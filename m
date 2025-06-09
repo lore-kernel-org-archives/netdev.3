@@ -1,249 +1,180 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8E321D3CA;
-	Mon,  9 Jun 2025 17:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2571621B8E0
+	for <netdev@vger.kernel.org>; Mon,  9 Jun 2025 17:39:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749490498; cv=none; b=fGyI9UeN/zn4blvChqW4nOsnwodEDQzovioJMZtzJWJjkmRj1o8nwVE2hkHGP5vE13EHhyRYfrn7NhT78fwONMuihiVp9bDGgUNJflUxz0zpcvOLw5KSoMB+z2H+me3WeUYhifJaYFha9ATA8IuD352y8MwGAYHlBkM5i/GfIA8=
+	t=1749490762; cv=none; b=l8Ac4p79o2Z4ElY/zvzpxVLLoxzxeyzYXX4h05F2IpgJ9t9UC9UsHkygOoRCyC8IOxEJx8TtVeJzsoidUD0CwbOYzczVa9XPiiz59FfDtM/zplxRQdDIfQAcFB38vSiMXcMxDKu6yVgoR101z8IXH2uFLo7ZypF+PRnYHWFP0MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749490498; c=relaxed/simple;
-	bh=P0uyLXZUJ1b2YGY6ixM1C+JXdrEdr9j6L4IfO3sQ7R8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SGuAWQ8WrQlFZxEVksJ837B2LB6vGaeuRq+G85CpdtVWVVUbImDzkXS7xVSQImW8i7nF5GpVAAVmOqz7waRCaQVs7bZ8T4qbkgm7IzayG37mLMh4OuoOrAr6Zp0FI5R1rYU0lzIA7vf98ajZrorTQJGqeP1OYT10kPvu3eHiuJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fj5eqiuN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749490762; c=relaxed/simple;
+	bh=vDEZLmFiWUgAEhhMnpPxC2x5ptegpxqcBtIXF4EgUvw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YsXgY305aCei+tgclDhHkiU5JquwRqeRxVYT+zXyqngronI/YKVP8F0VXqz34ps2xuE2nkVb5eN4LQdL2OQib8Eem/uM1W/XLP3FP9EDiHll035KsaD3W9kAB76WluBS4EisQx5euoqX60Ey+Hc6iM6UC+iv5r0bPuFyLwYmbxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UxFchhEB; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fj5eqiuN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54773C4CEF6;
-	Mon,  9 Jun 2025 17:34:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749490497;
-	bh=P0uyLXZUJ1b2YGY6ixM1C+JXdrEdr9j6L4IfO3sQ7R8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fj5eqiuNf2Y5tsv10HOnXxTcxQ0stff3Bg9U1nxzTFCaZfHbIKAER+EzqER8IrGaS
-	 BAWX99AYfG94OFUhTWgzD1mQJiuT7nlpSYnTrMDRut6CMCCGT+LGK7WmAApaoZkaNH
-	 tAildvKjNA0oBTRBcJqpoFN618Gz8narWR7fVWtlyk6pde2BIMx5n/0ERkDNhees5H
-	 jfxz79MaNf5xDQL5tm1bMBwgQU5RufVOMz8EewbR0sGcFxxW4f32M80bCyb1MnnmZ2
-	 wldmYLcYdbC56AiTWMGrRojn8PWWUxW0Qz9LYkNbMDA6vjEK/9Il39h752aNQFCOBf
-	 cTerovs+zp2zw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com
-Cc: willemdebruijn.kernel@gmail.com,
-	netdev@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	shuah@kernel.org,
-	sdf@fomichev.me,
-	linux-kselftest@vger.kernel.org
-Subject: [RFC net-next 6/6] selftests: drv-net: add test for RSS on flow label
-Date: Mon,  9 Jun 2025 10:34:42 -0700
-Message-ID: <20250609173442.1745856-7-kuba@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250609173442.1745856-1-kuba@kernel.org>
-References: <20250609173442.1745856-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UxFchhEB"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2357c61cda7so13255ad.1
+        for <netdev@vger.kernel.org>; Mon, 09 Jun 2025 10:39:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749490759; x=1750095559; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9RRpRkvuNJy3cXkOhH8biChoDOFuxh8lZ/u2fpQqLzg=;
+        b=UxFchhEB/EOTc0w70KhZaY15W09uYu6jXZOdr2ase+hIfTCPnYc/ZCm8tpKuJPWiOY
+         xZJfxn+61Ida+6G3EvB/BAOPBOyt9hI4GgbeyzuBG9TCxdpv0yWiNx+10mK38OG8e0YT
+         njTgmMc4zguYLqaxNenGblIq6z0Z8wqh9hm59Kfbjy+dkQUMe6KED7usY9RvlBxgF+3i
+         pCE1id1SQeHxgEQygp3chDNtfyiTg+MIK2RFk9nxvVh6TbdJiCQv8iz16M15ZPipF32q
+         Gs6Q9ysEJjPpaVmI39FOiyCGGRz2hKEMgb7wWg+9x67ahJ6X0DcMqFebPc/FxvZhcJM1
+         zfTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749490759; x=1750095559;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9RRpRkvuNJy3cXkOhH8biChoDOFuxh8lZ/u2fpQqLzg=;
+        b=azVJuHzlwT7kdWdbc9TKXZmcLTwZ5MrMwG1HrweyuBkhI2LxnaFVbuncf/iucRkZcu
+         pwi3dVw5o9MfQBCSQBy+Juhj1h2z7JW4PUizWZvGemIlDaeNs5S0Z30czuzlaMCV5p/E
+         kRj1dKrrsnT1vbPoMth7AsxN4jc0dJVmdl1z/1ZW1FvXfp+Wcccv27QPJj7laxPKAm9r
+         Bz+MOitp66PTkiJqjZUOFbjr0b9aCDaeyOkCPbeDuPWWEUJvXUsTnL0NkdZekk8/GgiP
+         AGRY0JBlhC8cLViWxPA6yavqV0jqfe6u0hHeM4zf5MlHGSBkN2PcZJCX7CgblmhF8thw
+         gfRA==
+X-Forwarded-Encrypted: i=1; AJvYcCWh1duPFyb3CyjLicuPetbO6Tq10f+f8w42fY+rV32t3I7veLDzDe4gJ19mmb+gKBB//kO44v0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRHzxdxiJjKkVAMoWvWurjWwIhAiTesBaBtRSgTUWtYnxnsCSb
+	/ta9ss1bDJ72BileYSNsMNNWQxU2CVY/X1oqI/fI368B7nd6ZjT4OrniP6rr0B81NwE/nOD/KoI
+	8IJMtz63rKvHrpdDYkutugPyLEXJ3+dcIgxAiWS6z
+X-Gm-Gg: ASbGncstIyRRNz+Wg2OGgfafwW0VjcOQLgPy+DTLIR0zhiAlQpMoAQpbXR5LLUiRVMl
+	ts8l2YV13FPiLaobRljUeDVlg51bk9JkXe6PcHKmAN1ZbRm7JtLO+2lJBpL5CvkQrERjLgRyKeu
+	vB3mBvMkpEbxJmKFPEO+quwPVOJ747+NNoepEw4FuP3PPbG/x269YtI3hXSUI5yPKWz2NkJiK6/
+	w==
+X-Google-Smtp-Source: AGHT+IEvrq24XpltBFWvdSIlKpCIc8JCZdMNJ6F/M800m9IOuRhKavTYagOECC3DsNK5G3lKUSM8nYe/B6o3T3jdn9Q=
+X-Received: by 2002:a17:902:e745:b0:231:ed22:e230 with SMTP id
+ d9443c01a7336-23613de3742mr5147245ad.15.1749490759104; Mon, 09 Jun 2025
+ 10:39:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250609043225.77229-1-byungchul@sk.com> <20250609043225.77229-10-byungchul@sk.com>
+In-Reply-To: <20250609043225.77229-10-byungchul@sk.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Mon, 9 Jun 2025 10:39:06 -0700
+X-Gm-Features: AX0GCFuAdxMyfuOpDJOl1NBEK5X2zXvXF5ManUgjd3SO6IAFQ752DFSmiJ8__HE
+Message-ID: <CAHS8izMLnyJNnK-K-kR1cSt0LOaZ5iGSYsM2R=QhTQDSjCm8pg@mail.gmail.com>
+Subject: Re: [PATCH net-next 9/9] page_pool: access ->pp_magic through struct
+ netmem_desc in page_pool_page_is_pp()
+To: Byungchul Park <byungchul@sk.com>
+Cc: willy@infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, kernel_team@skhynix.com, kuba@kernel.org, 
+	ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org, 
+	akpm@linux-foundation.org, davem@davemloft.net, john.fastabend@gmail.com, 
+	andrew+netdev@lunn.ch, asml.silence@gmail.com, toke@redhat.com, 
+	tariqt@nvidia.com, edumazet@google.com, pabeni@redhat.com, saeedm@nvidia.com, 
+	leon@kernel.org, ast@kernel.org, daniel@iogearbox.net, david@redhat.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org, 
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, vishal.moola@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a simple test for checking that RSS on flow label works,
-and that its rejected for IPv4 flows.
+On Sun, Jun 8, 2025 at 9:32=E2=80=AFPM Byungchul Park <byungchul@sk.com> wr=
+ote:
+>
+> To simplify struct page, the effort to separate its own descriptor from
+> struct page is required and the work for page pool is on going.
+>
+> To achieve that, all the code should avoid directly accessing page pool
+> members of struct page.
+>
+> Access ->pp_magic through struct netmem_desc instead of directly
+> accessing it through struct page in page_pool_page_is_pp().  Plus, move
+> page_pool_page_is_pp() from mm.h to netmem.h to use struct netmem_desc
+> without header dependency issue.
+>
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> ---
+>  include/linux/mm.h   | 12 ------------
+>  include/net/netmem.h | 14 ++++++++++++++
+>  mm/page_alloc.c      |  1 +
+>  3 files changed, 15 insertions(+), 12 deletions(-)
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index e51dba8398f7..f23560853447 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4311,16 +4311,4 @@ int arch_lock_shadow_stack_status(struct task_stru=
+ct *t, unsigned long status);
+>   */
+>  #define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
+>
+> -#ifdef CONFIG_PAGE_POOL
+> -static inline bool page_pool_page_is_pp(struct page *page)
+> -{
+> -       return (page->pp_magic & PP_MAGIC_MASK) =3D=3D PP_SIGNATURE;
+> -}
+> -#else
+> -static inline bool page_pool_page_is_pp(struct page *page)
+> -{
+> -       return false;
+> -}
+> -#endif
+> -
+>  #endif /* _LINUX_MM_H */
+> diff --git a/include/net/netmem.h b/include/net/netmem.h
+> index d84ab624b489..8f354ae7d5c3 100644
+> --- a/include/net/netmem.h
+> +++ b/include/net/netmem.h
+> @@ -56,6 +56,20 @@ NETMEM_DESC_ASSERT_OFFSET(pp_ref_count, pp_ref_count);
+>   */
+>  static_assert(sizeof(struct netmem_desc) <=3D offsetof(struct page, _ref=
+count));
+>
+> +#ifdef CONFIG_PAGE_POOL
+> +static inline bool page_pool_page_is_pp(struct page *page)
+> +{
+> +       struct netmem_desc *desc =3D (struct netmem_desc *)page;
+> +
+> +       return (desc->pp_magic & PP_MAGIC_MASK) =3D=3D PP_SIGNATURE;
+> +}
+> +#else
+> +static inline bool page_pool_page_is_pp(struct page *page)
+> +{
+> +       return false;
+> +}
+> +#endif
+> +
+>  /* net_iov */
+>
+>  DECLARE_STATIC_KEY_FALSE(page_pool_mem_providers);
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 4f29e393f6af..be0752c0ac92 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -55,6 +55,7 @@
+>  #include <linux/delayacct.h>
+>  #include <linux/cacheinfo.h>
+>  #include <linux/pgalloc_tag.h>
+> +#include <net/netmem.h>
 
- # ./tools/testing/selftests/drivers/net/hw/rss_flow_label.py
- TAP version 13
- 1..2
- ok 1 rss_flow_label.test_rss_flow_label
- ok 2 rss_flow_label.test_rss_flow_label_6only
- # Totals: pass:2 fail:0 xfail:0 xpass:0 skip:0 error:0
+mm files starting to include netmem.h is a bit interesting. I did not
+expect/want dependencies outside of net. If anything the netmem stuff
+include linux/mm.h
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: shuah@kernel.org
-CC: sdf@fomichev.me
-CC: linux-kselftest@vger.kernel.org
----
- .../testing/selftests/drivers/net/hw/Makefile |   1 +
- .../drivers/net/hw/rss_flow_label.py          | 151 ++++++++++++++++++
- 2 files changed, 152 insertions(+)
- create mode 100755 tools/testing/selftests/drivers/net/hw/rss_flow_label.py
+But I don't have a butter suggestion here and I don't see any huge
+problems with this off the top of my head, so
 
-diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-index df2c047ffa90..56bf1f1b8377 100644
---- a/tools/testing/selftests/drivers/net/hw/Makefile
-+++ b/tools/testing/selftests/drivers/net/hw/Makefile
-@@ -17,6 +17,7 @@ TEST_PROGS = \
- 	loopback.sh \
- 	pp_alloc_fail.py \
- 	rss_ctx.py \
-+	rss_flow_label.py \
- 	rss_input_xfrm.py \
- 	tso.py \
- 	xsk_reconfig.py \
-diff --git a/tools/testing/selftests/drivers/net/hw/rss_flow_label.py b/tools/testing/selftests/drivers/net/hw/rss_flow_label.py
-new file mode 100755
-index 000000000000..e471e13160ae
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/rss_flow_label.py
-@@ -0,0 +1,151 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+"""
-+Tests for RSS hashing on IPv6 Flow Label.
-+"""
-+
-+import glob
-+import socket
-+from lib.py import CmdExitFailure
-+from lib.py import ksft_run, ksft_exit, ksft_eq, ksft_ge, ksft_in, \
-+    ksft_not_in, ksft_raises, KsftSkipEx
-+from lib.py import bkg, cmd, defer, fd_read_timeout, rand_port
-+from lib.py import NetDrvEpEnv
-+
-+
-+def _ethtool_get_cfg(cfg, fl_type):
-+    descr = cmd(f"ethtool -n {cfg.ifname} rx-flow-hash {fl_type}").stdout
-+
-+    converter = {
-+        "IP SA": "s",
-+        "IP DA": "d",
-+        "L3 proto": "t",
-+        "L4 bytes 0 & 1 [TCP/UDP src port]": "f",
-+        "L4 bytes 2 & 3 [TCP/UDP dst port]": "n",
-+        "IPv6 Flow Label": "l",
-+    }
-+
-+    ret = ""
-+    for line in descr.split("\n")[1:-2]:
-+        # if this raises we probably need to add more keys to converter above
-+        ret += converter[line]
-+    return ret
-+
-+
-+def _traffic(cfg, one_sock, one_cpu):
-+    local_port  = rand_port(socket.SOCK_DGRAM)
-+    remote_port = rand_port(socket.SOCK_DGRAM)
-+
-+    sock = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
-+    sock.bind(("", local_port))
-+    sock.connect((cfg.remote_addr_v["6"], 0))
-+    if one_sock:
-+        send = f"exec 5<>/dev/udp/{cfg.addr_v['6']}/{local_port}; " \
-+                "for i in `seq 20`; do echo a >&5; sleep 0.02; done; exec 5>&-"
-+    else:
-+        send = "for i in `seq 20`; do echo a | socat -t0.02 - UDP6:" \
-+              f"[{cfg.addr_v['6']}]:{local_port},sourceport={remote_port}; done"
-+
-+    cpus = set()
-+    with bkg(send, shell=True, host=cfg.remote, exit_wait=True):
-+        for _ in range(20):
-+            fd_read_timeout(sock.fileno(), 1)
-+            cpu = sock.getsockopt(socket.SOL_SOCKET, socket.SO_INCOMING_CPU)
-+            cpus.add(cpu)
-+
-+    if one_cpu:
-+        ksft_eq(len(cpus), 1,
-+                f"{one_sock=} - expected one CPU, got traffic on: {cpus=}")
-+    else:
-+        ksft_ge(len(cpus), 2,
-+                f"{one_sock=} - expected many CPUs, got traffic on: {cpus=}")
-+
-+
-+def test_rss_flow_label(cfg):
-+    """
-+    Test hashing on IPv6 flow label. Send traffic over a single socket
-+    and over multiple sockets. Depend on the remote having auto-label
-+    enabled so that it randomizes the label per socket.
-+    """
-+
-+    cfg.require_ipver("6")
-+    cfg.require_cmd("socat", remote=True)
-+    if not hasattr(socket, "SO_INCOMING_CPU"):
-+        raise KsftSkipEx("socket.SO_INCOMING_CPU was added in Python 3.11")
-+
-+    # 1 is the default, if someone changed it we probably shouldn"t mess with it
-+    af = cmd("cat /proc/sys/net/ipv6/auto_flowlabels", host=cfg.remote).stdout
-+    if af.strip() != "1":
-+        raise KsftSkipEx("Remote does not have auto_flowlabels enabled")
-+
-+    qcnt = len(glob.glob(f"/sys/class/net/{cfg.ifname}/queues/rx-*"))
-+    if qcnt < 2:
-+        raise KsftSkipEx(f"Local has only {qcnt} queues")
-+
-+    # Enable flow label hashing for UDP6
-+    initial = _ethtool_get_cfg(cfg, "udp6")
-+    no_lbl = initial.replace("l", "")
-+    if "l" not in initial:
-+        try:
-+            cmd(f"ethtool -N {cfg.ifname} rx-flow-hash udp6 l{no_lbl}")
-+        except CmdExitFailure as exc:
-+            raise KsftSkipEx("Device doesn't support Flow Label for UDP6") from exc
-+
-+        defer(cmd, f"ethtool -N {cfg.ifname} rx-flow-hash udp6 {initial}")
-+
-+    _traffic(cfg, one_sock=True, one_cpu=True)
-+    _traffic(cfg, one_sock=False, one_cpu=False)
-+
-+    # Disable it, we should see no hashing (reset was already defer()ed)
-+    cmd(f"ethtool -N {cfg.ifname} rx-flow-hash udp6 {no_lbl}")
-+
-+    _traffic(cfg, one_sock=False, one_cpu=True)
-+
-+
-+def _check_v4_flow_types(cfg):
-+    for fl_type in ["tcp4", "udp4", "ah4", "esp4", "sctp4"]:
-+        try:
-+            cur = cmd(f"ethtool -n {cfg.ifname} rx-flow-hash {fl_type}").stdout
-+            ksft_not_in("Flow Label", cur,
-+                        comment=f"{fl_type=} has Flow Label:" + cur)
-+        except CmdExitFailure:
-+            # Probably does not support this flow type
-+            pass
-+
-+
-+def test_rss_flow_label_6only(cfg):
-+    """
-+    Test interactions with IPv4 flow types. It should not be possible to set
-+    IPv6 Flow Label hashing for an IPv4 flow type. The Flow Label should also
-+    not appear in the IPv4 "current config".
-+    """
-+
-+    with ksft_raises(CmdExitFailure) as cm:
-+        cmd(f"ethtool -N {cfg.ifname} rx-flow-hash tcp4 sdfnl")
-+    ksft_in("Invalid argument", cm.exception.cmd.stderr)
-+
-+    _check_v4_flow_types(cfg)
-+
-+    # Try to enable Flow Labels and check again, in case it leaks thru
-+    initial = _ethtool_get_cfg(cfg, "udp6")
-+    changed = initial.replace("l", "") if "l" in initial else initial + "l"
-+
-+    cmd(f"ethtool -N {cfg.ifname} rx-flow-hash udp6 {changed}")
-+    restore = defer(cmd, f"ethtool -N {cfg.ifname} rx-flow-hash udp6 {initial}")
-+
-+    _check_v4_flow_types(cfg)
-+    restore.exec()
-+    _check_v4_flow_types(cfg)
-+
-+
-+def main() -> None:
-+    with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
-+        ksft_run([test_rss_flow_label,
-+                  test_rss_flow_label_6only],
-+                 args=(cfg, ))
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
--- 
-2.49.0
+Reviewed-by: Mina Almasry <almasrymina@google.com>
 
+Lets see if Jakub objects though. To be fair, we did put the netmem
+private stuff in net/core/netmem_priv.h, so technically
+include/net/netmem.h should be exportable indeed.
+
+--=20
+Thanks,
+Mina
