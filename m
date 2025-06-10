@@ -1,102 +1,127 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9382C17B0;
-	Tue, 10 Jun 2025 12:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EC92D29BF;
+	Tue, 10 Jun 2025 12:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749560350; cv=none; b=Y39wb7toxWXHPuyfdmb1sSxMRdHRMIwWgA5zCiFTdXO+XI9sCmBFnz5oKtT1sBDpwkjPitE1RBgXwuxahHIpgWWEsBbO1e0WesGGweVPGi+70CpTOzGw9kfJmwoi8OrNjKGmN2B6EwzBboQmMU8uhZvq7v7I2klBtG3bKhvP3ek=
+	t=1749560401; cv=none; b=tLXVJg17WjnlAYnOYXVuLNTcz8qh+1PO2B12WBi8bXZ9FouX2QW24+cwAWU+A7N0Zpy2F5AOcE/Y1IB1TMlJZL9b2ncIxZnnoNgR82+VriVRqTGRcC9cqZKyElFE77s9iv5gIYv8zPMk/LzFlXgcUW9azju/hdKSgngrATJZd1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749560350; c=relaxed/simple;
-	bh=oFMazrCuecngzoa++NkSmIOCoYRid8dS5A/ERnGJBpo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YWOOKWvX3q1WpRLyacAq9irJmo78J0Eo965EWeL24SXMzVx6EIlfIitRTjU0P5Qk6AzqK7iSdyhQWU5RV760ZEePfFOxfz5QuDSSQxMZZNVHunnjp20deeEEyFN9lKdM+JuQZ4eeyyZ6VUzrSbKJQ+aBd5/yS9EM9PUDqFqYh4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ujDB7z68; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1749560401; c=relaxed/simple;
+	bh=8s9eNAGzDntGvZK7Pc6cMHYrqeVLULwscezMnMgGoE4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sNcYYAWHJrGx3KCqudgsnvZI0d6HXIKAdHeksFRNwZvxlytO6gp1Rm9lDg9fA0peniN674KE/TaT506x2cGlzyHDD0REMzO0DrB7kZs7xvRjY9jIUg3QhSDsiSTyM886fWTEuhKi9/zByKeg58MJr4sNDucBasNXQBZpOOxNFh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ANBQjQQI; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ujDB7z68"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=0mN0Y6VG8wJwIHBPmUq5Ichmc5b23YwTM3GHpfC0Ov0=; b=ujDB7z68qrrQWLKAjGzbmCQGy3
-	LdOtDJSTUvPJoAR+dlK+SCrvQO4qgGvAcvh2Obe7Xf1qUhfc6kUAHntYjvGObWD50/ANPKe97yd3y
-	StFdUf5u32nQt5lMjBOlGoqnG9dJYy8rhkzxAKLYPIrFSRwObLsOO0zSTHB4qQv0slmA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uOyYu-00FGk5-Tp; Tue, 10 Jun 2025 14:58:44 +0200
-Date: Tue, 10 Jun 2025 14:58:44 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Frank Wunderlich <frank-w@public-files.de>
-Cc: linux@fw-web.de, myungjoo.ham@samsung.com, kyungmin.park@samsung.com,
-	cw00.choi@samsung.com, djakov@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, olteanv@gmail.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com, jia-wei.chang@mediatek.com,
-	johnson.wang@mediatek.com, arinc.unal@arinc9.com,
-	Landen.Chao@mediatek.com, dqfext@gmail.com, sean.wang@mediatek.com,
-	daniel@makrotopia.org, lorenzo@kernel.org, nbd@nbd.name,
-	linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: Re: [PATCH v3 12/13] arm64: dts: mediatek: mt7988a-bpi-r4: add
- sfp cages and link to gmac
-Message-ID: <e1a49ca7-f082-4983-89fe-1a8f8c8a3de1@lunn.ch>
-References: <20250608211452.72920-1-linux@fw-web.de>
- <20250608211452.72920-13-linux@fw-web.de>
- <934b1515-2da1-4479-848e-cd2475ebe98d@lunn.ch>
- <trinity-b9ab960d-38f8-4524-b645-fc0832ce72ec-1749546239525@trinity-msg-rest-gmx-gmx-live-5d9b465786-6phds>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ANBQjQQI"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-450cf0120cdso47000575e9.2;
+        Tue, 10 Jun 2025 05:59:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749560396; x=1750165196; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EBizC4HChtDjhvxMjVZXHxWUIj72Hoy73F5AtjgusPA=;
+        b=ANBQjQQIMaw9yw6JaJ53PbudvK/YJYZhWyatwCNres8AsJ+KbaatPTDb/3EDfQqRpx
+         2Flq2K2nl9UQ6KVr/WfnLXfv0ALkQHlfYGTRiOmteyskC+7eZLOo42J/q6bHc+wwbFCE
+         WAbuKaDndqswJt+CKZZ4q4C8HkxgWCMh9sPi6uS2eJ+ICwQ8JR/a/cwDcwK1At+Xa0lh
+         to51pa8zenZR9yfe98kZiJuVkj932jW8cSV1ZcPzG9PfYOY4Np93mrMxXNR2KUvmcaYq
+         LD4X90+LqMYR9mHy/TAdz2LPtPkSNdhjw7L/Xje6YfiCuILooe3ZU/xu5eRW8l10de/I
+         Im9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749560396; x=1750165196;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EBizC4HChtDjhvxMjVZXHxWUIj72Hoy73F5AtjgusPA=;
+        b=A9QMz+pALWucvUuGhBic6VeSoR3kU9igOofh8Umugx8KpHUdXDL2k8R+4WMvQhQywe
+         ouNFYdbMBiYBJfbVOoa7dgj8hh23B3qF6tbOd+jMGS91oUDihgxemxCxuL4bGWueXp9K
+         qIVHuFba/Qp+gdiKudsnT4rSHT7eo6V1aZOUdDehL7Te/8XXVWmB2MkqbN9LDJUiaPTE
+         euMHsH7DBNeOXncGMZeY/SnjmIq1uIucTfmM97M44UeN8g6NnVwjpg8NLblxlP/SFcL4
+         of8JHPiCJ+LuEJkbVTpEG/0kz8TDpZF+ZaiCfArUdX70Tm/67QY1nhr7BpUnlqBnSlrC
+         Io4A==
+X-Forwarded-Encrypted: i=1; AJvYcCUjzI+HA+zgbW5c6F+PvBnolEPnc0LFzH+tSjpWhAk7b8qfpVMpsSpKijycKDuLc1EM9NM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYEfettX8h1zQaiV2l/0PtzL0nPcxtevmfDw8WsG/ZUrvzFLNu
+	qIdcbfLVXI7ICRIG+cpW9hzYzp1WNzdVhtet7mvnzeSg8edpFceB/OZcfrQupg==
+X-Gm-Gg: ASbGncus3aiAYjnIW8pS7fFWWK+Q8oP3q3yKtHawmM5hoPKpRU+BtiziZ1ORxQXCF42
+	eykXZtw/XtXETsTVBiLSZ6Adgx5DOvbnArMiGiZoXVlEwojXpL80beLlTLsBf4mSpkWF8C7zr6n
+	9w+7K5H+tEE7+l/eKSYKTqYjn/MmBboityWg3JQj4g7oj8xIyHdfU/JqqCiV8wXpNLl9ZQmHQ2c
+	rDoTDX/ZLT0iYa6cszw6Rg/afEmYe81AKaIcvYCtwe64c+nJW18UcEoCHtgeyxn8r+rsPvKkFCA
+	IWmNAi5BO6MZBBBHe/h2o12UNSy2rnlmPlkVqWsaV/wzonfvUu/jLoMnA1CnfyycJx87tsvB2EO
+	ig3T2
+X-Google-Smtp-Source: AGHT+IGpxd1xxIqDK6SYHgkxWT+7F5cwAd7IVV1tuOTh0FRSNPqlNQxFdPzeQh9zjHggZ7MrXo7Uxw==
+X-Received: by 2002:a05:600c:3b95:b0:442:faa3:fadb with SMTP id 5b1f17b1804b1-4520134081dmr172208475e9.2.1749560395787;
+        Tue, 10 Jun 2025 05:59:55 -0700 (PDT)
+Received: from imac.lan ([2a02:8010:60a0:0:6117:17d9:610b:9e0a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-452fb381abfsm130563485e9.17.2025.06.10.05.59.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jun 2025 05:59:55 -0700 (PDT)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	mptcp@lists.linux.dev,
+	kernel-tls-handshake@lists.linux.dev,
+	bpf@vger.kernel.org
+Cc: donald.hunter@redhat.com,
+	Donald Hunter <donald.hunter@gmail.com>
+Subject: [PATCH net-next v1 0/7] netlink: specs: fix all the yamllint errors
+Date: Tue, 10 Jun 2025 13:59:37 +0100
+Message-ID: <20250610125944.85265-1-donald.hunter@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <trinity-b9ab960d-38f8-4524-b645-fc0832ce72ec-1749546239525@trinity-msg-rest-gmx-gmx-live-5d9b465786-6phds>
+Content-Transfer-Encoding: 8bit
 
-> > sff,sfp.yaml says:
-> > 
-> >   maximum-power-milliwatt:
-> >     minimum: 1000
-> >     default: 1000
-> >     description:
-> >       Maximum module power consumption Specifies the maximum power consumption
-> >       allowable by a module in the slot, in milli-Watts. Presently, modules can
-> >       be up to 1W, 1.5W or 2W.
-> > 
-> > I've no idea what will happen when the SFP core sees 3000. Is the
-> > comment out of date?
-> 
-> at least sfp-core has no issue with the setting
-> 
-> root@bpi-r4-phy-8G:~# dmesg | grep sfp
-> [    1.269437] sfp sfp1: Host maximum power 3.0W
-> [    1.613749] sfp sfp1: module CISCO-FINISAR    FTLX8571D3BCL-C2 rev A    sn S2209167650      dc 220916  
-> 
-> imho some modules require more than 2W (some gpon/xpon and 10G copper ethernet).
+yamllint reported ~500 errors and warnings in the netlink specs. Fix all
+the reported issues.
 
-Looking at the code:
+Link: https://lore.kernel.org/netdev/m2tt4tt3wv.fsf@gmail.com/
 
-static int sfp_module_parse_power(struct sfp *sfp)
-{
-        u32 power_mW = 1000;
-        bool supports_a2;
+Donald Hunter (7):
+  netlink: specs: add doc start markers to yaml
+  netlink: specs: clean up spaces in brackets
+  netlink: specs: fix up spaces before comments
+  netlink: specs: fix up truthy values
+  netlink: specs: fix up indentation errors
+  netlink: specs: wrap long doc lines (>80 chars)
+  netlink: specs: fix a couple of yamllint warnings
 
-        if (sfp->id.ext.sff8472_compliance >= SFP_SFF8472_COMPLIANCE_REV10_2 &&
-            sfp->id.ext.options & cpu_to_be16(SFP_OPTIONS_POWER_DECL))
-                power_mW = 1500;
-        /* Added in Rev 11.9, but there is no compliance code for this */
-        if (sfp->id.ext.sff8472_compliance >= SFP_SFF8472_COMPLIANCE_REV11_4 &&
-            sfp->id.ext.options & cpu_to_be16(SFP_OPTIONS_HIGH_POWER_LEVEL))
-                power_mW = 2000;
+ Documentation/netlink/specs/conntrack.yaml    |  38 ++--
+ Documentation/netlink/specs/devlink.yaml      | 208 +++++++++---------
+ Documentation/netlink/specs/dpll.yaml         |  14 +-
+ Documentation/netlink/specs/ethtool.yaml      |  70 +++---
+ Documentation/netlink/specs/fou.yaml          |  14 +-
+ Documentation/netlink/specs/handshake.yaml    |  10 +-
+ Documentation/netlink/specs/lockd.yaml        |   4 +-
+ Documentation/netlink/specs/mptcp_pm.yaml     | 192 ++++++++--------
+ Documentation/netlink/specs/net_shaper.yaml   |   7 +-
+ Documentation/netlink/specs/netdev.yaml       |  43 ++--
+ Documentation/netlink/specs/nfsd.yaml         |  10 +-
+ Documentation/netlink/specs/nftables.yaml     |  16 +-
+ Documentation/netlink/specs/nl80211.yaml      | 109 ++++-----
+ Documentation/netlink/specs/nlctrl.yaml       |   6 +-
+ Documentation/netlink/specs/ovpn.yaml         |  26 +--
+ Documentation/netlink/specs/ovs_datapath.yaml |   2 +-
+ Documentation/netlink/specs/ovs_flow.yaml     |  16 +-
+ Documentation/netlink/specs/ovs_vport.yaml    |   4 +-
+ Documentation/netlink/specs/rt-addr.yaml      |   2 +-
+ Documentation/netlink/specs/rt-link.yaml      |   2 +-
+ Documentation/netlink/specs/rt-neigh.yaml     |   2 +-
+ Documentation/netlink/specs/rt-route.yaml     |  10 +-
+ Documentation/netlink/specs/rt-rule.yaml      |   2 +-
+ Documentation/netlink/specs/tc.yaml           |  27 ++-
+ Documentation/netlink/specs/tcp_metrics.yaml  |   8 +-
+ Documentation/netlink/specs/team.yaml         |  16 +-
+ 26 files changed, 440 insertions(+), 418 deletions(-)
 
-How does your module indicate it needs 3000 mW? Does this bit of code
-need extending to read additional bits?
+-- 
+2.49.0
 
-	Andrew
