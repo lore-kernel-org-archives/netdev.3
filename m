@@ -1,70 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6EB246769
-	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 17:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C61E1DE2A8
+	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 18:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749578221; cv=none; b=s2ltWzCfugL8XCjj5/wrkmFLg1gK2JQ/sjBS6qNSrgQwkuFgFLo4X697DTab4mPIoqg6M4/9NoKDdvTdHaJSyYb/M2gcUqkojzQ1+2Re5E7sehWrArlXVjpc8ZNDF+cX+2XMDlHayej3GYcrCMG82NRExttBxHhs00ZOHV2CBlI=
+	t=1749579150; cv=none; b=bGPxutHUTraxcZyQUEOxjKMLFyi9Lz5maifVkjaxarDwjX+FT/SoQ/sWXlIbcRGg1x6Z5tN4BQtC5Bav/9uTd2ec6QAOBJcY8bBtkm/bb+msPRCvKqoUSzSi3F6EtmLclSwcIKo5N1NKORhsPVNgADCQSzNWjX/6VHaPtXNs4Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749578221; c=relaxed/simple;
-	bh=o/EIqDhRHXNwC661Ix/Xh07w858mX3cfWZTrFQXedL8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jMOBfbFaR3/VPuBvDwb+et6ZRhCJyB/PJiFOhaOPWDPYn5DEC38RzqeP935MdGJYdjpY7lfsJq8WzrEc8gNkeVEP+EwhRRY8kJ0Kxxx4jloT/elORgU7OyWW+KPvIEjo7FWEJE6ljtHDLNu2heWg05CjcWRRHS9uSE7pw6IOFPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C8lA2SJe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749579150; c=relaxed/simple;
+	bh=0DO9ji7fhUKeP8C4dffS5kIgVpayLGI6iU9FypMtU1c=;
+	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
+	 Content-Type:Date:Message-ID; b=gC5UPxSepWNDN2RfapXsyOL6/gSSieJ/CyKVGiYXYRjsOOyk8XGm2BcIl3/TM07tyOU8LlHZ1tmL7kbWo4I5cn1LOaUx1aR9rBUccdBdktD2Rk2ec2iXZR/s4SpFtMjkN/6Hw9sGZYXC2ZFni031N6l5QUdKKPy2iQUPIm1jKZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=vuO/4izA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Cs2aiyqw; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C8lA2SJe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BCBC4CEF3
-	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 17:57:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749578220;
-	bh=o/EIqDhRHXNwC661Ix/Xh07w858mX3cfWZTrFQXedL8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=C8lA2SJeEYhikdL+aZZWnFPTO8dh+r7awAOO0N6zOr2Y1JSszkaghSQ6g2jc5TsaG
-	 bRXjG/WJwjW0YgCzD3fRLjSraJN88Ih3AccAMiAZBJaEJv/Tet940P0Zpfr9z6IfF6
-	 V/Eq4N++eRmnwMXWi00mtB26HFk8wESbAHZW8OrJJ3qB1v+q+mRZf+sksu7fZs4tgU
-	 UgXblbBx+nSd3/lvIqxkuou2Crr7jJXZj4mQU0X6Oda4F5TWhQ5PSbCuVzGUCLTDak
-	 7+bSybB1XsAGTbVZ7vgXLQlqm7A0Bm26swXpbKEzIXYlitePywArEXCCk53Pvh1GJD
-	 qzebgfYrFh2JA==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-607cc1a2bd8so5930220a12.2
-        for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 10:57:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVK4Ef8sG4r65WX+hbhC+anacgzuhzhozFtMnoeQUlhquFFHoHdCGgKsKSlbhtZ+1gVa6mzr/E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxnJBuzx1pnlpSlYVUmMWBIUYBU3PHtSMtneTd25mAEzArCYau
-	JXLJfaUXw6ptjcWjWJ7vtKF8QvGXp5NUlb7n2ZHxVO/v/vhziWE4x4k3RGUHiNriM42kI3XIXmn
-	V5wc9uib3YqSChpVVuupSa5GeeBzeJgaWMwPaqJ8c
-X-Google-Smtp-Source: AGHT+IGZXUq7dF0vWaS7EQJBO5eVjQ/62SvrC56EQBE7WguprI9Qv3UDt+jKNg2wBvmdSxFLEb1PFEKm0hwONKUXytE=
-X-Received: by 2002:a05:6402:d0d:b0:604:bb1d:938d with SMTP id
- 4fb4d7f45d1cf-60846d30b2dmr95190a12.34.1749578219228; Tue, 10 Jun 2025
- 10:56:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="vuO/4izA";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Cs2aiyqw"
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 0DD5F1140152;
+	Tue, 10 Jun 2025 14:12:26 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Tue, 10 Jun 2025 14:12:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
+	 h=cc:cc:content-id:content-type:content-type:date:date:from
+	:from:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1749579145; x=
+	1749665545; bh=OoZ5u0oIBWN0fzLecqeatxwyVSEZ+6Btjcye8WjMJVM=; b=v
+	uO/4izAf8kmSVcAgo0zJr+JnvAK5kYhOe3m3kf1PU36+dpjnMj95X1bmIEWRuy4l
+	p4FXle5D4r/HdZT51DAbMrQLf1d7tZ0mmNjWx27UgUqglhJwq1BcWu0Bs0mwdHGZ
+	aLyRW6tPhwYXSMCOpVzJAAiJMeBi75vfZS7hhpsr1JWv+lPFSe58Nk6wjM37S3tE
+	UC/iTqvZUi2dQPg85Q6IT3Z7j9+UfzaQgSztndRsdT24h2IBB07mFCDKUejMJ49D
+	wk4KsHSO1wf2lsCAWm6s9cAHBJNeLwphbrn/JSw5FK0PuKxsZ2uSKEWZIUy/dN+p
+	E9/M+9IdcjWx5YeaY/Dfw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-id:content-type
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm1; t=1749579145; x=1749665545; bh=O
+	oZ5u0oIBWN0fzLecqeatxwyVSEZ+6Btjcye8WjMJVM=; b=Cs2aiyqwK8u79uE28
+	/k+VuiOnnFuhdy+85VwXVs04frpIXjN5ACy2qhfIGZuDOtFQE2QaDYLncAM605ws
+	J75qYKLyRnedStcjA7FfoQXv8h7s8BxzZRa5tM2dxrU/TY4R1gSmNsV7QNuR3kap
+	xJ0RPxnBnyqM9F+4P64sQYxitaWyGdmlskdrRSdUii0/mMU0oC48Ly2/D+aMcGz6
+	D2E4VtjLp81y7f2Lh594cHBbVuG4cOFNcc44yjCs6xretb3pHrArSbzZM1FMa4Fh
+	InGB11/GcvVEl30NvNwEBpEx2GofCmbLidCSnBm79j7r7GLYZFdUN+HOHmghjP9j
+	lOxiw==
+X-ME-Sender: <xms:iXVIaO7EssFhD02b0xYv8uBu1ocOdZpEWUd-Sbv_LwHC_JbPJcrGjQ>
+    <xme:iXVIaH7JaU0-Y1VL4rrrVcC2YER7HYsn9h2cOm6SzHmzp7lGkBGqOjpEH6sQFec1q
+    -g5TTSMZTfzrIlQZg8>
+X-ME-Received: <xmr:iXVIaNdWmvxOdfG-NGnbgmC1CQN4m9daozf_PiHwqPsrNn7W072oVL-NIFI0u719P-LouQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdduuddtkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefhvfevufgjfhfogggtfffksehttdertdertddv
+    necuhfhrohhmpeflrgihucggohhssghurhhghhcuoehjvhesjhhvohhssghurhhghhdrnh
+    gvtheqnecuggftrfgrthhtvghrnhepjedvgffhteevvddufedvjeegleetveekveegtdfh
+    udekveeijeeuheekgeffjedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepjhhvsehjvhhoshgsuhhrghhhrdhnvghtpdhnsggprhgtphhtthho
+    pedvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehhmhhoohhrvgesqhhumhhulh
+    hordgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:iXVIaLKP0_xJNaRybGpOA9EqS25g_SjOvs_33G_uAv2ZD5tBkRk9eA>
+    <xmx:iXVIaCLfickWhxFS8FGbNjKDuNtCR1kgPiG6ViiE2d9UQKFkU3WzOw>
+    <xmx:iXVIaMwpa151-h4K1CjIx-wn8xX6eKAgZCLVRaq6L7XFndOt4_MWww>
+    <xmx:iXVIaGKl213e5ZOdLreBa_pn8yksZrZPA5LW8Ghf1eDV8KqNTeyJaw>
+    <xmx:iXVIaDzEgQ-H7iBJt-ZGBDmnlFB1Qr_4g5v213nHKJJqK_yNZ_GB5bql>
+Feedback-ID: i53714940:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 10 Jun 2025 14:12:25 -0400 (EDT)
+Received: by famine.localdomain (Postfix, from userid 1000)
+	id 75EC49FCA9; Tue, 10 Jun 2025 11:12:24 -0700 (PDT)
+Received: from famine (localhost [127.0.0.1])
+	by famine.localdomain (Postfix) with ESMTP id 731659FCA8;
+	Tue, 10 Jun 2025 11:12:24 -0700 (PDT)
+From: Jay Vosburgh <jv@jvosburgh.net>
+To: Haylin Moore <hmoore@qumulo.com>
+cc: netdev@vger.kernel.org
+Subject: Re: bond_eth_hash only uses the fifth byte of MAC address
+In-reply-to: 
+ <CALnKHDCKs-_XvW0jFAu1yv-Ex_OabqzuyBy=US_W-jzwy9N3Ug@mail.gmail.com>
+References: 
+ <CALnKHDCKs-_XvW0jFAu1yv-Ex_OabqzuyBy=US_W-jzwy9N3Ug@mail.gmail.com>
+Comments: In-reply-to Haylin Moore <hmoore@qumulo.com>
+   message dated "Tue, 10 Jun 2025 09:54:25 -0700."
+X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250610175442.2138504-1-stfomichev@gmail.com>
-In-Reply-To: <20250610175442.2138504-1-stfomichev@gmail.com>
-From: KP Singh <kpsingh@kernel.org>
-Date: Tue, 10 Jun 2025 19:56:48 +0200
-X-Gmail-Original-Message-ID: <CACYkzJ6Y+wcBeVgU-SbxFbimQQ5ve3p3J1YEAcb=VhPJwaYFvA@mail.gmail.com>
-X-Gm-Features: AX0GCFugYv_WEc-J17kTVrbFElExKOsgJjQw9bwraM1ZC-OWcx0MedIOHxHss0E
-Message-ID: <CACYkzJ6Y+wcBeVgU-SbxFbimQQ5ve3p3J1YEAcb=VhPJwaYFvA@mail.gmail.com>
-Subject: Re: [PATCH bpf] MAINTAINERS: add myself as bpf networking reviewer
-To: Stanislav Fomichev <stfomichev@gmail.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, ast@kernel.org, 
-	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
-	song@kernel.org, yhs@fb.com, john.fastabend@gmail.com, haoluo@google.com, 
-	jolsa@kernel.org, akpm@linux-foundation.org, lumag@kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1518703.1749579144.1@famine>
+Date: Tue, 10 Jun 2025 11:12:24 -0700
+Message-ID: <1518704.1749579144@famine>
 
-On Tue, Jun 10, 2025 at 7:54=E2=80=AFPM Stanislav Fomichev <stfomichev@gmai=
-l.com> wrote:
->
-> I've been focusing on networking BPF bits lately, add myself as a
-> reviewer.
->
-> Signed-off-by: Stanislav Fomichev <stfomichev@gmail.com>
+Haylin Moore <hmoore@qumulo.com> wrote:
 
-Acked-by: KP Singh <kpsingh@kernel.org>
+>Hello All,
+>
+>I am currently digging into the source code powering layer2+3 bonding
+>and saw that for bond_eth_hash only the 5th byte of both the source
+>and destination MAC address is used in the XOR.
+>
+>Is there a reason for this? I was not able to find anything searching
+>the mailing lists or the web. This functionality while documented just
+>feels weird to me.
+
+	My recollection, which could be totally wrong, is that the
+described algorithm was chosen to mimic what was available on Cisco
+Etherchannel at the time.  Bonding's balance-xor mode was originally
+developed to interoperate with Etherchannel, before LACP became popular,
+so this would have been implemented circa 2000-2002.
+
+	Development on bonding was done out of tree at that time, and
+updates were distributed on sourceforge, with discussion primarily on
+the bonding-devel mailing list.  marc.info has the bonding-devel list
+archived; you might be able to find the original discussion there.
+
+	-J
+
+---
+	-Jay Vosburgh, jv@jvosburgh.net
