@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECEE28C2BA
-	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 09:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B451FF5F9
+	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 09:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749548983; cv=none; b=lkZy3XGOLy4EYLszQykrkIL3rDiL3I8MlgbqDhgl1j1Kz+B32fyKWorW2NWNsDy1MBUcFaB8UfHb3a0b4wCAxpfhOinlDd0yaCYciZ8mXZ+ferWyuXI85SrHZyWB64/TUPLx13R2etz4R0GRB5aW/Syjz9zyS76q+2trgQiSwz8=
+	t=1749548983; cv=none; b=IvEm9PDKAwmZwKIx5JQNC0xrMmAnlJebuolg0YO9pbFxca/GvgUVgl8NTN7x+aIrOUK1ISVq8oKFoMQTdH4V13cKjlW77sQ3rJtG4S7ZkHwwGENscwLD/avXTz5WQZnHwyAz6jBOFvPGhiE7yUgu83bG2esOhypx+0PNs9Gy9rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749548983; c=relaxed/simple;
-	bh=KabShRj8UASUcnl3Kk5qNBy+Bq7mNbp1XnBranxRLIw=;
+	bh=weM+OnsNvV4FWKwTPqn0FVRndQe1+bf9ZR7EdL/YkN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exbqzn+cPrxn+jS2CACq2KtNgu6csP7QL9Ql3k6+G1ImyXAdcmG12DBWPBVBrDSaQmpNvLKWf86dV4g/8vYgMMfa9mwCLURDM7MRc442Ab8WZPCNxiXlk2dQhXBjJr6pysMmERjXecbo2ZZZyYeFmYpgPqDchghfcIfVWfA4Sac=
+	 MIME-Version; b=qcRlQcnP2rJKmi+YeChScXebLmL9uvSdQjwkfVjTiR7SwrI5eS4gTk/EJN8lGKPPzmzd+m8AvsT7ruZa5F+sTea5SE2X4Vnsi6UyMeutwQDfgcsY5V89uBrPwI5h0aY3xpqT5/7fFzeVRLLxVnwGyXMclfpChjakG9PmGrktVG8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1uOvbu-000642-1i
-	for netdev@vger.kernel.org; Tue, 10 Jun 2025 11:49:38 +0200
+	id 1uOvbv-00067C-AE
+	for netdev@vger.kernel.org; Tue, 10 Jun 2025 11:49:39 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1uOvbt-002kcr-10
+	id 1uOvbu-002kdy-1a
 	for netdev@vger.kernel.org;
-	Tue, 10 Jun 2025 11:49:37 +0200
+	Tue, 10 Jun 2025 11:49:38 +0200
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id EE7144241A8
-	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 09:49:36 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id 232954241BA
+	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 09:49:38 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 720E7424185;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 9AF28424189;
 	Tue, 10 Jun 2025 09:49:35 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 14bffc6d;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id d87a5492;
 	Tue, 10 Jun 2025 09:49:34 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -45,11 +45,11 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Davide Caratti <dcaratti@redhat.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 4/7] can: netlink: can_changelink(): rename tdc_mask into fd_tdc_flag_provided
-Date: Tue, 10 Jun 2025 11:46:19 +0200
-Message-ID: <20250610094933.1593081-5-mkl@pengutronix.de>
+Subject: [PATCH net-next 6/7] can: add drop reasons in the receive path of AF_CAN
+Date: Tue, 10 Jun 2025 11:46:21 +0200
+Message-ID: <20250610094933.1593081-7-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250610094933.1593081-1-mkl@pengutronix.de>
 References: <20250610094933.1593081-1-mkl@pengutronix.de>
@@ -65,60 +65,93 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: Davide Caratti <dcaratti@redhat.com>
 
-The only purpose of the tdc_mask variable is to check whether or not
-any tdc flags (CAN_CTRLMODE_TDC_{AUTO,MANUAL}) were provided. At this
-point, the actual value of the flags do no matter any more because
-these can be deduced from some other information.
+Besides the existing pr_warn_once(), use skb drop reasons in case AF_CAN
+layer drops non-conformant CAN{,FD,XL} frames, or conformant frames
+received by "wrong" devices, so that it's possible to debug (and count)
+such events using existing tracepoints:
 
-Rename the tdc_mask variable into fd_tdc_flag_provided to make this
-more explicit. Note that the fd_ prefix is added in preparation of the
-introduction of CAN XL.
+| # perf record -e skb:kfree_skb -aR -- ./drv/canfdtest -v -g -l 1 vcan0
+| # perf script
+| [...]
+| canfdtest  1123 [000]  3893.271264: skb:kfree_skb: skbaddr=0xffff975703c9f700 rx_sk=(nil) protocol=12 location=can_rcv+0x4b  reason: CAN_RX_INVALID_FRAME
 
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20241112165118.586613-12-mailhol.vincent@wanadoo.fr
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Link: https://patch.msgid.link/20250604160605.1005704-2-dcaratti@redhat.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dev/netlink.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/net/dropreason-core.h | 18 ++++++++++++++++++
+ net/can/af_can.c              |  6 +++---
+ 2 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 16b0f326c143..13826e8a707b 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -189,7 +189,7 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 			  struct netlink_ext_ack *extack)
- {
- 	struct can_priv *priv = netdev_priv(dev);
--	u32 tdc_mask = 0;
-+	bool fd_tdc_flag_provided = false;
- 	int err;
+diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+index bcf9d7467e1a..b9e78290269e 100644
+--- a/include/net/dropreason-core.h
++++ b/include/net/dropreason-core.h
+@@ -121,6 +121,9 @@
+ 	FN(ARP_PVLAN_DISABLE)		\
+ 	FN(MAC_IEEE_MAC_CONTROL)	\
+ 	FN(BRIDGE_INGRESS_STP_STATE)	\
++	FN(CAN_RX_INVALID_FRAME)	\
++	FN(CANFD_RX_INVALID_FRAME)	\
++	FN(CANXL_RX_INVALID_FRAME)	\
+ 	FNe(MAX)
  
- 	/* We need synchronization with dev->stop() */
-@@ -234,11 +234,11 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 			memset(&priv->fd.tdc, 0, sizeof(priv->fd.tdc));
- 		}
+ /**
+@@ -573,6 +576,21 @@ enum skb_drop_reason {
+ 	 * ingress bridge port does not allow frames to be forwarded.
+ 	 */
+ 	SKB_DROP_REASON_BRIDGE_INGRESS_STP_STATE,
++	/**
++	 * @SKB_DROP_REASON_CAN_RX_INVALID_FRAME: received
++	 * non conform CAN frame (or device is unable to receive CAN frames)
++	 */
++	SKB_DROP_REASON_CAN_RX_INVALID_FRAME,
++	/**
++	 * @SKB_DROP_REASON_CANFD_RX_INVALID_FRAME: received
++	 * non conform CAN-FD frame (or device is unable to receive CAN frames)
++	 */
++	SKB_DROP_REASON_CANFD_RX_INVALID_FRAME,
++	/**
++	 * @SKB_DROP_REASON_CANXL_RX_INVALID_FRAME: received
++	 * non conform CAN-XL frame (or device is unable to receive CAN frames)
++	 */
++	SKB_DROP_REASON_CANXL_RX_INVALID_FRAME,
+ 	/**
+ 	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
+ 	 * shouldn't be used as a real 'reason' - only for tracing code gen
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index 4aab7033c933..b2387a46794a 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -683,7 +683,7 @@ static int can_rcv(struct sk_buff *skb, struct net_device *dev,
+ 		pr_warn_once("PF_CAN: dropped non conform CAN skbuff: dev type %d, len %d\n",
+ 			     dev->type, skb->len);
  
--		tdc_mask = cm->mask & CAN_CTRLMODE_FD_TDC_MASK;
-+		fd_tdc_flag_provided = cm->mask & CAN_CTRLMODE_FD_TDC_MASK;
- 		/* CAN_CTRLMODE_TDC_{AUTO,MANUAL} are mutually
- 		 * exclusive: make sure to turn the other one off
- 		 */
--		if (tdc_mask)
-+		if (fd_tdc_flag_provided)
- 			priv->ctrlmode &= cm->flags | ~CAN_CTRLMODE_FD_TDC_MASK;
+-		kfree_skb(skb);
++		kfree_skb_reason(skb, SKB_DROP_REASON_CAN_RX_INVALID_FRAME);
+ 		return NET_RX_DROP;
  	}
  
-@@ -342,7 +342,7 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 				priv->ctrlmode &= ~CAN_CTRLMODE_FD_TDC_MASK;
- 				return err;
- 			}
--		} else if (!tdc_mask) {
-+		} else if (!fd_tdc_flag_provided) {
- 			/* Neither of TDC parameters nor TDC flags are
- 			 * provided: do calculation
- 			 */
+@@ -698,7 +698,7 @@ static int canfd_rcv(struct sk_buff *skb, struct net_device *dev,
+ 		pr_warn_once("PF_CAN: dropped non conform CAN FD skbuff: dev type %d, len %d\n",
+ 			     dev->type, skb->len);
+ 
+-		kfree_skb(skb);
++		kfree_skb_reason(skb, SKB_DROP_REASON_CANFD_RX_INVALID_FRAME);
+ 		return NET_RX_DROP;
+ 	}
+ 
+@@ -713,7 +713,7 @@ static int canxl_rcv(struct sk_buff *skb, struct net_device *dev,
+ 		pr_warn_once("PF_CAN: dropped non conform CAN XL skbuff: dev type %d, len %d\n",
+ 			     dev->type, skb->len);
+ 
+-		kfree_skb(skb);
++		kfree_skb_reason(skb, SKB_DROP_REASON_CANXL_RX_INVALID_FRAME);
+ 		return NET_RX_DROP;
+ 	}
+ 
 -- 
 2.47.2
 
