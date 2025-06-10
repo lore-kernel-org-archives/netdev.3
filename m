@@ -1,99 +1,57 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FE025B303;
-	Tue, 10 Jun 2025 13:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D48222D4D1;
+	Tue, 10 Jun 2025 13:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749560561; cv=none; b=aqnKs++N1LOZgsw5IIVxuQkhZHmyw8FRMD5wwDXgQyaV39izNxvL3k2Vec4qZVrcR737COUw7q9L2q52+lP7W7+NFyHwUO21HV5csPUHpGozJ3Ql5NdgLucPRhBZoA7K20/L0ON5Z45SCE98Kt4eMc+peN2qm2YhWF0fqk1XhQg=
+	t=1749560581; cv=none; b=SDtkKF/mmcX8/n6DSntTT8gf/2Ka1j5IOk+NvcNAieiXKyUeBxaeL3hYcflt8pZH9oTUXs8URKRdeq1gNoH1sK/T9He1s4DiYNPGYpUQQcmuLTjP8x3ClgOLmD2P2eL8PoHo2joR8XfVeTG4gHX2XGe3srB0xm/6+pcPcYPcN2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749560561; c=relaxed/simple;
-	bh=/jatg1ZWDAzcSUBqpB64o17uf0USP4p9QCqlP8pmvHI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X2hg9AASKvm28SWktE39XDfi12brMjvwHZ/PxJhBQ8M5dbef+kP9aeiNkFSe0L4miwmrGBILv7wTqDIKmEey6i6O1EH9IH9/0tKuJQRXfJKtPPD7psUANX7mUgNqkGADYeX/KWa4paNo6n7MJPQen7ZzUDa/ncYGlmRdfev5xoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=A7TRHe/W; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1749560581; c=relaxed/simple;
+	bh=JpBzempB8amvFKFVlCUmuYC1NIzkDNtNbps8F+olw3U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tG2rX7nmf+lih9XOJuwnEKtzKBC7DUNVVIjjNS7Ka+FnOrGClqwkRvBeRnG2r2xZpVdsoFX02WXSG5uYMltTItAXYHhKduXLRSk0RMCzi0ySPefdyKVS0vkQQcwH2cALyCy1kGKTMFN4xlQ0NbrKSwIT6XGKsBRHrp/Rjz2Cqtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uzuqle3K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="A7TRHe/W"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=QwxW4h5f3CkdkNw+Db5HyK4+JuDrbGxxAbNIATvH60g=; b=A7TRHe/WbobrAi05hTAuC8C+DA
-	CMnkX2g6TYDWBF64pgaKaf8uWr0LsptEoUXjpvJqdnSNxc7pj78erXJf+XqkR9uEA9A56UdAwpGSt
-	J5kTaR0+xl3Fx/GqaGMsIOibN7hPJMxKGPG46TVIMZMqxeFkMfyMkcWedCTXatWTTAmA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uOycV-00FGmy-Dh; Tue, 10 Jun 2025 15:02:27 +0200
-Date: Tue, 10 Jun 2025 15:02:27 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Jander <david@protonic.nl>, kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v1 1/3] net: phy: dp83tg720: implement soft
- reset with asymmetric delay
-Message-ID: <ef433d7f-ff57-4ae4-af27-a005a3080a1d@lunn.ch>
-References: <20250610081059.3842459-1-o.rempel@pengutronix.de>
- <20250610081059.3842459-2-o.rempel@pengutronix.de>
- <534b3aed-bef5-410e-b970-495b62534d96@lunn.ch>
- <aEgm25HcomOxE8oX@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uzuqle3K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA92C4CEED;
+	Tue, 10 Jun 2025 13:03:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749560581;
+	bh=JpBzempB8amvFKFVlCUmuYC1NIzkDNtNbps8F+olw3U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uzuqle3K2Zgo2WzvyOt++C0dkbUQSgoq5QZS3Q1s0Kr66eVNZZJXhTvu8UsH2Nl3J
+	 xFcBdLX8Fm8d3Jf8blc4xt5bK2DCrWsCoAB8+q9HzfJlGaGOX4MH8p9B6F2x53JOsn
+	 BPIZFqSBbAtZrQZdm0W9EchUoH+WKGFORACdY69cb+ywntEJI3mu87EKHlm+A6mNra
+	 XZ96Ggxqs7X/YcnPrmwFaLs0r10C6ktdUx+VRHGtNU3v2VNqa/VFygT6J1l8XEBH39
+	 7ukw0QoA6lGkWOUX6wE5fb1QbrModr83OELHqBxud5j7gZCZ9/QUD2JdGDw6e4Ag4k
+	 J+GKfuLai7Cbg==
+Date: Tue, 10 Jun 2025 06:02:59 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Petr Machata <petrm@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, David Ahern
+ <dsahern@gmail.com>, <netdev@vger.kernel.org>, Simon Horman
+ <horms@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel
+ <idosch@nvidia.com>, <mlxsw@nvidia.com>, Shuah Khan <shuah@kernel.org>,
+ <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH net-next 14/14] selftests: forwarding: Add a test for
+ verifying VXLAN MC underlay
+Message-ID: <20250610060259.00a17ce8@kernel.org>
+In-Reply-To: <d47a5edc84638eb27e2f57655a619b06051fa7ae.1749499963.git.petrm@nvidia.com>
+References: <cover.1749499963.git.petrm@nvidia.com>
+	<d47a5edc84638eb27e2f57655a619b06051fa7ae.1749499963.git.petrm@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aEgm25HcomOxE8oX@pengutronix.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> > > + *
-> > > + * 1. Unreliable Link Detection and Synchronized Reset Deadlock
-> > > + * ------------------------------------------------------------
-> > > + * After a link loss or during link establishment, the DP83TG720 PHY may fail
-> > > + * to detect or report link status correctly. To work around this, the PHY must
-> > > + * be reset periodically when no link is detected.
-> > > + *
-> > > + * However, in point-to-point setups where both link partners use the same
-> > > + * driver (e.g. Linux on both sides), a synchronized reset pattern may emerge.
-> > > + * This leads to a deadlock, where both PHYs reset at the same time and
-> > > + * continuously miss each other during auto-negotiation.
-> > > + *
-> > > + * To address this, the reset procedure includes two components:
-> > > + *
-> > > + * - A **fixed minimum delay of 1ms** after issuing a hardware reset, as
-> > > + *   required by the "DP83TG720S-Q1 1000BASE-T1 Automotive Ethernet PHY with
-> > > + *   SGMII and RGMII" datasheet. This ensures MDC access timing is respected
-> > > + *   before any further MDIO operations.
-> > > + *
-> > > + * - An **additional asymmetric delay**, empirically chosen based on
-> > > + *   master/slave role. This reduces the risk of synchronized resets on both
-> > > + *   link partners. Values are selected to avoid periodic overlap and ensure
-> > > + *   the link is re-established within a few cycles.
-> > 
-> > Maybe there is more about this in the following patches, i've not read
-> > them yet. Does autoneg get as far as determining master/slave role? Or
-> > are you assuming the link partners are somehow set as
-> > prefer_master/prefer_slave?
-> 
-> This PHY do not support autoneg (as required for automotive PHYs),
-> master/slave roles should be assigned by strapping or from software to
-> make the link functional.
+On Mon, 9 Jun 2025 22:50:30 +0200 Petr Machata wrote:
+> Add tests for MC-routing underlay VXLAN traffic.
 
-O.K, please extend the documentation to include this.
-
-If they are incorrectly configured, both have the same role, do they
-fail to get a link because of that? So it does not matter they both
-have the same delays, it is not going to work whatever...
-
-    Andrew
-
----
-pw-bot: cr
+nit: we started using shellcheck, may be worth addressing the
+warning-level complaints?
