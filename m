@@ -1,114 +1,234 @@
-Received: from constellation.wizardsworks.org (wizardsworks.org [24.234.38.212])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4919238C1B;
-	Tue, 10 Jun 2025 18:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.234.38.212
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29ED24633C;
+	Tue, 10 Jun 2025 18:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749580304; cv=none; b=La2ASn5eoeOn3wLNbseUFEjaxNjMPUatXM/6ST4LAtJ0usdNUV/O03ijVpDHPFgF/kpaGiXNV5XLAGuikH7AZVzyHQK2mXk5iZ6AJIQhQgi+kUofLjfSI7qQG9oOK0jaE6K5htbDrIBFZrJygtKjHNDVzoTYSuW2VTgl1RS/yMI=
+	t=1749580971; cv=none; b=SCZ+NgyzZQjGdLhEgLHSqwfbA2urP4roMH23b/8R9IWfS8qbJpvKS0kQh584yTw0niCeqQ8gglbKPxbXRylcucm6yzw5ywTyR/WvXVWnxgJdLYagl85wpw3UdgAbhNCGCM/UgyEPPNxDbti/EOW9SvFv/eWGggVSM0KMXHEvUxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749580304; c=relaxed/simple;
-	bh=QUg0jZlbuzFB5jP9wY8764cHVeJKKVjbPNKXc2oti5c=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=O8LDDphFNceRgB+wGD0Z/tE3QZaFZ+4hGx4l6de+nlYcPWVEX9QbeAInp+HwEkjim5xGh4jXzr5oR/NVTBq6Uw+AQy1BwQySQqZR7QG/U6YyZ27y4obaKnf6+zk/sHb8THtQLbSVHIt8NkcqLzaIJ+qJNMToTQ2mh4BeFlu2Lo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wizardsworks.org; spf=pass smtp.mailfrom=wizardsworks.org; arc=none smtp.client-ip=24.234.38.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wizardsworks.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wizardsworks.org
-Received: from mail.wizardsworks.org (localhost [127.0.0.1])
-	by constellation.wizardsworks.org (8.18.1/8.18.1) with ESMTP id 55AIXZf6000833;
-	Tue, 10 Jun 2025 11:33:35 -0700
+	s=arc-20240116; t=1749580971; c=relaxed/simple;
+	bh=NCJFu44V4QJ1vQws4N4CiyJCUCgBz5teMTE2RAaiTbI=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=lDnUwFMCyafi+HqLAY2j519EIeqv5e5JhzYc1mXfQN+RZlIPpdXdI67uHa5nEF/81aQxyw2qVFVScKlVEWp7G3EyivHUduaxKAuFYbOA/SeVU+9WdsM5mDKj1rWszeJxkE/iAY9s2do/x68A7hH/+A/xTpXfvRbZx63S45WMVBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=VLEP+8CS; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="VLEP+8CS"
+Received: by linux.microsoft.com (Postfix, from userid 1006)
+	id 5CF3221175A7; Tue, 10 Jun 2025 11:42:49 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5CF3221175A7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1749580969;
+	bh=DNW0VMHKju0KL6eZOtEkJKOmowbimuF1cYD5YEwI4CM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VLEP+8CSJIVWyaqTUKLBnHMspiqpNZdYPzR+Bezu2SzPzv54VOvWoY1HtDYKMJnjo
+	 iWFbk86N1h8suQsKEZ0LEDrGxmhTV8Pw21XA+cKMQMxmaUjI9AjvE75tLe8TA4LoZU
+	 WV7amKuRonFMoZI6rUU9X1hoo670Kw/MMqQ5zKPg=
+From: Haiyang Zhang <haiyangz@linux.microsoft.com>
+To: linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: haiyangz@microsoft.com,
+	decui@microsoft.com,
+	stephen@networkplumber.org,
+	kys@microsoft.com,
+	paulros@microsoft.com,
+	olaf@aepfle.de,
+	vkuznets@redhat.com,
+	davem@davemloft.net,
+	wei.liu@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	leon@kernel.org,
+	longli@microsoft.com,
+	ssengar@linux.microsoft.com,
+	linux-rdma@vger.kernel.org,
+	daniel@iogearbox.net,
+	john.fastabend@gmail.com,
+	bpf@vger.kernel.org,
+	ast@kernel.org,
+	hawk@kernel.org,
+	tglx@linutronix.de,
+	shradhagupta@linux.microsoft.com,
+	andrew+netdev@lunn.ch,
+	kotaranov@microsoft.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next,v7] net: mana: Add handler for hardware servicing events
+Date: Tue, 10 Jun 2025 11:42:22 -0700
+Message-Id: <1749580942-17671-1-git-send-email-haiyangz@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Tue, 10 Jun 2025 11:33:35 -0700
-From: Greg Chandler <chandleg@wizardsworks.org>
-To: Florian Fainelli <f.fainelli@gmail.com>
-Cc: stable@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: Tulip 21142 panic on physical link disconnect
-In-Reply-To: <02e3f9b8-9e60-4574-88e2-906ccd727829@gmail.com>
-References: <53bb866f5bb12cc1b6c33b3866007f2b@wizardsworks.org>
- <02e3f9b8-9e60-4574-88e2-906ccd727829@gmail.com>
-Message-ID: <70660feba172c7933cd5521527df523c@wizardsworks.org>
-X-Sender: chandleg@wizardsworks.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
 
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-Thanks!  I appreciate you getting back to me.  I've got about 30 huge 
-bugs I am shaking down, and this one just cropped up, so I haven't been 
-able to put a lot of time into it yet.
-I rolled a full debug kernel last night to troubleshoot what appears to 
-be a spinlock/mutex issue with something else, but I'm sure it'll help 
-with this too.
+To collaborate with hardware servicing events, upon receiving the special
+EQE notification from the HW channel, remove the devices on this bus.
+Then, after a waiting period based on the device specs, rescan the parent
+bus to recover the devices.
 
-If I find anything out I will also reply with the details....
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+---
+v7:
+rebased.
 
+v6:
+Not acquiring module refcnt as suggested by Paolo Abeni.
 
+v5:
+Get refcnt of the pdev struct to avoid removal before running the work
+as suggested by Jakub Kicinski.
 
-On 2025/06/10 09:27, Florian Fainelli wrote:
-> Howdy!
-> 
-> On 6/9/25 15:43, Greg Chandler wrote:
->> 
->> This is a from-scratch build (non-vendor/non-distribution)
->> Host/Target = alpha ev6
->> Kernel source = 6.12.12
->> 
->> My last working kernel on this was a 2.6.x, it's been a while since 
->> I've had time to bring this system up to date, so I don't know when 
->> this may have started.
->> I had a 3.0.102 in there, but I didn't test the networking while using 
->> it.
->> 
->> Please let me know what I can do to help out with figuring this one 
->> out.
-> 
-> I don't have an Alpha machine to try this on, but I do have a 
-> functional Cobalt Qube2 (MIPS 32/64) with these adapters connected 
-> directly over PCI:
-> 
-> 00:07.0 Ethernet controller: Digital Equipment Corporation DECchip 
-> 21142/43 (rev 41)
->         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- 
-> ParErr+ Stepping- SERR- FastB2B- DisINTx-
->         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium 
-> >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
->         Latency: 64 (5000ns min, 10000ns max), Cache Line Size: 32 
-> bytes
->         Interrupt: pin A routed to IRQ 19
->         Region 0: I/O ports at 1000 [size=128]
->         Region 1: Memory at 12082000 (32-bit, non-prefetchable) 
-> [size=1K]
->         Expansion ROM at 12000000 [disabled] [size=256K]
->         Kernel driver in use: tulip
-> 
-> 
-> 00:0c.0 Ethernet controller: Digital Equipment Corporation DECchip 
-> 21142/43 (rev 41)
->         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- 
-> ParErr- Stepping- SERR- FastB2B- DisINTx-
->         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium 
-> >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
->         Latency: 64 (5000ns min, 10000ns max), Cache Line Size: 32 
-> bytes
->         Interrupt: pin A routed to IRQ 20
->         Region 0: I/O ports at 1080 [size=128]
->         Region 1: Memory at 12082400 (32-bit, non-prefetchable) 
-> [size=1K]
->         Expansion ROM at 12040000 [disabled] [size=256K]
->         Kernel driver in use: tulip
-> 
-> the machine is not currently on a switch that I can control, but I can 
-> certainly try to plug in the cable and see what happens, give me a 
-> couple of days to get back to you, and if you don't hear back,  please 
-> holler. Here are the bits of kernel configuration:
-> 
-> CONFIG_NET_TULIP=y
-> CONFIG_TULIP=y
-> # CONFIG_TULIP_MWI is not set
-> # CONFIG_TULIP_MMIO is not set
-> # CONFIG_TULIP_NAPI is not set
+v4:
+Renamed EQE type 135 to GDMA_EQE_HWC_RESET_REQUEST, since there can
+be multiple cases of this reset request.
+
+v3:
+Updated for checkpatch warnings as suggested by Simon Horman.
+
+v2:
+Added dev_dbg for service type as suggested by Shradha Gupta.
+Added driver cap bit.
+---
+ .../net/ethernet/microsoft/mana/gdma_main.c   | 67 +++++++++++++++++++
+ include/net/mana/gdma.h                       | 10 ++-
+ 2 files changed, 75 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index 3504507477c6..c75184519fe4 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -352,11 +352,58 @@ void mana_gd_ring_cq(struct gdma_queue *cq, u8 arm_bit)
+ }
+ EXPORT_SYMBOL_NS(mana_gd_ring_cq, "NET_MANA");
+ 
++#define MANA_SERVICE_PERIOD 10
++
++struct mana_serv_work {
++	struct work_struct serv_work;
++	struct pci_dev *pdev;
++};
++
++static void mana_serv_func(struct work_struct *w)
++{
++	struct mana_serv_work *mns_wk;
++	struct pci_bus *bus, *parent;
++	struct pci_dev *pdev;
++
++	mns_wk = container_of(w, struct mana_serv_work, serv_work);
++	pdev = mns_wk->pdev;
++
++	pci_lock_rescan_remove();
++
++	if (!pdev)
++		goto out;
++
++	bus = pdev->bus;
++	if (!bus) {
++		dev_err(&pdev->dev, "MANA service: no bus\n");
++		goto out;
++	}
++
++	parent = bus->parent;
++	if (!parent) {
++		dev_err(&pdev->dev, "MANA service: no parent bus\n");
++		goto out;
++	}
++
++	pci_stop_and_remove_bus_device(bus->self);
++
++	msleep(MANA_SERVICE_PERIOD * 1000);
++
++	pci_rescan_bus(parent);
++
++out:
++	pci_unlock_rescan_remove();
++
++	pci_dev_put(pdev);
++	kfree(mns_wk);
++}
++
+ static void mana_gd_process_eqe(struct gdma_queue *eq)
+ {
+ 	u32 head = eq->head % (eq->queue_size / GDMA_EQE_SIZE);
+ 	struct gdma_context *gc = eq->gdma_dev->gdma_context;
+ 	struct gdma_eqe *eq_eqe_ptr = eq->queue_mem_ptr;
++	struct mana_serv_work *mns_wk;
+ 	union gdma_eqe_info eqe_info;
+ 	enum gdma_eqe_type type;
+ 	struct gdma_event event;
+@@ -401,6 +448,26 @@ static void mana_gd_process_eqe(struct gdma_queue *eq)
+ 		eq->eq.callback(eq->eq.context, eq, &event);
+ 		break;
+ 
++	case GDMA_EQE_HWC_FPGA_RECONFIG:
++		dev_info(gc->dev, "Recv MANA service type:%d\n", type);
++
++		if (gc->in_service) {
++			dev_info(gc->dev, "Already in service\n");
++			break;
++		}
++
++		mns_wk = kzalloc(sizeof(*mns_wk), GFP_ATOMIC);
++		if (!mns_wk)
++			break;
++
++		dev_info(gc->dev, "Start MANA service type:%d\n", type);
++		gc->in_service = true;
++		mns_wk->pdev = to_pci_dev(gc->dev);
++		pci_dev_get(mns_wk->pdev);
++		INIT_WORK(&mns_wk->serv_work, mana_serv_func);
++		schedule_work(&mns_wk->serv_work);
++		break;
++
+ 	default:
+ 		break;
+ 	}
+diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
+index 3ce56a816425..bfae59202669 100644
+--- a/include/net/mana/gdma.h
++++ b/include/net/mana/gdma.h
+@@ -58,7 +58,7 @@ enum gdma_eqe_type {
+ 	GDMA_EQE_HWC_INIT_EQ_ID_DB	= 129,
+ 	GDMA_EQE_HWC_INIT_DATA		= 130,
+ 	GDMA_EQE_HWC_INIT_DONE		= 131,
+-	GDMA_EQE_HWC_SOC_RECONFIG	= 132,
++	GDMA_EQE_HWC_FPGA_RECONFIG	= 132,
+ 	GDMA_EQE_HWC_SOC_RECONFIG_DATA	= 133,
+ 	GDMA_EQE_HWC_SOC_SERVICE	= 134,
+ 	GDMA_EQE_RNIC_QP_FATAL		= 176,
+@@ -403,6 +403,8 @@ struct gdma_context {
+ 	u32			test_event_eq_id;
+ 
+ 	bool			is_pf;
++	bool			in_service;
++
+ 	phys_addr_t		bar0_pa;
+ 	void __iomem		*bar0_va;
+ 	void __iomem		*shm_base;
+@@ -578,12 +580,16 @@ enum {
+ /* Driver can handle holes (zeros) in the device list */
+ #define GDMA_DRV_CAP_FLAG_1_DEV_LIST_HOLES_SUP BIT(11)
+ 
++/* Driver can self reset on FPGA Reconfig EQE notification */
++#define GDMA_DRV_CAP_FLAG_1_HANDLE_RECONFIG_EQE BIT(17)
++
+ #define GDMA_DRV_CAP_FLAGS1 \
+ 	(GDMA_DRV_CAP_FLAG_1_EQ_SHARING_MULTI_VPORT | \
+ 	 GDMA_DRV_CAP_FLAG_1_NAPI_WKDONE_FIX | \
+ 	 GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECONFIG | \
+ 	 GDMA_DRV_CAP_FLAG_1_VARIABLE_INDIRECTION_TABLE_SUPPORT | \
+-	 GDMA_DRV_CAP_FLAG_1_DEV_LIST_HOLES_SUP)
++	 GDMA_DRV_CAP_FLAG_1_DEV_LIST_HOLES_SUP | \
++	 GDMA_DRV_CAP_FLAG_1_HANDLE_RECONFIG_EQE)
+ 
+ #define GDMA_DRV_CAP_FLAGS2 0
+ 
+-- 
+2.34.1
+
