@@ -1,59 +1,78 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A8C2192F2;
-	Tue, 10 Jun 2025 14:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630BC221708
+	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 14:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749567173; cv=none; b=bfMx4G37CM4BdH4YMLu7Rbg+eNj1aypOLGNdZNo2bVrgAE/y6v4zLUAWXk/+DDg1nBGJ1eHdUz9yEfLQpP8rWgpOdUI1fePGwL65crHd7WzN5IK4YjjjVaqwH8gutOXHU0XnD6o3FjwPAeM547t4vqOlKnW+4wF3FMCZpNsG9SI=
+	t=1749567227; cv=none; b=EliZMMRvWo8FxwGu+oCwVlT9HvVlXUAFSIbGBkkvpZT+F31qdRHL1Fy4L5oaM5xIWEEdhaOZovFPw9wbtGz/Ntv/1aO//uZXVergiz1rkkjiEKpXgkb/bGYx29F3+lmvo2OXWSYGPqtCgHOUgv/LVKa/ssIFcaZRoI4/GaSywLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749567173; c=relaxed/simple;
-	bh=AZ7LHXSTXqFwK4mhI9ePGhYALuIIQ6ybKIs/Tl45lZo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=izAwwkuUrMoZF4lFd0XjhSvxGTiZcp1q6RVvDewLvca/8E1H47ZImkYWtK3o0AsmlqkRsERPViOaTwDfsFQZCYJZ/CbbNYJKRt+G9qIrfiKlsnb4UQD/jdV9+HrqX4U7BDHe4o03esZh3tgFhf9UedjT0PKqtm875EKwv1ofGq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PkbvhepM; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1749567227; c=relaxed/simple;
+	bh=49CwuumcAEN0WgHrhZH3PFTEd1GIO24EWOkjrkutSlo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aLEBQAmgT3Ak2s76k62R8VePpS7lvde0aQe7FuUx3Slq914GOZgt74Vp56PJmcxY0SpbolNh8TfkhAgy3G61fOuB9KvhGN9ri0+XtUSBVQ0Fb1X4pKtUqaWDiDd0nAOQpwqQgCzgCTDdmUkTb2Uv+wRa7Jr2Oldvdm1F1X7lpH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=Rj7lFS94; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PkbvhepM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749567170; x=1781103170;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=AZ7LHXSTXqFwK4mhI9ePGhYALuIIQ6ybKIs/Tl45lZo=;
-  b=PkbvhepMSGIPuq8AnqSa1tYluvRg4/WfN9OvwC4w8Mf+fmpf+PXIPFr5
-   MyO5Qg2IwYUhcXfTvLVT0E+Wcuzr0wf8KYurEx4LOVjJwqXSgu5llz1Q/
-   Dd6J8CB8TKVwbbutVuRKR01+OYeHExyni7s7u18iyVBZ6mX8oEh8n3ZT9
-   bu9BQiC03sybUeHB9atSULfpaEJ6XRkhIz22u7AjPSPubuOEpdOL970WX
-   Wv+lM1XKvHVpr/1t9aagjnqxTX0CAseyBT3W6LdXFwv0L7IzrjauZ8YOb
-   wTWb/duBfwRGprI+IKZ3atpyR1ehYjgyZL8rZ9dqQSd1hWKfwCBmOOmhu
-   Q==;
-X-CSE-ConnectionGUID: 5h9dmtn0T7quHZ0rakvIPw==
-X-CSE-MsgGUID: bnPFGeXPSDyd1WJPNoMGdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="51768052"
-X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
-   d="scan'208";a="51768052"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 07:52:22 -0700
-X-CSE-ConnectionGUID: pLu9gEhtRC+f6wJlv07aeA==
-X-CSE-MsgGUID: BHnPbfXVSgaDaQjKzAsurQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
-   d="scan'208";a="177803366"
-Received: from ubuntu.bj.intel.com ([10.238.156.109])
-  by orviesa002.jf.intel.com with ESMTP; 10 Jun 2025 07:52:19 -0700
-From: Jun Miao <jun.miao@intel.com>
-To: oneukum@suse.com,
-	sbhatta@marvell.com,
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="Rj7lFS94"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43edecbfb94so67014665e9.1
+        for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 07:53:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1749567222; x=1750172022; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZenOCv1TK181BQJBXwmVUonYy4Wo2e2g99VbHT8n9yw=;
+        b=Rj7lFS94KDaOtfyHPrDL212+u8hY/pX8bRvs0IkWIcSSjfEn1UVlO+0Qq3gFhibFXK
+         y3hjuVyi+XksdF9gwEY0c8kH/4nkeWUfIffhWRQHXjH0R4RM20GBT8mh5J0Eu3Dcm/Vh
+         YPS9sXayOCNNm4ajxTpUM3wnBFXKsqQMBRS7ZiSiG/txN/d/qxCPHFwqoXkeW99ZW2xE
+         xMJQpbFCwMRT6tEUgT6G0d6XjYpLDHiv3yS+EmLmYuAn4tVX9wUleORvoD/ap3hyYq1N
+         Pj0fi0tsN/UyVNZTADxZ/SIBTuRX+UdXqBaQ/UtDylM7kHDLRXeneWdGEb8pFlETWLSX
+         BbQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749567222; x=1750172022;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZenOCv1TK181BQJBXwmVUonYy4Wo2e2g99VbHT8n9yw=;
+        b=Dphmxm8Z70tnQGO2jtzH3NkTMpLYttN8f4hBKHn621oMNRAhhFluIRgXdEU+XV/UM9
+         IRUwwIJDcHO6q+iajRfEej5G1MnnFPf0uVTlJJTgxBf2WumpoFpVHemO/h8s1YNxjof7
+         G/1x1HSVApdF0oXc505I7Qg/tzVAHNrQIPA3JTW7WAqtN1g0UsBqcwjlEjN2INwnTi+l
+         0C0BcMJ4fB5x2rZa9ackav6+Mtth63SoFnCcho9Nc3M8QxG0SDV8hFXlP8W0TIaue2oX
+         w9Nq2QBYNCIS38uCMgvDmqmtof6n5CRnUZ8GH/WFjip+zfk4SUQRjpFfn9NNsfjuaAQ2
+         LtAw==
+X-Gm-Message-State: AOJu0YxRYtS5BRAtyXjb0gN72RZ3RWgD6bR6MX5PCIKVb5rlj4q9TTFv
+	hDyJ64aN79yhbw9K68NQK2/3Zz8bP4kQeWZrPxiWd5gIsidPO1lObtwTAAnRFG/I8v/3/a60VF1
+	+cX3M
+X-Gm-Gg: ASbGnctMsYfOFfgPnopXdMgWdOdV57TckGNx+A8zOuqLx1eWbHqAeoZcYBIroPQqnxx
+	raPeCM5ykd9fUuBknRFSHpQwaAf9qO7fbcGnuN+uuAfx5KV3EYgU2NxHIXZOb3E5RuO+8VeU361
+	fUDLIAcqecbBTjZOm1xuUJ3MGT59km1LPfFetW59t//FHBEBUNWc42WBX88le0zE0WtIBcFbSYm
+	JJ4qC10gr2TmHt7OVR8VX8GamFbMy4tfBruzcHIJywnFxAUU9/ItJ2FPb+cCBHydEqN0ZABVCR6
+	SBraIR9CmUNLCN5/nQLif57WwfXhf74+VNLIRXVlKWeiIAuTScaYAok=
+X-Google-Smtp-Source: AGHT+IE9DMO9gZR1jYT5IPvQ7DlwJFrvR5R6EGz5vufWtNnUUYO4g8IGd55hcs9tleJhaXS255TYjQ==
+X-Received: by 2002:a05:600c:1f10:b0:450:d611:eb95 with SMTP id 5b1f17b1804b1-45313e00be4mr78624595e9.17.1749567222448;
+        Tue, 10 Jun 2025 07:53:42 -0700 (PDT)
+Received: from localhost ([193.47.165.251])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a5324638e9sm12331430f8f.89.2025.06.10.07.53.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jun 2025 07:53:41 -0700 (PDT)
+From: Jiri Pirko <jiri@resnulli.us>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
 	kuba@kernel.org,
-	netdev@vger.kernel.org
-Cc: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jun.miao@intel.com
-Subject: [PATCH V2] net: usb: Convert tasklet API to new bottom half workqueue mechanism
-Date: Tue, 10 Jun 2025 22:54:03 +0800
-Message-Id: <20250610145403.2289375-1-jun.miao@intel.com>
-X-Mailer: git-send-email 2.32.0
+	pabeni@redhat.com,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	donald.hunter@gmail.com,
+	parav@nvidia.com,
+	kalesh-anakkur.purayil@broadcom.com
+Subject: [PATCH net-next v4] net/mlx5: Expose serial numbers in devlink info
+Date: Tue, 10 Jun 2025 04:51:28 +0200
+Message-ID: <20250610025128.109232-1-jiri@resnulli.us>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,199 +81,131 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Migrate tasklet APIs to the new bottom half workqueue mechanism. It
-replaces all occurrences of tasklet usage with the appropriate workqueue
-APIs throughout the usbnet driver. This transition ensures compatibility
-with the latest design and enhances performance.
+From: Jiri Pirko <jiri@nvidia.com>
 
-As suggested by Oliver and Sundeep, the usbnet_bh() function only be
-called by usbnet_bh_workqueue(). It can be waited on in usbnet_stop(), which
-in turn can be called for a device reset. Hence this must be GFP_NOIO
-instead of GFP_ATOMIC in the rx_alloc_submit().
+Devlink info allows to expose serial number and board serial number
+Get the values from PCI VPD and expose it.
 
-Suggested-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Suggested-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Jun Miao <jun.miao@intel.com>
+$ devlink dev info
+pci/0000:08:00.0:
+  driver mlx5_core
+  serial_number e4397f872caeed218000846daa7d2f49
+  board.serial_number MT2314XZ00YA
+  versions:
+      fixed:
+        fw.psid MT_0000000894
+      running:
+        fw.version 28.41.1000
+        fw 28.41.1000
+      stored:
+        fw.version 28.41.1000
+        fw 28.41.1000
+auxiliary/mlx5_core.eth.0:
+  driver mlx5_core.eth
+pci/0000:08:00.1:
+  driver mlx5_core
+  serial_number e4397f872caeed218000846daa7d2f49
+  board.serial_number MT2314XZ00YA
+  versions:
+      fixed:
+        fw.psid MT_0000000894
+      running:
+        fw.version 28.41.1000
+        fw 28.41.1000
+      stored:
+        fw.version 28.41.1000
+        fw 28.41.1000
+auxiliary/mlx5_core.eth.1:
+  driver mlx5_core.eth
+
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Acked-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- drivers/net/usb/usbnet.c   | 38 +++++++++++++++++++-------------------
- include/linux/usb/usbnet.h |  2 +-
- 2 files changed, 20 insertions(+), 20 deletions(-)
+v3->v4:
+- no changes, solo patch, dropped fuid patches
+v2->v3:
+- do not continue in case devlink_info_*serial_number_put() returns
+  error
+v1->v2:
+- fixed possibly uninitialized variable "err"
+---
+ .../net/ethernet/mellanox/mlx5/core/devlink.c | 53 +++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index c04e715a4c2a..c2750fd5eb59 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -461,7 +461,7 @@ static enum skb_state defer_bh(struct usbnet *dev, struct sk_buff *skb,
- 
- 	__skb_queue_tail(&dev->done, skb);
- 	if (dev->done.qlen == 1)
--		tasklet_schedule(&dev->bh);
-+		queue_work(system_bh_wq, &dev->bh_work);
- 	spin_unlock(&dev->done.lock);
- 	spin_unlock_irqrestore(&list->lock, flags);
- 	return old_state;
-@@ -549,7 +549,7 @@ static int rx_submit (struct usbnet *dev, struct urb *urb, gfp_t flags)
- 		default:
- 			netif_dbg(dev, rx_err, dev->net,
- 				  "rx submit, %d\n", retval);
--			tasklet_schedule (&dev->bh);
-+			queue_work(system_bh_wq, &dev->bh_work);
- 			break;
- 		case 0:
- 			__usbnet_queue_skb(&dev->rxq, skb, rx_start);
-@@ -709,7 +709,7 @@ void usbnet_resume_rx(struct usbnet *dev)
- 		num++;
- 	}
- 
--	tasklet_schedule(&dev->bh);
-+	queue_work(system_bh_wq, &dev->bh_work);
- 
- 	netif_dbg(dev, rx_status, dev->net,
- 		  "paused rx queue disabled, %d skbs requeued\n", num);
-@@ -778,7 +778,7 @@ void usbnet_unlink_rx_urbs(struct usbnet *dev)
- {
- 	if (netif_running(dev->net)) {
- 		(void) unlink_urbs (dev, &dev->rxq);
--		tasklet_schedule(&dev->bh);
-+		queue_work(system_bh_wq, &dev->bh_work);
- 	}
- }
- EXPORT_SYMBOL_GPL(usbnet_unlink_rx_urbs);
-@@ -861,14 +861,14 @@ int usbnet_stop (struct net_device *net)
- 	/* deferred work (timer, softirq, task) must also stop */
- 	dev->flags = 0;
- 	timer_delete_sync(&dev->delay);
--	tasklet_kill(&dev->bh);
-+	disable_work_sync(&dev->bh_work);
- 	cancel_work_sync(&dev->kevent);
- 
- 	/* We have cyclic dependencies. Those calls are needed
- 	 * to break a cycle. We cannot fall into the gaps because
- 	 * we have a flag
- 	 */
--	tasklet_kill(&dev->bh);
-+	disable_work_sync(&dev->bh_work);
- 	timer_delete_sync(&dev->delay);
- 	cancel_work_sync(&dev->kevent);
- 
-@@ -955,7 +955,7 @@ int usbnet_open (struct net_device *net)
- 	clear_bit(EVENT_RX_KILL, &dev->flags);
- 
- 	// delay posting reads until we're fully open
--	tasklet_schedule (&dev->bh);
-+	queue_work(system_bh_wq, &dev->bh_work);
- 	if (info->manage_power) {
- 		retval = info->manage_power(dev, 1);
- 		if (retval < 0) {
-@@ -1123,7 +1123,7 @@ static void __handle_link_change(struct usbnet *dev)
- 		 */
- 	} else {
- 		/* submitting URBs for reading packets */
--		tasklet_schedule(&dev->bh);
-+		queue_work(system_bh_wq, &dev->bh_work);
- 	}
- 
- 	/* hard_mtu or rx_urb_size may change during link change */
-@@ -1198,11 +1198,11 @@ usbnet_deferred_kevent (struct work_struct *work)
- 		} else {
- 			clear_bit (EVENT_RX_HALT, &dev->flags);
- 			if (!usbnet_going_away(dev))
--				tasklet_schedule(&dev->bh);
-+				queue_work(system_bh_wq, &dev->bh_work);
- 		}
- 	}
- 
--	/* tasklet could resubmit itself forever if memory is tight */
-+	/* workqueue could resubmit itself forever if memory is tight */
- 	if (test_bit (EVENT_RX_MEMORY, &dev->flags)) {
- 		struct urb	*urb = NULL;
- 		int resched = 1;
-@@ -1224,7 +1224,7 @@ usbnet_deferred_kevent (struct work_struct *work)
- fail_lowmem:
- 			if (resched)
- 				if (!usbnet_going_away(dev))
--					tasklet_schedule(&dev->bh);
-+					queue_work(system_bh_wq, &dev->bh_work);
- 		}
- 	}
- 
-@@ -1325,7 +1325,7 @@ void usbnet_tx_timeout (struct net_device *net, unsigned int txqueue)
- 	struct usbnet		*dev = netdev_priv(net);
- 
- 	unlink_urbs (dev, &dev->txq);
--	tasklet_schedule (&dev->bh);
-+	queue_work(system_bh_wq, &dev->bh_work);
- 	/* this needs to be handled individually because the generic layer
- 	 * doesn't know what is sufficient and could not restore private
- 	 * information if a remedy of an unconditional reset were used.
-@@ -1547,7 +1547,7 @@ static inline void usb_free_skb(struct sk_buff *skb)
- 
- /*-------------------------------------------------------------------------*/
- 
--// tasklet (work deferred from completions, in_irq) or timer
-+// workqueue (work deferred from completions, in_irq) or timer
- 
- static void usbnet_bh (struct timer_list *t)
- {
-@@ -1594,23 +1594,23 @@ static void usbnet_bh (struct timer_list *t)
- 		int	temp = dev->rxq.qlen;
- 
- 		if (temp < RX_QLEN(dev)) {
--			if (rx_alloc_submit(dev, GFP_ATOMIC) == -ENOLINK)
-+			if (rx_alloc_submit(dev, GFP_NOIO) == -ENOLINK)
- 				return;
- 			if (temp != dev->rxq.qlen)
- 				netif_dbg(dev, link, dev->net,
- 					  "rxqlen %d --> %d\n",
- 					  temp, dev->rxq.qlen);
- 			if (dev->rxq.qlen < RX_QLEN(dev))
--				tasklet_schedule (&dev->bh);
-+				queue_work(system_bh_wq, &dev->bh_work);
- 		}
- 		if (dev->txq.qlen < TX_QLEN (dev))
- 			netif_wake_queue (dev->net);
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+index 73cd74644378..42218834183a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+@@ -35,6 +35,55 @@ static u16 mlx5_fw_ver_subminor(u32 version)
+ 	return version & 0xffff;
  }
  
--static void usbnet_bh_tasklet(struct tasklet_struct *t)
-+static void usbnet_bh_workqueue(struct work_struct *work)
- {
--	struct usbnet *dev = from_tasklet(dev, t, bh);
-+	struct usbnet *dev = from_work(dev, work, bh_work);
++static int mlx5_devlink_serial_numbers_put(struct mlx5_core_dev *dev,
++					   struct devlink_info_req *req,
++					   struct netlink_ext_ack *extack)
++{
++	struct pci_dev *pdev = dev->pdev;
++	unsigned int vpd_size, kw_len;
++	char *str, *end;
++	u8 *vpd_data;
++	int err = 0;
++	int start;
++
++	vpd_data = pci_vpd_alloc(pdev, &vpd_size);
++	if (IS_ERR(vpd_data))
++		return 0;
++
++	start = pci_vpd_find_ro_info_keyword(vpd_data, vpd_size,
++					     PCI_VPD_RO_KEYWORD_SERIALNO, &kw_len);
++	if (start >= 0) {
++		str = kstrndup(vpd_data + start, kw_len, GFP_KERNEL);
++		if (!str) {
++			err = -ENOMEM;
++			goto end;
++		}
++		end = strchrnul(str, ' ');
++		*end = '\0';
++		err = devlink_info_board_serial_number_put(req, str);
++		kfree(str);
++		if (err)
++			goto end;
++	}
++
++	start = pci_vpd_find_ro_info_keyword(vpd_data, vpd_size, "V3", &kw_len);
++	if (start >= 0) {
++		str = kstrndup(vpd_data + start, kw_len, GFP_KERNEL);
++		if (!str) {
++			err = -ENOMEM;
++			goto end;
++		}
++		err = devlink_info_serial_number_put(req, str);
++		kfree(str);
++		if (err)
++			goto end;
++	}
++
++end:
++	kfree(vpd_data);
++	return err;
++}
++
+ #define DEVLINK_FW_STRING_LEN 32
  
- 	usbnet_bh(&dev->delay);
- }
-@@ -1742,7 +1742,7 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 	skb_queue_head_init (&dev->txq);
- 	skb_queue_head_init (&dev->done);
- 	skb_queue_head_init(&dev->rxq_pause);
--	tasklet_setup(&dev->bh, usbnet_bh_tasklet);
-+	INIT_WORK (&dev->bh_work, usbnet_bh_workqueue);
- 	INIT_WORK (&dev->kevent, usbnet_deferred_kevent);
- 	init_usb_anchor(&dev->deferred);
- 	timer_setup(&dev->delay, usbnet_bh, 0);
-@@ -1971,7 +1971,7 @@ int usbnet_resume (struct usb_interface *intf)
+ static int
+@@ -49,6 +98,10 @@ mlx5_devlink_info_get(struct devlink *devlink, struct devlink_info_req *req,
+ 	if (!mlx5_core_is_pf(dev))
+ 		return 0;
  
- 			if (!(dev->txq.qlen >= TX_QLEN(dev)))
- 				netif_tx_wake_all_queues(dev->net);
--			tasklet_schedule (&dev->bh);
-+			queue_work(system_bh_wq, &dev->bh_work);
- 		}
- 	}
- 
-diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
-index 0b9f1e598e3a..208682f77179 100644
---- a/include/linux/usb/usbnet.h
-+++ b/include/linux/usb/usbnet.h
-@@ -58,7 +58,7 @@ struct usbnet {
- 	unsigned		interrupt_count;
- 	struct mutex		interrupt_mutex;
- 	struct usb_anchor	deferred;
--	struct tasklet_struct	bh;
-+	struct work_struct	bh_work;
- 
- 	struct work_struct	kevent;
- 	unsigned long		flags;
++	err = mlx5_devlink_serial_numbers_put(dev, req, extack);
++	if (err)
++		return err;
++
+ 	err = devlink_info_version_fixed_put(req, "fw.psid", dev->board_id);
+ 	if (err)
+ 		return err;
 -- 
-2.32.0
+2.49.0
 
