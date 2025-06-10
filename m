@@ -1,97 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.67.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80119219FC;
-	Tue, 10 Jun 2025 02:30:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3D31E521B
+	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 03:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.67.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749522659; cv=none; b=EfspWV4l5nlhX4oCCUBk3HV0GoHCXMd6Rjoxx6uuawIZHUaQx0iPAr9njqjgc91kjCOXYVys15MycS2ggv5zMe02Vm7y7gdE5EwKjZVojZ+cEM4CsRNlI/77CvAPdPoj930qkBZgPuXB/1iwAjEDEjoNeQ2mUFfs9r1vzqzF0Lg=
+	t=1749527191; cv=none; b=eFyZRxVXAqXPRZi5+El2enNF+fbXHvqY2tj3FEHX7MqDZDCc0b50p8kAmGEXUHq/9a9nHrBPQ7f1BXPZ5EiwFoxvfZB1rIpLBKGZTfszpFIm63gDsActsbz+N4SS0RUnZAWAiXegVLX6yNyjrg1CYAU3McZMNVFLZjjg6k3xjvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749522659; c=relaxed/simple;
-	bh=MF9eFED5nRvQBjnkQkaYBoOXrlZbPXE3oEhI6hM3hIM=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=jCmIBHnDp6LsUcnexYSs8Gze+iEQEHRMchhvj6CqriYmVL+BPYrLEcbPBUMDOVtLz3UdcZ0jkyyWjNeBD9NW1BP1xtOFdLIa+VXwMDp6c+8exXrk5jP2JlImVGwcwiput8Pfa72Fep768FJZwgahEVmk+XUVSyngf860xBoRMhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QtPCtTdA; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QtPCtTdA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B1BC4CEEB;
-	Tue, 10 Jun 2025 02:30:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749522659;
-	bh=MF9eFED5nRvQBjnkQkaYBoOXrlZbPXE3oEhI6hM3hIM=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=QtPCtTdAWiYNrWfnLL1Egie323Tgg630GTtlhtKZVSX9uBqa1Gr88E9RsbxDT91td
-	 g8N2E1mXP6KQ3i2S6j5SfrRj0MaXKnbtvuE83BlJUxGGpTiVbnl2rxiJMDCs4KEyTx
-	 8GoA9PljkQes7HFBNnlOgpA+P9Osn1lcp/7BumzmdOTDsooqKlOoMYKrU0N+NtBleL
-	 XDFNcpnclJnjOq5Ft8al8OYLgep4MJTJBH3B1r74QqveEOOgVHBzBa3R7cBj3KbHtg
-	 aOW4kofCS51lkO8XkZR1GLTWMCjnZ4wICUfyW4BwQFGxs5B6ZFfvE6OYVB/idqhdt2
-	 m/aI3IhosKoyA==
-Date: Mon, 09 Jun 2025 21:30:57 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1749527191; c=relaxed/simple;
+	bh=b1rgYTKhkyPRyHl7/4Gi5QLolb2gubZFGI5smUerzb4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=axRgkc3BxY8/jRpr60uio2SFbamP68aT4RUaRYUjzlOJIksRd1+8ptOj0pT1x2/Ghl5Fn10aQem6nxGK1pxVX8BUv3iZHxds0JUm+LqBXmsBCCOHrdG0vRzUcPOMofGvIgaBeY8VH7oJVh9RvmDNfzqet2DgdqYgOi1TF7mVeU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=none smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=114.132.67.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bamaicloud.com
+X-QQ-mid: esmtpsz18t1749527160t9f8b1ad8
+X-QQ-Originating-IP: 4eU/NePvb737xWgkhwkiSBGvtsqQT9AHXqdb9OUTpEc=
+Received: from localhost.localdomain ( [111.202.70.101])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 10 Jun 2025 11:45:54 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 16841047995638308170
+EX-QQ-RecipientCnt: 15
+From: Tonghao Zhang <tonghao@bamaicloud.com>
+To: netdev@vger.kernel.org
+Cc: Tonghao Zhang <tonghao@bamaicloud.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Zengbing Tu <tuzengbing@didiglobal.com>
+Subject: [net-next v6 2/4] net: bonding: add broadcast_neighbor netlink option
+Date: Tue, 10 Jun 2025 11:44:43 +0800
+Message-Id: <c12fa14e016b6fa9f1a8b49ecad212c235301ac8.1749525581.git.tonghao@bamaicloud.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <cover.1749525581.git.tonghao@bamaicloud.com>
+References: <cover.1749525581.git.tonghao@bamaicloud.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: edumazet@google.com, netdev@vger.kernel.org, 
- linux-aspeed@lists.ozlabs.org, mturquette@baylibre.com, 
- BMC-SW@aspeedtech.com, linux-kernel@vger.kernel.org, kuba@kernel.org, 
- krzk+dt@kernel.org, p.zabel@pengutronix.de, sboyd@kernel.org, 
- linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- davem@davemloft.net, conor+dt@kernel.org, joel@jms.id.au, 
- andrew+netdev@lunn.ch, devicetree@vger.kernel.org, pabeni@redhat.com, 
- andrew@codeconstruct.com.au
-To: Jacky Chou <jacky_chou@aspeedtech.com>
-In-Reply-To: <20250610012406.3703769-2-jacky_chou@aspeedtech.com>
-References: <20250610012406.3703769-1-jacky_chou@aspeedtech.com>
- <20250610012406.3703769-2-jacky_chou@aspeedtech.com>
-Message-Id: <174952265793.3644019.286629373000016480.robh@kernel.org>
-Subject: Re: [net-next v2 1/4] dt-bindings: net: ftgmac100: Add resets
- property
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:bamaicloud.com:qybglogicsvrsz:qybglogicsvrsz4a-0
+X-QQ-XMAILINFO: OJVhEmJj02aqtxAeBIXA59oLj+xuZO8AfgMIdk4IYI5HYFmywD5GZsrq
+	yT79cBgNuacjRrxWGH+eZ4UmRZ7UM6J+apdhqmUi1HL2dJqAnl5sKfDMH3LQz/y57FRSdrO
+	+eUvj+cB2Qr4sph59Sdnl0xxt/SiPdylhBMrZCDUlQMl0mibuHWmUb6Pv/v4P0FEcY2tqZJ
+	8PN4AYYS4VByUEaVZ8cHok8AHEi7PTVwAaa0VqtOuqXcSjObawi71GDgUKbJn4Rghi6JFhc
+	/LD/yqMP8nSzmcDjdDbrXgLs8YOKZsqvBXQShmmQuRw6wFORxedBsnpYq54JeAUR5Y+iuIe
+	C73zXuSSPo3BdD+kuGBMMRBp2QAYYpmaISrRJ3w0m1YjnmGuDtnx+AgtCPRKhwj0AY0yp36
+	gxIyDdGsSCVg6u90l+8w8ZgBwoNybFQ0kIf9n5mFQ4pbKME2UwAqr+2EJzOh6n3e0MXiLfS
+	6cG+lTR1Bh6d0zgZfnrF2VsOAME37UJl7u815ThJD1iXW5bH+8xrcxtyEAYTTyX0WRyBweP
+	MUNgB9KRsLVaZ7UGeE/c1VuroOBMvNjB7njpPHPVHgeTI9yrIDnJOlnFu/n0eqo7frMnKWx
+	PiAHyZbLeJuSlgG7hw0QKJ5LASVjfwt1VceW+fvOlkSIH06kMQwAXVr4fuAkt5DSr5/y/uM
+	sYe777bpPgKwM1zIbu7BGUldsWCqjMwJdvxVw7mU6tnDwAx4baTZS+K2+S29T3zanm4cuYR
+	Cp6zznR6gVa9SsfpyD2E0+HwKwYiNMCXzNw90uEoBxsL63UF7H88KtQdGdZLF8HevQ2FXyR
+	eQGGWiMaz86Jv9e7xRnT+i72yTAsVVMLlhMPO9U0sWl+fWtQ29CSMpzAjVECnoGzfjrhTCJ
+	y9bWzAZl1KgFvtJKzW7sb7GlNwH5DpmA8GKwogROmLRAp7BT9hJze10NxiX+8xP4hVNn3qY
+	kFMAdxyY6Wsg+bWAQqd7ytzYfulg9YhkLBQ6jMWJ/HPje0ObPtJeTNDVzpX0kAIGXsWNov6
+	exuUY1QyYS5aOkkNWp2h8W0kGJDyF9OZGh9OujSA==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+X-QQ-RECHKSPAM: 0
 
+User can config or display the bonding broadcast_neighbor option via
+iproute2/netlink.
 
-On Tue, 10 Jun 2025 09:24:03 +0800, Jacky Chou wrote:
-> Add optional resets property for Aspeed SoCs to reset the MAC and
-> RGMII/RMII.
-> 
-> Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
-> ---
->  .../bindings/net/faraday,ftgmac100.yaml       | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
+Signed-off-by: Zengbing Tu <tuzengbing@didiglobal.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+---
+ drivers/net/bonding/bond_netlink.c | 16 ++++++++++++++++
+ include/uapi/linux/if_link.h       |  1 +
+ 2 files changed, 17 insertions(+)
 
-My bot found errors running 'make dt_binding_check' on your patch:
-
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml:82:1: [error] duplication of key "allOf" in mapping (key-duplicates)
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml: ignoring, error parsing file
-./Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml:82:1: found duplicate key "allOf" with value "[]" (original value: "[]")
-make[2]: *** Deleting file 'Documentation/devicetree/bindings/net/faraday,ftgmac100.example.dts'
-Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml:82:1: found duplicate key "allOf" with value "[]" (original value: "[]")
-make[2]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/net/faraday,ftgmac100.example.dts] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1519: dt_binding_check] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250610012406.3703769-2-jacky_chou@aspeedtech.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
+index ac5e402c34bc..57fff2421f1b 100644
+--- a/drivers/net/bonding/bond_netlink.c
++++ b/drivers/net/bonding/bond_netlink.c
+@@ -124,6 +124,7 @@ static const struct nla_policy bond_policy[IFLA_BOND_MAX + 1] = {
+ 	[IFLA_BOND_MISSED_MAX]		= { .type = NLA_U8 },
+ 	[IFLA_BOND_NS_IP6_TARGET]	= { .type = NLA_NESTED },
+ 	[IFLA_BOND_COUPLED_CONTROL]	= { .type = NLA_U8 },
++	[IFLA_BOND_BROADCAST_NEIGH]	= { .type = NLA_U8 },
+ };
+ 
+ static const struct nla_policy bond_slave_policy[IFLA_BOND_SLAVE_MAX + 1] = {
+@@ -561,6 +562,16 @@ static int bond_changelink(struct net_device *bond_dev, struct nlattr *tb[],
+ 			return err;
+ 	}
+ 
++	if (data[IFLA_BOND_BROADCAST_NEIGH]) {
++		int broadcast_neigh = nla_get_u8(data[IFLA_BOND_BROADCAST_NEIGH]);
++
++		bond_opt_initval(&newval, broadcast_neigh);
++		err = __bond_opt_set(bond, BOND_OPT_BROADCAST_NEIGH, &newval,
++				     data[IFLA_BOND_BROADCAST_NEIGH], extack);
++		if (err)
++			return err;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -630,6 +641,7 @@ static size_t bond_get_size(const struct net_device *bond_dev)
+ 		nla_total_size(sizeof(struct nlattr)) +
+ 		nla_total_size(sizeof(struct in6_addr)) * BOND_MAX_NS_TARGETS +
+ 		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_COUPLED_CONTROL */
++		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_BROADCAST_NEIGH */
+ 		0;
+ }
+ 
+@@ -793,6 +805,10 @@ static int bond_fill_info(struct sk_buff *skb,
+ 		       bond->params.coupled_control))
+ 		goto nla_put_failure;
+ 
++	if (nla_put_u8(skb, IFLA_BOND_BROADCAST_NEIGH,
++		       bond->params.broadcast_neighbor))
++		goto nla_put_failure;
++
+ 	if (BOND_MODE(bond) == BOND_MODE_8023AD) {
+ 		struct ad_info info;
+ 
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index 3ad2d5d98034..53b2f6ebda8b 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -1534,6 +1534,7 @@ enum {
+ 	IFLA_BOND_MISSED_MAX,
+ 	IFLA_BOND_NS_IP6_TARGET,
+ 	IFLA_BOND_COUPLED_CONTROL,
++	IFLA_BOND_BROADCAST_NEIGH,
+ 	__IFLA_BOND_MAX,
+ };
+ 
+-- 
+2.34.1
 
