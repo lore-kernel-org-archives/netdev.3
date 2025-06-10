@@ -1,99 +1,169 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out.smtpout.orange.fr (out-71.smtpout.orange.fr [193.252.22.71])
+	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E5125B30D;
-	Tue, 10 Jun 2025 14:02:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B412949FF;
+	Tue, 10 Jun 2025 14:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749564175; cv=none; b=lDHQeoDBVkumg5HYkDCcH2tYUGDWWj2mzjbL1g4FVOdrdzoSRB+R/dgVrxeKC4/TLReHt735M1NWrRU/6a54SHSzLUlzkjV/BMu//7p8Xt7VmpM60in5IwA838ZSZrHnoBc6bzlv1x14yER3xXzEAuXcDOON/t78ZngB1g7p0vY=
+	t=1749564291; cv=none; b=ORZnMKCc9JtM/hqcD7iOpuRjomqCfNbWc2alIWFQfQzHf+4gWtxPC87s/pL4Wt0iyRS/D+/BsOqbS+0MZ2JQMgCPEkNyaFAeuxIrpXtciG9DvAUlhwp50UoIWHBwEc9r2WBfjApK5mGePrau3qsKO8TbKtPAvzuxUDxxVlu4A44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749564175; c=relaxed/simple;
-	bh=rR2+r5qNZldGyUCZ7EWqLJNYGGfGfQV4TCmD9BJ8pD0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IVWAsZ03UwETgeFy7ZGEhRhaKQhFo2cAtC/L6ePEBloE/rvivB/MKkwEntUAcXSuqEWxMZs6tG72L8TFbfiRXJhxCrp7vYbN8/MSZ4AON5RohCR9kVq3CMimRUFAj70TnAsgn9gNfJFCCY/Pex/T1g2svgfn4v+CgCkokw8aV1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OW2qzXgA; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749564291; c=relaxed/simple;
+	bh=GtKVuDpQozzRxBMPBU/w2lBolsv0hs5W4XqJxSU4vlQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E5xBpF6CpYNpisvcj4yjZh7+iUC2i2y3lxEKg7EPN4QLP2zmiVcabhK7FQanVGA5BwJrtsVvU5Xi+IRjN/mDEjEbJmaj7MHfBo5p589KpcDuuqvtnNrGi3oQPyKHIOFdu8IGigOGeVhryaV49TbvMDFQyY7ms4O/MBbWR4Nh/TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=P1KTZe1X; arc=none smtp.client-ip=193.252.22.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OW2qzXgA"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-313154270bbso5701300a91.2;
-        Tue, 10 Jun 2025 07:02:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749564174; x=1750168974; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rR2+r5qNZldGyUCZ7EWqLJNYGGfGfQV4TCmD9BJ8pD0=;
-        b=OW2qzXgAZlDINTdroA851sXZOYgJ2HxFdojff9YVT9CFzbwd/8EYIFn9t95ImIEIoI
-         skcaCiuWb+2gsoeqGsJbm7maM4xTd0GRGOzr20UaXZ7IzMbt658h6opwKj9Fe3JNSB33
-         IZw9hORs+jhv+/EGC0DJDAdC9FrNjF2QK+R73X3/CNe3M6nWnlrWw817ua+Dl1KiHTEl
-         DzLvqe/mAaP91B3LUuwyk1ldLGlPbjctv+sGoaqNBh63Xfy0SeTHLu5KfKQTPRUa576Q
-         JvANJQAMBYPSf3sjkV+QtxYtQAjyfMk/ROpS21tG8ZJLDruKEDbIuDLuK+TmqxTuLPTt
-         8vIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749564174; x=1750168974;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rR2+r5qNZldGyUCZ7EWqLJNYGGfGfQV4TCmD9BJ8pD0=;
-        b=rUcoEXBblm9u5/WxM9sLxO/C82xbSOt/KFCvdCjcUI7WQx1ScSsgfZ32ndzgxJ7BPi
-         pQY4a7nHurEHkfJlI7dH9J3w4ioe/kMf1SDON1LxCBMRRGmMddy6NiJBa4uuKl1Pmp4n
-         RNhWiV6Sv8yyuHF6R+4aEKh6m/a7fEKiFCwDDiAf+Su4TGd/q/moGIhEiQBPQH0PBsXV
-         32ooXEio1cbHk5ocZYaHTuqNCZzDfKUeD4n0fNXkfT017ltENUR2iVv2jWJAE2NRwSkm
-         RUcmAdNXwpnjz4v15tEFEW6Rlf3F0QV+lBIfIvpc3buxPrUNxG21bWdfXKhsQpV8bLm3
-         kuUA==
-X-Forwarded-Encrypted: i=1; AJvYcCWWnYR6j4y+Uhl9xCderGsQwhlFoYLucNpuCkCMeIGD0r2nAxGfeP28qMrjQOSu/iY7Wdo=@vger.kernel.org, AJvYcCWysfW2CcPHl2xmmf/wvpws/sX1ygOqa0PRV5erSVJZ5Gud4bVasH6NNmbgPrZl/cNRhGAptVx+@vger.kernel.org, AJvYcCXS0SxiS05X72d9wFgR+LdzetHHPluIJziRO7A1VKA/CqhK6l7UVOJ9wF5OaZBdzP5wZWdhQjEUaD+pO3Rw@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVSWnpoEGtNTxSawUd/3ZaH4nPh91XNKaBZnl1wN6Yz4b640lx
-	1m87eC2/zbr3SKthJ6rgHIAAEH0preD8m3LdNlRa2TecyUftIpXIIy49ckoH/Tx/6saBNyFLvju
-	vEuEO5m1CmLlsLbfkFtg8485tfEDmSw==
-X-Gm-Gg: ASbGncsPzZLg9zqCRrlCMouIqvsWg17uoX2SDPI8s6+4x0NY7bTdQIT2LYJTflm7nbz
-	z9/PLSqoW4p702fxnnzCs7kZPzFKdtYbFv3/Jnc/OKy2lJBmNYKiQSSYaVINjNvHj6iMvUiASuN
-	hMGF5MmgGjAfIvrBZ/GM8lGHQtl9AcIN29ABngTKFacSc/Ibsh+ohTHg==
-X-Google-Smtp-Source: AGHT+IFt6O/F8LJeutdiPpaedvHBL+GurnehgGHHbAiwrPXXlKx3pwq3X47Mvfn6ggzqaLckHZKni2cumwmBeWQc7wA=
-X-Received: by 2002:a17:90b:268d:b0:30e:3718:e9d with SMTP id
- 98e67ed59e1d1-3134769bfbbmr27041075a91.35.1749564171758; Tue, 10 Jun 2025
- 07:02:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="P1KTZe1X"
+Received: from [172.16.82.72] ([124.33.176.97])
+	by smtp.orange.fr with ESMTPA
+	id OzRPua8DmtcjXOzRWucHgO; Tue, 10 Jun 2025 15:55:22 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1749563722;
+	bh=Wos0TNL78fyhGvrTFiYrEZxgYaMHol2UDLlgx/6hyNA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=P1KTZe1XOW4D9HHqh6ZcZ6lv4WTcn/C7pVhRAa1+zaEydyluMc6OJtiq4BSuGvwo4
+	 zZ6F8wPPNkIkgGWGp/7Kyz2SVyDorWCGgcbNdx52rvy4HTnz+/LXR4Ge5+jVFOYWcL
+	 ToqLT+TnHFeMaIpGMdK2C0vGayPFMxyqHv/UlevhhFAUGG+IEbv6uZRYU6vt3W+X6b
+	 jNkofwCMDpTA15G3gbYju8BKiSvLoIgQj3Oo393CFWP4cRNRLyvTi0il1sTGjZ0QHr
+	 7JBMs8s9gzJV3uKUgQama8YgXie5Mjte3Jg4AaIMGKQwPs5boHg6UVLzq1JoWP7jOQ
+	 VG2tBogHDMxng==
+X-ME-Helo: [172.16.82.72]
+X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 10 Jun 2025 15:55:22 +0200
+X-ME-IP: 124.33.176.97
+Message-ID: <b2f87cff-3a81-482b-bfdd-389950b7ec8e@wanadoo.fr>
+Date: Tue, 10 Jun 2025 22:55:02 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250609173851.778-1-ujwal.kundur@gmail.com> <05305f84-37ff-4345-803a-85c2025dd67b@intel.com>
-In-Reply-To: <05305f84-37ff-4345-803a-85c2025dd67b@intel.com>
-From: Ujwal Kundur <ujwal.kundur@gmail.com>
-Date: Tue, 10 Jun 2025 19:32:37 +0530
-X-Gm-Features: AX0GCFsmJxL0oLJw9jrPJRYkmar4Cb03jp8TbUi0T0LQIAMmGtBD9J8x6weufv0
-Message-ID: <CALkFLLJpz2MxRZ8r+mGayU_BZE=2=ukXTzXcnmyhXeHB7Q6v3g@mail.gmail.com>
-Subject: Re: [PATCH] bpf: cpumap: report Rx queue index to xdp_rxq_info
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org, 
-	hawk@kernel.org, john.fastabend@gmail.com, andrii@kernel.org, 
-	martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org, 
-	yonghong.song@linux.dev, kpsingh@kernel.org, sdf@fomichev.me, 
-	aoluo@google.com, jolsa@kernel.org, netdev@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] net: can: mcp251x: use new GPIO line value setter
+ callbacks
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, linux-can@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ Daniel Golle <daniel@makrotopia.org>, DENG Qingfang <dqfext@gmail.com>,
+ Sean Wang <sean.wang@mediatek.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Marc Kleine-Budde <mkl@pengutronix.de>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>
+References: <20250610-gpiochip-set-rv-net-v1-0-35668dd1c76f@linaro.org>
+ <20250610-gpiochip-set-rv-net-v1-3-35668dd1c76f@linaro.org>
+Content-Language: en-US
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Autocrypt: addr=mailhol.vincent@wanadoo.fr; keydata=
+ xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
+ LFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI+wrIEExYKAFoC
+ GwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQTtj3AFdOZ/IOV06OKrX+uI
+ bbuZwgUCZx41XhgYaGtwczovL2tleXMub3BlbnBncC5vcmcACgkQq1/riG27mcIYiwEAkgKK
+ BJ+ANKwhTAAvL1XeApQ+2NNNEwFWzipVAGvTRigA+wUeyB3UQwZrwb7jsQuBXxhk3lL45HF5
+ 8+y4bQCUCqYGzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrbYZzu0JG5w8gxE6EtQe6LmxKMqP6E
+ yR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDldOjiq1/riG27mcIFAmceMvMCGwwF
+ CQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8VzsZwr/S44HCzcz5+jkxnVVQ5LZ4B
+ ANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
+In-Reply-To: <20250610-gpiochip-set-rv-net-v1-3-35668dd1c76f@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> This looks wrong...
-> I think this will always return index 0
+On 10/06/2025 at 21:37, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> 
+> struct gpio_chip now has callbacks for setting line values that return
+> an integer, allowing to indicate failures. Convert the driver to using
+> them.
+> 
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-> So passing dev->_rx to that function will always return 0; which is what
-> the field is already initialised to...
+This does not match the address with which you sent the patch: brgl@bgdev.pl
 
-I didn't realize that would always return 0, sorry I should've tried
-to understand that statement better.
+> ---
+>  drivers/net/can/spi/mcp251x.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
+> index ec5c64006a16f703bc816983765584c5f3ac76e8..7545497d14b46c6388f3976c2bf7b9a99e959c1e 100644
+> --- a/drivers/net/can/spi/mcp251x.c
+> +++ b/drivers/net/can/spi/mcp251x.c
+> @@ -530,8 +530,8 @@ static int mcp251x_gpio_get_multiple(struct gpio_chip *chip,
+>  	return 0;
+>  }
+>  
+> -static void mcp251x_gpio_set(struct gpio_chip *chip, unsigned int offset,
+> -			     int value)
+> +static int mcp251x_gpio_set(struct gpio_chip *chip, unsigned int offset,
+> +			    int value)
+>  {
+>  	struct mcp251x_priv *priv = gpiochip_get_data(chip);
+>  	u8 mask, val;
+> @@ -545,9 +545,11 @@ static void mcp251x_gpio_set(struct gpio_chip *chip, unsigned int offset,
+>  
+>  	priv->reg_bfpctrl &= ~mask;
+>  	priv->reg_bfpctrl |= val;
+> +
+> +	return 0;
 
-> I'll just add that you may want to take a look at Lorenzo's series[0].
-> Rx queue index is sorta HW hint, so it shouldn't be a problem to add the
-> corresponding field to xdp_rx_meta.
-> Then, you can expand cpumap's code to try reading that HW meta if present.
+mcp251x_gpio_set() calls mcp251x_write_bits() which calls mcp251x_spi_write()
+which can fail.
 
-Thank you! I also tried to work backwards to figure out how the
-queue_index would be used if present in xdp_rxq_info but that wasn't
-immediately apparent to me.
-I'm keen on learning/contributing to the BPF part of the network stack
-and this seemed like a good first patch to take up -- I'll understand
-this better and try again.
+For this change to really make sense, the return value of mcp251x_spi_write()
+should be propagated all the way around.
 
-Thanks for your time,
-Ujwal
+>  }
+>  
+> -static void
+> +static int
+>  mcp251x_gpio_set_multiple(struct gpio_chip *chip,
+>  			  unsigned long *maskp, unsigned long *bitsp)
+>  {
+> @@ -561,7 +563,7 @@ mcp251x_gpio_set_multiple(struct gpio_chip *chip,
+>  	val = FIELD_PREP(BFPCTRL_BFS_MASK, val);
+>  
+>  	if (!mask)
+> -		return;
+> +		return 0;
+>  
+>  	mutex_lock(&priv->mcp_lock);
+>  	mcp251x_write_bits(priv->spi, BFPCTRL, mask, val);
+> @@ -569,6 +571,8 @@ mcp251x_gpio_set_multiple(struct gpio_chip *chip,
+>  
+>  	priv->reg_bfpctrl &= ~mask;
+>  	priv->reg_bfpctrl |= val;
+> +
+> +	return 0;
+
+Same as above.
+
+>  }
+>  
+>  static void mcp251x_gpio_restore(struct spi_device *spi)
+> @@ -594,8 +598,8 @@ static int mcp251x_gpio_setup(struct mcp251x_priv *priv)
+>  	gpio->get_direction = mcp251x_gpio_get_direction;
+>  	gpio->get = mcp251x_gpio_get;
+>  	gpio->get_multiple = mcp251x_gpio_get_multiple;
+> -	gpio->set = mcp251x_gpio_set;
+> -	gpio->set_multiple = mcp251x_gpio_set_multiple;
+> +	gpio->set_rv = mcp251x_gpio_set;
+> +	gpio->set_multiple_rv = mcp251x_gpio_set_multiple;
+>  	gpio->base = -1;
+>  	gpio->ngpio = ARRAY_SIZE(mcp251x_gpio_names);
+>  	gpio->names = mcp251x_gpio_names;
+> 
+
+Yours sincerely,
+Vincent Mailhol
+
