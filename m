@@ -1,320 +1,115 @@
-Received: from constellation.wizardsworks.org (wizardsworks.org [24.234.38.212])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39EC248F73;
-	Tue, 10 Jun 2025 18:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.234.38.212
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BE72609D9;
+	Tue, 10 Jun 2025 19:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749581506; cv=none; b=iaf91ihnzgxHSecnMZ8LkUaWxN7AGt/Wr5m7QkFSLhhoriemTdNXgsV5xqwogAZUiYNB9WzwqXU4mSo3qMWvmhTJZGWzT9H4roGC6qMQ+Vh3XkGUPIujNhOxmA8JSywUf55qh8S14D+SdRLty3XEXzRY7tDjnSz9iKkxDm30PTI=
+	t=1749582341; cv=none; b=aszhTWWL9vq4buo5hmBJd1NgNC3MWv2XQ5RygF1UqCq/N7U96JGZ4esA0ItFE/6iZdZs9h3pDADz1pcyOIMMxZQ0200NamDT6lmhC2b3t8ilvGVGMDwJW48Qgi46u83ubxlG6Ri+QeBov8DiWioxWInKgZD13ZbICE2n4O6jk1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749581506; c=relaxed/simple;
-	bh=kkBnKdtcGib5Pt8puNdpG+R7rOnu2/QGnpy7xh8y1q0=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=D6KH4MDTL7Pb8qBE0U3Wt3kDSltdu0rTMT38Z9WxT21Yo7mRmjVgFhmbPgpiSKBUcvbgPknd94IPdqodOsoO2lBBnDiV2DUW62B33meFDGMUM7+/zSzAnt77CEa0xTPmCG1GDwgDW6xPt98pTnfTouAkqKVbuYwf2dEQWohfGCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wizardsworks.org; spf=pass smtp.mailfrom=wizardsworks.org; arc=none smtp.client-ip=24.234.38.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wizardsworks.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wizardsworks.org
-Received: from mail.wizardsworks.org (localhost [127.0.0.1])
-	by constellation.wizardsworks.org (8.18.1/8.18.1) with ESMTP id 55AIraMY001192;
-	Tue, 10 Jun 2025 11:53:36 -0700
+	s=arc-20240116; t=1749582341; c=relaxed/simple;
+	bh=XoHE7rwIpW75cxE3NkPum8Nv0zq5MnmrOJxIUeuPjBU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tWDNm3lQo9UColE/ZPfdBHXxpQTdiBZA4mGUnQ+4C++FozNieJlC4vMZY15ZpVttPfWYojttux9+oxMXs/fTMr+MkWg+qDnzdj9UCoCW75VfdODy/7x/X0N0j82J5HT8iA9rtRrhv6U0c8eidRynrVIjm+6z57NJL94Kd82zas4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=olkmG6TM; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="olkmG6TM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=vsOL9HjFuesZRM4LC588aOJ2IAXWcopQUhkn/lRI5iY=; b=olkmG6TMQfW+uUtGze4N3AVXlf
+	kdVhKU9k1H6keVcJxAq9pFcloNt1ACUS2mQsayE+2okUDaVqQ87DcXzsm9gt2smnCTN5eKq451hGY
+	ZUWx1KW0rgRydseFQDj892Bw5uEapDxFnRJtbpz5BTwZZ5X1eLj05pyCZ5qdIo6xF0lFRpzE/l41y
+	MoJV0NuHkChkkbbXEH5y9apSihNoCz4MCr5GAIti70RRPpZC4v7JtMy9IyUKbIHgSJ3yIkcVngfwt
+	Mf5jiQE2axWqw9xPyVKsmzlAN1pjRb5jazsJWi3NJ5eedyCzq992mYwoLryd7rl3p9K3zZsULWPAJ
+	4PpvUV5Q==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1uP3pj-000Pqd-1C;
+	Tue, 10 Jun 2025 20:36:27 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1uP3pi-000Juz-1o;
+	Tue, 10 Jun 2025 20:36:26 +0200
+Message-ID: <1c133144-7868-4d6d-878d-e1db71de23be@iogearbox.net>
+Date: Tue, 10 Jun 2025 20:36:26 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 10 Jun 2025 11:53:36 -0700
-From: Greg Chandler <chandleg@wizardsworks.org>
-To: Florian Fainelli <f.fainelli@gmail.com>
-Cc: stable@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: Tulip 21142 panic on physical link disconnect
-In-Reply-To: <02e3f9b8-9e60-4574-88e2-906ccd727829@gmail.com>
-References: <53bb866f5bb12cc1b6c33b3866007f2b@wizardsworks.org>
- <02e3f9b8-9e60-4574-88e2-906ccd727829@gmail.com>
-Message-ID: <385f2469f504dd293775d3c39affa979@wizardsworks.org>
-X-Sender: chandleg@wizardsworks.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf] MAINTAINERS: add myself as bpf networking reviewer
+To: Stanislav Fomichev <stfomichev@gmail.com>, bpf@vger.kernel.org,
+ netdev@vger.kernel.org
+Cc: ast@kernel.org, andrii@kernel.org, martin.lau@linux.dev, song@kernel.org,
+ yhs@fb.com, john.fastabend@gmail.com, kpsingh@kernel.org, haoluo@google.com,
+ jolsa@kernel.org, akpm@linux-foundation.org, lumag@kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250610175442.2138504-1-stfomichev@gmail.com>
+Content-Language: en-US
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <20250610175442.2138504-1-stfomichev@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27664/Tue Jun 10 10:41:04 2025)
 
-
-
-I decided to test this again before I got sidetracked on my bigger 
-issue.
-The kernel I repored this on was 6.12.12 on alpha, this is also that 
-same version, but with a make distclean, and just about every single 
-debug option turned on.
-
-I left the last line of the kernel boot in this output as well, showing 
-"link beat good"
-
-I pulled the plug and it happened again immediately.
-I waited 10 sec, and plugged it back in, and I do not get a "link up" 
-type message that I would expect to see.
-
-This should have popped up between:
-[ 1088.732841] ---[ end trace 0000000000000000 ]---
-
-     and this one:
-[ 1133.693755] ------------[ cut here ]------------
-
-
-
-I waited for the switch to negotiate, which it only does at 10 half for 
-this.
-I waited a few seconds more and pulled the plug again and got the second 
-one:
-
-
-
-[   18.469717] net eth2: 21143 10baseT link beat good
-[ 1088.732841] ------------[ cut here ]------------
-[ 1088.732841] WARNING: CPU: 0 PID: 0 at kernel/time/timer.c:1657 
-__timer_delete_sync+0x104/0x120
-[ 1088.732841] Modules linked in: loop
-[ 1088.732841] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.12.12 #4
-[ 1088.732841]        fffffc0000c83ab0 fffffc0000388c94 fffffc0000326744 
-fffffc0000afbee8
-[ 1088.732841]        0000000000000000 fffffc0000388c94 fffffc00009e0d70 
-0000000000000000
-[ 1088.732841]        fffffc0000afbee8 0000000000000679 fffffc0000388c94 
-0000000000000009
-[ 1088.732841]        fffffc0000cf9100 000000011f821600 fffffc0000388c94 
-0000000000000000
-[ 1088.732841]        fffffc00020e6000 fffffc00020e73d0 fffffffff0669000 
-fffffd000a120000
-[ 1088.732841]        fffffc0000358f10 fffffc000203e180 0000000000000008 
-fffffc000203e6b0
-[ 1088.732841] Trace:
-[ 1088.732841] [<fffffc0000388c94>] __timer_delete_sync+0x104/0x120
-[ 1088.732841] [<fffffc0000326744>] __warn+0x194/0x1a0
-[ 1088.732841] [<fffffc0000388c94>] __timer_delete_sync+0x104/0x120
-[ 1088.732841] [<fffffc00009e0d70>] warn_slowpath_fmt+0x84/0xf0
-[ 1088.732841] [<fffffc0000388c94>] __timer_delete_sync+0x104/0x120
-[ 1088.732841] [<fffffc0000388c94>] __timer_delete_sync+0x104/0x120
-[ 1088.732841] [<fffffc0000358f10>] try_to_wake_up+0x170/0x2d0
-[ 1088.732841] [<fffffc0000358bb8>] wakeup_preempt+0x68/0xd0
-[ 1088.732841] [<fffffc0000919a2c>] tcp_orphan_update+0x6c/0x90
-[ 1088.732841] [<fffffc000038be64>] timekeeping_update+0xd4/0x290
-[ 1088.732841] [<fffffc0000780fdc>] t21142_lnk_change+0x1bc/0x790
-[ 1088.732841] [<fffffc000077a890>] tulip_interrupt+0x280/0xac0
-[ 1088.732841] [<fffffc0000372b90>] __handle_irq_event_percpu+0x60/0x180
-[ 1088.732841] [<fffffc0000372d30>] handle_irq_event_percpu+0x80/0xa0
-[ 1088.732841] [<fffffc0000372d98>] handle_irq_event+0x48/0xe0
-[ 1088.732841] [<fffffc0000377af0>] handle_level_irq+0xc0/0x1f0
-[ 1088.732841] [<fffffc0000315300>] handle_irq+0x70/0xe0
-[ 1088.732841] [<fffffc000031d6c0>] dp264_srm_device_interrupt+0x30/0x50
-[ 1088.732841] [<fffffc00003153dc>] do_entInt+0x6c/0x1c0
-[ 1088.732841] [<fffffc0000310cc0>] ret_from_sys_call+0x0/0x10
-[ 1088.732841] [<fffffc000035c69c>] pick_task_fair+0x3c/0x100
-[ 1088.732841] [<fffffc000035d89c>] task_non_contending+0x6c/0x2a0
-[ 1088.732841] [<fffffc000035fc28>] do_idle+0x58/0x190
-[ 1088.732841] [<fffffc00009eda20>] cpu_idle_poll.isra.0+0x0/0x60
-[ 1088.732841] [<fffffc00009eda60>] cpu_idle_poll.isra.0+0x40/0x60
-[ 1088.732841] [<fffffc0000360058>] cpu_startup_entry+0x38/0x50
-[ 1088.732841] [<fffffc00009edbc8>] rest_init+0xe8/0xec
-[ 1088.732841] [<fffffc000031001c>] _stext+0x1c/0x20
-
-[ 1088.732841] ---[ end trace 0000000000000000 ]---
-[ 1133.693755] ------------[ cut here ]------------
-[ 1133.693755] WARNING: CPU: 0 PID: 0 at kernel/time/timer.c:1657 
-__timer_delete_sync+0x104/0x120
-[ 1133.693755] Modules linked in: loop
-[ 1133.693755] CPU: 0 UID: 0 PID: 0 Comm: swapper Tainted: G        W    
-       6.12.12 #4
-[ 1133.693755] Tainted: [W]=WARN
-[ 1133.693755]        fffffc0000c83ab0 fffffc0000388c94 fffffc0000326744 
-fffffc0000afbee8
-[ 1133.693755]        0000000000000000 fffffc0000388c94 fffffc00009e0d70 
-0000000000000000
-[ 1133.693755]        fffffc0000afbee8 0000000000000679 fffffc0000388c94 
-0000000000000009
-[ 1133.693755]        fffffc0000cf9100 000000011f821600 fffffc0000388c94 
-0000000000000000
-[ 1133.693755]        fffffc00020e6000 fffffc00020e73d0 fffffffff8668000 
-fffffd000a120000
-[ 1133.693755]        fffffc0000358f10 fffffc000203e180 0000000000000008 
-fffffc000203e6b0
-[ 1133.693755] Trace:
-[ 1133.693755] [<fffffc0000388c94>] __timer_delete_sync+0x104/0x120
-[ 1133.693755] [<fffffc0000326744>] __warn+0x194/0x1a0
-[ 1133.693755] [<fffffc0000388c94>] __timer_delete_sync+0x104/0x120
-[ 1133.693755] [<fffffc00009e0d70>] warn_slowpath_fmt+0x84/0xf0
-[ 1133.693755] [<fffffc0000388c94>] __timer_delete_sync+0x104/0x120
-[ 1133.693755] [<fffffc0000388c94>] __timer_delete_sync+0x104/0x120
-[ 1133.693755] [<fffffc0000358f10>] try_to_wake_up+0x170/0x2d0
-[ 1133.693755] [<fffffc0000358bb8>] wakeup_preempt+0x68/0xd0
-[ 1133.693755] [<fffffc0000919a2c>] tcp_orphan_update+0x6c/0x90
-[ 1133.693755] [<fffffc000038be64>] timekeeping_update+0xd4/0x290
-[ 1133.693755] [<fffffc0000780fdc>] t21142_lnk_change+0x1bc/0x790
-[ 1133.693755] [<fffffc000077a890>] tulip_interrupt+0x280/0xac0
-[ 1133.693755] [<fffffc0000372b90>] __handle_irq_event_percpu+0x60/0x180
-[ 1133.693755] [<fffffc0000372d30>] handle_irq_event_percpu+0x80/0xa0
-[ 1133.693755] [<fffffc0000372d98>] handle_irq_event+0x48/0xe0
-[ 1133.693755] [<fffffc0000377af0>] handle_level_irq+0xc0/0x1f0
-[ 1133.693755] [<fffffc0000315300>] handle_irq+0x70/0xe0
-[ 1133.693755] [<fffffc000031d6c0>] dp264_srm_device_interrupt+0x30/0x50
-[ 1133.693755] [<fffffc00003153dc>] do_entInt+0x6c/0x1c0
-[ 1133.693755] [<fffffc0000310cc0>] ret_from_sys_call+0x0/0x10
-[ 1133.693755] [<fffffc000035c69c>] pick_task_fair+0x3c/0x100
-[ 1133.693755] [<fffffc000035d89c>] task_non_contending+0x6c/0x2a0
-[ 1133.693755] [<fffffc000035fc28>] do_idle+0x58/0x190
-[ 1133.693755] [<fffffc00009eda20>] cpu_idle_poll.isra.0+0x0/0x60
-[ 1133.693755] [<fffffc00009eda50>] cpu_idle_poll.isra.0+0x30/0x60
-[ 1133.693755] [<fffffc0000360058>] cpu_startup_entry+0x38/0x50
-[ 1133.693755] [<fffffc00009edbc8>] rest_init+0xe8/0xec
-[ 1133.693755] [<fffffc000031001c>] _stext+0x1c/0x20
-
-[ 1133.693755] ---[ end trace 0000000000000000 ]---
-
-
-
-
-After this, even though the link is shown at the switch mii-tool 
-confirms:
-root@bigbang:~# mii-tool eth2
-eth2: no link
-
-
-Which I think leans towards it not showing the link up message.  I think 
-the driver croaked which is a pain as it's not a module.  I can 
-recompile to test that if someone thinks that would be helpful.
-
-root@bigbang:~# dmesg |grep eth
-[    8.150386] net eth0: Digital DS21142/43 Tulip rev 65 at Port 0x8400, 
-08:00:2b:86:ab:b1, IRQ 29
-[    8.170894] net eth1: Digital DS21142/43 Tulip rev 65 at Port 0x8480, 
-08:00:2b:86:a8:5b, IRQ 30
-[    8.809565] e1000 0000:00:10.0 eth2: (PCI:33MHz:64-bit) 
-00:02:b3:f3:e6:3d
-[    8.811518] e1000 0000:00:10.0 eth2: Intel(R) PRO/1000 Network 
-Connection
-[    8.813472] usbcore: registered new interface driver kaweth
-[   25.848619] tulip 0000:00:09.0 eth126: renamed from eth0
-[   26.400377] tulip 0000:00:09.0 rename_eth126: renamed from eth126
-[   26.861314] e1000 0000:00:10.0 eth124: renamed from eth2
-[   26.887681] e1000 0000:00:10.0 eth0: renamed from eth124
-[   27.122056] tulip 0000:00:09.0 eth2: renamed from rename_eth126
-[   68.313441] tulip 0000:00:0b.0 eth1: tulip_stop_rxtx() failed (CSR5 
-0xf0660000 CSR6 0xb3862002)
-[   68.791956] tulip 0000:00:09.0 eth2: tulip_stop_rxtx() failed (CSR5 
-0xf0660000 CSR6 0xb3862002)
-
-root@bigbang:~# mii-tool eth2
-eth2: no link
-
-root@bigbang:~# mii-tool eth1
-eth1: no link
-
-root@bigbang:~# ifconfig -a
-eth0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
-         inet 192.168.1.75  netmask 255.255.255.0  broadcast 
-192.168.1.255
-         ether 00:02:b3:f3:e6:3d  txqueuelen 1000  (Ethernet)
-         RX packets 0  bytes 0 (0.0 B)
-         RX errors 0  dropped 0  overruns 0  frame 0
-         TX packets 0  bytes 0 (0.0 B)
-         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-eth1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-         inet 192.168.1.76  netmask 255.255.255.0  broadcast 
-192.168.1.255
-         inet6 fe80::a00:2bff:fe86:a85b  prefixlen 64  scopeid 0x20<link>
-         ether 08:00:2b:86:a8:5b  txqueuelen 1000  (Ethernet)
-         RX packets 0  bytes 0 (0.0 B)
-         RX errors 11  dropped 0  overruns 0  frame 0
-         TX packets 0  bytes 0 (0.0 B)
-         TX errors 5  dropped 0 overruns 0  carrier 15  collisions 0
-
-eth2: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-         inet 192.168.1.77  netmask 255.255.255.0  broadcast 
-192.168.1.255
-         inet6 fe80::a00:2bff:fe86:abb1  prefixlen 64  scopeid 0x20<link>
-         ether 08:00:2b:86:ab:b1  txqueuelen 1000  (Ethernet)
-         RX packets 0  bytes 0 (0.0 B)
-         RX errors 11  dropped 0  overruns 0  frame 0
-         TX packets 0  bytes 0 (0.0 B)
-         TX errors 5  dropped 0 overruns 0  carrier 15  collisions 0
-
-
-Clearly the interface doesn't work at all, which I hadn't noticed up 
-until now.  I have been using a USB stick to copy stuff, and a serial 
-console for everything else.
-
-I took a quick look at the motherboard and these are Intel 21143-TD 
-chips vs DEC ones.
-
-I had not noticed the "tulip_stop_rxtx" errors until now, more likely 
-becuase I wasn't looking for them, vs them not being there.
-
-
-
-
-
-
-
-
-On 2025/06/10 09:27, Florian Fainelli wrote:
-> Howdy!
+On 6/10/25 7:54 PM, Stanislav Fomichev wrote:
+> I've been focusing on networking BPF bits lately, add myself as a
+> reviewer.
 > 
-> On 6/9/25 15:43, Greg Chandler wrote:
->> 
->> This is a from-scratch build (non-vendor/non-distribution)
->> Host/Target = alpha ev6
->> Kernel source = 6.12.12
->> 
->> My last working kernel on this was a 2.6.x, it's been a while since 
->> I've had time to bring this system up to date, so I don't know when 
->> this may have started.
->> I had a 3.0.102 in there, but I didn't test the networking while using 
->> it.
->> 
->> Please let me know what I can do to help out with figuring this one 
->> out.
-> 
-> I don't have an Alpha machine to try this on, but I do have a 
-> functional Cobalt Qube2 (MIPS 32/64) with these adapters connected 
-> directly over PCI:
-> 
-> 00:07.0 Ethernet controller: Digital Equipment Corporation DECchip 
-> 21142/43 (rev 41)
->         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- 
-> ParErr+ Stepping- SERR- FastB2B- DisINTx-
->         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium 
-> >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
->         Latency: 64 (5000ns min, 10000ns max), Cache Line Size: 32 
-> bytes
->         Interrupt: pin A routed to IRQ 19
->         Region 0: I/O ports at 1000 [size=128]
->         Region 1: Memory at 12082000 (32-bit, non-prefetchable) 
-> [size=1K]
->         Expansion ROM at 12000000 [disabled] [size=256K]
->         Kernel driver in use: tulip
-> 
-> 
-> 00:0c.0 Ethernet controller: Digital Equipment Corporation DECchip 
-> 21142/43 (rev 41)
->         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- 
-> ParErr- Stepping- SERR- FastB2B- DisINTx-
->         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium 
-> >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
->         Latency: 64 (5000ns min, 10000ns max), Cache Line Size: 32 
-> bytes
->         Interrupt: pin A routed to IRQ 20
->         Region 0: I/O ports at 1080 [size=128]
->         Region 1: Memory at 12082400 (32-bit, non-prefetchable) 
-> [size=1K]
->         Expansion ROM at 12040000 [disabled] [size=256K]
->         Kernel driver in use: tulip
-> 
-> the machine is not currently on a switch that I can control, but I can 
-> certainly try to plug in the cable and see what happens, give me a 
-> couple of days to get back to you, and if you don't hear back,  please 
-> holler. Here are the bits of kernel configuration:
-> 
-> CONFIG_NET_TULIP=y
-> CONFIG_TULIP=y
-> # CONFIG_TULIP_MWI is not set
-> # CONFIG_TULIP_MMIO is not set
-> # CONFIG_TULIP_NAPI is not set
+> Signed-off-by: Stanislav Fomichev <stfomichev@gmail.com>
 
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
