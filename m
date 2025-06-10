@@ -1,143 +1,99 @@
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.217])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0219421B9F7;
-	Tue, 10 Jun 2025 11:46:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.217
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749556013; cv=pass; b=BZhbwsRKm3MoD74JbvnZWO4DVPew9GehrvcsK8k7i4GF2u5AJLa+B9STTz6/Vo6iFvlYCB90oy4SKJzcIjgvMjCBBhnK++5iNCYGzcG2BKowNEYu7PvBFoIrRuctBdcdMwr7dyJjDzCUniuDfcUWl3pkYJ/nv2gP9g16KgRljqQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749556013; c=relaxed/simple;
-	bh=uHJX0DxWeFqVosoMPeKr16q7fAhmSfsN6OaFvUHtD08=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nc1bOQ4dLGKlRTkxp33yvYvVh4oEZv33soE4q0tymsrJLa9NKK/MtVykXHHY05sv4HYqmU4nDDhR1Pllzkq7mbJrMtAiBiV2Tfvi3F+7VFJvXQCcJ+Pxzm3nFT/o3sLiU5MRRlt9BH2YM0QgRn2A1WYtxWCSQPpc7nkX9jGlS1Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inhub.de; spf=pass smtp.mailfrom=inhub.de; arc=pass smtp.client-ip=81.169.146.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inhub.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inhub.de
-ARC-Seal: i=1; a=rsa-sha256; t=1749555649; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=Evh0aWvulWGMvk/ec2Ra1bRNhjCgyglFzo9ECK+/MjvM7bn0quUl30F8Jgy4kI6iMy
-    RW3KTtvbIoehlVfEVhGj5785lCszP6c7BGOSN5NJ2lV2tUHrOb3tn/A3WoNeGobxcy3y
-    0T58BI23nxCdOCxOi43jZgtikCDZpA3j3C3kPIucDZL+6nEePO1D96ySVE9kQ1dRWXg7
-    WXlRKXGzFdqyOtJV0O2cQRBgR+bPRdXLJpSJnqFSdZ28CFaSobEpY6Ayl6SUDTg6NyEt
-    o/a/dNNbU+Bvq7GCYBJSDHwuqtORqhkwlTUKGAkPF/fcMrFeOZJaH1rmR7eOl6NLDyD8
-    li9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1749555649;
-    s=strato-dkim-0002; d=strato.com;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=eIpbhmNUjy3O7tv0PtPRwrwhNYwNcqRDWPgwFL0PBm8=;
-    b=qWfkXyo+oyR1rIg1fH4gzCzAMnWmP+gkQ9Fl50Vzx73Lv9Hnp7jwglD+d3GCyPjj1c
-    OG/8lkhZf8l50wudwqKBPwPpBi0M7esL1WbvuaX9rl5+hUxJLNzPD2Gut87A5Ig9wzoO
-    naaqZhN6fc5ULK13l740wR0UsQkg3rhfjNoXzSKj3RfldkfMSqU7ao7DB9A6Oei0T28o
-    mAVM9nT61YlTZjNcmd24gAXCU5uHV+No5ITa/72AFIA7X/vyZ1zieIi2LB0mEj6SPnIZ
-    bLegrHMoP2ytLczhfdUV5zlMpaktcL1SoBACX43oQpnQm35BkUpfFSdCrkM2sToR2xp/
-    /tyw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-X-RZG-AUTH: ":OGMGfEG7NfU1WQAxQKSndOy9b62IXRUXP1G+n0e9SfNgaKe3jg5kqErvsv7wxhn7R+CZYOGugK8="
-Received: from crypto.lan.inhub.de
-    by smtp.strato.de (RZmta 51.3.0 AUTH)
-    with ESMTPSA id J569d715ABen5yb
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Tue, 10 Jun 2025 13:40:49 +0200 (CEST)
-From: Tobias Junghans <tobias.junghans@inhub.de>
-To: Lee Jones <lee@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	linux-leds@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Tobias Junghans <tobias.junghans@inhub.de>
-Subject: [PATCH 2/2] leds: trigger: netdev: refactor netdev_event_requires_handling()
-Date: Tue, 10 Jun 2025 13:40:20 +0200
-Message-ID: <20250610114029.268938-3-tobias.junghans@inhub.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250610114029.268938-1-tobias.junghans@inhub.de>
-References: <20250610114029.268938-1-tobias.junghans@inhub.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC14B4C96;
+	Tue, 10 Jun 2025 12:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749556910; cv=none; b=Z/XVPFAaEi73Q9sBHcs7B4x+GGyujGo5RdVaTcQXJTDvvnvzwzEVqDt1BLvTcmmZw3PR9kBitSIHXjjutdy/61AI22y8srQybNJeA8EOIsXzfwzSej91B8JFlyopAoBixanAc4Vfh4Jz4cCcT0gPMUH8xHVFGC6pL0sqAT0TC6E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749556910; c=relaxed/simple;
+	bh=tvmLJ7I84f5E7KdYoF1dx2imxUaTzRl2oI5ecGPovPE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=re/MNN4HwrT/HLmOgeIXf9akqDeHaGG1vojYT00dai1FrdFaYPYtAyn27wRHMB2x4BHBVb3RMeKXi0fiISfMDeTzNU5rWRG3hnFeyDeb0lBBJBR1y9RTLI+3Zncx2X74DE7OXJW/9x6LsHu0rDkHcSeBgf6Ph9wgeZDXjKuKrE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sAryIj0g; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sAryIj0g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B14C4CEED;
+	Tue, 10 Jun 2025 12:01:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749556910;
+	bh=tvmLJ7I84f5E7KdYoF1dx2imxUaTzRl2oI5ecGPovPE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=sAryIj0gPbWxkb/KYsh7dul0WWGHTVsvvFJGWEy9nYcaRUhECosN2ncxnc3i4gNu6
+	 07TCXjRzVaQqZRjaVVNeMn6oIzo3v7QyZsna5ZoYxYr1n9gMSVNNSi8NN8Bp/jcD+2
+	 YcMt0i/kIupp0+lV7Ev4CzgH8YEmPxF1NEkTx59g/lm3YFQJyf3Pjj+YgsEv+XKsxj
+	 38+WAKz5voiCvcdQDKjEyf6Z9gOYGFT1/aN+aapp5Nb9/JwjozrV+XrpsHZjbtxwt0
+	 A+RkFTfv85NbK0Mto96tGjk9FbNC7aIKwFHA8LkMTr8XygQaBbtBLxXoyESz2CXUDQ
+	 qz2W22arkOLmg==
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 4CD901AF6B15; Tue, 10 Jun 2025 14:01:37 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
+To: Ujwal Kundur <ujwal.kundur@gmail.com>, ast@kernel.org,
+ daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
+ hawk@kernel.org, john.fastabend@gmail.com, andrii@kernel.org,
+ martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, kpsingh@kernel.org, sdf@fomichev.me,
+ aoluo@google.com, jolsa@kernel.org
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Ujwal Kundur <ujwal.kundur@gmail.com>
+Subject: Re: [PATCH] bpf: cpumap: report Rx queue index to xdp_rxq_info
+In-Reply-To: <20250609173851.778-1-ujwal.kundur@gmail.com>
+References: <20250609173851.778-1-ujwal.kundur@gmail.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Tue, 10 Jun 2025 14:01:37 +0200
+Message-ID: <874iwnerfi.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain
 
-If there are network devices with the same name in different
-namespaces, ledtrig-netdev gets confused easily and switches between
-these devices whenever there are NETDEV_CHANGENAME/NETDEV_REGISTER
-notifications.  This happens since ledtrig-netdev only checks for
-device name equality regardless of previous associations with another
-network device with the same name.
+Ujwal Kundur <ujwal.kundur@gmail.com> writes:
 
-Real world example: eth0 is the primary physical network interface and
-ledltrig-netdev is associated with that interface. If now Docker creates
-a virtual Ethernet interface (vethXXXX), moves it to the
-container's net namespace and renames it to eth0, ledtrig-netdev
-switches to this device and the LED no longer blinks for the original
-(physical) network device.
+> Refer to the Rx queue using a XDP frame's attached netdev and ascertain
+> the queue index from it.
+>
+> Signed-off-by: Ujwal Kundur <ujwal.kundur@gmail.com>
+> ---
+>  kernel/bpf/cpumap.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
+> index 67e8a2fc1a99..8230292deac1 100644
+> --- a/kernel/bpf/cpumap.c
+> +++ b/kernel/bpf/cpumap.c
+> @@ -34,6 +34,7 @@
+>  #include <linux/btf_ids.h>
+>  
+>  #include <linux/netdevice.h>
+> +#include <net/netdev_rx_queue.h>
+>  #include <net/gro.h>
+>  
+>  /* General idea: XDP packets getting XDP redirected to another CPU,
+> @@ -196,7 +197,7 @@ static int cpu_map_bpf_prog_run_xdp(struct bpf_cpu_map_entry *rcpu,
+>  
+>  		rxq.dev = xdpf->dev_rx;
+>  		rxq.mem.type = xdpf->mem_type;
+> -		/* TODO: report queue_index to xdp_rxq_info */
+> +		rxq.queue_index = get_netdev_rx_queue_index(xdpf->dev_rx->_rx);
 
-Fix this by refactoring the conditions under which to handle netdev
-events:
+This is pretty nonsensical; the definition of the function you're
+calling is this:
 
-- For processing NETDEV_REGISTER events, the device name has to match
-  and no association with a net_dev must exist.
+static inline unsigned int
+get_netdev_rx_queue_index(struct netdev_rx_queue *queue)
+{
+	struct net_device *dev = queue->dev;
+	int index = queue - dev->_rx;
 
-- For processing NETDEV_CHANGENAME events, the associated and notified
-  network device have to match. Alternatively the device name has to
-  match and no association with a net_dev must exist.
+	BUG_ON(index >= dev->num_rx_queues);
+	return index;
+}
 
-- For all other events, the associated and notified network device have
-  to match.
+So passing dev->_rx to that function will always return 0; which is what
+the field is already initialised to...
 
-Signed-off-by: Tobias Junghans <tobias.junghans@inhub.de>
----
- drivers/leds/trigger/ledtrig-netdev.c | 29 +++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/leds/trigger/ledtrig-netdev.c b/drivers/leds/trigger/ledtrig-netdev.c
-index 6e16619719fe..a3f30e6f74b4 100644
---- a/drivers/leds/trigger/ledtrig-netdev.c
-+++ b/drivers/leds/trigger/ledtrig-netdev.c
-@@ -578,15 +578,28 @@ static const struct attribute_group *netdev_trig_groups[] = {
- static bool netdev_event_requires_handling(unsigned long evt, struct net_device *dev,
- 					   struct led_netdev_data *trigger_data)
- {
--	if (evt != NETDEV_UP && evt != NETDEV_DOWN && evt != NETDEV_CHANGE
--	    && evt != NETDEV_REGISTER && evt != NETDEV_UNREGISTER
--	    && evt != NETDEV_CHANGENAME)
--		return false;
--
--	if (!(dev == trigger_data->net_dev ||
--	     (evt == NETDEV_CHANGENAME && !strcmp(dev->name, trigger_data->device_name)) ||
--	     (evt == NETDEV_REGISTER && !strcmp(dev->name, trigger_data->device_name))))
-+	switch (evt) {
-+	case NETDEV_REGISTER:
-+		if (trigger_data->net_dev ||
-+		    strcmp(dev->name, trigger_data->device_name))
-+			return false;
-+		break;
-+	case NETDEV_CHANGENAME:
-+		if (trigger_data->net_dev != dev &&
-+		    (trigger_data->net_dev ||
-+		     strcmp(dev->name, trigger_data->device_name)))
-+			return false;
-+		break;
-+	case NETDEV_UNREGISTER:
-+	case NETDEV_UP:
-+	case NETDEV_DOWN:
-+	case NETDEV_CHANGE:
-+		if (trigger_data->net_dev != dev)
-+			return false;
-+		break;
-+	default:
- 		return false;
-+	}
- 
- 	return true;
- }
--- 
-2.43.0
-
+-Toke
