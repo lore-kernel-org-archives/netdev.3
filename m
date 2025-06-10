@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213FD28B509
-	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 09:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B1A28C2AC
+	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 09:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749546850; cv=none; b=KQIofKolnIp5GLC6Xxc5SuiS+lbB4iAxX6go1nGQD4fSQPrBWe5q7rmMMhqHjug1Y5CoyPSJdSsbDDOFYfect4s3tdYPdvEVC+/mLXSb2vWph3E7MLnQCQZkPk6TgDw9aqZ2QWKg0pkY3/YR/Jkv3sUuaJbqnsdG5qm+QppQbPE=
+	t=1749546853; cv=none; b=oiMi1ZA33fOM/GtRcWl4mfgSYlw2QlwBjgcZWthnGAJgleTXGtaRLj/bIsABnFdqQbrs6+btMgxd9QOX4i6cWvZM730YEhA17wpKRE96yyJYsDtGkd+wbOzjO2ktXvJMKqr53kKiM1BGwsTdPFBjogkp+p79+QWdfjCALzXnKaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749546850; c=relaxed/simple;
-	bh=eAP/Pgxs/9S4eWPhajMtCxZYCSMA8XaOpnWO4Mni19I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=bXUzg7M0LNaLTNl69qzOuJ7mSD6m9zoR21lg1QaYvxCHWBP7xVlY4O4zGd/4vDW4UNGEhPXK81DMGCKLLpodapK/AMLSK3jFf91i+zugFudjSgILRaee1prDxIOSul54ixeOcTKcFyq9gje82IkFEas+wIs+Guc3kHXmxK5D5mc=
+	s=arc-20240116; t=1749546853; c=relaxed/simple;
+	bh=u+aF9b6V2pUtD48hyOB5seudSASLfD6rWb1EbHeYoPg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=J9yhSi4oQw4FaOGE6tYX0t79N8Iafd8L2vHZmQ0ZEzxtQpYtreOvLTqZuJ9aYcHvTV8Bfu1Al8ZHp1uh2nFstv6gF+Uv9GaB6Y4ksR0Cls7eLn3pFn0p1c8UC3GYOEpdRHxIEiTqq9VTD2pmxthfn79Y9Htku3DAev7vx8Lvwlw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uOv3M-000487-VW; Tue, 10 Jun 2025 11:13:57 +0200
+	id 1uOv3M-00048A-VW; Tue, 10 Jun 2025 11:13:56 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uOv3L-002kQH-1d;
+	id 1uOv3L-002kQK-1p;
 	Tue, 10 Jun 2025 11:13:55 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uOv3L-00H2Jv-1O;
+	id 1uOv3L-00H2KP-1Z;
 	Tue, 10 Jun 2025 11:13:55 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Andrew Lunn <andrew@lunn.ch>,
@@ -40,10 +41,12 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	linux-kernel@vger.kernel.org,
 	Russell King <linux@armlinux.org.uk>,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v1 0/3] net: phy: micrel: add extended PHY support for KSZ9477-class devices
-Date: Tue, 10 Jun 2025 11:13:51 +0200
-Message-Id: <20250610091354.4060454-1-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v1 3/3] net: phy: micrel: add cable test support for KSZ9477-class PHYs
+Date: Tue, 10 Jun 2025 11:13:54 +0200
+Message-Id: <20250610091354.4060454-4-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250610091354.4060454-1-o.rempel@pengutronix.de>
+References: <20250610091354.4060454-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,33 +60,72 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hi all,
+Enable cable test support for KSZ9477-class PHYs by reusing the
+existing KSZ9131 implementation.
 
-This patch series extends the PHY driver support for the Microchip
-KSZ9477-class switch-integrated PHYs. These changes enhance ethtool
-functionality and diagnostic capabilities by implementing the following
-features:
-- MDI/MDI-X configuration support
-  All crossover modes (auto, MDI, MDI-X) are now configurable.
+This also adds support for 100Mbit-only PHYs like KSZ8563, which are
+identified as KSZ9477. For these PHYs, only two wire pairs (A and B)
+are active, so the cable test logic limits the pair_mask accordingly.
 
-- RX error counter reporting
-  The RXER counter (reg 0x15) is now accumulated and exported via
-ethtool stats.
+Support for KSZ8563 is untested but added based on its register
+compatibility and PHY ID match.
 
-- Cable test support
-  Reuses the KSZ9131 implementation to enable open/short fault
-detection and approximate fault length reporting.
+Tested on KSZ9893 (Gigabit): open and short conditions were correctly
+detected on all four pairs. Fault length reporting is functional and
+varies by pair. For example:
+- 2m cable: open faults reported ~1.2m (pairs B–D), 0.0m (pair A)
+- No cable: all pairs report 0.0m fault length
 
-Oleksij Rempel (3):
-  net: phy: micrel: add MDI/MDI-X control support for KSZ9477
-    switch-integrated PHYs
-  net: phy: micrel: Add RX error counter support for KSZ9477
-    switch-integrated PHYs
-  net: phy: micrel: add cable test support for KSZ9477-class PHYs
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/net/phy/micrel.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
- drivers/net/phy/micrel.c | 111 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 109 insertions(+), 2 deletions(-)
-
---
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 68d86383e6c7..d0429dc8f561 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -1723,7 +1723,8 @@ static int ksz9x31_cable_test_fault_length(struct phy_device *phydev, u16 stat)
+ 	 *
+ 	 * distance to fault = (VCT_DATA - 22) * 4 / cable propagation velocity
+ 	 */
+-	if (phydev_id_compare(phydev, PHY_ID_KSZ9131))
++	if (phydev_id_compare(phydev, PHY_ID_KSZ9131) ||
++	    phydev_id_compare(phydev, PHY_ID_KSZ9477))
+ 		dt = clamp(dt - 22, 0, 255);
+ 
+ 	return (dt * 400) / 10;
+@@ -1797,12 +1798,20 @@ static int ksz9x31_cable_test_get_status(struct phy_device *phydev,
+ 					 bool *finished)
+ {
+ 	struct kszphy_priv *priv = phydev->priv;
+-	unsigned long pair_mask = 0xf;
++	unsigned long pair_mask;
+ 	int retries = 20;
+ 	int pair, ret, rv;
+ 
+ 	*finished = false;
+ 
++	if (linkmode_test_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT,
++			      phydev->supported) ||
++	    linkmode_test_bit(ETHTOOL_LINK_MODE_1000baseT_Half_BIT,
++			      phydev->supported))
++		pair_mask = 0xf; /* All pairs */
++	else
++		pair_mask = 0x3; /* Pairs A and B only */
++
+ 	/* Try harder if link partner is active */
+ 	while (pair_mask && retries--) {
+ 		for_each_set_bit(pair, &pair_mask, 4) {
+@@ -5790,6 +5799,8 @@ static struct phy_driver ksphy_driver[] = {
+ 	.resume		= ksz9477_resume,
+ 	.get_phy_stats	= kszphy_get_phy_stats,
+ 	.update_stats	= kszphy_update_stats,
++	.cable_test_start	= ksz9x31_cable_test_start,
++	.cable_test_get_status	= ksz9x31_cable_test_get_status,
+ } };
+ 
+ module_phy_driver(ksphy_driver);
+-- 
 2.39.5
 
