@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B31017E
-	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 23:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0617A286D62
+	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 23:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749598752; cv=none; b=rs5y39TSFTeb+CoCq8ghTt2AHzpCQQDnVlpjVLrPh5JUjVwrz50Gzn3Y0t21Joey5T6Y3rkC+jdN4uICHoaxaCImlFj+SXGSakJ7NH7wV76fTX8ad/yieV2oCiRFShgKIIn6mQ42RczN7m/ZeN1hQt9PkOKY/OgsvVQN7geceoo=
+	t=1749598755; cv=none; b=mZ5TZ9HlQPRXq7B358P/AZEyZu7VMy0Y/epNs4CORHykoYVe+4pHqxqaVUxdqSUb8KYE54Y4dMhahcbUq+cQJ4gWAT1xtc1KvLwclAfP8zRVjOr1rCgeg0fOfOfmMPn5eQ2biXzHIN95QtpPXRv77OHkGyXzqVlO9MXL8H51v7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749598752; c=relaxed/simple;
-	bh=wo3Uf0n1PWV9t1y0Nc9oyrOqSDfMBAsZySvJFwrTNZI=;
+	s=arc-20240116; t=1749598755; c=relaxed/simple;
+	bh=dQqvqy5jM4Kw/KaMrb/822UamyamkcS4EuAXGDR2s30=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NypVD14u9fr5ZIICCXE5Zx2wMeYNjXmkwK+23oH+UoJxOoj0DMyMi79Anb/yEGXbEnDVLJgjMblNHZw5MOS0ZlatrdPiuGh8wLYHop15FeNHUhc/p85uKHhnvH5D3RjHIq+9/JdeUVwB6mCQfmSI+wT9+W7CJBNYWjQlUxvbI2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YoQl3p2H; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ktS2dbtdNST8QTHKI6ieArxw/eBkGfVi89Fcfkvuk3//i7ROXZJtO0kvPq4HxVwIJ79eEnYpBCSoVQE22eKp7ZC/Q9Byx9yMMfBAnIjzGqlw/RgOBldMgxJShYhQ5ZsW4FMxZm2UoLbdGl5pCFbBzXp6svLHsuvOPwpDQowFFA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uXuZ/iaq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YoQl3p2H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176FEC4CEED;
-	Tue, 10 Jun 2025 23:39:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uXuZ/iaq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE290C4CEF0;
+	Tue, 10 Jun 2025 23:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749598752;
-	bh=wo3Uf0n1PWV9t1y0Nc9oyrOqSDfMBAsZySvJFwrTNZI=;
+	s=k20201202; t=1749598754;
+	bh=dQqvqy5jM4Kw/KaMrb/822UamyamkcS4EuAXGDR2s30=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=YoQl3p2Hr1AKvaYa70WOVcPopmEn/aj0yMXttZbz2Glkm2m562CDcC06bVz9AdAkB
-	 MRqx6mYF0VDL5feT27/as0EvEmnlMVpWHmde9m3LXPrdTkZPNiBqHatTD5JndUfqFK
-	 CldLoLANf0lEc9BUpSMdXcKHF0P9MctJUwCz9foLDwEGdHO8XCpMGfJxkdz8XXb8Fo
-	 CaGerg97Zbfuv31xwTJ/B3fgWfpLijwRpGmhm4WF8DscCeErkYx6BahM33iW9nF+IR
-	 Y8S2Pz9sr9MDl5czhUb+ASM3hXtK1iqMZW3X/BTdeqVNkCPv1wSQ0ANf43uG2kolol
-	 4HICSV1cO7e+A==
+	b=uXuZ/iaqvzSQf967Gq7LRdiKcCQJYVJj5wSapn6tPZXPHzj8fIXx6n99cB8GUULkI
+	 4yVmUczIEjibvRWZU2jvodK0eR2d/K+cJzV9BuU4R2vurqpPZmRzLTNnt7+e0ZJi9H
+	 WG21bVtGIEmHzK/PiW6bxhfe1gp+VEY/7/tMmjI8EJUFKE+DTjc6q8HsvSld8sUoOd
+	 k9TLUl/5W7gtDAKJe492nwViKl/CS8lOATE71WEL/4CNuL+x+2h2D1la+RcVRGOCFA
+	 o7p6BHylhiMjQ/LmIN1DbfFDVcJlfaz098TayVMRT2ZA3yy2uMOQHdISlvcu+wIVBo
+	 BeewI7tsL57jw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADDB538111E3;
-	Tue, 10 Jun 2025 23:39:43 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D3038111E3;
+	Tue, 10 Jun 2025 23:39:46 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,58 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 00/11][pull request] Intel Wired LAN Driver
- Updates
- 2025-06-09 (ice, i40e, ixgbe, iavf)
+Subject: Re: [net-next PATCH] octeontx2-pf: Avoid typecasts by simplifying
+ otx2_atomic64_add macro
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174959878248.2630805.4773411977374147072.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Jun 2025 23:39:42 +0000
-References: <20250609212652.1138933-1-anthony.l.nguyen@intel.com>
-In-Reply-To: <20250609212652.1138933-1-anthony.l.nguyen@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org
+ <174959878522.2630805.9404523510094095917.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Jun 2025 23:39:45 +0000
+References: <1749484421-3607-1-git-send-email-sbhatta@marvell.com>
+In-Reply-To: <1749484421-3607-1-git-send-email-sbhatta@marvell.com>
+To: Subbaraya Sundeep <sbhatta@marvell.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ sgoutham@marvell.com, gakula@marvell.com, hkelam@marvell.com,
+ bbhushan2@marvell.com, lcherian@marvell.com, jerinj@marvell.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
-by Tony Nguyen <anthony.l.nguyen@intel.com>:
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  9 Jun 2025 14:26:39 -0700 you wrote:
-> Jake moves from individual virtchnl RSS configuration values, for ice,
-> i40e, and iavf, to a common libie location and values.
+On Mon, 9 Jun 2025 21:23:41 +0530 you wrote:
+> Just because otx2_atomic64_add is using u64 pointer as argument
+> all callers has to typecast __iomem void pointers which inturn
+> causing sparse warnings. Fix those by changing otx2_atomic64_add
+> argument to void pointer.
 > 
-> Martyna and Dawid add counters for link_down_events to ice, i40e, and
-> ixgbe drivers. The counter increments only on actual physical link-down
-> events visible to the PHY. It does not increment when the user performs
-> a software-only interface down/up (e.g. ip link set dev down).
+> Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,01/11] net: intel: rename 'hena' to 'hashcfg' for clarity
-    https://git.kernel.org/netdev/net-next/c/78b2d9908b42
-  - [net-next,02/11] net: intel: move RSS packet classifier types to libie
-    https://git.kernel.org/netdev/net-next/c/141d0c9037ca
-  - [net-next,03/11] ice: add link_down_events statistic
-    https://git.kernel.org/netdev/net-next/c/e7aee24a89c8
-  - [net-next,04/11] i40e: add link_down_events statistic
-    https://git.kernel.org/netdev/net-next/c/f0768aec37c0
-  - [net-next,05/11] ixgbe: add link_down_events statistic
-    https://git.kernel.org/netdev/net-next/c/9acae9e2e289
-  - [net-next,06/11] ice: redesign dpll sma/u.fl pins control
-    https://git.kernel.org/netdev/net-next/c/2dd5d03c77e2
-  - [net-next,07/11] ice: change SMA pins to SDP in PTP API
-    https://git.kernel.org/netdev/net-next/c/a33a302b505b
-  - [net-next,08/11] ice: add ice driver PTP pin documentation
-    https://git.kernel.org/netdev/net-next/c/cb9e0de77761
-  - [net-next,09/11] ice: add a separate Rx handler for flow director commands
-    https://git.kernel.org/netdev/net-next/c/dc5e7a3513ef
-  - [net-next,10/11] iavf: convert to NAPI IRQ affinity API
-    https://git.kernel.org/netdev/net-next/c/b0ca7dc0e70e
-  - [net-next,11/11] ixgbe: Fix typos and clarify comments in X550 driver code
-    https://git.kernel.org/netdev/net-next/c/670678399edc
+  - [net-next] octeontx2-pf: Avoid typecasts by simplifying otx2_atomic64_add macro
+    https://git.kernel.org/netdev/net-next/c/c4246f4cce05
 
 You are awesome, thank you!
 -- 
