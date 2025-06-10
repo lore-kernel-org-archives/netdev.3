@@ -1,135 +1,90 @@
-Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFFC25DD01
-	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 08:02:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB757E9;
+	Tue, 10 Jun 2025 08:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749542558; cv=none; b=O9EfYYfOGlm7kKa873eT0Gtjl+wGeY5K+QziVdIeMLkpMw93QSenLiJcM40auxh/bSRexws40xXAE46KpoR7DewqX3l3SSvrsnv0sCZNKHgbS246V8XPh2rF11ZV8LhreDIGxfa3nbQWlBJoevFB6BZxrTXhSadYzqB/1GZGXHk=
+	t=1749542790; cv=none; b=BkeR7J2huLucPCLxqml2/Hhm4mpEX6I7Ci1MoOxwkdbAVqFjUMxF8TCd6S/F3ZaXcrTDV95biTOgRzAWcn4aFj6d2DBPi7MwV5sJQSHOufB+5bxeQzdxt8xUgKQ1WWokmv8Yr4YfFCLR1MmRfE/J/RxbgEVHKZYQOxQ4/E2I1us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749542558; c=relaxed/simple;
-	bh=OZoYBYTlwkLiMpSPc8fdrVo8/i8kX55/L9jGSeRtV4A=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=t/MprnmeRrd5gOOmxf1eYba3P0X1UTF7TdJaycCT+yCC7mlo7R6ElqmV+kB6wdBi5jYFBYAcixydHdwBi8uocRxixLRQjU9zqoGlJSQ1X87zQfK6ZY3rojK2YPwDo8HuIj5lmfXquVuXxPpJlpm0cHi5qkOM45KiVHhGDk3izWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-3ddbd339f3dso56833115ab.0
-        for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 01:02:36 -0700 (PDT)
+	s=arc-20240116; t=1749542790; c=relaxed/simple;
+	bh=oofEe6usbj+qKOpysPdU+fJP4MUaYO5/A/AQXFZCWa8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sFn9b2RdWww0fYU4OU6S/6SkM6JuUw8aYkfPWxIUgmY41nrEPKTzXcWcbiwbkDD7N6PRgM5bj3yo2Cp8JI2y3mtlHmc4hjXDGNtpxM4r3pp42Us5At4DGjrH16pWZgj8SWMQCtK7krzfzL3+cYMPWryZVtCuhq1c9u9Q/EQfXBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ade76b8356cso141460566b.2;
+        Tue, 10 Jun 2025 01:06:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749542556; x=1750147356;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=p7GbDdel3IUK8fSKvAeseaNyJLsdrTcfYnH0qmMJJ7k=;
-        b=j/o8TXrLkXfFU87/Vel9nt34EaJHzkQapejYTL9qlael+jjjTbDriY4wS36iIkG4eE
-         PeoEtSrP51fuwvge9B/v5/mkWiGzrW95dNoXdZSldFM879WXNPvLXLdxE6IlXCaK7rU0
-         D6CUShO4szse7V4IXjBTiN88V45RQcW5/z3RZYAqBNvpNjl6NERF/jjoV0anEiL0VMvu
-         KR0RngHTCJLr5DWrCWGL+ppBMjITtu8XgMUcKTk2G1K4uKok1RXqqv1nDklkOnpl6xqx
-         bSSvZf+uyCFJCjjufZ4of9nGiStn456X0Z+zXPZgQfBTxa3CTz5qQSmboT1Hj+8acKAd
-         nH2A==
-X-Forwarded-Encrypted: i=1; AJvYcCWVOeeSgZtG6SkQcoC/uWtAp6rVM4U0jw41amVKWmoHYxka8BKPhrgv90TZUKeMlmInPaA8FaQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz45NDT4tbfAjxJU5wFqKBvoNe+9ZkkOALLVnRMHL0StdhXhtC+
-	Dpa4qAsQSqTVeU+qyYgvbjNYG5IHw8xAhtnXdEllfvo1KC9l/M/ikHhN/m8pLWv4esVpc/e5QnO
-	06Sbp/od5kn5SyXjIuDvV/kNWDVCTK9JmS2Xt20CHPZ4T0OJvr2UKQT+074I=
-X-Google-Smtp-Source: AGHT+IFjH6OPrbyVdM2kIH0ThYhow5IOSH2t1RJmwi1Oj0SPMdtyA08QXKLBVaAMFPyznygVaO2xhAu+jYt6LkHDaxMAxeQC+k+6
+        d=1e100.net; s=20230601; t=1749542787; x=1750147587;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BU+jtFAxsbmD1oSGWe/PHbt+kKKNnnYvXpq5CdpQ3QA=;
+        b=qFndv5P7G8KW3UArPuF2FinAUIQFOUL8g7mHzVvPoNa9WNLLqPWAos2azaHpuYtpBx
+         krtmkt0wA8VMlbpvhP856OylLK1sTCHBIT5oz+QHYSgQt3GprmcQDeKFK2qlzHnoaE+v
+         Hbq5CsAWIstG62deZDe/YaOIgAo5iysnD17gOsQa9dNcXUWb7Unx2/MdO7ZDYi1U/0Sl
+         X8+uA0UP6iYdovBPKZTDWWNPXPbZd50cxNZCwvCkzGe1UxqXch+rZ0aY0spNbAD8KgYr
+         sGxyBnSZ00fp7X7TpBwzvbtDCfyHhCK2d/twqxuVXPa+HvLiZJPKjxQoTZOrjWrT2rwQ
+         Ly4w==
+X-Forwarded-Encrypted: i=1; AJvYcCVfdTYRHwoE/9gNx9nnRYZTT7kW2rIr+P6UM8ciVV2TpOIrhAfp4UVjUb4HbrzoHFjrjml8ryam@vger.kernel.org, AJvYcCViykZKAyfdj9A0I2hyxqnA4ES50Y0Z0wU6YZLrWVl5YI2f7xc5n5As45Gdo37dNXxdiACV9ZgVnEOyh/o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvYqnO141fjfIcJlP7RzKxdpsjWKVNIWGhaUoYoOQotIIj7ha1
+	wRgoKuxNe0zAuVCc7WXPMzKjREKnqYglNc4kCxxkXb9vG7GQDQrHifzP
+X-Gm-Gg: ASbGnctjnyujE4PrKYoxU1OBbqXdGen/h9xA/8EbFROSvTTU0R+kPogIDGMB6suYbbh
+	guRot3ZZ5UTjRI1bmacU0CNAjfBeF5tg3h2eaeXgjGExoFMIARys/+v7AdCDBCf92CnagmQMvNP
+	EHkTLm6SV/3otsAfjCrYtXyjuZgytSaQ63LlaAjeFZMGtfC2gi4InEFJU7DopvcvNbq9YBDIvTW
+	WoAtrdvQz9LacVFKoXm4nEEXlBmoJnSLjeYTOPyNmYkLtxvgn4PK7BNyyJwZ4+H0FjEMH+MqT7p
+	4lBPBdmizUUUCtmUjjismsnoiL0qzpkb4EGvLFJFopOBJG8uPtfO
+X-Google-Smtp-Source: AGHT+IHvp9ssXqL+sQbF0Pqu3m/lzBCQFqu7LbWBTPnLJ9OumSC65Ukoyd3wQye+bHoOL3D/2IKl3g==
+X-Received: by 2002:a17:906:3e0d:b0:ade:3eb6:3b0 with SMTP id a640c23a62f3a-ade3eb609ffmr791351566b.31.1749542787282;
+        Tue, 10 Jun 2025 01:06:27 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:5::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1e361462sm672758066b.184.2025.06.10.01.06.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jun 2025 01:06:26 -0700 (PDT)
+Date: Tue, 10 Jun 2025 01:06:24 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Gustavo Luiz Duarte <gustavold@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] netconsole: fix appending sysdata when
+ sysdata_fields == SYSDATA_RELEASE
+Message-ID: <aEfngKdDKgQH2yZq@gmail.com>
+References: <20250609-netconsole-fix-v1-1-17543611ae31@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1689:b0:3dc:7f3b:aca9 with SMTP id
- e9e14a558f8ab-3ddeddc683fmr12533155ab.14.1749542555978; Tue, 10 Jun 2025
- 01:02:35 -0700 (PDT)
-Date: Tue, 10 Jun 2025 01:02:35 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6847e69b.a70a0220.27c366.005f.GAE@google.com>
-Subject: [syzbot] [tipc?] KASAN: user-memory-access Write in tipc_crypto_stop
-From: syzbot <syzbot+2434dfff4223d77e8e1d@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	jmaloy@redhat.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
-	tipc-discussion@lists.sourceforge.net
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250609-netconsole-fix-v1-1-17543611ae31@gmail.com>
 
-Hello,
+On Mon, Jun 09, 2025 at 11:24:20AM -0700, Gustavo Luiz Duarte wrote:
+> Before appending sysdata, prepare_extradata() checks if any feature is
+> enabled in sysdata_fields (and exits early if none is enabled).
+> 
+> When SYSDATA_RELEASE was introduced, we missed adding it to the list of
+> features being checked against sysdata_fields in prepare_extradata().
+> The result was that, if only SYSDATA_RELEASE is enabled in
+> sysdata_fields, we incorreclty exit early and fail to append the
+> release.
+> 
+> Instead of checking specific bits in sysdata_fields, check if
+> sysdata_fields has ALL bit zeroed and exit early if true. This fixes
+> case when only SYSDATA_RELEASE enabled and makes the code more general /
+> less error prone in future feature implementation.
+> 
+> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
 
-syzbot found the following issue on:
+Fixes: dd30ae533242 ("netconsole: append release to sysdata")
 
-HEAD commit:    0f70f5b08a47 Merge tag 'pull-automount' of git://git.kerne..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=157dd00c580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=22765942f2e2ebcf
-dashboard link: https://syzkaller.appspot.com/bug?extid=2434dfff4223d77e8e1d
-compiler:       Debian clang version 20.1.6 (++20250514063057+1e4d39e07757-1~exp1~20250514183223.118), Debian LLD 20.1.6
+Reviewed-by: Breno Leitao <leitao@debian.org>
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/f091df6896fd/disk-0f70f5b0.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/978b2a8699d8/vmlinux-0f70f5b0.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/b6e13557ddc0/bzImage-0f70f5b0.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+2434dfff4223d77e8e1d@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KASAN: user-memory-access in instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
-BUG: KASAN: user-memory-access in atomic_fetch_sub_release include/linux/atomic/atomic-instrumented.h:400 [inline]
-BUG: KASAN: user-memory-access in __refcount_sub_and_test include/linux/refcount.h:389 [inline]
-BUG: KASAN: user-memory-access in __refcount_dec_and_test include/linux/refcount.h:432 [inline]
-BUG: KASAN: user-memory-access in refcount_dec_and_test include/linux/refcount.h:450 [inline]
-BUG: KASAN: user-memory-access in tipc_aead_put net/tipc/crypto.c:398 [inline]
-BUG: KASAN: user-memory-access in tipc_crypto_stop+0x1fb/0x430 net/tipc/crypto.c:1536
-Write of size 4 at addr 00000000ffff00c0 by task kworker/u8:0/12
-
-CPU: 1 UID: 0 PID: 12 Comm: kworker/u8:0 Not tainted 6.15.0-syzkaller-09161-g0f70f5b08a47 #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Workqueue: netns cleanup_net
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- kasan_report+0x118/0x150 mm/kasan/report.c:634
- check_region_inline mm/kasan/generic.c:-1 [inline]
- kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:189
- instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
- atomic_fetch_sub_release include/linux/atomic/atomic-instrumented.h:400 [inline]
- __refcount_sub_and_test include/linux/refcount.h:389 [inline]
- __refcount_dec_and_test include/linux/refcount.h:432 [inline]
- refcount_dec_and_test include/linux/refcount.h:450 [inline]
- tipc_aead_put net/tipc/crypto.c:398 [inline]
- tipc_crypto_stop+0x1fb/0x430 net/tipc/crypto.c:1536
- tipc_exit_net+0x7b/0x140 net/tipc/core.c:119
- ops_exit_list net/core/net_namespace.c:200 [inline]
- ops_undo_list+0x49a/0x990 net/core/net_namespace.c:253
- cleanup_net+0x4c5/0x8a0 net/core/net_namespace.c:686
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3321
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
- kthread+0x711/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-==================================================================
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Thanks for the fix,
+--breno
