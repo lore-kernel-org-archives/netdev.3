@@ -1,104 +1,84 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7EFF2AF1E;
-	Tue, 10 Jun 2025 12:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D382980BC;
+	Tue, 10 Jun 2025 12:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749559588; cv=none; b=MGQ677CVh193UYci+sAXbQEuLIyB9F3zVkO1hemplgIiDAbIHo8mU5szHoDjofngSgdplR7vAizWkzqOe2FTKfucApe5OEWVgnmyESPD1B4DArcNDAdVt1UX5qdbmpDt07F88t4crfeNXqU3jgxSi4um8eO8NHbXIibDY9INEgg=
+	t=1749559813; cv=none; b=EvMA3SiIVWNsSPgHAJIr0AuzyJAeGCpRNC8KS5LhnYWNmY+UncYBf4R/CdAOLnQljEryOUUG8HKtrYZmBGByf6MWzNVRw5vDTDirPCxXzQ1l7HIx4PCGqvv5jEpI5maAkIJ/4sAF3/N+38LMfgd8fKUwrb3WxZPrEc+Y2fc5vPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749559588; c=relaxed/simple;
-	bh=mSF2gA5Qb1wekKI7B0KlNmhWLve3DeW+P+aVaydV8OI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fDG8xMUzv9NRdY4XlWSv0IwB5J7nFcOzF9MAgRwtEZJzdBb7gDbTiK/g+CU5K3SRqmYiaGuzKwP2iYkOlqrswD1AmpqLosfkURrvpHuS0cQbscFwmevbnfatASowfe0UIPmDT83sIRFaYqaXKwQ3GIhbD3DbdVMyll1g5ma2D48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hZoQ3j3I; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1749559813; c=relaxed/simple;
+	bh=xYRmbHCiSt/4kk7rpcC2ftng1cfPPYAJDj28TMRmGfo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To; b=sIElr9/H+9+hDsXS4CxsBaXILfChvMO/tv1agV/1m4oW1J0EAd+bxZ/qh/3NcFtXm0WDry4xAtlVR4/BS3X8u9fC00ftjU8g99nTO8/7mw+GLmdjgSWh6Bz9mzCKYwfA2yKTUDG8ATK80pw1+28O0ZoUe8g24RgH+GjJF8xHmh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dUtQ0X6G; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hZoQ3j3I"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=IxovBajuiG9VZJ3XmWy0NzjagqDViV1ywWm/ai8Bd1M=; b=hZoQ3j3IzpoxwljSwnB8bccPSM
-	XRrBw7WFNZ8PxtzbiIXdJUnm/tkBx5fm8LE2KeugPzbPkZOxOSYZeqWHG27E/pZqa2VZB9z9EYDNc
-	cwy1nsznvNnVMKnbEY13v7IRURpmJET03jHqxGcIuSW+kSzh3eWH+oyjvx03UBx9A2i8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uOyMc-00FGUL-0t; Tue, 10 Jun 2025 14:46:02 +0200
-Date: Tue, 10 Jun 2025 14:46:02 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	DENG Qingfang <dqfext@gmail.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-can@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH 4/4] net: phy: qca807x: use new GPIO line value setter
- callbacks
-Message-ID: <5c9a127b-8538-4856-bdb3-cbee87993428@lunn.ch>
-References: <20250610-gpiochip-set-rv-net-v1-0-35668dd1c76f@linaro.org>
- <20250610-gpiochip-set-rv-net-v1-4-35668dd1c76f@linaro.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dUtQ0X6G"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7280B43A10;
+	Tue, 10 Jun 2025 12:50:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1749559803;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3C3o0IMeAbxHYY9zE2a3M74zmHC7R/FFLuOJDYKXdFo=;
+	b=dUtQ0X6GNgLioF8U6KVXXljzf7QwK1Ud0DXKLaPwnEvjWk3oLvVsVG8XKWmkHQdUws/HBt
+	AQf4gl67TWtpUx8paycCDT9ATRIu1XQ7GoND8fIOdE/eks08h4/GoF1BthM8GCDrXswD18
+	be0+dBf7PeP39aksSwowtofcWWuWSJqPTgF6szvefIojucBhbhFBDuZGfxvsB07PDEXNFO
+	VdeLKMjWxwbWLn6NMSb5YBKvtVN/bzylgZqxRC7BRAqhbYjKdSXP1xJHS3g1N3geqct4tn
+	s4ThtPJ/2j1nExrOC5/ECeN53aw88qCa4uuaCm0tlgdTrVSbcn8+FLPY5YICsg==
+From: Kory Maincent <kory.maincent@bootlin.com>
+Subject: [PATCH ethtool 0/2] Add support for PTP hardware source
+Date: Tue, 10 Jun 2025 14:50:00 +0200
+Message-Id: <20250610-feature_phc_source-v1-0-cbd1adef12aa@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250610-gpiochip-set-rv-net-v1-4-35668dd1c76f@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAPgpSGgC/x3MwQqEIBRG4VeJu07QYiJ6lYgQ/R0vRMbVIojef
+ WSW3+KchzKEkWlqHhJcnDntFaZtyEW7f6HYV1Onu48ejFYBtpyC9YhuzekUB+XNAHhv3Rh6quE
+ hCHz/pzOhxJLSRsv7/gAVLyVebQAAAA==
+To: Michal Kubecek <mkubecek@suse.cz>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Andrew Lunn <andrew@lunn.ch>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jason Xing <kernelxing@tencent.com>, Russell King <linux@armlinux.org.uk>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Kory Maincent <kory.maincent@bootlin.com>
+X-Mailer: b4 0.15-dev-8cb71
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddutdejhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffufffkgggtgffvofesthekredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeduudevkefftdelffeiffeikeefueeutddvtdehteehgeekvdejgedvteegffetkeenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedufedprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepfihilhhlvghmuggvsghruhhijhhnrdhkvghrnhgvlhesghhmrghilhdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehmkhhusggvtggvkhesshhushgvrdgtiidprhgtphhtthhopehthhhomhgrshdrphgvthgriiiio
+ hhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhk
+X-GND-Sasl: kory.maincent@bootlin.com
 
-> -static void qca807x_gpio_set(struct gpio_chip *gc, unsigned int offset, int value)
-> +static int qca807x_gpio_set(struct gpio_chip *gc, unsigned int offset, int value)
->  {
->  	struct qca807x_gpio_priv *priv = gpiochip_get_data(gc);
->  	u16 reg;
-> @@ -390,14 +390,12 @@ static void qca807x_gpio_set(struct gpio_chip *gc, unsigned int offset, int valu
->  	val |= QCA807X_GPIO_FORCE_EN;
->  	val |= FIELD_PREP(QCA807X_GPIO_FORCE_MODE_MASK, value);
->  
-> -	phy_write_mmd(priv->phy, MDIO_MMD_AN, reg, val);
-> +	return phy_write_mmd(priv->phy, MDIO_MMD_AN, reg, val);
->  }
+Add description of the PTP hardware source to indicate whether the
+timestamp comes from a PHY or a MAC.
 
-The full function is:
-
-static void qca807x_gpio_set(struct gpio_chip *gc, unsigned int offset, int value)
-{
-	struct qca807x_gpio_priv *priv = gpiochip_get_data(gc);
-	u16 reg;
-	int val;
-
-	reg = QCA807X_MMD7_LED_FORCE_CTRL(offset);
-
-	val = phy_read_mmd(priv->phy, MDIO_MMD_AN, reg);
-	val &= ~QCA807X_GPIO_FORCE_MODE_MASK;
-	val |= QCA807X_GPIO_FORCE_EN;
-	val |= FIELD_PREP(QCA807X_GPIO_FORCE_MODE_MASK, value);
-
-	phy_write_mmd(priv->phy, MDIO_MMD_AN, reg, val);
-}
-
-The phy_read_mmd() could also fail and return an error code.
-
-    Andrew
-
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
-pw-bot: cr
+Kory Maincent (2):
+      update UAPI header copies
+      tsinfo: Add support for PTP hardware source
+
+ netlink/tsinfo.c                       |  34 +++++++++
+ uapi/linux/ethtool.h                   | 134 +++++++++++++++++----------------
+ uapi/linux/ethtool_netlink_generated.h |  19 +++--
+ uapi/linux/if_link.h                   |  15 ++++
+ 4 files changed, 132 insertions(+), 70 deletions(-)
+---
+base-commit: 9338aa51d4856273539a052332de3695e09620bd
+change-id: 20250610-feature_phc_source-d16eeddac8f3
+
+Best regards,
+-- 
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
+
