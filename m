@@ -1,39 +1,39 @@
 Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B2C2868B8;
-	Tue, 10 Jun 2025 08:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA11E288527;
+	Tue, 10 Jun 2025 08:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749543534; cv=none; b=hPweE6Sf7fMjqDGL9x9G3WTFXZDrCTZkaO72t370DAAtr3Xe46340UoKLAboLhXftqdXHgCblTPO1n0gzSmqR4bSWnPyNBWh9QYPfNw9J+WYGmd/k6EVcwpgvsMDKAqIqABbUATP+kYkrDKnm37uFTCnk2FYXnHqDb593DbR2zo=
+	t=1749543536; cv=none; b=KyvcMerVf0tPsGd9DCypAcuO7Bkit7HZAsz0BFaLhvbS/gCP7X1D726g+FuwkZUqJKacpvNrLpR7eHFIebx2IVZsJ4rJaAo42jhyKaafmDqosRtAGNHDwhaLnveHOYQ0oYUK9CcAmKrxXC2NDqyXiVGuu4unezcX6KDJZfhdXWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749543534; c=relaxed/simple;
-	bh=6CgKAAUo2JHD7yFHhbo+1T4kIagvIlgRJCvhKYrQlbU=;
+	s=arc-20240116; t=1749543536; c=relaxed/simple;
+	bh=HFQWAfZvvOVviJYU4nJ3AIIjhLUSvteSwDQkYZUucVo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ceZBEimBVzDTq/SJ0KmvxEvcz5D43mWCXl7EPLPs2C6FVpfR9aJjRkri0wBt60nFypLpQGCjSe8fJ8BAvrw6UjAmvuPBnZD2Tnh9L/nhz/7AlF7+3NkWDJ0OlfywcpsRwcPHHjCsGvfhovPIPzIlzBxs0TiAbBmTMRezV/xIMRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dj9+FhOQ; arc=none smtp.client-ip=217.70.183.198
+	 In-Reply-To:To:Cc; b=raqcgSq2UfE0yCXxcNBwDgOzP45Xbjz0C2X1KXo3s9gtXVYFGXUh0s+0YhdrVS7Dkwl8/tyr/oOqwXUiC9NFBnc9ok0+XJnh5H1i8KkfxX+VEn5aLvmInaq0DM2rrU04KCgjYzUfrdJFhEQd4y/LFCd5RSDPIWy66N4NyfNCze4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pzg6jfBj; arc=none smtp.client-ip=217.70.183.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dj9+FhOQ"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 72C0544250;
-	Tue, 10 Jun 2025 08:18:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pzg6jfBj"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9E8A04428D;
+	Tue, 10 Jun 2025 08:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749543527;
+	t=1749543531;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZDG/Y1XmDGe9GkL9daMK3NUZhybT+HAZPX9S1Ul60BE=;
-	b=dj9+FhOQf1ZzSb9zYh5eTsBoDq0vQ9BP2yAcZnZg1rT18wiuNefGyunrF5Er5RjDIviAHf
-	ni0AUZOK24XHwEXZpWNhcMufSpsHAFhXcJpXcFSQkqdwcnIyYSFL4Z3X0aQAod9OoTf5Mi
-	3QX0/TQ/XnxuRCcQvwlpSdMOOOk7HOOEMrdLa25G5kcpWxmwflTcp/dqL8WbbJJ0iqDVyM
-	T01YRrenyT21o3VddgGHLJt4OTMEzl+I/SmxG9J5U1Wwd+wdbA4v9ASVsv3RLLPgR+HgY3
-	IMxT2Mu5+isL6hG0jaYU094q10iN4TLVV+WW+X0bQ1c4DdMX/xH8q+MkcVBBiw==
+	bh=t4eclzSe50+bbHVxcyvpL552HOn3zu2XAeniKUWOrVg=;
+	b=pzg6jfBjCLrk/7m4+B5mnSWDfZd6M0VZCJb9wBO3a4jzY3dcsflQSPJDFj5e59sAPGL/k+
+	9kyej0B9KqQurJ/CFo/Ll408IGHSjeQhMocH1y4Z/Ji6JAf3AFey6+WVJdPSkVTrLaXzf2
+	i8KCPcSzYqBHp9Bf4jdmDBrRbUJbSnFfXltTCsV0P+G/ySNxR2nxmRQF6WrdkaDZYE8CTH
+	Klku4+F2/b68LDDbMgpu94OFfvxp4cSW9YyS8xpzJuI1K7GJeyrqvY/vYpxYi32p/9kJyW
+	PSG9jzII/lNI1y4Yt6lI6Oo4Ra8vPvWY6bMLcdfjbATByaMlV3Nb6TBV/Uw5Lg==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Tue, 10 Jun 2025 10:11:43 +0200
-Subject: [PATCH net-next v13 09/13] net: pse-pd: pd692x0: Add support for
- PSE PI priority feature
+Date: Tue, 10 Jun 2025 10:11:46 +0200
+Subject: [PATCH net-next v13 12/13] net: pse-pd: tps23881: Add support for
+ static port priority feature
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,7 +42,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250610-feature_poe_port_prio-v13-9-c5edc16b9ee2@bootlin.com>
+Message-Id: <20250610-feature_poe_port_prio-v13-12-c5edc16b9ee2@bootlin.com>
 References: <20250610-feature_poe_port_prio-v13-0-c5edc16b9ee2@bootlin.com>
 In-Reply-To: <20250610-feature_poe_port_prio-v13-0-c5edc16b9ee2@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>, Oleksij Rempel <o.rempel@pengutronix.de>, 
@@ -64,254 +64,220 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
 X-Mailer: b4 0.15-dev-8cb71
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddutdeglecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvefgvdfgkeetgfefgfegkedugffghfdtffeftdeuteehjedtvdelvddvleehtdevnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgepieenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvdejpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopeguvghnthhprhhojhgvtghtsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrn
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddutdeglecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpefmohhrhicuofgrihhntggvnhhtuceokhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvefgvdfgkeetgfefgfegkedugffghfdtffeftdeuteehjedtvdelvddvleehtdevnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgepleenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvdejpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopeguvghnthhprhhojhgvtghtsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrn
  hgvlhdrohhrghdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgtphhtthhopehordhrvghmphgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
 X-GND-Sasl: kory.maincent@bootlin.com
 
 From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 
-This patch extends the PSE callbacks by adding support for the newly
-introduced pi_set_prio() callback, enabling the configuration of PSE PI
-priorities. The current port priority is now also included in the status
-information returned to users.
+This patch enhances PSE callbacks by introducing support for the static
+port priority feature. It extends interrupt management to handle and report
+detection, classification, and disconnection events. Additionally, it
+introduces the pi_get_pw_req() callback, which provides information about
+the power requested by the Powered Devices.
+
+Interrupt support is essential for the proper functioning of the TPS23881
+controller. Without it, after a power-on (PWON), the controller will
+no longer perform detection and classification. This could lead to
+potential hazards, such as connecting a non-PoE device after a PoE device,
+which might result in magic smoke.
 
 Signed-off-by: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
 Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
-Changes in v7:
-- Nitpick change.
 
-Changes in v3:
+Change in v7:
+- Add configuration of the power limit back after an over current event.
+
+Change in v4:
+- Fix variable type nit.
+
+Change in v3:
 - New patch
 ---
- drivers/net/pse-pd/pd692x0.c | 205 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 205 insertions(+)
+ drivers/net/pse-pd/tps23881.c | 244 +++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 228 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/pse-pd/pd692x0.c b/drivers/net/pse-pd/pd692x0.c
-index 7d60a714ca53..a4766c18f333 100644
---- a/drivers/net/pse-pd/pd692x0.c
-+++ b/drivers/net/pse-pd/pd692x0.c
-@@ -12,6 +12,8 @@
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/pse-pd/pse.h>
-+#include <linux/regulator/driver.h>
-+#include <linux/regulator/machine.h>
+diff --git a/drivers/net/pse-pd/tps23881.c b/drivers/net/pse-pd/tps23881.c
+index 7a9a5dbe0cb1..63f8f43062bc 100644
+--- a/drivers/net/pse-pd/tps23881.c
++++ b/drivers/net/pse-pd/tps23881.c
+@@ -20,20 +20,30 @@
  
- #define PD692X0_PSE_NAME "pd692x0_pse"
- 
-@@ -76,6 +78,8 @@ enum {
- 	PD692X0_MSG_GET_PORT_CLASS,
- 	PD692X0_MSG_GET_PORT_MEAS,
- 	PD692X0_MSG_GET_PORT_PARAM,
-+	PD692X0_MSG_GET_POWER_BANK,
-+	PD692X0_MSG_SET_POWER_BANK,
- 
- 	/* add new message above here */
- 	PD692X0_MSG_CNT
-@@ -95,6 +99,8 @@ struct pd692x0_priv {
- 	unsigned long last_cmd_key_time;
- 
- 	enum ethtool_c33_pse_admin_state admin_state[PD692X0_MAX_PIS];
-+	struct regulator_dev *manager_reg[PD692X0_MAX_MANAGERS];
-+	int manager_pw_budget[PD692X0_MAX_MANAGERS];
- };
- 
- /* Template list of communication messages. The non-null bytes defined here
-@@ -170,6 +176,16 @@ static const struct pd692x0_msg pd692x0_msg_template_list[PD692X0_MSG_CNT] = {
- 		.data = {0x4e, 0x4e, 0x4e, 0x4e,
- 			 0x4e, 0x4e, 0x4e, 0x4e},
- 	},
-+	[PD692X0_MSG_GET_POWER_BANK] = {
-+		.key = PD692X0_KEY_REQ,
-+		.sub = {0x07, 0x0b, 0x57},
-+		.data = {   0, 0x4e, 0x4e, 0x4e,
-+			 0x4e, 0x4e, 0x4e, 0x4e},
-+	},
-+	[PD692X0_MSG_SET_POWER_BANK] = {
-+		.key = PD692X0_KEY_CMD,
-+		.sub = {0x07, 0x0b, 0x57},
-+	},
- };
- 
- static u8 pd692x0_build_msg(struct pd692x0_msg *msg, u8 echo)
-@@ -739,6 +755,29 @@ pd692x0_pi_get_actual_pw(struct pse_controller_dev *pcdev, int id)
- 	return (buf.data[0] << 4 | buf.data[1]) * 100;
- }
- 
-+static int
-+pd692x0_pi_get_prio(struct pse_controller_dev *pcdev, int id)
-+{
-+	struct pd692x0_priv *priv = to_pd692x0_priv(pcdev);
-+	struct pd692x0_msg msg, buf = {0};
+ #define TPS23881_REG_IT		0x0
+ #define TPS23881_REG_IT_MASK	0x1
++#define TPS23881_REG_IT_DISF	BIT(2)
++#define TPS23881_REG_IT_DETC	BIT(3)
++#define TPS23881_REG_IT_CLASC	BIT(4)
+ #define TPS23881_REG_IT_IFAULT	BIT(5)
+ #define TPS23881_REG_IT_SUPF	BIT(7)
++#define TPS23881_REG_DET_EVENT	0x5
+ #define TPS23881_REG_FAULT	0x7
+ #define TPS23881_REG_SUPF_EVENT	0xb
+ #define TPS23881_REG_TSD	BIT(7)
++#define TPS23881_REG_DISC	0xc
+ #define TPS23881_REG_PW_STATUS	0x10
+ #define TPS23881_REG_OP_MODE	0x12
++#define TPS23881_REG_DISC_EN	0x13
+ #define TPS23881_OP_MODE_SEMIAUTO	0xaaaa
+ #define TPS23881_REG_DIS_EN	0x13
+ #define TPS23881_REG_DET_CLA_EN	0x14
+ #define TPS23881_REG_GEN_MASK	0x17
++#define TPS23881_REG_CLCHE	BIT(2)
++#define TPS23881_REG_DECHE	BIT(3)
+ #define TPS23881_REG_NBITACC	BIT(5)
+ #define TPS23881_REG_INTEN	BIT(7)
+ #define TPS23881_REG_PW_EN	0x19
++#define TPS23881_REG_RESET	0x1a
++#define TPS23881_REG_CLRAIN	BIT(7)
+ #define TPS23881_REG_2PAIR_POL1	0x1e
+ #define TPS23881_REG_PORT_MAP	0x26
+ #define TPS23881_REG_PORT_POWER	0x29
+@@ -178,6 +188,7 @@ static int tps23881_pi_enable(struct pse_controller_dev *pcdev, int id)
+ 	struct i2c_client *client = priv->client;
+ 	u8 chan;
+ 	u16 val;
 +	int ret;
-+
-+	ret = pd692x0_fw_unavailable(priv);
+ 
+ 	if (id >= TPS23881_MAX_CHANS)
+ 		return -ERANGE;
+@@ -191,7 +202,22 @@ static int tps23881_pi_enable(struct pse_controller_dev *pcdev, int id)
+ 				       BIT(chan % 4));
+ 	}
+ 
+-	return i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
++	ret = i2c_smbus_write_word_data(client, TPS23881_REG_PW_EN, val);
 +	if (ret)
 +		return ret;
 +
-+	msg = pd692x0_msg_template_list[PD692X0_MSG_GET_PORT_PARAM];
-+	msg.sub[2] = id;
-+	ret = pd692x0_sendrecv_msg(priv, &msg, &buf);
++	/* Enable DC disconnect*/
++	chan = priv->port[id].chan[0];
++	ret = i2c_smbus_read_word_data(client, TPS23881_REG_DISC_EN);
 +	if (ret < 0)
 +		return ret;
-+	if (!buf.data[2] || buf.data[2] > pcdev->pis_prio_max + 1)
-+		return -ERANGE;
 +
-+	/* PSE core priority start at 0 */
-+	return buf.data[2] - 1;
-+}
++	val = tps23881_set_val(ret, chan, 0, BIT(chan % 4), BIT(chan % 4));
++	ret = i2c_smbus_write_word_data(client, TPS23881_REG_DISC_EN, val);
++	if (ret)
++		return ret;
 +
- static struct pd692x0_msg_ver pd692x0_get_sw_version(struct pd692x0_priv *priv)
- {
- 	struct device *dev = &priv->client->dev;
-@@ -766,6 +805,7 @@ static struct pd692x0_msg_ver pd692x0_get_sw_version(struct pd692x0_priv *priv)
++	return 0;
+ }
  
- struct pd692x0_manager {
- 	struct device_node *port_node[PD692X0_MAX_MANAGER_PORTS];
-+	struct device_node *node;
- 	int nports;
- };
+ static int tps23881_pi_disable(struct pse_controller_dev *pcdev, int id)
+@@ -224,6 +250,17 @@ static int tps23881_pi_disable(struct pse_controller_dev *pcdev, int id)
+ 	 */
+ 	mdelay(5);
  
-@@ -857,6 +897,8 @@ pd692x0_of_get_managers(struct pd692x0_priv *priv,
- 		if (ret)
- 			goto out;
- 
-+		of_node_get(node);
-+		manager[manager_id].node = node;
- 		nmanagers++;
- 	}
- 
-@@ -869,6 +911,8 @@ pd692x0_of_get_managers(struct pd692x0_priv *priv,
- 			of_node_put(manager[i].port_node[j]);
- 			manager[i].port_node[j] = NULL;
- 		}
-+		of_node_put(manager[i].node);
-+		manager[i].node = NULL;
- 	}
- 
- 	of_node_put(node);
-@@ -876,6 +920,130 @@ pd692x0_of_get_managers(struct pd692x0_priv *priv,
++	/* Disable DC disconnect*/
++	chan = priv->port[id].chan[0];
++	ret = i2c_smbus_read_word_data(client, TPS23881_REG_DISC_EN);
++	if (ret < 0)
++		return ret;
++
++	val = tps23881_set_val(ret, chan, 0, 0, BIT(chan % 4));
++	ret = i2c_smbus_write_word_data(client, TPS23881_REG_DISC_EN, val);
++	if (ret)
++		return ret;
++
+ 	/* Enable detection and classification */
+ 	ret = i2c_smbus_read_word_data(client, TPS23881_REG_DET_CLA_EN);
+ 	if (ret < 0)
+@@ -919,6 +956,47 @@ static int tps23881_setup_pi_matrix(struct pse_controller_dev *pcdev)
  	return ret;
  }
  
-+static const struct regulator_ops dummy_ops;
++static int tps23881_power_class_table[] = {
++	-ERANGE,
++	4000,
++	7000,
++	15500,
++	30000,
++	15500,
++	15500,
++	-ERANGE,
++	45000,
++	60000,
++	75000,
++	90000,
++	15500,
++	45000,
++	-ERANGE,
++	-ERANGE,
++};
 +
-+static struct regulator_dev *
-+pd692x0_register_manager_regulator(struct device *dev, char *reg_name,
-+				   struct device_node *node)
++static int tps23881_pi_get_pw_req(struct pse_controller_dev *pcdev, int id)
 +{
-+	struct regulator_init_data *rinit_data;
-+	struct regulator_config rconfig = {0};
-+	struct regulator_desc *rdesc;
-+	struct regulator_dev *rdev;
++	struct tps23881_priv *priv = to_tps23881_priv(pcdev);
++	struct i2c_client *client = priv->client;
++	u8 reg, chan;
++	int ret;
++	u16 val;
 +
-+	rinit_data = devm_kzalloc(dev, sizeof(*rinit_data),
-+				  GFP_KERNEL);
-+	if (!rinit_data)
-+		return ERR_PTR(-ENOMEM);
++	/* For a 4-pair the classification need 5ms to be completed */
++	if (priv->port[id].is_4p)
++		mdelay(5);
 +
-+	rdesc = devm_kzalloc(dev, sizeof(*rdesc), GFP_KERNEL);
-+	if (!rdesc)
-+		return ERR_PTR(-ENOMEM);
-+
-+	rdesc->name = reg_name;
-+	rdesc->type = REGULATOR_VOLTAGE;
-+	rdesc->ops = &dummy_ops;
-+	rdesc->owner = THIS_MODULE;
-+
-+	rinit_data->supply_regulator = "vmain";
-+
-+	rconfig.dev = dev;
-+	rconfig.init_data = rinit_data;
-+	rconfig.of_node = node;
-+
-+	rdev = devm_regulator_register(dev, rdesc, &rconfig);
-+	if (IS_ERR(rdev)) {
-+		dev_err_probe(dev, PTR_ERR(rdev),
-+			      "Failed to register regulator\n");
-+		return rdev;
-+	}
-+
-+	return rdev;
-+}
-+
-+static int
-+pd692x0_register_managers_regulator(struct pd692x0_priv *priv,
-+				    const struct pd692x0_manager *manager,
-+				    int nmanagers)
-+{
-+	struct device *dev = &priv->client->dev;
-+	size_t reg_name_len;
-+	int i;
-+
-+	/* Each regulator name len is dev name + 12 char +
-+	 * int max digit number (10) + 1
-+	 */
-+	reg_name_len = strlen(dev_name(dev)) + 23;
-+
-+	for (i = 0; i < nmanagers; i++) {
-+		struct regulator_dev *rdev;
-+		char *reg_name;
-+
-+		reg_name = devm_kzalloc(dev, reg_name_len, GFP_KERNEL);
-+		if (!reg_name)
-+			return -ENOMEM;
-+		snprintf(reg_name, 26, "pse-%s-manager%d", dev_name(dev), i);
-+		rdev = pd692x0_register_manager_regulator(dev, reg_name,
-+							  manager[i].node);
-+		if (IS_ERR(rdev))
-+			return PTR_ERR(rdev);
-+
-+		priv->manager_reg[i] = rdev;
-+	}
-+
-+	return 0;
-+}
-+
-+static int
-+pd692x0_conf_manager_power_budget(struct pd692x0_priv *priv, int id, int pw)
-+{
-+	struct pd692x0_msg msg, buf;
-+	int ret, pw_mW = pw / 1000;
-+
-+	msg = pd692x0_msg_template_list[PD692X0_MSG_GET_POWER_BANK];
-+	msg.data[0] = id;
-+	ret = pd692x0_sendrecv_msg(priv, &msg, &buf);
++	chan = priv->port[id].chan[0];
++	reg = TPS23881_REG_DISC + (chan % 4);
++	ret = i2c_smbus_read_word_data(client, reg);
 +	if (ret < 0)
 +		return ret;
 +
-+	msg = pd692x0_msg_template_list[PD692X0_MSG_SET_POWER_BANK];
-+	msg.data[0] = id;
-+	msg.data[1] = pw_mW >> 8;
-+	msg.data[2] = pw_mW & 0xff;
-+	msg.data[3] = buf.sub[2];
-+	msg.data[4] = buf.data[0];
-+	msg.data[5] = buf.data[1];
-+	msg.data[6] = buf.data[2];
-+	msg.data[7] = buf.data[3];
-+	return pd692x0_sendrecv_msg(priv, &msg, &buf);
++	val = tps23881_calc_val(ret, chan, 4, 0xf);
++	return tps23881_power_class_table[val];
 +}
 +
-+static int
-+pd692x0_configure_managers(struct pd692x0_priv *priv, int nmanagers)
-+{
+ static const struct pse_controller_ops tps23881_ops = {
+ 	.setup_pi_matrix = tps23881_setup_pi_matrix,
+ 	.pi_enable = tps23881_pi_enable,
+@@ -931,6 +1009,7 @@ static const struct pse_controller_ops tps23881_ops = {
+ 	.pi_get_pw_limit = tps23881_pi_get_pw_limit,
+ 	.pi_set_pw_limit = tps23881_pi_set_pw_limit,
+ 	.pi_get_pw_limit_ranges = tps23881_pi_get_pw_limit_ranges,
++	.pi_get_pw_req = tps23881_pi_get_pw_req,
+ };
+ 
+ static const char fw_parity_name[] = "ti/tps23881/tps23881-parity-14.bin";
+@@ -1088,17 +1167,113 @@ static void tps23881_irq_event_over_temp(struct tps23881_priv *priv,
+ 	}
+ }
+ 
+-static void tps23881_irq_event_over_current(struct tps23881_priv *priv,
+-					    u16 reg_val,
+-					    unsigned long *notifs,
+-					    unsigned long *notifs_mask)
++static int tps23881_irq_event_over_current(struct tps23881_priv *priv,
++					   u16 reg_val,
++					   unsigned long *notifs,
++					   unsigned long *notifs_mask)
+ {
 +	int i, ret;
+ 	u8 chans;
+ 
+ 	chans = tps23881_irq_export_chans_helper(reg_val, 0);
++	if (!chans)
++		return 0;
 +
-+	for (i = 0; i < nmanagers; i++) {
-+		struct regulator *supply = priv->manager_reg[i]->supply;
-+		int pw_budget;
++	tps23881_set_notifs_helper(priv, chans, notifs, notifs_mask,
++				   ETHTOOL_PSE_EVENT_OVER_CURRENT |
++				   ETHTOOL_C33_PSE_EVENT_DISCONNECTION);
 +
-+		pw_budget = regulator_get_unclaimed_power_budget(supply);
-+		/* Max power budget per manager */
-+		if (pw_budget > 6000000)
-+			pw_budget = 6000000;
-+		ret = regulator_request_power_budget(supply, pw_budget);
++	/* Over Current event resets the power limit registers so we need
++	 * to configured it again.
++	 */
++	for_each_set_bit(i, notifs_mask, priv->pcdev.nr_lines) {
++		if (priv->port[i].pw_pol < 0)
++			continue;
++
++		ret = tps23881_pi_enable_manual_pol(priv, i);
 +		if (ret < 0)
 +			return ret;
 +
-+		priv->manager_pw_budget[i] = pw_budget;
-+		ret = pd692x0_conf_manager_power_budget(priv, i, pw_budget);
++		/* Set power policy */
++		ret = tps23881_pi_set_pw_pol_limit(priv, i,
++						   priv->port[i].pw_pol,
++						   priv->port[i].is_4p);
 +		if (ret < 0)
 +			return ret;
 +	}
@@ -319,83 +285,186 @@ index 7d60a714ca53..a4766c18f333 100644
 +	return 0;
 +}
 +
- static int
- pd692x0_set_port_matrix(const struct pse_pi_pairset *pairset,
- 			const struct pd692x0_manager *manager,
-@@ -998,6 +1166,14 @@ static int pd692x0_setup_pi_matrix(struct pse_controller_dev *pcdev)
++static void tps23881_irq_event_disconnection(struct tps23881_priv *priv,
++					     u16 reg_val,
++					     unsigned long *notifs,
++					     unsigned long *notifs_mask)
++{
++	u8 chans;
++
++	chans = tps23881_irq_export_chans_helper(reg_val, 4);
+ 	if (chans)
+ 		tps23881_set_notifs_helper(priv, chans, notifs, notifs_mask,
+-					   ETHTOOL_PSE_EVENT_OVER_CURRENT);
++					   ETHTOOL_C33_PSE_EVENT_DISCONNECTION);
++}
++
++static int tps23881_irq_event_detection(struct tps23881_priv *priv,
++					u16 reg_val,
++					unsigned long *notifs,
++					unsigned long *notifs_mask)
++{
++	enum ethtool_pse_event event;
++	int reg, ret, i, val;
++	unsigned long chans;
++
++	chans = tps23881_irq_export_chans_helper(reg_val, 0);
++	for_each_set_bit(i, &chans, TPS23881_MAX_CHANS) {
++		reg = TPS23881_REG_DISC + (i % 4);
++		ret = i2c_smbus_read_word_data(priv->client, reg);
++		if (ret < 0)
++			return ret;
++
++		val = tps23881_calc_val(ret, i, 0, 0xf);
++		/* If detection valid */
++		if (val == 0x4)
++			event = ETHTOOL_C33_PSE_EVENT_DETECTION;
++		else
++			event = ETHTOOL_C33_PSE_EVENT_DISCONNECTION;
++
++		tps23881_set_notifs_helper(priv, BIT(i), notifs,
++					   notifs_mask, event);
++	}
++
++	return 0;
++}
++
++static int tps23881_irq_event_classification(struct tps23881_priv *priv,
++					     u16 reg_val,
++					     unsigned long *notifs,
++					     unsigned long *notifs_mask)
++{
++	int reg, ret, val, i;
++	unsigned long chans;
++
++	chans = tps23881_irq_export_chans_helper(reg_val, 4);
++	for_each_set_bit(i, &chans, TPS23881_MAX_CHANS) {
++		reg = TPS23881_REG_DISC + (i % 4);
++		ret = i2c_smbus_read_word_data(priv->client, reg);
++		if (ret < 0)
++			return ret;
++
++		val = tps23881_calc_val(ret, i, 4, 0xf);
++		/* Do not report classification event for unknown class */
++		if (!val || val == 0x8 || val == 0xf)
++			continue;
++
++		tps23881_set_notifs_helper(priv, BIT(i), notifs,
++					   notifs_mask,
++					   ETHTOOL_C33_PSE_EVENT_CLASSIFICATION);
++	}
++
++	return 0;
+ }
+ 
+ static int tps23881_irq_event_handler(struct tps23881_priv *priv, u16 reg,
+@@ -1106,7 +1281,7 @@ static int tps23881_irq_event_handler(struct tps23881_priv *priv, u16 reg,
+ 				      unsigned long *notifs_mask)
+ {
+ 	struct i2c_client *client = priv->client;
+-	int ret;
++	int ret, val;
+ 
+ 	/* The Supply event bit is repeated twice so we only need to read
+ 	 * the one from the first byte.
+@@ -1118,13 +1293,36 @@ static int tps23881_irq_event_handler(struct tps23881_priv *priv, u16 reg,
+ 		tps23881_irq_event_over_temp(priv, ret, notifs, notifs_mask);
+ 	}
+ 
+-	if (reg & (TPS23881_REG_IT_IFAULT | TPS23881_REG_IT_IFAULT << 8)) {
++	if (reg & (TPS23881_REG_IT_IFAULT | TPS23881_REG_IT_IFAULT << 8 |
++		   TPS23881_REG_IT_DISF | TPS23881_REG_IT_DISF << 8)) {
+ 		ret = i2c_smbus_read_word_data(client, TPS23881_REG_FAULT);
+ 		if (ret < 0)
+ 			return ret;
+-		tps23881_irq_event_over_current(priv, ret, notifs, notifs_mask);
++		ret = tps23881_irq_event_over_current(priv, ret, notifs,
++						      notifs_mask);
++		if (ret)
++			return ret;
++
++		tps23881_irq_event_disconnection(priv, ret, notifs, notifs_mask);
+ 	}
+ 
++	if (reg & (TPS23881_REG_IT_DETC | TPS23881_REG_IT_DETC << 8 |
++		   TPS23881_REG_IT_CLASC | TPS23881_REG_IT_CLASC << 8)) {
++		ret = i2c_smbus_read_word_data(client, TPS23881_REG_DET_EVENT);
++		if (ret < 0)
++			return ret;
++
++		val = ret;
++		ret = tps23881_irq_event_detection(priv, val, notifs,
++						   notifs_mask);
++		if (ret)
++			return ret;
++
++		ret = tps23881_irq_event_classification(priv, val, notifs,
++							notifs_mask);
++		if (ret)
++			return ret;
++	}
+ 	return 0;
+ }
+ 
+@@ -1178,7 +1376,14 @@ static int tps23881_setup_irq(struct tps23881_priv *priv, int irq)
+ 	int ret;
+ 	u16 val;
+ 
+-	val = TPS23881_REG_IT_IFAULT | TPS23881_REG_IT_SUPF;
++	if (!irq) {
++		dev_err(&client->dev, "interrupt is missing");
++		return -EINVAL;
++	}
++
++	val = TPS23881_REG_IT_IFAULT | TPS23881_REG_IT_SUPF |
++	      TPS23881_REG_IT_DETC | TPS23881_REG_IT_CLASC |
++	      TPS23881_REG_IT_DISF;
+ 	val |= val << 8;
+ 	ret = i2c_smbus_write_word_data(client, TPS23881_REG_IT_MASK, val);
+ 	if (ret)
+@@ -1188,11 +1393,19 @@ static int tps23881_setup_irq(struct tps23881_priv *priv, int irq)
+ 	if (ret < 0)
  		return ret;
  
- 	nmanagers = ret;
-+	ret = pd692x0_register_managers_regulator(priv, manager, nmanagers);
-+	if (ret)
-+		goto out;
-+
-+	ret = pd692x0_configure_managers(priv, nmanagers);
-+	if (ret)
-+		goto out;
-+
- 	ret = pd692x0_set_ports_matrix(priv, manager, nmanagers, port_matrix);
- 	if (ret)
- 		goto out;
-@@ -1008,8 +1184,14 @@ static int pd692x0_setup_pi_matrix(struct pse_controller_dev *pcdev)
+-	val = (u16)(ret | TPS23881_REG_INTEN | TPS23881_REG_INTEN << 8);
++	val = TPS23881_REG_INTEN | TPS23881_REG_CLCHE | TPS23881_REG_DECHE;
++	val |= val << 8;
++	val |= (u16)ret;
+ 	ret = i2c_smbus_write_word_data(client, TPS23881_REG_GEN_MASK, val);
+ 	if (ret < 0)
+ 		return ret;
  
- out:
- 	for (i = 0; i < nmanagers; i++) {
-+		struct regulator *supply = priv->manager_reg[i]->supply;
-+
-+		regulator_free_power_budget(supply,
-+					    priv->manager_pw_budget[i]);
-+
- 		for (j = 0; j < manager[i].nports; j++)
- 			of_node_put(manager[i].port_node[j]);
-+		of_node_put(manager[i].node);
- 	}
- 	return ret;
- }
-@@ -1071,6 +1253,25 @@ static int pd692x0_pi_set_pw_limit(struct pse_controller_dev *pcdev,
- 	return pd692x0_sendrecv_msg(priv, &msg, &buf);
- }
- 
-+static int pd692x0_pi_set_prio(struct pse_controller_dev *pcdev, int id,
-+			       unsigned int prio)
-+{
-+	struct pd692x0_priv *priv = to_pd692x0_priv(pcdev);
-+	struct pd692x0_msg msg, buf = {0};
-+	int ret;
-+
-+	ret = pd692x0_fw_unavailable(priv);
-+	if (ret)
++	/* Reset interrupts registers */
++	ret = i2c_smbus_write_word_data(client, TPS23881_REG_RESET,
++					TPS23881_REG_CLRAIN);
++	if (ret < 0)
 +		return ret;
 +
-+	msg = pd692x0_msg_template_list[PD692X0_MSG_SET_PORT_PARAM];
-+	msg.sub[2] = id;
-+	/* Controller priority from 1 to 3 */
-+	msg.data[4] = prio + 1;
-+
-+	return pd692x0_sendrecv_msg(priv, &msg, &buf);
-+}
-+
- static const struct pse_controller_ops pd692x0_ops = {
- 	.setup_pi_matrix = pd692x0_setup_pi_matrix,
- 	.pi_get_admin_state = pd692x0_pi_get_admin_state,
-@@ -1084,6 +1285,8 @@ static const struct pse_controller_ops pd692x0_ops = {
- 	.pi_get_pw_limit = pd692x0_pi_get_pw_limit,
- 	.pi_set_pw_limit = pd692x0_pi_set_pw_limit,
- 	.pi_get_pw_limit_ranges = pd692x0_pi_get_pw_limit_ranges,
-+	.pi_get_prio = pd692x0_pi_get_prio,
-+	.pi_set_prio = pd692x0_pi_set_prio,
- };
+ 	return devm_pse_irq_helper(&priv->pcdev, irq, 0, &irq_desc);
+ }
  
- #define PD692X0_FW_LINE_MAX_SZ 0xff
-@@ -1500,6 +1703,8 @@ static int pd692x0_i2c_probe(struct i2c_client *client)
- 	priv->pcdev.ops = &pd692x0_ops;
+@@ -1270,17 +1483,16 @@ static int tps23881_i2c_probe(struct i2c_client *client)
  	priv->pcdev.dev = dev;
  	priv->pcdev.types = ETHTOOL_PSE_C33;
-+	priv->pcdev.supp_budget_eval_strategies = PSE_BUDGET_EVAL_STRAT_DYNAMIC;
-+	priv->pcdev.pis_prio_max = 2;
+ 	priv->pcdev.nr_lines = TPS23881_MAX_CHANS;
++	priv->pcdev.supp_budget_eval_strategies = PSE_BUDGET_EVAL_STRAT_STATIC;
  	ret = devm_pse_controller_register(dev, &priv->pcdev);
- 	if (ret)
+ 	if (ret) {
  		return dev_err_probe(dev, ret,
+ 				     "failed to register PSE controller\n");
+ 	}
+ 
+-	if (client->irq) {
+-		ret = tps23881_setup_irq(priv, client->irq);
+-		if (ret)
+-			return ret;
+-	}
++	ret = tps23881_setup_irq(priv, client->irq);
++	if (ret)
++		return ret;
+ 
+ 	return ret;
+ }
 
 -- 
 2.43.0
