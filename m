@@ -1,26 +1,27 @@
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCB213BC02
-	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 03:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.155.80.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9282F33985
+	for <netdev@vger.kernel.org>; Tue, 10 Jun 2025 03:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749527191; cv=none; b=EtWTHw58ZaBzVkIsg/L1PsODTKbRQNKJUFXEYOfi/Y1d4fRvNS1G+k4Q7gsxhz3S3oeqWvMdHZf3j19qefyDCXeY0kcFbfa7Wm0EDvBrtAaoFP+5oJYqp3mQkEGErpXIXVI/iJb9m/rV/eDMabgo0qFFJJVw7iNaQ6KuOZKtBXY=
+	t=1749527195; cv=none; b=RYYVyj1hxJpgTJEDybKCrD8gXWXh1AMmxJxEcA/TSmVaF6UnqZKtaItvmuz+fF8zLbhUqXF/KecjNzIbBLdvib1zalxqa6EGIA5ti8RAPuk/+wwMlPPaTXhDfflKlzvOlHKAZohpw4zjRzz31gB6rr4LSsNXTMkujd9K9hd/wzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749527191; c=relaxed/simple;
-	bh=+GAGzflEhlC6FD81N+B7BulvBRIUzGB/zE8mIFnXklE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jO/IacqYN4yV+K8hC6ZuOm7jrL3WVyR6MQJZDkuCkMEl0jFcLoO2zxxULxjW6HCtHif65X6GBw83BZWY0768GE2Nu1nVGmUNNSCxtn96aEzF44eeHNEHJ2tdzqtQoi4meJOsGHbGBKlntE0PsIUrkaRbOkBTlmcL1vA+nJGKTFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=pass smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=43.155.80.173
+	s=arc-20240116; t=1749527195; c=relaxed/simple;
+	bh=2ZGi94tMoIWR0+UROYhU6I5IxlA+QqathFUUEDbuG0I=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EgodJ8M4b+VHA/3iG8E+POwtYbzhi1NbivHFpMcdCYJovQFJurrftZweEMoeIy6+DNSY4CV5fb9gouFS5b3NrCw7fkDHK0NFlvI3rXRClcMusOCaZOSYJVCIwrC94F1euTqJTgzo6H7GRQvh2UoPGuyrf5oeLawmzUhGUos/GhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=none smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=18.194.254.142
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bamaicloud.com
-X-QQ-mid: esmtpsz18t1749527143t40d5e94a
-X-QQ-Originating-IP: 6YLZVe03CfVtyZtYmhXoS75v59wL4641pHSGVVpnEIc=
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bamaicloud.com
+X-QQ-mid: esmtpsz18t1749527170ta949d520
+X-QQ-Originating-IP: r8AH0oOJlPqDJNxRwIm2xbJ793Pj7a3deiDxXeu/su0=
 Received: from localhost.localdomain ( [111.202.70.101])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 10 Jun 2025 11:45:11 +0800 (CST)
+	id ; Tue, 10 Jun 2025 11:46:01 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 807393703523562276
+X-BIZMAIL-ID: 16349489029027878949
 EX-QQ-RecipientCnt: 15
 From: Tonghao Zhang <tonghao@bamaicloud.com>
 To: netdev@vger.kernel.org
@@ -38,10 +39,12 @@ Cc: Tonghao Zhang <tonghao@bamaicloud.com>,
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Nikolay Aleksandrov <razor@blackwall.org>,
 	Zengbing Tu <tuzengbing@didiglobal.com>
-Subject: [net-next v6 0/4] add broadcast_neighbor for no-stacking networking arch
-Date: Tue, 10 Jun 2025 11:44:41 +0800
-Message-Id: <cover.1749525581.git.tonghao@bamaicloud.com>
+Subject: [net-next v6 3/4] net: bonding: send peer notify when failure recovery
+Date: Tue, 10 Jun 2025 11:44:44 +0800
+Message-Id: <81185ef7f9227cff906903fe8e74258727529491.1749525581.git.tonghao@bamaicloud.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <cover.1749525581.git.tonghao@bamaicloud.com>
+References: <cover.1749525581.git.tonghao@bamaicloud.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,57 +54,29 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:bamaicloud.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: Mq+dXfLz1bhawD1ORetWSIZ0Ij+sM+UEZjDYnmufd3XU7ujmzYB+56rw
-	GaxauR+fAFCpF1/DCD4WiePYOZE1/pvxm8es3+XKcof1SjqVM3exPBhljGFS7pK6m1/ocbW
-	n6PLiL3QWgPoau62oxUks3s52PwpSZ/8VEkj3bS9CsoKDB3zX0tedYat5ENit9rXfvsx1bj
-	k9cuq54Gwk+wvJhX5pPIkBPgIETkUgMivoc1/7HU6+ghR6RmOc6MAOa+OlATyVddISQtDbP
-	5EDSfca1p6FNEt4RAJpJP0hx9zA55ecAGDwmpHzLUeBHYQO3Uok5lBgHtL1rB6xiGs7rHZG
-	CuTrQAB2E8K8u774SnWvj9RGDqeHUVz/+JM+uc7zXTjaT7VzwIQ1Ggc01vTnRsJ0mbkks0s
-	cZhfw9B8SpkjZGczutMTzpki/KMSoRbBNxkpIS4H68079xC13hmUWys9zQ0FUErfab/yAYO
-	PyZEPAs6n0Cseb1iVLFRHIt588BCcBbY7Ik1kvaOdy5bvWXYiSbV+/if3AGrOKASvgjV/XJ
-	F922lJCwj+B5VsvEPB+C2GqsChdwGvv8GcvtGac/txHe/PjVDn/qmuSWf3cWe2k/cd2tjs5
-	9mbzu2q1uxhBNpXexa/efH6HixOIqvh3aislkjAIv0RO8MVYKw4ZgWa44qxqGuN7o3tl3It
-	o/p9Gjtdmcozrrrer73B/ow9dPFQpUjs13BR1kWR8HRbLSkrN+fkVR8im42+wcrHKZ3IF3x
-	5AngtWKKpnsccR++hjBvy93+nw2+9wMRxhilsDsq06As2ruHzPQ2Qj0gTwr4+XH1+cPjIKh
-	ahAOQaLjl/xVizgjPWMOovSEjz4xpLY7IO448LEdMn+q8smmFcmzVOGxx/0IyntK/OkI1HT
-	J1ksfxwqxAkquLmmCWl66JQ2WivHNOBorqRzwe9G9lhslsfcbK6suQD/wY1oB7Gkg9exFaX
-	JfbCqFsbXGZpngAYaGMR7cj8eVTvJHr++TkijvTiopolLug==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+X-QQ-XMAILINFO: MKzYG8XJzx27oJ+SOxK6WF8G9SBBqwqVXfIL/AFTR+wEtvrGoIpRarkU
+	bM5OCQDxZvSHQVLFXW2h96PTcSRNcmusqUldTvKAW9fUvQtecbglNdZjgAGMvgU4xBpTSV+
+	Ed9V9p23KWNUTI3XfnsgvqxeByXDp45iX9hDyIUJS/hYO3CSOgfNz1urdPs1nQf/kzp8e6M
+	dJsTd6ZSQj5JkdkhBYD6s11ZDN5W41HgReFsReH1NOYvtGUagXgWkYl8WfYdCkptYV/h7F4
+	iY/hjQnKz/uvNc05p5Lp0TAUVp5AHdf9KZxPDkhlhWf7FQ4geCz4R0yvIoB3qeshmR2gecq
+	iO9XeOR/E2766fePS0ZtEZTXPU1yHomGZEsYzyIaEYnJeJdp2Dd07sdy9duQprzh3ning/h
+	rTrrHKnJ/xlptk+/nrQBbcTBCgnBZONCAc7QhaDufIuyMqXV8wvGm87j0iuM0uqvQSZ0Gne
+	UwDLrxq5FrDxZ3TJMx/IcZRc5x+S2vPCOiD+RlBcXhEgL06OK27iL/NZ3b+Ad3GUh9itDDG
+	Vv8uxpR+jaAuUU690dHT6xYxQHG6kidZZM2l13bhnAsAZzwr/q2w/MVkN3I/9iN2TE7rGIm
+	tGJcrU5rrBiu5D2ul44C/xbd0RHIqTklMc7rB12eb3oWg9pt4TQo1SruXzXeed0BVHPuE/2
+	YV9BU7QFwmFjMau8eElycgpZ8J58KOMO0poGSYwhJ4eKvCm+iX5aW6Q0Honrl9kEZNBHGBG
+	bZqvOjHTGNbeWFUwuLNG5PGrWqBWO4AB+4YR0zakyaNDVTWSM4U/7gzMTIFxvi5ZDPYydEx
+	bBkFlp+caRgqi3mdsoeQWzyAav8JAgHI6fn46YerFhY9SCv8DgMqgDBe9BBD5sR2+3phbsj
+	GHzIBtcS5vW4HspbBiA8P4zR3rhTtOQT48ffhR7NF+GZKaElAizTlWQzwtoBZcWe3j/z+6s
+	VMmve+KkzZqQdAX40efYypV6xTWUxcYJeu89kQwPrq4yEQKgMhYy8Myja0u+mZXyoR8s=
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
 X-QQ-RECHKSPAM: 0
 
-For no-stacking networking arch, and enable the bond mode 4(lacp) in
-datacenter, the switch require arp/nd packets as session synchronization.
-More details please see patch.
-
-v6 change log:
-- del unnecessary rcu_read_lock in bond_xmit_broadcast  
-
-v5 change log:
-- format commit message of all patches
-- use skb_header_pointer instead of pskb_may_pull
-- send only packets to active slaves instead of all ports, and add more commit log
-
-v4 change log:
-- fix dec option in bond_close
-
-v3 change log:
-- inc/dec broadcast_neighbor option in bond_open/close and UP state.
-- remove explicit inline of bond_should_broadcast_neighbor
-- remove sysfs option
-- remove EXPORT_SYMBOL_GPL
-- reorder option bond_opt_value
-- use rcu_xxx in bond_should_notify_peers.
-
-v2 change log:
-- add static branch for performance
-- add more info about no-stacking arch in commit message
-- add broadcast_neighbor info and format doc
-- invoke bond_should_broadcast_neighbor only in BOND_MODE_8023AD mode for performance
-- explain why we need sending peer notify when failure recovery
-- change the doc about num_unsol_na
-- refine function name to ad_cond_set_peer_notif
-- ad_cond_set_peer_notif invoked in ad_enable_collecting_distributing
-- refine bond_should_notify_peers for lacp mode.
+After LACP protocol recovery, the port can transmit packets.
+However, if the bond port doesn't send gratuitous ARP/ND
+packets to the switch, the switch won't return packets through
+the current interface. This causes traffic imbalance. To resolve
+this issue, when LACP protocol recovers, send ARP/ND packets.
 
 Cc: Jay Vosburgh <jv@jvosburgh.net>
 Cc: "David S. Miller" <davem@davemloft.net>
@@ -115,26 +90,100 @@ Cc: Steven Rostedt <rostedt@goodmis.org>
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Zengbing Tu <tuzengbing@didiglobal.com>
+Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
+Signed-off-by: Zengbing Tu <tuzengbing@didiglobal.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+---
+ Documentation/networking/bonding.rst |  5 +++--
+ drivers/net/bonding/bond_3ad.c       | 13 +++++++++++++
+ drivers/net/bonding/bond_main.c      | 21 ++++++++++++++++-----
+ 3 files changed, 32 insertions(+), 7 deletions(-)
 
-Tonghao Zhang (4):
-  net: bonding: add broadcast_neighbor option for 802.3ad
-  net: bonding: add broadcast_neighbor netlink option
-  net: bonding: send peer notify when failure recovery
-  net: bonding: add tracepoint for 802.3ad
-
- Documentation/networking/bonding.rst | 11 +++-
- drivers/net/bonding/bond_3ad.c       | 19 ++++++
- drivers/net/bonding/bond_main.c      | 87 ++++++++++++++++++++++++----
- drivers/net/bonding/bond_netlink.c   | 16 +++++
- drivers/net/bonding/bond_options.c   | 35 +++++++++++
- include/net/bond_options.h           |  1 +
- include/net/bonding.h                |  3 +
- include/trace/events/bonding.h       | 37 ++++++++++++
- include/uapi/linux/if_link.h         |  1 +
- 9 files changed, 197 insertions(+), 13 deletions(-)
- create mode 100644 include/trace/events/bonding.h
-
+diff --git a/Documentation/networking/bonding.rst b/Documentation/networking/bonding.rst
+index 14f7593d888d..f8f5766703d4 100644
+--- a/Documentation/networking/bonding.rst
++++ b/Documentation/networking/bonding.rst
+@@ -773,8 +773,9 @@ num_unsol_na
+ 	greater than 1.
+ 
+ 	The valid range is 0 - 255; the default value is 1.  These options
+-	affect only the active-backup mode.  These options were added for
+-	bonding versions 3.3.0 and 3.4.0 respectively.
++	affect the active-backup or 802.3ad (broadcast_neighbor enabled) mode.
++	These options were added for bonding versions 3.3.0 and 3.4.0
++	respectively.
+ 
+ 	From Linux 3.0 and bonding version 3.7.1, these notifications
+ 	are generated by the ipv4 and ipv6 code and the numbers of
+diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
+index c6807e473ab7..d1c2d416ac87 100644
+--- a/drivers/net/bonding/bond_3ad.c
++++ b/drivers/net/bonding/bond_3ad.c
+@@ -982,6 +982,17 @@ static int ad_marker_send(struct port *port, struct bond_marker *marker)
+ 	return 0;
+ }
+ 
++static void ad_cond_set_peer_notif(struct port *port)
++{
++	struct bonding *bond = port->slave->bond;
++
++	if (bond->params.broadcast_neighbor && rtnl_trylock()) {
++		bond->send_peer_notif = bond->params.num_peer_notif *
++			max(1, bond->params.peer_notif_delay);
++		rtnl_unlock();
++	}
++}
++
+ /**
+  * ad_mux_machine - handle a port's mux state machine
+  * @port: the port we're looking at
+@@ -2061,6 +2072,8 @@ static void ad_enable_collecting_distributing(struct port *port,
+ 		__enable_port(port);
+ 		/* Slave array needs update */
+ 		*update_slave_arr = true;
++		/* Should notify peers if possible */
++		ad_cond_set_peer_notif(port);
+ 	}
+ }
+ 
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 12046ef51569..0acece55d9cb 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1237,17 +1237,28 @@ static struct slave *bond_find_best_slave(struct bonding *bond)
+ /* must be called in RCU critical section or with RTNL held */
+ static bool bond_should_notify_peers(struct bonding *bond)
+ {
+-	struct slave *slave = rcu_dereference_rtnl(bond->curr_active_slave);
++	struct bond_up_slave *usable;
++	struct slave *slave = NULL;
+ 
+-	if (!slave || !bond->send_peer_notif ||
++	if (!bond->send_peer_notif ||
+ 	    bond->send_peer_notif %
+ 	    max(1, bond->params.peer_notif_delay) != 0 ||
+-	    !netif_carrier_ok(bond->dev) ||
+-	    test_bit(__LINK_STATE_LINKWATCH_PENDING, &slave->dev->state))
++	    !netif_carrier_ok(bond->dev))
+ 		return false;
+ 
++	if (BOND_MODE(bond) == BOND_MODE_8023AD) {
++		usable = rcu_dereference_rtnl(bond->usable_slaves);
++		if (!usable || !READ_ONCE(usable->count))
++			return false;
++	} else {
++		slave = rcu_dereference_rtnl(bond->curr_active_slave);
++		if (!slave || test_bit(__LINK_STATE_LINKWATCH_PENDING,
++				       &slave->dev->state))
++			return false;
++	}
++
+ 	netdev_dbg(bond->dev, "bond_should_notify_peers: slave %s\n",
+-		   slave ? slave->dev->name : "NULL");
++		   slave ? slave->dev->name : "all");
+ 
+ 	return true;
+ }
 -- 
 2.34.1
 
