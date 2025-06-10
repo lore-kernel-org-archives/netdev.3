@@ -1,46 +1,66 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717282397BF;
-	Tue, 10 Jun 2025 16:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C633239E66;
+	Tue, 10 Jun 2025 16:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749572825; cv=none; b=eKVjsamkk5qFjDslw94mXUV5jpVPqjfh1M4pBzHB0nMmnM7nzY91Yj6faeevumpnay4aFmsN5KYAEnDk0Su/VS0Ml9xvYD9l5F9RBNs4N0iDyjenQxWy6eN7tgzGKCbn9a8+h4qJWLACKVjkf4xbqdfZ39KlHHcBsNJvaRQHeuI=
+	t=1749572860; cv=none; b=A6BUvVZ8pcVT2AVpGzUpio9ODTrtnN6yT83uAJ50aX4+KPAQQMzxnr3tUCCunwlW4qWrZQE3nzedNQubCW7HlspswMg2CvmrgHNriMwN3yQ/FDhzaOX5KYt5JvwMcvNU2Eekats79nGIByCxnEIsnWXM1/O/FqkxRqZx7dneJik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749572825; c=relaxed/simple;
-	bh=pP870zDIb4r8/GKNFbLgcL7hSOEnmBLb98cd8Mk2W+s=;
+	s=arc-20240116; t=1749572860; c=relaxed/simple;
+	bh=q5pZXGzab5L7kIA5opntKbzztK0z+GseiREu1iWJWq0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HC6LSAdDlseHSN2eA1NgrCS1miYBrS9RZh7iRIzcUJtGGtpYNvOadxyYfmwgbnCxTWxNingJzC7+uY82K/UiDBkWYwiWgCTqgco6AgMF1iWD5osjk4oQIgY2nksp9xzICN1V6UslXK00LoOOxI40AXR53TAJznify1RwA9nB8tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=Zx+x9wFu; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	 In-Reply-To:Content-Type; b=DgivI0qlavbr5VjSkflc5/6kupjBAd7it4bgAt+ELTgv5TOIh2AqEkc5aIsnKCEQoK8trCFCobjcMvt/En5JDwoJnglDJrLe4lS+JAe4ZkanIgorKPyTDLHgRolbw9fKV0upfrNCjyJAFqPou1zlIpKB9Pp4l6ItYstdltMd3C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lgauDWco; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="Zx+x9wFu"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=b5iUreELVegy9zHBLef9My826vz+Z0wQpOMG0HkMqNI=; b=Zx+x9wFup5B/cIpstJOFGa6QEN
-	jfuaZeWYR0IOtDff9kcLB4pJg+INasINrLkTh3Wco6dpTAw2kWatYoFBa4vLkOYCa3OihE0d95eH8
-	PZd202c3M06/f0tWaj+Y9mwAGRbBKwZyc0QaijNYJzBzRU5f85jO7kL9V+0xdSoCG7t1qRzFsBLKO
-	qfk62JwPSZLN8qmIQFwpqbpJvX2Alt2mW6+oVETRwgEmlRAdFFk6wnmAuUSAXiiT95IsRoJuFMA1m
-	6Nw8yg2jYgwgRkKm9nuSmPDfwW1SYO+Ih3deP3szcz4C3KhDKqL4HBA8HobgW7L7ssR7R9kUAV925
-	/aOfXqiw==;
-Received: from sslproxy08.your-server.de ([78.47.166.52])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1uP1WD-00087U-1S;
-	Tue, 10 Jun 2025 18:08:09 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1uP1WC-0000Vb-0M;
-	Tue, 10 Jun 2025 18:08:08 +0200
-Message-ID: <5016f963-90ea-4dfd-bf7b-c4a5565af70c@iogearbox.net>
-Date: Tue, 10 Jun 2025 18:08:07 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lgauDWco"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-235a3dd4f0dso39331405ad.0;
+        Tue, 10 Jun 2025 09:27:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749572858; x=1750177658; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qnpi/fv02jA2ezwHhPOatuvGODwDYoxXXaeEv1Eqd18=;
+        b=lgauDWcopKT7exqPuMxRJM+PCC1E1i7Iu9RtxRHo2PHATxHRWNld0p6NYDI/Kb+Uaf
+         ICCUl6N4D+zISNEYkodKVnIt835hSVwLGxxv3QYiI7UXnl52y18yrUOlCUpFUihEwFSU
+         vYIx0/Poc3Gv+hpY1wYcT+tYQpGqJm+H21FjgZPwEydSDn9u5Q6o8o0ehBkc316d7PAd
+         V7iJEIwHdW5YH2XfYJv8KX79dJ4zjNuSxwGXNPwRCAWHE6rRX/3ebO/ow/LIOGUxW865
+         n+XqI36UDbLmrFh1RuaGXS3v5u4jtOAnJhw/177nSAfqEwF375lFhZCeYwCISNB24UIe
+         i4mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749572858; x=1750177658;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Qnpi/fv02jA2ezwHhPOatuvGODwDYoxXXaeEv1Eqd18=;
+        b=dmfDxJu0xT7uXNqGotzhChRrD4DlnsvN/bl7zheN8yPLPOAY4v5mZLszXi6f67vWJ/
+         AED6acue1kQjwbbycpxHx3k06YXcLo5w2Rxf39par7wpXvYN3JL/tMyWcVtTxw2gShfv
+         u8Kl8TeeYpGYuTfyAxuyU0wCBHuUb6xTf3zZKMVBx+7IH5TRCwh2B37S/l3crN70kAeL
+         +lDBYS+Gs1rdI4IYotSpVMzp8l85PCwvz9iGbyPpw0Q6fR2cOm8nh9j3zv19+DJFFetJ
+         N73h+iR+CnniRwYdl1b6Oq6qZKnHNKdMhBf0XssdScnmzBv91cAUu/Sq9KlIFTQq2Bvi
+         dWUw==
+X-Forwarded-Encrypted: i=1; AJvYcCUvOsHXbWjzwvl1dbBO3lbltiWflzEalgMGZ4z93ASXw4JDSdn4NA6mM5B2szxqFwEMgZg3sUw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGEOIfm5rSX69KDridpRLRRCPDs/tQcuXp4u4OFWcHCBQV3UpO
+	DSqRMCZX2jQ5AlAb9SldbGMeuTw3pm+bOUl8JBL+3ll77ZJzwKf2hdDKAtjX4y5r
+X-Gm-Gg: ASbGncuaPRWIK0BFRaiFdk0zNryacYR2n5pE8r5t4P39b4TrxCBZG7ueGmEgKGnnUU+
+	TfS2M5i6fasewmT2A2T8aznX7eLD1x8Ma2V56Lm60yYKqeqdA0IqlGZ2vS8C2D6qKU5hPinaSOk
+	Agwyyd8wkk3h9fPTe3UablqoLAVoNtnnqaTqyZAWdz9J56w5WXOKm5eIBN2xzJEeXIEGGIcxJzY
+	z/iPIt7kXmxhX/V+54OtcrIaJHj/pEsuHO0lmAGHB0TYcMQIaq1NIhNYoUBwdhrWFxMAe0dr3mZ
+	h9/g/msTIGlJlp2me1KauXRfzDOh4hv20XFZPXa0oTdHQemaUPQ7fyVdJNCCWPzaRyIPmwwikT4
+	h42jJ9p/o8ERwFw==
+X-Google-Smtp-Source: AGHT+IGpTrb7cBzENw+NXQu9WEpfRFX/Vs8phwWjOLbp0a0gR9J1gLWGnXLnYRSegmtnjQjUu8xV1g==
+X-Received: by 2002:a17:902:fc4b:b0:235:f298:cbbe with SMTP id d9443c01a7336-23640c87c06mr8388835ad.12.1749572858257;
+        Tue, 10 Jun 2025 09:27:38 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-236032ff2f7sm73338715ad.92.2025.06.10.09.27.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Jun 2025 09:27:37 -0700 (PDT)
+Message-ID: <02e3f9b8-9e60-4574-88e2-906ccd727829@gmail.com>
+Date: Tue, 10 Jun 2025 09:27:35 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,166 +68,103 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next] bpf: Fix RCU usage in
- bpf_get_cgroup_classid_curr helper
-To: Charalampos Mitrodimas <charmitro@posteo.net>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Feng Yang <yangfeng@kylinos.cn>,
- Tejun Heo <tj@kernel.org>, Network Development <netdev@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
- syzbot+b4169a1cfb945d2ed0ec@syzkaller.appspotmail.com
-References: <20250608-rcu-fix-task_cls_state-v1-1-2a2025b4603b@posteo.net>
- <CAADnVQLxaxVpCaK90FfePOKMLpH=axaK3gDwVZLp0L1+fNxgtA@mail.gmail.com>
- <9eae82be-0900-44ea-b105-67fadc7d480d@iogearbox.net>
- <CAADnVQK_k4ReDwS_urGtJPQ1SXaHdrGWYxJGd-QK=tAn60p4vw@mail.gmail.com>
- <87wm9jy623.fsf@posteo.net>
- <CAADnVQ+mzrDH+8S=ddDCtyo6YUO4dUUsAS88Jza93pDQ2K3Bng@mail.gmail.com>
- <87tt4nzjbq.fsf@posteo.net>
+Subject: Re: Tulip 21142 panic on physical link disconnect
+To: Greg Chandler <chandleg@wizardsworks.org>, stable@vger.kernel.org
+Cc: netdev@vger.kernel.org
+References: <53bb866f5bb12cc1b6c33b3866007f2b@wizardsworks.org>
 Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- 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
-In-Reply-To: <87tt4nzjbq.fsf@posteo.net>
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <53bb866f5bb12cc1b6c33b3866007f2b@wizardsworks.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27664/Tue Jun 10 10:41:04 2025)
+Content-Transfer-Encoding: 7bit
 
-On 6/10/25 5:51 PM, Charalampos Mitrodimas wrote:
-> Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
->> On Tue, Jun 10, 2025 at 8:23 AM Charalampos Mitrodimas
->> <charmitro@posteo.net> wrote:
->>> Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
->>>> On Tue, Jun 10, 2025 at 5:58 AM Daniel Borkmann <daniel@iogearbox.net> wrote:
->>>>> On 6/9/25 5:51 PM, Alexei Starovoitov wrote:
->>>>>> On Sun, Jun 8, 2025 at 8:35 AM Charalampos Mitrodimas
->>>>>> <charmitro@posteo.net> wrote:
->>>>>>>
->>>>>>> The commit ee971630f20f ("bpf: Allow some trace helpers for all prog
->>>>>>> types") made bpf_get_cgroup_classid_curr helper available to all BPF
->>>>>>> program types.  This helper used __task_get_classid() which calls
->>>>>>> task_cls_state() that requires rcu_read_lock_bh_held().
->>>>>>>
->>>>>>> This triggers an RCU warning when called from BPF syscall programs
->>>>>>> which run under rcu_read_lock_trace():
->>>>>>>
->>>>>>>     WARNING: suspicious RCU usage
->>>>>>>     6.15.0-rc4-syzkaller-g079e5c56a5c4 #0 Not tainted
->>>>>>>     -----------------------------
->>>>>>>     net/core/netclassid_cgroup.c:24 suspicious rcu_dereference_check() usage!
->>>>>>>
->>>>>>> Fix this by replacing __task_get_classid() with task_cls_classid()
->>>>>>> which handles RCU locking internally using regular rcu_read_lock() and
->>>>>>> is safe to call from any context.
->>>>>>>
->>>>>>> Reported-by: syzbot+b4169a1cfb945d2ed0ec@syzkaller.appspotmail.com
->>>>>>> Closes: https://syzkaller.appspot.com/bug?extid=b4169a1cfb945d2ed0ec
->>>>>>> Fixes: ee971630f20f ("bpf: Allow some trace helpers for all prog types")
->>>>>>> Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
->>>>>>> ---
->>>>>>>    net/core/filter.c | 2 +-
->>>>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>>>>>
->>>>>>> diff --git a/net/core/filter.c b/net/core/filter.c
->>>>>>> index 30e7d36790883b29174654315738e93237e21dd0..3b3f81cf674dde7d2bd83488450edad4e129bdac 100644
->>>>>>> --- a/net/core/filter.c
->>>>>>> +++ b/net/core/filter.c
->>>>>>> @@ -3083,7 +3083,7 @@ static const struct bpf_func_proto bpf_msg_pop_data_proto = {
->>>>>>>    #ifdef CONFIG_CGROUP_NET_CLASSID
->>>>>>>    BPF_CALL_0(bpf_get_cgroup_classid_curr)
->>>>>>>    {
->>>>>>> -       return __task_get_classid(current);
->>>>>>> +       return task_cls_classid(current);
->>>>>>>    }
->>>>>>
->>>>>> Daniel added this helper in
->>>>>> commit 5a52ae4e32a6 ("bpf: Allow to retrieve cgroup v1 classid from v2 hooks")
->>>>>> with intention to use it from networking hooks.
->>>>>>
->>>>>> But task_cls_classid() has
->>>>>>           if (in_interrupt())
->>>>>>                   return 0;
->>>>>>
->>>>>> which will trigger in softirq and tc hooks.
->>>>>> So this might break Daniel's use case.
->>>>>
->>>>> Yeap, we cannot break tc(x) BPF programs. It probably makes sense to have
->>>>> a new helper implementation for the more generic, non-networking case which
->>>>> then internally uses task_cls_classid().
->>>>
->>>> Instead of forking the helper I think we can :
->>>> rcu_read_lock_bh_held() || rcu_read_lock_held()
->>>> in task_cls_state().
->>>
->>> I tested your suggestion with,
->>>
->>>    rcu_read_lock_bh_held() || rcu_read_lock_held()
->>>
->>> but it still triggers the RCU warning because BPF syscall programs use
->>> rcu_read_lock_trace().
->>>
->>> Adding rcu_read_lock_trace_held() fixes it functionally but triggers a
->>> checkpatch warning:
->>>
->>>    WARNING: use of RCU tasks trace is incorrect outside BPF or core RCU code
->>
->> It's safe to ignore checkpatch in this case.
+Howdy!
+
+On 6/9/25 15:43, Greg Chandler wrote:
 > 
-> If that is the case I'll move forward with this. It was my initial fix
-> for this[1] anyway, but checkpatch made me change it.
+> This is a from-scratch build (non-vendor/non-distribution)
+> Host/Target = alpha ev6
+> Kernel source = 6.12.12
+> 
+> My last working kernel on this was a 2.6.x, it's been a while since I've 
+> had time to bring this system up to date, so I don't know when this may 
+> have started.
+> I had a 3.0.102 in there, but I didn't test the networking while using it.
+> 
+> Please let me know what I can do to help out with figuring this one out.
 
-Agree that one is better!
+I don't have an Alpha machine to try this on, but I do have a functional 
+Cobalt Qube2 (MIPS 32/64) with these adapters connected directly over PCI:
 
-> [1]: https://github.com/charmitro/linux/commit/e5c42d49bfb967c3c35f536971f397492d2f46bf
+00:07.0 Ethernet controller: Digital Equipment Corporation DECchip 
+21142/43 (rev 41)
+         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- 
+ParErr+ Stepping- SERR- FastB2B- DisINTx-
+         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium 
+ >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+         Latency: 64 (5000ns min, 10000ns max), Cache Line Size: 32 bytes
+         Interrupt: pin A routed to IRQ 19
+         Region 0: I/O ports at 1000 [size=128]
+         Region 1: Memory at 12082000 (32-bit, non-prefetchable) [size=1K]
+         Expansion ROM at 12000000 [disabled] [size=256K]
+         Kernel driver in use: tulip
 
-Thanks,
-Daniel
+
+00:0c.0 Ethernet controller: Digital Equipment Corporation DECchip 
+21142/43 (rev 41)
+         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- 
+ParErr- Stepping- SERR- FastB2B- DisINTx-
+         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium 
+ >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+         Latency: 64 (5000ns min, 10000ns max), Cache Line Size: 32 bytes
+         Interrupt: pin A routed to IRQ 20
+         Region 0: I/O ports at 1080 [size=128]
+         Region 1: Memory at 12082400 (32-bit, non-prefetchable) [size=1K]
+         Expansion ROM at 12040000 [disabled] [size=256K]
+         Kernel driver in use: tulip
+
+the machine is not currently on a switch that I can control, but I can 
+certainly try to plug in the cable and see what happens, give me a 
+couple of days to get back to you, and if you don't hear back,  please 
+holler. Here are the bits of kernel configuration:
+
+CONFIG_NET_TULIP=y
+CONFIG_TULIP=y
+# CONFIG_TULIP_MWI is not set
+# CONFIG_TULIP_MMIO is not set
+# CONFIG_TULIP_NAPI is not set
+-- 
+Florian
