@@ -1,85 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC6F227EA3;
-	Tue, 10 Jun 2025 11:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B7A170A23;
+	Tue, 10 Jun 2025 11:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749555000; cv=none; b=EVA7ugL9x+8cyLgjlnDoc+H6PckHwXiVQ20XF2RRkYHjO7MSdV+URhcqPM6xl8f4pirs1C3YMN7khTZSlzcLJtGsyKbuv7MjRVUYVeap+D3BpgY2h54c5VWN3JukCiS1JMQ+hQ7DMiJzd9a5tFYQidynleaeoh6/dQlByCrslTc=
+	t=1749555675; cv=none; b=tlCcK1a4Jg5zUflBB3cvORaKcvoq5iG0GA/Qo+RhcD6Cj+8Xl1Gt9EEkOBIRmRMpTy2TH2rnOd5Kqfvg6fno6EUWJUn+7eHBNvUHJqd7jLggDgXjwmXfKJuVGvJVztMy2jlwqDfzOKndCL+J+uMWxoyyrJtx2mjkBaIa8EjxaME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749555000; c=relaxed/simple;
-	bh=b5nUIzqm3EUmBKYjt0opVpGPnsw1G6P3eA2WugutoP8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KpXC7G7F0LdRn8JtpEmBRrTQh7vHLFh67NVS8PI9ywWt73RJ0xYBt43QjHrb0WjhKzl1TtVInrG2JdrE3m3HSpa1xqKN9X5cDcr20HL6WmRwmrnrRBRQ/rrBc5apC0bHrLlJZge30sb69TbRu2OIBg/NdD18A+paMr8qqzMFGcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FuvPwHe1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749555675; c=relaxed/simple;
+	bh=n0ML7zRSEOuaaURpftI7CAfQ7mwr7h1bbhbOBwd5Elg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JO/eTa9BmvXYRYhErJnmeXBLaUctTgVObp5/VSAxreSlbxO6Ic2IqmkqdrfnCEREkvyjH7DljiRFIeJ6OcvUgY/p4MtjX8Wx0dG0gDqqrSIYOgjjWn1Wb2f1TTRArU1B1DQL7chs3urNlSgSOQP0c0tsM7tpVzIw/WyUV9azb8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=ZSqOzO9j; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ff3VuJZh reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FuvPwHe1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48035C4CEED;
-	Tue, 10 Jun 2025 11:29:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749554999;
-	bh=b5nUIzqm3EUmBKYjt0opVpGPnsw1G6P3eA2WugutoP8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FuvPwHe1xCld1Q8ATLa4J8sn2DcS8xWs3+Kj5Uvn3Q/4nd3jXarHhvEInSuped4w2
-	 sIQyPLJbJuTWqAevPBbwKTXTTwgDqA0wOHBEfcDyu6od9jeEH/a15ItmZUcPcMkCYf
-	 vWQ+NNznSeTHp6GxWhQDZPVMiKbaxuzJrXnrfR2+29dnqXuEG2g24jIgtN2x6SE3+q
-	 UGBbxt+C95dKwjUVozaTZISOGdv5dBJWKj7ac8eqLv22tONXYS5P3JS/SR7sQP0myG
-	 xRTxh/GEHGo4Saf2sq3Qwsg0Dd0Ww5s/c1hrT+DAEazxMFSxfXc3T308tILHD5lWFH
-	 UA4huvjkfXCpQ==
-Message-ID: <2d7c6d00-692b-442c-931f-ace85f8b1477@kernel.org>
-Date: Tue, 10 Jun 2025 13:29:52 +0200
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="ZSqOzO9j";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ff3VuJZh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1749555672; x=1781091672;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=T0hn3QlUDDx93aZ+2OLzS2n7KSVRomyjHzy0XcJuNHM=;
+  b=ZSqOzO9jHjXbs9xfDDn2d7FAEcFOsjGWn4jTbExm13l65/cL2i1xqvzA
+   NFYosRPONpRWO5HoG2HGpnnqL2A50F+UF1h6JqrGxIee+pMTWx/apbM0Y
+   Hic95jRKd5ZxjzwoIbwCDj6DAx25Vqgc6A8TsfCy9HTYUVVq0bFblW2UE
+   VeowG+DIBOzhvkEGaWIurNIlhGG5FZPXyrPVDwcf/apEtthuReJftydM5
+   moja8nEvEIhzufbwx8bLrq/vG26rExP190FXk1vEb499GSRI9vzw5uC59
+   Agd1YSMigMoJQv8iZ7DFWrVJgcCrtjofr+PCvHjx018l2G3OV0TVbiOvR
+   g==;
+X-CSE-ConnectionGUID: vsjij+9nQ2uFUS1Pg5iwLw==
+X-CSE-MsgGUID: I3JfwE03TIS1nmD1YgaJPA==
+X-IronPort-AV: E=Sophos;i="6.16,225,1744063200"; 
+   d="scan'208";a="44544268"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 10 Jun 2025 13:41:09 +0200
+X-CheckPoint: {684819D4-36-28ACC837-DD1065DB}
+X-MAIL-CPID: 9A11648A6B4940251418317FFD709A70_2
+X-Control-Analysis: str=0001.0A006374.684819DB.001E,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BB09B167453;
+	Tue, 10 Jun 2025 13:41:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1749555664;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=T0hn3QlUDDx93aZ+2OLzS2n7KSVRomyjHzy0XcJuNHM=;
+	b=ff3VuJZhBQBkP0NPYqsWcI1Cj4BdXMCFheJYKRJMr/DdM/sHlvydBcZevz4h1l4pN+xWPF
+	TPqbVO5J08m3MAMdd95L+Du1JEvt5NwCnxB2wwmkFSQX3hm15SA50BeBr47Uajed6VHoLP
+	ajrrbIodbM2iIKQOtSCg8/oXYI0avq1R8aSIBRhjYKLAoZK/hP9DXkqfYPdCCMm8pL+MMa
+	B6t1rcH/B63Frg9fBunsc+bPVgYMFlKqDRW6b8Y9DUx4KS+ukyLVwF6hfvIFyeO4pGQ8s8
+	/HKKOCKYm8bV6+MbjonBtMActakK0mRJwJ94DEtFsGD3epCln8bwBX+lZUW9eA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Madalin Bucur <madalin.bucur@nxp.com>,
+	Sean Anderson <sean.anderson@seco.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] net: fman_memac: Don't use of_property_read_bool on non-boolean property managed
+Date: Tue, 10 Jun 2025 13:40:56 +0200
+Message-ID: <20250610114057.414791-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] bpf: cpumap: report Rx queue index to xdp_rxq_info
-To: Ujwal Kundur <ujwal.kundur@gmail.com>, ast@kernel.org,
- daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
- john.fastabend@gmail.com, andrii@kernel.org, martin.lau@linux.dev,
- eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
- kpsingh@kernel.org, sdf@fomichev.me, aoluo@google.com, jolsa@kernel.org
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250609173851.778-1-ujwal.kundur@gmail.com>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <20250609173851.778-1-ujwal.kundur@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+'managed' is a non-boolean property specified in ethernet-controller.yaml.
+Since commit c141ecc3cecd7 ("of: Warn when of_property_read_bool() is
+used on non-boolean properties") this raises a warning. Use the
+replacement of_property_present() instead.
 
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ drivers/net/ethernet/freescale/fman/fman_memac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 09/06/2025 19.38, Ujwal Kundur wrote:
-> Refer to the Rx queue using a XDP frame's attached netdev and ascertain
-> the queue index from it.
-> 
-> Signed-off-by: Ujwal Kundur <ujwal.kundur@gmail.com>
-> ---
->   kernel/bpf/cpumap.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
-> index 67e8a2fc1a99..8230292deac1 100644
-> --- a/kernel/bpf/cpumap.c
-> +++ b/kernel/bpf/cpumap.c
-> @@ -34,6 +34,7 @@
->   #include <linux/btf_ids.h>
->   
->   #include <linux/netdevice.h>
-> +#include <net/netdev_rx_queue.h>
->   #include <net/gro.h>
->   
->   /* General idea: XDP packets getting XDP redirected to another CPU,
-> @@ -196,7 +197,7 @@ static int cpu_map_bpf_prog_run_xdp(struct bpf_cpu_map_entry *rcpu,
->   
->   		rxq.dev = xdpf->dev_rx;
->   		rxq.mem.type = xdpf->mem_type;
-> -		/* TODO: report queue_index to xdp_rxq_info */
-> +		rxq.queue_index = get_netdev_rx_queue_index(xdpf->dev_rx->_rx);
+diff --git a/drivers/net/ethernet/freescale/fman/fman_memac.c b/drivers/net/ethernet/freescale/fman/fman_memac.c
+index 3925441143fac..0291093f2e4e4 100644
+--- a/drivers/net/ethernet/freescale/fman/fman_memac.c
++++ b/drivers/net/ethernet/freescale/fman/fman_memac.c
+@@ -1225,7 +1225,7 @@ int memac_initialization(struct mac_device *mac_dev,
+ 	 * be careful and not enable this if we are using MII or RGMII, since
+ 	 * those configurations modes don't use in-band autonegotiation.
+ 	 */
+-	if (!of_property_read_bool(mac_node, "managed") &&
++	if (!of_property_present(mac_node, "managed") &&
+ 	    mac_dev->phy_if != PHY_INTERFACE_MODE_MII &&
+ 	    !phy_interface_mode_is_rgmii(mac_dev->phy_if))
+ 		mac_dev->phylink_config.default_an_inband = true;
+-- 
+2.43.0
 
-This looks wrong...
-I think this will always return index 0
-
---Jesper
