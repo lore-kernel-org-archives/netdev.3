@@ -1,80 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D263247DEA;
-	Wed, 11 Jun 2025 21:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C42225413;
+	Wed, 11 Jun 2025 21:27:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749677125; cv=none; b=MzrXT+lBnttSR8Og/iWKgzGw9b9HdJiavSlxAm9OeaRt5zMoAdmValsHPc6EDQsRnhhKlzNJMhwJheCkWi+xFvJ3FC+jYjeDIjnkRvBLwvpNeVXjj1MUs8DW0QXTjInDr49EXRvcBPfk6DMVdEmt1LqKa7BrVfc2l9lhqa3uSxU=
+	t=1749677260; cv=none; b=pI6UDaZ5eJFBZOhPOAqpH+PkUJDIohr9u19n4NUJcvSr02S07MeLXjA7sc/YNsJfVXVTBd4/mGjBUR7bzr+hGRBq2esmYjYu6kmkxH6jzhAk+mt4FkdjcDI1NZy8ZYTFMZn4Hu/LjGWfYqfnucOnNbNfMmd4V/kivi100TMI+/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749677125; c=relaxed/simple;
-	bh=p5G9hodyoqquGQv0FDJLWXP70EcteeuZIP/ixo9N4RM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X8bWY8BlfegQtyReVnJgDGaBW/d5phhEr1+fdd7HQfjAzb1a6uJSPMsC8/aBnjPwNb59wOXGbf0HB89zD1eT3Im+WnH7X64aZxFKXMDpzrWyiAFOFJUdc7bPWALVsSfxj7qDZKWd2Qx8vQN2vjaLJMWWNewH8gNzfStjUx1K5e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hDJP3oC0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749677260; c=relaxed/simple;
+	bh=r1BuQBYBAW6rqeGVd7IX2D2PqK1FkNIQJArsBxJUFIg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=QMdr6hjxTp6tEp+ykE1gUMx5efk8UJ34uPQhnUNtwcn7+6Y9binSvZFf3WxIR4mnin+TofLMewH3B3COKrrbXulr/WltX8Tcx2SgTyke43TEWRLaNNkB7po4Wze0+S/OFAxaBMpYNRLInQs7uKOhy6pid35j/JsHCf+K46w+QJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WNYowpiP; arc=none smtp.client-ip=192.19.166.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hDJP3oC0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516DCC4CEF2;
-	Wed, 11 Jun 2025 21:25:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749677124;
-	bh=p5G9hodyoqquGQv0FDJLWXP70EcteeuZIP/ixo9N4RM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hDJP3oC0xQexyVhR/7d4PZtjUyHFBj0hP2HYXx5kEDYYvUG173CJ5Qfo9lSNM07Vy
-	 8r4fFR37bDAD94oq9ai0JOuHFxKCjX9DM1WV9tXJ2vyuvxnD2Yb/KTTYCngc8baNOD
-	 zCDftQ49uBaS114bnMk3PIOJ1lL24Gy3Qayqj4tB95uYkcB78ymm3dMweLJ82kKNKd
-	 dtc7QTPlvNwUOBvQGGPLeiMtk9esKZhdTqF6DFrnNqzQt1wIXyCZKVQkjvo0a8HQFy
-	 4Vj1cnFaQQ9k6P6zreTMcMj/Dd4Sdp5WL6VN582GftigXuql4dXcGDKFMiKL00CcNj
-	 UIr2ywhn1x1Mg==
-Date: Wed, 11 Jun 2025 14:25:23 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Justin Lai <justinlai0215@realtek.com>
-Cc: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
- <andrew+netdev@lunn.ch>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <horms@kernel.org>, <pkshih@realtek.com>,
- <larry.chiu@realtek.com>
-Subject: Re: [PATCH net-next] rtase: Refine the flexibility of Rx queue
- allocation
-Message-ID: <20250611142523.67e7d984@kernel.org>
-In-Reply-To: <20250610095518.6585-1-justinlai0215@realtek.com>
-References: <20250610095518.6585-1-justinlai0215@realtek.com>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WNYowpiP"
+Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 19CE1C0000D6;
+	Wed, 11 Jun 2025 14:27:32 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 19CE1C0000D6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+	s=dkimrelay; t=1749677252;
+	bh=r1BuQBYBAW6rqeGVd7IX2D2PqK1FkNIQJArsBxJUFIg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WNYowpiPzGiZU2qDtJSgdkP6iIrwuNHjEzSf5zCPesXpv8WpY5YJhwQze/SiBFuqY
+	 OVRgnTVg7f1DH+DoDSXsCtv+flEmDHfYbceQIgAgejj853nAVipv4oxlZc8IV1GuO/
+	 oEsz5EtxWhqhGfdlaIPaaZY0JdYxdbJthaK9qhus=
+Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id ECDA618000847;
+	Wed, 11 Jun 2025 14:27:31 -0700 (PDT)
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+To: netdev@vger.kernel.org
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	bcm-kernel-feedback-list@broadcom.com (open list:BROADCOM ASP 2.0 ETHERNET DRIVER),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net-next v2 1/2] net: bcmasp: Utilize napi_complete_done() return value
+Date: Wed, 11 Jun 2025 14:27:29 -0700
+Message-Id: <20250611212730.252342-2-florian.fainelli@broadcom.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250611212730.252342-1-florian.fainelli@broadcom.com>
+References: <20250611212730.252342-1-florian.fainelli@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue, 10 Jun 2025 17:55:18 +0800 Justin Lai wrote:
-> Refine the flexibility of Rx queue allocation by using alloc_etherdev_mqs.
-> 
-> Signed-off-by: Justin Lai <justinlai0215@realtek.com>
-> ---
->  drivers/net/ethernet/realtek/rtase/rtase_main.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-> index 4d37217e9a14..c22dd573418a 100644
-> --- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-> +++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-> @@ -2080,8 +2080,8 @@ static int rtase_init_board(struct pci_dev *pdev, struct net_device **dev_out,
->  	int ret = -ENOMEM;
->  
->  	/* dev zeroed in alloc_etherdev */
-> -	dev = alloc_etherdev_mq(sizeof(struct rtase_private),
-> -				RTASE_FUNC_TXQ_NUM);
-> +	dev = alloc_etherdev_mqs(sizeof(struct rtase_private),
-> +				 RTASE_FUNC_TXQ_NUM, RTASE_FUNC_RXQ_NUM);
->  	if (!dev)
->  		goto err_out;
->  
+Make use of the return value from napi_complete_done(). This allows
+users to use the gro_flush_timeout and napi_defer_hard_irqs sysfs
+attributes for configuring software interrupt coalescing.
 
-$ git grep RTASE_FUNC_.XQ_NUM
-drivers/net/ethernet/realtek/rtase/rtase.h:#define RTASE_FUNC_TXQ_NUM  1
-drivers/net/ethernet/realtek/rtase/rtase.h:#define RTASE_FUNC_RXQ_NUM  1
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Justin Chen <justin.chen@broadcom.com>
+---
+ drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-This patch is a nop?
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+index 0d61b8580d72..7dc28166d337 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+@@ -605,10 +605,8 @@ static int bcmasp_rx_poll(struct napi_struct *napi, int budget)
+ 
+ 	bcmasp_intf_rx_desc_write(intf, intf->rx_edpkt_dma_read);
+ 
+-	if (processed < budget) {
+-		napi_complete_done(&intf->rx_napi, processed);
++	if (processed < budget && napi_complete_done(&intf->rx_napi, processed))
+ 		bcmasp_enable_rx_irq(intf, 1);
+-	}
+ 
+ 	return processed;
+ }
 -- 
-pw-bot: reject
+2.34.1
+
