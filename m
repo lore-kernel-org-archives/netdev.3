@@ -1,102 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D27713A3F2
-	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 20:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668E1210F44;
+	Wed, 11 Jun 2025 20:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749673402; cv=none; b=kyN88S1+nZkIPsKJc0HxkE8+fQ5UCdfCOvvDYct49KF/paeWOZHceae7anSNebBHdB+oL2h4dU79TTZhqv7fze+ITSOFP/lg7okZ2RXqFQAzv22g7ksGfY9eHGDYGvDYaBZ0ziZc/zTEyNwh9ypViQ16wY/8mxy8FBQskxtpEHE=
+	t=1749673666; cv=none; b=VdhLCjlGZ96kY7r2BYjodCjAJp/Y5edAQPrMbJ1YUVa+1XzAoYm5qRhcCFfBWR+fqGIvrJmGR1kDELlAU/3TZ3ADhj/m7p3VbJlFU3yzuyypI3QrHkxLjQWEV0Cykan0jwSeCfXq5fmiJXgtXpwjg4aPIXarJudMaVGf5ftGdOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749673402; c=relaxed/simple;
-	bh=TSJ0xzSdWNrXSW/KgRMtrp6xLfO1Nug0/yg93GgtDU0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lDLu1z5/Ju360hLiaBcMYkl2ioWBeXqlVxq9H89koZe0srhujMcO1TjvNy/05fTajj6zgb8T/dMAJnBBh/aGau0pVLju0gb0SkpDSPWk8mL4wpsFAiD/mACidauXvcAF7GGKLaaJ8pH1zvvwFnaxzM2nmlo9Ii3TlQ9EFl9EQ9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rQS7VZg3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749673666; c=relaxed/simple;
+	bh=MU8Zi+pntPYytdt49KNwDwq4ACCf3lHI4qQsBgK7E6g=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qd8o+onRBPh6GAu8RFql6jbvYWcKiU/BafGOJcF9bR1JR32k+K0cuUrx0pjz62cRaO+0PipPyattUWvFxS7kiP124eIg6444SRo+GLVhKjMx2bPsDxgo+Za8PObujsz9xIJ1uvjqxUkDsUuQ6xWasUa2A4eUdV+sfFIv2QgYJZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=KTGAP0oJ; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rQS7VZg3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40619C4CEE3;
-	Wed, 11 Jun 2025 20:23:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749673401;
-	bh=TSJ0xzSdWNrXSW/KgRMtrp6xLfO1Nug0/yg93GgtDU0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rQS7VZg3WfP+TvBaKbMMQFSKSyoGxMUoepdwSov+790PYQHwiyFcv/He6m1haBEab
-	 TZjn6K4y+mlmyIFpMuE3RFsX7QSJtpDxbT9BsquQhPTfcORXzuf6rHCZxLBVZyQ4ow
-	 Nw4yQzyzWxED7tIGIxX5HmYHXE7Bad9Nh+ox4bSi152iUjCHP7f0qyJp6lagP6bZip
-	 QEhpaWnVeT3sY7hdeMb92DKpx0tTm9urwyPPidYdS1jjvGwK8LMJk5P4n4HBNH8LhK
-	 kGzIVC/Aq+a37DU00RU60YqGu9fAb2MMuRXeW5Mnx0uZd0E00qol7LhmZkSwPSXhcE
-	 yVkDjhKagfrsw==
-Date: Wed, 11 Jun 2025 13:23:20 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Petr Machata <petrm@nvidia.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, "David Ahern"
- <dsahern@gmail.com>, <netdev@vger.kernel.org>, Simon Horman
- <horms@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel
- <idosch@nvidia.com>, <mlxsw@nvidia.com>, Kuniyuki Iwashima
- <kuniyu@google.com>
-Subject: Re: [PATCH net-next 00/14] ipmr, ip6mr: Allow MC-routing
- locally-generated MC packets
-Message-ID: <20250611132320.53c5bebc@kernel.org>
-In-Reply-To: <87o6uui6f7.fsf@nvidia.com>
-References: <cover.1749499963.git.petrm@nvidia.com>
-	<20250610055856.5ca1558a@kernel.org>
-	<87wm9jeo3n.fsf@nvidia.com>
-	<87o6uui6f7.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="KTGAP0oJ"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1uPRZW-00BKls-1R; Wed, 11 Jun 2025 21:57:18 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From; bh=d1QaSFHfEh3cM2Uv7I3zUqxXFc1eWwgg2qbFxn/xMxc=
+	; b=KTGAP0oJ7ZLO4T+XONPBBuZ8nO5acq803LvkagTvlFsHLizXcHUUNHkwSl4x+PGiPriobqTJk
+	u7/5LM2t7Zl5CEIFaelft39YuLdSwumZCY01r/tWC+BAHHYS+URDpJtzj/HtTIDwyFW7WPlV4DuCw
+	tPOvDs0TGlQfuKlKAT0WeYMGAJr20p7ETXT+X9AM8seNzlgFswC2upqvafnuOMRUD5MVjvDRQSQXC
+	XwEGj38a2lelMCjiMdrAjvju58mc60qkIdxrWcwwSgCHHsjmurFyx8trG98niAVYf4B1o9oO7ViPV
+	+mDGsjgI2VFjP7GN0mqQDw0b8KAAtHdJX4d1AA==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1uPRZV-0005DR-G9; Wed, 11 Jun 2025 21:57:17 +0200
+Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1uPRZH-00BycS-19; Wed, 11 Jun 2025 21:57:03 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Subject: [PATCH net-next v3 0/3] vsock/test: Improve transport_uaf test
+Date: Wed, 11 Jun 2025 21:56:49 +0200
+Message-Id: <20250611-vsock-test-inc-cov-v3-0-5834060d9c20@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIHfSWgC/23NTQ7CIBQE4Ks0rH0GHqVFV97DuCg/tcQEDBBS0
+ /TuEja66HIymW82kmx0NpFrt5Foi0su+Br4qSN6mfzTgjM1E6QoKMcBSgr6BdmmDM5r0KGAksg
+ lojJqlKQO39HObm3onXibwds1k0dtFpdyiJ/2VljrGyyQH8GFAYN54oKOl54pZW5RhfWsQ8MK/
+ gPyEECgIOdBCNVTI0b9A/Z9/wLGVSFF/QAAAA==
+X-Change-ID: 20250326-vsock-test-inc-cov-b823822bdb78
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-On Wed, 11 Jun 2025 17:30:15 +0200 Petr Machata wrote:
-> Could it actually have been caused by another test? The howto page
-> mentions that the CI is running the tests one at a time, so I don't
-> suppose that's a possibility.
-> 
-> I'll try to run a more fuller suite tomorrow and star at the code a bit
-> to see if I might be missing an error branch or something.
+Increase the coverage of a test implemented in commit 301a62dfb0d0
+("vsock/test: Add test for UAF due to socket unbinding"). Take this
+opportunity to factor out some utility code, drop a redundant sync between
+client and server, and introduce a /proc/kallsyms harvesting logic for
+auto-detecting registered vsock transports.
 
-We also hit a crash in ipv6 fcnal.sh, too. Looks like this is either a
-kmemleak false positive or possibly related to the rtnl changes in ipv6.
-Either way I it's not related to you changes, sorry about that! :(
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+Changes in v3:
+- Drop "RFC" prefix, rebase, amend commit logs
+- get_transports(): don't look for a symbol that was already found
+- Expand testcase comments, clean up the code [Stefano]
+- Streamline `enum transport` and `transport_ksyms` [Stefano]
+- Move KALLSYMS_* defines from utils.h to utils.c [Stefano]
+- Link to v2: https://lore.kernel.org/r/20250528-vsock-test-inc-cov-v2-0-8f655b40d57c@rbox.co
 
-[ 2900.792890] BUG: kernel NULL pointer dereference, address: 0000000000000108
-[ 2900.792961] #PF: supervisor read access in kernel mode
-[ 2900.793017] #PF: error_code(0x0000) - not-present page
-[ 2900.793053] PGD 8fd6067 P4D 8fd6067 PUD 6402067 PMD 0 
-[ 2900.793097] Oops: Oops: 0000 [#1] SMP NOPTI
-[ 2900.793127] CPU: 0 UID: 0 PID: 15652 Comm: nettest Not tainted 6.15.0-virtme #1 PREEMPT(voluntary) 
-[ 2900.793200] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-[ 2900.793245] RIP: 0010:ip6_pol_route+0x286/0x4a0
-[ 2900.793290] Code: 0c 24 0f 85 fb 01 00 00 09 ca 0f 88 2f 01 00 00 e8 cf 11 43 ff 83 cb 08 48 8d 7c 24 18 e8 32 7b ff ff 0f b7 cb ba ff ff ff ff <4c> 8b 80 08 01 00 00 48 89 c6 49 89 c7 49 8d b8 80 06 00 00 4c 89
-[ 2900.793422] RSP: 0018:ffffc08a0932f480 EFLAGS: 00010246
-[ 2900.793460] RAX: 0000000000000000 RBX: 0000000000000008 RCX: 0000000000000008
-[ 2900.793521] RDX: 00000000ffffffff RSI: ffffc08a0932f740 RDI: ffff9adac8c8f1a8
-[ 2900.793580] RBP: ffff9adac87458c0 R08: 0000000000000000 R09: 0000000000000000
-[ 2900.793635] R10: 0000000000000000 R11: 0000000000000040 R12: ffff9adac82e362c
-[ 2900.793692] R13: ffff9adac82e3600 R14: 0000000000000080 R15: 0000000000000000
-[ 2900.793752] FS:  00007f3418913740(0000) GS:ffff9adb7373a000(0000) knlGS:0000000000000000
-[ 2900.793816] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 2900.793864] CR2: 0000000000000108 CR3: 0000000008007004 CR4: 0000000000772ef0
-[ 2900.793920] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 2900.793977] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[ 2900.794031] PKRU: 55555554
-[ 2900.794050] Call Trace:
-[ 2900.794070]  <TASK>
-[ 2900.794090]  ? __pfx_ip6_pol_route_output+0x10/0x10
-[ 2900.794131]  fib6_rule_action+0xe3/0x310
-[ 2900.794166]  fib_rules_lookup+0x1b2/0x2b0
-[ 2900.794200]  ? __pfx_ip6_pol_route_output+0x10/0x10
-[ 2900.794241]  fib6_rule_lookup+0xa9/0x270
-[ 2900.794271]  ? __pfx_ip6_pol_route_output+0x10/0x10
-[ 2900.794310]  ip6_route_output_flags+0xab/0x180
-[ 2900.794353]  ip6_dst_lookup_tail.constprop.0+0x282/0x340
-[ 2900.794394]  ip6_dst_lookup_flow+0x46/0xc0
-[ 2900.794422]  vrf_xmit+0x100/0x4a0
-[ 2900.794459]  dev_hard_start_xmit+0x8d/0x1c0
+Changes in v2:
+- Speed up: don't bother checking EINTR or respecting timeout on connect()s
+- Introduce get_transports(), warn on unsupported setup [Stefano]
+- Comment the code, drop the sync, introduce vsock_bind_try() [Stefano]
+- Link to v1: https://lore.kernel.org/r/20250523-vsock-test-inc-cov-v1-1-fa3507941bbd@rbox.co
 
-https://netdev-3.bots.linux.dev/vmksft-net/results/160541/vm-crash-thr0-0
+---
+Michal Luczaj (3):
+      vsock/test: Introduce vsock_bind_try() helper
+      vsock/test: Introduce get_transports()
+      vsock/test: Cover more CIDs in transport_uaf test
+
+ tools/testing/vsock/util.c       | 80 ++++++++++++++++++++++++++++++++--
+ tools/testing/vsock/util.h       | 30 +++++++++++++
+ tools/testing/vsock/vsock_test.c | 93 ++++++++++++++++++++++++++++++++--------
+ 3 files changed, 181 insertions(+), 22 deletions(-)
+---
+base-commit: 0097c4195b1d0ca57d15979626c769c74747b5a0
+change-id: 20250326-vsock-test-inc-cov-b823822bdb78
+
+Best regards,
+-- 
+Michal Luczaj <mhal@rbox.co>
+
