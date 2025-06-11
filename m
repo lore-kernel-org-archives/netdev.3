@@ -1,37 +1,37 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C08021B19D
-	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 06:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFBE225A39
+	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 06:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749623461; cv=none; b=YssVBiymxWuBUII9JdLPiq+Gel55F0BMv7bs2HUjI6rhYOTal8SK3mchRI6V69ANqO+PoC/yOPfw/Uk6YBciicNl46YXsCSPlKPtL7o5yF1TODxvHtmmDaoEJdTCbSpWZsJL+7OzvwExdS0OyryKQp8LKEJBVsMPHbvB7mRrOfI=
+	t=1749623462; cv=none; b=EkVVeaOdsjLvjw+M47nS6TTn6wCTzUuU6bqQXgzc60tNx9hSHEnNPhj/rCegYhJQETOhzC1oVx0XSfG0p/F4OvRMp0qnUbq1ljq16HSl3BArMa1X0h9U89+3oqdQWDkLXoeVODFfs+/reT98+NGMzSBrOG5WBzgA48EKiyw0HA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749623461; c=relaxed/simple;
-	bh=a6aw4aa2cUbfhI+C1HpTVHxzU6H213PQb/EEj50UUX0=;
+	s=arc-20240116; t=1749623462; c=relaxed/simple;
+	bh=EL2gCfmzIovdB6VoKl+epcHZWHwCI/CrNLtehHXQOKI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WsFgouqCkjT1UWacOlqyRPt3EzFR8bBYsV3biJqXRnTJ0Fa2RpJq1ztBrGW4Ggq8gOwhjHCsC0SPPgSjPLJV1CFyHhN5WzFYa43krcEbdOP5qAmFzpKtdLB2dqmQKL8lvvVaATwNWDkbVo1n08yGqDjrP+nQ36osPoSzTzeSmZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=AmLyOxhO; arc=none smtp.client-ip=203.29.241.158
+	 In-Reply-To:To:Cc; b=neqo5DrHJ2Y5nYDFv1eoDjEjNTwmkEwn519qVkjGiBs8LFjpPut1ICYWcboMPKa5Em1tNYL5Wey+aKF8o1Ra9PHyzohK33qLrIBFGgtvXVqXRJHKjuXTQ+7XBjVJMWzagYpmujz0i9Tyrv3OrYirtTEkhR0hsnnScl8bqsYBvBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=IFFbh5We; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="AmLyOxhO"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="IFFbh5We"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=codeconstruct.com.au; s=2022a; t=1749623458;
-	bh=WbaZ851tPvl9z9qCq9g9hQhGeKab8Q7zy72SwZ1dqFQ=;
+	bh=DMnjwGtSmGbbUOtlBNdL/KemkURsL5zRLIvdHYsYV1c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=AmLyOxhO25OZXmIu2J9kEbSQ8Y6akHQQY2jouNiISYNjU6gUk4QiZETkIk+RaEABL
-	 auFCnikGkm+aZc/8heBeC+8a1tW9FbDncmxNHq8NXFNWC0WhRHr7m5hVu0+5DacvLR
-	 aT/66GBZxn+L6Jdf0CnIPMVGp73ru5cK4NaSznJKgEaJbdt+altvNy7P+uptZ9LVAc
-	 dueGgdTVgyHQyYNKstoaZGMcNDkh/o7RHq7tHbP8GQV3YvljdqFUtNCWVZ7dIKmwSV
-	 zqwYVXUlkaLLOzug1z2ENOXoELhLV0MQCy6AY1W8S/VYAVEc1m2g4W2FVTZ8U0rdx6
-	 Zqy/cjfchChHQ==
+	b=IFFbh5WejQ6Yo2HxZiFrHuampu1nvu5Qg3Ov0wNbWXX9vkK3dujvUqRE+oYSZpxxn
+	 pBWKSbvvvbLNKQRo9WBs62scaZgxJX2DrGHvk6757VvHRV6XYvwQKGcqUahqVFZqKY
+	 BPgTMoQWE4Pxmnneqjj6hHcTKsL6xsTOJT1OSjQ6bRta4NFqh+mDbm/jhdY1LxOUbz
+	 CNZ15YzGzBOYu1qaFCpxrD0zqCjmolIb8vQdv5Ow2VDba2mGrCjo8n9lhQMZEDACRc
+	 4jYIzk9zv+kwEiTiju0v7Gp7D5gg5ugPPuAot+tFra0zHzu/L+wMH7j2ZUGZ8MqPza
+	 IkFNowjgzW4gw==
 Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id 07DF167DD3; Wed, 11 Jun 2025 14:30:58 +0800 (AWST)
+	id A234E67DDB; Wed, 11 Jun 2025 14:30:58 +0800 (AWST)
 From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Wed, 11 Jun 2025 14:30:28 +0800
-Subject: [PATCH net-next 01/13] net: mctp: don't use source cb data when
- forwarding, ensure pkt_type is set
+Date: Wed, 11 Jun 2025 14:30:30 +0800
+Subject: [PATCH net-next 03/13] net: mctp: separate cb from
+ direct-addressing routing
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250611-dev-forwarding-v1-1-6b69b1feb37f@codeconstruct.com.au>
+Message-Id: <20250611-dev-forwarding-v1-3-6b69b1feb37f@codeconstruct.com.au>
 References: <20250611-dev-forwarding-v1-0-6b69b1feb37f@codeconstruct.com.au>
 In-Reply-To: <20250611-dev-forwarding-v1-0-6b69b1feb37f@codeconstruct.com.au>
 To: Matt Johnston <matt@codeconstruct.com.au>, 
@@ -50,63 +50,113 @@ To: Matt Johnston <matt@codeconstruct.com.au>,
 Cc: netdev@vger.kernel.org
 X-Mailer: b4 0.14.2
 
-In the output path, only check the skb->cb data when we know it's from
-a local socket; input packets will have source address information there
-instead.
+Now that we have the dst->haddr populated from by sendmsg (when extended
+addressing is in use), we no longer need to stash the link-layer address
+in the skb->cb.
 
-In order to detect when we're forwarding, set skb->pkt_type on
-input/output.
+Instead, only use skb->cb for incoming lladdr data.
+
+While we're at it: remove cb->src, as was never used.
 
 Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
 ---
- net/mctp/route.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ include/net/mctp.h |  4 ++--
+ net/mctp/af_mctp.c |  3 +--
+ net/mctp/route.c   | 21 +++++----------------
+ 3 files changed, 8 insertions(+), 20 deletions(-)
 
+diff --git a/include/net/mctp.h b/include/net/mctp.h
+index 6c9c5c48f59a1bf45f9c9d274a3ca2b633e96c75..b3af0690f60749a9bf9f489c7118c82cfd9d577e 100644
+--- a/include/net/mctp.h
++++ b/include/net/mctp.h
+@@ -183,8 +183,8 @@ struct mctp_sk_key {
+ struct mctp_skb_cb {
+ 	unsigned int	magic;
+ 	unsigned int	net;
+-	int		ifindex; /* extended/direct addressing if set */
+-	mctp_eid_t	src;
++	/* fields below provide extended addressing for ingress to recvmsg() */
++	int		ifindex;
+ 	unsigned char	halen;
+ 	unsigned char	haddr[MAX_ADDR_LEN];
+ };
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index ca66521435b10c2299b82ed64718ddc98f1f07f3..1141a4e33aaaabef4b58a5942dbe2847f2b7fcdd 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -134,8 +134,7 @@ static int mctp_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
+ 		DECLARE_SOCKADDR(struct sockaddr_mctp_ext *,
+ 				 extaddr, msg->msg_name);
+ 
+-		if (!mctp_sockaddr_ext_is_ok(extaddr) ||
+-		    extaddr->smctp_halen > sizeof(cb->haddr)) {
++		if (!mctp_sockaddr_ext_is_ok(extaddr)) {
+ 			rc = -EINVAL;
+ 			goto err_free;
+ 		}
 diff --git a/net/mctp/route.c b/net/mctp/route.c
-index d9c8e5a5f9ce9aefbf16730c65a1f54caa5592b9..128ac46dda5eb882994960b8c0eb671007ad8583 100644
+index e11bf1c1e383cc251c5b6e2852d3756f706956c7..42d80a9f21d6a054375156e3de21be72a187c6fc 100644
 --- a/net/mctp/route.c
 +++ b/net/mctp/route.c
-@@ -392,6 +392,9 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
- 	 */
- 	skb_orphan(skb);
+@@ -561,35 +561,28 @@ static int mctp_dst_input(struct mctp_dst *dst, struct sk_buff *skb)
  
-+	if (skb->pkt_type == PACKET_OUTGOING)
-+		skb->pkt_type = PACKET_LOOPBACK;
-+
- 	/* ensure we have enough data for a header and a type */
- 	if (skb->len < sizeof(struct mctp_hdr) + 1)
- 		goto out;
-@@ -578,7 +581,13 @@ static int mctp_route_output(struct mctp_route *route, struct sk_buff *skb)
+ static int mctp_dst_output(struct mctp_dst *dst, struct sk_buff *skb)
+ {
+-	struct mctp_skb_cb *cb = mctp_cb(skb);
+ 	struct mctp_hdr *hdr = mctp_hdr(skb);
+ 	char daddr_buf[MAX_ADDR_LEN];
+ 	char *daddr = NULL;
+ 	int rc;
+ 
+ 	skb->protocol = htons(ETH_P_MCTP);
++	skb->pkt_type = PACKET_OUTGOING;
+ 
+ 	if (skb->len > dst->mtu) {
+ 		kfree_skb(skb);
  		return -EMSGSIZE;
  	}
  
--	if (cb->ifindex) {
-+	/* If we're forwarding, we don't want to use the input path's cb,
-+	 * as it holds the *source* hardware addressing information.
-+	 *
-+	 * We will have a PACKET_HOST skb from the dev, or PACKET_OUTGOING
-+	 * from a socket; only use cb in the latter case.
-+	 */
-+	if (skb->pkt_type == PACKET_OUTGOING && cb->ifindex) {
- 		/* direct route; use the hwaddr we stashed in sendmsg */
- 		if (cb->halen != skb->dev->addr_len) {
+-	/* If we're forwarding, we don't want to use the input path's cb,
+-	 * as it holds the *source* hardware addressing information.
+-	 *
+-	 * We will have a PACKET_HOST skb from the dev, or PACKET_OUTGOING
+-	 * from a socket; only use cb in the latter case.
+-	 */
+-	if (skb->pkt_type == PACKET_OUTGOING && cb->ifindex) {
+-		/* direct route; use the hwaddr we stashed in sendmsg */
+-		if (cb->halen != skb->dev->addr_len) {
++	/* direct route; use the hwaddr we stashed in sendmsg */
++	if (dst->halen) {
++		if (dst->halen != skb->dev->addr_len) {
  			/* sanity check, sendmsg should have already caught this */
-@@ -587,6 +596,7 @@ static int mctp_route_output(struct mctp_route *route, struct sk_buff *skb)
+ 			kfree_skb(skb);
+ 			return -EMSGSIZE;
  		}
- 		daddr = cb->haddr;
+-		daddr = cb->haddr;
++		daddr = dst->haddr;
  	} else {
-+		skb->pkt_type = PACKET_OUTGOING;
+-		skb->pkt_type = PACKET_OUTGOING;
  		/* If lookup fails let the device handle daddr==NULL */
- 		if (mctp_neigh_lookup(route->dev, hdr->dest, daddr_buf) == 0)
+ 		if (mctp_neigh_lookup(dst->dev, hdr->dest, daddr_buf) == 0)
  			daddr = daddr_buf;
-@@ -1032,6 +1042,7 @@ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
- 		tag = req_tag & MCTP_TAG_MASK;
- 	}
+@@ -1004,7 +997,6 @@ int mctp_local_output(struct sock *sk, struct mctp_dst *dst,
+ 		      struct sk_buff *skb, mctp_eid_t daddr, u8 req_tag)
+ {
+ 	struct mctp_sock *msk = container_of(sk, struct mctp_sock, sk);
+-	struct mctp_skb_cb *cb = mctp_cb(skb);
+ 	struct mctp_sk_key *key;
+ 	struct mctp_hdr *hdr;
+ 	unsigned long flags;
+@@ -1059,9 +1051,6 @@ int mctp_local_output(struct sock *sk, struct mctp_dst *dst,
+ 	skb_reset_network_header(skb);
+ 	skb->dev = dst->dev->dev;
  
-+	skb->pkt_type = PACKET_OUTGOING;
- 	skb->protocol = htons(ETH_P_MCTP);
- 	skb->priority = 0;
- 	skb_reset_transport_header(skb);
+-	/* cb->net will have been set on initial ingress */
+-	cb->src = saddr;
+-
+ 	/* set up common header fields */
+ 	hdr = mctp_hdr(skb);
+ 	hdr->ver = 1;
 
 -- 
 2.39.5
