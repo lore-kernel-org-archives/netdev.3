@@ -1,167 +1,115 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7040F283CA2
-	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 18:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D2325E45A
+	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 18:10:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749665012; cv=none; b=ln2KmmWu56G9NVXr9Ljky1Fhdb+Gnyd5mTb0/Pna43CsZr/XJcsZv95QFWdE7m+Va/mS1AlBZCS7pM2+TaPuRdkjLHXgO23KXr3uubghVjoec0lULwOTlCSZM5WoGlBF4wimb9Tm7SU+3+uz88iWnJFUoBJHE82o988l3+wuJoI=
+	t=1749665402; cv=none; b=bFq2MS01MX8D94ZDyL1P8caZ/qV8eC7mldbM7gSZCnH6hNTvVyJAReLMPIqBwl2qSp5bouksVDX/M7asD5EfN4w0sMC2L0Y+bhY0AFUiZn2y3sGDl1fgvLCtkKW4Xe8IXh2AwE4ThBEu/hsmt/dc2kf7HewX69mjv7wOlPzihqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749665012; c=relaxed/simple;
-	bh=kyDLIuNcHKvOIVGDGePSs4TZqK/62E5JtECFITJh7Ic=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BbsxRvOFlYiJA5Tq2y/o9/YRi4tTAwOntjSPgEOb5jJQ7f8PdwSzJLrIbZVHZSVZHehvZ+ELSq5UXxwCPbqWUKIWhIG94mTXxVO++zeoTa2tMqFop2m/4gsqVbiJA0+FfMWeifCDp2VeK17olIJ/eAIhCL48uTvH3oGTZb2YPuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lkCUHZK6; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1749665402; c=relaxed/simple;
+	bh=bu4xPoBt76F+Eq0kat9hmnO6V+OwxxMkfVAKZ5Yj/Q8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QVbORnZkUzPsw89xHeAZAepG4dudyhhyTs7/rROtRv/IXl1Ab0ln8b3x00XjTwS0UpiXSTTdTRDmTupS3XLoQLVksUf2RuU8eouuwkbcjCqA6Eb3Mqxw28AKRGHpCPHQaxqahv2HK+xKD+TCY8Rtm5WZw/Ycla9FnGOd9DTVu+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MqE1mMoc; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lkCUHZK6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749665010; x=1781201010;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=kyDLIuNcHKvOIVGDGePSs4TZqK/62E5JtECFITJh7Ic=;
-  b=lkCUHZK6jyGccmC7GGipR6vbeEPF0ZO7eTYMHEGWraVPBeoiW+Iu9J0L
-   BHAH7pj5hknnh5KZjCOWg5P7Sp3hX3id+bvVd3uZlRbQgS7Sy2W3bMvnO
-   D79R6HJkMYafpmutTJfbasgHyTtMwGiwLZWMU4ofwFf61A7nDq6czy0BO
-   wIfrL8mynIe7KKngk0/ZZJyQlM6zOJaM/XXVmfpsSy9jEIJGaRU7HQoC9
-   ctKYTjHBClotbJKjieXXU0yPBhDUpvrYY/YwsL6zFB5HKsCLzpF341qXh
-   wm9uaAcZuUacaG9xyZ9Da0tunAxYmI1rBtILgi9VayTvfpQR5saalzOoX
-   Q==;
-X-CSE-ConnectionGUID: 5JYw9ByhRG2Va1wxTw9eeA==
-X-CSE-MsgGUID: MceGX3LQTd+VfwyUNtiQcQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="51042584"
-X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; 
-   d="scan'208";a="51042584"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 11:03:29 -0700
-X-CSE-ConnectionGUID: rmE2plnbSSuZCMJ70DzOjw==
-X-CSE-MsgGUID: jXOaktiQQxiA2Ll75nMciw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; 
-   d="scan'208";a="152418312"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa004.fm.intel.com with ESMTP; 11 Jun 2025 11:03:29 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
-	anthony.l.nguyen@intel.com,
-	faizal.abdul.rahim@intel.com,
-	chwee.lin.choong@intel.com,
-	vladimir.oltean@nxp.com,
-	horms@kernel.org,
-	vitaly.lifshits@intel.com,
-	dima.ruinskiy@intel.com,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Subject: [PATCH net-next 7/7] igc: add preemptible queue support in mqprio
-Date: Wed, 11 Jun 2025 11:03:09 -0700
-Message-ID: <20250611180314.2059166-8-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250611180314.2059166-1-anthony.l.nguyen@intel.com>
-References: <20250611180314.2059166-1-anthony.l.nguyen@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MqE1mMoc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749665400;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oj/ZmTISV0zLWehd/r37qsP548vbvorWZeWxWtJq4lI=;
+	b=MqE1mMocmUgT6849h3Qr+vB6bGQc6tA7sUQhG4HT4gXMKYqfVpFrgzHn9sTZFVr2gSOpOA
+	MM55OIIf6brKQnUBuSgL8Rnu92wdMZkDlqdZUNyTLHn1er6ofIkRINg6tCVqMYGDmkLPkQ
+	crOHz0pAuq1KjtsIqZNZMDxpaU3tGyM=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-RAzo4OtWPCGHAzNAxIKJRQ-1; Wed,
+ 11 Jun 2025 14:09:54 -0400
+X-MC-Unique: RAzo4OtWPCGHAzNAxIKJRQ-1
+X-Mimecast-MFC-AGG-ID: RAzo4OtWPCGHAzNAxIKJRQ_1749665393
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4D0DC19560BD;
+	Wed, 11 Jun 2025 18:09:53 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.122])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4F108180035C;
+	Wed, 11 Jun 2025 18:09:52 +0000 (UTC)
+Date: Wed, 11 Jun 2025 14:09:51 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Alok Tiwari <alok.a.tiwari@oracle.com>
+Cc: mst@redhat.com, jasowang@redhat.com, michael.christie@oracle.com,
+	pbonzini@redhat.com, eperezma@redhat.com,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	darren.kenny@oracle.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] vhost-scsi: Fix typos and formatting in comments and
+ logs
+Message-ID: <20250611180951.GA190743@fedora>
+References: <20250611143932.2443796-1-alok.a.tiwari@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="gL1+kZGNyJIUcrAQ"
+Content-Disposition: inline
+In-Reply-To: <20250611143932.2443796-1-alok.a.tiwari@oracle.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 
-igc already supports enabling MAC Merge for FPE. This patch adds
-support for preemptible queues in mqprio.
+--gL1+kZGNyJIUcrAQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Tested preemption with mqprio by:
-1. Enable FPE:
-   ethtool --set-mm enp1s0 pmac-enabled on tx-enabled on verify-enabled on
-2. Enable preemptible queue in mqprio:
-   mqprio num_tc 4 map 0 1 2 3 0 0 0 0 0 0 0 0 0 0 0 0 \
-   queues 1@0 1@1 1@2 1@3 \
-   fp P P P E
+On Wed, Jun 11, 2025 at 07:39:21AM -0700, Alok Tiwari wrote:
+> This patch corrects several minor typos and formatting issues.
+> Changes include:
+>=20
+> Fixing misspellings like in comments
+> - "explict" -> "explicit"
+> - "infight" -> "inflight",
+> - "with generate" -> "will generate"
+>=20
+> formatting in logs
+> - Correcting log formatting specifier from "%dd" to "%d"
+> - Adding a missing space in the sysfs emit string to prevent
+>   misinterpreted output like "X86_64on ". changing to "X86_64 on "
+> - Cleaning up stray semicolons in struct definition endings
+>=20
+> These changes improve code readability and consistency.
+> no functionality changes.
+>=20
+> Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+> ---
+>  drivers/vhost/scsi.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
 
-Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/igc/igc_main.c | 9 ++-------
- drivers/net/ethernet/intel/igc/igc_tsn.c  | 9 +++++++++
- drivers/net/ethernet/intel/igc/igc_tsn.h  | 1 +
- 3 files changed, 12 insertions(+), 7 deletions(-)
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 23cbe02ee238..515b9610b907 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6765,6 +6765,7 @@ static int igc_tsn_enable_mqprio(struct igc_adapter *adapter,
- 
- 	if (!mqprio->qopt.num_tc) {
- 		adapter->strict_priority_enable = false;
-+		igc_fpe_clear_preempt_queue(adapter);
- 		netdev_reset_tc(adapter->netdev);
- 		goto apply;
- 	}
-@@ -6792,13 +6793,6 @@ static int igc_tsn_enable_mqprio(struct igc_adapter *adapter,
- 		return -EOPNOTSUPP;
- 	}
- 
--	/* Preemption is not supported yet. */
--	if (mqprio->preemptible_tcs) {
--		NL_SET_ERR_MSG_MOD(mqprio->extack,
--				   "Preemption is not supported yet");
--		return -EOPNOTSUPP;
--	}
--
- 	igc_save_mqprio_params(adapter, mqprio->qopt.num_tc,
- 			       mqprio->qopt.offset);
- 
-@@ -6818,6 +6812,7 @@ static int igc_tsn_enable_mqprio(struct igc_adapter *adapter,
- 		adapter->queue_per_tc[i] = i;
- 
- 	mqprio->qopt.hw = TC_MQPRIO_HW_OFFLOAD_TCS;
-+	igc_fpe_save_preempt_queue(adapter, mqprio);
- 
- apply:
- 	return igc_tsn_offload_apply(adapter);
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-index 811856d66571..b23b9ca451a7 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-@@ -160,6 +160,15 @@ void igc_fpe_init(struct igc_adapter *adapter)
- 	ethtool_mmsv_init(&adapter->fpe.mmsv, adapter->netdev, &igc_mmsv_ops);
- }
- 
-+void igc_fpe_clear_preempt_queue(struct igc_adapter *adapter)
-+{
-+	for (int i = 0; i < adapter->num_tx_queues; i++) {
-+		struct igc_ring *tx_ring = adapter->tx_ring[i];
-+
-+		tx_ring->preemptible = false;
-+	}
-+}
-+
- static u32 igc_fpe_map_preempt_tc_to_queue(const struct igc_adapter *adapter,
- 					   unsigned long preemptible_tcs)
- {
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.h b/drivers/net/ethernet/intel/igc/igc_tsn.h
-index f2e8bfef4871..a95b893459d7 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.h
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.h
-@@ -17,6 +17,7 @@ enum igc_txd_popts_type {
- DECLARE_STATIC_KEY_FALSE(igc_fpe_enabled);
- 
- void igc_fpe_init(struct igc_adapter *adapter);
-+void igc_fpe_clear_preempt_queue(struct igc_adapter *adapter);
- void igc_fpe_save_preempt_queue(struct igc_adapter *adapter,
- 				const struct tc_mqprio_qopt_offload *mqprio);
- u32 igc_fpe_get_supported_frag_size(u32 frag_size);
--- 
-2.47.1
+--gL1+kZGNyJIUcrAQ
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmhJxm8ACgkQnKSrs4Gr
+c8h+5Af+Pw6W/Lmi0FuHsDBbsZP4bq67qUmcf5R9aAbd6M6bpBLfLwsQOolA4RG0
+3pewOLgln11imSS632hXDd3KLntR2IoW1t0iwdHwfXX+/wzc3FuEdMahpsscEVxx
+ont13Xst6s6C134RD1RSti9uJlqU2KpjnXlKgMjswVSbgO3YoBcCTlTubramxWIR
+nxlwlghg6s9QTCqoCoCd4w6cNyKuYUF3AOZnnL0uTaomu3kRHjipN3cbzoVl+c5X
+M/OnNP08C1WVhsapy/GvGZFa/PUysPqCacprK4FKkJH3WThZ7Z25SkTa+/zyiTO1
+QiJBcXiNYrgyuzuicGpTiU0SStERnA==
+=HVM3
+-----END PGP SIGNATURE-----
+
+--gL1+kZGNyJIUcrAQ--
 
