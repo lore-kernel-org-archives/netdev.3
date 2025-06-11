@@ -1,37 +1,36 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A0A227E8F
-	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 06:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1411428FD
+	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 06:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749623462; cv=none; b=GrwHkqj9BCAXSFc8XFAr1bvawGsE7tjB/SQHp0rj2hreV+AhdHr5Byndq9MHuJWpY3HEynmdSfnIPf2Pk4iA2K2DbqxywVmX1NbU15V7dPRobx4K73W3xqzJGqwGVSvBjCgeQtBkvuOUYOYh6ffdiexQJI3ugqREVFWxVusHpWM=
+	t=1749623462; cv=none; b=f256PfqEL4ExFoTHvLSmFxKwV/+pUcXcQhuPJOfyaClNiuycXfELeFIxwjRwB1zDS5gYe8hdYCNRl0LiMINooXAQhgF01czy0XZPafCxO7BVUJlKk1xDrQnuOezx2bz3N6u90B/OdNVBB748w8MuAi7pq0v1C1ax7zIagwp0V4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749623462; c=relaxed/simple;
-	bh=L0QDqvP7LYf3a7HP40O4D/9HzWhTu21fcJ9OM8avD+c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AyRX9foDlqjqSDBUJKfZQJswCjI0asccyq83yLXV9WOag1A7Qe82nXNwsqZFXvHLSS03g9Z5TqD9P3/zEQ3d5QYp4i0S5pPLY74sFkFkhzvakWFeMbpMKe/x9O/4njPmrGBJUCTcCk0vTCXFgHvh0f04bZFkjedKRGZyEe6VuSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=ZDndOvjA; arc=none smtp.client-ip=203.29.241.158
+	bh=WBNH4L5hDQ4xX/RLafEdt0CMbfj6IFfzoJ1cza8J9ms=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZwXu7NaJPcSs5kFLxjmBUoHrXg0XoFbQpZUZSF/2JIhE74vq2DjSC3v54ujFkUVs4XzwwLGcl2Tm1Wmq3XIn+XGzClWQW/+7EYN2/mYhI7DVG8VS8upEMI7M36qN6MePCCkjcSNsV6sbpvXOIHE2D9xnjWJzQtnjA2JQJtTXK0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=isK/HPGe; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="ZDndOvjA"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="isK/HPGe"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1749623458;
-	bh=bpplyrufTPAEz0szVkPuhXMUOEK92m/zleybUILmNWU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ZDndOvjASkQ+AjMok8sgFDtg66weRXbcczWUANRT8a7t6+gFrNr0INdcYBNX2+lV/
-	 dgCaRbLOpGzo3BG/WshoHDLc2F/20Kpy2RQfv69+PJFveU6zwrzDo8lRHxg3Ex4ez5
-	 3tfJhfesoC63k4Kp+lfLh5jt7D8wNyeiK2BsNbZNrnod23IkYy1X5/Qf2oRgHz8HtO
-	 xJABG8oBW+RaslYjy2WAeV81b6cNClSZ89Cj3zAYO9e+yt13zHUxibEwvnGQ1wUW1I
-	 qt5PbgnpnSiiG1wADSZw/dCA2XLm/GQArAn1MooOUuAQMKGO7yWUva2RKxxx9jh1Zy
-	 OyzJs32T9bnoA==
+	d=codeconstruct.com.au; s=2022a; t=1749623457;
+	bh=9HTZYOtLbn3hE7mHuNjiywNmhFd2Sw3QxLpZHg8L3AU=;
+	h=From:Subject:Date:To:Cc;
+	b=isK/HPGewrNpJc2HBz72Iml9hpdIxKKl5H7xUsYJ3DkmB/FJFeZ0bU+on+ISMW6r+
+	 0d2w0k0StrIjRXS6EAMtVoKbh8O/J5DzD5vbzhMSroTw8Qt67CQ9R/5EDoulK2YAqO
+	 6mUZjE/RJMENdYVC4oSPiA683tZyio467axzvM8NVmOSjALk3Wr6Q8lAdioWSNNUxD
+	 7OeShpN0eg1NhIiGFF4327NB+aNIP+hRQcRGFoLW7qO/OnQh/2Xnfc1chuYwr+wXL2
+	 o/zmHHcu03OYfPMEnGpZsXJpwoSB8pHmt1O7ER7U+2DAQsp4fLzI7LWgoBlsydDf/x
+	 QuYBye4W9DEJw==
 Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id EC2DF67DDD; Wed, 11 Jun 2025 14:30:58 +0800 (AWST)
+	id B47F467A3E; Wed, 11 Jun 2025 14:30:57 +0800 (AWST)
 From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Wed, 11 Jun 2025 14:30:31 +0800
-Subject: [PATCH net-next 04/13] net: mctp: test: Add an addressed device
- constructor
+Subject: [PATCH net-next 00/13] net: mctp: Add support for gateway routing
+Date: Wed, 11 Jun 2025 14:30:27 +0800
+Message-Id: <20250611-dev-forwarding-v1-0-6b69b1feb37f@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,9 +39,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250611-dev-forwarding-v1-4-6b69b1feb37f@codeconstruct.com.au>
-References: <20250611-dev-forwarding-v1-0-6b69b1feb37f@codeconstruct.com.au>
-In-Reply-To: <20250611-dev-forwarding-v1-0-6b69b1feb37f@codeconstruct.com.au>
+X-B4-Tracking: v=1; b=H4sIAIMiSWgC/x3MQQqEMAxA0atI1gbSqhS9irhwbKrZxCEVRxDvP
+ sXlW/x/Q2YTzjBUNxifkmXXAldXsGyzrowSi8GT76jzhJFPTLv9ZouiK1Jwrg9NG+iToERf4yT
+ XOxxB+UDl64Dpef6wOdUnagAAAA==
+X-Change-ID: 20250520-dev-forwarding-0711973470bf
 To: Matt Johnston <matt@codeconstruct.com.au>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -50,103 +50,66 @@ To: Matt Johnston <matt@codeconstruct.com.au>,
 Cc: netdev@vger.kernel.org
 X-Mailer: b4 0.14.2
 
-Upcoming tests will check semantics of hardware addressing, which
-require a dev with ->addr_len != 0. Add a constructor to create a
-MCTP interface using a physically-addressed bus type.
+This series adds a gatweay route type for the MCTP core, allowing
+non-local EIDs as the match for a route.
+
+Example setup using the mctp tools:
+
+    mctp route add 9 via mctpi2c0
+    mctp neigh add 9 dev mctpi2c0 lladdr 0x1d
+    mctp route add 10 gw 9
+
+- will route packets to eid 10 through mctpi2c0, using a dest lladdr
+of 0x1d (ie, that of the directly-attached eid 9).
+
+The core change to support this is the introduction of a struct
+mctp_dst, which represents the result of a route lookup. Since this
+involves a bit of surgery through the routing code, we add a few tests
+along the way.
+
+We're introducing an ABI change in the new RTM_{NEW,GET,DEL}ROUTE
+netlink formats, with the support for a RTA_GATEWAY attribute. Because
+we need a network ID specified to fully-qualify a gateway EID, the
+RTA_GATEWAY attribute carries the (net, eid) tuple in full:
+
+    struct mctp_fq_addr {
+        unsigned int net;
+        mctp_eid_t eid;
+    }
+
+Of course, any questions, comments etc are most welcome.
 
 Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
 ---
- net/mctp/test/utils.c | 20 ++++++++++++++++++--
- net/mctp/test/utils.h |  7 +++++++
- 2 files changed, 25 insertions(+), 2 deletions(-)
+Jeremy Kerr (13):
+      net: mctp: don't use source cb data when forwarding, ensure pkt_type is set
+      net: mctp: separate routing database from routing operations
+      net: mctp: separate cb from direct-addressing routing
+      net: mctp: test: Add an addressed device constructor
+      net: mctp: test: Add extaddr routing output test
+      net: mctp: test: move functions into utils.[ch]
+      net: mctp: test: add sock test infrastructure
+      net: mctp: test: Add initial socket tests
+      net: mctp: pass net into route creation
+      net: mctp: remove routes by netid, not by device
+      net: mctp: allow NL parsing directly into a struct mctp_route
+      net: mctp: add gateway routing support
+      net: mctp: test: Add tests for gateway routes
 
-diff --git a/net/mctp/test/utils.c b/net/mctp/test/utils.c
-index 565763eb02114be8fd2a097fe0fe391d8f4bd2ae..26dce14dc7f246f03ff66e5b84274b33c48baf0e 100644
---- a/net/mctp/test/utils.c
-+++ b/net/mctp/test/utils.c
-@@ -26,19 +26,22 @@ static void mctp_test_dev_setup(struct net_device *ndev)
- 	ndev->type = ARPHRD_MCTP;
- 	ndev->mtu = MCTP_DEV_TEST_MTU;
- 	ndev->hard_header_len = 0;
--	ndev->addr_len = 0;
- 	ndev->tx_queue_len = DEFAULT_TX_QUEUE_LEN;
- 	ndev->flags = IFF_NOARP;
- 	ndev->netdev_ops = &mctp_test_netdev_ops;
- 	ndev->needs_free_netdev = true;
- }
- 
--struct mctp_test_dev *mctp_test_create_dev(void)
-+static struct mctp_test_dev *__mctp_test_create_dev(unsigned short lladdr_len,
-+						    const unsigned char *lladdr)
- {
- 	struct mctp_test_dev *dev;
- 	struct net_device *ndev;
- 	int rc;
- 
-+	if (WARN_ON(lladdr_len > MAX_ADDR_LEN))
-+		return NULL;
-+
- 	ndev = alloc_netdev(sizeof(*dev), "mctptest%d", NET_NAME_ENUM,
- 			    mctp_test_dev_setup);
- 	if (!ndev)
-@@ -46,6 +49,8 @@ struct mctp_test_dev *mctp_test_create_dev(void)
- 
- 	dev = netdev_priv(ndev);
- 	dev->ndev = ndev;
-+	ndev->addr_len = lladdr_len;
-+	dev_addr_set(ndev, lladdr);
- 
- 	rc = register_netdev(ndev);
- 	if (rc) {
-@@ -61,6 +66,17 @@ struct mctp_test_dev *mctp_test_create_dev(void)
- 	return dev;
- }
- 
-+struct mctp_test_dev *mctp_test_create_dev(void)
-+{
-+	return __mctp_test_create_dev(0, NULL);
-+}
-+
-+struct mctp_test_dev *mctp_test_create_dev_lladdr(unsigned short lladdr_len,
-+						  const unsigned char *lladdr)
-+{
-+	return __mctp_test_create_dev(lladdr_len, lladdr);
-+}
-+
- void mctp_test_destroy_dev(struct mctp_test_dev *dev)
- {
- 	mctp_dev_put(dev->mdev);
-diff --git a/net/mctp/test/utils.h b/net/mctp/test/utils.h
-index df6aa1c03440922c18eec337b220b8428d1c684e..c702f4a6b5ff9f2de06f6a6bfee0c3653abfdefd 100644
---- a/net/mctp/test/utils.h
-+++ b/net/mctp/test/utils.h
-@@ -3,6 +3,8 @@
- #ifndef __NET_MCTP_TEST_UTILS_H
- #define __NET_MCTP_TEST_UTILS_H
- 
-+#include <uapi/linux/netdevice.h>
-+
- #include <kunit/test.h>
- 
- #define MCTP_DEV_TEST_MTU	68
-@@ -10,11 +12,16 @@
- struct mctp_test_dev {
- 	struct net_device *ndev;
- 	struct mctp_dev *mdev;
-+
-+	unsigned short lladdr_len;
-+	unsigned char lladdr[MAX_ADDR_LEN];
- };
- 
- struct mctp_test_dev;
- 
- struct mctp_test_dev *mctp_test_create_dev(void);
-+struct mctp_test_dev *mctp_test_create_dev_lladdr(unsigned short lladdr_len,
-+						  const unsigned char *lladdr);
- void mctp_test_destroy_dev(struct mctp_test_dev *dev);
- 
- #endif /* __NET_MCTP_TEST_UTILS_H */
+ include/net/mctp.h         |  52 +++-
+ include/uapi/linux/mctp.h  |   8 +
+ net/mctp/af_mctp.c         |  62 ++---
+ net/mctp/route.c           | 563 ++++++++++++++++++++++++++++--------------
+ net/mctp/test/route-test.c | 604 +++++++++++++++++++++++++++++----------------
+ net/mctp/test/sock-test.c  | 229 +++++++++++++++++
+ net/mctp/test/utils.c      | 196 ++++++++++++++-
+ net/mctp/test/utils.h      |  44 ++++
+ 8 files changed, 1307 insertions(+), 451 deletions(-)
+---
+base-commit: 0097c4195b1d0ca57d15979626c769c74747b5a0
+change-id: 20250520-dev-forwarding-0711973470bf
 
+Best regards,
 -- 
-2.39.5
+Jeremy Kerr <jk@codeconstruct.com.au>
 
