@@ -1,77 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA96E24729E;
-	Wed, 11 Jun 2025 21:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D54A254875;
+	Wed, 11 Jun 2025 21:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749678008; cv=none; b=CVhujg4skSxcZbvQ721poF5I+fBCYpmv6OYYey3PqwZ2OWOgqpNcgAXL758zvvTex4R/Pe+Tx2N7Ke2mVURyYvERfoet3sRTggjexuLY2zeBFNMN3PwoIWvG3nl90najvhdyU9FIV4+ioFPbFQvQ5JLM46gEf/ISlwByudUu6rU=
+	t=1749678015; cv=none; b=cwEB6jFfdMCpah2yX7SWyNjm41Zj7t7wp6jfLQzahqc2TIFoyThd0cDNMeMxBY834MstkHxLxp9206/aOLeQ2QseGGAMyYeoXLetLqzEfPrFCb8hnv58ZQGlvhXhJCJNxtY5IkLeAALN+7tu/++A04kN1iOrH4NDMdPK/Bg+cfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749678008; c=relaxed/simple;
-	bh=Y+7SL6a/uxFt7I+KV9WCZREo8uPTpjZfddI9p4MFulM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TNPGdASswUjjN6sg8acFS8UB+jjzjZRe6swlTcLS5tefAuvAOXVvQ5UT3zr+KlWBN+Gb4elrztONKCHQkY5YCi2Sm3qUngf3K7eo8aIo1/5SMh7Y6foTKCsspJp9zvlf2VM2/rroT5xtYaoFDOMmXHX3XuFXfqZ9L6aapEBxER0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iUvJI7S5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749678015; c=relaxed/simple;
+	bh=vvy6FSk8l33Uu1F3F45El0IAo4jPqdVFkYUIUcguYQA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GJ0ZEfiDW4rtAHFDHXBfvSg9Veibgo2eaLwv9XmIrWnCuhkas3xN9EGWoWWX9NtbDG7xo7h051O8TAyEDCuPho09vIOVEt/tW6vZt9dsQSimi+JHCyE2fa5usoN4zsA3AdG+8HVxNIElH157aRTMl8ywsvquWRLrRdkG+oZ4fBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UxjNGa0b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iUvJI7S5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 225AEC4CEE3;
-	Wed, 11 Jun 2025 21:40:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UxjNGa0b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24B5C4CEE3;
+	Wed, 11 Jun 2025 21:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749678008;
-	bh=Y+7SL6a/uxFt7I+KV9WCZREo8uPTpjZfddI9p4MFulM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=iUvJI7S5GJR10XfPc7psiaRJE6zOte5It8SuYmRBOFsKRfaQtt3mp+oT4JYRoG13W
-	 spgscnroKaG7h7Y3ligWv4j5DF80jd6EBRvhMQZsUjFaOc95VgSA04fd9uVu4L9XMm
-	 ikEZGmzH54wp8SrLLGsjc0e0ZA+1/d2zVFPvuUnFXdDTx1Tyx08oxLdE1LJOUNl/EH
-	 2IrFOR+O7EHpJzTIROxkKPUBhWfEkZFdgr7OVkA61o3KN3ZvIDNUrMYIC67uZ9PBJ0
-	 5/M1t4OezF2ZV6zbU8U5j8udBbEOgbK+5z5TuQwefHCiqf90OJzah/12CSznYmBIVS
-	 WDvYg5eBF8/6A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 71989380DBE9;
-	Wed, 11 Jun 2025 21:40:39 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1749678015;
+	bh=vvy6FSk8l33Uu1F3F45El0IAo4jPqdVFkYUIUcguYQA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=UxjNGa0beJItVVMaEM45Yf9geagTYTp4u6opx6O+drjXdAUth/BXlhC/Z7SXlXKlu
+	 4+9el668sdeSuCwxDzDwbPh4dj+afFlRvSC1UqGWRqXgIc2bJuuv6Huggzuup2CLof
+	 MOKmrwZxKwioYezl/DLPDPEwqkZvvSwmKvLpYKhV1xk/fifbIwuyXf8dthT9zCvRha
+	 QT6fJimA+DWQi8ldJ8etw7ajXCHmwnD+vrDaDhWHJZRZ1gaP4l66Y60SKcxWQN2M3+
+	 NeiH6zdW0JM1tn+ao5hVP9Kk4dswAttIpALY79WB2Cww90GqTJ+c4YOjCYqOOFkvZU
+	 mLUmRzsx7JZOg==
+Date: Wed, 11 Jun 2025 14:40:13 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Mark Bloch <mbloch@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Paolo Abeni
+ <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>,
+ <saeedm@nvidia.com>, <gal@nvidia.com>, <leonro@nvidia.com>,
+ <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net 7/9] net/mlx5e: Properly access RCU protected
+ qdisc_sleeping variable
+Message-ID: <20250611144013.300c79ea@kernel.org>
+In-Reply-To: <20250610151514.1094735-8-mbloch@nvidia.com>
+References: <20250610151514.1094735-1-mbloch@nvidia.com>
+	<20250610151514.1094735-8-mbloch@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/1] net: fman_memac: Don't use of_property_read_bool on
- non-boolean property managed
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174967803798.3496159.17632265399572187192.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Jun 2025 21:40:37 +0000
-References: <20250610114057.414791-1-alexander.stein@ew.tq-group.com>
-In-Reply-To: <20250610114057.414791-1-alexander.stein@ew.tq-group.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: madalin.bucur@nxp.com, sean.anderson@seco.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 10 Jun 2025 13:40:56 +0200 you wrote:
-> 'managed' is a non-boolean property specified in ethernet-controller.yaml.
-> Since commit c141ecc3cecd7 ("of: Warn when of_property_read_bool() is
-> used on non-boolean properties") this raises a warning. Use the
-> replacement of_property_present() instead.
+On Tue, 10 Jun 2025 18:15:12 +0300 Mark Bloch wrote:
+> qdisc_sleeping variable is declared as "struct Qdisc __rcu" and
+> as such needs proper annotation while accessing it.
 > 
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Without rtnl_dereference(), the following error is generated by smatch:
+
+sparse ?
+
 > 
-> [...]
+> drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40: warning:
+>   incorrect type in initializer (different address spaces)
+> drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    expected
+>   struct Qdisc *qdisc
+> drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    got struct
+>   Qdisc [noderef] __rcu *qdisc_sleeping
+> 
+> Fixes: 214baf22870c ("net/mlx5e: Support HTB offload")
 
-Here is the summary with links:
-  - [1/1] net: fman_memac: Don't use of_property_read_bool on non-boolean property managed
-    https://git.kernel.org/netdev/net-next/c/7781c4f70305
+I don't think this is a functional change? We don't treat silencing
+compiler warnings as fixes, not for sparse or W=1 warnings.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+> Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+> ---
+>  drivers/net/ethernet/mellanox/mlx5/core/en/qos.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
+> index f0744a45db92..2f32111210f8 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
+> @@ -374,7 +374,9 @@ void mlx5e_reactivate_qos_sq(struct mlx5e_priv *priv, u16 qid, struct netdev_que
+>  void mlx5e_reset_qdisc(struct net_device *dev, u16 qid)
+>  {
+>  	struct netdev_queue *dev_queue = netdev_get_tx_queue(dev, qid);
+> -	struct Qdisc *qdisc = dev_queue->qdisc_sleeping;
+> +	struct Qdisc *qdisc;
+> +
+> +	qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
+>  
+>  	if (!qdisc)
 
-
+nit: no new line between action and error check
