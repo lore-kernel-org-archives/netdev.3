@@ -1,127 +1,209 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742C4223338
-	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 20:54:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A325223338;
+	Wed, 11 Jun 2025 20:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749675245; cv=none; b=slZg6vXeR4ZmkvXhJrQgab/eOZ7y7JSIZ50vA31MDKU2Upv7m2J6V0mswUdeNMQHUagvlutSs/v0vp6/xLF01Oe1iNGerdctFtiqOEDUEhMlLrU5lMt+++BIyiubZXdocvIonrWITfso+GcahDgUV/1z3WxfHM06SiAUx7mLp0A=
+	t=1749675458; cv=none; b=eHJmCpYfoz6nI0dwFMGmPDB7xWAn97KxZPmmlLUt3w9d9cd8gMWsV7JdGjTfwQU9II07WxIGiVTxLmmgtyjBSnrNa7hQ568yxkVIilV/qu3HVF3QiynHSz/dQ0U1IJBlJVTy7UMRXOmQLrm/9mZATwbldl4iyHKBFq/dnfvIrP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749675245; c=relaxed/simple;
-	bh=AYq8n/v+tXT+VUaqslKMjVLnkmeNw2RH4xUUmbvnOTw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ftRkF8a6EZ+yl2XxF3piP3N3tOKBsIkPdA7ZbaX425aUgc0INp9WW4ZpR28yNd65mN5x4wc4oD6pjwQIgqvXWEmFYT1Y5cIqnQ149RC/dIVhWreZyBIioqqpOph4jtvMGDQ8pJLSucMVoHalN+cywB4WsR0OoOThHEoScolRD0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O8SLhoe2; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1749675458; c=relaxed/simple;
+	bh=j1MoG8vohMurbJ2zXOe7FjdHXD8BvCDW/R9FluYHUpk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ezye8ipgKRlrHU2VWws/q5+N4XRkYSgEXaK9HW4EtbnaL6ILC0aWTTTbo9dCFm7uDIprPYTYUDhJKixSxJJcSYvl2POpuLz/c8oNXmt8vNXkhLKjmKgIazjFo/ayM0ZZK38xZnvUSv4RwK/l7LXU8glzathtfDRoSW7DjXc75Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gtWpKYwz; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O8SLhoe2"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2357c61cda7so13775ad.1
-        for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 13:54:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749675244; x=1750280044; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+9ODZSh8S7aCPsxn2p/L7r5lbam9F8rTMEAJ1T+T72E=;
-        b=O8SLhoe2xdpv1TU4IcPMtxP24QwZe9fL667FTUvmw2Rx6aF65AsfHenEAOX3DMeOl1
-         CbysfEvve6rnPfDTFXzMENge1ywPBti1NOvNRMKWN7rlhSDlaxqa3CYc26H14XZAl3/h
-         7CfOT9cqDOvXMVWaMk1beKr4vbbWdyK8Vy1Elzb7ShqnM4X7vB0g5DaWrsrsIPhzorY+
-         +7YE1XQ86uMn8EAJS+po9NIpsfFIQgBMXKKChuGEHwwdAbQoUfwkhY5w61V7dYIbsL6n
-         hxmkhYTPKm/JYH2rD95qJ/A3pedYP5LAf8Nt8UjbtlaDXJjHt7+TSXmzAF8sgwExkiOU
-         9YVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749675244; x=1750280044;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+9ODZSh8S7aCPsxn2p/L7r5lbam9F8rTMEAJ1T+T72E=;
-        b=N45D4qP2ara7FHfFnI2pPowWJ7cxjW3iOA2n6iZJ8rLTZRUWOHagogC8bxn2GKE/Vy
-         aQ9cLtfBt7vz8bn3pZ5gkH4j18Dkckqbhq5rssOUMcQdsCJLnWhbGmiaci82GHapllG3
-         eV9M6oQ+Yq+jSRCpEWpQ18+rHykPONvxMQLL3NHTBKB9V2exEWX8ey3yc6cFPA6mm0WU
-         MeBMGI0TiYYYydUWlpR0q2F0Im6KCaGlKk5WEGc9nuPXWzb/rEuj5ywQq2Ff2k+mVjLq
-         tq+auTWKMosFCxzOnh2Fx2P8R/4G35enm7bWJvC7DXzWRK7o7XA6gCCqXrjpbtc3pJCs
-         XQ/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVBL8N3w4KYDMYBz10SLpKyM9RyV4hTmbsMunfgw8mEXAFDj1mFGnLjOaf6/5Q42UE6lc5NZMw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yza9JVRrlRffPAgjFhYJB55CNlKaSugI1Qrngtu/5royRlwLZXk
-	o31/s+X0aIlA7mlgIxHv/f0rvCzRINY50jVKUC2F3RI60R6L0iToD6c4jN+quOoQP03jNPrp1DY
-	3zxh/IyuPAJ9FPhKgdIIhLXrDnGvus+wM41g7qZVG
-X-Gm-Gg: ASbGncusCIx3DGeL3vcxhlg5WYnUH3A5Auxu4xxgnMLrm9SNLqIcg9xKgiYEeRUYA1s
-	unQhpHfHo2wUktOu58ejQPRcQEzcmgzLTfauE2B/n/PqzC1W/phpO5SfV6FhJhy49lQoU9743g3
-	2R1uO2rLH++4r+G2MuRdY1ObRXp/9xNDsGlrsZJ9CFq4Pq5N9K5gK6UR4LbqP2eDKO7gzC920C
-X-Google-Smtp-Source: AGHT+IGNxlwvOT/63E8WfH8fOvLo/kbNgZNIZ0H/0cRMTD73xz3o38k6hHpr4p4XXDFuDJGxNZhFeuEoTw2UanOyEww=
-X-Received: by 2002:a17:903:4b03:b0:224:6c8:8d84 with SMTP id
- d9443c01a7336-2364dc4e0d5mr581215ad.4.1749675243498; Wed, 11 Jun 2025
- 13:54:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gtWpKYwz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749675457; x=1781211457;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=j1MoG8vohMurbJ2zXOe7FjdHXD8BvCDW/R9FluYHUpk=;
+  b=gtWpKYwzPi2omaj4ALY+aVWqBrVojKJiCc1X0nHNi9iUSgrkh8SPHjj9
+   rrCO26oBOzIQwhpk7GIhW8AqraVPCrY8nguViAD/QC/Ch8SdQbsOG+6gM
+   vO7z367Yx4tuKf6uGvjmqG0fjiP0CatEsQU3TZzw42tCFdzeUUzCJi6Rx
+   A+SpxEp9sxk9jQZYi6CtocWC8+WZcf0PmESUTYUNDW6iER6mL6gpmgr+p
+   TQWGz7e/4X68TX+B8/EHfTjJ851qtDFwFDH69PuIE+2j/qZASJM4rzD+C
+   BE1YzPI/6nstbXM7uVYDNSe9GAkC9rlFLM/x9oU4SNB2W4KiyVEgRyUL1
+   g==;
+X-CSE-ConnectionGUID: 864CMKrQRsWINuaqy9fU9Q==
+X-CSE-MsgGUID: Cb4ytaATSce5Z/gXCkmRew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="62447049"
+X-IronPort-AV: E=Sophos;i="6.16,229,1744095600"; 
+   d="scan'208";a="62447049"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 13:57:36 -0700
+X-CSE-ConnectionGUID: gvyO/YbKQXirQ68wnknz1w==
+X-CSE-MsgGUID: grM3MlK7RBmVp9XuSo07CA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,229,1744095600"; 
+   d="scan'208";a="152579700"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 11 Jun 2025 13:57:33 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uPSVm-000ArK-1y;
+	Wed, 11 Jun 2025 20:57:30 +0000
+Date: Thu, 12 Jun 2025 04:56:42 +0800
+From: kernel test robot <lkp@intel.com>
+To: Florian Fainelli <florian.fainelli@broadcom.com>,
+	netdev@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 2/2] net: bcmasp: enable GRO software interrupt
+ coalescing by default
+Message-ID: <202506120428.xh54jIu7-lkp@intel.com>
+References: <20250610173835.2244404-3-florian.fainelli@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250609043225.77229-1-byungchul@sk.com> <20250609043225.77229-2-byungchul@sk.com>
- <20250609123255.18f14000@kernel.org>
-In-Reply-To: <20250609123255.18f14000@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 11 Jun 2025 13:53:51 -0700
-X-Gm-Features: AX0GCFs86j-gs5jhCZgm2IbPRLCZG610-Y9bqwTkXzjafc_yCgYbSIAlkglSp4o
-Message-ID: <CAHS8izP2Y4FMfHyTU6u5NRT45raM9isXJZPY4LMC8c03dGUPJQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/9] netmem: introduce struct netmem_desc
- mirroring struct page
-To: Jakub Kicinski <kuba@kernel.org>, David Howells <dhowells@redhat.com>
-Cc: Byungchul Park <byungchul@sk.com>, willy@infradead.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel_team@skhynix.com, 
-	ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org, 
-	akpm@linux-foundation.org, davem@davemloft.net, john.fastabend@gmail.com, 
-	andrew+netdev@lunn.ch, asml.silence@gmail.com, toke@redhat.com, 
-	tariqt@nvidia.com, edumazet@google.com, pabeni@redhat.com, saeedm@nvidia.com, 
-	leon@kernel.org, ast@kernel.org, daniel@iogearbox.net, david@redhat.com, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org, 
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, vishal.moola@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250610173835.2244404-3-florian.fainelli@broadcom.com>
 
-On Mon, Jun 9, 2025 at 12:32=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Mon,  9 Jun 2025 13:32:17 +0900 Byungchul Park wrote:
-> > To simplify struct page, the page pool members of struct page should be
-> > moved to other, allowing these members to be removed from struct page.
-> >
-> > Introduce a network memory descriptor to store the members, struct
-> > netmem_desc, and make it union'ed with the existing fields in struct
-> > net_iov, allowing to organize the fields of struct net_iov.
->
-> What's the intended relation between the types?
->
-> netmem_ref exists to clearly indicate that memory may not be readable.
-> Majority of memory we expect to allocate from page pool must be
-> kernel-readable. What's the plan for reading the "single pointer"
-> memory within the kernel?
->
-> I think you're approaching this problem from the easiest and least
-> relevant direction. Are you coordinating with David Howells?
+Hi Florian,
 
-FWIW I did point David to this work in a tangentially related thread:
+kernel test robot noticed the following build errors:
 
-https://lore.kernel.org/netdev/CAHS8izMMU8QZrvXRiDjqwsBg_34s+dhvSyrU7XGMBuP=
-F6eWyTA@mail.gmail.com/
+[auto build test ERROR on net-next/main]
 
-I think yes it would be good to get a reviewed-by or acked-by from
-Matthew or David to show that this approach is in line with their
-plans?
+url:    https://github.com/intel-lab-lkp/linux/commits/Florian-Fainelli/net-bcmasp-Utilize-napi_complete_done-return-value/20250611-140255
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20250610173835.2244404-3-florian.fainelli%40broadcom.com
+patch subject: [PATCH net-next 2/2] net: bcmasp: enable GRO software interrupt coalescing by default
+config: parisc-randconfig-002-20250612 (https://download.01.org/0day-ci/archive/20250612/202506120428.xh54jIu7-lkp@intel.com/config)
+compiler: hppa-linux-gcc (GCC) 10.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250612/202506120428.xh54jIu7-lkp@intel.com/reproduce)
 
-From my end I tried to review to:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506120428.xh54jIu7-lkp@intel.com/
 
-1. Make sure the changes are compatible with net_iov/netmem_ref.
-2. Make sure what's implemented here is in line with the memdesc
-effort Matthew lists here[1]. In particular the netmem_desc struct
-introduced here is very similar to the zpdesc and ptdesc structs
-mentioned as an example in [1].
+All errors (new ones prefixed by >>):
 
-[1] https://kernelnewbies.org/MatthewWilcox/Memdescs/Path
+   drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c: In function 'bcmasp_interface_create':
+>> drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c:1282:36: error: passing argument 1 of 'netdev_sw_irq_coalesce_default_on' from incompatible pointer type [-Werror=incompatible-pointer-types]
+    1282 |  netdev_sw_irq_coalesce_default_on(dev);
+         |                                    ^~~
+         |                                    |
+         |                                    struct device *
+   In file included from include/linux/etherdevice.h:21,
+                    from drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c:8:
+   include/linux/netdevice.h:93:59: note: expected 'struct net_device *' but argument is of type 'struct device *'
+      93 | void netdev_sw_irq_coalesce_default_on(struct net_device *dev);
+         |                                        ~~~~~~~~~~~~~~~~~~~^~~
+   cc1: some warnings being treated as errors
 
---=20
-Thanks,
-Mina
+
+vim +/netdev_sw_irq_coalesce_default_on +1282 drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+
+  1198	
+  1199	struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
+  1200						    struct device_node *ndev_dn, int i)
+  1201	{
+  1202		struct device *dev = &priv->pdev->dev;
+  1203		struct bcmasp_intf *intf;
+  1204		struct net_device *ndev;
+  1205		int ch, port, ret;
+  1206	
+  1207		if (of_property_read_u32(ndev_dn, "reg", &port)) {
+  1208			dev_warn(dev, "%s: invalid port number\n", ndev_dn->name);
+  1209			goto err;
+  1210		}
+  1211	
+  1212		if (of_property_read_u32(ndev_dn, "brcm,channel", &ch)) {
+  1213			dev_warn(dev, "%s: invalid ch number\n", ndev_dn->name);
+  1214			goto err;
+  1215		}
+  1216	
+  1217		ndev = alloc_etherdev(sizeof(struct bcmasp_intf));
+  1218		if (!ndev) {
+  1219			dev_warn(dev, "%s: unable to alloc ndev\n", ndev_dn->name);
+  1220			goto err;
+  1221		}
+  1222		intf = netdev_priv(ndev);
+  1223	
+  1224		intf->parent = priv;
+  1225		intf->ndev = ndev;
+  1226		intf->channel = ch;
+  1227		intf->port = port;
+  1228		intf->ndev_dn = ndev_dn;
+  1229		intf->index = i;
+  1230	
+  1231		ret = of_get_phy_mode(ndev_dn, &intf->phy_interface);
+  1232		if (ret < 0) {
+  1233			dev_err(dev, "invalid PHY mode property\n");
+  1234			goto err_free_netdev;
+  1235		}
+  1236	
+  1237		if (intf->phy_interface == PHY_INTERFACE_MODE_INTERNAL)
+  1238			intf->internal_phy = true;
+  1239	
+  1240		intf->phy_dn = of_parse_phandle(ndev_dn, "phy-handle", 0);
+  1241		if (!intf->phy_dn && of_phy_is_fixed_link(ndev_dn)) {
+  1242			ret = of_phy_register_fixed_link(ndev_dn);
+  1243			if (ret) {
+  1244				dev_warn(dev, "%s: failed to register fixed PHY\n",
+  1245					 ndev_dn->name);
+  1246				goto err_free_netdev;
+  1247			}
+  1248			intf->phy_dn = ndev_dn;
+  1249		}
+  1250	
+  1251		/* Map resource */
+  1252		bcmasp_map_res(priv, intf);
+  1253	
+  1254		if ((!phy_interface_mode_is_rgmii(intf->phy_interface) &&
+  1255		     intf->phy_interface != PHY_INTERFACE_MODE_MII &&
+  1256		     intf->phy_interface != PHY_INTERFACE_MODE_INTERNAL) ||
+  1257		    (intf->port != 1 && intf->internal_phy)) {
+  1258			netdev_err(intf->ndev, "invalid PHY mode: %s for port %d\n",
+  1259				   phy_modes(intf->phy_interface), intf->port);
+  1260			ret = -EINVAL;
+  1261			goto err_free_netdev;
+  1262		}
+  1263	
+  1264		ret = of_get_ethdev_address(ndev_dn, ndev);
+  1265		if (ret) {
+  1266			netdev_warn(ndev, "using random Ethernet MAC\n");
+  1267			eth_hw_addr_random(ndev);
+  1268		}
+  1269	
+  1270		SET_NETDEV_DEV(ndev, dev);
+  1271		intf->ops = &bcmasp_intf_ops;
+  1272		ndev->netdev_ops = &bcmasp_netdev_ops;
+  1273		ndev->ethtool_ops = &bcmasp_ethtool_ops;
+  1274		intf->msg_enable = netif_msg_init(-1, NETIF_MSG_DRV |
+  1275						  NETIF_MSG_PROBE |
+  1276						  NETIF_MSG_LINK);
+  1277		ndev->features |= NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM | NETIF_F_SG |
+  1278				  NETIF_F_RXCSUM;
+  1279		ndev->hw_features |= ndev->features;
+  1280		ndev->needed_headroom += sizeof(struct bcmasp_pkt_offload);
+  1281	
+> 1282		netdev_sw_irq_coalesce_default_on(dev);
+  1283	
+  1284		return intf;
+  1285	
+  1286	err_free_netdev:
+  1287		free_netdev(ndev);
+  1288	err:
+  1289		return NULL;
+  1290	}
+  1291	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
