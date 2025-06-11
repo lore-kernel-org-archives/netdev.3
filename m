@@ -1,27 +1,27 @@
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEA523E346
-	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 08:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CF023ABAF
+	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 08:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749631052; cv=none; b=HaW7lxyXmdSvFFLJ37FBy2lDw7KT40dKfYPz+3mUAizaLYnAQBojeR4NGm6mxnMrGchxx+lTMqORHgESu8zZxR0PCTQxYfeXaoFbpoKU6GMz8NwsVUJmrJSxCtS8SUaF4LuiWKPY/JgSzKvFB2BORNVPd726As7k0znp0QBI+fs=
+	t=1749631052; cv=none; b=R7TYYqgqMfiKgASux7BAgj/RSem5Yv07k4gaRZ0ACUTuic0vaw438Lf3IX0cKZTOCgwnlzTsyQu1esWuTlS4DLizvQzT+OQ9FDgMAM2UxjHXOZJFh755cp2sHjfW2VJn5XUX1LMBiqYn94xFyJOGeRwQ7sTX6T+WZJJc9Km6bFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749631052; c=relaxed/simple;
-	bh=DQsK4cZzEc2UGCY/gTL/Q/JDaY65KuGiCobp2nU9Rvo=;
+	bh=niS2teVaPDV5GBvziCefBB55Uuzt72qtQQRoztZyfQA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tEUvfk2zyfqG0nTDIkhUwiGQp8YI/R2r+6TW1kjYoGBDjWRu/aKTzia5XgdLA1Wr5r/yhyTAXoxdqgpeMOwP/d6kM1tW1jqMtI7xzeGSk8BG+mFsphd3q0O7dAaIx8xfT1McjebE4Jk+DBvZRrOlx5kID3FPHnRGTdUY3IEg5pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.207.19.206
+	 MIME-Version; b=GFVV6tzG0E0he6b8huiftz0hYIkz7E+Q1G4HBcql1pkuRIB0wOxxRChxG1wCBlLUxj6E5vSWRIzxanFMwuGO9qqO39J1qMeVz4p0ty4R/sOCDpoJacmvBTfZt1fVabdyhBcoCBTTtWhJi50FEvjIRMYvGdfXG/YwiuWPsm2PCjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.204.34.129
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: zesmtpgz1t1749630981t8922a70a
-X-QQ-Originating-IP: qRgK3xgu6HukfSVDOhGrNGzOhnxVkChrObbnOLBUkIw=
+X-QQ-mid: zesmtpgz1t1749630992td9f21fe9
+X-QQ-Originating-IP: 0BmRionrXgmzI6xW4yuGZZVREv/v61DLwqtJEQF2wrw=
 Received: from localhost.localdomain ( [36.20.60.58])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 11 Jun 2025 16:36:20 +0800 (CST)
+	id ; Wed, 11 Jun 2025 16:36:31 +0800 (CST)
 X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 4299090505336962142
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 8487931790450883411
 EX-QQ-RecipientCnt: 9
 From: Mengyuan Lou <mengyuanlou@net-swift.com>
 To: netdev@vger.kernel.org
@@ -33,9 +33,9 @@ Cc: kuba@kernel.org,
 	linglingzhang@trustnetic.com,
 	jiawenwu@net-swift.com,
 	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net-next 07/12] net: txgbevf: Support Rx and Tx process path
-Date: Wed, 11 Jun 2025 16:35:54 +0800
-Message-Id: <20250611083559.14175-8-mengyuanlou@net-swift.com>
+Subject: [PATCH net-next 12/12] net: ngbevf: add phylink check flow
+Date: Wed, 11 Jun 2025 16:35:59 +0800
+Message-Id: <20250611083559.14175-13-mengyuanlou@net-swift.com>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20250611083559.14175-1-mengyuanlou@net-swift.com>
 References: <20250611083559.14175-1-mengyuanlou@net-swift.com>
@@ -48,117 +48,111 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpgz:net-swift.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: N42p3T2RvIR94hx2K9WbOwyBZ+aIIfTIBBLFtRNuwa65ACfNt0AaMvVc
-	lPbFr++siqjmUt6+AB1ULk/YtdimxUuCtnl96b2XwUjKm5AA8G2bXVgAM1j5d+455LOiwo/
-	5y5NHCHtmWu9HOu9NlvbmEZg3X8zuhJvPKr1w1iHbvzn8zjg4Y5jV0CZhZo/oHqVLCawV74
-	4Zow4iZEPgHl5ZGG11vlDSKMNQRd5ZCESfmEltUW8xvWgGabESdzw6CKuurgUTcrO8K07U8
-	D+46LYJwFGeQdq4kJfIscCODHSpKM7xHdsqEZMoev1BGzwhpO1EWYhg2D7GO/xNzRbZJvOl
-	/kAW3x9fQkPiulPAjo14EMgq6P+azSnO4sSU/ikHsepGRJ6wk9oSlLfou4iNdG0xkGlkMQp
-	ouyjUAHOYkUe4dC8VXnm8dSCpFjW3agstnH5Bb89ibcX952z4cHKS+sc0//ZOLZ8+kBzrng
-	xg51hWl4KkXyqAIcYsJH8Hg+VmFuKqgbXbTobVfbaU91zPPSakFaPongcHCKncXgn4E9GeW
-	vymNBtxDJ21b5ZVm/hN2q4tOoAfRHn5bBNpDgHuljaG0LUAV08o0IokAHVUgjg8DG056vey
-	i5ksD36MSTOIQ1c9r3COiBCepggi6qGLf0o2W5LH0UbMZh9x+yRrFgQaznkAHYP2o3XtvFe
-	960sGa7gBfE4idOBlB+F8P6+xbuD207WCkThMVySIDYUOcWGugKx/wBrzGhaFknqc9D2IwK
-	C9fDMfv3RI2PlM7mLbsLDnpRTM1ZILaHEyU03GbGA9LeoGVQA4I51glaHKGMUtRBaCKRxNz
-	ZkkY4jULU+3z88Dwf51bylDL0LS8fvd1RdlUHffq9dvDjI6JdhveqOBcMsGDyOJ5P225OoN
-	VKFoe9BnFM+Lj8XEVICbKou83a+jo7BfjjRhMj4R2YHsK9zZQcYbrHXN0i6jAqS80AjlPTm
-	BLgknRoikX1ltzAmBPcMqzaHrt5QVfhjBgsAlJgyA/KS891HEXTtiBsqS+hepTPVIsE8i+K
-	hPZCrpIerPlTYUr2MwAxiJ07ri4Z2LffYS9FcKb/9RnF0fh7da0BO/KTlMkeULJlX/LQp40
-	9lywX/uYZe9rzc1wtx/P5tA4CSDxbmKnHW9IjZA3oXnb3t6JVjglD28ME5EZaoJcg==
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+X-QQ-XMAILINFO: MTZmBNp7l7aiX+2nbRLP9qERGsPIhWrT7f7xMkPOPgClSR/7T20XgifO
+	xQsyP8Vw7EGEDCswABsJf3bo7IuMSt3rxZ9ACKdIPQZ1PIWfoa4s8lMERGmQpFpLnxTsUVg
+	pDE/LE7RXrWmi7+5T4MAIRRJROzAJ/Ds3hw5ilsaFMiWCjIMF9rWhXYlY+wH97KJ+BBPDmQ
+	PJUq6+qdC1nLKwXFUzzTOrXYX1EEO0BY2Ql4VNIZ2m7omztGYoMlx6cGekavafG/nqDFtgE
+	v1abk4gzyJtaeYmnEotZTwEAULjANBkgGK07VQ6xiyVMQ/+GxQ5/VeRgjfXwWO9RNcOqW6L
+	EjSbRlWQi2hD7xJxCcV6yC7hDWRqin17FAYjFx4ey6NfivzzfwYflrXg3kebuOqAuy7Ufg9
+	GD9Bmx7Vuz+vWl9NZpFSaHZeI59Pa1SbguRY6ycYWBfpca4I1mysUfLapgz/BJzmbcfOaXC
+	v9n7j4DVi1Ia9C3z/92gRBmyUYUpC0bSCQ/BrDWVzblL03wc1Ytc4JrWGGuBbOCt3yRE3ZH
+	UURG/7NeirmOTeUbY02CwA5Ihjtr9zW/yy5FXt0J089aowOuVzbfDoe9vzMXi4hZDoUi1KE
+	OQvEv0H5TdE00ZJz62F/M+RczTum8rAJ/u7BrgvdNl2IWAzqO8kwpSlfsal3CAYLTfw7dgC
+	M2dUPbblYj3aBL6TciQsCITaxGtXJsp+phDHtkrTrBC38IeKWZOxy0WDNXzA1vw16tZ6Vwe
+	2QKoEhYofqu7Vr0vzZurrPaXdrZpduwBA5H7QgFHfSVMYN6mO/oYNjqlcB8bVHCuSIA219d
+	uafcmp6rQAOJxfZfr3UI6u5qE+7IPxUWydwX8Lqe5ziLhWMwIOi6u5GW14JIkiz5iaUYv4p
+	rh+uhLvcoXjW/WplB9/zeRjBGl7G23XPG8jQq/mh+Ae1klJzmRTCq9szAX6PTPqW8NnP1Y/
+	nnrVDJbwq1CtgCDhO8ADWC3PmVsrPmwxY82nyNcdKCSNm9wDvEX5gH0ZnBUJdza+lytihu8
+	4yHLDkbVVDMvpER9+Rqiymweli+PxeSbSuCqocJzkNOMcNPI/GMr2hK9lu6HVAd4Zc2ePoE
+	aJPJ0NwKGSRDQGkqpFBmaMizppq98Fs3dUkKAGgbFKCNa4j4DEcf+Z/nWDQ9+hxIeU5KQAQ
+	PAQ8
+X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
 X-QQ-RECHKSPAM: 0
 
-Improve the configuration of Rx and Tx ring.
-Setup and alloc resources.
-Configure Rx and Tx unit on hardware.
-Add .ndo_start_xmit support and start all queues.
+Add phylink support to wangxun 1G virtual functions.
+Get link status from pf in mbox, and if it is failed then
+check the vx_status, because vx_status switching is too slow.
 
 Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
 ---
- .../net/ethernet/wangxun/libwx/wx_vf_common.c | 25 ++++++++++++++++++-
- .../ethernet/wangxun/txgbevf/txgbevf_main.c   |  2 ++
- 2 files changed, 26 insertions(+), 1 deletion(-)
+ .../net/ethernet/wangxun/ngbevf/ngbevf_main.c | 50 +++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-index c01ff91a057d..51c93364aaf1 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-@@ -250,10 +250,14 @@ static void wxvf_irq_enable(struct wx *wx)
- static void wxvf_up_complete(struct wx *wx)
- {
- 	wx_configure_msix_vf(wx);
-+	smp_mb__before_atomic();
-+	wx_napi_enable_all(wx);
- 
- 	/* clear any pending interrupts, may auto mask */
- 	wr32(wx, WX_VXICR, U32_MAX);
- 	wxvf_irq_enable(wx);
-+	/* enable transmits */
-+	netif_tx_start_all_queues(wx->netdev);
- }
- 
- int wxvf_open(struct net_device *netdev)
-@@ -261,13 +265,31 @@ int wxvf_open(struct net_device *netdev)
- 	struct wx *wx = netdev_priv(netdev);
- 	int err;
- 
--	err = wx_request_msix_irqs_vf(wx);
-+	err = wx_setup_resources(wx);
- 	if (err)
- 		goto err_reset;
-+	wx_configure_vf(wx);
-+
-+	err = wx_request_msix_irqs_vf(wx);
-+	if (err)
-+		goto err_free_resources;
-+
-+	/* Notify the stack of the actual queue counts. */
-+	err = netif_set_real_num_tx_queues(netdev, wx->num_tx_queues);
-+	if (err)
-+		goto err_free_irq;
-+
-+	err = netif_set_real_num_rx_queues(netdev, wx->num_rx_queues);
-+	if (err)
-+		goto err_free_irq;
- 
- 	wxvf_up_complete(wx);
- 
- 	return 0;
-+err_free_irq:
-+	wx_free_irq(wx);
-+err_free_resources:
-+	wx_free_resources(wx);
- err_reset:
- 	wx_reset_vf(wx);
+diff --git a/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c b/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
+index a629b645d3a1..e5b7e1753213 100644
+--- a/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
++++ b/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
+@@ -120,6 +120,50 @@ static int ngbevf_sw_init(struct wx *wx)
  	return err;
-@@ -293,6 +315,7 @@ int wxvf_close(struct net_device *netdev)
- 
- 	wxvf_down(wx);
- 	wx_free_irq(wx);
-+	wx_free_resources(wx);
- 
- 	return 0;
  }
-diff --git a/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
-index 64f171423b23..448513cf882c 100644
---- a/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
-@@ -40,6 +40,7 @@ static const struct pci_device_id txgbevf_pci_tbl[] = {
- static const struct net_device_ops txgbevf_netdev_ops = {
- 	.ndo_open               = wxvf_open,
- 	.ndo_stop               = wxvf_close,
-+	.ndo_start_xmit         = wx_xmit_frame,
- 	.ndo_validate_addr      = eth_validate_addr,
- 	.ndo_set_mac_address    = wx_set_mac_vf,
- };
-@@ -261,6 +262,7 @@ static int txgbevf_probe(struct pci_dev *pdev,
+ 
++static const struct phylink_mac_ops ngbevf_mac_ops = {
++	.mac_config = wxvf_mac_config,
++	.mac_link_down = wxvf_mac_link_down,
++	.mac_link_up = wxvf_mac_link_up,
++};
++
++static int ngbevf_phylink_init(struct wx *wx)
++{
++	struct phylink_link_state link_state;
++	struct phylink_config *phy_config;
++	phy_interface_t phy_mode;
++	struct phylink *phylink;
++	int err;
++
++	phy_config = &wx->phylink_config;
++	phy_config->dev = &wx->netdev->dev;
++	phy_config->type = PHYLINK_NETDEV;
++	phy_config->mac_capabilities = MAC_1000FD | MAC_100FD | MAC_10FD;
++	phy_config->get_fixed_state = wx_get_mac_link_vf;
++
++	phy_mode = PHY_INTERFACE_MODE_RGMII;
++	__set_bit(PHY_INTERFACE_MODE_RGMII, phy_config->supported_interfaces);
++
++	/* Initialize the phylink */
++	phylink = phylink_create(phy_config, NULL,
++				 phy_mode, &ngbevf_mac_ops);
++	if (IS_ERR(phylink)) {
++		wx_err(wx, "Failed to create phylink\n");
++		return PTR_ERR(phylink);
++	}
++
++	link_state.speed = SPEED_1000;
++	link_state.duplex = DUPLEX_FULL;
++	err = phylink_set_fixed_link(phylink, &link_state);
++	if (err) {
++		wx_err(wx, "Failed to set fixed link\n");
++		return err;
++	}
++
++	wx->phylink = phylink;
++
++	return 0;
++}
++
+ /**
+  * ngbevf_probe - Device Initialization Routine
+  * @pdev: PCI device information struct
+@@ -201,6 +245,10 @@ static int ngbevf_probe(struct pci_dev *pdev,
+ 	if (err)
+ 		goto err_free_sw_init;
+ 
++	err = ngbevf_phylink_init(wx);
++	if (err)
++		goto err_clear_interrupt_scheme;
++
+ 	err = register_netdev(netdev);
+ 	if (err)
  		goto err_register;
- 
- 	pci_set_drvdata(pdev, wx);
-+	netif_tx_stop_all_queues(netdev);
- 
+@@ -211,6 +259,8 @@ static int ngbevf_probe(struct pci_dev *pdev,
  	return 0;
  
+ err_register:
++	phylink_destroy(wx->phylink);
++err_clear_interrupt_scheme:
+ 	wx_clear_interrupt_scheme(wx);
+ err_free_sw_init:
+ 	kfree(wx->vfinfo);
 -- 
 2.30.1
 
