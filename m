@@ -1,166 +1,73 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from us.padl.com (us.padl.com [216.154.215.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0853AEC4
-	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 00:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C3C15E96
+	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 00:36:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749601540; cv=none; b=o1C8FOZZ2sBpP3ItQQMDPuv9g+NvMaIWbSAM+dq9OKPbZppQF6ACBb1m8buafVrWEHitHdv6XalrOOv62VX/QQfEN9Rd7KOdqpNG4atkRuz0HrmhQhHzIuOuR0ONPy9c45QKGqJ/NjSpr8wwjFcb5OyZwht6ZgSy70zcT1IoN8g=
+	t=1749602198; cv=none; b=i9uQCOgdT7cfgsipiZwA3a5p+sRF/Zd1BIoTpEqc45tAuaaeiSrXnXI+YTVXVrljXrK2rRfiG0rOB4BnquZdlVzc49ZYGTbOre4wH0xCs3kgxh6ldSQLPBQERva5JFkzfCKHyEVckysyorj+zClo9qETVrc/C7Nxoj9nfaduksI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749601540; c=relaxed/simple;
-	bh=mFag4hz+lv7bx3Z8BEnZDowZA4eQdv8p3Ld0WnRSmX8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RMx+v8U/JeoMzyBeYVb9ymx+HdIpvQPfhwasK8SO5rL1ZLaK63MY6mM97la3VzveattaezolRt1cHS/yDis4+ERfOI7tIs5yAdCMd2mLAMDX0GxK1kXBeJcFkAL2jQfyEpmC24gpuCb8sog9IMY/A6S8UJDa4gRYCOW6tTpIOg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=l5JDaIli; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1749602198; c=relaxed/simple;
+	bh=tmc5T8UXk6G7YbbXvCmLiEGvKi4mXkChWkY6w2yUyM8=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:To; b=io4yutYGDhzXMgGfbF6oHdup1yQZfDJaA2S+yGj498S3eIh0EF0QfJHna1YVm8aGK4yl9YyCdvbpu7OLsKqVssXjfsld6mfWFXa2fv3oAwwPLwlCazRufIIEWh+fdhZnm5Oeq0C0nfl16EFgz1NqDJbCJO+kT8jzu1n78dhOP4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=RXgz1jr+; arc=none smtp.client-ip=216.154.215.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="l5JDaIli"
-Message-ID: <68106010-f34b-45a8-aaf5-003f5c925c01@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1749601536;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OH4ApGYmn/DMBgrAa1vHydYXZRuq4f/WNOze5miWktY=;
-	b=l5JDaIliqGax9nCiNWoNNyi6hrwme+E9qfvM4NE+RsJJRlu5WXkURDmC6mSALN3pvWi2fT
-	KB7lFOOEFR33expXmQ8uf9HaXAtdb/Y0IiimPuL7R+vl9UBPpYxqMFvhBfws5hyhjqd9eo
-	n+AUEuKPTVtDEYA5GI3fj6j0xfp2boo=
-Date: Tue, 10 Jun 2025 17:25:26 -0700
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="RXgz1jr+"
+Received: from auth (localhost [127.0.0.1]) by us.padl.com (8.14.7/8.14.7) with ESMTP id 55B0BcAu013004
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 01:11:41 +0100
+DKIM-Filter: OpenDKIM Filter v2.11.0 us.padl.com 55B0BcAu013004
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
+	t=1749600701; bh=tmc5T8UXk6G7YbbXvCmLiEGvKi4mXkChWkY6w2yUyM8=;
+	h=From:Subject:Date:To:From;
+	b=RXgz1jr+F4Nw0vU5ixk0Kjjzmyvbe7BJbNttAp9U/+F5H0weuN+QAT03ASZ7yVKOL
+	 ccffK4PNv8re4zPVv+qRWkrhnQS2IVjfmJLrBAxAfOWG1o0uWGONYFlTmuS3x0d3Rq
+	 5Cnd3v158xH4dWqqkiQpPEFAJBrPM+5LyMZ7JSesH24wYnG5wQzJ339mZ3WV/BYAyb
+	 G3jSzBPXdZZVNiOzYz8cTGeB/xQO9rfvNdK2B1bTmaEOChSUJlmEuHwXo+O6is66Qi
+	 EopCaAFLenzszlU9/OVY++v+VzuADJXeQza2APDglG3UuZeiZZFo/gBO9yio10hR4R
+	 BHxBSOj+qDZmQ==
+From: Luke Howard <lukeh@padl.com>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH net-next V7 2/2] veth: apply qdisc backpressure on full
- ptr_ring to reduce TX drops
-To: Jesper Dangaard Brouer <hawk@kernel.org>, netdev@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>,
- Bastien Curutchet <bastien.curutchet@bootlin.com>
-Cc: bpf@vger.kernel.org, tom@herbertland.com,
- Eric Dumazet <eric.dumazet@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
- =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
- dsahern@kernel.org, makita.toshiaki@lab.ntt.co.jp,
- kernel-team@cloudflare.com, phil@nwl.cc,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-References: <174559288731.827981.8748257839971869213.stgit@firesoul>
- <174559294022.827981.1282809941662942189.stgit@firesoul>
- <fecfcad0-7a16-42b8-bff2-66ee83a6e5c4@linux.dev>
- <b158cffc-582b-4a2f-bb13-a27c8f58b6fc@kernel.org>
- <46a47776-dcd9-4c6f-8d71-f94b22b077e2@kernel.org>
- <6812c58a-4f33-46b5-8886-1198e36823ed@linux.dev>
- <cba926c1-66b9-45fb-a203-13ff646567f9@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ihor Solodrai <ihor.solodrai@linux.dev>
-In-Reply-To: <cba926c1-66b9-45fb-a203-13ff646567f9@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: [RFC] net:dsa: mv88e6xxx: RMU-only mode
+Message-Id: <1D0097F9-5C25-442C-BDD5-CF8F7D8838E6@padl.com>
+Date: Wed, 11 Jun 2025 10:11:27 +1000
+To: netdev@vger.kernel.org
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
 
-On 6/10/25 2:40 PM, Jesper Dangaard Brouer wrote:
-> 
-> 
-> On 10/06/2025 20.26, Ihor Solodrai wrote:
->> On 6/10/25 8:56 AM, Jesper Dangaard Brouer wrote:
->>>
->>>
->>> On 10/06/2025 13.43, Jesper Dangaard Brouer wrote:
->>>>
->>>> On 10/06/2025 00.09, Ihor Solodrai wrote:
->>> [...]
->>>>
->>>> Can you give me the output from below command (on your compiled 
->>>> kernel):
->>>>
->>>>   ./scripts/faddr2line drivers/net/veth.o veth_xdp_rcv.constprop.0+0x6b
->>>>
->>>
->>> Still need above data/info please.
->>
->> root@devvm7589:/ci/workspace# ./scripts/faddr2line ./kout.gcc/drivers/ 
->> net/veth.o veth_xdp_rcv.constprop.0+0x6b
->> veth_xdp_rcv.constprop.0+0x6b/0x390:
->> netdev_get_tx_queue at /ci/workspace/kout.gcc/../include/linux/ 
->> netdevice.h:2637
->> (inlined by) veth_xdp_rcv at /ci/workspace/kout.gcc/../drivers/net/ 
->> veth.c:912
->>
->> Which is:
->>
->> veth.c:912
->>      struct veth_priv *priv = netdev_priv(rq->dev);
->>      int queue_idx = rq->xdp_rxq.queue_index;
->>      struct netdev_queue *peer_txq;
->>      struct net_device *peer_dev;
->>      int i, done = 0, n_xdpf = 0;
->>      void *xdpf[VETH_XDP_BATCH];
->>
->>      /* NAPI functions as RCU section */
->>      peer_dev = rcu_dereference_check(priv->peer, 
->> rcu_read_lock_bh_held());
->>   --->    peer_txq = netdev_get_tx_queue(peer_dev, queue_idx);
->>
->> netdevice.h:2637
->>      static inline
->>      struct netdev_queue *netdev_get_tx_queue(const struct net_device 
->> *dev,
->>                       unsigned int index)
->>      {
->>          DEBUG_NET_WARN_ON_ONCE(index >= dev->num_tx_queues);
->>   --->        return &dev->_tx[index];
->>      }
->>
->> So the suspect is peer_dev (priv->peer)?
-> 
-> Yes, this is the problem!
-> 
-> So, it seems that peer_dev (priv->peer) can become a NULL pointer.
-> 
-> Managed to reproduce - via manually deleting the peer device:
->   - ip link delete dev veth42
->   - while overloading veth41 via XDP redirecting packets into it.
-> 
-> Managed to trigger concurrent crashes on two CPUs (C0 + C3)
->   - so below output gets interlaced a bit:
-> 
-> [...]
-> 
-> A fix could look like this:
-> 
-> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-> index e58a0f1b5c5b..a3046142cb8e 100644
-> --- a/drivers/net/veth.c
-> +++ b/drivers/net/veth.c
-> @@ -909,7 +909,7 @@ static int veth_xdp_rcv(struct veth_rq *rq, int budget,
-> 
->          /* NAPI functions as RCU section */
->          peer_dev = rcu_dereference_check(priv->peer, 
-> rcu_read_lock_bh_held());
-> -       peer_txq = netdev_get_tx_queue(peer_dev, queue_idx);
-> +       peer_txq = peer_dev ? netdev_get_tx_queue(peer_dev, queue_idx) : 
-> NULL;
-> 
->          for (i = 0; i < budget; i++) {
->                  void *ptr = __ptr_ring_consume(&rq->xdp_ring);
-> @@ -959,7 +959,7 @@ static int veth_xdp_rcv(struct veth_rq *rq, int budget,
->          rq->stats.vs.xdp_packets += done;
->          u64_stats_update_end(&rq->stats.syncp);
-> 
-> -       if (unlikely(netif_tx_queue_stopped(peer_txq)))
-> +       if (peer_txq && unlikely(netif_tx_queue_stopped(peer_txq)))
->                  netif_tx_wake_queue(peer_txq);
-> 
+Some Marvell switches have a Remote Management Unit (RMU) which permits =
+in-band configuration, essentially tunnelling MDIO requests in Ethernet =
+packets.
 
-Great! I presume you will send a patch separately?
+Andrew Lunn and Mattias Forsblad have previously submitted patches to =
+the mv88e6xxx driver to support RMU, with the proviso that MDIO must =
+still be present for initial switch configuration and to enable RMU =
+itself.
 
-> 
-> 
-> 
-> --Jesper
-> 
-> 
+There are some situations where MDIO is unavailable, but RMU can be =
+enabled externally (either by an external device connected over MDIO or =
+a switch EEPROM). In this case it is useful to support in-band only =
+configuration, without MDIO, with the switch being a platform device =
+instead of a MDIO child node.
 
+WIP patches can be found here:
+
+https://github.com/PADL/linux/tree/rpi-6.14.y-xebros-rmu
+
+It required changes to both the DSA core (to bring up the conduit device =
+first) as well as the Marvell driver. Once Andrew has submitted his RMU =
+patches on which these are based, and I have done further testing, I =
+plan to submit these patches.
+
+Please note that the tree above includes some unrelated driver commits =
+for AVB and DSCP support that I of course would separate out before =
+submitting.=
