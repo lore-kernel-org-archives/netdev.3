@@ -1,175 +1,98 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB38DF49;
-	Wed, 11 Jun 2025 22:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCEFDF49;
+	Wed, 11 Jun 2025 22:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749681619; cv=none; b=AhXM2CnJoTG08kCwvP/AhLNMNO9St6in/gcl1s3IS1iWcrPjG/FKXzhHAVlwcmx78NzDzz7wYCq0Zt2djAkmAwyPQIVGOPqcwtfOblWr+i64ScuxE0K4Is+/VgaxqwBvtfZ6qKIN6dPBtNv9VV8+4QPIuNS4fPieEYLl1oDtBXs=
+	t=1749681631; cv=none; b=UcdhkhYvizIpGGV38Q1uyq9YGvu+24zirkMUXp1ehYq7xdwahvsnjQcOjfMcC7lZ+snM2EY7omsVG/+nGau55sqInLK0J2OqNtKzrmlxVF2PzSILTY8Q+mXrmbV8ImFa3cDPUWyEGQcjWFU1L4BXo00beIwMD1dj8XqltqFDJGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749681619; c=relaxed/simple;
-	bh=HYGzR/0lPajAJjjHFrDLDOmO2EpjmvNf1NtQvCaKh30=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=XIPtrjFohzh9s7CTDMX6tV3MYpqFQIKDR6X2Voj57nOdCVZXa0PkL3f+m9MMDR1BUsG8dozgIqbMlHiWa61TcCu1cHgf1muOjAZ9ZzotxknFINOtfkdi8cwtEtVtgO2gvVjMAkSFu62nm0il2l2ld+ZGKIqbpD0EZGTx1Ya6mUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=public-files.de; spf=pass smtp.mailfrom=public-files.de; dkim=pass (2048-bit key) header.d=public-files.de header.i=frank-w@public-files.de header.b=AbSv3Rvp; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=public-files.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=public-files.de
+	s=arc-20240116; t=1749681631; c=relaxed/simple;
+	bh=tqcQIa+ZKMMv+FxVs+6upISHy3GJKMFoMRsshIbhJ54=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L8MPEFPQmCemue5b1buSR77WYJjm4Ktm5OHxVAoy2CsKdCBXiw0HIL23mMXSbZ9x+5zm0LffOu7h2Oa2XwIhBvOLl08DddgnEE75VgNySf/Oyan01ViJGB68LgTHfr0SV5AZiAIBwDLfmLtvAPRF/iiMjhhozzYxUY8g2Efzhbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=nUjxgWSC; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=public-files.de header.i=frank-w@public-files.de header.b="AbSv3Rvp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=public-files.de;
-	s=s31663417; t=1749681557; x=1750286357; i=frank-w@public-files.de;
-	bh=M+DXZolM1CuO7m1q3GplhJNNpS0Vq/tj3+DzTCCdtGY=;
-	h=X-UI-Sender-Class:Date:From:To:CC:Subject:Reply-to:In-Reply-To:
-	 References:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=AbSv3RvpaGHmnIxBfz6Jm7PJR1BejaK56qmKAeVrkzZdZe/dbl4UUjTGRbHn/bNl
-	 qqxYTUZ+W2lbEZMu2KaPMmCw7VdAnRCeignFySXeStAg3L4G8X+KRBNwlwOPJR7V7
-	 nD74yYStoBmuZnudYlF9cdUQZrUZb/xv8vkYGxkvW7hcOvexfxVm+vSl+WReKjXY+
-	 nR3DzpIqV4MXTL0ekNIIMxTst1ZpsBYy+J7oOlMG2s3aWofEXhCwPQwWfQdZoDx7R
-	 Pggob6RUD4BdRqEx0LbI8/GlfESHJGBu2sjfmJVoNrg2A1Cap+3S/njxojrYCcAsH
-	 7v/EP+MZGmUT0QqpjA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [127.0.0.1] ([194.15.82.247]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1McpNo-1uyGt446V8-00bewy; Thu, 12
- Jun 2025 00:39:17 +0200
-Date: Tue, 10 Jun 2025 15:32:23 +0200
-From: Frank Wunderlich <frank-w@public-files.de>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: linux@fw-web.de, myungjoo.ham@samsung.com, kyungmin.park@samsung.com,
- cw00.choi@samsung.com, djakov@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, olteanv@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- jia-wei.chang@mediatek.com, johnson.wang@mediatek.com, arinc.unal@arinc9.com,
- Landen.Chao@mediatek.com, dqfext@gmail.com, sean.wang@mediatek.com,
- daniel@makrotopia.org, lorenzo@kernel.org, nbd@nbd.name,
- linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Subject: =?US-ASCII?Q?Re=3A_Re=3A_=5BPATCH_v3_12/13=5D_arm64=3A_dts=3A_mediatek=3A?=
- =?US-ASCII?Q?_mt7988a-bpi-r4=3A_add_sfp_cages_and_link_to_gmac?=
-User-Agent: K-9 Mail for Android
-Reply-to: frank-w@public-files.de
-In-Reply-To: <e1a49ca7-f082-4983-89fe-1a8f8c8a3de1@lunn.ch>
-References: <20250608211452.72920-1-linux@fw-web.de> <20250608211452.72920-13-linux@fw-web.de> <934b1515-2da1-4479-848e-cd2475ebe98d@lunn.ch> <trinity-b9ab960d-38f8-4524-b645-fc0832ce72ec-1749546239525@trinity-msg-rest-gmx-gmx-live-5d9b465786-6phds> <e1a49ca7-f082-4983-89fe-1a8f8c8a3de1@lunn.ch>
-Message-ID: <87B3002D-46DD-4392-BD0E-54D2B1DA5EAB@public-files.de>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="nUjxgWSC"
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55BMPQiS007414;
+	Wed, 11 Jun 2025 22:40:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=N2UiDtG3F5sbaCXZqBA6GWF4/z633
+	RE00lAXhHLMGTk=; b=nUjxgWSCFK5MYMaNstpLVc2LvUWYyx129lcsEf65JD6Kw
+	oz4w/f94kZbRNIoPAalQ2jZxENLlNemBiAWNVTHWugyDhCwD2MelnS47vhFlEC4d
+	NIqXNso7d0AgSll6yFwF5eQ+sjX2BpIQogijt37HHMZ9BveeHkP0l9qvktshriKt
+	BjQ2m6R/LSdXygM6/y5e9GOnXgI0mqbuXZ7sZTJCvzMBc8MvVcxhtTp6WP7d8pOw
+	b6e1cfDwc3ylENh5zcXWlt784TVevNKkxMDuIdsG4wTK7GR4Ar6hMe3J0WhjyKsO
+	IhMIHukv2vqdRW2BeMOWckKSLftUVCZqAv8IWs26g==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 474buf8k3d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Jun 2025 22:40:23 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 55BKoJbG020342;
+	Wed, 11 Jun 2025 22:40:22 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 474bvh2j41-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Jun 2025 22:40:22 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55BMeMxR024452;
+	Wed, 11 Jun 2025 22:40:22 GMT
+Received: from konrad-char-us-oracle-com.osdevelopmeniad.oraclevcn.com (konrad-char-us-oracle-com.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.249.23])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 474bvh2j3t-1;
+	Wed, 11 Jun 2025 22:40:22 +0000
+From: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To: allison.henderson@oracle.com, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, tj@kernel.org,
+        andrew@lunn.ch
+Cc: hannes@cmpxchg.org, mkoutny@suse.com, cgroups@vger.kernel.org
+Subject: [PATCH v2] Expose RDS features via sysfs.
+Date: Wed, 11 Jun 2025 18:39:18 -0400
+Message-ID: <20250611224020.318684-1-konrad.wilk@oracle.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:DsPiSpMR8xb6e8i18zfPbYVrfbaG4v6s3QvSjVXohv/Uc0Js7TW
- T13ewz6NHM6Jsu4kkwPnhT4bmwivrR7L7kmktDCU8A9NgFKYSktihrBDX5j13mb/pBPcsCl
- JwAyZBffD23sZBYwUUATi9Zn3dxoWNTC48+uTkTjXLrcx7XVBTcKm+Rv36/2EZFTXP4MTv6
- CFJkZx0ABx2kBvIt9bC8g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:5TUBUR1RzM4=;Xb/FftVWsM+f589cjF/ztCS/hl/
- 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
- 716VAXP
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-11_10,2025-06-10_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ bulkscore=0 adultscore=0 suspectscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2506110192
+X-Authority-Analysis: v=2.4 cv=RZGQC0tv c=1 sm=1 tr=0 ts=684a05d7 b=1 cx=c_pps a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17 a=6IFa9wvqVegA:10 a=xjO9cqGlMa9R-XWzUmgA:9 cc=ntf awl=host:13207
+X-Proofpoint-GUID: ICo7S6KqboMdPrNTn7aOzEdKdIMWe5oI
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjExMDE5MiBTYWx0ZWRfX+FkAX+ieSSNd Qws1T+R6xwD8GdMqKFDE7HJ+bFjryJuqQzgmoeKbomuzObF1QICihpa/LObKbOjW1KeR9XCYWML tvWHaA6fwL79KNMVLKSVTsrUkK9iudy477/UWXIHcH/CVEe/rwioaM16Y19Qey9YTAdagLJCN7Y
+ 7mQJF2hTn7iEarNEOxtvs+dNWaRCAVUPeAsarsiIH+4/r0v2SLRMgVEBEdc9cmSpp0O7H/Sl5L4 AJJOihYHNtD2gFV1VkShLgDa23KnAWET86Oc7pTS27QSRx4yUdGg4Up8iAe0s9HLWVpZa7XL0PK pbgQgGzXnBhrHq5MQm/SdEK9ZIRupafF1LuiWE6QGrLQici7JZaofhzkYjLOc1THDm4oDkv1gC6
+ yEH2vCstQNClf7UjFaDWwdRbI6jeLUwOf67qA0dsTBLf21BoTl3Bdtq3Y69O5argmNFYJVnF
+X-Proofpoint-ORIG-GUID: ICo7S6KqboMdPrNTn7aOzEdKdIMWe5oI
 
-Am 10=2E Juni 2025 14:58:44 MESZ schrieb Andrew Lunn <andrew@lunn=2Ech>:
->> > sff,sfp=2Eyaml says:
->> >=20
->> >   maximum-power-milliwatt:
->> >     minimum: 1000
->> >     default: 1000
->> >     description:
->> >       Maximum module power consumption Specifies the maximum power co=
-nsumption
->> >       allowable by a module in the slot, in milli-Watts=2E Presently,=
- modules can
->> >       be up to 1W, 1=2E5W or 2W=2E
->> >=20
->> > I've no idea what will happen when the SFP core sees 3000=2E Is the
->> > comment out of date?
->>=20
->> at least sfp-core has no issue with the setting
->>=20
->> root@bpi-r4-phy-8G:~# dmesg | grep sfp
->> [    1=2E269437] sfp sfp1: Host maximum power 3=2E0W
->> [    1=2E613749] sfp sfp1: module CISCO-FINISAR    FTLX8571D3BCL-C2 rev=
- A    sn S2209167650      dc 220916 =20
->>=20
->> imho some modules require more than 2W (some gpon/xpon and 10G copper e=
-thernet)=2E
->
->Looking at the code:
->
->static int sfp_module_parse_power(struct sfp *sfp)
->{
->        u32 power_mW =3D 1000;
->        bool supports_a2;
->
->        if (sfp->id=2Eext=2Esff8472_compliance >=3D SFP_SFF8472_COMPLIANC=
-E_REV10_2 &&
->            sfp->id=2Eext=2Eoptions & cpu_to_be16(SFP_OPTIONS_POWER_DECL)=
-)
->                power_mW =3D 1500;
->        /* Added in Rev 11=2E9, but there is no compliance code for this =
-*/
->        if (sfp->id=2Eext=2Esff8472_compliance >=3D SFP_SFF8472_COMPLIANC=
-E_REV11_4 &&
->            sfp->id=2Eext=2Eoptions & cpu_to_be16(SFP_OPTIONS_HIGH_POWER_=
-LEVEL))
->                power_mW =3D 2000;
->
->How does your module indicate it needs 3000 mW? Does this bit of code
->need extending to read additional bits?
+Hi folks,
 
-Message says "host maximum power",not that sfp needs the 3w=2E
+Changelog:
++ Since v2:
+ - Changed it to use sysfs and expose a 'features' file with the data.
+ 
+This patch addresses an issue where we have applications compiled against
+against older (or newer) kernels. RDS does not have any ioctls to query
+for what version of ABIs it has or what features it has. Hence this solution
+that proposes to put this ABI information in sysfs space.
 
->	Andrew
+Please take a look and thank you for spending your time reading over the
+patch and providing feedback on the right way forward.
 
+Thank you!
 
-regards Frank
+Konrad Rzeszutek Wilk (1):
+      rds: Expose feature parameters via sysfs
+
+ net/rds/af_rds.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+
