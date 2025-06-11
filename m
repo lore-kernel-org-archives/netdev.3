@@ -1,203 +1,102 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CB92BE7AF
-	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 14:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02BD1E485;
+	Wed, 11 Jun 2025 14:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749651663; cv=none; b=ReYGyb1aLH2onXFo7ylQoqr9GV6uOnAZ71YSrv4RRyUfpgteOnOfmKKXNzm9P5CyjLV8sS+5mlHsnPS75gpM47AvNFIYCj1kTl3HlwUg1xa73I6DDjC3B3GvXpDVoQtT1B0G+0G2cwdMVOup40F+yk/qP/FCTsofaJPhri+UVpM=
+	t=1749651878; cv=none; b=FouxsjJVtaTsG4BSsav4XKLU6cFqKrA29ciidCFht7HlzWzz00V1GGKahHRtAk8Pl2MzF1xtJOQGJovxa5aur0WEHAEAQZZ0A1/magfrXqEINwGj4odfGecVsFK8WUTaByjDkGkfhPssZnXuQhGBbOXetajgRuaOS/ZzBPfDqz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749651663; c=relaxed/simple;
-	bh=tEXibwohiKNHCWkX7JniiQ7ZfUXlGD/79RnMkx3tqaE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PVnqXT3taAbdVNdHQEPPUowXmoo/wZD180zel/iHeJ/AbjSftrCSEhHG1nFbzJRIKxyzI8QX38TeOVjxdR8qRbDGuYdV0rQ4Qo5KBJ9sCbBmcznBk2hndxM/PTC3YkjmbhuNpl7HH7Mh4u3H+ITwXseqpba09qGCzaroIJJVPH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jKz08fY7; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1749651878; c=relaxed/simple;
+	bh=zhuxC+KhjOVBwtC+ZikFTxVlNB4jrxhuaXaa+Xblpxs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bwt9Djr4F3H3Xz74c3JUOEB1vP4DJ8wnUU3uQD1qYrcm8gdnDzINKGt/8f9VLWPDIWrCxhijtokhdA/XPk5JFtnYpIpv4BpiKU/4DpjEL4RTfXBMHLupYa04d7779ncjUNNK7hkE/Zgg1asvLNujHkQcxbg7bpIkrnuScBAXZjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L3ZTKswQ; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jKz08fY7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749651660;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C/ntzkpVyIcXdzoQL5rgGpdL1A4Z+ur0N0W3VcmJOj4=;
-	b=jKz08fY7l7yn87BouONxurXxR7YC3/ITwil9BUxPEL8Cw3audfZkvKvedmwBAdVaCZEUVT
-	Vrli+sVNhUxIqENiAyNpjwIVW+CujzRPIllHjaKHR0l6Way8N2e/LBDDk7x++wB925MntS
-	TuwdRsS5koEcCW7MlDbcEB5vJVkEZ7s=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-444-yXE3vLVoMSqZUxo3VHe4-A-1; Wed, 11 Jun 2025 10:20:59 -0400
-X-MC-Unique: yXE3vLVoMSqZUxo3VHe4-A-1
-X-Mimecast-MFC-AGG-ID: yXE3vLVoMSqZUxo3VHe4-A_1749651658
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6fb2910dd04so30766596d6.0
-        for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 07:20:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L3ZTKswQ"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-451d3f72391so87617065e9.3;
+        Wed, 11 Jun 2025 07:24:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749651874; x=1750256674; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RTXKRBFGUAka08dub7+UBA5yiZf9fur0UOXcxOoy2sc=;
+        b=L3ZTKswQ5gCyfLURktJlabE68b4ktLtGrsOLVSGsn3ltwcsNMDcao4qi6ei7bDr/p6
+         9znCZxe78JZ5f9tv6L3RxqgLIbxdw7J7aMAnKDyacNy1hT29AOsQJhMQeXz+eCdv86sG
+         QLVcFa3TDmupxTiI2GiyyRmMKkUcjUQ3bSKHrzBUBdZDJmLT1qH89nSrP5LsWxkCHQA5
+         mNTXRM0GBgZFjc9COUguqZYyb+jXXF4gOHHoXsfLdSWOZPMJq6yh/BK2iFUV+CMDSnuB
+         0av/gY9jSovttr/wYx7TBH2SNWfBBxHyTDW5TcCu+JcaAurGNAwEKSd4jzz1PcyPYLWP
+         /ZDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749651658; x=1750256458;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C/ntzkpVyIcXdzoQL5rgGpdL1A4Z+ur0N0W3VcmJOj4=;
-        b=pq4ykjln9xjZp+sxkDREXLRxT4zlyUQ1A5jNUCEOhTawJ1NyMEFqVVQFSSUMI8ITW1
-         hEOBYFAJBpn+pzbOGMxkPCacvvkTiCDSDa/n0wxl8qui5vYh8gZ2FWDcBf/WmmvF799H
-         mSJuJqemgYrcF9qrvIvp47s1AuwzzjX7QOsLielJZjBfuA4gI01f4gBXRr4r4pWWcB0i
-         HZKF9ZllDZeSS2L3Omfn1ra3Vp9qv5Iso1nRMd0JO2FNBf/796ew53MSRPRbnonpH7sE
-         Ao3Rk4uAz9BX55Aq8k/myW3yRcZRabgUde67Gt0aaiPHJHJOJX01Q8rknbZ0GmmloE4e
-         k6Rw==
-X-Forwarded-Encrypted: i=1; AJvYcCVrOl3/oCb8ubap58EVPZflpM1zMvH+wuOLUbnGEijx84GzBncNExILVgV01+aFvpCVq0UsTKA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymF35xwDKLfsSJLcJZiBhiyxWjtX3MiPuHnZ9+LVuHtTb21OLL
-	f67bNGj6wVDn7sBTdOk/pQGNOPMXT2Ftq2fKQ3udL75WCvs4IXy2NjEH5CyyyYl9okOxT4Xm8AA
-	re1ck7AN2np2QNUHolS5oNHGX7Io4W+mIhQ/M+IZ8p7wWTqsC/1MbvF2g6XAX3phKCQ==
-X-Gm-Gg: ASbGncsD8bu1ErjRtj1r6VgwOfVGBWB6QaSVYg/BWpyANerwoIIPZuVw1pYvT67GB8c
-	e+DvqrX+31U6VyoaBwSG6Ratag91/+qZ2FRcklFNhyZkVebgEFopL6e3OTkkJh8pvqQ+L1ncEUo
-	anDVOhhHHPAJuN2Bq1J2yLiKpVje9dNV0HuTI0jlWRDLAvt7DNi6AlA06lzkigySRDu3eUtFuM7
-	eg7yYTjqSzDgIppX9SRLduLAB/1bdv0LF9hY0jojwRvaksbVPpBsMmovk/M25ZweVNtvYHMCQmx
-	k7R7brikMQ79jMWXmzmRjt1l8yKO
-X-Received: by 2002:a05:6214:e87:b0:6f4:cb2e:25cc with SMTP id 6a1803df08f44-6fb2c375cbcmr53864596d6.32.1749651657764;
-        Wed, 11 Jun 2025 07:20:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGQt/g4HB23CjbIbHN4akFe9MRSdw7e8RgKDMJzNZJ6k+6aUqN0eqJB/UJ1rAQJhrsDdwLVxA==
-X-Received: by 2002:a05:6214:e87:b0:6f4:cb2e:25cc with SMTP id 6a1803df08f44-6fb2c375cbcmr53864296d6.32.1749651657123;
-        Wed, 11 Jun 2025 07:20:57 -0700 (PDT)
-Received: from sgarzare-redhat ([193.207.148.235])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb09b2a1fasm82526736d6.93.2025.06.11.07.20.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 07:20:56 -0700 (PDT)
-Date: Wed, 11 Jun 2025 16:20:49 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC net-next v2 2/3] vsock/test: Introduce
- get_transports()
-Message-ID: <lvduahetdnmshgo7tus7kezq6ddps5wjouefkmfwxkw7ckbhpg@nvjhai4xt5kl>
-References: <20250528-vsock-test-inc-cov-v2-0-8f655b40d57c@rbox.co>
- <20250528-vsock-test-inc-cov-v2-2-8f655b40d57c@rbox.co>
- <wzbyv7fvzgpf4ta775of6k4ozypnfe6szysvnz4odd3363ipsp@2v3h5w77cr7a>
- <b4f3bc0d-9ff5-4271-be28-bbace27927bd@rbox.co>
- <hxnugz3xrrn3ze2arcvjumvjqekvjfsrvd32wi7e3zgdagdaqb@cm3y6fipqdf3>
- <adae2539-2a48-45c3-a340-e9ab3776941f@rbox.co>
+        d=1e100.net; s=20230601; t=1749651874; x=1750256674;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RTXKRBFGUAka08dub7+UBA5yiZf9fur0UOXcxOoy2sc=;
+        b=mQmERdfe5B6ayEEsrsJJ9L6gcZbZ0/yWAlRPd6Yc5pAS/d8mxTp63nxOD6/AAptykO
+         ExWuK5iibIhct/ExlP7eCRphOAdluE6kfhSNxNDXJWPDHyGRfAObQczShzeBdAnDaJPY
+         bktPKLLjMTSCyQVDFzI7DnxBItUQaJNjL/cet78yBBiQZk6N8OdF3PmmuyzLjLujPi8B
+         8zF6bT4AL1I/HG2NNU+SRbS4ucQYOd48n7tIEVD4a4oe7C6EcGKs+sHk/aiJl4D+KRVE
+         H8aSXIHZyck1D+aOw0wr87b8PHcjtC/DOrxf6LXlrrg9qRktozIYuzcEd2bJTSQFFoUc
+         N0iw==
+X-Forwarded-Encrypted: i=1; AJvYcCUo936QnRflxbbvBf9CVnUtLdaPR4ZjP5N024t//zzIEZ6GpVXHzYLSTvZOXtPLdIa4fm/hYQFn@vger.kernel.org, AJvYcCVCdrfvZlg4nAT8QDm1aXkKX4DpT83BU1z0GZd/0vWylBKO7kGMAhHjO7rodGv4CJ+OQxI=@vger.kernel.org, AJvYcCWcDGfEN7hPR9Hs+clf4Ei21i+wXrBWWcr9Bhs805ZBbP/byQKrxUBLaN1DxEuCFohLh6cqR1iGhgPdzQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7doMNuV5IXs8LKxwBCr56+etY6m7A7EWbHLwfXJ2hmGgNLvOH
+	YP06o6/PJvVUbzwB0ccMnA6oKf8M68gvGT3/XjTV2x08MrewiQabxgPV
+X-Gm-Gg: ASbGnctOqWXtDcykqLE2p+YQzWeDZZzCwyFXfb/7W/GDhoFPswcnbUzfhxJJdGFKmin
+	aTwRsDCCYaqywLyYYKJrckhfVopWyVEZ2uWk4my0Apza3KuouAWicIakwmFaBs51gDwWbFxDoah
+	YlRQy5vUnYdZ4GE51HuVw4IriDirTWN9e6YVbt/lOovtaBz1IB5QkMfulG0LPPrEODb87xT38H6
+	FSh5mpM7FDB7EdDT4LVaKmKlPCfuw8oFQcThcSZZVDXm692VA9FrCEY4RLqHdXQjzAnWePg+Q/p
+	GxyIMJ4ZGVrnb0YVigyfw9TW8XoEKm1UcfEkWSK923mINOlR9Qi+o0bZaAovXpNBWWOfdik=
+X-Google-Smtp-Source: AGHT+IHoeACtZ7Lq1d6rrqu6tvHRqZvx/wZr02IW/ChCWd4ssRnTymEzapp3q53gv8ZTjy+QowM5Nw==
+X-Received: by 2002:a05:600c:3586:b0:441:b3eb:574e with SMTP id 5b1f17b1804b1-4532b8c5658mr22745e9.5.1749651873795;
+        Wed, 11 Jun 2025 07:24:33 -0700 (PDT)
+Received: from [192.168.8.100] ([148.252.145.22])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a5323a8acasm15187999f8f.26.2025.06.11.07.24.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Jun 2025 07:24:33 -0700 (PDT)
+Message-ID: <8c7c1039-5b9c-4060-8292-87047dfd9845@gmail.com>
+Date: Wed, 11 Jun 2025 15:25:54 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <adae2539-2a48-45c3-a340-e9ab3776941f@rbox.co>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 0/9] Split netmem from struct page
+To: Byungchul Park <byungchul@sk.com>, willy@infradead.org,
+ netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ kernel_team@skhynix.com, kuba@kernel.org, almasrymina@google.com,
+ ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org,
+ akpm@linux-foundation.org, davem@davemloft.net, john.fastabend@gmail.com,
+ andrew+netdev@lunn.ch, toke@redhat.com, tariqt@nvidia.com,
+ edumazet@google.com, pabeni@redhat.com, saeedm@nvidia.com, leon@kernel.org,
+ ast@kernel.org, daniel@iogearbox.net, david@redhat.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
+ linux-rdma@vger.kernel.org, bpf@vger.kernel.org, vishal.moola@gmail.com
+References: <20250609043225.77229-1-byungchul@sk.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250609043225.77229-1-byungchul@sk.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 06, 2025 at 09:51:29AM +0200, Michal Luczaj wrote:
->On 6/5/25 12:46, Stefano Garzarella wrote:
->> On Wed, Jun 04, 2025 at 09:10:19PM +0200, Michal Luczaj wrote:
->>> On 6/4/25 11:07, Stefano Garzarella wrote:
->>>> On Wed, May 28, 2025 at 10:44:42PM +0200, Michal Luczaj wrote:
->>>>> +static int __get_transports(void)
->>>>> +{
->>>>> +	/* Order must match transports defined in util.h.
->>>>> +	 * man nm: "d" The symbol is in the initialized data section.
->>>>> +	 */
->>>>> +	const char * const syms[] = {
->>>>> +		"d loopback_transport",
->>>>> +		"d virtio_transport",
->>>>> +		"d vhost_transport",
->>>>> +		"d vmci_transport",
->>>>> +		"d hvs_transport",
->>>>> +	};
->>>>
->>>> I would move this array (or a macro that define it), near the transport
->>>> defined in util.h, so they are near and we can easily update/review
->>>> changes.
->>>>
->>>> BTW what about adding static asserts to check we are aligned?
->>>
->>> Something like
->>>
->>> #define KNOWN_TRANSPORTS	\
->>
->> What about KNOWN_TRANSPORTS(_) ?
->
->Ah, yeah.
->
->>> 	_(LOOPBACK, "loopback")	\
->>> 	_(VIRTIO, "virtio")	\
->>> 	_(VHOST, "vhost")	\
->>> 	_(VMCI, "vmci")		\
->>> 	_(HYPERV, "hvs")
->>>
->>> enum transport {
->>> 	TRANSPORT_COUNTER_BASE = __COUNTER__ + 1,
->>> 	#define _(name, symbol)	\
->>> 		TRANSPORT_##name = _BITUL(__COUNTER__ - TRANSPORT_COUNTER_BASE),
->>> 	KNOWN_TRANSPORTS
->>> 	TRANSPORT_NUM = __COUNTER__ - TRANSPORT_COUNTER_BASE,
->>> 	#undef _
->>> };
->>>
->>> static char * const transport_ksyms[] = {
->>> 	#define _(name, symbol) "d " symbol "_transport",
->>> 	KNOWN_TRANSPORTS
->>> 	#undef _
->>> };
->>>
->>> static_assert(ARRAY_SIZE(transport_ksyms) == TRANSPORT_NUM);
->>>
->>> ?
->>
->> Yep, this is even better, thanks :-)
->
->Although checkpatch complains:
->
->ERROR: Macros with complex values should be enclosed in parentheses
->#105: FILE: tools/testing/vsock/util.h:11:
->+#define KNOWN_TRANSPORTS(_)	\
->+	_(LOOPBACK, "loopback")	\
->+	_(VIRTIO, "virtio")	\
->+	_(VHOST, "vhost")	\
->+	_(VMCI, "vmci")		\
->+	_(HYPERV, "hvs")
->
->BUT SEE:
->
->   do {} while (0) advice is over-stated in a few situations:
->
->   The more obvious case is macros, like MODULE_PARM_DESC, invoked at
->   file-scope, where C disallows code (it must be in functions).  See
->   $exceptions if you have one to add by name.
->
->   More troublesome is declarative macros used at top of new scope,
->   like DECLARE_PER_CPU.  These might just compile with a do-while-0
->   wrapper, but would be incorrect.  Most of these are handled by
->   detecting struct,union,etc declaration primitives in $exceptions.
->
->   Theres also macros called inside an if (block), which "return" an
->   expression.  These cannot do-while, and need a ({}) wrapper.
->
->   Enjoy this qualification while we work to improve our heuristics.
->
->ERROR: Macros with complex values should be enclosed in parentheses
->#114: FILE: tools/testing/vsock/util.h:20:
->+	#define _(name, symbol)	\
->+		TRANSPORT_##name = BIT(__COUNTER__ - TRANSPORT_COUNTER_BASE),
->
->WARNING: Argument 'symbol' is not used in function-like macro
->#114: FILE: tools/testing/vsock/util.h:20:
->+	#define _(name, symbol)	\
->+		TRANSPORT_##name = BIT(__COUNTER__ - TRANSPORT_COUNTER_BASE),
->
->WARNING: Argument 'name' is not used in function-like macro
->#122: FILE: tools/testing/vsock/util.h:28:
->+	#define _(name, symbol) "d " symbol "_transport",
->
->Is it ok to ignore this? FWIW, I see the same ERRORs due to similarly used
->preprocessor directives in fs/bcachefs/alloc_background_format.h, and the
->same WARNINGs about unused macro arguments in arch/x86/include/asm/asm.h
->(e.g. __ASM_SEL).
+On 6/9/25 05:32, Byungchul Park wrote:
+> Hi all,
+> 
+> In this version, I'm posting non-controversial patches first.  I will
+> post the rest more carefully later.  In this version, no update has been
+> applied except excluding some patches from the previous version.  See
+> the changes below.
 
-It's just test, so I think it's fine to ignore, but please exaplain it 
-in the commit description with also references to other ERRORs/WARNINGs 
-like you did here. Let's see what net maintainers think.
+fwiw, I tried it with net_iov (zcrx), it didn't blow up during a
+short test.
 
-Thanks,
-Stefano
+-- 
+Pavel Begunkov
 
