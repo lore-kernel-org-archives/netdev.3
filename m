@@ -1,109 +1,136 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61CD227E89
-	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 08:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA87254AEC
+	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 09:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749632275; cv=none; b=Kvd/ifblXhQ032DNbEYl8qzxO89yjiR6kHp6VXpyICvQ2jBWnt1ObnNiOv3MVJHLNK7yb2+/FONgQ3nDAwsRWid9D/tIK37w6BFOnefZhGoKiIkmt5hoCDvgrGgiHO6O6gPD6n3/vTyMTyJ80RPTbi5bD10zfvGkaitUad405HI=
+	t=1749632678; cv=none; b=STyDrGhqLPqiDKr66C9c5b4Gjw/engfUPipl1Fl3WJ/D1Y6jwmRfcVUeZObfUTutbLFOfIYLCMebeLD9LH0kRvCLRGeDsXrpApSrAY67zL3Ub65flvcGRQKmfqtPk2p8/XIbm3dvhKlyUud0Q5Xq8Cvuh0yoTfi0mrOkTaW6qB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749632275; c=relaxed/simple;
-	bh=PuA2ndzsf6qV8+DZjFJzpHjynq2dG7WznWmQHytru3g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IYIl+ATWcOCMRQ1FIqp8pmIiqetE258c04OafSMhiRpb9LKUB40Y8+I2AgqFVnrivu8CZZoHgZNgvOFav9fq2CLbRP+FKj+6WBB++rDcJLI5qTZeUhtho230NKCYVC/amo6KyIIoFEef+fO5Sq7njhAHfx/U95hZRDXF8PVtwUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=datadoghq.com; spf=pass smtp.mailfrom=datadoghq.com; dkim=pass (1024-bit key) header.d=datadoghq.com header.i=@datadoghq.com header.b=X7gC7ug8; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=datadoghq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=datadoghq.com
+	s=arc-20240116; t=1749632678; c=relaxed/simple;
+	bh=jLq8TQOAMhHdsylHL7FElHZIu/bvuM8qtmokE4WqBTs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aZDs++23vkB4sBX1DIsITFudrofPow+8qEL5dUvre9dtNAkBMaOtZhht7af0MzKI+mb38Gvvjr8MRSjKyYuGtTUwW/nB0F7FNHdJuo2WkBX4utnWbh2na6mmhRI7jNWVJTOKRAd1SAGice1XPCoZ8WlnP2wNYr74LClaoOHdby8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (3072-bit key) header.d=posteo.net header.i=@posteo.net header.b=TLTRiRSr; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=datadoghq.com header.i=@datadoghq.com header.b="X7gC7ug8"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-703f3830906so243627b3.3
-        for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 01:57:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=datadoghq.com; s=google; t=1749632272; x=1750237072; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jjvJV8ZhcGRvupyFP8whmvE6fGj3kxjqSux4Bqr/JI4=;
-        b=X7gC7ug8jA2cprDslC41cXhxHpfciejBoUgfTTdJWpwVEQngBHGA+pLPRZgiZJvvsX
-         QJoU03RRxtlDmNThT3v5rg3701W9/aMyoRgzqA2gUVKnV5acMtrcnBsDmKGpEgZl4gtx
-         HzHH+A/xn7NtHmKGXBp8q4uLPGs8u9NGNaba0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749632272; x=1750237072;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jjvJV8ZhcGRvupyFP8whmvE6fGj3kxjqSux4Bqr/JI4=;
-        b=GxqevT6O3p2Qqn0RAGDIG8Yr4w/rI6MsCscrgoofy6KEVVWGT9x41r5+sTtkdrX9Jq
-         lg4Lot/pkosEI/VC5XmoyG1oODhVVVwOcyhP2j3K2tAwV8hlLOe2+95V6ah6If+onLJm
-         N1sTZVCwtrVOinIYKdFIn7p8u99hB7yGnjacRLCJXCyrLYeZU41RSJQmgVVo2v4icFIn
-         2xqnUvzEn5uaz+YNuZMtgEYPNIdtHGYchflEqfA2gxJvOQ4VSdJ2WnTc1Mn7NNaDoYOU
-         sQuMXHwfEedcatvaZXgFtq8usBnkOWIuS0KtN+Ye8Zyp4nYBrLsUfFEMCc7X1gRAgu3j
-         B6pg==
-X-Forwarded-Encrypted: i=1; AJvYcCUKDSYot8eRlAIBYbxFPNaHFoNltqSJGn0woetaswuyWz7j67ZiKsrfqfnmMyVe6SBN+Ki24Vg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOy4wtpEWJq74qMyts1Rx4UP7jUzO4WNxwDZxQOmVoIVzjrWp1
-	c2YgNd1zIAGcxH57uT3hK9swnOJO2NSXbdyOLBWK3fO2a7KV2fHiu3qxEHKxh3j0xiFqd7IQAS2
-	nBOILYIC2MI7vb/8/VfdiyLIYdiSPmnYech4Q15vhbo1in8AhS/bY86I=
-X-Gm-Gg: ASbGncvNMncM/Tz7A3QzpXg3sMnW69ASajyULbZFZtzQB0r/e7kkUUCJiCvDRvL0j/G
-	Ebz6W+ti9oCmCvcL8pALbNVYBw4YANGTYcyNEwOWy4jxkysKJF5WBVDr/kz0USPKTVGd5EehsLy
-	/nz62TERzfAtl9I8fKq5+gQnTyyFmDq9bEICX/VBbH9l7t6DZ4hbD1R65x
-X-Google-Smtp-Source: AGHT+IFFUX7swcm0JEVkBkoeXBxQqu33hMdHpH5TkNq62BrSmW92rmo/SE91S3zNAbTom0l5kxhyos7zTLCHUuzheJg=
-X-Received: by 2002:a05:690c:3685:b0:70e:4cdc:6e7a with SMTP id
- 00721157ae682-71140ae3679mr14818867b3.6.1749632272516; Wed, 11 Jun 2025
- 01:57:52 -0700 (PDT)
+	dkim=pass (3072-bit key) header.d=posteo.net header.i=@posteo.net header.b="TLTRiRSr"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 6EC31240103
+	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 11:04:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net;
+	s=1984.ea087b; t=1749632674;
+	bh=jLq8TQOAMhHdsylHL7FElHZIu/bvuM8qtmokE4WqBTs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:From;
+	b=TLTRiRSralZsGm3Chv0w46FoF9yz05ZenISNsjEbDf1uAv57sSKGwfxX5t39QR7tY
+	 6OdFvRBFohyAo8lqz3dbBh2kKYnZWmrGcJ6ElmMeJ2n6lvCl39S9Uoe+TizkYSN+cm
+	 kfPuRcaEWToQKHP85flDWDLB9qMtdChPMUHnBIGXCp4fEjL6sSq/dXeoDdJmoNFqJA
+	 xOa4RlWzmmiFEGgkUb5RJXOQtYI8PM47xnxzf5bqMnSZscL7BhaMZ7kHQzj9MEeo1G
+	 vDX7kz0yBJT66DqbnQwPzlj/iomKdjzaFSme88s2k8PR7cf71zEoqTCzs+EQzvtNT0
+	 hMPKDKYlFIzmlE0BGMrwRICgF31FdjK4+GLE8X8txDXRB8ir+s476XCFx01VYBtapw
+	 KFBPqbtoJ+eLnr8xUHXcbOqTeYc0LJUdCOp7OH1xP/qrjvhOKPcZNpASFUzVPnfPFK
+	 0CXk/6CgSd7q0TpGWzOvtvWXApDDUIKtvaMaZ+0wJxL7Q5n5mVa
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4bHKV61lB6z9rxD;
+	Wed, 11 Jun 2025 11:04:30 +0200 (CEST)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+Date: Wed, 11 Jun 2025 09:04:06 +0000
+Subject: [PATCH bpf-next v2] net: Fix RCU usage in task_cls_state() for BPF
+ programs
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250609-sockmap-splice-v2-0-9c50645cfa32@datadoghq.com>
- <20250609-sockmap-splice-v2-1-9c50645cfa32@datadoghq.com> <20250609122146.3e92eaef@kernel.org>
-In-Reply-To: <20250609122146.3e92eaef@kernel.org>
-From: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
-Date: Wed, 11 Jun 2025 10:57:41 +0200
-X-Gm-Features: AX0GCFthcjUN2-ZcbaCjBFu9eICTHSIis43T6ijos1tz5aAY4JHlgHWN205uMSw
-Message-ID: <CALye=__1_5Zr99AEZhxXXBtzbTPDC_KEZz_WCDDavjwujECYtQ@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v2 1/5] net: Add splice_read to prot
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Vincent Whitchurch via B4 Relay <devnull+vincent.whitchurch.datadoghq.com@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Jakub Sitnicki <jakub@cloudflare.com>, 
-	Kuniyuki Iwashima <kuniyu@amazon.com>, netdev@vger.kernel.org, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250611-rcu-fix-task_cls_state-v2-1-1a7fc248232a@posteo.net>
+X-B4-Tracking: v=1; b=H4sIAIVGSWgC/4WNXQ6CMBCEr0L22TX9QTA+cQ9DSKGLNBpKupVoS
+ O9u4QI+fpOZbzZgCo4YbsUGgVbHzs8Z1KmAYTLzg9DZzKCEuohKXDEMbxzdB6PhZze8uONoIqE
+ gW+ux1LWVBHm8BMqtQ3xvM0+Oow/f42eVe/pXuUqUqMxe68tK6L5ZPEfy55kitCmlHwADJY29A
+ AAA
+X-Change-ID: 20250608-rcu-fix-task_cls_state-0ed73f437d1e
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+ Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Feng Yang <yangfeng@kylinos.cn>, 
+ Tejun Heo <tj@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org, syzbot+b4169a1cfb945d2ed0ec@syzkaller.appspotmail.com, 
+ Charalampos Mitrodimas <charmitro@posteo.net>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749632650; l=2465;
+ i=charmitro@posteo.net; s=20250526; h=from:subject:message-id;
+ bh=jLq8TQOAMhHdsylHL7FElHZIu/bvuM8qtmokE4WqBTs=;
+ b=ut6ePDZlYIfJ1ZYNH55TQtCyEKaPR4TU6r3rukgknfjavYlrrn/IkxJBy746Ht37XV5aI87Ex
+ oBOn6hKvQS4C7IH8VFFYisxJPoXcJkH3SO1bxjld9hRyPF4Iq2fnFUw
+X-Developer-Key: i=charmitro@posteo.net; a=ed25519;
+ pk=PNHEh5o1dcr5kfKoZhfwdsfm3CxVfRje7vFYKIW0Mp4=
 
-On Mon, Jun 9, 2025 at 9:21=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
-te:
-> Can we not override proto_ops in tcp_bpf for some specific reason?
-> TLS does that, IIUC.
+The commit ee971630f20f ("bpf: Allow some trace helpers for all prog
+types") made bpf_get_cgroup_classid_curr helper available to all BPF
+program types, not just networking programs.
 
-I see that TLS writes to sk->sk_socket->ops to override the proto_ops.
-I added some prints to tcp_bpf_update_proto() but there I see that
-sk->sk_socket is NULL in some code paths, like the one below.
+This helper calls __task_get_classid() which internally calls
+task_cls_state() requiring rcu_read_lock_bh_held(). This works in
+networking/tc context where RCU BH is held, but triggers an RCU
+warning when called from other contexts like BPF syscall programs that
+run under rcu_read_lock_trace():
 
- tcp_bpf_update_proto: restore 0 sk_prot 000000002cf13dcc sk_socket
-0000000000000000
- CPU: 0 UID: 0 PID: 392 Comm: test_sockmap Not tainted
-6.15.0-12313-g39e87f4ff7c3-dirty #77 PREEMPT(voluntary)
- Call Trace:
-  <IRQ>
-  dump_stack_lvl+0x83/0xa0
-  tcp_bpf_update_proto+0x116/0x790
-  sock_map_link+0x425/0xdd0
-  sock_map_update_common+0xb8/0x6a0
-  bpf_sock_map_update+0x102/0x190
-  bpf_prog_4d9ceaf804942d01_bpf_sockmap+0x79/0x81
-  __cgroup_bpf_run_filter_sock_ops+0x1db/0x4b0
-  tcp_init_transfer+0x852/0xc00
-  tcp_rcv_state_process+0x3147/0x4b30
-  tcp_child_process+0x346/0x8b0
-  tcp_v4_rcv+0x1616/0x3e10
-  ip_protocol_deliver_rcu+0x93/0x370
-  ip_local_deliver_finish+0x29c/0x420
-  ip_local_deliver+0x193/0x450
-  ip_rcv+0x497/0x710
-  __netif_receive_skb_one_core+0x164/0x1b0
-  process_backlog+0x3a7/0x12b0
-  __napi_poll.constprop.0+0xa0/0x440
-  net_rx_action+0x8ce/0xca0
-  handle_softirqs+0x1c3/0x7b0
-  do_softirq+0xa5/0xd0
+  WARNING: suspicious RCU usage
+  6.15.0-rc4-syzkaller-g079e5c56a5c4 #0 Not tainted
+  -----------------------------
+  net/core/netclassid_cgroup.c:24 suspicious rcu_dereference_check() usage!
+
+Fix this by also accepting rcu_read_lock_trace_held() as a valid RCU
+context in the task_cls_state() function. This is safe because BPF
+programs are non-sleepable and task_cls_state() is only doing an RCU
+dereference to get the classid.
+
+Reported-by: syzbot+b4169a1cfb945d2ed0ec@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b4169a1cfb945d2ed0ec
+Fixes: ee971630f20f ("bpf: Allow some trace helpers for all prog types")
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+---
+Changes in v2:
+- Fix RCU usage in task_cls_state() instead of BPF helper
+- Add rcu_read_lock_trace_held() check to accept trace RCU as valdi
+  context
+- Drop the approach of using task_cls_classid() which has in_interrupt()
+  check
+- Link to v1: https://lore.kernel.org/r/20250608-rcu-fix-task_cls_state-v1-1-2a2025b4603b@posteo.net
+---
+ net/core/netclassid_cgroup.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/core/netclassid_cgroup.c b/net/core/netclassid_cgroup.c
+index d22f0919821e931fbdedf5a8a7a2998d59d73978..df86f82d747ac40e99597d6f2d921e8cc2834e64 100644
+--- a/net/core/netclassid_cgroup.c
++++ b/net/core/netclassid_cgroup.c
+@@ -21,7 +21,8 @@ static inline struct cgroup_cls_state *css_cls_state(struct cgroup_subsys_state
+ struct cgroup_cls_state *task_cls_state(struct task_struct *p)
+ {
+ 	return css_cls_state(task_css_check(p, net_cls_cgrp_id,
+-					    rcu_read_lock_bh_held()));
++					    rcu_read_lock_bh_held() ||
++					    rcu_read_lock_trace_held()));
+ }
+ EXPORT_SYMBOL_GPL(task_cls_state);
+ 
+
+---
+base-commit: 079e5c56a5c41d285068939ff7b0041ab10386fa
+change-id: 20250608-rcu-fix-task_cls_state-0ed73f437d1e
+
+Best regards,
+-- 
+Charalampos Mitrodimas <charmitro@posteo.net>
+
