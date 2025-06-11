@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599191DFF7;
-	Wed, 11 Jun 2025 21:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B66D247298
+	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 21:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749677399; cv=none; b=qw/MtJlf//wLqh4E/ZGT27X2kR+dWWzRPMPTtQsgdEW2YHUM+4/gWDT21Zn7F59iM0Jg4hkxSIS4ZV63VkmBZqYsnRB2c2MmT+PjbcF/eqtCa/Lu6rUdlpI2CWE2AhMhMMMMxPKj/CgCNQcMmc0u3cFVJm+Pp8HR+JeQjIaLccI=
+	t=1749678004; cv=none; b=ChfhX3/unLVo6IY+Ht+9a/7zLu3kFHcH8idEQ++ZEoJCZk1FpKkqaBSk/Q4ioF4fyklnQt0gcZwNYQIeA65hE4IfC+4dCjGfYSoq2rnJsnHKwwwyNu2DC9fFnSrAnufryDevuIrGSeJgM2MF+6w6V2ja7f0VlAmjU20TZuXOpDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749677399; c=relaxed/simple;
-	bh=PMlU9LLyEqlcFL6ggXBd+aNIgUGhBQRpYs6zgASZ7Yw=;
+	s=arc-20240116; t=1749678004; c=relaxed/simple;
+	bh=l7Q2pzYVlTn24zSDQ+fF5ZKOzmCXSRDA9SFSQ8CeWY4=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TYhoo1MpFu7VrsJMBl/6F/L0WHpMNoEi5eGOjvydFOphhTOf2+4CXbOyN8ZnVAegkRuv4QA7bVOeNx+H7RaThBoJfqrMw85V/lENf1ITeBWNsS9yISfBUrOmw3TmQ42P2aOPDHG5ICiz0Lor/Q5Gz+o0kb5oqfrTVMsu6mJCMcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RPpT9nIp; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=A6G3j+T5myLsv5q1sLjrLlQLE7RtNmDIzwIHbKufUai6vs3MqXlYUYzTaxmPrc86PscTNOVYpAnSuPdJ2eyRaxtPmd1obeRcxfmf2c8cwy0y/KDNFb7WensomJgwRc2d0oX3sQUeVSvM9unUdKLYHfJNb1Tsw7SOlmRefGQS2Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZCuAT7k5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RPpT9nIp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D487EC4CEE3;
-	Wed, 11 Jun 2025 21:29:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZCuAT7k5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA22C4CEF1;
+	Wed, 11 Jun 2025 21:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749677398;
-	bh=PMlU9LLyEqlcFL6ggXBd+aNIgUGhBQRpYs6zgASZ7Yw=;
+	s=k20201202; t=1749678004;
+	bh=l7Q2pzYVlTn24zSDQ+fF5ZKOzmCXSRDA9SFSQ8CeWY4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=RPpT9nIpvf51BZxucOa6mowC28lp3tWTGf9ftPEESybSFAABfsmizyfy5/BSwnW4p
-	 STimnxd6fyxnUadK0zsiWSRTDyzUyjfAY8/nKUKtVCESgLtKyB80uDn2b9wJRHP2EQ
-	 +C/lBEFnyxarVHHTGq9kJ9OITjBJNzW9bL2cLOk40/6wQKWIKt9uxvjtxwE1kHJM28
-	 uUoOMi/vfce648HAvOmeDfdYFBiIouKNyhhLJbYZlHbut7Pwf5+x+XOWdCQ3+Zq6Bc
-	 UU8tKctRKZ1GKl9GTwcbnj2voLdly6OmyoBH2Mc5QtVVhpWNI0wKHr7gVRos6/rFk+
-	 30vc4K/bsZQuw==
+	b=ZCuAT7k5HJngVqKR/c7hi86VRF+YwNK8Vjabd9tiIc8APv+DROAs9ttDnUMqvASqx
+	 nahwP1ND/3f2a15v1WlE99VY0oSHdpRFzbCPcNAqLt80IhQPL+iH5oUtm9DePfxnXk
+	 a7b2pbmYd7rF0ybir7Rau/wR3H78bxNpFDLOgr8lx5yXRLmEAYhLjfE7AbMVyIae1W
+	 yFxBvAYRkUA1g2DtkilhPgrHlvPf1K+7mGpURNGTEbXNI7htsJpJ8j3PQB1HWkHQ+6
+	 gnDQn++i935VbQhUDK0OrcoTT3+L+bvX8NwG95SQ71CBxBq1Bm1lPnJipVXXhJctiw
+	 mr07wNhguND9g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33AFF380DBE9;
-	Wed, 11 Jun 2025 21:30:30 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E7E380DBE9;
+	Wed, 11 Jun 2025 21:40:35 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net-next] net: usb: lan78xx: make struct fphy_status
- static
- const
+Subject: Re: [PATCH net 0/5][pull request] Intel Wired LAN Driver Updates
+ 2025-06-10 (i40e, iavf, ice, e1000)
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174967742900.3492087.9037933414056575160.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Jun 2025 21:30:29 +0000
-References: <0890f92e-a03d-4aa7-8bc8-94123d253f22@gmail.com>
-In-Reply-To: <0890f92e-a03d-4aa7-8bc8-94123d253f22@gmail.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Thangaraj.S@microchip.com, Rengarajan.S@microchip.com,
- UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, pabeni@redhat.com,
- edumazet@google.com, kuba@kernel.org, davem@davemloft.net,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org
+ <174967803425.3496159.10923726360736126981.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Jun 2025 21:40:34 +0000
+References: <20250610171348.1476574-1-anthony.l.nguyen@intel.com>
+In-Reply-To: <20250610171348.1476574-1-anthony.l.nguyen@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This series was applied to netdev/net.git (main)
+by Tony Nguyen <anthony.l.nguyen@intel.com>:
 
-On Tue, 10 Jun 2025 22:58:15 +0200 you wrote:
-> Constify variable fphy_status and make it static.
+On Tue, 10 Jun 2025 10:13:40 -0700 you wrote:
+> For i40e:
+> Robert Malz improves reset handling for situations where multiple reset
+> requests could cause some to be missed.
 > 
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> ---
-> v2:
-> - extend commit message
+> For iavf:
+> Ahmed adds detection, and handling, of reset that could occur early in
+> the initialization process to stop long wait/hangs.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,net-next] net: usb: lan78xx: make struct fphy_status static const
-    https://git.kernel.org/netdev/net-next/c/ae4e3334dd05
+  - [net,1/5] i40e: return false from i40e_reset_vf if reset is in progress
+    https://git.kernel.org/netdev/net/c/a2c90d63b712
+  - [net,2/5] i40e: retry VFLR handling if there is ongoing VF reset
+    https://git.kernel.org/netdev/net/c/fb4e9239e029
+  - [net,3/5] iavf: fix reset_task for early reset event
+    https://git.kernel.org/netdev/net/c/0c6f4631436e
+  - [net,4/5] ice/ptp: fix crosstimestamp reporting
+    https://git.kernel.org/netdev/net/c/a5a441ae283d
+  - [net,5/5] e1000: Move cancel_work_sync to avoid deadlock
+    https://git.kernel.org/netdev/net/c/b4a8085ceefb
 
 You are awesome, thank you!
 -- 
