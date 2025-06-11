@@ -1,793 +1,142 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56551DE8B5
-	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 15:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC83917597;
+	Wed, 11 Jun 2025 15:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749657279; cv=none; b=ZCRJG62Zq286cerUqxRWBKC84wlAyK+qElUEZ4l4rcmLUogyaQzOahynLgB+5R1DyCEp5w+MLRE/RAOimCM3XnK6ewlrjdihmukIYbMz/YUpChdqr4ODIaLRI5T8lPscAiMNrJputAxmgxzCIB2fS9YVsMoNqYuhTeLIra6ae4Q=
+	t=1749657320; cv=none; b=kkDJJ8MknlDaQzI3Yp5o3DfkaylFafJDld/MV/vsrTXX8CEMOUaDURVwyHle2sXtDOUSdCbEN1bxAwzEuBkvgy92XOUDQBFRFYVWkKO82/db5M2/ftfR65pxUpySzQ9wS0ItVgF5HYPioAtOAppBmhgo/cvZ6nbVtUe7wq/LDj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749657279; c=relaxed/simple;
-	bh=aChVk7NuBPtC4BnTLrDzZYCY1ibYXb9hXzVkeiTIql0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SE6azZo6zvoowCesKtHlIUXzrYv1yD340YU6M/VWf7geWBWO6jDBw9oB5tB8pg65tAuDI/yUu5I2lH8/jXj5h1uRVfrqOqZaTyGRwF2Uwnh98Bq7hcFE7fwEVkUMW8BbP6TrscG+k2VtEkL30aln6viL2UzRhAXdsZLTaQ6sH70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YfcilOck; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YfcilOck"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749657276; x=1781193276;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=aChVk7NuBPtC4BnTLrDzZYCY1ibYXb9hXzVkeiTIql0=;
-  b=YfcilOckPdE2hJ9dfl8eW7yKmES/6cI12ipJpotD/dXwW/5H1mVTuLcc
-   n7lakRxFVbtxGZd+9b9sh4zehweAHEds423vpV3CCPZpkbY3HTvwGjxvO
-   us+Ba23HJC/OegFU1VE3XCyosHMZOpKjDdEYSBl5EsNoQ4GTZMopQRybT
-   QwXiw/tYKSrPnudTJYKo4fWIB51YxZ5J3uJtAcwrgW2r3TFTctf4Ohaqu
-   3AL7M1y9RsVUWolVfzAmuwWQ9JJGrvQdKh6itWjaZcG76haUPIbiIjBNP
-   pwEZH01z/ty0hok71/l65xnL5xBRuQoU+0MNbKusvl6cIKYoOEdMH4azM
-   w==;
-X-CSE-ConnectionGUID: syWp4/BNR+KHrQfvlBN/gg==
-X-CSE-MsgGUID: Z1Nk/PQxR+WWasBaRjNvwg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="50914100"
-X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; 
-   d="scan'208";a="50914100"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 08:54:33 -0700
-X-CSE-ConnectionGUID: W1BtOQx+Rr2ZyP+1P1GAhQ==
-X-CSE-MsgGUID: R57onhv9TmuxP32xVlg33w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; 
-   d="scan'208";a="151030096"
-Received: from spandruv-mobl4.amr.corp.intel.com (HELO kmughal-lnx..) ([10.124.221.0])
-  by fmviesa003.fm.intel.com with ESMTP; 11 Jun 2025 08:54:32 -0700
-From: Khalid Mughal <khalid.mughal@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Khalid Mughal <khalid.mughal@intel.com>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>
-Subject: [PATCH] net: Add new iccnet driver
-Date: Wed, 11 Jun 2025 08:54:02 -0700
-Message-ID: <20250611155402.1260634-1-khalid.mughal@intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1749657320; c=relaxed/simple;
+	bh=RuH+17plmVtHYvKUZVvFokwqhJyYZSSTBslAfWYSSes=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qKNXhAzBDPtypYOwrNHbtTGLFHLGX8Ltnb3Gf9dr6IW07Jd/dOMh5YF12XcAKx2HHUmVF/6LDs7giVwWVQxUtOS60vazdMlkBAI0CdfaND9YF9/LmB1OuVK3+Pzc5O/nqtbh/C8rGhJr3LCK2YLHFbtv9AbJSbvPNOyytejXNSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ad93ff9f714so1223837566b.2;
+        Wed, 11 Jun 2025 08:55:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749657317; x=1750262117;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4dwG9EoMZ9ZKiC4ZdlNpo301IGTXAAOKclnpBssAG0E=;
+        b=FA7/sRcVAemOU48Zh9EKWjtmGH62gpWk7Gcd4frf3kWGlhE7B26p602oAtoYNTUpoK
+         dyvwKx/O5Qwr5p9hg5dIjnelQvit0nLoWJm/3697yt826IBh31Dib3rDHGDEZw9Cg2NY
+         bV6hc9uJDSo0H/pK8ru1KK2l/KsQgqIVRfkkgZqcxT+7GE7i9Lachk2KsncmYW3hJEZa
+         VJcfbT/oFt/ZprsC3Wdk993adNRSs3+1VAtbCqnyOqgPiKMAGF9J11XJNpla7YkWDfIO
+         xIGqBe6EYrocA0y/FAb86/3250UvQhhTXSwjE+2UsRhbLzlACEovawQsSByg7deSegI/
+         jNVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUIQTEIm6zwarTD2p1cKOFT45CLe/QQYyHQABUFXYusfpN0mi5JdlXHK79AzdXCGh3xiL8GJ6E4/dIwbqQ=@vger.kernel.org, AJvYcCWTOeqOD4A9HAJ9Z6oFDd/MwRkzAWsSRnT0xMM0fZkaKrZ5INLfMB4ncocc7adVqhTHp9c5Vl1h@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJc4hQzLKfqi3a+CCYEiJ1niWZnOOgjVnRN63K2K8GCrovd88X
+	7BlkmI4ayfQ1IjSWxS/GzW+QCqUvEysNilbc+VoskSdU6pBpiHNjDRkV
+X-Gm-Gg: ASbGncu2AU7aeAUmIg3qcjGzLSc/U+NnDYrZV9RgtqxqJF/Bvjp7uiVymoEpAFoAVM2
+	QaE0ofnDSbQgj79TYQ+AEHRXsuVEHp38fya+YmgzZPB0B7lDOSwOQ0yuiVzYt3CDlYxmidUmETK
+	RMnyS0F2/SPXGDer3QtiPYqU9876oT1ZUbkAV+TzJn9koSF30j2AudRaT+YinLRrLG5DwD46oj0
+	Z72W6tZJs3/61yNhaTnaYoz0x67scjCj6w5/G3dNrM4AW/iUeQVBoFtFH5tpu9a8ByXtifnWlr8
+	AZFrKv77XwP55+zAEH3D4PPPnXAii8JbfxlsiKSlL0/eT492RfNGAQ==
+X-Google-Smtp-Source: AGHT+IEsIs1LfkvlptHxbiWYOk1v3wDTy5QTNB0kKe4Qx9gAubVMpbktdWpOaQty3ez3oGX+LfxDTQ==
+X-Received: by 2002:a17:907:7210:b0:ad8:8689:2cc9 with SMTP id a640c23a62f3a-adea378cd5bmr12817366b.56.1749657316839;
+        Wed, 11 Jun 2025 08:55:16 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:71::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1db57610sm919089666b.52.2025.06.11.08.55.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Jun 2025 08:55:16 -0700 (PDT)
+Date: Wed, 11 Jun 2025 08:55:13 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Akira Yokosawa <akiyks@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Ignacio Encinas Rubio <ignacio@iencinas.com>,
+	Marco Elver <elver@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jan Stancek <jstancek@redhat.com>, Paolo Abeni <pabeni@redhat.com>,
+	Ruben Wauters <rubenru09@aol.com>, joel@joelfernandes.org,
+	linux-kernel-mentees@lists.linux.dev, linux-kernel@vger.kernel.org,
+	lkmm@lists.linux.dev, netdev@vger.kernel.org, peterz@infradead.org,
+	stern@rowland.harvard.edu
+Subject: Re: [PATCH 4/4] docs: netlink: store generated .rst files at
+ Documentation/output
+Message-ID: <aEmm4bHxn3+l0vDO@gmail.com>
+References: <cover.1749551140.git.mchehab+huawei@kernel.org>
+ <5183ad8aacc1a56e2dce9cc125b62905b93e83ca.1749551140.git.mchehab+huawei@kernel.org>
+ <aEhSu56ePZ/QPHUW@gmail.com>
+ <20250611174518.5b24bdad@sal.lan>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250611174518.5b24bdad@sal.lan>
 
-Intel(R) IPU ICCNET (Inter-Complex Communication Network) Driver:
+Hello Mauro,
 
-The iccnet (Inter-Core Communication Network) driver enables sideband
-channel communication between the Management-Complex and the
-Compute-Complex, both powered by ARMv8 CPUs, on the Intel IPU
-(Infrastructure Processing Unit). The driver establishes descriptor
-rings for transmission and reception using a shared memory region
-accessible to both CPU complexes. The TX ring of one CPU maps
-directly to the RX ring of the other CPU.
+On Wed, Jun 11, 2025 at 05:45:18PM +0200, Mauro Carvalho Chehab wrote:
+> Em Tue, 10 Jun 2025 08:43:55 -0700
+> Breno Leitao <leitao@debian.org> escreveu:
+> 
+> > Hello Mauro,
+> > 
+> > On Tue, Jun 10, 2025 at 12:46:07PM +0200, Mauro Carvalho Chehab wrote:
+> > > A better long term solution is to have an extension at
+> > > Documentation/sphinx that parses *.yaml files for netlink files,
+> > > which could internally be calling ynl_gen_rst.py. Yet, some care
+> > > needs to be taken, as yaml extensions are also used inside device
+> > > tree.  
+> > 
+> > In fact, This is very similar to what I did initially in v1. And I was
+> > creating a sphinx extension to handle the generation, have a look here:
+> > 
+> > https://lore.kernel.org/all/20231103135622.250314-1-leitao@debian.org/
+> > 
+> > During the review, we agree to move out of the sphinx extension.
+> > the reasons are the stubs/templates that needs to be created and you are
+> > creating here.
+> > 
+> > So, if we decide to come back to sphinx extension, we can leverage that
+> > code from v1 ?!
+> > 
+> > > -def generate_main_index_rst(output: str) -> None:
+> > > +def generate_main_index_rst(output: str, index_dir: str, ) -> None:  
+> > 
+> > You probably don't need the last , before ).
+> > 
+> > Other than that, LGTM.
+> > 
+> > The question is, are we OK with the templates that need to be created
+> > for netlink specs?! 
+> > 
+> > Thanks for looking at it,
+> > --breno
+> 
+> Hi Breno,
+> 
+> I did here a test creating a completely new repository using
+> sphinx-quickstart, adding yaml to conf.py with:
+> 
+> 	source_suffix = ['.rst', '.yaml']
+> 
+> There, I imported your v1 patch from:
+> 	https://lore.kernel.org/all/20231103135622.250314-1-leitao@debian.org/
+> 
+> While your extension seems to require some work, as it has issues
+> processing the current patch, it *is* creating one html file per each
+> yaml, without needing any template. All it is needed there is to place
+> an yaml file somewhere under source/ directory:
 
-== Initial and Evolving Use Cases ==
+Thanks for the tests. It appears that the sphinx extension can function
+without requiring stubs and templates, right?
 
-The initial use case was limited to simple utilities like scp, ssh,
-etc. However, iccnet evolved into the primary communication channel
-for iSCSI. In this scenario, Compute-Complex requires iSCSI to boot
-its OS, with the Management-Complex acting as an iSCSI server
-utilizing its SSD/NVMe storage. As a result, iccnet is now the
-default communication interface between Management-Complex and
-Compute-Complex for iSCSI. Since iSCSI relies on TCP/IP, a proper
-netdev driver is required.
+Given you have your hands dirty with it, and probably more experience
+than I have with sphinx extensions, would you be willing to take
+ownership of this extension and submit it? I'd be more than happy
+to review it.
 
-== Driver Design ==
-
-The iccnet is implemented as a generic netdev driver, enabling
-seamless integration with the Linux TCP/IP stack, without requiring
-custom socket APIs. The driver uses ARPHRD_RAWIP, forming a
-point-to-point link between Management-Complex and Compute-Complex.
-
-It uses a reserved 2MB section of shared memory (outside the OS
-domains of Management-Complex and Compute-Complex), within a larger
-shared memory region. The driver follows a simple descriptor ring
-model. Each descriptor includes a status word with an ownership bit
-and a buffer for packet/frame data.
-On transmit:
-  Data is copied via memcpy() (no DMA available),
-  The ownership bit is set, and
-  An interrupt is triggered to notify the peer.
-On receive:
-  The interrupt handler processes the packet,
-  Copies the data via memcpy(), and
-  Resets the ownership bit.
-
-Since the iccnet driver does not include an Ethernet header and lacks
-ARP support, a static route must be added after module insertion, e.g.
-    On Compute-Complex: ip route add 10.0.0.1 dev iccnet
-    On Management-Complex: ip route add 10.0.0.2 dev iccnet
-
-== Alternative Solutions Considered ==
-
-Before developing iccnet, several existing solutions were evaluated,
-but none met the requirements:
-1. virtio-net: Requires a backend device model between CPU complexes.
-2. veth (Virtual Ethernet): Only works within the same Linux network
-   namespace and does not support shared memory communication.
-3. PRMsg (Remote Processor Messaging): Cannot expose a netdev
-   interface, which is required for iSCSI.
-4. Mailbox Framework: Similar to RPMsg; lacks netdev support,
-   making it unsuitable for iSCSI.
-
-Signed-off-by: Khalid Mughal <khalid.mughal@intel.com>
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
----
-v2:
-- Fixed issues highlighted by Marcin Szycik
-v3:
-- Fixed internal-kbuild-all build warning
-v4:
-- Changed iccnet header padding
----
- .../devicetree/bindings/net/intel,iccnet.yaml |  71 +++
- drivers/net/Kconfig                           |  10 +
- drivers/net/Makefile                          |   1 +
- drivers/net/iccnet.c                          | 541 ++++++++++++++++++
- 4 files changed, 623 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/intel,iccnet.yaml
- create mode 100644 drivers/net/iccnet.c
-
-diff --git a/Documentation/devicetree/bindings/net/intel,iccnet.yaml b/Documentation/devicetree/bindings/net/intel,iccnet.yaml
-new file mode 100644
-index 000000000000..bdd42c64e6a7
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/intel,iccnet.yaml
-@@ -0,0 +1,71 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/intel,iccnet.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Intel IPU ICCNET interface
-+
-+maintainers:
-+  - Khalid Mughal <khalid.mughal@intel.com>
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: intel,iccnet
-+
-+  reg:
-+    description:
-+      physical address and sizes of shared memory region
-+    maxItems: 1
-+
-+  rxring-offset:
-+    description:
-+      offset of start of receive descriptor ring
-+    maxItems: 1
-+
-+  txring-offset:
-+    description:
-+      offset of start of transmit descriptor ring
-+    maxItems: 1
-+
-+  ipc-reg:
-+    description:
-+      interrupt/status register address
-+    maxItems: 1
-+
-+  interrupts:
-+    description:
-+      interrupt specifier specific to interrupt controller
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - rxring-offset
-+  - txring-offset
-+  - ipc-reg
-+  - interrupts
-+
-+
-+allOf:
-+  - $ref: ethernet-controller.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    soc {
-+        #address-cells = <2>;
-+        #size-cells = <2>;
-+
-+        ethernet@4198000000 {
-+            compatible = "intel,iccnet";
-+            reg = <0x41 0x98000000 0x0 0x200000>;
-+            rxring-offset = <0x000000>;
-+            txring-offset = <0x100000>;
-+            ipc-reg = <0x20 0x53A10000>;
-+            interrupts = <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
-+        };
-+    };
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 1fd5acdc73c6..27d5ceeb6e54 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -669,4 +669,14 @@ config NETDEV_LEGACY_INIT
- 	  Drivers that call netdev_boot_setup_check() should select this
- 	  symbol, everything else no longer needs it.
- 
-+config ICCNET
-+	tristate "Intel IPU ICCNET interface"
-+	depends on ACPI || OF
-+	help
-+
-+	  Enables support for the Intel ICCNET (Inter-Complex
-+	  Communication Network) interface used in Intel IPU
-+	  (Infrastructure Processing Unit). It provides a point-to-point
-+	  communication link between 2 CPU complexes over a shared memory
-+	  transport.
- endif # NETDEVICES
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 13743d0e83b5..9938b0dd9099 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -90,3 +90,4 @@ obj-$(CONFIG_FUJITSU_ES) += fjes/
- obj-$(CONFIG_USB4_NET) += thunderbolt/
- obj-$(CONFIG_NETDEVSIM) += netdevsim/
- obj-$(CONFIG_NET_FAILOVER) += net_failover.o
-+obj-$(CONFIG_ICCNET) += iccnet.o
-diff --git a/drivers/net/iccnet.c b/drivers/net/iccnet.c
-new file mode 100644
-index 000000000000..693718f3b30a
---- /dev/null
-+++ b/drivers/net/iccnet.c
-@@ -0,0 +1,541 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright(C) 2020-2025 Intel Corporation */
-+
-+#include <linux/acpi.h>
-+#include <linux/if_arp.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+
-+#define DRIVER_NAME		"iccnet"
-+
-+#define ICCNET_STS_RX_LOOP	BIT(4) /* RX-loop is in active state */
-+#define ICCNET_STS_RUNNING	BIT(8) /* operational state == running */
-+#define ICCNET_STS_STOPPED	0x0    /* operational state == stopped */
-+
-+#define ICCNET_NAPI_WEIGHT	NAPI_POLL_WEIGHT /* Packets per NAPI poll */
-+
-+#define ICCNET_IPC_REG_STS	0x00   /* Status register - (Read-Only) */
-+#define ICCNET_IPC_REG_CLR	0x04   /* Clear register - (Write-Clear) */
-+#define ICCNET_IPC_REG_SET	0x08   /* Set/Trigger register - (Read-Write) */
-+#define ICCNET_IPC_REG_SZ	16     /* Register space size (in bytes) */
-+
-+#define ICCNET_IPC_ENABLE	BIT(0) /* Trigger an IPC interrupt */
-+#define ICCNET_IPC_CLEAR	GENMASK(31, 0) /* Clear IPC interrupt */
-+
-+#define ICCNET_LINK_UP		1      /* Link is up */
-+#define ICCNET_LINK_DOWN	0      /* Link is down */
-+
-+#define ICCNET_RING_SET		BIT(31) /* Descriptor is in use */
-+#define ICCNET_RING_CLR		0x0     /* Descriptor is free */
-+#define ICCNET_RING_MSK		GENMASK(30, 0) /* Mask to extract frame len */
-+
-+#define ICCNET_MAX_MTU		4088   /* Max MTU size for iccnet */
-+#define ICCNET_FRAME_LEN	ICCNET_MAX_MTU
-+#define ICCNET_MIN_MTU		ETH_MIN_MTU /* Min MTU size for iccnet */
-+#define ICCNET_HDR_SIZE		1024   /* Header size */
-+#define ICCNET_DSC_SIZE		4092   /* Descriptor size: FRAME_LEN + 4 */
-+
-+#define ICCNET_RX_RING_SIZE	SZ_1M  /* Rx ring size */
-+#define ICCNET_TX_RING_SIZE	SZ_1M  /* Tx ring size */
-+#define ICCNET_MAX_DSC_ELEM	256    /* Max descriptor elements in a ring */
-+
-+struct iccnet_hdr {
-+	u32 link; /* Link status (ICCNET_LINK_UP or ICCNET_LINK_DOWN) */
-+	u32 rx_idx; /* Current index in the RX descriptor ring */
-+	u32 tx_idx; /* Current index in the TX descriptor ring */
-+	u32 nelem; /* Ring size (# of elements in the Ring) */
-+
-+	u64 st_rx_pkts; /* Total number of received packets */
-+	u64 st_tx_pkts; /* Total number of transmitted packets */
-+	u64 st_rx_bytes; /* Total number of received bytes */
-+	u64 st_tx_bytes; /* Total number of transmitted bytes */
-+	u64 st_rx_dropped; /* Number of received packets dropped */
-+	u64 st_tx_dropped; /* Number of transmitted packets dropped */
-+	u64 st_rx_errors; /* Number of receive errors */
-+	u64 st_irq_valid; /* Number of valid IRQs processed */
-+	u64 st_irq_none; /* Number of IRQs with no data to process */
-+	u64 st_napi_poll; /* Number of times NAPI polling was triggered */
-+	u64 st_napi_done; /* Number of times NAPI polling completed */
-+
-+	u64 rsvd[19];  /* Padding to ensure struct alignment */
-+} __packed;
-+
-+struct iccnet_dsc {
-+	u32 status; /* Status word: ownership flag + frame length */
-+	u8 data[ICCNET_FRAME_LEN]; /* Packet data buffer */
-+} __packed;
-+static_assert(sizeof(struct iccnet_dsc) == ICCNET_DSC_SIZE, "ERR dsc_size");
-+
-+struct iccnet {
-+	int opstate; /* Operational state flags (e.g., ICCNET_STS_RUNNING) */
-+	void __iomem *base; /* Base address of shared memory (I/O mapped) */
-+	void __iomem *ipc_base; /* Base address for interrupt registers */
-+
-+	struct net_device *ndev; /* Associated network device */
-+	struct napi_struct napi; /* NAPI instance for packet reception */
-+
-+	spinlock_t rx_lock; /* lock to protect Rx Ring */
-+	spinlock_t tx_lock; /* lock to protect Tx Ring */
-+
-+	struct iccnet_hdr *own_hdr; /* Pointer to TX ring header */
-+	struct iccnet_dsc *tx_ring; /* Pointer to TX descriptor ring */
-+	struct iccnet_hdr *peer_hdr; /* Pointer to RX ring header */
-+	struct iccnet_dsc *rx_ring; /* Pointer to RX descriptor ring */
-+};
-+
-+/**
-+ * iccnet_irqhandler - Interrupt handler for iccnet
-+ * @irq: Interrupt number
-+ * @priv: Network device structure
-+ *
-+ * Handles interrupts for the iccnet device. It clears the interrupt status
-+ * register and schedules NAPI if the interrupt is valid.
-+ *
-+ * Return: IRQ_HANDLED
-+ */
-+static irqreturn_t iccnet_irqhandler(int irq, void *priv)
-+{
-+	struct net_device *ndev = priv;
-+	struct iccnet *idev;
-+	u32 irqstatus;
-+
-+	idev = netdev_priv(ndev);
-+
-+	irqstatus = readl(idev->ipc_base + ICCNET_IPC_REG_STS);
-+	writel(ICCNET_IPC_CLEAR, idev->ipc_base + ICCNET_IPC_REG_CLR);
-+
-+	if (irqstatus & ICCNET_IPC_ENABLE) {
-+		if (idev->opstate & ICCNET_STS_RUNNING)
-+			napi_schedule(&idev->napi);
-+		idev->own_hdr->st_irq_valid++;
-+	} else {
-+		idev->own_hdr->st_irq_none++;
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+/**
-+ * iccnet_start - Start the network interface
-+ * @ndev: Network device structure
-+ *
-+ * Called when the network interface is activated (IFF_UP). This function
-+ * enables NAPI, starts the transmit queue, and marks the link as up.
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+static int iccnet_start(struct net_device *ndev)
-+{
-+	struct iccnet *idev = netdev_priv(ndev);
-+
-+	napi_enable(&idev->napi);
-+	netif_carrier_on(ndev);
-+	netif_start_queue(ndev);
-+	idev->own_hdr->link = ICCNET_LINK_UP;
-+	idev->opstate |= ICCNET_STS_RUNNING;
-+	return 0;
-+}
-+
-+/**
-+ * iccnet_stop - Stop the network interface
-+ * @ndev: Network device structure
-+ *
-+ * Called when the network interface is deactivated. It stops the transmit
-+ * queue, disables NAPI, and marks the link as down.
-+ *
-+ * Return: 0 on success
-+ */
-+static int iccnet_stop(struct net_device *ndev)
-+{
-+	struct iccnet *idev = netdev_priv(ndev);
-+
-+	if (idev->opstate & ICCNET_STS_RUNNING) {
-+		idev->opstate &= ~ICCNET_STS_RUNNING;
-+		netif_stop_queue(ndev);
-+		netif_carrier_off(ndev);
-+		napi_disable(&idev->napi);
-+		idev->own_hdr->link = ICCNET_LINK_DOWN;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * iccnet_start_xmit - Transmit a packet
-+ * @skb: Socket buffer containing the packet
-+ * @ndev: Network device structure
-+ *
-+ * Handles packet transmission. It checks if the transmit ring is available,
-+ * copies the packet data, updates statistics, and notifies hardware.
-+ *
-+ * Return: NETDEV_TX_OK on success
-+ */
-+static int iccnet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
-+{
-+	struct iccnet *idev = netdev_priv(ndev);
-+	struct iccnet_dsc *txrptr;
-+	int pktlen;
-+
-+	spin_lock(&idev->tx_lock);
-+	txrptr = &idev->tx_ring[idev->own_hdr->tx_idx];
-+
-+	if ((txrptr->status & ICCNET_RING_SET) ||
-+	    idev->peer_hdr->link == ICCNET_LINK_DOWN) {
-+		dev_kfree_skb_any(skb);
-+		idev->own_hdr->st_tx_dropped++;
-+		goto tx_exit;
-+	}
-+
-+	pktlen = (skb->len < ICCNET_MIN_MTU) ? ICCNET_MIN_MTU : skb->len;
-+	skb_copy_from_linear_data(skb, txrptr->data, skb->len);
-+	idev->own_hdr->st_tx_pkts++;
-+	idev->own_hdr->st_tx_bytes += pktlen;
-+	txrptr->status = ICCNET_RING_SET | pktlen;
-+	writel(ICCNET_IPC_ENABLE, idev->ipc_base + ICCNET_IPC_REG_SET);
-+	idev->own_hdr->tx_idx =
-+		(idev->own_hdr->tx_idx + 1) % ICCNET_MAX_DSC_ELEM;
-+	dev_kfree_skb_any(skb);
-+
-+tx_exit:
-+	spin_unlock(&idev->tx_lock);
-+
-+	return NETDEV_TX_OK;
-+}
-+
-+/**
-+ * iccnet_start_recv - Receive packets
-+ * @ndev: Network device structure
-+ * @budget: Maximum number of packets to process
-+ *
-+ * Processes received packets and passes them to the network stack.
-+ *
-+ * Return: Number of packets processed
-+ */
-+static int iccnet_start_recv(struct net_device *ndev, int budget)
-+{
-+	struct iccnet *idev = netdev_priv(ndev);
-+	struct iccnet_dsc *rxrptr;
-+	struct sk_buff *skb;
-+	int npackets = 0;
-+	int pktlen;
-+
-+	spin_lock(&idev->rx_lock);
-+	idev->opstate |= ICCNET_STS_RX_LOOP;
-+	rxrptr = &idev->rx_ring[idev->own_hdr->rx_idx];
-+
-+	while ((rxrptr->status & ICCNET_RING_SET) && budget--) {
-+		pktlen = rxrptr->status & ICCNET_RING_MSK;
-+		skb = napi_alloc_skb(&idev->napi, pktlen + 2);
-+		if (!skb) {
-+			idev->own_hdr->st_rx_dropped++;
-+			break;
-+		}
-+		skb_reserve(skb, 2); /* adjust alignment (if needed) */
-+		skb_put(skb, pktlen); /* set the length of the skb */
-+		skb_copy_to_linear_data(skb, rxrptr->data, pktlen);
-+		skb->dev = ndev;
-+		if ((skb->data[0] & 0xf0) == 0x40)
-+			skb->protocol = htons(ETH_P_IP); /* IPv4 */
-+		else
-+			skb->protocol = htons(ETH_P_IPV6); /* IPv6 */
-+		skb->ip_summed = CHECKSUM_UNNECESSARY;
-+		napi_gro_receive(&idev->napi, skb);
-+		idev->own_hdr->st_rx_pkts++;
-+		idev->own_hdr->st_rx_bytes += pktlen;
-+		rxrptr->status = ICCNET_RING_CLR;
-+		idev->own_hdr->rx_idx =
-+			(idev->own_hdr->rx_idx + 1) % ICCNET_MAX_DSC_ELEM;
-+		rxrptr = &idev->rx_ring[idev->own_hdr->rx_idx];
-+		npackets++;
-+	}
-+
-+	idev->opstate &= ~ICCNET_STS_RX_LOOP;
-+	spin_unlock(&idev->rx_lock);
-+
-+	return npackets;
-+}
-+
-+/**
-+ * iccnet_napi_poll - NAPI poll function
-+ * @napi: NAPI structure
-+ * @budget: Maximum number of packets to process
-+ *
-+ * Processes received packets within the given budget. Completes polling
-+ * if all packets have been processed.
-+ *
-+ * Return: Number of packets processed
-+ */
-+static int iccnet_napi_poll(struct napi_struct *napi, int budget)
-+{
-+	struct iccnet *idev = container_of(napi, struct iccnet, napi);
-+	struct net_device *ndev = idev->ndev;
-+	int npackets = budget;
-+
-+	if (idev->opstate == ICCNET_STS_STOPPED)
-+		return 0;
-+
-+	if (!(idev->opstate & ICCNET_STS_RX_LOOP))
-+		npackets = iccnet_start_recv(ndev, budget);
-+
-+	if (npackets < budget) {
-+		napi_complete_done(napi, npackets);
-+		idev->own_hdr->st_napi_done++;
-+	}
-+
-+	idev->own_hdr->st_napi_poll++;
-+
-+	return npackets;
-+}
-+
-+/**
-+ * iccnet_get_stats64 - Get network statistics
-+ * @ndev: Network device structure
-+ * @stats: Pointer to statistics structure
-+ *
-+ * Retrieves the network statistics such as packet count, bytes transmitted,
-+ * and errors.
-+ */
-+static void iccnet_get_stats64(struct net_device *ndev,
-+			       struct rtnl_link_stats64 *stats)
-+{
-+	struct iccnet *idev = netdev_priv(ndev);
-+
-+	stats->rx_packets = idev->own_hdr->st_rx_pkts;
-+	stats->rx_bytes   = idev->own_hdr->st_rx_bytes;
-+	stats->tx_packets = idev->own_hdr->st_tx_pkts;
-+	stats->tx_bytes   = idev->own_hdr->st_tx_bytes;
-+	stats->rx_errors  = idev->own_hdr->st_rx_errors;
-+	stats->rx_dropped = idev->own_hdr->st_rx_dropped;
-+	stats->tx_dropped = idev->own_hdr->st_tx_dropped;
-+}
-+
-+/**
-+ * iccnet_tx_timeout - Handle transmit timeout
-+ * @ndev: Network device structure
-+ * @txq: Transmit queue index
-+ *
-+ * Called when a transmit timeout occurs. It restarts the transmit queue.
-+ */
-+static void iccnet_tx_timeout(struct net_device *ndev, unsigned int txq)
-+{
-+	netif_wake_queue(ndev);
-+}
-+
-+/**
-+ * iccnet_remove - Remove the network device
-+ * @pdev: Platform device structure
-+ *
-+ * Unregisters and frees resources associated with the network device.
-+ */
-+static void iccnet_remove(struct platform_device *pdev)
-+{
-+	struct net_device *ndev = platform_get_drvdata(pdev);
-+	struct iccnet *idev = netdev_priv(ndev);
-+
-+	iccnet_stop(ndev);
-+	free_irq(ndev->irq, ndev);
-+	unregister_netdev(ndev);
-+	netif_napi_del(&idev->napi);
-+	iounmap(idev->ipc_base);
-+	iounmap(idev->base);
-+	free_netdev(ndev);
-+}
-+
-+static const struct net_device_ops iccnet_netdev_ops = {
-+	.ndo_open			= iccnet_start,
-+	.ndo_stop			= iccnet_stop,
-+	.ndo_start_xmit			= iccnet_start_xmit,
-+	.ndo_get_stats64		= iccnet_get_stats64,
-+	.ndo_tx_timeout			= iccnet_tx_timeout
-+};
-+
-+/**
-+ * iccnet_setup - Initialize network device structure
-+ * @ndev: Network device structure
-+ *
-+ * Sets up the network device parameters such as MTU, flags, and operations.
-+ */
-+static void iccnet_setup(struct net_device *ndev)
-+{
-+	ndev->header_ops = NULL; /* No header */
-+	ndev->type = ARPHRD_RAWIP; /* Raw IP */
-+	ndev->mtu = ICCNET_MAX_MTU;
-+	ndev->min_mtu = ICCNET_MIN_MTU;
-+	/* Point-to-Point link with no ARP, no multicast, and no broadcast */
-+	ndev->flags = IFF_POINTOPOINT | IFF_NOARP;
-+	ndev->flags &= ~(IFF_MULTICAST | IFF_BROADCAST);
-+	ndev->netdev_ops = &iccnet_netdev_ops;
-+}
-+
-+/**
-+ * iccnet_probe - Probe function for the platform device
-+ * @pdev: Platform device structure
-+ *
-+ * Initializes the network device, maps memory regions, and sets up the driver.
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+static int iccnet_probe(struct platform_device *pdev)
-+{
-+	struct net_device *ndev;
-+	struct resource *res;
-+	struct iccnet *idev;
-+	struct device *dev;
-+	u64 ipc_csr_base;
-+	u32 tx_offset = 0;
-+	u32 rx_offset = 0;
-+	u32 res_size;
-+	u8 *membase;
-+	int rc = 0;
-+
-+	dev = &pdev->dev;
-+	if (!dev)
-+		return -ENODEV;
-+
-+	ndev = alloc_netdev(sizeof(*idev), DRIVER_NAME, NET_NAME_PREDICTABLE,
-+			    iccnet_setup);
-+	if (!ndev)
-+		return -ENOMEM;
-+
-+	platform_set_drvdata(pdev, ndev);
-+	SET_NETDEV_DEV(ndev, &pdev->dev);
-+
-+	idev = netdev_priv(ndev);
-+	idev->ndev = ndev;
-+
-+	spin_lock_init(&idev->tx_lock);
-+	spin_lock_init(&idev->rx_lock);
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res) {
-+		netdev_err(ndev, "failed to get IORESOURCE_MEM\n");
-+		rc = -ENODEV;
-+		goto err;
-+	}
-+
-+	res_size = resource_size(res);
-+	if (res_size < (ICCNET_TX_RING_SIZE + ICCNET_RX_RING_SIZE)) {
-+		netdev_err(ndev, "IORESOURCE_MEM size mismatch\n");
-+		rc = -ENODEV;
-+		goto err;
-+	}
-+
-+	idev->base = ioremap_wc(res->start, res_size);
-+	if (!idev->base) {
-+		netdev_err(ndev, "could not map device\n");
-+		rc = -ENOMEM;
-+		goto err;
-+	}
-+
-+	membase = idev->base;
-+	if (!(is_acpi_node(dev->fwnode) || dev_of_node(dev))) {
-+		netdev_err(ndev, "Can't get data from DT or ACPI\n");
-+		rc = -ENXIO;
-+		goto err;
-+	}
-+
-+	rc = device_property_read_u32(dev, "rxring-offset", &rx_offset);
-+	if (rc) {
-+		netdev_err(ndev, "invalid rxring-offset\n");
-+		goto err;
-+	}
-+
-+	rc = device_property_read_u32(dev, "txring-offset", &tx_offset);
-+	if (rc) {
-+		netdev_err(ndev, "invalid txring-offset\n");
-+		goto err;
-+	}
-+
-+	rc = device_property_read_u64(dev, "ipc-reg", &ipc_csr_base);
-+	if (rc) {
-+		netdev_err(ndev, "invalid ipc-reg\n");
-+		goto err;
-+	}
-+
-+	idev->ipc_base =
-+		ioremap(ipc_csr_base, ICCNET_IPC_REG_SZ);
-+	if (!idev->ipc_base) {
-+		netdev_err(ndev, "could not map IPC CSRs\n");
-+		rc = -ENOMEM;
-+		goto err;
-+	}
-+
-+	idev->own_hdr = (struct iccnet_hdr *)(membase + tx_offset);
-+	memset(idev->own_hdr, 0, ICCNET_HDR_SIZE);
-+	idev->own_hdr->nelem = ICCNET_MAX_DSC_ELEM;
-+	idev->tx_ring = (struct iccnet_dsc *)
-+		(membase + tx_offset + ICCNET_HDR_SIZE);
-+	memset(idev->tx_ring, 0,
-+	       sizeof(struct iccnet_dsc) * ICCNET_MAX_DSC_ELEM);
-+	idev->rx_ring = (struct iccnet_dsc *)
-+		(membase + rx_offset + ICCNET_HDR_SIZE);
-+	memset(idev->rx_ring, 0,
-+	       sizeof(struct iccnet_dsc) * ICCNET_MAX_DSC_ELEM);
-+	idev->peer_hdr = (struct iccnet_hdr *)(membase + rx_offset);
-+	idev->peer_hdr->rx_idx = 0; idev->peer_hdr->tx_idx = 0;
-+
-+	ndev->irq = platform_get_irq(pdev, 0);
-+	if (ndev->irq < 0)
-+		goto err;
-+
-+	writel(ICCNET_IPC_CLEAR, idev->ipc_base + ICCNET_IPC_REG_CLR);
-+	rc = request_irq(ndev->irq,
-+			 iccnet_irqhandler, 0, ndev->name, ndev);
-+	if (rc < 0) {
-+		netdev_err(ndev, "error requesting interrupt\n");
-+		goto err;
-+	}
-+
-+	rc = register_netdev(ndev);
-+	if (rc < 0)
-+		goto err;
-+
-+	netif_napi_add(ndev, &idev->napi, iccnet_napi_poll);
-+
-+	idev->opstate = ICCNET_STS_STOPPED;
-+
-+	netdev_info(ndev, "MTU:%u IRQ:%d OF:0x%08x\n",
-+		    ICCNET_FRAME_LEN, ndev->irq, tx_offset);
-+
-+	return 0;
-+err:
-+	if (ndev->irq)
-+		free_irq(ndev->irq, ndev);
-+	if (idev->base)
-+		iounmap(idev->base);
-+	if (idev->ipc_base)
-+		iounmap(idev->ipc_base);
-+	free_netdev(ndev);
-+	return rc;
-+}
-+
-+#ifdef CONFIG_OF
-+static const struct of_device_id iccnet_of_match[] = {
-+	{ .compatible = "intel,icc_net" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, iccnet_of_match);
-+#endif
-+
-+#ifdef CONFIG_ACPI
-+static const struct acpi_device_id iccnet_acpi_match[] = {
-+	{ "INTC10C4", 0 },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(acpi, iccnet_acpi_match);
-+#endif
-+
-+static struct platform_driver iccnet_driver = {
-+	.probe	= iccnet_probe,
-+	.remove = iccnet_remove,
-+	.driver = {
-+		.name = DRIVER_NAME,
-+		.of_match_table = iccnet_of_match,
-+		.acpi_match_table = ACPI_PTR(iccnet_acpi_match),
-+	},
-+};
-+
-+module_platform_driver(iccnet_driver);
-+
-+MODULE_DESCRIPTION("Intel(R) IPU ICCNET Driver");
-+MODULE_LICENSE("GPL v2");
--- 
-2.43.0
-
+--breno
