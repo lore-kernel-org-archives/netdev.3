@@ -1,197 +1,113 @@
-Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10ADF22CBD0;
-	Wed, 11 Jun 2025 06:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C08021B19D
+	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 06:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749622596; cv=none; b=QXIaMdJEnKkvsBmqHl+cnD8HqihfCzM5pIg9gphA6A5fDtOjNMHU0HX9qzPt38pcYlSr6i72BgoqzDkgfGaQMXywnjdzjxKP3EkLMiJBVqn1O2V/puc2n8B2Z2cek54B8GJLhODozuur8+TOckDn0mUlxzq3y87neC5efuMf0YU=
+	t=1749623461; cv=none; b=YssVBiymxWuBUII9JdLPiq+Gel55F0BMv7bs2HUjI6rhYOTal8SK3mchRI6V69ANqO+PoC/yOPfw/Uk6YBciicNl46YXsCSPlKPtL7o5yF1TODxvHtmmDaoEJdTCbSpWZsJL+7OzvwExdS0OyryKQp8LKEJBVsMPHbvB7mRrOfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749622596; c=relaxed/simple;
-	bh=v4L2wlZ33mOuGPZDs6teD614QmYCP+zr9rUg3UN7axQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GptMUUWeKohINqhPMX8wAUM56ZzPgCkKtv0rPjxYbJiKoVYiKrb10M90D4eVEy15qv/a1huLPA0VdeXxOMm2isF2vEvYHA6BeEkJe5xfQRsx6M0AmrhgndAnjdCeRvz5mop5oYH/i+z7UJiDhrbEEa67kY+wawaAzfDWRFM9YzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
-X-CSE-ConnectionGUID: W6AiPcQpSEaYDJP7WfYCYQ==
-X-CSE-MsgGUID: 6gH0QCHpSF2f9qsz7CjlXQ==
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 11 Jun 2025 15:16:33 +0900
-Received: from ubuntu.adwin.renesas.com (unknown [10.226.92.57])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id A33D64012643;
-	Wed, 11 Jun 2025 15:16:28 +0900 (JST)
-From: John Madieu <john.madieu.xa@bp.renesas.com>
-To: andrew+netdev@lunn.ch,
-	conor+dt@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	geert+renesas@glider.be,
-	krzk+dt@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	robh@kernel.org
-Cc: biju.das.jz@bp.renesas.com,
-	devicetree@vger.kernel.org,
-	john.madieu@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	magnus.damm@gmail.com,
-	netdev@vger.kernel.org,
-	John Madieu <john.madieu.xa@bp.renesas.com>
-Subject: [PATCH v2 3/3] arm64: dts: renesas: rzg3e-smarc-som: Enable eth{0-1} (GBETH) interfaces
-Date: Wed, 11 Jun 2025 08:16:09 +0200
-Message-ID: <20250611061609.15527-4-john.madieu.xa@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250611061609.15527-1-john.madieu.xa@bp.renesas.com>
-References: <20250611061609.15527-1-john.madieu.xa@bp.renesas.com>
+	s=arc-20240116; t=1749623461; c=relaxed/simple;
+	bh=a6aw4aa2cUbfhI+C1HpTVHxzU6H213PQb/EEj50UUX0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=WsFgouqCkjT1UWacOlqyRPt3EzFR8bBYsV3biJqXRnTJ0Fa2RpJq1ztBrGW4Ggq8gOwhjHCsC0SPPgSjPLJV1CFyHhN5WzFYa43krcEbdOP5qAmFzpKtdLB2dqmQKL8lvvVaATwNWDkbVo1n08yGqDjrP+nQ36osPoSzTzeSmZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=AmLyOxhO; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="AmLyOxhO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1749623458;
+	bh=WbaZ851tPvl9z9qCq9g9hQhGeKab8Q7zy72SwZ1dqFQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=AmLyOxhO25OZXmIu2J9kEbSQ8Y6akHQQY2jouNiISYNjU6gUk4QiZETkIk+RaEABL
+	 auFCnikGkm+aZc/8heBeC+8a1tW9FbDncmxNHq8NXFNWC0WhRHr7m5hVu0+5DacvLR
+	 aT/66GBZxn+L6Jdf0CnIPMVGp73ru5cK4NaSznJKgEaJbdt+altvNy7P+uptZ9LVAc
+	 dueGgdTVgyHQyYNKstoaZGMcNDkh/o7RHq7tHbP8GQV3YvljdqFUtNCWVZ7dIKmwSV
+	 zqwYVXUlkaLLOzug1z2ENOXoELhLV0MQCy6AY1W8S/VYAVEc1m2g4W2FVTZ8U0rdx6
+	 Zqy/cjfchChHQ==
+Received: by codeconstruct.com.au (Postfix, from userid 10000)
+	id 07DF167DD3; Wed, 11 Jun 2025 14:30:58 +0800 (AWST)
+From: Jeremy Kerr <jk@codeconstruct.com.au>
+Date: Wed, 11 Jun 2025 14:30:28 +0800
+Subject: [PATCH net-next 01/13] net: mctp: don't use source cb data when
+ forwarding, ensure pkt_type is set
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250611-dev-forwarding-v1-1-6b69b1feb37f@codeconstruct.com.au>
+References: <20250611-dev-forwarding-v1-0-6b69b1feb37f@codeconstruct.com.au>
+In-Reply-To: <20250611-dev-forwarding-v1-0-6b69b1feb37f@codeconstruct.com.au>
+To: Matt Johnston <matt@codeconstruct.com.au>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-Enable the Gigabit Ethernet Interfaces (GBETH) populated on the RZ/G3E SMARC EVK
+In the output path, only check the skb->cb data when we know it's from
+a local socket; input packets will have source address information there
+instead.
 
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: John Madieu <john.madieu.xa@bp.renesas.com>
+In order to detect when we're forwarding, set skb->pkt_type on
+input/output.
+
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
 ---
- .../boot/dts/renesas/rzg3e-smarc-som.dtsi     | 106 ++++++++++++++++++
- 1 file changed, 106 insertions(+)
+ net/mctp/route.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/rzg3e-smarc-som.dtsi b/arch/arm64/boot/dts/renesas/rzg3e-smarc-som.dtsi
-index f99a09d04ddd..4b4c7f3381ad 100644
---- a/arch/arm64/boot/dts/renesas/rzg3e-smarc-som.dtsi
-+++ b/arch/arm64/boot/dts/renesas/rzg3e-smarc-som.dtsi
-@@ -26,6 +26,8 @@ / {
- 	compatible = "renesas,rzg3e-smarcm", "renesas,r9a09g047e57", "renesas,r9a09g047";
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index d9c8e5a5f9ce9aefbf16730c65a1f54caa5592b9..128ac46dda5eb882994960b8c0eb671007ad8583 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -392,6 +392,9 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+ 	 */
+ 	skb_orphan(skb);
  
- 	aliases {
-+		ethernet0 = &eth0;
-+		ethernet1 = &eth1;
- 		i2c2 = &i2c2;
- 		mmc0 = &sdhi0;
- 		mmc2 = &sdhi2;
-@@ -77,6 +79,74 @@ &audio_extal_clk {
- 	clock-frequency = <48000000>;
- };
++	if (skb->pkt_type == PACKET_OUTGOING)
++		skb->pkt_type = PACKET_LOOPBACK;
++
+ 	/* ensure we have enough data for a header and a type */
+ 	if (skb->len < sizeof(struct mctp_hdr) + 1)
+ 		goto out;
+@@ -578,7 +581,13 @@ static int mctp_route_output(struct mctp_route *route, struct sk_buff *skb)
+ 		return -EMSGSIZE;
+ 	}
  
-+&eth0 {
-+	phy-handle = <&phy0>;
-+	phy-mode = "rgmii-id";
-+
-+	pinctrl-0 = <&eth0_pins>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		compatible = "snps,dwmac-mdio";
-+
-+		phy0: ethernet-phy@7 {
-+			compatible = "ethernet-phy-id0022.1640",
-+				     "ethernet-phy-ieee802.3-c22";
-+			reg = <7>;
-+			interrupts-extended = <&icu 3 IRQ_TYPE_LEVEL_LOW>;
-+			rxc-skew-psec = <1400>;
-+			txc-skew-psec = <1400>;
-+			rxdv-skew-psec = <0>;
-+			txdv-skew-psec = <0>;
-+			rxd0-skew-psec = <0>;
-+			rxd1-skew-psec = <0>;
-+			rxd2-skew-psec = <0>;
-+			rxd3-skew-psec = <0>;
-+			txd0-skew-psec = <0>;
-+			txd1-skew-psec = <0>;
-+			txd2-skew-psec = <0>;
-+			txd3-skew-psec = <0>;
-+		};
-+	};
-+};
-+
-+&eth1 {
-+	phy-handle = <&phy1>;
-+	phy-mode = "rgmii-id";
-+
-+	pinctrl-0 = <&eth1_pins>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		compatible = "snps,dwmac-mdio";
-+
-+		phy1: ethernet-phy@7 {
-+			compatible = "ethernet-phy-id0022.1640",
-+				     "ethernet-phy-ieee802.3-c22";
-+			reg = <7>;
-+			interrupts-extended = <&icu 16 IRQ_TYPE_LEVEL_LOW>;
-+			rxc-skew-psec = <1400>;
-+			txc-skew-psec = <1400>;
-+			rxdv-skew-psec = <0>;
-+			txdv-skew-psec = <0>;
-+			rxd0-skew-psec = <0>;
-+			rxd1-skew-psec = <0>;
-+			rxd2-skew-psec = <0>;
-+			rxd3-skew-psec = <0>;
-+			txd0-skew-psec = <0>;
-+			txd1-skew-psec = <0>;
-+			txd2-skew-psec = <0>;
-+			txd3-skew-psec = <0>;
-+		};
-+	};
-+};
-+
- &gpu {
- 	status = "okay";
- 	mali-supply = <&reg_vdd0p8v_others>;
-@@ -103,6 +173,42 @@ raa215300: pmic@12 {
- };
+-	if (cb->ifindex) {
++	/* If we're forwarding, we don't want to use the input path's cb,
++	 * as it holds the *source* hardware addressing information.
++	 *
++	 * We will have a PACKET_HOST skb from the dev, or PACKET_OUTGOING
++	 * from a socket; only use cb in the latter case.
++	 */
++	if (skb->pkt_type == PACKET_OUTGOING && cb->ifindex) {
+ 		/* direct route; use the hwaddr we stashed in sendmsg */
+ 		if (cb->halen != skb->dev->addr_len) {
+ 			/* sanity check, sendmsg should have already caught this */
+@@ -587,6 +596,7 @@ static int mctp_route_output(struct mctp_route *route, struct sk_buff *skb)
+ 		}
+ 		daddr = cb->haddr;
+ 	} else {
++		skb->pkt_type = PACKET_OUTGOING;
+ 		/* If lookup fails let the device handle daddr==NULL */
+ 		if (mctp_neigh_lookup(route->dev, hdr->dest, daddr_buf) == 0)
+ 			daddr = daddr_buf;
+@@ -1032,6 +1042,7 @@ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
+ 		tag = req_tag & MCTP_TAG_MASK;
+ 	}
  
- &pinctrl {
-+	eth0_pins: eth0 {
-+		pinmux = <RZG3E_PORT_PINMUX(A, 1, 1)>, /* MDC */
-+			 <RZG3E_PORT_PINMUX(A, 0, 1)>, /* MDIO */
-+			 <RZG3E_PORT_PINMUX(C, 2, 15)>, /* PHY_INTR (IRQ2) */
-+			 <RZG3E_PORT_PINMUX(C, 1, 1)>, /* RXD3 */
-+			 <RZG3E_PORT_PINMUX(C, 0, 1)>, /* RXD2 */
-+			 <RZG3E_PORT_PINMUX(B, 7, 1)>, /* RXD1 */
-+			 <RZG3E_PORT_PINMUX(B, 6, 1)>, /* RXD0 */
-+			 <RZG3E_PORT_PINMUX(B, 0, 1)>, /* RXC */
-+			 <RZG3E_PORT_PINMUX(A, 2, 1)>, /* RX_CTL */
-+			 <RZG3E_PORT_PINMUX(B, 5, 1)>, /* TXD3 */
-+			 <RZG3E_PORT_PINMUX(B, 4, 1)>, /* TXD2 */
-+			 <RZG3E_PORT_PINMUX(B, 3, 1)>, /* TXD1 */
-+			 <RZG3E_PORT_PINMUX(B, 2, 1)>, /* TXD0 */
-+			 <RZG3E_PORT_PINMUX(B, 1, 1)>, /* TXC */
-+			 <RZG3E_PORT_PINMUX(A, 3, 1)>; /* TX_CTL */
-+	};
-+
-+	eth1_pins: eth1 {
-+		pinmux = <RZG3E_PORT_PINMUX(D, 1, 1)>, /* MDC */
-+			 <RZG3E_PORT_PINMUX(D, 0, 1)>, /* MDIO */
-+			 <RZG3E_PORT_PINMUX(F, 2, 15)>, /* PHY_INTR (IRQ15) */
-+			 <RZG3E_PORT_PINMUX(F, 1, 1)>, /* RXD3 */
-+			 <RZG3E_PORT_PINMUX(F, 0, 1)>, /* RXD2 */
-+			 <RZG3E_PORT_PINMUX(E, 7, 1)>, /* RXD1 */
-+			 <RZG3E_PORT_PINMUX(E, 6, 1)>, /* RXD0 */
-+			 <RZG3E_PORT_PINMUX(E, 0, 1)>, /* RXC */
-+			 <RZG3E_PORT_PINMUX(D, 2, 1)>, /* RX_CTL */
-+			 <RZG3E_PORT_PINMUX(E, 5, 1)>, /* TXD3 */
-+			 <RZG3E_PORT_PINMUX(E, 4, 1)>, /* TXD2 */
-+			 <RZG3E_PORT_PINMUX(E, 3, 1)>, /* TXD1 */
-+			 <RZG3E_PORT_PINMUX(E, 2, 1)>, /* TXD0 */
-+			 <RZG3E_PORT_PINMUX(E, 1, 1)>, /* TXC */
-+			 <RZG3E_PORT_PINMUX(D, 3, 1)>; /* TX_CTL */
-+	};
-+
- 	i2c2_pins: i2c {
- 		pinmux = <RZG3E_PORT_PINMUX(3, 4, 1)>, /* SCL2 */
- 			 <RZG3E_PORT_PINMUX(3, 5, 1)>; /* SDA2 */
++	skb->pkt_type = PACKET_OUTGOING;
+ 	skb->protocol = htons(ETH_P_MCTP);
+ 	skb->priority = 0;
+ 	skb_reset_transport_header(skb);
+
 -- 
-2.25.1
+2.39.5
 
