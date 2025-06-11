@@ -1,132 +1,118 @@
-Received: from mx.wizmail.org (smtp.wizmail.org [85.158.153.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A6B2E611C
-	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 11:15:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.158.153.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6372E6134
+	for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 11:15:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749640525; cv=none; b=ePgPnO/cMPl9SlKIigw7XvxYCn1RVp/KiAxmIXyNKNHHOCgokouLAc8QCriphMANorDVu+LP2lCnjanmb6eYfooFLbAnB1Ern7O+zYuKfnVNfYLvV0xOW53UOFQvHu3etrgwcXpK8+kvEZW7RejZLC8A1BRYAFACGup3HfekcE8=
+	t=1749640527; cv=none; b=dYNlrAuZ7zLYY6gt4rGTSYmsZol7yykCshmDsdnvDXfiq6DELw8AgMaEskNQhOVcahXKDC450/KXOxWfhmFEbtYorT6Kmtc523dN5pVl9Cq4MSrQGnSK6Qi541d1hR7U7p6JaAXOUWucCg2PJmy3g8i28iFzI61A86gWuv6jUC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749640525; c=relaxed/simple;
-	bh=tCJLgt7l7dJkOb8RKx1jDwE+yWfGqcyH9a8oPK58ojY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sdwe16MJWC2Ehxhc/tpzhaMR8O+oydOqEPHIS5xTC4a/KwSX4Cvv2gXEvordaUOJ3rDl3fU3ol48ov3iFIHqIfv+WifY/8gANMC8wuJ9oVOlovPvt0t7m4CVt0q1pNIgZLUh9Z/RGss2Ucl8TnmCyU4nKc7KbV6husWm0TS5jsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exim.org; spf=fail smtp.mailfrom=exim.org; dkim=permerror (0-bit key) header.d=wizmail.org header.i=@wizmail.org header.b=uEp6V7Df; dkim=pass (2048-bit key) header.d=wizmail.org header.i=@wizmail.org header.b=IJLML5ee; arc=none smtp.client-ip=85.158.153.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exim.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=exim.org
+	s=arc-20240116; t=1749640527; c=relaxed/simple;
+	bh=mpJX67UARFLWKGCFiOBDV0BnZqpCCV9N5k1Ho3dHLjU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pLHm/2G5QldUeuZV63nVTytzmYCO9Ylm7XBz0V5VCz87v6TVIEnWPVQL3C5P+RuSSDu271uV9MKL7RhPY1jKvyDf7dt+q4I1Ja7eD3KKZeq6eRPboRHIi2q+MoxCE4sc7CGM7Wpog7FrXbPsW6cJe3bIAWfeNGT8OgxayFZirYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=15owc9Ng; arc=none smtp.client-ip=209.85.160.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=wizmail.org header.i=@wizmail.org header.b="uEp6V7Df";
-	dkim=pass (2048-bit key) header.d=wizmail.org header.i=@wizmail.org header.b="IJLML5ee"
-DKIM-Signature: v=1; a=ed25519-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=wizmail.org; s=e202001; h=Content-Transfer-Encoding:MIME-Version:Message-ID
-	:Date:Subject:Cc:To:From:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:
-	MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive:Autocrypt;
-	bh=AePifKdvj15gTeHCmgUxQLE+LV/3N1008Wx3LkUR/bU=; b=uEp6V7DfNBMit3CJrQVQxGO8cV
-	oLlBaHsFUlt0sgt2Xv1uTOFg67c22CAghsELgoJlSyO7oOHqbPF8Myb4gOBg==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizmail.org
-	; s=r202001; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject
-	:Cc:To:From:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive:Autocrypt;
-	bh=AePifKdvj15gTeHCmgUxQLE+LV/3N1008Wx3LkUR/bU=; b=IJLML5eeT8xLnEcKLYLyJT9unm
-	qX0oTl67vcLxdVxy9OQei6iqTy9zaTJWAS2qExIMLKIT12TEbdqFzBP03IK1Uku6qpNi7Pa8+kAuX
-	2AOYWDlfiKhYUOQw2cEPN2xHCbCWP9DO1CdFStu3OBIaLciJ/qksSy9g+5ldigcLnZ2paqv9SXHnj
-	prm6XktL5R8ZrAMf/l+AxjFJvuolWCnPEsOXVWydehcR3ohqkHSCTExQu+b3Bi06mmV8XmrRIxGy5
-	4oLWgo6ExyCb+gQZNvnXYvpeM5oJtavrHhhpHZtoAU5lKel/eGz8HGkSQFRCKmUxw+5WLwA/2WwhZ
-	WfEfFNDA==;
-Authentication-Results: wizmail.org;
-	iprev=pass (hellmouth.gulag.org.uk) smtp.remote-ip=85.158.153.62;
-	auth=pass (PLAIN) smtp.auth=jgh@wizmail.org
-Received: from hellmouth.gulag.org.uk ([85.158.153.62] helo=macbook.dom.ain)
-	by wizmail.org (Exim 4.98.114)
-	(TLS1.3) tls TLS_AES_256_GCM_SHA384
-	with esmtpsa
-	id 1uPJQM-00000001t3o-0P1X
-	(return-path <jgh@exim.org>);
-	Wed, 11 Jun 2025 11:15:18 +0000
-From: Jeremy Harris <jgh@exim.org>
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	ncardwell@google.com,
-	Jeremy Harris <jgh@exim.org>
-Subject: [PATCH net-next] tcp: fix TCP_DEFER_ACCEPT for Fast Open
-Date: Wed, 11 Jun 2025 12:14:57 +0100
-Message-ID: <046a1b5d6087a4af6aa0e734dcf8312a4bab4a66.1749640237.git.jgh@exim.org>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="15owc9Ng"
+Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-4a6f2dbdf84so66080441cf.0
+        for <netdev@vger.kernel.org>; Wed, 11 Jun 2025 04:15:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749640524; x=1750245324; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=doR8jFOsTWGxbSAA8FIyU8ln5P3Cz7PlBDy/7CACM/A=;
+        b=15owc9Nglu4HDC9QwDINW+dedJuHfE8ilnAhb2M5XkhWIEhJ/O5uyxd2NkKEVJBaKR
+         6ZvqZ3W/Yox+G9kX6hDI8l5WjclmIPB8OKDdgq+xELpxvUrHZLCWeUwABEMoropY3OXA
+         MKsbP30Nze+XGG2flwr14CzNucaT1ln58eDR9RLawlf+zFrM+xalBjqpQWYQ81UKMRXa
+         U5jk1hJK7uufOmJ3AC/9NLBPW95ogLyBWEgDmor4hLFxGOoeyLLL0veU3Zx+1zMjnAsx
+         a8jnZJ/W3oQWOP6t4XXjaE83jiQWOq1jNczmTss/mF/xvoqEAE/CGeaeuh66CvtOQ6y0
+         mJNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749640524; x=1750245324;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=doR8jFOsTWGxbSAA8FIyU8ln5P3Cz7PlBDy/7CACM/A=;
+        b=VC+lYKrzShpPxruXxjPD+ZgGKfFHl6/zUo8Sc8A8qky9V33rSKRbnOnVxZNJY64r9b
+         CTAAOU4KdM+fdMsb7Cs93bJ8kNOW1XTSIUvSAZHjnsrPXzAyo7782ooNqgqI32lsXQIi
+         gs4xm0dBX9whl6e12S6Gwowl+Z1lvLpkTamlRHOV0OW+fUSr3OA1GtTrJPj4iF49iSgu
+         N2QXM0FHnuNXXCRS/GZoViKybChd8SL3uv86FvtF5ZspgOZaAPORumihiFUhri3JGwqV
+         wSVt7jGtdNEl+RvZl48lBHuyM7TWaPapNH5HqRGPT40Tudsve1epAGRhyQUfLMbEpHJp
+         pGFg==
+X-Forwarded-Encrypted: i=1; AJvYcCXdzrYXeAag8Jik+JLI47ja21Fxd4BnIvuqQkFrzpUZvfVO+A+vy/8zvzgN6FlI7UGgpczlhEk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZlrZrQE7RxKCCHxS4+Hk5PhMFGMofWjm69EExYWHL6tybbymK
+	SShj2T2uF0R3aEPa3r65+ck3DeMyjQlm9oCQ8wZj8VzzgdaR6pzNycKG7/aZOg4HvNfonVtH2Ub
+	W25jC3G68CzHGoA==
+X-Google-Smtp-Source: AGHT+IFrT2ScoDHFpFL1BECFp6RbsUD4Xv3UyWMJ0i5dt0W3rWarksPyTmXYAPilAtMrEGtZq2zyuy815ffJxA==
+X-Received: from qtbge27.prod.google.com ([2002:a05:622a:5c9b:b0:4a6:ea91:5345])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:260e:b0:4a6:fa8e:50a8 with SMTP id d75a77b69052e-4a713b952d7mr52625011cf.2.1749640524510;
+ Wed, 11 Jun 2025 04:15:24 -0700 (PDT)
+Date: Wed, 11 Jun 2025 11:15:11 +0000
+In-Reply-To: <20250611111515.1983366-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Pcms-Received-Sender: hellmouth.gulag.org.uk ([85.158.153.62] helo=macbook.dom.ain) with esmtpsa
+Mime-Version: 1.0
+References: <20250611111515.1983366-1-edumazet@google.com>
+X-Mailer: git-send-email 2.50.0.rc0.642.g800a2b2222-goog
+Message-ID: <20250611111515.1983366-2-edumazet@google.com>
+Subject: [PATCH net 1/5] net_sched: prio: fix a race in prio_tune()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, 
+	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
+	Gerrard Tai <gerrard.tai@starlabs.sg>
+Content-Type: text/plain; charset="UTF-8"
 
-The TCP_DEFER_ACCEPT socket option defers sending the 3rd-ack segment
-for a connection until a data write (or timeout).  The existing
-implementation works for traditional connections but not for Fast Open,
-where the syn moves us to ESTABLISHED and data in the SYN then causes an
-ACK to be sent.
+Gerrard Tai reported a race condition in PRIO, whenever SFQ perturb timer
+fires at the wrong time.
 
-Fix by adding checks in those ACK paths for the state set by the
-setsockopt, and clear down that state when we send data.
+The race is as follows:
 
-Signed-off-by: Jeremy Harris <jgh@exim.org>
+CPU 0                                 CPU 1
+[1]: lock root
+[2]: qdisc_tree_flush_backlog()
+[3]: unlock root
+ |
+ |                                    [5]: lock root
+ |                                    [6]: rehash
+ |                                    [7]: qdisc_tree_reduce_backlog()
+ |
+[4]: qdisc_put()
+
+This can be abused to underflow a parent's qlen.
+
+Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
+should fix the race, because all packets will be purged from the qdisc
+before releasing the lock.
+
+Fixes: 7b8e0b6e6599 ("net: sched: prio: delay destroying child qdiscs on change")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv4/tcp.c        | 4 ++++
- net/ipv4/tcp_input.c  | 4 ++++
- net/ipv4/tcp_output.c | 2 ++
- 3 files changed, 10 insertions(+)
+ net/sched/sch_prio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index f64f8276a73c..54096cc94fcd 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1499,6 +1499,10 @@ void __tcp_cleanup_rbuf(struct sock *sk, int copied)
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	bool time_to_ack = false;
+diff --git a/net/sched/sch_prio.c b/net/sched/sch_prio.c
+index cc30f7a32f1a786fa1c3937a1b9d5c96a52e56e7..9e2b9a490db23d858b27b7fc073b05a06535b05e 100644
+--- a/net/sched/sch_prio.c
++++ b/net/sched/sch_prio.c
+@@ -211,7 +211,7 @@ static int prio_tune(struct Qdisc *sch, struct nlattr *opt,
+ 	memcpy(q->prio2band, qopt->priomap, TC_PRIO_MAX+1);
  
-+	/* Avoid sending ACK if waiting for user data. */
-+	if (READ_ONCE(inet_csk(sk)->icsk_accept_queue.rskq_defer_accept))
-+		return;
-+
- 	if (inet_csk_ack_scheduled(sk)) {
- 		const struct inet_connection_sock *icsk = inet_csk(sk);
+ 	for (i = q->bands; i < oldbands; i++)
+-		qdisc_tree_flush_backlog(q->queues[i]);
++		qdisc_purge_queue(q->queues[i]);
  
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 8ec92dec321a..8ebf15cffde9 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5776,6 +5776,10 @@ static void __tcp_ack_snd_check(struct sock *sk, int ofo_possible)
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	unsigned long rtt, delay;
- 
-+	/* Avoid sending ACK if waiting for user data */
-+	if (READ_ONCE(inet_csk(sk)->icsk_accept_queue.rskq_defer_accept))
-+		return;
-+
- 	    /* More than one full frame received... */
- 	if (((tp->rcv_nxt - tp->rcv_wup) > inet_csk(sk)->icsk_ack.rcv_mss &&
- 	     /* ... and right edge of window advances far enough.
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 3ac8d2d17e1f..89f8068d32c5 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2752,6 +2752,8 @@ static bool tcp_write_xmit(struct sock *sk, unsigned int mss_now, int nonagle,
- 	int result;
- 	bool is_cwnd_limited = false, is_rwnd_limited = false;
- 
-+	WRITE_ONCE(inet_csk(sk)->icsk_accept_queue.rskq_defer_accept, 0);
-+
- 	sent_pkts = 0;
- 
- 	tcp_mstamp_refresh(tp);
-
-base-commit: 0097c4195b1d0ca57d15979626c769c74747b5a0
+ 	for (i = oldbands; i < q->bands; i++) {
+ 		q->queues[i] = queues[i];
 -- 
-2.49.0
+2.50.0.rc0.642.g800a2b2222-goog
 
