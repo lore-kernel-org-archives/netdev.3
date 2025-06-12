@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AF023875D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7345C239086;
 	Thu, 12 Jun 2025 10:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749724344; cv=none; b=HOScbjE+l3xfbzXY6NbvTFgOpu5vcS0dfQxLMEaVzCzZByu5YqVYdPn/ehxQRkIMlggU2U6kSMzcl1FIMy4emYpn1+m45f8f8VT+2s69L9lwebWRGzklGTW5cKG36y4NAGZEQG4XM/ZzkYb78eNp+opjfWbcwXvxPKjO0VbHruo=
+	t=1749724344; cv=none; b=eiQeSzB3II9wcUghV/sEoWAb1BXlzmGLCz5+T3FCvW9r4LAQ7GEuu0CMxpaEWfM9RqAhCA8Rtlj+73BQYmP9tVHOMOIdL8dAB6YZu6zboMCytgOLUM6Y0FOH044o+6zfev4sLjWdHC7fVcGb6I6+CMhSIDGaGzAfrAQSywM0lsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749724344; c=relaxed/simple;
-	bh=Rf32VUtonyL0iZQ1xHiMQTgxmKbimCiZo2NoOWu5xrw=;
+	bh=RRdlkBDEmtJLl36U7brH9gBLYzEATksRx+v4nftXEzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHq9V4I+WLeHBsu5z/RhzJqnQLZtFqIfSvJ5rP66CHXmZiIjNr9IK2OYHgOQ9WcupbER6XlvuU8HK4pBQupNCbtWOBe0PGKh+qsc9qPxDVhq1EL2YUbZi++O8JehiDfvwX6/D5pxaJM6IBHlk/e8ocjM2/mm4IUm7uy/gHMPxNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SzxolWfh; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=pHodsJIpGTWMrLxVs/gUSJHCyPM7GZ6n/SqQ1wqsQXgrwRCUcMe80DS5q7bdYzD133oGW8cQY5A/SMqSB5KEMwwVxxeDg0R8EppfiSXJlJ3zpK6QtovqOd0bUrDvkpMwvo1dqVHIRpJb7l8YC/PUFP8t4vgLZpgz9guD1apD1SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UVHCopI0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SzxolWfh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C16CC4CEFA;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UVHCopI0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49465C4CEF6;
 	Thu, 12 Jun 2025 10:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1749724344;
-	bh=Rf32VUtonyL0iZQ1xHiMQTgxmKbimCiZo2NoOWu5xrw=;
+	bh=RRdlkBDEmtJLl36U7brH9gBLYzEATksRx+v4nftXEzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SzxolWfhAyEul5xyN4ytFxuRwYettkYSunDRGS3Txz9DdkVP6Eg2woI64Xx9b0inm
-	 Mv49MA7NozbOztOXMQ7KEenLawWtNeyXJ6m+1xxzJd5OSOG7kt8yT+3iCKaqkOpser
-	 qcWU96TljP/6SkptPosu6WlrnOFK+95P67ITHxMqqg3hDVxejEEc/V0M0QD1xFbbrr
-	 Uj7bDVkCzIog72l8uZFmFHfWadiO4tooeig9lcUCgz19Ouz3Vv0dx+RFSUeQ1LrRz4
-	 btLjUvP1Z1FGyN0e32YF5N0Ngwqb8X5juhgNbd22pqA7RJfEwwiIcnPgG6BjEv9WSo
-	 GXaXAxCZa3lyw==
+	b=UVHCopI04I+B9FJVD3PR9QgfTRL898ozWpz/XOVzpIJ6g10EiWXU1XZWRAzJCULIa
+	 VM8wA9J8nX6xlvh//zLP6w7kEN5lJ7Qj9qwNd9w06Nt8zp2TV6MkcVnlsT2flXGwfs
+	 p/fV8CwxQX8wrywXRQhKBXLmrV5EXWnm50Og9B8OagQhhC+1oLN8G+OKNBjsQyObc1
+	 Jy//fCMCD/MyZ5jd04MFb8gBMLkksHErruJmipsLRNou6weuacF2XOGNL2fiVCXA3u
+	 3Vgp2jlfngzqnEHXU9AdY4Evjibz/0nqLFR/aapDO96CITYOhgCg7PjyO44DUIbUM5
+	 u0pARcEgU8ctA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uPfEM-00000004yvU-1U4e;
+	id 1uPfEM-00000004yvg-2Cgm;
 	Thu, 12 Jun 2025 12:32:22 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
@@ -46,8 +46,6 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	"Paolo Abeni" <pabeni@redhat.com>,
 	"Ruben Wauters" <rubenru09@aol.com>,
 	"Shuah Khan" <skhan@linuxfoundation.org>,
-	Jakub Kicinski <mchehab+huawei@kernel.org>,
-	Simon Horman <mchehab+huawei@kernel.org>,
 	joel@joelfernandes.org,
 	linux-kernel-mentees@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
@@ -55,9 +53,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	netdev@vger.kernel.org,
 	peterz@infradead.org,
 	stern@rowland.harvard.edu
-Subject: [PATCH v2 07/12] tools: ynl_gen_rst.py: do some coding style cleanups
-Date: Thu, 12 Jun 2025 12:31:59 +0200
-Message-ID: <bf60cde6ca45ecd1d1b78c5d0bf133ed74b9ebfc.1749723671.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v2 10/12] docs: sphinx: parser_yaml.py: add Netlink specs parser
+Date: Thu, 12 Jun 2025 12:32:02 +0200
+Message-ID: <095fba5224a22b86a7604773ddaf9b5193157bc1.1749723671.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1749723671.git.mchehab+huawei@kernel.org>
 References: <cover.1749723671.git.mchehab+huawei@kernel.org>
@@ -70,332 +68,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Do some coding style cleanups to make pylint and flake8 happier.
+Place the code at parser_yaml.py to handle Netlink specs. All
+other yaml files are ignored.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- scripts/lib/netlink_yml_parser.py  | 74 +++++++++++-------------------
- tools/net/ynl/pyynl/ynl_gen_rst.py |  2 +-
- 2 files changed, 28 insertions(+), 48 deletions(-)
+ .pylintrc                           |  2 +-
+ Documentation/sphinx/parser_yaml.py | 39 +++++++++++++++++++++--------
+ 2 files changed, 29 insertions(+), 12 deletions(-)
 
-diff --git a/scripts/lib/netlink_yml_parser.py b/scripts/lib/netlink_yml_parser.py
-index 8d7961a1a256..65981b86875f 100755
---- a/scripts/lib/netlink_yml_parser.py
-+++ b/scripts/lib/netlink_yml_parser.py
-@@ -19,16 +19,13 @@
+diff --git a/.pylintrc b/.pylintrc
+index 30b8ae1659f8..f1d21379254b 100644
+--- a/.pylintrc
++++ b/.pylintrc
+@@ -1,2 +1,2 @@
+ [MASTER]
+-init-hook='import sys; sys.path += ["scripts/lib/kdoc", "scripts/lib/abi"]'
++init-hook='import sys; sys.path += ["scripts/lib", "scripts/lib/kdoc", "scripts/lib/abi"]'
+diff --git a/Documentation/sphinx/parser_yaml.py b/Documentation/sphinx/parser_yaml.py
+index b3cde9cf7aac..eb32e3249274 100755
+--- a/Documentation/sphinx/parser_yaml.py
++++ b/Documentation/sphinx/parser_yaml.py
+@@ -3,6 +3,10 @@ Sphinx extension for processing YAML files
+ """
  
- from typing import Any, Dict, List
- import os.path
--import sys
--import argparse
- import logging
- import yaml
- 
- 
--# ==============
--# RST Formatters
--# ==============
- class RstFormatters:
-+    """RST Formatters"""
+ import os
++import re
++import sys
 +
-     SPACE_PER_LEVEL = 4
++from pprint import pformat
  
-     @staticmethod
-@@ -36,81 +33,67 @@ class RstFormatters:
-         """Return space to format"""
-         return " " * (level * RstFormatters.SPACE_PER_LEVEL)
+ from docutils.parsers.rst import Parser as RSTParser
+ from docutils.statemachine import ViewList
+@@ -10,7 +14,10 @@ from docutils.statemachine import ViewList
+ from sphinx.util import logging
+ from sphinx.parsers import Parser
  
--
-     @staticmethod
-     def bold(text: str) -> str:
-         """Format bold text"""
-         return f"**{text}**"
- 
--
-     @staticmethod
-     def inline(text: str) -> str:
-         """Format inline text"""
-         return f"``{text}``"
- 
--
-     @staticmethod
-     def sanitize(text: str) -> str:
-         """Remove newlines and multiple spaces"""
-         # This is useful for some fields that are spread across multiple lines
-         return str(text).replace("\n", " ").strip()
- 
--
-     def rst_fields(self, key: str, value: str, level: int = 0) -> str:
-         """Return a RST formatted field"""
-         return self.headroom(level) + f":{key}: {value}"
- 
--
-     def rst_definition(self, key: str, value: Any, level: int = 0) -> str:
-         """Format a single rst definition"""
-         return self.headroom(level) + key + "\n" + self.headroom(level + 1) + str(value)
- 
--
-     def rst_paragraph(self, paragraph: str, level: int = 0) -> str:
-         """Return a formatted paragraph"""
-         return self.headroom(level) + paragraph
- 
--
-     def rst_bullet(self, item: str, level: int = 0) -> str:
-         """Return a formatted a bullet"""
-         return self.headroom(level) + f"- {item}"
- 
--
-     @staticmethod
-     def rst_subsection(title: str) -> str:
-         """Add a sub-section to the document"""
-         return f"{title}\n" + "-" * len(title)
- 
--
-     @staticmethod
-     def rst_subsubsection(title: str) -> str:
-         """Add a sub-sub-section to the document"""
-         return f"{title}\n" + "~" * len(title)
- 
--
-     @staticmethod
-     def rst_section(namespace: str, prefix: str, title: str) -> str:
-         """Add a section to the document"""
-         return f".. _{namespace}-{prefix}-{title}:\n\n{title}\n" + "=" * len(title)
- 
--
-     @staticmethod
-     def rst_subtitle(title: str) -> str:
-         """Add a subtitle to the document"""
-         return "\n" + "-" * len(title) + f"\n{title}\n" + "-" * len(title) + "\n\n"
- 
--
-     @staticmethod
-     def rst_title(title: str) -> str:
-         """Add a title to the document"""
-         return "=" * len(title) + f"\n{title}\n" + "=" * len(title) + "\n\n"
- 
--
-     def rst_list_inline(self, list_: List[str], level: int = 0) -> str:
-         """Format a list using inlines"""
-         return self.headroom(level) + "[" + ", ".join(self.inline(i) for i in list_) + "]"
- 
--
-     @staticmethod
-     def rst_ref(namespace: str, prefix: str, name: str) -> str:
-         """Add a hyperlink to the document"""
-@@ -119,10 +102,9 @@ class RstFormatters:
-                     'nested-attributes': 'attribute-set',
-                     'struct': 'definition'}
-         if prefix in mappings:
--            prefix = mappings[prefix]
-+            prefix = mappings.get(prefix, "")
-         return f":ref:`{namespace}-{prefix}-{name}`"
- 
--
-     def rst_header(self) -> str:
-         """The headers for all the auto generated RST files"""
-         lines = []
-@@ -132,7 +114,6 @@ class RstFormatters:
- 
-         return "\n".join(lines)
- 
--
-     @staticmethod
-     def rst_toctree(maxdepth: int = 2) -> str:
-         """Generate a toctree RST primitive"""
-@@ -143,16 +124,14 @@ class RstFormatters:
- 
-         return "\n".join(lines)
- 
--
-     @staticmethod
-     def rst_label(title: str) -> str:
-         """Return a formatted label"""
-         return f".. _{title}:\n\n"
- 
--# =======
--# Parsers
--# =======
+-from pprint import pformat
++srctree = os.path.abspath(os.environ["srctree"])
++sys.path.insert(0, os.path.join(srctree, "scripts/lib"))
 +
- class NetlinkYamlParser:
-+    """YAML Netlink specs Parser"""
- 
-     fmt = RstFormatters()
- 
-@@ -164,7 +143,6 @@ class NetlinkYamlParser:
- 
-         return "\n".join(lines)
- 
--
-     def parse_do(self, do_dict: Dict[str, Any], level: int = 0) -> str:
-         """Parse 'do' section and return a formatted string"""
-         lines = []
-@@ -177,16 +155,16 @@ class NetlinkYamlParser:
- 
-         return "\n".join(lines)
- 
--
-     def parse_do_attributes(self, attrs: Dict[str, Any], level: int = 0) -> str:
-         """Parse 'attributes' section"""
-         if "attributes" not in attrs:
-             return ""
--        lines = [self.fmt.rst_fields("attributes", self.fmt.rst_list_inline(attrs["attributes"]), level + 1)]
-+        lines = [self.fmt.rst_fields("attributes",
-+                                     self.fmt.rst_list_inline(attrs["attributes"]),
-+                                     level + 1)]
- 
-         return "\n".join(lines)
- 
--
-     def parse_operations(self, operations: List[Dict[str, Any]], namespace: str) -> str:
-         """Parse operations block"""
-         preprocessed = ["name", "doc", "title", "do", "dump", "flags"]
-@@ -194,7 +172,8 @@ class NetlinkYamlParser:
-         lines = []
- 
-         for operation in operations:
--            lines.append(self.fmt.rst_section(namespace, 'operation', operation["name"]))
-+            lines.append(self.fmt.rst_section(namespace, 'operation',
-+                                              operation["name"]))
-             lines.append(self.fmt.rst_paragraph(operation["doc"]) + "\n")
- 
-             for key in operation.keys():
-@@ -206,7 +185,8 @@ class NetlinkYamlParser:
-                     value = self.fmt.rst_ref(namespace, key, value)
-                 lines.append(self.fmt.rst_fields(key, value, 0))
-             if 'flags' in operation:
--                lines.append(self.fmt.rst_fields('flags', self.fmt.rst_list_inline(operation['flags'])))
-+                lines.append(self.fmt.rst_fields('flags',
-+                                                 self.fmt.rst_list_inline(operation['flags'])))
- 
-             if "do" in operation:
-                 lines.append(self.fmt.rst_paragraph(":do:", 0))
-@@ -220,7 +200,6 @@ class NetlinkYamlParser:
- 
-         return "\n".join(lines)
- 
--
-     def parse_entries(self, entries: List[Dict[str, Any]], level: int) -> str:
-         """Parse a list of entries"""
-         ignored = ["pad"]
-@@ -235,17 +214,19 @@ class NetlinkYamlParser:
-                 if type_:
-                     field_name += f" ({self.fmt.inline(type_)})"
-                 lines.append(
--                    self.fmt.rst_fields(field_name, self.fmt.sanitize(entry.get("doc", "")), level)
-+                    self.fmt.rst_fields(field_name,
-+                                        self.fmt.sanitize(entry.get("doc", "")),
-+                                        level)
-                 )
-             elif isinstance(entry, list):
-                 lines.append(self.fmt.rst_list_inline(entry, level))
-             else:
--                lines.append(self.fmt.rst_bullet(self.fmt.inline(self.fmt.sanitize(entry)), level))
-+                lines.append(self.fmt.rst_bullet(self.fmt.inline(self.fmt.sanitize(entry)),
-+                                                 level))
- 
-         lines.append("\n")
-         return "\n".join(lines)
- 
--
-     def parse_definitions(self, defs: Dict[str, Any], namespace: str) -> str:
-         """Parse definitions section"""
-         preprocessed = ["name", "entries", "members"]
-@@ -270,7 +251,6 @@ class NetlinkYamlParser:
- 
-         return "\n".join(lines)
- 
--
-     def parse_attr_sets(self, entries: List[Dict[str, Any]], namespace: str) -> str:
-         """Parse attribute from attribute-set"""
-         preprocessed = ["name", "type"]
-@@ -279,7 +259,8 @@ class NetlinkYamlParser:
-         lines = []
- 
-         for entry in entries:
--            lines.append(self.fmt.rst_section(namespace, 'attribute-set', entry["name"]))
-+            lines.append(self.fmt.rst_section(namespace, 'attribute-set',
-+                                              entry["name"]))
-             for attr in entry["attributes"]:
-                 type_ = attr.get("type")
-                 attr_line = attr["name"]
-@@ -301,13 +282,13 @@ class NetlinkYamlParser:
- 
-         return "\n".join(lines)
- 
--
-     def parse_sub_messages(self, entries: List[Dict[str, Any]], namespace: str) -> str:
-         """Parse sub-message definitions"""
-         lines = []
- 
-         for entry in entries:
--            lines.append(self.fmt.rst_section(namespace, 'sub-message', entry["name"]))
-+            lines.append(self.fmt.rst_section(namespace, 'sub-message',
-+                                              entry["name"]))
-             for fmt in entry["formats"]:
-                 value = fmt["value"]
- 
-@@ -315,13 +296,14 @@ class NetlinkYamlParser:
-                 for attr in ['fixed-header', 'attribute-set']:
-                     if attr in fmt:
-                         lines.append(self.fmt.rst_fields(attr,
--                                                self.fmt.rst_ref(namespace, attr, fmt[attr]),
--                                                1))
-+                                                         self.fmt.rst_ref(namespace,
-+                                                                          attr,
-+                                                                          fmt[attr]),
-+                                                         1))
-                 lines.append("\n")
- 
-         return "\n".join(lines)
- 
--
-     def parse_yaml(self, obj: Dict[str, Any]) -> str:
-         """Format the whole YAML into a RST string"""
-         lines = []
-@@ -344,7 +326,8 @@ class NetlinkYamlParser:
-         # Operations
-         if "operations" in obj:
-             lines.append(self.fmt.rst_subtitle("Operations"))
--            lines.append(self.parse_operations(obj["operations"]["list"], family))
-+            lines.append(self.parse_operations(obj["operations"]["list"],
-+                                               family))
- 
-         # Multicast groups
-         if "mcast-groups" in obj:
-@@ -368,11 +351,9 @@ class NetlinkYamlParser:
- 
-         return "\n".join(lines)
- 
--
-     # Main functions
-     # ==============
- 
--
-     def parse_yaml_file(self, filename: str) -> str:
-         """Transform the YAML specified by filename into an RST-formatted string"""
-         with open(filename, "r", encoding="utf-8") as spec_file:
-@@ -381,7 +362,6 @@ class NetlinkYamlParser:
- 
-         return content
- 
--
-     def generate_main_index_rst(self, output: str, index_dir: str) -> None:
-         """Generate the `networking_spec/index` content and write to the file"""
-         lines = []
-diff --git a/tools/net/ynl/pyynl/ynl_gen_rst.py b/tools/net/ynl/pyynl/ynl_gen_rst.py
-index 257288f707af..317093623dab 100755
---- a/tools/net/ynl/pyynl/ynl_gen_rst.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_rst.py
-@@ -23,7 +23,7 @@ SRC_DIR = os.path.dirname(os.path.realpath(__file__))
- 
- sys.path.insert(0, os.path.join(SRC_DIR, LIB_DIR))
- 
--from netlink_yml_parser import NetlinkYamlParser
 +from netlink_yml_parser import NetlinkYamlParser      # pylint: disable=C0413
  
+ logger = logging.getLogger(__name__)
  
- def parse_arguments() -> argparse.Namespace:
+@@ -19,8 +26,9 @@ class YamlParser(Parser):
+ 
+     supported = ('yaml', 'yml')
+ 
+-    # Overrides docutils.parsers.Parser. See sphinx.parsers.RSTParser
+-    def parse(self, inputstring, document):
++    netlink_parser = NetlinkYamlParser()
++
++    def do_parse(self, inputstring, document, msg):
+         """Parse YAML and generate a document tree."""
+ 
+         self.setup_parse(inputstring, document)
+@@ -28,14 +36,6 @@ class YamlParser(Parser):
+         result = ViewList()
+ 
+         try:
+-            # FIXME: Test logic to generate some ReST content
+-            basename = os.path.basename(document.current_source)
+-            title = os.path.splitext(basename)[0].replace('_', ' ').title()
+-
+-            msg = f"{title}\n"
+-            msg += "=" * len(title) + "\n\n"
+-            msg += "Something\n"
+-
+             # Parse message with RSTParser
+             for i, line in enumerate(msg.split('\n')):
+                 result.append(line, document.current_source, i)
+@@ -48,6 +48,23 @@ class YamlParser(Parser):
+ 
+         self.finish_parse()
+ 
++    # Overrides docutils.parsers.Parser. See sphinx.parsers.RSTParser
++    def parse(self, inputstring, document):
++        """Check if a YAML is meant to be parsed."""
++
++        fname = document.current_source
++
++        # Handle netlink yaml specs
++        if re.search("/netlink/specs/", fname):
++            if fname.endswith("index.yaml"):
++                msg = self.netlink_parser.generate_main_index_rst(fname, None)
++            else:
++                msg = self.netlink_parser.parse_yaml_file(fname)
++
++            self.do_parse(inputstring, document, msg)
++
++        # All other yaml files are ignored
++
+ def setup(app):
+     """Setup function for the Sphinx extension."""
+ 
 -- 
 2.49.0
 
