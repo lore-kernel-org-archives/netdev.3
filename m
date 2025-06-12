@@ -1,75 +1,61 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03672D8771;
-	Thu, 12 Jun 2025 16:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC5E2F4328
+	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 16:13:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749744649; cv=none; b=PjDwkVZ2hOe/kG4+OTDwMDqGOXcMXT/PAqwIQbcRU/AEhWI59yBQO8bKeT2k2fF+VPc0iDRhkWiW+K2ZnXPgSqKc0T/zXOKvVYn5gNQ5VzsTnhMSTbd3QW+QrZnVmvYGtY1xNbCYxb/M/1v5SSYq5y7vb9ckDVrI4cLCKVzsI3k=
+	t=1749744841; cv=none; b=DsxwYW8UHaNIY9L+xTKPe6RDTGx0YQBCyq/pTfPz4+jxKDpro6C4taaQG+aKDfIbKXo4BmRg9yAPh/RY4tO+we8pyXTm0fpaFaS7zSLzvPaLoRklUl1UdrU2Pw0+wPZsDHR6tVPv9hXeCGCVS8odQ/v3K5LQ6/xK4n1bJ5krVGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749744649; c=relaxed/simple;
-	bh=X29ySbF7NIGDlQVp1woOlVIfnUo3FpZJcl8ba1PlchM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkoiqT9lMnt0oeiiRckGXvR/tJHbeWL3nBDp1AjJJhfECr8cnjTTKNGgMa+UDXFrylWuIdKp2CWLUllkpwzLAdmMzxLOZx5acPuKGJPXhwR0VmAteY6repzNW2DBX+Frw/M640LtufzihrI264uwBx2RQ7Gb9jU8HXlhJz3u6KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HCF+7YLO; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1749744841; c=relaxed/simple;
+	bh=GudavV7V/tmRCw9VRdQAoiKzqyVCsDJM/4AnuzY1wrY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=b8Z3aWiGDCMN+vgCW0NRM08fhchxBjHHChE44/dd1Abk7HhpXNPR4N/XaBObWCa3u2AV7rMrMm3QmyNI3Hm7NQJMj/LJ5i5gRNc6+11+pX2vO5+SFYvQBHSbGHya8Kvln6x6uQZmfF6AV0COB7YgyfNuXMmdUxr+e+XC5wD4gZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=Ao77tH7i; arc=none smtp.client-ip=99.78.197.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HCF+7YLO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749744648; x=1781280648;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=X29ySbF7NIGDlQVp1woOlVIfnUo3FpZJcl8ba1PlchM=;
-  b=HCF+7YLO5YHN4Mt8/qS9QehXe1gCyUZlj77SyO+NF9Velst+o53JQEuP
-   g81BEN1PGQMXJd2r5gu62w1HUdIxEs33zPORwXSYVVrCgRbd+CMWnOHzS
-   KY4Gm9eWRBh90OhWlfTRShLsm/hK0v/38ShMF2n+zGepatZkcB3G5CeQJ
-   etUp95qsWaBfhb//j07Bg8dK5P/wad+WEO2uYr80jYEcR3AKmN98CI4Vo
-   J74J8ECS21n57i02RgjH5wANYmiwQJ3DjsJdV19kcaFPliy64wmB6/Vl6
-   I1jUXFD+YjzGM2U5IbdyMiijj3A8MzCZiG9GJlmd6VGOyZBhDJ4rFa+Xl
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="Ao77tH7i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1749744840; x=1781280840;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ihkZgVUzQqGvvmt/oKfsiY5SM+COVVcX+bS+R4pesBQ=;
+  b=Ao77tH7ic5k5iEOb+DSCfXndVJaS6DO2F4c1D6XTJgwQui+Ves4Bi95B
+   NLqgOJIi5iHTrl3QQrN/7IfE4Y0aBE2TFqEQ1P/SFPo1qzbx8eYHSyDuR
+   GhmGGUXyPhqLN6s23r7CDmCYsOxdQ4YgoggmOdYka4jOMx2JBOn/jVvPk
+   +7UhhHrNdAzKIU461hufsCIgBb7VbPSAmLhMB9dLLclsqelgjyXvL1Tli
+   vXasrW9AAJ9xgAlzZRdi4kNeVk7QhegPEsBxeYquWiB6fA4Xp0S2r5ya1
+   kpsp7FodXLckg8J7hfopyCPZqisYlbPoxWmgT55tqxO8ubnV7C4MhuNba
    g==;
-X-CSE-ConnectionGUID: RGyQPX1uS76A+zJMUqLU+g==
-X-CSE-MsgGUID: t0t8SJ/+TDq8gSG7J7LAHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="55739197"
-X-IronPort-AV: E=Sophos;i="6.16,231,1744095600"; 
-   d="scan'208";a="55739197"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 09:10:48 -0700
-X-CSE-ConnectionGUID: 6p3/DrJsTg6ZPyqWIzD1aw==
-X-CSE-MsgGUID: Uk5iDxCfSqaD0NS/1emfpQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,231,1744095600"; 
-   d="scan'208";a="148468690"
-Received: from newjersey.igk.intel.com ([10.102.20.203])
-  by orviesa008.jf.intel.com with ESMTP; 12 Jun 2025 09:10:43 -0700
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH iwl-next v2 17/17] libeth: xdp, xsk: access adjacent u32s as u64 where applicable
-Date: Thu, 12 Jun 2025 18:02:34 +0200
-Message-ID: <20250612160234.68682-18-aleksander.lobakin@intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250612160234.68682-1-aleksander.lobakin@intel.com>
-References: <20250612160234.68682-1-aleksander.lobakin@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,231,1744070400"; 
+   d="scan'208";a="210882419"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 16:13:59 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.21.151:58684]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.29.22:2525] with esmtp (Farcaster)
+ id 95d2bb70-4aa7-4273-81da-24e1eb19dfa0; Thu, 12 Jun 2025 16:13:59 +0000 (UTC)
+X-Farcaster-Flow-ID: 95d2bb70-4aa7-4273-81da-24e1eb19dfa0
+Received: from EX19D003ANC003.ant.amazon.com (10.37.240.197) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Thu, 12 Jun 2025 16:13:59 +0000
+Received: from b0be8375a521.amazon.com (10.37.245.11) by
+ EX19D003ANC003.ant.amazon.com (10.37.240.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Thu, 12 Jun 2025 16:13:55 +0000
+From: Kohei Enju <enjuk@amazon.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>
+CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Kohei Enju <kohei.enju@gmail.com>, Kohei Enju
+	<enjuk@amazon.com>
+Subject: [PATCH iwl-next v1] igbvf: remove unused interrupt counter fields from struct igbvf_adapter
+Date: Fri, 13 Jun 2025 01:13:40 +0900
+Message-ID: <20250612161343.66065-2-enjuk@amazon.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,135 +63,62 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D044UWA004.ant.amazon.com (10.13.139.7) To
+ EX19D003ANC003.ant.amazon.com (10.37.240.197)
 
-On 64-bit systems, writing/reading one u64 is faster than two u32s even
-when they're are adjacent in a struct. The compilers won't guarantee
-they will combine those; I observed both successful and unsuccessful
-attempts with both GCC and Clang, and it's not easy to say what it
-depends on.
-There's a few places in libeth_xdp winning up to several percent from
-combined access (both performance and object code size, especially
-when unrolling). Add __LIBETH_WORD_ACCESS and use it there on LE.
-Drivers are free to optimize HW-specific callbacks under the same
-definition.
+Remove `int_counter0` and `int_counter1` from struct igbvf_adapter since
+they are only incremented in interrupt handlers igbvf_intr_msix_rx() and
+igbvf_msix_other(), but never read or used anywhere in the driver.
 
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Note that igbvf_intr_msix_tx() does not have similar counter increments,
+suggesting that these were likely overlooked during development.
+
+Eliminate the fields and their unnecessary accesses in interrupt
+handlers.
+
+Tested-by: Kohei Enju <enjuk@amazon.com>
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
 ---
- include/net/libeth/xdp.h | 29 ++++++++++++++++++++++++++---
- include/net/libeth/xsk.h | 10 +++++-----
- 2 files changed, 31 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/intel/igbvf/igbvf.h  | 2 --
+ drivers/net/ethernet/intel/igbvf/netdev.c | 4 ----
+ 2 files changed, 6 deletions(-)
 
-diff --git a/include/net/libeth/xdp.h b/include/net/libeth/xdp.h
-index dba09a9168f1..6ce6aec6884c 100644
---- a/include/net/libeth/xdp.h
-+++ b/include/net/libeth/xdp.h
-@@ -475,6 +475,21 @@ struct libeth_xdp_tx_desc {
- 	((const void *)(uintptr_t)(priv));				      \
- })
+diff --git a/drivers/net/ethernet/intel/igbvf/igbvf.h b/drivers/net/ethernet/intel/igbvf/igbvf.h
+index ca6e44245a7b..ba9c3fee6da7 100644
+--- a/drivers/net/ethernet/intel/igbvf/igbvf.h
++++ b/drivers/net/ethernet/intel/igbvf/igbvf.h
+@@ -238,8 +238,6 @@ struct igbvf_adapter {
+ 	int int_mode;
+ 	u32 eims_enable_mask;
+ 	u32 eims_other;
+-	u32 int_counter0;
+-	u32 int_counter1;
  
-+/*
-+ * On 64-bit systems, assigning one u64 is faster than two u32s. When ::len
-+ * occupies lowest 32 bits (LE), whole ::opts can be assigned directly instead.
-+ */
-+#ifdef __LITTLE_ENDIAN
-+#define __LIBETH_WORD_ACCESS		1
-+#endif
-+#ifdef __LIBETH_WORD_ACCESS
-+#define __libeth_xdp_tx_len(flen, ...)					      \
-+	.opts = ((flen) | FIELD_PREP(GENMASK_ULL(63, 32), (__VA_ARGS__ + 0)))
-+#else
-+#define __libeth_xdp_tx_len(flen, ...)					      \
-+	.len = (flen), .flags = (__VA_ARGS__ + 0)
-+#endif
-+
- /**
-  * libeth_xdp_tx_xmit_bulk - main XDP Tx function
-  * @bulk: array of frames to send
-@@ -870,8 +885,7 @@ static inline u32 libeth_xdp_xmit_queue_head(struct libeth_xdp_tx_bulk *bq,
+ 	u32 eeprom_wol;
+ 	u32 wol;
+diff --git a/drivers/net/ethernet/intel/igbvf/netdev.c b/drivers/net/ethernet/intel/igbvf/netdev.c
+index beb01248600f..33104408007a 100644
+--- a/drivers/net/ethernet/intel/igbvf/netdev.c
++++ b/drivers/net/ethernet/intel/igbvf/netdev.c
+@@ -855,8 +855,6 @@ static irqreturn_t igbvf_msix_other(int irq, void *data)
+ 	struct igbvf_adapter *adapter = netdev_priv(netdev);
+ 	struct e1000_hw *hw = &adapter->hw;
  
- 	bq->bulk[bq->count++] = (typeof(*bq->bulk)){
- 		.xdpf	= xdpf,
--		.len	= xdpf->len,
--		.flags	= LIBETH_XDP_TX_FIRST,
-+		__libeth_xdp_tx_len(xdpf->len, LIBETH_XDP_TX_FIRST),
- 	};
+-	adapter->int_counter1++;
+-
+ 	hw->mac.get_link_status = 1;
+ 	if (!test_bit(__IGBVF_DOWN, &adapter->state))
+ 		mod_timer(&adapter->watchdog_timer, jiffies + 1);
+@@ -899,8 +897,6 @@ static irqreturn_t igbvf_intr_msix_rx(int irq, void *data)
+ 	struct net_device *netdev = data;
+ 	struct igbvf_adapter *adapter = netdev_priv(netdev);
  
- 	if (!xdp_frame_has_frags(xdpf))
-@@ -902,7 +916,7 @@ static inline bool libeth_xdp_xmit_queue_frag(struct libeth_xdp_tx_bulk *bq,
- 
- 	bq->bulk[bq->count++] = (typeof(*bq->bulk)){
- 		.dma	= dma,
--		.len	= skb_frag_size(frag),
-+		__libeth_xdp_tx_len(skb_frag_size(frag)),
- 	};
- 
- 	return true;
-@@ -1260,6 +1274,7 @@ bool libeth_xdp_buff_add_frag(struct libeth_xdp_buff *xdp,
-  * Internal, use libeth_xdp_process_buff() instead. Initializes XDP buffer
-  * head with the Rx buffer data: data pointer, length, headroom, and
-  * truesize/tailroom. Zeroes the flags.
-+ * Uses faster single u64 write instead of per-field access.
-  */
- static inline void libeth_xdp_prepare_buff(struct libeth_xdp_buff *xdp,
- 					   const struct libeth_fqe *fqe,
-@@ -1267,7 +1282,15 @@ static inline void libeth_xdp_prepare_buff(struct libeth_xdp_buff *xdp,
- {
- 	const struct page *page = __netmem_to_page(fqe->netmem);
- 
-+#ifdef __LIBETH_WORD_ACCESS
-+	static_assert(offsetofend(typeof(xdp->base), flags) -
-+		      offsetof(typeof(xdp->base), frame_sz) ==
-+		      sizeof(u64));
-+
-+	*(u64 *)&xdp->base.frame_sz = fqe->truesize;
-+#else
- 	xdp_init_buff(&xdp->base, fqe->truesize, xdp->base.rxq);
-+#endif
- 	xdp_prepare_buff(&xdp->base, page_address(page) + fqe->offset,
- 			 page->pp->p.offset, len, true);
- }
-diff --git a/include/net/libeth/xsk.h b/include/net/libeth/xsk.h
-index 213778a68476..481a7b28e6f2 100644
---- a/include/net/libeth/xsk.h
-+++ b/include/net/libeth/xsk.h
-@@ -26,8 +26,8 @@ static inline bool libeth_xsk_tx_queue_head(struct libeth_xdp_tx_bulk *bq,
- {
- 	bq->bulk[bq->count++] = (typeof(*bq->bulk)){
- 		.xsk	= xdp,
--		.len	= xdp->base.data_end - xdp->data,
--		.flags	= LIBETH_XDP_TX_FIRST,
-+		__libeth_xdp_tx_len(xdp->base.data_end - xdp->data,
-+				    LIBETH_XDP_TX_FIRST),
- 	};
- 
- 	if (likely(!xdp_buff_has_frags(&xdp->base)))
-@@ -48,7 +48,7 @@ static inline void libeth_xsk_tx_queue_frag(struct libeth_xdp_tx_bulk *bq,
- {
- 	bq->bulk[bq->count++] = (typeof(*bq->bulk)){
- 		.xsk	= frag,
--		.len	= frag->base.data_end - frag->data,
-+		__libeth_xdp_tx_len(frag->base.data_end - frag->data),
- 	};
- }
- 
-@@ -199,7 +199,7 @@ __libeth_xsk_xmit_fill_buf_md(const struct xdp_desc *xdesc,
- 	ctx = xsk_buff_raw_get_ctx(sq->pool, xdesc->addr);
- 	desc = (typeof(desc)){
- 		.addr	= ctx.dma,
--		.len	= xdesc->len,
-+		__libeth_xdp_tx_len(xdesc->len),
- 	};
- 
- 	BUILD_BUG_ON(!__builtin_constant_p(tmo == libeth_xsktmo));
-@@ -226,7 +226,7 @@ __libeth_xsk_xmit_fill_buf(const struct xdp_desc *xdesc,
- {
- 	return (struct libeth_xdp_tx_desc){
- 		.addr	= xsk_buff_raw_get_dma(sq->pool, xdesc->addr),
--		.len	= xdesc->len,
-+		__libeth_xdp_tx_len(xdesc->len),
- 	};
- }
- 
+-	adapter->int_counter0++;
+-
+ 	/* Write the ITR value calculated at the end of the
+ 	 * previous interrupt.
+ 	 */
 -- 
 2.49.0
 
