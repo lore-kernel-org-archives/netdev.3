@@ -1,346 +1,192 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2059.outbound.protection.outlook.com [40.107.243.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489CB29B78B
-	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 16:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749745045; cv=none; b=Ft+/XEnsVtTPF7pTJtGB0b2k8jwiXbvXMXBQIhOYujVFAnVK2VPkyHb64lvozsdkAqUOxDDQXBdQ44sQPBAUdtWWyCjIbK8S9Y05C3KYgFNgm+LFriTGlJiGh4O0MqK0FN4s+sigOq+J1Xsg4qsm0vCkX4AQysXdGYm2/1eXY4s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749745045; c=relaxed/simple;
-	bh=dPuf9FUWeM+BLK1seyi9NcOAI+FsAeZ4PO++j3ziw9w=;
-	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
-	 Message-Id:Date; b=r+ax96nZOa5hRXOBJFn2qcVHmgMSiD5oSL7Q4f5W71B7YXAlh91EllHwFXpvYsseSVzJcg253Wo+ooprFkZoKD7pYihJlTBmj4KnUo/cCydThZvs1azCwZheEWtwgdUda66/9RzBqb2bJTaGxjc2Z9Ygy4fUQWjO7Yo02DCBjKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=CdNoi5TP; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E1A299A82
+	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 16:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749745551; cv=fail; b=C8iAoJVU1vXuyy891G5VBRCT0nbr6dSzNwDxxSSE1On8R4kfI8fGO1nOO+TKv/CzbthsSZEyw0IBXpH46pyKof91FGZl/jBOudypVLqXlnH2EmMKoyzeMFKNmE6uFlqvR4NPDYuxpWwuWRuk8OFTjChu+++kCOTPLe5X9VzJpS0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749745551; c=relaxed/simple;
+	bh=d0EU/AlCF64VGUgORTb2SwFJ6TXgsicWj7A3FVw1upM=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=WUHhAaacya2ChiZIClZdrdu5Sq7aHNmnwOevj1fzIQeRATMjAnlvSRe+jaCUXiA9tDm8wog0QgFiH0K3Ab4Afl1D/TuI6CJwLOuNKltEu7ydps+0wzQQlvO0ef8ueTPOHBhAMgSBLAEoLvTOullBSvdUQqleiqePfI08aNI8efE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PrraZOCI; arc=fail smtp.client-ip=40.107.243.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="CdNoi5TP"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
-	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Xa9ldOdTR15G6fLzz6FMCCQoVl/XbCjTH6vEU5SJCOk=; b=CdNoi5TPJJrLH10Sw2eRffsdzb
-	9VEhwCn95AoKUxX8/rrEow1A1c93zES5VglqCfbaN7Cdh9ItU+kizCgF6hicI7KBnCnspvwP4Zfdl
-	flWKI87Z3Qfs6Ls/AF8y5d8xj4k8Ux52/8mcMwXWocL2Jfrg9TPGKLknE/Yk5YytZjrSnrqhQdoAG
-	dy5PRrylmyfPZIH1teBk3/ihn8qVRuwFczIch/8+6Mt5GCkCP2dXONgK1XyD05yPiF2mR+ot4eCUN
-	Zfye27SbI4ldpj2XLSpouy8/bmYvkrnfJTdYmqR6E+SYXLj56MnOtvj9Y0OoGqauVHQrzcRgn2nQX
-	AiB8IW6w==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:50116 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1uPkc7-00087v-3D;
-	Thu, 12 Jun 2025 17:17:16 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1uPkbT-004EyG-OQ; Thu, 12 Jun 2025 17:16:35 +0100
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next] net: stmmac: remove pcs_get_adv_lp() support
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PrraZOCI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iAXcjRD0oOlf2UO5xtXWhlqGgroE72iixq4NwgTcjGAvVbcjogtwuSi5oUsUZT1w6OJB3ICpXBWTG6wwTVUfAbsbw2ymayIStxEaQacqEkWND/RzbqUq83mXLTFRlbZDyjCbbszUHf4BheW8dkGpDgWdwjjQFoZpsQqN4KmQAAzVbADHX7iRlv3Fn//s8Xrf8xH5F46506mROoql8BKJeBzZCyA7Z/2dmj5ht9uxcfJeM5bV62kCMSdYxpjAvdrifPx84kxyztP6BU9M8mNPMjmToqR4dEbE4wFLFLNIg0PcCrTY/htNd7W6eYRsLhk0AlpTfp2wuOEpTQv8LEDonA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BwivV10qq5lK+dlmQgjNTyes1HIxhk9v5tBhGmkwfoM=;
+ b=Or3e813i9K4Du8jefE8f1WtTnP8HPuCcrUewUwCkBwBiJ2KvDD2eo5TSrN9YR2Nno6djZAQA12C+Noj8HqZKxpYYiGebJSiur+pNasxEjfYcujRTarJsUW6lHHDBqAqndWIBnq3o5IxRZkvXMFgFKZUbSmMZkIwtRb3y1k2r/xBliAXAGHBor0thfDOnZ84Z4TnwprDwhm/1zRM6LnGlZyJnSKBktiMKBI+i9MG7Bgzx/DZdPEFjZ26S5r6xIAwT1/A6nHX6rVx6CuPhiGJtwbVA9uvAvuFd3xu+KGWfWUC34CvJJ+Z12JbY9VDKuVdm34DCvTVKNKYrMhNKG65low==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BwivV10qq5lK+dlmQgjNTyes1HIxhk9v5tBhGmkwfoM=;
+ b=PrraZOCIR22R8AEqPNF2dnc0gU32EbBfcs3GCVPkGp2SxoCDnGxLZOJeorzJTecL+nFj+xRBio02qyM7y4rKoRDWy+JRIP4Qxxt+8wBpg+SS77Q9TGUi8qBNl6ZqD8QU8P15Fu+UoXNlWWPIAPWglHXOT9ICAAAqVA0Ffid7+qr1i93Pvmq+JW5UDetYQLFuagxzEIE948bmkt8Hn4rnm9AcA9RGnQCVrg8MwCNftqjfu9X17pAMAg4KLV9ebOvcNbStx8FVvnZj+dXQC+afMiugq8VIrvHorzDfZXePjb8xlBLKfGm4CDAQ7WqZ4KH0+pENHIfFTPI0L29ul3VTjw==
+Received: from BL1P223CA0014.NAMP223.PROD.OUTLOOK.COM (2603:10b6:208:2c4::19)
+ by MN0PR12MB6103.namprd12.prod.outlook.com (2603:10b6:208:3c9::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.18; Thu, 12 Jun
+ 2025 16:25:47 +0000
+Received: from MN1PEPF0000ECD7.namprd02.prod.outlook.com
+ (2603:10b6:208:2c4:cafe::35) by BL1P223CA0014.outlook.office365.com
+ (2603:10b6:208:2c4::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.22 via Frontend Transport; Thu,
+ 12 Jun 2025 16:25:47 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ MN1PEPF0000ECD7.mail.protection.outlook.com (10.167.242.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8835.15 via Frontend Transport; Thu, 12 Jun 2025 16:25:46 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 12 Jun
+ 2025 09:25:28 -0700
+Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 12 Jun
+ 2025 09:25:23 -0700
+References: <cover.1749499963.git.petrm@nvidia.com>
+ <20250610055856.5ca1558a@kernel.org> <87wm9jeo3n.fsf@nvidia.com>
+ <87o6uui6f7.fsf@nvidia.com> <20250611132320.53c5bebc@kernel.org>
+User-agent: mu4e 1.8.14; emacs 29.4
+From: Petr Machata <petrm@nvidia.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Petr Machata <petrm@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, "David
+ Ahern" <dsahern@gmail.com>, <netdev@vger.kernel.org>, Simon Horman
+	<horms@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel
+	<idosch@nvidia.com>, <mlxsw@nvidia.com>, Kuniyuki Iwashima
+	<kuniyu@google.com>
+Subject: Re: [PATCH net-next 00/14] ipmr, ip6mr: Allow MC-routing
+ locally-generated MC packets
+Date: Thu, 12 Jun 2025 14:02:47 +0200
+In-Reply-To: <20250611132320.53c5bebc@kernel.org>
+Message-ID: <87jz5hhqqe.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1uPkbT-004EyG-OQ@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Thu, 12 Jun 2025 17:16:35 +0100
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD7:EE_|MN0PR12MB6103:EE_
+X-MS-Office365-Filtering-Correlation-Id: ceaa7b7c-3a78-4a51-16a4-08dda9cdc97d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?hK1vnhdumzS89xvWOdVwtWIxiEXZiAF0GkMEIeDegjPhnx5PN9KXuQRTr35p?=
+ =?us-ascii?Q?pZP+PGPgzddlIIchw50Hzggndfa3fgEv3fYQRkGGGGzwuQmrVbi7hmImPn8l?=
+ =?us-ascii?Q?6HpqIRJI1cJrhN1CTKc+yFUSHk/D6YXZDM1UKUuJ5IfLDsvSvGObxTGdmIpQ?=
+ =?us-ascii?Q?suafE5AXjoTLbRg91O9dxObwEpfFWz68Hi/U3tQenfToREM5lU1truPPqiH/?=
+ =?us-ascii?Q?DudaHNGi017a81wUMeH1NWSu3B1UEK75+48KAZFrNAuBb24/j6kmFYKlXY1T?=
+ =?us-ascii?Q?kZT/rrxylnYzoHdcusicLUPf7riK9upgGU/RxdAjMuULm1LCdozPFsDdAfHM?=
+ =?us-ascii?Q?cU6gMevsdBbRKgDu7FqjplFDN2WoodXjPVzyQUGpEcp91hdkdTZTemW6BMru?=
+ =?us-ascii?Q?RpCnO70f96DVwl68iO4+L3cZWCGEiwsSVYcMwEssbcmiU/n/bGMwUDdOogfO?=
+ =?us-ascii?Q?azZiF7YEqAWDegHnnmdFcrbin9YYIPRUNXOe4q/BtBdW0zYeCkn6bWUYEdYL?=
+ =?us-ascii?Q?9nIuBymrYhEaNvoRe9PsLdk4JlxPuSO8kDUURu5Wp4h8+ZCSff4yEz5GMsjt?=
+ =?us-ascii?Q?ptL+RpzZQuIfWYMvEpXk4mqF7vYB3qCUDfytYHCrJbVKAmolR/2gG0zhW1u3?=
+ =?us-ascii?Q?6vMxJlT1ukLjbk29I0jRxveqNSrNa/50Ppi5MdLgf6BrOhEna0mtigrGWYzg?=
+ =?us-ascii?Q?KjiJj7jKoROzzBqNKXwyISRkDne/6L6/F9s0spXlasFLxA4WGKtSKVQJtlvE?=
+ =?us-ascii?Q?YSicG47r4eFAf24pNB0TBVRCnBY3F5Ccn0xUPc+JTJS1kN17nNv9XJKnAFou?=
+ =?us-ascii?Q?g/eln0lHalC/kGceGSCEYf0RLL5WkuNAq9wDbtyPSV/DTdMUA4/B02b/al2f?=
+ =?us-ascii?Q?CxpFxrd9oPeJK6EYUVhcGtmdXyc3nTmOukVnYwsIpbXHbSgk07rIUhVDFsyb?=
+ =?us-ascii?Q?iyytEx19ggYgpYvGErafiLRctrLPae38YRL6e98OHbX37Xh6GHpr8sGz605R?=
+ =?us-ascii?Q?BDMedvUDWe+F4fAgFhGhpuaL/ZYC7eqb+MddxHqrBDgY6okeM2nyQyq7BAY8?=
+ =?us-ascii?Q?AZXuIzGIp3Li1CALRA4qIAXFnTSMl7+dRvNNpc8rBibR9FEZWoMjghQTZ218?=
+ =?us-ascii?Q?tDhqoTxe57cQOseO0fFDFfbWUMMLAfLe3Rt3LVNTwtkO0Pht43QyJY7srat+?=
+ =?us-ascii?Q?3q88kAGNreWB1zWztQ+Rv7lLPnhGb1ZevRQsAem+SzlSDTc9QxQEoReHxt5M?=
+ =?us-ascii?Q?4ZMBUJExek480oV/gFzXbws3EIn/ULXiwTrzbuIXHwX+SxBSaSp1E/GmMIOq?=
+ =?us-ascii?Q?EN1VBUr277yzg712/FrlOlaAol9/jwHqOOTyhMsfLEJE4/USd8fQKtUiG2YE?=
+ =?us-ascii?Q?Ihb2RJCnBoz5/pnmUG52x/fP2gIlP53F9SDAsIliFX6AzPjqCZLlTpPC2KXj?=
+ =?us-ascii?Q?HDCtRhoWu3efvdMqWmVTWDyT4xmTKUpW8QkOVviZjMnUdW+4tgJfEKHKoZYb?=
+ =?us-ascii?Q?Y5PqWJsrKzOgWNMZ7VUdAmd3MYKIAdT5x3xc?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2025 16:25:46.8267
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ceaa7b7c-3a78-4a51-16a4-08dda9cdc97d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000ECD7.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6103
 
-It appears that the GMAC_ANE_ADV and GMAC_ANE_LPA registers are only
-available for TBI and RTBI PHY interfaces. In commit 482b3c3ba757
-("net: stmmac: Drop TBI/RTBI PCS flags") support for these was dropped,
-and thus it no longer makes sense to access these registers.
 
-Remove the *_get_adv_lp() functions, and the now redundant struct
-rgmii_adv and STMMAC_PCS_* definitions.
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/common.h  | 11 -----
- .../ethernet/stmicro/stmmac/dwmac1000_core.c  |  6 ---
- .../net/ethernet/stmicro/stmmac/dwmac4_core.c |  8 ----
- drivers/net/ethernet/stmicro/stmmac/hwif.h    |  4 --
- .../ethernet/stmicro/stmmac/stmmac_ethtool.c  | 47 +------------------
- .../net/ethernet/stmicro/stmmac/stmmac_pcs.h  | 32 +------------
- 6 files changed, 4 insertions(+), 104 deletions(-)
+> On Wed, 11 Jun 2025 17:30:15 +0200 Petr Machata wrote:
+>> Could it actually have been caused by another test? The howto page
+>> mentions that the CI is running the tests one at a time, so I don't
+>> suppose that's a possibility.
+>> 
+>> I'll try to run a more fuller suite tomorrow and star at the code a bit
+>> to see if I might be missing an error branch or something.
+>
+> We also hit a crash in ipv6 fcnal.sh, too. Looks like this is either a
+> kmemleak false positive or possibly related to the rtnl changes in ipv6.
+> Either way I it's not related to you changes, sorry about that! :(
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index ea5da5793362..cbffccb3b9af 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -396,17 +396,6 @@ enum request_irq_err {
- 
- #define CORE_IRQ_MTL_RX_OVERFLOW	BIT(8)
- 
--/* Physical Coding Sublayer */
--struct rgmii_adv {
--	unsigned int pause;
--	unsigned int duplex;
--	unsigned int lp_pause;
--	unsigned int lp_duplex;
--};
--
--#define STMMAC_PCS_PAUSE	1
--#define STMMAC_PCS_ASYM_PAUSE	2
--
- /* DMA HW capabilities */
- struct dma_features {
- 	unsigned int mbps_10_100;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-index 56b76aaa58f0..38875c832bb8 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-@@ -399,11 +399,6 @@ static void dwmac1000_ctrl_ane(void __iomem *ioaddr, bool ane, bool srgmi_ral,
- 	dwmac_ctrl_ane(ioaddr, GMAC_PCS_BASE, ane, srgmi_ral, loopback);
- }
- 
--static void dwmac1000_get_adv_lp(void __iomem *ioaddr, struct rgmii_adv *adv)
--{
--	dwmac_get_adv_lp(ioaddr, GMAC_PCS_BASE, adv);
--}
--
- static void dwmac1000_debug(struct stmmac_priv *priv, void __iomem *ioaddr,
- 			    struct stmmac_extra_stats *x,
- 			    u32 rx_queues, u32 tx_queues)
-@@ -508,7 +503,6 @@ const struct stmmac_ops dwmac1000_ops = {
- 	.set_eee_pls = dwmac1000_set_eee_pls,
- 	.debug = dwmac1000_debug,
- 	.pcs_ctrl_ane = dwmac1000_ctrl_ane,
--	.pcs_get_adv_lp = dwmac1000_get_adv_lp,
- 	.set_mac_loopback = dwmac1000_set_mac_loopback,
- };
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-index 9c2549d4100f..bc06b24fc611 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -589,11 +589,6 @@ static void dwmac4_ctrl_ane(void __iomem *ioaddr, bool ane, bool srgmi_ral,
- 	dwmac_ctrl_ane(ioaddr, GMAC_PCS_BASE, ane, srgmi_ral, loopback);
- }
- 
--static void dwmac4_get_adv_lp(void __iomem *ioaddr, struct rgmii_adv *adv)
--{
--	dwmac_get_adv_lp(ioaddr, GMAC_PCS_BASE, adv);
--}
--
- /* RGMII or SMII interface */
- static void dwmac4_phystatus(void __iomem *ioaddr, struct stmmac_extra_stats *x)
- {
-@@ -958,7 +953,6 @@ const struct stmmac_ops dwmac4_ops = {
- 	.set_eee_timer = dwmac4_set_eee_timer,
- 	.set_eee_pls = dwmac4_set_eee_pls,
- 	.pcs_ctrl_ane = dwmac4_ctrl_ane,
--	.pcs_get_adv_lp = dwmac4_get_adv_lp,
- 	.debug = dwmac4_debug,
- 	.set_filter = dwmac4_set_filter,
- 	.set_mac_loopback = dwmac4_set_mac_loopback,
-@@ -993,7 +987,6 @@ const struct stmmac_ops dwmac410_ops = {
- 	.set_eee_timer = dwmac4_set_eee_timer,
- 	.set_eee_pls = dwmac4_set_eee_pls,
- 	.pcs_ctrl_ane = dwmac4_ctrl_ane,
--	.pcs_get_adv_lp = dwmac4_get_adv_lp,
- 	.debug = dwmac4_debug,
- 	.set_filter = dwmac4_set_filter,
- 	.flex_pps_config = dwmac5_flex_pps_config,
-@@ -1030,7 +1023,6 @@ const struct stmmac_ops dwmac510_ops = {
- 	.set_eee_timer = dwmac4_set_eee_timer,
- 	.set_eee_pls = dwmac4_set_eee_pls,
- 	.pcs_ctrl_ane = dwmac4_ctrl_ane,
--	.pcs_get_adv_lp = dwmac4_get_adv_lp,
- 	.debug = dwmac4_debug,
- 	.set_filter = dwmac4_set_filter,
- 	.safety_feat_config = dwmac5_safety_feat_config,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-index ae4efffb785f..e1ac9a245bfe 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-@@ -300,7 +300,6 @@ struct stmmac_dma_ops {
- 
- struct mac_device_info;
- struct net_device;
--struct rgmii_adv;
- struct stmmac_tc_entry;
- struct stmmac_pps_cfg;
- struct stmmac_rss;
-@@ -377,7 +376,6 @@ struct stmmac_ops {
- 	/* PCS calls */
- 	void (*pcs_ctrl_ane)(void __iomem *ioaddr, bool ane, bool srgmi_ral,
- 			     bool loopback);
--	void (*pcs_get_adv_lp)(void __iomem *ioaddr, struct rgmii_adv *adv);
- 	/* Safety Features */
- 	int (*safety_feat_config)(void __iomem *ioaddr, unsigned int asp,
- 				  struct stmmac_safety_feature_cfg *safety_cfg);
-@@ -467,8 +465,6 @@ struct stmmac_ops {
- 	stmmac_do_void_callback(__priv, mac, debug, __priv, __args)
- #define stmmac_pcs_ctrl_ane(__priv, __args...) \
- 	stmmac_do_void_callback(__priv, mac, pcs_ctrl_ane, __args)
--#define stmmac_pcs_get_adv_lp(__priv, __args...) \
--	stmmac_do_void_callback(__priv, mac, pcs_get_adv_lp, __args)
- #define stmmac_safety_feat_config(__priv, __args...) \
- 	stmmac_do_callback(__priv, mac, safety_feat_config, __args)
- #define stmmac_safety_feat_irq_status(__priv, __args...) \
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-index f702f7b7bf9f..72f1724af037 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-@@ -325,7 +325,6 @@ static int stmmac_ethtool_get_link_ksettings(struct net_device *dev,
- 	if (!(priv->plat->flags & STMMAC_FLAG_HAS_INTEGRATED_PCS) &&
- 	    (priv->hw->pcs & STMMAC_PCS_RGMII ||
- 	     priv->hw->pcs & STMMAC_PCS_SGMII)) {
--		struct rgmii_adv adv;
- 		u32 supported, advertising, lp_advertising;
- 
- 		if (!priv->xstats.pcs_link) {
-@@ -337,10 +336,6 @@ static int stmmac_ethtool_get_link_ksettings(struct net_device *dev,
- 
- 		cmd->base.speed = priv->xstats.pcs_speed;
- 
--		/* Get and convert ADV/LP_ADV from the HW AN registers */
--		if (stmmac_pcs_get_adv_lp(priv, priv->ioaddr, &adv))
--			return -EOPNOTSUPP;	/* should never happen indeed */
--
- 		/* Encoding of PSE bits is defined in 802.3z, 37.2.1.4 */
- 
- 		ethtool_convert_link_mode_to_legacy_u32(
-@@ -350,44 +345,12 @@ static int stmmac_ethtool_get_link_ksettings(struct net_device *dev,
- 		ethtool_convert_link_mode_to_legacy_u32(
- 			&lp_advertising, cmd->link_modes.lp_advertising);
- 
--		if (adv.pause & STMMAC_PCS_PAUSE)
--			advertising |= ADVERTISED_Pause;
--		if (adv.pause & STMMAC_PCS_ASYM_PAUSE)
--			advertising |= ADVERTISED_Asym_Pause;
--		if (adv.lp_pause & STMMAC_PCS_PAUSE)
--			lp_advertising |= ADVERTISED_Pause;
--		if (adv.lp_pause & STMMAC_PCS_ASYM_PAUSE)
--			lp_advertising |= ADVERTISED_Asym_Pause;
--
- 		/* Reg49[3] always set because ANE is always supported */
- 		cmd->base.autoneg = ADVERTISED_Autoneg;
- 		supported |= SUPPORTED_Autoneg;
- 		advertising |= ADVERTISED_Autoneg;
- 		lp_advertising |= ADVERTISED_Autoneg;
- 
--		if (adv.duplex) {
--			supported |= (SUPPORTED_1000baseT_Full |
--				      SUPPORTED_100baseT_Full |
--				      SUPPORTED_10baseT_Full);
--			advertising |= (ADVERTISED_1000baseT_Full |
--					ADVERTISED_100baseT_Full |
--					ADVERTISED_10baseT_Full);
--		} else {
--			supported |= (SUPPORTED_1000baseT_Half |
--				      SUPPORTED_100baseT_Half |
--				      SUPPORTED_10baseT_Half);
--			advertising |= (ADVERTISED_1000baseT_Half |
--					ADVERTISED_100baseT_Half |
--					ADVERTISED_10baseT_Half);
--		}
--		if (adv.lp_duplex)
--			lp_advertising |= (ADVERTISED_1000baseT_Full |
--					   ADVERTISED_100baseT_Full |
--					   ADVERTISED_10baseT_Full);
--		else
--			lp_advertising |= (ADVERTISED_1000baseT_Half |
--					   ADVERTISED_100baseT_Half |
--					   ADVERTISED_10baseT_Half);
- 		cmd->base.port = PORT_OTHER;
- 
- 		ethtool_convert_legacy_u32_to_link_mode(
-@@ -515,12 +478,9 @@ stmmac_get_pauseparam(struct net_device *netdev,
- 		      struct ethtool_pauseparam *pause)
- {
- 	struct stmmac_priv *priv = netdev_priv(netdev);
--	struct rgmii_adv adv_lp;
- 
--	if (priv->hw->pcs && !stmmac_pcs_get_adv_lp(priv, priv->ioaddr, &adv_lp)) {
-+	if (priv->hw->pcs) {
- 		pause->autoneg = 1;
--		if (!adv_lp.pause)
--			return;
- 	} else {
- 		phylink_ethtool_get_pauseparam(priv->phylink, pause);
- 	}
-@@ -531,12 +491,9 @@ stmmac_set_pauseparam(struct net_device *netdev,
- 		      struct ethtool_pauseparam *pause)
- {
- 	struct stmmac_priv *priv = netdev_priv(netdev);
--	struct rgmii_adv adv_lp;
- 
--	if (priv->hw->pcs && !stmmac_pcs_get_adv_lp(priv, priv->ioaddr, &adv_lp)) {
-+	if (priv->hw->pcs) {
- 		pause->autoneg = 1;
--		if (!adv_lp.pause)
--			return -EOPNOTSUPP;
- 		return 0;
- 	} else {
- 		return phylink_ethtool_set_pauseparam(priv->phylink, pause);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-index 1bdf87b237c4..4a684c97dfae 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-@@ -16,6 +16,8 @@
- /* PCS registers (AN/TBI/SGMII/RGMII) offsets */
- #define GMAC_AN_CTRL(x)		(x)		/* AN control */
- #define GMAC_AN_STATUS(x)	(x + 0x4)	/* AN status */
-+
-+/* ADV, LPA and EXP are only available for the TBI and RTBI interfaces */
- #define GMAC_ANE_ADV(x)		(x + 0x8)	/* ANE Advertisement */
- #define GMAC_ANE_LPA(x)		(x + 0xc)	/* ANE link partener ability */
- #define GMAC_ANE_EXP(x)		(x + 0x10)	/* ANE expansion */
-@@ -107,34 +109,4 @@ static inline void dwmac_ctrl_ane(void __iomem *ioaddr, u32 reg, bool ane,
- 
- 	writel(value, ioaddr + GMAC_AN_CTRL(reg));
- }
--
--/**
-- * dwmac_get_adv_lp - Get ADV and LP cap
-- * @ioaddr: IO registers pointer
-- * @reg: Base address of the AN Control Register.
-- * @adv_lp: structure to store the adv,lp status
-- * Description: this is to expose the ANE advertisement and Link partner ability
-- * status to ethtool support.
-- */
--static inline void dwmac_get_adv_lp(void __iomem *ioaddr, u32 reg,
--				    struct rgmii_adv *adv_lp)
--{
--	u32 value = readl(ioaddr + GMAC_ANE_ADV(reg));
--
--	if (value & GMAC_ANE_FD)
--		adv_lp->duplex = DUPLEX_FULL;
--	if (value & GMAC_ANE_HD)
--		adv_lp->duplex |= DUPLEX_HALF;
--
--	adv_lp->pause = (value & GMAC_ANE_PSE) >> GMAC_ANE_PSE_SHIFT;
--
--	value = readl(ioaddr + GMAC_ANE_LPA(reg));
--
--	if (value & GMAC_ANE_FD)
--		adv_lp->lp_duplex = DUPLEX_FULL;
--	if (value & GMAC_ANE_HD)
--		adv_lp->lp_duplex = DUPLEX_HALF;
--
--	adv_lp->lp_pause = (value & GMAC_ANE_PSE) >> GMAC_ANE_PSE_SHIFT;
--}
- #endif /* __STMMAC_PCS_H__ */
--- 
-2.30.2
+No problem.
 
+> [ 2900.792890] BUG: kernel NULL pointer dereference, address: 0000000000000108
+> [ 2900.792961] #PF: supervisor read access in kernel mode
+> [ 2900.793017] #PF: error_code(0x0000) - not-present page
+> [ 2900.793053] PGD 8fd6067 P4D 8fd6067 PUD 6402067 PMD 0 
+> [ 2900.793097] Oops: Oops: 0000 [#1] SMP NOPTI
+> [ 2900.793127] CPU: 0 UID: 0 PID: 15652 Comm: nettest Not tainted 6.15.0-virtme #1 PREEMPT(voluntary) 
+> [ 2900.793200] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+> [ 2900.793245] RIP: 0010:ip6_pol_route+0x286/0x4a0
+> [ 2900.793290] Code: 0c 24 0f 85 fb 01 00 00 09 ca 0f 88 2f 01 00 00 e8 cf 11 43 ff 83 cb 08 48 8d 7c 24 18 e8 32 7b ff ff 0f b7 cb ba ff ff ff ff <4c> 8b 80 08 01 00 00 48 89 c6 49 89 c7 49 8d b8 80 06 00 00 4c 89
+> [ 2900.793422] RSP: 0018:ffffc08a0932f480 EFLAGS: 00010246
+> [ 2900.793460] RAX: 0000000000000000 RBX: 0000000000000008 RCX: 0000000000000008
+> [ 2900.793521] RDX: 00000000ffffffff RSI: ffffc08a0932f740 RDI: ffff9adac8c8f1a8
+> [ 2900.793580] RBP: ffff9adac87458c0 R08: 0000000000000000 R09: 0000000000000000
+> [ 2900.793635] R10: 0000000000000000 R11: 0000000000000040 R12: ffff9adac82e362c
+> [ 2900.793692] R13: ffff9adac82e3600 R14: 0000000000000080 R15: 0000000000000000
+> [ 2900.793752] FS:  00007f3418913740(0000) GS:ffff9adb7373a000(0000) knlGS:0000000000000000
+> [ 2900.793816] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [ 2900.793864] CR2: 0000000000000108 CR3: 0000000008007004 CR4: 0000000000772ef0
+> [ 2900.793920] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> [ 2900.793977] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> [ 2900.794031] PKRU: 55555554
+> [ 2900.794050] Call Trace:
+> [ 2900.794070]  <TASK>
+> [ 2900.794090]  ? __pfx_ip6_pol_route_output+0x10/0x10
+> [ 2900.794131]  fib6_rule_action+0xe3/0x310
+> [ 2900.794166]  fib_rules_lookup+0x1b2/0x2b0
+> [ 2900.794200]  ? __pfx_ip6_pol_route_output+0x10/0x10
+> [ 2900.794241]  fib6_rule_lookup+0xa9/0x270
+> [ 2900.794271]  ? __pfx_ip6_pol_route_output+0x10/0x10
+> [ 2900.794310]  ip6_route_output_flags+0xab/0x180
+> [ 2900.794353]  ip6_dst_lookup_tail.constprop.0+0x282/0x340
+> [ 2900.794394]  ip6_dst_lookup_flow+0x46/0xc0
+> [ 2900.794422]  vrf_xmit+0x100/0x4a0
+> [ 2900.794459]  dev_hard_start_xmit+0x8d/0x1c0
+>
+> https://netdev-3.bots.linux.dev/vmksft-net/results/160541/vm-crash-thr0-0
+
+Didn't see this issue either FWIW.
