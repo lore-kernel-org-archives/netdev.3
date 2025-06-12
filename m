@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F4629B8EA
-	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 15:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB9D29B8EA
+	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 15:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749741620; cv=none; b=bLCyHJU2FJg6F7a2utrLrIPD6R8AWaprjibq9/jA4R/Bug5eQtCD7DOz8bZDiM4wYlEfOzAGVqeB+MD5vlrc5z0Tu+VvTjFhO+k9BKrIffFWADgMVklhbW8kf9902nYvt0CKJ5JYcNGajPEm5wCObdYf7oO6VsrCJnK0EHjhR/A=
+	t=1749741621; cv=none; b=LqYpBwWOcOnyhR1mCU+U+ZvCm+jzaRqWWNUnEaOVMiqgtGKXqcoCaWpzXNOvi7cfTa7aDF0d6d6cwA6gisENMBBE91PI+j72MY+o8oNaK2DNWLpQOOvDhj5MXTpsB45FOsJAxaBkGfNxWzgd1Cvut7nFkzt3wQKpbEEllSrg+SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749741620; c=relaxed/simple;
-	bh=/K7zS/yOnYtHkAlyz3kuFX1TH0+jGbHwA3YDzBq43RA=;
+	s=arc-20240116; t=1749741621; c=relaxed/simple;
+	bh=vn3lQBxpov3jjjOtqnE5Bqxi2sq3/h8ksyKc7go9wiM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ggT1FBhkThSpfMvPITnUoTiCB4ZFr4+9Ntf3HCWDDfiP10ojGebzGsoThtnhzMBerBZYRmao36DI8ARKaGXwdUHCQV50ZH5wM0SNT2kd/rY3L+aWJ2tsh2xKnEHrhEU/7FFKRh2wHHW0FW02kHONNUxVxgZHmsjb4FEtAeiuv+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AsJUNOls; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gLbk2zniMtNot0hmW371ZnH0oJdsfdZbk/1PaKHh328tB1DF1wEi2xizyhH6fpNTmg0+HT5mFObG6JmZpcnYeWiQP34gcjvKv2vI/rzJwQN5bgCULHmSPuwxAgT/w/DF2QoTkJgCizv0OrcTp0FIrz2/DA+5rHQ+uRQG+6E/Eb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjqPN+kn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AsJUNOls"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6EDC4CEEA;
-	Thu, 12 Jun 2025 15:20:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjqPN+kn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D06BC4CEEB;
+	Thu, 12 Jun 2025 15:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749741618;
-	bh=/K7zS/yOnYtHkAlyz3kuFX1TH0+jGbHwA3YDzBq43RA=;
+	s=k20201202; t=1749741621;
+	bh=vn3lQBxpov3jjjOtqnE5Bqxi2sq3/h8ksyKc7go9wiM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=AsJUNOlsT3aN768mqe9rnTM+SHY8V3lZLfS4j3I4x98wEksjKBR8IlMsvb+SGYQDg
-	 gP2Iq/g1BfaZBhoJxCYadaKVyZBzVWuV3aolEDvXpuP7qEaNPiXFgh8W5/VU3AE3Fr
-	 SPB29PgnQLppfyc+TV4Vbdmq2KkorCXysVV+1ZyWrCw7InDdxZgEgc3x2IjFtPdxme
-	 T2BXSULrMKWdo9gmH6D7FK+tPnpqaCOTIBUyP1zqOSiOn+/GhWM27Wtg09cFuPV/mQ
-	 nqwM360NaaizAIISH+ZQz4Gb4oZoJJa5p+Z4S7ATXHqmrdxvXJqmkqDRHFirdio6ak
-	 Sw7y+qMGjjwKg==
+	b=CjqPN+kni2Qaps7WYeaVI5YUhh3Db575D6RswvsINvO+vpNVezSPtrN53FGZpSAAF
+	 rF/dTuzWehrU6HklwzSUBlZIEcEpkMn4sV5qaFxnlYfrmzso1YSfFriMlacKXe3hmS
+	 IHGWNu2p3xAD20qDgOcwLC5jZM4HuinlyYff35E5iVhpAos+RhCbeTCn4cVFi53MEY
+	 eoh6PlfRX5jKQsY7hn4q+lueYMiBRN5kPKevtuac1iZbJlzv2/3Mf+tnFdB8UO+eJL
+	 /jSqjouyCpikbD5gQpOO/3jYIvdMklcFoIkDtSTF9MQp2na4+LVWGbhM5z2PnYaTZP
+	 8DER70qyp2SOQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C0639EFFCF;
-	Thu, 12 Jun 2025 15:20:49 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C3839EFFCF;
+	Thu, 12 Jun 2025 15:20:52 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,51 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/5] net_sched: no longer use
- qdisc_tree_flush_backlog()
+Subject: Re: [PATCH net] net: drv: netdevsim: don't napi_complete() from
+ netpoll
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174974164823.4177214.9827119720924150067.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Jun 2025 15:20:48 +0000
-References: <20250611111515.1983366-1-edumazet@google.com>
-In-Reply-To: <20250611111515.1983366-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us,
- netdev@vger.kernel.org, eric.dumazet@gmail.com
+ <174974165099.4177214.7214118561387768587.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Jun 2025 15:20:50 +0000
+References: <20250611174643.2769263-1-kuba@kernel.org>
+In-Reply-To: <20250611174643.2769263-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ leitao@debian.org, dw@davidwei.uk
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 11 Jun 2025 11:15:10 +0000 you wrote:
-> This series is based on a report from Gerrard Tai.
+On Wed, 11 Jun 2025 10:46:43 -0700 you wrote:
+> netdevsim supports netpoll. Make sure we don't call napi_complete()
+> from it, since it may not be scheduled. Breno reports hitting a
+> warning in napi_complete_done():
 > 
-> Essentially, all users of qdisc_tree_flush_backlog() are racy.
-> 
-> We must instead use qdisc_purge_queue().
-> 
-> Eric Dumazet (5):
->   net_sched: prio: fix a race in prio_tune()
->   net_sched: red: fix a race in __red_change()
->   net_sched: tbf: fix a race in tbf_change()
->   net_sched: ets: fix a race in ets_qdisc_change()
->   net_sched: remove qdisc_tree_flush_backlog()
+> WARNING: CPU: 14 PID: 104 at net/core/dev.c:6592 napi_complete_done+0x2cc/0x560
+>   __napi_poll+0x2d8/0x3a0
+>   handle_softirqs+0x1fe/0x710
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/5] net_sched: prio: fix a race in prio_tune()
-    https://git.kernel.org/netdev/net/c/d35acc1be348
-  - [net,2/5] net_sched: red: fix a race in __red_change()
-    https://git.kernel.org/netdev/net/c/85a3e0ede384
-  - [net,3/5] net_sched: tbf: fix a race in tbf_change()
-    https://git.kernel.org/netdev/net/c/43eb46604121
-  - [net,4/5] net_sched: ets: fix a race in ets_qdisc_change()
-    https://git.kernel.org/netdev/net/c/d92adacdd8c2
-  - [net,5/5] net_sched: remove qdisc_tree_flush_backlog()
-    https://git.kernel.org/netdev/net/c/adcaa890c7a4
+  - [net] net: drv: netdevsim: don't napi_complete() from netpoll
+    https://git.kernel.org/netdev/net/c/1264971017b4
 
 You are awesome, thank you!
 -- 
