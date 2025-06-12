@@ -1,119 +1,159 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA70B21B918
-	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 08:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55C2156F45
+	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 09:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749718610; cv=none; b=rTFtxQSuRoADWVyN/1DrR/2RADD9+pH7AbJg/oNjMHlk46tVT4FVgyBGadkpB6YpZQze48AM37Gr0Hfbb//X0RPH8eS2Wl/Lqp/2dMwRetJf9jdaA938dDAaBQKFa6vzL4WlR2zOm5CEyI9URi2VeT9DhlSGktmrgs4L+ajXzd8=
+	t=1749719121; cv=none; b=J7uST/bW2y/OEvcKcsKRg9DPbBwkBBi2T/tibo/gJfAmlPevzCXw4bItJ59T2WP0qcAd8yikemvn7Yct7HylRSYFXm9e2YtG7DAAv7BtacI4ZiHzcfFQJ7rI88ZZrVreNBjeSsuo45wC8suMT1Zof4lVNRLOXL3q3j9ea0//jFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749718610; c=relaxed/simple;
-	bh=QUqmWhIOPeOaCfPk0J82P3o3C74RBvP6ZXmQgcB1aLg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cr7GTkYGcVtlJSuJULZYzAC+ulcTsB4Jsh4gm+28Yk5IKrWcX1YDU7B0HCzEHpE6H06fKrNaOf5AgwE1oIz+OCA6ni1fO9h51r09+PKGA5pEr+PS46kLVueJzyYsENrPDqHjnSXECQfJ7jmgm8ibt0paooYkpX4GCCoLUt4YTU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GQgIVbzA; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1749719121; c=relaxed/simple;
+	bh=W3nifrGaJTVu11+37zh+htUyCWWe4+ouNiwekOr9E/U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e/UF24EvjnCLFyTbQVmLMVVVz7hjq8VkB4SmnTfd8HNyIsE0/nALwwlZm+Z5eFHvVo9nrCvSf2Vgq5owNIEjaXrFd9kZ1mlfl6oVlprU38wpHJo4qQKpW4K38mH2bE90MnpDSERJAOudTOwjfHP6WM4+zTiPA7UzEPlL0wVE2Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XYp4N1M+; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GQgIVbzA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749718609; x=1781254609;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QUqmWhIOPeOaCfPk0J82P3o3C74RBvP6ZXmQgcB1aLg=;
-  b=GQgIVbzALAZsB+qhexr1it0ZqZ+o4p3uVNjHl6OKjpxzBCHrAZkmEgkn
-   nVdhQ0IYCreDwUOMG2m2lvlh3gM7hl+oAQZQr7cCCnqQzi38fmiQGLWj8
-   2SkMtdWQUI/Ig+4/TxQ7cfAZpZG/0zGGItyeB4bdXqkUB2HWQ9KaaafPh
-   ndaHbhTSvHAWgDFpnLHDxK/1h9MnkPyA2Jx8XJYBMWoZXXSv8oAjtUISt
-   FeGjsm6wiGmM8MPZE0uci3QaoIGHw20mRWt+CzxACGMOLyeK58AqO+CjV
-   QueSYoBqm4yIaYId0RjjfLNqkX0lK3hHxmRGRxSxn9TnJ4z5HL1Knkx9g
-   w==;
-X-CSE-ConnectionGUID: 2+ZdponrRL67yqpk8KZtqA==
-X-CSE-MsgGUID: cQI4CQmiRbW2Or8Tl8Ui7A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="50996354"
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
-   d="scan'208";a="50996354"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 01:56:48 -0700
-X-CSE-ConnectionGUID: hft+gJgKStipLfMBbHTDUg==
-X-CSE-MsgGUID: wpC+Oj5gRyeOKAUeuyN0/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
-   d="scan'208";a="147442929"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 12 Jun 2025 01:56:46 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uPdjn-000BLK-1y;
-	Thu, 12 Jun 2025 08:56:43 +0000
-Date: Thu, 12 Jun 2025 16:56:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jeremy Kerr <jk@codeconstruct.com.au>,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next 13/13] net: mctp: test: Add tests for gateway
- routes
-Message-ID: <202506121602.RLO9kgkY-lkp@intel.com>
-References: <20250611-dev-forwarding-v1-13-6b69b1feb37f@codeconstruct.com.au>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XYp4N1M+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749719118;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=la7I67fpYtKDvu65uRhLGaZkwWzuwESfAMSxd5HPN0g=;
+	b=XYp4N1M+2JPomMrZYkMNqOu3sMYFdSJElv0amWmHWpIE0Y5k4ZCcyiPj1NH+ACPqnozMIp
+	WLWF9wwlvDVpNL87RD81GmS2Jc9uvaHe1zTwnVB45+ihY539WUtuWnG9zHyJGUyn8ItPTm
+	ONKNjYB6/vJjsqjMUzgk5eNCkB3gtJM=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-182-WW5odRNDNXuZHTcUWp2-5g-1; Thu, 12 Jun 2025 05:05:17 -0400
+X-MC-Unique: WW5odRNDNXuZHTcUWp2-5g-1
+X-Mimecast-MFC-AGG-ID: WW5odRNDNXuZHTcUWp2-5g_1749719116
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-607c91a207dso707797a12.2
+        for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 02:05:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749719116; x=1750323916;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=la7I67fpYtKDvu65uRhLGaZkwWzuwESfAMSxd5HPN0g=;
+        b=J+MV/iXS0BbSys76KZoDEeeqP5Eywie3hdsAilpq3pLcnkl+dxAwDWMKBo9S6VgKQp
+         yjnWLNf7e5LvBc74bqXFEEgEj//6JNWu2/ZBXwSANyooiln3KeDM17E6uxOwnucY8t33
+         +/hqQTo0ljuBRRhpfHgmjttWsJNydbHDSGpGh8mVaFlfze/6b2KpgF4ZqLmPp9gGUwZr
+         w3mnEz2r8tP2jtsMIv3xNnbiXiy83pV82IBZd4CFA5MMscR38QoARYwctU6MP2NWCi/g
+         O3zGWtkRJsGDspJlOFrEugrK/TxhmqzZmoYHbyGIrGPWuY8yrGg3lqtnLzm+P3bHiX7R
+         ExxA==
+X-Gm-Message-State: AOJu0YyQzQaFK/3HsgpQ1ee2gITWQ1vmaGEvczxcZwelp8CEPGDgj2N3
+	WBtHIJoxrBFsEbjVzz5c5rVAxF+pG/AaPAJ6QCri22c5kkQVisrochHJxgC0tMBj1Ie+z+v2UBu
+	R80aPV30aCKxcFe2IRjQ8hQrKFS/3v40lb6f81HNufzxVYJ7LWEQZbR9j6w==
+X-Gm-Gg: ASbGnctEFqfwZOL/9UTocjynu24bnL7I3ENV82bixaWlOt2Ubb4AurssK34HyAMGvMJ
+	UY5ZETntngvMotMfk5uZIWfbWL4mPPmOW+Ne2uLPE2tszgoPP2zNllfvDj0LA+mjH1XBKcFBc51
+	aX/6w1J0NotwrU30k2LGUkHO3Nh4RuzPk6+7S5MLm9LpqmBTPqlSDYSI4hZ+JtOuGzvfn1Xks+4
+	PUV/OVuA0AzCQ8iLfFX2hN9j4nciIluDiXsOS3k002sdkZwsi2W38AfHPyr/HFhagWdViyTV+Oy
+	WmYjxB6Ga73ONy9+u8QaK7on
+X-Received: by 2002:a05:6402:34cd:b0:602:346b:1509 with SMTP id 4fb4d7f45d1cf-6086a6dcd1cmr1735292a12.9.1749719115896;
+        Thu, 12 Jun 2025 02:05:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHQ079WoFey7SiJ2O0oyxhF2BYyBlVFY5e1GuBCQG3FcjnoOQn2hKmYw/P3wRFkmroBuQvdkg==
+X-Received: by 2002:a05:6402:34cd:b0:602:346b:1509 with SMTP id 4fb4d7f45d1cf-6086a6dcd1cmr1735268a12.9.1749719115470;
+        Thu, 12 Jun 2025 02:05:15 -0700 (PDT)
+Received: from [100.69.167.148] ([147.229.117.1])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6086a5d201csm841918a12.36.2025.06.12.02.05.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Jun 2025 02:05:15 -0700 (PDT)
+Message-ID: <29837ab4-3682-4f2f-b8f7-7d367195525d@redhat.com>
+Date: Thu, 12 Jun 2025 11:05:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250611-dev-forwarding-v1-13-6b69b1feb37f@codeconstruct.com.au>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v3 1/8] virtio: introduce extended features
+To: Jason Wang <jasowang@redhat.com>
+Cc: netdev@vger.kernel.org, Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+References: <cover.1749210083.git.pabeni@redhat.com>
+ <47a89c6b568c3ab266ab351711f916d4a683ebdf.1749210083.git.pabeni@redhat.com>
+ <CACGkMEuNL+nLb2EvHWqSfKB6iiDScuKD6RJqxZ2-P9v5BDH1HA@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CACGkMEuNL+nLb2EvHWqSfKB6iiDScuKD6RJqxZ2-P9v5BDH1HA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Jeremy,
+On 6/12/25 2:50 AM, Jason Wang wrote:
+> On Fri, Jun 6, 2025 at 7:46 PM Paolo Abeni <pabeni@redhat.com> wrote:
+>> @@ -272,22 +272,22 @@ static int virtio_dev_probe(struct device *_d)
+>>         int err, i;
+>>         struct virtio_device *dev = dev_to_virtio(_d);
+>>         struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
+>> -       u64 device_features;
+>> -       u64 driver_features;
+>> +       u64 device_features[VIRTIO_FEATURES_DWORDS];
+>> +       u64 driver_features[VIRTIO_FEATURES_DWORDS];
+>>         u64 driver_features_legacy;
+>>
+>>         /* We have a driver! */
+>>         virtio_add_status(dev, VIRTIO_CONFIG_S_DRIVER);
+>>
+>>         /* Figure out what features the device supports. */
+>> -       device_features = dev->config->get_features(dev);
+>> +       virtio_get_features(dev, device_features);
+>>
+>>         /* Figure out what features the driver supports. */
+>> -       driver_features = 0;
+>> +       virtio_features_zero(driver_features);
+>>         for (i = 0; i < drv->feature_table_size; i++) {
+>>                 unsigned int f = drv->feature_table[i];
+>> -               BUG_ON(f >= 64);
+>> -               driver_features |= (1ULL << f);
+>> +               BUG_ON(f >= VIRTIO_FEATURES_MAX);
+>> +               virtio_features_set_bit(driver_features, f);
+> 
+> Instead of doing BUG_ON here, could we just stop at 128 bits?
 
-kernel test robot noticed the following build warnings:
+I think it would be nice to have a sanity check to ensure the driver
+code is sync with the core. What about a WARN_ON_ONCE?
 
-[auto build test WARNING on 0097c4195b1d0ca57d15979626c769c74747b5a0]
+>> @@ -121,6 +124,8 @@ struct virtio_config_ops {
+>>         void (*del_vqs)(struct virtio_device *);
+>>         void (*synchronize_cbs)(struct virtio_device *);
+>>         u64 (*get_features)(struct virtio_device *vdev);
+>> +       void (*get_extended_features)(struct virtio_device *vdev,
+>> +                                     u64 *features);
+> 
+> I think it would be better to add a size to simplify the future extension.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jeremy-Kerr/net-mctp-don-t-use-source-cb-data-when-forwarding-ensure-pkt_type-is-set/20250611-143319
-base:   0097c4195b1d0ca57d15979626c769c74747b5a0
-patch link:    https://lore.kernel.org/r/20250611-dev-forwarding-v1-13-6b69b1feb37f%40codeconstruct.com.au
-patch subject: [PATCH net-next 13/13] net: mctp: test: Add tests for gateway routes
-config: hexagon-randconfig-r133-20250612 (https://download.01.org/0day-ci/archive/20250612/202506121602.RLO9kgkY-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce: (https://download.01.org/0day-ci/archive/20250612/202506121602.RLO9kgkY-lkp@intel.com/reproduce)
+Note that the array size is implied by the virtio-features definition.
+Future extensions will be obtained by increasing the
+VIRTIO_FEATURES_DWORD define, with no other change to the code.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506121602.RLO9kgkY-lkp@intel.com/
+I think a length here would be redundant.
 
-sparse warnings: (new ones prefixed by >>)
-   net/mctp/route.c: note: in included file:
->> net/mctp/test/route-test.c:1256:37: sparse: sparse: symbol 'mctp_route_gw_mtu_tests' was not declared. Should it be static?
-   net/mctp/route.c:162:9: sparse: sparse: context imbalance in 'mctp_lookup_key' - different lock contexts for basic block
-   net/mctp/route.c:554:39: sparse: sparse: context imbalance in 'mctp_dst_input' - unexpected unlock
+>> +static inline bool virtio_features_equal(const u64 *f1, const u64 *f2)
+>> +{
+>> +       u64 diff = 0;
+>> +       int i;
+>> +
+>> +       for (i = 0; i < VIRTIO_FEATURES_DWORDS; ++i)
+>> +               diff |= f1[i] ^ f2[i];
+>> +       return !!diff;
+> 
+> Nit: we can return false early here.
 
-vim +/mctp_route_gw_mtu_tests +1256 net/mctp/test/route-test.c
+I can do in in the next revision.
 
-  1255	
-> 1256	const struct mctp_route_gw_mtu_test mctp_route_gw_mtu_tests[] = {
-  1257		/* no route-specific MTUs */
-  1258		{ 68, 0, 0, 0, 68 },
-  1259		{ 100, 0, 0, 0, 100 },
-  1260		/* one route MTU (smaller than dev mtu), others unrestricted */
-  1261		{ 100, 68, 0, 0, 68 },
-  1262		{ 100, 0, 68, 0, 68 },
-  1263		{ 100, 0, 0, 68, 68 },
-  1264		/* smallest applied, regardless of order */
-  1265		{ 100, 99, 98, 68, 68 },
-  1266		{ 99, 100, 98, 68, 68 },
-  1267		{ 98, 99, 100, 68, 68 },
-  1268		{ 68, 98, 99, 100, 68 },
-  1269	};
-  1270	
+[same disclaimer here: I'm traveling for the whole week, my replies will
+be rare and delayed]
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+/P
+
