@@ -1,236 +1,244 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F60194A44
-	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 10:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977F013C8E8;
+	Thu, 12 Jun 2025 10:26:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749723983; cv=none; b=c19AfZ5so+uCJNICBMtq+QctLjfMNhEsH/T5DaSj7Ob26gHpgyDw7BjDoSY6zx2eSHui4qtmHzfxWckUqJepZjzEceD88mGW/L7YbaSPSOY4eUaQnqGrZ+rGQ0GFGtnxRsVxlHIgTL128Yl7Usu3W/xFwHXHn/lM3c6YM1Dnx0U=
+	t=1749724003; cv=none; b=hU6JNBWwehprPJy/4nmsvQEduBzvNe1M2PzW9YU2k6mHNQ4/n7D6CS9z/26T6wI9kd9FCgOW9ZrOlZv3t1sdLl2Zk0kgDnNHnA8GjxK4I0hSH89wUu/vnsizkzEv8xiaQ3Q9DnqRZsAPGNBLcn2b1RW8vjoJ1CBU6NL58shXmZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749723983; c=relaxed/simple;
-	bh=iWVcOjuwVvJmKw5DK54LVEO2nYO1nzlf6AJ4WoM/j30=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D/jWqzZqGRkOrFwhp0ACigFyZX8fHKSuO2iIo86lMde7rN/GHvoiMkExgJ6/JcpZum2ndir/7k7tKNlnwuvp9P8GA3jLpuZ3Jk2QmBJoqL2X4k/EvMwouSTkEpRPfi4FOSi9HionXOLsuoFLgi7t7uF6WwxPuuZIiNIfmA97u98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b=vNcVKwne; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1749724003; c=relaxed/simple;
+	bh=tAJKRWzg1rS1UnSrbY96N/b3j0qzmKDhJ4rD85IR0L0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lIYZMYiVnTFmGCJxcD9z/zP0bldZkoFiYy9ZUZF4z8Mc4JkL9wsTyc1PulpKZmX/8BJvSoBor6+Iu2fUahJTyVRz2UV+aa9R7MSpLBgiTM40tlhH0m3NZQ6enPhfd0AuGD1SwAtNIuH6rYH57ou4XCJYIdZNxWFM9T6/Ja8OIbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bcmHlKN1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b="vNcVKwne"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-32ade3723adso8207111fa.0
-        for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 03:26:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1749723979; x=1750328779; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7gGWPjNnUqCb+mNdpZDEx7Lbwg6nHcykrw3xJhs8X6s=;
-        b=vNcVKwnev1Tftd/bD5pDMkNxFJ9OgNUrGKge6dgVWrorDgW+KD8/Tdp29BNf0Nc+83
-         la58tdpUHZWtPSJd4y+hofyUzH5lr9if/FvhYm/CZ04CQcjXFXDMU9HwdleXa/261kFA
-         zjkpyzb2/oHVIOAufqcv80/KDcaejX9mJSt0Q3u2iaqZ01pEoHQnryHD8tglUxdgzZUZ
-         xKa1Hk6anKqvsQEqfLq59rjXpcjZUkg9GEcHGsUD9gkSWGwnqVC9FXKMhHvc9b2/IwA6
-         ZYTbxL7K0CRl7TKPWdSuEwvLAh8cBFpX7SwOtFBQz86sqilbYArW3mHZuBQHyF7JsvfJ
-         lgrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749723979; x=1750328779;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7gGWPjNnUqCb+mNdpZDEx7Lbwg6nHcykrw3xJhs8X6s=;
-        b=E43eeu3mzXV75ZxeBTWpV04lMSege4eal8Xj9ZOV6+k1YxI/RBBtRTwXjXj6+NPEP9
-         WreJEAsmqtviaR4eqZRyQs9/+3/BZ1AdZkut37ZuBgaDH7TaBRti4xN8fOo8BVvgi3mN
-         xUxbluYxK191LjU6lHXUt9F8Dv8OMyHLPeZr2EkPWv3jjzj+4NKXaG+q/4UkmbRHrywv
-         m2qDvCaLA3rVd7lO7Jtpe9hIu2srdtKat/3R2tYo3CeAZb4k2j/raivYvK8lQqtXaZn2
-         UmeX0+0+gMo8fpXVqvEgZH3XPG3TXt9TWY9Nup00puBmy+/4Ud5gJfwCACv+SB/Ejwgh
-         Ezrg==
-X-Forwarded-Encrypted: i=1; AJvYcCUplsIPm+Lm9185irpBGoveAMjXypdrU7Ei2WTTxeLk32mTrDj9u8Sv6hpjSqF6kAW65KjfcBw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywaa0QblWLKLaAUCEbhbgNnwIjBzo/wdDTFDZ7R7Cnk+BsIgajw
-	FiVXN2BKzkP+8Jwos2kx/srfumlMQOdrD0GsEv9WF0PnbIMXfCGZM353uxRppt36tL4=
-X-Gm-Gg: ASbGnctlDsNDk9ALBkP4EIaCKF/KFl/G2hqcWzPIgwQtvnzlvx2d8ztDKfPOBmvq09J
-	iniybSTN5A+GSi0t0mCBS+DYJ/667Tg2Wz2bfA/4RCuGEF74Qa6nG/PnIrAxP+EUborm2hu+eVd
-	6pg0oxLzUg7vBtiBpyko8Gy1JpuRfNmkOuJca0ZatoxbByUcmPS6xBKq9g4S+30JGLTrXm/4nCf
-	TsmMrO9RCixd5PydgZn18zXHd+9My4UTZSwY+ouJx5WrjVauZ1oz5Hjk4amdkeR9u9+XTXEDlFQ
-	dVtxnDv8eRgn8kXi2o4/RzY/NHPNa2+13m3zTH9iKcS+x8uBrwnn5BBtmcsCXqwFTWO8n8laJS7
-	mrTHH5sYXCb9xZ8U2NrqREoQdBOP+ocY=
-X-Google-Smtp-Source: AGHT+IHwRgWqvaENeYp9S0vo8vnydHVjyiifYBAyLqw1TTn5tQIQygqdjcPs5G60sw7dOQoW676mfg==
-X-Received: by 2002:a05:651c:b12:b0:32a:81a2:8aa3 with SMTP id 38308e7fff4ca-32b306f93edmr8555891fa.23.1749723978862;
-        Thu, 12 Jun 2025 03:26:18 -0700 (PDT)
-Received: from [100.115.92.205] (176.111.185.210.kyiv.nat.volia.net. [176.111.185.210])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32b3320eaaasm1695791fa.111.2025.06.12.03.26.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Jun 2025 03:26:18 -0700 (PDT)
-Message-ID: <765689ad-7445-4966-adb3-0f5b3de810c5@blackwall.org>
-Date: Thu, 12 Jun 2025 13:26:16 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bcmHlKN1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FEEC4CEEA;
+	Thu, 12 Jun 2025 10:26:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749724003;
+	bh=tAJKRWzg1rS1UnSrbY96N/b3j0qzmKDhJ4rD85IR0L0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bcmHlKN1sWdp5SOzi3khF2Z6QvhFoAeVZA+h/UX6TLSmoT1h2tDPqMFuQxBscZKib
+	 arY6EXTTKqFRlDBaSg82lQGGUvyLMzcVwej8KyKEq5hZ760NMKCirkfp4ITSufl35m
+	 p/CpJCd5eBTsrRznHaNNO9mkRps+Gn8K5II+4QRuyrQerOX+3vl2IEfd+Cm19FkTvx
+	 KFVXODM/u2qjy6rvZj1062ktJQWxWT7w+fyqCqAVHSZnsfxKnaEcID+1Aeon8rbOs/
+	 EfwLxnGFFhhDt2Qza/kdcbEJfxgUFVGWJjsc6P/3onw3DudxGlieAWU7m30fHfE2e6
+	 Ri2uvuvYHHbiw==
+Date: Thu, 12 Jun 2025 11:26:37 +0100
+From: Lee Jones <lee@kernel.org>
+To: Ivan Vecera <ivecera@redhat.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, netdev@vger.kernel.org,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Prathosh Satish <Prathosh.Satish@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Michal Schmidt <mschmidt@redhat.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next v7 8/8] mfd: zl3073x: Register DPLL sub-device
+ during init
+Message-ID: <20250612102637.GB381401@google.com>
+References: <2e3eb9e3-151d-42ef-9043-998e762d3ba6@redhat.com>
+ <aBt1N6TcSckYj23A@smile.fi.intel.com>
+ <20250507152609.GK3865826@google.com>
+ <b095ffb9-c274-4520-a45e-96861268500b@redhat.com>
+ <20250513094126.GF2936510@google.com>
+ <6f693bb5-da3c-4363-895f-58a267e52a18@redhat.com>
+ <20250522073902.GC8794@google.com>
+ <7421647b-ae85-4f34-843c-02f1fb21d7f3@redhat.com>
+ <20250522104551.GD1199143@google.com>
+ <73eb151c-93cd-4617-b0e4-f7dccb20c4cb@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/2] neighbor: Add NTF_EXT_VALIDATED flag for
- externally validated entries
-To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, horms@kernel.org, donald.hunter@gmail.com,
- petrm@nvidia.com, daniel@iogearbox.net
-References: <20250611141551.462569-1-idosch@nvidia.com>
- <20250611141551.462569-2-idosch@nvidia.com>
-Content-Language: en-US
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20250611141551.462569-2-idosch@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <73eb151c-93cd-4617-b0e4-f7dccb20c4cb@redhat.com>
 
-On 6/11/25 17:15, Ido Schimmel wrote:
-> tl;dr
-> =====
-> 
-> Add a new neighbor flag ("extern_valid") that can be used to indicate to
-> the kernel that a neighbor entry was learned and determined to be valid
-> externally. The kernel will not try to remove or invalidate such an
-> entry, leaving these decisions to the user space control plane. This is
-> needed for EVPN multi-homing where a neighbor entry for a multi-homed
-> host needs to be synced across all the VTEPs among which the host is
-> multi-homed.
-> 
-> Background
-> ==========
-> 
-> In a typical EVPN multi-homing setup each host is multi-homed using a
-> set of links called ES (Ethernet Segment, i.e., LAG) to multiple leaf
-> switches (VTEPs). VTEPs that are connected to the same ES are called ES
-> peers.
-> 
-> When a neighbor entry is learned on a VTEP, it is distributed to both ES
-> peers and remote VTEPs using EVPN MAC/IP advertisement routes. ES peers
-> use the neighbor entry when routing traffic towards the multi-homed host
-> and remote VTEPs use it for ARP/NS suppression.
-> 
-> Motivation
-> ==========
-> 
-> If the ES link between a host and the VTEP on which the neighbor entry
-> was locally learned goes down, the EVPN MAC/IP advertisement route will
-> be withdrawn and the neighbor entries will be removed from both ES peers
-> and remote VTEPs. Routing towards the multi-homed host and ARP/NS
-> suppression can fail until another ES peer locally learns the neighbor
-> entry and distributes it via an EVPN MAC/IP advertisement route.
-> 
-> "draft-rbickhart-evpn-ip-mac-proxy-adv-03" [1] suggests avoiding these
-> intermittent failures by having the ES peers install the neighbor
-> entries as before, but also injecting EVPN MAC/IP advertisement routes
-> with a proxy indication. When the previously mentioned ES link goes down
-> and the original EVPN MAC/IP advertisement route is withdrawn, the ES
-> peers will not withdraw their neighbor entries, but instead start aging
-> timers for the proxy indication.
-> 
-> If an ES peer locally learns the neighbor entry (i.e., it becomes
-> "reachable"), it will restart its aging timer for the entry and emit an
-> EVPN MAC/IP advertisement route without a proxy indication. An ES peer
-> will stop its aging timer for the proxy indication if it observes the
-> removal of the proxy indication from at least one of the ES peers
-> advertising the entry.
-> 
-> In the event that the aging timer for the proxy indication expired, an
-> ES peer will withdraw its EVPN MAC/IP advertisement route. If the timer
-> expired on all ES peers and they all withdrew their proxy
-> advertisements, the neighbor entry will be completely removed from the
-> EVPN fabric.
-> 
-> Implementation
-> ==============
-> 
-> In the above scheme, when the control plane (e.g., FRR) advertises a
-> neighbor entry with a proxy indication, it expects the corresponding
-> entry in the data plane (i.e., the kernel) to remain valid and not be
-> removed due to garbage collection. The control plane also expects the
-> kernel to notify it if the entry was learned locally (i.e., became
-> "reachable") so that it will remove the proxy indication from the EVPN
-> MAC/IP advertisement route. That is why these entries cannot be
-> programmed with dummy states such as "permanent" or "noarp".
-> 
-> Instead, add a new neighbor flag ("extern_valid") which indicates that
-> the entry was learned and determined to be valid externally and should
-> not be removed or invalidated by the kernel. The kernel can probe the
-> entry and notify user space when it becomes "reachable". However, if the
-> kernel does not receive a confirmation, have it return the entry to the
-> "stale" state instead of the "failed" state.
-> 
-> In other words, an entry marked with the "extern_valid" flag behaves
-> like any other dynamically learned entry other than the fact that the
-> kernel cannot remove or invalidate it.
-> 
-> One can argue that the "extern_valid" flag should not prevent garbage
-> collection and that instead a neighbor entry should be programmed with
-> both the "extern_valid" and "extern_learn" flags. There are two reasons
-> for not doing that:
-> 
-> 1. Unclear why a control plane would like to program an entry that the
->     kernel cannot invalidate but can completely remove.
-> 
-> 2. The "extern_learn" flag is used by FRR for neighbor entries learned
->     on remote VTEPs (for ARP/NS suppression) whereas here we are
->     concerned with local entries. This distinction is currently irrelevant
->     for the kernel, but might be relevant in the future.
-> 
-> Given that the flag only makes sense when the neighbor has a valid
-> state, reject attempts to add a neighbor with an invalid state and with
-> this flag set. For example:
-> 
->   # ip neigh add 192.0.2.1 nud none dev br0.10 extern_valid
->   Error: Cannot create externally validated neighbor with an invalid state.
->   # ip neigh add 192.0.2.1 lladdr 00:11:22:33:44:55 nud stale dev br0.10 extern_valid
->   # ip neigh replace 192.0.2.1 nud failed dev br0.10 extern_valid
->   Error: Cannot mark neighbor as externally validated with an invalid state.
-> 
-> The above means that a neighbor cannot be created with the
-> "extern_valid" flag and flags such as "use" or "managed" as they result
-> in a neighbor being created with an invalid state ("none") and
-> immediately getting probed:
-> 
->   # ip neigh add 192.0.2.1 lladdr 00:11:22:33:44:55 nud stale dev br0.10 extern_valid use
->   Error: Cannot create externally validated neighbor with an invalid state.
-> 
-> However, these flags can be used together with "extern_valid" after the
-> neighbor was created with a valid state:
-> 
->   # ip neigh add 192.0.2.1 lladdr 00:11:22:33:44:55 nud stale dev br0.10 extern_valid
->   # ip neigh replace 192.0.2.1 lladdr 00:11:22:33:44:55 nud stale dev br0.10 extern_valid use
-> 
-> One consequence of preventing the kernel from invalidating a neighbor
-> entry is that by default it will only try to determine reachability
-> using unicast probes. This can be changed using the "mcast_resolicit"
-> sysctl:
-> 
->   # sysctl net.ipv4.neigh.br0/10.mcast_resolicit
->   0
->   # tcpdump -nn -e -i br0.10 -Q out arp &
->   # ip neigh replace 192.0.2.1 lladdr 00:11:22:33:44:55 nud stale dev br0.10 extern_valid use
->   62:50:1d:11:93:6f > 00:11:22:33:44:55, ethertype ARP (0x0806), length 42: Request who-has 192.0.2.1 tell 192.0.2.2, length 28
->   62:50:1d:11:93:6f > 00:11:22:33:44:55, ethertype ARP (0x0806), length 42: Request who-has 192.0.2.1 tell 192.0.2.2, length 28
->   62:50:1d:11:93:6f > 00:11:22:33:44:55, ethertype ARP (0x0806), length 42: Request who-has 192.0.2.1 tell 192.0.2.2, length 28
->   # sysctl -wq net.ipv4.neigh.br0/10.mcast_resolicit=3
->   # ip neigh replace 192.0.2.1 lladdr 00:11:22:33:44:55 nud stale dev br0.10 extern_valid use
->   62:50:1d:11:93:6f > 00:11:22:33:44:55, ethertype ARP (0x0806), length 42: Request who-has 192.0.2.1 tell 192.0.2.2, length 28
->   62:50:1d:11:93:6f > 00:11:22:33:44:55, ethertype ARP (0x0806), length 42: Request who-has 192.0.2.1 tell 192.0.2.2, length 28
->   62:50:1d:11:93:6f > 00:11:22:33:44:55, ethertype ARP (0x0806), length 42: Request who-has 192.0.2.1 tell 192.0.2.2, length 28
->   62:50:1d:11:93:6f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 192.0.2.1 tell 192.0.2.2, length 28
->   62:50:1d:11:93:6f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 192.0.2.1 tell 192.0.2.2, length 28
->   62:50:1d:11:93:6f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 192.0.2.1 tell 192.0.2.2, length 28
-> 
-> iproute2 patches can be found here [2].
-> 
-> [1] https://datatracker.ietf.org/doc/html/draft-rbickhart-evpn-ip-mac-proxy-adv-03
-> [2] https://github.com/idosch/iproute2/tree/submit/extern_valid_v1
-> 
-> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-> ---
->   Documentation/netlink/specs/rt-neigh.yaml |  1 +
->   include/net/neighbour.h                   |  4 +-
->   include/uapi/linux/neighbour.h            |  5 ++
->   net/core/neighbour.c                      | 75 ++++++++++++++++++++---
->   4 files changed, 75 insertions(+), 10 deletions(-)
-> 
+On Thu, 22 May 2025, Ivan Vecera wrote:
 
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+> On 22. 05. 25 12:45 odp., Lee Jones wrote:
+> > On Thu, 22 May 2025, Ivan Vecera wrote:
+> > 
+> > > 
+> > > 
+> > > On 22. 05. 25 9:39 dop., Lee Jones wrote:
+> > > > On Tue, 13 May 2025, Ivan Vecera wrote:
+> > > > 
+> > > > > On 13. 05. 25 11:41 dop., Lee Jones wrote:
+> > > > > > On Mon, 12 May 2025, Ivan Vecera wrote:
+> > > > > > 
+> > > > > > > On 07. 05. 25 5:26 odp., Lee Jones wrote:
+> > > > > > > > On Wed, 07 May 2025, Andy Shevchenko wrote:
+> > > > > > > > 
+> > > > > > > > > On Wed, May 07, 2025 at 03:56:37PM +0200, Ivan Vecera wrote:
+> > > > > > > > > > On 07. 05. 25 3:41 odp., Andy Shevchenko wrote:
+> > > > > > > > > > > On Wed, May 7, 2025 at 3:45 PM Ivan Vecera <ivecera@redhat.com> wrote:
+> > > > > > > > > 
+> > > > > > > > > ...
+> > > > > > > > > 
+> > > > > > > > > > > > +static const struct zl3073x_pdata zl3073x_pdata[ZL3073X_MAX_CHANNELS] = {
+> > > > > > > > > > > > +       { .channel = 0, },
+> > > > > > > > > > > > +       { .channel = 1, },
+> > > > > > > > > > > > +       { .channel = 2, },
+> > > > > > > > > > > > +       { .channel = 3, },
+> > > > > > > > > > > > +       { .channel = 4, },
+> > > > > > > > > > > > +};
+> > > > > > > > > > > 
+> > > > > > > > > > > > +static const struct mfd_cell zl3073x_devs[] = {
+> > > > > > > > > > > > +       ZL3073X_CELL("zl3073x-dpll", 0),
+> > > > > > > > > > > > +       ZL3073X_CELL("zl3073x-dpll", 1),
+> > > > > > > > > > > > +       ZL3073X_CELL("zl3073x-dpll", 2),
+> > > > > > > > > > > > +       ZL3073X_CELL("zl3073x-dpll", 3),
+> > > > > > > > > > > > +       ZL3073X_CELL("zl3073x-dpll", 4),
+> > > > > > > > > > > > +};
+> > > > > > > > > > > 
+> > > > > > > > > > > > +#define ZL3073X_MAX_CHANNELS   5
+> > > > > > > > > > > 
+> > > > > > > > > > > Btw, wouldn't be better to keep the above lists synchronised like
+> > > > > > > > > > > 
+> > > > > > > > > > > 1. Make ZL3073X_CELL() to use indexed variant
+> > > > > > > > > > > 
+> > > > > > > > > > > [idx] = ...
+> > > > > > > > > > > 
+> > > > > > > > > > > 2. Define the channel numbers
+> > > > > > > > > > > 
+> > > > > > > > > > > and use them in both data structures.
+> > > > > > > > > > > 
+> > > > > > > > > > > ...
+> > > > > > > > > > 
+> > > > > > > > > > WDYM?
+> > > > > > > > > > 
+> > > > > > > > > > > OTOH, I'm not sure why we even need this. If this is going to be
+> > > > > > > > > > > sequential, can't we make a core to decide which cell will be given
+> > > > > > > > > > > which id?
+> > > > > > > > > > 
+> > > > > > > > > > Just a note that after introduction of PHC sub-driver the array will look
+> > > > > > > > > > like:
+> > > > > > > > > > static const struct mfd_cell zl3073x_devs[] = {
+> > > > > > > > > >            ZL3073X_CELL("zl3073x-dpll", 0),  // DPLL sub-dev for chan 0
+> > > > > > > > > >            ZL3073X_CELL("zl3073x-phc", 0),   // PHC sub-dev for chan 0
+> > > > > > > > > >            ZL3073X_CELL("zl3073x-dpll", 1),  // ...
+> > > > > > > > > >            ZL3073X_CELL("zl3073x-phc", 1),
+> > > > > > > > > >            ZL3073X_CELL("zl3073x-dpll", 2),
+> > > > > > > > > >            ZL3073X_CELL("zl3073x-phc", 2),
+> > > > > > > > > >            ZL3073X_CELL("zl3073x-dpll", 3),
+> > > > > > > > > >            ZL3073X_CELL("zl3073x-phc", 3),
+> > > > > > > > > >            ZL3073X_CELL("zl3073x-dpll", 4),
+> > > > > > > > > >            ZL3073X_CELL("zl3073x-phc", 4),   // PHC sub-dev for chan 4
+> > > > > > > > > > };
+> > > > > > > > > 
+> > > > > > > > > Ah, this is very important piece. Then I mean only this kind of change
+> > > > > > > > > 
+> > > > > > > > > enum {
+> > > > > > > > > 	// this or whatever meaningful names
+> > > > > > > > > 	..._CH_0	0
+> > > > > > > > > 	..._CH_1	1
+> > > > > > > > > 	...
+> > > > > > > > > };
+> > > > > > > > > 
+> > > > > > > > > static const struct zl3073x_pdata zl3073x_pdata[ZL3073X_MAX_CHANNELS] = {
+> > > > > > > > >            { .channel = ..._CH_0, },
+> > > > > > > > >            ...
+> > > > > > > > > };
+> > > > > > > > > 
+> > > > > > > > > static const struct mfd_cell zl3073x_devs[] = {
+> > > > > > > > >            ZL3073X_CELL("zl3073x-dpll", ..._CH_0),
+> > > > > > > > >            ZL3073X_CELL("zl3073x-phc", ..._CH_0),
+> > > > > > > > >            ...
+> > > > > > > > > };
+> > > > > > > > 
+> > > > > > > > This is getting hectic.  All for a sequential enumeration.  Seeing as
+> > > > > > > > there are no other differentiations, why not use IDA in the child
+> > > > > > > > instead?
+> > > > > > > 
+> > > > > > > For that, there have to be two IDAs, one for DPLLs and one for PHCs...
+> > > > > > 
+> > > > > > Sorry, can you explain a bit more.  Why is this a problem?
+> > > > > > 
+> > > > > > The IDA API is very simple.
+> > > > > > 
+> > > > > > Much better than building your own bespoke MACROs.
+> > > > > 
+> > > > > I will try to explain this in more detail... This MFD driver handles
+> > > > > chip family ZL3073x where the x == number of DPLL channels and can
+> > > > > be from <1, 5>.
+> > > > > 
+> > > > > The driver creates 'x' DPLL sub-devices during probe and has to pass
+> > > > > channel number that should this sub-device use. Here can be used IDA
+> > > > > in DPLL sub-driver:
+> > > > > e.g. ida_alloc_max(zldev->channels, zldev->max_channels, GFP_KERNEL);
+> > > > > 
+> > > > > This way the DPLL sub-device get its own unique channel ID to use.
+> > > > > 
+> > > > > The situation is getting more complicated with PHC sub-devices because
+> > > > > the chip can provide UP TO 'x' PHC sub-devices depending on HW
+> > > > > configuration. To handle this the MFD driver has to check this HW config
+> > > > > for particular channel if it is capable to provide PHC functionality.
+> > > > > 
+> > > > > E.g. ZL30735 chip has 5 channels, in this case the MFD driver should
+> > > > > create 5 DPLL sub-devices. And then lets say channel 0, 2 and 4 are
+> > > > > PHC capable. Then the MFD driver should create 3 PHC sub-devices and
+> > > > > pass 0, 2 resp. 4 for them.
+> > > > 
+> > > > Where is the code that determines which channels are PHC capable?
+> > > 
+> > > It is not included in this series and will be added once the PTP driver
+> > > will be added. But the code looks like:
+> > > 
+> > > for (i = 0; i < ZL3073X_MAX_CHANNELS; i++) {
+> > > 	if (channel_is_in_nco_mode(..., i)) {
+> > > 		struct mfd_cell phc_dev = ZL3073X_CELL("zl3073x-phc", i);
+> > > 		rc = devm_mfd_add_devices(zldev->dev,
+> > > 					  PLATFORM_DEVID_AUTO, &phc_dev,
+> > > 					  1, NULL, 0, NULL);
+> > > 		...
+> > > 	}
+> > > }
+> > 
+> > It's the channel_is_in_nco_mode() code I wanted to see.
+> 
+> The function is like this:
+> 
+> static bool zl3073x_chan_in_nco_mode(struct zl3073x_dev *zldev, u8 ch)
+> {
+> 	u8 mode, mode_refsel;
+> 	int rc;
+> 
+> 	rc = zl3073x_read_u8(zlptp->mfd,
+> 			     ZL_REG_DPLL_MODE_REFSEL(ch), &mode_refsel);
+> 	if (rc)
+> 		return false;
+> 
+> 	mode = FIELD_GET(ZL_DPLL_MODE_REFSEL_MODE, mode_refsel);
+> 
+> 	return (mode == ZL_DPLL_MODE_REFSEL_MODE_NCO);
+> }
+> 
+> > What if you register all PHC devices, then bomb out if
+> > !channel_is_in_nco_mode()?  Presumably this can / should also live in
+> > the PHC driver as well?
+> 
+> Yes, we can register PHC sub-dev for all channels disregard to channel
+> mode. The PHC driver checks for the mode and return -ENODEV when it is
+> different from NCO. But in this case the user will see PHC platform
+> devices under /sys/bus/platform/device and some of them won't have
+> driver bound (they will look like some kind of phantom devices).
+> I'm not sure if this is OK and not confusing.
 
+There will be plenty of devices which do not successfully probe for one
+reason or another.  This is all that these 'phantom devices' will
+indicate.
+
+-- 
+Lee Jones [李琼斯]
