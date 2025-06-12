@@ -1,128 +1,98 @@
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3393B280;
-	Thu, 12 Jun 2025 00:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35EA8BE8;
+	Thu, 12 Jun 2025 00:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749688837; cv=none; b=OjXMrVtMRy4nLg9UJp5eK0wPs7YAtaYchLENMFrQO3FiNn811ooqn4+Lqc9YzkzK2SsL1okrC1/PC7HPdAY3Oql4ttqGZZl/3F9oeKGvSqc/qno2xhVC6A7IwxHbm7h3BVTnz5hNMNQCZV0YpYFuGqXBzQZ+solCbNBFzQ6dPWI=
+	t=1749689300; cv=none; b=pC5a0mlBie33GeWbIf3lUctklDFJp2e5W/t1nAUdCkaoWbz97GkEQ2UIVCNeM3z5tQcv41BfcEM5V2EVZy4xJgyqPw7XLf8fWbZlf8zwHFQakGGw2p4EFcNiXYH3114DnUINQ0ATkQ4T0fhoHmmBXVLOTe9js+ZkZYZztoQAr1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749688837; c=relaxed/simple;
-	bh=sEo29Y4UUQrtzYpx+2sKnZH/o6C4OT1r4wZBTH7Tvls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HVgF5K5I7PBaUWpiXXHcuF5cmKrFbkTs5yHYWEZ5DG99rPGOjDpeSkGL3mAFMG978nvUKXJ9Mjj3Ixk0eXvC5J+tkPNsrCE3vbRgH3UHweQk2DjRhf7hVovyY+R9P1BKYiU9/d51S1F9fYLq//yzTeRM3h/kQOj5nmili5T3bJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-669ff7000002311f-1b-684a21ffb9fe
-Date: Thu, 12 Jun 2025 09:40:26 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: Pavel Begunkov <asml.silence@gmail.com>, willy@infradead.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, kernel_team@skhynix.com, kuba@kernel.org,
-	ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org,
-	akpm@linux-foundation.org, davem@davemloft.net,
-	john.fastabend@gmail.com, andrew+netdev@lunn.ch, toke@redhat.com,
-	tariqt@nvidia.com, edumazet@google.com, pabeni@redhat.com,
-	saeedm@nvidia.com, leon@kernel.org, ast@kernel.org,
-	daniel@iogearbox.net, david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, horms@kernel.org,
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-	vishal.moola@gmail.com
-Subject: Re: [PATCH net-next 0/9] Split netmem from struct page
-Message-ID: <20250612004026.GB41589@system.software.com>
-References: <20250609043225.77229-1-byungchul@sk.com>
- <8c7c1039-5b9c-4060-8292-87047dfd9845@gmail.com>
- <CAHS8izNiFA71bbLd1fq3sFh1CuC5Zh19f53XMPYk2Dj8iOfkOA@mail.gmail.com>
+	s=arc-20240116; t=1749689300; c=relaxed/simple;
+	bh=3d2nv4mQzWVieMmhZJFf9T1T8JQ4ZqqR9dLmZQor5y0=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=RC+X3HtzJN8WiKc5dPVWkJ0FPSuwUW3jYUoQdAJ8rNKYKfNJU4RRWaCyDeSsnj1OIkmXQAK5j+5vyTQVIxI9w7s/gGjwZmjtjedY6UI818o7Yj6N/gxdKHrsg2U9nZRm+OY9JphEQLqeSgngnhCTQKNg0LhyXs1M2KxyKR8knpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NpQiVKQD; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NpQiVKQD"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7fd35b301bdso361747a12.2;
+        Wed, 11 Jun 2025 17:48:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749689298; x=1750294098; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3d2nv4mQzWVieMmhZJFf9T1T8JQ4ZqqR9dLmZQor5y0=;
+        b=NpQiVKQDyfy/PLdFrLtHe5NAn8PTX/AuOT8bF+v7SgPeDJv5KudlkXvKAiobQXa2sx
+         jX41zYmce+v6/ZL8U1Oi9Gurozv+muxiseZdXgBNELAJ3+ILmGo3mpJ5AfCfgmvZLf6S
+         k2mBc6Ae9Mzk6huho+eAZKy+P3B/hNzYgG+IKhHfy+W5r5WFXhGMNL+GRD5tO4WNMiMZ
+         slpWR8/LMCe2WFo4W30CMaqoud7/OYeWCEpVw1t13+xw7NO3Sl7MrqjHXTe6Eme7dEt2
+         orFCGcPpzLjwXIgofH4Wl017mm4+6esBWShnYiDxwZlSoIzbzz/udZxjclEVXJ1wi96U
+         C7Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749689298; x=1750294098;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3d2nv4mQzWVieMmhZJFf9T1T8JQ4ZqqR9dLmZQor5y0=;
+        b=OIBYK+eXGS+RKwDXbhqcS7kK5aLypNlv0dPXqHfwzg/0PNnf6FlgkKRpxnhdGsdpme
+         4T9EaW/VCFmmhi8TDoEUA7+O6xS//fTx045ILPTFVie9LZngxP7imQdRR8julglwoqP+
+         v5rkesCSgQoEH/2I+/lseEj/8M3JcU2YVftQsUAyAU6h9/VxYkmZZSQwzsqvQTAJBxI/
+         vfOoJFYGF92uqKMQ/LbPbP8x6CecZ1irnzJeomkxhuciLGbJ0awQvPdWPUn4qbf5DK6S
+         vjqnjYw6/u611UOHJjqySrLOCqgKgjFTAmXUdiRdf5fzvwsXM2ewzuiFKtfahSGKS8Lr
+         IK9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUarx6cp+fSk4d0nOG8xKklxWWgcQ8/5yAsYfpds4Zc/upVjVoSAeFLlR8U2T1Taga3zieAMNVe@vger.kernel.org, AJvYcCUmRvp4zKTlRP/mJ3wnGjqLGpnkTm9U2nf2J+0gF5MYrZ7LSUOGS9AgofJn/St9+a1S4/pqDJmzcwhBd+4gjYU=@vger.kernel.org, AJvYcCVhB5KQ2ojX4f6vKt8PMx23Nk5Q68CCnqEc8LACcZwdOGIU5ybkiOxpR+6/TiB2OpG4NxlLRg88pSwm9X0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4xZ1e3gPWaPlEKhbJvpth3fWW7ECIKEKStfFsQGd5RA4ix7gW
+	WTRkkmfkWjUf+f6FaFWRzVd/1RS0q1J1xny7C2Db8yV8dU1tCOkM+fIyHo/bKgnD
+X-Gm-Gg: ASbGncvZei7MEAAbFq/9Ddb4pQQ61E2I2gXKDYZp/x5UcOatqALAnC0iPQTIqmHEf41
+	7k/Ul+DrtJuiWn/OxpxmYGMwRV/eduMJc3gKHEvOyCbIl1PM9PBxVwPKY9QUxhoqviFQZbXu6hx
+	1VPizAk90QWjVP9kGqfF9UZgjecXKxMg53QvGer2g9X3S0Tq8JZoW8ojR3TZnucQTOQm2xw6xRt
+	TZdMuOYSbWL1oBin9jLFmXHpwX5dSvnOjgIDR4G4wW+5xeYQDtfO823eOlcG6L0TdNE0WWUIKCP
+	ERhCTL2c7oOygekldGoXhhaqcKv9WWnIfv5qdD245Oi74TaZLrg3movp50Z1WXCN9pFRHWCFRqF
+	WlK2XIJOMX08Lq9bSHTgXSMaNwqBePa21L7zJeSI4
+X-Google-Smtp-Source: AGHT+IG48Dss+KMa32YKb1Yc3+atTL+EItxUQqwsQHXnKCXv/vuFdpbPbpSc9wX8C8WDQ4IsuVkX2w==
+X-Received: by 2002:a17:902:d488:b0:234:d778:13fa with SMTP id d9443c01a7336-2364ca46910mr20702875ad.26.1749689297911;
+        Wed, 11 Jun 2025 17:48:17 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e6f9878sm1911455ad.151.2025.06.11.17.48.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Jun 2025 17:48:17 -0700 (PDT)
+Date: Thu, 12 Jun 2025 09:48:05 +0900 (JST)
+Message-Id: <20250612.094805.256395171864740471.fujita.tomonori@gmail.com>
+To: tamird@gmail.com
+Cc: aliceryhl@google.com, fujita.tomonori@gmail.com, tmgross@umich.edu,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+ a.hindborg@kernel.org, dakr@kernel.org, davem@davemloft.net,
+ andrew@lunn.ch, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: cast to the proper type
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CAJ-ks9m837aTYsS9Qd8bC0_abE_GT9TZUDZbbPnpyOtgrF9Ehw@mail.gmail.com>
+References: <20250611-correct-type-cast-v1-1-06c1cf970727@gmail.com>
+	<CAH5fLghomO3znaj14ZSR9FeJSTAtJhLjR=fNdmSQ0MJdO+NfjQ@mail.gmail.com>
+	<CAJ-ks9m837aTYsS9Qd8bC0_abE_GT9TZUDZbbPnpyOtgrF9Ehw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHS8izNiFA71bbLd1fq3sFh1CuC5Zh19f53XMPYk2Dj8iOfkOA@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0iTURzGPXsve10OXqeto4XiuirYjT78qaigD50kwzC6mbiVL201V2xl
-	GlhWi0iadjGouWyilZdoNW9TTGuJZhcSu7AuZlhZdJnk1DJX5qtEfvvxPH+eHwcORymKmXBO
-	Z9grGA0avYqV0bJvQUWxI1Fx2vk+8zSwOa6xUPEzA66+dTFgK69B0D/0Sgq+5lYWiosGKbA9
-	NtMw4PhFwYeWbil0XemhoeF4LQXdefdYsJiHKTjiKpVAe00uA/m/LlNQm/1WCk/qbSy8uTbC
-	QI/bQkObtYyGrtwV0GJXwuCDrwiaHbUSGDx5kYWzHXYW3pm7EHTc7aah4HAuAkejh4HhnzZ2
-	RRSpKnshIXXWTimxO/eRytIYkuPpoIiz/ARLnH1npOT18waW3Ds/TJM6l09CLEe9LPn+4SVN
-	ehufscRR9YwmD+3NUuJzRiTwW2RLUwW9Ll0wzlumlmmL3IeZPTdkGWXmHiYbmbkcFMhhfhFu
-	t7xichA3xu87D4kxzc/EzqffpCKz/Gzs8QxRIofy0bik8fTouYyjeC+Drw/VjxUh/HL84/U7
-	VmQ5D9g31MaKRwregXB20xc0XgTjtgvvaZGp0VV/YQcliil+Kr76hxuPI/HR6oKxzUB+He7p
-	amREnsxPx7drWiXiJuYbOHzfewyNPyAM3yn10KdQsHWCwjpBYf2vsE5Q2BFdjhQ6Q3qaRqdf
-	NFebadBlzN2+O82JRr/OlSx/kgv1tSe6Ec8hVZDcpV2tVTCadFNmmhthjlKFypUho5E8VZN5
-	QDDuTjHu0wsmN5rK0aop8oWD+1MV/A7NXmGXIOwRjP9aCRcYno3i0h7G+5O2LVCGxsTLTqy5
-	/DslmcrxHpkzc5kqwq8OD03xL1+8M96CrLZa1ZcZVc7cJWELIzZX1bP9tyqpJxkVsauiTCcH
-	Dm44p3Ekzki+FBD0edPdR8FZYZKS+1sTlDtmTVobXRiw9tjNcwGR6qAKdVP1x5ru9Z8MK/O+
-	9pL6jfkvVLRJq1kQQxlNmr+mcmk/NgMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG++9cdlwtjtcOGkmrsItZgcGbRkYQ/ZUIg27Uh1zt0EbbjM1E
-	u5DmMhy5NLuumQvNvESLaW6GaGxiSkY2W9jFJlomWJq35VIyV0R++/E8D7/3y8sQQblUOKNQ
-	p/EatVQpoUWkaFd8ztqZpUny9QNOBkyWBzRUT2bA/R47BaaqOgTjvvdCGGt+RkPpXS8Bppc6
-	EiYsPwn43NIrBE95PwkNF20E9F5upSFfN0XAeXuFAJzFbRR01BkouPrzHgG2rB4hdD4x0fDx
-	wQwF/Y58EtqMlSR4DFuhxRwG3udfETRbbALwXiqmochlpqFP50HgcvaScDvbgMDS2EXB1KSJ
-	3irBtZVvBbje2C3EZutJXFOxGuu7XAS2VuXR2Dp6RYg/vGmgcevNKRLX28cEOD9niMYjn9+R
-	eLjRTePSge8CbKl1k7jd3CxMDjwo2izjlYp0XrNuS4pIfteRTZ14JMqo1PVTWUjH6BHDcGws
-	96n7nB4FMCS7grO+/ib0M81GcV1dPsLPIewqrqyxkNIjEUOwQxT30PfkTxHMJnA/PvTRfhaz
-	wI352mj/KIi1IC6raRD9LQK5tlufSD8Ts9bpOy7Cf5hgI7j7v5i/cSSX8/j2H2cAu5vr9zRS
-	fg5ll3FP654JCtBC4xyTcY7J+N9knGMyI7IKhSjU6SqpQrkxRntcnqlWZMQcTVVZ0ex3lJ+d
-	LrSj8c4dDsQySLJAbJcnyoMoabo2U+VAHENIQsRhwbORWCbNPMVrUg9rTip5rQNFMKRkkThp
-	P58SxB6TpvHHef4Er/nXCpiA8CwkXzP6a0/fznkbkqOqS3rcNwabhl5NIm0CljQcYIOzhfHq
-	a4ZmR9Glkt17j6zT13hVm2TOF4dSWhSx7La49unumS86kypv/sSFRdcLwojnr4fbQ0siNbeS
-	c23u4AVn9kW/kGviFqau3FK/eKdsInp57PYlZa3GuIq0stP5Ix0fqxMlpFYu3bCa0GilvwFy
-	0WHmGQMAAA==
-X-CFilter-Loop: Reflected
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-On Wed, Jun 11, 2025 at 01:48:36PM -0700, Mina Almasry wrote:
-> On Wed, Jun 11, 2025 at 7:24 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
-> >
-> > On 6/9/25 05:32, Byungchul Park wrote:
-> > > Hi all,
-> > >
-> > > In this version, I'm posting non-controversial patches first.  I will
-> > > post the rest more carefully later.  In this version, no update has been
-> > > applied except excluding some patches from the previous version.  See
-> > > the changes below.
-> >
-> > fwiw, I tried it with net_iov (zcrx), it didn't blow up during a
-> > short test.
-> >
-> 
-> FWIW, I ran my devmem TCP tests, and pp benchmark regression tests.
-> Both look good to me. For the pp benchmark:
-
-Thanks for the test.
-
-	Byungchul
-> 
-> Before:
-> 
-> Fast path results:
-> no-softirq-page_pool01 Per elem: 11 cycles(tsc) 4.337 ns
-> 
-> ptr_ring results:
-> no-softirq-page_pool02 Per elem: 529 cycles(tsc) 196.073 ns
-> 
-> slow path results:
-> no-softirq-page_pool03 Per elem: 554 cycles(tsc) 205.195 ns
-> 
-> After:
-> 
-> Fast path results:
-> no-softirq-page_pool01 Per elem: 11 cycles(tsc) 4.401 ns
-> 
-> ptr_ring results:
-> no-softirq-page_pool02 Per elem: 530 cycles(tsc) 196.443 ns
-> 
-> slow path results:
-> no-softirq-page_pool03 Per elem: 551 cycles(tsc) 204.287 ns
-> 
-> 
-> 
-> -- 
-> Thanks,
-> Mina
+T24gV2VkLCAxMSBKdW4gMjAyNSAwOTozMDo0NiAtMDQwMA0KVGFtaXIgRHViZXJzdGVpbiA8dGFt
+aXJkQGdtYWlsLmNvbT4gd3JvdGU6DQoNCj4gT24gV2VkLCBKdW4gMTEsIDIwMjUgYXQgNzo0MuKA
+r0FNIEFsaWNlIFJ5aGwgPGFsaWNlcnlobEBnb29nbGUuY29tPiB3cm90ZToNCj4+DQo+PiBPbiBX
+ZWQsIEp1biAxMSwgMjAyNSBhdCAxMjoyOOKAr1BNIFRhbWlyIER1YmVyc3RlaW4gPHRhbWlyZEBn
+bWFpbC5jb20+IHdyb3RlOg0KPj4gPg0KPj4gPiBVc2UgdGhlIGZmaSB0eXBlIHJhdGhlciB0aGFu
+IHRoZSByZXNvbHZlZCB1bmRlcmx5aW5nIHR5cGUuDQo+PiA+DQo+PiA+IEZpeGVzOiBmMjBmZDU0
+NDlhZGEgKCJydXN0OiBjb3JlIGFic3RyYWN0aW9ucyBmb3IgbmV0d29yayBQSFkgZHJpdmVycyIp
+DQo+Pg0KPj4gRG9lcyB0aGlzIG5lZWQgdG8gYmUgYmFja3BvcnRlZD8gSWYgbm90LCBJIHdvdWxk
+bid0IGluY2x1ZGUgYSBGaXhlcyB0YWcuDQo+IA0KPiBJJ20gZmluZSB3aXRoIG9taXR0aW5nIGl0
+LiBJIHdhbnRlZCB0byBsZWF2ZSBhIGJyZWFkY3J1bWIgdG8gdGhlDQo+IGNvbW1pdCB0aGF0IGlu
+dHJvZHVjZWQgdGhlIGN1cnJlbnQgY29kZS4NCg0KSSBhbHNvIGRvbid0IHRoaW5rIHRoaXMgdGFn
+IGlzIG5lY2Vzc2FyeSBiZWNhdXNlIHRoaXMgaXMgbm90IGEgYnVnDQpmaXguIEFuZCBzaW5jZSB0
+aGlzIHRhZyBwb2ludHMgdG8gdGhlIGZpbGUncyBpbml0aWFsIGNvbW1pdCwgSSBkb24ndA0KdGhp
+bmsgaXQncyBwYXJ0aWN1bGFybHkgdXNlZnVsLg0K
