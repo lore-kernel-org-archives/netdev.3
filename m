@@ -1,115 +1,106 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19E129B8E5
-	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 15:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC6129994C
+	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 15:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749742754; cv=none; b=tT3rxFcoTnZOEIjBdAcWYEIHc6XJrGoeqxrxNlrgo3dATG/xgROTxHeXf3pz3PMRn4KjoVvOR+o+XuunJmsn1DcpdGO5qWmzALPjqH1Qz3hCGVp+8weSIYjkyoKHSlt2KSj+07rCATk26UOFE4H08YErpC0ABlIUFI0EkM5kYms=
+	t=1749742869; cv=none; b=DpJDXIv+KZJKZxqVxFxMVUjVvM9IbGL/pia2tY3rvTNm8O8aH/04Ci1lORxQcSrSn0MyPt0BVXOUDjAlDJsQX8OvLb9ZKo/sfmPtimS9GQPFh9nhK+3m8FRne2dFpbfxB2zsdVXQx/0SIAX4xBIaQKPmD/jKNAC/Z7EdXhjaeNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749742754; c=relaxed/simple;
-	bh=bh6e3aZhERXOjQ6Gx4/GsntMfPc/vEUDeUlfzxV4/OU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MrZWfwW7e2t/prkrZP0iuJQa+yx2Szo0wZcIWT9mQ4nqIBa3xCtWykt5uKOfqtXR4bj7TsdAOrbavZ3Zhn0j4BeaIr7htynld4V4wGkysmLZ4eE0mgWki+n1s7Zf5HxjAKeiAHkElbezTv057m4tIPCB+50n+Qt6j3X1/OhgpHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=icgN1GsS; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1749742869; c=relaxed/simple;
+	bh=ZPcDShdjx+nCTSQod47ShrHk7gOnPleGBIFHcgcuXnM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=QB5TYv5YwKsqMSV+dS409QHWMTcprMJtt84UR0T+AXFO64/Xs7p+YkTz15DtD3CX5SCIiardHne9zF95nC4mP/TOaaAcs4z57PB45nZG1fxya9/KzHmHyPWFCfE/3mXVFVZYbY8ZjDwFf4+ei4OnLsqEApeOZVqXd1iuCW/ogvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=0pgm9N7k; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="icgN1GsS"
-Message-ID: <b7137a4a-cb87-4aa5-958f-a83d3239e967@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1749742740;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mx5FBx1fw+pZ6pjrn+Y9O7dYZ++IH+lPj2ErOykVNzA=;
-	b=icgN1GsSf4dXa2aarzDwWLo3Iju3i34wDoXZoI3hiV79iRnI6s4EulvHLkro7SyECmvQ5b
-	1LjfW+VJ6oyFp1e/LYzdQV1XsAuXoDs/RkibJylnYHAndNQJaLHFycVSGp5yNd87wm/fsN
-	PWE3e17NjdvWnJNa1YgTcb8Zzgi+DfI=
-Date: Thu, 12 Jun 2025 11:38:56 -0400
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="0pgm9N7k"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ovLz1bXOwuyb8LOC7DzxQcjGmyjM0gF1HJUD1277E/E=; b=0pgm9N7kHgk7OBk8ajf/hV/MYm
+	81fRtd8g0erMhPmAyoRZ47m9U30VPZRp8hqFxlGArohluP0+CO1LPc9Z4q96EYTrl0mLDe3MDfd0s
+	DFXFCzS3G7AQforiMBlF+hf0Xlz/tSvVz5FhvcmMGUQHhN98GoCNp80biRzuMOSYUwWaR1Lpi4vBt
+	hPUdhaP880Rz+Ny0Z2MT7+1cOtU0Jabkf6xS9up3vYdtADVHdHxa2eXdGrJ/FA+wWAjX7MEjfyJAq
+	1M9c4np7ZJwpZZcArG7uUWDRxAtX0jgLanBpa5s80EW2Sdq88Hz6kV6qwTMNQp0Jx0okFUTCBpAAw
+	O9pr/ypg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58594)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uPk31-000837-1j;
+	Thu, 12 Jun 2025 16:40:59 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uPk2w-0000uM-0f;
+	Thu, 12 Jun 2025 16:40:54 +0100
+Date: Thu, 12 Jun 2025 16:40:54 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 0/9] net: stmmac: rk: much needed cleanups
+Message-ID: <aEr1BhIoC6-UM2XV@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [net-next PATCH v6 03/10] net: pcs: Add subsystem
-To: Randy Dunlap <rdunlap@infradead.org>, netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>
-Cc: Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, linux-kernel@vger.kernel.org,
- Kory Maincent <kory.maincent@bootlin.com>,
- Daniel Golle <daniel@makrotopia.org>, Simon Horman <horms@kernel.org>,
- Christian Marangi <ansuelsmth@gmail.com>, Lei Wei <quic_leiwei@quicinc.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
-References: <20250610233134.3588011-1-sean.anderson@linux.dev>
- <20250610233134.3588011-4-sean.anderson@linux.dev>
- <f5b16bd6-01b6-45c0-9668-41ccf90445a3@infradead.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <f5b16bd6-01b6-45c0-9668-41ccf90445a3@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 6/10/25 20:24, Randy Dunlap wrote:
-> Hi,
-> 
-> 
->> diff --git a/Documentation/networking/pcs.rst b/Documentation/networking/pcs.rst
->> new file mode 100644
->> index 000000000000..4b41ba884160
->> --- /dev/null
->> +++ b/Documentation/networking/pcs.rst
->> @@ -0,0 +1,102 @@
->> +.. SPDX-License-Identifier: GPL-2.0
->> +
->> +=============
->> +PCS Subsystem
->> +=============
->> +
->> +The PCS (Physical Coding Sublayer) subsystem handles the registration and lookup
->> +of PCS devices. These devices contain the upper sublayers of the Ethernet
->> +physical layer, generally handling framing, scrambling, and encoding tasks. PCS
->> +devices may also include PMA (Physical Medium Attachment) components. PCS
->> +devices transfer data between the Link-layer MAC device, and the rest of the
->> +physical layer, typically via a serdes. The output of the serdes may be
->> +connected more-or-less directly to the medium when using fiber-optic or
->> +backplane connections (1000BASE-SX, 1000BASE-KX, etc). It may also communicate
->> +with a separate PHY (such as over SGMII) which handles the connection to the
->> +medium (such as 1000BASE-T).
->> +
->> +Looking up PCS Devices
->> +----------------------
->> +
->> +There are generally two ways to look up a PCS device. If the PCS device is
->> +internal to a larger device (such as a MAC or switch), and it does not share an
->> +implementation with an existing PCS, then it does not need to be registered with
->> +the PCS subsystem. Instead, you can populate a :c:type:`phylink_pcs`
->> +in your probe function. Otherwise, you must look up the PCS.
->> +
->> +If your device has a :c:type:`fwnode_handle`, you can add a PCS using the
->> +``pcs-handle`` property::
->> +
->> +    ethernet-controller {
->> +        // ...
->> +        pcs-handle = <&pcs>;
->> +        pcs-handle-names = "internal";
->> +    };
->> +
->> +Then, during your probe function, you can get the PCS using :c:func:`pcs_get`::
-> 
-> It's preferable to use                               PCS using pcs_get()::
-> instead of the :c:func: notation to make the .rst file more human-readable.
-> They produce the same generated output.
+Hi,
 
-If you find this syntax useful, then you should update
-Documentation/doc-guide/{kernel-doc,sphinx}.rst. I did not use it
-because it I did not know about it because it is not documented.
+This series starts attacking the reams of fairly identical duplicated
+code in dwmac-rk. Every new SoC that comes along seems to need more
+code added to this file because e.g. the way the clock is controlled
+is different in every SoC.
 
---Sean
+The first thing to realise is that the driver only supports RMII and
+RGMII interface modes. So, the first patch adds a .get_interfaces()
+implementation which reports this for phylink's usage, thus ensuring
+that we error out during initialisation should something that isn't
+supported be specified. Note that there is one case where there are
+a pair of interfaces, one supports only RMII the other supports RMII
+and RGMII, but we report both anyway - something that the existing
+driver allows. A future patch may attempt to fix this.
+
+Rather than writing code, let's realise that there are two major
+implementations here:
+
+1. a struct clk that needs to be set.
+2. writing a register with settings for RGMII and RMII speeds.
+
+Provide implementations for these, Also realise that as a result
+of doing this, we can kill off the .set_rgmii_speed() and
+.set_rmii_speed() methods by combining them together - indeed,
+this is what later SoCs already do by pointing both these methods
+at the same function.
+
+Overall, this patch series shrinks the file LOC by almost 8.7%
+by removing 175 lines from over 2000 lines.
+
+Apart from the error reporting changing and restricting interface
+modes to those that the driver supports, no functional change is
+anticipated with this patch. However, I have no hardware to test
+this.
+
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 689 +++++++++----------------
+ 1 file changed, 257 insertions(+), 432 deletions(-)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
