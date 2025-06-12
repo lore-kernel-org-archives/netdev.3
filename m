@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FE922FAC3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9A923027C;
 	Thu, 12 Jun 2025 10:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749724344; cv=none; b=T95w6O2JBYqMn/YajTtugrle7AAxK6Qst/zp5a4sZ//rcNU9/uH3lpQVpIXsNe5fvaHWQyyEhgP+ow2iyupwv4Kl05NSACID8nC+blAPIUThsCmEkKkzjDYR/e+U5Lp9eVPNvCJRCQpmrcwiDkAkiV9Zfwq/r5TypQzxNtaGjAk=
+	t=1749724344; cv=none; b=OoWvPE8NXu3xpVrxUHhpSMNbNcpbpTufoHUVpr15PVCuO5TG4K+PgWFb8k9YPkyYoYbaNkoJXXtmMBHPa/T0lU3VwUIGDu0+ddlXC1WgZNCfAqsuGlfdu8fz8wFWskTbCKzbSJ1tFw2v98zwldm+mm2yUaLDCl/E3uTVA1mrEyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749724344; c=relaxed/simple;
-	bh=nVMNn0VSngYDSLAUJezTR2b19OzJ86I1XkvSWoGjSbY=;
+	bh=8JLj251EiGtS/E11n5n+267zLGC8qyxQhPvEcm7GqEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pirxhlxAC/a4lnpY40zq/PiWigU8HMe09RZP6vR0sqs7VpFQ4W7abdBpgzm0o2mqK8XGqZj8cj9jJ3v8QxidXfdraDmSOYfhzGvpPm2sjxeC7RYMTRekJX2ut61eObo+Bq7lCuCveM2d5xgeTjaPUsDAfdaf8G0a6ur+m1DzQ94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Frmjlb8d; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Z+YAhpl5fYB6RgeAJtYAq14mrmo0CYRYnIhTrS2k38lY+kBhZKHZag/H+O/uKqjMbU/TM5bRCmFeU+LxU6sECLrVmkmtUI6jFvYeKKT5J9DJFitZSjiFcQ5Hf5NVJHIuZ/E+OpIXTI54RGsvI7otth4tE8J9SBgPO2lBQWf7W4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iY6kr6e7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Frmjlb8d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EB8C4CEF1;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iY6kr6e7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8F5C4CEF2;
 	Thu, 12 Jun 2025 10:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1749724344;
-	bh=nVMNn0VSngYDSLAUJezTR2b19OzJ86I1XkvSWoGjSbY=;
+	bh=8JLj251EiGtS/E11n5n+267zLGC8qyxQhPvEcm7GqEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Frmjlb8dtgO48XvFAdPuTxYhDYKcBFzGt7ZRjxuCJhF4OXj9hpXofqzOG5hb7cMBW
-	 q/J5fRL1xWnQwqkZGL5DhdoNQ/QqbowLv6NdDFqlQ2du9D6KyrmeoAt4dQsWBNL9m+
-	 7YtC2txWNucD27ir6klSf84OifHPrzB3//NGvC5jCxWgrlLohvLWBy9XILJMi/p2vI
-	 7toskAJFDyeA+amwI93kITiDd1A2/WK06bolb1Chq9WFI9noJ3noIgEAapuamHusIq
-	 wKww2EHwIAPIBR0hc7kt06Z+wqemMRhdVVg4X1W4Z7wiM4vLBSB1wPTVN7Au896bh9
-	 WBCk14dlxr1xA==
+	b=iY6kr6e7t9X0fY6cA0BO2hl97xvLAU1X+FqXUuf/Zj/gPasJ4px/BybClaBCc+UtN
+	 8LKhk2B+99BHQf9MY5Ndz/yUoGCl1RsCx4TNV0T+PBhuUmbiZJDIDkifZMfn6EOwt/
+	 RfSJPSUv2bpNOTE99rryohJ9b+4uGKptX9qdjiHN41VVCMVa2ejIOseVOoSOato/ab
+	 zP1bE+donimiTaqISL/WbUWnyeOuhdOMZAQ4h4Id2ZlkCbsfxfuZPlLs5ZyBaaJ8WK
+	 uJakU2J0oAeeXNGUBexanpFzk7yKZqV0pcLA8maefhCtTj+zXXHXv3P5Hxe4W/nv6x
+	 /ibqos4qx8Alw==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uPfEM-00000004yvE-0SLU;
-	Thu, 12 Jun 2025 12:32:22 +0200
+	id 1uPfEL-00000004yv6-49fB;
+	Thu, 12 Jun 2025 12:32:21 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>
@@ -55,9 +55,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	netdev@vger.kernel.org,
 	peterz@infradead.org,
 	stern@rowland.harvard.edu
-Subject: [PATCH v2 03/12] docs: netlink: don't ignore generated rst files
-Date: Thu, 12 Jun 2025 12:31:55 +0200
-Message-ID: <1cf12ab4c027cf27decf70a40aafdd0e2f669299.1749723671.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v2 01/12] tools: ynl_gen_rst.py: create a top-level reference
+Date: Thu, 12 Jun 2025 12:31:53 +0200
+Message-ID: <ed66166bec8051df75465f9821671b21011fbda4.1749723671.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1749723671.git.mchehab+huawei@kernel.org>
 References: <cover.1749723671.git.mchehab+huawei@kernel.org>
@@ -70,54 +70,41 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Currently, the build system generates ReST files inside the
-source directory. This is not a good idea, specially when
-we have renames, as make clean won't get rid of them.
+Currently, rt documents are referred with:
 
-As the first step to address the issue, stop ignoring those
-files. This way, we can see exactly what has been produced
-at build time inside $(srctree):
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`rt-link<../../networking/netlink_spec/rt-link>`
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
 
-        Documentation/networking/netlink_spec/conntrack.rst
-        Documentation/networking/netlink_spec/devlink.rst
-        Documentation/networking/netlink_spec/dpll.rst
-        Documentation/networking/netlink_spec/ethtool.rst
-        Documentation/networking/netlink_spec/fou.rst
-        Documentation/networking/netlink_spec/handshake.rst
-        Documentation/networking/netlink_spec/index.rst
-        Documentation/networking/netlink_spec/lockd.rst
-        Documentation/networking/netlink_spec/mptcp_pm.rst
-        Documentation/networking/netlink_spec/net_shaper.rst
-        Documentation/networking/netlink_spec/netdev.rst
-        Documentation/networking/netlink_spec/nfsd.rst
-        Documentation/networking/netlink_spec/nftables.rst
-        Documentation/networking/netlink_spec/nl80211.rst
-        Documentation/networking/netlink_spec/nlctrl.rst
-        Documentation/networking/netlink_spec/ovs_datapath.rst
-        Documentation/networking/netlink_spec/ovs_flow.rst
-        Documentation/networking/netlink_spec/ovs_vport.rst
-        Documentation/networking/netlink_spec/rt_addr.rst
-        Documentation/networking/netlink_spec/rt_link.rst
-        Documentation/networking/netlink_spec/rt_neigh.rst
-        Documentation/networking/netlink_spec/rt_route.rst
-        Documentation/networking/netlink_spec/rt_rule.rst
-        Documentation/networking/netlink_spec/tc.rst
-        Documentation/networking/netlink_spec/tcp_metrics.rst
-        Documentation/networking/netlink_spec/team.rst
+that's hard to maintain, and may break if we change the way
+rst files are generated from yaml. Better to use instead a
+reference for the netlink family.
+
+So, add a netlink-<foo> reference to all generated docs.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- Documentation/networking/netlink_spec/.gitignore | 1 -
- 1 file changed, 1 deletion(-)
- delete mode 100644 Documentation/networking/netlink_spec/.gitignore
+ tools/net/ynl/pyynl/ynl_gen_rst.py | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/networking/netlink_spec/.gitignore b/Documentation/networking/netlink_spec/.gitignore
-deleted file mode 100644
-index 30d85567b592..000000000000
---- a/Documentation/networking/netlink_spec/.gitignore
-+++ /dev/null
-@@ -1 +0,0 @@
--*.rst
+diff --git a/tools/net/ynl/pyynl/ynl_gen_rst.py b/tools/net/ynl/pyynl/ynl_gen_rst.py
+index 0cb6348e28d3..7bfb8ceeeefc 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_rst.py
++++ b/tools/net/ynl/pyynl/ynl_gen_rst.py
+@@ -314,10 +314,11 @@ def parse_yaml(obj: Dict[str, Any]) -> str:
+ 
+     # Main header
+ 
+-    lines.append(rst_header())
+-
+     family = obj['name']
+ 
++    lines.append(rst_header())
++    lines.append(rst_label("netlink-" + family))
++
+     title = f"Family ``{family}`` netlink specification"
+     lines.append(rst_title(title))
+     lines.append(rst_paragraph(".. contents:: :depth: 3\n"))
 -- 
 2.49.0
 
