@@ -1,142 +1,267 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7B92E6D0D;
-	Thu, 12 Jun 2025 20:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8192D8DCD
+	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 20:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749758612; cv=none; b=oykDLHeFqGybBA7eosJ06LVHYtp0L98BVxAp6ehVyUyWLkePCKLa1JhbnPt7N5sWgMe8IjyS36mmGqw8b9cu8e0agy4szLegwMJAo3l8EdFynHoedKfD2SvF3C58I8PlzCVrkV2xBi8uJKZAXhkAS9K1pUG89RDkdJg0+pJU2K0=
+	t=1749758623; cv=none; b=PsZ1gke/qeTQW8CZ0t9IGvz8I5lDcIu4t8EwXV46TV7ZtaexZFZmySl1oaWaeAbz5ugnrTrhAyG0w8Z+N3vBghXNc/VQ1Ec4q11GCXh5obnPV80HhgY3UWWPQBtwLxyv1Tlg0ACLSH8w2iEFRylIZuY8gquCAuHooZCupMRocsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749758612; c=relaxed/simple;
-	bh=1fykyusYVro73+SkCEdouTI5VeesZrBsX99TGTggxRY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GAAyAvv9lIXR3cz9HD2ThZaq1wzxKon+gChUVXXxi1VS9gRNQTL5qia+sq33ISLlSHYpXpzqsL5ysojx4mu5xqIY/L6wkigRRZz6sLFSeySMdcZGyZJ+Sikqb7I3P7YpG/PICLspat9ZGSThXfsH6IMbWm/xtRdHwgRXi0HSLzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W4sHbK8R; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749758623; c=relaxed/simple;
+	bh=9zblmUgJtWIkKos6+zpNQ9d4+qjoBrYkzw8znx9DyTA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o8m32eDYLpoHw5KVT6ddGgc51O9rxB8ipHiAgzbJo1i/Mlcvg6Jj9i7ZMcDBeyE/qESmkv8RVkiVdoRIJzuRdV1egTmI+rhrmujosl41+klzBK1ZyX//H0A+M9liPBah0eIrnwLDECoVYi+nHauk7+kNNAEuxuNzg5O8NkSRtO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NWZr8tBQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W4sHbK8R"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7d393a42698so13740885a.2;
-        Thu, 12 Jun 2025 13:03:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749758610; x=1750363410; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZnKjnGPQVsYruwW26IKQXjP4KtQDe+H/2EepWEDvdH4=;
-        b=W4sHbK8Rs5KCcGme9De5sqRir3UOA9vOZUcGmoOpf2cdZ8eVtjOlxadBwoa6UdY4qA
-         vhv59KXx9PALywRfJr53obg2XymxjiHUWtZtVr5731rN5HyxE2R1NpUM85oNbzaafcrN
-         VrvTpUCkIrV7HSSsCtVA8D2pyJ/IMq5Gwn6Cd1Rtex/VX4UtFGsn0WQdwxybAF5AesVk
-         LT7hYM/v4q+OwU1ZZqFzpQbQs7Z6cvfqwmfpanM950fUjwV3G69dlKjS+VUFniiIuAnj
-         cNFRaZasw117y0uEdrX59SoR6U3rvV92aAMU7lxT/gLn2YABxYYdzqpu/62udPRs10PC
-         sL2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749758610; x=1750363410;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZnKjnGPQVsYruwW26IKQXjP4KtQDe+H/2EepWEDvdH4=;
-        b=FYSb8ZBs+T1hBE7+4cYhBLcBcbUsfBomS5S2hjArW3N8znEvxz2bYAgCrW6iV6cfgg
-         NNZJCP+1wYUnCsuvxuLDQ2kdL4AbWfPrekuhFenU8xGk8R82rh4cPA8jV9qk7gpsDn7s
-         uaywj8UzIhW6/Q9xg0s4tqsa5fp0hffB9fTdf+TwfH35F58BtgwArrHFMxky1YZffq5M
-         WYJC20eWBLQW/CsGtCtVBh1dE0vszMTY8FtcXzcvMX9xoL16PPT+6gjTkvv0KPwpaXop
-         Dqt9aDaCYwZQJ0ggzrcZuYR3RfUJAI+Y+zgi8MM5bFcOHl4E8pIDfgWoRb9yy/kc8vmy
-         i9kA==
-X-Forwarded-Encrypted: i=1; AJvYcCUzCku/qJEjoT4lmmSJWlLQMDfvzF1PDby7z6diCIzUGlMT28rEjGicpfzSbLCTYSCEHxsFrhoAnVw=@vger.kernel.org, AJvYcCXl1hzb/7TtZYcgq1mRBp2EBAVnlSixPgi9lWp8MBDNQgigANkhltwwRwPdypncKccWOM55JgnLBxC7tbgB5yH1@vger.kernel.org, AJvYcCXpsFENXwt6XDuMBp8YzIRglxg0uGbDIZCrnOc9LSgbmYoA8xLExibsrgmpq3mJkUbF45KAZRpX02YRfoe7@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzemp48UW2eRTE77l+NhFmWCXbXdMkhb5b+0I6XRfqrHonCSFLK
-	h4VT5dRChQmGcbAOIhgXCj997Wl2MisvoE7U8Dnx1Zop4kL9/HWuOI1D/kEyEkYECYI=
-X-Gm-Gg: ASbGncv7uSNB/GwdM4f+K0mFi4sLBJxoYHT6kaFLmDKmp93cQlzBQpOmwizBJa23yGD
-	4X0HQj/NyvhAUMs7WLGZssRZmEdodbtGzznbH8nQvBo3TEZUMnJ6dulO29U+zxzjxL1/DJsCfEe
-	lQwDpoDLnZfiyuBOl2xZYPaSzoAbTWET4A/B7Ot7lnZHosb1AU3GD3hlexvJQ9yyqQUqS3GboCO
-	6auBKHxFiiI9dD05tHpxoQHdkH9cztNgsosV+fUp64L+c4fWaVlVe8T4dMrA5zx8eVp8yC0POju
-	1fPKlWizcCqmKwJgpvbD9Etez1QpWPaRN7DB69i/9zhhV3QvV94L1/U=
-X-Google-Smtp-Source: AGHT+IEYJNouzQaBO57RIFJdSjytY+rAwJnE1qi8JXnfhXTA6dO5SUQ1nlRCfzkPu1uKMj9aLcCzVw==
-X-Received: by 2002:a05:620a:bc3:b0:7c5:79e8:412a with SMTP id af79cd13be357-7d3bc37d979mr35927485a.2.1749758609646;
-        Thu, 12 Jun 2025 13:03:29 -0700 (PDT)
-Received: from localhost ([2a03:2880:20ff:1::])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3b8ed35b1sm77151285a.88.2025.06.12.13.03.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jun 2025 13:03:29 -0700 (PDT)
-From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Date: Thu, 12 Jun 2025 13:02:18 -0700
-Subject: [PATCH net-next v2 5/5] docs: netconsole: document msgid feature
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NWZr8tBQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749758619;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BkHZHBWuBTB8Pv5EbGd/otlclSLolWJa7Gh+KIrTNFo=;
+	b=NWZr8tBQSM1sMzoVe6kBJWuTPcjoeDS5JMQMOLnC/IzNQBVUE+L4bUhSjiGorVDpqpBNgj
+	AzqPdeZYsS2X8oz7gO9xaNvyzK3ARMZWH3Vbc6BMH2SYuGBJFB4EUW6kf4r0dGizUtVez+
+	E7AYeuvgRQ5Id0dZvFOuWIH2D7cAlsc=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-557-2s7XAF63NoGMVM-pJdq-eA-1; Thu,
+ 12 Jun 2025 16:03:31 -0400
+X-MC-Unique: 2s7XAF63NoGMVM-pJdq-eA-1
+X-Mimecast-MFC-AGG-ID: 2s7XAF63NoGMVM-pJdq-eA_1749758608
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9139419560B2;
+	Thu, 12 Jun 2025 20:03:28 +0000 (UTC)
+Received: from p16v.redhat.com (unknown [10.45.224.169])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 21B5C180045B;
+	Thu, 12 Jun 2025 20:03:21 +0000 (UTC)
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Prathosh Satish <Prathosh.Satish@microchip.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Petr Oros <poros@redhat.com>
+Subject: [PATCH net-next v9 13/14] dpll: zl3073x: Add support to get/set frequency on input pins
+Date: Thu, 12 Jun 2025 22:01:44 +0200
+Message-ID: <20250612200145.774195-14-ivecera@redhat.com>
+In-Reply-To: <20250612200145.774195-1-ivecera@redhat.com>
+References: <20250612200145.774195-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250612-netconsole-msgid-v2-5-d4c1abc84bac@gmail.com>
-References: <20250612-netconsole-msgid-v2-0-d4c1abc84bac@gmail.com>
-In-Reply-To: <20250612-netconsole-msgid-v2-0-d4c1abc84bac@gmail.com>
-To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
- Gustavo Luiz Duarte <gustavold@gmail.com>
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Add documentation explaining the msgid feature in netconsole.
+Add support to get/set frequency on input pins. The frequency for input
+pins (references) is computed in the device according this formula:
 
-This feature appends unique id to the userdata dictionary. The message
-ID is populated from a per-target 32 bit counter which is incremented
-for each message sent to the target. This allows a target to detect if
-messages are dropped before reaching the target.
+ freq = base_freq * multiplier * (nominator / denominator)
 
-Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+where the base_freq comes from the list of supported base frequencies
+and other parameters are arbitrary numbers. All these parameters are
+16-bit unsigned integers.
+
+Co-developed-by: Prathosh Satish <Prathosh.Satish@microchip.com>
+Signed-off-by: Prathosh Satish <Prathosh.Satish@microchip.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 ---
- Documentation/networking/netconsole.rst | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ drivers/dpll/zl3073x/dpll.c | 124 ++++++++++++++++++++++++++++++++++++
+ drivers/dpll/zl3073x/regs.h |   5 ++
+ 2 files changed, 129 insertions(+)
 
-diff --git a/Documentation/networking/netconsole.rst b/Documentation/networking/netconsole.rst
-index a0076b542e9c..59cb9982afe6 100644
---- a/Documentation/networking/netconsole.rst
-+++ b/Documentation/networking/netconsole.rst
-@@ -340,6 +340,38 @@ In this example, the message was sent by CPU 42.
-       cpu=42    # kernel-populated value
+diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
+index 1f44910958781..8bd0e3e66e7f1 100644
+--- a/drivers/dpll/zl3073x/dpll.c
++++ b/drivers/dpll/zl3073x/dpll.c
+@@ -8,6 +8,7 @@
+ #include <linux/dpll.h>
+ #include <linux/err.h>
+ #include <linux/kthread.h>
++#include <linux/math64.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/netlink.h>
+@@ -84,6 +85,127 @@ zl3073x_dpll_pin_direction_get(const struct dpll_pin *dpll_pin, void *pin_priv,
+ 	return 0;
+ }
  
++/**
++ * zl3073x_dpll_input_ref_frequency_get - get input reference frequency
++ * @zldpll: pointer to zl3073x_dpll
++ * @ref_id: reference id
++ * @frequency: pointer to variable to store frequency
++ *
++ * Reads frequency of given input reference.
++ *
++ * Return: 0 on success, <0 on error
++ */
++static int
++zl3073x_dpll_input_ref_frequency_get(struct zl3073x_dpll *zldpll, u8 ref_id,
++				     u32 *frequency)
++{
++	struct zl3073x_dev *zldev = zldpll->dev;
++	u16 base, mult, num, denom;
++	int rc;
++
++	guard(mutex)(&zldev->multiop_lock);
++
++	/* Read reference configuration */
++	rc = zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_RD,
++			   ZL_REG_REF_MB_MASK, BIT(ref_id));
++	if (rc)
++		return rc;
++
++	/* Read registers to compute resulting frequency */
++	rc = zl3073x_read_u16(zldev, ZL_REG_REF_FREQ_BASE, &base);
++	if (rc)
++		return rc;
++	rc = zl3073x_read_u16(zldev, ZL_REG_REF_FREQ_MULT, &mult);
++	if (rc)
++		return rc;
++	rc = zl3073x_read_u16(zldev, ZL_REG_REF_RATIO_M, &num);
++	if (rc)
++		return rc;
++	rc = zl3073x_read_u16(zldev, ZL_REG_REF_RATIO_N, &denom);
++	if (rc)
++		return rc;
++
++	/* Sanity check that HW has not returned zero denominator */
++	if (!denom) {
++		dev_err(zldev->dev,
++			"Zero divisor for ref %u frequency got from device\n",
++			ref_id);
++		return -EINVAL;
++	}
++
++	/* Compute the frequency */
++	*frequency = base * mult * num / denom;
++
++	return rc;
++}
++
++static int
++zl3073x_dpll_input_pin_frequency_get(const struct dpll_pin *dpll_pin,
++				     void *pin_priv,
++				     const struct dpll_device *dpll,
++				     void *dpll_priv, u64 *frequency,
++				     struct netlink_ext_ack *extack)
++{
++	struct zl3073x_dpll *zldpll = dpll_priv;
++	struct zl3073x_dpll_pin *pin = pin_priv;
++	u32 ref_freq;
++	u8 ref;
++	int rc;
++
++	/* Read and return ref frequency */
++	ref = zl3073x_input_pin_ref_get(pin->id);
++	rc = zl3073x_dpll_input_ref_frequency_get(zldpll, ref, &ref_freq);
++	if (!rc)
++		*frequency = ref_freq;
++
++	return rc;
++}
++
++static int
++zl3073x_dpll_input_pin_frequency_set(const struct dpll_pin *dpll_pin,
++				     void *pin_priv,
++				     const struct dpll_device *dpll,
++				     void *dpll_priv, u64 frequency,
++				     struct netlink_ext_ack *extack)
++{
++	struct zl3073x_dpll *zldpll = dpll_priv;
++	struct zl3073x_dev *zldev = zldpll->dev;
++	struct zl3073x_dpll_pin *pin = pin_priv;
++	u16 base, mult;
++	u8 ref;
++	int rc;
++
++	/* Get base frequency and multiplier for the requested frequency */
++	rc = zl3073x_ref_freq_factorize(frequency, &base, &mult);
++	if (rc)
++		return rc;
++
++	guard(mutex)(&zldev->multiop_lock);
++
++	/* Load reference configuration */
++	ref = zl3073x_input_pin_ref_get(pin->id);
++	rc = zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_RD,
++			   ZL_REG_REF_MB_MASK, BIT(ref));
++
++	/* Update base frequency, multiplier, numerator & denominator */
++	rc = zl3073x_write_u16(zldev, ZL_REG_REF_FREQ_BASE, base);
++	if (rc)
++		return rc;
++	rc = zl3073x_write_u16(zldev, ZL_REG_REF_FREQ_MULT, mult);
++	if (rc)
++		return rc;
++	rc = zl3073x_write_u16(zldev, ZL_REG_REF_RATIO_M, 1);
++	if (rc)
++		return rc;
++	rc = zl3073x_write_u16(zldev, ZL_REG_REF_RATIO_N, 1);
++	if (rc)
++		return rc;
++
++	/* Commit reference configuration */
++	return zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_WR,
++			     ZL_REG_REF_MB_MASK, BIT(ref));
++}
++
+ /**
+  * zl3073x_dpll_selected_ref_get - get currently selected reference
+  * @zldpll: pointer to zl3073x_dpll
+@@ -592,6 +714,8 @@ zl3073x_dpll_mode_get(const struct dpll_device *dpll, void *dpll_priv,
  
-+Message ID auto population in userdata
-+--------------------------------------
-+
-+Within the netconsole configfs hierarchy, there is a file named `msgid_enabled`
-+located in the `userdata` directory. This file controls the message ID
-+auto-population feature, which assigns a numeric id to each message sent to a
-+given target and appends the ID to userdata dictionary in every message sent.
-+
-+The message ID is generated using a per-target 32 bit counter that is
-+incremented for every message sent to the target. Note that this counter will
-+eventually wrap around after reaching uint32_t max value, so the message ID is
-+not globally unique over time. However, it can still be used by the target to
-+detect if messages were dropped before reaching the target by identifying gaps
-+in the sequence of IDs.
-+
-+It is important to distinguish message IDs from the message <sequnum> field.
-+Some kernel messages may never reach netconsole (for example, due to printk
-+rate limiting). Thus, a gap in <sequnum> cannot be solely relied upon to
-+indicate that a message was dropped during transmission, as it may never have
-+been sent via netconsole. The message ID, on the other hand, is only assigned
-+to messages that are actually transmitted via netconsole.
-+
-+Example::
-+
-+  echo "This is message #1" > /dev/kmsg
-+  echo "This is message #2" > /dev/kmsg
-+  13,434,54928466,-;This is message #1
-+   msgid=1
-+  13,435,54934019,-;This is message #2
-+   msgid=2
-+
-+
- Extended console:
- =================
+ static const struct dpll_pin_ops zl3073x_dpll_input_pin_ops = {
+ 	.direction_get = zl3073x_dpll_pin_direction_get,
++	.frequency_get = zl3073x_dpll_input_pin_frequency_get,
++	.frequency_set = zl3073x_dpll_input_pin_frequency_set,
+ 	.prio_get = zl3073x_dpll_input_pin_prio_get,
+ 	.prio_set = zl3073x_dpll_input_pin_prio_set,
+ 	.state_on_dpll_get = zl3073x_dpll_input_pin_state_on_dpll_get,
+diff --git a/drivers/dpll/zl3073x/regs.h b/drivers/dpll/zl3073x/regs.h
+index 34e905053a1ef..09dd314663dff 100644
+--- a/drivers/dpll/zl3073x/regs.h
++++ b/drivers/dpll/zl3073x/regs.h
+@@ -135,6 +135,11 @@
+ #define ZL_REF_MB_SEM_WR			BIT(0)
+ #define ZL_REF_MB_SEM_RD			BIT(1)
  
-
++#define ZL_REG_REF_FREQ_BASE			ZL_REG(10, 0x05, 2)
++#define ZL_REG_REF_FREQ_MULT			ZL_REG(10, 0x07, 2)
++#define ZL_REG_REF_RATIO_M			ZL_REG(10, 0x09, 2)
++#define ZL_REG_REF_RATIO_N			ZL_REG(10, 0x0b, 2)
++
+ #define ZL_REG_REF_CONFIG			ZL_REG(10, 0x0d, 1)
+ #define ZL_REF_CONFIG_ENABLE			BIT(0)
+ #define ZL_REF_CONFIG_DIFF_EN			BIT(2)
 -- 
-2.47.1
+2.49.0
 
