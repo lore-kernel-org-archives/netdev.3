@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DE129B8EA;
-	Thu, 12 Jun 2025 15:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FF12DCC04
+	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 15:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749741618; cv=none; b=qiQWphfs4aSYAvlC7TT8bYa2lmAYnDQarknf7nLQmo8IaMQgNNlCTbtfOt0b6lDa1Hcbr8uuS1H9oCEeFeWpG8nZ87yBgaYWJZ8g0SI4Db91/k3e41gzD5NBnB5si9e0qRMvrSyoH8PAiSLJhCD6miAxeTJXkKrNj7TnyGr/0HU=
+	t=1749741620; cv=none; b=bUm0LfZ1ppAfa8TtNmdMhcgGTXyLKt6+GJirSzCmG+qab8S8QgZO8ocmpvpEHwZwHkgnrdyaSu95vFy54h5nxDnhvSprSLSG8WhNXzhI1tggcmDLmEJTtocyjBQ7iNdYGS2fdRNvHOPp7xG3Y5nptbZl5SnYoInN1jozb7X7gC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749741618; c=relaxed/simple;
-	bh=evw1ArLli+25obPWgrG5Cb7YcWqwAf7ZdQ2ZBuQN5Qc=;
+	s=arc-20240116; t=1749741620; c=relaxed/simple;
+	bh=JcYMGJZDpp8EP5QbvvNYj5/u4QTJivgxJeuE9QB0Ls0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Woe51lt0Ll/YHBCV0M54H4VGWUaJ1MV3plV2vCPbre4S6g3xwjIO8EjXaFxISNNzSeG7SQQDpZlqPNn5ZLAPF3Q/Asg3oL69bXl1yHPu9AflPDhHGgTmMjgrSYPkAhS9xXDwE/3AbQocNta8IpG2Zc7ZTob1P7DrwgASKLVeA4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZYvpXpl0; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=NaHeIUV6mLQ42e0pxAn3+KvLp8TB17tc9+iRzZExGpShGFr5JaltcUcHmc1smK61AM/0TG4wazQEFacRbutMSIzb5JSUttP1DEJ7DaIEkkj/1foxgBjAChCxvbAzX8AS+T8oICeOIMZRJ4fNFPGCfj+lvFveSsqHd5UX11xL3po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dzDUH7J5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZYvpXpl0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188BBC4CEF4;
-	Thu, 12 Jun 2025 15:20:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dzDUH7J5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C040BC4CEEB;
+	Thu, 12 Jun 2025 15:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749741617;
-	bh=evw1ArLli+25obPWgrG5Cb7YcWqwAf7ZdQ2ZBuQN5Qc=;
+	s=k20201202; t=1749741619;
+	bh=JcYMGJZDpp8EP5QbvvNYj5/u4QTJivgxJeuE9QB0Ls0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ZYvpXpl0igDw7PPZP3gDFuCoCJachgfrNoihnfEwrX0p07CewVhdV6wHG7j5KQXuk
-	 TLlxo6F5i1iq/U05xsV4U6H2My7f0P80/4SQw3PS4Din5qLHqI0hCzGKhILTgV5FoT
-	 Af8g570/qgRILBWBkvHAw+xrvrHJF7PojvRUsmvyswZkeRXR2aGXSw1pXbgQgWUDBM
-	 ozKZuJKr9Bvv7+jKCX9mQIMzFBDGsY82O0+EKqiNqzsTcuBrJGRX15g0LZSPV7xNk3
-	 rURpvYE9uviKDmC5jvrRg3jSdMOayLw42dH5xOd5WPrmfYcCkDIrqD8TQrYPuBOtNJ
-	 AAQpCSOUztp2A==
+	b=dzDUH7J5z6Q5TJE7i0lCklP6ndwNre7XkIhpfG12nipXhHBJpL38KcQg1UVUPvc9D
+	 xLbwhLyNiHJPNarK2kXdEAq9SolZ79p7vnsEh8M1UfgTIwQa6iAQi6Z8R6SbmMM0Oo
+	 rlNjS4P38tsVboOlgjdrBINyyyPJYke9WwlG26Gt0QUqot/HJh0j9MLslLHdJWc7p8
+	 9EcAzUhGLGG4oc5eQWZl6Rurg14u0nUoJ+v+xX4shxnH1phrvNmDp169AeNUP4ZayM
+	 fUdBO2t0gIf4QIxZyVMwbhOPSdXajaoOG8tFH3jvgPHnepGFHSLEDZalL8eif09K2J
+	 ceiRMd4TwPTYA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33C4C39EFFCF;
-	Thu, 12 Jun 2025 15:20:48 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD9A39EFFCF;
+	Thu, 12 Jun 2025 15:20:50 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,36 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] bluetooth 2025-06-11
+Subject: Re: [PATCH v1 net] ipv6: Move fib6_config_validate() to
+ ip6_route_add().
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <174974164700.4177214.8234479173667456165.git-patchwork-notify@kernel.org>
-Date: Thu, 12 Jun 2025 15:20:47 +0000
-References: <20250611204944.1559356-1-luiz.dentz@gmail.com>
-In-Reply-To: <20250611204944.1559356-1-luiz.dentz@gmail.com>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org
+ <174974164949.4177214.14871483094576808515.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Jun 2025 15:20:49 +0000
+References: <20250611193551.2999991-1-kuni1840@gmail.com>
+In-Reply-To: <20250611193551.2999991-1-kuni1840@gmail.com>
+To: Kuniyuki Iwashima <kuni1840@gmail.com>
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, kuniyu@google.com,
+ netdev@vger.kernel.org, syzbot+4c2358694722d304c44e@syzkaller.appspotmail.com
 
 Hello:
 
-This pull request was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 11 Jun 2025 16:49:44 -0400 you wrote:
-> The following changes since commit 260388f79e94fb3026c419a208ece8358bb7b555:
+On Wed, 11 Jun 2025 12:35:02 -0700 you wrote:
+> From: Kuniyuki Iwashima <kuniyu@google.com>
 > 
->   net/mdiobus: Fix potential out-of-bounds clause 45 read/write access (2025-06-11 12:49:03 +0100)
+> syzkaller created an IPv6 route from a malformed packet, which has
+> a prefix len > 128, triggering the splat below. [0]
 > 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2025-06-11
+> This is a similar issue fixed by commit 586ceac9acb7 ("ipv6: Restore
+> fib6_config validation for SIOCADDRT.").
 > 
 > [...]
 
 Here is the summary with links:
-  - [GIT,PULL] bluetooth 2025-06-11
-    https://git.kernel.org/netdev/net/c/d5441acae780
+  - [v1,net] ipv6: Move fib6_config_validate() to ip6_route_add().
+    https://git.kernel.org/netdev/net/c/b3979e3d2fc9
 
 You are awesome, thank you!
 -- 
