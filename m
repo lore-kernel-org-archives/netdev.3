@@ -1,92 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CEE8BE8
-	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 00:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA4E182D0;
+	Thu, 12 Jun 2025 00:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749688587; cv=none; b=kw0dEq3LQhwbqnx7fG+Vs8woVSDFB7/BaeddpVpFaQKr64qZCw+MxWXCZOJ43qdxZM9ujGjRZfxccT3qFyGkgHYOvAeMaNXMmxFgxNWhU6jgyfgZaSSzv9H/ehqyR5Qb1wXNOu9UCqf6pW2ENYHqAcd+2KXiNJ10cwyjw5ZH0I8=
+	t=1749688801; cv=none; b=i0UbWdWkrkOQOdhSX2FbtCwZa2jWCI/UKMP+8mGW/SSFohcut4CUKFIFZJ/mD/LRc8SLauQehr/sU8jinNbE+HAZJ4goSzeHAdnaz4DqTD7bFy/SyYFh8PVulZDYIJXJhPhnCyLe/0HWKotDyBWOUhIcud7qwJzudaJO7/wkicg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749688587; c=relaxed/simple;
-	bh=VX2z2/FTyVn7BQpo+/VJOHyJJYMp0fe/rlbeOnwg8S8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nGDKAVsPnzCKM9rSkS2KXpIfEHCW8GEh4lTGlExZbszrhNjac88PgSP7EVUBKXnzr9eUJkiB+RODkNOBiOE6PQfeXXN+BxdoGfjTCNIBE8yvlY41aWXA3b/nNb/h2yGMfqyM56Z12hZ5qgU0InEb4tlrcAcdY4fE1ZI6WAHymKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gs8Ktq8o; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749688801; c=relaxed/simple;
+	bh=jpj01HFrpsqQ9KoLARSa3nYvj53bpFwNKRQ3OKEk8As=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Nh4UeYKiquZoIbF0n/Lx2Krny19yEbOOfJQhiFicxgxqUKMpJKd6oF7+SUyIdYB+Qu2BsNpAjUTex3aBaX0QmH3qRzPQrdhLjOjEW5NcJduYaFo9mp+P8dnTjPDoVG8tl3EHJVOS7yELaXkrt++P4tEOSFwapvd4PhV4pFBKtu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=APAOw6/a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gs8Ktq8o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0CEC4CEE3;
-	Thu, 12 Jun 2025 00:36:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="APAOw6/a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61D1C4CEE3;
+	Thu, 12 Jun 2025 00:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749688587;
-	bh=VX2z2/FTyVn7BQpo+/VJOHyJJYMp0fe/rlbeOnwg8S8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Gs8Ktq8oAq+gDWOf1HIkw1MKCjkvLUD34+FWmtdYgVDcMktaU8GYHoBfX87Y0SOQN
-	 j712zYHBDZbysi8LQDV6hLTiAk9E15f0PjFmRABnbS3MiBl4dqJRQAn/rnekjgX2Y1
-	 bW+lTZ2OUHhB0IbqfqnDueXhcyWZwR1f3gt6AGEjWbRRNddUmQzB8d2eB7huh4AiQj
-	 t90s0vnkhMn3itY4Cx4MU8ENXBhHLU4L1prU3J3M7hQx0wr0W5LEgmWFt6q7edqW6k
-	 cLTKz8/faCH5zcZyM8ZKVMeadORQw6ceFG49PlUd5WCD+PMC1YLk7q0daBgwMQWK5t
-	 eQxr7fkyGGavA==
-Date: Wed, 11 Jun 2025 17:36:26 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org
-Subject: Re: [PATCH net-next] net: airoha: Add TCP LRO support
-Message-ID: <20250611173626.54f2cf58@kernel.org>
-In-Reply-To: <aEg1lvstEFgiZST1@lore-rh-laptop>
-References: <20250610-airoha-eth-lro-v1-1-3b128c407fd8@kernel.org>
-	<CANn89iJsNWkWzAJbOvaBNjozuLOQBcpVo1bnvfeGq5Zm6h9e=Q@mail.gmail.com>
-	<aEg1lvstEFgiZST1@lore-rh-laptop>
+	s=k20201202; t=1749688800;
+	bh=jpj01HFrpsqQ9KoLARSa3nYvj53bpFwNKRQ3OKEk8As=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=APAOw6/aLgn4GH1zi0JCsdqyqGgxnYvd2c3XYJyK8H42HsA8b2XK0h9PyTuORr8rS
+	 xrsz+w2cIGCRMxmANmtxU2i4QHYofyh3pDGp0SgDQvm77ZC+tvpyojsGTrcjp578Ad
+	 veA2m+LNcdQbMeyvU2BdE9zpvruzDOJwGJdjRdafK1659VGtsCn2N7bZb4Apv3RHSD
+	 7JBNOQBNKJ0vAiWCipa/554cQeMscB0/o//c7iF47hFWDAt1zy76d+xpEhN5h40gfn
+	 2JkXZuqGaSFaWW5bJNxW2pM/I4TYEWxrIzY/KPG+0gWnbO6pbCFMfgyT1bEZv2xctX
+	 OHFJjGTYVr4Dw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EADAB3822D1A;
+	Thu, 12 Jun 2025 00:40:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3 1/2] net: clear the dst when changing skb protocol
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174968883075.3549461.11849610540706113890.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Jun 2025 00:40:30 +0000
+References: <20250610001245.1981782-1-kuba@kernel.org>
+In-Reply-To: <20250610001245.1981782-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ willemdebruijn.kernel@gmail.com, maze@google.com, daniel@iogearbox.net,
+ stable@vger.kernel.org, martin.lau@linux.dev, john.fastabend@gmail.com,
+ eddyz87@gmail.com, sdf@fomichev.me, haoluo@google.com, willemb@google.com,
+ william.xuanziyang@huawei.com, alan.maguire@oracle.com, bpf@vger.kernel.org,
+ shuah@kernel.org, linux-kselftest@vger.kernel.org, yonghong.song@linux.dev
 
-On Tue, 10 Jun 2025 15:39:34 +0200 Lorenzo Bianconi wrote:
-> > Tell us more... It seems small LRO packets will consume a lot of
-> > space, incurring a small skb->len/skb->truesize ratio, and bad TCP WAN
-> > performance.  
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon,  9 Jun 2025 17:12:44 -0700 you wrote:
+> A not-so-careful NAT46 BPF program can crash the kernel
+> if it indiscriminately flips ingress packets from v4 to v6:
 > 
-> I think the main idea is forward to hw LRO queues (queues 24-31 in this
-> case) just specific protocols with mostly big packets but I completely
-> agree we have an issue for small packets. One possible approach would be
-> to define a threshold (e.g. 256B) and allocate a buffer or page from the
-> page allocator for small packets (something similar to what mt7601u driver
-> is doing[0]).  What do you think?
-
-I'm not Eric but FWIW 256B is not going to help much. It's best to keep
-the len / truesize ratio above 50%, so with 32k buffers we're talking
-about copying multiple frames.
-
-> > And order-5 pages are unlikely to be available in the long run anyway.  
+>   BUG: kernel NULL pointer dereference, address: 0000000000000000
+>     ip6_rcv_core (net/ipv6/ip6_input.c:190:20)
+>     ipv6_rcv (net/ipv6/ip6_input.c:306:8)
+>     process_backlog (net/core/dev.c:6186:4)
+>     napi_poll (net/core/dev.c:6906:9)
+>     net_rx_action (net/core/dev.c:7028:13)
+>     do_softirq (kernel/softirq.c:462:3)
+>     netif_rx (net/core/dev.c:5326:3)
+>     dev_loopback_xmit (net/core/dev.c:4015:2)
+>     ip_mc_finish_output (net/ipv4/ip_output.c:363:8)
+>     NF_HOOK (./include/linux/netfilter.h:314:9)
+>     ip_mc_output (net/ipv4/ip_output.c:400:5)
+>     dst_output (./include/net/dst.h:459:9)
+>     ip_local_out (net/ipv4/ip_output.c:130:9)
+>     ip_send_skb (net/ipv4/ip_output.c:1496:8)
+>     udp_send_skb (net/ipv4/udp.c:1040:8)
+>     udp_sendmsg (net/ipv4/udp.c:1328:10)
 > 
-> I agree. I guess we can reduce the order to ~ 2 (something similar to
-> mtk_eth_soc hw LRO implementation [1]).
+> [...]
 
-Would be good to test. SW GRO can "re-GRO" the partially coalesced
-packets, so it's going to be diminishing returns.
+Here is the summary with links:
+  - [net,v3,1/2] net: clear the dst when changing skb protocol
+    https://git.kernel.org/netdev/net/c/ba9db6f907ac
+  - [net,v3,2/2] selftests: net: add test case for NAT46 looping back dst
+    https://git.kernel.org/netdev/net/c/567766954b2d
 
-> > LRO support would only make sense if the NIC is able to use multiple
-> > order-0 pages to store the payload.  
-> 
-> The hw supports splitting big packets over multiple order-0 pages if we
-> increase the MTU over one page size, but according to my understanding
-> hw LRO requires contiguous memory to work.
-
-Hm, you're already passing buffers smaller than normal TSO so
-presumably having a smaller buffers will break the sessions more 
-often but still work?
-
-You mean want to steal some of the code from:
-https://lore.kernel.org/all/20250421222827.283737-1-kuba@kernel.org/
-and make the buffer size user-configurable. But not a requirement.
-Let's at least get some understanding of the perf benefit of 
-32k vs 16k or 8k
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
