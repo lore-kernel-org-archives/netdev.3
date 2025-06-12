@@ -1,129 +1,111 @@
-Received: from oak.phenome.org (unknown [193.110.157.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560D42253EA
-	for <netdev@vger.kernel.org>; Thu, 12 Jun 2025 09:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.110.157.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3699224244;
+	Thu, 12 Jun 2025 09:14:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749719411; cv=none; b=j+Caa3duZYJqCwVbtf9Dk6EagiB0nX7aSFDAWUhIYSdQZ1JpkFfxdTJWfJDqFMweHPJBy0L26Teh3eTHweJkt6MoC6bMqlb5PAKH9/TqIsDp6bUSkSwsoGmXkvJ4oVRi/7Z7ImaIUjZmtHJCUp0uzr9CrH+pwOl7jWeVGJV5bOk=
+	t=1749719671; cv=none; b=L9myPDWRW6PCg1ll1wehnxgVRlqEr9Q+pLwGR1lOZnmgCdjXky1jmGNiMU/f3Z09FeGZY29Xcfo2mo2AS7X3AyJ7/lRr1of6oTa/rpPsUcGApNDMwl9V5K65qbe/qt1aApTe54TJxSYrSfFzAfTVobaOQsksU1R+Woo6O4j0xhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749719411; c=relaxed/simple;
-	bh=5d3jN3fn+I5Q7QYVsDdXTjPnMvpF2p/kdNCrBj08FiY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pn6JYetGDuMobjNXuPRbnhU4FkohJ4mTGPlIwrguAcRoA3+0sct4ESAFJv0UYLPVPWN7l6jBykTdKHHP6mOYdjgi30QqbADILAQ1Q4R3FhO8Rzw8p6ErCufeOr/a8s5w+BcnZRztrYnd0wLLXBZzxAYL8LCYXVJ795/6OsPBDmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org; spf=pass smtp.mailfrom=phenome.org; dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b=C0C3zo2+; arc=none smtp.client-ip=193.110.157.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phenome.org
+	s=arc-20240116; t=1749719671; c=relaxed/simple;
+	bh=OWNjSkSJvE2sfoNgmC6p5w20Yx3MWT0X4bBvBXk1SsY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g4MnuD+j8Y0/lPPYUUyIwnFhNKYGnSGtQ+wMf879RnyuwyMmPGp3GX85+ZoZeL7BjHFlhQNNhPj1NFcqMoC4FDqE3gkmy/LXaZ7IDzVqyrf3sXFluPrNCdi1uWBE9XF4fGm2shExAFJzN9XwMT3nxPepNBcqdXgDCUnsqqtpmFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K6RIjzzG; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b="C0C3zo2+"
-Authentication-Results: oak.phenome.org (amavisd); dkim=pass (2048-bit key)
- reason="pass (just generated, assumed good)" header.d=phenome.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=phenome.org; h=
-	in-reply-to:content-transfer-encoding:content-disposition
-	:content-type:content-type:mime-version:references:message-id
-	:subject:subject:from:from:date:date:received; s=oak1; t=
-	1749718951; x=1750582952; bh=5d3jN3fn+I5Q7QYVsDdXTjPnMvpF2p/kdNC
-	rBj08FiY=; b=C0C3zo2+6pwSukA00NpMmz5OyP1ZI0U2/3Y4PhMTXFogHrXHNVZ
-	o+0PMbrTP0WAxF+Sf4LgX1R9KT4Qww3c0iXWQNOzqdyMLPzimoelzF7SUi7Z8Rzp
-	8WLyg5DJG/8WN+McyfHZ3R1rggB9e2AxFh2WYPNgQaSkwjczbXa5x4hiPoJNzAzJ
-	bRMSh0wCKwVDYm5mJjNy94iTQbCgeMLLrkqDpWWq9kvzqGtp0qJtW4nLf0mCeJ00
-	5jTfuiT+nXYh9Iat/AKE4ILvjoMnoj8j4P+BAjWiM3+0SI+XljWxtknNKQM4hHbW
-	ynwNZRXP4tEyDo8etwUMXeR1fmkWtJbUWPQ==
-X-Virus-Scanned: amavisd at oak.phenome.org
-Received: from Antony2201.local (hal.connected.by.freedominter.net [91.132.42.103])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384)
-	(No client certificate requested)
-	by oak.phenome.org (Postfix) with ESMTPSA;
-	Thu, 12 Jun 2025 11:02:30 +0200 (CEST)
-Date: Thu, 12 Jun 2025 11:02:28 +0200
-From: Antony Antony <antony@phenome.org>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Aakash Kumar S <saakashkumar@marvell.com>, netdev@vger.kernel.org,
-	herbert@gondor.apana.org.au, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, akamaluddin@marvell.com, devel@linux-ipsec.org
-Subject: Re: [PATCH]   xfrm: Duplicate =?utf-8?Q?SP?=
- =?utf-8?Q?I_Handling_=E2=80=93?= IPsec-v3 Compliance Concern
-Message-ID: <aEqXpFSawrMOO25V@Antony2201.local>
-References: <20250609065014.381215-1-saakashkumar@marvell.com>
- <aElfx2P9VBN/q0A6@gauss3.secunet.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K6RIjzzG"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ad88d77314bso157411566b.1;
+        Thu, 12 Jun 2025 02:14:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749719668; x=1750324468; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zeyxqUHZy6QVzGR9NXN+50F6/05thYdhp5HaVT4lX0Q=;
+        b=K6RIjzzGe4arazGkEm7AgE2F5Gz1M98jpDTHCndasxMNE9jBdHuqV/Tt1Qlhv92T43
+         mLBDwjHX2W/TMUXFSIzooT3zysUkahOO+X06QgrqcrFAPg4r4qI/Iu/AEJlMvbtK4+P3
+         7wFvIcGNa/Sa5Hu1c6QMsLzgN48wEWcFVP+SxvuWU5eDTZlXZq48RAFG6ZqLGAnLw2vy
+         sHjk5A2mDLe9DlmGdjTXfinfPrtCw+7iV6qDW5L1ZdCXdDwxV2qa/6I3JhIOIZqZQTEK
+         TJXNdE7mModO5IGhyfEf6XB/XIrK38tTy7dWryebrZTQVt8ZuWXlq9y3rEJhGmy+QDbB
+         JYnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749719668; x=1750324468;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zeyxqUHZy6QVzGR9NXN+50F6/05thYdhp5HaVT4lX0Q=;
+        b=k1P1BJhVE8R5wDq/kWZIxTANg3aFnPqKO+LqVZhKhEOyBLRvtK3Im9r72WZE2cHcna
+         DBg58SCASf2m/LAPrFX3mz9FPxqZUqskeaJudAEPZ3wC93a6AN3U/hoEh9310POkoM0X
+         Qin1Altg5kFJ32MVX0kZWT7xmBssKvqNVg4AD1bvoNpKksmy56/XMac0iZSvkt6+eHQN
+         PIuL163nvH8mRiIA54D9FBH3NaEd0A4vEOcRW+Rz8dW49+SaWXgSjd+JVrNbrtj7QCJa
+         1Bel6I70Y6pliFYeyz7oyxi+VhSg/i0zWImKmWDD5z5MDsBC3vb/2EZaUgeoXGCPegbx
+         hRsA==
+X-Gm-Message-State: AOJu0YwdCISWWcH/mb+dTqPH9t8x5y3kjFqZSJWy4glgI8CtxGIBDvR0
+	jdKp/L8nyQ180hMvjO45lcfQwMmZESNiqto3oLGuAga53IO8reR8vnJHePmdSw==
+X-Gm-Gg: ASbGncuhDxoNZ/u6gcXsRHD/FtkkVlrStoCxHYCawgpS52C5zJzpgFyWBSJFdi5dHOE
+	s26GRlCzlLp6SKrpsJszlz7kjuJSLoo3GyMYkZxSbe2nJRvuKP8MQKsgvHkOzs+NHXEAsNV6ISI
+	7eGxcaLiWZim0bUgL07pYi+rZGfVc3HIn5vbQr3UuX1JLec1ZCytO4KcSpT0IwaGe9NlZLPs5PR
+	iGAnBrrO9gtL9o18v5NgIZTLfXXViQ6jBcdUaX3M6/HQqoi2kAegVO/pVgiM6KahLA9i8pq+jBW
+	4hBL8WYsE4IPl4XvBlQX1iwcsyDJdMnjXb8VXMQzVSBg/Q7uZbabyRs1K9dMwxKLtK0BeDnD0fU
+	+35zOzfCWJX54pdvJQw==
+X-Google-Smtp-Source: AGHT+IEPiTGs3HqkCUv9d7gXn+31hkMp9lyWYrUDt96zcBLtXubAKBTxS2ILkfmci1gnrQ0xBa9s0A==
+X-Received: by 2002:a17:907:d8f:b0:ad8:a4a8:1034 with SMTP id a640c23a62f3a-ade893db0cbmr588478166b.8.1749719667403;
+        Thu, 12 Jun 2025 02:14:27 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325:77fd:1068:74c8:af87? ([2620:10d:c092:600::1:be2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adeadecea68sm100750566b.146.2025.06.12.02.14.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Jun 2025 02:14:26 -0700 (PDT)
+Message-ID: <3ff6b1e8-ea46-47db-aa52-65f252550396@gmail.com>
+Date: Thu, 12 Jun 2025 10:15:50 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aElfx2P9VBN/q0A6@gauss3.secunet.de>
-X-Mutt-References: <aElfx2P9VBN/q0A6@gauss3.secunet.de>
-X-Mutt-Fcc: ~/sent
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/5] io_uring cmd for tx timestamps
+To: io-uring@vger.kernel.org, Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Kuniyuki Iwashima <kuniyu@amazon.com>, Paolo Abeni <pabeni@redhat.com>,
+ Willem de Bruijn <willemb@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Jason Xing <kerneljasonxing@gmail.com>
+References: <cover.1749657325.git.asml.silence@gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <cover.1749657325.git.asml.silence@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 11, 2025 at 12:51:51PM +0200, Steffen Klassert wrote:
-> On Mon, Jun 09, 2025 at 12:20:14PM +0530, Aakash Kumar S wrote:
-> >         The issue originates when Strongswan initiates an XFRM_MSG_ALLOCSPI
-> >         Netlink message, which triggers the kernel function xfrm_alloc_spi().
-> >         This function is expected to ensure uniqueness of the Security Parameter
-> >         Index (SPI) for inbound Security Associations (SAs). However, it can
-> >         return success even when the requested SPI is already in use, leading
-> >         to duplicate SPIs assigned to multiple inbound SAs, differentiated
-> >         only by their destination addresses.
-
-Is this an issue in xfrm stack without hardware offload? Does it affect packet
-flow? It seems SA install will allow non uniqe SPI for incoming, even
-after this. Which is the correct behaviour.
-
-I have a feeling this is an issue due to hardware implementer's choice
-of only support one option from RFC 4301 section 4.4.2?
-
-> > 
-> >         This behavior causes inconsistencies during SPI lookups for inbound packets.
-> >         Since the lookup may return an arbitrary SA among those with the same SPI,
-> >         packet processing can fail, resulting in packet drops.
-> > 
-> >         According to RFC 6071, in IPsec-v3, a unicast SA is uniquely identified
-> >         by the SPI alone. Therefore, relying on additional fields
-> >         (such as destination addresses, proto) to disambiguate SPIs contradicts
-> >         the RFC and undermines protocol correctness.
-
+On 6/12/25 10:09, Pavel Begunkov wrote:
+> Vadim Fedorenko suggested to add an alternative API for receiving
+> tx timestamps through io_uring. The series introduces io_uring socket
+> cmd for fetching tx timestamps, which is a polled multishot request,
+> i.e. internally polling the socket for POLLERR and posts timestamps
+> when they're arrives. For the API description see Patch 5.
 > 
-> This is not quite right, RFC 4301 says:
+> It reuses existing timestamp infra and takes them from the socket's
+> error queue. For networking people the important parts are Patch 1,
+> and io_uring_cmd_timestamp() from Patch 5 walking the error queue.
 > 
-> If the packet is addressed to the IPsec device and AH or ESP is
-> specified as the protocol, the packet is looked up in the SAD.
-> For unicast traffic, use only the SPI (or SPI plus protocol).
+> It should be reasonable to take it through the io_uring tree once
+> we have consensus, but let me know if there are any concerns.
 > 
-> So using the potocol as as lookup key is OK.
+> v3: Add a flag to distinguish sw vs hw timestamp. skb_get_tx_timestamp()
+>      from Patch 1 now returns the indication of that, and in Patch 5
+>      it's converted into a io_uring CQE bit flag.
 
-That’s correct—the commit message should not reference RFC 6701. I would suggest instead referring to RFC 4301, specifically sections 4.1 and 4.4.2. These sections describe the three SPI uniqueness constraints allowed by the architecture for the incoming path.
+FWIW, it's a relatively small change, but I dropped all review tags.
 
-- Unique SPI
-- Unique (SPI + protocol (AH/ESP) + destination IP of the incoming SA)
-- Unique (SPI + protocol + destination IP + source IP)
+Also I pruned the test I've been using (derived from the tx-timestamp
+selftest). Pushed it here:
 
-The IPsec architecture RFC 4301 explicitly allows all three options for 
-incoming SAs, which is why I don’t believe anything is currently broken in 
-the data path.
+https://github.com/isilence/liburing/tree/tx-timestamp
 
-So it is not complaince issue. In my opinion, RFC 6071 is not standard RFC 
-to be complaint with. It looks like an odd RFC among IPsec standards, what 
-is IPsec-v3? IPsec IMHO should refer RFC 7296, 4303 and 4301 and related 
-RFCs. We can also take this on IETF mailing list, instead of netdev.
+-- 
+Pavel Begunkov
 
-As for SPI allocation, it is indeed permissible to be restrictive, as proposed by this patch.
-However, section 4.4.2 of RFC 4301—which indirectly governs SPI 
-allocation—is only applicable to unicast SAs.
-
-So I’m also supportive of the patch, provided the commit message offers a 
-clearer explanation and outlines what exactly is broken under the current 
-behavior. Ideally also how to re-produce it.  This is important. I would 
-love to see generic hardware supporting all 3 cases above, just like xfrm 
-implementation.
-
-PS: I am ccing more IPsec experts.
-latest version of the patch is at:
-https://lore.kernel.org/all/20250612055017.806273-1-saakashkumar@marvell.com/
-
--antony
