@@ -1,111 +1,248 @@
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F502F41;
-	Fri, 13 Jun 2025 06:47:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CF31EE7C6;
+	Fri, 13 Jun 2025 07:05:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749797283; cv=none; b=Udhm60PTSH6oavoKV5DIidKo1HzmJOB+qXj/qjntGPphytcJngRyP61BePFL2RVIDCU2tKvu+OW5Wj3PswybdYjZUQYFqLs1gVfKOreta5Ze7TGlp3bmmzIVAQ6ieQwVvpaF2Zh2EVHnR0dpm3Bd6euv+L8vvMk5dbSpUS+E6U4=
+	t=1749798307; cv=none; b=KcunoDYB/zqjcka2o23V9xncy+n9+WDDBpoO9g1siqXm6FyJom42yCt9pSNuV9qHAqFfI6TUz94fE/184c0gLgUjzWJoErKp1V8Y9iXwDLoSGWCMqY2DP8qv2hTnZVsHGhtY8y/tghH+oabDWiTaDHQtGe/Bi1O34uvOzIOn9IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749797283; c=relaxed/simple;
-	bh=ymBMbvtiTZZthEx06S2LAqkMRzZ9usCHAyrYGOc3hhw=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=UEI01ZP6PwlCOi2Ledr7NYM9WkgmsXyzAtJA6/9Ty37p7wOuhg0/E4cGqCmKM8fwDAY5wH7VhdoHdLgvzARaI/XOfy4MGqL0K85i18Q2jFDH7foii+EeZXgR9JfCiHlBujP2QfgkObLMz6JXh5POfY+mkt49onJ7fBFOxu1GmG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=SEjDAttS; arc=none smtp.client-ip=162.62.57.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1749798307; c=relaxed/simple;
+	bh=YPhirRC/fqgXNZyCmveCpTKVmiZA7ueG5zIrOKWu6sI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b6wQxLDmYgQoh2ByCg0HdTu9h5r/h94ieFntzTemsfBktlNsvCX2RbVbpX+4zI4fsyZwVaDx1f75mBvRAQFHdNF9gXbD0WZK2oMjHtxQhgAxYI8oOg2sXO9HORZPMYESNXBhAOv89oEgBWhTanwriEwTH9/KnOfsmKuvTUgnO54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LLGSEuhO; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="SEjDAttS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1749797268;
-	bh=GNxwzOmyaguiVAK/TnYJRgd/kxFd/pTS562cfZLBego=;
-	h=From:To:Cc:Subject:Date;
-	b=SEjDAttSQ2mrDGMP2TdhCwUFieG/9nOe2B6bhqLH7xjSkpUOZD+zNJQSgy7Nj7RlB
-	 RKKMijnfQ6WveXvgFvxxW98b5aGahvd1rXxm9o7B55F+D41v9/HFv0DrH/DdALCdQD
-	 KCFcyQ40Ha3U27GjeHTfptkvuIyESe+Z/ikTiAxg=
-Received: from smart.. ([116.2.183.7])
-	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
-	id 89D24E5E; Fri, 13 Jun 2025 14:34:29 +0800
-X-QQ-mid: xmsmtpt1749796469t9qj238mb
-Message-ID: <tencent_0F1668EB507D97CB15755AB59FA378B1C408@qq.com>
-X-QQ-XMAILINFO: NGXqqtj/LXpFvy5vICTku3pECHcCiY+V/Rjn8mhkxGbXtkgsZ/oSRLCtEVKUG9
-	 qj6zfWEFhhNLSkTE9BvLhhPUD7YEojvC+ICUMyGn+uMsFn1KIWT/hYdGkFZsGM6NuZrxuGfERzp8
-	 P/R+q0ernxEx4kz4pjtU8usEd1b2oJZKzLdG5k0/BtSA5FmqNX9/jUTDQ9BAwBQd9N5iy/a9Jg99
-	 qBbT9eBhTAyMbhKfq3sjdnGBIxmGy7dJpkith2j27YYOgNyYWxCUkJgqqoFMU2r1CY8gX7Wr+tqE
-	 92ltVrUjXM0Avfqg2wX+0iBmpHS4hFEQ6Pzd1++V6FL0O+53CjDgsHjWSOPtAcVWa0OOOVu/g4n4
-	 8y3t9MtSs1tVYiz3vreQXcnEj4JRuxskNZ7G9dLa04YzHPlgnchPQxX2QBNELmAc4MXGkibUYFYi
-	 QhdzOqsLBmDyVeQfnASZvSSyVGeaA1TCqOfiIh7PJDX1a4uf8yLfDOH+HDqeYem923ucPW2OGbYl
-	 c5iW9y73md2KBttOrdl7S/VMCWa3s66NGMzBXiPowTDw+K0DuB6TvXTAO2WMPb0rXEt45Nj4mvfa
-	 RQL+UUwbrxeL+rrVJVNprpcWUozHq91UIvDlrm0v6yyo/mlRLYYhMXTRGauMsukltLSH2DZVLSJH
-	 sdkyubD+uyRjk9gNWvYsGS8BOQDsTSGt+RgcqJwPpV19oL3rYq1Z+vZOtHKzY7D00QhjHZ/QxTEw
-	 7Jwrf0/CWuOpAW+U7cmm3xAkAeUkfBO4fxR2ShaSblSygT9dtyzOV8IEjAKxwDKlzaFzy+fER4KH
-	 AvJCyA+snDSh2PirqvyqDucTT1sqZ7TU2CmIyyedgvS9qo3juJ9qDDXUsSWpFHBXS01j+R8kjlbf
-	 MVyWx4Y8zr1vRSBZLA+MibO5f3aSudR0BXWO/0gpG5EdFzYgfWcCf1zrZuceb5lJlc59rBvds+ho
-	 yPK4Waxgo+avx6O4buweOyzcdiENyOIN6g1rZ8nP1rtSeY7hu9NIvR9ep9RW6sBAh/CkYZGemsv7
-	 DMWlB/N+N39kwQSKf+UgydwW2eLDJKdVZUjSIglngtdbr4Y0V/SaixvGJeZ7tWlC/dLWcPHhspnS
-	 YNCq7ido6+mzNewnE=
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-From: dataonline <dataonline@foxmail.com>
-To: =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	dataonline <dataonline@foxmail.com>
-Subject: [PATCH] net: usb: qmi_wwan: add SIMCom 8230C composition
-Date: Fri, 13 Jun 2025 14:34:27 +0800
-X-OQ-MSGID: <20250613063427.2167777-1-dataonline@foxmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LLGSEuhO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749798306; x=1781334306;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YPhirRC/fqgXNZyCmveCpTKVmiZA7ueG5zIrOKWu6sI=;
+  b=LLGSEuhOZQkOb9loS/sqDV6u+2gsn9+KmQEloOyHyYkrFCNwtYRpwemm
+   k2NisS9UWEX7DCiE7BlduUa70ZPdLaBY4glT31f+S3Xn9ToEbde5osfmn
+   qNwjyFxcM3ePrEj9pdbR4KKwBAnpOc6hgwxrkUapiViHLC9tixCLjNaQX
+   +EGTrdL5SS6sQ6vAXMMpZrPEL8/w6JCj94RwCB93P+da6AwZZULR2cz3h
+   fY8FecLQby5njqLNkrbCAEZsQksNqU9wKWIVdvuliKJPYjwj05AFHlVfA
+   50wOwJm57gUHYaU0zQVYpBPCGsStPYhwkDuXFH94pwYCPcIp0Jl4Hqs2t
+   Q==;
+X-CSE-ConnectionGUID: 5epJTmOwRuiZ3IfrVJ8Zog==
+X-CSE-MsgGUID: FA3JHCVFShK0YF3Wf3VKNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51878656"
+X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; 
+   d="scan'208";a="51878656"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 00:04:53 -0700
+X-CSE-ConnectionGUID: S+YzazeVS0qcM0G9gtFmGQ==
+X-CSE-MsgGUID: ZaxUnIRhSNWmOJKg/4rtLg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; 
+   d="scan'208";a="170929459"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 13 Jun 2025 00:04:50 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uPyT2-000CJ4-0W;
+	Fri, 13 Jun 2025 07:04:48 +0000
+Date: Fri, 13 Jun 2025 15:04:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Thomas Fourier <fourier.thomas@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Chris Snook <chris.snook@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] (drivers/ethernet/atheros/atl1) test DMA mapping for
+ error code
+Message-ID: <202506131458.MnU50xNO-lkp@intel.com>
+References: <20250612150542.85239-2-fourier.thomas@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250612150542.85239-2-fourier.thomas@gmail.com>
 
-Add support for SIMCom 8230C which is based on Qualcomm SDX35 chip.
-0x9071: tty (DM) + tty (NMEA) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1e0e ProdID=9071 Rev= 5.15
-S:  Manufacturer=SIMCOM
-S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
-S:  SerialNumber=0123456789ABCDEF
-C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=none
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Hi Thomas,
 
-Signed-off-by: dataonline <dataonline@foxmail.com>
----
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+kernel test robot noticed the following build errors:
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index b586b1c13a47..f5647ee0adde 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1426,6 +1426,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x22de, 0x9051, 2)}, /* Hucom Wireless HM-211S/K */
- 	{QMI_FIXED_INTF(0x22de, 0x9061, 3)},	/* WeTelecom WPD-600N */
- 	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9001, 5)},	/* SIMCom 7100E, 7230E, 7600E ++ */
-+	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9071, 3)},	/* SIMCom 8230C ++ */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0121, 4)},	/* Quectel EC21 Mini PCIe */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0191, 4)},	/* Quectel EG91 */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
+[auto build test ERROR on linus/master]
+[also build test ERROR on v6.16-rc1 next-20250612]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Thomas-Fourier/drivers-ethernet-atheros-atl1-test-DMA-mapping-for-error-code/20250612-231733
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20250612150542.85239-2-fourier.thomas%40gmail.com
+patch subject: [PATCH] (drivers/ethernet/atheros/atl1) test DMA mapping for error code
+config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20250613/202506131458.MnU50xNO-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250613/202506131458.MnU50xNO-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506131458.MnU50xNO-lkp@intel.com/
+
+All error/warnings (new ones prefixed by >>):
+
+   drivers/net/ethernet/atheros/atlx/atl1.c: In function 'atl1_tx_map':
+>> drivers/net/ethernet/atheros/atlx/atl1.c:2315:34: warning: assignment to 'dma_addr_t' {aka 'long long unsigned int'} from 'void *' makes integer from pointer without a cast [-Wint-conversion]
+    2315 |                 buffer_info->dma = NULL;
+         |                                  ^
+>> drivers/net/ethernet/atheros/atlx/atl1.c:2317:39: error: 'tdp_ring' undeclared (first use in this function); did you mean 'tpd_ring'?
+    2317 |                 if (++first_mapped == tdp_ring->count)
+         |                                       ^~~~~~~~
+         |                                       tpd_ring
+   drivers/net/ethernet/atheros/atlx/atl1.c:2317:39: note: each undeclared identifier is reported only once for each function it appears in
+
+
+vim +2317 drivers/net/ethernet/atheros/atlx/atl1.c
+
+  2192	
+  2193	static int atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+  2194		struct tx_packet_desc *ptpd)
+  2195	{
+  2196		struct atl1_tpd_ring *tpd_ring = &adapter->tpd_ring;
+  2197		struct atl1_buffer *buffer_info;
+  2198		u16 buf_len = skb->len;
+  2199		struct page *page;
+  2200		unsigned long offset;
+  2201		unsigned int nr_frags;
+  2202		unsigned int f;
+  2203		int retval;
+  2204		u16 next_to_use;
+  2205		u16 first_mapped;
+  2206		u16 data_len;
+  2207		u8 hdr_len;
+  2208	
+  2209		buf_len -= skb->data_len;
+  2210		nr_frags = skb_shinfo(skb)->nr_frags;
+  2211		next_to_use = atomic_read(&tpd_ring->next_to_use);
+  2212		first_mapped = next_to_use;
+  2213		buffer_info = &tpd_ring->buffer_info[next_to_use];
+  2214		BUG_ON(buffer_info->skb);
+  2215		/* put skb in last TPD */
+  2216		buffer_info->skb = NULL;
+  2217	
+  2218		retval = (ptpd->word3 >> TPD_SEGMENT_EN_SHIFT) & TPD_SEGMENT_EN_MASK;
+  2219		if (retval) {
+  2220			/* TSO */
+  2221			hdr_len = skb_tcp_all_headers(skb);
+  2222			buffer_info->length = hdr_len;
+  2223			page = virt_to_page(skb->data);
+  2224			offset = offset_in_page(skb->data);
+  2225			buffer_info->dma = dma_map_page(&adapter->pdev->dev, page,
+  2226							offset, hdr_len,
+  2227							DMA_TO_DEVICE);
+  2228			if (dma_mapping_error(&adapter->pdev->dev, buffer_info->dma))
+  2229				goto dma_err;
+  2230	
+  2231			if (++next_to_use == tpd_ring->count)
+  2232				next_to_use = 0;
+  2233	
+  2234			if (buf_len > hdr_len) {
+  2235				int i, nseg;
+  2236	
+  2237				data_len = buf_len - hdr_len;
+  2238				nseg = (data_len + ATL1_MAX_TX_BUF_LEN - 1) /
+  2239					ATL1_MAX_TX_BUF_LEN;
+  2240				for (i = 0; i < nseg; i++) {
+  2241					buffer_info =
+  2242					    &tpd_ring->buffer_info[next_to_use];
+  2243					buffer_info->skb = NULL;
+  2244					buffer_info->length =
+  2245					    (ATL1_MAX_TX_BUF_LEN >=
+  2246					     data_len) ? ATL1_MAX_TX_BUF_LEN : data_len;
+  2247					data_len -= buffer_info->length;
+  2248					page = virt_to_page(skb->data +
+  2249						(hdr_len + i * ATL1_MAX_TX_BUF_LEN));
+  2250					offset = offset_in_page(skb->data +
+  2251						(hdr_len + i * ATL1_MAX_TX_BUF_LEN));
+  2252					buffer_info->dma = dma_map_page(&adapter->pdev->dev,
+  2253									page, offset,
+  2254									buffer_info->length,
+  2255									DMA_TO_DEVICE);
+  2256					if (dma_mapping_error(&adapter->pdev->dev, buffer_info->dma))
+  2257						goto dma_err;
+  2258					if (++next_to_use == tpd_ring->count)
+  2259						next_to_use = 0;
+  2260				}
+  2261			}
+  2262		} else {
+  2263			/* not TSO */
+  2264			buffer_info->length = buf_len;
+  2265			page = virt_to_page(skb->data);
+  2266			offset = offset_in_page(skb->data);
+  2267			buffer_info->dma = dma_map_page(&adapter->pdev->dev, page,
+  2268							offset, buf_len,
+  2269							DMA_TO_DEVICE);
+  2270			if (dma_mapping_error(&adapter->pdev->dev, buffer_info->dma))
+  2271				goto dma_err;
+  2272			if (++next_to_use == tpd_ring->count)
+  2273				next_to_use = 0;
+  2274		}
+  2275	
+  2276		for (f = 0; f < nr_frags; f++) {
+  2277			const skb_frag_t *frag = &skb_shinfo(skb)->frags[f];
+  2278			u16 i, nseg;
+  2279	
+  2280			buf_len = skb_frag_size(frag);
+  2281	
+  2282			nseg = (buf_len + ATL1_MAX_TX_BUF_LEN - 1) /
+  2283				ATL1_MAX_TX_BUF_LEN;
+  2284			for (i = 0; i < nseg; i++) {
+  2285				buffer_info = &tpd_ring->buffer_info[next_to_use];
+  2286				BUG_ON(buffer_info->skb);
+  2287	
+  2288				buffer_info->skb = NULL;
+  2289				buffer_info->length = (buf_len > ATL1_MAX_TX_BUF_LEN) ?
+  2290					ATL1_MAX_TX_BUF_LEN : buf_len;
+  2291				buf_len -= buffer_info->length;
+  2292				buffer_info->dma = skb_frag_dma_map(&adapter->pdev->dev,
+  2293					frag, i * ATL1_MAX_TX_BUF_LEN,
+  2294					buffer_info->length, DMA_TO_DEVICE);
+  2295				if (dma_mapping_error(&adapter->pdev->dev, buffer_info->dma))
+  2296					goto dma_err;
+  2297	
+  2298				if (++next_to_use == tpd_ring->count)
+  2299					next_to_use = 0;
+  2300			}
+  2301		}
+  2302	
+  2303		/* last tpd's buffer-info */
+  2304		buffer_info->skb = skb;
+  2305	
+  2306		return 0;
+  2307	
+  2308	 dma_err:
+  2309		while (first_mapped != next_to_use) {
+  2310			buffer_info = &tpd_ring->buffer_info[first_mapped];
+  2311			dma_unmap_page(&adapter->pdev->dev,
+  2312				       buffer_info->dma,
+  2313				       buffer_info->length,
+  2314				       DMA_TO_DEVICE);
+> 2315			buffer_info->dma = NULL;
+  2316	
+> 2317			if (++first_mapped == tdp_ring->count)
+  2318				first_mapped = 0;
+  2319		}
+  2320		return -ENOMEM;
+  2321	}
+  2322	
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
