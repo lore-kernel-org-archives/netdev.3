@@ -1,64 +1,58 @@
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1832F41;
-	Fri, 13 Jun 2025 06:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F502F41;
+	Fri, 13 Jun 2025 06:47:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749797169; cv=none; b=gilWzsIercfUXEAy/LaHNzvC5IPngi+POeCmUugwLcs83whzGV3ZitPey867uaZyC7oAeRlNAP538ZJ0r1mm/FSbAwxi8VckfXwcYTkQwFKAE2fHKxH/CsCPiA7nPlhXM3TkNZl0zdINDoJdPEiiMxejEgtyYXCm2SmVKNtKbBE=
+	t=1749797283; cv=none; b=Udhm60PTSH6oavoKV5DIidKo1HzmJOB+qXj/qjntGPphytcJngRyP61BePFL2RVIDCU2tKvu+OW5Wj3PswybdYjZUQYFqLs1gVfKOreta5Ze7TGlp3bmmzIVAQ6ieQwVvpaF2Zh2EVHnR0dpm3Bd6euv+L8vvMk5dbSpUS+E6U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749797169; c=relaxed/simple;
-	bh=/EwZg1oZR49LHjEgYh6mYVIRq1j8rfovxf5weWMxPCc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IUiQxEkXczjWpoCqBGuNph2Fek3/mt0z1D9N5EPs+PR50RClR2S806rt/sVjaLC6p5+Q2rqLR5QKk7vJtjTTTr8yzQcG+I/faePuvF9Ay6KYcwBy0F4i4PDiKb8uWUIT8AUazTDQAtfLFz10N0tbV7Ml5PWMiKRnkuUJjzI4ITw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=j7B+/F4U; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1749797283; c=relaxed/simple;
+	bh=ymBMbvtiTZZthEx06S2LAqkMRzZ9usCHAyrYGOc3hhw=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=UEI01ZP6PwlCOi2Ledr7NYM9WkgmsXyzAtJA6/9Ty37p7wOuhg0/E4cGqCmKM8fwDAY5wH7VhdoHdLgvzARaI/XOfy4MGqL0K85i18Q2jFDH7foii+EeZXgR9JfCiHlBujP2QfgkObLMz6JXh5POfY+mkt49onJ7fBFOxu1GmG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=SEjDAttS; arc=none smtp.client-ip=162.62.57.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="j7B+/F4U"
-Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 55D6jquR3062110;
-	Fri, 13 Jun 2025 01:45:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1749797152;
-	bh=oajSuti6jz9rnNbhXAfUaBOuSqrfLjbzmaFWuDd/IoU=;
-	h=From:To:CC:Subject:Date;
-	b=j7B+/F4UHhVdPcs8O9Ydb+uSyMe8pCC/kUbLQFR0baLIIzw/p8rAqtagY4O6LapLn
-	 5Wo6nxtQ7J5/WaB4TqEK/X4einHMBsWFs/WQ0QrYlRR0+Gn7s+9qi6LNDqexUCCOfI
-	 WGfhqdBVc2VWCNZUii6zl7RII2SGlEwcNn/AE1AQ=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 55D6jq1R031690
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Fri, 13 Jun 2025 01:45:52 -0500
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 13
- Jun 2025 01:45:52 -0500
-Received: from fllvem-mr08.itg.ti.com (10.64.41.88) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Fri, 13 Jun 2025 01:45:52 -0500
-Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
-	by fllvem-mr08.itg.ti.com (8.18.1/8.18.1) with ESMTP id 55D6jqOS1130541;
-	Fri, 13 Jun 2025 01:45:52 -0500
-Received: from localhost (danish-tpc.dhcp.ti.com [10.24.69.25])
-	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 55D6joAm011920;
-	Fri, 13 Jun 2025 01:45:51 -0500
-From: MD Danish Anwar <danishanwar@ti.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Meghana Malladi
-	<m-malladi@ti.com>
-CC: <linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <srk@ti.com>,
-        Vignesh Raghavendra
-	<vigneshr@ti.com>,
-        Roger Quadros <rogerq@kernel.org>, <danishanwar@ti.com>
-Subject: [PATCH net-next v2] net: ti: icssg-prueth: Read firmware-names from device tree
-Date: Fri, 13 Jun 2025 12:15:47 +0530
-Message-ID: <20250613064547.44394-1-danishanwar@ti.com>
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="SEjDAttS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1749797268;
+	bh=GNxwzOmyaguiVAK/TnYJRgd/kxFd/pTS562cfZLBego=;
+	h=From:To:Cc:Subject:Date;
+	b=SEjDAttSQ2mrDGMP2TdhCwUFieG/9nOe2B6bhqLH7xjSkpUOZD+zNJQSgy7Nj7RlB
+	 RKKMijnfQ6WveXvgFvxxW98b5aGahvd1rXxm9o7B55F+D41v9/HFv0DrH/DdALCdQD
+	 KCFcyQ40Ha3U27GjeHTfptkvuIyESe+Z/ikTiAxg=
+Received: from smart.. ([116.2.183.7])
+	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
+	id 89D24E5E; Fri, 13 Jun 2025 14:34:29 +0800
+X-QQ-mid: xmsmtpt1749796469t9qj238mb
+Message-ID: <tencent_0F1668EB507D97CB15755AB59FA378B1C408@qq.com>
+X-QQ-XMAILINFO: NGXqqtj/LXpFvy5vICTku3pECHcCiY+V/Rjn8mhkxGbXtkgsZ/oSRLCtEVKUG9
+	 qj6zfWEFhhNLSkTE9BvLhhPUD7YEojvC+ICUMyGn+uMsFn1KIWT/hYdGkFZsGM6NuZrxuGfERzp8
+	 P/R+q0ernxEx4kz4pjtU8usEd1b2oJZKzLdG5k0/BtSA5FmqNX9/jUTDQ9BAwBQd9N5iy/a9Jg99
+	 qBbT9eBhTAyMbhKfq3sjdnGBIxmGy7dJpkith2j27YYOgNyYWxCUkJgqqoFMU2r1CY8gX7Wr+tqE
+	 92ltVrUjXM0Avfqg2wX+0iBmpHS4hFEQ6Pzd1++V6FL0O+53CjDgsHjWSOPtAcVWa0OOOVu/g4n4
+	 8y3t9MtSs1tVYiz3vreQXcnEj4JRuxskNZ7G9dLa04YzHPlgnchPQxX2QBNELmAc4MXGkibUYFYi
+	 QhdzOqsLBmDyVeQfnASZvSSyVGeaA1TCqOfiIh7PJDX1a4uf8yLfDOH+HDqeYem923ucPW2OGbYl
+	 c5iW9y73md2KBttOrdl7S/VMCWa3s66NGMzBXiPowTDw+K0DuB6TvXTAO2WMPb0rXEt45Nj4mvfa
+	 RQL+UUwbrxeL+rrVJVNprpcWUozHq91UIvDlrm0v6yyo/mlRLYYhMXTRGauMsukltLSH2DZVLSJH
+	 sdkyubD+uyRjk9gNWvYsGS8BOQDsTSGt+RgcqJwPpV19oL3rYq1Z+vZOtHKzY7D00QhjHZ/QxTEw
+	 7Jwrf0/CWuOpAW+U7cmm3xAkAeUkfBO4fxR2ShaSblSygT9dtyzOV8IEjAKxwDKlzaFzy+fER4KH
+	 AvJCyA+snDSh2PirqvyqDucTT1sqZ7TU2CmIyyedgvS9qo3juJ9qDDXUsSWpFHBXS01j+R8kjlbf
+	 MVyWx4Y8zr1vRSBZLA+MibO5f3aSudR0BXWO/0gpG5EdFzYgfWcCf1zrZuceb5lJlc59rBvds+ho
+	 yPK4Waxgo+avx6O4buweOyzcdiENyOIN6g1rZ8nP1rtSeY7hu9NIvR9ep9RW6sBAh/CkYZGemsv7
+	 DMWlB/N+N39kwQSKf+UgydwW2eLDJKdVZUjSIglngtdbr4Y0V/SaixvGJeZ7tWlC/dLWcPHhspnS
+	 YNCq7ido6+mzNewnE=
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
+From: dataonline <dataonline@foxmail.com>
+To: =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	dataonline <dataonline@foxmail.com>
+Subject: [PATCH] net: usb: qmi_wwan: add SIMCom 8230C composition
+Date: Fri, 13 Jun 2025 14:34:27 +0800
+X-OQ-MSGID: <20250613063427.2167777-1-dataonline@foxmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -67,256 +61,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Refactor the way firmware names are handled for the ICSSG PRUETH driver.
-Instead of using hardcoded firmware name arrays for different modes (EMAC,
-SWITCH, HSR), the driver now reads the firmware names from the device tree
-property "firmware-name". Only the EMAC firmware names are specified in the
-device tree property. The firmware names for all other supported modes are
-generated dynamically based on the EMAC firmware names by replacing
-substrings (e.g., "eth" with "sw" or "hsr") as appropriate.
+Add support for SIMCom 8230C which is based on Qualcomm SDX35 chip.
+0x9071: tty (DM) + tty (NMEA) + tty (AT) + rmnet
+T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1e0e ProdID=9071 Rev= 5.15
+S:  Manufacturer=SIMCOM
+S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
+S:  SerialNumber=0123456789ABCDEF
+C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=none
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Example: Below are the firmwares used currently for PRU0 core
-
-EMAC: ti-pruss/am65x-sr2-pru0-prueth-fw.elf
-SW  : ti-pruss/am65x-sr2-pru0-prusw-fw.elf
-HSR : ti-pruss/am65x-sr2-pru0-pruhsr-fw.elf
-
-All three firmware names are same except for the operating mode.
-
-In general for PRU0 core, firmware name is,
-
-        ti-pruss/am65x-sr2-pru0-pru<mode>-fw.elf
-
-Since the EMAC firmware names are defined in DT, driver will read those
-directly and for other modes swap the mode name. i.e. eth -> sw or
-eth -> hsr.
-
-This preserves backwards compatibility as ICSSG driver is supported only
-by AM65x and AM64x. Both of these have "firmware-name" property
-populated in their device tree.
-
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+Signed-off-by: dataonline <dataonline@foxmail.com>
 ---
-v1 - v2: Changed commit message to include an example as suggested by 
-         Jakub Kicinski <kuba@kernel.org>
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-v1: https://lore.kernel.org/all/20250610052501.3444441-1-danishanwar@ti.com/
-
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 135 +++++++++++++------
- drivers/net/ethernet/ti/icssg/icssg_prueth.h |  12 +-
- 2 files changed, 102 insertions(+), 45 deletions(-)
-
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index 86fc1278127c..a1e013b0a0eb 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -125,45 +125,6 @@ static irqreturn_t prueth_tx_ts_irq(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--static struct icssg_firmwares icssg_hsr_firmwares[] = {
--	{
--		.pru = "ti-pruss/am65x-sr2-pru0-pruhsr-fw.elf",
--		.rtu = "ti-pruss/am65x-sr2-rtu0-pruhsr-fw.elf",
--		.txpru = "ti-pruss/am65x-sr2-txpru0-pruhsr-fw.elf",
--	},
--	{
--		.pru = "ti-pruss/am65x-sr2-pru1-pruhsr-fw.elf",
--		.rtu = "ti-pruss/am65x-sr2-rtu1-pruhsr-fw.elf",
--		.txpru = "ti-pruss/am65x-sr2-txpru1-pruhsr-fw.elf",
--	}
--};
--
--static struct icssg_firmwares icssg_switch_firmwares[] = {
--	{
--		.pru = "ti-pruss/am65x-sr2-pru0-prusw-fw.elf",
--		.rtu = "ti-pruss/am65x-sr2-rtu0-prusw-fw.elf",
--		.txpru = "ti-pruss/am65x-sr2-txpru0-prusw-fw.elf",
--	},
--	{
--		.pru = "ti-pruss/am65x-sr2-pru1-prusw-fw.elf",
--		.rtu = "ti-pruss/am65x-sr2-rtu1-prusw-fw.elf",
--		.txpru = "ti-pruss/am65x-sr2-txpru1-prusw-fw.elf",
--	}
--};
--
--static struct icssg_firmwares icssg_emac_firmwares[] = {
--	{
--		.pru = "ti-pruss/am65x-sr2-pru0-prueth-fw.elf",
--		.rtu = "ti-pruss/am65x-sr2-rtu0-prueth-fw.elf",
--		.txpru = "ti-pruss/am65x-sr2-txpru0-prueth-fw.elf",
--	},
--	{
--		.pru = "ti-pruss/am65x-sr2-pru1-prueth-fw.elf",
--		.rtu = "ti-pruss/am65x-sr2-rtu1-prueth-fw.elf",
--		.txpru = "ti-pruss/am65x-sr2-txpru1-prueth-fw.elf",
--	}
--};
--
- static int prueth_start(struct rproc *rproc, const char *fw_name)
- {
- 	int ret;
-@@ -186,11 +147,11 @@ static int prueth_emac_start(struct prueth *prueth)
- 	int ret, slice;
- 
- 	if (prueth->is_switch_mode)
--		firmwares = icssg_switch_firmwares;
-+		firmwares = prueth->icssg_switch_firmwares;
- 	else if (prueth->is_hsr_offload_mode)
--		firmwares = icssg_hsr_firmwares;
-+		firmwares = prueth->icssg_hsr_firmwares;
- 	else
--		firmwares = icssg_emac_firmwares;
-+		firmwares = prueth->icssg_emac_firmwares;
- 
- 	for (slice = 0; slice < PRUETH_NUM_MACS; slice++) {
- 		ret = prueth_start(prueth->pru[slice], firmwares[slice].pru);
-@@ -1632,6 +1593,87 @@ static void prueth_unregister_notifiers(struct prueth *prueth)
- 	unregister_netdevice_notifier(&prueth->prueth_netdevice_nb);
- }
- 
-+static void icssg_read_firmware_names(struct device_node *np,
-+				      struct icssg_firmwares *fw)
-+{
-+	int i;
-+
-+	for (i = 0; i < PRUETH_NUM_MACS; i++) {
-+		of_property_read_string_index(np, "firmware-name", i * 3 + 0,
-+					      &fw[i].pru);
-+		of_property_read_string_index(np, "firmware-name", i * 3 + 1,
-+					      &fw[i].rtu);
-+		of_property_read_string_index(np, "firmware-name", i * 3 + 2,
-+					      &fw[i].txpru);
-+	}
-+}
-+
-+/* icssg_firmware_name_replace - Replace a substring in firmware name
-+ * @dev: device pointer for memory allocation
-+ * @src: source firmware name string
-+ * @from: substring to replace
-+ * @to: replacement substring
-+ *
-+ * Return: a newly allocated string with the replacement, or the original
-+ * string if replacement is not possible.
-+ */
-+static const char *icssg_firmware_name_replace(struct device *dev,
-+					       const char *src,
-+					       const char *from,
-+					       const char *to)
-+{
-+	size_t prefix, from_len, to_len, total;
-+	const char *p = strstr(src, from);
-+	char *buf;
-+
-+	if (!p)
-+		return src; /* fallback: no replacement, use original */
-+
-+	prefix = p - src;
-+	from_len = strlen(from);
-+	to_len = strlen(to);
-+	total = strlen(src) - from_len + to_len + 1;
-+
-+	buf = devm_kzalloc(dev, total, GFP_KERNEL);
-+	if (!buf)
-+		return src; /* fallback: allocation failed, use original */
-+
-+	strscpy(buf, src, prefix + 1);
-+	strscpy(buf + prefix, to, to_len + 1);
-+	strscpy(buf + prefix + to_len, p + from_len, total - prefix - to_len);
-+
-+	return buf;
-+}
-+
-+/**
-+ * icssg_mode_firmware_names - Generate firmware names for a specific mode
-+ * @dev: device pointer for logging and context
-+ * @src: source array of firmware name structures
-+ * @dst: destination array to store updated firmware name structures
-+ * @from: substring in firmware names to be replaced
-+ * @to: substring to replace @from in firmware names
-+ *
-+ * Iterates over all MACs and replaces occurrences of the @from substring
-+ * with @to in the firmware names (pru, rtu, txpru) for each MAC. The
-+ * updated firmware names are stored in the @dst array.
-+ */
-+static void icssg_mode_firmware_names(struct device *dev,
-+				      struct icssg_firmwares *src,
-+				      struct icssg_firmwares *dst,
-+				      const char *from, const char *to)
-+{
-+	int i;
-+
-+	for (i = 0; i < PRUETH_NUM_MACS; i++) {
-+		dst[i].pru = icssg_firmware_name_replace(dev, src[i].pru,
-+							 from, to);
-+		dst[i].rtu = icssg_firmware_name_replace(dev, src[i].rtu,
-+							 from, to);
-+		dst[i].txpru = icssg_firmware_name_replace(dev, src[i].txpru,
-+							   from, to);
-+	}
-+}
-+
- static int prueth_probe(struct platform_device *pdev)
- {
- 	struct device_node *eth_node, *eth_ports_node;
-@@ -1808,6 +1850,15 @@ static int prueth_probe(struct platform_device *pdev)
- 		icss_iep_init_fw(prueth->iep1);
- 	}
- 
-+	/* Read EMAC firmware names from device tree */
-+	icssg_read_firmware_names(np, prueth->icssg_emac_firmwares);
-+
-+	/* Generate other mode firmware names based on EMAC firmware names */
-+	icssg_mode_firmware_names(dev, prueth->icssg_emac_firmwares,
-+				  prueth->icssg_switch_firmwares, "eth", "sw");
-+	icssg_mode_firmware_names(dev, prueth->icssg_emac_firmwares,
-+				  prueth->icssg_hsr_firmwares, "eth", "hsr");
-+
- 	spin_lock_init(&prueth->vtbl_lock);
- 	spin_lock_init(&prueth->stats_lock);
- 	/* setup netdev interfaces */
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-index 23c465f1ce7f..c03e3b3626c1 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-@@ -259,9 +259,9 @@ struct prueth_pdata {
- };
- 
- struct icssg_firmwares {
--	char *pru;
--	char *rtu;
--	char *txpru;
-+	const char *pru;
-+	const char *rtu;
-+	const char *txpru;
- };
- 
- /**
-@@ -300,6 +300,9 @@ struct icssg_firmwares {
-  * @is_switchmode_supported: indicates platform support for switch mode
-  * @switch_id: ID for mapping switch ports to bridge
-  * @default_vlan: Default VLAN for host
-+ * @icssg_emac_firmwares: Firmware names for EMAC mode, indexed per MAC
-+ * @icssg_switch_firmwares: Firmware names for SWITCH mode, indexed per MAC
-+ * @icssg_hsr_firmwares: Firmware names for HSR mode, indexed per MAC
-  */
- struct prueth {
- 	struct device *dev;
-@@ -343,6 +346,9 @@ struct prueth {
- 	spinlock_t vtbl_lock;
- 	/** @stats_lock: Lock for reading icssg stats */
- 	spinlock_t stats_lock;
-+	struct icssg_firmwares icssg_emac_firmwares[PRUETH_NUM_MACS];
-+	struct icssg_firmwares icssg_switch_firmwares[PRUETH_NUM_MACS];
-+	struct icssg_firmwares icssg_hsr_firmwares[PRUETH_NUM_MACS];
- };
- 
- struct emac_tx_ts_response {
-
-base-commit: 6d4e01d29d87356924f1521ca6df7a364e948f13
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index b586b1c13a47..f5647ee0adde 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1426,6 +1426,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_QUIRK_SET_DTR(0x22de, 0x9051, 2)}, /* Hucom Wireless HM-211S/K */
+ 	{QMI_FIXED_INTF(0x22de, 0x9061, 3)},	/* WeTelecom WPD-600N */
+ 	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9001, 5)},	/* SIMCom 7100E, 7230E, 7600E ++ */
++	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9071, 3)},	/* SIMCom 8230C ++ */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0121, 4)},	/* Quectel EC21 Mini PCIe */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0191, 4)},	/* Quectel EG91 */
+ 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
 -- 
 2.34.1
 
