@@ -1,163 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BEF1DFD86;
-	Fri, 13 Jun 2025 01:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21FB1C84AD;
+	Fri, 13 Jun 2025 01:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749779723; cv=none; b=LteK6WA7Lxo07Hcoy9z2yY91dAB2OeU6dB7fEkoN6w/o50jWFXU+OtSoVxV5075KR0mXrQvRRdJLl6kbkIlM75PcfJ1F/86yMHwjY3qwcOxdNucPOvUNHaoPyQ6Qm5Sf6PZ+XhziU2XdfslBfAhTupFdjJ+iD3iG4hNotvC/2VE=
+	t=1749779999; cv=none; b=aOnrJ198i2ShhFDl7b38D26NJ2bYXkrpjepxhBfSk1iK3UGYby71vtHV6tcqNvShWGAw18bUtuWMK3apPH2Qtxeikc4drzY40ENJSTIYnkMI38mC6EE1qoetrBme0yZddjeE8Un2/WEaQVV6oGBGw6ttCxDq9+OhLpbVZ+PAxs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749779723; c=relaxed/simple;
-	bh=w9+uhG8mukFv3LUxt/Camybk60EdgO3KKFcvGpshaz8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZP7YqNziT5XYVobsYMN0br8ocIQzJ3kka1eTJ5ppIWQs0XbN7klT00cWdnHY/Li7T+IhJesma8KatXobPX4bmi8401Y+e+EYfbQlhj0ca701Opgpx3cfB086SysONJ7t8EoqpfzPTJaemftt7VMQJkGuRlSz2LqcB6EcEgyyr/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P/iEYGIa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749779999; c=relaxed/simple;
+	bh=PdQx8SDHF2OkhNpbxe9NUNMzYfyqf5xrF8iOKtmIe6w=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=qJ6QXu7CkdDeKW+FN3hwVWx3rZxNSsiYcM3e3o6GGbxbHBxLwi71RFdmNb5VJGAUZQzYDL8AOQcDhInv5CtVw6XREjz7XGxjpq1D5SF05QqiIjhp/6f+9L5vVbFv7OFioP8f5EGjCT6Reaw8k6pwljvBYuE8Ko8UeFm3s0BQVIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jvSZiZll; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P/iEYGIa"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DD62DC4CEF0;
-	Fri, 13 Jun 2025 01:55:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jvSZiZll"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3510CC4CEEA;
+	Fri, 13 Jun 2025 01:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749779723;
-	bh=w9+uhG8mukFv3LUxt/Camybk60EdgO3KKFcvGpshaz8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=P/iEYGIapK6CORVhx0aBzk4QJQljMwwpVF4iWrUH7B14Bwxic4YBKR//yM4pBLk4i
-	 jW6Ov/HxAPmMbewZtk5AuVpbmvnYrPxOY3khiMe1mb5gC/UAzyXj0Jc3wUnx8ROILF
-	 VYbVnZ8oRaj2X0em9dBUfMSpwHKh0+jXo6XExersUPeFLz3tnZp6CWuklY9aLZLgcS
-	 27yoYrinXUSXdO+W3wMaDw6Odr8rMMqkrn4BfscZVhYI6OqmW5Pfk5R6aEyb2AWb86
-	 L9EYGnof7OnX7V+YEHs6xWSg1nyfj0XXMSSpVj7d+hL0WdsU733GfhPrq7+/hcnppD
-	 xInu61qEJXX8Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4C0DC71148;
-	Fri, 13 Jun 2025 01:55:22 +0000 (UTC)
-From: George Moussalem via B4 Relay <devnull+george.moussalem.outlook.com@kernel.org>
-Date: Fri, 13 Jun 2025 05:55:07 +0400
-Subject: [PATCH RESEND net-next v5 1/2] dt-bindings: net: qca,ar803x: Add
- IPQ5018 Internal GE PHY support
+	s=k20201202; t=1749779999;
+	bh=PdQx8SDHF2OkhNpbxe9NUNMzYfyqf5xrF8iOKtmIe6w=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=jvSZiZll3nclK2PkENuIpFcnJ3jFjDsRG5/lkj6Wf5Y+8aqqRPDnZwsN0QOBqju3l
+	 TylGIwx2vptMxQtlUva/uZEe66ngjecMKHthn4WGGI3ztulC5qJfdcxhqc1Q0bYVqC
+	 TDzrZz6RecObZP14lcKo+dCK0Kv/RjgNQhBm9sxD8ciiyKhgsFXCXuTHjmo2qbG8Qz
+	 ApJyrbT6MmXeA0xBPq2EBX5ifuNYzyAndXsG1ZFh8kW2wDZcT9WZ8y1/Sf8WnS9L83
+	 rPGc+GlSDvAp7+6ONLir4xuuYc5V4rz4WRTK8YMYDhgU3jOeV/s4ESBT2j0LOdwzAn
+	 Jx3QO9Njoueqg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33BB239EFFD1;
+	Fri, 13 Jun 2025 02:00:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250613-ipq5018-ge-phy-v5-1-9af06e34ea6b@outlook.com>
-References: <20250613-ipq5018-ge-phy-v5-0-9af06e34ea6b@outlook.com>
-In-Reply-To: <20250613-ipq5018-ge-phy-v5-0-9af06e34ea6b@outlook.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, George Moussalem <george.moussalem@outlook.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1749779719; l=2960;
- i=george.moussalem@outlook.com; s=20250321; h=from:subject:message-id;
- bh=MSreklj9uhNRgsWlk9VY//Ue1TwD7d3ZsG5R6DaH9lo=;
- b=kVQ8JntaLhMiRoj//SVbfu2GsOyZi18OCEamIWjZA5JsVyeYZ8fVi6oMLMNnUX19H+Y7gaWpm
- l3cJY01QEajAT9EuDjDupBQ/UqFAIiV748uTU7r7K2VFIoGn1jxDag7
-X-Developer-Key: i=george.moussalem@outlook.com; a=ed25519;
- pk=/PuRTSI9iYiHwcc6Nrde8qF4ZDhJBlUgpHdhsIjnqIk=
-X-Endpoint-Received: by B4 Relay for george.moussalem@outlook.com/20250321
- with auth_id=364
-X-Original-From: George Moussalem <george.moussalem@outlook.com>
-Reply-To: george.moussalem@outlook.com
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: Use dev_fwnode()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174978002900.187534.13912380514697676901.git-patchwork-notify@kernel.org>
+Date: Fri, 13 Jun 2025 02:00:29 +0000
+References: <20250611104348.192092-15-jirislaby@kernel.org>
+In-Reply-To: <20250611104348.192092-15-jirislaby@kernel.org>
+To: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: linux-kernel@vger.kernel.org, tglx@linutronix.de, kuba@kernel.org,
+ davem@davemloft.net, netdev@vger.kernel.org, woojung.huh@microchip.com,
+ UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com,
+ edumazet@google.com, pabeni@redhat.com, Thangaraj.S@microchip.com,
+ Rengarajan.S@microchip.com, richardcochran@gmail.com,
+ linux-usb@vger.kernel.org
 
-From: George Moussalem <george.moussalem@outlook.com>
+Hello:
 
-Document the IPQ5018 Internal Gigabit Ethernet PHY found in the IPQ5018
-SoC. Its output pins provide an MDI interface to either an external
-switch in a PHY to PHY link scenario or is directly attached to an RJ45
-connector.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-The PHY supports 10/100/1000 mbps link modes, CDT, auto-negotiation and
-802.3az EEE.
+On Wed, 11 Jun 2025 12:43:43 +0200 you wrote:
+> irq_domain_create_simple() takes fwnode as the first argument. It can be
+> extracted from the struct device using dev_fwnode() helper instead of
+> using of_node with of_fwnode_handle().
+> 
+> So use the dev_fwnode() helper.
+> 
+> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: netdev@vger.kernel.org
+> 
+> [...]
 
-For operation, the LDO controller found in the IPQ5018 SoC for which
-there is provision in the mdio-4019 driver.
+Here is the summary with links:
+  - net: Use dev_fwnode()
+    https://git.kernel.org/netdev/net-next/c/6d4e01d29d87
 
-Two common archictures across IPQ5018 boards are:
-1. IPQ5018 PHY --> MDI --> RJ45 connector
-2. IPQ5018 PHY --> MDI --> External PHY
-In a phy to phy architecture, the DAC needs to be configured to
-accommodate for the short cable length. As such, add an optional boolean
-property so the driver sets preset DAC register values accordingly.
-
-Signed-off-by: George Moussalem <george.moussalem@outlook.com>
----
- .../devicetree/bindings/net/qca,ar803x.yaml        | 43 ++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/net/qca,ar803x.yaml b/Documentation/devicetree/bindings/net/qca,ar803x.yaml
-index 3acd09f0da863137f8a05e435a1fd28a536c2acd..7ae5110e7aa2cc97498a0ec46b67d8ed8440f3f2 100644
---- a/Documentation/devicetree/bindings/net/qca,ar803x.yaml
-+++ b/Documentation/devicetree/bindings/net/qca,ar803x.yaml
-@@ -16,8 +16,37 @@ description: |
- 
- allOf:
-   - $ref: ethernet-phy.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - ethernet-phy-id004d.d0c0
-+
-+    then:
-+      properties:
-+        reg:
-+          const: 7  # This PHY is always at MDIO address 7 in the IPQ5018 SoC
-+
-+        resets:
-+          items:
-+            - description:
-+                GE PHY MISC reset which triggers a reset across MDC, DSP, RX, and TX lines.
-+
-+        qcom,dac-preset-short-cable:
-+          description:
-+            Set if this phy is connected to another phy to adjust the values for
-+            MDAC and EDAC to adjust amplitude, bias current settings, and error
-+            detection and correction algorithm to accommodate for short cable length.
-+            If not set, DAC values are not modified and it is assumed the MDI output pins
-+            of this PHY are directly connected to an RJ45 connector.
-+          type: boolean
- 
- properties:
-+  compatible:
-+    enum:
-+      - ethernet-phy-id004d.d0c0
-+
-   qca,clk-out-frequency:
-     description: Clock output frequency in Hertz.
-     $ref: /schemas/types.yaml#/definitions/uint32
-@@ -132,3 +161,17 @@ examples:
-             };
-         };
-     };
-+  - |
-+    #include <dt-bindings/reset/qcom,gcc-ipq5018.h>
-+
-+    mdio {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        ge_phy: ethernet-phy@7 {
-+            compatible = "ethernet-phy-id004d.d0c0";
-+            reg = <7>;
-+
-+            resets = <&gcc GCC_GEPHY_MISC_ARES>;
-+        };
-+    };
-
+You are awesome, thank you!
 -- 
-2.49.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
