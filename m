@@ -1,148 +1,101 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CE72DECC7;
-	Fri, 13 Jun 2025 11:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FB62D5C95;
+	Fri, 13 Jun 2025 11:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749813634; cv=none; b=jFBPlbUD5uy/UlPiuXXKh8xHg4icuIm6qEW2bF0XT1o+bBu9s3ygxDgkLxMXqWFrIylswsfXGlNGGfiY90xmrz236KeTUc0CR7MnwSbV3qqxcX2C6TgALv+hg9tuwetjXsm8nsNMSVBARRxvQeNhT9NtieK+NI6mTY5ClhnkTJw=
+	t=1749813803; cv=none; b=TUapeCrsyR57YUt1vEyyXguEOo6iAmdJlQzkmj8CUihrz8rl0HkGCYKeByJzWUJ9Pp7U9yvHgKCDjBZP8eTp6d4rKuQ2tVtNovveiOKhYHnDH0Hc5mN/7Tb5hO36TZmfhpkVJkGhHTDhxIbBO8GGdl8ABUGVOXKoF3mcUrwSOC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749813634; c=relaxed/simple;
-	bh=5+dUxXBeTxzT+dImx+nunp7dvhoq71qj4IUSAoqj+nM=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=ZxYoxLtwDdhDHgFw9PRrR+kTwOzxi8xnxd8WexwIQE9d20k+sk6Q6/a1FFPg/dk80Ui0RjYlIyzSnXrmGcVQD7EauzkN+0lCBfV2iSiEC4U6QcVFK0O2bd+vqNqc1sWS5lPjGrN1M8QkvH6/i5V9l54YeK/wazDVI9T82ENhxNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=OMRX2svp; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="OMRX2svp"
-Received: by linux.microsoft.com (Postfix, from userid 1173)
-	id 111862113A74; Fri, 13 Jun 2025 04:20:33 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 111862113A74
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1749813633;
-	bh=dWbk6Wcgu9Mw3tIUfMKWsdLrsOL+GBBGHi3425QsaNo=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=OMRX2svpuWY/iIIpOLi4mukGMq6zZVj0PJvpcP2yySV7IR1uirDTUOmdeahw4FzFe
-	 P0cTdNNE4T6pED87k5jwJ5GWjgECasSyi4x8dGO2IQ628qMDwuDum9TNaq/FuiMJny
-	 NZC5/DB+liN+l6U9Vp7cdxAn+ZWs3oN1WOXZr/xM=
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	longli@microsoft.com,
-	kotaranov@microsoft.com,
-	horms@kernel.org,
-	shirazsaleem@microsoft.com,
-	leon@kernel.org,
-	ernis@linux.microsoft.com,
-	shradhagupta@linux.microsoft.com,
-	schakrabarti@linux.microsoft.com,
-	gerhard@engleder-embedded.com,
-	rosenp@gmail.com,
-	sdf@fomichev.me,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH net-next v2 4/4] net: mana: Handle unsupported HWC commands
-Date: Fri, 13 Jun 2025 04:20:27 -0700
-Message-Id: <1749813627-8377-5-git-send-email-ernis@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1749813627-8377-1-git-send-email-ernis@linux.microsoft.com>
-References: <1749813627-8377-1-git-send-email-ernis@linux.microsoft.com>
+	s=arc-20240116; t=1749813803; c=relaxed/simple;
+	bh=lPy9K4tp84sS9dzBKaLxxe+yj2bFe4m1LYpoaKFyl8Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bXIF8DX+QKh3XPc5zwEIq2+mqkcN9BoKQO4MHLlTimJR56t0N05LJbujAlvXhtv9eTSSVStLssFd93Oa55su7X0zZK9wNczA8+yAdpdl60WVN1W80IiITXMlolH+tdqeqPEMNiJZsqYbjrRD4rzjY4JxJNi3QJB7q08OM9kfxRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-adb5cb6d8f1so348652566b.3;
+        Fri, 13 Jun 2025 04:23:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749813800; x=1750418600;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HZw7odpK1VFuzX1+DMI95ImEufa1i/SGG5I6XZiF9i8=;
+        b=pAEn+xYx3YUMLP98ncfFCxgejoHU/ovypxfM/G+oxXBdvBuwpMW5MKB15iRHEOvH/W
+         HAdFoEk3PSTk54t09B3jwVorJsyuM81whjdQcd4arwUhMc1AKb5gJr31pSPiTo5E3Jdo
+         fCay7d6relciLczW//3bIrIyljqmziVbHDuRZlP5BlwC+r0YEbtg3AHpWjYF8+k3oxru
+         GWzsvN4XdyewOTWYWRxrXCnIqnm0f3rS1ojwFNFTGT+660ajKQFVE8F1TWpik7Seet8H
+         hwWZwDHU3nqE8YldAHWjGxAaaaoEGCY76TKwUmWTsxT6wVLtzu5CHaycwnziLdzTRxIV
+         8oUw==
+X-Forwarded-Encrypted: i=1; AJvYcCW2Xj+4CsXqXpMudocPUsShRAQeODtFWpatay1FFSKUDkatuOyOTCQUjxXfmtsqFb+tU97nLruboyxDpgY=@vger.kernel.org, AJvYcCW5YLGQqC+7JPYx27yFmC2bwGwtVrFVBKtQByOYmOgg048ra27i8Hf+Otmcmy4BBRKhER2voaUHcIc5AA7n3tKq@vger.kernel.org, AJvYcCXW7U5ZE7cd7QX4eOLiMYyBt0QpXepqBXxtJ524RkEegQtcXpeoZ+I3zQZch3F0BvicJBIQJcB1@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdmSF09FINSju7ZZwdIxBEO4G/quZblynUiM9Wczn3j16XcKPw
+	wWPoGfCb+jBRadGtrJEp5WH/7MQJ5eBrxuSG+Pin8sXA151jEfihiUGV7hEC9w==
+X-Gm-Gg: ASbGncuc4DQNh79ZaIFHF/4i1gt739Frjx+jYR3G45nVWSmKIA29E30imVBl4Deg1tt
+	ZtSd3vVGc0y8Xkr39H5LVt3uYVfwvYeGizHYnl49oiCwkQwspzI2Wmu2pPWxHkK+Ng2bUVNzdlZ
+	FR3hzfHPD5gFPqlqIUTtlEqP7XCNLK2AQdhlG9tg1UUgzCS6ytnq12lbgePwRBktG0569wTAOWS
+	oOESFVj/0zS3QWH6tl7flELH8NExYNs53ttqAz2PiZzARFCOJtqpO3BQveSJym0uPmNfpwov9at
+	6w6jqOIjDe+pUyDKSFta7coj5o2w8eZ3LRkQcuWl49Snyu2oCK1b
+X-Google-Smtp-Source: AGHT+IEE2BXLcFQbqzB4y7qNrNGQCWdHF6OzFtsL4qnH4BOAgnAXpYdY7O5wf1roVuCh9PHLr9zhzQ==
+X-Received: by 2002:a17:907:70b:b0:add:deb1:d84d with SMTP id a640c23a62f3a-adec5583fe7mr271589066b.1.1749813799632;
+        Fri, 13 Jun 2025 04:23:19 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:2::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adec88ff425sm111655666b.87.2025.06.13.04.23.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Jun 2025 04:23:19 -0700 (PDT)
+Date: Fri, 13 Jun 2025 04:22:31 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH net-next v2 7/7] selftest: netconsole: add test for
+ cmdline configuration
+Message-ID: <aEwJ95gqNkNYMk14@gmail.com>
+References: <20250611-rework-v2-0-ab1d92b458ca@debian.org>
+ <20250611-rework-v2-7-ab1d92b458ca@debian.org>
+ <20250612150542.0b4a7d71@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250612150542.0b4a7d71@kernel.org>
 
-If any of the HWC commands are not recognized by the
-underlying hardware, the hardware returns the response
-header status of -1. Log the information using
-netdev_info_once to avoid multiple error logs in dmesg.
+On Thu, Jun 12, 2025 at 03:05:42PM -0700, Jakub Kicinski wrote:
+> On Wed, 11 Jun 2025 07:18:56 -0700 Breno Leitao wrote:
+> > Add a new selftest to verify netconsole module loading with command
+> > line arguments. This test exercises the init_netconsole() path and
+> > validates proper parsing of the netconsole= parameter format.
+> > 
+> > The test:
+> > - Loads netconsole module with cmdline configuration instead of
+> >   dynamic reconfiguration
+> > - Validates message transmission through the configured target
+> > - Adds helper functions for cmdline string generation and module
+> >   validation
+> > 
+> > This complements existing netconsole selftests by covering the
+> > module initialization code path that processes boot-time parameters.
+> > This test is useful to test issues like the one described in [1].
+> 
+> I think this leaks the IP address, because if netcons_overflow.sh
+> runs afterwards it skips with:
+> 
+> #     inet 192.0.2.1/24 scope global eni370np1
+> # SKIP: IPs already in use. Skipping it
+> 
+> if netcons_overflow.sh runs first everything is fine.
 
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Reviewed-by: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
-Reviewed-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
----
-Changes in v2:
-* Define GDMA_STATUS_CMD_UNSUPPORTED for unsupported HWC status code
-  instead of using -1.
----
- drivers/net/ethernet/microsoft/mana/hw_channel.c |  4 ++++
- drivers/net/ethernet/microsoft/mana/mana_en.c    | 11 +++++++++++
- include/net/mana/gdma.h                          |  1 +
- 3 files changed, 16 insertions(+)
+Thanks for the report. I acknowledge there is a bug in the cleanup part
+of the code. Basically `trap cleanup_all_ns EXIT` is not enought because
+it was not removing the local netdevsim interface, which must be removed
+as well. I will update and resend. Good catch, again.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index 3d3677c0d014..650d22654d49 100644
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -891,6 +891,10 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
- 	}
- 
- 	if (ctx->status_code && ctx->status_code != GDMA_STATUS_MORE_ENTRIES) {
-+		if (ctx->status_code == GDMA_STATUS_CMD_UNSUPPORTED) {
-+			err = -EOPNOTSUPP;
-+			goto out;
-+		}
- 		if (req_msg->req.msg_type != MANA_QUERY_PHY_STAT)
- 			dev_err(hwc->dev, "HWC: Failed hw_channel req: 0x%x\n",
- 				ctx->status_code);
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 54a86c233948..50a947859bd0 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -847,6 +847,9 @@ static int mana_send_request(struct mana_context *ac, void *in_buf,
- 	err = mana_gd_send_request(gc, in_len, in_buf, out_len,
- 				   out_buf);
- 	if (err || resp->status) {
-+		if (err == -EOPNOTSUPP)
-+			return err;
-+
- 		if (req->req.msg_type != MANA_QUERY_PHY_STAT)
- 			dev_err(dev, "Failed to send mana message: %d, 0x%x\n",
- 				err, resp->status);
-@@ -1252,6 +1255,10 @@ int mana_query_link_cfg(struct mana_port_context *apc)
- 				sizeof(resp));
- 
- 	if (err) {
-+		if (err == -EOPNOTSUPP) {
-+			netdev_info_once(ndev, "MANA_QUERY_LINK_CONFIG not supported\n");
-+			return err;
-+		}
- 		netdev_err(ndev, "Failed to query link config: %d\n", err);
- 		return err;
- 	}
-@@ -1294,6 +1301,10 @@ int mana_set_bw_clamp(struct mana_port_context *apc, u32 speed,
- 				sizeof(resp));
- 
- 	if (err) {
-+		if (err == -EOPNOTSUPP) {
-+			netdev_info_once(ndev, "MANA_SET_BW_CLAMP not supported\n");
-+			return err;
-+		}
- 		netdev_err(ndev, "Failed to set bandwidth clamp for speed %u, err = %d",
- 			   speed, err);
- 		return err;
-diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
-index 3ce56a816425..7752ab0a55cf 100644
---- a/include/net/mana/gdma.h
-+++ b/include/net/mana/gdma.h
-@@ -10,6 +10,7 @@
- #include "shm_channel.h"
- 
- #define GDMA_STATUS_MORE_ENTRIES	0x00000105
-+#define GDMA_STATUS_CMD_UNSUPPORTED	0xffffffff
- 
- /* Structures labeled with "HW DATA" are exchanged with the hardware. All of
-  * them are naturally aligned and hence don't need __packed.
--- 
-2.34.1
-
+--breno
