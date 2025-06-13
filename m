@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0896D1E0DE8;
-	Fri, 13 Jun 2025 10:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696AB1DF258;
+	Fri, 13 Jun 2025 10:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749811440; cv=none; b=FlUky1+ont/29Yeifr7E4iSeF5xr1FIM18zPLQSkPJ7o75kmuWFIVxT9D+3twJx6Per3gav/ElfT5ME575z2BH04r0XLve9Xb6iNSHQ6H7gSVcjbsXIxYFnoZ6udcoUPWEfNM7veEVu7vqSw22bS60oyzCUB9o7KTGS1QyI0k4s=
+	t=1749812380; cv=none; b=mqrOdujGg96eq449zG1sc4EwxxQWN1Ewnxu2wJNBQ/N4SBp5RH+Ue4yBsQnuTOzZyWqrLUZfqbi61Iq3lvXPuYrNc60ZaxqC6pet5Q5iyeEsRJ6D+h8ynx2ZInil3tmQvCJWXQNEFj3KRflPpjrmavDoEz7ddATlprIDEaXzsWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749811440; c=relaxed/simple;
-	bh=mnbw6A0mNVYyInMDA9EbKUPtqVXfTwi9C7mfH7beIQQ=;
+	s=arc-20240116; t=1749812380; c=relaxed/simple;
+	bh=8BPhB2JZF3kqe7+MUXT80kngr0DXMAQUCUO0KkK66Fs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gZR+hRfpXdSzade/5K1hG0uIQaKfmgpBcXvOMbTxr0HitsG5n2fjeyWV9Fntmkj51oxnjJbkl3xtKmqyehsRV/zXy83jXM+wylCfqhp4P6DYwqQ2+VGUpEQg4URarBxEWYJcMrJ7XQrkjyEWVB8U/aiQ6n9sEklTzIwdB/9+WYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gU0uRFkV; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=g79MNG+6VxD6lgZijYD7AY3TLT0cc0EmcRIGF4VFSjGpe7C4GyTLXSYk4jifxNEScIypMbV+XeYH8vEQtMuKdQyAtAAx6HrohAV3csXcfqXsTZyA4TCFt5LSImxOwdnnA7ZAdN8EJvDeTxI3+Oxf8hW7Dg5WK//bi7dbFSVAk8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E8pGoORo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gU0uRFkV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD306C4CEE3;
-	Fri, 13 Jun 2025 10:43:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E8pGoORo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF46C4CEE3;
+	Fri, 13 Jun 2025 10:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749811439;
-	bh=mnbw6A0mNVYyInMDA9EbKUPtqVXfTwi9C7mfH7beIQQ=;
+	s=k20201202; t=1749812379;
+	bh=8BPhB2JZF3kqe7+MUXT80kngr0DXMAQUCUO0KkK66Fs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gU0uRFkVCP3yxRwUtFbnMhRQdsKCOZoM/nzYLTQN7tkZlScexuLQ0L+q7JGcJeK2A
-	 3VAsyyRyInGzeylTmqtJGqIjxLJuv/ts3Afu7vNPiZxyvvOIasA/KAk2onqqtLPNjz
-	 0e6GuEIj2vcTxBqEYHokMug56dvF8YaRCEvSLY2BZBxpFAwnT4ckrG3Dc/Fsg4MJGQ
-	 KxDM+ttltbj3Y/X+EShpvMXDylbvNfZPow47cooj4pnKkoEjzJoOeCiyj0NckKtzEz
-	 RDBfKa4YSGSE6Vz5KyjwR2FDZ5unY3yXTXx5tOOm/7iERiXMlR8X7e1eq+vTooBai8
-	 ZJ8zd7ghroI9w==
-Message-ID: <27ca7dfa-9dee-43f5-9e97-78de5e964f6e@kernel.org>
-Date: Fri, 13 Jun 2025 12:43:50 +0200
+	b=E8pGoORo7JjAI5Gf8pcjM9GcdLfbtOp7aw9l0A49lEOrkGRdYINKd0IK/fxk5UdSX
+	 xkShKhDLO86C1A6feqTOBegRKg6JaBu0ev4hOpLJUXwTLzmx5HRqqSW7wdCVOfOClj
+	 q87wVJbOSZiCyg/aSndJuppyPYVK8/1XihHWGQ0ZuBsykJi4CUOB+5kEhDYtdSb0yM
+	 j/EkWtzw8JMqNYHdEBO1TtN56t/1nkrzogStq3aAO91cbSommV14kUlG0q2xFHfEKW
+	 SCVnDxOD8J1FyeHrj5uU3MrFSkRc1eOMIOzEcW2O7bFCnzrqQVBhlOHxkfzDn2sR1V
+	 KKwgCeHEPf5Cg==
+Message-ID: <ca38f2ed-999f-4ce1-8035-8ee9247f27f2@kernel.org>
+Date: Fri, 13 Jun 2025 12:59:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,95 +35,102 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/9] arm64: dts: imx93: move i.MX93 specific part from
- imx91_93_common.dtsi to imx93.dtsi
-To: Joy Zou <joy.zou@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- catalin.marinas@arm.com, will@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- ulf.hansson@linaro.org, richardcochran@gmail.com, kernel@pengutronix.de,
- festevam@gmail.com
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-pm@vger.kernel.org, frank.li@nxp.com, ye.li@nxp.com, ping.bai@nxp.com,
- peng.fan@nxp.com, aisheng.dong@nxp.com, xiaoning.wang@nxp.com
-References: <20250613100255.2131800-1-joy.zou@nxp.com>
- <20250613100255.2131800-5-joy.zou@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH bpf-next V1 7/7] net: xdp: update documentation for
+ xdp-rx-metadata.rst
+To: Daniel Borkmann <borkmann@iogearbox.net>,
+ Stanislav Fomichev <stfomichev@gmail.com>,
+ Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+ Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>, Eric Dumazet <eric.dumazet@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ sdf@fomichev.me, kernel-team@cloudflare.com, arthur@arthurfabre.com,
+ jakub@cloudflare.com, Magnus Karlsson <magnus.karlsson@intel.com>,
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, arzeznik@cloudflare.com,
+ Yan Zhai <yan@cloudflare.com>
+References: <174897271826.1677018.9096866882347745168.stgit@firesoul>
+ <174897279518.1677018.5982630277641723936.stgit@firesoul>
+ <aEJWTPdaVmlIYyKC@mini-arch>
+ <bf7209aa-8775-448d-a12e-3a30451dad22@iogearbox.net> <87plfbcq4m.fsf@toke.dk>
+ <aEixEV-nZxb1yjyk@lore-rh-laptop> <aEj6nqH85uBe2IlW@mini-arch>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250613100255.2131800-5-joy.zou@nxp.com>
-Content-Type: text/plain; charset=UTF-8
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <aEj6nqH85uBe2IlW@mini-arch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 13/06/2025 12:02, Joy Zou wrote:
-> Move i.MX93 specific part from imx91_93_common.dtsi to imx93.dtsi.
 
-You just moved them to the common file. Why are you moving the same line
-again?
 
+
+On 11/06/2025 05.40, Stanislav Fomichev wrote:
+> On 06/11, Lorenzo Bianconi wrote:
+>>> Daniel Borkmann <daniel@iogearbox.net> writes:
+>>>
+>> [...]
+>>>>>
+>>>>> Why not have a new flag for bpf_redirect that transparently stores all
+>>>>> available metadata? If you care only about the redirect -> skb case.
+>>>>> Might give us more wiggle room in the future to make it work with
+>>>>> traits.
+>>>>
+>>>> Also q from my side: If I understand the proposal correctly, in order to fully
+>>>> populate an skb at some point, you have to call all the bpf_xdp_metadata_* kfuncs
+>>>> to collect the data from the driver descriptors (indirect call), and then yet
+>>>> again all equivalent bpf_xdp_store_rx_* kfuncs to re-store the data in struct
+>>>> xdp_rx_meta again. This seems rather costly and once you add more kfuncs with
+>>>> meta data aren't you better off switching to tc(x) directly so the driver can
+>>>> do all this natively? :/
+>>>
+>>> I agree that the "one kfunc per metadata item" scales poorly. IIRC, the
+>>> hope was (back when we added the initial HW metadata support) that we
+>>> would be able to inline them to avoid the function call overhead.
+>>>
+>>> That being said, even with half a dozen function calls, that's still a
+>>> lot less overhead from going all the way to TC(x). The goal of the use
+>>> case here is to do as little work as possible on the CPU that initially
+>>> receives the packet, instead moving the network stack processing (and
+>>> skb allocation) to a different CPU with cpumap.
+>>>
+>>> So even if the *total* amount of work being done is a bit higher because
+>>> of the kfunc overhead, that can still be beneficial because it's split
+>>> between two (or more) CPUs.
+>>>
+>>> I'm sure Jesper has some concrete benchmarks for this lying around
+>>> somewhere, hopefully he can share those :)
+>>
+>> Another possible approach would be to have some utility functions (not kfuncs)
+>> used to 'store' the hw metadata in the xdp_frame that are executed in each
+>> driver codebase before performing XDP_REDIRECT. The downside of this approach
+>> is we need to parse the hw metadata twice if the eBPF program that is bounded
+>> to the NIC is consuming these info. What do you think?
 > 
-> Signed-off-by: Joy Zou <joy.zou@nxp.com>
-> ---
->  .../boot/dts/freescale/imx91_93_common.dtsi   | 140 +---------------
->  arch/arm64/boot/dts/freescale/imx93.dtsi      | 155 ++++++++++++++++++
->  2 files changed, 157 insertions(+), 138 deletions(-)>
-> diff --git a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-> index 64cd0776b43d..da4c1c0699b3 100644
-> --- a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->  /*
-> - * Copyright 2022 NXP
-> + * Copyright 2025 NXP
+> That's the option I was asking about. I'm assuming we should be able
+> to reuse existing xmo metadata callbacks for this. We should be able
+> to hide it from the drivers also hopefully.
 
-Why?
+I'm not against this idea of transparently stores all available metadata
+into the xdp_frame (via some flag/config), but it does not fit our
+production use-case.  I also think that this can be added later.
 
+We need the ability to overwrite the RX-hash value, before redirecting
+packet to CPUMAP (remember as cover-letter describe RX-hash needed
+*before* the GRO engine processes the packet in CPUMAP. This is before
+TC/BPF).
 
-Best regards,
-Krzysztof
+Our use-case for overwriting the RX-hash value is load-balancing IPSEC
+encapsulated tunnel traffic at XDP stage via CPUMAP redirects.  This is
+generally applicable to tunneling in that we want the store the RX-hash
+of the tunnels inner-headers.  Our IPSEC use-case have a variation that
+we only decrypt[1] the first 32 bytes to calc a LB hash over
+inner-headers, and then redirect the original packet to CPUMAP.  The
+IPSEC packets travel into a veth device, which we discovered will send
+everything on a single RX-queue... because RX-hash (calc by netstack)
+will obviously use the outer-headers, meaning this LB doesn't scale.
+
+I hope this makes it clear, why we need BPF-prog ability to explicitly
+"store" the RX-hash in the xdp-frame.
+
+--Jesper
+
+[1] https://docs.ebpf.io/linux/kfuncs/bpf_crypto_decrypt/
