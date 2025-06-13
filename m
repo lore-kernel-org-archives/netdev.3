@@ -1,179 +1,330 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B8C13C9D4;
-	Fri, 13 Jun 2025 01:55:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B941DF990;
+	Fri, 13 Jun 2025 01:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749779711; cv=none; b=A0guletBgi5stjs8Goz+l/NeEMcFHH2fQf1WcUbSfPYs2iqeUL0fJDbv+Yj0//60B3smOfL+vLwJ8JLVkrcUlfV6/+qZCVh1YCq5yUD0CSFRNe/LcB5T5hksG6Gee2iU1G1bGlkuNLXKlvuQNILHCTV9mE6vzjq+UopInIrWJMM=
+	t=1749779723; cv=none; b=rAc4ZYc7AJomr4SwIJQoBjENJ5bb+aXy9tBCBlTYcrgimXGomVrhMYZB/ApORBceMB1quLFvFtIKK7/qjrMIthSu1zK/c8YxTza+rIXs9lvQ1RumwG3tmQc64smEDyHr84yhDuW59SVjQH3JtGCXdOG27j+hinIR32JRWwMAgGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749779711; c=relaxed/simple;
-	bh=rCdKrK6gJ/e8YxnkxVovavsWLwaBZejD5B7IvnTP7CU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZzSpJQrQEIksb2KuqkcFpdcGaQ8fYC3JcjARSX9Kx9uZgAtSQGInPYe61Bpfx0ZH+/0gI9YO2kaFF7KyP19LeDFscoAs2C7uD9veGSIh/XFEUXRVW2sDv8vpEmHdcCivGFSQRAavsZIZAP37Ejj2hAobnMl4aK1wjE6qPsiKt5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LkuHUGsn; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749779723; c=relaxed/simple;
+	bh=ioQAPz2xaDe+HRnOdXbR3y7vvtc51k6zFgxMh+n8twI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=gZg4diA19x4H+DexOvncsRjPp+bCFGV6KQpZZxnobr6F+tvkxxxOYJPxLL5NOo/EQUj4OnRa16mxCX8EFrsC/O5s0P29ayf4g/Wn022dQGVrZJbQQt7hP6SMn8NxxQKojDJdyQuFHtP7JlRO/JBMJlZPY6eIkDml0gKBQDLOYbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Aqf/N1tB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LkuHUGsn"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e75668006b9so1667178276.3;
-        Thu, 12 Jun 2025 18:55:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749779709; x=1750384509; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=06ajxX2TNlIzX7ObIwY55/RYqge10Y8dd0yMk2LIygM=;
-        b=LkuHUGsnuNNbElpKo5hjZtJ0ywzkBHQl/V+Xu5rHft9zp5lYDtTTRR2tR416zgfUJq
-         AengLFH0aqLj6XMqnHtKtFub1W6eoVztl6XaK9xxieUMC5Jel5d8BsFSGldgzUHlDy0x
-         tgM3EF2mf6nMWEUQYhfWxRV0ZAgu0UH0+8XqhUBoWopdegmwRoigc4kX+Gaity7UGk0Q
-         NI/AuTs4Aq+nTbvE08ExLIWFVDmkTRlRkvI+kWWOK1nBJiT5rtWrH8vOuVUgDvlMGiJ3
-         G9cZtqoQ7DN9zWjIwno5Gzb/0qE48/xPw2lDS7AcEofGG1ZpG5X4EnKcGFxpZ+zoHjdT
-         1IyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749779709; x=1750384509;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=06ajxX2TNlIzX7ObIwY55/RYqge10Y8dd0yMk2LIygM=;
-        b=g5TJboYpoBFdTNjdvOlg6D9BEosDZa+kMGk+0weh3m8KBFfjgbRDexrseTSrq/YJuP
-         bVqGzw/Ccm6TnHdrW6jIIlOBL3FEt7fHDTpsT//ZDJxXlnKUx85J5TnsmklFQex9O5Nl
-         ygskgExRlSCPCud6fi1NHX/y27LIba7TShJ0AIWlWz7Zuzx4RfeOmiTaq7bGPXlOY2W5
-         YjIcPSypEAliJF6IDhfe2XDKGQnrHWeLA6kSaNaqzVTYDrPDwsqbNBRbvxO27H9Wkjyq
-         gc+aeLxhYofvyOdK0qrJLCoNFNwsKjbe4CVEkuaj0cPhBEOM5MfE7lW0NKTXLuZXS7T8
-         JOzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQLOmqQKHJ+9EI1kF97L2e5WCYd7inSlAYclvTnk+sYcaIFg75raKhBDaS3weVttoBc4M/6qyFjU7ieSFjsbA=@vger.kernel.org, AJvYcCUmGn23m1MuHcZcufJzQ+GozG5rDttA9VqTNdlGQwx9792ZlqDJ/XbDH+MVmr5eUkOgsJ2pwNgDUZZMEw==@vger.kernel.org, AJvYcCUq2c4nnt7c9h118ZPGgupSlt53cMNlGfnrEbQ8vJD5waTWp7BkwQ76AYFbkTHk2kM8tTMPHE6rPAPAXBE=@vger.kernel.org, AJvYcCVxotwpZxkFfJ52KVR47F6nMPxhgBW2I97fGDlrgyT+b9EhkVVcM+avoLX313ymiqlHkJ57PlQNrT8Z@vger.kernel.org, AJvYcCWULLaczJWmQ0VGuvSrmTURl1L6FpuTNVVfSAex+yHElLO66MuGuo0dr9KvMdmHM2yYuLhHl8uAKcdU@vger.kernel.org, AJvYcCWXICN2lZsX8GemsEGbRPIyXNHHKCH97hoCcB/bXJrrmQOs1V4RzrQ/ZuPpIl346V5ozUTjWMPmshbA@vger.kernel.org, AJvYcCWlRqmos7XvSnA/mXHQP1Bh9THEX4udSl6hcQhlg4GUVEysVYW9vYJQ3AEIdQ7RHJJZyzuS5rCSPYM=@vger.kernel.org, AJvYcCXRsnx3cgt0XLdUFIiTinzCj02kQxIuYwGUfSX5anMwCiYKlh0+77GB0rtTSvOGFxZnyXhaERMRKHH1/MEC@vger.kernel.org, AJvYcCXnmKu9YS2FSD+AJHKS/eBBT/bV4Vl9ia+Jff0x6No2IuFWg6kg/BtuW/38z+P4HwXjtD6brRAE@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBx/nR8qIp4wX7vRxcElysYkZJgIfGL20Ym6mXj1RRSOOF2+wq
-	DjdNfAjE0NMbo7TnQxrlTnSQo634ifChBWbUFUHEq0oGJZVx7gH4/acNotxCw9wDlTD55d1j+nZ
-	vHAENsqcw1+T7slFOGCSyl8alHiZd5+c=
-X-Gm-Gg: ASbGncvDtYIbonx1lW0WFv4PEKsOHMcm1Y15yTx58OooEwhBbCLFLuE3H3qbHX6qtF4
-	WQ6fJCq/pqH4t8UDu32yQc3EQnsnjjCB1oiTqbCJDa2odvKQ4gyvx/Wl82UpQobt5ZgPPD9QuBx
-	cMIhJJZsOP00B3hR3EpBBTikML+9waoDSanTSa+IY8YNoiaoOjJXwqXRrdJgFA4NZ/3UxTt8uRJ
-	a9p
-X-Google-Smtp-Source: AGHT+IEwtTMIgnW9cREhPY1t6TwmH5URxj0k01buMuGSLF64DQ1cKYYmL5ADjjBfdKxhOg26PxHaWRdo1T9o8K3ogLo=
-X-Received: by 2002:a05:6902:2846:b0:e80:cff4:5d1f with SMTP id
- 3f1490d57ef6-e821c3260admr1744635276.33.1749779708953; Thu, 12 Jun 2025
- 18:55:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Aqf/N1tB"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EB02DC4CEF5;
+	Fri, 13 Jun 2025 01:55:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749779723;
+	bh=ioQAPz2xaDe+HRnOdXbR3y7vvtc51k6zFgxMh+n8twI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=Aqf/N1tBDPtvPZAM1GhcunHi+fV1S3lK+W8ZYvOIkyEXeFnBuExslf8wOXWXVthaP
+	 Zl6NWn4OqZXjcDQs1zDKx4APG+018JsmmJ1k9+rCK/yko5h6wNf6UZ8qTyIvaMaVVX
+	 b1Iu2U5L2nr/11djmF12setYDuTDht35MpzhpylJcPL9/jDEnnXeuJG75LJ/8fhwlA
+	 hEpexhNf1mkiJh6i/bN0NuxA1pbtNbBSXf/5EmzIJaQupcHUXN/q/BSGFK+OLbxXho
+	 Co0pYzVMp4qKzQnqdSSwj2xuVCupJx5/LXBhj5e57HmopXV3yrWoujcae3kVADi53+
+	 qSvqL3R51R9lQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9E42C71150;
+	Fri, 13 Jun 2025 01:55:22 +0000 (UTC)
+From: George Moussalem via B4 Relay <devnull+george.moussalem.outlook.com@kernel.org>
+Date: Fri, 13 Jun 2025 05:55:08 +0400
+Subject: [PATCH RESEND net-next v5 2/2] net: phy: qcom: at803x: Add
+ Qualcomm IPQ5018 Internal PHY support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250604041418.1188792-1-tmyu0@nuvoton.com> <20250604041418.1188792-2-tmyu0@nuvoton.com>
- <20250612140041.GF381401@google.com> <CAOoeyxVvZiD18qbGd5oUnqLNETKw50fJBjJO3vR50kon_a5_kA@mail.gmail.com>
- <20250612152313.GP381401@google.com>
-In-Reply-To: <20250612152313.GP381401@google.com>
-From: Ming Yu <a0282524688@gmail.com>
-Date: Fri, 13 Jun 2025 09:54:56 +0800
-X-Gm-Features: AX0GCFuXplAsq4dFkQn8MRsErKaATzN_Jh0hZNplX5q_WEulmLSOivK-kFfFh9w
-Message-ID: <CAOoeyxV-E_HQOBu0Pzfy0b0yJ2qbrW_C8pATCTWE4+PXqvHL6g@mail.gmail.com>
-Subject: Re: [PATCH v12 1/7] mfd: Add core driver for Nuvoton NCT6694
-To: Lee Jones <lee@kernel.org>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andi.shyti@kernel.org, 
-	mkl@pengutronix.de, mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	wim@linux-watchdog.org, linux@roeck-us.net, jdelvare@suse.com, 
-	alexandre.belloni@bootlin.com, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-	linux-rtc@vger.kernel.org, linux-usb@vger.kernel.org, 
-	Ming Yu <tmyu0@nuvoton.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250613-ipq5018-ge-phy-v5-2-9af06e34ea6b@outlook.com>
+References: <20250613-ipq5018-ge-phy-v5-0-9af06e34ea6b@outlook.com>
+In-Reply-To: <20250613-ipq5018-ge-phy-v5-0-9af06e34ea6b@outlook.com>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, George Moussalem <george.moussalem@outlook.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749779719; l=9492;
+ i=george.moussalem@outlook.com; s=20250321; h=from:subject:message-id;
+ bh=R5k0bIbl9k/QACKkeDffKhqMQ6qO/YSOmshLeIdltn4=;
+ b=dc6dGdFri5bKuQH8ZPveu5XTni+GbbDrhGGKQzI1DndxewaK1vg7tJbJt6ZFiyRf+Lotcdbh7
+ 0hPvHyjJ38oB4K4v6/CN1343nTI75hDsU6vY2x88tnfCP6/wwyZ52YE
+X-Developer-Key: i=george.moussalem@outlook.com; a=ed25519;
+ pk=/PuRTSI9iYiHwcc6Nrde8qF4ZDhJBlUgpHdhsIjnqIk=
+X-Endpoint-Received: by B4 Relay for george.moussalem@outlook.com/20250321
+ with auth_id=364
+X-Original-From: George Moussalem <george.moussalem@outlook.com>
+Reply-To: george.moussalem@outlook.com
 
-Lee Jones <lee@kernel.org> =E6=96=BC 2025=E5=B9=B46=E6=9C=8812=E6=97=A5 =E9=
-=80=B1=E5=9B=9B =E4=B8=8B=E5=8D=8811:23=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> On Thu, 12 Jun 2025, Ming Yu wrote:
->
-> > Dear Lee,
-> >
-> > Thank you for reviewing,
-> >
-> > Lee Jones <lee@kernel.org> =E6=96=BC 2025=E5=B9=B46=E6=9C=8812=E6=97=A5=
- =E9=80=B1=E5=9B=9B =E4=B8=8B=E5=8D=8810:00=E5=AF=AB=E9=81=93=EF=BC=9A
-> > >
-> > ...
-> > > > +static const struct mfd_cell nct6694_devs[] =3D {
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 0),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 1),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 2),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 3),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 4),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 5),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 6),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 7),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 8),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 9),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 10),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 11),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 12),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 13),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 14),
-> > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 15),
-> > > > +
-> > > > +     MFD_CELL_BASIC("nct6694-i2c", NULL, NULL, 0, 0),
-> > > > +     MFD_CELL_BASIC("nct6694-i2c", NULL, NULL, 0, 1),
-> > > > +     MFD_CELL_BASIC("nct6694-i2c", NULL, NULL, 0, 2),
-> > > > +     MFD_CELL_BASIC("nct6694-i2c", NULL, NULL, 0, 3),
-> > > > +     MFD_CELL_BASIC("nct6694-i2c", NULL, NULL, 0, 4),
-> > > > +     MFD_CELL_BASIC("nct6694-i2c", NULL, NULL, 0, 5),
-> > >
-> > > Why have we gone back to this silly numbering scheme?
-> > >
-> > > What happened to using IDA in the child driver?
-> > >
-> >
-> > In a previous version, I tried to maintain a static IDA in each
-> > sub-driver. However, I didn=E2=80=99t consider the case where multiple =
-NCT6694
-> > devices are bound to the same driver =E2=80=94 in that case, the IDs ar=
-e not
-> > fixed and become unusable for my purpose.
->
-> Not sure I understand.
->
+From: George Moussalem <george.moussalem@outlook.com>
 
-As far as I know, if I maintain the IDA in the sub-drivers and use
-multiple MFD_CELL_NAME("nct6694-gpio") entries in the MFD, the first
-NCT6694 device bound to the GPIO driver will receive IDs 0~15.
-However, when a second NCT6694 device is connected to the system, it
-will receive IDs 16~31.
-Because of this behavior, I switched back to using platform_device->id.
+The IPQ5018 SoC contains a single internal Gigabit Ethernet PHY which
+provides an MDI interface directly to an RJ45 connector or an external
+switch over a PHY to PHY link.
 
-> > I=E2=80=99ve since realized that using pdev->id avoids the need for cel=
-l->id,
-> > so I reverted to the earlier approach.
-> >
-> > That said, do you think it would be a better solution to manage all
-> > the IDAs centrally within the driver? For example:
-> > in nct6694.c
-> > struct nct6694 {
-> >     struct device *dev;
-> >
-> >     struct ida gpio_ida;
-> >     struct ida i2c_ida;
-> >     struct ida can_ida;
-> >     struct ida wdt_ida;
-> > };
-> >
-> > static int nct6694_probe(struct platform_device *pdev)
-> > {
-> >     ida_init(&nct6694->gpio_ida);
-> >     ...
-> > }
-> >
-> > in gpio-nct6694.c
-> > static int nct6694_gpio_probe(struct platform_device *pdev)
-> > {
-> >     id =3D ida_alloc(&nct6694->gpio_ida, GFP_KERNEL);
-> > }
->
-> No that would be way worse.
->
+The PHY supports 10BASE-T/100BASE-TX/1000BASE-T link modes in SGMII
+interface mode, CDT, auto-negotiation and 802.3az EEE.
+
+Let's add support for this PHY in the at803x driver as it falls within
+the Qualcomm Atheros OUI.
+
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: George Moussalem <george.moussalem@outlook.com>
+---
+ drivers/net/phy/qcom/Kconfig  |   2 +-
+ drivers/net/phy/qcom/at803x.c | 167 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 168 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/phy/qcom/Kconfig b/drivers/net/phy/qcom/Kconfig
+index 570626cc8e14d3e6615f74a6377f0f7c9f723e89..84239e08a8dfa466b0a7b2a5ec724a168b692cd2 100644
+--- a/drivers/net/phy/qcom/Kconfig
++++ b/drivers/net/phy/qcom/Kconfig
+@@ -7,7 +7,7 @@ config AT803X_PHY
+ 	select QCOM_NET_PHYLIB
+ 	depends on REGULATOR
+ 	help
+-	  Currently supports the AR8030, AR8031, AR8033, AR8035 model
++	  Currently supports the AR8030, AR8031, AR8033, AR8035, IPQ5018 model
+ 
+ config QCA83XX_PHY
+ 	tristate "Qualcomm Atheros QCA833x PHYs"
+diff --git a/drivers/net/phy/qcom/at803x.c b/drivers/net/phy/qcom/at803x.c
+index 26350b962890b0321153d74758b13d817407d094..43e604171828ce35d5950e02b1d08ee3e4523fdc 100644
+--- a/drivers/net/phy/qcom/at803x.c
++++ b/drivers/net/phy/qcom/at803x.c
+@@ -19,6 +19,7 @@
+ #include <linux/regulator/consumer.h>
+ #include <linux/of.h>
+ #include <linux/phylink.h>
++#include <linux/reset.h>
+ #include <linux/sfp.h>
+ #include <dt-bindings/net/qca-ar803x.h>
+ 
+@@ -96,6 +97,8 @@
+ #define ATH8035_PHY_ID				0x004dd072
+ #define AT8030_PHY_ID_MASK			0xffffffef
+ 
++#define IPQ5018_PHY_ID				0x004dd0c0
++
+ #define QCA9561_PHY_ID				0x004dd042
+ 
+ #define AT803X_PAGE_FIBER			0
+@@ -108,6 +111,48 @@
+ /* disable hibernation mode */
+ #define AT803X_DISABLE_HIBERNATION_MODE		BIT(2)
+ 
++#define IPQ5018_PHY_FIFO_CONTROL		0x19
++#define IPQ5018_PHY_FIFO_RESET			GENMASK(1, 0)
++
++#define IPQ5018_PHY_DEBUG_EDAC			0x4380
++#define IPQ5018_PHY_MMD1_MDAC			0x8100
++#define IPQ5018_PHY_DAC_MASK			GENMASK(15, 8)
++
++/* MDAC and EDAC values for short cable length */
++#define IPQ5018_PHY_DEBUG_EDAC_VAL		0x10
++#define IPQ5018_PHY_MMD1_MDAC_VAL		0x10
++
++#define IPQ5018_PHY_MMD1_MSE_THRESH1		0x1000
++#define IPQ5018_PHY_MMD1_MSE_THRESH2		0x1001
++#define IPQ5018_PHY_PCS_EEE_TX_TIMER		0x8008
++#define IPQ5018_PHY_PCS_EEE_RX_TIMER		0x8009
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL3	0x8074
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL4	0x8075
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL5	0x8076
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL6	0x8077
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL7	0x8078
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL9	0x807a
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL13	0x807e
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL14	0x807f
++
++#define IPQ5018_PHY_MMD1_MSE_THRESH1_VAL	0xf1
++#define IPQ5018_PHY_MMD1_MSE_THRESH2_VAL	0x1f6
++#define IPQ5018_PHY_PCS_EEE_TX_TIMER_VAL	0x7880
++#define IPQ5018_PHY_PCS_EEE_RX_TIMER_VAL	0xc8
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL3_VAL	0xc040
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL4_VAL	0xa060
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL5_VAL	0xc040
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL6_VAL	0xa060
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL7_VAL	0xc24c
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL9_VAL	0xc060
++#define IPQ5018_PHY_PCS_CDT_THRESH_CTRL13_VAL	0xb060
++#define IPQ5018_PHY_PCS_NEAR_ECHO_THRESH_VAL	0x90b0
++
++#define IPQ5018_PHY_DEBUG_ANA_LDO_EFUSE		0x1
++#define IPQ5018_PHY_DEBUG_ANA_LDO_EFUSE_MASK	GENMASK(7, 4)
++#define IPQ5018_PHY_DEBUG_ANA_LDO_EFUSE_DEFAULT	0x50
++#define IPQ5018_PHY_DEBUG_ANA_DAC_FILTER	0xa080
++
+ MODULE_DESCRIPTION("Qualcomm Atheros AR803x PHY driver");
+ MODULE_AUTHOR("Matus Ujhelyi");
+ MODULE_LICENSE("GPL");
+@@ -133,6 +178,11 @@ struct at803x_context {
+ 	u16 led_control;
+ };
+ 
++struct ipq5018_priv {
++	struct reset_control *rst;
++	bool set_short_cable_dac;
++};
++
+ static int at803x_write_page(struct phy_device *phydev, int page)
+ {
+ 	int mask;
+@@ -987,6 +1037,109 @@ static int at8035_probe(struct phy_device *phydev)
+ 	return at8035_parse_dt(phydev);
+ }
+ 
++static int ipq5018_cable_test_start(struct phy_device *phydev)
++{
++	phy_write_mmd(phydev, MDIO_MMD_PCS, IPQ5018_PHY_PCS_CDT_THRESH_CTRL3,
++		      IPQ5018_PHY_PCS_CDT_THRESH_CTRL3_VAL);
++	phy_write_mmd(phydev, MDIO_MMD_PCS, IPQ5018_PHY_PCS_CDT_THRESH_CTRL4,
++		      IPQ5018_PHY_PCS_CDT_THRESH_CTRL4_VAL);
++	phy_write_mmd(phydev, MDIO_MMD_PCS, IPQ5018_PHY_PCS_CDT_THRESH_CTRL5,
++		      IPQ5018_PHY_PCS_CDT_THRESH_CTRL5_VAL);
++	phy_write_mmd(phydev, MDIO_MMD_PCS, IPQ5018_PHY_PCS_CDT_THRESH_CTRL6,
++		      IPQ5018_PHY_PCS_CDT_THRESH_CTRL6_VAL);
++	phy_write_mmd(phydev, MDIO_MMD_PCS, IPQ5018_PHY_PCS_CDT_THRESH_CTRL7,
++		      IPQ5018_PHY_PCS_CDT_THRESH_CTRL7_VAL);
++	phy_write_mmd(phydev, MDIO_MMD_PCS, IPQ5018_PHY_PCS_CDT_THRESH_CTRL9,
++		      IPQ5018_PHY_PCS_CDT_THRESH_CTRL9_VAL);
++	phy_write_mmd(phydev, MDIO_MMD_PCS, IPQ5018_PHY_PCS_CDT_THRESH_CTRL13,
++		      IPQ5018_PHY_PCS_CDT_THRESH_CTRL13_VAL);
++	phy_write_mmd(phydev, MDIO_MMD_PCS, IPQ5018_PHY_PCS_CDT_THRESH_CTRL3,
++		      IPQ5018_PHY_PCS_NEAR_ECHO_THRESH_VAL);
++
++	/* we do all the (time consuming) work later */
++	return 0;
++}
++
++static int ipq5018_config_init(struct phy_device *phydev)
++{
++	struct ipq5018_priv *priv = phydev->priv;
++	u16 val;
++
++	/*
++	 * set LDO efuse: first temporarily store ANA_DAC_FILTER value from
++	 * debug register as it will be reset once the ANA_LDO_EFUSE register
++	 * is written to
++	 */
++	val = at803x_debug_reg_read(phydev, IPQ5018_PHY_DEBUG_ANA_DAC_FILTER);
++	at803x_debug_reg_mask(phydev, IPQ5018_PHY_DEBUG_ANA_LDO_EFUSE,
++			      IPQ5018_PHY_DEBUG_ANA_LDO_EFUSE_MASK,
++			      IPQ5018_PHY_DEBUG_ANA_LDO_EFUSE_DEFAULT);
++	at803x_debug_reg_write(phydev, IPQ5018_PHY_DEBUG_ANA_DAC_FILTER, val);
++
++	/* set 8023AZ EEE TX and RX timer values */
++	phy_write_mmd(phydev, MDIO_MMD_PCS, IPQ5018_PHY_PCS_EEE_TX_TIMER,
++		      IPQ5018_PHY_PCS_EEE_TX_TIMER_VAL);
++	phy_write_mmd(phydev, MDIO_MMD_PCS, IPQ5018_PHY_PCS_EEE_RX_TIMER,
++		      IPQ5018_PHY_PCS_EEE_RX_TIMER_VAL);
++
++	/* set MSE threshold values */
++	phy_write_mmd(phydev, MDIO_MMD_PMAPMD, IPQ5018_PHY_MMD1_MSE_THRESH1,
++		      IPQ5018_PHY_MMD1_MSE_THRESH1_VAL);
++	phy_write_mmd(phydev, MDIO_MMD_PMAPMD, IPQ5018_PHY_MMD1_MSE_THRESH2,
++		      IPQ5018_PHY_MMD1_MSE_THRESH2_VAL);
++
++	/* PHY DAC values are optional and only set in a PHY to PHY link architecture */
++	if (priv->set_short_cable_dac) {
++		/* setting MDAC (Multi-level Digital-to-Analog Converter) in MMD1 */
++		phy_modify_mmd(phydev, MDIO_MMD_PMAPMD, IPQ5018_PHY_MMD1_MDAC,
++			       IPQ5018_PHY_DAC_MASK, IPQ5018_PHY_MMD1_MDAC_VAL);
++
++		/* setting EDAC (Error-detection and Correction) in debug register */
++		at803x_debug_reg_mask(phydev, IPQ5018_PHY_DEBUG_EDAC,
++				      IPQ5018_PHY_DAC_MASK, IPQ5018_PHY_DEBUG_EDAC_VAL);
++	}
++
++	return 0;
++}
++
++static void ipq5018_link_change_notify(struct phy_device *phydev)
++{
++	/*
++	 * Reset the FIFO buffer upon link disconnects to clear any residual data
++	 * which may cause issues with the FIFO which it cannot recover from.
++	 */
++	mdiobus_modify_changed(phydev->mdio.bus, phydev->mdio.addr,
++			       IPQ5018_PHY_FIFO_CONTROL, IPQ5018_PHY_FIFO_RESET,
++			       phydev->link ? IPQ5018_PHY_FIFO_RESET : 0);
++}
++
++static int ipq5018_probe(struct phy_device *phydev)
++{
++	struct device *dev = &phydev->mdio.dev;
++	struct ipq5018_priv *priv;
++	int ret;
++
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv->set_short_cable_dac = of_property_read_bool(dev->of_node,
++							  "qcom,dac-preset-short-cable");
++
++	priv->rst = devm_reset_control_array_get_exclusive(dev);
++	if (IS_ERR(priv->rst))
++		return dev_err_probe(dev, PTR_ERR(priv->rst),
++				     "failed to acquire reset\n");
++
++	ret = reset_control_reset(priv->rst);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to reset\n");
++
++	phydev->priv = priv;
++
++	return 0;
++}
++
+ static struct phy_driver at803x_driver[] = {
+ {
+ 	/* Qualcomm Atheros AR8035 */
+@@ -1078,6 +1231,19 @@ static struct phy_driver at803x_driver[] = {
+ 	.read_status		= at803x_read_status,
+ 	.soft_reset		= genphy_soft_reset,
+ 	.config_aneg		= at803x_config_aneg,
++}, {
++	PHY_ID_MATCH_EXACT(IPQ5018_PHY_ID),
++	.name			= "Qualcomm Atheros IPQ5018 internal PHY",
++	.flags			= PHY_IS_INTERNAL | PHY_POLL_CABLE_TEST,
++	.probe			= ipq5018_probe,
++	.config_init		= ipq5018_config_init,
++	.link_change_notify	= ipq5018_link_change_notify,
++	.read_status		= at803x_read_status,
++	.config_intr		= at803x_config_intr,
++	.handle_interrupt	= at803x_handle_interrupt,
++	.cable_test_start	= ipq5018_cable_test_start,
++	.cable_test_get_status	= qca808x_cable_test_get_status,
++	.soft_reset		= genphy_soft_reset,
+ }, {
+ 	/* Qualcomm Atheros QCA9561 */
+ 	PHY_ID_MATCH_EXACT(QCA9561_PHY_ID),
+@@ -1104,6 +1270,7 @@ static const struct mdio_device_id __maybe_unused atheros_tbl[] = {
+ 	{ PHY_ID_MATCH_EXACT(ATH8032_PHY_ID) },
+ 	{ PHY_ID_MATCH_EXACT(ATH8035_PHY_ID) },
+ 	{ PHY_ID_MATCH_EXACT(ATH9331_PHY_ID) },
++	{ PHY_ID_MATCH_EXACT(IPQ5018_PHY_ID) },
+ 	{ PHY_ID_MATCH_EXACT(QCA9561_PHY_ID) },
+ 	{ }
+ };
+
+-- 
+2.49.0
 
 
-Thanks,
-Ming
