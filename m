@@ -1,85 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F3E3595A;
-	Fri, 13 Jun 2025 13:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D16B86349;
+	Fri, 13 Jun 2025 13:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749820080; cv=none; b=okeBUGphRiRG2UpelZMd/ll9pNIv9h4hhfqhHjrYvebfh6p8sw/9A2U8GsisO+dM686b9++v5eQbPErH4eislCS9DcQWP6UBvw8anq+cbnuxmsKYaIU5zWNG66lcBWxj21JnOAZRjHOsayYcZ4ncQ8l7nkawx2UlOUGdITnc/5s=
+	t=1749820252; cv=none; b=Fr7qx/eHawBvr6dYFCimAeSLb6U9UNj92YrqI1TkiVRz4FlFCpf03q8x6I0jr1BZ35mzd0sKo/kYhXV020313NlsmC1g+aJKFGOVEf04OTOW0aErtv/k6w5yVEo8Bnj0UngghhXubr6D2i2YI0QcTvB4HO2DuBKu+gXGlIgMGAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749820080; c=relaxed/simple;
-	bh=rtychsqz4b9aGmWoQ2Cv3JTMD17+FvibZTjfMu3M+nU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dz+nVq8xVbBJONuN3JhIJauMMyPHdDAUPnk82TkW/EegeBEtdMWuFxG7SCyzstM7kYuZJLBPykRzqq5V02BQA5+IF/hg5BhkwzUAfIdUymcet0vZfB9p6DFbCPCw4X9BtZi9t/oEXu2T2PcuZG7Hxd1UL6bKHmo8ON/aBW6f0yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E5znlyp1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749820252; c=relaxed/simple;
+	bh=bighsJukvHCmbsxtrGb5PYuln7NuXuTra9dKT6j4s1c=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=lwZjbzG7LNuRKF4KU8kuT4QLwZGM072TYG/keytSop1HHlWxJdGBY4kCDoN34KhrVecht441HJFleF6nIypfHjDhcjHDmBwYN4BB5o6AIFguvSolLjo8avda4PsTawgPRmPwlHa3YCxIm2IBDBtcjUZSOaUFmPeBe76+cUuuGjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q0HvrRJb; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E5znlyp1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70BDC4CEE3;
-	Fri, 13 Jun 2025 13:07:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749820079;
-	bh=rtychsqz4b9aGmWoQ2Cv3JTMD17+FvibZTjfMu3M+nU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E5znlyp1oii/MKYWWT61lHFnq5WKaQ84AFRBmNuETuxIlvlhdSnbuhAxUZHhOIN00
-	 q+aJi6ojNyE+F3rPf9/l2l/OwutwrOelOpapnXQq8/FjchmMznLan/Dm3vZuXLGfM4
-	 MQG5tYSQ/OYit4aFAPuOUQzAxD6B4Qwy2vk85IXkDOA4udAEMFspCr69nS+nPR3thV
-	 VZGML054PAT/OYhM9ZQlD/TImxqHtHFrSc9PPlBAuJ/sv0XDedrBNO8g/p3waOPeh2
-	 J3d7jfoNuS+PcONakH2S3LvcixHLXQ/trfVJR/FOZ/ICucfWb5LIsEIp8AYp8MS0ga
-	 XQJ7yB71x8nnA==
-Date: Fri, 13 Jun 2025 14:07:53 +0100
-From: Simon Horman <horms@kernel.org>
-To: Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux GPIO <linux-gpio@vger.kernel.org>,
-	Linux MTD <linux-mtd@vger.kernel.org>,
-	Linux Networking <netdev@vger.kernel.org>,
-	Linux USB <linux-usb@vger.kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Richard Weinberger <richard@nod.at>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
-	Felipe Balbi <balbi@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Subject: Re: [PATCH] Documentation: treewide: Replace remaining spinics links
- with lore
-Message-ID: <20250613130753.GE414686@horms.kernel.org>
-References: <20250611065254.36608-2-bagasdotme@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q0HvrRJb"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-451e2f0d9c2so17073095e9.1;
+        Fri, 13 Jun 2025 06:10:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749820248; x=1750425048; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gLilsl7/9YCC/BIaIFPuFIBhon3SF7Um1puCDANK0WU=;
+        b=Q0HvrRJbqVopDXVPrXr5ITlLYfTLWIX3RKrAjtBbaxncr75NvI6L/KSvTl+Yg8Ba8j
+         ZlHML0kn+v8bo+J/svOiEkx25EgYMNrsX2WsXUwenybzgcj/+0lXIDwstrUQ1o2ozh4v
+         cXI7jelz1Vc6bv5vi1hyK5p5SKqBxSNHehGF2Uk3QEK/YINDR9MOA9ctCs62fSvMeOiy
+         JFl1yHP5YpLqFNpLYTAoKb8trmKErOaD9yjMRiYcPjchxaLa997PMQb8HXBoKna900hz
+         TVO5AvmbwUV8EK/XO1zedahMEPn8/y4zeCliDMVKmnB/6ClAXCm1DvbnHDocbgTLSkcH
+         c4Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749820248; x=1750425048;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gLilsl7/9YCC/BIaIFPuFIBhon3SF7Um1puCDANK0WU=;
+        b=O5EkMBqqrj4yeiBnINe5PAYSCktTEM88XkU+txRE6LUl4Efk1Mxt2dSuXNl4cfCWsZ
+         9MY/KXJ6HAlSAu9BHzcK4bbUSkOx9jMOf65eCIyfXlJdjCiC/uWqgifH9x6cmiZ5Ns6L
+         BifgMq/hLFcL9+X0wugxeHTBbci0OkGhefmmd9hA3Z55YbEmMGcxG2mJofjEvbcH6Ur/
+         Sz1Giik7shC9p9nohG8pF77Uwn3fIi9yaBlI2K1d8l7Yy5fyBMNWfpth1OKeGeQYJsOt
+         e6LNZqkn7188Sc2Q2rq/5jInGjU02/Ig3klgYrxMeXxS3AUqSWTOiCUwoismsMxRef8k
+         o5kg==
+X-Forwarded-Encrypted: i=1; AJvYcCVXWstr9yKOBiHMBIAHkAP00buhxlbWt+NmCURxzvLW7//JAfNjazkqrqLrJuf98jt/+ijR4IEjfuNFBp4=@vger.kernel.org, AJvYcCWsLuNYVzHG1QSyGZOfkpMHTIOb48t1MiaF58PBgQTm6YEx8yBDCQK6uk+QxtEEEFU0eTB1bpNX@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCDqZxSs51r0DM489hfdVb5ZrvTnN5HlF35jTiWyKvHdlSaLo3
+	GBydFz+EcBEKdkH28l5eT7mlqOzwAGc4pdzFix8iUIQe19WEmhGNyb6y
+X-Gm-Gg: ASbGncsIReij2lOAEBcuGJMPUa63Rhxe5Q2wANaE5tGcVpHVL3Rq+B1f9AsiM3GJZYR
+	UmcMN7IUrWTqED7j5ilB1EMCKF19DFavtPHkPOn2ThHh/ixZNV8xo5ZpbEDbrSvZurvZp6X8EMJ
+	AVzRy9J3jsuCg8866AuAOhwYm3AFZ+kWOWI2CRehzE14LMnViE5LMk31TfUk+x9aWHwRFBjw+kS
+	rJ0Z0A0bTtJNw54gXew8ntxmdeKz4n7pqAdiOSxTTEe6r4kbEXkPAkCIb6ikZhlVLLV8c9aZDIA
+	qIRLUtBCEtD3JBcW4iGyGj6WeoCWbGSNUZ7MdDf3PZrI4xllhodesdYphFl1yG3EfJzgmKpkLNk
+	=
+X-Google-Smtp-Source: AGHT+IGfVZFiAggq9Aw6BMb9XwyEivoymyFHVpaowGl0cVCFRIr9NgEggsMqUnBqGZmFMU5CQmtjhA==
+X-Received: by 2002:a05:600c:5908:b0:453:827:d0b1 with SMTP id 5b1f17b1804b1-4533b235e16mr6682555e9.2.1749820248270;
+        Fri, 13 Jun 2025 06:10:48 -0700 (PDT)
+Received: from imac ([2a02:8010:60a0:0:75e0:f7f7:dffa:561e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e2384cesm51114175e9.16.2025.06.13.06.10.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Jun 2025 06:10:47 -0700 (PDT)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>,  Jonathan Corbet
+ <corbet@lwn.net>,  "Akira Yokosawa" <akiyks@gmail.com>,  "Breno Leitao"
+ <leitao@debian.org>,  "David S. Miller" <davem@davemloft.net>,  "Eric
+ Dumazet" <edumazet@google.com>,  "Ignacio Encinas Rubio"
+ <ignacio@iencinas.com>,  "Jan Stancek" <jstancek@redhat.com>,  "Marco
+ Elver" <elver@google.com>,  "Paolo Abeni" <pabeni@redhat.com>,  "Ruben
+ Wauters" <rubenru09@aol.com>,  "Shuah Khan" <skhan@linuxfoundation.org>,
+  joel@joelfernandes.org,  linux-kernel-mentees@lists.linux.dev,
+  linux-kernel@vger.kernel.org,  lkmm@lists.linux.dev,
+  netdev@vger.kernel.org,  peterz@infradead.org,  stern@rowland.harvard.edu
+Subject: Re: [PATCH v3 13/16] docs: conf.py: add include_pattern to speedup
+In-Reply-To: <62f2de3a195dc47ba6919721e460a8dd7ae95bc3.1749812870.git.mchehab+huawei@kernel.org>
+Date: Fri, 13 Jun 2025 14:02:55 +0100
+Message-ID: <m2ikkzlrpc.fsf@gmail.com>
+References: <cover.1749812870.git.mchehab+huawei@kernel.org>
+	<62f2de3a195dc47ba6919721e460a8dd7ae95bc3.1749812870.git.mchehab+huawei@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250611065254.36608-2-bagasdotme@gmail.com>
+Content-Type: text/plain
 
-On Wed, Jun 11, 2025 at 01:52:55PM +0700, Bagas Sanjaya wrote:
-> Long before introduction of lore.kernel.org, people would link
-> to LKML threads on third-party archives (here spinics.net), which
-> in some cases can be unreliable (as these were outside of
-> kernel.org control). Replace links to them with lore counterparts
-> (if any).
-> 
-> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
+
+> Now that we have a parser for yaml, use include_pattern, adding
+> just yaml files from the only directory we currently process.
+>
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 > ---
->  Documentation/driver-api/gpio/driver.rst                    | 2 +-
->  Documentation/filesystems/ubifs-authentication.rst          | 2 +-
->  .../networking/device_drivers/ethernet/ti/cpsw.rst          | 6 +++---
->  Documentation/usb/gadget-testing.rst                        | 2 +-
+>  Documentation/conf.py | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/Documentation/conf.py b/Documentation/conf.py
+> index b8668bcaf090..60e6998e49e1 100644
+> --- a/Documentation/conf.py
+> +++ b/Documentation/conf.py
+> @@ -222,10 +222,13 @@ language = 'en'
+>  
+>  # List of patterns, relative to source directory, that match files and
+>  # directories to ignore when looking for source files.
+> +include_patterns = [
+> +	'**.rst',
+> +	'netlink/specs/*.yaml',
+> +]
 
-Thanks Bagas,
+It's unfortunate where you added the include patterns because the
+adjacent comment is specific to exclude patterns. I suggest rewording
+the comment to be relevant to both.
 
-These changes look nice and correct to me.
-
-I am wondering if you considered also addressing
-the spinics.net links in gadget-testing.rst.
-They are the only other instances I see under Documentation.
+> +
+>  exclude_patterns = [
+>  	'output',
+> -	'devicetree/bindings/**.yaml',
+> -	'netlink/*.yaml',
+>  ]
+>  
+>  # The reST default role (used for this markup: `text`) to use for all
