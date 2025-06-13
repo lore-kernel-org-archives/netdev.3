@@ -1,161 +1,111 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBD719049B
-	for <netdev@vger.kernel.org>; Fri, 13 Jun 2025 09:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+Received: from mail-m1973182.qiye.163.com (mail-m1973182.qiye.163.com [220.197.31.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2850424DD1A;
+	Fri, 13 Jun 2025 09:24:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749806669; cv=none; b=Ma8p9vMqcf3JVARVigtoOQ3OfL3M0J7Q+aMrmJ2BnMqOXd6ddseT6MJgmZpkvByM3daK2hQq5t3LVJPg1Xa69QRc9oZB9+yC+UihNHfN2McJrJ7A9R9/xG5WCLRFuq+OEhM3bl2LN/MMz5XNM1HqkFPLm93dRnbZOls/40oL0pU=
+	t=1749806704; cv=none; b=FWF9Rh1gez4KFsGkLjrAPo2kVXLbG7xbEtwEqj0CXc92QbfOLCAB2micIRStqctZsxRoww2lfKdckKp2DCoO3Ou9GHV9lDM5jq288yIc3ZQZtT2bgDpzHDzOOExBwZHRVsnpzVdaS3LWeYkcfif2ByM0QX+sG1htklO/PMte4v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749806669; c=relaxed/simple;
-	bh=BMF++BKwdznNiS4fuA5u544UU6ZhejeT/qIhTgZ4IPA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=Sb4CPW6GT3eVPK/nyEKFwNCJjQMsbu5Rdu+rRhUIaakc9GNOmvle17wi9690Z4e/TQNPId9//4txGjIackGk9Fguu70v8L3i8135DTdq/UTVRmIfbdbDXqNNCdUpJsiARk6u1iisXTVW5gktcPHL2GDHNbqmaqcj8kJXLthaZWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=PrlUz/mr reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1749806704; c=relaxed/simple;
+	bh=zfk3I70U/S1a7wWOZU0zLfDlYSHLaTIkBupmVtsOcQ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hxPMot9Z1SEYaOnD791mfmho6bdHl10H0HzTpf1p+gdeUeoJzHvk4gDvRIjibPqySKIW6ar6IpxoWXq3w4zkly4Q+fp1AehVndwt0KihQ14N/PrCDQncJ+Yy2oE3re31HmkLJkdpMdu75c4HvUj2eIxFmEDqcMRD5N/duuiN9nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hillstonenet.com; spf=pass smtp.mailfrom=hillstonenet.com; dkim=pass (1024-bit key) header.d=hillstonenet.com header.i=@hillstonenet.com header.b=wwSatz74; arc=none smtp.client-ip=220.197.31.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hillstonenet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hillstonenet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="PrlUz/mr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=SuhxioHjusIg04lPfG0Lcwv+9MTf+DRi3jC4oNF+cy8=; b=P
-	rlUz/mrephZyq3YWlcMzRanQyRDadlUE/NuDtsHSlbJD8neGboswY3MNUQX55Evu
-	dtVBJ6jEhN/h01AGytNsAMJQL7JrS2W1zoMhDVfGo/GSjOpMjq1qUUL05WzJgv+Z
-	WeJ66QOnPV0ypjI2MwuL7eU0ypYqptWDySl5ZiCG4I=
-Received: from slark_xiao$163.com (
- [2408:8459:3c40:3841:62a2:e95c:33ad:c14c] ) by ajax-webmail-wmsvr-40-122
- (Coremail) ; Fri, 13 Jun 2025 17:23:28 +0800 (CST)
-Date: Fri, 13 Jun 2025 17:23:28 +0800 (CST)
-From: "Slark Xiao" <slark_xiao@163.com>
-To: "Muhammad Nuzaihan Kamal Luddin" <zaihan@unrealasia.net>,
-	"Sergey Ryazanov" <ryazanov.s.a@gmail.com>
-Cc: "Sergey Ryazanov" <ryazanov.s.a@gmail.com>,
-	"Loic Poulain" <loic.poulain@oss.qualcomm.com>,
-	"Johannes Berg" <johannes@sipsolutions.net>,
-	"Andrew Lunn" <andrew+netdev@lunn.ch>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"David S Miller" <davem@davemloft.net>,
-	"Jakub Kicinski" <kuba@kernel.org>,
-	"Abeni Paolo" <pabeni@redhat.com>, netdev@vger.kernel.org,
-	"Qiang Yu" <quic_qianyu@quicinc.com>,
-	"Manivannan Sadhasivam" <manivannan.sadhasivam@linaro.org>,
-	"Johan Hovold" <johan@kernel.org>
-Subject: Re:Re:Re: [RFC PATCH 4/6] net: wwan: add NMEA port support
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
- Copyright (c) 2002-2025 www.mailtech.cn 163com
-In-Reply-To: <1127dc09.55cb.1968040ac46.Coremail.slark_xiao@163.com>
-References: <7aed94ce.2dca.1967b8257af.Coremail.slark_xiao@163.com>
- <4D47E70F-D3F3-4EB6-8AE0-D50452865E58@unrealasia.net>
- <1127dc09.55cb.1968040ac46.Coremail.slark_xiao@163.com>
-X-NTES-SC: AL_Qu2fC/SbuU4r7iOYbOkfmk8Sg+84W8K3v/0v1YVQOpF8jDHp5j8HZGVSHFva/8a0IBGgmgmGVCJ82t9hZrBzRZ83poFm9fnwOA2uCUBGWik5hA==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	dkim=pass (1024-bit key) header.d=hillstonenet.com header.i=@hillstonenet.com header.b="wwSatz74"
+Received: from localhost.localdomain (unknown [111.199.5.197])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 188a5f404;
+	Fri, 13 Jun 2025 13:55:48 +0800 (GMT+08:00)
+From: Haixia Qu <hxqu@hillstonenet.com>
+To: Jon Maloy <jmaloy@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Haixia Qu <hxqu@hillstonenet.com>,
+	netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] tipc: fix panic in tipc_udp_nl_dump_remoteip() using bearer as udp without check
+Date: Fri, 13 Jun 2025 05:55:06 +0000
+Message-ID: <20250613055506.95836-1-hxqu@hillstonenet.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <85e7ddb.97b3.1976899efc7.Coremail.slark_xiao@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:eigvCgD3f4IQ7ktoUOYbAA--.3548W
-X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/1tbibh1rZGhLoN11rAACs5
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZSE8eVhgeGEwaQhoYGEtOGFYVFAkWGhdVEwETFh
+	oSFyQUDg9ZV1kYEgtZQVlKSkpVSkJCVU5VSkJMWVdZFhoPEhUdFFlBWU9LSFVKS0lPT09IVUpLS1
+	VKQktLWQY+
+X-HM-Tid: 0a9767dbcff609dakunm0183899d96fc76
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6KzI6PSo6DDE4VlFLHQ4sEDQf
+	PEgaFE5VSlVKTE9CTEJPSk9CT0JCVTMWGhIXVRMDCg47ExIXFwgPFBUeFR4PVRgUFkVZV1kSC1lB
+	WUpKSlVKQkJVTlVKQkxZV1kIAVlBSU9JQjcG
+DKIM-Signature:a=rsa-sha256;
+	b=wwSatz74OxiXnkMspGWlFdozbCPhPwIR2B1y8y9C8KbtZJTfLAdpjjNmzN8lI2IPy05DRiLM43KCzBTM40GsLBQuVDjkPhUh+QqW23Te/RmbyzyiHFbV6nbcS4E7zqNbag5AUWLEIfks7KZC4W+SySEgVcw4O9thyx7guHnjJzI=; s=default; c=relaxed/relaxed; d=hillstonenet.com; v=1;
+	bh=CZ6k5m8GOuN3if7SPQ1hTZoDDUTFYnMwwwYr/8JUHSA=;
+	h=date:mime-version:subject:message-id:from;
 
-CkhpIFNlcmdleSwKRG8gd2UgaGF2ZSBhbnkgdXBkYXRlcyBhYm91dCB0aGlzIGZlYXR1cmU/IEkg
-ZGlkbid0IHNlZSBhbnkgbmV3IHBhdGNoIG9yIHJldmlldyBzdWdnZXN0aW9uLgpTZWVtcyB0aGlz
-IHRhc2sgaXMgcGVuZGluZyB3aXRob3V0IGFueSBwdXNoLgoKVGhhbmtzClNsYXJrCkF0IDIwMjUt
-MDQtMjkgMTQ6MzQ6MDQsICJTbGFyayBYaWFvIiA8c2xhcmtfeGlhb0AxNjMuY29tPiB3cm90ZToK
-Pgo+Cj5BdCAyMDI1LTA0LTI4IDIxOjIzOjUzLCAiTXVoYW1tYWQgTnV6YWloYW4gS2FtYWwgTHVk
-ZGluIiA8emFpaGFuQHVucmVhbGFzaWEubmV0PiB3cm90ZToKPj5IaSBTbGFyaywKPj4KPj55b3Ug
-Y2FiIGFkZCB1ZGV2IHJ1bGVzIHRvIHNldCB0aGUgcGVybWlzc2lvbnMuCj4+Cj4+UmVnYXJkcywK
-Pj5aYWloYW4KPj5TZW50IGZyb20gbXkgaVBob25lCj4+Cj5IaSBaYWloYW4sCj5UaGFua3MgZm9y
-IHlvdXIgYWR2aWNlLgo+QnV0IEkgdHJpZWQgaW4gbXkgbG9jYWwsIG5vIG1hdHRlciB0aGUgbW9k
-ZSBpcyA2NDQgb3IgNzU1LCBzaW1pbGFyIGlzc3VlIHN0aWxsIGV4aXN0Lgo+QlRXLCB0aGlzIGVy
-cm9yIG9ubHkgd2FzIHJlcG9ydGVkIHdoZW4gSSBjYWxsICJncHNtb24iIG9yICJjZ3BzIiBjb21t
-YW5kLgo+Cj50ZXN0IHJlZmVyZW5jZSBhcyBiZWxvdzoKPmpiZEBqYmQ6fiQgY2F0IC9ldGMvdWRl
-di9ydWxlcy5kLzk5LWdwcy5ydWxlcyAKPktFUk5FTD09Imduc3MwIiwgTU9ERT0iMDc1NSIsIEdS
-T1VQPSJkaWFsb3V0Igo+Cj405pyIIDI5IDE0OjA4OjE3IGpiZCBncHNkWzM1NDRdOiBncHNkOkVS
-Uk9SOiBTRVI6IGRldmljZSBvcGVuIG9mIC9kZXYvZ25zczAgZmFpbGVkOiBQZXJtaXNzaW9uIGRl
-bmllZCAtIHJldHJ5aW5nIHJlYWQtb25seQo+NOaciCAyOSAxNDowODoxNyBqYmQgZ3BzZFszNTQ0
-XTogZ3BzZDpFUlJPUjogU0VSOiByZWFkLW9ubHkgZGV2aWNlIG9wZW4gb2YgL2Rldi9nbnNzMCBm
-YWlsZWQ6IFBlcm1pc3Npb24gZGVuaWVkCj405pyIIDI5IDE0OjA4OjE3IGpiZCBncHNkWzM1NDRd
-OiBncHNkOkVSUk9SOiAvZGV2L2duc3MwOiBkZXZpY2UgYWN0aXZhdGlvbiBmYWlsZWQsIGZyZWVp
-bmcgZGV2aWNlLgo+amJkQGpiZDp+JCAKPmpiZEBqYmQ6fiQgbHMgLWwgL2Rldi9nbnNzMCAKPmNy
-d3hyLXhyLXggMSByb290IGRpYWxvdXQgMjM3LCAwICA05pyIIDI5IDE0OjA1IC9kZXYvZ25zczAK
-Pgo+VGhhbmtzCj4+PiBPbiAyOCBBcHIgMjAyNSwgYXQgNDoyOOKAr1BNLCBTbGFyayBYaWFvIDxz
-bGFya194aWFvQDE2My5jb20+IHdyb3RlOgo+Pj4gCj4+PiDvu78KPj4+IEF0IDIwMjUtMDQtMDkg
-MTg6NDI6NTksICJTZXJnZXkgUnlhemFub3YiIDxyeWF6YW5vdi5zLmFAZ21haWwuY29tPiB3cm90
-ZToKPj4+Pj4gT24gQXByaWwgOSwgMjAyNSAxMTozMDo1OCBBTSBHTVQrMDM6MDAsIFNsYXJrIFhp
-YW8gPHNsYXJrX3hpYW9AMTYzLmNvbT4gd3JvdGU6Cj4+Pj4+IAo+Pj4+PiBIaSBTZXJnZXksCj4+
-Pj4+IERldmljZSBwb3J0IC9kZXYvZ25zczAgaXMgZW51bWVyYXRlZCAuIERvZXMgaXQgYmUgZXhw
-ZWN0ZWQ/Cj4+Pj4+IEkgY2FuIGdldCB0aGUgTk1FQSBkYXRhIGZyb20gdGhpcyBwb3J0IGJ5IGNh
-dCBvciBtaW5pY29tIGNvbW1hbmQuCj4+Pj4+IEJ1dCB0aGUgZ3BzZC5zZXJ2aWNlIGFsc28gY2Fu
-IG5vdCBiZSBpbml0aWFsaXplZCBub3JtYWxseS4gSXQgcmVwb3J0czoKPj4+Pj4gCj4+Pj4+IFRy
-aWdnZXJlZEJ5OiDil48gZ3BzZC5zb2NrZXQKPj4+Pj4gICBQcm9jZXNzOiAzODI0IEV4ZWNTdGFy
-dFByZT0vYmluL3N0dHkgc3BlZWQgMTE1MjAwIC1GICRERVZJQ0VTIChjb2RlPWV4aXRlZCwgc3Rh
-dHVzPTEvRkFJTFVSRSkKPj4+Pj4gICAgICAgQ1BVOiA3bXMKPj4+Pj4gCj4+Pj4+IDTmnIggMDkg
-MTY6MDQ6MTYgamJkIHN5c3RlbWRbMV06IFN0YXJ0aW5nIEdQUyAoR2xvYmFsIFBvc2l0aW9uaW5n
-IFN5c3RlbSkgRGFlbW9uLi4uCj4+Pj4+IDTmnIggMDkgMTY6MDQ6MTcgamJkIHN0dHlbMzgyNF06
-IC9iaW4vc3R0eTogL2Rldi9nbnNzMDogSW5hcHByb3ByaWF0ZSBpb2N0bCBmb3IgZGV2aWNlCj4+
-Pj4+IDTmnIggMDkgMTY6MDQ6MTcgamJkIHN5c3RlbWRbMV06IGdwc2Quc2VydmljZTogQ29udHJv
-bCBwcm9jZXNzIGV4aXRlZCwgY29kZT1leGl0ZWQsIHN0YXR1cz0xL0ZBSUxVUkUKPj4+Pj4gNOac
-iCAwOSAxNjowNDoxNyBqYmQgc3lzdGVtZFsxXTogZ3BzZC5zZXJ2aWNlOiBGYWlsZWQgd2l0aCBy
-ZXN1bHQgJ2V4aXQtY29kZScuCj4+Pj4+IDTmnIggMDkgMTY6MDQ6MTcgamJkIHN5c3RlbWRbMV06
-IEZhaWxlZCB0byBzdGFydCBHUFMgKEdsb2JhbCBQb3NpdGlvbmluZyBTeXN0ZW0pIERhZW1vbi4K
-Pj4+Pj4gCj4+Pj4+IFNlZW1zIGl0J3Mgbm90IGEgc2VyaWFsIHBvcnQuCj4+Pj4gCj4+Pj4gSXQg
-aXMgYSBjaGFyIGRldiBsYWNraW5nIHNvbWUgSU9DVExzIHN1cHBvcnQuIFllYWguCj4+Pj4gCj4+
-Pj4+IEFueSBhZHZpY2U/Cj4+Pj4gCj4+Pj4gWWVwLiBSZW1vdmUgdGhhdCBzdHR5IGludm9jYXRp
-b24gZnJvbSB0aGUgc2VydmljZSBkZWZpbml0aW9uLiBGb3IgbWUsIGdwc2Qgd29ya3MgZmxhd2xl
-c3NseS4gWW91IGNhbiB0cnkgdG8gc3RhcnQgaXQgbWFudWFsbHkgZnJvbSBhIHRlcm1pbmFsLgo+
-Pj4+IAo+Pj4+IC0tCj4+Pj4gU2VyZ2V5Cj4+PiBIaSBTZXJnZXksCj4+PiBNeSBkZXZpY2UgY291
-bGQgb3V0cHV0IHRoZSBOTUVBIGRhdGEgYnkgcG9ydCAvZGV2L2duc3MwLiBTb21ldGhpbmcgbGlr
-ZSBiZWxvdzoKPj4+IAo+Pj4gJEdQUk1DLDA3MTYzNC4wMCxBLDIyMzkuMzcyMDY3LE4sMTE0MDIu
-NjUzMDQ4LEUsLCwyODA0MjUsLCxBLFYqMkQKPj4+ICRHQVJNQywwNzE2MzQuMDAsQSwyMjM5LjM3
-MjA2NyxOLDExNDAyLjY1MzA0OCxFLCwsMjgwNDI1LCwsQSxWKjNDCj4+PiAkR0JSTUMsMDcxNjM0
-LjAwLEEsMjIzOS4zNzIwNjcsTiwxMTQwMi42NTMwNDgsRSwsLDI4MDQyNSwsLEEsViozRgo+Pj4g
-JEdOUk1DLDA3MTYzNC4wMCxBLDIyMzkuMzcyMDY3LE4sMTE0MDIuNjUzMDQ4LEUsLCwyODA0MjUs
-LCxBLFYqMzMKPj4+ICRHTkdOUywwNzE2MzQuMDAsMjIzOS4zNzIwNjcsTiwxMTQwMi42NTMwNDgs
-RSxOQUFOTk4sMDIsNTAwLjAsLCwsLFYqMTUKPj4+ICRHUEdHQSwwNzE2MzQuMDAsMjIzOS4zNzIw
-NjcsTiwxMTQwMi42NTMwNDgsRSwxLDAwLDUwMC4wLCwsLCwsKjU5Cj4+PiAkR0FHR0EsMDcxNjM0
-LjAwLDIyMzkuMzcyMDY3LE4sMTE0MDIuNjUzMDQ4LEUsMSwwMSw1MDAuMCwsLCwsLCo0OQo+Pj4g
-JEdCR0dBLDA3MTYzNC4wMCwyMjM5LjM3MjA2NyxOLDExNDAyLjY1MzA0OCxFLDEsMDAsNTAwLjAs
-LCwsLCwqNEIKPj4+ICRHTkdHQSwwNzE2MzQuMDAsMjIzOS4zNzIwNjcsTiwxMTQwMi42NTMwNDgs
-RSwxLDAyLDUwMC4wLCwsLCwsKjQ1Cj4+PiAkR1BHU1YsNCwxLDEzLDA0LDAwLDAzOCwsMDUsMzMs
-MjQwLCwwNiw0MSwwMzMsLDA5LDI1LDA1OCwsMSo2Rgo+Pj4gJEdQR1NWLDQsMiwxMywxMSw0Nywz
-NDQsLDEyLDMzLDI4NiwsMTMsMDksMTg1LCwxNywyOSwxMjgsLDEqNkUKPj4+ICRHUEdTViw0LDMs
-MTMsMTksNTQsMTEzLCwyMCw2MiwyODQsLDIyLDE1LDE3NCwsMjUsMDksMzExLCwxKjY4Cj4+PiAk
-R1BHU1YsNCw0LDEzLDQwLDAwLDAwMCwyOCwxKjU4Cj4+PiAkR0xHU1YsMywxLDA5LDEwLDE5LDI0
-NSwsMDYsMzgsMTg1LCwwOSwwNiwyMDMsLDExLDEzLDI5NiwsMSo3OQo+Pj4gJEdMR1NWLDMsMiww
-OSwwNSw2MCwwNjQsLDIwLDM5LDAxMywsMTksMTcsMDg0LCwyMSwxNSwzMjEsLDEqN0UKPj4+ICRH
-TEdTViwzLDMsMDksMDQsMTYsMDMwLCwxKjQxCj4+PiAkR0FHU1YsMywxLDExLDAyLDMwLDI5Nyws
-MDQsMzIsMDc2LCwwNSwxMCwxODgsLDA2LDQxLDEwNywsNyo3OAo+Pj4gJEdBR1NWLDMsMiwxMSww
-OSwzOSwxNDAsLDEwLDI2LDA1NSwsMTEsNDIsMDI3LCwxMiwwOSwwNzEsLDcqN0UKPj4+ICRHQUdT
-ViwzLDMsMTEsMTYsMzYsMTk4LCwyNCwxOSwxNzYsLDM2LDM5LDMxNywsNyo0NQo+Pj4gJEdCR1NW
-LDQsMSwxNSwwMSw0NywxMjIsLDAyLDQ2LDIzNCwsMDMsNjMsMTg5LCwwNCwzNCwxMDgsLDEqN0QK
-Pj4+ICRHQkdTViw0LDIsMTUsMDUsMjMsMjUzLCwwNiwwNCwxODcsLDA3LDg2LDE5NCwsMDgsNjgs
-Mjg0LCwxKjc1Cj4+PiAkR0JHU1YsNCwzLDE1LDA5LDAzLDIwMSwsMTAsNzgsMjk5LCwxMSw1Niww
-MjUsLDEyLDI5LDA5NCwsMSo3MQo+Pj4gCj4+PiBCdXQgdGhlIGdwc2QgcHJvZ3Jlc3Mgd2VyZSBz
-dHVjayB3aXRoIGJlbG93IGVycm9yczoKPj4+IOKXjyBncHNkLnNlcnZpY2UgLSBHUFMgKEdsb2Jh
-bCBQb3NpdGlvbmluZyBTeXN0ZW0pIERhZW1vbgo+Pj4gICAgIExvYWRlZDogbG9hZGVkICgvbGli
-L3N5c3RlbWQvc3lzdGVtL2dwc2Quc2VydmljZTsgZW5hYmxlZDsgdmVuZG9yIHByZXNldDogZW5h
-YmxlZCkKPj4+ICAgICBBY3RpdmU6IGFjdGl2ZSAocnVubmluZykgc2luY2UgTW9uIDIwMjUtMDQt
-MjggMjM6MTY6NDcgQ1NUOyAyMHMgYWdvCj4+PiBUcmlnZ2VyZWRCeTog4pePIGdwc2Quc29ja2V0
-Cj4+PiAgICBQcm9jZXNzOiA1MjgxIEV4ZWNTdGFydD0vdXNyL3NiaW4vZ3BzZCAkR1BTRF9PUFRJ
-T05TICRPUFRJT05TICRERVZJQ0VTIChjb2RlPWV4aXRlZCwgc3RhdHVzPTAvU1VDQ0VTUykKPj4+
-ICAgTWFpbiBQSUQ6IDUyODMgKGdwc2QpCj4+PiAgICAgIFRhc2tzOiAxIChsaW1pdDogMzcyNzIp
-Cj4+PiAgICAgTWVtb3J5OiA2NTIuMEsKPj4+ICAgICAgICBDUFU6IDEwbXMKPj4+ICAgICBDR3Jv
-dXA6IC9zeXN0ZW0uc2xpY2UvZ3BzZC5zZXJ2aWNlCj4+PiAgICAgICAgICAgICDilJTilIA1Mjgz
-IC91c3Ivc2Jpbi9ncHNkIC1GIC92YXIvcnVuL2dwc2Quc29jayAvZGV2L2duc3MwCj4+PiAKPj4+
-IDTmnIggMjggMjM6MTY6NDcgamJkIHN5c3RlbWRbMV06IFN0YXJ0aW5nIEdQUyAoR2xvYmFsIFBv
-c2l0aW9uaW5nIFN5c3RlbSkgRGFlbW9uLi4uCj4+PiA05pyIIDI4IDIzOjE2OjQ3IGpiZCBzeXN0
-ZW1kWzFdOiBTdGFydGVkIEdQUyAoR2xvYmFsIFBvc2l0aW9uaW5nIFN5c3RlbSkgRGFlbW9uLgo+
-Pj4gNOaciCAyOCAyMzoxNzowMiBqYmQgZ3BzZFs1MjgzXTogZ3BzZDpFUlJPUjogU0VSOiBkZXZp
-Y2Ugb3BlbiBvZiAvZGV2L2duc3MwIGZhaWxlZDogUGVybWlzc2lvbiBkZW5pZWQgLSByZXRyeWlu
-ZyByZWFkLW9ubHkKPj4+IDTmnIggMjggMjM6MTc6MDIgamJkIGdwc2RbNTI4M106IGdwc2Q6RVJS
-T1I6IFNFUjogcmVhZC1vbmx5IGRldmljZSBvcGVuIG9mIC9kZXYvZ25zczAgZmFpbGVkOiBQZXJt
-aXNzaW9uIGRlbmllZAo+Pj4gNOaciCAyOCAyMzoxNzowMiBqYmQgZ3BzZFs1MjgzXTogZ3BzZDpF
-UlJPUjogL2Rldi9nbnNzMDogZGV2aWNlIGFjdGl2YXRpb24gZmFpbGVkLCBmcmVlaW5nIGRldmlj
-ZS4KPj4+IAo+Pj4gQW5kIEkgY2hlY2tlZCB0aGUgZ25zcyBkZXZpY2UgYXR0cmlidXRlLCBpdCBy
-ZXBvcnRzOgo+Pj4gY3J3LS0tLS0tLSAxIHJvb3Qgcm9vdCAyMzcsIDAgIDTmnIggMjggIDIwMjUg
-L2Rldi9nbnNzMAo+Pj4gCj4+PiBNYXkgSSBrbm93IGhvdyBkbyB5b3UgZml4IHRoaXM/Cj4+PiAK
-Pj4+IFRoYW5rcwo+Pj4gCj4+PiAK
+When TIPC_NL_UDP_GET_REMOTEIP cmd calls tipc_udp_nl_dump_remoteip() 
+with media name set to a l2 name, kernel panics [1].
+
+The reproduction steps:
+1. create a tun interface
+2. enable l2 bearer
+3. TIPC_NL_UDP_GET_REMOTEIP with media name set to tun
+
+the ub was in fact a struct dev.
+
+when bid != 0 && skip_cnt != 0, bearer_list[bid] may be NULL or 
+other media when other thread changes it.
+
+fix this by checking media_id.
+
+[1]
+tipc: Started in network mode
+tipc: Node identity 8af312d38a21, cluster identity 4711
+tipc: Enabled bearer <eth:syz_tun>, priority 1
+Oops: general protection fault
+KASAN: null-ptr-deref in range 
+CPU: 1 UID: 1000 PID: 559 Comm: poc Not tainted 6.16.0-rc1+ #117 PREEMPT
+Hardware name: QEMU Ubuntu 24.04 PC
+RIP: 0010:tipc_udp_nl_dump_remoteip+0x4a4/0x8f0
+
+Signed-off-by: Haixia Qu <hxqu@hillstonenet.com>
+---
+ net/tipc/udp_media.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index 108a4cc2e001..258d6aa4f21a 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -489,7 +489,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
+ 
+ 		rtnl_lock();
+ 		b = tipc_bearer_find(net, bname);
+-		if (!b) {
++		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
+ 			rtnl_unlock();
+ 			return -EINVAL;
+ 		}
+@@ -500,7 +500,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
+ 
+ 		rtnl_lock();
+ 		b = rtnl_dereference(tn->bearer_list[bid]);
+-		if (!b) {
++		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
+ 			rtnl_unlock();
+ 			return -EINVAL;
+ 		}
+-- 
+2.43.0
+
