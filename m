@@ -1,73 +1,100 @@
-Received: from joooj.vinc17.net (joooj.vinc17.net [155.133.131.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A832D8DD9
-	for <netdev@vger.kernel.org>; Fri, 13 Jun 2025 12:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.133.131.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B72275AF7
+	for <netdev@vger.kernel.org>; Fri, 13 Jun 2025 12:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749816591; cv=none; b=g/iWjMtFd44oN302TFmvjAv0Jvtt97Vx/qmrKbFaG2yo+Tn2aWJzPG6xk8KoryU1dy44U4J29cmTDKYIL/nDC2Y3nCbaSp3AxzoC2SrbA4Q09usm2g1qB0bPVcX6VqfW3zo0RydYqJzjpCVbCY6JFb/v4DlPpn1R8tdnl6MZ07E=
+	t=1749816690; cv=none; b=iDV1nzXZ0NbnjXb3X6NHfF0yAvbXAs1MXODz944yK7uZDG4tIj9CxLjWO5IFdwo3oOu0tWmZtRTLoM2L0Bw1sngZL5Eu2UFC89X2LUcJpQgI7EthbWmek13RHlxk/0oOwKXSPEnQx9sQVPHsS6fpNIWHJmoDBw2b0JukpgNuDnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749816591; c=relaxed/simple;
-	bh=pk0lQdv43C/rZv579FMX5Hagj+NuYzOwntCyzfrP9rM=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=JKET1eIlKRV3waDv4L7bgG5neaXU8xA5v/JEXNbTxDJkXHPa+Kms+tzOZtQi/CKWQC9GDcVcZDmwbrPD2P4ljD69wQ3YvL3gQKFe0eH5aAymZg/eCoxYpjpmAgXjj8t8x3p7Zn0Eu2gFxKV/k5AZeMIUv9LsROpHD2Z5RELMquw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vinc17.net; spf=pass smtp.mailfrom=vinc17.net; arc=none smtp.client-ip=155.133.131.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vinc17.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vinc17.net
-Received: from smtp-qaa.vinc17.net (2a02-8428-1b1d-4d01-96a9-491d-7b48-ba31.rev.sfr.net [IPv6:2a02:8428:1b1d:4d01:96a9:491d:7b48:ba31])
-	by joooj.vinc17.net (Postfix) with ESMTPSA id 2CDB236F;
-	Fri, 13 Jun 2025 14:07:12 +0200 (CEST)
-Received: by qaa.vinc17.org (Postfix, from userid 1000)
-	id 01772CA0114; Fri, 13 Jun 2025 14:07:11 +0200 (CEST)
-Date: Fri, 13 Jun 2025 14:07:11 +0200
-From: Vincent Lefevre <vincent@vinc17.net>
-To: netdev@vger.kernel.org
-Subject: [BUG] ip-route(8) man page: incorrect "ip route delete" documentation
-Message-ID: <20250613120711.GA237002@qaa.vinc17.org>
+	s=arc-20240116; t=1749816690; c=relaxed/simple;
+	bh=IfISvLuMcxjZrVnRK88ix7qpKs0G89Wpm0+eZ0yuCZ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SEJ3diTQiOS8I7sDbBohvH1Gteo4pI+zCuDx/TMAmQrYMFgMLAkBb3Pjingq2V8JFMr82vrVJAHVWE9N2v164yvbOwlp3qRzI1ovHSSxTfmPS3c5UgbwkmD0q3ob8n2WiYdSnnX3yaSh3Q2PYgIiczYT64677dfiWZC8tCHggT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=WCqkqO/l; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="WCqkqO/l"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-451dbe494d6so26499975e9.1
+        for <netdev@vger.kernel.org>; Fri, 13 Jun 2025 05:11:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1749816687; x=1750421487; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X123xpbb/jeKY4R9e6FB1cA1Gkq5lhAcYgbmcRglrII=;
+        b=WCqkqO/lC9CJNiunU02139HhCJQJbw5s01U8LvTfJQIBBFa4O8Mw3Y3G74wI3texws
+         mCS/oa0F7MnhwT+9gqXiquWyZ04e5jadEBcWlelW40h9SEm8X7H7BoGQ/8bM8UxjYoJQ
+         vrYMXNwAldBf82N3SVO0J91UtHZRvX5bT3etvljh2SHO/wClTb2Cw6/YRPoRDEStqHqL
+         MEoUDhcn7cvDT52n8XZ9kxpS6oc84fCNbAVx1Ves4/ZuAIgewk1pFft35YVtJIcX0zUI
+         8rhsSLj1QuIbUEO56uDhFrToUiJtFWY1ScyvOSPq1NmJ0YrbHKULqqduC6vSZRoiC4U8
+         8l8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749816687; x=1750421487;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X123xpbb/jeKY4R9e6FB1cA1Gkq5lhAcYgbmcRglrII=;
+        b=VdmQ2y0d24zpwOg5HnZeaTnBClCcNLrFx+Ws5d1jaAQKXXcreaY0cFHtB+06gMDnjK
+         TQZnshoRyDqcvVl4+uYnJaWoB6tPV9N7YUekwfrEzrH9lTPDm6ZhXbsFiIxkNqYt9Q2/
+         JnrjyQlSYBPplSj7Q6PAH+Zd2asXchJkWMyyZYT5TGdp9nwl3m4Kir3zACKei5cHp/Hm
+         d7My9lOdZh56YLj/0Bkw+u/okz8//Cfgl1EIm3/0Yt1HbS8p1gd4Yd+qdsDmWkruOXmO
+         46g/nwxvHxvptCFdxqyvBOCulGRJ6KSRO3b/i8zjksQpGMsBL64UQKQjD38pR93GVaHK
+         D5sA==
+X-Forwarded-Encrypted: i=1; AJvYcCWdrKhZblRG0/M7Bpd252KynN3bVAwkQ5NBFEfKMBdo1T1VzUHKw0W3yuV3JDueTWP8+CissTg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5ovMREssCwAg3t+qMzbwdlQmcIsOKRvADqRf37kC24c5wA8Jv
+	lw2TPBuoXJjRE47u4x/NkPHoQ8Tpf+LqtM9CtcjVYu4+4DJMo8qCZEQMKExQF985jEbHW8kYCZh
+	O+biBA6k=
+X-Gm-Gg: ASbGncuAcBWMscHBAJg2J9lAAqY+NRX8CACT1Vn30w70rarurXna2i/7gkXOpD77COL
+	PwAUzsNUQxG6tHOegY76LLdSX0dQi7SWFguu/4muz95JGsrusbsH0mmmlJwFrQ5/2UgWuhEqpdr
+	NZu+l9wjIOGJuSmuzM5rGcWMJLyyot9IlwWlX9cA2DPy9rShLs3fNK/9szUOr9sUj5cMAnzYUx2
+	uCl7rZHMhMnTSejxhYgkOQHvBq3ydxO6St6u2lKD6AuFLsot6xY0eLHGhtmvQZbcKCj0DhTNSEy
+	FCPjP5Ucxs4b4b67lqddgWNPtq5CjLopOInJS/72rplRCuQiPxP9RN/qyrziSi0bi2SEIMATMzu
+	AcPokDAs=
+X-Google-Smtp-Source: AGHT+IGT6muk7KulGb8uoUJI0MLmt/NFsIJLiIY9WjvVeHJ+eUp+xu9OTUUSggvF1QY1GYh8bwc2Pg==
+X-Received: by 2002:a05:600c:3b98:b0:450:30e4:bdf6 with SMTP id 5b1f17b1804b1-45334b19559mr25871965e9.19.1749816686825;
+        Fri, 13 Jun 2025 05:11:26 -0700 (PDT)
+Received: from MacBook-Air.local ([5.100.243.24])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e24420csm49767325e9.20.2025.06.13.05.11.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Jun 2025 05:11:26 -0700 (PDT)
+Date: Fri, 13 Jun 2025 15:11:23 +0300
+From: Joe Damato <joe@dama.to>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com, jacob.e.keller@intel.com,
+	michal.swiatkowski@linux.intel.com
+Subject: Re: [PATCH net-next 1/7] eth: igb: migrate to new RXFH callbacks
+Message-ID: <aEwVa9s_je4AKMEc@MacBook-Air.local>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org,
+	intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com, jacob.e.keller@intel.com,
+	michal.swiatkowski@linux.intel.com
+References: <20250613010111.3548291-1-kuba@kernel.org>
+ <20250613010111.3548291-2-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Mailer-Info: https://www.vinc17.net/mutt/
-User-Agent: Mutt/2.2.13+86 (bb2064ae) vl-169878 (2025-02-08)
+In-Reply-To: <20250613010111.3548291-2-kuba@kernel.org>
 
-Hi,
+On Thu, Jun 12, 2025 at 06:01:05PM -0700, Jakub Kicinski wrote:
+> Migrate to new callbacks added by commit 9bb00786fc61 ("net: ethtool:
+> add dedicated callbacks for getting and setting rxfh fields").
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  drivers/net/ethernet/intel/igb/igb_ethtool.c | 20 ++++++++++----------
+>  1 file changed, 10 insertions(+), 10 deletions(-)
 
-The documentation of "ip route delete" in the ip-route(8) man page is
-incorrect. The man page says:
-
-  ip route delete
-    delete route
-    ip  route  del  has the same arguments as ip route add, but their
-    semantics are a bit different.
-
-    Key values (to, tos, preference and table) select  the  route  to
-    delete. If optional attributes are present, ip verifies that they
-    coincide with the attributes of the route to delete.  If no route
-    with the given key and attributes was found, ip route del fails.
-
-But the behavior is unclear when several routes match the argument.
-Above, the singular is used, so I assume that a single route will
-be deleted (this is what I can observe). However, in such a case,
-it should say "a route", not "the route", because the route is not
-completely identified. Or better, say which route will be deleted
-(it seems to be the first one in the list).
-
-I'm also wondering whether the current behavior is actually the
-expected one.
-
-Note that the vpnc-script script of vpnc-scripts for VPNC and
-OpenConnect assumes that "ip route del ..." will delete all the
-matching routes:
-
-  https://gitlab.com/openconnect/vpnc-scripts/-/issues/65
-
--- 
-Vincent Lefèvre <vincent@vinc17.net> - Web: <https://www.vinc17.net/>
-100% accessible validated (X)HTML - Blog: <https://www.vinc17.net/blog/>
-Work: CR INRIA - computer arithmetic / Pascaline project (LIP, ENS-Lyon)
+Reviewed-by: Joe Damato <joe@dama.to>
