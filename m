@@ -1,155 +1,174 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2083.outbound.protection.outlook.com [40.107.94.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E64520F060
-	for <netdev@vger.kernel.org>; Fri, 13 Jun 2025 19:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.83
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749842614; cv=fail; b=izst+NOlsEErU6dZlFZ7UrDaFt4YFVqMwgbmxCtaiZ8FCVAvz8CtyDkEsk4MhBDdxwH3E8xG4AeHu5VKGc6pzFXlwTzvCHCF/zRAtGy4hrF2PYcUD2ze/9fBm33FEoScF8sma//6aulzI1Bkztkg3RmEN6o9jCJECGF7NEChWBg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749842614; c=relaxed/simple;
-	bh=Bfx+nySr9P64kJ6OB1IhUPkBzFELBLtXbtBnVrzcbN8=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=c83Wmn6nkrluJWNtNsHoBFsoneMbYKfq+Rezw8Cq7HZlzQhkbB8w5ax7Ir+F2QGdqrLXUG1hqthwVAH4Sy3NFspCy1XjoVl7GVjR25UoGgbtQ5olqcdnaReBrY3ydFTa5AX3o6pEQHGyVDZyueA/yNSALRG39cbySq7850xkHTM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dnf6U0d7; arc=fail smtp.client-ip=40.107.94.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AC738DD1
+	for <netdev@vger.kernel.org>; Fri, 13 Jun 2025 19:31:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749843067; cv=none; b=OhqrfjGCMYPkdAY4U/s20Ofpcef24zFM4v+jgPm13iefCMuxVnjn1f88j9RxiyQu5kCko/hzF7wXeL1RI2BIM+2gdwqTJNNkntW3kevB0w6d32zm+y6joLvMaNprtcW0liMIdZorO6wgWPsjEYHG00Z+WEwwrUEQiuGquM5aZxk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749843067; c=relaxed/simple;
+	bh=mUNcLK7Tz/HN6zvk5vt0JDmZZxU3HQm+SFRcssS+tDw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VQ/VoXvf+Xu7CuV37MR6xdbO/CMOf2bArRTUGfmY+lJ4B17Js2agymsU0UuEpiHofzAtMw9FBLriixX7A5T8yQb/D6sCWZmiLGC09e/uq7Jz2Fy6e92aXDbGm1NPCg4v22fpYuORoSErOWFywRxViunp9+8pRECNqg1k2nVxgY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=asTLAxfc; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dnf6U0d7"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t0KEuof+xZUZJdRg5nbghf6l6h+5WT9kzGuP1xyqtdk4XoUm1xSCJD6NoC73SlEqZi0C+7OAQx1FDl0YxnZRKeaB4+Yq6Aqdg6FRfJfQ0oPVdOGBnspZjGpquLmDjnVW/c4qgXano1swsfq9Bsm0GTk4bD+t8pY6EyYdBe7IXtmlDqMSEWPceU8f5e6+HT0mMXqic8tgpuhVyw9H7yoBB0yKY6DRVSVv69aMDmdDqS08ufwiIONLw6g/xB0Yi/nSKMOBCgXiVm537zhbYsN+Hk4tijiHNFXzZtIwPD8PE/0yP13lhDQ3Eh/LgqxImrVsBgJDbASMMzfqWo5dH2kVYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XcG3b+dd/UmFuFC31I1+K3OYctGMaEcQircdw0O82I0=;
- b=yjq85rs0wcvBmgVyceuXxRhG0CC6lE6ZiELPqeAmZc/2FDWdrEUeF+pXog59XlAsqK6FnyHw5B8emqHNEKb477tgAhK6drMxVAHYXpd5iSnCGxriKsOTRHXQYXTuNpWYSbF9doQwPBc1szqkgzewVnSyic0qCvYOENUOQaYWg1AlKMSjCyrrBpHuv9gOPodwe+IaMChq61bRryZQuOvRidOBUnnHim0qPLIKivOrdBQw8zWrEDEGZow73CE43KYj83sKO9u2mPvBv0YNAn75nFUSfsbhbUCVrtz2cnppIritzkcIynjtRJsXotCvSAZdKdOw1U3j1S8QOtuePRmWaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=blackwall.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XcG3b+dd/UmFuFC31I1+K3OYctGMaEcQircdw0O82I0=;
- b=dnf6U0d7uQiFOx3YLzDHMAF0wzESMI92xuUR9zDXU13Yx7Aj6N+TRF/isDk3gNQkxd8mfgSoMu5MpreDNBUSfpMZEMNOBeZ4L2YFMPfHAGqu2Zobcrd9KE4zAidC4DsstWaOl/wv8GZ91eKe35g/u+/gKihHVskUIdIAu4SMJ2KUvrJvHKPtwebJFWUF+QkdzaPS0dY+XYxSD4x/Jqk/FmcKVrp6AgaXPdgjB6Y/8J+9Skt9mbJYJG+LJHCXjfWb//9v0/p9sOxohSLT5CdDG2L3rolaPhg053ndyHb4YLyv0DUi1w3vwCPLvEF3JPWmfFKV7m/Lh8T7rZ4idUybYA==
-Received: from CH0PR03CA0295.namprd03.prod.outlook.com (2603:10b6:610:e6::30)
- by SA3PR12MB8801.namprd12.prod.outlook.com (2603:10b6:806:312::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.18; Fri, 13 Jun
- 2025 19:23:30 +0000
-Received: from CH3PEPF00000014.namprd21.prod.outlook.com
- (2603:10b6:610:e6:cafe::df) by CH0PR03CA0295.outlook.office365.com
- (2603:10b6:610:e6::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.22 via Frontend Transport; Fri,
- 13 Jun 2025 19:23:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CH3PEPF00000014.mail.protection.outlook.com (10.167.244.119) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8880.0 via Frontend Transport; Fri, 13 Jun 2025 19:23:29 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 13 Jun
- 2025 12:23:12 -0700
-Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 13 Jun
- 2025 12:23:07 -0700
-References: <cover.1749757582.git.petrm@nvidia.com>
- <175561dc917afb9a9773c229d671488f3e155225.1749757582.git.petrm@nvidia.com>
- <20250613094806.2e67594c@kernel.org>
-User-agent: mu4e 1.8.14; emacs 29.4
-From: Petr Machata <petrm@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Petr Machata <petrm@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, "David
- Ahern" <dsahern@gmail.com>, <netdev@vger.kernel.org>, Simon Horman
-	<horms@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>, Ido Schimmel
-	<idosch@nvidia.com>, <mlxsw@nvidia.com>
-Subject: Re: [PATCH net-next v2 09/14] net: ipv6: Add ip6_mr_output()
-Date: Fri, 13 Jun 2025 20:59:27 +0200
-In-Reply-To: <20250613094806.2e67594c@kernel.org>
-Message-ID: <875xgz4fag.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="asTLAxfc"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6f2b58f0d09so1152636d6.3
+        for <netdev@vger.kernel.org>; Fri, 13 Jun 2025 12:31:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749843065; x=1750447865; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dW6v6dejOPisLbvN8khlLaoI3qjUIgmYYdBqK5vX2pc=;
+        b=asTLAxfcZ8+poBnx6yHXtaJpjyeCb4+7spQ1bae03ow6gQ26t72HZj0GVkJQd1czTB
+         QVJzgouAyTDenZnGGDvfUJTE0iuEC77hdQDLHqKpF8+eBLYHcR59xwyTSqj289SvFFC2
+         eZhnmGcHxOvzgxrzDz/9zSlZ/8IozN3x5KI58jEnmN7DEsR3pctxhuEelK3Bnmz8A31G
+         1gRJA2gjFVQlOfm8IGJSxHszqoU0etwicHj4Z2DU/hZyEsmLVIXLvf4is35I3sHU9zat
+         we5IZ8lWkmm1crWLLCAN2ui99b8NkD51fgtMpi4e7kGmeY04y0yNSoagyyRqtPwkJlV+
+         GxJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749843065; x=1750447865;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dW6v6dejOPisLbvN8khlLaoI3qjUIgmYYdBqK5vX2pc=;
+        b=u5bYay0C9740EE1NUCPmW/OQKumvRU53Sv3S+FLZwkfCbinvAWV++l/ogXHwL0vdh7
+         HWGVMscHgLizI6ZbxHSrU/QMZCFAEvgYPuISTg0wjhLRvTZe9rj9781a+6r08/oYv5EO
+         Nu8hpwpI6lNEpGVRlX9NB/0ZSBfZV6Ane7oHW9aDOesSOjgNl1z2PMQagmNJF9fzkQVL
+         i7e0BYsLAYM/jXZSPYjkya77HCXFaelgqMI5wPhVo3dm5Az3WBK72wKA4cnN9VBAxdwK
+         ly9eg2wkix+wX0vY3TCYL5SdA5H8J29EovDQi184zsJU0BYIqkNO56wBLxoTAxFh4Sjv
+         xz8Q==
+X-Gm-Message-State: AOJu0Yz2opJ1uo62YEn4JBVrjrshsccac4v35jsZbiCWty+/ZiGPrcyP
+	jPX2hk7HuTBbLysHw/A8l44CVM1EWqNcV06yC9IMUoT/PLx+Qe3iadfR
+X-Gm-Gg: ASbGncsyS6HeM4ov8QQRk3i8WnuPsTZdrgydAvdPqmaAqLFZlIN+i/Hp3daU0/KVywp
+	85jKltemXn9EtLP9jMLBEu58X593YyyoRGcak3yYS5dFrcMYjMQfre9q4Io3JrFmoxxgmuxX2lx
+	bvE1c8RlMdacMD8sAG0FPYn7I6h7nF6LWbklevtUS6WWsGgpTVNK4SRGnpgdmhT3BBz9mlMu99U
+	57ujq82VtSSlhE8n0QJT3Wd+iw/O0kLR7cKmLSrsqfXjakKOplKURI5Y9HHLbnGptJmo5bofPJA
+	6n5WOL8wjZ5HBgugwNiPH1oL83Z4dQCaf6c2gI30r8QTF4fPE16JtuSShIMyk5gyqSoFVa2P7Jz
+	dj9sE
+X-Google-Smtp-Source: AGHT+IHP3xDIsxPLmd3T7ZvJxd/G3VZK8Aq9Fq64ZUQJvzhpVyW2/UGnRUs+3S9DCCKulrtpd6P4Cg==
+X-Received: by 2002:a05:6214:2b84:b0:6fa:cdc9:8b06 with SMTP id 6a1803df08f44-6fb477707f1mr3296206d6.3.1749843064813;
+        Fri, 13 Jun 2025 12:31:04 -0700 (PDT)
+Received: from soy.nyc.corp.google.com ([2620:0:1003:315:8d12:28c7:afe9:8851])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb35b3dc1dsm25283646d6.46.2025.06.13.12.31.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Jun 2025 12:31:04 -0700 (PDT)
+From: Neal Cardwell <ncardwell.sw@gmail.com>
+To: David Miller <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org,
+	Neal Cardwell <ncardwell@google.com>,
+	Eric Wheeler <netdev@lists.ewheeler.net>,
+	Yuchung Cheng <ycheng@google.com>
+Subject: [PATCH net] tcp: fix tcp_packet_delayed() for tcp_is_non_sack_preventing_reopen() behavior
+Date: Fri, 13 Jun 2025 15:30:56 -0400
+Message-ID: <20250613193056.1585351-1-ncardwell.sw@gmail.com>
+X-Mailer: git-send-email 2.50.0.rc1.591.g9c95f17f64-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF00000014:EE_|SA3PR12MB8801:EE_
-X-MS-Office365-Filtering-Correlation-Id: c845d104-6c52-4ba3-a219-08ddaaafc770
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Ocu1estuMmPv0Zo1xLEfGqF0ajHolL17uty4M20fsy0RWmTeSD3dn9RSxKmh?=
- =?us-ascii?Q?3sioEL7MC2WTRXaHKlsHQbqLoL0IaKQIvMHJbUURqtQ/ZpXgTFI1sRcxauxO?=
- =?us-ascii?Q?IDZIVUP/RisQ/yqF275vub7TB8VLi4b74xo4POQwHwqdWSne2tGAlXs57nw1?=
- =?us-ascii?Q?hM5QXQiq8bBjU2TOcftOsf8E+NCXxI8YbqCl32kvE/danw31jojeM+gQOqrc?=
- =?us-ascii?Q?3MJsMqleIivo87iobTRbrVc4VUFUX/ZbvUERJC5qWLVh/PWiBMlqns+Pvrud?=
- =?us-ascii?Q?tDSdfXGfeSldqQdfia+hA/odnsnrWsqjma3vyN1xhDtxtcOdtVx8OS62AQA0?=
- =?us-ascii?Q?qQPQue6kmlzp3KP1gkCpO5cKLbW5FvMPBKCDeM8kvacSJB9S12tYPUGmPrgp?=
- =?us-ascii?Q?dvoWZQ0MGw98/B+pYio8cxLv3y339ptfciV5ObGxMwr584alNd3QocaPpDDK?=
- =?us-ascii?Q?lSjVEBYfkBlMjOWFKfeaJTBfh1IjhuMLyvW0UBXSsyVetgOIVJcPDQKxl0ca?=
- =?us-ascii?Q?R4mN7y4/pWFaYupA9AiH50Ip40mE+ImNs6RorT+6O4DbQhWwdyNEJgUseEyp?=
- =?us-ascii?Q?xtylT64/GUykIG/XysiA6s6wpcdURS3Qjbvp8ty5kK2aSqmbC9qZsmnDEVau?=
- =?us-ascii?Q?p7ngjbhZzKJfaIbvMRJQoSON/Bqnt2CPQzO4KIUW6DLtGMroyHF7AdRVY/uW?=
- =?us-ascii?Q?RtdrmGbeU28NVM5MkD65ayQQM77emuRqoGjOhmVv6xq6truZE2Fewr9kmFA7?=
- =?us-ascii?Q?HaTBak43mbS83i4xnk7H7de6sBpPStMI1BGESDGzeuXB+4W796mUpghvcJZQ?=
- =?us-ascii?Q?nhj1mOwoihVP2AK00W6WibFDMB1AK8+GrNpyigqyeTojlYIhkqiJe2pRS9pi?=
- =?us-ascii?Q?f2T4WLgLF+DTL7akevJ8GrWvfUukVvz+131DzOVQmeoKXhV/I2scZbkd/6va?=
- =?us-ascii?Q?BiHbVf/J92ivMjErKuKDjseC5Id5exXl9sDNI98NOzxV3MlAZYSKSyZAxD6K?=
- =?us-ascii?Q?dgiIffJ3s1pFN+c3VrTeNbf8Ux/G96xOAhFHLuL2liLktl3IfoURDjqtnbOs?=
- =?us-ascii?Q?jAUu+MldruBnqkbnV4uEyC/2tNV7Cpnv94wvypwxz44F8hGJAIkZ9G3InLaG?=
- =?us-ascii?Q?HH89+cmaQ93pxhH9e1xeNdZt248hqhclfGbWU1JljugRWw2U9Irdw8mSjhNm?=
- =?us-ascii?Q?0M5zbMZgPeApCffyShAcbRiLM4uqLpkmAYteeP0QGoo40QOufk9mFPsqIo1O?=
- =?us-ascii?Q?0Hdr2D2b0DIey8yu3cd1rkY4shb2VKvS/9HRiJ/xNmHB/hKZd//qERLy5i7M?=
- =?us-ascii?Q?CX4oN8U9akshgYfuPXOAGkItCDFI/s+Ht4MtwPGwE+oGTdqGQ3l8vj1a/D0X?=
- =?us-ascii?Q?ZcinMew50xaMRnoPlED2XEfoIyIbpAbyDTpMpgQeHekhhfr27kL9chL1ffnr?=
- =?us-ascii?Q?rdh1icKuHy82mjbS29qaB8iSgkLKZKlFBIAiwT1aQXEq0sjHeAQhYQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2025 19:23:29.6796
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c845d104-6c52-4ba3-a219-08ddaaafc770
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH3PEPF00000014.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8801
+Content-Transfer-Encoding: 8bit
 
+From: Neal Cardwell <ncardwell@google.com>
 
-Jakub Kicinski <kuba@kernel.org> writes:
+After the following commit from 2024:
 
-> On Thu, 12 Jun 2025 22:10:43 +0200 Petr Machata wrote:
->> +static inline int
->> +ip6_mr_output(struct net *net, struct sock *sk, struct sk_buff *skb)
->> +{
->> +	return 0;
->> +}
->
-> Shouldn't this free the skb?
->
-> That would explain why you're not seeing the problem our netdevsim
-> runner doesn't have IPV6_MROUTE set, and you probably do?
+commit e37ab7373696 ("tcp: fix to allow timestamp undo if no retransmits were sent")
 
-Yep, that's what reproduces it. The NIPA how-to-reproduce instructions
-show they use tools/testing/selftests/net/forwarding/config, but those
-enable IPV6_MROUTE, hence why it didn't reproduce for me.
+...there was buggy behavior where TCP connections without SACK support
+could easily see erroneous undo events at the end of fast recovery or
+RTO recovery episodes. The erroneous undo events could cause those
+connections to suffer repeated loss recovery episodes and high
+retransmit rates.
 
-This ip6_mr_output() fallback is completely broken, it should be calling
-ip6_output() obviously instead of silently leaking the packet :-|
+The problem was an interaction between the non-SACK behavior on these
+connections and the undo logic. The problem is that, for non-SACK
+connections at the end of a loss recovery episode, if snd_una ==
+high_seq, then tcp_is_non_sack_preventing_reopen() holds steady in
+CA_Recovery or CA_Loss, but clears tp->retrans_stamp to 0. Then upon
+the next ACK the "tcp: fix to allow timestamp undo if no retransmits
+were sent" logic saw the tp->retrans_stamp at 0 and erroneously
+concluded that no data was retransmitted, and erroneously performed an
+undo of the cwnd reduction, restoring cwnd immediately to the value it
+had before loss recovery.  This caused an immediate burst of traffic
+and build-up of queues and likely another immediate loss recovery
+episode.
+
+This commit fixes tcp_packet_delayed() to ignore zero retrans_stamp
+values for non-SACK connections when snd_una is at or above high_seq,
+because tcp_is_non_sack_preventing_reopen() clears retrans_stamp in
+this case, so it's not a valid signal that we can undo.
+
+Note that the commit named in the Fixes footer restored long-present
+behavior from roughly 2005-2019, so apparently this bug was present
+for a while during that era, and this was simply not caught.
+
+Fixes: e37ab7373696 ("tcp: fix to allow timestamp undo if no retransmits were sent")
+Reported-by: Eric Wheeler <netdev@lists.ewheeler.net>
+Closes: https://lore.kernel.org/netdev/64ea9333-e7f9-0df-b0f2-8d566143acab@ewheeler.net/
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Co-developed-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+---
+ net/ipv4/tcp_input.c | 37 +++++++++++++++++++++++++------------
+ 1 file changed, 25 insertions(+), 12 deletions(-)
+
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 8ec92dec321a9..12c2e6fc85c62 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2479,20 +2479,33 @@ static inline bool tcp_packet_delayed(const struct tcp_sock *tp)
+ {
+ 	const struct sock *sk = (const struct sock *)tp;
+ 
+-	if (tp->retrans_stamp &&
+-	    tcp_tsopt_ecr_before(tp, tp->retrans_stamp))
+-		return true;  /* got echoed TS before first retransmission */
+-
+-	/* Check if nothing was retransmitted (retrans_stamp==0), which may
+-	 * happen in fast recovery due to TSQ. But we ignore zero retrans_stamp
+-	 * in TCP_SYN_SENT, since when we set FLAG_SYN_ACKED we also clear
+-	 * retrans_stamp even if we had retransmitted the SYN.
++	/* Received an echoed timestamp before the first retransmission? */
++	if (tp->retrans_stamp)
++		return tcp_tsopt_ecr_before(tp, tp->retrans_stamp);
++
++	/* We set tp->retrans_stamp upon the first retransmission of a loss
++	 * recovery episode, so normally if tp->retrans_stamp is 0 then no
++	 * retransmission has happened yet (likely due to TSQ, which can cause
++	 * fast retransmits to be delayed). So if snd_una advanced while
++	 * (tp->retrans_stamp is 0 then apparently a packet was merely delayed,
++	 * not lost. But there are exceptions where we retransmit but then
++	 * clear tp->retrans_stamp, so we check for those exceptions.
+ 	 */
+-	if (!tp->retrans_stamp &&	   /* no record of a retransmit/SYN? */
+-	    sk->sk_state != TCP_SYN_SENT)  /* not the FLAG_SYN_ACKED case? */
+-		return true;  /* nothing was retransmitted */
+ 
+-	return false;
++	/* (1) For non-SACK connections, tcp_is_non_sack_preventing_reopen()
++	 * clears tp->retrans_stamp when snd_una == high_seq.
++	 */
++	if (!tcp_is_sack(tp) && !before(tp->snd_una, tp->high_seq))
++		return false;
++
++	/* (2) In TCP_SYN_SENT tcp_clean_rtx_queue() clears tp->retrans_stamp
++	 * when setting FLAG_SYN_ACKED is set, even if the SYN was
++	 * retransmitted.
++	 */
++	if (sk->sk_state == TCP_SYN_SENT)
++		return false;
++
++	return true;	/* tp->retrans_stamp is zero; no retransmit yet */
+ }
+ 
+ /* Undo procedures. */
+-- 
+2.50.0.rc1.591.g9c95f17f64-goog
+
