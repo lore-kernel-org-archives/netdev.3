@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24BB298CD2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D6E299928;
 	Sat, 14 Jun 2025 08:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749891378; cv=none; b=OC6hx+Bm7OM6IqYkNxWKiuUgL3GMPI4vNe1q7139DxitXHKxzZqjH5+b/hBKmXr7HiV6UhRx6UO449l/IHZTntK/drjdtkX+7AWbK86orHzdljQBHqZaeq9Dz+gCvrc+5nNPDColTOTORnDen0D7YEgex2wmYHg34lSOKpqaDB8=
+	t=1749891379; cv=none; b=U+MXT60eeLqxluGpt/ihoalF7UkjDaC5A31RAcOrSXfS9179uUZGfOeDF4o6I2uKSZlhHIHXvJmMqb7+UwigtEiB/UrCRK/FHxyEv+59XT846PvYukFG3NEypyF74aljSLJI3KCuvABzRnzakXljBGv9bJt9pz/2GLXDBR6hOmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749891378; c=relaxed/simple;
-	bh=jazvmyYFMnGYOxxVZMEBOjTd9mMz+TrushWEPpOXIDU=;
+	s=arc-20240116; t=1749891379; c=relaxed/simple;
+	bh=00F9KG3FuikbC/77I/aVEWzxRtC/68GGYQsrs3gqu00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PtPq5SeT+pWYBhOM88RCVbSfv5/leHdtcu3wemQ6EJdt8PIFq2FpM7jpHq0dqNW5PvDwRmlEUqsDhuRRpWwRnoZ1qS5xxdv6xmfna8m0IZpyu8IIIn08U2r9mGqzriFY1c3/77UckOfr97v4wijXpMG+42CuyWS96x2HnFMeQL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ron2pf0w; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ud7aAwX/IHTstc5MesAawLTPL+Y2LypacaZZsec3evl+Ktn7huiNCSxN1raLryowpq5kVYrz2JcEq6Qmf0Aoeuzhm7jYu5x4Sc9XqWVHgplF2K7VGNG0CDfjcgYFSR1ugv4AX/TgMpyJoRxFaZOcHOsga/5vVxn6pzuKTscVvWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WrsOCRsq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ron2pf0w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDA2C113D0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WrsOCRsq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A8BC4CEFE;
 	Sat, 14 Jun 2025 08:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1749891378;
-	bh=jazvmyYFMnGYOxxVZMEBOjTd9mMz+TrushWEPpOXIDU=;
+	bh=00F9KG3FuikbC/77I/aVEWzxRtC/68GGYQsrs3gqu00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ron2pf0wEzLlgOKo4jmBETCTLD/zzRde1B1blhmA9544cAqKpYlKO6zjy7IQ87L4m
-	 oIxcgKs0txHocJYfjic3d74DjoToEIPJOdhhLZkvXszxongHQHizoTbzDf2i3uVCWd
-	 9D62wpxysFGCkZuNUc3fXwuukYKboCinO5aHe5WrEaYeJu8R95fv+bivZxEjNNjjTp
-	 tmKs9Y8a6X4Fnn25ln/4pJY4Mqaj/keRzemu5qDOsx/6uImiy1hSQmnZSpm7wCgv6E
-	 D5b5V+mz7N4d4ZicqPXqaq2n9U0tNa8tE9p065wR/WePMaMdCt0SiLHBeV39LxPvjJ
-	 tSbFGd0AIJsww==
+	b=WrsOCRsq69wKZqzbM/v4hKRkiF6UJl4qiGVj1ejjEYSbVZjgDJ59mBRM/3knDFwKr
+	 wB5f4hi2a2j86U0ExnNWsZOn1GPDAF12SAx99jKz9Bc+VuB2RMR9/KopRFxyiN+hb3
+	 z++8JFza65hM6EA7H22qSVa5eCE/PkyJ4D+xag+c87NqULs+gw0Q9H8XYiWckTiXm+
+	 d1iMqSQ50AMTZqgNp7W86D6LNAhAt7P6h14Jwpz2rJoGpS7ghjiDFGq9zNleKAg2TG
+	 NijsY+UTSH1gJ1VGEuWiuYpBEmjR2FXAZE0qie7DYNJq+pnvdPENlyaFSzoeZb5bLI
+	 4DWsDFgHQXbyQ==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uQMgS-000000064bT-2hKl;
+	id 1uQMgS-000000064bL-2EQ1;
 	Sat, 14 Jun 2025 10:56:16 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
@@ -46,6 +46,8 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	"Paolo Abeni" <pabeni@redhat.com>,
 	"Ruben Wauters" <rubenru09@aol.com>,
 	"Shuah Khan" <skhan@linuxfoundation.org>,
+	Jakub Kicinski <mchehab+huawei@kernel.org>,
+	Simon Horman <mchehab+huawei@kernel.org>,
 	joel@joelfernandes.org,
 	linux-kernel-mentees@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
@@ -53,9 +55,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	netdev@vger.kernel.org,
 	peterz@infradead.org,
 	stern@rowland.harvard.edu
-Subject: [PATCH v4 13/14] docs: Makefile: disable check rules on make cleandocs
-Date: Sat, 14 Jun 2025 10:56:07 +0200
-Message-ID: <bafc364ae9119b4536460903cfd3a3afc33a4151.1749891128.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v4 11/14] docs: uapi: netlink: update netlink specs link
+Date: Sat, 14 Jun 2025 10:56:05 +0200
+Message-ID: <dbc3dfd26ade24dc92c5b4003fd952f067f0fab9.1749891128.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1749891128.git.mchehab+huawei@kernel.org>
 References: <cover.1749891128.git.mchehab+huawei@kernel.org>
@@ -68,34 +70,41 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-It doesn't make sense to check for missing ABI and documents
-when cleaning the tree.
+With the recent parser_yaml extension, and the removal of the
+auto-generated ReST source files, the location of netlink
+specs changed.
+
+Update uAPI accordingly.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- Documentation/Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/userspace-api/netlink/index.rst | 2 +-
+ Documentation/userspace-api/netlink/specs.rst | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/Makefile b/Documentation/Makefile
-index 9185680b1e86..820f07e0afe6 100644
---- a/Documentation/Makefile
-+++ b/Documentation/Makefile
-@@ -5,6 +5,7 @@
- # for cleaning
- subdir- := devicetree/bindings
+diff --git a/Documentation/userspace-api/netlink/index.rst b/Documentation/userspace-api/netlink/index.rst
+index c1b6765cc963..83ae25066591 100644
+--- a/Documentation/userspace-api/netlink/index.rst
++++ b/Documentation/userspace-api/netlink/index.rst
+@@ -18,4 +18,4 @@ Netlink documentation for users.
  
-+ifneq ($(MAKECMDGOALS),cleandocs)
- # Check for broken documentation file references
- ifeq ($(CONFIG_WARN_MISSING_DOCUMENTS),y)
- $(shell $(srctree)/scripts/documentation-file-ref-check --warn)
-@@ -14,6 +15,7 @@ endif
- ifeq ($(CONFIG_WARN_ABI_ERRORS),y)
- $(shell $(srctree)/scripts/get_abi.py --dir $(srctree)/Documentation/ABI validate)
- endif
-+endif
+ See also:
+  - :ref:`Documentation/core-api/netlink.rst <kernel_netlink>`
+- - :ref:`Documentation/networking/netlink_spec/index.rst <specs>`
++ - :ref:`Documentation/netlink/specs/index.rst <specs>`
+diff --git a/Documentation/userspace-api/netlink/specs.rst b/Documentation/userspace-api/netlink/specs.rst
+index 1b50d97d8d7c..debb4bfca5c4 100644
+--- a/Documentation/userspace-api/netlink/specs.rst
++++ b/Documentation/userspace-api/netlink/specs.rst
+@@ -15,7 +15,7 @@ kernel headers directly.
+ Internally kernel uses the YAML specs to generate:
  
- # You can set these variables from the command line.
- SPHINXBUILD   = sphinx-build
+  - the C uAPI header
+- - documentation of the protocol as a ReST file - see :ref:`Documentation/networking/netlink_spec/index.rst <specs>`
++ - documentation of the protocol as a ReST file - see :ref:`Documentation/netlink/specs/index.rst <specs>`
+  - policy tables for input attribute validation
+  - operation tables
+ 
 -- 
 2.49.0
 
