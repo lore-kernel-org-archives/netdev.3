@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634C81EC014;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FFA1F4631;
 	Sat, 14 Jun 2025 08:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749891378; cv=none; b=dJx0bPIhCzSSKqVD6iRHjQT0mg5uJhpesRToZ+w+meTp2cK+z+7v+WemthGbcIOykSCozQRAxCN/tnHBkzUBRRg1HQajk9b5J8hjDR8IBmim32U6Bv/zZFpZz8d0ImuuhvZuCxYfH3b/UohifOqroOEXsI+sFfr+M+l2sCzQ0Bo=
+	t=1749891378; cv=none; b=WVeYR4bC/zNy5Qpmk9TiEr9udnp4hitpDphpdmeRlK1kSCw5Naeqbi7tl8mgusM1pIJ90l6HLH7hDB9/rEC25+Di6Y4ozYlKTlRyvdBf8aVEzBT38NHiMTjiwdcU9SCt4SrfNlrvMcAz6eF2SM0E7mVYBUagmJWBC3PAwBMDZws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749891378; c=relaxed/simple;
-	bh=zjfj2Tm7h9LKUnhgzAVTuVnT8YUaP6pYYIdRhxmKFAc=;
+	bh=8JLj251EiGtS/E11n5n+267zLGC8qyxQhPvEcm7GqEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJ5qaE24Q7sWn/t0PU3RvwbKi8wSAoxK8DnbS3/jBqB5t5VueTnYXmOsohw8heAc8Wi5wlGl6RLbUNscU881NvV+Jqy3CmmzlUyjEzPQapYuYkfTHXOU/KmS8mCIzo2moNsdWobLAHJcmSOmYtBAO33wX3acpervgWLCK49eZy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XN8xx+lC; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=jrv7LaPSrfSZmzcv5iZnus+OaTChVkbDxFVNhNOpwIinEkm9J/wNJaLfZPnUmqWgEgNbyyeWCQaJODFOb1fMvjfDA+WLP38zQ0407jkVr3MhoFeJDKmVnGIkoECBLoZG48jL5/2n5+A6yy2VK0vFREbInC05i2kCFDOz3JXnRug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=umeedEFn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XN8xx+lC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E578EC4CEF1;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="umeedEFn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8901C4CEF2;
 	Sat, 14 Jun 2025 08:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1749891378;
-	bh=zjfj2Tm7h9LKUnhgzAVTuVnT8YUaP6pYYIdRhxmKFAc=;
+	bh=8JLj251EiGtS/E11n5n+267zLGC8qyxQhPvEcm7GqEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XN8xx+lChxGcgbZ/ztz2429Ca+3Vh91S/41P+iBhSYgUXxOCXNENr5YO36mz5p5Qr
-	 5BWkw16tgrbiIUcPp7S13/Gl77VY9kk2ygbQN63bxhZFLidlPN/Oowf0EDBjQvaUvx
-	 +DOsNDt2bvoKH9r3H9OC9ng+uu6wNAzKctC2Lxp3xfWKlY27zGLQUUQtoErQSFTb4U
-	 Zqh9IQjyxvtwmnkya21jQ4Ic47BZLEiUNVkrVD+MPiRs3LrVclJlIdMLloniEKL7F0
-	 i2qTV7k2UGBFK8PYLuWc3kN6SGblRv/qIHNWsRE08Cdqy8W7G/0GNwLlytCSyJkbdI
-	 0TQD+6uNa2hOw==
+	b=umeedEFnlci600SipXlsi0H6C/9NbbdgnZQ+uUcYKUUcOwhDRHylvby3pkc6uxuUj
+	 gUpz0wA7vicDAg7GMtCsGBJ9LGa/T5Z/a5Q8Lo6DynAT53+IFEMv3lulVXJSBYByTo
+	 0hq4Wcco5yoa1OMPIoCEKVxl7MdAJsIjoUWG1CWKASL2t35GzKCVb5RB+RKcghXsv1
+	 EssBfDGOQij865I4tnSb4ZQqBMwRsCeQk+lsqM/JMKZDGToJ5zcXmrOLzk6LHTIkyr
+	 nPfaL+VU/L0+rZBf16bfLYnPo/fZWecRgnxxUI63PFYplWOUpxlUCFP8mz5rf65eSq
+	 KxFkI3aO5YlKA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uQMgS-000000064at-0Rls;
-	Sat, 14 Jun 2025 10:56:16 +0200
+	id 1uQMgR-000000064ah-3uBS;
+	Sat, 14 Jun 2025 10:56:15 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>
@@ -55,9 +55,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	netdev@vger.kernel.org,
 	peterz@infradead.org,
 	stern@rowland.harvard.edu
-Subject: [PATCH v4 04/14] tools: ynl_gen_rst.py: make the index parser more generic
-Date: Sat, 14 Jun 2025 10:55:58 +0200
-Message-ID: <3fb42a4aa79631d69041f6750dc0d55dd3067162.1749891128.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v4 01/14] tools: ynl_gen_rst.py: create a top-level reference
+Date: Sat, 14 Jun 2025 10:55:55 +0200
+Message-ID: <ed66166bec8051df75465f9821671b21011fbda4.1749891128.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1749891128.git.mchehab+huawei@kernel.org>
 References: <cover.1749891128.git.mchehab+huawei@kernel.org>
@@ -70,78 +70,41 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-It is not a good practice to store build-generated files
-inside $(srctree), as one may be using O=<BUILDDIR> and even
-have the Kernel on a read-only directory.
+Currently, rt documents are referred with:
 
-Change the YAML generation for netlink files to allow it
-to parse data based on the source or on the object tree.
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`rt-link<../../networking/netlink_spec/rt-link>`
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
+
+that's hard to maintain, and may break if we change the way
+rst files are generated from yaml. Better to use instead a
+reference for the netlink family.
+
+So, add a netlink-<foo> reference to all generated docs.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- tools/net/ynl/pyynl/ynl_gen_rst.py | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ tools/net/ynl/pyynl/ynl_gen_rst.py | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/tools/net/ynl/pyynl/ynl_gen_rst.py b/tools/net/ynl/pyynl/ynl_gen_rst.py
-index 7bfb8ceeeefc..b1e5acafb998 100755
+index 0cb6348e28d3..7bfb8ceeeefc 100755
 --- a/tools/net/ynl/pyynl/ynl_gen_rst.py
 +++ b/tools/net/ynl/pyynl/ynl_gen_rst.py
-@@ -365,6 +365,7 @@ def parse_arguments() -> argparse.Namespace:
+@@ -314,10 +314,11 @@ def parse_yaml(obj: Dict[str, Any]) -> str:
  
-     parser.add_argument("-v", "--verbose", action="store_true")
-     parser.add_argument("-o", "--output", help="Output file name")
-+    parser.add_argument("-d", "--input_dir", help="YAML input directory")
+     # Main header
  
-     # Index and input are mutually exclusive
-     group = parser.add_mutually_exclusive_group()
-@@ -405,11 +406,14 @@ def write_to_rstfile(content: str, filename: str) -> None:
-     """Write the generated content into an RST file"""
-     logging.debug("Saving RST file to %s", filename)
+-    lines.append(rst_header())
+-
+     family = obj['name']
  
-+    dir = os.path.dirname(filename)
-+    os.makedirs(dir, exist_ok=True)
++    lines.append(rst_header())
++    lines.append(rst_label("netlink-" + family))
 +
-     with open(filename, "w", encoding="utf-8") as rst_file:
-         rst_file.write(content)
- 
- 
--def generate_main_index_rst(output: str) -> None:
-+def generate_main_index_rst(output: str, index_dir: str) -> None:
-     """Generate the `networking_spec/index` content and write to the file"""
-     lines = []
- 
-@@ -418,12 +422,18 @@ def generate_main_index_rst(output: str) -> None:
-     lines.append(rst_title("Netlink Family Specifications"))
-     lines.append(rst_toctree(1))
- 
--    index_dir = os.path.dirname(output)
--    logging.debug("Looking for .rst files in %s", index_dir)
-+    index_fname = os.path.basename(output)
-+    base, ext = os.path.splitext(index_fname)
-+
-+    if not index_dir:
-+        index_dir = os.path.dirname(output)
-+
-+    logging.debug(f"Looking for {ext} files in %s", index_dir)
-     for filename in sorted(os.listdir(index_dir)):
--        if not filename.endswith(".rst") or filename == "index.rst":
-+        if not filename.endswith(ext) or filename == index_fname:
-             continue
--        lines.append(f"   {filename.replace('.rst', '')}\n")
-+        base, ext = os.path.splitext(filename)
-+        lines.append(f"   {base}\n")
- 
-     logging.debug("Writing an index file at %s", output)
-     write_to_rstfile("".join(lines), output)
-@@ -447,7 +457,7 @@ def main() -> None:
- 
-     if args.index:
-         # Generate the index RST file
--        generate_main_index_rst(args.output)
-+        generate_main_index_rst(args.output, args.input_dir)
- 
- 
- if __name__ == "__main__":
+     title = f"Family ``{family}`` netlink specification"
+     lines.append(rst_title(title))
+     lines.append(rst_paragraph(".. contents:: :depth: 3\n"))
 -- 
 2.49.0
 
