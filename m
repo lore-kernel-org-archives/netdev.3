@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F01A2980AC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0C12980B4;
 	Sat, 14 Jun 2025 08:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749891378; cv=none; b=ii2h5k8cgfi5iFmcp/2n3njJsaZw1+H1bcd4c+vPl0rO+3Ua/76aCpnLZkguah8HunA/T+apwIhIHt9+TDsC3EQG9MOltfl8+wXNSg8EeOBsFrTI/HC1aP1zcYsGk/JoaE64I4OYAvr08SsQNFR0sVSwFAFunIc/2R8JZH12WYo=
+	t=1749891378; cv=none; b=sSpQmN3NuCwM77BCtx+yvAYpF4f4WtlMduJ8g9YHfCFX7xZTJH8ZTYaPD+cBCEoAagHZDx0WGU2iQUDa5X7iPkxg2hxlg9aGRRlZFt0Ba62Em2Fh7IohGgLejtIZfYPyZeNA85TSn3mawIiBoYOwDviXVg2QJBaw0IgRBwKktw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749891378; c=relaxed/simple;
-	bh=+6rtudJ73X+4ufoIvZc3v82fZGF4QvbxcviFruS5je8=;
+	bh=I8pUy88zBF77rSu49ytMSdMuCNGwN6+WLgN5avfuYxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BO218lETKnonlHkapNyY+a6MxDysHSM31I+Qwx0tBQTvCEwSpr9v1bsGehqlmr2TwiP22r/O/yVvfS9RHsHLGsoWfq+4yok0CemfBBoJ8pqt7SEsgJ5Wo2Q0sLf7/J3RrL+zOB0XEl4lmKJXdzKgtAKNEg+1Qsekgvqt42jSXpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kVadhsiF; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=cyZWS6jnK2SLG3wJY4hmEj1U92padwxlBSMukh7llcJxiQYv6V3jb/dPm11s5KtNN8K5yKHcrg49qa2nc/n2qs/rQtXS5A8Evyn5oomHDmTnbeHu35gFAwHyJ4jUavO1XR7Vsu7Mt/wZbkgQi3SRiMQm6giS3RAtnHyusBVXOfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTG7J6SH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kVadhsiF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AA2C4CEFC;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTG7J6SH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223EAC4CEFA;
 	Sat, 14 Jun 2025 08:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1749891378;
-	bh=+6rtudJ73X+4ufoIvZc3v82fZGF4QvbxcviFruS5je8=;
+	bh=I8pUy88zBF77rSu49ytMSdMuCNGwN6+WLgN5avfuYxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kVadhsiFfw1MukiWOx/QmX9YxGaDXTanMWwIAtUR7A1moktENrB55UduqSiOGrpt3
-	 bkmb2l1YKkJpqKC4KTUrFqr/cLfMhgKBiUYXgGteilOC/LAr3BA9+2pxP36LZfpRv3
-	 pwfHUWbBHo19ig60DM05UFsVok0cE1SshPyi57ORIMkoCmr/2HVBj28ScfEK8VT/F4
-	 rEfRXarDKsxqZ+7f8VOKybJB092lMV5NLccTW0ghJJLUzx+Yn1njsxQfKWfTkc0vat
-	 ER7BqIoootq6YyA+PYCNijJAGynwgFRHKaophMGth764KftTL+zbZFK8xn4BOj5N1g
-	 uyEbeFjDnKpOA==
+	b=HTG7J6SH/h1/npYSqD2MKXtZuTixOUkwIZQ6lmqLSQ3J5aNz5L1gABzF7h0vUpW8n
+	 UMVtH3jE02TZm3H7Erbf2UjLQYDF2JtJmBNQ8qUdJNXOiYCdpVD5KJ1LUiRth78MWB
+	 gK5LBkeYIvapyhdht6NO7NWwDtTHV9EHthMTa74+VDlr/bL7RYxkHRXYGg3zimEgBQ
+	 Ih5k0Kkkl2CnHMj1EXLH1sRRSHzFwZzmzXA638Y9M+ECQMXBaA4ZiizxlMyRdHSjVT
+	 LiaKHPFfKCQPSppHB7EdBy7D2VCTz5mUwbdQew5RS6Uwmm174j649+cCbCt0WPDaLF
+	 HECI2U1/M9KFw==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uQMgS-000000064bG-1zCZ;
+	id 1uQMgS-000000064b9-1UUZ;
 	Sat, 14 Jun 2025 10:56:16 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
@@ -53,9 +53,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	netdev@vger.kernel.org,
 	peterz@infradead.org,
 	stern@rowland.harvard.edu
-Subject: [PATCH v4 10/14] docs: conf.py: don't handle yaml files outside Netlink specs
-Date: Sat, 14 Jun 2025 10:56:04 +0200
-Message-ID: <de859cadec9d31d33ba484ebb738dc73ebaa720e.1749891128.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v4 08/14] docs: sphinx: add a parser for yaml files for Netlink specs
+Date: Sat, 14 Jun 2025 10:56:02 +0200
+Message-ID: <4eb1691d75bedaf1317e5293bb09f4148288904a.1749891128.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1749891128.git.mchehab+huawei@kernel.org>
 References: <cover.1749891128.git.mchehab+huawei@kernel.org>
@@ -65,51 +65,128 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-The parser_yaml extension already has a logic to prevent
-handing all yaml documents. However, if we don't also exclude
-the patterns at conf.py, the build time would increase a lot,
-and warnings like those would be generated:
+Add a simple sphinx.Parser to handle yaml files and add the
+the code to handle Netlink specs. All other yaml files are
+ignored.
 
-    Documentation/netlink/genetlink.yaml: WARNING: o documento não está incluído em nenhum toctree
-    Documentation/netlink/genetlink-c.yaml: WARNING: o documento não está incluído em nenhum toctree
-    Documentation/netlink/genetlink-legacy.yaml: WARNING: o documento não está incluído em nenhum toctree
-    Documentation/netlink/index.rst: WARNING: o documento não está incluído em nenhum toctree
-    Documentation/netlink/netlink-raw.yaml: WARNING: o documento não está incluído em nenhum toctree
+The code was written in a way that parsing yaml for different
+subsystems and even for different parts of Netlink are easy.
 
-Add some exclusion rules to prevent that.
+All it takes to have a different parser is to add an
+import line similar to:
+
+	from netlink_yml_parser import YnlDocGenerator
+
+adding the corresponding parser somewhere at the extension:
+
+	netlink_parser = YnlDocGenerator()
+
+And then add a logic inside parse() to handle different
+doc outputs, depending on the file location, similar to:
+
+        if "/netlink/specs/" in fname:
+            msg = self.netlink_parser.parse_yaml_file(fname)
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- Documentation/conf.py | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ .pylintrc                           |  2 +-
+ Documentation/sphinx/parser_yaml.py | 76 +++++++++++++++++++++++++++++
+ 2 files changed, 77 insertions(+), 1 deletion(-)
+ create mode 100755 Documentation/sphinx/parser_yaml.py
 
-diff --git a/Documentation/conf.py b/Documentation/conf.py
-index add6ce78dd80..62a51ac64b95 100644
---- a/Documentation/conf.py
-+++ b/Documentation/conf.py
-@@ -221,8 +221,16 @@ language = 'en'
- #today_fmt = '%B %d, %Y'
- 
- # List of patterns, relative to source directory, that match files and
--# directories to ignore when looking for source files.
--exclude_patterns = ['output']
-+# directories.
-+include_patterns = [
-+	'**.rst',
-+	'netlink/specs/*.yaml',
-+]
+diff --git a/.pylintrc b/.pylintrc
+index 30b8ae1659f8..f1d21379254b 100644
+--- a/.pylintrc
++++ b/.pylintrc
+@@ -1,2 +1,2 @@
+ [MASTER]
+-init-hook='import sys; sys.path += ["scripts/lib/kdoc", "scripts/lib/abi"]'
++init-hook='import sys; sys.path += ["scripts/lib", "scripts/lib/kdoc", "scripts/lib/abi"]'
+diff --git a/Documentation/sphinx/parser_yaml.py b/Documentation/sphinx/parser_yaml.py
+new file mode 100755
+index 000000000000..9083e102c9f3
+--- /dev/null
++++ b/Documentation/sphinx/parser_yaml.py
+@@ -0,0 +1,76 @@
++"""
++Sphinx extension for processing YAML files
++"""
 +
-+# patterns to ignore when looking for source files.
-+exclude_patterns = [
-+	'output',
-+]
- 
- # The reST default role (used for this markup: `text`) to use for all
- # documents.
++import os
++import re
++import sys
++
++from pprint import pformat
++
++from docutils.parsers.rst import Parser as RSTParser
++from docutils.statemachine import ViewList
++
++from sphinx.util import logging
++from sphinx.parsers import Parser
++
++srctree = os.path.abspath(os.environ["srctree"])
++sys.path.insert(0, os.path.join(srctree, "scripts/lib"))
++
++from netlink_yml_parser import YnlDocGenerator        # pylint: disable=C0413
++
++logger = logging.getLogger(__name__)
++
++class YamlParser(Parser):
++    """Custom parser for YAML files."""
++
++    # Need at least two elements on this set
++    supported = ('yaml', 'yml')
++
++    netlink_parser = YnlDocGenerator()
++
++    def do_parse(self, inputstring, document, msg):
++        """Parse YAML and generate a document tree."""
++
++        self.setup_parse(inputstring, document)
++
++        result = ViewList()
++
++        try:
++            # Parse message with RSTParser
++            for i, line in enumerate(msg.split('\n')):
++                result.append(line, document.current_source, i)
++
++            rst_parser = RSTParser()
++            rst_parser.parse('\n'.join(result), document)
++
++        except Exception as e:
++            document.reporter.error("YAML parsing error: %s" % pformat(e))
++
++        self.finish_parse()
++
++    # Overrides docutils.parsers.Parser. See sphinx.parsers.RSTParser
++    def parse(self, inputstring, document):
++        """Check if a YAML is meant to be parsed."""
++
++        fname = document.current_source
++
++        # Handle netlink yaml specs
++        if "/netlink/specs/" in fname:
++            msg = self.netlink_parser.parse_yaml_file(fname)
++            self.do_parse(inputstring, document, msg)
++
++        # All other yaml files are ignored
++
++def setup(app):
++    """Setup function for the Sphinx extension."""
++
++    # Add YAML parser
++    app.add_source_parser(YamlParser)
++    app.add_source_suffix('.yaml', 'yaml')
++
++    return {
++        'version': '1.0',
++        'parallel_read_safe': True,
++        'parallel_write_safe': True,
++    }
 -- 
 2.49.0
 
