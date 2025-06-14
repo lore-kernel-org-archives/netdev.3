@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0C12980B4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18AC298CD1;
 	Sat, 14 Jun 2025 08:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749891378; cv=none; b=sSpQmN3NuCwM77BCtx+yvAYpF4f4WtlMduJ8g9YHfCFX7xZTJH8ZTYaPD+cBCEoAagHZDx0WGU2iQUDa5X7iPkxg2hxlg9aGRRlZFt0Ba62Em2Fh7IohGgLejtIZfYPyZeNA85TSn3mawIiBoYOwDviXVg2QJBaw0IgRBwKktw0=
+	t=1749891378; cv=none; b=OV9fKLXoU7xnTiyvxBhvVlm8yvDD6p49h0zfuGdsqTzMhLFVLn1W+U9oDtOVeJzikL7Zb95u2JlZwqamv2cRKcE6jtT3YaS++86K83fuMCghvlbqlnHNWgpW6Oo5y+bhkYJ4GBT/iRvjI+JRQrr5aRsvEnFGrmwaWtXt5D514k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749891378; c=relaxed/simple;
-	bh=I8pUy88zBF77rSu49ytMSdMuCNGwN6+WLgN5avfuYxU=;
+	bh=JDTK8ds5rMEZTW9f7Wpcip/tbHM6fMKUON4aC7f9ZTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cyZWS6jnK2SLG3wJY4hmEj1U92padwxlBSMukh7llcJxiQYv6V3jb/dPm11s5KtNN8K5yKHcrg49qa2nc/n2qs/rQtXS5A8Evyn5oomHDmTnbeHu35gFAwHyJ4jUavO1XR7Vsu7Mt/wZbkgQi3SRiMQm6giS3RAtnHyusBVXOfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTG7J6SH; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=CNgSSJ2D4Pa1wATKOEFlGZzGQMfaZ8bgvgiOClGSe5AsuB7aFlY2Q12vPMAqlG2nF1B+vSwgA4GEHlG9rvl1WobIJfJaVPEbjMv5xLNepdmtm14oMXZUP0bDRmQ8VsyOYQspj5buLrEI0jD3eSmdgKsmazL/0BV+5AjiD5ltGyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jnxo2kga; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTG7J6SH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223EAC4CEFA;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jnxo2kga"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793A4C116C6;
 	Sat, 14 Jun 2025 08:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1749891378;
-	bh=I8pUy88zBF77rSu49ytMSdMuCNGwN6+WLgN5avfuYxU=;
+	bh=JDTK8ds5rMEZTW9f7Wpcip/tbHM6fMKUON4aC7f9ZTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HTG7J6SH/h1/npYSqD2MKXtZuTixOUkwIZQ6lmqLSQ3J5aNz5L1gABzF7h0vUpW8n
-	 UMVtH3jE02TZm3H7Erbf2UjLQYDF2JtJmBNQ8qUdJNXOiYCdpVD5KJ1LUiRth78MWB
-	 gK5LBkeYIvapyhdht6NO7NWwDtTHV9EHthMTa74+VDlr/bL7RYxkHRXYGg3zimEgBQ
-	 Ih5k0Kkkl2CnHMj1EXLH1sRRSHzFwZzmzXA638Y9M+ECQMXBaA4ZiizxlMyRdHSjVT
-	 LiaKHPFfKCQPSppHB7EdBy7D2VCTz5mUwbdQew5RS6Uwmm174j649+cCbCt0WPDaLF
-	 HECI2U1/M9KFw==
+	b=Jnxo2kgabhDXzSpfzf0kdqlxjfXWeYV1fURoZiC0VQCicHOQ5U2te0gdTHk3o9Ghd
+	 +iaOdCab93EbQ3V3PMSsF26JYOTOuz0XqNDIWWCtBY/TUNc5jKw6qpZuOGOQYIMRXu
+	 WgVIcuqRmhvWPCYM7YxMpZ/vQGEUeFVuNz9fYIqCVfzUtzgn+DJ1rYFxGyX2v/NXcH
+	 hMZuoVBRB3SLs58H7PaZN3m1jNV+1FngQcfVKuR2stYZEzncKvEi6ViR6GDKApdm82
+	 SjIMRWmXG5X7WRKZ+siT8E0DKGhWRiEcIvOzISR/vmarQaL7wzPOWiQKap07Ns03hx
+	 S3TvudT1JdLpg==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uQMgS-000000064b9-1UUZ;
+	id 1uQMgS-000000064bX-2vAc;
 	Sat, 14 Jun 2025 10:56:16 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
@@ -53,9 +53,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	netdev@vger.kernel.org,
 	peterz@infradead.org,
 	stern@rowland.harvard.edu
-Subject: [PATCH v4 08/14] docs: sphinx: add a parser for yaml files for Netlink specs
-Date: Sat, 14 Jun 2025 10:56:02 +0200
-Message-ID: <4eb1691d75bedaf1317e5293bb09f4148288904a.1749891128.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v4 14/14] docs: conf.py: properly handle include and exclude patterns
+Date: Sat, 14 Jun 2025 10:56:08 +0200
+Message-ID: <2238d93ac08f9e6d3e88e0edfc6f58d13f5f9b68.1749891128.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1749891128.git.mchehab+huawei@kernel.org>
 References: <cover.1749891128.git.mchehab+huawei@kernel.org>
@@ -68,125 +68,105 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Add a simple sphinx.Parser to handle yaml files and add the
-the code to handle Netlink specs. All other yaml files are
-ignored.
+When one does:
+	make SPHINXDIRS="netlink/specs" htmldocs
 
-The code was written in a way that parsing yaml for different
-subsystems and even for different parts of Netlink are easy.
+the build would break because a statically-defined pattern
+like:
 
-All it takes to have a different parser is to add an
-import line similar to:
+	include_patterns = [
+		...
+		'netlink/specs/*.yaml',
+	]
 
-	from netlink_yml_parser import YnlDocGenerator
+would be pointing to Documentation/netlink/specs/netlink/specs,
+as the path there is relative. Also, when SPHINXDIRS is used,
+the exclude_pattern = [ "output" ] is also wrong.
 
-adding the corresponding parser somewhere at the extension:
-
-	netlink_parser = YnlDocGenerator()
-
-And then add a logic inside parse() to handle different
-doc outputs, depending on the file location, similar to:
-
-        if "/netlink/specs/" in fname:
-            msg = self.netlink_parser.parse_yaml_file(fname)
+Fix conf.py to generate relative include/exclude patterns,
+relative to the SOURCEDIR sphinx-dir parameter.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- .pylintrc                           |  2 +-
- Documentation/sphinx/parser_yaml.py | 76 +++++++++++++++++++++++++++++
- 2 files changed, 77 insertions(+), 1 deletion(-)
- create mode 100755 Documentation/sphinx/parser_yaml.py
+ Documentation/conf.py | 58 ++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 46 insertions(+), 12 deletions(-)
 
-diff --git a/.pylintrc b/.pylintrc
-index 30b8ae1659f8..f1d21379254b 100644
---- a/.pylintrc
-+++ b/.pylintrc
-@@ -1,2 +1,2 @@
- [MASTER]
--init-hook='import sys; sys.path += ["scripts/lib/kdoc", "scripts/lib/abi"]'
-+init-hook='import sys; sys.path += ["scripts/lib", "scripts/lib/kdoc", "scripts/lib/abi"]'
-diff --git a/Documentation/sphinx/parser_yaml.py b/Documentation/sphinx/parser_yaml.py
-new file mode 100755
-index 000000000000..9083e102c9f3
---- /dev/null
-+++ b/Documentation/sphinx/parser_yaml.py
-@@ -0,0 +1,76 @@
-+"""
-+Sphinx extension for processing YAML files
-+"""
+diff --git a/Documentation/conf.py b/Documentation/conf.py
+index 62a51ac64b95..be678bdf95d4 100644
+--- a/Documentation/conf.py
++++ b/Documentation/conf.py
+@@ -17,6 +17,52 @@ import os
+ import sphinx
+ import shutil
+ 
++# Location of Documentation/ directory
++doctree = os.path.abspath('.')
 +
-+import os
-+import re
-+import sys
++# List of patterns that don't contain directory names, in glob format.
++include_patterns = ['**.rst']
++exclude_patterns = []
 +
-+from pprint import pformat
-+
-+from docutils.parsers.rst import Parser as RSTParser
-+from docutils.statemachine import ViewList
-+
-+from sphinx.util import logging
-+from sphinx.parsers import Parser
-+
-+srctree = os.path.abspath(os.environ["srctree"])
-+sys.path.insert(0, os.path.join(srctree, "scripts/lib"))
-+
-+from netlink_yml_parser import YnlDocGenerator        # pylint: disable=C0413
-+
-+logger = logging.getLogger(__name__)
-+
-+class YamlParser(Parser):
-+    """Custom parser for YAML files."""
-+
-+    # Need at least two elements on this set
-+    supported = ('yaml', 'yml')
-+
-+    netlink_parser = YnlDocGenerator()
-+
-+    def do_parse(self, inputstring, document, msg):
-+        """Parse YAML and generate a document tree."""
-+
-+        self.setup_parse(inputstring, document)
-+
-+        result = ViewList()
-+
-+        try:
-+            # Parse message with RSTParser
-+            for i, line in enumerate(msg.split('\n')):
-+                result.append(line, document.current_source, i)
-+
-+            rst_parser = RSTParser()
-+            rst_parser.parse('\n'.join(result), document)
-+
-+        except Exception as e:
-+            document.reporter.error("YAML parsing error: %s" % pformat(e))
-+
-+        self.finish_parse()
-+
-+    # Overrides docutils.parsers.Parser. See sphinx.parsers.RSTParser
-+    def parse(self, inputstring, document):
-+        """Check if a YAML is meant to be parsed."""
-+
-+        fname = document.current_source
-+
-+        # Handle netlink yaml specs
-+        if "/netlink/specs/" in fname:
-+            msg = self.netlink_parser.parse_yaml_file(fname)
-+            self.do_parse(inputstring, document, msg)
-+
-+        # All other yaml files are ignored
++# List of patterns that contain directory names in glob format.
++dyn_include_patterns = ['netlink/specs/**.yaml']
++dyn_exclude_patterns = ['output']
 +
 +def setup(app):
-+    """Setup function for the Sphinx extension."""
++    """
++    On Sphinx, all directories are relative to what it is passed as
++    SOURCEDIR parameter for sphinx-build. Due to that, all patterns
++    that have directory names on it need to be dynamically set, after
++    converting them to a relative patch.
 +
-+    # Add YAML parser
-+    app.add_source_parser(YamlParser)
-+    app.add_source_suffix('.yaml', 'yaml')
++    As Sphinx doesn't include any patterns outside SOURCEDIR, we should
++    exclude relative patterns that start with "../".
++    """
 +
-+    return {
-+        'version': '1.0',
-+        'parallel_read_safe': True,
-+        'parallel_write_safe': True,
-+    }
++    sourcedir = app.srcdir  # full path to the source directory
++    builddir = os.environ.get("BUILDDIR")
++
++    # setup include_patterns dynamically
++    for p in dyn_include_patterns:
++        full = os.path.join(doctree, p)
++
++        rel_path = os.path.relpath(full, start = app.srcdir)
++        if rel_path.startswith("../"):
++            continue
++
++        app.config.include_patterns.append(rel_path)
++
++    # setup exclude_patterns dynamically
++    for p in dyn_exclude_patterns:
++        full = os.path.join(doctree, p)
++
++        rel_path = os.path.relpath(full, start = app.srcdir)
++        if rel_path.startswith("../"):
++            continue
++
++        app.config.exclude_patterns.append(rel_path)
++
++
+ # helper
+ # ------
+ 
+@@ -220,18 +266,6 @@ language = 'en'
+ # Else, today_fmt is used as the format for a strftime call.
+ #today_fmt = '%B %d, %Y'
+ 
+-# List of patterns, relative to source directory, that match files and
+-# directories.
+-include_patterns = [
+-	'**.rst',
+-	'netlink/specs/*.yaml',
+-]
+-
+-# patterns to ignore when looking for source files.
+-exclude_patterns = [
+-	'output',
+-]
+-
+ # The reST default role (used for this markup: `text`) to use for all
+ # documents.
+ #default_role = None
 -- 
 2.49.0
 
