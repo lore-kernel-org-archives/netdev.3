@@ -1,200 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FA129826D;
-	Sat, 14 Jun 2025 08:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA0C282EE
+	for <netdev@vger.kernel.org>; Sat, 14 Jun 2025 09:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749891378; cv=none; b=XPWy4HSpBVbXk+JhQ0yjQmJjqRWCDwW/3gvjxv/9bjvhagDfeVfqP9xfEN9lOmJPEqtsL0AVNzw3XqmbDUrRLBuMWbMTrPg9o32+QtD4lPDIQVhPcs9QYcwWsMNFRx69FcjWS6qmRdFmE2nlnu/63A/S63dvX8RtFBsWalbVIUo=
+	t=1749892440; cv=none; b=HEPJcp8Y4LLqjkJ63aCHVrUvvsAcxHa8Su42SYpUv7hHuh/u8iOyarcP+ujiLeUGOGVhUAEc2qBHH7KJyRdA36QGCbna4pynIdBMIN8MB7eNxwlAndc3nSDmk8lTeAm76j0ZAwONRrKrxfiVeD9n75wilsiBOZAJHvWLR5t/plk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749891378; c=relaxed/simple;
-	bh=44HqA/nQN1h1x3sf65AL65NGoxtO1kKhCNfyxZijhTE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMVuBOSC+dCeaqvckDhfxI4JJMIN170u8UlLNExuCiNgjCJASpu6VIclMWgdCfjqTWYN0wI1sQ1+SxSGYE7bZVVpkLIzBrnirPFcvcnREOdFOVEHr4nHUY1ziLN9qkvF84/XBNDkaHC3B6m0/cN/D/lCw5uGR+U6RUEM1D1DEu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u4ii6I/l; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749892440; c=relaxed/simple;
+	bh=Gf4Kg//PAOI7svmDUo6iMmXvFYrH0gwIWf1XFi7/9qI=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Z3NxVNkslQI4VMgbOPTHclilwKuwKmwFKN0QqeA7OO8A6UC37CAmZMh8pJcBtkmEzg/mA/I9oDMlTA2G3EG/8cyfHKat89xnzpuh3BXfDBO6NTbm4sNmbz+suVM2pa/YPTnWFxi0OuN3fxwiykiXO8d2wvitRgHr/pT05UEaB/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bejarano.io; spf=pass smtp.mailfrom=bejarano.io; dkim=pass (2048-bit key) header.d=bejarano.io header.i=@bejarano.io header.b=sxOeCoRZ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gmNwlVeQ; arc=none smtp.client-ip=202.12.124.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bejarano.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bejarano.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u4ii6I/l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD73C4CEFB;
-	Sat, 14 Jun 2025 08:56:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749891378;
-	bh=44HqA/nQN1h1x3sf65AL65NGoxtO1kKhCNfyxZijhTE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u4ii6I/lIPIrGHquibOeNq+QkMf4FEblj3eI+8R96BXMdsXYt8kg3Yne4zYLBRdON
-	 z7qG9k3BYNuS2RCS4ZjV1/6PdaQFjQvLqxV2nnj1cSdGLprUv6y4/KgAFXLBI9C8Kr
-	 RDJq0gAcQLJyuHhBsbvPwn+FDryeJwlVyGRB1mjJs1m6FcI5FOyfvmG0NUHm/tUibJ
-	 wBysw2HDt1AbxY0gbVaySXhOj/uLqJHpdrjRlf8hkNF1L/uRD+abDHrVQ29HqUVYw8
-	 akCOE3BSPvpBZzHQhrRBGl3BbBeaiNu+xn3PaBlCGhttzRxdPbn+hkgkrCqBGJPoAK
-	 B6EsHNzZD6uiQ==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uQMgS-000000064bD-1ktO;
-	Sat, 14 Jun 2025 10:56:16 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	"Akira Yokosawa" <akiyks@gmail.com>,
-	"Breno Leitao" <leitao@debian.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Donald Hunter" <donald.hunter@gmail.com>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"Ignacio Encinas Rubio" <ignacio@iencinas.com>,
-	"Jan Stancek" <jstancek@redhat.com>,
-	"Marco Elver" <elver@google.com>,
-	"Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
-	"Paolo Abeni" <pabeni@redhat.com>,
-	"Ruben Wauters" <rubenru09@aol.com>,
-	"Shuah Khan" <skhan@linuxfoundation.org>,
-	Jakub Kicinski <mchehab+huawei@kernel.org>,
-	Simon Horman <mchehab+huawei@kernel.org>,
-	joel@joelfernandes.org,
-	linux-kernel-mentees@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lkmm@lists.linux.dev,
-	netdev@vger.kernel.org,
-	peterz@infradead.org,
-	stern@rowland.harvard.edu
-Subject: [PATCH v4 09/14] docs: use parser_yaml extension to handle Netlink specs
-Date: Sat, 14 Jun 2025 10:56:03 +0200
-Message-ID: <16e241d5c67adbec4a39524383d0058643f92b40.1749891128.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <cover.1749891128.git.mchehab+huawei@kernel.org>
-References: <cover.1749891128.git.mchehab+huawei@kernel.org>
+	dkim=pass (2048-bit key) header.d=bejarano.io header.i=@bejarano.io header.b="sxOeCoRZ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gmNwlVeQ"
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 389AB114017F;
+	Sat, 14 Jun 2025 05:13:56 -0400 (EDT)
+Received: from phl-imap-16 ([10.202.2.88])
+  by phl-compute-02.internal (MEProxy); Sat, 14 Jun 2025 05:13:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bejarano.io; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1749892436;
+	 x=1749978836; bh=Gf4Kg//PAOI7svmDUo6iMmXvFYrH0gwIWf1XFi7/9qI=; b=
+	sxOeCoRZwtiwsIl7rQxEzQRg4IzWOuq1CK7WpGIpaFBc7/8a8wgZ9LVA6KjX9T0C
+	TJ0n78uEhOKDNDBg68nfdV0k+saeDVcqAen0uOMQ+mDt+JrYoGB+5w7wfaQx3P7l
+	fIqW72QI3xVT1F23xv0NR24QSXcYTsoASlrRxEXhQViSd8Jq4GHXy4deeBKwsS0K
+	HiapZ0SZEkOH33IbjloUTsfFhSNvU7WfDBXeNdKehP/wRSHa8CtXAW7u04L44ewC
+	7mCiySOXuBvujs8gwkogYAPBH5UMvA614QWSJiaH3D5uqkcBjJXPEasV073oX5Xk
+	1Ua2YkCru45+boBLbtsLTQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1749892436; x=
+	1749978836; bh=Gf4Kg//PAOI7svmDUo6iMmXvFYrH0gwIWf1XFi7/9qI=; b=g
+	mNwlVeQc3fDb2IG97s/RjnxxnI3XeOx15zE51IeE2deJ2ukOG39PEx+BAB4d01xU
+	h1ws6sSsukjotXzrF12YkA5lkFhjPq088elh2rHEssWYCIxi9iGe1hG9wG0ARrDc
+	BOa7eXYRfHZIspCyiUBNHp5cgszlneLLM4hm7jyMifyi8mpT0uVCx/JlA99hUA11
+	4cQODKxpuNXHhLjy7Q8VOrTCGdT9SXQPc6jNlG7QFlR86NeG+xuBnWh2aG+I+61w
+	WaJtSJVdXq0/mCIOerrEL1WfoRGYFfES5sIDj64mJNnU8k2r8Q22Rs/5HyG4duL0
+	p1cfOHBCs2yleJa2fPF0A==
+X-ME-Sender: <xms:Uj1NaC_rPAtAsk12nmsxGFSRktNS8cNmIcrHrP5xj8HbkkveGTaboQ>
+    <xme:Uj1NaCt5hl2OxwKwqnk0CasoFZ79WMd2Kqi2mP3KyKJ_3fW42NQLDYQ2ROzI4pyjU
+    1nUc2YGtw35-_cz_Ew>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvtdeggecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdftihgtrghrugcuuegvjhgrrhgrnhhofdcuoehrihgtrghrugessg
+    gvjhgrrhgrnhhordhioheqnecuggftrfgrthhtvghrnhepkeehveefffefffdutefhteeu
+    udelgfehheffledtteekgeeigeelgefgveevteeunecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomheprhhitggrrhgusegsvghjrghrrghnohdrihho
+    pdhnsggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepug
+    grvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopeihvghhvgiikhgvlhhs
+    hhgssehgmhgrihhlrdgtohhmpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvg
+    drtghomhdprhgtphhtthhopehmihgthhgrvghlrdhjrghmvghtsehinhhtvghlrdgtohhm
+    pdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhkrg
+    drfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohep
+    rghnughrvgifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopegrnhgurhgvfi
+    eslhhunhhnrdgthhdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:Uj1NaICRIpjcLME9WVKzgtSCjtoSoUx2hKdUIoOiGUHYWSzKB3ZxFA>
+    <xmx:Uj1NaKdfVDwY5DMdGY3jCyuxrYx378RongdSukWPeZGbXezwHJVYCA>
+    <xmx:Uj1NaHOIFLq0V5kQE-MZIYuygxzImvY316uuEIRbD_kybL13VWb9wA>
+    <xmx:Uj1NaEkHQLKpZOZxdFqQtRx2T4ilrf031E0ML7dqW_gKnZU5SOUpdQ>
+    <xmx:VD1NaM_wykRw2xoK2G5AWaXzonGgi8rX6CMLAg8M4ksoYmlpITyfkIpk>
+Feedback-ID: i583147b9:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 52AEC2CC0081; Sat, 14 Jun 2025 05:13:54 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+X-ThreadId: T9bfb5a61a13769a7
+Date: Sat, 14 Jun 2025 11:13:53 +0200
+From: "Ricard Bejarano" <ricard@bejarano.io>
+To: "Andrew Lunn" <andrew@lunn.ch>
+Cc: "Mika Westerberg" <mika.westerberg@linux.intel.com>,
+ netdev@vger.kernel.org, michael.jamet@intel.com, YehezkelShB@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com
+Message-Id: <b033e79d-17bc-495d-959c-21ddc7f061e4@app.fastmail.com>
+In-Reply-To: <71C2308A-0E9C-4AD3-837A-03CE8EA4CA1D@bejarano.io>
+References: <29E840A2-D4DB-4A49-88FE-F97303952638@bejarano.io>
+ <9a5f7f4c-268f-4c7c-b033-d25afc76f81c@lunn.ch>
+ <63FE081D-44C9-47EC-BEDF-2965C023C43E@bejarano.io>
+ <0b6cf76d-e64d-4a35-b006-20946e67da6e@lunn.ch>
+ <8672A9A1-6B32-4F81-8DFA-4122A057C9BE@bejarano.io>
+ <c1ac6822-a890-45cd-b710-38f9c7114272@lunn.ch>
+ <38B49EF9-4A56-4004-91CF-5A2D591E202D@bejarano.io>
+ <09f73d4d-efa3-479d-96b5-fd51d8687a21@lunn.ch>
+ <CD0896D8-941E-403E-9DA9-51B13604A449@bejarano.io>
+ <78AA82DB-92BE-4CD5-8EC7-239E6A93A465@bejarano.io>
+ <11d6270e-c4c9-4a3a-8d2b-d273031b9d4f@lunn.ch>
+ <A206060D-C73B-49B9-9969-45BF15A500A1@bejarano.io>
+ <71C2308A-0E9C-4AD3-837A-03CE8EA4CA1D@bejarano.io>
+Subject: Re: Poor thunderbolt-net interface performance when bridged
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Instead of manually calling ynl_gen_rst.py, use a Sphinx extension.
-This way, no .rst files would be written to the Kernel source
-directories.
+Any ideas?
 
-We are using here a toctree with :glob: property. This way, there
-is no need to touch the netlink/specs/index.rst file every time
-a new Netlink spec is added/renamed/removed.
+I've rebuilt the lab with 6.15.2 and I still see that ~12-15% receiver loss.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- Documentation/Makefile                          | 17 -----------------
- Documentation/conf.py                           | 11 ++++++-----
- Documentation/netlink/specs/index.rst           | 13 +++++++++++++
- Documentation/networking/index.rst              |  2 +-
- .../networking/netlink_spec/readme.txt          |  4 ----
- 5 files changed, 20 insertions(+), 27 deletions(-)
- create mode 100644 Documentation/netlink/specs/index.rst
- delete mode 100644 Documentation/networking/netlink_spec/readme.txt
-
-diff --git a/Documentation/Makefile b/Documentation/Makefile
-index d30d66ddf1ad..9185680b1e86 100644
---- a/Documentation/Makefile
-+++ b/Documentation/Makefile
-@@ -102,22 +102,6 @@ quiet_cmd_sphinx = SPHINX  $@ --> file://$(abspath $(BUILDDIR)/$3/$4)
- 		cp $(if $(patsubst /%,,$(DOCS_CSS)),$(abspath $(srctree)/$(DOCS_CSS)),$(DOCS_CSS)) $(BUILDDIR)/$3/_static/; \
- 	fi
- 
--YNL_INDEX:=$(srctree)/Documentation/networking/netlink_spec/index.rst
--YNL_RST_DIR:=$(srctree)/Documentation/networking/netlink_spec
--YNL_YAML_DIR:=$(srctree)/Documentation/netlink/specs
--YNL_TOOL:=$(srctree)/tools/net/ynl/pyynl/ynl_gen_rst.py
--
--YNL_RST_FILES_TMP := $(patsubst %.yaml,%.rst,$(wildcard $(YNL_YAML_DIR)/*.yaml))
--YNL_RST_FILES := $(patsubst $(YNL_YAML_DIR)%,$(YNL_RST_DIR)%, $(YNL_RST_FILES_TMP))
--
--$(YNL_INDEX): $(YNL_RST_FILES)
--	$(Q)$(YNL_TOOL) -o $@ -x
--
--$(YNL_RST_DIR)/%.rst: $(YNL_YAML_DIR)/%.yaml $(YNL_TOOL)
--	$(Q)$(YNL_TOOL) -i $< -o $@
--
--htmldocs texinfodocs latexdocs epubdocs xmldocs: $(YNL_INDEX)
--
- htmldocs:
- 	@$(srctree)/scripts/sphinx-pre-install --version-check
- 	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,html,$(var),,$(var)))
-@@ -184,7 +168,6 @@ refcheckdocs:
- 	$(Q)cd $(srctree);scripts/documentation-file-ref-check
- 
- cleandocs:
--	$(Q)rm -f $(YNL_INDEX) $(YNL_RST_FILES)
- 	$(Q)rm -rf $(BUILDDIR)
- 	$(Q)$(MAKE) BUILDDIR=$(abspath $(BUILDDIR)) $(build)=Documentation/userspace-api/media clean
- 
-diff --git a/Documentation/conf.py b/Documentation/conf.py
-index 12de52a2b17e..add6ce78dd80 100644
---- a/Documentation/conf.py
-+++ b/Documentation/conf.py
-@@ -45,7 +45,7 @@ needs_sphinx = '3.4.3'
- extensions = ['kerneldoc', 'rstFlatTable', 'kernel_include',
-               'kfigure', 'sphinx.ext.ifconfig', 'automarkup',
-               'maintainers_include', 'sphinx.ext.autosectionlabel',
--              'kernel_abi', 'kernel_feat', 'translations']
-+              'kernel_abi', 'kernel_feat', 'translations', 'parser_yaml']
- 
- # Since Sphinx version 3, the C function parser is more pedantic with regards
- # to type checking. Due to that, having macros at c:function cause problems.
-@@ -143,10 +143,11 @@ else:
- # Add any paths that contain templates here, relative to this directory.
- templates_path = ['sphinx/templates']
- 
--# The suffix(es) of source filenames.
--# You can specify multiple suffix as a list of string:
--# source_suffix = ['.rst', '.md']
--source_suffix = '.rst'
-+# The suffixes of source filenames that will be automatically parsed
-+source_suffix = {
-+        '.rst': 'restructuredtext',
-+        '.yaml': 'yaml',
-+}
- 
- # The encoding of source files.
- #source_encoding = 'utf-8-sig'
-diff --git a/Documentation/netlink/specs/index.rst b/Documentation/netlink/specs/index.rst
-new file mode 100644
-index 000000000000..7f7cf4a096f2
---- /dev/null
-+++ b/Documentation/netlink/specs/index.rst
-@@ -0,0 +1,13 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. _specs:
-+
-+=============================
-+Netlink Family Specifications
-+=============================
-+
-+.. toctree::
-+   :maxdepth: 1
-+   :glob:
-+
-+   *
-diff --git a/Documentation/networking/index.rst b/Documentation/networking/index.rst
-index ac90b82f3ce9..b7a4969e9bc9 100644
---- a/Documentation/networking/index.rst
-+++ b/Documentation/networking/index.rst
-@@ -57,7 +57,7 @@ Contents:
-    filter
-    generic-hdlc
-    generic_netlink
--   netlink_spec/index
-+   ../netlink/specs/index
-    gen_stats
-    gtp
-    ila
-diff --git a/Documentation/networking/netlink_spec/readme.txt b/Documentation/networking/netlink_spec/readme.txt
-deleted file mode 100644
-index 030b44aca4e6..000000000000
---- a/Documentation/networking/netlink_spec/readme.txt
-+++ /dev/null
-@@ -1,4 +0,0 @@
--SPDX-License-Identifier: GPL-2.0
--
--This file is populated during the build of the documentation (htmldocs) by the
--tools/net/ynl/pyynl/ynl_gen_rst.py script.
--- 
-2.49.0
-
+Thanks,
+RB
