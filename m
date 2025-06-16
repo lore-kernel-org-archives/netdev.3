@@ -1,76 +1,70 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A82290BA5
-	for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 20:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4856A188734;
+	Mon, 16 Jun 2025 20:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750104963; cv=none; b=AT034nLIP/Vto7EUnrz+70oY9h/xIbExTMJkgQ+j+/BWnX9v4sIKtDWrUv0O/yFriEtMsga1ZXBb3yIkhJcsuZSkvG/WrS8xpzbxnqQ9QLophCML8hdOen7pWFQ/5E963wEDuXYELMlGKiLHCnHOvdk5gjdW76dAsJ3mr4mU+KE=
+	t=1750105033; cv=none; b=HEfcFwzGIGgehqdWvWGuDpRkXrE/PZgyhXCvjNhx+KrypI9KKcekSOUJ917oJnbNVawB7rBHbBdAZQKHN55bO/0yIRVhXSVyLCwkXaYxt9JRZU/2o0L57/u+FNmviZW/5L7LMre0JXKvO7d6krCKWcXDGeEI9Jia3xwoPUptQ2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750104963; c=relaxed/simple;
-	bh=oT2X5a9db3fvX4h+pfQea3+mOSJ3D/971Mhcdm02WP8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKkDuTf0fGg3lc+P4rBeWqKLpeLX3Z3MJiPgeFDyqG2udfB+8e1IzxaE3t11JM4hx+lhhXz7lyev+TEOuB4dXqf1SP0dSIFvusDi7qzcZBAqgnr5jjCuw/I/0WDtnfW2yLztsQLj+EwhpBpq0FWt8ARj+vNqk77mfjykrvxJgpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=fail smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W744zAbi; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1750105033; c=relaxed/simple;
+	bh=QqqcdBldOsKECqDeDnLCI7ssciXHHExLpk1j8BVrxVg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TsRCSF+diaXlxhEIo/kdM/51q5kivn/JRfFioQ0/fWUK+SL4oheocZgIWrj1F8sif+h+Qya8+2InvMqKRVgkZxVlCUEfeP9aDWKyUh33hJIZglaihWlH6AM3btZwazLJhU0Jl0u63Voma9ZdXwaWKH7grB3n9fI2AOHqrY3a7+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f7KBrdFR; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W744zAbi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750104961;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5e7j5Lsxu01XP+JZK7FayPbs2oiwzPSDVUbmSjN7Gns=;
-	b=W744zAbi5XrgcqevyEBhyEr5v3nndonJmXICyEBw9sw26e/4dif9FLuUANUVNVTY46AL+c
-	a3jcvSDawGe4nyUWMXBaHIJx68fP1uYlaaCWMcdxJhzzMedRYvN8GM2mO7OhsPoTj5zgQq
-	XmIsvaG25elDxPiSvLSkMhRyyCHM92E=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-VxfjwL0JPCeatWu2opHOYw-1; Mon,
- 16 Jun 2025 16:15:56 -0400
-X-MC-Unique: VxfjwL0JPCeatWu2opHOYw-1
-X-Mimecast-MFC-AGG-ID: VxfjwL0JPCeatWu2opHOYw_1750104954
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3C33E1956095;
-	Mon, 16 Jun 2025 20:15:54 +0000 (UTC)
-Received: from p16v.luc.cera.cz (unknown [10.45.224.53])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D886F30001B1;
-	Mon, 16 Jun 2025 20:15:47 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Petr Oros <poros@redhat.com>
-Subject: [PATCH net-next v11 14/14] dpll: zl3073x: Add support to get/set frequency on output pins
-Date: Mon, 16 Jun 2025 22:14:04 +0200
-Message-ID: <20250616201404.1412341-15-ivecera@redhat.com>
-In-Reply-To: <20250616201404.1412341-1-ivecera@redhat.com>
-References: <20250616201404.1412341-1-ivecera@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f7KBrdFR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750105031; x=1781641031;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=QqqcdBldOsKECqDeDnLCI7ssciXHHExLpk1j8BVrxVg=;
+  b=f7KBrdFRlZcyrFVy5qOgN4X6SHsOVg518zgtKY4i2twQhTpBT1WnFsG2
+   8BYTWy2e255dc5f/GxPjiFXKTxGxHClRF9L9tQ/F+On0DwyIQVzb9p1DU
+   GqXsYolBoFtwRi1c7B5X+bFnoXb9bR5L9k6dn6OXsufFTlggJFHNgggmA
+   nFyhAS+un7sb3TcBuyYT75K1wzNKGqEC4eH9cDdb6Ub4/8srNrSM5MvDx
+   N69Q1nP9SqEEaECpthBo99pgSzoB51CF962A3gPOf94Mk75rTMVWCUVJK
+   haUgRnMGPw5b/SjQOS6todSwPphEpB1koSW+sPh8QdTIMUpFGsCoN9cbI
+   A==;
+X-CSE-ConnectionGUID: 34Pi4Y39QXOtW9iCus/xvg==
+X-CSE-MsgGUID: Up3J76l1TkCXi/40mEUZgQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="62533436"
+X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; 
+   d="scan'208";a="62533436"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2025 13:17:10 -0700
+X-CSE-ConnectionGUID: WLFE0wpWSOK15rp7dukoIA==
+X-CSE-MsgGUID: a298UTcPT8WpCzlxwOt3gA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; 
+   d="scan'208";a="153530965"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by orviesa004.jf.intel.com with ESMTP; 16 Jun 2025 13:17:10 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	aleksander.lobakin@intel.com,
+	maciej.fijalkowski@intel.com,
+	magnus.karlsson@intel.com,
+	michal.kubiak@intel.com,
+	przemyslaw.kitszel@intel.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	horms@kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH net-next v2 00/17][pull request] libeth: add libeth_xdp helper lib
+Date: Mon, 16 Jun 2025 13:16:21 -0700
+Message-ID: <20250616201639.710420-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,308 +72,152 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Add support to get/set frequencies on output pins. The frequency for
-output pin is determined by the frequency of synthesizer the output
-pin is connected to and divisor of the output to which is the given pin
-belongs. The resulting frequency of the P-pin and the N-pin from this
-output pair depends on the signal format of this output pair.
+Alexander Lobakin says:
 
-The device supports so-called N-divided signal formats where for the
-N-pin there is an additional divisor. The frequencies for both pins from
-such output pair are computed:
+Time to add XDP helpers infra to libeth to greatly simplify adding
+XDP to idpf and iavf, as well as improve and extend XDP in ice and
+i40e. Any vendor is free to reuse helpers. If this happens, I'm fine
+with moving the folder of out intel/.
 
- P-pin-freq = synth_freq / output_div
- N-pin-freq = synth_freq / output_div / n_div
+The helpers greatly simplify building xdp_buff, running a prog,
+handling the verdict, implement XDP_TX, .ndo_xdp_xmit, XDP buffer
+completion. Same applies to XSk (with XSk xmit instead of
+.ndo_xdp_xmit, plus stuff like XSk wakeup).
+They are entirely generic with no HW definitions or assumptions.
+HW-specific stuff like parsing Rx desc / filling Tx desc is passed
+from the driver as inline callbacks.
 
-For other signal-format types both P and N pin have the same frequency
-based only synth frequency and output divisor.
+For now, key assumptions that optimize performance / avoid code
+bloat, but might not fit every driver in driver/net/:
+ * netmem holding the buffers are always order-0;
+ * driver has separate XDP Tx queues, doesn't use stack queues for
+   that. For best efficiency, you may want to have nr_cpu_ids XDP
+   queues, but less (queue sharing) is also supported;
+ * XDP Tx queues are interrupt-less and use "lazy" cleaning only
+   when there are less than 1/4 free Tx descriptors of the queue
+   size;
+ * main target platforms are 64-bit, although 32-bit is also fully
+   supported, but the code might be not as optimized for them.
 
-Implement output pin callbacks to get and set frequency. The frequency
-setting for the output non-N-divided signal format is simple as we have
-to compute just new output divisor. For N-divided formats it is more
-complex because by changing of output divisor we change frequency for
-both P and N pins. In this case if we are changing frequency for P-pin
-we have to compute also new N-divisor for N-pin to keep its current
-frequency. From this and the above it follows that the frequency of
-the N-pin cannot be higher than the frequency of the P-pin and the
-callback must take this limitation into account.
+Library code already supports multi-buffer for all kinds of Tx and
+both header split and no split for Rx and Tx. Frags can come from
+devmem/io_uring etc., direct `struct page *` is used only for header
+buffers for which it's always true.
+Drivers are free to pass their own Rx hints and XSK xmit hints ops.
 
-Co-developed-by: Prathosh Satish <Prathosh.Satish@microchip.com>
-Signed-off-by: Prathosh Satish <Prathosh.Satish@microchip.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
----
- drivers/dpll/zl3073x/dpll.c | 234 ++++++++++++++++++++++++++++++++++++
- drivers/dpll/zl3073x/regs.h |   5 +
- 2 files changed, 239 insertions(+)
+XDP_TX and ndo_xdp_xmit use onstack bulk for the frames to be sent
+and send them by batches of 16 buffers. This eats ~280 bytes on the
+stack, but gives good boosts and allow to greatly optimize the main
+sending function leaving it without any error/exception paths.
 
-diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-index a110109a738c3..bd4b4af2223d3 100644
---- a/drivers/dpll/zl3073x/dpll.c
-+++ b/drivers/dpll/zl3073x/dpll.c
-@@ -640,6 +640,238 @@ zl3073x_dpll_input_pin_prio_set(const struct dpll_pin *dpll_pin, void *pin_priv,
- 	return 0;
- }
- 
-+static int
-+zl3073x_dpll_output_pin_frequency_get(const struct dpll_pin *dpll_pin,
-+				      void *pin_priv,
-+				      const struct dpll_device *dpll,
-+				      void *dpll_priv, u64 *frequency,
-+				      struct netlink_ext_ack *extack)
-+{
-+	struct zl3073x_dpll *zldpll = dpll_priv;
-+	struct zl3073x_dev *zldev = zldpll->dev;
-+	struct zl3073x_dpll_pin *pin = pin_priv;
-+	struct device *dev = zldev->dev;
-+	u8 out, signal_format, synth;
-+	u32 output_div, synth_freq;
-+	int rc;
-+
-+	out = zl3073x_output_pin_out_get(pin->id);
-+	synth = zl3073x_out_synth_get(zldev, out);
-+	synth_freq = zl3073x_synth_freq_get(zldev, synth);
-+
-+	guard(mutex)(&zldev->multiop_lock);
-+
-+	/* Read output configuration into mailbox */
-+	rc = zl3073x_mb_op(zldev, ZL_REG_OUTPUT_MB_SEM, ZL_OUTPUT_MB_SEM_RD,
-+			   ZL_REG_OUTPUT_MB_MASK, BIT(out));
-+	if (rc)
-+		return rc;
-+
-+	rc = zl3073x_read_u32(zldev, ZL_REG_OUTPUT_DIV, &output_div);
-+	if (rc)
-+		return rc;
-+
-+	/* Check output divisor for zero */
-+	if (!output_div) {
-+		dev_err(dev, "Zero divisor for output %u got from device\n",
-+			out);
-+		return -EINVAL;
-+	}
-+
-+	/* Read used signal format for the given output */
-+	signal_format = zl3073x_out_signal_format_get(zldev, out);
-+
-+	switch (signal_format) {
-+	case ZL_OUTPUT_MODE_SIGNAL_FORMAT_2_NDIV:
-+	case ZL_OUTPUT_MODE_SIGNAL_FORMAT_2_NDIV_INV:
-+		/* In case of divided format we have to distiguish between
-+		 * given output pin type.
-+		 */
-+		if (zl3073x_dpll_is_p_pin(pin)) {
-+			/* For P-pin the resulting frequency is computed as
-+			 * simple division of synth frequency and output
-+			 * divisor.
-+			 */
-+			*frequency = synth_freq / output_div;
-+		} else {
-+			/* For N-pin we have to divide additionally by
-+			 * divisor stored in esync_period output mailbox
-+			 * register that is used as N-pin divisor for these
-+			 * modes.
-+			 */
-+			u32 ndiv;
-+
-+			rc = zl3073x_read_u32(zldev, ZL_REG_OUTPUT_ESYNC_PERIOD,
-+					      &ndiv);
-+			if (rc)
-+				return rc;
-+
-+			/* Check N-pin divisor for zero */
-+			if (!ndiv) {
-+				dev_err(dev,
-+					"Zero N-pin divisor for output %u got from device\n",
-+					out);
-+				return -EINVAL;
-+			}
-+
-+			/* Compute final divisor for N-pin */
-+			*frequency = synth_freq / output_div / ndiv;
-+		}
-+		break;
-+	default:
-+		/* In other modes the resulting frequency is computed as
-+		 * division of synth frequency and output divisor.
-+		 */
-+		*frequency = synth_freq / output_div;
-+		break;
-+	}
-+
-+	return rc;
-+}
-+
-+static int
-+zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
-+				      void *pin_priv,
-+				      const struct dpll_device *dpll,
-+				      void *dpll_priv, u64 frequency,
-+				      struct netlink_ext_ack *extack)
-+{
-+	struct zl3073x_dpll *zldpll = dpll_priv;
-+	struct zl3073x_dev *zldev = zldpll->dev;
-+	struct zl3073x_dpll_pin *pin = pin_priv;
-+	struct device *dev = zldev->dev;
-+	u32 output_n_freq, output_p_freq;
-+	u8 out, signal_format, synth;
-+	u32 cur_div, new_div, ndiv;
-+	u32 synth_freq;
-+	int rc;
-+
-+	out = zl3073x_output_pin_out_get(pin->id);
-+	synth = zl3073x_out_synth_get(zldev, out);
-+	synth_freq = zl3073x_synth_freq_get(zldev, synth);
-+
-+	/* Check the requested frequency divides synth frequency without
-+	 * remainder.
-+	 */
-+	if (synth_freq % (u32)frequency) {
-+		dev_err(dev, "The requested frequency must divide %u Hz\n",
-+			synth_freq);
-+		return -EINVAL;
-+	}
-+	new_div = synth_freq / (u32)frequency;
-+
-+	/* Get used signal format for the given output */
-+	signal_format = zl3073x_out_signal_format_get(zldev, out);
-+
-+	guard(mutex)(&zldev->multiop_lock);
-+
-+	/* Load output configuration */
-+	rc = zl3073x_mb_op(zldev, ZL_REG_OUTPUT_MB_SEM, ZL_OUTPUT_MB_SEM_RD,
-+			   ZL_REG_OUTPUT_MB_MASK, BIT(out));
-+	if (rc)
-+		return rc;
-+
-+	/* Check signal format */
-+	if (signal_format != ZL_OUTPUT_MODE_SIGNAL_FORMAT_2_NDIV &&
-+	    signal_format != ZL_OUTPUT_MODE_SIGNAL_FORMAT_2_NDIV_INV) {
-+		/* For non N-divided signal formats the frequency is computed
-+		 * as division of synth frequency and output divisor.
-+		 */
-+		rc = zl3073x_write_u32(zldev, ZL_REG_OUTPUT_DIV, new_div);
-+		if (rc)
-+			return rc;
-+
-+		/* For 50/50 duty cycle the divisor is equal to width */
-+		rc = zl3073x_write_u32(zldev, ZL_REG_OUTPUT_WIDTH, new_div);
-+		if (rc)
-+			return rc;
-+
-+		/* Commit output configuration */
-+		return zl3073x_mb_op(zldev,
-+				     ZL_REG_OUTPUT_MB_SEM, ZL_OUTPUT_MB_SEM_WR,
-+				     ZL_REG_OUTPUT_MB_MASK, BIT(out));
-+	}
-+
-+	/* For N-divided signal format get current divisor */
-+	rc = zl3073x_read_u32(zldev, ZL_REG_OUTPUT_DIV, &cur_div);
-+	if (rc)
-+		return rc;
-+
-+	/* Check output divisor for zero */
-+	if (!cur_div) {
-+		dev_err(dev, "Zero divisor for output %u got from device\n",
-+			out);
-+		return -EINVAL;
-+	}
-+
-+	/* Get N-pin divisor (shares the same register with esync */
-+	rc = zl3073x_read_u32(zldev, ZL_REG_OUTPUT_ESYNC_PERIOD, &ndiv);
-+	if (rc)
-+		return rc;
-+
-+	/* Check N-pin divisor for zero */
-+	if (!ndiv) {
-+		dev_err(dev,
-+			"Zero N-pin divisor for output %u got from device\n",
-+			out);
-+		return -EINVAL;
-+	}
-+
-+	/* Compute current output frequency for P-pin */
-+	output_p_freq = synth_freq / cur_div;
-+
-+	/* Compute current N-pin frequency */
-+	output_n_freq = output_p_freq / ndiv;
-+
-+	if (zl3073x_dpll_is_p_pin(pin)) {
-+		/* We are going to change output frequency for P-pin but
-+		 * if the requested frequency is less than current N-pin
-+		 * frequency then indicate a failure as we are not able
-+		 * to compute N-pin divisor to keep its frequency unchanged.
-+		 */
-+		if (frequency <= output_n_freq)
-+			return -EINVAL;
-+
-+		/* Update the output divisor */
-+		rc = zl3073x_write_u32(zldev, ZL_REG_OUTPUT_DIV, new_div);
-+		if (rc)
-+			return rc;
-+
-+		/* For 50/50 duty cycle the divisor is equal to width */
-+		rc = zl3073x_write_u32(zldev, ZL_REG_OUTPUT_WIDTH, new_div);
-+		if (rc)
-+			return rc;
-+
-+		/* Compute new divisor for N-pin */
-+		ndiv = (u32)frequency / output_n_freq;
-+	} else {
-+		/* We are going to change frequency of N-pin but if
-+		 * the requested freq is greater or equal than freq of P-pin
-+		 * in the output pair we cannot compute divisor for the N-pin.
-+		 * In this case indicate a failure.
-+		 */
-+		if (output_p_freq <= frequency)
-+			return -EINVAL;
-+
-+		/* Compute new divisor for N-pin */
-+		ndiv = output_p_freq / (u32)frequency;
-+	}
-+
-+	/* Update divisor for the N-pin */
-+	rc = zl3073x_write_u32(zldev, ZL_REG_OUTPUT_ESYNC_PERIOD, ndiv);
-+	if (rc)
-+		return rc;
-+
-+	/* For 50/50 duty cycle the divisor is equal to width */
-+	rc = zl3073x_write_u32(zldev, ZL_REG_OUTPUT_ESYNC_WIDTH, ndiv);
-+	if (rc)
-+		return rc;
-+
-+	/* Commit output configuration */
-+	return zl3073x_mb_op(zldev, ZL_REG_OUTPUT_MB_SEM, ZL_OUTPUT_MB_SEM_WR,
-+			     ZL_REG_OUTPUT_MB_MASK, BIT(out));
-+}
-+
- static int
- zl3073x_dpll_output_pin_state_on_dpll_get(const struct dpll_pin *dpll_pin,
- 					  void *pin_priv,
-@@ -724,6 +956,8 @@ static const struct dpll_pin_ops zl3073x_dpll_input_pin_ops = {
- 
- static const struct dpll_pin_ops zl3073x_dpll_output_pin_ops = {
- 	.direction_get = zl3073x_dpll_pin_direction_get,
-+	.frequency_get = zl3073x_dpll_output_pin_frequency_get,
-+	.frequency_set = zl3073x_dpll_output_pin_frequency_set,
- 	.state_on_dpll_get = zl3073x_dpll_output_pin_state_on_dpll_get,
- };
- 
-diff --git a/drivers/dpll/zl3073x/regs.h b/drivers/dpll/zl3073x/regs.h
-index 09dd314663dff..9c62906de095d 100644
---- a/drivers/dpll/zl3073x/regs.h
-+++ b/drivers/dpll/zl3073x/regs.h
-@@ -198,4 +198,9 @@
- #define ZL_OUTPUT_MODE_SIGNAL_FORMAT_2_NDIV	12
- #define ZL_OUTPUT_MODE_SIGNAL_FORMAT_2_NDIV_INV	15
- 
-+#define ZL_REG_OUTPUT_DIV			ZL_REG(14, 0x0c, 4)
-+#define ZL_REG_OUTPUT_WIDTH			ZL_REG(14, 0x10, 4)
-+#define ZL_REG_OUTPUT_ESYNC_PERIOD		ZL_REG(14, 0x14, 4)
-+#define ZL_REG_OUTPUT_ESYNC_WIDTH		ZL_REG(14, 0x18, 4)
-+
- #endif /* _ZL3073X_REGS_H */
+XSk xmit fills Tx descriptors in the loop unrolled by 8. This was
+proven to improve perf on ice and i40e. XDP_TX and ndo_xdp_xmit
+doesn't use unrolling as I wasn't able to get any improvements in
+those scenenarios from this, while +1 Kb for their sending functions
+for nothing doesn't sound reasonable.
+
+XSk wakeup, instead of traditionally used "SW interrupts" provided
+by NICs, uses IPI to schedule NAPI on the CPU corresponding to the
+given queue pair. It gives better control over CPU distribution and
+in general performs way better than "SW interrupts", plus allows us
+to not pass any HW-specific callbacks there.
+
+The code is built the way that all callbacks passed from drivers
+get inlined; in general, most of hotpath gets inlined. Everything
+slow/exception lands to .c files in the libeth folder, doesn't
+create copies in the drivers themselves and doesn't overloat
+hotpath.
+Sure, inlining means that hotpath will be compiled into every driver
+that uses the lib, but the core code is written in one place, so no
+copying of bugs happens. Fixed once -- works everywhere.
+
+The last commit might look like sorta hack, but it gives really good
+boosts and decreases object code size, plus there are checks that
+all those wider accesses are fully safe, so I don't feel anything
+bad about it.
+
+An example of using libeth_xdp can be found either on my GitHub or
+on the mailing lists here ("XDP for idpf"). Macros for building
+driver XDP functions lead to that some implementations (XDP_TX,
+ndo_xdp_xmit etc.) consist of really only a few lines.
+----
+Was a part of "XDP for idpf" series, now submitted separately with
+proper splitting into atomic commits. I hope 17 patches out of 15
+maximum allowed is not a problem.
+
+All checkpatch warnings are false-positives unless someone disagrees.
+Checked with `--strict --codespell`, a well as building with W=12
+and sparse/smatch.
+W=12 is clean, sparse only warns about "context imbalance", but it's
+intended that libeth_xdp_tx_init_bulk() takes rcu_read_lock() and
+libeth_xdp_rx_finalize() does rcu_read_unlock(). This is how Eth
+drivers with enabled XDP do: lock before the NAPI polling loop,
+unlock after the loop is done and the pending XDP_TX and
+XDP_REDIRECT frames/maps are flushed (both functions are always
+required to be called when using libeth_xdp helpers on Rx).
+
+v2:
+* move EXPORT_SYMBOL*() stuff to a separate (1st) commit;
+* annotate a couple big objects on the stack with `__uninitialized` to
+  mitigate performance loss with `CONFIG_INIT_STACK_ALL_*` (Kees);
+* 0001: idpf: drop invalid packets if header split workaround failed (Jakub);
+* 0003: don't support XDP + netmem for now until the core is ready for
+  this (Jakub);
+* 0009: use new __DEFINE_FLEX() after the changes from the hardening PR
+  (Kees).
+
+v1: https://lore.kernel.org/netdev/20250520205920.2134829-1-anthony.l.nguyen@intel.com
+IWL: https://lore.kernel.org/intel-wired-lan/20250612160234.68682-1-aleksander.lobakin@intel.com/
+
+The following are changes since commit 8909f5f4ecd551c2299b28e05254b77424c8c7dc:
+  net: stmmac: qcom-ethqos: add ethqos_pcs_set_inband()
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 200GbE
+
+Alexander Lobakin (17):
+  libeth, libie: clean symbol exports up a little
+  libeth: convert to netmem
+  libeth: support native XDP and register memory model
+  libeth: xdp: add XDP_TX buffers sending
+  libeth: xdp: add .ndo_xdp_xmit() helpers
+  libeth: xdp: add XDPSQE completion helpers
+  libeth: xdp: add XDPSQ locking helpers
+  libeth: xdp: add XDPSQ cleanup timers
+  libeth: xdp: add helpers for preparing/processing &libeth_xdp_buff
+  libeth: xdp: add XDP prog run and verdict result handling
+  libeth: xdp: add templates for building driver-side callbacks
+  libeth: xdp: add RSS hash hint and XDP features setup helpers
+  libeth: xsk: add XSk XDP_TX sending helpers
+  libeth: xsk: add XSk xmit functions
+  libeth: xsk: add XSk Rx processing support
+  libeth: xsk: add XSkFQ refill and XSk wakeup helpers
+  libeth: xdp, xsk: access adjacent u32s as u64 where applicable
+
+ drivers/net/ethernet/intel/iavf/iavf_txrx.c   |   14 +-
+ .../ethernet/intel/idpf/idpf_singleq_txrx.c   |    2 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |   36 +-
+ drivers/net/ethernet/intel/libeth/Kconfig     |   10 +-
+ drivers/net/ethernet/intel/libeth/Makefile    |    8 +-
+ drivers/net/ethernet/intel/libeth/priv.h      |   37 +
+ drivers/net/ethernet/intel/libeth/rx.c        |   42 +-
+ drivers/net/ethernet/intel/libeth/tx.c        |   41 +
+ drivers/net/ethernet/intel/libeth/xdp.c       |  451 ++++
+ drivers/net/ethernet/intel/libeth/xsk.c       |  271 +++
+ drivers/net/ethernet/intel/libie/rx.c         |    7 +-
+ include/net/libeth/rx.h                       |   28 +-
+ include/net/libeth/tx.h                       |   36 +-
+ include/net/libeth/types.h                    |  106 +-
+ include/net/libeth/xdp.h                      | 1879 +++++++++++++++++
+ include/net/libeth/xsk.h                      |  685 ++++++
+ 16 files changed, 3596 insertions(+), 57 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/libeth/priv.h
+ create mode 100644 drivers/net/ethernet/intel/libeth/tx.c
+ create mode 100644 drivers/net/ethernet/intel/libeth/xdp.c
+ create mode 100644 drivers/net/ethernet/intel/libeth/xsk.c
+ create mode 100644 include/net/libeth/xdp.h
+ create mode 100644 include/net/libeth/xsk.h
+
 -- 
-2.49.0
+2.47.1
 
