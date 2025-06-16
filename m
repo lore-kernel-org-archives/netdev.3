@@ -1,183 +1,286 @@
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2070.outbound.protection.outlook.com [40.107.102.70])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2081.outbound.protection.outlook.com [40.107.92.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E262248BA;
-	Mon, 16 Jun 2025 22:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C4F221275
+	for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 22:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.81
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750113904; cv=fail; b=hkEPANlzQqXYv8ktIW9q/KydnFjaE3AzjcghulqdE86yKP5JZS2McznyJlJUeCj/DF44aVDF2EAbb9MocKrqRWCd16rElXPEncUohsYDcereRmBW1H5BDLCvaSGd694lenhLwi7LSFVU/0WrqZTtL5FWYK+fJe70MzKFbHoihmo=
+	t=1750113908; cv=fail; b=Fi9bCMTENDF9z6B65s70qKLLHU02Bd2mGEpeSBFFxxsp4MF5JTUTM/b0PqAUmXNyrcXvkH7n+jYn6sDnYZf7xN/0drO05zlhSdrd4O0vPe/9cLrfB+JCGOcfDO0iplHRErKu822pfDwDm6Ysa0s131bBV+r6xK6ptjdMNIYj9Ew=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750113904; c=relaxed/simple;
-	bh=PFlRVb1dp1AWKuEWC+mwTj6mdqUKGZi60NK2sHpp6LM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KKwIxp4YtwxBbjA0VcUeiBbhCZOhmIXa4ZrygnbNieKWfQ/zG9VZVbuOMaPHOodeNE8PVC61ffZzY+rrDH/Y+1Z9+wbc5S8B3xSJC0F7EpH9YNZwyTLXkkc8vYxPMwi+EUMwPI+fsWGvhmh/JcmJaRXRiqd1ZyROFcG98kK4TgU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wk6OgJK7; arc=fail smtp.client-ip=40.107.102.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1750113908; c=relaxed/simple;
+	bh=CyYTJhz4yD432UBUGIyYrrkEMgjoXafjTAQwq9XcxwY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X8QkZz4+E501AZLkMqZQxLnPKZHDvhVlxzXxpWIp3g0RhlPZubE1JD8Okv7DgMCPoFySoYhY9dNaEvCHaQsCGADiT6xRuB70YWG9Kee/N7TwA6eSRx2GNdU5qyuBNNQ/9QcLS3xdzReGEmGt4JZuDdqJkRy2JVsgu1wf4X72I+M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jcZaMWsj; arc=fail smtp.client-ip=40.107.92.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wk6OgJK7"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jcZaMWsj"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p66x/ZiIc9Kcs1gOz+Yzv+fIY2CC5xF/facB+ZKistZ3hMhc3Iz+Hprvb5IshuJ1PzmELtBCY8+gShe2b1SVRSKYzARAVfysoJmJkhMLwT5TaVjLbSalgcGfB+RummyBULUCqdqdtbiQzlaC4m/nd9HqcVSmcW+zsjKP6Rivss/mx85rLLV9gw7rjtVZOuDbGFrPuT7cizoyBvQgf8xvFn0ssbqKbfbbqHH0RxhzQ0YuTzF9yfkQ9+5vXAT+Eots0zPqEU4qgXVwbx/OqzxjGfVvHq0/e3oFxeDS4/+x9ttjvuIp3VQ2dGzOLC0y2UPPPsXcJ2GgP791xXymi2fy/A==
+ b=Z+coj0/4YrWCOmsgawSFaRBsvo1rkF1K8ZbasKfwA97MbaKxWYbfx219+cKpJJo41WE2H8J5h+bMdnIpisDdmoz1pcCA0JZjIu/5nzQX6vF6YrbNfB3tjQSFWfiVm8hBkoIzilFzoWe6fjVuDfH3k7+Y8mLFi6J5uM8ICzvQTWgbDIf3HMA1m2fHmPeaGZ0fXg5FYlgyakMhcVKKD74AGcymtxMP256y/192LZKRE5wspoin/XZRxWLD76LJBwW7JkCuD2wRLgJSaGIOq68KsP/6mIGXbyJf7/llReyQ1Ezab6elymw0y7ECMm4R8F13Etc9ad7E49LX7jT/sEt76w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MklNlaOpnO+58a5YDxiYCqEgTuBB4F3pzrukERE9unY=;
- b=CzW00zD/S6+zClkUOXOvUgTrS/DvgTTL7++jQjCo9xbEJQloWN5qHZRN6LF9h/PIMefzJdXELa532TfnL/CF22KoVsYfeyEtPvdFK3F+xW39Fcs9aIfwNgc44Hq4WbF0xxHTtThNsC/pz4cCMwPYuhmyDSGjkwOcqhGLmUXqFbcvMQWNdIXFYeFLOo/fpkx0ll/THbOJuqoWEv/Imo5QeHPjqHFkTTNQxlrh1TjuEz25pPt+kJ661BnBdxu17LmzdAxLNJulG44QjlPs/ElmQksYNVl8nNge/kpaBD+f+BOxiHQR4Pk+8jJvp2ZDVX100JjiPil2PbFV5jdnMFvD5Q==
+ bh=HFbFskTi1V0JoyEv4ldPboP5yiJY4oguyV+DrzmOX7U=;
+ b=FZvtvsCUGaO93Aqsfim+raaR1c4mVdHgg2A+2xh/kNBeGtLUW8VYsXGgS6TzScxp8vv3YbmjgDYAlHSdIGL8PK9W3eTBFE8SkFBDfjGdjODt9fMD39TaNPfkHgziqC2GWUFV6v04NZbf5b359NlHsoOASIvRWFv8w6M9P5paBuqqSRYCbZRbFds9sOltEkc5nzqMZuSC6hy7fcflyN/mtSZ3mv6GvX6P7REe1W6smjXf+m8QI2hPvRzydscxdldxC5G2Owz12UnBntKRPRo6DYTY6GCd+AAebzxSax2qaufR78ZTTiM92HbA7P2FZMOWqJ0S+PqyZw/j/Fh9EsJD7A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ 216.228.117.161) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MklNlaOpnO+58a5YDxiYCqEgTuBB4F3pzrukERE9unY=;
- b=wk6OgJK7C0CEnhfJdZUUb8v+HbWB94oEbr6R2C2CGwYmwL3oSNkG4mg5KhYmCQyc56jw5xrh4RS4pippsgTzHfo5924SCs1wGvRyEmEKo5j8WT+zxFpUsW7bDkX7YqrEnmkMI8RQBGwQvW4sPLPNf33cgZcWvtC5v6zeonXZTQo=
-Received: from BN8PR16CA0022.namprd16.prod.outlook.com (2603:10b6:408:4c::35)
- by CH2PR12MB4229.namprd12.prod.outlook.com (2603:10b6:610:a5::15) with
+ bh=HFbFskTi1V0JoyEv4ldPboP5yiJY4oguyV+DrzmOX7U=;
+ b=jcZaMWsj7sSdOsjI6X/Ws5J9jYp0q6jDjuKyey7owElaE7Co+6tZ8jWGjOtiO8mhZwgvxPSzsWvsNYoOZcZhUBOSrs7x0mINuAUF63IAGFZnBb0beCGMjXckfu1ZXTW7BU9hk/yXDll9J8B9Fd8OQwJDNm1KP6qAktawJXUYGfzxICpXm+XBtbd7hXdJK9GntehAKhD02tb7KW6ZKYt0BcAZrrBVAzNK4P15B32OhFLwwAX1ls7yU30U5AaUKjRWwxDcHN5Nc0ye4d9fQk57eKho/I9OKUQnco3JSGvt+JqZ4uE9HQpP3qg0sggBk+Q9sO5VPnaiyxPwgjlsD2i17g==
+Received: from SJ2PR07CA0019.namprd07.prod.outlook.com (2603:10b6:a03:505::21)
+ by LV2PR12MB5942.namprd12.prod.outlook.com (2603:10b6:408:171::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.28; Mon, 16 Jun
- 2025 22:45:00 +0000
-Received: from BN1PEPF00004687.namprd05.prod.outlook.com
- (2603:10b6:408:4c:cafe::25) by BN8PR16CA0022.outlook.office365.com
- (2603:10b6:408:4c::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8792.23 via Frontend Transport; Mon,
- 16 Jun 2025 22:44:59 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN1PEPF00004687.mail.protection.outlook.com (10.167.243.132) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8835.15 via Frontend Transport; Mon, 16 Jun 2025 22:44:59 +0000
-Received: from driver-dev1.pensando.io (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 16 Jun
- 2025 17:44:58 -0500
-From: Shannon Nelson <shannon.nelson@amd.com>
-To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <brett.creeley@amd.com>, Shannon Nelson <shannon.nelson@amd.com>
-Subject: [PATCH] MAINTAINERS: Remove Shannon Nelson from MAINTAINERS file
-Date: Mon, 16 Jun 2025 15:44:37 -0700
-Message-ID: <20250616224437.56581-1-shannon.nelson@amd.com>
-X-Mailer: git-send-email 2.17.1
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Mon, 16 Jun
+ 2025 22:45:02 +0000
+Received: from CO1PEPF000042AA.namprd03.prod.outlook.com
+ (2603:10b6:a03:505:cafe::9d) by SJ2PR07CA0019.outlook.office365.com
+ (2603:10b6:a03:505::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.25 via Frontend Transport; Mon,
+ 16 Jun 2025 22:45:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CO1PEPF000042AA.mail.protection.outlook.com (10.167.243.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8835.15 via Frontend Transport; Mon, 16 Jun 2025 22:45:00 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 16 Jun
+ 2025 15:44:48 -0700
+Received: from fedora.mtl.com (10.126.230.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 16 Jun
+ 2025 15:44:42 -0700
+From: Petr Machata <petrm@nvidia.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, David Ahern <dsahern@gmail.com>,
+	<netdev@vger.kernel.org>
+CC: Simon Horman <horms@kernel.org>, Nikolay Aleksandrov
+	<razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>, Petr Machata
+	<petrm@nvidia.com>, <mlxsw@nvidia.com>
+Subject: [PATCH net-next v3 00/15] ipmr, ip6mr: Allow MC-routing locally-generated MC packets
+Date: Tue, 17 Jun 2025 00:44:08 +0200
+Message-ID: <cover.1750113335.git.petrm@nvidia.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00004687:EE_|CH2PR12MB4229:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c0e71a2-790f-4059-e3a8-08ddad276ccd
+X-MS-TrafficTypeDiagnostic: CO1PEPF000042AA:EE_|LV2PR12MB5942:EE_
+X-MS-Office365-Filtering-Correlation-Id: ead01d53-be2b-4f28-c314-08ddad276d7a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024;
+	BCL:0;ARA:13230040|36860700013|376014|82310400026|1800799024|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?s5ZZSPSOaoOev2m+Rh4bjRotGcJn6UXnMklP6r+aE3QZTEplBN2eG2Oin1Ed?=
- =?us-ascii?Q?D2Hf4yBXsHHUX5K+cLfgkwBBV5z9A79k+B+oM4/rltjrAMmPFz/dxt+4dJn3?=
- =?us-ascii?Q?8ykk1A4eoYUohR/TMeJXITDB2okzR1fmwBK/y75kHUTg60RfvOw0hlbLnzaU?=
- =?us-ascii?Q?3AY1cu8NrQuGCu59iFh5gh4vQLvMmD9I2/4Z8g1AMghbYoD5tfH3KEX8VlyL?=
- =?us-ascii?Q?JYa5nwoD4HbdKW+of1QNdLWXy2b9GkN67cxp92ZiqqjXHm437w6Hmrxt9hiN?=
- =?us-ascii?Q?Jg5K22AAtbbKtotune6zjVloY2b35c09IVOeaMhJzD+Odl+VkRLxKCQQ/72J?=
- =?us-ascii?Q?jYFv2UiNV6YN5OB7pYkIgG1bF2ycbjHWM7+LhxEG3phlGInpZkrvsMgw1FaB?=
- =?us-ascii?Q?TlKn6IMY9WnUQlXesSBxboOYLO3HphJwIesmCf8uqHrTLdUjj2u+MdzVfL8r?=
- =?us-ascii?Q?V/XzcSCT4Iz+SHjc56WSRJYKGTBmDMgHYg8rIqSK72Y8XMZ9rNSiFJibN8uu?=
- =?us-ascii?Q?RPLEbYzT5BmE2cRjZjgR99CXcS21IvSMwjE0k3wX77/QLgyQmvWJTIri1sTk?=
- =?us-ascii?Q?lY9N24LSFDPdc0U1LFlWgk0IP+lBFtYDc8gFkWqD2/AXsQcnT6G2KwF1k0w1?=
- =?us-ascii?Q?naM91hii3/I7SWExI/S8ZvJfquyo+LXqsK2tHEYGkxK1ESSivNVHBD2K2FJu?=
- =?us-ascii?Q?KQiZW0bF4XCPZivTH9el8F9J9GOvmM7X4WHsKT+s+GW4sMl7ldUUT3mK/S05?=
- =?us-ascii?Q?AgnYsuBPLJi+ic8czBK6hBM0nJ1K+7dcrw9a0uA0ZbMKfB8SZBWOrORJ/hFP?=
- =?us-ascii?Q?WxeUo+FQ+suhZ+61T3jEj9ohIQjh0/UN7+ywreJ0nk+NIg67uRh6bQNQSKtS?=
- =?us-ascii?Q?wbioT3tWtJZZLSiAUFGLc+arGJhByFHhOldDbyMWVpajCqevjTMm/ZJMXCIh?=
- =?us-ascii?Q?UuRMdz2UZkYnNP/8Zw0LRCZ1y+IlIKFNGEVs1LbxSUYGVRM7xj/o1r8tz2dD?=
- =?us-ascii?Q?hR/NJHMTjTAOwYk7BKrJE5SEbTnqAbOFw5G4UdbB9p2tZmqp4QNP9AEio0q9?=
- =?us-ascii?Q?+B4WLrz+gRuPfYRQpLqjN433JXgOU4YgdLy38R3XA2B95gkxzOTxfsT5ttF/?=
- =?us-ascii?Q?+gPOAI+aag7tWyuqt1gCNQhuwZkBdzOAD7xcv4YOaWRy8BrI2HFPR1E229NH?=
- =?us-ascii?Q?Y+NIa4DI+S5FPs/u1iXXEh3uVib+dGhj0KWJAF318WZTczQPJrbklUeu4Of4?=
- =?us-ascii?Q?WDe6tzf45Ec0e6ITqc2cGvQCFvB4XOrRz1EgztPi4afdhSyWmi9KnXA6Bh2y?=
- =?us-ascii?Q?QvvJgKniOJRVqwZJc3MYWVyfljvMU/fdGPmf3igif2tp/fgu/RyuGG6Sj88E?=
- =?us-ascii?Q?kFdkGzPm2wJVbbFzVWNg+EUw7i/Wtq4tqxAWdIFiKnAMu2pUAcf/TFd8eOP6?=
- =?us-ascii?Q?gw1/fFyUS3EfourH6GqLIxBh5ezJ6DdLcF7RnWHT8KH7LMkJFNH7UH6iXQs3?=
- =?us-ascii?Q?TwlyNetfq4OQGDhmQvtTndnqOrSSkPQoAgAz?=
+	=?us-ascii?Q?ePLvECUs10M0QYviGtolidbKoCSXusHGd+kZ9PwwhYzXC2YiQB2wK0NQ9JDj?=
+ =?us-ascii?Q?bekEbk378CuzZjJkruxB3PT8GAga6yZn/RI0Dn7kR0loCahyaBvtLvF9Fa5I?=
+ =?us-ascii?Q?B2wQIOA6yDYZV6kh6KLbVHMam4MVlq5PO0rNfwqc4GQ2CG7YF8bxUzYCEsl/?=
+ =?us-ascii?Q?flJHrEnuC1ANfTUnGAq9tzp/mgO1lW2qhCjwIZXfxXF+UnFOJjOUSkmDAbg0?=
+ =?us-ascii?Q?yoYiJoTZFjmfP4mJ5rGbQfv2gfowU3HQ2677pklrPUrFhW+vATAAxJ1+iQFQ?=
+ =?us-ascii?Q?KM4lAfQVsb2/6uO1WqJjujHZs7uiq8JZmqv/Xf9/zrbzlNEHr83ILIlEcf8O?=
+ =?us-ascii?Q?TipZ+LjFAsTojfFmM5pYOWkAbEXKmRxdttVxYGnmnCJJ50d/+Quy5QwQlB7D?=
+ =?us-ascii?Q?8cmK2my9Rz3nKNixCfXFiEZybMsaeErJC3HdEfyDdCh0i4U0sOP6OcMdgCrq?=
+ =?us-ascii?Q?uuIRAeWgBWBL0RMSxiRraNJGp6QtC92BL0I8ceHT2RW6o4QXGO4rzqn+HDyF?=
+ =?us-ascii?Q?eMmXXJua+EEXmqBOUJiZlQgoYmYiD+3Y8ds++vjci9S2Xd+3E090Rlbkimrk?=
+ =?us-ascii?Q?yANIGawG1F43I+EXXzf/VK1ZGdbuJHQRRfwkb/wkO3dRMLElZ8M2JEQ4hVDz?=
+ =?us-ascii?Q?kZ30RfgrT7YU3PXFHtiJpDTqOWzK6CCoejQuxGskOA2XbX152JZc2M5QtALZ?=
+ =?us-ascii?Q?YLn17QZh8BKvA70BH7g+0rxVfworizAbTktZaOvzndOAfZVaYKp5fhYJjBRw?=
+ =?us-ascii?Q?P+sCR3M34LtsNOXCCAAuRI3Yg95HKE5TBAUcjW48SJeK3jCGhfIiRsWCF5IE?=
+ =?us-ascii?Q?IZkooVnCGTMXQh01oG4iznmT3w66b8Q5FcTNn8VDAN3n2TfeBoBnuJT9Wv2W?=
+ =?us-ascii?Q?QMb3t7t2bKFaRGzgbTw81IgaTF5CmVTR3ODzUy/x9bG9eggS05AHBhg+S+sg?=
+ =?us-ascii?Q?eGHdE7wvw3pCJ8Vn4ZMFWr20msp+2NwpQEQF9od51BzbFsV1D5unx8jdVfOu?=
+ =?us-ascii?Q?QQHjPNlEPTaaydVE9/o0+Fj5E5QuNtXXxV09sf5PVxDlxSdp3dQfI4rZWrwK?=
+ =?us-ascii?Q?UNSwo9aFA+wq5gEdC4X5q0D/7TqJYgelUCbeMucmJsvrBa9rwu1nycQb70Er?=
+ =?us-ascii?Q?UkabKkD99ARnmTdtLD5mb2+qtNIpHVgvj7px9vyncIuoEUmGOx3PlVSy4Kw1?=
+ =?us-ascii?Q?oz7fk9q2u0VIWgx1jiBYWLvLjtneC2dO692m8WiqN2OTW64uLsreM3LSzNGl?=
+ =?us-ascii?Q?u4JmGIn4ZQnjP3k/X+NNMDm9wwc32wY/69hiQVTPFrFBzTKp/SHpRJL+A94K?=
+ =?us-ascii?Q?RuECUIRhZCQ047Y8x2xHlT9UMetA6dbuiAD5gL/T0X/6SQmtpR6GhF1/ia3P?=
+ =?us-ascii?Q?6UzTgM3yazLroSy+NhNVJ82fMAbEGtmdhO3vM5Iu861HaYWlwAAUd8NaWJBG?=
+ =?us-ascii?Q?A0gANou/nayHUleRQgXHDNZ4LnTB1rvmVUbJP+8qUK/P1o+jCEmMRsteOpQr?=
+ =?us-ascii?Q?h0LHsZLSn8AGmST8Gt2xlHCh2rIh10NHD/QG?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2025 22:44:59.6814
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(82310400026)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2025 22:45:00.7597
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c0e71a2-790f-4059-e3a8-08ddad276ccd
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-Network-Message-Id: ead01d53-be2b-4f28-c314-08ddad276d7a
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00004687.namprd05.prod.outlook.com
+	CO1PEPF000042AA.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4229
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5942
 
-Brett Creeley is taking ownership of AMD/Pensando drivers while I wander
-off into the sunset with my retirement this month.  I'll still keep an
-eye out on a few topics for awhile, and maybe do some free-lance work in
-the future.
+Multicast routing is today handled in the input path. Locally generated MC
+packets don't hit the IPMR code. Thus if a VXLAN remote address is
+multicast, the driver needs to set an OIF during route lookup. In practice
+that means that MC routing configuration needs to be kept in sync with the
+VXLAN FDB and MDB. Ideally, the VXLAN packets would be routed by the MC
+routing code instead.
 
-Meanwhile, thank you all for the fun and support and the many learning
-opportunities :-).
+To that end, this patchset adds support to route locally generated
+multicast packets.
 
-Special thanks go to DaveM for merging my first patch long ago, the big
-ionic patchset a few years ago, and my last patchset last week.
+However, an installation that uses a VXLAN underlay netdevice for which it
+also has matching MC routes, would get a different routing with this patch.
+Previously, the MC packets would be delivered directly to the underlay
+port, whereas now they would be MC-routed. In order to avoid this change in
+behavior, introduce an IPCB/IP6CB flag. Unless the flag is set, the new
+MC-routing code is skipped.
 
-Cheers,
-sln
+All this is keyed to a new VXLAN attribute, IFLA_VXLAN_MC_ROUTE. Only when
+it is set does any of the above engage.
 
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
----
- MAINTAINERS | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+In addition to that, and as is the case today with MC forwarding,
+IPV4_DEVCONF_MC_FORWARDING must be enabled for the netdevice that acts as a
+source of MC traffic (i.e. the VXLAN PHYS_DEV), so an MC daemon must be
+attached to the netdevice.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 99fbde007792..437381aeaa71 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1157,7 +1157,6 @@ F:	arch/x86/include/asm/amd/node.h
- F:	arch/x86/kernel/amd_node.c
- 
- AMD PDS CORE DRIVER
--M:	Shannon Nelson <shannon.nelson@amd.com>
- M:	Brett Creeley <brett.creeley@amd.com>
- L:	netdev@vger.kernel.org
- S:	Maintained
-@@ -9941,7 +9940,6 @@ F:	drivers/fwctl/mlx5/
- 
- FWCTL PDS DRIVER
- M:	Brett Creeley <brett.creeley@amd.com>
--R:	Shannon Nelson <shannon.nelson@amd.com>
- L:	linux-kernel@vger.kernel.org
- S:	Maintained
- F:	drivers/fwctl/pds/
-@@ -19377,7 +19375,7 @@ F:	crypto/pcrypt.c
- F:	include/crypto/pcrypt.h
- 
- PDS DSC VIRTIO DATA PATH ACCELERATOR
--R:	Shannon Nelson <shannon.nelson@amd.com>
-+R:	Brett Creeley <brett.creeley@amd.com>
- F:	drivers/vdpa/pds/
- 
- PECI HARDWARE MONITORING DRIVERS
-@@ -19399,7 +19397,6 @@ F:	include/linux/peci-cpu.h
- F:	include/linux/peci.h
- 
- PENSANDO ETHERNET DRIVERS
--M:	Shannon Nelson <shannon.nelson@amd.com>
- M:	Brett Creeley <brett.creeley@amd.com>
- L:	netdev@vger.kernel.org
- S:	Maintained
+When a VXLAN netdevice with a MC remote is brought up, the physical
+netdevice joins the indicated MC group. This is important for local
+delivery of MC packets, so it is still necessary to configure a physical
+netdevice -- the parameter cannot go away. The netdevice would however
+typically not be a front panel port, but a dummy. An MC daemon would then
+sit on top of that netdevice as well as any front panel ports that it needs
+to service, and have routes set up between the two.
+
+A way to configure the VXLAN netdevice to take advantage of the new MC
+routing would be:
+
+ # ip link add name d up type dummy
+ # ip link add name vx10 up type vxlan id 1000 dstport 4789 \
+	local 192.0.2.1 group 225.0.0.1 ttl 16 dev d mrcoute
+ # ip link set dev vx10 master br # plus vlans etc.
+
+With the following MC routes:
+
+ (192.0.2.1, 225.0.0.1) iif=d oil=swp1,swp2 # TX route
+ (*, 225.0.0.1) iif=swp1 oil=d,swp2         # RX route
+ (*, 225.0.0.1) iif=swp2 oil=d,swp1         # RX route
+
+The RX path has not changed, with the exception of an extra MC hop. Packets
+are delivered to the front panel port and MC-forwarded to the VXLAN
+physical port, here "d". Since the port has joined the multicast group, the
+packets are locally delivered, and end up being processed by the VXLAN
+netdevice.
+
+This patchset is based on earlier patches from Nikolay Aleksandrov and
+Roopa Prabhu, though it underwent significant changes. Roopa broadly
+presented the topic on LPC 2019 [0].
+
+Patchset progression:
+
+- Patches #1 to #4 add ip_mr_output()
+- Patches #5 to #10 add ip6_mr_output()
+- Patch #11 adds the VXLAN bits to enable MR engagement
+- Patches #12 to #14 prepare selftest libraries
+- Patch #15 includes a new test suite
+
+[0] https://www.youtube.com/watch?v=xlReECfi-uo
+
+v3:
+- Patch #4:
+    - Reindent the TTL condition
+    - Refold the skb2 = skb_clone() code
+- Patch #8:
+    - New patch
+- Patch #9:
+    - Move kfree_skb() to the ip6mr_prepare_xmit() caller, like IPv4.
+    - The patch is now structurally so similar to the IPv4
+      one that the subject should reflect that. Update.
+- Patch #10:
+    - kfree_skb() now needs to be in ip6mr_output2()
+    - The fallback version of ip6_mr_output(), compiled when
+      IPV6_MROUTE is not defined, needs to call ip6_output()
+      instead of silently leaking the SKB.
+    - Reindent the TTL condition
+    - Refold the skb2 = skb_clone() code
+- Patch #15:
+    - Disable shellchecking apparently-unreachable commands.
+      They are actually reachable through tests_run, in_ns, etc.
+    - Run setup_wait with an explicit argument to avoid
+      shellcheck citation.
+
+v2:
+- Patches #11, #13 and #14:
+    - Adjust as per shellcheck citations
+    - Retain Nik's R-b at patch #13, the changes were very minor.
+
+Petr Machata (15):
+  net: ipv4: Add a flags argument to iptunnel_xmit(),
+    udp_tunnel_xmit_skb()
+  net: ipv4: ipmr: ipmr_queue_xmit(): Drop local variable `dev'
+  net: ipv4: ipmr: Split ipmr_queue_xmit() in two
+  net: ipv4: Add ip_mr_output()
+  net: ipv6: Make udp_tunnel6_xmit_skb() void
+  net: ipv6: Add a flags argument to ip6tunnel_xmit(),
+    udp_tunnel6_xmit_skb()
+  net: ipv6: ip6mr: Fix in/out netdev to pass to the FORWARD chain
+  net: ipv6: ip6mr: Make ip6mr_forward2() void
+  net: ipv6: ip6mr: Split ip6mr_forward2() in two
+  net: ipv6: Add ip6_mr_output()
+  vxlan: Support MC routing in the underlay
+  selftests: forwarding: lib: Move smcrouted helpers here
+  selftests: net: lib: Add ip_link_has_flag()
+  selftests: forwarding: adf_mcd_start(): Allow configuring custom
+    interfaces
+  selftests: forwarding: Add a test for verifying VXLAN MC underlay
+
+ drivers/net/amt.c                             |   9 +-
+ drivers/net/bareudp.c                         |   7 +-
+ drivers/net/geneve.c                          |   7 +-
+ drivers/net/gtp.c                             |  12 +-
+ drivers/net/ovpn/udp.c                        |   4 +-
+ drivers/net/vxlan/vxlan_core.c                |  23 +-
+ drivers/net/wireguard/socket.c                |   4 +-
+ include/linux/ipv6.h                          |   1 +
+ include/linux/mroute6.h                       |   7 +
+ include/net/ip.h                              |   2 +
+ include/net/ip6_tunnel.h                      |   3 +-
+ include/net/ip_tunnels.h                      |   2 +-
+ include/net/udp_tunnel.h                      |  17 +-
+ include/net/vxlan.h                           |   5 +-
+ include/uapi/linux/if_link.h                  |   1 +
+ net/ipv4/ip_tunnel.c                          |   4 +-
+ net/ipv4/ip_tunnel_core.c                     |   4 +-
+ net/ipv4/ipmr.c                               | 169 +++-
+ net/ipv4/route.c                              |   2 +-
+ net/ipv4/udp_tunnel_core.c                    |   5 +-
+ net/ipv6/ip6_tunnel.c                         |   2 +-
+ net/ipv6/ip6_udp_tunnel.c                     |  18 +-
+ net/ipv6/ip6mr.c                              | 148 +++-
+ net/ipv6/route.c                              |   1 +
+ net/ipv6/sit.c                                |   2 +-
+ net/sctp/ipv6.c                               |   7 +-
+ net/sctp/protocol.c                           |   3 +-
+ net/tipc/udp_media.c                          |  12 +-
+ .../testing/selftests/net/forwarding/Makefile |   1 +
+ tools/testing/selftests/net/forwarding/lib.sh |  46 ++
+ .../net/forwarding/router_multicast.sh        |  35 +-
+ .../net/forwarding/vxlan_bridge_1q_mc_ul.sh   | 771 ++++++++++++++++++
+ tools/testing/selftests/net/lib.sh            |  12 +-
+ 33 files changed, 1225 insertions(+), 121 deletions(-)
+ create mode 100755 tools/testing/selftests/net/forwarding/vxlan_bridge_1q_mc_ul.sh
+
 -- 
-2.17.1
+2.49.0
 
