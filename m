@@ -1,62 +1,46 @@
-Received: from mxout1.routing.net (mxout1.routing.net [134.0.28.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E9D2116EE;
-	Mon, 16 Jun 2025 08:07:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AE02163B2;
+	Mon, 16 Jun 2025 08:24:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750061271; cv=none; b=L2Kd54WAsnIiisBqrznMCUBjSRFOb8/UrHlNvZKfEhp/zKqWBQwwv0NZBQFlw4ZexHt5/xOqR912dUlGH3+n02eaRCw2Uh18hB+8MBE+gwju3KnEETxpDzRLu9cWTMVT6kMWbYjD5cX4j/5b9mZm7K2Hj0y5auRG9VbVbc+kMrM=
+	t=1750062270; cv=none; b=Tb9Gx9KVSAA7Ttcz40qGoVN/1TlMnMdff+k1HPaNq5JhWgp9HnE8ZRN+FdwkaFoC/vvr5Y+FMNW9PxNgIsTjVJr/rWuamGtmle+kGMHlQsZzP4iBbLWXNHq9/L/gphen0gBOnhUnWLsNZm/DRmbzxE25D2b9ZolCFL7lLkfs7F8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750061271; c=relaxed/simple;
-	bh=AftlQEL6Khk/DC4qbPUaIfYSZ4Qv4tGnW7qwvZaILKc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TRhIIoAvREVpJ/Z3qCm6/gytqBFRm52NNUpi7BVFTqxX7d5prqw+BY2BvW8ftul3c28E/zDe5a0iwtNkG7bfH5qYyuP92vRFHGl7jQkBznfjDjLzjDydpp+5QxSJQDMVVoUPwD93MpX7Uxmm8LENGvZecsgT1j1JIGD+zAAWbiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=iRrvfIMX; arc=none smtp.client-ip=134.0.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fw-web.de
+	s=arc-20240116; t=1750062270; c=relaxed/simple;
+	bh=2wunBQAEUUjaoDkXd/pxyrdC4UwepMLxk2ExQRIJD3Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uQW4z8EWtTGBZjvGfOgCxDABt9G2tmEarxwgHzcoJuUg99kP8f0hOhgjp27/j7BdoQ7qg+plNsJtxd5NUnwrBp7goKLDIJI1SfPmCoueh/0Ed93ZifjlnsEH/7yABiDyQ6rd/dtliVz5doUxxlHthxe1x5q8xxYblhhKR/PQUWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jkscdBit; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="iRrvfIMX"
-Received: from mxbulk.masterlogin.de (unknown [192.168.10.85])
-	by mxout1.routing.net (Postfix) with ESMTP id 737353FDD4;
-	Mon, 16 Jun 2025 08:07:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
-	s=20200217; t=1750061266;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O65L2t9W8ZXWygRCA4KnSeEpTHiZlvT4O3mUer1lJck=;
-	b=iRrvfIMXUMPEHmbttE1A3Q194fTpN00corjw0Y4kfRKOuOm+YbRSKyCK9SQgb+ShY+dusM
-	txJ00iOENvqSrJGwASwgSJrUjX4bwYQ8BVwqw43oh3XY7DBZew/pNvjyFuFgip2RposViz
-	geXtErzbL1IUpnn6FnYDvgkwSjjiVK8=
-Received: from frank-u24.. (fttx-pool-194.15.87.210.bambit.de [194.15.87.210])
-	by mxbulk.masterlogin.de (Postfix) with ESMTPSA id 39BB8122704;
-	Mon, 16 Jun 2025 08:07:46 +0000 (UTC)
-From: Frank Wunderlich <linux@fw-web.de>
-To: Felix Fietkau <nbd@nbd.name>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jkscdBit"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB09C4CEEA;
+	Mon, 16 Jun 2025 08:24:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750062269;
+	bh=2wunBQAEUUjaoDkXd/pxyrdC4UwepMLxk2ExQRIJD3Q=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jkscdBit8Sid4gQDBvclhlpmB3PXZY2xMH3LQjEvjoyiaGbaaCe6UlYmqIjHpAt00
+	 0KuPBjGNYh/jjuc3G88+khp530fPj5tS4wlSlQSsDueXpAKEtBqyEa279mjJKZQnfT
+	 NYjNvrdcYasr+DXT205vDoTd+scc7MGjxEAf+qtu73Cd0jOZBnfJTPRrfvNo011oik
+	 r68NLLC8PGiqyfRwqZwl4fYGah7QrBSe9Z6uuWAL7/nwLB0F521bNgOaofK18tXV4a
+	 qnt8BnhEH8wGfUqFsoQoj41IqP8/bFIGyUxFFcRvQJbAu3bp+Bph2oyXOBQv4E4sEk
+	 Amn26tXd++ySw==
+From: Leon Romanovsky <leon@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Frank Wunderlich <frank-w@public-files.de>,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: Mark Zhang <markzhang@nvidia.com>,
+	linux-rdma@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Simon Horman <horms@kernel.org>,
-	Daniel Golle <daniel@makrotopia.org>,
-	arinc.unal@arinc9.com
-Subject: [net-next v4 1/3] net: ethernet: mtk_eth_soc: support named IRQs
-Date: Mon, 16 Jun 2025 10:07:34 +0200
-Message-ID: <20250616080738.117993-2-linux@fw-web.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250616080738.117993-1-linux@fw-web.de>
-References: <20250616080738.117993-1-linux@fw-web.de>
+	Paolo Abeni <pabeni@redhat.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH net] net/mlx4e: Remove redundant definition of IB_MTU_XXX
+Date: Mon, 16 Jun 2025 11:24:23 +0300
+Message-ID: <aca9b2c482b4bea91e3750b15b2b00a33ee0265a.1750062150.git.leon@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,81 +49,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Frank Wunderlich <frank-w@public-files.de>
+From: Mark Zhang <markzhang@nvidia.com>
 
-Add named interrupts and keep index based fallback for exiting devicetrees.
+Remove them to avoid "redeclaration of enumerator" build error, as they
+are already defined in ib_verbs.h. This is needed for the following
+patch, which need to include the ib_verbs.h.
 
-Currently only rx and tx IRQs are defined to be used with mt7988, but
-later extended with RSS/LRO support.
-
-Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 096335b3f983 ("mlx4_core: Allow dynamic MTU configuration for IB ports")
+Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
-v2:
-- move irqs loading part into own helper function
-- reduce indentation
-- place mtk_get_irqs helper before the irq_handler (note for simon)
----
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 39 +++++++++++++++------
- 1 file changed, 28 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/main.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index b76d35069887..81ae8a6fe838 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -3337,6 +3337,30 @@ static void mtk_tx_timeout(struct net_device *dev, unsigned int txqueue)
- 	schedule_work(&eth->pending_work);
+diff --git a/drivers/net/ethernet/mellanox/mlx4/main.c b/drivers/net/ethernet/mellanox/mlx4/main.c
+index febeadfdd5a5..03d2fc7d9b09 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/main.c
++++ b/drivers/net/ethernet/mellanox/mlx4/main.c
+@@ -49,6 +49,8 @@
+ #include <linux/mlx4/device.h>
+ #include <linux/mlx4/doorbell.h>
+ 
++#include <rdma/ib_verbs.h>
++
+ #include "mlx4.h"
+ #include "fw.h"
+ #include "icm.h"
+@@ -1246,14 +1248,6 @@ static ssize_t set_port_type(struct device *dev,
+ 	return err ? err : count;
  }
  
-+static int mtk_get_irqs(struct platform_device *pdev, struct mtk_eth *eth)
-+{
-+	int i;
-+
-+	eth->irq[1] = platform_get_irq_byname(pdev, "tx");
-+	eth->irq[2] = platform_get_irq_byname(pdev, "rx");
-+	if (eth->irq[1] >= 0 && eth->irq[2] >= 0)
-+		return 0;
-+
-+	for (i = 0; i < 3; i++) {
-+		if (MTK_HAS_CAPS(eth->soc->caps, MTK_SHARED_INT) && i > 0)
-+			eth->irq[i] = eth->irq[0];
-+		else
-+			eth->irq[i] = platform_get_irq(pdev, i);
-+
-+		if (eth->irq[i] < 0) {
-+			dev_err(&pdev->dev, "no IRQ%d resource found\n", i);
-+			return -ENXIO;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static irqreturn_t mtk_handle_irq_rx(int irq, void *_eth)
+-enum ibta_mtu {
+-	IB_MTU_256  = 1,
+-	IB_MTU_512  = 2,
+-	IB_MTU_1024 = 3,
+-	IB_MTU_2048 = 4,
+-	IB_MTU_4096 = 5
+-};
+-
+ static inline int int_to_ibta_mtu(int mtu)
  {
- 	struct mtk_eth *eth = _eth;
-@@ -5106,17 +5130,10 @@ static int mtk_probe(struct platform_device *pdev)
- 		}
+ 	switch (mtu) {
+@@ -1266,7 +1260,7 @@ static inline int int_to_ibta_mtu(int mtu)
  	}
+ }
  
--	for (i = 0; i < 3; i++) {
--		if (MTK_HAS_CAPS(eth->soc->caps, MTK_SHARED_INT) && i > 0)
--			eth->irq[i] = eth->irq[0];
--		else
--			eth->irq[i] = platform_get_irq(pdev, i);
--		if (eth->irq[i] < 0) {
--			dev_err(&pdev->dev, "no IRQ%d resource found\n", i);
--			err = -ENXIO;
--			goto err_wed_exit;
--		}
--	}
-+	err = mtk_get_irqs(pdev, eth);
-+	if (err)
-+		goto err_wed_exit;
-+
- 	for (i = 0; i < ARRAY_SIZE(eth->clks); i++) {
- 		eth->clks[i] = devm_clk_get(eth->dev,
- 					    mtk_clks_source_name[i]);
+-static inline int ibta_mtu_to_int(enum ibta_mtu mtu)
++static inline int ibta_mtu_to_int(enum ib_mtu mtu)
+ {
+ 	switch (mtu) {
+ 	case IB_MTU_256:  return  256;
 -- 
-2.43.0
+2.49.0
 
