@@ -1,314 +1,227 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A042BF002
-	for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 13:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB0C2BEFE6;
+	Mon, 16 Jun 2025 14:05:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750082352; cv=none; b=EB6DOb7XhzSvJ4plvk4ChOmh+kwxgImo0REc9jUAjwuV2DTPuzbvkonVj7G05RxJQLQNERL0HvMK8QLxO0B9eRCC1gmo1IVEBCfbNei6sMfb7y1OEN/VoDIAfaEs3lx56L+eJspbc62GaKkydsfFTs0du4SI3C8wdUDrDqnC8aY=
+	t=1750082752; cv=none; b=AApM8k/jm7aYc0CocXOclWg18P69OODJPLTNbskR7x4c5xt+FCLY993YmskZhazb6oFXzsLJ6P3rWO74L3dEYmWDbeAwHjpjn+KNqudhI6G/DeTMy1ad6e64U/s9qYobFqak5GUiI+5Idt3O/6394s4oZKpY50TdRKnc7wOW3l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750082352; c=relaxed/simple;
-	bh=vqy7nH2TRHhiiSz/OGaQv55N1pBGXt8kziKc5Kqy/AY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oPzZW6UHU/BtU/P3i5dzD6Nw6pLYk35a9K2f7e4nkP7ICNX/Qz0igmBiMIj4xUETUF97j5+zaAJpHBcattDBW1a9UeyErwwpAKxsjGDQEk3G/82pj+b1Fuh70MoeGfQw7x5X8f0VwhnkDDB9d5H60N2PCZj2d/sRW+O4eyviOUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZGgPlGqO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1750082752; c=relaxed/simple;
+	bh=WzE1aNqujYVsFqob/hOJtHNXP3jA3Px95R81bO5dBX8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sHmQqCduUNdLf9tn0jXFcfhqp7Ha0+X16DWAny7wVYrmzT7mhxhJDllEa3UPd6Xe6tvsl66TM2b2bU0+oqOp3ZAs5J6dxwLVTa39oUJRqH+3Hq3ugldf5WE+rfU/7p3YYOAHqo8XENvndK8kl7ZRuGAfD3KLVoZSKh4sZrX6T/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eEPZ+SGR; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZGgPlGqO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750082349;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MDXOR2+9SFucAcceARHVMU6Tuqx3sff55HmAoDR3SqQ=;
-	b=ZGgPlGqOvgMiZ+2GVovrmzeJYEkLWgmpnx7kEWXXMo3qqhDjPf87PaUqbyDn6Y4HJlFho1
-	dGCOjkYh2cvg2ekOw8lyY3VgmRZnJNbtfJL0yiY96sYs97wikOEsnfHa9reZv52k4u//Sf
-	hkM0R7unUTzzkh617BOV74qAhK0EqO8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-361-k2foTBQ2P1KxwTg0_TBihg-1; Mon, 16 Jun 2025 09:59:08 -0400
-X-MC-Unique: k2foTBQ2P1KxwTg0_TBihg-1
-X-Mimecast-MFC-AGG-ID: k2foTBQ2P1KxwTg0_TBihg_1750082347
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-451d3f03b74so31081615e9.3
-        for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 06:59:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750082347; x=1750687147;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eEPZ+SGR"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4531898b208so4733745e9.3;
+        Mon, 16 Jun 2025 07:05:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750082748; x=1750687548; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MDXOR2+9SFucAcceARHVMU6Tuqx3sff55HmAoDR3SqQ=;
-        b=E80hZMy5fIh62RJg6ryrMBLltYzMnrj0j3vc0u9F9Pohw2NVUrp8N+AEXL9rxS3BEF
-         fuEQOoUxwWgJYhN5AFFotUcDGYeAhNWI+mqHyNcef0rWh5LawUw2QHU3NtKhuCqisrOb
-         P8mC02jA91slpTmmce0hr/pDJrVJzjJ47Lz+I2j7376FHe5VLIHCwPQLQfAsHT2Ht+u6
-         gFc3LhNQWql6BK24088AhlZ8mvAlp0jCdTahp7607fZ6V70Bv7CJLhsWfTNlguZyoCdj
-         JBFCQsJ5M5Fgzs8t6yYWLzsJjQTpY/Br5ZFA3bdX3VcVxIGtSacc+T1DwuUM24JH/svv
-         RmMw==
-X-Forwarded-Encrypted: i=1; AJvYcCXXg8TP62IFzFPXoCW30AQx6Nl03SDPFf7UAFMMCNF6c2e9g3IQavOtnhAhhXIMAIjWIB0+/xk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+EwNW/S6ypBvB8vnaim2EuUjGFESQ6M8vZugx1eVXsV7IV8NV
-	S69QDAIwdZ20sjYBghekpdDUZqgY9uiXboBlAaIy+21a9ruEcgfMYnVKVlc1qsyk1w2C+bhUoL4
-	2y7rGNeFOI6ckrH+6Yn/+pl9nXhwEdd7nBEQSIoNU8zoDg4JENEviOzuHGg==
-X-Gm-Gg: ASbGncudxiN35UtU3gfAkX6GAoL10XG3VVRU90IE8PkYEJbkKX5ttOwfjXJON0V63Am
-	2xgKWwOEqj+jKQjUO70gQNo5VP1zlHK7/kpcr4AER8UmNqfnFLbwElQXJ7MYM3WFdmN9GHEro1E
-	CvrRES02qUOU7vn+G10jWQBIbJYmSFVvwT6g9HtkET9BihDHQIy8Sra0pIo59ShGOrbtliAGaHC
-	qmkBZwMQ5X/dVTLY8NnIRx8RTLb0YyuAu+ZtAkSFXibBJ0fQNAi+WKJHqYCB0jH0i+wQgLF+DLP
-	CmhAvh5zrFuO3LbMQWHy14bRChk=
-X-Received: by 2002:a05:6000:2913:b0:3a4:c2e4:11b with SMTP id ffacd0b85a97d-3a572e5889amr7854239f8f.51.1750082346881;
-        Mon, 16 Jun 2025 06:59:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGRgV7a2zE81Cn4q+8HsPH4Efg/1Yo3ECeuGZsn/U6pXmXm9DovaRfGerUSfCxyx2uouMUMag==
-X-Received: by 2002:a05:6000:2913:b0:3a4:c2e4:11b with SMTP id ffacd0b85a97d-3a572e5889amr7854209f8f.51.1750082346294;
-        Mon, 16 Jun 2025 06:59:06 -0700 (PDT)
-Received: from sgarzare-redhat ([193.207.202.17])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e2354fbsm143617795e9.15.2025.06.16.06.59.03
+        bh=SzdRQROMTVgMksH6Fn4lHaEKC4h3vDSH2xEvADuUVQE=;
+        b=eEPZ+SGR88rmCa89HDdVejKbJ3dc25zov/RenIdVwgreO88cVUMI+29l4imJMVqwNO
+         AfNdaDE5SeZqIpaDAGD2coPdoIj9iQtWCHyU3AiU6osoBFJhGayw3Nm3Wvuyz2YuG6ba
+         EllrgGKml5mm5rRNWFiQGj5KKSIoJ0M/+t3H62oRdRY0rlxWNRCC0SSC+N4OAWZ+GIzg
+         B96jWmSDOYqAYESTKCJ02v3AQZsZdZc9pNBBXB5vIVLzEp162BXN1e49WAhbTgpGCeBj
+         NCAgaR9Zxe8s6NouYCxO33MxdV0kOY9mxzMJRv7oj0nc2eLclu3SD+S00qmG2U/t4M/7
+         qn4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750082748; x=1750687548;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzdRQROMTVgMksH6Fn4lHaEKC4h3vDSH2xEvADuUVQE=;
+        b=r7uocN4uXKukInSlaWR4GSCr/9/PQPqHwbJMxdeuFgFu87Vjnbl8oGWjokCc4TVPTR
+         f3AlLPrUezsY8o3SdAer5x62N0vU7plJvh1SgfEJCRBwog+aC0qTbJp/nDIJ3GCFnztj
+         ysqnkhPMQbsL/PG0d9IINM6aSju0hf/ciFFIIYf9iXyNV0vadHx8ngIwG2AlhJBs59b3
+         mAYHVnomn4+4qMI6klkSKVBSnnI5D6vNjApUowlgdDMA4pIRAhL4pq43YPVBxXJ/53rW
+         ECH7WjKSJYQyAFtQhBIauAY8ZRz0ROU49+Odp8S4QbYhmCnYgH5qqKlFfxawBw+nwJ+8
+         a+Ow==
+X-Forwarded-Encrypted: i=1; AJvYcCVwpEHFPaqifj/Y0lncJCl03W4WxbFNx+iSwFLa6Jeznt7FbUDpph/ViqYaV4HXY8d4XZssiQikxiEeG+g=@vger.kernel.org, AJvYcCXfzQLoYnMzPwFRurawno3EnTDJcAU6U2MMU80UCjxAUBqTmbt93e4tZC5qVmPQrFM0vwaEhzvZ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxpf5Lu+BxExurIuw3KrHh+jJoCHYicpTBYGoEZiMz9XBXKWLCr
+	+M3S0L5XhtU4m6EcGMLA6XbgvoptjZQQEzwOvby28jPvvAJVh4aKrMUz
+X-Gm-Gg: ASbGncs/N90gZw+/mAnb64OG5ww9zS3AcjuqS5NKozTYodyJNrpHeqx4GwNlPRncH+T
+	15E4vTIQPI297MU8UhurqrI0tkaj4UxKOg4skIzo4Wfn0S+1Pri6Bf7S/kvfrzt2tdMbXWNkpIU
+	3rvMz2rVoqkUd22gCZrDhpgz5dDzdNYkvwqWZ1OAFl4gt8OAk7nsF7U0/Nn+oG6MeCd2SKFVPOM
+	N6XIHBLuch2YkQo+lR0vKy9X84QEOru68AfF9SC9XROMxv85xs41Qd8JVdNp3eTxyTC6Dd0ft84
+	czZKo0S5N54Tr3QuNKMcrjcLV/R5W/65cq3qAMjK9rsoJ+TMd8WIaJZGChBpWBGFeAwXe/5sFYR
+	RRLUXSu4etYF6OzFJkAWaD4XAcPR4kmiy9zfJTq910I4Nw76xWamRgye/Eb1f26Q2w+QDn4mbX8
+	A=
+X-Google-Smtp-Source: AGHT+IEzv/FPUGCpExirpUho/BpLTrXMgQkYiLbvu9R83JslzbyWIGXNQAL/kP5P3cKnFdGy05kWAQ==
+X-Received: by 2002:a05:600c:3582:b0:441:d244:1463 with SMTP id 5b1f17b1804b1-4533c9c72a2mr32825155e9.0.1750082747657;
+        Mon, 16 Jun 2025 07:05:47 -0700 (PDT)
+Received: from thomas-precision3591.home (2a01cb00014ec30066fa15afc047b98a.ipv6.abo.wanadoo.fr. [2a01:cb00:14e:c300:66fa:15af:c047:b98a])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4532e24420csm144457775e9.20.2025.06.16.07.05.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Jun 2025 06:59:05 -0700 (PDT)
-Date: Mon, 16 Jun 2025 15:59:01 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Xuewei Niu <niuxuewei97@gmail.com>
-Cc: mst@redhat.com, pabeni@redhat.com, jasowang@redhat.com, 
-	xuanzhuo@linux.alibaba.com, davem@davemloft.net, netdev@vger.kernel.org, stefanha@redhat.com, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	fupan.lfp@antgroup.com, Xuewei Niu <niuxuewei.nxw@antgroup.com>
-Subject: Re: [PATCH net-next v2 3/3] test/vsock: Add ioctl SIOCINQ tests
-Message-ID: <2oxz7toygswngn7kfmsrbmpikk5qggwbvk3oxb5ucrbq3pcfff@azc54m4hwlfb>
-References: <20250613031152.1076725-1-niuxuewei.nxw@antgroup.com>
- <20250613031152.1076725-4-niuxuewei.nxw@antgroup.com>
+        Mon, 16 Jun 2025 07:05:47 -0700 (PDT)
+From: Thomas Fourier <fourier.thomas@gmail.com>
+To: 
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	Chris Snook <chris.snook@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jeff Garzik <jeff@garzik.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] ethernet: alt1: Fix missing DMA mapping tests
+Date: Mon, 16 Jun 2025 15:59:55 +0200
+Message-ID: <20250616140246.612740-2-fourier.thomas@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250613074356.210332b1@kernel.org>
+References: <20250613074356.210332b1@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250613031152.1076725-4-niuxuewei.nxw@antgroup.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 13, 2025 at 11:11:52AM +0800, Xuewei Niu wrote:
->This patch adds SIOCINQ ioctl tests for both SOCK_STREAM and
->SOCK_SEQPACKET.
->
->The client waits for the server to send data, and checks if the SIOCINQ
->ioctl value matches the data size. After consuming the data, the client
->checks if the SIOCINQ value is 0.
->
->Signed-off-by: Xuewei Niu <niuxuewei.nxw@antgroup.com>
->---
-> tools/testing/vsock/util.c       | 36 ++++++++++----
-> tools/testing/vsock/util.h       |  2 +
-> tools/testing/vsock/vsock_test.c | 83 +++++++++++++++++++++++++++++++-
-> 3 files changed, 111 insertions(+), 10 deletions(-)
->
->diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
->index 0c7e9cbcbc85..472246198966 100644
->--- a/tools/testing/vsock/util.c
->+++ b/tools/testing/vsock/util.c
->@@ -97,28 +97,46 @@ void vsock_wait_remote_close(int fd)
-> 	close(epollfd);
-> }
->
->-/* Wait until transport reports no data left to be sent.
->- * Return false if transport does not implement the unsent_bytes() callback.
->+/* Wait until ioctl gives an expected int value.
->+ * Return a negative value if the op is not supported.
->  */
->-bool vsock_wait_sent(int fd)
->+int ioctl_int(int fd, unsigned long op, int *actual, int expected)
-> {
->-	int ret, sock_bytes_unsent;
->+	int ret;
->+	char name[32];
->+
->+	if (!actual) {
->+		fprintf(stderr, "%s requires a non-null pointer\n", __func__);
->+		exit(EXIT_FAILURE);
->+	}
->+
->+	snprintf(name, sizeof(name), "ioctl(%lu)", op);
->
-> 	timeout_begin(TIMEOUT);
-> 	do {
->-		ret = ioctl(fd, SIOCOUTQ, &sock_bytes_unsent);
->+		ret = ioctl(fd, op, actual);
-> 		if (ret < 0) {
-> 			if (errno == EOPNOTSUPP)
-> 				break;
->
->-			perror("ioctl(SIOCOUTQ)");
->+			perror(name);
-> 			exit(EXIT_FAILURE);
-> 		}
->-		timeout_check("SIOCOUTQ");
->-	} while (sock_bytes_unsent != 0);
->+		timeout_check(name);
->+	} while (*actual != expected);
-> 	timeout_end();
->
->-	return !ret;
->+	return ret;
->+}
->+
->+/* Wait until transport reports no data left to be sent.
->+ * Return false if transport does not implement the unsent_bytes() callback.
->+ */
->+bool vsock_wait_sent(int fd)
->+{
->+	int sock_bytes_unsent;
->+
->+	return !(ioctl_int(fd, SIOCOUTQ, &sock_bytes_unsent, 0));
-> }
+According to Shuah Khan[1], all `dma_map()` functions should be tested
+before using the pointer.  This patch checks for errors after all
+`dma_map()` calls.
 
-Please split this patch in 2, one where you do the refactoring in 
-util.c/h and one for the new test.
+In `atl1_alloc_rx_buffers()`, when the dma mapping fails,
+the buffer is deallocated ans marked as such.
 
->
-> /* Create socket <type>, bind to <cid, port> and return the file descriptor. */
->diff --git a/tools/testing/vsock/util.h b/tools/testing/vsock/util.h
->index 5e2db67072d5..945c85ff8d22 100644
->--- a/tools/testing/vsock/util.h
->+++ b/tools/testing/vsock/util.h
->@@ -3,6 +3,7 @@
-> #define UTIL_H
->
-> #include <sys/socket.h>
->+#include <sys/ioctl.h>
+In `atl1_tx_map()`, the previously dma_mapped buffers are de-mapped and an
+error is returned.
 
-Why we need this in util.h?
+[1] https://events.static.linuxfound.org/sites/events/files/slides/Shuah_Khan_dma_map_error.pdf
 
-> #include <linux/vm_sockets.h>
->
-> /* Tests can either run as the client or the server */
->@@ -54,6 +55,7 @@ int vsock_stream_listen(unsigned int cid, unsigned int port);
-> int vsock_seqpacket_accept(unsigned int cid, unsigned int port,
-> 			   struct sockaddr_vm *clientaddrp);
-> void vsock_wait_remote_close(int fd);
->+int ioctl_int(int fd, unsigned long op, int *actual, int expected);
-> bool vsock_wait_sent(int fd);
-> void send_buf(int fd, const void *buf, size_t len, int flags,
-> 	      ssize_t expected_ret);
->diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
->index f669baaa0dca..43996447f9a2 100644
->--- a/tools/testing/vsock/vsock_test.c
->+++ b/tools/testing/vsock/vsock_test.c
->@@ -20,7 +20,6 @@
-> #include <sys/mman.h>
-> #include <poll.h>
-> #include <signal.h>
->-#include <sys/ioctl.h>
-> #include <linux/time64.h>
->
-> #include "vsock_test_zerocopy.h"
->@@ -1305,6 +1304,58 @@ static void test_unsent_bytes_client(const struct test_opts *opts, int type)
-> 	close(fd);
-> }
->
->+static void test_unread_bytes_server(const struct test_opts *opts, int type)
->+{
->+	unsigned char buf[MSG_BUF_IOCTL_LEN];
->+	int client_fd;
->+
->+	client_fd = vsock_accept(VMADDR_CID_ANY, opts->peer_port, NULL, type);
->+	if (client_fd < 0) {
->+		perror("accept");
->+		exit(EXIT_FAILURE);
->+	}
->+
->+	for (int i = 0; i < sizeof(buf); i++)
->+		buf[i] = rand() & 0xFF;
->+
->+	send_buf(client_fd, buf, sizeof(buf), 0, sizeof(buf));
->+	control_writeln("SENT");
->+	control_expectln("RECEIVED");
->+
->+	close(client_fd);
->+}
->+
->+static void test_unread_bytes_client(const struct test_opts *opts, int type)
->+{
->+	unsigned char buf[MSG_BUF_IOCTL_LEN];
->+	int ret, fd;
->+	int sock_bytes_unread;
->+
->+	fd = vsock_connect(opts->peer_cid, opts->peer_port, type);
->+	if (fd < 0) {
->+		perror("connect");
->+		exit(EXIT_FAILURE);
->+	}
->+
->+	control_expectln("SENT");
->+	/* The data has arrived but has not been read. The expected is
->+	 * MSG_BUF_IOCTL_LEN.
->+	 */
->+	ret = ioctl_int(fd, TIOCINQ, &sock_bytes_unread, MSG_BUF_IOCTL_LEN);
->+	if (ret) {
->+		fprintf(stderr, "Test skipped, TIOCINQ not supported.\n");
->+		goto out;
->+	}
->+
->+	recv_buf(fd, buf, sizeof(buf), 0, sizeof(buf));
->+	// All date has been consumed, so the expected is 0.
->+	ioctl_int(fd, TIOCINQ, &sock_bytes_unread, 0);
->+	control_writeln("RECEIVED");
->+
->+out:
->+	close(fd);
->+}
->+
-> static void test_stream_unsent_bytes_client(const struct test_opts *opts)
-> {
-> 	test_unsent_bytes_client(opts, SOCK_STREAM);
->@@ -1325,6 +1376,26 @@ static void test_seqpacket_unsent_bytes_server(const struct test_opts *opts)
-> 	test_unsent_bytes_server(opts, SOCK_SEQPACKET);
-> }
->
->+static void test_stream_unread_bytes_client(const struct test_opts *opts)
->+{
->+	test_unread_bytes_client(opts, SOCK_STREAM);
->+}
->+
->+static void test_stream_unread_bytes_server(const struct test_opts *opts)
->+{
->+	test_unread_bytes_server(opts, SOCK_STREAM);
->+}
->+
->+static void test_seqpacket_unread_bytes_client(const struct test_opts *opts)
->+{
->+	test_unread_bytes_client(opts, SOCK_SEQPACKET);
->+}
->+
->+static void test_seqpacket_unread_bytes_server(const struct test_opts *opts)
->+{
->+	test_unread_bytes_server(opts, SOCK_SEQPACKET);
->+}
->+
-> #define RCVLOWAT_CREDIT_UPD_BUF_SIZE	(1024 * 128)
-> /* This define is the same as in 'include/linux/virtio_vsock.h':
->  * it is used to decide when to send credit update message during
->@@ -2016,6 +2087,16 @@ static struct test_case test_cases[] = {
-> 		.run_client = test_seqpacket_unsent_bytes_client,
-> 		.run_server = test_seqpacket_unsent_bytes_server,
-> 	},
->+	{
->+		.name = "SOCK_STREAM ioctl(SIOCINQ) functionality",
->+		.run_client = test_stream_unread_bytes_client,
->+		.run_server = test_stream_unread_bytes_server,
->+	},
->+	{
->+		.name = "SOCK_SEQPACKET ioctl(SIOCINQ) functionality",
->+		.run_client = test_seqpacket_unread_bytes_client,
->+		.run_server = test_seqpacket_unread_bytes_server,
->+	},
+Fixes: f3cc28c79760 ("Add Attansic L1 ethernet driver.")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+---
+ drivers/net/ethernet/atheros/atlx/atl1.c | 43 ++++++++++++++++++++++--
+ 1 file changed, 40 insertions(+), 3 deletions(-)
 
-I think I already mentioned in the previous version: please add new 
-tests at the end of the array, so we can preserve test IDs.
-
-Thanks,
-Stefano
-
-> 	{
-> 		.name = "SOCK_STREAM leak accept queue",
-> 		.run_client = test_stream_leak_acceptq_client,
->-- 
->2.34.1
->
+diff --git a/drivers/net/ethernet/atheros/atlx/atl1.c b/drivers/net/ethernet/atheros/atlx/atl1.c
+index cfdb546a09e7..dd0e01d3a023 100644
+--- a/drivers/net/ethernet/atheros/atlx/atl1.c
++++ b/drivers/net/ethernet/atheros/atlx/atl1.c
+@@ -1869,6 +1869,14 @@ static u16 atl1_alloc_rx_buffers(struct atl1_adapter *adapter)
+ 		buffer_info->dma = dma_map_page(&pdev->dev, page, offset,
+ 						adapter->rx_buffer_len,
+ 						DMA_FROM_DEVICE);
++		if (dma_mapping_error(&pdev->dev, buffer_info->dma)) {
++			buffer_info->alloced = 0;
++			buffer_info->skb = NULL;
++			buffer_info->dma = 0;
++			kfree_skb(skb);
++			adapter->soft_stats.rx_dropped++;
++			break;
++		}
+ 		rfd_desc->buffer_addr = cpu_to_le64(buffer_info->dma);
+ 		rfd_desc->buf_len = cpu_to_le16(adapter->rx_buffer_len);
+ 		rfd_desc->coalese = 0;
+@@ -2183,8 +2191,8 @@ static int atl1_tx_csum(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 	return 0;
+ }
+ 
+-static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+-	struct tx_packet_desc *ptpd)
++static int atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
++		       struct tx_packet_desc *ptpd)
+ {
+ 	struct atl1_tpd_ring *tpd_ring = &adapter->tpd_ring;
+ 	struct atl1_buffer *buffer_info;
+@@ -2194,6 +2202,7 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 	unsigned int nr_frags;
+ 	unsigned int f;
+ 	int retval;
++	u16 first_mapped;
+ 	u16 next_to_use;
+ 	u16 data_len;
+ 	u8 hdr_len;
+@@ -2201,6 +2210,7 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 	buf_len -= skb->data_len;
+ 	nr_frags = skb_shinfo(skb)->nr_frags;
+ 	next_to_use = atomic_read(&tpd_ring->next_to_use);
++	first_mapped = next_to_use;
+ 	buffer_info = &tpd_ring->buffer_info[next_to_use];
+ 	BUG_ON(buffer_info->skb);
+ 	/* put skb in last TPD */
+@@ -2216,6 +2226,8 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 		buffer_info->dma = dma_map_page(&adapter->pdev->dev, page,
+ 						offset, hdr_len,
+ 						DMA_TO_DEVICE);
++		if (dma_mapping_error(&adapter->pdev->dev, buffer_info->dma))
++			goto dma_err;
+ 
+ 		if (++next_to_use == tpd_ring->count)
+ 			next_to_use = 0;
+@@ -2242,6 +2254,9 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 								page, offset,
+ 								buffer_info->length,
+ 								DMA_TO_DEVICE);
++				if (dma_mapping_error(&adapter->pdev->dev,
++						      buffer_info->dma))
++					goto dma_err;
+ 				if (++next_to_use == tpd_ring->count)
+ 					next_to_use = 0;
+ 			}
+@@ -2254,6 +2269,8 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 		buffer_info->dma = dma_map_page(&adapter->pdev->dev, page,
+ 						offset, buf_len,
+ 						DMA_TO_DEVICE);
++		if (dma_mapping_error(&adapter->pdev->dev, buffer_info->dma))
++			goto dma_err;
+ 		if (++next_to_use == tpd_ring->count)
+ 			next_to_use = 0;
+ 	}
+@@ -2277,6 +2294,9 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 			buffer_info->dma = skb_frag_dma_map(&adapter->pdev->dev,
+ 				frag, i * ATL1_MAX_TX_BUF_LEN,
+ 				buffer_info->length, DMA_TO_DEVICE);
++			if (dma_mapping_error(&adapter->pdev->dev,
++					      buffer_info->dma))
++				goto dma_err;
+ 
+ 			if (++next_to_use == tpd_ring->count)
+ 				next_to_use = 0;
+@@ -2285,6 +2305,22 @@ static void atl1_tx_map(struct atl1_adapter *adapter, struct sk_buff *skb,
+ 
+ 	/* last tpd's buffer-info */
+ 	buffer_info->skb = skb;
++
++	return 0;
++
++ dma_err:
++	while (first_mapped != next_to_use) {
++		buffer_info = &tpd_ring->buffer_info[first_mapped];
++		dma_unmap_page(&adapter->pdev->dev,
++			       buffer_info->dma,
++			       buffer_info->length,
++			       DMA_TO_DEVICE);
++		buffer_info->dma = 0;
++
++		if (++first_mapped == tpd_ring->count)
++			first_mapped = 0;
++	}
++	return -ENOMEM;
+ }
+ 
+ static void atl1_tx_queue(struct atl1_adapter *adapter, u16 count,
+@@ -2419,7 +2455,8 @@ static netdev_tx_t atl1_xmit_frame(struct sk_buff *skb,
+ 		}
+ 	}
+ 
+-	atl1_tx_map(adapter, skb, ptpd);
++	if (atl1_tx_map(adapter, skb, ptpd))
++		return NETDEV_TX_BUSY;
+ 	atl1_tx_queue(adapter, count, ptpd);
+ 	atl1_update_mailbox(adapter);
+ 	return NETDEV_TX_OK;
+-- 
+2.43.0
 
