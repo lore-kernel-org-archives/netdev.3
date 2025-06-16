@@ -1,71 +1,129 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A4B2163B2
-	for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 23:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA932163B2
+	for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 23:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750116861; cv=none; b=icMfdG0d2vKCORbbxNigzGmj78KQeyuA6r/zEH+WHeEP55nFOm73nWLVprvdhIRdU4qXgxusf3M2JxQ01KEOQZfPWK/MQe62i9Yia6NEHupEAmrpX5l+/z2ELAaZCrD381gKmo6HD3loB+r2mv+o3SA2dLCbEZRSgEz8UWeoK8Q=
+	t=1750116881; cv=none; b=U/IBgtVZWqZq6Yzlvhf/UDJukRJejoBjP4LmPL0buss9S5d6KYM+5sA2fZKCTbVPlIsHe3VYaLt3/fIJuldmnUl6A0rt5ooxFPM1jyad5oHscLhhA0YfaBYWzWNp6Yy/+mmktCYrmuqIrT9NXeZZWDdRlu2eYy379TZ+wsxfBDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750116861; c=relaxed/simple;
-	bh=G2jNNENMvxxxt979xS958u5QrXauhEJJM5kjaBw6DJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dbs+WbqQSZJv9wDsdJTJHH6NQ4lb/Wl9JCklK4LFS3+wXNI5DPTT2n9vmGAoCdhhhJ09TUXtub2oQTBNncQQh+tqZAVLzNGI93aOE2N2yaxQzwilLz8y8cwgnRTftkfIR/bl7HpwZph8V9cA4Dcu8z+UwKq0S4M1sHpS8/obI1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4K/Qv6b1; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1750116881; c=relaxed/simple;
+	bh=PGKrvzXdBGv41uM6xQnaoQPoElTpPRhY02l1Rum5oTA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fo7xFUWscbdnV60Of6+SZuPEAtjn/du/9CdMsFabroMsaM8RL4Anys2DVDJmZEFQfaDG7VXCRtzOMqMgOfb6t+v/tCk7j5RY/X/Gp2mr/ST4TteXx1ayZS96UtuDIKK1ozmyYgcRpABt21cpVFuQPWVly0cY6SjyCMp0STTL55Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=InKxTY85; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4K/Qv6b1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=BePOfiT7npLQIY5e20eiRynStUObeSDrh0xh71pFI4w=; b=4K/Qv6b1b3GEbTeV2sQRtrnU2V
-	eEsya342v4+qD6FVDHNiwm0z4u8w3j8k5VDSO4wK4gTr7WJDqas1z9HDgeeM21RJS3BrKJTbs9xzw
-	CZevoSDzGj6ja+r01OJXsEu3vU82AI+5/2sZZQLnMfQfzyB2rxS18K+hqnGrRsyT0IeY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uRJL6-00G6SN-VL; Tue, 17 Jun 2025 01:34:08 +0200
-Date: Tue, 17 Jun 2025 01:34:08 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="InKxTY85"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-234d366e5f2so65780065ad.1
+        for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 16:34:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750116878; x=1750721678; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wMC20MQPqA66JaNhPIxwLAaQFam8GRiJ4CG1MfEhrsQ=;
+        b=InKxTY85QebgiqeerltSRrWSsAarPs+YYqyKFc5Cq7j1E95c/lf5R2y12gUDlFOg1n
+         7DF+O21t7v+qx/VdPApQqM2q8JXR9D55qq3FKcOgTsewHAEdymnu2QCfgIhJmUx2YseE
+         A2P07qN4tmWGdGkV5TRexcCdBtLW/uS4j8gZrOzS+79Kx3qoF0VkyDs1+Zo2rqiMmJUd
+         mFtG14Cfvt3cyjv/HprsXRdKnxTLThQGAMSGJoUrCEnzk3RnFOjd9XoM8BDdRAsR+vd7
+         dMZ3FCms3K+jjUo9Amb0nCY9P2tWJKUgJuU0vNKfVGheSPojaSI5k0QGeEy7mFf7EFzS
+         P8Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750116878; x=1750721678;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wMC20MQPqA66JaNhPIxwLAaQFam8GRiJ4CG1MfEhrsQ=;
+        b=d1AaYSoDqpHk1e/6uk2/FBs/tjTphT5weu5uiOPRxXXFwMWOC2aXw+gExzTx2Cw5vF
+         O76Ep0TmcbIKoIdkkf832fPKSYHkldZiD2gcUZ7XTqp/SYrpp7FvAbaKMNdu7Pfm0cE2
+         sCjMA0XL/lWXpWMQ8hJF9TfdlWwv+VEO4S3zXq3kWvXwwz8wEY8QK09q1BAhxlKQfd0M
+         eygFxGNUX3O7VVQGSTOyQtVMp6BMQjM+NyyKg74pB7j0eq97f/II34mcQW/74r+SEkH7
+         FHyqE/12FFnpRiUmOf0ZsVvsESldgMpoQppDomCdsvF2bjSySi35B7AzrhKrwwlJjkjZ
+         IiBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUyX9LghE0T72b4nhaUJxpAlBHNdDnASdBxCQVExxQQgej5anayXIaXGR9ZdfpK51qUighbmrY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjlguEb8GLCIDo2N+cKp/aRB7bzIqBxa8j3fNZA+zZshZiAOwb
+	QvuMMHCj4Iw/GDqyxYnn9FmKSI8dsjRXj0Cuyziyl50cbytltgbuq0U=
+X-Gm-Gg: ASbGncuP1MwxpSNVCTUBIOZHrzg1KMBMd0YbSlZgigRZ9paMnoLQBdDCThWpWP4vuLP
+	jsBwmO6wWmbreFCaYqOIzvIh7+2ou8H5Ghu5bjUu8auH9hLFlF2pRvD6P4wU9D8DJq0Xj7rP/ik
+	vRmvQZv78q02akbxBRC8vTr8WZzxLxnHrJIpcToaAXKLgCuMh/R/wK0qrdWR/QPHau6tk+lz+bU
+	jhhxczdp16D/49dz9Zh2ERyf7Aknq/oYxOWquCHV8fG4JjaVdsTzBjY670CjrRALF2vN+/8YSPr
+	2XXUHOQlGR6V03+mZ8hSFpwUuV+U9mqVlkTA92s=
+X-Google-Smtp-Source: AGHT+IH6H1rk3QcwfgrXN8SlmejMWKyq+dylOuzEbCbCIHblBptxhPnKHr91x8BDL7WH+IqjxkNsnw==
+X-Received: by 2002:a17:903:124a:b0:235:f3e6:467f with SMTP id d9443c01a7336-2366b3138e6mr174155565ad.2.1750116877774;
+        Mon, 16 Jun 2025 16:34:37 -0700 (PDT)
+Received: from fedora.. ([2601:647:6700:3390::c8d1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2365de89393sm67220485ad.114.2025.06.16.16.34.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Jun 2025 16:34:37 -0700 (PDT)
+From: Kuniyuki Iwashima <kuni1840@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 2/4] net: stmmac: visconti: reorganise
- visconti_eth_set_clk_tx_rate()
-Message-ID: <48941356-d75a-4fca-88c9-c5925d79a993@lunn.ch>
-References: <aFCHJWXSLbUoogi6@shell.armlinux.org.uk>
- <E1uRH26-004UyM-9G@rmk-PC.armlinux.org.uk>
+Cc: Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH v1 net-next 00/15] ipv6: Drop RTNL from mcast.c and anycast.c
+Date: Mon, 16 Jun 2025 16:28:29 -0700
+Message-ID: <20250616233417.1153427-1-kuni1840@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1uRH26-004UyM-9G@rmk-PC.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 16, 2025 at 10:06:22PM +0100, Russell King (Oracle) wrote:
-> Rather than testing dwmac->phy_intf_sel several times for the same
-> values in this function, group the code together. The only part
-> which was common was stopping the internal clock before programming
-> the clock setting.
-> 
-> This further improves the readability of this function.
-> 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+This is a prep series for RCU conversion of RTM_NEWNEIGH, which needs
+RTNL during neigh_table.{pconstructor,pdestructor}() touching IPv6
+multicast code.
 
-    Andrew
+Currently, IPv6 multicast code is protected by lock_sock() and
+inet6_dev->mc_lock, and RTNL is not actually needed.
+
+In addition, anycast code is also in the same situation and does not
+need RTNL at all.
+
+This series removes RTNL from net/ipv6/{mcast.c,anycast.c} and finally
+removes setsockopt_needs_rtnl() from do_ipv6_setsockopt().
+
+
+Kuniyuki Iwashima (15):
+  ipv6: ndisc: Remove __in6_dev_get() in
+    pndisc_{constructor,destructor}().
+  ipv6: mcast: Replace locking comments with lockdep annotations.
+  ipv6: mcast: Check inet6_dev->dead under idev->mc_lock in
+    __ipv6_dev_mc_inc().
+  ipv6: mcast: Remove mca_get().
+  ipv6: mcast: Use in6_dev_get() in ipv6_dev_mc_dec().
+  ipv6: mcast: Don't hold RTNL for IPV6_ADD_MEMBERSHIP and
+    MCAST_JOIN_GROUP.
+  ipv6: mcast: Don't hold RTNL for IPV6_DROP_MEMBERSHIP and
+    MCAST_LEAVE_GROUP.
+  ipv6: mcast: Don't hold RTNL in ipv6_sock_mc_close().
+  ipv6: mcast: Don't hold RTNL for MCAST_ socket options.
+  ipv6: Remove unnecessary ASSERT_RTNL and comment.
+  ipv6: anycast: Don't use rtnl_dereference().
+  ipv6: anycast: Don't hold RTNL for IPV6_LEAVE_ANYCAST and
+    IPV6_ADDRFORM.
+  ipv6: anycast: Unify two error paths in ipv6_sock_ac_join().
+  ipv6: anycast: Don't hold RTNL for IPV6_JOIN_ANYCAST.
+  ipv6: Remove setsockopt_needs_rtnl().
+
+ include/linux/netdevice.h |   4 +-
+ net/core/dev.c            |  30 ++--
+ net/ipv6/addrconf.c       |  12 +-
+ net/ipv6/anycast.c        |  92 ++++++-----
+ net/ipv6/ipv6_sockglue.c  |  28 +---
+ net/ipv6/mcast.c          | 321 +++++++++++++++++++-------------------
+ net/ipv6/ndisc.c          |  10 +-
+ 7 files changed, 242 insertions(+), 255 deletions(-)
+
+-- 
+2.49.0
+
