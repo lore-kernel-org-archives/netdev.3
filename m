@@ -1,177 +1,192 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2064.outbound.protection.outlook.com [40.107.93.64])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0412DBF4C
-	for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 13:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750080387; cv=fail; b=iq7T7TG5iknbPpsi/TCRash1XHdLzldlC1bbO5Dx3Fi5XO/t4iFiEmT78XkUUWkPC/P7X8ZzDU5b+/ncGN2bkIyD2NfjZihkJJYFCJdcyBBfHyOq6Em4aPyN4GqnycH7IlSDJTfNSHpXffW27ilpIZSu4V+qwbmdp1sxxV6crSY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750080387; c=relaxed/simple;
-	bh=REGfHG84ZFMtJJae8eePuBsAxdNKUueEH9yGY5Kt2ks=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K0RrHP0WNKrkhbF+d0/CJ/ciS5tqTFVy3Rp8IB8ICk+uXPrLvoAQGmRTnIDpZP340Z5auCEAp7hqjt0j8ZQ184inCtrCuD+w4VLnVmIIvOkRH6HjxrhOOgmhAnRE0bC2POVdXLbaeu0+XGzW5Z+O4vyqswyDXPJRY/fd2//Dn+0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UKQqQVv5; arc=fail smtp.client-ip=40.107.93.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7BE2877F9;
+	Mon, 16 Jun 2025 13:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750080392; cv=none; b=kd7ygGz32Ll3mJiqz+I8wUlN4a2s/I/mWORGk9OCsk+kUqaZzZkcYwzrhbLUaqlAzaC31qVdKGjee5NmXfwOIMwjxM6liZSTEAXfv9ZEG2osPL+fTHf8cT1B7QNaNXleO5HLfNg1kDTuL5qmp6N7hAFVQ2bPhYFcI12XWc05a7I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750080392; c=relaxed/simple;
+	bh=W1ULqCjf8lfOUmBr3Wu+Ci3avbmtCxJZhQsdCwBauN4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Gvz/PWtjdoR1jjeR5ge6994fjisyqYF0LDvLtvRzgeyjM+yX4fSJKldhDnpZ4Kqg8buJ+X6xaxluOU9PFxuss+NvPXL6m+tEOrQlI3G8bospdFQlWUosAk2vD7Z46n5eJ69Jk5E26zH/U0ATWsnZG/WLtuQ6Qj/OxjGUDLAdBf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WoKnGQcE; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UKQqQVv5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OZlXdUZBzJOlxwI1uZJ4k38xOoWntAljmxLd0Ym/qchxnoAM1SkFP2ADd3PWJyiRNRD1epBK9IPQUypQfovWCU21YsjO63wD9Tow7W/kyyBHG4rQaPd0qg8eEN65rUwhUJZEvHXZXW5nzLBGbfMAaCQAUV15glk+WanpNQqgft6G1mEQwdvrWLbWkhF47qAcq81Pjd9mQnZ/MpD4nRSCR+qIuIZ+2luxry+UyOSjCGqVLKslSO0L0B1O6ZMtQWp0VelNjJ1uhjZqzchW6G3x9TrMpogD3qDBsCLZmiQvJkS9UE4ThtI2NFcHu1vQoajCkIWhWXeSzcF7OuYuxVGLFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=McGPAmtypePj0Qx3RdBo37zNbnoLbT4GqVDmn7DCCDw=;
- b=l3uO5PY2kQwdXUDFWO4egqUu5z8hELXvtv0/Bq0jkzAHulOv/G8NAwJoBHoz5eT3gS0MBYE3k2sdrBGTp9KT/WXvo5txStRYxN9faG7b86SsRm+8IyK1pqw/BlkCxxcwP/aH5/cVd1Agh9giPeRdJQUI0BXI16NDnqPqcbcfARM/XAOYrFtoAL/Qq7wpr9psxUg/B2frCoDdaQtbQFRqDtIy0WMJUpEUESYob5tWjBea8aBy/UNi5Txxvr2QQNlPokhxS2LapC/XJ6WwTQugVUkdUduejLIH3paEaTNhq7eUvV7qWeko/1hMskm4TsClVEoV+UJfEgo4UyWSdgvkPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=McGPAmtypePj0Qx3RdBo37zNbnoLbT4GqVDmn7DCCDw=;
- b=UKQqQVv5U8Pa4gWt+5PnHrAxMYHNvcsyeRMXi/zh68YeCGFrrjVIEmuBsY66Fw5XwBqRpIdswSZFU+Qt1buR9vAUNK8tLm/72J0veFAug27fFbANnLFiDQPDF3gq8BuXWJojVWQ4qrdheCYLnNqiuxEhKrLwDd7brwNQvvb+eVuEe3U93RkHqLbPei8/W/RSQW7T+sKXv4oGxtBPcuP//rjaKdvaDckBbupdJCXcqcRTNzvoT0kAat4kiJOeN2eP0FTBV6fm5bq4I/X20QcinzGRYtV7K4v5KuExwG+7Z6a/FOFXXYKUTAJaTV4tVQiT32EKFl+IiC6++EvVii+/UQ==
-Received: from BN9PR03CA0206.namprd03.prod.outlook.com (2603:10b6:408:f9::31)
- by CH3PR12MB9316.namprd12.prod.outlook.com (2603:10b6:610:1ce::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.28; Mon, 16 Jun
- 2025 13:26:22 +0000
-Received: from BL6PEPF00022573.namprd02.prod.outlook.com
- (2603:10b6:408:f9:cafe::e7) by BN9PR03CA0206.outlook.office365.com
- (2603:10b6:408:f9::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8792.35 via Frontend Transport; Mon,
- 16 Jun 2025 13:26:22 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BL6PEPF00022573.mail.protection.outlook.com (10.167.249.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8835.15 via Frontend Transport; Mon, 16 Jun 2025 13:26:21 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 16 Jun
- 2025 06:26:07 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 16 Jun
- 2025 06:26:06 -0700
-Received: from vdi.nvidia.com (10.127.8.12) by mail.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server id 15.2.1544.14 via Frontend Transport; Mon, 16
- Jun 2025 06:26:04 -0700
-From: Gal Pressman <gal@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	<netdev@vger.kernel.org>
-CC: Gal Pressman <gal@nvidia.com>, Alex Lazar <alazar@nvidia.com>, "Dragos
- Tatulea" <dtatulea@nvidia.com>
-Subject: [PATCH net-next v2 3/3] net: vlan: Use IS_ENABLED() helper for CONFIG_VLAN_8021Q guard
-Date: Mon, 16 Jun 2025 16:26:26 +0300
-Message-ID: <20250616132626.1749331-4-gal@nvidia.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20250616132626.1749331-1-gal@nvidia.com>
-References: <20250616132626.1749331-1-gal@nvidia.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WoKnGQcE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750080390; x=1781616390;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=W1ULqCjf8lfOUmBr3Wu+Ci3avbmtCxJZhQsdCwBauN4=;
+  b=WoKnGQcEmOCoeRDyW7m6RUcmIFk/LMv99Q2N6WTGyT4wMS1UhG/TAmfq
+   98UZYXGZh/G3UBjIJc6hmuGHK+y/BtuD+GJHuxFQ/2i0Gzt3Wb0ClrzUP
+   E18x8C6NoGmi1QrWvWUKsN/K8C0nIaUxmRJeHmor34U+7j0sJ6ewpiBxT
+   Vx0Wi0D0Mmqnp1BuP+YQVp80ymlp0goHIsQ5G38KeosKy5g+qNejC9hQE
+   qafOWZ0CpIuHfnjBn16bBXXkAVAeuC9ix+RcX5vrnQampIxDnhnMrwPnk
+   r0aDfiL/A6IqvJgZfJSR1ZDSYPInGQVTBiA7FD3WPUx36U6q5G3hUm0lk
+   A==;
+X-CSE-ConnectionGUID: l92DMQDAQXK842n4QgPt+w==
+X-CSE-MsgGUID: uQJ+HUUlRVenVVfzFtJIiw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="63255614"
+X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; 
+   d="scan'208";a="63255614"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2025 06:26:29 -0700
+X-CSE-ConnectionGUID: sUy1hWcBTaOgchksDDuQnw==
+X-CSE-MsgGUID: y/Hym029QOuoVBlZiI68jA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; 
+   d="scan'208";a="153426298"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.92])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2025 06:26:10 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>, Robin Murphy
+ <robin.murphy@arm.com>, Yury Norov <yury.norov@gmail.com>, Jakub Kicinski
+ <kuba@kernel.org>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>, Jaehoon Chung
+ <jh80.chung@samsung.com>, Ulf Hansson <ulf.hansson@linaro.org>, Heiko
+ Stuebner <heiko@sntech.de>, Shreeya Patel <shreeya.patel@collabora.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Sandy Huang
+ <hjc@rock-chips.com>, Andy Yan <andy.yan@rock-chips.com>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Vinod Koul
+ <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, Nicolas
+ Frattaroli <frattaroli.nicolas@gmail.com>, Liam Girdwood
+ <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Jaroslav Kysela
+ <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Shawn Lin <shawn.lin@rock-chips.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy?=
+ =?utf-8?Q?=C5=84ski?=
+ <kwilczynski@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, Rob
+ Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Chanwoo
+ Choi <cw00.choi@samsung.com>, MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>, Qin Jian <qinjian@cqplus1.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nick
+ Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ linux-pm@vger.kernel.org, netdev@vger.kernel.org, llvm@lists.linux.dev,
+ linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-clk@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-sound@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-phy@lists.infradead.org,
+ kernel@collabora.com, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org
+Subject: Re: [PATCH 01/20] bitfield: introduce HWORD_UPDATE bitfield macros
+In-Reply-To: <3361713.44csPzL39Z@workhorse>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250612-byeword-update-v1-0-f4afb8f6313f@collabora.com>
+ <1437fe89-341b-4b57-b1fa-a0395081e941@arm.com> <aEw7LBpmkfOqZgf1@yury>
+ <3361713.44csPzL39Z@workhorse>
+Date: Mon, 16 Jun 2025 16:26:07 +0300
+Message-ID: <35d8c6372fb38f6d7e452c2e3b5a80327f20dae6@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00022573:EE_|CH3PR12MB9316:EE_
-X-MS-Office365-Filtering-Correlation-Id: da468f8a-b77d-4431-12f0-08ddacd962b9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?aHZmMW9MRVo3VFJQcVVnSkFITkl5bXJOZWdrbVJLQi9jZjFNYWJETU5mVHZU?=
- =?utf-8?B?TlVDMVNYNklDSXJaTVZmYkYwZlVVMmVnS2t6cGhEdFByS2RPNU8xQS9zNWpt?=
- =?utf-8?B?bzd1dVdXQnVZY0E2Y0l1SHlUZ3BPei9hTEdabHNaWThGcU0wZVpHWGhjMEFQ?=
- =?utf-8?B?Mm4zUXJVbWR2YU43VDRPZXNtODVqN2NxMlVBOWY5aER2UlkvZW1RVXNIVTZa?=
- =?utf-8?B?L241U3pGcVNScVUzbVB6Vm5SUFAyUXQyekxPa0lkVDlHUXJBSTBCd2RoL1Vh?=
- =?utf-8?B?VXMwajNwc1ZCV1loMlVIMU5YNDNaVnp1VVRxRnRSOVdRcUhOdkN5T1krVi9m?=
- =?utf-8?B?d2h6R3AyMU11bVEwYUtyeTkrbk83WU1uNFFHa3NHVmcxVEVueVI3Y21MQ3Jy?=
- =?utf-8?B?d3pTUTVjT1JTdy9oY3JyRHRwNmM5VUs3T25JbVlDNUVDa1k0YTZKcEdENTdY?=
- =?utf-8?B?MktnT0gwRHp5ZUs4cy9FYUJJcFFkNXI0eDYzemVjYW1KeXZGNjZjYVNkZ0or?=
- =?utf-8?B?eU1jeUx6SnVHRjR2dkw5KzBxbDJrNFA5ZlVDN2xha3pKV0ZCTHRjYVBxRDRp?=
- =?utf-8?B?S3RTNHdlaU1sd0xlVldISHlaNzJodWVRaVlMZmd4T3BlYUJrQmk2TVgxYmxh?=
- =?utf-8?B?T1hMOGkxRldNRmcwaG45cklGSGtvZ1hPdm0xK1VYK1FkYjU4cmc4TGlpVmpm?=
- =?utf-8?B?dEMxdDA4Vk5pKzFQTXBCUjNKM0ltMHFpN1MvRll3eU96WjVsZW03VmxPbVpO?=
- =?utf-8?B?MFhyOUxCNzBGN0hNcEFROWM0TnA2YWtEM29qc1F6eXBuOG1jcmxqY3lwd2hN?=
- =?utf-8?B?dGx3RGYrNXYyT1JJOGNFcTdWSDhzNlQ3aUp5YnowNlRSTzZHMlJNV0E4M2wx?=
- =?utf-8?B?MjdSZ0ZUNVNzTHdCN1VHaFdrY3gzVUM2OE5SMit3T1RYUTdJVTl0ekJPS0M4?=
- =?utf-8?B?U2pOUC9VYU52eDVKYUNCNmp6aW11SUlwcXZROEd4WUswTnViM08zVk8yREJ1?=
- =?utf-8?B?dDNvaFF6OGFMd3JidnhIKzhOUDdRa2t4WGpsN0NnVHQ1NFlXTnc2RUNVMzdq?=
- =?utf-8?B?ODJaOEJDYlVTUlREeHFLQmZVcmZvenF6aFZqekprNFhudkErVm1uWUlIU0Vx?=
- =?utf-8?B?M3pWUm8zUGluZzIrUWRZZkhGZ1BpM0FGSTJGSm5rRW54MW1pMGpmS3pOTlhQ?=
- =?utf-8?B?UTMvK0EyWEppZEdjK3JqNWtVSHhwR3R3WU9pdTIxODgzWVU4eWhVTXc1MHhL?=
- =?utf-8?B?bXZza29mT0Q2anhBOWpldkRXdWwvUUNJWGFCbTkyUGtaNFBwamZSM2didC9X?=
- =?utf-8?B?NThyNUhlQm8vNTRUODZZNGkrSVpZNThGRWNQakhxOG9ldHM3bWFsTjJEcS9h?=
- =?utf-8?B?NjAweTVwOVJ0VURCV2lSWmZQY3AzLzV1aFRhaUtDZExtcDFxWFgzSHBwUnpr?=
- =?utf-8?B?djJUTWhhWnJKVFdPd2tsK3VuS1A4c0xVajJxWjhoeHJyMk5XQXRVa3VaU3dk?=
- =?utf-8?B?N2EyYnV0ZXFxYUNPaFAvK3FrSjFPbEg5U2Z2Yi96d2VTWGo1QWRkL21DWTFE?=
- =?utf-8?B?UFdVM011OGVUcEpNQktuNTBlTGRTeDN1UFhOYkJTdUpVdGZiTjExTGlNNG1M?=
- =?utf-8?B?cS9KYnJXT2Z2aElzVkQ2bTBCMXF1elR4OGtNV3hIZEhNcEtRS04wMHdwS2V5?=
- =?utf-8?B?OXlwQW1hRmZJM3d1eGx2bE1oREF2bVd5SEVNaWZ4Q3M1bXN0aGNnQnhoeDZZ?=
- =?utf-8?B?WWF3MGN3VHRWcGd2RTlPcnIwaXFRWVRCb3dQVVJ6QjA4UUNkQTZETzNJVmR0?=
- =?utf-8?B?WGd1YUFlQ2Fwc0Y4VXpaalpUMWljMU1haVJ3TWlxcExCeWkzOVB1amFIMmwv?=
- =?utf-8?B?MW5SRHQ3Ly9QeG0zTXZNcHJtQ0wvUzNrMS9JWTFCbEZmUzdPVkpnR0ZsV1BT?=
- =?utf-8?B?L1hBSytFZnZEL1JkMUVUZVJBRVYyak13ekRhUzh3dTVITjl5cWRHbzBKNFlm?=
- =?utf-8?B?Z1pFNHIrZzlPRDNQZ09hREd0MHVKQlc3emVTWjhiUEVGYnFaZFRzcm9TVUJk?=
- =?utf-8?Q?UJXNia?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2025 13:26:21.8491
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: da468f8a-b77d-4431-12f0-08ddacd962b9
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00022573.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9316
+Content-Type: text/plain
 
-The header currently tests the VLAN core with an explicit pair of 'if
-defined' checks:
-    #if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
+On Mon, 16 Jun 2025, Nicolas Frattaroli <nicolas.frattaroli@collabora.com> wrote:
+> Hello,
+>
+> On Friday, 13 June 2025 16:52:28 Central European Summer Time Yury Norov wrote:
+>> On Fri, Jun 13, 2025 at 02:54:50PM +0100, Robin Murphy wrote:
+>> > On 2025-06-12 7:56 pm, Nicolas Frattaroli wrote:
+>> > > Hardware of various vendors, but very notably Rockchip, often uses
+>> > > 32-bit registers where the upper 16-bit half of the register is a
+>> > > write-enable mask for the lower half.
+>> > > 
+>> > > This type of hardware setup allows for more granular concurrent register
+>> > > write access.
+>> > > 
+>> > > Over the years, many drivers have hand-rolled their own version of this
+>> > > macro, usually without any checks, often called something like
+>> > > HIWORD_UPDATE or FIELD_PREP_HIWORD, commonly with slightly different
+>> > > semantics between them.
+>> > > 
+>> > > Clearly there is a demand for such a macro, and thus the demand should
+>> > > be satisfied in a common header file.
+>> > > 
+>> > > Add two macros: HWORD_UPDATE, and HWORD_UPDATE_CONST. The latter is a
+>> > > version that can be used in initializers, like FIELD_PREP_CONST. The
+>> > > macro names are chosen to not clash with any potential other macros that
+>> > > drivers may already have implemented themselves, while retaining a
+>> > > familiar name.
+>> > 
+>> > Nit: while from one angle it indeed looks similar, from another it's even
+>> > more opaque and less meaningful than what we have already. Personally I
+>> > cannot help but see "hword" as "halfword", so logically if we want 32+32-bit
+>> > or 8+8-bit variants in future those would be WORD_UPDATE() and
+>> > BYTE_UPDATE(), right? ;)
+>> > 
+>> > It's also confounded by "update" not actually having any obvious meaning at
+>> > this level without all the implicit usage context. FWIW my suggestion would
+>> > be FIELD_PREP_WM_U16, such that the reader instantly sees "FIELD_PREP with
+>> > some additional semantics", even if they then need to glance at the
+>> > kerneldoc for clarification that WM stands for writemask (or maybe WE for
+>> > write-enable if people prefer). Plus it then leaves room to easily support
+>> > different sizes (and potentially even bonkers upside-down Ux_WM variants?!)
+>> > without any bother if we need to.
+>> 
+>> I like the idea. Maybe even shorter: FIELD_PREP_WM16()?
+>> 
+>
+> I do think FIELD_PREP_WM16() is a good name. If everyone is okay with this
+> as a name, I will use it in v2 of the series. And by "everyone" I really
+> mean everyone should get their hot takes in before the end of the week,
+> as I intend to send out a v2 on either Friday or the start of next week
+> to keep the ball rolling, but I don't want to reroll a 20 patch series
+> with a trillion recipients more than is absolutely necessary.
 
-Instead, use IS_ENABLED() which is the kernel way to test whether an
-option is configured as builtin/module.
+I'd never guess what WM stands for in this context without looking it
+up, but I'll be happy if we have FIELD_PREP_ and 16 in there. So works
+for me.
 
-This is purely cosmetic – no functional changes.
+> To that end, I'd also like to get some other naming choices clarified.
+>
+> As I gathered, these two macros should best be placed in its own header.
+> Is include/linux/hw_bitfield.h a cromulent choice, or should we go with
+> include/linux/hw_bits.h?
 
-Reviewed-by: Alex Lazar <alazar@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
----
- include/linux/if_vlan.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I'll let y'all fight it out.
 
-diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
-index b9f699799cf6..15e01935d3fa 100644
---- a/include/linux/if_vlan.h
-+++ b/include/linux/if_vlan.h
-@@ -131,7 +131,7 @@ struct vlan_pcpu_stats {
- 	u32			tx_dropped;
- };
- 
--#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
-+#if IS_ENABLED(CONFIG_VLAN_8021Q)
- 
- extern struct net_device *__vlan_find_dev_deep_rcu(struct net_device *real_dev,
- 					       __be16 vlan_proto, u16 vlan_id);
+> Furthermore, should it be FIELD_PREP_WM16_CONST or FIELD_PREP_CONST_WM16?
+> I'm personally partial to the former.
+
+Ditto.
+
+> And finally, is it okay if I leave out refactoring Intel's
+> _MASKED_FIELD() or should I see if I can at least replace its
+> implementation while I'm at it?
+
+I think you can just let us deal with that afterwards. You have enough
+users already.
+
+
+BR,
+Jani.
+
+
+>
+> For less opinionated changes, I'll also change all the `U` literal
+> suffixes to `UL` wherever I've added them. As I understand it, it doesn't
+> really make a difference in these instances, but `UL` is more prevalent
+> in the kernel.
+>
+> Kind regards,
+> Nicolas Frattaroli
+>
+>
+
 -- 
-2.40.1
-
+Jani Nikula, Intel
