@@ -1,62 +1,78 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259D82BEFED;
-	Mon, 16 Jun 2025 21:18:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138E12BEFED
+	for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 21:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750108741; cv=none; b=pY9trK+Dmp4br4kJweVRPvrnzx/QINT5sZEJ+OT8hZlVfG6d9C8pclwuzy8MzHAJ9/CAPfL6S5mahQ/FgzU65IbyNTIUurWrzbQP91xNXCGNtoEeGcnheAXJdDicv/5kNgf43P1+O22frS8ytAP5xGvkFMJLuqbNZnVtoUczaSo=
+	t=1750108801; cv=none; b=IQWrFTFgXuW9ygP8fxgb0ZlqMxpWy7H2MRaIDxOrRsX/SAsxme4iue1zkrtmvnSpPCItO5BthCSNVfDte12LDSJee62Zu80+emFi+4KpSmFc2ZxFOKtNj29ZWyh0Ho6HGL98x8Og05/eSOcZcWuNxkq/sCEym+DGm2zs3YfZOJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750108741; c=relaxed/simple;
-	bh=EorTzHoVc3/xhNMu51TieYCCOxxDeamaIYaQQITc+TI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YX8yMd5Iv71Yq7vwzsptAEreLjOzrMhzVR5X2Av0CTk4kKqMpcPRwy8/4D+s3qBu+NZcPl+WCvZQDGpondxqQaETstesaAjT/kPsQNG/PqKqL6vpQtCHX4sJI9Sjfq6GpfnASblDYw0urFUrZL8cJHDLt9ciAinOXjW6/P4koys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ttNpKq/N; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1750108801; c=relaxed/simple;
+	bh=M+u+VkdqHUJ4chQNcEGLF+FfaNaovDI/L1EF/UnaAsA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=qG3SEphFf0a9F0OpoiLXsayZGgZxxx1/MtmqsHp4wqmTYXzneu6imhxXq+PK2ikseFkdTNAomRJfILfS+LeMNCYjaQgMMgn7Cz5NU0BGb7YA7Hc9oDD75t6K6FmrlDWik9oj4CmFtYqgtLxgFpbBXBeppKieCZ4QIooNbvMYaJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dYDu9Ooc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ttNpKq/N"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=g/eTvuKctPiNU4S+YYDAoBjwAzv9ftGfxRJh7MtARmE=; b=ttNpKq/NPcesTfbq2ajefLrQkK
-	41U6T1Mjc2ulBWvT4UAwkm3xkZSFH+t7P8cok05bAaZB23M4tabIjBVgmq8GzSMI8YIBWwTuiCIt3
-	HVQaq/ZJjxc0zAdFI5DPeDheLzYtF2eP1Wn8RKK0I0Vv81MqhOClDa27kzB5+zY8V+8Q=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uRHE9-00G5cV-Be; Mon, 16 Jun 2025 23:18:49 +0200
-Date: Mon, 16 Jun 2025 23:18:49 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vladimir Oltean <olteanv@gmail.com>
-Cc: Robert Cross <quantumcross@gmail.com>, netdev@vger.kernel.org,
-	bpf@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] net: dsa: mv88e6xxx: fix external smi for mv88e6176
-Message-ID: <64029640-9c93-4019-97bc-c371cf14e91f@lunn.ch>
-References: <20250616162023.2795566-1-quantumcross@gmail.com>
- <3c5a8746-4d57-49d5-8a3d-5af7514c46b3@lunn.ch>
- <CAATNC474tcoDeDaGg1GKbSAkb8QBT9rcHrHrszycWpQwzU+6XA@mail.gmail.com>
- <ad17b701-f260-473f-b96f-0668ce052e75@lunn.ch>
- <20250616205227.2qmzv2fsbx6j533t@skbuf>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dYDu9Ooc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52EAC4CEEA;
+	Mon, 16 Jun 2025 21:20:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750108800;
+	bh=M+u+VkdqHUJ4chQNcEGLF+FfaNaovDI/L1EF/UnaAsA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=dYDu9Oocd3KykpVZLpk46aK/jeviwBK0WCkg1yxpfthhuhZadsECsdHw5TuQyKwyM
+	 dVj7fV18zqBqWWmNdRnNdpwBje268g/5oZllcds5qONn9Oz/wq/Kc/5mChaGOKDaoC
+	 DTmcdfmzahPSvrWO5+Q+9e2TIowjwZipuZ2gVOB5zpY1EDI3YtC/csOGrKesgrgstB
+	 OelTBFaBCBJxBeocjW7GcCqnRXil28MnRc/VLncOEarHb22pyuxl+WMN767Qo80/we
+	 Vf+HilD6T9TtU689FQA7Y2XQVcgJql8X/NDhBS5Eodo+bmcccIojyi5aZjO412dWgf
+	 UO6rPra1k2PyQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE14438111D8;
+	Mon, 16 Jun 2025 21:20:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250616205227.2qmzv2fsbx6j533t@skbuf>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] pldmfw: Select CRC32 when PLDMFW is selected
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175010882950.2517548.16812914519632809645.git-patchwork-notify@kernel.org>
+Date: Mon, 16 Jun 2025 21:20:29 +0000
+References: <20250613-pldmfw-crc32-v1-1-f3fad109eee6@kernel.org>
+In-Reply-To: <20250613-pldmfw-crc32-v1-1-f3fad109eee6@kernel.org>
+To: Simon Horman <horms@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, jacob.e.keller@intel.com, ebiggers@google.com,
+ netdev@vger.kernel.org
 
-> Is there any addition to Documentation/devicetree/bindings/net/dsa/marvell,mv88e6xxx.yaml
-> that we could make in order to clarify which switch families have a
-> combined internal+external MDIO bus and which ones have them separate?
-> As you're saying, this is an area where mistakes happen relatively
-> frequently.
+Hello:
 
-It should be possible to add a constraint. Only compatible
-"marvell,mv88e6190" can use "mdio-external"
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-	Andrew
+On Fri, 13 Jun 2025 17:46:20 +0100 you wrote:
+> pldmfw calls crc32 code and depends on it being enabled, else
+> there is a link error as follows. So PLDMFW should select CRC32.
+> 
+>   lib/pldmfw/pldmfw.o: In function `pldmfw_flash_image':
+>   pldmfw.c:(.text+0x70f): undefined reference to `crc32_le_base'
+> 
+> This problem was introduced by commit b8265621f488 ("Add pldmfw library
+> for PLDM firmware update").
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] pldmfw: Select CRC32 when PLDMFW is selected
+    https://git.kernel.org/netdev/net/c/1224b218a4b9
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
