@@ -1,154 +1,113 @@
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0782868B3;
-	Mon, 16 Jun 2025 16:43:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A4B2BEFE1;
+	Mon, 16 Jun 2025 16:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750092231; cv=none; b=VZT069Dk5cGg+feljKDFA3ZjcIJHoZ/iPFj4F8juw23ZDiCEkFuoXn5fYtUkwg9Byo9kS8lAQu+oaq0sAxz24WRGhd2kL1Mjv5R3/CP5IsrbAK0zybcZGxvS4q58ESOIayCUpGXfXVOgkY4Vu77rPNw281QcwLfZnULWoXRXXCk=
+	t=1750092487; cv=none; b=b7rl6Fl0SKgCGFEY/arudogtSQqthkR6OYZZ6qAT8ua9e35Uv4v9PSCpxeTgSxGZ8M0e/mHc8JedwK1hO4hFyJnHLemTN9ecHtYwXgPizn+Y5wZzcDo0yA6fpNgdh/NoqqJa2xZk+0xcTSJvnkW6a6Y0X4z27Csv1bmgThfwKiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750092231; c=relaxed/simple;
-	bh=GToAKMJOAzgaPnwur4vcXJJz5zZVnXepZMpNIkxPKEY=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=LL4M1cD5oq2wtayvdgcYtFQlGg0bKt/b7BWzTPyX8jRRgzmd/86s6ZghWsw2T4UCY6XJIS+u+LnOssBM6N1M3mYmsh7ixHXP+oTKVnFDPj5eSALEZZonHpktpnG65AOgiim7Qf3iKxxlO4lw3pKhBZtq4WTfFgjJf1oHr0v1sDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gsKat6yq; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750092487; c=relaxed/simple;
+	bh=vhZVzII3CTfFCsNaHspYbWSGDD/REfUZxPruFgTiNbk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qc1Sy3Ny0+qwBx9MTmha0ja5pr7wyF8mgSS2DOEqqJP3tqDLC2Ce1foYU4nFD7qgwQs3ytvHE5b9I79EWpzhtmbtYuEz2VVcTx6S7XAO5NO2jXUTAobiBdiYgxbQNMBq8MQOZzSM+2cRZqDL49AiGXJ7oeni6MnNBuNgVlIf8gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MrLy4Y78; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gsKat6yq"
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-70b4e497d96so42625607b3.2;
-        Mon, 16 Jun 2025 09:43:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750092229; x=1750697029; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zLCRVz2k1at0n1nr33b0V9j3klWouJOz2HIaXuHS5yk=;
-        b=gsKat6yqTPsW9yeMqwG3bF8XcpFekzlrGdOx/Em3ZOnuVvFanDy9nRzCss1OeF86jO
-         t5jIhCOSHx3t2VV0aNrcxf24+ZPthNfUE2f013e4EWdiCQCNirDVrkbBg++NSZh1jbZU
-         qdFJbBrjgEQD6cpPsyXTGj5w7TUoEDd7Kp9igtlc5c8IsJgsaKzblEcEjcbDjjhapooZ
-         vPFE0YbBYA92TLO0ZV3TIK5IHTvoldt8wgH6l6GzNGxwFykHn7r5iqik8JqoHWwYxtLb
-         5X/l2mOYB0TgmIQPTydoeeUo8q8SXP4SPZwiJC+XrbGXv1uNrjG1bEFFNgZrxWKfx9l1
-         hcCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750092229; x=1750697029;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=zLCRVz2k1at0n1nr33b0V9j3klWouJOz2HIaXuHS5yk=;
-        b=Zbdxnr1wYnmxPoOWckcsSuWlh2ufgVuOBiRJrz0dSfUZLm5YmeZ49kvte049o9yT/P
-         e+UJn6RlqY3/pjOIM6TLyQceyvIEYIAshJYKog3G0eee95JyCCNw6Wedx0YPw+lM6Isq
-         RyjuLLloKBcGqHk6dZJaOapta2U3u1YXe6lX8QIt+kknpf8BdAz8XWaYZbZ9PTjC+ZGZ
-         u9uJTc1axITB+u/3bD0I21PwL6pZlwbwa6xSRRudibsiFAhEEzyz2ojNjZZd9jCTEH91
-         MVCp5J1HoyGwfNnoM4w365l+PNGEFkMsBUiFhBnFvx2yXdnwsTWnStqhr7ZxlKdUBUFf
-         zlpA==
-X-Forwarded-Encrypted: i=1; AJvYcCWKqP0pw7hY3Gp33OaQFkRBM0vSwzNnYLrrqDCDjUCsUzKkET6ttF9HVhjbo/6kh7HDj4+hrIxvvw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0+bNkWoiKtzlyzzwcGtKDaLEXHcrQkKuRWoW+2rA5FDyQWojJ
-	Psnybh8UvmL1ljawZq3qVyLDSqKC35izpWRAVE5MfS0wMEmmYm43NffT
-X-Gm-Gg: ASbGnctDbUQ4H2h9SirLcW37vJi6luLRqR6S1OFlqn755suTPFn9o47VVJhUFaOyrDq
-	mxpif3pb9XyycrVuFoJvTLVCoBGNDcpd05sGwUFmxydQajk9m3mYpGaKoRI+gQoBf43+548LGPR
-	dFOH5iw1/E6oqXk9n1IpmtPce9mxwftvnfBbn86zXorrM+OzUQWsHRGZszDQONsYdUvsftgVrAq
-	0dAurmg0cqUFqM/csXRaSNYauZ6lfzFYsggTJVKedGNxAQaVlM0eYz7omDWW+lQQX964IRhXCyY
-	klZ5Oik1tBxJ3eH0Cbi0koqXDXYdeb/WHQgd2PTXvJOFp+DNzkstfYQdZNJj8ilGwL/8ABasnGU
-	YE90N3sP/VFLXXpvK8bNOZwSDDNQJYI88cr3gqlQz/w==
-X-Google-Smtp-Source: AGHT+IEe2ShsQXChv0t1KlspZ6IbgyUhhI5A4khvWSqPzGJvZ0uxWm69ALzGppn56dPOERUY5UbwwQ==
-X-Received: by 2002:a05:690c:89:b0:70d:ed5d:b4cd with SMTP id 00721157ae682-71175457355mr132435637b3.17.1750092228534;
-        Mon, 16 Jun 2025 09:43:48 -0700 (PDT)
-Received: from localhost (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
-        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-71194917307sm4336667b3.20.2025.06.16.09.43.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Jun 2025 09:43:47 -0700 (PDT)
-Date: Mon, 16 Jun 2025 12:43:47 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Pavel Begunkov <asml.silence@gmail.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- io-uring@vger.kernel.org, 
- Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: netdev@vger.kernel.org, 
- Eric Dumazet <edumazet@google.com>, 
- Kuniyuki Iwashima <kuniyu@amazon.com>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemb@google.com>, 
- "David S . Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- Jason Xing <kerneljasonxing@gmail.com>
-Message-ID: <685049c36304b_2150e229495@willemb.c.googlers.com.notmuch>
-In-Reply-To: <65907669-80cb-4c79-9979-4bd2c159c0ed@gmail.com>
-References: <cover.1750065793.git.asml.silence@gmail.com>
- <702357dd8936ef4c0d3864441e853bfe3224a677.1750065793.git.asml.silence@gmail.com>
- <685031d760515_20ce862942c@willemb.c.googlers.com.notmuch>
- <65907669-80cb-4c79-9979-4bd2c159c0ed@gmail.com>
-Subject: Re: [PATCH v5 1/5] net: timestamp: add helper returning skb's tx
- tstamp
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MrLy4Y78"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51EAC4CEEA;
+	Mon, 16 Jun 2025 16:47:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750092485;
+	bh=vhZVzII3CTfFCsNaHspYbWSGDD/REfUZxPruFgTiNbk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MrLy4Y78WdF45DgIA04d6GzEjtLBdJOuzQzc8TS3cPBYJrqvdD4dQFjmAu31g9sjj
+	 LElKFh4qj5gs6zQLqeNtg/LZNM8xpZZMDosfM3a/0yzIL+oPRsoyhb51Jn/kFadBXX
+	 Bebo2KAm91G1jlgy63aDMYFC8qn4J4+lj8Rw/0rr4SZqB1mLQOI/Cjvg57bIK0ElAz
+	 utaZ2+o6sCFUK+2HW2G7xhAxJ9FTDFKl/7sYwyO/Z/6YYo4+Mab1V7tfmjwSIoRHh8
+	 XfinTPBQZknPAJK0LIOHLuUnwUWEku8xay8HtSK4Je5aDfJXhT5Twr+elRYzkKM8lL
+	 bkKOrjBzNPQxg==
+Date: Mon, 16 Jun 2025 17:47:57 +0100
+From: Simon Horman <horms@kernel.org>
+To: Joy Zou <joy.zou@nxp.com>
+Cc: "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
+	"alexandre.torgue@foss.st.com" <alexandre.torgue@foss.st.com>,
+	"ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-stm32@st-md-mailman.stormreply.com" <linux-stm32@st-md-mailman.stormreply.com>,
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+	Frank Li <frank.li@nxp.com>, Ye Li <ye.li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+	Aisheng Dong <aisheng.dong@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>
+Subject: Re: Re: [PATCH v5 1/9] dt-bindings: arm: fsl: add i.MX91 11x11 evk
+ board
+Message-ID: <20250616164757.GC4794@horms.kernel.org>
+References: <20250613100255.2131800-1-joy.zou@nxp.com>
+ <20250613100255.2131800-2-joy.zou@nxp.com>
+ <20250614171642.GU414686@horms.kernel.org>
+ <AS4PR04MB93869345F739436917920F59E170A@AS4PR04MB9386.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <AS4PR04MB93869345F739436917920F59E170A@AS4PR04MB9386.eurprd04.prod.outlook.com>
 
-Pavel Begunkov wrote:
-> On 6/16/25 16:01, Willem de Bruijn wrote:
-> > Pavel Begunkov wrote:
-> >> Add a helper function skb_get_tx_timestamp() that returns a tx timestamp
-> >> associated with an error queue skb.
-> >>
-> >> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-> >> ---
-> >>   include/net/sock.h |  4 ++++
-> >>   net/socket.c       | 46 ++++++++++++++++++++++++++++++++++++++++++++++
-> >>   2 files changed, 50 insertions(+)
-> >>
-> >> diff --git a/include/net/sock.h b/include/net/sock.h
-> >> index 92e7c1aae3cc..f5f5a9ad290b 100644
-> >> --- a/include/net/sock.h
-> >> +++ b/include/net/sock.h
-> >> @@ -2677,6 +2677,10 @@ void __sock_recv_timestamp(struct msghdr *msg, struct sock *sk,
-> >>   void __sock_recv_wifi_status(struct msghdr *msg, struct sock *sk,
-> >>   			     struct sk_buff *skb);
-> >>   
-> >> +bool skb_has_tx_timestamp(struct sk_buff *skb, const struct sock *sk);
-> >> +int skb_get_tx_timestamp(struct sk_buff *skb, struct sock *sk,
-> >> +			 struct timespec64 *ts);
-> >> +
-> >>   static inline void
-> >>   sock_recv_timestamp(struct msghdr *msg, struct sock *sk, struct sk_buff *skb)
-> >>   {
-> >> diff --git a/net/socket.c b/net/socket.c
-> >> index 9a0e720f0859..2cab805943c0 100644
-> >> --- a/net/socket.c
-> >> +++ b/net/socket.c
-> >> @@ -843,6 +843,52 @@ static void put_ts_pktinfo(struct msghdr *msg, struct sk_buff *skb,
-> >>   		 sizeof(ts_pktinfo), &ts_pktinfo);
-> >>   }
-> >>   
-> >> +bool skb_has_tx_timestamp(struct sk_buff *skb, const struct sock *sk)
-> >> +{
-> > 
-> > I forgot to ask earlier, and not a reason for a respin.
-> > 
-> > Is the only reason that skb is not const here skb_hwtstamps?
+On Mon, Jun 16, 2025 at 07:42:39AM +0000, Joy Zou wrote:
 > 
-> Yes, and also get_timestamp() for skb_get_tx_timestamp(). It's easy to patch,
-> but I was hoping we can merge it through the io_uring tree without deps on
-> net-next and add const to the new helpers after. It's definitely less trouble
-> than orchestrating a separate branch otherwise.
+> > -----Original Message-----
+> > From: Simon Horman <horms@kernel.org>
+> > Sent: 2025年6月15日 1:17
+> > To: Joy Zou <joy.zou@nxp.com>
+> > Cc: robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
+> > shawnguo@kernel.org; s.hauer@pengutronix.de; catalin.marinas@arm.com;
+> > will@kernel.org; andrew+netdev@lunn.ch; davem@davemloft.net;
+> > edumazet@google.com; kuba@kernel.org; pabeni@redhat.com;
+> > mcoquelin.stm32@gmail.com; alexandre.torgue@foss.st.com;
+> > ulf.hansson@linaro.org; richardcochran@gmail.com; kernel@pengutronix.de;
+> > festevam@gmail.com; devicetree@vger.kernel.org;
+> > linux-kernel@vger.kernel.org; imx@lists.linux.dev;
+> > linux-arm-kernel@lists.infradead.org; netdev@vger.kernel.org;
+> > linux-stm32@st-md-mailman.stormreply.com; linux-pm@vger.kernel.org;
+> > Frank Li <frank.li@nxp.com>; Ye Li <ye.li@nxp.com>; Jacky Bai
+> > <ping.bai@nxp.com>; Peng Fan <peng.fan@nxp.com>; Aisheng Dong
+> > <aisheng.dong@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>
+> > Subject: Re: [PATCH v5 1/9] dt-bindings: arm: fsl: add i.MX91 11x11 evk
+> > board
+> > 
+> > On Fri, Jun 13, 2025 at 06:02:47PM +0800, Joy Zou wrote:
+> > > From: Pengfei Li <pengfei.li_1@nxp.com>
+> > >
+> > > Add the board imx91-11x11-evk in the binding docuemnt.
+> > 
+> > nit: document
+> Thanks for your comments!
+> Will correct it!
+> Will use codespell check the patchset.
 
-Makes sense.
+Good plan. The --codespell option to checkpatch should work well here.
 
-> FWIW, it'd be fine to add
-> const to the existing helpers in the meantime as long as the new functions
-> stay non-const for now. Hope that works
-
-Yeah, agreed no need to add such dependencies.
-
-> -- 
-> Pavel Begunkov
-> 
-
-
+...
