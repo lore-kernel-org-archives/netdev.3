@@ -1,109 +1,96 @@
-Received: from mail.crpt.ru (mx03.crpt.ru [91.230.251.117])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABF51863E;
-	Mon, 16 Jun 2025 05:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.230.251.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3E48F5E
+	for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 05:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750050400; cv=none; b=N6rj87M5aGY9y5i6gSTIIqpWTsNc4Ppw3kzt9TT3pe0/PaVX08ZLrOAVsnH+9FUNf7YbBtkKlqrfwbPzAnngM6329cD6xy2HRDZLSGjp/JDZk44BheUmvNEAaP/20ju83LZ3HWg9wpGZzqKeHgCQ9mOQFVLPfF/ywfkZyk8FeCk=
+	t=1750051272; cv=none; b=AVYBYj+2Oj3MZI4d2Gj9UCT3/yopHL0E3E9N/oDJSpaekgNxu9Ju3QhsGqy0amycCNRxJyxRf3ZlA0eV7HnpFbQqjOKV4i4uDRnbfdhv5Up2XumriSlFFV3z5IHOFXtZ3MbahUaRn7d2hh0r8jBM+PprMTtOjXRSHMi7OiV27Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750050400; c=relaxed/simple;
-	bh=Bc+zA+sHr92wmJmoKBYrXr1MsDN1MT+rlsejLa9BpY4=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=DvZda3r/SlGhs5fA+197y8Tly77vJ62q8yAgBSkxt4eKlbdtGBXryWcYSIrlPlPI1RlajcfnWKZaB9E3g+9/zxjqxd7xmg1IbedyJ77KgmctLd5so977hoHCtfdZfTXBXKv88YGIUJM8KiSQ8Zaq/axOON1pkg9pWGGcaaw/SAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=fail (0-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=XhHhVosD reason="key not found in DNS"; arc=none smtp.client-ip=91.230.251.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crpt.ru
+	s=arc-20240116; t=1750051272; c=relaxed/simple;
+	bh=AJtFD4xq/MzddrsGlwqGudpwpW7HQRyhVQZnqXFLrVw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qzm2NtWpnXTwdaAgTpAcKVuwl2p8kbgdcOKnZcLrCz6n/5IiS10jZuhyFeoLHaw5ebrkVhLV1eoN5tyVqqRU5h9h7yIIRgOYOFPQOwUUMTjlsVCb/LoxEAKgSJXmAuov3q/irPqR64uP2GVlVGuMzdEXYyEBlEKl2Rr1jmIELws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TfO7rjLZ; arc=none smtp.client-ip=209.85.217.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="XhHhVosD"
-Received: from mail.crpt.ru ([192.168.60.4])
-	by mail.crpt.ru  with ESMTPS id 55G4oj26030341-55G4oj28030341
-	(version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=OK);
-	Mon, 16 Jun 2025 07:50:45 +0300
-Received: from EX2.crpt.local (192.168.60.4) by ex2.crpt.local (192.168.60.4)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Mon, 16 Jun
- 2025 07:50:44 +0300
-Received: from EX2.crpt.local ([192.168.60.4]) by EX2.crpt.local
- ([192.168.60.4]) with mapi id 15.01.2507.044; Mon, 16 Jun 2025 07:50:44 +0300
-From: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>
-To: Tariq Toukan <tariqt@nvidia.com>
-CC: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
-Subject: [PATCH net-next] net/mlx4_en: Remove the redundant NULL check for the
- 'my_ets' object
-Thread-Topic: [PATCH net-next] net/mlx4_en: Remove the redundant NULL check
- for the 'my_ets' object
-Thread-Index: AQHb3no3cJA/FSbAVkSNIYVzsV0iVw==
-Date: Mon, 16 Jun 2025 04:50:44 +0000
-Message-ID: <20250616045034.26000-1-a.vatoropin@crpt.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-kse-serverinfo: EX2.crpt.local, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 6/15/2025 9:22:00 PM
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TfO7rjLZ"
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-4e80edfa06fso256809137.2
+        for <netdev@vger.kernel.org>; Sun, 15 Jun 2025 22:21:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750051270; x=1750656070; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AJtFD4xq/MzddrsGlwqGudpwpW7HQRyhVQZnqXFLrVw=;
+        b=TfO7rjLZxEgMaaPR7zikjljhGWYCYBok6Q6iAGYuMeZmTpS2+Jz46znHFzeSNzW5C5
+         ljiHsNMjB6dYN7Hb+K/aSZcALy1j7CZwRuGUkBkgq1hCrGVhWpWYWSAWA7Xrok0dDLf2
+         xbiO9lIjaDKNV7zyppSspvgX4NPIft9olBQ1I6uSnWk6pfHP1vPcnBUkQOW4esQgQiz2
+         AIgGxFVOlTnw1rdvaCPs9ufIh0563HzG/1RNs5tleUUC28sGpYI4vIGpoH0fr/65PEsH
+         ltRkl3oZsuwFHHg5YEKV4yy16F6RIvQOtGBWG7V467iqTlA42O2YuqMvclnL2u4VnOxt
+         oKug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750051270; x=1750656070;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AJtFD4xq/MzddrsGlwqGudpwpW7HQRyhVQZnqXFLrVw=;
+        b=aNuEg2lrraH5ZU6EgVspCM0W22gyKTH38mU6nIBamxtLYRJsFfVXPuxNdEwRIgpxDP
+         l1V9iDbqACvDiPK7Y79WQSP6Of8q5sMcv66TW6AezLt2S0B1y8UdLi/y75HV7W+Za4Pn
+         vo3jWbAX3ufgdkkbAhNhcltn/AAzs3FR9Lcwnff/9W7YPTCEhk0s+qItxFxgxjOJe/Ml
+         tRV9MZaL0wOc/nSqp7OZY58saj0rOycvom7Y3sTQGu6Ziee9Wp6xJ8AdH6F7BJsEJbWL
+         Bc8ReEZqOmueW+BNv67vGRIiDoYjIWAeHdrpzGDYvm2Hy9vSkKU4ebeFwSSBHxMP81O9
+         w+2A==
+X-Forwarded-Encrypted: i=1; AJvYcCW4dD1UbT5lWzcmhEljrmWZBtw7aJggM9ZCTTamPUbEeDD2O+Uku7n+j5nx6kvA5Eid0IlPtMY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYLp4sJ9ZMQdgqfYC0OHCN4Gl8FmRnMNYt+AqvpMblBNRTnVZ4
+	tDvIDrGNQdpV5rCKGJVLpgiqyFzCy1oBQsOEBcse4cjEvcEiHKOJLpjERiefcKPHskiH7WHZn2v
+	WLrMOTX0DnRL+RNkjwgP+MI3V/TLBZfs=
+X-Gm-Gg: ASbGnct5SXHix+oThcN86E3vyKkD7LQ4R8BX75cDdZ/FQAxkuInzbtkoPFzHAWwuCiB
+	qcptNlBNeLbLFADVhAzuLEIaK0g/1uEu/7/T6piXDgQETBUG1hx1dPzp4ioR9EJb8lFUPMi3RzO
+	LVuD8O+NTzb1PZJEoszKH8M6vPmCSYL+SHcDNFValM2uxRge93M2k+N2L2AW+MMhrHVxXMLv+a1
+	pE=
+X-Google-Smtp-Source: AGHT+IEm0hHopjC6EZOFE7CYLnrWia29/xYqNJRDAHAjjZw2fXglL0QgA9od2Mza6lK/ddrSZ+FdlZd+yx6b5jU8dUQ=
+X-Received: by 2002:a05:6102:54a7:b0:4e5:a9b7:df with SMTP id
+ ada2fe7eead31-4e7f643cd77mr4876448137.13.1750051270313; Sun, 15 Jun 2025
+ 22:21:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-FEAS-BEC-Info: WlpIGw0aAQkEARIJHAEHBlJSCRoLAAEeDUhZUEhYSFhIWUhZXkguLVxYWC48UVpaWFhYWFtRSFlRSAlGHgkcBxoHGAEGKAsaGBxGGh1IWUhZX0gcCRoBGRwoBh4BDAEJRgsHBUhYSFpIWVpIWVFaRlleUEZeWEZcSFBIWEhYSFBIWEhYSFhIWllICQYMGg0fQwYNHAwNHigEHQYGRgsASFhIWVFIDAkeDQUoDAkeDQUEBw4cRgYNHEhYSFlRSA0MHQUJEg0cKA8HBw8EDUYLBwVIWEhZXUgDHQoJKAMNGgYNBEYHGg9IWEhaUEgEAQYdEEUDDRoGDQQoHg8NGkYDDRoGDQRGBxoPSFhIWlBIBB4LRRgaBwINCxwoBAEGHRAcDRscAQYPRgcaD0hYSFlfSBgJCg0GASgaDQwACRxGCwcFSFhIWV9IHAkaARkcKAYeAQwBCUYLBwVIWA==
-X-FEAS-Client-IP: 192.168.60.4
-X-FE-Policy-ID: 2:2:0:SYSTEM
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=crpt.ru; s=ud.crpt.ru; c=relaxed/relaxed;
- h=from:to:cc:subject:date:message-id:content-type:mime-version;
- bh=cgljj/Kunki6TqOGaVTTv0LJ3MX0FK/HJaxIZV2Kyag=;
- b=XhHhVosDHFpa6LLLpWv1gcimFJpW3+aw2ct9p+ok3/U6ldQD9ZWeQtqziglmaQzN2CgO9MxizLQH
-	Uq5zMH5MUPHg/fAE496b1/ZjWZ2eLo4bzwo+p1/oOZ1vFFzyNVTqtQXu+mPAPL0wSD9AsJhEHg8j
-	Sk+fw9FGxX8swe8tw77YUhX6L0mDQxK66/K/8Av4BwxZbCJ/CAuxQbEctyueXonWaLn3LmSx/nu4
-	1WYOwQsrjgVhJlLwOy/lmiMSfCCHb09vBsNFLqeNeR7S4FM2W4aPawxfZxj5jdxI2ncU+a1jdPf6
-	pSKjO8KfIRZAjutwyl9YoH7TwDjfF+xWyEUVcg==
+References: <20250613064136.3911944-1-edumazet@google.com>
+In-Reply-To: <20250613064136.3911944-1-edumazet@google.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
+Date: Sun, 15 Jun 2025 22:20:58 -0700
+X-Gm-Features: AX0GCFvsqHgyCYPTUqCrt_p-MYTZ76YxRToTBkx0ZUk3smRhXrZQYr84KtFhRbE
+Message-ID: <CAM_iQpWCXnMtZd0TJBhmKbGViEnQuL=xu4tf4SpH2pctsR8Mog@mail.gmail.com>
+Subject: Re: [PATCH net-next] selftests/tc-testing: sfq: check perturb timer values
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+On Thu, Jun 12, 2025 at 11:41=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
+ wrote:
+>
+> Add one test to check that the kernel rejects a negative perturb timer.
+>
+> Add a second test checking that the kernel rejects
+> a too big perturb timer.
+>
+> All test results:
+>
+> 1..2
+> ok 1 cdc1 - Check that a negative perturb timer is rejected
+> ok 2 a9f0 - Check that a too big perturb timer is rejected
+>
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-Static analysis shows that pointer "my_ets" cannot be NULL because it=20
-points to the object "struct ieee_ets".
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
 
-Remove the extra NULL check. It is meaningless and harms the readability
-of the code.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
----
-Resend for net-next. Link to initial thread:
-https://lore.kernel.org/netdev/20250401061439.9978-1-a.vatoropin@crpt.ru/
- drivers/net/ethernet/mellanox/mlx4/en_dcb_nl.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_dcb_nl.c b/drivers/net/e=
-thernet/mellanox/mlx4/en_dcb_nl.c
-index 752a72499b4f..be80da03a594 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_dcb_nl.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_dcb_nl.c
-@@ -290,9 +290,6 @@ static int mlx4_en_dcbnl_ieee_getets(struct net_device =
-*dev,
- 	struct mlx4_en_priv *priv =3D netdev_priv(dev);
- 	struct ieee_ets *my_ets =3D &priv->ets;
-=20
--	if (!my_ets)
--		return -EINVAL;
--
- 	ets->ets_cap =3D IEEE_8021QAZ_MAX_TCS;
- 	ets->cbs =3D my_ets->cbs;
- 	memcpy(ets->tc_tx_bw, my_ets->tc_tx_bw, sizeof(ets->tc_tx_bw));
---=20
-2.43.0
+Thanks!
