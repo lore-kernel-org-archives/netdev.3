@@ -1,37 +1,37 @@
-Received: from mxout3.routing.net (mxout3.routing.net [134.0.28.8])
+Received: from mxout1.routing.net (mxout1.routing.net [134.0.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0938274FC6;
-	Mon, 16 Jun 2025 09:58:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1948A2750E5;
+	Mon, 16 Jun 2025 09:58:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750067928; cv=none; b=n4jSm8pMxwl2VdD4hpY5J3kapnpIB35kUnauBkCyRGoaVBjHugkqRjJMrI4unJlj8ZB7KTPAfTrPRqSI6JtmnMSoFvuVxyK5fjZNWqGw+EBOWOHWtMznpNXVShSHL0R25ihpNV4d47AwLIeHQOtUcd68s5u6W8wonjej/So1vlI=
+	t=1750067929; cv=none; b=UXrUGx0Vzhjpyn8/pH7dSnQKL4Ylic84JOPZDD6FWqzbhLz7fVyUnMHBHHQ+WHkZvgrZT+S4tXj1Ni7PgXFXnP1ZNR1ACNk2Iau7KZrxnCYLo7AH3gYzG5PFJg4+k6rHuoHyQBg02tzpfcD2ycSHcEM3gvXfgfjZjAYgc1PDIX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750067928; c=relaxed/simple;
-	bh=vasLuAIVGN71piVbyel+Q8mRVI3PJ2R3OaDC4gFrR5k=;
+	s=arc-20240116; t=1750067929; c=relaxed/simple;
+	bh=owery2Y9xho1bAvAYoxF0F6uDfB7KsKdTzyV/Nr07xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Htm5ucQiRMb3H67KMcauNncDkpPq/yU4ZUtU6+OMZOpnrFsFGeArs1LqAlGqbqrjSKIKhJ6FjhMoL8nDBOWM1WKNdnlpW/IkFvVj/8sRE0Kwp8jZ6D9oTMgmIPAtnND0WxiYEMszDadg9BnvHgOlUy6fRqcbwlKaPxA/BVyixqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=RB5eDYKa; arc=none smtp.client-ip=134.0.28.8
+	 MIME-Version; b=tB5W14J7Qf9aoOjhLZ9Cqw4v3yORDf4VWwOKm3yoWnXYb5kuaXHE1bweaHo5/7BL9Ral4HMRvp5vKmd8ZGRmDok4dErmNewzNn4zISLEOpFJ5iMxlOs3ds0MJznrwaoeNFt9ml/GyOHFVZpjbM8oACXlqLwXIq6Zpk9Chdvz9qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=eGf3s0Dn; arc=none smtp.client-ip=134.0.28.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fw-web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="RB5eDYKa"
+	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="eGf3s0Dn"
 Received: from mxbulk.masterlogin.de (unknown [192.168.10.85])
-	by mxout3.routing.net (Postfix) with ESMTP id D4851605EB;
-	Mon, 16 Jun 2025 09:58:43 +0000 (UTC)
+	by mxout1.routing.net (Postfix) with ESMTP id 0FF9A41AAA;
+	Mon, 16 Jun 2025 09:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
-	s=20200217; t=1750067923;
+	s=20200217; t=1750067925;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7sHWoK+S4dor/cCGOhSqusJFB/am18LqdmWaQ7hQvKA=;
-	b=RB5eDYKaekECO89jL5yQTwXFJaudwcBBwxvAZXS5hzJiGcy304w9NvhL/oFGF0HvPL7uuV
-	3vv4OP1zUpAcFv0+4r269Ca21jMicU4gQU8pjjB6yDy4/MwC2eVk7OPF81PCgCb1yBHSfs
-	4+eOrAOKZ7h/HKpE5WuEXBPwYbW/lwc=
+	bh=Mw75z6h4HeFha6AF7YI1R1VXg23z1dS7Y1C1o8vw7rQ=;
+	b=eGf3s0DnOxdkyJ/bqKhPYLUNNu8lm1EH/gFkuSpNKsWX+3qZuQNyRwASfKEMGEm2fQoDTf
+	O69zsIH/WgY96o7CRTYc7NKZH53QlTbgh+Pp3GprVlMs6sxL/68rBMojwDKx2iY0f4yRFQ
+	HmWWR8lAQTkKU8pFEi1ptWI5CmAJiQ4=
 Received: from frank-u24.. (fttx-pool-194.15.87.210.bambit.de [194.15.87.210])
-	by mxbulk.masterlogin.de (Postfix) with ESMTPSA id 78ECA122677;
-	Mon, 16 Jun 2025 09:58:43 +0000 (UTC)
+	by mxbulk.masterlogin.de (Postfix) with ESMTPSA id A7FE4122704;
+	Mon, 16 Jun 2025 09:58:44 +0000 (UTC)
 From: Frank Wunderlich <linux@fw-web.de>
 To: MyungJoo Ham <myungjoo.ham@samsung.com>,
 	Kyungmin Park <kyungmin.park@samsung.com>,
@@ -64,9 +64,9 @@ Cc: Frank Wunderlich <frank-w@public-files.de>,
 	netdev@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH v4 10/13] arm64: dts: mediatek: mt7988a-bpi-r4: add gpio leds
-Date: Mon, 16 Jun 2025 11:58:20 +0200
-Message-ID: <20250616095828.160900-11-linux@fw-web.de>
+Subject: [PATCH v4 13/13] arm64: dts: mediatek: mt7988a-bpi-r4: configure switch phys and leds
+Date: Mon, 16 Jun 2025 11:58:23 +0200
+Message-ID: <20250616095828.160900-14-linux@fw-web.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250616095828.160900-1-linux@fw-web.de>
 References: <20250616095828.160900-1-linux@fw-web.de>
@@ -80,48 +80,99 @@ Content-Transfer-Encoding: 8bit
 
 From: Frank Wunderlich <frank-w@public-files.de>
 
-Bananapi R4 has a green and a blue led which can be switched by gpio.
-Green led is for running state so default on.
+Assign pinctrl to switch phys and leds.
 
-Green led also shares pin with eeprom writeprotect where led off allows
-writing to eeprom.
-
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- .../dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+v4:
+- reorder switch phy(-led) properties
+v2:
+- add labels and led-function and include after dropping from soc dtsi
+---
+ .../dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi | 61 +++++++++++++++++++
+ 1 file changed, 61 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi b/arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi
-index 30affedf84d4..21eb91c8609f 100644
+index 4d709ee527df..7c9df606f60d 100644
 --- a/arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi
 +++ b/arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi
-@@ -21,6 +21,25 @@ fan: pwm-fan {
- 		status = "okay";
- 	};
+@@ -4,6 +4,7 @@
  
-+	gpio-leds {
-+		compatible = "gpio-leds";
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/regulator/richtek,rt5190a-regulator.h>
++#include <dt-bindings/leds/common.h>
+ 
+ #include "mt7988a.dtsi"
+ 
+@@ -152,6 +153,66 @@ &gmac2 {
+ 	sfp = <&sfp1>;
+ };
+ 
++&gsw_phy0 {
++	pinctrl-0 = <&gbe0_led0_pins>;
++	pinctrl-names = "gbe-led";
++};
 +
-+		led_green: led-green {
-+			function = LED_FUNCTION_STATUS;
-+			color = <LED_COLOR_ID_GREEN>;
-+			gpios = <&pio 79 GPIO_ACTIVE_HIGH>;
-+			default-state = "on";
-+		};
++&gsw_phy0_led0 {
++	function = LED_FUNCTION_WAN;
++	color = <LED_COLOR_ID_GREEN>;
++	status = "okay";
++};
 +
-+		led_blue: led-blue {
-+			function = LED_FUNCTION_WPS;
-+			color = <LED_COLOR_ID_BLUE>;
-+			gpios = <&pio 63 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+	};
++&gsw_port0 {
++	label = "wan";
++};
 +
++&gsw_phy1 {
++	pinctrl-0 = <&gbe1_led0_pins>;
++	pinctrl-names = "gbe-led";
++};
 +
- 	reg_1p8v: regulator-1p8v {
- 		compatible = "regulator-fixed";
- 		regulator-name = "fixed-1.8V";
++&gsw_phy1_led0 {
++	function = LED_FUNCTION_LAN;
++	color = <LED_COLOR_ID_GREEN>;
++	status = "okay";
++};
++
++&gsw_port1 {
++	label = "lan1";
++};
++
++&gsw_phy2 {
++	pinctrl-0 = <&gbe2_led0_pins>;
++	pinctrl-names = "gbe-led";
++};
++
++&gsw_phy2_led0 {
++	function = LED_FUNCTION_LAN;
++	color = <LED_COLOR_ID_GREEN>;
++	status = "okay";
++};
++
++&gsw_port2 {
++	label = "lan2";
++};
++
++&gsw_phy3 {
++	pinctrl-0 = <&gbe3_led0_pins>;
++	pinctrl-names = "gbe-led";
++};
++
++&gsw_phy3_led0 {
++	function = LED_FUNCTION_LAN;
++	color = <LED_COLOR_ID_GREEN>;
++	status = "okay";
++};
++
++&gsw_port3 {
++	label = "lan3";
++};
++
+ &i2c0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c0_pins>;
 -- 
 2.43.0
 
