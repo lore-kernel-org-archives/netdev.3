@@ -1,70 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2F127FD7C
-	for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 10:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F25A2882D1;
+	Mon, 16 Jun 2025 10:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750070012; cv=none; b=ld0aCvvxariPzk/axIjusRjVHj7vX0rNiNtxlew/OasyWFCJBkdjDhpR1Ws7GK/EQOzmWTOn2Z4oNL0r7WJp7B8ajeucHqXUfu33clRLVSwwwpV1jLCzNBIO9a7snm7UJ8+Ygc73eqwMi3bQUU7brLkflX+1AgUaIvVOrcJ1lW8=
+	t=1750070552; cv=none; b=ltMUobAUSbKp+oea08+qGUxGeW/BBOTnFgmvBewxPiZc7zLhPLzqQuqox4Gih29opJxBpYcKnyMBhnPEwJPAPtGpW7Ir0ycM+6x7LdlecI3Q6CieBB7926JcZqU8Pr0Vovg8Z7iAkGR2yUktPe6PFJpVOJBFoMJ9S+5tF9uE/f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750070012; c=relaxed/simple;
-	bh=3ebRY26H1XYhLWH6tzAmlkRLTE0gf74bhstF6wlp81g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iydCZ0k6LefC8sd6KjAVlCUEdrraVogpD1JTNpfTzIJqRfsaZfEhGuHQQL3zbGbGRL7VivxxqRbPoyXSr5EC3aWhUgkJs4DN4ycYntmWnTbctIJfNZ+DCCrbE2r3ZNUja7p5Wrc9auhAmiJZGbZ684VikrZzmFxsrDS4JIvLAZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTQ7eFvY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750070552; c=relaxed/simple;
+	bh=Fhsd6q/hRQwGHerpb6eGxJc9LhHttkXql2QisPijFJE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bRYZlj0H+O7RKkkwlPqhzbBt1KKgFF/2vStgWKnis8m30bQGpnWi7FLZJ7GxnPuvMlcZ2TrF/tOmWoc+J+aZgSL82jYsgcW9SGmp3zxUR65LXw2xdIiElcASL2MJMLj51d5aX/COW4AMhr7AVP2nLeaYIBWZn2/WNQOQGQwiBy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aSKCP//v; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTQ7eFvY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D77C4CEEF;
-	Mon, 16 Jun 2025 10:33:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750070012;
-	bh=3ebRY26H1XYhLWH6tzAmlkRLTE0gf74bhstF6wlp81g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HTQ7eFvYlai6Fm7Plh3CUF5fdZQH42OhfVLxDXVvk4LYOABsm1o5J5efydBcdWkma
-	 T0oQSqelEUILokmDUZOFyywp+a7DPOH7BDNXrrU1SoIVTM6U9OA5dBKWruSW7DO+cm
-	 pe3yppISTO+1JgxB8ESDPQ2hQHVY5RPDGBLmlRirqY5EtcK4VVVXY5yufqg+V6YiD8
-	 8WfI9PBLa2DlTy0sJudiE2b2B/K5tfbAqovqsLoIEyLfI5QXVcFZ7NYqHzAWB885KU
-	 E1ayNCmavwIzwZM80yi3GYVBY6wZh04ZnM0gMsZGR95wdCbo2UHms3tTqEAtGXW0+u
-	 jI3PRM/eaFxFQ==
-Date: Mon, 16 Jun 2025 13:33:27 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Alexander Duyck <alexander.duyck@gmail.com>, netdev@vger.kernel.org,
-	hkallweit1@gmail.com, davem@davemloft.net, pabeni@redhat.com,
-	kuba@kernel.org, Jiri Pirko <jiri@nvidia.com>
-Subject: Re: [net-next PATCH 0/6] Add support for 25G, 50G, and 100G to fbnic
-Message-ID: <20250616103327.GC750234@unreal>
-References: <174956639588.2686723.10994827055234129182.stgit@ahduyck-xeon-server.home.arpa>
- <20250612094234.GA436744@unreal>
- <daa8bb61-5b6c-49ab-8961-dc17ef2829bf@lunn.ch>
- <20250612173145.GB436744@unreal>
- <52be06d0-ad45-4e8c-9893-628ba8cebccb@lunn.ch>
- <20250613160024.GC436744@unreal>
- <aEyprg21XsgmJoOR@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aSKCP//v"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-313154270bbso4761166a91.2;
+        Mon, 16 Jun 2025 03:42:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750070551; x=1750675351; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WTabLOpgCLwYv8rCyGl7CwHdWBc3RbnKBwJmaj/inH4=;
+        b=aSKCP//vWWy0YD8hp+qyF6BLWe/Q/GrrXqTGhG+m/P5rd4rbuxQcT5UxkPPydnlhoI
+         /Dt6bJVGOq1wsZ2YjKke80N92Jl5Ng3rLB4R3IrC8X6YVT6NGOJeYcMWSnPaUKolFeKj
+         dhg+ey2f5s/6317NO668N2HSgujmHfICAqmSXfTa0+oyCn8TrNK3Solwmcnazjp0rrsa
+         1lGh5kM/GncY8AHhueB/joyLaaK5BRvpkqxG27uCCJaYxs7L2Y/MvP6RlxL+4tDpC8fi
+         ThR/crcV2QAWtk0msCpmuxEsTaRa5/xoAxLEBMJ0HA1ONJMkIfz6owMzyyd72/AvljCp
+         LIGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750070551; x=1750675351;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WTabLOpgCLwYv8rCyGl7CwHdWBc3RbnKBwJmaj/inH4=;
+        b=PmNoVLXXWsmaP3U6PS6bDCLxLJon/sI2aNtq9FCmCvSwLXN8KwgY9rpMESS3pmCVsY
+         gbXPg1pCibdiFfdrDKNzrD+T/R9N9RjMo3hr/XkP5Kr3QDvmbYdkfLZ9HgSnHXNj04GV
+         JB/OGRNPt5sWULIxDDAO66ho/UytixcH3Y4ehSXWgUjMCM2/reuBUe8rhOS5yXgH0FIJ
+         jBOhAKjhNkg977hoendaTyc0F57phXswBg0PUUhUV7u/yaY024hLGy8KQMkvMlED1w3u
+         ZnDb+2YxDIHgHVH+uTyEK82EebT9u1/AzJDLIg1ZMOZ5dPm6Y1lCvi0x1ANy3gmlofR6
+         to4A==
+X-Forwarded-Encrypted: i=1; AJvYcCUCHiROmXg4Wbj+lEayKrSNj3Rr+XvTwaed1Nff9exmEklWJgVf/qHtw/b4ifP/Qp4GCBcw0Rt6MIPvmiGW@vger.kernel.org, AJvYcCVrW9vCDF4gF0KwheaWqe1SvdPFvyUVveVEFZofQubNVqzPYbfNJ95+1b9gk4OY3YVbn8ewMmzszrs=@vger.kernel.org, AJvYcCW/+LVksse1U09VZvjRzKSfZVCwNdYYfg+ZNGq2xXRovymcUz3xJVlc8vgSNkcwZgb24U+6XmuL44Nh@vger.kernel.org, AJvYcCXoseujehnXre7adIKylkcqdgvYDKlJXrt9L731y+JkcyZhv/iDJlpRUxnGCpsxy52WfDZXewIR@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzknPGGYKnsoD38FY6RKwXNIEJzv94LiJaTBFQLn88IGDMTTHs
+	Ny4jZYS0DcGQNEkifRlSljW128D4Y49v0MiEQ8IH4lMOl1bm5CQGbOA+W1fucWmZLZ+Cil8rhlC
+	bZM1XrDQIMoiWRamFZ/GfwSyEDphjZY0=
+X-Gm-Gg: ASbGncu61VsoK3flVucSS8ycECdvfuELtR4z95tlVlzjMbXUox3YbnXNNzwezzcLMbl
+	aYKvvODmVjybdjYnfEZQ4dSFgU/HZOdPegAKanJnQ2oWJD0Fs6LF78LKvN99tl9VsmRSUDj/g/b
+	Gh+OLIE3mJ8/xSsDf/vxORiJABoLMtTJJTz6NNEf0n
+X-Google-Smtp-Source: AGHT+IGdvq4Jz7wCl7O5nLF8AdUqsnNZK/jUgiSEfeGbfX1YCA4ekJ6+LuyEXZu02NW4N5RvWGmagNrrauMC8JexM5M=
+X-Received: by 2002:a17:90b:274d:b0:311:9e59:7aba with SMTP id
+ 98e67ed59e1d1-313f1be899bmr14937709a91.2.1750070550782; Mon, 16 Jun 2025
+ 03:42:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aEyprg21XsgmJoOR@shell.armlinux.org.uk>
+References: <20250613100255.2131800-1-joy.zou@nxp.com> <20250613100255.2131800-5-joy.zou@nxp.com>
+In-Reply-To: <20250613100255.2131800-5-joy.zou@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Mon, 16 Jun 2025 13:44:31 +0300
+X-Gm-Features: AX0GCFu6L7Akim9BySCPjWCa7aS9JinLbW1qVZSuSXFVwqMzcBMNsyM6unHsnmE
+Message-ID: <CAEnQRZAp8TX84AygSjWGx-cNiLyZXZwUx5C-DLDuyB6hO3gXMw@mail.gmail.com>
+Subject: Re: [PATCH v5 4/9] arm64: dts: imx93: move i.MX93 specific part from
+ imx91_93_common.dtsi to imx93.dtsi
+To: Joy Zou <joy.zou@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, catalin.marinas@arm.com, 
+	will@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
+	ulf.hansson@linaro.org, richardcochran@gmail.com, kernel@pengutronix.de, 
+	festevam@gmail.com, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-pm@vger.kernel.org, frank.li@nxp.com, ye.li@nxp.com, ping.bai@nxp.com, 
+	peng.fan@nxp.com, aisheng.dong@nxp.com, xiaoning.wang@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 13, 2025 at 11:43:58PM +0100, Russell King (Oracle) wrote:
-> On Fri, Jun 13, 2025 at 07:00:24PM +0300, Leon Romanovsky wrote:
-> > Excellent, like you said, no one needs this code except fbnic, which is
-> > exactly as was agreed - no core in/out API changes special for fbnic.
-> 
-> Rather than getting all religious about this, I'd prefer to ask a
-> different question.
-> 
-> Is it useful to add 50GBASER, LAUI and 100GBASEP PHY interface modes,
-> and would anyone else use them? That's the real question here, and
-> *not* whomever is submitting the patches or who is the first user.
+On Fri, Jun 13, 2025 at 1:08=E2=80=AFPM Joy Zou <joy.zou@nxp.com> wrote:
+>
+> Move i.MX93 specific part from imx91_93_common.dtsi to imx93.dtsi.
+>
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> ---
+>  .../boot/dts/freescale/imx91_93_common.dtsi   | 140 +---------------
+>  arch/arm64/boot/dts/freescale/imx93.dtsi      | 155 ++++++++++++++++++
+>  2 files changed, 157 insertions(+), 138 deletions(-)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi b/arch/ar=
+m64/boot/dts/freescale/imx91_93_common.dtsi
+> index 64cd0776b43d..da4c1c0699b3 100644
+> --- a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+>  /*
+> - * Copyright 2022 NXP
+> + * Copyright 2025 NXP
 
-Right now, the answer is no. There are no available devices in the
-market which implement it.
+This should  be Copyright 2022,2025 NXP,  as per NXP internal guidelines.
 
-Thanks
+Am I missing something?
+
+thanks,
+Daniel.
