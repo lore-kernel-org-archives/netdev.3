@@ -1,60 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D239784039;
-	Mon, 16 Jun 2025 15:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB781DF749
+	for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 15:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750086237; cv=none; b=mVSJ6VmE92MbyX3W3w7c5hl/fLYrJPUUW5S0RxtJ1grJzb4B20MvVdFn14St4AO0A4PKwe5qqcOUjxg0qH4bjWTaVxomu+e3sZLpT3PkLD/k+jQpb1k7ffa0O9TdZnYEvfEpbflW9xxx1Gl6LH+6eaMxdJQL233EwaUOHBdkiTs=
+	t=1750087097; cv=none; b=B3GvUYtit/UWwalvwkYnx0ToqICa9rjcMRPqTV2wIW++sohOBB4OeBV9W810xYjFDcTO5k3QB93X4flUlANUH67dgw54GiCpX+V/Zj/4gTnOlpj0eWcvjpuNGEvCbn6jb7+4eZWv8cqMS1nXjhiFEj7aV0nbTPtHmKd07ts3S9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750086237; c=relaxed/simple;
-	bh=Z1NVxtB6FWsUaP0Tts63iaOqkQo4XjWoxebAKiOjg/w=;
+	s=arc-20240116; t=1750087097; c=relaxed/simple;
+	bh=0Uwi5HcvGSgIv33Xf6N3b39LRxabNPsVu39qZpDYCnA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rPnG7SUHkoHfa/DqCBTHGT7KeGvXz8U0qpMaMITvUI6A+k4y/OEHyPa9PMNbT3aJAxZqCAYcZkXnUCpi7IzpxEOf7nzLTjEDA/3LxDnCAtUYqLaFjA1N+DIRnclC5xzqMGM2uq6oQ6E+aZE+Qll1i/DSQr4Bd1nqe3VsbaaD5D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ncCrwldi; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nsv4bCKqyM3P/h6mBP+Q3qnsGzbKdhgTHRsPH9Bd1ZFzogKHxcyAGa4A98SuKwd8gYgZegy+ID3GCVfjJMq8HvooGC2h0j0t1YthhTGQd9QLt4X2dg4nyeUDFWptfwqqHpYfhfwVj3snu3sWkLnaR4IuQ1g9a6hugj7Uk5MMWIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=t0E3nMNi; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ncCrwldi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D093C4CEEA;
-	Mon, 16 Jun 2025 15:03:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750086236;
-	bh=Z1NVxtB6FWsUaP0Tts63iaOqkQo4XjWoxebAKiOjg/w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ncCrwldi7KW2oR0BGna/HBIIAJv+ZAHCoEZKs/BPyn5/AoAX6SCi4QOiYwdfUhXDK
-	 FvYkI2VE7Pi53zget0gbSimS3IiNE01ZriAjIc10bUcXNbMISKldm54Qislz5xWw1f
-	 t47CTk8CTT7AkauDj92qs5EMcK6scec1Am7KlSq0juEFKe+cnu7xsAAkKXnZXx8TzS
-	 9IXoFG9gUOcL9xgDdicFC5WOZ0S4TKm3GFmf77drUF6ZLUl4a04uBgm0QIiIsIygdf
-	 IMMz13YeWwL0zt0oYXWq6XHO3ofduFutX9NUVepde1X3iycMWpig7Uv+Ub61MAfe9i
-	 sp4gIvBdMMjRA==
-Date: Mon, 16 Jun 2025 16:03:50 +0100
-From: Simon Horman <horms@kernel.org>
-To: Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux GPIO <linux-gpio@vger.kernel.org>,
-	Linux MTD <linux-mtd@vger.kernel.org>,
-	Linux Networking <netdev@vger.kernel.org>,
-	Linux USB <linux-usb@vger.kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Richard Weinberger <richard@nod.at>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
+	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="t0E3nMNi"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3a548a73ff2so4389833f8f.0
+        for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 08:18:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1750087093; x=1750691893; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sWtX9vXAE4ylrzNWM+gtRkVXqnOFx0L8cYcLFK9zXB4=;
+        b=t0E3nMNi2s7g6juabHyfHWlSvMdnK5BXsQ26jgq4NtPZvXM0X6FPKzrdL+mzSAZFWi
+         ohwhGAx3l3hyEWjRC5h3zFfBisZWS1lgM4EorW9OYf7BlUiABwrN19/Q6tYUA1x49yQr
+         D6xfaDgObiAnRk1mYl6xj+jEr2rwGXpp7cokcyknSrz4kHa3N5avxoFqVjzYRGVGwUgC
+         QUj//5/q/GsEUWjIGqy/GChA3FCf5HnQRZko9pP0WGJzNIn1W1e3AqgNGTNoi7u4LKuh
+         ffIUp7eJe4A673VqE7usfg00TXC4br3/X8MvW4rBqV9W1WO2/MC7z3Xd/IvtG+/IY71O
+         VojQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750087093; x=1750691893;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sWtX9vXAE4ylrzNWM+gtRkVXqnOFx0L8cYcLFK9zXB4=;
+        b=ZZpOIE2r17Ygs3M3IjMawLfmk/ZcsmKXySKrGvr3SGBzKwGa4SpQJfP8tx8vc2Sf10
+         tO/WoVVPwrcSM7Tei7r3GmJwuScugFP4SNZoPZndz2oqv83wIAlZ/VXBNWv+G0XelIgw
+         RJf+vHhQB8E3cCcy4kKsPv0gSCX+aJONiNse0bNUfnH7UjOmxzEBAIGQaxYJ2O/YmnnO
+         UOhhzpg0nz8Jmk8b9Ieni6caNUe53YrhLSxG64Qeb9UmQSJpHJYf2jcnK0s9d9zN8z1a
+         kusDUvFF42p4rQpTLuwi5cx3DK8j3+j6amoy+S45WUSgBBBXwlu1GjZj5I1cjzmqlsPD
+         WAsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXiuMPqPE54FQCpl0Qz1ZqD39QDOn2JzGhFEbynirxJTht5xlvfTjKO9mRjxauGqLuAsystFrg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRUtGif4Gsdp77CktcltMsCmQk2nwxP2rIiVYcLItqqerjnbce
+	PceD/BjZ5KAKoXnSHwumXfDj0WUYm+kMYRPAccyWOeo2tx1w7g4lntSRhScwKpEcvCQ=
+X-Gm-Gg: ASbGncuDMEWsqU9yfLgx5zDENbLQVznS5MKjwgJcmQVzUlMPn7Tvj2GWFrFs7+03LzH
+	ipdbPpAPIKETFiUNVzsvLh+TbpkhML6DJbtDjA7tEhRV40+QDrEMxnypuFBG/2wmt7QpSLb2U9+
+	1qnxTCBliP8qUlhVBYE5OAKTwHvcicpQXaAodb5b2tWg7lXKFnae+vHaVPt2hLRPTSRMgQWwBg8
+	9OwbrQPm7curHJ+GP9xr/dtdcQcjgaYMvOsfadur8aoWYNaCJjGl9qLibMIj0t27p7s7QSchZQV
+	4+78GowC+duuGbXgX9gwjVRY9W36rOU1Z8RalbC8Kt0Q3LItHoS1pxRnkmzNxcaD5syTJtA6yV4
+	G0w==
+X-Google-Smtp-Source: AGHT+IG2wziWgDzPPtUiGHhkgZrnXbFFCxJ48YmTR61+iBYCNtEv6FH/PDzXC8sc2DbQNu0Loh/3kQ==
+X-Received: by 2002:a05:6000:26c4:b0:3a5:2fae:1348 with SMTP id ffacd0b85a97d-3a572e99553mr7820909f8f.51.1750087092712;
+        Mon, 16 Jun 2025 08:18:12 -0700 (PDT)
+Received: from MacBook-Air.local ([5.100.243.24])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e232b68sm145949525e9.10.2025.06.16.08.18.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Jun 2025 08:18:12 -0700 (PDT)
+Date: Mon, 16 Jun 2025 18:18:09 +0300
+From: Joe Damato <joe@dama.to>
+To: Dave Marquardt <davemarq@linux.ibm.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net v2] Fixed typo in netdevsim documentation
+Message-ID: <aFA1seeltkOQROVn@MacBook-Air.local>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Dave Marquardt <davemarq@linux.ibm.com>,
+	Jiri Pirko <jiri@resnulli.us>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>,
-	Felipe Balbi <balbi@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: Re: [PATCH] Documentation: treewide: Replace remaining spinics links
- with lore
-Message-ID: <20250616150350.GC6918@horms.kernel.org>
-References: <20250611065254.36608-2-bagasdotme@gmail.com>
- <20250613130753.GE414686@horms.kernel.org>
- <aEznrV9XoXNpYKwa@archie.me>
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20250613-netdevsim-typo-fix-v2-1-d4e90aff3f2f@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,30 +85,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aEznrV9XoXNpYKwa@archie.me>
+In-Reply-To: <20250613-netdevsim-typo-fix-v2-1-d4e90aff3f2f@linux.ibm.com>
 
-On Sat, Jun 14, 2025 at 10:08:29AM +0700, Bagas Sanjaya wrote:
-> On Fri, Jun 13, 2025 at 02:07:53PM +0100, Simon Horman wrote:
-> > I am wondering if you considered also addressing
-> > the spinics.net links in gadget-testing.rst.
-> > They are the only other instances I see under Documentation.
+On Fri, Jun 13, 2025 at 11:02:23AM -0500, Dave Marquardt wrote:
+> Fixed a typographical error in "Rate objects" section
 > 
-> I can't find on lore remaing spinics threads ([1], [2], [3]). These are all
-> from 2012-2013 and somehow lore doesn't have linux-usb archive on that year.
-> 
-> Andrzej, Sebastian, what do you think?
-> 
-> Thanks.
-> 
-> [1]: https://lore.kernel.org/all/?q=s%3A%22f_phonet+with+SOCK_DGRAM%22
-> [2]: https://lore.kernel.org/all/?q=s%3A%22pnxmit.c%2C+test+program%22
-> [3]: https://lore.kernel.org/all/?q=s%3A%22usb%2Fgadget%3A+the+start+of+the+configfs+interface%22
+> Signed-off-by: Dave Marquardt <davemarq@linux.ibm.com>
+> ---
+> - Fixed typographical error in "Rate objects" section
+> - Spell checked netdevsim.rst and found no additional errors
+> -
+> ---
+>  Documentation/networking/devlink/netdevsim.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Hi Bagas,
+For future reference, since Breno gave a Reviewed-by for the last patch [1],
+you could have included his tag since there were no substantive changes.
 
-Thanks for the explanation.  Based on that I think this patch is fine.
-And the remaining links can be updated in future if appropriate.
+In any case:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-
-
+Reviewed-by: Joe Damato <joe@dama.to>
