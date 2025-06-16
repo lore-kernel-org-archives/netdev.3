@@ -1,85 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2074.outbound.protection.outlook.com [40.107.237.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712A82E40E;
-	Mon, 16 Jun 2025 20:04:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750104271; cv=none; b=HJyYwcvgTV1RXqnkWmWlDRdWylCYzSdJP2xe2Yp1RhCj0S4sOkJCc+djO7/P8SNU0XZkiK8MUNnVl1sFqtp7rmMFYr+ldaTd2Am0pfC8Lk7HIrQjXCN64ZjDxVaYAc+ncwtA4FstiYjKEp+WSD9+gyLgWHi/JDyv1/h8oLVhMaQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750104271; c=relaxed/simple;
-	bh=Et21XFiupMhtztsIix5XoNNyWOX94OGDV/Hx4l9I1UA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dXc4q5xb0NZ5BRkZ6D7g1qbIC9jmfDrFiAt0E37G/JH1zbv0IfgWMOdlBFMt2Z+nQpHxhO17yMeRV5Fm/LNiSlqZIHJuyhtsMNd7F2ZgrQVsEXAbWCfYFn+xgeFx7soOeh+a5bmEx2HEs6ggOZQuUcm9NPAR5P/ctaCsM+Sdj0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+zXodZV; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394C61CAA62;
+	Mon, 16 Jun 2025 20:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750104289; cv=fail; b=a0EIF5MCIVm0eU05E1JJwl5/E7ATtrlyo3hEI5dTfraD4lBWTRjILKNqtOx5p3PaDFWG6mSQPkSfI6/rAb4/+5L8h5hWqopcLpR1yKdIFmILzOcraPSspoEGKCINaZy92qMt8/hwVTGMKoMJmJekxYZmALEMb435mV/zfWpwQ6E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750104289; c=relaxed/simple;
+	bh=xDiY/xc15AqVJTg9q1TJdzn8G+bp9T8piCygvwftWkk=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=F36j0fh/nBAA/EjueK6oq3FmMUsblvTkZ4gGEdrYpTDcShBj7I68HtG3BbWUEJmyO13RtL4OuB6vcGEWq1MiduzxbgSmsGf9NyqY44TISCnU6pQO89ij2CxFm3TZ9QddLFnblyeUCtuqkSBool52i3AMK1ZBxuWbkgeaV9UNplc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bfSrTt17; arc=fail smtp.client-ip=40.107.237.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+zXodZV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAC1C4CEEA;
-	Mon, 16 Jun 2025 20:04:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750104271;
-	bh=Et21XFiupMhtztsIix5XoNNyWOX94OGDV/Hx4l9I1UA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I+zXodZVJH4kHho9Ufv8FbtQvgUgfCH4AfNHCPLYPw002zjOYi4Tp+k2QA7qpdc80
-	 3klgaouwg3LLarOktqriyrb/lrrsv+xQgfgF4npfu95Qej8/M6FdMCjZPwdGLXpfyF
-	 nFJnXeRxLGeqaE3OuvGQKfhUqKPQotW9tecd9LS2rV5Fu9MIv3mQeU3CLa/nOLlatB
-	 7AtMiXDLo6QCX1Y9ADWe+KbnFfNWQlsPEhu5z7fIoGkNfuSERTP2gvrvfXpnAqdGYD
-	 +23REHbx2HniHUeB0gw9m0b4QIHzz8sTAzFo3WGLROPxzhb7EKngcGURVRYFr5nuwf
-	 4I0uZKvdg9nvw==
-Date: Mon, 16 Jun 2025 21:04:27 +0100
-From: Simon Horman <horms@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Mark Zhang <markzhang@nvidia.com>,
-	linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH net] net/mlx4e: Remove redundant definition of IB_MTU_XXX
-Message-ID: <20250616200427.GC5000@horms.kernel.org>
-References: <aca9b2c482b4bea91e3750b15b2b00a33ee0265a.1750062150.git.leon@kernel.org>
- <20250616163602.GA4794@horms.kernel.org>
- <20250616183305.GF750234@unreal>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bfSrTt17"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YnlqgHgP0tj5NblMkK9cMpyQH7I+HyMYZa10tRmbaWqLFbl/CzlpHicEWcMnFtTB6tNxMx8/Fak9dcm5BnR2jTFnGzrG1761KExAgMyUaAK43QB32A2GPVnf1GMshlJHtPOMYcd41XoYEy8EiJKpqLdfHTu8yicG+3IOOiOHbTzoJJVEOfgt61SHTze8a4O2pSx1Z+1y+1JYUlZ+D9oPkykAAcy/m7CKoq4omT5Kf/Q1NWVnBuiZjqb9wr6PMZSLVvw3O6l7G/7zok81N6IycraavkCCAo4RNSlT8/ggyYCJgmr067pg9teSHmHLZjlMP3x5PBR5AdoderSy1czY4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0XZXVuGFSaU4gYR/B/25jKWbZ7Q2YitZHgPBX2dpnMw=;
+ b=ToSOA+V1gYiOTdG3IMHCF+lTXKLj8P/Gb8BfgwXnzrUXhTP9R6EjfG/5xcisR4VSJUuQ/Z9+BuSzdAF13vLMlGYmBwiaGFwuKVws8Nm9FRGha0U1XXpW4C6qFWpufdV6pnZZrw9I4mfVi/oxjhuhulF1syULKdeaNAL+nj1Px2GT36kYbsbtkJT5SCjwINo/e80tPwx1smXWrqKsEXKf9feHBYmQ7lSTBHnXlVGREL1/M9TqF+Fgd3sSN2SJXPCxjrjMU9jrxF5HIXOn27+VW2LxEsOf3RzdT7tZ5BaaBLvYxFBdaaZSjA6CuUpvO1cq8yTe9A0DkK8shB4Ey7r0vA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0XZXVuGFSaU4gYR/B/25jKWbZ7Q2YitZHgPBX2dpnMw=;
+ b=bfSrTt17oiY5fWCOaLJzMVkMRQgl4ZWoJ9lGWggG52sbZ7O5Qba+0cDhWWfIpZ3I42P+H3v/9BDF+aXtb5wvqijVLcZ+zBARqEda1Ewf06QNpaRNEe9ZG+c62bOsuue4LhgXFhM3eCYgxQY/lplfKyO+s8wijALOykBCK5CHRZVm5zwlU2NvOFHpHFRdallz73DzWc9TNjvH8rcTLIKAvDMLlgopALwmUBDA+hlcplFbG0WOdo0P7xmdvo16Q7OBVbUopJ92P/O2qs1DlthNRfjDU2Xib6R9ZpoNEB17kE9NmS51zQxAS1rEaunz9sT+FC2i9WKac0i6V07ZZB6DzA==
+Received: from MN2PR22CA0010.namprd22.prod.outlook.com (2603:10b6:208:238::15)
+ by IA1PR12MB8336.namprd12.prod.outlook.com (2603:10b6:208:3fc::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.30; Mon, 16 Jun
+ 2025 20:04:45 +0000
+Received: from BL6PEPF0001AB56.namprd02.prod.outlook.com
+ (2603:10b6:208:238:cafe::9e) by MN2PR22CA0010.outlook.office365.com
+ (2603:10b6:208:238::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.23 via Frontend Transport; Mon,
+ 16 Jun 2025 20:04:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BL6PEPF0001AB56.mail.protection.outlook.com (10.167.241.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8835.15 via Frontend Transport; Mon, 16 Jun 2025 20:04:44 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 16 Jun
+ 2025 13:04:27 -0700
+Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 16 Jun
+ 2025 13:04:21 -0700
+References: <cover.1749757582.git.petrm@nvidia.com>
+ <78edac89730a346e957b69d4107fcd8f1c5c6266.1749757582.git.petrm@nvidia.com>
+ <20250613095755.54381628@kernel.org>
+ <ccaf0784-d7a3-41e2-b3e0-65b9022f15a6@kernel.org>
+ <87wm9bu13q.fsf@nvidia.com>
+ <426a2c83-38ca-4fa2-9270-b3e600e30d19@kernel.org>
+User-agent: mu4e 1.8.14; emacs 29.4
+From: Petr Machata <petrm@nvidia.com>
+To: Matthieu Baerts <matttbe@kernel.org>
+CC: Petr Machata <petrm@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Paolo
+ Abeni" <pabeni@redhat.com>, David Ahern <dsahern@gmail.com>,
+	<netdev@vger.kernel.org>, Simon Horman <horms@kernel.org>, "Nikolay
+ Aleksandrov" <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>,
+	<mlxsw@nvidia.com>, Shuah Khan <shuah@kernel.org>,
+	<linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH net-next v2 14/14] selftests: forwarding: Add a test for
+ verifying VXLAN MC underlay
+Date: Mon, 16 Jun 2025 21:53:24 +0200
+In-Reply-To: <426a2c83-38ca-4fa2-9270-b3e600e30d19@kernel.org>
+Message-ID: <87sejztpvj.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250616183305.GF750234@unreal>
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB56:EE_|IA1PR12MB8336:EE_
+X-MS-Office365-Filtering-Correlation-Id: d014fb42-4b14-4298-8c57-08ddad110a07
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Qxlr4MXu2X9NBTFrC391IW4RXhabPagN91CenQBt9mpVDWbQAq+wg3r9s7dX?=
+ =?us-ascii?Q?bUL8BBBWjej/lUz3aapBO/6DR5flhlzAVMioLfYIKutnv/FkTVS5RW4ataUM?=
+ =?us-ascii?Q?CUD7zTy+8hD7MNHudhJDPBAM9ri2umubck57o6zQ8VnAnxyuGicMPmDZ/kRx?=
+ =?us-ascii?Q?NZYRvpC6Keg+7qIMliLqOTukqR66mtc7LLiIDTwk0wL5SsPaS0ZZJN+wa89t?=
+ =?us-ascii?Q?sr9kqcT7sykc+T45AiH7cw5mVz4zOjwyatETFFSy2Esgs99JfN8RLi6w67Bb?=
+ =?us-ascii?Q?ZdJOpAxGRi3NWNVwA+mROfdLz9jJ3x7EwRRDBjwTCVuKTLjMrBcnuvZBYrC+?=
+ =?us-ascii?Q?ipZen1a8JHB5zZSvd01fCv+RcsiObaM9bMZLWLks6qWCprRGJ1ea4OW/E0ME?=
+ =?us-ascii?Q?UXqpt2vHppbransQThC82lsmqzFxlIQH/JbOJDpjm11FZsK8nDiRl9BrOn/Q?=
+ =?us-ascii?Q?mF3bAVCvlawQ9ZWlDP3ksH6HaicVPP805iMnQ0NciVSh6Ok38LufPGBvFmPb?=
+ =?us-ascii?Q?HFVTmAMQQNDngAf/GGwIdwMiQQYEys0fSbm02jbX5APel1RR3XlZBKcnr/NA?=
+ =?us-ascii?Q?MdbKU9DSR6usRQoIoAtgaI0udfxooa74U0kkG+tZazXD2RbR/pxu4WAME79V?=
+ =?us-ascii?Q?u7IESUfP4vZCNO+EIDtHkFp3e1ls5MK8DIiQKZ8hfb7nB2Sgv5T7RLyZ86oX?=
+ =?us-ascii?Q?ajWbuEISV50VRydw/Z+MuTWysjJ+U0VhDc7ZGZEp8XYdiex1fLNwV7w5Bpsn?=
+ =?us-ascii?Q?rXRILeGydzjjSJteCDsahNPyPIxSxnlEuttH7eJ7ULQoFcEHyFPti5Zyx0WR?=
+ =?us-ascii?Q?W3m4duuL4dzh9Amp0Ai+p/o8etz83/ZJFVEwtaKem0RCfCRK8vBLTmUfPY0q?=
+ =?us-ascii?Q?VE4+2bWQStWbYSuQQoy0erY0BxzneCLXbLRBXbYILJByk7nJFbcDAQfiyY5I?=
+ =?us-ascii?Q?YRdWfZ1xnvZIM+TD6kNxQDlVXIDyDGrri4gJ+9Eiso9tapcSBkKepqDpD65s?=
+ =?us-ascii?Q?FmoJKTjdr25emkrMu4FeNu7L+2jOrbNvkvXC6N5B453YiTLCKItbprZoWPov?=
+ =?us-ascii?Q?f24LdHs1z+BQeeiraRmVxchGkkOAPcc04/OFV8/7k8yIguBM4EY1KZIwbkMd?=
+ =?us-ascii?Q?P9X82uyOjhqFmaTLh5FsLx5fFvcYXvQhVOom5kyRfkAlj0gXQpPRzQquEDaO?=
+ =?us-ascii?Q?X2H0cxbT2MNjEJAFWKX3KluB/GQlA/dupAVtsXiHMnltJqdCyTGS71IYuJvy?=
+ =?us-ascii?Q?k4w68AFPgGZCN/zym9KtmkNPZf0fQeCwA8tfUL7hALDEkfXyZInH7QoCqauE?=
+ =?us-ascii?Q?e8HOkTzMlyiC7dcrAzLdVQU6k1r0EidzSWMV/3e7DZ88zkr5LpmhjBQQc7F+?=
+ =?us-ascii?Q?N6vDXEaue22XDZbtEmB5HGNr2igAlNshwavyjF9/1rwx+A4+Tr9xYxjs/Snl?=
+ =?us-ascii?Q?k4E1ark6bPq1F0j9Bb5yoJQQI9sBTWQ5YaQMVZnF5cyFHHd3EXoY3yDlvbIw?=
+ =?us-ascii?Q?qZMIxMlO0YcfeO6LuZ09JPeLvdNLy2T7XZGi?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2025 20:04:44.8756
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d014fb42-4b14-4298-8c57-08ddad110a07
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB56.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8336
 
-On Mon, Jun 16, 2025 at 09:33:05PM +0300, Leon Romanovsky wrote:
-> On Mon, Jun 16, 2025 at 05:36:02PM +0100, Simon Horman wrote:
-> > On Mon, Jun 16, 2025 at 11:24:23AM +0300, Leon Romanovsky wrote:
-> > > From: Mark Zhang <markzhang@nvidia.com>
-> > > 
-> > > Remove them to avoid "redeclaration of enumerator" build error, as they
-> > > are already defined in ib_verbs.h. This is needed for the following
-> > > patch, which need to include the ib_verbs.h.
-> > > 
-> > > Fixes: 096335b3f983 ("mlx4_core: Allow dynamic MTU configuration for IB ports")
-> > > Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
-> > > Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-> > > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> > 
-> > Hi Mark, Leon, all,
-> > 
-> > If I understand things correctly, without this patch the driver
-> > compiles and functions correctly. But if it is modified to
-> > include rdma/ib_verbs.h, which is required for some other forthcoming
-> > change, then the other parts of this patch are needed to avoid a build
-> > failure.
-> 
-> Yes, the inclusion of rdma/ib_verbs.h was needed for series, which at
-> the end doesn't need it. I can drop Fixes line if it is important.
-> 
-> There is no following patches for this. It is standalone change.
 
-Sure, that is fine by me.
-But please drop the Fixes tag and resubmit for net-next.
+Matthieu Baerts <matttbe@kernel.org> writes:
 
-Thanks
+> Hi Petr,
+>
+> On 16/06/2025 17:06, Petr Machata wrote:
+>> 
+>> Matthieu Baerts <matttbe@kernel.org> writes:
+
+>>> That what we did with MPTCP, see the top of the mptcp_join.sh file for
+>>> example [2], where we have:
+>>>
+>>>> # ShellCheck incorrectly believes that most of the code here is unreachable
+>>>> # because it's invoked by variable name, see how the "tests" array is used
+>>>> #shellcheck disable=SC2317
+>>>
+>>> If you add this at the top of your new file, followed by an empty line,
+>>> shellcheck will ignore this issue for the whole file.
+>> 
+>> The ALL_TESTS issue is not the end of it either. We use helpers that
+>> call stuff indirectly all over the place. defer, in_ns... It would make
+>> sense to me to just disable SC2317 in NIPA runs. Or maybe even put it in
+>> net/forwarding/.shellcheckrc. Pretty much all those tests are written in
+>> a style that will hit these issues.
+>
+> In this case, I think it would be better to add this .shellcheckrc file
+> in net/forwarding. If you modify NIPA, I don't think people will know
+> what is allowed or not, or what command line to use, no?
+
+Good point. The question then is whether to put it to forwarding/ or
+directly net/, which is has seen more use of lib.sh and therefore the
+same sort of coding style. I'll experiment with it and should be able to
+send it later in the week. I don't want to add it to the MC patchset.
+
+> Note that NIPA's shellcheck reports are currently ignoring all "info"
+> and "style" severities -- so including SC2317 -- except for new files or
+> the ones that were previously shellcheck compliant.
+
+Yeah, I know, but the result is still very noisy, if you want to verify
+it prior to sending the patchset. It's a bit annoying to have to scroll
+through the report trying to find relevant stuff. I could add
+.shellcheckrc in my own clone, but everybody is going to hit these.
