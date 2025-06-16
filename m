@@ -1,146 +1,88 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE992DBF72
-	for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 13:34:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E9C2BEFE1
+	for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 13:38:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750080900; cv=none; b=Wv2wrrujQ4GMdJwcxbzW9qM8+zljTbJxZFbswd9PLVO1apKhP5FdQt1jQfTOW3qwd39BP4eR3wpIOo7OxGDsLITA/hpDCHswk/WkuBvE+dxHOLHEwH3zkkZt2lm4OYE6pR8T0C3lGBPltPlzB4TFC1cBmW3Ch9m4QDgP3MmX8e0=
+	t=1750081140; cv=none; b=JlG2wjbJ+AHBECcFVSS2J5hdi8Jfj6+YeEVsL+ywbLLaVK80ZqkDmXlD+SGUVasTRsk11vkkkiJAS4MfIzqaGsp3+ApUE7bAshunJhOmdbfxZ8iXWY7pYXID+t1GdRU9m9/+rpPYeVeCzSY0Z6/5ZbvRDzlMUxPKJ5SKtKponjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750080900; c=relaxed/simple;
-	bh=A9wFcAqQwmUZpiuDblwurVpuPc0+SJEASs4pwtKduTM=;
+	s=arc-20240116; t=1750081140; c=relaxed/simple;
+	bh=Qwlb9f4UqEBo8Fip0+xaWfZ7pxfr82y7AgftVGul4Yc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E5m+WCioClCO1JDDcnCJz0jJufIUA/weKb4a2+Ceqr+Wlg9g/6xBfqOIjCehrq5a679PfHIxlJQSn8/WVKvqO+52nquzi9VBNcv4c3h2e5QhjnKP7+ZBYruQ51YlWQ5AD9h3DqOT62pJbl2tT8p5ZgCpKyegJscrAG5U2PItYdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uR9z2-0001e3-42; Mon, 16 Jun 2025 15:34:44 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uR9z0-003ocA-2t;
-	Mon, 16 Jun 2025 15:34:42 +0200
-Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 66E1F42893E;
-	Mon, 16 Jun 2025 13:34:42 +0000 (UTC)
-Date: Mon, 16 Jun 2025 15:34:40 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, Frank Li <frank.li@nxp.com>
-Subject: Re: [PATCH net-next v2 07/10] net: fec: fec_enet_rx_queue(): replace
- manual VLAN header calculation with skb_vlan_eth_hdr()
-Message-ID: <20250616-positive-vicugna-of-felicity-9239d9-mkl@pengutronix.de>
-References: <20250612-fec-cleanups-v2-0-ae7c36df185e@pengutronix.de>
- <20250612-fec-cleanups-v2-7-ae7c36df185e@pengutronix.de>
- <729dfa8c-6eca-42c6-b9fd-5333208a0a69@lunn.ch>
- <PAXPR04MB8510A1946372F37B5F97E9F28870A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <4877c76a-d0c1-41d7-95c6-553542e2d9b1@lunn.ch>
+	 Content-Type:Content-Disposition:In-Reply-To; b=klEvB+N2JEMsYRRITveN3+w6yNKBoE535HbQEs04pfNuImRVLCQBATOyW1EtNK3QUu5pjloVYTTL8ZLWwdvj+1HUsHvxQI+Nax2PXXbUmhx24tPFmu1lrrEiytQ8u88yZWRx8raB4G6oItkO9c7LCtwh2nGFpX+09L1ilmv0XBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QxGD5xgZ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QxGD5xgZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38D8C4CEEA;
+	Mon, 16 Jun 2025 13:38:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750081139;
+	bh=Qwlb9f4UqEBo8Fip0+xaWfZ7pxfr82y7AgftVGul4Yc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QxGD5xgZ2OAPCEY43MzurQtcdsohAs6E8OQQPGLU12UEnaLDPKpK9wEcsqL1nkmKA
+	 y70soT4ZpPU421g5h7uV1g4oF++179uwujTkh0j4wG94sDM24WVV/NMSQkTZ8arc+y
+	 91I25VaIu8VsJ4snUoQE8wBYrblhs7GKpN775skDR58RD7TCG5YLeifHHkJNN6Hfch
+	 C7zlz58AVrxamhUHrmJo2cf58Kfv49ZVR0q4ToOh3DRtlZRmei6zRf2EluG0nBzkZf
+	 rVULmyOWa+bXwwtubTyPJeLzjnviCiSvHtdurE25j1cC5AaDbI9HMrY0r71fPoNsqL
+	 ZxsSm2+Q4Ic8A==
+Date: Mon, 16 Jun 2025 14:38:55 +0100
+From: Simon Horman <horms@kernel.org>
+To: Michael Chan <michael.chan@broadcom.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
+	pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com,
+	David Wei <dw@davidwei.uk>
+Subject: Re: [PATCH net 3/3] bnxt_en: Update MRU and RSS table of RSS
+ contexts on queue reset
+Message-ID: <20250616133855.GA6187@horms.kernel.org>
+References: <20250613231841.377988-1-michael.chan@broadcom.com>
+ <20250613231841.377988-4-michael.chan@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6rzuiur3eqbcevt4"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4877c76a-d0c1-41d7-95c6-553542e2d9b1@lunn.ch>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+In-Reply-To: <20250613231841.377988-4-michael.chan@broadcom.com>
 
+On Fri, Jun 13, 2025 at 04:18:41PM -0700, Michael Chan wrote:
+> From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+> 
+> The commit under the Fixes tag below which updates the VNICs' RSS
+> and MRU during .ndo_queue_start(), needs to be extended to cover any
+> non-default RSS contexts which have their own VNICs.  Without this
+> step, packets that are destined to a non-default RSS context may be
+> dropped after .ndo_queue_start().
 
---6rzuiur3eqbcevt4
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net-next v2 07/10] net: fec: fec_enet_rx_queue(): replace
- manual VLAN header calculation with skb_vlan_eth_hdr()
-MIME-Version: 1.0
+Hi,
 
-On 16.06.2025 15:12:37, Andrew Lunn wrote:
-> On Mon, Jun 16, 2025 at 01:42:08AM +0000, Wei Fang wrote:
-> > > >  drivers/net/ethernet/freescale/fec_main.c | 3 +--
-> > > >  1 file changed, 1 insertion(+), 2 deletions(-)
-> > > >
-> > > > diff --git a/drivers/net/ethernet/freescale/fec_main.c
-> > > > b/drivers/net/ethernet/freescale/fec_main.c
-> > > > index 6b456372de9a..f238cb60aa65 100644
-> > > > --- a/drivers/net/ethernet/freescale/fec_main.c
-> > > > +++ b/drivers/net/ethernet/freescale/fec_main.c
-> > > > @@ -1860,8 +1860,7 @@ fec_enet_rx_queue(struct net_device *ndev, u16
-> > > queue_id, int budget)
-> > > >  		    fep->bufdesc_ex &&
-> > > >  		    (ebdp->cbd_esc & cpu_to_fec32(BD_ENET_RX_VLAN))) {
-> > > >  			/* Push and remove the vlan tag */
-> > > > -			struct vlan_hdr *vlan_header =3D
-> > > > -					(struct vlan_hdr *) (data + ETH_HLEN);
-> > > > +			struct vlan_ethhdr *vlan_header =3D skb_vlan_eth_hdr(skb);
-> > >=20
-> > > This is not 'obviously correct', so probably the commit message needs=
- expanding.
-> > >=20
-> > > static inline struct vlan_ethhdr *skb_vlan_eth_hdr(const struct sk_bu=
-ff *skb) {
-> > > 	return (struct vlan_ethhdr *)skb->data; }
-> > >=20
-> > > I can see a few lines early:
-> > >=20
-> > > 		data =3D skb->data;
-> > >=20
-> > > but what about the + ETH_HLEN?
-> > >=20
-> >=20
-> > The type of vlan_header has been changed from "struct vlan_hdr *" to
-> > "struct vlan_ethhdr *", so it is correct to use skb->data directly.
->=20
-> Doh! I missed that, sorry. Maybe extend the commit message, you
-> mention skb_vlan_eth_hdr() but you could add something like
->=20
-> ... and change the type of vlan_header to struct vlan_ethhdr to take
-> into account the ethernet header plus vlan header is returned.
->=20
-> With that, please add: Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+This patch seems to be doing two things:
+1. Addressing the bug described above
+2. Implementing the optimisation below
 
-Will do, thanks!
+As such I think it would be best split into two patches.
+And I'd lean towards targeting the optimisation at net-next
+since "this scheme is just an improvement".
 
-Marc
+> 
+> We further optimize this scheme by updating the VNIC only if the
+> RX ring being restarted is in the RSS table of the VNIC.  Updating
+> the VNIC (in particular setting the MRU to 0) will momentarily stop
+> all traffic to all rings in the RSS table.  Any VNIC that has the
+> RX ring excluded from the RSS table can skip this step and avoid the
+> traffic disruption.
+> 
+> Note that this scheme is just an improvement.  A VNIC with multiple
+> rings in the RSS table will still see traffic disruptions to all rings
+> in the RSS table when one of the rings is being restarted.  We are
+> working on a FW scheme that will improve upon this further.
+> 
+> Fixes: 5ac066b7b062 ("bnxt_en: Fix queue start to update vnic RSS table")
+> Reported-by: David Wei <dw@davidwei.uk>
+> Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+> Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---6rzuiur3eqbcevt4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmhQHW0ACgkQDHRl3/mQ
-kZzv3QgAj3kbtMjU741HDJh5zzIvnio+zZLg4NbUzRfer3lx2Y4qLI8tWZQFyZZt
-cOUm/G+zu5zKm6UxIHQ+XmPHonj/sz+dRi+Qj1wDuYBdbhZWOTIqYd7S3T61h4SP
-lxwZyhE/j03tE/KeMeSs853eZRvdyCXW4+GYNLN28wR/URs88KdHQZuzwe1pCWYI
-0qT8v3SSU/bDaybETJ+e3BHOgbBBG0QURONMRXlUbCI7FScz/5Sc3FJMABUTkn/S
-N3KXzyFfQpsh7ePqUm8glFEeStublciZgVPN3Wn1Jeogqp+p1hYWBLbyq+hZjS0P
-C8CSppSsEVOLs1HX19284euOGaJtOw==
-=UOCy
------END PGP SIGNATURE-----
-
---6rzuiur3eqbcevt4--
+...
