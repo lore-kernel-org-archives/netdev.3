@@ -1,127 +1,112 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44F82E11C1
-	for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 05:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5582A189B8C;
+	Mon, 16 Jun 2025 05:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750052064; cv=none; b=djhr9wgRMKkXv5jw4UGpo00yB6nqwIs/9qnK75HZy/t13qXocMriVilKYYE/PysJZoQSYPdUMSRpmJmt9A1OnF/q4IEn3TsbPgEE0ou6i3N6E/PHP8gSlI4tw8opHnvPj+rPPVoxKq/e/ttxpWRra54cnkEhQrMio/ce3jCyTRI=
+	t=1750052722; cv=none; b=TcrDTNjynbjv8rT9hC61x/T6Ebc9fe6D0Lx+G5R8rkD9cxcTcKzX57fJfssJdnRNcCjS3+lDRsul/YBPgbC0Csafeh5X2965GPOC/A8glyKOei+X9nXmrS0GeMT1vc3f8QguD07ZKHTroCyUcrAmrQIvaR91ETobzJ2dsnxEgbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750052064; c=relaxed/simple;
-	bh=xfNJTgN9TCVMW6n31UDUcTok0Hdz7AP7jf9CRclJCFg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lIAyrNcrh/ZcxH/bP6Fdy5qjsxNiEXIbTc9aCIz5YAEGb+xFjZiOI0ympjDd6F88mPRTu+oIEipcgQobGOyccTLCreGdzQ8hgNehEuwtFPAV7V2EwhM0mLPX/dFdOKRAwU16flGqHgCm+Kprtr9bbRNNfjISnknZmnpKvAkRqBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gfZkF65t; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1750052722; c=relaxed/simple;
+	bh=fpnkkOftvr32u+qLJ/VQLPl9wzt0dntur1yD8wmaBr4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GBbtZUnayJUVQbUvhos+S/x4LClIovmgBBqaNyIYOCE5xDC1KrZLH3JVi8NnQsfXn8aXh9DjsThHxVg6+fVOhj5jvhIIG72a8UoSz0sPgMORCtsd6vkKRSu3994CWaFAqSoRP57Zm6zkMclYOhKu2Th0pw+DHov4QrdZgOXcI2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=S64gmAVD; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gfZkF65t"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750052060;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1CBjMVseHPazdD7nsVj7nsvjyAW5v2qbrVd83qIb1EM=;
-	b=gfZkF65tgakmHhDMdc6odY26Bz/JWp0nwYOskkta1xxJdWzwZBQolRY8GAC7RbB4ot1lhK
-	pXZXNi8loFodFac404r49UtjNp9RRRVmJw8gI0WTwdAU3F1oAqYC66C7EU1n8Kcae771JM
-	qDtQrvDDAW6VAzSNVfldwBy1WSHKffA=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-t9hZb38uNKmXlmXdh7ScDw-1; Mon, 16 Jun 2025 01:34:19 -0400
-X-MC-Unique: t9hZb38uNKmXlmXdh7ScDw-1
-X-Mimecast-MFC-AGG-ID: t9hZb38uNKmXlmXdh7ScDw_1750052058
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b1442e039eeso2502233a12.0
-        for <netdev@vger.kernel.org>; Sun, 15 Jun 2025 22:34:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750052058; x=1750656858;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1CBjMVseHPazdD7nsVj7nsvjyAW5v2qbrVd83qIb1EM=;
-        b=omBf/EyqDJo1BukQKIS//V8fIYHt0JFO0JsWrV1Wqesi8NGmW5qiddhIcBGz9jwSOw
-         azMuSKJTjpxhs0Mll2EZOp+zy2smFz7V/9LXioETSgnARw838WqjBUs0uFA6ElmgV53l
-         ExMBAF8CqJUpkHtzPu5/fKb1d87QNNnfnSVT62vyL1lymkLqgsq6BLk2dCF5lTLFRHiD
-         sTfbAVXEfNU/tLGqx958hyEHDrYNLGVtVbtANAjX544gpO619rYOXOScrqLoLpSynK0J
-         m2621nTPIk31jWsIVNBBO4ShLrPz56fPGQ8gpjDMa5JM5Nx5YRXS4dAwEllYQgeyzXPH
-         ohVg==
-X-Gm-Message-State: AOJu0YzLSBainAQ/bUkJxWcFhpgZBCcdx/WAdX8lmwS2WTo1neOMPqlG
-	P7f1ph1BaRDPx7JdKNqfLztfFUcuwV54PgoB2ADPJJ8IeT6TIlrq1+Csbj+gUFHHsFA64kDxR9W
-	RoSdVIuGSwi0axxzu7ry2Jx7kwa8Cd35mB46KqiIw3QggBsb8Ex+trCTpWuERJwiBYPVpcvHV0L
-	fEILQ9OelKYcJab4C3Y4fzig4ApajI75aj
-X-Gm-Gg: ASbGncuE1ZDZAopsJLlEdyY1rFw9ZvMJPJcp30iwrCaseFC9f1mP2GB/WGO1KpUxKIz
-	IW2JgOwIVyb3NT8V3j8+XPUF6l9txMc3aGTTxeaqkpTmMN6O+oJ+NhYzlV4iMU5qeQHFzYrfjev
-	ejog==
-X-Received: by 2002:a05:6a20:7287:b0:216:1ea0:a512 with SMTP id adf61e73a8af0-21fbd7f9364mr11757189637.38.1750052057895;
-        Sun, 15 Jun 2025 22:34:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGI0Ns9agvuk9A2FBajJhBx55VqIHpcqEKH7wf9vC83YXOkKf0yfvwqi7kwWT4LmHQ9XTpkAdtWiTku5a6Sn9Y=
-X-Received: by 2002:a05:6a20:7287:b0:216:1ea0:a512 with SMTP id
- adf61e73a8af0-21fbd7f9364mr11757154637.38.1750052057524; Sun, 15 Jun 2025
- 22:34:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="S64gmAVD"
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55G0WYLe014065;
+	Mon, 16 Jun 2025 05:45:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=zWCCR
+	oNpZVN4KFAYLFC9HnHKzqleSTDoIKfkY6cqO10=; b=S64gmAVDWXzB91rIWdgob
+	LWvGNatIchgh0K729kY1iZNOT/wGxCT7l8soMzg0L/4M7QE1VhITPRNEzSZGfL93
+	as2usjIZ9fL5go7vD4Mtq5H1BdoN+8STEeSv65lLLgGLIJ0S36QcxSwHHlwv9S3t
+	IsVvo39Sf6O3bx3iUZPGldzDrqcfvDoK4TB4u5B3okv0hYTjsqGcKdyUSeYR1GYi
+	J6sMHVE03w/vGlWQNH9JcbOds3X9j+bbzn+J4zh6SClOe5YeYWqeFKYpkLUHnREZ
+	I3xLjP4Lt0r3njjW3pHDLXL6AIQVNvWPjWk/uPY3uYOZ4BHnYJ29hIGnVto4YXEH
+	A==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4791mxhpxx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Jun 2025 05:45:10 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 55G4Mq7F032103;
+	Mon, 16 Jun 2025 05:45:10 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 478yh7fhg3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Jun 2025 05:45:09 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55G5j7FU015580;
+	Mon, 16 Jun 2025 05:45:09 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 478yh7fhda-2;
+	Mon, 16 Jun 2025 05:45:09 +0000
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
+To: pabeni@redhat.com, kuba@kernel.org, jeroendb@google.com,
+        hramamurthy@google.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+        edumazet@google.com, netdev@vger.kernel.org, almasrymina@google.com,
+        bcf@google.com
+Cc: alok.a.tiwari@oracle.com, linux-kernel@vger.kernel.org,
+        ziweixiao@google.com, joshwash@google.com, willemb@google.com,
+        pkaligineedi@google.com
+Subject: [PATCH 2/2] gve: Return error for unknown admin queue command
+Date: Sun, 15 Jun 2025 22:45:01 -0700
+Message-ID: <20250616054504.1644770-2-alok.a.tiwari@oracle.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250616054504.1644770-1-alok.a.tiwari@oracle.com>
+References: <20250616054504.1644770-1-alok.a.tiwari@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1749210083.git.pabeni@redhat.com> <a38c6a4618962237dde1c4077120a3a9d231e2c0.1749210083.git.pabeni@redhat.com>
- <CACGkMEtExmmfmtd0+6YwgjuiWR-T5RvfcnHEbmH=ewqNXHPHYA@mail.gmail.com> <3da348e2-9404-4c6f-8b94-1c831ff7e6f9@redhat.com>
-In-Reply-To: <3da348e2-9404-4c6f-8b94-1c831ff7e6f9@redhat.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 16 Jun 2025 13:34:05 +0800
-X-Gm-Features: AX0GCFuqPsB177cV9IA_WOSqrUZvhAHtkJp8389wrLX86jq4IYeO3Kj0PPpfpHU
-Message-ID: <CACGkMEs9HLYakHZiJbvTv=nWnVhCzPwywh-nB95tTCyAZ65zZQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 7/8] tun: enable gso over UDP tunnel support.
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Yuri Benditovich <yuri.benditovich@daynix.com>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-16_02,2025-06-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999 mlxscore=0
+ spamscore=0 malwarescore=0 adultscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2506160036
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE2MDAzNiBTYWx0ZWRfX09dleojPizNU +Isuc89mK7W5eExXrnPLW8soG+8zzJKaMIQruSrXZe/P4vP9XLkJfYxkrVt9u2Z2P1HT97e4YOK Yk5Pl6nQNlwxIA8gNBxSZCwNI06srOu8C14mn7pr6jukNO9rsIynviwdYqNLEbgfhijNp+oSZFz
+ GjdWDGYrPZxcRkk1p2/6XIMgZICmSPdDJsLzqrvl/khRKHyOldJQk/NHtEGyz2uEohqXUiFy/8M aQYNBpFOHtLCEYc9O8so3+kawSuICd4Wadxg1DTfgZw7buzETf0xX2iGM9NK9qcaEAXSyE8X9EA ZNJ3uDMFDiGReHbaMDa8QWfpz0KGbcIXyyQ3ynL48TgyY7nG46whpQFvONDRLcDTLb8IoGH5E48
+ NGAQxX35x4S2tpuj4pct8yrhLWyP2mId1KHZQY0gx18JJP1CTx7h18Nqqf5C2k4ZOnIuCe21
+X-Authority-Analysis: v=2.4 cv=HvR2G1TS c=1 sm=1 tr=0 ts=684faf66 b=1 cx=c_pps a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17 a=6IFa9wvqVegA:10 a=yPCof4ZbAAAA:8 a=dq2otab6FrwKeooAi1oA:9
+X-Proofpoint-GUID: KBjjd7qMdtXynZq612vREd8ihT1EkRrq
+X-Proofpoint-ORIG-GUID: KBjjd7qMdtXynZq612vREd8ihT1EkRrq
 
-On Sat, Jun 14, 2025 at 4:04=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wro=
-te:
->
-> On 6/12/25 6:55 AM, Jason Wang wrote:
-> > On Fri, Jun 6, 2025 at 7:46=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> =
-wrote:
-> >> diff --git a/include/uapi/linux/if_tun.h b/include/uapi/linux/if_tun.h
-> >> index 287cdc81c939..79d53c7a1ebd 100644
-> >> --- a/include/uapi/linux/if_tun.h
-> >> +++ b/include/uapi/linux/if_tun.h
-> >> @@ -93,6 +93,15 @@
-> >>  #define TUN_F_USO4     0x20    /* I can handle USO for IPv4 packets *=
-/
-> >>  #define TUN_F_USO6     0x40    /* I can handle USO for IPv6 packets *=
-/
-> >>
-> >> +/* I can handle TSO/USO for UDP tunneled packets */
-> >> +#define TUN_F_UDP_TUNNEL_GSO           0x080
-> >> +
-> >> +/*
-> >> + * I can handle TSO/USO for UDP tunneled packets requiring csum offlo=
-ad for
-> >> + * the outer header
-> >> + */
-> >> +#define TUN_F_UDP_TUNNEL_GSO_CSUM      0x100
-> >> +
-> >
-> > Any reason we don't choose to use 0x40 and 0x60?
->
-> I just noticed I forgot to answer this one, I'm sorry.
->
-> 0x40 is already in use (for TUN_F_USO6, as you can see above), and 0x60
-> is a bitmask, not a single bit. I used the lowest available free bits.
+In gve_adminq_issue_cmd(), return -EINVAL instead of 0 when an unknown
+admin queue command opcode is encountered.
 
-You are right.
+This prevents the function from silently succeeding on invalid input
+and prevents undefined behavior by ensuring the function fails gracefully
+when an unrecognized opcode is provided.
 
-Thanks
+These changes improve error handling.
 
->
-> /P
->
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+---
+ drivers/net/ethernet/google/gve/gve_adminq.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+index e93e564f3e65..a7b21cea27da 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.c
++++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+@@ -564,6 +564,7 @@ static int gve_adminq_issue_cmd(struct gve_priv *priv,
+ 		break;
+ 	default:
+ 		dev_err(&priv->pdev->dev, "unknown AQ command opcode %d\n", opcode);
++		return -EINVAL;
+ 	}
+ 
+ 	return 0;
+-- 
+2.47.1
 
