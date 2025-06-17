@@ -1,216 +1,128 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D6E2EB5D3;
-	Tue, 17 Jun 2025 15:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D213C2CCC5;
+	Tue, 17 Jun 2025 15:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175367; cv=none; b=eiZkXfT5mnMZmM+rTbPSpkO6RaOXj5ezwblXW9lwHXBho2WkiSvCUrbtGF/Espkj0I45pnnntSOg7+3z4qxql/RC5nyKO5mVmywTysMiK7QMF3ehpWyZIIx3MGXPoUQWry9yYATwABbFiisCTI1uXmFsG8yQAGwEKHVmwuDtXXY=
+	t=1750175467; cv=none; b=TzXsZmRzqJCAjL8afTnZAQMOrv3BIn5pQnobibY6tt08D5bIpoFisJBzP5lKwIqEWScoHYMNJUUD5Zuaod+kcniUPUVR0NQw1+c2VYgJgrM3rhL/vS4F4GZsQnwhTfsUwU2HR8M5ZxNqs0CEBRyOmYCqI3mhlBCoKjUTULqi7uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175367; c=relaxed/simple;
-	bh=8s9t1kuXB6avTYRQ0vG2v4H1fTsDd+syfRgNT4/rrL0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l38fuqlQm/8aRsYB61fBwz2DkY6vQ3z6qdO8IYs4qk/yfIvYO3PgoGbmuGgsWIuiuItX97mapAtJJSKg00uUjwQuW5lBXUq1EBbJm2RZ6UhO0vd4Dt+QMj2QSau3kgUuwwAh5g2Vxf1iE8maQRnm6Y2PY21sM1RExt71U6h5Oxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=amYisdfN; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1750175467; c=relaxed/simple;
+	bh=5RqjtlgUUeuy/fAmRiej3LgLEt2jOXDeeg6BVuZlz38=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W3UNBpiMWqNJDRxTHvO9s8lvV4/Wfl8ksPOJpUnAt9v/x06KofgwzVQLPMP3+WGCKbe7IOS3XdA4GDSbzKJnyHVwptUu21p6fOIsfYXvbNBEdS4CyBJRf5+NdtQyR6snpMdwqLB9R1Q509/4EvaxjANfM9eH9R0oheuyY2U6+ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="amYisdfN"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-450dd065828so48238375e9.2;
-        Tue, 17 Jun 2025 08:49:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750175363; x=1750780163; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2ED7sxa3PS0VApQnvLXC5jidvzh+lHXS4510sX1ujII=;
-        b=amYisdfNuq1F2xRGHqXeqoWvnZjy+3Z6PV0+tPyJahboULy+DBhSFA011NhpLzUL2K
-         qs4YDN9Bp6cuMwF+PbggMSTuYRQprxI6SHtgJmJ0miU8hNIaoi/rpVG3lAO/RI2XtcKb
-         jkDDWCzO7wk33o2wV7gvC5MGpKubipCRiA7HznCDaxbEkTrwOaZzoIud+rQ9Sb3R7Pwr
-         b0ITwcNwffHJbsSZMTZuUO8axgY/W0UrvoBRnEfDhRUI1OsauCQBGIXK8JHgDhD0ZwF2
-         H8qPPeELffaeAoqCW7vTs1V2Osk5Jm5mQXJeU1oDFatZQ8b4oAwSerudOj/RXuEqkc3O
-         zQlw==
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-4e7fb730078so992295137.1;
+        Tue, 17 Jun 2025 08:51:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750175363; x=1750780163;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2ED7sxa3PS0VApQnvLXC5jidvzh+lHXS4510sX1ujII=;
-        b=BBCCqgrVO+Zz2IMHt6jpiDhGQoiHwvfUHynPe361RY0wIPvniwybp5gMXf0HFxXuhL
-         ix28EapV+qmBKsRhNed32X7xWjleeCxzkm92LdcXUoLlaEnBtBOHvolH5hzpLgLdI6im
-         xS4m7HEqQfSWFuRzciVn0P0dC+js8kdqkMCMSoc8Rbq3bI3ArCQlhGt0pYCNCyhIyGON
-         OrxsUSvy9y7jw94tti6Y//+ctWiQ57CqKHXUUCuZDgYjCt9r7JcIZS4SWgWIvbVCDXfk
-         hFattWVDe9dqXXvlMdjNszvIE1R0MveZfg3IAD+LIKudHa0rSIdlQcWGQkzng0+h+Mdz
-         /7AQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU228JV+jRYQ0Qnqwa6W5ScEhdvhYyhxbd0cWBTn5UBjGe+2h/KVjW010lPtSgCBVo31I/YjDFU@vger.kernel.org, AJvYcCXyExSjZeBBpGmCPvU/qqiUBEolP4pkj0ROo5aiTfc8AtaOUgsBvjdzN7Ut1Xuqq7Q/77E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB1Ss99GjhPjfRd2VeznHOAyV3bNu7C+/jUK5eWoPLrwf/0Go+
-	HKP0sjWVK54+frCb9QThUSbknkYVZFl4QYffTxmbibpcvgwFcE1WST+JCwr2SzIb
-X-Gm-Gg: ASbGncswJSh4u7BPPKsXjxbIbLTx07HldaycE1+Sv6mz7lZEHgvJv0+I9aAfjgNNNCc
-	p0uEsqQBq9vdHU3VlL94xXaZlXMcIMuYZ/ThM88RBTA5oeGoMqIi+AU5uUrij+HpQQzIpGrrOQZ
-	6wRNZowffY6c/f2LrNsNeFvZM/NzUa+y8K4BQkQAdIM0D2FpYWHS15+SBrb3MG2c0AYCxSK8kyK
-	IcxcFo6fzpm+PuVYe+u70UJ7DGuU6GI86T2DHQm0v7IIIoXf//oYGnZ+FW7ssnbLcPY50puukBZ
-	Ne7z2djVjmoQ4I14Rw0OoMn2DJhY07GbqDRdFfm4QdBvc09oTkVmxpebr0g4nPgTYNiFs64Rnz8
-	eVZmrZXpWuee/NEmW6He23cUwFVXXr0KvPZtlU29HQBC33qM27oqiyW7hwSsgDPphlDbpp/Y=
-X-Google-Smtp-Source: AGHT+IFDwtTxvdIk8gaYyDwV4B4f9ZCesBloO5HyZeHmjRI0aKuIc5DEn11og0iET4+2nV8PKlUKqw==
-X-Received: by 2002:a05:600c:3f07:b0:442:f4a3:b5ec with SMTP id 5b1f17b1804b1-4533ca7a34bmr143186285e9.4.1750175363138;
-        Tue, 17 Jun 2025 08:49:23 -0700 (PDT)
-Received: from mail.gmail.com (2a01cb0889497e00112ae8a423a3e4b4.ipv6.abo.wanadoo.fr. [2a01:cb08:8949:7e00:112a:e8a4:23a3:e4b4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568b6debasm14650000f8f.93.2025.06.17.08.49.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 08:49:22 -0700 (PDT)
-Date: Tue, 17 Jun 2025 17:49:21 +0200
-From: Paul Chaignon <paul.chaignon@gmail.com>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org,
-	bpf@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>, Tom Herbert <tom@herbertland.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>
-Subject: [PATCH stable 5.10,5.15 2/2] bpf: Fix L4 csum update on IPv6 in
- CHECKSUM_COMPLETE
-Message-ID: <2ce92c476e4acba76002b69ad71093c5f8a681c6.1750171422.git.paul.chaignon@gmail.com>
-References: <0bd9e0321544730642e1b068dd70178d5a3f8804.1750171422.git.paul.chaignon@gmail.com>
+        d=1e100.net; s=20230601; t=1750175464; x=1750780264;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OWqem8pDRB+jdxImbAtTRPgwW7lDiNsUzIpmKoUsHz4=;
+        b=Px+MLzP5um6MdMYgFr4ki2uvKKHACV5fxFQj6z3je4MEwrCNxDcHyuaAjVmRbIQxEw
+         PnJmqE4UQ4e9YPD5fSkFT3X04ozAj0vYkzX4UEUggRB3tXb4s1rjG6PGwgUW+udiSwVf
+         zj9/aVZvQ5Dq/dx0bMgJIZrQfo2mpoPSb5kzJfeVKgz6VVsOOdRKkq2bJV40kHztnKHx
+         AwTP6iUWp6ScKliboTjRC+biLQbdedM4cvfSJ0xNUdcFy+v6OLJMQTT2EhXld/TRXaHT
+         GyFOoVrWqkYBZ6tWmGF+8Rmit8XNcD9XzGkRyt6Fbxz+msEEFyZl+f4MLwfrM/qlWPq8
+         HxqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUTG1CTCZnidGAOuHmC7eecJMQVykufZQ5O7yaU56NByzwUFeMp1fBIQNydy36cjt6U4HCcOcaF8mS1@vger.kernel.org, AJvYcCWanNbcH+Pq4P4F+dfxVdlz6lmLPdbNGJ0fa7mik8YV1w7XRju5OlW0l/IlK3bUiFJoGZN7sD76GW4RL1RrA660H54=@vger.kernel.org, AJvYcCXfNHX/HpgmgK2wFvAd6ZIZwJnI/e3N4C37h/l2QU/7XZbFTAtMuBlSOvHm/UD5e6rXsyaajOCBh7UoPu86@vger.kernel.org, AJvYcCXlOSj2FS2ZPqe2UEcXY71LmIZ8ndzvklWoxjdLnYo4OvYCIvQOfdgH03CL71NDkFaqn6kXXlFt@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTwuY3JHfc4ONEoV7m5cxuwwDU/oUgWDJsduGJiazddNkxo91A
+	mDPqRHMgXeWu7QKaKumvfRmongzTMmkcnxUaOtBTPmxTz0SoZ+Jr9e3FNzKW28Qb
+X-Gm-Gg: ASbGncuhAsj0T8IwdFc1Cye2nj9iGBG6YSdX71n+r7C53pWfkc8XPKkBqeddlsV7Zv4
+	5Lqf2vXXKi8Xwj1HvagzxbpAVYGJEgSml/FtQRFthsLEwgSEwodQVuZzObeZxx8hsfasHHztz7j
+	0bNP9f9NqegR1G9AYXYzsAeSbdY6a8+6X2xpddU9LQwks66ll1NqvcWmJziE3SwmlcmJVPTFrZp
+	k6L9eY/mFyGd8TtasG9gcDo0tFHhZfmJYw9/cfB2RSNszaAhZ9tcn4uOAFaMOyXhl/k1h5xvLgE
+	T2PWPsLE3FPHyB/xuNpLugl2LhV9Pows4rCop+KQ/j56jNwspysMvQ56EdnN3LZ3RfyHuoJAwjS
+	FQVdr9t0j32TpHU+Su4gGKysw5A0a2/lgwSM=
+X-Google-Smtp-Source: AGHT+IEYnm3bsCHqtvQsTtYnEmS222ydUHeJsXfCGfB3ygwEnvT/dNNuIa75K2agZgGorXX1wavBgQ==
+X-Received: by 2002:a05:6102:2927:b0:4e6:245b:cf5e with SMTP id ada2fe7eead31-4e7f62a5240mr9649994137.17.1750175463588;
+        Tue, 17 Jun 2025 08:51:03 -0700 (PDT)
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com. [209.85.222.51])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-87f0fb54157sm1590908241.27.2025.06.17.08.51.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Jun 2025 08:51:03 -0700 (PDT)
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-87f234ba1abso642533241.1;
+        Tue, 17 Jun 2025 08:51:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU4U6/pXgl6a/mYaRWTLR6HdZJmqXd792SUhqQRoaLS6+MHfA2PTTwObHRtpt/jwnitpC0/K+Skhg4w@vger.kernel.org, AJvYcCVqvROObTfYX3Mme6oKGX5eJXs6KYHk6tQaLzhHFJjk+pgTV2ChY6XZb7y2VOaUxnsRU5ICWWs54yECJlek@vger.kernel.org, AJvYcCW+fMuEPqamnIHccAoogjdEjZD8IlrQsuiHFMFn4EsShJHN+ZyZ+YiFA+KRYQl1yZhePYKL0DFJ@vger.kernel.org, AJvYcCW6Vk8esDhWSmEUgBG6zopDrDLdBDFQ0m5SmZMhiUUTREhRaBruhMVdz1ECtpvuF0nWQjxjI5resd2bl6RaXKdS02s=@vger.kernel.org
+X-Received: by 2002:a05:6102:26c2:b0:4e2:ecd8:a1f with SMTP id
+ ada2fe7eead31-4e7f6186014mr8280933137.1.1750175462827; Tue, 17 Jun 2025
+ 08:51:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0bd9e0321544730642e1b068dd70178d5a3f8804.1750171422.git.paul.chaignon@gmail.com>
+References: <20250611061609.15527-1-john.madieu.xa@bp.renesas.com> <20250611061609.15527-4-john.madieu.xa@bp.renesas.com>
+In-Reply-To: <20250611061609.15527-4-john.madieu.xa@bp.renesas.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 17 Jun 2025 17:50:50 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWJNCSUj6mUweKtXycHNNok4L=TFQipVO8n9g7DiU=b9A@mail.gmail.com>
+X-Gm-Features: Ac12FXwk4GGI8MpQTiHifAVx3-K2qs_irp8n-7ldxy3kuIQEgMz6LOdOM9uXcm0
+Message-ID: <CAMuHMdWJNCSUj6mUweKtXycHNNok4L=TFQipVO8n9g7DiU=b9A@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] arm64: dts: renesas: rzg3e-smarc-som: Enable
+ eth{0-1} (GBETH) interfaces
+To: John Madieu <john.madieu.xa@bp.renesas.com>
+Cc: andrew+netdev@lunn.ch, conor+dt@kernel.org, davem@davemloft.net, 
+	edumazet@google.com, krzk+dt@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
+	prabhakar.mahadev-lad.rj@bp.renesas.com, robh@kernel.org, 
+	biju.das.jz@bp.renesas.com, devicetree@vger.kernel.org, john.madieu@gmail.com, 
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	magnus.damm@gmail.com, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-[ Upstream commit ead7f9b8de65632ef8060b84b0c55049a33cfea1 ]
-[ Note: Fixed conflict due to unrelated comment change. ]
+Hi John,
 
-In Cilium, we use bpf_csum_diff + bpf_l4_csum_replace to, among other
-things, update the L4 checksum after reverse SNATing IPv6 packets. That
-use case is however not currently supported and leads to invalid
-skb->csum values in some cases. This patch adds support for IPv6 address
-changes in bpf_l4_csum_update via a new flag.
+On Wed, 11 Jun 2025 at 11:00, John Madieu <john.madieu.xa@bp.renesas.com> wrote:
+> Enable the Gigabit Ethernet Interfaces (GBETH) populated on the RZ/G3E SMARC EVK
+>
+> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+> Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
+> Signed-off-by: John Madieu <john.madieu.xa@bp.renesas.com>
 
-When calling bpf_l4_csum_replace in Cilium, it ends up calling
-inet_proto_csum_replace_by_diff:
+Thanks for your patch!
 
-    1:  void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
-    2:                                       __wsum diff, bool pseudohdr)
-    3:  {
-    4:      if (skb->ip_summed != CHECKSUM_PARTIAL) {
-    5:          csum_replace_by_diff(sum, diff);
-    6:          if (skb->ip_summed == CHECKSUM_COMPLETE && pseudohdr)
-    7:              skb->csum = ~csum_sub(diff, skb->csum);
-    8:      } else if (pseudohdr) {
-    9:          *sum = ~csum_fold(csum_add(diff, csum_unfold(*sum)));
-    10:     }
-    11: }
+> --- a/arch/arm64/boot/dts/renesas/rzg3e-smarc-som.dtsi
+> +++ b/arch/arm64/boot/dts/renesas/rzg3e-smarc-som.dtsi
 
-The bug happens when we're in the CHECKSUM_COMPLETE state. We've just
-updated one of the IPv6 addresses. The helper now updates the L4 header
-checksum on line 5. Next, it updates skb->csum on line 7. It shouldn't.
+> @@ -77,6 +79,74 @@ &audio_extal_clk {
+>         clock-frequency = <48000000>;
+>  };
+>
+> +&eth0 {
+> +       phy-handle = <&phy0>;
+> +       phy-mode = "rgmii-id";
+> +
+> +       pinctrl-0 = <&eth0_pins>;
+> +       pinctrl-names = "default";
+> +       status = "okay";
+> +
+> +       mdio {
 
-For an IPv6 packet, the updates of the IPv6 address and of the L4
-checksum will cancel each other. The checksums are set such that
-computing a checksum over the packet including its checksum will result
-in a sum of 0. So the same is true here when we update the L4 checksum
-on line 5. We'll update it as to cancel the previous IPv6 address
-update. Hence skb->csum should remain untouched in this case.
+&mdio0 {
 
-The same bug doesn't affect IPv4 packets because, in that case, three
-fields are updated: the IPv4 address, the IP checksum, and the L4
-checksum. The change to the IPv4 address and one of the checksums still
-cancel each other in skb->csum, but we're left with one checksum update
-and should therefore update skb->csum accordingly. That's exactly what
-inet_proto_csum_replace_by_diff does.
+> +               #address-cells = <1>;
+> +               #size-cells = <0>;
+> +               compatible = "snps,dwmac-mdio";
 
-This special case for IPv6 L4 checksums is also described atop
-inet_proto_csum_replace16, the function we should be using in this case.
+No need for these three properties, as they are already present in the
+SoC-specific DTS with the exact same values.
 
-This patch introduces a new bpf_l4_csum_replace flag, BPF_F_IPV6,
-to indicate that we're updating the L4 checksum of an IPv6 packet. When
-the flag is set, inet_proto_csum_replace_by_diff will skip the
-skb->csum update.
+Same for the second interface.
 
-Fixes: 7d672345ed295 ("bpf: add generic bpf_csum_diff helper")
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://patch.msgid.link/96a6bc3a443e6f0b21ff7b7834000e17fb549e05.1748509484.git.paul.chaignon@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
----
- include/uapi/linux/bpf.h       | 2 ++
- net/core/filter.c              | 5 +++--
- tools/include/uapi/linux/bpf.h | 2 ++
- 3 files changed, 7 insertions(+), 2 deletions(-)
+The rest LGTM, so with the above fixed:
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index 0bdeeabbc5a8..2ac62d5ed466 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -1695,6 +1695,7 @@ union bpf_attr {
-  * 		for updates resulting in a null checksum the value is set to
-  * 		**CSUM_MANGLED_0** instead. Flag **BPF_F_PSEUDO_HDR** indicates
-  * 		the checksum is to be computed against a pseudo-header.
-+ * 		Flag **BPF_F_IPV6** should be set for IPv6 packets.
-  *
-  * 		This helper works in combination with **bpf_csum_diff**\ (),
-  * 		which does not update the checksum in-place, but offers more
-@@ -5106,6 +5107,7 @@ enum {
- 	BPF_F_PSEUDO_HDR		= (1ULL << 4),
- 	BPF_F_MARK_MANGLED_0		= (1ULL << 5),
- 	BPF_F_MARK_ENFORCE		= (1ULL << 6),
-+	BPF_F_IPV6			= (1ULL << 7),
- };
- 
- /* BPF_FUNC_skb_set_tunnel_key and BPF_FUNC_skb_get_tunnel_key flags. */
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 65b7fb9c3d29..169d9ba4e7a0 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -1951,10 +1951,11 @@ BPF_CALL_5(bpf_l4_csum_replace, struct sk_buff *, skb, u32, offset,
- 	bool is_pseudo = flags & BPF_F_PSEUDO_HDR;
- 	bool is_mmzero = flags & BPF_F_MARK_MANGLED_0;
- 	bool do_mforce = flags & BPF_F_MARK_ENFORCE;
-+	bool is_ipv6   = flags & BPF_F_IPV6;
- 	__sum16 *ptr;
- 
- 	if (unlikely(flags & ~(BPF_F_MARK_MANGLED_0 | BPF_F_MARK_ENFORCE |
--			       BPF_F_PSEUDO_HDR | BPF_F_HDR_FIELD_MASK)))
-+			       BPF_F_PSEUDO_HDR | BPF_F_HDR_FIELD_MASK | BPF_F_IPV6)))
- 		return -EINVAL;
- 	if (unlikely(offset > 0xffff || offset & 1))
- 		return -EFAULT;
-@@ -1970,7 +1971,7 @@ BPF_CALL_5(bpf_l4_csum_replace, struct sk_buff *, skb, u32, offset,
- 		if (unlikely(from != 0))
- 			return -EINVAL;
- 
--		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, false);
-+		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, is_ipv6);
- 		break;
- 	case 2:
- 		inet_proto_csum_replace2(ptr, skb, from, to, is_pseudo);
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 54b8c899d21c..fe70f9ce8b00 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -1695,6 +1695,7 @@ union bpf_attr {
-  * 		for updates resulting in a null checksum the value is set to
-  * 		**CSUM_MANGLED_0** instead. Flag **BPF_F_PSEUDO_HDR** indicates
-  * 		the checksum is to be computed against a pseudo-header.
-+ * 		Flag **BPF_F_IPV6** should be set for IPv6 packets.
-  *
-  * 		This helper works in combination with **bpf_csum_diff**\ (),
-  * 		which does not update the checksum in-place, but offers more
-@@ -5106,6 +5107,7 @@ enum {
- 	BPF_F_PSEUDO_HDR		= (1ULL << 4),
- 	BPF_F_MARK_MANGLED_0		= (1ULL << 5),
- 	BPF_F_MARK_ENFORCE		= (1ULL << 6),
-+	BPF_F_IPV6			= (1ULL << 7),
- };
- 
- /* BPF_FUNC_clone_redirect and BPF_FUNC_redirect flags. */
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.43.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
