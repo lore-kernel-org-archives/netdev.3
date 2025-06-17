@@ -1,64 +1,165 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6A72DF3CB;
-	Tue, 17 Jun 2025 10:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6061E5383;
+	Tue, 17 Jun 2025 10:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750155076; cv=none; b=J87DvzkSoTym6NQohPJ6swmf4f85b0G3rRlAyqgq61CkP8N+QMg3jv/YYcUb6vvaXp+ezV81cHm1xDyeMywh7lo5gwbGETjsDcC3nG4Brv1MpMiT0hZILq2T1mC5+tk00rTOew5nOxHRLfZ8ZSfsZbFrJNEWHcxocoY1avAEEMg=
+	t=1750155547; cv=none; b=Ur8Hlkc/W/w+Gylh2I3cxvWGHsT4Cj0pJ4I3QTK4njkoJGz3YnGjqGktvbCdoDnVmh9u/OvZ0FU0gPjQSb6hthXZV89YO8NJzqw+arRZp9J/FJLyXwt8EmfEy5xl2CiiffQIDDKuI/ZHXbDtc2MD+Uob05lvpi6/4AkcO2aHe4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750155076; c=relaxed/simple;
-	bh=cUKbbU/oS3Cg7lShc7Ki9J5+9Zrxia79qJwxm5GCJsY=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TnCFN/mAsuzSAID55b0F7SBa5vKsAMDR7m2nrvfnLRritfhKIs9OJAXzBJJnSEd4gUUZ5PttLElFLqWEsn9jGpyCV1hChclyeC5aYr0oCx+nkZhr3a5VM+DdA6GbKF+O47w+uegyndGqA1Wlux9xW/QDvQRZgkxuhHpee6pkOu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QSN30ksR; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1750155547; c=relaxed/simple;
+	bh=lWVgHkdCmmhxPJ/pPYm/0EoMpSP4kpv53wc1doly1l0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FhqFUVxvLFRHsvuTQju4XQf1xKsIYd/B2H+TH9wmwENIChHhdDAFW2uhgPVgOdGkLv/8tLG/t6zCK86WLM6nYvzjQq3Kx1b3LFtSUG6XLERRELZxEREoJJwMaregQhsRmmmqIVdbeHI+EfI3qxClLmQGa0POBmT4kFd4C0DWaCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=DInoz4Q8; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QSN30ksR"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=cUKbbU/oS3Cg7lShc7Ki9J5+9Zrxia79qJwxm5GCJsY=;
-	t=1750155075; x=1751364675; b=QSN30ksRHX52XiNxPdbhNT+9X62W5FKMYdv+ReNrXwdTlN0
-	9QZvJp9qfx5LGJvXSvQwTnSgUPB5aGsjsT/TH8VM9GIwc5Ms7Z9ltOJh9wWweWffBy6TTRAlZZ8wI
-	F6N6R8jxGXjHS994+S7FcVVci2embCOnuhX4rGuGDy3Nvgm4/g3GPjoVwYZt0dS79RS6Q+TESLjGc
-	1xVw072k+pne4c+y98Mp8o05mSljUvlFY0WiXEmNFZzqKMtBDxbGnpWTCgBgkpxp/BJNoWwb82SwO
-	qrOAhzvNnkkeJvqx1lWrL0oX1lPmvLDitUsPFaEdJrFLeoHZEE/dhFTSIPHvYweA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uRTHT-0000000EGoc-3uts;
-	Tue, 17 Jun 2025 12:11:04 +0200
-Message-ID: <67fa81579ed1e4bf289235863eb5728b243a58ba.camel@sipsolutions.net>
-Subject: Re: [syzbot] [wireless?] INFO: task hung in
- rfkill_global_led_trigger_worker (3)
-From: Johannes Berg <johannes@sipsolutions.net>
-To: syzbot <syzbot+50499e163bfa302dfe7b@syzkaller.appspotmail.com>, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Date: Tue, 17 Jun 2025 12:11:02 +0200
-In-Reply-To: <000000000000114385061d997d9c@google.com>
-References: <000000000000114385061d997d9c@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="DInoz4Q8"
+Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 55HAId552851641;
+	Tue, 17 Jun 2025 05:18:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1750155519;
+	bh=H5JYcPxPvOm/wQvlylxZSm+Bf6z0WAAFiSnAvpWknfg=;
+	h=From:To:CC:Subject:Date;
+	b=DInoz4Q8qwcy235WKiiEeVQ7+yWTB9Sd9QZPsMXp3wip8Kq0PzBC72IK9eIL1BZAO
+	 fsIg1Ak6nA6z/3KtXfjGw5ZSBDZgO7qy6RcfxhfLDCM1mIlxPkEPRbrbW9r4X0nIQE
+	 p0fN5f2X6ocbMJUOi5+M6FxmZW1g80fz2JMpEsOQ=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 55HAId4Q3522504
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Tue, 17 Jun 2025 05:18:39 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 17
+ Jun 2025 05:18:38 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Tue, 17 Jun 2025 05:18:38 -0500
+Received: from localhost (akira.dhcp.ti.com [10.24.69.4])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 55HAIb9A1511897;
+	Tue, 17 Jun 2025 05:18:38 -0500
+From: Himanshu Mittal <h-mittal1@ti.com>
+To: <h-mittal1@ti.com>, <pabeni@redhat.com>, <kuba@kernel.org>,
+        <edumazet@google.com>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>
+CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
+        Vignesh Raghavendra
+	<vigneshr@ti.com>,
+        Roger Quadros <rogerq@kernel.org>, <danishanwar@ti.com>,
+        <m-malladi@ti.com>, <pratheesh@ti.com>, <prajith@ti.com>
+Subject: [PATCH net-next v2] net: ti: icssg-prueth: Add prp offload support to ICSSG driver
+Date: Tue, 17 Jun 2025 15:48:37 +0530
+Message-ID: <20250617101837.381217-1-h-mittal1@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Fri, 2024-07-19 at 06:15 -0700, syzbot wrote:
->=20
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3D50499e163bfa302=
-dfe7b
+Add support for ICSSG PRP mode which supports offloading of:
+ - Packet duplication and PRP trailer insertion
+ - Packet duplicate discard and PRP trailer removal
 
-#syz dup: INFO: task hung in rfkill_unregister (3)
-#syz set label: nfc
+Signed-off-by: Himanshu Mittal <h-mittal1@ti.com>
+---
+v2-v1:
+- Align with recent firmware name handling updates made in:
+ https://lore.kernel.org/all/20250613064547.44394-1-danishanwar@ti.com/
 
-johannes
+v1: https://lore.kernel.org/all/42ac0736-cb5a-4d99-a11c-6f861adbdb5f@ti.com/
+
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 12 +++++++++++-
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h |  4 ++++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index a1e013b0a0eb..2aa812cbab92 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -148,8 +148,10 @@ static int prueth_emac_start(struct prueth *prueth)
+ 
+ 	if (prueth->is_switch_mode)
+ 		firmwares = prueth->icssg_switch_firmwares;
+-	else if (prueth->is_hsr_offload_mode)
++	else if (prueth->is_hsr_offload_mode && HSR_V1 == prueth->hsr_prp_version)
+ 		firmwares = prueth->icssg_hsr_firmwares;
++	else if (prueth->is_hsr_offload_mode && PRP_V1 == prueth->hsr_prp_version)
++		firmwares = prueth->icssg_prp_firmwares;
+ 	else
+ 		firmwares = prueth->icssg_emac_firmwares;
+ 
+@@ -1527,6 +1529,7 @@ static int prueth_netdevice_event(struct notifier_block *unused,
+ 	struct netdev_notifier_changeupper_info *info;
+ 	struct prueth_emac *emac = netdev_priv(ndev);
+ 	struct prueth *prueth = emac->prueth;
++	enum hsr_version hsr_ndev_version;
+ 	int ret = NOTIFY_DONE;
+ 
+ 	if (ndev->netdev_ops != &emac_netdev_ops)
+@@ -1538,6 +1541,11 @@ static int prueth_netdevice_event(struct notifier_block *unused,
+ 
+ 		if ((ndev->features & NETIF_PRUETH_HSR_OFFLOAD_FEATURES) &&
+ 		    is_hsr_master(info->upper_dev)) {
++			hsr_get_version(info->upper_dev, &hsr_ndev_version);
++			if (hsr_ndev_version != HSR_V1 && hsr_ndev_version != PRP_V1)
++				return -EOPNOTSUPP;
++			prueth->hsr_prp_version = hsr_ndev_version;
++
+ 			if (info->linking) {
+ 				if (!prueth->hsr_dev) {
+ 					prueth->hsr_dev = info->upper_dev;
+@@ -1858,6 +1866,8 @@ static int prueth_probe(struct platform_device *pdev)
+ 				  prueth->icssg_switch_firmwares, "eth", "sw");
+ 	icssg_mode_firmware_names(dev, prueth->icssg_emac_firmwares,
+ 				  prueth->icssg_hsr_firmwares, "eth", "hsr");
++	icssg_mode_firmware_names(dev, prueth->icssg_emac_firmwares,
++				  prueth->icssg_prp_firmwares, "eth", "prp");
+ 
+ 	spin_lock_init(&prueth->vtbl_lock);
+ 	spin_lock_init(&prueth->stats_lock);
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+index c03e3b3626c1..4a9940b12e47 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+@@ -13,6 +13,7 @@
+ #include <linux/etherdevice.h>
+ #include <linux/genalloc.h>
+ #include <linux/if_vlan.h>
++#include <linux/if_hsr.h>
+ #include <linux/interrupt.h>
+ #include <linux/kernel.h>
+ #include <linux/mfd/syscon.h>
+@@ -290,6 +291,7 @@ struct icssg_firmwares {
+  * @vlan_tbl: VLAN-FID table pointer
+  * @hw_bridge_dev: pointer to HW bridge net device
+  * @hsr_dev: pointer to the HSR net device
++ * @hsr_prp_version: enum to store the protocol version of hsr master
+  * @br_members: bitmask of bridge member ports
+  * @hsr_members: bitmask of hsr member ports
+  * @prueth_netdevice_nb: netdevice notifier block
+@@ -332,6 +334,7 @@ struct prueth {
+ 
+ 	struct net_device *hw_bridge_dev;
+ 	struct net_device *hsr_dev;
++	enum hsr_version hsr_prp_version;
+ 	u8 br_members;
+ 	u8 hsr_members;
+ 	struct notifier_block prueth_netdevice_nb;
+@@ -349,6 +352,7 @@ struct prueth {
+ 	struct icssg_firmwares icssg_emac_firmwares[PRUETH_NUM_MACS];
+ 	struct icssg_firmwares icssg_switch_firmwares[PRUETH_NUM_MACS];
+ 	struct icssg_firmwares icssg_hsr_firmwares[PRUETH_NUM_MACS];
++	struct icssg_firmwares icssg_prp_firmwares[PRUETH_NUM_MACS];
+ };
+ 
+ struct emac_tx_ts_response {
+-- 
+2.34.1
+
