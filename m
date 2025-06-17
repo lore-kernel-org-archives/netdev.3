@@ -1,240 +1,238 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7764F1EDA3C
-	for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 11:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750160425; cv=none; b=JCtD47wRbLcl5LQf/DnfRB5zFsUUhIbEYa3Km27j/EEu2/NpUN/YvZU3NpESu7KClpjzveGLXyMipI6D/1yrtv9ECP1EXmIOmSbZ1j2UF6MPJHM13LxKxILOX7hsjIWkWeXjVB8LzEcJst365kj+mPgbW7PRZWF3cC0oIMYw5e8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750160425; c=relaxed/simple;
-	bh=pQVEUN/gPDpJst8by8S69bN8fit2PMpNZ3mdXuwTddM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Jn8PJvPcaXA3ATZjF03O6gKMn/FCs9NDyAVFifEDJ0qzitb7yd2tdoXWeatczz3u3rhjdWIpiGAsi7aCtI1FxeW1ApvixX0x9RzPKduL7vbiMA9bpRy3UDALm/P8GmnbNyzsBxEoPltRarWPsoP1I9L5J4DiPm558kR/cq6SGbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=pass smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=18.194.254.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bamaicloud.com
-X-QQ-mid: zesmtpgz6t1750160357t94d16e2c
-X-QQ-Originating-IP: B/aYg/ntnd4MNrLCxAjeelwhu8FiS07w5hdTUsJ3o54=
-Received: from smtpclient.apple ( [111.202.70.102])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 17 Jun 2025 19:39:14 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 15771769124630019725
-EX-QQ-RecipientCnt: 15
-Content-Type: text/plain;
-	charset=utf-8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47378285CA4
+	for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 11:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750160793; cv=fail; b=pyLO9e2XaMqUkMuwOntU1n+Gt9bEBT84F+JoqHspvkcABPCVdU7qZiOcLIIPVB7D1yWju8/svazeo8x6uWwQOt/vIYmKKwrEINDmGN/g+fZKm+E7rMBivoQI0r22SO0uJwrJNbuMZNlQU0hyE/5fS0rtFwbK4sIsxWwXpdTw9HM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750160793; c=relaxed/simple;
+	bh=lq+jO3A6TRtI9Ppk16hOGHRaMWt0TNA7Cs4LaHj/ARE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=m+ADWerGOC2pYAcIHQPUU8JH0Lv4XYk1xDDK8zI2JKa1QiHMZryX/EvK379ZjMiXFQKTIXDp/jFmk85YSYuy+eV72iad41FerPlGsvtE4L5E3/vWH5bbEBnKLFPRJOz21kdzLYltI8yJZtyei3npv5W6cyf2afrC1oDgNF9X1xA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GSucyEpd; arc=fail smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GSucyEpd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750160792; x=1781696792;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=lq+jO3A6TRtI9Ppk16hOGHRaMWt0TNA7Cs4LaHj/ARE=;
+  b=GSucyEpdKXr0SXXnBVNUaiK1ENqPMNbCYFox/Ytg4Jc2tRw8lDzDfLnZ
+   VHrrgAuoBnto3b0hxiggO0DaaD/JLf4NkjUT5gveQ2O6JeTWPOLYx3+Ax
+   lO/j1+dKoDgjFz/ZLMuZpFe21zoPMknIxN39heXYxJIRN0n6tfb7Ech7l
+   wNH8Y0GqA8aSLyDZAdtBr6YJQxfU2NDhkyOmv6PO8mGvNVj8igJctfjTC
+   Xp2Wcc+8rCP1WJNOhIJHxEMsosv1F6hrpxMbhHhi6rhYPtuc2baH2IBjB
+   gfUbSqVItm86dEouotHQucMZTmTLdwtSZR7tiDyweTfBIrzNSnHXSlMvB
+   A==;
+X-CSE-ConnectionGUID: LccyyMjzQImFQ36y9K8IxQ==
+X-CSE-MsgGUID: srJPo4L/SROsdcD7R8mXhQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="51560517"
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; 
+   d="scan'208";a="51560517"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 04:46:31 -0700
+X-CSE-ConnectionGUID: 4yC/bZ4YQeCEMEtByVCP7w==
+X-CSE-MsgGUID: 4rJV9I8mSTCznFPOP8Qb5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,243,1744095600"; 
+   d="scan'208";a="171999847"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 04:46:31 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 17 Jun 2025 04:46:30 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Tue, 17 Jun 2025 04:46:30 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.42)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 17 Jun 2025 04:46:30 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ts6K/L+c5PdHJiAMCUq8BWhwsZbbs8B6UY+gEtxE8yp4LbY3Ra82X6Ls6GBqQ90RgkBsS6FlVF1iGrOjChUPTboP5p35mVcL/IV4KXet4MzeF9gK41xzprwQm3iXgIUIYVt7ZQXOYyaI3XNnGndvq/9oEzQZxkPJ1SarljxHtJ2c1tsCTDnHH78q7BKrXgLQ1olB8nLKfOydSMD+Hc7bqP3SxBiR2Gvh8Wrl8w7/nDZFvIDOmI5bTilH92o3e8OH7/jpK6tM59JY9a6uavrwCst9LaT6Z8nwWB1WMk298aImMF8YaOKXwH9Q2KvsR0kbat2Nt7MFXm+24NVuWOcBJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lq+jO3A6TRtI9Ppk16hOGHRaMWt0TNA7Cs4LaHj/ARE=;
+ b=bQbAGyDxi9TQw8Kvm06kGkwsukdD/nQEP+OmfTwWmIgq2usInjqIHf9giLs37fhQvPxYYCqqy2Ghcf79n6x6YiL0cdQl8BuHoGhBTb8EzPnExUOR6XiP7l984Lq5jS9TqjmyKUUUGFefG0YyF0dewwWboFnTEc4DYutHVbvtphHMoC4G3pTG96IytVb/UeVpVHhqGQ1F3kt/dT8zqqn3EwFwLiF+bmC37LS1bOZ9jz3DnwT2tEHD/z+qzW2faQg4+bY0uEGmF75/EjdWDUteHoL4Sq6EBzuFZdCYb9sTwIkwiBCZGgBPaumItd4+QlIgBEPui/d28epHB0mOhnu7Eg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA1PR11MB6219.namprd11.prod.outlook.com (2603:10b6:208:3e9::15)
+ by LV2PR11MB6071.namprd11.prod.outlook.com (2603:10b6:408:178::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.28; Tue, 17 Jun
+ 2025 11:46:15 +0000
+Received: from IA1PR11MB6219.namprd11.prod.outlook.com
+ ([fe80::f302:c534:2d71:822b]) by IA1PR11MB6219.namprd11.prod.outlook.com
+ ([fe80::f302:c534:2d71:822b%4]) with mapi id 15.20.8835.027; Tue, 17 Jun 2025
+ 11:46:14 +0000
+From: "Nitka, Grzegorz" <grzegorz.nitka@intel.com>
+To: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Korba, Przemyslaw"
+	<przemyslaw.korba@intel.com>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, "Olech, Milena" <milena.olech@intel.com>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-next] ice: add recovery clock and
+ clock 1588 control for E825c
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-next] ice: add recovery clock and
+ clock 1588 control for E825c
+Thread-Index: AQHbvmpJOPEcAP6YGEuwZGoZPCZSMrPKy9QAgDywARA=
+Date: Tue, 17 Jun 2025 11:46:14 +0000
+Message-ID: <IA1PR11MB6219AD0507E93B975DC4689B9273A@IA1PR11MB6219.namprd11.prod.outlook.com>
+References: <20250506093506.3136225-1-przemyslaw.korba@intel.com>
+ <f6033421-e1b6-40ca-8d40-0c09fa65642f@intel.com>
+In-Reply-To: <f6033421-e1b6-40ca-8d40-0c09fa65642f@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR11MB6219:EE_|LV2PR11MB6071:EE_
+x-ms-office365-filtering-correlation-id: c2f12591-6d73-4768-30ae-08ddad949089
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?cWpZYlFHdFUzVlBuY0U3R1RzVXp5Z0ZMTTMyUVR1OEVBSmpMc2NiSTFwcW5n?=
+ =?utf-8?B?c0lMV1NVeTJxTGk5Ym80ZWphQUZCcDlZQmhCWFpQWktkblVpdnFrcUozOFBN?=
+ =?utf-8?B?Ry9NUU41Nmx5cjFyY2ZReERkUXJzRmZOT0NXeUovZGhQOXFVc2FnR2duTFo1?=
+ =?utf-8?B?cGVvNnVJUitpdWRtdG44dHNTZWU2NC9oNzhkRHQ1dGFGb3JHYnlzZnIzTVhw?=
+ =?utf-8?B?SGltbG54RWQ2RDFsRFNDc0VxdTFlVS9FRGRSSElqUmN4MHE0N2VzbDBvV3hq?=
+ =?utf-8?B?bVFTL2kxK3VrSUYzOGg4d0dFTWpBcForRDJKNkpidlpPRFEwbFhueEZXcTU5?=
+ =?utf-8?B?VXFjWm9Oc0dMMklOSTJSN2J5aGxzak1kbzRGQWNMMkJpNVhBZWFkc3BJakt5?=
+ =?utf-8?B?bGhCUVJiOVRuMXNVQTErYkEyZXQ3RCt1a1pYd0VPbzFJVHoydjBpSHR2eWx2?=
+ =?utf-8?B?NEYwK3EwV1FqRTJtbS9FMmc4K3ZScHpPeXN2dVFEeGxjbkNTaCtadlYwSHVK?=
+ =?utf-8?B?bk9xZUhPOXBmSEFPaFUzQlBDa2VpRGFocWxRQ2hvWnJkNktWOTh5Ymh1c25P?=
+ =?utf-8?B?bGk0L2hkS1RPa0VUbzNFQk01RzlTcXB0QndWTi92a1VacmZLb0RBVkVOalJZ?=
+ =?utf-8?B?Tkt0R1hZMnJpU05IY2NKNDZ0UWRDcGlEN25GcGlaMDdCZGRoRDZ3OFZQSjJ5?=
+ =?utf-8?B?b3BDdXBUWjhURjZVUGFDeHBaZXRWVVZjZzVkS0F6UEdiVU9Lb2ZVV3E2V0Yw?=
+ =?utf-8?B?T040eHRVb05uRncveW0xdGxsQlpEcmo3S0hPZllpVzJxb0dQV0F6VHBuL21r?=
+ =?utf-8?B?NFNTWGNVRHE5c0h1MmpvbkgrQkhlNk1LeExOdGpzVFlBMElaOFVqY2JTMXBq?=
+ =?utf-8?B?eklzbzR2ZS80akNtclpnUzRSRHpxVk9udm9IZzlZSyt2bXVPaU9lT1ZkS1pX?=
+ =?utf-8?B?dmhvNnpaWTl4VU43cithYWxFVUhWTU9MR1AwOWpPNXBkek5lLzFMelFURjZI?=
+ =?utf-8?B?RnUxeWE2dS9xeFJpaTZUOEJFOHpoOEtrSXRsMUd2TmdVbnNrV3pmdENRZ1h3?=
+ =?utf-8?B?OVcyeTA1TkpqRzcyV0s4L3FSMmc5ZkVWUkkxUWRxVTR0RmxMdHBoMzVuempF?=
+ =?utf-8?B?RmNHQnVWV0FjNlJqTTBtYlpPYVkzNjRpbzdtT0NkODU1R0pzY2dDVHFORWFH?=
+ =?utf-8?B?azI2WlkvV2kyK2dSOUlPUGtyNDV5UGNtZWY5aGgzQVB3NG5mbXpPZzFhMTBJ?=
+ =?utf-8?B?Nk5GMyttL2E1azB4b2owZGxoMjRMV1h6ZEdFTnU1R0R3NTBoVXcyOThGRS85?=
+ =?utf-8?B?elRQVTZmL1RSMThqbVV3ek9wRWRiY0cvY1hGVUVuQ2FxbGdyWnR3a1AxM003?=
+ =?utf-8?B?cWkwa3MxR2xhY0MzTFp2bDdTU0l5RmxNTmx5dEhLRmZ4OWtJTnhKVmNlSW02?=
+ =?utf-8?B?R1I5ZGt5NU9tRXlLaGpQdUp2VW5wbmVvS0N3THp6OHk4U1BiWVAwaTRTcUlp?=
+ =?utf-8?B?eDdsN05xZjhxWXYwaGl1dWRvRWt1cTBDQ3Y0NEJqN3NEYVU2UHc5M3FpOEpF?=
+ =?utf-8?B?elRZL0ExT3BoeUU5Z1BpbkNzNU5DaGFXcm9VSk1EdEpUcUVRR3orUHEzVkFQ?=
+ =?utf-8?B?Sm5PNmplSDhRT0hlNndINUVQR20rOFdaZCtoTU9tWFNsQW55SnYzbnNPT3BF?=
+ =?utf-8?B?VTVrTzBBWU82eXp0ZXNqSlZJZmlDcTltNmZiVnYwQ1dydW13cmFsVUVUczZl?=
+ =?utf-8?B?QzM5U0s2MmVndnlnOW5XWVhQc01oVTBrUnVoc0FWelJjSVFaaXV5MDRwWjcr?=
+ =?utf-8?B?TEdBbTc1MkdFby8zSFlDSnVlc1IxK2FkR2JRbDVOb1NUdXc2MXVLdFBWQklY?=
+ =?utf-8?B?ZkpIQjJBOENRaGs1Z1BEM2drUks1Z3dxeFpxMmsyM0hJZDUzdlJUemUxdVlJ?=
+ =?utf-8?B?eHR0K08rZWlWWTYxZGtEbGZveXI5Y2JOYWdzT1dkRExIbEVwZlRQb04walQ1?=
+ =?utf-8?B?bjF3ejJoQVJ3PT0=?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6219.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?QXJkYjJiWHVVdUFxZ1RIY2RHUWsxTXRLU0MzLzRVdm1NSEpvbUdVUVhDZ1Ix?=
+ =?utf-8?B?TDhKS0ZGaEpCR0tJNTBUOXFNWS9hUmcwTTVqWEpiSnRQeWxzTWZoTTByNlZX?=
+ =?utf-8?B?dU9GbTZ5MnpleW1rdFZBQmhOaExVOGNrRG0rdy9PbGozV3I4bEtabWFjZFIz?=
+ =?utf-8?B?NW01R2VtOTRVRUprS0g2SFpBT0FwLzhBRE14aHZzSmdRL2JpbVdNUU1ESGtj?=
+ =?utf-8?B?eG9CcUgzWllPWXdiWHJFU1ZtYnZTSTJ1K0RFSWFFWjQ2d0t6QnozNkJFQ2o1?=
+ =?utf-8?B?OUNpVm9hK1dpeGlCRmJ0WUE1MGhPWWVEM2ZVRisyODR6WGs5ak1raFJNQy95?=
+ =?utf-8?B?cDQ1ZUVMSy8xK0JYbXpxV1JOT2RNK1Y1ZWd6emtpNVJwNWpTWTVHREU5M2tW?=
+ =?utf-8?B?dHdKdjFOeC9aU1dhUGZmc2h0YXpCa0M1UTY3L2twcS9PSU9CZlh0ZCtVekRx?=
+ =?utf-8?B?NTlVcXZqUjg5T2JPUkMvcW1LYitINzgxVXV2MGVmVGkxZUc2bkVDSlRhci9p?=
+ =?utf-8?B?VkhoOW05ZGt2cXFFS05Xc2J1NmRscGNJdGxGeEloM2ZVa1ZoNCtQblp3UWo2?=
+ =?utf-8?B?bExjN3lmbC9BUzNheFI5eUQzN0NzQTJaUWlJbHBVV0pXT2pUUnUwUWJVNWY4?=
+ =?utf-8?B?YTU2dkZNaFdsblBhbnBBSTFRcW5YZ04rU0tCa3ZQM3RneHB2eXRwbnFKM2dn?=
+ =?utf-8?B?TjVMeEtTc2k2YjN2QVdaMWlGc3J3OXcrNVluK0J3bWpxSGFIam8vRU4raUhL?=
+ =?utf-8?B?RDJNZ3NERXFhczM0ck83THJlbE43cCtueURnSWJZcDhOZXBpa1BWeGVMU1JM?=
+ =?utf-8?B?dkxONlNqQSt2ckdXZTlTWDY5TFgycXJZRWZEL3UxNFM5V0hqNUNRV0hqOEpy?=
+ =?utf-8?B?WDZ3QkRhd2RyVFpCTzFGdnY0am9FVTBlTVVaTkwwVkdkQkxKUWp2bjNpRENP?=
+ =?utf-8?B?SGd3eU1lNWxaNGNCL3ZPVStWSTZKRzRZMFlwc2EyZUpWdnQyaUVSWXZHcUJP?=
+ =?utf-8?B?bHNLNWhqYnkrYkxYaUJpcUpTWXlDcXpHTVhRaXlzRkkydnhhZS9MOSswTWpk?=
+ =?utf-8?B?N0I4WXNvMGxUbEtETlBaUExhdExTNHpNQ0RBS3NMY01DekJZWHVvU1ZJb2F0?=
+ =?utf-8?B?b0xWWW9DRndtNDM2OGhHZEhHTHA3NmJnYVBVWU5hendrMUpQZU9RZ3Y0NUxW?=
+ =?utf-8?B?N1ZCeWFDcG50MU03ZVJFSEc1SHFxd2RUU2hkZXQ3Y3BJVHFsc1dlekFWbGhk?=
+ =?utf-8?B?VGFiQ1ZsemJlMVNTSmJ0bmttTWdqMmp1eC94bnZlRFJZWjhFY2hyOUhtL3J6?=
+ =?utf-8?B?NVVLSUNmNHVVWjB1cnVmOGc1V3NCbWEwZ0VqR2lLRlZpNkJ3QkZnVU5ibVor?=
+ =?utf-8?B?UThWMzZiRVc5aHV3VTVzemZOM1cxVWJzd0RqVWprd2dNL3pmQVU3bnpHR1gw?=
+ =?utf-8?B?YUpsZll3UGpqRWFTTkhOcmRDR1A3Um9xYWdsQThjVmJGdXlNeWx3ZC84ZS9K?=
+ =?utf-8?B?d0NwTTdtekpDeUp3M004aHFDQ2RycEVuNHBlSHd3NkUrbmdiT1I2MW1HWFNj?=
+ =?utf-8?B?Y1RPWFdDMytWS1QzOGFHRFRpVU1DTkRlWk1HZUF1S21WUjNvN1JtR0JQalRk?=
+ =?utf-8?B?SWVmdUVjbG5TR21PSk9mL01SVVA1b3BLYWZ6bTRBNUM0UFc3b1cyaWwwRWtU?=
+ =?utf-8?B?cll0TjB3czR4SDlLVE4wS3hSWmFLWTJrVlVCQjNzSS9DSDZtR2hHTGc2cklZ?=
+ =?utf-8?B?VGN1amhLT2l0MVdSMlBDUXJ2U2diSWUyOStOZjE5Q3NtR2w4bVNlTEpReUsr?=
+ =?utf-8?B?YUR6S2oreVNPaTJwUnJja1hoZGxRcmVMRzhsbTRpZmMwNzF3My9KZHY3QWZE?=
+ =?utf-8?B?V0tSeDJpUVNacVpXdzFaN2FvcHZpSkRLSFQxRjZtZjFqZ3NaMDVpSVF1YUVG?=
+ =?utf-8?B?eG8yVmdtUFZoRkZUUVJRZFM0Q1BTYVRNUWNYZHB5NmwvbExaWmdhNFkva0sx?=
+ =?utf-8?B?NEc3a2RDdkFrTXZXNFVZaExTV2Rza0poTnNIZnpwK1doN3dNOVRjeWlsQTNR?=
+ =?utf-8?B?Z29hdkxaUGt3RjFpUzJVVnErS2dISitEOWNBeWRDblFGM1RQbWlvRzBsVFRV?=
+ =?utf-8?Q?n/15SsB+C0mLDV4L6DNTY/nZC?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [net-next v6 3/4] net: bonding: send peer notify when failure
- recovery
-From: Tonghao Zhang <tonghao@bamaicloud.com>
-In-Reply-To: <EB500915-0C30-4491-8709-80894B771EC4@bamaicloud.com>
-Date: Tue, 17 Jun 2025 19:39:04 +0800
-Cc: netdev@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Nikolay Aleksandrov <razor@blackwall.org>,
- Zengbing Tu <tuzengbing@didiglobal.com>,
- Tonghao Zhang <tonghao@bamaicloud.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <5FC20461-E971-4469-B4D5-CEFB3B61CB44@bamaicloud.com>
-References: <cover.1749525581.git.tonghao@bamaicloud.com>
- <81185ef7f9227cff906903fe8e74258727529491.1749525581.git.tonghao@bamaicloud.com>
- <1931522.1750120618@famine>
- <EB500915-0C30-4491-8709-80894B771EC4@bamaicloud.com>
-To: jv@jvosburgh.net
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:bamaicloud.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: MsL7hwqo9bYsO677DhYg8Aud70VtDBx+KTPTpBDvvexw99XzvNHQmGdH
-	c/6KoFwCDNACzyktlg8EI2POrB23m8ElD5Uj6RdZwgglQC2QinJORxd3c7EaYIw+zKske1H
-	HvXCr53IHiePORmyvRBF9XrpGnVecYjRKE9ER9MmYcCP1v7hzLIt/h8Il72Paj4g5XiHvh+
-	/i32QDv98VPCeU6NYxbPowwYLIBsJ8GuWLUBJuYisBeXzu/Qjdiqde4CjlDsoZCWNaogZHI
-	HnlXylRp/Eiqo2AIBUMhW3SZakCZaAiF43G8wVKtEh75Pjn38fQ99033EqHNQHhTjjT1U4r
-	Ii7eiBjLHuovge1yeNAgwSQWl1z1wcGn5n+UdeybfuQcMtCKjsZIx7pTG8+z9IZ2aHkl/nL
-	yFqW5aO5zvuOwFD52LKRngfXtKomtTtzSxK/x4y8RFRB3MNPQynzYBlvqrXPp1EU9zOdtQj
-	7347A1djk94OClp1Kb+oIji8fLUKdIRxwkATmZbKKAIEn263LiQFUTn+f0itfHalSlwRjjb
-	Spg2jgRKfmwcOg/KKev5XbpSBsRtY/5DN3c3AJ9iajA03toTo/A5HfX2OrEBhhijkO2x66e
-	7LhVppnrZEGAXfJOJwOPx86Pm04cd/7tqmyxXHXTJJJYSFZXgvq+w/5f7yyninqfccQqZyk
-	+3kEgVGBtX3d6G0ouesKBskNZEAiFrt2UZJ6Dqk76QJSe6JZjv4xbVsjYbln9kJewu2fDqZ
-	uinI9R8KxQBpAxoZH6MepYr8P+BoGFqGkiRTWPT2m/7hJShQA2Jzmml6Qe1feXvIwWvxsos
-	UvASYYDV0QvLIJF2tsJ+WZcG1yEEdPqq/FX2kTwT7hJTPmtO+7loJZkx2fNxNl72W9cfslx
-	/Gnt1qrVEJCp7bxF1/qq7aZeKuVr3lvIkMVySfeaZXvnBCKvqg+TNZH4UFFzM+k6YJoiA1N
-	ju17gjC25uNuO9JvyPNRRvpLHcflbgv6JsNTWwMqsXxeFmNSkVhZNTuq2dL8semG79SM=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6219.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2f12591-6d73-4768-30ae-08ddad949089
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Jun 2025 11:46:14.7870
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: IDkGvQZWjVUxkvyItbEBtlUbwTXt+ZZ5JMYVPMS4MWzyfJjaIV/AJO+1C3z+bxo/EStvucxPxItyvDnugLmXMEtFAEx9Q98nDCQq+23jkKM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR11MB6071
+X-OriginatorOrg: intel.com
 
-
-
-> 2025=E5=B9=B46=E6=9C=8817=E6=97=A5 18:47=EF=BC=8CTonghao Zhang =
-<tonghao@bamaicloud.com> =E5=86=99=E9=81=93=EF=BC=9A
->=20
->=20
->=20
->> 2025=E5=B9=B46=E6=9C=8817=E6=97=A5 08:36=EF=BC=8CJay Vosburgh =
-<jv@jvosburgh.net> =E5=86=99=E9=81=93=EF=BC=9A
->>=20
->> Tonghao Zhang <tonghao@bamaicloud.com> wrote:
->>=20
->>> After LACP protocol recovery, the port can transmit packets.
->>> However, if the bond port doesn't send gratuitous ARP/ND
->>> packets to the switch, the switch won't return packets through
->>> the current interface. This causes traffic imbalance. To resolve
->>> this issue, when LACP protocol recovers, send ARP/ND packets.
->>=20
->> I think the description above needs to mention that the
->> gratuitous ARP/ND only happens if broadcast_neighbor is enabled.
-> Ok, thanks
->>=20
->> I'll note that the documentation update does include this
->> caveat.
->>=20
->>> Cc: Jay Vosburgh <jv@jvosburgh.net>
->>> Cc: "David S. Miller" <davem@davemloft.net>
->>> Cc: Eric Dumazet <edumazet@google.com>
->>> Cc: Jakub Kicinski <kuba@kernel.org>
->>> Cc: Paolo Abeni <pabeni@redhat.com>
->>> Cc: Simon Horman <horms@kernel.org>
->>> Cc: Jonathan Corbet <corbet@lwn.net>
->>> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
->>> Cc: Steven Rostedt <rostedt@goodmis.org>
->>> Cc: Masami Hiramatsu <mhiramat@kernel.org>
->>> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
->>> Cc: Nikolay Aleksandrov <razor@blackwall.org>
->>> Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
->>> Signed-off-by: Zengbing Tu <tuzengbing@didiglobal.com>
->>> Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
->>> ---
->>> Documentation/networking/bonding.rst |  5 +++--
->>> drivers/net/bonding/bond_3ad.c       | 13 +++++++++++++
->>> drivers/net/bonding/bond_main.c      | 21 ++++++++++++++++-----
->>> 3 files changed, 32 insertions(+), 7 deletions(-)
->>>=20
->>> diff --git a/Documentation/networking/bonding.rst =
-b/Documentation/networking/bonding.rst
->>> index 14f7593d888d..f8f5766703d4 100644
->>> --- a/Documentation/networking/bonding.rst
->>> +++ b/Documentation/networking/bonding.rst
->>> @@ -773,8 +773,9 @@ num_unsol_na
->>> greater than 1.
->>>=20
->>> The valid range is 0 - 255; the default value is 1.  These options
->>> - affect only the active-backup mode.  These options were added for
->>> - bonding versions 3.3.0 and 3.4.0 respectively.
->>> + affect the active-backup or 802.3ad (broadcast_neighbor enabled) =
-mode.
->>> + These options were added for bonding versions 3.3.0 and 3.4.0
->>> + respectively.
->>>=20
->>> =46rom Linux 3.0 and bonding version 3.7.1, these notifications
->>> are generated by the ipv4 and ipv6 code and the numbers of
->>> diff --git a/drivers/net/bonding/bond_3ad.c =
-b/drivers/net/bonding/bond_3ad.c
->>> index c6807e473ab7..d1c2d416ac87 100644
->>> --- a/drivers/net/bonding/bond_3ad.c
->>> +++ b/drivers/net/bonding/bond_3ad.c
->>> @@ -982,6 +982,17 @@ static int ad_marker_send(struct port *port, =
-struct bond_marker *marker)
->>> return 0;
->>> }
->>>=20
->>> +static void ad_cond_set_peer_notif(struct port *port)
->>> +{
->>> + struct bonding *bond =3D port->slave->bond;
->>> +
->>> + if (bond->params.broadcast_neighbor && rtnl_trylock()) {
->>> + bond->send_peer_notif =3D bond->params.num_peer_notif *
->>> + max(1, bond->params.peer_notif_delay);
->>> + rtnl_unlock();
->>> + }
->>> +}
->>> +
->>> /**
->>> * ad_mux_machine - handle a port's mux state machine
->>> * @port: the port we're looking at
->>> @@ -2061,6 +2072,8 @@ static void =
-ad_enable_collecting_distributing(struct port *port,
->>> __enable_port(port);
->>> /* Slave array needs update */
->>> *update_slave_arr =3D true;
->>> + /* Should notify peers if possible */
->>> + ad_cond_set_peer_notif(port);
->>> }
->>> }
->>>=20
->>> diff --git a/drivers/net/bonding/bond_main.c =
-b/drivers/net/bonding/bond_main.c
->>> index 12046ef51569..0acece55d9cb 100644
->>> --- a/drivers/net/bonding/bond_main.c
->>> +++ b/drivers/net/bonding/bond_main.c
->>> @@ -1237,17 +1237,28 @@ static struct slave =
-*bond_find_best_slave(struct bonding *bond)
->>> /* must be called in RCU critical section or with RTNL held */
->>> static bool bond_should_notify_peers(struct bonding *bond)
->>> {
->>> - struct slave *slave =3D =
-rcu_dereference_rtnl(bond->curr_active_slave);
->>> + struct bond_up_slave *usable;
->>> + struct slave *slave =3D NULL;
->>>=20
->>> - if (!slave || !bond->send_peer_notif ||
->>> + if (!bond->send_peer_notif ||
->>>    bond->send_peer_notif %
->>>    max(1, bond->params.peer_notif_delay) !=3D 0 ||
->>> -     !netif_carrier_ok(bond->dev) ||
->>> -     test_bit(__LINK_STATE_LINKWATCH_PENDING, &slave->dev->state))
->>> +     !netif_carrier_ok(bond->dev))
->>> return false;
->>>=20
->>> + if (BOND_MODE(bond) =3D=3D BOND_MODE_8023AD) {
->>> + usable =3D rcu_dereference_rtnl(bond->usable_slaves);
->>> + if (!usable || !READ_ONCE(usable->count))
->>> + return false;
->>> + } else {
->>> + slave =3D rcu_dereference_rtnl(bond->curr_active_slave);
->>> + if (!slave || test_bit(__LINK_STATE_LINKWATCH_PENDING,
->>> +        &slave->dev->state))
->>> + return false;
->>> + }
->>> +
->>> netdev_dbg(bond->dev, "bond_should_notify_peers: slave %s\n",
->>> -    slave ? slave->dev->name : "NULL");
->>> +    slave ? slave->dev->name : "all");
->>=20
->> Is it actually correct that if slave =3D=3D NULL, the notify peers
->> logic will send to all ports?  I'm not sure why this changed.
-> when bond is lacp mode, and send_peer_notif > 0, usable_slaves > 0, =
-then slave =3D=3D NULL, the debug log will print info =
-"bond_should_notify_peers: slave all=E2=80=9D.
-In lacp mode, when broadcast_neighbor enabled, send_peer_notif will be =
-set in ad_cond_set_peer_notif.
->=20
-> In active-backup mode, slave is not NULL, that means =
-"bond_should_notify_peers: slave xx".
->>=20
->> -J
->>=20
->>>=20
->>> return true;
->>> }
->>> --=20
->>> 2.34.1
->>=20
->> ---
->> -Jay Vosburgh, jv@jvosburgh.net
-
-
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEludGVsLXdpcmVkLWxhbiA8
+aW50ZWwtd2lyZWQtbGFuLWJvdW5jZXNAb3N1b3NsLm9yZz4gT24gQmVoYWxmIE9mDQo+IFRvbnkg
+Tmd1eWVuDQo+IFNlbnQ6IEZyaWRheSwgTWF5IDksIDIwMjUgMTA6NTMgUE0NCj4gVG86IEtvcmJh
+LCBQcnplbXlzbGF3IDxwcnplbXlzbGF3LmtvcmJhQGludGVsLmNvbT47IGludGVsLXdpcmVkLQ0K
+PiBsYW5AbGlzdHMub3N1b3NsLm9yZw0KPiBDYzogbmV0ZGV2QHZnZXIua2VybmVsLm9yZzsgS2l0
+c3plbCwgUHJ6ZW15c2xhdw0KPiA8cHJ6ZW15c2xhdy5raXRzemVsQGludGVsLmNvbT47IE9sZWNo
+LCBNaWxlbmEgPG1pbGVuYS5vbGVjaEBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJlOiBbSW50ZWwt
+d2lyZWQtbGFuXSBbUEFUQ0ggaXdsLW5leHRdIGljZTogYWRkIHJlY292ZXJ5IGNsb2NrIGFuZA0K
+PiBjbG9jayAxNTg4IGNvbnRyb2wgZm9yIEU4MjVjDQo+IA0KPiANCj4gDQo+IE9uIDUvNi8yMDI1
+IDI6MzUgQU0sIFByemVteXNsYXcgS29yYmEgd3JvdGU6DQo+ID4gQWRkIGNvbnRyb2wgZm9yIEU4
+MjUgaW5wdXQgcGluczogcGh5IGNsb2NrIHJlY292ZXJ5IGFuZCBjbG9jayAxNTg4Lg0KPiA+IEU4
+MjUgZG9lcyBub3QgcHJvdmlkZSBjb250cm9sIG92ZXIgcGxhdGZvcm0gbGV2ZWwgRFBMTCBidXQg
+aXQNCj4gPiBwcm92aWRlcyBjb250cm9sIG92ZXIgUEhZIGNsb2NrIHJlY292ZXJ5LCBhbmQgUFRQ
+L3RpbWVzdGFtcCBkcml2ZW4NCj4gPiBpbnB1dHMgZm9yIHBsYXRmb3JtIGxldmVsIERQTEwuDQo+
+ID4NCj4gPiBJbnRyb2R1Y2UgYSBzb2Z0d2FyZSBjb250cm9sbGVkIGxheWVyIG9mIGFic3RyYWN0
+aW9uIHRvOg0KPiA+IC0gY3JlYXRlIGEgRFBMTCBvZiB0eXBlIEVFQyBmb3IgRTgyNWMsDQo+ID4g
+LSBjcmVhdGUgcmVjb3ZlcmVkIGNsb2NrIHBpbiBmb3IgZWFjaCBQRiwgYW5kIGNvbnRyb2wgdGhl
+bSB0aHJvdWdoDQo+ID4gd3JpdGluZyB0byByZWdpc3RlcnMsDQo+ID4gLSBjcmVhdGUgcGluIHRv
+IGNvbnRyb2wgY2xvY2sgMTU4OCBmb3IgUEYwLCBhbmQgY29udHJvbCBpdCB0aHJvdWdoDQo+ID4g
+d3JpdGluZyB0byByZWdpc3RlcnMuDQo+ID4NCj4gPiBSZXZpZXdlZC1ieTogTWlsZW5hIE9sZWNo
+IDxtaWxlbmEub2xlY2hAaW50ZWwuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFByemVteXNsYXcg
+S29yYmEgPHByemVteXNsYXcua29yYmFAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICAgZHJpdmVy
+cy9uZXQvZXRoZXJuZXQvaW50ZWwvaWNlL2ljZV9kcGxsLmMgICB8IDg1NiArKysrKysrKysrKysr
+KysrKystLQ0KPiA+ICAgZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWNlL2ljZV9kcGxsLmgg
+ICB8ICAyNCArLQ0KPiA+ICAgZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWNlL2ljZV9tYWlu
+LmMgICB8ICAgMyArLQ0KPiA+ICAgZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWNlL2ljZV9w
+dHBfaHcuYyB8ICA0MCArLQ0KPiA+ICAgZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaWNlL2lj
+ZV9wdHBfaHcuaCB8ICAgMiArDQo+ID4gICBkcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pY2Uv
+aWNlX3RzcGxsLmggIHwgICA3ICsNCj4gPiAgIGRyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2lj
+ZS9pY2VfdHlwZS5oICAgfCAgIDYgKw0KPiA+ICAgNyBmaWxlcyBjaGFuZ2VkLCA4NjUgaW5zZXJ0
+aW9ucygrKSwgNzMgZGVsZXRpb25zKC0pDQo+ID4NCg0KQXBvbG9naWVzIGZvciBsYXRlIGZlZWRi
+YWNrIGFuZCBub3QgYW5zd2VyaW5nIGRpcmVjdGx5IHRvIG9yaWdpbmFsIG1lc3NhZ2UgKEkgbG9z
+dCBpdCBzb21laG93KQ0KVGhpcyBwYXRjaCByZXF1aXJlcyB0d28gbW9yZSBjaGFuZ2VzOg0KDQox
+KSBmdW5jdGlvbmFsLCB3ZSBjYW4ndCB1c2UgcGZfaWQgZm9yIHJjbGsgcGlucyBpbml0aWFsaXph
+dGlvbiBpbiBjYXNlIG9mIEU4MjVDIGRldmljZXMuDQpJdCBhcHBsaWVzIHRvIDJYTkMgbW9kZSB2
+YXJpYW50cyBzcGVjaWZpY2FsbHkuIFRoZXJlIGlzIGEgbWFwcGluZyBuZWVkZWQgdG8gYWNoaWV2
+ZQ0KdW5pcXVlIHBpbiBpbmRleGVzIGZvciBQRnMgZnJvbSBib3RoIE5BQyAodGhlcmUgaXMgYSBm
+dW5jdGlvbg0KaWNlX2dldF9waHlfbGFuZV9udW1iZXIgd2hpY2ggY292ZXJzIHRoYXQgYW5kIGlz
+IHN1aXRhYmxlIGZvciBvdGhlciBFODAwIHByb2R1Y3RzKS4NCg0KMikgYWZ0ZXIgb25lIG1vcmUg
+YW5hbHlzaXMgb2YgdGhlIHBhdGNoLCB3ZSB0aGluayB0aGF0IENMS19PVVQgcGluIGRlZmluaXRp
+b24NCmlzIHJlZHVuZGFudCAobm90IHVzZWQpIGFuZCBpdCB3b3VsZCBiZSBnb29kIHRvIHJlbW92
+ZSBpdCBmcm9tIHRoZSBwYXRjaC4NCg0KVGhhbmtzDQoNCkdyemVnb3J6DQoNCg==
