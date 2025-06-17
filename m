@@ -1,73 +1,63 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02642ECEAE
-	for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 16:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4252DFF2B
+	for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 16:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176586; cv=none; b=UwaUhcC6GmaES1s4ljtCBCdJKpKA9Akz6pqfebUpq50Zf1dYiroZ7JxR38WpGvwD0bBRvH/KpyZKw/bX7ba6gUVTnqYz+21raAZqxHXiF+t2HXIb6xuaBUWjWSsSME6ZBKS97bEm16IicNQPZ6hv02K3ki/9pY1llDZsvDxxFW8=
+	t=1750176621; cv=none; b=JsD7ppUbNdSFtK9W7uLdlQIYN3ZNwtTroTWlJy7YlZTgOIRf3UXbitjhHJHjjubTf2Yce6qB55mp3M3CGiV8OL23OkCnRSxT1IjjJxvsfIcgYoRXZD6AX3FPp/NG4kYHAzFRekAYDvGNuO4SxC1ZSi9DPECywK9FKLAbrA9MoRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176586; c=relaxed/simple;
-	bh=e8cEPTs82N3ebqQiWLlW0aqmQmVoF7FWyUqDl32gkhg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DCA6ZHB+g/eKMOP5kpinHo1DV+LwEGIpqbkXbbiFpJYjiRansncbqjB3+GCJf/5/rchyfrSSlNf4G2fhpMtARs/PQVdrEMVnAyDDALMq3Mlie+X746PjTp5Nqajt6sLEzDcTap3iuOMFvmlDvKNr1VnOjJq6N8VCYjlKUQsVR68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ukenucw7; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1750176621; c=relaxed/simple;
+	bh=pVyvF3eYxxjO246g5QZE97s8sjAFnfNwoI4mCPK0V5s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=p3wRddMWbFGz4zfz1klHwy7vGLQCeQSbHnE02lXkohCcMA2vVlQfNJLIGTFkRkNRTTrYLWrA7cMIbIS3QMy3vTCqGlEePxvXesJdlR1mmQZ510yxLfDuLPZLyGxPUwjv6n5nFYhakZ0Zp6VWNg5D7CrAr5mesrzob4ipxKRn2uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=O44xcvWe; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ukenucw7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750176583;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=RY437T66zUTU85w+ZMnXlHoih95/8VsrgB9XXy3i00M=;
-	b=Ukenucw7fkbsZCA/fkEorZ5xbPvoKfolu6FkH6I5ttD5FRrE8I2jihIcY8zg60GmYLWH4F
-	9WBVkyGST4UnpEzEfratAmcq5+BHxtHhKRLefQDaL/5Jnbms45Kz2o+uZB9AgeKyzd/NiF
-	ljwSlDbvgWpzj+ytRr6yrKszY96d4JE=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-75-qEjssfq5M3GaWvzW1nij5Q-1; Tue, 17 Jun 2025 12:09:41 -0400
-X-MC-Unique: qEjssfq5M3GaWvzW1nij5Q-1
-X-Mimecast-MFC-AGG-ID: qEjssfq5M3GaWvzW1nij5Q_1750176581
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-ade6fd82263so436792066b.1
-        for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 09:09:41 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="O44xcvWe"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-234fcadde3eso76474895ad.0
+        for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 09:10:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1750176620; x=1750781420; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=XadhcNtxF1ej4n+cxZcsL+dzrWJT+s0macaGyzV2RaU=;
+        b=O44xcvWeHiiNzcKBlWJaq80BWLy0GAOoeP8i9KeGRtW5zjYsenh1gI0xsuivv5KBc6
+         RqmYVixTM/IEeje+P/vDo9PhBem9XfPVVGOgyvbRtxfUJqzecDCLv3tTEM3MbfBcMc9n
+         Ecv5I8eg0Y8ymJHFlEAgxpKXoW4+P5RJ8Rzys=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750176581; x=1750781381;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RY437T66zUTU85w+ZMnXlHoih95/8VsrgB9XXy3i00M=;
-        b=XJ8w8g5zpGTheff/HLRcnZfHPky8Ybg6nbdACzfY+UoWpWOI/kZZ8h1aIDaOUY9ZD0
-         Oj6avu80dJT5iRGUADzVElBLb/HmYwJzMNDPgmVFoskqfdlCiUGVXy4YUr+QY/c2c5m9
-         xAqxpCHFOPvGoTGnCApAOY20oqn/f8zDIfI98vE7lTUiIOHNM97AOmNvlVuljHoleMBj
-         CX+fsb7JtKvFAcQcSz6rWCIMEvQwMx3cmovvW2JlhPXSy37SQlINSjR+19ZbKOj835jF
-         m4BZIg9Ar3kjNYDgYbwu/2a9829aPz+yBCw/BNtbV6AG8UlCXL+1X9UgoDyDOWB20B4Z
-         y9OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXY2+lQEB5/tf6hcMrJQ1Se/WugCGmXG4iZtTVQ2SSbUpBdM+tHVApZalIke3p9inJg3dzS95s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmwkgdQ2YXzkp470fFamcdyfcyANHdfzbtqcZHeEbOxfzRa7+D
-	NF3eb/pUeaHFkxbKx/2V9I2VE4nEOrDKTnfaroi2HW5YAJq/0sKyeuyN/MJubzTWe/pLNXf4Cxe
-	PQts8A8BR5KGq8zWR7RDe2RVqru+7jeFWdtmiPb4DWqtj7GjaYSwCGUONqQ==
-X-Gm-Gg: ASbGncsss6VPcUEfTjdeNDo89ltFcXlWFk7NHEKUtnx81Lziea3JBK308DYsEuGuk9e
-	T3gGsbFNSZ4w5uijzGkObeJAekESBIIURwgqm84HErMpdVheQ/1V5UBdcwx8PgUeduL7XoyOSWx
-	5MaIkvmq/hIOC0xdAtjQ5Pu9A6FBoQM1ML/BHEXXP6yReGzAJA5jUaw/Cr/kl5nNJJ+f/rDkQuc
-	lgO7hwp3E8psznbDS2WKbNWuGmYz0IRXmt4Efu4X4UfOMftgh+p+yVTpPj8eV2H4pbqR/Q8wHXc
-	dgqlisfam3SAQZCalph8ynXjYBOkg4dncW7bA1tOk+Rgu6qpd8Wh/CCaZhJsSby13xluqKCK5zz
-	J8GCVuY3qnHAqNyECGMrwVF5lEePLmB1nNsBXNEhwMBi67qk=
-X-Received: by 2002:a17:907:3f1f:b0:ad2:417b:2ab5 with SMTP id a640c23a62f3a-adfad4f5a5amr1126325666b.60.1750176580480;
-        Tue, 17 Jun 2025 09:09:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF6u1NV6QXYpbyorqCmZBn41Wz+ATHHrC4a871mog3qYJ+wSPRBCHfMyBrTpWHRiApiZ+6vfg==
-X-Received: by 2002:a17:907:3f1f:b0:ad2:417b:2ab5 with SMTP id a640c23a62f3a-adfad4f5a5amr1126321166b.60.1750176579921;
-        Tue, 17 Jun 2025 09:09:39 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f31:700:3851:c66a:b6b9:3490? (p200300d82f3107003851c66ab6b93490.dip0.t-ipconnect.de. [2003:d8:2f31:700:3851:c66a:b6b9:3490])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adec897ac25sm890207966b.157.2025.06.17.09.09.37
+        d=1e100.net; s=20230601; t=1750176620; x=1750781420;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XadhcNtxF1ej4n+cxZcsL+dzrWJT+s0macaGyzV2RaU=;
+        b=L5MxuwgrLJYN6DcwgPGByHDM4kG+0mKLsyRej0j/Wd8JQwn5VzbNaETtA8+YpbJGJK
+         hPej0P1tH5ODMp1ntGMbYzMJxphJI+/KmIP8FEZ8BcR1VyvhEV4Guh9H7unqgDGqFh7z
+         ROiaY2ir7nd0n0qaf61bmSbS8aceXRp8jP5OBh7GzeaXo6KeA/vg0Yb8tiOyXjOyBeE8
+         O6U6FZoZCAoeU9ivp5EB7ENhwEyhEh7HMpjAKWJidLzhg0QSjV9Vw1EYCGVTCR+Zyse/
+         ZYUAaRXvLozrPPV1msi6p356IDHwZ/mF9GhL3LpJ7OVTF2+NJKkfalL8OtOxaONKyfxf
+         gGag==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ127hPUXS3YoMLh+PQAMPtjE+y5IyYZef92gzKUkY7xSEmLsQSParHdpNP3Q68pKqqjy1c+M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwaKQJjvS/VEBSNyG1QKYshJIloV97pG/GPODmP86cVlAS47nv
+	2sSNJNpINcM3FtZgs1tYr8k/c5jfIS78bcoHtHT8FGmBTSxnmWDoTHBWXwgmx5VuUg==
+X-Gm-Gg: ASbGncuhcKRpPmc7opjtr+izOCOzN0gPYhMTVMuziyfME1wnwLPjq2EzNH/1LvxK0t2
+	vvcyyrOkSXqHlPDkFTIbB3VROtkDW/xlspt1ZFu/AHdQV4llY7aUPh4ungvB5F4pqqnuf4Bt1df
+	hr7mWRl9bVmmEQ5MXXxsx+iM88uoomsABVTFeKJE5VaB7je5FSagrzHYivYnP5QIsIfLZjwFUJE
+	28WfDaYU2O+DHrVK2y+U/8BG6gXWP7q1bLmN8kZAzfrZXNzIHsjF9S36UklADTwqaOuJAnUJZdD
+	7QER0EEnjuJfQy7x3PhKO1pctz+D7I5auyvCNl96UVUCZxJhzIFveroiNZmJnTJJuLqTaJlhMN0
+	Zg68rpjtd7nOHvD4KP+lO4GiaUQQrrTuA6dLt
+X-Google-Smtp-Source: AGHT+IFrnm/6g2DdRD4ThsyOlmM9n95VHHRp9LotSb21QFKqc3Hyfe+DmATQ1RwzBN8km8ELJ/9BcA==
+X-Received: by 2002:a17:903:22cd:b0:235:efbb:953c with SMTP id d9443c01a7336-2366b329f4amr187483075ad.13.1750176619593;
+        Tue, 17 Jun 2025 09:10:19 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2365d88d921sm82016405ad.40.2025.06.17.09.10.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Jun 2025 09:09:39 -0700 (PDT)
-Message-ID: <129fe808-4285-48fe-95b6-00ea19bd87af@redhat.com>
-Date: Tue, 17 Jun 2025 18:09:36 +0200
+        Tue, 17 Jun 2025 09:10:18 -0700 (PDT)
+Message-ID: <3b0d8a90-7312-41af-9ac6-9128aef2cce9@broadcom.com>
+Date: Tue, 17 Jun 2025 09:10:17 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,177 +65,59 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: netmem series needs some love and Acks from MM folks
-To: Harry Yoo <harry.yoo@oracle.com>, Mina Almasry <almasrymina@google.com>,
- willy@infradead.org
-Cc: Byungchul Park <byungchul@sk.com>, Jakub Kicinski <kuba@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- kernel_team@skhynix.com, ilias.apalodimas@linaro.org, hawk@kernel.org,
- akpm@linux-foundation.org, davem@davemloft.net, john.fastabend@gmail.com,
- andrew+netdev@lunn.ch, asml.silence@gmail.com, toke@redhat.com,
- tariqt@nvidia.com, edumazet@google.com, pabeni@redhat.com,
- saeedm@nvidia.com, leon@kernel.org, ast@kernel.org, daniel@iogearbox.net,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
- linux-rdma@vger.kernel.org, bpf@vger.kernel.org, vishal.moola@gmail.com
-References: <20250609043225.77229-1-byungchul@sk.com>
- <20250609043225.77229-2-byungchul@sk.com>
- <20250609123255.18f14000@kernel.org>
- <20250610013001.GA65598@system.software.com>
- <20250611185542.118230c1@kernel.org>
- <20250613011305.GA18998@system.software.com>
- <CAHS8izMsKaP66A1peCHEMxaqf0SV-O6uRQ9Q6MDNpnMbJ+XLUA@mail.gmail.com>
- <aFDTikg1W3Bz_s5E@hyeyoo>
-From: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH net-next v4 04/14] net: dsa: b53: detect BCM5325 variants
+To: =?UTF-8?Q?=C3=81lvaro_Fern=C3=A1ndez_Rojas?= <noltari@gmail.com>,
+ jonas.gorski@gmail.com, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, vivien.didelot@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, dgcbueu@gmail.com
+References: <20250614080000.1884236-1-noltari@gmail.com>
+ <20250614080000.1884236-5-noltari@gmail.com>
 Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <aFDTikg1W3Bz_s5E@hyeyoo>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <20250614080000.1884236-5-noltari@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 17.06.25 04:31, Harry Yoo wrote:
-> On Fri, Jun 13, 2025 at 07:19:07PM -0700, Mina Almasry wrote:
->> On Thu, Jun 12, 2025 at 6:13 PM Byungchul Park <byungchul@sk.com> wrote:
->>>
->>> On Wed, Jun 11, 2025 at 06:55:42PM -0700, Jakub Kicinski wrote:
->>>> On Tue, 10 Jun 2025 10:30:01 +0900 Byungchul Park wrote:
->>>>>> What's the intended relation between the types?
->>>>>
->>>>> One thing I'm trying to achieve is to remove pp fields from struct page,
->>>>> and make network code use struct netmem_desc { pp fields; } instead of
->>>>> sturc page for that purpose.
->>>>>
->>>>> The reason why I union'ed it with the existing pp fields in struct
->>>>> net_iov *temporarily* for now is, to fade out the existing pp fields
->>>>> from struct net_iov so as to make the final form like:
->>>>
->>>> I see, I may have mixed up the complaints there. I thought the effort
->>>> was also about removing the need for the ref count. And Rx is
->>>> relatively light on use of ref counting.
->>>>
->>>>>> netmem_ref exists to clearly indicate that memory may not be readable.
->>>>>> Majority of memory we expect to allocate from page pool must be
->>>>>> kernel-readable. What's the plan for reading the "single pointer"
->>>>>> memory within the kernel?
->>>>>>
->>>>>> I think you're approaching this problem from the easiest and least
->>>>>
->>>>> No, I've never looked for the easiest way.  My bad if there are a better
->>>>> way to achieve it.  What would you recommend?
->>>>
->>>> Sorry, I don't mean that the approach you took is the easiest way out.
->>>> I meant that between Rx and Tx handling Rx is the easier part because
->>>> we already have the suitable abstraction. It's true that we use more
->>>> fields in page struct on Rx, but I thought Tx is also more urgent
->>>> as there are open reports for networking taking references on slab
->>>> pages.
->>>>
->>>> In any case, please make sure you maintain clear separation between
->>>> readable and unreadable memory in the code you produce.
->>>
->>> Do you mean the current patches do not?  If yes, please point out one
->>> as example, which would be helpful to extract action items.
->>>
->>
->> I think one thing we could do to improve separation between readable
->> (pages/netmem_desc) and unreadable (net_iov) is to remove the struct
->> netmem_desc field inside the net_iov, and instead just duplicate the
->> pp/pp_ref_count/etc fields. The current code gives off the impression
->> that net_iov may be a container of netmem_desc which is not really
->> accurate.
->>
->> But I don't think that's a major blocker. I think maybe the real issue
->> is that there are no reviews from any mm maintainers?
+On 6/14/25 00:59, Álvaro Fernández Rojas wrote:
+> We need to be able to differentiate the BCM5325 variants because:
+> - BCM5325M switches lack the ARLIO_PAGE->VLAN_ID_IDX register.
+> - BCM5325E have less 512 ARL buckets instead of 1024.
 > 
-> Let's try changing the subject to draw some attention from MM people :)
+> Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
 
-Hi, it worked! :P
-
-I hope Willy will find his way to this thread as well.
-
-> 
->> So I'm not 100%
->> sure this is in line with their memdesc plans. I think probably
->> patches 2->8 are generic netmem-ifications that are good to merge
->> anyway, but I would say patch 1 and 9 need a reviewed by from someone
->> on the mm side. Just my 2 cents.
-> 
-> As someone who worked on the zpdesc series, I think it is pretty much
-> in line with the memdesc plans.
-> 
-> I mean, it does differ a bit from the initial idea of generalizing it as
-> "bump" allocator, but overall, it's still aligned with the memdesc
-> plans, and looks like a starting point, IMHO.
-
-Just to summarize (not that there is any misunderstanding), the first 
-step of the memdesc plan is simple:
-
-1) have a dedicated data-structure we will allocate alter dynamically.
-
-2) Make it overlay "struct page" for now in a way that doesn't break things
-
-3) Convert all users of "struct page" to the new data-structure
-
-Later, the memdesc data-structure will then actually come be allocated 
-dynamically, so "struct page" content will not apply anymore, and we can 
-shrink "struct page".
-
-
-What I see in this patch is exactly 1) and 2).
-
-I am not 100% sure about existing "struct net_iov" and how that 
-interacts with "struct page" overlay. I suspects it's just a dynamically 
-allocated structure?
-
-Because this patch changes the layout of "struct net_iov", which is a 
-bit confusing at first sight?
-
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-Cheers,
-
-David / dhildenb
-
+Florian
