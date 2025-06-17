@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2002F2C40
-	for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 16:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637002F2C62
+	for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 16:13:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176782; cv=none; b=raL3pD4rOVItnCDnqY/7Wlq6lf4Y/fL6JqSXeXgowd9P8QrwC6Yp8R8B/D9587c+14n1/WnX2MqOf+tB4M6XwEDjoD1ls+PcCR6osxJR6KS8cFcUOWe/Ks+eX6YErHN3hlHSQbJ3OsFF6AB//zPXq3KEFTifjG8nnck1aHqUD3U=
+	t=1750176794; cv=none; b=U31bLAAADY9g00VSHcgIDfluy1D2ZbuUx5e0cn12VWDU55/7b23TFny6iyw5/RTr3/DK0PWVakBG8HTjTnF90yT7D/L0iWlXepQWV9cPNvW9qli1YWbaa2VtMK7k0sGmnyX+8qrxpxQNXTGIE8wJWFrLyvr6IYL2A0N8Q/W58eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176782; c=relaxed/simple;
-	bh=laIGb1IKtBZOa81NCsCrQQljm8QmVh2QyvglNZZUIY4=;
+	s=arc-20240116; t=1750176794; c=relaxed/simple;
+	bh=vIkpEF2V4ZyKLM4/7kTQqy/Vo3REFThf/x3iEGqVFJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=StJjUNkc+Ysw2lMtgH8/dpbXNjJhycOGnOaB+oiaqbTRDSO8mHHvRhnNn5YjTyCvtWPeQSm3vSX0M09s/JAnWhSIWEIgcijKaJg/j1bFlkXnQgWsjzKOZ1wGceX6foE12SVsCwxYub7Ug75Z0AdP2YN8Oi0O8zkt4HcDNVYqju4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AU47yFQm; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=t6jYrkRv3k/xDyW5cuYw56/TyifqY/V5pF5dzTKaF96NpYioPI/OLshrtTLMBeOxZcU9hgPikr/TkO6hoeNjzwbKnhCFemopmPsM0AOst+KOHXSIs/xkUD0mCD593HHFKGmLiLL32muV+coHlHwk7x4I7jW1KEqz9Z3dz5cQ7Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YIA5Xbiv; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AU47yFQm"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YIA5Xbiv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750176779;
+	s=mimecast20190719; t=1750176791;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c1hdf9DV50KgGNqqDa4l3+CWvy5i3jUw2FB4V2WBc7E=;
-	b=AU47yFQmmE4BbbVVbIHgnaJHUli8+lggsXJFLSg7aftN6iKjfyTa+2j/J8oPvNWYxbJT33
-	NGwyUZPkc/5829GWQPt2/TPl6lKq3isSh/g3wxuNZXABlVL4InMAmVOQ56Tbhj+JrOEM0k
-	45+QNsVsvXESSftBMY49yzGHubNS8xA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=s65DmpwHyzipjluBVtCYhJuSmNFjtWdcGs8KRXL1zRw=;
+	b=YIA5Xbivpx9uXtrWelRcUh/0XMEm6io0m41DdRFePGAHtfc1r53Agft3eAn/7nHMZ8qcUM
+	BVO94aJ//rHnKSdeWndTwMTj4vAYg6bWkxT6rpHikUCWnzy/dXCKqPU9sXOiXJ+MQB7XKs
+	vkzawbRFB27WwZ1+RlXDKCKRnsVWK5o=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-112-NZlBtL7rMMelAbDDmZgJxQ-1; Tue,
- 17 Jun 2025 12:12:56 -0400
-X-MC-Unique: NZlBtL7rMMelAbDDmZgJxQ-1
-X-Mimecast-MFC-AGG-ID: NZlBtL7rMMelAbDDmZgJxQ_1750176775
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-453--IrpN9HHNOOUlmJ34Bsr-A-1; Tue,
+ 17 Jun 2025 12:13:06 -0400
+X-MC-Unique: -IrpN9HHNOOUlmJ34Bsr-A-1
+X-Mimecast-MFC-AGG-ID: -IrpN9HHNOOUlmJ34Bsr-A_1750176785
 Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 12EBB1956096;
-	Tue, 17 Jun 2025 16:12:55 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6959C1800291;
+	Tue, 17 Jun 2025 16:13:05 +0000 (UTC)
 Received: from gerbillo.redhat.com (unknown [10.44.33.2])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 50E7D1956094;
-	Tue, 17 Jun 2025 16:12:49 +0000 (UTC)
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F254B1956094;
+	Tue, 17 Jun 2025 16:13:00 +0000 (UTC)
 From: Paolo Abeni <pabeni@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
@@ -55,9 +55,9 @@ Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Yuri Benditovich <yuri.benditovich@daynix.com>,
 	Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v4 net-next 3/8] vhost-net: allow configuring extended features
-Date: Tue, 17 Jun 2025 18:12:10 +0200
-Message-ID: <c510db61e36ce3b26e3a1fb7716c17f6888da095.1750176076.git.pabeni@redhat.com>
+Subject: [PATCH v4 net-next 5/8] net: implement virtio helpers to handle UDP GSO tunneling.
+Date: Tue, 17 Jun 2025 18:12:12 +0200
+Message-ID: <5385db79f3fdb59c8cbf235ef4453122ef19ae7e.1750176076.git.pabeni@redhat.com>
 In-Reply-To: <cover.1750176076.git.pabeni@redhat.com>
 References: <cover.1750176076.git.pabeni@redhat.com>
 Precedence: bulk
@@ -69,258 +69,376 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-Use the extended feature type for 'acked_features' and implement
-two new ioctls operation allowing the user-space to set/query an
-unbounded amount of features.
+The virtio specification are introducing support for GSO over UDP
+tunnel.
 
-The actual number of processed features is limited by VIRTIO_FEATURES_MAX
-and attempts to set features above such limit fail with
-EOPNOTSUPP.
+This patch brings in the needed defines and the additional virtio hdr
+parsing/building helpers.
 
-Note that: the legacy ioctls implicitly truncate the negotiated
-features to the lower 64 bits range and the 'acked_backend_features'
-field don't need conversion, as the only negotiated feature there
-is in the low 64 bit range.
+The UDP tunnel support uses additional fields in the virtio hdr, and such
+fields location can change depending on other negotiated features -
+specifically VIRTIO_NET_F_HASH_REPORT.
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+Try to be as conservative as possible with the new field validation.
+
+Existing implementation for plain GSO offloads allow for invalid/
+self-contradictory values of such fields. With GSO over UDP tunnel we can
+be more strict, with no need to deal with legacy implementation.
+
+Since the checksum-related field validation is asymmetric in the driver
+and in the device, introduce a separate helper to implement the new checks
+(to be used only on the driver side).
+
+Note that while the feature space exceeds the 64-bit boundaries, the
+guest offload space is fixed by the specification of the
+VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET command to a 64-bit size.
+
+Prior to the UDP tunnel GSO support, each guest offload bit corresponded
+to the feature bit with the same value and vice versa.
+
+Due to the limited 'guest offload' space, relevant features in the high
+64 bits are 'mapped' to free bits in the lower range. That is simpler
+than defining a new command (and associated features) to exchange an
+extended guest offloads set.
+
+As a consequence, the uAPIs also specify the mapped guest offload value
+corresponding to the UDP tunnel GSO features.
+
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
----
+--
 v3 -> v4:
-  - use a single static (lower case) constant instead of enum and old def
-  - simpler VHOST_GET_FEATURES_ARRAY impl
-  - avoid using virtio_features_and_not
+  - fixed offset for UDP GSO tunnel, update accordingly the helpers
+  - tried to clarified vlan_hlen semantic
+  - virtio_net_chk_data_valid() -> virtio_net_handle_csum_offload()
 
 v2 -> v3:
-  - virtio_features_t -> u64[2]
-  - add __counted_by annotation to vhost_features_array
+  - add definitions for possible vnet hdr layouts with tunnel support
 
 v1 -> v2:
-  - change the ioctl to use an extensible API
+  - 'relay' -> 'rely' typo
+  - less unclear comment WRT enforced inner GSO checks
+  - inner header fields are allowed only with 'modern' virtio,
+    thus are always le
+  - clarified in the commit message the need for 'mapped features'
+    defines
+  - assume little_endian is true when UDP GSO is enabled.
+  - fix inner proto type value
 ---
- drivers/vhost/net.c              | 87 ++++++++++++++++++++++++--------
- drivers/vhost/vhost.c            |  2 +-
- drivers/vhost/vhost.h            |  4 +-
- include/uapi/linux/vhost.h       |  7 +++
- include/uapi/linux/vhost_types.h |  5 ++
- 5 files changed, 82 insertions(+), 23 deletions(-)
+ include/linux/virtio_net.h      | 196 ++++++++++++++++++++++++++++++--
+ include/uapi/linux/virtio_net.h |  33 ++++++
+ 2 files changed, 221 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 7cbfc7d718b3..126aa4ee26a8 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -69,12 +69,12 @@ MODULE_PARM_DESC(experimental_zcopytx, "Enable Zero Copy TX;"
- 
- #define VHOST_DMA_IS_DONE(len) ((__force u32)(len) >= (__force u32)VHOST_DMA_DONE_LEN)
- 
--enum {
--	VHOST_NET_FEATURES = VHOST_FEATURES |
--			 (1ULL << VHOST_NET_F_VIRTIO_NET_HDR) |
--			 (1ULL << VIRTIO_NET_F_MRG_RXBUF) |
--			 (1ULL << VIRTIO_F_ACCESS_PLATFORM) |
--			 (1ULL << VIRTIO_F_RING_RESET)
-+static const u64 vhost_net_features[VIRTIO_FEATURES_DWORDS] = {
-+	VHOST_FEATURES |
-+	(1ULL << VHOST_NET_F_VIRTIO_NET_HDR) |
-+	(1ULL << VIRTIO_NET_F_MRG_RXBUF) |
-+	(1ULL << VIRTIO_F_ACCESS_PLATFORM) |
-+	(1ULL << VIRTIO_F_RING_RESET),
- };
- 
- enum {
-@@ -1614,16 +1614,17 @@ static long vhost_net_reset_owner(struct vhost_net *n)
- 	return err;
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index 02a9f4dc594d..449487c914a8 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -47,9 +47,9 @@ static inline int virtio_net_hdr_set_proto(struct sk_buff *skb,
+ 	return 0;
  }
  
--static int vhost_net_set_features(struct vhost_net *n, u64 features)
-+static int vhost_net_set_features(struct vhost_net *n, const u64 *features)
+-static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+-					const struct virtio_net_hdr *hdr,
+-					bool little_endian)
++static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
++					  const struct virtio_net_hdr *hdr,
++					  bool little_endian, u8 hdr_gso_type)
  {
- 	size_t vhost_hlen, sock_hlen, hdr_len;
- 	int i;
+ 	unsigned int nh_min_len = sizeof(struct iphdr);
+ 	unsigned int gso_type = 0;
+@@ -57,8 +57,8 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 	unsigned int p_off = 0;
+ 	unsigned int ip_proto;
  
--	hdr_len = (features & ((1ULL << VIRTIO_NET_F_MRG_RXBUF) |
--			       (1ULL << VIRTIO_F_VERSION_1))) ?
--			sizeof(struct virtio_net_hdr_mrg_rxbuf) :
--			sizeof(struct virtio_net_hdr);
--	if (features & (1 << VHOST_NET_F_VIRTIO_NET_HDR)) {
-+	hdr_len = virtio_features_test_bit(features, VIRTIO_NET_F_MRG_RXBUF) ||
-+		  virtio_features_test_bit(features, VIRTIO_F_VERSION_1) ?
-+		  sizeof(struct virtio_net_hdr_mrg_rxbuf) :
-+		  sizeof(struct virtio_net_hdr);
-+
-+	if (virtio_features_test_bit(features, VHOST_NET_F_VIRTIO_NET_HDR)) {
- 		/* vhost provides vnet_hdr */
- 		vhost_hlen = hdr_len;
- 		sock_hlen = 0;
-@@ -1633,18 +1634,19 @@ static int vhost_net_set_features(struct vhost_net *n, u64 features)
- 		sock_hlen = hdr_len;
+-	if (hdr->gso_type != VIRTIO_NET_HDR_GSO_NONE) {
+-		switch (hdr->gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
++	if (hdr_gso_type != VIRTIO_NET_HDR_GSO_NONE) {
++		switch (hdr_gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
+ 		case VIRTIO_NET_HDR_GSO_TCPV4:
+ 			gso_type = SKB_GSO_TCPV4;
+ 			ip_proto = IPPROTO_TCP;
+@@ -84,7 +84,7 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 			return -EINVAL;
+ 		}
+ 
+-		if (hdr->gso_type & VIRTIO_NET_HDR_GSO_ECN)
++		if (hdr_gso_type & VIRTIO_NET_HDR_GSO_ECN)
+ 			gso_type |= SKB_GSO_TCP_ECN;
+ 
+ 		if (hdr->gso_size == 0)
+@@ -122,7 +122,7 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 
+ 				if (!protocol)
+ 					virtio_net_hdr_set_proto(skb, hdr);
+-				else if (!virtio_net_hdr_match_proto(protocol, hdr->gso_type))
++				else if (!virtio_net_hdr_match_proto(protocol, hdr_gso_type))
+ 					return -EINVAL;
+ 				else
+ 					skb->protocol = protocol;
+@@ -153,7 +153,7 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 		}
  	}
- 	mutex_lock(&n->dev.mutex);
--	if ((features & (1 << VHOST_F_LOG_ALL)) &&
-+	if (virtio_features_test_bit(features, VHOST_F_LOG_ALL) &&
- 	    !vhost_log_access_ok(&n->dev))
- 		goto out_unlock;
  
--	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM))) {
-+	if (virtio_features_test_bit(features, VIRTIO_F_ACCESS_PLATFORM)) {
- 		if (vhost_init_device_iotlb(&n->dev))
- 			goto out_unlock;
- 	}
+-	if (hdr->gso_type != VIRTIO_NET_HDR_GSO_NONE) {
++	if (hdr_gso_type != VIRTIO_NET_HDR_GSO_NONE) {
+ 		u16 gso_size = __virtio16_to_cpu(little_endian, hdr->gso_size);
+ 		unsigned int nh_off = p_off;
+ 		struct skb_shared_info *shinfo = skb_shinfo(skb);
+@@ -199,6 +199,13 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 	return 0;
+ }
  
- 	for (i = 0; i < VHOST_NET_VQ_MAX; ++i) {
- 		mutex_lock(&n->vqs[i].vq.mutex);
--		n->vqs[i].vq.acked_features = features;
-+		virtio_features_copy(n->vqs[i].vq.acked_features_array,
-+				     features);
- 		n->vqs[i].vhost_hlen = vhost_hlen;
- 		n->vqs[i].sock_hlen = sock_hlen;
- 		mutex_unlock(&n->vqs[i].vq.mutex);
-@@ -1681,12 +1683,13 @@ static long vhost_net_set_owner(struct vhost_net *n)
- static long vhost_net_ioctl(struct file *f, unsigned int ioctl,
- 			    unsigned long arg)
- {
-+	u64 all_features[VIRTIO_FEATURES_DWORDS];
- 	struct vhost_net *n = f->private_data;
- 	void __user *argp = (void __user *)arg;
- 	u64 __user *featurep = argp;
- 	struct vhost_vring_file backend;
--	u64 features;
--	int r;
-+	u64 features, count, copied;
-+	int r, i;
++static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
++					const struct virtio_net_hdr *hdr,
++					bool little_endian)
++{
++	return __virtio_net_hdr_to_skb(skb, hdr, little_endian, hdr->gso_type);
++}
++
+ static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
+ 					  struct virtio_net_hdr *hdr,
+ 					  bool little_endian,
+@@ -242,4 +249,177 @@ static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
+ 	return 0;
+ }
  
- 	switch (ioctl) {
- 	case VHOST_NET_SET_BACKEND:
-@@ -1694,16 +1697,60 @@ static long vhost_net_ioctl(struct file *f, unsigned int ioctl,
- 			return -EFAULT;
- 		return vhost_net_set_backend(n, backend.index, backend.fd);
- 	case VHOST_GET_FEATURES:
--		features = VHOST_NET_FEATURES;
-+		features = vhost_net_features[0];
- 		if (copy_to_user(featurep, &features, sizeof features))
- 			return -EFAULT;
- 		return 0;
- 	case VHOST_SET_FEATURES:
- 		if (copy_from_user(&features, featurep, sizeof features))
- 			return -EFAULT;
--		if (features & ~VHOST_NET_FEATURES)
-+		if (features & ~vhost_net_features[0])
- 			return -EOPNOTSUPP;
--		return vhost_net_set_features(n, features);
++static inline unsigned int virtio_l3min(bool is_ipv6)
++{
++	return is_ipv6 ? sizeof(struct ipv6hdr) : sizeof(struct iphdr);
++}
 +
-+		virtio_features_from_u64(all_features, features);
-+		return vhost_net_set_features(n, all_features);
-+	case VHOST_GET_FEATURES_ARRAY:
-+		if (copy_from_user(&count, argp, sizeof(u64)))
-+			return -EFAULT;
++static inline int
++virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
++			  const struct virtio_net_hdr_v1_hash_tunnel *vhdr,
++			  bool tnl_hdr_negotiated,
++			  bool tnl_csum_negotiated,
++			  bool little_endian)
++{
++	const struct virtio_net_hdr *hdr = (const struct virtio_net_hdr *)vhdr;
++	unsigned int inner_nh, outer_th, inner_th;
++	unsigned int inner_l3min, outer_l3min;
++	u8 gso_inner_type, gso_tunnel_type;
++	bool outer_isv6, inner_isv6;
++	int ret;
 +
-+		/* Copy the net features, up to the user-provided buffer size */
-+		argp += sizeof(u64);
-+		copied = min(count, VIRTIO_FEATURES_DWORDS);
-+		if (copy_to_user(argp, vhost_net_features,
-+				 copied * sizeof(u64)))
-+			return -EFAULT;
++	gso_tunnel_type = hdr->gso_type & VIRTIO_NET_HDR_GSO_UDP_TUNNEL;
++	if (!gso_tunnel_type)
++		return virtio_net_hdr_to_skb(skb, hdr, little_endian);
 +
-+		/* Zero the trailing space provided by user-space, if any */
-+		if (clear_user(argp, (count - copied) * sizeof(u64)))
-+			return -EFAULT;
-+		return 0;
-+	case VHOST_SET_FEATURES_ARRAY:
-+		if (copy_from_user(&count, argp, sizeof(u64)))
-+			return -EFAULT;
++	/* Tunnel not supported/negotiated, but the hdr asks for it. */
++	if (!tnl_hdr_negotiated)
++		return -EINVAL;
 +
-+		virtio_features_zero(all_features);
-+		for (i = 0; i < min(count, VIRTIO_FEATURES_DWORDS); ++i) {
-+			argp += sizeof(u64);
-+			if (copy_from_user(&all_features[i], argp,
-+					   sizeof(u64)))
-+				return -EFAULT;
-+		}
++	/* Either ipv4 or ipv6. */
++	if (gso_tunnel_type == VIRTIO_NET_HDR_GSO_UDP_TUNNEL)
++		return -EINVAL;
 +
-+		/* Any feature specified by user-space above VIRTIO_FEATURES_MAX is
-+		 * not supported by definition.
++	/* The UDP tunnel must carry a GSO packet, but no UFO. */
++	gso_inner_type = hdr->gso_type & ~(VIRTIO_NET_HDR_GSO_ECN |
++					   VIRTIO_NET_HDR_GSO_UDP_TUNNEL);
++	if (!gso_inner_type || gso_inner_type == VIRTIO_NET_HDR_GSO_UDP)
++		return -EINVAL;
++
++	/* Rely on csum being present. */
++	if (!(hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM))
++		return -EINVAL;
++
++	/* Validate offsets. */
++	outer_isv6 = gso_tunnel_type & VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6;
++	inner_isv6 = gso_inner_type == VIRTIO_NET_HDR_GSO_TCPV6;
++	inner_l3min = virtio_l3min(inner_isv6);
++	outer_l3min = ETH_HLEN + virtio_l3min(outer_isv6);
++
++	inner_th = __virtio16_to_cpu(little_endian, hdr->csum_start);
++	inner_nh = le16_to_cpu(vhdr->inner_nh_offset);
++	outer_th = le16_to_cpu(vhdr->outer_th_offset);
++	if (outer_th < outer_l3min ||
++	    inner_nh < outer_th + sizeof(struct udphdr) ||
++	    inner_th < inner_nh + inner_l3min)
++		return -EINVAL;
++
++	/* Let the basic parsing deal with plain GSO features. */
++	ret = __virtio_net_hdr_to_skb(skb, hdr, true,
++				      hdr->gso_type & ~gso_tunnel_type);
++	if (ret)
++		return ret;
++
++	/* In case of USO, the inner protocol is still unknown and
++	 * `inner_isv6` is just a guess, additional parsing is needed.
++	 * The previous validation ensures that accessing an ipv4 inner
++	 * network header is safe.
++	 */
++	if (gso_inner_type == VIRTIO_NET_HDR_GSO_UDP_L4) {
++		struct iphdr *iphdr = (struct iphdr *)(skb->data + inner_nh);
++
++		inner_isv6 = iphdr->version == 6;
++		inner_l3min = virtio_l3min(inner_isv6);
++		if (inner_th < inner_nh + inner_l3min)
++			return -EINVAL;
++	}
++
++	skb_set_inner_protocol(skb, inner_isv6 ? htons(ETH_P_IPV6) :
++						 htons(ETH_P_IP));
++	if (hdr->flags & VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM) {
++		if (!tnl_csum_negotiated)
++			return -EINVAL;
++
++		skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL_CSUM;
++	} else {
++		skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL;
++	}
++
++	skb->inner_transport_header = inner_th + skb_headroom(skb);
++	skb->inner_network_header = inner_nh + skb_headroom(skb);
++	skb->inner_mac_header = inner_nh + skb_headroom(skb);
++	skb->transport_header = outer_th + skb_headroom(skb);
++	skb->encapsulation = 1;
++	return 0;
++}
++
++/* Checksum-related fields validation for the driver */
++static inline int virtio_net_handle_csum_offload(struct sk_buff *skb,
++						 struct virtio_net_hdr *hdr,
++						 bool tnl_csum_negotiated)
++{
++	if (!(hdr->gso_type & VIRTIO_NET_HDR_GSO_UDP_TUNNEL)) {
++		if (!(hdr->flags & VIRTIO_NET_HDR_F_DATA_VALID))
++			return 0;
++
++		skb->ip_summed = CHECKSUM_UNNECESSARY;
++		if (!(hdr->flags & VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM))
++			return 0;
++
++		/* tunnel csum packets are invalid when the related
++		 * feature has not been negotiated
 +		 */
-+		for (; i < count; ++i) {
-+			if (copy_from_user(&features, argp, sizeof(u64)))
-+				return -EFAULT;
-+			if (features)
-+				return -EOPNOTSUPP;
-+		}
++		if (!tnl_csum_negotiated)
++			return -EINVAL;
++		skb->csum_level = 1;
++		return 0;
++	}
 +
-+		for (i = 1; i < VIRTIO_FEATURES_DWORDS; i++)
-+			if (all_features[i] & ~vhost_net_features[i])
-+				return -EOPNOTSUPP;
++	/* DATA_VALID is mutually exclusive with NEEDS_CSUM, and GSO
++	 * over UDP tunnel requires the latter
++	 */
++	if (hdr->flags & VIRTIO_NET_HDR_F_DATA_VALID)
++		return -EINVAL;
++	return 0;
++}
 +
-+		return vhost_net_set_features(n, all_features);
- 	case VHOST_GET_BACKEND_FEATURES:
- 		features = VHOST_NET_BACKEND_FEATURES;
- 		if (copy_to_user(featurep, &features, sizeof(features)))
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 3a5ebb973dba..1094256a943c 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -372,7 +372,7 @@ static void vhost_vq_reset(struct vhost_dev *dev,
- 	vq->log_used = false;
- 	vq->log_addr = -1ull;
- 	vq->private_data = NULL;
--	vq->acked_features = 0;
-+	virtio_features_zero(vq->acked_features_array);
- 	vq->acked_backend_features = 0;
- 	vq->log_base = NULL;
- 	vq->error_ctx = NULL;
-diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
-index bb75a292d50c..d1aed35c4b07 100644
---- a/drivers/vhost/vhost.h
-+++ b/drivers/vhost/vhost.h
-@@ -133,7 +133,7 @@ struct vhost_virtqueue {
- 	struct vhost_iotlb *umem;
- 	struct vhost_iotlb *iotlb;
- 	void *private_data;
--	u64 acked_features;
-+	VIRTIO_DECLARE_FEATURES(acked_features);
- 	u64 acked_backend_features;
- 	/* Log write descriptors */
- 	void __user *log_base;
-@@ -291,7 +291,7 @@ static inline void *vhost_vq_get_backend(struct vhost_virtqueue *vq)
++/*
++ * vlan_hlen always refers to the outermost MAC header. That also
++ * means it refers to the only MAC header, if the packet does not carry
++ * any encapsulation.
++ */
++static inline int
++virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
++			    struct virtio_net_hdr_v1_hash_tunnel *vhdr,
++			    bool tnl_hdr_negotiated,
++			    bool little_endian,
++			    int vlan_hlen)
++{
++	struct virtio_net_hdr *hdr = (struct virtio_net_hdr *)vhdr;
++	unsigned int inner_nh, outer_th;
++	int tnl_gso_type;
++	int ret;
++
++	tnl_gso_type = skb_shinfo(skb)->gso_type & (SKB_GSO_UDP_TUNNEL |
++						    SKB_GSO_UDP_TUNNEL_CSUM);
++	if (!tnl_gso_type)
++		return virtio_net_hdr_from_skb(skb, hdr, little_endian, false,
++					       vlan_hlen);
++
++	/* Tunnel support not negotiated but skb ask for it. */
++	if (!tnl_hdr_negotiated)
++		return -EINVAL;
++
++	/* Let the basic parsing deal with plain GSO features. */
++	skb_shinfo(skb)->gso_type &= ~tnl_gso_type;
++	ret = virtio_net_hdr_from_skb(skb, hdr, true, false, vlan_hlen);
++	skb_shinfo(skb)->gso_type |= tnl_gso_type;
++	if (ret)
++		return ret;
++
++	if (skb->protocol == htons(ETH_P_IPV6))
++		hdr->gso_type |= VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6;
++	else
++		hdr->gso_type |= VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4;
++
++	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_TUNNEL_CSUM)
++		hdr->flags |= VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM;
++
++	inner_nh = skb->inner_network_header - skb_headroom(skb);
++	outer_th = skb->transport_header - skb_headroom(skb);
++	vhdr->inner_nh_offset = cpu_to_le16(inner_nh);
++	vhdr->outer_th_offset = cpu_to_le16(outer_th);
++	return 0;
++}
++
+ #endif /* _LINUX_VIRTIO_NET_H */
+diff --git a/include/uapi/linux/virtio_net.h b/include/uapi/linux/virtio_net.h
+index 963540deae66..81907dd55362 100644
+--- a/include/uapi/linux/virtio_net.h
++++ b/include/uapi/linux/virtio_net.h
+@@ -70,6 +70,28 @@
+ 					 * with the same MAC.
+ 					 */
+ #define VIRTIO_NET_F_SPEED_DUPLEX 63	/* Device set linkspeed and duplex */
++#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO 65 /* Driver can receive
++					      * GSO-over-UDP-tunnel packets
++					      */
++#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM 66 /* Driver handles
++						   * GSO-over-UDP-tunnel
++						   * packets with partial csum
++						   * for the outer header
++						   */
++#define VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO 67 /* Device can receive
++					     * GSO-over-UDP-tunnel packets
++					     */
++#define VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO_CSUM 68 /* Device handles
++						  * GSO-over-UDP-tunnel
++						  * packets with partial csum
++						  * for the outer header
++						  */
++
++/* Offloads bits corresponding to VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO{,_CSUM}
++ * features
++ */
++#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_MAPPED	46
++#define VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM_MAPPED	47
  
- static inline bool vhost_has_feature(struct vhost_virtqueue *vq, int bit)
- {
--	return vq->acked_features & (1ULL << bit);
-+	return virtio_features_test_bit(vq->acked_features_array, bit);
- }
- 
- static inline bool vhost_backend_has_feature(struct vhost_virtqueue *vq, int bit)
-diff --git a/include/uapi/linux/vhost.h b/include/uapi/linux/vhost.h
-index d4b3e2ae1314..d6ad01fbb8d2 100644
---- a/include/uapi/linux/vhost.h
-+++ b/include/uapi/linux/vhost.h
-@@ -235,4 +235,11 @@
-  */
- #define VHOST_VDPA_GET_VRING_SIZE	_IOWR(VHOST_VIRTIO, 0x82,	\
- 					      struct vhost_vring_state)
-+
-+/* Extended features manipulation */
-+#define VHOST_GET_FEATURES_ARRAY _IOR(VHOST_VIRTIO, 0x83, \
-+				       struct vhost_features_array)
-+#define VHOST_SET_FEATURES_ARRAY _IOW(VHOST_VIRTIO, 0x83, \
-+				       struct vhost_features_array)
-+
- #endif
-diff --git a/include/uapi/linux/vhost_types.h b/include/uapi/linux/vhost_types.h
-index d7656908f730..1c39cc5f5a31 100644
---- a/include/uapi/linux/vhost_types.h
-+++ b/include/uapi/linux/vhost_types.h
-@@ -110,6 +110,11 @@ struct vhost_msg_v2 {
- 	};
+ #ifndef VIRTIO_NET_NO_LEGACY
+ #define VIRTIO_NET_F_GSO	6	/* Host handles pkts w/ any GSO type */
+@@ -131,12 +153,17 @@ struct virtio_net_hdr_v1 {
+ #define VIRTIO_NET_HDR_F_NEEDS_CSUM	1	/* Use csum_start, csum_offset */
+ #define VIRTIO_NET_HDR_F_DATA_VALID	2	/* Csum is valid */
+ #define VIRTIO_NET_HDR_F_RSC_INFO	4	/* rsc info in csum_ fields */
++#define VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM 8	/* UDP tunnel requires csum offload */
+ 	__u8 flags;
+ #define VIRTIO_NET_HDR_GSO_NONE		0	/* Not a GSO frame */
+ #define VIRTIO_NET_HDR_GSO_TCPV4	1	/* GSO frame, IPv4 TCP (TSO) */
+ #define VIRTIO_NET_HDR_GSO_UDP		3	/* GSO frame, IPv4 UDP (UFO) */
+ #define VIRTIO_NET_HDR_GSO_TCPV6	4	/* GSO frame, IPv6 TCP */
+ #define VIRTIO_NET_HDR_GSO_UDP_L4	5	/* GSO frame, IPv4& IPv6 UDP (USO) */
++#define VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4 0x20 /* UDP over IPv4 tunnel present */
++#define VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6 0x40 /* UDP over IPv6 tunnel present */
++#define VIRTIO_NET_HDR_GSO_UDP_TUNNEL (VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4 | \
++				       VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6)
+ #define VIRTIO_NET_HDR_GSO_ECN		0x80	/* TCP has ECN set */
+ 	__u8 gso_type;
+ 	__virtio16 hdr_len;	/* Ethernet + IP + tcp/udp hdrs */
+@@ -181,6 +208,12 @@ struct virtio_net_hdr_v1_hash {
+ 	__le16 padding;
  };
  
-+struct vhost_features_array {
-+	__u64 count; /* number of entries present in features array */
-+	__u64 features[] __counted_by(count);
++struct virtio_net_hdr_v1_hash_tunnel {
++	struct virtio_net_hdr_v1_hash hash_hdr;
++	__le16 outer_th_offset;
++	__le16 inner_nh_offset;
 +};
 +
- struct vhost_memory_region {
- 	__u64 guest_phys_addr;
- 	__u64 memory_size; /* bytes */
+ #ifndef VIRTIO_NET_NO_LEGACY
+ /* This header comes first in the scatter-gather list.
+  * For legacy virtio, if VIRTIO_F_ANY_LAYOUT is not negotiated, it must
 -- 
 2.49.0
 
