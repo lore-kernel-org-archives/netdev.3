@@ -1,403 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FB328FFF3;
-	Tue, 17 Jun 2025 08:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6B01E1C3A
+	for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 08:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750147352; cv=none; b=YU1APOlE2/K1FJ7XiKSjZMCwbvQX+fdjZABM53hW0bDz6OyEeznNzY6tHP0qayyeFCjtqRhoSJ/1U2bSRVu9NKSequBP9kFP2vSuPLe9yghcyBbz8mcxXE+/4jynQtX7UujE/p9aIDPlT/HHlp7vy26hMA3Jag6tJCbXPTja0qA=
+	t=1750147403; cv=none; b=oo34bdqrccMcwYQ/k5bN/atTi5gwKzlaRmc3UjaHN5+d2iiBjOTMMUyTPAQUgoKIsdbLYc+2X4Z1lMPV8ofFolkw97yzLtsQTqbeusdkzU6BowdQsydQqAUXlCbsIG2ydYyxfBIlkEqcozLq9XJHMn2GKGBT38GzEXSgTcW+OtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750147352; c=relaxed/simple;
-	bh=iVC0GdftjUz57Jcaq/naOorp34P65m/H+bbrvm2J+Fc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TtB2esjLvdCaan8lwejD66MFbsRBIo5zzzsQOow0t+WhAHdDd7F6D5m5rySResYC6Boe3d0nn0iVxOdroSK9HnbGXUZ6+Wcc/ELAmD9OA8AmbRVLbuCBXOi3cFbda2EPdLg/WmVqxrzyzEjZuFEBD/pWL60SxDMsalsRt85I908=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSmzQ35B; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750147403; c=relaxed/simple;
+	bh=bA/s+nEWNrj//fK7D5RkLh1+Yz6YKukh9Y35BfxnfN0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EzANnlWtkUgvu84C1WXpjb2X64jqe3Ppuw3TBatfj6L8RSIMulsC0bVh3iI06/p7WsiNr0hRrYltPgqfneXdWdK2gexzodAqQiEGKQHyycBkBw0nhF87jOd2gJ91tkXxG/O+v3P2L7cLSCqKl5uDVi3nIXbesJChZRRReoHsUQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KhT8009f; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSmzQ35B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC52BC4CEF6;
-	Tue, 17 Jun 2025 08:02:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750147352;
-	bh=iVC0GdftjUz57Jcaq/naOorp34P65m/H+bbrvm2J+Fc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DSmzQ35BS+UYLALCVOZIoFHWI8oWmaK3k+xvWA3aTVCQYnqFgZIgTNsokNjFZOqCr
-	 tXpOGcApTGWDatdqlpLcn7MFTagWI4TgdGTjUYdNdB1FPR79DYRNsIwfNPi5KBhc41
-	 9MoQSX4mngTCnHCEgX2BTuQ9Vzp/K8gqiGq+RD74xer2xcDlmOoGlLqomgxVANxCVd
-	 zOtF5fqIN7OLAQfzF2pCV42/VqtG8U5evo2ltCDOthjXOIe8TGo/6QXqo7J/3aR/eN
-	 ppCTf37XxYr73iI3gVKTj1A+DmUbpWyBLJfniMXQFGRI61yK1qfmB6w6JL912jUmFF
-	 +KIXrqaXBiksQ==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uRRH4-00000001vdN-0X8d;
-	Tue, 17 Jun 2025 10:02:30 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	"Akira Yokosawa" <akiyks@gmail.com>,
-	"Breno Leitao" <leitao@debian.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Donald Hunter" <donald.hunter@gmail.com>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"Ignacio Encinas Rubio" <ignacio@iencinas.com>,
-	"Jan Stancek" <jstancek@redhat.com>,
-	"Marco Elver" <elver@google.com>,
-	"Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
-	"Paolo Abeni" <pabeni@redhat.com>,
-	"Ruben Wauters" <rubenru09@aol.com>,
-	"Shuah Khan" <skhan@linuxfoundation.org>,
-	Jakub Kicinski <mchehab+huawei@kernel.org>,
-	Simon Horman <mchehab+huawei@kernel.org>,
-	joel@joelfernandes.org,
-	linux-kernel-mentees@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lkmm@lists.linux.dev,
-	netdev@vger.kernel.org,
-	peterz@infradead.org,
-	stern@rowland.harvard.edu
-Subject: [PATCH v5 09/15] tools: ynl_gen_rst.py: clanup coding style
-Date: Tue, 17 Jun 2025 10:02:06 +0200
-Message-ID: <b86d44729cc0d3adfdddc607a432f96f06aaf1be.1750146719.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <cover.1750146719.git.mchehab+huawei@kernel.org>
-References: <cover.1750146719.git.mchehab+huawei@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KhT8009f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750147400;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I9M5qb9uvgcmFrvNHUSO6JPSDEu8M+uViPg0NcUfDQc=;
+	b=KhT8009fSbJccmKGB7Q4hdIzPBGLHnSgVnEbWV8zwJOzE23OK4O60kgzUzFXLqtKfo8FDh
+	nvL+k4cxySMMUt76d2XPAQMuNEJnlFMwfWDM4PZUDOIOjIaCPPBhXXmcDDO1xtGBQqdtax
+	yD5RKLbMkdfwyrs8CfyYMYAD5x6BoBU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-344-smXzomqzNGeCpBsW_vtxOg-1; Tue, 17 Jun 2025 04:03:17 -0400
+X-MC-Unique: smXzomqzNGeCpBsW_vtxOg-1
+X-Mimecast-MFC-AGG-ID: smXzomqzNGeCpBsW_vtxOg_1750147396
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-450d290d542so32726845e9.1
+        for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 01:03:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750147396; x=1750752196;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I9M5qb9uvgcmFrvNHUSO6JPSDEu8M+uViPg0NcUfDQc=;
+        b=pOvF5YJVcbRrqID2KGbWWcEiprVGxJPkj8LNq8n7vKPVYFOau2VGWLSLQV223+zvMn
+         CFpM0f8sMCXMITk50o2i2XcJ9tF23EPjfegRVu1M5ev2vbq992AYh53mHpGMm5USBeul
+         Wai+htG6vu1NSnPNqKSsyxoUA1CGVR0CybcTjEOR9fKdRNuol4Zvcc0ORzJHhFTSj429
+         j5FuBeRO2eZj7PVWGSyh4w6OCLVIf3LNcOBcZwmUfVKAyDzV40fs1FpQhkM2QigJ5iLD
+         RZRUzHoZeVEFeD90TgE2kK6sYfwODkcufl/ArvHNesz4b2cOrdCTn8BdCuByqCi8DN1e
+         Rkxw==
+X-Forwarded-Encrypted: i=1; AJvYcCXlkkqw1Gji4D5c9Cc/7hFAHjQPKG+B3knnh1T1+dPLn0Y78UL+gt8AR2F4alEQBZRW8GfbcZ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPdHB8fEdPH4DXC4iJxlb/pfhIQTQo7bPDpZKlvej1ADIStcJf
+	59dVE0grlheBNlXU79Ieal4Zl26J75BUU5mgg6VHbDW1udxpXVqhiaSczj6Loh1Ii6iHTVgkk6R
+	ITCxt1U9Ke+i7QkB6ZLXXWspKKnYZHPqovI1G4bRs18g8PqjpsxoXAMV/Jw==
+X-Gm-Gg: ASbGncv0u0cuT/ypOYSD4VxriYxP/CrcXEpYZVNxeXlut/ujALnu8lepB2v8IEdZP2n
+	ynJot/+He1e67cZjdek8HcWazIzjzeinJ6ZStJdDGg6fb/l4q9el/xKXPRxCbLtr9nodhq2P1XW
+	vHTRfz89REs5Apq+MlIxjPWGutIA+arGcNc6YyddGA8LnfzvSlpDADY0RrZwOlTdahxUuOvecfP
+	GCYTYyRuJVpL0LloH0LtfzTZD9hHlBS9U1/lGhZqoC4m6NaEpnROUE/ge3T5SGw2svNwXcZihrE
+	TYWRx85AEE0WAU8JbtHs8qlK8ziYRxILBAwyga0c5tQWHnS1LM36T+5QHtncMCwndkldjg==
+X-Received: by 2002:a05:600c:6989:b0:453:9b3:5b65 with SMTP id 5b1f17b1804b1-4533ca502ecmr118289725e9.8.1750147396385;
+        Tue, 17 Jun 2025 01:03:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGa5hb12hxOI7NI9LM+Gy/ttziKvFk+cYltrEgu8xSQyQCrypOS1hOsZRqs2NvczVsDJZBItw==
+X-Received: by 2002:a05:600c:6989:b0:453:9b3:5b65 with SMTP id 5b1f17b1804b1-4533ca502ecmr118289205e9.8.1750147395893;
+        Tue, 17 Jun 2025 01:03:15 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2448:cb10:3ac6:72af:52e3:719a? ([2a0d:3344:2448:cb10:3ac6:72af:52e3:719a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e16a097sm172162895e9.33.2025.06.17.01.03.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Jun 2025 01:03:15 -0700 (PDT)
+Message-ID: <8ff9ee00-1bb6-4558-b2a7-c0ee59badb12@redhat.com>
+Date: Tue, 17 Jun 2025 10:03:10 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 net-next 04/15] tcp: AccECN core
+To: chia-yu.chang@nokia-bell-labs.com, edumazet@google.com,
+ linux-doc@vger.kernel.org, corbet@lwn.net, horms@kernel.org,
+ dsahern@kernel.org, kuniyu@amazon.com, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, dave.taht@gmail.com, jhs@mojatatu.com,
+ kuba@kernel.org, stephen@networkplumber.org, xiyou.wangcong@gmail.com,
+ jiri@resnulli.us, davem@davemloft.net, andrew+netdev@lunn.ch,
+ donald.hunter@gmail.com, ast@fiberby.net, liuhangbin@gmail.com,
+ shuah@kernel.org, linux-kselftest@vger.kernel.org, ij@kernel.org,
+ ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com,
+ g.white@cablelabs.com, ingemar.s.johansson@ericsson.com,
+ mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at,
+ Jason_Livingood@comcast.com, vidhi_goel@apple.com
+Cc: Olivier Tilmans <olivier.tilmans@nokia.com>
+References: <20250610125314.18557-1-chia-yu.chang@nokia-bell-labs.com>
+ <20250610125314.18557-5-chia-yu.chang@nokia-bell-labs.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250610125314.18557-5-chia-yu.chang@nokia-bell-labs.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Cleanup some coding style issues pointed by pylint and flake8.
+On 6/10/25 2:53 PM, chia-yu.chang@nokia-bell-labs.com wrote:
+> From: Ilpo Järvinen <ij@kernel.org>
+> 
+> This change implements Accurate ECN without negotiation and
+> AccECN Option (that will be added by later changes). Based on
+> AccECN specifications:
+>   https://tools.ietf.org/id/draft-ietf-tcpm-accurate-ecn-28.txt
+> 
+> Accurate ECN allows feeding back the number of CE (congestion
+> experienced) marks accurately to the sender in contrast to
+> RFC3168 ECN that can only signal one marks-seen-yes/no per RTT.
+> Congestion control algorithms can take advantage of the accurate
+> ECN information to fine-tune their congestion response to avoid
+> drastic rate reduction when only mild congestion is encountered.
+> 
+> With Accurate ECN, tp->received_ce (r.cep in AccECN spec) keeps
+> track of how many segments have arrived with a CE mark. Accurate
+> ECN uses ACE field (ECE, CWR, AE) to communicate the value back
+> to the sender which updates tp->delivered_ce (s.cep) based on the
+> feedback. This signalling channel is lossy when ACE field overflow
+> occurs.
+> 
+> Conservative strategy is selected here to deal with the ACE
+> overflow, however, some strategies using the AccECN option later
+> in the overall patchset mitigate against false overflows detected.
+> 
+> The ACE field values on the wire are offset by
+> TCP_ACCECN_CEP_INIT_OFFSET. Delivered_ce/received_ce count the
+> real CE marks rather than forcing all downstream users to adapt
+> to the wire offset.
+> 
+> This patch uses the first 1-byte hole and the last 4-byte hole of
+> the tcp_sock_write_txrx for 'received_ce_pending' and 'received_ce'.
+> Also, the group size of tcp_sock_write_txrx is increased from
+> 91 + 4 to 95 + 4 due to the new u32 received_ce member. Below are
+> the trimmed pahole outcomes before and after this patch.
 
-No functional changes.
+AFAICS 'received_ce' fills the existing 4 bytes hole, so
+tcp_sock_write_txrx size should be now (95 + 0), am I missreading something?
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- tools/net/ynl/pyynl/netlink_yml_parser.py | 75 ++++++++---------------
- tools/net/ynl/pyynl/ynl_gen_rst.py        |  2 +-
- 2 files changed, 27 insertions(+), 50 deletions(-)
+> @@ -384,17 +387,16 @@ static void tcp_data_ecn_check(struct sock *sk, const struct sk_buff *skb)
+>  		if (tcp_ca_needs_ecn(sk))
+>  			tcp_ca_event(sk, CA_EVENT_ECN_IS_CE);
+>  
+> -		if (!(tp->ecn_flags & TCP_ECN_DEMAND_CWR)) {
+> +		if (!(tp->ecn_flags & TCP_ECN_DEMAND_CWR) &&
+> +		    tcp_ecn_mode_rfc3168(tp)) {
+>  			/* Better not delay acks, sender can have a very low cwnd */
+>  			tcp_enter_quickack_mode(sk, 2);
+>  			tp->ecn_flags |= TCP_ECN_DEMAND_CWR;
+>  		}
+> -		tp->ecn_flags |= TCP_ECN_SEEN;
 
-diff --git a/tools/net/ynl/pyynl/netlink_yml_parser.py b/tools/net/ynl/pyynl/netlink_yml_parser.py
-index 839e78b39de3..f71360f0ceb7 100755
---- a/tools/net/ynl/pyynl/netlink_yml_parser.py
-+++ b/tools/net/ynl/pyynl/netlink_yml_parser.py
-@@ -18,17 +18,12 @@
- """
- 
- from typing import Any, Dict, List
--import os.path
--import sys
--import argparse
--import logging
- import yaml
- 
- 
--# ==============
--# RST Formatters
--# ==============
- class RstFormatters:
-+    """RST Formatters"""
-+
-     SPACE_PER_LEVEL = 4
- 
-     @staticmethod
-@@ -36,81 +31,67 @@ class RstFormatters:
-         """Return space to format"""
-         return " " * (level * RstFormatters.SPACE_PER_LEVEL)
- 
--
-     @staticmethod
-     def bold(text: str) -> str:
-         """Format bold text"""
-         return f"**{text}**"
- 
--
-     @staticmethod
-     def inline(text: str) -> str:
-         """Format inline text"""
-         return f"``{text}``"
- 
--
-     @staticmethod
-     def sanitize(text: str) -> str:
-         """Remove newlines and multiple spaces"""
-         # This is useful for some fields that are spread across multiple lines
-         return str(text).replace("\n", " ").strip()
- 
--
-     def rst_fields(self, key: str, value: str, level: int = 0) -> str:
-         """Return a RST formatted field"""
-         return self.headroom(level) + f":{key}: {value}"
- 
--
-     def rst_definition(self, key: str, value: Any, level: int = 0) -> str:
-         """Format a single rst definition"""
-         return self.headroom(level) + key + "\n" + self.headroom(level + 1) + str(value)
- 
--
-     def rst_paragraph(self, paragraph: str, level: int = 0) -> str:
-         """Return a formatted paragraph"""
-         return self.headroom(level) + paragraph
- 
--
-     def rst_bullet(self, item: str, level: int = 0) -> str:
-         """Return a formatted a bullet"""
-         return self.headroom(level) + f"- {item}"
- 
--
-     @staticmethod
-     def rst_subsection(title: str) -> str:
-         """Add a sub-section to the document"""
-         return f"{title}\n" + "-" * len(title)
- 
--
-     @staticmethod
-     def rst_subsubsection(title: str) -> str:
-         """Add a sub-sub-section to the document"""
-         return f"{title}\n" + "~" * len(title)
- 
--
-     @staticmethod
-     def rst_section(namespace: str, prefix: str, title: str) -> str:
-         """Add a section to the document"""
-         return f".. _{namespace}-{prefix}-{title}:\n\n{title}\n" + "=" * len(title)
- 
--
-     @staticmethod
-     def rst_subtitle(title: str) -> str:
-         """Add a subtitle to the document"""
-         return "\n" + "-" * len(title) + f"\n{title}\n" + "-" * len(title) + "\n\n"
- 
--
-     @staticmethod
-     def rst_title(title: str) -> str:
-         """Add a title to the document"""
-         return "=" * len(title) + f"\n{title}\n" + "=" * len(title) + "\n\n"
- 
--
-     def rst_list_inline(self, list_: List[str], level: int = 0) -> str:
-         """Format a list using inlines"""
-         return self.headroom(level) + "[" + ", ".join(self.inline(i) for i in list_) + "]"
- 
--
-     @staticmethod
-     def rst_ref(namespace: str, prefix: str, name: str) -> str:
-         """Add a hyperlink to the document"""
-@@ -119,10 +100,9 @@ class RstFormatters:
-                     'nested-attributes': 'attribute-set',
-                     'struct': 'definition'}
-         if prefix in mappings:
--            prefix = mappings[prefix]
-+            prefix = mappings.get(prefix, "")
-         return f":ref:`{namespace}-{prefix}-{name}`"
- 
--
-     def rst_header(self) -> str:
-         """The headers for all the auto generated RST files"""
-         lines = []
-@@ -132,7 +112,6 @@ class RstFormatters:
- 
-         return "\n".join(lines)
- 
--
-     @staticmethod
-     def rst_toctree(maxdepth: int = 2) -> str:
-         """Generate a toctree RST primitive"""
-@@ -143,16 +122,13 @@ class RstFormatters:
- 
-         return "\n".join(lines)
- 
--
-     @staticmethod
-     def rst_label(title: str) -> str:
-         """Return a formatted label"""
-         return f".. _{title}:\n\n"
- 
--# =======
--# Parsers
--# =======
- class YnlDocGenerator:
-+    """YAML Netlink specs Parser"""
- 
-     fmt = RstFormatters()
- 
-@@ -164,7 +140,6 @@ class YnlDocGenerator:
- 
-         return "\n".join(lines)
- 
--
-     def parse_do(self, do_dict: Dict[str, Any], level: int = 0) -> str:
-         """Parse 'do' section and return a formatted string"""
-         lines = []
-@@ -177,16 +152,16 @@ class YnlDocGenerator:
- 
-         return "\n".join(lines)
- 
--
-     def parse_do_attributes(self, attrs: Dict[str, Any], level: int = 0) -> str:
-         """Parse 'attributes' section"""
-         if "attributes" not in attrs:
-             return ""
--        lines = [self.fmt.rst_fields("attributes", self.fmt.rst_list_inline(attrs["attributes"]), level + 1)]
-+        lines = [self.fmt.rst_fields("attributes",
-+                                     self.fmt.rst_list_inline(attrs["attributes"]),
-+                                     level + 1)]
- 
-         return "\n".join(lines)
- 
--
-     def parse_operations(self, operations: List[Dict[str, Any]], namespace: str) -> str:
-         """Parse operations block"""
-         preprocessed = ["name", "doc", "title", "do", "dump", "flags"]
-@@ -194,7 +169,8 @@ class YnlDocGenerator:
-         lines = []
- 
-         for operation in operations:
--            lines.append(self.fmt.rst_section(namespace, 'operation', operation["name"]))
-+            lines.append(self.fmt.rst_section(namespace, 'operation',
-+                                              operation["name"]))
-             lines.append(self.fmt.rst_paragraph(operation["doc"]) + "\n")
- 
-             for key in operation.keys():
-@@ -206,7 +182,8 @@ class YnlDocGenerator:
-                     value = self.fmt.rst_ref(namespace, key, value)
-                 lines.append(self.fmt.rst_fields(key, value, 0))
-             if 'flags' in operation:
--                lines.append(self.fmt.rst_fields('flags', self.fmt.rst_list_inline(operation['flags'])))
-+                lines.append(self.fmt.rst_fields('flags',
-+                                                 self.fmt.rst_list_inline(operation['flags'])))
- 
-             if "do" in operation:
-                 lines.append(self.fmt.rst_paragraph(":do:", 0))
-@@ -220,7 +197,6 @@ class YnlDocGenerator:
- 
-         return "\n".join(lines)
- 
--
-     def parse_entries(self, entries: List[Dict[str, Any]], level: int) -> str:
-         """Parse a list of entries"""
-         ignored = ["pad"]
-@@ -235,17 +211,19 @@ class YnlDocGenerator:
-                 if type_:
-                     field_name += f" ({self.fmt.inline(type_)})"
-                 lines.append(
--                    self.fmt.rst_fields(field_name, self.fmt.sanitize(entry.get("doc", "")), level)
-+                    self.fmt.rst_fields(field_name,
-+                                        self.fmt.sanitize(entry.get("doc", "")),
-+                                        level)
-                 )
-             elif isinstance(entry, list):
-                 lines.append(self.fmt.rst_list_inline(entry, level))
-             else:
--                lines.append(self.fmt.rst_bullet(self.fmt.inline(self.fmt.sanitize(entry)), level))
-+                lines.append(self.fmt.rst_bullet(self.fmt.inline(self.fmt.sanitize(entry)),
-+                                                 level))
- 
-         lines.append("\n")
-         return "\n".join(lines)
- 
--
-     def parse_definitions(self, defs: Dict[str, Any], namespace: str) -> str:
-         """Parse definitions section"""
-         preprocessed = ["name", "entries", "members"]
-@@ -270,7 +248,6 @@ class YnlDocGenerator:
- 
-         return "\n".join(lines)
- 
--
-     def parse_attr_sets(self, entries: List[Dict[str, Any]], namespace: str) -> str:
-         """Parse attribute from attribute-set"""
-         preprocessed = ["name", "type"]
-@@ -279,7 +256,8 @@ class YnlDocGenerator:
-         lines = []
- 
-         for entry in entries:
--            lines.append(self.fmt.rst_section(namespace, 'attribute-set', entry["name"]))
-+            lines.append(self.fmt.rst_section(namespace, 'attribute-set',
-+                                              entry["name"]))
-             for attr in entry["attributes"]:
-                 type_ = attr.get("type")
-                 attr_line = attr["name"]
-@@ -301,13 +279,13 @@ class YnlDocGenerator:
- 
-         return "\n".join(lines)
- 
--
-     def parse_sub_messages(self, entries: List[Dict[str, Any]], namespace: str) -> str:
-         """Parse sub-message definitions"""
-         lines = []
- 
-         for entry in entries:
--            lines.append(self.fmt.rst_section(namespace, 'sub-message', entry["name"]))
-+            lines.append(self.fmt.rst_section(namespace, 'sub-message',
-+                                              entry["name"]))
-             for fmt in entry["formats"]:
-                 value = fmt["value"]
- 
-@@ -315,13 +293,14 @@ class YnlDocGenerator:
-                 for attr in ['fixed-header', 'attribute-set']:
-                     if attr in fmt:
-                         lines.append(self.fmt.rst_fields(attr,
--                                                self.fmt.rst_ref(namespace, attr, fmt[attr]),
--                                                1))
-+                                                         self.fmt.rst_ref(namespace,
-+                                                                          attr,
-+                                                                          fmt[attr]),
-+                                                         1))
-                 lines.append("\n")
- 
-         return "\n".join(lines)
- 
--
-     def parse_yaml(self, obj: Dict[str, Any]) -> str:
-         """Format the whole YAML into a RST string"""
-         lines = []
-@@ -344,7 +323,8 @@ class YnlDocGenerator:
-         # Operations
-         if "operations" in obj:
-             lines.append(self.fmt.rst_subtitle("Operations"))
--            lines.append(self.parse_operations(obj["operations"]["list"], family))
-+            lines.append(self.parse_operations(obj["operations"]["list"],
-+                                               family))
- 
-         # Multicast groups
-         if "mcast-groups" in obj:
-@@ -368,11 +348,9 @@ class YnlDocGenerator:
- 
-         return "\n".join(lines)
- 
--
-     # Main functions
-     # ==============
- 
--
-     def parse_yaml_file(self, filename: str) -> str:
-         """Transform the YAML specified by filename into an RST-formatted string"""
-         with open(filename, "r", encoding="utf-8") as spec_file:
-@@ -381,7 +359,6 @@ class YnlDocGenerator:
- 
-         return content
- 
--
-     def generate_main_index_rst(self, output: str, index_dir: str) -> None:
-         """Generate the `networking_spec/index` content and write to the file"""
-         lines = []
-diff --git a/tools/net/ynl/pyynl/ynl_gen_rst.py b/tools/net/ynl/pyynl/ynl_gen_rst.py
-index 624b0960476e..5d29ce01c60c 100755
---- a/tools/net/ynl/pyynl/ynl_gen_rst.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_rst.py
-@@ -23,7 +23,7 @@ SRC_DIR = os.path.dirname(os.path.realpath(__file__))
- 
- sys.path.insert(0, os.path.join(SRC_DIR, LIB_DIR))
- 
--from netlink_yml_parser import YnlDocGenerator
-+from netlink_yml_parser import YnlDocGenerator        # pylint: disable=C0413
- 
- 
- def parse_arguments() -> argparse.Namespace:
--- 
-2.49.0
+It's not clear why you need to move this statement earlier in the code
+path even for ecn_mode_rfc3168(). Either a comment or
+
+		if (!tcp_ecn_mode_rfc3168(tp))
+			break;
+
+a few lines aboved could help.
+
+>  		break;
+>  	default:
+>  		if (tcp_ca_needs_ecn(sk))
+>  			tcp_ca_event(sk, CA_EVENT_ECN_NO_CE);
+> -		tp->ecn_flags |= TCP_ECN_SEEN;
+
+Same here.
+
+Thanks,
+
+Paolo
 
