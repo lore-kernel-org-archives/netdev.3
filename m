@@ -1,80 +1,80 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499762F2C68;
-	Tue, 17 Jun 2025 13:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42B42E264B;
+	Tue, 17 Jun 2025 13:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750165219; cv=none; b=JgWmk9bIuH+zHlZxm5zEfpVJNvXduW3VXKHcFXJZjo/3vfG+lm5izuC+hy3mZMoHU7lepImVPuIGIh+b6SbgnfOAti/uq9WTsSiTZSgWzBTx/uj8jU+jdPByxI4AtjL1Gjsic5ged8r3oHQLILV9oiWye7Up+RlUW+yKek1oPaA=
+	t=1750165221; cv=none; b=drTUv/NenOz4Kt6ml49rh9XoxLr09Zd3GTUBIjgVUSW9Y8KW0w/HhueRU9fyhmRA41zrr4ltYNy8DqgIvgfbzxq5QaOHu4wFjjaIlyzKkFsBuSaYCKbwU05MFtodtYGUEOke0TwLpfBSdxDAikEtMhs85q6bL1t3ipsWHnZj+SE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750165219; c=relaxed/simple;
-	bh=BGmA/bVMJ9ftGI7TvxXUi+QwAR8gKmoQYzQ5tMnoBp4=;
+	s=arc-20240116; t=1750165221; c=relaxed/simple;
+	bh=x5Wrb85DRWbVNOvnfzFdGgHoRKBrMPTvOnwfQ5uCOG4=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=CslEoazknIuTB3tqyK0rUTv8b/LJ0N3JkBgCFAr0jvkEqCyfBvueTKXRJn2rtKGQx348LH/rbvmVSyz9AQJMbvvxYA9pyIi4cJoUesRUdJNhdS2wJQQ91SWSeTZrSAS+fNy+FM6bmDbfXf1rEQpfPoII2mzR9r2GGwQBtGus31I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AInaSgjq; arc=none smtp.client-ip=209.85.128.43
+	 MIME-Version:Content-Type; b=bu7SxGmSXY5jOh78ZTzc3UFkmWr4mS5vKPWDQv2ApwSsGkpEnfyDPiTXYiJ3u8KQnMp4yao39EZWhnmEd2rh84qgL67Ejqo91F0HH7HWFZ6sPFkI2RknfigEdHqrGBfY5SFXErutwKWWzeC2L3J7cSZX7y59+thM7D2UeMGRrnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h4bE92Kx; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AInaSgjq"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-451d6ade159so47263105e9.1;
-        Tue, 17 Jun 2025 06:00:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h4bE92Kx"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4530921461aso49077485e9.0;
+        Tue, 17 Jun 2025 06:00:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750165215; x=1750770015; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750165217; x=1750770017; darn=vger.kernel.org;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BGmA/bVMJ9ftGI7TvxXUi+QwAR8gKmoQYzQ5tMnoBp4=;
-        b=AInaSgjq+q4hll4PvDY8q5uC5IM0M2xpubCZrF5nPMl5A+ktc3rDq2vUIav1VhZEwa
-         3VWj7k7G93KZNhY7lf7VroYSxW9MGY3jO73Ih3uC2KLlQq8rx3FWNPaVEfpKbSguYlrZ
-         ar76qTXZtJOEWVOPwN5Ze+40F5AmgktlDz9a3HtvX5drH9I+/J7+mfNk9B3/h6ciilaG
-         27Vu7qhVllG7o7YfKHXn3/M4GUa1hiC2vIBl5mIHKCQa0h2zQnx3Zq5tZLXdBJKPrw5w
-         pxuiHub6c4tTNyuBifgigeFufVqe+C7Ioy93xuRT3BaEIOu3Ns7odvYgu9WFDepwFXiz
-         uNnA==
+        bh=UCBsAUdKLlXHFAS2dv9cOixZKTFpwiXbiHVQbvH0Ze8=;
+        b=h4bE92KxAdOXyBEKrY5gB5XgkzGk8Eph8KqhITj9Tb1e3oTkaqlP7PQuYUydP8OW9/
+         wG6ayXjrPYsrJYIzEKzOiQjVFbEheHQa2Zik3eQBX0Rr4o76DjwLNzs1Rq+zVsuGqkBB
+         xyOBAY+kWKOhr2b86R9CVgypu4GbiB+11+NISwEUS6I/bt9x2zeCQclgDtX1evpNpyFJ
+         7vt5bJ7MoEHA2MCPihfqT2V0gseKKrqSXHF4xYyh3gvVOb/AEsad65wfvCaURmioR4Zo
+         W58b8DYIbstHz+YLReFr+zNWAveFs2WOGS+f3xiNQOyxOYN2kDAleimI4r1jLqCKn8/s
+         SP7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750165215; x=1750770015;
+        d=1e100.net; s=20230601; t=1750165217; x=1750770017;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BGmA/bVMJ9ftGI7TvxXUi+QwAR8gKmoQYzQ5tMnoBp4=;
-        b=DOAW95/nmTOvtngFA3MIioxvh6RDCMlOj5/0Zt9K1JgskyEmv9vwzV6+zMZ+r8Mn3J
-         1Y60BkygNBa0fcmXRRxZxAxYN7N4ZmhJJ9MjdRjbp9PDzPlZj8aH9IHiJHaJHOxtrgO6
-         5xwsEERdxF81v2lZa804dRLz2LJcu0lQiosbRB+myseZeafzKekBKvYflYrb9Rip3wHe
-         XcMMqSFAcItssr34IhcAxFBkth1HHrI4Ir2cSzZeJn4vipdjNl117QzDZt0jI8JWbXUg
-         1+qUrFgx0epsIYteopqx4mWbOF77vlskSYQg08A6eF0v5ajeNQZAZsK74XzaVSWX/6JY
-         SqAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVbtdg77InrO2pm/C1/kZ9bnrvWz1BWmoaeJVYNXWjy6wkicglkK9cUjfzzm8bB7qW+wUxMmsYFxPDClV4=@vger.kernel.org, AJvYcCWIrdsv7LnSdpbMWIHBLtPnvKUe3koSgcK8AZ8avitWKl9Xm39EZws3zO4cr6HmfAZFO4UW+Ttw@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+7bGNP3PkeiMLyfr6UdiEdMWuDW/TAVsiTsL6ti8Au3Y4l9aC
-	X0WfIfEPkpdZf7aTFxApylM/wQEczgc/THQo2l03IXrfqxrk+mqjAmLI
-X-Gm-Gg: ASbGncuSIzaa5apkf92UJTFj6HdDjWize2pUReioVuwZx2K2rP8LsA+SDqnbwEwF7fZ
-	WRJVIiZNvqDkHZCj2fg94qB2S9prvGvd2Ww6Ko1ACiMl07fURShGEnFh3A8vl4L9gwpQRi/JqwI
-	yAg4blSBIMSMsRZYnEgj+bFB+uHZIib4QeI34Ls3GAhv5JKcGLb+okPr9Gdc8aeqabZyvslI3Cm
-	Hj81JRQMvxPC8xGsMj4k8RnDBgJzU9PIZC9jAB/HQZSRHRz9RS90aE6L/j3y0xDSERniUv7IPcN
-	Ou1m9QH/0hS0U/lwf804Bu1vbu4cNEboAhc7Kj/MjAJ9Js9mAK5+FhfoDXtLt70eA166ak+9q7w
-	COscTsPrkVg==
-X-Google-Smtp-Source: AGHT+IFdwscoFtKDmQDDxuggxEnGBwA789Okb1t+Dl/aRVj/6eU4eWq9IO95AQuPjQQagJ63A6hoHg==
-X-Received: by 2002:a05:600c:1c12:b0:44b:1f5b:8c85 with SMTP id 5b1f17b1804b1-4533caf5e9fmr139557665e9.13.1750165215199;
-        Tue, 17 Jun 2025 06:00:15 -0700 (PDT)
+        bh=UCBsAUdKLlXHFAS2dv9cOixZKTFpwiXbiHVQbvH0Ze8=;
+        b=i9F9tRiZxfpujeIwLoyOrhYlcE2ftGNmPt6fZ31e+7nQdUqWs7UPkJu59PF/LUjamZ
+         hAnDY84+W7Hxt74/RsRx8Jt47I3EvSXZDYZT4rBBjkGpcJAitDdHVCSfjrV4wwuyGIHO
+         W4tV3VDyt/Kx7hHTiwjHLOiMTf1RThCRpts9MvMi+YZFkvg43p+4Tu6GtvEF4guUZ9n8
+         axhOKywGJ33mfyk4Mm1/rSsNOfqzlql5FxeICMX5IISevbn5nbpPHgR2nRJ/xT/3FIOJ
+         dABRXyiYp1GlQw0pzRpZUmQYo0tSmg/ZMnNSONLTH6M5f5nepLVpzoxo5gn6+EGhsOPh
+         NLIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUOKl8+VquoLbDuOIFovN07USfDVJJp65K/VfqsXh2Y8Djc8D3k3Wh8fPTNEdNtVoreu+Zy4wch@vger.kernel.org, AJvYcCVfzDA9Imm+pWL1btdSUq67lJaRVmLJKDviWFknwLdv6bGnK26sVpLCrGOMfoqNRcZqIMrkBSnIKXU3zFM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLG5Ogrru2TT2bN0iO29Q+U54N8s5J2YixpyVDa+glSHwOzYsR
+	PgwsGB9MLyG6k4GwJLkWlVkHL9Q+1l2VI2RSi3S36bHETg6fSfvKzdeOYOz0Moa+
+X-Gm-Gg: ASbGncvqLLgGGx/adrjoUMSA0lIfQDAiBidWuMsiWalVYJGN/BC02N/WKqAanjcH6yA
+	FyHEcyWeo3tUx4X6gpg4ZHEhzXnxa2e55ULJt6HqUjCBO0J7J2VE4PDcWtxvt9jzRxDUltz8WOw
+	1wTXbzKu0C5Z9E6AITrulgWGbm8spulgox5ffc6GAi539GumkuTshxtjsJOW+jS+VMU/s1fXbR7
+	c/iy+3ZYqYDKup+zO9sLIS8+lFpxxUHAGXI4pgQqfukHh8GuFsgOPFTCihnrwQWFfEvXTFpd1Kf
+	9LU5XcP0MUh8fvc2y0zq6VtLS17POpy+JlZra6drnxHBSr90okMCVnohsx+uEpJ4jFrqiGLevQM
+	=
+X-Google-Smtp-Source: AGHT+IE47uR89T5Uem9MM2qCkm1YZX6jwmHcz73YYxvO/Jmwjj1PBFbbbUyCJLNhhaUZOFeMr0rGbg==
+X-Received: by 2002:a05:600c:37c3:b0:43c:fe90:1279 with SMTP id 5b1f17b1804b1-453561ce33bmr8920735e9.21.1750165217074;
+        Tue, 17 Jun 2025 06:00:17 -0700 (PDT)
 Received: from imac ([2a02:8010:60a0:0:8931:baa3:a9ed:4f01])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e169d90sm178458845e9.32.2025.06.17.06.00.13
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e1838fasm173538455e9.38.2025.06.17.06.00.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 06:00:14 -0700 (PDT)
+        Tue, 17 Jun 2025 06:00:16 -0700 (PDT)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>,  Jonathan Corbet
- <corbet@lwn.net>,  "Akira Yokosawa" <akiyks@gmail.com>,  "Breno Leitao"
- <leitao@debian.org>,  "David S. Miller" <davem@davemloft.net>,  "Eric
- Dumazet" <edumazet@google.com>,  "Ignacio Encinas Rubio"
- <ignacio@iencinas.com>,  "Jan Stancek" <jstancek@redhat.com>,  "Marco
- Elver" <elver@google.com>,  "Paolo Abeni" <pabeni@redhat.com>,  "Ruben
- Wauters" <rubenru09@aol.com>,  "Shuah Khan" <skhan@linuxfoundation.org>,
+ <corbet@lwn.net>,  linux-kernel@vger.kernel.org,  Akira Yokosawa
+ <akiyks@gmail.com>,  "David S. Miller" <davem@davemloft.net>,  Ignacio
+ Encinas Rubio <ignacio@iencinas.com>,  Marco Elver <elver@google.com>,
+  Shuah Khan <skhan@linuxfoundation.org>,  Eric Dumazet
+ <edumazet@google.com>,  Jan Stancek <jstancek@redhat.com>,  Paolo Abeni
+ <pabeni@redhat.com>,  Ruben Wauters <rubenru09@aol.com>,
   joel@joelfernandes.org,  linux-kernel-mentees@lists.linux.dev,
-  linux-kernel@vger.kernel.org,  lkmm@lists.linux.dev,
-  netdev@vger.kernel.org,  peterz@infradead.org,  stern@rowland.harvard.edu
-Subject: Re: [PATCH v5 12/15] docs: uapi: netlink: update netlink specs link
-In-Reply-To: <33f4626404cc92ee3f3aab481a8d163e9b4a0f6c.1750146719.git.mchehab+huawei@kernel.org>
-Date: Tue, 17 Jun 2025 13:46:16 +0100
-Message-ID: <m2tt4eilif.fsf@gmail.com>
+  lkmm@lists.linux.dev,  netdev@vger.kernel.org,  peterz@infradead.org,
+  stern@rowland.harvard.edu,  Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH v5 00/15] Don't generate netlink .rst files inside
+ $(srctree)
+In-Reply-To: <cover.1750146719.git.mchehab+huawei@kernel.org>
+Date: Tue, 17 Jun 2025 13:58:11 +0100
+Message-ID: <m2msa6ikyk.fsf@gmail.com>
 References: <cover.1750146719.git.mchehab+huawei@kernel.org>
-	<33f4626404cc92ee3f3aab481a8d163e9b4a0f6c.1750146719.git.mchehab+huawei@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -86,16 +86,54 @@ Content-Type: text/plain
 
 Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
 
-> With the recent parser_yaml extension, and the removal of the
-> auto-generated ReST source files, the location of netlink
-> specs changed.
+> As discussed at:
+>    https://lore.kernel.org/all/20250610101331.62ba466f@foz.lan/
 >
-> Update uAPI accordingly.
+> changeset f061c9f7d058 ("Documentation: Document each netlink family")
+> added a logic which generates *.rst files inside $(srctree). This is bad
+> when O=<BUILDDIR> is used.
 >
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> A recent change renamed the yaml files used by Netlink, revealing a bad
+> side effect: as "make cleandocs" don't clean the produced files and symbols
+> appear duplicated for people that don't build the kernel from scratch.
+>
+> This series adds an yaml parser extension and uses an index file with glob for
+> *. We opted to write such extension in a way that no actual yaml conversion
+> code is inside it. This makes it flexible enough to handle other types of yaml
+> files in the future. The actual yaml conversion logic were placed at 
+> netlink_yml_parser.py. 
+>
+> As requested by YNL maintainers, this version has netlink_yml_parser.py
+> inside tools/net/ynl/pyynl/ directory. I don't like mixing libraries with
+> binaries, nor to have Python libraries spread all over the Kernel. IMO,
+> the best is to put all of them on a common place (scripts/lib, python/lib,
+> lib/python, ...) but, as this can be solved later, for now let's keep it this
+> way.
+>
+> ---
 
-nit: seems like this could be part of patch 11
+Note that the series leaves the YNL build broken.
 
-Either way,
-
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+make -C tools/net/ynl/
+make: Entering directory '/home/donaldh/net-next/tools/net/ynl'
+make[1]: Entering directory '/home/donaldh/net-next/tools/net/ynl/lib'
+make[1]: Nothing to be done for 'all'.
+make[1]: Leaving directory '/home/donaldh/net-next/tools/net/ynl/lib'
+make[1]: Entering directory '/home/donaldh/net-next/tools/net/ynl/generated'
+	GEN_RST conntrack.rst
+Traceback (most recent call last):
+  File "/home/donaldh/net-next/tools/net/ynl/generated/../pyynl/ynl_gen_rst.py", line 90, in <module>
+    main()
+    ~~~~^^
+  File "/home/donaldh/net-next/tools/net/ynl/generated/../pyynl/ynl_gen_rst.py", line 86, in main
+    write_to_rstfile(content, args.output)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/donaldh/net-next/tools/net/ynl/generated/../pyynl/ynl_gen_rst.py", line 64, in write_to_rstfile
+    os.makedirs(directory, exist_ok=True)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 227, in makedirs
+FileNotFoundError: [Errno 2] No such file or directory: ''
+make[1]: *** [Makefile:56: conntrack.rst] Error 1
+make[1]: Leaving directory '/home/donaldh/net-next/tools/net/ynl/generated'
+make: *** [Makefile:25: generated] Error 2
+make: Leaving directory '/home/donaldh/net-next/tools/net/ynl'
