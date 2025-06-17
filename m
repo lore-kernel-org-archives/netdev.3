@@ -1,151 +1,68 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87152F5316;
-	Tue, 17 Jun 2025 22:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDF52F5316;
+	Tue, 17 Jun 2025 22:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750199766; cv=none; b=s1vsKhjIUlWo/pv6YV0Y0q2M7klPdndvcB+ICZuLJWrr1WQXoVsdsd2DSHpnN1kQVSdzYm4+IRZo0kCQ2fe4LDXNWaoTOnR2UjqhMsXentFLerMPitEBlnD1VAUY00F8HNFF3oBPOpsjB0mUOEA9NewmhojEram24vbMAqaBxIc=
+	t=1750200066; cv=none; b=I7GkYcW4k0+V598kr1V+eYPFAFoahVqi9ybEBRN1csBtQVnJcLB5RCDV60K+sHmSlBCTEILzPfQIN2pWIit4pRfnp12jupaQ9NqjjrUDz7R4oAtCDC3c1rLHcY5wUEb62GntBwysJuvVSy0gu0B7ftxfri9X7bGHaeMGW65X6rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750199766; c=relaxed/simple;
-	bh=sl26ObIUgcfhCsxOrL5q9KS81TDnKHG7kwchskWJVnE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ON6y6kjgh8sws+Wsa/Q4sn6YvfV9SW9UwWkQMI2m7Sw1Pxr93gQ1sb/jRkX9492CpiEudGnlzak7bfT6GozK9TDS1PhPIkGKNcoWLzB2f0nLVswo+rGYQ4YTjach+ril2NQ+x/lqUQbgvTPrQWZZzSlucc7JNnH7c57yyie1png=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eyYKRfRN; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750200066; c=relaxed/simple;
+	bh=tQo8KDmbcmwwW3t38wbwAKEqD0oRAHN2BseOqSPMUBQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fWlLg5ZnbmTXoB7FpSlf/80ZDJBBryXYjlYqlyZxmpUv4SuEEvp0E11VzlzXq56TU+o9noRi24RdOVeqWs+0kt7lT2EDMlaf7rMNc9gJWljyw1mnmJTBiRxLDYGKrp6SiYG24RZX4pVLnJcxA53zAi3E5nuUDJbf6yzBAqFRtlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NIB5aJbV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eyYKRfRN"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-235ea292956so57861775ad.1;
-        Tue, 17 Jun 2025 15:36:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750199764; x=1750804564; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BslBmwEX63SpkQgXswNn2wvkE3/iV6LHLzaWgxFwnTc=;
-        b=eyYKRfRNixW9ErAdvSnpo0L/N3tx8RmVEpH3udJEyJ5driBXxzhg3+nF4V2mAnMdrJ
-         4YfliAWna9CwjFezebIVB43I96vwUW49Gmai/euDGgV5y67C+0vB6WDIfrrVCE4sjKhj
-         P+diE8W2WDuf7WICwMRpZq8I6lUz0eauSk97W//l6KX3f4onw2gMvfp4fYGk1aGSFXCy
-         W7QoYfoyq4ftoZ0XROymtwp0WQak7Mokm9bcn0G1YKARAGL9zeGZ3MnMj53VflxlO2Do
-         Qj+S3JPZvGF0xrGHW99nPN7rtgJI6kOkfFG/7CiXin7yv8NoCiJvsKc0mbaSBBZSkP3d
-         LEag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750199764; x=1750804564;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BslBmwEX63SpkQgXswNn2wvkE3/iV6LHLzaWgxFwnTc=;
-        b=pyhVWdSt8l4uL295F15JcsY1ucPIQdjriFROG5V76sKoisrF4DGds2BktnvPYvb16w
-         cuSxcI80Ung/DZwD0i0PB8Py8yrC08wX7CpzowYSYjEOfWbxXQ+u8179DzY3vU9M7Efi
-         htAruKio5yACDWdwP9M/ppKayYWF7TwTgh/KMtk1BGHQ3uewG0bKIeiu95sNVxm94Kis
-         9EGX1EaadzOIXT4L52oHXxm7W2p5xn8v97nGFVzykHPivpole76gc6//VW4moULHfkO+
-         Uv2WVtzxwPanBkcODNo4siMCr1f0YnHTMPyqW5oa5Se6xUrLYPKEr+kHAlHZoUzHMS4F
-         bEsA==
-X-Forwarded-Encrypted: i=1; AJvYcCUfZum6sJJXJU3jmCRXRSxPj70eU1uyrjMZMFXAG9SpqDwtHxPvLztM+E1Iy80XqfJTPmUBBZ44wG5qRpLeo6ZDoBxTXsE=@vger.kernel.org, AJvYcCX1LdQdOAeoB+vN3W03xY+ZGbOC3dVQh4/P65dRgxwTR2+hmJ+BH9fwWsUfakJE32Wtg4qWvrUs@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGpvObryE28JTpUduLfDm7f9xCjaevKhJNY/CvSjLIBruwKekm
-	Q1XX4bPWtWdrO1AOlE4e4bem0fQAmDVG3Qqb9gl2bAxsn3hmI9pbQgg=
-X-Gm-Gg: ASbGnct34R3FWfnqU59qUmIrEv261WNRFufxd0qezw1AYa2UYvtr5lMU0VUlorbkGyx
-	LIkqw05H6U42LLwWOZ5vl785WM8zeFin6p6DcyB/NVPBi5SKQ2qQZsJgUJdR9RfWNr3UABaEekf
-	HuCEMvqHKcgHR2jhlJ5a0LAtjy+b1chU+8/l/rwVXkve6XeHC9oMogUtbOhj5lzFN1R1SPnQcJt
-	R1KgeoKtEyK/oT7jnmVMxEWxNmTVvny9mfTOAeP07bqFswqunMMVOrg4xwt1aLOZVE21e8hIRRR
-	Z/gDfZut3bbbatax66GWloGkJ4yx1fYbm/vadLw=
-X-Google-Smtp-Source: AGHT+IE1PEjlOZHq/6qvvcs7qyAZrObDSTCsfokzw52ipsmbNvfckY8Niwzqd4Rqn6ssyvveSaNZTA==
-X-Received: by 2002:a17:902:d542:b0:234:f4da:7eeb with SMTP id d9443c01a7336-2366afe986cmr197072925ad.7.1750199764064;
-        Tue, 17 Jun 2025 15:36:04 -0700 (PDT)
-Received: from fedora.. ([2601:647:6700:3390::c8d1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2365decb5ccsm85988045ad.223.2025.06.17.15.36.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 15:36:03 -0700 (PDT)
-From: Kuniyuki Iwashima <kuni1840@gmail.com>
-To: paul@paul-moore.com
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	horms@kernel.org,
-	huw@codeweavers.com,
-	john.cs.hey@gmail.com,
-	kuba@kernel.org,
-	kuni1840@gmail.com,
-	kuniyu@google.com,
-	linux-security-module@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	syzkaller@googlegroups.com
-Subject: Re: [PATCH v1 net] calipso: Fix null-ptr-deref in calipso_req_{set,del}attr().
-Date: Tue, 17 Jun 2025 15:35:48 -0700
-Message-ID: <20250617223601.14060-1-kuni1840@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <CAHC9VhQ0trrgHyJxQOqAQAeN2bCsCx0JeXQgj_xeQbcckCbdZg@mail.gmail.com>
-References: <CAHC9VhQ0trrgHyJxQOqAQAeN2bCsCx0JeXQgj_xeQbcckCbdZg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NIB5aJbV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B5CC4CEE3;
+	Tue, 17 Jun 2025 22:41:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750200064;
+	bh=tQo8KDmbcmwwW3t38wbwAKEqD0oRAHN2BseOqSPMUBQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=NIB5aJbVTxhengcICaOuhkZLgPegniWqPyTqGMNi8s5uWVi0GX9wY0GxvdF87yhii
+	 TdUQZMHvMdTH398/8wC5wJ0pJMonILMMNareHpntTQHok1x39b2s3VcmjtI+wTc8c1
+	 EcGMv0m1HAcdTEM4wI/xc6sZWu04bGj4ZCi73dXARz4+PzcWxyrqnhyC8BlbPRhoxF
+	 gXXhdwAocZJqVsa3Jx3C153xSNRpZcalPyfIskB80TTH84jBZSD08ofdn2AmMqyIXq
+	 5morCmWG0OjTvUDVNKV1TZ291b8tAzXbX7aV4CnmShPUo7oA13UYGnXwqc/G94Gh68
+	 UHZ1JaYUohvUw==
+Date: Tue, 17 Jun 2025 15:41:03 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Pavel Begunkov <asml.silence@gmail.com>, io-uring@vger.kernel.org, Vadim
+ Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org, Eric Dumazet
+ <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@amazon.com>, Paolo Abeni
+ <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, "David S .
+ Miller" <davem@davemloft.net>, Richard Cochran <richardcochran@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Jason Xing
+ <kerneljasonxing@gmail.com>
+Subject: Re: [PATCH v5 0/5] io_uring cmd for tx timestamps
+Message-ID: <20250617154103.519b5b9d@kernel.org>
+In-Reply-To: <520fa72f-1105-42f6-a16f-050873be8742@kernel.dk>
+References: <cover.1750065793.git.asml.silence@gmail.com>
+	<efd53c47-4be9-4a91-aef1-7f0cb8bae750@kernel.dk>
+	<20250617152923.01c274a1@kernel.org>
+	<520fa72f-1105-42f6-a16f-050873be8742@kernel.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 17 Jun 2025 18:08:15 -0400
-> On Tue, Jun 17, 2025 at 5:23 PM Kuniyuki Iwashima <kuni1840@gmail.com> wrote:
-> > From: Paul Moore <paul@paul-moore.com>
-> > Date: Tue, 17 Jun 2025 17:04:18 -0400
-> > > On Mon, Jun 16, 2025 at 1:26 PM Kuniyuki Iwashima <kuni1840@gmail.com> wrote:
-> > > >
-> > > > From: Kuniyuki Iwashima <kuniyu@google.com>
-> > > >
-> > > > syzkaller reported a null-ptr-deref in sock_omalloc() while allocating
-> > > > a CALIPSO option.  [0]
-> > > >
-> > > > The NULL is of struct sock, which was fetched by sk_to_full_sk() in
-> > > > calipso_req_setattr().
-> > > >
-> > > > Since commit a1a5344ddbe8 ("tcp: avoid two atomic ops for syncookies"),
-> > > > reqsk->rsk_listener could be NULL when SYN Cookie is returned to its
-> > > > client, as hinted by the leading SYN Cookie log.
-> > > >
-> > > > Here are 3 options to fix the bug:
-> > > >
-> > > >   1) Return 0 in calipso_req_setattr()
-> > > >   2) Return an error in calipso_req_setattr()
-> > > >   3) Alaways set rsk_listener
-> > > >
-> > > > 1) is no go as it bypasses LSM, but 2) effectively disables SYN Cookie
-> > > > for CALIPSO.  3) is also no go as there have been many efforts to reduce
-> > > > atomic ops and make TCP robust against DDoS.  See also commit 3b24d854cb35
-> > > > ("tcp/dccp: do not touch listener sk_refcnt under synflood").
-> > > >
-> > > > As of the blamed commit, SYN Cookie already did not need refcounting,
-> > > > and no one has stumbled on the bug for 9 years, so no CALIPSO user will
-> > > > care about SYN Cookie.
-> > > >
-> > > > Let's return an error in calipso_req_setattr() and calipso_req_delattr()
-> > > > in the SYN Cookie case.
-> > >
-> > > I think that's reasonable, but I think it would be nice to have a
-> > > quick comment right before the '!sk' checks to help people who may hit
-> > > the CALIPSO/SYN-cookie issue in the future.  Maybe "/*
-> > > tcp_syncookies=2 can result in sk == NULL */" ?
-> >
-> > tcp_syncookies=1 enables SYN cookie and =2 forces it for every request.
-> > I just used =2 to reproduce the issue without SYN flooding, so it would
-> > be /* sk is NULL for SYN+ACK w/ SYN Cookie */
+On Tue, 17 Jun 2025 16:33:20 -0600 Jens Axboe wrote:
+> >> Sounds like we're good to queue this up for 6.17?  
+> > 
+> > I think so. Can I apply patch 1 off v6.16-rc1 and merge it in to
+> > net-next? Hash will be 2410251cde0bac9f6, you can pull that across.
+> > LMK if that works.  
 > 
-> Sure, that sounds good.
-> 
-> > But I think no one will hit it (at least so for 9 years) and wonder why
-> > because SYN could be dropped randomly under such a event.
-> 
-> Yes, you are probably correct, but that doesn't mean a brief comment
-> as described above isn't a good idea.  If you add the comment and
-> you've got my ACK.
+> Can we put it in a separate branch and merge it into both? Otherwise
+> my branch will get a bunch of unrelated commits, and pulling an
+> unnamed sha is pretty iffy.
 
-Ok, will post v2 with comments and your tag.
+Like this?
 
-> 
-> Acked-by: Paul Moore <paul@paul-moore.com>
->
-
-Thanks!
+ https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git timestamp-for-jens
