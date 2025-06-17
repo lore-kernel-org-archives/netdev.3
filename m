@@ -1,190 +1,145 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2070.outbound.protection.outlook.com [40.107.223.70])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4552DE1E1
-	for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 12:36:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750163782; cv=fail; b=cGoQH6mNifBigf06yDS3deFLH0egkY2uF2mX+kAdCqKmU9/1UTFVTfWFC0QzcZzTODLZxeDAfVo2242yHjSCjd8/b24f17XCGxJ9csn99b4Uq+WjMj4/8KNVp9dTj4ZXrQhL47imjtNgYLFaZhAs1fIso42GuHRRq8wXVTplpcw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750163782; c=relaxed/simple;
-	bh=pGLInxSlE401KtjD8ny96fTEHsw8ufGzwRmH8B1Xogk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fRsw/k+KFkkQBs3J2KI7LHi/ickIisp2V5q8XIoK6Y3bHCP+QKpJIVMTcPybH+2SyO0KaUG7XzFb2YS8c1K8Rh+/v8qoS2mqehuo56dMYtPSu/nq6muS1AJT96nE3xvWELymUElWu5CLobfEr5dsTiEtWWHAyV96ik5xqwENYAQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ok8BJBjX; arc=fail smtp.client-ip=40.107.223.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654032DE216
+	for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 12:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750164359; cv=none; b=foIA8WZVa3FdZH+8xNAVOpTQdJvGAJQs73NqhhZV6GlrL12IaFHo0ItV9G3ayb0//by3B7qFMjqDi87JCnuOS4RtRN2BoV+dR28svu4aToulHvgTz7wtLkYLE2zfslg6JE8X8b1oVNtIn40h0oNgS+SOrmD+L6hVu+50Kb06aKU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750164359; c=relaxed/simple;
+	bh=QxZLfUTEIFdVHJkWCH6cSGdXKxkzLmbolb7cty2jJws=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=to0YzEjjZD0HN7Xwd0Edi2KobJ6O3NRLtEMBZ0+X8K5vis46n7sQdh2qgKGgtTYXpTo6Kh9RX1j+JNZ6netj70YmEJUlaZmMXP5BtrECGEpXlVPcHSg2m+NRXRYd6OeVaLlhw0vUhqetpkvC8fsFB/9q8s1hOZ0CiN8olzi6oKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UsDLtXIr; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ok8BJBjX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L8RyViIYIHCYRNWKOZrjQZFUkoEkvdYBN+cPCjOAQEkcDS/IayVuG2aKvc0zoeqcrVXlSULIRCG38Cn4QT6LqDo/k712BsRfT6vpG8qW7P2s2jrknjUsoyqR+v/wc40E2I910/nYhrysdaHRkJ4oMX7rZ7zquDKB4Gx817ztGLiNS2b9w+HOS3kOG3rjzNUBZrgQmcNqVoGmypD+PnchnDsRPkgwu2QVhaJOubsL7lo5zc7nj/bAgE/MWVqpVIFbp2CtGRZ7k+R3eWytTPwKDowz6nXg6EQMU+QQzP3V7AsyBqSk24nHOcmX2aadtwPPQX2kugzez6AtRzQqe41ftw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZJ9L6SZgEepERFS3imGa2BXkA/ViAXbgHlukQaA6wLw=;
- b=glcq4zSp/K3rSmJOymm03XclWJJjGc/rhtPdxBGL5gzKPZeluvodc1FZgFoNmQmLwmDNNcqwnPTJR3JXy1Qk5JUWMnKuaIaslzmnix3iGdr0efYXwR8DOqO/7bj64w3IFdWFTeHjPUQCMOtvOVTdxHmUPaAw2hGPj0KEo2/dgoGzRvuzCF7xWEg+rXNbxSX0MjoV2iLd/oMxdcGQbHUo1ZaHw9d3vSJfv68FeydvjBxm5lq5wQuOjGrLRmtuj6UqDawZcYS+MvJFqd90BS3Q12YrQ6ZFRcFGiNrWhxJTeZeFPla7Yf7zvE7y0w7FjpFWBMMQ0y80DH6jT75DjKoJ9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZJ9L6SZgEepERFS3imGa2BXkA/ViAXbgHlukQaA6wLw=;
- b=Ok8BJBjXPo328Rnmgzquptsz+QqJTSAnvZZ03UNC8jG6Yp49/tw/dB43PvnetkMr+cXc0vB1gFweYFd8mGWt9WOUq5owBrTTOj2nYUumcFXj78XqjG8YnZQazfij/eNKE5aaNasXvYrZ6DYz8Zz/7ft9erTcY7kGHHsf2RtBaILLqHBGc2RnTVjtMAylyESmstULXKh9orSRS/CTOKz5gelaChmUBSpcqC+GBcdxzW/gmVvQnM4lfBTgWyFDC9rID0lH7oI3Xy9Ddw8c3xVWZB1Kew5ku76i2rMELMl8hb4XpsmVqJ28YHW4lHP7BkS2f27Ldmc53725Xbv3SrGmcw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from IA1PR12MB9031.namprd12.prod.outlook.com (2603:10b6:208:3f9::19)
- by PH7PR12MB6539.namprd12.prod.outlook.com (2603:10b6:510:1f0::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Tue, 17 Jun
- 2025 12:36:16 +0000
-Received: from IA1PR12MB9031.namprd12.prod.outlook.com
- ([fe80::1fb7:5076:77b5:559c]) by IA1PR12MB9031.namprd12.prod.outlook.com
- ([fe80::1fb7:5076:77b5:559c%4]) with mapi id 15.20.8835.027; Tue, 17 Jun 2025
- 12:36:16 +0000
-Date: Tue, 17 Jun 2025 12:36:03 +0000
-From: Dragos Tatulea <dtatulea@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, donald.hunter@gmail.com, 
-	sdf@fomichev.me, almasrymina@google.com, dw@davidwei.uk, asml.silence@gmail.com, 
-	ap420073@gmail.com, jdamato@fastly.com, michael.chan@broadcom.com
-Subject: Re: [RFC net-next 19/22] eth: bnxt: use queue op config validate
-Message-ID: <fyuhlxqjgrypi2gu24kj3x3noulgibd3kdgmek6qmbssfjailj@uf7w3fyb7sqz>
-References: <20250421222827.283737-1-kuba@kernel.org>
- <20250421222827.283737-20-kuba@kernel.org>
- <5nar53qzx3oyphylkiv727rnny7cdu5qlvgyybl2smopa6krb4@jzdm3jr22zkc>
- <20250612071028.4f7c5756@kernel.org>
- <vuv4k5wzq7463di2zgsfxikgordsmygzgns7ay2pt7lpkcnupl@jme7vozdrjaq>
- <20250612153037.59335f8f@kernel.org>
- <zkf45dswziidctwloy7wqlpcu2grdykpvmmmytksyjwal3wd42@f5cleyttlcob>
- <20250613161636.0626f4f3@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250613161636.0626f4f3@kernel.org>
-X-ClientProxiedBy: TLZP290CA0015.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:9::11) To IA1PR12MB9031.namprd12.prod.outlook.com
- (2603:10b6:208:3f9::19)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UsDLtXIr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750164356;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dYUkWUOYnsC7CSh9B18Rcje/1ENNTK97RWp3t1nu5V4=;
+	b=UsDLtXIrxTIDIpYOfIqL+TyYRrQIB1XzLluC6VaNJB4dtDDC+igNNtuqXYugw6BB8Q1cG1
+	hR3y2NWXJpKo0okp0sp8u1oAUwKTXYEnA23Ax40d1bz2/y8Gf/CPNAdJ+EzjYpxuTphnZd
+	wRJj4AcaR2O9POhMp4/enF+6gAUKPtI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-119-AlZyCxgDOrGSZ4BmSYgViQ-1; Tue, 17 Jun 2025 08:45:55 -0400
+X-MC-Unique: AlZyCxgDOrGSZ4BmSYgViQ-1
+X-Mimecast-MFC-AGG-ID: AlZyCxgDOrGSZ4BmSYgViQ_1750164354
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a50816cc58so1921323f8f.3
+        for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 05:45:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750164354; x=1750769154;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dYUkWUOYnsC7CSh9B18Rcje/1ENNTK97RWp3t1nu5V4=;
+        b=FAKjvc/wzWc1xdAaQCPgSQf7PGEkRucKyjKTS/ugU31YA1BshDDMn2AXhAcFwwVzmW
+         DcEnC/xa5901nho7QRm7EsAUOjyp3fkBQLzSHg8gRL2t4tSbcibGFDt+qf3FaTBgvEH4
+         0nUhHPVHjE/XtwG7bYIT8FvUhX95LrmhMqV+F/KOdXPtx7y7kzulxoQ2TUQm81beDDKh
+         poJT40dWoqtb0S7XM7VaJSI6fLug4ulu7AS63ogrQIpDOGkRhqj3EeWJmG5b23T2FrST
+         kJ+1om1zPp7Py1WqecVryBOckBvFIEW23JjFbbgUaV0Mm7r9UjCmIt+FY0CBfhpJvisB
+         J2Ow==
+X-Forwarded-Encrypted: i=1; AJvYcCXPeH9idhDvhGikP+Ru5lDDiPMRCC51QhTEiTre5N3sS0OGxczGur2w7p6uNubEhK714fwmnXQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCNz6OBaHEnvOQ5KoEoTcyJ0XSBzu0mAePoG3TI8dUMrmLqZFw
+	rv4KCo+eIy62K6X531lWUpU3wF4eaK/FiuxPigipq5djyTDcN9mhs+5LcgBTHM4aFPamo7e2gDB
+	EvIpMU1PPBIyHG9QKF6mZZ1E60V5M1Rc7L5iI/SZ5qC3zpJRIsiNLtkLrwQ==
+X-Gm-Gg: ASbGncsUt3W44qaHJ/iq7pHiKT+Ynl6WoGtm//rE7nErwpfrysVwuJbxHXskZwe6BRj
+	SHhVmVVacAxfmqYZpqkVnSadFoLqJ6G4Ddx8Y4nfpNp+LEbu6PZKGxV7rzmb4Dgjms0J1bQbzAZ
+	FLzoJAxmezmF8mlGNfCddiIPQ3pYV6Dq/tZj8SjUhOiE8QggnCKWiN8uthucWGpP47yqr4LRdBQ
+	iDMUfxWOeX0/7Sbkc1X74B9Yk07O42L+mp6UJF/77QTfs+f0Fb9dgOoxhH93GLqGrK5CWTwzrTq
+	TDu703zA0PUzCeYLbvdblcwQydL0Nw==
+X-Received: by 2002:a05:6000:144e:b0:3a5:3b14:1ba3 with SMTP id ffacd0b85a97d-3a572e58cc9mr10591120f8f.49.1750164353690;
+        Tue, 17 Jun 2025 05:45:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGl9BQcpZmRhEGmv7pvvJ6cVLjXCzCX3TEgb6m15O5XE69AmzolQFfm0zghgQdyzP/OZLjVAQ==
+X-Received: by 2002:a05:6000:144e:b0:3a5:3b14:1ba3 with SMTP id ffacd0b85a97d-3a572e58cc9mr10591092f8f.49.1750164353213;
+        Tue, 17 Jun 2025 05:45:53 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2448:cb10::f39? ([2a0d:3344:2448:cb10::f39])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568b090b0sm13845560f8f.46.2025.06.17.05.45.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Jun 2025 05:45:52 -0700 (PDT)
+Message-ID: <61c54e7b-9ffd-45c4-b37f-c570e310ea45@redhat.com>
+Date: Tue, 17 Jun 2025 14:45:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB9031:EE_|PH7PR12MB6539:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ea65cc6-cd97-45c1-bde5-08ddad9b8d5c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?nFfOsHNLF3+Vlr/QIkQ/+ZB+s6M34Bb3IahMVnJaieW1YUHqMbSlDsbqptXk?=
- =?us-ascii?Q?UX+NzY92DAtmmyuyf0pFOrZKcd0Gqf29iJnfSCBM05Mc8uQe67FfhgtjvYAp?=
- =?us-ascii?Q?G50+MinJYaKy0S48QKGzJcdKGYo4KTfrqnuXt9K2C4DBcRHkUR+OGFenofoA?=
- =?us-ascii?Q?L0jYK5gRw9r0KHVCSLOyb4qBiU8cjILl65hGdgH7iZTpCZPRBTTm2mnSwUPr?=
- =?us-ascii?Q?Wn9QJjSAINwWMJPYGdLK4aEjQ4Hp08LIeqeVS4ylWF45j/hS9Hcq7mZ5jZpB?=
- =?us-ascii?Q?pTQX5aq7Bm6752tc/7QjDLnqZ4Q3u/LdU9G9YyBcF9vbYiL2cCOjTPZBlmeI?=
- =?us-ascii?Q?8Mlhi9IZmoTywL/yK1H1EDsFR64zW+G0Z+D/wWvEhpX+oI15takx5B4lai03?=
- =?us-ascii?Q?9mDPkkQYzwiUvKl9R7rpCXA+y6b8JggiPWwDUks57p2GRJyAuAgTeEmF+0A2?=
- =?us-ascii?Q?HlPW9dU897KvSLMSPtC7pFgc0BdWz6DSELiCEal8rymMXWVs3EznHlzLPwQ1?=
- =?us-ascii?Q?1T3n39bs4qJdjAb6jY+0YLV1LkyA4HM0GzL2tK9qVrGWBzIXtXiZmLOW4NFo?=
- =?us-ascii?Q?N+vvpOb8wgUUBoQq53pZt7gBSo6Ub3KPdcBH3lsjv0ltdVxpi4Vgss6/9Ymh?=
- =?us-ascii?Q?P4wezd4Go2NhwY3NSzDjlklvZ2s21JwcI/Q/Fj8tkB/zfCbSKUV8h/pg4Nuk?=
- =?us-ascii?Q?KLRZOH1ef8rAc1B07zi2Ou09fGrbb7+vf+M1B8pVdCUWkJoI8RfTYpK35H9V?=
- =?us-ascii?Q?vEu5HVEg8JtXJgL+lGu6bABjFzg7vU7glfFQ06a8YSqleL4DM6molCMBRcow?=
- =?us-ascii?Q?aMfpKcWhamD3ureyEVC5GkTixTB+/Q2PiPybPM9sfcKEhFqGcYFVO1DRPtv2?=
- =?us-ascii?Q?TFYoWMZOXUrDJX8QqihA/JW78nj8kORZybWUg5djeSf5eSDfye4apPjCg/Ra?=
- =?us-ascii?Q?JUOmKA6tJL37v60hlPt9iXpAmwbgb6OunTUFdkZ1mwLpHrR2/p8xfL+WQUpL?=
- =?us-ascii?Q?Qa2MTpHp5i4P+0SVZhKPhLxz8rXGOPv1D8gEgZ2OLA4x63kWWPHhE1sIKH1x?=
- =?us-ascii?Q?VQZMHsIADaSRRlgmvG+80b2nyzGBMNNfmQHMJ3GOKc0A0o3punGYklJq7jA5?=
- =?us-ascii?Q?2WMYmmwMvCR+Lli5wjSMTAq1Dhk6nMvr+wLiNExJ5jsVwzYhvEVQgOsX+HpN?=
- =?us-ascii?Q?p7qyWrXCgL43m22pxbP5X7D3W8/oLQ/dxsAoI9HAPO8aX+RMpxxRKy3AkBd/?=
- =?us-ascii?Q?nDZ2w+bXXsmEP9f2Mo8F7tiiskqCIIN8UG14uoEiR67x9/IA/Fp29YOxdIEm?=
- =?us-ascii?Q?psgvY6ckh0qInr/Rod0o14VY41HEdj+kp9sZFufKuYRk5uDaiUicc+bqxPDs?=
- =?us-ascii?Q?9LEV007Lb9B0dZDCkrw9fewvQysaY7E0qpgqhULPrCJ24gBDEQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB9031.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bbO4ksLJBqGvDEJaxZdjiYvFeEZCUSP0V2RZghswLkZafDWilI08UgeAg3c1?=
- =?us-ascii?Q?oHsWYJS0+W1ZZPXlaPm1v8D7ym5rcZfwigzAAT9c7TV4vcG2rZ2hlTiSUUAq?=
- =?us-ascii?Q?h/96FPw917wMcVyo8FXI2eeinGnVNCRRjBU31XHTq3lIaVqGDcfbukE8Tfh2?=
- =?us-ascii?Q?BS66T4vj0s+3pGE5vyl+XnjPxL8bovEqs0QMCUxzDIsAj95A2KixJ04NbKlQ?=
- =?us-ascii?Q?QYDYoXSNSNd8YOAOaLDOglRaFGxL7HunROMR/1d9xhk4mPyvL0z1DHpdvE0A?=
- =?us-ascii?Q?NSu3X4gsa4Zu9cVJ9xPdHrymcNU37tXZWLUp4o8fmP/C0kQTl/+5ggY1if63?=
- =?us-ascii?Q?/DxR+RlnVqh1tmSxEXYAep+l5RzSw8miOs9GVk5mptLNEkIrxRhrVWTtlm51?=
- =?us-ascii?Q?4mOmldAb8ayyzNIzqu74sxOSccJ5K48quejfa9P3cSo6pPzKoz0Jnh76m3MO?=
- =?us-ascii?Q?0DeLEiybD3HADs6u1y1AdcMreapw3ThZEcRw5nLc3JTTwNi3asy86HoEerpF?=
- =?us-ascii?Q?iFA8ONI6oYYFGStQamMQ19tXCf0psVjkmjU8bWyQm0AI20ij9+7SuNqJL4mH?=
- =?us-ascii?Q?M3VcJge98I3q9vEU7/WfWqiJ471vEkN/aLmv3Q9XgU4vHVkhGQz4djIDQLOZ?=
- =?us-ascii?Q?30Z1nN/S9laoAoO0lemM01zwFDhlt9wjcEWUlZVR/TLG3ue5XYszD1BKi7BN?=
- =?us-ascii?Q?4LyU+A1hDjy8LRfh61+iiumHcthTWrMt8/2nReLkXQjCHIS35KCCLGeq0byI?=
- =?us-ascii?Q?uz4A57NsuNyGCX8PWboOZUwxwBADjF4r41p6da8KIajUojefJ15kcFmVTeCE?=
- =?us-ascii?Q?Fdv2AAuMHlOPNjgTkc+GGdSh+OE08v4bY1m2U7bcwSZ4w+OmL5Mfq9ivlksq?=
- =?us-ascii?Q?nBk63yP0vlVLGVf+hkW4FfHvaDzmfqkH7LZ7/tPReHSs0Fo+ciZHyh1oqOLB?=
- =?us-ascii?Q?kkRehVmcNZgsImZ3p3RI6xsvLfAzcn1ZplJ5MyUuqwreLXemN08G4+/3wJgX?=
- =?us-ascii?Q?sueWSPOM5FJj8zBeJPg0UwYKvk02lZw9Ot3J0MdB6hqVITOaFfwBbre73y03?=
- =?us-ascii?Q?7byRJ1W3HjJjtk94oXKwiFX6UPWKUbkroQbRdTnNxh+VU52srh86D80WKEbz?=
- =?us-ascii?Q?6Oc/9CfL6PyGRyvaYAkyQNYadMcCObcutffbVCDJc5xUiwFRFNVomP9dJxi7?=
- =?us-ascii?Q?igv907/czv+MMfnrvmFGe6zfUQbtHdUBuDTO77Cvnw7kxeSgkRvSE1WOz9Vt?=
- =?us-ascii?Q?JT8/f+u9qvyHOCucZDaRYaqSarZAuF1c+05Y8EdbxbIRKS5U1SG0N+79lcr7?=
- =?us-ascii?Q?CrJMtC8wCm/sJaMSx1SROF1m+mIBCdkHk2XSGbkazyshoAZn/hnqvdjWfzxl?=
- =?us-ascii?Q?hJ9Q2Oo5FuBhmfZz35LqVa08UbLa8bGtz3ot0J905riLWW0O0M2plxzyRBqd?=
- =?us-ascii?Q?gk+k3AdJccZ538fUPMYuYcKa1KKcjhesgVW0wMDm4uRCSeHVDX1w5mjPqLqU?=
- =?us-ascii?Q?qlJdAuCnoanrReC5zYrwEVArHC6JiZJuVo5iDJGAk8+815FTzy0AXbgVX2Kk?=
- =?us-ascii?Q?PRW9MhiGzKZL68udtVP4XgaJFs6qTFmzaru6vju5?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ea65cc6-cd97-45c1-bde5-08ddad9b8d5c
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB9031.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2025 12:36:16.1106
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rGisfnQ/P2Io+ImFGmTiTe6WVtKOqmSkCTgQ7sNVdLiTrgggseC68AhtdTmla7wNRTYdKMF4R7gAf/zr/WwdsA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6539
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 5/7] igc: add private flag to reverse TX queue
+ priority in TSN mode
+To: Vladimir Oltean <vladimir.oltean@nxp.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+Cc: faizal.abdul.rahim@intel.com, chwee.lin.choong@intel.com,
+ horms@kernel.org, vitaly.lifshits@intel.com, dima.ruinskiy@intel.com,
+ Mor Bar-Gabay <morx.bar.gabay@intel.com>, davem@davemloft.net,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ kuba@kernel.org
+References: <20250611180314.2059166-1-anthony.l.nguyen@intel.com>
+ <20250611180314.2059166-6-anthony.l.nguyen@intel.com>
+ <26b0a6cd-9f2c-487a-bb7a-d648993b8725@redhat.com>
+ <20250617121742.64no35fvb2bbnppf@skbuf>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250617121742.64no35fvb2bbnppf@skbuf>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 13, 2025 at 04:16:36PM -0700, Jakub Kicinski wrote:
-> On Fri, 13 Jun 2025 19:02:53 +0000 Dragos Tatulea wrote:
-> > > > There is a relationship between ring size, MTU and how much memory a queue
-> > > > would need for a full ring, right? Even if relationship is driver dependent.  
-> > > 
-> > > I see, yes, I think I did something along those lines in patch 16 here.
-> > > But the range of values for bnxt is pretty limited so a lot fewer
-> > > corner cases to deal with.
-> > 
-> > Indeed.
-> > 
-> > > Not sure about the calculation depending on MTU, tho. We're talking
-> > > about HW-GRO enabled traffic, they should be tightly packed into the
-> > > buffer, right? So MTU of chunks really doesn't matter from the buffer
-> > > sizing perspective. If they are not packet using larger buffers is
-> > > pointless.
-> > >  
-> > But it matters from the perspective of total memory allocatable by the
-> > queue (aka page pool size), right? A 1K ring size with 1500 MTU would
-> > need less total memory than for a 1K queue x 9000 MTU to cover the full
-> > queue.
+On 6/17/25 2:17 PM, Vladimir Oltean wrote:
+> On Tue, Jun 17, 2025 at 12:06:14PM +0200, Paolo Abeni wrote:
+>> On 6/11/25 8:03 PM, Tony Nguyen wrote:
+>>> To harmonize TX queue priority behavior between taprio and mqprio, and
+>>> to fix these issues without breaking long-standing taprio use cases,
+>>> this patch adds a new private flag, called reverse-tsn-txq-prio, to
+>>> reverse the TX queue priority. It makes queue 3 the highest and queue 0
+>>> the lowest, reusing the TX arbitration logic already used by mqprio.
+>> Isn't the above quite the opposite of what Vladimir asked in
+>> https://lore.kernel.org/all/20250214113815.37ttoor3isrt34dg@skbuf/ ?
+>>
+>> """
+>> I would expect that for uniform behavior, you would force the users a
+>> little bit to adopt the new TX scheduling mode in taprio, otherwise any
+>> configuration with preemptible traffic classes would be rejected by the
+>> driver.
+>> """
+>>
+>> I don't see him commenting on later version, @Vladimir: does this fits you?
 > 
-> True but that's only relevant to the "normal" buffers?
-> IIUC for bnxt and fbnic the ring size for rx-jumbo-pending
-> (which is where payloads go) is always in 4k buffer units.
-> Whether the MTU is 1k or 9k we'd GRO the packets together
-> into the 4k buffers. So I don't see why the MTU matters 
-> for the amount of memory held on the aggregation ring.
->
-I see what you mean. mlx5 sizes the memory requirements according to
-ring size and MTU. That's where my misunderstanding came from.
-
-> > Side note: We already have the disconnect between how much the driver
-> > *thinks* it needs (based on ring size, MTU and other stuff) and how much
-> > memory is given by a memory provider from the application side.
+> Indeed, sorry for disappearing from the patch review process.
 > 
-> True, tho, I think ideally the drivers would accept starting
-> with a ring that's not completely filled. I think that's better
-> user experience.
-Agreed.
+> I don't see the discrepancy between what Faizal implemented and what we
+> discussed. Specifically on the bit you quoted - patch "igc: add
+> preemptible queue support in taprio" refuses taprio schedules with
+> preemptible TCs if the user hasn't explicitly opted into
+> IGC_FLAG_TSN_REVERSE_TXQ_PRIO. If that private flag isn't set,
+> everything works as currently documented, just the new features are
+> gated.
+> 
+> The name of the private flag is debatable IMHO, because it's taprio
+> specific and the name doesn't reflect that (mqprio uses the "reverse"
+> priority assignment to TX queues by default, and this flag doesn't
+> change that). Also, "reverse" compared to what? Both operating modes can
+> equally be named "reverse". Maybe "taprio-standard-txq-priority" would
+> have been clearer regarding what the flag really does. Anyway, I don't
+> want to stir up a huge debate around naming if functionality-wise it's
+> the same thing, they have to maintain it, I don't.
+> 
+> Is there something I'm missing? It feels like it.
 
-Thanks,
-Dragos
+I misread your original comment as a request to make the 'standard'
+priority the default, and the current one reachable only enabling the
+priv flag.
+
+I see you are fine with the current status, so the answer to your
+question is 'no' ;)
+
+Paolo
+
