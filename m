@@ -1,169 +1,147 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2086.outbound.protection.outlook.com [40.107.220.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E6A28F519
-	for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 08:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750147212; cv=fail; b=KyH0YTOC+2tJClsvSEY60yU5qycdhFWfkn0vEwcMp1FGyh70P2ETFytSJO5ditKU1Su852667fR8cllE7lGf/yI0neAWEMxPNjGtZ01K4jxxlnggChepfZO5NAqpMO7Rk8A04SPRhNfDaFma22pU9a+qXiGpPVRZ5PyscAx/OmQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750147212; c=relaxed/simple;
-	bh=fUi59uBacuEWzwb707MIvvx02NxPIJKX8QMGcLZCBbU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ighibzi8fhhxSVWk2EthMmyyFYo5PHgI7fYOOykaYguxtamMukRc1SPrnUBE/wvILuo68J13T0ldpeF8oeh7FM0QVO2WvHldWG/AspjgcIMf1qdVBC11qj2ANL1Pfbj8jafqBgnosPHcDVNTaxKat1EHL6VBip6MsduDinPZzgI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DjnPu7+f; arc=fail smtp.client-ip=40.107.220.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D07A8528E;
+	Tue, 17 Jun 2025 08:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750147352; cv=none; b=VhNbvn3X6Yw2K/I58h+e0LyE7VVBs82w872PvIdB4H9iRdCH2sptpp0W8NNJ5QBGk13BzUH4LPXrBAsS4Act/9+oIluK97NyAlZ7wamWWxegG8+qZNHkBviAkK3sJf9TFvlvcYBR6OzKJFfsKwXWZGuyxIwyy53jIY8/aUAt6ZI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750147352; c=relaxed/simple;
+	bh=zjfj2Tm7h9LKUnhgzAVTuVnT8YUaP6pYYIdRhxmKFAc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VcGYxhPQVcRjb/AX3C2wQeWjHagu927qWb7bYheZNEI45GKboj64FDn5wxz6ULQ2qmqezSjNrnxflpFJ2K6+0cPJa1pMP4QTqVWn+cNog3UG4UqWum2CkbfuNJzH2gu4X7iR57dJ62cIfaaB5HFYTYRVyYaJcCm0T66V0yvU1WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tf5PXJHb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DjnPu7+f"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uS2w6LXePPc6MAewE1aHX8dmipLsJ/+FCBc+aVxxb5Mmps2huOxJGhLtCj8EM+d1DXwk43H+fesKiWyjxahDT+5Cyh4lq204WWRG0/OsysU477COG5RUy8ogwB+1FaOwgxa7q4YJ3SLGicv41yiJ3DDPwOHDu3z7bZB+3dlAu6vkcJHXh/sHf49D2FkoG6YlEptpPPr20DACLeVoHg5NqWuvQlueQ6plO7dh7w/aps8Z+pStVEY+MwnTWlfR8zTod99OAOAT5RI5eJifFh/rLXDjPU6d7LVrdxyrzhPFWpTSvVQ5uySFcwagur2XLqSu/joB7znTsSTJiIRY44j/vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fUi59uBacuEWzwb707MIvvx02NxPIJKX8QMGcLZCBbU=;
- b=p9Im3LLUkglu9akU3m8/6RuiLxkwDxVYJHOHomOoKd5EPxtR5yXiALhMVGErUlOq/nRgkkUO3duqh8Pi9yD0BxrHHpzl1+pt6OSjS64cyxgfbeHfeRxjoE2Ds5i31RFBkStVwSF07NdejcmU8EmNXQwvsoz6Awfy8wYe7WGvC0ry6eFQK4I1CoVUjeOYXb6K+7s2Qcl8iJWfApYzu7d2NFkTBO2+9/mzuc2vxKIitBnYF3A84YZXvjmyhHRozN+8MfdUSK3f+xXAdXzDX7XDUZqMFJ3RovThUGyw0/j2oWVdVu7hGg6xRG2BiMLHQW+mOV5ddVMGbOdBuv0Cv045tA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fUi59uBacuEWzwb707MIvvx02NxPIJKX8QMGcLZCBbU=;
- b=DjnPu7+fWm5EpMBlHvmuqITcDO1mQui1IbJVNoSuawZH63PuPUEB1OwxU0iXqXtw61miCwp6feeIRZi6D49l66rfyJQI8cGeD48xhDEe2guALeAaDfNjTNHW5ks6rgbWZQ7sgLGSiIwCcLi1glVOhnVXjYC4shqKLqEVo0tlt04l1j3Toi31OEifhcRpSjFCeiS5op/lPU59rezBaDPkgAqnP4PQ2a7ObTeV6MNgVbqn0dE79A8RdkEzTuwUJ9TMteVEA+9ye2s4oYa1FagxnlS1ph3z7Erf5khQxK4VKm6H1AUwgj1kwFEwbv9Nz9w+a46V7oRtznQGVE5nUB0y0A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB7500.namprd12.prod.outlook.com (2603:10b6:610:148::17)
- by BN7PPF683A477A9.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6d3) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.28; Tue, 17 Jun
- 2025 08:00:08 +0000
-Received: from CH3PR12MB7500.namprd12.prod.outlook.com
- ([fe80::7470:5626:d269:2bf2]) by CH3PR12MB7500.namprd12.prod.outlook.com
- ([fe80::7470:5626:d269:2bf2%4]) with mapi id 15.20.8835.027; Tue, 17 Jun 2025
- 08:00:07 +0000
-Message-ID: <16f6d38d-5ee3-4b0d-a81a-5989ce599114@nvidia.com>
-Date: Tue, 17 Jun 2025 11:00:00 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] openvswitch: Allocate struct ovs_pcpu_storage
- dynamically
-To: Jakub Kicinski <kuba@kernel.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: netdev@vger.kernel.org, dev@openvswitch.org,
- "David S. Miller" <davem@davemloft.net>, Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>, Eric Dumazet <edumazet@google.com>,
- Ilya Maximets <i.maximets@ovn.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-References: <20250613123629.-XSoQTCu@linutronix.de>
- <20250616150902.330c4ac3@kernel.org>
-Content-Language: en-US
-From: Gal Pressman <gal@nvidia.com>
-In-Reply-To: <20250616150902.330c4ac3@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TL2P290CA0021.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:3::15) To CH3PR12MB7500.namprd12.prod.outlook.com
- (2603:10b6:610:148::17)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tf5PXJHb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1C8C4CEE3;
+	Tue, 17 Jun 2025 08:02:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750147351;
+	bh=zjfj2Tm7h9LKUnhgzAVTuVnT8YUaP6pYYIdRhxmKFAc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Tf5PXJHbyqoDMJUjhFzgNd2QGPUruuk54hW8GfaiY4HU/qL1o+lPlFJ4ixNuynI+I
+	 LgDzId9V2N2/TBnov9FlC+ewqG+seIJu21fNhZQalb2Z+c38L5lWALHfK40MHkUrkz
+	 rjdD5mtoXusfnPP5ksGOkgtAOH8vtnQ7UX34RX34vdPdBjX4ZQXW+MtlLGjq2iUh94
+	 ScnqiaNRn8Kw/zchQ1QNIbu4pnRHYxj6AYirHgpT+InZ9lflxBH1ksL5Xnge+LabWM
+	 y0CkkOO+WxmJxLa+mla504XWl2rQtvPJZXMQ7ITvVL3uIEG7xsquNK4YdcDPpqywRV
+	 SpN7aT8dbEagg==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1uRRH4-00000001vd6-01hy;
+	Tue, 17 Jun 2025 10:02:30 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	"Akira Yokosawa" <akiyks@gmail.com>,
+	"Breno Leitao" <leitao@debian.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Donald Hunter" <donald.hunter@gmail.com>,
+	"Eric Dumazet" <edumazet@google.com>,
+	"Ignacio Encinas Rubio" <ignacio@iencinas.com>,
+	"Jan Stancek" <jstancek@redhat.com>,
+	"Marco Elver" <elver@google.com>,
+	"Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
+	"Paolo Abeni" <pabeni@redhat.com>,
+	"Ruben Wauters" <rubenru09@aol.com>,
+	"Shuah Khan" <skhan@linuxfoundation.org>,
+	Jakub Kicinski <mchehab+huawei@kernel.org>,
+	Simon Horman <mchehab+huawei@kernel.org>,
+	joel@joelfernandes.org,
+	linux-kernel-mentees@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	lkmm@lists.linux.dev,
+	netdev@vger.kernel.org,
+	peterz@infradead.org,
+	stern@rowland.harvard.edu
+Subject: [PATCH v5 05/15] tools: ynl_gen_rst.py: make the index parser more generic
+Date: Tue, 17 Jun 2025 10:02:02 +0200
+Message-ID: <1cd8b28bfe159677b8a8b1228b04ba2919c8aee8.1750146719.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <cover.1750146719.git.mchehab+huawei@kernel.org>
+References: <cover.1750146719.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB7500:EE_|BN7PPF683A477A9:EE_
-X-MS-Office365-Filtering-Correlation-Id: aff07cd8-451c-4843-12b0-08ddad74f9c4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VmpvTTdDdk5nbkZ3alpnV2pON1VVbVpqNjZPK1N1d1pPNEp1cjVVa0hWQ2Z6?=
- =?utf-8?B?aUtvd3IrQnRPSWlJK3pvMTYrbVRHM3lnam9pV0RyanNOR05xcDN0dGd5RlNj?=
- =?utf-8?B?YStEOTFlRlBCd3p3cGJLTjlSUjJ2bmMzTEF2cU1abkVhK1VRRWVtU1U2WkNj?=
- =?utf-8?B?MzQ2Y0lXNHFyWitCTVlPK0Y0TWsyQklwM3F0bHVUdzNvOVZlTTNtWmMxMmY2?=
- =?utf-8?B?T0VjQkJHaWJWcko0em9Ic3ZMU0VUNGdtUUZDeithdWtlTUp5VnhXcUZRTkRO?=
- =?utf-8?B?Tkg2WGtxR3pvSFVmOHhmK2JFL2tlT0RUSTJlaHcraDM0WURWSTBuY0FXYXJ3?=
- =?utf-8?B?OTJ3eWlVZnBtYnlXUVluVjlzQW1EU2tpWVU4SW8xWkJpZVJ0bytGSFdaSUVm?=
- =?utf-8?B?c2xLanZHS3pJUDVBSVFyL2g4TythZ0xKZzY2U2Z1UGpIU2E3UXVzUjBFUlNB?=
- =?utf-8?B?eHBHRlBJZjlsZi8wQlgyK0Ridk80eW9lTmtWcUMyU0l2c2VyamFsVEJya1FW?=
- =?utf-8?B?MUsyaWFsQmxXQlVlRHVOWVhuSzZWcHZUUGlNMWRDdDllQ3VoSTRFb0VnQ0lv?=
- =?utf-8?B?WmJJSVZrZkk4bVg2Q0lIU1d1Q3ErcUd4R3VmNmtzRC9zOTErUnB4bTdFUndw?=
- =?utf-8?B?c3BKbHZza0hqdWNxNDY1SnpDdDVqbjdZbWM1THg2U2lneG0xc0t4OEhaTERL?=
- =?utf-8?B?ei9UeEZWelg1dkxGRHZ2MmhTU3M2aXhaazVHeXhzeU1meTV6SFhtbG05a3I4?=
- =?utf-8?B?c0tpbUhwWlV1ckR2bWRYM3ovR2d2T0JxcFpMMHF6S0VteVlKTkMrL25OTm1o?=
- =?utf-8?B?NHVhUHJRTTY5akt1a0lVVEdhaGt1c2dGVEV0eTJBOTE4NFQvWVpMdm1MRHlK?=
- =?utf-8?B?eFNpVm5tREY5azlhRkJWMnRDMUJjNmg0TS81YkR5K2NTVWdwejdIOW9yVTlG?=
- =?utf-8?B?bXZ4VjhEK2JreFJJU0M2bngzNmdEK1BNN2xTSVZ6TTE4NnNlK3haaWY2Q0JM?=
- =?utf-8?B?VkhVcSs5NkhybEtEcDlSSGlDTStCVHBGQ2paN295RGNKY0FJTlpOclloTW1O?=
- =?utf-8?B?Y1ZmZ0xxekt4L1B2dmhHUERnMGVNSUYxQnBCdE5vbzdSWHE5Y1JVNlB6MEx5?=
- =?utf-8?B?Z3NacGlxeUhvOU1PZHlyZTZrdlNnazdueE16clVIZjhFY250ZkZlK0JLYTkv?=
- =?utf-8?B?Vk1lb01heWtqdTdMTW44Yk1tSWMvekRmNExXckFXbHRScU9WZHlxN1R3MkQ0?=
- =?utf-8?B?VHo0ZUxMYkd0QlFBK1JzQWZ4b3RnaEhOVk1va0pGbjdJaVlJbHRnRkFiZFRj?=
- =?utf-8?B?OFZpVUNoSlp1U2c3eTJYK0pZY1NxU0ZVSlJpcDkvZ3QzcjlsWlE5dm5sWHlz?=
- =?utf-8?B?U1l1SFN6cUhFbk4zbStXN3RxcU5zLzBrU1FaRk5TZHNBQm9RRUk1WnhjNnZL?=
- =?utf-8?B?V1Arb3ROSjY3QWp3SUloVFhGeXFCK3hDWmxGRVk5MEs0U1JlMzI4NlhLUkJI?=
- =?utf-8?B?c0xPOUNkRDJPNmFTcDZYWk1zNENZZzJBRTAzdjltNW41QnlXSlRvTmJ4eFpr?=
- =?utf-8?B?d3BzeE1Nd1RsYkhJNGZTTWU0bUdMSVp6Z0l3NGVKbFo5OVNzSXNIYS8ycm43?=
- =?utf-8?B?cTdyaFk4Z1hmN0lMV1VOVnhNOWJwc2NHYnk0QzJGNG5FZ0JQRWJRZXBZQUM0?=
- =?utf-8?B?REJRTS9nczBqSzBZbkR6SXZLMFZSL3BsWkwvN3A2MnQxZE9RTHg2ZXpoYjBU?=
- =?utf-8?B?cE5nMDRZTjNjL0ViL1gxWXpkMUxIM2dnZXZhSmsxbEpubXNQZnQ5SFg5MjNa?=
- =?utf-8?B?Z3hiYlpnMDRnZmlWdmliNFJyODhoUGtwTDJWang4SnhwTVVFY083ZzJrRWE1?=
- =?utf-8?B?dXRGR3dDY25DR0FDMTdtWVJSak4vbDF5ekxWeEtHbU5pdmc9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB7500.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Mi9GRFlwUGtVdS9GNldQbTREc2tlMTE0Tm1JYnVmTlpvSk9JZGZWWVpyQ3R3?=
- =?utf-8?B?cEhsOWF5UjUzZEJ0N2ptTFZIS0VlVGg4R1REMjRGcmhaK2N3cFdoakhLa3J5?=
- =?utf-8?B?cDR3dmRGNHl5TXpNdG80RVlCU1F4Q0dZVEt1V3BVQWVKNEtCNDZURHVjS3lQ?=
- =?utf-8?B?dVg1UVRLYzZhR2kzblVReUw4b1NNRTVNZnU4TUUxUS93akJnZXNlL3lyMWtl?=
- =?utf-8?B?RFl2Q24vaW9VcmxCSnp4WmYwa3ovQ0MyQ0V5OWtDZU9MeENsd1NSSVZGVjNs?=
- =?utf-8?B?VkQzRUdBaGxXMGVkNzVJcVFzMmkrdlo3c2ZWRkNOYVVRWmhWQVRSY1J3SUt6?=
- =?utf-8?B?ckdTSEFORmc0OWdVazJ4ek5UdS9Jd2ZENXFRdXdKb3Y5VnhkYm5UTWFqdENv?=
- =?utf-8?B?cldJQ2dJZEZZUGJYU1VjaXRwUjB0b2lNSEhwSWtyeVJKQm5QdXd2K0dKMkVh?=
- =?utf-8?B?RTBXa0lSVjFwREs3NHJxdzBHRTFTL2ZXZHFoeHdLNkswSFFiUEM0WjRxRjRT?=
- =?utf-8?B?MSt5Z3duTVNzWlNyTmY0VkZFam1kb0tUalZRVlNkN0lsM0xFWS82MEF0TEhK?=
- =?utf-8?B?OTludU9LNEV3TEFxQXpKZC9TcE5uSXc5MVcxSXJBVWdEeG9XNGlYdWpRb1N0?=
- =?utf-8?B?RHBvK0FGK1NyZ2FyTFgrVjVwUk9rRFdhd3JMSmR1SVFzWFg1QmpYQUs0S1Zl?=
- =?utf-8?B?U2ZLbTBnTWhUN1JnYlBORGxtKytlSUpTQnZ0RzFBaGxISHhrRnNMa3gyL2pI?=
- =?utf-8?B?MTY3azZlYm4wL01SUnVaVitmRXRrUG5RRDU1ako1OHFwcDBYVjJqZUdLT2o0?=
- =?utf-8?B?R3kyVTU4MEpyYXFIRnpNZjlsVFNsdFkyWFNab3FxOGhYUEc2WTYzWTlMT2hG?=
- =?utf-8?B?L1p4dnkrV0kvdVJWa2piZG16eUtaTmNjTzBxK0Naek5ZdUVGN3dkMGV0OHpT?=
- =?utf-8?B?ZGVUT3ZtVW85UENTSXdrSmNZa3dBSVVwdGduakRWMlJzRjc0UWdkM2pjU0Nz?=
- =?utf-8?B?MSt5YVp2eXVzNnE4N1FQd3JKWnBuUlBIRTU3b0tIajFlaXp4dkNLRXZOc1VJ?=
- =?utf-8?B?UGphdzYxQ3pUOWlMbWFHSDAyc1h1ak9iYmpucXRXckE1VTk3M0U2QzBVZWlS?=
- =?utf-8?B?MFo0WU4xZTRCa29tLzNOOVBWK3pMTElXUWQzc0gzWWNUdnZoZERIRGRKUExS?=
- =?utf-8?B?K05BV0phcnB3QjJCQmVSTlB3amdpd3UyMmRmbEdjYXQ3ZlpJbU5DbmgxaHB4?=
- =?utf-8?B?S3ZyUy9IY2pNM1VWdnpONXMrM3dmT0FzQkxSMmM1NzFPUTMzZ1FPL0RZbEc5?=
- =?utf-8?B?emd6Z2VxQVdOR2J4YVpzU0FPZ2NOU0lNMGF1bFB5MzB5OHJldm9BZkt1QkxZ?=
- =?utf-8?B?cEp5cDJpaWhGUjFBbzBYT3ZJYms1a21aVHV2V2hUQXZUTWxIRVNhdTIzMlVN?=
- =?utf-8?B?WnUzdHhpUWtERUpadEhqdTNGcHBIOVRnYUhDdW55UHB3Q09vNnZCSDBSMDBK?=
- =?utf-8?B?dUVzMWVDK3ZjaG16bkZReTE3bHV4ZmtmSU1xWUwvcDRMZ0V5YkZhV2phaDZF?=
- =?utf-8?B?TkhoTGxpbEo3RFBkSXRMWGJ6c2ZiTEM2VkhWdnVSL28wLzQzQWVOVVFZaGFw?=
- =?utf-8?B?TUJZZUllOE4rZDJuNUQyUjZUNG9uNkhFNVlwYnpWLzh6cTFRK1B3Z1FieXlo?=
- =?utf-8?B?YW5PSXYzcTlnRnpBSkdNVWNmdjdzS0VtcWU4UFZ2UzhHOVdkeHBFSEtndWRC?=
- =?utf-8?B?TFFZS0JvQnc5T2pyT1JEME5mSnhYcTJISkJ4NkphcFpDM05LN0I3RHVpOWwz?=
- =?utf-8?B?UWNNWHdjQWUrZHVteEdHTG9VV21xWitBUEs4VjN6eWVZeDMrUStNY05Uclcz?=
- =?utf-8?B?b3FsVEg2a3JTQndRNUdWQjNGbDhBcURzY2w2bEt3VlE1RmpNOFNEbVBlbkFi?=
- =?utf-8?B?aDFTQVluRngwTFRqTDErU2IzT1F1VzdIWkdSbkpNcnF1VXorWmRsVmg4OHpM?=
- =?utf-8?B?bmZpclBHUS9zSW1hWTVSRU5Pc3NmOUJ5MTNGL3RYRWYvVlhSNExvclJiMm52?=
- =?utf-8?B?UnRVMDZPR29OQ3l3cHpqYXhqNUJQbmN5MDR6L0gzMXpvU0tHNjhRTmdMRHky?=
- =?utf-8?Q?4O9k=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: aff07cd8-451c-4843-12b0-08ddad74f9c4
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB7500.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2025 08:00:07.8281
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MRKFxjRBuHVIF1k7sPq7Aleaevj//vQ6rGNkcAR1+VHMsGlG8BCyTr3gdWWf5moV
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF683A477A9
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-On 17/06/2025 1:09, Jakub Kicinski wrote:
-> Gal, should we wait for your testing or apply?
+It is not a good practice to store build-generated files
+inside $(srctree), as one may be using O=<BUILDDIR> and even
+have the Kernel on a read-only directory.
 
-Unfortunately, I don't have a way to manually test this at the moment
-due to limited availability these days, I will only be able to report
-back once it's applied, sorry :\.
+Change the YAML generation for netlink files to allow it
+to parse data based on the source or on the object tree.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ tools/net/ynl/pyynl/ynl_gen_rst.py | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
+
+diff --git a/tools/net/ynl/pyynl/ynl_gen_rst.py b/tools/net/ynl/pyynl/ynl_gen_rst.py
+index 7bfb8ceeeefc..b1e5acafb998 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_rst.py
++++ b/tools/net/ynl/pyynl/ynl_gen_rst.py
+@@ -365,6 +365,7 @@ def parse_arguments() -> argparse.Namespace:
+ 
+     parser.add_argument("-v", "--verbose", action="store_true")
+     parser.add_argument("-o", "--output", help="Output file name")
++    parser.add_argument("-d", "--input_dir", help="YAML input directory")
+ 
+     # Index and input are mutually exclusive
+     group = parser.add_mutually_exclusive_group()
+@@ -405,11 +406,14 @@ def write_to_rstfile(content: str, filename: str) -> None:
+     """Write the generated content into an RST file"""
+     logging.debug("Saving RST file to %s", filename)
+ 
++    dir = os.path.dirname(filename)
++    os.makedirs(dir, exist_ok=True)
++
+     with open(filename, "w", encoding="utf-8") as rst_file:
+         rst_file.write(content)
+ 
+ 
+-def generate_main_index_rst(output: str) -> None:
++def generate_main_index_rst(output: str, index_dir: str) -> None:
+     """Generate the `networking_spec/index` content and write to the file"""
+     lines = []
+ 
+@@ -418,12 +422,18 @@ def generate_main_index_rst(output: str) -> None:
+     lines.append(rst_title("Netlink Family Specifications"))
+     lines.append(rst_toctree(1))
+ 
+-    index_dir = os.path.dirname(output)
+-    logging.debug("Looking for .rst files in %s", index_dir)
++    index_fname = os.path.basename(output)
++    base, ext = os.path.splitext(index_fname)
++
++    if not index_dir:
++        index_dir = os.path.dirname(output)
++
++    logging.debug(f"Looking for {ext} files in %s", index_dir)
+     for filename in sorted(os.listdir(index_dir)):
+-        if not filename.endswith(".rst") or filename == "index.rst":
++        if not filename.endswith(ext) or filename == index_fname:
+             continue
+-        lines.append(f"   {filename.replace('.rst', '')}\n")
++        base, ext = os.path.splitext(filename)
++        lines.append(f"   {base}\n")
+ 
+     logging.debug("Writing an index file at %s", output)
+     write_to_rstfile("".join(lines), output)
+@@ -447,7 +457,7 @@ def main() -> None:
+ 
+     if args.index:
+         # Generate the index RST file
+-        generate_main_index_rst(args.output)
++        generate_main_index_rst(args.output, args.input_dir)
+ 
+ 
+ if __name__ == "__main__":
+-- 
+2.49.0
+
