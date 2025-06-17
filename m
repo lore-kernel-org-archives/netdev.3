@@ -1,62 +1,62 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5369F2EBDC2;
-	Tue, 17 Jun 2025 13:00:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A592D2EBDE3;
+	Tue, 17 Jun 2025 13:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750165215; cv=none; b=MeicVRfTNxr+cGQ4fSNFJAaHvlXIGciZ5zb2UBweaYgGNvdbIE4DFqDzlyZ29UEBCoL0210d50PcnAxTWB2U3YH3H+1gyOEIVM3vXQfagddkIpb557BEXgt+deQYkUdJ7nBf3i0w4lLYXT1Z6qF79DzZf3iPK1oja1g/y3mRudU=
+	t=1750165216; cv=none; b=VMDlUjnSF5pJqUUxk7n2EfKR4ZdLnzgGJXfP118ptQTlCqGS6qSqsDinAF1JNrQNU3c+uNVUwhAxCqz8dLjR1/YvMQWP6ok8pTvGYhw48v5oqr8MxUMgzELsI82SBqt7ng22+SBOkNmqETr+yIewIe6h89ggMLh7SxG9nkN6PnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750165215; c=relaxed/simple;
-	bh=vKPakfogKKix3izDDBo9OyyTz68HN3ZhsLtr7WF+d3k=;
+	s=arc-20240116; t=1750165216; c=relaxed/simple;
+	bh=U+2BrFcs/WNvZ2BeNf0LFR/mmC+ALZlnCYcOkB3I+lo=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=O6nggdPGdxq9BEALyl7intIQcsPON7Lz3wPb2/h8Y4kMmU/zDtzA0ZuWVXvIarT6pmLrlaf7SeUZyCRt4hsSd9JWEohZJwZLtputDNUHdOwW4gvWC/YLUhBTxZUA35yHuCWeNv/U+9lfB6yFKM8y1wS3Cm4yGD/3yk1UK6VCzcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T9N7Ra9y; arc=none smtp.client-ip=209.85.221.41
+	 MIME-Version:Content-Type; b=nOoybNQO/iILELR1AYmm22VjnlXzYxynTASQ+Oy/wgA3dj9neIO6lK7hfCIN/tZ7pP2jw0Kd8sIEFmPb3SEmBnU7sdxQt3PMmIR248UUBui2VT0EydJf839THnUwS3MYPOHhM4Z9k+PV3mlmsZisQu74ZwXHXqKmbL1C7al5ZCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fxCDp4l1; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T9N7Ra9y"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3a57ae5cb17so1690978f8f.0;
-        Tue, 17 Jun 2025 06:00:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fxCDp4l1"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a53359dea5so3931286f8f.0;
+        Tue, 17 Jun 2025 06:00:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750165210; x=1750770010; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750165211; x=1750770011; darn=vger.kernel.org;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CYoy6x7UGY+cu6w5H/g64EV7yFmP0q4eOzaGrrkLz/0=;
-        b=T9N7Ra9yBuwOM7xd7V9rKiT1YsFBB8wTwgsRER2CgRCTETqyQcBlzLuKcvFuDRWjw/
-         XRqKuNiGrDBe2E7eOG0UDQOqjVAswlNgMFtr8QrC6rhURYuZLmWceNOpOQvbgRK3BkDi
-         KjegKC3QAnOdRHuXClmBDn2ZzZCuh/cgbDq6I4JHU1GaUAX8mhtQG8BHDBZKCpVmVOV3
-         6lbOHlxvvXRZ/gmtLmvLnUJjhZNZzRKFE0V1zdPonLTLrtIEVflgnoTqMa37ZMYZVfr8
-         x2qXlIMtlnJykJc+99FUJEmN34i6I763QR/82AfD52obCclBL9lowwoVGFPO6v3JBiYI
-         yvmg==
+        bh=U+2BrFcs/WNvZ2BeNf0LFR/mmC+ALZlnCYcOkB3I+lo=;
+        b=fxCDp4l1gIvk4JUfd3v35PTl2Itek4Q7DgEVgTBt3JHMC5E0JXf8659RJ30cu2Ndbh
+         u4YMInLwkytN0Rt7Ay1Hykc5u5Yzlbmw9PN0Hy5jJ1XTnSum2EIkPVDg/ABHr1MmwAuh
+         4O+yN8Y2Sc+NxhlAw7nqAg+Ma1dPZFuRAUHhqKFCrPqJWFEiRlltl24lasxyBjsathuJ
+         l8WpmtgUfsNHdINVaoqsK5XgKhfCnSwhAYQq33kLqcyurAcxKiFn6Px5M2pmmaZ98VTx
+         4BMaw6jOSw6AJ4hBYZnr99F9qNz9mjfNN94ifLKiuSjHPkDLylTa6tkBb04TYqo0fo5f
+         mUWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750165210; x=1750770010;
+        d=1e100.net; s=20230601; t=1750165211; x=1750770011;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CYoy6x7UGY+cu6w5H/g64EV7yFmP0q4eOzaGrrkLz/0=;
-        b=eaCmBGNLp3Fga1vDE8Ra0GlchAthwBNTbcHNk+GYcr9RirjlD3nZOnJLMPCqwZSWPc
-         nSGbNaE4s3aolC1OJnlqF+hQ879UfcdaOdPps3Wn7+YNpMw/r9LMlxtxO6il2xfJbBEn
-         4OM1OGWDJKHic1rAihwiYXJSO5xrNsTd6Yrf5SOt+WqdmgoY3mk58xmfDk4Msivjk7GZ
-         4MfBEDVnO0yMgOj7e6L6RGAAzLDfLgudOTksHuqZT3k268CoXiRiDx8tjB8jR036QQeX
-         Om2CMsJYReEQHDq0knvMqm/bWVTqbuzoVeH5XszdODjLC1oOQLBKmrcTJgjpnnkfrjw3
-         Z36g==
-X-Forwarded-Encrypted: i=1; AJvYcCUlkeYdOTsq36ggP17tf4es3TOoZOWbRrzZsws/MW7Lyxj1llI7fwVe/fDewCZ3PZKEEqtvdRev@vger.kernel.org, AJvYcCVY3px6qH3kVZKd/oVVTZmT7sX5jzcSaw9orqrGeRWtGlzADtgcjnJ9BSvxnBTmyQNpv1D6dCzwK7r9ctM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywp1LBnr3hvkDA6NSdEZWWG+3Vi9OlNJBqOacO0olyNRjoN+jer
-	cZTNyDd0QRDWNE1bKNw52LyVFMfcmYEr7r/kTFRwGzQygYfypAaoXaxEo6r7Od8g
-X-Gm-Gg: ASbGnct+dmPrDG0wBj69Y01S7Jie7jbsoIW5e88dhVOpoTA3bXsmECcuH6rGRmwpQxu
-	AhvMzFScA0vyNUrpGzm7gKdmib4uIvvALV3+p+KPOHcMf+Rctn/0A8HYMfLzF2vVG2JvKfa4EhP
-	IWfTmEx47UzF3AVeoxInxy5CsDNf+wx9VdHQtKwTt3OYHFB0Ibs1KUOwSrL7ROBV6eJxlLob1R/
-	RqZJwL/4l3nU1Ui6AR7ssHHpOmzUWTJqXtEckfypWnot6nRO7hVPpga4eg6s4CqZVD2EUmFAEAB
-	urdOlacm35qeiDxElMfj84MMihaW7DJo35uDuf0jl1zyHykYO42vBfmQiO2saDS0W/Z1NENRsXc
+        bh=U+2BrFcs/WNvZ2BeNf0LFR/mmC+ALZlnCYcOkB3I+lo=;
+        b=r1DfpkcG68/Pjdvby+6qBsULdYvPaPXu5aRQBo6Ut0BAazKNy6Dt5CzUD9trS2d9nl
+         tTsPf8Ag1EXbNMZ6HyvDi/QyVkfXa/KzyDoc2EhGnnjq6/0hQZtoeIoxbDgozOiy1Vjn
+         n4DE4TIXKLjUWrMfz+qlPF42G/Gbmd7XzZ2wH5LBR6GwHUBNHOXsDgfQ6Mm6vnX+zd5r
+         lBbStMaXj4Vs8U8d8mNjuUF+9tY8FvoK788PJEmburvCp9qOOXIbRfG8IIihF1SrmUTC
+         rudyBZJYMQzFghsxr858ccw9XYSPxJnX4UMzkYGbL+QGOjwQAvvahsLaLEuzVmQOdJQu
+         lbtw==
+X-Forwarded-Encrypted: i=1; AJvYcCUp3XQBv4T1QR0PKKE4GOLlaTYluqgHbdrSRcN93wl30GW/21g4g2e579ngtX/Mv/cHHwTpLfUG3AG6Tf4=@vger.kernel.org, AJvYcCVRpW7nKpHAtiHVHostoRQtOt726WI25zVFGNx23BPP3b7FKm5pNxLJi3wFiNVE6LgfUqBurKA2@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFyHRqqjKmtUO+uiw8B+uXsXrFn/S8l+vAUN3ZzVQjWNS6am6W
+	1xa7kA0foTtHJpt+7JbpgMMW5RlvOhZ+ow0SGN3CB1ZY8ZigH4MPkUHvZKlxr755
+X-Gm-Gg: ASbGnctUCh6QNw5OmA6ObA7KrDvkHNyx4sp4+R1M4LaJtyy72z4HQ1/Jsdu1g8iD/2l
+	GZ6Ysw0QNfh2FQ3cdUEu0bOSBE+xpc3qonssroY47YB/614dG04zi9vrBoL4ny44s3eCSm8afB4
+	ONfwkAcSJn3tKaE17hCs9gimH2cdcfCytwnoc3MfIoMAx40kng/K4csTG+HFnJaM6kCNr8iee+j
+	Ikh1ew5QucjBnldMs4voSdVV4Kn9CfkYoak+mhBrBGcvmVX9C1ztfNBWI5wRY3koeLUMZLlYgfG
+	dRr2//0zpJb3FA8gv/L92fk7JsSPePiH4+dQzvFHZr6WzLU6QToODzGrFzV/42E7k4+vLsvHnoU
 	=
-X-Google-Smtp-Source: AGHT+IFFtE66j0KBeiVBmHT2kdpGgOwXtX4PGlW51AaI/zJ78oGV7HwQmIMFUGUqOcnRWs2CbvgRsw==
-X-Received: by 2002:a05:6000:24c8:b0:3a4:f918:9db9 with SMTP id ffacd0b85a97d-3a572e79fa4mr10169058f8f.32.1750165209425;
-        Tue, 17 Jun 2025 06:00:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFAOftRNr9UArvb/ayDqecb5pQMF3c/jd+7G9PdWPODKXwcXgkgZu8aWMDVJ40l2sMdirRwTA==
+X-Received: by 2002:a5d:5f84:0:b0:3a4:c8c1:aed8 with SMTP id ffacd0b85a97d-3a5723af1d2mr10004080f8f.39.1750165211307;
+        Tue, 17 Jun 2025 06:00:11 -0700 (PDT)
 Received: from imac ([2a02:8010:60a0:0:8931:baa3:a9ed:4f01])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568a800d9sm13815810f8f.45.2025.06.17.06.00.07
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e09c21esm174344585e9.17.2025.06.17.06.00.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 06:00:08 -0700 (PDT)
+        Tue, 17 Jun 2025 06:00:10 -0700 (PDT)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>,  Jonathan Corbet
@@ -69,13 +69,13 @@ Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>,  Jonathan Corbet
   joel@joelfernandes.org,  linux-kernel-mentees@lists.linux.dev,
   linux-kernel@vger.kernel.org,  lkmm@lists.linux.dev,
   netdev@vger.kernel.org,  peterz@infradead.org,  stern@rowland.harvard.edu
-Subject: Re: [PATCH v5 10/15] docs: sphinx: add a parser for yaml files for
- Netlink specs
-In-Reply-To: <c407d769c9f47083e8f411c13989522e32262562.1750146719.git.mchehab+huawei@kernel.org>
-Date: Tue, 17 Jun 2025 13:35:50 +0100
-Message-ID: <m27c1ak0k9.fsf@gmail.com>
+Subject: Re: [PATCH v5 14/15] docs: netlink: remove obsolete .gitignore from
+ unused directory
+In-Reply-To: <073835aa035718b120971b7a53e0f270d146fe87.1750146719.git.mchehab+huawei@kernel.org>
+Date: Tue, 17 Jun 2025 13:38:11 +0100
+Message-ID: <m234byk0gc.fsf@gmail.com>
 References: <cover.1750146719.git.mchehab+huawei@kernel.org>
-	<c407d769c9f47083e8f411c13989522e32262562.1750146719.git.mchehab+huawei@kernel.org>
+	<073835aa035718b120971b7a53e0f270d146fe87.1750146719.git.mchehab+huawei@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -87,156 +87,11 @@ Content-Type: text/plain
 
 Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
 
-> Add a simple sphinx.Parser to handle yaml files and add the
-> the code to handle Netlink specs. All other yaml files are
-> ignored.
->
-> The code was written in a way that parsing yaml for different
-> subsystems and even for different parts of Netlink are easy.
->
-> All it takes to have a different parser is to add an
-> import line similar to:
->
-> 	from netlink_yml_parser import YnlDocGenerator
->
-> adding the corresponding parser somewhere at the extension:
->
-> 	netlink_parser = YnlDocGenerator()
->
-> And then add a logic inside parse() to handle different
-> doc outputs, depending on the file location, similar to:
->
->         if "/netlink/specs/" in fname:
->             msg = self.netlink_parser.parse_yaml_file(fname)
+> The previous code was generating source rst files
+> under Documentation/networking/netlink_spec/. With the
+> Sphinx YAML parser, this is now gone. So, stop ignoring
+> *.rst files inside netlink specs directory.
 >
 > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
->  Documentation/sphinx/parser_yaml.py | 76 +++++++++++++++++++++++++++++
->  1 file changed, 76 insertions(+)
->  create mode 100755 Documentation/sphinx/parser_yaml.py
->
-> diff --git a/Documentation/sphinx/parser_yaml.py b/Documentation/sphinx/parser_yaml.py
-> new file mode 100755
-> index 000000000000..635945e1c5ba
-> --- /dev/null
-> +++ b/Documentation/sphinx/parser_yaml.py
-> @@ -0,0 +1,76 @@
-> +"""
-> +Sphinx extension for processing YAML files
-> +"""
-> +
-> +import os
-> +import re
-> +import sys
-> +
-> +from pprint import pformat
-> +
-> +from docutils.parsers.rst import Parser as RSTParser
-> +from docutils.statemachine import ViewList
-> +
-> +from sphinx.util import logging
-> +from sphinx.parsers import Parser
-> +
-> +srctree = os.path.abspath(os.environ["srctree"])
-> +sys.path.insert(0, os.path.join(srctree, "tools/net/ynl/pyynl"))
-> +
-> +from netlink_yml_parser import YnlDocGenerator        # pylint: disable=C0413
-> +
-> +logger = logging.getLogger(__name__)
-> +
-> +class YamlParser(Parser):
-> +    """Custom parser for YAML files."""
 
-Would be good to say that this is a common YAML parser that calls
-different subsystems, e.g. how you described it in the commit message.
-
-> +
-> +    # Need at least two elements on this set
-
-I think you can drop this comment. It's not that it must be two
-elements, it's that supported needs to be a list and the python syntax
-to force parsing as a list would be ('item', )
-
-> +    supported = ('yaml', 'yml')
-> +
-> +    netlink_parser = YnlDocGenerator()
-> +
-> +    def do_parse(self, inputstring, document, msg):
-
-Maybe a better name for this is parse_rst?
-
-> +        """Parse YAML and generate a document tree."""
-
-Also update comment.
-
-> +
-> +        self.setup_parse(inputstring, document)
-> +
-> +        result = ViewList()
-> +
-> +        try:
-> +            # Parse message with RSTParser
-> +            for i, line in enumerate(msg.split('\n')):
-> +                result.append(line, document.current_source, i)
-
-This has the effect of associating line numbers from the generated ReST
-with the source .yaml file, right? So errors will be reported against
-the wrong place in the file. Is there any way to show the cause of the
-error in the intermediate ReST?
-
-As an example if I modify tc.yaml like this:
-
-diff --git a/Documentation/netlink/specs/tc.yaml b/Documentation/netlink/specs/tc.yaml
-index 4cc1f6a45001..c36d86d2dc72 100644
---- a/Documentation/netlink/specs/tc.yaml
-+++ b/Documentation/netlink/specs/tc.yaml
-@@ -4044,7 +4044,9 @@ operations:
-             - chain
-     -
-       name: getchain
--      doc: Get / dump tc chain information.
-+      doc: |
-+        Get / dump tc chain information.
-+        .. bogus-directive:: 
-       attribute-set: attrs
-       fixed-header: tcmsg
-       do:
-
-This is the resuting error which will be really hard to track down:
-
-/home/donaldh/net-next/Documentation/netlink/specs/tc.yaml:216: ERROR: Unexpected indentation. [docutils]
-
-> +
-> +            rst_parser = RSTParser()
-> +            rst_parser.parse('\n'.join(result), document)
-> +
-> +        except Exception as e:
-> +            document.reporter.error("YAML parsing error: %s" % pformat(e))
-> +
-> +        self.finish_parse()
-> +
-> +    # Overrides docutils.parsers.Parser. See sphinx.parsers.RSTParser
-> +    def parse(self, inputstring, document):
-> +        """Check if a YAML is meant to be parsed."""
-> +
-> +        fname = document.current_source
-> +
-> +        # Handle netlink yaml specs
-> +        if "/netlink/specs/" in fname:
-> +            msg = self.netlink_parser.parse_yaml_file(fname)
-> +            self.do_parse(inputstring, document, msg)
-> +
-> +        # All other yaml files are ignored
-> +
-> +def setup(app):
-> +    """Setup function for the Sphinx extension."""
-> +
-> +    # Add YAML parser
-> +    app.add_source_parser(YamlParser)
-> +    app.add_source_suffix('.yaml', 'yaml')
-> +
-> +    return {
-> +        'version': '1.0',
-> +        'parallel_read_safe': True,
-> +        'parallel_write_safe': True,
-> +    }
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
