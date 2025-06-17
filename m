@@ -1,358 +1,204 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8C02BF013;
-	Tue, 17 Jun 2025 02:21:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750126908; cv=fail; b=uQIzd2yTDx2i5ngTLcIgpZjieBGkiHqBhkONSf6Qm9y5X9VB9Rcy1vT7svM55g+TNJpuiGL90PFoUoNC2V0C24R3/vVEsDJrs2EPB3Zc6yCu6a8jF46YzKM5CyXqKORTE4RpUvyjDHJd4t7DqJmeIYARASDVimkus7dYJzVXnhs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750126908; c=relaxed/simple;
-	bh=HYfOYbkA+6WRKwn8oVZoW4sD89zb77MBmEXfxf7XLS8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=RLr/ctFDq7HaUyZAlkJso5pWJcvm+Cax7TyJMYeOHHpKyr/QViypDQj5/y9YOSILT+uB6s9NRR3Xl3S6/6WzcBowV1KV4CgtOSzFr5VF6pvLWzXXmXWLqTWKt4G0EmgN/fZtEzLkWQvA9I6XYYzgx9NGkSPWy6NK1CxJyMVsO9I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=IkowAIEg; dkim=fail (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=NeN6gvID reason="signature verification failed"; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="IkowAIEg";
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="NeN6gvID"
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55GLYq8d017638;
-	Tue, 17 Jun 2025 02:20:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=r5vYnadNwzN/GudwMLIVqHSadJhjhnQc+AyI4kEZ2tA=; b=
-	IkowAIEgN8VnJEFfPyt58/HDcNxVJPwlvqfong+v9Xp9n7eyB3zHu27dywHXFJ/+
-	S5IefkKsHjrzzilwG0iLv0F0hSFdR0JhzgCaWWm+YY6wMC/UOmqmHtpcM1GJFG01
-	GfG3kl+v30HAi84ttE2BRzb+87Srrcp9+iTwxP4060SHN/IL6powtgdMqGDqFcOW
-	pOZC5AdQGKw2m4yNLYl3YUdHBPJJMzKREWzxMo/WHuclCUHIXH971oZzPef2oBkS
-	/N7SqKA/XD612XNBd/0T2ry9w67SAxrdOyk35tUOD4MH3nHyaPlpHQv8IcZ4zWPq
-	AYsuc6FiHNba44f/tKb/7Q==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 478yp4md5x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Jun 2025 02:20:57 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 55GNLjAB001886;
-	Tue, 17 Jun 2025 02:20:56 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11on2074.outbound.protection.outlook.com [40.107.223.74])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 478yh8nhn9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Jun 2025 02:20:56 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GIpH1FaZZXB34KynoIX6nS2lcQRaw2DW1GMvbnG3DJB0T36YFmmFbmVCOT+85eSiRrXD/BTusAKERsjGWJuK6yBX1piRSf6JM/WJXxT6BNveR5yvwqFyCXXWYEBxtVyJRvQw9QjB5jvefpdbiiptWqEV65qxXI7p1rXH6BOyhlzEw8UdEWzzA9qsZFlurM9h9/tXM7wcI9zhFBd1qwwBxuH5TT9wRxXauKVn1GHT/PBfR7JYThFgXuDO2e1EqcWKDxNgR9YJ9DUKxjyFOXEp8vf4wlQBSUnMyJSG+uMpVZS4e5UDYHCBe547BMTwQguL5Zb+aIdCLh8NHwrw4ysscw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7wDRdmzpI8nldz54MjKKS9EUW6Z/ZPFEB4E7wfyQcoA=;
- b=qYa8WInU3vpjbaGgqJarc8yydGdMQX4KG/+ELsivlnkYNvoSR66T4bRLB69XFIRvyHLUPV20e28jeHddko2KgnucrNxhkm87BLriG6lXoHwmKyGpmOmxLEN2xrn7OuUlqCLpRQFv5OqZBJDF+9Vybr0uYlGpKoRQ4AmbAOzaXzgF0f+VP1GdUkyE3bkC80e5Gdiv0uxsyr9j0nUIH1S1JrXx5Dpl0kiWJXAoQAAZOCC0XtqhC+bSEYshQOWOVRCXZeeLtroN///AZeMwQirC7+b9jUiL+LB3rz1WsdZBrJ9zYQl/yjNehU5GX/Z0JBXovKSDrRObN33hb5EXPtR7PQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7wDRdmzpI8nldz54MjKKS9EUW6Z/ZPFEB4E7wfyQcoA=;
- b=NeN6gvID415qa6cEKmOEcFUAyNhRHR39YpAi3w3etJzo0XwjgvRCl3o1zLKaV1BiXZy4O2dO5k5SvGzbvIv32IjNmGvT6h0FtGbNILiZVmZa7TKVxb2q1vkaHpy6BnukK/yl6ozBnW06bJEzhEC3/S4k5d7lArIYlbHbE5iQOb4=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by LV3PR10MB8179.namprd10.prod.outlook.com (2603:10b6:408:28a::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Tue, 17 Jun
- 2025 02:20:54 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23%4]) with mapi id 15.20.8835.027; Tue, 17 Jun 2025
- 02:20:53 +0000
-Date: Tue, 17 Jun 2025 11:20:37 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Byungchul Park <byungchul@sk.com>
-Cc: willy@infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, kernel_team@skhynix.com, kuba@kernel.org,
-        almasrymina@google.com, ilias.apalodimas@linaro.org, hawk@kernel.org,
-        akpm@linux-foundation.org, davem@davemloft.net,
-        john.fastabend@gmail.com, andrew+netdev@lunn.ch,
-        asml.silence@gmail.com, toke@redhat.com, tariqt@nvidia.com,
-        edumazet@google.com, pabeni@redhat.com, saeedm@nvidia.com,
-        leon@kernel.org, ast@kernel.org, daniel@iogearbox.net,
-        david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-        vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-        horms@kernel.org, linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-        vishal.moola@gmail.com
-Subject: Re: [PATCH net-next 1/9] netmem: introduce struct netmem_desc
- mirroring struct page
-Message-ID: <aFDQ9X2WsXszNJ5M@hyeyoo>
-References: <20250609043225.77229-1-byungchul@sk.com>
- <20250609043225.77229-2-byungchul@sk.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250609043225.77229-2-byungchul@sk.com>
-X-ClientProxiedBy: SE2P216CA0095.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c2::10) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C998C335C7
+	for <netdev@vger.kernel.org>; Tue, 17 Jun 2025 02:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.206
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750127551; cv=none; b=hUCr89ayWCqKAkdXrdoXysff1CAWiNproPZI6oBw+zS3JrC0AxSfFpO3W2drivLzAZxYe3Rhski47BSuoEk6fz0OGrunLY8sey+b6t/4zLANJO54IsS3NI5bYwvEnXm2stZcVaDlUt/5Lvg6U5+8/qf41hjLpAfGnNBtWhcvzxQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750127551; c=relaxed/simple;
+	bh=h4q1rdV/jvVwTNYLtRk4eAkzcqF8Q9upnPzV7KCRXuM=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Z5JeEwXMX3Bp/2BbUA/OlaD1KQR03VPLou/gyQyCCvzRRg5503aG8gfnMUlLTAmn2qRWobmZTeoXhA99cOS8noclSqExJkLHjf6NmWL14GdRgBbcd7TYPQkCsTaiiGqB6POqGhGDqa2nmcVgJp07eFVQAhIG88qm+Qo82w1cag4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-3ddc6d66787so71820845ab.3
+        for <netdev@vger.kernel.org>; Mon, 16 Jun 2025 19:32:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750127549; x=1750732349;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2kFs6ehQrsbeV5OtP9QYHlGeA6LyGbaav1qAD3QYV/E=;
+        b=IWorEp8SlnDrDvJUxrFHJ33knwotZHMZWr4CX2FkpwZjpO458SJPNpbhL6pxFLIr8q
+         gRBhYaNqgm+9ni4ww3vz53anF7p77eJcBCsElcJ6MVvyjRmcWBto+BGerSeOxcF9IPH9
+         vsZRHuhdXoAk8FIWS+5Uz7S16fBsYPh/ZnZq5tbIbqrgljONuTYoPZjtsFS2mlaAVxmF
+         xicQJssZpxs3yBRt1zZx0rtcVM7fdeFR8tzAZalQAigimF02eVfb+5vhaLcLesIIhgl9
+         /m7+WDER58KioMdEE+6mCpq5nVrKMncKoU6B3THK4j45FuhBhhIINMVWpq33KGNCTMAN
+         cSKg==
+X-Forwarded-Encrypted: i=1; AJvYcCUIpC29W7J2BSnxvAguDeUyDi7bp8TIbTj5PKwUX9K1nfvxTVpC9fdUzPyfKnkDv8lFYAjPyKA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzr5O8xbpGOme7BA3sxX2HlmvHTTm4fOJvKbYyOI4lJmkH0AJeW
+	fvVx8ED4nda6/EEU8auKUj3NJr3ZUPhXuuAYebj6IUm3Mt5JWOSNoBV7HgPslBhkHDXJRJ19VFd
+	GLIwqByMaQf9EjA0lT37Ty1M9xjTl5SAga5R3t4x590gob9goczijzuXG3lw=
+X-Google-Smtp-Source: AGHT+IGojPqlwd05Ofb94SwCCl6PaTM0bN7hniK2siRdvVj6Tbgu9X+chhmupx/zHOzGW4YUeA41zt3BbVmujP3nhoOv+1667f7c
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|LV3PR10MB8179:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee461661-b1e0-4636-7e0a-08ddad45959f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?E/hRH+JcuIpCHunZdOU9oT7eNI+OX+MLC+if4bGyirt7tXrT3qCilBTQx5?=
- =?iso-8859-1?Q?NK3TCcY+ts1butC9MalAy0jJ2qieCWhqzqUyLsYmzEEHLar3wMNoqb/RtH?=
- =?iso-8859-1?Q?FEJgl/g2K/LzJOkWgL8EV/BUcL20QxcKqdetCc/9dcd70ClW7E93/zGwoi?=
- =?iso-8859-1?Q?f4hF2xdw2tuWKAryb5YItmUH2rWLVydSIC6heSZcWavPCK1m8vnB5CUFlT?=
- =?iso-8859-1?Q?2p07LzsQntSOMhBsEdDZuguMRP5vJKb/SdzA/JDeIZ9DgnTiQi5BivAmsT?=
- =?iso-8859-1?Q?Re4s5G7VvI0VoBr9TtUxzWWH5UKJY2aTC78UeVs6EHG67QdUqtUb0qRnXe?=
- =?iso-8859-1?Q?VmM2NadhV3wllGErbKKgGiZiGezl9hicATow4A7ujUocwNuEpSR3uw7wSO?=
- =?iso-8859-1?Q?s1UZeYbFnE7nBhj7g12D1tEbwD6rdBsfC2od+iY/VfSC86VDfVvNwZ5AaZ?=
- =?iso-8859-1?Q?VzTCZso/W9a7ZMg+Vqf9PsSFdsw1H8UqtZe8arG3GXsjWZAsjP0g4bKLBo?=
- =?iso-8859-1?Q?5lDV+P7nE8Dx75i3XIEijUzp1zrQipSrVJM0Wi7qI+Di4he7Zxm/tSGREI?=
- =?iso-8859-1?Q?hIPbBRWE1Z7rOFX9t4DrKkXeVdhXP/0dN3LG+OKFpFQl66OtQoAl8Ipxhe?=
- =?iso-8859-1?Q?ueMrpjOoa/YGy2eXMoMMiBB+TkWywqQES9Ofp3E+BTn6qoBtpcZO30CFi6?=
- =?iso-8859-1?Q?uzK2O9prlm/8G7FE1dsjYZHJs+IEAQClmavzzMkoYj8pKyHn0HZDOXzKjR?=
- =?iso-8859-1?Q?8dKfiLAODYNKrY/jKpTy8UkRR8+rEZs8vZELfBqcvjfIouGDDy5CwUoYdR?=
- =?iso-8859-1?Q?03ihY7mek9mSXfrIAFIX8x7brYKfDPHh2V5NjlUcA0+XDQA4RDT3sff0y6?=
- =?iso-8859-1?Q?pWRKdmPszMRGMPl6i9mgIgEJq1oBrNRakjg4ZdGMH44d3+OMZbr5EbRIXb?=
- =?iso-8859-1?Q?P0XuyNnLDbmRNjC/p9VnUZLZqZ2Ytoz2ftIK+KdtdQVlJy985OGEZV+T9x?=
- =?iso-8859-1?Q?FNe5vftHlmUNfR1HwRVy6i0OPlkqlL2niYBpdxixDY3oUUGFI4hov7GTyX?=
- =?iso-8859-1?Q?2Y8JbNcRRaXrVwVt/kEeKlaNOzKLnpze/MIFt1Fyb9MAJwycIm5je+AgmK?=
- =?iso-8859-1?Q?cnXQlOSTqAx8edyZGqdywUEl9XFfwKyuXkBIkcXVSBOxk3uVbIWd2G35hU?=
- =?iso-8859-1?Q?OM5aOGrIIgXQ5W3FQknYC0Jnkag1na1wUJ94J+W4SV/zm4Krw40N8bJgf+?=
- =?iso-8859-1?Q?H6mQK2KZVaaaLJYK8uU74MUGW94Vgv0ydyxlgoY04W/DLLymTgO8fzd78l?=
- =?iso-8859-1?Q?pH6eLagkoPMka8xR06tKSC7Ygi/ZNf2fEqAyN+YAE44Tmvfz/xRZsPpIe4?=
- =?iso-8859-1?Q?5RYVwBsz9uv/XthA+Rz01ERlm0jQol0a5e8XK0noRMC+1ilus1jHSBGtW8?=
- =?iso-8859-1?Q?5yG9w9Tjur9GvOt3AOMcICWV4nU3KU4Sr812O6jJBSvHa49M+76svm+vSx?=
- =?iso-8859-1?Q?I=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?S4mpuVd6WPO5bbNBA8xPH4NcVuv5fUzTIWLo0wmWUP2V00xN3c/wrwhXYo?=
- =?iso-8859-1?Q?R0Z6LpE3AGq/YCEp5BpyY5NOyuLs568FY1o8WrR/KjwDVwv+t6gf68eRMR?=
- =?iso-8859-1?Q?UPEjClscaiqP5vzhho9As1focvwqQsiSEBJaK8jjrveEtQuDf6IMWULeWS?=
- =?iso-8859-1?Q?lQPwEsFA92j3JcAqKuceWvyeNrHphOybvZUA8vsbSp8Mq8YN1pdg0I6cPO?=
- =?iso-8859-1?Q?gyXaWhH3wxGtIuOv5JkBoiDAskITRM/d6khT59/oxU3n0aA3A1LlGdhKB6?=
- =?iso-8859-1?Q?TCS37yfZHEGvHrsuotWg/ZAuuvSTuABzc1SW+NRhn6Fdgt/tKS8wkdkxMV?=
- =?iso-8859-1?Q?cEmmHzZ247ZHdYVZE/jqjXIIIQKcAFJOl/MRLTLlAg51QGI3+KaVXSMrFr?=
- =?iso-8859-1?Q?bYQxIEUIakkNFP9jVTgxti73fzsWW+paY6ISTsEA6Fe0E2bVoeGOumxR4h?=
- =?iso-8859-1?Q?T+3xS2eZcvjK9rQQh4GuAJcFlKZSHzBb5OMTeEoY17erdL5Li3B6B4sI7w?=
- =?iso-8859-1?Q?E/muYN1mT1IUlOVf0JE7TM3mHtb2yAi7K6ERenWZ76iXT7ThJ9KzYW0zW0?=
- =?iso-8859-1?Q?NuJ8X0zNxU9Wj/tOhtbtF6oVccDFA14LGgA8RpAofgb9F454Gv5IHRLymc?=
- =?iso-8859-1?Q?iOrTVbUsO1alWg66nBtaw1PpMk4TZLwWnc61VoT+C80knSKw6/jcRs4Jj9?=
- =?iso-8859-1?Q?QKGAEcIjqAVCYG4zgG6DXj0SlZJnMelwKQMYk6EPQAySS+Ie1HpP/c3eMi?=
- =?iso-8859-1?Q?3xdjhtmF9+fjXQwHJt2CirAIgMJrkV3KYX/SU5Z5Qe4eNQ8K8p6yNvIOzU?=
- =?iso-8859-1?Q?5bb2hWKolCe4N0enoxXRBEjQpQYB+WDd1opxjxogJ5iAKyjcLYP5yLhHE1?=
- =?iso-8859-1?Q?6i/kCjTEoOG9bAA8ZSyjW/PrwZ8jREgAfl4Vf0phdY+O9Dr637GiofzkIk?=
- =?iso-8859-1?Q?HUMQKdzWNs9BCvh2SzlvtBR0bJqzV80vQb26dROSNiIxBA6zBVR3mpssSg?=
- =?iso-8859-1?Q?Le/2ZBYwu0+p7TD+ZaTlp7tnk+LXhcltFmnccQpoocFvKFGMBfHrO2Plpg?=
- =?iso-8859-1?Q?XUnIw23C2joArubzbJVJaez+TMhLAAEE/qvrKPMy5rcJzwIUfV4MOO31gr?=
- =?iso-8859-1?Q?X3RkOqfYoI5TroYz5z5WhmNap/qzV5CzVF61o0FS/5FKPGYu7DifcUPxgR?=
- =?iso-8859-1?Q?6oJKbnqPtiMXhw4JtrD4V6LXA0scYj9L//4nfYMnuj+J6yw/hsWYTTV/WO?=
- =?iso-8859-1?Q?V592wAvIkdL/wNzMJtBuqg0ln/m7qZkSR+T/uDDXY/75CmyUJOH8+siycL?=
- =?iso-8859-1?Q?E2qXzogTMTtLwemiQralt4looHc04XjF/Y0DxmFQ7JkBXYfSatI3FvHmN0?=
- =?iso-8859-1?Q?aJuKppGpCQdx9hkFxQ5dycGHGpRVjpM+3g9OhY9ry9BoPeXMd6Q3ra1Pjn?=
- =?iso-8859-1?Q?a892502VgHBjNcB14144XEK+sCxKAO9oxmhddVeO8pxGIeQQm6Q5BOzT4Y?=
- =?iso-8859-1?Q?+U5WzR8JsVBL//lmkB4tkzGgzpfbLENC/DqhkuiHZPRDE25cvVt+M9RAnJ?=
- =?iso-8859-1?Q?KklliEK4GPYtzecEevkHZiUFdwJn1rGVnBvn6guai3DMY0il0Sk3XVogjS?=
- =?iso-8859-1?Q?WUP3mefkvvyXVI809xVmQpAyg7yrt51JK/?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	VCvSwWPoWtltp7QcVjfnAwWu4uUcwUZlKe2QhmRMqjYwcDUkLPf6UDjXwJjvE/V1zfyjus5NOW17tmAo+hQKRe2O0mtIy2GOKKMOQBQyL9JB6OTnpWp9piB4J0CWrydxCam5mGEtSkHC9T53afk7MsUQjI/9YCm89HhKKFq7o4eT5n/bK+GtK4YQQHKetUJqqA52rAVRihyxTYOthXB5WtOjrosija1OniTQb6W4RyJ4sK0sBhrTsHP3usmHETWfYPdGm8qu7Drf0zhxoHIwBxk2OHvMZxnOLfTBCnzLg3y1Qq94g0f5JHa2IJ00sfFoCcX867t4pHhAM3YqW7mxgHrTudUwvqOuIybnBDH69FRVraXHloxmzM349LO/0KbZiZ9LdSF0lEfXK0icFGDuBp72Cxke0mB05y7s8oTg/5rfpxMQd6gO4hUgFSHcOCmEU00y0RdXR7XEz2fTJQ2PdnIYl275T9j2MpC63p1TO2iz4qDzVbfDKGGd+++/+gQSydrfssHX1P6OzAXoKCxovddhIM6X4jH4+pBd1i6dEzqjXVphTB8ueuc7F0sLapeVJ9rQAwmlW8a5jYvVzfXxaGroFm7waUu7sjShmqj6/sg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee461661-b1e0-4636-7e0a-08ddad45959f
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2025 02:20:53.5687
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zyAuyr5O6Ownz86cXfGjDBrAsWFOpWqzrWq2nKr/bEHV8bKAHbViY07rUGX38yCRLo8tRLZ57jZSFOaWQgkpdw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR10MB8179
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-17_01,2025-06-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
- mlxlogscore=999 mlxscore=0 bulkscore=0 spamscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2505160000 definitions=main-2506170019
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE3MDAxOSBTYWx0ZWRfX19vXgPwnsOLg qbw08xPuFblwgo64m1tcRBTVqySs0Flgd240Zue/1cLrG7HK/ODQQpCOtMXOpldHViminWGEH5c /xeWC3KRvufrNm+ql/kiwCBDzrkzWLwna7fb3rhZ5m5C9HRKcnvjomWhWP+dwroAH2KCIiwqCkO
- UdALv1cCPzpZT+dUnLcxM2g/I/8Icpv9DmqZWGKgKWBeV08NbzLs1vXfI8yjcBsvVn0wUQkHN99 ZLQci7k60aeixYfAB4LnQnR5106gwF2XD3AU1LUVISt+Cyc2xQYv1CuWbVnx19TcP/L+6QgBCak u7Ab1uE+j8YTy8xIIkDvIMnCIHVIRgB6uB2V1olCdhBMOWLG4wcNa1qJzhHFXKDuJrI+Cf/mvbj
- 2cCK7TWJratVbq+7PmVp8P9EVb9ySABBzjWX44q/v1gVCgzWY8YmafhD3Ri9mvMD5jguZqwt
-X-Authority-Analysis: v=2.4 cv=K5EiHzWI c=1 sm=1 tr=0 ts=6850d10a b=1 cx=c_pps a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10 a=6IFa9wvqVegA:10 a=GoEa3M9JfhUA:10 a=ph6IYJdgAAAA:8 a=20KFwNOVAAAA:8 a=pGLkceISAAAA:8 a=1XWaLZrsAAAA:8 a=yPCof4ZbAAAA:8 a=U9lO-2-X6Y3eVARFeYUA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
- a=ty6LBwuTSqq6QlXLCppH:22 cc=ntf awl=host:13206
-X-Proofpoint-GUID: kX1Kf6zEtWobq_6PC2J4vAwiW2vYMZTN
-X-Proofpoint-ORIG-GUID: kX1Kf6zEtWobq_6PC2J4vAwiW2vYMZTN
+X-Received: by 2002:a05:6e02:1a2b:b0:3dd:d746:25eb with SMTP id
+ e9e14a558f8ab-3de07cd170amr127784865ab.16.1750127549067; Mon, 16 Jun 2025
+ 19:32:29 -0700 (PDT)
+Date: Mon, 16 Jun 2025 19:32:29 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6850d3bd.a70a0220.395abc.01fa.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING: net/mac80211/tx.c:LINE at
+ __ieee80211_beacon_get, CPU: syz.NUM.NUM/NUM
+From: syzbot <syzbot+468656785707b0e995df@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jun 09, 2025 at 01:32:17PM +0900, Byungchul Park wrote:
-> To simplify struct page, the page pool members of struct page should be
-> moved to other, allowing these members to be removed from struct page.
-> 
-> Introduce a network memory descriptor to store the members, struct
-> netmem_desc, and make it union'ed with the existing fields in struct
-> net_iov, allowing to organize the fields of struct net_iov.
-> 
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
-> Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-> Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-> Reviewed-by: Mina Almasry <almasrymina@google.com>
-> ---
+Hello,
 
-I think one point of confusion here is that net_iov mirrors some fields
-in netmem_desc, even though net_iov itself does not overlay struct page.
+syzbot found the following issue on:
 
-Presumably the reason is because net_iovs may not be associated with
-specific pages, but only with DMA addresses?
+HEAD commit:    050f8ad7b58d Add linux-next specific files for 20250616
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=125e190c580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d2efc7740224b93a
+dashboard link: https://syzkaller.appspot.com/bug?extid=468656785707b0e995df
+compiler:       Debian clang version 20.1.6 (++20250514063057+1e4d39e07757-1~exp1~20250514183223.118), Debian LLD 20.1.6
 
-The only reason why it mirrors netmem_desc fields seems to be
-"page_pool doesn't want to care if netmem_ref is netmem_desc or net_iov
- when doing something with netmem_ref".
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Maybe it's worth clearly documenting that net_iov does not
-overlay (I mean, does not share storage with) struct page, and
-why it won't be a memdesc type in the memdesc world.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/49faa18d2f53/disk-050f8ad7.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/7c6f9cd7fe5d/vmlinux-050f8ad7.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/84a08d6403ee/bzImage-050f8ad7.xz
 
-Other than that, it looks good to me:
-Acked-by: Harry Yoo <harry.yoo@oracle.com>
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+468656785707b0e995df@syzkaller.appspotmail.com
 
->  include/net/netmem.h | 94 ++++++++++++++++++++++++++++++++++----------
->  1 file changed, 73 insertions(+), 21 deletions(-)
-> 
-> diff --git a/include/net/netmem.h b/include/net/netmem.h
-> index 386164fb9c18..2687c8051ca5 100644
-> --- a/include/net/netmem.h
-> +++ b/include/net/netmem.h
-> @@ -12,6 +12,50 @@
->  #include <linux/mm.h>
->  #include <net/net_debug.h>
->  
-> +/* These fields in struct page are used by the page_pool and net stack:
-> + *
-> + *        struct {
-> + *                unsigned long pp_magic;
-> + *                struct page_pool *pp;
-> + *                unsigned long _pp_mapping_pad;
-> + *                unsigned long dma_addr;
-> + *                atomic_long_t pp_ref_count;
-> + *        };
-> + *
-> + * We mirror the page_pool fields here so the page_pool can access these
-> + * fields without worrying whether the underlying fields belong to a
-> + * page or netmem_desc.
-> + *
-> + * CAUTION: Do not update the fields in netmem_desc without also
-> + * updating the anonymous aliasing union in struct net_iov.
-> + */
-> +struct netmem_desc {
-> +	unsigned long _flags;
-> +	unsigned long pp_magic;
-> +	struct page_pool *pp;
-> +	unsigned long _pp_mapping_pad;
-> +	unsigned long dma_addr;
-> +	atomic_long_t pp_ref_count;
-> +};
-> +
-> +#define NETMEM_DESC_ASSERT_OFFSET(pg, desc)        \
-> +	static_assert(offsetof(struct page, pg) == \
-> +		      offsetof(struct netmem_desc, desc))
-> +NETMEM_DESC_ASSERT_OFFSET(flags, _flags);
-> +NETMEM_DESC_ASSERT_OFFSET(pp_magic, pp_magic);
-> +NETMEM_DESC_ASSERT_OFFSET(pp, pp);
-> +NETMEM_DESC_ASSERT_OFFSET(_pp_mapping_pad, _pp_mapping_pad);
-> +NETMEM_DESC_ASSERT_OFFSET(dma_addr, dma_addr);
-> +NETMEM_DESC_ASSERT_OFFSET(pp_ref_count, pp_ref_count);
-> +#undef NETMEM_DESC_ASSERT_OFFSET
-> +
-> +/*
-> + * Since struct netmem_desc uses the space in struct page, the size
-> + * should be checked, until struct netmem_desc has its own instance from
-> + * slab, to avoid conflicting with other members within struct page.
-> + */
-> +static_assert(sizeof(struct netmem_desc) <= offsetof(struct page, _refcount));
-> +
->  /* net_iov */
->  
->  DECLARE_STATIC_KEY_FALSE(page_pool_mem_providers);
-> @@ -31,12 +75,25 @@ enum net_iov_type {
->  };
->  
->  struct net_iov {
-> -	enum net_iov_type type;
-> -	unsigned long pp_magic;
-> -	struct page_pool *pp;
-> +	union {
-> +		struct netmem_desc desc;
-> +
-> +		/* XXX: The following part should be removed once all
-> +		 * the references to them are converted so as to be
-> +		 * accessed via netmem_desc e.g. niov->desc.pp instead
-> +		 * of niov->pp.
-> +		 */
-> +		struct {
-> +			unsigned long _flags;
-> +			unsigned long pp_magic;
-> +			struct page_pool *pp;
-> +			unsigned long _pp_mapping_pad;
-> +			unsigned long dma_addr;
-> +			atomic_long_t pp_ref_count;
-> +		};
-> +	};
->  	struct net_iov_area *owner;
-> -	unsigned long dma_addr;
-> -	atomic_long_t pp_ref_count;
-> +	enum net_iov_type type;
->  };
->  
->  struct net_iov_area {
-> @@ -48,27 +105,22 @@ struct net_iov_area {
->  	unsigned long base_virtual;
->  };
->  
-> -/* These fields in struct page are used by the page_pool and net stack:
-> +/* net_iov is union'ed with struct netmem_desc mirroring struct page, so
-> + * the page_pool can access these fields without worrying whether the
-> + * underlying fields are accessed via netmem_desc or directly via
-> + * net_iov, until all the references to them are converted so as to be
-> + * accessed via netmem_desc e.g. niov->desc.pp instead of niov->pp.
->   *
-> - *        struct {
-> - *                unsigned long pp_magic;
-> - *                struct page_pool *pp;
-> - *                unsigned long _pp_mapping_pad;
-> - *                unsigned long dma_addr;
-> - *                atomic_long_t pp_ref_count;
-> - *        };
-> - *
-> - * We mirror the page_pool fields here so the page_pool can access these fields
-> - * without worrying whether the underlying fields belong to a page or net_iov.
-> - *
-> - * The non-net stack fields of struct page are private to the mm stack and must
-> - * never be mirrored to net_iov.
-> + * The non-net stack fields of struct page are private to the mm stack
-> + * and must never be mirrored to net_iov.
->   */
-> -#define NET_IOV_ASSERT_OFFSET(pg, iov)             \
-> -	static_assert(offsetof(struct page, pg) == \
-> +#define NET_IOV_ASSERT_OFFSET(desc, iov)                    \
-> +	static_assert(offsetof(struct netmem_desc, desc) == \
->  		      offsetof(struct net_iov, iov))
-> +NET_IOV_ASSERT_OFFSET(_flags, _flags);
->  NET_IOV_ASSERT_OFFSET(pp_magic, pp_magic);
->  NET_IOV_ASSERT_OFFSET(pp, pp);
-> +NET_IOV_ASSERT_OFFSET(_pp_mapping_pad, _pp_mapping_pad);
->  NET_IOV_ASSERT_OFFSET(dma_addr, dma_addr);
->  NET_IOV_ASSERT_OFFSET(pp_ref_count, pp_ref_count);
->  #undef NET_IOV_ASSERT_OFFSET
-> -- 
-> 2.17.1
-> 
+------------[ cut here ]------------
+WARNING: net/mac80211/tx.c:5024 at __ieee80211_beacon_update_cntdwn net/mac80211/tx.c:5024 [inline], CPU#1: syz.4.243/6807
+WARNING: net/mac80211/tx.c:5024 at __ieee80211_beacon_get+0x125d/0x1630 net/mac80211/tx.c:5453, CPU#1: syz.4.243/6807
+Modules linked in:
+CPU: 1 UID: 0 PID: 6807 Comm: syz.4.243 Not tainted 6.16.0-rc2-next-20250616-syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+RIP: 0010:__ieee80211_beacon_update_cntdwn net/mac80211/tx.c:5024 [inline]
+RIP: 0010:__ieee80211_beacon_get+0x125d/0x1630 net/mac80211/tx.c:5453
+Code: e7 e8 27 f2 2f f7 45 31 f6 4c 8b bc 24 a0 00 00 00 e9 78 fe ff ff e8 92 bf d6 f6 90 0f 0b 90 e9 e0 f7 ff ff e8 84 bf d6 f6 90 <0f> 0b 90 e9 38 fb ff ff e8 76 bf d6 f6 48 c7 c7 a0 5c 79 8f 4c 89
+RSP: 0018:ffffc90000a089f8 EFLAGS: 00010246
+RAX: ffffffff8ae9aaac RBX: ffffffff8ae99886 RCX: ffff888025e8da00
+RDX: 0000000000000100 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: ffff888025e8da00 R09: 0000000000000003
+R10: 0000000000000007 R11: 0000000000000100 R12: ffff888058976500
+R13: dffffc0000000000 R14: ffff8880589769d0 R15: ffff888032955024
+FS:  00007fbd84f5b6c0(0000) GS:ffff888125d40000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000555570bf35c8 CR3: 000000002eed6000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <IRQ>
+ ieee80211_beacon_get_tim+0xb4/0x2b0 net/mac80211/tx.c:5580
+ ieee80211_beacon_get include/net/mac80211.h:5638 [inline]
+ mac80211_hwsim_beacon_tx+0x3ce/0x860 drivers/net/wireless/virtual/mac80211_hwsim.c:2319
+ __iterate_interfaces+0x2a8/0x590 net/mac80211/util.c:761
+ ieee80211_iterate_active_interfaces_atomic+0xdb/0x180 net/mac80211/util.c:797
+ mac80211_hwsim_beacon+0xbb/0x1c0 drivers/net/wireless/virtual/mac80211_hwsim.c:2353
+ __run_hrtimer kernel/time/hrtimer.c:1761 [inline]
+ __hrtimer_run_queues+0x529/0xc60 kernel/time/hrtimer.c:1825
+ hrtimer_run_softirq+0x187/0x2b0 kernel/time/hrtimer.c:1842
+ handle_softirqs+0x283/0x870 kernel/softirq.c:579
+ __do_softirq kernel/softirq.c:613 [inline]
+ invoke_softirq kernel/softirq.c:453 [inline]
+ __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:680
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
+ sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1050
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+RIP: 0010:finish_wait+0x5/0x1f0 kernel/sched/wait.c:358
+Code: 0f 1e fa 44 89 ef e8 7a 68 f5 ff eb 96 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 55 <41> 57 41 56 41 55 41 54 53 48 83 ec 10 48 89 f3 49 89 fd 48 bd 00
+RSP: 0018:ffffc9001bccf5f0 EFLAGS: 00000246
+RAX: 7fffffffffffffff RBX: dffffc0000000000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffffc9001bccf640 RDI: ffff888028058700
+RBP: ffffc9001bccf6f0 R08: ffffffff8fa14ff7 R09: 1ffffffff1f429fe
+R10: dffffc0000000000 R11: fffffbfff1f429ff R12: ffff888028058700
+R13: ffffc9001bccf640 R14: 1ffff92003799ec4 R15: 7fffffffffffffff
+ unix_wait_for_peer+0x22f/0x2e0 net/unix/af_unix.c:1587
+ unix_dgram_sendmsg+0xb1f/0x1870 net/unix/af_unix.c:2188
+ sock_sendmsg_nosec net/socket.c:712 [inline]
+ __sock_sendmsg+0x219/0x270 net/socket.c:727
+ ____sys_sendmsg+0x52d/0x830 net/socket.c:2566
+ ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2620
+ __sys_sendmmsg+0x227/0x430 net/socket.c:2709
+ __do_sys_sendmmsg net/socket.c:2736 [inline]
+ __se_sys_sendmmsg net/socket.c:2733 [inline]
+ __x64_sys_sendmmsg+0xa0/0xc0 net/socket.c:2733
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fbd8418e929
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fbd84f5b038 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
+RAX: ffffffffffffffda RBX: 00007fbd843b5fa0 RCX: 00007fbd8418e929
+RDX: 0400000000000041 RSI: 0000200000000000 RDI: 0000000000000005
+RBP: 00007fbd84210b39 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007fbd843b5fa0 R15: 00007ffe98cac8e8
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	0f 1e fa             	nop    %edx
+   3:	44 89 ef             	mov    %r13d,%edi
+   6:	e8 7a 68 f5 ff       	call   0xfff56885
+   b:	eb 96                	jmp    0xffffffa3
+   d:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+  14:	00
+  15:	90                   	nop
+  16:	90                   	nop
+  17:	90                   	nop
+  18:	90                   	nop
+  19:	90                   	nop
+  1a:	90                   	nop
+  1b:	90                   	nop
+  1c:	90                   	nop
+  1d:	90                   	nop
+  1e:	90                   	nop
+  1f:	90                   	nop
+  20:	90                   	nop
+  21:	90                   	nop
+  22:	90                   	nop
+  23:	90                   	nop
+  24:	90                   	nop
+  25:	f3 0f 1e fa          	endbr64
+  29:	55                   	push   %rbp
+* 2a:	41 57                	push   %r15 <-- trapping instruction
+  2c:	41 56                	push   %r14
+  2e:	41 55                	push   %r13
+  30:	41 54                	push   %r12
+  32:	53                   	push   %rbx
+  33:	48 83 ec 10          	sub    $0x10,%rsp
+  37:	48 89 f3             	mov    %rsi,%rbx
+  3a:	49 89 fd             	mov    %rdi,%r13
+  3d:	48                   	rex.W
+  3e:	bd                   	.byte 0xbd
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
