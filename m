@@ -1,102 +1,91 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5B74430;
-	Tue, 17 Jun 2025 06:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB2E27461;
+	Tue, 17 Jun 2025 06:31:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750140993; cv=none; b=QSMvN/CRs3d3bxJ1GfMfKvB0KgALL0BVaZxoMaJsRjAkj0rFMLUWIni0NKuFr5nUJR2TylzIJ5f6CmfZbvSrBKRZH4IyUfH0yyOFM4knSOAkyxMsDi8+g1s0sM32jyFEiu5ES9pQaiuIUIGjT+kNvcoGv8rjURZM8wYQ+Iuan3o=
+	t=1750141910; cv=none; b=YF0iEpO3G00fc9zMZmYV3xnoRmdQAHgPW31Fvvojn1EPGqDGpmaVz5aHIygWBrtQZLA7fYI2lczIm4Osfv3JkdEfTUlHunjU7Zva9EmU4+GiTagsThySxpZSaDPvTkqit/A1H2ufahVTDmBauz7UeaP5/RjVjCQIkOFriq3V6uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750140993; c=relaxed/simple;
-	bh=em5afbSxDVZTWjiIIfEt3ro5pNH4iDv1ddey82xb5k4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kpmfcWM31C6+gxsbrAjdOb4eyo7f2zoxdSL8V85AVA5J30oQv9hsd4po6kCcdLz0f+wWPd2ZMKqB3hs0xXP6gZEUepZFxYEU4h+SC1S1mq9AkXllSuSU3wVNhj/wEdp+37PbRtbieLXM8w0IA73wYvNhvmz1mFMMTFvHV54wtuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=MLNQdKQP; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1750141910; c=relaxed/simple;
+	bh=Ai7vF5RV57bV/NmagLGT4gN2aemR9Fwghr5/jJb67CM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Iz2Chi7xqBKmK8nkuXMPcY8BX4FOKRiRfgF1d1SSm3CG+n945b57XFLNSasrQ3qk1cAi7KP382498O4afxJdIf8nNrt2zLQSXqvYp1Mc3EYxBoCRmOocjvUG/VAd3S3HoUekKhrCJAs1HFcyOTz5s9pCFhpYBXUity8M0G5owZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QL+1KHxv; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="MLNQdKQP"
-Received: by linux.microsoft.com (Postfix, from userid 1173)
-	id 12CB02115DDF; Mon, 16 Jun 2025 23:16:31 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 12CB02115DDF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1750140991;
-	bh=KzS9ZS6fAvo4puvySZm9ixLEffc5yo2/sxVEQs2cdqk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MLNQdKQPFuyylGJu0lRnPbIsyUPkT/7uauh3pgrAFlT7B4qXM5Zzs4mQYZTPPCHgN
-	 AA4B/1p5BZThRtiT3pAvtQpiKOlV1RvjIRYXbFX+4EQa0tb2WUYR4oEEKOJwhiP7Ou
-	 f7MPIxQTtGfs/RIvQR2dr8BD8sKoE4ohEFGGTeAY=
-Date: Mon, 16 Jun 2025 23:16:31 -0700
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com, longli@microsoft.com,
-	kotaranov@microsoft.com, horms@kernel.org,
-	shirazsaleem@microsoft.com, leon@kernel.org,
-	shradhagupta@linux.microsoft.com, schakrabarti@linux.microsoft.com,
-	gerhard@engleder-embedded.com, rosenp@gmail.com, sdf@fomichev.me,
-	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/4] Support bandwidth clamping in mana using
- net shapers
-Message-ID: <20250617061631.GA19561@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1749813627-8377-1-git-send-email-ernis@linux.microsoft.com>
- <20250614130354.0a53214e@kernel.org>
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QL+1KHxv"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=Pk2oPHCqJ/oLBd26Ay4PWRHlFgJzTH2Jf8vliD86dZw=;
+	t=1750141908; x=1751351508; b=QL+1KHxvmAmxM6Ix61aUSoAEhm/APFvJBgsoo1dasgcsEy2
+	rLqbTdZ81amqL0eUR7WoF9+knPOmSzWsZWdeQlNtV3GjNN6TAIKcEk5CNMR62Dg48d5DbAHhbX9AD
+	/5nXbC7S4yFuVseCKRh4Tq9FV8K6T/lb16nscr0XCI/7R/q0U9TiiBr6umA/0Fc2y1E7f823JjiYm
+	4Zb25TPSO1gMCaqv/rTgRwe+YPspmcnw+pJY1ueHQX14A8XQp8vdtFuBbsfOJMRsp2pk0pHLK4JIX
+	xgCnO0xFInSGX2NJNRlZcD71i8fR9oQPYTn7gNXPFlt5oKYVZvzmg8YPlrsRVoOw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uRPqz-0000000DxKA-21pr;
+	Tue, 17 Jun 2025 08:31:30 +0200
+Message-ID: <86bbb07755d748c9b582c0ab234e8a4ce0314ce4.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: fix oob in ieee80211_rx_mgmt_beacon
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Edward Adam Davis <eadavis@qq.com>, 
+	syzbot+6554b492c7008bcd3385@syzkaller.appspotmail.com
+Cc: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Date: Tue, 17 Jun 2025 08:31:27 +0200
+In-Reply-To: <tencent_8DCFF079526DB42E796E5095C0E8E2EE1E0A@qq.com>
+References: <68504add.a70a0220.395abc.01e7.GAE@google.com>
+	 <tencent_8DCFF079526DB42E796E5095C0E8E2EE1E0A@qq.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250614130354.0a53214e@kernel.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+X-malware-bazaar: not-scanned
 
-On Sat, Jun 14, 2025 at 01:03:54PM -0700, Jakub Kicinski wrote:
-> On Fri, 13 Jun 2025 04:20:23 -0700 Erni Sri Satya Vennela wrote:
-> > This patchset introduces hardware-backed bandwidth rate limiting
-> > for MANA NICs via the net_shaper_ops interface, enabling efficient and
-> > fine-grained traffic shaping directly on the device.
-> > 
-> > Previously, MANA lacked a mechanism for user-configurable bandwidth
-> > control. With this addition, users can now configure shaping parameters,
-> > allowing better traffic management and performance isolation.
-> > 
-> > The implementation includes the net_shaper_ops callbacks in the MANA
-> > driver and supports one shaper per vport. Add shaping support via
-> > mana_set_bw_clamp(), allowing the configuration of bandwidth rates
-> > in 100 Mbps increments (minimum 100 Mbps). The driver validates input
-> > and rejects unsupported values. On failure, it restores the previous
-> > configuration which is queried using mana_query_link_cfg() or
-> > retains the current state.
-> > 
-> > To prevent potential deadlocks introduced by net_shaper_ops, switch to
-> > _locked variants of NAPI APIs when netdevops_lock is held during
-> > VF setup and teardown.
-> > 
-> > Also, Add support for ethtool get_link_ksettings to report the maximum
-> > link speed supported by the SKU in mbps.
-> > 
-> > These APIs when invoked on hardware that are older or that do
-> > not support these APIs, the speed would be reported as UNKNOWN and
-> > the net-shaper calls to set speed would fail.
-> 
-> Failed to apply patch:
-> Applying: net: mana: Fix potential deadlocks in mana napi ops
-> error: patch fragment without header at line 23: @@ -2102,9 +2108,11 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
-> error: could not build fake ancestor
-> hint: Use 'git am --show-current-patch=diff' to see the failed patch
-> hint: When you have resolved this problem, run "git am --continue".
-> hint: If you prefer to skip this patch, run "git am --skip" instead.
-> hint: To restore the original branch and stop patching, run "git am --abort".
-> hint: Disable this message with "git config set advice.mergeConflict false"
-> Patch failed at 0001 net: mana: Fix potential deadlocks in mana napi ops
-> 
-> please rebase
-Hi Jakub,
+On Tue, 2025-06-17 at 12:41 +0800, Edward Adam Davis wrote:
+> According to ieee80211_s1g_optional_len(), it can be clearly seen that th=
+e
+> maximum size of variable is 4 and it is an array. Based on the above, the
+> parsing of the frame control field and optional field is optimized.
+>=20
+> Fixes: 1e1f706fc2ce ("wifi: cfg80211/mac80211: correctly parse S1G beacon=
+ optional elements")
+> Reported-by: syzbot+6554b492c7008bcd3385@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D6554b492c7008bcd3385
+> Tested-by: syzbot+6554b492c7008bcd3385@syzkaller.appspotmail.com
+> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+> ---
+>  include/linux/ieee80211.h | 2 +-
+>  net/mac80211/mlme.c       | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+> index ce377f7fb912..556ce95e0b0f 100644
+> --- a/include/linux/ieee80211.h
+> +++ b/include/linux/ieee80211.h
+> @@ -1278,7 +1278,7 @@ struct ieee80211_ext {
+>  			u8 sa[ETH_ALEN];
+>  			__le32 timestamp;
+>  			u8 change_seq;
+> -			u8 variable[0];
+> +			u8 variable[4];
 
-Thank you for your reply. I will rebase and repost.
+That's incorrect when those fields aren't present, and will result in
+wrong sizeof(). I believe the correct fix is one I sent before, to just
+make it []:
 
-- Vennela
-> -- 
-> pw-bot: cr
+https://lore.kernel.org/linux-wireless/20250614003037.a3e82e882251.I2e8b58e=
+56ff2a9f8b06c66f036578b7c1d4e4685@changeid/
+
+johannes
