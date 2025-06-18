@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4338D2DE200;
-	Wed, 18 Jun 2025 11:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409DD2DE1F8;
+	Wed, 18 Jun 2025 11:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750247212; cv=none; b=cATNM32Rmjm8HWUzW8AalrY4WrID29m7IycE61moZJ1ajBhh/aCsfy18h8ara6eipGldH5L2DpgaNCP5idsJhitHfet30n+l3JdjM9MokE6j2pfgGd9vBOZSFTM4ekpADVNIQi4nCGLM4gWhfmXp1nue+B2YF5MSQpmyx+GpVDM=
+	t=1750247212; cv=none; b=kic5xGMlcl+mFkDL65IcMOHs3DkYFWVAuY2yM1pNiOyFdD01USHTy4cRZKi+0v7EeFj55YtA9V1QqQlCzFvB3Zl4KYBBi4dH/43GYH/QgXJTc41qhXf1lH5eEV97lnF7IdpGcbueqJsDccoHHk+cnEEu9tPKkUg6vBvpN4NvO3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750247212; c=relaxed/simple;
-	bh=x9AeS/miPbBkEF42gU7I9M77AvT46AbR0fPXxclljq0=;
+	bh=EpBDvvCEgkXYhfewwIef0GKxoO/B4wVDI6b8/pzv1js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6hZv01UfYBM0ekIk5u1AfSDz2ss6zoFq3+c+LgtmZf1SiV1As9xO/NOTuqXlQbcFUN/Gq8rmhEH1KVBURrhfbNILfrZljqTGie2cC6nWY6KeujMs3xgme6Zg/m924d1H8V++5K/jiESKDVNnyj/L5QMLDdDpt15e6S9hMTBozw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FDsXTwvB; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ShOOFP/IbVcw9McHjAQGA2nH4C/RUyzOMWWFctFR1AcV9m2jgM7PNJgOXFxilFArs+f1vbkyCSwioMLMdlCz8lakE40SoVy6OqoDaWDMKjghYdEms5+VdRbZ3U3bDdThfAK06JWw3IuTgUeG399zB9cnlXGazIUVTdzJwe+c4WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+ZRYobj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FDsXTwvB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7083DC4CEF5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+ZRYobj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792B3C4CEF7;
 	Wed, 18 Jun 2025 11:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1750247211;
-	bh=x9AeS/miPbBkEF42gU7I9M77AvT46AbR0fPXxclljq0=;
+	bh=EpBDvvCEgkXYhfewwIef0GKxoO/B4wVDI6b8/pzv1js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FDsXTwvBmZ6inEQ0GHo42mMBV2jpCmnV6UZth+MhAXsZj69ehsYRseecuhiPyrVTW
-	 S0ht994iFisgUxnwl7UoJAanhfHukyaGk8AzxJZ0qQkwdoljdhIJNPE7NCh7bEX/uT
-	 WRf/rTeIyIgLCtivY3No7sqKzGxXtxbdBDVM/mb78sajFjiMZ0SNadSoM8CC2D7MBF
-	 lAG1kFAGLJlurI5MPWr4hWWHbKuMJQwOAfieIxNXoOHaiP6DZNN4MOtuBmUBICtdYk
-	 YaSVhzrRAhTXdR/RzNYEoYYWknYeaIDyqpFmImvsJUry3ouhuq3fBpbwBM+t3iXyiu
-	 2uQ4hKjUkB9Hg==
+	b=W+ZRYobjcLWK0vU17Ws2hevZE0iFBwszhyTYartunBQDEzBnb0bCCXQvtclt7D+3B
+	 HVb8Kw/SvOJrc6Frsu2epI4VEzFhYYwkzuMtek/M+XRiU1tq2xwH4zhWDmHs93sVCw
+	 d9snjHFdwZr860yuHcxS039luOTnkK2rHxOkcpEOl2S4jV2n4SoTjveEUTv6au9xQ+
+	 SdEs2bbd6a7LHA52uT+H+1XhwNh6Z3KnAr9OYe2/RKlSIgWMbLMyglBSw1Ttrx4aEp
+	 JbYCgN+UfW70DIxwBK0gCnsNgYGH29pBOOGDTOjR9SafThcSXmQbP0wdVEteFd+mkd
+	 tn/6UdQvq0qIA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uRrFh-000000036Um-2hSN;
+	id 1uRrFh-000000036Ut-2w6u;
 	Wed, 18 Jun 2025 13:46:49 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
@@ -55,9 +55,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	netdev@vger.kernel.org,
 	peterz@infradead.org,
 	stern@rowland.harvard.edu
-Subject: [PATCH v6 08/15] docs: use parser_yaml extension to handle Netlink specs
-Date: Wed, 18 Jun 2025 13:46:35 +0200
-Message-ID: <4ee82983b4702f4c52296c3bae9c5be8b452650a.1750246291.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v6 10/15] tools: ynl_gen_rst.py: drop support for generating index files
+Date: Wed, 18 Jun 2025 13:46:37 +0200
+Message-ID: <f0cac4c299684395f68081fe6cb98aa7689550f5.1750246291.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1750246291.git.mchehab+huawei@kernel.org>
 References: <cover.1750246291.git.mchehab+huawei@kernel.org>
@@ -70,144 +70,100 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Instead of manually calling ynl_gen_rst.py, use a Sphinx extension.
-This way, no .rst files would be written to the Kernel source
-directories.
-
-We are using here a toctree with :glob: property. This way, there
-is no need to touch the netlink/specs/index.rst file every time
-a new Netlink spec is added/renamed/removed.
+As we're now using an index file with a glob, there's no need
+to generate index files anymore.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
 ---
- Documentation/Makefile                        | 17 ----------------
- Documentation/conf.py                         | 20 ++++++++++++++-----
- Documentation/networking/index.rst            |  2 +-
- .../networking/netlink_spec/readme.txt        |  4 ----
- Documentation/sphinx/parser_yaml.py           |  4 ++--
- 5 files changed, 18 insertions(+), 29 deletions(-)
- delete mode 100644 Documentation/networking/netlink_spec/readme.txt
+ tools/net/ynl/pyynl/lib/doc_generator.py | 26 ------------------------
+ tools/net/ynl/pyynl/ynl_gen_rst.py       | 26 ------------------------
+ 2 files changed, 52 deletions(-)
 
-diff --git a/Documentation/Makefile b/Documentation/Makefile
-index b98477df5ddf..820f07e0afe6 100644
---- a/Documentation/Makefile
-+++ b/Documentation/Makefile
-@@ -104,22 +104,6 @@ quiet_cmd_sphinx = SPHINX  $@ --> file://$(abspath $(BUILDDIR)/$3/$4)
- 		cp $(if $(patsubst /%,,$(DOCS_CSS)),$(abspath $(srctree)/$(DOCS_CSS)),$(DOCS_CSS)) $(BUILDDIR)/$3/_static/; \
- 	fi
+diff --git a/tools/net/ynl/pyynl/lib/doc_generator.py b/tools/net/ynl/pyynl/lib/doc_generator.py
+index f71360f0ceb7..866551726723 100644
+--- a/tools/net/ynl/pyynl/lib/doc_generator.py
++++ b/tools/net/ynl/pyynl/lib/doc_generator.py
+@@ -358,29 +358,3 @@ class YnlDocGenerator:
+             content = self.parse_yaml(yaml_data)
  
--YNL_INDEX:=$(srctree)/Documentation/networking/netlink_spec/index.rst
--YNL_RST_DIR:=$(srctree)/Documentation/networking/netlink_spec
--YNL_YAML_DIR:=$(srctree)/Documentation/netlink/specs
--YNL_TOOL:=$(srctree)/tools/net/ynl/pyynl/ynl_gen_rst.py
+         return content
 -
--YNL_RST_FILES_TMP := $(patsubst %.yaml,%.rst,$(wildcard $(YNL_YAML_DIR)/*.yaml))
--YNL_RST_FILES := $(patsubst $(YNL_YAML_DIR)%,$(YNL_RST_DIR)%, $(YNL_RST_FILES_TMP))
+-    def generate_main_index_rst(self, output: str, index_dir: str) -> None:
+-        """Generate the `networking_spec/index` content and write to the file"""
+-        lines = []
 -
--$(YNL_INDEX): $(YNL_RST_FILES)
--	$(Q)$(YNL_TOOL) -o $@ -x
+-        lines.append(self.fmt.rst_header())
+-        lines.append(self.fmt.rst_label("specs"))
+-        lines.append(self.fmt.rst_title("Netlink Family Specifications"))
+-        lines.append(self.fmt.rst_toctree(1))
 -
--$(YNL_RST_DIR)/%.rst: $(YNL_YAML_DIR)/%.yaml $(YNL_TOOL)
--	$(Q)$(YNL_TOOL) -i $< -o $@
+-        index_fname = os.path.basename(output)
+-        base, ext = os.path.splitext(index_fname)
 -
--htmldocs texinfodocs latexdocs epubdocs xmldocs: $(YNL_INDEX)
+-        if not index_dir:
+-            index_dir = os.path.dirname(output)
 -
- htmldocs:
- 	@$(srctree)/scripts/sphinx-pre-install --version-check
- 	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,html,$(var),,$(var)))
-@@ -186,7 +170,6 @@ refcheckdocs:
- 	$(Q)cd $(srctree);scripts/documentation-file-ref-check
- 
- cleandocs:
--	$(Q)rm -f $(YNL_INDEX) $(YNL_RST_FILES)
- 	$(Q)rm -rf $(BUILDDIR)
- 	$(Q)$(MAKE) BUILDDIR=$(abspath $(BUILDDIR)) $(build)=Documentation/userspace-api/media clean
- 
-diff --git a/Documentation/conf.py b/Documentation/conf.py
-index 4ba4ee45e599..6af61e26cec5 100644
---- a/Documentation/conf.py
-+++ b/Documentation/conf.py
-@@ -38,6 +38,15 @@ exclude_patterns = []
- dyn_include_patterns = []
- dyn_exclude_patterns = ['output']
- 
-+# Currently, only netlink/specs has a parser for yaml.
-+# Prefer using include patterns if available, as it is faster
-+if has_include_patterns:
-+    dyn_include_patterns.append('netlink/specs/*.yaml')
-+else:
-+    dyn_exclude_patterns.append('netlink/*.yaml')
-+    dyn_exclude_patterns.append('devicetree/bindings/**.yaml')
-+    dyn_exclude_patterns.append('core-api/kho/bindings/**.yaml')
-+
- # Properly handle include/exclude patterns
- # ----------------------------------------
- 
-@@ -105,7 +114,7 @@ needs_sphinx = '3.4.3'
- extensions = ['kerneldoc', 'rstFlatTable', 'kernel_include',
-               'kfigure', 'sphinx.ext.ifconfig', 'automarkup',
-               'maintainers_include', 'sphinx.ext.autosectionlabel',
--              'kernel_abi', 'kernel_feat', 'translations']
-+              'kernel_abi', 'kernel_feat', 'translations', 'parser_yaml']
- 
- # Since Sphinx version 3, the C function parser is more pedantic with regards
- # to type checking. Due to that, having macros at c:function cause problems.
-@@ -203,10 +212,11 @@ else:
- # Add any paths that contain templates here, relative to this directory.
- templates_path = ['sphinx/templates']
- 
--# The suffix(es) of source filenames.
--# You can specify multiple suffix as a list of string:
--# source_suffix = ['.rst', '.md']
--source_suffix = '.rst'
-+# The suffixes of source filenames that will be automatically parsed
-+source_suffix = {
-+        '.rst': 'restructuredtext',
-+        '.yaml': 'yaml',
-+}
- 
- # The encoding of source files.
- #source_encoding = 'utf-8-sig'
-diff --git a/Documentation/networking/index.rst b/Documentation/networking/index.rst
-index ac90b82f3ce9..b7a4969e9bc9 100644
---- a/Documentation/networking/index.rst
-+++ b/Documentation/networking/index.rst
-@@ -57,7 +57,7 @@ Contents:
-    filter
-    generic-hdlc
-    generic_netlink
--   netlink_spec/index
-+   ../netlink/specs/index
-    gen_stats
-    gtp
-    ila
-diff --git a/Documentation/networking/netlink_spec/readme.txt b/Documentation/networking/netlink_spec/readme.txt
-deleted file mode 100644
-index 030b44aca4e6..000000000000
---- a/Documentation/networking/netlink_spec/readme.txt
-+++ /dev/null
-@@ -1,4 +0,0 @@
--SPDX-License-Identifier: GPL-2.0
+-        logging.debug(f"Looking for {ext} files in %s", index_dir)
+-        for filename in sorted(os.listdir(index_dir)):
+-            if not filename.endswith(ext) or filename == index_fname:
+-                continue
+-            base, ext = os.path.splitext(filename)
+-            lines.append(f"   {base}\n")
 -
--This file is populated during the build of the documentation (htmldocs) by the
--tools/net/ynl/pyynl/ynl_gen_rst.py script.
-diff --git a/Documentation/sphinx/parser_yaml.py b/Documentation/sphinx/parser_yaml.py
-index 635945e1c5ba..2b2af239a1c2 100755
---- a/Documentation/sphinx/parser_yaml.py
-+++ b/Documentation/sphinx/parser_yaml.py
-@@ -15,9 +15,9 @@ from sphinx.util import logging
- from sphinx.parsers import Parser
+-        logging.debug("Writing an index file at %s", output)
+-
+-        return "".join(lines)
+diff --git a/tools/net/ynl/pyynl/ynl_gen_rst.py b/tools/net/ynl/pyynl/ynl_gen_rst.py
+index b5a665eeaa5a..90ae19aac89d 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_rst.py
++++ b/tools/net/ynl/pyynl/ynl_gen_rst.py
+@@ -31,9 +31,6 @@ def parse_arguments() -> argparse.Namespace:
  
- srctree = os.path.abspath(os.environ["srctree"])
--sys.path.insert(0, os.path.join(srctree, "tools/net/ynl/pyynl"))
-+sys.path.insert(0, os.path.join(srctree, "tools/net/ynl/pyynl/lib"))
+     # Index and input are mutually exclusive
+     group = parser.add_mutually_exclusive_group()
+-    group.add_argument(
+-        "-x", "--index", action="store_true", help="Generate the index page"
+-    )
+     group.add_argument("-i", "--input", help="YAML file name")
  
--from netlink_yml_parser import YnlDocGenerator        # pylint: disable=C0413
-+from doc_generator import YnlDocGenerator        # pylint: disable=C0413
+     args = parser.parse_args()
+@@ -63,25 +60,6 @@ def write_to_rstfile(content: str, filename: str) -> None:
+         rst_file.write(content)
  
- logger = logging.getLogger(__name__)
  
+-def generate_main_index_rst(output: str) -> None:
+-    """Generate the `networking_spec/index` content and write to the file"""
+-
+-    lines.append(rst_header())
+-    lines.append(rst_label("specs"))
+-    lines.append(rst_title("Netlink Family Specifications"))
+-    lines.append(rst_toctree(1))
+-
+-    index_dir = os.path.dirname(output)
+-    logging.debug("Looking for .rst files in %s", index_dir)
+-    for filename in sorted(os.listdir(index_dir)):
+-        if not filename.endswith(".rst") or filename == "index.rst":
+-            continue
+-        lines.append(f"   {filename.replace('.rst', '')}\n")
+-
+-    logging.debug("Writing an index file at %s", output)
+-    write_to_rstfile(msg, output)
+-
+-
+ def main() -> None:
+     """Main function that reads the YAML files and generates the RST files"""
+ 
+@@ -100,10 +78,6 @@ def main() -> None:
+ 
+         write_to_rstfile(content, args.output)
+ 
+-    if args.index:
+-        # Generate the index RST file
+-        generate_main_index_rst(args.output)
+-
+ 
+ if __name__ == "__main__":
+     main()
 -- 
 2.49.0
 
