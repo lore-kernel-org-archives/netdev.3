@@ -1,136 +1,102 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F33F2EA72C;
-	Wed, 18 Jun 2025 13:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F044E1DE4E5
+	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 13:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750254981; cv=none; b=JOsfPqBw8ZcEg7SLnJgVtbCRfNPYwqf8Hb2wvNNquu2H/hzPlDdh8bbL1pqFAL4ApLGU5OCv6yCEx3hjihhZmGN83bfP6yrzQgf7q1gt6sG5Vh5Id/7vQvglXDHsuSu1ozQ+V3g+ZmfO5EO/1RDPiH9sshpDChA2HOtQzn5Uqps=
+	t=1750255059; cv=none; b=nxCv1z/4i/0gg2jTGkFMRFKkvgbLRFFwZd7UI8Nr9lwMsysxw6gOkXsmk8JQXzbaXd+630DqOQVQCONMsltALVCLzvGeBwhVt990ba6rswTt0AMmc0Sk50APZh+Dwkkjy/CBQ1p+ikR1lIflgHll60w1xeFARubr8rfsuAh0klo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750254981; c=relaxed/simple;
-	bh=v3ZpREMUhFIX9M7AGFK+DPGAOyAA6vhpBXi+PM2R62Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NXizi5172s//yZDhKM/QMd+Xy8v4aZOgbdCsb8TOQy+E4kywN3CKzBcVqKdqwk5fUrzEn9DzlWAITec2Qu/+JvQQDKGi/qNFh0Syq3BL2AdrH5/rBJr2pP6MhFyE7MSQhpFerp9iDuoNnXcJSAT+hNb7SziRQMTgc6BOjIzmHbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98.2)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1uRt8G-000000003fP-1YpV;
-	Wed, 18 Jun 2025 13:55:58 +0000
-Date: Wed, 18 Jun 2025 15:55:45 +0200
-From: Daniel Golle <daniel@makrotopia.org>
-To: Frank Wunderlich <linux@fw-web.de>
-Cc: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Frank Wunderlich <frank-w@public-files.de>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, Simon Horman <horms@kernel.org>,
-	arinc.unal@arinc9.com
-Subject: Re: [net-next v5 1/3] net: ethernet: mtk_eth_soc: support named IRQs
-Message-ID: <aFLFYe8mq4tbLfdf@pidgin.makrotopia.org>
-References: <20250618130717.75839-1-linux@fw-web.de>
- <20250618130717.75839-2-linux@fw-web.de>
+	s=arc-20240116; t=1750255059; c=relaxed/simple;
+	bh=aUMGU24e/U816ucsvaMp7F9X6fMCmk6K78hrDWDCXVs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OzJ+BfaVJzZrYQURNFv1lgz1A/vYZtNpfi99B2/GpeiCjvMZAi5xQoChrL7xBLTTnlAoXdVeI+d+FE4hlX4neBUIVxR1BSZmIUuXcS7nfesEEUFv6UFEJ7OcLFmJcYL0sGDu+1Hj5z1lust8iRWEHB14sPZu0otoV5Lx/swe2MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=LynolH9u; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="LynolH9u"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55ICO4FV006306;
+	Wed, 18 Jun 2025 06:57:26 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	pfpt0220; bh=yDojCNv0VHMRPiwcpyXmwLGuuPCUOzV0KLV+alCkFRw=; b=Lyn
+	olH9uxTTiweNTc0V4bjsuqg/1X54S+kK51t2Ih9576t4Nlf549+DiO1Mft1X/2aD
+	EQbiCL9EhlxNqmF2Ca4+Bee7YTC+AmJoAueL5Ku0j9Fl/8Q8eQGKabpAOUc6hXW+
+	JSN9tPmDCUwARvPmJeDyapQAV816cwZKWq1mXSTT5WyWnDIzzvX9GIlKDF5j5uy7
+	FsrDwuM/AmSYnom2lOtNsHO56nxQ7peOH8RvnkxJvoqOvAFoLsu9JHOP1t0mKi+n
+	YCLx7NB9WwMRD148FUXfuuOBbGoC80WP4rn7za3HiwlMJxUOBXBZPJ5529YYjApk
+	NgcEFL1CWktb4L05Aag==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 47bwdg06af-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Jun 2025 06:57:25 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Wed, 18 Jun 2025 06:57:24 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Wed, 18 Jun 2025 06:57:23 -0700
+Received: from hyd1358.marvell.com (unknown [10.29.37.11])
+	by maili.marvell.com (Postfix) with ESMTP id 7C5263F7044;
+	Wed, 18 Jun 2025 06:57:19 -0700 (PDT)
+From: Subbaraya Sundeep <sbhatta@marvell.com>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
+        <lcherian@marvell.com>, <gakula@marvell.com>, <jerinj@marvell.com>,
+        <hkelam@marvell.com>, <saikrishnag@marvell.com>
+CC: <netdev@vger.kernel.org>, Subbaraya Sundeep <sbhatta@marvell.com>
+Subject: [net-next PATCH] octeontx2-af: Fix rvu_mbox_init return path
+Date: Wed, 18 Jun 2025 19:27:16 +0530
+Message-ID: <1750255036-23802-1-git-send-email-sbhatta@marvell.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250618130717.75839-2-linux@fw-web.de>
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=Ga0XnRXL c=1 sm=1 tr=0 ts=6852c5c5 cx=c_pps a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17 a=6IFa9wvqVegA:10 a=M5GUcnROAAAA:8 a=lZJwEDgMoJHJxu8PrKUA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: VhdLIQe0RssSehPe9fBP4BJIUIonQlqQ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE4MDExNyBTYWx0ZWRfXwPRmQfWkV7nv JAK2+MM2LpKPEN0JQ9cPnSAbTRm6f1pNIID8WFa2DpXQ4LdCjX5GMwoZhijIe+00p2onvcGFX+O FsyNpswVFumkNyw7O6sdnqn0gUZD0WFm1fqvaCZSY5WfHsJ/XQ23VlkFn7uWBKaYZP/xPwbQdPj
+ /ZGQUU7j5SxLBbpaVd6TactgxO9gZQcmCUzaEuJ1o5acpwpSXnoq+Fxe/FNuZecHgCDoA9hgKo8 Tbr0U9zKEk/tdRJ5wYsS+Bm/FP7F43GPI1+VkUnvMHutO7WE2QIbEb+mi6h0UKjZGCKkZEiOVKk mCoDnomTnCL6HhOOHRBsaxoyGLt+QD8YGdbC9CTuQWNf9SOYA0Nf+JgNWYKCg9F8srl4LovP0Vw
+ mD96jJpnFxvdOsssWMXP6GxhPtZITghtfONGfc6/t36Jh6BvuaZSwdTrtxQdj4Vk/bBjXmBD
+X-Proofpoint-ORIG-GUID: VhdLIQe0RssSehPe9fBP4BJIUIonQlqQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-18_05,2025-06-18_02,2025-03-28_01
 
-On Wed, Jun 18, 2025 at 03:07:12PM +0200, Frank Wunderlich wrote:
-> From: Frank Wunderlich <frank-w@public-files.de>
-> 
-> Add named interrupts and keep index based fallback for existing
-> devicetrees.
-> 
-> Currently only rx and tx IRQs are defined to be used with mt7988, but
-> later extended with RSS/LRO support.
-> 
-> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-> Reviewed-by: Simon Horman <horms@kernel.org>
->  
-> +static int mtk_get_irqs(struct platform_device *pdev, struct mtk_eth *eth)
-> +{
-> +	int i;
-> +
-> +	/* future SoCs beginning with MT7988 should use named IRQs in dts */
-> +	eth->irq[1] = platform_get_irq_byname(pdev, "tx");
-> +	eth->irq[2] = platform_get_irq_byname(pdev, "rx");
-> +	if (eth->irq[1] >= 0 && eth->irq[2] >= 0)
-> +		return 0;
+rvu_mbox_init function makes use of error path for
+freeing memory which are local to the function in
+both success and failure conditions. This is unusual hence
+fix it by returning zero on success. With new cn20k code this
+is freeing valid memory in success case also.
 
-I'd rather extend that logic and fall back to the legacy way only in case
-of -ENXIO. Ie. add here:
+Fixes: e53ee4acb220 ("octeontx2-af: CN20k basic mbox operations and structures")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+---
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-if (eth->irq[1] != -ENXIO)
-	return eth->irq[1];
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index bfee71f4..7e538ee 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -2573,7 +2573,11 @@ static int rvu_mbox_init(struct rvu *rvu, struct mbox_wq_info *mw,
+ 		mwork->rvu = rvu;
+ 		INIT_WORK(&mwork->work, mbox_up_handler);
+ 	}
+-	goto free_regions;
++
++	kfree(mbox_regions);
++	bitmap_free(pf_bmap);
++
++	return 0;
+ 
+ exit:
+ 	destroy_workqueue(mw->mbox_wq);
+-- 
+2.7.4
 
-if (eth->irq[2] != -ENXIO)
-	return eth->irq[2];
-
-Maybe also output a warning at this point in case MTK_SHARED_INT is no
-set, to recommend users to update their device tree to named interrupts.
-
-> +
-> +	/* legacy way:
-> +	 * On MTK_SHARED_INT SoCs (MT7621 + MT7628) the first IRQ is taken
-> +	 * from devicetree and used for both RX and TX - it is shared.
-> +	 * On SoCs with non-shared IRQs the first entry is not used,
-> +	 * the second is for TX, and the third is for RX.
-> +	 */
-> +	for (i = 0; i < 3; i++) {
-> +		if (MTK_HAS_CAPS(eth->soc->caps, MTK_SHARED_INT) && i > 0)
-> +			eth->irq[i] = eth->irq[0];
-> +		else
-> +			eth->irq[i] = platform_get_irq(pdev, i);
-> +
-> +		if (eth->irq[i] < 0) {
-> +			dev_err(&pdev->dev, "no IRQ%d resource found\n", i);
-> +			return -ENXIO;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static irqreturn_t mtk_handle_irq_rx(int irq, void *_eth)
->  {
->  	struct mtk_eth *eth = _eth;
-> @@ -5106,17 +5137,10 @@ static int mtk_probe(struct platform_device *pdev)
->  		}
->  	}
->  
-> -	for (i = 0; i < 3; i++) {
-> -		if (MTK_HAS_CAPS(eth->soc->caps, MTK_SHARED_INT) && i > 0)
-> -			eth->irq[i] = eth->irq[0];
-> -		else
-> -			eth->irq[i] = platform_get_irq(pdev, i);
-> -		if (eth->irq[i] < 0) {
-> -			dev_err(&pdev->dev, "no IRQ%d resource found\n", i);
-> -			err = -ENXIO;
-> -			goto err_wed_exit;
-> -		}
-> -	}
-> +	err = mtk_get_irqs(pdev, eth);
-> +	if (err)
-> +		goto err_wed_exit;
-> +
->  	for (i = 0; i < ARRAY_SIZE(eth->clks); i++) {
->  		eth->clks[i] = devm_clk_get(eth->dev,
->  					    mtk_clks_source_name[i]);
-> -- 
-> 2.43.0
-> 
-> 
