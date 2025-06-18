@@ -1,233 +1,155 @@
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2040.outbound.protection.outlook.com [40.107.102.40])
+Received: from mx0b-00190b01.pphosted.com (mx0b-00190b01.pphosted.com [67.231.157.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E921465A5;
-	Wed, 18 Jun 2025 23:23:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750289007; cv=fail; b=okSTHbs3hR5pWqFSrnXjrVz8kEY2NLDn/QTfw5jvDS7o0Wan1wi3zqtPaUX132x7w/Z9GzMObLIDLe6rty9QXYE81EIjOcfv7OYFXyRtAI+L9xPYlfHlLX3J725NSNJBEbH37ckw4phDb7RCLdX2jBNESPp34wCcZGykaDA9pM0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750289007; c=relaxed/simple;
-	bh=u8T0pZ00ncLIhWmNFl2ls1okV8h/Z/ak5PHno9h+T/k=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=StyIJtl10b7Sihtt4X9EezkdTokSj8i/wIAfvOvPFl24eQbluh5KHk1GAJV4JwchRfMsbjmgoJ9YwPvh/e2IP2jEDevvtb1lXMw2/IX4GGWrE0wxO7cm/GsSuvfpLF3LS7KiiCIT7OcdIHe/5w0/GwD9fmSTprH9yFycbUFlG+Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rGFjnRPO; arc=fail smtp.client-ip=40.107.102.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADEB3085A6
+	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 23:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.157.127
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750289462; cv=none; b=arMkwaIsPI+D36c7PvTSIA1J1GHA+gOGXLhBDAdG/XrLNKPLZS/X+1luwV/hX42Lmyb06uagEkxlOtTxO5RLFrXSD5JNLPwO9W2nV2wEiTdFIHUPC7yKfUshLBiqBUECZR2jN0S6VbWfoR9qWwbc3ycAdGt1GVir8W3+3p2hi68=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750289462; c=relaxed/simple;
+	bh=asOF6ipxfung4gv2k8p+JIy17qomlLiKINNOr6msEIA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=kf4ieaX6BmdVxZwYYUtWSWaRSm/nOmCy1fNBbaox5s2wCIGzSzbDbfQ6FdWsdLDDRcgS6mm5K82Gn5M3lZmXiUzJTfINWuJEHWALxYx3UhTmdPBCbFUXJvIPEMp1VT8fPoK/vJzYvGGKKmSNljCHXmcrKlvtuIaT7/ZOgApoy1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=Fh0ouM0G; arc=none smtp.client-ip=67.231.157.127
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rGFjnRPO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KAsY2qoWV9OPO4PU7cxB0ws5VVKrHD3tO8J/qAbD2b+PB8IVpzJj+VRWmrYdm79qlv30wS/zYk5+HIaVhSsuFV7QfP2YgltU8EU5oVFIbOiQyyueNsb0Rcuvkwp+DF0Yrs1eiJtZg3YJaXNbI+ns9PhAHqSoe/ITsgCnWdYlxarlWWGzVxBhcT1AfVY55yaMYo/mtirCe6Sem1/BDn060XLBlMeVfhuzUg6lnsImLqqqGGZ8n6oQ7GkaB+qNQqDpE6Ni4RET0WOS/ELKn5UHpZdTpFiuk5KczDvyfvweMoEBjYOXQWHIkwRdZSMXuOIm1hV+615YhSGSNPvFgYwwJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Sc5clnx5PsfnVmeGscKuETiLBgztRvLBejlShHRJXoA=;
- b=sXFWVlwTWwFcLiCbNzOE8FeOMS5IJyoBpdGzMnMUY+xQiowuroDhYtjEXwAvaCrmz0YeUf08wkGsnYih0ZlcL+rLUn4thBVJWtufi0FjqeDVNwN0FaW/Yu0gQhy649MPeO3uGamlDUwa0bCWQCUJnXxPErXfl3gchsSq33h014XumlpG+torFM+9tZfPH8FiXHbzTLfWLaeHwPOAGy/Xip2dmw6u0Df6xdDkhasA+5zGpXblV6Gh3Dvum892DhwYLOtiU2uCF8CZMQ/hP8S7iwxjs9qZv+GpvAIHUzTS7XkG4sVuaiEBqh+x2Q0wikt9tfRAnUH4jFVemEmOf8jmyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Sc5clnx5PsfnVmeGscKuETiLBgztRvLBejlShHRJXoA=;
- b=rGFjnRPOWrdAI6kqauWHpUZGaZR/iguJuBYV1WAPgZCvfAS0oYpm/tN3ncY2Y1ngASUcDzj5GzdRAZOdifniK1KAAcQ58jPqO8cOw07l/Tq9tzgmH0+LsYCGqymCGv86QxvT3+4YB4FWsMWQOebDmN/sKuCI5ixSIS4BjCPg6+4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH0PR12MB7982.namprd12.prod.outlook.com (2603:10b6:510:28d::5)
- by SA3PR12MB8022.namprd12.prod.outlook.com (2603:10b6:806:307::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.39; Wed, 18 Jun
- 2025 23:23:23 +0000
-Received: from PH0PR12MB7982.namprd12.prod.outlook.com
- ([fe80::bfd5:ffcf:f153:636a]) by PH0PR12MB7982.namprd12.prod.outlook.com
- ([fe80::bfd5:ffcf:f153:636a%5]) with mapi id 15.20.8835.023; Wed, 18 Jun 2025
- 23:23:23 +0000
-Message-ID: <21f5acb9-c011-478b-b1a2-601d748dc88f@amd.com>
-Date: Wed, 18 Jun 2025 16:23:21 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Remove Shannon Nelson from MAINTAINERS file
-To: Shannon Nelson <shannon.nelson@amd.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: brett.creeley@amd.com
-References: <20250616224437.56581-1-shannon.nelson@amd.com>
-Content-Language: en-US
-From: Brett Creeley <bcreeley@amd.com>
-In-Reply-To: <20250616224437.56581-1-shannon.nelson@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR05CA0136.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::21) To PH0PR12MB7982.namprd12.prod.outlook.com
- (2603:10b6:510:28d::5)
+	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="Fh0ouM0G"
+Received: from pps.filterd (m0122331.ppops.net [127.0.0.1])
+	by mx0b-00190b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55I4t2rN010217;
+	Thu, 19 Jun 2025 00:13:46 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=jan2016.eng; bh=u1aCRo15v
+	sT3gJ2RMtMmzA0zmKnYdO4yx3qRoHzBYKY=; b=Fh0ouM0GYY9E//KzQ/sfp1plV
+	cwpKuyL8d/Sk/RK+wbzYQhbXcIV5q85uJRdfYe8kqve6jJliQ/jbEWoaFWw8EGTT
+	XL+7Xv1syMP6VW8yulpYtiEScufn244jo7qEvx8lhyVwXpCmqpmMgWBFl7hfXfCR
+	39C7S8YWov4nvNg9J7i/d1VOjMGSH0frT1rQvOZapn8K1/2Uo5O1Wn75MCv2hnTV
+	FXG+RmX8Hu65VCSRhltJ54lQUnXUYh7i2tAK0QFBEAzmQG+ZtUhiLOOvq7kPeFNq
+	KcPOoHpAkQHPgTd1SMOaatATRiLslMUN8p9Lt5AtyZ3Fk9RLn9R2jfWILi2jQ==
+Received: from prod-mail-ppoint5 (prod-mail-ppoint5.akamai.com [184.51.33.60] (may be forged))
+	by mx0b-00190b01.pphosted.com (PPS) with ESMTPS id 4791jwq2fq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Jun 2025 00:13:46 +0100 (BST)
+Received: from pps.filterd (prod-mail-ppoint5.akamai.com [127.0.0.1])
+	by prod-mail-ppoint5.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id 55IIoOZD027498;
+	Wed, 18 Jun 2025 16:13:45 -0700
+Received: from prod-mail-relay11.akamai.com ([172.27.118.250])
+	by prod-mail-ppoint5.akamai.com (PPS) with ESMTP id 47bt2tuk1y-1;
+	Wed, 18 Jun 2025 16:13:45 -0700
+Received: from bos-lhv9ol.bos01.corp.akamai.com (bos-lhv9ol.bos01.corp.akamai.com [172.28.41.79])
+	by prod-mail-relay11.akamai.com (Postfix) with ESMTP id 2D79B33B2C;
+	Wed, 18 Jun 2025 23:13:45 +0000 (GMT)
+From: Jason Baron <jbaron@akamai.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, horms@kernel.org, kuniyu@amazon.com
+Subject: [PATCH net-next v2 1/3] net: add sock_rcvbuf_has_space() helper
+Date: Wed, 18 Jun 2025 19:13:21 -0400
+Message-Id: <8ceedaa19fb64010ada1db183f7a6ad5a297835b.1750285100.git.jbaron@akamai.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1750285100.git.jbaron@akamai.com>
+References: <cover.1750285100.git.jbaron@akamai.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7982:EE_|SA3PR12MB8022:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91d3bc56-731c-4d26-ffc3-08ddaebf1e6a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MWo4Smk3dW05WXFUenYzSVh4Yk8vYmFNdHNLZmpUOG5uYVhLMFArZXJmb2FH?=
- =?utf-8?B?cXpaSFR4WndWYWg5NHF3QlI0NGk5NWhkYjhMVGpCeDVvNnJtNjVxR2VSc2th?=
- =?utf-8?B?RmUyODhldkFnZ2JWVkFwZm9CeFZqaWFUNUZpYmF3YWZKNDdzR1M1c1E3bTd0?=
- =?utf-8?B?NDl1TEtUMEhYdDJvQmhEQkJqUi9rdXBlOEh1TmxHM05HUTRqbVF1L2l0UUN1?=
- =?utf-8?B?azVuYkRDSEZqYndJdFZnNXM3dVlZbU1YZTBVb01ReUhOV0tIYm50UHdCMm1Q?=
- =?utf-8?B?YnVxaGQrSEdYZ2t2ZWNmS01Db21GWWlxcDNwZmhDbGx1YW9KbzBrNDlsMmJu?=
- =?utf-8?B?dm55QlFRUmFQdHYwWE9rWmlHdjZxUVoxMCtUZ3lQbkxXVHFzSEdJeG9zR3Zl?=
- =?utf-8?B?enBzZGx1UjBJajVaRWRsQldkT3JnZW9YVEFuL0V4b1A4b3dFNnRSQk0ySzhH?=
- =?utf-8?B?MlFHMmFZaWdqa1dFcjhIWEczU2x1VFBPUHBhalRDVmR3SVFvdXFnV1MzYW1V?=
- =?utf-8?B?bnZUUHZ6T0c2VUFneEh0VDk2Y0kvVFY2MnI2MEhDb0Q4eGUydFR1KzFmWThU?=
- =?utf-8?B?alB5N0YyQlhmRXJjV2tmYk1GMGlWNTg4UEVmdWJ6YWhjSUhyYjhySWxxeC9C?=
- =?utf-8?B?azQyZWhpMXlteXkxR3pJOCszQnJVRWNPQXlINTV5a1V5UFc3ODNvVXI3RSs1?=
- =?utf-8?B?YUtoVllndWxSYVNxMlhkL01jWTV1cUkwVmFlV1lDRitTK1ZkcDFqVjFLMUNQ?=
- =?utf-8?B?V0UwVHVTQzVQdU9FQ3B3NXN4SmFGdlVPSUEyV3dJdkhIclNxRi8yN2Rmd0FC?=
- =?utf-8?B?dzRDY2RvS25ucVdGMThwWVlaeGVoWElVUDhDbVo4REluV1RseXYwcmRSdHpk?=
- =?utf-8?B?SExMUmN2bGRqODVqUjlKSXF5NTRIc29nYjJ2WDN3RklFK1VGb0dwbDRHa3N2?=
- =?utf-8?B?eG1XMHJnU3hoQkp1SEFXTXhFSmtPVTRZMEhRcmRlTFFFOSs1N2lJbTArbXQ0?=
- =?utf-8?B?ODdsT3QveGdCOUd0d3FMR1FIZnN3TVhoaE5IL3VEMHFhVWdzbkVBVURyc3JE?=
- =?utf-8?B?L0hUYmk4dGpYaWZZU1pyUzd4M2U5L1pEaVVqZGNZUXFoY2pKWnZNSkoveWRS?=
- =?utf-8?B?cWVQOVZNMytUUEhmTnl4ZmNsOFdHZkcrZ3BmNmtTUWNNZGxKQWxoU0liZU80?=
- =?utf-8?B?dWVtNktWakg2RllFSjZKLzJsYjQ5bkVUMDZKT3lGRHhWMDFOVVkvKzU5S1NR?=
- =?utf-8?B?TGljM1h3RzFHczVJSlZzTkM3TWZWOTkyL2E4YmcrL0IxTW95ckc3OUNOWExB?=
- =?utf-8?B?M0ZWQ2FyTjU0SElhRHpYbC9RVFhCNFU0SFlPeGE5UGUwdEx5RlNPVUh1OEtN?=
- =?utf-8?B?bHJMYXRrQjJtUVdNYk9XblZBencyNGNkMGs5cmN2WDQ2OFRWMVlRdS82RXlV?=
- =?utf-8?B?MG9HS1FQNVVaTElQdG1PUmowYy9YUUJkaVNGdEdpbWtEc01QQldndW1VYVNV?=
- =?utf-8?B?OGJ0c1Y5dXhvaXMwaW1ma1BLWHZhakJuakpXcER6clVrTkluR0o1TldIL1JI?=
- =?utf-8?B?QkIyR1k2N1huWjgwTnBMaGdVNzFKYktDTlRuMVZnbjh5VE1uVmtDWEdmRHdj?=
- =?utf-8?B?L2NLM0paV1UyMUNYRHlIdFdWWU43cWNuKzY3NzJxeUVVdWdXUStlR0YvWk9r?=
- =?utf-8?B?b2F2WFBmc2xNVGxqaklYQUl1QmpnZVIySWl4eFhzTUxsOFozSVlodFhnRVFC?=
- =?utf-8?B?emRDejRua2RITStuQmFac2R2VjNBRFZIemZ5Tm9CLyswdzhtbjBrNnIyLzBp?=
- =?utf-8?B?L0ZhSXZOeTFxYXJPYjJ5ci9FOEhxRnJDSUVuQVZibkxKRG5QeUdhZTltRGd4?=
- =?utf-8?B?WTRUOFgvVDV3a3ZuV2t4NGw1citGanhGYXpmSnVlTkNIeGkrSHhxdHBIOVVD?=
- =?utf-8?Q?s4wdntpQHmQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7982.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QTB5c3QvTzhSUXZOU2pSQnk1OEFpRDVMTEtFNkdENmVVWmhXdUM5b0w1Y0xi?=
- =?utf-8?B?M3poVDU3ZEQwZmREclhxSnBya1UybDd5M2lFbGNKdlUwRXo5RWxlVFJYNDNQ?=
- =?utf-8?B?NGhiSFJLUVJFMitXc2RzT3BYMkRRNnhSbGdmaGpna1I4dnRXVU5aaGxZbGJR?=
- =?utf-8?B?MDJJZFBBK3J5NXlQNnp2YWI1WjNqQ1dkVmJybHFyQ1R5YVpNeDF6bnNVeFlU?=
- =?utf-8?B?cWhMN2tvQ3NteC9rZWJtUC8yb25NVWlxaTJjSnNoNFcxSjlaMXVwUGJXNnpm?=
- =?utf-8?B?Kzd2N2d1cUU3MEk0amxwWDI1anFWcTNuUjhqYXhCbjIrRWZwK01Gdnc0M2Jz?=
- =?utf-8?B?Q3g5dHBDMktLU1h2UFpwQmgxdkM5M0FkZitVWGJlVkhlRzYwdThLZW0yU2JZ?=
- =?utf-8?B?b1dTZmRxRWF5dCt5Z0pCdTBaMHIwdGZWZG9PenlQUWdmRUFhSFZUNTNYWXRW?=
- =?utf-8?B?SzBnQ04xaXBuelN6WnZTb1JKRU0zUHlkbkpieEhKQkZKekE3TEVtYmFaRzlV?=
- =?utf-8?B?aVgzL2VyNDkzZzRwdUZYRkJYRHA0YTBScEY1MnNteDk0dlVBRHdYV1p6cWF6?=
- =?utf-8?B?TmlTd2lvZVQ5a2ZreDZOZHA2MlZqbE9qK1RRNllSYmQ3YjQvSFlFQkE2M1lY?=
- =?utf-8?B?aEo4ZTlrRGtGbEhJWEtFOTNQYU5wN3hiaDQ2aFllL0NEWUI2VUZIU0hnTFlT?=
- =?utf-8?B?NVk0dVBWVkxlZm9sa1hZcFlNRW9WM2ttQ0FHRmJkOGZ1bG5BSXIxQ01TeDdn?=
- =?utf-8?B?b3FZaGhGTUZWRDYvUC9PU3BwM0N4REcxclVkQnNxK2Ivd05ycnd4MlRmRlhP?=
- =?utf-8?B?RXFPejZMc1ZybTRDUzFMb0pYbFNhNlhkOERxNmlvMVBudXdGRnQwY3BQV3V6?=
- =?utf-8?B?WkFjQWdPOUtOTnIvaW1pdmlnSEg5RVE0UDZoMzRkVW0xMEt2WStHb0JjTlZD?=
- =?utf-8?B?TDR6cFozYjhBMjloc3l0c2tNTWptTkFoSVpLNUtTS3cwMDJxbldWSE5XdDY4?=
- =?utf-8?B?WDBkQmxseUF4akNXbXp5a3puUHlzcU8wMUlsa3FxZlZhSjlhQjFnU3RyMlVz?=
- =?utf-8?B?UG16MFYzQ1h6WFNqMGRBU3NqOFB0cGF5b1hVOGhWWnRCc1NXWGRtQ3c4SmlV?=
- =?utf-8?B?NHNwaDlRZUNqK2lSdHZNSXlHMUdwcm9aMFo4NUZJU2pzdWlGdG04YThPc0Jn?=
- =?utf-8?B?UjJkOUIxU1VkakxrYStVNktnU0x6ZjhwUjIxWEU1aFFrMyttWlVPN1lnWEda?=
- =?utf-8?B?b1EzQU1ZT05Ia0VReExsWnlqY055b3FodENDK3haL2wzek5HejBRRUhrbzJy?=
- =?utf-8?B?Tlg0dCtPdmtlTVAwcnNPZTVSZ0s3dmNFbU52UnJqWTBxRTJCSysvbnk1OGZh?=
- =?utf-8?B?Lzk3Yy9zK0tYelU0NWVVSUdqQ3k4N2toNTFvVlA0VWVrOTZTdXNiVU5RU2NU?=
- =?utf-8?B?Qkp3UDBadFRySUw1bEhRMGl4UzdWSEtucVhmakQxei9YR1IvS2U3dCsvck55?=
- =?utf-8?B?YmdxamlBRDVJSWFYYmtQNC9ZRzNCTHovVVprMkVqVFIveHlnRElDcFVMY0lV?=
- =?utf-8?B?a1JiRTRrL0FFZVlpZkdkYlV3YTkvcFRUWmx1Q21ROGE0UVp6aFRvTWRRdEhT?=
- =?utf-8?B?MmpXcDcwajVzTGZJc2E1RHlJZnFLdWpuYUg1L1grcFpkeFpWQm56ZnAzaFVx?=
- =?utf-8?B?K1FraGRzVDZVNjVzZ3plbEFLdlBuanNyWjFkNm5xMVZLamp5QmdYbW1RZE1r?=
- =?utf-8?B?K1JYVE83bVk2WnI2eXE2QUQ1elJjVTh5WStqellqUTVjTWt4VTZPdUJQOVBj?=
- =?utf-8?B?VXhWSjI1LzNPOVJLbHlNYVFhQk8zZDhpdXRYVHZISndtTHpEalVwL2RjOVJr?=
- =?utf-8?B?R0VSK2pyK0RMelc2OVhWa3dZeDNNTm1BUHJzUFFiTTQ5LzhvMm9ZRGpRVGth?=
- =?utf-8?B?VFhNUVdDUUhKd0swaGZxVWtLTEpoRVZKUmVXLy9nMmZQWFZsc0NCeFlLL2lT?=
- =?utf-8?B?NE9yNFRDNklGU01Lelk0cWE1U2o3N1UrTjZxd3AzdENYc2Zhek8zeTM0Y1R3?=
- =?utf-8?B?ZVcyVWhkZk8xV1NrWmxlVGJHZ0FtTTBqeGxoQUZ3eGFwRzNkd1NXdkdJa1p2?=
- =?utf-8?Q?danL+K/syca5oaYMv4xgs65O9?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91d3bc56-731c-4d26-ffc3-08ddaebf1e6a
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7982.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2025 23:23:23.0556
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 79RzfkfIQ8qsvSWtT8eOtfq+xo5bLIgYR81ati+hT51IslmKwU7aSPdvbK674VM9WXn9Yh/VU0EyY/VwfpQhiA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8022
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-18_06,2025-06-18_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 malwarescore=0
+ spamscore=0 mlxlogscore=935 adultscore=0 suspectscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2506180198
+X-Authority-Analysis: v=2.4 cv=N70pF39B c=1 sm=1 tr=0 ts=6853482a cx=c_pps
+ a=NpDlK6FjLPvvy7XAFEyJFw==:117 a=NpDlK6FjLPvvy7XAFEyJFw==:17
+ a=6IFa9wvqVegA:10 a=X7Ea-ya5AAAA:8 a=inUz9VF5o64L-tkKYzoA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE4MDIwMCBTYWx0ZWRfX0TaER9zgo7yC
+ XabFegG9GGt1d0daSiHUOA3RVjsG/l9+a2b4pENMrmygm4GvCIU5Wj6jjHDSNFdxjd+G8deYKTq
+ 5xdYQUh46WDnVW666U9+I9Qvg9sJPEoHh5YcbQSTvMrbFbP+/fBTLrC9jeIdpHAmCPrCOsEuOUd
+ y8bVqoToWUjZ5XSskYQnZg1bPEan/hDKPQszUXgawJWOrEIxLnm9pEO7m/ChewKN+iJ+7uLYIzy
+ VgkikZYBOEvK4yNomtuTYPPZH30MpT9hNPWzuNvM2jRPHT+jGfFOy9k4BrNcjMNFH4uwQmGr08f
+ DnrNJAxw4oONYllJ/p+ud+8ambIhooipB+UfpzTdfhs4dsw5jv5YIC5y6y3O0VipDOtRkHnku4h
+ 7D2XYxOJpugEW2dayR9tabODluujIc5sEnugSMpRIX3O/RwaDPRkWfi8C4yukH4r2ZG/MDrk
+X-Proofpoint-GUID: JxJLKCMq9HHiLciN-b3uspVBgT-2mBfn
+X-Proofpoint-ORIG-GUID: JxJLKCMq9HHiLciN-b3uspVBgT-2mBfn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-18_06,2025-06-18_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ malwarescore=0 mlxlogscore=695 suspectscore=0 spamscore=0 adultscore=0
+ mlxscore=0 clxscore=1015 bulkscore=0 impostorscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506180200
 
-On 6/16/2025 3:44 PM, Shannon Nelson wrote:
-> Brett Creeley is taking ownership of AMD/Pensando drivers while I wander
-> off into the sunset with my retirement this month.  I'll still keep an
-> eye out on a few topics for awhile, and maybe do some free-lance work in
-> the future.
-> 
-> Meanwhile, thank you all for the fun and support and the many learning
-> opportunities :-).
-> 
-> Special thanks go to DaveM for merging my first patch long ago, the big
-> ionic patchset a few years ago, and my last patchset last week.
+Let's add helper function that abstract the sk->sk_rcvbuf limits check
+for wraparound that Kuniyuki Iwashima introduce for udp receive path:
 
-Shannon,
+commit 5a465a0da13e ("udp: Fix multiple wraparounds of sk->sk_rmem_alloc.")
 
-Congrats on a well earned/deserved milestone. I wish you all the best in 
-wandering off into the sunset. Your guidance over the years has been 
-invaluable and I hope to continue maintaining our drivers with a 
-fraction of the patience and grace you have shown.
+Note that I copied Kuniyuki Iwashima's comments into
+sock_rcvbuf_has_space(). Subsequent patches will use this for udp and
+netlink sockets.
 
-I know I already signed off, but I figured it makes sense to do it here 
-as well...
+Signed-off-by: Jason Baron <jbaron@akamai.com>
+---
+ include/net/sock.h | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-
-Thanks,
-
-Brett
-> 
-> Cheers,
-> sln
-> 
-> Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-> Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-> ---
->   MAINTAINERS | 5 +----
->   1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 99fbde007792..437381aeaa71 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1157,7 +1157,6 @@ F:	arch/x86/include/asm/amd/node.h
->   F:	arch/x86/kernel/amd_node.c
->   
->   AMD PDS CORE DRIVER
-> -M:	Shannon Nelson <shannon.nelson@amd.com>
->   M:	Brett Creeley <brett.creeley@amd.com>
->   L:	netdev@vger.kernel.org
->   S:	Maintained
-> @@ -9941,7 +9940,6 @@ F:	drivers/fwctl/mlx5/
->   
->   FWCTL PDS DRIVER
->   M:	Brett Creeley <brett.creeley@amd.com>
-> -R:	Shannon Nelson <shannon.nelson@amd.com>
->   L:	linux-kernel@vger.kernel.org
->   S:	Maintained
->   F:	drivers/fwctl/pds/
-> @@ -19377,7 +19375,7 @@ F:	crypto/pcrypt.c
->   F:	include/crypto/pcrypt.h
->   
->   PDS DSC VIRTIO DATA PATH ACCELERATOR
-> -R:	Shannon Nelson <shannon.nelson@amd.com>
-> +R:	Brett Creeley <brett.creeley@amd.com>
->   F:	drivers/vdpa/pds/
->   
->   PECI HARDWARE MONITORING DRIVERS
-> @@ -19399,7 +19397,6 @@ F:	include/linux/peci-cpu.h
->   F:	include/linux/peci.h
->   
->   PENSANDO ETHERNET DRIVERS
-> -M:	Shannon Nelson <shannon.nelson@amd.com>
->   M:	Brett Creeley <brett.creeley@amd.com>
->   L:	netdev@vger.kernel.org
->   S:	Maintained
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 70c0b570a21f..5f4fdf96bba6 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2484,6 +2484,44 @@ static inline unsigned long sock_wspace(struct sock *sk)
+ 	return amt;
+ }
+ 
++static inline bool __sock_rcvbuf_has_space(unsigned int rmem,
++					   unsigned int rcvbuf,
++					   unsigned int size)
++{
++	/* Immediately drop when the receive queue is full. */
++	if (rmem + size > rcvbuf) {
++		if (rcvbuf > INT_MAX >> 1)
++			return false;
++
++		/* Always allow at least one packet for small buffer. */
++		if (rmem > rcvbuf)
++			return false;
++	}
++	return true;
++}
++
++/**
++ * sock_rcvbuf_has_space - check if sk->sk_rcvbuf has space
++ * @sk: socket
++ * @skb: socket buffer
++ *
++ * Can skb->truesize bytes be added to the socket receive buffer
++ * while respecting the sk->sk_rcvbuf limit. Note that rcvbuf and
++ * rmem are assigned to unsigned int to avoid wraparound.
++ *
++ * Return: true if there is space, false otherwise
++ */
++static inline bool sock_rcvbuf_has_space(struct sock *sk, struct sk_buff *skb)
++{
++	unsigned int rmem, rcvbuf;
++
++	/* Cast to unsigned int performs the boundary check for INT_MAX. */
++	rmem = atomic_read(&sk->sk_rmem_alloc);
++	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
++
++	return __sock_rcvbuf_has_space(rmem, rcvbuf, skb->truesize);
++}
++
+ /* Note:
+  *  We use sk->sk_wq_raw, from contexts knowing this
+  *  pointer is not NULL and cannot disappear/change.
+-- 
+2.25.1
 
