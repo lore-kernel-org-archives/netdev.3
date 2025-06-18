@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410822DE1FE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D4D2DE20D;
 	Wed, 18 Jun 2025 11:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750247212; cv=none; b=ZlsI+j61IjfaChx7Mm1pA5X+kPdbRD1dVTJtc11gA//TfPAqz3sGwuegn1BSlbNS6iaDZDA7cvZZYP71EiekLPDJ6e549Vuf7hZK+P+6R/XXFe5aQkjzdlMLRjUUpX2IT2QVjII/sQzvBbfJS70DJi+4rw3MxRbqC+B6Wmcj8oo=
+	t=1750247212; cv=none; b=LT763bLPtpS5heMkhVEqIbSRug02NrRUqXy9d7O//6zvVezyYGvD/Gx9w2XIoATPqZM0MZSBmHgDsUtFTCpWm0fMeMYJBqmvCZLJQeOhtcrl/zkSS49My+1N++xl/Zo8rrWiQGr1/iSeSkBNvtKjOer94BXzS3gpOHdnHzvT194=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750247212; c=relaxed/simple;
-	bh=eN7Fxcj9u2QqSQyAPJebfF4efSTAdGEp6Mz6tU0QxYE=;
+	bh=ZRwnGGD63dY02hpT4BqTMDO35vMSt+NPRBYC3eA8F/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9G1iYmC5yEAioCGvMk0scdpoM+Kc3sYmUYKnuktcczjkyvANmMBhwGXre89L3ovg0HAj6iw57pco9EAs1NXr/cdAvhtraXaFnWX6UmX9eS28VBCDcaWg2ePsk0L+KyXdfW4oQfn6pzvfiyLm/Ouwz+afPXXhMmM9000PYNfhJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y5qc8JaJ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=QZm9zPaxqgC4BgiIPcO5T4eT7z2LceM0QSDsAJz/uCYPFpCzco4ACB3mdEGOrwBENMj2wQYlVr5pRPaqTgj7KlZmgakrblhmYcTzO0tDVnzU7xRaH2eDkBMpUuAucMzOD8TYjRlN5eXFr7OEViQhZAsWUYzdqxmKSaYc/Tj/JA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ECOl5BRe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y5qc8JaJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEFFC4CEED;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ECOl5BRe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4D3C4AF0D;
 	Wed, 18 Jun 2025 11:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1750247211;
-	bh=eN7Fxcj9u2QqSQyAPJebfF4efSTAdGEp6Mz6tU0QxYE=;
+	bh=ZRwnGGD63dY02hpT4BqTMDO35vMSt+NPRBYC3eA8F/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y5qc8JaJNngjt5xMMheiWdiT5Wlm8grh5TwZ1cD6MlIwizBMNsDymDJpvfRkNCK9o
-	 3TnRvnOP2kJWm1tU9GppCQL3CTntdL45YRWCoLr9ao4rxD2txtncHbMEYclr/Ndt8n
-	 +ceJtJCCeHUr12jWouOdarnQ6hcdzydUCSMhLlFs3L6CGAx3z0kpaPsCEeY4kYCL8H
-	 HOp6EasctSH7p6t1CN6a1qP2o3Xf2YQe3UpT6UQr/g3mI1aAdRiXAZQHeBu8GXY/c4
-	 Di2ERh2ZFJwjCWTN7cVgo4xObZks/wdh5gNt7LTUn5PTWxEPWBf6Jg/bDSadopaA0w
-	 Rfi+q2CO8WTMw==
+	b=ECOl5BRe87OvUepxguUsJp/4l1hRNtCbwqNjCMKeGjYqvokOnyKNABZOuwY98Q2fa
+	 fCERk7jEx/Ju37vT0DqTitnglMTMQis7idZXo+SwLhbtE61LZmPrs6aBYRHG68NJZd
+	 nUMkWxDj1a+YTHrDhD2XHEiyOrQnLUxMXYcKERiMZZ3NhcOnU2BI4NDLhqP7b2fY8A
+	 LHfttEj3+Hk8O9XTn9UzR7ttvklSQtu68sg81o9oR7+pX56iGvpm4a9AepBQq13LFX
+	 rtTriENeStpvgwr1RmTCLLCMPaoOQeNJfjpkOzFDe6Z1u0qpY3uCnYsTt0MrPhPoM3
+	 em4D2Y/94bjNA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uRrFh-000000036Ue-2T7y;
+	id 1uRrFh-000000036V7-3HmZ;
 	Wed, 18 Jun 2025 13:46:49 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
@@ -55,9 +55,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	netdev@vger.kernel.org,
 	peterz@infradead.org,
 	stern@rowland.harvard.edu
-Subject: [PATCH v6 06/15] tools: ynl_gen_rst.py: cleanup coding style
-Date: Wed, 18 Jun 2025 13:46:33 +0200
-Message-ID: <901d329a2d679e05572eb399b39418a48a491844.1750246291.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v6 13/15] tools: netlink_yml_parser.py: add line numbers to parsed data
+Date: Wed, 18 Jun 2025 13:46:40 +0200
+Message-ID: <21722a5346cfc3b8a0ad7427fca157cff032e2f0.1750246291.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1750246291.git.mchehab+huawei@kernel.org>
 References: <cover.1750246291.git.mchehab+huawei@kernel.org>
@@ -70,321 +70,108 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Cleanup some coding style issues pointed by pylint and flake8.
-
-No functional changes.
+When something goes wrong, we want Sphinx error to point to the
+right line number from the original source, not from the
+processed ReST data.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
 ---
- tools/net/ynl/pyynl/lib/doc_generator.py | 75 ++++++++----------------
- 1 file changed, 26 insertions(+), 49 deletions(-)
+ tools/net/ynl/pyynl/lib/doc_generator.py | 34 ++++++++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
 
 diff --git a/tools/net/ynl/pyynl/lib/doc_generator.py b/tools/net/ynl/pyynl/lib/doc_generator.py
-index 839e78b39de3..f71360f0ceb7 100644
+index 866551726723..a9d8ab6f2639 100644
 --- a/tools/net/ynl/pyynl/lib/doc_generator.py
 +++ b/tools/net/ynl/pyynl/lib/doc_generator.py
-@@ -18,17 +18,12 @@
- """
- 
+@@ -20,6 +20,16 @@
  from typing import Any, Dict, List
--import os.path
--import sys
--import argparse
--import logging
  import yaml
  
- 
--# ==============
--# RST Formatters
--# ==============
- class RstFormatters:
-+    """RST Formatters"""
++LINE_STR = '__lineno__'
 +
-     SPACE_PER_LEVEL = 4
++class NumberedSafeLoader(yaml.SafeLoader):
++    """Override the SafeLoader class to add line number to parsed data"""
++
++    def construct_mapping(self, node):
++        mapping = super().construct_mapping(node)
++        mapping[LINE_STR] = node.start_mark.line
++
++        return mapping
  
-     @staticmethod
-@@ -36,81 +31,67 @@ class RstFormatters:
-         """Return space to format"""
-         return " " * (level * RstFormatters.SPACE_PER_LEVEL)
- 
--
-     @staticmethod
-     def bold(text: str) -> str:
-         """Format bold text"""
-         return f"**{text}**"
- 
--
-     @staticmethod
-     def inline(text: str) -> str:
-         """Format inline text"""
-         return f"``{text}``"
- 
--
-     @staticmethod
-     def sanitize(text: str) -> str:
-         """Remove newlines and multiple spaces"""
-         # This is useful for some fields that are spread across multiple lines
-         return str(text).replace("\n", " ").strip()
- 
--
-     def rst_fields(self, key: str, value: str, level: int = 0) -> str:
-         """Return a RST formatted field"""
-         return self.headroom(level) + f":{key}: {value}"
- 
--
-     def rst_definition(self, key: str, value: Any, level: int = 0) -> str:
-         """Format a single rst definition"""
-         return self.headroom(level) + key + "\n" + self.headroom(level + 1) + str(value)
- 
--
-     def rst_paragraph(self, paragraph: str, level: int = 0) -> str:
-         """Return a formatted paragraph"""
-         return self.headroom(level) + paragraph
- 
--
-     def rst_bullet(self, item: str, level: int = 0) -> str:
-         """Return a formatted a bullet"""
-         return self.headroom(level) + f"- {item}"
- 
--
-     @staticmethod
-     def rst_subsection(title: str) -> str:
-         """Add a sub-section to the document"""
-         return f"{title}\n" + "-" * len(title)
- 
--
-     @staticmethod
-     def rst_subsubsection(title: str) -> str:
-         """Add a sub-sub-section to the document"""
-         return f"{title}\n" + "~" * len(title)
- 
--
-     @staticmethod
-     def rst_section(namespace: str, prefix: str, title: str) -> str:
-         """Add a section to the document"""
-         return f".. _{namespace}-{prefix}-{title}:\n\n{title}\n" + "=" * len(title)
- 
--
-     @staticmethod
-     def rst_subtitle(title: str) -> str:
-         """Add a subtitle to the document"""
-         return "\n" + "-" * len(title) + f"\n{title}\n" + "-" * len(title) + "\n\n"
- 
--
-     @staticmethod
-     def rst_title(title: str) -> str:
-         """Add a title to the document"""
-         return "=" * len(title) + f"\n{title}\n" + "=" * len(title) + "\n\n"
- 
--
-     def rst_list_inline(self, list_: List[str], level: int = 0) -> str:
-         """Format a list using inlines"""
-         return self.headroom(level) + "[" + ", ".join(self.inline(i) for i in list_) + "]"
- 
--
-     @staticmethod
-     def rst_ref(namespace: str, prefix: str, name: str) -> str:
-         """Add a hyperlink to the document"""
-@@ -119,10 +100,9 @@ class RstFormatters:
-                     'nested-attributes': 'attribute-set',
-                     'struct': 'definition'}
-         if prefix in mappings:
--            prefix = mappings[prefix]
-+            prefix = mappings.get(prefix, "")
-         return f":ref:`{namespace}-{prefix}-{name}`"
- 
--
-     def rst_header(self) -> str:
-         """The headers for all the auto generated RST files"""
-         lines = []
-@@ -132,7 +112,6 @@ class RstFormatters:
- 
-         return "\n".join(lines)
- 
--
-     @staticmethod
-     def rst_toctree(maxdepth: int = 2) -> str:
-         """Generate a toctree RST primitive"""
-@@ -143,16 +122,13 @@ class RstFormatters:
- 
-         return "\n".join(lines)
- 
--
-     @staticmethod
-     def rst_label(title: str) -> str:
+ class RstFormatters:
+     """RST Formatters"""
+@@ -127,6 +137,11 @@ class RstFormatters:
          """Return a formatted label"""
          return f".. _{title}:\n\n"
  
--# =======
--# Parsers
--# =======
++    @staticmethod
++    def rst_lineno(lineno: int) -> str:
++        """Return a lineno comment"""
++        return f".. LINENO {lineno}\n"
++
  class YnlDocGenerator:
-+    """YAML Netlink specs Parser"""
+     """YAML Netlink specs Parser"""
  
-     fmt = RstFormatters()
- 
-@@ -164,7 +140,6 @@ class YnlDocGenerator:
- 
-         return "\n".join(lines)
- 
--
-     def parse_do(self, do_dict: Dict[str, Any], level: int = 0) -> str:
+@@ -144,6 +159,9 @@ class YnlDocGenerator:
          """Parse 'do' section and return a formatted string"""
          lines = []
-@@ -177,16 +152,16 @@ class YnlDocGenerator:
- 
-         return "\n".join(lines)
- 
--
-     def parse_do_attributes(self, attrs: Dict[str, Any], level: int = 0) -> str:
-         """Parse 'attributes' section"""
-         if "attributes" not in attrs:
-             return ""
--        lines = [self.fmt.rst_fields("attributes", self.fmt.rst_list_inline(attrs["attributes"]), level + 1)]
-+        lines = [self.fmt.rst_fields("attributes",
-+                                     self.fmt.rst_list_inline(attrs["attributes"]),
-+                                     level + 1)]
- 
-         return "\n".join(lines)
- 
--
-     def parse_operations(self, operations: List[Dict[str, Any]], namespace: str) -> str:
-         """Parse operations block"""
-         preprocessed = ["name", "doc", "title", "do", "dump", "flags"]
-@@ -194,7 +169,8 @@ class YnlDocGenerator:
-         lines = []
- 
-         for operation in operations:
--            lines.append(self.fmt.rst_section(namespace, 'operation', operation["name"]))
-+            lines.append(self.fmt.rst_section(namespace, 'operation',
-+                                              operation["name"]))
+         for key in do_dict.keys():
++            if key == LINE_STR:
++                lines.append(self.fmt.rst_lineno(do_dict[key]))
++                continue
+             lines.append(self.fmt.rst_paragraph(self.fmt.bold(key), level + 1))
+             if key in ['request', 'reply']:
+                 lines.append(self.parse_do_attributes(do_dict[key], level + 1) + "\n")
+@@ -174,6 +192,10 @@ class YnlDocGenerator:
              lines.append(self.fmt.rst_paragraph(operation["doc"]) + "\n")
  
              for key in operation.keys():
-@@ -206,7 +182,8 @@ class YnlDocGenerator:
-                     value = self.fmt.rst_ref(namespace, key, value)
-                 lines.append(self.fmt.rst_fields(key, value, 0))
-             if 'flags' in operation:
--                lines.append(self.fmt.rst_fields('flags', self.fmt.rst_list_inline(operation['flags'])))
-+                lines.append(self.fmt.rst_fields('flags',
-+                                                 self.fmt.rst_list_inline(operation['flags'])))
++                if key == LINE_STR:
++                    lines.append(self.fmt.rst_lineno(operation[key]))
++                    continue
++
+                 if key in preprocessed:
+                     # Skip the special fields
+                     continue
+@@ -233,6 +255,9 @@ class YnlDocGenerator:
+         for definition in defs:
+             lines.append(self.fmt.rst_section(namespace, 'definition', definition["name"]))
+             for k in definition.keys():
++                if k == LINE_STR:
++                    lines.append(self.fmt.rst_lineno(definition[k]))
++                    continue
+                 if k in preprocessed + ignored:
+                     continue
+                 lines.append(self.fmt.rst_fields(k, self.fmt.sanitize(definition[k]), 0))
+@@ -268,6 +293,9 @@ class YnlDocGenerator:
+                 lines.append(self.fmt.rst_subsubsection(attr_line))
  
-             if "do" in operation:
-                 lines.append(self.fmt.rst_paragraph(":do:", 0))
-@@ -220,7 +197,6 @@ class YnlDocGenerator:
- 
-         return "\n".join(lines)
- 
--
-     def parse_entries(self, entries: List[Dict[str, Any]], level: int) -> str:
-         """Parse a list of entries"""
-         ignored = ["pad"]
-@@ -235,17 +211,19 @@ class YnlDocGenerator:
-                 if type_:
-                     field_name += f" ({self.fmt.inline(type_)})"
-                 lines.append(
--                    self.fmt.rst_fields(field_name, self.fmt.sanitize(entry.get("doc", "")), level)
-+                    self.fmt.rst_fields(field_name,
-+                                        self.fmt.sanitize(entry.get("doc", "")),
-+                                        level)
-                 )
-             elif isinstance(entry, list):
-                 lines.append(self.fmt.rst_list_inline(entry, level))
-             else:
--                lines.append(self.fmt.rst_bullet(self.fmt.inline(self.fmt.sanitize(entry)), level))
-+                lines.append(self.fmt.rst_bullet(self.fmt.inline(self.fmt.sanitize(entry)),
-+                                                 level))
- 
-         lines.append("\n")
-         return "\n".join(lines)
- 
--
-     def parse_definitions(self, defs: Dict[str, Any], namespace: str) -> str:
-         """Parse definitions section"""
-         preprocessed = ["name", "entries", "members"]
-@@ -270,7 +248,6 @@ class YnlDocGenerator:
- 
-         return "\n".join(lines)
- 
--
-     def parse_attr_sets(self, entries: List[Dict[str, Any]], namespace: str) -> str:
-         """Parse attribute from attribute-set"""
-         preprocessed = ["name", "type"]
-@@ -279,7 +256,8 @@ class YnlDocGenerator:
+                 for k in attr.keys():
++                    if k == LINE_STR:
++                        lines.append(self.fmt.rst_lineno(attr[k]))
++                        continue
+                     if k in preprocessed + ignored:
+                         continue
+                     if k in linkable:
+@@ -306,6 +334,8 @@ class YnlDocGenerator:
          lines = []
  
-         for entry in entries:
--            lines.append(self.fmt.rst_section(namespace, 'attribute-set', entry["name"]))
-+            lines.append(self.fmt.rst_section(namespace, 'attribute-set',
-+                                              entry["name"]))
-             for attr in entry["attributes"]:
-                 type_ = attr.get("type")
-                 attr_line = attr["name"]
-@@ -301,13 +279,13 @@ class YnlDocGenerator:
+         # Main header
++        lineno = obj.get('__lineno__', 0)
++        lines.append(self.fmt.rst_lineno(lineno))
  
-         return "\n".join(lines)
+         family = obj['name']
  
--
-     def parse_sub_messages(self, entries: List[Dict[str, Any]], namespace: str) -> str:
-         """Parse sub-message definitions"""
-         lines = []
- 
-         for entry in entries:
--            lines.append(self.fmt.rst_section(namespace, 'sub-message', entry["name"]))
-+            lines.append(self.fmt.rst_section(namespace, 'sub-message',
-+                                              entry["name"]))
-             for fmt in entry["formats"]:
-                 value = fmt["value"]
- 
-@@ -315,13 +293,14 @@ class YnlDocGenerator:
-                 for attr in ['fixed-header', 'attribute-set']:
-                     if attr in fmt:
-                         lines.append(self.fmt.rst_fields(attr,
--                                                self.fmt.rst_ref(namespace, attr, fmt[attr]),
--                                                1))
-+                                                         self.fmt.rst_ref(namespace,
-+                                                                          attr,
-+                                                                          fmt[attr]),
-+                                                         1))
-                 lines.append("\n")
- 
-         return "\n".join(lines)
- 
--
-     def parse_yaml(self, obj: Dict[str, Any]) -> str:
-         """Format the whole YAML into a RST string"""
-         lines = []
-@@ -344,7 +323,8 @@ class YnlDocGenerator:
-         # Operations
-         if "operations" in obj:
-             lines.append(self.fmt.rst_subtitle("Operations"))
--            lines.append(self.parse_operations(obj["operations"]["list"], family))
-+            lines.append(self.parse_operations(obj["operations"]["list"],
-+                                               family))
- 
-         # Multicast groups
-         if "mcast-groups" in obj:
-@@ -368,11 +348,9 @@ class YnlDocGenerator:
- 
-         return "\n".join(lines)
- 
--
-     # Main functions
-     # ==============
- 
--
+@@ -354,7 +384,7 @@ class YnlDocGenerator:
      def parse_yaml_file(self, filename: str) -> str:
          """Transform the YAML specified by filename into an RST-formatted string"""
          with open(filename, "r", encoding="utf-8") as spec_file:
-@@ -381,7 +359,6 @@ class YnlDocGenerator:
+-            yaml_data = yaml.safe_load(spec_file)
+-            content = self.parse_yaml(yaml_data)
++            numbered_yaml = yaml.load(spec_file, Loader=NumberedSafeLoader)
++            content = self.parse_yaml(numbered_yaml)
  
          return content
- 
--
-     def generate_main_index_rst(self, output: str, index_dir: str) -> None:
-         """Generate the `networking_spec/index` content and write to the file"""
-         lines = []
 -- 
 2.49.0
 
