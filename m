@@ -1,136 +1,158 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8290828505E
-	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 09:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EEDC280334
+	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 09:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750238630; cv=none; b=uHenXJSvdnA4QZDaowoK8uSjv8ezl3IkX9ddY6qkvgr98tEc2tPqqQ7uHIspspEFCFz4u6v05sZp87/N+fvtSaNwTMlqe923JIyjOdZGc6adC43M4h6IUAqiZofvWRovQFRzldT03wcyo/UMYWvrES6wTXmv0HNFQrdvyz4JLqk=
+	t=1750238665; cv=none; b=qek29W/ghUNK5jsk49CBGJ0esFU+EPY09+TxpsvtUIDa+yXM0fhppd+WEpOanTkkC6kGb7pkuV+4+I6KDK/UO3sxzCENZhazfvQ883B5vf17iTQmj/aRioJUo+xWEY4Sva4E+J+VUwEBfe1jgS/2pQcfH3TfydKI0SpMKY0A8/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750238630; c=relaxed/simple;
-	bh=GzGR9FAsgMGPxwdjJcPaHiC/kkUlytMjamAq0np+uTc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/MM0c7fZK3VlyKR7BtDzd1YL+HGCAG60mE9JFrG+DihlgbBzAn6pWj6NKZP9pOgZowahxR8tV8VQgvSd6sgyqlA8Jryx52zwExp7XP30OUuWydumsEItunkjDGZ5Ek2XH9Jfdxooj2fqPENWBaJnzLccRIZXZdw05NzkdAqE4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uRp1E-0006ec-GC
-	for netdev@vger.kernel.org; Wed, 18 Jun 2025 11:23:44 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uRp1C-00479u-2s
-	for netdev@vger.kernel.org;
-	Wed, 18 Jun 2025 11:23:42 +0200
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 9082642B2C9
-	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 09:23:42 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 7737542B280;
-	Wed, 18 Jun 2025 09:23:39 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id f1e0a5e3;
-	Wed, 18 Jun 2025 09:23:38 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
+	s=arc-20240116; t=1750238665; c=relaxed/simple;
+	bh=stlKD8TMt2RHQpIMrF+XfM/1DcDXWqKH+tWALVeME38=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ieYJmEoX6z1R0dU5Q/+QYM/x2l0pZg6EXKkY6IV+kEaBZFiNI2J9SRiDgIU6p+p+z/NWf3uFJHflX4vHNxpDoSCGHFM9y4Za11GlCZaoVUxIhaobtkNctr6DPWcEl821CGVXCCYdUaIghvAZ6//oZqPX5ckPS5P+rwUUCKn1Fvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WoLFDR8i; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WoLFDR8i"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b271f3ae786so4919137a12.3
+        for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 02:24:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1750238664; x=1750843464; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=POgVgQOHyY5JFhC7ZUirzBX59J0Bo8DjMxk+7VX8j3Y=;
+        b=WoLFDR8iJLt1OL5SDXnzr2iMaObNxbXNHST8XWvSxMZvSZ7KOVIWCZdPzmP0f5/swM
+         oMZCPGoUz2u+KnapF+Rrt+h0Pb+L60SiTxgvNU1KngrrVeFm+/KhoGa2aDPQm0cFaXXh
+         JWT1JOH0nCbVcPOX/NP2d5/tw18XSDEZgeE9s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750238664; x=1750843464;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=POgVgQOHyY5JFhC7ZUirzBX59J0Bo8DjMxk+7VX8j3Y=;
+        b=oIv4KepGnOk4T4mLLF+W4kuLCtx7qCQ2lota49nU+TGa8kp3u9V+FHVZQPR+4GFy1y
+         5fzRvW/qaDqNDiyAv/f0/b+uMHAP58lQ/Eu3IpRxMYrC55j/uaZYShWWG6PrWcNoQphx
+         qkSXLg9Taq6jIdy0HvkaYbxXBNYtl48d4+7kNTnH66dKJ4sxIeEy4Q6yEXWq1ctA0SeC
+         3wSrl7aJHiEpngmAk97Wda40jcSh0jLIXnaY/VdCkcVdwQlgY1uCIiCUupQqOqU0HDK2
+         eRtcny/ZgSSbMGH+HOykoPCskmatVTmaOPcZ+nhaCuGz8mflgXe+yqEkoXws8uUV5X1G
+         ttvA==
+X-Gm-Message-State: AOJu0Yx1oCPI/JErB/rImjqMmyY2TxsohnX2Xe/G615R9/xwbHAOziak
+	N9pDCiZxdvh0zyu5k9iUqtZsPaglD7bB7cTcV4WUB2JQl7I66kVFf2FiWCOAU7JhBg==
+X-Gm-Gg: ASbGncvoaq6CAuCo3NzQrIwXCCGzwIqyiNhzLn8Ewr1f9Vj21rUJJ0Nipe5EfwHGI0s
+	b7pQJXggAHl7y/LMVUADyw4IxShn5UczRSrXQfKJ259oDPam2uCwxz37bbncwPjQQZmOTSvbMiY
+	defmgAWs/GkEQSn1iVIYNDh0sXl5qMP8v9FRcegKn7j658SycsgSkUTuFkYmb+W8dPAhAMKZ7Gl
+	agQaO0nUowxaTZDSuC/rJUWZpshjsjwCvQcLU/P3QYB1iu0MpIxE9UAvwQKbncIv8Lur59WxK9P
+	kVA7qkezSRDr8b9aSm4GlhCqU4Hd51xKl7KytBSS6V61gqGjDkMO2TG9APRmrDjdG0ECJhdDdpu
+	pUAJlY3VamzilaMBRUs3ZH5/8fj7aVNQ8Li2m3Eg=
+X-Google-Smtp-Source: AGHT+IEEXCf9tYsKSdb5r4gM4NhS9cCtxK0XcjZ6Yra6MbUTOtw6mZPoZlZe+86e1KbOYl4Ew/DSEw==
+X-Received: by 2002:a05:6a00:2181:b0:746:2ae9:fc42 with SMTP id d2e1a72fcca58-7489cfc37a3mr22044526b3a.19.1750238663731;
+        Wed, 18 Jun 2025 02:24:23 -0700 (PDT)
+Received: from localhost.localdomain ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7488ffecd08sm10408993b3a.27.2025.06.18.02.24.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Jun 2025 02:24:23 -0700 (PDT)
+From: Vikas Gupta <vikas.gupta@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
 	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 08/10] can: rcar_canfd: Share config code in rcar_canfd_set_bittiming()
-Date: Wed, 18 Jun 2025 11:20:02 +0200
-Message-ID: <20250618092336.2175168-9-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250618092336.2175168-1-mkl@pengutronix.de>
-References: <20250618092336.2175168-1-mkl@pengutronix.de>
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	Vikas Gupta <vikas.gupta@broadcom.com>
+Subject: [net-next, 00/10] Introducing Broadcom BNGE Ethernet Driver
+Date: Wed, 18 Jun 2025 14:47:30 +0000
+Message-ID: <20250618144743.843815-1-vikas.gupta@broadcom.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+Hi,
 
-The configuration register format for nominal bit timings in CAN-FD mode
-and the format for bit timings in CAN mode on CAN-FD controllers with
-shared Classical CAN registers are the same.
+This patch series introduces the Ethernet driver for Broadcom’s
+BCM5770X chip family, which supports 50/100/200/400/800 Gbps
+link speeds. The driver is built as the bng_en.ko kernel module.
 
-Restructure the code to make this clear, also reducing kernel size by 80
-bytes.
+To keep the series within a reviewable size (~5K lines of code), this initial
+submission focuses on the core infrastructure and initialization, including:
+1) PCIe support (device IDs, probe/remove)
+2) Devlink support
+3) Firmware communication mechanism
+4) Creation of network device
+5) PF Resource management (rings, IRQs, etc. for netdev & aux dev)
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/b7643a3c49777989d02145a85b85cf773ec2123f.1749655315.git.geert+renesas@glider.be
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/rcar/rcar_canfd.c | 25 +++++++------------------
- 1 file changed, 7 insertions(+), 18 deletions(-)
+Support for Tx/Rx datapaths, link management, ethtool/devlink operations and
+additional features will be introduced in the subsequent patch series.
 
-diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index c292694ae4d2..9ee49ef57e4f 100644
---- a/drivers/net/can/rcar/rcar_canfd.c
-+++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -1474,13 +1474,17 @@ static void rcar_canfd_set_bittiming(struct net_device *ndev)
- 	tseg1 = bt->prop_seg + bt->phase_seg1 - 1;
- 	tseg2 = bt->phase_seg2 - 1;
- 
--	if (priv->can.ctrlmode & CAN_CTRLMODE_FD) {
--		/* CAN FD only mode */
-+	if ((priv->can.ctrlmode & CAN_CTRLMODE_FD) || gpriv->info->shared_can_regs) {
- 		cfg = (RCANFD_NCFG_NTSEG1(gpriv, tseg1) | RCANFD_NCFG_NBRP(brp) |
- 		       RCANFD_NCFG_NSJW(gpriv, sjw) | RCANFD_NCFG_NTSEG2(gpriv, tseg2));
-+	} else {
-+		cfg = (RCANFD_CFG_TSEG1(tseg1) | RCANFD_CFG_BRP(brp) |
-+		       RCANFD_CFG_SJW(sjw) | RCANFD_CFG_TSEG2(tseg2));
-+	}
- 
--		rcar_canfd_write(priv->base, RCANFD_CCFG(ch), cfg);
-+	rcar_canfd_write(priv->base, RCANFD_CCFG(ch), cfg);
- 
-+	if (priv->can.ctrlmode & CAN_CTRLMODE_FD) {
- 		/* Data bit timing settings */
- 		brp = dbt->brp - 1;
- 		sjw = dbt->sjw - 1;
-@@ -1491,21 +1495,6 @@ static void rcar_canfd_set_bittiming(struct net_device *ndev)
- 		       RCANFD_DCFG_DSJW(gpriv, sjw) | RCANFD_DCFG_DTSEG2(gpriv, tseg2));
- 
- 		rcar_canfd_write(priv->base, rcar_canfd_f_dcfg(gpriv, ch), cfg);
--	} else {
--		/* Classical CAN only mode */
--		if (gpriv->info->shared_can_regs) {
--			cfg = (RCANFD_NCFG_NTSEG1(gpriv, tseg1) |
--			       RCANFD_NCFG_NBRP(brp) |
--			       RCANFD_NCFG_NSJW(gpriv, sjw) |
--			       RCANFD_NCFG_NTSEG2(gpriv, tseg2));
--		} else {
--			cfg = (RCANFD_CFG_TSEG1(tseg1) |
--			       RCANFD_CFG_BRP(brp) |
--			       RCANFD_CFG_SJW(sjw) |
--			       RCANFD_CFG_TSEG2(tseg2));
--		}
--
--		rcar_canfd_write(priv->base, RCANFD_CCFG(ch), cfg);
- 	}
- }
- 
+The bng_en driver shares the bnxt_hsi.h file with the bnxt_en driver, as the bng_en
+driver leverages the hardware communication protocol used by the bnxt_en driver.
+
+Thanks,
+Vikas
+
+
+Vikas Gupta (10):
+  bng_en: Add PCI interface
+  bng_en: Add devlink interface
+  bng_en: Add firmware communication mechanism
+  bng_en: Add initial interaction with firmware
+  bng_en: Add ring memory allocation support
+  bng_en: Add backing store support
+  bng_en: Add resource management support
+  bng_en: Add irq allocation support
+  bng_en: Initialize default configuration
+  bng_en: Add a network device
+
+ MAINTAINERS                                   |   6 +
+ drivers/net/ethernet/broadcom/Kconfig         |   9 +
+ drivers/net/ethernet/broadcom/Makefile        |   1 +
+ drivers/net/ethernet/broadcom/bnge/Makefile   |  12 +
+ drivers/net/ethernet/broadcom/bnge/bnge.h     | 218 ++++++
+ .../net/ethernet/broadcom/bnge/bnge_core.c    | 395 ++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_devlink.c | 267 +++++++
+ .../net/ethernet/broadcom/bnge/bnge_devlink.h |  18 +
+ .../net/ethernet/broadcom/bnge/bnge_ethtool.c |  33 +
+ .../net/ethernet/broadcom/bnge/bnge_ethtool.h |   9 +
+ .../net/ethernet/broadcom/bnge/bnge_hwrm.c    | 503 +++++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_hwrm.h    | 117 +++
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.c    | 703 ++++++++++++++++++
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.h    |  27 +
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 266 +++++++
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  | 206 +++++
+ .../net/ethernet/broadcom/bnge/bnge_resc.c    | 604 +++++++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_resc.h    |  94 +++
+ .../net/ethernet/broadcom/bnge/bnge_rmem.c    | 438 +++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_rmem.h    | 188 +++++
+ 20 files changed, 4114 insertions(+)
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/Makefile
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_core.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_devlink.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_devlink.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_ethtool.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_ethtool.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_hwrm.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_hwrm.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_netdev.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_resc.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_resc.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_rmem.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_rmem.h
+
 -- 
-2.47.2
-
+2.47.1
 
