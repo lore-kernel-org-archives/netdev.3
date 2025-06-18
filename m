@@ -1,147 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605C135963;
-	Wed, 18 Jun 2025 08:25:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5683225B1DA;
+	Wed, 18 Jun 2025 08:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750235127; cv=none; b=JFNvCPVRbwXogIfdPIisKmZphcc6T7AtvAlHLwxmY9wYUNsU99Rdxxe/teu+JBjA81FKKW+H4Ie2YkCDtE09d35Mrkh9uscqczDsiBfH/YGsdvqK0Rf34b1lFtmHq4FrSlpyA7Fni5aB8JNd7Mt8YDF/QrhcIFBnmcwKLErlH+E=
+	t=1750235579; cv=none; b=p1LHfoMtcprZI40JTlXKdmR7Qg+ClUUF1HjJ6dQRwRRqg30yvD9Awvy+93dM+f3oMIaCyZUlHL47BCIZcLkCKq9Bi0VqVbqdc36H3JhDayjhTHjgG4EB/cijzKldDpEZNKrQ5O5Q9RINHTjLzi2v97TAcDEB6PBtjqDHTA4EQgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750235127; c=relaxed/simple;
-	bh=CfnRxmufD9BFa5b8W1bL5FF2qtdnavYecQUsRTtCjJg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VOIgPPKVdNjQuEG6Ln1gOgScVX/5JmITod08eHlNRFQ0TNego9jo5kDZA7IjEx6cxQ42d9cVmLIw1fMnRpTXOGRDYKy7pHn6+nxm8uUmkEQ6lJ4sGJvqim4WdqQ0BULRsk6WKns8F18GmQs68aNo3rjJG9tidgArLjioIN+z+IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nNrGdRwL; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nNrGdRwL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF5EC4CEE7;
-	Wed, 18 Jun 2025 08:25:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750235126;
-	bh=CfnRxmufD9BFa5b8W1bL5FF2qtdnavYecQUsRTtCjJg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nNrGdRwLhZ7NP0P6VyZegnph1FkmFymqeTegErJcd+OoajPMd/mZfGF07/mEir47S
-	 +M4+0S5SJAih9ojrKXszbdqmHYJvFveMJPfx9CcA0dYNJt9GrVl1fQnGhV8XS3w1D5
-	 DhXdcJI8NMWKG+cj/6ekw4l5Lwk5tSHaJ74EM3FbgMoL9qv5eab3ISECnU8JzEUS8P
-	 Y0NIQyLxOtJsC0GlZcXIcDrIFfGUPkvf8tUDHclnMOYb33O7avMkkCDZjnGghLpObV
-	 B6Z0fBjFuQRr8DHI/RdwKyRkmg4n3LhpRH+H47fkQTzKIblTgwFmvQ1VB9zpRT+dwo
-	 E/5hB09Ftoymw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1uRo6n-000000007yV-2JUI;
-	Wed, 18 Jun 2025 10:25:25 +0200
-Date: Wed, 18 Jun 2025 10:25:25 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Chris Lew <chris.lew@oss.qualcomm.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Hemant Kumar <quic_hemantk@quicinc.com>,
-	Maxim Kochetkov <fido_max@inbox.ru>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] net: qrtr: mhi: synchronize qrtr and mhi preparation
-Message-ID: <aFJ39fpIkEpqtZiM@hovoldconsulting.com>
-References: <20250604-qrtr_mhi_auto-v2-1-a143433ddaad@oss.qualcomm.com>
- <aFJwfXsnxiCEWL1u@hovoldconsulting.com>
+	s=arc-20240116; t=1750235579; c=relaxed/simple;
+	bh=YZ2owkYi3X0AEVs+LYgxowjgbXXIYv8otbPc+FFdDh0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=P9H/r4EneNDzj3e2AiciBmYoKzdDP1GLRUezOWPIT/TdRE7tVNScT686ixjeDxbNfqLVsKlyoyVaFm8kJvZGU6xSL+Z9u0ukd9RVEurMfUBfRpoBmj3jn1PoCmRbaKL1ZCVl6K168qgGcDIzD/RziH9PXUEPiqIsEaasF8Jb6qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-60780d74bbaso871409a12.0;
+        Wed, 18 Jun 2025 01:32:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750235576; x=1750840376;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QidkYVW37CmwUswBeJDb096IVxANRzd4ryyxmJfoTyo=;
+        b=D27H/1feTYIRVKTLQRM0PZKfnGVxfwhBwHnjtTiAMkTpmRXTeEAjcJtvCbgCviuGEf
+         jnSxFbeM72RjrJmqUWCX0X4tL9wvrO2o5+4SFVwvNuBrpxHKg0NgBp96zI/AblAgaS1c
+         TWU894hU7mPMTgyXhBQNgxdE2w5zOQ8yzYFPdERDXdoJam1sqFl8289OtTNzGakLx3wu
+         NGilTfmd+tvhddtafJ2o/cO4Sc76wMnSjzVAF6vXzkm7d4VvZBZd2F/MFJDJwEFu1t25
+         uzjDxsbc5nGmQV6qLwA2B/d7bHdXgY8p9DTCkwqrNEp8XOTGXINjaBgO25XbTV8R2bh8
+         Nexg==
+X-Forwarded-Encrypted: i=1; AJvYcCV6YGVdB7kX6mqVv3Y39lfi/hLgtea5bslYANOjObc/4nf2qzjRlnfsM1CPaolaG1Cim/t1bJAJdQrMcgM=@vger.kernel.org, AJvYcCXJglWyQXUpNTQrx4lANE61wD3zxjECNR5UWn9Ea37T/1C2cW1iZy5bptLdDZK4ZEuyNCErJFMQqhnvGtAyw3Pv@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxOTlqCGCAG4LAl0cZ+KjXzzQTIpB0xwYV4NEMWZrrbQYBsiL2
+	nr5qt6CpT6PHq2/BtfMWfoyyPXw6JLLSY6vQTuX92CPeoeQjbBwjCQvP
+X-Gm-Gg: ASbGncukliT9gISE+29efMkQvQDeNzv2MzhssbkGOXtshGQA2JikiHoaJxgyg58wKHz
+	qFW1o5juiCQULcHyXzUaThH1iKDJrzVRhWnKlwyKSFUMnrTIAI8/98nhJ7eOlfKsgqlXaLBFoS3
+	cInOpaiRMMSqqtJMKvg6bVxZanuwKNgAV2b2jO/ZeW2hnXm+0ohsJIl46RA8EYFEJxqs9YcaV06
+	o8bE/fJo9Gbu5iEQDx3zDniN6xKhfoBGLhMheqFSNeFTodpYD3cUoNCArblCrB1C+6wz8NEyBim
+	oPQC8nXP5rdMMmlGLcxlEo7mqWi4MuMn9P2TW4t+MPA/Yfw2O10y
+X-Google-Smtp-Source: AGHT+IESnlhzm6JY29BbKFKb++BCw4CagU+L4+qKbE73XqGEAhecsxPXDKaJUwi1i/vSUvnQf0x7Qw==
+X-Received: by 2002:a05:6402:5187:b0:604:b87f:88b4 with SMTP id 4fb4d7f45d1cf-609c1873e6cmr1420416a12.2.1750235575356;
+        Wed, 18 Jun 2025 01:32:55 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:2::])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-608cfadeb92sm7855479a12.13.2025.06.18.01.32.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Jun 2025 01:32:54 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH net-next v4 0/4] netdevsim: implement RX statistics using
+ NETDEV_PCPU_STAT_DSTATS
+Date: Wed, 18 Jun 2025 01:32:41 -0700
+Message-Id: <20250618-netdevsim_stat-v4-0-19fe0d35e28e@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aFJwfXsnxiCEWL1u@hovoldconsulting.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKl5UmgC/2XNy2rDMBCF4VcRs/YUXXyTV32PEIJkjRItKhdJi
+ ATjdw+YLNx6ffj+s0KmFCjDxFZIVEMOS4SJtQ2D+WHinTA4mBhILjveC46RiqOaw88tF1NQd1p
+ 3WgriiqBh8JvIh+cevECkgpGeBa4Ng0fIZUmv/amKff9Exf9oFchxFsL23eB0b/23IxtM/FrSf
+ W9VefTq5CVy1KM3ahxVP7fjyaujH05eIUfjqbVutl6q4Y/ftu0NwyG/2jcBAAA=
+X-Change-ID: 20250610-netdevsim_stat-95995921e03e
+To: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, David Wei <dw@davidwei.uk>, 
+ Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
+ gustavold@gmail.com, Joe Damato <joe@dama.to>
+X-Mailer: b4 0.15-dev-42535
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1862; i=leitao@debian.org;
+ h=from:subject:message-id; bh=YZ2owkYi3X0AEVs+LYgxowjgbXXIYv8otbPc+FFdDh0=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBoUnm10E7EUYsctvXTS2FPSCQTDuhoSvHsC2dps
+ aVTjGWR8NWJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaFJ5tQAKCRA1o5Of/Hh3
+ bVoqD/9vZcfM9dVn9HZvGuvP/wNGVEqBTTG0cOA56gJginOOtdgS9KWgya72Svaro3jAfZyMLRC
+ AkhXS1LaAOhOHCmhDSJZDS5SFZnbKX0DoOZAYPtE3Gks98w4Ro7FN9cZxioCh3NWoMjztXeNXCn
+ ovnmvz8pnmwCYj4GxY4wyTyiwZiV0Zb7VP9uDhjVqpcsFy1Vk5zxDegn/7HB01+T5TPxSesGsWY
+ fGdWdi0uyKT8aaP+yB3BhX4X4eq5xBgzJAYyI7phKLye/ZENLM678yknZQ0FRU8JXWitvWTZR0e
+ YIp5zXfbfqPZceNG6B2jArfCp11O1rND/5IDjaYmlh34OCk9CoJ17wJcOq/86Il+eYrdS6DIUxG
+ 7+ovCftIAistr0zg6/VNj+dwwM3OHNe/zP5R2rdMGrtssnWYhb9cTmEU8eWYSA7mQXasHCCQict
+ +1bA6r4CdczAeOix0mpPBi4+spKrP52LOJHBa8eyO8/hHXPv8ZByrVnGzJgDlBzrCvhiZPTi5yy
+ Jryf4ZYOrvGKLxyIlfmjLV7/+mCXUEV6ldQwG/Abr6GzDuLiAGUP0OUMmAqWOUXoehQ/+5o93Zv
+ tJmIKk1L59ipBqjVdRpHY/2rcbvFlW0XkE45zaseJ0AE7Eej39hVCurE9k7OSJ/npWb+sgSdQ2l
+ Dq14Z3/Z9qt41Zg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-On Wed, Jun 18, 2025 at 09:53:34AM +0200, Johan Hovold wrote:
-> On Wed, Jun 04, 2025 at 02:05:42PM -0700, Chris Lew wrote:
-> > The call to qrtr_endpoint_register() was moved before
-> > mhi_prepare_for_transfer_autoqueue() to prevent a case where a dl
-> > callback can occur before the qrtr endpoint is registered.
-> > 
-> > Now the reverse can happen where qrtr will try to send a packet
-> > before the channels are prepared. The correct sequence needs to be
-> > prepare the mhi channel, register the qrtr endpoint, queue buffers for
-> > receiving dl transfers.
-> > 
-> > Since qrtr will not use mhi_prepare_for_transfer_autoqueue(), qrtr must
-> > do the buffer management and requeue the buffers in the dl_callback.
-> > Sizing of the buffers will be inherited from the mhi controller
-> > settings.
-> > 
-> > Fixes: 68a838b84eff ("net: qrtr: start MHI channel after endpoit creation")
-> > Reported-by: Johan Hovold <johan@kernel.org>
-> > Closes: https://lore.kernel.org/linux-arm-msm/ZyTtVdkCCES0lkl4@hovoldconsulting.com/
-> > Signed-off-by: Chris Lew <chris.lew@oss.qualcomm.com>
-> 
-> Thanks for the update. I believe this one should have a stable tag as
-> well as it fixes a critical boot failure on Qualcomm platforms that we
-> hit frequently with the in-kernel pd-mapper.
-> 
-> And it indeed fixes the crash:
-> 
-> Tested-by: Johan Hovold <johan+linaro@kernel.org>
+The netdevsim driver previously lacked RX statistics support, which
+prevented its use with the GenerateTraffic() test framework, as this
+framework verifies traffic flow by checking RX byte counts.
 
-While it fixes the registration race and NULL-deref, something else is
-not right with the patch.
+This patch migrates netdevsim from its custom statistics collection to
+the NETDEV_PCPU_STAT_DSTATS framework, as suggested by Jakub. This
+change not only standardizes the statistics handling but also adds the
+necessary RX statistics support required by the test framework.
 
-On resume from suspend I now get a bunch of mhi errors for the ath12k
-wifi:
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v4:
+- Protect dev_dstats_rx_dropped_add() by disabling BH (Jakub)
+- Link to v3: https://lore.kernel.org/r/20250617-netdevsim_stat-v3-0-afe4bdcbf237@debian.org
 
-[   25.843963] mhi mhi1: Requested to power ON
-[   25.848766] mhi mhi1: Power on setup success
-[   25.939124] mhi mhi1: Wait for device to enter SBL or Mission mode
-[   26.325393] mhi mhi1: Error recycling buffer for chan:21
-[   26.331193] mhi mhi1: Error recycling buffer for chan:21
-[   26.336798] mhi mhi1: Error recycling buffer for chan:21
-[   26.342390] mhi mhi1: Error recycling buffer for chan:21
-[   26.347994] mhi mhi1: Error recycling buffer for chan:21
-[   26.353609] mhi mhi1: Error recycling buffer for chan:21
-[   26.359207] mhi mhi1: Error recycling buffer for chan:21
-...
+Changes in v3:
+- Rely on netdev from caller instead of napi->dev in nsim_queue_free().
+- Link to v2: https://lore.kernel.org/r/20250613-netdevsim_stat-v2-0-98fa38836c48@debian.org
 
-and after that there's a warning at shutdown when tearing down mhi:
+Changes in v2:
+- Changed the RX collection place from nsim_napi_rx() to nsim_rcv (Joe Damato)
+- Collect RX dropped packets statistic in nsim_queue_free() (Jakub)
+- Added a helper in dstat to add values to RX dropped packets
+- Link to v1: https://lore.kernel.org/r/20250611-netdevsim_stat-v1-0-c11b657d96bf@debian.org
 
-[   36.384573] WARNING: CPU: 5 PID: 109 at mm/slub.c:4753 free_large_kmalloc+0x13c/0x160
-[   36.552152] CPU: 5 UID: 0 PID: 109 Comm: kworker/u52:0 Not tainted 6.16.0-rc2 #10 PREEMPT
-[   36.560724] Hardware name: Qualcomm CRD, BIOS 6.0.241007.BOOT.MXF.2.4-00534.1-HAMOA-1 10/ 7/2024
-[   36.569835] Workqueue: mhi_hiprio_wq mhi_pm_st_worker [mhi]
-[   36.575648] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[   36.582882] pc : free_large_kmalloc+0x13c/0x160
-[   36.587610] lr : kfree+0x208/0x32c
-[   36.591166] sp : ffff80008107b900
-[   36.594636] x29: ffff80008107b900 x28: 0000000000000000 x27: ffff800082b9d690
-[   36.602045] x26: ffff800082f681e0 x25: ffff800082f681e8 x24: 00000000ffffffff
-[   36.609454] x23: ffff00080406cd80 x22: 0000000000000001 x21: ffff0008023f2000
-[   36.616863] x20: 05a2dd88f4602478 x19: fffffdffe008fc80 x18: 00000000000c8dc0
-[   36.624272] x17: 0000000000000028 x16: ffffdd893588f02c x15: ffffdd8936a28928
-[   36.631681] x14: ffffdd8936af16e8 x13: 0000000000008000 x12: 0000000000000000
-[   36.639097] x11: ffffdd893709c968 x10: 0000000000000001 x9 : ffff0008099c95c0
-[   36.646505] x8 : 0000001000000000 x7 : ffff0008099c95c0 x6 : 00000008823f2000
-[   36.653915] x5 : ffffdd8937417f60 x4 : 0000000000000020 x3 : ffff000801c2d7e0
-[   36.661324] x2 : 0bfffe0000000000 x1 : ffff0008023f2000 x0 : 00000000000000ff
-[   36.668733] Call trace:
-[   36.671307]  free_large_kmalloc+0x13c/0x160 (P)
-[   36.676036]  kfree+0x208/0x32c
-[   36.679241]  mhi_reset_chan+0x1d4/0x2e4 [mhi]
-[   36.683786]  mhi_driver_remove+0x1bc/0x1fc [mhi]
-[   36.688597]  device_remove+0x70/0x80
-[   36.692341]  device_release_driver_internal+0x1e4/0x240
-[   36.697778]  device_release_driver+0x18/0x24
-[   36.702233]  bus_remove_device+0xd0/0x148
-[   36.706424]  device_del+0x148/0x374
-[   36.710077]  mhi_destroy_device+0xb0/0x13c [mhi]
-[   36.714888]  device_for_each_child+0x60/0xbc
-[   36.719344]  mhi_pm_disable_transition+0x154/0x510 [mhi]
-[   36.724875]  mhi_pm_st_worker+0x2dc/0xb18 [mhi]
-[   36.729594]  process_one_work+0x20c/0x610
-[   36.733788]  worker_thread+0x244/0x388
-[   36.737711]  kthread+0x150/0x220
-[   36.741093]  ret_from_fork+0x10/0x20
+---
+Breno Leitao (4):
+      netdevsim: migrate to dstats stats collection
+      netdevsim: collect statistics at RX side
+      net: add dev_dstats_rx_dropped_add() helper
+      netdevsim: account dropped packet length in stats on queue free
 
-Johan
+ drivers/net/netdevsim/netdev.c    | 56 ++++++++++++++++-----------------------
+ drivers/net/netdevsim/netdevsim.h |  5 ----
+ include/linux/netdevice.h         | 10 +++++++
+ 3 files changed, 33 insertions(+), 38 deletions(-)
+---
+base-commit: 3b5b1c428260152e47c9584bc176f358b87ca82d
+change-id: 20250610-netdevsim_stat-95995921e03e
+
+Best regards,
+-- 
+Breno Leitao <leitao@debian.org>
+
