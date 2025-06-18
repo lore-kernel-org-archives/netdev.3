@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0AC2E3AE7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B23D2E2EE9
 	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 12:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750249575; cv=none; b=oNQp58julcQY1Yg2VJX2IyMJcuhwlypksZnT5CxgIGwNWxhEN5REM2kaH6vCN9+46WkFFLdr/8IrKqPB1ci4x5Z4qtY0iXeDXK3e1EvRaAT0I5c9SgNgMKlvF54y/xsBlC4GeQ1c+XEF/Oy/ID9047IRxIMhzHp+UPsjGumcVBw=
+	t=1750249575; cv=none; b=nHrTJgt7njKVK3Css9I2eGrVHcMT6Pfr9RUWMQltZtXSpvO+mht5tFWjDh+VYlcBtYJCHpTv2YIJ9oIxWUewnE4K30d7iXOtlugytEz2T1gDnXfrM5yamrG1RAZDirpCrtQxDSLGoOtYW2pkFi3oKi8ohjPw9elUOpkyIhf+YWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750249575; c=relaxed/simple;
-	bh=K3ZwQtt6dtJ5cPaEh2Q0U2SfPQuD5sf8qnPOtYK5aZs=;
+	bh=IDD9v6cYS1E9fCQrM9ecA0zZ84fSUhOa0K+YmkkRkZw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t2tJPWMJOQ8Sfv5nJXUNRXSJpOT4VcSX5w9LgywMjr1riCDo4tGXWX2A5lKLjbXoquXqaveTVRGX5belfzAzzvIXVFJbgJgKVRrSRQK5bxRdYN3VOv9bsrWLTCtNk3O1RRCGZ+MDIyie7Nrz4/3tTcvq/6s0q+gXKUz/0JX/UXU=
+	 MIME-Version; b=K+TzeCOSIkw2/9V/qHLcgDzMovuXs876RjH+PYKUjL8QIWl0tG6S5g+Rv39mE+N2gyoPhVoz8kkwR3y1JPlafcIXA4OBorxMgZuaTN1UwjuSq89MSZKOSI+xskrHd0vdplj96Ao5EyqwFFQ9/MqzNOiOlaS57s0VU9bKUjeHtBQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uRrrg-00007k-UV; Wed, 18 Jun 2025 14:26:04 +0200
+	id 1uRrrg-00007i-UW; Wed, 18 Jun 2025 14:26:04 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uRrrf-0048Uu-21;
+	id 1uRrrf-0048Uq-1r;
 	Wed, 18 Jun 2025 14:26:03 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uRrrf-00DFDI-1d;
+	id 1uRrrf-00DFCy-1R;
 	Wed, 18 Jun 2025 14:26:03 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -40,16 +40,16 @@ To: "David S. Miller" <davem@davemloft.net>,
 	Thangaraj Samynathan <Thangaraj.S@microchip.com>,
 	Rengarajan Sundararajan <Rengarajan.S@microchip.com>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com,
 	Phil Elwell <phil@raspberrypi.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next v8 4/6] net: usb: lan78xx: port link settings to phylink API
-Date: Wed, 18 Jun 2025 14:26:00 +0200
-Message-Id: <20250618122602.3156678-5-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v8 2/6] net: usb: lan78xx: Rename EVENT_LINK_RESET to EVENT_PHY_INT_ACK
+Date: Wed, 18 Jun 2025 14:25:58 +0200
+Message-Id: <20250618122602.3156678-3-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250618122602.3156678-1-o.rempel@pengutronix.de>
 References: <20250618122602.3156678-1-o.rempel@pengutronix.de>
@@ -65,83 +65,67 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Refactor lan78xx_get_link_ksettings and lan78xx_set_link_ksettings to
-use the phylink API (phylink_ethtool_ksettings_get and
-phylink_ethtool_ksettings_set) instead of directly interfacing with the
-PHY. This change simplifies the code and ensures better integration with
-the phylink framework for link management.
+The EVENT_LINK_RESET macro currently triggers deferred work after a PHY
+interrupt. Prior to PHYLINK conversion, this work included reconfiguring
+the MAC and PHY, effectively performing a 'link reset'.
 
-Additionally, the explicit calls to usb_autopm_get_interface() and
-usb_autopm_put_interface() have been removed. These were originally
-needed to manage USB power management during register accesses. However,
-lan78xx_mdiobus_read() and lan78xx_mdiobus_write() already handle USB
-auto power management internally, ensuring that the interface remains
-active when necessary. Since there are no other direct register accesses
-in these functions that require explicit power management handling, the
-extra calls have become redundant and are no longer needed.
+However, after porting the driver to the PHYLINK framework, the logic
+associated with this event now solely handles the acknowledgment of
+the PHY interrupt. The MAC and PHY reconfiguration is now managed by
+PHYLINK's dedicated callbacks.
+
+To accurately reflect its current, narrowed functionality, rename
+EVENT_LINK_RESET to EVENT_PHY_INT_ACK.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
-changes v4:
-- add explanation why we do not care about usb_autopm in this functions
----
- drivers/net/usb/lan78xx.c | 34 ++--------------------------------
- 1 file changed, 2 insertions(+), 32 deletions(-)
+ drivers/net/usb/lan78xx.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 9bb1d2527d0c..8df0a2323fb9 100644
+index 61b2a7c26f60..18402a3922a6 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -1866,46 +1866,16 @@ static int lan78xx_get_link_ksettings(struct net_device *net,
- 				      struct ethtool_link_ksettings *cmd)
- {
- 	struct lan78xx_net *dev = netdev_priv(net);
--	struct phy_device *phydev = net->phydev;
--	int ret;
--
--	ret = usb_autopm_get_interface(dev->intf);
--	if (ret < 0)
--		return ret;
+@@ -385,7 +385,7 @@ struct skb_data {		/* skb->cb is one of these */
+ #define EVENT_RX_HALT			1
+ #define EVENT_RX_MEMORY			2
+ #define EVENT_STS_SPLIT			3
+-#define EVENT_LINK_RESET		4
++#define EVENT_PHY_INT_ACK		4
+ #define EVENT_RX_PAUSED			5
+ #define EVENT_DEV_WAKING		6
+ #define EVENT_DEV_ASLEEP		7
+@@ -1642,7 +1642,7 @@ static void lan78xx_status(struct lan78xx_net *dev, struct urb *urb)
  
--	phy_ethtool_ksettings_get(phydev, cmd);
--
--	usb_autopm_put_interface(dev->intf);
--
--	return ret;
-+	return phylink_ethtool_ksettings_get(dev->phylink, cmd);
- }
+ 	if (intdata & INT_ENP_PHY_INT) {
+ 		netif_dbg(dev, link, dev->net, "PHY INTR: 0x%08x\n", intdata);
+-		lan78xx_defer_kevent(dev, EVENT_LINK_RESET);
++		lan78xx_defer_kevent(dev, EVENT_PHY_INT_ACK);
  
- static int lan78xx_set_link_ksettings(struct net_device *net,
- 				      const struct ethtool_link_ksettings *cmd)
- {
- 	struct lan78xx_net *dev = netdev_priv(net);
--	struct phy_device *phydev = net->phydev;
--	int ret = 0;
--	int temp;
--
--	ret = usb_autopm_get_interface(dev->intf);
--	if (ret < 0)
--		return ret;
--
--	/* change speed & duplex */
--	ret = phy_ethtool_ksettings_set(phydev, cmd);
+ 		if (dev->domain_data.phyirq > 0)
+ 			generic_handle_irq_safe(dev->domain_data.phyirq);
+@@ -3524,7 +3524,7 @@ static int lan78xx_stop(struct net_device *net)
+ 	 */
+ 	clear_bit(EVENT_TX_HALT, &dev->flags);
+ 	clear_bit(EVENT_RX_HALT, &dev->flags);
+-	clear_bit(EVENT_LINK_RESET, &dev->flags);
++	clear_bit(EVENT_PHY_INT_ACK, &dev->flags);
+ 	clear_bit(EVENT_STAT_UPDATE, &dev->flags);
  
--	if (!cmd->base.autoneg) {
--		/* force link down */
--		temp = phy_read(phydev, MII_BMCR);
--		phy_write(phydev, MII_BMCR, temp | BMCR_LOOPBACK);
--		mdelay(1);
--		phy_write(phydev, MII_BMCR, temp);
--	}
--
--	usb_autopm_put_interface(dev->intf);
--
--	return ret;
-+	return phylink_ethtool_ksettings_set(dev->phylink, cmd);
- }
+ 	cancel_delayed_work_sync(&dev->wq);
+@@ -4448,10 +4448,10 @@ static void lan78xx_delayedwork(struct work_struct *work)
+ 		}
+ 	}
  
- static void lan78xx_get_pause(struct net_device *net,
+-	if (test_bit(EVENT_LINK_RESET, &dev->flags)) {
++	if (test_bit(EVENT_PHY_INT_ACK, &dev->flags)) {
+ 		int ret = 0;
+ 
+-		clear_bit(EVENT_LINK_RESET, &dev->flags);
++		clear_bit(EVENT_PHY_INT_ACK, &dev->flags);
+ 		ret = lan78xx_phy_int_ack(dev);
+ 		if (ret)
+ 			netdev_info(dev->net, "PHY INT ack failed (%pe)\n",
 -- 
 2.39.5
 
