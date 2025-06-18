@@ -1,108 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F09B258CD0;
-	Wed, 18 Jun 2025 12:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3564288C25
+	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 12:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750250425; cv=none; b=GVqFqoHQUjzgtDHsHu8go2u6ZZ71z0/DoK32NZsyjv3H4KK0yxcan12qet+cWbbL3VrMAaMDylMmbiwsLd8/KXPFD9SmsXjVEQh+qUv5q1qzOj9eCXH2eKcurSoMFXDjsqlFix7y6U2TeqF6/7cAV+qalhiKKPGEATcKuOL4Bxk=
+	t=1750250629; cv=none; b=JBoj29QVff9tKjzt3POzAJAt/5TJptvx9eSena1OFyJwySyazpgVG3UbKIGnZENCmeIOQFGgwN8mm6EOiIUKosRRMreRnfOakjll3g7iHI6VdLEDnEATscCfNYKcSdxKU+uc7QwXrYvuZBJN+md7n9YLChOALShAmYcW3ZEFvNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750250425; c=relaxed/simple;
-	bh=lKJkRX5S1J6VtzITZ5xzBjEBLhnqYUnVxruczGLyT08=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QpBrawzBhEZTLwy7FJuYvlWdZA4Sdd8eL8og4KKA1BkRsAWXdfD2vfggr5jcGigNrTAMNApIHMGyEOMljSVllZ+8ROXro+lDyVJZi9GPIDOXzJu/OM52qxDoNaT+X9vaUdJo+x7XbsxDUjI/2zdLYetVU4hqmlXsTxcKexiP5d0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T35oes2F; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750250629; c=relaxed/simple;
+	bh=LJOl3iVxdLqWTnYrqhGFjB6SUJ0Pn6WjK3KpdQZOJyc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LtNjtGWdyN0h4Uzf7kTF1GNrqzx6BNImgiY7704/Rr/VWANoRIcFhoR7b/HhcWK47BdqTxMadOLnDVpF+p/x6w6a/OEpjk1KE51G6Dk6Yaq0LseR5ihVzjPy4Ifso2yEpPjjaFFVfwZYupmEzpCGWUmwN8IjOfThsJVOcFum9yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=IbgubzVf; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T35oes2F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6CDC4CEE7;
-	Wed, 18 Jun 2025 12:40:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750250424;
-	bh=lKJkRX5S1J6VtzITZ5xzBjEBLhnqYUnVxruczGLyT08=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T35oes2Fkomfh40d6u66VAQWgiTTkCCDSuXaUmP9wZj+ZvbxEJppK5DeCdXziOEhg
-	 3HEpnVRqlDeTIAfAtsfh8HKcdGHc7Uqpj6S6eN2INZPxSjVIwS2jXPoJjuaciRncRy
-	 Xxm82+PegCaah7+5vTiKGWtGcO+DjQzVo+ZUt7AqelZLpBZY33KdEBNwB5Uaq1WxK2
-	 eOMNofrX6l+G0WeTImkNi69icQxs5GeLX0ZqZP3QGnVRWs1KH+cTaMtewy/RNj2FaO
-	 2cqyu3Mxebizp7QLsFdK6B8Fb+28XA5K2+Ds9lwEFxz13m0Kvrv1ACzaUaSh3pE8vU
-	 lxd9Pi9CUntEQ==
-Date: Wed, 18 Jun 2025 13:40:19 +0100
-From: Simon Horman <horms@kernel.org>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Akira Yokosawa <akiyks@gmail.com>,
-	Breno Leitao <leitao@debian.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ignacio Encinas Rubio <ignacio@iencinas.com>,
-	Jan Stancek <jstancek@redhat.com>, Marco Elver <elver@google.com>,
-	Paolo Abeni <pabeni@redhat.com>, Ruben Wauters <rubenru09@aol.com>,
-	Shuah Khan <skhan@linuxfoundation.org>, joel@joelfernandes.org,
-	linux-kernel-mentees@lists.linux.dev, linux-kernel@vger.kernel.org,
-	lkmm@lists.linux.dev, netdev@vger.kernel.org, peterz@infradead.org,
-	stern@rowland.harvard.edu
-Subject: Re: [PATCH v5 05/15] tools: ynl_gen_rst.py: make the index parser
- more generic
-Message-ID: <20250618124019.GQ1699@horms.kernel.org>
-References: <cover.1750146719.git.mchehab+huawei@kernel.org>
- <1cd8b28bfe159677b8a8b1228b04ba2919c8aee8.1750146719.git.mchehab+huawei@kernel.org>
- <20250617115927.GK5000@horms.kernel.org>
- <20250618085735.7f9aa5a6@foz.lan>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="IbgubzVf"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1uRrzq-00CJdb-IV; Wed, 18 Jun 2025 14:34:30 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From; bh=ihyBf5E+gzJ5kBv9T40XlfDhBl6X2+hvJwoX0tSQLr4=
+	; b=IbgubzVf8XhgT+sxWhHIoah/74KWgJuJNYwuM0mpFf0YPd17h51NwO8YUaWBnwaw3CTzUyCkw
+	cRrT7Zp+1KgVxyRj5Se5xYiK6sSKcD7TgZ3opaztdoYJJ8ypJ9DTdLhsoaiXiJLDpNCNhauWcyCjv
+	lkYBrIz0+zcFS1yQzWOWMsbD2b2hUSKfj4ZAG+XvfdcETEN+RCb7HD41xETAxnGoXyIKMpjq3zMC6
+	/5AR0ZHUpTX579YrYby+N8Ubh+FDvgaOPtrQVDciz8rkfyR/o2l1b03h3pHSzcO0QS/Eg+kQedpMe
+	1s86jzK2n4arb175Hj6clqGXGh0AddF826hSpg==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1uRrzp-0001Wj-FF; Wed, 18 Jun 2025 14:34:29 +0200
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1uRrzo-00DbRZ-7G; Wed, 18 Jun 2025 14:34:28 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Subject: [PATCH net 0/3] vsock: Fix transport_{h2g,g2h,dgram,local} TOCTOU
+ issues
+Date: Wed, 18 Jun 2025 14:33:59 +0200
+Message-Id: <20250618-vsock-transports-toctou-v1-0-dd2d2ede9052@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250618085735.7f9aa5a6@foz.lan>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADeyUmgC/x3MwQrCMAyA4VcZORuo1eL0VWSH2kUXhGYk2RiMv
+ bvF43f4/x2MlMng0e2gtLKx1IbzqYMy5foh5LEZYogppHjB1aR80TVXm0Xd0KW4LHh93dJ4LzH
+ 3IUGrZ6U3b//zEyo5DMfxA1tHnrluAAAA
+X-Change-ID: 20250523-vsock-transports-toctou-4b75d9c2a805
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-On Wed, Jun 18, 2025 at 08:57:35AM +0200, Mauro Carvalho Chehab wrote:
-> Em Tue, 17 Jun 2025 12:59:27 +0100
-> Simon Horman <horms@kernel.org> escreveu:
-> 
-> > On Tue, Jun 17, 2025 at 10:02:02AM +0200, Mauro Carvalho Chehab wrote:
-> > > It is not a good practice to store build-generated files
-> > > inside $(srctree), as one may be using O=<BUILDDIR> and even
-> > > have the Kernel on a read-only directory.
-> > > 
-> > > Change the YAML generation for netlink files to allow it
-> > > to parse data based on the source or on the object tree.
-> > > 
-> > > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> > > ---
-> > >  tools/net/ynl/pyynl/ynl_gen_rst.py | 22 ++++++++++++++++------
-> > >  1 file changed, 16 insertions(+), 6 deletions(-)
-> > > 
-> > > diff --git a/tools/net/ynl/pyynl/ynl_gen_rst.py b/tools/net/ynl/pyynl/ynl_gen_rst.py
-> > > index 7bfb8ceeeefc..b1e5acafb998 100755
-> > > --- a/tools/net/ynl/pyynl/ynl_gen_rst.py
-> > > +++ b/tools/net/ynl/pyynl/ynl_gen_rst.py
-> > > @@ -365,6 +365,7 @@ def parse_arguments() -> argparse.Namespace:
-> > >  
-> > >      parser.add_argument("-v", "--verbose", action="store_true")
-> > >      parser.add_argument("-o", "--output", help="Output file name")
-> > > +    parser.add_argument("-d", "--input_dir", help="YAML input directory")
-> > >  
-> > >      # Index and input are mutually exclusive
-> > >      group = parser.add_mutually_exclusive_group()
-> > > @@ -405,11 +406,14 @@ def write_to_rstfile(content: str, filename: str) -> None:
-> > >      """Write the generated content into an RST file"""
-> > >      logging.debug("Saving RST file to %s", filename)
-> > >  
-> > > +    dir = os.path.dirname(filename)
-> > > +    os.makedirs(dir, exist_ok=True)
-> > > +
-> > >      with open(filename, "w", encoding="utf-8") as rst_file:
-> > >          rst_file.write(content)  
-> > 
-> > Hi Mauro,
-> > 
-> > With this patch applied I see the following, which did not happen before.
-> 
-> Thanks! this was an intermediate step. I'll just drop this patch and
-> fix conflicts at the next version.
+transport_{h2g,g2h,dgram,local} may become NULL on vsock_core_unregister().
+Make sure a poorly timed `rmmod transport` won't lead to a NULL/stale
+pointer dereference.
 
-Likewise, thanks.
+Note that these oopses are pretty unlikely to happen in the wild. Splats
+were collected after sprinkling kernel with mdelay()s.
+
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+Michal Luczaj (3):
+      vsock: Fix transport_{h2g,g2h} TOCTOU
+      vsock: Fix transport_g2h TOCTOU
+      vsock: Fix transport_* TOCTOU
+
+ net/vmw_vsock/af_vsock.c | 34 +++++++++++++++++++++++++++-------
+ 1 file changed, 27 insertions(+), 7 deletions(-)
+---
+base-commit: d0fa59897e049e84432600e86df82aab3dce7aa5
+change-id: 20250523-vsock-transports-toctou-4b75d9c2a805
+
+Best regards,
+-- 
+Michal Luczaj <mhal@rbox.co>
+
