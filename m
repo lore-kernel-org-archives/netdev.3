@@ -1,117 +1,215 @@
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0305F522F;
-	Wed, 18 Jun 2025 06:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333F52580F1;
+	Wed, 18 Jun 2025 06:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750229602; cv=none; b=I2sMCfJ3z1p7v/KVLeHZml//yNftVyQXPAxHtEFX213PtfG8pAl9TCQS0Dsm2dX0PelqQD5mZxOpsFQC8L9ZbgCNp/NXXgClxJIlcRkmbDVeDOYtmg5ZRtxKn5SwwrRwTAwVPFRk32uEux/ttBc/UE+ec5gp3D8qVQeZIWqZajw=
+	t=1750229767; cv=none; b=QRGC8Eqf8LaaDRfZbzaXjJofjVaasHYJrZwafre5L+FNMbKF25AiNkWKqw/lu4pfBR/HIbMmhn0CTVe7xjqQ89Wk76iU4PiwMPXAN0YxQZYiGtsXEWxoFyPhLT9Ab9x8nn14+CJKQDw1wAUPrAIFX/Oz5ioA2gXbx1WqqHzwHYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750229602; c=relaxed/simple;
-	bh=z6Zh6LHr9HQDygJksnzqsETbW3lKHUK6tVBn3W13Zl8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=gmOvFi/rHI8YUJChG1Txf/6znvBwmdIrHf1L1qcoHtH9yeuYNMYMxmsX82NONHYiTxFz6845Kplk3IVfPgzCvC+Gsi7n02WYmgy5ppT8vNTL8vUS9U3wuGUhS5qsRSubbeeYQ7kTEENiZ7DAxuuvcildTDaB4JZyHKdz87xsYc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4bMYn174Hcz27g2B;
-	Wed, 18 Jun 2025 14:32:05 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id CB5901A0171;
-	Wed, 18 Jun 2025 14:33:34 +0800 (CST)
-Received: from [10.67.112.40] (10.67.112.40) by dggpemf200006.china.huawei.com
- (7.185.36.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 18 Jun
- 2025 14:33:34 +0800
-Message-ID: <825fe267-0925-4b91-98ef-82dfb768f916@huawei.com>
-Date: Wed, 18 Jun 2025 14:33:32 +0800
+	s=arc-20240116; t=1750229767; c=relaxed/simple;
+	bh=Ufj1Ve1yx1z53tof+gYkfjzJ5vn/yw4UB29+0ds9ltM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UMB33m7jHo6xIobd9VigxIWkKUL7+il15blkVJgPODBt7BtIrDBrzE70G6GQujm73axMlfzqByISLwqyd2n68995ZTVjR2RgVR8AopsrN6eRbBjHO2wKDz3DIGjLMutVCh22+TTpmC8SDW37I4huGhhAY0rE9B+yCijEy6/TzpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T7oeYUor; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T7oeYUor"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-312e747d2d8so356997a91.0;
+        Tue, 17 Jun 2025 23:56:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750229765; x=1750834565; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zD4epyLQ1xLlDMRfj3B+WCP+Gez/lsY1w8BlgJOMNAk=;
+        b=T7oeYUorK/lr1QDgx9o4bVkuoZwbb+a27wGKTRXll2w0OIIGsDqkDxVHF3OpwruCoS
+         aJaJkP1ZPbcYqoQqRPFjZcKVsWIbS88eb/SM2aRSyW51XGbrHVuypCYgvxWi5eb5ofqJ
+         8lYM7pPrYmgMRMOkNerLx3EruBkO9oiseO+ea0ci8BYKVP1B+RccWzwWUETi7A7cyX/P
+         EFhQXv8xAxrLOe0mDwAgO1GwPT/fi+K3J7virfN8W2CWbGN6geKOovDzxlXW283vd9s3
+         77fNuf0zAKOaSQZ02k7yEhT+ir050wp2JxoHGZXOt4tneropXE6SQ2VSa2prWXnNJuZI
+         PFsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750229765; x=1750834565;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zD4epyLQ1xLlDMRfj3B+WCP+Gez/lsY1w8BlgJOMNAk=;
+        b=IZKst50rhBM9678fYEFfqzFpQSpNUj+sCLojsVZCwcKPEY9xkRf9bTYWDhp7m8722b
+         Iiifb1kxyVgCGteVz0/gNxGm4qtFcjxp/8JGTuVxT8GY+a/cjBdxpGCnetMgRYlIo0mL
+         zWzf446xYyGjigJkZXECpnKlOExInAkwH7Rk3UqAxjc4AWHNT0EiPcOUpsEzsL+K4Ywo
+         qpDuz+nuVIHL/8bSBozR4vfew+syw0PE9tCL4TwtF8EtHmZtc75TDurUyY9pTo8gkhDn
+         9nmkryv0Pz02O+VSkE5hSrZ9b/QqF+s917VYSmNapJ06DpMLAe0aptgZslx4bAhWPrfF
+         fOyg==
+X-Forwarded-Encrypted: i=1; AJvYcCWNyPJ8RFYuATMi9NoFd63bwwKn6rA5+LNjkve6H1soQ14DVlpbJudGQWrDRiTvUFWe4ML2mH8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyC8lAUgbgvg62VsgYzQjRSgLdHdNcR3AbWZ5SmoXE5ILlazf+
+	OVojjdGyaQC+3ZjbIRCcowsv47jJOsS5vTdR9YjtwKYKWBolN6QUsL02
+X-Gm-Gg: ASbGnctq85ITi3lDEffqAVJ15x/onXMG7170hKYT6zoaXncmTmeGodvaa75uXxQu6Ir
+	H3E1wag+oxjEtifhZmlrJw07chv8YXQKBeICvlNDL803tJuj2nkBXrniazs/5//dz+Lb1axnerg
+	QHI1z+TtFYTHzH0lUxO92jUwdtIdUpuImlyMPjSVUJm4vj/yS5fcKua+BScKL33/e4Z56abN0IY
+	u6o9CshKnoqI4pwgL0Ume4IH0q0P6ju3K/PiQhXMQPmEZKP9qLyzozBMwZrB01/AMvA42GKxyS3
+	adXRr/tkrYDudDJaLUr6J36Ha8y7/x9YqJANyrxs/DOuXNeLI6m/95/axbCqH8cUf65ZetQomkT
+	rUigkokT+Qh0NXKh2VV/vx9Ruutg0Rogn7w==
+X-Google-Smtp-Source: AGHT+IEtnTdWsIG6RSlbujnQtmVZpuH1mZixKMM8JLrsLXHgTbXBclHr/bkw6UQeiu8QyxsSHi5Ixw==
+X-Received: by 2002:a17:90b:5627:b0:311:abba:53b6 with SMTP id 98e67ed59e1d1-3157c856847mr2096287a91.14.1750229765296;
+        Tue, 17 Jun 2025 23:56:05 -0700 (PDT)
+Received: from KERNELXING-MB0.tencent.com ([43.132.141.24])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2365de782e2sm91844535ad.103.2025.06.17.23.56.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Jun 2025 23:56:04 -0700 (PDT)
+From: Jason Xing <kerneljasonxing@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	bjorn@kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	jonathan.lemon@gmail.com,
+	sdf@fomichev.me,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	joe@dama.to
+Cc: bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Jason Xing <kernelxing@tencent.com>
+Subject: [PATCH net-next v2] net: xsk: add sysctl_xsk_max_tx_budget in the xmit path
+Date: Wed, 18 Jun 2025 14:55:53 +0800
+Message-Id: <20250618065553.96822-1-kerneljasonxing@gmail.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC]Page pool buffers stuck in App's socket queue
-To: Mina Almasry <almasrymina@google.com>
-CC: Ratheesh Kannoth <rkannoth@marvell.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>
-References: <20250616080530.GA279797@maili.marvell.com>
- <d152d5fa-e846-48ba-96f4-77493996d099@huawei.com>
- <CAHS8izNBNoMfheMbW5_FS1zMHW61BZVzDLHgv0+E0Zn6U=jD-g@mail.gmail.com>
-Content-Language: en-US
-From: Yunsheng Lin <linyunsheng@huawei.com>
-In-Reply-To: <CAHS8izNBNoMfheMbW5_FS1zMHW61BZVzDLHgv0+E0Zn6U=jD-g@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- dggpemf200006.china.huawei.com (7.185.36.61)
 
-On 2025/6/18 5:02, Mina Almasry wrote:
-> On Mon, Jun 16, 2025 at 11:34 PM Yunsheng Lin <linyunsheng@huawei.com> wrote:
->>
->> On 2025/6/16 16:05, Ratheesh Kannoth wrote:
->>> Hi,
->>>
->>> Recently customer faced a page pool leak issue And keeps on gettting following message in
->>> console.
->>> "page_pool_release_retry() stalled pool shutdown 1 inflight 60 sec"
->>>
->>> Customer runs "ping" process in background and then does a interface down/up thru "ip" command.
->>>
->>> Marvell octeotx2 driver does destroy all resources (including page pool allocated for each queue of
->>> net device) during interface down event. This page pool destruction will wait for all page pool buffers
->>> allocated by that instance to return to the pool, hence the above message (if some buffers
->>> are stuck).
->>>
->>> In the customer scenario, ping App opens both RAW and RAW6 sockets. Even though Customer ping
->>> only ipv4 address, this RAW6 socket receives some IPV6 Router Advertisement messages which gets generated
->>> in their network.
->>>
->>> [   41.643448]  raw6_local_deliver+0xc0/0x1d8
->>> [   41.647539]  ip6_protocol_deliver_rcu+0x60/0x490
->>> [   41.652149]  ip6_input_finish+0x48/0x70
->>> [   41.655976]  ip6_input+0x44/0xcc
->>> [   41.659196]  ip6_sublist_rcv_finish+0x48/0x68
->>> [   41.663546]  ip6_sublist_rcv+0x16c/0x22c
->>> [   41.667460]  ipv6_list_rcv+0xf4/0x12c
->>>
->>> Those packets will never gets processed. And if customer does a interface down/up, page pool
->>> warnings will be shown in the console.
->>>
->>> Customer was asking us for a mechanism to drain these sockets, as they dont want to kill their Apps.
->>> The proposal is to have debugfs which shows "pid  last_processed_skb_time  number_of_packets  socket_fd/inode_number"
->>> for each raw6/raw4 sockets created in the system. and
->>> any write to the debugfs (any specific command) will drain the socket.
->>>
->>> 1. Could you please comment on the proposal ?
->>
->> I would say the above is kind of working around the problem.
->> It would be good to fix the Apps or fix the page_pool.
->>
->>> 2. Could you suggest a better way ?
->>
->> For fixing the page_pool part, I would be suggesting to keep track
->> of all the inflight pages and detach those pages from page_pool when
->> page_pool_destroy() is called, the tracking part was [1], unfortunately
->> the maintainers seemed to choose an easy way instead of a long term
->> direction, see [2].
-> 
-> This is not that accurate IMO. Your patch series and the merged patch
-> series from Toke does the same thing: both keep track of dma-mapped
+From: Jason Xing <kernelxing@tencent.com>
 
-The main difference is the above 'dma-mapped'.
+For some applications, it's quite useful to let users have the chance to
+tune the max budget, like accelerating transmission, when xsk is sending
+packets. Exposing such a knob also helps auto/AI tuning in the long run.
 
-> pages, so that they can be unmapped at page_pool_destroy time. Toke
-> just did the tracking in a simpler way that people were willing to
-> review.
-> 
-> So, if you had a plan to detach pages on page_pool_destroy on top of
-> your tracking, the exact same plan should work on top of Toke's
-> tracking. It may be useful to code that and send an RFC if you have
-> time. It would indeed fix this periodic warning issue.
+The patch unifies two definitions into one that is 32 by default and
+makes the sysctl knob namespecified.
 
-As above, when page_pool_create() is called without PP_FLAG_DMA_MAP, the
-dma-mapped pages tracking is not enough.
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+---
+v2
+Link: https://lore.kernel.org/all/20250617002236.30557-1-kerneljasonxing@gmail.com/
+1. use a per-netns sysctl knob
+2. use sysctl_xsk_max_tx_budget to unify both definitions.
+---
+ include/net/netns/core.h   |  1 +
+ include/net/xdp_sock.h     |  2 +-
+ net/core/net_namespace.c   |  1 +
+ net/core/sysctl_net_core.c |  8 ++++++++
+ net/xdp/xsk.c              | 12 ++++++------
+ 5 files changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/include/net/netns/core.h b/include/net/netns/core.h
+index 9b36f0ff0c20..f1ff15fd0032 100644
+--- a/include/net/netns/core.h
++++ b/include/net/netns/core.h
+@@ -14,6 +14,7 @@ struct netns_core {
+ 
+ 	int	sysctl_somaxconn;
+ 	int	sysctl_optmem_max;
++	int	sysctl_xsk_max_tx_budget;
+ 	u8	sysctl_txrehash;
+ 	u8	sysctl_tstamp_allow_data;
+ 
+diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
+index e8bd6ddb7b12..57b26ad12aa1 100644
+--- a/include/net/xdp_sock.h
++++ b/include/net/xdp_sock.h
+@@ -65,7 +65,7 @@ struct xdp_sock {
+ 	struct xsk_queue *tx ____cacheline_aligned_in_smp;
+ 	struct list_head tx_list;
+ 	/* record the number of tx descriptors sent by this xsk and
+-	 * when it exceeds MAX_PER_SOCKET_BUDGET, an opportunity needs
++	 * when it exceeds sysctl_xsk_max_tx_budget, an opportunity needs
+ 	 * to be given to other xsks for sending tx descriptors, thereby
+ 	 * preventing other XSKs from being starved.
+ 	 */
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index ae54f26709ca..890f8dc28690 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -396,6 +396,7 @@ static __net_init void preinit_net_sysctl(struct net *net)
+ 	net->core.sysctl_optmem_max = 128 * 1024;
+ 	net->core.sysctl_txrehash = SOCK_TXREHASH_ENABLED;
+ 	net->core.sysctl_tstamp_allow_data = 1;
++	net->core.sysctl_xsk_max_tx_budget = 32;
+ }
+ 
+ /* init code that must occur even if setup_net() is not called. */
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 5dbb2c6f371d..a51d9c7246ee 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -667,6 +667,14 @@ static struct ctl_table netns_core_table[] = {
+ 		.extra1		= SYSCTL_ZERO,
+ 		.proc_handler	= proc_dointvec_minmax
+ 	},
++	{
++		.procname	= "xsk_max_tx_budget",
++		.data		= &init_net.core.sysctl_xsk_max_tx_budget,
++		.maxlen		= sizeof(int),
++		.mode		= 0644,
++		.extra1		= SYSCTL_ONE,
++		.proc_handler	= proc_dointvec_minmax
++	},
+ 	{
+ 		.procname	= "txrehash",
+ 		.data		= &init_net.core.sysctl_txrehash,
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 72c000c0ae5f..15df133b50d7 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -33,9 +33,6 @@
+ #include "xdp_umem.h"
+ #include "xsk.h"
+ 
+-#define TX_BATCH_SIZE 32
+-#define MAX_PER_SOCKET_BUDGET (TX_BATCH_SIZE)
+-
+ void xsk_set_rx_need_wakeup(struct xsk_buff_pool *pool)
+ {
+ 	if (pool->cached_need_wakeup & XDP_WAKEUP_RX)
+@@ -424,7 +421,10 @@ bool xsk_tx_peek_desc(struct xsk_buff_pool *pool, struct xdp_desc *desc)
+ 	rcu_read_lock();
+ again:
+ 	list_for_each_entry_rcu(xs, &pool->xsk_tx_list, tx_list) {
+-		if (xs->tx_budget_spent >= MAX_PER_SOCKET_BUDGET) {
++		struct sock *sk = (struct sock *)xs;
++		int max_budget = READ_ONCE(sock_net(sk)->core.sysctl_xsk_max_tx_budget);
++
++		if (xs->tx_budget_spent >= max_budget) {
+ 			budget_exhausted = true;
+ 			continue;
+ 		}
+@@ -778,8 +778,8 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
+ 
+ static int __xsk_generic_xmit(struct sock *sk)
+ {
++	u32 max_budget = READ_ONCE(sock_net(sk)->core.sysctl_xsk_max_tx_budget);
+ 	struct xdp_sock *xs = xdp_sk(sk);
+-	u32 max_batch = TX_BATCH_SIZE;
+ 	bool sent_frame = false;
+ 	struct xdp_desc desc;
+ 	struct sk_buff *skb;
+@@ -797,7 +797,7 @@ static int __xsk_generic_xmit(struct sock *sk)
+ 		goto out;
+ 
+ 	while (xskq_cons_peek_desc(xs->tx, &desc, xs->pool)) {
+-		if (max_batch-- == 0) {
++		if (max_budget-- == 0) {
+ 			err = -EAGAIN;
+ 			goto out;
+ 		}
+-- 
+2.43.5
+
