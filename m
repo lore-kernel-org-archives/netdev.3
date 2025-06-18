@@ -1,16 +1,16 @@
 Received: from glittertind.blackshift.org (glittertind.blackshift.org [116.203.23.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6924C2DFF08
-	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 12:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF672BD58F
+	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 12:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.23.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750248041; cv=none; b=LDJu/yFKIEtsi6r5rGu8ZprT+V7oXplQaE8JPLG4BxwqPtGnIcWbURVslsO5N9ZRKsU8bNPt45ItQLikT/lFMwkhbtQuomaN+DlfEUE+VWShKKusiIkq43mrrUM5ndWyXeqfykePrJLomfEZ2ag11FGR+3q1d1s6v55wmhvzOE4=
+	t=1750248045; cv=none; b=bQJyc9Fr8btyfCDD1ICts1kjlEba7lCgIIBoxhpNdk5t9EsBDq/e/c27d0ENQ1VLY8SIyV4nyeIAU4ShMlruFXGdIHBOKANyREkrB1lpGDqJgiRVlkPUXdh5xKL7TaGpAUp+Hd7bOzRLfWqE/9wLvUyr+yCVvVLLcjVWz91PluA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750248041; c=relaxed/simple;
-	bh=VYJMovtGxdXZkHpWqywTu3uAJHSI58Pp1fUIXcI9pgw=;
+	s=arc-20240116; t=1750248045; c=relaxed/simple;
+	bh=HLPx1m+m8OBpx0jIA9w5+WqHbeIWeNqmWWt4rHfMWgo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Q3frPk9aXOlYaZINlsh6cwzbtMC0q9xpw3qDYX4wmgyDTbnfwL/rr0yv98NxnKTAI0YdYhObiSzbIaKeVyJF3zq0FS2cVSa/wqJ+evU1uQ3IN9d+HUz1np5jtjWfqVdUci0lEm7oel+Mopo+BoustVLMEAbM5rewfKdy63qadXs=
+	 In-Reply-To:To:Cc; b=n2nQts7Do3bLtFEcdD4wx2YPHbQ5eVYUCbJflWdKA42ADtz9BR40/LjmpofeYMd37FV8XmdnenbVuFzlp+yfOy2u8fyrgpg7y8fuz2zLYEEEhST1hx9ILgvf8S5279xgPQ7tiZ4Zu21SbKctmPF5miS8PQpQC+aLtIk6eHWujH8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=none smtp.mailfrom=hardanger.blackshift.org; arc=none smtp.client-ip=116.203.23.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=hardanger.blackshift.org
@@ -19,24 +19,24 @@ Received: from bjornoya.blackshift.org (unknown [IPv6:2003:e3:7f3d:bb00:d189:60c
 	 key-exchange X25519 server-signature ECDSA (secp384r1)
 	 client-signature RSA-PSS (4096 bits))
 	(Client CN "bjornoya.blackshift.org", Issuer "R10" (verified OK))
-	by glittertind.blackshift.org (Postfix) with ESMTPS id 9B78966FC4E
-	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 12:00:33 +0000 (UTC)
+	by glittertind.blackshift.org (Postfix) with ESMTPS id 340A766FD0E
+	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 12:00:38 +0000 (UTC)
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 67F2A42B566
-	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 12:00:33 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id 02FF942B5E1
+	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 12:00:37 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 488EE42B50F;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 7442542B514;
 	Wed, 18 Jun 2025 12:00:29 +0000 (UTC)
 Received: from hardanger.blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 950a2536;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id a4e44d1b;
 	Wed, 18 Jun 2025 12:00:28 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed, 18 Jun 2025 14:00:04 +0200
-Subject: [PATCH net-next v4 04/11] net: fec: sort the includes by
- alphabetic order
+Date: Wed, 18 Jun 2025 14:00:06 +0200
+Subject: [PATCH net-next v4 06/11] net: fec: fec_restart(): introduce a
+ define for FEC_ECR_SPEED
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250618-fec-cleanups-v4-4-c16f9a1af124@pengutronix.de>
+Message-Id: <20250618-fec-cleanups-v4-6-c16f9a1af124@pengutronix.de>
 References: <20250618-fec-cleanups-v4-0-c16f9a1af124@pengutronix.de>
 In-Reply-To: <20250618-fec-cleanups-v4-0-c16f9a1af124@pengutronix.de>
 To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
@@ -56,207 +56,53 @@ To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
  Alexander Lobakin <aleksander.lobakin@intel.com>
 Cc: imx@lists.linux.dev, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, kernel@pengutronix.de, bpf@vger.kernel.org, 
- Marc Kleine-Budde <mkl@pengutronix.de>
+ Marc Kleine-Budde <mkl@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
+ Andrew Lunn <andrew@lunn.ch>
 X-Mailer: b4 0.15-dev-6f78e
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5783; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=VYJMovtGxdXZkHpWqywTu3uAJHSI58Pp1fUIXcI9pgw=;
- b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBoUqpKv55JNsh2H9F4WAzaA5+/vQfJC1Zv+Fw4U
- sFpmuUoomeJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaFKqSgAKCRAMdGXf+ZCR
- nJj/B/9toLY5u7rFfv4LwgM9yTMa8J2CBVOo8eNXWYnuFFY1EKhLs66QhzuqxxAazM361yL0c4R
- xygMznzya02W7i8HwSiAYu3M0Qp/eHr4pEGANV3m0i88j1esisDdtIWlQ9QHT0B6rvU0m7ZMRFU
- UwzNSR/o6ZFKP9Ho8ER73CDnM1DmMhWlZmKe3TViDfcMySbIVoRpwYW91ng/+H+hCDEIWLzj0Qo
- YA+LvMGGiL62/dPk1cnfdIil5vK5amCFRQtowZD1e/X1bDadY8SUu/Hbb3COYHB1279JVbUSY8m
- QESE4BUTrdCa0KtfVvxSezMYNdqXrZe+8qKwfECOWk/vGFnO
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1320; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=HLPx1m+m8OBpx0jIA9w5+WqHbeIWeNqmWWt4rHfMWgo=;
+ b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBoUqpNDiZE0Sr1rTttZvnuVsD1qKnX9uYiRl1Mf
+ +XLQBf/xEeJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaFKqTQAKCRAMdGXf+ZCR
+ nEK3B/9DeIeJwg6n4mToTOv9cyYpKhOAwh9a71Lg+P3v85jYE6HD6yXL10poW2xOwaQRGY5Lxtz
+ NGjUpJTT8Is/rB4rEihyVLNCzQly9bo/XIs6kiq/Up+yZ+2YS5gEGFsrT8zzLncoulu66IH+/b2
+ i8W0GzbMkz2lqg2imanhYDEUkp3KDcZo7L6Zr9zJuvK3/y5ORMyiup4mA/m606XzhOQi52ffnIZ
+ BY94E+k0isWE2y8jQTpUW/E8QY9Xr/okIZ/kYrhSqIz1YhxB6IH5SRirZGQUDMalnzcuvQ1nYyi
+ NmJoD4EQ4S0qBfB76pkrDzqw1+TMgE4R/Ljzr6ngTQQ4G85f
 X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
  fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 
-This is a preparation patch to make addition of new includes easier
-without breaking the alphabetic order.
+Replace "1 << 5" for configuring 1000 MBit/s with a defined constant to
+improve code readability and maintainability.
 
-Suggested-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/ethernet/freescale/fec.h      |  6 +--
- drivers/net/ethernet/freescale/fec_main.c | 80 +++++++++++++++----------------
- drivers/net/ethernet/freescale/fec_ptp.c  | 38 +++++++--------
- 3 files changed, 62 insertions(+), 62 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-index ce1e4fe4d492..5c8fdcef759b 100644
---- a/drivers/net/ethernet/freescale/fec.h
-+++ b/drivers/net/ethernet/freescale/fec.h
-@@ -14,14 +14,14 @@
- #define	FEC_H
- /****************************************************************************/
- 
-+#include <dt-bindings/firmware/imx/rsrc.h>
-+#include <linux/bpf.h>
- #include <linux/clocksource.h>
-+#include <linux/firmware/imx/sci.h>
- #include <linux/net_tstamp.h>
- #include <linux/pm_qos.h>
--#include <linux/bpf.h>
- #include <linux/ptp_clock_kernel.h>
- #include <linux/timecounter.h>
--#include <dt-bindings/firmware/imx/rsrc.h>
--#include <linux/firmware/imx/sci.h>
- #include <net/xdp.h>
- 
- #if defined(CONFIG_M523x) || defined(CONFIG_M527x) || defined(CONFIG_M528x) || \
 diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index dbfc191bcde1..3b1a4506caa6 100644
+index 083b7e07a9d1..e4fc1baf114d 100644
 --- a/drivers/net/ethernet/freescale/fec_main.c
 +++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -22,55 +22,55 @@
-  * Copyright (C) 2010-2011 Freescale Semiconductor, Inc.
-  */
- 
--#include <linux/module.h>
--#include <linux/kernel.h>
--#include <linux/string.h>
--#include <linux/pm_runtime.h>
--#include <linux/ptrace.h>
--#include <linux/errno.h>
--#include <linux/ioport.h>
--#include <linux/slab.h>
--#include <linux/interrupt.h>
-+#include <linux/bitops.h>
-+#include <linux/bpf.h>
-+#include <linux/bpf_trace.h>
-+#include <linux/cacheflush.h>
-+#include <linux/clk.h>
-+#include <linux/crc32.h>
- #include <linux/delay.h>
--#include <linux/netdevice.h>
-+#include <linux/errno.h>
- #include <linux/etherdevice.h>
--#include <linux/skbuff.h>
-+#include <linux/fec.h>
-+#include <linux/filter.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/icmp.h>
-+#include <linux/if_vlan.h>
- #include <linux/in.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/ioport.h>
- #include <linux/ip.h>
-+#include <linux/irq.h>
-+#include <linux/kernel.h>
-+#include <linux/mdio.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/module.h>
-+#include <linux/netdevice.h>
-+#include <linux/of.h>
-+#include <linux/of_mdio.h>
-+#include <linux/of_net.h>
-+#include <linux/phy.h>
-+#include <linux/pinctrl/consumer.h>
-+#include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/prefetch.h>
-+#include <linux/property.h>
-+#include <linux/ptrace.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/skbuff.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
-+#include <linux/string.h>
-+#include <linux/tcp.h>
-+#include <linux/udp.h>
-+#include <linux/workqueue.h>
- #include <net/ip.h>
- #include <net/page_pool/helpers.h>
- #include <net/selftests.h>
- #include <net/tso.h>
--#include <linux/tcp.h>
--#include <linux/udp.h>
--#include <linux/icmp.h>
--#include <linux/spinlock.h>
--#include <linux/workqueue.h>
--#include <linux/bitops.h>
--#include <linux/io.h>
--#include <linux/irq.h>
--#include <linux/cacheflush.h>
--#include <linux/clk.h>
--#include <linux/crc32.h>
--#include <linux/platform_device.h>
--#include <linux/property.h>
--#include <linux/mdio.h>
--#include <linux/phy.h>
--#include <linux/fec.h>
--#include <linux/of.h>
--#include <linux/of_mdio.h>
--#include <linux/of_net.h>
--#include <linux/regulator/consumer.h>
--#include <linux/if_vlan.h>
--#include <linux/pinctrl/consumer.h>
--#include <linux/gpio/consumer.h>
--#include <linux/prefetch.h>
--#include <linux/mfd/syscon.h>
--#include <linux/regmap.h>
- #include <soc/imx/cpuidle.h>
--#include <linux/filter.h>
--#include <linux/bpf.h>
--#include <linux/bpf_trace.h>
- 
- #include "fec.h"
- 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index d6d9f0d6ca99..afe162c9eed8 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -7,30 +7,30 @@
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
--#include <linux/module.h>
--#include <linux/kernel.h>
--#include <linux/string.h>
--#include <linux/ptrace.h>
--#include <linux/errno.h>
--#include <linux/ioport.h>
--#include <linux/slab.h>
--#include <linux/interrupt.h>
--#include <linux/pci.h>
--#include <linux/delay.h>
--#include <linux/netdevice.h>
--#include <linux/etherdevice.h>
--#include <linux/skbuff.h>
--#include <linux/spinlock.h>
--#include <linux/workqueue.h>
- #include <linux/bitops.h>
--#include <linux/io.h>
--#include <linux/irq.h>
- #include <linux/clk.h>
--#include <linux/platform_device.h>
--#include <linux/phy.h>
-+#include <linux/delay.h>
-+#include <linux/errno.h>
-+#include <linux/etherdevice.h>
- #include <linux/fec.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/ioport.h>
-+#include <linux/irq.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/netdevice.h>
- #include <linux/of.h>
- #include <linux/of_net.h>
-+#include <linux/pci.h>
-+#include <linux/phy.h>
-+#include <linux/platform_device.h>
-+#include <linux/ptrace.h>
-+#include <linux/skbuff.h>
-+#include <linux/slab.h>
-+#include <linux/spinlock.h>
-+#include <linux/string.h>
-+#include <linux/workqueue.h>
- 
- #include "fec.h"
- 
+@@ -275,6 +275,7 @@ MODULE_PARM_DESC(macaddr, "FEC Ethernet MAC address");
+ #define FEC_ECR_MAGICEN         BIT(2)
+ #define FEC_ECR_SLEEP           BIT(3)
+ #define FEC_ECR_EN1588          BIT(4)
++#define FEC_ECR_SPEED           BIT(5)
+ #define FEC_ECR_BYTESWP         BIT(8)
+ /* FEC RCR bits definition */
+ #define FEC_RCR_LOOP            BIT(0)
+@@ -1206,7 +1207,7 @@ fec_restart(struct net_device *ndev)
+ 		/* 1G, 100M or 10M */
+ 		if (ndev->phydev) {
+ 			if (ndev->phydev->speed == SPEED_1000)
+-				ecntl |= (1 << 5);
++				ecntl |= FEC_ECR_SPEED;
+ 			else if (ndev->phydev->speed == SPEED_100)
+ 				rcntl &= ~FEC_RCR_10BASET;
+ 			else
 
 -- 
 2.47.2
