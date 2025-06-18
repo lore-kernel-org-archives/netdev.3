@@ -1,158 +1,123 @@
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00190b01.pphosted.com (mx0b-00190b01.pphosted.com [67.231.157.127])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8741F09BF
-	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 23:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C352184F
+	for <netdev@vger.kernel.org>; Thu, 19 Jun 2025 00:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.157.127
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750290941; cv=none; b=HiWUSy0vtIW7XE7nzbu24AADDl7TNw2pC52Tdg8ZwqVz97U3rr+fAZYylu8+LJ6lCTZqxRIy/6w7fLYiINYR+U5v44Ei9PPrirNrrJOGXPMh3jQj2KBeMPoxe1Kl6USrt6gTlNLhhX2TzZROrCQDtq13ff37hmZQJX9PeFi36pU=
+	t=1750291938; cv=none; b=TLj1fBp0NBZQVO/GKfMg/diULqZxQZJl4uf80QARKw9dc5NhWNRGUgYoWnqvjZjbiIVAR9eKMGzGCaDsYe6tGf0fyY+GnHosqoyBbu5LsgNmzXpG+bkAzeS+/EEvl+UDUDn0XADTclE9mcugKZn/UyY1FT/lA+G/WQZu66Ffzjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750290941; c=relaxed/simple;
-	bh=jXiE9rzeNs/RRjF+fEh/djBAzoD6GL5vfoqjbMTJVtM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Aatw7Qx59G3LYMuZCZhgxbRlvrxcEu2TbZUPrIi00yhVdSEoxqwo0wDTQ8Idl8Z8EjwpWhAmACjFTk8IuX7sNdwKxqC/q9c+uSn+9DcqsE96eeTChqcOwsbTtVXlBFWoYVz5T9ez2dBFAS81rPWzUtnQn7KxwEQMoMwNnw9eV5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=epLsLDBb; arc=none smtp.client-ip=209.85.166.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1750291938; c=relaxed/simple;
+	bh=Znhl+XTYXIA9gVuw2Csztz6Obua1PSDQMCyYO2uTjEI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=t1HguDiSaWPfF4VIvqwnP3ghUjZSv7giq5N2LQkFr4llVxpJU8J2MdwuoFBXbgncrY5wwYsaPqxm2V/CrjpkQ4QuuDlQt8R7YVu6lQ3VLxEfGoDWCo+p55EWpKhOBU9sv3+ANksnAuVdrygjLhHLJ3hkTA5UjPs5R5zcGVWWGnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=fQKmqOLU; arc=none smtp.client-ip=67.231.157.127
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="epLsLDBb"
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3de247e4895so05ab.1
-        for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 16:55:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750290939; x=1750895739; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OhvnUJBdUC24eZOisoPiZwhVd/LIwB2bYvJ6RT4qk7Y=;
-        b=epLsLDBbkmHP5kptTc0JsZlOWw5LmHVUQmlaOnYKZgkwi8aq9NDDJaYJBPxB4bUhp0
-         SIdzS1haD9EBI8ud71RIm1LIx4NgaT+yM3COPyw+mpvzZp2VZF+dXEhTmiTcbbjlFl6K
-         NjLajHkgthw2JUgCPzsO5LDKcDHXH+IuhOKzCdv0iz+u6U4QsP/XmILQcc56g25qesah
-         esSfc+lG8Licz36wDKwkxhMbOsh/o3waZ+vQGGyokI1ii9TqFDWcabIwbXAG+JT02MHT
-         a5FKqdKLZacGuYGWl6tA+Wdql/PRxTBJKghz7P55Vs/Zji5F1OdqlxpJuWXA43fnolPf
-         MkIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750290939; x=1750895739;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OhvnUJBdUC24eZOisoPiZwhVd/LIwB2bYvJ6RT4qk7Y=;
-        b=ingFKeMsDYYbyjpn5/3XUFsMvY5CTYCFLLLZgNzf01wfANVnmwrcU+Usl+gFyWQNBb
-         Tk05jMaZx2rMkjJe3Ux57WyJNfWZWP60JcJ9I4n0koDezaIthXaE3PaiD1RjNXd5J6Ud
-         eYmCHQ0AmvNDRJ2+ggid9GUQfcI39CNddMfvqe7OX7zPPGdCRjjcQKJRvYul4QISaaM1
-         PMklJJMHZbDJDgo+tfgmiEA6NQDzv+0WYU3UYXBGRM6VLN7/Mzqz8rSFlc8lWdGQ/2CZ
-         PlMD6Iq/hA4vANP9kS2y8Tt00YUd9jPk5Em9oOKm2AMY4u34OycpYNBC26THuOGmDycq
-         W4Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCU8wckyRWluXMliQG752l+8lZmLdK3R6CPaBVvK1Q9kYFlDpoRwS1JbCJ5zsQQdh9CE4jxatzI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6Xqwf4xnpt1CEl6rNUPCdDUgUX/InX6So3CudPOgBZgJu9pQu
-	mr7AqcD+tPmi4DNnVuq0rgohwPTHT9pMh9VRJG3oFTRevLVsc4TJ4lZ1enMihA0D4yIFvm192C4
-	fkGBw6nPSCHlCHqhjLq2fUD1dXXYjFI5W7sZapOgv
-X-Gm-Gg: ASbGncs+tSi/mZoLfA/behrYiKsTnkuJpq8MyC3nK4piXTUs9hee4mEQ296pReohzid
-	6BYmRdzAnlneP3RMFW2PPV+P1mSBFDmzZy49fa4HQ3J/uQpc5BAxz1HqFpizEnm9Vhpp3CliqGt
-	Z6N9W7AyRjEzLuZcmiaWG7Wz7iW9zEJSVJbNf3SgCzTZVFbHhoBR8ZWiN52SWDV7Yrm2DLC3DTx
-	kKx
-X-Google-Smtp-Source: AGHT+IEAj3oIerZ8VMhDsBvB9jTtKhynwQ/opLvvI7poEt160ct1eaw1qJ+tjnjOnXuXTGGXuUfKXdzM8SueivuxuaI=
-X-Received: by 2002:a05:6e02:4507:20b0:3d9:3ee7:a75b with SMTP id
- e9e14a558f8ab-3de304f2062mr903775ab.1.1750290938367; Wed, 18 Jun 2025
- 16:55:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="fQKmqOLU"
+Received: from pps.filterd (m0050096.ppops.net [127.0.0.1])
+	by m0050096.ppops.net-00190b01. (8.18.1.2/8.18.1.2) with ESMTP id 55ILU5BE001765;
+	Thu, 19 Jun 2025 00:13:47 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=jan2016.eng; bh=fM70JcWK1
+	O6OoLDKK/sqxGDGA7bzJGB3MmPO3OUXsK0=; b=fQKmqOLU+djPQLtxWDW2VrfFc
+	KCOG74CV+r2ARfhCXv6qRfryKcO8qVTFwOLRm7X5tMUiMjp1N9N6VfZyBgPP1kp0
+	VOboCp0F9ak3OvjKDn0/6+HYsxs2CBcWuIx2aNw8LC32kOFBPOE6K2erYNv1KClF
+	aCOTdni2brHAY6b/WpSpAZKAD3Q2sLcwNS/ARgmeCot+FwjwJVw+Ch5lOfY+fwO2
+	Nr2E7DsFBeJ7d3l4q2IS4EXSqBxSSIr/K7wCN3nngwCxEIr0NekOqT4WaKirqekJ
+	0mJn3kDsPgaw16jlO+0igy0MKiL3bMGt1oaliR/nYW0QLk+RaK30nmU2ygmXg==
+Received: from prod-mail-ppoint6 (prod-mail-ppoint6.akamai.com [184.51.33.61] (may be forged))
+	by m0050096.ppops.net-00190b01. (PPS) with ESMTPS id 4791gfyy2c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Jun 2025 00:13:47 +0100 (BST)
+Received: from pps.filterd (prod-mail-ppoint6.akamai.com [127.0.0.1])
+	by prod-mail-ppoint6.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id 55IMgdkn014221;
+	Wed, 18 Jun 2025 19:13:46 -0400
+Received: from prod-mail-relay11.akamai.com ([172.27.118.250])
+	by prod-mail-ppoint6.akamai.com (PPS) with ESMTP id 47bt18uhm2-1;
+	Wed, 18 Jun 2025 19:13:46 -0400
+Received: from bos-lhv9ol.bos01.corp.akamai.com (bos-lhv9ol.bos01.corp.akamai.com [172.28.41.79])
+	by prod-mail-relay11.akamai.com (Postfix) with ESMTP id 1028A33B2C;
+	Wed, 18 Jun 2025 23:13:46 +0000 (GMT)
+From: Jason Baron <jbaron@akamai.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, horms@kernel.org, kuniyu@amazon.com
+Subject: [PATCH net-next v2 2/3] udp: use __sock_rcvbuf_has_space() helper
+Date: Wed, 18 Jun 2025 19:13:22 -0400
+Message-Id: <c4b522bbcc0bef99a917c331949b0a6840fcab4c.1750285100.git.jbaron@akamai.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1750285100.git.jbaron@akamai.com>
+References: <cover.1750285100.git.jbaron@akamai.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250618104025.3463656-1-yuyanghuang@google.com> <20250618182029.GV1699@horms.kernel.org>
-In-Reply-To: <20250618182029.GV1699@horms.kernel.org>
-From: Yuyang Huang <yuyanghuang@google.com>
-Date: Thu, 19 Jun 2025 08:55:01 +0900
-X-Gm-Features: Ac12FXz88D2o7FcO2slqJtiNgJD5NxCpvCi7fsUGH4HLmFCQnQ7_XC7-NAVyGH8
-Message-ID: <CADXeF1F6q5NfboqbnoGJPFf9C1x3-v2OkspKqYhnFOVL2=1vdg@mail.gmail.com>
-Subject: Re: [PATCH net-next] selftest: add selftest for anycast notifications
-To: Simon Horman <horms@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-18_06,2025-06-18_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=777 phishscore=0 mlxscore=0
+ adultscore=0 suspectscore=0 bulkscore=0 malwarescore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2506180198
+X-Proofpoint-ORIG-GUID: _phhKwRTTG_vWgabL5Ag0mGAa12caTek
+X-Proofpoint-GUID: _phhKwRTTG_vWgabL5Ag0mGAa12caTek
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE4MDIwMCBTYWx0ZWRfX7sNu3jNSna5u
+ smoHrJUVCrhnKSUXpJ7+NQm2njItvshcTeS7k1ijI1+sSs9uY69b4eiiADx5NF1Oxt3//r5g98C
+ WvZmf8pPWnlcse6YYkoCv8NDXWBjg+WVIDlibIS5Un8kpoZ3O3+ZLiZ+0lryWw9tH0NfbVl6yvU
+ Puzhui6QnAkl3kJNTQrY319z5LIzjW42GKuDpBze/8bOZx6JplHcKAPQcrFL3khwUeSS24pwxxL
+ 1BX/s0v6fAyC4vT1TOrE2T39udZAmy1CakWvxIASP3nQJ37FtLvCcZbiDEC/mKS2oc6wQh6ciPa
+ Jt1K235NfPblc59EKaWn0ZATVGjjKcFawl4+ungDWL3AC9TVA79FWJVa6qghSwscElzd3n7qb00
+ PtsCPKPFsqkP562Q/Q+TvdVLmL7pV9aXZuizndNfjMroWviblz/N1JyBUCOHK4flzIq05xmt
+X-Authority-Analysis: v=2.4 cv=Qc1mvtbv c=1 sm=1 tr=0 ts=6853482b cx=c_pps
+ a=WPLAOKU3JHlOa4eSsQmUFQ==:117 a=WPLAOKU3JHlOa4eSsQmUFQ==:17
+ a=6IFa9wvqVegA:10 a=X7Ea-ya5AAAA:8 a=4e7UgTkSTAAOCcoRnsgA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-18_06,2025-06-18_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ lowpriorityscore=0 mlxscore=0 malwarescore=0 bulkscore=0 suspectscore=0
+ adultscore=0 spamscore=0 phishscore=0 impostorscore=0 priorityscore=1501
+ clxscore=1015 mlxlogscore=547 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506180200
 
-Thanks for the review feedback, I will move the clean up to a seaparte patc=
-h.
+Make use of __sock_rcvbuf_has_space() in __udp_enqueue_schedule_skb().
 
-On Thu, Jun 19, 2025 at 3:20=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
-te:
->
-> On Wed, Jun 18, 2025 at 07:40:25PM +0900, Yuyang Huang wrote:
-> > This commit adds a new kernel selftest to verify RTNLGRP_IPV6_ACADDR
-> > notifications. The test works by adding/removing a dummy interface,
-> > enabling packet forwarding, and then confirming that user space can
-> > correctly receive anycast notifications.
-> >
-> > The test relies on the iproute2 version to be 6.13+.
-> >
-> > Tested by the following command:
-> > $ vng -v --user root --cpus 16 -- \
-> > make -C tools/testing/selftests TARGETS=3Dnet
-> > TEST_PROGS=3Drtnetlink_notification.sh \
-> > TEST_GEN_PROGS=3D"" run_tests
-> >
-> > Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
-> > ---
-> >  .../selftests/net/rtnetlink_notification.sh   | 52 +++++++++++++++++--
-> >  1 file changed, 47 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/tools/testing/selftests/net/rtnetlink_notification.sh b/to=
-ols/testing/selftests/net/rtnetlink_notification.sh
->
-> ...
->
-> > @@ -18,12 +20,11 @@ kci_test_mcast_addr_notification()
-> >       local tmpfile
-> >       local monitor_pid
-> >       local match_result
-> > -     local test_dev=3D"test-dummy1"
-> >
-> >       tmpfile=3D$(mktemp)
-> >       defer rm "$tmpfile"
-> >
-> > -     ip monitor maddr > $tmpfile &
-> > +     ip monitor maddr > "$tmpfile" &
-> >       monitor_pid=3D$!
-> >       defer kill_process "$monitor_pid"
-> >
-> > @@ -32,7 +33,7 @@ kci_test_mcast_addr_notification()
-> >       if [ ! -e "/proc/$monitor_pid" ]; then
-> >               RET=3D$ksft_skip
-> >               log_test "mcast addr notification: iproute2 too old"
-> > -             return $RET
-> > +             return "$RET"
-> >       fi
-> >
-> >       ip link add name "$test_dev" type dummy
->
-> > @@ -53,7 +54,48 @@ kci_test_mcast_addr_notification()
-> >               RET=3D$ksft_fail
-> >       fi
-> >       log_test "mcast addr notification: Expected 4 matches, got $match=
-_result"
-> > -     return $RET
-> > +     return "$RET"
-> > +}
->
-> ...
->
-> > @@ -67,4 +109,4 @@ require_command ip
-> >
-> >  tests_run
-> >
-> > -exit $EXIT_STATUS
-> > +exit "$EXIT_STATUS"
->
-> Hi,
->
-> While I like the changes above (that I haven't trimmed-out)
-> these seem to be clean-ups that aren't strictly related
-> to the subject of this patch. IOW, they don't belong in this patch
-> (but could be a separate patch).
->
-> --
-> pw-bot: changes-requested
+Signed-off-by: Jason Baron <jbaron@akamai.com>
+---
+ net/ipv4/udp.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
+
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index dde52b8050b8..64e6c34a8fb8 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1733,17 +1733,8 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ 	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+ 	size = skb->truesize;
+ 
+-	/* Immediately drop when the receive queue is full.
+-	 * Cast to unsigned int performs the boundary check for INT_MAX.
+-	 */
+-	if (rmem + size > rcvbuf) {
+-		if (rcvbuf > INT_MAX >> 1)
+-			goto drop;
+-
+-		/* Always allow at least one packet for small buffer. */
+-		if (rmem > rcvbuf)
+-			goto drop;
+-	}
++	if (!__sock_rcvbuf_has_space(rmem, rcvbuf, size))
++		goto drop;
+ 
+ 	/* Under mem pressure, it might be helpful to help udp_recvmsg()
+ 	 * having linear skbs :
+-- 
+2.25.1
+
