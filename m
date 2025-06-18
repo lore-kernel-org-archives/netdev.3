@@ -1,101 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D898F2DE204;
-	Wed, 18 Jun 2025 12:34:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4902BD5AF;
+	Wed, 18 Jun 2025 12:34:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750250049; cv=none; b=bJEme0JjVrWLsdly2puFyopO7OyaFdxWDFGrQFPvw0lXYJb2+AYM6Ko5P/PUel8zhYhSd0rHcrOgkXK8jvV89ucIL3tBFFZaAgeA9F1mV4R4IYek7zlXXKBMiRZXiwhwzwZvIX11GWsKaTgZqo0GIE4o6HIqygOiAczSTVvO4qE=
+	t=1750250092; cv=none; b=uJCZhIdOWdeO13D8mS4LSn02JUBzFsNzRNA+PC/q6uYSZ/eoyyEs6GJQ2UfVlh3o5X9mQuriHRWqBN8yocctRdnBWiOB8qqoPZqKEKZ3wT18rG/CtEGmcjswRglgUNgVmuu+VdZX5isp5BASdlc82pAw6kEDKLTGXvS85tOmhWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750250049; c=relaxed/simple;
-	bh=CqtW2tNbfWVC0/PJLiDcBr6CPf9A3LFNx9bnw1lWXdw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nQ5nzTDQl5UOd+kIe4QvgwjyTTbIOPQXuIkIir9qaTQCbO2q2lbkC2lhIpQ3Jf24q5jjp+TteaNKm9WdcLBz2aKOqyT8L4iJPn5iqxYp2sNKi+uw4lJQ0oOrX5TpX6gCYpNOVcooiX+2M5xq6PjHEKyc6SiU6t2oDtFiMaiU8/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QpTgTRhZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750250092; c=relaxed/simple;
+	bh=c/V9qKsWL7LR4TXZlQzm9LYcR7HXbQIfS9FcI7mQezw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=VqXIr7qMD1jSPMqANzC7G8vmHnWBMEijh/Z/plBmZyzoONK4kM1wfGpFxC8JLP6d7pLQ1WF3tQs/+gQfyKVx+jvlgijo3RARK/sng2jMmAvJdV33iQPvnaocXJXV0S7yETDQYUHOe4PDrCKAwnW7hwHzDFb13huc88rF//UuWMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=tAhQaCXk; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QpTgTRhZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69762C4CEE7;
-	Wed, 18 Jun 2025 12:34:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750250049;
-	bh=CqtW2tNbfWVC0/PJLiDcBr6CPf9A3LFNx9bnw1lWXdw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QpTgTRhZ5Xe4fvAIXro9/JvXN2JfjblpwUOUnRcBqCGPZSup2mjMvddb37oMtKb6H
-	 DemTvUQikcwmPWnxqQQ8eTiq3qxBWqIMj4pwD3dJJeMSViSU66QQlrv7v66jmxDuE/
-	 AAc7JVuyghm0VxJI885Hf5PPxHBNlXMwdHHx826DYGCFjttUm4HB//xmwiA2ALgOck
-	 4RLazNONmA/0K5CcKnjBXaU7laoY2Mh9BGzEt1FFfIGkloZOZ/6QtoBsrYP/17Miwx
-	 OuHmoVISw5s6HLY0Qc98cu3ADHkK+qv7clBzrdSYInRuW32zj23QK5Ad05D5OmNx/v
-	 TgxRwiJWtqyzA==
-Date: Wed, 18 Jun 2025 13:34:05 +0100
-From: Simon Horman <horms@kernel.org>
-To: David Thompson <davthompson@nvidia.com>
-Cc: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Asmaa Mnebhi <asmaa@nvidia.com>
-Subject: Re: [PATCH net v1] mlxbf_gige: return EPROBE_DEFER if PHY IRQ is not
- available
-Message-ID: <20250618123405.GN1699@horms.kernel.org>
-References: <20250613185129.1998882-1-davthompson@nvidia.com>
- <20250616124502.GA4750@horms.kernel.org>
- <MN0PR12MB5907DC095A95A1BA1F2472FDC773A@MN0PR12MB5907.namprd12.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="tAhQaCXk"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1uRs07-00CJhx-PL; Wed, 18 Jun 2025 14:34:47 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=50l1Jw38RlpNlRT0k2eYWxpZdFo+21V94gLNM82jfXQ=; b=tAhQaCXksEaw6n7FfdY4l1Qxav
+	rvwfws3hkimpRSQspPu2rQIrPdbQhQhVVbqLCigWVX8KoehXAXk/VDiaHsSKZTNr2FZwDIm1dKhE1
+	OOIbhUJtp59Lfwx/sKrJYfw3rFDFyp4iSbE4mwXsdr34j7U/W9QPuBAOAGu9MJr9fxEg4HD8umB/A
+	ntFGj3QE7YkzTC8+88nqqXM7UfEJPWvlRVR9iCt9sgJ1BhmM/egnus3Rcgg/WCnXSp19X3K3+ZreY
+	fEcmbB9s4w+s2K/bPaJ2yhb0aXnIHGc71TfOUbGQUE1KOuqsQSDPtR0fbmhZTGQXYz8B+OMmO77zJ
+	TqS5rycA==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1uRs07-0004bn-CZ; Wed, 18 Jun 2025 14:34:47 +0200
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1uRrzp-00DbRZ-A6; Wed, 18 Jun 2025 14:34:29 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Wed, 18 Jun 2025 14:34:01 +0200
+Subject: [PATCH net 2/3] vsock: Fix transport_g2h TOCTOU
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <MN0PR12MB5907DC095A95A1BA1F2472FDC773A@MN0PR12MB5907.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250618-vsock-transports-toctou-v1-2-dd2d2ede9052@rbox.co>
+References: <20250618-vsock-transports-toctou-v1-0-dd2d2ede9052@rbox.co>
+In-Reply-To: <20250618-vsock-transports-toctou-v1-0-dd2d2ede9052@rbox.co>
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-On Tue, Jun 17, 2025 at 08:07:37PM +0000, David Thompson wrote:
-> > -----Original Message-----
-> > From: Simon Horman <horms@kernel.org>
-> > Sent: Monday, June 16, 2025 8:45 AM
-> > To: David Thompson <davthompson@nvidia.com>
-> > Cc: andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
-> > kuba@kernel.org; pabeni@redhat.com; u.kleine-koenig@baylibre.com;
-> > netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Asmaa Mnebhi
-> > <asmaa@nvidia.com>
-> > Subject: Re: [PATCH net v1] mlxbf_gige: return EPROBE_DEFER if PHY IRQ is not
-> > available
-> > 
-> > On Fri, Jun 13, 2025 at 06:51:29PM +0000, David Thompson wrote:
-> > > The message "Error getting PHY irq. Use polling instead"
-> > > is emitted when the mlxbf_gige driver is loaded by the kernel before
-> > > the associated gpio-mlxbf driver, and thus the call to get the PHY IRQ
-> > > fails since it is not yet available. The driver probe() must return
-> > > -EPROBE_DEFER if acpi_dev_gpio_irq_get_by() returns the same.
-> > >
-> > > Signed-off-by: David Thompson <davthompson@nvidia.com>
-> > > Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
-> > 
-> > Thanks David,
-> > 
-> > I as a bug fix this needs a Fixes tag, which you can add by simply replying to this
-> > email.
-> > 
-> > Else we can treat it as an enhancement for net-next.
-> 
-> Yes, good point Simon.
-> 
-> This patch is a fix, so should have the following Fixes tag:
-> 	Fixes: 6c2a6ddca763 ("net: mellanox: mlxbf_gige: Replace non-standard interrupt handling")
+Function may race with vsock_core_unregister(): transport_g2h may become
+NULL after the NULL check. Protect from a potential null-ptr-deref.
 
-Thanks David,
+KASAN: null-ptr-deref in range [0x0000000000000118-0x000000000000011f]
+RIP: 0010:vsock_find_cid+0x47/0x90
+Call Trace:
+ __vsock_bind+0x4b2/0x720
+ vsock_bind+0x90/0xe0
+ __sys_bind+0x14d/0x1e0
+ __x64_sys_bind+0x6e/0xc0
+ do_syscall_64+0x92/0x1c0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-I notice that in the meantime that this has been marked as Changes Requested
-in patchwork. Presumably due to my earlier comment about a Fixes tag.
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ net/vmw_vsock/af_vsock.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Could you post a v2 with the Fixes tag?
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 047d1bc773fab9c315a6ccd383a451fa11fb703e..337540efc237c8bc482a6730948fc773c00854f1 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -533,8 +533,10 @@ EXPORT_SYMBOL_GPL(vsock_assign_transport);
+ 
+ bool vsock_find_cid(unsigned int cid)
+ {
+-	if (transport_g2h && cid == transport_g2h->get_local_cid())
+-		return true;
++	scoped_guard(mutex, &vsock_register_mutex) {
++		if (transport_g2h && cid == transport_g2h->get_local_cid())
++			return true;
++	}
+ 
+ 	if (transport_h2g && cid == VMADDR_CID_HOST)
+ 		return true;
 
-Feel free to also include
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+-- 
+2.49.0
 
