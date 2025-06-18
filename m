@@ -1,34 +1,66 @@
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB022F5323;
-	Wed, 18 Jun 2025 11:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C972BEC28;
+	Wed, 18 Jun 2025 11:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750247151; cv=none; b=eHNr88SSAIb1TtbBqYSvphYZVP8koRvGhIzazDLKEc1jHJjjYNhiqv9FYzQcNbA7aDrVwV1zZ8v2hjwnCc4wgsD8HI0p+u1+UWBt7GLt/FVc1DQv/iG/jVJ4cVwisLo2FuHhYgYTDri6vZ05rpx5TLYOhBm2cZxQ4K78mA+qOZ4=
+	t=1750247211; cv=none; b=kkhK4sjKnPM546baCQzWSrbNxS1u/buw4QPaYRJKLoD3vLPAlKGMVyIjT8f97NgpZydebBZkixL1vfKt5UOFkNRKKvQ77USATSG2k1LqiF9lWPRLtnaDIiUMbaHeQKEBE9v0DKKzkROhbVBVgZmrgMPixpKX1H/yoyZcq5W9nEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750247151; c=relaxed/simple;
-	bh=WYJ16Alk09q6fIdfKWEBzJa6GAWM1uSoSPLuY7xDDcI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=q1GN5sUk+K6xivIRVbIyfMvHLBxRv6o/YhcdnDNiCkbeETFpzYtEWg+4uU1dQTJ8OlcYpxl1nNTbh2UBebwLnb6TSQgjxlXcBT1mndFYY0tJX1Bq7XlSl/g6gUoYlUISLPAE33MAbu6agdm1jNoMgURYbwf5EIlmoti7xQiRD+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from localhost.localdomain (188.234.0.8) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Wed, 18 Jun
- 2025 14:45:30 +0300
-From: d.privalov <d.privalov@omp.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg
-	<johan.hedberg@gmail.com>, "David S. Miller" <davem@davemloft.net>, Jakub
- Kicinski <kuba@kernel.org>, <linux-bluetooth@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, Miklos Szeredi <mszeredi@redhat.com>, Dmitriy
- Privalov <d.privalov@omp.ru>
-Subject: [PATCH 5.10/5.15 1/1] fuse: don't increment nlink in link()
-Date: Wed, 18 Jun 2025 14:44:09 +0300
-Message-ID: <20250618114409.179601-1-d.privalov@omp.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1750247211; c=relaxed/simple;
+	bh=MZJWqI3Ttw/muYCtmcZ8ZV0+firnnb8VF0+QvKwQ1QU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Uioe4DoH9e3xAfV5CgbK02n93656xl5gFCzOhq5bO3imM5Ea5TiMu1jWl3titRd3+XXMOW7U60x2xBrcvoSzOsB7qIa75rF+AWxooQJ3waWoI6iNm9OrNLtTuYmbaQCSvLFwsoWmF0Qrr0Tgw/lTs6E8hmCclr2gArCUOljMcxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P91TIwux; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P91TIwux"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59226C4CEE7;
+	Wed, 18 Jun 2025 11:46:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750247211;
+	bh=MZJWqI3Ttw/muYCtmcZ8ZV0+firnnb8VF0+QvKwQ1QU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=P91TIwuxhS2K9nDmQzM6kFxsLu9ADImckCvp9pDPV1AUX+4/xgi1rrQf5gmEhSjEm
+	 lQgkonVoIjkS60GRyPswnAJHSYa4fJguEgACI87M6Z8FhnoYzYYXugIrq7JDFsAicd
+	 wzNZIzZeueNuvcoZJRu2ncRFAOJVzu/M5i5kXEqpOvXi5FNg9w9HdLw/XxwynsplNk
+	 xXN2QOWBiqrcALkNK9qDPwFa6l+WUYeixXCM1LztaGoNslJFBxGmalCfGAWruUhLdW
+	 Q4LjPlImNUA7FLRFygbdYWMGGJbnSiuZkDn08F9R1anDFdbdBCW8dSiwuOQ+K7Fdnc
+	 Kl1CAAppMiDdQ==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1uRrFh-000000036UR-26te;
+	Wed, 18 Jun 2025 13:46:49 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	"Akira Yokosawa" <akiyks@gmail.com>,
+	"Breno Leitao" <leitao@debian.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Donald Hunter" <donald.hunter@gmail.com>,
+	"Eric Dumazet" <edumazet@google.com>,
+	"Ignacio Encinas Rubio" <ignacio@iencinas.com>,
+	"Jan Stancek" <jstancek@redhat.com>,
+	"Marco Elver" <elver@google.com>,
+	"Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
+	"Paolo Abeni" <pabeni@redhat.com>,
+	"Ruben Wauters" <rubenru09@aol.com>,
+	"Shuah Khan" <skhan@linuxfoundation.org>,
+	Jakub Kicinski <mchehab+huawei@kernel.org>,
+	Simon Horman <mchehab+huawei@kernel.org>,
+	joel@joelfernandes.org,
+	linux-kernel-mentees@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	lkmm@lists.linux.dev,
+	netdev@vger.kernel.org,
+	peterz@infradead.org,
+	stern@rowland.harvard.edu
+Subject: [PATCH v6 03/15] docs: netlink: netlink-raw.rst: use :ref: instead of :doc:
+Date: Wed, 18 Jun 2025 13:46:30 +0200
+Message-ID: <205e2b0baddabf47ab23ed08fbddd3fdc0cdcc58.1750246291.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <cover.1750246291.git.mchehab+huawei@kernel.org>
+References: <cover.1750246291.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -36,117 +68,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 06/18/2025 11:27:56
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 194137 [Jun 18 2025]
-X-KSE-AntiSpam-Info: Version: 6.1.1.11
-X-KSE-AntiSpam-Info: Envelope from: d.privalov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 62 0.3.62
- e2af3448995f5f8a7fe71abf21bb23519d0f38c3
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info:
-	d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;omp.ru:7.1.1
-X-KSE-AntiSpam-Info: {Tracking_ip_hunter}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 188.234.0.8
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/18/2025 11:29:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 6/18/2025 9:13:00 AM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+Currently, rt documents are referred with:
 
-commit 97f044f690bac2b094bfb7fb2d177ef946c85880 upstream.
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`rt-link<../../networking/netlink_spec/rt-link>`
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
 
-The fuse_iget() call in create_new_entry() already updated the inode with
-all the new attributes and incremented the attribute version.
+Having :doc: references with relative paths doesn't always work,
+as it may have troubles when O= is used. Also that's hard to
+maintain, and may break if we change the way rst files are
+generated from yaml. Better to use instead a reference for
+the netlink family.
 
-Incrementing the nlink will result in the wrong count.  This wasn't noticed
-because the attributes were invalidated right after this.
+So, replace them by Sphinx cross-reference tag that are
+created by ynl_gen_rst.py.
 
-Updating ctime is still needed for the writeback case when the ctime is not
-refreshed.
-
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Dmitriy Privalov <d.privalov@omp.ru>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- fs/fuse/dir.c | 29 ++++++++++-------------------
- 1 file changed, 10 insertions(+), 19 deletions(-)
+ Documentation/userspace-api/netlink/netlink-raw.rst | 6 +++---
+ tools/net/ynl/pyynl/ynl_gen_rst.py                  | 5 +++--
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-index 4488a53a192d..7055fdc1b8ce 100644
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -807,7 +807,7 @@ void fuse_flush_time_update(struct inode *inode)
- 	mapping_set_error(inode->i_mapping, err);
- }
+diff --git a/Documentation/userspace-api/netlink/netlink-raw.rst b/Documentation/userspace-api/netlink/netlink-raw.rst
+index 31fc91020eb3..aae296c170c5 100644
+--- a/Documentation/userspace-api/netlink/netlink-raw.rst
++++ b/Documentation/userspace-api/netlink/netlink-raw.rst
+@@ -62,8 +62,8 @@ Sub-messages
+ ------------
  
--void fuse_update_ctime(struct inode *inode)
-+static void fuse_update_ctime_in_cache(struct inode *inode)
- {
- 	if (!IS_NOCMTIME(inode)) {
- 		inode->i_ctime = current_time(inode);
-@@ -816,6 +816,12 @@ void fuse_update_ctime(struct inode *inode)
- 	}
- }
+ Several raw netlink families such as
+-:doc:`rt-link<../../networking/netlink_spec/rt-link>` and
+-:doc:`tc<../../networking/netlink_spec/tc>` use attribute nesting as an
++:ref:`rt-link<netlink-rt-link>` and
++:ref:`tc<netlink-tc>` use attribute nesting as an
+ abstraction to carry module specific information.
  
-+void fuse_update_ctime(struct inode *inode)
-+{
-+	fuse_invalidate_attr(inode);
-+	fuse_update_ctime_in_cache(inode);
-+}
-+
- static int fuse_unlink(struct inode *dir, struct dentry *entry)
- {
- 	int err;
-@@ -986,25 +992,10 @@ static int fuse_link(struct dentry *entry, struct inode *newdir,
- 	args.in_args[1].size = newent->d_name.len + 1;
- 	args.in_args[1].value = newent->d_name.name;
- 	err = create_new_entry(fm, &args, newdir, newent, inode->i_mode);
--	/* Contrary to "normal" filesystems it can happen that link
--	   makes two "logical" inodes point to the same "physical"
--	   inode.  We invalidate the attributes of the old one, so it
--	   will reflect changes in the backing inode (link count,
--	   etc.)
--	*/
--	if (!err) {
--		struct fuse_inode *fi = get_fuse_inode(inode);
+ Conceptually it looks as follows::
+@@ -162,7 +162,7 @@ then this is an error.
+ Nested struct definitions
+ -------------------------
+ 
+-Many raw netlink families such as :doc:`tc<../../networking/netlink_spec/tc>`
++Many raw netlink families such as :ref:`tc<netlink-tc>`
+ make use of nested struct definitions. The ``netlink-raw`` schema makes it
+ possible to embed a struct within a struct definition using the ``struct``
+ property. For example, the following struct definition embeds the
+diff --git a/tools/net/ynl/pyynl/ynl_gen_rst.py b/tools/net/ynl/pyynl/ynl_gen_rst.py
+index 0cb6348e28d3..7bfb8ceeeefc 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_rst.py
++++ b/tools/net/ynl/pyynl/ynl_gen_rst.py
+@@ -314,10 +314,11 @@ def parse_yaml(obj: Dict[str, Any]) -> str:
+ 
+     # Main header
+ 
+-    lines.append(rst_header())
 -
--		spin_lock(&fi->lock);
--		fi->attr_version = atomic64_inc_return(&fm->fc->attr_version);
--		if (likely(inode->i_nlink < UINT_MAX))
--			inc_nlink(inode);
--		spin_unlock(&fi->lock);
--		fuse_invalidate_attr(inode);
--		fuse_update_ctime(inode);
--	} else if (err == -EINTR) {
-+	if (!err)
-+		fuse_update_ctime_in_cache(inode);
-+	else if (err == -EINTR)
- 		fuse_invalidate_attr(inode);
--	}
- 	return err;
- }
+     family = obj['name']
  
++    lines.append(rst_header())
++    lines.append(rst_label("netlink-" + family))
++
+     title = f"Family ``{family}`` netlink specification"
+     lines.append(rst_title(title))
+     lines.append(rst_paragraph(".. contents:: :depth: 3\n"))
 -- 
-2.34.1
+2.49.0
 
