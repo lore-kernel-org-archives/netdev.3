@@ -1,86 +1,212 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3564288C25
-	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 12:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070462E06EF;
+	Wed, 18 Jun 2025 12:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750250629; cv=none; b=JBoj29QVff9tKjzt3POzAJAt/5TJptvx9eSena1OFyJwySyazpgVG3UbKIGnZENCmeIOQFGgwN8mm6EOiIUKosRRMreRnfOakjll3g7iHI6VdLEDnEATscCfNYKcSdxKU+uc7QwXrYvuZBJN+md7n9YLChOALShAmYcW3ZEFvNs=
+	t=1750250809; cv=none; b=dEmrdUz359GmHWZ1vE1GCdRLt4nkgALqnzZ6H2QxbkNQ88RdkClogkxW7/YQONCL+cZtMxrtHauy2+WGI2IFe9oEtsjJkTuXz41FiUvWrkQYSJZPbi//2coVQTqXH+Y+QpUynbPaYLrA+cH2zSelXcOxncVzyRC1SAvISoNZGW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750250629; c=relaxed/simple;
-	bh=LJOl3iVxdLqWTnYrqhGFjB6SUJ0Pn6WjK3KpdQZOJyc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LtNjtGWdyN0h4Uzf7kTF1GNrqzx6BNImgiY7704/Rr/VWANoRIcFhoR7b/HhcWK47BdqTxMadOLnDVpF+p/x6w6a/OEpjk1KE51G6Dk6Yaq0LseR5ihVzjPy4Ifso2yEpPjjaFFVfwZYupmEzpCGWUmwN8IjOfThsJVOcFum9yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=IbgubzVf; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1750250809; c=relaxed/simple;
+	bh=u1fNk4sNonPlV/2H949IVwNt/MR1MgWaifstjaJVxO4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B5j9xOsuqYiuWEWln37CT1XzPo6uMQBg568PQ+E4GCLiSy3y+80fA1kI6eusx+h6pFhOir1OOACnyuTlSjlLOoo5lvCusSFHXLVzqMPIY+tV/Cd9Uy+xdfMFs09N86UasqaqlulXImEdtjodp0lKZk/eE5PK4oyB5RgVcIRGZG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nNf1h64f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="IbgubzVf"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1uRrzq-00CJdb-IV; Wed, 18 Jun 2025 14:34:30 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-Id:Date:Subject:From; bh=ihyBf5E+gzJ5kBv9T40XlfDhBl6X2+hvJwoX0tSQLr4=
-	; b=IbgubzVf8XhgT+sxWhHIoah/74KWgJuJNYwuM0mpFf0YPd17h51NwO8YUaWBnwaw3CTzUyCkw
-	cRrT7Zp+1KgVxyRj5Se5xYiK6sSKcD7TgZ3opaztdoYJJ8ypJ9DTdLhsoaiXiJLDpNCNhauWcyCjv
-	lkYBrIz0+zcFS1yQzWOWMsbD2b2hUSKfj4ZAG+XvfdcETEN+RCb7HD41xETAxnGoXyIKMpjq3zMC6
-	/5AR0ZHUpTX579YrYby+N8Ubh+FDvgaOPtrQVDciz8rkfyR/o2l1b03h3pHSzcO0QS/Eg+kQedpMe
-	1s86jzK2n4arb175Hj6clqGXGh0AddF826hSpg==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1uRrzp-0001Wj-FF; Wed, 18 Jun 2025 14:34:29 +0200
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1uRrzo-00DbRZ-7G; Wed, 18 Jun 2025 14:34:28 +0200
-From: Michal Luczaj <mhal@rbox.co>
-Subject: [PATCH net 0/3] vsock: Fix transport_{h2g,g2h,dgram,local} TOCTOU
- issues
-Date: Wed, 18 Jun 2025 14:33:59 +0200
-Message-Id: <20250618-vsock-transports-toctou-v1-0-dd2d2ede9052@rbox.co>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nNf1h64f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBEB9C4CEE7;
+	Wed, 18 Jun 2025 12:46:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750250808;
+	bh=u1fNk4sNonPlV/2H949IVwNt/MR1MgWaifstjaJVxO4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nNf1h64fOgTzzyKYLnOG6pt4r/ATOcHrnakMZUTFUdWN76xMAKy/aPjTKRDA7HPk/
+	 yLIhIf4Cbd8Sz3HTGEKOiX3lPZb8bP2Dd7yINp58hd6CrSKGuKET8piFkHCz1I+hPM
+	 KfsZ1p9Vj5/i4/WsKC+cDp4/tuFawTqwriMhznsrnEh+46SuXpHNf6t0qDr+H5kIx5
+	 qS9Z75u3H4D7SCAlvNEpLxF0xUz2Q2snVtxpEoZN/dyNBUNFgOpKan8drS200moqJe
+	 BHZZi00AhDnfmsjjuCR6eEzjkkxZNgJyUK+DTpEjL1OKnOw8n8WBVMeHx/FJEnc5ZT
+	 zY3JV676s2mlQ==
+Message-ID: <f445633e-b72c-4b5d-bb18-acda1c1d4de6@kernel.org>
+Date: Wed, 18 Jun 2025 14:46:43 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADeyUmgC/x3MwQrCMAyA4VcZORuo1eL0VWSH2kUXhGYk2RiMv
- bvF43f4/x2MlMng0e2gtLKx1IbzqYMy5foh5LEZYogppHjB1aR80TVXm0Xd0KW4LHh93dJ4LzH
- 3IUGrZ6U3b//zEyo5DMfxA1tHnrluAAAA
-X-Change-ID: 20250523-vsock-transports-toctou-4b75d9c2a805
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
-X-Mailer: b4 0.14.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4] page_pool: import Jesper's page_pool
+ benchmark
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, Ilias Apalodimas
+ <ilias.apalodimas@linaro.org>, =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?=
+ <toke@toke.dk>, Ignat Korchagin <ignat@cloudflare.com>
+References: <20250615205914.835368-1-almasrymina@google.com>
+ <c126182c-8f26-41e2-a20d-ceefc2ced886@kernel.org>
+ <CAHS8izPyzJvchqFNrRjY95D=41nya8Tmvx1eS9n0ijtHcUUETA@mail.gmail.com>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <CAHS8izPyzJvchqFNrRjY95D=41nya8Tmvx1eS9n0ijtHcUUETA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-transport_{h2g,g2h,dgram,local} may become NULL on vsock_core_unregister().
-Make sure a poorly timed `rmmod transport` won't lead to a NULL/stale
-pointer dereference.
 
-Note that these oopses are pretty unlikely to happen in the wild. Splats
-were collected after sprinkling kernel with mdelay()s.
 
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
----
-Michal Luczaj (3):
-      vsock: Fix transport_{h2g,g2h} TOCTOU
-      vsock: Fix transport_g2h TOCTOU
-      vsock: Fix transport_* TOCTOU
+On 16/06/2025 23.11, Mina Almasry wrote:
+> On Mon, Jun 16, 2025 at 2:29 AM Jesper Dangaard Brouer <hawk@kernel.org> wrote:
+>> On 15/06/2025 22.59, Mina Almasry wrote:
+>>> From: Jesper Dangaard Brouer <hawk@kernel.org>
+>>>
+>>> We frequently consult with Jesper's out-of-tree page_pool benchmark to
+>>> evaluate page_pool changes.
+>>>
+>>> Import the benchmark into the upstream linux kernel tree so that (a)
+>>> we're all running the same version, (b) pave the way for shared
+>>> improvements, and (c) maybe one day integrate it with nipa, if possible.
+>>>
+>>> Import bench_page_pool_simple from commit 35b1716d0c30 ("Add
+>>> page_bench06_walk_all"), from this repository:
+>>> https://github.com/netoptimizer/prototype-kernel.git
+>>>
+>>> Changes done during upstreaming:
+>>> - Fix checkpatch issues.
+>>> - Remove the tasklet logic not needed.
+>>> - Move under tools/testing
+>>> - Create ksft for the benchmark.
+>>> - Changed slightly how the benchmark gets build. Out of tree, time_bench
+>>>     is built as an independent .ko. Here it is included in
+>>>     bench_page_pool.ko
+>>>
+>>> Steps to run:
+>>>
+>>> ```
+>>> mkdir -p /tmp/run-pp-bench
+>>> make -C ./tools/testing/selftests/net/bench
+>>> make -C ./tools/testing/selftests/net/bench install INSTALL_PATH=/tmp/run-pp-bench
+>>> rsync --delete -avz --progress /tmp/run-pp-bench mina@$SERVER:~/
+>>> ssh mina@$SERVER << EOF
+>>>     cd ~/run-pp-bench && sudo ./test_bench_page_pool.sh
+>>> EOF
+>>> ```
+>>>
+>>> Output:
+>>>
+>>> ```
+>>> (benchmrk dmesg logs)
+>>>
+>>
+>> Something is off with benchmark numbers compared to the OOT version.
+>>
+> 
+> I assume you're comparing my results (my kernel config + my hardware +
+> upstream benchmark) with your results (your kernel config + your
+> hardware + OOT version). The problem may be in OOT vs upstream but it
+> may be just different code/config/hardware.
 
- net/vmw_vsock/af_vsock.c | 34 +++++++++++++++++++++++++++-------
- 1 file changed, 27 insertions(+), 7 deletions(-)
----
-base-commit: d0fa59897e049e84432600e86df82aab3dce7aa5
-change-id: 20250523-vsock-transports-toctou-4b75d9c2a805
+True I used OOT version.
 
-Best regards,
--- 
-Michal Luczaj <mhal@rbox.co>
+Just applied this patch, but I get compile error. Because Makefile tries
+to get kernel headers (net/page_pool/helpers.h) from local Linux
+installation instead of git tree.  This need to be adjusted for patch,
+such that it builds with src-local/git tree provided headers.
+
+$ make -C ./tools/testing/selftests/net/bench/page_pool/
+make: Entering directory 
+'/home/jbrouer/git/kernel/net/tools/testing/selftests/net/bench/page_pool'
+make[1]: Entering directory '/usr/src/kernels/6.5.12-100.fc37.x86_64'
+   CC [M] 
+/home/jbrouer/git/kernel/net/tools/testing/selftests/net/bench/page_pool/bench_page_pool_simple.o
+/home/jbrouer/git/kernel/net/tools/testing/selftests/net/bench/page_pool/bench_page_pool_simple.c:12:10: 
+fatal error: net/page_pool/helpers.h: No such file or directory
+    12 | #include <net/page_pool/helpers.h>
+       |          ^~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make[3]: *** [scripts/Makefile.build:243: 
+/home/jbrouer/git/kernel/net/tools/testing/selftests/net/bench/page_pool/bench_page_pool_simple.o] 
+Error 1
+make[2]: *** [/usr/src/kernels/6.5.12-100.fc37.x86_64/Makefile:2046: 
+/home/jbrouer/git/kernel/net/tools/testing/selftests/net/bench/page_pool] 
+Error 2
+make[1]: *** [Makefile:246: __sub-make] Error 2
+make[1]: Leaving directory '/usr/src/kernels/6.5.12-100.fc37.x86_64'
+make: *** [Makefile:14: all] Error 2
+make: Leaving directory 
+'/home/jbrouer/git/kernel/net/tools/testing/selftests/net/bench/page_pool'
+
+
+>> Adding my numbers below, they were run on my testlab with:
+>>    - CPU E5-1650 v4 @ 3.60GHz
+>>    - kernel: net.git v6.15-12438-gd9816ec74e6d
+>>
+>>> Fast path results:
+>>> no-softirq-page_pool01 Per elem: 11 cycles(tsc) 4.368 ns
+>>>
+>>
+>> Fast-path on your CPU is faster (22 cycles(tsc) 6.128 ns) than my CPU.
+>> What CPU is this?
+> 
+> My test setup is a Gcloud A3 VM (so virtualized). The CPU is:
+> 
+> cat /proc/cpuinfo
+> ...
+> model name      : Intel(R) Xeon(R) Platinum 8481C CPU @ 2.70GHz
+> 
+>>
+>> Type:no-softirq-page_pool01 Per elem: 22 cycles(tsc) 6.128 ns (step:0)
+>>    - (measurement period time:0.061282924 sec time_interval:61282924)
+>>    - (invoke count:10000000 tsc_interval:220619745)
+>>
+>>> ptr_ring results:
+>>> no-softirq-page_pool02 Per elem: 527 cycles(tsc) 195.187 ns
+>>
+>> I'm surprised that ptr_ring benchmark is very slow, compared to my
+>> result (below) 60 cycles(tsc) 16.853 ns.
+>>
+>> Type:no-softirq-page_pool02 Per elem: 60 cycles(tsc) 16.853 ns (step:0)
+>>    - (measurement period time:0.168535760 sec time_interval:168535760)
+>>    - (invoke count:10000000 tsc_interval:606734160)
+>>
+>> Maybe your kernel is compiled with some CONFIG debug thing that makes it
+>> slower?
+>>
+> 
+> Yeah, I actually just checked and I have CONFIG_DEBUG_NET on in my
+> build, and a lot of other debug configs are turned on.
+> 
+
+The CONFIG_DEBUG_NET should be low overhead, so I don't expect this to
+be the root-cause.  Other CONFIG options are more likely the issue.
+
+> Let me investigate here. Maybe trimming the debug configs and double
+> checking my tree for debug logs I added would point to the difference.
+>
+
+The perf record trick below will help you identify overhead more rabidly 
+IMHO.
+
+
+> I could also try to put both the OOT version and upstream version in
+> my tree and do a proper A/B comparison that way.
+> 
+> If you do get chance to run this upstream version from your exact tree
+> and config, that would be a good A/B comparison as well.
+> 
+>> You can troubleshoot like this:
+>>    - select the `no-softirq-page_pool02` test via run_flags=$((2#100)).
+>>
+>>    # perf record -g modprobe bench_page_pool_simple run_flags=$((2#100))
+>> loops=$((100*10**6))
+>>    # perf report --no-children
+>>
+> 
+> Thanks, will do.
+
+With a micro-benchmark like this, the perf report should help you to
+quickly indentify the kernel debug CONFIG that adds the overhead.
+
+--Jesper
 
