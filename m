@@ -1,398 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mxout1.routing.net (mxout1.routing.net [134.0.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8672E8E0A
-	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 14:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CDAF9CB;
+	Wed, 18 Jun 2025 14:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750257874; cv=none; b=OouQre4mMeShmwYPwrjyLdBwbRROCG5oaOfErPx17G/wulzJpOQ/5BStMv8Tr0Xcfsygpkjj6p2mNB63vrFa93sgVKPiDVt/YvEd2QOZmLs1BuHXoxFXhviUKXlYUuFzWCn+X5P9UypescFFsiIWyKvllgtfpwnmS7X1oqUa910=
+	t=1750258224; cv=none; b=PlKglEolCdQFpgZBSkjPWx6cCrlOkA+cuOezxJJRall9xuE2JdotQ7neSQg9gMzpocooqLGdtZ4AqdvI3eKqV31M1QYCKlxNlQ5JpNRx7eogebF/64GKhaQxl6Q1DVfo6GtQt55I42z5cKUK9fVg3+pVPCbmPokfOHOQc9gf1lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750257874; c=relaxed/simple;
-	bh=ONHLN6CxRHfgebqxTvLdgzaPNyDOZwjY7ko8i9CiZow=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MGe0hyb7g9oF7Ng2qT5mHeVuVKEtMlLlXiLX6bF4AuliJ2og6zFGi6H6Y1t9L586UeRtHn2d9uINOwA2cE1ofUaXEVc4g/ZfX73sZDADdy4qTCz9ji1q3k2oseIECIguFqF621GsfOSc0s+loFCVWmFEJ23Zx2bJMCZQbCA/1R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZezbEMYB; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1750258224; c=relaxed/simple;
+	bh=fB7KyoRN2gpN9HFgeI9W3VaZODcts6RtL/092DIdZ7o=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=dnHhWXbs1AJKIFzNCnObYx3/XIPbPa8jklieErT2x1JJR9l/FVh3WXS/yuZJBUKRb1Mpq83iUjsxTY95QeDCI4Dam+mZ/Ry0tHiNvMmi94xVu0NdH0o3/cRic8a5u7XfwlaK7nnWfdcOAURxIqiCwJZk714FjEqRNdOfpQR4Mj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=Nbknur+1; arc=none smtp.client-ip=134.0.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fw-web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZezbEMYB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750257872; x=1781793872;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ONHLN6CxRHfgebqxTvLdgzaPNyDOZwjY7ko8i9CiZow=;
-  b=ZezbEMYBVBOxOzWxBNTxzezbx4DKjTtfd/oRMFJ366t9lC4ei5CPZiPK
-   iiM8sHhKyMuHXfi/jQqrqL8EjUQgmHslSam3vTusRVIKC3CQJ9aY8l0Y3
-   zInN13yaYDaNnS1H1f7KqCwmq43I6tCPLL137Nme2cYePuyBwHnWZ8SAZ
-   mTSRsWa5Qel6sSOYLtCZB6/u07UsUa82H4/86fNGz9QrhOc+PXCdVb1sD
-   FeRXiY5/pwvFVIR1HtxK2zm6f3Iub4W2vQXTp6aIMlU7UeNbA9Z5hvael
-   f8S/9JDM26hBetqKhcz+3gGIO6uk4dkE351kbpILSUUTlzwM5jYGdR1GM
-   Q==;
-X-CSE-ConnectionGUID: NtYJ6XvlTWGwPcFogTLsCA==
-X-CSE-MsgGUID: lrDyGTXBT/yke83Zmglthg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="63520128"
-X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
-   d="scan'208";a="63520128"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 07:44:31 -0700
-X-CSE-ConnectionGUID: pUCNFtHxTLiX0IXXqV9Xtw==
-X-CSE-MsgGUID: itoorhJrRDKJEkInFi85bA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
-   d="scan'208";a="150145545"
-Received: from gklab-003-014.igk.intel.com ([10.91.173.44])
-  by orviesa007.jf.intel.com with ESMTP; 18 Jun 2025 07:44:29 -0700
-From: Milena Olech <milena.olech@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Milena Olech <milena.olech@intel.com>,
-	Karol Kolacinski <karol.kolacinski@intel.com>,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH v3 iwl-next] idpf: add cross timestamping
-Date: Wed, 18 Jun 2025 16:42:36 +0200
-Message-ID: <20250618144308.81960-3-milena.olech@intel.com>
-X-Mailer: git-send-email 2.43.5
+	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="Nbknur+1"
+Received: from mxbox3.masterlogin.de (unknown [192.168.10.78])
+	by mxout1.routing.net (Postfix) with ESMTP id 3474E41ADE;
+	Wed, 18 Jun 2025 14:50:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
+	s=20200217; t=1750258214;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N7tr9vCzas4Dcx7c2Tgeu4LP6gHZKQuy1GdaO/TFlr4=;
+	b=Nbknur+18KqPDja5RX/s65/bE/pPe42K7+j6BqbbBZ2lfnz1+IlheE52B92cm6xDpE+eM3
+	+1J2JXUED1AfYvVCBLE/WbHiocrItKJfci05mR4apGeGPAdDixOTM5mR2MMA0ap8wmz/zh
+	dXnO3+qaeB8OGQJndQ74liL4RhdsOEM=
+Received: from [127.0.0.1] (fttx-pool-80.245.76.73.bambit.de [80.245.76.73])
+	by mxbox3.masterlogin.de (Postfix) with ESMTPSA id 0453F360048;
+	Wed, 18 Jun 2025 14:50:12 +0000 (UTC)
+Date: Wed, 18 Jun 2025 16:50:13 +0200
+From: Frank Wunderlich <linux@fw-web.de>
+To: Daniel Golle <daniel@makrotopia.org>
+CC: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Frank Wunderlich <frank-w@public-files.de>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, Simon Horman <horms@kernel.org>,
+ arinc.unal@arinc9.com
+Subject: Re: [net-next v5 1/3] net: ethernet: mtk_eth_soc: support named IRQs
+User-Agent: K-9 Mail for Android
+In-Reply-To: <aFLFYe8mq4tbLfdf@pidgin.makrotopia.org>
+References: <20250618130717.75839-1-linux@fw-web.de> <20250618130717.75839-2-linux@fw-web.de> <aFLFYe8mq4tbLfdf@pidgin.makrotopia.org>
+Message-ID: <601853CD-F47A-452A-87AC-668E73A3E971@fw-web.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Mail-ID: e609ebad-906a-455e-bb64-4bc71f18ceb5
 
-Add cross timestamp support through virtchnl mailbox messages and directly,
-through PCIe BAR registers. Cross timestamping assumes that both system
-time and device clock time values are cached simultaneously, what is
-triggered by HW. Feature is enabled for both ARM and x86 archs.
+Am 18=2E Juni 2025 15:55:45 MESZ schrieb Daniel Golle <daniel@makrotopia=2E=
+org>:
+>On Wed, Jun 18, 2025 at 03:07:12PM +0200, Frank Wunderlich wrote:
+>> From: Frank Wunderlich <frank-w@public-files=2Ede>
+>>=20
+>> Add named interrupts and keep index based fallback for existing
+>> devicetrees=2E
+>>=20
+>> Currently only rx and tx IRQs are defined to be used with mt7988, but
+>> later extended with RSS/LRO support=2E
+>>=20
+>> Signed-off-by: Frank Wunderlich <frank-w@public-files=2Ede>
+>> Reviewed-by: Simon Horman <horms@kernel=2Eorg>
+>> =20
+>> +static int mtk_get_irqs(struct platform_device *pdev, struct mtk_eth *=
+eth)
+>> +{
+>> +	int i;
+>> +
+>> +	/* future SoCs beginning with MT7988 should use named IRQs in dts */
+>> +	eth->irq[1] =3D platform_get_irq_byname(pdev, "tx");
+>> +	eth->irq[2] =3D platform_get_irq_byname(pdev, "rx");
+>> +	if (eth->irq[1] >=3D 0 && eth->irq[2] >=3D 0)
+>> +		return 0;
+>
+>I'd rather extend that logic and fall back to the legacy way only in case
+>of -ENXIO=2E Ie=2E add here:
+>
+>if (eth->irq[1] !=3D -ENXIO)
+>	return eth->irq[1];
+>
+>if (eth->irq[2] !=3D -ENXIO)
+>	return eth->irq[2];
 
-Signed-off-by: Milena Olech <milena.olech@intel.com>
-Reviewed-by: Karol Kolacinski <karol.kolacinski@intel.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
----
-v2 -> v3: revert rebase of the top of iXD
-v1 -> v2: rebase on the top of iXD, fix kernel doc, use IS_ENABLED
-directly in the code flow
+I would do this later after the consts are used
+ instead of index numbers,just to not add lines
+ that are changed later again=2EBetter adding the
+ lines already with the consts=2E
 
- drivers/net/ethernet/intel/idpf/idpf_ptp.c    | 136 ++++++++++++++++++
- drivers/net/ethernet/intel/idpf/idpf_ptp.h    |  17 +++
- .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   |  55 ++++++-
- 3 files changed, 207 insertions(+), 1 deletion(-)
+>Maybe also output a warning at this point in case MTK_SHARED_INT is no
+>set, to recommend users to update their device tree to named interrupts=
+=2E
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-index cb46185da749..31da005f27fc 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-@@ -42,6 +42,13 @@ void idpf_ptp_get_features_access(const struct idpf_adapter *adapter)
- 							   direct,
- 							   mailbox);
- 
-+	/* Get the cross timestamp */
-+	direct = VIRTCHNL2_CAP_PTP_GET_CROSS_TIME;
-+	mailbox = VIRTCHNL2_CAP_PTP_GET_CROSS_TIME_MB;
-+	ptp->get_cross_tstamp_access = idpf_ptp_get_access(adapter,
-+							   direct,
-+							   mailbox);
-+
- 	/* Set the device clock time */
- 	direct = VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME;
- 	mailbox = VIRTCHNL2_CAP_PTP_SET_DEVICE_CLK_TIME;
-@@ -171,6 +178,127 @@ static int idpf_ptp_read_src_clk_reg(struct idpf_adapter *adapter, u64 *src_clk,
- 	return 0;
- }
- 
-+#if IS_ENABLED(CONFIG_ARM_ARCH_TIMER) || IS_ENABLED(CONFIG_X86)
-+/**
-+ * idpf_ptp_get_sync_device_time_direct - Get the cross time stamp values
-+ *					  directly
-+ * @adapter: Driver specific private structure
-+ * @dev_time: 64bit main timer value
-+ * @sys_time: 64bit system time value
-+ */
-+static void idpf_ptp_get_sync_device_time_direct(struct idpf_adapter *adapter,
-+						 u64 *dev_time, u64 *sys_time)
-+{
-+	u32 dev_time_lo, dev_time_hi, sys_time_lo, sys_time_hi;
-+	struct idpf_ptp *ptp = adapter->ptp;
-+
-+	spin_lock(&ptp->read_dev_clk_lock);
-+
-+	idpf_ptp_enable_shtime(adapter);
-+
-+	dev_time_lo = readl(ptp->dev_clk_regs.dev_clk_ns_l);
-+	dev_time_hi = readl(ptp->dev_clk_regs.dev_clk_ns_h);
-+
-+	sys_time_lo = readl(ptp->dev_clk_regs.sys_time_ns_l);
-+	sys_time_hi = readl(ptp->dev_clk_regs.sys_time_ns_h);
-+
-+	spin_unlock(&ptp->read_dev_clk_lock);
-+
-+	*dev_time = (u64)dev_time_hi << 32 | dev_time_lo;
-+	*sys_time = (u64)sys_time_hi << 32 | sys_time_lo;
-+}
-+
-+/**
-+ * idpf_ptp_get_sync_device_time_mailbox - Get the cross time stamp values
-+ *					   through mailbox
-+ * @adapter: Driver specific private structure
-+ * @dev_time: 64bit main timer value expressed in nanoseconds
-+ * @sys_time: 64bit system time value expressed in nanoseconds
-+ *
-+ * Return: 0 on success, -errno otherwise.
-+ */
-+static int idpf_ptp_get_sync_device_time_mailbox(struct idpf_adapter *adapter,
-+						 u64 *dev_time, u64 *sys_time)
-+{
-+	struct idpf_ptp_dev_timers cross_time;
-+	int err;
-+
-+	err = idpf_ptp_get_cross_time(adapter, &cross_time);
-+	if (err)
-+		return err;
-+
-+	*dev_time = cross_time.dev_clk_time_ns;
-+	*sys_time = cross_time.sys_time_ns;
-+
-+	return err;
-+}
-+
-+/**
-+ * idpf_ptp_get_sync_device_time - Get the cross time stamp info
-+ * @device: Current device time
-+ * @system: System counter value read synchronously with device time
-+ * @ctx: Context provided by timekeeping code
-+ *
-+ * The device and the system clocks time read simultaneously.
-+ *
-+ * Return: 0 on success, -errno otherwise.
-+ */
-+static int idpf_ptp_get_sync_device_time(ktime_t *device,
-+					 struct system_counterval_t *system,
-+					 void *ctx)
-+{
-+	struct idpf_adapter *adapter = ctx;
-+	u64 ns_time_dev, ns_time_sys;
-+	int err;
-+
-+	switch (adapter->ptp->get_cross_tstamp_access) {
-+	case IDPF_PTP_NONE:
-+		return -EOPNOTSUPP;
-+	case IDPF_PTP_DIRECT:
-+		idpf_ptp_get_sync_device_time_direct(adapter, &ns_time_dev,
-+						     &ns_time_sys);
-+		break;
-+	case IDPF_PTP_MAILBOX:
-+		err = idpf_ptp_get_sync_device_time_mailbox(adapter,
-+							    &ns_time_dev,
-+							    &ns_time_sys);
-+		if (err)
-+			return err;
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	*device = ns_to_ktime(ns_time_dev);
-+
-+	system->cs_id = IS_ENABLED(CONFIG_X86) ? CSID_X86_ART
-+					       : CSID_ARM_ARCH_COUNTER;
-+	system->cycles = ns_time_sys;
-+	system->use_nsecs = true;
-+
-+	return 0;
-+}
-+
-+/**
-+ * idpf_ptp_get_crosststamp - Capture a device cross timestamp
-+ * @info: the driver's PTP info structure
-+ * @cts: The memory to fill the cross timestamp info
-+ *
-+ * Capture a cross timestamp between the system time and the device PTP hardware
-+ * clock.
-+ *
-+ * Return: cross timestamp value on success, -errno on failure.
-+ */
-+static int idpf_ptp_get_crosststamp(struct ptp_clock_info *info,
-+				    struct system_device_crosststamp *cts)
-+{
-+	struct idpf_adapter *adapter = idpf_ptp_info_to_adapter(info);
-+
-+	return get_device_system_crosststamp(idpf_ptp_get_sync_device_time,
-+					     adapter, NULL, cts);
-+}
-+#endif /* CONFIG_ARM_ARCH_TIMER || CONFIG_X86 */
-+
- /**
-  * idpf_ptp_gettimex64 - Get the time of the clock
-  * @info: the driver's PTP info structure
-@@ -664,6 +792,14 @@ static void idpf_ptp_set_caps(const struct idpf_adapter *adapter)
- 	info->verify = idpf_ptp_verify_pin;
- 	info->enable = idpf_ptp_gpio_enable;
- 	info->do_aux_work = idpf_ptp_do_aux_work;
-+#if IS_ENABLED(CONFIG_ARM_ARCH_TIMER)
-+	info->getcrosststamp = idpf_ptp_get_crosststamp;
-+#elif IS_ENABLED(CONFIG_X86)
-+	if (pcie_ptm_enabled(adapter->pdev) &&
-+	    boot_cpu_has(X86_FEATURE_ART) &&
-+	    boot_cpu_has(X86_FEATURE_TSC_KNOWN_FREQ))
-+		info->getcrosststamp = idpf_ptp_get_crosststamp;
-+#endif /* CONFIG_ARM_ARCH_TIMER */
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.h b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
-index a876749d6116..785da03e4cf5 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ptp.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.h
-@@ -21,6 +21,8 @@ struct idpf_ptp_cmd {
-  * @dev_clk_ns_h: high part of the device clock register
-  * @phy_clk_ns_l: low part of the PHY clock register
-  * @phy_clk_ns_h: high part of the PHY clock register
-+ * @sys_time_ns_l: low part of the system time register
-+ * @sys_time_ns_h: high part of the system time register
-  * @incval_l: low part of the increment value register
-  * @incval_h: high part of the increment value register
-  * @shadj_l: low part of the shadow adjust register
-@@ -42,6 +44,10 @@ struct idpf_ptp_dev_clk_regs {
- 	void __iomem *phy_clk_ns_l;
- 	void __iomem *phy_clk_ns_h;
- 
-+	/* System time */
-+	void __iomem *sys_time_ns_l;
-+	void __iomem *sys_time_ns_h;
-+
- 	/* Main timer adjustments */
- 	void __iomem *incval_l;
- 	void __iomem *incval_h;
-@@ -162,6 +168,7 @@ struct idpf_ptp_vport_tx_tstamp_caps {
-  * @dev_clk_regs: the set of registers to access the device clock
-  * @caps: PTP capabilities negotiated with the Control Plane
-  * @get_dev_clk_time_access: access type for getting the device clock time
-+ * @get_cross_tstamp_access: access type for the cross timestamping
-  * @set_dev_clk_time_access: access type for setting the device clock time
-  * @adj_dev_clk_time_access: access type for the adjusting the device clock
-  * @tx_tstamp_access: access type for the Tx timestamp value read
-@@ -182,6 +189,7 @@ struct idpf_ptp {
- 	struct idpf_ptp_dev_clk_regs dev_clk_regs;
- 	u32 caps;
- 	enum idpf_ptp_access get_dev_clk_time_access:2;
-+	enum idpf_ptp_access get_cross_tstamp_access:2;
- 	enum idpf_ptp_access set_dev_clk_time_access:2;
- 	enum idpf_ptp_access adj_dev_clk_time_access:2;
- 	enum idpf_ptp_access tx_tstamp_access:2;
-@@ -264,6 +272,8 @@ void idpf_ptp_get_features_access(const struct idpf_adapter *adapter);
- bool idpf_ptp_get_txq_tstamp_capability(struct idpf_tx_queue *txq);
- int idpf_ptp_get_dev_clk_time(struct idpf_adapter *adapter,
- 			      struct idpf_ptp_dev_timers *dev_clk_time);
-+int idpf_ptp_get_cross_time(struct idpf_adapter *adapter,
-+			    struct idpf_ptp_dev_timers *cross_time);
- int idpf_ptp_set_dev_clk_time(struct idpf_adapter *adapter, u64 time);
- int idpf_ptp_adj_dev_clk_fine(struct idpf_adapter *adapter, u64 incval);
- int idpf_ptp_adj_dev_clk_time(struct idpf_adapter *adapter, s64 delta);
-@@ -305,6 +315,13 @@ idpf_ptp_get_dev_clk_time(struct idpf_adapter *adapter,
- 	return -EOPNOTSUPP;
- }
- 
-+static inline int
-+idpf_ptp_get_cross_time(struct idpf_adapter *adapter,
-+			struct idpf_ptp_dev_timers *cross_time)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static inline int idpf_ptp_set_dev_clk_time(struct idpf_adapter *adapter,
- 					    u64 time)
- {
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
-index bdcc54a5fb56..4f1fb0cefe51 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
-@@ -30,6 +30,7 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
- 		.send_buf.iov_len = sizeof(send_ptp_caps_msg),
- 		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
- 	};
-+	struct virtchnl2_ptp_cross_time_reg_offsets cross_tstamp_offsets;
- 	struct virtchnl2_ptp_clk_adj_reg_offsets clk_adj_offsets;
- 	struct virtchnl2_ptp_clk_reg_offsets clock_offsets;
- 	struct idpf_ptp_secondary_mbx *scnd_mbx;
-@@ -71,7 +72,7 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
- 
- 	access_type = ptp->get_dev_clk_time_access;
- 	if (access_type != IDPF_PTP_DIRECT)
--		goto discipline_clock;
-+		goto cross_tstamp;
- 
- 	clock_offsets = recv_ptp_caps_msg->clk_offsets;
- 
-@@ -90,6 +91,22 @@ int idpf_ptp_get_caps(struct idpf_adapter *adapter)
- 	temp_offset = le32_to_cpu(clock_offsets.cmd_sync_trigger);
- 	ptp->dev_clk_regs.cmd_sync = idpf_get_reg_addr(adapter, temp_offset);
- 
-+cross_tstamp:
-+	access_type = ptp->get_cross_tstamp_access;
-+	if (access_type != IDPF_PTP_DIRECT)
-+		goto discipline_clock;
-+
-+	cross_tstamp_offsets = recv_ptp_caps_msg->cross_time_offsets;
-+
-+	temp_offset = le32_to_cpu(cross_tstamp_offsets.sys_time_ns_l);
-+	ptp->dev_clk_regs.sys_time_ns_l = idpf_get_reg_addr(adapter,
-+							    temp_offset);
-+	temp_offset = le32_to_cpu(cross_tstamp_offsets.sys_time_ns_h);
-+	ptp->dev_clk_regs.sys_time_ns_h = idpf_get_reg_addr(adapter,
-+							    temp_offset);
-+	temp_offset = le32_to_cpu(cross_tstamp_offsets.cmd_sync_trigger);
-+	ptp->dev_clk_regs.cmd_sync = idpf_get_reg_addr(adapter, temp_offset);
-+
- discipline_clock:
- 	access_type = ptp->adj_dev_clk_time_access;
- 	if (access_type != IDPF_PTP_DIRECT)
-@@ -162,6 +179,42 @@ int idpf_ptp_get_dev_clk_time(struct idpf_adapter *adapter,
- 	return 0;
- }
- 
-+/**
-+ * idpf_ptp_get_cross_time - Send virtchnl get cross time message
-+ * @adapter: Driver specific private structure
-+ * @cross_time: Pointer to the device clock structure where the value is set
-+ *
-+ * Send virtchnl get cross time message to get the time of the clock and the
-+ * system time.
-+ *
-+ * Return: 0 on success, -errno otherwise.
-+ */
-+int idpf_ptp_get_cross_time(struct idpf_adapter *adapter,
-+			    struct idpf_ptp_dev_timers *cross_time)
-+{
-+	struct virtchnl2_ptp_get_cross_time cross_time_msg;
-+	struct idpf_vc_xn_params xn_params = {
-+		.vc_op = VIRTCHNL2_OP_PTP_GET_CROSS_TIME,
-+		.send_buf.iov_base = &cross_time_msg,
-+		.send_buf.iov_len = sizeof(cross_time_msg),
-+		.recv_buf.iov_base = &cross_time_msg,
-+		.recv_buf.iov_len = sizeof(cross_time_msg),
-+		.timeout_ms = IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC,
-+	};
-+	int reply_sz;
-+
-+	reply_sz = idpf_vc_xn_exec(adapter, &xn_params);
-+	if (reply_sz < 0)
-+		return reply_sz;
-+	if (reply_sz != sizeof(cross_time_msg))
-+		return -EIO;
-+
-+	cross_time->dev_clk_time_ns = le64_to_cpu(cross_time_msg.dev_time_ns);
-+	cross_time->sys_time_ns = le64_to_cpu(cross_time_msg.sys_time_ns);
-+
-+	return 0;
-+}
-+
- /**
-  * idpf_ptp_set_dev_clk_time - Send virtchnl set device time message
-  * @adapter: Driver specific private structure
+I understand the reason behind (documentation
+ which irq is used for which purpose),but
+ previous devicetrees of non-shared SoCs using
+ at least the reserved irq 0=2E Mt7986 has 0 and 3
+ defined in dts=2E That could be tricky in binding,
+ so my way was starting with irq names now for
+ new additions and leaving existing dts as they
+ are=2E
 
-base-commit: 245d0e432f7858217773389541a9c1b4d10d9a40
--- 
-2.43.5
+Maybe i should add the mt7988 ethernet binding change from my dts series h=
+ere=2E=2E=2E
 
+regards Frank
