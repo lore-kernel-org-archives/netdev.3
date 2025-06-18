@@ -1,805 +1,475 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE963285056
-	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 11:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC31F2DE1FB;
+	Wed, 18 Jun 2025 11:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750246263; cv=none; b=XhbWN7rvZ7PH1JLZBxG0NgIl9HLw7aZfJWctBrDtbqoyYCDfM2QU/7bRiUjI8MPQ1S53SqM/JJANh+sEkqv8s2hEuT4aW8GsSbHjMB2YsJV61xCajNG5KMSVqmXzJOa/Xs85ubJV5Of+fAv7FlF15IftZdFB+i/GZpBQwx3Knsw=
+	t=1750246266; cv=none; b=vA58vrehAy1j6YRH8Amvq+1PikuQIjUNHf9iLbjHwPukD4WbzoQqQwgi8qg344myznbaBOFtcdf7xVWMWMEMc5kSkH6lq7wpwxFJ4nWlE3cPcDakEMhbNjgOiw3QsHPcXjyUgFtRzmCoia7T6vfyx5y7v7GEBDAuldEg9tKhvwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750246263; c=relaxed/simple;
-	bh=op463HFwpozUXcnLDJpbh5e1wOXUqGzsj3gNSHkF6hw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=crnH1lk+iit85RI47cMhqawcXXDabg2LyltTJVNjlp+HYjS6rwla0U9vpeUXzvOLHTf/3Zf9vANoEMAQ+U2yNm/CUaf0ywmRV+2tdjNdKR8d9wMOBm8pE2OBse3Q3ozk0O0PjTI+rBiLJfiR5ZJPSqImD1K6z4WN5xunKkm9mVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RTR2bzNa; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1750246266; c=relaxed/simple;
+	bh=PFWYLyIoIt4cTapU/Na90+p9QAzw3OdbfKGAWXPb2Pc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TJwg5zPNnwUjska3MbEmc5pILJTIPJ27OhFVUb4xyS/YSW666sQDfuYWsKlMlR9y4wWjPNSBERBKkdqIFL/z1TsqgniOH/eMBSvq1WB2uZv0UpPtav3YSnKEQTRSyeOKVh4gzeMXno33mxrJduvT+aOXF9W5f0EmNEhybZC0ZPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=BQDB0FSB; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RTR2bzNa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750246261; x=1781782261;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=op463HFwpozUXcnLDJpbh5e1wOXUqGzsj3gNSHkF6hw=;
-  b=RTR2bzNaToXA+7bxMXCZbe4OpCWHbxM5tpSzeAhSUQRgdEXoG5vbQjcS
-   WCosnoRCviawKK+P0T8o+ytnopLIsGwuhnlFZrurldPgzqg6Hpn7NiT4A
-   iuEY3zrx+x0yt2q7u23Gx38OS9iJmCna1cMMkjvkNrihjV0jMA7ZdGAXT
-   XAqc+etbCZvxgxTgcqpV3livZOoXGlQLAT4Gf2JbzWIl4XJL4ETxrqByi
-   6I3ORjUk+ZO72zy9qPVoQ2dqraeJmARJk1dXGxQi6bDSaVlJoSP3dcuAk
-   495FBZukmGuDpNWqtxctcbTnw1nWwwoUf05ty7CkCGTjrLqOctFPaRpDa
-   Q==;
-X-CSE-ConnectionGUID: HTvgO1RhTTCDI4Etmt2SgQ==
-X-CSE-MsgGUID: u2Rj+H2TRWGPXpOBw7Y7wQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="63810267"
-X-IronPort-AV: E=Sophos;i="6.16,245,1744095600"; 
-   d="scan'208";a="63810267"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 04:29:52 -0700
-X-CSE-ConnectionGUID: nmvufV68S3WApAtUcf2txw==
-X-CSE-MsgGUID: B15fEukxQOWnW28mwjDanQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,245,1744095600"; 
-   d="scan'208";a="149314136"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 04:29:49 -0700
-Date: Wed, 18 Jun 2025 13:28:59 +0200
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Mengyuan Lou <mengyuanlou@net-swift.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, andrew+netdev@lunn.ch, duanqiangwen@net-swift.com,
-	linglingzhang@trustnetic.com, jiawenwu@net-swift.com
-Subject: Re: [PATCH net-next 02/12] net: libwx: add base vf api for vf drivers
-Message-ID: <aFKi++7iX3PuEd9V@mev-dev.igk.intel.com>
-References: <20250611083559.14175-1-mengyuanlou@net-swift.com>
- <20250611083559.14175-3-mengyuanlou@net-swift.com>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="BQDB0FSB"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55I7sfFg027085;
+	Wed, 18 Jun 2025 04:30:43 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=i
+	Le9p3KhtGYjUyD0QrbVR+Dw+UM6lLqMmetl9QM08NI=; b=BQDB0FSBwfYx4zwmK
+	5TwR+SBgEL1oaHOOZfy+zXT7XT5KcgTtM0mSvYhmsV8xpLeB6YfWd0hy0kyCDQH8
+	/HbTNrA9jo3OAPulaFwOwcTOxixZqhCOocQngO4MHkaWnzm57DFOy5iPjB77730Z
+	XTE4IPFU4M+dTgqoiu4ctg2bfkEiulMaqdEQiQCQ4pKJY4nat1Iz2NUW7Ce9g9tj
+	wb+vOk+zQx6zd6zQPHK9KtSVAWtOL8oFPam3bmWnntBVDu7DlwrhOhwWqgqO4fpG
+	Uhzej5aumTdWA8Ly4hTFKCVKbWNz8ONlinhUwd1HlBXF2E9rXTS9nDG44Aj/0tLj
+	P9Nxw==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 47bsf2recm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Jun 2025 04:30:43 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Wed, 18 Jun 2025 04:30:42 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Wed, 18 Jun 2025 04:30:42 -0700
+Received: from optiplex.marvell.com (unknown [10.28.34.253])
+	by maili.marvell.com (Postfix) with ESMTP id 1D1AD3F7058;
+	Wed, 18 Jun 2025 04:30:38 -0700 (PDT)
+From: Tanmay Jagdale <tanmay@marvell.com>
+To: <davem@davemloft.net>, <leon@kernel.org>, <horms@kernel.org>,
+        <sgoutham@marvell.com>, <bbhushan2@marvell.com>,
+        <herbert@gondor.apana.org.au>
+CC: <linux-crypto@vger.kernel.org>, <netdev@vger.kernel.org>,
+        Tanmay Jagdale
+	<tanmay@marvell.com>
+Subject: [PATCH net-next v2 01/14] crypto: octeontx2: Share engine group info with AF driver
+Date: Wed, 18 Jun 2025 16:59:55 +0530
+Message-ID: <20250618113020.130888-2-tanmay@marvell.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250618113020.130888-1-tanmay@marvell.com>
+References: <20250618113020.130888-1-tanmay@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250611083559.14175-3-mengyuanlou@net-swift.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: xG-Y9vfK3agI7Z0bgr20DXcd--l10VAg
+X-Proofpoint-GUID: xG-Y9vfK3agI7Z0bgr20DXcd--l10VAg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE4MDA5NyBTYWx0ZWRfXx9i5IjsJhzuP XamHQ1iNUs5tqYtID/vz6R22ffvG44IyggMQ/0YU42M/5NJmBixLpmQIrdwk25x7Q0wAMEmV9hj XmbsJJEIm+mjMNB9gzUV9q3LlcwoJpxCpOPx8OH13kmtCQB+PUNDhmebxzbGGUtrdM51pRgUAfJ
+ pgD9+/uk3AvQabxGcz4q13fLZJYJMfPCaD/1G4bXRu76nJhyfMt5fQTOXdhqJ7QPggbwKqEmsUF eRu8AkPZmwAKg2Xp46XJOMu93fAz0Vqtg7ojgy+9DPqIBuumvVyyLZ5LEi0D6aEDEf/1TGErOYB p1mgSyeRx4ZKs4orpNqB7hwujO+Nf2riH10NJ7PEVecxiZwE6KuaMP+Q+Uc/askqu1J2IICSXLC
+ hckGTfWaMFuAkXq52qdvTOUvDd9xHV59aA8GWI01rutW2ZmmDrh14HI8hUfi3aQPigyvptAB
+X-Authority-Analysis: v=2.4 cv=Yu4PR5YX c=1 sm=1 tr=0 ts=6852a363 cx=c_pps a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8 a=GI_xRDtv3xhmJ9wnqnoA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-18_04,2025-06-18_02,2025-03-28_01
 
-On Wed, Jun 11, 2025 at 04:35:49PM +0800, Mengyuan Lou wrote:
-> Implement mbox_write_and_read_ack functions which are
-> used to set basic functions like set_mac, get_link.etc
-> for vf.
-> 
-> Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
-> ---
->  drivers/net/ethernet/wangxun/libwx/Makefile  |   1 +
->  drivers/net/ethernet/wangxun/libwx/wx_hw.c   |   2 +-
->  drivers/net/ethernet/wangxun/libwx/wx_hw.h   |   1 +
->  drivers/net/ethernet/wangxun/libwx/wx_type.h |   1 +
->  drivers/net/ethernet/wangxun/libwx/wx_vf.c   | 521 +++++++++++++++++++
->  drivers/net/ethernet/wangxun/libwx/wx_vf.h   |  61 +++
->  6 files changed, 586 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_vf.c
->  create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_vf.h
-> 
-> diff --git a/drivers/net/ethernet/wangxun/libwx/Makefile b/drivers/net/ethernet/wangxun/libwx/Makefile
-> index 9b78b604a94e..ddf0bb921676 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/Makefile
-> +++ b/drivers/net/ethernet/wangxun/libwx/Makefile
-> @@ -5,3 +5,4 @@
->  obj-$(CONFIG_LIBWX) += libwx.o
->  
->  libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o
-> +libwx-objs += wx_vf.o
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-> index 0f4be72116b8..82dd76f0326e 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-> @@ -1107,7 +1107,7 @@ static int wx_write_uc_addr_list(struct net_device *netdev, int pool)
->   *  by the MO field of the MCSTCTRL. The MO field is set during initialization
->   *  to mc_filter_type.
->   **/
-> -static u32 wx_mta_vector(struct wx *wx, u8 *mc_addr)
-> +u32 wx_mta_vector(struct wx *wx, u8 *mc_addr)
->  {
->  	u32 vector = 0;
->  
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.h b/drivers/net/ethernet/wangxun/libwx/wx_hw.h
-> index 26a56cba60b9..718015611da6 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_hw.h
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.h
-> @@ -29,6 +29,7 @@ void wx_mac_set_default_filter(struct wx *wx, u8 *addr);
->  int wx_add_mac_filter(struct wx *wx, u8 *addr, u16 pool);
->  int wx_del_mac_filter(struct wx *wx, u8 *addr, u16 pool);
->  void wx_flush_sw_mac_table(struct wx *wx);
-> +u32 wx_mta_vector(struct wx *wx, u8 *mc_addr);
->  int wx_set_mac(struct net_device *netdev, void *p);
->  void wx_disable_rx(struct wx *wx);
->  int wx_set_vf_spoofchk(struct net_device *netdev, int vf, bool setting);
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> index f2061c893358..d2d0764792d4 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> @@ -1213,6 +1213,7 @@ struct wx {
->  
->  	void *priv;
->  	u8 __iomem *hw_addr;
-> +	u8 __iomem *b4_addr; /* vf only */
->  	struct pci_dev *pdev;
->  	struct net_device *netdev;
->  	struct wx_bus_info bus;
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf.c b/drivers/net/ethernet/wangxun/libwx/wx_vf.c
-> new file mode 100644
-> index 000000000000..a211329fd71a
-> --- /dev/null
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_vf.c
-> @@ -0,0 +1,521 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/* Copyright (c) 2015 - 2025 Beijing WangXun Technology Co., Ltd. */
-> +
-> +#include <linux/etherdevice.h>
-> +#include <linux/pci.h>
-> +
-> +#include "wx_type.h"
-> +#include "wx_hw.h"
-> +#include "wx_mbx.h"
-> +#include "wx_vf.h"
-> +
-> +static void wx_virt_clr_reg(struct wx *wx)
-> +{
-> +	u32 vfsrrctl;
-> +	int i;
-> +
-> +	/* VRSRRCTL default values (BSIZEPACKET = 2048, BSIZEHEADER = 256) */
-> +	vfsrrctl = WX_VXRXDCTL_HDRSZ(wx_hdr_sz(WX_RX_HDR_SIZE));
-> +	vfsrrctl |= WX_VXRXDCTL_BUFSZ(wx_buf_sz(WX_RX_BUF_SIZE));
-> +
-> +	/* clear all rxd ctl */
-> +	for (i = 0; i < 7; i++) {
+From: Bharat Bhushan <bbhushan2@marvell.com>
 
-Define for 7 will be usefull.
+CPT crypto hardware have multiple engines of different type
+and these engines of a give type are attached to one of the
+engine group. Software will submit ecnap/decap work to these
+engine group. Engine group details are available with CPT
+crypto driver. This is shared with AF driver using mailbox
+message to enable use cases like inline-ipsec etc.
 
-> +		wr32m(wx, WX_VXRXDCTL(i),
-> +		      WX_VXRXDCTL_HDRSZ_MASK | WX_VXRXDCTL_BUFSZ_MASK,
-> +		      vfsrrctl);
-> +	}
+Also, no need to try to delete engine groups if engine group
+initialization fails. Engine groups will never be created
+before engine group initialization.
 
-Drop {, } as it is one line.
+Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
+Signed-off-by: Tanmay Jagdale <tanmay@marvell.com>
+---
 
-> +
-> +	rd32(wx, WX_VXSTATUS);
-> +}
-> +
-> +/**
-> + *  wx_start_hw_vf - Prepare hardware for Tx/Rx
-> + *  @wx: pointer to hardware structure
-> + *
-> + *  Starts the hardware by filling the bus info structure and media type, clears
-> + *  all on chip counters, initializes receive address registers, multicast
-> + *  table, VLAN filter table, calls routine to set up link and flow control
-> + *  settings, and leaves transmit and receive units disabled and uninitialized
-> + **/
-> +void wx_start_hw_vf(struct wx *wx)
-> +{
-> +	/* Clear wx stopped flag */
-> +	wx->adapter_stopped = false;
+Changes in v2:
+- None 
 
-From the description it should do a lot more. Maybe move the description
-to the patch where the function is filled.
+V1 Link: https://lore.kernel.org/netdev/20250502132005.611698-2-tanmay@marvell.com/
 
-> +}
-> +EXPORT_SYMBOL(wx_start_hw_vf);
-> +
-> +/**
-> + *  wx_init_hw_vf - virtual function hardware initialization
-> + *  @wx: pointer to hardware structure
-> + *
-> + *  Initialize the hardware by resetting the hardware and then starting
-> + *  the hardware
+ .../marvell/octeontx2/otx2_cpt_common.h       |   7 --
+ .../marvell/octeontx2/otx2_cptpf_main.c       |   4 +-
+ .../marvell/octeontx2/otx2_cptpf_mbox.c       |   1 +
+ .../marvell/octeontx2/otx2_cptpf_ucode.c      | 116 ++++++++++++++++--
+ .../marvell/octeontx2/otx2_cptpf_ucode.h      |   3 +-
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |  16 +++
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |  10 ++
+ .../ethernet/marvell/octeontx2/af/rvu_cpt.c   |  21 ++++
+ 8 files changed, 160 insertions(+), 18 deletions(-)
 
-Now it is just setting the flag and reading MAC address.
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cpt_common.h b/drivers/crypto/marvell/octeontx2/otx2_cpt_common.h
+index 062def303dce..89d4dfbb1e8e 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cpt_common.h
++++ b/drivers/crypto/marvell/octeontx2/otx2_cpt_common.h
+@@ -31,13 +31,6 @@
+ 
+ #define BAD_OTX2_CPT_ENG_TYPE OTX2_CPT_MAX_ENG_TYPES
+ 
+-enum otx2_cpt_eng_type {
+-	OTX2_CPT_AE_TYPES = 1,
+-	OTX2_CPT_SE_TYPES = 2,
+-	OTX2_CPT_IE_TYPES = 3,
+-	OTX2_CPT_MAX_ENG_TYPES,
+-};
+-
+ /* Take mbox id from end of CPT mbox range in AF (range 0xA00 - 0xBFF) */
+ #define MBOX_MSG_RX_INLINE_IPSEC_LF_CFG 0xBFE
+ #define MBOX_MSG_GET_ENG_GRP_NUM        0xBFF
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c b/drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c
+index 1c5c262af48d..1bceabe5f0e2 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c
+@@ -819,7 +819,7 @@ static int otx2_cptpf_probe(struct pci_dev *pdev,
+ sysfs_grp_del:
+ 	sysfs_remove_group(&dev->kobj, &cptpf_sysfs_group);
+ cleanup_eng_grps:
+-	otx2_cpt_cleanup_eng_grps(pdev, &cptpf->eng_grps);
++	otx2_cpt_cleanup_eng_grps(cptpf);
+ free_lmtst:
+ 	cn10k_cpt_lmtst_free(pdev, &cptpf->lfs);
+ unregister_intr:
+@@ -851,7 +851,7 @@ static void otx2_cptpf_remove(struct pci_dev *pdev)
+ 	/* Delete sysfs entry created for kernel VF limits */
+ 	sysfs_remove_group(&pdev->dev.kobj, &cptpf_sysfs_group);
+ 	/* Cleanup engine groups */
+-	otx2_cpt_cleanup_eng_grps(pdev, &cptpf->eng_grps);
++	otx2_cpt_cleanup_eng_grps(cptpf);
+ 	/* Disable AF-PF mailbox interrupt */
+ 	cptpf_disable_afpf_mbox_intr(cptpf);
+ 	/* Destroy AF-PF mbox */
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_mbox.c b/drivers/crypto/marvell/octeontx2/otx2_cptpf_mbox.c
+index b4b2d3d1cbc2..3ff3a49bd82b 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_mbox.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_mbox.c
+@@ -502,6 +502,7 @@ static void process_afpf_mbox_msg(struct otx2_cptpf_dev *cptpf,
+ 	case MBOX_MSG_NIX_INLINE_IPSEC_CFG:
+ 	case MBOX_MSG_CPT_LF_RESET:
+ 	case MBOX_MSG_LMTST_TBL_SETUP:
++	case MBOX_MSG_CPT_SET_ENG_GRP_NUM:
+ 		break;
+ 
+ 	default:
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
+index 7180944ece50..b8c1d95d2c45 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
+@@ -1144,6 +1144,68 @@ int otx2_cpt_get_eng_grp(struct otx2_cpt_eng_grps *eng_grps, int eng_type)
+ 	return eng_grp_num;
+ }
+ 
++static int otx2_cpt_get_eng_grp_type(struct otx2_cpt_eng_grps *eng_grps,
++				     int grp_num)
++{
++	struct otx2_cpt_eng_grp_info *grp;
++
++	grp = &eng_grps->grp[grp_num];
++	if (!grp->is_enabled)
++		return 0;
++
++	if (eng_grp_has_eng_type(grp, OTX2_CPT_SE_TYPES) &&
++	    !eng_grp_has_eng_type(grp, OTX2_CPT_IE_TYPES))
++		return OTX2_CPT_SE_TYPES;
++
++	if (eng_grp_has_eng_type(grp, OTX2_CPT_IE_TYPES))
++		return OTX2_CPT_IE_TYPES;
++
++	if (eng_grp_has_eng_type(grp, OTX2_CPT_AE_TYPES))
++		return OTX2_CPT_AE_TYPES;
++	return 0;
++}
++
++static int otx2_cpt_set_eng_grp_num(struct otx2_cptpf_dev *cptpf,
++				    enum otx2_cpt_eng_type eng_type, bool set)
++{
++	struct cpt_set_egrp_num *req;
++	struct pci_dev *pdev = cptpf->pdev;
++
++	if (!eng_type || eng_type >= OTX2_CPT_MAX_ENG_TYPES)
++		return -EINVAL;
++
++	req = (struct cpt_set_egrp_num *)
++	      otx2_mbox_alloc_msg_rsp(&cptpf->afpf_mbox, 0,
++				      sizeof(*req), sizeof(struct msg_rsp));
++	if (!req) {
++		dev_err(&pdev->dev, "RVU MBOX failed to get message.\n");
++		return -EFAULT;
++	}
++
++	memset(req, 0, sizeof(*req));
++	req->hdr.id = MBOX_MSG_CPT_SET_ENG_GRP_NUM;
++	req->hdr.sig = OTX2_MBOX_REQ_SIG;
++	req->hdr.pcifunc = OTX2_CPT_RVU_PFFUNC(cptpf->pdev, cptpf->pf_id, 0);
++	req->set = set;
++	req->eng_type = eng_type;
++	req->eng_grp_num = otx2_cpt_get_eng_grp(&cptpf->eng_grps, eng_type);
++
++	return otx2_cpt_send_mbox_msg(&cptpf->afpf_mbox, pdev);
++}
++
++static int otx2_cpt_set_eng_grp_nums(struct otx2_cptpf_dev *cptpf, bool set)
++{
++	enum otx2_cpt_eng_type type;
++	int ret;
++
++	for (type = OTX2_CPT_AE_TYPES; type < OTX2_CPT_MAX_ENG_TYPES; type++) {
++		ret = otx2_cpt_set_eng_grp_num(cptpf, type, set);
++		if (ret)
++			return ret;
++	}
++	return 0;
++}
++
+ int otx2_cpt_create_eng_grps(struct otx2_cptpf_dev *cptpf,
+ 			     struct otx2_cpt_eng_grps *eng_grps)
+ {
+@@ -1224,6 +1286,10 @@ int otx2_cpt_create_eng_grps(struct otx2_cptpf_dev *cptpf,
+ 	if (ret)
+ 		goto delete_eng_grp;
+ 
++	ret = otx2_cpt_set_eng_grp_nums(cptpf, 1);
++	if (ret)
++		goto unset_eng_grp;
++
+ 	eng_grps->is_grps_created = true;
+ 
+ 	cpt_ucode_release_fw(&fw_info);
+@@ -1271,6 +1337,8 @@ int otx2_cpt_create_eng_grps(struct otx2_cptpf_dev *cptpf,
+ 	mutex_unlock(&eng_grps->lock);
+ 	return 0;
+ 
++unset_eng_grp:
++	otx2_cpt_set_eng_grp_nums(cptpf, 0);
+ delete_eng_grp:
+ 	delete_engine_grps(pdev, eng_grps);
+ release_fw:
+@@ -1350,9 +1418,10 @@ int otx2_cpt_disable_all_cores(struct otx2_cptpf_dev *cptpf)
+ 	return cptx_disable_all_cores(cptpf, total_cores, BLKADDR_CPT0);
+ }
+ 
+-void otx2_cpt_cleanup_eng_grps(struct pci_dev *pdev,
+-			       struct otx2_cpt_eng_grps *eng_grps)
++void otx2_cpt_cleanup_eng_grps(struct otx2_cptpf_dev *cptpf)
+ {
++	struct otx2_cpt_eng_grps *eng_grps = &cptpf->eng_grps;
++	struct pci_dev *pdev = cptpf->pdev;
+ 	struct otx2_cpt_eng_grp_info *grp;
+ 	int i, j;
+ 
+@@ -1366,6 +1435,8 @@ void otx2_cpt_cleanup_eng_grps(struct pci_dev *pdev,
+ 			grp->engs[j].bmap = NULL;
+ 		}
+ 	}
++
++	otx2_cpt_set_eng_grp_nums(cptpf, 0);
+ 	mutex_unlock(&eng_grps->lock);
+ }
+ 
+@@ -1388,8 +1459,7 @@ int otx2_cpt_init_eng_grps(struct pci_dev *pdev,
+ 		dev_err(&pdev->dev,
+ 			"Number of engines %d > than max supported %d\n",
+ 			eng_grps->engs_num, OTX2_CPT_MAX_ENGINES);
+-		ret = -EINVAL;
+-		goto cleanup_eng_grps;
++		return -EINVAL;
+ 	}
+ 
+ 	for (i = 0; i < OTX2_CPT_MAX_ENGINE_GROUPS; i++) {
+@@ -1403,14 +1473,20 @@ int otx2_cpt_init_eng_grps(struct pci_dev *pdev,
+ 					sizeof(long), GFP_KERNEL);
+ 			if (!grp->engs[j].bmap) {
+ 				ret = -ENOMEM;
+-				goto cleanup_eng_grps;
++				goto release_bmap;
+ 			}
+ 		}
+ 	}
+ 	return 0;
+ 
+-cleanup_eng_grps:
+-	otx2_cpt_cleanup_eng_grps(pdev, eng_grps);
++release_bmap:
++	for (i = 0; i < OTX2_CPT_MAX_ENGINE_GROUPS; i++) {
++		grp = &eng_grps->grp[i];
++		for (j = 0; j < OTX2_CPT_MAX_ETYPES_PER_GRP; j++) {
++			kfree(grp->engs[j].bmap);
++			grp->engs[j].bmap = NULL;
++		}
++	}
+ 	return ret;
+ }
+ 
+@@ -1590,6 +1666,7 @@ int otx2_cpt_dl_custom_egrp_create(struct otx2_cptpf_dev *cptpf,
+ 	bool has_se, has_ie, has_ae;
+ 	struct fw_info_t fw_info;
+ 	int ucode_idx = 0;
++	int egrp;
+ 
+ 	if (!eng_grps->is_grps_created) {
+ 		dev_err(dev, "Not allowed before creating the default groups\n");
+@@ -1727,7 +1804,21 @@ int otx2_cpt_dl_custom_egrp_create(struct otx2_cptpf_dev *cptpf,
+ 	}
+ 	ret = create_engine_group(dev, eng_grps, engs, grp_idx,
+ 				  (void **)uc_info, 1);
++	if (ret)
++		goto release_fw;
+ 
++	ret = otx2_cpt_set_eng_grp_num(cptpf, engs[0].type, 1);
++	if (ret) {
++		egrp = otx2_cpt_get_eng_grp(eng_grps, engs[0].type);
++		ret = delete_engine_group(dev, &eng_grps->grp[egrp]);
++	}
++	if (ucode_idx > 1) {
++		ret = otx2_cpt_set_eng_grp_num(cptpf, engs[1].type, 1);
++		if (ret) {
++			egrp = otx2_cpt_get_eng_grp(eng_grps, engs[1].type);
++			ret = delete_engine_group(dev, &eng_grps->grp[egrp]);
++		}
++	}
+ release_fw:
+ 	cpt_ucode_release_fw(&fw_info);
+ err_unlock:
+@@ -1745,6 +1836,7 @@ int otx2_cpt_dl_custom_egrp_delete(struct otx2_cptpf_dev *cptpf,
+ 	struct device *dev = &cptpf->pdev->dev;
+ 	char *tmp, *err_msg;
+ 	int egrp;
++	int type;
+ 	int ret;
+ 
+ 	err_msg = "Invalid input string format(ex: egrp:0)";
+@@ -1766,6 +1858,16 @@ int otx2_cpt_dl_custom_egrp_delete(struct otx2_cptpf_dev *cptpf,
+ 		return -EINVAL;
+ 	}
+ 	mutex_lock(&eng_grps->lock);
++	type = otx2_cpt_get_eng_grp_type(eng_grps, egrp);
++	if (!type) {
++		mutex_unlock(&eng_grps->lock);
++		return -EINVAL;
++	}
++	ret = otx2_cpt_set_eng_grp_num(cptpf, type, 0);
++	if (ret) {
++		mutex_unlock(&eng_grps->lock);
++		return -EINVAL;
++	}
+ 	ret = delete_engine_group(dev, &eng_grps->grp[egrp]);
+ 	mutex_unlock(&eng_grps->lock);
+ 
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.h b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.h
+index 7e6a6a4ec37c..85ead693e359 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.h
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.h
+@@ -155,8 +155,7 @@ struct otx2_cpt_eng_grps {
+ struct otx2_cptpf_dev;
+ int otx2_cpt_init_eng_grps(struct pci_dev *pdev,
+ 			   struct otx2_cpt_eng_grps *eng_grps);
+-void otx2_cpt_cleanup_eng_grps(struct pci_dev *pdev,
+-			       struct otx2_cpt_eng_grps *eng_grps);
++void otx2_cpt_cleanup_eng_grps(struct otx2_cptpf_dev *cptpf);
+ int otx2_cpt_create_eng_grps(struct otx2_cptpf_dev *cptpf,
+ 			     struct otx2_cpt_eng_grps *eng_grps);
+ int otx2_cpt_disable_all_cores(struct otx2_cptpf_dev *cptpf);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index b3562d658d45..f0342c0001c2 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -219,6 +219,8 @@ M(CPT_CTX_CACHE_SYNC,   0xA07, cpt_ctx_cache_sync, msg_req, msg_rsp)    \
+ M(CPT_LF_RESET,         0xA08, cpt_lf_reset, cpt_lf_rst_req, msg_rsp)	\
+ M(CPT_FLT_ENG_INFO,     0xA09, cpt_flt_eng_info, cpt_flt_eng_info_req,	\
+ 			       cpt_flt_eng_info_rsp)			\
++M(CPT_SET_ENG_GRP_NUM,  0xA0A, cpt_set_eng_grp_num, cpt_set_egrp_num,   \
++				msg_rsp)				\
+ /* SDP mbox IDs (range 0x1000 - 0x11FF) */				\
+ M(SET_SDP_CHAN_INFO, 0x1000, set_sdp_chan_info, sdp_chan_info_msg, msg_rsp) \
+ M(GET_SDP_CHAN_INFO, 0x1001, get_sdp_chan_info, msg_req, sdp_get_chan_info_msg) \
+@@ -1951,6 +1953,20 @@ struct cpt_flt_eng_info_rsp {
+ 	u64 rsvd;
+ };
+ 
++enum otx2_cpt_eng_type {
++	OTX2_CPT_AE_TYPES = 1,
++	OTX2_CPT_SE_TYPES = 2,
++	OTX2_CPT_IE_TYPES = 3,
++	OTX2_CPT_MAX_ENG_TYPES,
++};
++
++struct cpt_set_egrp_num {
++	struct mbox_msghdr hdr;
++	bool set;
++	u8 eng_type;
++	u8 eng_grp_num;
++};
++
+ struct sdp_node_info {
+ 	/* Node to which this PF belons to */
+ 	u8 node_id;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+index 7ee1fdeb5295..4537b7ecfd90 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -565,6 +565,15 @@ struct rep_evtq_ent {
+ 	struct rep_event event;
+ };
+ 
++struct rvu_cpt_eng_grp {
++	u8 eng_type;
++	u8 grp_num;
++};
++
++struct rvu_cpt {
++	struct rvu_cpt_eng_grp eng_grp[OTX2_CPT_MAX_ENG_TYPES];
++};
++
+ struct rvu {
+ 	void __iomem		*afreg_base;
+ 	void __iomem		*pfreg_base;
+@@ -645,6 +654,7 @@ struct rvu {
+ 	spinlock_t		mcs_intrq_lock;
+ 	/* CPT interrupt lock */
+ 	spinlock_t		cpt_intr_lock;
++	struct rvu_cpt		rvu_cpt;
+ 
+ 	struct mutex		mbox_lock; /* Serialize mbox up and down msgs */
+ 	u16			rep_pcifunc;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
+index f404117bf6c8..69c1796fba44 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
+@@ -656,6 +656,27 @@ static int cpt_inline_ipsec_cfg_outbound(struct rvu *rvu, int blkaddr, u8 cptlf,
+ 	return 0;
+ }
+ 
++int rvu_mbox_handler_cpt_set_eng_grp_num(struct rvu *rvu,
++					 struct cpt_set_egrp_num *req,
++					 struct msg_rsp *rsp)
++{
++	struct rvu_cpt *rvu_cpt = &rvu->rvu_cpt;
++	u8 eng_type = req->eng_type;
++
++	if (!eng_type || eng_type >= OTX2_CPT_MAX_ENG_TYPES)
++		return -EINVAL;
++
++	if (req->set) {
++		rvu_cpt->eng_grp[eng_type].grp_num = req->eng_grp_num;
++		rvu_cpt->eng_grp[eng_type].eng_type = eng_type;
++	} else {
++		rvu_cpt->eng_grp[eng_type].grp_num = 0;
++		rvu_cpt->eng_grp[eng_type].eng_type = 0;
++	}
++
++	return 0;
++}
++
+ int rvu_mbox_handler_cpt_inline_ipsec_cfg(struct rvu *rvu,
+ 					  struct cpt_inline_ipsec_cfg_msg *req,
+ 					  struct msg_rsp *rsp)
+-- 
+2.43.0
 
-> + **/
-> +void wx_init_hw_vf(struct wx *wx)
-> +{
-> +	wx_start_hw_vf(wx);
-> +	wx_get_mac_addr_vf(wx, wx->mac.addr);
-> +}
-> +EXPORT_SYMBOL(wx_init_hw_vf);
-> +
-> +static int wx_mbx_write_and_read_reply(struct wx *wx, u32 *req_buf,
-> +				       u32 *resp_buf, u16 size)
-> +{
-> +	int ret;
-> +
-> +	ret = wx_write_posted_mbx(wx, req_buf, size);
-> +	if (unlikely(ret))
-
-Why unlikely? It isn't usuall to add in error handling outside hot path.
-
-> +		return ret;
-> +
-> +	return wx_read_posted_mbx(wx, resp_buf, size);
-> +}
-> +
-> +/**
-> + *  wx_reset_hw_vf - Performs hardware reset
-> + *  @wx: pointer to hardware structure
-> + *
-> + *  Resets the hardware by resetting the transmit and receive units, masks and
-> + *  clears all interrupts.
-> + *
-> + *  Return: returns 0 on success, negative error code on failure
-> + **/
-> +int wx_reset_hw_vf(struct wx *wx)
-> +{
-> +	struct wx_mbx_info *mbx = &wx->mbx;
-> +	u32 msgbuf[4] = {WX_VF_RESET};
-> +	u8 *addr = (u8 *)(&msgbuf[1]);
-> +	u32 b4_buf[16] = {0};
-> +	u32 timeout = 200;
-> +	int ret;
-> +	u32 i;
-> +
-> +	/* Call wx stop to disable tx/rx and clear interrupts */
-> +	wx_stop_adapter_vf(wx);
-> +
-> +	/* reset the api version */
-> +	wx->vfinfo->vf_api = wx_mbox_api_null;
-> +
-> +	/* backup msix vectors */
-> +	if (wx->b4_addr) {
-
-Where this address is being set? I wonder if 0 is always invalid (as 0
-sounds like valid address) and also if it shouldn't return error in case
-wx->b4_addr is invalid.
-
-> +		for (i = 0; i < 16; i++)
-> +			b4_buf[i] = readl(wx->b4_addr + i * 4);
-> +	}
-> +
-> +	wr32m(wx, WX_VXCTRL, WX_VXCTRL_RST, WX_VXCTRL_RST);
-> +	rd32(wx, WX_VXSTATUS);
-> +
-> +	/* we cannot reset while the RSTI / RSTD bits are asserted */
-> +	while (!wx_check_for_rst_vf(wx) && timeout) {
-> +		timeout--;
-> +		udelay(5);
-> +	}
-> +
-> +	/* restore msix vectors */
-> +	if (wx->b4_addr) {
-> +		for (i = 0; i < 16; i++)
-> +			writel(b4_buf[i], wx->b4_addr + i * 4);
-> +	}
-> +
-> +	/* amlite: bme */
-> +#define WX_VX_PF_BME	0x4B8
-
-In my opinion it should go to the header where there are other
-register definitions.
-
-> +	if (wx->mac.type == wx_mac_aml || wx->mac.type == wx_mac_aml40)
-> +		wr32(wx, WX_VX_PF_BME, BIT(0));
-
-BIT(0) can be also described there.
-
-> +
-> +	if (!timeout)
-> +		return -EBUSY;
-> +
-> +	/* Reset VF registers to initial values */
-> +	wx_virt_clr_reg(wx);
-> +
-> +	/* mailbox timeout can now become active */
-> +	mbx->timeout = 2000;
-> +
-> +	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
-> +					  ARRAY_SIZE(msgbuf));
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (msgbuf[0] != (WX_VF_RESET | WX_VT_MSGTYPE_ACK) &&
-> +	    msgbuf[0] != (WX_VF_RESET | WX_VT_MSGTYPE_NACK))
-> +		return -EINVAL;
-> +
-> +	if (msgbuf[0] == (WX_VF_RESET | WX_VT_MSGTYPE_ACK))
-> +		ether_addr_copy(wx->mac.perm_addr, addr);
-> +
-> +	wx->mac.mc_filter_type = msgbuf[3];
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL(wx_reset_hw_vf);
-> +
-> +/**
-> + *  wx_stop_adapter_vf - Generic stop Tx/Rx units
-> + *  @wx: pointer to hardware structure
-> + *
-> + *  Sets the adapter_stopped flag within wx struct. Clears interrupts,
-> + *  disables transmit and receive units. The adapter_stopped flag is used by
-> + *  the shared code and drivers to determine if the wx is in a stopped
-> + *  state and should not touch the hardware.
-> + *
-> + *  Return: returns 0 on success, negative error code on failure
-> + **/
-> +int wx_stop_adapter_vf(struct wx *wx)
-> +{
-> +	u32 reg_val;
-> +	u16 i;
-> +
-> +	wx->adapter_stopped = true;
-> +
-> +	/* Clear interrupt mask to stop from interrupts being generated */
-> +	wr32(wx, WX_VXIMS, WX_VF_IRQ_CLEAR_MASK);
-> +
-> +	/* Clear any pending interrupts, flush previous writes */
-> +	wr32(wx, WX_VXICR, U32_MAX);
-> +
-> +	/* Disable the transmit unit.  Each queue must be disabled. */
-> +	for (i = 0; i < wx->mac.max_tx_queues; i++)
-> +		wr32(wx, WX_VXTXDCTL(i), WX_VXTXDCTL_FLUSH);
-> +
-> +	/* Disable the receive unit by stopping each queue */
-> +	for (i = 0; i < wx->mac.max_rx_queues; i++) {
-> +		reg_val = rd32(wx, WX_VXRXDCTL(i));
-> +		reg_val &= ~WX_VXRXDCTL_ENABLE;
-> +		wr32(wx, WX_VXRXDCTL(i), reg_val);
-> +	}
-> +	/* Clear packet split and pool config */
-> +	wr32(wx, WX_VXMRQC, 0);
-> +
-> +	/* flush all queues disables */
-> +	rd32(wx, WX_VXSTATUS);
-> +
-> +	return 0;
-
-Always returns 0, should be void.
-
-> +}
-> +EXPORT_SYMBOL(wx_stop_adapter_vf);
-> +
-> +/**
-> + *  wx_set_rar_vf - set device MAC address
-> + *  @wx: pointer to hardware structure
-> + *  @index: Receive address register to write
-> + *  @addr: Address to put into receive address register
-> + *  @enable_addr: set flag that address is active
-> + *
-> + *  Return: returns 0 on success, negative error code on failure
-> + **/
-> +int wx_set_rar_vf(struct wx *wx, u32 index, u8 *addr, u32 enable_addr)
-> +{
-> +	u32 msgbuf[3] = {WX_VF_SET_MAC_ADDR};
-> +	u8 *msg_addr = (u8 *)(&msgbuf[1]);
-> +	int ret;
-> +
-> +	memcpy(msg_addr, addr, ETH_ALEN);
-> +
-> +	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
-> +					  ARRAY_SIZE(msgbuf));
-> +	if (ret)
-> +		return ret;
-> +	msgbuf[0] &= ~WX_VT_MSGTYPE_CTS;
-> +
-> +	/* if nacked the address was rejected, use "perm_addr" */
-> +	if (msgbuf[0] == (WX_VF_SET_MAC_ADDR | WX_VT_MSGTYPE_NACK)) {
-> +		wx_get_mac_addr_vf(wx, wx->mac.addr);
-> +		return -EINVAL;
-> +	}
-> +
-> +	return ret;
-
-nit, ret is always 0 here, so return 0; should be more readable.
-
-> +}
-> +EXPORT_SYMBOL(wx_set_rar_vf);
-> +
-> +/**
-> + *  wx_update_mc_addr_list_vf - Update Multicast addresses
-> + *  @wx: pointer to the HW structure
-> + *  @netdev: pointer to the net device structure
-> + *
-> + *  Updates the Multicast Table Array.
-> + *
-> + *  Return: returns 0 on success, negative error code on failure
-> + **/
-> +int wx_update_mc_addr_list_vf(struct wx *wx, struct net_device *netdev)
-> +{
-> +	u32 msgbuf[WX_VXMAILBOX_SIZE] = {0};
-
-WX_VXMAILBOX_SIZE is 15, but 4B is opcode. There is 14 * 4B for payload
-= 56B, so it is 28 16 bit words, not 30, am I correct? Please add it as
-define instead of just the number.
-
-> +	u16 *vector_l = (u16 *)&msgbuf[1];
-> +	struct netdev_hw_addr *ha;
-> +	u32 cnt, i;
-> +
-> +	/* Each entry in the list uses 1 16 bit word.  We have 30
-> +	 * 16 bit words available in our HW msgbuf buffer (minus 1 for the
-> +	 * msgbuf type).  That's 30 hash values if we pack 'em right. If
-> +	 * there are more than 30 MC addresses to add then punt the
-> +	 * extras for now and then add code to handle more than 30 later.
-> +	 * It would be unusual for a server to request that many multi-cast
-> +	 * addresses except for in large enterprise network environments.
-> +	 */
-
-I think you should handle more than 30 here, instead of writting a
-comment about adding it later. It is just about sending anoither
-command, yes?
-
-}
-> +
-> +	cnt = netdev_mc_count(netdev);
-> +	if (cnt > 30)
-> +		cnt = 30;
-> +	msgbuf[0] = WX_VF_SET_MULTICAST;
-> +	msgbuf[0] |= cnt << WX_VT_MSGINFO_SHIFT;
-> +
-> +	i = 0;
-> +	netdev_for_each_mc_addr(ha, netdev) {
-> +		if (i == cnt)
-> +			break;
-> +		if (is_link_local_ether_addr(ha->addr))
-> +			continue;
-> +
-> +		vector_l[i++] = wx_mta_vector(wx, ha->addr);
-
-What about endianess, don't you need a __cpu_to_le16/be16 conversion? 
-
-> +	}
-> +
-> +	return wx_write_posted_mbx(wx, msgbuf, WX_VXMAILBOX_SIZE);
-
-Shouldn't the size be cut to the real number of address?
-
-> +}
-> +EXPORT_SYMBOL(wx_update_mc_addr_list_vf);
-> +
-> +/**
-> + *  wx_update_xcast_mode_vf - Update Multicast mode
-> + *  @wx: pointer to the HW structure
-> + *  @xcast_mode: new multicast mode
-> + *
-> + *  Updates the Multicast Mode of VF.
-> + *
-> + *  Return: returns 0 on success, negative error code on failure
-> + **/
-> +int wx_update_xcast_mode_vf(struct wx *wx, int xcast_mode)
-> +{
-> +	u32 msgbuf[2] = {WX_VF_UPDATE_XCAST_MODE, xcast_mode};
-> +	int ret = 0;
-> +
-> +	switch (wx->vfinfo->vf_api) {
-> +	case wx_mbox_api_13:
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-
-if (api != vx_mbox_api_13)
-	return -EINVAL;
-
-> +
-> +	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
-> +					  ARRAY_SIZE(msgbuf));
-> +	if (ret)
-> +		return ret;
-> +
-> +	msgbuf[0] &= ~WX_VT_MSGTYPE_CTS;
-> +	if (msgbuf[0] == (WX_VF_UPDATE_XCAST_MODE | WX_VT_MSGTYPE_NACK))
-> +		return -EINVAL;
-> +
-> +	return ret;
-
-return 0;
-
-> +}
-> +EXPORT_SYMBOL(wx_update_xcast_mode_vf);
-> +
-> +/**
-> + * wx_get_link_state_vf - Get VF link state from PF
-> + * @wx: pointer to the HW structure
-> + * @link_state: link state storage
-> + *
-> + * Return: return state of the operation error or success.
-> + **/
-> +int wx_get_link_state_vf(struct wx *wx, u16 *link_state)
-> +{
-> +	u32 msgbuf[2] = {WX_VF_GET_LINK_STATE};
-> +	int ret = 0;
-> +
-> +	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
-> +					  ARRAY_SIZE(msgbuf));
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (msgbuf[0] & WX_VT_MSGTYPE_NACK)
-> +		return -EINVAL;
-> +
-> +	*link_state = msgbuf[1];
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(wx_get_link_state_vf);
-> +
-> +/**
-> + *  wx_set_vfta_vf - Set/Unset vlan filter table address
-> + *  @wx: pointer to the HW structure
-> + *  @vlan: 12 bit VLAN ID
-> + *  @vind: unused by VF drivers
-> + *  @vlan_on: if true then set bit, else clear bit
-> + *  @vlvf_bypass: boolean flag indicating updating default pool is okay
-> + *
-> + *  Turn on/off specified VLAN in the VLAN filter table.
-> + *
-> + *  Return: returns 0 on success, negative error code on failure
-> + **/
-> +int wx_set_vfta_vf(struct wx *wx, u32 vlan, u32 vind, bool vlan_on,
-> +		   bool vlvf_bypass)
-> +{
-> +	u32 msgbuf[2] = {WX_VF_SET_VLAN, vlan};
-> +	bool vlan_offload = false;
-> +	int ret = 0;
-> +
-> +	/* Setting the 8 bit field MSG INFO to TRUE indicates "add" */
-> +	msgbuf[0] |= vlan_on << WX_VT_MSGINFO_SHIFT;
-> +	/* if vf vlan offload is disabled, allow to create vlan under pf port vlan */
-> +	msgbuf[0] |= BIT(vlan_offload);
-> +
-> +	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
-> +					  ARRAY_SIZE(msgbuf));
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (msgbuf[0] & WX_VT_MSGTYPE_ACK)
-> +		return 0;
-> +
-> +	return msgbuf[0] & WX_VT_MSGTYPE_NACK;
-
-This will be positive on fail. Reword the kdoc.
-Is it even possible to not have ACK and not have NACK?
-Maybe return -EIO; here is enough? Or even better return error if no ACK
-and return 0; at the end.
-
-> +}
-> +EXPORT_SYMBOL(wx_set_vfta_vf);
-> +
-> +void wx_get_mac_addr_vf(struct wx *wx, u8 *mac_addr)
-> +{
-> +	ether_addr_copy(mac_addr, wx->mac.perm_addr);
-> +}
-> +EXPORT_SYMBOL(wx_get_mac_addr_vf);
-> +
-> +int wx_get_fw_version_vf(struct wx *wx)
-> +{
-> +	u32 msgbuf[2] = {WX_VF_GET_FW_VERSION};
-> +	int ret;
-> +
-> +	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
-> +					  ARRAY_SIZE(msgbuf));
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (msgbuf[0] & WX_VT_MSGTYPE_NACK)
-> +		return -EINVAL;
-> +	snprintf(wx->eeprom_id, 32, "0x%08x", msgbuf[1]);
-> +
-> +	return ret;
-
-It will be great to stick to one style of checking if it is possible.
-Here is the best, if nack returns error, just return 0 at the end, as
-ret is always 0 here.
-
-> +}
-> +EXPORT_SYMBOL(wx_get_fw_version_vf);
-> +
-> +int wx_set_uc_addr_vf(struct wx *wx, u32 index, u8 *addr)
-> +{
-> +	u32 msgbuf[3] = {WX_VF_SET_MACVLAN};
-> +	u8 *msg_addr = (u8 *)(&msgbuf[1]);
-> +	int ret;
-> +
-> +	/* If index is one then this is the start of a new list and needs
-> +	 * indication to the PF so it can do it's own list management.
-> +	 * If it is zero then that tells the PF to just clear all of
-> +	 * this VF's macvlans and there is no new list.
-> +	 */
-> +	msgbuf[0] |= index << WX_VT_MSGINFO_SHIFT;
-> +	if (addr)
-> +		memcpy(msg_addr, addr, 6);
-> +	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
-> +					  ARRAY_SIZE(msgbuf));
-> +	if (ret)
-> +		return ret;
-> +
-> +	msgbuf[0] &= ~WX_VT_MSGTYPE_CTS;
-> +
-> +	if (msgbuf[0] == (WX_VF_SET_MACVLAN | WX_VT_MSGTYPE_NACK))
-> +		return -EINVAL;
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(wx_set_uc_addr_vf);
-> +
-> +/**
-> + *  wx_rlpml_set_vf - Set the maximum receive packet length
-> + *  @wx: pointer to the HW structure
-> + *  @max_size: value to assign to max frame size
-> + *
-> + *  Return: returns 0 on success, negative error code on failure
-> + **/
-> +int wx_rlpml_set_vf(struct wx *wx, u16 max_size)
-> +{
-> +	u32 msgbuf[2] = {WX_VF_SET_LPE, max_size};
-> +	int ret;
-> +
-> +	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
-> +					  ARRAY_SIZE(msgbuf));
-> +	if (ret)
-> +		return ret;
-> +	if ((msgbuf[0] & WX_VF_SET_LPE) &&
-> +	    (msgbuf[0] & WX_VT_MSGTYPE_NACK))
-> +		return -EINVAL;
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(wx_rlpml_set_vf);
-> +
-> +/**
-> + *  wx_negotiate_api_version - Negotiate supported API version
-> + *  @wx: pointer to the HW structure
-> + *  @api: integer containing requested API version
-> + *
-> + *  Return: returns 0 on success, negative error code on failure
-> + **/
-> +int wx_negotiate_api_version(struct wx *wx, int api)
-> +{
-> +	u32 msgbuf[2] = {WX_VF_API_NEGOTIATE, api};
-> +	int ret;
-> +
-> +	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
-> +					  ARRAY_SIZE(msgbuf));
-> +	if (ret)
-> +		return ret;
-> +
-> +	msgbuf[0] &= ~WX_VT_MSGTYPE_CTS;
-> +
-> +	/* Store value and return 0 on success */
-> +	if (msgbuf[0] == (WX_VF_API_NEGOTIATE | WX_VT_MSGTYPE_NACK))
-> +		return -EINVAL;
-> +	wx->vfinfo->vf_api = api;
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(wx_negotiate_api_version);
-> +
-> +int wx_get_queues_vf(struct wx *wx, u32 *num_tcs, u32 *default_tc)
-> +{
-> +	u32 msgbuf[5] = {WX_VF_GET_QUEUES};
-> +	int ret = 0;
-
-int ret; is enough.
-
-> +
-> +	/* do nothing if API doesn't support wx_get_queues */
-> +	switch (wx->vfinfo->vf_api) {
-> +	case wx_mbox_api_13:
-> +		break;
-> +	default:
-> +		return 0;
-
-if() instead
-
-> +	}
-> +
-> +	/* Fetch queue configuration from the PF */
-> +	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
-> +					  ARRAY_SIZE(msgbuf));
-> +	if (ret)
-> +		return ret;
-> +	msgbuf[0] &= ~WX_VT_MSGTYPE_CTS;
-> +
-> +	/* if we didn't get an ACK there must have been
-> +	 * some sort of mailbox error so we should treat it
-> +	 * as such
-> +	 */
-> +	if (msgbuf[0] != (WX_VF_GET_QUEUES | WX_VT_MSGTYPE_ACK))
-> +		return -EINVAL;
-> +	/* record and validate values from message */
-> +	wx->mac.max_tx_queues = msgbuf[WX_VF_TX_QUEUES];
-> +	if (wx->mac.max_tx_queues == 0 ||
-> +	    wx->mac.max_tx_queues > WX_VF_MAX_TX_QUEUES)
-> +		wx->mac.max_tx_queues = WX_VF_MAX_TX_QUEUES;
-> +
-> +	wx->mac.max_rx_queues = msgbuf[WX_VF_RX_QUEUES];
-> +	if (wx->mac.max_rx_queues == 0 ||
-> +	    wx->mac.max_rx_queues > WX_VF_MAX_RX_QUEUES)
-> +		wx->mac.max_rx_queues = WX_VF_MAX_RX_QUEUES;
-> +
-> +	*num_tcs = msgbuf[WX_VF_TRANS_VLAN];
-> +	/* in case of unknown state assume we cannot tag frames */
-> +	if (*num_tcs > wx->mac.max_rx_queues)
-> +		*num_tcs = 1;
-> +	*default_tc = msgbuf[WX_VF_DEF_QUEUE];
-> +	/* default to queue 0 on out-of-bounds queue number */
-> +	if (*default_tc >= wx->mac.max_tx_queues)
-> +		*default_tc = 0;
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(wx_get_queues_vf);
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf.h b/drivers/net/ethernet/wangxun/libwx/wx_vf.h
-> new file mode 100644
-> index 000000000000..eb40048f46eb
-> --- /dev/null
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_vf.h
-> @@ -0,0 +1,61 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/* Copyright (c) 2015 - 2025 Beijing WangXun Technology Co., Ltd. */
-> +
-> +#ifndef _WX_VF_H_
-> +#define _WX_VF_H_
-> +
-> +#define WX_VXSTATUS              0x4
-> +#define WX_VXCTRL                0x8
-> +#define WX_VXCTRL_RST            BIT(0)
-> +
-> +#define WX_VXMRQC                0x78
-> +#define WX_VXICR                 0x100
-> +#define WX_VXIMS                 0x108
-> +#define WX_VF_IRQ_CLEAR_MASK     7
-> +#define WX_VF_MAX_TX_QUEUES      4
-> +#define WX_VF_MAX_RX_QUEUES      4
-> +#define WX_VXTXDCTL(r)           (0x3010 + (0x40 * (r)))
-> +#define WX_VXRXDCTL(r)           (0x1010 + (0x40 * (r)))
-> +#define WX_VXRXDCTL_ENABLE       BIT(0)
-> +#define WX_VXTXDCTL_FLUSH        BIT(26)
-> +
-> +#define WX_VXRXDCTL_RSCMAX(f)    FIELD_PREP(GENMASK(24, 23), f)
-> +#define WX_VXRXDCTL_BUFLEN(f)    FIELD_PREP(GENMASK(6, 1), f)
-> +#define WX_VXRXDCTL_BUFSZ(f)     FIELD_PREP(GENMASK(11, 8), f)
-> +#define WX_VXRXDCTL_HDRSZ(f)     FIELD_PREP(GENMASK(15, 12), f)
-> +
-> +#define WX_VXRXDCTL_RSCMAX_MASK  GENMASK(24, 23)
-> +#define WX_VXRXDCTL_BUFLEN_MASK  GENMASK(6, 1)
-> +#define WX_VXRXDCTL_BUFSZ_MASK   GENMASK(11, 8)
-> +#define WX_VXRXDCTL_HDRSZ_MASK   GENMASK(15, 12)
-> +
-> +#define wx_conf_size(v, mwidth, uwidth) ({ \
-> +	typeof(v) _v = (v); \
-> +	(_v == 2 << (mwidth) ? 0 : _v >> (uwidth)); \
-> +})
-> +#define wx_buf_len(v)            wx_conf_size(v, 13, 7)
-> +#define wx_hdr_sz(v)             wx_conf_size(v, 10, 6)
-> +#define wx_buf_sz(v)             wx_conf_size(v, 14, 10)
-> +#define wx_pkt_thresh(v)         wx_conf_size(v, 4, 0)
-> +
-> +#define WX_RX_HDR_SIZE           256
-> +#define WX_RX_BUF_SIZE           2048
-> +
-> +void wx_start_hw_vf(struct wx *wx);
-> +void wx_init_hw_vf(struct wx *wx);
-> +int wx_reset_hw_vf(struct wx *wx);
-> +void wx_get_mac_addr_vf(struct wx *wx, u8 *mac_addr);
-> +int wx_stop_adapter_vf(struct wx *wx);
-> +int wx_get_fw_version_vf(struct wx *wx);
-> +int wx_set_rar_vf(struct wx *wx, u32 index, u8 *addr, u32 enable_addr);
-> +int wx_update_mc_addr_list_vf(struct wx *wx, struct net_device *netdev);
-> +int wx_set_uc_addr_vf(struct wx *wx, u32 index, u8 *addr);
-> +int wx_rlpml_set_vf(struct wx *wx, u16 max_size);
-> +int wx_negotiate_api_version(struct wx *wx, int api);
-> +int wx_get_queues_vf(struct wx *wx, u32 *num_tcs, u32 *default_tc);
-> +int wx_update_xcast_mode_vf(struct wx *wx, int xcast_mode);
-> +int wx_get_link_state_vf(struct wx *wx, u16 *link_state);
-> +int wx_set_vfta_vf(struct wx *wx, u32 vlan, u32 vind, bool vlan_on,
-> +		   bool vlvf_bypass);
-> +
-> +#endif /* _WX_VF_H_ */
-
-In general it will be great to define structures for each command that
-is used in VF communication. Filling it should be also easier.
-
-Thanks
-
-> -- 
-> 2.30.1
