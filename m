@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3088C2F94B7
-	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 17:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C62D2FE391
+	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 17:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750268574; cv=none; b=bqK9Ng2aH+D1UGPuQNX/4FeOkCpPtsYHRhlkq5LTtTmh81FZLnuz20m7w9HphNskVK1JhpSzlqwV3QvHD6lQ+8Wxqa4r/S1cuHwla4vPb2IITm1Yt9mSLlQpwt1hdP9UecoL03jDl+fYIQzGRl+/wmsxWPYveY8g+6ZTCnvIucw=
+	t=1750268574; cv=none; b=sWGiuCQVERbtJGQMuoK12Uji87K5bxIFQg4ZeWAKB6A3vKFJEZ/NWMxhizhnzdEMoXZokLUtdOp4rLpJNVNyghz0Bplm/FCYsPwtarA1PfI8FfQpT7BY8bl0+pgU4BdU8msEuaFfaYqOgJvd5P15xAgbZUGv9hccJwLyg3eaPg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750268574; c=relaxed/simple;
-	bh=8pF34EUyRygN2RFh5v6kgONRDP4MTYWHSRKS3Q6j434=;
+	bh=Z5kkU6+E1c0JF2JHDsX6B+jdUnp2jwbeNLrKLL9/F5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W7Hk4LfCAWq2mnnlNTZVk4OZgoE38HVIlwi+8bfxA/uYRUK2sChiI6tq58rVEQRQmnz6eBud8Rxe2UAspg1G12ADy+flrZtQuTDFn+Milw3BtlFJzk+AyAEaMTkP4LeUk4Mu9zn1BdzDBxK9aJF9ePWHx/kXk1fDWIINp9YckdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T7mpXHWM; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=jZgmz011wFXZWmFMQCG82m9Bq5FkO0LFm1HijZB8NkZ2SzFlmVvL2SIZXEz26S6vYhiqBUspjkyb2Bs9hJbW5xFlk9rlySUGWKtRBDOwYsxtyxNBJDypsrZ9RRGNpz0S54ur1TAPhOHzeOwLtovTkivcqXmF9Yn2AoMR9jNdyVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PCvKY7Ex; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T7mpXHWM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PCvKY7Ex"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750268571; x=1781804571;
+  t=1750268573; x=1781804573;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8pF34EUyRygN2RFh5v6kgONRDP4MTYWHSRKS3Q6j434=;
-  b=T7mpXHWMw10z2NO5wuU+pElQnVUnJtERrPfOHWFJwrAfNHhhiIoM+ZUp
-   RWR8jg51xkfS2XrzZfwGeG847Kw74+l1pAUYxe1WW1CTKf0By2TqstVWs
-   nGWAoL42PC2SNyrXxJH2aZ6NxCKKGghqf8IhWibYHXo4vqLCWMfgrEk+y
-   3q0/0jQdu2kPhuTeKB2XJpTbrlSnKkU1TXhnJAYmeXCn3euWg31Ui4Ohf
-   gNKTjzzpKoCZkkpAWi3I5+UsYLGsB1KQy2QsoLmeD7Lzj5Y8UVd8tMzC9
-   s2z81P9NNMW1zpPjkfwGkVRDuRVHDgJh4+oRxxg7H/RVVAxhdGeWtI6bi
-   A==;
-X-CSE-ConnectionGUID: SWbp9sHkT7+WOAVL8r4JuA==
-X-CSE-MsgGUID: A3sHMj0DQiOd+fyzLBFe0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="56183707"
+  bh=Z5kkU6+E1c0JF2JHDsX6B+jdUnp2jwbeNLrKLL9/F5k=;
+  b=PCvKY7ExKHHNMhRvog6elHkxbqJg3OepTOmywUxwgL/5Ho/Lrn1Fehvp
+   16mbhJzq4jG/T0jzpOuympSZMZtoAOahhVOr20r4cg/hHaYuudpJehjXj
+   cSOnW7WovQWYixkVUuMeDLHlLgyCZcMYgJ05bEcTZrgrH809foSwWzMhI
+   YDtth87dFyJHNbvwtBRA7FG31Qq6HhL+Ow4104vh3LbqNNbLQPECP8Oo6
+   s7HPGTAS6cv+UuE+dschMn6LTNWfeOf5U80/7TuTppObz7glpFg5aIpKb
+   lH77PWatMA2p1b4ge6iR77qy4UNhjBJ5hfxowcGMbdlAv7/B10rJULWT/
+   Q==;
+X-CSE-ConnectionGUID: j9Ys8l0zQoWHzovpYBwwZA==
+X-CSE-MsgGUID: Bq6dVv2sQ16fixsueE6d/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="56183721"
 X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
-   d="scan'208";a="56183707"
+   d="scan'208";a="56183721"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 10:42:48 -0700
-X-CSE-ConnectionGUID: MOms8weWTNCv9LNeh5q9Xg==
-X-CSE-MsgGUID: 7SS10ygxTeaXj9vf8gvTOA==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 10:42:49 -0700
+X-CSE-ConnectionGUID: A5bwJYCxRWmjnCXWv1QdkA==
+X-CSE-MsgGUID: TapG7U8ERfKWAAWBTcaOaA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,246,1744095600"; 
-   d="scan'208";a="149695907"
+   d="scan'208";a="149695932"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa007.fm.intel.com with ESMTP; 18 Jun 2025 10:42:47 -0700
+  by fmviesa007.fm.intel.com with ESMTP; 18 Jun 2025 10:42:48 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,17 +50,15 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Karol Kolacinski <karol.kolacinski@intel.com>,
+Cc: Jacob Keller <jacob.e.keller@intel.com>,
 	anthony.l.nguyen@intel.com,
-	jacob.e.keller@intel.com,
+	karol.kolacinski@intel.com,
 	przemyslaw.kitszel@intel.com,
 	richardcochran@gmail.com,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Milena Olech <milena.olech@intel.com>,
 	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net-next 06/15] ice: add TSPLL log config helper
-Date: Wed, 18 Jun 2025 10:42:18 -0700
-Message-ID: <20250618174231.3100231-7-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next 08/15] ice: clear time_sync_en field for E825-C during reprogramming
+Date: Wed, 18 Jun 2025 10:42:20 -0700
+Message-ID: <20250618174231.3100231-9-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250618174231.3100231-1-anthony.l.nguyen@intel.com>
 References: <20250618174231.3100231-1-anthony.l.nguyen@intel.com>
@@ -72,113 +70,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Karol Kolacinski <karol.kolacinski@intel.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-Add a helper function to print new/current TSPLL config. This helps
-avoid unnecessary casts from u8 to enums.
+When programming the Clock Generation Unit for E285-C hardware, we need
+to clear the time_sync_en bit of the DWORD 9 before we set the
+frequency.
 
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Milena Olech <milena.olech@intel.com>
+Co-developed-by: Karol Kolacinski <karol.kolacinski@intel.com>
 Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_tspll.c | 54 ++++++++++++----------
- 1 file changed, 30 insertions(+), 24 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_tspll.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_tspll.c b/drivers/net/ethernet/intel/ice/ice_tspll.c
-index cf0e37296796..08af4ced50eb 100644
+index 2cc728c2b678..8de1ad1da834 100644
 --- a/drivers/net/ethernet/intel/ice/ice_tspll.c
 +++ b/drivers/net/ethernet/intel/ice/ice_tspll.c
-@@ -89,6 +89,26 @@ static const char *ice_tspll_clk_src_str(enum ice_clk_src clk_src)
+@@ -285,6 +285,11 @@ static int ice_tspll_cfg_e825c(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
+ 		ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R23, dw23.val);
  	}
- }
  
-+/**
-+ * ice_tspll_log_cfg - Log current/new TSPLL configuration
-+ * @hw: Pointer to the HW struct
-+ * @enable: CGU enabled/disabled
-+ * @clk_src: Current clock source
-+ * @tspll_freq: Current clock frequency
-+ * @lock: CGU lock status
-+ * @new_cfg: true if this is a new config
-+ */
-+static void ice_tspll_log_cfg(struct ice_hw *hw, bool enable, u8 clk_src,
-+			      u8 tspll_freq, bool lock, bool new_cfg)
-+{
-+	dev_dbg(ice_hw_to_dev(hw),
-+		"%s TSPLL configuration -- %s, src %s, freq %s, PLL %s\n",
-+		new_cfg ? "New" : "Current", str_enabled_disabled(enable),
-+		ice_tspll_clk_src_str((enum ice_clk_src)clk_src),
-+		ice_tspll_clk_freq_str((enum ice_tspll_freq)tspll_freq),
-+		lock ? "locked" : "unlocked");
-+}
++	if (dw9.time_sync_en) {
++		dw9.time_sync_en = 0;
++		ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R9, dw9.val);
++	}
 +
- /**
-  * ice_tspll_cfg_e82x - Configure the Clock Generation Unit TSPLL
-  * @hw: Pointer to the HW struct
-@@ -144,12 +164,9 @@ static int ice_tspll_cfg_e82x(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- 	if (err)
- 		return err;
+ 	/* Set the frequency */
+ 	dw9.time_ref_freq_sel = clk_freq;
  
--	/* Log the current clock configuration */
--	ice_debug(hw, ICE_DBG_PTP, "Current TSPLL configuration -- %s, clk_src %s, clk_freq %s, PLL %s\n",
--		  str_enabled_disabled(dw24.ts_pll_enable),
--		  ice_tspll_clk_src_str(dw24.time_ref_sel),
--		  ice_tspll_clk_freq_str(dw9.time_ref_freq_sel),
--		  bwm_lf.plllock_true_lock_cri ? "locked" : "unlocked");
-+	ice_tspll_log_cfg(hw, dw24.ts_pll_enable, dw24.time_ref_sel,
-+			  dw9.time_ref_freq_sel, bwm_lf.plllock_true_lock_cri,
-+			  false);
- 
- 	/* Disable the PLL before changing the clock source or frequency */
- 	if (dw24.ts_pll_enable) {
-@@ -222,12 +239,8 @@ static int ice_tspll_cfg_e82x(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- 		return -EBUSY;
+@@ -296,6 +301,7 @@ static int ice_tspll_cfg_e825c(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
+ 		dw9.time_ref_en = 1;
+ 		dw9.clk_eref0_en = 0;
  	}
++	dw9.time_sync_en = 1;
+ 	ICE_WRITE_CGU_REG_OR_DIE(hw, ICE_CGU_R9, dw9.val);
  
--	/* Log the current clock configuration */
--	ice_debug(hw, ICE_DBG_PTP, "New TSPLL configuration -- %s, clk_src %s, clk_freq %s, PLL %s\n",
--		  str_enabled_disabled(dw24.ts_pll_enable),
--		  ice_tspll_clk_src_str(dw24.time_ref_sel),
--		  ice_tspll_clk_freq_str(dw9.time_ref_freq_sel),
--		  bwm_lf.plllock_true_lock_cri ? "locked" : "unlocked");
-+	ice_tspll_log_cfg(hw, dw24.ts_pll_enable, clk_src, clk_freq, true,
-+			  true);
- 
- 	return 0;
- }
-@@ -316,12 +329,9 @@ static int ice_tspll_cfg_e825c(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- 	if (err)
- 		return err;
- 
--	/* Log the current clock configuration */
--	ice_debug(hw, ICE_DBG_PTP, "Current TSPLL configuration -- %s, clk_src %s, clk_freq %s, PLL %s\n",
--		  str_enabled_disabled(dw23.ts_pll_enable),
--		  ice_tspll_clk_src_str(dw23.time_ref_sel),
--		  ice_tspll_clk_freq_str(dw9.time_ref_freq_sel),
--		  ro_lock.plllock_true_lock_cri ? "locked" : "unlocked");
-+	ice_tspll_log_cfg(hw, dw23.ts_pll_enable, dw23.time_ref_sel,
-+			  dw9.time_ref_freq_sel,
-+			  ro_lock.plllock_true_lock_cri, false);
- 
- 	/* Disable the PLL before changing the clock source or frequency */
- 	if (dw23.ts_pll_enable) {
-@@ -414,12 +424,8 @@ static int ice_tspll_cfg_e825c(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
- 		return -EBUSY;
- 	}
- 
--	/* Log the current clock configuration */
--	ice_debug(hw, ICE_DBG_PTP, "New TSPLL configuration -- %s, clk_src %s, clk_freq %s, PLL %s\n",
--		  str_enabled_disabled(dw23.ts_pll_enable),
--		  ice_tspll_clk_src_str(dw23.time_ref_sel),
--		  ice_tspll_clk_freq_str(dw9.time_ref_freq_sel),
--		  ro_lock.plllock_true_lock_cri ? "locked" : "unlocked");
-+	ice_tspll_log_cfg(hw, dw23.ts_pll_enable, clk_src, clk_freq, true,
-+			  true);
- 
- 	return 0;
- }
+ 	/* Choose the referenced frequency */
 -- 
 2.47.1
 
