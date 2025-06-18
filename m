@@ -1,188 +1,177 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2043.outbound.protection.outlook.com [40.107.92.43])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A8E1F4191
-	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 09:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750238803; cv=fail; b=JSojEs9opAvapf2lat7XPQ8KkJezKnmQ2QueGYe7Awz0VWOvaT123yK+epLC9E13vOqJkwLfnNw/U+mBuF1aNpkyrNJjJ1mJ64foOVaYiVJLWn1x7kJl+l/qzNMsleHSAyOJ47FZUwg2SoqpNH+SXy0VKp+/1trAXWiRk0u/8ck=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750238803; c=relaxed/simple;
-	bh=NsBFE9xfG2rSdG/yNqsm/5gY7L/nYRsw1GUXfTqO/rU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iV+2zXeSCET0HNgRMccnn/UscSNv2MDDg3JhUQUYdB5zJSr9Oct3UkV2HERMfVzfQW6TkUQnggpKuWCy4+I6wDqU+u480slSJPp3oDkkHBP2LOdJU3slBdyM+zBd8HQWVVAR3ik9L3axQ6rfoFDoMZTm0cFuNOVqAjZ3i99MzlU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=i0ULE8fg; arc=fail smtp.client-ip=40.107.92.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D24C28F5
+	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 09:29:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750238989; cv=none; b=d2nYd3Q8IyYY/mOEkzh7tbOnGkvwrWEqD32e57NMwqy8Lf2SA3SNGBDehppcAGmnHXUhW38KF5g/W8+yFEcKl+t5pxUQOYCjWYypWz4uOKg9+Ym8tN+FfRbOm9bdCZOoRd9jpA75O0kuPhfdxL/QFv5eYmG+N1jjKYk9LB7i3LA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750238989; c=relaxed/simple;
+	bh=jjNlmHBcaxShHoPQ1BOaxdlhQ3qJO/+cOCvjTnVHmo8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tzgfd6y+bYuzupAc0FDwXs9vaY3BQUXshcUuIsiUfQi/w4Ht1cuqWo7xhQzZ4jGULGUo7h3RJI5z45Sq0LZot4FXSADqXvQt4xDXR/JH284MEHfCW+1zfcE5CCnmQlyvNhFOJ6Z7l/GcvppO7TiGI1goNvRrUOqhbavr1GkvgDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Nd+VL/gu; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="i0ULE8fg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gf0eJDPvsz1PGk0eil3y/qM8M2WWd3jP/IRKqg/whLCY5f208u7wEc03vaieYinPTzwQJaHdkQdWXEd0bqrFPn0ChtdP5DC0GH4UIn570uE51BxnpNJHdmdvb00On2UpoITVM552Tq0qrV/92sJoPQKjQOgBWy0mF1Jy8Gu7ye0JDM3senT645nISQZNe6s6Ck0sZNG9UNdr9J2GnLU3uLLeEpPEqTv3nTNeUXD6QvcbAwkOEBHkLv1bKSd56Udx/MA4+qU05FQEW6Za2S0absG3Ojte1fUkPZ17w/QCpyibxbZnWYhvz7Q14mv462ISkzuEe7QY37OoMVAlMqILog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dvrUDp01fCL42Xv7ZnOWStRM0eqkA4WgaEhcpCk4Igk=;
- b=R2A57ULC10QjBvPkdRCIj01fJICAkyCFlXTxzmpXw5Oc/xgJakNRNuOEK6T3yjj8MPoD6oDZk+8aK4dKtx2JP2EG5UJH4xvDuh7FoF5ZabdEaznJ2todqG55nOI+UTOuq6cg1AgVFha/ZHyZ2TQiOWeX8UMZPuWCxBGNCGxYM4pQfDvLmTURe+LYqm6A0aVSP7t0w7XzMaDu33dGXKUYEUR4IJSlgFLODQ9VissWrxD/7s8pkftBU1c5gDGJ+V7BzxqVLv//ZcQnhtLNpSJpjf0XX73SUVLTekwIDvrestxUfcaPp4Tk3KN7yMYbUVzDsVmja+D6quueQdR6wn35Ww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dvrUDp01fCL42Xv7ZnOWStRM0eqkA4WgaEhcpCk4Igk=;
- b=i0ULE8fgvyFOXXhGM3YGrlgJ3aIokydyh9xSWmLnRQjnlz7qWhEMRQLJI2fu02z8ORkEKc8d+v5SNiilYDYIYpUEt3QJtv6b2vRnQle7fNfITrdpMzt8YS1U/sizIbU6LkkVNd4bHlYBpo72nx869IHZzutb/Vl/35/mGpemmSQktbmAx4jYYIbMbrbxKT5VqrE6ZxVk5D+O9fYGcUceVud0DEFftIhuWul0NN3hqPsHy9E9Mk7SH1cEmh/ROFyP3gruHcLoTX6TXJ0oFqP61Sq3kTvyd2I6mH6r2xRW+70b5xZYGrCwohWR0QP81EC+mBsXBGt5+X4yN+06xBTuOg==
-Received: from CH5PR02CA0015.namprd02.prod.outlook.com (2603:10b6:610:1ed::9)
- by SA1PR12MB9472.namprd12.prod.outlook.com (2603:10b6:806:45b::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Wed, 18 Jun
- 2025 09:26:39 +0000
-Received: from CH1PEPF0000A34A.namprd04.prod.outlook.com
- (2603:10b6:610:1ed:cafe::80) by CH5PR02CA0015.outlook.office365.com
- (2603:10b6:610:1ed::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.32 via Frontend Transport; Wed,
- 18 Jun 2025 09:26:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CH1PEPF0000A34A.mail.protection.outlook.com (10.167.244.5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8857.21 via Frontend Transport; Wed, 18 Jun 2025 09:26:38 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 18 Jun
- 2025 02:26:24 -0700
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 18 Jun
- 2025 02:26:23 -0700
-Received: from mtl-vdi-603.wap.labs.mlnx (10.127.8.11) by mail.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server id 15.2.1544.14 via Frontend
- Transport; Wed, 18 Jun 2025 02:26:21 -0700
-From: Jianbo Liu <jianbol@nvidia.com>
-To: <netdev@vger.kernel.org>, <davem@davemloft.net>, <kuba@kernel.org>,
-	<steffen.klassert@secunet.com>
-CC: Jianbo Liu <jianbol@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>,
-	"Herbert Xu" <herbert@gondor.apana.org.au>, Eric Dumazet
-	<edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>
-Subject: [PATCH net-next] xfrm: hold device only for the asynchronous decryption
-Date: Wed, 18 Jun 2025 12:25:49 +0300
-Message-ID: <20250618092550.68847-1-jianbol@nvidia.com>
-X-Mailer: git-send-email 2.38.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Nd+VL/gu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750238984;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k+HaWI7OzQLBgz2QNz0jyieeF0YKXhz+FU7MoJE7o3Q=;
+	b=Nd+VL/guFMKq4FRO0uwerI1CAPPqPpnyLvO7k1a1J9rHtAGt6Z9HK2xQnfir6lKvThjpBt
+	6w3BK6mdv6nRQA+cu7eLkhV93Tyisvc8qPAhJeULCfd8C2w4O64URo+jApPZgD8DLA8Zgn
+	F2MqJY1guGEHrXGxMaNnMvZpB9S7uck=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-76-hqCBze9uOICvRifC8mx7_w-1; Wed, 18 Jun 2025 05:29:43 -0400
+X-MC-Unique: hqCBze9uOICvRifC8mx7_w-1
+X-Mimecast-MFC-AGG-ID: hqCBze9uOICvRifC8mx7_w_1750238982
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-606c46b8b9cso574717a12.1
+        for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 02:29:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750238982; x=1750843782;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k+HaWI7OzQLBgz2QNz0jyieeF0YKXhz+FU7MoJE7o3Q=;
+        b=vWh6ETLoev4PEdvMg61Itqj380dPhNqaydVNZcdW67fNXIbBwDFYEhkIiKsmNKCvYN
+         s1riRsfVDERarqkb+mZXBqNjPyCtqzt55Mg4kezGyNRDLidEc1KNvzn7y78uWs4E4bww
+         Q3+Ap/Xm/b2xKnBwAtlSxcuDO0weDcmI6+5MPS/MRCP8v2G1YF9QaarGo4FuYVpLTtE0
+         jAfKtVA/YtyK5k+3+bpWXjarA9KoF5Ke3hSlHFz3cyhZfPGQJJU49yliA1MI9YmU2YQ+
+         cezC5RK9L0IO2NZasagBCDgAKBJnv01QmPGycwR+PTA66z4pLtiO6TJxrmcdnXD8j06m
+         FanA==
+X-Gm-Message-State: AOJu0YwrHmPjs8WSPpLUQ3/EP2tHVHNGgruQ/J/te32X5QadwEu0uTsw
+	L59/guOoFM0n84jbNtbYXFbQSVlR17Fr3PiU4+qbLVX8scbbKyi47UhcFXQGP1IUMAsiYR7CrNp
+	Xy1X4NMkxvzfBk4Oy73mL+uSjLOcKFeSKDl6VV4ppwiiT2rWDgmAeXmoECDZgf/x5XgEc
+X-Gm-Gg: ASbGncuT4fklGARZU5c39pgOC5VVxWMWXVQQODbJEMVFb6MXQQSHIdVOvOg6fF48Sd2
+	+UUmXIp8FYpv6vL64kBVDL4zeso+N3RRknJ5DXZT/d55Vasm+aWLP3GBWqmI61jmZpMiiBGqSiY
+	tuRUsNDnC/yO0909OUuy90Fk/fYnHuN1GG3dBYp3Ed3PgfFqbCn8dvpxk5MlWVmEeJUolFUAJ6m
+	OkXeh9AKY4+3YJMOWqMn6ZCOLmDjOcsiDpZEPt4LWAn/cluEerquQDL1KXD+6tedysQbFKgSnu0
+	tY3WAF572LH4ekqii+yLO4H6bB1Wgg==
+X-Received: by 2002:a05:6402:4615:b0:608:ce7d:c3b8 with SMTP id 4fb4d7f45d1cf-609c1c4f210mr1658674a12.17.1750238981775;
+        Wed, 18 Jun 2025 02:29:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGncpkbOEkdFUjtLQceXbwmAIojrcJ5sOr06x17DDmBNCLGmjtchBCLAX0WETxKUlupAtrjKg==
+X-Received: by 2002:a05:600c:4fd6:b0:43d:fa5f:7d30 with SMTP id 5b1f17b1804b1-453599ada17mr14276895e9.16.1750235499871;
+        Wed, 18 Jun 2025 01:31:39 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:271a:7310::f39? ([2a0d:3344:271a:7310::f39])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568b27795sm16213817f8f.71.2025.06.18.01.31.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Jun 2025 01:31:39 -0700 (PDT)
+Message-ID: <54923be8-8ab0-4b55-b599-5f20c999e60f@redhat.com>
+Date: Wed, 18 Jun 2025 10:31:37 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 net-next 1/8] virtio: introduce extended features
+To: Jason Wang <jasowang@redhat.com>
+Cc: netdev@vger.kernel.org, Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+References: <cover.1750176076.git.pabeni@redhat.com>
+ <2d17ac04283e0751c6a8e8dbda509dcc1237490f.1750176076.git.pabeni@redhat.com>
+ <CACGkMEv8b33EeMuHU03EGByumHRMhT3C6_Xeq_Lig=gjroofRg@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CACGkMEv8b33EeMuHU03EGByumHRMhT3C6_Xeq_Lig=gjroofRg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000A34A:EE_|SA1PR12MB9472:EE_
-X-MS-Office365-Filtering-Correlation-Id: 87767674-3244-49dc-841d-08ddae4a3a9a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?9rG2UGvz/F5ORjgS4TJUA8/GOWeMGdjJJQQ0obok7dFP0G5ci07An4CCHe70?=
- =?us-ascii?Q?gLn5zytOCZ/SalsNAjrDQOl1uBYKFAsvvoxZsFdpIYCtmV3jwySio29rq1qH?=
- =?us-ascii?Q?OeNYLLHu4/eIEB9Xx0ljQRBRKhlL3HGrJUg3QgOra4gdzLoGLU3SeDnX88Ap?=
- =?us-ascii?Q?L/40ca3XK0zMV4Jx55vZmnJlticTMbvyOP6iUAx6qpeDrmQYmqhXk/x1CHzS?=
- =?us-ascii?Q?kon6uYtt7H+KM2LXQy6GIUtLo+9FbtRxeFwrV0HcS2VxqOpkUtgYleOAfQIJ?=
- =?us-ascii?Q?QSXen0EtND+MVL9jn5edPh3F+8yWir816bK711mOHLsHpIWd6+VGQco/BujB?=
- =?us-ascii?Q?4kXnIcR3DUX3Amms6Y24PSnpkOjaJO+lvYeHBfvIYqNiD5ltRe6VEuc+/J+U?=
- =?us-ascii?Q?TB+qzMSTPqZvQzMpoZ4lfas2zF5O3r9wkUeR5p4zxF0xzIN6IavxE+GZuelP?=
- =?us-ascii?Q?w20O7BifjjHz81uUhe7/7G86asEeqXjvVMvlwcpV56KNIzAHUurdZinZWFHr?=
- =?us-ascii?Q?UQDQjVSzQ3brG8z3NA4V+I5PDSmSSwLCpGjjDNgbf5NqESE1q1HlhSetLIBX?=
- =?us-ascii?Q?zkOiKAfej9M/cDoQOfO2w3kTv1EAG4gEOcJDEUVTrkbQU7Ch5ha3KmlAt32k?=
- =?us-ascii?Q?KB4Sr7eiigTyzhKJsVrlTudn6ljxwf8vN0xFEKPKXvAPAjk3MOFxWZEMf9j1?=
- =?us-ascii?Q?0LwyzNI2wKt9mZiBylpK9WrFF4WleeE6u4lYeCb8ykRGvc+r8rTj37nizEIB?=
- =?us-ascii?Q?FA9+au26hQ+lBF+GceWq58JVZzw4Ma5p3hmF9AoL1onDJG2dZj/C8UrUT8HX?=
- =?us-ascii?Q?3zq71zM6TwKgZ3AWNGp3t+Dp6B59GgCCfGZiY7cio26OZ1I3XDHB0e0dCuC3?=
- =?us-ascii?Q?SDXBm6zl0KD4yPIw5b0lHxXSx3QH5cqNxjouOSRT1+bpH70H0juCfj6uNC2H?=
- =?us-ascii?Q?zn3QWyzB5dKKr1P4ZJwiBMO80seDRckzNRlwmCOQ5jcdFbR+Wq88WdPX0+/8?=
- =?us-ascii?Q?E9GlTZ4TnwUsHF3jk1TRA5DHXNhl0WZs5mohYK75vgUyDSJ2CTD++vrb57aB?=
- =?us-ascii?Q?AozXmw1EnZdcTiZe3joZHrxUxyTkCDMm7znRaSLSaChTfIWWO4m+Pg0Bhhds?=
- =?us-ascii?Q?/admTDG9fRjiATtHFXZcoF5T08byOKU0PWDgfKDr1jgl+2vGFJiwbBirBY5/?=
- =?us-ascii?Q?+1JGzVOX/BKwjTmGeQQWYeuAcHSCivik9Gbx5iIHJum16AeLeNDeObU/5gXd?=
- =?us-ascii?Q?ZL4o/2bcvucBTDyrota1oFj8rT0lazuw7KVWW2j8lcmX/7m2U0eXQkNlkHFD?=
- =?us-ascii?Q?KS3CmNP8I95SskfiZa6+fr7tNb/Sr4K3v5d65Too8ORAeVAFSd3gwqur2o/B?=
- =?us-ascii?Q?qFODUVdLnXQIZvg28fql/zA3REb4z2hmR2tLnDwjuiBoAiLmngJxc5aIl/7B?=
- =?us-ascii?Q?f9yXhq5xrEFXZFo9OI12VulYQC7DbhLHrlJRjLd6lmPPArcqthNOOTwnzuyU?=
- =?us-ascii?Q?XVKicA1wHhOYRWoqsmhP9jJsa9zZOIaLhk61?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2025 09:26:38.8930
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87767674-3244-49dc-841d-08ddae4a3a9a
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH1PEPF0000A34A.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9472
 
-The dev_hold() on skb->dev during packet reception was originally
-added to prevent the device from being released prematurely during
-asynchronous decryption operations.
+On 6/18/25 3:51 AM, Jason Wang wrote:
+> On Wed, Jun 18, 2025 at 12:12 AM Paolo Abeni <pabeni@redhat.com> wrote:
+>>
+>> The virtio specifications allows for up to 128 bits for the
+>> device features. Soon we are going to use some of the 'extended'
+>> bits features (above 64) for the virtio_net driver.
+>>
+>> Introduce extended features as a fixed size array of u64. To minimize
+>> the diffstat allows legacy driver to access the low 64 bits via a
+>> transparent union.
+>>
+>> Introduce an extended get_extended_features configuration callback
+>> that devices supporting the extended features range must implement in
+>> place of the traditional one.
+>>
+>> Note that legacy and transport features don't need any change, as
+>> they are always in the low 64 bit range.
+>>
+>> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+>> ---
+>> v3 -> v4:
+>>   - moved bit sanity check in virtio_features_*
+>>   - replaced BUG_ON with WARN_ON_ONCE
+>>   - *_and_not -> _andnot
+>>   - short circuit features comparison
+>> v2 -> v3:
+>>   - uint128_t -> u64[2];
+>> v1 -> v2:
+>>   - let u64 VIRTIO_BIT() cope with higher bit values
+>>   - add .get_features128 instead of changing .get_features signature
+>> ---
+>>  drivers/virtio/virtio.c         | 43 +++++++++-------
+>>  drivers/virtio/virtio_debug.c   | 27 +++++-----
+>>  include/linux/virtio.h          |  5 +-
+>>  include/linux/virtio_config.h   | 41 +++++++--------
+>>  include/linux/virtio_features.h | 88 +++++++++++++++++++++++++++++++++
+>>  5 files changed, 151 insertions(+), 53 deletions(-)
+>>  create mode 100644 include/linux/virtio_features.h
+>>
+>> diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
+>> index 95d5d7993e5b..5c48788cdbec 100644
+>> --- a/drivers/virtio/virtio.c
+>> +++ b/drivers/virtio/virtio.c
+>> @@ -53,7 +53,7 @@ static ssize_t features_show(struct device *_d,
+>>
+>>         /* We actually represent this as a bitstring, as it could be
+>>          * arbitrary length in future. */
+>> -       for (i = 0; i < sizeof(dev->features)*8; i++)
+>> +       for (i = 0; i < VIRTIO_FEATURES_MAX; i++)
+>>                 len += sysfs_emit_at(buf, len, "%c",
+>>                                __virtio_test_bit(dev, i) ? '1' : '0');
+>>         len += sysfs_emit_at(buf, len, "\n");
+>> @@ -272,22 +272,22 @@ static int virtio_dev_probe(struct device *_d)
+>>         int err, i;
+>>         struct virtio_device *dev = dev_to_virtio(_d);
+>>         struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
+>> -       u64 device_features;
+>> -       u64 driver_features;
+>> +       u64 device_features[VIRTIO_FEATURES_DWORDS];
+>> +       u64 driver_features[VIRTIO_FEATURES_DWORDS];
+>>         u64 driver_features_legacy;
+>>
+>>         /* We have a driver! */
+>>         virtio_add_status(dev, VIRTIO_CONFIG_S_DRIVER);
+>>
+>>         /* Figure out what features the device supports. */
+>> -       device_features = dev->config->get_features(dev);
+>> +       virtio_get_features(dev, device_features);
+>>
+>>         /* Figure out what features the driver supports. */
+>> -       driver_features = 0;
+>> +       virtio_features_zero(driver_features);
+>>         for (i = 0; i < drv->feature_table_size; i++) {
+>>                 unsigned int f = drv->feature_table[i];
+>> -               BUG_ON(f >= 64);
+>> -               driver_features |= (1ULL << f);
+>> +               if (!WARN_ON_ONCE(f >= VIRTIO_FEATURES_MAX))
+> 
+> Nit: Any reason why switching to use WARN_ON_ONCE()?
 
-As current hardware can offload decryption, this asynchronous path is
-not always utilized. This often results in a pattern of dev_hold()
-immediately followed by dev_put() for each packet, creating
-unnecessary reference counting overhead detrimental to performance.
+BUG_ON() are strongly discouraged. Since I touched the nearby code
+checkpatch urged me to take action ;)
 
-This patch optimizes this by skipping the dev_hold() and subsequent
-dev_put() when asynchronous decryption is not being performed.
-
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
----
- net/xfrm/xfrm_input.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index 7e6a71b9d6a3..31ed705712a8 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -503,6 +503,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 		/* An encap_type of -1 indicates async resumption. */
- 		if (encap_type == -1) {
- 			async = 1;
-+			dev_put(skb->dev);
- 			seq = XFRM_SKB_CB(skb)->seq.input.low;
- 			goto resume;
- 		}
-@@ -649,18 +650,16 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 		XFRM_SKB_CB(skb)->seq.input.low = seq;
- 		XFRM_SKB_CB(skb)->seq.input.hi = seq_hi;
- 
--		dev_hold(skb->dev);
--
- 		if (crypto_done)
- 			nexthdr = x->type_offload->input_tail(x, skb);
- 		else
- 			nexthdr = x->type->input(x, skb);
- 
--		if (nexthdr == -EINPROGRESS)
-+		if (nexthdr == -EINPROGRESS) {
-+			dev_hold(skb->dev);
- 			return 0;
-+		}
- resume:
--		dev_put(skb->dev);
--
- 		spin_lock(&x->lock);
- 		if (nexthdr < 0) {
- 			if (nexthdr == -EBADMSG) {
--- 
-2.38.1
+/P
 
