@@ -1,83 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F31944F
-	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 07:49:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDB3253941;
+	Wed, 18 Jun 2025 07:50:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750232994; cv=none; b=pxbWk/ptJ8gdSh0EQr8QCDQIFVjkaczsVSbOrwdex3xXpErtI0vdWtBKM12T+urfsDNa0iXrg0RTG7UOGwTJl/0Ck1zpmb1mffMW7Ag1RzsLeVf209mnwYbj5Y0rM7oSIJx/0+3YnCPBADJ4kE3+JOQi+4ggtOmrRqHWA+x3/Hc=
+	t=1750233020; cv=none; b=MRe+4o1pCgvInNwbRcyGbEg5vqgxu9X7BGJFR0Nrn71zhiorpyWvwMvXk8h0PEgNQUj/yX33H/ofMrlb2se0HG8NLJtWuSLP39N4OPO/pt33UOqbkv44cLluXPAKRpvyg1knNsz065HJYLNI+Xm4/p98HerucyXDQ2eVpiSwNo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750232994; c=relaxed/simple;
-	bh=aC64CEq1Onwzg7hQyJBpP3n73y+2vG8xqxjywocSUUI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TQkard7TwbyYV+HrdDEJfYVjpBPNlcm4HW6UCfJ2AwlW6CE14bCNwwmI9J3Z+LjtFHI7TuDfDVbx0DwKWwXP7UEFY4CkjGgDV/uZhFBCyAS29GTkuSOBs7g/JLMjEslPLIHZJLH1TWvcmVCLRgca2ACpEI8/9Sisz4Q/V047y44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FujFC+7A; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750233020; c=relaxed/simple;
+	bh=MeaewijDxGT7gmruAwpRJWBbB70dS3bLaAjXvOgPHwg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PGVCD7/ljbk+QIp3utGupnAzfSDv+J1L9DLRtPF81MBiuUH2+onyrcmFvWtMVwb83FD4pvOIKAvvg4kk3NDe2C40B72a35Go9XFG1UoTD6ggzdIaJ2A2qRTutz32Pgg6bp5qgW1qQhaO3SjDak5BvKkF1FA78gtQlRQKETEYaaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YLiVYhfd; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FujFC+7A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9BBC4CEE7;
-	Wed, 18 Jun 2025 07:49:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750232993;
-	bh=aC64CEq1Onwzg7hQyJBpP3n73y+2vG8xqxjywocSUUI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FujFC+7Ahq84E2eCe+Iiou4DRzWv2GhCOKy0IPaIsSQypsdcoCFpIHGUboR85UBkm
-	 FvLILNyJOE7g/IDFE9scsVoaGTGPmbAYEHTLI0DDgydUhYlhYz8XNTmazgJGu6maGL
-	 sLstO3vI5FXbowGzjg2IDWMa9cWPTFyOuT4blRD2K17dPJljo2l3JR02ksGjsWwvpw
-	 dB8NXfC7BKglijPdr4A7aXSCdp9qLPZzk8O5WJwg/9KZJHO4/PG6I5EN22ral76jBS
-	 JAN163WWy4+TW+4GlIraP6DyBcNaAerYnA2/kS1S7mRb4Q0BZtUL5iiSa6NXqIIfBC
-	 1Xi8l+90P9WZg==
-Date: Wed, 18 Jun 2025 09:49:51 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/2] net: airoha: Improve hwfd
- buffer/descriptor queues setup
-Message-ID: <aFJvnxVVM_sdSpKX@lore-desk>
-References: <20250616-airoha-hw-num-desc-v2-0-bb328c0b8603@kernel.org>
- <20250617183244.641d9cd3@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YLiVYhfd"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6097b404f58so4343882a12.3;
+        Wed, 18 Jun 2025 00:50:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750233017; x=1750837817; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ECKn4hQ4bwsuqfN+mIcN9gog+ud6vUM+tBu4MrCxvDU=;
+        b=YLiVYhfdM71EjctnCasm/N0SVZd5z9eSKubgDXw0dxv2a/6upz2zkR/p0swxKshB5h
+         sl3363pYlZpvcL8ZGr/uZ+396CPcoahB3dbD20pAFl98Pw8BvPXOasBjSursKjm3May2
+         KEsh51VWGzxoFB9/ufqegVvBNeQQr8kk52TEd5tai626OQUsiorlQbO+KsFEM1E+t2gV
+         XxUOxmAU/O0036LTqafHWmneexHhEc2FRQf5CbbHOUIy+ycSrqma6JcNa6Cs0+OQJzj5
+         /Ogdgt3JQRng32oGwj4Fri0EczxIwvUPiMF+jl/t8Wx0KZ5bjzwYoczX80dbk836d/ba
+         ZySA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750233017; x=1750837817;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ECKn4hQ4bwsuqfN+mIcN9gog+ud6vUM+tBu4MrCxvDU=;
+        b=p16EcuCTHpfXUX76vLIIAykxhKtHfY5qAYX0NcfbR+rmHbLbhq7/BLQ/DHxT4n2787
+         5oP0J1vhXEcjS3WprEKxNGmeh7m2AY9vyrMfmRfHCUXFrRoN1Z7uVuRkCv2oMAUQghhg
+         yq6SugQeq72VC1sZKTY/LnSvA2vi9HEd29R/ul/7IJJnjcF1XDB2yliVm0EIi3MGDb7h
+         85qdpl+nh4s+zqbqi2EfO9dMos91b6boKdrt+a6QPs3FI8fk1E7UB68aYavVt2hN9X0o
+         PrXYiht7Q5mtsEya3cUNlOMzYZcLYBK98EzCNp9ACF30lhcXO6s7K0z4P0U6g1fFHKgT
+         t1OA==
+X-Forwarded-Encrypted: i=1; AJvYcCU33/AZDVWVbXONUjpPaqX6BI9dVjSmS9iEa+d+G3nmIMcLXQUhW7AtUdCBB5r9AtTJ19c3maSMKCftJg==@vger.kernel.org, AJvYcCWBIC/HleNOSB1pr8ocmEFUsNHOsQc3PDEalB4+7PRf9qOGT5A0VwGFJCsxxpnO1W2ms+xwJYWZ@vger.kernel.org, AJvYcCWrctnx01q1/faDBeU1weL78oB68NAiZv3QOFujoUYeZkEyt96kVPakYT0DREay2WeKjIk=@vger.kernel.org, AJvYcCXORg2dWiT5f1W/ROO7vkvvYbnL0Cq6yiKR7Kc/PD2HF05CuPsVyhLWF9g5xyavcUkOds37YC+G2qoYbAQe@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQHvr/aRTSqFRYhjT3EBTp9JJybUTstofQGY53BHWkq64/FrPG
+	acLmeI22lGlsatsgW75qCQ7mRKXHhZRPeSQ4gmgmTiYSU/ldb3/pOy3w
+X-Gm-Gg: ASbGnctLyHwiJW1ZIxLs8cXq4iQpDR4H38H1OHF8wjNcg/QUgoXz1VlL+Hf7Ed1bxXJ
+	qCgiWub1dWtBg7X16PoyKEzolNr1/yoWTGV/b2yyOiuVrCeCeomtuUJotgb/vc40NS6yqGbZ+xo
+	yllfhMIf0vEwWcfvKNQpz+eTp1A0cPNgZ7qS3FzGnN0fnozMuIKeGVO4z+mgFgGTVxVPVqgbZYc
+	yTb5QAzlhxSDyLVsCm3iE1D4/rPgt0acVAffqBLtKGMD+jCIRvyZubs3QJ6KuSPdKt5GE6vulI0
+	ltKMZm1QiaBYzA9wQ9jTQSbNPKYXhuaXyccALl2kHhTnHoow5eVwxk1TeGXqz2UVt3HVdZsULPQ
+	=
+X-Google-Smtp-Source: AGHT+IGU4+U2g1i+YBxoe05CktY6r7Lz+Sv5ZqQdL+2ljUCgejgb3V2iXZawdXMuMofP/og+uhKFKw==
+X-Received: by 2002:a17:907:dab:b0:ad8:9428:6a3c with SMTP id a640c23a62f3a-adfad31ccc4mr1575311066b.11.1750233016473;
+        Wed, 18 Jun 2025 00:50:16 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::2ef? ([2620:10d:c092:600::1:ae0d])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adec88ff1a1sm987202266b.89.2025.06.18.00.50.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Jun 2025 00:50:15 -0700 (PDT)
+Message-ID: <72e9f23c-58ca-49c3-baee-f76b91d093ff@gmail.com>
+Date: Wed, 18 Jun 2025 08:51:32 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="v6JufC9cwr1xoEbW"
-Content-Disposition: inline
-In-Reply-To: <20250617183244.641d9cd3@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: netmem series needs some love and Acks from MM folks
+To: Byungchul Park <byungchul@sk.com>, David Hildenbrand <david@redhat.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Mina Almasry <almasrymina@google.com>,
+ willy@infradead.org, Jakub Kicinski <kuba@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ kernel_team@skhynix.com, ilias.apalodimas@linaro.org, hawk@kernel.org,
+ akpm@linux-foundation.org, davem@davemloft.net, john.fastabend@gmail.com,
+ andrew+netdev@lunn.ch, toke@redhat.com, tariqt@nvidia.com,
+ edumazet@google.com, pabeni@redhat.com, saeedm@nvidia.com, leon@kernel.org,
+ ast@kernel.org, daniel@iogearbox.net, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, horms@kernel.org, linux-rdma@vger.kernel.org,
+ bpf@vger.kernel.org, vishal.moola@gmail.com
+References: <20250609043225.77229-1-byungchul@sk.com>
+ <20250609043225.77229-2-byungchul@sk.com>
+ <20250609123255.18f14000@kernel.org>
+ <20250610013001.GA65598@system.software.com>
+ <20250611185542.118230c1@kernel.org>
+ <20250613011305.GA18998@system.software.com>
+ <CAHS8izMsKaP66A1peCHEMxaqf0SV-O6uRQ9Q6MDNpnMbJ+XLUA@mail.gmail.com>
+ <aFDTikg1W3Bz_s5E@hyeyoo> <129fe808-4285-48fe-95b6-00ea19bd87af@redhat.com>
+ <20250618000840.GA23579@system.software.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250618000840.GA23579@system.software.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 6/18/25 01:08, Byungchul Park wrote:
+> On Tue, Jun 17, 2025 at 06:09:36PM +0200, David Hildenbrand wrote:
+...>> 1) have a dedicated data-structure we will allocate alter dynamically.
+>>
+>> 2) Make it overlay "struct page" for now in a way that doesn't break things
+>>
+>> 3) Convert all users of "struct page" to the new data-structure
+>>
+>> Later, the memdesc data-structure will then actually come be allocated
+>> dynamically, so "struct page" content will not apply anymore, and we can
+>> shrink "struct page".
+>>
+>>
+>> What I see in this patch is exactly 1) and 2).
+>>
+>> I am not 100% sure about existing "struct net_iov" and how that
+>> interacts with "struct page" overlay. I suspects it's just a dynamically
+>> allocated structure?
+>>
+>> Because this patch changes the layout of "struct net_iov", which is a
+>> bit confusing at first sight?
+> 
+> The changes of the layout was asked by network folks, that was to split
+> the struct net_iov fields to two, netmem_desc and net_iov specific ones.
 
---v6JufC9cwr1xoEbW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+That's right, and the moved fields should never be touched without
+checking that it's a net_iov first. All of it will eventually converge
+to netmem_desc without net_iov sticking out where it shouldn't, but my
+personal preference would be to get this merged, as it's a good enough
+base, and do the rest on top.
 
-> On Mon, 16 Jun 2025 15:45:39 +0200 Lorenzo Bianconi wrote:
-> > Compute the number of hwfd buffers/descriptors according to the reserved
-> > memory size if provided via DTS.
-> > Reduce the required hwfd buffers queue size for QDMA1.
->=20
-> Same question regarding target tree, FWIW
+> How to organize struct net_iov further is up to the network folks, but
+> I believe the current layout should be the first step.
+-- 
+Pavel Begunkov
 
-ack, fine. I will post v3 targeting net tree.
-
-Regards,
-Lorenzo
-
---v6JufC9cwr1xoEbW
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaFJvnwAKCRA6cBh0uS2t
-rHwQAQDRWhuDKkooK+3SdVhoIcSjVlWNQW9cx1j+py4qwhHrxwD/REl0bOTp+6/n
-fZd/+nOnfqJphhHl2l5TM92s7tbawAI=
-=pcct
------END PGP SIGNATURE-----
-
---v6JufC9cwr1xoEbW--
