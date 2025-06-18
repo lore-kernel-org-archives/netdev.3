@@ -1,184 +1,79 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FB1283FDC
-	for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 10:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FB227F177;
+	Wed, 18 Jun 2025 10:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750243240; cv=none; b=eZ12FfCNpIOmUwEis0Ue/r9eZ1y12jw0e8YkxtOG6wsKZyHF9ikbllAMnqPUkE3SwvLd/GceJomg8GJ45Llw1mbdAJCkn6Fn2CMk5QmzBLsBSGRpYfiZceXzNIn3WDBIGyzZuG7wRsH7LwY0LPb+jwJ2Qoi16d4x971bZ/nDiWY=
+	t=1750243302; cv=none; b=Rn2PkLXjz+gTg+XNUJgMMhmiIf+AkuzyUNcUne9c+wTCvjQf2C73prE76Z1If8RIL0sW//7pBXBtnHky/l+BZoNzxYSrs3x1lDIQPaappXvY5C9EQ5m2y32ybMwmVROvJ5QM1XQ4UoMX+VR+EbfqlYOwqbIkYnNKcon8phUtsSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750243240; c=relaxed/simple;
-	bh=IFrk+Wt+3IOL5c/d/oA9s1HjP/eu3QahRP+hmKMQO48=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MwWJ0ofnB+w9jSaL/AeyUIqa6XFekM0cv6SMGR4LLpSBHo4nCUFD7KlO4Ph8+XGZf8ihC1nYy96uFQs2TM+pxe8cmMbiac1P+7yQERcI34bcgvv9XZ/P5Cg/oIm06qUP3R9RKd68Av2FMCnGQPXpYERtxaqFwCtufpMvvYTTOjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WK2kvWoY; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yuyanghuang.bounces.google.com
+	s=arc-20240116; t=1750243302; c=relaxed/simple;
+	bh=4MWy2YUMCsaOlFgUjdLpNG2BqypAZmGxZCgUKaSlvho=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=grvY1ZIHgc/VkkWaWIpyTh688L+JHbfq1I34yrsMFjUNbOLg9oxyKSd2BevXUNObKZMuVCpG4UIDQ//fm0R5U9pSPdDuJlFDecjWmYlx3NYzmm1c38I3acf3vBqjl+6UvWDrJ7M3MzXfIhKZY/10AF12v2t2K1CXfhcj6UENOeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=xRNdrcC+; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WK2kvWoY"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-748764d84feso9360156b3a.2
-        for <netdev@vger.kernel.org>; Wed, 18 Jun 2025 03:40:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750243236; x=1750848036; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=O5ZRzpxuw236Qa1RlkQYMr8Acq5Mq2S5Ae5QLL/5mzs=;
-        b=WK2kvWoYfJaQgF++P5iaPDbW/BY0ytQCs+vhdngpQSGRgg2xfiHcRSzqRA/4m0mPD0
-         Km+mTIrtuN4GVPFfqgxj8S9iEJoSscsxfUEsDX9MG1w4Phf2jNfcH9WcHK6D1BoIB60y
-         J+zg4Z6e+uYDhRuhVW9gibl14kJ74l2UYqzL0yYIBVNaXw09WjN1asXicGKtNllqEVNp
-         ryD+i4aSTKtMHvakEjAWKpdkYRDWxfmGfIeMYtoCKFZ55IUr2zVvwUcWW6qQRrmVWgq1
-         b4QtiMcZZyKK1PSuvQDeN5pZJM9n3yKQFlKGbJn+4tiUOb5v2JA/Biauq7kYF3QX2d4H
-         T2xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750243236; x=1750848036;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=O5ZRzpxuw236Qa1RlkQYMr8Acq5Mq2S5Ae5QLL/5mzs=;
-        b=KR5HtcaXyHUVqpkZG9wUAOeXe2AvU7Vjyjbcik1mSbR9J9drnxO0pCicHBPd0FG7lU
-         qtcOkMsqhk1XUnr3XZFKv+72E+zBadX3i3ACY47yRzxPCWuP+LM12hlUWmG9JON3wivF
-         2Epfvtnngo0DSB+hZi2GcKALM1cTP/4p/Cm/80DPPsShYYtAFVAQ86I0keRGYDDX/f8x
-         lZx4OVyvgczpZVbGYXZ5QkFlERTvnAom5a8KyPmPblFyaxDBICazU3zOmONqLRJMLhAh
-         mniobyJzb4CpqQjqo+SUVam64JZXRoxMeAP611FqF1+x6rVGHisrggkKInXKNIBlS9ZY
-         d4pQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX8xCaJg/KjSt74A+z+6bsM0La/yONAPr4wPuo4Uz5Jadx7FnxGHAq6aXnRhC1aJM+4qbVaMfc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZfile25PtHcToRfqCIjb9oaBYuveKm0cvdzdwNxvnouy8Mt/l
-	zRZqFaYmYtQR7tflmoPebSEj8GsojeZSBrTSznWevKX+PsYCy6YqeMP6rMBiuXyc4uun0oQSxvE
-	oSOqWfLTeMmARG75sAkRnZK4h/Q==
-X-Google-Smtp-Source: AGHT+IFm6jRnVgcFeMCAYW1rUtQm4z9LOhLiOCwsAqf3bSFUHFjg6zoWoywY8kEyAIzz78G43yBDi8e2+p1zScjWFw==
-X-Received: from pfbgd14.prod.google.com ([2002:a05:6a00:830e:b0:740:5196:b63a])
- (user=yuyanghuang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:4b4c:b0:740:9d7c:8f5c with SMTP id d2e1a72fcca58-7489cfde7a6mr23990572b3a.18.1750243236415;
- Wed, 18 Jun 2025 03:40:36 -0700 (PDT)
-Date: Wed, 18 Jun 2025 19:40:25 +0900
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="xRNdrcC+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=XstzbsMdBgpvXArLU4IX3djhcZ4PMHanS8IZaEUIMI4=; b=xRNdrcC+zURL0NKyh0g6GsbHfY
+	yaflu1bcQCB0dmciBV+BhHLDxPuZN61101U+qg8MTeXALW6Yg9MqbLqtL607rohL1AuTPSj2fc40v
+	OrdMblsRRDcE6ZViNkmCZ7keP5ysfrPu2eoRpYopdKU7Qx2urW530Wg/SG05oupiukG592YT1uFpP
+	D0C95bPcJFgnALcLkr1C5p3Bvw+9cqBoEwJOaLdoG1vz4BaIctAiaHg1CUT00EUnsMqlWpGizRdFr
+	57C94Lm4Z9ndFRzQoJTTIvpT4apCsPGMcamLLjXKU+jz3v8fdeUuS8QsDrqk98A64VZznuUXPp7yh
+	AsBIonjg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53870)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uRqEN-0006IK-0i;
+	Wed, 18 Jun 2025 11:41:23 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uRqEJ-0006lZ-02;
+	Wed, 18 Jun 2025 11:41:19 +0100
+Date: Wed, 18 Jun 2025 11:41:18 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 0/2] net: stmmac: loongson1: cleanups
+Message-ID: <aFKXzlno7HkG-cNh@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.0.rc2.761.g2dc52ea45b-goog
-Message-ID: <20250618104025.3463656-1-yuyanghuang@google.com>
-Subject: [PATCH net-next] selftest: add selftest for anycast notifications
-From: Yuyang Huang <yuyanghuang@google.com>
-To: Yuyang Huang <yuyanghuang@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-This commit adds a new kernel selftest to verify RTNLGRP_IPV6_ACADDR
-notifications. The test works by adding/removing a dummy interface,
-enabling packet forwarding, and then confirming that user space can
-correctly receive anycast notifications.
+Hi,
 
-The test relies on the iproute2 version to be 6.13+.
+A couple of patches to cleanup loongson1. First, introducing a match
+data struct to allow the per-match data to be extended beyond the init
+function pointer, and then adding a setup method to allow the resource
+base address to be translated to the MAC index at probe time rather
+than repeatedly in the setup function.
 
-Tested by the following command:
-$ vng -v --user root --cpus 16 -- \
-make -C tools/testing/selftests TARGETS=net
-TEST_PROGS=rtnetlink_notification.sh \
-TEST_GEN_PROGS="" run_tests
+ .../net/ethernet/stmicro/stmmac/dwmac-loongson1.c  | 73 ++++++++++++++++------
+ 1 file changed, 55 insertions(+), 18 deletions(-)
 
-Signed-off-by: Yuyang Huang <yuyanghuang@google.com>
----
- .../selftests/net/rtnetlink_notification.sh   | 52 +++++++++++++++++--
- 1 file changed, 47 insertions(+), 5 deletions(-)
-
-diff --git a/tools/testing/selftests/net/rtnetlink_notification.sh b/tools/testing/selftests/net/rtnetlink_notification.sh
-index 39c1b815bbe4..2d938861197c 100755
---- a/tools/testing/selftests/net/rtnetlink_notification.sh
-+++ b/tools/testing/selftests/net/rtnetlink_notification.sh
-@@ -8,9 +8,11 @@
- 
- ALL_TESTS="
- 	kci_test_mcast_addr_notification
-+	kci_test_anycast_addr_notification
- "
- 
- source lib.sh
-+test_dev="test-dummy1"
- 
- kci_test_mcast_addr_notification()
- {
-@@ -18,12 +20,11 @@ kci_test_mcast_addr_notification()
- 	local tmpfile
- 	local monitor_pid
- 	local match_result
--	local test_dev="test-dummy1"
- 
- 	tmpfile=$(mktemp)
- 	defer rm "$tmpfile"
- 
--	ip monitor maddr > $tmpfile &
-+	ip monitor maddr > "$tmpfile" &
- 	monitor_pid=$!
- 	defer kill_process "$monitor_pid"
- 
-@@ -32,7 +33,7 @@ kci_test_mcast_addr_notification()
- 	if [ ! -e "/proc/$monitor_pid" ]; then
- 		RET=$ksft_skip
- 		log_test "mcast addr notification: iproute2 too old"
--		return $RET
-+		return "$RET"
- 	fi
- 
- 	ip link add name "$test_dev" type dummy
-@@ -53,7 +54,48 @@ kci_test_mcast_addr_notification()
- 		RET=$ksft_fail
- 	fi
- 	log_test "mcast addr notification: Expected 4 matches, got $match_result"
--	return $RET
-+	return "$RET"
-+}
-+
-+kci_test_anycast_addr_notification()
-+{
-+	RET=0
-+	local tmpfile
-+	local monitor_pid
-+	local match_result
-+
-+	tmpfile=$(mktemp)
-+	defer rm "$tmpfile"
-+
-+	ip monitor acaddress > "$tmpfile" &
-+	monitor_pid=$!
-+	defer kill_process "$monitor_pid"
-+	sleep 1
-+
-+	if [ ! -e "/proc/$monitor_pid" ]; then
-+		RET=$ksft_skip
-+		log_test "anycast addr notification: iproute2 too old"
-+		return "$RET"
-+	fi
-+
-+	ip link add name "$test_dev" type dummy
-+	check_err $? "failed to add dummy interface"
-+	ip link set "$test_dev" up
-+	check_err $? "failed to set dummy interface up"
-+	sysctl -qw net.ipv6.conf."$test_dev".forwarding=1
-+	ip link del dev "$test_dev"
-+	check_err $? "Failed to delete dummy interface"
-+	sleep 1
-+
-+	# There should be 2 line matches as follows.
-+	# 9: dummy2    inet6 any fe80:: scope global
-+	# Deleted 9: dummy2    inet6 any fe80:: scope global
-+	match_result=$(grep -cE "$test_dev.*(fe80::)" "$tmpfile")
-+	if [ "$match_result" -ne 2 ]; then
-+		RET=$ksft_fail
-+	fi
-+	log_test "anycast addr notification: Expected 2 matches, got $match_result"
-+	return "$RET"
- }
- 
- #check for needed privileges
-@@ -67,4 +109,4 @@ require_command ip
- 
- tests_run
- 
--exit $EXIT_STATUS
-+exit "$EXIT_STATUS"
 -- 
-2.50.0.rc2.761.g2dc52ea45b-goog
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
