@@ -1,145 +1,113 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4FC20C480;
-	Thu, 19 Jun 2025 07:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA48E2472A4
+	for <netdev@vger.kernel.org>; Thu, 19 Jun 2025 08:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750319160; cv=none; b=UXXxCPZ4G0QrYZadV2uj8P57Cr8NALYejSfEmjqLyeVhg/Ywd9j/rOT0UdPem7tkEOVLQNhglmoX9Qu0CcQIjGFZzPLFn6AdAg0UkPA2u+MfFB6NfRByTtWUZGdWoNimbrvF1JxRrm1yAac4EsnpOwhhARDQ+nfHHd19mNMF+Fo=
+	t=1750320070; cv=none; b=i3sgtFKBaML0IAJTJmx9Lrgx22+S+vocOoU3Wb/Q3a6fvMVJYgEX4XxP9SEUHTFv12r17P8RnqvcVJT9c08pj9CO8AOIxTa59iVwdJFGTUBduC6u5hE2exQAni6Vbscy8162o6o5TwkhNMIbLRuZjO0451TiUvKKoTPOl6bx/9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750319160; c=relaxed/simple;
-	bh=L7M1r3hXW846r86reJZJKNbDYYbqOkSgw23MVbxAEB0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=psSZVKBvzoOZQ8T/JvlaO8aA7/9TVnjHWcD5qKjOYlxWPkeDxm+DDea+VJG0fKPLIcl6cyyPX85cprHYoYZa3EYOZf1wLEMAxnlv7VXVD3zG9gcp3p2whdMKXzAyymKBLTiHijruFqekvulbtzBlVKovg+t3XlXUiQ0RA5w8V00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=h-partners.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4bNCKB38PnzvZMY;
-	Thu, 19 Jun 2025 15:43:42 +0800 (CST)
-Received: from kwepemo500015.china.huawei.com (unknown [7.202.194.227])
-	by mail.maildlp.com (Postfix) with ESMTPS id 37B5014011F;
-	Thu, 19 Jun 2025 15:45:55 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by kwepemo500015.china.huawei.com
- (7.202.194.227) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 19 Jun
- 2025 15:45:54 +0800
-From: z30015464 <zhongxuan2@huawei.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<stephen@networkplumber.org>, <dsahern@gmail.com>
-CC: <gaoxingwang1@huawei.com>, <yanan@huawei.com>, <tangce1@huawei.com>
-Subject: [Issue] iproute2: coredump problem with command ip link xstats
-Date: Thu, 19 Jun 2025 15:45:52 +0800
-Message-ID: <20250619074552.1775627-1-zhongxuan2@huawei.com>
-X-Mailer: git-send-email 2.33.0
+	s=arc-20240116; t=1750320070; c=relaxed/simple;
+	bh=a6aw4aa2cUbfhI+C1HpTVHxzU6H213PQb/EEj50UUX0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=kFa5Hd1SeEGD34i2Wq43NaEJbRkDv66u8QA2V/WeqyPNSYGZvX0GVaPMRpo8WnJ8gN7lK9po5D1jblVv7uenH36Unepcf4QsXevHnHTzO6KHkA+5hEF6RTSRYLILXdixn7gPhDwavuXx14iWBVxhw7Cyue3tJwMU6R1FiOikyic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=XLYsc5VT; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="XLYsc5VT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1750320060;
+	bh=WbaZ851tPvl9z9qCq9g9hQhGeKab8Q7zy72SwZ1dqFQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=XLYsc5VTsfxNX/OQX2oMdKsSJx//0aagz4uq7I597R/EiG9whucq0LktjJQKiimvF
+	 2W3rYgz/pC7GHZpbIi+gNOmjY5zIxh2GD19z33ov0k0bQ3pB+GMVeZRWuwYMjxjW+R
+	 g3LAG76LsuLogNshDhHtNSmdUGKJ0cyMIhxiEcpmJ4U701eERNP/bnL19pQAGhHzd6
+	 a/ZjS8citU6ux6gx8KcHmXNY8MgRL/V/OICnpA3xdbAJG9Lw+Mw2+tZ8pmLFSzZOAe
+	 7IbC/0hHuhfbfmCuep5BdzQWlsU6JTIw2IteD2CCawGyOv9nPcX0PrqxqU8DVQWRhT
+	 I0lsCShw/U40w==
+Received: by codeconstruct.com.au (Postfix, from userid 10000)
+	id 0CFB668E77; Thu, 19 Jun 2025 16:01:00 +0800 (AWST)
+From: Jeremy Kerr <jk@codeconstruct.com.au>
+Date: Thu, 19 Jun 2025 16:00:36 +0800
+Subject: [PATCH net-next v2 01/13] net: mctp: don't use source cb data when
+ forwarding, ensure pkt_type is set
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemo500015.china.huawei.com (7.202.194.227)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250619-dev-forwarding-v2-1-3f81801b06c2@codeconstruct.com.au>
+References: <20250619-dev-forwarding-v2-0-3f81801b06c2@codeconstruct.com.au>
+In-Reply-To: <20250619-dev-forwarding-v2-0-3f81801b06c2@codeconstruct.com.au>
+To: Matt Johnston <matt@codeconstruct.com.au>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-Hello everyone,=0D
-=0D
-I having an issues while using iprute2 6.15.0. When I created a bond and in=
-tended to use 'ip link xstats' command to query extended information, a sta=
-ck overflow occurred, followed by a coredump. I couldn't identify the root =
-cause through the code and need some help.=0D
-=0D
-Example:=0D
-ifconfig eth1 up=0D
-modprobe bonding mode=3D4 max_bonds=3D1 lacp_rate=3D1 miimon=3D100=0D
-ip addr add 7.7.0.100/24 dev bond0=0D
-ip link xstats type bond dev bond0=0D
-=0D
-Here is the result:=0D
-[root@localhost /]# ip link xstats type bond=0D
-bond0=0D
-                    LACPDU Rx 0=0D
-                    LACPDU Tx 0=0D
-                    LACPDU Unknown type Rx 0=0D
-                    LACPDU Illegal Rx 0=0D
-                    Marker Rx 0=0D
-                    Marker Tx 0=0D
-                    Marker response Rx 0=0D
-                    Marker response Tx 0=0D
-                    Marker unknown type Rx 0=0D
-*** stack smashing detected ***: terminated=0D
-Aborted (core dumped)=0D
-=0D
-Here is the result with valgrind:=0D
-[root@localhost /]# valgrind ip link xstats type bond dev bond0=0D
-=3D=3D242893=3D=3D Memcheck, a memory error detector=0D
-=3D=3D242893=3D=3D Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward=
- et al.=0D
-=3D=3D242893=3D=3D Using Valgrind-3.22.0 and LibVEX; rerun with -h for copy=
-right info=0D
-=3D=3D242893=3D=3D Command: ip link xstats type bond dev bond0=0D
-=3D=3D242893=3D=3D=0D
-bond0=0D
-                    LACPDU Rx 0=0D
-                    LACPDU Tx 0=0D
-                    LACPDU Unknown type Rx 0=0D
-                    LACPDU Illegal Rx 0=0D
-                    Marker Rx 0=0D
-                    Marker Tx 0=0D
-                    Marker response Rx 0=0D
-                    Marker response Tx 0=0D
-                    Marker unknown type Rx 0=0D
-*** stack smashing detected ***: terminated=0D
-=3D=3D242893=3D=3D=0D
-=3D=3D242893=3D=3D Process terminating with default action of signal 6 (SIG=
-ABRT)=0D
-=3D=3D242893=3D=3D    at 0x498AB5C: __pthread_kill_implementation (pthread_=
-kill.c:44)=0D
-=3D=3D242893=3D=3D    by 0x493CF45: raise (raise.c:26)=0D
-=3D=3D242893=3D=3D    by 0x492733B: abort (abort.c:79)=0D
-=3D=3D242893=3D=3D    by 0x49281A8: __libc_message.cold (libc_fatal.c:152)=
-=0D
-=3D=3D242893=3D=3D    by 0x4A1621A: __fortify_fail (fortify_fail.c:24)=0D
-=3D=3D242893=3D=3D    by 0x4A17435: __stack_chk_fail (stack_chk_fail.c:24)=
-=0D
-=3D=3D242893=3D=3D    by 0x157A81: bond_print_stats_attr (iplink_bond.c:877=
-)=0D
-=3D=3D242893=3D=3D    by 0x157B02: bond_print_xstats (iplink_bond.c:895)=0D
-=3D=3D242893=3D=3D    by 0x1846A9: rtnl_dump_filter_l (libnetlink.c:926)=0D
-=3D=3D242893=3D=3D    by 0x185A01: rtnl_dump_filter_nc (libnetlink.c:969)=0D
-=3D=3D242893=3D=3D    by 0x16B0BF: iplink_ifla_xstats (iplink_xstats.c:71)=
-=0D
-=3D=3D242893=3D=3D    by 0x118C3C: do_cmd (ip.c:131)=0D
-=3D=3D242893=3D=3D=0D
-=3D=3D242893=3D=3D HEAP SUMMARY:=0D
-=3D=3D242893=3D=3D     in use at exit: 33,878 bytes in 4 blocks=0D
-=3D=3D242893=3D=3D   total heap usage: 8 allocs, 4 frees, 66,755 bytes allo=
-cated=0D
-=3D=3D242893=3D=3D=0D
-=3D=3D242893=3D=3D LEAK SUMMARY:=0D
-=3D=3D242893=3D=3D    definitely lost: 0 bytes in 0 blocks=0D
-=3D=3D242893=3D=3D    indirectly lost: 0 bytes in 0 blocks=0D
-=3D=3D242893=3D=3D      possibly lost: 0 bytes in 0 blocks=0D
-=3D=3D242893=3D=3D    still reachable: 33,878 bytes in 4 blocks=0D
-=3D=3D242893=3D=3D         suppressed: 0 bytes in 0 blocks=0D
-=3D=3D242893=3D=3D Rerun with --leak-check=3Dfull to see details of leaked =
-memory=0D
-=3D=3D242893=3D=3D=0D
-=3D=3D242893=3D=3D For lists of detected and suppressed errors, rerun with:=
- -s=0D
-=3D=3D242893=3D=3D ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 f=
-rom 0)=0D
-Aborted (core dumped)=0D
-=0D
-Through gdb debugging, __stack_chk_fail was triggered after the end of func=
-tion bond_print_stats_attr function.=0D
-I first found this issue in version 6.6.0. After replacing package 6.15.0, =
-the issue still persists. =0D
-I also tried version 5.15.0 but there was no abnormality.=0D
-Maybe some modifications triggered this issue, but I cannot found the cause=
-. I hope to get some helps.=0D
-=0D
-Thank you very much.=0D
-=0D
-=0D
-=0D
+In the output path, only check the skb->cb data when we know it's from
+a local socket; input packets will have source address information there
+instead.
+
+In order to detect when we're forwarding, set skb->pkt_type on
+input/output.
+
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+---
+ net/mctp/route.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index d9c8e5a5f9ce9aefbf16730c65a1f54caa5592b9..128ac46dda5eb882994960b8c0eb671007ad8583 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -392,6 +392,9 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+ 	 */
+ 	skb_orphan(skb);
+ 
++	if (skb->pkt_type == PACKET_OUTGOING)
++		skb->pkt_type = PACKET_LOOPBACK;
++
+ 	/* ensure we have enough data for a header and a type */
+ 	if (skb->len < sizeof(struct mctp_hdr) + 1)
+ 		goto out;
+@@ -578,7 +581,13 @@ static int mctp_route_output(struct mctp_route *route, struct sk_buff *skb)
+ 		return -EMSGSIZE;
+ 	}
+ 
+-	if (cb->ifindex) {
++	/* If we're forwarding, we don't want to use the input path's cb,
++	 * as it holds the *source* hardware addressing information.
++	 *
++	 * We will have a PACKET_HOST skb from the dev, or PACKET_OUTGOING
++	 * from a socket; only use cb in the latter case.
++	 */
++	if (skb->pkt_type == PACKET_OUTGOING && cb->ifindex) {
+ 		/* direct route; use the hwaddr we stashed in sendmsg */
+ 		if (cb->halen != skb->dev->addr_len) {
+ 			/* sanity check, sendmsg should have already caught this */
+@@ -587,6 +596,7 @@ static int mctp_route_output(struct mctp_route *route, struct sk_buff *skb)
+ 		}
+ 		daddr = cb->haddr;
+ 	} else {
++		skb->pkt_type = PACKET_OUTGOING;
+ 		/* If lookup fails let the device handle daddr==NULL */
+ 		if (mctp_neigh_lookup(route->dev, hdr->dest, daddr_buf) == 0)
+ 			daddr = daddr_buf;
+@@ -1032,6 +1042,7 @@ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
+ 		tag = req_tag & MCTP_TAG_MASK;
+ 	}
+ 
++	skb->pkt_type = PACKET_OUTGOING;
+ 	skb->protocol = htons(ETH_P_MCTP);
+ 	skb->priority = 0;
+ 	skb_reset_transport_header(skb);
+
+-- 
+2.39.5
+
