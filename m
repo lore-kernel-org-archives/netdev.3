@@ -1,31 +1,33 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8D7258CF7;
-	Thu, 19 Jun 2025 11:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893C7258A;
+	Thu, 19 Jun 2025 12:09:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750334362; cv=none; b=mV1nVLepeGiHPfJeM1EiKbRwYuLk00NHe5/bvP0k8glK+IF4B2+tBunOExP6gnd76AVI7xbVRHDYZ1kyp3H8ScyDAauCQWyRQg4XO5W+IiYpLqwAekOrOFrOWJEIAB8W9NpUyEoDKprtTnMamnWilVYk7VyzHVi+1k99kiXtTbI=
+	t=1750334959; cv=none; b=fCDVu2Ug8dAFmxlEeigDfVUvbP8/ss8wh8qQjbj/6MipLeLtRy5LuWQUclUPTa/MV9Lej/HS5eAWfUjPZKl6zFTTmSoUZ4jw2dL2C8CuYYqXypWNZ+H3bQRnvgSFJLLTgWN7NZMxPBal3al6evxY72n8FNC0ZQLrNspM5XSXpg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750334362; c=relaxed/simple;
-	bh=iVqwSJOrUUKdU3YweV0T+6fhDKrE8tyv1LFowiLtiDA=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=B0+OR/rBrmpYHt8b/ikK81SuzvImbqQUEm4d8fCNGUtgHiGKN8F0ZK0QWQ3vJe7HkZpbVN2hH5NhRADLPySwiY632YwXRZuHFkqEgY9An1wtwj4BD7zveo0xSD3LFfWsxermlw4rW5rNYxsxV5oUlvt7PXsb579DaThRVGBFMIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4bNJvQ2X10zdbfY;
-	Thu, 19 Jun 2025 19:55:14 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 75EA5180B43;
-	Thu, 19 Jun 2025 19:59:09 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 19 Jun 2025 19:59:08 +0800
-Message-ID: <5a23d321-307a-4f4a-a2cf-9c8dcf001dbb@huawei.com>
-Date: Thu, 19 Jun 2025 19:59:07 +0800
+	s=arc-20240116; t=1750334959; c=relaxed/simple;
+	bh=yl86KSoo8hswMGhXsp32B/sx36wzzNqUuMUtV6U7f5Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g4GKwERCDGF1cLKk1Kjhmb5Vgj3DXLF2/3byjly/U33DMg9+Os/ExMlDNyW7F/Jp/4nrWynNFYp7PXUV70eg5oN24id3zbEc3x9imVfdwBVvf3pE982AlBmEhHtwevxSmV1eh9cg6K6kw0x+WQY3keQhu8X0v9FbVgE1z5wKTQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KxRBK2Ns; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KxRBK2Ns"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0888C4CEEE;
+	Thu, 19 Jun 2025 12:09:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750334958;
+	bh=yl86KSoo8hswMGhXsp32B/sx36wzzNqUuMUtV6U7f5Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KxRBK2Nsgq6cIFVniLp3F7K9wH1ZvsAtUyrIm19qK9Yol5SOmwYaSsFrM9iHQCGrg
+	 lCvDZa2p9wA2Ra/MqvoFqwehcneM7NgyWEPqAefhQfM2f8LjFihVJsLQ0qSQLxVeBA
+	 X1iHqnS4iyayDJZDJElSNusWJjul1TLq7F464YruqFdUZHDIUrq54YPm76Ghz+D8ih
+	 5k9Fcm1EgsCttteWo8pOeTE+zTgblCrQsl5+zAoIU9tCwvJ4h+Ye19A+1IcQ/8IgvK
+	 7d/bIrFn91vzdzAaFpQ5KcweD9E5SY6HGMAyd+vSc6I/5ctdE8aAYcVVCYBpWuWhTT
+	 9jObARHrxqv+A==
+Message-ID: <cd4f2982-00ff-4e7b-88e1-6f6697da2c2f@kernel.org>
+Date: Thu, 19 Jun 2025 14:09:11 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -33,81 +35,69 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
-	<shenjian15@huawei.com>, <wangpeiyang1@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
-	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<michal.swiatkowski@linux.intel.com>
-Subject: Re: [PATCH V2 net-next 8/8] net: hns3: clear hns alarm: comparison of
- integer expressions of different signedness
-To: Simon Horman <horms@kernel.org>
-References: <20250617010255.1183069-1-shaojijie@huawei.com>
- <20250617010255.1183069-9-shaojijie@huawei.com>
- <20250618112924.GL1699@horms.kernel.org>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <20250618112924.GL1699@horms.kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+Subject: Re: Performance impact of disabling VLAN offload [was: Re: [PATCH
+ bpf-next V1 7/7] net: xdp: update documentation for xdp-rx-metadata.rst]
+To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+ Lorenzo Bianconi <lorenzo@kernel.org>,
+ Stanislav Fomichev <stfomichev@gmail.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+ <borkmann@iogearbox.net>, Eric Dumazet <eric.dumazet@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ sdf@fomichev.me, kernel-team@cloudflare.com, arthur@arthurfabre.com,
+ jakub@cloudflare.com, Magnus Karlsson <magnus.karlsson@intel.com>,
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+ Willem Ferguson <wferguson@cloudflare.com>,
+ Jesse Brandeburg <jbrandeburg@cloudflare.com>
+References: <174897271826.1677018.9096866882347745168.stgit@firesoul>
+ <174897279518.1677018.5982630277641723936.stgit@firesoul>
+ <aEJWTPdaVmlIYyKC@mini-arch>
+ <bf7209aa-8775-448d-a12e-3a30451dad22@iogearbox.net> <87plfbcq4m.fsf@toke.dk>
+ <aEixEV-nZxb1yjyk@lore-rh-laptop> <aEj6nqH85uBe2IlW@mini-arch>
+ <aFAQJKQ5wM-htTWN@lore-desk> <aFA8BzkbzHDQgDVD@mini-arch>
+ <aFBI6msJQn4-LZsH@lore-desk> <87h60e4meo.fsf@toke.dk>
+ <76a5330e-dc52-41ea-89c2-ddcde4b414bd@kernel.org> <875xgu4d6a.fsf@toke.dk>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <875xgu4d6a.fsf@toke.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-on 2025/6/18 19:29, Simon Horman wrote:
-> On Tue, Jun 17, 2025 at 09:02:55AM +0800, Jijie Shao wrote:
->> From: Peiyang Wang <wangpeiyang1@huawei.com>
->>
->> A static alarm exists in the hns and needs to be cleared.
-> I'm curious to know if you used a tool to flag this.
 
-Sorry, the last reply was not cc to netdev...
+On 17/06/2025 17.10, Toke Høiland-Jørgensen wrote:
+>> Later we will look at using the vlan tag. Today we have disabled HW
+>> vlan-offloading, because XDP originally didn't support accessing HW vlan
+>> tags.
+> 
+> Side note (with changed subject to disambiguate): Do you have any data
+> on the performance impact of disabling VLAN offload that you can share?
+> I've been sort of wondering whether saving those couple of bytes has any
+> measurable impact on real workloads (where you end up looking at the
+> headers anyway, so saving the cache miss doesn't matter so much)?
+> 
 
-Some internal tools, and then there are the compiler options, such as -Wsign-compare.
+Our production setup have two different VLAN IDs, one for INTERNAL-ID
+and one for EXTERNAL-ID (Internet) traffic.  On (many) servers this is
+on the same physical net_device.
 
->
->> The alarm is comparison of integer expressions of different
->> signedness including 's64' and 'long unsigned int',
->> 'int' and 'long unsigned int', 'u32' and 'int',
->> 'int' and 'unsigned int'.
->>
->> Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
->> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
->> ---
->>   .../hns3/hns3_common/hclge_comm_cmd.c         |  2 +-
->>   .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 22 +++++++-------
->>   .../net/ethernet/hisilicon/hns3/hns3_enet.h   |  2 +-
->>   .../ethernet/hisilicon/hns3/hns3_ethtool.c    |  4 +--
->>   .../hisilicon/hns3/hns3pf/hclge_debugfs.c     | 13 ++++----
->>   .../hisilicon/hns3/hns3pf/hclge_main.c        | 30 +++++++++----------
->>   .../hisilicon/hns3/hns3pf/hclge_mbx.c         |  7 +++--
->>   .../hisilicon/hns3/hns3pf/hclge_mdio.c        |  2 +-
->>   .../hisilicon/hns3/hns3pf/hclge_ptp.h         |  2 +-
->>   .../hisilicon/hns3/hns3vf/hclgevf_main.c      |  2 +-
->>   .../hisilicon/hns3/hns3vf/hclgevf_mbx.c       |  2 +-
->>   11 files changed, 44 insertions(+), 44 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
->> index 4ad4e8ab2f1f..37396ca4ecfc 100644
->> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
->> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
->> @@ -348,7 +348,7 @@ static int hclge_comm_cmd_csq_clean(struct hclge_comm_hw *hw)
->>   static int hclge_comm_cmd_csq_done(struct hclge_comm_hw *hw)
->>   {
->>   	u32 head = hclge_comm_read_dev(hw, HCLGE_COMM_NIC_CSQ_HEAD_REG);
->> -	return head == hw->cmq.csq.next_to_use;
->> +	return head == (u32)hw->cmq.csq.next_to_use;
-> Can the type of next_to_use be changed to an unsigned type?
-> It would be nice to avoid casts.
+Our Unimog XDP load-balancer *only* handles EXTERNAL-ID.  Thus, the very
+first thing Unimog does is checking the VLAN ID.  If this doesn't match
+EXTERNAL-ID it returns XDP_PASS.  This is the first time packet data
+area is read which (due to our AMD-CPUs) will be a cache-miss.
 
-Today I plan to modify the next_to_use type,
-but I found that if next_to_use is changed to u32,
-it will cause many other places to need to synchronously change the variable type.
-At a glance, there are dozens of places.
+If this were INTERNAL-ID then we have caused a cache-miss earlier than
+needed.  The NIC driver have already started a net_prefetch.  Thus, if
+we can return XDP_PASS without touching packet data, then we can
+(latency) hide part of the cache-miss (behind SKB-zero-ing). (We could
+also CPUMAP redirect the INTERNAL-ID to a remote CPU for further gains).
+  Using the kfunc (bpf_xdp_metadata_rx_vlan_tag[1]) for reading VLAN ID
+doesn't touch/read packet data.
 
-Therefore, I am considering whether this part can remain unchanged.
+I hope this makes it clear why reading the HW offloaded VLAN tag from
+the RX-descriptor is a performance benefit?
 
-Thanks
-Jijie Shao
+--Jesper
 
-
+[1] https://docs.kernel.org/networking/xdp-rx-metadata.html
