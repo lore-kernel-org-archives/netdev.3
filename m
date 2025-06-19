@@ -1,29 +1,29 @@
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44141AF0B5;
-	Thu, 19 Jun 2025 14:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8641322A4F3;
+	Thu, 19 Jun 2025 14:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750344497; cv=none; b=Iob3goA6rAbm0gV0rsFidQ7aqPckz5gSuLxvyHiccMkYc5iNMBy1P1PhSIaS/JZY95vYPna2IL4uyLoKGyfU75UW9QtahMJE+L55dteKWp+0XVnOHAP+eELJ7NyvcBqwxf3eRQGd6dpLfWVE0jWKbEJmjmEk7I2xf/rqdarx98g=
+	t=1750344498; cv=none; b=NDqZgjHLHHuILF6DpTHCOV09HUlCneAOzOWYnuOfJa+CDPOmen+TrdBEmicQ+pPeNwAsxR/fUwoPTlz5TzNBsG7AW+u7/n5lfcQRLxPUCxRqk8hmVMszVP2eViQ9vPxkh/h9mwwld9eF9MWA5e7Kme7BjEgVnMtb3CvZFrJF2lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750344497; c=relaxed/simple;
-	bh=YjMS2CcpuzRSbboHGnLRakfRmitcWwOqCbDpXu5+n/c=;
+	s=arc-20240116; t=1750344498; c=relaxed/simple;
+	bh=i7rcD1P8laXbZBfNdu4DupjBlFmEKluMaA6OTeWwlqA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dnc7OqXLD97nvkfLxtBHtbf8vGSE+HeiqMNRDY9t/OODpTL9Oh+CO1Kx16udywBGSZPG5oBUFAPRuT3vIb15JFCJNbF2XHieYj1BB7us9VP6eVJRnkNcTtCZQbBPF0nYpG8ip1veiPb6mIot8C4fMePFVJlhl8xV+6zWi0b18+o=
+	 MIME-Version:Content-Type; b=OS5mpFPeQdN9UPO4b8uYen2bePL3iqZwfkA4mTeAXtkKBoE+JxI0oj0uQlidX7r7rW46dVbm7MlIaPNESUNMV4PZIrXCQH/XL4CRgHyMU0GkPhvScqdjNWCWaSbN3Bmxsf5nUXE1mp68A47cFpxw2iU/BCtLt4598Tlmdek1MWs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4bNNf26wL3zRk5T;
-	Thu, 19 Jun 2025 22:43:54 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4bNNf41WPzzRkdD;
+	Thu, 19 Jun 2025 22:43:56 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id D6A8B180B6A;
-	Thu, 19 Jun 2025 22:48:11 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 1F5711400D9;
+	Thu, 19 Jun 2025 22:48:13 +0800 (CST)
 Received: from localhost.localdomain (10.90.31.46) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 19 Jun 2025 22:48:11 +0800
+ 15.2.1544.11; Thu, 19 Jun 2025 22:48:12 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -32,9 +32,9 @@ CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
 	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
 	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
-Subject: [PATCH V3 net-next 5/8] net: hns3: set the freed pointers to NULL when lifetime is not end
-Date: Thu, 19 Jun 2025 22:40:54 +0800
-Message-ID: <20250619144057.2587576-6-shaojijie@huawei.com>
+Subject: [PATCH V3 net-next 7/8] net: hns3: add complete parentheses for some macros
+Date: Thu, 19 Jun 2025 22:40:56 +0800
+Message-ID: <20250619144057.2587576-8-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20250619144057.2587576-1-shaojijie@huawei.com>
 References: <20250619144057.2587576-1-shaojijie@huawei.com>
@@ -49,89 +49,28 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  kwepemk100013.china.huawei.com (7.202.194.61)
 
-From: Jian Shen <shenjian15@huawei.com>
+Add complete parentheses for some macros to fix static check
+warning.
 
-There are several pointers are freed but not set to NULL,
-and their lifetime is not end immediately. To avoid misusing
-there wild pointers, set them to NULL.
-
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
 Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 ---
-ChangeLog:
-v2 -> v3:
-  - Remove unnecessary pointer set to NULL operation, suggested by Simon Horman.
-  v2: https://lore.kernel.org/all/20250617010255.1183069-1-shaojijie@huawei.com/
----
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 4 ++++
- drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 4 ++++
- 2 files changed, 8 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index e0a2ca21ee46..9d7c9523c9e1 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -5208,6 +5208,7 @@ static void hclge_fd_free_node(struct hclge_dev *hdev,
- {
- 	hlist_del(&rule->rule_node);
- 	kfree(rule);
-+	rule = NULL;
- 	hclge_sync_fd_state(hdev);
- }
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
+index d36c4ed16d8d..dd61ddd8f904 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
+@@ -692,7 +692,7 @@ static inline unsigned int hns3_page_order(struct hns3_enet_ring *ring)
  
-@@ -5232,6 +5233,7 @@ static void hclge_update_fd_rule_node(struct hclge_dev *hdev,
- 		new_rule->rule_node.pprev = old_rule->rule_node.pprev;
- 		memcpy(old_rule, new_rule, sizeof(*old_rule));
- 		kfree(new_rule);
-+		new_rule = NULL;
- 		break;
- 	case HCLGE_FD_DELETED:
- 		hclge_fd_dec_rule_cnt(hdev, old_rule->location);
-@@ -8521,6 +8523,7 @@ static void hclge_update_mac_node(struct hclge_mac_node *mac_node,
- 		if (mac_node->state == HCLGE_MAC_TO_ADD) {
- 			list_del(&mac_node->node);
- 			kfree(mac_node);
-+			mac_node = NULL;
- 		} else {
- 			mac_node->state = HCLGE_MAC_TO_DEL;
- 		}
-@@ -9151,6 +9154,7 @@ static void hclge_uninit_vport_mac_list(struct hclge_vport *vport,
- 		case HCLGE_MAC_TO_ADD:
- 			list_del(&mac_node->node);
- 			kfree(mac_node);
-+			mac_node = NULL;
- 			break;
- 		}
- 	}
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-index e3f86638540b..3ffd47b30ad3 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-@@ -933,6 +933,7 @@ static void hclgevf_update_mac_node(struct hclgevf_mac_addr_node *mac_node,
- 		if (mac_node->state == HCLGEVF_MAC_TO_ADD) {
- 			list_del(&mac_node->node);
- 			kfree(mac_node);
-+			mac_node = NULL;
- 		} else {
- 			mac_node->state = HCLGEVF_MAC_TO_DEL;
- 		}
-@@ -2395,6 +2396,7 @@ static int hclgevf_init_msi(struct hclgevf_dev *hdev)
- 					sizeof(int), GFP_KERNEL);
- 	if (!hdev->vector_irq) {
- 		devm_kfree(&pdev->dev, hdev->vector_status);
-+		hdev->vector_status = NULL;
- 		pci_free_irq_vectors(pdev);
- 		return -ENOMEM;
- 	}
-@@ -2408,6 +2410,8 @@ static void hclgevf_uninit_msi(struct hclgevf_dev *hdev)
+ /* iterator for handling rings in ring group */
+ #define hns3_for_each_ring(pos, head) \
+-	for (pos = (head).ring; (pos); pos = (pos)->next)
++	for ((pos) = (head).ring; (pos); (pos) = (pos)->next)
  
- 	devm_kfree(&pdev->dev, hdev->vector_status);
- 	devm_kfree(&pdev->dev, hdev->vector_irq);
-+	hdev->vector_status = NULL;
-+	hdev->vector_irq = NULL;
- 	pci_free_irq_vectors(pdev);
- }
- 
+ #define hns3_get_handle(ndev) \
+ 	(((struct hns3_nic_priv *)netdev_priv(ndev))->ae_handle)
 -- 
 2.33.0
 
