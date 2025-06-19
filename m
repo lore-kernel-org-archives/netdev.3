@@ -1,128 +1,123 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E361D9A54;
-	Thu, 19 Jun 2025 09:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A330C21B9C0;
+	Thu, 19 Jun 2025 09:46:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750325907; cv=none; b=F+QUl+yw40t5o8inn7CRB4MvZ7/kJUXCEPKs71uZI3/X2d8EZ4FtlHrBpniaVCzx1irV6719dmwtfwSgHWavO9DuMHq/ADYZSdCxHk1AQGCkohnjKYJvBPa/lZHocrFyNpnl4Mh0EGLskdBCW8bCoh9NpPTkHvwFJgoNKv35u7o=
+	t=1750326404; cv=none; b=a4OJv/PpunmKLGf0330tjSoy/wGh/dbnqfGjQv2HuHpe3an6IiPDSkd+CyQ0XXjZSZ/EgI73xDouAL2GTsFRazxSDnm2XtzXS5/7b0paQuggohqCMfyLe+EG4uy3RxSgbkY6SHuaC36an9LS4BBSoSTsC3qb8xcsQEES61jQDuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750325907; c=relaxed/simple;
-	bh=KLKRYvVaEBlMMIwnNFT9MCa4uPrERj6jrU+CDNwkM8Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pOTmz+gjg5jnojSixPZgejK/HtRPm4dkGfoSqcABWMW5jlvEq7hb1RjRb3qiQ06M1oo1gHSmHvZDBKJ/NL+gE6z2AUz+oYHEiCrPKKIK+pVqbgh2zuMwfwEPgxHPFAJ9wqe8ZLozxir8e4JfaKJiZ3k4nliWo3GrDrlgoTCRzvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WGck4IyE; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750326404; c=relaxed/simple;
+	bh=r1Ar8ZQ4D9/WtFd5hRo45kEmZ+WsfRpMNPKRKqGWvds=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=taQkVGVbmaSNzKL9IwHlbIZC4N6mF+2bbUHKZJoNvRUB+Kot2dwub+uBYN+yM8DcIupPrfdEgPYGxac4BKMCg/AaxJwaV/GmwDCcivD9cV/VuhD3mAPkd9JJiXtwC23lcrtjD+tG+rwIznA87ORy99OkUjjIPMjz7QUa+cse/ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JO6oj8V/; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WGck4IyE"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7425bd5a83aso434655b3a.0;
-        Thu, 19 Jun 2025 02:38:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750325905; x=1750930705; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PinCl0B0GdBzlEv7WwLDggwxT66ZmaTkkrZuqcrKs+Y=;
-        b=WGck4IyEf+5U51t5ZfXmAw/Ul4Br3iOeyjPkrPduzIMDTYDF6v+e5GYv9HnZjUPkdl
-         gowlwjipKtZCKgNLtZeeBdZ3LVuswhs3e1qNpttnZhn6M7z6UIRXPeQG1DZ9DgGarFY2
-         gcSJKeZhpjP0vo8YinQGJUbaXymUxIUFHvS0Lb0ec1ep1/DWkJdbnwpxttYPVtQyc31d
-         rA+Q+rbGwvRsze/2mYBzUurkI10w/E2nrpigFZntZd/wExn446J4PnnLBQ4OU1h6axHP
-         DJZvM6mU43nQ/XGwtx9sL4nQw4ISJQGbFtYbYqXis1bZdPzr7HC8+zCjZcga26qDtpXZ
-         gETA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750325905; x=1750930705;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PinCl0B0GdBzlEv7WwLDggwxT66ZmaTkkrZuqcrKs+Y=;
-        b=InWXC59pWyj6Unp5BvErMfB2lCi0LaFk31NGvkarYsH0u6aavVfmfDCYjc8TCG3Y7V
-         6JKOv92W+05l1Q6MWlDiWrkUwaJKavJQ5XcgxxeG25BeeQaQj5MG7YDcTQ3N28yKvWGp
-         ji208EmcqPTVKw+H1GoZTxaWFmrTHtAvs7Y87Qs1zyRJysMYS/t5ExMGtrQOAFiQaGmR
-         40WEjGO9CuKFsVLvveSJtj+q2+ZjV7pWA4CZG6BYCnBoiMthVPExYG8DKK8qA7RdcKki
-         qFYL6Yur6gYUYk6DY5pEcePBRRRvU9H2nFG/wpgBrqcbumU6G0DdHG3EItrr/5MIGmGF
-         5Ckg==
-X-Forwarded-Encrypted: i=1; AJvYcCX9wwumZoycx779uS+s8iY35YHie45eQhtS9BkUzWnexDQuKQBafw1q/LXlzTjpUDkugism3dw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlP7t084iOh5o1aOVRhLUZyjOhlmM3k0V81mJiRB85BlGTfz7a
-	ZF9qIavaY0NzFig0o6VipdNV0sqXiCgXVKm0udHatZejWWBj001HrYZE
-X-Gm-Gg: ASbGncsl/ygpK/1tgym0VJyXK2fo07AWjPinlXcnP2kJTSNTPAWgXsseG+wlNopKlv5
-	9bjzlv5/Vc89smgOg0hJLuCGYCSqSN8iEdI1zGds8vU+Nv5SAFsEgx9TE9xTFkciSRvEftXae/n
-	BmUTEGghZvs82FuT0oHxwLECx8y5DoXTjWB/r2ZRXIi4eCirC6P+ta8XyLs8TsCFAJM/FIdUBqD
-	4WY1upk6Gu4Mm93w2Wb1CLdgd53SiRUCVQFRRbfWYW/kjoSp/u5nQ0WqtZHKB9vSPQGSW8i7rz2
-	gT/Rop83GS/Uyqc882ifv9lD3NvHjaf8yHfASzuhGYvzHdTI8+3PxwiU27eO0E/wyx5q09l84zC
-	trELcGtwFiPVIOKTMhSnHQHH3nAoTzNJ7Hg==
-X-Google-Smtp-Source: AGHT+IHG6jT+kJ7Yzc1ajmMNbCHMwqzlSFbQg8gVUuYFTMiCxTB6FO9Ehvq8rUigAQcoiyB5oDVO+Q==
-X-Received: by 2002:a05:6a20:e609:b0:216:1ea0:a526 with SMTP id adf61e73a8af0-21fbd5ddde0mr35713387637.40.1750325905045;
-        Thu, 19 Jun 2025 02:38:25 -0700 (PDT)
-Received: from KERNELXING-MB0.tencent.com ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7489000749csm13241453b3a.68.2025.06.19.02.38.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jun 2025 02:38:24 -0700 (PDT)
-From: Jason Xing <kerneljasonxing@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	bjorn@kernel.org,
-	magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	jonathan.lemon@gmail.com,
-	sdf@fomichev.me,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	joe@dama.to,
-	willemdebruijn.kernel@gmail.com
-Cc: bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Jason Xing <kernelxing@tencent.com>
-Subject: [PATCH net-next] net: xsk: update tx queue consumer immdiately after transmission
-Date: Thu, 19 Jun 2025 17:36:41 +0800
-Message-Id: <20250619093641.70700-1-kerneljasonxing@gmail.com>
-X-Mailer: git-send-email 2.33.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JO6oj8V/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750326403; x=1781862403;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=r1Ar8ZQ4D9/WtFd5hRo45kEmZ+WsfRpMNPKRKqGWvds=;
+  b=JO6oj8V/whTjyaNd2C/242GD7d0Co+VO7OK/VKTr9CKtg86YyEwy5yal
+   oIAvfKOzc1r6WN2ENZFCpXK/rYk6e1j5e+4QHWsQwJs3777vUPE3vOvNy
+   i+A2de6iXsJTzOF32b63FA6l1Nc3WLUeUl57ybCbJW7i704sJGmjwxVgI
+   NiLBw/Vje1jvfK2KwUVW4M9ftTrFDaD9O3EDwDPaoD3c63TFn0GvxPPEt
+   Avtg8NfGCN55BKd6hZxi7OwxikOn0MNO41goP5U9pMC0UuClDKWygTJwN
+   ofmrMMjoFcQyyUo1MK5tB7mYx9CdfhtLhOXouG64OSlysdwgwZtpKwtq1
+   w==;
+X-CSE-ConnectionGUID: Ks/UGMX5Q3OoHDYdyzfwPw==
+X-CSE-MsgGUID: STOgO8BRQ4qXG5swJvLPKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11468"; a="51683409"
+X-IronPort-AV: E=Sophos;i="6.16,248,1744095600"; 
+   d="scan'208";a="51683409"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2025 02:46:42 -0700
+X-CSE-ConnectionGUID: I0Y4y6uZTQuwsbi+3UEesg==
+X-CSE-MsgGUID: fAsgOCE5RpuNzUuUl2Do/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,248,1744095600"; 
+   d="scan'208";a="151080205"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 19 Jun 2025 02:46:38 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uSBqu-000Kd4-1R;
+	Thu, 19 Jun 2025 09:46:36 +0000
+Date: Thu, 19 Jun 2025 17:46:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Vikas Gupta <vikas.gupta@broadcom.com>, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com, vsrama-krishna.nemani@broadcom.com,
+	Vikas Gupta <vikas.gupta@broadcom.com>,
+	Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>,
+	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
+Subject: Re: [net-next, 03/10] bng_en: Add firmware communication mechanism
+Message-ID: <202506191741.1C9E7i3x-lkp@intel.com>
+References: <20250618144743.843815-4-vikas.gupta@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250618144743.843815-4-vikas.gupta@broadcom.com>
 
-From: Jason Xing <kernelxing@tencent.com>
+Hi Vikas,
 
-For afxdp, the return value of sendto() syscall doesn't reflect how many
-descs handled in the kernel. One of use cases is that when user-space
-application tries to know the number of transmitted skbs and then decides
-if it continues to send, say, is it stopped due to max tx budget?
+kernel test robot noticed the following build errors:
 
-The following formular can be used after sending to learn how many
-skbs/descs the kernel takes care of:
+[auto build test ERROR on linus/master]
+[also build test ERROR on v6.16-rc2 next-20250618]
+[cannot apply to horms-ipvs/master]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-  tx_queue.consumers_before - tx_queue.consumers_after
+url:    https://github.com/intel-lab-lkp/linux/commits/Vikas-Gupta/bng_en-Add-PCI-interface/20250618-173130
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20250618144743.843815-4-vikas.gupta%40broadcom.com
+patch subject: [net-next, 03/10] bng_en: Add firmware communication mechanism
+config: parisc-randconfig-r073-20250619 (https://download.01.org/0day-ci/archive/20250619/202506191741.1C9E7i3x-lkp@intel.com/config)
+compiler: hppa-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250619/202506191741.1C9E7i3x-lkp@intel.com/reproduce)
 
-Prior to the current patch, the consumer of tx queue is not immdiately
-updated at the end of each sendto syscall, which leads the consumer
-value out-of-dated from the perspective of user space. So this patch
-requires store operation to pass the cached value to the shared value
-to handle the problem.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506191741.1C9E7i3x-lkp@intel.com/
 
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
----
- net/xdp/xsk.c | 2 ++
- 1 file changed, 2 insertions(+)
+All errors (new ones prefixed by >>):
 
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 7c47f665e9d1..3288ab2d67b4 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -856,6 +856,8 @@ static int __xsk_generic_xmit(struct sock *sk)
- 	}
- 
- out:
-+	__xskq_cons_release(xs->tx);
-+
- 	if (sent_frame)
- 		if (xsk_tx_writeable(xs))
- 			sk->sk_write_space(sk);
+   hppa-linux-ld: hppa-linux-ld: DWARF error: could not find abbrev number 1754059
+   drivers/net/ethernet/broadcom/bnge/bnge_hwrm.o: in function `__hwrm_req_init':
+>> bnge_hwrm.c:(.text+0x96c): multiple definition of `__hwrm_req_init'; hppa-linux-ld: DWARF error: could not find abbrev number 179644068
+   drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.o:bnxt_hwrm.c:(.text+0xccc): first defined here
+   hppa-linux-ld: drivers/net/ethernet/broadcom/bnge/bnge_hwrm.o: in function `hwrm_req_timeout':
+>> bnge_hwrm.c:(.text+0xa90): multiple definition of `hwrm_req_timeout'; drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.o:bnxt_hwrm.c:(.text+0xdf0): first defined here
+   hppa-linux-ld: drivers/net/ethernet/broadcom/bnge/bnge_hwrm.o: in function `hwrm_req_alloc_flags':
+>> bnge_hwrm.c:(.text+0xac8): multiple definition of `hwrm_req_alloc_flags'; drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.o:bnxt_hwrm.c:(.text+0xe28): first defined here
+   hppa-linux-ld: drivers/net/ethernet/broadcom/bnge/bnge_hwrm.o: in function `hwrm_req_flags':
+>> bnge_hwrm.c:(.text+0xb00): multiple definition of `hwrm_req_flags'; drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.o:bnxt_hwrm.c:(.text+0xf9c): first defined here
+   hppa-linux-ld: drivers/net/ethernet/broadcom/bnge/bnge_hwrm.o: in function `hwrm_req_hold':
+>> bnge_hwrm.c:(.text+0xb48): multiple definition of `hwrm_req_hold'; drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.o:bnxt_hwrm.c:(.text+0xfe4): first defined here
+   hppa-linux-ld: drivers/net/ethernet/broadcom/bnge/bnge_hwrm.o: in function `hwrm_req_drop':
+>> bnge_hwrm.c:(.text+0xbd0): multiple definition of `hwrm_req_drop'; drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.o:bnxt_hwrm.c:(.text+0x106c): first defined here
+   hppa-linux-ld: drivers/net/ethernet/broadcom/bnge/bnge_hwrm.o: in function `hwrm_req_send':
+>> bnge_hwrm.c:(.text+0xc10): multiple definition of `hwrm_req_send'; drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.o:bnxt_hwrm.c:(.text+0x12f0): first defined here
+   hppa-linux-ld: drivers/net/ethernet/broadcom/bnge/bnge_hwrm.o: in function `hwrm_req_send_silent':
+>> bnge_hwrm.c:(.text+0xc50): multiple definition of `hwrm_req_send_silent'; drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.o:bnxt_hwrm.c:(.text+0x1330): first defined here
+   hppa-linux-ld: drivers/net/ethernet/broadcom/bnge/bnge_hwrm.o: in function `hwrm_req_dma_slice':
+>> bnge_hwrm.c:(.text+0xca8): multiple definition of `hwrm_req_dma_slice'; drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.o:bnxt_hwrm.c:(.text+0x1388): first defined here
+
 -- 
-2.43.5
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
