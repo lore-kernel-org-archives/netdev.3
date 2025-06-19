@@ -1,125 +1,102 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0894830E834
-	for <netdev@vger.kernel.org>; Thu, 19 Jun 2025 18:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CA4246BBB;
+	Thu, 19 Jun 2025 19:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750359409; cv=none; b=MRkI43OspqdDGDdYfNUDAlIgbrNF1bUehCsdOTT5B1zprrK18N0/DC4pWZE0VxNmAJMogGgKIdn74gGOmvob8Y6sWO51sqeLHJnn1O7Z0gTQHBIAwGmCF2YOhGzNOgknEkAylInJPsjEHYq8ZpSVjK3FN6oQ6CIJDcLml8CdrAE=
+	t=1750360762; cv=none; b=U/qT9li04/oOrryDXTfcaSCZaLow0VDzlM5FWOqSlzi9ocYHBg09cR4lsIgKL161aO2wVY7t6Tf9FTbjlZc6P+h4R5N1RYSthpeC4jYvIiA2nZvIVj+9F0GWPpFn+Yij7JDyo0KMpvft3JKgNNQkDvXWmRAMr11a5s2rmXcFLvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750359409; c=relaxed/simple;
-	bh=fKF/I0+isHtGiRm6xuU+f9Uo0CAsrds2Al+UOu1mQ5M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EZ+NwCXUMXnwj9Bp7tgp7tQAqwKz5TPEpGmHfDWVcPbVrL+Sg3g4XDywi/1I/X5U5v176rPEHn1nsl/NDPUjC6qO4Rj3dlh3pi08+1Fo2XaRy1qhDd2Pv7t1jQCiXIEv1cpMQgcLRORSib1sCHCt04YOV/saTx3BgKFi3srCq3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FoeAZsr9; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750360762; c=relaxed/simple;
+	bh=LDMXTkVlQDnupG+UBA2IQttq9RHsgsS5cAxbc+ksyEU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jq36VpartB0eTcKqveMqitTB9YAukzqcftr8vV3t0x4F8+DWABWLZLf8wRnQzLQG31O0y5mtN4NFpjYkISyko6yzra32Vt4caa0BbAw4+t8N/9Jpnb2oTkCTPPwgunUywf4FpstGzp68Ec9e+VUzJ+VtBeAtW7p7dx5pDDFdd+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MET21Rqy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FoeAZsr9"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-742c3d06de3so1195009b3a.0
-        for <netdev@vger.kernel.org>; Thu, 19 Jun 2025 11:56:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750359407; x=1750964207; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cPfQOrhMScbXL+oNW2gI5wzKhXNZfE204OqcaxBBPT4=;
-        b=FoeAZsr9zk5NdOVAhe8MVVLrQnyP5smFXfDfyirCr3BZRxuHH2qmPSQmSHAXTqZexD
-         aXGW8wYiemiQ7LDM7M1/Pi8Z2ajHqaX2Qqudi6zr0Sjkwx2Mbthud0FceEAbLL4QDTjv
-         rIwoOwR6ekV5xQIAbYJY6oJ8FKbPt0LyUCT3F2zd6CtQkcyh4t7el4Rg0Rxv/NvF3pqA
-         0rQeKO2foeWEXyMFqwWMZM2U4rcukx9+414VY1LuUIKvqpRgMu3bm90Si2jK7abQkjUY
-         VpiPys6cjBW0E6DOpufa7Suof7XyO5rLb2mkO5orEktvo6oLXLwlN/UWIsBNtbarzaOg
-         Bimw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750359407; x=1750964207;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cPfQOrhMScbXL+oNW2gI5wzKhXNZfE204OqcaxBBPT4=;
-        b=SaCGnqt5gwglJ7vFwyOtKr0EL/tFCvhGo9uqBshgxzrtMw4dD4FaehFh+84IeAp992
-         CCU5QaLxb+YTtJaqwgmwHFgT9yHZOPeKJPvhFNXdmJh6VqrS+FC3ZapD1hrXXA6/VFVu
-         BX1Aa9tKm/VOTVWBMknc0nLQDkBvnTu3lCOiB4i9mb49SmeDckUqEwYaaHk5+399/lOh
-         U6xha0Fwb2FAXqqiWDXi99gfr3N2baPWajcAKIi6YzYaMtppBJzDfQN1hAQdJgqcyVOq
-         YphPCsv/E7/qpbsvNDpeDexj1AJTdcEU0fccBBgGTSIcyVIfaqm9cDlc5iyNjVBPWMmC
-         zsRA==
-X-Forwarded-Encrypted: i=1; AJvYcCWTOXubV8mSp0ZcH8xXOkFkjK8b/6kHWYT1FARHZy0GYDTiDeWTgq1Jvge3oIzViqJ7GMXxugU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9Ap5Bka2YvC9PiqAZLSYxycdSv7ORqDMvUKEI5vAMXGppj7pQ
-	6iXGu4Xw/YQqzKvvfZUuokAHk3AUnypo7H6hVeVbfX0cmR+b2OW+qGbNnK12G+dqsusD
-X-Gm-Gg: ASbGncsWzHnc8eb8SzRF8j5gvKw/Cf3ZiU10iDsJ8za+PKGJVsI9OSn78xs8Qg0p15J
-	ID6pHDFXJg7uaCBd9eEgwUaFJjf0xj8GR4NrrPx8MtUUrGFYByQ2OJ9mPIe+AfNAMy+sCBFrFj8
-	wa4zlKdaNLjJytgtPFvHEJlPnkl82UA7dxm5bZepnROkLen8Q++ViYiJ4eqakCFj/lqLg9XuiF3
-	YpjAqan7D0qPWVO2ti7KFyYBgIyRc4IeCb57+GPa7s1G5PayMTsaXEtoOloIpO/2jeRh1GpqNXx
-	mdAp0ItIRiY0yX6NU97LHTFOKKlgS3CJ8t1wWmE=
-X-Google-Smtp-Source: AGHT+IF92Y0gC//wIs/aswreTNLpnPdJNrWSDkgaaIDQVRDXD7MLQ1aXg9J0ShjOxcY+j9VAl8TzPA==
-X-Received: by 2002:a05:6a20:a123:b0:21a:ec1b:c85f with SMTP id adf61e73a8af0-22026e1314emr114349637.4.1750359407135;
-        Thu, 19 Jun 2025 11:56:47 -0700 (PDT)
-Received: from fedora.. ([2601:647:6700:3390::c8d1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7490a689180sm388556b3a.146.2025.06.19.11.56.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jun 2025 11:56:46 -0700 (PDT)
-From: Kuniyuki Iwashima <kuni1840@gmail.com>
-To: pabeni@redhat.com
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	kuni1840@gmail.com,
-	kuniyu@google.com,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v1 net-next 06/15] ipv6: mcast: Don't hold RTNL for IPV6_ADD_MEMBERSHIP and MCAST_JOIN_GROUP.
-Date: Thu, 19 Jun 2025 11:56:08 -0700
-Message-ID: <20250619185645.1647494-1-kuni1840@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <c84e2303-2240-4bd7-a0d9-2e1d4d0c0677@redhat.com>
-References: <c84e2303-2240-4bd7-a0d9-2e1d4d0c0677@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MET21Rqy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C78C4CEEA;
+	Thu, 19 Jun 2025 19:19:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750360761;
+	bh=LDMXTkVlQDnupG+UBA2IQttq9RHsgsS5cAxbc+ksyEU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MET21RqyYxksarZ9F9PT2gpDE69XYycjW9Ai26NHx2xjofzlYsdIJWBnPSUsTIte4
+	 KZ3qAg55yExnPpei/HOwZr9eWGR3RMsqHe5AZW+ea9bUyWsR+6Fmi8WVK0S4xyo5u4
+	 plOfsrR8zwhfbWtehabdm98sa2xjzxvc86txr5T1uB4tK3BTw8D/8RPsef806/+NvX
+	 WEOvkzpul7y/KcV3kqsYz9qvmEIUdNHCqfHWeFmFjpfU9DNPiJGuRKEm6SUdvDQrRF
+	 7yzXNJUDN+hPRxQOueAaVy47CEI6gnIdiUa2u949Plx0G64msh3cJhRWVEzdCFC0re
+	 qWiaJNBXPpIwQ==
+Date: Thu, 19 Jun 2025 12:19:20 -0700
+From: Saeed Mahameed <saeed@kernel.org>
+To: Mark Bloch <mbloch@nvidia.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>, saeedm@nvidia.com, gal@nvidia.com,
+	leonro@nvidia.com, tariqt@nvidia.com,
+	Leon Romanovsky <leon@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 0/5] net/mlx5e: Add support for PCIe congestion
+ events
+Message-ID: <aFRiuIPidlx7Qsy9@x130>
+References: <20250619113721.60201-1-mbloch@nvidia.com>
+ <20250619075543.1d31f937@kernel.org>
+ <d9bcc48d-17a2-4d12-bacd-6bef296b45c6@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <d9bcc48d-17a2-4d12-bacd-6bef296b45c6@nvidia.com>
 
-From: Paolo Abeni <pabeni@redhat.com>
-Date: Thu, 19 Jun 2025 14:33:56 +0200
-> On 6/17/25 1:28 AM, Kuniyuki Iwashima wrote:
-> > From: Kuniyuki Iwashima <kuniyu@google.com>
-> > 
-> > In __ipv6_sock_mc_join(), per-socket mld data is protected by lock_sock(),
-> > and only __dev_get_by_index() requires RTNL.
-> > 
-> > Let's use dev_get_by_index() and drop RTNL for IPV6_ADD_MEMBERSHIP and
-> > MCAST_JOIN_GROUP.
-> > 
-> > Note that when we fetch dev from rt6_lookup(), we can call dev_hold()
-> > safely for rt->dst.dev as it already holds refcnt for the dev if exists.
-> 
-> I'm not 110% sure it's safe. AFAICS a racing dst_dev_put() could
-> potentially release the rt->dst reference concurrently???
-> The race looks quite orthogonal to the patchset, but double-checking I'm
-> not missing anything.
+On 19 Jun 19:00, Mark Bloch wrote:
+>
+>
+>On 19/06/2025 17:55, Jakub Kicinski wrote:
+>> On Thu, 19 Jun 2025 14:37:16 +0300 Mark Bloch wrote:
+>>> PCIe congestion events are events generated by the firmware when the
+>>> device side has sustained PCIe inbound or outbound traffic above
+>>> certain thresholds. The high and low threshold are hysteresis thresholds
+>>> to prevent flapping: once the high threshold has been reached, a low
+>>> threshold event will be triggered only after the bandwidth usage went
+>>> below the low threshold.
+>>
+>> What are we supposed to do with a series half of which is tagged for
+>> one tree and half for another? If you want for some of the patches to
+>> go via the shared tree - you have to post them separately.
+>> Ideally you'd post them to the list in a combined "pull request +
+>> patches" format (see for example how Marc posts CAN patches, or Pablo
+>> posts netfilter). Once we pull that you can sent the net-next stuff
+>> separately as patches.
+>
+>Miscommunication about the proper process, thanks for the explanation.
+>PR + patches seems cleaner and provides more context,
+>so I’ll go with that.
+>
+>>
+>> I feel like I just had the same exact conversation with Tariq recently.
+>> Really not great when same process explainer has to be given to
+>> multiple people from the same company :( I'd like to remind y'all that
+>> reading the mailing list is not optional:
+>
+>I do follow the mailing list and double checked what should be done in
+>this scenario. In the end it's my responsibility so it's my fault.
+>
 
-Oh, I missed that one.  Given some ->err_handler() use rt6_lookup()
-under RCU, adding rcu_read_lock() could be safer ?
+I think what Mark did here is fine, Yes I understand this is not
+applicable to net-next yet, but the point is review and we can do the
+following, when review is done:
 
+I can Apply the mlx5-next portion to mlx5-next and Mark on V2 can send the
+net-next stuff + A PR request to the mlx5-next branch, this is how we used
+to do it all the time, but this time review happens all at once for both
+trees.
 
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index c91134c7e927..fc49f84d74ca 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -201,12 +201,14 @@ static int __ipv6_sock_mc_join(struct sock *sk, int ifindex,
- 	if (ifindex == 0) {
- 		struct rt6_info *rt;
- 
-+		rcu_read_lock();
- 		rt = rt6_lookup(net, addr, NULL, 0, NULL, 0);
- 		if (rt) {
- 			dev = rt->dst.dev;
- 			dev_hold(dev);
- 			ip6_rt_put(rt);
- 		}
-+		rcu_read_unlock();
- 	} else {
- 		dev = dev_get_by_index(net, ifindex);
- 	}
+Jakub is this acceptable ? 
+
