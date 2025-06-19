@@ -1,37 +1,37 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1B325E47D
-	for <netdev@vger.kernel.org>; Thu, 19 Jun 2025 08:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E1925E829
+	for <netdev@vger.kernel.org>; Thu, 19 Jun 2025 08:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750320073; cv=none; b=ZUpGdWSE/kPfzSzGh2Sa/BfE/exBKD/OadBKqs7k6oLzj1my6lTS9Un+u63h0AoI/NmFsVAfyaRZLp+b3taTFeU6cWr6fc9KOANQLtpRb6G9xpWLOtXcKX5VoahriKkJnhTX3Hbc3JbNRGUJWMDoLljGVSjWtD+jtMtROwS4cQQ=
+	t=1750320074; cv=none; b=g0gjsr8gkBDflHiPmH7mUeUVSzUgR1HsXfPXKQ3pb7Mz9ypwbLRryVwmA6HGZtSYrbn+ac2MAI4ZY6vcKbVP52+KHop/8xvwZW6vgnA3GUYM670IWCT2w732hUe4/dLyfbBZFUULUgSQ0flKH6I5lExnmebkTRYHjC/uHyPF95A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750320073; c=relaxed/simple;
-	bh=zVuld+2m2MEUitbQZwla1PDS+SinR+fyDsgT1hhK5Rw=;
+	s=arc-20240116; t=1750320074; c=relaxed/simple;
+	bh=TsCEVJSbAG4Ui9UU7KbJEf0wpBgmVpLIPdk5MB9uO+Q=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Mvp+OsztXOzLYR5X7vZG2X/tgTCnZhbC0nqXPy8SYVr+AXmgQaDE4iYSVBBMYJ+kqHtJiribgpfLBIlz27/Q9+zYdfaHGOLDfKQHcyt9MjY86NF2iA/1p594uz5Kqykz7qpaIikrgpTkeTFQncLiXv3cetYhiSlyrMZyQZDcA1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=GiBOcC8U; arc=none smtp.client-ip=203.29.241.158
+	 In-Reply-To:To:Cc; b=SARRx8KQZT2f5/JT1Ig6kx/pVYDGvMC3k7htyLT4a69wVxNJmaRT6/YUZzqWtE9cscoALDktbYOVd26WnvGDco2dFiyMi4ujiP11S1HThrJ8F/V63OZWJDGH8eML0JOUxKSsoDGlwetPzo7FXmie29Z6r228EF6gTMid9XJ+tIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=dpKkM70+; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="GiBOcC8U"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="dpKkM70+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1750320061;
-	bh=/2zf83oVZEReg1d9mh2DMWCAmDDCvhyRZ10CEc9oizU=;
+	d=codeconstruct.com.au; s=2022a; t=1750320063;
+	bh=R/iBcO0Na5B85cl0hG3FHnOdxLFLdGi9Q11jSvY6nw4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=GiBOcC8UDotx19lVZEOhZXABS9klQHu5v14dn1RPaBXZ1RJZ8aYJl8trOkNo1+amE
-	 k8MhOo6GgHLxMiMN99w3hxMkwQF/IiFPE2AJbQKD/DbkSo8dZ+TCHGthFFnF5+8M9l
-	 jui4/382r3ByK8BirRLOYwaQTQawscHPEyXQWFB/ea5Y42uEUeEyU3x2itXYsWCbXc
-	 YHjbKnmL7GZCjgU6jbzKZ2o8xUktdCsqbwRl11tO9b1Zaqr40NwmK9BchBSMZ9P+8x
-	 CloS2JeTR9OKnF67wPp/7FwITh45rRkG0F3zMg6WCPg0tLXU2ikpWj3YsB5ej8u8ms
-	 nOPd1nxZBUimw==
+	b=dpKkM70+GigQgdRr2eCXSHXvHzrG4+26vRdhLDZLFivR7YIwO0mRP7RuvPq41W0WO
+	 NCuvAr7hiHKNgPTAMxEl25wx7SeGP4PtBDwAWf6RURMF24YxcKlejJCQBVUZOqeaIq
+	 Qb0V8j/+DXDDpBStwCOPpSNTnFausvybRYBq3dHRV5wt/ycP1NLKai6jLBXheb4vEA
+	 9nz3gH+C7z/7oX14ytC6WpqFdV9vok8xTXcoKQ6Dz16XwkC1AgZFLUF6VkMdZn1nKr
+	 PuHNXAyNgsr7Zhq3SCJNvlO/ihAbPIa2j/0VyZe6qWSxVKtmOzYL6JGL6GfQOVFbKf
+	 uE56Jf8LPpQpw==
 Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id 9365F68EBE; Thu, 19 Jun 2025 16:01:01 +0800 (AWST)
+	id 71BFC68ECB; Thu, 19 Jun 2025 16:01:03 +0800 (AWST)
 From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Thu, 19 Jun 2025 16:00:40 +0800
-Subject: [PATCH net-next v2 05/13] net: mctp: test: Add extaddr routing
- output test
+Date: Thu, 19 Jun 2025 16:00:45 +0800
+Subject: [PATCH net-next v2 10/13] net: mctp: remove routes by netid, not
+ by device
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250619-dev-forwarding-v2-5-3f81801b06c2@codeconstruct.com.au>
+Message-Id: <20250619-dev-forwarding-v2-10-3f81801b06c2@codeconstruct.com.au>
 References: <20250619-dev-forwarding-v2-0-3f81801b06c2@codeconstruct.com.au>
 In-Reply-To: <20250619-dev-forwarding-v2-0-3f81801b06c2@codeconstruct.com.au>
 To: Matt Johnston <matt@codeconstruct.com.au>, 
@@ -50,85 +50,68 @@ To: Matt Johnston <matt@codeconstruct.com.au>,
 Cc: netdev@vger.kernel.org
 X-Mailer: b4 0.14.2
 
-Test that the routing code preserves the haddr data in a skb through an
-input route operation.
+In upcoming changes, a route may not have a device associated. Since the
+route is matched on the (network, eid) tuple, pass the netid itself into
+mctp_route_remove.
 
 Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
 ---
- net/mctp/test/route-test.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ net/mctp/route.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/net/mctp/test/route-test.c b/net/mctp/test/route-test.c
-index bd1bf6f45fdbe8e9278618cb53410ae66e9aa78b..704169f4ba3865aea3f48883de4d46d6a146b639 100644
---- a/net/mctp/test/route-test.c
-+++ b/net/mctp/test/route-test.c
-@@ -1296,6 +1296,58 @@ static void mctp_test_route_output_key_create(struct kunit *test)
- 	mctp_test_destroy_dev(dev);
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index c2495e2073c6946c3517b525b5d49b93fbfdd81f..1731cabcc30780226d39e6e0716346f7acb5bd7e 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -1080,6 +1080,11 @@ int mctp_local_output(struct sock *sk, struct mctp_dst *dst,
+ 	return rc;
  }
  
-+static void mctp_test_route_extaddr_input(struct kunit *test)
++static unsigned int mctp_route_netid(struct mctp_route *rt)
 +{
-+	static const unsigned char haddr[] = { 0xaa, 0x55 };
-+	struct mctp_test_pktqueue tpq;
-+	struct mctp_skb_cb *cb, *cb2;
-+	const unsigned int len = 40;
-+	struct mctp_test_dev *dev;
-+	struct sk_buff *skb, *skb2;
-+	struct mctp_dst dst;
-+	struct mctp_hdr hdr;
-+	struct socket *sock;
-+	int rc;
-+
-+	hdr.ver = 1;
-+	hdr.src = 10;
-+	hdr.dest = 8;
-+	hdr.flags_seq_tag = FL_S | FL_E | FL_TO;
-+
-+	__mctp_route_test_init(test, &dev, &dst, &tpq, &sock, MCTP_NET_ANY);
-+
-+	skb = mctp_test_create_skb(&hdr, len);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, skb);
-+
-+	/* set our hardware addressing data */
-+	cb = mctp_cb(skb);
-+	memcpy(cb->haddr, haddr, sizeof(haddr));
-+	cb->halen = sizeof(haddr);
-+
-+	mctp_test_skb_set_dev(skb, dev);
-+
-+	rc = mctp_dst_input(&dst, skb);
-+	KUNIT_ASSERT_EQ(test, rc, 0);
-+
-+	mctp_test_dst_release(&dst, &tpq);
-+
-+	skb2 = skb_recv_datagram(sock->sk, MSG_DONTWAIT, &rc);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, skb2);
-+	KUNIT_ASSERT_EQ(test, skb2->len, len);
-+
-+	cb2 = mctp_cb(skb2);
-+
-+	/* Received SKB should have the hardware addressing as set above.
-+	 * We're likely to have the same actual cb here (ie., cb == cb2),
-+	 * but it's the comparison that we care about
-+	 */
-+	KUNIT_EXPECT_EQ(test, cb2->halen, sizeof(haddr));
-+	KUNIT_EXPECT_MEMEQ(test, cb2->haddr, haddr, sizeof(haddr));
-+
-+	skb_free_datagram(sock->sk, skb2);
-+	mctp_test_destroy_dev(dev);
++	return rt->dev->net;
 +}
 +
- static struct kunit_case mctp_test_cases[] = {
- 	KUNIT_CASE_PARAM(mctp_test_fragment, mctp_frag_gen_params),
- 	KUNIT_CASE_PARAM(mctp_test_rx_input, mctp_rx_input_gen_params),
-@@ -1312,6 +1364,7 @@ static struct kunit_case mctp_test_cases[] = {
- 	KUNIT_CASE(mctp_test_fragment_flow),
- 	KUNIT_CASE(mctp_test_route_output_key_create),
- 	KUNIT_CASE(mctp_test_route_input_cloned_frag),
-+	KUNIT_CASE(mctp_test_route_extaddr_input),
- 	{}
- };
+ /* route management */
+ static int mctp_route_add(struct net *net, struct mctp_dev *mdev,
+ 			  mctp_eid_t daddr_start, unsigned int daddr_extent,
+@@ -1132,7 +1137,7 @@ static int mctp_route_add(struct net *net, struct mctp_dev *mdev,
+ 	return 0;
+ }
  
+-static int mctp_route_remove(struct net *net, struct mctp_dev *mdev,
++static int mctp_route_remove(struct net *net, unsigned int netid,
+ 			     mctp_eid_t daddr_start, unsigned int daddr_extent,
+ 			     unsigned char type)
+ {
+@@ -1149,7 +1154,7 @@ static int mctp_route_remove(struct net *net, struct mctp_dev *mdev,
+ 	ASSERT_RTNL();
+ 
+ 	list_for_each_entry_safe(rt, tmp, &net->mctp.routes, list) {
+-		if (rt->dev == mdev &&
++		if (mctp_route_netid(rt) == netid &&
+ 		    rt->min == daddr_start && rt->max == daddr_end &&
+ 		    rt->type == type) {
+ 			list_del_rcu(&rt->list);
+@@ -1169,7 +1174,8 @@ int mctp_route_add_local(struct mctp_dev *mdev, mctp_eid_t addr)
+ 
+ int mctp_route_remove_local(struct mctp_dev *mdev, mctp_eid_t addr)
+ {
+-	return mctp_route_remove(dev_net(mdev->dev), mdev, addr, 0, RTN_LOCAL);
++	return mctp_route_remove(dev_net(mdev->dev), mdev->net,
++				 addr, 0, RTN_LOCAL);
+ }
+ 
+ /* removes all entries for a given device */
+@@ -1389,7 +1395,7 @@ static int mctp_delroute(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	if (rtm->rtm_type != RTN_UNICAST)
+ 		return -EINVAL;
+ 
+-	rc = mctp_route_remove(net, mdev, daddr_start, rtm->rtm_dst_len,
++	rc = mctp_route_remove(net, mdev->net, daddr_start, rtm->rtm_dst_len,
+ 			       RTN_UNICAST);
+ 	return rc;
+ }
 
 -- 
 2.39.5
