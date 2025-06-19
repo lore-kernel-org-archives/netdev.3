@@ -1,168 +1,116 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A35521B9C0;
-	Thu, 19 Jun 2025 09:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08CA921C161
+	for <netdev@vger.kernel.org>; Thu, 19 Jun 2025 09:48:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750326426; cv=none; b=Ir+3VBuA7HZyYX5rtKzNcnMmipCge7zd//qCu0+f7WoeYFLLdNz82lnU0tOzoTrDWfDnDBGEc8TvlcFumMjgfV634D++cbIXvQlRkqqMqoMe7xNuVQidRXI5dj11so+InSR5OJDtcgXU9KSiWOCMBL6SsICW1vYA7xagyyTttGg=
+	t=1750326499; cv=none; b=R1Gp5QZgCFJAYwJuTK3unBkusrgDiBzjT2mKooIIy2YQ9uv5YbBJGi2RUNkb5wgKoaY8y96BxWi4SB5E4Z9qPe0VYr/uNGyWaY+tGjKlWl4svL+7aGshddBxmFS8vXViYLSl1xT5YumkrnYGKu0GHa9Sgh2wrN/qSEamuw+bh8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750326426; c=relaxed/simple;
-	bh=jo4S4oP37pMlRWEMLh1A4wsCbWwOGpq0aSS3GjoaWMQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s7kqdneMVA2R7khvFzf07/P2oYUeaq520qFqvPq7gbP4G8ENJ8aImyO6zmBwvvXpi+hEdMG0kyrMVLFDD2rU/HozulMpl2Dh7LwOJCVwekSq16Yi67kvktDUEkWY2qZxKNtl0lQ7JsWtM+8jBJg3W+qa9W7CY+n5U1Hv4vhtgIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RKt1VgKE; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750326499; c=relaxed/simple;
+	bh=+hI8Xs4QODG0WyLiH7srKpnO6ErrVHPlG4SA6o6CR2k=;
+	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
+	 Message-Id:Date; b=pPKaIeOnXSnsOnt7HQwdNnYA9y5QaW5MfvNmIb9kURKoz5kaAGOyAOTYNcmCb4kEwgXkEb2E/NejpUyX6GYWumLGMDlcYmWxHmqHQPBUseAWOHV62HA7NnzeAlZ1ukq9inueWyk0oO43gM5D4kcY7T1Lssx1Rso90H2BP1Dci9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=fdRbQF6M; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RKt1VgKE"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a4e62619afso81253f8f.1;
-        Thu, 19 Jun 2025 02:47:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750326423; x=1750931223; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3wpyHDstt56CkQjT7Xqq7Dy0LffgxF5WyMGLP3dXWQc=;
-        b=RKt1VgKEWiMgG7Ln7HQGPWN9fCRpkDYYda89yqwmpbEzRNtCGjYmwfsrIZpE1rsSkz
-         LQ+IEPYUrM1qwIaXa8jOgSCy8WG6PZmtJIJDPP+HmU406pMPviyBmN7nt/L/ZO0q+mEI
-         pEPc0ZKTkgEQUqoivQFZhiFqh6EzibIgtlKkfrizOcEAZxClqa6f3NCuRaWBBome8Ula
-         81mqO5xuOvvTnwQVilu3TeFkn4nyHLQavMVPSaDiJjyzntP6Csz1aBX1rzj383rkf9Jt
-         tpMbmOvn6wHWe0sMAsLoaRWP9u9DOCxje1rnnCyXVpDac5fFGt0MOgQzafMrwY4bsmyi
-         NpYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750326423; x=1750931223;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3wpyHDstt56CkQjT7Xqq7Dy0LffgxF5WyMGLP3dXWQc=;
-        b=fMezlSQn/ksKuPIcmnLmyVfQDsgae3JbSjPoAv+qjZG9APO6yDTAkfg4HhUP/gTsyW
-         LWHbj4pxr85LVNRZIAXJS4O4v112uBmreRrTcZPWfhh3YVJDgkhHQh/Rd0ribhRFtZ8r
-         NwkHWFXmKesKjTDDXSLpNg4vRfAJQjCXn+nEyYJEcd5eu7znaiNiebHVOPS1k84iivUn
-         dA6MA6bquJEoNSIopTy87pLTaD3S7llORsLs2UtPyY+mv3uUDiQu8zQffkSFxg9dpvml
-         mTxmhC5hluYRUxIId/tFb74fVmllGb2zM2qJjyASi12MqBOMhEumdmnisPinrjsFyqtH
-         DYmw==
-X-Forwarded-Encrypted: i=1; AJvYcCVWeMD9u/YCE4R1fjb7pb1dM17IVUdh04jkKRnRqDQWlmhi8S0BUtCqjw1R7Cgm/oZmtHH98RpB80/omx+N@vger.kernel.org, AJvYcCVysFgtO5Z2d2fP8N7gTqs7g0OE9HCWxi1e8KUyH693wcSQ5XRen7/bx/+K91nH5Ou+JOIAC4Y2@vger.kernel.org, AJvYcCWt96fDRKxNfqNpPMZYW8xdthQ+uVb3pLb3lTczzxl6W1CLWliZJqnKaToNVbno4vV5z80=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXyW77sLlR7FM3U4n0X9vlBig7IwhIoE3/mpuQXi/avzdlm61K
-	TGj4QVIWFCUdIDTxcKDWHpRI1q5j3V9etb1OY5XffwupNzQIWde9CLm7
-X-Gm-Gg: ASbGnctUQuyjGucFZXaa9OX+r0RZksgx8ugDlxN6gTO6KdVsfW44UBGrJyayePGgpHJ
-	j783nBGue+8YipTcxhYnlTW9HlwJNIEcVItu6U1M6fqcCJby8eqGxnzOEDRANAt5tVllDdQxdub
-	yxk3AKmJb5k/xwfZ5/Azwr0TIcc8m23h5nbj+66yVY5HWPLI75jNsvyHNH1/3UcM0z3zJL+q/hd
-	W/owQjzBtV3IPSidFSxWG6xPNOyKQmbE8TC+BJNCqTLV/LUAsbnG71n+/Dy7reBhf0ToOgQQgH1
-	xZUt5jQIpa+J/ehJGtTWgo7a8TH3FnF4zbnhV4++dFNsUBSE+/YHnR7KWdDX2VsJspewb5Sh4J/
-	KH4/TQv+ptLZg60RBmLLTSvAAuW385BLi9Xt2/OFyl0/ZvOZy3udQtmCDcNnmaYM8hpS0g9ZuXd
-	o=
-X-Google-Smtp-Source: AGHT+IEpqro60YlzzzeszDwSvToDBSiVTr/feKFQAwvdfZL6g25ljawMqwhjbgmAVFDKx/RglSW7ng==
-X-Received: by 2002:a05:6000:1789:b0:3a5:324a:9bd with SMTP id ffacd0b85a97d-3a585f2ec3emr3358471f8f.2.1750326423230;
-        Thu, 19 Jun 2025 02:47:03 -0700 (PDT)
-Received: from thomas-precision3591.home (2a01cb00014ec3008c7e3874bfd786a1.ipv6.abo.wanadoo.fr. [2a01:cb00:14e:c300:8c7e:3874:bfd7:86a1])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3a568b089b5sm18825847f8f.48.2025.06.19.02.47.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jun 2025 02:47:02 -0700 (PDT)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="fdRbQF6M"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=AApn2ot00InFaDW5pjrmd9wr1a+/4qJM2q8x8u9VFeM=; b=fdRbQF6MGkCqD0lNx0zAhb1Dqz
+	W0tjVHZaO82AfU5sMTZ3dCl0inJV9nwPOx0IW42nB3xqZfYC1Mve+iKAYTU46+V2hMQ6xXHNEpNGt
+	TZPtEfLnRZMDLTEdSQIjR5GgxcKB6rKMfgvxPAtCNMvOTeEoYm4Hjk8aQS/pI0Nxn7eaKhJJZIIlp
+	V+vW3PAl0K6CoRtA2Pd2C1BndrqbF33ov76LDDxqhNbKfiRPbh+tnwFeIhKiybTaaBkoPnyX59PlR
+	JyZh7hVsMQzH05c+d8QJ85xR8cH7zd0yO3YMN0sT//qZb/FlszBqolVK3yolSZGkjSrXFaaEEk7f6
+	Gh7KVPTg==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:51446 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1uSBsM-0007jW-3D;
+	Thu, 19 Jun 2025 10:48:07 +0100
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1uSBri-004fL5-FI; Thu, 19 Jun 2025 10:47:26 +0100
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Taehee Yoo <ap420073@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH net v3] ethernet: ionic: Fix DMA mapping tests
-Date: Thu, 19 Jun 2025 11:45:30 +0200
-Message-ID: <20250619094538.283723-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Zapolskiy <vz@mleia.com>
+Subject: [PATCH net-next] net: stmmac: lpc18xx: use plat_dat->phy_interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1uSBri-004fL5-FI@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Thu, 19 Jun 2025 10:47:26 +0100
 
-Change error values of `ionic_tx_map_single()` and `ionic_tx_map_frag()`
-from 0 to `DMA_MAPPING_ERROR` to prevent collision with 0 as a valid
-address.
+lpc18xx uses plat_dat->mac_interface, despite wanting to validate the
+PHY interface. Checking the DT files (arch/arm/boot/dts/nxp/lpc/), none
+of them specify mac-mode which means mac_interface and phy_interface
+will be identical.
 
-This also fixes the use of `dma_mapping_error()` to test against 0 in
-`ionic_xdp_post_frame()`
+mac_interface is only used when there is some kind of MII converter
+between the DesignWare MAC and PHY, and describes the interface mode
+that the DW MAC needs to use, whereas phy_interface describes the
+interface mode that the PHY uses.
 
-Fixes: 0f3154e6bcb3 ("ionic: Add Tx and Rx handling")
-Fixes: 56e41ee12d2d ("ionic: better dma-map error handling")
-Fixes: ac8813c0ab7d ("ionic: convert Rx queue buffers to use page_pool")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Noting that lpc18xx only supports MII and RMII interface modes, switch
+this glue driver to use plat_dat->phy_interface, and to mark that the
+mac_interface is not used, explicitly set it to PHY_INTERFACE_MODE_NA.
+The latter is safe as the only user of mac_interface for this platform
+would be in stmmac_check_pcs_mode(), which only checks for RGMII or
+SGMII.
+
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_txrx.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-lpc18xx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-index 2ac59564ded1..d10b58ebf603 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-@@ -321,7 +321,7 @@ static int ionic_xdp_post_frame(struct ionic_queue *q, struct xdp_frame *frame,
- 					   len, DMA_TO_DEVICE);
- 	} else /* XDP_REDIRECT */ {
- 		dma_addr = ionic_tx_map_single(q, frame->data, len);
--		if (!dma_addr)
-+		if (dma_addr == DMA_MAPPING_ERROR)
- 			return -EIO;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-lpc18xx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-lpc18xx.c
+index 22653ffd2a04..c0c44916f849 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-lpc18xx.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-lpc18xx.c
+@@ -41,6 +41,7 @@ static int lpc18xx_dwmac_probe(struct platform_device *pdev)
+ 	if (IS_ERR(plat_dat))
+ 		return PTR_ERR(plat_dat);
+ 
++	plat_dat->mac_interface = PHY_INTERFACE_MODE_NA;
+ 	plat_dat->has_gmac = true;
+ 
+ 	reg = syscon_regmap_lookup_by_compatible("nxp,lpc1850-creg");
+@@ -49,9 +50,9 @@ static int lpc18xx_dwmac_probe(struct platform_device *pdev)
+ 		return PTR_ERR(reg);
  	}
  
-@@ -357,7 +357,7 @@ static int ionic_xdp_post_frame(struct ionic_queue *q, struct xdp_frame *frame,
- 			} else {
- 				dma_addr = ionic_tx_map_frag(q, frag, 0,
- 							     skb_frag_size(frag));
--				if (dma_mapping_error(q->dev, dma_addr)) {
-+				if (dma_addr == DMA_MAPPING_ERROR) {
- 					ionic_tx_desc_unmap_bufs(q, desc_info);
- 					return -EIO;
- 				}
-@@ -1083,7 +1083,7 @@ static dma_addr_t ionic_tx_map_single(struct ionic_queue *q,
- 		net_warn_ratelimited("%s: DMA single map failed on %s!\n",
- 				     dev_name(dev), q->name);
- 		q_to_tx_stats(q)->dma_map_err++;
--		return 0;
-+		return DMA_MAPPING_ERROR;
- 	}
- 	return dma_addr;
- }
-@@ -1100,7 +1100,7 @@ static dma_addr_t ionic_tx_map_frag(struct ionic_queue *q,
- 		net_warn_ratelimited("%s: DMA frag map failed on %s!\n",
- 				     dev_name(dev), q->name);
- 		q_to_tx_stats(q)->dma_map_err++;
--		return 0;
-+		return DMA_MAPPING_ERROR;
- 	}
- 	return dma_addr;
- }
-@@ -1116,7 +1116,7 @@ static int ionic_tx_map_skb(struct ionic_queue *q, struct sk_buff *skb,
- 	int frag_idx;
- 
- 	dma_addr = ionic_tx_map_single(q, skb->data, skb_headlen(skb));
--	if (!dma_addr)
-+	if (dma_addr == DMA_MAPPING_ERROR)
- 		return -EIO;
- 	buf_info->dma_addr = dma_addr;
- 	buf_info->len = skb_headlen(skb);
-@@ -1126,7 +1126,7 @@ static int ionic_tx_map_skb(struct ionic_queue *q, struct sk_buff *skb,
- 	nfrags = skb_shinfo(skb)->nr_frags;
- 	for (frag_idx = 0; frag_idx < nfrags; frag_idx++, frag++) {
- 		dma_addr = ionic_tx_map_frag(q, frag, 0, skb_frag_size(frag));
--		if (!dma_addr)
-+		if (dma_addr == DMA_MAPPING_ERROR)
- 			goto dma_fail;
- 		buf_info->dma_addr = dma_addr;
- 		buf_info->len = skb_frag_size(frag);
+-	if (plat_dat->mac_interface == PHY_INTERFACE_MODE_MII) {
++	if (plat_dat->phy_interface == PHY_INTERFACE_MODE_MII) {
+ 		ethmode = LPC18XX_CREG_CREG6_ETHMODE_MII;
+-	} else if (plat_dat->mac_interface == PHY_INTERFACE_MODE_RMII) {
++	} else if (plat_dat->phy_interface == PHY_INTERFACE_MODE_RMII) {
+ 		ethmode = LPC18XX_CREG_CREG6_ETHMODE_RMII;
+ 	} else {
+ 		dev_err(&pdev->dev, "Only MII and RMII mode supported\n");
 -- 
-2.43.0
+2.30.2
 
