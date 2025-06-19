@@ -1,107 +1,85 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647C728DF3B;
-	Thu, 19 Jun 2025 22:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE907229B23;
+	Thu, 19 Jun 2025 22:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750373701; cv=none; b=uUR+qj6HCemisCXePLIXBNyOQW3KdGaQyOy5dAY+C7evMz4Rr3yvtGmjQHTeZI842wJmIqmOiSN8JzyANKWVNLyL7s9X/KMylGi1a0minDBKGAwJieZ0COeHGvxfUZBrMcivzNeUMyUO6SiHqRKmRTObhZhFsDS94TRljjkIEic=
+	t=1750373979; cv=none; b=bJI86tn61++PZ9mm6GHjt0l3ld6FxWlkpA4ui1cWoObRJVk9UKm0KUYj3JQZowcT3W8UsCN0Mka3Au/GcDDbOrgkaqA8c1hsfoBWKstvOyROb1AJ9o70Y+0kHJQ8E9kr1jOXYNWwbzPpc6BamrR1r43yH1I16tQBuRIgQJGxL0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750373701; c=relaxed/simple;
-	bh=6sePk+G/EKaUsxFhwpkZ3tXruwwG27Ix5uopCUKZePs=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=NjfYR+zChtqMHkN5iGE4YXsL80pAFJ7qzNQMKzttfB4gDI7/ydl+WttUTrMOQuzQ2FUQGsvS4XEky8Tx0/qI9Krb7oGEKawtG0WTHwViytFPQlP/A9B+6+/saKuwgER7+p9RpmwRvwR4kqzIYV6NJyxjvziZX+0AV3/WNRH5nvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wozd3JfM; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750373979; c=relaxed/simple;
+	bh=oFs8W69mkMcE3jsONVpj/UL2MWIy+951BHWY6ac5wh4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=FcfPaK+pbWH3OgjDNENr+rIxHfgysqL1WC85WJM5d1bRHEFfTqBznOndcuzjqNEAHGN73GUJwAImIla/WvgdifIVn3+DzUbvmMmhOCd9jd1ViMlWXURglairoIuaAp2xR2MQ8csRyj4zF9TceQdkF/DRrNHrgKgNOm912X/q0fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KnGFEyFk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wozd3JfM"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7425bd5a83aso938641b3a.0;
-        Thu, 19 Jun 2025 15:55:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750373699; x=1750978499; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=U5LUh+vcUEz2dsN4kFQrgT/PUHpvK2pO4wxhl19yUFE=;
-        b=Wozd3JfMotqqL63pgPsfa2tMmrqpDLQHO309SNkMKVPQLFpvbYJ/MH4n/MsjdaBH7i
-         olraWhKWi8+YubLiMkddvnMWycDTRZ8j7Maxql0YGABtdnBO7SYx4Y5kqiK1BAJi0IUk
-         6sDbT6u1dwCHnnsgC179+5BEqViZEmxPxSpjiTLdO/3xejX3yPN0wIj3AMHnF7naQekg
-         zYJWgMoEv7g835toSoj0KcDEs5laoWp2/TA4n6FvvF8IrNaAaTW6XID9IVdLKPHZyTRC
-         4fsCfRTm9V4PjNVOrg5RZwmP5PWS6nD/fD4FV18glGTSlhJOA7gOoNIJCtPVcumNjdXx
-         v5zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750373699; x=1750978499;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=U5LUh+vcUEz2dsN4kFQrgT/PUHpvK2pO4wxhl19yUFE=;
-        b=P7wBI3WwbIapD3habK2J+Gj2uQJuP1RaAdziGus/NuF3H9JcWZ7/IVJ4oIiaXupWN9
-         oR9Zw9xShF2I/TlzkYUvUR3ZrOhrK6n9KlQRpvwpnSHULJNNtECKbrfZMPXPPTZqsrMK
-         vn8MnNvRLrfTgviwnbXQ7FgBhuURBbqI7LdJp2r88rN+RydlEeKlwDAyOeIP2aQlYc+C
-         WUYmPMNmYXNdebrF60QVTqvwWVoKKVM9EEVCHP0XZduhkqvT0r9q9NR4sNEvjd6nHg2r
-         bfeVNrsuhvh0yhU+WI4xymAs9XB/ZEddYBkQzKPx9xx4mspV6mpOe1vcMEjj+Nik3/kH
-         fHKg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUsZe3EflCN+pgYFErf6QmUvWm0DBnDv1qmGC8BG0OzmDhuiV22sAqDSeCXykV9FYfXMv2lZJKJ6j9EQwundk=@vger.kernel.org, AJvYcCXbzjzVQFFKNHuqGeNv4S1HL47bljwOR0gpdghB+755V5VzmmYrF/0GsaBpqy9ya2EIBLz1eaGyzsezAts=@vger.kernel.org, AJvYcCXdDfwJYNNIxxKSQxD7bBIsc7KF3V/dYnZ/HPzax2Hd5ECmXzd9mf6d8ny5qd+AB66QZliuywVt@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzx4JyJReWgk2/mly1vAtn/iT59y1jd4EzRE7yHf2lY/jPfZTGN
-	wGkui+ER6/VsI65hawCQen+vGaKGGhnSlmU/uolnIOuLpWwtRIyXCfqi
-X-Gm-Gg: ASbGncu95FzpYpPhFpCQfdR++3X3K6bRbQ+cWukesYaqevERpoYjISEQMBbij7iU4CD
-	6/8NbIwsR+3cVq13/thCT9QzJASa8kQalN95lg0XiPP486mzZNkEPlfSSqJ99urOuagHTNJAYf4
-	ZDscKxW1zV9UVxcwYrc/znY7yq5MpkQqidCmjFdrKR+MlteaPFNKWvwCz7WcwRqMhplbejTw5q4
-	GtgsoH9sGQsbgmD6QdfL460MhSJLvNdFqqZLN0esIghd3bu3mmyJugU4gHJR2VNiB78ErOZYx3g
-	wAqZ64DHXTJFsOGaMDTxKHW3+enoFg/ozFGtNsOzMM2S2BqsNOoENm+ZsE7u99rhKOKKKIR5KL4
-	uCWzPzTdRbntNLFKMsPacxHXxxIlXgqEaFkvQf593
-X-Google-Smtp-Source: AGHT+IGMOxrcLqORxCkCwjmK4ZO6AvSemKqlGQKHeZb8yFFS7F0PURx5NSiGPIe7ehUlW04USd49VQ==
-X-Received: by 2002:a05:6a20:3c8e:b0:204:432e:5fa4 with SMTP id adf61e73a8af0-22026eb16ddmr843061637.23.1750373699399;
-        Thu, 19 Jun 2025 15:54:59 -0700 (PDT)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7490a66a763sm642168b3a.141.2025.06.19.15.54.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jun 2025 15:54:59 -0700 (PDT)
-Date: Fri, 20 Jun 2025 07:54:43 +0900 (JST)
-Message-Id: <20250620.075443.1954975894369072064.fujita.tomonori@gmail.com>
-To: tamird@gmail.com
-Cc: fujita.tomonori@gmail.com, aliceryhl@google.com, tmgross@umich.edu,
- ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, dakr@kernel.org, davem@davemloft.net,
- andrew@lunn.ch, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: cast to the proper type
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CAJ-ks9mazp=gSqDEzUuh0eTvj6pBET-z2zz7XQzmu9at=4V03A@mail.gmail.com>
-References: <20250612.094805.256395171864740471.fujita.tomonori@gmail.com>
-	<CAJ-ks9nXwBMNcZLK1uJB=qJk8KsOF7q8nYZC6qANboxmT8qFFA@mail.gmail.com>
-	<CAJ-ks9mazp=gSqDEzUuh0eTvj6pBET-z2zz7XQzmu9at=4V03A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KnGFEyFk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3797CC4CEEA;
+	Thu, 19 Jun 2025 22:59:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750373978;
+	bh=oFs8W69mkMcE3jsONVpj/UL2MWIy+951BHWY6ac5wh4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=KnGFEyFk5qE287+Q7JLkttMqxxMV5xHRLgw8Da5HR9fVRUwfWaA5h3tOVlTPmXvhS
+	 bTSulvvdfYnOde/FSX3vip85LWVjZxmBdUnmg7s3l3MnVbDm13yf2fU7mJ7CO6lUZT
+	 toKW1Tw2Wj/Xbfmt5r4Z5iGKFPwPl1Qs4wufpH4csW8iTx7TzGHXZooNgcGHuU1wmM
+	 Wxr7sqnASeIHg+6/Zz+baryFiBLNkzoA4tK1t8fdajRM3FqJwPpKUGpn1XpPJVBvLU
+	 UmYAIxnhSXhPDc7kQaYOmGCakl2nq2A4UgBrXhUzA2sIXxSnUAk928JlvLmCcEVx9v
+	 w0BMzjbfZukVQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D2E38111DD;
+	Thu, 19 Jun 2025 23:00:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: mana: Set tx_packets to post gso processing
+ packet count
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175037400625.1013059.17103601464401559949.git-patchwork-notify@kernel.org>
+Date: Thu, 19 Jun 2025 23:00:06 +0000
+References: 
+ <1750160021-24589-1-git-send-email-shradhagupta@linux.microsoft.com>
+In-Reply-To: 
+ <1750160021-24589-1-git-send-email-shradhagupta@linux.microsoft.com>
+To: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Cc: decui@microsoft.com, wei.liu@kernel.org, haiyangz@microsoft.com,
+ kys@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ kotaranov@microsoft.com, schakrabarti@linux.microsoft.com,
+ ernis@linux.microsoft.com, longli@microsoft.com,
+ dipayanroy@linux.microsoft.com, shirazsaleem@microsoft.com,
+ netdev@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, paulros@microsoft.com,
+ shradhagupta@microsoft.com
 
-On Thu, 19 Jun 2025 11:29:56 -0400
-Tamir Duberstein <tamird@gmail.com> wrote:
+Hello:
 
->> > >> > Fixes: f20fd5449ada ("rust: core abstractions for network PHY drivers")
->> > >>
->> > >> Does this need to be backported? If not, I wouldn't include a Fixes tag.
->> > >
->> > > I'm fine with omitting it. I wanted to leave a breadcrumb to the
->> > > commit that introduced the current code.
->> >
->> > I also don't think this tag is necessary because this is not a bug
->> > fix. And since this tag points to the file's initial commit, I don't
->> > think it's particularly useful.
->>
->> Would you be OK stripping the tag on apply, or would you like me to send v2?
+This patch was applied to netdev/net-next.git (main)
+by David S. Miller <davem@davemloft.net>:
+
+On Tue, 17 Jun 2025 04:33:41 -0700 you wrote:
+> Allow tx_packets and tx_bytes counter in the driver to represent
+> the packets transmitted post GSO processing.
 > 
-> Hi Tomo, gentle ping here. Does this look reasonable to you, with the
-> Fixes tag stripped on apply?
+> Currently they are populated as bigger pre-GSO packets and bytes
+> 
+> Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+> 
+> [...]
 
-Yeah, if you drop the Fixes tag, it's fine by me.
+Here is the summary with links:
+  - [net-next] net: mana: Set tx_packets to post gso processing packet count
+    https://git.kernel.org/netdev/net-next/c/7399ef984022
 
-Thanks,
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
