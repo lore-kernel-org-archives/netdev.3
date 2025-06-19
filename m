@@ -1,180 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75E32586E0;
-	Thu, 19 Jun 2025 06:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC2528033D;
+	Thu, 19 Jun 2025 06:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750315821; cv=none; b=qZn3mNEsfNfWHiPVUIPVSKB2pjOay5ADV74GNwbprFeFNyrZKpYtLEjOHwJxToLC7P1zcDKoLPl/YIzOfIc8e2fVeQFvV4o1UdAlVEesKT0iwXnRUVjW8iiEPOVnPMPhkA1/dZrm0Qh4ryJtFjhWpYEAPwI6sSLs2MQxRg7/U6g=
+	t=1750315832; cv=none; b=a+SBR/jOMk9FLj0wO1C7fLMTBFSF+W1AZ/4909ODs5yCZWcYe5T1BBc1GoXkZAqI7nwSyPhx6o8+Wuy0J52pbV55Hgj9AMQy8MK+a4W1ilr/JKcKd7xIv4Fej2FQ4YscWuJ8fP72vD60mu6z9ChabZBZo5FGP/zdHpjQZ+dVW4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750315821; c=relaxed/simple;
-	bh=sLGX0eyqIoRSaJCtRaOhRqFB+mw5FlWjFBG7e4HNq2I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RFkqSysymwHwzpEvs/PzdGFuCXGn224/mY5BO8Y3CYlkxBHSw6dJF+7S38fH4/l8uqSTYSFVjDPIWUgexNAhmGR57/2og9MDlb4JgSlxz8PICkg7tMK41W/wTW0fu6dFv0gSPYYBgkJekHC0BEwV7IMJpkLdjH62OdrUBLgY2E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YD6qezGc; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YD6qezGc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C87C116C6;
-	Thu, 19 Jun 2025 06:50:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750315821;
-	bh=sLGX0eyqIoRSaJCtRaOhRqFB+mw5FlWjFBG7e4HNq2I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YD6qezGcHVKgPQ7iY2lD7cpkxIaV5PL3Fxe5U1FafOwI8jTwRPpRQ/FXrwR6haiUu
-	 tUqs4Xs+UJ1H+SfVGjlDWOHJRjo0E0DHLy9ShUlEQdWMQZXRI7LYIT5aPZho/6fa5C
-	 nM01fd9UnTqcOM2wUB9R7dp5IUa2m8ViJS7k6vwanzEexFgUJRvuj7zjg3aPGV0CM/
-	 1a5je6uD0RzxHKHod/rFGwc7lXt9Yjnp58nEqRJiaDGSDCI1NTRw7MIXjkrHE4KDrC
-	 xBdr7yvuJkgJrzuW7+4pLjj7ZSAtkJ3RPRoloP0NMQc6jYrUkFEWMUw534K8IkZ1hg
-	 ak7ljWm0E7vhQ==
-Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uS96J-00000003dHR-0tQY;
-	Thu, 19 Jun 2025 08:50:19 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	"Akira Yokosawa" <akiyks@gmail.com>,
-	"Breno Leitao" <leitao@debian.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Donald Hunter" <donald.hunter@gmail.com>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"Ignacio Encinas Rubio" <ignacio@iencinas.com>,
-	"Jan Stancek" <jstancek@redhat.com>,
-	"Marco Elver" <elver@google.com>,
-	"Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
-	"Paolo Abeni" <pabeni@redhat.com>,
-	"Ruben Wauters" <rubenru09@aol.com>,
-	"Shuah Khan" <skhan@linuxfoundation.org>,
-	Jakub Kicinski <mchehab+huawei@kernel.org>,
-	Simon Horman <mchehab+huawei@kernel.org>,
-	joel@joelfernandes.org,
-	linux-kernel-mentees@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lkmm@lists.linux.dev,
-	netdev@vger.kernel.org,
-	peterz@infradead.org,
-	stern@rowland.harvard.edu
-Subject: [PATCH v7 14/17] docs: parser_yaml.py: add support for line numbers from the parser
-Date: Thu, 19 Jun 2025 08:49:07 +0200
-Message-ID: <33fc2894166805b93d4cf652cff9927a54b4f242.1750315578.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <cover.1750315578.git.mchehab+huawei@kernel.org>
-References: <cover.1750315578.git.mchehab+huawei@kernel.org>
+	s=arc-20240116; t=1750315832; c=relaxed/simple;
+	bh=3nFKja3nA1TDJ772c5AACmRHDAVC3lGSF24aRdNaCnE=;
+	h=Date:Message-ID:Mime-Version:From:To:Cc:Subject:Content-Type; b=F0BeRVM4D77HcwRJ8ft0NXhEeaV7r6Ai6aco2ODWhmIUjODFc1LDQOb4scVAS+TACV8Gb66myp1pb2WjpmCgC3ur3f6oYoxjIX8WZr8eYHMQ2k15i1fYoqrmdabuSjDJ7u2hWQ/byWcqcLqXtPwoLEYG4Xb/pYIEU/MyD+gLJ64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4bNB7X5nyWz51SY9;
+	Thu, 19 Jun 2025 14:50:16 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl1.zte.com.cn with SMTP id 55J6nVDW043596;
+	Thu, 19 Jun 2025 14:49:32 +0800 (+08)
+	(envelope-from jiang.peng9@zte.com.cn)
+Received: from mapi (xaxapp02[null])
+	by mapi (Zmail) with MAPI id mid31;
+	Thu, 19 Jun 2025 14:49:34 +0800 (CST)
+Date: Thu, 19 Jun 2025 14:49:34 +0800 (CST)
+X-Zmail-TransId: 2afa6853b2feffffffffff5-9ceb4
+X-Mailer: Zmail v1.0
+Message-ID: <20250619144934348-KObAuS33g0yI9ulIjMjE@zte.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Mime-Version: 1.0
+From: <jiang.peng9@zte.com.cn>
+To: <pabeni@redhat.com>
+Cc: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <horms@kernel.org>, <jiang.peng9@zte.com.cn>, <jiri@resnulli.us>,
+        <linux@treblig.org>, <oscmaes92@gmail.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <xu.xin16@zte.com.cn>,
+        <yang.yang29@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIG5ldF0gbmV0OiB2bGFuOiBmaXggZm9ybWF0LXRydW5jYXRpb24gd2FybmluZ3MgaW4KIHJlZ2lzdGVyX3ZsYW5fZGV2aWNl?=
+Content-Type: multipart/mixed;
+	boundary="=====_001_next====="
+X-MAIL:mse-fl1.zte.com.cn 55J6nVDW043596
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6853B328.002/4bNB7X5nyWz51SY9
 
-Instead of printing line numbers from the temp converted ReST
-file, get them from the original source.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- Documentation/sphinx/parser_yaml.py      | 12 ++++++++++--
- tools/net/ynl/pyynl/lib/doc_generator.py | 16 ++++++++++++----
- 2 files changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/sphinx/parser_yaml.py b/Documentation/sphinx/parser_yaml.py
-index 2b2af239a1c2..5360fcfd4fde 100755
---- a/Documentation/sphinx/parser_yaml.py
-+++ b/Documentation/sphinx/parser_yaml.py
-@@ -29,6 +29,8 @@ class YamlParser(Parser):
- 
-     netlink_parser = YnlDocGenerator()
- 
-+    re_lineno = re.compile(r"\.\. LINENO ([0-9]+)$")
-+
-     def do_parse(self, inputstring, document, msg):
-         """Parse YAML and generate a document tree."""
- 
-@@ -38,8 +40,14 @@ class YamlParser(Parser):
- 
-         try:
-             # Parse message with RSTParser
--            for i, line in enumerate(msg.split('\n')):
--                result.append(line, document.current_source, i)
-+            lineoffset = 0;
-+            for line in msg.split('\n'):
-+                match = self.re_lineno.match(line)
-+                if match:
-+                    lineoffset = int(match.group(1))
-+                    continue
-+
-+                result.append(line, document.current_source, lineoffset)
- 
-             rst_parser = RSTParser()
-             rst_parser.parse('\n'.join(result), document)
-diff --git a/tools/net/ynl/pyynl/lib/doc_generator.py b/tools/net/ynl/pyynl/lib/doc_generator.py
-index a9d8ab6f2639..7f4f98983cdf 100644
---- a/tools/net/ynl/pyynl/lib/doc_generator.py
-+++ b/tools/net/ynl/pyynl/lib/doc_generator.py
-@@ -158,9 +158,11 @@ class YnlDocGenerator:
-     def parse_do(self, do_dict: Dict[str, Any], level: int = 0) -> str:
-         """Parse 'do' section and return a formatted string"""
-         lines = []
-+        if LINE_STR in do_dict:
-+            lines.append(self.fmt.rst_lineno(do_dict[LINE_STR]))
-+
-         for key in do_dict.keys():
-             if key == LINE_STR:
--                lines.append(self.fmt.rst_lineno(do_dict[key]))
-                 continue
-             lines.append(self.fmt.rst_paragraph(self.fmt.bold(key), level + 1))
-             if key in ['request', 'reply']:
-@@ -187,13 +189,15 @@ class YnlDocGenerator:
-         lines = []
- 
-         for operation in operations:
-+            if LINE_STR in operation:
-+                lines.append(self.fmt.rst_lineno(operation[LINE_STR]))
-+
-             lines.append(self.fmt.rst_section(namespace, 'operation',
-                                               operation["name"]))
-             lines.append(self.fmt.rst_paragraph(operation["doc"]) + "\n")
- 
-             for key in operation.keys():
-                 if key == LINE_STR:
--                    lines.append(self.fmt.rst_lineno(operation[key]))
-                     continue
- 
-                 if key in preprocessed:
-@@ -253,10 +257,12 @@ class YnlDocGenerator:
-         lines = []
- 
-         for definition in defs:
-+            if LINE_STR in definition:
-+                lines.append(self.fmt.rst_lineno(definition[LINE_STR]))
-+
-             lines.append(self.fmt.rst_section(namespace, 'definition', definition["name"]))
-             for k in definition.keys():
-                 if k == LINE_STR:
--                    lines.append(self.fmt.rst_lineno(definition[k]))
-                     continue
-                 if k in preprocessed + ignored:
-                     continue
-@@ -284,6 +290,9 @@ class YnlDocGenerator:
-             lines.append(self.fmt.rst_section(namespace, 'attribute-set',
-                                               entry["name"]))
-             for attr in entry["attributes"]:
-+                if LINE_STR in attr:
-+                    lines.append(self.fmt.rst_lineno(attr[LINE_STR]))
-+
-                 type_ = attr.get("type")
-                 attr_line = attr["name"]
-                 if type_:
-@@ -294,7 +303,6 @@ class YnlDocGenerator:
- 
-                 for k in attr.keys():
-                     if k == LINE_STR:
--                        lines.append(self.fmt.rst_lineno(attr[k]))
-                         continue
-                     if k in preprocessed + ignored:
-                         continue
--- 
-2.49.0
+--=====_001_next=====
+Content-Type: multipart/related;
+	boundary="=====_002_next====="
+
+
+--=====_002_next=====
+Content-Type: multipart/alternative;
+	boundary="=====_003_next====="
+
+
+--=====_003_next=====
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+RnJvbTogUGVuZyBKaWFuZyA8amlhbmcucGVuZzlAenRlLmNvbS5jbj4NCg0KQnVpbGRpbmcgd2l0
+aCBXPTEgdHJpZ2dlcnMgZm9ybWF0LXRydW5jYXRpb24gd2FybmluZ3MgaW4gdGhlDQpyZWdpc3Rl
+cl92bGFuX2RldmljZSBmdW5jdGlvbiB3aGVuIGNvbXBpbGVkIHdpdGggR0NDIDEyLjMuMC4NClRo
+ZXNlIHdhcm5pbmdzIG9jY3VyIGR1ZSB0byB0aGUgdXNlIG9mICVpIGFuZCAlLjRpIGZvcm1hdA0K
+c3BlY2lmaWVycyB3aXRoIGEgYnVmZmVyIHNpemUgdGhhdCBtaWdodCBiZSBpbnN1ZmZpY2llbnQN
+CmZvciB0aGUgZm9ybWF0dGVkIHN0cmluZywgcG90ZW50aWFsbHkgY2F1c2luZyB0cnVuY2F0aW9u
+Lg0KDQpUaGUgb3JpZ2luYWwgd2FybmluZyB0cmFjZToNCm5ldC84MDIxcS92bGFuLmM6MjQ3OjE3
+OiBub3RlOiAnc25wcmludGYnIG91dHB1dCBiZXR3ZWVuIDMgYW5kIDIyIGJ5dGVzIGludG8gYSBk
+ZXN0aW5hdGlvbiBvZiBzaXplIDE2DQoyNDcgfCBzbnByaW50ZihuYW1lLCBJRk5BTVNJWiwgIiVz
+LiVpIiwgcmVhbF9kZXYtPm5hbWUsIHZsYW5faWQpOw0KDQpTaWduZWQtb2ZmLWJ5OiBQZW5nIEpp
+YW5nIDxqaWFuZy5wZW5nOUB6dGUuY29tLmNuPg0KLS0tDQogbmV0LzgwMjFxL3ZsYW4uYyB8IDEw
+ICsrKysrLS0tLS0NCiAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9u
+cygtKQ0KDQpkaWZmIC0tZ2l0IGEvbmV0LzgwMjFxL3ZsYW4uYyBiL25ldC84MDIxcS92bGFuLmMN
+CmluZGV4IDA2OTA4ZTM3YzNkOS4uZjJjMTcwMzVmNjI1IDEwMDY0NA0KLS0tIGEvbmV0LzgwMjFx
+L3ZsYW4uYw0KKysrIGIvbmV0LzgwMjFxL3ZsYW4uYw0KQEAgLTIxNyw3ICsyMTcsNyBAQCBzdGF0
+aWMgaW50IHJlZ2lzdGVyX3ZsYW5fZGV2aWNlKHN0cnVjdCBuZXRfZGV2aWNlICpyZWFsX2Rldiwg
+dTE2IHZsYW5faWQpDQogICAgICAgIHN0cnVjdCB2bGFuX2Rldl9wcml2ICp2bGFuOw0KICAgICAg
+ICBzdHJ1Y3QgbmV0ICpuZXQgPSBkZXZfbmV0KHJlYWxfZGV2KTsNCiAgICAgICAgc3RydWN0IHZs
+YW5fbmV0ICp2biA9IG5ldF9nZW5lcmljKG5ldCwgdmxhbl9uZXRfaWQpOw0KLSAgICAgICBjaGFy
+IG5hbWVbSUZOQU1TSVpdOw0KKyAgICAgICBjaGFyIG5hbWVbSUZOQU1TSVogKyA2XTsgLyogcGx1
+cyBleHRyYSA2IGJ5dGVzIGZvciB2bGFuX2lkICovDQogICAgICAgIGludCBlcnI7DQogDQogICAg
+ICAgIGlmICh2bGFuX2lkID49IFZMQU5fVklEX01BU0spDQpAQCAtMjMyLDI2ICsyMzIsMjYgQEAg
+c3RhdGljIGludCByZWdpc3Rlcl92bGFuX2RldmljZShzdHJ1Y3QgbmV0X2RldmljZSAqcmVhbF9k
+ZXYsIHUxNiB2bGFuX2lkKQ0KICAgICAgICBzd2l0Y2ggKHZuLT5uYW1lX3R5cGUpIHsNCiAgICAg
+ICAgY2FzZSBWTEFOX05BTUVfVFlQRV9SQVdfUExVU19WSUQ6DQogICAgICAgICAgICAgICAgLyog
+bmFtZSB3aWxsIGxvb2sgbGlrZTogIGV0aDEuMDAwNSAqLw0KLSAgICAgICAgICAgICAgIHNucHJp
+bnRmKG5hbWUsIElGTkFNU0laLCAiJXMuJS40aSIsIHJlYWxfZGV2LT5uYW1lLCB2bGFuX2lkKTsN
+CisgICAgICAgICAgICAgICBzbnByaW50ZihuYW1lLCBzaXplb2YobmFtZSksICIlcy4lLjRpIiwg
+cmVhbF9kZXYtPm5hbWUsIHZsYW5faWQpOw0KICAgICAgICAgICAgICAgIGJyZWFrOw0KICAgICAg
+ICBjYXNlIFZMQU5fTkFNRV9UWVBFX1BMVVNfVklEX05PX1BBRDoNCiAgICAgICAgICAgICAgICAv
+KiBQdXQgb3VyIHZsYW4uVklEIGluIHRoZSBuYW1lLg0KICAgICAgICAgICAgICAgICAqIE5hbWUg
+d2lsbCBsb29rIGxpa2U6ICB2bGFuNQ0KICAgICAgICAgICAgICAgICAqLw0KLSAgICAgICAgICAg
+ICAgIHNucHJpbnRmKG5hbWUsIElGTkFNU0laLCAidmxhbiVpIiwgdmxhbl9pZCk7DQorICAgICAg
+ICAgICAgICAgc25wcmludGYobmFtZSwgc2l6ZW9mKG5hbWUpLCAidmxhbiVpIiwgdmxhbl9pZCk7
+DQogICAgICAgICAgICAgICAgYnJlYWs7DQogICAgICAgIGNhc2UgVkxBTl9OQU1FX1RZUEVfUkFX
+X1BMVVNfVklEX05PX1BBRDoNCiAgICAgICAgICAgICAgICAvKiBQdXQgb3VyIHZsYW4uVklEIGlu
+IHRoZSBuYW1lLg0KICAgICAgICAgICAgICAgICAqIE5hbWUgd2lsbCBsb29rIGxpa2U6ICBldGgw
+LjUNCiAgICAgICAgICAgICAgICAgKi8NCi0gICAgICAgICAgICAgICBzbnByaW50ZihuYW1lLCBJ
+Rk5BTVNJWiwgIiVzLiVpIiwgcmVhbF9kZXYtPm5hbWUsIHZsYW5faWQpOw0KKyAgICAgICAgICAg
+ICAgIHNucHJpbnRmKG5hbWUsIHNpemVvZihuYW1lKSwgIiVzLiVpIiwgcmVhbF9kZXYtPm5hbWUs
+IHZsYW5faWQpOw0KICAgICAgICAgICAgICAgIGJyZWFrOw0KICAgICAgICBjYXNlIFZMQU5fTkFN
+RV9UWVBFX1BMVVNfVklEOg0KICAgICAgICAgICAgICAgIC8qIFB1dCBvdXIgdmxhbi5WSUQgaW4g
+dGhlIG5hbWUuDQogICAgICAgICAgICAgICAgICogTmFtZSB3aWxsIGxvb2sgbGlrZTogIHZsYW4w
+MDA1DQogICAgICAgICAgICAgICAgICovDQogICAgICAgIGRlZmF1bHQ6DQotICAgICAgICAgICAg
+ICAgc25wcmludGYobmFtZSwgSUZOQU1TSVosICJ2bGFuJS40aSIsIHZsYW5faWQpOw0KKyAgICAg
+ICAgICAgICAgIHNucHJpbnRmKG5hbWUsIHNpemVvZihuYW1lKSwgInZsYW4lLjRpIiwgdmxhbl9p
+ZCk7DQogICAgICAgIH0NCiANCiAgICAgICAgbmV3X2RldiA9IGFsbG9jX25ldGRldihzaXplb2Yo
+c3RydWN0IHZsYW5fZGV2X3ByaXYpLCBuYW1lLA0KLS0gDQoyLjI1LjE=
+
+
+--=====_003_next=====
+Content-Type: text/html ;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+PGRpdiBjbGFzcz0iemNvbnRlbnRSb3ciPjxwPkZyb206IFBlbmcgSmlhbmcgJmx0O2ppYW5nLnBl
+bmc5QHp0ZS5jb20uY24mZ3Q7PGJyPjwvcD48cD48YnI+PC9wPjxwPkJ1aWxkaW5nIHdpdGggVz0x
+IHRyaWdnZXJzIGZvcm1hdC10cnVuY2F0aW9uIHdhcm5pbmdzIGluIHRoZTwvcD48cD5yZWdpc3Rl
+cl92bGFuX2RldmljZSBmdW5jdGlvbiB3aGVuIGNvbXBpbGVkIHdpdGggR0NDIDEyLjMuMC48L3A+
+PHA+VGhlc2Ugd2FybmluZ3Mgb2NjdXIgZHVlIHRvIHRoZSB1c2Ugb2YgJWkgYW5kICUuNGkgZm9y
+bWF0PC9wPjxwPnNwZWNpZmllcnMgd2l0aCBhIGJ1ZmZlciBzaXplIHRoYXQgbWlnaHQgYmUgaW5z
+dWZmaWNpZW50PC9wPjxwPmZvciB0aGUgZm9ybWF0dGVkIHN0cmluZywgcG90ZW50aWFsbHkgY2F1
+c2luZyB0cnVuY2F0aW9uLjwvcD48cD48YnI+PC9wPjxwPlRoZSBvcmlnaW5hbCB3YXJuaW5nIHRy
+YWNlOjwvcD48cD5uZXQvODAyMXEvdmxhbi5jOjI0NzoxNzogbm90ZTogJ3NucHJpbnRmJyBvdXRw
+dXQgYmV0d2VlbiAzIGFuZCAyMiBieXRlcyBpbnRvIGEgZGVzdGluYXRpb24gb2Ygc2l6ZSAxNjwv
+cD48cD4yNDcgfCBzbnByaW50ZihuYW1lLCBJRk5BTVNJWiwgIiVzLiVpIiwgcmVhbF9kZXYtJmd0
+O25hbWUsIHZsYW5faWQpOzwvcD48cD48YnI+PC9wPjxwPlNpZ25lZC1vZmYtYnk6IFBlbmcgSmlh
+bmcgJmx0O2ppYW5nLnBlbmc5QHp0ZS5jb20uY24mZ3Q7PC9wPjxwPi0tLTwvcD48cD4mbmJzcDtu
+ZXQvODAyMXEvdmxhbi5jIHwgMTAgKysrKystLS0tLTwvcD48cD4mbmJzcDsxIGZpbGUgY2hhbmdl
+ZCwgNSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKTwvcD48cD48YnI+PC9wPjxwPmRpZmYg
+LS1naXQgYS9uZXQvODAyMXEvdmxhbi5jIGIvbmV0LzgwMjFxL3ZsYW4uYzwvcD48cD5pbmRleCAw
+NjkwOGUzN2MzZDkuLmYyYzE3MDM1ZjYyNSAxMDA2NDQ8L3A+PHA+LS0tIGEvbmV0LzgwMjFxL3Zs
+YW4uYzwvcD48cD4rKysgYi9uZXQvODAyMXEvdmxhbi5jPC9wPjxwPkBAIC0yMTcsNyArMjE3LDcg
+QEAgc3RhdGljIGludCByZWdpc3Rlcl92bGFuX2RldmljZShzdHJ1Y3QgbmV0X2RldmljZSAqcmVh
+bF9kZXYsIHUxNiB2bGFuX2lkKTwvcD48cD4mbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgc3Ry
+dWN0IHZsYW5fZGV2X3ByaXYgKnZsYW47PC9wPjxwPiZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNw
+OyBzdHJ1Y3QgbmV0ICpuZXQgPSBkZXZfbmV0KHJlYWxfZGV2KTs8L3A+PHA+Jm5ic3A7ICZuYnNw
+OyAmbmJzcDsgJm5ic3A7IHN0cnVjdCB2bGFuX25ldCAqdm4gPSBuZXRfZ2VuZXJpYyhuZXQsIHZs
+YW5fbmV0X2lkKTs8L3A+PHA+LSZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwO2NoYXIgbmFtZVtJ
+Rk5BTVNJWl07PC9wPjxwPismbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDtjaGFyIG5hbWVbSUZO
+QU1TSVogKyA2XTsgLyogcGx1cyBleHRyYSA2IGJ5dGVzIGZvciB2bGFuX2lkICovPC9wPjxwPiZu
+YnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyBpbnQgZXJyOzwvcD48cD4mbmJzcDs8L3A+PHA+Jm5i
+c3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7IGlmICh2bGFuX2lkICZndDs9IFZMQU5fVklEX01BU0sp
+PC9wPjxwPkBAIC0yMzIsMjYgKzIzMiwyNiBAQCBzdGF0aWMgaW50IHJlZ2lzdGVyX3ZsYW5fZGV2
+aWNlKHN0cnVjdCBuZXRfZGV2aWNlICpyZWFsX2RldiwgdTE2IHZsYW5faWQpPC9wPjxwPiZuYnNw
+OyAmbmJzcDsgJm5ic3A7ICZuYnNwOyBzd2l0Y2ggKHZuLSZndDtuYW1lX3R5cGUpIHs8L3A+PHA+
+Jm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7IGNhc2UgVkxBTl9OQU1FX1RZUEVfUkFXX1BMVVNf
+VklEOjwvcD48cD4mbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJz
+cDsgJm5ic3A7IC8qIG5hbWUgd2lsbCBsb29rIGxpa2U6Jm5ic3A7IGV0aDEuMDAwNSAqLzwvcD48
+cD4tJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNw
+O3NucHJpbnRmKG5hbWUsIElGTkFNU0laLCAiJXMuJS40aSIsIHJlYWxfZGV2LSZndDtuYW1lLCB2
+bGFuX2lkKTs8L3A+PHA+KyZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7
+ICZuYnNwOyAmbmJzcDtzbnByaW50ZihuYW1lLCBzaXplb2YobmFtZSksICIlcy4lLjRpIiwgcmVh
+bF9kZXYtJmd0O25hbWUsIHZsYW5faWQpOzwvcD48cD4mbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJz
+cDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7IGJyZWFrOzwvcD48cD4mbmJzcDsgJm5ic3A7
+ICZuYnNwOyAmbmJzcDsgY2FzZSBWTEFOX05BTUVfVFlQRV9QTFVTX1ZJRF9OT19QQUQ6PC9wPjxw
+PiZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsg
+LyogUHV0IG91ciB2bGFuLlZJRCBpbiB0aGUgbmFtZS48L3A+PHA+Jm5ic3A7ICZuYnNwOyAmbmJz
+cDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsqIE5hbWUgd2lsbCBs
+b29rIGxpa2U6Jm5ic3A7IHZsYW41PC9wPjxwPiZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAm
+bmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7Ki88L3A+PHA+LSZuYnNwOyAmbmJzcDsg
+Jm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDtzbnByaW50ZihuYW1lLCBJ
+Rk5BTVNJWiwgInZsYW4laSIsIHZsYW5faWQpOzwvcD48cD4rJm5ic3A7ICZuYnNwOyAmbmJzcDsg
+Jm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwO3NucHJpbnRmKG5hbWUsIHNpemVvZihu
+YW1lKSwgInZsYW4laSIsIHZsYW5faWQpOzwvcD48cD4mbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJz
+cDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7IGJyZWFrOzwvcD48cD4mbmJzcDsgJm5ic3A7
+ICZuYnNwOyAmbmJzcDsgY2FzZSBWTEFOX05BTUVfVFlQRV9SQVdfUExVU19WSURfTk9fUEFEOjwv
+cD48cD4mbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5i
+c3A7IC8qIFB1dCBvdXIgdmxhbi5WSUQgaW4gdGhlIG5hbWUuPC9wPjxwPiZuYnNwOyAmbmJzcDsg
+Jm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7KiBOYW1lIHdp
+bGwgbG9vayBsaWtlOiZuYnNwOyBldGgwLjU8L3A+PHA+Jm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5i
+c3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsqLzwvcD48cD4tJm5ic3A7ICZu
+YnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwO3NucHJpbnRmKG5h
+bWUsIElGTkFNU0laLCAiJXMuJWkiLCByZWFsX2Rldi0mZ3Q7bmFtZSwgdmxhbl9pZCk7PC9wPjxw
+PismbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7
+c25wcmludGYobmFtZSwgc2l6ZW9mKG5hbWUpLCAiJXMuJWkiLCByZWFsX2Rldi0mZ3Q7bmFtZSwg
+dmxhbl9pZCk7PC9wPjxwPiZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7
+ICZuYnNwOyAmbmJzcDsgYnJlYWs7PC9wPjxwPiZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyBj
+YXNlIFZMQU5fTkFNRV9UWVBFX1BMVVNfVklEOjwvcD48cD4mbmJzcDsgJm5ic3A7ICZuYnNwOyAm
+bmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7IC8qIFB1dCBvdXIgdmxhbi5WSUQgaW4g
+dGhlIG5hbWUuPC9wPjxwPiZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7
+ICZuYnNwOyAmbmJzcDsgJm5ic3A7KiBOYW1lIHdpbGwgbG9vayBsaWtlOiZuYnNwOyB2bGFuMDAw
+NTwvcD48cD4mbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsg
+Jm5ic3A7ICZuYnNwOyovPC9wPjxwPiZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyBkZWZhdWx0
+OjwvcD48cD4tJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7
+ICZuYnNwO3NucHJpbnRmKG5hbWUsIElGTkFNU0laLCAidmxhbiUuNGkiLCB2bGFuX2lkKTs8L3A+
+PHA+KyZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJz
+cDtzbnByaW50ZihuYW1lLCBzaXplb2YobmFtZSksICJ2bGFuJS40aSIsIHZsYW5faWQpOzwvcD48
+cD4mbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgfTwvcD48cD4mbmJzcDs8L3A+PHA+Jm5ic3A7
+ICZuYnNwOyAmbmJzcDsgJm5ic3A7IG5ld19kZXYgPSBhbGxvY19uZXRkZXYoc2l6ZW9mKHN0cnVj
+dCB2bGFuX2Rldl9wcml2KSwgbmFtZSw8L3A+PHA+LS0mbmJzcDs8L3A+PHA+Mi4yNS4xPC9wPjxw
+IHN0eWxlPSJmb250LXNpemU6MTRweDtmb250LWZhbWlseTrlvq7ova/pm4Xpu5EsTWljcm9zb2Z0
+IFlhSGVpOyI+PGJyPjwvcD48cCBzdHlsZT0iZm9udC1zaXplOjE0cHg7Zm9udC1mYW1pbHk65b6u
+6L2v6ZuF6buRLE1pY3Jvc29mdCBZYUhlaTsiPjxicj48L3A+PHAgc3R5bGU9ImZvbnQtc2l6ZTox
+NHB4O2ZvbnQtZmFtaWx5OuW+rui9r+mbhem7kSxNaWNyb3NvZnQgWWFIZWk7Ij48YnI+PC9wPjxw
+IHN0eWxlPSJmb250LXNpemU6MTRweDtmb250LWZhbWlseTrlvq7ova/pm4Xpu5EsTWljcm9zb2Z0
+IFlhSGVpOyI+PGJyPjwvcD48L2Rpdj4=
+
+
+--=====_003_next=====--
+
+--=====_002_next=====--
+
+--=====_001_next=====--
 
