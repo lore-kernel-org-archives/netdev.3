@@ -1,64 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FBE2045B1;
-	Thu, 19 Jun 2025 10:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1D02236EB
+	for <netdev@vger.kernel.org>; Thu, 19 Jun 2025 10:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750328374; cv=none; b=axbEcMFtzmtgk+HrO83S0V6lvO/sggNeDr8nrNDg2HHaQ4razeTWuYJgN6W5Shelbgj3rZeYKtYw2Re5G1IgvFYm0YU3JzK5pV7MFmhwO62HW67pA1chaJsbEwziuc0R8be43lIM1IdP3BOJPUJYO9HSWQu5+mTpIUYZz3T9GYQ=
+	t=1750328379; cv=none; b=aXID6jxlxM9qU0IrbrT21goUv/EoUCwYa/tL1T2Pxew8vbUM5YZHj3XcrNtYOvWtVjxnS8LwfxBlk10+zTGvO04obt9p5aRV60nSUSubGm58EFdb6MOHR7gKXS6D4BXgO6Cv0du1g4yG+tQlgHt2hSEf+MbhR8iVRvlPTp1//l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750328374; c=relaxed/simple;
-	bh=TFp8r10SI9qs2FkfzjhWNknAgkyWJ+OG/4m+bbmfhzk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l6GpdS6sB7qsD2qgmHr/4xXt3UdpO25YN10iPC9u/DXuUD1IQTRI4UpKAhF4qjrxv9Lj5dFJvojCuZ/Lf8wxsU4vrXvkqidVXpmKFoT/DGz4tRbcJgjKJ84cfex95qN9puL33QoSVg1Ss/E59noLV9ShIdq8qXX+gLDUfW/uLuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FfABfO1X; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750328379; c=relaxed/simple;
+	bh=ZHFs1DNZJ7MegEL4vY6HVJ/GAoi/z934NysqJeGxZSQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=l5poxucqhFB5tF1PVA9LKJo5nlYVBl2dV/5Wyp/4JOXCLgv/4sOXjA+orG9Zn7SCQyoTVwzROV0QAED8NVuu8mnieuJRaZxhJrvEXKOpXLUE+Q5Aiz9VZey1+2F9EfAc156fzbb4+JclMHfowT+g9QJIxeG1XWMFK+Ic5Vzhtjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h0Na4gce; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FfABfO1X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03FBCC4CEEA;
-	Thu, 19 Jun 2025 10:19:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h0Na4gce"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 537AAC4CEEA;
+	Thu, 19 Jun 2025 10:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750328373;
-	bh=TFp8r10SI9qs2FkfzjhWNknAgkyWJ+OG/4m+bbmfhzk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FfABfO1XIqtf7KGj/5ngqcFzZKbitq+SeZIVFHF2gZUGBoyNcNayUNwFQMm5x04IX
-	 +Ii+ev4k0tjABdat5ReX41nuK7u7thzwEjcS5a7I49OrseK1ztIRmJUTn/NVR467yG
-	 kUPS75ydQ7srPjtgNFvFtw0yR9+7X4MaN1spsNgLVqIkLDJZJEgEtQz8xlbT12DDPY
-	 2hwuxd69bb1wDs9vLdAHADsYJlqa/qS1nP47T9f77eT8MdrEdZsC1oxjLMdG/kIpUR
-	 ojXC3nTupjkK/rY7qxt+lCg+Vm4qnob1nZsXdwm3aL/24Zuo08RpghdmPkr5rt54d9
-	 e4pLtUqQgCj7Q==
-Date: Thu, 19 Jun 2025 11:19:29 +0100
-From: Simon Horman <horms@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	jv@jvosburgh.ne, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, gustavold@gmail.com
-Subject: Re: [PATCH 2/3] netpoll: extract IPv4 address retrieval into helper
- function
-Message-ID: <20250619101929.GF1699@horms.kernel.org>
-References: <20250618-netpoll_ip_ref-v1-0-c2ac00fe558f@debian.org>
- <20250618-netpoll_ip_ref-v1-2-c2ac00fe558f@debian.org>
+	s=k20201202; t=1750328378;
+	bh=ZHFs1DNZJ7MegEL4vY6HVJ/GAoi/z934NysqJeGxZSQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=h0Na4gce1a044SwveUjP9mGjralW3KWD3JNfZ54/S6X7V80Zt5MRoezT/XUEhlvzy
+	 +aGr1xsOhFR0M8t0FT/1Bvi6xksvEbtek94YloUYz8UOx8B3P6J63O/+lDlKOOH+Nj
+	 2/1bruZnCC8pOohL0IUS8oaSLYk6fxzzriKH+hq6SwlCulWdVTnbTHP/7OJTM0X2S/
+	 P/XVdYDECZ5TZp/VVbmAzgsPLnMQzrd8bZMkCVwyQrBM/qMBfNAmSNw+WvtE5+M2mV
+	 R7bt5Q5jaflD0IfgUK2QEUl1whicZELTEPD3nGhFw9ETLgt7rxARapleub88c5kQTN
+	 IPj1Eu/lVj3TQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE2693806649;
+	Thu, 19 Jun 2025 10:20:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250618-netpoll_ip_ref-v1-2-c2ac00fe558f@debian.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] ipv6: Simplify link-local address generation for
+ IPv6 GRE.
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175032840651.446896.1939844731953767667.git-patchwork-notify@kernel.org>
+Date: Thu, 19 Jun 2025 10:20:06 +0000
+References: 
+ <a9144be9c7ec3cf09f25becae5e8fdf141fde9f6.1750075076.git.gnault@redhat.com>
+In-Reply-To: 
+ <a9144be9c7ec3cf09f25becae5e8fdf141fde9f6.1750075076.git.gnault@redhat.com>
+To: Guillaume Nault <gnault@redhat.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, netdev@vger.kernel.org, horms@kernel.org,
+ dsahern@kernel.org, idosch@idosch.org
 
-On Wed, Jun 18, 2025 at 02:32:46AM -0700, Breno Leitao wrote:
-> Move the IPv4 address retrieval logic from netpoll_setup() into a
-> separate netpoll_take_ipv4() function to improve code organization
-> and readability. This change consolidates the IPv4-specific logic
-> and error handling into a dedicated function while maintaining
-> the same functionality.
-> 
-> No functional changes.
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+Hello:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Mon, 16 Jun 2025 13:58:29 +0200 you wrote:
+> Since commit 3e6a0243ff00 ("gre: Fix again IPv6 link-local address
+> generation."), addrconf_gre_config() has stopped handling IP6GRE
+> devices specially and just calls the regular addrconf_addr_gen()
+> function to create their link-local IPv6 addresses.
+> 
+> We can thus avoid using addrconf_gre_config() for IP6GRE devices and
+> use the normal IPv6 initialisation path instead (that is, jump directly
+> to addrconf_dev_config() in addrconf_init_auto_addrs()).
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] ipv6: Simplify link-local address generation for IPv6 GRE.
+    https://git.kernel.org/netdev/net-next/c/d3623dd5bd4e
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
