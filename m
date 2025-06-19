@@ -1,103 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893C7258A;
-	Thu, 19 Jun 2025 12:09:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1567623A9A0
+	for <netdev@vger.kernel.org>; Thu, 19 Jun 2025 12:15:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750334959; cv=none; b=fCDVu2Ug8dAFmxlEeigDfVUvbP8/ss8wh8qQjbj/6MipLeLtRy5LuWQUclUPTa/MV9Lej/HS5eAWfUjPZKl6zFTTmSoUZ4jw2dL2C8CuYYqXypWNZ+H3bQRnvgSFJLLTgWN7NZMxPBal3al6evxY72n8FNC0ZQLrNspM5XSXpg4=
+	t=1750335326; cv=none; b=jg1hnZfBy/RpQSvp72CjVcY1PRHNXjc94AARnTc72mojQazOzMqQQzaQNVxhyaJ00LHbwkclP1MJpUj9Sma73iVOEo1RgiRTYaNXFIRrKn11xAkP+y4LDnndKjKwLNgS4rdOyLAti1zMstk943ZPwIsvtgq7l+M/957MhXIqKyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750334959; c=relaxed/simple;
-	bh=yl86KSoo8hswMGhXsp32B/sx36wzzNqUuMUtV6U7f5Y=;
+	s=arc-20240116; t=1750335326; c=relaxed/simple;
+	bh=1ravPs/FMxL5LuoHuJXK+mU1twHGVx7Ojyt5HQnO1BM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g4GKwERCDGF1cLKk1Kjhmb5Vgj3DXLF2/3byjly/U33DMg9+Os/ExMlDNyW7F/Jp/4nrWynNFYp7PXUV70eg5oN24id3zbEc3x9imVfdwBVvf3pE982AlBmEhHtwevxSmV1eh9cg6K6kw0x+WQY3keQhu8X0v9FbVgE1z5wKTQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KxRBK2Ns; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=soK/49Ae3rC0hAp6bjzAcOE5qo3vvM+xOip4AiMKLQXXOMEtyphbvCur+Ycg5KI8aHGGHKsUwXPW9Dg9Z1sCcF1ruKbng3Xn5GuddxSRb1OOv7e9WS5BAesPnR/sneccj5q2pc5k0/xd0jyHR6h8JIGuX7ANeJqyRUIKnYrh0s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hX2FayJz; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KxRBK2Ns"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0888C4CEEE;
-	Thu, 19 Jun 2025 12:09:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750334958;
-	bh=yl86KSoo8hswMGhXsp32B/sx36wzzNqUuMUtV6U7f5Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KxRBK2Nsgq6cIFVniLp3F7K9wH1ZvsAtUyrIm19qK9Yol5SOmwYaSsFrM9iHQCGrg
-	 lCvDZa2p9wA2Ra/MqvoFqwehcneM7NgyWEPqAefhQfM2f8LjFihVJsLQ0qSQLxVeBA
-	 X1iHqnS4iyayDJZDJElSNusWJjul1TLq7F464YruqFdUZHDIUrq54YPm76Ghz+D8ih
-	 5k9Fcm1EgsCttteWo8pOeTE+zTgblCrQsl5+zAoIU9tCwvJ4h+Ye19A+1IcQ/8IgvK
-	 7d/bIrFn91vzdzAaFpQ5KcweD9E5SY6HGMAyd+vSc6I/5ctdE8aAYcVVCYBpWuWhTT
-	 9jObARHrxqv+A==
-Message-ID: <cd4f2982-00ff-4e7b-88e1-6f6697da2c2f@kernel.org>
-Date: Thu, 19 Jun 2025 14:09:11 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hX2FayJz"
+Message-ID: <ba027737-39df-4541-8fea-1c4cf489b43b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1750335318;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a5tu14SfjOQv5TBx7EfkgfUxq/XAyStwsImnQzyxPqY=;
+	b=hX2FayJz88BPRw7Yx23sBwK2HlaMWc7WrD5xufoIQxieXk3feCCpo6V78k6uSLItgcFPsE
+	x1fCvcVembCR3QIZ/KPkzlmeNaDJQPeBdsqKboeVHFTrRzyFjEidyBPm5dV0OqdzEGubZP
+	xApztwwVir8jr/6tE6Fqgyv28YHcjz0=
+Date: Thu, 19 Jun 2025 13:15:06 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Performance impact of disabling VLAN offload [was: Re: [PATCH
- bpf-next V1 7/7] net: xdp: update documentation for xdp-rx-metadata.rst]
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Stanislav Fomichev <stfomichev@gmail.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org,
- netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <borkmann@iogearbox.net>, Eric Dumazet <eric.dumazet@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
- sdf@fomichev.me, kernel-team@cloudflare.com, arthur@arthurfabre.com,
- jakub@cloudflare.com, Magnus Karlsson <magnus.karlsson@intel.com>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- Willem Ferguson <wferguson@cloudflare.com>,
- Jesse Brandeburg <jbrandeburg@cloudflare.com>
-References: <174897271826.1677018.9096866882347745168.stgit@firesoul>
- <174897279518.1677018.5982630277641723936.stgit@firesoul>
- <aEJWTPdaVmlIYyKC@mini-arch>
- <bf7209aa-8775-448d-a12e-3a30451dad22@iogearbox.net> <87plfbcq4m.fsf@toke.dk>
- <aEixEV-nZxb1yjyk@lore-rh-laptop> <aEj6nqH85uBe2IlW@mini-arch>
- <aFAQJKQ5wM-htTWN@lore-desk> <aFA8BzkbzHDQgDVD@mini-arch>
- <aFBI6msJQn4-LZsH@lore-desk> <87h60e4meo.fsf@toke.dk>
- <76a5330e-dc52-41ea-89c2-ddcde4b414bd@kernel.org> <875xgu4d6a.fsf@toke.dk>
+Subject: Re: [PATCH net-next v11 13/14] dpll: zl3073x: Add support to get/set
+ frequency on input pins
+To: Paolo Abeni <pabeni@redhat.com>, Ivan Vecera <ivecera@redhat.com>,
+ netdev@vger.kernel.org
+Cc: Prathosh Satish <Prathosh.Satish@microchip.com>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Shannon Nelson <shannon.nelson@amd.com>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ Michal Schmidt <mschmidt@redhat.com>, Petr Oros <poros@redhat.com>
+References: <20250616201404.1412341-1-ivecera@redhat.com>
+ <20250616201404.1412341-14-ivecera@redhat.com>
+ <72bab3b2-bdd6-43f6-9243-55009f9c1071@redhat.com>
 Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <875xgu4d6a.fsf@toke.dk>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <72bab3b2-bdd6-43f6-9243-55009f9c1071@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-
-
-On 17/06/2025 17.10, Toke Høiland-Jørgensen wrote:
->> Later we will look at using the vlan tag. Today we have disabled HW
->> vlan-offloading, because XDP originally didn't support accessing HW vlan
->> tags.
+On 19/06/2025 12:15, Paolo Abeni wrote:
+> On 6/16/25 10:14 PM, Ivan Vecera wrote:
+>> +/**
+>> + * zl3073x_dpll_input_ref_frequency_get - get input reference frequency
+>> + * @zldpll: pointer to zl3073x_dpll
+>> + * @ref_id: reference id
+>> + * @frequency: pointer to variable to store frequency
+>> + *
+>> + * Reads frequency of given input reference.
+>> + *
+>> + * Return: 0 on success, <0 on error
+>> + */
+>> +static int
+>> +zl3073x_dpll_input_ref_frequency_get(struct zl3073x_dpll *zldpll, u8 ref_id,
+>> +				     u32 *frequency)
+>> +{
+>> +	struct zl3073x_dev *zldev = zldpll->dev;
+>> +	u16 base, mult, num, denom;
+>> +	int rc;
+>> +
+>> +	guard(mutex)(&zldev->multiop_lock);
+>> +
+>> +	/* Read reference configuration */
+>> +	rc = zl3073x_mb_op(zldev, ZL_REG_REF_MB_SEM, ZL_REF_MB_SEM_RD,
+>> +			   ZL_REG_REF_MB_MASK, BIT(ref_id));
+>> +	if (rc)
+>> +		return rc;
+>> +
+>> +	/* Read registers to compute resulting frequency */
+>> +	rc = zl3073x_read_u16(zldev, ZL_REG_REF_FREQ_BASE, &base);
+>> +	if (rc)
+>> +		return rc;
+>> +	rc = zl3073x_read_u16(zldev, ZL_REG_REF_FREQ_MULT, &mult);
+>> +	if (rc)
+>> +		return rc;
+>> +	rc = zl3073x_read_u16(zldev, ZL_REG_REF_RATIO_M, &num);
+>> +	if (rc)
+>> +		return rc;
+>> +	rc = zl3073x_read_u16(zldev, ZL_REG_REF_RATIO_N, &denom);
+>> +	if (rc)
+>> +		return rc;
+>> +
+>> +	/* Sanity check that HW has not returned zero denominator */
+>> +	if (!denom) {
+>> +		dev_err(zldev->dev,
+>> +			"Zero divisor for ref %u frequency got from device\n",
+>> +			ref_id);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	/* Compute the frequency */
+>> +	*frequency = base * mult * num / denom;
 > 
-> Side note (with changed subject to disambiguate): Do you have any data
-> on the performance impact of disabling VLAN offload that you can share?
-> I've been sort of wondering whether saving those couple of bytes has any
-> measurable impact on real workloads (where you end up looking at the
-> headers anyway, so saving the cache miss doesn't matter so much)?
+> As base, mult, num and denom are u16, the above looks like integer
+> overflow prone.
+> 
+> I think you should explicitly cast to u64, and possibly use a u64 frequency.
+
+I might be a good idea to use mul_u64_u32_div together with mul_u32_u32?
+These macroses will take care of overflow on 32bit platforms as well.
+
+> 
+> /P
 > 
 
-Our production setup have two different VLAN IDs, one for INTERNAL-ID
-and one for EXTERNAL-ID (Internet) traffic.  On (many) servers this is
-on the same physical net_device.
-
-Our Unimog XDP load-balancer *only* handles EXTERNAL-ID.  Thus, the very
-first thing Unimog does is checking the VLAN ID.  If this doesn't match
-EXTERNAL-ID it returns XDP_PASS.  This is the first time packet data
-area is read which (due to our AMD-CPUs) will be a cache-miss.
-
-If this were INTERNAL-ID then we have caused a cache-miss earlier than
-needed.  The NIC driver have already started a net_prefetch.  Thus, if
-we can return XDP_PASS without touching packet data, then we can
-(latency) hide part of the cache-miss (behind SKB-zero-ing). (We could
-also CPUMAP redirect the INTERNAL-ID to a remote CPU for further gains).
-  Using the kfunc (bpf_xdp_metadata_rx_vlan_tag[1]) for reading VLAN ID
-doesn't touch/read packet data.
-
-I hope this makes it clear why reading the HW offloaded VLAN tag from
-the RX-descriptor is a performance benefit?
-
---Jesper
-
-[1] https://docs.kernel.org/networking/xdp-rx-metadata.html
