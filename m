@@ -1,140 +1,233 @@
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1DC1FDE02;
-	Fri, 20 Jun 2025 04:12:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0BC2A8C1;
+	Fri, 20 Jun 2025 05:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750392762; cv=none; b=AQ8Ja7fbu7ub7VwnKxQOGoHL3P3EysQCz93QUCkkSWPS6CjVhkUqYMy4ae50CnNN+dXbtdeXqkHeCNmkroG94QRoBd8dbDI5I0Wd6rFimhBcz6HTu2tuAy3loA4puQ0/HaTI1QT/U13iBNuEk96D0iSgfBik1qg2Nlxb5JSVKYE=
+	t=1750395743; cv=none; b=DyesaGLr/Ez9YIUFBcfeUD85CA2Jd7vFaHdOpoVkfr2J4kkKms3UxfA1GFj3knTbqWtvEd+xBoEP7X+RSsQ3h6x0CDuUYkppc2FzpBCV55jjwy6KbQHcwwe2AzUSTkxFcZH7Whk1ufEupGkT/ek2NnNsR9yBy33HLg/OkaSO0DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750392762; c=relaxed/simple;
-	bh=6XKzE5AjnkHOhNbJyUZM7HFd+RUUttC5m76509LyLgU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=af+ReeLrKcROeYNxgW2fuOJVzxvlUeydwxh7rz3xTNSOwa4G79IF4BnjiV5QbhHhTlU+YsBjmWr38McBcj1d6o1dJCuWabFZUCHrbA59awiDr7h0op57i/0iTfoW0Bq2vzra7iXLH/47dPfAAk1lxXqNIdwbgABBE3tPHPzwiq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-669ff7000002311f-8c-6854dfb2d233
-From: Byungchul Park <byungchul@sk.com>
-To: willy@infradead.org,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel_team@skhynix.com,
-	kuba@kernel.org,
-	almasrymina@google.com,
-	ilias.apalodimas@linaro.org,
-	harry.yoo@oracle.com,
-	hawk@kernel.org,
-	akpm@linux-foundation.org,
-	davem@davemloft.net,
-	john.fastabend@gmail.com,
-	andrew+netdev@lunn.ch,
-	asml.silence@gmail.com,
-	toke@redhat.com,
-	tariqt@nvidia.com,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	saeedm@nvidia.com,
-	leon@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	horms@kernel.org,
-	linux-rdma@vger.kernel.org,
-	bpf@vger.kernel.org,
-	vishal.moola@gmail.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	jackmanb@google.com
-Subject: [PATCH net-next v6 6/9] netmem: remove __netmem_get_pp()
-Date: Fri, 20 Jun 2025 13:12:21 +0900
-Message-Id: <20250620041224.46646-7-byungchul@sk.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20250620041224.46646-1-byungchul@sk.com>
-References: <20250620041224.46646-1-byungchul@sk.com>
+	s=arc-20240116; t=1750395743; c=relaxed/simple;
+	bh=D9l67I4gVQ1Zk7K1SD18ucSocCnCM8EvcaI1dWXIpis=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jaW0+kzoOYjVgRZYXmMHg3PNtKOyD0BCTfK8W/axF4fnCXsGESdOZpDehg/RiaFLL7cvPngKe1kCt/6VU0F6exXmYqflRTwVaS3e9o63Nx7k4suvyEYfJngy1Q0VcPi3mJDGqsS+dYKr11qP+8qixXnE5MvS0jfgS3i59bG/c80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksO9gZ48; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksO9gZ48"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56176C4CEE3;
+	Fri, 20 Jun 2025 05:02:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750395742;
+	bh=D9l67I4gVQ1Zk7K1SD18ucSocCnCM8EvcaI1dWXIpis=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ksO9gZ48Ucnptc+udebuWMyQsSgJYaVlDw5nZFSowhmwnScVLR5NgleScED/xgcxF
+	 9Z/IElzQpDNcCyROEv3mvyaJ35Yfrx0vUGNvvt5nup+yMJoTPJkmjf9VJ6+5pQ1EQI
+	 aICfckMyyWxRGjyoquAYOq6Ny7u8KwzfCMQ2hUac=
+Date: Fri, 20 Jun 2025 07:02:19 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ming Yu <a0282524688@gmail.com>
+Cc: Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>,
+	linus.walleij@linaro.org, brgl@bgdev.pl, andi.shyti@kernel.org,
+	mkl@pengutronix.de, mailhol.vincent@wanadoo.fr,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, wim@linux-watchdog.org,
+	jdelvare@suse.com, alexandre.belloni@bootlin.com,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org,
+	netdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, linux-rtc@vger.kernel.org,
+	linux-usb@vger.kernel.org, Ming Yu <tmyu0@nuvoton.com>
+Subject: Re: [PATCH v12 1/7] mfd: Add core driver for Nuvoton NCT6694
+Message-ID: <2025062058-caddie-rendering-3bf1@gregkh>
+References: <20250613131133.GR381401@google.com>
+ <CAOoeyxXftk9QX_REgeQhuXSc9rEguzXkKVKDQdawU=NzGbo9oA@mail.gmail.com>
+ <20250619115345.GL587864@google.com>
+ <CAOoeyxXSTeypv2qQjcK1cSPtjch=gJGYzqoMsLQ-LJZ8Kwgd=w@mail.gmail.com>
+ <20250619152814.GK795775@google.com>
+ <CAOoeyxU7eQneBuxbBqepta29q_OHPzrkN4SKmj6RX72L3Euw5A@mail.gmail.com>
+ <2025061910-skies-outgoing-89cc@gregkh>
+ <644dfd66-ad30-47cb-9ec4-50d9a003433b@roeck-us.net>
+ <2025061914-sternum-factoid-4269@gregkh>
+ <CAOoeyxUcB1xc_kMBADWoV8RnnFJ+uCYa_kJ7_BdyR8W_WZfsAg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA01SaUiTYRzn2fPued8tR29L6s2iYHRQ0CUW/w8RdvqAKIX2oQNqtZe2mibT
-	TDtNR8dIu6RyzlyJqdNYrdLZYWnzwg6PrFmmtuyATo+WZlCbEvntx+/8f/hzWJklDeJ0sQmi
-	IVatVxE5I/8ScGnujc5o7YIXP1iw2EsIFA8kQUGXUwoWWymC/sFXLPS5agnkXfJisDw1MvDD
-	/gvDuxoPC8WOCOi88p6Bu0fLMHhO1hFINw5huDf4lYVUZ6EEGkszpJD5Kx9DWUoXCy23LQQ6
-	Sv5I4X1VOgP15iIGOjNCocY6AbwNnxG47GUS8J7IIXC22UrgrbETQfNDDwPZhzMQ2CvcUhga
-	8HVkV3ewodPpw8/fML1Z1Cah5ebXLLU6dtMbhXOoyd2MqcN2nFBH7xmWtj+/S2jdhSGGljv7
-	JDQ97SuhPe9eMvRbRSuh9putDH1kdbFrxm2QL9GIel2iaJi/dItc621MQ3ENY5Iqmo6RFOSR
-	mRDHCXyI8NgUZkKyYeg0n2b8mPCzBLd7EPtxIL9Q6PPU+ng5h/mrRHCVvGL9wnh+mdDy8YPE
-	jxl+hlDf82yYV/CLhHOmB2SkdJpQfO3BcJGMXyz0pN4Z5pU+z8Blo3TEP06oz+pm/Pdg37D9
-	otJPY1807VY29u8KvJMTbMYvzEjnJKGy0M2cQrx5VNz8P24eFbcibENKXWxijFqnD5mnTY7V
-	Jc3btivGgXwPc+XA741O1NsYVYV4DqkCFM7+KK1Sqk6MT46pQgKHVYGKvLpIrVKhUSfvFQ27
-	Nht268X4KjSZY1QTFcHePRolv12dIO4UxTjR8E+VcLKgFLTVotlv6J/583BuSonK/XNT0Krn
-	RqPHdmTlsvYpTVOiujNJqETAyz8VaNeWv7AU8IFhLcfG7uh1lc59dD33yeJ9OX9aKzsiZvcc
-	tAbHNYVXr1ifEDSouX9+3Yp7TbIZYioXum5qekNkGo0gTwPaopvD80O+N+or294MTVh96IDx
-	oEXFxGvVC+dgQ7z6LwIKOz4sAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG+e+cnR2Xw9MUO9gHYWSGpGVkvaSEadDBSrqRFIKuPLjllU3F
-	SRfTWWpqmhU171reZbG8TDMTNS/4QfOSlnlhqUmK5m14xTYl8tvD8/ze5/nykphwA7cipcFh
-	rCxYHCgi+Djf0znWXjN6TXK0pvgkZKrLCShbiYSiMS0XMkurESytDvFgsaWNgII8PQaZXUoc
-	ltVrGEy06nhQprkIo4WTONQ/rsFA97SdgGTlOgYfV2d5EKMt5kBzVgcXuqtTuPB87S0GNdFj
-	POityyRgpHyLC5NNyTh0qEpwGE1xhdZcS9B3ziBoUddwQJ+URUB6Ty4BP5WjCHqadThkPExB
-	oG4Y5ML6iqEj4/MIz9WGaZ6Zw5jKkm8cplY1zGNyNeHM+2I7JnGwB2M0pQkEo1l4xmN+fK0n
-	mPZX6zhTq13kMMmxswQzP/EdZ+Ya+gmmYOoPh1FX9uOXhDf5Ln5soDSClR057cuX6LtjUWjn
-	nsiGL/FENNKZJCITkqaO01pVGm7UBGVLDw6uYkZtQTnSi7o2g88nMaqCoFvKh3jGwJw6Q/dO
-	/eIYNU7Z0B3zfdu+gHKiXyY2Ejul1nTZu8btIhPqBD0f82HbFxqYlXwld4ffS3e8HjcMkIYB
-	W1qdLTTamOE0tioDS0UC1S5K9Z9S7aJyEVaKLKTBEUFiaaCTgzxAogiWRjrcDgnSIMNPFN7b
-	SNOipd5zTYgikchUoF26KhFyxRFyRVAToklMZCEoaPeUCAV+YkUUKwvxkYUHsvImtJ/ERfsE
-	Hl6sr5DyF4exASwbysr+pRzSxCoaXRoeX+90U2QdTInT5+hOVRy4Fe/dFc5ezs/ZTB/YjLE/
-	ViS09LzzyCw+wdU0zeHsp1K+u39USe2Lvv50JQxoL1i/CRK3XxFMK2zG6sJ+33/gb+dyON5Z
-	eWN5w6vRPNXjUHmSe+jd7K3mvAXv62bnp9dEcVUKfoTnk0q3EDcMZD4iXC4RO9phMrn4L77r
-	xaQPAwAA
-X-CFilter-Loop: Reflected
+In-Reply-To: <CAOoeyxUcB1xc_kMBADWoV8RnnFJ+uCYa_kJ7_BdyR8W_WZfsAg@mail.gmail.com>
 
-There are no users of __netmem_get_pp().  Remove it.
+On Fri, Jun 20, 2025 at 10:54:44AM +0800, Ming Yu wrote:
+> Dear Guenter and Greg,
+> 
+> Thank you for reviewing,
+> 
+> Greg KH <gregkh@linuxfoundation.org> 於 2025年6月20日 週五 上午1:18寫道：
+> >
+> > On Thu, Jun 19, 2025 at 09:58:04AM -0700, Guenter Roeck wrote:
+> > > On 6/19/25 09:20, Greg KH wrote:
+> > > > On Fri, Jun 20, 2025 at 12:03:01AM +0800, Ming Yu wrote:
+> > > > > Lee Jones <lee@kernel.org> 於 2025年6月19日 週四 下午11:28寫道：
+> > > > > >
+> > > > > > On Thu, 19 Jun 2025, Ming Yu wrote:
+> > > > > >
+> > > > > > > Lee Jones <lee@kernel.org> 於 2025年6月19日 週四 下午7:53寫道：
+> > > > > > > >
+> > > > > > > > On Fri, 13 Jun 2025, Ming Yu wrote:
+> > > > > > > >
+> > > > > > > > > Lee Jones <lee@kernel.org> 於 2025年6月13日 週五 下午9:11寫道：
+> > > > > > > > > >
+> > > > > > > > > > On Fri, 13 Jun 2025, Ming Yu wrote:
+> > > > > > > > > >
+> > > > > > > > > > > Lee Jones <lee@kernel.org> 於 2025年6月12日 週四 下午11:23寫道：
+> > > > > > > > > > > >
+> > > > > > > > > > > > On Thu, 12 Jun 2025, Ming Yu wrote:
+> > > > > > > > > > > >
+> > > > > > > > > > > > > Dear Lee,
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > Thank you for reviewing,
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > Lee Jones <lee@kernel.org> 於 2025年6月12日 週四 下午10:00寫道：
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > ...
+> > > > > > > > > > > > > > > +static const struct mfd_cell nct6694_devs[] = {
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 0),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 1),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 2),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 3),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 4),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 5),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 6),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 7),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 8),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 9),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 10),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 11),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 12),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 13),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 14),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-gpio", NULL, NULL, 0, 15),
+> > > > > > > > > > > > > > > +
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-i2c", NULL, NULL, 0, 0),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-i2c", NULL, NULL, 0, 1),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-i2c", NULL, NULL, 0, 2),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-i2c", NULL, NULL, 0, 3),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-i2c", NULL, NULL, 0, 4),
+> > > > > > > > > > > > > > > +     MFD_CELL_BASIC("nct6694-i2c", NULL, NULL, 0, 5),
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > > Why have we gone back to this silly numbering scheme?
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > > > What happened to using IDA in the child driver?
+> > > > > > > > > > > > > >
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > In a previous version, I tried to maintain a static IDA in each
+> > > > > > > > > > > > > sub-driver. However, I didn’t consider the case where multiple NCT6694
+> > > > > > > > > > > > > devices are bound to the same driver — in that case, the IDs are not
+> > > > > > > > > > > > > fixed and become unusable for my purpose.
+> > > > > > > > > > > >
+> > > > > > > > > > > > Not sure I understand.
+> > > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > > > > As far as I know, if I maintain the IDA in the sub-drivers and use
+> > > > > > > > > > > multiple MFD_CELL_NAME("nct6694-gpio") entries in the MFD, the first
+> > > > > > > > > > > NCT6694 device bound to the GPIO driver will receive IDs 0~15.
+> > > > > > > > > > > However, when a second NCT6694 device is connected to the system, it
+> > > > > > > > > > > will receive IDs 16~31.
+> > > > > > > > > > > Because of this behavior, I switched back to using platform_device->id.
+> > > > > > > > > >
+> > > > > > > > > > Each of the devices will probe once.
+> > > > > > > > > >
+> > > > > > > > > > The first one will be given 0, the second will be given 1, etc.
+> > > > > > > > > >
+> > > > > > > > > > Why would you give multiple IDs to a single device bound to a driver?
+> > > > > > > > > >
+> > > > > > > > >
+> > > > > > > > > The device exposes multiple peripherals — 16 GPIO controllers, 6 I2C
+> > > > > > > > > adapters, 2 CAN FD controllers, and 2 watchdog timers. Each peripheral
+> > > > > > > > > is independently addressable, has its own register region, and can
+> > > > > > > > > operate in isolation. The IDs are used to distinguish between these
+> > > > > > > > > instances.
+> > > > > > > > > For example, the GPIO driver will be probed 16 times, allocating 16
+> > > > > > > > > separate gpio_chip instances to control 8 GPIO lines each.
+> > > > > > > > >
+> > > > > > > > > If another device binds to this driver, it is expected to expose
+> > > > > > > > > peripherals with the same structure and behavior.
+> > > > > > > >
+> > > > > > > > I still don't see why having a per-device IDA wouldn't render each
+> > > > > > > > probed device with its own ID.  Just as you have above.
+> > > > > > > >
+> > > > > > >
+> > > > > > > For example, when the MFD driver and the I2C sub-driver are loaded,
+> > > > > > > connecting the first NCT6694 USB device to the system results in 6
+> > > > > > > nct6694-i2c platform devices being created and bound to the
+> > > > > > > i2c-nct6694 driver. These devices receive IDs 0 through 5 via the IDA.
+> > > > > > >
+> > > > > > > However, when a second NCT6694 USB device is connected, its
+> > > > > > > corresponding nct6694-i2c platform devices receive IDs 6 through 11 —
+> > > > > > > instead of 0 through 5 as I originally expected.
+> > > > > > >
+> > > > > > > If I've misunderstood something, please feel free to correct me. Thank you!
+> > > > > >
+> > > > > > In the code above you register 6 I2C devices.  Each device will be
+> > > > > > assigned a platform ID 0 through 5. The .probe() function in the I2C
+> > > > > > driver will be executed 6 times.  In each of those calls to .probe(),
+> > > > > > instead of pre-allocating a contiguous assignment of IDs here, you
+> > > > > > should be able to use IDA in .probe() to allocate those same device IDs
+> > > > > > 0 through 5.
+> > > > > >
+> > > > > > What am I missing here?
+> > > > > >
+> > > > >
+> > > > > You're absolutely right in the scenario where a single NCT6694 device
+> > > > > is present. However, I’m wondering how we should handle the case where
+> > > > > a second or even third NCT6694 device is bound to the same MFD driver.
+> > > > > In that situation, the sub-drivers using a static IDA will continue
+> > > > > allocating increasing IDs, rather than restarting from 0 for each
+> > > > > device. How should this be handled?
+> > > >
+> > > > What is wrong with increasing ids?  The id value means nothing, they
+> > > > just have to be unique.
+> > > >
+> > >
+> > > Unless they are used in the client driver as index into an array, as in
+> > > "this is the Nth instance of this device for this chip". There has to be
+> > > _some_ means to pass N to the client driver.
+> >
+> > Ick, that should just be walking the list of child devices instead, as
+> > obviously no one is hard coding array sizes for devices these days,
+> > right?  :)
+> >
+> > Anyway, sure, if you _have_ to have a specific id, then use a specific
+> > id, but really, it should not matter.
+> >
+> 
+> I need fixed IDs in order to communicate with the sub-devices
+> correctly. For instance, the I2C driver registers 6 devices, and the
+> userspace interface needs to know which specific I2C controller (e.g.,
+> index 0 ~ 5) to target with custom commands. Using fixed IDs allow the
+> driver to maintain a consistent mapping between device instances and
+> register sets.
+> 
+> I'm open to better alternatives, but so far, using fixed
+> platform_device->id has been the most straightforward way to achieve
+> this.
 
-Signed-off-by: Byungchul Park <byungchul@sk.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
----
- include/net/netmem.h | 16 ----------------
- 1 file changed, 16 deletions(-)
+The kernel is not responsible for numbering devices in a determinisitic
+way like this, so be very careful.  Userspace can implement whatever
+policy it wants to figure out what device id is what actual device, by
+using tools like udev and the like.  See how it does this today by
+looking at your /dev/disks/ directory on your system at the symlinks.
 
-diff --git a/include/net/netmem.h b/include/net/netmem.h
-index e27ed0b9c82e..d0a84557983d 100644
---- a/include/net/netmem.h
-+++ b/include/net/netmem.h
-@@ -245,22 +245,6 @@ static inline struct net_iov *__netmem_clear_lsb(netmem_ref netmem)
- 	return (struct net_iov *)((__force unsigned long)netmem & ~NET_IOV);
- }
- 
--/**
-- * __netmem_get_pp - unsafely get pointer to the &page_pool backing @netmem
-- * @netmem: netmem reference to get the pointer from
-- *
-- * Unsafe version of netmem_get_pp(). When @netmem is always page-backed,
-- * e.g. when it's a header buffer, performs faster and generates smaller
-- * object code (avoids clearing the LSB). When @netmem points to IOV,
-- * provokes invalid memory access.
-- *
-- * Return: pointer to the &page_pool (garbage if @netmem is not page-backed).
-- */
--static inline struct page_pool *__netmem_get_pp(netmem_ref netmem)
--{
--	return __netmem_to_page(netmem)->pp;
--}
--
- static inline struct page_pool *netmem_get_pp(netmem_ref netmem)
- {
- 	return __netmem_clear_lsb(netmem)->pp;
--- 
-2.17.1
+So good luck with this, but again, it's not the kernel's job to keep
+device numbering static across boots, that is not something we guarantee
+at all.
 
+Perhaps you should not be using mfd for this?  Perhaps something like
+the auxbus would work better?
+
+thanks,
+
+greg k-h
