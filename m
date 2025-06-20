@@ -1,217 +1,159 @@
-Received: from dehost.average.org (dehost.average.org [88.198.2.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE5D28B4FD;
-	Fri, 20 Jun 2025 13:48:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=88.198.2.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60761E47B7;
+	Fri, 20 Jun 2025 13:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750427293; cv=none; b=WY8yoi8Nle89FzJQRpFnMjVtD/EqLOdgRWTtjLpP4IqKEp0g8MRIHSRAXgeuRj63v0H2oMFFmM6E3bfqXLWQ3Bfz75AiFvzP/i/uW/sZ7PSztS+yorcnfuC+2w7sDKsGJgg31n2XZ2WsPNlfPaBERDSED7Q12F3s/5EzNKLpqiU=
+	t=1750427430; cv=none; b=Cgz4wp5jtKu0mApDYBfsSkBnE3dcEIx7a4P9EHDPhXGZORcVaujUfRSr8Mj53LlsjGwfdUQJ78C4BFdMHMfD6ShmoI6ZeseTFRnu8hPH6l4fCIC407R6nUFDXVUMKabDyLntR7e1O8DsxM6+3tENdAzS7dhmQCbFLO6rneOv06Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750427293; c=relaxed/simple;
-	bh=WhWToY2gFgoji2enDe1Nyb8LomNvws/2+8zZTVs0T7U=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=Ll6t181Gz1fpFXa3ZWh9pqzefcyrBmO798JOal/8TFbpjEJV+tEaiArbRzgZBlnYW9tPrNjLGW8YxV+t+Pn/dnxDKyOl0+qJOjX36WYvzBEvPkr4F5FTp8wkubDKKbYyQ+EMqDf3EuItku5y1y9xUIRWk1+D1jLftaW1+ehgpQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=average.org; spf=pass smtp.mailfrom=average.org; dkim=pass (1024-bit key) header.d=average.org header.i=@average.org header.b=di7jMW1X; arc=none smtp.client-ip=88.198.2.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=average.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=average.org
+	s=arc-20240116; t=1750427430; c=relaxed/simple;
+	bh=V9RKXCSdzPs9RnQSgYgt6zhXkh4lYLOKhIoew822ulw=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=phqy8uB0m/vWZfR7KH+10jodaBX1IZFTsIkGAAHbecbYLacvNvprcVLZy0C5IqhGQz1v3EKUCfpU4QR3CwS3Ljr6a8LGhLVPIn4wDch30gl/5lp9ROUQ0bnCRwmCaeyjhPJOWoDpAf3qGhFUPSp7N6FWUzeIm5V9NmsQ7Bon8XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JKcUlG3k; arc=none smtp.client-ip=209.85.219.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=average.org header.i=@average.org header.b="di7jMW1X"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=average.org; s=mail;
-	t=1750426721; bh=WhWToY2gFgoji2enDe1Nyb8LomNvws/2+8zZTVs0T7U=;
-	h=Date:To:Cc:From:Subject:From;
-	b=di7jMW1XYhQxWvPksg20urXNLbfEyt3lmIOD46D0bdCjcBVTN7ap2a7x5nWzzjskr
-	 /ll8A6bjbgUa0vNKCjTysaCxIJ8EDtuIr/0exOg9l8Tuih1tbkAaNvrjwC2NGyCZK6
-	 YH+XveYgxS1geKMDK2mnvlx7aHvgHyr9MDc30fW4=
-Received: from [10.16.126.80] (unknown [212.227.34.98])
-	by dehost.average.org (Postfix) with ESMTPSA id 68CA74C87C1E;
-	Fri, 20 Jun 2025 15:38:41 +0200 (CEST)
-Message-ID: <f55f7161-7ddc-46d1-844e-0f6e92b06dda@average.org>
-Date: Fri, 20 Jun 2025 15:38:35 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JKcUlG3k"
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e81a7d90835so2159445276.1;
+        Fri, 20 Jun 2025 06:50:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750427428; x=1751032228; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TD8kAkASSnG1wzUC5nTWjuLEj74fm4Uzyf/IkPMrDqY=;
+        b=JKcUlG3kC+/L5EFVpAW/FR9FzyyY55P660tX/BGqaQ1B3SRMqdW5MPyTN4ccR2DKj6
+         QqzgyaKnAurexhJoOou4jqtb4r57xVIa/uXwoMJ22qh2LTFmi7/3rJyWHukHDTZmDj/W
+         x3nU+cNpB9Q6QqVUt3+7IDeo2L+f0jyiU1cB5q9xMZkIA/j/CJ1YtNxJ/Wldtn3Z5wkG
+         UVvR73lmfiLOZHluplFCRlbRf2X+eELb83Yle+quBhAmhVeTWvr5Iyis2IA3H45N2/O8
+         9rkCpUROS99PSuKQ9M1/+86NKaLJDRqxCnE+ld1GNd8XvbjZg0Yg2g8rKX3JGHliD+cI
+         WZ7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750427428; x=1751032228;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TD8kAkASSnG1wzUC5nTWjuLEj74fm4Uzyf/IkPMrDqY=;
+        b=TeayEOwZQd9m9PoVSWQcA2o7oXA5fuqGN5wy5zy4uDoUAgl6eUVnXVVIn0dgyhMAYY
+         XgdogUjtgRYxftRk6s+ZxWxB5chrDuw+YUjjQrgawnkxpxCcH4uHfMurxHUODWOvNrau
+         xFNfhx2D8Bir8W38cUYQ/Fyi+Hkwf0zxCtuGYY6vgtYIpme9vdWbPuWmTQa16TY0feU5
+         mWIX+sYZoGZFvNwr9Q5R4V6EmzlhrMaI/tpGUVr1L60UlCw2yW0qloCWPR0tFzWPnxXZ
+         AjzDFrSBLkXz5YH0soEdnuAn0iqDCM/pGVdAXQ6cwpXbDxSQfkDwqMaR+O4nglqvT7ln
+         mtuw==
+X-Forwarded-Encrypted: i=1; AJvYcCUV+rJwUkzXSoybW9KI4KkNQR++bdTplHOWiBAzUafVJK16kvGCv4Fc2XkB4eYIqlIwlDK4UkLQ@vger.kernel.org, AJvYcCVsDDiCFU6egxKnl2mDELCOXZMYQpJxOebkpfA5plLEBujnFNxVAJA6XK0B1q7WkBekUlM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxipTQWkBGqONZQNkpKsRc74UlAliG4rXIoPV3s145xnwQ5tcdq
+	C1xh9wIFlXhgx1hujFkuXIH7YbXD3tBH8fGZgtY/5I+Syyu9SANHoGE1
+X-Gm-Gg: ASbGncuwqq6uJyTutCOVsjywjqqL/Tjk5hj/XgCiNpJ5u8SpI2iqo2aiRdBYxHRwxBM
+	h4lzDPSawJ97aY5ex55z50IpnEgdZ5WEyKaTA0K3heoAi4F9VmYJDjBhybN9rW1EDcYGMsoKmww
+	w6iF2F4gAsdAOmU761sMmazhgpYK6OmQ0EXVpDw2suk1CK36jui21iSZLgIHUEiohTJn6VSWaUu
+	P4ofDV7vscqegoM7g1BbAeIi5RhqvVl9TNKnco3GwYFiosnGx8zAZpR1KMPeG/Ar7VqwEZNULwu
+	n+dSuSVCRh739OFORPIeUYZNt9phIEt45P0756bGdtUgnymfLYqOcHA5zs9+rJAnsFGihQzfi1K
+	rozhr7Tyzm1kYJmp1HSt8ExANQLRkKfnIYa30ZTsHrA==
+X-Google-Smtp-Source: AGHT+IFxRzHHxJdNQGryBWnMzOWVAoaXhH5x5MJogpJcYGKuMitX9ftWwL9+ldnbzzE4HpeDL8pngg==
+X-Received: by 2002:a05:690c:368a:b0:710:edf9:d93b with SMTP id 00721157ae682-712c63afe2emr48005997b3.11.1750427427666;
+        Fri, 20 Jun 2025 06:50:27 -0700 (PDT)
+Received: from localhost (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
+        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-712c4c2689bsm4207677b3.124.2025.06.20.06.50.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Jun 2025 06:50:27 -0700 (PDT)
+Date: Fri, 20 Jun 2025 09:50:26 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jason Xing <kerneljasonxing@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ bjorn@kernel.org, 
+ magnus.karlsson@intel.com, 
+ maciej.fijalkowski@intel.com, 
+ jonathan.lemon@gmail.com, 
+ sdf@fomichev.me, 
+ ast@kernel.org, 
+ daniel@iogearbox.net, 
+ hawk@kernel.org, 
+ john.fastabend@gmail.com, 
+ joe@dama.to, 
+ willemdebruijn.kernel@gmail.com, 
+ bpf@vger.kernel.org, 
+ netdev@vger.kernel.org, 
+ Jason Xing <kernelxing@tencent.com>
+Message-ID: <68556722b5c47_3ffda429453@willemb.c.googlers.com.notmuch>
+In-Reply-To: <CAL+tcoA=KQCLdthH3VXPhd-z=sieKQu_xOPgQEzxdy0Mtnycag@mail.gmail.com>
+References: <20250619090440.65509-1-kerneljasonxing@gmail.com>
+ <20250619080904.0a70574c@kernel.org>
+ <CAL+tcoA=KQCLdthH3VXPhd-z=sieKQu_xOPgQEzxdy0Mtnycag@mail.gmail.com>
+Subject: Re: [PATCH net-next v3] net: xsk: introduce XDP_MAX_TX_BUDGET
+ set/getsockopt
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-GB, ru-RU
-To: netdev@vger.kernel.org
-Cc: "netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
- David Ahern <dsahern@kernel.org>, Nicolas Dichtel
- <nicolas.dichtel@6wind.com>, Florian Westphal <fw@strlen.de>,
- Pablo Neira Ayuso <pablo@netfilter.org>
-From: Eugene Crosser <crosser@average.org>
-Subject: When routed to VRF, NF _output_ hook is run unexpectedly
-Autocrypt: addr=crosser@average.org; keydata=
- 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
- u3lufqBt0w==
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------G6lT0ME0MREdbUBsN5ZKv7y4"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------G6lT0ME0MREdbUBsN5ZKv7y4
-Content-Type: multipart/mixed; boundary="------------Jx43KJnnGY0YnxvQvju5FtWm";
- protected-headers="v1"
-From: Eugene Crosser <crosser@average.org>
-To: netdev@vger.kernel.org
-Cc: "netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
- David Ahern <dsahern@kernel.org>, Nicolas Dichtel
- <nicolas.dichtel@6wind.com>, Florian Westphal <fw@strlen.de>,
- Pablo Neira Ayuso <pablo@netfilter.org>
-Message-ID: <f55f7161-7ddc-46d1-844e-0f6e92b06dda@average.org>
-Subject: When routed to VRF, NF _output_ hook is run unexpectedly
-
---------------Jx43KJnnGY0YnxvQvju5FtWm
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Hello!
+Jason Xing wrote:
+> On Thu, Jun 19, 2025 at 11:09=E2=80=AFPM Jakub Kicinski <kuba@kernel.or=
+g> wrote:
+> >
+> > On Thu, 19 Jun 2025 17:04:40 +0800 Jason Xing wrote:
+> > > @@ -424,7 +421,9 @@ bool xsk_tx_peek_desc(struct xsk_buff_pool *poo=
+l, struct xdp_desc *desc)
+> > >       rcu_read_lock();
+> > >  again:
+> > >       list_for_each_entry_rcu(xs, &pool->xsk_tx_list, tx_list) {
+> > > -             if (xs->tx_budget_spent >=3D MAX_PER_SOCKET_BUDGET) {=
 
-It is possible, and very useful, to implement "two-stage routing" by
-installing a route that points to a VRF device:
+> > > +             int max_budget =3D READ_ONCE(xs->max_tx_budget);
+> > > +
+> > > +             if (xs->tx_budget_spent >=3D max_budget) {
+> > >                       budget_exhausted =3D true;
+> > >                       continue;
+> > >               }
+> > > @@ -779,7 +778,7 @@ static struct sk_buff *xsk_build_skb(struct xdp=
+_sock *xs,
+> > >  static int __xsk_generic_xmit(struct sock *sk)
+> > >  {
+> > >       struct xdp_sock *xs =3D xdp_sk(sk);
+> > > -     u32 max_batch =3D TX_BATCH_SIZE;
+> > > +     u32 max_budget =3D READ_ONCE(xs->max_tx_budget);
+> >
+> > Hm, maybe a question to Stan / Willem & other XSK experts but are the=
+se
+> > two max values / code paths really related? Question 2 -- is generic
+> > XSK a legit optimization target, legit enough to add uAPI?
+> =
 
-    ip link add vrfNNN type vrf table NNN
-    ...
-    ip route add xxxxx/yy dev vrfNNN
+> I'm not an expert but my take is:
+> #1, I don't see the correlation actually while I don't see any reason
+> to use the different values for both of them.
+> #2, These two definitions are improvement points because whether to do
+> the real send is driven by calling sendto(). Enlarging a little bit of
+> this value could save many times of calling sendto(). As for the uAPI,
+> I don't know if it's worth it, sorry. If not, the previous version 2
+> patch (regarding per-netns policy) will be revived.
+> =
 
-however this causes surprising behaviour with relation to netfilter
-hooks. Namely, packets taking such path traverse _output_ nftables
-chain, with conntracking information reset. So, for example, even
-when "notrack" has been set in the prerouting chain, conntrack entries
-will still be created. Script attached below demonstrates this behaviour.=
+> So I will leave those two questions to XSK experts as well.
 
+You're proposing the code change, so I think it's on you to make
+this argument?
+ =
 
-So, in order to control conntracking behaviour, it is necessary to
-install additional rules in the output chain, despite clearly only
-forwarding takes place, logically. Also, because "iif" is not available
-in the "output" chain, it is difficult to distinguish such vrf-routed
-traffic from true "output" traffic in the nftable rule.
+> #2 quantification
+> It's really hard to do so mainly because of various stacks implemented
+> in the user-space. AF_XDP is providing a fundamental mechanism only
+> and its upper layer is prosperous.
 
-I suppose that if the packet is being processed by vrf because it
-followed a route pointing to the vrf interface, output netfilter hook
-should not be executed. Possibly(?) a forwarding hook should be run
-instead, or none?
+I think it's a hard sell to argue adding a tunable, if no plausible
+recommendation can be given on how the tunable is to be used.
 
-Thanks for consideration
+It's not necessary, and most cases infeasible, to give a heuristic
+that fits all possible users. But at a minimum the one workload that
+prompted the patch. What value do you set it to and how did you
+arrive at that number? =
 
-Eugene
-
-=3D=3D=3D=3D=3D
-#!/bin/sh
-
-cleanup() {
-	for ns in 1 2 3; do
-		ip netns del tns$ns
-	done
-}
-
-trap cleanup EXIT
-
-for ns in 1 2 3; do
-	ip netns add tns$ns
-done
-ip -n tns2 link add ve21 type veth peer ve12 netns tns1
-ip -n tns2 link add ve23 type veth peer ve32 netns tns3
-
-ip -n tns1 link set lo up
-ip -n tns1 addr add 172.16.1.1/30 dev ve12
-ip -n tns1 link set ve12 up
-ip -n tns1 route add default via 172.16.1.2 dev ve12
-
-ip -n tns3 link set lo up
-ip -n tns3 addr add 172.16.3.1/30 dev ve32
-ip -n tns3 addr add 172.16.9.1/30 dev ve32
-ip -n tns3 link set ve32 up
-ip -n tns3 route add default via 172.16.3.2 dev ve32
-
-ip -n tns2 link set lo up
-ip -n tns2 addr add 172.16.1.2/30 dev ve21
-ip -n tns2 link set ve21 up
-ip -n tns2 addr add 172.16.3.2/30 dev ve23
-ip -n tns2 link set ve23 up
-
-ip -n tns2 link add tvrf1 type vrf table 9999
-ip -n tns2 link set tvrf1 up
-ip -n tns2 route add 172.16.9.0/24 dev tvrf1
-ip -n tns2 route add 172.16.9.0/24 via 172.16.3.1 dev ve23 vrf tvrf1
-
-ip netns exec tns2 nft -f - <<__END__
-table inet filter {
-	chain rawout {
-		type filter hook output priority raw; policy accept;
-		counter # notrack  ### NEED THIS ADDITIONAL "notrack"
-	}
-	chain rawpre {
-		type filter hook prerouting priority raw; policy accept;
-		counter notrack
-	}
-	chain forward {
-		type filter hook forward priority filter; policy accept;
-		ct state established,related counter accept
-		counter
-	}
-}
-__END__
-
-ip netns exec tns1 ping -q -W1 -c1 172.16.3.1
-ip netns exec tns1 ping -q -W1 -c1 172.16.9.1
-
-ip netns exec tns2 nft list ruleset
-ip netns exec tns2 conntrack -L
-
---------------Jx43KJnnGY0YnxvQvju5FtWm--
-
---------------G6lT0ME0MREdbUBsN5ZKv7y4
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEnAziRJw3ydIzIkaHfKQHw5GdRYwFAmhVZFsACgkQfKQHw5Gd
-RYyXNgf/SmW6JMNPITGAwM8e0I1U1VhJeGLMBslRip/FbyChPhXeZ1PpGbXjw37Z
-8vkzO+NlAoUcxpYa6yFkp5ljiplMyKPcgpDxHPpxrQ9SIl4JEDBocb7mkg3/lN0j
-XgCqC7t47AZhuF1HPvRvvJnGDMpdWSACMJCeyfbCIyH4d2IqO2QOlF9YHKAkH4Pl
-j7XktukGqi7NNYAFryPtMpgAWWANS3XvEN1NrR3BUTtJP0CT7pv8rbgzQhP0IFnJ
-JW7GNBFFtpz2lMa6ggzZh1NAI7XZS42idKtf9NnkswgR68P0uIl1DBvmOqnu0Io4
-NMlXc+5oDjbgfn5YZ4MpCdIh1pJxeQ==
-=eDCm
------END PGP SIGNATURE-----
-
---------------G6lT0ME0MREdbUBsN5ZKv7y4--
