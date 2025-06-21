@@ -1,306 +1,162 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6EB539A;
-	Sat, 21 Jun 2025 00:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E023173;
+	Sat, 21 Jun 2025 01:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750466875; cv=none; b=axkeWi1KDU71Mo8xVsieLQqVzGWOTpmYSHXHIRkQ9r2fh0ruB9gpm70In1kGtk3N8dgvLE87kJYvuJ9psjevu6TL844flitGlBYUZ+tmAPQ0fe/8hHM4LdUAoh4CqBhxdYRvo2qZWgkvHVdWgWrbMYJJwiDPPReQUsDicf1J/7Y=
+	t=1750468003; cv=none; b=d3Hxh49knj5c/2QBXknL/IpDvz+LRCa5iOA2V9e3P9CxrmSpZU7qpG07KdeGkzqQIqFPuk2AY4Fo6yO+PVtkutf1lEEetG3xlcaLL11/2wyW7rOEWicMut2lH9E3x3jIf83/ufHDulek1wLkmhAI/rXdRY5rYNrD6mOnq92H37c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750466875; c=relaxed/simple;
-	bh=/45otv5zF2ad1IYUZ9cdo9KC/e70G11Qigzwmcd30Jc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Za2Rn29lAV3nE0rnhxNYjAf/mV2pE9yiLvuwzFEhWtnlRCBnZOvxPj6fLUNJapQfbqRUGVtYh1gQY3Cjy4xibtINfek/af5ZUD7hLwZPtKeEzowvCYk0qtww3RdrG1Fb/6y2qlmPKm3K61t1WITFtqh8hu8For6ogjk0sRcZSPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=L1L2J7qy; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1750468003; c=relaxed/simple;
+	bh=/zUEP/ZthdU/jL5hhulkFW79OME62AvtfmvxYVKjDY0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pz+8DUzMoLGcllHNolrbTFNX5nrcN/ph9iqhFOjEK17eatFnBtdsUfVDJWgnbOTd6Wa67dCsm9wkmfgKdtzZS9Anew3VNE4Y1xlsX6Mpb98MPmYwKWbO9dOyXWB3+OaktwvXzKNtw+byHhE12OBaedt3FLxeFxfixyH76+5VQnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UQ9ZgpI6; arc=none smtp.client-ip=209.85.166.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="L1L2J7qy"
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55L0LDk9029646;
-	Sat, 21 Jun 2025 00:47:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=vDhvG
-	+Uprxt1jxcq2Z0FtRn3OUH4623Q9nNim7CI1S4=; b=L1L2J7qyEF2YA9igClyX/
-	QjLtHR/AIh5GCC3t/2k2rhmv4A8aBKMiEf3xhJXjDmnkpyB19twLt9jPwdx2rCQ9
-	SHQoKTcsTuPLsTelcQDNJb9IdAPsPrKoKDguFx0qXVEYhNYETNe+QYUaM3wSNVmF
-	vGevUFcRaoshCmKQMT6mHN1DsVYgzrxmPEHag+J2/P6c2rH8ZpTe/MmhhCWz8t2C
-	4dzsshnghVayauho2O14XNgMCkEWSl/ne0N6ZnfTMtLuDOqcAD6Q6nKXe9r5icbb
-	cso2OFNRbwQu3JcSyMJbN0EcS52dPdDaOsSpe7ap6HIJnFM4y70pQHczbK87fm+n
-	Q==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 478yv5cjgd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 21 Jun 2025 00:47:47 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 55KMXrMJ037413;
-	Sat, 21 Jun 2025 00:47:46 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 478yhd7nnu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 21 Jun 2025 00:47:46 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55L0ixOj038657;
-	Sat, 21 Jun 2025 00:47:45 GMT
-Received: from konrad-char-us-oracle-com.osdevelopmeniad.oraclevcn.com (konrad-char-us-oracle-com.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.249.23])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 478yhd7nn3-2;
-	Sat, 21 Jun 2025 00:47:45 +0000
-From: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-To: allison.henderson@oracle.com, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, tj@kernel.org,
-        andrew@lunn.ch
-Cc: hannes@cmpxchg.org, mkoutny@suse.com, cgroups@vger.kernel.org,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Subject: [PATCH net-next v4] rds: Expose feature parameters via sysfs (and ELF)
-Date: Fri, 20 Jun 2025 20:26:11 -0400
-Message-ID: <20250621004741.2883507-2-konrad.wilk@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250621004741.2883507-1-konrad.wilk@oracle.com>
-References: <20250621004741.2883507-1-konrad.wilk@oracle.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UQ9ZgpI6"
+Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-3ddd32e3955so8393895ab.2;
+        Fri, 20 Jun 2025 18:06:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750468000; x=1751072800; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IPKKNAvlZSp+QOhtTY1FDg2ly4OUD3/RjCrMWA/mLac=;
+        b=UQ9ZgpI68plX4RZFqW+ayR+4N7EzcxYuxwaltsSlF1jVEI7wkE/Gro171kExNElTct
+         YeiecsVph7AmGL6vo5fhqB7D+rMbGwjqcmCJ7JS2CIV8tpSyfVtqBF/OhEZE2wb7Nhau
+         rYXFGYFpDiBRt2yDVM9IkgukVr8ePxHqMYERhG8s6Wn4AnmMg/kLccxxTWiMk53aVLmv
+         A6dmzyAZitWzRtsbL/Dejpm1lbYB3pyR3kzuUdmSczqBPzdTSXkwR20zSLNiH8QQkQe1
+         Y5vo0XUfft3q3dcYf1lOCY2frEBh+MKyGuH7Z2sSbl8JYyWhrG97OMSna7Mc4QQXeTbK
+         bv0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750468000; x=1751072800;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IPKKNAvlZSp+QOhtTY1FDg2ly4OUD3/RjCrMWA/mLac=;
+        b=AOLsRu6RY73WGWWgN2SBphNIyaDfcGyBb9YJzPVBgXwuAfS9yG22+Njl9tXWjmwWdO
+         mGcmZQfNKl8iz+CWGqV/Oe0IW+PB8ld5jrY0Evk4jV5onoYhwVhvmfX8WfNd5Fm2Bgl3
+         SHYumClucTNCgy+BTp7+C8l9mMIk4taTg00Lyw4o5udhycbC2DdfK4RcSUIQnOtlpssf
+         Ss+zeRrS8Eio+C5WO5AuuvSQo4buje9+ROR6cCTP857+7suI0ZloqCJp/IO5tBejl2I3
+         RcuCBkNYXWFac5t5HkpBIrxR4HhwUG4ecPlqn9hVE5fRvmZcRw8cECytMxxdSoQmFX80
+         jLtw==
+X-Forwarded-Encrypted: i=1; AJvYcCVWOHliAA4Lf92GNjYiCQvpZX0fbsmK0dycPQzMU16RZI8n5GSklMSgkRe7qIOaOMzRoEw=@vger.kernel.org, AJvYcCWv6TV0efQiJVEXfcITbuJsoAFY5mo7hk3GpetAGuXsU1dSKWZezBipF7ozqhKNYQp7qqYn80Pm@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBlsJUtsEjk+sYRdyXLi+6ddskMginNtONmtUfFycBurD0WrY5
+	Vxa45RZCQUaGcHiVIJSC5yxnB1r6JEqBQub8j1QaKFLCls3v28FbMhT2FP2ILy7AixenJJ0QZAy
+	h0VoV4jCPTZmfJbjwi/Y6THyAhziZSbo=
+X-Gm-Gg: ASbGncu/UrR9lxiyqHfVVibzzB1MTFBECrRjwCYux9YxbtR/+Cw0+ak1hvysTeK5/Ww
+	SDLzqEtELfX8kATuAbJy9NlHdAWDw1J3NPQ5OXcM1zBrd7XVoCee0y1CM+kRFXULLeljkRyCpIY
+	rVbbbNB+LGAoKsYy7xtZ0SolNZOTQO0LrBKmmnXwCl6Q==
+X-Google-Smtp-Source: AGHT+IE/Nwiw4ZighNENV+5mjdW0ijfvaQezgdCgMFiM/p+8kjUkbGTiT2fr1TuOHDxksvCkse4ZrOv3dqeCyJnBycw=
+X-Received: by 2002:a05:6e02:2217:b0:3dc:7a9a:4529 with SMTP id
+ e9e14a558f8ab-3de38cb10cdmr58268895ab.16.1750468000468; Fri, 20 Jun 2025
+ 18:06:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-20_08,2025-06-20_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 adultscore=0
- mlxlogscore=999 spamscore=0 mlxscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2506210002
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIxMDAwMiBTYWx0ZWRfX+X8UHAiGW8sf yB2tj7dj3XxFU6/VaHSCg91OMNALE4oBMtac1NkQyqxDNy3TqQDly2J+fkw8ZH0t5eT24VxXyUO iwG2b65N83C3q57zIJWcs1YP2mZ3r7CpdlHrIRgjvSsv26Fc2Ru4hzUXJFs0akspyO8pGPxe7Ve
- 3UiRd71eFhiOnj/fgVvPBMQMV5+ZgC1JbWZ+JzUxAJvKUBm0ToH+TYtcTG2mterFHcdKF8ww5Xy Z1kgQXgyExnGggoN7rhGrF13RyzCGG8tV9FE7JqGpcKLwn3Totzm9/Zh0fJxVlZ4TEAPISp3uTf JcHh5cfpZvsrOFuL1U9RyPvAOkmc0Y5klqXkg0lJhjFR4ybI86XqhKmhwKmFaqtNR4CIQjgPWbh
- kmhoI9FS5MSC2TEiOIUTwfmnWWVEJMGs829rp4nyIF8mV8jEc5LpUCrb7vwOKkmeQ77IO5Hg
-X-Proofpoint-GUID: KZ-22x_aQ4uMiQKDOdonKKxko6UtRhpt
-X-Proofpoint-ORIG-GUID: KZ-22x_aQ4uMiQKDOdonKKxko6UtRhpt
-X-Authority-Analysis: v=2.4 cv=W9c4VQWk c=1 sm=1 tr=0 ts=68560133 cx=c_pps a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17 a=6IFa9wvqVegA:10 a=yPCof4ZbAAAA:8 a=m4ZG2DmCZvx6Djf13nYA:9
+References: <20250619090440.65509-1-kerneljasonxing@gmail.com>
+ <20250619080904.0a70574c@kernel.org> <aFVvcgJpw5Cnog2O@mini-arch> <6855deade401b_1ca4329456@willemb.c.googlers.com.notmuch>
+In-Reply-To: <6855deade401b_1ca4329456@willemb.c.googlers.com.notmuch>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Sat, 21 Jun 2025 09:06:03 +0800
+X-Gm-Features: AX0GCFv0krLjmeVrJvtIlqPv_bisd_76ZoX3YG1MQEZz4IgaTCk-dCALd5WXTU4
+Message-ID: <CAL+tcoD6gkyirk=CQ0yepk3fkZVf+28Zc7nUoModeCT3Po7VYQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v3] net: xsk: introduce XDP_MAX_TX_BUDGET set/getsockopt
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Stanislav Fomichev <stfomichev@gmail.com>, Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net, 
+	edumazet@google.com, pabeni@redhat.com, bjorn@kernel.org, 
+	magnus.karlsson@intel.com, maciej.fijalkowski@intel.com, 
+	jonathan.lemon@gmail.com, sdf@fomichev.me, ast@kernel.org, 
+	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, joe@dama.to, 
+	bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	Jason Xing <kernelxing@tencent.com>, magnus.karlsson@gmail.com, skhawaja@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-We would like to have a programmatic way for applications
-to query which of the features defined in include/uapi/linux/rds.h
-are actually implemented by the kernel.
+On Sat, Jun 21, 2025 at 6:20=E2=80=AFAM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+>
+> Stanislav Fomichev wrote:
+> > On 06/19, Jakub Kicinski wrote:
+> > > On Thu, 19 Jun 2025 17:04:40 +0800 Jason Xing wrote:
+> > > > @@ -424,7 +421,9 @@ bool xsk_tx_peek_desc(struct xsk_buff_pool *poo=
+l, struct xdp_desc *desc)
+> > > >   rcu_read_lock();
+> > > >  again:
+> > > >   list_for_each_entry_rcu(xs, &pool->xsk_tx_list, tx_list) {
+> > > > -         if (xs->tx_budget_spent >=3D MAX_PER_SOCKET_BUDGET) {
+> > > > +         int max_budget =3D READ_ONCE(xs->max_tx_budget);
+> > > > +
+> > > > +         if (xs->tx_budget_spent >=3D max_budget) {
+> > > >                   budget_exhausted =3D true;
+> > > >                   continue;
+> > > >           }
+> > > > @@ -779,7 +778,7 @@ static struct sk_buff *xsk_build_skb(struct xdp=
+_sock *xs,
+> > > >  static int __xsk_generic_xmit(struct sock *sk)
+> > > >  {
+> > > >   struct xdp_sock *xs =3D xdp_sk(sk);
+> > > > - u32 max_batch =3D TX_BATCH_SIZE;
+> > > > + u32 max_budget =3D READ_ONCE(xs->max_tx_budget);
+> > >
+> > > Hm, maybe a question to Stan / Willem & other XSK experts but are the=
+se
+> > > two max values / code paths really related? Question 2 -- is generic
+> > > XSK a legit optimization target, legit enough to add uAPI?
+> >
+> > 1) xsk_tx_peek_desc is for zc case and xsk_build_skb is copy mode;
+> > whether we want to affect zc case given the fact that Jason seemingly
+> > cares about copy mode is a good question.
+>
+> The two constants seem to be only tangentially created.
+>
+> If there is fear that one tunable modifies both, it is simple enough
+> to remove the unnecessary dependency and only tune the first.
 
-The problem is that applications can be built against newer
-kernel (or older) and they may have the feature implemented or not.
+Last night I was thinking only let the first one take effect and keep
+the zc mode untouched. IIUC, if we publish the uAPI (setsockopt),
+we're _not_ allowed to remove the unwanted one when we spot some
+problems? If so, I will only make the copy mode work :) If the latter
+needs this in the future, another setsockopt can be easily added. Am I
+right?
 
-The lack of a certain feature would signify that the kernel
-does not support it. The presence of it signifies the existence
-of it.
+>
+> > 2) I do find it surprising as well. Recent busy polling patches were
+> > also using/targeting copy mode. But from my pow, if people use it, I se=
+e
+> > no reason to make it more usable.
+>
+> That's a very fair question.
+>
+> Jason, have you tried XDP_ZEROCOPY? It's quite plausible that that
+> would address your issue.
 
-This would provide the application to query the sysfs and figure
-out what is supported on a running system.
+Not yet, but I will try and verify maybe at the beginning of next
+month as you suggested.
 
-This patch would expose this extra sysfs file:
+>
+> I have had a use for copy mode, but that was rather obscure. A small
+> packet workload where copy cost is negligible, and with copy mode it
+> was easy to make to reinstate flow steering in XDP to specific XSKs,
+> akin to
+>
+> https://lore.kernel.org/netdev/65c0f032ac71a_7396029419@willemb.c.googler=
+s.com.notmuch/
 
-/sys/kernel/rds/features/ioctl_get_tos
-/sys/kernel/rds/features/ioctl_set_tos
-/sys/kernel/rds/features/socket_cancel_sent_to
-/sys/kernel/rds/features/socket_cong_monitor
-/sys/kernel/rds/features/socket_free_mr
-/sys/kernel/rds/features/socket_get_mr
-/sys/kernel/rds/features/socket_get_mr_for_dest
-/sys/kernel/rds/features/socket_recverr
-/sys/kernel/rds/features/socket_so_rxpath_latency
-/sys/kernel/rds/features/socket_so_transport
+Interesting. Thanks for the pointer  :)
 
-With the value of 'supported' in them. In the future this value
-could change to say 'deprecated' or have other values (for example
-different versions) or can be runtime changed.
+>
+> The main issue with that remained that driver copy mode also implies
+> the slower generic copy based Tx path, which goes through the full
+> dev_queue_xmit stack.
 
-The choice to use sysfs and this particular way is modeled on the
-filesystems usage exposing their features.
+To be more specific, not the full dev_queue_xmit stack as
+__xsk_generic_xmit() bypasses the qdisc layer.
 
-Alternative solution such as exposing one file ('features') with
-each feature enumerated (which cgroup does) is a bit limited in
-that it does not provide means to provide extra content in the future
-for each feature. For example if one of the features had three
-modes and one wanted to set a particular one at runtime - that
-does not exist in cgroup (albeit it can be implemented but it would
-be quite hectic to have just one single attribute).
-
-Another solution of using an ioctl to expose a bitmask has the
-disadvantage of being less flexible in the future and while it can
-have a bit of supported/unsupported, it is not clear how one would
-change modes or expose versions. It is most certainly feasible
-but it can get seriously complex fast.
-
-As such this mechanism offers the basic support we require
-now and offers the flexibility for the future.
-
-Lastly, we also utilize the ELF note macro to expose these via
-so that applications that have not yet initialized RDS transport
-can inspect the kernel module to see if they have the appropiate
-support and choose an alternative protocol if they wish so.
-
-Signed-off-by: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
----
-v3: Add the missing documentation
-    Remove the CONFIG_SYSFS #ifdef machinations
-    Redo it with each feature as a seperate file in 'features'
-    directory.
-v4: Follow the syntax in Documentation/ABI/stable/sysfs-module
-    Tack on the ret value if we fail kobject_create_and_add
----
- Documentation/ABI/stable/sysfs-transport-rds | 43 +++++++++++++
- net/rds/af_rds.c                             | 63 +++++++++++++++++++-
- 2 files changed, 105 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/ABI/stable/sysfs-transport-rds
-
-diff --git a/Documentation/ABI/stable/sysfs-transport-rds b/Documentation/ABI/stable/sysfs-transport-rds
-new file mode 100644
-index 000000000000..749a043d4e88
---- /dev/null
-+++ b/Documentation/ABI/stable/sysfs-transport-rds
-@@ -0,0 +1,43 @@
-+What:		/sys/kernel/rds/features/*
-+Date:		June 2025
-+KernelVersion:	6.17
-+Contact:	rds-devel@oss.oracle.com
-+Description:	This directory contains the features that this kernel
-+		has been built with and supports. They correspond
-+		to the include/uapi/linux/rds.h features.
-+
-+		The intent is for applications compiled against rds.h
-+		to be able to query and find out what features the
-+		driver supports. The current expected value is 'supported'.
-+
-+What:		/sys/kernel/rds/features/ioctl_[get,set]_tos
-+Description:	Allows the user to set on the socket a type of
-+		service(tos) value associated forever.
-+
-+What:		/sys/kernel/rds/features/socket_cancel_sent_to
-+Description:	Allows to cancel all pending messages to a given destination.
-+
-+What:		/sys/kernel/rds/features/socket_cong_monitor
-+Description:	RDS provides explicit congestion monitoring for a socket using
-+		a 64-bit mask. Each bit in the mask corresponds to a group of ports.
-+
-+		When a congestion update arrives, RDS checks the set of ports
-+		that became uncongested against the bit mask.
-+
-+		If they overlap, a control messages is enqueued on the socket,
-+		and the application is woken up.
-+
-+What:		/sys/kernel/rds/features/socket_[get_mr.get_mr_for_dest,free_mr]
-+Description:	RDS allows a process to register or release memory ranges for
-+		RDMA.
-+
-+What:		/sys/kernel/rds/features/socket_recverr
-+Description:	RDS will send RDMA notification messages to the application for
-+		any RDMA operation that fails. By default this is off.
-+
-+What:		/sys/kernel/rds/features/socket_so_rxpath_latency
-+Description:	Receive path latency in various stages of receive path.
-+
-+What:		/sys/kernel/rds/features/socket_so_transport
-+Description:	Attach the socket to the underlaying transport (TCP, RDMA
-+		or loop) before invoking bind on the socket.
-diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
-index 8435a20968ef..f920cc6f0b2b 100644
---- a/net/rds/af_rds.c
-+++ b/net/rds/af_rds.c
-@@ -32,7 +32,9 @@
-  */
- #include <linux/module.h>
- #include <linux/errno.h>
-+#include <linux/elfnote.h>
- #include <linux/kernel.h>
-+#include <linux/kobject.h>
- #include <linux/gfp.h>
- #include <linux/in.h>
- #include <linux/ipv6.h>
-@@ -871,6 +873,53 @@ static void rds6_sock_info(struct socket *sock, unsigned int len,
- }
- #endif
- 
-+static ssize_t supported_show(struct kobject *kobj, struct kobj_attribute *attr,
-+			     char *buf)
-+{
-+	return sysfs_emit(buf, "supported\n");
-+}
-+
-+#define SYSFS_ATTR(_name)					\
-+ELFNOTE64("rds." #_name, 0, 1);				\
-+static struct kobj_attribute rds_attr_##_name = {		\
-+	.attr = {.name = __stringify(_name), .mode = 0444 },	\
-+	.show = supported_show,					\
-+}
-+
-+SYSFS_ATTR(ioctl_set_tos);
-+SYSFS_ATTR(ioctl_get_tos);
-+SYSFS_ATTR(socket_cancel_sent_to);
-+SYSFS_ATTR(socket_cong_monitor);
-+SYSFS_ATTR(socket_get_mr);
-+SYSFS_ATTR(socket_get_mr_for_dest);
-+SYSFS_ATTR(socket_free_mr);
-+SYSFS_ATTR(socket_recverr);
-+SYSFS_ATTR(socket_so_rxpath_latency);
-+SYSFS_ATTR(socket_so_transport);
-+
-+#define ATTR_LIST(_name) &rds_attr_##_name.attr
-+
-+static struct attribute *rds_feat_attrs[] = {
-+	ATTR_LIST(ioctl_set_tos),
-+	ATTR_LIST(ioctl_get_tos),
-+	ATTR_LIST(socket_cancel_sent_to),
-+	ATTR_LIST(socket_cong_monitor),
-+	ATTR_LIST(socket_get_mr),
-+	ATTR_LIST(socket_get_mr_for_dest),
-+	ATTR_LIST(socket_free_mr),
-+	ATTR_LIST(socket_recverr),
-+	ATTR_LIST(socket_so_rxpath_latency),
-+	ATTR_LIST(socket_so_transport),
-+	NULL,
-+};
-+
-+static const struct attribute_group rds_feat_group = {
-+	.attrs = rds_feat_attrs,
-+	.name = "features",
-+};
-+
-+static struct kobject *rds_sysfs_kobj;
-+
- static void rds_exit(void)
- {
- 	sock_unregister(rds_family_ops.family);
-@@ -882,6 +931,8 @@ static void rds_exit(void)
- 	rds_stats_exit();
- 	rds_page_exit();
- 	rds_bind_lock_destroy();
-+	sysfs_remove_group(rds_sysfs_kobj, &rds_feat_group);
-+	kobject_put(rds_sysfs_kobj);
- 	rds_info_deregister_func(RDS_INFO_SOCKETS, rds_sock_info);
- 	rds_info_deregister_func(RDS_INFO_RECV_MESSAGES, rds_sock_inc_info);
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -923,6 +974,15 @@ static int __init rds_init(void)
- 	if (ret)
- 		goto out_proto;
- 
-+	rds_sysfs_kobj = kobject_create_and_add("rds", kernel_kobj);
-+	if (!rds_sysfs_kobj) {
-+		ret = -ENOMEM;
-+		goto out_proto;
-+	}
-+	ret = sysfs_create_group(rds_sysfs_kobj, &rds_feat_group);
-+	if (ret)
-+		goto out_kobject;
-+
- 	rds_info_register_func(RDS_INFO_SOCKETS, rds_sock_info);
- 	rds_info_register_func(RDS_INFO_RECV_MESSAGES, rds_sock_inc_info);
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -931,7 +991,8 @@ static int __init rds_init(void)
- #endif
- 
- 	goto out;
--
-+out_kobject:
-+	kobject_put(rds_sysfs_kobj);
- out_proto:
- 	proto_unregister(&rds_proto);
- out_stats:
--- 
-2.43.5
-
+Thanks,
+Jason
