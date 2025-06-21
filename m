@@ -1,115 +1,99 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A07D4C7C
-	for <netdev@vger.kernel.org>; Sat, 21 Jun 2025 00:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341AC4C7C;
+	Sat, 21 Jun 2025 00:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750466750; cv=none; b=kr560HGGSPTjT/oQar00zQ0tzpVssM0XwBuW0zCcmw80pHvjMDGYUM1FnRtjz5lApJxfom/DzX08MF2+d221RaMOvG60/DdmBDG7Gkwer5xm/NUBK+HFiXsq/awqouyETP2GIUevPzPVV7QS+yHu+rdS3eB6ffXpX5GyaeeWCHc=
+	t=1750466874; cv=none; b=elOpzP9sfBfYefrVulDqPwDAAH6pWVOKDX1F76MrhcLTMT880FM4f/kjit81Dhqj8CB7q/gCxG/DL+TJP5An2KFpnYbMMPIhCGaSAThg1qJ0D5/jFEixhkPa8ghHqTxpjvlSE1K387Oom+98kdKO/r0Wxw22Zzq82rdS4jJcBkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750466750; c=relaxed/simple;
-	bh=/vXicv0zO8Xh6+Arf/Ygx7TcZEN7xXN5Wb93qZ7YgIk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z7wkDtNlTXourEef/GXeg4m3rzft2MqwC2LfClQRUEUBCtOTdNQVxl1qt+qJZhJDjFfKDtoqp4nCvc2nnxl98R7lfrfNWi0R0iFGjXg7Rb4Mr/LH7fT47uLdEn2BEF3YSwRbMykgltOnK44xgXtx+ShGOdcZTKXJ63ZgrzwQBNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=aZz1hkPT; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	s=arc-20240116; t=1750466874; c=relaxed/simple;
+	bh=P3T3lMbliCUlHip6lon8TgSCX3DYEoaqxNKSAaEvwq4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k+p14gtje0wopmzd/5WSOhCR1qCFXlGtDc7OdOkrWDE0FfmD9AQDtm211co+Qw/jFVCh3OJ3BeEXxFvMz0TAAYCBCnhorrl03h7SYTmONjjqSB8uNyMwJhA8Iym/O+eG4C+oqb2NilUgCNgy+yVVLNItm2SYOgxtQfwi/ESe3g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=mABo3DTg; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="aZz1hkPT"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3137c2021a0so1857273a91.3
-        for <netdev@vger.kernel.org>; Fri, 20 Jun 2025 17:45:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1750466746; x=1751071546; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/sbdXbeY2/eaugiOA42ampKhNLipC3GxlWN6lfAE8ZE=;
-        b=aZz1hkPTkamJJmwE4WW+Vq8gq7KwUaFSJTyyidkiRVJj5UVkzFo8m3u8xua4xKWzQM
-         Lbs6K4I18BKHnlQ1uZxcl5RrGWzVsqVaPnXIUu+uLTpoAm7KO6Ps7Lg0DaIyOz3JSGNr
-         R/UoBRxSyx0C3k1ohhxb3vTkYXeXO8/cc5AJiD9eTCwkVv/2qrpV8rEHqbGOwFM2jsp3
-         ++4Y/V4hQZwMltAuv9SLY/qqzydJuBfbaOvHGca0VPisai2TAAzhCvwQmHaORf9xFm1Z
-         06IVSWx8lbEo3DjcPpIdQpH+iWG3zZQkW/y5Cim0QcxJiw0c3FrnlG13FNgf3djMw2IA
-         KDuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750466746; x=1751071546;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/sbdXbeY2/eaugiOA42ampKhNLipC3GxlWN6lfAE8ZE=;
-        b=NV2Lol8wyGM/X7oMpeOW0d9MLorb9eJvHvqkI8hKYy3GPakC4TuhjGu3Z4I+RchWrZ
-         4PVI0VDTLIjZnqBkPkT9osUdlbOtUBmySWRsGj2Oji+nXGM/H2b1iYQYSfdeUV69RQwM
-         6WCeNxa6+fOPLR7aRYXk58c2cdFTyhKSY6Bz5PGxy7C3tR82wcWn8+HRCp45vKWPMOB7
-         6Hy+53sSXyuCzoG7+AUSYeHP9QaL2lAP5DAdkUqY0/tqzNJluWLpFpczMg4+2wuG8Rmi
-         lwhtsQmxK3qI0FUmfkZKWo+PxKgWQ/t0WzFzuiVdnunwfdLNYTbys/A+GKhEZVnDAAm5
-         uHQg==
-X-Forwarded-Encrypted: i=1; AJvYcCV9EVENvbjklwbEXDHAdia7QtILeq7QAxbl96ejVSqMxRtG7u844BWiICVB9ARyf64NgOIRs8E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3bguDTGwQ5YR4Qu8cW9WcxZnYmu/kBAhGNBt4xy/YxyztMazZ
-	PpAMVVNJzInyhnfTVXTR7zN4jVYJOdooREQBBD1DGv8ZsuG7siJvJ6t6HyB6CKAJV8o=
-X-Gm-Gg: ASbGnctLNv8AHbGm9t7bRbzCSjrwgTmwEOwkyKSTxnsyxqhJILWhy0GSM1S+8l+9vW0
-	sshIdHZVZSOdFe7vq0ZV6JJEV1Z7dTFvT1AMwAcq8O+5hdlE4yr5VBDJmkuq/3+tEHE5+IMqgPw
-	v9bxbpmfzUe0VupMg6qE5pfaU3tufrlSYJcoarqc5JI7GJbhz5PG6Dfa2FcHX5kUHl3fuhddheh
-	0ynHIsxScyPzp4gyLtSNXDTWutBkvRcdkQyOG+4pZ6H1xn1xBLaduo8/t75PsvuVz814xaEyUuJ
-	M7exHxk7xGyXSAvAviAqFzo1yvj0u4TCkF9cN/aJKieCHsxKoiHCk3yQPqRASrkUfLDWC1uWvIb
-	OsYQar5KJ/UVy/6pgzFYiHxv561GQ
-X-Google-Smtp-Source: AGHT+IFGe58Aajh183xb+xaVI4y6HjhTaPO8NjgjrfTnTmp/ptzBvH8aNWnz3q5vexwIUkQ0dtm5Ag==
-X-Received: by 2002:a17:90b:4c42:b0:311:ea13:2e6a with SMTP id 98e67ed59e1d1-3159d6487a6mr8071680a91.13.1750466746099;
-        Fri, 20 Jun 2025 17:45:46 -0700 (PDT)
-Received: from [192.168.11.150] (157-131-30-234.fiber.static.sonic.net. [157.131.30.234])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b31f1243092sm2165142a12.42.2025.06.20.17.45.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Jun 2025 17:45:45 -0700 (PDT)
-Message-ID: <65868bf0-a210-4f5d-a18a-bd779e824de8@kernel.dk>
-Date: Fri, 20 Jun 2025 18:45:43 -0600
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="mABo3DTg"
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55KEBl13010407;
+	Sat, 21 Jun 2025 00:47:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=TunngGGa7IAXVrIg7SDfP//CX6E4e
+	X/GiN5io65+RA0=; b=mABo3DTghZ/wHoMVdfGG4EJ0K7emwY8yYhoE6DKsY6prX
+	xCcZTTEu14H9TgamVwE9b+/iPHFzNvt5bPqGi16Tt1myKjHHw+J63JGG1iWez5/L
+	V6+sU7sSZ18ecKas9uSA2wfBMvw1y87AtGfdwz4gLZG0cBb/aGdimTgbgLUGUn9M
+	NczeK4BtW6YVmX6LGAuLnbLDw8WVKF3SQ4k5ZO9LM2NTqSIXYeBtr0CvwKWfRQo/
+	ts877Im0iOgd2JoYMN5XDMurF8FhtogrOmsn/ieqm9AGp7zJYKPN1iJfqUGlsp0e
+	D8jbpJOmnXzKJZHxTkro2xw+Mhk5XM7iIP03X8CDg==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 478yp4vps0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 21 Jun 2025 00:47:45 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 55KMVo4v037634;
+	Sat, 21 Jun 2025 00:47:44 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 478yhd7nnf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 21 Jun 2025 00:47:44 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55L0ixOg038657;
+	Sat, 21 Jun 2025 00:47:44 GMT
+Received: from konrad-char-us-oracle-com.osdevelopmeniad.oraclevcn.com (konrad-char-us-oracle-com.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.249.23])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 478yhd7nn3-1;
+	Sat, 21 Jun 2025 00:47:44 +0000
+From: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To: allison.henderson@oracle.com, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, tj@kernel.org,
+        andrew@lunn.ch
+Cc: hannes@cmpxchg.org, mkoutny@suse.com, cgroups@vger.kernel.org
+Subject: [PATCH net-next v4] Expose RDS features via sysfs.
+Date: Fri, 20 Jun 2025 20:26:10 -0400
+Message-ID: <20250621004741.2883507-1-konrad.wilk@oracle.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/5] io_uring cmd for tx timestamps
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Pavel Begunkov <asml.silence@gmail.com>, io-uring@vger.kernel.org,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org,
- Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@amazon.com>,
- Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
- "David S . Miller" <davem@davemloft.net>,
- Richard Cochran <richardcochran@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Jason Xing <kerneljasonxing@gmail.com>
-References: <cover.1750065793.git.asml.silence@gmail.com>
- <efd53c47-4be9-4a91-aef1-7f0cb8bae750@kernel.dk>
- <20250617152923.01c274a1@kernel.org>
- <520fa72f-1105-42f6-a16f-050873be8742@kernel.dk>
- <20250617154103.519b5b9d@kernel.org>
- <1fb789b2-2251-42ed-b3c2-4a5f31bca020@kernel.dk>
- <20250620124643.6c2bdc14@kernel.org>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20250620124643.6c2bdc14@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-20_08,2025-06-20_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 adultscore=0
+ mlxlogscore=999 spamscore=0 mlxscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2506210002
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIxMDAwMiBTYWx0ZWRfX5M6JoSSuT/GI jOtNHafgMQhISltSb08fQdHNtpgZCDP1emjEctdPisC4O8DKiiowEqcXAB+1ZpXzqVkl7+MEsjM 63Z8YWAjG61fmgfDUM3prlRcyXlMqpxwKHRF2MNlHPmE8lwoEPlfr3FRGRBkWxd4kW1z8l3jG0l
+ TSxf29JQjRt6bJ59/jmLM8R3mGsBNrty+Jot7BCARstbBi8syLFxWrgjyOT2TSX/TlZ9k75bcoj 1663y3nJq4kSz+jIVw3LvfjNFoH2c49AFYwJ7ULOqhIzenYNsJ651O9QDO49om9LdiePpT/MJki zK3QmL3W6olcoTr+hioWaTkv98K+99rdPfOc7lJk57XPVPik49TneR0eEuU2jeeonU14ZumMITj
+ fIYpeM81yS60u7SP6L3elkUY3Ph2EA2TUz8zDau3GwFZSklRODKzcHpeCrEVdsc0G07R4123
+X-Authority-Analysis: v=2.4 cv=K5EiHzWI c=1 sm=1 tr=0 ts=68560131 cx=c_pps a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17 a=6IFa9wvqVegA:10 a=xjO9cqGlMa9R-XWzUmgA:9
+X-Proofpoint-GUID: 0-a_3Vg8D27RGCTNk78sUnBZ1QJn66Ya
+X-Proofpoint-ORIG-GUID: 0-a_3Vg8D27RGCTNk78sUnBZ1QJn66Ya
 
-On 6/20/25 1:46 PM, Jakub Kicinski wrote:
-> On Fri, 20 Jun 2025 08:31:25 -0600 Jens Axboe wrote:
->> On 6/17/25 4:41 PM, Jakub Kicinski wrote:
->>> On Tue, 17 Jun 2025 16:33:20 -0600 Jens Axboe wrote:  
->>>> Can we put it in a separate branch and merge it into both? Otherwise
->>>> my branch will get a bunch of unrelated commits, and pulling an
->>>> unnamed sha is pretty iffy.  
->>>
->>> Like this?
->>>
->>>  https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git timestamp-for-jens  
->>
->> Branch seems to be gone?
-> 
-> Ah, I deleted when I was forwarding to Linus yesterday.
-> I figured you already pulled, sorry about that.
-> I've pushed it out again now.
+Hi folks,
 
-Thanks! Usually I would have, but waiting on -rc3 for that branch. I'll
-reply here when I've pulled, should be on Sunday.
+Changelog:
++ Since v1:
+ - Changed it to use sysfs and expose a 'features' file with the data.
++ Since v2:
+ - Use a 'features' directory similar to ext4, btrfs and expose each feature.
++ Since v3:
+ - Fix ret returning 0 if kobject_create_and_add fails
+ - Follow the syntax of Documentation/ABI/stable/sysfs-module.
+ 
+This patch addresses an issue where we have applications compiled against
+against older (or newer) kernels. RDS does not have any ioctls to query
+for what version of ABIs it has or what features it has. Hence this solution
+that proposes to put this ABI information in sysfs space.
 
--- 
-Jens Axboe
+ Documentation/ABI/stable/sysfs-transport-rds | 43 +++++++++++++++++++
+ net/rds/af_rds.c                             | 63 +++++++++++++++++++++++++++-
+ 2 files changed, 105 insertions(+), 1 deletion(-)
+
+Konrad Rzeszutek Wilk (1):
+      rds: Expose feature parameters via sysfs (and ELF)
 
