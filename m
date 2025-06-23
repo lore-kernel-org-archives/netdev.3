@@ -1,210 +1,237 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90F926D4C3
-	for <netdev@vger.kernel.org>; Mon, 23 Jun 2025 16:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750694804; cv=none; b=kd08vOvkyX7BnjOWRBmd6y+1AiHmJqXdKGHUE8EXZjMzipFfrwuW7rBpD+6X83WpW6utGn8L91qNGSbN8AdmO6D+ol/kGzyWlfPdEk3bEKtqCCSh4lR/dMhvFTSgcQ7IDpHdfMwwJnggRboCCXTqy5gpJs2MZmlB+v7cn8Gmh9o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750694804; c=relaxed/simple;
-	bh=Mi/60CA7Ydz3R+PY7UFNgNc1KYMFHge7mElfLwWKOr8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=J5rnC+rDio/l+yHRjhXmsrGg5d3Hc87Q9k7B2fi9fbRFWzA1SFUNTCW4xGjXbU9FC4TF8idYZSHUv4oEMWl4+GiOZajX3WCVk2z6rwBjU3YkW1/osNHiBEmy9kdYkIK5qcEG3DpGan5W+yc782dZZnDRRlcmUQW3lXB5NUaCzPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=HZR9Cz4d; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A46145B3E;
+	Mon, 23 Jun 2025 16:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750694835; cv=pass; b=mfwfeKDlgMqq3WxwKOntxXHqOc0fMDym5UpPzG+LB/5eYfefzCRTuIRF0k/wpuEUespsOBnF7mqwWXd5/adrvkODs6Hc81Mr4T7KFlgQUezoUkNgfgeAUpwPf42osM0QHLfxEyRNuPJ+FpZAK1zzFyGgXozim7nMKpeK+ZziXlY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750694835; c=relaxed/simple;
+	bh=Idu57VDjF3mSyGxyHJymDuIMS3y1xL0aqQtnUD2e9qw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gKE7YqobSzQgyT2xhvMZcjXBETzclRrDl7E9ozeqx9bu8hZT8Ad79Rgn/0x/RGBAjFQg9CKfj+2yi4Ve88ablbduISqryBeeYyFi68+nu+IHKggnZ44rhjvwS/nCfQkwTo0LjHnBNXGkdLcww3QtKJ6nUKNI/Jlq3o/5iheiFJA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b=Ur91gAI5; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="HZR9Cz4d"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4a44b3526e6so55986491cf.0
-        for <netdev@vger.kernel.org>; Mon, 23 Jun 2025 09:06:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1750694801; x=1751299601; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ktC6cfOVZ/76Z0Ijy6OOpcQ17JdhB2dNNAa6r8b5k90=;
-        b=HZR9Cz4dpBF6zvt6bbVFA/8QW+qOjnBv3pj+SgGnlEerrAmoSn1JrfXxWlLHAA2Ogs
-         Lr2pzCKYHLt5GwFCBh201FMKxDBjqofdtwJLOnl+wdgGfRauyg3Ucc49hB1dusnp/RBh
-         pOeDEW5iN9rkXSDGaeNH1po0ohysR3fqh6fLaofVHr5Jcw86OpaR5xXh3jbXAak81GaF
-         oDzn3c5NsiMt2zrtuz+JymjMXYXPwssnzrj3Gb9UiW2EhvinEKCcPrWUZ54VPNPxjz6c
-         OupEzcCi9HswQdllA0QIVvzV51HvsbYyk2KyxECpepv4uoKU4dmbE8aMgRWbn00mFOUz
-         x+EA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750694801; x=1751299601;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ktC6cfOVZ/76Z0Ijy6OOpcQ17JdhB2dNNAa6r8b5k90=;
-        b=s3ENIbBCMabxHmSvQMbG+6qBaicwhT3DGt/NyKJOKtsa/vFQNr3bMxy9f4xQ3+Yn9z
-         juyQ7/iraWf87Jqf1joj+Se8/+OP2tI8gEG00sZviG8fmDf5AV29g6Zc7etiYz1NjPX/
-         3BLjqaj0MCxj/mO1uhMBF/hs9sSeYMau4O/0vNtjwu8fdTh2g5Q1/QjLQJoe0El3ZBDd
-         zMDClrcF+nN9EyTTjI63Wbpj/OBdHgZ4N2bHe4cgYxwGSIqfdTagB+4od33DUCmIEYbS
-         xgz3JxlMC30mMJp3rY80qR5o+KrkaZNpjxyrhNJJpXb7u2O+HR9XmGnCxBWjhCRzED2L
-         wK+Q==
-X-Gm-Message-State: AOJu0YyEUU1F6oq3ShlkyGzK/PDyum6OaRes+IixFlLP/rBlmRZt7xdr
-	0Cqq5lYddfrWIDN+s1gaJ0e4rKZud5mW15xAiOwvKVXIlgdfg32qdk/MYBHNUTv5pfC6AeksxKO
-	1mLeB
-X-Gm-Gg: ASbGncv1fIRi/WZYvQL8J8qo/CrMeTNdCU3GBUHusho6ZHQ0K22I+Eo0DW5thoUylKx
-	1sjj/aTnrMyvOpg8nX1WVVdBt2SrhLzoIaApdXNIZrDlIiu4yTr92HnourJo94b6AA+AtQ9mKnj
-	B9oyarNarObzpao8mlnSXkW+GZF1EaelpK9d0998CoynfiHWtRBcxbIcu4x47vCgIhuFQmw2ldA
-	+f+uX3z4Qm+nKk5lFR5GN1vVpBl+mtcrl3lsSNDX9F4u6NOEvsvPnyspEtIvqW2kTAJmYvXh8YE
-	NJ2Kym0m2Yv+28lbYeswyKyBzmlSEW6JbE6pdSacETPInUkbbAk=
-X-Google-Smtp-Source: AGHT+IGoR8ANNdKqeXSB6QUjUR7YL2sWmX6fZq3ocRFUEgh9F0Tx0iW7Wm2+7Ic1YaQV1+hJP8HI+A==
-X-Received: by 2002:a05:620a:319b:b0:7d3:9ba1:a044 with SMTP id af79cd13be357-7d3f9923097mr1677605985a.33.1750694801144;
-        Mon, 23 Jun 2025 09:06:41 -0700 (PDT)
-Received: from debian.debian ([2a09:bac5:7a49:1cd2::2df:3a])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3ffdb190esm349258785a.86.2025.06.23.09.06.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 09:06:40 -0700 (PDT)
-Date: Mon, 23 Jun 2025 09:06:38 -0700
-From: Yan Zhai <yan@cloudflare.com>
-To: netdev@vger.kernel.org
-Cc: Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org, kernel-team@cloudflare.com
-Subject: [PATCH net] bnxt: properly flush XDP redirect lists
-Message-ID: <aFl7jpCNzscumuN2@debian.debian>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b="Ur91gAI5"
+ARC-Seal: i=1; a=rsa-sha256; t=1750694752; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ALvgrtg+SBpE7ZZ5IkKOvEGS2SR4IufJdiOtiRVy68FjasB3QJgnA6RvY/N+EWWViRfyhEVxnTbdcTnv2v5XfDJzm7WEQ0UnzaDPAyseLdjkl1hb650UOTbiPdDATgqwdQ0m5LpepSWI3r6mky17Jk1JFGkOO2tMYLrNthhObwc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1750694752; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=OBRKd+xA4VsUyeckNojrdNQY/i5zR4hbYSAkGkUAxmI=; 
+	b=f3ISUawrfRo5+VIsmDCuLxBzcU2wsRYh8AzkHPaZdDI7cgoz33XFITfsgEElgM9NSiGaUM3OQfm+dYsD9LIHYxcv+/b6ZROeF56zQHjEWzyGwaqBBxO33FdbDSPb6iXhG6JZJ0LIg+Xrl2mcrBRdGxRMwgFHPpAjRG9/ITc6ZEA=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=nicolas.frattaroli@collabora.com;
+	dmarc=pass header.from=<nicolas.frattaroli@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750694752;
+	s=zohomail; d=collabora.com; i=nicolas.frattaroli@collabora.com;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=OBRKd+xA4VsUyeckNojrdNQY/i5zR4hbYSAkGkUAxmI=;
+	b=Ur91gAI5Pg4ujGe9cgYtIhXeRdyWF4npt8XEVb3xB6c3gzjKDMoCcqGXSa540LUH
+	6uxd/EWPKNeFn3LrQ2TzaIZiMHsCyJroUlVvMjiRyJDgSkbfLlkadlnnc8+V/IkF3gU
+	4xPwrh5EMDEFFEwzxIcgQctKEDXccsek567/7Rjw=
+Received: by mx.zohomail.com with SMTPS id 1750694748824857.0971844130715;
+	Mon, 23 Jun 2025 09:05:48 -0700 (PDT)
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Subject: [PATCH v2 00/20] BYEWORD_UPDATE: unifying (most) HIWORD_UPDATE
+ macros
+Date: Mon, 23 Jun 2025 18:05:28 +0200
+Message-Id: <20250623-byeword-update-v2-0-cf1fc08a2e1f@collabora.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEh7WWgC/12OzQ6DIBAGX8XsuTSAf42nvkfjAWSpJCoW0GqM7
+ 16qPfU4m8x8u4FHZ9BDlWzgcDbe2CECvyTQtGJ4IjEqMnDKc1owSuSKb+sUmUYlApIsyxuKKMq
+ SKYjS6FCb5Qg+6pMdvqbYDecRpPBIGtv3JlTJgEsgZ5un8BVa44N16/HQzA7jt83/t2dGKNGZ0
+ PKmi5Sl+t7YrhPSOnGNA1Dv+/4BLKkE/uEAAAA=
+X-Change-ID: 20250610-byeword-update-445c0eea771d
+To: Yury Norov <yury.norov@gmail.com>, 
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+ Jaehoon Chung <jh80.chung@samsung.com>, 
+ Ulf Hansson <ulf.hansson@linaro.org>, Heiko Stuebner <heiko@sntech.de>, 
+ Shreeya Patel <shreeya.patel@collabora.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Sandy Huang <hjc@rock-chips.com>, Andy Yan <andy.yan@rock-chips.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Nicolas Frattaroli <frattaroli.nicolas@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Shawn Lin <shawn.lin@rock-chips.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+ MyungJoo Ham <myungjoo.ham@samsung.com>, 
+ Kyungmin Park <kyungmin.park@samsung.com>, Qin Jian <qinjian@cqplus1.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: kernel@collabora.com, linux-kernel@vger.kernel.org, 
+ linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-media@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-phy@lists.infradead.org, 
+ linux-sound@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, linux-pci@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-clk@vger.kernel.org, llvm@lists.linux.dev, 
+ Nicolas Frattaroli <nicolas.frattaroli@collabora.com>, 
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+X-Mailer: b4 0.14.2
 
-We encountered following crash when testing a XDP_REDIRECT feature
-in production:
+This series was spawned by [1], where I was asked to move every instance
+of HIWORD_UPDATE et al that I could find to a common macro in the same
+series that I am introducing said common macro.
 
-[56251.579676] list_add corruption. next->prev should be prev (ffff93120dd40f30), but was ffffb301ef3a6740. (next=ffff93120dd
-40f30).
-[56251.601413] ------------[ cut here ]------------
-[56251.611357] kernel BUG at lib/list_debug.c:29!
-[56251.621082] Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-[56251.632073] CPU: 111 UID: 0 PID: 0 Comm: swapper/111 Kdump: loaded Tainted: P           O       6.12.33-cloudflare-2025.6.
-3 #1
-[56251.653155] Tainted: [P]=PROPRIETARY_MODULE, [O]=OOT_MODULE
-[56251.663877] Hardware name: MiTAC GC68B-B8032-G11P6-GPU/S8032GM-HE-CFR, BIOS V7.020.B10-sig 01/22/2025
-[56251.682626] RIP: 0010:__list_add_valid_or_report+0x4b/0xa0
-[56251.693203] Code: 0e 48 c7 c7 68 e7 d9 97 e8 42 16 fe ff 0f 0b 48 8b 52 08 48 39 c2 74 14 48 89 f1 48 c7 c7 90 e7 d9 97 48
- 89 c6 e8 25 16 fe ff <0f> 0b 4c 8b 02 49 39 f0 74 14 48 89 d1 48 c7 c7 e8 e7 d9 97 4c 89
-[56251.725811] RSP: 0018:ffff93120dd40b80 EFLAGS: 00010246
-[56251.736094] RAX: 0000000000000075 RBX: ffffb301e6bba9d8 RCX: 0000000000000000
-[56251.748260] RDX: 0000000000000000 RSI: ffff9149afda0b80 RDI: ffff9149afda0b80
-[56251.760349] RBP: ffff9131e49c8000 R08: 0000000000000000 R09: ffff93120dd40a18
-[56251.772382] R10: ffff9159cf2ce1a8 R11: 0000000000000003 R12: ffff911a80850000
-[56251.784364] R13: ffff93120fbc7000 R14: 0000000000000010 R15: ffff9139e7510e40
-[56251.796278] FS:  0000000000000000(0000) GS:ffff9149afd80000(0000) knlGS:0000000000000000
-[56251.809133] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[56251.819561] CR2: 00007f5e85e6f300 CR3: 00000038b85e2006 CR4: 0000000000770ef0
-[56251.831365] PKRU: 55555554
-[56251.838653] Call Trace:
-[56251.845560]  <IRQ>
-[56251.851943]  cpu_map_enqueue.cold+0x5/0xa
-[56251.860243]  xdp_do_redirect+0x2d9/0x480
-[56251.868388]  bnxt_rx_xdp+0x1d8/0x4c0 [bnxt_en]
-[56251.877028]  bnxt_rx_pkt+0x5f7/0x19b0 [bnxt_en]
-[56251.885665]  ? cpu_max_write+0x1e/0x100
-[56251.893510]  ? srso_alias_return_thunk+0x5/0xfbef5
-[56251.902276]  __bnxt_poll_work+0x190/0x340 [bnxt_en]
-[56251.911058]  bnxt_poll+0xab/0x1b0 [bnxt_en]
-[56251.919041]  ? srso_alias_return_thunk+0x5/0xfbef5
-[56251.927568]  ? srso_alias_return_thunk+0x5/0xfbef5
-[56251.935958]  ? srso_alias_return_thunk+0x5/0xfbef5
-[56251.944250]  __napi_poll+0x2b/0x160
-[56251.951155]  bpf_trampoline_6442548651+0x79/0x123
-[56251.959262]  __napi_poll+0x5/0x160
-[56251.966037]  net_rx_action+0x3d2/0x880
-[56251.973133]  ? srso_alias_return_thunk+0x5/0xfbef5
-[56251.981265]  ? srso_alias_return_thunk+0x5/0xfbef5
-[56251.989262]  ? __hrtimer_run_queues+0x162/0x2a0
-[56251.996967]  ? srso_alias_return_thunk+0x5/0xfbef5
-[56252.004875]  ? srso_alias_return_thunk+0x5/0xfbef5
-[56252.012673]  ? bnxt_msix+0x62/0x70 [bnxt_en]
-[56252.019903]  handle_softirqs+0xcf/0x270
-[56252.026650]  irq_exit_rcu+0x67/0x90
-[56252.032933]  common_interrupt+0x85/0xa0
-[56252.039498]  </IRQ>
-[56252.044246]  <TASK>
-[56252.048935]  asm_common_interrupt+0x26/0x40
-[56252.055727] RIP: 0010:cpuidle_enter_state+0xb8/0x420
-[56252.063305] Code: dc 01 00 00 e8 f9 79 3b ff e8 64 f7 ff ff 49 89 c5 0f 1f 44 00 00 31 ff e8 a5 32 3a ff 45 84 ff 0f 85 ae
- 01 00 00 fb 45 85 f6 <0f> 88 88 01 00 00 48 8b 04 24 49 63 ce 4c 89 ea 48 6b f1 68 48 29
-[56252.088911] RSP: 0018:ffff93120c97fe98 EFLAGS: 00000202
-[56252.096912] RAX: ffff9149afd80000 RBX: ffff9141d3a72800 RCX: 0000000000000000
-[56252.106844] RDX: 00003329176c6b98 RSI: ffffffe36db3fdc7 RDI: 0000000000000000
-[56252.116733] RBP: 0000000000000002 R08: 0000000000000002 R09: 000000000000004e
-[56252.126652] R10: ffff9149afdb30c4 R11: 071c71c71c71c71c R12: ffffffff985ff860
-[56252.136637] R13: 00003329176c6b98 R14: 0000000000000002 R15: 0000000000000000
-[56252.146667]  ? cpuidle_enter_state+0xab/0x420
-[56252.153909]  cpuidle_enter+0x2d/0x40
-[56252.160360]  do_idle+0x176/0x1c0
-[56252.166456]  cpu_startup_entry+0x29/0x30
-[56252.173248]  start_secondary+0xf7/0x100
-[56252.179941]  common_startup_64+0x13e/0x141
-[56252.186886]  </TASK>
+The first patch of the series introduces a new header file,
+hw_bitfield.h, which contains two new macros: FIELD_PREP_WM16 and
+FIELD_PREP_WM16_CONST. The latter can be used in initializers.
 
-From the crash dump, we found that the cpu_map_flush_list inside
-redirect info is partially corrupted: its list_head->next points to
-itself, but list_head->prev points to a valid list of unflushed bq
-entries.
+I've cheekily added the hw_bitfield.h header to the BITMAP API section
+of the MAINTAINERS file.
 
-This turned out to be a result of missed XDP flush on redirect lists. By
-digging in the actual source code, we found that
-commit 7f0a168b0441 ("bnxt_en: Add completion ring pointer in TX and RX
-ring structures") incorrectly overwrites the event mask for XDP_REDIRECT
-in bnxt_rx_xdp. We can stably reproduce this crash by returning XDP_TX
-and XDP_REDIRECT randomly for incoming packets in a naive XDP program.
-Properly propagate the XDP_REDIRECT events back fixes the crash.
+This macro definition checks that the mask fits, and that the value fits
+in the mask. Like FIELD_PREP, it also shifts the value up to the mask,
+so turning off a bit does not require using the mask as a value. Masks
+are also required to be contiguous, like with FIELD_PREP.
 
-Fixes: 7f0a168b0441 ("bnxt_en: Add completion ring pointer in TX and RX ring structures")
-Tested-by: Andrew Rzeznik <arzeznik@cloudflare.com>
-Signed-off-by: Yan Zhai <yan@cloudflare.com>
+For each definition of such a macro, the driver(s) that used it were
+evaluated for three different treatments:
+ - full conversion to the new macro, for cases where replacing the
+   implementation of the old macro wouldn't have worked, or where the
+   conversion was trivial. These are the most complex patches in this
+   series, as they sometimes have to pull apart definitions of masks
+   and values due to the new semantics, which require a contiguous
+   mask and shift the value for us.
+ - replacing the implementation of the old macro with an instance of the
+   new macro, done where I felt it made the patch much easier to review
+   because I didn't want to drop a big diff on people.
+ - skipping conversion entirely, usually because the mask is
+   non-constant and it's not trivial to make it constant. Sometimes an
+   added complication is that said non-constant mask is either used in a
+   path where runtime overhead may not be desirable, or in an
+   initializer.
+
+Left out of conversion:
+ - drivers/mmc/host/sdhci-of-arasan.c: mask is non-constant.
+ - drivers/phy/rockchip/phy-rockchip-inno-csidphy.c: mask is
+   non-constant likely by way of runtime pointer dereferencing, even if
+   struct and members are made const.
+ - drivers/clk/rockchip/clk.h: way too many clock drivers use non-const
+   masks in the context of an initializer.
+
+I will not be addressing these 3 remaining users in this series, as
+implementing a runtime checked version on top of this and verifying that
+it doesn't cause undue overhead just for 3 stragglers is a bit outside
+the scope of wanting to get my RK3576 PWM series unblocked. Please have
+mercy.
+
+In total, I count 19 different occurrences of such a macro fixed out of
+22 I found. The vast majority of these patches have either undergone
+static testing to ensure the values end up the same during development,
+or have been verified to not break the device the driver is for at
+runtime. Only a handful are just compile-tested, and the individual
+patches remark which ones those are.
+
+This took a lot of manual work as this wasn't really something that
+could be automated: code had to be refactored to ensure masks were
+contiguous, made sense to how the hardware actually works and to human
+readers, were constant, and that the code uses unshifted values.
+
+Please note that I will not be resending the whole series again for
+purely subjective cosmetic changes. This series touches a lot of
+subsystems, which means many clashing tastes. You've had a week's notice
+to get any low-effort naming nitpicks out of the way after v1. If you as
+a maintainer are unhappy with a commit prefix or such, then you have my
+express permission to modify it while applying the patch, so that I
+don't need to bombard everyone else's inboxes again.
+
+https://lore.kernel.org/all/aD8hB-qJ4Qm6IFuS@yury/ [1]
+
+Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Changes in v2:
+- rebase onto next-20250623. This involved solving two conflicts in
+  pcie-dw-rockchip.
+- move new macros to a new hw_bitfield.h, and rename them to
+  FIELD_PREP_WM16*. All patches in the series have been updated to use
+  the new names.
+- hw_bitfield.h: fix macro param re-use in FIELD_PREP_WM16. I don't know
+  if there's any way to do the same in FIELD_PREP_WM16_CONST, but the
+  bitfield.h FIELD_PREP functions don't do it for either, so I'm already
+  strictly better anyway.
+- hw_bitfield.h: remove whitespace after cast operators.
+- change newly introduced U literal suffixes to UL, as they are more
+  commonly used in the kernel.
+- pcie-dw-rockchip: remove the legacy mode flag, as it's unused.
+- Link to v1: https://lore.kernel.org/r/20250612-byeword-update-v1-0-f4afb8f6313f@collabora.com
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 2cb3185c442c..ae89a981e052 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -2989,6 +2989,7 @@ static int __bnxt_poll_work(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- {
- 	struct bnxt_napi *bnapi = cpr->bnapi;
- 	u32 raw_cons = cpr->cp_raw_cons;
-+	bool flush_xdp = false;
- 	u32 cons;
- 	int rx_pkts = 0;
- 	u8 event = 0;
-@@ -3042,6 +3043,8 @@ static int __bnxt_poll_work(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- 			else
- 				rc = bnxt_force_rx_discard(bp, cpr, &raw_cons,
- 							   &event);
-+			if (event & BNXT_REDIRECT_EVENT)
-+				flush_xdp = true;
- 			if (likely(rc >= 0))
- 				rx_pkts += rc;
- 			/* Increment rx_pkts when rc is -ENOMEM to count towards
-@@ -3066,7 +3069,7 @@ static int __bnxt_poll_work(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- 		}
- 	}
- 
--	if (event & BNXT_REDIRECT_EVENT) {
-+	if (flush_xdp) {
- 		xdp_do_flush();
- 		event &= ~BNXT_REDIRECT_EVENT;
- 	}
+---
+Nicolas Frattaroli (20):
+      bitmap: introduce hardware-specific bitfield operations
+      mmc: dw_mmc-rockchip: switch to FIELD_PREP_WM16 macro
+      soc: rockchip: grf: switch to FIELD_PREP_WM16_CONST macro
+      media: synopsys: hdmirx: replace macros with bitfield variants
+      drm/rockchip: lvds: switch to FIELD_PREP_WM16 macro
+      phy: rockchip-emmc: switch to FIELD_PREP_WM16 macro
+      drm/rockchip: dsi: switch to FIELD_PREP_WM16* macros
+      drm/rockchip: vop2: switch to FIELD_PREP_WM16 macro
+      phy: rockchip-samsung-dcphy: switch to FIELD_PREP_WM16 macro
+      drm/rockchip: dw_hdmi_qp: switch to FIELD_PREP_WM16 macro
+      drm/rockchip: inno-hdmi: switch to FIELD_PREP_WM16 macro
+      phy: rockchip-usb: switch to FIELD_PREP_WM16 macro
+      drm/rockchip: dw_hdmi: switch to FIELD_PREP_WM16* macros
+      ASoC: rockchip: i2s-tdm: switch to FIELD_PREP_WM16_CONST macro
+      net: stmmac: dwmac-rk: switch to FIELD_PREP_WM16 macro
+      PCI: rockchip: Switch to FIELD_PREP_WM16* macros
+      PCI: dw-rockchip: Switch to FIELD_PREP_WM16 macro
+      PM / devfreq: rockchip-dfi: switch to FIELD_PREP_WM16 macro
+      clk: sp7021: switch to FIELD_PREP_WM16 macro
+      phy: rockchip-pcie: switch to FIELD_PREP_WM16 macro
+
+ MAINTAINERS                                        |   1 +
+ drivers/clk/clk-sp7021.c                           |  22 ++--
+ drivers/devfreq/event/rockchip-dfi.c               |  27 ++--
+ drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c    | 142 ++++++++++-----------
+ drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c        |  80 ++++++------
+ drivers/gpu/drm/rockchip/dw_hdmi_qp-rockchip.c     |  68 +++++-----
+ drivers/gpu/drm/rockchip/inno_hdmi.c               |  11 +-
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.h       |   1 -
+ drivers/gpu/drm/rockchip/rockchip_lvds.h           |  21 +--
+ drivers/gpu/drm/rockchip/rockchip_vop2_reg.c       |  15 ++-
+ .../media/platform/synopsys/hdmirx/snps_hdmirx.h   |   6 +-
+ drivers/mmc/host/dw_mmc-rockchip.c                 |   9 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c     |   3 +-
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c      |  42 +++---
+ drivers/pci/controller/pcie-rockchip.h             |  35 ++---
+ drivers/phy/rockchip/phy-rockchip-emmc.c           |   3 +-
+ drivers/phy/rockchip/phy-rockchip-pcie.c           |  72 +++--------
+ drivers/phy/rockchip/phy-rockchip-samsung-dcphy.c  |  11 +-
+ drivers/phy/rockchip/phy-rockchip-usb.c            |  51 +++-----
+ drivers/soc/rockchip/grf.c                         |  35 +++--
+ include/linux/hw_bitfield.h                        |  62 +++++++++
+ sound/soc/rockchip/rockchip_i2s_tdm.h              |   4 +-
+ 22 files changed, 367 insertions(+), 354 deletions(-)
+---
+base-commit: 0491b8f4897c1ed267446959628592fd1cf8107d
+change-id: 20250610-byeword-update-445c0eea771d
+
+Best regards,
 -- 
-2.39.5
-
+Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 
