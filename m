@@ -1,157 +1,102 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD4023ED56
-	for <netdev@vger.kernel.org>; Mon, 23 Jun 2025 12:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C732224DD0F;
+	Mon, 23 Jun 2025 12:56:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750683221; cv=none; b=mfJ0Zoc5cV49LhyXpKuM5wiz+ObL/6kga/hD3NmzorZmAl43TxRzywmMcYXDnARjkKL2t3V+YeNrx44gsmTvRuvik1Lh19tpnur8i1E8Yf/k7TtdxxodzwN9BnNgPpXl4jKVfE865+rOcCFeRCrVwEe8itvcaljItQPwPb/7g0U=
+	t=1750683407; cv=none; b=WN8xOvCACw9cNjnGw6xVsyBIOuxzumeVKqxVlpwxs2yXub+W7PMXJfgbsWZo66FpJJxJYu6/weudt0BuGtIh+iNmYtCtrJwqB8+85H1VwhsTpRRNJiG34SA09CVidgZew+fwAWCDFr3XKjK6tkb/d7aT9U6ZWoyBEOKZ/cBOYrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750683221; c=relaxed/simple;
-	bh=HESYCwxtTCrMkmrbuFYPB++g7gvN/5zo0tw6nMc4pqA=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=W/Xq7OXToAt8+sNWbuL3ErGnbdC+BOtVYagZOXO+/c9eF+IKIjsFyUk+YggAwhEHpmDsYPBdqpGf5oSyYI/GwOcFEmLweFVYEUTordvB34mjtOJwOATZRJLAZH3J9yXSbM+PU9jbM7j8dzKdUO6+iC5BenSUteWwSb41VbMbEko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FQ4Y/FAv; arc=none smtp.client-ip=209.85.128.47
+	s=arc-20240116; t=1750683407; c=relaxed/simple;
+	bh=7n4fuwiYJUTibWNIDCfCMV6f+zSGKadvPylADSrSODI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mqVrpvGSpbha4srJ9rBlQGmQCNvzcDw0/SCjK4U6WsBlZ+XmxLFQQstdD/IGyiNh3ljVelOL8lGYpLYW0C97fNSF87ZWx6W2P/iuDdlMkn6YPCLlQnxYlYQGjx+ccG3DXW/+Rvnc/BiE4hGn1xf+T5t4MEseAFR5Clauu33DNS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q7Wp+d/s; arc=none smtp.client-ip=209.85.167.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FQ4Y/FAv"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-441ab63a415so43687655e9.3
-        for <netdev@vger.kernel.org>; Mon, 23 Jun 2025 05:53:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q7Wp+d/s"
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-54e98f73850so3591600e87.1;
+        Mon, 23 Jun 2025 05:56:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750683218; x=1751288018; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=I28Qoudqg6FqMNnDwRZB2GBcdBQVhMvcpaGUG0Uox00=;
-        b=FQ4Y/FAvMrUKqsHXNqemiB3rXDEHW6/fvtYJ9o0uv/NdC0zX5Tg0rjmUwyEjJ51nWu
-         Hhhb9Ma+j83TSjW5yAEcwluDT9YD/mXtwKwV5D2SgzqtGf4ePxyC/ZNqGjOgcxbQVcC0
-         WTgYtxgco3V8h1G7eytEtLdKgLfctkzXI3P2FQtf8Mu4KCABp4jrlRt1fjdGnJNgo2py
-         XAk7IwLhbsK1sue9v6Rml/vuo/LWv3ZTkhrYtFBgbRvmzle8TpN5eTgXgEaf9H5BSfVb
-         GFTI1DhG7Flh3rWuWXZebYga64Yre7W8kpQfQjY1ZUbkLDwI35azhZdyoWVL6HhxVfat
-         xKnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750683218; x=1751288018;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1750683404; x=1751288204; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I28Qoudqg6FqMNnDwRZB2GBcdBQVhMvcpaGUG0Uox00=;
-        b=mv9WsaFawTmCp2jDixdIMMl0WFqsKehzISYS2Pz7QNMGI2eZVDmAsWhJURIXkZLTzT
-         aGuXnN19d7j7IrawYXtLE6nuZhpkFXZmXpG2tX5GhpDOrW/x5aAM+9bw6/l/kry5/IDX
-         5IvZXonqHQasw/RkLb43c34PZDyd+JPWDpfkCRCXZa92HzVAz7FXM6e7+145F3XSTN38
-         k+mRF86tvWCSbZnzu2Pt3nlJ67u0WowKmwG8rU02BDfXB1G+CGyjKHPFpO8d9laR26ZM
-         epDatVLo1/r4aZjmBbVXZpFbOD5yd7OQkSAJ4mPDJW4E+/BP/lpQ93ktT+f7cIoTSFzl
-         r1ew==
-X-Forwarded-Encrypted: i=1; AJvYcCUrgjmbf4StWYHsWbFWP1+T70INhMaEugFmiOvN3slKI3bgUCvPfW70V07NI0cC5Bjlb2qahxw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywPy7MY4WL27wh2JIr179QEKOdnf9DAnlTx2hHRQ+ke7Cz7QeK
-	7dur49btgSbvLDLgUIMr6jKS1EEycey2isVOKFOD9ttJS9xjnN4i4WPf
-X-Gm-Gg: ASbGncucM3D2TN5jQjpDvpQfU4vIGKlaE2TXkmC+I7giNyCc6Kyc3gsfu6bhzleSNpe
-	xkWE6QwU7aSb9pdNlgbfdjuNgKOvtYdPAEzfuvdUdS5TME0zi3kg0Ep5rqFDmuI48fzNG83MVoR
-	WBaJZrMVKtpXeaCwp70yFMCTK3Ui/LaI9bfgtE58mAxEJtmQemeLMqzISIfqh2p8P55ItPvXi3V
-	CSnJy+PqX7MYVBpyyohGMk+Yuai4633GXchdUZF3r3fruibTx3GtR/zeepD+lIlPabw3ptI4XNM
-	kNlf3haZ2t/RbGJy68P5cutpr/MAlXMTPbI2/IJkso0/9/9TU4FkwNIDYIQkE8c3WFvDRLFy6H8
-	=
-X-Google-Smtp-Source: AGHT+IH7ph15XgCuNVw6LvKEAMtEYhmrlgALDiEcC1R14CZYfkZ2QMw1kheSsrT64fEimUH1kDjMHQ==
-X-Received: by 2002:a05:6000:4284:b0:3a5:783f:5289 with SMTP id ffacd0b85a97d-3a6d1310426mr9440612f8f.49.1750683217895;
-        Mon, 23 Jun 2025 05:53:37 -0700 (PDT)
-Received: from imac ([2a02:8010:60a0:0:ed85:62cb:5684:a2ca])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d1187df7sm9412999f8f.66.2025.06.23.05.53.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 05:53:37 -0700 (PDT)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
-  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
-  maxime.chevallier@bootlin.com,  sdf@fomichev.me,  jdamato@fastly.com,
-  ecree.xilinx@gmail.com
-Subject: Re: [PATCH net-next 2/9] net: ethtool: dynamically allocate full
- req size req
-In-Reply-To: <20250621171944.2619249-3-kuba@kernel.org>
-Date: Mon, 23 Jun 2025 13:01:10 +0100
-Message-ID: <m2a55yekft.fsf@gmail.com>
-References: <20250621171944.2619249-1-kuba@kernel.org>
-	<20250621171944.2619249-3-kuba@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+        bh=8/PYDyDKGZYKEGjVXXHlyij22R64l8wztxMeZv4XmnE=;
+        b=Q7Wp+d/sE4YVPl1V62uzQbfTm5BJkbN9IG3EyVo8oMQ2TFzvo9edQ4Wg9vAHUD2o0o
+         ikip2CydU0wkQNwKI1UHjn5kGZWK9I65MALDWkCnLRvDRiG+4/LcRNVi+3yXWRoxzgg2
+         s6Np22jYOzXM5b7zqer9o1xHebXyV2mrbowX78bQSYHpG/D975bSMngMjXURGNdlZn/g
+         BjkRp3GWjCSEw8zsAA+7QzupsicmhZxZDci79VYJ0ZJW0c1VmsUqjZmET9F7aVbcV9uA
+         ENNiohvOgckeyJzInKkATZPCx5jnOt7+oHpUg9437RLag313cAxUc6xs5OFWowpCQlC2
+         P9Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750683404; x=1751288204;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8/PYDyDKGZYKEGjVXXHlyij22R64l8wztxMeZv4XmnE=;
+        b=Ow8tDL2yeEdeNfYEe3C3lWz87uVHq490c/2C7RG5rW9ks2FM8zo7EysMGF+XJjEZ1/
+         fqpFMoP2mQEMoos+sTWhUFsn8HpBY8Z6X2KwRfzXFk2mGx4h+Fx1cN4vu40uMnf5caaE
+         12owkSicceQutx1qJNvN6c88MKZpiwFQwYatyaHOlaJ2fH4si7khDSkay+HEAqMHniEc
+         lzBKZS4o8i2i28lO4q7Xxb3sw9Buh50EoLp/qpxZyDUi0MaMSNkgNmWp4cEEh/nI9pC7
+         f3corirLMnw1BzVH5eCTTQxbpQnYOywnPUmWU1OUY7AsLv04xrjBMHVIUrpIxSrbttWx
+         3wPw==
+X-Forwarded-Encrypted: i=1; AJvYcCVIm+UrywZpowmE0ot1tzfm2LMNBpbNx2uE+b0cpNlY9iThqGOf+NCmN/QFnefbNdxPxU5EJq7DmZkP@vger.kernel.org, AJvYcCWBoghLT+Z8ZbPLlt/Kf/DQAJAfoGHvFw9oycTDKi19SEQuZCWkiU4ryCTLpmUSxX1cWlWG0WCyZFpLg+iL@vger.kernel.org, AJvYcCXfAzLgE8Ly6VytGEDSJ3bf9EL82a11JPHXevpgJkMXDPXyUAUwDsxQ/wI3YovT04jy26Zk5IMF@vger.kernel.org
+X-Gm-Message-State: AOJu0YycCCjPHFbRTeHrNeGvcN884BqEEqPdU8XI9ZHpDtc5Ng+uW9/P
+	I27HMzgXmQYU+yzfPYoU4fjDtNTtjmGbY6oiVzM6O0hZTdGbOwvJMlR/m98xR6PQ2g5m9OQL27O
+	VS9dUpimfFkqiT/hFz4iEqd6ydg+PhqY=
+X-Gm-Gg: ASbGnctNd0sh9hxxT+/b+j+ViSP7OCwgyXmWWJQuvOPQBh66POh1OPXm3Tdup1ITr6W
+	nX0rL21cQGCeezra2YnTa3W2rG9xx/k5MZcXj7G7oppg3Gw6St3Zp+3hyYkrF2ZKMPZtdeS4dnx
+	OlIgSgjzA3BPP+yUUeQeNSR8/Is7pgM+b7PQIwdeZwSG7E6flMLV58WZkZiNF/L1039oszvI2Dg
+	dM=
+X-Google-Smtp-Source: AGHT+IHVX0GlIPq3TBaQtLm46YetyZZ0s+N9/Y4hGKlfh5oMqO78Ds4mOXk6wiprWLKaWnye4Cex5x6r2Jq+usWNPy8=
+X-Received: by 2002:a05:6512:159d:b0:553:ceed:c85f with SMTP id
+ 2adb3069b0e04-553e3bb4cbbmr3113374e87.21.1750683403609; Mon, 23 Jun 2025
+ 05:56:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250623095732.2139853-1-joy.zou@nxp.com> <20250623095732.2139853-9-joy.zou@nxp.com>
+In-Reply-To: <20250623095732.2139853-9-joy.zou@nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 23 Jun 2025 09:56:31 -0300
+X-Gm-Features: AX0GCFuGOUHw2mx0QPMnuqMm-hZkSD1S0Ck80ClMf9fqxc9r2EVikPukaYObI_I
+Message-ID: <CAOMZO5AzU03qEg80vhyU=CrgVgYt+rn=WQ7SphtADxOc5eG5tQ@mail.gmail.com>
+Subject: Re: [PATCH v6 8/9] pmdomain: imx93-blk-ctrl: mask DSI and PXP PD
+ domain register on i.MX91
+To: Joy Zou <joy.zou@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, catalin.marinas@arm.com, 
+	will@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
+	ulf.hansson@linaro.org, richardcochran@gmail.com, kernel@pengutronix.de, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-pm@vger.kernel.or, 
+	frank.li@nxp.com, ye.li@nxp.com, ping.bai@nxp.com, aisheng.dong@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Jakub Kicinski <kuba@kernel.org> writes:
+On Mon, Jun 23, 2025 at 7:00=E2=80=AFAM Joy Zou <joy.zou@nxp.com> wrote:
 
-> In preparation for using req_info to carry parameters between
-> SET and NTF allocate a full request into struct. Since the size
+> +static const struct imx93_blk_ctrl_data imx91_media_blk_ctl_dev_data =3D=
+ {
+> +       .domains =3D imx93_media_blk_ctl_domain_data,
+> +       .skip_mask =3D BIT(IMX93_MEDIABLK_PD_MIPI_DSI) | BIT(IMX93_MEDIAB=
+LK_PD_PXP),
+> +       .num_domains =3D ARRAY_SIZE(imx93_media_blk_ctl_domain_data),
+> +       .clk_names =3D (const char *[]){ "axi", "apb", "nic", },
+> +       .num_clks =3D 3,
 
-typo: into -> info
+Instead of hardcoding the number of clocks, what about using
+ARRAY_SIZE() instead?
 
-> depends on the subcommand we need to allocate it on the heap.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
->  net/ethtool/netlink.c | 20 +++++++++++++-------
->  1 file changed, 13 insertions(+), 7 deletions(-)
->
-> diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-> index 9de828df46cd..a9467b96f00c 100644
-> --- a/net/ethtool/netlink.c
-> +++ b/net/ethtool/netlink.c
-> @@ -863,8 +863,8 @@ static int ethnl_default_done(struct netlink_callback *cb)
->  static int ethnl_default_set_doit(struct sk_buff *skb, struct genl_info *info)
->  {
->  	const struct ethnl_request_ops *ops;
-> -	struct ethnl_req_info req_info = {};
->  	const u8 cmd = info->genlhdr->cmd;
-> +	struct ethnl_req_info *req_info;
->  	struct net_device *dev;
->  	int ret;
->  
-> @@ -874,20 +874,24 @@ static int ethnl_default_set_doit(struct sk_buff *skb, struct genl_info *info)
->  	if (GENL_REQ_ATTR_CHECK(info, ops->hdr_attr))
->  		return -EINVAL;
->  
-> -	ret = ethnl_parse_header_dev_get(&req_info, info->attrs[ops->hdr_attr],
-> +	req_info = kzalloc(ops->req_info_size, GFP_KERNEL);
-> +	if (!req_info)
-> +		return -ENOMEM;
-> +
-> +	ret = ethnl_parse_header_dev_get(req_info, info->attrs[ops->hdr_attr],
->  					 genl_info_net(info), info->extack,
->  					 true);
->  	if (ret < 0)
-> -		return ret;
-> +		goto out_free_req;
->  
->  	if (ops->set_validate) {
-> -		ret = ops->set_validate(&req_info, info);
-> +		ret = ops->set_validate(req_info, info);
->  		/* 0 means nothing to do */
->  		if (ret <= 0)
->  			goto out_dev;
->  	}
->  
-> -	dev = req_info.dev;
-> +	dev = req_info->dev;
->  
->  	rtnl_lock();
->  	netdev_lock_ops(dev);
-> @@ -902,7 +906,7 @@ static int ethnl_default_set_doit(struct sk_buff *skb, struct genl_info *info)
->  	if (ret < 0)
->  		goto out_free_cfg;
->  
-> -	ret = ops->set(&req_info, info);
-> +	ret = ops->set(req_info, info);
->  	if (ret < 0)
->  		goto out_ops;
->  
-> @@ -921,7 +925,9 @@ static int ethnl_default_set_doit(struct sk_buff *skb, struct genl_info *info)
->  	netdev_unlock_ops(dev);
->  	rtnl_unlock();
->  out_dev:
-> -	ethnl_parse_header_dev_put(&req_info);
-> +	ethnl_parse_header_dev_put(req_info);
-> +out_free_req:
-> +	kfree(req_info);
->  	return ret;
->  }
+Like it was done here:
+
+https://lore.kernel.org/linux-arm-kernel/20250619062108.2016511-1-xiaolei.w=
+ang@windriver.com/
