@@ -1,264 +1,122 @@
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB0D23E32B;
-	Mon, 23 Jun 2025 14:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616972580DD
+	for <netdev@vger.kernel.org>; Mon, 23 Jun 2025 14:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750688109; cv=none; b=cDkHohQEqhswqFtxPVn/afMz4acX8G0k39MJT/YW84sLPxyD7GWZP1gj/LwnaVOhXlMZTOXtNY82QqC/Gm/qRE6Ye2wZPxovop8V9Z3shupxiONLY/6KP8rxsO18qHmJKTSVhIsbSJT9KjF1zTwYtefkKHier50nm3gehc2R6jY=
+	t=1750688235; cv=none; b=gDbd0JJoOBH8GVPeIQvPnjSSaZhqD4/WZCCZ/A3QXmiljZ8Y7sEs5Oo68VOvvmm2YoXs3ORmcE9c5NMPDYMy65amoeUdjE7d6ojNRZDVaC4seWYybhtAVtNcSZG6DnJeMPo0mg0xE2zRUJSRCFX8rnnnwR6xd1GaKmQOskU11Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750688109; c=relaxed/simple;
-	bh=tNAbyUXXcvLSX1/HaVvJWocHFoAQXHezuDempRUgh8g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=V9JdyQGOxtVwUov5uIktZGC6o3qd2pJ2tOFQnqahFI4eapdiIMser3admSbT1mI4w2tYnqAtgyvhyUDVvZlZ4Nu+FZbSot51iTAFoBQLxfABsR5Fa/UNcuChmdgdprPP5bQEcgdxixAR4GOoOgRZU6MnCe2y5psD9DYTewVTN+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=ZeqaIBwB; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	s=arc-20240116; t=1750688235; c=relaxed/simple;
+	bh=yxh7ilQonYBUqypJb67+dDP3F/Z9G9zjb1heS+hjcYw=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=okuJYbzkChjqIxLTbTcXKwb+Lnox6Xexa9Tvtt5MN/8RFmSD8o+0BuJsvsmYczVjncvHciH3gSVyI1JiMV6oyfi+jvjDQHGphisYdjj7y7KdCid1TIWROnoaHj82c0bEjDkZvuH/sew60EjdtC/iAhwq0syGTsBgQbSTe1keTyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dxsbl3N2; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="ZeqaIBwB"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
-	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=w0wj1kz+OaHYSslz8uT4BlZL0F35gW1MKk/KWpUq2mE=; b=ZeqaIBwBwhwlDMoEp4egIbRmq/
-	sF3qSy4H+/+Jm2kA4brbPJzfKupMh5Hsp/xFvX+YxDO6aeVsnHgNAe6cQdVKGc2N/aV/bJL6tzIcQ
-	//z0DZAuEEBRaEMzg1LWtzR9rK2MeIJXr2Y6OJjVCKNmcnnbG9AolvJhqHpqD/vzVNXGMqSURtLNZ
-	3Ggz4wJhr6JFibdT4SUzwqUZ6ab8CD1tbd7LMdIxIFPQtUvaryligjec8MmSFFPM8q4UBpXkj8JVU
-	N6bk1GG/JjEnob/ZzSYEuEifW3pWykjxUjQioTRPeWNmBuRN+6rDJnpOxrka41Gf7AiRwbPF/bfjY
-	PMYIwCEA==;
-Received: from [122.175.9.182] (port=41441 helo=cypher.couthit.local)
-	by server.couthit.com with esmtpa (Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1uThiT-00000006RDz-1U45;
-	Mon, 23 Jun 2025 10:00:09 -0400
-From: Parvathi Pudi <parvathi@couthit.com>
-To: danishanwar@ti.com,
-	rogerq@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	ssantosh@kernel.org,
-	richardcochran@gmail.com,
-	s.hauer@pengutronix.de,
-	m-karicheri2@ti.com,
-	glaroque@baylibre.com,
-	afd@ti.com,
-	saikrishnag@marvell.com,
-	m-malladi@ti.com,
-	jacob.e.keller@intel.com,
-	diogo.ivo@siemens.com,
-	javier.carrasco.cruz@gmail.com,
-	horms@kernel.org,
-	s-anna@ti.com,
-	basharath@couthit.com,
-	parvathi@couthit.com
-Cc: linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	pratheesh@ti.com,
-	prajith@ti.com,
-	vigneshr@ti.com,
-	praneeth@ti.com,
-	srk@ti.com,
-	rogerq@ti.com,
-	krishna@couthit.com,
-	pmohan@couthit.com,
-	mohan@couthit.com
-Subject: [PATCH net-next v9 00/11] PRU-ICSSM Ethernet Driver
-Date: Mon, 23 Jun 2025 19:29:38 +0530
-Message-Id: <20250623135949.254674-1-parvathi@couthit.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dxsbl3N2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750688232;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DENPfef9k5KPGfxCMnb/tEj2yf0fmCOohO51w/ehSyg=;
+	b=dxsbl3N28t2PBiU53JuQkEIGR1Vt6wSLbLnz/Kl8q0ft/w07ItQ85JO5jVr5T6Ayemw4CM
+	nt0m2bmz5+68MJrVILsfScrT0iVfXQXm2UJ9Q4GluR28jUEfhJK1IKEjYtjmv+62l+u81i
+	hVjSZM+JKD7IjN37iTIJOmZPt8nS7Uk=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-19-rkV28ZGCPsW3UDW4tgao9A-1; Mon,
+ 23 Jun 2025 10:17:08 -0400
+X-MC-Unique: rkV28ZGCPsW3UDW4tgao9A-1
+X-Mimecast-MFC-AGG-ID: rkV28ZGCPsW3UDW4tgao9A_1750688226
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8303418011FB;
+	Mon, 23 Jun 2025 14:17:05 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.81])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0A2CB1800284;
+	Mon, 23 Jun 2025 14:16:59 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <aFlcPOpajICfVlFE@infradead.org>
+References: <aFlcPOpajICfVlFE@infradead.org> <1069540.1746202908@warthog.procyon.org.uk> <165f5d5b-34f2-40de-b0ec-8c1ca36babe8@lunn.ch> <0aa1b4a2-47b2-40a4-ae14-ce2dd457a1f7@lunn.ch> <1015189.1746187621@warthog.procyon.org.uk> <1021352.1746193306@warthog.procyon.org.uk> <2135907.1747061490@warthog.procyon.org.uk>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: dhowells@redhat.com, Andrew Lunn <andrew@lunn.ch>,
+    Eric Dumazet <edumazet@google.com>,
+    "David
+ S. Miller" <davem@davemloft.net>,
+    Jakub Kicinski <kuba@kernel.org>,
+    David Hildenbrand <david@redhat.com>,
+    John Hubbard <jhubbard@nvidia.com>, willy@infradead.org,
+    Christian Brauner <brauner@kernel.org>,
+    Al Viro <viro@zeniv.linux.org.uk>,
+    Miklos Szeredi <mszeredi@redhat.com>, torvalds@linux-foundation.org,
+    netdev@vger.kernel.org, linux-mm@kvack.org,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: AF_UNIX/zerocopy/pipe/vmsplice/splice vs FOLL_PIN
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
-X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1111402.1750688218.1@warthog.procyon.org.uk>
+Date: Mon, 23 Jun 2025 15:16:58 +0100
+Message-ID: <1111403.1750688218@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Hi,
+Christoph Hellwig <hch@infradead.org> wrote:
 
-The Programmable Real-Time Unit Industrial Communication Sub-system (PRU-ICSS)
-is available on the TI SOCs in two flavors: Gigabit ICSS (ICSSG) and the older
-Megabit ICSS (ICSSM).
+> > The question is what should happen here to a memory span for which the
+> > network layer or pipe driver is not allowed to take reference, but rather
+> > must call a destructor?  Particularly if, say, it's just a small part of a
+> > larger span.
+> 
+> What is a "span" in this context?
 
-Support for ICSSG Dual-EMAC mode has already been mainlined [1] and the
-fundamental components/drivers such as PRUSS driver, Remoteproc driver,
-PRU-ICSS INTC, and PRU-ICSS IEP drivers are already available in the mainline
-Linux kernel. The current set of patch series builds on top of these components
-and introduces changes to support the Dual-EMAC using ICSSM on the TI AM57xx,
-AM437x and AM335x devices.
+In the first case, I was thinking along the lines of a bio_vec that says
+{physaddr,len} defining a "span" of memory.  Basically just a contiguous range
+of physical addresses, if you prefer.
 
-AM335x, AM437x and AM57xx devices may have either one or two PRU-ICSS instances
-with two 32-bit RISC PRU cores. Each PRU core has (a) dedicated Ethernet interface
-(MII, MDIO), timers, capture modules, and serial communication interfaces, and
-(b) dedicated data and instruction RAM as well as shared RAM for inter PRU
-communication within the PRU-ICSS.
+However, someone can, for example, vmsplice a span of memory into a pipe - say
+they add a whole page, all nicely aligned, but then they splice it out a byte
+at a time into 4096 other pipes.  Each of those other pipes now has a small
+part of a larger span and needs to share the cleanup information.
 
-These patches add support for the following features:
-- RX and TX over PRU Ethernet ports in Dual-EMAC mode
-- Full duplex with 100 Mbps link speed.
-- VLAN Filtering
-- Multicast Filtering
-- Promiscuous mode
-- Storm prevention
-- Interrupt coalescing
-- Linux PTP (ptp4l) Ordinary clock
+Now, imagine that a network filesystem writes a message into a TCP socket,
+where that message corresponds to an RPC call request and includes a number of
+kernel buffers that the network layer isn't permitted to look at the refcounts
+on, but rather a destructor must be called.  The request message may transit
+through the loopback driver and get placed on the Rx queue of another TCP
+socket - from whence it may be spliced off into a pipe.
 
-Further, note that these are the first set of patches for a single instance of
-PRU-ICSS Ethernet. Switch mode support for AM335x, AM437x and AM57x along with
-support for a second instance of PRU-ICSS on AM57x will be posted subsequently.
+Alternatively, if virtual I/O is involved, this message may get passed down to
+a layer outside of the system (though I don't think this is, in principle, any
+different from DMA being done by a NIC).
 
-The patches presented in this series have gone through the patch verification
-tools and no warnings or errors are reported. Sample test logs obtained from AM33x,
-AM43x and AM57x verifying the functionality on Linux next kernel are available here:
+And then there's relayfs and fuse, which seem to do weird stuff.
 
-[Interface up Testing](https://gist.github.com/ParvathiPudi/1ba62c7941de18e330813737ff4619fc)
+For the splicing of a loop-backed kernel message out of a TCP socket, it might
+make sense just to copy the message at that point.  The problem is that the
+kernel doesn't know what's going to happen next to it.
 
-[Ping Testing](https://gist.github.com/ParvathiPudi/9cb4fb3ce91629c230f1a66a65a26f4d)
+> In general splice unlike direct I/O relies on page reference counts inside
+> the splice machinery.  But that is configurable through the
+> pipe_buf_operations.  So if you want something to be handled by splice that
+> does not use simple page refcounts you need special pipe_buf_operations for
+> it.  And you'd better have a really good use case for this to be worthwhile.
 
-[Iperf Testing](https://gist.github.com/ParvathiPudi/00858477cce9e88e119ad7b79b0f51cf)
+Yes.  vmsplice, is the equivalent of direct I/O and should really do the same
+pinning thing that, say, write() to an O_DIRECT file does.
 
-[1] https://lore.kernel.org/all/20230106121046.886863-1-danishanwar@ti.com/
-[2] https://lore.kernel.org/all/20250108125937.10604-1-basharath@couthit.com/
-
-This is the v9 of the patch series [v1]. This version of the patchset
-addresses the comments made on [v8] of the series.
-
-Changes from v8 to v9 :
-
-*) Addressed Vadim Fedorenko comments on patch 6 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v7 to v8 :
-
-*) Addressed Paolo Abeni comments on patch 3 and 4 of the series.
-*) Replaced threaded IRQ logic with NAPI logic based on feedback from Paolo Abeni.
-*) Added Reviewed-by: tag from Rob Herring for patch 1.
-*) Rebased the series on latest net-next.
-
-Changes from v6 to v7 :
-
-*) Addressed Rob Herring comments on patch 1 of the series.
-*) Addressed Jakub Kicinski comments on patch 4, 5 and 6 of the series.
-*) Addressed Alok Tiwari comments on Patch 1, 4 and 5 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v5 to v6 :
-
-*) Addressed Simon Horman comments on patch 2, 7 and 11 of the series.
-*) Addressed Andrew Lunn comments on patch 5 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v4 to v5 :
-
-*) Addressed Andrew Lunn and Keller, Jacob E comments on patch 5 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v3 to v4 :
-
-*) Added support for AM33x and AM43x platforms.
-*) Removed SOC patch [2] and its dependencies.
-*) Addressed Jakub Kicinski, MD Danish Anwar and Nishanth Menon comments on cover
-   letter of the series.
-*) Addressed Rob Herring comments on patch 1 of the series.
-*) Addressed Ratheesh Kannoth comments on patch 2 of the series.
-*) Addressed Maxime Chevallier comments on patch 4 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v2 to v3 :
-
-*) Addressed Conor Dooley comments on patch 1 of the series.
-*) Addressed Simon Horman comments on patch 2, 3, 4, 5 and 6 of the series.
-*) Addressed Joe Damato comments on patch 4 of the series.
-*) Rebased the series on latest net-next.
-
-Changes from v1 to v2 :
-
-*) Addressed Andrew Lunn, Rob Herring comments on patch 1 of the series.
-*) Addressed Andrew Lunn comments on patch 2, 3, and 4 of the series.
-*) Addressed Richard Cochran, Jason Xing comments on patch 6 of the series.
-*) Rebased patchset on next-202401xx linux-next.
-
-[v1] https://lore.kernel.org/all/20250109105600.41297-1-basharath@couthit.com/
-[v2] https://lore.kernel.org/all/20250124122353.1457174-1-basharath@couthit.com/
-[v3] https://lore.kernel.org/all/20250214054702.1073139-1-parvathi@couthit.com/
-[v4] https://lore.kernel.org/all/20250407102528.1048589-1-parvathi@couthit.com/
-[v5] https://lore.kernel.org/all/20250414113458.1913823-1-parvathi@couthit.com/
-[v6] https://lore.kernel.org/all/20250423060707.145166-1-parvathi@couthit.com/
-[v7] https://lore.kernel.org/all/20250503121107.1973888-1-parvathi@couthit.com/
-[v8] https://lore.kernel.org/all/20250610105721.3063503-1-parvathi@couthit.com/
-
-Thanks and Regards,
-Parvathi.
-
-Murali Karicheri (1):
-  net: ti: prueth: Adds support for RX interrupt coalescing/pacing
-
-Parvathi Pudi (1):
-  dt-bindings: net: ti: Adds DUAL-EMAC mode support on PRU-ICSS2 for
-    AM57xx, AM43xx and AM33xx SOCs
-
-Roger Quadros (9):
-  net: ti: prueth: Adds ICSSM Ethernet driver
-  net: ti: prueth: Adds PRUETH HW and SW configuration
-  net: ti: prueth: Adds link detection, RX and TX support.
-  net: ti: prueth: Adds ethtool support for ICSSM PRUETH Driver
-  net: ti: prueth: Adds HW timestamping support for PTP using PRU-ICSS
-    IEP module
-  net: ti: prueth: Adds support for network filters for traffic control
-    supported by PRU-ICSS
-  net: ti: prueth: Adds power management support for PRU-ICSS
-  net: ti: prueth: Adds support for PRUETH on AM33x and AM43x SOCs
-  net: ti: prueth: Adds PTP OC Support for AM335x and AM437x
-
- .../devicetree/bindings/net/ti,icss-iep.yaml  |   10 +-
- .../bindings/net/ti,icssm-prueth.yaml         |  233 ++
- .../bindings/net/ti,pruss-ecap.yaml           |   32 +
- .../devicetree/bindings/soc/ti/ti,pruss.yaml  |    9 +
- drivers/net/ethernet/ti/Kconfig               |   24 +
- drivers/net/ethernet/ti/Makefile              |    5 +
- drivers/net/ethernet/ti/icssg/icss_iep.c      |  258 +-
- drivers/net/ethernet/ti/icssg/icss_iep.h      |   12 +
- drivers/net/ethernet/ti/icssm/icssm_ethtool.c |  337 +++
- drivers/net/ethernet/ti/icssm/icssm_prueth.c  | 2499 +++++++++++++++++
- drivers/net/ethernet/ti/icssm/icssm_prueth.h  |  464 +++
- .../net/ethernet/ti/icssm/icssm_prueth_dos.c  |  222 ++
- .../net/ethernet/ti/icssm/icssm_prueth_ecap.c |  312 ++
- .../net/ethernet/ti/icssm/icssm_prueth_ecap.h |   47 +
- .../net/ethernet/ti/icssm/icssm_prueth_ptp.h  |   85 +
- drivers/net/ethernet/ti/icssm/icssm_switch.h  |  285 ++
- .../ti/icssm/icssm_vlan_mcast_filter_mmap.h   |  120 +
- 17 files changed, 4950 insertions(+), 4 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
- create mode 100644 Documentation/devicetree/bindings/net/ti,pruss-ecap.yaml
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_ethtool.c
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth.c
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth.h
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_dos.c
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_ecap.c
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_ecap.h
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_ptp.h
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_switch.h
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_vlan_mcast_filter_mmap.h
-
--- 
-2.34.1
+David
 
