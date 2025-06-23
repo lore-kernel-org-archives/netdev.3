@@ -1,73 +1,43 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FE610E5;
-	Mon, 23 Jun 2025 03:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524B7A933;
+	Mon, 23 Jun 2025 03:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750649681; cv=none; b=NM+5/4Pg2hNK9UkxYmowVkqq77qopSh3A1RfgAFxB8L30/neYJzP//5p8CawuEAV/M7/+Gi8lXJV4rc0aJA1UNYa5agd2cDUfrsKh0hXjkyUR2LQwrCiic66womAWwr7mkSQOij1sdhqdfaO6TaAOmAGeRgYpmKJdpqqkP0dG40=
+	t=1750650503; cv=none; b=H7ATbyRC02FIfVC0+trB0z1JGHC2Bf1dZaPPaNTFm8hADp31d0Y6ppjRrdSEcsPLl2kMxcBErQQ5e/RpJo2Vt/gURSe7lHl/DGhIuyOA6ZlhAZP+T4LzKVjW+MmchpTTpJxZwM/URT4ETxqDdGRXodW1P2mAEvedt/nQ5Vfhd/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750649681; c=relaxed/simple;
-	bh=lXjmMI9CtZtHxfiUJTvqITe5Oo1TwGCPB0imDz+0oTg=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=iHolZRkXNBP+e47Il4iS4RnkUGIaJeBku2nnzqs6G60NiSn8lB+0bsuWSTmwUWIYARWHJQSCNy88zt+P8vSr3vAELsLvZhCeQmjsH6PVLlDo4ae0hbNye9ClYRKpbvPmI89zGGU++NQb1xUeq/aNET86G8iGEJaomnPVcxf8hjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YlRqNVAH; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YlRqNVAH"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b31d489a76dso3064937a12.1;
-        Sun, 22 Jun 2025 20:34:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750649679; x=1751254479; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=eql3VwMROrHW2B+HlytVrn2bj3G0w8gtwYP0PNEmI3k=;
-        b=YlRqNVAHYIeu1HKIbkVeMJM09NOvXKFbVDTOPfOUxB7V2JOvqJwfWXD+yoXlnExtap
-         QEU8XoU5kll0wTYQUMxohbNynX4A6QBwMRQ65BhR11t30n2ep7GdcnjJKUy9NySsBPZ9
-         Udl2ddFTR43MUIQIB1ky8kpZA3Hd4T2Y4mxWGEhNgj7TFN4uOlVUrUsqKA0vdWFDK//0
-         Jv3Rq35/dvrCLsICdaiYZHUVQcE7daltG04ch00k1lMKyykXTXvGDaLaxSMOVnqJq56t
-         p9pMVQIQka3FO4zCzSOtWmXyAWtNtglFRAmmXFE+Ce9FPTJulbp+yv1PkOBHFYsKe7A9
-         nbXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750649679; x=1751254479;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eql3VwMROrHW2B+HlytVrn2bj3G0w8gtwYP0PNEmI3k=;
-        b=h1WDwDSq8jZMzU/AwT+E3u340X+Ul2Of8Etct+wWd9OcMNIwFztuvnWHVslpXbDW7E
-         SjMBVE2E0hyjZ2hIjrQHUwrglpxJwJQ8Vr3H77LZcAx2WsAPkus9i2fSKr28pefrwIBR
-         K0AJuu/4xSZsRYT7q7wBaf4ThJmlo+K/LxrGlaA0wl86pbjc5aNTG7ps4y3NVs3U1O5N
-         aqZpOE8ZieaZ5fU+kP2sDa/SflA6maWHUx0X8SXbGvSgJyLOt1pvYbE+tmcr1rTGD4Fm
-         y3LvMJfIcWfzDux1+vi6HH4sPynBymwG2a0P3qnEynTb8+mJRZNJ2Z3dbGwNWM+IT/+I
-         erTg==
-X-Forwarded-Encrypted: i=1; AJvYcCURKO3oINduIAyHaWHjM0s6rJ/h+ReJL4PmqyKlv6qDMWWcg+dbL2n1heFMjaCQZj5v8on+doQ9@vger.kernel.org, AJvYcCW34awe0QzZJ+gdHTaN064N4g3yfqUW27Ezdp4m4loanKyqgu053J8k4PocxhzFggE7D2Uhl2y834tLbtQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjtbsQZr51eF53O83VQ+5lKbry9KIjPtBf0SKQVEUduJsEqjky
-	iSOnvChgROE8vSMmJhR+43S7yKVEyxTSJTcE67LrjqLK5x24QBEohbY7vvHAyUBE
-X-Gm-Gg: ASbGncsZJh3iq9C9AM2jylWXWjTjq6vh5TL2kcdDTRObfLXHw37zedt0OjJOKOPDIee
-	aAv1J2Hx/+VkjAlmTb3qTUs3j0L5ZtajgFo4uYHmifC+cReAW4BVmw6zMCgWGheycnxpKjm6Liu
-	G2ipCbwS36DEzWmUYkfe5u7MQV4tHBYdBwtaYDpB1hr2UNP7iVRMMamf10k6gNUV3ojOgqu3vnv
-	J4f26j606x/7ZA16MVPRiomOL8u43C2idzQhNJyS2q4R1H+NmJqYGm7adRGJXdh43paysQmKNMI
-	YossmyvF6uomghstyuzVaQJNXNTl2UNXQdHUhTrykPPeLeogTKSObuW7
-X-Google-Smtp-Source: AGHT+IEhgRl++Fx55uLO7+/lhP80b0zMUkWLxP10oWJZffLh24Wy9vh5iBElL4IOt7Ew0kK0YE6TSQ==
-X-Received: by 2002:a17:902:ebcd:b0:235:f70:fd37 with SMTP id d9443c01a7336-237d9848159mr165547735ad.19.1750649678995;
-        Sun, 22 Jun 2025 20:34:38 -0700 (PDT)
-Received: from gmail.com ([116.237.168.226])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d8397243sm71818625ad.20.2025.06.22.20.34.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Jun 2025 20:34:38 -0700 (PDT)
-From: Qingfang Deng <dqfext@gmail.com>
-To: linux-ppp@vger.kernel.org,
-	Michal Ostrowski <mostrows@earthlink.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] pppoe: drop PACKET_OTHERHOST before skb_share_check()
-Date: Mon, 23 Jun 2025 11:34:31 +0800
-Message-ID: <20250623033431.408810-1-dqfext@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1750650503; c=relaxed/simple;
+	bh=qt/+ct1EsDxJroNT5S6IwbORgIaQ5BsRcdhUMcdxPrM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pViSAnnFALmxNPtxA8owx4Ha8yL+d36qjGMdFj25XHGcmwJ11L/pUX8OIX/Yb0E8EvNvU8DvF6NwsdwrISp9k7o+Y2bFeovkneRwSJ7x7hz5GOEgOnEDLVewQecRvXZmoyDYAxkL99v4dl/erpaGz7NOmd6kW2qjIXeQ3PjoMIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4bQYq75wFGzPt9m;
+	Mon, 23 Jun 2025 11:44:19 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 94F8D1402E9;
+	Mon, 23 Jun 2025 11:48:16 +0800 (CST)
+Received: from localhost.localdomain (10.90.31.46) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 23 Jun 2025 11:48:15 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <wangpeiyang1@huawei.com>,
+	<liuyonglong@huawei.com>, <chenhao418@huawei.com>,
+	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
+	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
+Subject: [PATCH v2 net-next 2/3] net: hibmcge: adjust the burst len configuration of the MAC controller to improve TX performance.
+Date: Mon, 23 Jun 2025 11:41:28 +0800
+Message-ID: <20250623034129.838246-3-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20250623034129.838246-1-shaojijie@huawei.com>
+References: <20250623034129.838246-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,40 +45,58 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-Align with ip_rcv() by dropping PACKET_OTHERHOST packets before
-calling skb_share_check(). This avoids unnecessary skb processing
-for packets that will be discarded anyway.
+Adjust the burst len configuration of the MAC controller
+to improve TX performance.
 
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
- drivers/net/ppp/pppoe.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c  | 8 ++++++++
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h | 2 ++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index 68e631718ab0..410effa42ade 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -372,9 +372,6 @@ static int pppoe_rcv_core(struct sock *sk, struct sk_buff *skb)
- 	 * can't change.
- 	 */
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
+index 9b65eef62b3f..6e5602591554 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
+@@ -168,6 +168,11 @@ static void hbg_hw_set_mac_max_frame_len(struct hbg_priv *priv,
  
--	if (skb->pkt_type == PACKET_OTHERHOST)
--		goto abort_kfree;
--
- 	if (sk->sk_state & PPPOX_BOUND) {
- 		ppp_input(&po->chan, skb);
- 	} else if (sk->sk_state & PPPOX_RELAY) {
-@@ -418,6 +415,9 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
- 	struct pppoe_net *pn;
- 	int len;
+ void hbg_hw_set_mtu(struct hbg_priv *priv, u16 mtu)
+ {
++	/* burst_len BIT(29) set to 1 can improve the TX performance.
++	 * But packet drop occurs when mtu > 2000.
++	 * So, BIT(29) reset to 0 when mtu > 2000.
++	 */
++	u32 burst_len_bit = (mtu > 2000) ? 0 : 1;
+ 	u32 frame_len;
  
-+	if (skb->pkt_type == PACKET_OTHERHOST)
-+		goto drop;
+ 	frame_len = mtu + VLAN_HLEN * priv->dev_specs.vlan_layers +
+@@ -175,6 +180,9 @@ void hbg_hw_set_mtu(struct hbg_priv *priv, u16 mtu)
+ 
+ 	hbg_hw_set_pcu_max_frame_len(priv, frame_len);
+ 	hbg_hw_set_mac_max_frame_len(priv, frame_len);
 +
- 	skb = skb_share_check(skb, GFP_ATOMIC);
- 	if (!skb)
- 		goto out;
++	hbg_reg_write_field(priv, HBG_REG_BRUST_LENGTH_ADDR,
++			    HBG_REG_BRUST_LENGTH_B, burst_len_bit);
+ }
+ 
+ void hbg_hw_mac_enable(struct hbg_priv *priv, u32 enable)
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
+index eb50b202ca3a..310f8a74797d 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
+@@ -185,6 +185,8 @@
+ #define HBG_REG_TX_CFF_ADDR_2_ADDR		(HBG_REG_SGMII_BASE + 0x0490)
+ #define HBG_REG_TX_CFF_ADDR_3_ADDR		(HBG_REG_SGMII_BASE + 0x0494)
+ #define HBG_REG_RX_CFF_ADDR_ADDR		(HBG_REG_SGMII_BASE + 0x04A0)
++#define HBG_REG_BRUST_LENGTH_ADDR		(HBG_REG_SGMII_BASE + 0x04C4)
++#define HBG_REG_BRUST_LENGTH_B			BIT(29)
+ #define HBG_REG_RX_BUF_SIZE_ADDR		(HBG_REG_SGMII_BASE + 0x04E4)
+ #define HBG_REG_RX_BUF_SIZE_M			GENMASK(15, 0)
+ #define HBG_REG_BUS_CTRL_ADDR			(HBG_REG_SGMII_BASE + 0x04E8)
 -- 
-2.43.0
+2.33.0
 
