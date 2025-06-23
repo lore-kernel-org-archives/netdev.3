@@ -1,140 +1,102 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D3E1F94A
-	for <netdev@vger.kernel.org>; Mon, 23 Jun 2025 15:52:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398C126E175;
+	Mon, 23 Jun 2025 15:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750693949; cv=none; b=Nv2DjGzg8916ULB1Rtcczat+iFVHKaSETV+5xd1/qQ6LzaXkkLO2/2GvKLSD4aBRWa79AJsQhnSq+H4pRKyD9Hv38MGLf8WgmuVJi8CQBDI3KjbslW80QUbsAHu+JB9fQpTCw7usRXfJJFsbHHb3skMwVfNOMe/7uqb0pY5Vi9I=
+	t=1750693999; cv=none; b=awzZybKNeiB40HQD5Kr78xvUt6B1rkGm7tEicZNl+IQ63qs+6kP3HPKekcLITvevCbbe0zq4poHX0HR2i5eioiZzd5G7wHRaQJ09ZJQdwYLe/EzPxUzrVugvsLHkS3sW/RtFmKCFpyXL70tbCNe7GF3NYoiu+R283xdMFvaEJNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750693949; c=relaxed/simple;
-	bh=swZyKu2+7PHKHRfwkdESPz2DA5ktsMeC1wvUcdYV9iE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=QJl5ubddjjQcNwD9A5abQwvjERkllpIWYf7l6TvXhhv3+7xnGiB+pxhef0ZXblFlLzc3TGOL/vLin0gQWvVVairfhCtLZu9iEZn8Hl+v3JwstiF2tlxn4hNgf05H8nnvl8OJanlzC9gC+WoDVzTH7ryST/Q4lcs3x8LzuikLm8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UlgZeHeH; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750693999; c=relaxed/simple;
+	bh=eKiXvCPGG7WLlm26Hmb3q6+HD966RHLLuhjnSiZlll4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KhntzDIhETxI0n31yicFCV/KuURX9F/+tBuKaXn3KOeXRnMgRNHYc9MOIDl82SDORUUcfiOlKuBwbjuikvWjEqmB7Fu6GGEY4jZsZZsISC8+4g+p6Npo/AZ2oXPaBWHIRE3quQXUNliN7wh44lTmlshnydoxqDZh16vwKMnlCF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=KYAiZida; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UlgZeHeH"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-32b78b5aa39so45894291fa.1
-        for <netdev@vger.kernel.org>; Mon, 23 Jun 2025 08:52:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750693936; x=1751298736; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tFal6z5WdoJfwgoFuJLt03DQDW5DDCeNtwgGrqakBwU=;
-        b=UlgZeHeHIkuOAOaEVdWdnGX1wdH55jWYILbP2qqJPNDLizckonbt4WBZIbwdCcirqu
-         pk8EtxeER/JuXgonoCTZX/EA90U3J6zqU/iuAgBKNPFkFNDrlhcOTOZZ7jFntwHF3qDK
-         4ZJnBN8MDOPiEESH5FH5mein0XUQdpVqRBIUP7dq4GqpG6oaqr4gyF9quON8rwK8/R6v
-         qo14XXQv2o7pZ19l1o6A4OOYiyO79KYyNA+0zIZU70KMT2NW/UmbDnE/aMm4xVT6IF+2
-         9F3idoKc3ixEB0mvfd87c9rsPie1+sgOR9egAHLf0PLJFte5/CIdMSyCXnNEaxfPI+Pu
-         aH+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750693936; x=1751298736;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tFal6z5WdoJfwgoFuJLt03DQDW5DDCeNtwgGrqakBwU=;
-        b=FJPxAKus4SPu85hgYDtNom8ghMjGEkNMWdUUFpOu/93rTGuOAGmQ7uFGLU9LtM7wRt
-         jto3lRQiPVkny67lBXZeVa0HVI1CYFhCJ6aIuhs25hp+XeiTljjZ5L5JUnYFSk/IWUqD
-         +i1ku5bb/+2naQe+6h4xRdrezCDiNgM7npQHIkP13vWkwAdbITnvbTZZpNyX68jLVdwM
-         PP9HwWhDrDYBCv+9ajIIZxIkLWd8x2KXlGv8EJ6tb0+dqWag52wX8ayWjlFg7K2QWi/O
-         TqtR/5n6NVCzxXYW54Hk14WiUnCdkDTbF/dWRoJ9SGRXA2YUGE6mSfJWmqNS8l8tWWu2
-         N82g==
-X-Gm-Message-State: AOJu0Yx5qFuMBoMJAKzyckdJhf0BjSSnVD9ekNMcwrfPFb1ipQajqowy
-	Tj4YQLU2YQm7vAjOEFY1GIj53vuVvVqqMzSEZwWvs7bkHgeoDgA8npTGYNjxNg==
-X-Gm-Gg: ASbGncsyHtoA4n46h5qhcGf+ic6h6aithG0H5IPBTWq5kgy1ct8QQM/bpQcz82Pto9u
-	NoINHE/tTarHyFpw6EO+PxWggWQuUjhb5b6Zw3vkvRFYBTuDOCKUz+kvREuA2zpJnnxCs2zKR/N
-	QvOfI9HTjMbOJo9Zzr5+CfB5LkVDjOoCg4J34b74LilKpxC+CCpA10mkpZT3KQn7E2bgSPh31Yv
-	h14FB+knGI4MSv092HFJBh5fT+rSYUaIg4SqJYNf5ryU4f5SeYIz42nAKGyOc0B7ul0jib/HRLt
-	z+Qt3CgLeo1BWcnLGdRhSOBs/KrkSNdbxuL4BK91SMkRpSvZIoyWcMHLeH7tHvnfdTMIQtKEFQ3
-	924A/UHHQ5PEsTZ741SIvpg==
-X-Google-Smtp-Source: AGHT+IGaNwpEJrZTNxHoZE/oSLL9KF3CSArRfcXIxUGIx0td6xC1EkNPYdREAq1Q6+TI9QmN2o5MwA==
-X-Received: by 2002:a05:651c:4004:b0:32a:6eea:5c35 with SMTP id 38308e7fff4ca-32b98e8e669mr21686611fa.15.1750693935636;
-        Mon, 23 Jun 2025 08:52:15 -0700 (PDT)
-Received: from burken (c213-89-58-143.bredband.tele2.se. [213.89.58.143])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32b980a3652sm13459791fa.64.2025.06.23.08.52.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 08:52:14 -0700 (PDT)
-Date: Mon, 23 Jun 2025 17:52:13 +0200
-From: Jonas Karlsson <jonas.d.karlsson@gmail.com>
-To: netdev@vger.kernel.org
-Cc: jonas.d.karlsson@gmail.com
-Subject: [PATCH net 1/1] net: cadence: macb: only register MDIO bus when an
- MDIO child node exists in DT
-Message-ID: <aFl4LSaVfY7sz3Pr@burken>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="KYAiZida"
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55NCiZOO002102;
+	Mon, 23 Jun 2025 15:53:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=PxxPxgF2ODXpDFZkHWm+P8oA/NR5X
+	Y0G9EVuhakE/zQ=; b=KYAiZida+OyzOMzZExsedHOxYKbS28zeuAYDxEE5MMHI0
+	9MziLVOBEk8af0MIusyWJPkQs3fqk9P8UtrAMBONnfqvcb28N6meuaoL7icm9tkM
+	tzx56KFRCB3soo76R7qBukXD1sPlHs+plZ6DgaSptq0iiviSwxAXg5G+4TMBzjAq
+	qnTz+lQ4XTUoVzxd0tlZQzGKyvoAegIGCj5A7N6CRNe/n0QbHjP21KaCnjtM82Tb
+	CSpy18fX5+rHktbTbSzEVCKIZqhrZ6DS3FzZrkr9YMNF1MCH5icKgBBJ3bwed05P
+	9hZtDtUZdD8zh8pF8upp32vditBZWZ0iroFYQRaIg==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47egumhyg9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Jun 2025 15:53:10 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 55NFSveK009051;
+	Mon, 23 Jun 2025 15:53:10 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47ehq2h5v7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Jun 2025 15:53:09 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55NFr9NV013518;
+	Mon, 23 Jun 2025 15:53:09 GMT
+Received: from konrad-char-us-oracle-com.osdevelopmeniad.oraclevcn.com (konrad-char-us-oracle-com.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.249.23])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 47ehq2h5tu-1;
+	Mon, 23 Jun 2025 15:53:09 +0000
+From: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+To: allison.henderson@oracle.com, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, tj@kernel.org,
+        andrew@lunn.ch
+Cc: hannes@cmpxchg.org, mkoutny@suse.com, cgroups@vger.kernel.org
+Subject: [PATCH net-next v4.1] Expose RDS features via sysfs.
+Date: Mon, 23 Jun 2025 11:51:35 -0400
+Message-ID: <20250623155305.3075686-1-konrad.wilk@oracle.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-23_04,2025-06-23_06,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
+ spamscore=0 malwarescore=0 suspectscore=0 mlxscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2506230096
+X-Proofpoint-ORIG-GUID: duWBwEmbLxf3o-T2KorWfTeXqc9tcnAR
+X-Proofpoint-GUID: duWBwEmbLxf3o-T2KorWfTeXqc9tcnAR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA5NiBTYWx0ZWRfX7xL1wh4By42L Xd4AGC8Kwwt249NClkEGf0EYzdSm/w3GgpppJIskKdwwZ6I77HvTUS9OENSV/DyeRxCh1n5m9rD QMDJCRu0z27iRa5gYGBiXa75/1ZTbzKq6bf+DjyBVLzt0rz/Brv1W55Q6dlS5WIzMN2gOOaTbaD
+ 7xMc8i6H0bvI1GF0yWsKAIZCM4DITQUnF8kGC7GcEVpslXpErrTaolhhUR3/PPzhre243Euw1mR cKAwsMvBuxAnl4kHsky5hecwkW0TbpctQ+BHLUmWSxiIzdzzJeYoXwFAVZl8YoMf/xDP6AcYemB H8BMBDGSz1Kyz/4ye3rjY0CMwsho+0bII8QX4Xndt5+VUyc4GcyJil0zJTXDFRiacUE2H2JamLT
+ p5SR+U7jCqHp94EdGYm/J9YlecN65xT/QyHkPM0QYoYONjDvaNO4e+yaZjdJeh6LRzelVjea
+X-Authority-Analysis: v=2.4 cv=S5rZwJsP c=1 sm=1 tr=0 ts=68597867 cx=c_pps a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17 a=6IFa9wvqVegA:10 a=xjO9cqGlMa9R-XWzUmgA:9
 
-Prior to this patch, the MDIO peripheral was enabled for every GEM
-instance, even if no MDIO child node was defined in the device tree.
-In a setup where gem1 shares the MDIO bus with gem0 but has no MDIO
-subnode, gem1 would still scan the bus (both Clause 22 and Clause 45),
-adding unnecessary delay to the boot sequence.
+Hi folks,
 
-This patch changes the driver so that each GEM instance only registers
-its MDIO bus if it has an explicit MDIO child node in DT, e.g.:
-
-    &gem0 {
-        phy-handle = <&ethernet_phy0>;
-        mdio: mdio {
-            #address-cells = <1>;
-            #size-cells    = <0>;
-
-            ethernet_phy0: ethernet-phy@7 {
-                #phy-cells  = <1>;
-                compatible  = "ethernet-phy-id0022.1640",
-                              "ethernet-phy-ieee802.3-c22";
-                reg         = <7>;
-            };
-
-            ethernet_phy1: ethernet-phy@3 {
-                #phy-cells  = <1>;
-                compatible  = "ethernet-phy-id0022.1640",
-                              "ethernet-phy-ieee802.3-c22";
-                reg         = <3>;
-            };
-        };
-    };
-
-    &gem1 {
-        phy-handle = <&ethernet_phy1>;
-        /* no MDIO subnode here, so MDIO bus won’t be registered */
-    };
-
-Signed-off-by: Jonas Karlsson <jonas.d.karlsson@gmail.com>
----
- drivers/net/ethernet/cadence/macb_main.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 68ca6713a09a..e2b1f93f97e1 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1024,12 +1024,11 @@ static int macb_mii_init(struct macb *bp)
- 	struct device_node *mdio_np, *np = bp->pdev->dev.of_node;
- 	int err = -ENXIO;
+Changelog:
++ Since v1:
+ - Changed it to use sysfs and expose a 'features' file with the data.
++ Since v2:
+ - Use a 'features' directory similar to ext4, btrfs and expose each feature.
++ Since v3:
+ - Fix ret returning 0 if kobject_create_and_add fails
+ - Follow the syntax of Documentation/ABI/stable/sysfs-module.
++ Since v4:
+ - Changed period to coma in ABI documentation.
+ - Added Allison's Reviewed-by
  
--	/* With fixed-link, we don't need to register the MDIO bus,
--	 * except if we have a child named "mdio" in the device tree.
--	 * In that case, some devices may be attached to the MACB's MDIO bus.
-+	/* Only register MDIO bus if there is a child named "mdio" in
-+	 * the device tree
- 	 */
- 	mdio_np = of_get_child_by_name(np, "mdio");
--	if (!mdio_np && of_phy_is_fixed_link(np))
-+	if (!mdio_np)
- 		return macb_mii_probe(bp->dev);
- 
- 	/* Enable management port */
--- 
-2.43.0
+This patch addresses an issue where we have applications compiled against
+against older (or newer) kernels. RDS does not have any ioctls to query
+for what version of ABIs it has or what features it has. Hence this solution
+that proposes to put this ABI information in sysfs space.
+
+ Documentation/ABI/stable/sysfs-transport-rds | 43 +++++++++++++++++++
+ net/rds/af_rds.c                             | 63 +++++++++++++++++++++++++++-
+ 2 files changed, 105 insertions(+), 1 deletion(-)
+
+Konrad Rzeszutek Wilk (1):
+      rds: Expose feature parameters via sysfs (and ELF)
 
