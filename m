@@ -1,105 +1,116 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9922F1B4240;
-	Mon, 23 Jun 2025 10:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928B5238C21;
+	Mon, 23 Jun 2025 10:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750674514; cv=none; b=joXbe0v97/p25otNPbE6arqV6PhhaKN81MJF7LREjR1VwtL6JIa3DQx7wbDKg3Oa3p4zRJU9gzZVI0MI1pYfJnl8NqI89/jvRL6zzwnOPOn1TUpBSWecCEPcC2rYQNgIy4LRRgQeKyDPuw+QG/EHhp9InqUIKPD9PoCuXxmS+WI=
+	t=1750674570; cv=none; b=WCjhRK7TVX4yoqFoetvLO8QlVUnqEnLpDx++iPtZH6AMcEZHN38Up3hNDOhG+woGMxerlfpQgFCipEusRdylo2gkNQ9ynnX7ejahG8IvGa9gibWyPwRi8fERskphKp+hKY1zd2mpLITnAGq/PEI5pFKFfyU1ov9OUrIAlZ2l0jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750674514; c=relaxed/simple;
-	bh=N7ZQxV+Tkg0+Ls4X+f9GzaVY7wm4dgYAmb5ovUUI3Po=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qytbLPF1ZR/ehPA2CoataopSkn8E0AR2SSznpb8LUrg8E6RIL9br4sjC3vauEKryaCHiMUv2l20r7bdU6SuwyCZk8WQO8OLWQ6JbxXlEQdhaya7thzx94GOqj5n1rqwTm8wQaiKnmGPUmaXryrvmOfyAXcwN0Preo2FJTOs+I7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-681ff7000002311f-cd-68592c4b26b2
-Date: Mon, 23 Jun 2025 19:28:21 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: willy@infradead.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kernel_team@skhynix.com, kuba@kernel.org, almasrymina@google.com,
-	ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org,
-	akpm@linux-foundation.org, davem@davemloft.net,
-	john.fastabend@gmail.com, andrew+netdev@lunn.ch,
-	asml.silence@gmail.com, toke@redhat.com, tariqt@nvidia.com,
-	edumazet@google.com, pabeni@redhat.com, saeedm@nvidia.com,
-	leon@kernel.org, ast@kernel.org, daniel@iogearbox.net,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	horms@kernel.org, linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-	vishal.moola@gmail.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	jackmanb@google.com
-Subject: Re: [PATCH net-next v6 1/9] netmem: introduce struct netmem_desc
- mirroring struct page
-Message-ID: <20250623102821.GC3199@system.software.com>
-References: <20250620041224.46646-1-byungchul@sk.com>
- <20250620041224.46646-2-byungchul@sk.com>
- <8eaf52bf-4c3c-4007-afe5-a22da9f228f9@redhat.com>
+	s=arc-20240116; t=1750674570; c=relaxed/simple;
+	bh=E/V1S8fsQv28bkCAhEQ4ycEwjcFe4GGI4EAwIkH482Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Pi7fo1AjHxyd92tU6K+j8x3cdTHgxVvPvjtqt/XSPD553/8Ex5Foyo/vK/taqdDD2J/S0Cq2sREnO9GVDK1TWZLWZYLx55uNDL8vTp/Q+3J3Em9LJxLgTIlrStOK8ttrSxvt2UA3r4EHIerv06ZzWQRAON5j+oZ+l68OZAc3pTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYaBP2lk; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYaBP2lk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C3DC4CEF0;
+	Mon, 23 Jun 2025 10:29:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750674570;
+	bh=E/V1S8fsQv28bkCAhEQ4ycEwjcFe4GGI4EAwIkH482Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SYaBP2lk0MdWtqUfv/93HDoI9bgXyLZ1tLGUoFvVQn3m/gqL2pzfO8H4ej/tMuOpo
+	 IXbbs9NfCHZpJMK0JIbPK/vuggsuzrNRQJBulX9F4h0vF0THpre66D/rUBsy7scHzk
+	 QX50s5saUijGk5oN6fRLOScqEUc6zqKa4/zfL2n9JgdYg81DsDyzEtJHiOsL7HFN+R
+	 vTqdIAWvpLpm/my4bGLRZp7TV0NO8xnMoqV/nxj2tsq2xkZpHLA3PAmboH6yFxF10J
+	 /gau00wQxz5avfk7CdHNGiNOQnlDl9jAqoe2CJjATH80ADl1hqH21K/kcGJhM9PlBl
+	 8rZa7P40gbD/w==
+Message-ID: <1d622833-d509-4f5b-ba19-b1f30c592d3b@kernel.org>
+Date: Mon, 23 Jun 2025 13:29:10 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8eaf52bf-4c3c-4007-afe5-a22da9f228f9@redhat.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0iTYRiGefd+p00HX8vqLX8U62BZOQup54faQaoPOxgF0Qlq5EebzRWb
-	mgaBlhlJWi07TZNpZJ5gNQ+bYVJLnbJAs7RVprZUCMwwD2SW5oyofxf3/XBx/3g4rDDTCzit
-	PkE06NU6JSOjZF/8C1ZvX3VAE/r6fgDkWcsZKPueDA96HDTklVYjGBl/z8JwvYuBewVjGPJa
-	0ikYtf7A0NfoZaHMthO6i/opqL1ox+C90sRAVvoEhifjgyyccxRLoLU6m4acH/cx2FN7WHj1
-	OI+BrvIpGvqdWRQ0m0so6M7eCI2WuTDmHkBQb7VLYOzyXQaut1kY+JTejaDtuZeC3LRsBNY6
-	Dw0T36cduQ1d7MYlwvOBr1ioLHkrEWrMH1jBYksUKoqDhUxPGxZspZcYwfbNxAqdHbWM0HR7
-	ghJqHMMSIev8ICMM9b2jhK917YxgrWynhBeWenb3rIOy8FhRp00SDarIozKN60kNc+oVm9zU
-	8xKnoik6E3Ec4cNIWufCTCSdQZd7EvuY4pcSp/sm42OGDyIez/hMHsAvJ7aMh9Ms4zCfzxBL
-	TudMMZtXk1umTxIfy/n15G1l18yRgr+ByJCtjP5TzCLNd3opH2M+mHgmP0t8IzAfSB5Mcr5Y
-	ykcSk7kR+XgOv5g8rXZJfB7COzgyNGDGf5bOJ8+KPdRVxJv/05r/05r/aS0IlyKFVp8Ur9bq
-	wkI0KXptcsixk/E2NP0xRWd/HnKgb617nYjnkNJfftR/v0ZBq5OMKfFORDisDJA7N+/TKOSx
-	6pQzouHkEUOiTjQ6USBHKefJ146djlXwx9UJ4glRPCUa/rYSTrogFYlsu99o6OGcxSUfMxzl
-	fjqX4YJJNedXxwbp5vDRXa9V1i6VfUtc77PCbSNyb4QpLj2qxb0yQRcdJX2jii6ovdIRnlO3
-	KSZwXdSLp0Zn7zIajXgnVmTHaPM7x+fvqYpkkV9D2L79GRUR/WX6RY+qGqJTBgd2XLq2dchS
-	mHt7XlGQkjJq1GuCscGo/g1pi+z/LQMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG+Z9zds5xNDqtVSclgkVU6yoUvWGIFNSfzOpTmhF6yINbeWPL
-	WySZrkJRy0uZxxkzU+cFV0t0hkbM8sKivGCsLCeaUSKWaZJZ1mZEffvxPM/v/fSypPIn5cvq
-	4s6J+jghRk3LKfmRgMytwVtOaHe09BJgstbTUPctBaqH7TIw1TYhmJkbZGD6SScNFeWzJJhe
-	GCn4av1OwljHCAN1thBwV72noPVqMwkj17poyDXOk9A2N8lAht1CQHtZtwx6mvJkUPS9koTm
-	9GEG+h+aaBiq/yWD945cCrqlGgrceUHQYV4Js84JBE+szQTM5pTRUNhnpmHU6EbQ1z5CQeml
-	PATWRy4ZzH/z3Ch9OsQErcftE59I3FjzisAt0lsGm22J+IFFg7NdfSS21WbR2PalgMFvXrbS
-	uOvWPIVb7NMEzs2cpPHU2GsKf3o0QOOKD58JbG0coI4pw+V7o8QYXZKo3x4YKdd2trXQCf1M
-	StdwL5mOfsmykQ/Lczv5TucC6WWKW887nDdpL9PcBt7lmlvMVdxG3nblnoflLMndpnlz0ZvF
-	Yjkn8MUFo4SXFdxu/lXj0OJIyd1A/JStTvanWMZ3l7yjvExyGt618NEjsB7246sXWG/swwXy
-	BVIH8vIKbh3/uKmTuI4U0n+29J8t/bPNiKxFKl1cUqygi9m1zXBWmxqnS9l2Oj7WhjxPUZX2
-	I9+OZvoPOhDHIvUShSU4TKuUCUmG1FgH4llSrVI49h3XKhVRQup5UR8foU+MEQ0O5MdS6lWK
-	Q6FipJKLFs6JZ0UxQdT/bQnWxzcdnZLOJx9WVo3XXtD8GCu6jMMsWXeeb2i9veVLsu9pIdrx
-	YmmletNaY8IzLiC0QjuWVp6dPX7sdUhUYcnRyXx//66G/WbVwJmczU4/nakMvXOOmhculYbX
-	rw5WNgT7HSh2F67ZaZmULp4cDHyYHy7t8a+53xMglOTZVXebrpARGb1qyqAV/DWk3iD8BkQV
-	x6EQAwAA
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 04/13] dt-bindings: interconnect: add mt7988-cci
+ compatible
+To: Frank Wunderlich <linux@fw-web.de>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Frank Wunderlich <frank-w@public-files.de>,
+ Jia-Wei Chang <jia-wei.chang@mediatek.com>,
+ Johnson Wang <johnson.wang@mediatek.com>, =?UTF-8?B?QXLEsW7DpyDDnE5BTA==?=
+ <arinc.unal@arinc9.com>, Landen Chao <Landen.Chao@mediatek.com>,
+ DENG Qingfang <dqfext@gmail.com>, Sean Wang <sean.wang@mediatek.com>,
+ Daniel Golle <daniel@makrotopia.org>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Felix Fietkau <nbd@nbd.name>, linux-pm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+References: <20250620083555.6886-1-linux@fw-web.de>
+ <20250620083555.6886-5-linux@fw-web.de>
+Content-Language: en-US
+From: Georgi Djakov <djakov@kernel.org>
+In-Reply-To: <20250620083555.6886-5-linux@fw-web.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 23, 2025 at 11:32:16AM +0200, David Hildenbrand wrote:
-> On 20.06.25 06:12, Byungchul Park wrote:
-> > To simplify struct page, the page pool members of struct page should be
-> > moved to other, allowing these members to be removed from struct page.
-> > 
-> > Introduce a network memory descriptor to store the members, struct
-> > netmem_desc, and make it union'ed with the existing fields in struct
-> > net_iov, allowing to organize the fields of struct net_iov.
+On 20.06.25 11:35, Frank Wunderlich wrote:
+> From: Frank Wunderlich <frank-w@public-files.de>
 > 
-> It would be great adding some result from the previous discussions in
-> here, such as that the layout of "struct net_iov" can be changed because
-> it is not a "struct page" overlay, what the next steps based on this
-
-I think the network folks already know how to use and interpret their
-data struct, struct net_iov for sure.. but I will add the comment if it
-you think is needed.  Thanks for the comment.
-
-	Byungchul
-
-> patch are etc.
+> Add compatible for Mediatek MT7988 SoC with mediatek,mt8183-cci fallback
+> which is taken by driver.
 > 
-> --
-> Cheers,
+> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+> Acked-by: Rob Herring (Arm) <robh@kernel.org>
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+
+Acked-by: Georgi Djakov <djakov@kernel.org>
+
+This can go with the rest of the patches or please let me know if i should apply it.
+
+BR,
+Georgi
+
+> ---
+> v2:
+> - no RFC
+> - drop "items" as sugested by conor
+> ---
+>   .../bindings/interconnect/mediatek,cci.yaml           | 11 ++++++++---
+>   1 file changed, 8 insertions(+), 3 deletions(-)
 > 
-> David / dhildenb
+> diff --git a/Documentation/devicetree/bindings/interconnect/mediatek,cci.yaml b/Documentation/devicetree/bindings/interconnect/mediatek,cci.yaml
+> index 58611ba2a0f4..4d72525f407e 100644
+> --- a/Documentation/devicetree/bindings/interconnect/mediatek,cci.yaml
+> +++ b/Documentation/devicetree/bindings/interconnect/mediatek,cci.yaml
+> @@ -17,9 +17,14 @@ description: |
+>   
+>   properties:
+>     compatible:
+> -    enum:
+> -      - mediatek,mt8183-cci
+> -      - mediatek,mt8186-cci
+> +    oneOf:
+> +      - enum:
+> +          - mediatek,mt8183-cci
+> +          - mediatek,mt8186-cci
+> +      - items:
+> +          - enum:
+> +              - mediatek,mt7988-cci
+> +          - const: mediatek,mt8183-cci
+>   
+>     clocks:
+>       items:
+
