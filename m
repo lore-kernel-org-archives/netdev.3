@@ -1,102 +1,140 @@
-Received: from relay16.mail.gandi.net (relay16.mail.gandi.net [217.70.178.236])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940BA25EF82;
-	Mon, 23 Jun 2025 15:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.236
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D3E1F94A
+	for <netdev@vger.kernel.org>; Mon, 23 Jun 2025 15:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750693908; cv=none; b=eGj2rZpr9LJkSeZA2LzjNpuTpHY0HzcTf5UE5vYXFwJe8mJzseJZ4BWiCpHRU41z8MYioBw8y6ruQqaztvF0EjAfNgi32ZAsFK0ECKfZh0Hg+cnsa2BuovYNPydyrt2B2DkYMi+6xYyoTInMs1I/GJ0+8Fh1ZAr0SA7PzFtv6Vw=
+	t=1750693949; cv=none; b=Nv2DjGzg8916ULB1Rtcczat+iFVHKaSETV+5xd1/qQ6LzaXkkLO2/2GvKLSD4aBRWa79AJsQhnSq+H4pRKyD9Hv38MGLf8WgmuVJi8CQBDI3KjbslW80QUbsAHu+JB9fQpTCw7usRXfJJFsbHHb3skMwVfNOMe/7uqb0pY5Vi9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750693908; c=relaxed/simple;
-	bh=h4AVMYKSCrcTc9JYJnM3RTwqyK7hwOu18sc9aiNikIQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NgQtQzZfVNhOp0LTxu0X4MYyBEeKrpeu+DoFxFrWfx1RPq4/5SNhdWtMnCXR+FXwqWVrfMAQy/hTkVTu/VP7Ldq4o39wnVs3D7oLbnKS2rRLUreFxGyt4Pg+x3qxr06pEUe6vCZUz/3834Zs9mUxSNv0eheWsMD3wfIZaoaO3/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cqhA5rWB; arc=none smtp.client-ip=217.70.178.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1750693949; c=relaxed/simple;
+	bh=swZyKu2+7PHKHRfwkdESPz2DA5ktsMeC1wvUcdYV9iE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=QJl5ubddjjQcNwD9A5abQwvjERkllpIWYf7l6TvXhhv3+7xnGiB+pxhef0ZXblFlLzc3TGOL/vLin0gQWvVVairfhCtLZu9iEZn8Hl+v3JwstiF2tlxn4hNgf05H8nnvl8OJanlzC9gC+WoDVzTH7ryST/Q4lcs3x8LzuikLm8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UlgZeHeH; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cqhA5rWB"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EAB9044A1F;
-	Mon, 23 Jun 2025 15:51:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750693898;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h4AVMYKSCrcTc9JYJnM3RTwqyK7hwOu18sc9aiNikIQ=;
-	b=cqhA5rWBKGfnwGDr8MdDoAJKA3fxBJKamPaUJS01dWNPaHzYUlu7oR2qF6y5gb8JjENZ/c
-	EwZD2+WDsRxwihbN5/fXd4Qkdt4nokjzdBCA64uNMJrIRHC9OK4a3cQiy4mfb7KYl+e69h
-	OKcKmCkyLKsA7jRo9M0AxeOzQ2r3mSSq4bKck7AM69Tt4v8o0Wz8rzBnKY2gH2qQ24JPy5
-	fzqBLPLusX/mEoklOXkvRutS/7jX8VD8VY1LFrr2Xfp3sf/RtzbutSx70QjyvZ9284sv2E
-	eKDxzxC1IHojLwgUIbeanpN6iEXA+cYoeXTXq6qLcqARiTcPn3u2PUCcFecRWw==
-Date: Mon, 23 Jun 2025 17:51:35 +0200
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Kamil =?UTF-8?B?SG9yw6Fr?= - 2N <kamilh@axis.com>
-Cc: <florian.fainelli@broadcom.com>,
- <bcm-kernel-feedback-list@broadcom.com>, <andrew@lunn.ch>,
- <hkallweit1@gmail.com>, <linux@armlinux.org.uk>, <davem@davemloft.net>,
- <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
- <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <netdev@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <robh@kernel.org>
-Subject: Re: [PATCH net-next v2 2/3] net: phy: bcm5481x: Implement MII-Lite
- mode
-Message-ID: <20250623175135.5ddee2ea@2a02-8440-d115-be0d-cec0-a2a1-bc3c-622e.rev.sfr.net>
-In-Reply-To: <20250623151048.2391730-2-kamilh@axis.com>
-References: <20250623151048.2391730-1-kamilh@axis.com>
-	<20250623151048.2391730-2-kamilh@axis.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UlgZeHeH"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-32b78b5aa39so45894291fa.1
+        for <netdev@vger.kernel.org>; Mon, 23 Jun 2025 08:52:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750693936; x=1751298736; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tFal6z5WdoJfwgoFuJLt03DQDW5DDCeNtwgGrqakBwU=;
+        b=UlgZeHeHIkuOAOaEVdWdnGX1wdH55jWYILbP2qqJPNDLizckonbt4WBZIbwdCcirqu
+         pk8EtxeER/JuXgonoCTZX/EA90U3J6zqU/iuAgBKNPFkFNDrlhcOTOZZ7jFntwHF3qDK
+         4ZJnBN8MDOPiEESH5FH5mein0XUQdpVqRBIUP7dq4GqpG6oaqr4gyF9quON8rwK8/R6v
+         qo14XXQv2o7pZ19l1o6A4OOYiyO79KYyNA+0zIZU70KMT2NW/UmbDnE/aMm4xVT6IF+2
+         9F3idoKc3ixEB0mvfd87c9rsPie1+sgOR9egAHLf0PLJFte5/CIdMSyCXnNEaxfPI+Pu
+         aH+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750693936; x=1751298736;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tFal6z5WdoJfwgoFuJLt03DQDW5DDCeNtwgGrqakBwU=;
+        b=FJPxAKus4SPu85hgYDtNom8ghMjGEkNMWdUUFpOu/93rTGuOAGmQ7uFGLU9LtM7wRt
+         jto3lRQiPVkny67lBXZeVa0HVI1CYFhCJ6aIuhs25hp+XeiTljjZ5L5JUnYFSk/IWUqD
+         +i1ku5bb/+2naQe+6h4xRdrezCDiNgM7npQHIkP13vWkwAdbITnvbTZZpNyX68jLVdwM
+         PP9HwWhDrDYBCv+9ajIIZxIkLWd8x2KXlGv8EJ6tb0+dqWag52wX8ayWjlFg7K2QWi/O
+         TqtR/5n6NVCzxXYW54Hk14WiUnCdkDTbF/dWRoJ9SGRXA2YUGE6mSfJWmqNS8l8tWWu2
+         N82g==
+X-Gm-Message-State: AOJu0Yx5qFuMBoMJAKzyckdJhf0BjSSnVD9ekNMcwrfPFb1ipQajqowy
+	Tj4YQLU2YQm7vAjOEFY1GIj53vuVvVqqMzSEZwWvs7bkHgeoDgA8npTGYNjxNg==
+X-Gm-Gg: ASbGncsyHtoA4n46h5qhcGf+ic6h6aithG0H5IPBTWq5kgy1ct8QQM/bpQcz82Pto9u
+	NoINHE/tTarHyFpw6EO+PxWggWQuUjhb5b6Zw3vkvRFYBTuDOCKUz+kvREuA2zpJnnxCs2zKR/N
+	QvOfI9HTjMbOJo9Zzr5+CfB5LkVDjOoCg4J34b74LilKpxC+CCpA10mkpZT3KQn7E2bgSPh31Yv
+	h14FB+knGI4MSv092HFJBh5fT+rSYUaIg4SqJYNf5ryU4f5SeYIz42nAKGyOc0B7ul0jib/HRLt
+	z+Qt3CgLeo1BWcnLGdRhSOBs/KrkSNdbxuL4BK91SMkRpSvZIoyWcMHLeH7tHvnfdTMIQtKEFQ3
+	924A/UHHQ5PEsTZ741SIvpg==
+X-Google-Smtp-Source: AGHT+IGaNwpEJrZTNxHoZE/oSLL9KF3CSArRfcXIxUGIx0td6xC1EkNPYdREAq1Q6+TI9QmN2o5MwA==
+X-Received: by 2002:a05:651c:4004:b0:32a:6eea:5c35 with SMTP id 38308e7fff4ca-32b98e8e669mr21686611fa.15.1750693935636;
+        Mon, 23 Jun 2025 08:52:15 -0700 (PDT)
+Received: from burken (c213-89-58-143.bredband.tele2.se. [213.89.58.143])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32b980a3652sm13459791fa.64.2025.06.23.08.52.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Jun 2025 08:52:14 -0700 (PDT)
+Date: Mon, 23 Jun 2025 17:52:13 +0200
+From: Jonas Karlsson <jonas.d.karlsson@gmail.com>
+To: netdev@vger.kernel.org
+Cc: jonas.d.karlsson@gmail.com
+Subject: [PATCH net 1/1] net: cadence: macb: only register MDIO bus when an
+ MDIO child node exists in DT
+Message-ID: <aFl4LSaVfY7sz3Pr@burken>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddujeegfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthhqredtredtjeenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeektdfhhfehleffjeegteetteehgedtgfekueeffffghedugfetlefgtdekteekieenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdejiedriedvrddujedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdejiedriedvrddujedupdhhvghlohepvdgrtddvqdekgeegtddqugduudehqdgsvgdtugdqtggvtgdtqdgrvdgruddqsggtfegtqdeivddvvgdrrhgvvhdrshhfrhdrnhgvthdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduiedprhgtphhtthhopehkrghmihhlhhesrgigihhsrdgtohhmpdhrtghpthhtohepfhhlohhrihgrnhdrfhgrihhnvghllhhisegsrhhorggutghomhdrtghomhdprhgtphhtthhopegstghmqdhkvghrnhgvl
- hdqfhgvvggusggrtghkqdhlihhsthessghrohgruggtohhmrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Hi Kamil,
+Prior to this patch, the MDIO peripheral was enabled for every GEM
+instance, even if no MDIO child node was defined in the device tree.
+In a setup where gem1 shares the MDIO bus with gem0 but has no MDIO
+subnode, gem1 would still scan the bus (both Clause 22 and Clause 45),
+adding unnecessary delay to the boot sequence.
 
-On Mon, 23 Jun 2025 17:10:46 +0200
-Kamil Hor=C3=A1k - 2N <kamilh@axis.com> wrote:
+This patch changes the driver so that each GEM instance only registers
+its MDIO bus if it has an explicit MDIO child node in DT, e.g.:
 
-> From: Kamil Hor=C3=A1k (2N) <kamilh@axis.com>
->=20
-> The Broadcom bcm54810 and bcm54811 PHYs are capable to operate in
-> simplified MII mode, without TXER, RXER, CRS and COL signals as defined
-> for the MII. While the PHY can be strapped for MII mode, the selection
-> between MII and MII-Lite must be done by software.
-> The MII-Lite mode can be used with some Ethernet controllers, usually
-> those used in automotive applications. The absence of COL signal
-> makes half-duplex link modes impossible but does not interfere with
-> BroadR-Reach link modes on Broadcom PHYs, because they are full-duplex
-> only. The MII-Lite mode can be also used on an Ethernet controller with
-> full MII interface by just leaving the input signals (RXER, CRS, COL)
-> inactive.
+    &gem0 {
+        phy-handle = <&ethernet_phy0>;
+        mdio: mdio {
+            #address-cells = <1>;
+            #size-cells    = <0>;
 
-I'm following-up to Andrew's suggestion of making it a dedicated
-phy-mode. You say that this requires only phy-side configuration,
-however you also say that with MII-lite, you can't do half-duplex.
+            ethernet_phy0: ethernet-phy@7 {
+                #phy-cells  = <1>;
+                compatible  = "ethernet-phy-id0022.1640",
+                              "ethernet-phy-ieee802.3-c22";
+                reg         = <7>;
+            };
 
-Looking at the way we configure the MAC to PHY link, how can the MAC
-driver know that HD isn't available if this is a phy-only property ?
+            ethernet_phy1: ethernet-phy@3 {
+                #phy-cells  = <1>;
+                compatible  = "ethernet-phy-id0022.1640",
+                              "ethernet-phy-ieee802.3-c22";
+                reg         = <3>;
+            };
+        };
+    };
 
-Relying on the fact that the PHYs that use MII-Lite will only ever
-setup a full-duplex link with the partner seems a bit fragile, when we
-could indicate that this new MII-Lite mode only supports 10FD/100FD,
-through this mapping code here :
+    &gem1 {
+        phy-handle = <&ethernet_phy1>;
+        /* no MDIO subnode here, so MDIO bus won’t be registered */
+    };
 
-https://elixir.bootlin.com/linux/v6.16-rc2/source/drivers/net/phy/phy_caps.=
-c#L282
+Signed-off-by: Jonas Karlsson <jonas.d.karlsson@gmail.com>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-Besides that, given that this is a physically different MAC to PHY
-interface (missing signals compared to MII), one could also argue that
-this warrants a dedicated phy-mode.
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 68ca6713a09a..e2b1f93f97e1 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1024,12 +1024,11 @@ static int macb_mii_init(struct macb *bp)
+ 	struct device_node *mdio_np, *np = bp->pdev->dev.of_node;
+ 	int err = -ENXIO;
+ 
+-	/* With fixed-link, we don't need to register the MDIO bus,
+-	 * except if we have a child named "mdio" in the device tree.
+-	 * In that case, some devices may be attached to the MACB's MDIO bus.
++	/* Only register MDIO bus if there is a child named "mdio" in
++	 * the device tree
+ 	 */
+ 	mdio_np = of_get_child_by_name(np, "mdio");
+-	if (!mdio_np && of_phy_is_fixed_link(np))
++	if (!mdio_np)
+ 		return macb_mii_probe(bp->dev);
+ 
+ 	/* Enable management port */
+-- 
+2.43.0
 
-Maxime
