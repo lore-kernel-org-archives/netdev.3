@@ -1,181 +1,226 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4469B22D9ED;
-	Tue, 24 Jun 2025 08:16:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9615221739
+	for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 08:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750753011; cv=none; b=A/MK0uCQzQwOOYgL0FlDJIjyg2V2txypw3fDZrXndExx25sI276zwNWXmeH6V6yUjfu5GJKgpJ9E6XPhGv1P04eGRTZE5I4Xgwxf2JXhDOWlfgfoYZOUJC4ybqIWX9EVCJ4G70jt8sxmKp5Ejs1skgpMhM+7aKAGQv6TN2L8R7k=
+	t=1750753590; cv=none; b=fnjRexsBg8S18isr89LlxRXxpjz2DkIt2FWMD146SF5KhkehBvuhZPvVzUOZy42F8RK1/qHYg0TaTqrMehxkhy5JMavjH2nku1DspnRqKj5aQ8l/1ZYX55Jos40KoUkr5FLxPDmLGJxGfHYFrmqPki6Rx93qfgXU/J18IDl5mC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750753011; c=relaxed/simple;
-	bh=NBm7n8cvZBw6HTko9M9D97Lqr/lsqlB20GFEmgKmdwc=;
+	s=arc-20240116; t=1750753590; c=relaxed/simple;
+	bh=IeWGG3hyAvbwB6tvfqkj8zEqSmmgUr88kLWUMzQ6I48=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iVKkj5ebH2mHvOizeuLHTM5nyLtOoLU8WPycvy7/SHicD9r/9iyI/bACINajtxyKx0s5ux9Sj5tPrJGZzp8toEi/IEo1YcSLxB+d5jzA/jmBdnNWKF0kg7jy85h6TMCYlCJg4q2Y2dpDPPUmAOlbQCfdt70K61/uv6KyXLUyETA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=D27XIDOD; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="D27XIDOD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=mMnMLYCAgxCT8gkPeig8C/G/rXJSBpt5RF65PZMjsdg=; b=D27XIDOD17q4O65To2PG5W+KJq
-	kGJ7PN3qvRLghHdjyJUT3rwQpo1dkyYYlW2OdsEdJKU0qofBChOwP0PQqfT1mBQNHhYJMCxmSYub9
-	OcABdfMKRtXFZTSKxJutatMYGyHscoyuHH00nl/aAXBmglZgYilt5xhYGSDJRJYU2J1E=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uTypJ-00Glmv-AQ; Tue, 24 Jun 2025 10:16:21 +0200
-Date: Tue, 24 Jun 2025 10:16:21 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Imre Kaloz <kaloz@openwrt.org>,
-	Frederic Lambert <frdrc66@gmail.com>,
-	Gabor Juhos <juhosg@openwrt.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] ARM: dts: Fix up wrv54g device tree
-Message-ID: <08531445-a27d-413f-96de-81087d6f61e1@lunn.ch>
-References: <20250624-ks8995-dsa-bindings-v1-0-71a8b4f63315@linaro.org>
- <20250624-ks8995-dsa-bindings-v1-2-71a8b4f63315@linaro.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=tt76baC56O+s0/5arXMkH2dFS7bac4CXdMUk17hMBk2ZcqlBG0ECU6aFcp9ac9gkqj34t3i2cAVjbX0UK52jbF1BMx7pdQx6v+fr0Aby7jB8rlQOCk/n9ZfvB9nz2mLct8B5+2adr3zlRzlEL8Jpd9x+TAv+/oe9bg0q1hzgd6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uTyyi-0000Bp-H9; Tue, 24 Jun 2025 10:26:04 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uTyyg-00559E-1m;
+	Tue, 24 Jun 2025 10:26:02 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uTyyg-00F6ln-1M;
+	Tue, 24 Jun 2025 10:26:02 +0200
+Date: Tue, 24 Jun 2025 10:26:02 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next v4 0/4] net: selftest: improve test string
+ formatting and checksum handling
+Message-ID: <aFphGj_57XnwyhW1@pengutronix.de>
+References: <20250515083100.2653102-1-o.rempel@pengutronix.de>
+ <20250516184510.2b84fab4@kernel.org>
+ <aFU9o5F4RG3QVygb@pengutronix.de>
+ <20250621064600.035b83b3@kernel.org>
+ <aFk-Za778Bk38Dxn@pengutronix.de>
+ <20250623101920.69d5c731@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250624-ks8995-dsa-bindings-v1-2-71a8b4f63315@linaro.org>
+In-Reply-To: <20250623101920.69d5c731@kernel.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Tue, Jun 24, 2025 at 09:41:12AM +0200, Linus Walleij wrote:
-> Fix up the KS8995 switch and PHYs the way that is most likely:
+On Mon, Jun 23, 2025 at 10:19:20AM -0700, Jakub Kicinski wrote:
+> On Mon, 23 Jun 2025 13:45:41 +0200 Oleksij Rempel wrote:
+> > On Sat, Jun 21, 2025 at 06:46:00AM -0700, Jakub Kicinski wrote:
+> > > On Fri, 20 Jun 2025 12:53:23 +0200 Oleksij Rempel wrote:
+> > > > Let me first describe the setup where this issue was observed and my findings.
+> > > > The problem occurs on a system utilizing a Microchip DSA driver with an STMMAC
+> > > > Ethernet controller attached to the CPU port.
+> > > > 
+> > > > In the current selftest implementation, the TCP checksum validation fails,
+> > > > while the UDP test passes. The existing code prepares the skb for hardware
+> > > > checksum offload by setting skb->ip_summed = CHECKSUM_PARTIAL. For TCP, it sets
+> > > > the thdr->check field to the complement of the pseudo-header checksum, and for
+> > > > UDP, it uses udp4_hwcsum. If I understand it correct, this configuration tells
+> > > > the kernel that the hardware should perform the checksum calculation.
+> > > > 
+> > > > However, during testing, I noticed that "rx-checksumming" is enabled by default
+> > > > on the CPU port, and this leads to the TCP test failure.  Only after disabling
+> > > > "rx-checksumming" on the CPU port did the selftest pass. This suggests that the
+> > > > issue is specifically related to the hardware checksum offload mechanism in
+> > > > this particular setup. The behavior indicates that something on the path
+> > > > recalculated the checksum incorrectly.  
+> > > 
+> > > Interesting, that sounds like the smoking gun. When rx-checksumming 
+> > > is enabled the packet still reaches the stack right?  
+> > 
+> > No. It looks like this packets are just silently dropped, before they was
+> > seen by the stack. The only counter which confirms presence of this
+> > frames is HW specific mmc_rx_tcp_err. But it will be increasing even if
+> > rx-checksumming is disabled and packets are forwarded to the stack.
 > 
-> - Phy 1-4 is certainly the PHYs of the KS8995 (mask 0x1e in
->   the outoftree code masks PHYs 1,2,3,4).
-> - Phy 5 is likely the separate WAN phy directly connected
->   to ethc.
-> - The ethb is probably connected as CPU interface to
->   the KS8995.
+> If you happen to have the docs for the STMMAC instantiation in the SoC
+> it'd be good to check if discarding frames with bad csum can be
+> disabled. Various monitoring systems will expect the L4 checksum errors
+> to appear in nstat, not some obscure ethtool -S counter.
+
+Ack. I will it add to my todo.
+
+
+For proper understanding of STMMAC and other drivers, here is how I currently
+understand the expected behavior on the receive path, with some open questions:
+
+Receive Path Checksum Scenarios
+
+* No Hardware Verification
+    * The hardware is not configured for RX checksum offload
+      or does not support the packet type, passing the packet to the driver
+      as-is.
+    * Expected driver behavior: The driver should set the packet's state to
+      `CHECKSUM_NONE`, signaling to the kernel that a software checksum
+      validation is required.
+
+* Hardware Verifies and Reports All Frames (Ideal Linux Behavior)
+    * The hardware is configured not to drop packets with bad checksums.
+      It verifies the checksum of each packet and reports the result (good
+      or bad) in a status field on the DMA descriptor.
+    * Expected driver behavior: The driver must read the status for every
+      packet.
+        * If the hardware reports the checksum is good, the driver should set
+          the packet's state to `CHECKSUM_UNNECESSARY`.
+        * If the hardware reports the checksum is bad, the driver should set
+          the packet's state to `CHECKSUM_NONE` and still pass it to the
+          kernel.
+    * Open Questions:
+        * When the hardware reports a bad checksum in this mode, should the
+          driver increment `rx_crc_errors` immediately? Or should it only set
+          the packet's state to `CHECKSUM_NONE` and let the kernel stack find
+          the error and increment the counter, in order to avoid
+          double-counting the same error?
+
+* Hardware Verifies and Drops on Error
+    * The hardware's RX checksum engine is active and configured to
+      automatically discard any packet with an incorrect checksum before it is
+      delivered to the driver.
+    * Open Questions:
+
+        * When reporting these hardware-level drops, what is the most
+          appropriate existing standard `net_device_stats` counter to use
+          (e.g., `rx_crc_errors`, `rx_errors`)?
+        * If no existing standard counter is a good semantic fit, add new
+          standard counters?
+        * If the "drop on error" feature cannot be disabled independently,
+          and reporting the error via a standard counter is not feasible,
+          does this imply that the entire RX checksum offload feature must be
+          disabled to ensure error visibility?
+
+* Hardware Provides Full Packet Checksum (`CHECKSUM_COMPLETE`)
+    * The hardware calculates a single checksum over the entire packet and
+      provides this value to the driver, without needing to parse the
+      L3/L4 headers.
+    * Expected driver behavior: The driver should place the checksum provided
+      by the hardware into the `skb->csum` field and set the packet's state
+      to `CHECKSUM_COMPLETE`.
+
+Anything I forgot?
+
+> > > If so does the frame enter the stack with CHECKSUM_COMPLETE or
+> > > UNNECESSARY?  
+> > 
+> > If rx-checksumming is enabled and packet has supported ethertype,
+> > then CHECKSUM_UNNECESSARY will be set. Otherwise CHECKSUM_NONE.
+> > 
+> > > > When examining the loopbacked frames, I observed that the TCP checksum was
+> > > > incorrect. Upon further investigation, the xmit helper in net/dsa/tag_ksz.c
+> > > > includes the following:
+> > > > 
+> > > > if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb))
+> > > >     return NULL;
+> > > > 
+> > > > I assume skb_checksum_help() is intended to calculate the proper checksum when
+> > > > CHECKSUM_PARTIAL is set, indicating that the software should complete the
+> > > > checksum before handing it to the hardware. My understanding is that the STMMAC
+> > > > hardware then calculates the checksum for egress frames if CHECKSUM_PARTIAL is
+> > > > used.  
+> > > 
+> > > stmmac shouldn't touch the frame, note that skb_checksum_help() sets
+> > > skb->ip_summed = CHECKSUM_NONE; so the skb should no longer be considered
+> > > for csum offload.  
+> > 
+> > It looks like skb_checksum_help(), which is used in tag_ksz.c, generates
+> > a TCP checksum without accounting for the IP pseudo-header. The
+> > resulting checksum is then incorrect and is filtered out by the STMMAC
+> > HW on ingress
 > 
-> There are some confused comments in the old board file
-> replicated into the device tree like ethc being "connected
-> to port 5 of the ks8995" but this makes no sense as it
-> is certainly connected to a phy.
+> The pseudo-header csum is filled in net_test_get_skb(), where it calls
+> tcp_v4_check(). But I think you're right, it's incorrect. Could you try:
 > 
-> Properly integrate the KS8995 switch using the new bindings.
-> 
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
->  .../dts/intel/ixp/intel-ixp42x-linksys-wrv54g.dts  | 75 +++++++++++++++++-----
->  1 file changed, 59 insertions(+), 16 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/intel/ixp/intel-ixp42x-linksys-wrv54g.dts b/arch/arm/boot/dts/intel/ixp/intel-ixp42x-linksys-wrv54g.dts
-> index 98275a363c57cde22ef57c3885bc4469677ef790..14b766083e3a870a1154a93be74af6e6738fe137 100644
-> --- a/arch/arm/boot/dts/intel/ixp/intel-ixp42x-linksys-wrv54g.dts
-> +++ b/arch/arm/boot/dts/intel/ixp/intel-ixp42x-linksys-wrv54g.dts
-> @@ -72,10 +72,50 @@ spi {
->  		cs-gpios = <&gpio0 5 GPIO_ACTIVE_LOW>;
->  		num-chipselects = <1>;
->  
-> -		switch@0 {
-> +		ethernet-switch@0 {
->  			compatible = "micrel,ks8995";
->  			reg = <0>;
->  			spi-max-frequency = <50000000>;
+> diff --git a/net/core/selftests.c b/net/core/selftests.c
+> index 35f807ea9952..1166dd1ddb07 100644
+> --- a/net/core/selftests.c
+> +++ b/net/core/selftests.c
+> @@ -160,8 +160,10 @@ static struct sk_buff *net_test_get_skb(struct net_device *ndev,
+>         skb->csum = 0;
+>         skb->ip_summed = CHECKSUM_PARTIAL;
+>         if (attr->tcp) {
+> -               thdr->check = ~tcp_v4_check(skb->len, ihdr->saddr,
+> -                                           ihdr->daddr, 0);
+> +               int l4len;
 > +
-> +			ethernet-ports {
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +
-> +				ethernet-port@0 {
-> +					reg = <0>;
-> +					label = "1";
-> +					phy-mode = "rgmii";
+> +               l4len = skb->tail - skb_transport_header(skb);
+> +               thdr->check = ~tcp_v4_check(l4len, ihdr->saddr, ihdr->daddr, 0);
+>                 skb->csum_start = skb_transport_header(skb) - skb->head;
+>                 skb->csum_offset = offsetof(struct tcphdr, check);
+>         } else {
+> 
+> Or some such?
 
-If this is an internal PHY, it would be better to use 'internal'. I
-would like to avoid all the issues around 'rgmii' vs 'rgmii-id'.
+Ah, it works now!
 
-> +				ethernet-port@4 {
-> +					reg = <4>;
-> +					ethernet = <&ethb>;
-> +					phy-mode = "rgmii-id";
-> +					fixed-link {
-> +						speed = <100>;
-> +						full-duplex;
-> +					};
+So, for my understanding:
+- does skb_checksum_help() rely on a precalculated and integrated
+  pseudo-header csum?
+- And is this how typical HW-accelerated checksumming works?
+- Is this why it is called CHECKSUM_PARTIAL, because only one part of the
+  checksum is pre-calculated?
 
-That is a bit odd, rgmii-id, yet speed limited to 100. It would be
-good to add a comment about this.
-
-> @@ -134,41 +174,44 @@ pci@c0000000 {
->  			<0x0800 0 0 2 &gpio0 10 IRQ_TYPE_LEVEL_LOW>; /* INT B on slot 1 is irq 10 */
->  		};
->  
-> -		/*
-> -		 * EthB - connected to the KS8995 switch ports 1-4
-> -		 * FIXME: the boardfile defines .phy_mask = 0x1e for this port to enable output to
-> -		 * all four switch ports, also using an out of tree multiphy patch.
-> -		 * Do we need a new binding and property for this?
-> -		 */
-> -		ethernet@c8009000 {
-> +		ethb: ethernet@c8009000 {
->  			status = "okay";
->  			queue-rx = <&qmgr 3>;
->  			queue-txready = <&qmgr 20>;
-> -			phy-mode = "rgmii";
-> -			phy-handle = <&phy4>;
-> +			phy-mode = "rgmii-id";
-> +			fixed-link {
-> +				speed = <100>;
-> +				full-duplex;
-> +			};
-
-This is all confusing. Do you have the board, or a schematic for it? 
-
-Looking at the old DT, this ethernet interface has its own MDIO bus,
-with PHYs at address 4 and 5. The phy-handle above means this MAC is
-connected to the PHY at address 4. The PHY at address 5 is connected
-to the second MAC instance of this SoC. This implies it is:
-
-SOC:MAC-PHY-PHY-MAC:SWITCH 
-
-Rather than the more usual back to back MAC. There are boards with
-back to back PHY, so it is not out of the question.
-
-However, it could also be this old DT description is completely
-broken, and the PHYs on this bus are the external PHYs for the
-switches? There should not be a phy-handle in the MAC nodes.
-
->  
->  			mdio {
->  				#address-cells = <1>;
->  				#size-cells = <0>;
->  
-> -				/* Should be ports 1-4 on the KS8995 switch */
-> +				/* Should be LAN ports 1-4 on the KS8995 switch */
-> +				phy1: ethernet-phy@1 {
-> +					reg = <1>;
-> +				};
-> +				phy2: ethernet-phy@2 {
-> +					reg = <2>;
-> +				};
-> +				phy3: ethernet-phy@3 {
-> +					reg = <3>;
-> +				};
->  				phy4: ethernet-phy@4 {
->  					reg = <4>;
->  				};
-
-This node is the SoC interface MDIO bus. Why would the internal PHYs
-of switch bus on the SoC MDIO bus? I would expect the switch to have
-its own MDIO bus and place its PHYs there.
-
-	Andrew
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
