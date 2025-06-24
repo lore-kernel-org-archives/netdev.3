@@ -1,45 +1,45 @@
 Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E3619D084
-	for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 09:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF252222CC
+	for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 09:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750758868; cv=none; b=WjVKGRMvkf8BppfQe2s0jnqP2YulJK5iOWy2GIzXFiTtkOPK8Tazt26Dq7mBu+awVPT9EfeT4uK1KoMPqpa4/nDAV/sKsAo3mSqa0nmJoIZ3jrUFYtevvaeuqDKM2zUvyhRw7Vbg1iht3A/HclHX3qwAIkGdlAHZLuIgh9HJv58=
+	t=1750758874; cv=none; b=D/9cFaKG/UlkWR+3InHY+X4rIfjLoKjE/uyj7Z2LB4O0l9dcyYr/KSU2Qz6Xj1jpLgCgNWn/Ktzl2cdQZOjW4cN4auFooJ5AVkWImNyX3EM4cQ3kFa0xZLdZ/SIdsi5pkWyp7EwuucWxnvq1lVDy7aw1RmGON+kLLehq661F1DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750758868; c=relaxed/simple;
-	bh=uqkz9n3cXeZ8dWR3V7k1mqJrp/VlUn32LAcNLj9u9Qs=;
+	s=arc-20240116; t=1750758874; c=relaxed/simple;
+	bh=aVicvWb2z9asxVyGNaHwfqwI/PWtxFm6n16ZTbYiSFY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Xv5oCWH/5O2l2gcj9Dj9WmgJkZYG57HOew0+3VgSe/OlpXGpXVv+LjIqbs0VUUAqhsVZPwzwETkh1lNNBF+mqEZiYoHa/ngeWjPVVLGyIp5kYcXlj/PT/ZYRnUfMhmC/Nq935rFHophuveoNRth9pDBVF4U+GKXAJ6y+kqtewcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=rwF9Q1CT; arc=none smtp.client-ip=185.226.149.37
+	 In-Reply-To:To:Cc; b=drVM//JmIjsCgPiYCV98jEHD5wbSrT5LAsX2Bx208BKG7a9ul8OrGG9p2hAQj/XWnmCzZq03xfxi2hNZMBHyrBlJzyxIuYXczJIHpNohg3INGW+rqCnFIk1c4YTPzhRG8Gqmp/zDTHkxYUn1s5Odq/qboz/250xJdCnldsus8wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=tV7kDYan; arc=none smtp.client-ip=185.226.149.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="rwF9Q1CT"
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="tV7kDYan"
 Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
 	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1uU0MA-00AXas-UV; Tue, 24 Jun 2025 11:54:22 +0200
+	id 1uU0M5-00AXZz-TC; Tue, 24 Jun 2025 11:54:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
 	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=mb24HdoCl0957wtvOLAlFVXDR/MMgGHlQT3zT4JrkPk=; b=rwF9Q1CTjfwpBGkV52UOkUhx5m
-	7c+srA+xERSbc5QOrn6LO/ZDaAYZOtEbzyG7XTCiCN51Kcq+ZykOOSdm8Z7HKQ+H6qzLbWdzZXkC0
-	HJBbN0J7cUpTmp2FMU0vgQCwu9KCoO/8Rs/e+m4JKLZvGHdYOUH31ijI1i9X4DwE//s/wNtqQlp1O
-	W6vKznZZcVlAaaVR5MFA3vsFXCzdMdi7N+KKMEKgQn6fqnE6/9c0WL2JN9s5NIBrRXxde0fLP29xL
-	O0CMZbnh80GVDcZ8Cm2FTgDMzY1d5nng/rhQ9gZYOR/BD+41FAUPzEA4SkJ5luwFD8edcheeXijJM
-	l/nM9+hA==;
+	bh=30g1ZM1uCabAJyCAmaZGsFvTePUdMNQ+ZO3xiXDVNWM=; b=tV7kDYansE5dJeC9l3H5LGVRtz
+	zzUC1jD0tHscxG8lMf93xoOHVTLd8MmANZMFlVwufdZjaTFRgo7NnVn8Dyer2tyX6nQtHMhmbqoGP
+	WztFccTUf+d9BbXaCOBCbpRnG9pLVKxyXy9mQBAWh6nUeq6sb/E+ORiSl4JURBudHTuJ3x+jOnvzy
+	o5Xm0T/QD+c7xz3MBwKXf1TbISPtsGAInFCfj/AE+cZnHSarZ9yKf/kwmtY1ZBsl7RvqcC/n0d09q
+	+ODhylckE70EuxbauE0HcnAwDjZzlszZHkH1MjcgDCpXJ0B/D8ewMFM/7x6QwFxnImv1Y2RorB++w
+	MxQYfV4w==;
 Received: from [10.9.9.73] (helo=submission02.runbox)
 	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1uU0MA-0002ZF-JM; Tue, 24 Jun 2025 11:54:22 +0200
+	id 1uU0M5-0002Yk-Hg; Tue, 24 Jun 2025 11:54:17 +0200
 Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1uU0Lk-00FYQf-LG; Tue, 24 Jun 2025 11:53:56 +0200
+	id 1uU0Ln-00FYQf-Ew; Tue, 24 Jun 2025 11:53:59 +0200
 From: Michal Luczaj <mhal@rbox.co>
-Date: Tue, 24 Jun 2025 11:53:50 +0200
-Subject: [PATCH net-next 3/7] tcp: Drop tcp_splice_state::flags
+Date: Tue, 24 Jun 2025 11:53:54 +0200
+Subject: [PATCH net-next 7/7] net: skbuff: Drop unused @skb
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,7 +48,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250624-splice-drop-unused-v1-3-cf641a676d04@rbox.co>
+Message-Id: <20250624-splice-drop-unused-v1-7-cf641a676d04@rbox.co>
 References: <20250624-splice-drop-unused-v1-0-cf641a676d04@rbox.co>
 In-Reply-To: <20250624-splice-drop-unused-v1-0-cf641a676d04@rbox.co>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -62,36 +62,49 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Michal Luczaj <mhal@rbox.co>
 X-Mailer: b4 0.14.2
 
-Since skb_splice_bits() does not accept @flags anymore, struct's field
-became unused. Remove it.
+Since its introduction in commit ce098da1497c ("skbuff: Introduce
+slab_build_skb()"), __slab_build_skb() never used the @skb argument. Remove
+it and adapt both callers.
 
-No functional change indented.
+No functional change intended.
 
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- net/ipv4/tcp.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/core/skbuff.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 46997793d87ab40dcd1e1dd041e4641e287e1b7e..b6285fb1369d32541b9f7d660ca33389b7e4da61 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -324,7 +324,6 @@ EXPORT_IPV6_MOD(tcp_sockets_allocated);
- struct tcp_splice_state {
- 	struct pipe_inode_info *pipe;
- 	size_t len;
--	unsigned int flags;
- };
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index b4f7843430a3f8f84aed387bf41ae761d97687ad..b5f685b6611c177c199f70bb16fd3940bce8cded 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -384,8 +384,7 @@ static inline void __finalize_skb_around(struct sk_buff *skb, void *data,
+ 	skb_set_kcov_handle(skb, kcov_common_handle());
+ }
  
- /*
-@@ -803,7 +802,6 @@ ssize_t tcp_splice_read(struct socket *sock, loff_t *ppos,
- 	struct tcp_splice_state tss = {
- 		.pipe = pipe,
- 		.len = len,
--		.flags = flags,
- 	};
- 	long timeo;
- 	ssize_t spliced;
+-static inline void *__slab_build_skb(struct sk_buff *skb, void *data,
+-				     unsigned int *size)
++static inline void *__slab_build_skb(void *data, unsigned int *size)
+ {
+ 	void *resized;
+ 
+@@ -418,7 +417,7 @@ struct sk_buff *slab_build_skb(void *data)
+ 		return NULL;
+ 
+ 	memset(skb, 0, offsetof(struct sk_buff, tail));
+-	data = __slab_build_skb(skb, data, &size);
++	data = __slab_build_skb(data, &size);
+ 	__finalize_skb_around(skb, data, size);
+ 
+ 	return skb;
+@@ -435,7 +434,7 @@ static void __build_skb_around(struct sk_buff *skb, void *data,
+ 	 * using slab buffer should use slab_build_skb() instead.
+ 	 */
+ 	if (WARN_ONCE(size == 0, "Use slab_build_skb() instead"))
+-		data = __slab_build_skb(skb, data, &size);
++		data = __slab_build_skb(data, &size);
+ 
+ 	__finalize_skb_around(skb, data, size);
+ }
 
 -- 
 2.49.0
