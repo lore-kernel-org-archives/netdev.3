@@ -1,38 +1,38 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656D72E765E;
-	Tue, 24 Jun 2025 14:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCBF2EA73E;
+	Tue, 24 Jun 2025 14:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750775639; cv=none; b=hNJmF2+KudlO/3sPV3nEBOJD83eyAp0zU1gMmAjbJj5IL116Oi/fhGF2+LJO82TIWVHjM86lYMvfAAEoxTXmrc4jkLRvuxZhIU9fABkeMK3l8EEJuffPVjbUCxitpHWKCfndk9s5yHEbTnG9dZSkhIXakq15WcUT/s1F3DZU1Yo=
+	t=1750775642; cv=none; b=KoYMPAh/yyv7CKPditJV4kldLFKPaV45Ot6pr9G7fshnqfL1eodKshaqQe09/7/JZ0fnOLSaBBSbmLTBYiwI6l5W9ENm+KZPjyFSFz6kYF4T1V7yOmYWIr4N5a0v59uk2lAFOyCbizvKR/TP8cI4RuSI5/R9BOY3XKs+ql+Eg/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750775639; c=relaxed/simple;
-	bh=ji64ktf1VyZ4FuTl9hGewtqBHAwEVicidJKzYxHMYgw=;
+	s=arc-20240116; t=1750775642; c=relaxed/simple;
+	bh=XxteZlriZXwOV7rELxqx+IQIELgRA44AU0tBWBFlVRM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CE6JZ71wVSEo4/wwI4QZToBTu5rSk3fiBbK5e30IJuBwZAy7cFxON8JzQ+Qz0nevZJmw9hIGFQzMkr2bge/cL9ERR7RhoN2hkeFAMAWPATafh3E2oxyDyCK0sFePRyPRDUWHmqxDAkiBVbPpKVi9khOHQ579UUFkY4Q1EjwceXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=iG/j/fWD; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version; b=Oqib+HY7J1tZ3PYY+KYfaaU0HSvffPcvigM/c1u8oNQfXTgjBsBXYR54wNTNQtWSDibEHhxq74Gf7226T6dCOs6vWfT50TMmcsZKdA4m9P6cqKF0ey6C6As2LX4i82vLd3JNDXUaa4UO5ybuiRreqn6DC9h4GFqVGIvwhbwpt0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Wcv06ZNG; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="iG/j/fWD"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Wcv06ZNG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1750775634;
-	bh=ji64ktf1VyZ4FuTl9hGewtqBHAwEVicidJKzYxHMYgw=;
+	s=mail; t=1750775637;
+	bh=XxteZlriZXwOV7rELxqx+IQIELgRA44AU0tBWBFlVRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iG/j/fWDuQnrGtCdqdajU5N23Xogk0f72t5xmDnd8J2EanHay80UdFDtrNC1K7P+U
-	 mlMmeH+1Fo07QM2guP5ntqvGYW8RXSMvPrlGhzpoBAqhf3o4gctaCNkFZoNWd5tCIl
-	 G4s4UjWDBc7+7NL4B7hL6EVjh/tvzyrQrLy0AcunKP58iIcr6JXhhv0EQbHQYf7Mr1
-	 1ArzTYPD+BOOPz/WEZbkDEJwjLfldD823cRLtJZjaggb38aI0B+pxuz5kWuDbPQYcS
-	 L5DtikxicS0QVGkdyEyujfY94jST5XaGzBewyBOEgjnMde4S3Lnv8nc4rEcenFGaZb
-	 5V1QZ84DIl2Bg==
+	b=Wcv06ZNG4xs+TxKGo8m/lt1KeUkk04eywbDkx9mcRpAngrIyhHdvPsqfPd9ZHsbj7
+	 fywdSIMMchuLGnCMwZKD00RXXvFxRVRHikDA9Aw7VaRISdj7c74UKqKguPwOdUOuvf
+	 HMXAaJuf/YhF29EjiD0eT3g/Kwn5x0CmkMjcW6fTg5FtIHf2cD6muRybcYMoEF2O5N
+	 CLUQEfTF56DWwBsWkjWc0i0FhQZA+Z4nXkja6PxavumpZyknYu9YtN0SmJpOHAyS4F
+	 a3UQII4ZMS4By9RrQx8bW8WvENe60Rf5aSHuw9abrARF+nOX0lVcDZ56InZ0G9szDg
+	 B/GVFt30advXA==
 Received: from laura.lan (unknown [IPv6:2001:b07:646b:e2:d2c7:2075:2c3c:38e5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 6C0A617E1090;
-	Tue, 24 Jun 2025 16:33:53 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id EA1E217E088B;
+	Tue, 24 Jun 2025 16:33:55 +0200 (CEST)
 From: Laura Nao <laura.nao@collabora.com>
 To: mturquette@baylibre.com,
 	sboyd@kernel.org,
@@ -53,9 +53,9 @@ Cc: guangjie.song@mediatek.com,
 	netdev@vger.kernel.org,
 	kernel@collabora.com,
 	Laura Nao <laura.nao@collabora.com>
-Subject: [PATCH v2 18/29] clk: mediatek: Add MT8196 adsp clock support
-Date: Tue, 24 Jun 2025 16:32:09 +0200
-Message-Id: <20250624143220.244549-19-laura.nao@collabora.com>
+Subject: [PATCH v2 20/29] clk: mediatek: Add MT8196 mcu clock support
+Date: Tue, 24 Jun 2025 16:32:11 +0200
+Message-Id: <20250624143220.244549-21-laura.nao@collabora.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250624143220.244549-1-laura.nao@collabora.com>
 References: <20250624143220.244549-1-laura.nao@collabora.com>
@@ -67,55 +67,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add support for the MT8196 adsp clock controller, which provides clock
-gate control for Audio DSP.
+Add support for the MT8196 mcu clock controller, which provides PLL
+control for MCU.
 
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Laura Nao <laura.nao@collabora.com>
 ---
- drivers/clk/mediatek/Kconfig           |   7 +
- drivers/clk/mediatek/Makefile          |   1 +
- drivers/clk/mediatek/clk-mt8196-adsp.c | 193 +++++++++++++++++++++++++
- 3 files changed, 201 insertions(+)
- create mode 100644 drivers/clk/mediatek/clk-mt8196-adsp.c
+ drivers/clk/mediatek/Kconfig          |   7 ++
+ drivers/clk/mediatek/Makefile         |   1 +
+ drivers/clk/mediatek/clk-mt8196-mcu.c | 166 ++++++++++++++++++++++++++
+ 3 files changed, 174 insertions(+)
+ create mode 100644 drivers/clk/mediatek/clk-mt8196-mcu.c
 
 diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
-index cd12e7ff3e12..d4c97f64b42a 100644
+index 6c556bec4531..ed1073c5b432 100644
 --- a/drivers/clk/mediatek/Kconfig
 +++ b/drivers/clk/mediatek/Kconfig
-@@ -1068,6 +1068,13 @@ config COMMON_CLK_MT8196
+@@ -1082,6 +1082,13 @@ config COMMON_CLK_MT8196_IMP_IIC_WRAP
  	help
- 	  This driver supports MediaTek MT8196 basic clocks.
+ 	  This driver supports MediaTek MT8196 i2c clocks.
  
-+config COMMON_CLK_MT8196_ADSP
-+	tristate "Clock driver for MediaTek MT8196 adsp"
++config COMMON_CLK_MT8196_MCUSYS
++	tristate "Clock driver for MediaTek MT8196 mcusys"
 +	depends on COMMON_CLK_MT8196
-+	default m
++	default COMMON_CLK_MT8196
 +	help
-+	  This driver supports MediaTek MT8196 adsp clocks
++	  This driver supports MediaTek MT8196 mcusys clocks.
 +
  config COMMON_CLK_MT8196_PEXTPSYS
  	tristate "Clock driver for MediaTek MT8196 pextpsys"
  	depends on COMMON_CLK_MT8196
 diff --git a/drivers/clk/mediatek/Makefile b/drivers/clk/mediatek/Makefile
-index 21e768f67283..6a34ee2f7855 100644
+index 120cf20acdc1..7b284ccc1b48 100644
 --- a/drivers/clk/mediatek/Makefile
 +++ b/drivers/clk/mediatek/Makefile
-@@ -163,6 +163,7 @@ obj-$(CONFIG_COMMON_CLK_MT8195_WPESYS) += clk-mt8195-wpe.o
- obj-$(CONFIG_COMMON_CLK_MT8196) += clk-mt8196-apmixedsys.o clk-mt8196-topckgen.o \
- 				   clk-mt8196-topckgen2.o clk-mt8196-vlpckgen.o \
+@@ -165,6 +165,7 @@ obj-$(CONFIG_COMMON_CLK_MT8196) += clk-mt8196-apmixedsys.o clk-mt8196-topckgen.o
  				   clk-mt8196-peri_ao.o
-+obj-$(CONFIG_COMMON_CLK_MT8196_ADSP) += clk-mt8196-adsp.o
+ obj-$(CONFIG_COMMON_CLK_MT8196_ADSP) += clk-mt8196-adsp.o
+ obj-$(CONFIG_COMMON_CLK_MT8196_IMP_IIC_WRAP) += clk-mt8196-imp_iic_wrap.o
++obj-$(CONFIG_COMMON_CLK_MT8196_MCUSYS) += clk-mt8196-mcu.o
  obj-$(CONFIG_COMMON_CLK_MT8196_PEXTPSYS) += clk-mt8196-pextp.o
  obj-$(CONFIG_COMMON_CLK_MT8196_UFSSYS) += clk-mt8196-ufs_ao.o
  obj-$(CONFIG_COMMON_CLK_MT8365) += clk-mt8365-apmixedsys.o clk-mt8365.o
-diff --git a/drivers/clk/mediatek/clk-mt8196-adsp.c b/drivers/clk/mediatek/clk-mt8196-adsp.c
+diff --git a/drivers/clk/mediatek/clk-mt8196-mcu.c b/drivers/clk/mediatek/clk-mt8196-mcu.c
 new file mode 100644
-index 000000000000..2c1852b77aa8
+index 000000000000..a08d1597cc88
 --- /dev/null
-+++ b/drivers/clk/mediatek/clk-mt8196-adsp.c
-@@ -0,0 +1,193 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/drivers/clk/mediatek/clk-mt8196-mcu.c
+@@ -0,0 +1,166 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright (c) 2025 MediaTek Inc.
 + *                    Guangjie Song <guangjie.song@mediatek.com>
@@ -123,190 +123,163 @@ index 000000000000..2c1852b77aa8
 + *                    Laura Nao <laura.nao@collabora.com>
 + */
 +#include <dt-bindings/clock/mediatek,mt8196-clock.h>
-+#include <linux/clk-provider.h>
++#include <linux/clk.h>
 +#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_address.h>
 +#include <linux/of_device.h>
 +#include <linux/platform_device.h>
 +
-+#include "clk-gate.h"
 +#include "clk-mtk.h"
++#include "clk-pll.h"
 +
-+static const struct mtk_gate_regs afe0_cg_regs = {
-+	.set_ofs = 0x0,
-+	.clr_ofs = 0x0,
-+	.sta_ofs = 0x0,
-+};
++#define ARMPLL_LL_CON0	0x008
++#define ARMPLL_LL_CON1	0x00c
++#define ARMPLL_LL_CON2	0x010
++#define ARMPLL_LL_CON3	0x014
++#define ARMPLL_BL_CON0	0x008
++#define ARMPLL_BL_CON1	0x00c
++#define ARMPLL_BL_CON2	0x010
++#define ARMPLL_BL_CON3	0x014
++#define ARMPLL_B_CON0	0x008
++#define ARMPLL_B_CON1	0x00c
++#define ARMPLL_B_CON2	0x010
++#define ARMPLL_B_CON3	0x014
++#define CCIPLL_CON0	0x008
++#define CCIPLL_CON1	0x00c
++#define CCIPLL_CON2	0x010
++#define CCIPLL_CON3	0x014
++#define PTPPLL_CON0	0x008
++#define PTPPLL_CON1	0x00c
++#define PTPPLL_CON2	0x010
++#define PTPPLL_CON3	0x014
 +
-+static const struct mtk_gate_regs afe1_cg_regs = {
-+	.set_ofs = 0x10,
-+	.clr_ofs = 0x10,
-+	.sta_ofs = 0x10,
-+};
++#define MT8196_PLL_FMAX		(3800UL * MHZ)
++#define MT8196_PLL_FMIN		(1500UL * MHZ)
++#define MT8196_INTEGER_BITS	8
 +
-+static const struct mtk_gate_regs afe2_cg_regs = {
-+	.set_ofs = 0x4,
-+	.clr_ofs = 0x4,
-+	.sta_ofs = 0x4,
-+};
-+
-+static const struct mtk_gate_regs afe3_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0x8,
-+	.sta_ofs = 0x8,
-+};
-+
-+static const struct mtk_gate_regs afe4_cg_regs = {
-+	.set_ofs = 0xc,
-+	.clr_ofs = 0xc,
-+	.sta_ofs = 0xc,
-+};
-+
-+#define GATE_AFE0(_id, _name, _parent, _shift) {	\
-+		.id = _id,				\
-+		.name = _name,				\
-+		.parent_name = _parent,			\
-+		.regs = &afe0_cg_regs,			\
-+		.shift = _shift,			\
-+		.flags = CLK_OPS_PARENT_ENABLE |	\
-+			 CLK_IGNORE_UNUSED,		\
-+		.ops = &mtk_clk_gate_ops_no_setclr,	\
++#define PLL(_id, _name, _reg, _en_reg, _en_mask, _pll_en_bit,	\
++	    _flags, _rst_bar_mask,				\
++	    _pd_reg, _pd_shift, _tuner_reg,			\
++	    _tuner_en_reg, _tuner_en_bit,			\
++	    _pcw_reg, _pcw_shift, _pcwbits) {			\
++		.id = _id,					\
++		.name = _name,					\
++		.reg = _reg,					\
++		.en_reg = _en_reg,				\
++		.en_mask = _en_mask,				\
++		.pll_en_bit = _pll_en_bit,			\
++		.flags = _flags,				\
++		.rst_bar_mask = _rst_bar_mask,			\
++		.fmax = MT8196_PLL_FMAX,			\
++		.fmin = MT8196_PLL_FMIN,			\
++		.pd_reg = _pd_reg,				\
++		.pd_shift = _pd_shift,				\
++		.tuner_reg = _tuner_reg,			\
++		.tuner_en_reg = _tuner_en_reg,			\
++		.tuner_en_bit = _tuner_en_bit,			\
++		.pcw_reg = _pcw_reg,				\
++		.pcw_shift = _pcw_shift,			\
++		.pcwbits = _pcwbits,				\
++		.pcwibits = MT8196_INTEGER_BITS,		\
 +	}
 +
-+#define GATE_AFE1(_id, _name, _parent, _shift) {	\
-+		.id = _id,				\
-+		.name = _name,				\
-+		.parent_name = _parent,			\
-+		.regs = &afe1_cg_regs,			\
-+		.shift = _shift,			\
-+		.flags = CLK_OPS_PARENT_ENABLE |	\
-+			 CLK_IGNORE_UNUSED,		\
-+		.ops = &mtk_clk_gate_ops_no_setclr,	\
-+	}
-+
-+#define GATE_AFE2(_id, _name, _parent, _shift) {	\
-+		.id = _id,				\
-+		.name = _name,				\
-+		.parent_name = _parent,			\
-+		.regs = &afe2_cg_regs,			\
-+		.shift = _shift,			\
-+		.flags = CLK_OPS_PARENT_ENABLE |	\
-+			 CLK_IGNORE_UNUSED,		\
-+		.ops = &mtk_clk_gate_ops_no_setclr,	\
-+	}
-+
-+#define GATE_AFE3(_id, _name, _parent, _shift) {	\
-+		.id = _id,				\
-+		.name = _name,				\
-+		.parent_name = _parent,			\
-+		.regs = &afe3_cg_regs,			\
-+		.shift = _shift,			\
-+		.flags = CLK_OPS_PARENT_ENABLE |	\
-+			 CLK_IGNORE_UNUSED,		\
-+		.ops = &mtk_clk_gate_ops_no_setclr,	\
-+	}
-+
-+#define GATE_AFE4(_id, _name, _parent, _shift) {	\
-+		.id = _id,				\
-+		.name = _name,				\
-+		.parent_name = _parent,			\
-+		.regs = &afe4_cg_regs,			\
-+		.shift = _shift,			\
-+		.flags = CLK_OPS_PARENT_ENABLE |	\
-+			 CLK_IGNORE_UNUSED,		\
-+		.ops = &mtk_clk_gate_ops_no_setclr,	\
-+	}
-+
-+static const struct mtk_gate afe_clks[] = {
-+	/* AFE0 */
-+	GATE_AFE0(CLK_AFE_PCM1, "afe_pcm1", "clk26m", 13),
-+	GATE_AFE0(CLK_AFE_PCM0, "afe_pcm0", "clk26m", 14),
-+	GATE_AFE0(CLK_AFE_CM2, "afe_cm2", "clk26m", 16),
-+	GATE_AFE0(CLK_AFE_CM1, "afe_cm1", "clk26m", 17),
-+	GATE_AFE0(CLK_AFE_CM0, "afe_cm0", "clk26m", 18),
-+	GATE_AFE0(CLK_AFE_STF, "afe_stf", "clk26m", 19),
-+	GATE_AFE0(CLK_AFE_HW_GAIN23, "afe_hw_gain23", "clk26m", 20),
-+	GATE_AFE0(CLK_AFE_HW_GAIN01, "afe_hw_gain01", "clk26m", 21),
-+	GATE_AFE0(CLK_AFE_FM_I2S, "afe_fm_i2s", "clk26m", 24),
-+	GATE_AFE0(CLK_AFE_MTKAIFV4, "afe_mtkaifv4", "clk26m", 25),
-+	/* AFE1 */
-+	GATE_AFE1(CLK_AFE_AUDIO_HOPPING, "afe_audio_hopping_ck", "clk26m", 0),
-+	GATE_AFE1(CLK_AFE_AUDIO_F26M, "afe_audio_f26m_ck", "clk26m", 1),
-+	GATE_AFE1(CLK_AFE_APLL1, "afe_apll1_ck", "aud_1", 2),
-+	GATE_AFE1(CLK_AFE_APLL2, "afe_apll2_ck", "aud_2", 3),
-+	GATE_AFE1(CLK_AFE_H208M, "afe_h208m_ck", "vlp_audio_h", 4),
-+	GATE_AFE1(CLK_AFE_APLL_TUNER2, "afe_apll_tuner2", "vlp_aud_engen2", 12),
-+	GATE_AFE1(CLK_AFE_APLL_TUNER1, "afe_apll_tuner1", "vlp_aud_engen1", 13),
-+	/* AFE2 */
-+	GATE_AFE2(CLK_AFE_UL2_ADC_HIRES_TML, "afe_ul2_aht", "vlp_audio_h", 12),
-+	GATE_AFE2(CLK_AFE_UL2_ADC_HIRES, "afe_ul2_adc_hires", "vlp_audio_h", 13),
-+	GATE_AFE2(CLK_AFE_UL2_TML, "afe_ul2_tml", "clk26m", 14),
-+	GATE_AFE2(CLK_AFE_UL2_ADC, "afe_ul2_adc", "clk26m", 15),
-+	GATE_AFE2(CLK_AFE_UL1_ADC_HIRES_TML, "afe_ul1_aht", "vlp_audio_h", 16),
-+	GATE_AFE2(CLK_AFE_UL1_ADC_HIRES, "afe_ul1_adc_hires", "vlp_audio_h", 17),
-+	GATE_AFE2(CLK_AFE_UL1_TML, "afe_ul1_tml", "clk26m", 18),
-+	GATE_AFE2(CLK_AFE_UL1_ADC, "afe_ul1_adc", "clk26m", 19),
-+	GATE_AFE2(CLK_AFE_UL0_ADC_HIRES_TML, "afe_ul0_aht", "vlp_audio_h", 20),
-+	GATE_AFE2(CLK_AFE_UL0_ADC_HIRES, "afe_ul0_adc_hires", "vlp_audio_h", 21),
-+	GATE_AFE2(CLK_AFE_UL0_TML, "afe_ul0_tml", "clk26m", 22),
-+	GATE_AFE2(CLK_AFE_UL0_ADC, "afe_ul0_adc", "clk26m", 23),
-+	/* AFE3 */
-+	GATE_AFE3(CLK_AFE_ETDM_IN6, "afe_etdm_in6", "clk26m", 7),
-+	GATE_AFE3(CLK_AFE_ETDM_IN5, "afe_etdm_in5", "clk26m", 8),
-+	GATE_AFE3(CLK_AFE_ETDM_IN4, "afe_etdm_in4", "clk26m", 9),
-+	GATE_AFE3(CLK_AFE_ETDM_IN3, "afe_etdm_in3", "clk26m", 10),
-+	GATE_AFE3(CLK_AFE_ETDM_IN2, "afe_etdm_in2", "clk26m", 11),
-+	GATE_AFE3(CLK_AFE_ETDM_IN1, "afe_etdm_in1", "clk26m", 12),
-+	GATE_AFE3(CLK_AFE_ETDM_IN0, "afe_etdm_in0", "clk26m", 13),
-+	GATE_AFE3(CLK_AFE_ETDM_OUT6, "afe_etdm_out6", "clk26m", 15),
-+	GATE_AFE3(CLK_AFE_ETDM_OUT5, "afe_etdm_out5", "clk26m", 16),
-+	GATE_AFE3(CLK_AFE_ETDM_OUT4, "afe_etdm_out4", "clk26m", 17),
-+	GATE_AFE3(CLK_AFE_ETDM_OUT3, "afe_etdm_out3", "clk26m", 18),
-+	GATE_AFE3(CLK_AFE_ETDM_OUT2, "afe_etdm_out2", "clk26m", 19),
-+	GATE_AFE3(CLK_AFE_ETDM_OUT1, "afe_etdm_out1", "clk26m", 20),
-+	GATE_AFE3(CLK_AFE_ETDM_OUT0, "afe_etdm_out0", "clk26m", 21),
-+	GATE_AFE3(CLK_AFE_TDM_OUT, "afe_tdm_out", "aud_1", 24),
-+	/* AFE4 */
-+	GATE_AFE4(CLK_AFE_GENERAL15_ASRC, "afe_general15_asrc", "clk26m", 9),
-+	GATE_AFE4(CLK_AFE_GENERAL14_ASRC, "afe_general14_asrc", "clk26m", 10),
-+	GATE_AFE4(CLK_AFE_GENERAL13_ASRC, "afe_general13_asrc", "clk26m", 11),
-+	GATE_AFE4(CLK_AFE_GENERAL12_ASRC, "afe_general12_asrc", "clk26m", 12),
-+	GATE_AFE4(CLK_AFE_GENERAL11_ASRC, "afe_general11_asrc", "clk26m", 13),
-+	GATE_AFE4(CLK_AFE_GENERAL10_ASRC, "afe_general10_asrc", "clk26m", 14),
-+	GATE_AFE4(CLK_AFE_GENERAL9_ASRC, "afe_general9_asrc", "clk26m", 15),
-+	GATE_AFE4(CLK_AFE_GENERAL8_ASRC, "afe_general8_asrc", "clk26m", 16),
-+	GATE_AFE4(CLK_AFE_GENERAL7_ASRC, "afe_general7_asrc", "clk26m", 17),
-+	GATE_AFE4(CLK_AFE_GENERAL6_ASRC, "afe_general6_asrc", "clk26m", 18),
-+	GATE_AFE4(CLK_AFE_GENERAL5_ASRC, "afe_general5_asrc", "clk26m", 19),
-+	GATE_AFE4(CLK_AFE_GENERAL4_ASRC, "afe_general4_asrc", "clk26m", 20),
-+	GATE_AFE4(CLK_AFE_GENERAL3_ASRC, "afe_general3_asrc", "clk26m", 21),
-+	GATE_AFE4(CLK_AFE_GENERAL2_ASRC, "afe_general2_asrc", "clk26m", 22),
-+	GATE_AFE4(CLK_AFE_GENERAL1_ASRC, "afe_general1_asrc", "clk26m", 23),
-+	GATE_AFE4(CLK_AFE_GENERAL0_ASRC, "afe_general0_asrc", "clk26m", 24),
-+	GATE_AFE4(CLK_AFE_CONNSYS_I2S_ASRC, "afe_connsys_i2s_asrc", "clk26m", 25),
++static const struct mtk_pll_data cpu_bl_plls[] = {
++	PLL(CLK_CPBL_ARMPLL_BL, "armpll-bl", ARMPLL_BL_CON0, ARMPLL_BL_CON0, 0,
++	    0, PLL_AO, BIT(0), ARMPLL_BL_CON1, 24, 0, 0, 0, ARMPLL_BL_CON1, 0, 22),
 +};
 +
-+static const struct mtk_clk_desc afe_mcd = {
-+	.clks = afe_clks,
-+	.num_clks = ARRAY_SIZE(afe_clks),
-+	.need_runtime_pm = true,
++static const struct mtk_pll_data cpu_b_plls[] = {
++	PLL(CLK_CPB_ARMPLL_B, "armpll-b", ARMPLL_B_CON0, ARMPLL_B_CON0, 0, 0,
++	    PLL_AO, BIT(0), ARMPLL_B_CON1, 24, 0, 0, 0, ARMPLL_B_CON1, 0, 22),
 +};
 +
-+static const struct of_device_id of_match_clk_mt8196_adsp[] = {
-+	{ .compatible = "mediatek,mt8196-adsp", .data = &afe_mcd },
++static const struct mtk_pll_data cpu_ll_plls[] = {
++	PLL(CLK_CPLL_ARMPLL_LL, "armpll-ll", ARMPLL_LL_CON0, ARMPLL_LL_CON0, 0,
++	    0, PLL_AO, BIT(0), ARMPLL_LL_CON1, 24, 0, 0, 0, ARMPLL_LL_CON1, 0, 22),
++};
++
++static const struct mtk_pll_data cci_plls[] = {
++	PLL(CLK_CCIPLL, "ccipll", CCIPLL_CON0, CCIPLL_CON0, 0, 0, PLL_AO,
++	    BIT(0), CCIPLL_CON1, 24, 0, 0, 0, CCIPLL_CON1, 0, 22),
++};
++
++static const struct mtk_pll_data ptp_plls[] = {
++	PLL(CLK_PTPPLL, "ptppll", PTPPLL_CON0, PTPPLL_CON0, 0, 0, PLL_AO,
++	    BIT(0), PTPPLL_CON1, 24, 0, 0, 0, PTPPLL_CON1, 0, 22),
++};
++
++static const struct of_device_id of_match_clk_mt8196_mcu[] = {
++	{ .compatible = "mediatek,mt8196-armpll-bl-pll-ctrl",
++	  .data = &cpu_bl_plls },
++	{ .compatible = "mediatek,mt8196-armpll-b-pll-ctrl",
++	  .data = &cpu_b_plls },
++	{ .compatible = "mediatek,mt8196-armpll-ll-pll-ctrl",
++	  .data = &cpu_ll_plls },
++	{ .compatible = "mediatek,mt8196-ccipll-pll-ctrl", .data = &cci_plls },
++	{ .compatible = "mediatek,mt8196-ptppll-pll-ctrl", .data = &ptp_plls },
 +	{ /* sentinel */ }
 +};
++MODULE_DEVICE_TABLE(of, of_match_clk_mt8196_mcu);
 +
-+static struct platform_driver clk_mt8196_adsp_drv = {
-+	.probe = mtk_clk_simple_probe,
-+	.remove = mtk_clk_simple_remove,
++static int clk_mt8196_mcu_probe(struct platform_device *pdev)
++{
++	const struct mtk_pll_data *plls;
++	struct clk_hw_onecell_data *clk_data;
++	struct device_node *node = pdev->dev.of_node;
++	const int num_plls = 1;
++	int r;
++
++	plls = of_device_get_match_data(&pdev->dev);
++	if (!plls)
++		return -EINVAL;
++
++	clk_data = mtk_alloc_clk_data(num_plls);
++	if (!clk_data)
++		return -ENOMEM;
++
++	r = mtk_clk_register_plls(node, plls, num_plls, clk_data);
++	if (r)
++		goto free_clk_data;
++
++	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
++	if (r)
++		goto unregister_plls;
++
++	platform_set_drvdata(pdev, clk_data);
++
++	return r;
++
++unregister_plls:
++	mtk_clk_unregister_plls(plls, num_plls, clk_data);
++free_clk_data:
++	mtk_free_clk_data(clk_data);
++
++	return r;
++}
++
++static void clk_mt8196_mcu_remove(struct platform_device *pdev)
++{
++	const struct mtk_pll_data *plls = of_device_get_match_data(&pdev->dev);
++	struct clk_hw_onecell_data *clk_data = platform_get_drvdata(pdev);
++	struct device_node *node = pdev->dev.of_node;
++
++	of_clk_del_provider(node);
++	mtk_clk_unregister_plls(plls, 1, clk_data);
++	mtk_free_clk_data(clk_data);
++}
++
++static struct platform_driver clk_mt8196_mcu_drv = {
++	.probe = clk_mt8196_mcu_probe,
++	.remove = clk_mt8196_mcu_remove,
 +	.driver = {
-+		.name = "clk-mt8196-adsp",
-+		.of_match_table = of_match_clk_mt8196_adsp,
++		.name = "clk-mt8196-mcu",
++		.of_match_table = of_match_clk_mt8196_mcu,
 +	},
 +};
-+module_platform_driver(clk_mt8196_adsp_drv);
++module_platform_driver(clk_mt8196_mcu_drv);
 +
-+MODULE_DESCRIPTION("MediaTek MT8196 AudioDSP clocks driver");
++MODULE_DESCRIPTION("MediaTek MT8196 mcusys clocks driver");
 +MODULE_LICENSE("GPL");
 -- 
 2.39.5
