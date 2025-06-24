@@ -1,35 +1,37 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DBC1EE03D;
-	Tue, 24 Jun 2025 01:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B927518641;
+	Tue, 24 Jun 2025 01:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750727986; cv=none; b=mn/LptTCtTUmi8rV9a/vo1rP3RMmekyVMW0G438FjcYkaGPfLeJC4kFwuS2FzgWQqTSOUoKwueFbKyPwvYRIG5makDhX2ftryA9kX+Mp+Or82JWlq2vfhV8hROCZF6z1tlu1wiReMyuanpxBQ2YusrZ3HhbvQkHkD+uvPuSxPhM=
+	t=1750728299; cv=none; b=WAh4e5GxrHoo37h11eYLAy56GSwWFUNcjD+6Tqg+HbUH9/x7/pIOvb0H5SrVTZ9ojsyxIjBAfCpcD7uE7PqXi3IRG0DYY2FI+IQz8V4mJVkD/Eq8BpdTmB5N/sl43Qi/nwVYh0ADxKYH8UceYtLXG8nhsD9qEfPEzvtm+Bc3fuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750727986; c=relaxed/simple;
-	bh=2sea/8TDb29cJCbSdhJsFF2RTDYENHm4QTSQy7k4Iic=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=j/VN0KWEW3gg6i1X1lvBOF9dbVDf/Kcy/tKUG3d4VKuVHooT9KGVopfxdCH+Po9KOfrbgxfsfVV+70O30DGbwlmfYaAmGeVBfuqx0wzvCV2wpsSrodGMV4tsZEU9Sdv4lKGf1IpN1CryUGIsQq/wCcRk74jHhZzfAYo06LLMAeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SFx0/sYP; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFx0/sYP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF27C4CEEF;
-	Tue, 24 Jun 2025 01:19:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750727986;
-	bh=2sea/8TDb29cJCbSdhJsFF2RTDYENHm4QTSQy7k4Iic=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=SFx0/sYPuXcRzbjTvea0LQrxM+GgZqSfGBrr62cTP+PNYxjmuiEaR/TeRTrb6cK1B
-	 RrVX/1jhpDeeg3zvsMqdImCH47JUgFcgmiQCRqz8Gobd4rH52kRklmQr+O3x6lmYvT
-	 UaI1j6IeUP5Tuz9+dieFTg9ODK7yw3MzXVD4OBLT66E3RzwB6XfGNkdTh+UafUCk1I
-	 vFObtOL5WxsWfnS0Ms+d2+lHuxxt1M6fxh5+np8V5p1xoclbqtvvPa95LY0rrD0xEH
-	 SswdAPCJSl1v5HyNOHC0aStyE1jKKwnlV2CVP4P8ap1UpVlBX+NXfK7ZKvWo2J9Mo0
-	 PhKYDQEG6Z4vg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3408839FEB7D;
-	Tue, 24 Jun 2025 01:20:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1750728299; c=relaxed/simple;
+	bh=Hn+0wwL8ZlhoJI/0juhHC2Xllu76w0znhfwXP9KXX30=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bhqh0giDIOzNgdJ2+2Z+clwY4KqKV96rNTVg9gVJu+eKADskDj7DGIrIA6rJgrfv2jv1HAU64rjN7CxG+7D9HfMYBtfnO/XF/qyjCE1VP3mqsLxwBtA0HFygAP0TLUZp45SPd9ztljWWi0rae5IoCm8M2Yor/7cBAaGIRPwsnrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bR6dy5h1cz2BdCN;
+	Tue, 24 Jun 2025 09:23:18 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id E5BF4140296;
+	Tue, 24 Jun 2025 09:24:53 +0800 (CST)
+Received: from huawei.com (10.175.124.27) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 24 Jun
+ 2025 09:24:53 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <gnaaman@drivenets.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>
+Subject: [PATCH net-next] neighbour: Remove redundant assignment to err
+Date: Tue, 24 Jun 2025 09:42:16 +0800
+Message-ID: <20250624014216.3686659-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,44 +39,33 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v5] page_pool: import Jesper's page_pool
- benchmark
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175072801301.3355543.12713890018845780288.git-patchwork-notify@kernel.org>
-Date: Tue, 24 Jun 2025 01:20:13 +0000
-References: <20250619181519.3102426-1-almasrymina@google.com>
-In-Reply-To: <20250619181519.3102426-1-almasrymina@google.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, hawk@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- shuah@kernel.org, ilias.apalodimas@linaro.org, toke@toke.dk
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-Hello:
+'err' has been checked against 0 in the if statement.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+ net/core/neighbour.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-On Thu, 19 Jun 2025 18:15:18 +0000 you wrote:
-> From: Jesper Dangaard Brouer <hawk@kernel.org>
-> 
-> We frequently consult with Jesper's out-of-tree page_pool benchmark to
-> evaluate page_pool changes.
-> 
-> Import the benchmark into the upstream linux kernel tree so that (a)
-> we're all running the same version, (b) pave the way for shared
-> improvements, and (c) maybe one day integrate it with nipa, if possible.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v5] page_pool: import Jesper's page_pool benchmark
-    https://git.kernel.org/netdev/net-next/c/cccfe0982208
-
-You are awesome, thank you!
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 85a5535de8ba..8ad9898f8e42 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -2055,10 +2055,8 @@ static int neigh_add(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 
+ 	err = __neigh_update(neigh, lladdr, ndm->ndm_state, flags,
+ 			     NETLINK_CB(skb).portid, extack);
+-	if (!err && ndm_flags & (NTF_USE | NTF_MANAGED)) {
++	if (!err && ndm_flags & (NTF_USE | NTF_MANAGED))
+ 		neigh_event_send(neigh, NULL);
+-		err = 0;
+-	}
+ 	neigh_release(neigh);
+ out:
+ 	return err;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
