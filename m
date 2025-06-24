@@ -1,45 +1,45 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF252222CC
-	for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 09:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E3D27AC34;
+	Tue, 24 Jun 2025 09:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750758874; cv=none; b=D/9cFaKG/UlkWR+3InHY+X4rIfjLoKjE/uyj7Z2LB4O0l9dcyYr/KSU2Qz6Xj1jpLgCgNWn/Ktzl2cdQZOjW4cN4auFooJ5AVkWImNyX3EM4cQ3kFa0xZLdZ/SIdsi5pkWyp7EwuucWxnvq1lVDy7aw1RmGON+kLLehq661F1DY=
+	t=1750758874; cv=none; b=G4ONPF/yZN+oPHTAdsjMozpagph+GoDmYy5FxUEXh8Z+3Y+Hk7RWapliq9vUlOsISGXLrwgrKCz/QQWVAunfVmuCDo6RgrQVYkd6jaSskQBnph0iRf7aGzc8r0N5ihQnc9Uf0RNBt9HMt/1lTT5kQOEzI2JQYBqykUszXlmr158=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750758874; c=relaxed/simple;
-	bh=aVicvWb2z9asxVyGNaHwfqwI/PWtxFm6n16ZTbYiSFY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=drVM//JmIjsCgPiYCV98jEHD5wbSrT5LAsX2Bx208BKG7a9ul8OrGG9p2hAQj/XWnmCzZq03xfxi2hNZMBHyrBlJzyxIuYXczJIHpNohg3INGW+rqCnFIk1c4YTPzhRG8Gqmp/zDTHkxYUn1s5Odq/qboz/250xJdCnldsus8wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=tV7kDYan; arc=none smtp.client-ip=185.226.149.37
+	bh=h6b3Dvy0m1FF/YKgCnBBN4Es7WMUn/3ltvEA8B2lkI8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dFizEJy+i7f+TC2GeX78zsZqYhc42FHTliqxc9U7x32+C2uUEcRf5Y2ijSq5ElI97W0/ACydO5WwSGoP4Y73s8bX6IJ1YCGYe+oBLC2Cc+9zMPU381EQk0Vd+/H10WJ6pvwy9QqmKkzWVtjpqlaEiCxRLX5bcgNCOVWH+FAxY0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=u8Glw/DF; arc=none smtp.client-ip=185.226.149.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="tV7kDYan"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="u8Glw/DF"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1uU0M5-00AXZz-TC; Tue, 24 Jun 2025 11:54:17 +0200
+	id 1uU0M7-00AvYh-Go; Tue, 24 Jun 2025 11:54:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=30g1ZM1uCabAJyCAmaZGsFvTePUdMNQ+ZO3xiXDVNWM=; b=tV7kDYansE5dJeC9l3H5LGVRtz
-	zzUC1jD0tHscxG8lMf93xoOHVTLd8MmANZMFlVwufdZjaTFRgo7NnVn8Dyer2tyX6nQtHMhmbqoGP
-	WztFccTUf+d9BbXaCOBCbpRnG9pLVKxyXy9mQBAWh6nUeq6sb/E+ORiSl4JURBudHTuJ3x+jOnvzy
-	o5Xm0T/QD+c7xz3MBwKXf1TbISPtsGAInFCfj/AE+cZnHSarZ9yKf/kwmtY1ZBsl7RvqcC/n0d09q
-	+ODhylckE70EuxbauE0HcnAwDjZzlszZHkH1MjcgDCpXJ0B/D8ewMFM/7x6QwFxnImv1Y2RorB++w
-	MxQYfV4w==;
+	s=selector2; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From; bh=jBuOc98pgrI/yzTm/QMABM9kBiwU1kMFlEWq193r77E=
+	; b=u8Glw/DFBwXcE460G5UOXstjbE3Ina9VfqabOnviDk4Rlvf9//0MKmR4R9Ml5b0ggNj4bz4aq
+	DICbXAubLsufy2T6YJi7wX/qlmryyuubaEffAzOkqFDQqo6/Qxnoi1AkDCEtEnUWSfLlkpFmDBJdm
+	WSsBUG6qSPSDdAJaQ9bEln5TwUfPraHGyiDxd3EUXQA3tuW1VmbuQSHteDAN6AYfafBBDZCkx0K9M
+	v+VeKqqtBjvdvg74pDL+9x3VL1dYzMfNdtPOPxouGKu+brusYEi92+PkuWQWImILYr+seRnUAfHnE
+	4I06AYDK5OXrHL0KuJR4EcHiRSmpk6qWFVRbNw==;
 Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1uU0M5-0002Yk-Hg; Tue, 24 Jun 2025 11:54:17 +0200
+	id 1uU0M7-0005ui-4w; Tue, 24 Jun 2025 11:54:19 +0200
 Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1uU0Ln-00FYQf-Ew; Tue, 24 Jun 2025 11:53:59 +0200
+	id 1uU0Li-00FYQf-MM; Tue, 24 Jun 2025 11:53:54 +0200
 From: Michal Luczaj <mhal@rbox.co>
-Date: Tue, 24 Jun 2025 11:53:54 +0200
-Subject: [PATCH net-next 7/7] net: skbuff: Drop unused @skb
+Subject: [PATCH net-next 0/7] net: Remove unused function parameters in
+ skbuff.c
+Date: Tue, 24 Jun 2025 11:53:47 +0200
+Message-Id: <20250624-splice-drop-unused-v1-0-cf641a676d04@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,9 +48,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250624-splice-drop-unused-v1-7-cf641a676d04@rbox.co>
-References: <20250624-splice-drop-unused-v1-0-cf641a676d04@rbox.co>
-In-Reply-To: <20250624-splice-drop-unused-v1-0-cf641a676d04@rbox.co>
+X-B4-Tracking: v=1; b=H4sIAKt1WmgC/x3MQQqDMBBG4avIrDuQBCvBq5QugvnbDsgYMloE8
+ e4Gl9/ivYMMVWA0dgdV/MVk0Qb/6Gj6Jf2CJTdTcOHpBh/ZyiwTONel8KabIbNDjxSTD0P01MJ
+ S8ZH9nr5IsbJiX+l9nhdqOeEfbgAAAA==
+X-Change-ID: 20250618-splice-drop-unused-0e4ea8a12681
 To: "David S. Miller" <davem@davemloft.net>, 
  Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
  Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
@@ -62,50 +63,41 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Michal Luczaj <mhal@rbox.co>
 X-Mailer: b4 0.14.2
 
-Since its introduction in commit ce098da1497c ("skbuff: Introduce
-slab_build_skb()"), __slab_build_skb() never used the @skb argument. Remove
-it and adapt both callers.
+Couple of cleanup patches to get rid of unused function parameters around
+skbuff.c.
 
-No functional change intended.
+Offshot of my question in [1], but way more contained. Found by adding
+"-Wunused-parameter -Wno-error" to KBUILD_CFLAGS and grepping for specific
+skbuff.c warnings.
+
+[1]: https://lore.kernel.org/netdev/972af569-0c90-4585-9e1f-f2266dab6ec6@rbox.co/
 
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- net/core/skbuff.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+Michal Luczaj (7):
+      net: splice: Drop unused @pipe
+      net: splice: Drop unused @flags
+      tcp: Drop tcp_splice_state::flags
+      af_unix: Drop unix_stream_read_state::splice_flags
+      net: splice: Drop unused @gfp
+      net: splice: Drop nr_pages_max initialization
+      net: skbuff: Drop unused @skb
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index b4f7843430a3f8f84aed387bf41ae761d97687ad..b5f685b6611c177c199f70bb16fd3940bce8cded 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -384,8 +384,7 @@ static inline void __finalize_skb_around(struct sk_buff *skb, void *data,
- 	skb_set_kcov_handle(skb, kcov_common_handle());
- }
- 
--static inline void *__slab_build_skb(struct sk_buff *skb, void *data,
--				     unsigned int *size)
-+static inline void *__slab_build_skb(void *data, unsigned int *size)
- {
- 	void *resized;
- 
-@@ -418,7 +417,7 @@ struct sk_buff *slab_build_skb(void *data)
- 		return NULL;
- 
- 	memset(skb, 0, offsetof(struct sk_buff, tail));
--	data = __slab_build_skb(skb, data, &size);
-+	data = __slab_build_skb(data, &size);
- 	__finalize_skb_around(skb, data, size);
- 
- 	return skb;
-@@ -435,7 +434,7 @@ static void __build_skb_around(struct sk_buff *skb, void *data,
- 	 * using slab buffer should use slab_build_skb() instead.
- 	 */
- 	if (WARN_ONCE(size == 0, "Use slab_build_skb() instead"))
--		data = __slab_build_skb(skb, data, &size);
-+		data = __slab_build_skb(data, &size);
- 
- 	__finalize_skb_around(skb, data, size);
- }
+ .../chelsio/inline_crypto/chtls/chtls_io.c         |  3 +-
+ include/linux/skbuff.h                             |  5 ++--
+ net/core/skbuff.c                                  | 32 ++++++++--------------
+ net/ipv4/ip_output.c                               |  3 +-
+ net/ipv4/tcp.c                                     |  7 ++---
+ net/ipv6/ip6_output.c                              |  3 +-
+ net/kcm/kcmsock.c                                  |  5 ++--
+ net/tls/tls_sw.c                                   |  2 +-
+ net/unix/af_unix.c                                 |  7 ++---
+ 9 files changed, 24 insertions(+), 43 deletions(-)
+---
+base-commit: ee1a0c653f9cad7e2634a39f6c530e12edddf0fc
+change-id: 20250618-splice-drop-unused-0e4ea8a12681
 
+Best regards,
 -- 
-2.49.0
+Michal Luczaj <mhal@rbox.co>
 
