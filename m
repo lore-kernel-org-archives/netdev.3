@@ -1,41 +1,71 @@
-Received: from mail.codelabs.ch (mail.codelabs.ch [109.202.192.35])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DEE293C6C
-	for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 12:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.202.192.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F88728D8CA
+	for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 12:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750769587; cv=none; b=qHI69gjP9HAaumsICorRhl+tRdFlhXgENYMVD/SCKuXciGM9TRHyFBcj/HWFJUPloBsTZjowrdM+x8WzmPMDdQ+10X+wjWttg1CEcORQzbgtdBvcvRlwJSqZX2tz4jxw08394bPHDx8F6avNHHnrv9EZuSpm0J2ngJ+yYulOTo0=
+	t=1750769644; cv=none; b=Fsyp+kedU83MUvXlZvwSgMsNgNOs5DhZJCsxa4vohUBeL9xb8/kGU+he2yIBAzg9n5GCV0A/C/QDVr4w1ptATap1fEajKSEDpJAs8SPYw9SGEXP9VjHoAAJY+oFNfZqfxCL5WzLufwy3idBwXGkQtIlWvNIpNOwD6hDTPkAcbGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750769587; c=relaxed/simple;
-	bh=upKkpI+hzZsZq7s3JgwRlLmrB1H4fgSlkaUXoqTF1PU=;
-	h=Message-ID:Date:MIME-Version:To:From:Cc:Subject:Content-Type; b=Wg88Afzgq07MMZ4S5FWqQJzE+DDHCeaDI0FK6NTMVhhKkzaegjR8NjOijbG9ukWWXmQzZjdsSlLXDv/dujU12VFgrXOk0DpDVC5XYzhkFr0XuNP6PtXhxzu0zp+VFWkJFJva5f97U04cSentCqyJPwc4jtsEVmXofp3P3LnhJik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=strongswan.org; spf=pass smtp.mailfrom=strongswan.org; dkim=pass (2048-bit key) header.d=strongswan.org header.i=@strongswan.org header.b=RiR6qIFT; arc=none smtp.client-ip=109.202.192.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=strongswan.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strongswan.org
+	s=arc-20240116; t=1750769644; c=relaxed/simple;
+	bh=2kOE0t10Ys08qMax53uN1Ij++jJiV3VlExemldFQM8Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=diuSrWMlvcZ5eGByVsgcytpBs8+fg3JjcaXCbjEMoAwjyBzxWIS6YHTiI4f5u2mKQdrgytR+46VYSefgaTFiUsqEjb/r1zPBbZvkXPX2RQqftysJdmZsRGIXWMhOfCvEle168X/uyyuteDgI5jD0j4c/fUUbBGQ9C9gKo7ID7qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UmQVu5Hq; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=strongswan.org header.i=@strongswan.org header.b="RiR6qIFT"
-Received: from localhost (localhost [127.0.0.1])
-	by mail.codelabs.ch (Postfix) with ESMTP id 76B825A0002;
-	Tue, 24 Jun 2025 14:47:22 +0200 (CEST)
-Received: from mail.codelabs.ch ([127.0.0.1])
- by localhost (fenrir.codelabs.ch [127.0.0.1]) (amavis, port 10024) with ESMTP
- id u-afJyaT9NAf; Tue, 24 Jun 2025 14:47:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=strongswan.org;
-	s=default; t=1750769241;
-	bh=upKkpI+hzZsZq7s3JgwRlLmrB1H4fgSlkaUXoqTF1PU=;
-	h=Date:To:From:Cc:Subject:From;
-	b=RiR6qIFTrGfe1kKKtMZBM63UN6TXgJ482MazMq/JU0oSp31y/QMmfrq1iuge0SuMv
-	 IATPvth3tXcutS1y1gnOgr8ikmCa8jTaKZ/scwpJk96S+zJDs8JpBwJ2sUigUHPUu6
-	 xKte/+SuivFQcBvKIRBqLK4cDHnai7hDXCGY2Fd4+Gph+JgEptvp2UIEp29AjxsP8+
-	 XNpF8pvvbrg0+kNLNP/MhPD8Di2Mu6NC3YUiEURW4C7s+jUDTKBlvY8N3pt4zw6jtk
-	 EMbSwGkEnJQ54h6W8wubrZYpVhbsy37XEXFrdsjTg1x5FZTPqyyDrvrvYqnYHFKnsv
-	 gpJMVniUHwzxw==
-Received: from [192.168.78.131] (ip-217-18-181-130.static.reverse.dsi.net [217.18.181.130])
-	by mail.codelabs.ch (Postfix) with ESMTPSA id 4AC805A0001;
-	Tue, 24 Jun 2025 14:47:21 +0200 (CEST)
-Message-ID: <d14acb9a-bc2b-4459-a8e7-a9017d9d75fc@strongswan.org>
-Date: Tue, 24 Jun 2025 14:47:20 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UmQVu5Hq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750769640;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T1zTpwcC335IMGuNVVSMsviTgOOTgO+DQI5xktWwQcI=;
+	b=UmQVu5HqnY6DnVKVatuvmHBBsERCTrUiqBDjAUBB9a6bkSyxkrrqxUfziLMqZ7LV0syaw2
+	FaSK0gLbMiV8L7TMa4Tm/7+p3BQvg9PDdL0/bPxWgmibK1+MHptoZj6SIcrwGKwkNXukRK
+	Qz51IkDDoIHSCjcu5O6yiqhIHtVIP7c=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-482-Hlrv7rq2MqeLPHCiI6XnPA-1; Tue, 24 Jun 2025 08:53:59 -0400
+X-MC-Unique: Hlrv7rq2MqeLPHCiI6XnPA-1
+X-Mimecast-MFC-AGG-ID: Hlrv7rq2MqeLPHCiI6XnPA_1750769638
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4537f56ab36so2722405e9.1
+        for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 05:53:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750769638; x=1751374438;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T1zTpwcC335IMGuNVVSMsviTgOOTgO+DQI5xktWwQcI=;
+        b=kcLvYsrJ2pzHX6ljSKSU8WTCEnTVanI7ARlQWK0yqE5m79O7qGI2LQFYPORW7Ejtph
+         RpD2QXEIClaAf8sNy7iljWoRBQC6aOuaITBdzFfN+9IUPopyb6YfAgNvCUW2EbMfzHPI
+         pso672pVcwRuFpqlNYv9lIdH8evCCqaHDsElOGr27iweaSxwvWEL4CgmPyI4JVs5yZOY
+         /ap+N/Fh9+6XuASUr0P4L0v5lCjnK8w4xgQs8mCMYDyWZgdIQI4gKTTxa7T5mD3YJHJI
+         MhnPzMSRszDL26SpwQSiYN1eAGuO9NRj9SizrMW4vxE1MJcqo+3xm0LVv55XlcRKDUU+
+         bVqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWQ0jkElR05yqbBezUmxElzfznHaE/1Udhkp4cYKmgVAYmXzHSMHMgW0oSOq2KAJ0vV3405vZ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzM8y1gClZKKHhYSDkvC+XM6EaEVyIMQ4eF4CUscKHrkpKF6lb7
+	zLlIzbtHDVw/rIF7aDU3a3nXWF32B09k+VtKAvB8ffpDZOwkQXCc9HkDTnbPPnoI3wP+i0qzKdp
+	b1XcYt+P9z84Vglg2ylvrQAvlbSYCBv4BgXkBVwe8sn/p7FI7wkJ2j3bYPw==
+X-Gm-Gg: ASbGncu8ylUfFftuKmMrbEX1rBEK9C+pN3JVw0+JxKvRY4YS3P+5W3zOf7uMH3AruHG
+	VzAsh6fqra7Dog8NbZNdTK92jRGpji3KrLnKhZGBP5kkV0bpA9rM1IRehLiRpNY09KrRaY12DQC
+	OYfPUD2AF12Y4j9PRysaM063QjKlPJfpB4dVx7ByOfuLOV4zGXJjEV09lHYDCbtBKY0RZ1TAB7D
+	e0mCHS2uZJWbMz+GTamgJAgKhkd3/dVVjS0qF6qbIURE8e0nlvi+fXaQld7E0ort3N0QwXvLoXs
+	sW9amABZTwKFuBpGtMq724gl/sdtDg==
+X-Received: by 2002:a05:600c:b8a:b0:450:d4a6:799e with SMTP id 5b1f17b1804b1-453658bac1fmr127799325e9.20.1750769638124;
+        Tue, 24 Jun 2025 05:53:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFY7lMZVaWFiRWIPG8b3cMXMdvCcNTK8MZjjGLVmokK+tCuYyoVQ5c/x3K3fImoxj9zLjbwsw==
+X-Received: by 2002:a05:600c:b8a:b0:450:d4a6:799e with SMTP id 5b1f17b1804b1-453658bac1fmr127799095e9.20.1750769637706;
+        Tue, 24 Jun 2025 05:53:57 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2445:d510::f39? ([2a0d:3344:2445:d510::f39])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453646dc761sm139345745e9.17.2025.06.24.05.53.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Jun 2025 05:53:57 -0700 (PDT)
+Message-ID: <fb0f1e3c-2229-4860-b46a-b99f6dbfdfe6@redhat.com>
+Date: Tue, 24 Jun 2025 14:53:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,101 +73,55 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>
-Content-Language: de-CH, en-US
-From: Tobias Brunner <tobias@strongswan.org>
-Cc: netdev@vger.kernel.org, devel@linux-ipsec.org
-Subject: [PATCH ipsec] xfrm: Set transport header to fix UDP GRO handling
-Autocrypt: addr=tobias@strongswan.org; keydata=
- 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
- tvkh7XWO2ycrW1UlzUzM4KV3SDLIhfOU
+Subject: Re: [PATCH net-next v5] docs: net: sysctl documentation cleanup
+To: Abdelrahman Fekry <abdelrahmanfekry375@gmail.com>, corbet@lwn.net,
+ davem@davemloft.net, edumazet@google.com, horms@kernel.org, kuba@kernel.org
+Cc: linux-doc@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ skhan@linuxfoundation.com, jacob.e.keller@intel.com,
+ alok.a.tiwari@oracle.com, bagasdotme@gmail.com
+References: <20250622090720.190673-1-abdelrahmanfekry375@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250622090720.190673-1-abdelrahmanfekry375@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-The referenced commit replaced a call to __xfrm4|6_udp_encap_rcv() with
-a custom check for non-ESP markers.  But what the called function also
-did was setting the transport header to the ESP header.  The function
-that follows, esp4|6_gro_receive(), relies on that being set when it calls
-xfrm_parse_spi().  We have to set the full offset as the skb's head was
-not moved yet so adding just the UDP header length won't work.
+On 6/22/25 11:07 AM, Abdelrahman Fekry wrote:
+> @@ -593,10 +629,16 @@ tcp_min_rtt_wlen - INTEGER
+>  	Default: 300
+>  
+>  tcp_moderate_rcvbuf - BOOLEAN
+> -	If set, TCP performs receive buffer auto-tuning, attempting to
+> +	If enabled, TCP performs receive buffer auto-tuning, attempting to
+>  	automatically size the buffer (no greater than tcp_rmem[2]) to
+> -	match the size required by the path for full throughput.  Enabled by
+> -	default.
+> +	match the size required by the path for full throughput.
+> +
+> +	Possible values:
+> +
+> +	- 0 (disabled)
+> +	- 1 (enabled)
+> +
+> +	Default: 0 (disabled)
 
-Fixes: e3fd05777685 ("xfrm: Fix UDP GRO handling for some corner cases")
-Signed-off-by: Tobias Brunner <tobias@strongswan.org>
----
- net/ipv4/xfrm4_input.c | 3 +++
- net/ipv6/xfrm6_input.c | 3 +++
- 2 files changed, 6 insertions(+)
+This uncorrectly changes the default value: should be 1.
 
-diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
-index 0d31a8c108d4..f28cfd88eaf5 100644
---- a/net/ipv4/xfrm4_input.c
-+++ b/net/ipv4/xfrm4_input.c
-@@ -202,6 +202,9 @@ struct sk_buff *xfrm4_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 	if (len <= sizeof(struct ip_esp_hdr) || udpdata32[0] == 0)
- 		goto out;
- 
-+	/* set the transport header to ESP */
-+	skb_set_transport_header(skb, offset);
-+
- 	NAPI_GRO_CB(skb)->proto = IPPROTO_UDP;
- 
- 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
-diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
-index 841c81abaaf4..9005fc156a20 100644
---- a/net/ipv6/xfrm6_input.c
-+++ b/net/ipv6/xfrm6_input.c
-@@ -202,6 +202,9 @@ struct sk_buff *xfrm6_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
- 	if (len <= sizeof(struct ip_esp_hdr) || udpdata32[0] == 0)
- 		goto out;
- 
-+	/* set the transport header to ESP */
-+	skb_set_transport_header(skb, offset);
-+
- 	NAPI_GRO_CB(skb)->proto = IPPROTO_UDP;
- 
- 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
--- 
-2.43.0
+>  icmp_echo_ignore_broadcasts - BOOLEAN
+> -	If set non-zero, then the kernel will ignore all ICMP ECHO and
+> +	If enabled, then the kernel will ignore all ICMP ECHO and
+>  	TIMESTAMP requests sent to it via broadcast/multicast.
+>  
+> -	Default: 1
+> +	Possible values:
+> +
+> +	- 0 (disabled)
+> +	- 1 (enabled)
+> +
+> +	Default: 0 (disabled)
+
+Same here.
+
+/P
 
