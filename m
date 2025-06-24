@@ -1,66 +1,41 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.codelabs.ch (mail.codelabs.ch [109.202.192.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E6D298CB0
-	for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 12:51:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DEE293C6C
+	for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 12:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.202.192.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750769474; cv=none; b=PhHOqwlx1yRCGbAApCCcYtr8yWZI9ZYmo59ukAOW9WLNH5T50j929z66sirayM4n94qGB3Y8IJ1rE/7ZkhTuUInNEF54eBjo++yhkx6TlyOPgb3E6wiP14jDy13omv+6tAmGA8wkqipqO4B2g+K4uY2RDUt3008ze4/HTli0yqk=
+	t=1750769587; cv=none; b=qHI69gjP9HAaumsICorRhl+tRdFlhXgENYMVD/SCKuXciGM9TRHyFBcj/HWFJUPloBsTZjowrdM+x8WzmPMDdQ+10X+wjWttg1CEcORQzbgtdBvcvRlwJSqZX2tz4jxw08394bPHDx8F6avNHHnrv9EZuSpm0J2ngJ+yYulOTo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750769474; c=relaxed/simple;
-	bh=jkT6mfH4uJfqYwc9rvEhzIqTWfZ6q1x0/wb+MeCmz0w=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ntwwcgYxXG6GZ6IknKVeNqL5HmhFdKoCJFv7bFHEI9OJy2CAVu57/aAS66d+t06bc8aXfh2qXP0GKBculdkc5q4FaOEbX6YMkhHrTzYDB5+N2c2D6U946WIFETXcqR3QleG1QFcX6q8zI2O+NZZjjPVUZuJBdrOq77JkQIv3S7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jacekk.info; spf=pass smtp.mailfrom=jacekk.info; dkim=pass (2048-bit key) header.d=jacekk.info header.i=@jacekk.info header.b=MVy5FOR4; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jacekk.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jacekk.info
+	s=arc-20240116; t=1750769587; c=relaxed/simple;
+	bh=upKkpI+hzZsZq7s3JgwRlLmrB1H4fgSlkaUXoqTF1PU=;
+	h=Message-ID:Date:MIME-Version:To:From:Cc:Subject:Content-Type; b=Wg88Afzgq07MMZ4S5FWqQJzE+DDHCeaDI0FK6NTMVhhKkzaegjR8NjOijbG9ukWWXmQzZjdsSlLXDv/dujU12VFgrXOk0DpDVC5XYzhkFr0XuNP6PtXhxzu0zp+VFWkJFJva5f97U04cSentCqyJPwc4jtsEVmXofp3P3LnhJik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=strongswan.org; spf=pass smtp.mailfrom=strongswan.org; dkim=pass (2048-bit key) header.d=strongswan.org header.i=@strongswan.org header.b=RiR6qIFT; arc=none smtp.client-ip=109.202.192.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=strongswan.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strongswan.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jacekk.info header.i=@jacekk.info header.b="MVy5FOR4"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-607b59b447bso7949937a12.1
-        for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 05:51:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jacekk.info; s=g2024; t=1750769471; x=1751374271; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=R8j08AxL8zlJOltWi63caQrmz1cFgG6v1E8nzEyRGUo=;
-        b=MVy5FOR4pHJiIGCZa9Eix15tvZdH1JjvJUR/wWjnsmbfX8HSYQGen7+KGg4NK5AIjN
-         9EKRujwSDBTBa4grQeFUvxr9JELV6Tos13K74Zl677p5QLsqHCu1qgIGcA6evI1ZbVLv
-         U7AvKU4e9ZLsUEaE9yFchujiUdIG0WAy9Xx9QEToAS0OcRRRcRgmnJ3s/R5xZJr87SAI
-         sqsWF3AhF/BrCNL95mTozzBDDHwJfnBkhO745MBW4x2w2ezK45cwEXNyaNErpnahuG2N
-         N5j9CsmtYPbWZ1sbG55QrO3fE3ZyHd9fzEIOwk/z+GofoSpXKPbES5fMZE4LsZIr/Z32
-         WTDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750769471; x=1751374271;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R8j08AxL8zlJOltWi63caQrmz1cFgG6v1E8nzEyRGUo=;
-        b=FS/9EF8nVH6uR1fRyalLjUHoo46iMXkUcsI/iXZ34HQLRYbJMJJFOnWrx+po6tHKh7
-         ewCumiAMv8dZYUUqkdmey9JuqR8I8iAhmUNd4e0PdeRWbyHjZIcQE9q+xhExjjaAOC2o
-         Y9O4Qr63QrqiqNriT7lWyTOX30PoUC0pIeKACZlC4k5WWyvWCvDRwsU/UhKqag3atdU5
-         +irsDYBQwJJDmAGORxFqaTbsjAzv1eb5TC4SlGNj6GlYkJnwmS+TGT1YHstzNGllx2mp
-         vpP5K75/DcWbUo7dILxk7rXJsYSB7/6KhoI9HBLxn74T/TCrdceWw2CRVVRHscdjXnev
-         lGlg==
-X-Forwarded-Encrypted: i=1; AJvYcCVs8TJslAj/kMzWLBM+2qa4Xn4d8U2ScFmz3qin4wMzAwGDJLNUMidBNLAzG+EsBApXlANFAIg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUnkYIKQM4N5v1G4goEHeSeP8Z4dr3B5SZYCWidASH0DM1L8WF
-	+5yyNNwwedq/sk19oos9efEsTt66B8WmaIOn4YpnBG9sc+4Imc8q7qFWCZdHg/HHtQ==
-X-Gm-Gg: ASbGncsbF1/jiHO161HMw8gvrM6SJlXjg+BZi21WxCm3xcReXKEsYUAe5pdLK8e8VxS
-	hpNO8GKB7OcSnorcLNETv9ZpelkTs+4BamU+pAOwDecX4Kln2SC9+OMxBTSWzuM/L5l/wdk/ZKf
-	VHE5qV8hEvAebbWrhfjwavt8kdz/9gq8g50t50VLnU2Mnq/zUehGcAnUsSF5YuUo+k4bnj6Lfk7
-	V8mf2QKNu/9hTI/pCkUO6eiKlqCKz9ebc70oTmb4t85T54RXb/ErmiycCKbHrEETHVrDC66akRp
-	052/F6+LZ9hWJ7OjlWpetjFNeXnx0sPXrZsShCChgu4pWAo95JEJqMWlFLfo27lO
-X-Google-Smtp-Source: AGHT+IGW7ORN9PWnJJjgW+cZ6TowqoJ7MmszMOr+J2FbInVvd3xL3L9vT7lM4Pbi6amiUEIgd5D6GA==
-X-Received: by 2002:a05:6402:4415:b0:607:f31f:26de with SMTP id 4fb4d7f45d1cf-60a1ccad8femr13331076a12.1.1750769470446;
-        Tue, 24 Jun 2025 05:51:10 -0700 (PDT)
-Received: from [192.168.0.114] ([91.196.212.106])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60c2f1ae7basm1003980a12.25.2025.06.24.05.51.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Jun 2025 05:51:10 -0700 (PDT)
-From: Jacek Kowalski <jacek@jacekk.info>
-X-Google-Original-From: Jacek Kowalski <Jacek@jacekk.info>
-Message-ID: <cca5cdd3-79b3-483d-9967-8a134dd23219@jacekk.info>
-Date: Tue, 24 Jun 2025 14:51:09 +0200
+	dkim=pass (2048-bit key) header.d=strongswan.org header.i=@strongswan.org header.b="RiR6qIFT"
+Received: from localhost (localhost [127.0.0.1])
+	by mail.codelabs.ch (Postfix) with ESMTP id 76B825A0002;
+	Tue, 24 Jun 2025 14:47:22 +0200 (CEST)
+Received: from mail.codelabs.ch ([127.0.0.1])
+ by localhost (fenrir.codelabs.ch [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id u-afJyaT9NAf; Tue, 24 Jun 2025 14:47:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=strongswan.org;
+	s=default; t=1750769241;
+	bh=upKkpI+hzZsZq7s3JgwRlLmrB1H4fgSlkaUXoqTF1PU=;
+	h=Date:To:From:Cc:Subject:From;
+	b=RiR6qIFTrGfe1kKKtMZBM63UN6TXgJ482MazMq/JU0oSp31y/QMmfrq1iuge0SuMv
+	 IATPvth3tXcutS1y1gnOgr8ikmCa8jTaKZ/scwpJk96S+zJDs8JpBwJ2sUigUHPUu6
+	 xKte/+SuivFQcBvKIRBqLK4cDHnai7hDXCGY2Fd4+Gph+JgEptvp2UIEp29AjxsP8+
+	 XNpF8pvvbrg0+kNLNP/MhPD8Di2Mu6NC3YUiEURW4C7s+jUDTKBlvY8N3pt4zw6jtk
+	 EMbSwGkEnJQ54h6W8wubrZYpVhbsy37XEXFrdsjTg1x5FZTPqyyDrvrvYqnYHFKnsv
+	 gpJMVniUHwzxw==
+Received: from [192.168.78.131] (ip-217-18-181-130.static.reverse.dsi.net [217.18.181.130])
+	by mail.codelabs.ch (Postfix) with ESMTPSA id 4AC805A0001;
+	Tue, 24 Jun 2025 14:47:21 +0200 (CEST)
+Message-ID: <d14acb9a-bc2b-4459-a8e7-a9017d9d75fc@strongswan.org>
+Date: Tue, 24 Jun 2025 14:47:20 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,50 +43,101 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] e1000e: ignore factory-default checksum value on
- TGP platform
-To: Simon Horman <horms@kernel.org>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <fe064a2c-31d6-4671-ba30-198d121782d0@jacekk.info>
- <b7856437-2c74-4e01-affa-3bbc57ce6c51@jacekk.info>
- <20250624095313.GB8266@horms.kernel.org>
-Content-Language: en-US
-In-Reply-To: <20250624095313.GB8266@horms.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>
+Content-Language: de-CH, en-US
+From: Tobias Brunner <tobias@strongswan.org>
+Cc: netdev@vger.kernel.org, devel@linux-ipsec.org
+Subject: [PATCH ipsec] xfrm: Set transport header to fix UDP GRO handling
+Autocrypt: addr=tobias@strongswan.org; keydata=
+ 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
+ tvkh7XWO2ycrW1UlzUzM4KV3SDLIhfOU
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
->> +	if (hw->mac.type == e1000_pch_tgp && checksum == (u16)NVM_SUM_FACTORY_DEFAULT) {
-> 
-> I see that a similar cast is applied to NVM_SUM. But why?
-> If it's not necessary then I would advocate dropping it.
+The referenced commit replaced a call to __xfrm4|6_udp_encap_rcv() with
+a custom check for non-ESP markers.  But what the called function also
+did was setting the transport header to the ESP header.  The function
+that follows, esp4|6_gro_receive(), relies on that being set when it calls
+xfrm_parse_spi().  We have to set the full offset as the skb's head was
+not moved yet so adding just the UDP header length won't work.
 
-It's like that since the beginning of git history, tracing back to e1000:
+Fixes: e3fd05777685 ("xfrm: Fix UDP GRO handling for some corner cases")
+Signed-off-by: Tobias Brunner <tobias@strongswan.org>
+---
+ net/ipv4/xfrm4_input.c | 3 +++
+ net/ipv6/xfrm6_input.c | 3 +++
+ 2 files changed, 6 insertions(+)
 
-$ git show 1da177e4c3f4:drivers/net/e1000/e1000_hw.c | grep -A 1 EEPROM_SUM
-     if(checksum == (uint16_t) EEPROM_SUM)
-         return E1000_SUCCESS;
-(...)
-
-
-I'd really prefer to keep it as-is here for a moment, since similar 
-constructs are not only here, and then clean them up separately.
-
-Examples instances from drivers/net/ethernet/intel:
-
-e1000/e1000_ethtool.c:  if ((checksum != (u16)EEPROM_SUM) && !(*data))
-e1000/e1000_hw.c:       if (checksum == (u16)EEPROM_SUM)
-e1000e/ethtool.c:       if ((checksum != (u16)NVM_SUM) && !(*data))
-igb/e1000_82575.c:      if (checksum != (u16) NVM_SUM) {
-igb/e1000_nvm.c:        if (checksum != (u16) NVM_SUM) {
-igc/igc_nvm.c:  if (checksum != (u16)NVM_SUM) {
-
+diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
+index 0d31a8c108d4..f28cfd88eaf5 100644
+--- a/net/ipv4/xfrm4_input.c
++++ b/net/ipv4/xfrm4_input.c
+@@ -202,6 +202,9 @@ struct sk_buff *xfrm4_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
+ 	if (len <= sizeof(struct ip_esp_hdr) || udpdata32[0] == 0)
+ 		goto out;
+ 
++	/* set the transport header to ESP */
++	skb_set_transport_header(skb, offset);
++
+ 	NAPI_GRO_CB(skb)->proto = IPPROTO_UDP;
+ 
+ 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
+diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
+index 841c81abaaf4..9005fc156a20 100644
+--- a/net/ipv6/xfrm6_input.c
++++ b/net/ipv6/xfrm6_input.c
+@@ -202,6 +202,9 @@ struct sk_buff *xfrm6_gro_udp_encap_rcv(struct sock *sk, struct list_head *head,
+ 	if (len <= sizeof(struct ip_esp_hdr) || udpdata32[0] == 0)
+ 		goto out;
+ 
++	/* set the transport header to ESP */
++	skb_set_transport_header(skb, offset);
++
+ 	NAPI_GRO_CB(skb)->proto = IPPROTO_UDP;
+ 
+ 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
 -- 
-Best regards,
-   Jacek Kowalski
+2.43.0
 
