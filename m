@@ -1,51 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938CB1946DF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9391E194A45
 	for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 00:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750725013; cv=none; b=P61UJp/paUzbz14m/je8D2UpvyDJ9NthZTWVdEQW1JiNnBqyNPoCqIvGasBCgkepGiwVvCLY8u+LvlmzXWn6K52K2MDMZaTEKRAIoH6CmVR5betxGKHOcvrfmc/HyOzhKgtrqhqYp6T4q9wXluidDjlMMgQbyFByhKEwRGBqTYo=
+	t=1750725013; cv=none; b=KeynWICow1qkvnLG+xpUIQ1qmCtN9fp2OmrmsAJqaYcN3scZHeTkDo9l2tkhbJ/eSpVcKh9t6sTIuroRnjVPkm/Ctb5fYaVUhwae+3J1qTP3Ezm0Fy6FR13jY95YxJdH/xsfBiePfkbjsHy+wrtU4DUnBAVd3/aAsa9f2ihugqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750725013; c=relaxed/simple;
-	bh=HCof3ZorrURb/XNOTqNcJBeLxfq4ji8wlBJfgFY5nlI=;
+	bh=o4hj3F9sT37zdvuAQpgExiaMoeCQnU2Bj09aX+sXwAM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZDwYXKjy+p9wQ2iH1KuhVw8DnBkoeNU9YtcVknmUOwYbWrWtb0YwzeAnuXdlb92N9k/6nOls28k572Zc6od/jthmMv1BOka8RxfvlOZRzoHR7heyG3g4VuvXAkm+YmcB2WCvMkDbWbUxJWPesrCsrLMyRx5p+RWWam/BMYjliqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fL8yuJzu; arc=none smtp.client-ip=192.198.163.19
+	 In-Reply-To:To:Cc; b=pxvsohV/oZfeP4aPfQAwBDg1hbPy0N8Rh1uEtJgMh4VITU0zLXXhg72dLFXDO4vb0KKUKKF6/PGrThGek8eZhau/hllXS2lV5CA6r0zlm+G6O2fmi3a0yU/kEUu0L3F/ScNzC6zYsxIA4btWS6hLRRHQjxOnPmYmQpUIwBbQ0oQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lmvFNQ+p; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fL8yuJzu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lmvFNQ+p"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1750725012; x=1782261012;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=HCof3ZorrURb/XNOTqNcJBeLxfq4ji8wlBJfgFY5nlI=;
-  b=fL8yuJzuLzhJtN1aDwY2zCEhCYWQv0dnV9OTO293owi30ub3H4jeVDqG
-   aa0WmwqU5cgPk/g3hvgkQ7TP90ZfsCIkHhseY7OxWHKV1HKZxMt1nKICo
-   Mf9ey7z3mTCNMObgLnR7OdgTFpiBcztRZo9gKQGFeXZ6KnG7ursJYnI70
-   hVsjxDFeiw0jTioyIkWgZiLG/UwKU8C3NGjXd9WT/BzgHzCDYghWsNuQ6
-   zamthm6+NY+8ozFMOnWnhPpCk07IbjEHHcLOq+DoMUWZJhstOA/LP7LuB
-   mmSm6/zEGjMtvLpTl4yIcsunqG72SZz7IAD8wtGOSY37QU3X83zeBqXfP
-   A==;
-X-CSE-ConnectionGUID: nkbtx50XSkmz0i2X/nM2Pw==
-X-CSE-MsgGUID: EKC8E81YRcKzfaCVGb9qYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="52067920"
+  bh=o4hj3F9sT37zdvuAQpgExiaMoeCQnU2Bj09aX+sXwAM=;
+  b=lmvFNQ+pYpVje8ToxW5Ae7FAK4J5MuxpKtR2fyWim1fWik7qeZ7dAb4+
+   nvboB97e4DK/beRdwJShjILMuwexCJDcnZiYnZFtPKnE9YqzSoVqcesKs
+   8zCwRBl+z8Li2Pe50v9pgSS3OBPHtQTAQaFVFmlzBdoLuZUGX5P4gHbD1
+   OMbrDoZ0iUWBk4eWkVUVAv7FPo0OCxyk5vF/CP0Na5ZwDot9Csvcx8SPa
+   lFOtXVVkySMDgcnJQ8K3x6yIQynoaq07NB5o/A5p23Nx7+DBZuZ6lfp+H
+   AdHc8e6EreGWi9SQkuDWHd5jFwaU3S/S0WTkvzBOAkC2o2ej4n8ao+RCz
+   w==;
+X-CSE-ConnectionGUID: 8NL2ykTfRtS93nM05WTtWA==
+X-CSE-MsgGUID: vvkncbGBTouHEw4+d3wPqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="52067921"
 X-IronPort-AV: E=Sophos;i="6.16,260,1744095600"; 
-   d="scan'208";a="52067920"
+   d="scan'208";a="52067921"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
   by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 17:30:07 -0700
-X-CSE-ConnectionGUID: dML8eh9aRd+IHAPTLd7RFg==
-X-CSE-MsgGUID: pjHfOmlySHWIDmwXqDBFeg==
+X-CSE-ConnectionGUID: ucq3/5DaQYKC2ivB8+EpMw==
+X-CSE-MsgGUID: KB1hCkS7TqCfrDvXElPSIA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,260,1744095600"; 
-   d="scan'208";a="157534056"
+   d="scan'208";a="157534051"
 Received: from jekeller-desk.jf.intel.com ([10.166.241.15])
   by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 17:30:06 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Mon, 23 Jun 2025 17:30:04 -0700
-Subject: [PATCH 8/8] ice: default to TIME_REF instead of TXCO on E825-C
+Date: Mon, 23 Jun 2025 17:30:02 -0700
+Subject: [PATCH 6/8] ice: fall back to TCXO on TSPLL lock fail
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,58 +54,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250623-kk-tspll-improvements-alignment-v1-8-fe9a50620700@intel.com>
+Message-Id: <20250623-kk-tspll-improvements-alignment-v1-6-fe9a50620700@intel.com>
 References: <20250623-kk-tspll-improvements-alignment-v1-0-fe9a50620700@intel.com>
 In-Reply-To: <20250623-kk-tspll-improvements-alignment-v1-0-fe9a50620700@intel.com>
 To: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
 Cc: Jacob Keller <jacob.e.keller@intel.com>, 
- Anthony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org
+ Anthony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org, 
+ Karol Kolacinski <karol.kolacinski@intel.com>, 
+ Milena Olech <milena.olech@intel.com>
 X-Mailer: b4 0.14.2
 
-The driver currently defaults to the internal oscillator as the clock
-source for E825-C hardware. While this clock source is labeled TCXO,
-indicating a temperature compensated oscillator, this is only true for some
-board designs. Many board designs have a less capable oscillator. The
-E825-C hardware may also have its clock source set to the TIME_REF pin.
-This pin is connected to the DPLL and is often a more stable clock source.
-The choice of the internal oscillator is not suitable for all systems,
-especially those which want to enable SyncE support.
+From: Karol Kolacinski <karol.kolacinski@intel.com>
 
-There is currently no interface available for users to configure the clock
-source. Other variants of the E82x board have the clock source configured
-in the NVM, but E825-C lacks this capability, so different board designs
-cannot select a different default clock via firmware.
+TSPLL can fail when trying to lock to TIME_REF as a clock source, e.g.
+when the external clock source is not stable or connected to the board.
+To continue operation after failure, try to lock again to internal TCXO
+and inform user about this.
 
-In most setups, the TIME_REF is a suitable default clock source.
-Additionally, we now fall back to the internal oscillator automatically if
-the TIME_REF clock source cannot be locked.
-
-Change the default clock source for E825-C to TIME_REF. Note that the
-driver logs a dev_dbg message upon configuring the TSPLL which includes the
-clock source and frequency. This can be enabled to confirm which clock
-source is in use.
-
-Longterm a proper interface to dynamically introspect and change the clock
-source will be designed (perhaps some extension of the DPLL subsystem?)
-
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Milena Olech <milena.olech@intel.com>
+Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_tspll.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index bc292d61892c3856919c6986f28795e50b0c0748..84cd8c6dcf39bf35c59ad27468d4e63f9b575376 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -2302,7 +2302,7 @@ ice_parse_1588_func_caps(struct ice_hw *hw, struct ice_hw_func_caps *func_p,
- 		info->clk_src = ((number & ICE_TS_CLK_SRC_M) != 0);
- 	} else {
- 		info->clk_freq = ICE_TSPLL_FREQ_156_250;
--		info->clk_src = ICE_CLK_SRC_TCXO;
-+		info->clk_src = ICE_CLK_SRC_TIME_REF;
- 	}
- 
- 	if (info->clk_freq < NUM_ICE_TSPLL_FREQ) {
+diff --git a/drivers/net/ethernet/intel/ice/ice_tspll.c b/drivers/net/ethernet/intel/ice/ice_tspll.c
+index abd9f4ff2f5563e35dd8e8fa551eb944d8f5802a..886a18b2e65fa03860f8907552f2a57b0717fdf7 100644
+--- a/drivers/net/ethernet/intel/ice/ice_tspll.c
++++ b/drivers/net/ethernet/intel/ice/ice_tspll.c
+@@ -605,5 +605,17 @@ int ice_tspll_init(struct ice_hw *hw)
+ 	/* Configure the TSPLL using the parameters from the function
+ 	 * capabilities.
+ 	 */
+-	return ice_tspll_cfg(hw, tspll_freq, clk_src);
++	err = ice_tspll_cfg(hw, tspll_freq, clk_src);
++	if (err) {
++		dev_warn(ice_hw_to_dev(hw), "Failed to lock TSPLL to predefined frequency. Retrying with fallback frequency.\n");
++
++		/* Try to lock to internal TCXO as a fallback. */
++		tspll_freq = ice_tspll_default_freq(hw->mac_type);
++		clk_src = ICE_CLK_SRC_TCXO;
++		err = ice_tspll_cfg(hw, tspll_freq, clk_src);
++		if (err)
++			dev_warn(ice_hw_to_dev(hw), "Failed to lock TSPLL to fallback frequency.\n");
++	}
++
++	return err;
+ }
 
 -- 
 2.48.1.397.gec9d649cc640
