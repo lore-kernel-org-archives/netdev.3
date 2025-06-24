@@ -1,112 +1,126 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1A2222571;
-	Tue, 24 Jun 2025 12:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC06D1D52B;
+	Tue, 24 Jun 2025 12:35:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750768439; cv=none; b=bXfdMTp9VWUzI9fdNuU/iOEIgv5mhoqBHdy3M8ye4ArXKE2e32rCWrm+Cp3s1CMKK42XEPW5idIUO9Dr/y3S4AELk9m0j5KbVNCUj9j1G1zndvHk8E2RBmPlAnEd9VJyRi1hy5dKdnhmWgrMvOnn2CKUX8wHxomkTH8d6jb6ppU=
+	t=1750768505; cv=none; b=Kvhge7SMsBvddM1moW99Dyha88KVs8m+6XPUyPRafJK0yL1kww4BiwWI04DEKfTOhjydoZr4AqWUfXIvKrFtObL7qWZBPr49fbhTP1oicLll+/2+GbWozf2Vsx/gHwVCjX19uiABl/s947QtA8N7ygRDpurVLxsLZ0cESu3hJKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750768439; c=relaxed/simple;
-	bh=ntGwK67tdZVtGMNaU6QKhZxFxF5O/eBDm3EURT/Hu1s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HWRwDGhtX6y3Sozu6jPrktwMlfvZweUQKIxwUmmcG6mJvmrMrwkiAB/mmyqzW5n6iWQVb1Hkibp5qvxAbEz17T8U1OAOyKmFb19sIgAkGlZd+mLhA4dIaWz6wu9S2iFAAWRJ75AFrqIEsg+gefYAVyDP2puBhV8/6CPy4aJY4+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4bRPQf1J4RzTgmJ;
-	Tue, 24 Jun 2025 20:29:30 +0800 (CST)
-Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4E544180237;
-	Tue, 24 Jun 2025 20:33:49 +0800 (CST)
-Received: from huawei.com (10.175.124.27) by dggpemf500016.china.huawei.com
- (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 24 Jun
- 2025 20:33:48 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <dsahern@kernel.org>
-CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
-	<wangliang74@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next] net: add sysctl ndisc_debug
-Date: Tue, 24 Jun 2025 20:51:15 +0800
-Message-ID: <20250624125115.3926152-1-wangliang74@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1750768505; c=relaxed/simple;
+	bh=vO6kx9P2dBA5m8J1U9nii5EEhuooiv9bKaiWcrrGZBY=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kHllTAYiJx9LR+Lw1gBSxFwiY1DNJ6H95f4vNZXstOHktmrJchinxyw7Upl0dYD30TK7xQwr9Ks4NqUX+6+tKriqbLeXehyVpsgxoC+xDoozUfV+mzA2dZgwzvMle5nUvxtqZ3FT5SlcGOueF6ROPMVxamO67UaiUi1rZN0nopA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fejes.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fejes.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-450cf214200so47543835e9.1;
+        Tue, 24 Jun 2025 05:35:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750768502; x=1751373302;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vO6kx9P2dBA5m8J1U9nii5EEhuooiv9bKaiWcrrGZBY=;
+        b=XwH9krYt8G+4y9F3V8QomGpT96vsTEANNYwm/SizHOjIGmZo48qE5P9n1N0o9iktIK
+         A3YdYFVze1sFw9Cb2UQNDNv013jKHGfR9NSQCZ9/1zRGz8JDflMGmlHHO6RYf3e8NFKt
+         KctYfTH66rFSe0BanNfCs1+mlTv6RqIG/x2tEVTZQyRIxJxOrenr0Cc+Lk5VZ0s+4vna
+         hhNHkjD8Mj5C2D8sYnMsPZ5B1vXsoebpcf2MngM7MnNxf/HrUa6n6zKPgEy3l43JfJZ2
+         VyTRRPzJxLLWb7tvOVzlBGgnOrhQl4uMF3+ooHlI+hA1EZvgF1i0SrXOf/cugFHzTpsf
+         ZjDw==
+X-Forwarded-Encrypted: i=1; AJvYcCV4NbgIdtoQM2jlVpzYIppG0uz91OJ6o9hD2PuarJFKnqG8PLmT7k2zDH3tZfuIwIYcNRX4czPQCJv7Iy8KaNU=@vger.kernel.org, AJvYcCX4kzBrWNi1OAoc6g7eR+lqw802z4gg2iBzMcy+DBq4587GMmsv5bfhLLqVc38yRgl2nuhYLcsW@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1AlYQD6TjZ+9NrML35typA7/fP4sXg8ywThriQK1ev+T+pflI
+	xBJSMR81lBADzlk2dmZh9Vv5FQKSgL0qWhGh8N7XWJyjs4wuLC2v0pcU
+X-Gm-Gg: ASbGnctWbEXQRaD4GqbbQwtvyHK0I9BH08mojcevcMNW1m/kSC0F7c8uHJ6C3R5XMBz
+	9H4HxXv7W0Kd11QcfeAChGbtJkBRh7/61UXZn960193kiHGPz8WVtCdDQVNcVOWdSMzUCuf9ZjA
+	V0cq7kkiodIwjgZLSn/B9Z4z/pK46guwCPotueDXkwFqeWmvcC0nnU9W39GGbCn9Gqsej0AEDq1
+	js+Fkt3Nvz8zAt93OG7N3WNMp8ej6OqnMl4qujZ5/EmuAfn7yAekdZeKGEXR60eNYZCFsFS5AGN
+	lpIGrZabcu1FN3jVMXdzlI44GCzqyyc46z5itiLqMKpctimjz4PedzQDyH4=
+X-Google-Smtp-Source: AGHT+IGU5aurfEaFN5yYiteziFoxX752x4NwSEcFi+QXFzqK7qCY3Nfhc7kq1gMvvLwKAlqjQkp9lQ==
+X-Received: by 2002:a05:600c:4510:b0:43d:45a:8fc1 with SMTP id 5b1f17b1804b1-453659c484bmr151534765e9.4.1750768501473;
+        Tue, 24 Jun 2025 05:35:01 -0700 (PDT)
+Received: from [10.148.85.1] ([195.228.69.10])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453646cb672sm143029305e9.6.2025.06.24.05.34.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Jun 2025 05:34:59 -0700 (PDT)
+Message-ID: <6f880f49c2d9ef20ab087c6e9d1a6d6c8f6e500a.camel@fejes.dev>
+Subject: Re: [PATCH v20 net-next 0/6] DUALPI2 patch
+From: Ferenc Fejes <ferenc@fejes.dev>
+To: chia-yu.chang@nokia-bell-labs.com, alok.a.tiwari@oracle.com, 
+	pctammela@mojatatu.com, horms@kernel.org, donald.hunter@gmail.com, 
+	xandfury@gmail.com, netdev@vger.kernel.org, dave.taht@gmail.com,
+ pabeni@redhat.com, 	jhs@mojatatu.com, kuba@kernel.org,
+ stephen@networkplumber.org, 	xiyou.wangcong@gmail.com, jiri@resnulli.us,
+ davem@davemloft.net, 	edumazet@google.com, andrew+netdev@lunn.ch,
+ ast@fiberby.net, liuhangbin@gmail.com, 	shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, ij@kernel.org, 	ncardwell@google.com,
+ koen.de_schepper@nokia-bell-labs.com, 	g.white@cablelabs.com,
+ ingemar.s.johansson@ericsson.com, 	mirja.kuehlewind@ericsson.com,
+ cheshire@apple.com, rs.ietf@gmx.at, 	Jason_Livingood@comcast.com,
+ vidhi_goel@apple.com
+Date: Tue, 24 Jun 2025 14:34:57 +0200
+In-Reply-To: <20250621193331.16421-1-chia-yu.chang@nokia-bell-labs.com>
+References: <20250621193331.16421-1-chia-yu.chang@nokia-bell-labs.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf500016.china.huawei.com (7.185.36.197)
 
-Ipv6 ndisc uses ND_PRINTK to print logs. However it only works when
-ND_DEBUG was set in the compilation phase. This patch adds sysctl
-ndisc_debug, so we can change the print switch when system is running and
-get ipv6 ndisc log to debug.
+On Sat, 2025-06-21 at 21:33 +0200, chia-yu.chang@nokia-bell-labs.com wrote:
+> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+>=20
+> Hello,
+>=20
+> =C2=A0 Please find the DualPI2 patch v20.
+>=20
+> =C2=A0 This patch serise adds DualPI Improved with a Square (DualPI2) wit=
+h
+> following features:
+> * Supports congestion controls that comply with the Prague requirements i=
+n
+> RFC9331 (e.g. TCP-Prague)
+> * Coupled dual-queue that separates the L4S traffic in a low latency queu=
+e (L-
+> queue), without harming remaining traffic that is scheduled in classic qu=
+eue
+> (C-queue) due to congestion-coupling using PI2 as defined in RFC9332
+> * Configurable overload strategies
+> * Use of sojourn time to reliably estimate queue delay
+> * Supports ECN L4S-identifier (IP.ECN=3D=3D0b*1) to classify traffic into
+> respective queues
+>=20
 
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
----
- include/net/ndisc.h        | 5 ++---
- net/ipv6/ndisc.c           | 3 +++
- net/ipv6/sysctl_net_ipv6.c | 7 +++++++
- 3 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/ndisc.h b/include/net/ndisc.h
-index 3c88d5bc5eed..481a7fc5d5c1 100644
---- a/include/net/ndisc.h
-+++ b/include/net/ndisc.h
-@@ -60,12 +60,11 @@ enum {
- 
- #include <net/neighbour.h>
- 
--/* Set to 3 to get tracing... */
--#define ND_DEBUG 1
-+extern u8 ndisc_debug;
- 
- #define ND_PRINTK(val, level, fmt, ...)				\
- do {								\
--	if (val <= ND_DEBUG)					\
-+	if (val <= ndisc_debug)					\
- 		net_##level##_ratelimited(fmt, ##__VA_ARGS__);	\
- } while (0)
- 
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index ecb5c4b8518f..be4bb72b1d61 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -83,6 +83,9 @@ static void pndisc_destructor(struct pneigh_entry *n);
- static void pndisc_redo(struct sk_buff *skb);
- static int ndisc_is_multicast(const void *pkey);
- 
-+u8 ndisc_debug = 1;
-+EXPORT_SYMBOL_GPL(ndisc_debug);
-+
- static const struct neigh_ops ndisc_generic_ops = {
- 	.family =		AF_INET6,
- 	.solicit =		ndisc_solicit,
-diff --git a/net/ipv6/sysctl_net_ipv6.c b/net/ipv6/sysctl_net_ipv6.c
-index d2cd33e2698d..c0968f0c5d00 100644
---- a/net/ipv6/sysctl_net_ipv6.c
-+++ b/net/ipv6/sysctl_net_ipv6.c
-@@ -247,6 +247,13 @@ static struct ctl_table ipv6_rotable[] = {
- 		.proc_handler	= proc_dointvec,
- 	},
- #endif /* CONFIG_NETLABEL */
-+	{
-+		.procname	= "ndisc_debug",
-+		.data		= &ndisc_debug,
-+		.maxlen		= sizeof(u8),
-+		.mode		= 0644,
-+		.proc_handler	= proc_dou8vec_minmax
-+	},
- };
- 
- static int __net_init ipv6_sysctl_net_init(struct net *net)
--- 
-2.34.1
+Looking at this, I wonder if DualPI2 would be implemented in BPF.
+For example, you could have two FIFOs with a BPF Qdisc, such as:
 
+struct bpf_list_head l_queue __contains(skb_node, node);
+struct bpf_list_head c_queue __contains(skb_node, node);
+
+The bpf_list_push_back and bpf_list_pop_front functions are also available =
+for
+handling these.
+
+There are also spinlock helpers, and the pi2_timer can be replaced with upd=
+ates
+based on the struct bpf_timer. Of course, there are tricks to consider rega=
+rding
+GSO, which might require additional BPF helpers. However, looking through t=
+he
+code, I see a chance to implement this as a pure BPF qdisc. What do you thi=
+nk?
+
+Having this as a regular qdisc with the iproute2 tc interface is great,
+considering the effort already spent on it. However, since all the operatio=
+nal
+bits are already sorted out, it might be worth looking into the feasibility=
+ of a
+BPF version.
+
+Best,
+Ferenc
