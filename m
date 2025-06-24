@@ -1,246 +1,136 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939B726B740;
-	Tue, 24 Jun 2025 08:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AC827A460
+	for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 09:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750755497; cv=none; b=infczNEaII9Snf5cYyUWlC1LYkS2EMjqbsRoADbWKz13yH8uCochvnMwWCHKUmJxGfEgNeproAhqqMehD0Vn5OUSUb2wr+aIbAfzdc9FZKbthhqlWVKuG4JnZA/OwrK3FT3qZv0nlZJu1TYYgdzwuZiuV4vNGknP2td/Q4I6ioM=
+	t=1750755751; cv=none; b=PIMGCgT0CBircD2iy6pq80weJmfamzmYr/gg4r/HyiPtADdc7ro8eAL4VuO3edS8hPDxaAFCxXdpfApT92G12W+4EALDjbzPPPrGBTgaX+xNwhsdFstMnz3Vj+mxbXhRyIX+lnoKaOBzNCIfDsLzgCxuQ/hKXWFMJamHNGDAllM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750755497; c=relaxed/simple;
-	bh=VLbiWkX8kQdNOTQe/nl+zGd6Uct821hYaKB9Ta26SfM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=brAvXMnpsCPIVG7TXhnpCvAlyz9UEvuQ0wTbzFsKCZub3AHnqFuSl5Ax5wbo/KcGXCTxm95vGtdrPhFOTW5eEBVDZl+5BTH7Ukder1NUJJ0u16oUR/xJOTUfuDf7l3UjCJUlo4NgVisukBQDQw3x/zpMUWIyODQRH+eNP8pMzPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.194.254.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpgz7t1750755414tdc053a77
-X-QQ-Originating-IP: Jix17jil7KHpbmzTpYumfJ4YKxtyb10ZR7lsQr2uxkc=
-Received: from lap-jiawenwu.trustnetic.com ( [60.186.80.242])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 24 Jun 2025 16:56:52 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 3746311101423383304
-EX-QQ-RecipientCnt: 11
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: mengyuanlou@net-swift.com,
-	duanqiangwen@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 2/3] net: wangxun: revert the adjustment of the IRQ vector sequence
-Date: Tue, 24 Jun 2025 16:56:33 +0800
-Message-Id: <20250624085634.14372-3-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20250624085634.14372-1-jiawenwu@trustnetic.com>
-References: <20250624085634.14372-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1750755751; c=relaxed/simple;
+	bh=JP89Vj/TbeY6UC2SgI40l+r8YLLxMD0iD9JJ5lKeLaQ=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=BopGbiLeYo9Qovb97rLqQBhOS2RLgAN86/LTumcwud7bs+ngkVHTCxR5RsAbR8njmIlzXiQ9UXFrcVMXcAAIebtLUPvtgfQBr54yyfza9IrRPSGVB/F6H/qf+UPgbGPtVmyK+onWc5OWRyFtLJ3nsVEUSDiVMpDYPmDc2GEiD1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LRdDA8vD; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LRdDA8vD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750755749;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qlOdlXhfpJ2qnP2BlVlsaFgHtdVv+17pO3XA1MNaXFU=;
+	b=LRdDA8vDqLRaHKOkCs/iXcE9LiGOwFfHX11PlktcmGDy198e4OKsf/oUl3GHMgl78clwky
+	sIfFE9nQ06LLXBTLIRDmG6HmTtZnnmrCLywlOk8Ytz2Yli68Ru5CLvboNwW9txi/dqFT4o
+	Rl0PYc641/gIVCbeqYei7xjlShKS4Os=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-psbfh304N8yHCFiaoILq0w-1; Tue,
+ 24 Jun 2025 05:02:22 -0400
+X-MC-Unique: psbfh304N8yHCFiaoILq0w-1
+X-Mimecast-MFC-AGG-ID: psbfh304N8yHCFiaoILq0w_1750755739
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DC1561956046;
+	Tue, 24 Jun 2025 09:02:13 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.81])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6E92618046C4;
+	Tue, 24 Jun 2025 09:02:07 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <aFlaxwpKChYXFf8A@infradead.org>
+References: <aFlaxwpKChYXFf8A@infradead.org> <2135907.1747061490@warthog.procyon.org.uk> <1069540.1746202908@warthog.procyon.org.uk> <165f5d5b-34f2-40de-b0ec-8c1ca36babe8@lunn.ch> <0aa1b4a2-47b2-40a4-ae14-ce2dd457a1f7@lunn.ch> <1015189.1746187621@warthog.procyon.org.uk> <1021352.1746193306@warthog.procyon.org.uk> <1098395.1750675858@warthog.procyon.org.uk>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: dhowells@redhat.com, Andrew Lunn <andrew@lunn.ch>,
+    Eric Dumazet <edumazet@google.com>,
+    "David S. Miller" <davem@davemloft.net>,
+    Jakub Kicinski <kuba@kernel.org>,
+    David Hildenbrand <david@redhat.com>,
+    John Hubbard <jhubbard@nvidia.com>,
+    Mina Almasry <almasrymina@google.com>, willy@infradead.org,
+    Christian Brauner <brauner@kernel.org>,
+    Al Viro <viro@zeniv.linux.org.uk>, netdev@vger.kernel.org,
+    linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+    Logan Gunthorpe <logang@deltatee.com>,
+    Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: How to handle P2P DMA with only {physaddr,len} in bio_vec?
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: OM0iiw2VivNHFySH9DvUUCFnqFRjfg6qrj+2jF65pMYpVFsHczsisLpb
-	ocNBddKq7OVhwfgT3xOEOVpBZQT9sN4luo1rzHsjEZmOUrk582z3UJGefxe9R4Vu6N7Nux7
-	B7N2+HtzP9Ljey3DtjMQMvgzIPEmlmdAGo2B99n0VXk59OLtAUgSgpYgE35o2aafV4mu7lQ
-	kLlXctKuuaytXE39RPROYmsqAqIaxbHEm67WDqfQ2nV6ThoWNYxUu5mJ9+4ructfG4c6oHl
-	snkQdxDfD35Zgp6oTL8yTitISI01f701/voIcGd11Skn3zcapw9XPQudNDjUGhzCYIwPykg
-	30i6y99d7FvccOeXdXSrjZ6xlPaVtiy/cwFB3BB4sJeYY/CPEvjcGR1ipwkAnBKU69QyhzW
-	YbVk0m5V4bnjUmsz9+vObq8WETpjsicOBIw7bRGq8LaGnyO80Sl8QOeNXWC1S7WEY7r8pva
-	TMq0Y/qm9hKtupFYmrQAr13Pk6sg/hIyEzriTOUTPn/ifLYOrVvxl1d4nEYIKuPlQyFqrEK
-	rAq6FroaGynySbAHw5GG4OZChYpImza6tXHURToIfTlruW9UEVqiH3EcuHCBhT1swhN6PRH
-	29IvwSMOYoJLoLyk6RTbjfn9XIcKKP/jbbYLdRy2aaPg/lDQjuWxmRhxDJAQbG/cbKP0v0S
-	2+pYXXIo1nZ0DZXYx4oUjizXMXPoOn/04mHD9UqQKryyH9dY3gPUrvHxO83/nzhpobtzdz6
-	1PkWRsdldtAeeyO06Hb/UXnR1Xhn8up8zy4dHtKDm1K/pZ0ZQSs8e3Ivv1pU7pGf8y1GbFl
-	uJgWXDaYjSMhWbc8YEEE2WRvXkQ/ryAP/PdkWZQtZAzSuU3G4ZSqBc48uRaA28JgBWiTmaw
-	mO3PDLoli7xM9rlZH4BDHFeNNds7kKz3cpUQpt93ms25xGhwyfPd5OmM0BgWfT3/AS8CUtg
-	pcM1HVP9127Q44gsoXMzK20zxiC5U8NE4mtMm1smf+8lR1c45syIl7jD23ztyIG9ldYTzkJ
-	fUi8EVk1Jh5drFwmgwGiGXI7E4vaU3R2Ub8Te1JoJPk1Bo4RTVJ5b/JzxndFP7d0ItN99Qm
-	a9xrG0lLSoo
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1143686.1750755725.1@warthog.procyon.org.uk>
+Date: Tue, 24 Jun 2025 10:02:05 +0100
+Message-ID: <1143687.1750755725@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Due to hardware limitations of NGBE, queue IRQs can only be requested
-on vector 0 to 7. When the number of queues is set to the maximum 8,
-the PCI IRQ vectors are allocated from 0 to 8. The vector 0 is used by
-MISC interrupt, and althrough the vector 8 is used by queue interrupt,
-it is unable to receive packets. This will cause some packets to be
-dropped when RSS is enabled and they are assigned to queue 8.
+Christoph Hellwig <hch@infradead.org> wrote:
 
-So revert the adjustment of the MISC IRQ location, to make it be the
-last one in IRQ vectors.
+> On Mon, Jun 23, 2025 at 11:50:58AM +0100, David Howells wrote:
+> > What's the best way to manage this without having to go back to the page
+> > struct for every DMA mapping we want to make?
+> 
+> There isn't a very easy way.  Also because if you actually need to do
+> peer to peer transfers, you right now absolutely need the page to find
+> the pgmap that has the information on how to perform the peer to peer
+> transfer.
 
-Fixes: 937d46ecc5f9 ("net: wangxun: add ethtool_ops for channel number")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_lib.c     | 17 ++++++++---------
- drivers/net/ethernet/wangxun/libwx/wx_type.h    |  2 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c   |  2 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_type.h   |  2 +-
- drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c  |  6 +++---
- drivers/net/ethernet/wangxun/txgbe/txgbe_type.h |  4 ++--
- 6 files changed, 16 insertions(+), 17 deletions(-)
+Are you expecting P2P to become particularly common?  Because page struct
+lookups will become more expensive because we'll have to do type checking and
+Willy may eventually move them from a fixed array into a maple tree - so if we
+can record the P2P flag in the bio_vec, it would help speed up the "not P2P"
+case.
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index 7f2e6cddfeb1..66eaf5446115 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -1746,7 +1746,7 @@ static void wx_set_num_queues(struct wx *wx)
-  */
- static int wx_acquire_msix_vectors(struct wx *wx)
- {
--	struct irq_affinity affd = { .pre_vectors = 1 };
-+	struct irq_affinity affd = { .post_vectors = 1 };
- 	int nvecs, i;
- 
- 	/* We start by asking for one vector per queue pair */
-@@ -1783,16 +1783,17 @@ static int wx_acquire_msix_vectors(struct wx *wx)
- 		return nvecs;
- 	}
- 
--	wx->msix_entry->entry = 0;
--	wx->msix_entry->vector = pci_irq_vector(wx->pdev, 0);
- 	nvecs -= 1;
- 	for (i = 0; i < nvecs; i++) {
- 		wx->msix_q_entries[i].entry = i;
--		wx->msix_q_entries[i].vector = pci_irq_vector(wx->pdev, i + 1);
-+		wx->msix_q_entries[i].vector = pci_irq_vector(wx->pdev, i);
- 	}
- 
- 	wx->num_q_vectors = nvecs;
- 
-+	wx->msix_entry->entry = nvecs;
-+	wx->msix_entry->vector = pci_irq_vector(wx->pdev, nvecs);
-+
- 	return 0;
- }
- 
-@@ -2299,8 +2300,6 @@ static void wx_set_ivar(struct wx *wx, s8 direction,
- 		wr32(wx, WX_PX_MISC_IVAR, ivar);
- 	} else {
- 		/* tx or rx causes */
--		if (!(wx->mac.type == wx_mac_em && wx->num_vfs == 7))
--			msix_vector += 1; /* offset for queue vectors */
- 		msix_vector |= WX_PX_IVAR_ALLOC_VAL;
- 		index = ((16 * (queue & 1)) + (8 * direction));
- 		ivar = rd32(wx, WX_PX_IVAR(queue >> 1));
-@@ -2339,7 +2338,7 @@ void wx_write_eitr(struct wx_q_vector *q_vector)
- 
- 	itr_reg |= WX_PX_ITR_CNT_WDIS;
- 
--	wr32(wx, WX_PX_ITR(v_idx + 1), itr_reg);
-+	wr32(wx, WX_PX_ITR(v_idx), itr_reg);
- }
- 
- /**
-@@ -2392,9 +2391,9 @@ void wx_configure_vectors(struct wx *wx)
- 		wx_write_eitr(q_vector);
- 	}
- 
--	wx_set_ivar(wx, -1, 0, 0);
-+	wx_set_ivar(wx, -1, 0, v_idx);
- 	if (pdev->msix_enabled)
--		wr32(wx, WX_PX_ITR(0), 1950);
-+		wr32(wx, WX_PX_ITR(v_idx), 1950);
- }
- EXPORT_SYMBOL(wx_configure_vectors);
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 7730c9fc3e02..d392394791b3 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1343,7 +1343,7 @@ struct wx {
- };
- 
- #define WX_INTR_ALL (~0ULL)
--#define WX_INTR_Q(i) BIT((i) + 1)
-+#define WX_INTR_Q(i) BIT((i))
- 
- /* register operations */
- #define wr32(a, reg, value)	writel((value), ((a)->hw_addr + (reg)))
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index b5022c49dc5e..68415a7ef12f 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -161,7 +161,7 @@ static void ngbe_irq_enable(struct wx *wx, bool queues)
- 	if (queues)
- 		wx_intr_enable(wx, NGBE_INTR_ALL);
- 	else
--		wx_intr_enable(wx, NGBE_INTR_MISC);
-+		wx_intr_enable(wx, NGBE_INTR_MISC(wx));
- }
- 
- /**
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-index bb74263f0498..6eca6de475f7 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-@@ -87,7 +87,7 @@
- #define NGBE_PX_MISC_IC_TIMESYNC		BIT(11) /* time sync */
- 
- #define NGBE_INTR_ALL				0x1FF
--#define NGBE_INTR_MISC				BIT(0)
-+#define NGBE_INTR_MISC(A)			BIT((A)->num_q_vectors)
- 
- #define NGBE_PHY_CONFIG(reg_offset)		(0x14000 + ((reg_offset) * 4))
- #define NGBE_CFG_LAN_SPEED			0x14440
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-index dc468053bdf8..3885283681ec 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-@@ -31,7 +31,7 @@ void txgbe_irq_enable(struct wx *wx, bool queues)
- 	wr32(wx, WX_PX_MISC_IEN, misc_ien);
- 
- 	/* unmask interrupt */
--	wx_intr_enable(wx, TXGBE_INTR_MISC);
-+	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
- 	if (queues)
- 		wx_intr_enable(wx, TXGBE_INTR_QALL(wx));
- }
-@@ -131,7 +131,7 @@ static irqreturn_t txgbe_misc_irq_handle(int irq, void *data)
- 		txgbe->eicr = eicr;
- 		if (eicr & TXGBE_PX_MISC_IC_VF_MBOX) {
- 			wx_msg_task(txgbe->wx);
--			wx_intr_enable(wx, TXGBE_INTR_MISC);
-+			wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
- 		}
- 		return IRQ_WAKE_THREAD;
- 	}
-@@ -183,7 +183,7 @@ static irqreturn_t txgbe_misc_irq_thread_fn(int irq, void *data)
- 		nhandled++;
- 	}
- 
--	wx_intr_enable(wx, TXGBE_INTR_MISC);
-+	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
- 	return (nhandled > 0 ? IRQ_HANDLED : IRQ_NONE);
- }
- 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index 42ec815159e8..41915d7dd372 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -302,8 +302,8 @@ struct txgbe_fdir_filter {
- #define TXGBE_DEFAULT_RX_WORK           128
- #endif
- 
--#define TXGBE_INTR_MISC       BIT(0)
--#define TXGBE_INTR_QALL(A)    GENMASK((A)->num_q_vectors, 1)
-+#define TXGBE_INTR_MISC(A)    BIT((A)->num_q_vectors)
-+#define TXGBE_INTR_QALL(A)    (TXGBE_INTR_MISC(A) - 1)
- 
- #define TXGBE_MAX_EITR        GENMASK(11, 3)
- 
--- 
-2.48.1
+> > Do we need to have
+> > iov_extract_user_pages() note this in the bio_vec?
+> > 
+> > 	struct bio_vec {
+> > 		physaddr_t	bv_base_addr;	/* 64-bits */
+> > 		size_t		bv_len:56;	/* Maybe just u32 */
+> > 		bool		p2pdma:1;	/* Region is involved in P2P */
+> > 		unsigned int	spare:7;
+> > 	};
+> 
+> Having a flag in the bio_vec might be a way to shortcut the P2P or not
+> decision a bit.  The downside is that without the flag, the bio_vec
+> in the brave new page-less world would actually just be:
+> 
+> 	struct bio_vec {
+> 		phys_addr_t	bv_phys;
+> 		u32		bv_len;
+> 	} __packed;
+> 
+> i.e. adding any more information would actually increase the size from
+> 12 bytes to 16 bytes for the usualy 64-bit phys_addr_t setups, and thus
+> undo all the memory savings that this move would provide.
+
+Do we actually need 32 bits for bv_len, especially given that MAX_RW_COUNT is
+capped at a bit less than 2GiB?  Could we, say, do:
+
+ 	struct bio_vec {
+ 		phys_addr_t	bv_phys;
+ 		u32		bv_len:31;
+		u32		bv_use_p2p:1;
+ 	} __packed;
+
+And rather than storing the how-to-do-P2P info in the page struct, does it
+make sense to hold it separately, keyed on bv_phys?
+
+Also, is it possible for the networking stack, say, to trivially map the P2P
+memory in order to checksum it?  I presume bv_phys in that case would point to
+a mapping of device memory?
+
+Thanks,
+David
 
