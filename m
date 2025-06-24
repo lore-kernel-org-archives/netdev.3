@@ -1,106 +1,146 @@
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DBF25B67E;
-	Tue, 24 Jun 2025 08:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEE72586CA
+	for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 08:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750753964; cv=none; b=TQUfX3NZ9FCJ87ttVsA8EXzmjYJWXBJMVOl1/u4DqCZuDccqr1o7C1A0sQaDjbj9nfJwckQE5JD9LQ3nzciBUawB7hxGqf8ek6P3nhGXVSQCSfGkTxCbSjmKRJIzwXFyoDWkliifsqrXSjbWe1p8iKgguzNg6Wyz+HiczfUlajk=
+	t=1750754380; cv=none; b=gB8QXmfVUZHjaD9N+uuLGXI5htxY54eT7ixebYbu+GB8wJUHC1csDd0vcbtlVYTSX1hZaQBOKmNjsBAAJgrnwKq3v6zhOv4Im9vmDXgmRIKEaZ+pCZf/J0V1m4JaQp7lToQrBxCpSKzOnXOEL6F/O+rX/YqXh1BgxUsGEngTPkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750753964; c=relaxed/simple;
-	bh=IP9zZ6vX1r03ltWl8w9ViI+/XIllLTAlSCc4K5E75r8=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=fW6C5WTHgx1JVsRSyvw3nyG641+Av2heJ1HNMJlETCD15QK+GBDVNDKs4Wq+vrADqrOf/lvBtSm7owuXYqNJoEdHe0W4aLAslKgnCf+0yNO5XLlbtKY6/0OEOLF0gpdzCtOd4/P6yux49ufsg7uQ41l/5ojVk14LdjrWfzBx/P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=gngyiwTB; arc=none smtp.client-ip=115.124.30.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1750754380; c=relaxed/simple;
+	bh=DVsCUdKVYcsFTKatDm5synRnxfD9Fb+XLA6NRENVAIQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r5y5/ncZk586jEO6Ek9NYW5mb6nV/tdQLORdasqLqa0d1a89hRvHtPiNND5vHXsnlThMjAzEuiWo5wHiFfy8fVUR18s8TMc8XSqA/jQxsefpMe+oNApz7bcKz2yqyOHZJ7CbzCDJsxHM8+O2xQ8juo3rFxO44HZk4oSQXd2psiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b8p6f8aX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="gngyiwTB"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1750753953; h=Message-ID:Subject:Date:From:To;
-	bh=xto8ohKa0ryNBVBrFTAZ50J9YmnkUMJE78zO1Eob+DM=;
-	b=gngyiwTB5wl/4ql3qUvMypZMauRuizllboob2BX57Qp1w+UpUZLzVz/fVm4PcPL4yt3P48jIe7dxgEV/GisbBuXZ3Yk4RQciJkSUf0C4oPCUeTyDmPpWD9agWctx8XxnNqJLo2HkqHPk6etNFmpfKI+VyPzcybtwOHhrnk4Co8E=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WegCBpn_1750753630 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 24 Jun 2025 16:27:11 +0800
-Message-ID: <1750753624.9023402-5-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net v2 2/2] virtio-net: xsk: rx: move the xdp->data adjustment to buf_to_xdp()
-Date: Tue, 24 Jun 2025 16:27:04 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org,
- Bui Quang Minh <minhquangbui99@gmail.com>,
- netdev@vger.kernel.org
-References: <20250621144952.32469-1-minhquangbui99@gmail.com>
- <20250621144952.32469-3-minhquangbui99@gmail.com>
-In-Reply-To: <20250621144952.32469-3-minhquangbui99@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b8p6f8aX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750754376;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=onzA+wcTvsJpzeYf5prB/BcDYizuukYIYq67f2ch1FM=;
+	b=b8p6f8aXzWbAgdBgadtXEYfBiXmBXrIZpbm5pfejeZXOpJFYHaRQNDRqx04xflO2A0LrlP
+	cX41RFi/RigBcllOf5u6aOnU4IsVL0i3RxS6u0ZWhfJAjMd9vhT0qmMp5q+LKDrMxAS84U
+	CWX3M6gwVj3cEwmCkk/sYzISLPQWm6Q=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-57-ZGkPe6OkP0GGOuxJbUf2Xg-1; Tue, 24 Jun 2025 04:39:35 -0400
+X-MC-Unique: ZGkPe6OkP0GGOuxJbUf2Xg-1
+X-Mimecast-MFC-AGG-ID: ZGkPe6OkP0GGOuxJbUf2Xg_1750754374
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3a4eb6fcd88so2506918f8f.1
+        for <netdev@vger.kernel.org>; Tue, 24 Jun 2025 01:39:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750754374; x=1751359174;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=onzA+wcTvsJpzeYf5prB/BcDYizuukYIYq67f2ch1FM=;
+        b=jCSuLt+bBhq2fBCpDEyX9GSGLZ3p36f05wl63YjczusPoXi2MTglBW+L/Mgibd5iBp
+         9kPA4UHeG1TzUkX0rNgryl2i++6QVNIqrs4tLqoOMzh2O9V1zahYODL92R1Cq+MXfazq
+         QixAVWRRtx1imGjSnrF3MohAuGe6gzy/dBnCqW8h45LZGBrAqL1m0Bh23r+f6VPaqZii
+         tb+/m+6zwEi5T1cUqGsK18NwmPGGUV7+8ZAyRMUgWE208jZDaV6MJlx0l3zMNebh4tWy
+         Z0LVDJQ3VxDB7Jb7S7QyXTbLn9+/u0MjxSnOp288TmoDoNluXwmhGP5vZVZCjQ/c+3Ka
+         UvEg==
+X-Forwarded-Encrypted: i=1; AJvYcCVpcgsvlM/4pd4HJz8Wh8O/C2osz19ZtEomdQOu8jQBFc7Q5bd3qrP1tlk+w3SRSU8wSZVUoao=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkgPMeUnl8RevNrqziSoeaNzg3mMYDbn6BzbSbfCqtIAHZs3Iz
+	HqRkgu30XamH5WYGGOLX9sCY81iZn9nR7UoB70/jI5w0X9HABOHpqQoEOzx7hL3pWA3CAHFU/KA
+	BvffeGVAt0bUcSByFkmBxvhtOJSKcENmEZC8a5J1pyx468zJcYFzMgI9+EA==
+X-Gm-Gg: ASbGncs3QxaESP0Z6iEZhwBKeSdZt60N3dv3PTU6BKmPnsNQEDkgPLHsX5ACppkJIKx
+	x0DMyEiOxxs2/jAx/nsk9tO69oj49OPAJbOHGdR6hPUSxEHx6Olqitsu4cCpMrNqHHAILS15n6o
+	ebgFVWyUAzlOeTpUTP1OVxFFRRjo1nt6E8w2g/8wTPDSryjzDaCZNtZjtRn5T3AKu8rpanaTqnX
+	3uSAPLdnEIUJOqOxKg0kKvKOEK/En30VStu9J9BWwHSAVywF78wTQ38Y6ReUjXs642/93soXRRq
+	aGxCGbzqDuPeb8gm8TjTrNH27lNNtg==
+X-Received: by 2002:a05:6000:220e:b0:3a4:fb7e:5fa6 with SMTP id ffacd0b85a97d-3a6d128a495mr12354814f8f.1.1750754373873;
+        Tue, 24 Jun 2025 01:39:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEXACAuieXnf1ff0n3aChzXI+RXODXJppEWVes06kAMCgYriTZilclAie3vgKCk9utLq6WSPw==
+X-Received: by 2002:a05:6000:220e:b0:3a4:fb7e:5fa6 with SMTP id ffacd0b85a97d-3a6d128a495mr12354781f8f.1.1750754373434;
+        Tue, 24 Jun 2025 01:39:33 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2445:d510::f39? ([2a0d:3344:2445:d510::f39])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e810977esm1319156f8f.83.2025.06.24.01.39.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Jun 2025 01:39:33 -0700 (PDT)
+Message-ID: <8d5c6585-bc49-498d-9bb9-91d02e8e793f@redhat.com>
+Date: Tue, 24 Jun 2025 10:39:31 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v1 1/1] phy: micrel: add Signal Quality Indicator
+ (SQI) support for KSZ9477 switch PHYs
+To: Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org
+References: <20250619133437.1373087-1-o.rempel@pengutronix.de>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250619133437.1373087-1-o.rempel@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, 21 Jun 2025 21:49:52 +0700, Bui Quang Minh <minhquangbui99@gmail.com> wrote:
-> This commit does not do any functional changes. It moves xdp->data
-> adjustment for buffer other than first buffer to buf_to_xdp() helper so
-> that the xdp_buff adjustment does not scatter over different functions.
->
-> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-
+On 6/19/25 3:34 PM, Oleksij Rempel wrote:
+> The KSZ9477 family of switch chips integrates PHYs that support a
+> Signal Quality Indicator (SQI) feature. This feature provides a
+> relative measure of receive signal quality, which approximates the
+> signal-to-noise ratio and can help detect degraded cabling or
+> noisy environments.
+> 
+> This commit implements the .get_sqi callback for these embedded PHYs
+> in the Micrel PHY driver. It uses the MMD PMA/PMD device registers
+> (0x01, 0xAC–0xAF) to read raw SQI values from each channel.
+> 
+> According to the KSZ9477S datasheet (DS00002392C), section 4.1.11:
+>   - SQI registers update every 2 µs.
+>   - Readings can vary significantly even in stable conditions.
+>   - Averaging 30–50 samples is recommended for reliable results.
+> 
+> The implementation:
+>   - Averages 40 samples per channel, with 3 µs delay between reads.
+>   - Polls only channel A for 100BASE-TX links.
+>   - Polls all four channels (A–D) for 1000BASE-T links.
+>   - Returns the *worst* quality (highest raw SQI), inverted to match
+>     the Linux convention where higher SQI indicates better signal quality.
+> 
+> Since there is no direct MDIO access to the PHYs, communication occurs
+> via SPI, I2C, or MDIO interfaces with the switch core, which then provides
+> an emulated MDIO bus to the integrated PHYs. Due to this level of
+> indirection, and the number of reads required for stable SQI sampling,
+> read latency becomes noticeable.
+> 
+> For example, on an i.MX8MP platform with a KSZ9893R switch connected
+> via SPI, invoking `ethtool` to read the link status takes approximately
+> 200 ms when SQI support is enabled.
+> 
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  drivers/net/virtio_net.c | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index 1eb237cd5d0b..4e942ea1bfa3 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -1159,7 +1159,19 @@ static struct xdp_buff *buf_to_xdp(struct virtnet_info *vi,
->  		return NULL;
->  	}
->
-> -	xsk_buff_set_size(xdp, len);
-> +	if (first_buf) {
-> +		xsk_buff_set_size(xdp, len);
-> +	} else {
-> +		/* This is the same as xsk_buff_set_size but with the adjusted
-> +		 * xdp->data.
-> +		 */
-> +		xdp->data = xdp->data_hard_start + XDP_PACKET_HEADROOM;
-> +		xdp->data -= vi->hdr_len;
-> +		xdp->data_meta = xdp->data;
-> +		xdp->data_end = xdp->data + len;
-> +		xdp->flags = 0;
-> +	}
-> +
->  	xsk_buff_dma_sync_for_cpu(xdp);
->
->  	return xdp;
-> @@ -1284,7 +1296,7 @@ static int xsk_append_merge_buffer(struct virtnet_info *vi,
->  			goto err;
->  		}
->
-> -		memcpy(buf, xdp->data - vi->hdr_len, len);
-> +		memcpy(buf, xdp->data, len);
->
->  		xsk_buff_free(xdp);
->
-> --
-> 2.43.0
->
+> 
+> This commit currently focuses on single-channel SQI support due to
+> budget constraints that prevent immediate extension of the SQI API for
+> full multichannel functionality. Despite this limitation, the feature
+> still significantly improves diagnostic capabilities for users, and I
+> intend to upstream it in its current form.
+
+AFAICS the commit message reflects the 'wannabe'/future implementation
+and not the actual one included into this patch.
+
+I think you should reword the commit message, describing the current
+implementation.
+
+Also it looks like the SQI value is not inverted, I'm unsure if you
+should update the commit message accordingly or actually do the invert
+in the code.
+
+Thanks,
+
+Paolo
+
