@@ -1,205 +1,147 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4622652AF;
-	Wed, 25 Jun 2025 15:24:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8071E1C3F
+	for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 15:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750865099; cv=none; b=QOs8W+WnlRvGmkxwdmjfYOLSQegGuGa21PHjnwG+rasXFUpxjwvEEWerZi1dcC8anJYibEcC6FWF6szlW1jHdcdg+k6AqJXozPL+DERnIEencxR37pwxH5THbbteNIyONKfVzScoS1X8NnW85KpEHv2VHzcwxLXymWEwMSAUBxI=
+	t=1750865600; cv=none; b=SXII0D9XRc18AfO1RKwxrFBpdpol58bYWXaygGmYV3VbmHubOnpH9CKp4uz4G36QRyOb7GQHE2MTyGon4k/quinIGjrWAkoWtjI8AEHul/tZkMSxfEc+HGD5SQCd4D6JPpp/FRBFF5SVJBekn+Whst+LWOGrJ0S9BPe7VvoAvZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750865099; c=relaxed/simple;
-	bh=DVaxS9mTINZk0rvzzEi0zAW5HSrGIGK0lZqID2qLB+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IJl/J0oqp02ku7kSaciI0ircc3+vq5TsrQdF09naNgFOb7ew8h0oe5qvRM9SuAMsY3lm6o7+YvJub5SYHTLPNhNupWY5+mdCv8gqBtUF9khu1Y4XZhkA9zTlLa1wwugQ0K4ux2MsWAkVClOjxZQc4sguR7p1bmUozF2UtEROczQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I0NWswJX; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750865600; c=relaxed/simple;
+	bh=c8FSfguKABksIcExAHgtfoLmBGZaZ1ts3uapmjwMvAQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pSSd6l8xSism9Fp6nA/F9WxTcRBCoIh8HQaOfh8ARb25uJkvUm+JmFPFVv3h6FwWFPZL4pDbC72naha9Jg7RNOatqw7FmIHk2hy4jG22KcAAmSxxLUWyCxoLwGbl2y6sbveKlvqA/guI82GjFpEP8/HHX7OFrkOIG75QHVDGeHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=hukUymb6; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I0NWswJX"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4a589b7dd5fso1083111cf.0;
-        Wed, 25 Jun 2025 08:24:57 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="hukUymb6"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-23636167afeso143785ad.3
+        for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 08:33:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750865097; x=1751469897; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ST35E8pfOiK/1Yn/IFpq1998QsVUH66BaD6x0ib8XaU=;
-        b=I0NWswJXUZB8xE7M4Pd7Y4YF5zjuxGPDcRoK0h14U8urG+y7pb5nqN7MPIgwIySsdL
-         2mdsQMMuY0y9Dr2H//CHAnf1VgrbqiY2+A5H7mix2lGu1w+XtybqiXvo0zeJGMUO38g0
-         2FDJpVVxe8ZU2sfMuHWuBcA3WXDzsA35SxSJOWPc9xbsAchFvNk0R4gv5eCI2RrkVRqI
-         GMwDIcyKAUAXxq8e2UZNR7FvmNkdXbhERev4+ZFCCad/LmoWabe+P6SNkXGDFKy+IZ45
-         sNTyRZq5txJ8FR6xfTACzoP/sJCa8T1+E74usU+6x9KRi7fdNcg5I+G0+SuVTHfMzgzc
-         efQg==
+        d=broadcom.com; s=google; t=1750865598; x=1751470398; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=B3s1/vNdKwqKk8VSN6xQBK6wRzwuNkbzzDSegXDItxY=;
+        b=hukUymb6okcLnK+7L4pHtp9GfI0+G8gntIyxa2hTReo2REGPEmAVZIajSd/VcdZMA8
+         q41+B8J5EGLjHpVmsDcGdVKb/bvS5gZsRMT9PCDjYJJ3AgIiBU0DXJDvRrAaTQWHL34d
+         64gws/YDFMXjSv7q4zp0FlyGt8215F6WBaBx0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750865097; x=1751469897;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ST35E8pfOiK/1Yn/IFpq1998QsVUH66BaD6x0ib8XaU=;
-        b=hiuT8UQ6YtNxSyVBHekge0M/2FOLPmeH6ct6RsTLMp2wqMMuAhTW1VcDQGncr9mYDR
-         NJN3zdZoS5neSNhoCl4ZhF0YTwDYB67KIV9leiI/yaFNtSE+jSluAdhArsktPthuCBcq
-         wj6WXzwNU3N52OIRhhZFXSGw4wfMnDeDZvoTbAs4/YusEPiTCZGLGYl1Q2y+9vxE2DAz
-         uAAlxQlgJAVvGuVxKSp8mAADLtVOEIDGFlnQeMSpDQR3VasKvn2z7wS+kPm615t/omsu
-         NM26PPYX9UZYGztO293j1fQntSeh1S0qwtis+05CbE5nJhkpC54PLczD2vSFR6L8mhxa
-         4sIA==
-X-Forwarded-Encrypted: i=1; AJvYcCVmSuRaojIG3cHZ1bTEXpsBWag3W0CCbEtwXQ0MlWTp7EbyNHqwrQWZkjq40jSDWfHhVlDR@vger.kernel.org, AJvYcCVrcmXsN22ABUUVgsZVu8P+7SLrPaJEh0S6bJ4GP/u+cmQlPEmaGe/B203xaMLwbysm2mhCvdM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3zUgDSSll3BeUROzq26rG89aHCXnV+hQFi00lFJsLH2Ai772X
-	dKSK0YBKSMebSJyEzuM5c1VRMJ5tP0tZPVo2XunhP9dlIB00i2cygtDa
-X-Gm-Gg: ASbGncvKZDObVn5lZ4Kcn4MsHldC/MjO8kEAabMHC7lY6BCvQHzDmfk+JqZH6Vre/Zo
-	PY61LRhyjGTR3cSsufx59urWG9+DW3db97N6mzvI7L4gIo4YxVCkmksd0Xz22V2pK6FWBcGuUct
-	1eN35cTE/D3xTxOfPcvoZbm/W9rF4b6mwkXCFRlGXpoqjMcryWBOQp5JpeI9HGhkjcGCt5CGvAH
-	TtyvM9XZPnSWypGz6eEpPQbvLfPpR0hwuf5QSAuBL90hp++teD65SYI6nPrK95M5r53ARJJheSE
-	paQd1a++TpBB5A3Ofkl8bnA2ooSVsQKI1CTel7NT0AVI0UquVMlwvRu2y7yjOAH1WOyKqDoqFPH
-	jHt9xMeZ//bX3q6vYj7kU2NYar32P/fHXPHjOKFA++zcCF1Ru4Mmi
-X-Google-Smtp-Source: AGHT+IHSHF4por84O5ihD13mbCVJ7lpg+HRk5vsTlb5fCqjI7ut2qlgYqwNXArOEw1tTdM6stSMZ5A==
-X-Received: by 2002:ac8:5894:0:b0:4a4:4103:f301 with SMTP id d75a77b69052e-4a7c0238ac5mr57115501cf.0.1750865096376;
-        Wed, 25 Jun 2025 08:24:56 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3f99fbe06sm617917785a.94.2025.06.25.08.24.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 08:24:55 -0700 (PDT)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5313EF40066;
-	Wed, 25 Jun 2025 11:24:55 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Wed, 25 Jun 2025 11:24:55 -0400
-X-ME-Sender: <xms:xxRcaIp0-3z8Y82Uxt2hVCZV8kIa1hAGuObc1oIZ1qXg6d_bgmERrg>
-    <xme:xxRcaOq28oQPCOkPkxmycqOcEJpMG11hbwxIbqKkNmtPa6__qxPDueYPehkWMRG-h
-    tLCuWUQn5O7MsURqQ>
-X-ME-Received: <xmr:xxRcaNN1xi6iCfXozA66TncMfc37ecEv-3kURRDbr1QAlfUmdLucsgfW2w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvfeduvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpedtgeehleevffdujeffgedvlefghffhleekieeifeegveetjedvgeevueffieeh
-    hfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepvdeipdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopehfrhgvuggvrhhitgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
-    hugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgt
-    uhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlkhhmmheslhhishhtsh
-    drlhhinhhugidruggvvhdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdr
-    ohhrghdprhgtphhtthhopehmihhnghhosehkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    ifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhonhhgmhgrnhesrhgvughh
-    rghtrdgtohhmpdhrtghpthhtohepuggrvhgvsehsthhgohhlrggsshdrnhgvth
-X-ME-Proxy: <xmx:xxRcaP4owxUiMUd1ZE-tIHcSRGwqSDial2gl1MrTtL-Jglnlq6xhBA>
-    <xmx:xxRcaH5sWOVDw1NtamZwNzNWwSSVM8VfQdQt4h6T5WIcY4Zj0KWmIA>
-    <xmx:xxRcaPgBLuEEfc09Q2iiwixCj4ufuP0YgnsrM_0n3-uKpzyiIV5SCA>
-    <xmx:xxRcaB44mYkmJRvK5tl0T_uAVso9nWdY53Z3D2XoB-dwvhzb0DMU8g>
-    <xmx:xxRcaKKlAAdPhdSHMinHEPHnUnZd7R9n-wzF9ZMBySHaqyhUGGWfu-3n>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 25 Jun 2025 11:24:54 -0400 (EDT)
-Date: Wed, 25 Jun 2025 08:24:53 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rcu@vger.kernel.org, lkmm@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>, Breno Leitao <leitao@debian.org>,
-	aeh@meta.com, netdev@vger.kernel.org, edumazet@google.com,
-	jhs@mojatatu.com, kernel-team@meta.com,
-	Erik Lundgren <elundgren@meta.com>
-Subject: Re: [PATCH 4/8] shazptr: Avoid synchronize_shaptr() busy waiting
-Message-ID: <aFwUxblhRjh24JF1@Mac.home>
-References: <20250625031101.12555-1-boqun.feng@gmail.com>
- <20250625031101.12555-5-boqun.feng@gmail.com>
- <aFv_9f9w_HdTj9Xj@localhost.localdomain>
+        d=1e100.net; s=20230601; t=1750865598; x=1751470398;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B3s1/vNdKwqKk8VSN6xQBK6wRzwuNkbzzDSegXDItxY=;
+        b=DQFkvSoVvYSL8o7vHhyNlXjfJ3OBRVXDclHzDPYwPKZWD3NUel2MAzZHgSjObjarsq
+         Dv6lVwsGfs7g4446xkSlYWjzLaKZR/Ezb1Bx5CTyHJAePUUAeVnQ1pNhom3XzcdCnC8p
+         0NWod9p2ZrcoRr48Z8f0jX7+UVSiMcy2Bg0AmHTZi3KJkpoV/IgWUrfPslxEItABDD20
+         rYWX5lmd59DVsiQCFfJif32BC5ZSLqT+LTVclYfwF/iKbBS67u3ydLYoQUeMehq00thM
+         eUVqCnTMEdwMSUqAn7FsRJWkn3NpWMBi144Cvw9ZRURRR0RpWq9d8Ey0X4IpRquMPlTl
+         bbUw==
+X-Gm-Message-State: AOJu0YzZYHYxmYUtMCxDrhgacbD9aFJHJyaD/hergIZdk9sXzOvAu9IU
+	rHvc6b8RPLtqGh7sjYDDr2dfGQME5lqJ3yGZhprnNdvwmoQ9MG9WO0VGIDlCCQP8DVLpl60Qa43
+	/wP47dw==
+X-Gm-Gg: ASbGncvlEuCkY4IcjIfN54bZ0VStKFdvKeg8NWfOvn/dHXwJQCGCQsueg8s3nQ8Pdow
+	Ld4Ruy9VrVJusTEfI5PCoRlW5e5lnfppuRT6OE+Uk6MxD6JIkUakoKENrk74LNqyb0p9f3CU6b+
+	EWuL1kBhE+kwyVNVxhDN69yuUD4hVLifmN3YPGllMNTZkofeMdQgloGsqhna8FN6rjTc+VkUutM
+	Jio1cUbjzXbfIW/M7ArPiSdNELcf9M170xQnCueYjijmlBNGS1aV+8dOkoWwfp2X8wuJiuGTYJx
+	zxL6DxdSu8ANhTPH3WJaw7qRe/boPBgX4qVF0BkOedbRcOMzg5Atd3jkJcioeSGbOHdxoANCiQ/
+	fEl2iHm/Eee4/EiC317EVywApE3EtGkrFjLzM
+X-Google-Smtp-Source: AGHT+IE6utduW+535yEDioFqrmKeyfIowaXtoHnhSNqF69KT4DRMAW5+oa67HG2s7FBAglWod2kbzg==
+X-Received: by 2002:a17:903:2a8e:b0:234:dd3f:80fd with SMTP id d9443c01a7336-23823f88a80mr69721385ad.2.1750865598550;
+        Wed, 25 Jun 2025 08:33:18 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d86103c1sm134739815ad.105.2025.06.25.08.33.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Jun 2025 08:33:17 -0700 (PDT)
+Message-ID: <e29788cb-1817-4168-b058-5d02332f03a8@broadcom.com>
+Date: Wed, 25 Jun 2025 08:33:16 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: Supporting SGMII to 100BaseFX SFP modules, with broadcom PHYs
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+ "Russell King (Oracle)" <linux@armlinux.org.uk>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, =?UTF-8?Q?Marek_Beh=C3=BAn?=
+ <kabel@kernel.org>, Robert Hancock <robert.hancock@calian.com>,
+ Tao Ren <rentao.bupt@gmail.com>
+References: <20250624233922.45089b95@fedora.home>
+ <24146e10-5e9c-42f5-9bbe-fe69ddb01d95@broadcom.com>
+ <20250625091506.051a8723@fedora.home>
+Content-Language: en-US
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <20250625091506.051a8723@fedora.home>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aFv_9f9w_HdTj9Xj@localhost.localdomain>
 
-On Wed, Jun 25, 2025 at 03:56:05PM +0200, Frederic Weisbecker wrote:
-> Le Tue, Jun 24, 2025 at 08:10:57PM -0700, Boqun Feng a écrit :
-> > +static void synchronize_shazptr_normal(void *ptr)
-> > +{
-> > +	int cpu;
-> > +	unsigned long blocking_grp_mask = 0;
-> > +
-> > +	smp_mb(); /* Synchronize with the smp_mb() in shazptr_acquire(). */
-> > +
-> > +	for_each_possible_cpu(cpu) {
-> > +		void **slot = per_cpu_ptr(&shazptr_slots, cpu);
-> > +		void *val;
-> > +
-> > +		/* Pair with smp_store_release() in shazptr_clear(). */
-> > +		val = smp_load_acquire(slot);
-> > +
-> > +		if (val == ptr || val == SHAZPTR_WILDCARD)
-> > +			blocking_grp_mask |= 1UL << (cpu / shazptr_scan.cpu_grp_size);
-> > +	}
-> > +
-> > +	/* Found blocking slots, prepare to wait. */
-> > +	if (blocking_grp_mask) {
+On 6/25/25 00:15, Maxime Chevallier wrote:
+> Hi again Florian,
 > 
-> synchronize_rcu() here would be enough since all users have preemption disabled.
-> But I guess this defeats the performance purpose? (If so this might need a
-> comment somewhere).
+> On Tue, 24 Jun 2025 15:29:25 -0700
+> Florian Fainelli <florian.fainelli@broadcom.com> wrote:
 > 
-
-synchronize_shazptr_normal() cannot wait for a whole grace period,
-because the point of hazard pointers is to avoid waiting for unrelated
-readers.
-
-> I guess blocking_grp_mask is to avoid allocating a cpumask (again for
-> performance purpose? So I guess synchronize_shazptr_normal() has some perf
-
-If we are talking about {k,v}malloc allocation:
-synchronize_shazptr_normal() would mostly be used in cleanup/free path
-similar to synchronize_rcu(), therefor I would like to avoid "allocating
-memory to free memory".
-
-> expectations?)
+>> For 100BaseFX, the signal detection is configured in bit 5 of the shadow
+>> 0b01100 in the 0x1C register. You can use bcm_{read,write}_shadow() for
+>> that:
+>>
+>> 0 to use EN_10B/SD as CMOS/TTL signal detect (default)
+>> 1 to use SD_100FXÂ± as PECL signal detect
+>>
+>> You can use either copper or SGMII interface for 100BaseFX and that will
+>> be configured this way:
+>>
+>> - in register 0x1C, shadow 0b10 (1000Base-T/100Base-TX/10Base-T Spare
+>> Control 1), set bit 4 to 1 to enable 100BaseFX
+>>
+>> - disable auto-negotiation with register 0x00 = 0x2100
+>>
+>> - set register 0x18 to 0x430 (bit 10 -> normal mode, bits 5:4 control
+>> the edge rate. 0b00 -> 4ns, 0b01 -> 5ns, 0b10 -> 3ns, 0b11 -> 0ns. This
+>> is the auxiliary control register (MII_BCM54XX_AUXCTL_SHDWSEL_AUXCTL).
 > 
-> One possibility is to have the ptr contained in:
-> 
-> struct hazptr {
->        void *ptr;
->        struct cpumask scan_mask
-> };
-> 
+> And I have my first ping going through :) Thank you so much, if I get a
+> chance to meet you in person one day, drinks are on me :)
 
-You mean updaters passing a `struct hazptr *` into
-synchronize_shazptr_normal()? That may be a good idea, if multiple
-updaters can share the same `struct hazptr *`, we can add that later,
-but...
-
-> And then the caller could simply scan itself those remaining CPUs without
-> relying on the kthread.
-
-.. this is a bad idea, sure, we can always burn some CPU time to scan,
-but local optimization doesn't mean global optimization, if in the
-future, we have a lots of synchronize_shazptr_normal()s happening at
-the same time, the self busy-waiting scan would become problematic.
-
-Regards,
-Boqun
-
-> 
-> But I'm sure there are good reasons for now doing that :-)
-> 
-> Thanks.
-> 
-> -- 
-> Frederic Weisbecker
-> SUSE Labs
+OK, that's great news, looking forward to seeing patches, and I will 
+remember your offer :)
+-- 
+Florian
