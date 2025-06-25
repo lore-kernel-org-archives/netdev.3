@@ -1,153 +1,157 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878EE26B973
-	for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 08:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054FB27F18F;
+	Wed, 25 Jun 2025 08:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750841693; cv=none; b=k8crYazh1bcK047jcC576KyVVnIrIGlMWJDiS76msBsADszfGGs2qeJbJCGx7Ve+QNJg0WJrQf4EzHLQV9CM9ZE5prbrPsvuI4MCc0IrkgtdDJYequLicAFmxo9e7d4vzFDiHRIL/pbdY3+dPBJum7+OG6WxpMW6Dmh5+wV1RfI=
+	t=1750841857; cv=none; b=NSISRoSCIyJnRbzweNLYo42u7a7ikuR/E5R33E5yfOfuxVyce5lOzr+kSIxVgKVacOdrI/TLkzejXjAkZGlX/cTAE09ckBcmcDlMb1uJTjLkHH8up/aTIAjDy/IHcjwegL4i6ey9ft8VcIyMJ2T9H8Od3XyforNSmBzqOuxzipE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750841693; c=relaxed/simple;
-	bh=IMHNO1bT1El4HG2JXEHyLJZxCIu/EzODJnWdqZWBHw8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e9XQDliAc3RFSsiF/DPCow2Jo8HqeZp7Cmm0gF4GTjMDsP5zFXvhWH+yJW7tzN8nsoWwynd6F87llsXo571ew3Ym8As65cXwZWcD1U4YlpAe50FU1Um8aF76/2y87gIOW4DLWI6tHcCZ9AowCmt3yU5h9dbUESX4y62d324+wak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NoPCt0Lg; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1750841857; c=relaxed/simple;
+	bh=0QgB6O4O/sYU4iRucJ8iotwxezNS2MkmRTc3/U3q/9w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B+QuOWC26dQGwzDxme+03uaQwponS8676OQvErxW+umPdG6gKTN5lTFq+t/63qus3MkDYjAHUizopf4t/uPmVYvX36Nt9x7ktQPDHWDFsrnnBj3QNLv+0b7WQEVsAFuurIbW3mF0jMkCYnfTuG/TOpLMNNn+cZXt7bU5I3wogDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DW1bIPn8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NoPCt0Lg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750841690;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H7SojeMD2gps8cZo3IPHcE59cXnndpk0obLuxFCFG5c=;
-	b=NoPCt0Lga0/6jdflq+J4E/ccK04N95tVlCIgg2Wunq/V+T0wNAnqfCmFsVPT0TWc8iwhaz
-	EV5D8rHlenTxGe1IaSt4OEIN6I9Diwq+iOfqFVeSgOFY0GflqYgzUQcpMhySs/mTFQIHaD
-	fxMtiHxqaF0oJbsw4ScOPC44YxYHGoI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-413-ZJHRBYjdM4qTYx-bb8OAOg-1; Wed, 25 Jun 2025 04:54:48 -0400
-X-MC-Unique: ZJHRBYjdM4qTYx-bb8OAOg-1
-X-Mimecast-MFC-AGG-ID: ZJHRBYjdM4qTYx-bb8OAOg_1750841688
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45359bfe631so7127205e9.0
-        for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 01:54:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750841688; x=1751446488;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H7SojeMD2gps8cZo3IPHcE59cXnndpk0obLuxFCFG5c=;
-        b=nDRfqHwdMldXgeTMnWYSYDJkz6edwnIx3lc4Y5NQMw2jVtT0AkBUvDogjawRwjbwSE
-         OncJFGsm5FygHuMveSwRodUkww/n+T2Jaf8DZE6uTBNeVk1V39Fh54mfPVNnsGP/TwgG
-         yGe00fDTGl/HvgFzSTii2hI8N/IuGO9YZCobnRPf4dEM9wQlFGKLz55JtHMr5h6EgTuf
-         oKNgWZ7gM2twL5rE2X9tbguE+xIA/cSJB/1XqAeh1dou/S2nqMxvWdWgZj1Gq/ZJbZsh
-         7N7XiuTJZNzu+jLUNgmBza7xOkmBS+Qlxx4DC8ayhyR2xlamvCRpTE/85cgCfWF5wU7P
-         F48Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUVrWFVm+P3hcBC4orAoVHb8R1WlqDp6xh3e3a0TaTcLKmRutheWXI83wQUcd3NZUs7TR+1KwA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIGWHng4jYQ3i9k+GIw/rRVdGXORViwEe0BXLj2vwSfWokoFmy
-	W1sBEZ7nFN1RGgabYAjTSRV8ODJQz7cpQwCf2YnGQgNN4AtALqwJ1Qays2uI6ofM7UEjwbAwDAc
-	0B2Cpm6XBLWpHK9Q4B+cv9IHq6X6wnMMgmcYVfFg0RycLr7+VQj01XCCTBg==
-X-Gm-Gg: ASbGncu+uF1wn0OPyFMyHafy1i4EP4SJUZ8bgjj7KrYvZieEw5DGtAG5g1A6oeKzj8l
-	qjk3d7JuObKWq+PDGEoXkfiyB85CJ6lQyDhzkt2pdakY9NT5bedfMvjkzKKWjvULww2gDxkX9XV
-	Nh1Wl950Di6OB4xC2uQZ01lip2yB/7/K7No8KHtTruqE3+D2jUr87eb8FaI2acbZq9eWQqi77mk
-	K/6nmF+zjnNi+LnQZPqxjjNooDmwlCZPc8sorP6+CtUYmjXBMMNMF0C2F8Cq9UYA7e5h60h6KJT
-	vQ1uZxHK6xuvoKjzEt7hD4X3vEqy
-X-Received: by 2002:a05:600c:35d2:b0:450:d00d:d0 with SMTP id 5b1f17b1804b1-45381ae467cmr18288095e9.19.1750841687671;
-        Wed, 25 Jun 2025 01:54:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGYLN8WpVcipmrn+PxxvTbwwdYiFGmiYVj3yUsHDD0K7ZUDXBWM8hLnXLAMurjH8x8NH2rxcA==
-X-Received: by 2002:a05:600c:35d2:b0:450:d00d:d0 with SMTP id 5b1f17b1804b1-45381ae467cmr18287785e9.19.1750841687044;
-        Wed, 25 Jun 2025 01:54:47 -0700 (PDT)
-Received: from sgarzare-redhat ([193.207.151.122])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453823ad247sm13350055e9.26.2025.06.25.01.54.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 01:54:46 -0700 (PDT)
-Date: Wed, 25 Jun 2025 10:54:40 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC net v2 3/3] vsock: Fix IOCTL_VM_SOCKETS_GET_LOCAL_CID
- to check also `transport_local`
-Message-ID: <uqap2qzmvkfqxfqssxnt5anni6jhdupnarriinblznv5lfk764@qkrjq22xeygb>
-References: <20250620-vsock-transports-toctou-v2-0-02ebd20b1d03@rbox.co>
- <20250620-vsock-transports-toctou-v2-3-02ebd20b1d03@rbox.co>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DW1bIPn8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0FFC4CEEA;
+	Wed, 25 Jun 2025 08:57:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750841856;
+	bh=0QgB6O4O/sYU4iRucJ8iotwxezNS2MkmRTc3/U3q/9w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DW1bIPn8+wO1CO4ERNB9TZT6bfg+jmleh0swnm693vd3NvFbpG/OZSMRc56gGicV5
+	 ZtF7p9vu8eh+rQYXLenH3rs2RhhmlE9o0vVCOz+uayDuNHhm5pY7OMLtBen1qooAdO
+	 swoHx7Fsv/3l93q4QM3UpIHr5oMR8YjS2SZiaOWfWBz+5DGG14NuG0sKv85YiG7/ij
+	 vGVG+davd9Q+wMxOEA5GnRmH3+7VbFNZxjoH7cJD02Och3vEOKe9Mb26Kz9twdi5FF
+	 SbbQBlLN9MJ8GnBrTroEgtrrLQsM8HbBaIDLDQM3JE8sWH4tYrjmraF36T9AnpVF+L
+	 bps/xM9fsAw2w==
+Message-ID: <0870a2ba-936b-4eb2-a570-f2c9dea471b8@kernel.org>
+Date: Wed, 25 Jun 2025 10:57:30 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250620-vsock-transports-toctou-v2-3-02ebd20b1d03@rbox.co>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 09/29] dt-bindings: clock: mediatek: Describe MT8196
+ peripheral clock controllers
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Laura Nao <laura.nao@collabora.com>, mturquette@baylibre.com,
+ sboyd@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ matthias.bgg@gmail.com, p.zabel@pengutronix.de, richardcochran@gmail.com
+Cc: guangjie.song@mediatek.com, wenst@chromium.org,
+ linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+ kernel@collabora.com
+References: <20250624143220.244549-1-laura.nao@collabora.com>
+ <20250624143220.244549-10-laura.nao@collabora.com>
+ <7dfba01a-6ede-44c2-87e3-3ecb439b48e3@kernel.org>
+ <284a4ee5-806b-45f9-8d57-d02ec291e389@collabora.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <284a4ee5-806b-45f9-8d57-d02ec291e389@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 20, 2025 at 09:52:45PM +0200, Michal Luczaj wrote:
->Support returning VMADDR_CID_LOCAL in case no other vsock transport is
->available.
->
->Fixes: 0e12190578d0 ("vsock: add local transport support in the vsock core")
->Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->Signed-off-by: Michal Luczaj <mhal@rbox.co>
->---
->man vsock(7) mentions IOCTL_VM_SOCKETS_GET_LOCAL_CID vs. VMADDR_CID_LOCAL:
->
->   Ioctls
->       ...
->       IOCTL_VM_SOCKETS_GET_LOCAL_CID
->              ...
->              Consider using VMADDR_CID_ANY when binding instead of
->              getting the local CID with IOCTL_VM_SOCKETS_GET_LOCAL_CID.
->
->   Local communication
->       ....
->       The local CID obtained with IOCTL_VM_SOCKETS_GET_LOCAL_CID can be
->       used for the same purpose, but it is preferable to use
->       VMADDR_CID_LOCAL.
->
->I was wondering it that would need some rewriting, since we're adding
->VMADDR_CID_LOCAL as a possible ioctl's return value.
+On 25/06/2025 10:20, AngeloGioacchino Del Regno wrote:
+> Il 24/06/25 18:02, Krzysztof Kozlowski ha scritto:
+>> On 24/06/2025 16:32, Laura Nao wrote:
+>>> +  '#reset-cells':
+>>> +    const: 1
+>>> +    description:
+>>> +      Reset lines for PEXTP0/1 and UFS blocks.
+>>> +
+>>> +  mediatek,hardware-voter:
+>>> +    $ref: /schemas/types.yaml#/definitions/phandle
+>>> +    description:
+>>> +      On the MT8196 SoC, a Hardware Voter (HWV) backed by a fixed-function
+>>> +      MCU manages clock and power domain control across the AP and other
+>>> +      remote processors. By aggregating their votes, it ensures clocks are
+>>> +      safely enabled/disabled and power domains are active before register
+>>> +      access.
+>>
+>> Resource voting is not via any phandle, but either interconnects or
+>> required opps for power domain.
+> 
+> Sorry, I'm not sure who is actually misunderstanding what, here... let me try to
+> explain the situation:
+> 
+> This is effectively used as a syscon - as in, the clock controllers need to perform
+> MMIO R/W on both the clock controller itself *and* has to place a vote to the clock
+> controller specific HWV register.
 
-IIRC the reason was, that if we have for example a G2H module loaded, 
-the ioctl returns the CID of that module (e.g. 42). So, we can use both 
-42 and VMADDR_CID_LOCAL to do the loopback communication, but we 
-encourage to always use VMADDR_CID_LOCAL.  With this change we basically 
-don't change that, but we change the fact that if there is only the 
-loopback module loaded, before the ioctl returned VMADDR_CID_ANY, while 
-now it returns LOCAL rightly.
+syscon is not the interface to place a vote for clocks. "clocks"
+property is.
 
-So, IMO we are fine.
+> 
+> This is done for MUX-GATE and GATE clocks, other than for power domains.
+> 
+> Note that the HWV system is inside of the power domains controller, and it's split
+> on a per hardware macro-block basis (as per usual MediaTek hardware layout...).
+> 
+> The HWV, therefore, does *not* vote for clock *rates* (so, modeling OPPs would be
+> a software quirk, I think?), does *not* manage bandwidth (and interconnect is for
+> voting BW only?), and is just a "switch to flip".
 
->---
-> net/vmw_vsock/af_vsock.c | 2 ++
-> 1 file changed, 2 insertions(+)
->
->diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->index a1b1073a2c89f865fcdb58b38d8e7feffcf1544f..4bdb4016bd14d790f3d217d5063be64a1553b194 100644
->--- a/net/vmw_vsock/af_vsock.c
->+++ b/net/vmw_vsock/af_vsock.c
->@@ -2577,6 +2577,8 @@ static long vsock_dev_do_ioctl(struct file *filp,
-> 		cid = vsock_transport_local_cid(&transport_g2h);
-> 		if (cid == VMADDR_CID_ANY)
-> 			cid = vsock_transport_local_cid(&transport_h2g);
->+		if (cid == VMADDR_CID_ANY && transport_local)
->+			cid = VMADDR_CID_LOCAL;
+That's still clocks. Gate is a clock.
 
-why not `cid = vsock_transport_local_cid(&transport_local)` like for 
-H2G?
+> 
+> Is this happening because the description has to be improved and creating some
+> misunderstanding, or is it because we are underestimating and/or ignoring something
+> here?
+> 
 
-Thanks,
-Stefano
+Other vendors, at least qcom, represent it properly - clocks. Sometimes
+they mix up and represent it as power domains, but that's because
+downstream is a mess and because we actually (at upstream) don't really
+know what is inside there - is it a clock or power domain.
 
->
-> 		if (put_user(cid, p) != 0)
-> 			retval = -EFAULT;
->
->-- 
->2.49.0
->
 
+Best regards,
+Krzysztof
