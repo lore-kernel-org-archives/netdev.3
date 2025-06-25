@@ -1,145 +1,74 @@
-Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BA31DEFE7;
-	Wed, 25 Jun 2025 09:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3A0202987
+	for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 09:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750845056; cv=none; b=KnVI93rw794h1GUpDlvpo3dheB/dgmYmpRBysLWQbIt+J4mX+R3bsTbRn+m9QsJHTRkt7KUvtINNM7cOVk/dTN1hPqXKiXjLUBrEWOt3iVoTs9OBueWg/BzQevg/tMH1tumLbUnD6jJfDxK7DTyJmexfdx5Hyj8fmvq/QILPjVo=
+	t=1750845111; cv=none; b=b0shsJmOU5IAUSUXP+eTnkI4Un3Llj3+8YhJNEMXmIwnX0JBdDjl6XObh04X08H6qrcCCyhfMwWc59AwjUk7ZRevZcnUfePcetMbV1StWVgKAIReuiNghZCYRmffSaARgNLH/Qck9G2hTzjGkBIF2FNLCyNEXsok5By7kyGCcrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750845056; c=relaxed/simple;
-	bh=XV1nkjfUcMxl3FXXMlmgCgmpon5+5Xw73zAFoBzP0nI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uGw/TOYap4h80+c9Dmx2wVBP1AuSUSDY72C0RZtQN27FDh2vZ5OG8VOod4nYPR0K+u4K4cXOSdxTJk7wzT/Og+RV6x4YtZgnUyt7WN35/wb2Ten+Ky2GmAvP5QDu2foYUYecIDjsE9NV25YajfvA6Nq7/V0R3tDPhyrmjMun3S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=XGHkEr+3; arc=none smtp.client-ip=52.119.213.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1750845111; c=relaxed/simple;
+	bh=orA5hl8mOrlRqgtAYdazEQT9m/BuTnqj5P9Ji7geJkY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O6dBCdr6AJ7dbWY184w72iUod6a0xqcj3LXkTR/aN4TI7nsAd4nBW5AnJUzL4iuHtKONj9j3Jf4NUSLHiFpquVqhQTlDsH5WcqNOnv3G9Up69FcINU2w9ZFw7qkg/MpP+zW9GR28M1ZyyXSoRupUYmZtoImkq6hcSLLyGVns+gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=h12oAJ9X; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="XGHkEr+3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1750845055; x=1782381055;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=i9pQ+MlE5S8O+IzYQuqdhdmkfSkIm+1g1tP/i8TStbQ=;
-  b=XGHkEr+3QYKvlpxVIzCK9sS5bSBFF+CQcuWkoPY1qCV0zlOAnv9joy64
-   a7SYa/sYk2r6eJO4n8ciJKDBPuM1HllOr/FwBRW37PYYh3NnN2OxhAYyh
-   5UB5XhCMWuf5zn9aC1w2kB4e2TDsjQrJmfJVuKOQfgVxj+cMPrz6F8KsL
-   MkcWS+T+uiKouYREx4XHAU7gRXN0pTgmEf5qlc0Nl+2wCssko87bZakRB
-   TwXasApLXEXsZSTovsuQhNPknAtua0zIXJmOGanPIeIgpzw/xbttY803r
-   nxI1nDhRmkOLy6vuoKsrz0Won2aSOV/X0LSwv4PER8phskFcysHeHWvAB
-   A==;
-X-IronPort-AV: E=Sophos;i="6.16,264,1744070400"; 
-   d="scan'208";a="736823987"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 09:50:29 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.21.151:3829]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.42.18:2525] with esmtp (Farcaster)
- id b83153d2-cbb2-4d13-bb3b-3d09a4fbbfc7; Wed, 25 Jun 2025 09:50:27 +0000 (UTC)
-X-Farcaster-Flow-ID: b83153d2-cbb2-4d13-bb3b-3d09a4fbbfc7
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 25 Jun 2025 09:50:26 +0000
-Received: from b0be8375a521.amazon.com (10.37.244.14) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 25 Jun 2025 09:50:24 +0000
-From: Kohei Enju <enjuk@amazon.com>
-To: <netdev@vger.kernel.org>, <linux-hams@vger.kernel.org>
-CC: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
-	<kuniyu@google.com>, Ingo Molnar <mingo@kernel.org>, Thomas Gleixner
-	<tglx@linutronix.de>, Kohei Enju <kohei.enju@gmail.com>, Kohei Enju
-	<enjuk@amazon.com>, <syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com>
-Subject: [PATCH net v1] rose: fix dangling neighbour pointers in rose_rt_device_down()
-Date: Wed, 25 Jun 2025 18:49:44 +0900
-Message-ID: <20250625095005.66148-2-enjuk@amazon.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="h12oAJ9X"
+Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 55P9pdUR1429718;
+	Wed, 25 Jun 2025 04:51:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1750845099;
+	bh=yM9DZCjv2WCedL+KVH1DBViVqTEkaHpNXVwA6Vk3TY8=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=h12oAJ9XwhDSkd/YIAcupnT5BtWQN4k3f/RVYq7PImBUltvrbbPOpaLI9MKXnizRN
+	 Hpmk6q7c+NjXKNL8mBSxHnwceBotEP1lKIrAdRvcuhEIKGOjXp+FUi2IFQH90miSnN
+	 eemSjP5RmJmH0zECAFD7kM0Fzq36isHJsT3iUO08=
+Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 55P9pdq22450676
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Wed, 25 Jun 2025 04:51:39 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Wed, 25
+ Jun 2025 04:51:39 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Wed, 25 Jun 2025 04:51:39 -0500
+Received: from localhost (uda0492258.dhcp.ti.com [172.24.227.169])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 55P9pctn3424026;
+	Wed, 25 Jun 2025 04:51:38 -0500
+Date: Wed, 25 Jun 2025 15:21:37 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Chintan Vankar <c-vankar@ti.com>
+CC: <mkubecek@suse.cz>, <s-vadapalli@ti.com>, <danishanwar@ti.com>,
+        <netdev@vger.kernel.org>
+Subject: Re: [PATCH ethtool-next v2] pretty: Add support for TI K3 CPSW
+ registers and ALE table dump
+Message-ID: <182fd7c0-52ad-4ff6-b08d-43480ee660f7@ti.com>
+References: <20250619171920.826125-1-c-vankar@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D040UWA004.ant.amazon.com (10.13.139.93) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250619171920.826125-1-c-vankar@ti.com>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-There are two bugs in rose_rt_device_down() that can lead to
-use-after-free:
+On Thu, Jun 19, 2025 at 10:49:20PM +0530, Chintan Vankar wrote:
+> Add support to dump CPSW registers and ALE table for the CPSW instances on
+> K3 SoCs that are configured using the am65-cpsw-nuss.c device-driver in
+> Linux.
+> 
+> Signed-off-by: Chintan Vankar <c-vankar@ti.com>
 
-1. The loop bound `t->count` is modified within the loop, which can
-   cause the loop to terminate early and miss some entries.
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-2. When removing an entry from the neighbour array, the subsequent entries
-   are moved up to fill the gap, but the loop index `i` is still
-   incremented, causing the next entry to be skipped.
-
-For example, if a node has three neighbours (A, B, A) and A is being
-removed:
-- 1st iteration (i=0): A is removed, array becomes (B, A, A), count=2
-- 2nd iteration (i=1): We now check A instead of B, skipping B entirely
-- 3rd iteration (i=2): Loop terminates early due to count=2
-
-This leaves the second A in the array with count=2, but the rose_neigh
-structure has been freed. Accessing code assumes that the first `count`
-entries are valid pointers, causing a use-after-free when it accesses
-the dangling pointer.
-
-Fix both issues by iterating over the array in reverse order with a fixed
-loop bound. This ensures that all entries are examined and that the removal
-of an entry doesn't affect the iteration of subsequent entries.
-
-Reported-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e04e2c007ba2c80476cb
-Tested-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
----
- net/rose/rose_route.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
-
-diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
-index 2dd6bd3a3011..a488fd8c4710 100644
---- a/net/rose/rose_route.c
-+++ b/net/rose/rose_route.c
-@@ -479,7 +479,7 @@ void rose_rt_device_down(struct net_device *dev)
- {
- 	struct rose_neigh *s, *rose_neigh;
- 	struct rose_node  *t, *rose_node;
--	int i;
-+	int i, j;
- 
- 	spin_lock_bh(&rose_node_list_lock);
- 	spin_lock_bh(&rose_neigh_list_lock);
-@@ -497,22 +497,14 @@ void rose_rt_device_down(struct net_device *dev)
- 			t         = rose_node;
- 			rose_node = rose_node->next;
- 
--			for (i = 0; i < t->count; i++) {
-+			for (i = t->count - 1; i >= 0; i--) {
- 				if (t->neighbour[i] != s)
- 					continue;
- 
- 				t->count--;
- 
--				switch (i) {
--				case 0:
--					t->neighbour[0] = t->neighbour[1];
--					fallthrough;
--				case 1:
--					t->neighbour[1] = t->neighbour[2];
--					break;
--				case 2:
--					break;
--				}
-+				for (j = i; j < t->count; j++)
-+					t->neighbour[j] = t->neighbour[j + 1];
- 			}
- 
- 			if (t->count <= 0)
--- 
-2.48.1
-
+Regards,
+Siddharth.
