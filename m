@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1FC2BD03C
-	for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 11:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D55289347
+	for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 11:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750849668; cv=none; b=VOuz47jAVOFVHx/qX2hwF8uXruPIZvj7UHyVW7JuPy5K6CnLgeJWylE3cmlZ0Z/SJ7OtwnZQoo/as83/70Zcsh945vAYJ8WUe2Lj54K64F9HWD6S7ynboVLT88UyPUqtFu2AImtmCNqQ7vyAF9jZnlixJyECpmmKmpUcJsTGZR4=
+	t=1750849691; cv=none; b=cWHd2CncY0h/+zojw7JiGPEMYQk9hn7zms5c7rwwUt0p6WzaCNzqX0pSZLxO2Wx1D1FWqj6JHKF51ob4ZV3n0Z5E5KnFXM4Y/S7YBa4GKIya035oLuYES+cKzF8WpaNHD5hSQxVhL2Czl4ukd6hrynD2eTy4+mCMKiCMGKGuDj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750849668; c=relaxed/simple;
-	bh=/3vp6ZxC0UVLPUUgMD07npqLPRexDtaPgnjtWiP5RQ8=;
+	s=arc-20240116; t=1750849691; c=relaxed/simple;
+	bh=in2ZrC/g8/BPj/ywSXMIS6hL14gcqHN5NMuJmzxpw00=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T43aagOgLjks4t4+Xb0WgydWd0P2Dh5eGrcjGxuhQQNwPkSesPEAbi8B0PNrxUomyIPnPLjLiHucczxjsx44Qi845QDRnVnicCi9qB2gMBSNwohkOUbUVPZQcLUnj9myeca91bzkVNjQvWWGB2wsCIus1MjirDmhkCQzMPOidWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kzkXqlxD; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ebV1yDS2VDxdpT+S1HMXm7N45DP1/PaVdjEPF76UvyY7f4TPY0VSBy8UTPl2Chujn6pNjd9LH6JWHXxW0+c8Ku88Rz26PFiHlLoWsavM9UACwrZSPtcm5bJTml7+IW0cdy7nk2peCssgSrRcNCk65kjJTCY89vj0HcN6TaNWurA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z80AyN6m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kzkXqlxD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C003C4CEEA;
-	Wed, 25 Jun 2025 11:07:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z80AyN6m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A46C4CEEA;
+	Wed, 25 Jun 2025 11:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750849668;
-	bh=/3vp6ZxC0UVLPUUgMD07npqLPRexDtaPgnjtWiP5RQ8=;
+	s=k20201202; t=1750849691;
+	bh=in2ZrC/g8/BPj/ywSXMIS6hL14gcqHN5NMuJmzxpw00=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kzkXqlxDexbqxXzNaj6Ts55LrkLIzmifa4IvpG84LYV+7+cHTVWgmQ5lJcwegdGCM
-	 sq8TLUviE/Ax49b6fn0MUR/HmOtSEWKEfqY1pGEEGTEUH6d42bLLzXLpyi18fwaJpg
-	 bj8FU8KYn8g7T9q4ztl6Eocya+9yoclELoNw3+JEz2A89IXhJ5PDhHlOmXc4JXthQq
-	 RF7LWsKdxSavl9me2nzljOUtV9avCbc5VnoQ9rh0t3I4/HHHAFnSzE5/VBqk3esubI
-	 63w1HL8BNKdsMOp9Bs7NpjXftRHT2V1zkbFZG1uX/gvb6IbGm7Df57wiAxVLDrbFAG
-	 9sdrS7mzu2bmg==
-Date: Wed, 25 Jun 2025 12:07:44 +0100
+	b=Z80AyN6m8HOWFV9FNDU3/gnXGKKSKBxNkoXjqrfcBdpOog/Og0gdYjB+zj1nOHqMC
+	 Cym/8/0aAdlmsWrL2UnD8yT3LZgoVkCIbn+uh/lcP0CyB6HB2Ie07gHtm/FrTUIRla
+	 EXW15iL5r0oS+JIu36qeCrTKA4fgbLTRZ1+/XaqTN1JnyBVbCUhrMW8Bstj5+8gu25
+	 HwxxMWn6qTyf73AeMmTulZ/d6eg5k91c86+rxYGm3Ku9eEQ+p9MW5lwTbubpDzPxbe
+	 Va/UpdbQ8A/wbFvO/PK1FZNVnhyE82JsUzn0tdr3IdNn+cKI7tNQxlGr/smo6UvddD
+	 dsgwyv0M3pwlg==
+Date: Wed, 25 Jun 2025 12:08:07 +0100
 From: Simon Horman <horms@kernel.org>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
 	pabeni@redhat.com, andrew+netdev@lunn.ch, alexanderduyck@fb.com,
 	mohsin.bashr@gmail.com
-Subject: Re: [PATCH net-next 3/5] eth: fbnic: realign whitespace
-Message-ID: <20250625110744.GY1562@horms.kernel.org>
+Subject: Re: [PATCH net-next 4/5] eth: fbnic: sort includes
+Message-ID: <20250625110807.GZ1562@horms.kernel.org>
 References: <20250624142834.3275164-1-kuba@kernel.org>
- <20250624142834.3275164-4-kuba@kernel.org>
+ <20250624142834.3275164-5-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,13 +44,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250624142834.3275164-4-kuba@kernel.org>
+In-Reply-To: <20250624142834.3275164-5-kuba@kernel.org>
 
-On Tue, Jun 24, 2025 at 07:28:32AM -0700, Jakub Kicinski wrote:
-> Relign various whitespace things. Some of it is spaces which should
-> be tabs and some is making sure the values are actually correctly
-> aligned to "columns" with 8 space tabs. Whitespace changes only.
-> 
+On Tue, Jun 24, 2025 at 07:28:33AM -0700, Jakub Kicinski wrote:
+> Make sure includes are in alphabetical order.
+
+\o/
+
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
 Reviewed-by: Simon Horman <horms@kernel.org>
