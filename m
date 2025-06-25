@@ -1,101 +1,131 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F349273F9;
-	Wed, 25 Jun 2025 09:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDABF29ACF1;
+	Wed, 25 Jun 2025 09:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750843368; cv=none; b=qoMjWB2F4dLEumuWe/OkeO3JXz9pNRiS7vwC5EYnClb5r/7QUMy5fJFlb5T/me06qYFLatJzqEuUkRiYa6UZS7oU1zbfN4jtfKVeY5yA1VixeCjuynlEA8njUL2MOt0by6wDWpDPa42YS9XM3AdiewcIK6gbU9SnKkhd171czMY=
+	t=1750843452; cv=none; b=mnknI3Zav/VqWCLPq9G08tkg1mS/9LZW/+OYjaH4alFxA6HFq8iWbHwbxYaSQ+VK2diDQlmVgesvlYPLh7Z+83gdWlEFwmLr0GkycU4fTtX7/aiw4cPB/DAI8cxHSAAf8X+0XHbCC9JBpmJtAqEIuDrIcKQ2uidY2oSN7ay8P5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750843368; c=relaxed/simple;
-	bh=BXTwXG/QzO6u1XNLD87/IzNVSJyF6sBtIFpnTngt3Yk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NRnNIsZ1RJdU/qU9QZBjsvcfrPOEAlFYLJmFF9aZDRRLbZtEh0QmGyAmrGawnelcgxGqzCqbk4y6rQemQ7koSOt1Jjlf1jey+u8zVGOzM4hXJfNFi4XXTvPH91HmihZ+vWH6xCu1MD7GjyrMxv/9T7I3lFJTGRUNmYU4FHKCFHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Czhzmarc; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Czhzmarc"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55P6jEwu017602;
-	Wed, 25 Jun 2025 02:21:18 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=yM1XFNaBNgpqbCZ5K8XLwlM
-	71AV44uTsxqGf72BIZl8=; b=CzhzmarcZp1VZY1vHQo1taA2kl1GZwKh7N1pUjq
-	cGEqiiivcOqV17gL3HPiwxVbwgQWmpkYku2vdwjNXrVf3DsUYfwmA6PWMI+XsqTG
-	5SQZ/iVoi9OLwusRrf+bqfPNzOO1pW4ISw6q70hw0ZICTGKAHsewW/f+CPJsFUjQ
-	erZDZbhk+I8iQ75vKpgMtovAf00aoEon5eavh4Hd2uo53iURh4aR4tbKBSrHu76y
-	sKJM93o1U5air+Izy9+zJagLCqtu8pgNs08SxxldMkuE61VNyS97wdykpHyHEmU+
-	2Q1wqhGk97BZ5xger5BXqNLVf17SAAV0gLIiFB6bDGiBMVA==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 47gc3kgad5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 02:21:17 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Wed, 25 Jun 2025 02:21:16 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Wed, 25 Jun 2025 02:21:16 -0700
-Received: from test-OptiPlex-Tower-Plus-7010.marvell.com (unknown [10.29.37.157])
-	by maili.marvell.com (Postfix) with ESMTP id C05813F704F;
-	Wed, 25 Jun 2025 02:21:08 -0700 (PDT)
-From: Hariprasad Kelam <hkelam@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <kuba@kernel.org>, <davem@davemloft.net>, <sgoutham@marvell.com>,
-        <gakula@marvell.com>, <jerinj@marvell.com>, <lcherian@marvell.com>,
-        <sbhatta@marvell.com>, <hkelam@marvell.com>, <naveenm@marvell.com>,
-        <edumazet@google.com>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
-        <bbhushan2@marvell.com>
-Subject: [net-next 0/3] Octeontx2-pf: extend link modes support
-Date: Wed, 25 Jun 2025 14:51:04 +0530
-Message-ID: <20250625092107.9746-1-hkelam@marvell.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1750843452; c=relaxed/simple;
+	bh=GtMpUXf0AldAqwlsG4t8bk9VWwvpumUXn1uff4D2zt8=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Xu+hkVtCAjLF0oKaYXNngYQgV7XXa0RK7FTfZm3WZnCRW0IqB68PIHaYlFABN4IgWa1FiP4DaNYtrdvj4qkb/1qeVOzC2A1U6y0t6uxzmkm60CcJlamDrOpObRpvLXmfqbOtdtVCCoWCZQXSR/3+SS47K39BBs+XJOCRowvUJgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:Yeas3t1750843353t755t02024
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [60.186.80.242])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 8753326016482812335
+To: "'Michal Swiatkowski'" <michal.swiatkowski@linux.intel.com>
+Cc: <netdev@vger.kernel.org>,
+	<andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>,
+	<edumazet@google.com>,
+	<kuba@kernel.org>,
+	<pabeni@redhat.com>,
+	<horms@kernel.org>,
+	<mengyuanlou@net-swift.com>,
+	<duanqiangwen@net-swift.com>,
+	<stable@vger.kernel.org>
+References: <20250624085634.14372-1-jiawenwu@trustnetic.com> <20250624085634.14372-2-jiawenwu@trustnetic.com> <aFu4yUsWek/x9kqd@mev-dev.igk.intel.com>
+In-Reply-To: <aFu4yUsWek/x9kqd@mev-dev.igk.intel.com>
+Subject: RE: [PATCH net v2 1/3] net: txgbe: request MISC IRQ in ndo_open
+Date: Wed, 25 Jun 2025 17:22:27 +0800
+Message-ID: <030d01dbe5b2$ab34df70$019e9e50$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: ZOiaDZqfK0UXBYuDfJIqg4j285MC_8jT
-X-Proofpoint-ORIG-GUID: ZOiaDZqfK0UXBYuDfJIqg4j285MC_8jT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI1MDA2OSBTYWx0ZWRfX434TGp3hrFVe FMzRWgxCqZq+LG+GIKD1klh4CdWQGDUZaCYkjg+zuJ1szwOVvTEspWzNvpe3gNn3luAc6wbl27m 7Mooq5pSTMiI+8dYU0kYFZkd1wT/JIC6HWdP7bzvdnpJYKwxSTdTQDMa65kzCtJdXRYaCMo/LqF
- qN12c1SOLvlabE24tIgn5LBq5/z1mm+2wvP9i9EzN/soHVZ24wkqHjoBlmw8XQGGTiXjI+qfwcg RS12LtkDy8gZ1Ni2Bxe5jaYHGHwtrZogmlFYtzmdcuz21iFrV8d6C7cDAliuTZ/GZXtejLw147D Bi1AVmvFDwl0q0flutuBNxg8KtZF2KupX3IwllZv/Uie4NJwzYb3p6bECGvrZ1wdHXMgkwZignB
- e7WSlKaDhb966QZEP2yAacjz2ReAMdnGvlwkaatlLtYEqs0HUO2KKyiy2l3d/KfHEMz4k9Pd
-X-Authority-Analysis: v=2.4 cv=D4ZHKuRj c=1 sm=1 tr=0 ts=685bbf8d cx=c_pps a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17 a=6IFa9wvqVegA:10 a=xG7LojJKveJkHGXijn4A:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-25_02,2025-06-23_07,2025-03-28_01
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQG8FB25wsfEchebLehyFWt5Oiz5UQF8meEIAbHDH+a0OceckA==
+X-QQ-SENDSIZE: 520
+Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MdzdX6p4PZzkstnd+MI+6iK2WIaBPpUZFtVUh2Y7AVwo+LdIRhetfZM1
+	/XdQWu2ZThmfXaA0k78T+Jqk25Whsa9Nmq1kZp7k0/W7QO4rT+RupcbjNWM2QNS2p1NC18W
+	/jeJhkSWx/HuH15Enmsr4CdogPxB5FbKfonLJVX5ojwKZEJRaTen3xMK/Q06vqGSH2RgRzV
+	L7OdW6xCeWCOYlZjn3Zio44YM9/Q4Q6Z67GsQ/m9d/qwna8nt5CZBrAqAH5Iq7UweoqYqJq
+	L8DfW3w/e7aYuWux8TN9GGmfeTTlqxo/1Zm0BVr/GRhLlcjy23pDFlgApCV647mArAAdyoq
+	4zbwiOdIiYZHQfr4AgaBeZdTTso2RcmHkqv+cZde3iL/wWl0UBk/+9v87xCNLHRtg1OEZtV
+	/zTRkEWdRF1sHDICD5IVKf3MfI1sTh/OvvEx72InYb3X2XtLWC/vYdZVDqbsDQORXkDGOiI
+	G6w1cUnv6DKnAClGXlhl+McGGhfzUP6hy6WDA2FIQVgi/93gsYN/HLR2HV79IrDqGC1GUm3
+	XwM0OlWf2PXz+rR8FFBZBmJJMW6ganpu1Df4PXxO8UD8tSkk/4hh8mwTza16sdGnr2RYtF5
+	XEIlaGg3yn1r+VxxjocepjDJFikd9iQI/T3yXMh1xKGpgUH787Qb8JL1DB2j629/ZyQFqaI
+	JAbhi56x4rWpfBDhrrzoCfDSM0eSbc1Ih2iXIZLDxkwSs0aHzvtBXnG8eP3R6g4tBr4XFkI
+	2MBcj0FVARgjf+Y0Dg9lxafabyYqxvysZ1u9MTDMvWHsnIlQgQlSlMD4MBOoZZl2fgOfVQE
+	ek9ygWTKu3XykPDdNIsLBgbL7+IIHtrIOQAT/kzyiTG7ylhxd3Th2NZPjaTfrn6EP/fVvbe
+	V17d2sKJ38bmGffMoc9R3gEGe0D0fUd55JtAH/2YXzWuyIgdk1XdNCT+d/gHil04lMf/ubb
+	6XV1RZ3eAtb6F/lDoz/ynXRx1syr7u7vyx+Z6jBMZf69MCCyC6AGvpNZIzSHI0u7sDCWdxP
+	ECJbH4cf+QjWozfDD+FcjVoaLdEA9AdAjr3JHjnw==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+X-QQ-RECHKSPAM: 0
 
-This series of patches adds multi advertise mode support along with
-other improvements in link mode management code flow.
+On Wed, Jun 25, 2025 4:53 PM, Michal Swiatkowski wrote:
+> On Tue, Jun 24, 2025 at 04:56:32PM +0800, Jiawen Wu wrote:
+> > Move the creating of irq_domain for MISC IRQ from .probe to .ndo_open,
+> > and free it in .ndo_stop, to maintain consistency with the queue IRQs.
+> > This it for subsequent adjustments to the IRQ vectors.
+> >
+> > Fixes: aefd013624a1 ("net: txgbe: use irq_domain for interrupt controller")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> > ---
+> >  .../net/ethernet/wangxun/txgbe/txgbe_irq.c    |  2 +-
+> >  .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 22 +++++++++----------
+> >  2 files changed, 11 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+> > index 20b9a28bcb55..dc468053bdf8 100644
+> > --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+> > +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+> > @@ -78,7 +78,6 @@ int txgbe_request_queue_irqs(struct wx *wx)
+> >  		free_irq(wx->msix_q_entries[vector].vector,
+> >  			 wx->q_vector[vector]);
+> >  	}
+> > -	wx_reset_interrupt_capability(wx);
+> >  	return err;
+> >  }
+> >
+> > @@ -211,6 +210,7 @@ void txgbe_free_misc_irq(struct txgbe *txgbe)
+> >  	free_irq(txgbe->link_irq, txgbe);
+> >  	free_irq(txgbe->misc.irq, txgbe);
+> >  	txgbe_del_irq_domain(txgbe);
+> > +	txgbe->wx->misc_irq_domain = false;
+> >  }
+> >
+> >  int txgbe_setup_misc_irq(struct txgbe *txgbe)
+> > diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> > index f3d2778b8e35..a5867f3c93fc 100644
+> > --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> > +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+> > @@ -458,10 +458,14 @@ static int txgbe_open(struct net_device *netdev)
+> >
+> >  	wx_configure(wx);
+> >
+> > -	err = txgbe_request_queue_irqs(wx);
+> > +	err = txgbe_setup_misc_irq(wx->priv);
+> 
+> Don't you need misc interrupt before ndo_open is called? I wonder if it
+> won't be simpler to always use last index (8) for misc irq. Is it
+> possible? I mean, use 8 event if the number of queues is lower than 8.
+> If yes you can drop this patch and hardcode misc interrupts on index 8.
+> 
+> [...]
+> 
+> BTW, assuming you can't always use last index, the patch looks fine.
 
-Patch1: Currently all SGMII modes 10/100/1000baseT are mapped with
-        single firmware mode. This patch updates these link modes
-        with corresponding firmware modes.
+Cannot always use index (8). Because the max RSS index is 63 for TXGBE,
+but 8 for NGBE. This hardware limitation is only for NGBE. And index (8)
+cannot be used by PF when SRIOV is enabled on NGBE.
 
-Patch2: Due to limitation in current kernel <-> firmware communication,
-        link modes are divided into multiple groups, and identified
-        with their group index.
+In fact, the misc interrupt is only used when the device is opened.
 
-Patch3: Adds support for multi advertise mode.
-
-Hariprasad Kelam (3):
-  Octeontx-pf: Update SGMII mode mapping
-  Octeontx2-af: Introduce mode group index
-  Octeontx2-pf: ethtool: support multi advertise mode
-
- .../net/ethernet/marvell/octeontx2/af/cgx.c   | 55 ++++++++++------
- .../net/ethernet/marvell/octeontx2/af/cgx.h   |  1 +
- .../ethernet/marvell/octeontx2/af/cgx_fw_if.h | 33 +++++++++-
- .../net/ethernet/marvell/octeontx2/af/mbox.h  |  9 ++-
- .../ethernet/marvell/octeontx2/af/rvu_cgx.c   |  9 ++-
- .../marvell/octeontx2/nic/otx2_ethtool.c      | 62 +++++++++----------
- 6 files changed, 113 insertions(+), 56 deletions(-)
-
--- 
-2.34.1
 
