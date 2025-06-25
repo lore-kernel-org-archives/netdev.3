@@ -1,233 +1,205 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7232DA752;
-	Wed, 25 Jun 2025 15:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750865005; cv=pass; b=PiLCVpAB5iCqS1mBRIn+svNd837SUPR4eFIxM1u47HK6fU4pXzujG144wvlJi9dpBnYvAlCXtxtTNLU0FHRDTM0kLUtZbwIlxUxhjrUgrk4uL9GxZrWut5oGyi6byFvx369m859wittX0XEZf/EsrxXFu3McmA/rkAwWG2/q7n0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750865005; c=relaxed/simple;
-	bh=dbm6Ij9s2O8swfUZzR1v4IH0cSSPUEclfNNYbKRETwE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=vC/Jt2aw9b2HeQZCX/jJc0yb8/mz9iAgtTQMw9d0o7PJFIzGizVrbY+4avGDgJlIr973kXYlO5D5kUkCVETIcf2sEugx6G6nSBkkRE3ttgavZnOcgvcWmb7liMYA2nlC9VM3k16LNjn/dj+j4ujm4/Mv0aYAEXUb1HQ1s0kNRLc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=MDfinMof; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4622652AF;
+	Wed, 25 Jun 2025 15:24:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750865099; cv=none; b=QOs8W+WnlRvGmkxwdmjfYOLSQegGuGa21PHjnwG+rasXFUpxjwvEEWerZi1dcC8anJYibEcC6FWF6szlW1jHdcdg+k6AqJXozPL+DERnIEencxR37pwxH5THbbteNIyONKfVzScoS1X8NnW85KpEHv2VHzcwxLXymWEwMSAUBxI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750865099; c=relaxed/simple;
+	bh=DVaxS9mTINZk0rvzzEi0zAW5HSrGIGK0lZqID2qLB+M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IJl/J0oqp02ku7kSaciI0ircc3+vq5TsrQdF09naNgFOb7ew8h0oe5qvRM9SuAMsY3lm6o7+YvJub5SYHTLPNhNupWY5+mdCv8gqBtUF9khu1Y4XZhkA9zTlLa1wwugQ0K4ux2MsWAkVClOjxZQc4sguR7p1bmUozF2UtEROczQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I0NWswJX; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="MDfinMof"
-Received: from [192.168.1.195] (unknown [IPv6:2a02:ed04:3581:1::d001])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pav@iki.fi)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4bS5Df2y1rz49Q47;
-	Wed, 25 Jun 2025 18:23:14 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1750864996;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=psSAEbA6GBc3e7dUMsn95jE0RdMTFhIo/mTHBwvBzf4=;
-	b=MDfinMofByz7XZhDK2T0GeJzfEZ8fZQq3Iu0ZILTmHhoNia+VXLg5ExlXPFz2wVs1qkm4d
-	pL5l9mMgRAiZ0wpyftZPyk0DjAZsWvLsFmznVT1B6qfokdA2ac0tQY3u3MVt6lFxE8/kud
-	30blGJ9BTvCCF4X5vdtiJGngAfp8K8owc5Jz77IzQI6jnlEDKI8n6OguFqUygJKtgtkbrW
-	brjZ/010A58/Zl2DBeSC5drzhoRfNmg+kF/w9m1pQ0I1yjhaPPNzXMsq4vylHSOYFA1qDz
-	Wn+F6x8ndXpQU0EWNKdymQlicaLAJygrtAFGQVbKpIFJukPv7coDDE/qtPQBLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1750864996;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=psSAEbA6GBc3e7dUMsn95jE0RdMTFhIo/mTHBwvBzf4=;
-	b=vCjqnD3FcXf/2mMvCcfeyDA6vg4BjiRQ4lJyaP75swsfKXZGhAHyX/it/7MYSRInA/jPJH
-	G/wuUo8IF5AAJ7EeO/EXiNmCKZcMg3b9edc7Y9gSs7i8C8BOi7TzakfZKZoKaPG0yZHaQ+
-	SlNAME7nBJqs6LBDfoOjWugcPfdW5oLKqfraw97Kt0ydk3RKsJk4KfvakpwdStsWVfx/Sd
-	L+vF6qf61X/R6ZXlbxrs0P99EPza9oSMYTTLW2122JtdDnb46Q9TN6YaC6MoEPayw+mBkf
-	SYtdFBkBGnHf/2Tn5XekmcQ7w9kTR17jKBm/+tV1wfys+PsnZHFA/smeRxyTNg==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=pav@iki.fi smtp.mailfrom=pav@iki.fi
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1750864996; a=rsa-sha256;
-	cv=none;
-	b=IXNg2LDtngA7UtAuMRAmck9XgZUJR38EbTfbA9OPGjTvS8M7BlxwKuuWwhlTzUkcGVjvuB
-	cX2oFohH26IvXLzxSKPMD6UTbCF8obcwKSslu9VNcS3IHMjhCNzc+RaXlZBbVi5IkZV5er
-	jMru5gFkxsIbazPW+WtVP7nc16om8l+pZyVu50XfzOnzmjfEI28Jt50c9Nj/2qLupkWMnw
-	ulL0eNoNxErqXUzAt4XYqdQJwMguUKYISygCsj1YdJ9H2zj6FNiwq7QX9YXNJvWJpSCUBe
-	Rfo4E3MucIgvlGbmdJU8CEBWv3ZtxLyM0pkLi5zI6rO89nD1eQJxedzy2ehzbw==
-Message-ID: <1306a61f39fd92565d1e292517154aa3009dbd11.camel@iki.fi>
-Subject: Re: [PATCH v2] Bluetooth: hci_event: Add support for handling LE
- BIG Sync Lost event
-From: Pauli Virtanen <pav@iki.fi>
-To: yang.li@amlogic.com, Marcel Holtmann <marcel@holtmann.org>, Johan
- Hedberg	 <johan.hedberg@gmail.com>, Luiz Augusto von Dentz
- <luiz.dentz@gmail.com>,  "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Wed, 25 Jun 2025 18:23:13 +0300
-In-Reply-To: <20250625-handle_big_sync_lost_event-v2-1-81f163057a21@amlogic.com>
-References: 
-	<20250625-handle_big_sync_lost_event-v2-1-81f163057a21@amlogic.com>
-Autocrypt: addr=pav@iki.fi; prefer-encrypt=mutual;
- keydata=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
- bzyGkKh2h8XdrYhtDjw9LmrprPQ==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I0NWswJX"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4a589b7dd5fso1083111cf.0;
+        Wed, 25 Jun 2025 08:24:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750865097; x=1751469897; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ST35E8pfOiK/1Yn/IFpq1998QsVUH66BaD6x0ib8XaU=;
+        b=I0NWswJXUZB8xE7M4Pd7Y4YF5zjuxGPDcRoK0h14U8urG+y7pb5nqN7MPIgwIySsdL
+         2mdsQMMuY0y9Dr2H//CHAnf1VgrbqiY2+A5H7mix2lGu1w+XtybqiXvo0zeJGMUO38g0
+         2FDJpVVxe8ZU2sfMuHWuBcA3WXDzsA35SxSJOWPc9xbsAchFvNk0R4gv5eCI2RrkVRqI
+         GMwDIcyKAUAXxq8e2UZNR7FvmNkdXbhERev4+ZFCCad/LmoWabe+P6SNkXGDFKy+IZ45
+         sNTyRZq5txJ8FR6xfTACzoP/sJCa8T1+E74usU+6x9KRi7fdNcg5I+G0+SuVTHfMzgzc
+         efQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750865097; x=1751469897;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ST35E8pfOiK/1Yn/IFpq1998QsVUH66BaD6x0ib8XaU=;
+        b=hiuT8UQ6YtNxSyVBHekge0M/2FOLPmeH6ct6RsTLMp2wqMMuAhTW1VcDQGncr9mYDR
+         NJN3zdZoS5neSNhoCl4ZhF0YTwDYB67KIV9leiI/yaFNtSE+jSluAdhArsktPthuCBcq
+         wj6WXzwNU3N52OIRhhZFXSGw4wfMnDeDZvoTbAs4/YusEPiTCZGLGYl1Q2y+9vxE2DAz
+         uAAlxQlgJAVvGuVxKSp8mAADLtVOEIDGFlnQeMSpDQR3VasKvn2z7wS+kPm615t/omsu
+         NM26PPYX9UZYGztO293j1fQntSeh1S0qwtis+05CbE5nJhkpC54PLczD2vSFR6L8mhxa
+         4sIA==
+X-Forwarded-Encrypted: i=1; AJvYcCVmSuRaojIG3cHZ1bTEXpsBWag3W0CCbEtwXQ0MlWTp7EbyNHqwrQWZkjq40jSDWfHhVlDR@vger.kernel.org, AJvYcCVrcmXsN22ABUUVgsZVu8P+7SLrPaJEh0S6bJ4GP/u+cmQlPEmaGe/B203xaMLwbysm2mhCvdM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3zUgDSSll3BeUROzq26rG89aHCXnV+hQFi00lFJsLH2Ai772X
+	dKSK0YBKSMebSJyEzuM5c1VRMJ5tP0tZPVo2XunhP9dlIB00i2cygtDa
+X-Gm-Gg: ASbGncvKZDObVn5lZ4Kcn4MsHldC/MjO8kEAabMHC7lY6BCvQHzDmfk+JqZH6Vre/Zo
+	PY61LRhyjGTR3cSsufx59urWG9+DW3db97N6mzvI7L4gIo4YxVCkmksd0Xz22V2pK6FWBcGuUct
+	1eN35cTE/D3xTxOfPcvoZbm/W9rF4b6mwkXCFRlGXpoqjMcryWBOQp5JpeI9HGhkjcGCt5CGvAH
+	TtyvM9XZPnSWypGz6eEpPQbvLfPpR0hwuf5QSAuBL90hp++teD65SYI6nPrK95M5r53ARJJheSE
+	paQd1a++TpBB5A3Ofkl8bnA2ooSVsQKI1CTel7NT0AVI0UquVMlwvRu2y7yjOAH1WOyKqDoqFPH
+	jHt9xMeZ//bX3q6vYj7kU2NYar32P/fHXPHjOKFA++zcCF1Ru4Mmi
+X-Google-Smtp-Source: AGHT+IHSHF4por84O5ihD13mbCVJ7lpg+HRk5vsTlb5fCqjI7ut2qlgYqwNXArOEw1tTdM6stSMZ5A==
+X-Received: by 2002:ac8:5894:0:b0:4a4:4103:f301 with SMTP id d75a77b69052e-4a7c0238ac5mr57115501cf.0.1750865096376;
+        Wed, 25 Jun 2025 08:24:56 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3f99fbe06sm617917785a.94.2025.06.25.08.24.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Jun 2025 08:24:55 -0700 (PDT)
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5313EF40066;
+	Wed, 25 Jun 2025 11:24:55 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Wed, 25 Jun 2025 11:24:55 -0400
+X-ME-Sender: <xms:xxRcaIp0-3z8Y82Uxt2hVCZV8kIa1hAGuObc1oIZ1qXg6d_bgmERrg>
+    <xme:xxRcaOq28oQPCOkPkxmycqOcEJpMG11hbwxIbqKkNmtPa6__qxPDueYPehkWMRG-h
+    tLCuWUQn5O7MsURqQ>
+X-ME-Received: <xmr:xxRcaNN1xi6iCfXozA66TncMfc37ecEv-3kURRDbr1QAlfUmdLucsgfW2w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvfeduvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpedtgeehleevffdujeffgedvlefghffhleekieeifeegveetjedvgeevueffieeh
+    hfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
+    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
+    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
+    gvrdhnrghmvgdpnhgspghrtghpthhtohepvdeipdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopehfrhgvuggvrhhitgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
+    hugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgt
+    uhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlkhhmmheslhhishhtsh
+    drlhhinhhugidruggvvhdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdr
+    ohhrghdprhgtphhtthhopehmihhnghhosehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    ifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhonhhgmhgrnhesrhgvughh
+    rghtrdgtohhmpdhrtghpthhtohepuggrvhgvsehsthhgohhlrggsshdrnhgvth
+X-ME-Proxy: <xmx:xxRcaP4owxUiMUd1ZE-tIHcSRGwqSDial2gl1MrTtL-Jglnlq6xhBA>
+    <xmx:xxRcaH5sWOVDw1NtamZwNzNWwSSVM8VfQdQt4h6T5WIcY4Zj0KWmIA>
+    <xmx:xxRcaPgBLuEEfc09Q2iiwixCj4ufuP0YgnsrM_0n3-uKpzyiIV5SCA>
+    <xmx:xxRcaB44mYkmJRvK5tl0T_uAVso9nWdY53Z3D2XoB-dwvhzb0DMU8g>
+    <xmx:xxRcaKKlAAdPhdSHMinHEPHnUnZd7R9n-wzF9ZMBySHaqyhUGGWfu-3n>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 25 Jun 2025 11:24:54 -0400 (EDT)
+Date: Wed, 25 Jun 2025 08:24:53 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rcu@vger.kernel.org, lkmm@lists.linux.dev,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>, Breno Leitao <leitao@debian.org>,
+	aeh@meta.com, netdev@vger.kernel.org, edumazet@google.com,
+	jhs@mojatatu.com, kernel-team@meta.com,
+	Erik Lundgren <elundgren@meta.com>
+Subject: Re: [PATCH 4/8] shazptr: Avoid synchronize_shaptr() busy waiting
+Message-ID: <aFwUxblhRjh24JF1@Mac.home>
+References: <20250625031101.12555-1-boqun.feng@gmail.com>
+ <20250625031101.12555-5-boqun.feng@gmail.com>
+ <aFv_9f9w_HdTj9Xj@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aFv_9f9w_HdTj9Xj@localhost.localdomain>
 
-Hi,
+On Wed, Jun 25, 2025 at 03:56:05PM +0200, Frederic Weisbecker wrote:
+> Le Tue, Jun 24, 2025 at 08:10:57PM -0700, Boqun Feng a écrit :
+> > +static void synchronize_shazptr_normal(void *ptr)
+> > +{
+> > +	int cpu;
+> > +	unsigned long blocking_grp_mask = 0;
+> > +
+> > +	smp_mb(); /* Synchronize with the smp_mb() in shazptr_acquire(). */
+> > +
+> > +	for_each_possible_cpu(cpu) {
+> > +		void **slot = per_cpu_ptr(&shazptr_slots, cpu);
+> > +		void *val;
+> > +
+> > +		/* Pair with smp_store_release() in shazptr_clear(). */
+> > +		val = smp_load_acquire(slot);
+> > +
+> > +		if (val == ptr || val == SHAZPTR_WILDCARD)
+> > +			blocking_grp_mask |= 1UL << (cpu / shazptr_scan.cpu_grp_size);
+> > +	}
+> > +
+> > +	/* Found blocking slots, prepare to wait. */
+> > +	if (blocking_grp_mask) {
+> 
+> synchronize_rcu() here would be enough since all users have preemption disabled.
+> But I guess this defeats the performance purpose? (If so this might need a
+> comment somewhere).
+> 
 
-ke, 2025-06-25 kello 16:42 +0800, Yang Li via B4 Relay kirjoitti:
-> From: Yang Li <yang.li@amlogic.com>
->=20
-> When the BIS source stops, the controller sends an LE BIG Sync Lost
-> event (subevent 0x1E). Currently, this event is not handled, causing
-> the BIS stream to remain active in BlueZ and preventing recovery.
->=20
-> Signed-off-by: Yang Li <yang.li@amlogic.com>
-> ---
-> Changes in v2:
-> - Matching the BIG handle is required when looking up a BIG connection.
-> - Use ev->reason to determine the cause of disconnection.
-> - Call hci_conn_del after hci_disconnect_cfm to remove the connection ent=
-ry
-> - Delete the big connection
-> - Link to v1: https://lore.kernel.org/r/20250624-handle_big_sync_lost_eve=
-nt-v1-1-c32ce37dd6a5@amlogic.com
-> ---
->  include/net/bluetooth/hci.h |  6 ++++++
->  net/bluetooth/hci_event.c   | 31 +++++++++++++++++++++++++++++++
->  2 files changed, 37 insertions(+)
->=20
-> diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-> index 82cbd54443ac..48389a64accb 100644
-> --- a/include/net/bluetooth/hci.h
-> +++ b/include/net/bluetooth/hci.h
-> @@ -2849,6 +2849,12 @@ struct hci_evt_le_big_sync_estabilished {
->  	__le16  bis[];
->  } __packed;
-> =20
-> +#define HCI_EVT_LE_BIG_SYNC_LOST 0x1e
-> +struct hci_evt_le_big_sync_lost {
-> +	__u8    handle;
-> +	__u8    reason;
-> +} __packed;
-> +
->  #define HCI_EVT_LE_BIG_INFO_ADV_REPORT	0x22
->  struct hci_evt_le_big_info_adv_report {
->  	__le16  sync_handle;
-> diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-> index 66052d6aaa1d..d0b9c8dca891 100644
-> --- a/net/bluetooth/hci_event.c
-> +++ b/net/bluetooth/hci_event.c
-> @@ -7026,6 +7026,32 @@ static void hci_le_big_sync_established_evt(struct=
- hci_dev *hdev, void *data,
->  	hci_dev_unlock(hdev);
->  }
-> =20
-> +static void hci_le_big_sync_lost_evt(struct hci_dev *hdev, void *data,
-> +					    struct sk_buff *skb)
-> +{
-> +	struct hci_evt_le_big_sync_lost *ev =3D data;
-> +	struct hci_conn *bis, *conn;
-> +
-> +	bt_dev_dbg(hdev, "big handle 0x%2.2x", ev->handle);
-> +
-> +	hci_dev_lock(hdev);
-> +
-> +	list_for_each_entry(bis, &hdev->conn_hash.list, list) {
+synchronize_shazptr_normal() cannot wait for a whole grace period,
+because the point of hazard pointers is to avoid waiting for unrelated
+readers.
 
-This should check bis->type =3D=3D BIS_LINK too.
+> I guess blocking_grp_mask is to avoid allocating a cpumask (again for
+> performance purpose? So I guess synchronize_shazptr_normal() has some perf
 
-> +		if (test_and_clear_bit(HCI_CONN_BIG_SYNC, &bis->flags) &&
-> +		    (bis->iso_qos.bcast.big =3D=3D ev->handle)) {
-> +			hci_disconn_cfm(bis, ev->reason);
-> +			hci_conn_del(bis);
-> +
-> +			/* Delete the big connection */
-> +			conn =3D hci_conn_hash_lookup_pa_sync_handle(hdev, bis->sync_handle);
-> +			if (conn)
-> +				hci_conn_del(conn);
+If we are talking about {k,v}malloc allocation:
+synchronize_shazptr_normal() would mostly be used in cleanup/free path
+similar to synchronize_rcu(), therefor I would like to avoid "allocating
+memory to free memory".
 
-Problems:
+> expectations?)
+> 
+> One possibility is to have the ptr contained in:
+> 
+> struct hazptr {
+>        void *ptr;
+>        struct cpumask scan_mask
+> };
+> 
 
-- use after free
+You mean updaters passing a `struct hazptr *` into
+synchronize_shazptr_normal()? That may be a good idea, if multiple
+updaters can share the same `struct hazptr *`, we can add that later,
+but...
 
-- hci_conn_del() cannot be used inside list_for_each_entry()=C2=A0
-  of the connection list
+> And then the caller could simply scan itself those remaining CPUs without
+> relying on the kthread.
 
-- also list_for_each_entry_safe() allows deleting only the iteration
-  cursor, so some restructuring above is needed
+.. this is a bad idea, sure, we can always burn some CPU time to scan,
+but local optimization doesn't mean global optimization, if in the
+future, we have a lots of synchronize_shazptr_normal()s happening at
+the same time, the self busy-waiting scan would become problematic.
 
+Regards,
+Boqun
 
-> +		}
-> +	}
-> +
-> +	hci_dev_unlock(hdev);
-> +}
-> +
->  static void hci_le_big_info_adv_report_evt(struct hci_dev *hdev, void *d=
-ata,
->  					   struct sk_buff *skb)
->  {
-> @@ -7149,6 +7175,11 @@ static const struct hci_le_ev {
->  		     hci_le_big_sync_established_evt,
->  		     sizeof(struct hci_evt_le_big_sync_estabilished),
->  		     HCI_MAX_EVENT_SIZE),
-> +	/* [0x1e =3D HCI_EVT_LE_BIG_SYNC_LOST] */
-> +	HCI_LE_EV_VL(HCI_EVT_LE_BIG_SYNC_LOST,
-> +		     hci_le_big_sync_lost_evt,
-> +		     sizeof(struct hci_evt_le_big_sync_lost),
-> +		     HCI_MAX_EVENT_SIZE),
->  	/* [0x22 =3D HCI_EVT_LE_BIG_INFO_ADV_REPORT] */
->  	HCI_LE_EV_VL(HCI_EVT_LE_BIG_INFO_ADV_REPORT,
->  		     hci_le_big_info_adv_report_evt,
->=20
-> ---
-> base-commit: bd35cd12d915bc410c721ba28afcada16f0ebd16
-> change-id: 20250612-handle_big_sync_lost_event-4c7dc64390a2
->=20
-> Best regards,
-
---=20
-Pauli Virtanen
+> 
+> But I'm sure there are good reasons for now doing that :-)
+> 
+> Thanks.
+> 
+> -- 
+> Frederic Weisbecker
+> SUSE Labs
