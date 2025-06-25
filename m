@@ -1,207 +1,101 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF8782864;
-	Wed, 25 Jun 2025 16:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225601519B9;
+	Wed, 25 Jun 2025 16:35:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750869064; cv=none; b=QPrXrYgt4R4dMBBImWb0N/aVM0aSAfInd/W/sK/1SaNMlRtdCm/kusGMrCk2AxWnufBkqFCZnh4vVmiGGRL4Z6rsg4lhKqYOGNcs1IZv+RaxDGENh+syhD6YXjpJDSOECSivgLWZ8fwxSxcuMUqxM9GKZToRERwXF+UU7OXufPI=
+	t=1750869304; cv=none; b=H9C+jM+X1lzEERP2krBf5YKDHYTHslfR2CE9UsrgSyGiLr0JJjoAZMDT0psg9VlVxYaiIJUD0mO/c9pPlJDmKdqFAWyJ+KR+J36uL9YKNNQS0rAGiNK47q4VD4qQj0ABSqklpO68Me1ihfVMShipqZ1e+1t9s/nrL18yMtcslOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750869064; c=relaxed/simple;
-	bh=e5rPs2f8VzLeR4ruwzzUAJHpHqv2jxxM/dhCmy/xM1c=;
-	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
-	 Content-Type:Date:Message-ID; b=SAojaPPEdJdr9saAWMCaO4vt6vGN3gwOKRDo47nQaVm2Nlq4RGHTuAAWZSQNqRVgmXmk6c8E6aclMqHTKBtY/WetfRh4dOFNJb+/nTSSNjU/J75mzQRCmxdFAyyp4xMFk3ogMqxihMjWknabn8twi5PDzAFANEjf7KzzfF2BCNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=P7gGTM7F; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Kky8lQQB; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
+	s=arc-20240116; t=1750869304; c=relaxed/simple;
+	bh=t/AgadN8uMX4Cd7yqzT2AU8W961H4oHAN2sIoXx/DAE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aF8NhY4veB34lYjWGiTtf4eL7Zgan0mmUQKn+3vSAy/ZbshihljuIG+euHjZ8RrBHI3NvJl49GRmhKXC0DxTseY+pIhTT66bgXeEFtDs+ol8SHy19EXS3WQIvscHqqWxWdFA0sr/97RTFfEvGh+MpYt58lfCtRwphTES1j5lWXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r1uCeWDX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="P7gGTM7F";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Kky8lQQB"
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 7A05E7A021F;
-	Wed, 25 Jun 2025 12:30:59 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Wed, 25 Jun 2025 12:30:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
-	 h=cc:cc:content-id:content-transfer-encoding:content-type
-	:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm3; t=1750869059; x=1750955459; bh=gn5mgacS9yby6OOdchPND
-	abDPrGtXN9QDzbZk+Lowcs=; b=P7gGTM7FxZ6pHq+AO2NGcA6gbCkW/h0sxozr7
-	LOPnxuW1IuaKtYl1lrqDAmFqIYX11fsl0B0ZKsOa7qNfFWVLOFxHYypPokXzom+J
-	SgdUSRpqLxEJTrer8y7NpW+8Vlal2xUhIMiHfGYnQz26OaL4Im2tHLhjch+ZRgVC
-	SGli6wVefRWhjlTextvP3zceqPp/1ZFtpIUAFM8N1mOG63GCSpsMMo2QVLdnWwTc
-	8BsnK/nCjXCktZu2b87q25Jfwn2nrspwxb6EZ68Uod9dqWz1Xi2U5efBpE7KHhGl
-	A7deEzWlInpjnAuo/A9AnjS4BHOYHPAFeLPMF8VPBSdrOid5Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-id
-	:content-transfer-encoding:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1750869059; x=1750955459; bh=gn5mgacS9yby6OOdchPNDabDPrGtXN9QDzb
-	Zk+Lowcs=; b=Kky8lQQBqRWpRpSipgmC0zErnhPv87GiRy22ShjLt158yPxp5Wx
-	T9qaufhIBrReYJzMhfOOAX4T0/hfzWRnv5pHMAsPGh3EOIp2wYyr9bB3c09dCqec
-	5ZwHUW65R9UNWJ8ihik0VChmy03ydrDQ8b+VHtMov8cqEo9Y/GonSN3chFNuqpSb
-	7PmDWHXTeRpl9IAposjTtpeZJH1At+QioE1fCz6+hEdpUWIrIA0OcIE60Zc3jzg6
-	8sMyKFxeRxZx6LGaoSSxsEEXSkydmCPqFdNO3e4xML5EbhUxLxoOVb+P5343e5av
-	YuwAciPZIrVdJXIu5VuL+gRGbxMaHpYpPUg==
-X-ME-Sender: <xms:QiRcaKfUZmG94GC1tQqIVRVA8XilqXnaMcFzU1z3OlaQW5crS-arvQ>
-    <xme:QiRcaEOxwP_rNOjWoK7pqX5b_zmK3hqpKxA4nrcQGLxA2KNc7f5SE-y3j8qLfxDNn
-    YR7gCm2VUI8DRT30eI>
-X-ME-Received: <xmr:QiRcaLgDcn9GhvsLtK_bCUN8Dab5sxQ7jKDMkKkYX_cintlh5apxjlstwbpcPtJTWnvYAQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvfedvhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufgjfhfogggtgfffkfesthhqredtredtvdenucfhrhhomheplfgrhicuggho
-    shgsuhhrghhhuceojhhvsehjvhhoshgsuhhrghhhrdhnvghtqeenucggtffrrghtthgvrh
-    hnpeeifedvleefleejveethfefieduueeivdefieevleffuddvveeftdehffffteefffen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjvhesjh
-    hvohhssghurhhghhdrnhgvthdpnhgspghrtghpthhtohepuddtpdhmohguvgepshhmthhp
-    ohhuthdprhgtphhtthhopehtohhnghhhrghosegsrghmrghitghlohhuugdrtghomhdprh
-    gtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvggu
-    uhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopegtrghrlhhoshdrsghilh
-    gsrghosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtohepshhfohhrshhhvggvsehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepphgrsggv
-    nhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvh
-    hgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:QiRcaH9RZvUp6ZHLpGI1yDzmmK2Axi09-wUqraoz6P_BJmaDpxLfNg>
-    <xmx:QiRcaGuRIOn29IZ4oAE7_fmuLeKDDkqK5CNImsJXn02HFyGxFOywWQ>
-    <xmx:QiRcaOGoDt-4se70SCGUgiDDNqqWULyIekECh1D3eKA1iK0wIhysFg>
-    <xmx:QiRcaFOfAWU888bY-PN2P4kTnxUAgcMWysBLvfegzvUZmXyL6q72rg>
-    <xmx:QyRcaJliR6hdj7wa3L_mpSPXGYoM690ANxBMfwLd4I2N3zfDz4vK37DA>
-Feedback-ID: i53714940:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 25 Jun 2025 12:30:58 -0400 (EDT)
-Received: by famine.localdomain (Postfix, from userid 1000)
-	id F0D159FCA2; Wed, 25 Jun 2025 09:30:56 -0700 (PDT)
-Received: from famine (localhost [127.0.0.1])
-	by famine.localdomain (Postfix) with ESMTP id ED0949FC65;
-	Wed, 25 Jun 2025 09:30:56 -0700 (PDT)
-From: Jay Vosburgh <jv@jvosburgh.net>
-To: "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>
-cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-    "David S. Miller" <davem@davemloft.net>,
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-    Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-    linux-kernel@vger.kernel.org,
-    Carlos Bilbao <carlos.bilbao@kernel.org>,
-    Tonghao Zhang <tonghao@bamaicloud.com>
-Subject: Re: [PATCH] bonding: don't force LACPDU tx to ~333 ms boundaries
-In-reply-to: <20250625-fix-lacpdu-jitter-v1-1-4d0ee627e1ba@kernel.org>
-References: <20250625-fix-lacpdu-jitter-v1-1-4d0ee627e1ba@kernel.org>
-Comments: In-reply-to "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>
-   message dated "Wed, 25 Jun 2025 11:01:24 -0500."
-X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r1uCeWDX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560CAC4CEEA;
+	Wed, 25 Jun 2025 16:35:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750869303;
+	bh=t/AgadN8uMX4Cd7yqzT2AU8W961H4oHAN2sIoXx/DAE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=r1uCeWDXPm10kCy2w1o/C5S8k3Xg9otCN1jOSmouZUvVLWmZ5BlctOCHlWTemtNM8
+	 a5PSis+vaBh1fi+5t4/Q3VXKYxG1i0+GIwFuhV4ivrbLztsa/XIov23Iq43hrzvXwR
+	 662CV5Hh4a04vgjQihrG2R86CsLouSFs+Sd35LQTzy9wjJKftLD0e8RYEq7bbUJDcY
+	 wXEODdTdx4BGMbKWU0wTzeTN5Pb4Omn3Adr6SehqQQCHem7sVO6tqtJeGgU72JtiMn
+	 f7+3yhaBEXCRVyPAidv3Uy1ytJxQNS2oExTq3n0aF2kW1L/wWyrcHQOEu3lIgBYA5N
+	 9bK+C6MWFpXvw==
+Date: Wed, 25 Jun 2025 17:34:59 +0100
+From: Simon Horman <horms@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH v2 net-next 0/3] change some statistics to 64-bit
+Message-ID: <20250625163459.GD152961@horms.kernel.org>
+References: <20250624101548.2669522-1-wei.fang@nxp.com>
+ <20250624181143.6206a518@kernel.org>
+ <PAXPR04MB8510EDB597AD25F666C450ED887BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2545703.1750869056.1@famine>
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Jun 2025 09:30:56 -0700
-Message-ID: <2545704.1750869056@famine>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB8510EDB597AD25F666C450ED887BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-Seth Forshee (DigitalOcean) <sforshee@kernel.org> wrote:
+On Wed, Jun 25, 2025 at 02:22:54AM +0000, Wei Fang wrote:
+> > On Tue, 24 Jun 2025 18:15:45 +0800 Wei Fang wrote:
+> > > The port MAC counters of ENETC are 64-bit registers and the statistics
+> > > of ethtool are also u64 type, so add enetc_port_rd64() helper function
+> > > to read 64-bit statistics from these registers, and also change the
+> > > statistics of ring to unsigned long type to be consistent with the
+> > > statistics type in struct net_device_stats.
+> > 
+> > this series adds almost 100 sparse warnings please trying building it with C=1
+> > --
+> > pw-bot: cr
+> 
+> Hi Jakub,
+> 
+> Simon has posted a patch [1] to fix the sparse warnings. Do I need to wait until
+> Simon's patch is applied to the net-next tree and then resend this patch set?
+> 
+> [1] https://lore.kernel.org/imx/20250624-etnetc-le-v1-1-a73a95d96e4e@kernel.org/
 
->The timer which ensures that no more than 3 LACPDUs are transmitted in
->a second rearms itself every 333ms regardless of whether an LACPDU is
->transmitted when the timer expires. This causes LACPDU tx to be delayed
->until the next expiration of the timer, which effectively aligns LACPDUs
->to ~333ms boundaries. This results in a variable amount of jitter in the
->timing of periodic LACPDUs.
+Yes, I have confirmed that with patch[1] applied this patch-set
+does not introduce any Sparse warnings (in my environment).
 
-	To be clear, the "3 per second" limitation that all of this
-should to conform to is from IEEE 802.1AX-2014, 6.4.16 Transmit machine:
+I noticed the Sparse warnings that are otherwise introduced when reviewing
+v1 of this patchset which is why I crated patch[1].
 
-	"When the LACP_Enabled variable is TRUE and the NTT (6.4.7)
-	variable is TRUE, the Transmit machine shall ensure that a
-	properly formatted LACPDU (6.4.2) is transmitted [i.e., issue a
-	CtrlMuxN:M_UNITDATA.Request(LACPDU) service primitive], subject
-	to the restriction that no more than three LACPDUs may be
-	transmitted in any Fast_Periodic_Time interval. If NTT is set to
-	TRUE when this limit is in force, the transmission shall be
-	delayed until such a time as the restriction is no longer in
-	force. The NTT variable shall be set to FALSE when the Transmit
-	machine has transmitted a LACPDU."
+The issue is that there is are long standing Sparse warnings - which
+highlight a driver bug, albeit one that doesn't manifest with in tree
+users. They is due to an unnecessary call to le64_to_cpu(). The warnings
+are:
 
-	The current implementation conforms to this as you describe: by
-aligning transmission to 1/3 second boundaries, no more than 3 can ever
-be sent in one second.
+  .../enetc_hw.h:513:16: warning: cast to restricted __le64
+  .../enetc_hw.h:513:16: warning: restricted __le64 degrades to integer
+  .../enetc_hw.h:513:16: warning: cast to restricted __le64
 
-	If, hypothetically, the state machine were to transition, or a
-user updates port settings (either of which would set NTT each time)
-more than 3 times in a second, would your patched code obey this
-restriction?
+Patches 2/3 and 3/3 multiply the incidence of the above 3 warnings because
+they increase the callers of the inline function where the problem lies.
 
-	For completeness, and to make this email as complicated as
-possible, I'll note that 802.1AX-2020 removes this particular
-restriction in favor of incorporating the 802.3 generic limit on
-transmission rates for Slow Protocols (of which LACP is one) to 10 per
-second (802.3-2022, 30.3.1.1.38) into the state machine (802.1AX-2020,
-6.4.7, see "txOpportunity" and 6.4.14 LACP Transmit machine).  Linux
-bonding doesn't implement the 802.1AX-2020 state machines, though, so I
-don't think we can reasonably pick and choose arbitrary pieces from two
-differing editions of a standard.
+But I'd argue that, other than noise, they don't make things worse.
+The bug doesn't manifest for in-tree users (and if it did, it would
+have been manifesting anyway).
 
-	-J
-
->Change this to only rearm the timer when an LACPDU is actually sent,
->allowing tx at any point after the timer has expired.
->
->Signed-off-by: Seth Forshee (DigitalOcean) <sforshee@kernel.org>
->---
-> drivers/net/bonding/bond_3ad.c | 11 ++++++-----
-> 1 file changed, 6 insertions(+), 5 deletions(-)
->
->diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3a=
-d.c
->index c6807e473ab706afed9560bcdb5e6eca1934f5b7..a8d8aaa169fc09d7d5c201ff2=
-98b37b3f11a7ded 100644
->--- a/drivers/net/bonding/bond_3ad.c
->+++ b/drivers/net/bonding/bond_3ad.c
->@@ -1378,7 +1378,7 @@ static void ad_tx_machine(struct port *port)
-> 	/* check if tx timer expired, to verify that we do not send more than
-> 	 * 3 packets per second
-> 	 */
->-	if (port->sm_tx_timer_counter && !(--port->sm_tx_timer_counter)) {
->+	if (!port->sm_tx_timer_counter || !(--port->sm_tx_timer_counter)) {
-> 		/* check if there is something to send */
-> 		if (port->ntt && (port->sm_vars & AD_PORT_LACP_ENABLED)) {
-> 			__update_lacpdu_from_port(port);
->@@ -1393,12 +1393,13 @@ static void ad_tx_machine(struct port *port)
-> 				 * again until demanded
-> 				 */
-> 				port->ntt =3D false;
->+
->+				/* restart tx timer(to verify that we will not
->+				 * exceed AD_MAX_TX_IN_SECOND
->+				 */
->+				port->sm_tx_timer_counter =3D ad_ticks_per_sec / AD_MAX_TX_IN_SECOND=
-;
-> 			}
-> 		}
->-		/* restart tx timer(to verify that we will not exceed
->-		 * AD_MAX_TX_IN_SECOND
->-		 */
->-		port->sm_tx_timer_counter =3D ad_ticks_per_sec/AD_MAX_TX_IN_SECOND;
-> 	}
-> }
-> =
-
->
->---
->base-commit: 86731a2a651e58953fc949573895f2fa6d456841
->change-id: 20250625-fix-lacpdu-jitter-1554d9f600ab
->
->Best regards,
->-- =
-
->Seth Forshee (DigitalOcean) <sforshee@kernel.org>
-
----
-	-Jay Vosburgh, jv@jvosburgh.net
+So I'd advocate accepting this series (or not) independent of resolving
+the Sparse warnings. Which should disappear when patch[1], or some variant
+thereof, is accepted (via net or directly into net-next).
