@@ -1,140 +1,145 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D36F29A303;
-	Wed, 25 Jun 2025 09:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BA31DEFE7;
+	Wed, 25 Jun 2025 09:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750844744; cv=none; b=tO02ZQPHU+cK5fC6Mh1/ChdAsKTNjYL2TkYgR/kYEqt5gTo5o5Bv84addc+MBodO6Klz9nUDufRU1EQGYbnRWuWoKO9eFCJW5lAnli0hP+45qJ+RqML8isi9vMvFdYnHIOmAL9q+gh81l+71Zzo+nEO4521iQXqKaI+QJpZ3zIU=
+	t=1750845056; cv=none; b=KnVI93rw794h1GUpDlvpo3dheB/dgmYmpRBysLWQbIt+J4mX+R3bsTbRn+m9QsJHTRkt7KUvtINNM7cOVk/dTN1hPqXKiXjLUBrEWOt3iVoTs9OBueWg/BzQevg/tMH1tumLbUnD6jJfDxK7DTyJmexfdx5Hyj8fmvq/QILPjVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750844744; c=relaxed/simple;
-	bh=WGq9BnLFRlvgaj6JRyQGZWMVZ81/AYyKEllbs2pFfUQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p5dYSXqItUODp679RtJR7X9+KO826PbgxDzbgp54STqNt7l0tYZeQgGaFrzL3VBW4RTsWSkq8VZ+GJzsHe/2otby6S1xgHro6WhgnApRimZwh+CiZqws1BKnR3aHRsGneFNMzDYOlhEc2zJ0sIWfuInJ1ksAAHEUeAqZxEE68KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=GBU4AKGc; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1750845056; c=relaxed/simple;
+	bh=XV1nkjfUcMxl3FXXMlmgCgmpon5+5Xw73zAFoBzP0nI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uGw/TOYap4h80+c9Dmx2wVBP1AuSUSDY72C0RZtQN27FDh2vZ5OG8VOod4nYPR0K+u4K4cXOSdxTJk7wzT/Og+RV6x4YtZgnUyt7WN35/wb2Ten+Ky2GmAvP5QDu2foYUYecIDjsE9NV25YajfvA6Nq7/V0R3tDPhyrmjMun3S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=XGHkEr+3; arc=none smtp.client-ip=52.119.213.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="GBU4AKGc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1750844739;
-	bh=WGq9BnLFRlvgaj6JRyQGZWMVZ81/AYyKEllbs2pFfUQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GBU4AKGca8KnCekeyVnEecyJmPoVJ7wlpqhQnR8iWTyHHoOmXtft89FJs/f+zClQV
-	 hbB+VfZY7un9VwtAeD07AeKh1UjGVKVG0FXBySpj02ixuj48s0NNREvPRmj0d9EPD7
-	 hSIJOAuxT7B8J5+oGL74kB+VAGj6Ot/Aizw8daZNKJV66x8egWZH/vgxHYgxIcSZaa
-	 WmI79YohY/fz4whCsSj0MdwFqEGHo978IvhMhR13I0Nov+bqXurBJuTpdWIgcPj42X
-	 3v82NQL/5x4kqHRLDpAuyf0qYvJ43Ib9grHcg+NmAWGMum2+fmyXCcLkwX19utj+VX
-	 As/O7jLCKPSbg==
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id B9EBB17E0CE3;
-	Wed, 25 Jun 2025 11:45:38 +0200 (CEST)
-Message-ID: <9fc32523-5009-4f48-8d82-6c3fd285801d@collabora.com>
-Date: Wed, 25 Jun 2025 11:45:38 +0200
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="XGHkEr+3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1750845055; x=1782381055;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=i9pQ+MlE5S8O+IzYQuqdhdmkfSkIm+1g1tP/i8TStbQ=;
+  b=XGHkEr+3QYKvlpxVIzCK9sS5bSBFF+CQcuWkoPY1qCV0zlOAnv9joy64
+   a7SYa/sYk2r6eJO4n8ciJKDBPuM1HllOr/FwBRW37PYYh3NnN2OxhAYyh
+   5UB5XhCMWuf5zn9aC1w2kB4e2TDsjQrJmfJVuKOQfgVxj+cMPrz6F8KsL
+   MkcWS+T+uiKouYREx4XHAU7gRXN0pTgmEf5qlc0Nl+2wCssko87bZakRB
+   TwXasApLXEXsZSTovsuQhNPknAtua0zIXJmOGanPIeIgpzw/xbttY803r
+   nxI1nDhRmkOLy6vuoKsrz0Won2aSOV/X0LSwv4PER8phskFcysHeHWvAB
+   A==;
+X-IronPort-AV: E=Sophos;i="6.16,264,1744070400"; 
+   d="scan'208";a="736823987"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 09:50:29 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [10.0.21.151:3829]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.42.18:2525] with esmtp (Farcaster)
+ id b83153d2-cbb2-4d13-bb3b-3d09a4fbbfc7; Wed, 25 Jun 2025 09:50:27 +0000 (UTC)
+X-Farcaster-Flow-ID: b83153d2-cbb2-4d13-bb3b-3d09a4fbbfc7
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 25 Jun 2025 09:50:26 +0000
+Received: from b0be8375a521.amazon.com (10.37.244.14) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 25 Jun 2025 09:50:24 +0000
+From: Kohei Enju <enjuk@amazon.com>
+To: <netdev@vger.kernel.org>, <linux-hams@vger.kernel.org>
+CC: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
+	<kuniyu@google.com>, Ingo Molnar <mingo@kernel.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Kohei Enju <kohei.enju@gmail.com>, Kohei Enju
+	<enjuk@amazon.com>, <syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com>
+Subject: [PATCH net v1] rose: fix dangling neighbour pointers in rose_rt_device_down()
+Date: Wed, 25 Jun 2025 18:49:44 +0900
+Message-ID: <20250625095005.66148-2-enjuk@amazon.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/29] dt-bindings: clock: mediatek: Describe MT8196
- peripheral clock controllers
-To: Krzysztof Kozlowski <krzk@kernel.org>, Laura Nao
- <laura.nao@collabora.com>, mturquette@baylibre.com, sboyd@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- matthias.bgg@gmail.com, p.zabel@pengutronix.de, richardcochran@gmail.com
-Cc: guangjie.song@mediatek.com, wenst@chromium.org,
- linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
- kernel@collabora.com
-References: <20250624143220.244549-1-laura.nao@collabora.com>
- <20250624143220.244549-10-laura.nao@collabora.com>
- <7dfba01a-6ede-44c2-87e3-3ecb439b48e3@kernel.org>
- <284a4ee5-806b-45f9-8d57-d02ec291e389@collabora.com>
- <0870a2ba-936b-4eb2-a570-f2c9dea471b8@kernel.org>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <0870a2ba-936b-4eb2-a570-f2c9dea471b8@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D040UWA004.ant.amazon.com (10.13.139.93) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Il 25/06/25 10:57, Krzysztof Kozlowski ha scritto:
-> On 25/06/2025 10:20, AngeloGioacchino Del Regno wrote:
->> Il 24/06/25 18:02, Krzysztof Kozlowski ha scritto:
->>> On 24/06/2025 16:32, Laura Nao wrote:
->>>> +  '#reset-cells':
->>>> +    const: 1
->>>> +    description:
->>>> +      Reset lines for PEXTP0/1 and UFS blocks.
->>>> +
->>>> +  mediatek,hardware-voter:
->>>> +    $ref: /schemas/types.yaml#/definitions/phandle
->>>> +    description:
->>>> +      On the MT8196 SoC, a Hardware Voter (HWV) backed by a fixed-function
->>>> +      MCU manages clock and power domain control across the AP and other
->>>> +      remote processors. By aggregating their votes, it ensures clocks are
->>>> +      safely enabled/disabled and power domains are active before register
->>>> +      access.
->>>
->>> Resource voting is not via any phandle, but either interconnects or
->>> required opps for power domain.
->>
->> Sorry, I'm not sure who is actually misunderstanding what, here... let me try to
->> explain the situation:
->>
->> This is effectively used as a syscon - as in, the clock controllers need to perform
->> MMIO R/W on both the clock controller itself *and* has to place a vote to the clock
->> controller specific HWV register.
-> 
-> syscon is not the interface to place a vote for clocks. "clocks"
-> property is.
-> 
->>
->> This is done for MUX-GATE and GATE clocks, other than for power domains.
->>
->> Note that the HWV system is inside of the power domains controller, and it's split
->> on a per hardware macro-block basis (as per usual MediaTek hardware layout...).
->>
->> The HWV, therefore, does *not* vote for clock *rates* (so, modeling OPPs would be
->> a software quirk, I think?), does *not* manage bandwidth (and interconnect is for
->> voting BW only?), and is just a "switch to flip".
-> 
-> That's still clocks. Gate is a clock.
-> 
->>
->> Is this happening because the description has to be improved and creating some
->> misunderstanding, or is it because we are underestimating and/or ignoring something
->> here?
->>
-> 
-> Other vendors, at least qcom, represent it properly - clocks. Sometimes
-> they mix up and represent it as power domains, but that's because
-> downstream is a mess and because we actually (at upstream) don't really
-> know what is inside there - is it a clock or power domain.
-> 
+There are two bugs in rose_rt_device_down() that can lead to
+use-after-free:
 
-....but the hardware voter cannot be represented as a clock, because you use it
-for clocks *or* power domains (but at the same time, and of course in different
-drivers, and in different *intertwined* registers).
+1. The loop bound `t->count` is modified within the loop, which can
+   cause the loop to terminate early and miss some entries.
 
-So the hardware voter itself (and/or bits inside of its registers) cannot be
-represented as a clock :\
+2. When removing an entry from the neighbour array, the subsequent entries
+   are moved up to fill the gap, but the loop index `i` is still
+   incremented, causing the next entry to be skipped.
 
-In the context of clocks, it's used for clocks, (and not touching power domains at
-all), but in the context of power domains it's used for power domains (and not
-touching clocks at all).
+For example, if a node has three neighbours (A, B, A) and A is being
+removed:
+- 1st iteration (i=0): A is removed, array becomes (B, A, A), count=2
+- 2nd iteration (i=1): We now check A instead of B, skipping B entirely
+- 3rd iteration (i=2): Loop terminates early due to count=2
 
-I'm not sure what qcom does - your reply makes me think that they did it such that
-the clocks part is in a MMIO and the power domains part is in a different MMIO,
-without having clock/pd intertwined voting registers...
+This leaves the second A in the array with count=2, but the rose_neigh
+structure has been freed. Accessing code assumes that the first `count`
+entries are valid pointers, causing a use-after-free when it accesses
+the dangling pointer.
 
-Still not sure what to do here, then...
+Fix both issues by iterating over the array in reverse order with a fixed
+loop bound. This ensures that all entries are examined and that the removal
+of an entry doesn't affect the iteration of subsequent entries.
 
-Cheers,
-Angelo
+Reported-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e04e2c007ba2c80476cb
+Tested-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+---
+ net/rose/rose_route.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
+
+diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
+index 2dd6bd3a3011..a488fd8c4710 100644
+--- a/net/rose/rose_route.c
++++ b/net/rose/rose_route.c
+@@ -479,7 +479,7 @@ void rose_rt_device_down(struct net_device *dev)
+ {
+ 	struct rose_neigh *s, *rose_neigh;
+ 	struct rose_node  *t, *rose_node;
+-	int i;
++	int i, j;
+ 
+ 	spin_lock_bh(&rose_node_list_lock);
+ 	spin_lock_bh(&rose_neigh_list_lock);
+@@ -497,22 +497,14 @@ void rose_rt_device_down(struct net_device *dev)
+ 			t         = rose_node;
+ 			rose_node = rose_node->next;
+ 
+-			for (i = 0; i < t->count; i++) {
++			for (i = t->count - 1; i >= 0; i--) {
+ 				if (t->neighbour[i] != s)
+ 					continue;
+ 
+ 				t->count--;
+ 
+-				switch (i) {
+-				case 0:
+-					t->neighbour[0] = t->neighbour[1];
+-					fallthrough;
+-				case 1:
+-					t->neighbour[1] = t->neighbour[2];
+-					break;
+-				case 2:
+-					break;
+-				}
++				for (j = i; j < t->count; j++)
++					t->neighbour[j] = t->neighbour[j + 1];
+ 			}
+ 
+ 			if (t->count <= 0)
+-- 
+2.48.1
+
