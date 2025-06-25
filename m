@@ -1,27 +1,27 @@
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807EE29B23B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A19329AAF7
 	for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 10:22:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750846946; cv=none; b=PaK3FrbpEX2JNF2RODZt9LKNAwtEZARLpFWAeGinLCVjfGSK4uKiy21dRiFc6BGXALC1Q0wdX7v6gkFDGkPanp7X5kHIhTnO67P2fNuHY8GMAeIfKWJ9+ALHfdsW8MZRQnYYq8CauaCWLmMRmrYdToZEfVFs5c1EDGdpa8ueJbk=
+	t=1750846947; cv=none; b=CQmZLYMy19cGj/VKXmJwWRqb+6bgUOfDp/OT2kPF1Xdrw5Q0UDYDd6tWQins67EmT1vOEYMkP6rbMHlqcZFE4UxBminVu+4VUNpfkq3Ojy3dcZ8KX2c3O9A52YSLULy/uT7GB4OJBligwmgzsAKCoDltajLx5Sn2udvAGzZYm3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750846946; c=relaxed/simple;
-	bh=7hqcaz84SluVy67hFSf74JyGlTNdCH9W4vQKnsHS12s=;
+	s=arc-20240116; t=1750846947; c=relaxed/simple;
+	bh=RXFyn2n0qyBIR7UEWxzN/TZFEwVE6PHzZiXLpdwSdVI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EHUicem77X5tocG/GhA2DgCfyrhpHGksB/crxu4rtRlpdiptPwJlWVe4tuMyeSkyCJuybTYGLz2oCPKTG2nFUVGzd/s5EDMm7w9JP4XhEoZZ/EY9suocRD+dXQlTooVTXZfT8Mn2Vn2m/Vue5NMAeclu/EHAN78CJWi6eelIYdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.204.34.130
+	 MIME-Version; b=Ro2qJZgLkyi80x95q6ZBsjzBavoyTYYOnNQSvJRDpaogtfVjD6yN/8/n5BZlp6gmQDQ+mvGuwI8dcFC0VRWPugvirZ3KvUEd8O6Q8C/w9WiHkdKj/kXy4cQ88Iw3LiE9wlJJgTl3ehD8KOwiFPVsyheEfT8o9LoL0/4WKNinO3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.207.22.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: esmtpgz13t1750846887t3cb666ba
-X-QQ-Originating-IP: jtRMwdQwEPKQHIBvJ8iex9apMMHR03M1Gc2NyzXGZo4=
+X-QQ-mid: esmtpgz13t1750846883t22193f44
+X-QQ-Originating-IP: dffsWKuBlAVRYO0lf63XnhDK/av6dbcHwMayeIESydQ=
 Received: from localhost.localdomain ( [60.186.80.242])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 25 Jun 2025 18:21:26 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 3029809876196297638
+	id ; Wed, 25 Jun 2025 18:21:21 +0800 (CST)
+X-QQ-SSF: 0001000000000000000000000000000
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 14228362950089457375
 EX-QQ-RecipientCnt: 10
 From: Mengyuan Lou <mengyuanlou@net-swift.com>
 To: netdev@vger.kernel.org
@@ -34,9 +34,9 @@ Cc: michal.swiatkowski@linux.intel.com,
 	linglingzhang@trustnetic.com,
 	jiawenwu@net-swift.com,
 	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net-next v2 11/12] net: ngbevf: init interrupts and request irqs
-Date: Wed, 25 Jun 2025 18:20:57 +0800
-Message-Id: <20250625102058.19898-12-mengyuanlou@net-swift.com>
+Subject: [PATCH net-next v2 09/12] net: wangxun: add ngbevf build
+Date: Wed, 25 Jun 2025 18:20:55 +0800
+Message-Id: <20250625102058.19898-10-mengyuanlou@net-swift.com>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20250625102058.19898-1-mengyuanlou@net-swift.com>
 References: <20250625102058.19898-1-mengyuanlou@net-swift.com>
@@ -49,120 +49,313 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpgz:net-swift.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: NqPPq/RgI0fMoBzevOIGovIIbN5rRtayhRSmzbaDifkTu2HgiJQL1RZZ
-	jg3xzwxoSCjJiw5IjXaexisxnNa/+o/uTNKgHp7kjNwA3o930bsvxIDKCCG1EsofDllD6Zs
-	OQBh9M+kR6oUwWpF4obU4nDIH6dpBp83sSom/HZbayV4Z3Fq5R3lEVoE2vt34YXbRpI8orB
-	/021nQLT9l/G8I1OoWcLJ7XjP3zXyCMDe7LGw4eVPScqt9BmrU2ZXbcx5GJ+1EdLXpc9ilB
-	G6kFkcd85aZzK/VNEM0pNNWVLjDFysMLw1sU0f/YdwsJtLDrTPDHcsGFFfRx5llkIaV5QfG
-	EW7aRGKesqvstTT7TiXuo1tiK3Gl4Yfe7dbofuSwMXYYovahTZoeCLe3EM2C6a3qXGYd6cK
-	lKg0QBgc6lm3D9/8VIqcjVa/C/hgqnBuv2ajjX1rgbpldB9xyEIEuU3pLu7L7cyZ8h47SH7
-	i5XAlpT1sXNg8GfOShmB1BdcKBTLJJlDlGSSkNWm/zPh7fggEU7+1HMAJaC9aEHFAwidsOe
-	ZK+joRp6bV+0SYLNf1CjyPiRloc8jdM1hQowo9oVmgZ5KQKwIuC/IpHHwqgf1OwxwFWocED
-	5RIzbkOjcBv7A6JVsvxgFSUlJ8ozUPgTOO9OEX82Lq5dxJ3+HzrDoTH7KPU/Z3RsSoufawK
-	Jm+V++e4dPtK+SZ8+ibQ6P3gUKe3f3HhbVWeODuUOIffgr40AARe6JZjQZu8IOJwN4JHsOj
-	EM4C7/ibJap4AcdlOljxBJdZlztHET6AjjqrpziKbVmw3JQ9um9qVwdBa/HM27B690OHklO
-	wULYfm24PhvCddcyVF+zBfTFo0zwjOl2pA5kuaiRIKLAqhz/geSSpa4qP/yDjettY954bq+
-	4B4I9aGOU/CAJ8v9Qe2HnSjU4jayq0LPM5f0YTge8ESlX7aP2m8IOvRBymA4QzWTeZj58xZ
-	ezWl/Z9/lpT2f1i5XQjdLA5OWP1BVSebM8PE36bKZnkuzTLmLMZtbXfGqE4+xWoFD244YfW
-	fn1Ppejrc2W6sYkQHTXuL1KYbaSCokGxF+ceqqGKBtaIbAw6hNcnlfQc0nW3wSXmPkyV2dj
-	v7TmwV7t+dkdjMExlUvXlgW1o1ol5dml1/Q9P4PwfedWUqbO6Y0Ub3RdbkxpoHOJ1N3MH2V
-	WhT6
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+X-QQ-XMAILINFO: Md0Qe8tK0cV65+mzCcv3bOqXBSr1i7uTqhnQ9agRxBsc05Z3gUbEzjDp
+	dAlNIK0iEBcA4V8kCLqbFRpAPpm/q/9XHphc+k43230gY/CWa51sJxEUh1/bC1GO3J+07jA
+	bhULNivzyg0hYozfm80o6KgXUpbAjjVPopADC3bK55QU65BVey8w2/IvwZCaMuJrXnqyVeX
+	Eyp2JgVYq4Yb4zqAtti/kdj0fxvOTHtpv5RIGrCmd/uj9fga5yfVU0fxCce3oSf3rxlrUOl
+	fBvzjClwrzYn80w/gdBpsyKK9fkghyCNyyKM9eCdaDh41rJfod0YqFibCBd4ESwbrnJvK43
+	RBuKwy55VWTGG28fo6VSfXBSnX/G1imn8Yvje5kqB/RsBPTe6lU8ERCGK/odIsVxNbvcmht
+	7XWaFkMOZ5SWfOspjGePStdw4lFkUU1tJtfRBTvweq0BEBu0cEm6HaWvp/Z5A6zb7Cilzdp
+	gaPb3nQs1tP3DgFAYPCrRdrQCJJ89Usc+cm4FERxScfk9xb+kdekRfttSA9NXORJ+m8kXNS
+	Baidju/HBpPDi4kw3FJTZ4jSpw3rVlA97biru/T2Xm6FbrQ6tsqDvYfnPu5IjOifOMrrm7r
+	9+ssjbwMDTb+F2AiYnsrDlWU0DZ8FGaBowosOHkScNcYcsCAn9rvnTkl4/gvGfU1brjD6bt
+	VXhvT8JDETFIe5QOj6YiPm/fX3pwoVAZ9M86vHNMQcHHxCH/DrCjzOF9RfE5SVXSSh3epOO
+	tQOjC/JhjXOR4uoZXQ2zzmy7zzSgyD2Sw7X4B1gVXZDAsgZw/ZxDgaHWCrxNXakJe7yWGZk
+	GbgDkD+ubpk/aFFbnsWfo6+rdBlaV572YZAY2gsJFr5Nzq1gNJsAQVXegCdfKUR/8hK4eXE
+	6vF07wnJB0rQZ9FIoBccPM9TrYntCC8icaf/SRGXtZGaLX32su272VLXRxncrawav66UhCv
+	yHTnwr3qpXzyUW12PyhKdZtTHx69nLTHjjnpwVpDgMPZhjcMkPHlVRfe/0oRajVEoNmVmhz
+	Y7KqhWfq1S6AiZ2vHrDsAZmj/hff8s4N1ALHn1AWk9tNaO/7b7le3E/FCs2mXgZQQoHQBzp
+	hhpicYCnQEXWckBjs5zlCs+l1/YKIXV3r/7/eRBjzTxE8zIwrGZX2oSajNWSI0ANg==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
 X-QQ-RECHKSPAM: 0
 
-Add specific parameters for irq alloc, then use
-wx_init_interrupt_scheme to initialize interrupt
-allocation in probe.
-Add .ndo_start_xmit support and start all queues.
+Add doc build infrastructure for ngbevf driver.
+Implement the basic PCI driver loading and unloading interface.
+Initialize the id_table which support 1G virtual
+functions for Wangxun.
 
 Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
 ---
- .../net/ethernet/wangxun/ngbevf/ngbevf_main.c  | 18 ++++++++++++++++++
- .../net/ethernet/wangxun/ngbevf/ngbevf_type.h  |  1 +
- 2 files changed, 19 insertions(+)
+ .../device_drivers/ethernet/index.rst         |   1 +
+ .../ethernet/wangxun/ngbevf.rst               |  16 ++
+ drivers/net/ethernet/wangxun/Kconfig          |  15 ++
+ drivers/net/ethernet/wangxun/Makefile         |   1 +
+ drivers/net/ethernet/wangxun/ngbevf/Makefile  |   9 ++
+ .../net/ethernet/wangxun/ngbevf/ngbevf_main.c | 149 ++++++++++++++++++
+ .../net/ethernet/wangxun/ngbevf/ngbevf_type.h |  24 +++
+ 7 files changed, 215 insertions(+)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/wangxun/ngbevf.rst
+ create mode 100644 drivers/net/ethernet/wangxun/ngbevf/Makefile
+ create mode 100644 drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
+ create mode 100644 drivers/net/ethernet/wangxun/ngbevf/ngbevf_type.h
 
+diff --git a/Documentation/networking/device_drivers/ethernet/index.rst b/Documentation/networking/device_drivers/ethernet/index.rst
+index e93453410772..40ac552641a3 100644
+--- a/Documentation/networking/device_drivers/ethernet/index.rst
++++ b/Documentation/networking/device_drivers/ethernet/index.rst
+@@ -60,6 +60,7 @@ Contents:
+    wangxun/txgbe
+    wangxun/txgbevf
+    wangxun/ngbe
++   wangxun/ngbevf
+ 
+ .. only::  subproject and html
+ 
+diff --git a/Documentation/networking/device_drivers/ethernet/wangxun/ngbevf.rst b/Documentation/networking/device_drivers/ethernet/wangxun/ngbevf.rst
+new file mode 100644
+index 000000000000..a39e3d5a1038
+--- /dev/null
++++ b/Documentation/networking/device_drivers/ethernet/wangxun/ngbevf.rst
+@@ -0,0 +1,16 @@
++.. SPDX-License-Identifier: GPL-2.0+
++
++==================================================================
++Linux Base Virtual Function Driver for Wangxun(R) Gigabit Ethernet
++==================================================================
++
++WangXun Gigabit Virtual Function Linux driver.
++Copyright(c) 2015 - 2025 Beijing WangXun Technology Co., Ltd.
++
++Support
++=======
++For general information, go to the website at:
++https://www.net-swift.com
++
++If you got any problem, contact Wangxun support team via nic-support@net-swift.com
++and Cc: netdev.
+diff --git a/drivers/net/ethernet/wangxun/Kconfig b/drivers/net/ethernet/wangxun/Kconfig
+index a6ec73e4f300..c548f4e80565 100644
+--- a/drivers/net/ethernet/wangxun/Kconfig
++++ b/drivers/net/ethernet/wangxun/Kconfig
+@@ -82,4 +82,19 @@ config TXGBEVF
+ 	  To compile this driver as a module, choose M here. MSI-X interrupt
+ 	  support is required for this driver to work correctly.
+ 
++config NGBEVF
++	tristate "Wangxun(R) GbE Virtual Function Ethernet support"
++	depends on PCI_MSI
++	select LIBWX
++	help
++	  This driver supports virtual functions for WX1860, WX1860AL.
++
++	  This driver was formerly named ngbevf.
++
++	  More specific information on configuring the driver is in
++	  <file:Documentation/networking/device_drivers/ethernet/wangxun/ngbevf.rst>.
++
++	  To compile this driver as a module, choose M here. MSI-X interrupt
++	  support is required for this driver to work correctly.
++
+ endif # NET_VENDOR_WANGXUN
+diff --git a/drivers/net/ethernet/wangxun/Makefile b/drivers/net/ethernet/wangxun/Makefile
+index 71371d47a6ee..0a71a710b717 100644
+--- a/drivers/net/ethernet/wangxun/Makefile
++++ b/drivers/net/ethernet/wangxun/Makefile
+@@ -7,3 +7,4 @@ obj-$(CONFIG_LIBWX) += libwx/
+ obj-$(CONFIG_TXGBE) += txgbe/
+ obj-$(CONFIG_TXGBEVF) += txgbevf/
+ obj-$(CONFIG_NGBE) += ngbe/
++obj-$(CONFIG_NGBEVF) += ngbevf/
+diff --git a/drivers/net/ethernet/wangxun/ngbevf/Makefile b/drivers/net/ethernet/wangxun/ngbevf/Makefile
+new file mode 100644
+index 000000000000..11a4f15e2ce3
+--- /dev/null
++++ b/drivers/net/ethernet/wangxun/ngbevf/Makefile
+@@ -0,0 +1,9 @@
++# SPDX-License-Identifier: GPL-2.0
++# Copyright (c) 2015 - 2025 Beijing WangXun Technology Co., Ltd.
++#
++# Makefile for the Wangxun(R) 1GbE virtual functions driver
++#
++
++obj-$(CONFIG_NGBE) += ngbevf.o
++
++ngbevf-objs := ngbevf_main.o
 diff --git a/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c b/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
-index 4eea682f024b..a629b645d3a1 100644
---- a/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
+new file mode 100644
+index 000000000000..77025e7deeeb
+--- /dev/null
 +++ b/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
-@@ -10,6 +10,7 @@
- 
- #include "../libwx/wx_type.h"
- #include "../libwx/wx_hw.h"
-+#include "../libwx/wx_lib.h"
- #include "../libwx/wx_mbx.h"
- #include "../libwx/wx_vf.h"
- #include "../libwx/wx_vf_common.h"
-@@ -43,10 +44,18 @@ static const struct pci_device_id ngbevf_pci_tbl[] = {
- static const struct net_device_ops ngbevf_netdev_ops = {
- 	.ndo_open               = wxvf_open,
- 	.ndo_stop               = wxvf_close,
-+	.ndo_start_xmit         = wx_xmit_frame,
- 	.ndo_validate_addr      = eth_validate_addr,
- 	.ndo_set_mac_address    = wx_set_mac_vf,
- };
- 
-+static void ngbevf_set_num_queues(struct wx *wx)
+@@ -0,0 +1,149 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (c) 2015 - 2025 Beijing WangXun Technology Co., Ltd. */
++
++#include <linux/types.h>
++#include <linux/module.h>
++#include <linux/pci.h>
++#include <linux/netdevice.h>
++#include <linux/string.h>
++#include <linux/etherdevice.h>
++
++#include "../libwx/wx_type.h"
++#include "../libwx/wx_vf_common.h"
++#include "ngbevf_type.h"
++
++/* ngbevf_pci_tbl - PCI Device ID Table
++ *
++ * Wildcard entries (PCI_ANY_ID) should come last
++ * Last entry must be all 0s
++ *
++ * { Vendor ID, Device ID, SubVendor ID, SubDevice ID,
++ *   Class, Class Mask, private data (not used) }
++ */
++static const struct pci_device_id ngbevf_pci_tbl[] = {
++	{ PCI_VDEVICE(WANGXUN, NGBEVF_DEV_ID_EM_WX1860AL_W), 0},
++	{ PCI_VDEVICE(WANGXUN, NGBEVF_DEV_ID_EM_WX1860A2), 0},
++	{ PCI_VDEVICE(WANGXUN, NGBEVF_DEV_ID_EM_WX1860A2S), 0},
++	{ PCI_VDEVICE(WANGXUN, NGBEVF_DEV_ID_EM_WX1860A4), 0},
++	{ PCI_VDEVICE(WANGXUN, NGBEVF_DEV_ID_EM_WX1860A4S), 0},
++	{ PCI_VDEVICE(WANGXUN, NGBEVF_DEV_ID_EM_WX1860AL2), 0},
++	{ PCI_VDEVICE(WANGXUN, NGBEVF_DEV_ID_EM_WX1860AL2S), 0},
++	{ PCI_VDEVICE(WANGXUN, NGBEVF_DEV_ID_EM_WX1860AL4), 0},
++	{ PCI_VDEVICE(WANGXUN, NGBEVF_DEV_ID_EM_WX1860AL4S), 0},
++	{ PCI_VDEVICE(WANGXUN, NGBEVF_DEV_ID_EM_WX1860NCSI), 0},
++	{ PCI_VDEVICE(WANGXUN, NGBEVF_DEV_ID_EM_WX1860A1), 0},
++	{ PCI_VDEVICE(WANGXUN, NGBEVF_DEV_ID_EM_WX1860AL1), 0},
++	/* required last entry */
++	{ .device = 0 }
++};
++
++/**
++ * ngbevf_probe - Device Initialization Routine
++ * @pdev: PCI device information struct
++ * @ent: entry in ngbevf_pci_tbl
++ *
++ * Return: return 0 on success, negative on failure
++ *
++ * ngbevf_probe initializes an adapter identified by a pci_dev structure.
++ * The OS initialization, configuring of the adapter private structure,
++ * and a hardware reset occur.
++ **/
++static int ngbevf_probe(struct pci_dev *pdev,
++			const struct pci_device_id __always_unused *ent)
 +{
-+	/* Start with base case */
-+	wx->num_rx_queues = 1;
-+	wx->num_tx_queues = 1;
++	struct net_device *netdev;
++	struct wx *wx = NULL;
++	int err;
++
++	err = pci_enable_device_mem(pdev);
++	if (err)
++		return err;
++
++	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
++	if (err) {
++		dev_err(&pdev->dev,
++			"No usable DMA configuration, aborting\n");
++		goto err_pci_disable_dev;
++	}
++
++	err = pci_request_selected_regions(pdev,
++					   pci_select_bars(pdev, IORESOURCE_MEM),
++					   dev_driver_string(&pdev->dev));
++	if (err) {
++		dev_err(&pdev->dev,
++			"pci_request_selected_regions failed 0x%x\n", err);
++		goto err_pci_disable_dev;
++	}
++
++	pci_set_master(pdev);
++
++	netdev = devm_alloc_etherdev_mqs(&pdev->dev,
++					 sizeof(struct wx),
++					 NGBEVF_MAX_TX_QUEUES,
++					 NGBEVF_MAX_RX_QUEUES);
++	if (!netdev) {
++		err = -ENOMEM;
++		goto err_pci_release_regions;
++	}
++
++	SET_NETDEV_DEV(netdev, &pdev->dev);
++
++	wx = netdev_priv(netdev);
++	wx->netdev = netdev;
++	wx->pdev = pdev;
++
++	wx->msg_enable = netif_msg_init(-1, NETIF_MSG_DRV |
++					NETIF_MSG_PROBE | NETIF_MSG_LINK);
++	wx->hw_addr = devm_ioremap(&pdev->dev,
++				   pci_resource_start(pdev, 0),
++				   pci_resource_len(pdev, 0));
++	if (!wx->hw_addr) {
++		err = -EIO;
++		goto err_pci_release_regions;
++	}
++
++	netdev->features |= NETIF_F_HIGHDMA;
++	pci_set_drvdata(pdev, wx);
++
++	return 0;
++
++err_pci_release_regions:
++	pci_release_selected_regions(pdev,
++				     pci_select_bars(pdev, IORESOURCE_MEM));
++err_pci_disable_dev:
++	pci_disable_device(pdev);
++	return err;
 +}
 +
- static int ngbevf_sw_init(struct wx *wx)
- {
- 	struct net_device *netdev = wx->netdev;
-@@ -65,6 +74,7 @@ static int ngbevf_sw_init(struct wx *wx)
- 
- 	/* Initialize the device type */
- 	wx->mac.type = wx_mac_em;
-+	wx->mac.max_msix_vectors = NGBEVF_MAX_MSIX_VECTORS;
- 	/* lock to protect mailbox accesses */
- 	spin_lock_init(&wx->mbx.mbx_lock);
- 
-@@ -98,6 +108,7 @@ static int ngbevf_sw_init(struct wx *wx)
- 	/* set default work limits */
- 	wx->tx_work_limit = NGBEVF_DEFAULT_TX_WORK;
- 	wx->rx_work_limit = NGBEVF_DEFAULT_RX_WORK;
-+	wx->set_num_queues = ngbevf_set_num_queues;
- 
- 	return 0;
- err_reset_hw:
-@@ -186,15 +197,22 @@ static int ngbevf_probe(struct pci_dev *pdev,
- 	eth_hw_addr_set(netdev, wx->mac.perm_addr);
- 	ether_addr_copy(netdev->perm_addr, wx->mac.addr);
- 
-+	err = wx_init_interrupt_scheme(wx);
-+	if (err)
-+		goto err_free_sw_init;
++/**
++ * ngbevf_remove - Device Removal Routine
++ * @pdev: PCI device information struct
++ *
++ * ngbevf_remove is called by the PCI subsystem to alert the driver
++ * that it should release a PCI device.  The could be caused by a
++ * Hot-Plug event, or because the driver is going to be removed from
++ * memory.
++ **/
++static void ngbevf_remove(struct pci_dev *pdev)
++{
++	wxvf_remove(pdev);
++}
 +
- 	err = register_netdev(netdev);
- 	if (err)
- 		goto err_register;
- 
- 	pci_set_drvdata(pdev, wx);
-+	netif_tx_stop_all_queues(netdev);
- 
- 	return 0;
- 
- err_register:
-+	wx_clear_interrupt_scheme(wx);
-+err_free_sw_init:
- 	kfree(wx->vfinfo);
- 	kfree(wx->rss_key);
- 	kfree(wx->mac_table);
++static DEFINE_SIMPLE_DEV_PM_OPS(ngbevf_pm_ops, wxvf_suspend, wxvf_resume);
++
++static struct pci_driver ngbevf_driver = {
++	.name     = KBUILD_MODNAME,
++	.id_table = ngbevf_pci_tbl,
++	.probe    = ngbevf_probe,
++	.remove   = ngbevf_remove,
++	.shutdown = wxvf_shutdown,
++	/* Power Management Hooks */
++	.driver.pm	= pm_sleep_ptr(&ngbevf_pm_ops)
++};
++
++module_pci_driver(ngbevf_driver);
++
++MODULE_DEVICE_TABLE(pci, ngbevf_pci_tbl);
++MODULE_AUTHOR("Beijing WangXun Technology Co., Ltd, <software@trustnetic.com>");
++MODULE_DESCRIPTION("WangXun(R) Gigabit PCI Express Network Driver");
++MODULE_LICENSE("GPL");
 diff --git a/drivers/net/ethernet/wangxun/ngbevf/ngbevf_type.h b/drivers/net/ethernet/wangxun/ngbevf/ngbevf_type.h
-index dc29349304f1..67e761089e99 100644
---- a/drivers/net/ethernet/wangxun/ngbevf/ngbevf_type.h
+new file mode 100644
+index 000000000000..c71a244ec6b9
+--- /dev/null
 +++ b/drivers/net/ethernet/wangxun/ngbevf/ngbevf_type.h
-@@ -18,6 +18,7 @@
- #define NGBEVF_DEV_ID_EM_WX1860A1               0x011a
- #define NGBEVF_DEV_ID_EM_WX1860AL1              0x011b
- 
-+#define NGBEVF_MAX_MSIX_VECTORS               1
- #define NGBEVF_MAX_RX_QUEUES                  1
- #define NGBEVF_MAX_TX_QUEUES                  1
- #define NGBEVF_DEFAULT_TXD                    128
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (c) 2015 - 2025 Beijing WangXun Technology Co., Ltd. */
++
++#ifndef _NGBEVF_TYPE_H_
++#define _NGBEVF_TYPE_H_
++
++/* Device IDs */
++#define NGBEVF_DEV_ID_EM_WX1860AL_W             0x0110
++#define NGBEVF_DEV_ID_EM_WX1860A2               0x0111
++#define NGBEVF_DEV_ID_EM_WX1860A2S              0x0112
++#define NGBEVF_DEV_ID_EM_WX1860A4               0x0113
++#define NGBEVF_DEV_ID_EM_WX1860A4S              0x0114
++#define NGBEVF_DEV_ID_EM_WX1860AL2              0x0115
++#define NGBEVF_DEV_ID_EM_WX1860AL2S             0x0116
++#define NGBEVF_DEV_ID_EM_WX1860AL4              0x0117
++#define NGBEVF_DEV_ID_EM_WX1860AL4S             0x0118
++#define NGBEVF_DEV_ID_EM_WX1860NCSI             0x0119
++#define NGBEVF_DEV_ID_EM_WX1860A1               0x011a
++#define NGBEVF_DEV_ID_EM_WX1860AL1              0x011b
++
++#define NGBEVF_MAX_RX_QUEUES                  1
++#define NGBEVF_MAX_TX_QUEUES                  1
++
++#endif /* _NGBEVF_TYPE_H_ */
 -- 
 2.30.1
 
