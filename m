@@ -1,89 +1,72 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF022D3A8C;
-	Wed, 25 Jun 2025 10:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E3529B224;
+	Wed, 25 Jun 2025 10:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750847635; cv=none; b=mOTDthLvwiwNHVuC/jEiaQeS0mqCYhDS2YqwXCUj8b1T5wDYMmuuXXN5dg22+bYK+OzOhhf/ohJ+MK7b9qrbxZwWGu5Lvn+RVZP2iCKCsm+c2wELt+UF3ls4wEdLTiQMs1bcMYVoapCM92w9gAPeolCKA6RcXAtqsn004bQsRrQ=
+	t=1750848223; cv=none; b=hxcKOK39sKLS3FrcQ21FJo11ON8cwoPgYD/2Njsl7lkeKigSjmnVnDuXCje2wwCvJKQ/oumIRS3BVRK9y0Dd5d+rb/vVnqqLaB/lDj6nHKv+90wAtqWE1w8cQgYaXHR7nrnCcy/Z9TMEDhw2CHHEtB4nJSTvTSooc4gRhYHzogM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750847635; c=relaxed/simple;
-	bh=u2JL3FczzXcYtFQ+pSya9xx54ScgFCYZ3yXRPtod8d8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=CyulyUXJ4NjLqP5hARtQIRJDvyc6PadyoVV7TiJjPK13Z4H11v65ZIIivW0cKVfiqjR1yuHNFkWUK8EQQoGqf6O2lIebZ5kM1LGdT+3I1vtVLsSIigUc8fAV6N4xEeoDP+wlYU6CnZ68arW96nWt5MT+egJqrVu2YZdD2Zna+F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=C7nKcv10; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=M1lX4h+W; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1750848223; c=relaxed/simple;
+	bh=bPlTIiXfUd4DLH+842hTOjtrbMNlSyt5bBcTD2L4g3k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OUYmI73qDVAIX3czKnT+vaWdnUwMm07UQp6aumqK8j/NU9Zu+5pQa+Q2KUyINFIlvvxP/bBVJG1NFtNtO9Ot8Db2Ouv1l6MxQVchqF8tTdf1F0xYVs3rqU6pNm1uygSrogKIEUZaW55rudx3KF+x7UQKOtFMCqKvumKXxJzneUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JsbOkdtR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="C7nKcv10";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="M1lX4h+W"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1750847630;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qS6j5Ud4Qg98bvTPqfEkTAjFzlZLvEpnPb7sBn/6J2s=;
-	b=C7nKcv10PjDtpZWxlW9pXi3qXgMwERA0tp2jp8bAUfPULc59b16dAsTVfszFSpVMPW0O+L
-	raoe3dlxusFPIq7J9QlFkruKRA52JarS1EHM4p1wHxjR7tY7Mgd6oB/w8TFBb0voUcQ7Ke
-	80IEWbb82LsBNDv2LiZd8MjSKTLPRRLKhzJDNe59g8kTBdZevRi2BY1ZzmYpCIKv4uaxoH
-	mko4vwSABGGo6ntRAt9SmoKWXU6DA/hBprR8T1fFaTMRSCN9Vvkdnxlrw5wSdpuHe2w1wH
-	QJRZMYMdDn9GJgs/gdJGsVHNQoS/R3YXadX+YUUAUPtEL8KmHcQYjFWQxWFl1A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1750847630;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qS6j5Ud4Qg98bvTPqfEkTAjFzlZLvEpnPb7sBn/6J2s=;
-	b=M1lX4h+WkCPuP3pfhTegwN2nuqTnB/U/ZQTpdRI1p1XTEg3ctbLdvLz5eDWTVq2OdMwDZa
-	ijiPqw+ctrXqWYCQ==
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [patch 13/13] ptp: Convert ptp_open/read() to __free()
-In-Reply-To: <20250624093600.17c655a8@kernel.org>
-References: <20250620130144.351492917@linutronix.de>
- <20250620131944.533741574@linutronix.de>
- <20250624093600.17c655a8@kernel.org>
-Date: Wed, 25 Jun 2025 12:33:50 +0200
-Message-ID: <87cyasaz5d.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JsbOkdtR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FCDC4CEEA;
+	Wed, 25 Jun 2025 10:43:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750848223;
+	bh=bPlTIiXfUd4DLH+842hTOjtrbMNlSyt5bBcTD2L4g3k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JsbOkdtRLcaCkhOSZ8PRBUBq4c+P+L+UO4z98C/dRX0wUePeojz9BlUORQiBXp9Hl
+	 GxyZ3y6AlTCECjQdrxyY8fAuIfETAGYJSfOkR6dQDvYJSrSADahMGM/eFH+6A+nBrk
+	 SBLenAr6ocFh+GCFOBZtPoA3gehv46YWP+91u+jtedI/d3Gb3m9xuIbKSJar2C6mcR
+	 mq5xlRvjUL3UtgUsHk5Oyd8/zH1FPR72UjEceTWTr2xoKA7JGM2xlD/MsaNry1z+2g
+	 OFTTJX7RNvDrggZEJa4nYlOEODnGL07FHLEdACCcjneHewzIrajDwaKR1mX4VcbBvZ
+	 170u8DL6DKGiQ==
+Date: Wed, 25 Jun 2025 11:43:39 +0100
+From: Simon Horman <horms@kernel.org>
+To: Fushuai Wang <wangfushuai@baidu.com>
+Cc: ioana.ciornei@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] dpaa2-eth: fix xdp_rxq_info leak in
+ dpaa2_eth_setup_rx_flow
+Message-ID: <20250625104339.GW1562@horms.kernel.org>
+References: <20250624144235.69622-1-wangfushuai@baidu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250624144235.69622-1-wangfushuai@baidu.com>
 
-On Tue, Jun 24 2025 at 09:36, Jakub Kicinski wrote:
-> On Fri, 20 Jun 2025 15:24:50 +0200 (CEST) Thomas Gleixner wrote:
->> Get rid of the kfree() and goto maze and just return error codes directly.
->
-> Maybe just skip this patch?  FWIW we prefer not to use __free()
-> within networking code.  But this is as much time as networking
-> so up to you.
->
->   Using device-managed and cleanup.h constructs
->   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->
->    [...]
->
->   Low level cleanup constructs (such as ``__free()``) can be used when building
->   APIs and helpers, especially scoped iterators. However, direct use of
->   ``__free()`` within networking core and drivers is discouraged.
->   Similar guidance applies to declaring variables mid-function.
+On Tue, Jun 24, 2025 at 10:42:35PM +0800, Fushuai Wang wrote:
+> When xdp_rxq_info_reg_mem_model() fails after a successful
+> xdp_rxq_info_reg(), the kernel may leaks the registered RXQ
+> info structure. Fix this by calling xdp_rxq_info_unreg() in
+> the error path, ensuring proper cleanup when memory model
+> registration fails.
+> 
+> Fixes: d678be1dc1ec ("dpaa2-eth: add XDP_REDIRECT support")
+> Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
 
-Interesting decision, unfortunately it lacks a rationale in that
-documentation.
+Thanks, I agree this is needed.
 
-I reworked the patch without the __free(), which still cleans up the mix
-of goto exit and return ERRCODE inconsistencies.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Let me send out V3 with that and network/ptp people can still decided to
-ignore it :)
+But I wonder how these resources are released in the following cases:
 
-Thanks,
+* Error in dpaa2_eth_bind_dpni() after at least one
+  successful call to dpaa2_eth_setup_rx_flow()
 
-        tglx
+* Error in dpaa2_eth_probe() after a successful call to
+  dpaa2_eth_bind_dpni()
 
+* Driver removal (dpaa2_eth_remove())
 
