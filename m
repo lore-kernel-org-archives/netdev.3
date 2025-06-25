@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0236C347B4
-	for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 01:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D301F1E4BE;
+	Wed, 25 Jun 2025 01:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750813811; cv=none; b=MuEcLEnXayEQUN5ghhhWQXhTtRxHMN9ku3OHtObAHEvfZibSUW/bxOsJesI3rblz8bnbam9TRhvwKL6sz5ufSA6mN2c9X45QKv4ouGZW8FmeNN8soLw31oE5nsnKAWqjOr+w6fAG228kXi0yP9dURP+6TGGp7hH8iWLfh32Y/r4=
+	t=1750813905; cv=none; b=mUUEzI0DiP/0mWHWKhR4TnACF5w/CgVw6tFBiaWaC0YEUxPtw6um7HYyrcRt9u5hZTguJzuVmGefaIeVqAS7Dso5zP46cbZSt7NgpOg6DiHWfpJ6xx9M4jBvLMMk4euWmT1dHrC14zYSFMBalBwl1VfRkzeaSOgWf8qActBcMF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750813811; c=relaxed/simple;
-	bh=5B+IVHIG46OlH2GnqyojySKTttI8ZUSaHT3u+E1BQow=;
+	s=arc-20240116; t=1750813905; c=relaxed/simple;
+	bh=J7mskIOl6mooDicAfCx/bLYXvIrbA0wCKKMXKC4Ob4Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PaCGu01HPXzgbpI51QM0fP1+DrW5BMcXlh+4lR4/yrXTTkNad/PpXHM0USw0w5TnD9cqclZjxDTmKiwIO+jgV6MSqyEVmlc7pgd2wn8085U5GCfkGz/qCq0sjXqRa3Uxs8iYFm6riCt5YJz5c34YWtsQjCURRoXkKy2uVTd0ILc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MuzWpcxR; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=s9sayPDbzDpCFZu9tg/6KHw5NYPYyjtm9dxrmUJ26WsPnrr7Gk7GtZ6tzOe2iqgIAvFnzmfDcIrU3/zNbn4w26cBmJNpJvHvGiTwDDX0P8jwvWE6keGyKWppSauO3j3ddo2cttKkIgiZ3ylZN5HxrdRjKjeR55bRAmhqfw0UYdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U4iiJiki; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MuzWpcxR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F9FC4CEE3;
-	Wed, 25 Jun 2025 01:10:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U4iiJiki"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E83C4CEF0;
+	Wed, 25 Jun 2025 01:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750813810;
-	bh=5B+IVHIG46OlH2GnqyojySKTttI8ZUSaHT3u+E1BQow=;
+	s=k20201202; t=1750813905;
+	bh=J7mskIOl6mooDicAfCx/bLYXvIrbA0wCKKMXKC4Ob4Y=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MuzWpcxR4ZTP+igjgUCsm/4Sb2jIHOduEjgq13gEKOn3ukGgV6U71cfRbgVBcbxdT
-	 AI0uq31aX7Qkegjo9a7EqCQuglvJe25JAM/2pJLrFTT5QVfsLvk0m5Xvek8vgcmigH
-	 jcoQGUnC00PH/UbTZ3yob5pa74iLj+6gPBnrVynEWk6ktZw4Lfjncib3bU0ZPJvmca
-	 2CTaZO7ShU6YOfp+kn0Eg0pUFaLmGQ9Aw0A7hrDFHSqUnpy4TfeMKvTvCG8c8bfwOy
-	 ltpWZjkGYrrG4I1xkW3SUC9d1Ooff23buu01dwNzGPSZHI1WnxxqVb0OO4Wvf37PMb
-	 /T3OyF1KgIGVQ==
-Date: Tue, 24 Jun 2025 18:10:09 -0700
+	b=U4iiJikiRVIDFHdX3jSVgsKA0BadcI31/tXpsbHSG0/GavRjf+XHhUiIjOWtHsDRE
+	 MNfKUvablXbnnyGk9cSAdL+fj2yxpzp8HcPc+di2aN/7thWaDY1yq/JJhAjgEhTp+C
+	 Am5/1IPsgkKixGYXeoHb25OwtR+4P660BhbxyrtqdaZIHV1r1cK9fpn+fiplFY03z+
+	 lfAb+sUaVBvZEf+LkjY3u32vZhMD/v6dKyk5D558s01uTAmJaJtN8KljEOX4E0abxK
+	 qJnCxr7AmYfSKiREKVBYdbhAs1LWToL1uXLcbXNj4xPhkGoKlMYG2h5Xf22sDVONz+
+	 FwrvZb0lEk9kQ==
+Date: Tue, 24 Jun 2025 18:11:43 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: "David S . Miller " <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- almasrymina@google.com, willemb@google.com, jdamato@fastly.com,
- mkarsten@uwaterloo.ca, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v9] Add support to set NAPI threaded for
- individual NAPI
-Message-ID: <20250624181009.755abb07@kernel.org>
-In-Reply-To: <20250623175316.2034885-1-skhawaja@google.com>
-References: <20250623175316.2034885-1-skhawaja@google.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 net-next 0/3] change some statistics to 64-bit
+Message-ID: <20250624181143.6206a518@kernel.org>
+In-Reply-To: <20250624101548.2669522-1-wei.fang@nxp.com>
+References: <20250624101548.2669522-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,19 +46,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 23 Jun 2025 17:53:16 +0000 Samiullah Khawaja wrote:
-> +/**
-> + * napi_set_threaded - set NAPI threaded state
-> + * @n: napi_struct to set the threaded state on
-> + * @threaded: whether this NAPI does threaded polling
-> + *
-> + * Return: 0 on success and negative errno on failure.
-> + */
-> +int napi_set_threaded(struct napi_struct *napi, bool threaded)
+On Tue, 24 Jun 2025 18:15:45 +0800 Wei Fang wrote:
+> The port MAC counters of ENETC are 64-bit registers and the statistics
+> of ethtool are also u64 type, so add enetc_port_rd64() helper function
+> to read 64-bit statistics from these registers, and also change the
+> statistics of ring to unsigned long type to be consistent with the
+> statistics type in struct net_device_stats.
 
-Ah, missed that this kdoc is wrong s/n/napi/
-
-For the record:
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=e5880f95a97928308845dc97fdd239605e06e501
+this series adds almost 100 sparse warnings
+please trying building it with C=1
 -- 
 pw-bot: cr
