@@ -1,74 +1,91 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9F81F460B;
-	Wed, 25 Jun 2025 10:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD0A285C80
+	for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 10:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750845881; cv=none; b=sjhBT6nW4s16Vbs+RA/Fy6K8lJxm/6hSR3LmeJRj9kiVxXxjZG1jgbWlWHd0Ww+7hgMQssKkIYX3g3VPgmbZKSW4g/aQTrgf2SXR/dZ5iu3Tx2Dk5VGkepEN4XL+HP2DiZP8yJS/LdcZetoKTVgR9/sUPafM7zV9GC6VYa60/sk=
+	t=1750845965; cv=none; b=us8IAMMvddZ+tqap6T4TtzQ8r/okQNAFiohJDfgRU8KUGVuiQw5JnRryYUiVW6cz9ukItcWl+rQBYk8OhaRa5ek+JQwoyDEwaK94w9IaqNrDtm+cSRUbNBQjAEvM9kX4hPuYLL4i4KFWl4+1pocD8FdfwZUjGNQUpC1G4OMTER8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750845881; c=relaxed/simple;
-	bh=GvIaJF5+J/InRTOZVzTLzmt/zTQ4aOIgzf23NRiEfPM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Y8ZhxOybLJzK7432FILUhhehTeRYBfrtvbD+4kYnsTUm14TYQZrf82kYxApxoXpjrkF1Fqd6DCDrtjn3JYqHwgCF6WPp1ySNbFiglL7G8VP6bpADJP9NtrLsriVbgK0lIPu5Q1iONQmP06VGqy7y+rosLk7VHqOqJ3rAWQOhoH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4bRyB25xydz2QTxx;
-	Wed, 25 Jun 2025 18:05:30 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id A9B4E1A016C;
-	Wed, 25 Jun 2025 18:04:35 +0800 (CST)
-Received: from huawei.com (10.175.124.27) by dggpemf500002.china.huawei.com
- (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 25 Jun
- 2025 18:04:34 +0800
-From: Yue Haibing <yuehaibing@huawei.com>
-To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<yuehaibing@huawei.com>
-Subject: [PATCH net-next] net: Remove unused function first_net_device_rcu()
-Date: Wed, 25 Jun 2025 18:21:55 +0800
-Message-ID: <20250625102155.483570-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1750845965; c=relaxed/simple;
+	bh=6pxpzEhoX1gG8wkYXpVyBC/pQqljz7bnRoUTWPWz1yk=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=RvIxDjYDW+R9SkxlI86xOnEmVOrE265WtDSBZVQ47eiyBrltTvxgjs/AdME7cwxulN7tTurtXozS4Fwmtm9nuodey+oll1uzj8wNrODlpMvjGQJ1rkI8lfQXgFW9tZF+1bOpVBSqfqTMJmaCAe22mPOWL/uwpuUREqfgvWLhccE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JvPUm4XC; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JvPUm4XC"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3a503d9ef59so4332178f8f.3
+        for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 03:06:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750845962; x=1751450762; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6pxpzEhoX1gG8wkYXpVyBC/pQqljz7bnRoUTWPWz1yk=;
+        b=JvPUm4XC7aSyRbZ5BILhfVKVCeDUU4G2VjHYsKZE36qDomVFQL/5n6SlfeRWO5g85+
+         pfM5p6SPHoCKAidqQ6+jmFlRBQ8kq1EHfnte+K3oxgpJJLdG1Db/jHxwjciTMU6FUTv/
+         ftFq8slHsFONFz7ivqNEgLg5r0PhUMSizvgUbV8gD0EcxcBSwSchQngx1phCDJkqiF6R
+         PWhCGD0yBdx5luuGH5/sQoXns1lyHOiytQNrkVgXqrPJpKw6S3jD/DTnEZFs/kQHFs81
+         kM4Jw1v6KPE3nDL/likyrMkUHnB9XORsGyzOIjhYedwe0ejmkDkEbdeoSuiJ++LHVt+p
+         MBCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750845962; x=1751450762;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6pxpzEhoX1gG8wkYXpVyBC/pQqljz7bnRoUTWPWz1yk=;
+        b=mN8f5X5p/zcZLpaJxrkR9lBvUdJf7YdRmkDXs54+HQnUtff6AAysq+kIo9GwtfHJ9w
+         uUlIS5wZ0C7AHJlD6FmV6OqFEmQQR8/KIeO0B1sa1/pQj0HJYGUAV2gTPptrBG+YFGjx
+         cfBdZzClToetvtWkDjP3BiFe1/AAJ2Uc6iEVp65gHCgoKBk/JGk76RqQyi2SAMLY5uWu
+         R1JX4MJ/1SYHfI5XLwc1TqA22ijSMZUVUi60abtly7qc36t28Y5cGv7uQ9UNOHXhdNM3
+         lLJ1ONOTjBW6Znr9vsNs6MvkrEhQxe7xrXmYNZqvz7g2KMzGrUIzCHLTrN2lfc82mlAi
+         8tig==
+X-Forwarded-Encrypted: i=1; AJvYcCV5MRucIDO5HJM5mfw9MNrgCRCbVnwTkC+S0dCwF8ialVwb7j3nUZWPn0e+/mQZOLtjdqR4PwI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUu4KhjUh1F6NT6cjDKl1nlZXM8iqlRGF9mVwT0dIqo0kmU8n8
+	gL5lHDst5jp66abC3QmrCXRXW7C636esl+r+y/uq8jthRv5DK79DewUT
+X-Gm-Gg: ASbGncuN5Ys8g98sb2S/rqgVgsZHmUWILHVj4R+P/v6bsRpQThfVXBOZvpBdtNBGXAW
+	imVfhLEInXQ6u6L2K/pwEu5MN57BQ1UjMf+/tKPbLeomQCl6+NyGBzGJLY5/RKDm6tXx8qV8ETY
+	2kD4r4IkWSRzpJh4V8zPDkVIkpI3hI4OLGQ7xttbLeOqh7lFJKa1r6CsJ8UoRvVvAUb4mzeNz0I
+	Wpl9UHHhk3HIsQSGYxJZsK/uvNp4H/5/keNeCp4IxNH7DNM12CaWjA+6iESCFB+zGmZv98oVb+g
+	8HPKKJXy3QI5e7o7PlUa+qSkUc1y7dAxEYaPO7vG3kgjbcdtRMrIKyHNR9/OtFbO8YOdb0WEgMw
+	=
+X-Google-Smtp-Source: AGHT+IEUaLy5pK1cTkHNMbxIKXTeDKggE1dnKPaQ0oX6nj0qSWycDNW8Uj6dR/9VTyU66k0RCmNCbw==
+X-Received: by 2002:a05:6000:40c8:b0:3a6:e6c3:6d95 with SMTP id ffacd0b85a97d-3a6ed64aa66mr1810816f8f.41.1750845961494;
+        Wed, 25 Jun 2025 03:06:01 -0700 (PDT)
+Received: from imac ([2a02:8010:60a0:0:5882:5c8b:68ce:cd54])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e8109728sm4128821f8f.82.2025.06.25.03.06.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Jun 2025 03:06:00 -0700 (PDT)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
+  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
+  maxime.chevallier@bootlin.com,  sdf@fomichev.me,  jdamato@fastly.com,
+  ecree.xilinx@gmail.com
+Subject: Re: [PATCH net-next v2 7/8] doc: ethtool: mark ETHTOOL_GRXFHINDIR
+ as reimplemented
+In-Reply-To: <20250623231720.3124717-8-kuba@kernel.org>
+Date: Wed, 25 Jun 2025 09:55:50 +0100
+Message-ID: <m2wm90ci95.fsf@gmail.com>
+References: <20250623231720.3124717-1-kuba@kernel.org>
+	<20250623231720.3124717-8-kuba@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf500002.china.huawei.com (7.185.36.57)
 
-This is unused since commit f04565ddf52e ("dev: use name hash for
-dev_seq_ops")
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
- include/linux/netdevice.h | 7 -------
- 1 file changed, 7 deletions(-)
+> The ETHTOOL_GRXFHINDIR reimplementation has been completed around
+> a year ago. We have been tweaking it so a bit hard to point
+> to a single commit that completed it, but all the fields available
+> in IOCTL are reported via Netlink.
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 03c26bb0fbbe..431d5ca10905 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -3316,13 +3316,6 @@ static inline struct net_device *first_net_device(struct net *net)
- 		net_device_entry(net->dev_base_head.next);
- }
- 
--static inline struct net_device *first_net_device_rcu(struct net *net)
--{
--	struct list_head *lh = rcu_dereference(list_next_rcu(&net->dev_base_head));
--
--	return lh == &net->dev_base_head ? NULL : net_device_entry(lh);
--}
--
- int netdev_boot_setup_check(struct net_device *dev);
- struct net_device *dev_getbyhwaddr(struct net *net, unsigned short type,
- 				   const char *hwaddr);
--- 
-2.34.1
-
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
