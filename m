@@ -1,67 +1,180 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E2A1F12E9;
-	Wed, 25 Jun 2025 10:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465DB29C352;
+	Wed, 25 Jun 2025 10:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750846071; cv=none; b=NWhMUabURr7oG6eQnSjMN0qNgwBEh0ybmyD+aVHErPo6OWS97B10ds+oJQOi9WN6/mQz2+Bv8vGbapWVxslzpYEoX1Pe0MhQM/0RyEDPr0cSuO7w2xqsnuiWblx7rzTHzsxKk2bD1XMBlZaR25Abzu/qL5Cl+pKl9sB7+qUVNto=
+	t=1750846083; cv=none; b=Nzpfi+ALTcONxqJZnS3StGUNB7keeQ8tBzge6UeTGZjoMrIKiQL7+GOKrIzgd5BqP49KejxSmKQYPyNTWuJR2q3W4A0wLyGjpgr/0pDam37+mQrQ3TEPF+GnHAzTlHHAKh2JjjDJ0TqXWmFbEAVJGIEwGMzmbI4hLse+wBSuCKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750846071; c=relaxed/simple;
-	bh=8kL53wUxhyeTo74iXjVU0IZdTi1MXnzx/j11F2AlHXU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TZ3nvCtaYiphZltVy/nPAL2g+EaoaGYNbqdrh8hA+Z2fNI/XCaYvZzDkWrONMJFaQOSJt0uBKO7ytRfcxr4W6PTC/EU9RjC7NvwXjLxVtveBQ0kFSyWp10FZkpu4Lhxdr3VZoQ7VeQFRX1rSra8Li4Pzwo+3HKhfblFduDkgHKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TjlymxbX; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TjlymxbX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A80C4CEEA;
-	Wed, 25 Jun 2025 10:07:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750846070;
-	bh=8kL53wUxhyeTo74iXjVU0IZdTi1MXnzx/j11F2AlHXU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TjlymxbXxJ5mfN4z5vvLHqUc41TrBsKLKzy/GHpQpvJADQt1PbXjgQceUN+3EyOJL
-	 2nTdimYmWFdxKzRqnkWUr/XOVDmTCYXIVFiTLNXrBEaEUiZquiWpNLdPI+dSxCNWHE
-	 jhvxgwZ0b1iDauisLJUGZlO4Yg6Vwl8GHTqH+eG8xivV4uXk3e2VxRFP9dP6IyhmJC
-	 aD9va7vTr6e8mUDE10ji82jV9Vr+t5zKddmqJ9kikCwAY8GmLxtCxv1KeEql/SXyJn
-	 sch27QTY9+ePi5L3/7lr9Cq71Y8ZUvL/Mh7N8hUuv7zZmyicuXa9adWVPQRJY2KpGZ
-	 W5a6+CDtqcf3w==
-Date: Wed, 25 Jun 2025 11:07:45 +0100
-From: Simon Horman <horms@kernel.org>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Boris Pismenny <borisp@nvidia.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Ayush Sawal <ayush.sawal@chelsio.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 7/7] net: skbuff: Drop unused @skb
-Message-ID: <20250625100745.GU1562@horms.kernel.org>
-References: <20250624-splice-drop-unused-v1-0-cf641a676d04@rbox.co>
- <20250624-splice-drop-unused-v1-7-cf641a676d04@rbox.co>
+	s=arc-20240116; t=1750846083; c=relaxed/simple;
+	bh=kMxe1IHoqXviFECo0NKuCfqjgpHzYP3h12Li81qEz7g=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gORBeIZEwfIASO15eGqd1GGg8rJztDSuujmqDZB9c92h9SyhoELzKqtvQFH1mJq4AmrHq8Im1Q3iJBQ3JoQpALdIgcUu7Nhy53Nlj2uLeGAlBPZGbOmymrq4gFFC9gZkBA+7SUpXLhP+VRE+ICiW773syeCRRGb4pqVs1xljta0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4bRyB44FdLz1d1hq;
+	Wed, 25 Jun 2025 18:05:32 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2B8DF180480;
+	Wed, 25 Jun 2025 18:07:53 +0800 (CST)
+Received: from huawei.com (10.175.124.27) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 25 Jun
+ 2025 18:07:52 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>
+Subject: [PATCH net-next] lwtunnel: Add lwtunnel_encap_type_check() helper
+Date: Wed, 25 Jun 2025 18:24:13 +0800
+Message-ID: <20250625102413.483743-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250624-splice-drop-unused-v1-7-cf641a676d04@rbox.co>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-On Tue, Jun 24, 2025 at 11:53:54AM +0200, Michal Luczaj wrote:
-> Since its introduction in commit ce098da1497c ("skbuff: Introduce
-> slab_build_skb()"), __slab_build_skb() never used the @skb argument. Remove
-> it and adapt both callers.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Consolidate encap_type check to dedicated helper for code clean.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+ net/core/lwtunnel.c | 46 ++++++++++++++++++++++-----------------------
+ 1 file changed, 22 insertions(+), 24 deletions(-)
+
+diff --git a/net/core/lwtunnel.c b/net/core/lwtunnel.c
+index f9d76d85d04f..f9453f278715 100644
+--- a/net/core/lwtunnel.c
++++ b/net/core/lwtunnel.c
+@@ -79,10 +79,18 @@ EXPORT_SYMBOL_GPL(lwtunnel_state_alloc);
+ static const struct lwtunnel_encap_ops __rcu *
+ 		lwtun_encaps[LWTUNNEL_ENCAP_MAX + 1] __read_mostly;
+ 
++static inline int lwtunnel_encap_type_check(unsigned int encap_type)
++{
++	if (encap_type == LWTUNNEL_ENCAP_NONE ||
++	    encap_type > LWTUNNEL_ENCAP_MAX)
++		return -EINVAL;
++	return 0;
++}
++
+ int lwtunnel_encap_add_ops(const struct lwtunnel_encap_ops *ops,
+ 			   unsigned int num)
+ {
+-	if (num > LWTUNNEL_ENCAP_MAX)
++	if (lwtunnel_encap_type_check(num) < 0)
+ 		return -ERANGE;
+ 
+ 	return !cmpxchg((const struct lwtunnel_encap_ops **)
+@@ -96,8 +104,7 @@ int lwtunnel_encap_del_ops(const struct lwtunnel_encap_ops *ops,
+ {
+ 	int ret;
+ 
+-	if (encap_type == LWTUNNEL_ENCAP_NONE ||
+-	    encap_type > LWTUNNEL_ENCAP_MAX)
++	if (lwtunnel_encap_type_check(encap_type) < 0)
+ 		return -ERANGE;
+ 
+ 	ret = (cmpxchg((const struct lwtunnel_encap_ops **)
+@@ -117,10 +124,10 @@ int lwtunnel_build_state(struct net *net, u16 encap_type,
+ {
+ 	const struct lwtunnel_encap_ops *ops;
+ 	bool found = false;
+-	int ret = -EINVAL;
++	int ret;
+ 
+-	if (encap_type == LWTUNNEL_ENCAP_NONE ||
+-	    encap_type > LWTUNNEL_ENCAP_MAX) {
++	ret = lwtunnel_encap_type_check(encap_type);
++	if (ret < 0) {
+ 		NL_SET_ERR_MSG_ATTR(extack, encap,
+ 				    "Unknown LWT encapsulation type");
+ 		return ret;
+@@ -152,10 +159,10 @@ EXPORT_SYMBOL_GPL(lwtunnel_build_state);
+ int lwtunnel_valid_encap_type(u16 encap_type, struct netlink_ext_ack *extack)
+ {
+ 	const struct lwtunnel_encap_ops *ops;
+-	int ret = -EINVAL;
++	int ret;
+ 
+-	if (encap_type == LWTUNNEL_ENCAP_NONE ||
+-	    encap_type > LWTUNNEL_ENCAP_MAX) {
++	ret = lwtunnel_encap_type_check(encap_type);
++	if (ret < 0) {
+ 		NL_SET_ERR_MSG(extack, "Unknown lwt encapsulation type");
+ 		return ret;
+ 	}
+@@ -236,8 +243,7 @@ int lwtunnel_fill_encap(struct sk_buff *skb, struct lwtunnel_state *lwtstate,
+ 	if (!lwtstate)
+ 		return 0;
+ 
+-	if (lwtstate->type == LWTUNNEL_ENCAP_NONE ||
+-	    lwtstate->type > LWTUNNEL_ENCAP_MAX)
++	if (lwtunnel_encap_type_check(lwtstate->type) < 0)
+ 		return 0;
+ 
+ 	nest = nla_nest_start_noflag(skb, encap_attr);
+@@ -275,8 +281,7 @@ int lwtunnel_get_encap_size(struct lwtunnel_state *lwtstate)
+ 	if (!lwtstate)
+ 		return 0;
+ 
+-	if (lwtstate->type == LWTUNNEL_ENCAP_NONE ||
+-	    lwtstate->type > LWTUNNEL_ENCAP_MAX)
++	if (lwtunnel_encap_type_check(lwtstate->type) < 0)
+ 		return 0;
+ 
+ 	rcu_read_lock();
+@@ -303,8 +308,7 @@ int lwtunnel_cmp_encap(struct lwtunnel_state *a, struct lwtunnel_state *b)
+ 	if (a->type != b->type)
+ 		return 1;
+ 
+-	if (a->type == LWTUNNEL_ENCAP_NONE ||
+-	    a->type > LWTUNNEL_ENCAP_MAX)
++	if (lwtunnel_encap_type_check(a->type) < 0)
+ 		return 0;
+ 
+ 	rcu_read_lock();
+@@ -339,9 +343,7 @@ int lwtunnel_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 		goto drop;
+ 	}
+ 	lwtstate = dst->lwtstate;
+-
+-	if (lwtstate->type == LWTUNNEL_ENCAP_NONE ||
+-	    lwtstate->type > LWTUNNEL_ENCAP_MAX) {
++	if (lwtunnel_encap_type_check(lwtstate->type) < 0) {
+ 		ret = 0;
+ 		goto out;
+ 	}
+@@ -393,9 +395,7 @@ int lwtunnel_xmit(struct sk_buff *skb)
+ 	}
+ 
+ 	lwtstate = dst->lwtstate;
+-
+-	if (lwtstate->type == LWTUNNEL_ENCAP_NONE ||
+-	    lwtstate->type > LWTUNNEL_ENCAP_MAX) {
++	if (lwtunnel_encap_type_check(lwtstate->type) < 0) {
+ 		ret = 0;
+ 		goto out;
+ 	}
+@@ -446,9 +446,7 @@ int lwtunnel_input(struct sk_buff *skb)
+ 		goto drop;
+ 	}
+ 	lwtstate = dst->lwtstate;
+-
+-	if (lwtstate->type == LWTUNNEL_ENCAP_NONE ||
+-	    lwtstate->type > LWTUNNEL_ENCAP_MAX)
++	if (lwtunnel_encap_type_check(lwtstate->type) < 0)
+ 		return 0;
+ 
+ 	ret = -EOPNOTSUPP;
+-- 
+2.34.1
 
