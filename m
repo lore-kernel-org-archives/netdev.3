@@ -1,27 +1,27 @@
-Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E712D2882BD
-	for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 10:21:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BEB29ACF3
+	for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 10:22:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750846924; cv=none; b=toxxtWtgKoeJ35jbInO5bHYYAY9BsaVxEquEIUIoF2bsQjlFgg1ScZNozsQyGzG4LYsS85Ebzmw8kplRxF/8ib8Lo+La6rdrHPJEL/DcUr/y1NeoOVnbaHMVENSsw8FSobHgBJGKn7DdZrVWzK+OoXZ+ERoghI0cm89G+LTxm/s=
+	t=1750846926; cv=none; b=rz5SNGTcjLOmQLgp8TRNluQFhgUhFRkysI4e7CZ2cS0TXTNdFiFqoGwIBXa6hoMVEaIKUbUF3QGha+fAhak2MTGd/xpDdKCaUjH8EtICopSTy6H+8dGP4dyQ22YctpRX3v+xS/hKItOHUlRcoP35r20sQ5/mEWr1s4vA9BKb9SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750846924; c=relaxed/simple;
-	bh=fymqXF9GxcCXhaF0feJ5Vps+CsYx/xzrFRbzBnu3+fY=;
+	s=arc-20240116; t=1750846926; c=relaxed/simple;
+	bh=eaTmAvkHhd5HYtlloVA17vbsgu+BUD2+MeX9qUrh1GU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=c25IvFwh/Qwh98m4WJEpZp9pZxsjZjrE4iOAex7JrMVBJFgFA0lXNu500KLbTsLvBpv65bHfD6hEqsBHZlozbswwaXy7CRYH9l3ZlX5GyNc6ysHBeWYur4/0W3sGYj+6i4FcJM482eLEyRqD11aQCazayjNsybjtuDCtPqfiLJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=15.184.224.54
+	 MIME-Version; b=K8SsB+l1pdIemldbtjnBILxEmN39Xo70/OKPuhRASQAHGZfdUngJHoJLWKsV1giND9GXez68dmJXE5HYaqx/ida0wkAaG+eQBziRgJzKl+PBTAVq0/syHM8krc69YCAHnQpi2v9LWWwBWtqs7z78akac2O+7GohpojfztNgyb2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.207.19.206
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: esmtpgz13t1750846871t91d4eb90
-X-QQ-Originating-IP: ssYKwkSOKoUDkrSmpWGsd7r7XMDsd5XsKsgwQe4B7iA=
+X-QQ-mid: esmtpgz13t1750846867tdec73d43
+X-QQ-Originating-IP: VNessEFQ/73APd5CihO3ICV7KZOe45jtrhSWmOJlHGA=
 Received: from localhost.localdomain ( [60.186.80.242])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 25 Jun 2025 18:21:10 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 13174027215969574091
+	id ; Wed, 25 Jun 2025 18:21:05 +0800 (CST)
+X-QQ-SSF: 0001000000000000000000000000000
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 7169494911318332135
 EX-QQ-RecipientCnt: 10
 From: Mengyuan Lou <mengyuanlou@net-swift.com>
 To: netdev@vger.kernel.org
@@ -34,9 +34,9 @@ Cc: michal.swiatkowski@linux.intel.com,
 	linglingzhang@trustnetic.com,
 	jiawenwu@net-swift.com,
 	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net-next v2 04/12] net: wangxun: add txgbevf build
-Date: Wed, 25 Jun 2025 18:20:50 +0800
-Message-Id: <20250625102058.19898-5-mengyuanlou@net-swift.com>
+Subject: [PATCH net-next v2 02/12] net: libwx: add base vf api for vf drivers
+Date: Wed, 25 Jun 2025 18:20:48 +0800
+Message-Id: <20250625102058.19898-3-mengyuanlou@net-swift.com>
 X-Mailer: git-send-email 2.30.1
 In-Reply-To: <20250625102058.19898-1-mengyuanlou@net-swift.com>
 References: <20250625102058.19898-1-mengyuanlou@net-swift.com>
@@ -49,387 +49,636 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpgz:net-swift.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: Nwe/jBd3hqf2DMYkPONhzPK12gPtbmDs2a7pCzUQIs0GMntHsu045eR0
-	H7uDEfGk3MEKm4L2dhlCLOirAH/Lgf/RDmWkJCYrOLQJmJPapGp2GWAwQ4XZSZTQVs2yl66
-	LaRF1WUPzLvhD9ubzDW7Fd0vfSmgOAgs0hp5lSsyQ5oATjXODlp8TmxtEGnbVZiBVuMmg39
-	ZbVUL9jGdoJhNeI6JD0dA6EYpVPsg4s4ZPGSp/1BF1Q1n5msSJgPS59QyhlEPuU711sl8o8
-	y3ydU/kxwMkeifXMjd8kN744ZiwKsES7eMgU0VWAWSUCO6+dxubuqj5uhLwYsDP0amBFnxu
-	rzBX8mrKI78a21mKK5ZqBLeu6Mwpfm0fb9PkYePa0OWHWuzHSU8yNkKkN/8bvLvZF0kE4hB
-	Qs1djo3wJ/1hrsyG8kKFRkfG+qEVKaxxIreuyAI6daQJ5isiIsiFnQoZaMAm22t4Vq1DXqV
-	0GXN5I6x+oLa4Pm6RGcbWrPQS/EiXDjzrDGYJKsvVbxHkH1yEixHB3iFpOaqWnaym1bRwfI
-	dITNk8WeW2vfJpggH9bBgyY6mTtlDI8QdXFJGqZINrGV53GOndWk5kNfrYfQAj+UhJgMjgO
-	xZrfeQYTU8nBkWl3QblD9VyjvfS3x0HvVZH/qa5nHrQsFI+CfoaPonSaz2nCXZVm3lbNop9
-	oDEuk3TaAQYSw11sa+gciW/sYGz85dPmcb70dobrLMy8t+1bIrXKUgmLnKXmUAw/EFQ/KMI
-	6fFsBCrJUIktI0VDnY+D686eYkttJE8Sb4qldSe8Jd/DH6AToh9uEOv+1/crdeqfvUyJQhR
-	bNIyJlP/SOl5c3X8BqTZdkHz905XXx7c4eTt+6SJg39rGlKWLx9pormvnkafWA29KauVdKt
-	c9sJWlDgOJ8bZ2+faTeTD++0vgpVuouBwGQz6rGvXT1C0s5Cqn8rxZ3eWfGmVf1V9ycccDW
-	uz1TsYLyIpqo7M5XBwvKVKt2PM2FviZsZY8/md8yjT4PM10bIsFp22NGH5nQMXYnLPJWPXX
-	x/dyx8tHBlnNuXSxXmTyy1H9fPXEaw/kt7mxrJ10S5778WwyYCXgnjmChsuDG4ZL+SR5/uX
-	wqlbnAi5k34uSGM/QL64z48SWX9Mv9JeIL23wzMm9gNhS+e4Oad6A8HZBpILvrlbwLXBW+I
-	WNUtaK1gM3uMg5E=
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+X-QQ-XMAILINFO: NzmZMORfs0iDB8AcTl4e5ZRBzgekPwL+vsW1kE0LOXTpC5Oc+lh52hzQ
+	WzThc1XEg9l/ZvecdiXfVAo/yBv16kM67vdbOHgfWRkhJL61o7jhU0IKGh07YH/XqEW0qeu
+	u3mbWqT4NsvS4Hi+3OVTDlAaWB9UK2ol/svu5AwpanGoE1/j3kA9nopJW+Aeh6RyQWz1w9L
+	kzxhfla4nDEU/TtzKc/3480GC5rNN4qeCF6/Bn6+R/MxnyWMxD39LKLI+kFh6kpqv/rBefB
+	mqBH9uUOlQggdZT23VQmKQ7AxQajmT92vzfs3LAi2nkpNguolWmJkgo0hLa4huS3fuQ5XUz
+	0eoF3aZhWJ+vDZWTsl7y7kWJyATJyHmJjjUSJMgTNlycHBXCfPbPBeEuHTLd2cJ7sVjiafE
+	XAiXSmm8WDtsDXIFj41Sb0MZHz+eGznyqHGDeJO4sIutx+wuq/9Cd7sj6tRDuA5RME1b9Zm
+	4x2YjCGCz+hPSGvkUo8hJfhOz7mAvB1dCtuZhchctXjPalBcuUX64wACBUpYSz5UIL0kdMz
+	m4DI2Uf0ZAZLkBB0w55x2A7k461ZohjuRMe4CuGWtrhGYxOIpja6/rNLPoueBS44SoI0Qdr
+	E7KWqKcT4WvXWmvfHc1crs+MO1j7l08YOyadVAn3DakKbmd1ATFZ+SfCB9Uz5qOGui9r28U
+	GwtyRjQuKhA1elYWuqlaFhamMosSdjR5w7dObNeijIbHaYy2iXF+By270ZXacE71Zb3Hi+C
+	dQsc0neEQqkcRX8VLAt4xs9ZS50hWkfifRb17w/D6Y4nW5SJUtycfRBwJjicNYjY6EsDrl5
+	g7j4K6fxdE6DshyWiEThS/LfMG7/AQJemMHpfcbFSy/fN98wZlJ//5xTTogf0FIG9oDmdtZ
+	io1EebNpVU3ZTlOD+CgUkqHsxrITAvD6uaXIx8QTt5TuZWQR18u/uMviI6fvpc5N8QYpMpp
+	mZTraTiC/ubSuCWqFpYT9QFY4pRz/dQXWbN8KqE3uP4FbTiqj86vzo9jytbW88kLU12HuQY
+	OFpmBPrX4Lh5eKmx3KJHbjrytAuxjjzVkkYPbEYal600ehFUp+yTKTwy2sn0QQyydiZMFv1
+	Hrc9+cBRvigNnJ7UkO7xRGtWh/Tux5bu7Jx2O05UoUopeFYjF/kjMeNje7ML6mcHg==
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
 X-QQ-RECHKSPAM: 0
 
-Add doc build infrastructure for txgbevf driver.
-Implement the basic PCI driver loading and unloading interface.
-Initialize the id_table which support 10/25/40G virtual
-functions for Wangxun.
-Ioremap the space of bar0 and bar4 which will be used.
+Implement mbox_write_and_read_ack functions which are
+used to set basic functions like set_mac, get_link.etc
+for vf.
 
 Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
 ---
- .../device_drivers/ethernet/index.rst         |   1 +
- .../ethernet/wangxun/txgbevf.rst              |  16 ++
- drivers/net/ethernet/wangxun/Kconfig          |  18 ++
- drivers/net/ethernet/wangxun/Makefile         |   1 +
- .../net/ethernet/wangxun/libwx/wx_vf_common.c |  38 +++++
- .../net/ethernet/wangxun/libwx/wx_vf_common.h |   4 +
- drivers/net/ethernet/wangxun/txgbevf/Makefile |   9 +
- .../ethernet/wangxun/txgbevf/txgbevf_main.c   | 154 ++++++++++++++++++
- .../ethernet/wangxun/txgbevf/txgbevf_type.h   |  20 +++
- 9 files changed, 261 insertions(+)
- create mode 100644 Documentation/networking/device_drivers/ethernet/wangxun/txgbevf.rst
- create mode 100644 drivers/net/ethernet/wangxun/txgbevf/Makefile
- create mode 100644 drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
- create mode 100644 drivers/net/ethernet/wangxun/txgbevf/txgbevf_type.h
+ drivers/net/ethernet/wangxun/libwx/Makefile  |   1 +
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c   |   2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_hw.h   |   1 +
+ drivers/net/ethernet/wangxun/libwx/wx_type.h |   1 +
+ drivers/net/ethernet/wangxun/libwx/wx_vf.c   | 473 +++++++++++++++++++
+ drivers/net/ethernet/wangxun/libwx/wx_vf.h   |  63 +++
+ 6 files changed, 540 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_vf.c
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_vf.h
 
-diff --git a/Documentation/networking/device_drivers/ethernet/index.rst b/Documentation/networking/device_drivers/ethernet/index.rst
-index 139b4c75a191..e93453410772 100644
---- a/Documentation/networking/device_drivers/ethernet/index.rst
-+++ b/Documentation/networking/device_drivers/ethernet/index.rst
-@@ -58,6 +58,7 @@ Contents:
-    ti/tlan
-    ti/icssg_prueth
-    wangxun/txgbe
-+   wangxun/txgbevf
-    wangxun/ngbe
+diff --git a/drivers/net/ethernet/wangxun/libwx/Makefile b/drivers/net/ethernet/wangxun/libwx/Makefile
+index 9b78b604a94e..ddf0bb921676 100644
+--- a/drivers/net/ethernet/wangxun/libwx/Makefile
++++ b/drivers/net/ethernet/wangxun/libwx/Makefile
+@@ -5,3 +5,4 @@
+ obj-$(CONFIG_LIBWX) += libwx.o
  
- .. only::  subproject and html
-diff --git a/Documentation/networking/device_drivers/ethernet/wangxun/txgbevf.rst b/Documentation/networking/device_drivers/ethernet/wangxun/txgbevf.rst
-new file mode 100644
-index 000000000000..b2f759b7b518
---- /dev/null
-+++ b/Documentation/networking/device_drivers/ethernet/wangxun/txgbevf.rst
-@@ -0,0 +1,16 @@
-+.. SPDX-License-Identifier: GPL-2.0+
-+
-+===========================================================================
-+Linux Base Virtual Function Driver for Wangxun(R) 10/25/40 Gigabit Ethernet
-+===========================================================================
-+
-+WangXun 10/25/40 Gigabit Virtual Function Linux driver.
-+Copyright(c) 2015 - 2025 Beijing WangXun Technology Co., Ltd.
-+
-+Support
-+=======
-+For general information, go to the website at:
-+https://www.net-swift.com
-+
-+If you got any problem, contact Wangxun support team via nic-support@net-swift.com
-+and Cc: netdev.
-diff --git a/drivers/net/ethernet/wangxun/Kconfig b/drivers/net/ethernet/wangxun/Kconfig
-index e5fc942c28cc..a6ec73e4f300 100644
---- a/drivers/net/ethernet/wangxun/Kconfig
-+++ b/drivers/net/ethernet/wangxun/Kconfig
-@@ -64,4 +64,22 @@ config TXGBE
- 	  To compile this driver as a module, choose M here. The module
- 	  will be called txgbe.
- 
-+config TXGBEVF
-+	tristate "Wangxun(R) 10/25/40G Virtual Function Ethernet support"
-+	depends on PCI
-+	depends on PCI_MSI
-+	select LIBWX
-+	select PHYLINK
-+	help
-+	  This driver supports virtual functions for SP1000A, WX1820AL,
-+	  WX5XXX, WX5XXXAL.
-+
-+	  This driver was formerly named txgbevf.
-+
-+	  More specific information on configuring the driver is in
-+	  <file:Documentation/networking/device_drivers/ethernet/wangxun/txgbevf.rst>.
-+
-+	  To compile this driver as a module, choose M here. MSI-X interrupt
-+	  support is required for this driver to work correctly.
-+
- endif # NET_VENDOR_WANGXUN
-diff --git a/drivers/net/ethernet/wangxun/Makefile b/drivers/net/ethernet/wangxun/Makefile
-index ca19311dbe38..71371d47a6ee 100644
---- a/drivers/net/ethernet/wangxun/Makefile
-+++ b/drivers/net/ethernet/wangxun/Makefile
-@@ -5,4 +5,5 @@
- 
- obj-$(CONFIG_LIBWX) += libwx/
- obj-$(CONFIG_TXGBE) += txgbe/
-+obj-$(CONFIG_TXGBEVF) += txgbevf/
- obj-$(CONFIG_NGBE) += ngbe/
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-index ee0207752ae2..e317ca3afded 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-@@ -11,6 +11,44 @@
- #include "wx_vf_lib.h"
- #include "wx_vf_common.h"
- 
-+int wxvf_suspend(struct device *dev_d)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev_d);
-+	struct wx *wx = pci_get_drvdata(pdev);
-+
-+	netif_device_detach(wx->netdev);
-+	pci_disable_device(pdev);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(wxvf_suspend);
-+
-+void wxvf_shutdown(struct pci_dev *pdev)
-+{
-+	wxvf_suspend(&pdev->dev);
-+}
-+EXPORT_SYMBOL(wxvf_shutdown);
-+
-+int wxvf_resume(struct device *dev_d)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev_d);
-+	struct wx *wx = pci_get_drvdata(pdev);
-+
-+	pci_set_master(pdev);
-+	netif_device_attach(wx->netdev);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(wxvf_resume);
-+
-+void wxvf_remove(struct pci_dev *pdev)
-+{
-+	pci_release_selected_regions(pdev,
-+				     pci_select_bars(pdev, IORESOURCE_MEM));
-+	pci_disable_device(pdev);
-+}
-+EXPORT_SYMBOL(wxvf_remove);
-+
- static irqreturn_t wx_msix_misc_vf(int __always_unused irq, void *data)
+ libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o
++libwx-objs += wx_vf.o
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 0f4be72116b8..82dd76f0326e 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -1107,7 +1107,7 @@ static int wx_write_uc_addr_list(struct net_device *netdev, int pool)
+  *  by the MO field of the MCSTCTRL. The MO field is set during initialization
+  *  to mc_filter_type.
+  **/
+-static u32 wx_mta_vector(struct wx *wx, u8 *mc_addr)
++u32 wx_mta_vector(struct wx *wx, u8 *mc_addr)
  {
- 	struct wx *wx = data;
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h
-index 9bee9de86cb2..f3b31f33407b 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h
-@@ -4,6 +4,10 @@
- #ifndef _WX_VF_COMMON_H_
- #define _WX_VF_COMMON_H_
+ 	u32 vector = 0;
  
-+int wxvf_suspend(struct device *dev_d);
-+void wxvf_shutdown(struct pci_dev *pdev);
-+int wxvf_resume(struct device *dev_d);
-+void wxvf_remove(struct pci_dev *pdev);
- int wx_request_msix_irqs_vf(struct wx *wx);
- void wx_negotiate_api_vf(struct wx *wx);
- void wx_reset_vf(struct wx *wx);
-diff --git a/drivers/net/ethernet/wangxun/txgbevf/Makefile b/drivers/net/ethernet/wangxun/txgbevf/Makefile
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.h b/drivers/net/ethernet/wangxun/libwx/wx_hw.h
+index 26a56cba60b9..718015611da6 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.h
+@@ -29,6 +29,7 @@ void wx_mac_set_default_filter(struct wx *wx, u8 *addr);
+ int wx_add_mac_filter(struct wx *wx, u8 *addr, u16 pool);
+ int wx_del_mac_filter(struct wx *wx, u8 *addr, u16 pool);
+ void wx_flush_sw_mac_table(struct wx *wx);
++u32 wx_mta_vector(struct wx *wx, u8 *mc_addr);
+ int wx_set_mac(struct net_device *netdev, void *p);
+ void wx_disable_rx(struct wx *wx);
+ int wx_set_vf_spoofchk(struct net_device *netdev, int vf, bool setting);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index 3d4785865bb2..d14e46ac244a 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1214,6 +1214,7 @@ struct wx {
+ 
+ 	void *priv;
+ 	u8 __iomem *hw_addr;
++	u8 __iomem *b4_addr; /* vf only */
+ 	struct pci_dev *pdev;
+ 	struct net_device *netdev;
+ 	struct wx_bus_info bus;
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf.c b/drivers/net/ethernet/wangxun/libwx/wx_vf.c
 new file mode 100644
-index 000000000000..4c7e6de04424
+index 000000000000..46643176cc91
 --- /dev/null
-+++ b/drivers/net/ethernet/wangxun/txgbevf/Makefile
-@@ -0,0 +1,9 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (c) 2015 - 2025 Beijing WangXun Technology Co., Ltd.
-+#
-+# Makefile for the Wangxun(R) 10/25/40GbE virtual functions driver
-+#
-+
-+obj-$(CONFIG_TXGBE) += txgbevf.o
-+
-+txgbevf-objs := txgbevf_main.o
-diff --git a/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
-new file mode 100644
-index 000000000000..9e8ddec36913
---- /dev/null
-+++ b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
-@@ -0,0 +1,154 @@
++++ b/drivers/net/ethernet/wangxun/libwx/wx_vf.c
+@@ -0,0 +1,473 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/* Copyright (c) 2015 - 2025 Beijing WangXun Technology Co., Ltd. */
 +
-+#include <linux/types.h>
-+#include <linux/module.h>
-+#include <linux/pci.h>
-+#include <linux/netdevice.h>
-+#include <linux/string.h>
 +#include <linux/etherdevice.h>
++#include <linux/pci.h>
 +
-+#include "../libwx/wx_type.h"
-+#include "../libwx/wx_vf_common.h"
-+#include "txgbevf_type.h"
++#include "wx_type.h"
++#include "wx_hw.h"
++#include "wx_mbx.h"
++#include "wx_vf.h"
 +
-+/* txgbevf_pci_tbl - PCI Device ID Table
-+ *
-+ * Wildcard entries (PCI_ANY_ID) should come last
-+ * Last entry must be all 0s
-+ *
-+ * { Vendor ID, Device ID, SubVendor ID, SubDevice ID,
-+ *   Class, Class Mask, private data (not used) }
-+ */
-+static const struct pci_device_id txgbevf_pci_tbl[] = {
-+	{ PCI_VDEVICE(WANGXUN, TXGBEVF_DEV_ID_SP1000), 0},
-+	{ PCI_VDEVICE(WANGXUN, TXGBEVF_DEV_ID_WX1820), 0},
-+	{ PCI_VDEVICE(WANGXUN, TXGBEVF_DEV_ID_AML500F), 0},
-+	{ PCI_VDEVICE(WANGXUN, TXGBEVF_DEV_ID_AML510F), 0},
-+	{ PCI_VDEVICE(WANGXUN, TXGBEVF_DEV_ID_AML5024), 0},
-+	{ PCI_VDEVICE(WANGXUN, TXGBEVF_DEV_ID_AML5124), 0},
-+	{ PCI_VDEVICE(WANGXUN, TXGBEVF_DEV_ID_AML503F), 0},
-+	{ PCI_VDEVICE(WANGXUN, TXGBEVF_DEV_ID_AML513F), 0},
-+	/* required last entry */
-+	{ .device = 0 }
-+};
++static void wx_virt_clr_reg(struct wx *wx)
++{
++	u32 vfsrrctl, i;
++
++	/* VRSRRCTL default values (BSIZEPACKET = 2048, BSIZEHEADER = 256) */
++	vfsrrctl = WX_VXRXDCTL_HDRSZ(wx_hdr_sz(WX_RX_HDR_SIZE));
++	vfsrrctl |= WX_VXRXDCTL_BUFSZ(wx_buf_sz(WX_RX_BUF_SIZE));
++
++	/* clear all rxd ctl */
++	for (i = 0; i < WX_VF_MAX_RING_NUMS; i++)
++		wr32m(wx, WX_VXRXDCTL(i),
++		      WX_VXRXDCTL_HDRSZ_MASK | WX_VXRXDCTL_BUFSZ_MASK,
++		      vfsrrctl);
++
++	rd32(wx, WX_VXSTATUS);
++}
 +
 +/**
-+ * txgbevf_probe - Device Initialization Routine
-+ * @pdev: PCI device information struct
-+ * @ent: entry in txgbevf_pci_tbl
++ *  wx_init_hw_vf - virtual function hardware initialization
++ *  @wx: pointer to hardware structure
 + *
-+ * Return: return 0 on success, negative on failure
-+ *
-+ * txgbevf_probe initializes an adapter identified by a pci_dev structure.
-+ * The OS initialization, configuring of the adapter private structure,
-+ * and a hardware reset occur.
++ *  Initialize the mac address
 + **/
-+static int txgbevf_probe(struct pci_dev *pdev,
-+			 const struct pci_device_id __always_unused *ent)
++void wx_init_hw_vf(struct wx *wx)
 +{
-+	struct net_device *netdev;
-+	struct wx *wx = NULL;
-+	int err;
++	wx_get_mac_addr_vf(wx, wx->mac.addr);
++}
++EXPORT_SYMBOL(wx_init_hw_vf);
 +
-+	err = pci_enable_device_mem(pdev);
-+	if (err)
-+		return err;
++static int wx_mbx_write_and_read_reply(struct wx *wx, u32 *req_buf,
++				       u32 *resp_buf, u16 size)
++{
++	int ret;
 +
-+	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
-+	if (err) {
-+		dev_err(&pdev->dev,
-+			"No usable DMA configuration, aborting\n");
-+		goto err_pci_disable_dev;
++	ret = wx_write_posted_mbx(wx, req_buf, size);
++	if (ret)
++		return ret;
++
++	return wx_read_posted_mbx(wx, resp_buf, size);
++}
++
++/**
++ *  wx_reset_hw_vf - Performs hardware reset
++ *  @wx: pointer to hardware structure
++ *
++ *  Resets the hardware by resetting the transmit and receive units, masks and
++ *  clears all interrupts.
++ *
++ *  Return: returns 0 on success, negative error code on failure
++ **/
++int wx_reset_hw_vf(struct wx *wx)
++{
++	struct wx_mbx_info *mbx = &wx->mbx;
++	u32 msgbuf[4] = {WX_VF_RESET};
++	u8 *addr = (u8 *)(&msgbuf[1]);
++	u32 b4_buf[16] = {0};
++	u32 timeout = 200;
++	int ret;
++	u32 i;
++
++	/* Call wx stop to disable tx/rx and clear interrupts */
++	wx_stop_adapter_vf(wx);
++
++	/* reset the api version */
++	wx->vfinfo->vf_api = wx_mbox_api_null;
++
++	/* backup msix vectors */
++	if (wx->b4_addr) {
++		for (i = 0; i < 16; i++)
++			b4_buf[i] = readl(wx->b4_addr + i * 4);
 +	}
 +
-+	err = pci_request_selected_regions(pdev,
-+					   pci_select_bars(pdev, IORESOURCE_MEM),
-+					   dev_driver_string(&pdev->dev));
-+	if (err) {
-+		dev_err(&pdev->dev,
-+			"pci_request_selected_regions failed 0x%x\n", err);
-+		goto err_pci_disable_dev;
++	wr32m(wx, WX_VXCTRL, WX_VXCTRL_RST, WX_VXCTRL_RST);
++	rd32(wx, WX_VXSTATUS);
++
++	/* we cannot reset while the RSTI / RSTD bits are asserted */
++	while (!wx_check_for_rst_vf(wx) && timeout) {
++		timeout--;
++		udelay(5);
 +	}
 +
-+	pci_set_master(pdev);
-+
-+	netdev = devm_alloc_etherdev_mqs(&pdev->dev,
-+					 sizeof(struct wx),
-+					 TXGBEVF_MAX_TX_QUEUES,
-+					 TXGBEVF_MAX_RX_QUEUES);
-+	if (!netdev) {
-+		err = -ENOMEM;
-+		goto err_pci_release_regions;
++	/* restore msix vectors */
++	if (wx->b4_addr) {
++		for (i = 0; i < 16; i++)
++			writel(b4_buf[i], wx->b4_addr + i * 4);
 +	}
 +
-+	SET_NETDEV_DEV(netdev, &pdev->dev);
++	/* amlite: bme */
++	if (wx->mac.type == wx_mac_aml || wx->mac.type == wx_mac_aml40)
++		wr32(wx, WX_VX_PF_BME, WX_VF_BME_ENABLE);
 +
-+	wx = netdev_priv(netdev);
-+	wx->netdev = netdev;
-+	wx->pdev = pdev;
++	if (!timeout)
++		return -EBUSY;
 +
-+	wx->msg_enable = netif_msg_init(-1, NETIF_MSG_DRV |
-+					NETIF_MSG_PROBE | NETIF_MSG_LINK);
-+	wx->hw_addr = devm_ioremap(&pdev->dev,
-+				   pci_resource_start(pdev, 0),
-+				   pci_resource_len(pdev, 0));
-+	if (!wx->hw_addr) {
-+		err = -EIO;
-+		goto err_pci_release_regions;
-+	}
++	/* Reset VF registers to initial values */
++	wx_virt_clr_reg(wx);
 +
-+	wx->b4_addr = devm_ioremap(&pdev->dev,
-+				   pci_resource_start(pdev, 4),
-+				   pci_resource_len(pdev, 4));
-+	if (!wx->b4_addr) {
-+		err = -EIO;
-+		goto err_pci_release_regions;
-+	}
++	/* mailbox timeout can now become active */
++	mbx->timeout = 2000;
 +
-+	netdev->features |= NETIF_F_HIGHDMA;
++	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
++					  ARRAY_SIZE(msgbuf));
++	if (ret)
++		return ret;
 +
-+	pci_set_drvdata(pdev, wx);
++	if (msgbuf[0] != (WX_VF_RESET | WX_VT_MSGTYPE_ACK) &&
++	    msgbuf[0] != (WX_VF_RESET | WX_VT_MSGTYPE_NACK))
++		return -EINVAL;
++
++	if (msgbuf[0] == (WX_VF_RESET | WX_VT_MSGTYPE_ACK))
++		ether_addr_copy(wx->mac.perm_addr, addr);
++
++	wx->mac.mc_filter_type = msgbuf[3];
 +
 +	return 0;
-+
-+err_pci_release_regions:
-+	pci_release_selected_regions(pdev,
-+				     pci_select_bars(pdev, IORESOURCE_MEM));
-+err_pci_disable_dev:
-+	pci_disable_device(pdev);
-+	return err;
 +}
++EXPORT_SYMBOL(wx_reset_hw_vf);
 +
 +/**
-+ * txgbevf_remove - Device Removal Routine
-+ * @pdev: PCI device information struct
++ *  wx_stop_adapter_vf - Generic stop Tx/Rx units
++ *  @wx: pointer to hardware structure
 + *
-+ * txgbevf_remove is called by the PCI subsystem to alert the driver
-+ * that it should release a PCI device.  The could be caused by a
-+ * Hot-Plug event, or because the driver is going to be removed from
-+ * memory.
++ *  Clears interrupts, disables transmit and receive units.
 + **/
-+static void txgbevf_remove(struct pci_dev *pdev)
++void wx_stop_adapter_vf(struct wx *wx)
 +{
-+	wxvf_remove(pdev);
++	u32 reg_val;
++	u16 i;
++
++	/* Clear interrupt mask to stop from interrupts being generated */
++	wr32(wx, WX_VXIMS, WX_VF_IRQ_CLEAR_MASK);
++
++	/* Clear any pending interrupts, flush previous writes */
++	wr32(wx, WX_VXICR, U32_MAX);
++
++	/* Disable the transmit unit.  Each queue must be disabled. */
++	for (i = 0; i < wx->mac.max_tx_queues; i++)
++		wr32(wx, WX_VXTXDCTL(i), WX_VXTXDCTL_FLUSH);
++
++	/* Disable the receive unit by stopping each queue */
++	for (i = 0; i < wx->mac.max_rx_queues; i++) {
++		reg_val = rd32(wx, WX_VXRXDCTL(i));
++		reg_val &= ~WX_VXRXDCTL_ENABLE;
++		wr32(wx, WX_VXRXDCTL(i), reg_val);
++	}
++	/* Clear packet split and pool config */
++	wr32(wx, WX_VXMRQC, 0);
++
++	/* flush all queues disables */
++	rd32(wx, WX_VXSTATUS);
 +}
++EXPORT_SYMBOL(wx_stop_adapter_vf);
 +
-+static DEFINE_SIMPLE_DEV_PM_OPS(txgbevf_pm_ops, wxvf_suspend, wxvf_resume);
++/**
++ *  wx_set_rar_vf - set device MAC address
++ *  @wx: pointer to hardware structure
++ *  @index: Receive address register to write
++ *  @addr: Address to put into receive address register
++ *  @enable_addr: set flag that address is active
++ *
++ *  Return: returns 0 on success, negative error code on failure
++ **/
++int wx_set_rar_vf(struct wx *wx, u32 index, u8 *addr, u32 enable_addr)
++{
++	u32 msgbuf[3] = {WX_VF_SET_MAC_ADDR};
++	u8 *msg_addr = (u8 *)(&msgbuf[1]);
++	int ret;
 +
-+static struct pci_driver txgbevf_driver = {
-+	.name     = KBUILD_MODNAME,
-+	.id_table = txgbevf_pci_tbl,
-+	.probe    = txgbevf_probe,
-+	.remove   = txgbevf_remove,
-+	.shutdown = wxvf_shutdown,
-+	/* Power Management Hooks */
-+	.driver.pm	= pm_sleep_ptr(&txgbevf_pm_ops)
-+};
++	memcpy(msg_addr, addr, ETH_ALEN);
 +
-+module_pci_driver(txgbevf_driver);
++	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
++					  ARRAY_SIZE(msgbuf));
++	if (ret)
++		return ret;
++	msgbuf[0] &= ~WX_VT_MSGTYPE_CTS;
 +
-+MODULE_DEVICE_TABLE(pci, txgbevf_pci_tbl);
-+MODULE_AUTHOR("Beijing WangXun Technology Co., Ltd, <software@trustnetic.com>");
-+MODULE_DESCRIPTION("WangXun(R) 10/25/40 Gigabit Virtual Function Network Driver");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/net/ethernet/wangxun/txgbevf/txgbevf_type.h b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_type.h
++	/* if nacked the address was rejected, use "perm_addr" */
++	if (msgbuf[0] == (WX_VF_SET_MAC_ADDR | WX_VT_MSGTYPE_NACK)) {
++		wx_get_mac_addr_vf(wx, wx->mac.addr);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL(wx_set_rar_vf);
++
++/**
++ *  wx_update_mc_addr_list_vf - Update Multicast addresses
++ *  @wx: pointer to the HW structure
++ *  @netdev: pointer to the net device structure
++ *
++ *  Updates the Multicast Table Array.
++ *
++ *  Return: returns 0 on success, negative error code on failure
++ **/
++int wx_update_mc_addr_list_vf(struct wx *wx, struct net_device *netdev)
++{
++	u32 msgbuf[2] = {WX_VF_SET_MULTICAST};
++	u16 *vector_l = (u16 *)&msgbuf[1];
++	struct netdev_hw_addr *ha;
++	u32 cnt, i;
++
++	cnt = netdev_mc_count(netdev);
++	if (cnt > 30)
++		cnt = 30;
++	msgbuf[0] |= cnt << WX_VT_MSGINFO_SHIFT;
++
++	i = 0;
++	netdev_for_each_mc_addr(ha, netdev) {
++		if (i == cnt)
++			break;
++		if (is_link_local_ether_addr(ha->addr))
++			continue;
++
++		vector_l[i++] = wx_mta_vector(wx, ha->addr);
++	}
++
++	return wx_write_posted_mbx(wx, msgbuf, ARRAY_SIZE(msgbuf));
++}
++EXPORT_SYMBOL(wx_update_mc_addr_list_vf);
++
++/**
++ *  wx_update_xcast_mode_vf - Update Multicast mode
++ *  @wx: pointer to the HW structure
++ *  @xcast_mode: new multicast mode
++ *
++ *  Updates the Multicast Mode of VF.
++ *
++ *  Return: returns 0 on success, negative error code on failure
++ **/
++int wx_update_xcast_mode_vf(struct wx *wx, int xcast_mode)
++{
++	u32 msgbuf[2] = {WX_VF_UPDATE_XCAST_MODE, xcast_mode};
++	int ret = 0;
++
++	if (wx->vfinfo->vf_api < wx_mbox_api_13)
++		return -EINVAL;
++
++	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
++					  ARRAY_SIZE(msgbuf));
++	if (ret)
++		return ret;
++
++	msgbuf[0] &= ~WX_VT_MSGTYPE_CTS;
++	if (msgbuf[0] == (WX_VF_UPDATE_XCAST_MODE | WX_VT_MSGTYPE_NACK))
++		return -EINVAL;
++
++	return 0;
++}
++EXPORT_SYMBOL(wx_update_xcast_mode_vf);
++
++/**
++ * wx_get_link_state_vf - Get VF link state from PF
++ * @wx: pointer to the HW structure
++ * @link_state: link state storage
++ *
++ * Return: return state of the operation error or success.
++ **/
++int wx_get_link_state_vf(struct wx *wx, u16 *link_state)
++{
++	u32 msgbuf[2] = {WX_VF_GET_LINK_STATE};
++	int ret;
++
++	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
++					  ARRAY_SIZE(msgbuf));
++	if (ret)
++		return ret;
++
++	if (msgbuf[0] & WX_VT_MSGTYPE_NACK)
++		return -EINVAL;
++
++	*link_state = msgbuf[1];
++
++	return 0;
++}
++EXPORT_SYMBOL(wx_get_link_state_vf);
++
++/**
++ *  wx_set_vfta_vf - Set/Unset vlan filter table address
++ *  @wx: pointer to the HW structure
++ *  @vlan: 12 bit VLAN ID
++ *  @vind: unused by VF drivers
++ *  @vlan_on: if true then set bit, else clear bit
++ *  @vlvf_bypass: boolean flag indicating updating default pool is okay
++ *
++ *  Turn on/off specified VLAN in the VLAN filter table.
++ *
++ *  Return: returns 0 on success, negative error code on failure
++ **/
++int wx_set_vfta_vf(struct wx *wx, u32 vlan, u32 vind, bool vlan_on,
++		   bool vlvf_bypass)
++{
++	u32 msgbuf[2] = {WX_VF_SET_VLAN, vlan};
++	bool vlan_offload = false;
++	int ret;
++
++	/* Setting the 8 bit field MSG INFO to TRUE indicates "add" */
++	msgbuf[0] |= vlan_on << WX_VT_MSGINFO_SHIFT;
++	/* if vf vlan offload is disabled, allow to create vlan under pf port vlan */
++	msgbuf[0] |= BIT(vlan_offload);
++
++	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
++					  ARRAY_SIZE(msgbuf));
++	if (ret)
++		return ret;
++
++	if (msgbuf[0] & WX_VT_MSGTYPE_ACK)
++		return 0;
++
++	return msgbuf[0] & WX_VT_MSGTYPE_NACK;
++}
++EXPORT_SYMBOL(wx_set_vfta_vf);
++
++void wx_get_mac_addr_vf(struct wx *wx, u8 *mac_addr)
++{
++	ether_addr_copy(mac_addr, wx->mac.perm_addr);
++}
++EXPORT_SYMBOL(wx_get_mac_addr_vf);
++
++int wx_get_fw_version_vf(struct wx *wx)
++{
++	u32 msgbuf[2] = {WX_VF_GET_FW_VERSION};
++	int ret;
++
++	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
++					  ARRAY_SIZE(msgbuf));
++	if (ret)
++		return ret;
++
++	if (msgbuf[0] & WX_VT_MSGTYPE_NACK)
++		return -EINVAL;
++	snprintf(wx->eeprom_id, 32, "0x%08x", msgbuf[1]);
++
++	return 0;
++}
++EXPORT_SYMBOL(wx_get_fw_version_vf);
++
++int wx_set_uc_addr_vf(struct wx *wx, u32 index, u8 *addr)
++{
++	u32 msgbuf[3] = {WX_VF_SET_MACVLAN};
++	u8 *msg_addr = (u8 *)(&msgbuf[1]);
++	int ret;
++
++	/* If index is one then this is the start of a new list and needs
++	 * indication to the PF so it can do it's own list management.
++	 * If it is zero then that tells the PF to just clear all of
++	 * this VF's macvlans and there is no new list.
++	 */
++	msgbuf[0] |= index << WX_VT_MSGINFO_SHIFT;
++	if (addr)
++		memcpy(msg_addr, addr, 6);
++	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
++					  ARRAY_SIZE(msgbuf));
++	if (ret)
++		return ret;
++
++	msgbuf[0] &= ~WX_VT_MSGTYPE_CTS;
++
++	if (msgbuf[0] == (WX_VF_SET_MACVLAN | WX_VT_MSGTYPE_NACK))
++		return -EINVAL;
++
++	return 0;
++}
++EXPORT_SYMBOL(wx_set_uc_addr_vf);
++
++/**
++ *  wx_rlpml_set_vf - Set the maximum receive packet length
++ *  @wx: pointer to the HW structure
++ *  @max_size: value to assign to max frame size
++ *
++ *  Return: returns 0 on success, negative error code on failure
++ **/
++int wx_rlpml_set_vf(struct wx *wx, u16 max_size)
++{
++	u32 msgbuf[2] = {WX_VF_SET_LPE, max_size};
++	int ret;
++
++	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
++					  ARRAY_SIZE(msgbuf));
++	if (ret)
++		return ret;
++	if ((msgbuf[0] & WX_VF_SET_LPE) &&
++	    (msgbuf[0] & WX_VT_MSGTYPE_NACK))
++		return -EINVAL;
++
++	return 0;
++}
++EXPORT_SYMBOL(wx_rlpml_set_vf);
++
++/**
++ *  wx_negotiate_api_version - Negotiate supported API version
++ *  @wx: pointer to the HW structure
++ *  @api: integer containing requested API version
++ *
++ *  Return: returns 0 on success, negative error code on failure
++ **/
++int wx_negotiate_api_version(struct wx *wx, int api)
++{
++	u32 msgbuf[2] = {WX_VF_API_NEGOTIATE, api};
++	int ret;
++
++	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
++					  ARRAY_SIZE(msgbuf));
++	if (ret)
++		return ret;
++
++	msgbuf[0] &= ~WX_VT_MSGTYPE_CTS;
++
++	/* Store value and return 0 on success */
++	if (msgbuf[0] == (WX_VF_API_NEGOTIATE | WX_VT_MSGTYPE_NACK))
++		return -EINVAL;
++	wx->vfinfo->vf_api = api;
++
++	return 0;
++}
++EXPORT_SYMBOL(wx_negotiate_api_version);
++
++int wx_get_queues_vf(struct wx *wx, u32 *num_tcs, u32 *default_tc)
++{
++	u32 msgbuf[5] = {WX_VF_GET_QUEUES};
++	int ret;
++
++	/* do nothing if API doesn't support wx_get_queues */
++	if (wx->vfinfo->vf_api < wx_mbox_api_13)
++		return -EINVAL;
++
++	/* Fetch queue configuration from the PF */
++	ret = wx_mbx_write_and_read_reply(wx, msgbuf, msgbuf,
++					  ARRAY_SIZE(msgbuf));
++	if (ret)
++		return ret;
++	msgbuf[0] &= ~WX_VT_MSGTYPE_CTS;
++
++	/* if we didn't get an ACK there must have been
++	 * some sort of mailbox error so we should treat it
++	 * as such
++	 */
++	if (msgbuf[0] != (WX_VF_GET_QUEUES | WX_VT_MSGTYPE_ACK))
++		return -EINVAL;
++	/* record and validate values from message */
++	wx->mac.max_tx_queues = msgbuf[WX_VF_TX_QUEUES];
++	if (wx->mac.max_tx_queues == 0 ||
++	    wx->mac.max_tx_queues > WX_VF_MAX_TX_QUEUES)
++		wx->mac.max_tx_queues = WX_VF_MAX_TX_QUEUES;
++
++	wx->mac.max_rx_queues = msgbuf[WX_VF_RX_QUEUES];
++	if (wx->mac.max_rx_queues == 0 ||
++	    wx->mac.max_rx_queues > WX_VF_MAX_RX_QUEUES)
++		wx->mac.max_rx_queues = WX_VF_MAX_RX_QUEUES;
++
++	*num_tcs = msgbuf[WX_VF_TRANS_VLAN];
++	/* in case of unknown state assume we cannot tag frames */
++	if (*num_tcs > wx->mac.max_rx_queues)
++		*num_tcs = 1;
++	*default_tc = msgbuf[WX_VF_DEF_QUEUE];
++	/* default to queue 0 on out-of-bounds queue number */
++	if (*default_tc >= wx->mac.max_tx_queues)
++		*default_tc = 0;
++
++	return 0;
++}
++EXPORT_SYMBOL(wx_get_queues_vf);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf.h b/drivers/net/ethernet/wangxun/libwx/wx_vf.h
 new file mode 100644
-index 000000000000..2ba9d0cb63d5
+index 000000000000..c523ef3e8502
 --- /dev/null
-+++ b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_type.h
-@@ -0,0 +1,20 @@
++++ b/drivers/net/ethernet/wangxun/libwx/wx_vf.h
+@@ -0,0 +1,63 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/* Copyright (c) 2015 - 2025 Beijing WangXun Technology Co., Ltd. */
 +
-+#ifndef _TXGBEVF_TYPE_H_
-+#define _TXGBEVF_TYPE_H_
++#ifndef _WX_VF_H_
++#define _WX_VF_H_
 +
-+/* Device IDs */
-+#define TXGBEVF_DEV_ID_SP1000                  0x1000
-+#define TXGBEVF_DEV_ID_WX1820                  0x2000
-+#define TXGBEVF_DEV_ID_AML500F                 0x500F
-+#define TXGBEVF_DEV_ID_AML510F                 0x510F
-+#define TXGBEVF_DEV_ID_AML5024                 0x5024
-+#define TXGBEVF_DEV_ID_AML5124                 0x5124
-+#define TXGBEVF_DEV_ID_AML503F                 0x503f
-+#define TXGBEVF_DEV_ID_AML513F                 0x513f
++#define WX_VF_MAX_RING_NUMS      8
++#define WX_VX_PF_BME             0x4B8
++#define WX_VF_BME_ENABLE         BIT(0)
++#define WX_VXSTATUS              0x4
++#define WX_VXCTRL                0x8
++#define WX_VXCTRL_RST            BIT(0)
 +
-+#define TXGBEVF_MAX_RX_QUEUES                  4
-+#define TXGBEVF_MAX_TX_QUEUES                  4
++#define WX_VXMRQC                0x78
++#define WX_VXICR                 0x100
++#define WX_VXIMS                 0x108
++#define WX_VF_IRQ_CLEAR_MASK     7
++#define WX_VF_MAX_TX_QUEUES      4
++#define WX_VF_MAX_RX_QUEUES      4
++#define WX_VXTXDCTL(r)           (0x3010 + (0x40 * (r)))
++#define WX_VXRXDCTL(r)           (0x1010 + (0x40 * (r)))
++#define WX_VXRXDCTL_ENABLE       BIT(0)
++#define WX_VXTXDCTL_FLUSH        BIT(26)
 +
-+#endif /* _TXGBEVF_TYPE_H_ */
++#define WX_VXRXDCTL_RSCMAX(f)    FIELD_PREP(GENMASK(24, 23), f)
++#define WX_VXRXDCTL_BUFLEN(f)    FIELD_PREP(GENMASK(6, 1), f)
++#define WX_VXRXDCTL_BUFSZ(f)     FIELD_PREP(GENMASK(11, 8), f)
++#define WX_VXRXDCTL_HDRSZ(f)     FIELD_PREP(GENMASK(15, 12), f)
++
++#define WX_VXRXDCTL_RSCMAX_MASK  GENMASK(24, 23)
++#define WX_VXRXDCTL_BUFLEN_MASK  GENMASK(6, 1)
++#define WX_VXRXDCTL_BUFSZ_MASK   GENMASK(11, 8)
++#define WX_VXRXDCTL_HDRSZ_MASK   GENMASK(15, 12)
++
++#define wx_conf_size(v, mwidth, uwidth) ({ \
++	typeof(v) _v = (v); \
++	(_v == 2 << (mwidth) ? 0 : _v >> (uwidth)); \
++})
++#define wx_buf_len(v)            wx_conf_size(v, 13, 7)
++#define wx_hdr_sz(v)             wx_conf_size(v, 10, 6)
++#define wx_buf_sz(v)             wx_conf_size(v, 14, 10)
++#define wx_pkt_thresh(v)         wx_conf_size(v, 4, 0)
++
++#define WX_RX_HDR_SIZE           256
++#define WX_RX_BUF_SIZE           2048
++
++void wx_init_hw_vf(struct wx *wx);
++int wx_reset_hw_vf(struct wx *wx);
++void wx_get_mac_addr_vf(struct wx *wx, u8 *mac_addr);
++void wx_stop_adapter_vf(struct wx *wx);
++int wx_get_fw_version_vf(struct wx *wx);
++int wx_set_rar_vf(struct wx *wx, u32 index, u8 *addr, u32 enable_addr);
++int wx_update_mc_addr_list_vf(struct wx *wx, struct net_device *netdev);
++int wx_set_uc_addr_vf(struct wx *wx, u32 index, u8 *addr);
++int wx_rlpml_set_vf(struct wx *wx, u16 max_size);
++int wx_negotiate_api_version(struct wx *wx, int api);
++int wx_get_queues_vf(struct wx *wx, u32 *num_tcs, u32 *default_tc);
++int wx_update_xcast_mode_vf(struct wx *wx, int xcast_mode);
++int wx_get_link_state_vf(struct wx *wx, u16 *link_state);
++int wx_set_vfta_vf(struct wx *wx, u32 vlan, u32 vind, bool vlan_on,
++		   bool vlvf_bypass);
++
++#endif /* _WX_VF_H_ */
 -- 
 2.30.1
-
 
