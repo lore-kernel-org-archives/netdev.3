@@ -1,93 +1,73 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10581F4CA9
-	for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 10:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5837629DB6B;
+	Wed, 25 Jun 2025 10:06:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750845974; cv=none; b=oaZ+s9c8HnButyc/guuLqhvzVoKGCDt2CNKG5z0znqruNRy5ozOxbEwBD0OYEFB8WjqbxfsEI5G8u6qtcxKCe821PG37zuhai6CMVL2nqVfgXpjLAcvDx3Gzsfdk8nwAgStYOk5oWLswPyCVPFfwqaKzYLC6Qd+NyPBxfIsuLyU=
+	t=1750845975; cv=none; b=qdNZtpiHca/lb0KjgDmZYxvdQyglyIS1EwsVia97dpabtKLAtCVkEbRWCnBd3CBgdmY+j8dyIeTDMQLdpQ5ubzE+TAkVGTfHuC2PfgZjVIN05XUTzqgCLiZfMp0LYFxbEQbqbOFgG0oGmmp411PB/czTv0MqHWXN0d+eqVk3AKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750845974; c=relaxed/simple;
-	bh=OQRcpBRl3upKIgsEgOyNBVXYp6e7hk9YmVhCrgaJIJA=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=m7BOBLHyeX/ble1PydspY1V0/MemJf1Iybh9Rj0b5SxO1N3xJ/wTHGVm4uMZlm3kF3k3Yzi92QaSH/R06oKpL/FKq4Mku7qB1rcX6vcfjqzlICxYXDQVJEt8im8bXfjCEgEG9vQYy9z4MwQBgd4DvnCaeKDKZ7MoWMni+D2p8JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hCgOL0W9; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750845975; c=relaxed/simple;
+	bh=aiLkgFC5NuellT8bZtBM3vhInrcKao1RCG4PgvpJiNA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GTWISj2Gde29vFUwOeIjPhB5fPrWFNoZwynTDJSTdE856GVUmL89EKtxVJk1OiGvPLp+qDFC6twOllyFYzvul2V/yllrbMYdplAB10z+aGpaTk42o1/kWp0cReVZpqC9Mp+OWioiyXqKHpakT45F/+6+lV+JmzKIqeloQcnpKUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hpaksek3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hCgOL0W9"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4530921461aso11429465e9.0
-        for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 03:06:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750845971; x=1751450771; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OQRcpBRl3upKIgsEgOyNBVXYp6e7hk9YmVhCrgaJIJA=;
-        b=hCgOL0W9mz1DHCC5Yd0ZdQpArN3DjL8DHjj7iceZmhUJEexHbP+iYyBEw99Of8tobD
-         hZvOzzw2W5KF7svz5U+wGt+toA1kFov9FX0uQDdvAix8i1UJsqxxVUH4kWAHSyL+AZnW
-         3i770N4EzaBf032XR2Sf8Od5fcNmG0lRMAhPiauF53oY/YbQ8eUYb5DS2Tz27GjzoeOF
-         Hq29ZkA8iNETvizlM6M6JzssgVAg4dg+oRHsQVYFe8DEwUCCyrUb8epUqFBbzHCATcc+
-         RcpTruyq4oVZUHPSQf75WXNoFKmfw3SsCXQ3a1phGtT1/pFJTpxJpHxC++SNrqzDnYbq
-         q3fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750845971; x=1751450771;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OQRcpBRl3upKIgsEgOyNBVXYp6e7hk9YmVhCrgaJIJA=;
-        b=hnkGK1/Gcmcth34xl6fgqCmr6VEC7cwGOYmhpiTVNO80EnzeANR+MmmKUH7ezR/W5W
-         55Y6ebzBvC5oT/J3BrCP4cpF+KAp4+80zCB8CkULSc+pH3iyyZ/O1iPlLuDjB2ly8XM9
-         36mc2cRSai8XsQ6r8D+hkNqXmb5lvMXH1lADpgvW1bVt8UrowF4mv2vtDKV9NBAAqBZt
-         iw7QZHlRpNdiweFPKTwb2q+JZq2FO8mRlnjG0zLdbJcs7TYWDO9nvxpPTsCrNr0L8OuO
-         a8+Op831T3oUw8fHiOwYY9m37hIhPO5O8bZAbnuXP2eGUyuVR9Rqpz/iNe1w84DbGEJc
-         Ckrw==
-X-Forwarded-Encrypted: i=1; AJvYcCXCbRLMcZk2zuXTpJIi5P01HfGMK2pS+lAYMGBxiv2PC2liLS7iZld9D4d3ptD0ToB7mx2VFfQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQhMkYJow3/+nobCx/+8k9lxsw5ydYak9Y48VTEpJK4jdYvN60
-	a3SbF1C+FSe7ww3lY+yDNL0aTnYGh4OC1dB5gfZDoCT8KpaISLvAaJKPQnSdff+a
-X-Gm-Gg: ASbGncsBNx2OOI97vnGFFmorfA2ZCF0J1YDZgiANPsZa8Dh2eHFHKTDrzvkxVYTVkEu
-	ugsdfLAEsSGBgFT8D3AM3XaTy6+ZOFrM5ovgZ706vmVqV+gJA+ztbKKX53sw/YDmskKI0SdQpPI
-	+LBrn/LGw4XGs6u56hWWUNfT+TgIhFZ365biPkOZlByFpXR211l+0DR1ognbUkmyfuzkDBGb0Bf
-	KjCG7qykLSY+S4IGTsZgFqzUWb1rnMVQBQ1y212t1yz3N5+O7Xhwn1M0pqsYGlAuqcdJ4/32jct
-	Kg8qRmcxdSyzgVo/8I/b9dpfWmA6s2LPQVATnc25t2cUIVPmBvnfQCIhOICV4R85mAijimY2qCo
-	=
-X-Google-Smtp-Source: AGHT+IEHnMdoqBAgTNdWXtlNLE8ri3jXxbBeMJa5HDVBKVS5VPxzD0LxzcIjYV08BWpDQqS/+TLz+w==
-X-Received: by 2002:a05:600c:1f91:b0:442:d5dd:5b4b with SMTP id 5b1f17b1804b1-45381af8535mr24100165e9.31.1750845970866;
-        Wed, 25 Jun 2025 03:06:10 -0700 (PDT)
-Received: from imac ([2a02:8010:60a0:0:5882:5c8b:68ce:cd54])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e80f279dsm4282810f8f.64.2025.06.25.03.06.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 03:06:10 -0700 (PDT)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
-  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
-  jiri@resnulli.us,  kalesh-anakkur.purayil@broadcom.com,
-  saeedm@nvidia.com,  jacob.e.keller@intel.com
-Subject: Re: [PATCH net 05/10] netlink: specs: devlink: replace underscores
- with dashes in names
-In-Reply-To: <20250624211002.3475021-6-kuba@kernel.org>
-Date: Wed, 25 Jun 2025 10:52:23 +0100
-Message-ID: <m27c10cfmw.fsf@gmail.com>
-References: <20250624211002.3475021-1-kuba@kernel.org>
-	<20250624211002.3475021-6-kuba@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hpaksek3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE43C4CEEE;
+	Wed, 25 Jun 2025 10:06:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750845974;
+	bh=aiLkgFC5NuellT8bZtBM3vhInrcKao1RCG4PgvpJiNA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hpaksek3nM8YbhFbsO8KJsdqx99hUU/RXs6iuJsmYp7HiYiOqWc1H0W5osUru5Bom
+	 qh2nKibrYU0JdXMuS8bun4z8VocDxHXMOGZzuXMD6rXdU8dryfotWkka91KSPUU2fI
+	 lDsnOiea8ik+f1HJAKvmgjYLkEpUHuPNWGcjnOryLZXZ7UJyXJ23Pxf6jVOrCZotFm
+	 s9n5yWyvUBPqyrFvQp3bS1+lOidKSHksRfqYdYgXn+V7USu6plTCTQSpTV7DIoi56l
+	 hJp6UdurW9b26rFfsKf3tLULzFSZDH1PyUEkNRGQdLRudxB3XACFJlYrtqmQbTGezd
+	 blQdXEQrC8xKg==
+Date: Wed, 25 Jun 2025 11:06:10 +0100
+From: Simon Horman <horms@kernel.org>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Boris Pismenny <borisp@nvidia.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Ayush Sawal <ayush.sawal@chelsio.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 6/7] net: splice: Drop nr_pages_max
+ initialization
+Message-ID: <20250625100610.GO1562@horms.kernel.org>
+References: <20250624-splice-drop-unused-v1-0-cf641a676d04@rbox.co>
+ <20250624-splice-drop-unused-v1-6-cf641a676d04@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250624-splice-drop-unused-v1-6-cf641a676d04@rbox.co>
 
-Jakub Kicinski <kuba@kernel.org> writes:
+On Tue, Jun 24, 2025 at 11:53:53AM +0200, Michal Luczaj wrote:
+> splice_pipe_desc::nr_pages_max was initialized unnecessary in commit
+> 41c73a0d44c9 ("net: speedup skb_splice_bits()"). spd_fill_page() compares
+> spd->nr_pages against a constant MAX_SKB_FRAGS, which makes setting
+> nr_pages_max redundant.
+> 
+> Remove the assignment. No functional change intended.
+> 
+> Signed-off-by: Michal Luczaj <mhal@rbox.co>
 
-> We're trying to add a strict regexp for the name format in the spec.
-> Underscores will not be allowed, dashes should be used instead.
-> This makes no difference to C (codegen, if used, replaces special
-> chars in names) but it gives more uniform naming in Python.
->
-> Fixes: 429ac6211494 ("devlink: define enum for attr types of dynamic attributes")
-> Fixes: f2f9dd164db0 ("netlink: specs: devlink: add the remaining command to generate complete split_ops")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+> ---
+> Probably the same thing in net/smc/smc_rx.c:smc_rx_splice()?
+
+Yes, it seems so to me.
