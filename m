@@ -1,164 +1,165 @@
-Received: from mail-ed1-f68.google.com (mail-ed1-f68.google.com [209.85.208.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9CA284B41
-	for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 10:15:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5878A284686
+	for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 10:21:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750846531; cv=none; b=mno8rWoA/srfLvcmocaToUUwDGvojU/i0d6hc3YTiS4qSg9rhBTridQEVWbABhdSlmbxJQ9IewqMQZ4BQ6JjGWTlZcdrxkaYIhO/Je1YVHzXkGdYBlpwg7c1x/3geXAYyFUrK71h4Bb4JIfNid66BJX9+FlSbybQCuIT567kQzg=
+	t=1750846919; cv=none; b=SpksKhDHkWcP6brsZjQw2U964WEqqWDlonxYiJUL7r1GIsuAaQTpOD4Lrs8PT2mSVstcsK+8NqAu4asYNVxdTbFNMsPikhKszSs08x0RQb9rXDmsF9OQHpsZQessDwJ8asjOZnBk3x6fzqsrd0Mlr4bGujkbxr7QmDlFJ+gFlMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750846531; c=relaxed/simple;
-	bh=FIF8iTq1d4GjW1WpCcb7UiabgcwCEx7BEqw0LZg7exw=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=qiUIQNBeEJ5KlrnKp0aCkxq7SGYbcec6BOyoDDx6k6KUdDtuy8uToeOHiPuVFmHthE8ohyHURdpq+pvaDiT/Hwt/sJV4KOt1FWtBtXts+jW/5wwcRIbeywB0+A9P7aH0UsNUS2Fsu4BrhkAkItHTxTiiBuZtUZPJRJ6I/VKkyEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f68.google.com with SMTP id 4fb4d7f45d1cf-6097d144923so1533838a12.1
-        for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 03:15:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750846527; x=1751451327;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:cc:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AbbPsk6SB4SWs1hUs3Mmb5Fa6L1piD+p6EaFsc2Xey8=;
-        b=dwqwiYBKSPUZ4wD9TblxP7l+yPsx0PZ3/0uLgYhByROdeF7BgMYiVMwt09VNa3iPll
-         QlkmFUyTl+CF0bm4PiOgfcAbfSL/hOWzIq/WXV4V3F8LFRNPyuUP1/w7i5PnGsY5kMuo
-         BatrTmMVjwEbW5veimAsGSUBbHrpzKCO8+pu7Drxtqe7cU4Kx58NZqBjo+jsOyg72goT
-         BcWOK0aoxmwMuxJSCwz2Kglf6Qf9BJ6iEGj7XBQnL2XhSvhYHsyWlIImj7MSzUvJgyPT
-         /3/id0rqf83A6kwRsllCHb2Hp1xG8ELvz7uF3gJpEo6g5E5SaBnzKinSeC5JX5nkiTvL
-         lqMg==
-X-Forwarded-Encrypted: i=1; AJvYcCWYb86pFfGSEXyCsNm0Kt79ySUQdR9ZGWRUnW28CBqYVg93ijwOHmkLbhEbl679egOIEOtV5M0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVX4BENguKv/hiZNDY6xK4l9/gxQOMUn3VpZsqWIHXCFqutcDs
-	8szgjLMRIbtuXxlKGpDdjpFgBlmU+YPlxeFx2UhKRSC5cKkgStIL3HWG
-X-Gm-Gg: ASbGncvnQnf+qb9uXrgJqjwCu8qDWnBRLzNTdCX+VJaBAXpJxZdZXzP9KxodGHtuGLr
-	WcSY1vEN+QsYpfy3yPGGtvFarlf52ubVc5Gb8MRpmmWrujWkDRg76AC1y3iGYjMg0L7oECe/clj
-	EZEwWND+8/7yrk8F6jdg7UK0rE2KBlzJWj7N6Q0/CmPcWSBU8YH6NVaOpTK4vFbLd8F91+J37kw
-	fPHxkf+HvkWVZgp8vlBH7sU2/yYxi1u25a2rgc8YBUNLPKev6O3RIH2O2kD1lS4X4GP8HtQcFV0
-	FJZ2/DWLy1rIm2SAgKJpNamzHvyVuDl+4uBlHxL4Noc27PGtIcCDRo3M6V1qLC/GsUyFeYZypfM
-	UDlbCLqIiEYLLX9qNUlVIqJQ=
-X-Google-Smtp-Source: AGHT+IG1J7knZE5apwKbx1rJuKhZc7Uf3gk9aOxkEVSL2I3TMnEK10esv5pd2ulCr9y5utdp3Eh3BA==
-X-Received: by 2002:a05:6402:210d:b0:60c:5853:5b54 with SMTP id 4fb4d7f45d1cf-60c58535d7cmr1029639a12.14.1750846527091;
-        Wed, 25 Jun 2025 03:15:27 -0700 (PDT)
-Received: from [192.168.88.252] (78-80-106-150.customers.tmcz.cz. [78.80.106.150])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60c2f196a07sm2221030a12.13.2025.06.25.03.15.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Jun 2025 03:15:26 -0700 (PDT)
-Message-ID: <2026a8ac-5e2a-4852-b7da-1f07ff916766@ovn.org>
-Date: Wed, 25 Jun 2025 12:15:25 +0200
+	s=arc-20240116; t=1750846919; c=relaxed/simple;
+	bh=MUV51pH3VvRPFct1fOjf4Venu7Of8/P6xC0CX+lCTT8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=cz9Q3yFaHmhTIQVJ/QQmD3oI7ZWN0PbLpPiuRDumr7nOXSNwlRGUfwqVYBTvdrVYT8c/gctIcHpv9ogChy/acexEqbmxW2aaUhyL/HsRq/vcxeA49lH53EATnrKLiTi88DUklBn5E+g//52lqmYak8Vuv3ov+tYHv0hoiIMNTzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.204.34.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: esmtpgz13t1750846878t17e3db3b
+X-QQ-Originating-IP: 5kkOV9t2Eg38lm4oJ9TSW/9+c6d33T0AJgiPTyaayTY=
+Received: from localhost.localdomain ( [60.186.80.242])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 25 Jun 2025 18:21:17 +0800 (CST)
+X-QQ-SSF: 0001000000000000000000000000000
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 14108390189384657594
+EX-QQ-RecipientCnt: 10
+From: Mengyuan Lou <mengyuanlou@net-swift.com>
+To: netdev@vger.kernel.org
+Cc: michal.swiatkowski@linux.intel.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	andrew+netdev@lunn.ch,
+	duanqiangwen@net-swift.com,
+	linglingzhang@trustnetic.com,
+	jiawenwu@net-swift.com,
+	Mengyuan Lou <mengyuanlou@net-swift.com>
+Subject: [PATCH net-next v2 07/12] net: txgbevf: Support Rx and Tx process path
+Date: Wed, 25 Jun 2025 18:20:53 +0800
+Message-Id: <20250625102058.19898-8-mengyuanlou@net-swift.com>
+X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20250625102058.19898-1-mengyuanlou@net-swift.com>
+References: <20250625102058.19898-1-mengyuanlou@net-swift.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: i.maximets@ovn.org, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- amorenoz@redhat.com, echaudro@redhat.com, michal.kubiak@intel.com
-Subject: Re: [PATCH net 06/10] netlink: specs: ovs_flow: replace underscores
- with dashes in names
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
- donald.hunter@gmail.com
-References: <20250624211002.3475021-1-kuba@kernel.org>
- <20250624211002.3475021-7-kuba@kernel.org>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20250624211002.3475021-7-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:net-swift.com:qybglogicsvrsz:qybglogicsvrsz4a-0
+X-QQ-XMAILINFO: MpkHnaaty8/1A2p9215943VbFf51gUbqMMkFzYw6xWaXjsGWGzDdjhr6
+	Mv2+0czQl6zNKiivZPdGQPUP65r+Dc2AV/+0tYV9JVLUoCuGCgeRxyXL/69nhD78M4ToBk1
+	7Dp/kWiXKcrUeLplkbz3RPsTpSInHMHbeNahG7h01cpXFVKAOCnUd58Ua+ZYOph9BRV16XB
+	6aA4vU4Ja6KxtTyGStHTybjbTKh8izDD47bfEWzGOZKQh4gRr86yyeOCvI+lQP2kAq8niPC
+	r2KUKnM2CggvyRcAzVrlqg2f4X9BJHkxwgFF72J8m9Vjka/UZW/2e/YUsMBjZQf6NFJ3FfD
+	/+N9zs9p+zY6n9YBPMBk6ncxlzr8P3gB974jHyL0hZQ9/5xnfZVsPDodsTCepSZPX3QhiYz
+	bC7z9sGtMVMUc1HJ+4ByHcpFm7GyhHjqJ91G33RTn7+b78xcpyElEdz5Tk9YgSm+hH0sIja
+	OslXj8WQl7phvSzmlVyg8iccS9w7kH9LHD4y36Kk/JZTFYtzGUHr2mppMF/OMmJwBUdfd2O
+	DEdU+oZk6K+nZ6lEV7AYoPpN26Ut/7ppo+oWZ4ByFPu7b39fq59BGifkykoviKahGd0JxIv
+	lrayORRQ6/s0DnVjxTZdcEw/mI70fyPjcHkBF0vUf962D7Bm3XEehGiu3wlr5gYHS25WANP
+	28UbKTMX2U3u0EUnlp2S0iGkIAkyrMhwkLY+MTxaqEn1AVRHIKBQmHTqD2R4frHBRO11d5c
+	EQyhyW8txaUy5VJNzOfidtwoUPYODofXZ2s7TqsiWuEhg6t1+E0iSeeI5z8yDFwG/p1rdqq
+	HvsRseeRYyghFuKtOv0CQTPYiJ6Qmi/MzLl8iI6JzjQ71fh+J0yAhH70dqrkAvcAicXpaiS
+	/inkrkp0stBOeB/Qxl42Rc0o4NquD5cFpPMIDue9AAv/33EiniDI8VZOmDsyNq7QuWkb4uv
+	dKiHnd+MZLLkLVhuw2QLkj+K8aiALR/bKwpaBilpq9HSEZDlpydixEyrzfNluNog4VI4uPv
+	POUi5CV+nLUegPA0mH7kN3zxKHEpQjUN1f9nwl468RaDGEhNnQQcsWc5LclslHGT5XqRuW5
+	tnyit7H1AkpYOFrNl9Q1C3TLlJA4pHeKLiUMioJWt5+46Gy+NTZidys44Hv0byqjQ==
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+X-QQ-RECHKSPAM: 0
 
-On 6/24/25 11:09 PM, Jakub Kicinski wrote:
-> We're trying to add a strict regexp for the name format in the spec.
-> Underscores will not be allowed, dashes should be used instead.
-> This makes no difference to C (codegen, if used, replaces special
-> chars in names) but it gives more uniform naming in Python.
-> 
-> Fixes: 93b230b549bc ("netlink: specs: add ynl spec for ovs_flow")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: donald.hunter@gmail.com
-> CC: i.maximets@ovn.org
-> CC: amorenoz@redhat.com
-> CC: echaudro@redhat.com
-> CC: michal.kubiak@intel.com
-> ---
->  Documentation/netlink/specs/ovs_flow.yaml | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/netlink/specs/ovs_flow.yaml b/Documentation/netlink/specs/ovs_flow.yaml
-> index 46f5d1cd8a5f..7974aa7d8905 100644
-> --- a/Documentation/netlink/specs/ovs_flow.yaml
-> +++ b/Documentation/netlink/specs/ovs_flow.yaml
-> @@ -216,7 +216,7 @@ uapi-header: linux/openvswitch.h
->      type: struct
->      members:
->        -
-> -        name: nd_target
-> +        name: nd-target
->          type: binary
->          len: 16
->          byte-order: big-endian
-> @@ -258,12 +258,12 @@ uapi-header: linux/openvswitch.h
->      type: struct
->      members:
->        -
-> -        name: vlan_tpid
-> +        name: vlan-tpid
->          type: u16
->          byte-order: big-endian
->          doc: Tag protocol identifier (TPID) to push.
->        -
-> -        name: vlan_tci
-> +        name: vlan-tci
->          type: u16
->          byte-order: big-endian
->          doc: Tag control identifier (TCI) to push.
+Improve the configuration of Rx and Tx ring.
+Setup and alloc resources.
+Configure Rx and Tx unit on hardware.
+Add .ndo_start_xmit support and start all queues.
 
-This makes naming consistent across the attributes, which is good.
+Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
+---
+ .../net/ethernet/wangxun/libwx/wx_vf_common.c | 25 ++++++++++++++++++-
+ .../ethernet/wangxun/txgbevf/txgbevf_main.c   |  2 ++
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
-Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+index 4224578b7974..60c9e1463efc 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+@@ -251,10 +251,14 @@ static void wxvf_irq_enable(struct wx *wx)
+ static void wxvf_up_complete(struct wx *wx)
+ {
+ 	wx_configure_msix_vf(wx);
++	smp_mb__before_atomic();
++	wx_napi_enable_all(wx);
+ 
+ 	/* clear any pending interrupts, may auto mask */
+ 	wr32(wx, WX_VXICR, U32_MAX);
+ 	wxvf_irq_enable(wx);
++	/* enable transmits */
++	netif_tx_start_all_queues(wx->netdev);
+ }
+ 
+ int wxvf_open(struct net_device *netdev)
+@@ -262,13 +266,31 @@ int wxvf_open(struct net_device *netdev)
+ 	struct wx *wx = netdev_priv(netdev);
+ 	int err;
+ 
+-	err = wx_request_msix_irqs_vf(wx);
++	err = wx_setup_resources(wx);
+ 	if (err)
+ 		goto err_reset;
++	wx_configure_vf(wx);
++
++	err = wx_request_msix_irqs_vf(wx);
++	if (err)
++		goto err_free_resources;
++
++	/* Notify the stack of the actual queue counts. */
++	err = netif_set_real_num_tx_queues(netdev, wx->num_tx_queues);
++	if (err)
++		goto err_free_irq;
++
++	err = netif_set_real_num_rx_queues(netdev, wx->num_rx_queues);
++	if (err)
++		goto err_free_irq;
+ 
+ 	wxvf_up_complete(wx);
+ 
+ 	return 0;
++err_free_irq:
++	wx_free_irq(wx);
++err_free_resources:
++	wx_free_resources(wx);
+ err_reset:
+ 	wx_reset_vf(wx);
+ 	return err;
+@@ -294,6 +316,7 @@ int wxvf_close(struct net_device *netdev)
+ 
+ 	wxvf_down(wx);
+ 	wx_free_irq(wx);
++	wx_free_resources(wx);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
+index a61e4a0781cf..57e67804b8b7 100644
+--- a/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
++++ b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
+@@ -40,6 +40,7 @@ static const struct pci_device_id txgbevf_pci_tbl[] = {
+ static const struct net_device_ops txgbevf_netdev_ops = {
+ 	.ndo_open               = wxvf_open,
+ 	.ndo_stop               = wxvf_close,
++	.ndo_start_xmit         = wx_xmit_frame,
+ 	.ndo_validate_addr      = eth_validate_addr,
+ 	.ndo_set_mac_address    = wx_set_mac_vf,
+ };
+@@ -258,6 +259,7 @@ static int txgbevf_probe(struct pci_dev *pdev,
+ 		goto err_register;
+ 
+ 	pci_set_drvdata(pdev, wx);
++	netif_tx_stop_all_queues(netdev);
+ 
+ 	return 0;
+ 
+-- 
+2.30.1
+
