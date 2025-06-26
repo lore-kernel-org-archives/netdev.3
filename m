@@ -1,157 +1,75 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568411AAA1E
-	for <netdev@vger.kernel.org>; Thu, 26 Jun 2025 02:12:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C171BC9F4;
+	Thu, 26 Jun 2025 02:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750903924; cv=none; b=F5xCiZ9uIk1qCxNe+RLdYk4IBXJeEmrU3AJhD8Tvl8EscLOwD4hgH1+lj6Tc/d9OFDpM8TBhCengo3ZzM/Vc6tTlPOd3khxD1xX08EEXm8Ru2cUFxFIaWOzuPzAQtcn8e6lH6+329U5MVfAH8CijZWQRlv5z2ZYMsOQ7SdGa1Us=
+	t=1750903983; cv=none; b=OYp6j+0BorMRoCEDACft2KN558qqSExo9JsN/x+Ybd2TqILBsv3dfS70VIXkpRoildjaR5eL/jQwSFtPCkkptRJpiao4t6WlEQa4wzWYH433aagGr4ONL8fky3li9yev9VvEj9/bk35wzH7eQzkerouHHRpT2/m5Ajo4z76HS4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750903924; c=relaxed/simple;
-	bh=dlu1oOBDb0G0LhtCbGJphyh/kQYZX8m/ub+ch/48lTM=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=Wt58xV97NfIkdOZWEar4mYpDjBckT8ncON/B9KDxWjlhb7XIAX+Vhmbhs21iTgpUm0Wcm04qxIqKRegKrN9dpaTHj3XTjD8vqpjYy+SsXd2ftRt/Hcv7r70GRn3bQ2XjwfVh7C/LVID2qW5A5S93yvCb5at+Kh4k+Gr0Xukj5sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iQ/Ws0qC; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iQ/Ws0qC"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-70e1d8c2dc2so5404897b3.3
-        for <netdev@vger.kernel.org>; Wed, 25 Jun 2025 19:12:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750903922; x=1751508722; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kCY1KeB66b7fmFJnlWcA8wXX5bGvO+8egACKlF7Srpc=;
-        b=iQ/Ws0qChegZdc8x5oFMktywDGtPIxlYUPKwEb6z7xojPt0ikITfaptN89ghlM9HwE
-         wWM3YIRl6gKNxlV3nMPjbyVmNNcdC2esfMne9ZWyWPntKGN5+QrKg4wylHveX0BXfXDB
-         r8JQKyzvfAF7F+AYTUxa0wgWmUIuL/OKagcXZ2y2p6o+/V+RXdioQxCe59NNzDbOKDqd
-         QaBNPcWLW0UBSPmMszYJoxS4/60b6ih1RNN11IY7AmRvGdOq93dnZjGI7AQsyxpcc12C
-         MzeMrhkk1SbVB9JKjK4ahCqL5JvWsLTMb6o/jxW9ygZzC1yinV9m7Rr5iPqQ9hVvOPpp
-         ofSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750903922; x=1751508722;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=kCY1KeB66b7fmFJnlWcA8wXX5bGvO+8egACKlF7Srpc=;
-        b=qzWKVYEDv+pwz2L379dCmEwFYCK4rtA77bpYDDcFddXjnIZj8/laBIq1NqLNxIj97F
-         YKtBmd3o2lkvDeYnEGQ2K8SEYVyl6ms6MWSw3x+nSKKDt3xFDeG6l1/A0JiG6xky64JW
-         KkognDAOWjkf85fq6YJ3B2BP9AqIyF4Eod7fgbIU/0UgjHU/ywnKSq8VpO746s8uXuwi
-         bLmnW/fC+2RmGpKuXghRqeo1Hv1jZ75AOQkOYowCvvE+bN78j9m4/nczIGvaLXFyxN3l
-         2Nq3/DOvgXEq+GhGoEgpXhXzGnSAnQtGxNuQC1RryrpNLdXvtLm6EsHQOrXWjNGi6gjE
-         /Klw==
-X-Forwarded-Encrypted: i=1; AJvYcCWsjTNR+SGL1DOC2y88w8hoGbU0OyVyOZ/Hf+t4VK6nzoDmHac5M91v62DKWzp4vO6DCpDV1gI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzywVdbGuHxS8V278X6rA+a0bja05E+qdUw3UaYu15R2c6fzcgX
-	3y+PjgkvRK+/gZ8IPGqqrnhcEgoaT6ftMA5avLDYDJqWWr79M7EJ2pRj
-X-Gm-Gg: ASbGncvIjqwt5M6MaAWaOPdehmI6soKT8A4UW6Xmud0EAlBqXiun2oY0Es+acV8ZbmT
-	tH5CLqeArB11Wd2iB312VMqN1yhba/0S6y7O192++y116hnX8V85V0BNMh/MYgSd8G4c/6wmZ+p
-	xmrDlEQAd6qSXkLwOfX5waVMH6NuHYcjQKDSlifGiUBXQiM0dWFwlfPwW1BOhFhGTGlBglLJvkj
-	56KQ06i/ery9G5hVN3EPb5jgKFy3d/XtniOyh7Z0wj6jvI6wrhz0YCS0Zl8Xyogq2ZThrDeA2HY
-	wlBVuUsj6LI6gAB31vRp8t01KwP+2g+/86SmL0D2bCyZ5OCLp3GqKGDMEPkHDlStD+xkg/FaZf3
-	0bGas11rc1aS9Pacu1RRmVzLMo/vUxPLARJ2A5BbQzA==
-X-Google-Smtp-Source: AGHT+IFStOQrnZ0kRqb2yl5GKZFeYdrPlYU3gUoNtnClKc/nE+dGNoCLWvPJpUrbamqhu/KduqcMqA==
-X-Received: by 2002:a05:690c:380d:b0:712:d946:788e with SMTP id 00721157ae682-71406cd2533mr79141497b3.14.1750903922319;
-        Wed, 25 Jun 2025 19:12:02 -0700 (PDT)
-Received: from localhost (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
-        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-712c4b96c1dsm26849247b3.62.2025.06.25.19.12.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 19:12:01 -0700 (PDT)
-Date: Wed, 25 Jun 2025 22:12:01 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Daniel Zahka <daniel.zahka@gmail.com>, 
- Donald Hunter <donald.hunter@gmail.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, 
- Leon Romanovsky <leon@kernel.org>, 
- Tariq Toukan <tariqt@nvidia.com>, 
- Boris Pismenny <borisp@nvidia.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, 
- Willem de Bruijn <willemb@google.com>, 
- David Ahern <dsahern@kernel.org>, 
- Neal Cardwell <ncardwell@google.com>, 
- Patrisious Haddad <phaddad@nvidia.com>, 
- Raed Salem <raeds@nvidia.com>, 
- Jianbo Liu <jianbol@nvidia.com>, 
- Dragos Tatulea <dtatulea@nvidia.com>, 
- Rahul Rameshbabu <rrameshbabu@nvidia.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>, 
- Alexander Lobakin <aleksander.lobakin@intel.com>, 
- Jacob Keller <jacob.e.keller@intel.com>, 
- netdev@vger.kernel.org
-Message-ID: <685cac7163d82_2a5da429488@willemb.c.googlers.com.notmuch>
-In-Reply-To: <20250625135210.2975231-9-daniel.zahka@gmail.com>
-References: <20250625135210.2975231-1-daniel.zahka@gmail.com>
- <20250625135210.2975231-9-daniel.zahka@gmail.com>
-Subject: Re: [PATCH v2 08/17] net: psp: add socket security association code
+	s=arc-20240116; t=1750903983; c=relaxed/simple;
+	bh=Ni+L1bRR+Fb+tAN9EZBMNNGO3y7Hf10H4g/51esIW0M=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LC9/YchZYBl2ZxaaKB3Cq6RQxFyA2Vhn8LrZOWmJX3RCTY9cvfVHqukZdgrud7qIejSX+K7BaXxB8jKRWAtL25QcI6mLPYpQouJ97tYkNocwRaXDaw9NW7EBFROW0u5hn9G46bsw6oCl+afRqgvSkq5wwvW+scCAtkXPEPCKZ5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bSMcS3Tswz2BdVJ;
+	Thu, 26 Jun 2025 10:11:20 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 36E8D140109;
+	Thu, 26 Jun 2025 10:12:58 +0800 (CST)
+Received: from localhost.localdomain (10.90.31.46) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 26 Jun 2025 10:12:57 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
+	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<shaojijie@huawei.com>
+Subject: [PATCH v3 net-next 0/3] Support some features for the HIBMCGE driver
+Date: Thu, 26 Jun 2025 10:06:10 +0800
+Message-ID: <20250626020613.637949-1-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-Daniel Zahka wrote:
-> From: Jakub Kicinski <kuba@kernel.org>
-> 
-> Add the ability to install PSP Rx and Tx crypto keys on TCP
-> connections. Netlink ops are provided for both operations.
-> Rx side combines allocating a new Rx key and installing it
-> on the socket. Theoretically these are separate actions,
-> but in practice they will always be used one after the
-> other. We can add distinct "alloc" and "install" ops later.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
-> Co-developed-by: Daniel Zahka <daniel.zahka@gmail.com>
+Support some features for the HIBMCGE driver
 
->  /**
->   * struct psp_dev_ops - netdev driver facing PSP callbacks
->   */
-> @@ -109,6 +145,28 @@ struct psp_dev_ops {
->  	 * @key_rotate: rotate the device key
->  	 */
->  	int (*key_rotate)(struct psp_dev *psd, struct netlink_ext_ack *extack);
-> +
-> +	/**
-> +	 * @rx_spi_alloc: allocate an Rx SPI+key pair
-> +	 * Allocate an Rx SPI and resulting derived key.
-> +	 * This key should remain valid until key rotation.
-> +	 */
-> +	int (*rx_spi_alloc)(struct psp_dev *psd, u32 version,
-> +			    struct psp_key_parsed *assoc,
-> +			    struct netlink_ext_ack *extack);
-> +
-> +	/**
-> +	 * @tx_key_add: add a Tx key to the device
-> +	 * Install an association in the device. Core will allocate space
-> +	 * for the driver to use at drv_data.
-> +	 */
-> +	int (*tx_key_add)(struct psp_dev *psd, struct psp_assoc *pas,
-> +			  struct netlink_ext_ack *extack);
-> +	/**
-> +	 * @tx_key_del: remove a Tx key from the device
-> +	 * Remove an association from the device.
-> +	 */
-> +	void (*tx_key_del)(struct psp_dev *psd, struct psp_assoc *pas);
->  };
+---
+ChangeLog:
+v2 -> v3:
+  - Use fixed_phy to re-implement the no-phy scenario, suggested by Andrew Lunn
+  v2: https://lore.kernel.org/all/20250623034129.838246-1-shaojijie@huawei.com/
+v1 -> v2:
+  - Fix code formatting errors, reported by Jakub Kicinski
+  v1: https://lore.kernel.org/all/20250619144423.2661528-1-shaojijie@huawei.com/
+---
 
-This Tx driver API is necessary for devices that store keys in an
-on-device key database.
+Jijie Shao (3):
+  net: hibmcge: support scenario without PHY
+  net: hibmcge: adjust the burst len configuration of the MAC controller
+    to improve TX performance.
+  net: hibmcge: configure FIFO thresholds according to the MAC
+    controller documentation
 
-The preferred device model for PSP is keys-in-descriptor, in line with
-the protocol design goal of O(1) device state. 
+ .../net/ethernet/hisilicon/hibmcge/hbg_hw.c   | 57 +++++++++++++++++++
+ .../net/ethernet/hisilicon/hibmcge/hbg_mdio.c | 38 +++++++++++++
+ .../net/ethernet/hisilicon/hibmcge/hbg_reg.h  |  8 +++
+ 3 files changed, 103 insertions(+)
 
-In that case, can the driver leave these callbacks NULL? And, in the
-driver tx datapath, access the tx key from psp_sk_assoc().
+-- 
+2.33.0
+
