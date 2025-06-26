@@ -1,152 +1,196 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2536A2264CA;
-	Thu, 26 Jun 2025 08:47:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25262293C69
+	for <netdev@vger.kernel.org>; Thu, 26 Jun 2025 08:49:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750927664; cv=none; b=WTRSZZF9IwHUu4oJu9NOf5+PKGuxfJyigqnvh5iJdBHxiaJZ7Wb6LZzL3ue/vzkkXXVwSC9FdmQNyUEJJrOzyNghBqbOqd04gFRBzP00OOs8E2oCejwNVkkM30yNbBdqAEcpnPRjzxRS9FStwx+fQnMlVE/b0bx2vXNLc+KuPd0=
+	t=1750927765; cv=none; b=GixdCW3RvSA4buLTgCthvbLp4ot8tFxR81bWI5AqPFe7xfUGwmMMjZU6vHFAchusk47dsgPZZA7NX3uyhvX6kO6aiRW90YYtB4TNIzkj36nLKNfhMvw9JaWryTJUMuoV7kQoFqUzTtmPSbKtHUPe2SLw2l6l0yoZnrg7C1bF+g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750927664; c=relaxed/simple;
-	bh=9U5EJmrGekA99glFhmw1yFwAVYppR9L38j/mg1yJuPw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Uz4w1iWj/cr1I7nLuwrjXMllo6BW3fO1ssfJ6ACagixmWdT9CF/FKnVrWeHVh/AMXqqHQAT2Om/nt9ZiJKhBefDCDEjC3AoJgObSHub0yfepmhtYPByTNaII4cV7CXmQSQPWg5j5bYTI4zaWtGI3VjXCJka/e+4FhOFcnOUssys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JMRfvtOA; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JMRfvtOA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750927663; x=1782463663;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9U5EJmrGekA99glFhmw1yFwAVYppR9L38j/mg1yJuPw=;
-  b=JMRfvtOAOK3I/bh6R/TJvazUUhPIhAHISun6Qmc1hNxdPOQ6bg4rFqrf
-   h7f5NwWKbNZBgCYiNmHT1zBhYzev6v2B+GFXnjrzKTw2l2hBaxAC4RE1B
-   NdObq84Z4rTZVnHEvnjjRGnWpCDz5PleMhuyIEoOX2N+8EHJ+dEJUvfRd
-   fv6XBApjaAsBQrnsrfWWhsdvgD3qGJmqGexsDUkiQQ6fNnwwMRFH1Cq4J
-   Dbe9QYBNWsKk+6rExREm1O9Uvxx2lfiBkGdjY7RjqApdJljv8msiQouof
-   VC3sRvqAuhnoaw/ieuY7Z2uVkrk8sKXTVTgdaSGxV0PdLz5ZNgNlOVa+j
-   A==;
-X-CSE-ConnectionGUID: MCRTK1owQCWWHr4j0tGstQ==
-X-CSE-MsgGUID: 4xj+5SZXTzupyQ4WgYcRkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="64275846"
-X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; 
-   d="scan'208";a="64275846"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 01:47:42 -0700
-X-CSE-ConnectionGUID: yntKr3jvRbe5ZE7vwaljQg==
-X-CSE-MsgGUID: vu6V/rAoSI+a7Oip97YJTA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; 
-   d="scan'208";a="176119027"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 26 Jun 2025 01:47:39 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uUiGf-000Ttq-08;
-	Thu, 26 Jun 2025 08:47:37 +0000
-Date: Thu, 26 Jun 2025 16:47:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Vikas Gupta <vikas.gupta@broadcom.com>, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	andrew+netdev@lunn.ch, horms@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com, vsrama-krishna.nemani@broadcom.com,
-	Vikas Gupta <vikas.gupta@broadcom.com>,
-	Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>,
-	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
-Subject: Re: [net-next, 09/10] bng_en: Initialize default configuration
-Message-ID: <202506261600.oLXe1N0I-lkp@intel.com>
-References: <20250618144743.843815-10-vikas.gupta@broadcom.com>
+	s=arc-20240116; t=1750927765; c=relaxed/simple;
+	bh=+wTL4f/08G7GYd3wN3GgvWAuEeuwdpqG53Kh2KNvawM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ShZlhxywsBrjqouQSd/LAxmInFwRsbvrACJ7wFscWkG+wu3AoPwRNSxTT8NZeb0wXN7SFUlljbPg7zB/Zn2Bso0x+y/0jxiXmtdyTar5YpOoAgMsCCG1cPGqAON0524YdTDNcp6oO2AmOTTlKKpnEKkXcPXI0HlZaDfGNoTlIVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz10t1750927708tca3f8b95
+X-QQ-Originating-IP: teajctoCwIUTwbLzJD0H3Mbus1YOZ4WzvbCM9RAfJTg=
+Received: from lap-jiawenwu.trustnetic.com ( [36.27.0.255])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 26 Jun 2025 16:48:26 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 12974716066767308989
+EX-QQ-RecipientCnt: 11
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	michal.swiatkowski@linux.intel.com
+Cc: mengyuanlou@net-swift.com,
+	duanqiangwen@net-swift.com,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net v3 3/3] net: ngbe: specify IRQ vector when the number of VFs is 7
+Date: Thu, 26 Jun 2025 16:48:04 +0800
+Message-Id: <20250626084804.21044-4-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20250626084804.21044-1-jiawenwu@trustnetic.com>
+References: <20250626084804.21044-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250618144743.843815-10-vikas.gupta@broadcom.com>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MWUTOgANNX2v1n9zFeusHkuoCf+Ij3myb80fvOuHBtzCJoeW8Sp+DHqF
+	sq3HBNFKc4lxigJoIJSKpTh6TOTXF2ywGW4nM7W2E6YJK/+X5n5PiutCnKW7Y8lwPdFAcOu
+	9pDU7Am5WkbGkDNQVla+PwMLwRKaMpAHsczW60gFXpKc/2UW2wX3qUrnezEiDCsCQHbYMdr
+	//2iM7jWLPRUPoFRxad8/4A55fqDHJFqQQmxesntBzSQ/OHWVRb4Ob9g0yzq7ZNgxAog+J2
+	Z05+M9UMgE/npRU896aGWZ83Zy2Ak0F7FGiTIYVlXOr9Up0NWEU1f+wo5Jf7/Wly8+nd7Jh
+	MF5+nIF5yOVoJfKvwUPvPyqsYvXVy7IUzSioV8fpl4vpgCTMD8JEgnF/qHwvcXXx52qLGDg
+	stUveaVRgX5Gv9DGjktP6sY2l96tKm6bbu7pBpzqiYEmGWotM3IdPnjV5g5IAZ9q70xS+cM
+	m4ws3wKkOuZ6bjR824rCXElvHlzHyWTY8sn7j4fnM0aMnK5ulus4mGevkKzjrpLeDD2kb62
+	+7hZN5zoBt2oTAVRcvkdDqRJp9TQsGSdJrep6ZIkhqxkTjJ4HLZl68Qan9zMAnD6VnwS2r2
+	apr654Lc2HncYC0S0HSNSO27FaCDCSLjt2r40LSusGUb8n+0UY0zZvpwjBbqbBExH/vSDnE
+	dlf+EUqGeCT4z5CPiUJE4dOZK5ongOdujxXGUDFlgY6ibcedI543IE5eTm9tfpy6DBxaiUa
+	gz3hZuklqO5O3o0nc8ATGesN6JYwEpmXL6gj6K+XVFD0gWS9MISL0PXbeaJzxEgaeIBS8mG
+	s2oNv2AayNTcR5oHtJIAqQsTQcQmi4vNGGfPYdZHpa63BBji4evUrwnTEBIUW36cUk9Ek+x
+	MgIl51Bw1W5DIdbwhZWDJoaL3XhSObGd14BpqRRcLqjqoxpKg4r2+G7NyXQK8GWKughQG6/
+	Y8jox/Pncr29nZ0/ofazdadptUcFPvKmqgu0fO/KQxMNw1nzBCNbxPulBqYrZRAHq+G0t0I
+	nnYswFPmEZEq8C4vbqbTux6TU2hmPsjE15u9IKREYLOmf1ch/KCmFAO5okgG3sZGIhuMP3y
+	A==
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+X-QQ-RECHKSPAM: 0
 
-Hi Vikas,
+For NGBE devices, the queue number is limited to be 1 when SRIOV is
+enabled. In this case, IRQ vector[0] is used for MISC and vector[1] is
+used for queue, based on the previous patches. But for the hardware
+design, the IRQ vector[1] must be allocated for use by the VF[6] when
+the number of VFs is 7. So the IRQ vector[0] should be shared for PF
+MISC and QUEUE interrupts.
 
-kernel test robot noticed the following build warnings:
++-----------+----------------------+
+| Vector    | Assigned To          |
++-----------+----------------------+
+| Vector 0  | PF MISC and QUEUE    |
+| Vector 1  | VF 6                 |
+| Vector 2  | VF 5                 |
+| Vector 3  | VF 4                 |
+| Vector 4  | VF 3                 |
+| Vector 5  | VF 2                 |
+| Vector 6  | VF 1                 |
+| Vector 7  | VF 0                 |
++-----------+----------------------+
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v6.16-rc3 next-20250625]
-[cannot apply to horms-ipvs/master]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Minimize code modifications, only adjust the IRQ vector number for this
+case.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Vikas-Gupta/bng_en-Add-PCI-interface/20250618-173130
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20250618144743.843815-10-vikas.gupta%40broadcom.com
-patch subject: [net-next, 09/10] bng_en: Initialize default configuration
-config: parisc-randconfig-r073-20250619 (https://download.01.org/0day-ci/archive/20250626/202506261600.oLXe1N0I-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 8.5.0
+Fixes: 877253d2cbf2 ("net: ngbe: add sriov function support")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   | 9 +++++++++
+ drivers/net/ethernet/wangxun/libwx/wx_sriov.c | 4 ++++
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  | 1 +
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 2 +-
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h | 2 +-
+ 5 files changed, 16 insertions(+), 2 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506261600.oLXe1N0I-lkp@intel.com/
-
-New smatch warnings:
-drivers/net/ethernet/broadcom/bnge/bnge_resc.c:533 bnge_net_init_dflt_rings() warn: always true condition '(rc != -19) => (0-u16max != (-19))'
-
-Old smatch warnings:
-drivers/net/ethernet/broadcom/bnge/bnge_resc.c:372 bnge_alloc_irqs() warn: unsigned 'irqs_demand' is never less than zero.
-drivers/net/ethernet/broadcom/bnge/bnge_resc.c:542 bnge_net_init_dflt_rings() warn: always true condition '(rc != -19) => (0-u16max != (-19))'
-
-vim +533 drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-
-   511	
-   512	static int bnge_net_init_dflt_rings(struct bnge_dev *bd, bool sh)
-   513	{
-   514		u16 dflt_rings, max_rx_rings, max_tx_rings, rc;
-   515	
-   516		if (sh)
-   517			bd->flags |= BNGE_EN_SHARED_CHNL;
-   518	
-   519		dflt_rings = netif_get_num_default_rss_queues();
-   520	
-   521		rc = bnge_get_dflt_rings(bd, &max_rx_rings, &max_tx_rings, sh);
-   522		if (rc)
-   523			return rc;
-   524		bd->rx_nr_rings = min_t(u16, dflt_rings, max_rx_rings);
-   525		bd->tx_nr_rings_per_tc = min_t(u16, dflt_rings, max_tx_rings);
-   526		if (sh)
-   527			bnge_trim_dflt_sh_rings(bd);
-   528		else
-   529			bd->nq_nr_rings = bd->tx_nr_rings_per_tc + bd->rx_nr_rings;
-   530		bd->tx_nr_rings = bd->tx_nr_rings_per_tc;
-   531	
-   532		rc = bnge_reserve_rings(bd);
- > 533		if (rc && rc != -ENODEV)
-   534			dev_warn(bd->dev, "Unable to reserve tx rings\n");
-   535		bd->tx_nr_rings_per_tc = bd->tx_nr_rings;
-   536		if (sh)
-   537			bnge_trim_dflt_sh_rings(bd);
-   538	
-   539		/* Rings may have been reduced, re-reserve them again */
-   540		if (bnge_need_reserve_rings(bd)) {
-   541			rc = bnge_reserve_rings(bd);
-   542			if (rc && rc != -ENODEV)
-   543				dev_warn(bd->dev, "Fewer rings reservation failed\n");
-   544			bd->tx_nr_rings_per_tc = bd->tx_nr_rings;
-   545		}
-   546		if (rc) {
-   547			bd->tx_nr_rings = 0;
-   548			bd->rx_nr_rings = 0;
-   549		}
-   550	
-   551		return rc;
-   552	}
-   553	
-
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index 66eaf5446115..7b53169cd216 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -1794,6 +1794,13 @@ static int wx_acquire_msix_vectors(struct wx *wx)
+ 	wx->msix_entry->entry = nvecs;
+ 	wx->msix_entry->vector = pci_irq_vector(wx->pdev, nvecs);
+ 
++	if (test_bit(WX_FLAG_IRQ_VECTOR_SHARED, wx->flags)) {
++		wx->msix_entry->entry = 0;
++		wx->msix_entry->vector = pci_irq_vector(wx->pdev, 0);
++		wx->msix_q_entries[0].entry = 0;
++		wx->msix_q_entries[0].vector = pci_irq_vector(wx->pdev, 1);
++	}
++
+ 	return 0;
+ }
+ 
+@@ -2292,6 +2299,8 @@ static void wx_set_ivar(struct wx *wx, s8 direction,
+ 
+ 	if (direction == -1) {
+ 		/* other causes */
++		if (test_bit(WX_FLAG_IRQ_VECTOR_SHARED, wx->flags))
++			msix_vector = 0;
+ 		msix_vector |= WX_PX_IVAR_ALLOC_VAL;
+ 		index = 0;
+ 		ivar = rd32(wx, WX_PX_MISC_IVAR);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
+index e8656d9d733b..c82ae137756c 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_sriov.c
+@@ -64,6 +64,7 @@ static void wx_sriov_clear_data(struct wx *wx)
+ 	wr32m(wx, WX_PSR_VM_CTL, WX_PSR_VM_CTL_POOL_MASK, 0);
+ 	wx->ring_feature[RING_F_VMDQ].offset = 0;
+ 
++	clear_bit(WX_FLAG_IRQ_VECTOR_SHARED, wx->flags);
+ 	clear_bit(WX_FLAG_SRIOV_ENABLED, wx->flags);
+ 	/* Disable VMDq flag so device will be set in NM mode */
+ 	if (wx->ring_feature[RING_F_VMDQ].limit == 1)
+@@ -78,6 +79,9 @@ static int __wx_enable_sriov(struct wx *wx, u8 num_vfs)
+ 	set_bit(WX_FLAG_SRIOV_ENABLED, wx->flags);
+ 	dev_info(&wx->pdev->dev, "SR-IOV enabled with %d VFs\n", num_vfs);
+ 
++	if (num_vfs == 7 && wx->mac.type == wx_mac_em)
++		set_bit(WX_FLAG_IRQ_VECTOR_SHARED, wx->flags);
++
+ 	/* Enable VMDq flag so device will be set in VM mode */
+ 	set_bit(WX_FLAG_VMDQ_ENABLED, wx->flags);
+ 	if (!wx->ring_feature[RING_F_VMDQ].limit)
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index d392394791b3..c363379126c0 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1191,6 +1191,7 @@ enum wx_pf_flags {
+ 	WX_FLAG_VMDQ_ENABLED,
+ 	WX_FLAG_VLAN_PROMISC,
+ 	WX_FLAG_SRIOV_ENABLED,
++	WX_FLAG_IRQ_VECTOR_SHARED,
+ 	WX_FLAG_FDIR_CAPABLE,
+ 	WX_FLAG_FDIR_HASH,
+ 	WX_FLAG_FDIR_PERFECT,
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index 68415a7ef12f..e0fc897b0a58 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -286,7 +286,7 @@ static int ngbe_request_msix_irqs(struct wx *wx)
+ 	 * for queue. But when num_vfs == 7, vector[1] is assigned to vf6.
+ 	 * Misc and queue should reuse interrupt vector[0].
+ 	 */
+-	if (wx->num_vfs == 7)
++	if (test_bit(WX_FLAG_IRQ_VECTOR_SHARED, wx->flags))
+ 		err = request_irq(wx->msix_entry->vector,
+ 				  ngbe_misc_and_queue, 0, netdev->name, wx);
+ 	else
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+index 6eca6de475f7..44ff62af7ae0 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+@@ -87,7 +87,7 @@
+ #define NGBE_PX_MISC_IC_TIMESYNC		BIT(11) /* time sync */
+ 
+ #define NGBE_INTR_ALL				0x1FF
+-#define NGBE_INTR_MISC(A)			BIT((A)->num_q_vectors)
++#define NGBE_INTR_MISC(A)			BIT((A)->msix_entry->vector)
+ 
+ #define NGBE_PHY_CONFIG(reg_offset)		(0x14000 + ((reg_offset) * 4))
+ #define NGBE_CFG_LAN_SPEED			0x14440
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.48.1
+
+
