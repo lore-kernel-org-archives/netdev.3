@@ -1,55 +1,67 @@
-Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE2F25FA03;
-	Thu, 26 Jun 2025 08:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C0E2641D8;
+	Thu, 26 Jun 2025 08:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750925617; cv=none; b=PAfXndeA+I5R7bfFbuBcvgNtYr7r3MJZZQXRipFhHtucX+BJNwx2UWLQQlk3N9m85YMoO4efeGu5mYLPgeV4NjiV57AsDQ4wGpajRovaPkDYS0kLz96eyTowTcwHujtIDql4iFsRehQNXxuHFiHsfFVOTO2msJxplIerKy2oeSg=
+	t=1750925618; cv=none; b=rjOqEKLKA2okx5dUxZFkZKs0YKR9oYd+b1dF5h5sWiNQBVK5KTQA2THJ84s4D22E3hr+84UwdrY04UFGo/JX6W8pV42BCxnsMcGo8LRHEsfRet1rYwjlUOZjA2rV8nnBWcj1jiA7/K9Bn7k5cB3W24VHPbnwLStqJyNcJ5xjHXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750925617; c=relaxed/simple;
-	bh=9R+INZ8e/SyHHgxDz0lyFa2OoSq9ExLuFg+fW4krK0I=;
+	s=arc-20240116; t=1750925618; c=relaxed/simple;
+	bh=gCUujhjF05O4bN0j1mBzTOE2gqunIOFmC86Oe+w0BHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q1ZibP1bkdq0bzFn7AtSq+cRJ0tosIU4a09aKA/laf71G5lNn+3aWovXI8Hu2QgzZ27YZBC9fEH0dQqLLKVyZCo6msZBmjC6KE8v55h6RAYhiMvKzPk6EFgyepDAo++f15VES1+ySErEyjpsvwxmkZolmzYULCvwcLqqbDlXLSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
-Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
-	by leonov.paulk.fr (Postfix) with ESMTPS id C7EA11F0004B;
-	Thu, 26 Jun 2025 08:13:32 +0000 (UTC)
-Received: by laika.paulk.fr (Postfix, from userid 65534)
-	id 31515AC7F89; Thu, 26 Jun 2025 08:13:32 +0000 (UTC)
-X-Spam-Level: *
-Received: from localhost.localdomain (unknown [192.168.1.65])
-	by laika.paulk.fr (Postfix) with ESMTP id 3ACB4AC7F7B;
-	Thu, 26 Jun 2025 08:09:41 +0000 (UTC)
-From: Paul Kocialkowski <paulk@sys-base.io>
-To: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
+	 MIME-Version; b=WkDTO1tAr72rlU8pXOVMbLO9sPeQQ8LjjOxYJli/isRRoE/3JY4laileMkjtlKnOjOK2oEA8UelDhkNIAIJPE/vBY+UCEMQZMey7kMnXyCuq5mmwiTM+kn7jsE076C1cE9uoYRVzRWRaaSL9LKtrbGUS2spDlFYwDWh3oZTGZM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wjm02Rzo; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wjm02Rzo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297F8C4CEF1;
+	Thu, 26 Jun 2025 08:13:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750925616;
+	bh=gCUujhjF05O4bN0j1mBzTOE2gqunIOFmC86Oe+w0BHo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Wjm02RzoN8zMUZ4Lf4JZeLea/LOFLfPo8Gr4mb8kIu1pQEYPlugBrSkaM0sOUBq1T
+	 3rujIZHl3t7TWHAK8LVMsWMUmX7YZbkuzZSXRlPCoANtFpNvRoAxvk7fvijGpHCmNm
+	 xS9G4la3eU5yGm8BxKrpUxnjIXnpCfT1Pjj5YkaFT/TBUGo+ssMntBsNSZlN34ch7Y
+	 SfQ8KXjlfzhqHfeUC0Iaxs6Itgln/zG9DkMLPOkj4M0GTf2YbPvh5OQnKvVmXtKH2a
+	 4NIUzlTJGoRq6vfUoKFs9JsKrjRgY287SoGJrWIxOuGPpTcTxvhThe42NpvcEq3L59
+	 WymfhuMJO6+Fg==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1uUhjT-00000004svq-1gmd;
+	Thu, 26 Jun 2025 10:13:19 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	"Akira Yokosawa" <akiyks@gmail.com>,
+	"Breno Leitao" <leitao@debian.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Donald Hunter" <donald.hunter@gmail.com>,
+	"Eric Dumazet" <edumazet@google.com>,
+	"Ignacio Encinas Rubio" <ignacio@iencinas.com>,
+	"Jan Stancek" <jstancek@redhat.com>,
+	"Marco Elver" <elver@google.com>,
+	"Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
+	"Paolo Abeni" <pabeni@redhat.com>,
+	"Randy Dunlap" <rdunlap@infradead.org>,
+	"Ruben Wauters" <rubenru09@aol.com>,
+	"Shuah Khan" <skhan@linuxfoundation.org>,
+	Jakub Kicinski <mchehab+huawei@kernel.org>,
+	Simon Horman <mchehab+huawei@kernel.org>,
+	joel@joelfernandes.org,
+	linux-kernel-mentees@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Paul Kocialkowski <paulk@sys-base.io>
-Subject: [PATCH 3/5] dt-bindings: net: sun8i-emac: Add A100 EMAC compatible
-Date: Thu, 26 Jun 2025 10:09:21 +0200
-Message-ID: <20250626080923.632789-4-paulk@sys-base.io>
+	lkmm@lists.linux.dev,
+	netdev@vger.kernel.org,
+	peterz@infradead.org,
+	stern@rowland.harvard.edu
+Subject: [PATCH v8 07/13] docs: uapi: netlink: update netlink specs link
+Date: Thu, 26 Jun 2025 10:13:03 +0200
+Message-ID: <c98d5c9b2c55b7f930d8429c8853b042ca4782db.1750925410.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250626080923.632789-1-paulk@sys-base.io>
-References: <20250626080923.632789-1-paulk@sys-base.io>
+In-Reply-To: <cover.1750925410.git.mchehab+huawei@kernel.org>
+References: <cover.1750925410.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,28 +69,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-The Allwinner A100/A133 has an Ethernet MAC (EMAC) controller that is
-compatible with the A64 one. It features the same syscon registers for
-control of the top-level integration of the unit.
+With the recent parser_yaml extension, and the removal of the
+auto-generated ReST source files, the location of netlink
+specs changed.
 
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+Update uAPI accordingly.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
 ---
- .../devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml       | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/userspace-api/netlink/index.rst | 2 +-
+ Documentation/userspace-api/netlink/specs.rst | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml b/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
-index 7b6a2fde8175..0ae415f1e69c 100644
---- a/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
-+++ b/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
-@@ -21,6 +21,7 @@ properties:
-       - items:
-           - enum:
-               - allwinner,sun20i-d1-emac
-+              - allwinner,sun50i-a100-emac
-               - allwinner,sun50i-h6-emac
-               - allwinner,sun50i-h616-emac0
-               - allwinner,sun55i-a523-emac0
+diff --git a/Documentation/userspace-api/netlink/index.rst b/Documentation/userspace-api/netlink/index.rst
+index c1b6765cc963..83ae25066591 100644
+--- a/Documentation/userspace-api/netlink/index.rst
++++ b/Documentation/userspace-api/netlink/index.rst
+@@ -18,4 +18,4 @@ Netlink documentation for users.
+ 
+ See also:
+  - :ref:`Documentation/core-api/netlink.rst <kernel_netlink>`
+- - :ref:`Documentation/networking/netlink_spec/index.rst <specs>`
++ - :ref:`Documentation/netlink/specs/index.rst <specs>`
+diff --git a/Documentation/userspace-api/netlink/specs.rst b/Documentation/userspace-api/netlink/specs.rst
+index 1b50d97d8d7c..debb4bfca5c4 100644
+--- a/Documentation/userspace-api/netlink/specs.rst
++++ b/Documentation/userspace-api/netlink/specs.rst
+@@ -15,7 +15,7 @@ kernel headers directly.
+ Internally kernel uses the YAML specs to generate:
+ 
+  - the C uAPI header
+- - documentation of the protocol as a ReST file - see :ref:`Documentation/networking/netlink_spec/index.rst <specs>`
++ - documentation of the protocol as a ReST file - see :ref:`Documentation/netlink/specs/index.rst <specs>`
+  - policy tables for input attribute validation
+  - operation tables
+ 
 -- 
 2.49.0
 
