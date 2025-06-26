@@ -1,48 +1,61 @@
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39377239E79
-	for <netdev@vger.kernel.org>; Thu, 26 Jun 2025 09:53:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984EF223316;
+	Thu, 26 Jun 2025 10:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750931604; cv=none; b=cxwHjYUt7Bh+OjeBIuAxY+q4bripVUeRFX5QYb12LAuGuFK+FR/sQZkPs7wGkX1unA0EYN3Oq65irIt12Rc/iuADafewKYuorg2cfRO0FCyh77lkVs4K0OaTX7jP+nMiRWRJmWSV4PHW1CPUtu64aC7h7neRld4PYKUqY4Ap7Es=
+	t=1750933013; cv=none; b=g11/a9cDX8AF4s9NpgDE3MS7Y3W+raDJ6GKqAePbHPhU6my03DuZtKIQHlmEd0+6BnZpsbEjLEquq8/MK/pW6UQKvFqJ1iDBOvaVyrn69FAKRsH8y6aQTpD5DLppRYfZFACOOdkBLv0XV1HsBktVOVvmpjTeeVBHU/aww8yEocI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750931604; c=relaxed/simple;
-	bh=6xt2LoZ7um35rNritE2Wf/QwH+8ilLcVf1tM7PmYNrk=;
+	s=arc-20240116; t=1750933013; c=relaxed/simple;
+	bh=GBSozoWWKRKZJrCGFCdZ43CXvJAlMWvl9OaRxXSMWT8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FqUhEcUficyXaAUipt6vln4FDARQjZBrCFsMt6jCiVv4cHrTk+KC0nF9T0T24d2xT5gCRSB0bQnQXtFUtJDMhFGMo6xv0uY5UDUmt0rDjiE37QPJSTp5HZYcfpgLlQ0I5NJg7xHXKpqxR8SrmzAv9TLRUNqCDZ3AxlGnANYa13g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=YC7oo4FO; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+	 Content-Type:Content-Disposition:In-Reply-To; b=RLzKK607dnsbTD/VFd3Wc2O35Nhc4tCw9mQJPoN0uf1jVUod7toqnSbZnXbnLgJ2dM5O4wYL8Nn83vV+kIWhUOkv9z+DUPOZ0q6pTZlVzwpcDqFzRYDgyW7b32CdeVSxMWDigDO8RkjO5yg9Oh2u6t17oTgFlf5eMNF9iiBrqpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=hA6stHRW; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="YC7oo4FO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=v/q6IdJG8Uymm/aG7hvNeaBvQ6/NVz2xUiJSURPH0ew=; b=YC7oo4FOJnk4o1w/qIJfPvWDfK
-	1PWyXJCQutSel9kN1vFJ3s0ajl5M4FLCcwYajNDAE/pL1pABCDbdiOfTftvX0+aZ1XUw5PvGi6dmp
-	wF6B1xeVnQcVYp1delMvT9SsCv/P7RTGwDPYI71AxUgt9DS2j/GPq4LfSdJBEHzvDkB03K30OCB+J
-	G32znKSZ37xyXWGG5DkuFtXrVHFGLR3/hQ3dXnex/BL2lDmMCAvlnPJqOFDOZp2nnJisQsZI3HUhY
-	sh+rMoLxU3KiqD2vMxqaOof5UhibvIHCG9+uJ1GAsQQaF64V9Gpl3oLzId1RboUuR5Ecoome4B7Qc
-	F/tRDXhQ==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1uUj2d-001A8z-0S;
-	Thu, 26 Jun 2025 17:53:08 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 26 Jun 2025 17:53:07 +0800
-Date: Thu, 26 Jun 2025 17:53:07 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Aakash Kumar S <saakashkumar@marvell.com>
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, akamaluddin@marvell.com,
-	antony@phenome.org
-Subject: Re: [PATCH] xfrm: Duplicate SPI Handling
-Message-ID: <aF0Yg4CMeG3y74gh@gondor.apana.org.au>
-References: <20250624181054.1502835-1-saakashkumar@marvell.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="hA6stHRW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=GBSozoWWKRKZJrCGFCdZ43CXvJAlMWvl9OaRxXSMWT8=; b=hA6stHRWbGabrP0nAwAWoTMcZF
+	eJOUeXz1a9oYFVsu9p03reHpmUahcEb40hbN/qsZv+k52oDDha4kjJdu61MiUH818eOSH8OHc7/5/
+	cWxShLIQFXB/Z8pPjuztsw4GaEgx0agBB+WieYS/W6ADB8yP40kuOLXAMcfKuy2sA4gcTbyNIEIri
+	KQZPZ/NLpNDKi73asapwljVb7QC+WdEFzA6N/Uat2EoEGVt/64eGG35YJxlfa/oLu98AKMEi+Je1G
+	VXh0BBLVJEcW8YM1i05rbuQshuh/esiB/zuKCvCgkBg20bZZp66+ffAp0ghWTUtlk1quPilRKcIjh
+	mvTtxtUA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uUjez-0000000BG9H-1fW8;
+	Thu, 26 Jun 2025 10:16:49 +0000
+Date: Thu, 26 Jun 2025 03:16:49 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Christoph Hellwig <hch@infradead.org>, linux-kernel@vger.kernel.org,
+	rcu@vger.kernel.org, lkmm@lists.linux.dev,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>, Breno Leitao <leitao@debian.org>,
+	aeh@meta.com, netdev@vger.kernel.org, edumazet@google.com,
+	jhs@mojatatu.com, kernel-team@meta.com,
+	Erik Lundgren <elundgren@meta.com>
+Subject: Re: [PATCH 0/8] Introduce simple hazard pointers for lockdep
+Message-ID: <aF0eEfoWVCyoIAgx@infradead.org>
+References: <20250625031101.12555-1-boqun.feng@gmail.com>
+ <aFvl96hO03K1gd2m@infradead.org>
+ <aFwC-dvuyYRYSWpY@Mac.home>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,56 +64,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250624181054.1502835-1-saakashkumar@marvell.com>
+In-Reply-To: <aFwC-dvuyYRYSWpY@Mac.home>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On Tue, Jun 24, 2025 at 11:40:54PM +0530, Aakash Kumar S wrote:
-> The issue originates when Strongswan initiates an XFRM_MSG_ALLOCSPI
-> Netlink message, which triggers the kernel function xfrm_alloc_spi().
-> This function is expected to ensure uniqueness of the Security Parameter
-> Index (SPI) for inbound Security Associations (SAs). However, it can
-> return success even when the requested SPI is already in use, leading
-> to duplicate SPIs assigned to multiple inbound SAs, differentiated
-> only by their destination addresses.
-> 
-> This behavior causes inconsistencies during SPI lookups for inbound packets.
-> Since the lookup may return an arbitrary SA among those with the same SPI,
-> packet processing can fail, resulting in packet drops.
-> 
-> According to RFC 4301 section 4.4.2 , for inbound processing a unicast SA
-> is uniquely identified by the SPI and optionally protocol.
-> 
-> Reproducing the Issue Reliably:
-> To consistently reproduce the problem, restrict the available SPI range in
-> charon.conf : spi_min = 0x10000000 spi_max = 0x10000002
-> This limits the system to only 2 usable SPI values.
-> Next, create more than 2 Child SA. each using unique pair of src/dst address.
-> As soon as the 3rd Child SA is initiated, it will be assigned a duplicate
-> SPI, since the SPI pool is already exhausted.
-> With a narrow SPI range, the issue is consistently reproducible.
-> With a broader/default range, it becomes rare and unpredictable.
-> 
-> Current implementation:
-> xfrm_spi_hash() lookup function computes hash using daddr, proto, and family.
-> So if two SAs have the same SPI but different destination addresses, then
-> they will:
-> a. Hash into different buckets
-> b. Be stored in different linked lists (byspi + h)
-> c. Not be seen in the same hlist_for_each_entry_rcu() iteration.
-> As a result, the lookup will result in NULL and kernel allows that Duplicate SPI
-> 
-> Proposed Change:
-> xfrm_state_lookup_spi_proto() does a truly global search - across all states,
-> regardless of hash bucket and matches SPI and proto.
-> 
-> Signed-off-by: Aakash Kumar S <saakashkumar@marvell.com>
-> ---
->  net/xfrm/xfrm_state.c | 78 ++++++++++++++++++++++++++-----------------
->  1 file changed, 47 insertions(+), 31 deletions(-)
+On Wed, Jun 25, 2025 at 07:08:57AM -0700, Boqun Feng wrote:
+> Sure, I will put one for the future version, here is the gist:
 
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+Thanks a lot!
 
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+> The updater's wait can finish immediately if no one is accessing 'a', in
+> other words it doesn't need to wait for reader 2.
+
+So basically it is the RCU concept, but limited to protecting exactly
+one pointer update per critical section with no ability for the read
+to e.g. acquire a refcount on the objected pointed to by that pointer?
