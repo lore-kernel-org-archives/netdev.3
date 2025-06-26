@@ -1,452 +1,249 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38CD2E1729;
-	Thu, 26 Jun 2025 12:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750942659; cv=none; b=HARNagRvJP2f1JAM745CkUCD3ZY5/9Uz3cHso8IqDOJu4HPnMobLLwpWw2JlV/VcyRCZ1mEnbWnCPmk1RJjRfJcrX6lNdahkno19SyZLBazW8BzY7HWCl2HoJ+b8UuqAhkFiHeI7JXZJoLs2/nbXgaz156Q9X+V3s0yy2eHdRyI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750942659; c=relaxed/simple;
-	bh=Z5XIQXQlazJbc/jPqjX37W6puWm6Ny0RQLBxIS6zP9g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DInjxeROLlQTpr/FITcnrmWE/lT30JXi0Dn15RdA0go6ZwfId56ehf1yKSVXxPW3vt6Lo2oE/szZBSLT3JTWAtPhi54BH2vTklk8xeaVrMxFOlw0PBCTt3GINwqXIqL6qBZVHLMdtmFgHC0d31eUE6aUOJqsBMddvjojUvZoQQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nT51aSI6; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5D22E1C50
+	for <netdev@vger.kernel.org>; Thu, 26 Jun 2025 12:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750942742; cv=fail; b=NS7LSVvQOsbDBZ5std/kYavX5yG7OQhfyRe4XSnMS25+NCl4VP/IfBXz5ZANjYG/HivYtFwD2Dx0qQ4kx84ELiQkEssHu0jgpdSjRVfttVxpiaESa7uKYEJHziZg29I3ydnodOZJdYpdQxPyqyXRUkV6ZyQoEG+mz0Yva7foCh0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750942742; c=relaxed/simple;
+	bh=pL8RxqruVoOSzUVThJQuiFE/VYREa6bKEOcK6KBA/us=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=T+MqUq/Ha1vcOteFOlGK2rttsWUJPbLLukDvP6ZeznKXeqv6M/OYJNYqQV33CiSHBVlZc8F2FBPnx0ie85pSCc2hLDjlT3WaNKH3ZIrm+z8L46dQvmXroD3JkmwwCmUw/krntdnoC1qfbFFpNh0kNcokM4raFD/6bJRWcoz9g9A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=CpkUW2lQ; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=a66sz3Hc; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nT51aSI6"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-32addf54a00so7793281fa.1;
-        Thu, 26 Jun 2025 05:57:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="CpkUW2lQ";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="a66sz3Hc"
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55QCauEf005467;
+	Thu, 26 Jun 2025 12:58:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=dM6YrvfrNO2WPej6Sqcbt0LJzkKM780CYMg66d2Ab7E=; b=
+	CpkUW2lQ7wwWAKjgWcVA9DbJNbUTvyOrv8qSw1nvtKOolF/wl3WU5oN6nNRImUOh
+	DaCIL+T4DHCNSHwZTeoCIOCOKUjSQNtrouKX4A6L87RzjT/kaxeQdKl4m4cw3oWs
+	8C/ZYNZMGdnNDgbHzxQtvtBKGxvO2W6ozNqEwMNQGHQvQRRk/x7F6ZzHiU0UlM9Q
+	nUGMDaadGLNh/7uYds15zWeeTVuko9k6HaN5Yybl94HrllFYeSUUGswr2JZH9ftL
+	oDXzfrNwhDCV+8zNix3LrP7JAqYIRsYM/N4X8Aaw6qWawBFfdSn7luFuqS3nYV4m
+	eGnMdMYeNebzRacXejAQuQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47egt1gh7x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Jun 2025 12:58:50 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 55QBe9pp016875;
+	Thu, 26 Jun 2025 12:58:49 GMT
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12on2066.outbound.protection.outlook.com [40.107.243.66])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47h0guw6kh-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Jun 2025 12:58:49 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k4nqTcJXUl+O4bNJIFt0Ff/bDgKzKbIsoQs1EDj+eeZxRX3GZWUFbNUHWB4XPFV9IoNoIuaQ1BD8I8aYy35s8XTaSMGmqlSs0Gz5tCGsaSY/MfYWFAsy+WuJpgSWGfY+t6x0rUROYSc4DuShhtcjcEsrYNEuNv4A040dFdGgfwTQ7Ig0etF7e1MtZZQkQVb2n4ayn33e9te8+z0WIF6CFbAO23VZjobP9yMY1c63p4bKKs6j6BRVBoeeKeIzleBGUqCc2NRf35OcfUi7fd/aqTXLLK2K84r09lqlxIMJ9JLudV2oLr5T8fhqQaVk0d24nrAOs/sVwzqsm9R/AV/Jdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dM6YrvfrNO2WPej6Sqcbt0LJzkKM780CYMg66d2Ab7E=;
+ b=WyqdLHQyND2ol6UIfmqNd/OI26vGSCqHohpiYyFPH3pDlc7dpnA/GnsfwWqMHAaiBMMoT1GtWk1mlL1TuxENjRFi+Xa9RqcnEpISMnc4Xc6HIpq9R3sQlf/VTl2lzwMZBx3fKZzePN30AUCnU8/W1nTWYEF/RcLMILmq4VmXqu5trSWHw8mn1SrLSzSXnkhKiit13Hkvbmps8DwwLFytdx8bFTiIHILw4RiTKwjyijxxAzi6Ur25ZJGAtOdN4GkgAd4yXEya0PsYOCYAm3D7gxPL30VqZoq7cqQM/AuO4z/q+CSp8eCct0mhlAsr0pXR1Pg+R7Ie5qD3eSzUAJlyDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750942655; x=1751547455; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hbDBF1m4ND8ODEViRH7eWaeCoVkwsjO8vjNuWncwojs=;
-        b=nT51aSI6bIDaE6LQVthN9Uv6ONBsZlAsM193v/vA/ZpkDTZj70iD+rl3uD9W6/N+fG
-         EAMS+UDfI25GZ0pRyK764WNgydAGGFyvW3pxLkyP59LuhX6upu3cIH5ENc2+rjlpDIY9
-         u5O4HBIcqzJjSDxN5uM0IEFQlJwuL/TJ9wQ82UEwu08S2ocGMhuvhiSFSKmYbbidWj9F
-         gv4E5/Jfn4MBj8GVe88GUVzjUklvPu1i9Ax+mko918PBSaXdCQXTS8u6KKcQsbg/9REU
-         exciRbpOyC5nfIIu3zTVVorLygS3cUVMy/BxguLymRgxiCvYZrBkOlpdkOCQPorwM8PL
-         R1uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750942655; x=1751547455;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hbDBF1m4ND8ODEViRH7eWaeCoVkwsjO8vjNuWncwojs=;
-        b=PzAXrubu1iw6tsx5kShaOltZLbWZaXP3zpMAoCHnKqirqiEUA6/wJ4hrvnoG9JIraH
-         DNBtZgIWaFMtCKdoeFabhx/dy1d5OraPWCgRdmRPP3kecfR8wrVMXNvOJmCjluFpM/r1
-         8Gxjh2bjVhCJ8rYbDgROtnSrUiM5zWAMvK5I+zGsogMF+GAd0FWsCZQuDDP/OvdOLu9I
-         KhPjxscNo+3bDJW9xBENXRD0XYXtzt/RCz5UwWb301/UsOiQaD1Ods2rb2rgSYBuWKwQ
-         LU2ftyDS4v80kt0yo5EloOBWYZelx7kNI+14Mp1oVaWewGCH5jK37IunEZ55HF+l1Gpm
-         8XxA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0Ft8RoAdArsTW9mypwj17w4SGwbRhTcSjlkhINuiOgsovJgvByooT0EHPVMc2z/aWjhKHfnwU@vger.kernel.org, AJvYcCVIqcTlwGvR0uak3sEB6VRmW61LPGuwOw7c4+9+c2p9Gm1Qfl6Kwlsu/J8nWHaA+5mU4HdZb581@vger.kernel.org, AJvYcCW/fVOTrWGp5c3ggKhDKSl7tq4vkCdRNG9mSD4h2EpxeQcchUHY89ze6XYxopT1Ddy3JW5al1fDVYZKJwT5t9Y=@vger.kernel.org, AJvYcCWIi2LxRg5rqmAZeH2gQA1d2UnoWKj7PpueEAAk1PwiaeBIDaye5AniGBe3YAQc1GXQ1lICHfxzkSW6RXdn@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhcFDMXBx+XF2uz1ENevHdgwqfAUz8+E+ew1HG18LMUxfNnYPb
-	to+6LtuiIifN7f7PtHUo3xxXDsZ7cN4fYBJojUPBgSFYOACa8q2zvhVQfnm9UV8qrU+w7DNByss
-	o6WcNbBqqzuS/o4s3T9/3Eks0rQzt35g2KGMX8U0Jcw==
-X-Gm-Gg: ASbGncu4W9LJ1Siy8xLcrOFLXNm1pFWDzr4DEgnLxI9EmT8HXzTaQyoJbuaYEO6zFGv
-	BzAEl8kOj6DtnOESHI6VQ7SSGmi53GUN7kALLYILfmo8CsKCdpBSEo0toVgpSYcdpMP1aym9JrT
-	J72fjVDtvFYZzBwirp7v0ujqBp5PWK83q1WAEMxSbslg==
-X-Google-Smtp-Source: AGHT+IF2Wqjq+z5Kekhx8NTddyZTPh0HFQb8SRZurjGuP33M/t0OWBh1RC07DUJS9Qf8Npu4yJAd8K2ViTlWgwhM72s=
-X-Received: by 2002:a05:651c:3045:b0:32b:7165:d0 with SMTP id
- 38308e7fff4ca-32cc643d074mr16874431fa.10.1750942654696; Thu, 26 Jun 2025
- 05:57:34 -0700 (PDT)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dM6YrvfrNO2WPej6Sqcbt0LJzkKM780CYMg66d2Ab7E=;
+ b=a66sz3HcFE+hePWyIIVu8BwugZKwM0cp5bglvyvcF0EusYu/ADTLMicbBxwwjgX6XAM29yY0UtJyC79g3552PcK7kltOpEXaEcmdEA90F3G0BjY0+qJpuI44bULyZz2ziPteNyceIXrplfHSHayJNsWX1OZCZTK7WHfVfMdLBXE=
+Received: from DS7PR10MB5134.namprd10.prod.outlook.com (2603:10b6:5:3a1::23)
+ by CH3PR10MB7394.namprd10.prod.outlook.com (2603:10b6:610:149::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.21; Thu, 26 Jun
+ 2025 12:58:45 +0000
+Received: from DS7PR10MB5134.namprd10.prod.outlook.com
+ ([fe80::39b2:9b47:123b:fc63]) by DS7PR10MB5134.namprd10.prod.outlook.com
+ ([fe80::39b2:9b47:123b:fc63%7]) with mapi id 15.20.8880.021; Thu, 26 Jun 2025
+ 12:58:43 +0000
+Message-ID: <ce04ba52-9201-4594-9079-64000e8dc797@oracle.com>
+Date: Thu, 26 Jun 2025 08:58:41 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 01/10] netlink: specs: nfsd: replace underscores with
+ dashes in names
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+        donald.hunter@gmail.com
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+        andrew+netdev@lunn.ch, horms@kernel.org, jlayton@kernel.org,
+        lorenzo@kernel.org
+References: <20250624211002.3475021-1-kuba@kernel.org>
+ <20250624211002.3475021-2-kuba@kernel.org>
+Content-Language: en-US
+From: Chuck Lever <chuck.lever@oracle.com>
+In-Reply-To: <20250624211002.3475021-2-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH0PR03CA0004.namprd03.prod.outlook.com
+ (2603:10b6:610:b0::9) To DS7PR10MB5134.namprd10.prod.outlook.com
+ (2603:10b6:5:3a1::23)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250626115209.17839-1-ceggers@arri.de>
-In-Reply-To: <20250626115209.17839-1-ceggers@arri.de>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Thu, 26 Jun 2025 08:57:22 -0400
-X-Gm-Features: Ac12FXwbphIiiUdCuEqIOLqT54dhAb91jK5k-PvTjulolO7Gvgbeo-8mmls3-Gg
-Message-ID: <CABBYNZLfDqh=49qtC2M6F+f+rmgZ-hQGnABseqWyk0H4QDGTqQ@mail.gmail.com>
-Subject: Re: [PATCH v2] Bluetooth: HCI: Set extended advertising data synchronously
-To: Christian Eggers <ceggers@arri.de>
-Cc: Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>, 
-	Jaganath Kanakkassery <jaganath.k.os@gmail.com>, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR10MB5134:EE_|CH3PR10MB7394:EE_
+X-MS-Office365-Filtering-Correlation-Id: e0db81bb-0204-427e-306d-08ddb4b12de0
+X-LD-Processed: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?TVlsaG1RWU01aFZsR0VjZTd0ckVYSFI4WTlNdmM3Q1JVME1GTFZOblBoeXBI?=
+ =?utf-8?B?Z1oyakRsSWx1eDk1R3FKZ0phQUhOZkowOFB0dTVTa2doSnBtRTNjei90YUhj?=
+ =?utf-8?B?dTBMMTF4emptYng1OTRBWjlpRUtHaHExcTVuL1Fkd21taWUvdjdnVkMrWFhW?=
+ =?utf-8?B?cHd6M2dEZnBvMkZSWEFFOUFLSXJ2QUJqMnh0SHBoZnJZSEQ5T0VuRGlxcjJy?=
+ =?utf-8?B?c3NLYXBMU3dqYkhmeTkzVkpxaEtnTjNwcW9hQWRmSXNDYk80aEtOc1lPWkIv?=
+ =?utf-8?B?Nzl0cHhFTFlHa1RjejFLaWswUDVDUDJnOExVSnhYckpnVXhKdk5Xc3pJQUI3?=
+ =?utf-8?B?VFhWTHZLVDk1WmVtbjNrOHNtTnJnbFpHTloxMktZUDRGWFkzRldmWEdpd1J1?=
+ =?utf-8?B?MlJmZnljdCtKU1V2OStyMWJFZ1BSZXhmVC9BVEdYcVVURjBkcU91UlJvK0Uy?=
+ =?utf-8?B?K0UzQUtYbGhIclUvZytaUFZkZWoreEppRm1rNVlVSWJuZ1R3YTllNmV3RkVX?=
+ =?utf-8?B?Vy8xSWQ1SnFvc2NKSkdENlNYVkVFcjJkKythdXRzcXFDZ1Y3YUg1bzcwUjVG?=
+ =?utf-8?B?VUJhOFE5TS9VRnZWZTAxc3FHRC9vWWdTOGhqTVB0ZzhCUk1yUDFVTktVcUV2?=
+ =?utf-8?B?TzhTMStnZlV0UElNYTRIUEhwVFlMcGpLVmpldE95UzAzczE3Z2ZSUjdBbUQx?=
+ =?utf-8?B?SHlGekdVWHhLRGt6NlAzcFJKdSs1R2RKeHNjWlByYklnU0tsRWFXQjhiTmdN?=
+ =?utf-8?B?WnpWSlN2c2Z0RmpyVVpidzVuUGlxOEJXdnBCK2JYb2M2VnZmcVgwVlhQUWpu?=
+ =?utf-8?B?d0Q5c0t3Wm1FQ3FMM0JjMjRobDYxSXpYN3lNaTA1cG1ha1FrQ1gydkdKRS9O?=
+ =?utf-8?B?SmxLYjR4TFZkdk5hd21zdnFROWhaZzd4SUpySlY4dTdWVytSbnp3enlSUlZT?=
+ =?utf-8?B?TGtLSU5KSlY5RDVGWnZUT25BWlRtaXQ4RzJPMVhnRDJLbkVEY1IrN3ozSEpT?=
+ =?utf-8?B?VERPWDNKOVJDWDhVaGx0a2ZBcW5PVmZ1VHVEYnVQSllwSkJnU05iWUJQcGQx?=
+ =?utf-8?B?UEQ0d3RzUDk2bnMySmZWeWNsRjByV1Vzb2FkTllaUUtkRzVINDI2L3E3Q3kx?=
+ =?utf-8?B?a2RMUXdHZ2lpNU5KTFFSdWJWem9CYTJaMm40QWhWQ0RJeGJUdmx6Tk1pa0pQ?=
+ =?utf-8?B?d2J6TmZpSVdweG5NSkZkc1gzZTJQZTlTK1VacXZwbEk0YVpOajFSK2dvK1lJ?=
+ =?utf-8?B?ejBMankxTTdkSlc5L0xJZ2JlVmtvY2lzNTBJWVNkZU9yRGxKYW9GSTg5ZTFY?=
+ =?utf-8?B?b2tKVEhMU2RuWnBPWlpEVmJ2S2ZyRUVGQWhjM1hUTTVKNDl6UEk4U050WC9E?=
+ =?utf-8?B?UlZLNnhQbE5xb01OMlNhNjlta3pjVUpaYWpEWHZBaXVmdndIdkw5RnFtMUcr?=
+ =?utf-8?B?M0dSOTQwWHJZTUhKUG9ENWhvamI1eTZvTTBodytvYkpYUU9DbUhZR3lkT2k4?=
+ =?utf-8?B?NHNQOWJ5YWx0bE9yV1J5bytjUitHOUxHRHNkL1VGNi8xU3JCUmFVZGtwT0VM?=
+ =?utf-8?B?bk9qZWovRU9xWGttQzdxS3JpUTI5TjEvZFBvT29PeUF2ZEdMUWhVNzFxczFP?=
+ =?utf-8?B?d2o1Y3ZkLythM1diVUQxVGdiUG4rZXZBL0xjQlVRaHBHbEIrMER2alQyZDc3?=
+ =?utf-8?B?SGt4Y2lHczI0NWVDNUZ3bW90MVVDemtIMFl3VUdIeVc4ckpvTVdJMGV1OHJs?=
+ =?utf-8?B?dFI4Ui9HRDdWYUJVRm9uLzhCRjkybHJqa0V2ektPTGtmU2dTdEtyUmx5akg5?=
+ =?utf-8?B?eGFOZk53QWlQTE9pSWF1Z1NhTGZIYVljWHRMeG4vRm1LelBLcnhQak91aEt1?=
+ =?utf-8?B?cC9lWThHY3J4bERvODZyOUswTkRRVFRlYkkwUU11MFdzeHNocW9WbHhmVHZR?=
+ =?utf-8?Q?dXC//kkAcrA=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR10MB5134.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?YTF1eFVHUndyNU0xeU9VWG9IRW5UMVZocHRKUERybUxSdmFiRDBlei9INTd6?=
+ =?utf-8?B?SzJRY3poUDNRWGRMMkM2UjJlRERIY0NqdkxuOWZka2laVFhQTlpRUWFaSDl4?=
+ =?utf-8?B?RXJHL285UWxXeUorWnZ0N3F0RFB5TS9GZ2RXQUtmRnBiMjNGSVF6R3BZZUdn?=
+ =?utf-8?B?eEF6MGVTV1NkMUN6amg1bHpSMmRuTUVycEU1b3F0WkxTWUtCVFhaWUdHTmxZ?=
+ =?utf-8?B?TWd3MmJsVkZQWVlpZHNYK21Sb0UwMWZNMERpd1J6QzFpamY1MnBVK1ZtS1VW?=
+ =?utf-8?B?T2o1RkxRMmdaSEI1dHJEaDVUR2FhSm5icnJYSVdZbXdLUU9ETWl1Q1BUSUZo?=
+ =?utf-8?B?ZnRtQUkycVRzZG84cHd3TDNZdVZBb3VlangzZTdsNTF5YmtxSlVoU09Pc0pG?=
+ =?utf-8?B?WUNJNXJFT1FUQ055ZUJ4aVlML2cvWDRESmRrbTYwSEFTdEZPWEUyamFBY0tW?=
+ =?utf-8?B?QWZEZGx6NWVJV2Z6aGdiU1VNMEh6dnRTVWRKUHhSREJIRmczbWwrQlNqR2hK?=
+ =?utf-8?B?Rm0xN0hFUlVkMTNDeFdwSmdpWmFWSk1pb205K29ZZWppc1RFNzhqUU9TZTM3?=
+ =?utf-8?B?NGpWQlBMajlwUnd3RjhzR2JqbTFBbW4wNXdVOGJjcFJHTTVqeWwxaFlJSEYw?=
+ =?utf-8?B?NFRKUVZILy9qQ0ozTTVMQ3BnOFFFbzNuUFUxWjc4MlAzTmY0SDhZZXRibUlT?=
+ =?utf-8?B?L01tQWZ5U3ZkUjBNbWxEcDRDa1psQUZqMlVUVHkvRCtFR2xRZng5UDNTbWNU?=
+ =?utf-8?B?WnFxRFRmWlE1bjB6aVpKaTRVb0RlOHVQSnJGeDJvZjVCQTVtOG9jOUtSNTNE?=
+ =?utf-8?B?cExEQ1JZdTdCYnBDcUQ5UkVZd2FlaHB1UVNWOHJkT1lNVWlNS2pCUzhYUC8z?=
+ =?utf-8?B?a3V2YUZiQ0xXNVpVNjMrdnY2TmU5a1hhV1RoVC9HOW1wTktyL0U0QVpKL2dB?=
+ =?utf-8?B?TG9jYVlZRFhwREZQK1ppTG1kTlRYMGp5aDV1aW53NHQ1SE5ZdlUyQnNZU0Jh?=
+ =?utf-8?B?VTJ3TUpCTTRHaDhCbzJwdXdxcEc2VWhVeWdjOGxoYWVvTUZiQm9EUGFpQm03?=
+ =?utf-8?B?a0FnaHM4ZjB6VGlyN3RtQ1gvTnhDL0tZWDg2OXQyR3JOT2wzeXJpb3QrZjd4?=
+ =?utf-8?B?N09pQlJRRmdzV1IwRytlS1Q5MTNvRjE2eHliMm5KcHBoc050SlEvQTdIM3RN?=
+ =?utf-8?B?V3FrVjdDM3A3eVNEWEtmWEF4bHNKTmVrREtNVWRaYmVUaWpWSkZxSVppOXhh?=
+ =?utf-8?B?RjVWbVJvWU91bk01dEVsSTRPdTBoU1RZcTRMd3BDRDNoZm8rUFFGWXYzWDhR?=
+ =?utf-8?B?ZWpkaXJzZHVKVGFFMUxoSDIwNk91dzRjTkNXaHg0NXZpM21UNVM4Ukp6ejNL?=
+ =?utf-8?B?TlJxbjdnTVlIcmEydVB5SnlqcS9BeHp2Qmw4VmZzVVpqck9iQkF4dyticVEw?=
+ =?utf-8?B?ak9ONWkyeUFKVEl5eitLWnU2cC9WSmJkVlZVS2dTN1MrUTFjd2xhakRrYUV0?=
+ =?utf-8?B?ZTlteTFHZktmWFh6ZWJoL0U0OExvclB0cjhZaE9ERE4zTXB3WWNzRnR4ZGND?=
+ =?utf-8?B?bHFRcG4xQnpzcmp4OTNPV0xRTFVZMUtCVDd6SmJTY3ZGM2tOVzF0WitrRUtm?=
+ =?utf-8?B?aEhWUDVUSjR6eDVtUVM4MU14NWwvczNRRnVDbm5LRitlbmdDM201cWc1dGlu?=
+ =?utf-8?B?OGhKTjNHNVVMTldpdDhvcFlXWFRiZG1ITEVOMWoxMnpyNCtkVzBtOENQeDFV?=
+ =?utf-8?B?ZkxZYUhDZnJlNEJIMU9xOVFJOGU2TEZlbUM0M00zb0o1WEwzalRQVzIvSWxu?=
+ =?utf-8?B?K2Nnck44bmd2L0hZb2t3TUNrMWQ4Vi8wRDN6WlFxTExJcUFPS00zaDZ4RWtE?=
+ =?utf-8?B?QTBXTi84dEQ3VHBybHk1TGpTaFV6cURETzNBTEp4UWdPY01tUzJlaGJGaG11?=
+ =?utf-8?B?azcwY1NXMFp2L1grdTRRQUcxNzNSaUlXQW1WbUp1L0N6YVJOcUM5ODBIbDdN?=
+ =?utf-8?B?Sm5xYUwyNG5OanlFYWlXeFJoZ25JdThYaU80RHBnYXNtc0lYdnlWT3dTSlhl?=
+ =?utf-8?B?ell5cDMzS2JzdkFaaTYxS3AzRE5mS01ncm40Ky8wV2J4S0NlU050WS8xUHFq?=
+ =?utf-8?Q?y8TT7p8+sYQxFgqUZwdtYynB4?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	694cXMxazv1P/ZeRj/tv9QICiIpwwCPPgcUD9z1r9wd1r/QbaVoiRp43pmD45iq+U1zTAlkQhkE54jZD7EnMGyCg/sfSV1oFNKyvUrGR186wuMf1uSB+lRBr0kqcPrP2Bx3h5+dmCjonK6DHZfVLR/4+qbn3lYcByc388knenZMK/D8wA2MDLzdh4/ZllNClfPCoSmhRgBz7RwrEYrWUoKyaLM9XslKQsG17XUMwASsriSqNF3rKXaCkK3fNdrLrOsNpuDegP4xmj2tjdVGFxzJDcw+MxAW5BiHgJj5X6DagwefcpAVxWkW4X+WN+1u28FjCkQT7v+F8hgB+bWFXAcYms4JPpZ04A2jIZTA5MV4D72gpxDxd+kvSucAYFmjVr89RZX+0kip5nfhp+WGBes9MBwNhpnCLM/myiZhowu9VJ4Xlh0tQdYOdN289NUpp7xmQCQdLFHD2oGVYcYtuc03YeMoDWZEDGNBbmvbmqgxtO1i0lEVkHtJz2GYwNSAbVdgQellc7Vt5e6WNjqj2IuuetHl7nyfmQFgNZ+PkFBzaAsGOBzhaOjJdecmSOSpVb/C30Rmzdxzs5h/HY76cisylOnNSaBodLZ78U8I/upI=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0db81bb-0204-427e-306d-08ddb4b12de0
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR10MB5134.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2025 12:58:43.1628
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Z2hEeWxqy+qyhLe7gT5hBhAplkdulstYAOupULXi7BCBifsrYHaSU7msFgNKt6lLbpPx30FED6RP9hpIXHq51Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7394
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-26_05,2025-06-26_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999
+ suspectscore=0 adultscore=0 mlxscore=0 malwarescore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2506260109
+X-Proofpoint-GUID: T1DZ3NI6PCdwzeNjFim8vFIlN3Dn7VeW
+X-Proofpoint-ORIG-GUID: T1DZ3NI6PCdwzeNjFim8vFIlN3Dn7VeW
+X-Authority-Analysis: v=2.4 cv=cpebk04i c=1 sm=1 tr=0 ts=685d440a b=1 cx=c_pps a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8 a=VByVxmysoRhPh_IJtNgA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI2MDEwOSBTYWx0ZWRfX0zewbbJtrhzJ t5Lbdj5pjSUZAKPvmzgOrgzEWpG2SxadvrwttF/SJN6PKwVKnKzH8aVbFqDCxIubIaiApwybhhK +FbyCTeGNTqpjd5YqHLLFAJ3nO8I2dAXzm+h868fQff/uA9ZxpLdaQVmr3V5GFriVKX33hVwEfN
+ CipIxaJ5isNI0I9zbR8cD44AuT5w0iGFgqeWF/SpTOC84m2VVbcrsExvLv4qMxnWu2KLectKcAX /anAS72okDvs3AxSv4qrnHGUwnT7EPwC2IWdXUVgoo14CL41llxdWO9IBhrySxPQdqnnpKsiwH2 VKl9cPjjTpdbOKw4Tr9kMmhfqCplAlx0wP0HFIToWq+/ntixt5jRox14r6LEAcDfwXZOQb4M8g+
+ Pfp6O81tggNXvFaU20/3v3W+qbEBcnDitWr/qeQPR7AQCW/E/gS4elvVO9wx4bOyJ5Zuxk83
 
-Hi Christian,
-
-On Thu, Jun 26, 2025 at 7:52=E2=80=AFAM Christian Eggers <ceggers@arri.de> =
-wrote:
->
-> Currently, for controllers with extended advertising, the advertising
-> data is set in the asynchronous response handler for extended
-> adverstising params. As most advertising settings are performed in a
-> synchronous context, the (asynchronous) setting of the advertising data
-> is done too late (after enabling the advertising).
->
-> Move setting of adverstising data from asynchronous response handler
-> into synchronous context to fix ordering of HCI commands.
->
-> Signed-off-by: Christian Eggers <ceggers@arri.de>
-> Fixes: a0fb3726ba55 ("Bluetooth: Use Set ext adv/scan rsp data if control=
-ler supports")
-> Cc: stable@vger.kernel.org
-> v1: https://lore.kernel.org/linux-bluetooth/20250625130510.18382-1-cegger=
-s@arri.de/
+On 6/24/25 5:09 PM, Jakub Kicinski wrote:
+> We're trying to add a strict regexp for the name format in the spec.
+> Underscores will not be allowed, dashes should be used instead.
+> This makes no difference to C (codegen, if used, replaces special
+> chars in names) but it gives more uniform naming in Python.
+> 
+> Fixes: 13727f85b49b ("NFSD: introduce netlink stubs")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 > ---
-> v2: convert setting of adv data into synchronous context (rather than mov=
-ing
-> more methods into asynchronous response handlers).
-> - hci_set_ext_adv_params_sync: new method
-> - hci_set_ext_adv_data_sync: move within source file (no changes)
-> - hci_set_adv_data_sync: dito
-> - hci_update_adv_data_sync: dito
-> - hci_cc_set_ext_adv_param: remove (performed synchronously now)
->
-> On Wednesday, 25 June 2025, 15:26:58 CEST, Luiz Augusto von Dentz wrote:
-> > That said for the likes of MGMT_OP_ADD_EXT_ADV_DATA you will still
-> > need to detect if the instance has already been enabled then do
-> > disable/re-enable logic if the quirk is set.
->
-> The critical opcode (HCI_OP_LE_SET_EXT_ADV_DATA) is only used in
-> hci_set_ext_adv_data_sync(). Two of the callers already ensure that
-> the advertising instance is disabled, so only hci_update_adv_data_sync()
-> may need a quirk. I suggest doing this in a separate patch.
->
-> regards,
-> Christian
->
->  net/bluetooth/hci_event.c |  36 -------
->  net/bluetooth/hci_sync.c  | 209 ++++++++++++++++++++++++--------------
->  2 files changed, 132 insertions(+), 113 deletions(-)
->
-> diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-> index 66052d6aaa1d..4d5ace9d245d 100644
-> --- a/net/bluetooth/hci_event.c
-> +++ b/net/bluetooth/hci_event.c
-> @@ -2150,40 +2150,6 @@ static u8 hci_cc_set_adv_param(struct hci_dev *hde=
-v, void *data,
->         return rp->status;
->  }
->
-> -static u8 hci_cc_set_ext_adv_param(struct hci_dev *hdev, void *data,
-> -                                  struct sk_buff *skb)
-> -{
-> -       struct hci_rp_le_set_ext_adv_params *rp =3D data;
-> -       struct hci_cp_le_set_ext_adv_params *cp;
-> -       struct adv_info *adv_instance;
-> -
-> -       bt_dev_dbg(hdev, "status 0x%2.2x", rp->status);
-> -
-> -       if (rp->status)
-> -               return rp->status;
-> -
-> -       cp =3D hci_sent_cmd_data(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS);
-> -       if (!cp)
-> -               return rp->status;
-> -
-> -       hci_dev_lock(hdev);
-> -       hdev->adv_addr_type =3D cp->own_addr_type;
-> -       if (!cp->handle) {
-> -               /* Store in hdev for instance 0 */
-> -               hdev->adv_tx_power =3D rp->tx_power;
-> -       } else {
-> -               adv_instance =3D hci_find_adv_instance(hdev, cp->handle);
-> -               if (adv_instance)
-> -                       adv_instance->tx_power =3D rp->tx_power;
-> -       }
-> -       /* Update adv data as tx power is known now */
-> -       hci_update_adv_data(hdev, cp->handle);
-> -
-> -       hci_dev_unlock(hdev);
-> -
-> -       return rp->status;
-> -}
-> -
->  static u8 hci_cc_read_rssi(struct hci_dev *hdev, void *data,
->                            struct sk_buff *skb)
->  {
-> @@ -4164,8 +4130,6 @@ static const struct hci_cc {
->         HCI_CC(HCI_OP_LE_READ_NUM_SUPPORTED_ADV_SETS,
->                hci_cc_le_read_num_adv_sets,
->                sizeof(struct hci_rp_le_read_num_supported_adv_sets)),
-> -       HCI_CC(HCI_OP_LE_SET_EXT_ADV_PARAMS, hci_cc_set_ext_adv_param,
-> -              sizeof(struct hci_rp_le_set_ext_adv_params)),
->         HCI_CC_STATUS(HCI_OP_LE_SET_EXT_ADV_ENABLE,
->                       hci_cc_le_set_ext_adv_enable),
->         HCI_CC_STATUS(HCI_OP_LE_SET_ADV_SET_RAND_ADDR,
-> diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-> index 1f8806dfa556..2a09b2cb983e 100644
-> --- a/net/bluetooth/hci_sync.c
-> +++ b/net/bluetooth/hci_sync.c
-> @@ -1205,9 +1205,116 @@ static int hci_set_adv_set_random_addr_sync(struc=
-t hci_dev *hdev, u8 instance,
->                                      sizeof(cp), &cp, HCI_CMD_TIMEOUT);
->  }
->
-> +static int
-> +hci_set_ext_adv_params_sync(struct hci_dev *hdev,
-> +                           const struct hci_cp_le_set_ext_adv_params *cp=
-,
-> +                           struct hci_rp_le_set_ext_adv_params *rp)
-> +{
-> +       struct sk_buff *skb;
-> +
-> +       skb =3D __hci_cmd_sync(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS, sizeof=
-(*cp),
-> +                            cp, HCI_CMD_TIMEOUT);
-> +
-> +       /* If command return a status event, skb will be set to -ENODATA =
-*/
-> +       if (skb =3D=3D ERR_PTR(-ENODATA))
-> +               return 0;
-> +
-> +       if (IS_ERR(skb)) {
-> +               bt_dev_err(hdev, "Opcode 0x%4.4x failed: %ld",
-> +                          HCI_OP_LE_SET_EXT_ADV_PARAMS, PTR_ERR(skb));
-> +               return PTR_ERR(skb);
-> +       }
-> +
-> +       if (skb->len !=3D sizeof(*rp)) {
-> +               bt_dev_err(hdev, "Invalid response length for "
-> +                          "HCI_OP_LE_SET_EXT_ADV_PARAMS: %u", skb->len);
-> +               kfree_skb(skb);
-> +               return -EIO;
-> +       }
-> +
-> +       memcpy(rp, skb->data, sizeof(*rp));
-> +       kfree_skb(skb);
-> +
-> +       return rp->status;
-> +}
-> +
-> +static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
-> +{
-> +       DEFINE_FLEX(struct hci_cp_le_set_ext_adv_data, pdu, data, length,
-> +                   HCI_MAX_EXT_AD_LENGTH);
-> +       u8 len;
-> +       struct adv_info *adv =3D NULL;
-> +       int err;
-> +
-> +       if (instance) {
-> +               adv =3D hci_find_adv_instance(hdev, instance);
-> +               if (!adv || !adv->adv_data_changed)
-> +                       return 0;
-> +       }
-> +
-> +       len =3D eir_create_adv_data(hdev, instance, pdu->data,
-> +                                 HCI_MAX_EXT_AD_LENGTH);
-> +
-> +       pdu->length =3D len;
-> +       pdu->handle =3D adv ? adv->handle : instance;
-> +       pdu->operation =3D LE_SET_ADV_DATA_OP_COMPLETE;
-> +       pdu->frag_pref =3D LE_SET_ADV_DATA_NO_FRAG;
-> +
-> +       err =3D __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_DATA,
-> +                                   struct_size(pdu, data, len), pdu,
-> +                                   HCI_CMD_TIMEOUT);
-> +       if (err)
-> +               return err;
-> +
-> +       /* Update data if the command succeed */
-> +       if (adv) {
-> +               adv->adv_data_changed =3D false;
-> +       } else {
-> +               memcpy(hdev->adv_data, pdu->data, len);
-> +               hdev->adv_data_len =3D len;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static int hci_set_adv_data_sync(struct hci_dev *hdev, u8 instance)
-> +{
-> +       struct hci_cp_le_set_adv_data cp;
-> +       u8 len;
-> +
-> +       memset(&cp, 0, sizeof(cp));
-> +
-> +       len =3D eir_create_adv_data(hdev, instance, cp.data, sizeof(cp.da=
-ta));
-> +
-> +       /* There's nothing to do if the data hasn't changed */
-> +       if (hdev->adv_data_len =3D=3D len &&
-> +           memcmp(cp.data, hdev->adv_data, len) =3D=3D 0)
-> +               return 0;
-> +
-> +       memcpy(hdev->adv_data, cp.data, sizeof(cp.data));
-> +       hdev->adv_data_len =3D len;
-> +
-> +       cp.length =3D len;
-> +
-> +       return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_DATA,
-> +                                    sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-> +}
-> +
-> +int hci_update_adv_data_sync(struct hci_dev *hdev, u8 instance)
-> +{
-> +       if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED))
-> +               return 0;
-> +
-> +       if (ext_adv_capable(hdev))
-> +               return hci_set_ext_adv_data_sync(hdev, instance);
-> +
-> +       return hci_set_adv_data_sync(hdev, instance);
-> +}
-> +
->  int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
->  {
->         struct hci_cp_le_set_ext_adv_params cp;
-> +       struct hci_rp_le_set_ext_adv_params rp;
->         bool connectable;
->         u32 flags;
->         bdaddr_t random_addr;
-> @@ -1316,8 +1423,20 @@ int hci_setup_ext_adv_instance_sync(struct hci_dev=
- *hdev, u8 instance)
->                 cp.secondary_phy =3D HCI_ADV_PHY_1M;
->         }
->
-> -       err =3D __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS,
-> -                                   sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-> +       err =3D hci_set_ext_adv_params_sync(hdev, &cp, &rp);
-> +       if (err)
-> +               return err;
-> +
-> +       hdev->adv_addr_type =3D own_addr_type;
-> +       if (!cp.handle) {
-> +               /* Store in hdev for instance 0 */
-> +               hdev->adv_tx_power =3D rp.tx_power;
-> +       } else if (adv) {
-> +               adv->tx_power =3D rp.tx_power;
-> +       }
+> CC: donald.hunter@gmail.com
+> CC: chuck.lever@oracle.com
+> CC: jlayton@kernel.org
+> CC: lorenzo@kernel.org
+> ---
+>  Documentation/netlink/specs/nfsd.yaml | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/netlink/specs/nfsd.yaml b/Documentation/netlink/specs/nfsd.yaml
+> index c87658114852..8d1a3c01708f 100644
+> --- a/Documentation/netlink/specs/nfsd.yaml
+> +++ b/Documentation/netlink/specs/nfsd.yaml
+> @@ -27,7 +27,7 @@ doc: NFSD configuration over generic netlink.
+>          name: proc
+>          type: u32
+>        -
+> -        name: service_time
+> +        name: service-time
+>          type: s64
+>        -
+>          name: pad
+> @@ -139,7 +139,7 @@ doc: NFSD configuration over generic netlink.
+>              - prog
+>              - version
+>              - proc
+> -            - service_time
+> +            - service-time
+>              - saddr4
+>              - daddr4
+>              - saddr6
 
-We can probably move the above code into hci_set_ext_adv_params_sync
-so we guarantee the tx_power is updated whenever it is used, if there
-are differences between the likes of directed advertisements, etc,
-that can probably be handled internally as well, although I think it
-doesn't seem to need a special handling since we restrict directected
-advertisements to handle 0x00 only.
-
-> +       /* Update adv data as tx power is known now */
-> +       err =3D hci_set_ext_adv_data_sync(hdev, cp.handle);
->         if (err)
->                 return err;
->
-> @@ -1822,79 +1941,6 @@ int hci_le_terminate_big_sync(struct hci_dev *hdev=
-, u8 handle, u8 reason)
->                                      sizeof(cp), &cp, HCI_CMD_TIMEOUT);
->  }
->
-> -static int hci_set_ext_adv_data_sync(struct hci_dev *hdev, u8 instance)
-> -{
-> -       DEFINE_FLEX(struct hci_cp_le_set_ext_adv_data, pdu, data, length,
-> -                   HCI_MAX_EXT_AD_LENGTH);
-> -       u8 len;
-> -       struct adv_info *adv =3D NULL;
-> -       int err;
-> -
-> -       if (instance) {
-> -               adv =3D hci_find_adv_instance(hdev, instance);
-> -               if (!adv || !adv->adv_data_changed)
-> -                       return 0;
-> -       }
-> -
-> -       len =3D eir_create_adv_data(hdev, instance, pdu->data,
-> -                                 HCI_MAX_EXT_AD_LENGTH);
-> -
-> -       pdu->length =3D len;
-> -       pdu->handle =3D adv ? adv->handle : instance;
-> -       pdu->operation =3D LE_SET_ADV_DATA_OP_COMPLETE;
-> -       pdu->frag_pref =3D LE_SET_ADV_DATA_NO_FRAG;
-> -
-> -       err =3D __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_DATA,
-> -                                   struct_size(pdu, data, len), pdu,
-> -                                   HCI_CMD_TIMEOUT);
-> -       if (err)
-> -               return err;
-> -
-> -       /* Update data if the command succeed */
-> -       if (adv) {
-> -               adv->adv_data_changed =3D false;
-> -       } else {
-> -               memcpy(hdev->adv_data, pdu->data, len);
-> -               hdev->adv_data_len =3D len;
-> -       }
-> -
-> -       return 0;
-> -}
-> -
-> -static int hci_set_adv_data_sync(struct hci_dev *hdev, u8 instance)
-> -{
-> -       struct hci_cp_le_set_adv_data cp;
-> -       u8 len;
-> -
-> -       memset(&cp, 0, sizeof(cp));
-> -
-> -       len =3D eir_create_adv_data(hdev, instance, cp.data, sizeof(cp.da=
-ta));
-> -
-> -       /* There's nothing to do if the data hasn't changed */
-> -       if (hdev->adv_data_len =3D=3D len &&
-> -           memcmp(cp.data, hdev->adv_data, len) =3D=3D 0)
-> -               return 0;
-> -
-> -       memcpy(hdev->adv_data, cp.data, sizeof(cp.data));
-> -       hdev->adv_data_len =3D len;
-> -
-> -       cp.length =3D len;
-> -
-> -       return __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_ADV_DATA,
-> -                                    sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-> -}
-> -
-> -int hci_update_adv_data_sync(struct hci_dev *hdev, u8 instance)
-> -{
-> -       if (!hci_dev_test_flag(hdev, HCI_LE_ENABLED))
-> -               return 0;
-> -
-> -       if (ext_adv_capable(hdev))
-> -               return hci_set_ext_adv_data_sync(hdev, instance);
-> -
-> -       return hci_set_adv_data_sync(hdev, instance);
-> -}
-> -
->  int hci_schedule_adv_instance_sync(struct hci_dev *hdev, u8 instance,
->                                    bool force)
->  {
-> @@ -6269,6 +6315,7 @@ static int hci_le_ext_directed_advertising_sync(str=
-uct hci_dev *hdev,
->                                                 struct hci_conn *conn)
->  {
->         struct hci_cp_le_set_ext_adv_params cp;
-> +       struct hci_rp_le_set_ext_adv_params rp;
->         int err;
->         bdaddr_t random_addr;
->         u8 own_addr_type;
-> @@ -6310,8 +6357,16 @@ static int hci_le_ext_directed_advertising_sync(st=
-ruct hci_dev *hdev,
->         if (err)
->                 return err;
->
-> -       err =3D __hci_cmd_sync_status(hdev, HCI_OP_LE_SET_EXT_ADV_PARAMS,
-> -                                   sizeof(cp), &cp, HCI_CMD_TIMEOUT);
-> +       err =3D hci_set_ext_adv_params_sync(hdev, &cp, &rp);
-> +       if (err)
-> +               return err;
-> +
-> +       hdev->adv_addr_type =3D own_addr_type;
-> +       /* Store in hdev for instance 0 */
-> +       hdev->adv_tx_power =3D rp.tx_power;
-> +
-> +       /* Update adv data as tx power is known now */
-> +       err =3D hci_set_ext_adv_data_sync(hdev, cp.handle);
->         if (err)
->                 return err;
->
-> --
-> 2.44.1
->
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
 
 
---=20
-Luiz Augusto von Dentz
+-- 
+Chuck Lever
