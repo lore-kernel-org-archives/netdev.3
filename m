@@ -1,72 +1,72 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45B52E92D0
-	for <netdev@vger.kernel.org>; Thu, 26 Jun 2025 14:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3582E764B
+	for <netdev@vger.kernel.org>; Thu, 26 Jun 2025 14:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750948139; cv=none; b=MpOgPmyQd2VyNB712al0R9JLzNGD4fbbsPGo8DOog6auMT5JLDFwGC7N37xy4up0a7DSLTZzPC8cPTTRyLUaoKq+3Bwd8dL/kiVlbuB687An2MWhkU8H3X4dRltY5TRxrrHaRhBsfy8GNtLda76H9n3zFb0O0dUHSv0Zwy6dH1U=
+	t=1750948273; cv=none; b=Pf38YP/Ug49AW2x2FBVMoCYtZpLmV9/DqD0lp855GXMsZYab7u1HUxdtHAQTiN/fACyJUcMvm7lTpdljvBs1s5LueYlpbwZna1RYYl+VfxlCQ3WLv3QG9BuyLm4VZBc8TppzUEMrm8fmB1TUsPVBITn05tZyT3zZ7GK0tISW3p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750948139; c=relaxed/simple;
-	bh=uRF120viZgAnv6HlRs+2IJ/iwPg8jCF5krylTcC4q20=;
+	s=arc-20240116; t=1750948273; c=relaxed/simple;
+	bh=nwVQ728QT5EuIWdIAijRXKl5sJq76dEIeMNft3nHbLY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=msBMhbYNQcTj+iLoAcmvAicigzdorrdtPdFRxDFER6KcJZI6b9LEVOl3l3MUhgjr5UZ4cH1cB0xi0nQUqng4Y908XTrpXPM06JEuq/mo+M//rsvlQ4E5uIfwVndU7L8ntkck4GfE8yB7dD+WscbvQTGmir88naKOrZJoflxBFmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=alpl+jqp; arc=none smtp.client-ip=209.85.160.175
+	 To:Cc:Content-Type; b=RBe89at/KvuoyoV6yVK9dme1iYX3gY9MhXEi4jl0XxC03WaxWQZ/AzB/CcpWzVdmdhfDd0HlqSIeLT9YozCorlZuLAtGsRPcXxS4dWWeKddUX4hDtF+RjXCbcFapaM4oGXUv/fnqBzezdYHzXe0jfGTqey/vSHgFXyKx6yeMhrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NtDMayuX; arc=none smtp.client-ip=209.85.160.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="alpl+jqp"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4a7a8c2b7b9so17348741cf.1
-        for <netdev@vger.kernel.org>; Thu, 26 Jun 2025 07:28:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NtDMayuX"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4a7f46f9bb6so11272231cf.3
+        for <netdev@vger.kernel.org>; Thu, 26 Jun 2025 07:31:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750948137; x=1751552937; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1750948271; x=1751553071; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uRF120viZgAnv6HlRs+2IJ/iwPg8jCF5krylTcC4q20=;
-        b=alpl+jqpvGMWvjN4P6skvLJ0XvVAokqkrwp6auVrNR133A1lYlhdaQcP8RqZViuYDu
-         X/Nbeb25YGni+YgeVSebYfUbdktL27SctUZ8UbbY+bz4Q0+AzdrtmwDoqMgTPs/RAyb3
-         2LYjJ8Q/UXyoV6WZzLvlP83LJG0yz0PhipkHdnVl2lZQXyF2pUHQqU10YqU51RUg6KO7
-         HzzQ8wuo8YSI8QNGC6DAvh4jqSb1lf+p13KI50yptviGES3kMm0fOX9hz28Z9GA6vbrA
-         +K9HyGLhatuDssKwtmvLDoF6cISLBr2yOtD5/v394AglcYwYuB4W8krk7lVhKBL8olem
-         yj7g==
+        bh=aTdcDRh13hQCfw+HnO8ec2lnP3IFKLOhT7+qZA51NlU=;
+        b=NtDMayuXcGQ286tK8MeP6vIqIMK5W1AytC/L11NEs30gp9+jXV9Bh1AnW79SpXHB19
+         xdpeH9x+fWfl6J9ERpyfdr0fBfbC5nAkFh+8l7XQHs9zyBncRdG50i4keSVuXTCOAW2o
+         EFi2LJmZghfselpppJGn1UWzEpy5lasAqIs5NkED8X2bgdnV4JJumd8N9fqXBUiHjNoD
+         Jsyl1r55SqFY+ZUMXghWiG01g+IY6e6qt/1LmWv1l1Tg3dnd0M/iM01TynSpsMAp/0xm
+         GVthVjthn7o2J3alPk5bdQdPyMAbAV0C4/YMr7KFApQuftmOBbDoIbhf+QkJcFHGDkXe
+         jNOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750948137; x=1751552937;
+        d=1e100.net; s=20230601; t=1750948271; x=1751553071;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uRF120viZgAnv6HlRs+2IJ/iwPg8jCF5krylTcC4q20=;
-        b=rrzelRRS+c/4FQ1vv/jT6Yoc27FRUDEWuJRRdRsDHRMfS5ALeq1GOQDu6nfX7dTSKH
-         uLSrgPulP0Xbz4tKghEDswtx35KjMJFYoU3z4hzqy8qjtY5szd6LLvLkUsVLUeg/LEj6
-         mNH4TBfpbfLyYFlbznZpRFbJa9z0YZLQfIRnRATXN89wlJ9zrwCoaDMCJUZVvdm53JUR
-         Kgd9uuWjQ22l803LC63rgog5B7lOgQEVpAro5Pm+SwQnFJ3bjyqZrqdQgrJtcd0uB9+H
-         pK/atBJk8cI/O/ZY8twby6i+zTlks/aGvQerAmoj+fDrRmjW6ZNwL3w6ZiJbN6s3rN4I
-         5c4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVBih1oIv/ShwKfEdPhwyDAsdnFCyIc5Dyx88IiljQJuXrAkKYY4oXQ4C7sjeQ6V76qICUItvA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywh73nW9ErHgucesHsC6R+o3IhjPlRZRP7sp7EWZ6aQNDYU2qtW
-	JS3YdIaZqhLcs7p5gfyjGkl6gYpRSObVYkX+9tqat7fM2rgsK2Sn2ZwChWj75XrpvHjxQlaSSDH
-	Ar57KKrtejagVnqAJeF+gM8g2vZ8J+FDwrb5Igzhq
-X-Gm-Gg: ASbGncubSVqrPdH88ENF2PRef8Wbhl/mSuuC7BANhH+bI/lLymPfq+2mZ+AeX8bV0uI
-	HsqK6hANpELydCDGsGelYxp6ldC3fjtXJ93swLO1Exb0vj9tYA/kTwDe2Q1hLcJP7IxvbKRp86a
-	5mWXXiAIvX/XSJuisncEAJ0Ud9680scoZXvBIdNCYdBkM=
-X-Google-Smtp-Source: AGHT+IGkgE8O6T5XUQ81AFBYyM9KSj7iEsBWDWQOgMLXY/DCtihb2N2D2qwIgsoPNCl4jcNjbp2+//KPUOhmpQelbBc=
-X-Received: by 2002:ac8:5d04:0:b0:4a4:3be3:6d65 with SMTP id
- d75a77b69052e-4a7c07cf200mr115329311cf.33.1750948136447; Thu, 26 Jun 2025
- 07:28:56 -0700 (PDT)
+        bh=aTdcDRh13hQCfw+HnO8ec2lnP3IFKLOhT7+qZA51NlU=;
+        b=vUwUyp5Wfez1QTOAkiAaELE0APFbbS9/MEUqLNuBohgX99Ey7pNJ7jU2YYz4NR7NCa
+         Fq9mbvYSiBYP0YByywmJ/qJswsb62b5idY8r4yut/U2fsGG/uSVVQ9u8R8ffC1SuPKwR
+         SdZiDr/Iu8zG3rtnxGzWSyp01wrH/0QU1Yt53CyiX+EXT2AyoQ2wK7rllRep2wZuK9Tt
+         oFqceJUFbcEaFq/7f/P5ZY3MUIZLBfJZZGGKEBuOIzvDttoD3NMb+oNxheNeiRJDzvbq
+         87gR4sVGAIPGi/yd+nYm/U25juauT2ohoFYUPRihC8udi+GRj/gN5DzMzeVfqxrrt8+d
+         fnkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUlvvNy31uLLxg6dA9mAGkXPvuMOOcfCcN1TLYDcoskWm9ppDLb7O03LEwYRtuKnKfKjMSIK2w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/TDCzSJYpY+u4ElX6YV3VUxbNvxzSUBmatbsxxT/v6Fsbh3gP
+	2UexFN90X7Qxw0j2Fy2cpXsLLiEuEFg1kpNwSF9V3r6DdkimclYivcPePzUvmTLQSzSKZ9AO+ns
+	60efnCHmSANDQJ/5V30KwFe2I+y6t/anV0XyMYWADPS5RNdVNbSUCX8MaPSk=
+X-Gm-Gg: ASbGncv6Erp6ScE8kgLG0PWykV0gcmV2vCWd73uIa18fNPvT2fxrgbBcmBVjhFHXs3k
+	rd7slasaLqMNwYdr8jQvl5lvIkxXY4EkAjKBKzwODnsecICUlh3a3pp/Vp5Ilw2rWIbdb+Kkie2
+	HFYbL9dlgar2hlDW6SJpN7UyARgxNAL342fNi1fPpCbmE=
+X-Google-Smtp-Source: AGHT+IGOwjpQDS3xUsavbVdj9EQ4+rdVS+tUUoAFj+FR3f4QomLNxBhpRAev6/PgXbHv3nXqYNaXQzR7sKpxbD7bF54=
+X-Received: by 2002:ac8:5a4b:0:b0:4a7:6ddf:f7d6 with SMTP id
+ d75a77b69052e-4a7c05f4aa4mr95903891cf.10.1750948271092; Thu, 26 Jun 2025
+ 07:31:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250624202616.526600-1-kuni1840@gmail.com> <20250624202616.526600-3-kuni1840@gmail.com>
-In-Reply-To: <20250624202616.526600-3-kuni1840@gmail.com>
+References: <20250624202616.526600-1-kuni1840@gmail.com> <20250624202616.526600-4-kuni1840@gmail.com>
+In-Reply-To: <20250624202616.526600-4-kuni1840@gmail.com>
 From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 26 Jun 2025 07:28:45 -0700
-X-Gm-Features: Ac12FXyR9lHkRQAZfS_Jl19AQ4GhHq6RC4VZP4PTX2g8oUH7OzZICKeK9RL1Mms
-Message-ID: <CANn89iKHeB2_+oBD0evw-xPXbQtdGtUiUmTQFsMPnFk9WQAAnQ@mail.gmail.com>
-Subject: Re: [PATCH v2 net-next 02/15] ipv6: mcast: Replace locking comments
- with lockdep annotations.
+Date: Thu, 26 Jun 2025 07:30:59 -0700
+X-Gm-Features: Ac12FXzJZonqmi6jy5qi3uqES-hVfv5qq-K7w67Otjj72T2KrMnSYzu3wmfy7IM
+Message-ID: <CANn89i+9rX722bpuQV+nNYU1O8fSXhQ_XndzCbD1whN_b_E84w@mail.gmail.com>
+Subject: Re: [PATCH v2 net-next 03/15] ipv6: mcast: Check inet6_dev->dead
+ under idev->mc_lock in __ipv6_dev_mc_inc().
 To: Kuniyuki Iwashima <kuni1840@gmail.com>
 Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
@@ -79,18 +79,38 @@ om> wrote:
 >
 > From: Kuniyuki Iwashima <kuniyu@google.com>
 >
-> Commit 63ed8de4be81 ("mld: add mc_lock for protecting per-interface
-> mld data") added the same comments regarding locking to many functions.
+> Since commit 63ed8de4be81 ("mld: add mc_lock for protecting
+> per-interface mld data"), every multicast resource is protected
+> by inet6_dev->mc_lock.
 >
-> Let's replace the comments with lockdep annotation, which is more helpful=
-.
+> RTNL is unnecessary in terms of protection but still needed for
+> synchronisation between addrconf_ifdown() and __ipv6_dev_mc_inc().
 >
-> Note that we just remove the comment for mld_clear_zeros() and
-> mld_send_cr(), where mc_dereference() is used in the entry of the
-> function.
+> Once we removed RTNL, there would be a race below, where we could
+> add a multicast address to a dead inet6_dev.
 >
-> While at it, a comment for __ipv6_sock_mc_join() is moved back to the
-> correct place.
+>   CPU1                            CPU2
+>   =3D=3D=3D=3D                            =3D=3D=3D=3D
+>   addrconf_ifdown()               __ipv6_dev_mc_inc()
+>                                     if (idev->dead) <-- false
+>     dead =3D true                       return -ENODEV;
+>     ipv6_mc_destroy_dev() / ipv6_mc_down()
+>       mutex_lock(&idev->mc_lock)
+>       ...
+>       mutex_unlock(&idev->mc_lock)
+>                                     mutex_lock(&idev->mc_lock)
+>                                     ...
+>                                     mutex_unlock(&idev->mc_lock)
+>
+> The race window can be easily closed by checking inet6_dev->dead
+> under inet6_dev->mc_lock in __ipv6_dev_mc_inc() as addrconf_ifdown()
+> will acquire it after marking inet6_dev dead.
+>
+> Let's check inet6_dev->dead under mc_lock in __ipv6_dev_mc_inc().
+>
+> Note that now __ipv6_dev_mc_inc() no longer depends on RTNL and
+> we can remove ASSERT_RTNL() there and the RTNL comment above
+> addrconf_join_solict().
 >
 > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 
