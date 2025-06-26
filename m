@@ -1,109 +1,73 @@
-Received: from leonov.paulk.fr (leonov.paulk.fr [185.233.101.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35EB425D1F1;
-	Thu, 26 Jun 2025 08:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.101.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7549725C712;
+	Thu, 26 Jun 2025 08:18:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750925727; cv=none; b=oyC9fkCpidF4C1omKUbZyhaav0yTHGD1C43o5P1gvUfFbhovNLVLvVF/BCqGtQq9LQZ/RNAgdQ49aZblE6heye5thq0UTKBRwyNNBEVIr+Dk2FxBIZsST+hxhp6Yt2lwqv+FlHS5xcAhzJGL1eKul1nk/Bx2TgHZsBdD4f3M8JE=
+	t=1750925884; cv=none; b=DV3ezoSX5RhW9jifqNF7xl9TPmKvo7Al3uxsiTLDHTgiFANBJ7ztflNUYggwyX1DqnAH9KgCwMKGqq5D/ihy2bW1JK92x2AYRlBoMkJlVzQGskEUP8XnUNaEEk39Jg/psxstU9YeLetiuAdOQeuiDhb/h35RfrE6B7YyK8X+Zkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750925727; c=relaxed/simple;
-	bh=PEZYGH+OI3VJSlIhgXQphteONYdoErA4jc7oo1FClP8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntr3aOC8/MC6d+bQ3dJY0Y6O89H76n7TkwmybZHCMpKL18VcnBZoCwaTpizp8Ho3U9+3piTadp3L2AGQvCVRBiCiglPvL3vUrOK6SZcYZfdfpZUlemOrje2s5teY2l9P88lkIPdQ8fbwkdIGK/HCRcCe2cQoVIf/LpbTNij9f20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io; spf=pass smtp.mailfrom=sys-base.io; arc=none smtp.client-ip=185.233.101.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sys-base.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sys-base.io
-Received: from laika.paulk.fr (12.234.24.109.rev.sfr.net [109.24.234.12])
-	by leonov.paulk.fr (Postfix) with ESMTPS id 5C6011F0004B;
-	Thu, 26 Jun 2025 08:15:24 +0000 (UTC)
-Received: by laika.paulk.fr (Postfix, from userid 65534)
-	id A5A52AC7F8D; Thu, 26 Jun 2025 08:15:23 +0000 (UTC)
-X-Spam-Level: *
-Received: from localhost.localdomain (unknown [192.168.1.65])
-	by laika.paulk.fr (Postfix) with ESMTP id 6F66CAC7F7C;
-	Thu, 26 Jun 2025 08:09:42 +0000 (UTC)
-From: Paul Kocialkowski <paulk@sys-base.io>
-To: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Paul Kocialkowski <paulk@sys-base.io>
-Subject: [PATCH 5/5] arm64: dts: allwinner: a133-liontron-h-a133l: Add Ethernet support
-Date: Thu, 26 Jun 2025 10:09:23 +0200
-Message-ID: <20250626080923.632789-6-paulk@sys-base.io>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250626080923.632789-1-paulk@sys-base.io>
-References: <20250626080923.632789-1-paulk@sys-base.io>
+	s=arc-20240116; t=1750925884; c=relaxed/simple;
+	bh=nw32RVdX+sPxj5/rkp3fDWbgLPASW4ZNwW2EgR81hY4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uwGi8u9Bnl5YtXCe4mLGci5ADeJahhAIXVDIARyRCIdc9yynXX9X2phujVY08uCRfAWClNe7XFPFc+NLqj57CzSxKc0i13qvnD19NzHG9Mzf4Bhklzdi3lJ41XeKOGuMiqgbPlKeoeUvhpTPXAzXxI/qo4957z6n/bOBbhZjLWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QjFvrUMT; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QjFvrUMT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C91DC4CEEB;
+	Thu, 26 Jun 2025 08:18:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750925884;
+	bh=nw32RVdX+sPxj5/rkp3fDWbgLPASW4ZNwW2EgR81hY4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QjFvrUMTZeqVFVWmPj6l/dNsJiepWMU78PBkVm726SNdtI5hGDmSJCu4+6RDkhLLn
+	 qqmfmOMY5rHyIZBG9WcKcjp5QlMB4gG5YNg7EV2HqA/kxAkvKJqnPhbZc3b1m2LHEY
+	 MU2F4I82+9A02ABknSba6WNFRG67ZpSwJ/aE0pzPxzCLDSCWe7tNnGAmXI0wDYTYHT
+	 bzRjJOEvsETaGkZTq/YH/rbSnRYoP1/U3BKem0TveGfDFuBV4QsFRMtxsOOz3wvEaz
+	 tbtD8siEMyDIS6Pwn/pEGZ3Y9sDvPUSyTdgXGqRsR8d3aZC0Mx/S1LtHgYWL80LvYp
+	 CIy98Nay2IitA==
+Date: Thu, 26 Jun 2025 09:17:59 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	bpf@vger.kernel.org, gustavold@gmail.com,
+	Stanislav Fomichev <sdf@fomichev.me>
+Subject: Re: [PATCH net-next v2 0/4] selftest: net: Add selftest for netpoll
+Message-ID: <20250626081759.GS1562@horms.kernel.org>
+References: <20250625-netpoll_test-v2-0-47d27775222c@debian.org>
+ <20250625184346.GM1562@horms.kernel.org>
+ <20250625144604.3f60d09d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250625144604.3f60d09d@kernel.org>
 
-The Liontron H-A133L board features an Ethernet controller with a
-JLSemi JL1101 PHY. Its reset pin is tied to the PH12 GPIO.
+On Wed, Jun 25, 2025 at 02:46:04PM -0700, Jakub Kicinski wrote:
+> On Wed, 25 Jun 2025 19:43:46 +0100 Simon Horman wrote:
+> > # # Exception| Traceback (most recent call last):
+> > # # Exception|   File "/home/virtme/testing-17/tools/testing/selftests/net/lib/py/ksft.py", line 243, in ksft_run
+> > # # Exception|     case(*args)
+> > # # Exception|   File "/home/virtme/testing-17/tools/testing/selftests/drivers/net/./netpoll_basic.py", line 308, in test_netpoll
+> > # # Exception|     do_netpoll_flush_monitored(cfg, netdevnl, ifname, target_name)
+> > # # Exception|   File "/home/virtme/testing-17/tools/testing/selftests/drivers/net/./netpoll_basic.py", line 243, in do_netpoll_flush_monitored
+> > # # Exception|     do_netpoll_flush(cfg, netdevnl, ifname, target_name)
+> > # # Exception|   File "/home/virtme/testing-17/tools/testing/selftests/drivers/net/./netpoll_basic.py", line 278, in do_netpoll_flush
+> > # # Exception|     if bpftrace_any_hit(join=False):
+> > # # Exception|   File "/home/virtme/testing-17/tools/testing/selftests/drivers/net/./netpoll_basic.py", line 230, in bpftrace_any_hit
+> > # # Exception|     raise KsftFailEx(f"bpftrace failed to run!?: {MAPS}")
+> > # # Exception| net.lib.py.ksft.KsftFailEx: bpftrace failed to run!?: {}
+> 
+> Looks like I haven't added bpftrace to the image before.
+> Fixed now.
 
-Note that the reset pin must be handled as a bus-wide reset GPIO in
-order to let the MDIO core properly reset it before trying to read
-its identification registers. There's no other device on the MDIO bus.
-
-The datasheet of the PHY mentions that the reset signal must be held
-for 1 ms to take effect. Make it 2 ms (and the same for post-delay) to
-be on the safe side without wasting too much time during boot.
-
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
----
- .../sun50i-a133-liontron-h-a133l.dts          | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a133-liontron-h-a133l.dts b/arch/arm64/boot/dts/allwinner/sun50i-a133-liontron-h-a133l.dts
-index fe77178d3e33..04dd7f781894 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-a133-liontron-h-a133l.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-a133-liontron-h-a133l.dts
-@@ -65,6 +65,25 @@ &ehci1 {
- 	status = "okay";
- };
- 
-+&emac {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&rmii_pins>;
-+	phy-handle = <&rmii_phy>;
-+	phy-mode = "rmii";
-+	status = "okay";
-+};
-+
-+&mdio {
-+	reset-gpios = <&pio 7 12 GPIO_ACTIVE_LOW>; /* PH12 */
-+	reset-delay-us = <2000>;
-+	reset-post-delay-us = <2000>;
-+
-+	rmii_phy: ethernet-phy@1 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <1>;
-+	};
-+};
-+
- &mmc0 {
- 	vmmc-supply = <&reg_dcdc1>;
- 	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>; /* PF6 */
--- 
-2.49.0
-
+Thanks, it looks good now.
