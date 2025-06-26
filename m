@@ -1,90 +1,104 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11F6218AB0
-	for <netdev@vger.kernel.org>; Thu, 26 Jun 2025 08:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB21290BCD;
+	Thu, 26 Jun 2025 08:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750926726; cv=none; b=doTMwmETUz1z4sYcBvfrvvUpWw1qHYcypiqN99CZg2aT3TAeyxQPaP4zlDSMo+7S+iQBo0XTc04PZuQ/QSQRb4uz27EgvORdqwzdka3r+UW2cJBF0lTZWpJtRaQVG3lmlJf57cLRwcW5WNUPSdsDSIfBCzijQks0jyTQ38kUeiA=
+	t=1750926857; cv=none; b=O8n6SEvvzj0J8huO1SHa0SOLgYCzGQJyHhtlGOcHQBN7TRIl0wSh59UQBXdebgE4nde6hyKTvwVYyQSFtsDq+B8FNUoRPtmU6E5mP7JxZZDOIzG4txoKjVZ4FohS9mtl4P6ZAby4FuGGtluoZH4awZYiyHS2iZXBjoj919UgM90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750926726; c=relaxed/simple;
-	bh=uP/rFDx8e9z3sNXc4VRTDpBmgU3yeg67Y/han+fosNQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FhkU8/31LEUV2rROH6Q3ELz0oRXviSvTKjmrREhwtYubRrttUrXIKgTtSegaKSa4kEMrkQKlw4vctloTNb99wccWfogsNvpwV+/t9C6yCBIpan3WQ/1OyJdfAXGRBv/h+dSpT696JMTYhPp3pVp+PbOu5j2WbyPwHlL1kkPyTFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1uUi1Y-0000AH-3U; Thu, 26 Jun 2025 10:32:00 +0200
-Message-ID: <f2647407-3de0-4afd-bc79-5b58e13f10aa@pengutronix.de>
-Date: Thu, 26 Jun 2025 10:33:51 +0200
+	s=arc-20240116; t=1750926857; c=relaxed/simple;
+	bh=fhLUUYVAyb1uDBHiiFLUBKdkZ0mPXVVyAvNzmr4SGO0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=R5XRjaBF7trPAyLlS+brv56uLA7QLIEYbi2nHPV9uWUwpTlV8CRw+T0w+xQmVOLoD0ZuWsW/i+vkof6AuI2Vblni4pH7lcvJRXw5oafqybAAIxBEc1kvcFtHNGOjm6InCZcM/ymYtfMcgC7KJxyxlHc01wncP01tlMJ+5aUGaO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=up9is5AR; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="up9is5AR"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1uUi3X-00GcBO-Oq; Thu, 26 Jun 2025 10:34:03 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=k/l0z57m3ZEaN2DhDCC8Xr3psOdIVksIU8zRLih/bxY=; b=up9is5ARxksILixaAI6Lh3hlTr
+	wbDXGEfPUcS0QfVyR+qXwyD7LrDfZD6gC4sAmbL4cF95uwGIQaN4s65AXkrfisnhZhFw98qIMCLCJ
+	HPajsm3Hh8NdZLPRZlsSvbEe2MnKA+Prgla4oz1LxUbPDz54OEEcbnQkH79ZkUiOcRjhnqasdeZSb
+	ZCWPCR7sAUseSSUCQfhYMmm2zkDK3g6uA1h6upzsBeOrb/QuKFqRX1RQFeOmU7Ts0UcHvTqUWI8JJ
+	agxBtXvcc6PNMbZWVgRzCTXGz5XC5AWlL4dm3+6k6yZYAbl0BwWG7I8ixLNgNBTbYXUHwVigLvdKi
+	n999ofUA==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1uUi3W-0004pt-2f; Thu, 26 Jun 2025 10:34:02 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1uUi3O-009Fh5-9n; Thu, 26 Jun 2025 10:33:54 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Thu, 26 Jun 2025 10:33:37 +0200
+Subject: [PATCH net-next v2 4/9] af_unix: Drop
+ unix_stream_read_state::splice_flags
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: fec: allow disable coalescing
-To: Andrew Lunn <andrew@lunn.ch>, Wei Fang <wei.fang@nxp.com>
-Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20250625-fec_deactivate_coalescing-v1-1-57a1e41a45d3@pengutronix.de>
- <PAXPR04MB8510C17E1980D456FD9F094F887AA@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <d60808b3-eb20-40ab-b952-d9cd8d8d68a7@lunn.ch>
-Content-Language: en-US
-From: Jonas Rebmann <jre@pengutronix.de>
-In-Reply-To: <d60808b3-eb20-40ab-b952-d9cd8d8d68a7@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: jre@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Message-Id: <20250626-splice-drop-unused-v2-4-3268fac1af89@rbox.co>
+References: <20250626-splice-drop-unused-v2-0-3268fac1af89@rbox.co>
+In-Reply-To: <20250626-splice-drop-unused-v2-0-3268fac1af89@rbox.co>
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+ David Ahern <dsahern@kernel.org>, Boris Pismenny <borisp@nvidia.com>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Ayush Sawal <ayush.sawal@chelsio.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Wenjia Zhang <wenjia@linux.ibm.com>, Jan Karcher <jaka@linux.ibm.com>, 
+ "D. Wythe" <alibuda@linux.alibaba.com>, Tony Lu <tonylu@linux.alibaba.com>, 
+ Wen Gu <guwen@linux.alibaba.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org, 
+ Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.14.2
 
-Hi Andrew,
+Since skb_splice_bits() does not accept the @flags argument anymore,
+struct's field became unused. Remove it.
 
-On 2025-06-26 10:12, Andrew Lunn wrote:
-> On Thu, Jun 26, 2025 at 02:36:37AM +0000, Wei Fang wrote:
->>>
->>> -       /* Must be greater than zero to avoid unpredictable behavior */
->>> -       if (!fep->rx_time_itr || !fep->rx_pkts_itr ||
->>> -           !fep->tx_time_itr || !fep->tx_pkts_itr)
->>> -               return;
-> 
-> Hi Wei
-> 
-> When i see a comment like this being removed, i wounder if there is
-> any danger of side effects? Do you know what is being done here is
-> actually safe, for all the different versions of the FEC which support
-> coalescence?
+No functional change indented.
 
-For reference, this comment is taken in plain from section 11.6.4.1.16.3
-in the i.MX 8M Plus Applications Processor Reference Manual (and is the
-same for the 6UL).
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ net/unix/af_unix.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-I was also worried about this so I made sure that in any case where
-either of those is zero, the coalescing enable bit (FEC_ITR_EN) is
-explicitly disabled.
-
-fec_enet_itr_coal_set is only ever called if FEC_QUIRK_HAS_COALESCE is
-set and for those models, we expect disabling coalescing via FEC_ITR_EN
--- and consequently also setting the parameters to zero -- to be
-unproblematic. This is also the reset default.
-
-Regards,
-Jonas
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 235319a045a1238cf27791dfefa9e61b4a593551..1e3a4db1a96a57c84c199e30c164f66409b04be4 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2674,7 +2674,6 @@ struct unix_stream_read_state {
+ 	struct pipe_inode_info *pipe;
+ 	size_t size;
+ 	int flags;
+-	unsigned int splice_flags;
+ };
+ 
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+@@ -3082,7 +3081,6 @@ static ssize_t unix_stream_splice_read(struct socket *sock,  loff_t *ppos,
+ 		.socket = sock,
+ 		.pipe = pipe,
+ 		.size = size,
+-		.splice_flags = flags,
+ 	};
+ 
+ 	if (unlikely(*ppos))
 
 -- 
-Pengutronix e.K.                           | Jonas Rebmann               |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+2.49.0
+
