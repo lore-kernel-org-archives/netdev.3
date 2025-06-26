@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8612882AF;
-	Thu, 26 Jun 2025 08:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25272882AF;
+	Thu, 26 Jun 2025 08:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750925630; cv=none; b=iWpKEUKAjnzPGjRCaGjkazYMULWneUjEzdfQRlg+csaX/rZjg3IgXdMWc3DTbw42WVdaoDq0qJeYI8M0fxkKBkwikiVQoBBpKMr0YOJ5HM/Ik77jhP4d2u3vxPJQltgXDtueWT8YjAr72IkF8Gp9jPxYbC4lvOjQnBvGk63s18g=
+	t=1750925633; cv=none; b=JT2n1PlRzEjwJj4ohFhvCM6xqmhL3zF1IaQoVjxf0umdjXM4aNsQaytMdwA/tqhluwy6E/jU73AcW9cuCvY1P5vVh05ZD2b95+vDIdF+gfh2U2Q0WqM4TQS6PdVRkM9NmCOAdS9xUseuuNiN+b7msx4aLWu22JO2xZ/synLvaBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750925630; c=relaxed/simple;
-	bh=Hv3gLw50JLGG5g7ccl776oKGKqF7lxHBB7tVJrn/eaQ=;
+	s=arc-20240116; t=1750925633; c=relaxed/simple;
+	bh=W4oDpda6kbCRnn0ODm8ONN7mKwlVwM/eB17fbg3mJL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXr8LeH74qh37KagBwsIPFf/JDVbYCWXWf6aIvt3cu4QyekOCrKhFhqQoQ3Ef2bOvNwX/oAwSTExCQjve+y93MQtjX+ys/Pfa9iYi3yNpneBdrOvKPYD5YPj41HoGMrykpfdrwFMO1jW2yZ4eYUv65wfA2C0+E62SVYWxd063eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bni07tGi; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=CcG553tPn2exMFN5sGRyfkKHyXcx9GiCuBc4O5PeZq7ueJcPrYJwsti7wrrzuURWfEyr6FihFBc5yUpnuK4IMvw+zOAjDg2qfGn9GTy89OaIoXk/g/MCEOW40Wg3m7LoQKgoetagfITYGUmeCWRgFiFP1jCffjI06qj6e8K/Ju0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaYdgaWi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bni07tGi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4443C4CEEE;
-	Thu, 26 Jun 2025 08:13:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaYdgaWi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA78C4CEEB;
+	Thu, 26 Jun 2025 08:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750925629;
-	bh=Hv3gLw50JLGG5g7ccl776oKGKqF7lxHBB7tVJrn/eaQ=;
+	s=k20201202; t=1750925633;
+	bh=W4oDpda6kbCRnn0ODm8ONN7mKwlVwM/eB17fbg3mJL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bni07tGieiYEANMpXUwwdQnkzn9JLi5x0RhWIGJxzWavigd369YO/S3o3X7elXh1+
-	 RK+fEIXqnvIK5tebNEdB7NNWsF8ywjWHe3iRj3YNdjp4mq9Z9dD+HXC6Mtk3IXUlXk
-	 N17fkSmmFpd4quoFCtXYWxttyMXsQIRIpy2agbz9wzqI4aYvL0gwNfR886+gs8FeN4
-	 dMTFjnuBpkbKSa8k2LXhMjQ/HXbuY+pttk9XGLKhpWMox3bsDO1TcK+CFPnvQW4uOw
-	 As89ervv3Kn6Fiiox4RdJ+7OYo9Q9wMNy/N0jYy+iAvZ+RttgDyA+M6AQud2n4SZKL
-	 kt/fPogfr0iRA==
+	b=CaYdgaWik9bFdu0z+vx0dF0aqIOWDHG1ysP+p8jo2Sw9Hh3E+DslnNhfAs+8NZRu/
+	 vV7rKGEufR24kXq4YyObjOgIkOrD6BMRKpEra+O3aATudLLX6wUZ51Nho/pIdMStTR
+	 WP8Y34JAyFTyjQBk+B71V+V7ec508Py7xB8VssSMxhI6y6Oynr2KU5ksCwWpQQQdxm
+	 fxroUjbQRtANPNDhBuwtNqF47caJmgrsGWC/uK2y6GxIYPiaqIT/yPmEqA850zCLX1
+	 D/5QzsdJGFrYpKK0UvjC/2MmVRK5D13dWcIqRQU02z3FnNBu+TJGC58TwfnWDzVl4d
+	 pQfRDgzRSVZaQ==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1uUhjT-00000004sva-1BWA;
+	id 1uUhjT-00000004svT-0va0;
 	Thu, 26 Jun 2025 10:13:19 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
@@ -56,9 +56,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	netdev@vger.kernel.org,
 	peterz@infradead.org,
 	stern@rowland.harvard.edu
-Subject: [PATCH v8 03/13] docs: netlink: index.rst: add a netlink index file
-Date: Thu, 26 Jun 2025 10:12:59 +0200
-Message-ID: <ac5ac2de57661b6f993f44a9b97f2e3921804f3b.1750925410.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v8 01/13] docs: netlink: netlink-raw.rst: use :ref: instead of :doc:
+Date: Thu, 26 Jun 2025 10:12:57 +0200
+Message-ID: <30cc47a21b1377c2ec59c6c45b5604afcd8ff5f9.1750925410.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1750925410.git.mchehab+huawei@kernel.org>
 References: <cover.1750925410.git.mchehab+huawei@kernel.org>
@@ -71,35 +71,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Instead of generating the index file, use glob to automatically
-include all data from yaml.
+Currently, rt documents are referred with:
+
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`rt-link<../../networking/netlink_spec/rt-link>`
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
+
+Having :doc: references with relative paths doesn't always work,
+as it may have troubles when O= is used. Also that's hard to
+maintain, and may break if we change the way rst files are
+generated from yaml. Better to use instead a reference for
+the netlink family.
+
+So, replace them by Sphinx cross-reference tag that are
+created by ynl_gen_rst.py.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
 ---
- Documentation/netlink/specs/index.rst | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
- create mode 100644 Documentation/netlink/specs/index.rst
+ Documentation/userspace-api/netlink/netlink-raw.rst | 6 +++---
+ tools/net/ynl/pyynl/ynl_gen_rst.py                  | 5 +++--
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/netlink/specs/index.rst b/Documentation/netlink/specs/index.rst
-new file mode 100644
-index 000000000000..7f7cf4a096f2
---- /dev/null
-+++ b/Documentation/netlink/specs/index.rst
-@@ -0,0 +1,13 @@
-+.. SPDX-License-Identifier: GPL-2.0
+diff --git a/Documentation/userspace-api/netlink/netlink-raw.rst b/Documentation/userspace-api/netlink/netlink-raw.rst
+index 31fc91020eb3..aae296c170c5 100644
+--- a/Documentation/userspace-api/netlink/netlink-raw.rst
++++ b/Documentation/userspace-api/netlink/netlink-raw.rst
+@@ -62,8 +62,8 @@ Sub-messages
+ ------------
+ 
+ Several raw netlink families such as
+-:doc:`rt-link<../../networking/netlink_spec/rt-link>` and
+-:doc:`tc<../../networking/netlink_spec/tc>` use attribute nesting as an
++:ref:`rt-link<netlink-rt-link>` and
++:ref:`tc<netlink-tc>` use attribute nesting as an
+ abstraction to carry module specific information.
+ 
+ Conceptually it looks as follows::
+@@ -162,7 +162,7 @@ then this is an error.
+ Nested struct definitions
+ -------------------------
+ 
+-Many raw netlink families such as :doc:`tc<../../networking/netlink_spec/tc>`
++Many raw netlink families such as :ref:`tc<netlink-tc>`
+ make use of nested struct definitions. The ``netlink-raw`` schema makes it
+ possible to embed a struct within a struct definition using the ``struct``
+ property. For example, the following struct definition embeds the
+diff --git a/tools/net/ynl/pyynl/ynl_gen_rst.py b/tools/net/ynl/pyynl/ynl_gen_rst.py
+index 0cb6348e28d3..7bfb8ceeeefc 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_rst.py
++++ b/tools/net/ynl/pyynl/ynl_gen_rst.py
+@@ -314,10 +314,11 @@ def parse_yaml(obj: Dict[str, Any]) -> str:
+ 
+     # Main header
+ 
+-    lines.append(rst_header())
+-
+     family = obj['name']
+ 
++    lines.append(rst_header())
++    lines.append(rst_label("netlink-" + family))
 +
-+.. _specs:
-+
-+=============================
-+Netlink Family Specifications
-+=============================
-+
-+.. toctree::
-+   :maxdepth: 1
-+   :glob:
-+
-+   *
+     title = f"Family ``{family}`` netlink specification"
+     lines.append(rst_title(title))
+     lines.append(rst_paragraph(".. contents:: :depth: 3\n"))
 -- 
 2.49.0
 
