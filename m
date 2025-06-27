@@ -1,97 +1,150 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0E423DE
-	for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 03:11:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC87199FD0;
+	Fri, 27 Jun 2025 03:54:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750993897; cv=none; b=p8duu+4h7YDlIV8h0D4DGnfTrBz2nuQLqkuGXAjaLhmK6xddBKcIFCZjah5QCb3q+fm8irgcRAbLk8/gDjbi8jcUpBEMSzmHXCFKHtA0lveKmnEKHX6PthFEEY5MzfsvcCA6GCpPOfMWS/aVnj/Ia44c9i3L+YYmeOmUBcKw4Ek=
+	t=1750996459; cv=none; b=uff1RfafbibSnGTdx4xECYW+CMWsk4zFYrpIwRKPhqU5naBITkyiyBmzCF06ellzSiYcXRav+ueVafGvgRPuF79o13jhse/XbDrRK0187Cw97CVZdB2TtOmQEN9QVLHdrBaYwSBOXiK5ckIvTx6T4Hlio42EpQQVot37rimnJOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750993897; c=relaxed/simple;
-	bh=nlcPshRdbToTPxImylc0Vmo/MTHnwfaG8pY4OWRlsic=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=pS7KxEfyiKfK+jNIWxasiEPZvExBwa47ddB8b39NLd2YUbDsZ6B+SWkBy05KB0ToQgiAX/NkfJxlboxbcfVoZYomlgdA9pXDCm1vjVe54RgnWGzTlVA7ohOUzIBut7dCw+eeglCXylOC2JtzdvKJbiLFlOK+mNZT2SpysmH1mnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=K/bJIxMO; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="K/bJIxMO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Content-Type:Mime-Version:Subject:From:Date:
-	Message-Id:To; bh=ZsnFS/v+FPgoY3ZK/ydQfXMRZIbNVbcRWC7h/xHkL4c=;
-	b=K/bJIxMOzkvc7X9CbK4sCe14VAXU/gTpk9enfaL/hWQ1jcB1MxHDkeTUEBo3QF
-	oRwXRcnFrWevsebEpnTCymw36mMJ7ZnZsOfPTYpIlkgWcLcEoOoTKapGp1CTjxQN
-	tow7o5fc7p1ECJPtSqL9GYmNamuyoGGqorOu/jvlRDMI4=
-Received: from smtpclient.apple (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgA39BSeC15o43VVAQ--.40850S3;
-	Fri, 27 Jun 2025 11:10:23 +0800 (CST)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1750996459; c=relaxed/simple;
+	bh=1wSshET0D4HzFtPkni4hcnJJMmDOUANJjtoKlvShps8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EYCkzhbHTFD1oNEC1pLBxXS9qJVppLycdCOiYdIwB9y2FdYfLyVHPL9X0ZODFmBda+/gv0VhBnlgM31r7fFPKNppdt7Q8IcYqGpvWVVAOi3m+C8WlCDxP7mYwtEL7NY3kmsMjrTPF7NZoHIm+Ym4pPuSG9fTDrvRpDLBRCSt23M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-669ff7000002311f-b5-685e15e2381c
+Date: Fri, 27 Jun 2025 12:54:05 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: willy@infradead.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	kernel_team@skhynix.com, almasrymina@google.com,
+	ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org,
+	akpm@linux-foundation.org, davem@davemloft.net,
+	john.fastabend@gmail.com, andrew+netdev@lunn.ch,
+	asml.silence@gmail.com, toke@redhat.com, tariqt@nvidia.com,
+	edumazet@google.com, pabeni@redhat.com, saeedm@nvidia.com,
+	leon@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, horms@kernel.org,
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+	vishal.moola@gmail.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	jackmanb@google.com
+Subject: Re: [PATCH net-next v7 1/7] netmem: introduce struct netmem_desc
+ mirroring struct page
+Message-ID: <20250627035405.GA4276@system.software.com>
+References: <20250625043350.7939-1-byungchul@sk.com>
+ <20250625043350.7939-2-byungchul@sk.com>
+ <20250626174904.4a6125c9@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: net: openvswitch: incorrect usage in ovs_meters_exit?
-From: lihuawei <lihuawei_zzu@163.com>
-In-Reply-To: <08200104-eda5-47f5-9538-b0be2b7fe1fc@ovn.org>
-Date: Fri, 27 Jun 2025 11:10:12 +0800
-Cc: davem@davemloft.net,
- netdev@vger.kernel.org,
- edumazet@google.com,
- pabeni@redhat.com,
- kuba@kernel.org,
- xiangxia.m.yue@gmail.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <71FB508D-5829-4237-9D8D-727235934971@163.com>
-References: <6B26C96C-1941-4AFF-AEAC-6C7E36CDFF02@163.com>
- <08200104-eda5-47f5-9538-b0be2b7fe1fc@ovn.org>
-To: Ilya Maximets <i.maximets@ovn.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-CM-TRANSID:PCgvCgA39BSeC15o43VVAQ--.40850S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tw45ZF17WFy5XF47Gw4UJwb_yoW8GF1fpr
-	ZYga47Krn7ArW7KrnF9w4xZryYvw4fGFy3ur1DC398Cwsxt34xWFW2yrn8GFWYkrWkJr4j
-	93y8twnxua1DtaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UvkskUUUUU=
-X-CM-SenderInfo: 5olk3tpzhls6l2x6il2tof0z/xtbBgBZ5vGheCxwPyQAAs0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250626174904.4a6125c9@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHec85O+e4Wh3nrFf9EsuohDJD6iG6GAQdiiiQIhLTUzu41TSZ
+	lzRITKWLqd1Ec7OYRrmWNZvhVkytqVmYFZaxbmrrQpktLBuppW2K5Lcf/+f//Hg+PCwp10tC
+	WU1KuqhLEbRKWkpJv82sXuIO3q1e1mpaBJWWWhqu/c6Cmj67BCrNDQiGhl8z8LO1nYZLVV4S
+	Kp8UUPDLMkLCx/tuBq5Zt0DvlU8UOI7ZSHCfekBDccEoCY3DHgby7CYCnjaUSKB05DIJttw+
+	Bp7dqaShp3ZcAp+cxRQ81F+loLckBu4b54C3YwBBq8VGgLfoAg3nuow0vC/oRdDV4qbAcKQE
+	gaXJJYHR3z6Hoa2HiQnnWwa+k/ytqy8J/rb+LcMbrRl8vSmCL3R1kbzVfILmrT/OMvybFw6a
+	f3B+lOJv238SfHG+h+YHP76i+O9N3TRvudVN8Y+Mrcy2wF3S1SpRq8kUdZFrE6XqzrHU1DJF
+	lvP1YyIXDc8uRAEs5qKxNb9TMsV/y0YYP1PcAjxoez/BNLcQu1zDpJ8VXDguqK+gCpGUJbkq
+	GhvLHROlIE7ADvcQ4WcZtxL3egaRvyTnjiLc/vcPPTkIxA8rPlB+JrkI7Br74ltgfRyGa8ZY
+	fxzAReGeurYJTzA3H99taCf8HszZWVxuyCcmLw3B90wu6jTi9NO0+mla/X+tEZFmJNekZCYL
+	Gm30UnV2iiZr6d4DyVbk+5grh//E2dGPp7FOxLFIOVMGkfFquUTITMtOdiLMkkqFTPbCF8lU
+	QvYhUXcgQZehFdOcKIyllHNly70HVXIuSUgX94tiqqibmhJsQGguqh5fMn55lmFASLz5anvF
+	RvWOFfuDjElNbS2bPMkrYj6c6Xt+z1bSfD3rRkh6R96Q1/A1pCbOGj508eChvC/xOfnanFX9
+	/SfvzD5uXluxWfHZY1l8rK/fZG5+1xwl3VnduHVfUUMd+UaVvj7uVFFsRlhdqWJeQtjGPd9m
+	sGvWBedoNjiVVJpaiIogdWnCP+YTlCAtAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG+59zds7ZaHRasw5WRLMLCKVC0QtGaRT9CbKgD4WUeWgHN9Jp
+	m5cZBGpWJGllUTqVJtbyFqspOmtKTE1NummXleVkphSIZl5wOq3NiPr243mf3/PpZUmFjwpm
+	tbpUUa8TElW0jJLFRJ7f4gmK04TPTy2HUmstDTUzRrg/YJdAaXUDgklvHwMTbR00VJRPk1D6
+	KpeCKessCUPPPAzU2A6C2zJMgeNSIwmeq5005OfOkdDsHWUgx15JQGtZlwReNxRI4ObsPRIa
+	swYY6H1cSkN/7S8JDDvzKegyVVHgLoiCZ+aVMN09gqDN2kjA9JUyGm70mGkYzHUj6Gn1UFCS
+	XYDA2uKSwNyMf6OkvZ+J2ohbR8ZIXF/1kcBNpi8MNtvScF1lKM5z9ZDYVn2ZxrafhQz+/N5B
+	486iOQo32ScInH9+lMbjQ58oPNbyjsYV334Q2Fr/jjqsiJXtVIuJ2nRRH7YrXqZ5sZCScktp
+	dPa9JLKQd1kekrI8t42fvzXLBJjiNvLjjYOLTHObeZfLSwZYyW3gc+uKqTwkY0munObNtx2L
+	pRWcwDs8k0SA5dwO3j06jgIlBXcR8R3zPvrPYTnfVfyVCjDJhfKuhe9+gfXzav7+AhuIpVwE
+	3/+wfXEniAvhnzZ0ENeQ3PSfbfrPNv2zzYisRkqtLj1J0CZu32o4rcnUaY1bTyUn2ZD/Jyzn
+	fNftaLJ3vxNxLFItlUPYCY1CIqQbMpOciGdJlVIuf++P5Goh86yoTz6pT0sUDU60mqVUq+QH
+	jorxCi5BSBVPi2KKqP97JVhpcBb6kO5u3hO3e2/LnoLI4dCcwyOFwZbxyDMZIeua7Z2HXsbi
+	48mOu1NrpSHMvti3j2a6pc0Pomq8tRHdRypLBt8svMkr0s2uWXKkzfVELxo3FR6LUSh3L2GU
+	FkF7Y29/X/QFaVjCnO/j83D1g+hstTmDbcLrM3y8uvfmHUtyNFW1RkUZNEJEKKk3CL8BPOu0
+	Jg8DAAA=
+X-CFilter-Loop: Reflected
 
-Okay=EF=BC=8CI got it, thank you Ilya Maximets.
+On Thu, Jun 26, 2025 at 05:49:04PM -0700, Jakub Kicinski wrote:
+> On Wed, 25 Jun 2025 13:33:44 +0900 Byungchul Park wrote:
+> > +/* A memory descriptor representing abstract networking I/O vectors,
+> > + * generally for non-pages memory that doesn't have its corresponding
+> > + * struct page and needs to be explicitly allocated through slab.
+> 
+> I still don't get what your final object set is going to be.
 
-> 2025=E5=B9=B46=E6=9C=8827=E6=97=A5 01:16=EF=BC=8CIlya Maximets =
-<i.maximets@ovn.org> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On 6/26/25 2:59 PM, lihuawei wrote:
->> hi, guys,
->>=20
->> 	Recently, I am working on ovs meter.c, after reading the code, I =
-have two questions about the ovs_meters_exit function as bellow :
->>=20
->> void ovs_meters_exit(struct datapath *dp)
->> {
->> 	struct dp_meter_table *tbl =3D &dp->meter_tbl;
->> 	struct dp_meter_instance *ti =3D rcu_dereference_raw(tbl->ti);
->> 	int i;
->>=20
->> 	for (i =3D 0; i < ti->n_meters; i++)
->> 		ovs_meter_free(rcu_dereference_raw(ti->dp_meters[i]));
->>=20
->> 	dp_meter_instance_free(ti);
->> }
->>=20
->>    1. why use rcu_dereference_raw here and not rcu_dereference_ovsl?
->>    2. why use dp_meter_instance_free here and not =
-dp_meter_instance_free_rcu?
->=20
-> Hi.  AFAICT, the ovs_meters_exit() is called only from two places:
->=20
-> 1. As a cleanup for the datapath that we failed to fully allocate.
-> 2. =46rom the RCU-postponed destroy_dp_rcu() when the datapath is
->   being destroyed.
->=20
-> In both cases there should be no users of this datapath at the time
-> this function is called, so it doesn't make a lot of sense to hold
-> the lock or postpone the destruction of these internal fields again.
-> Half of the datapath structure is already freed here.  So, unless
-> I'm missing something, we can just free the meters directly as well.
->=20
-> Best regards, Ilya Maximets.
+The ultimate goal is:
 
+   Remove the pp fields from struct page
+
+The second important goal is:
+
+   Introduce a network pp descriptor, netmem_desc
+
+While working on these two goals, I added some extra patches too, to
+clean up related code if it's obvious e.g. patches for renaming and so
+on.
+
+> We have
+>  - CPU-readable buffers (struct page)
+>  - un-readable buffers (struct net_iov)
+>  - abstract reference which can be a pointer to either of the
+>    above two (bitwise netmem_ref)
+> 
+> You say you want to evacuate page pool state from struct page
+> so I'd expect you to add a type which can always be fed into
+> some form of $type_to_virt(). A type which can always be cast
+> to net_iov, but not vice versa. So why are you putting things
+> inside net_iov, not outside.
+
+The type, struct netmem_desc, is declared outside.  Even though it's
+used overlaying on struct page *for now*, it will be dynamically
+allocated through slab shortly - it's also one of mm's plan.
+
+As you know, net_iov is working with the assumption that it overlays on
+struct page *for now* indeed, when it comes to netmem_ref.  See the
+following APIs as example:
+
+static inline struct net_iov *__netmem_clear_lsb(netmem_ref netmem)
+{
+	return (struct net_iov *)((__force unsigned long)netmem & ~NET_IOV);
+}
+
+static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
+{
+	__netmem_clear_lsb(netmem)->pp = pool;
+}
+
+I'd say, I replaced the overlaying (on struct page) part with a
+well-defined struct, netmem_desc that will play the role of struct page
+for pp usage, instead of a set of the current overlaying fields of
+net_iov.
+
+This 'introduction of netmem_desc' patch can be the base for network
+code to use netmem_desc as pp descriptor instead of struct page.  That's
+what I meant.
+
+Am I missing something or got you wrong?  If yes, please explain in more
+detail then I will get back with the answer.
+
+	Byungchul
+
+> > + * net_iovs are allocated and used by networking code, and the size of
+> > + * the chunk is PAGE_SIZE.
+> 
+> FWIW not for long. Patches to make the size of net_iov configurable
+> are in progress.
