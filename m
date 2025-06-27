@@ -1,69 +1,70 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5363829CB40
-	for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 10:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88F81DDC1E
+	for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 10:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751021444; cv=none; b=fvdpC1WRguPFRBvj+hPHD2qV3biTRHh21HPRb8wp7iDSuItTO9WGdoujyZ9lW23Ptf6buJR3PAkHHCk+GxsWoF8fnqfcShhxc8QS1Km6mBS8aCrbBparVadQ4hj7hzh9veyhTauiZMI5QjrOwrDv+SnbSeXbP95kpesASLTZ56g=
+	t=1751021518; cv=none; b=JgRYrNkDlm0oikOSh8G50YEgLWwIpglkG+/kRJGo4ajAbQBFHOpqMsbh1lFrfwwSSEs1YeTqA8jpkWmaUVOnIsynH4Rqkjz2TRjZSN6SCQv5mwLcktpGgvDMRnUd8G/2uF97PiAzeD40wK6jA/rkL2GaFfd3vYp7/Mzx3HEUS1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751021444; c=relaxed/simple;
-	bh=BVHZXeFbpjqe+fGCkZrzN32CSukxqi5Z0bBDKpeU2bg=;
+	s=arc-20240116; t=1751021518; c=relaxed/simple;
+	bh=8NiJEsAY6H5hPb9ifVbvDlDwq1XB2n1aC1SVumzVDf8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FbkPAo5VguVSbdgj+FFo57RiopOdl2nVgd0W88RJicxBux2rfqgnKR+oEZPBprMfcm4bvDve3p5dmQI3jt+d9k4ef8Iw7EmzW0Hf4Gg18rI2HWgnql/TQHpp5HGsj0sFN3evNXScIIVUWSTreg58s6ItOsxnoRcEVlSGOUNyrjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QdogCZeF; arc=none smtp.client-ip=170.10.129.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=LZ8ubotSncSZwDekfXgqJWdV1LZQODxkx9zIyhwZlC2y/MrlceW5OBSLKpGzmFj2UgUQFlh8AbG1S3nKxECieJqZ1KWGxxkBHRLWrPz5P5j2FydNsEnxF99rlNo+lt33pBKP1+BeWQ3eKU44bRzqo/KMMhY+sjUlbAqtz4eNDQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bt9nFbfp; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QdogCZeF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bt9nFbfp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751021442;
+	s=mimecast20190719; t=1751021515;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=htlFXUXFpvLyLzYGnFDK9X72riSzVnaZycxspABjtgs=;
-	b=QdogCZeFzJhiQjx3FQgakDknVK98TClmeTr3CI0JLy5OWKBP+9Jj7pNkYqNOQuwJOhSIL1
-	Fh8E7aezkJ0a3sRiP+7FetJwS444OR3tgM8CAOuhNHpCQaVxBBvCk2qQYkDav34k0jQ/nr
-	+spyuEOQhnNcQs6dn/1eT6R1k7AUy2s=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=L9N28nJ//bAtYtJKvSA/25sV4gpscCPOFq7vHxaYwng=;
+	b=Bt9nFbfpYtZskS5sVeVxxzeJj9b/wOKJadU3h4Vubdg3AOpnOS2r6eHiaDnVr3gE85DR+/
+	z/4dpMSh0ZBuhJNuwA07FNwQcOMS2KUA0miccOrLlQE9gAnHE7rvS/nPmkf21JHzPXX7aI
+	xlWu26QpcstjiXC8XlIJtPOY7mGjxFY=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-397-7xBseOI8PnCnmad_eS4llw-1; Fri, 27 Jun 2025 06:50:36 -0400
-X-MC-Unique: 7xBseOI8PnCnmad_eS4llw-1
-X-Mimecast-MFC-AGG-ID: 7xBseOI8PnCnmad_eS4llw_1751021436
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6fb3487d422so34769346d6.0
-        for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 03:50:36 -0700 (PDT)
+ us-mta-695-_5T0XhASOhmH3bUZnDdthQ-1; Fri, 27 Jun 2025 06:51:54 -0400
+X-MC-Unique: _5T0XhASOhmH3bUZnDdthQ-1
+X-Mimecast-MFC-AGG-ID: _5T0XhASOhmH3bUZnDdthQ_1751021514
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4a58cd9b142so41639861cf.0
+        for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 03:51:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751021436; x=1751626236;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=htlFXUXFpvLyLzYGnFDK9X72riSzVnaZycxspABjtgs=;
-        b=PNzE2CngJ9xBoG33EzBtPDxOxgU2y9tcYEwg0sfAgvc4YSqCZ47Np+enTOrdOV2QEZ
-         XVVCZ+gUPkPzHvKBGNJLrTeJr8l3CExnDFdH9brEl2FumXw2fQoh65CtKYTq1c9zMxUA
-         CILotTZg7GkCls4flYYQIvmHTHMXCSx44v5ywAHQx/VsMJiQcWj/l7nWx9MxqB/Z9gJk
-         P0nqveMwc0roGnS3xY0YZ5MRPkX3pXLv2O/4fYJPJk5S7iotFgypmq3p1qqRijNSIbsS
-         sxcOVse2kSe0Qd5CWWSdHy4ZqGEs05qEWRh2ObehXNt/P8AuOcD2DS8VFPMqOg7dfemM
-         wzxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWu9tWazOlMQXe5NtfErIR07AcNdkKhxPSImsf5xH0cB7Mju0heNU96rLqeSiphJi60ap1G0K8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3TpC1DmoNMYDnD5mmFxF5unz0wMHTwuKM72QVluijyIW8iQy6
-	Flaj15a/x0/iyC/7avz3aKQIMsNICZXraROX5KYbIx3rL7C8B/sI0dm2GAQMvSaHX7F+LBQ9mEh
-	JUOJZiG5SR3fQDlI/5IYOXQtl8J6dQvIym9Fz8BqGonyZLW6PpNuHh8+TSg==
-X-Gm-Gg: ASbGnctukRUfUpVbEg21Ipx7KmwyCtuxCItFai/Awfzp6mrGQo3ShbekMyAVnwKBlq6
-	wr0fZWd0OovfIHEq5KkV2APEqdhn7pNWbc3BECKTZRoyPAwhSxSRAVkXBHmQQTpsA0JFC6Ry/Li
-	i33eP0tWHg7I7v0/fAr30JcJlr1c8d3pbrnpkjy2n1HxGFzQiKDjsGjClpo0US1HBbi1QizHksS
-	T4gecFkLhNuwVKFomdzg6ydv3El0vdQmrI7xNDm/coQ3uHuJDOatsLkjrQQ1FqgPRHcLT05ky5z
-	Udl8m1BrBeg7OQZ7+jpu7zNQ5LuN
-X-Received: by 2002:ad4:5e8f:0:b0:6fb:66f7:643a with SMTP id 6a1803df08f44-7000224847fmr46956076d6.23.1751021435672;
-        Fri, 27 Jun 2025 03:50:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFuVOPpSbDXmObd1CmdrkOaPEYJK4J2y+x493SsV5Ja2/xhandwC2sZzDDh/UAk4qzxJ+GDUw==
-X-Received: by 2002:ad4:5e8f:0:b0:6fb:66f7:643a with SMTP id 6a1803df08f44-7000224847fmr46955756d6.23.1751021435242;
-        Fri, 27 Jun 2025 03:50:35 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751021514; x=1751626314;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=L9N28nJ//bAtYtJKvSA/25sV4gpscCPOFq7vHxaYwng=;
+        b=cWrUZ9VSH7J52q32HOBMeZAAZZjPhHu+VNzuB+1QYrDV79XdrL2einDvpnNo51GvCj
+         SIRQvFh1L81mSyH2356EVNF25I6Pmpwa3g0RyOcHQfuW7FA7ULtSZ1zB4NN7qP+G0ZS/
+         PKB+lSrHK3bOA68rtEnVfLmnynpo0iJtHwojdfnu4NSvPXhVAtZqPEOHQsa6XygCOXnv
+         Lrn6l+YHObWlI2EpIOC+37MIHszthd0O9jDU6yUTOglckyZVWa46UdIaLoImFbm7UVf7
+         skL+AV8xHbRv85nGXwtl2+oXrKagwdoYnbsZLHG2YehPUWuEMV3h1ClgjeVkK7L4wwR6
+         OkXg==
+X-Forwarded-Encrypted: i=1; AJvYcCXF6E2dcLADnQq+LLKaNuZ39YsI9LYdGFg3hH2CAJgEXozXqxawPHNKmlZa238BK5fHy4YIwG8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpgB2rJIJKiuqFKLi4bshcBVi2QdQFzhd4oA4SiBLWRdQ0ivbp
+	dtBP0p+9+1GOXVLtWZZ2m2LY0qlOfXRFb+v9JtED8bXsB0SF5TrF6edrRWvFwTuSa63o80MUAWa
+	UM38AiGtzTkrV3p557C2fwR4ahtGzXi/gZ43Gdv2EtQqbyqwpaGLCIhuXMQ==
+X-Gm-Gg: ASbGncu2B1Yqp3jrbgoS/XTiq+/Dxf+AyxNhdk22MaDmlYjlK1HDCkrzqh9zb5ShqYZ
+	Hywoq/zIreLPzRYlvHi/kVj3zlar2SWXZiOFK+DjMIqV9nIV6xo/xuXgSn4FWY0CIKwzx8Zc/gt
+	4AbFZ1x61pKR+BqGqp+QHE6bVyWADdLYh7C6TS8c6g6DslkSUepbKW5qj6pl2rAE+GcoMnTginm
+	gmGCheO2EFFI6tTUg2qhgLTKEPjXQeCofDJNuL0kpKwxZ7ttyDgC2QgV+uCPB+0Y0OxTNl/FG6O
+	oDCcnNceS2XWSj4AUEt9SPFlD1b8
+X-Received: by 2002:ac8:7f4e:0:b0:4a7:30e2:b31e with SMTP id d75a77b69052e-4a7fcac456fmr48138321cf.34.1751021513884;
+        Fri, 27 Jun 2025 03:51:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHUZBEeQ02fjTo/PBcoZEjlOKuEN1OVgF9WmLAZpvc5pbASKuBu4dcl/skhi8pvedUhQk6Z7w==
+X-Received: by 2002:ac8:7f4e:0:b0:4a7:30e2:b31e with SMTP id d75a77b69052e-4a7fcac456fmr48137981cf.34.1751021513420;
+        Fri, 27 Jun 2025 03:51:53 -0700 (PDT)
 Received: from sgarzare-redhat ([193.207.181.237])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd772e3f2dsm17866906d6.78.2025.06.27.03.50.32
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a7fc5ad3c6sm9858681cf.78.2025.06.27.03.51.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jun 2025 03:50:34 -0700 (PDT)
-Date: Fri, 27 Jun 2025 12:50:27 +0200
+        Fri, 27 Jun 2025 03:51:53 -0700 (PDT)
+Date: Fri, 27 Jun 2025 12:51:45 +0200
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Will Deacon <will@kernel.org>
 Cc: linux-kernel@vger.kernel.org, Keir Fraser <keirf@google.com>, 
@@ -71,78 +72,95 @@ Cc: linux-kernel@vger.kernel.org, Keir Fraser <keirf@google.com>,
 	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
 	Jason Wang <jasowang@redhat.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
 	netdev@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH 5/5] vhost/vsock: Allocate nonlinear SKBs for handling
- large transmit buffers
-Message-ID: <cuqzmhjjakvmbwvcyub75vvjxorjkmzxkuvwvwowhec6wuaghj@uyq6glnhxp5n>
+Subject: Re: [PATCH 0/5] vsock/virtio: SKB allocation improvements
+Message-ID: <izmrcafyog7cxvef2nipk5f2vzxxptyc4fopnvl3heqslsp7q6@32ssw2piag6h>
 References: <20250625131543.5155-1-will@kernel.org>
- <20250625131543.5155-6-will@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20250625131543.5155-6-will@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250625131543.5155-1-will@kernel.org>
 
-nit: I'd use `vsock/virtio: ` prefix since we are touching the virtio 
-transport common code. Maybe we can mention that this will affect both
-virtio and vhost transports.
+On Wed, Jun 25, 2025 at 02:15:38PM +0100, Will Deacon wrote:
+>Hi folks,
+>
+>We're using vsock extensively in Android as a channel over which we can
+>route binder transactions to/from virtual machines managed by the
+>Android Virtualisation Framework. However, we have been observing some
+>issues in production builds when using vsock in a low-memory environment
+>(on the host and the guest) such as:
+>
+>  * The host receive path hanging forever, despite the guest performing
+>    a successful write to the socket.
+>
+>  * Page allocation failures in the vhost receive path (this is a likely
+>    contributor to the above)
+>
+>  * -ENOMEM coming back from sendmsg()
+>
+>This series aims to improve the vsock SKB allocation for both the host
+>(vhost) and the guest when using the virtio transport to help mitigate
+>these issues. Specifically:
+>
+>  - Avoid single allocations of order > PAGE_ALLOC_COSTLY_ORDER
+>
+>  - Use non-linear SKBs for the transmit and vhost receive paths
+>
+>  - Reduce the guest RX buffers to a single page
+>
+>There are more details in the individual commit messages but overall
+>this results in less wasted memory and puts less pressure on the
+>allocator.
+>
+>This is my first time looking at this stuff, so all feedback is welcome.
 
-On Wed, Jun 25, 2025 at 02:15:43PM +0100, Will Deacon wrote:
->When transmitting a vsock packet, virtio_transport_send_pkt_info() calls
->virtio_transport_alloc_skb() to allocate and fill SKBs with the transmit
->data. Unfortunately, these are always linear allocations and can
->therefore result in significant pressure on kmalloc() considering that
->the maximum packet size (VIRTIO_VSOCK_MAX_PKT_BUF_SIZE +
->VIRTIO_VSOCK_SKB_HEADROOM) is a little over 64KiB, resulting in a 128KiB
->allocation for each packet.
->
->Rework the vsock SKB allocation so that, for sizes with page order
->greater than PAGE_ALLOC_COSTLY_ORDER, a nonlinear SKB is allocated
->instead with the packet header in the SKB and the transmit data in the
->fragments.
->
->Signed-off-by: Will Deacon <will@kernel.org>
->---
-> net/vmw_vsock/virtio_transport_common.c | 9 +++++++--
-> 1 file changed, 7 insertions(+), 2 deletions(-)
->
->diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->index 1b5d9896edae..424eb69e84f9 100644
->--- a/net/vmw_vsock/virtio_transport_common.c
->+++ b/net/vmw_vsock/virtio_transport_common.c
->@@ -109,7 +109,8 @@ static int virtio_transport_fill_skb(struct sk_buff *skb,
-> 		return __zerocopy_sg_from_iter(info->msg, NULL, skb,
-> 					       &info->msg->msg_iter, len, NULL);
->
->-	return memcpy_from_msg(skb_put(skb, len), info->msg, len);
->+	virtio_vsock_skb_put(skb);
->+	return skb_copy_datagram_from_iter(skb, 0, &info->msg->msg_iter, len);
-> }
->
-> static void virtio_transport_init_hdr(struct sk_buff *skb,
->@@ -261,7 +262,11 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
-> 	if (!zcopy)
-> 		skb_len += payload_len;
->
->-	skb = virtio_vsock_alloc_skb(skb_len, GFP_KERNEL);
->+	if (skb_len > SKB_WITH_OVERHEAD(PAGE_SIZE << PAGE_ALLOC_COSTLY_ORDER))
->+		skb = virtio_vsock_alloc_skb_with_frags(skb_len, GFP_KERNEL);
->+	else
->+		skb = virtio_vsock_alloc_skb(skb_len, GFP_KERNEL);
->+
+Thank you very much for this series!
 
-As I mentioned in the other patch, we may avoid this code duplication 
-hiding this in virtio_vsock_alloc_skb() or adding a new function that
-we can use when we want to allocate frags or not.
+I left some minor comments, but overall LGTM!
 
 Thanks,
 Stefano
 
-> 	if (!skb)
-> 		return NULL;
+>
+>Patches based on v6.16-rc3.
+>
+>Cheers,
+>
+>Will
+>
+>Cc: Keir Fraser <keirf@google.com>
+>Cc: Steven Moreland <smoreland@google.com>
+>Cc: Frederick Mayle <fmayle@google.com>
+>Cc: Stefan Hajnoczi <stefanha@redhat.com>
+>Cc: Stefano Garzarella <sgarzare@redhat.com>
+>Cc: "Michael S. Tsirkin" <mst@redhat.com>
+>Cc: Jason Wang <jasowang@redhat.com>
+>Cc: "Eugenio Pérez" <eperezma@redhat.com>
+>Cc: netdev@vger.kernel.org
+>Cc: virtualization@lists.linux.dev
+>
+>--->8
+>
+>Will Deacon (5):
+>  vhost/vsock: Avoid allocating arbitrarily-sized SKBs
+>  vsock/virtio: Resize receive buffers so that each SKB fits in a page
+>  vhost/vsock: Allocate nonlinear SKBs for handling large receive
+>    buffers
+>  vsock/virtio: Rename virtio_vsock_skb_rx_put() to
+>    virtio_vsock_skb_put()
+>  vhost/vsock: Allocate nonlinear SKBs for handling large transmit
+>    buffers
+>
+> drivers/vhost/vsock.c                   | 21 +++++++++------
+> include/linux/virtio_vsock.h            | 36 +++++++++++++++++++------
+> net/vmw_vsock/virtio_transport.c        |  2 +-
+> net/vmw_vsock/virtio_transport_common.c |  9 +++++--
+> 4 files changed, 49 insertions(+), 19 deletions(-)
 >
 >-- 
 >2.50.0.714.g196bf9f422-goog
