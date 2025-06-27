@@ -1,90 +1,113 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CE727E7F2;
-	Fri, 27 Jun 2025 08:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB795136327
+	for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 08:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751014288; cv=none; b=V53iZWwyoZkZ0kyLHxSKTOxoVB6lehf8UNcEdHG2hSDHg09ChaUOLW87Z4T/9MSDDyInrpGiWced0UeyuLdJFW2LwGQNri1I1zy5YGwhHmSxcnmtL7tfFEBCLmVWmdOzZ9eHk2uGfQS65rlhC16eP4s1NWUXS0l4185SyRSgf/Y=
+	t=1751014369; cv=none; b=Mfzr3t9oMD14qBxwtxjStW3QIs28WI5ZEdI6UPjW6Buau6j1z6/etNNleFJBtvDG+ralOOoIgmj5E9bO3cIapRL9KBzFQXzRaOgheQYrtlxqGK1IWtVdzzYcIisNiy93aVv9TWZBNeu7C5l//DPNyJvrgRWXah7mwdwPn18QFY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751014288; c=relaxed/simple;
-	bh=Qmr1pWYNvkatuHEqNURtFgCKVmibYH6bu6vAsN3K8fE=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ytdy7ESj9O0n+ZEC4ePAmkl6qTV7GksYqtxXoSk0DejMeADcc30Bb2QM1kSdAljQQVDS8TNshSuQDDAZMbLU5xKLdsf6d7KYEpENHLSgYYPRDzZZNFP/5TT/RXBWzVJsWhnpxDjVWlci8iYjwZBYPDxKF6bTQaRNsiUox/lde0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bT8Qg0V70z6M56y;
-	Fri, 27 Jun 2025 16:50:35 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 780E514011D;
-	Fri, 27 Jun 2025 16:51:23 +0800 (CST)
-Received: from localhost (10.48.153.213) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 27 Jun
- 2025 10:51:22 +0200
-Date: Fri, 27 Jun 2025 09:51:20 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: <alejandro.lucero-palau@amd.com>
-CC: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<dan.j.williams@intel.com>, <edward.cree@amd.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>,
-	<dave.jiang@intel.com>, Alejandro Lucero <alucerop@amd.com>, Martin Habets
-	<habetsm.xilinx@gmail.com>, Fan Ni <fan.ni@samsung.com>, Edward Cree
-	<ecree.xilinx@gmail.com>
-Subject: Re: [PATCH v17 09/22] sfc: create type2 cxl memdev
-Message-ID: <20250627095120.000056bf@huawei.com>
-In-Reply-To: <20250624141355.269056-10-alejandro.lucero-palau@amd.com>
-References: <20250624141355.269056-1-alejandro.lucero-palau@amd.com>
-	<20250624141355.269056-10-alejandro.lucero-palau@amd.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1751014369; c=relaxed/simple;
+	bh=a6aw4aa2cUbfhI+C1HpTVHxzU6H213PQb/EEj50UUX0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=fTg6Z7ZNkmzmiBm6LvmMLx2W8aGcvIqjwdnaZQ+zOiU0qyO4CJuHTAmsI47Bvhyl+EJXu6fnNVN/U+svY70bAcG6s32teV5GfYCYrQT1i2lrFPSZDVXJhwOZzazKD8KP4Yrfgv3dhuuRbaYiCk1PcSYx9LOv/zAGFJlQP4kJj88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=nHQCLlJP; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="nHQCLlJP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1751014365;
+	bh=WbaZ851tPvl9z9qCq9g9hQhGeKab8Q7zy72SwZ1dqFQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=nHQCLlJP9AR76X192/7WlMqLmGZB0ja35Zqjz+uliQbSDouTe1fGxMcEcQQn1EFrr
+	 4IFIyfoiVVrFLJRVKeth9LEmgT4qQhI9Ud14QEddiyr4FJyJZODbgXUYa0ua7vZJTn
+	 x1mLw2oWLUughsjfJAFCimQrvnz4Wxtra6+ClkRy8vb8GMIjoFqtGG1Jb9zZZs9Asq
+	 hGsgWJIiwZj3nGMCXuk8hEqoL/oGWmDHpHNbhbtN+Qa7manRfEv4vCf5P4WQcyntmD
+	 tJ72YdJ3ABuN8sCgQ0qx0aGJVTdAqCw88vYlhcMhSRBWEKTizbjGqY5fOY6FMW7n6L
+	 K2gXreCBGDcJQ==
+Received: by codeconstruct.com.au (Postfix, from userid 10000)
+	id CAFF669E13; Fri, 27 Jun 2025 16:52:45 +0800 (AWST)
+From: Jeremy Kerr <jk@codeconstruct.com.au>
+Date: Fri, 27 Jun 2025 16:52:17 +0800
+Subject: [PATCH net-next v4 01/14] net: mctp: don't use source cb data when
+ forwarding, ensure pkt_type is set
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Message-Id: <20250627-dev-forwarding-v4-1-72bb3cabc97c@codeconstruct.com.au>
+References: <20250627-dev-forwarding-v4-0-72bb3cabc97c@codeconstruct.com.au>
+In-Reply-To: <20250627-dev-forwarding-v4-0-72bb3cabc97c@codeconstruct.com.au>
+To: Matt Johnston <matt@codeconstruct.com.au>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-On Tue, 24 Jun 2025 15:13:42 +0100
-<alejandro.lucero-palau@amd.com> wrote:
+In the output path, only check the skb->cb data when we know it's from
+a local socket; input packets will have source address information there
+instead.
 
-> From: Alejandro Lucero <alucerop@amd.com>
-> 
-> Use cxl API for creating a cxl memory device using the type2
-> cxl_dev_state struct.
-> 
-> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
-> Reviewed-by: Martin Habets <habetsm.xilinx@gmail.com>
-> Reviewed-by: Fan Ni <fan.ni@samsung.com>
-> Acked-by: Edward Cree <ecree.xilinx@gmail.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/net/ethernet/sfc/efx_cxl.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
-> index 5d68ee4e818d..e2d52ed49535 100644
-> --- a/drivers/net/ethernet/sfc/efx_cxl.c
-> +++ b/drivers/net/ethernet/sfc/efx_cxl.c
-> @@ -79,6 +79,13 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
->  
->  	cxl_set_capacity(&cxl->cxlds, EFX_CTPIO_BUFFER_SIZE);
->  
-> +	cxl->cxlmd = devm_cxl_add_memdev(&pci_dev->dev, &cxl->cxlds);
-> +
-Trivial style thing but common practice (I haven't checked local style)
-is no blank line between call and associated error check. 
-> +	if (IS_ERR(cxl->cxlmd)) {
-> +		pci_err(pci_dev, "CXL accel memdev creation failed");
-> +		return PTR_ERR(cxl->cxlmd);
-> +	}
-> +
->  	probe_data->cxl = cxl;
->  
->  	return 0;
+In order to detect when we're forwarding, set skb->pkt_type on
+input/output.
+
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+---
+ net/mctp/route.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index d9c8e5a5f9ce9aefbf16730c65a1f54caa5592b9..128ac46dda5eb882994960b8c0eb671007ad8583 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -392,6 +392,9 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+ 	 */
+ 	skb_orphan(skb);
+ 
++	if (skb->pkt_type == PACKET_OUTGOING)
++		skb->pkt_type = PACKET_LOOPBACK;
++
+ 	/* ensure we have enough data for a header and a type */
+ 	if (skb->len < sizeof(struct mctp_hdr) + 1)
+ 		goto out;
+@@ -578,7 +581,13 @@ static int mctp_route_output(struct mctp_route *route, struct sk_buff *skb)
+ 		return -EMSGSIZE;
+ 	}
+ 
+-	if (cb->ifindex) {
++	/* If we're forwarding, we don't want to use the input path's cb,
++	 * as it holds the *source* hardware addressing information.
++	 *
++	 * We will have a PACKET_HOST skb from the dev, or PACKET_OUTGOING
++	 * from a socket; only use cb in the latter case.
++	 */
++	if (skb->pkt_type == PACKET_OUTGOING && cb->ifindex) {
+ 		/* direct route; use the hwaddr we stashed in sendmsg */
+ 		if (cb->halen != skb->dev->addr_len) {
+ 			/* sanity check, sendmsg should have already caught this */
+@@ -587,6 +596,7 @@ static int mctp_route_output(struct mctp_route *route, struct sk_buff *skb)
+ 		}
+ 		daddr = cb->haddr;
+ 	} else {
++		skb->pkt_type = PACKET_OUTGOING;
+ 		/* If lookup fails let the device handle daddr==NULL */
+ 		if (mctp_neigh_lookup(route->dev, hdr->dest, daddr_buf) == 0)
+ 			daddr = daddr_buf;
+@@ -1032,6 +1042,7 @@ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
+ 		tag = req_tag & MCTP_TAG_MASK;
+ 	}
+ 
++	skb->pkt_type = PACKET_OUTGOING;
+ 	skb->protocol = htons(ETH_P_MCTP);
+ 	skb->priority = 0;
+ 	skb_reset_transport_header(skb);
+
+-- 
+2.39.5
 
