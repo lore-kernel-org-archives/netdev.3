@@ -1,152 +1,109 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6900F15E8B;
-	Fri, 27 Jun 2025 20:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D532EBBBF
+	for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 20:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751054506; cv=none; b=svY2gZM/4Uncqo24EbUxgY6dUSR1d1T/HXwR9tPTbSKxdjsytqEo8jYf/IgoLWx04Mg2EVvj1a3vCEKLY+gLRDhxp1RuUP64BmJZ7wZu8CAJV1PhyNXRFk/YcixlzFvy/6XoRDZe9Q/9VBpUxbWkjMMjWriDvPVFVcJgdcHmfes=
+	t=1751054745; cv=none; b=ZKytcr1jZlHv1bfxZj0i/tLbJecSityKUdALEOn9qH/auQ9xdMoMyt93zTDZuR/BRpSs4aUHnW+rhZnd+Gi+ZCcYtLW+aFq7tap+bI+jZGFjJG+cYW2EfZn/r952jQX77+u20vNHOJig2BkOF1knEgC+qzlrydIBYLZumxN0ZYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751054506; c=relaxed/simple;
-	bh=alEzDmtk2I2rFB/roV/8cjxA5f7pcGNJr887FkIlt8o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JxsAUsCHoHg3OHn6bJP2t15aNMStWa8DdPA5qdsyEv/wK0ru/pgXWqqgsYTjBjA9JIb4DWXyafDci37vXJfN2pPKQ3euEghAS6dWQcCbfmLx9Z9QTujikrc9QWh4hARzaYotGeQ6v+zGUr6hCaxzw1rNoCjqkzCQPJhsJ+jh1jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98.2)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1uVEnR-000000003Fi-3XIT;
-	Fri, 27 Jun 2025 19:31:37 +0000
-Date: Fri, 27 Jun 2025 20:31:34 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: "Chester A. Unal" <chester.a.unal@arinc9.com>,
-	DENG Qingfang <dqfext@gmail.com>,
-	Sean Wang <sean.wang@mediatek.com>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Frank Wunderlich <frank-w@public-files.de>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [net-next PATCH 0/6] net: dsa: mt7530: modernize MIB handling +
- fix
-Message-ID: <aF7xlqRLXlZu0DZr@makrotopia.org>
-References: <20250410163022.3695-1-ansuelsmth@gmail.com>
+	s=arc-20240116; t=1751054745; c=relaxed/simple;
+	bh=58VetzeaoTTUO6xje0ZO9jyJyh/pGGsMiDy6XnPNWFI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lR/sdJroTKfaPujnfZQMO5Lx4XUK5poSCCf0mys3/A7Jvpo9Q/GuWMq2z0/DSJAptJ/VTm718tUCc3Gr5XJMRjNhg8XUpdubH9XBjmtFb17p7uWTJTCxyRjyFEJQTDYPAlW0UjpVYf9G0CTU4dflSTl8VRPUYapcyZKE2az2sWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dKh/KZGT; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dKh/KZGT"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b2fdba7f818so476807a12.2
+        for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 13:05:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1751054744; x=1751659544; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vF3w72k6M2FJsnp0yQuYIlc0wWajODBZmfeD8ZMb3YY=;
+        b=dKh/KZGTJJmmyZVnLiXJt6/T/jXdsjmoeSKouw2rnvrwgoui/FoqpND1oeCoX9KnRy
+         yYxiOOw1lMUnaKVN00CExAQ12AlU8kl0qEqyvKi4VduQSx7Xoe55NJNLCbwjnMDgEY/4
+         R5w8o6UBzwXPWyQI9FPJDcOokiMIj27kgLXjqfBadhVmW4o93AMAo6CsfLngSmowdKK/
+         NGn842CF7seV+gnkvEzAco4tFHxRawItzMtg7kO6vXHhQ5Mxxsj4Sctsi8ubwO/yJkJt
+         3FmuktSXFwtCqmLeXdpacWSmeOptXW3vJgCLiCmr/1oP9A3cI6limxXysgj2kS26Tl+p
+         ZxGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751054744; x=1751659544;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vF3w72k6M2FJsnp0yQuYIlc0wWajODBZmfeD8ZMb3YY=;
+        b=R6sEnBoZUceuSGG5/BEmnBlgUDZPVDO3HI051/zZ1WJ6thZDLvTsScSFATG9dJ5SCt
+         xmuEW/yj1xYKFzEH24R2ItV11dwkpm83PyXHdSb9wM0k89/eT04YEr0v6jB4QHntn3gZ
+         0ezvGBaIVu3U+CEa4qJoXAoiNW2e0eLY3tT3msmVBxcsZ+0X8Y3XPwQDinKJtrjZREmg
+         TvR3Pr45mQ1Q0Ci3CPSUqdnUvHmGP2qPxmmLXlDrrAtFclZPFSdAEJtdhtQf7EXSVryJ
+         9X02In+4r0sIpxV9Fc50KWYDpsW6DN7IPq5DIKAIkRmO98PphvP6pGyhk7i4oFp5pQvm
+         R9CQ==
+X-Gm-Message-State: AOJu0Yxa9P3i27i7FDSlCR8UI/rgRvXxrVEpx3ltwULihetlN+WuAbOI
+	hr/liElsaNQx+ALuj/ofNQ599XVwHk27mIQAZUjDfc6tkRJaOSIo6jQbDWPyCDsQ3qrgYUsGwf6
+	I/acXmIWDsLmSsY+YqSU4RX5xE3cCxzuGkLeO8Gl/FaOpaE1cn9mUvj8VRGrPJA2CWiTUxzdcVt
+	b/AnsJwGRsFqoRsf0NFCb1EX7QEgANUoQygIa/+FDz2u662SD5ory8Jo/HMX20SrM=
+X-Google-Smtp-Source: AGHT+IGgA2AyrASEeQalRWqmeezLlku7J3nX7jKNCFbgJ5auTtUg89qGUZ4YgwmCCUCUy/MWeJoqjGwBDkr/pL380g==
+X-Received: from pjbnb6.prod.google.com ([2002:a17:90b:35c6:b0:311:8076:14f1])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:5683:b0:313:23ed:6ff with SMTP id 98e67ed59e1d1-318c8ff234emr5811759a91.1.1751054743828;
+ Fri, 27 Jun 2025 13:05:43 -0700 (PDT)
+Date: Fri, 27 Jun 2025 20:04:51 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250410163022.3695-1-ansuelsmth@gmail.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
+Message-ID: <20250627200501.1712389-1-almasrymina@google.com>
+Subject: [PATCH net-next v1 1/2] selftests: pp-bench: remove unneeded linux/version.h
+From: Mina Almasry <almasrymina@google.com>
+To: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Cc: Mina Almasry <almasrymina@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	"=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?=" <toke@redhat.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Christian,
+linux/version.h was used by the out-of-tree version, but not needed in
+the upstream one anymore.
 
-On Thu, Apr 10, 2025 at 06:30:08PM +0200, Christian Marangi wrote:
-> This small series modernize MIB handling for MT7530 and also
-> implement .get_stats64.
-> 
-> It was reported that kernel and Switch MIB desync in scenario where
-> a packet is forwarded from a port to another. In such case, the
-> forwarding is offloaded and the kernel is not aware of the
-> transmitted packet. To handle this, read the counter directly
-> from Switch registers.
-> 
-> Christian Marangi (6):
->   net: dsa: mt7530: generalize read port stats logic
->   net: dsa: mt7530: move pkt size and rx err MIB counter to rmon stats
->     API
->   net: dsa: mt7530: move pause MIB counter to eth_ctrl stats API
->   net: dsa: mt7530: move pkt stats and err MIB counter to eth_mac stats
->     API
->   net: dsa: mt7530: move remaining MIB counter to define
->   net: dsa: mt7530: implement .get_stats64
+While I'm at it, sort the includes.
 
-After this series being applied I see lockdep warnings every time
-the interface counters are being read on MT7531 connected via MDIO:
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506271434.Gk0epC9H-lkp@intel.com/
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+---
+ .../selftests/net/bench/page_pool/bench_page_pool_simple.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-[  234.374708] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:579
-[  234.383200] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 3667, name: ifconfig
-[  234.391202] preempt_count: 1, expected: 0
-[  234.395226] INFO: lockdep is turned off.
-[  234.399150] CPU: 3 UID: 0 PID: 3667 Comm: ifconfig Tainted: G        W  O        6.16.0-rc1+ #0 NONE 
-[  234.399158] Tainted: [W]=WARN, [O]=OOT_MODULE
-[  234.399160] Hardware name: Bananapi BPI-R3 (DT)
-[  234.399162] Call trace:
-[  234.399165]  show_stack+0x28/0x78 (C)
-[  234.399179]  dump_stack_lvl+0x68/0x8c
-[  234.399184]  dump_stack+0x14/0x1c
-[  234.399188]  __might_resched+0x138/0x250
-[  234.399197]  __might_sleep+0x44/0x80
-[  234.399201]  __mutex_lock+0x4c/0x934
-[  234.399209]  mutex_lock_nested+0x20/0x28
-[  234.399215]  mt7530_get_stats64+0x40/0x2ac
-[  234.399222]  dsa_user_get_stats64+0x2c/0x40
-[  234.399229]  dev_get_stats+0x44/0x1e0
-[  234.399237]  dev_seq_printf_stats+0x24/0xe0
-[  234.399244]  dev_seq_show+0x14/0x40
-[  234.399248]  seq_read_iter+0x368/0x464
-[  234.399257]  seq_read+0xd0/0xfc
-[  234.399263]  proc_reg_read+0xa8/0xf0
-[  234.399268]  vfs_read+0x98/0x2b0
-[  234.399275]  ksys_read+0x54/0xdc
-[  234.399280]  __arm64_sys_read+0x18/0x20
-[  234.399286]  invoke_syscall.constprop.0+0x4c/0xd0
-[  234.399293]  do_el0_svc+0x3c/0xd0
-[  234.399298]  el0_svc+0x34/0xa0
-[  234.399303]  el0t_64_sync_handler+0x104/0x138
-[  234.399308]  el0t_64_sync+0x158/0x15c
+diff --git a/tools/testing/selftests/net/bench/page_pool/bench_page_pool_simple.c b/tools/testing/selftests/net/bench/page_pool/bench_page_pool_simple.c
+index f183d5e30dc6..1cd3157fb6a9 100644
+--- a/tools/testing/selftests/net/bench/page_pool/bench_page_pool_simple.c
++++ b/tools/testing/selftests/net/bench/page_pool/bench_page_pool_simple.c
+@@ -5,15 +5,12 @@
+  */
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/interrupt.h>
++#include <linux/limits.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+-
+-#include <linux/version.h>
+ #include <net/page_pool/helpers.h>
+ 
+-#include <linux/interrupt.h>
+-#include <linux/limits.h>
+-
+ #include "time_bench.h"
+ 
+ static int verbose = 1;
 
-Note that this only shows with some lock debugging options being set
-and may not actually be a problem, but I believe it anyway should be
-fixed somehow.
+base-commit: 8efa26fcbf8a7f783fd1ce7dd2a409e9b7758df0
+-- 
+2.50.0.727.gbf7dc18ff4-goog
 
-#
-# Lock Debugging (spinlocks, mutexes, etc...)
-#
-CONFIG_LOCK_DEBUGGING_SUPPORT=y
-CONFIG_PROVE_LOCKING=y
-CONFIG_PROVE_RAW_LOCK_NESTING=y
-# CONFIG_LOCK_STAT is not set
-CONFIG_DEBUG_RT_MUTEXES=y
-CONFIG_DEBUG_SPINLOCK=y
-CONFIG_DEBUG_MUTEXES=y
-CONFIG_DEBUG_WW_MUTEX_SLOWPATH=y
-CONFIG_DEBUG_RWSEMS=y
-CONFIG_DEBUG_LOCK_ALLOC=y
-CONFIG_LOCKDEP=y
-CONFIG_LOCKDEP_BITS=15
-CONFIG_LOCKDEP_CHAINS_BITS=16
-CONFIG_LOCKDEP_STACK_TRACE_BITS=19
-CONFIG_LOCKDEP_STACK_TRACE_HASH_BITS=14
-CONFIG_LOCKDEP_CIRCULAR_QUEUE_BITS=12
-# CONFIG_DEBUG_LOCKDEP is not set
-CONFIG_DEBUG_ATOMIC_SLEEP=y
-# CONFIG_DEBUG_LOCKING_API_SELFTESTS is not set
-# CONFIG_LOCK_TORTURE_TEST is not set
-# CONFIG_WW_MUTEX_SELFTEST is not set
-# CONFIG_SCF_TORTURE_TEST is not set
-# CONFIG_CSD_LOCK_WAIT_DEBUG is not set
-# end of Lock Debugging (spinlocks, mutexes, etc...)
-
-CONFIG_TRACE_IRQFLAGS=y
-CONFIG_TRACE_IRQFLAGS_NMI=y
-# CONFIG_DEBUG_IRQFLAGS is not set
-CONFIG_STACKTRACE=y
-# CONFIG_WARN_ALL_UNSEEDED_RANDOM is not set
-# CONFIG_DEBUG_KOBJECT is not set
-
-
-Cheers
-
-
-Daniel
