@@ -1,574 +1,105 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B09283124
-	for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 08:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B0226B2A9;
+	Fri, 27 Jun 2025 08:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751014375; cv=none; b=W1E469gvKzsb0fC1HPYC+TPUFuU0tYgAoQBVIYM7HWzVzidv3Q44BF9BaNVTFFJCaHF7lEeyVfm47Et/T0+Yyigmj4vvxVNi5j8nJDUac6kyj4v0fRs1fU82rZFTqJka57Yf0+A7vSXlcIjkYNuWx3qbRqP1YaNZAUYRKv3pqjI=
+	t=1751014675; cv=none; b=sEdEsN/nh04SdyEP+whFUI2FAQ8rCWYzchgpBNNuY3Pzc+7sLs3N3b8ZfRKcXYh0DzFohoqECZvG5cZ0jzv4xQmDh4UvcdmQ6Kv83rGHRBlaurbgkycquHX5SZYH14GmTNR6NL5fD3ApQLmFAcwxLSBNZMPPRpITHvVwFU0ub14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751014375; c=relaxed/simple;
-	bh=7rlERiI3Mi+F22kpgOA1hX9Dd3RaYb8gcBMVAPdGNn4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JUh74G9V2QRlPE9s+xqSUEy0fbQUcSeesqy8cmP7fxKvrUnmFNM7O3GDkNi76REAenYCgE3Slphs4wJPmgiTPfNjue1USK1cympcSJpGc6/vczG6JbBBozYnkvHrL/zUYIzWDBgiP0vp8KVgS3HaB+YvGzw1CXYyHA8OI9vES9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=eFcAYbaJ; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1751014675; c=relaxed/simple;
+	bh=gy06wkgzYN/6y36022+JpiDZZtaCzcdcmuScqSz0j2s=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ruVNP9RQqIrC3IKi7ZQTPAoY+thR9G4VtACq5XisNA7R+PxChVJ7ivUs/UuJKhXhiuftrX/AQmGp/dTuhsWpRojUy+VMEpiOfQvfcnuRSD/VcRA3OBmnGQJX6r/WLp9x6/Ab7BNl16BqstM/az6XtEvy5wOE2J221PK3niLJ8co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kx1Tb/1O; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="eFcAYbaJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kx1Tb/1O"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-742c7a52e97so1914722b3a.3;
+        Fri, 27 Jun 2025 01:57:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1751014369;
-	bh=AZV4UrZXc/j+AwNr07FO40iJoPQdgQF6koVZQW8htXM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=eFcAYbaJMqUwfei8GR/fPWX5B9IAR/Pcfolj9lX6+6Q9X+3xqtvzb4XoiDj3nFIeR
-	 Zyq+5xOQcXPF1S8nrci0GvrHpMLuV8qnmKESBgkBhXYr8C9LUia6qaEdhlXzXABTbv
-	 K/Tl49dXSURltAUB7xiJ7eRDN6TQzo0RFv07ND7sqyNm2584Do36DLt8Jm22KG5Sde
-	 d19qMgaiEBLojFCmVJyY83aPJL3PAyxG8vWbmrJiZ0Sh/VAz/6n8TOEAQjBgeHycVP
-	 GfybWye8DEPFI7adEPY/NL0c2qFmOQMwmZBBiYoPymQKtBJHKFNbL1FJlyfpxjijbw
-	 vbj3wJ+0uOOiQ==
-Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id 9C1B869E2C; Fri, 27 Jun 2025 16:52:49 +0800 (AWST)
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Fri, 27 Jun 2025 16:52:29 +0800
-Subject: [PATCH net-next v4 13/14] net: mctp: add gateway routing support
+        d=gmail.com; s=20230601; t=1751014674; x=1751619474; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qywkqaS10jNfbcCe1Qucm1CexZUdcFWqT7Q/PirttBs=;
+        b=kx1Tb/1OO4i0gZmdVyxxb1tHM4O1P9TZ7V3Vg5QZjs4ZV1HPxvbO7xeIX6tysKiyQz
+         elX4bj5tkTezi33q1N6vbbzpEDp0SCFyY+1jvlJXI3uY793m1KJ2wHCJd+rYgix35oTQ
+         JeQZdX2OcZX+ca0a9Ie0NdRHryBU8oEoc9KbbxXqGu0V1YI2CrhTMO2gakiXzhnzVIQR
+         /PDMXvlSBnELAnjjjKyqvv4KkYvkokqHBFl0Vo75nXyQHOf3LZjw04ciMadTSp8Aa+lC
+         RZRGowfvdpPtCLlwmCmGW6cKiGkSZ7QHnFXC8w9m2NcAnbXoTD8EJyTG+19fXEaG101C
+         yKAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751014674; x=1751619474;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qywkqaS10jNfbcCe1Qucm1CexZUdcFWqT7Q/PirttBs=;
+        b=azmehzLBsFUP/464mvVehd5VwcE9nfxouG9HAVIYRMrdWjyckpDPi+l5nrNQZ/SY5E
+         /NQGsib9ISDj3828WKVf12XxkXxH2uz9HE1/GTVmJyEpKKXIyUInuVIA07am2XHN7CMN
+         GAsCoAyeZTu5uPYkLqnLfiIfa9oOTUiFWmQ7SHuL1LYgpOHZzWp6j8ykAmxnruv+M3Fk
+         0vMP+ePDVHks9x+AbaPgJZxAjJCFXZcnaD4Jo3gsyQMfCmo2zgSO6958CRnd8oH2fupb
+         NWljcXwSZa1WNjEP9g37yVKiSKm4zGHgShcz9dFhmxmxp74GrvtF6XMArNFpdQh53RUx
+         23RA==
+X-Forwarded-Encrypted: i=1; AJvYcCUehqio0TrXdebBKUVu9ZDHUSTaS0NbslDOxfsvw4QAQI1eGFQb9hTtwi3x3u419VRsRo1Gaqs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9DQXhQ+JZe+Y3ISnfsD0z3NO6r7M6zAGVYETpJ+JXn5rLWEJB
+	Sz6r2pXCFEDPdKYoMYWHtZnmu/LMU1woziYTzo/PGPpfq284u7SRwHOD
+X-Gm-Gg: ASbGncsh6JCI0UL1aEfq9YAjU4GsHke4NMoFUvHFcD2H2yZlfDdQmZ2KpHTIbPxksY3
+	P3QleT3AuqQfp//xVWKvuX82L/IbtemxrZdh74w2WoZIwYRpVkdkOqm542ADQ2ArUBtxsXP6F8q
+	0S1siYOWBQNLmMAlPRjVSGaZIVO7lWZbnXPyIIIv05bNxLqc3yhqkotwRj7Wg0r7Yk7e8rClv8p
+	TanbUclM0XGr7NaJ7QD2jKyLblXWu14Xev5UbR+DqGJqMi+ZQ+qaCQjEmDL78v0vu6ShwBRoN3l
+	iqiS0qpP/WgtJLnllQMiUJ7oOX8P7buuEWIT6mhCmlQ53k5YOP1sBjk1qyfk1lOPtcBoljXFwRn
+	KwRIYbYfGgQGswnGWHHm9FnBJvddY3Mxt4DDsHNpwrkkl
+X-Google-Smtp-Source: AGHT+IES2qy1Qu14o5To39sDMwX4mYsXpTJNjcdq0ZCeobQ+w5UJH98hvV5GlniHP9X0Npx87yXTyQ==
+X-Received: by 2002:a05:6a00:1493:b0:736:9f20:a175 with SMTP id d2e1a72fcca58-74af6e27849mr3462219b3a.2.1751014673647;
+        Fri, 27 Jun 2025 01:57:53 -0700 (PDT)
+Received: from KERNELXING-MB0.tencent.com ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74af540b3d9sm1728170b3a.2.2025.06.27.01.57.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Jun 2025 01:57:53 -0700 (PDT)
+From: Jason Xing <kerneljasonxing@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	bjorn@kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	jonathan.lemon@gmail.com,
+	sdf@fomichev.me,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	joe@dama.to,
+	willemdebruijn.kernel@gmail.com
+Cc: bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Jason Xing <kernelxing@tencent.com>
+Subject: [PATCH net-next v4 0/2] net: xsk: update tx queue consumer
+Date: Fri, 27 Jun 2025 16:57:43 +0800
+Message-Id: <20250627085745.53173-1-kerneljasonxing@gmail.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250627-dev-forwarding-v4-13-72bb3cabc97c@codeconstruct.com.au>
-References: <20250627-dev-forwarding-v4-0-72bb3cabc97c@codeconstruct.com.au>
-In-Reply-To: <20250627-dev-forwarding-v4-0-72bb3cabc97c@codeconstruct.com.au>
-To: Matt Johnston <matt@codeconstruct.com.au>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
-This change allows for gateway routing, where a route table entry
-may reference a routable endpoint (by network and EID), instead of
-routing directly to a netdevice.
+From: Jason Xing <kernelxing@tencent.com>
 
-We add support for a RTM_GATEWAY attribute for netlink route updates,
-with an attribute format of:
+Patch 1 makes sure the consumer is updated at the end of generic xmit.
+Patch 2 adds corresponding test.
 
-    struct mctp_fq_addr {
-        unsigned int net;
-        mctp_eid_t eid;
-    }
+Jason Xing (2):
+  net: xsk: update tx queue consumer immediately after transmission
+  selftests/bpf: check if the global consumer updates in time
 
-- we need the net here to uniquely identify the target EID, as we no
-longer have the device reference directly (which would provide the net
-id in the case of direct routes).
-
-This makes route lookups recursive, as a route lookup that returns a
-gateway route must be resolved into a direct route (ie, to a device)
-eventually. We provide a limit to the route lookups, to prevent infinite
-loop routing.
-
-The route lookup populates a new 'nexthop' field in the dst structure,
-which now specifies the key for the neighbour table lookup on device
-output, rather than using the packet destination address directly.
-
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
---
-v2:
- - prevent uninitialsed gateway variable in nlparse_common, as reported
-   by Simon Horman via smatch
----
- include/net/mctp.h        |  13 ++-
- include/uapi/linux/mctp.h |   8 ++
- net/mctp/route.c          | 200 ++++++++++++++++++++++++++++++++++------------
- net/mctp/test/utils.c     |   3 +-
- 4 files changed, 171 insertions(+), 53 deletions(-)
-
-diff --git a/include/net/mctp.h b/include/net/mctp.h
-index b3af0690f60749a9bf9f489c7118c82cfd9d577e..ac4f4ecdfc24f1f481ff22a5673cb95e1bf21310 100644
---- a/include/net/mctp.h
-+++ b/include/net/mctp.h
-@@ -237,8 +237,18 @@ struct mctp_route {
- 	mctp_eid_t		min, max;
- 
- 	unsigned char		type;
-+
- 	unsigned int		mtu;
--	struct mctp_dev		*dev;
-+
-+	enum {
-+		MCTP_ROUTE_DIRECT,
-+		MCTP_ROUTE_GATEWAY,
-+	} dst_type;
-+	union {
-+		struct mctp_dev	*dev;
-+		struct mctp_fq_addr gateway;
-+	};
-+
- 	int			(*output)(struct mctp_dst *dst,
- 					  struct sk_buff *skb);
- 
-@@ -256,6 +266,7 @@ struct mctp_route {
- struct mctp_dst {
- 	struct mctp_dev *dev;
- 	unsigned int mtu;
-+	mctp_eid_t nexthop;
- 
- 	/* set for direct addressing */
- 	unsigned char halen;
-diff --git a/include/uapi/linux/mctp.h b/include/uapi/linux/mctp.h
-index e1db65df9359fea810a876786b864743c77e2478..19ad12a0cd4b4599667519aaed73a12d2892aa25 100644
---- a/include/uapi/linux/mctp.h
-+++ b/include/uapi/linux/mctp.h
-@@ -37,6 +37,14 @@ struct sockaddr_mctp_ext {
- 	__u8			smctp_haddr[MAX_ADDR_LEN];
- };
- 
-+/* A "fully qualified" MCTP address, which includes the system-local network ID,
-+ * required to uniquely resolve a routable EID.
-+ */
-+struct mctp_fq_addr {
-+	unsigned int	net;
-+	mctp_eid_t	eid;
-+};
-+
- #define MCTP_NET_ANY		0x0
- 
- #define MCTP_ADDR_NULL		0x00
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index ab5116c12b91461011c1ec3d9954609658a40a22..ed1ac147aff7af49030663f85558ff9b6dce4b27 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -563,7 +563,6 @@ static int mctp_dst_input(struct mctp_dst *dst, struct sk_buff *skb)
- 
- static int mctp_dst_output(struct mctp_dst *dst, struct sk_buff *skb)
- {
--	struct mctp_hdr *hdr = mctp_hdr(skb);
- 	char daddr_buf[MAX_ADDR_LEN];
- 	char *daddr = NULL;
- 	int rc;
-@@ -586,7 +585,7 @@ static int mctp_dst_output(struct mctp_dst *dst, struct sk_buff *skb)
- 		daddr = dst->haddr;
- 	} else {
- 		/* If lookup fails let the device handle daddr==NULL */
--		if (mctp_neigh_lookup(dst->dev, hdr->dest, daddr_buf) == 0)
-+		if (mctp_neigh_lookup(dst->dev, dst->nexthop, daddr_buf) == 0)
- 			daddr = daddr_buf;
- 	}
- 
-@@ -610,7 +609,8 @@ static int mctp_dst_output(struct mctp_dst *dst, struct sk_buff *skb)
- static void mctp_route_release(struct mctp_route *rt)
- {
- 	if (refcount_dec_and_test(&rt->refs)) {
--		mctp_dev_put(rt->dev);
-+		if (rt->dst_type == MCTP_ROUTE_DIRECT)
-+			mctp_dev_put(rt->dev);
- 		kfree_rcu(rt, rcu);
- 	}
- }
-@@ -799,10 +799,16 @@ static struct mctp_sk_key *mctp_lookup_prealloc_tag(struct mctp_sock *msk,
- }
- 
- /* routing lookups */
-+static unsigned int mctp_route_netid(struct mctp_route *rt)
-+{
-+	return rt->dst_type == MCTP_ROUTE_DIRECT ?
-+		READ_ONCE(rt->dev->net) : rt->gateway.net;
-+}
-+
- static bool mctp_rt_match_eid(struct mctp_route *rt,
- 			      unsigned int net, mctp_eid_t eid)
- {
--	return READ_ONCE(rt->dev->net) == net &&
-+	return mctp_route_netid(rt) == net &&
- 		rt->min <= eid && rt->max >= eid;
- }
- 
-@@ -811,16 +817,21 @@ static bool mctp_rt_compare_exact(struct mctp_route *rt1,
- 				  struct mctp_route *rt2)
- {
- 	ASSERT_RTNL();
--	return rt1->dev->net == rt2->dev->net &&
-+	return mctp_route_netid(rt1) == mctp_route_netid(rt2) &&
- 		rt1->min == rt2->min &&
- 		rt1->max == rt2->max;
- }
- 
--static void mctp_dst_from_route(struct mctp_dst *dst, struct mctp_route *route)
-+/* must only be called on a direct route, as the final output hop */
-+static void mctp_dst_from_route(struct mctp_dst *dst, mctp_eid_t eid,
-+				unsigned int mtu, struct mctp_route *route)
- {
- 	mctp_dev_hold(route->dev);
-+	dst->nexthop = eid;
- 	dst->dev = route->dev;
--	dst->mtu = route->mtu ?: READ_ONCE(dst->dev->dev->mtu);
-+	dst->mtu = READ_ONCE(dst->dev->dev->mtu);
-+	if (mtu)
-+		dst->mtu = min(dst->mtu, mtu);
- 	dst->halen = 0;
- 	dst->output = route->output;
- }
-@@ -849,6 +860,7 @@ int mctp_dst_from_extaddr(struct mctp_dst *dst, struct net *net, int ifindex,
- 	dst->mtu = READ_ONCE(netdev->mtu);
- 	dst->halen = halen;
- 	dst->output = mctp_dst_output;
-+	dst->nexthop = 0;
- 	memcpy(dst->haddr, haddr, halen);
- 
- 	rc = 0;
-@@ -863,24 +875,54 @@ void mctp_dst_release(struct mctp_dst *dst)
- 	mctp_dev_put(dst->dev);
- }
- 
-+static struct mctp_route *mctp_route_lookup_single(struct net *net,
-+						   unsigned int dnet,
-+						   mctp_eid_t daddr)
-+{
-+	struct mctp_route *rt;
-+
-+	list_for_each_entry_rcu(rt, &net->mctp.routes, list) {
-+		if (mctp_rt_match_eid(rt, dnet, daddr))
-+			return rt;
-+	}
-+
-+	return NULL;
-+}
-+
- /* populates *dst on successful lookup, if set */
- int mctp_route_lookup(struct net *net, unsigned int dnet,
- 		      mctp_eid_t daddr, struct mctp_dst *dst)
- {
-+	const unsigned int max_depth = 32;
-+	unsigned int depth, mtu = 0;
- 	int rc = -EHOSTUNREACH;
--	struct mctp_route *rt;
- 
- 	rcu_read_lock();
- 
--	list_for_each_entry_rcu(rt, &net->mctp.routes, list) {
--		/* TODO: add metrics */
--		if (!mctp_rt_match_eid(rt, dnet, daddr))
--			continue;
-+	for (depth = 0; depth < max_depth; depth++) {
-+		struct mctp_route *rt;
- 
--		if (dst)
--			mctp_dst_from_route(dst, rt);
--		rc = 0;
--		break;
-+		rt = mctp_route_lookup_single(net, dnet, daddr);
-+		if (!rt)
-+			break;
-+
-+		/* clamp mtu to the smallest in the path, allowing 0
-+		 * to specify no restrictions
-+		 */
-+		if (mtu && rt->mtu)
-+			mtu = min(mtu, rt->mtu);
-+		else
-+			mtu = mtu ?: rt->mtu;
-+
-+		if (rt->dst_type == MCTP_ROUTE_DIRECT) {
-+			if (dst)
-+				mctp_dst_from_route(dst, daddr, mtu, rt);
-+			rc = 0;
-+			break;
-+
-+		} else if (rt->dst_type == MCTP_ROUTE_GATEWAY) {
-+			daddr = rt->gateway.eid;
-+		}
- 	}
- 
- 	rcu_read_unlock();
-@@ -897,10 +939,13 @@ static int mctp_route_lookup_null(struct net *net, struct net_device *dev,
- 	rcu_read_lock();
- 
- 	list_for_each_entry_rcu(rt, &net->mctp.routes, list) {
--		if (rt->dev->dev != dev || rt->type != RTN_LOCAL)
-+		if (rt->dst_type != MCTP_ROUTE_DIRECT || rt->type != RTN_LOCAL)
- 			continue;
- 
--		mctp_dst_from_route(dst, rt);
-+		if (rt->dev->dev != dev)
-+			continue;
-+
-+		mctp_dst_from_route(dst, 0, 0, rt);
- 		rc = 0;
- 		break;
- 	}
-@@ -1080,11 +1125,6 @@ int mctp_local_output(struct sock *sk, struct mctp_dst *dst,
- 	return rc;
- }
- 
--static unsigned int mctp_route_netid(struct mctp_route *rt)
--{
--	return rt->dev->net;
--}
--
- /* route management */
- 
- /* mctp_route_add(): Add the provided route, previously allocated via
-@@ -1092,9 +1132,9 @@ static unsigned int mctp_route_netid(struct mctp_route *rt)
-  * hold on rt->dev for usage in the route table. On failure a caller will want
-  * to mctp_route_release().
-  *
-- * We expect that the caller has set rt->type, rt->min, rt->max, rt->dev and
-- * rt->mtu, and that the route holds a reference to rt->dev (via mctp_dev_hold).
-- * Other fields will be populated.
-+ * We expect that the caller has set rt->type, rt->dst_type, rt->min, rt->max,
-+ * rt->mtu and either rt->dev (with a reference held appropriately) or
-+ * rt->gateway. Other fields will be populated.
-  */
- static int mctp_route_add(struct net *net, struct mctp_route *rt)
- {
-@@ -1103,7 +1143,10 @@ static int mctp_route_add(struct net *net, struct mctp_route *rt)
- 	if (!mctp_address_unicast(rt->min) || !mctp_address_unicast(rt->max))
- 		return -EINVAL;
- 
--	if (!rt->dev)
-+	if (rt->dst_type == MCTP_ROUTE_DIRECT && !rt->dev)
-+		return -EINVAL;
-+
-+	if (rt->dst_type == MCTP_ROUTE_GATEWAY && !rt->gateway.eid)
- 		return -EINVAL;
- 
- 	switch (rt->type) {
-@@ -1172,6 +1215,7 @@ int mctp_route_add_local(struct mctp_dev *mdev, mctp_eid_t addr)
- 
- 	rt->min = addr;
- 	rt->max = addr;
-+	rt->dst_type = MCTP_ROUTE_DIRECT;
- 	rt->dev = mdev;
- 	rt->type = RTN_LOCAL;
- 
-@@ -1198,7 +1242,7 @@ void mctp_route_remove_dev(struct mctp_dev *mdev)
- 
- 	ASSERT_RTNL();
- 	list_for_each_entry_safe(rt, tmp, &net->mctp.routes, list) {
--		if (rt->dev == mdev) {
-+		if (rt->dst_type == MCTP_ROUTE_DIRECT && rt->dev == mdev) {
- 			list_del_rcu(&rt->list);
- 			/* TODO: immediate RTM_DELROUTE */
- 			mctp_route_release(rt);
-@@ -1291,21 +1335,28 @@ static const struct nla_policy rta_mctp_policy[RTA_MAX + 1] = {
- 	[RTA_DST]		= { .type = NLA_U8 },
- 	[RTA_METRICS]		= { .type = NLA_NESTED },
- 	[RTA_OIF]		= { .type = NLA_U32 },
-+	[RTA_GATEWAY]		= NLA_POLICY_EXACT_LEN(sizeof(struct mctp_fq_addr)),
- };
- 
- static const struct nla_policy rta_metrics_policy[RTAX_MAX + 1] = {
- 	[RTAX_MTU]		= { .type = NLA_U32 },
- };
- 
--/* base parsing; common to both _lookup and _populate variants */
-+/* base parsing; common to both _lookup and _populate variants.
-+ *
-+ * For gateway routes (which have a RTA_GATEWAY, and no RTA_OIF), we populate
-+ * *gatweayp. for direct routes (RTA_OIF, no RTA_GATEWAY), we populate *mdev.
-+ */
- static int mctp_route_nlparse_common(struct net *net, struct nlmsghdr *nlh,
- 				     struct netlink_ext_ack *extack,
- 				     struct nlattr **tb, struct rtmsg **rtm,
- 				     struct mctp_dev **mdev,
-+				     struct mctp_fq_addr *gatewayp,
- 				     mctp_eid_t *daddr_start)
- {
-+	struct mctp_fq_addr *gateway = NULL;
-+	unsigned int ifindex = 0;
- 	struct net_device *dev;
--	unsigned int ifindex;
- 	int rc;
- 
- 	rc = nlmsg_parse(nlh, sizeof(struct rtmsg), tb, RTA_MAX,
-@@ -1321,11 +1372,44 @@ static int mctp_route_nlparse_common(struct net *net, struct nlmsghdr *nlh,
- 	}
- 	*daddr_start = nla_get_u8(tb[RTA_DST]);
- 
--	if (!tb[RTA_OIF]) {
--		NL_SET_ERR_MSG(extack, "ifindex missing");
-+	if (tb[RTA_OIF])
-+		ifindex = nla_get_u32(tb[RTA_OIF]);
-+
-+	if (tb[RTA_GATEWAY])
-+		gateway = nla_data(tb[RTA_GATEWAY]);
-+
-+	if (ifindex && gateway) {
-+		NL_SET_ERR_MSG(extack,
-+			       "cannot specify both ifindex and gateway");
-+		return -EINVAL;
-+
-+	} else if (ifindex) {
-+		dev = __dev_get_by_index(net, ifindex);
-+		if (!dev) {
-+			NL_SET_ERR_MSG(extack, "bad ifindex");
-+			return -ENODEV;
-+		}
-+		*mdev = mctp_dev_get_rtnl(dev);
-+		if (!*mdev)
-+			return -ENODEV;
-+		gatewayp->eid = 0;
-+
-+	} else if (gateway) {
-+		if (!mctp_address_unicast(gateway->eid)) {
-+			NL_SET_ERR_MSG(extack, "bad gateway");
-+			return -EINVAL;
-+		}
-+
-+		gatewayp->eid = gateway->eid;
-+		gatewayp->net = gateway->net != MCTP_NET_ANY ?
-+			gateway->net :
-+			READ_ONCE(net->mctp.default_net);
-+		*mdev = NULL;
-+
-+	} else {
-+		NL_SET_ERR_MSG(extack, "no route output provided");
- 		return -EINVAL;
- 	}
--	ifindex = nla_get_u32(tb[RTA_OIF]);
- 
- 	*rtm = nlmsg_data(nlh);
- 	if ((*rtm)->rtm_family != AF_MCTP) {
-@@ -1338,16 +1422,6 @@ static int mctp_route_nlparse_common(struct net *net, struct nlmsghdr *nlh,
- 		return -EINVAL;
- 	}
- 
--	dev = __dev_get_by_index(net, ifindex);
--	if (!dev) {
--		NL_SET_ERR_MSG(extack, "bad ifindex");
--		return -ENODEV;
--	}
--
--	*mdev = mctp_dev_get_rtnl(dev);
--	if (!*mdev)
--		return -ENODEV;
--
- 	return 0;
- }
- 
-@@ -1361,16 +1435,25 @@ static int mctp_route_nlparse_lookup(struct net *net, struct nlmsghdr *nlh,
- 				     unsigned int *daddr_extent)
- {
- 	struct nlattr *tb[RTA_MAX + 1];
-+	struct mctp_fq_addr gw;
- 	struct mctp_dev *mdev;
- 	struct rtmsg *rtm;
- 	int rc;
- 
- 	rc = mctp_route_nlparse_common(net, nlh, extack, tb, &rtm,
--				       &mdev, daddr_start);
-+				       &mdev, &gw, daddr_start);
- 	if (rc)
- 		return rc;
- 
--	*netid = mdev->net;
-+	if (mdev) {
-+		*netid = mdev->net;
-+	} else if (gw.eid) {
-+		*netid = gw.net;
-+	} else {
-+		/* bug: _nlparse_common should not allow this */
-+		return -1;
-+	}
-+
- 	*type = rtm->rtm_type;
- 	*daddr_extent = rtm->rtm_dst_len;
- 
-@@ -1385,11 +1468,13 @@ static int mctp_route_nlparse_populate(struct net *net, struct nlmsghdr *nlh,
- 	struct nlattr *tbx[RTAX_MAX + 1];
- 	struct nlattr *tb[RTA_MAX + 1];
- 	unsigned int daddr_extent;
-+	struct mctp_fq_addr gw;
-+	struct mctp_dev *mdev;
- 	struct rtmsg *rtm;
- 	int rc;
- 
- 	rc = mctp_route_nlparse_common(net, nlh, extack, tb, &rtm,
--				       &rt->dev, &rt->min);
-+				       &mdev, &gw, &rt->min);
- 	if (rc)
- 		return rc;
- 
-@@ -1400,6 +1485,15 @@ static int mctp_route_nlparse_populate(struct net *net, struct nlmsghdr *nlh,
- 		return -EINVAL;
- 	}
- 
-+	if (gw.eid) {
-+		rt->dst_type = MCTP_ROUTE_GATEWAY;
-+		rt->gateway.eid = gw.eid;
-+		rt->gateway.net = gw.net;
-+	} else {
-+		rt->dst_type = MCTP_ROUTE_DIRECT;
-+		rt->dev = mdev;
-+	}
-+
- 	rt->type = rtm->rtm_type;
- 	rt->max = rt->min + daddr_extent;
- 	rt->mtu = 0;
-@@ -1433,7 +1527,8 @@ static int mctp_newroute(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	if (rc < 0)
- 		goto err_free;
- 
--	mctp_dev_hold(rt->dev);
-+	if (rt->dst_type == MCTP_ROUTE_DIRECT)
-+		mctp_dev_hold(rt->dev);
- 
- 	rc = mctp_route_add(net, rt);
- 	if (!rc)
-@@ -1488,7 +1583,6 @@ static int mctp_fill_rtinfo(struct sk_buff *skb, struct mctp_route *rt,
- 	hdr->rtm_tos = 0;
- 	hdr->rtm_table = RT_TABLE_DEFAULT;
- 	hdr->rtm_protocol = RTPROT_STATIC; /* everything is user-defined */
--	hdr->rtm_scope = RT_SCOPE_LINK; /* TODO: scope in mctp_route? */
- 	hdr->rtm_type = rt->type;
- 
- 	if (nla_put_u8(skb, RTA_DST, rt->min))
-@@ -1505,13 +1599,17 @@ static int mctp_fill_rtinfo(struct sk_buff *skb, struct mctp_route *rt,
- 
- 	nla_nest_end(skb, metrics);
- 
--	if (rt->dev) {
-+	if (rt->dst_type == MCTP_ROUTE_DIRECT) {
-+		hdr->rtm_scope = RT_SCOPE_LINK;
- 		if (nla_put_u32(skb, RTA_OIF, rt->dev->dev->ifindex))
- 			goto cancel;
-+	} else if (rt->dst_type == MCTP_ROUTE_GATEWAY) {
-+		hdr->rtm_scope = RT_SCOPE_UNIVERSE;
-+		if (nla_put(skb, RTA_GATEWAY,
-+			    sizeof(rt->gateway), &rt->gateway))
-+			goto cancel;
- 	}
- 
--	/* TODO: conditional neighbour physaddr? */
--
- 	nlmsg_end(skb, nlh);
- 
- 	return 0;
-diff --git a/net/mctp/test/utils.c b/net/mctp/test/utils.c
-index 6b4dc40d882c912575e28dfd8f2e730bf346885f..97b05e340586f69d8ba04c970b0ee88391db006a 100644
---- a/net/mctp/test/utils.c
-+++ b/net/mctp/test/utils.c
-@@ -134,6 +134,7 @@ struct mctp_test_route *mctp_test_create_route(struct net *net,
- 	rt->rt.max = eid;
- 	rt->rt.mtu = mtu;
- 	rt->rt.type = RTN_UNSPEC;
-+	rt->rt.dst_type = MCTP_ROUTE_DIRECT;
- 	if (dev)
- 		mctp_dev_hold(dev);
- 	rt->rt.dev = dev;
-@@ -176,7 +177,7 @@ void mctp_test_route_destroy(struct kunit *test, struct mctp_test_route *rt)
- 	list_del_rcu(&rt->rt.list);
- 	rtnl_unlock();
- 
--	if (rt->rt.dev)
-+	if (rt->rt.dst_type == MCTP_ROUTE_DIRECT && rt->rt.dev)
- 		mctp_dev_put(rt->rt.dev);
- 
- 	refs = refcount_read(&rt->rt.refs);
+ net/xdp/xsk.c                            | 17 ++++---
+ tools/testing/selftests/bpf/xskxceiver.c | 60 +++++++++++++++++++-----
+ 2 files changed, 58 insertions(+), 19 deletions(-)
 
 -- 
-2.39.5
+2.41.3
 
