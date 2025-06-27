@@ -1,98 +1,111 @@
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC613C01;
-	Fri, 27 Jun 2025 08:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2A0237164
+	for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 08:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751011960; cv=none; b=Qa6zNIiXH6ELf96JwPED9zHJKyw5PuXEYih/ggAl8uxxF3mhRHAqyofG2mZEN1fGfJdeN26NZlPU82eG11l4O6Zvehb+irXimaGZ8XgrGCojmeAnayDbV8TwT0PoTZA9CAtJxqvAL4UwToXR8gth3lr6XUAU3QPLDQtrLyKx3kQ=
+	t=1751012529; cv=none; b=tDbnIwULaqYTKVTzrDEDx9Ft86sn4e+ZLQf/+sZw9ycP3wjEMbTslHD4baX8hcphgHevZL8Kd6hmWBHQDkl/ydIr9ZorzaG7mn17Z2EEaGJom2EfmhzSg9k0JKyJLqs7XRDmr0PxMkNxvPuoXUsmWj3ht/7Ohf7SxZKisAejqCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751011960; c=relaxed/simple;
-	bh=ebVQ0A3hU/5Zztr0mcToWRPpdY94o5HaUmdOTQV0IyE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hyFLh4Fw2lKSK4/62YzD5KL4K0gqy9LJhDU8yz9LXvyF/m7GzEnsy734LYjiCYMeyxDQsn4/TYDcLXqsA7ShbGX5yWCGXKhVQ452F1lZkNxcgZzP513OAgxVufCRVAMSFQgZbNbm+2vAK7NUkN1+16JWkpAHNuOFiyQWRRSdXeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.22.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpsz4t1751011796tf0bed90b
-X-QQ-Originating-IP: dLd81xpOnw91kDLzRi/eNWHbMODsXd9cbmUNE83HUFM=
-Received: from w-MS-7E16.trustnetic.com ( [36.27.0.255])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 27 Jun 2025 16:09:50 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 9987340576110294093
-EX-QQ-RecipientCnt: 10
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: mengyuanlou@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: libwx: fix the incorrect display of the queue number
-Date: Fri, 27 Jun 2025 16:09:38 +0800
-Message-ID: <7F26D304FEA08514+20250627080938.84883-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1751012529; c=relaxed/simple;
+	bh=7L7gnA+PMqOvFzB9aOAb6Z3I8wPBf+AMV/Vnk3gf7KU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PHoJzG2V7A523yE4z8i8cqJZozFUVJwYrifKiYlyTq5BqMKcV4pp/IbEY2msWC5Dfd2jtagivijtOHU9Z1sUNF9g/VFnPFj+s7EBJKqhyYxs7c8/KhZy+YYV06+CyzrkviQPe7VxpvkMfbAKMqI9cnloL7c1yYfDAb6u8xdfxbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h4kCz8t9; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h4kCz8t9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751012526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zdhaPmsWFArhsXFsISpX5ZipUl19a5SM0RfIr3emwGI=;
+	b=h4kCz8t9918FeB2B47Kp/LfQUPldYKkkKrJKnyw4K2hv5VOwJx6J5Urg3sywplWP3Ft/iU
+	0A6+v3fc/cGSPXdpczA3wrGTyuYaW0WkfZzG8OnGNKD0VJ0BPocGJzzupRMoZt1GLW6FJA
+	1K7mMR9OCqDFBjAyB8iwzC2IeVhcG2I=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-575-3VmI-TXTNXGFCVtMNKzLxw-1; Fri, 27 Jun 2025 04:22:05 -0400
+X-MC-Unique: 3VmI-TXTNXGFCVtMNKzLxw-1
+X-Mimecast-MFC-AGG-ID: 3VmI-TXTNXGFCVtMNKzLxw_1751012524
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a56b3dee17so1470309f8f.0
+        for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 01:22:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751012524; x=1751617324;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zdhaPmsWFArhsXFsISpX5ZipUl19a5SM0RfIr3emwGI=;
+        b=TmI+MMaA3xQUuh59pCC17RUPQAeRUhmL/Ts93RxGQNKnch8EiG6qMoe8iYhoFgbQ9R
+         Hk2vqqXfG4zpYUJ2a0BP6COSgOWTqldyTdBp+cUs3wWx+2/dBskE6ESFO75gPtH/ELwO
+         hbZoFfhXW8VVvWp6Evf36XY8eU1sJpjmsFOP0hyYDKYoSO8Kbvfnq4BUUoBfBWkVEngc
+         xq8thvyh8kPUybGPkcFyaL+JjlUsoCnvhn7XRiUYaDQ6QuSvMCm4NaYKu+Jtcsgb1JK7
+         oO/JGRlbSNtusYlPmyjGhJ6HyEeI0LFv8Y9c0rfTSTO8yK6uFvum1GzIzlst80gY2495
+         /X9A==
+X-Forwarded-Encrypted: i=1; AJvYcCXPImPrG1ImhMiE/DkKcgHM0/KcQiOowoYJqHqW0O9Ac0lPpDg5pQk63TpJcroXLUJIeKIcNRU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzzlkf+YAKgstsOcqOu23aMabCtuvEJXyxq9xgFLF30SbUTKjKb
+	Iqje/w9Q21OYh0kX+eap0twWsbgYbZ/J3VRjGzDPPCqxMoYatzaD6arIhPoQhnb7+giDhAbzMg/
+	hyT8M8WCHib2Iz0th+m25kcwlA56uWgIQ6PBfu9OTWYz3IkT4d3R3zzir
+X-Gm-Gg: ASbGncu0A1C2rLTYSP5RGnIX8MjlbHp/1zREa3MfiEjMAGCEzh3mlXxOcFFBjezRXJK
+	9cZiz575QCGLfHfW2n/wfb6yal0RMhqQOoaJk4aJTPguWqVQIMMNUqiYIjgpDZ+lf/Ee3PQAUxj
+	6qw40RcGcdM8CVGIc+uP/mRLvBSUhheY2UDkmICdgsM6GNK/1Rb/04KzzPefEErHfg5hk8WHj3+
+	2ACXEm+HwqO3ac62ADQTXddAr4C7InyqYN9e4H3JB1LunLOHI2+biU6v5tiyPyqGOt18zo9YxPQ
+	nkSiHf0waEl0zOHNEC3jR9qNiBKcs57UE21mvC9KdGfQHqXIzCg=
+X-Received: by 2002:adf:9cc9:0:b0:3a5:271e:c684 with SMTP id ffacd0b85a97d-3a6f3153609mr4583315f8f.24.1751012523788;
+        Fri, 27 Jun 2025 01:22:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGE6kxl77BfW2oseBFkSC1JtOT5bepuvfPux+euP6AbKgN4iSeaZr6ihXIz7XSCpkAgQOS7Lw==
+X-Received: by 2002:adf:9cc9:0:b0:3a5:271e:c684 with SMTP id ffacd0b85a97d-3a6f3153609mr4583297f8f.24.1751012523368;
+        Fri, 27 Jun 2025 01:22:03 -0700 (PDT)
+Received: from [192.168.1.108] (ip73.213-181-144.pegonet.sk. [213.181.144.73])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a892e52b9esm2024043f8f.61.2025.06.27.01.22.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Jun 2025 01:22:02 -0700 (PDT)
+Message-ID: <bdca5369-57dd-4db4-82db-a2622d26c550@redhat.com>
+Date: Fri, 27 Jun 2025 10:22:01 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: M8Zk4Li7PoFirik9kQDftExlL36D72JxX7A7KSZH+H5S9yXzmWNdsCX4
-	3Rt5issrIUo+M64oIwLwHMhXuG08ffICaLaxkqnuvTJbzOBkdqIPZt8RHvcc/dKk09m2J2E
-	jPmO4ZBUcfq5S2fW8lV9GDC/ME51H5Ws+gYxL96mpTZ4BSUtgLbp3ByHOI8fxK2MjgaFPQy
-	Z8i7ikQ7xixFyly2T1rrUHZgq9Gu2hIwAanj3hw998hVtYA7nXgcD4SXZ9kYTZWAt49Fk/C
-	w7HUuV8RpkWrYmvRA5Z70F3gDQ+eTs6FO2pk+O/CFGMmQnv3kPMMwQ1N9pBvJMMUnAR0I2b
-	8zZZTwgA8GvI3N19Dof6qizlfXWRX6orYOi6ucWVnG44Su8CEQogw3KWnSgVup8bbKHGFOi
-	H5x1yxGRXS08gAzs8CVx2oL8gD9Zc65BFdi7BQtbeUp8hAciATp+CDTt0ZjgzKrzhfD3M0y
-	D2EvKi/UgoQlifLQlInwa0tf/DrReCj3amoFrt+yhTtJlvblRW7ysSQ58EJdxSMDPhTbDCY
-	iSm2tYQnBN6Y9JZ10UW9lnIrmWifcMQwNgDAPRIZEmwfK8apVDBduTtUXSRVm6qV+FH218E
-	kAEMCpTZ0E7Tyv/BRj4DoUPzTqsrT1hH9CfM5iBbqOSqdifnkvAXX2QOfGaRayHNgVe1NVU
-	mq3AmRUZbhW+WcP+WRAFLlM/eyYkk4w8KKXujvxyxJfQO0/hlILPMjpv4epP0KlyZMBXd7A
-	YjW0PPe7gbovMOhugjwDODMAXPCZlx77c3X7Sah6qj78+EZd2U4xsKDibyw7O/Hcv4cUOeG
-	889RZSqqUcoZVYWkwQ2Q1lFNaPR+LN+c58BJz+p4uv91MnnqOjSgmVXEhMrJ9UMDqEnkobs
-	dj6kDjGOZCA+ZDBX8fJBUG3RwXXn4+cAn4XaQKNN8y8l3ob8sy+VcHSGYrIYoxyXpelp0+j
-	bn3lBDRrSc03xuFW92lVEyS7fgJyvCyNOquL9pl2Q7pVpRH4AiVXN4IWhTq5IaVgp7Wk/jP
-	uh7bu+Gn4jG6J/xSRR0fln2C/kubZr05APmmNX8LyIXZfrZxGu2N4q1Gu8wZ0=
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: linux-next: build warning after merge of the bpf-next tree
+To: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>
+Cc: bpf <bpf@vger.kernel.org>, Networking <netdev@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>
+References: <20250627174759.3a435f86@canb.auug.org.au>
+From: Viktor Malik <vmalik@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20250627174759.3a435f86@canb.auug.org.au>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-When setting "ethtool -L eth0 combined 1", the number of RX/TX queue is
-changed to be 1. RSS is disabled at this moment, and the indices of FDIR
-have not be changed in wx_set_rss_queues(). So the combined count still
-shows the previous value. This issue was introduced when supporting
-FDIR. Fix it for those devices that support FDIR.
+On 6/27/25 09:47, Stephen Rothwell wrote:
+> Hi all,
+> 
+> After merging the bpf-next tree, today's linux-next build (htmldocs)
+> produced this warning:
+> 
+> kernel/bpf/helpers.c:3465: warning: expecting prototype for bpf_strlen(). Prototype was for bpf_strnlen() instead
+> kernel/bpf/helpers.c:3557: warning: expecting prototype for strcspn(). Prototype was for bpf_strcspn() instead
+> 
+> Introduced by commit
+> 
+>   e91370550f1f ("bpf: Add kfuncs for read-only string operations")
 
-Fixes: 34744a7749b3 ("net: txgbe: add FDIR info to ethtool ops")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_ethtool.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Oh, good catch, thanks for the report.
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index c12a4cb951f6..d9de600e685a 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -438,6 +438,10 @@ void wx_get_channels(struct net_device *dev,
- 	/* record RSS queues */
- 	ch->combined_count = wx->ring_feature[RING_F_RSS].indices;
- 
-+	/* nothing else to report if RSS is disabled */
-+	if (ch->combined_count == 1)
-+		return;
-+
- 	if (test_bit(WX_FLAG_FDIR_CAPABLE, wx->flags))
- 		ch->combined_count = wx->ring_feature[RING_F_FDIR].indices;
- }
--- 
-2.48.1
+Just sent a fix to bpf-next [1].
+
+Viktor
+
+[1]
+https://lore.kernel.org/bpf/20250627082001.237606-1-vmalik@redhat.com/T/#u
 
