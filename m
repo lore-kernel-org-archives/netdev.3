@@ -1,37 +1,37 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB814277026
-	for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 08:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A0A27EC98
+	for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 08:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751014369; cv=none; b=hT3/7GQJQ2Yhu9zgSMgKTP8NWgb8XHYTNpFkqEhSbLihs18ylStkMTSYOTRDFcvWRmS2So9jGaXBawXbbdZW+IgK5ASIXb8PeI8O4zYrylatPoB1/9dkmFUIiBtaaVjLZwqZH/phcD/QiAKR3cLI1hTBXWiNmpaHuijKUnVBUBM=
+	t=1751014370; cv=none; b=JvlB2b07CFTXScpZ8EhGCHVv67fpeXQbLeyG1lUdH07rSL6/zueN5Nz9Vo0/GIAJTcBu9t+QfIGZ9g0+2MPubyI8tn4iHOVhNG1P4gonWkBsSrADXjox29jH6kd6hiqJ76rP+quzHcpaUzja5cuHCqlY/9EYIwSOAoQWRZH8iAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751014369; c=relaxed/simple;
-	bh=TtIR8UYQdItw2vezph2XTVibrPgIo9NfYNC6HZbrLzs=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jnB8qoWTgY7+9Y4QUXkaDgOSDu8Z84Y5OEZjbsHAJd5twF8voW6MUL5bLCfaCCHaWqXO2KjiQQ/AHkXR8YIAQPqKL7z7H0Jey1AjpHfaJuWUN1cRz4knPcJmuMpNux5xuR5ie/xzSkgRqs1WS2adlJncmtP/HdA+klZdligSO8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=ay+21rgJ; arc=none smtp.client-ip=203.29.241.158
+	s=arc-20240116; t=1751014370; c=relaxed/simple;
+	bh=Yqo35/JjWo5AKin8vnjQacBT1V0azn+wwWy52bLYP2c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=uq1U7gNMFHYnLorGbT90KxRskpZCRfw4KjB0N1Xzv56Qn8zA3enreNFxQuVG7INcgrncxR7wv7oyImNBBKatY0Xp4KnQnB7D9veS6NP/ERK/ZD2HgZLpB8hsHB8C+UiqtBx1CGvZxgNFJN+GuSAR3pFG1Uz5oFCqndcCIx8cw+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=djuLSddn; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="ay+21rgJ"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="djuLSddn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1751014365;
-	bh=tK377rKA/I2vUb+E72lKTE07/N51K4Q0nDeqZmYcaoY=;
-	h=From:Subject:Date:To:Cc;
-	b=ay+21rgJQMemVRkkJvXYZrMb3RCKLr58GUR5w3eNKfDuKXuBZjsLnNS9doUP4dG/A
-	 1O/85nXIrhI6tKgTBXS4+0ta1MRwReS4oA3uUUV/CFA4ymq/0LzoJN2NtRT64QQ7PI
-	 BnzLW9DEIrhTfDmfqKJr76DiZtLq4DVY3nk/EIyiRKxmxNzeMkfmSQlMCPkOoznzuz
-	 n+3FvhPB4rdzWMc6um3TZ6az9uh4HMP4x6YsK/J09wFZAmD1/2Aaf/aqS4kpkG+PJN
-	 C1V2kcgLAfQIXR68HZO/DbzMcdIqZrq6FqX2K2R2t0zQM+dL8ZnHFXLp/UZ4Wr0vIB
-	 AeUtRy4hg1akA==
+	d=codeconstruct.com.au; s=2022a; t=1751014366;
+	bh=NbNRd9b/r2OE6Grr7jCtjxRecGuo5XQxSiiBw8aVTKU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=djuLSddnpKTyQcP7eah0eYmFVllLhSuBjJP3VV/ioqW4jmaC6PKf9CZZF/moX+c3i
+	 FT76qY1rnLPvbrwCr6Ul4mp9Xnf7+9AlCCSFlJKmvMMG1K9qrnsAFMfARghuGe1G5M
+	 C09/RILycEbw6+zMXdMrfM1A7w5pa+PWezqARjNSqPeBKA8K/hJgdxmfNCQc4gBeB3
+	 quCqumWoIcGH+/6/YDu3TZgqiPgSWMxKK4EPu92UMqoIOKLV3kTm/D+ohnsucvGDZL
+	 dG8X7XbEM9WZjGTsYtP3Gan85hG4wPQnGBIKLPiDPcv8lxEWzS+kWLxFMrtjzrfQ1S
+	 cnEG8xj6UpVxg==
 Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id 7D85169DE7; Fri, 27 Jun 2025 16:52:45 +0800 (AWST)
+	id 2840C69E1A; Fri, 27 Jun 2025 16:52:46 +0800 (AWST)
 From: Jeremy Kerr <jk@codeconstruct.com.au>
-Subject: [PATCH net-next v4 00/14] net: mctp: Add support for gateway
- routing
-Date: Fri, 27 Jun 2025 16:52:16 +0800
-Message-Id: <20250627-dev-forwarding-v4-0-72bb3cabc97c@codeconstruct.com.au>
+Date: Fri, 27 Jun 2025 16:52:18 +0800
+Subject: [PATCH net-next v4 02/14] net: mctp: test: make cloned_frag
+ buffers more appropriately-sized
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,11 +40,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMBbXmgC/33NMQ4CIRQE0KsYajH/g7vrWnkPY7HARykEA4gas
- 3eXUBmNlpPJvHmyRNFRYtvFk0UqLrnga1gvF0yfJn8k7kzNTIDooBPADRVuQ7xN0Th/5DAgjoN
- cD6Asq6NLJOvuDdwzT5l7umd2qM3JpRzioz0VbH1De8RPtCAH3qt+VGhJycHudDCkg085XnVe6
- XBeTdemFvEujV+SqJK0G9wAKui1+CPJN0l0X5KskqgfykhAqeQPaZ7nF64RHA5VAQAA
-X-Change-ID: 20250520-dev-forwarding-0711973470bf
+Message-Id: <20250627-dev-forwarding-v4-2-72bb3cabc97c@codeconstruct.com.au>
+References: <20250627-dev-forwarding-v4-0-72bb3cabc97c@codeconstruct.com.au>
+In-Reply-To: <20250627-dev-forwarding-v4-0-72bb3cabc97c@codeconstruct.com.au>
 To: Matt Johnston <matt@codeconstruct.com.au>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -52,83 +50,56 @@ To: Matt Johnston <matt@codeconstruct.com.au>,
 Cc: netdev@vger.kernel.org
 X-Mailer: b4 0.14.2
 
-This series adds a gateway route type for the MCTP core, allowing
-non-local EIDs as the match for a route.
+In our input_cloned_frag test, we currently allocate our test buffers
+arbitrarily-sized at 100 bytes.
 
-Example setup using the mctp tools:
-
-    mctp route add 9 via mctpi2c0
-    mctp neigh add 9 dev mctpi2c0 lladdr 0x1d
-    mctp route add 10 gw 9
-
-- will route packets to eid 10 through mctpi2c0, using a dest lladdr
-of 0x1d (ie, that of the directly-attached eid 9).
-
-The core change to support this is the introduction of a struct
-mctp_dst, which represents the result of a route lookup. Since this
-involves a bit of surgery through the routing code, we add a few tests
-along the way.
-
-We're introducing an ABI change in the new RTM_{NEW,GET,DEL}ROUTE
-netlink formats, with the support for a RTA_GATEWAY attribute. Because
-we need a network ID specified to fully-qualify a gateway EID, the
-RTA_GATEWAY attribute carries the (net, eid) tuple in full:
-
-    struct mctp_fq_addr {
-        unsigned int net;
-        mctp_eid_t eid;
-    }
-
-Of course, any questions, comments etc are most welcome.
+We only expect to receive a max of 15 bytes from the socket, so reduce
+to a more appropriate size. There are some upcoming changes to the
+routing code which hit a frame-size limit on s390, so reduce the usage
+before that lands.
 
 Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
----
-Changes in v4:
-- avoid vla detection from const array-size initialiser, reported by ktr
-- Link to v3: https://lore.kernel.org/r/20250625-dev-forwarding-v3-0-2061bd3013b3@codeconstruct.com.au
-
-Changes in v3:
-- 02/14 (new): Reduce frame size for route_input_cloned_frag kunit test,
-  preventing -Wframe-size-larger-than warnings
-- Link to v2: https://lore.kernel.org/r/20250619-dev-forwarding-v2-0-3f81801b06c2@codeconstruct.com.au
-
-Changes in v2:
-- 12/13: prevent uninitialsed gateway variable in nlparse_common
-- 13/13: make test data static
-- commit message spelling fixes
-- Link to v1: https://lore.kernel.org/r/20250611-dev-forwarding-v1-0-6b69b1feb37f@codeconstruct.com.au
 
 ---
-Jeremy Kerr (14):
-      net: mctp: don't use source cb data when forwarding, ensure pkt_type is set
-      net: mctp: test: make cloned_frag buffers more appropriately-sized
-      net: mctp: separate routing database from routing operations
-      net: mctp: separate cb from direct-addressing routing
-      net: mctp: test: Add an addressed device constructor
-      net: mctp: test: Add extaddr routing output test
-      net: mctp: test: move functions into utils.[ch]
-      net: mctp: test: add sock test infrastructure
-      net: mctp: test: Add initial socket tests
-      net: mctp: pass net into route creation
-      net: mctp: remove routes by netid, not by device
-      net: mctp: allow NL parsing directly into a struct mctp_route
-      net: mctp: add gateway routing support
-      net: mctp: test: Add tests for gateway routes
-
- include/net/mctp.h         |  52 +++-
- include/uapi/linux/mctp.h  |   8 +
- net/mctp/af_mctp.c         |  62 ++---
- net/mctp/route.c           | 563 +++++++++++++++++++++++++++--------------
- net/mctp/test/route-test.c | 612 +++++++++++++++++++++++++++++----------------
- net/mctp/test/sock-test.c  | 229 +++++++++++++++++
- net/mctp/test/utils.c      | 196 ++++++++++++++-
- net/mctp/test/utils.h      |  44 ++++
- 8 files changed, 1310 insertions(+), 456 deletions(-)
+v4:
+- don't use const size_t as array size const, it isn't const enough, so
+  triggers -Wvla-larger-than warnings. Reported by ktr.
+v3:
+- new commit, preventing -Wframe-larger-than issues for the upcoming
+  change, reported by ktr.
 ---
-base-commit: 0097c4195b1d0ca57d15979626c769c74747b5a0
-change-id: 20250520-dev-forwarding-0711973470bf
+ net/mctp/test/route-test.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-Best regards,
+diff --git a/net/mctp/test/route-test.c b/net/mctp/test/route-test.c
+index 06c1897b685a8bdfd6bb4f1bccaacb53b0cd54ba..44ebc8e4e30c6a8f91360926ede99510df2576b2 100644
+--- a/net/mctp/test/route-test.c
++++ b/net/mctp/test/route-test.c
+@@ -933,20 +933,18 @@ static void mctp_test_route_input_cloned_frag(struct kunit *test)
+ 		RX_FRAG(FL_S, 0),
+ 		RX_FRAG(FL_E, 1),
+ 	};
++	const size_t data_len = 3; /* arbitrary */
++	u8 compare[3 * ARRAY_SIZE(hdrs)];
++	u8 flat[3 * ARRAY_SIZE(hdrs)];
+ 	struct mctp_test_route *rt;
+ 	struct mctp_test_dev *dev;
+ 	struct sk_buff *skb[5];
+ 	struct sk_buff *rx_skb;
+ 	struct socket *sock;
+-	size_t data_len;
+-	u8 compare[100];
+-	u8 flat[100];
+ 	size_t total;
+ 	void *p;
+ 	int rc;
+ 
+-	/* Arbitrary length */
+-	data_len = 3;
+ 	total = data_len + sizeof(struct mctp_hdr);
+ 
+ 	__mctp_route_test_init(test, &dev, &rt, &sock, MCTP_NET_ANY);
+
 -- 
-Jeremy Kerr <jk@codeconstruct.com.au>
+2.39.5
 
