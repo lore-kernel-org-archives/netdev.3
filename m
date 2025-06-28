@@ -1,117 +1,244 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9349222584
-	for <netdev@vger.kernel.org>; Sat, 28 Jun 2025 08:45:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D552C22331C
+	for <netdev@vger.kernel.org>; Sat, 28 Jun 2025 09:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751100303; cv=none; b=YKKWYWylyHU3iHURPs+r218f5gJX5CarFZOpEFDTfq26dG8q8XiOQn6+HFYi3vv2UnWb98CEc5p2UrrfZlGPimASCnR41EIltUQUadlDY+vSoZIm8Zcpz8ya+bQbiF5N+IkQzrSvrEKYRvoP4PupTDt6eUTLkVrFa3AYsPO1Ev0=
+	t=1751101422; cv=none; b=OLMBflwSOtpaP0CZEQvAV0fOJkjl1dQD9OGPJUOFQTXSqXGEhGUl1rCZ6i1pHfYHioqglF11rXYjlfwUKimeInk9TzcnB0VJW/sysJV5Bu8TLjXvbGoo0MEAAJ0GuSS/QAZ5+5FqkTzHy7r/PHOAZngyVnP5Zl8PyQLzdrSzCpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751100303; c=relaxed/simple;
-	bh=f3o9OoZUEbBDeBbUxOB3GnLGKqZpAG8HFhx3v3nlo/s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xhzly47OYXF+LjSY17l09LX/ffdvvJkjiRR2cfpOcahr8RM23Fx+Ssr17d7EEnCPhZMv+vxNWcm2ouWPvlp8PL3FLZlhU+VFRQj+LHIkFDtMSMACUDiR6M+3fJjw/qGAb4xPEDIFCLYRlD/PMysCBBZQbgIGQt2yfB/UGVCKXOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B08+/v2f; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1751101422; c=relaxed/simple;
+	bh=C1RUEfL3U6ktbAFjvGq274icPXL9Jkfk4QLyxZWoaFw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=i0PB499t/8Hz4kTd9/kFKNiTYUfF+SAl4b5I3z/AixCMU5tiBglGgjDJhm5lAQpVu5yUI73WTuILBiwsCkodQgrYrV169Evlk2wnGQSY8+9JhuLmczfTtosblg7jL6IbR0pBZmJdPjGp9Lk3zcXWU5QiamUc1MaexMOPJVgB9uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DowkgcTz; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B08+/v2f"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4a6f3f88613so5798011cf.1
-        for <netdev@vger.kernel.org>; Sat, 28 Jun 2025 01:45:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751100301; x=1751705101; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/nmnfrusCNXdjpYHJ43O4MY52XtsNNDAe7B32gXZR/A=;
-        b=B08+/v2fGg+9DMi96O5lWHnkIwL9hBfG/wZVW11A3dfylVQAL7PBgRCbPFXewsYolW
-         TBOPcyswj4KZIA3xmvaUE3mScm81a1s1Xg3IkUvcShQSgi10WLhImnOKPbKQP+0c9kN+
-         NA/19wHB6OkvJYnmEH1Olmu3rsHPSbCsOxJ2dYdPWM8IO9p3NLF6phfpO1TjYKiR9qlz
-         Gf6JBgLNnYVnsO1okmSa9xLVtEOOG4yMg/tn7QMq2oixJch0oRuiagCEDZEuvLUW5NbU
-         8Ik5rbUzyAbfojkRH2WYm+HS8X6Zq8+dWOr36Gslq5o8wuN4aPC8wZNS9xW0OVoTo9W+
-         zQxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751100301; x=1751705101;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/nmnfrusCNXdjpYHJ43O4MY52XtsNNDAe7B32gXZR/A=;
-        b=qWnFczXqEApA1DKMWvxI7MnCFC31Va28nMXUpc8t8n6ALudd11lFl3nDDwDYGQOrH4
-         f69yQeDAf5NefGowh8o0+vCNknvFaDzFYL0p+bZcHxGnkIgAcGgsXSScd5HLjoM32rpb
-         ym5O7IAwe6Rz0b1pIO1JlmyZJTW1UytUglVtKFCSCHTlW9037f7afu94A/XAr5/I+RV4
-         XhhbLgFhO0bG+sFV4A+jcxaAVqR2bbDrVJh1C+KabLJ/lvscERvWCkDAIGzpLZ1ZevDD
-         Y6IGmqxM09VL4JLj7xHqj7Di9ajQcMzCBzLrNUADYQ4HJbcI3ha42NDetgETEfYrFYK/
-         mxoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXYF6g38Z6gH3imW1d4apoTyW73ghPt7fIXZjNaFp2kq3V+r17JTWReAK/R2OwC5Sb3QYSLmU0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWRTNlnUwAOoLGxaP3yRlEWinMvr7vCN5DXFler0CLQO94Tt4L
-	Dos3BkS+/+JwHf4azldKNs6KO2cxY6xaUYHxIGpx32inOJRj8ATo5aG70hF4ly4YsShBTWFG5AN
-	kze96Xy/qzebgIC7OYUWG+7+WDnUnX2OBllaVlmQs
-X-Gm-Gg: ASbGncutKw7/eFc3uGwLpTJA2UGO21i3rDkI0mMAzYCW+sOGYeEezdwQ7OR/2kSI1yN
-	R35lBpc9FPvms+sxxysGmUX+7xIY+U+/0gf9FfUfwkH4QfEshcvFDeRII8il2DZCC2ZmYlNUpjy
-	47ejIqR59WndZZdRzdEyWiwdgBgwvrkxS8SjFK0giaMU4E
-X-Google-Smtp-Source: AGHT+IEOmVnyFajIJ8a0GhgPX2/JYD/n70Gv15+Urivpy9ZmnV3HQI05bvkqKXfOyYfw16w5ldtEaRL1UFR0A99MQpw=
-X-Received: by 2002:a05:622a:1a27:b0:494:993d:ec2f with SMTP id
- d75a77b69052e-4a7fcab93bcmr96209851cf.12.1751100300350; Sat, 28 Jun 2025
- 01:45:00 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DowkgcTz"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1751101418;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Cu4UvP0WhUrIwMsfp2DxE5DkGiBKGgC1AcTaw2pOQM0=;
+	b=DowkgcTzPoMUYXNZ/UUZrHsp1Jr7ligBEq6CeLZW6hI4E4jn0jxj9D70ZfxqJjUpsmdItl
+	LodzNBsOmPCpUSnNMvQXNHd9HVmQx6l3g8VGg7hjf4GKCVJfR1Oa0nqgi1c95ghq977hyG
+	pvrVmjmMYcCifjyZPGyQ5BVNZ64vgEw=
+From: Frank Wunderlich <frank.wunderlich@linux.dev>
+To: MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Georgi Djakov <djakov@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Frank Wunderlich <frank-w@public-files.de>,
+	Johnson Wang <johnson.wang@mediatek.com>,
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Landen Chao <Landen.Chao@mediatek.com>,
+	DENG Qingfang <dqfext@gmail.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH v6 01/15] dt-bindings: net: mediatek,net: update for mt7988
+Date: Sat, 28 Jun 2025 11:03:12 +0200
+Message-ID: <20250628090330.57264-2-frank.wunderlich@linux.dev>
+In-Reply-To: <20250628090330.57264-1-frank.wunderlich@linux.dev>
+References: <20250628090330.57264-1-frank.wunderlich@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250626083512.GT1562@horms.kernel.org> <20250628081918.523857-1-malayarout91@gmail.com>
-In-Reply-To: <20250628081918.523857-1-malayarout91@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sat, 28 Jun 2025 01:44:49 -0700
-X-Gm-Features: Ac12FXx7HbqsaSi67Ecn8j0W_HA9gHLw_rRrRWO3BQVTSD-WwmLZmje0U1gXKqQ
-Message-ID: <CANn89iJUz2EXu_h-YbiNswixHo6z1EwcmQrfSk6o-MmBznWfWA@mail.gmail.com>
-Subject: Re: [PATCH v2] selftests: net: fix resource leak in napi_id_helper.c
-To: Malaya Kumar Rout <malayarout91@gmail.com>
-Cc: horms@kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Sat, Jun 28, 2025 at 1:19=E2=80=AFAM Malaya Kumar Rout
-<malayarout91@gmail.com> wrote:
->
-> Resolve minor resource leaks reported by cppcheck in napi_id_helper.c
->
-> cppcheck output before this patch:
-> tools/testing/selftests/drivers/net/napi_id_helper.c:37:3: error: Resourc=
-e leak: server [resourceLeak]
-> tools/testing/selftests/drivers/net/napi_id_helper.c:46:3: error: Resourc=
-e leak: server [resourceLeak]
-> tools/testing/selftests/drivers/net/napi_id_helper.c:51:3: error: Resourc=
-e leak: server [resourceLeak]
-> tools/testing/selftests/drivers/net/napi_id_helper.c:59:3: error: Resourc=
-e leak: server [resourceLeak]
-> tools/testing/selftests/drivers/net/napi_id_helper.c:67:3: error: Resourc=
-e leak: server [resourceLeak]
-> tools/testing/selftests/drivers/net/napi_id_helper.c:76:3: error: Resourc=
-e leak: server [resourceLeak]
->
-> cppcheck output after this patch:
-> No resource leaks found
->
-> Signed-off-by: Malaya Kumar Rout <malayarout91@gmail.com>
-> ---
->  .../selftests/drivers/net/napi_id_helper.c    | 19 +++++++++++++------
->  1 file changed, 13 insertions(+), 6 deletions(-)
->
-> diff --git a/tools/testing/selftests/drivers/net/napi_id_helper.c b/tools=
-/testing/selftests/drivers/net/napi_id_helper.c
-> index eecd610c2109..47dd3291bd55 100644
-> --- a/tools/testing/selftests/drivers/net/napi_id_helper.c
-> +++ b/tools/testing/selftests/drivers/net/napi_id_helper.c
-> @@ -34,7 +34,7 @@ int main(int argc, char *argv[])
->
->         if (setsockopt(server, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt=
-))) {
->                 perror("setsockopt");
-> -               return 1;
-> +               goto failure;
+From: Frank Wunderlich <frank-w@public-files.de>
 
-client variable is uninitialized at this point.
+Update binding for mt7988 which has 3 gmac and a sram for dma
+operations.
+
+MT7988 has 4 FE IRQs (currently only 2 are used) and 4 IRQs for use
+with RSS/LRO later.
+Add interrupt-names to make them accessible by name.
+
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+---
+v6:
+- update irq(name) min count to 4
+- move interrupt-names up and limiting for all socs below
+- add sram-property and drop second reg entry
+- drop minitems as there is only 1 item left now
+
+v5:
+- fix v4 logmessage and change description a bit describing how i get
+  the irq count.
+- update binding for 8 irqs with different names (rx,tx => fe0..fe3)
+  including the 2 reserved irqs which can be used later
+- change rx-ringX to pdmaX to be closer to hardware documentation
+
+v4:
+- increase max interrupts to 6 because of adding RSS/LRO interrupts (4)
+  and dropping 2 reserved irqs (0+3) around rx+tx
+- dropped Robs RB due to this change
+- allow interrupt names
+- add interrupt-names without reserved IRQs on mt7988
+  this requires mtk driver patch:
+  https://patchwork.kernel.org/project/netdevbpf/patch/20250616080738.117993-2-linux@fw-web.de/
+
+v2:
+- change reg to list of items
+---
+ .../devicetree/bindings/net/mediatek,net.yaml | 47 +++++++++++++++++--
+ 1 file changed, 44 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/net/mediatek,net.yaml b/Documentation/devicetree/bindings/net/mediatek,net.yaml
+index 9e02fd80af83..74a139000f60 100644
+--- a/Documentation/devicetree/bindings/net/mediatek,net.yaml
++++ b/Documentation/devicetree/bindings/net/mediatek,net.yaml
+@@ -28,7 +28,8 @@ properties:
+       - ralink,rt5350-eth
+ 
+   reg:
+-    maxItems: 1
++    items:
++      - description: Register for accessing the MACs.
+ 
+   clocks:
+     minItems: 2
+@@ -40,7 +41,19 @@ properties:
+ 
+   interrupts:
+     minItems: 1
+-    maxItems: 4
++    maxItems: 8
++
++  interrupt-names:
++    minItems: 1
++    items:
++      - const: fe0
++      - const: fe1
++      - const: fe2
++      - const: fe3
++      - const: pdma0
++      - const: pdma1
++      - const: pdma2
++      - const: pdma3
+ 
+   power-domains:
+     maxItems: 1
+@@ -54,6 +67,10 @@ properties:
+       - const: gmac
+       - const: ppe
+ 
++  sram:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description: phandle to mmio SRAM
++
+   mediatek,ethsys:
+     $ref: /schemas/types.yaml#/definitions/phandle
+     description:
+@@ -135,6 +152,10 @@ allOf:
+           minItems: 3
+           maxItems: 3
+ 
++        interrupt-names:
++          minItems: 3
++          maxItems: 3
++
+         clocks:
+           minItems: 4
+           maxItems: 4
+@@ -166,6 +187,9 @@ allOf:
+         interrupts:
+           maxItems: 1
+ 
++        interrupt-namess:
++          maxItems: 1
++
+         clocks:
+           minItems: 2
+           maxItems: 2
+@@ -192,6 +216,10 @@ allOf:
+           minItems: 3
+           maxItems: 3
+ 
++        interrupt-names:
++          minItems: 3
++          maxItems: 3
++
+         clocks:
+           minItems: 11
+           maxItems: 11
+@@ -232,6 +260,10 @@ allOf:
+           minItems: 3
+           maxItems: 3
+ 
++        interrupt-names:
++          minItems: 3
++          maxItems: 3
++
+         clocks:
+           minItems: 17
+           maxItems: 17
+@@ -274,6 +306,9 @@ allOf:
+         interrupts:
+           minItems: 4
+ 
++        interrupt-names:
++          minItems: 4
++
+         clocks:
+           minItems: 15
+           maxItems: 15
+@@ -312,6 +347,9 @@ allOf:
+         interrupts:
+           minItems: 4
+ 
++        interrupt-names:
++          minItems: 4
++
+         clocks:
+           minItems: 15
+           maxItems: 15
+@@ -350,6 +388,9 @@ allOf:
+         interrupts:
+           minItems: 4
+ 
++        interrupt-names:
++          minItems: 4
++
+         clocks:
+           minItems: 24
+           maxItems: 24
+@@ -382,7 +423,7 @@ allOf:
+             - const: xgp3
+ 
+ patternProperties:
+-  "^mac@[0-1]$":
++  "^mac@[0-2]$":
+     type: object
+     unevaluatedProperties: false
+     allOf:
+-- 
+2.43.0
+
