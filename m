@@ -1,91 +1,80 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECAD2BCFB;
-	Sat, 28 Jun 2025 04:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93904A33
+	for <netdev@vger.kernel.org>; Sat, 28 Jun 2025 05:14:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751085576; cv=none; b=GGUxyAVFc5+Z1v0I5cMG5xvm6tGcW+xA8YIdw2GniIOMS8QoGsnZ3ErlNTrfmycszWdsbtFFTmFWr5PDTetaTbefTDKLhEhH0jjhCirtyS9J4ojLs/c4tFYY8ieX35SiZiBCjltwMSUZjA9CcBzeQ5Rtap88YCZ7C8QtQL5MNcs=
+	t=1751087644; cv=none; b=qVSR1onYMarFQ+FJa9yKHfJO2V4wU9kVc8CrCVR2qrnDk1uV4UhVcbGpu6im2wXfTMB97qcYaFkhVO1hE9TxvoykVaN7EbLnRyERWMloWcCRoer6v5ok1Z4VP7VVTr5JcA+fGQIj64FX8Xh7tsRMackUkJQn7ZWEO80+chyV18E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751085576; c=relaxed/simple;
-	bh=XjehE0byLT6LFQc5LPjjr+h2YCj0kTxyUsbUd1G/6bU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tZ9VVxIN8LrCs9FvwxJbnTW+rHpA3pFmleof18qBc1ES2V4h5wjJtcozELsMrtfoZp5nze/wajSnWLE0CqLGg3XqjJq0ptm4DZlhRm6SSOJF7smSe4RvVtaGoc6JgqPFAjVK8HtJgHgQAm03OrX7aF8TsMNHLdaIdK1kZWN60Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-553b60de463so467871e87.3;
-        Fri, 27 Jun 2025 21:39:33 -0700 (PDT)
+	s=arc-20240116; t=1751087644; c=relaxed/simple;
+	bh=ImkOohW0xoy7J25xzFN6PO5huhiGY4VN5yzgFbX+u30=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=flVOGsiKo1QFP8Jo9Cb2qOAePSkG8O+evLPRvLmNKbKOAlNh3QiWoHCKaf64w1PNVStEsG9GU4MpJuMY3WBW/Tc7wbPtRg+4KfrUoEZude7uNcphCYmftwkQKjm+OZQgDuDNNN90MIix3Rb+FPNKKRDs5wASUM+EvT2v+It3l2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3df2e89fd03so4890535ab.0
+        for <netdev@vger.kernel.org>; Fri, 27 Jun 2025 22:14:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751085571; x=1751690371;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XjehE0byLT6LFQc5LPjjr+h2YCj0kTxyUsbUd1G/6bU=;
-        b=p/Zer3j8XrqONRsrWxsJ+QDpVP+W4gYdRNE+0MeZR3RKbQn3jVYgfCIQ0FVnzGM45P
-         XfGZcCcn5+4nWtgGao7syBA7K0Sc212o+5BC/TLLQ2CAxKBJNHJ7efV8km+ZAlxDJ27h
-         MpsepZCuYySCpN6btpKK6dGZifFdX+8iaWZdFk0Tfwc6NZAbb9xmAPaP3+hI6BgtZJrn
-         5c1ezTjUkLMcU8FTcf8kVf4x5qmebyVi+B5UR/gvOKbnA5K3NV/gYQ5GyUpE9oQMp4Ii
-         t9D6qmK//0adBuVtXfw9wmtHKirAt7Z5Kzk2MXAQRQt842kC0bu7oynhkIEW7P91xCQU
-         GLxg==
-X-Forwarded-Encrypted: i=1; AJvYcCUgGjh1GtlCPaEpBB8RObw4V+/4+TEvw8PgHhZdA/neCfmRoNRhsepx/W9XmEHzBXa6ogjooaV5oJ8feg==@vger.kernel.org, AJvYcCWHjFPnlpup/lIOnDpgKA5BRzBDJRSeOycQZcRSq2inGnOiu+Bg2h7/ncwXpC1OMcuXm/gkc4DMQ3VJ0Bga@vger.kernel.org, AJvYcCXqjDtLH51BVUGqiRtrPTxRIz3T2Gh10AZNCcrDCrhSzWYsFuNJktJqX8yDHkoyvGxMRn6bvcY1FmDe@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOx6ZapciUVjSFtGjqnBAcRFMspUkKE2PmLlfb43nWqkFPeM2n
-	Xdk7Hkl5tu2cHGQTw+Y3V/7oWKJ/GZXnJ2KV5mPYeAlMj+MiWBRi5dRb7DRQ87Fa
-X-Gm-Gg: ASbGnctoSko77ZN4yh570o5eg0Gq+FPL4Cyd3o733IXns+MlT4MtDrUY81P4jmNx/zR
-	G8QanuzSv5wuQch/zZH9HSwPFRQc9vX5tzZ+c60xqE3aWk16pnNG7R8TwIawAa2qOSiqUtfvPCc
-	3recUpL17UE+c11kmk8qpfuBZAZvffbHrZyq+MAIs8fpx24jglRTlF5P4ZfnTylwhmpBQAw7nO7
-	IJ0J1FrpU+GTMY9UO4/0TgIWeuLsoSbYNb8boPBiIGRYRPZxuKf4Aa5M41epJ8oo6yHsmPMOWms
-	5TYSv/sdA+V+MXNDwrhNgZK3fPeGMJafSvuZUMjkfa9mFpN4BOzhbvOCDtEpang6fc81Zrq0jCo
-	+9AKmI18BV9+Gaekd7dLqKtlB4oYY9A==
-X-Google-Smtp-Source: AGHT+IFAAFdqx0e30R4m2bLiTy55BpIjGpeKnNOchkj6cDxL04RM+oDcY0i0orscnrqx9ykTtykybw==
-X-Received: by 2002:a05:6512:3ca4:b0:553:5e35:b250 with SMTP id 2adb3069b0e04-5550b8d27demr2212542e87.32.1751085571245;
-        Fri, 27 Jun 2025 21:39:31 -0700 (PDT)
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com. [209.85.208.180])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5550b2d7c35sm663358e87.205.2025.06.27.21.39.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jun 2025 21:39:30 -0700 (PDT)
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-32b31afa781so3794311fa.3;
-        Fri, 27 Jun 2025 21:39:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVhTowp86Owi+yOBdFTcXSX1Y1R6D4xZjHSWrET2l5nmaCxS5JRAPlUVUcs+40UrslmUuKR//bnqM1ko52N@vger.kernel.org, AJvYcCVl8BU9hOmJEfWRCmn1Kp2fJXgZRA+ULgmdWKhOvVf+RHIpoVWcjurwNea5vpHrnlPTsdIRKgr3zXBhug==@vger.kernel.org, AJvYcCXd31eaOjHL3evfBUEu3sn7lnd4Fc25WdrXzekGxVMB4qjbB0Y6U/hfOxp3OE6khvQFXGLs/TpbE03A@vger.kernel.org
-X-Received: by 2002:a05:651c:304f:b0:32a:6c63:935 with SMTP id
- 38308e7fff4ca-32cdc4480afmr15261101fa.4.1751085570044; Fri, 27 Jun 2025
- 21:39:30 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751087642; x=1751692442;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nQtYV1Gyi68LVjdcfdU/eNq3IyRRwC3uv1igzI3erFc=;
+        b=NpWtt9vIug0tHrERtwFAF5tvVzYVffTu/9EqJFfnvxiBiqYUMW4Icw2A/75RWjCY06
+         PsVKbgvge0G1sGRxCm/3yXjFUD/uXvnd1UTRHLiluLkbA0eLyxMOZxbSSTpLA4xllr5r
+         sU0pS/osLRpLZTwhOpuN155kuQfhxYmZkwmwtMaC+BxyF9lGKCzDHJGxrt2+2RTfRZBG
+         ET7nbRGdKGZ2JxxmUFhzf7dbykjp+dVGBxjWH/6ElBOhB8b7QmjiCU/nVcEJXj0Wit+5
+         zxO45YMvkmt0+ZOm8SkoSoeaw+KzhyUrg9w9ILisFeFgdXyjBPnAmKYBUMLbf51GLEVX
+         4anQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4BHYCOPDaT5uNn2d/r6CeXZ0kYAaSTwmuPNSHe3Urijdc5KhXpAv12cM2Q3+zxNwCJAXuGbw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5L5e1aYBHSJkStesBPjAp/OEyAHOFBtWwIFCgymxdOy35ogF1
+	raWfyTuhJkAaX6iVGILJWn8YvZtUiUKQd7t5Qksx4ornbTWO5a1py/BO0Rbuk2mxUz1f93Z6YMP
+	ZViWqnC11DSKrxK8emk/NhxXOYGvS/yHUuJ4swEzOOV+M/XhXwCMC9x9OjwA=
+X-Google-Smtp-Source: AGHT+IHhgdgQNjS1nBnWLUNfiv7EE/EHoONqacRJkEf60gWH4jWoK7OhxwwDZCx0AkY52S0u7NOzrVPLBmfL6upFVifarVyjRBcy
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250626080923.632789-1-paulk@sys-base.io> <20250626080923.632789-2-paulk@sys-base.io>
-In-Reply-To: <20250626080923.632789-2-paulk@sys-base.io>
-Reply-To: wens@csie.org
-From: Chen-Yu Tsai <wens@csie.org>
-Date: Sat, 28 Jun 2025 12:39:17 +0800
-X-Gmail-Original-Message-ID: <CAGb2v67VVc4ckvzy+w++wcEUPSvV9Uxju2H4qTRNhjwAgYpzXg@mail.gmail.com>
-X-Gm-Features: Ac12FXwd7he7qKrnxN9KLQmU6bishZKuh8vNiwYMugN6VxIMRflq-7o7dltAy1M
-Message-ID: <CAGb2v67VVc4ckvzy+w++wcEUPSvV9Uxju2H4qTRNhjwAgYpzXg@mail.gmail.com>
-Subject: Re: [PATCH 1/5] pinctrl: sunxi: Fix a100 emac pin function name
-To: Paul Kocialkowski <paulk@sys-base.io>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Linus Walleij <linus.walleij@linaro.org>, Andre Przywara <andre.przywara@arm.com>
+X-Received: by 2002:a05:6e02:3189:b0:3dc:7f3b:acb1 with SMTP id
+ e9e14a558f8ab-3df4ab85c3dmr77735685ab.13.1751087642190; Fri, 27 Jun 2025
+ 22:14:02 -0700 (PDT)
+Date: Fri, 27 Jun 2025 22:14:02 -0700
+In-Reply-To: <685e86b3.a00a0220.129264.0003.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <685f7a1a.a70a0220.2f4de1.0007.GAE@google.com>
+Subject: Re: [syzbot] [net?] WARNING in ip6_mr_output
+From: syzbot <syzbot+0141c834e47059395621@syzkaller.appspotmail.com>
+To: bpoirier@nvidia.com, davem@davemloft.net, dsahern@kernel.org, 
+	edumazet@google.com, eric.dumazet@gmail.com, horms@kernel.org, 
+	idosch@nvidia.com, kuba@kernel.org, kuniyu@google.com, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	petrm@nvidia.com, razor@blackwall.org, roopa@nvidia.com, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 26, 2025 at 4:10=E2=80=AFPM Paul Kocialkowski <paulk@sys-base.i=
-o> wrote:
->
-> The Allwinner A100/A133 only has a single emac instance, which is
-> referred to as "emac" everywhere. Fix the pin names to drop the
-> trailing "0" that has no reason to be.
->
-> Fixes: 473436e7647d ("pinctrl: sunxi: add support for the Allwinner A100 =
-pin controller")
-> Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+syzbot has bisected this issue to:
 
-Acked-by: Chen-Yu Tsai <wens@csie.org>
+commit 96e8f5a9fe2d91b9f9eb8b45cc13ce1ca6a8af82
+Author: Petr Machata <petrm@nvidia.com>
+Date:   Mon Jun 16 22:44:18 2025 +0000
+
+    net: ipv6: Add ip6_mr_output()
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=13bcfb70580000
+start commit:   5d4809e25903 Add linux-next specific files for 20250620
+git tree:       linux-next
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=107cfb70580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=17bcfb70580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=58afc4b78b52b7e3
+dashboard link: https://syzkaller.appspot.com/bug?extid=0141c834e47059395621
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=138a2dd4580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=171c5b0c580000
+
+Reported-by: syzbot+0141c834e47059395621@syzkaller.appspotmail.com
+Fixes: 96e8f5a9fe2d ("net: ipv6: Add ip6_mr_output()")
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
