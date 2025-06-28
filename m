@@ -1,37 +1,37 @@
-Received: from mxout1.routing.net (mxout1.routing.net [134.0.28.11])
+Received: from mxout3.routing.net (mxout3.routing.net [134.0.28.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D42325A620;
-	Sat, 28 Jun 2025 16:55:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994B825C81F;
+	Sat, 28 Jun 2025 16:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751129711; cv=none; b=A/qo5UbXu2Jng8opOMtQbRaZ0vKvoh5RNuzTXh0RUZg3e4DuRjq4FfUb2aZTnzT/XngkVvzafIrx/OthOurm8Nu67Q614QxpcM0uMTnuJUgRzvX6iN/8NfPU4Ijv5T69HIdmk3h0Yr2seyFjhX9+G18vCLpNQ7WLNl3zLr3E9JU=
+	t=1751129714; cv=none; b=aGmNJrZvQYtQ0lLQAQyBCd2rY6P6LaPHSPad8JeXGk5sE9oEklZr3c/IKndpzGFhhmgN/LuULRjTPgPtPWnPp5xRMjTt5rHTtQ/wemljkbjLaUQBmEVDNSiBUOxz0yp6zwtxGNCl84xGQI48Ktk6761eobebCzjs/pAnhK4jXXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751129711; c=relaxed/simple;
-	bh=Dgdiq1horuDoHLdNztjJFaG+cA4sLMSMTTMWhbKe7+Q=;
+	s=arc-20240116; t=1751129714; c=relaxed/simple;
+	bh=P/EOW+pd0YQ7LiMHFX+KMFe53eWNEXq3yNdzkShDgOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ee5LYfdTQ7QCnw4cwNnSLslDYKeFNZ/2gyTSZwSbtZ31P51LiEscNqHULpxVv6Uqxbv/AY9UvQX72KUBoMo4GwJp1OfGtmBBXHYYzCZiApigCaJCkwVr5im/I90+nJxek2kKUk5AFNxBrUramlGzX0RqySBuvLAXBcOv4auMkzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=C9NZI/8M; arc=none smtp.client-ip=134.0.28.11
+	 MIME-Version; b=MPdfnIWG61gqWaFIQqT5YwSHDFqcsxtv1k7hlFCEjYpjztGqyFuvZbCsX8P0HDK2zitP6pA5WszaipFEAVzzDcTohPUIl2Jp5+7F69PU8fpTeETjP1o+RSYO7RnZl1X69aJqBltZMxiy/UbsbHPhPO+IH9VpKpZW4KVoY/lqkQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=que2Sa7s; arc=none smtp.client-ip=134.0.28.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fw-web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="C9NZI/8M"
+	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="que2Sa7s"
 Received: from mxbulk.masterlogin.de (unknown [192.168.10.85])
-	by mxout1.routing.net (Postfix) with ESMTP id 0700340373;
-	Sat, 28 Jun 2025 16:55:06 +0000 (UTC)
+	by mxout3.routing.net (Postfix) with ESMTP id 41D996063F;
+	Sat, 28 Jun 2025 16:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
-	s=20200217; t=1751129706;
+	s=20200217; t=1751129707;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DIMuNne++IWVgY0azMoYkvyXCjaefI/n17TVM+rpZxc=;
-	b=C9NZI/8MAu8+mhyQdSakPXSwZELFqyLuGRIKMtiKDFgT2XSApJd57ZIfVzGVOiO38ouGzr
-	3ougfS5ifP4LgEgkS64U7g3/Idq2D+4jbBO0Apr4KIKAui3899MRkcMqcvGXGZGmiwL04Z
-	3JLL8bU9QVQVW+daGT4Gls5ZIyCYZMg=
+	bh=c58atM53j6xJlfjeW4uz3/6gYrG19vaD/Ky2Z6w23+4=;
+	b=que2Sa7sNt/mFRl30AfBwZ3tVfqg2v9QChSL+/G3CXXTBU0w0kNgcEUmPZBKm4AxwyAi+z
+	eUMiVx3Hnl9dR6auHa+QkLJCMA/9lKJpR6y1OeHPvtg6yNfFlKbNyNYh+cirJtZd0MVycY
+	5sXN+FnscpNGFCot5NvVmVrY7zSe53M=
 Received: from frank-u24.. (fttx-pool-217.61.150.139.bambit.de [217.61.150.139])
-	by mxbulk.masterlogin.de (Postfix) with ESMTPSA id 9F34D12272D;
-	Sat, 28 Jun 2025 16:55:05 +0000 (UTC)
+	by mxbulk.masterlogin.de (Postfix) with ESMTPSA id D7F551226EC;
+	Sat, 28 Jun 2025 16:55:06 +0000 (UTC)
 From: Frank Wunderlich <linux@fw-web.de>
 To: MyungJoo Ham <myungjoo.ham@samsung.com>,
 	Kyungmin Park <kyungmin.park@samsung.com>,
@@ -63,9 +63,9 @@ Cc: Frank Wunderlich <frank-w@public-files.de>,
 	netdev@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH v7 09/14] arm64: dts: mediatek: mt7988a-bpi-r4: add proc-supply for cci
-Date: Sat, 28 Jun 2025 18:54:44 +0200
-Message-ID: <20250628165451.85884-10-linux@fw-web.de>
+Subject: [PATCH v7 12/14] arm64: dts: mediatek: mt7988a-bpi-r4: add aliases for ethernet
+Date: Sat, 28 Jun 2025 18:54:47 +0200
+Message-ID: <20250628165451.85884-13-linux@fw-web.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250628165451.85884-1-linux@fw-web.de>
 References: <20250628165451.85884-1-linux@fw-web.de>
@@ -79,29 +79,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Frank Wunderlich <frank-w@public-files.de>
 
-CCI requires proc-supply. Add it on board level.
+Add aliases for gmacs to allow bootloader setting mac-adresses.
 
 Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi b/arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi
-index 81ba045e0e0e..afa9e3b2b16a 100644
+index 21eb91c8609f..20073eb4d1bd 100644
 --- a/arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi
 +++ b/arch/arm64/boot/dts/mediatek/mt7988a-bananapi-bpi-r4.dtsi
-@@ -40,6 +40,10 @@ reg_3p3v: regulator-3p3v {
- 	};
- };
+@@ -8,6 +8,12 @@
+ #include "mt7988a.dtsi"
  
-+&cci {
-+	proc-supply = <&rt5190_buck3>;
-+};
+ / {
++	aliases {
++		ethernet0 = &gmac0;
++		ethernet1 = &gmac1;
++		ethernet2 = &gmac2;
++	};
 +
- &cpu0 {
- 	proc-supply = <&rt5190_buck3>;
- };
+ 	chosen {
+ 		stdout-path = "serial0:115200n8";
+ 	};
 -- 
 2.43.0
 
