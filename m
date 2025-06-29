@@ -1,73 +1,71 @@
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9918A244699
-	for <netdev@vger.kernel.org>; Sun, 29 Jun 2025 21:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64773224AFE
+	for <netdev@vger.kernel.org>; Sun, 29 Jun 2025 21:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751233246; cv=none; b=StQwVieZU6doP/fxGeZHYNTY4k1+uJVoEIVeU+P5U5wcpLVcBDThsyiOAyXtA1Y0g600PpUtd+6DPTQcJA/aJLiFUAtxENfyyppDu5Yh6247V2OM+sWylykZCyosJXm5qXNOoC5e2zKPXF2A4F09HINIKokHvRgTQrYZKnqZUqc=
+	t=1751233500; cv=none; b=lH42v+uxwLv6ywWeADZ82OB0YGUblJFku9VJC2/mKy3bnjd+DOwc/HYFhJInZvqmDZ5L6Hu/pVluR5ThFDiijLEln3hgtRe2lPlsc4Ss8Yo8JlLZ+r/sqXpwdjrG2QdSBwzYjM8RjhSD0uT+fEYbQtxddBeJef2yF9daUat5eJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751233246; c=relaxed/simple;
-	bh=HDrnBzNT9sqw61xhXF1ulsb7GjHFsKMwkldBN6Mty4A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etmmDk7kmvAIcP4sPGvr+sCBAclb+DHTjS1ohtdiSX9RVFOcpUL8SsYy2cfOb4Ju3M3/829x/0iPNl/vs5IKTxAjW4UoIszIFcjTn6IWuoSyiaokgnchIC9XyxVmRdPq4DUMQba8/L6QK7UVD86IO8+ry8+abC3HukrhIc6eiHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=iIROGsxv; arc=none smtp.client-ip=185.125.188.123
+	s=arc-20240116; t=1751233500; c=relaxed/simple;
+	bh=SHlCEPtJ+mGpBteebs/QxPWTja798xKUaQPyeGXszDs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nsNyHKUNdnxwFB1xlZvqV7jPJvI+zBWnRKb2ekRTqdaXq2ZIBX61Z6r/zxvb0Gr612nKlK25d1a1oHA7SeNVNobZskld7LYer/6pcuc8AzSxI319Lsd4cJ9W4E2KihCWPXMAjB/uL3MByZpGu58fVhEiVkyRUu2Sg8IZgHRhUKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=vIo9qEYP; arc=none smtp.client-ip=185.125.188.122
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="iIROGsxv"
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="vIo9qEYP"
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id DBF203F920
-	for <netdev@vger.kernel.org>; Sun, 29 Jun 2025 21:40:39 +0000 (UTC)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 737613F52A
+	for <netdev@vger.kernel.org>; Sun, 29 Jun 2025 21:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1751233239;
-	bh=tvyEgsiRIsWy5+9Pkt7fEE3jkj7QgFDygIBIFRyaq88=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version;
-	b=iIROGsxvT86S2eu7cl96Oyl5yCcM/eh3jMASxIc5sIwk9Uz4NUtUAmVpX/P3GvtuJ
-	 TM1LXBYQuzSlIwilUL/BcsomVM7yvSbj8LVonIbeQ+CETo+SkGvfBoWWQeGp7jrCPG
-	 JATSxuP7f9qKPWtZsB3Q6N+EkxCXZ+eRo70uGjhijYxeMubjYp7Z9xiLGOJ7B13jaM
-	 NNhsuA4lNOMmfLPFAscAj26M6tJgL1yim7YK433uOJaxC7Uk3k2R+oYzGaOXW5TRFA
-	 wdbGiWJwRKZyDNDt7vR0tOeg20J9fVpRavWYGDfsIlbviJylPsUKrPbRZ1ttwfR13t
-	 5MQcyz3vviAWg==
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-ae0a0683d6dso127664066b.2
-        for <netdev@vger.kernel.org>; Sun, 29 Jun 2025 14:40:39 -0700 (PDT)
+	s=20210705; t=1751233497;
+	bh=LxBoabtf7quwflXNyrjXQFRsM9Lks4N1hnfCJHIwSNw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=vIo9qEYPM0tbG4EU9SyTbuujaQzuFJ16HoQcr6foQ92AeQaUn2H311KyBWutglwHI
+	 PH6VU+Hub8NwhSmhlYbLDM7WRSk/DiJCnZUGfxKG+yXwLJgiNq0OcVktEiLAkNrA8f
+	 dgG53NHnoMEhOoB389ctYFaxzGUZeGHz7bsp1Dsmvzb2uuVh6F2jtGHIvrMLS17TeD
+	 FowIYicT6hyYeihtaPGzVd3KJhwE9PfA7W2wXhRKeTrH4RRH0X0iKH+nWOVdo72Lt6
+	 PP+18BXmPUbZ1FoQrBf95RSemJZS7ltOUn4pC0kdqlsBaOIpQ4zgu9HTy3yoCQBDa1
+	 /6SxzR6XD3Big==
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-607434dbc78so1418652a12.1
+        for <netdev@vger.kernel.org>; Sun, 29 Jun 2025 14:44:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751233237; x=1751838037;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tvyEgsiRIsWy5+9Pkt7fEE3jkj7QgFDygIBIFRyaq88=;
-        b=Sm9i+Ntd9rdUSE24W7amqDEVF7I3No7+UVgudeF9aQy+B5BSt8TycnCMNkPyvDS0he
-         Q1vejZzk0IrKcWSOlrZ58HD/Q4QifgWcYW7KqapubLnoQGceF4vI5kb3d5xW4Ua+Wzyz
-         jzkP/KWDPyWXcH6CfIpNmRDxfq0wtWWA7hW6sXAPU14AJHXdosjAq3SwIZUCx134tW9V
-         mZ3E2YEj/bgsMBLFj9oHKABB417Vqj2Qg7ifIu5nlm2LlIAbZbs/qHYSoeyB5yoCuyh8
-         aC4HwfgWvMGuEcb8+lqfLTyy6bdFWeNk5Htf91XABoYSyFO1/OcMAUeZjGZUKHniuqA+
-         X3rQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX5Y2Yk5vla+1Cp2hb2ounZAv2lJDyoFWsElfsOh3Yhv+jgJIOBlwBb+eU0WswxSg5wSFOGO18=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBVxZnD3s5qLjgd8Jlh7CrsSLeVUA4nYGj075lPuKWQjLoFls4
-	KMobGjLO1solHHJKhOy4yjUllI+oPxy+xXQhGbPXaymoEe1GM0Y74LnDJ8xl90dLgc4HyV5j0F2
-	W/UXqXFbOTNh8rlrJRyTIl3OmIZwcpEQSsqeuTYK5sfzhOApuUhsQTaHkcpTM1NLQlyW2IX1MUA
+        d=1e100.net; s=20230601; t=1751233497; x=1751838297;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LxBoabtf7quwflXNyrjXQFRsM9Lks4N1hnfCJHIwSNw=;
+        b=xTeYh8S8BQs/OwMbeoevFCnnehae+mo7RW/ZsY++OJIamzrk028Yoe733gLA30HO+s
+         5sx09+nujwklotmgE2zejLgleCPWRbnD+Wm3yQAA+kdrYfgZzkDMn3Qb/Re1xNfwDps5
+         mX5fbOmde9F8xLiVR7xgbb3Bk4+p6+5hnNolCO5zjPsodu5obzuYjAkqkffUc3MnFG/B
+         hC9F+OOA10uW0J7WmG+XQzRxOc9K3Af8Jeg//lrOGKVt6cZLICeBoLV1I5kzyEIhmih9
+         xORHAqhgAqpodi8DFo1V10Y49TFtufPs+kYpP/mIR+su2bRxI3r63AFvOY5X04Pu8q4m
+         h3Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqvKunr5nMtD4kvyz559Ce6LwyukvMecrWgULc6e7eNuy2B88myay0EL8MpBLU2euQDJnwHUA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBgdibo3ldFJDyX4SshYC1oABUyrEv9/FBttbZ77/b1Vu2VHTV
+	+zeBw+KNAGM5Op6HtnpmOfWbLGTCmQZIfKHWcOTDWgSY2GUGMOUsqKRcPyI+qbAeWhoo8HSnqS9
+	WuydqhqjpFWiuqEOMwZEprZZWXF/q9yjNS632BV9gcaEUL1suIGEwhNY8+1DGjjbI56SHOmcZtg
 	==
-X-Gm-Gg: ASbGnctM4KDSJGEy00pv5EAJc/8oypGjXfSjG6BtORZkWxbFoazGGTMBA9R10H1zu25
-	X/m/yBKzaVho6k18KDhVxqjFzWEmdMpY8uVdMJCfOqTRLust7id/UrCXxnxzVUZElxVYdTYZXLX
-	zugnj0IHooELMSrEMFmUGqdD9nsOGS33nACLLpxAprTQ8uGL0isyBKEMFkFf+HknQK/BUi6v+uC
-	0SWXdpoUV67eZWRmtg8Jm3dsEfYYSV1Oy1I9Oov+/w89qe+6rncGp0KuXaywka7P74EyXxY09PF
-	ujtRQRSkAJUisk1dBvDTD7UcwpWfj5/mYJ2DD6c8XryAc/31Rg==
-X-Received: by 2002:a17:907:3d8c:b0:adf:f82f:fe0a with SMTP id a640c23a62f3a-ae34fd729f7mr1138531366b.16.1751233237566;
-        Sun, 29 Jun 2025 14:40:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFKwXxCz9pE3Brid5b7t2MI0/k++PiuT/Gs+VG0QU8yP+Mj+j5hphzeOjffLrTX6bnFkf0tdA==
-X-Received: by 2002:a17:907:3d8c:b0:adf:f82f:fe0a with SMTP id a640c23a62f3a-ae34fd729f7mr1138529166b.16.1751233237127;
-        Sun, 29 Jun 2025 14:40:37 -0700 (PDT)
+X-Gm-Gg: ASbGncuRCVe18rDhGmowyFFKVNcesDBowm7cJxUtDEKqSlQ6/EMVdn1FCRusPPESMhp
+	LRh46JK22Xv4LawXIFP9cBAtIbmyEkRmLKMHnwdqsvtZjnvaXRV4aWEwh+aQxhuy7Vyi8OpLpaA
+	Nqp3N69TB+tv9preIL8lw8M1wek2oRVWutVbKkw0YKyV658tGqgo4raJYCEfm0RyaxdJ8KEWPCt
+	FlpPEsD3uhY/cHnyBDXg9Rkm9H2IbE2IpWGa9YuIsbMHiqydf5GoPkCHWBHPy6d0lP7z2WxXU5k
+	wihQmG1s4wbsmshX1KjeT6whRWPV2I1EH81EigEJV6JC4MUjuA==
+X-Received: by 2002:a05:6402:518c:b0:602:a0:1f3a with SMTP id 4fb4d7f45d1cf-60c88d5100fmr9545281a12.13.1751233496783;
+        Sun, 29 Jun 2025 14:44:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF3Ta19pv6AlU6JZPOMN54E0R1qHJzn/YSHm8EEl7rjRn41u1/8mTDp0f5nsGYygF2IYKDUaA==
+X-Received: by 2002:a05:6402:518c:b0:602:a0:1f3a with SMTP id 4fb4d7f45d1cf-60c88d5100fmr9545262a12.13.1751233496419;
+        Sun, 29 Jun 2025 14:44:56 -0700 (PDT)
 Received: from amikhalitsyn.lan ([178.24.219.243])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae35365a754sm557263366b.62.2025.06.29.14.40.35
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60c828e1a96sm4712037a12.19.2025.06.29.14.44.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Jun 2025 14:40:36 -0700 (PDT)
+        Sun, 29 Jun 2025 14:44:55 -0700 (PDT)
 From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-To: kuniyu@amazon.com
+To: kuniyu@google.com
 Cc: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
@@ -75,20 +73,19 @@ Cc: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
 	Willem de Bruijn <willemb@google.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Arnd Bergmann <arnd@arndb.de>,
 	Christian Brauner <brauner@kernel.org>,
 	Lennart Poettering <mzxreary@0pointer.de>,
 	Luca Boccassi <bluca@debian.org>,
-	David Rheinsberg <david@readahead.eu>
-Subject: [PATCH net-next 5/6] af_unix: enable handing out pidfds for reaped tasks in SCM_PIDFD
-Date: Sun, 29 Jun 2025 23:39:57 +0200
-Message-ID: <20250629214004.13100-6-aleksandr.mikhalitsyn@canonical.com>
+	David Rheinsberg <david@readahead.eu>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [RESEND PATCH net-next 0/6] allow reaped pidfds receive in SCM_PIDFD
+Date: Sun, 29 Jun 2025 23:44:37 +0200
+Message-ID: <20250629214449.14462-1-aleksandr.mikhalitsyn@canonical.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250629214004.13100-1-aleksandr.mikhalitsyn@canonical.com>
-References: <20250629214004.13100-1-aleksandr.mikhalitsyn@canonical.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,8 +94,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Now everything is ready to pass PIDFD_STALE to pidfd_prepare().
-This will allow opening pidfd for reaped tasks.
+This is a logical continuation of a story from [1], where Christian
+extented SO_PEERPIDFD to allow getting pidfds for a reaped tasks.
+
+Git tree:
+https://github.com/mihalicyn/linux/commits/scm_pidfd_stale
+
+Series based on https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git/log/?h=vfs-6.17.pidfs
+
+It does not use pidfs_get_pid()/pidfs_put_pid() API as these were removed in a scope of [2].
+I've checked that net-next branch currently (still) has these obsolete functions, but it
+will eventually include changes from [2], so it's not a big problem.
+
+Link: https://lore.kernel.org/all/20250425-work-pidfs-net-v2-0-450a19461e75@kernel.org/ [1]
+Link: https://lore.kernel.org/all/20250618-work-pidfs-persistent-v2-0-98f3456fd552@kernel.org/ [2]
 
 Cc: linux-kernel@vger.kernel.org
 Cc: netdev@vger.kernel.org
@@ -106,46 +115,29 @@ Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Eric Dumazet <edumazet@google.com>
 Cc: Jakub Kicinski <kuba@kernel.org>
 Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
 Cc: Willem de Bruijn <willemb@google.com>
 Cc: Leon Romanovsky <leon@kernel.org>
 Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Christian Brauner <brauner@kernel.org>
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>
 Cc: Lennart Poettering <mzxreary@0pointer.de>
 Cc: Luca Boccassi <bluca@debian.org>
 Cc: David Rheinsberg <david@readahead.eu>
-Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
----
- include/net/scm.h | 1 +
- net/core/scm.c    | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/scm.h b/include/net/scm.h
-index d1ae0704f230..1960c2b4f0b1 100644
---- a/include/net/scm.h
-+++ b/include/net/scm.h
-@@ -8,6 +8,7 @@
- #include <linux/file.h>
- #include <linux/security.h>
- #include <linux/pid.h>
-+#include <uapi/linux/pidfd.h>
- #include <linux/pidfs.h>
- #include <linux/nsproxy.h>
- #include <linux/sched/signal.h>
-diff --git a/net/core/scm.c b/net/core/scm.c
-index 0e71d5a249a1..022d5035d146 100644
---- a/net/core/scm.c
-+++ b/net/core/scm.c
-@@ -464,7 +464,7 @@ static void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm)
- 	if (!scm->pid)
- 		return;
- 
--	pidfd = pidfd_prepare(scm->pid, 0, &pidfd_file);
-+	pidfd = pidfd_prepare(scm->pid, PIDFD_STALE, &pidfd_file);
- 
- 	if (put_cmsg(msg, SOL_SOCKET, SCM_PIDFD, sizeof(int), &pidfd)) {
- 		if (pidfd_file) {
+Alexander Mikhalitsyn (6):
+  af_unix: rework unix_maybe_add_creds() to allow sleep
+  af_unix: introduce unix_skb_to_scm helper
+  af_unix: introduce and use __scm_replace_pid() helper
+  af_unix: stash pidfs dentry when needed
+  af_unix: enable handing out pidfds for reaped tasks in SCM_PIDFD
+  selftests: net: extend SCM_PIDFD test to cover stale pidfds
+
+ include/net/scm.h                             |  46 +++-
+ net/core/scm.c                                |  13 +-
+ net/unix/af_unix.c                            |  76 ++++--
+ .../testing/selftests/net/af_unix/scm_pidfd.c | 217 ++++++++++++++----
+ 4 files changed, 285 insertions(+), 67 deletions(-)
+
 -- 
 2.43.0
 
