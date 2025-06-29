@@ -1,72 +1,65 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.32])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71FC23644F;
-	Sun, 29 Jun 2025 17:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB464A3C;
+	Sun, 29 Jun 2025 18:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751218369; cv=none; b=IlNdG9/6OfUH4wVxtSKVuMHqZbi5+MYBOLxsgblT2/fm/lM6Svc2hucXtKywZxiN3eIjXwtzPdOs57qAHan33W3wQqeRtRn9K5KYo40UAkhWbi3es1nh1SeWYQiPTIUyRS40Ta+ed8hN4GzIpKDOem6UmbI2R4qUmB7lD6MKRnY=
+	t=1751220650; cv=none; b=QaI2wD2NoMwWWtsMczy7NmBK35IkrZGmFGArkumz7hhLIyrhAIL3JE3bMtBLAgEjZfx4Qg8A4Cnc/HKuGgSLOrk94cLcDRHcstl+8buOLk0cvPC9A2oT1r0cH6C8MKoy5JiwczzXRT51Dg2hFW4R5EDqqU2tfRhXVX7Z/NLbzVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751218369; c=relaxed/simple;
-	bh=cIg8W5VRbdSoa02zEehBGrMAUAxzldtjxXTbyZolGWk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DSU2DUwQcnP6PoLli+CxsrL7EZjFIUzAgREB2U3ll0dNtYq+zYcp1JWAAzpxUg6EXKNhex6JNmapyurUua/wWM5L3IgST7Rv6mM8wPnYG/OG+8gDBNmRL4lV3qbQLAIP+35JFvm+bCyPhQp0o+LmFcE7rXgncgyxqWmAFUzom4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; arc=none smtp.client-ip=160.80.4.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
-Received: from localhost.localdomain ([160.80.103.126])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 55THDW59007121
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Sun, 29 Jun 2025 19:13:51 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
-        Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Stefano Salsano <stefano.salsano@uniroma2.it>,
-        Paolo Lungaroni <paolo.lungaroni@uniroma2.it>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: [PATCH net-next 1/2] seg6: fix lenghts typo in a comment
-Date: Sun, 29 Jun 2025 19:12:25 +0200
-Message-Id: <20250629171226.4988-2-andrea.mayer@uniroma2.it>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20250629171226.4988-1-andrea.mayer@uniroma2.it>
-References: <20250629171226.4988-1-andrea.mayer@uniroma2.it>
+	s=arc-20240116; t=1751220650; c=relaxed/simple;
+	bh=rQ13VObp17dm8Lf0rGOz6vSrG3BrY0W2QeZG0NRfLTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K4WEFl6+w0bIT4V8DEW579s4DTM3ia2zR1E1CE7eAX97smiPiCuCzg770U8teFnA7wjWchg12BJ9bMPEp/BnPdwBoaI3A0a0MvXpIY/geOKwyzaSN1Y6NcNJUb6mqe7e/J4Kb80R4jBs+FFX2W/Lglhmg09+CjD/e1nHoCcbTOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=XCslqu7v; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XCslqu7v"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=0SXtSx80cAdCDtcPv9j072wXjbBXpZrMW0XySoNhCpM=; b=XCslqu7v0e4xvy6nG6epE1EPIJ
+	2sMobVmbQNK5E5AeZNuOc5TPB/L6Q2pQdXLxEDIyJxii0LeUsjmEfeqS6NtgiwKkNDHBXrArzEHyQ
+	u+cywzWRihMoNasndy/IlJrhmXDdrSWZly0QGf3SUSDDZFRDTBYKkg5/l5+F2X0sJ46s=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uVwTt-00HIBB-EX; Sun, 29 Jun 2025 20:10:21 +0200
+Date: Sun, 29 Jun 2025 20:10:21 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Lucien.Jheng" <lucienzx159@gmail.com>
+Cc: linux-clk@vger.kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
+	kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, daniel@makrotopia.org, ericwouds@gmail.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	joseph.lin@airoha.com, wenshin.chung@airoha.com,
+	lucien.jheng@airoha.com, albert-al.lee@airoha.com
+Subject: Re: [PATCH v1 net-next PATCH 1/1] net: phy: air_en8811h: Introduce
+ resume/suspend and clk_restore_context to ensure correct CKO settings after
+ network interface reinitialization.
+Message-ID: <fe9a6e67-2790-489b-a5fa-a03ec041f48e@lunn.ch>
+References: <20250629115911.51392-1-lucienzx159@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250629115911.51392-1-lucienzx159@gmail.com>
 
-Fix a typo:
-  lenghts -> length
+> +static void en8811h_clk_restore_context(struct clk_hw *hw)
+> +{
+> +	if (!__clk_get_enable_count(hw->clk))
 
-The typo has been identified using codespell, and the tool currently
-does not report any additional issues in comments.
+Using a __ functions seems wrong, they are supposed to be internal.
 
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+How about clk_ops save_context() and restore_context()?
+
+    Andrew
+
 ---
- net/ipv6/seg6_local.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index dfa825ee870e..4834d72624cf 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -2087,7 +2087,7 @@ struct nla_policy seg6_local_flavors_policy[SEG6_LOCAL_FLV_MAX + 1] = {
- static int seg6_chk_next_csid_cfg(__u8 block_len, __u8 func_len)
- {
- 	/* Locator-Block and Locator-Node Function cannot exceed 128 bits
--	 * (i.e. C-SID container lenghts).
-+	 * (i.e. C-SID container length).
- 	 */
- 	if (next_csid_chk_cntr_bits(block_len, func_len))
- 		return -EINVAL;
--- 
-2.20.1
-
+pw-bot: cr
