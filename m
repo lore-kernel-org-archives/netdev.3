@@ -1,61 +1,59 @@
-Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1256EEAA;
-	Sun, 29 Jun 2025 03:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6654CEC4;
+	Sun, 29 Jun 2025 05:16:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751166540; cv=none; b=UQmJ/7Aq/XowLRF1GRKEPvsukOQsh6i+4UwL74akX9VXEqXJiKN05aUTmAzudQMxuyvVHN+VpFmU95Y+lRpy5fp5ZrKiEEhTkKjVxHH+PXuc8YPJDHqMCD5pW8PdVOnXQAgSRqyaqNSPynkzTOcL8bQVJhSHUY6s3FvYOeteJj8=
+	t=1751174201; cv=none; b=Op4ZB+4QFHJRXJ7YpQE6lAPaYulcK1SsqpladRF9pd2Fu+YB/Uy4r+igU7rUhPvjY/cRAglWTrWef9ON8x1jIh9l4Qw+whmUMy+YuaPJPj/A3n8Eltzqzdapjpi3vmeliPX50B7RuxwQwGwJDfiH2dZ+v39zRYI3iZAOoyo1iHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751166540; c=relaxed/simple;
-	bh=RK5Z/8V0Cvn5MyQ2lvLJ5kvvK7okLP7oTJeIK/QJzCY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uIqU6tL5bN6cUarMTZUEfMgeCO5mErstlPbXKCizmHSFkjOxmJKZ7o/s0xjl/3qg7iMLP3WdXGJHrtdbtOTYTXeSfKnRZ2UgH3xdOotA0BKK2h9qC5S4k1w5TOGLtEifUHJs7usBkBo2EEIP8x/eRayO7KTEi5WnPykPSSAQK7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=iUIUOTk+; arc=none smtp.client-ip=99.78.197.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1751174201; c=relaxed/simple;
+	bh=5YCtt4xWoE2sFZbqLhmFUZNY5xZBfrLF3umVblZJwhs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GPuZ1qEjmHSOOLSiRu3nv5UYoOX6prmBW4ZneUgxEHvTiYIKGG8T5nR1dNEkM2Mc/jmitDPUS7/dGHNMjwe01rbHV7RWvEw/aCBmgRy0vuPLsqcy8RR8+JuZeMnhmAInKXlgcI3rl/N60qZ3Y7uvL1xu8EW/27o21WeX1Jvl6F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=maTAq/EX; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="iUIUOTk+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1751166538; x=1782702538;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=/1wU96fFlsrJiBIUTivDC2RYxvB3smo0WTj2uzdXEmY=;
-  b=iUIUOTk+t112J/eMsveGxNR4emEA8LKNy8JKatb/O3scM08YuW3jXknc
-   yfasVGhTsHGtXhsdk4qZQOVKYT7ohY8xW9/IVBnV7j5QK8exHHT7OUu+V
-   X1FonQPqpeVAgGKzZVMdef7B1WVcUJCzvppdS6vr31X/2p4t/YlXdBUaG
-   06Jcl/IgCrqLeHnDDuJ9bfQfSEoQHuOlYAScUMrALGWWkVhvZ/rvdJ3f6
-   STzVncbcTmO46s73RC+gf9USjUxeEm4+Q0r2LPz84cuGZWbBNDzFpYWnf
-   MQVcLPw+40c6tsoVrDP+e0+CbvLOLh4UAULXTSMPtXJJnotddvIWopXKN
-   g==;
-X-IronPort-AV: E=Sophos;i="6.16,274,1744070400"; 
-   d="scan'208";a="215563240"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2025 03:08:58 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.7.35:61997]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.172:2525] with esmtp (Farcaster)
- id db2f4156-a369-4273-8671-a3bddd2ec5a6; Sun, 29 Jun 2025 03:08:57 +0000 (UTC)
-X-Farcaster-Flow-ID: db2f4156-a369-4273-8671-a3bddd2ec5a6
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Sun, 29 Jun 2025 03:08:57 +0000
-Received: from b0be8375a521.amazon.com (10.37.244.14) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Sun, 29 Jun 2025 03:08:55 +0000
-From: Kohei Enju <enjuk@amazon.com>
-To: <linux-hams@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, <kohei.enju@gmail.com>,
-	Kohei Enju <enjuk@amazon.com>,
-	<syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com>
-Subject: [PATCH net v2] rose: fix dangling neighbour pointers in rose_rt_device_down()
-Date: Sun, 29 Jun 2025 12:06:31 +0900
-Message-ID: <20250629030833.6680-1-enjuk@amazon.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="maTAq/EX"
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55T01Ivl011733;
+	Sun, 29 Jun 2025 05:16:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=PF3DZSZbA4tBUtEFvdIVO9kArXETg
+	OS8vUkIBIamiuY=; b=maTAq/EX1k5GlkKyZO1ehQsgN3jQR6Nv7VD9+jJer3dyL
+	KMJzWSfGNnjVkd0FMYct8WckbAdjjoqOzitmqTKDWKQQ4NLtzGDZxkq5b8rHlZB0
+	auvO/Pvgqa2QzYiOdJg0+mH7QUoY1+C3QX9f+y/6y2kfrNqbFkzwvyDOjQ9YV9lC
+	/rViAfbMq+NWfngAxp5UZ75eVPhWd0xwmehkXVj6ieRbRrN3zmQT2nHdnbCV5ly4
+	D+0UotUYLjoh9hk5zq48bY0udJ7vQZEy9VHNxfXX+J8JiE9ZoKh1i3ZE2IN1kcml
+	SZwrEPmLSBQtIEnkW2+Uttoth4pDcb1tW5L4H20Og==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47j7af0u4x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 29 Jun 2025 05:16:19 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 55T57ZGT038552;
+	Sun, 29 Jun 2025 05:16:10 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47j6u78t87-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 29 Jun 2025 05:16:10 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 55T5BM8A020395;
+	Sun, 29 Jun 2025 05:16:09 GMT
+Received: from ca-dev110.us.oracle.com (ca-dev110.us.oracle.com [10.129.136.45])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 47j6u78t82-1;
+	Sun, 29 Jun 2025 05:16:09 +0000
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
+To: sgoutham@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        horms@kernel.org, netdev@vger.kernel.org
+Cc: alok.a.tiwari@oracle.com, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] net: thunderx: avoid direct MTU assignment after WRITE_ONCE()
+Date: Sat, 28 Jun 2025 22:15:37 -0700
+Message-ID: <20250629051540.518216-1-alok.a.tiwari@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,84 +61,85 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWC004.ant.amazon.com (10.13.139.246) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-27_05,2025-06-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0
+ mlxlogscore=999 malwarescore=0 mlxscore=0 adultscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2506290041
+X-Proofpoint-ORIG-GUID: E4FMocrkEVo34wSxTFAcXpK3dmRZfjCk
+X-Proofpoint-GUID: E4FMocrkEVo34wSxTFAcXpK3dmRZfjCk
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI5MDA0MiBTYWx0ZWRfX1XzUF28HmOio 3Rmpgb3lys6DDXLsPaDs2C8BdToQupenPxVwilEZUjN6j1z+mgE3cV+C17Gs/h/KsHwZwlzlQk3 Dz0sbvmmGSeLKzlFlN7i3+jBAedgCI5s/9Dn7BvnQgjAwmRY7Ao5AmNydKibehN+tnwr+1zhWX1
+ kWNcaOY0pO8H1nbC0VOYgnqrszm/vi0ryUWmGbXeoFdVn42Te73mcy6CyaWHbKBK/+VHCjvsKmF mKR0uEhZMq+Bazpseg6BOue+YtJevqe2DjOscAlg4PCJh3FLfsvupHT17mJj4hNP5ns/l9r0TEd C7fXIudW81WXFZGrI1ZBPaRgE0tDAbP055bofUCtw4kBj9Rcq3ZDGocNL/3NYGbQbtr3dsdl38j
+ Tflqtq0xuuZjKuDJ0ARtF5I0GEOmdBPvYFV+wEEJwgHWsuKGu+lj0p/rNNyOkYDa9IftfG6H
+X-Authority-Analysis: v=2.4 cv=b5Cy4sGx c=1 sm=1 tr=0 ts=6860cc23 cx=c_pps a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17 a=6IFa9wvqVegA:10 a=yPCof4ZbAAAA:8 a=Heg8zcIur3sJgoQ754cA:9
 
-There are two bugs in rose_rt_device_down() that can cause
-use-after-free:
+The current logic in nicvf_change_mtu() writes the new MTU to
+netdev->mtu using WRITE_ONCE() before verifying if the hardware
+update succeeds. However on hardware update failure, it attempts
+to revert to the original MTU using a direct assignment
+(netdev->mtu = orig_mtu)
+which violates the intended of WRITE_ONCE protection introduced in
+commit 1eb2cded45b3 ("net: annotate writes on dev->mtu from
+ndo_change_mtu()")
 
-1. The loop bound `t->count` is modified within the loop, which can
-   cause the loop to terminate early and miss some entries.
+Additionally, WRITE_ONCE(netdev->mtu, new_mtu) is unnecessarily
+performed even when the device is not running.
 
-2. When removing an entry from the neighbour array, the subsequent entries
-   are moved up to fill the gap, but the loop index `i` is still
-   incremented, causing the next entry to be skipped.
+Fix this by:
+  Only writing netdev->mtu after successfully updating the hardware.
+  Skipping hardware update when the device is down, and setting MTU
+  directly.
+  Remove unused variable orig_mtu.
 
-For example, if a node has three neighbours (A, A, B) with count=3 and A
-is being removed, the second A is not checked.
+This ensures that all writes to netdev->mtu are consistent with
+WRITE_ONCE expectations and avoids unintended state corruption
+on failure paths.
 
-    i=0: (A, A, B) -> (A, B) with count=2
-          ^ checked
-    i=1: (A, B)    -> (A, B) with count=2
-             ^ checked (B, not A!)
-    i=2: (doesn't occur because i < count is false)
-
-This leaves the second A in the array with count=2, but the rose_neigh
-structure has been freed. Code that accesses these entries assumes that
-the first `count` entries are valid pointers, causing a use-after-free
-when it accesses the dangling pointer.
-
-Fix both issues by iterating over the array in reverse order with a fixed
-loop bound. This ensures that all entries are examined and that the removal
-of an entry doesn't affect subsequent iterations.
-
-Reported-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e04e2c007ba2c80476cb
-Tested-by: syzbot+e04e2c007ba2c80476cb@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
 ---
-Changes:
-  v2:
-    - Change commit message to describe the UAF scenario correctly
-    - Replace for loop with memmove() for array shifting
-  v1: https://lore.kernel.org/all/20250625095005.66148-2-enjuk@amazon.com/
+Note: This change is not tested due to hardware availability.
+v1 -> v2
+remove unused variable orig_mtu.
 ---
- net/rose/rose_route.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/cavium/thunder/nicvf_main.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
-index 2dd6bd3a3011..b72bf8a08d48 100644
---- a/net/rose/rose_route.c
-+++ b/net/rose/rose_route.c
-@@ -497,22 +497,15 @@ void rose_rt_device_down(struct net_device *dev)
- 			t         = rose_node;
- 			rose_node = rose_node->next;
+diff --git a/drivers/net/ethernet/cavium/thunder/nicvf_main.c b/drivers/net/ethernet/cavium/thunder/nicvf_main.c
+index aebb9fef3f6eb..633244bc00f35 100644
+--- a/drivers/net/ethernet/cavium/thunder/nicvf_main.c
++++ b/drivers/net/ethernet/cavium/thunder/nicvf_main.c
+@@ -1578,7 +1578,6 @@ int nicvf_open(struct net_device *netdev)
+ static int nicvf_change_mtu(struct net_device *netdev, int new_mtu)
+ {
+ 	struct nicvf *nic = netdev_priv(netdev);
+-	int orig_mtu = netdev->mtu;
  
--			for (i = 0; i < t->count; i++) {
-+			for (i = t->count - 1; i >= 0; i--) {
- 				if (t->neighbour[i] != s)
- 					continue;
+ 	/* For now just support only the usual MTU sized frames,
+ 	 * plus some headroom for VLAN, QinQ.
+@@ -1589,16 +1588,18 @@ static int nicvf_change_mtu(struct net_device *netdev, int new_mtu)
+ 		return -EINVAL;
+ 	}
  
- 				t->count--;
+-	WRITE_ONCE(netdev->mtu, new_mtu);
  
--				switch (i) {
--				case 0:
--					t->neighbour[0] = t->neighbour[1];
--					fallthrough;
--				case 1:
--					t->neighbour[1] = t->neighbour[2];
--					break;
--				case 2:
--					break;
--				}
-+				memmove(&t->neighbour[i], &t->neighbour[i + 1],
-+					sizeof(t->neighbour[0]) *
-+						(t->count - i));
- 			}
+-	if (!netif_running(netdev))
++	if (!netif_running(netdev)) {
++		WRITE_ONCE(netdev->mtu, new_mtu);
+ 		return 0;
++	}
  
- 			if (t->count <= 0)
+ 	if (nicvf_update_hw_max_frs(nic, new_mtu)) {
+-		netdev->mtu = orig_mtu;
+ 		return -EINVAL;
+ 	}
+ 
++	WRITE_ONCE(netdev->mtu, new_mtu);
++
+ 	return 0;
+ }
+ 
 -- 
-2.49.0
+2.46.0
 
