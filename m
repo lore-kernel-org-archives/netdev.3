@@ -1,146 +1,202 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BC940BF5;
-	Sun, 29 Jun 2025 05:31:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80AE01F92A
+	for <netdev@vger.kernel.org>; Sun, 29 Jun 2025 05:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751175077; cv=none; b=fWXG4Ihovfz+1uBPLKvSrpAKcA2ypFRmZgiKa6Uxsj+xUsq3ZVTKBquyeUOATnkzwyr2txyRVe/3EfoLTjTIK8hULgMUTdX6LL2DIdAzr96Uha7BWzHCX+sON793njoAOME9G++E56iCC+tmZifLdYtQshKmFpTUTatutyLpk1Q=
+	t=1751176475; cv=none; b=XEVh/r8en3ZY/ByGCIX/TztE0HI/MmC499mU0R2gyWjMoIglU79pc5dI0Sm+jsti87g5M6z6Us/9+VdtYjkL0c77OEtcM4sU5hhm4Ye0Cj0+xZBucz8OhVvh7+eOhCsMJwmD6iLvaVecNBgoLoznCzQZ4zigX3AdDY4NxONDMKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751175077; c=relaxed/simple;
-	bh=ETOpPQhKUGbb3m1DQNXZ9d1API2efLKRSgFfw3wjXYA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c+2KghDc2Ou4GX2myjryngDUXiNqzVkco6BzY2v/wgsQbAxaq01f6jsFmCPN69cbisF3zphRudZ0yqwoLq/ZCTC3S2hL+17K+WIA5JGhvPXNJuWAxAFoKlC8OQ1K0zMoRn128+kj/0N5r9V02a8SHnM3hDxV4duWA68WTK/TcyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jMSqAJAU; arc=none smtp.client-ip=209.85.215.170
+	s=arc-20240116; t=1751176475; c=relaxed/simple;
+	bh=acRO77bmGgaltNrloiJVwPAJzzJZa7ZshYnMyoKmwUw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PoNkvZaKSxn24ag/vbs5X7SqWaeIIV+LzyOSKMnkPiPjiRCCh2D8405YMpkHULmgXCsZlVYJO2IvWmh54cXCiv9R/6bCEP5vPVLR9z3/gvWspN86KzZHnprpoW++jaXTb05JVCDQMZYBPViyDdeewjPCjWGNH9eYDjBQUNRSG5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nnSXKexx; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jMSqAJAU"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b34a8f69862so1089186a12.2;
-        Sat, 28 Jun 2025 22:31:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nnSXKexx"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b2fd091f826so3117002a12.1
+        for <netdev@vger.kernel.org>; Sat, 28 Jun 2025 22:54:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751175074; x=1751779874; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4KxQw+8wrv6WHqC8EiMCQt88wHvecAR5EAJYKEAI9aQ=;
-        b=jMSqAJAUBjP/nfinIh9SMcf36rg5zUxHFHAYzeW3TvNgk0EBjCEmCw+lrc0ZpiqCBT
-         iWWWwTS4Fta7Q5+HUNitu9mmn2cujl5D50+oCKV5ryvQ7fAK1qtpp1eXudFB+Q1axHJM
-         6zS8Z0+LC1wQKPPF4N5ItEgxV0gF7SopjAAELpm9Q9bxONndAIrIwWSNzaPvroh51rv4
-         u3tnqIhj97vIFhC5p+ldMqO6bZ09DLSu0jeQfvFy0LXHBgOTPQH2IikrlPpx1G87GiG6
-         J5ony19EYjcwfxRsrEzV5mEpqWzXfHupOGN3pl0/97WwF/bp4Mt+2qK4FPSubvPi5MBK
-         wzuA==
+        d=gmail.com; s=20230601; t=1751176472; x=1751781272; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZM7xZ6DHY+WfrWlrzC9MhyQMj+5i/LhY63UoQQGbUpU=;
+        b=nnSXKexxtJQGOjkoyrevGVhWQYflTe+HlECYPSEDj6SZ9Pa/hCYqgc37ZTnezNiAuB
+         Og3wVEbMmnerJRbP6vBWH4Pup6cpq0gRrj+m8n0Opj+XDa7NB62EiZHVNCAZPlSX4jpi
+         yfmX58apmCyt014JS8hfKz6ON+4K8qA2nlCB/vT5WXYv8LvDuOrvMBTXLdQWlmOSkY/i
+         zwgLMDexEkHBKOtcpe+Q+CCysNFGqLnlA3VRXSR05u3QG4+Rtz6WrjJOjrs8C/jWYwH9
+         cZ9Jv/ihrCenHjGyXMCiGvjm+dgHA1Kf+jm042gjWroGN96Ek6wu1Kewy0cylhAwI8Rf
+         ANxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751175074; x=1751779874;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4KxQw+8wrv6WHqC8EiMCQt88wHvecAR5EAJYKEAI9aQ=;
-        b=AhoNv7AXEwnRju8CgE/ImKqzRjo8jiePu92e2n83Ed1dMnv6Rj8TizCT81lM8150ql
-         3yzGpyZoPbXM6Ms6zxVQHIcAgvd2pu34n3ZT1AZEuAA9FeoLbCsGvZeU+JwBfgzvGaPd
-         oNdWhQ7nV7Yp0WfpPf2mExdE8zLpGcvutwqvIxhdVigt6Ooo5byownUvb4n89PzLbW1i
-         FoeUpw54PVt8+QjLz5h1S7V6Cl0iMBnyLFT1Do253CFseznPvPxbaaZu4SC0JyAW0t+e
-         S8R/J31fFFFe5zjLBaLHqN0/OcTANi1IbFXFc9eSJmMMrX4SdK+Zlnynk7okwSu+9HSs
-         w9Cg==
-X-Forwarded-Encrypted: i=1; AJvYcCUgILvvIHGFWO12qFeqKYvUe35tpqU36OyC5k8BThKxYmQghyJrQUj7Q0Zc9wfo2Km5cWA4OQKu@vger.kernel.org, AJvYcCWqle11UdvkZ0p0wysWrNk4RKZo4F4stNOXTb5w0XG6bfr7gfD58tPWgY1oh5oOxiJGcflRy4+ZaqkN2eRs@vger.kernel.org, AJvYcCXn351xr/6lCNX0bxhg9Sr4rjmoYiP5I0SINk7xjRlO37YswKmiFB4IoDe7wyeVl6j4Rjw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxW7qaazX/KCH95X/pfO60adSJfQv4ycXjessoD42zeggNkvaNk
-	usfqmM69MJb1DFwL6ZcL+sMxrjd0wTS5Zk/Qd/BIQRqowBAn+p7muFj26QgUiA==
-X-Gm-Gg: ASbGncsyZmaT1PJZcLT14jhFhf9usEX6KA663UzDJbbCDoFe2O7fQEKmGB3nsRQ1ray
-	ximu2NBLWjESVKmHecb/ERDjqjN9TGiQooehN/fbnR/Yc5ATX3PMNmC8HX3mq35frj1nIR+JB79
-	sBFzgBNoJxhyKLfl6B8Kp87uRMd7CG3ER+SEjvOkz2sWBcwdPQQW4mRo2151LMzZaCOfacOOlUX
-	PFryWXTdM7mhFrEnmXqfMcNbMbYpRQbh4f4833hWpkU0GQWLcRgPCq9q6VKvpDp5FnWpvKXc7x+
-	9Va3yX0SgSkrqL5Pf9pThupGxY9+p1oLy+GbSkOc1voy90ktjXruDyz6IMMc20VAl5MPbXslmXQ
-	S/gHeuZl3iJ+KvU3nskNxmDdDhepRQpTwlKaxcmpv
-X-Google-Smtp-Source: AGHT+IEVZEItwhAmpQ7qT5rj0OSH/4b+v0bHuKzDVzS/4Qq/q+fKX3xbk/96CMChuM4cXxPSEAR6mA==
-X-Received: by 2002:a17:90b:4c89:b0:312:29e:9ec9 with SMTP id 98e67ed59e1d1-318c92ee68dmr14182999a91.24.1751175073661;
-        Sat, 28 Jun 2025 22:31:13 -0700 (PDT)
-Received: from ?IPV6:2001:ee0:4f0e:fb30:6051:fd69:c29f:10f6? ([2001:ee0:4f0e:fb30:6051:fd69:c29f:10f6])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-315f54414acsm10901024a91.47.2025.06.28.22.31.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Jun 2025 22:31:13 -0700 (PDT)
-Message-ID: <c207a343-7e08-4a2f-9163-2d64dd47d906@gmail.com>
-Date: Sun, 29 Jun 2025 12:31:07 +0700
+        d=1e100.net; s=20230601; t=1751176472; x=1751781272;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZM7xZ6DHY+WfrWlrzC9MhyQMj+5i/LhY63UoQQGbUpU=;
+        b=rsPOkmN/ASeAkRHi+3Fpu2oMPjlMSRRXgbefdNUhx7aW7dUh5CO3HNmAh2rVM3Mb8a
+         3BJV1J1wYyyXhy4iMyH7NgkS9fCbHu5KI9jfOi6uTigemCj0ssczNQuCieoH98ObLBNG
+         pWizxgpLYNnBHq2FJyU2xeNmsUHNZsg/pMmh/iLedjJKiHWZiQpBjYIJADAaYebCF6ZZ
+         CLZt9DZh/jYsWkvKoKEZymzfsR5XS/vyRfQJ6Vp8NaPZemBCK8dR9am/OsQW7mEDaMgz
+         o0apc0JrTLyzfDPJsaRYgEEx7SwqJRUeSuIKyDmUGbMvRzORHd1HFY922AFumnDlUTTQ
+         aDXA==
+X-Gm-Message-State: AOJu0Yzhvw1kc0N999zHTsKnMfoZvBUePfWgMkpsmda9z3WNou2znWlz
+	qwIWjilIrMzYI3qSnS5GH/H86AVPm3UW8zhQhncOr/cZI5QH4qBlhnc+mf3ZD0xqqZM=
+X-Gm-Gg: ASbGnctMY48z3nevIfrsRsxCDYMRmY+t+rZpwgZ93u5yse8xfUoVo3AG13oP2dQkIN2
+	WdpGcpd3PNWoRBvuUb6qNkX7aoN2PCe+K2hlIz+ipBR4aXrtA5dpQCV9D7uw5UWnVRhAWl3T1q7
+	PsW2UtL6nD8XNJynH2IZonVXcQVer+VjnSXe2iaeMiTj9fLFZwxprFXu5DC4DrD7wA4UsY1IS21
+	M9F9P+AwnHqScdGK1Vb8/+BOXIWe5MsU2sdPGCfDvVnwFTmJF3/8J8SUo2u7gXpzUVDIIi5KJW/
+	IDq3kzRu7SG0tWyuymkkxoAOdff8M8cdgYc9D17rNEFkyctafqkzHm2xGADzg3wnrwTGk5ArIQ=
+	=
+X-Google-Smtp-Source: AGHT+IFiWcZgwmidMSylItrnMnXJQ7ccbjNL3ueUAETsON3wPFWI1hiESx20H9ohf11nThhotIPptg==
+X-Received: by 2002:a17:90b:55d0:b0:311:482a:f956 with SMTP id 98e67ed59e1d1-316d69bf0cbmr18474486a91.5.1751176472206;
+        Sat, 28 Jun 2025 22:54:32 -0700 (PDT)
+Received: from dustpuppy.laguna.lan ([47.156.206.103])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-315f539e6b5sm10054237a91.13.2025.06.28.22.54.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Jun 2025 22:54:31 -0700 (PDT)
+From: Eric Work <work.eric@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Work <work.eric@gmail.com>,
+	Igor Russkikh <irusskikh@marvell.com>,
+	Mark Starovoitov <mstarovoitov@marvell.com>,
+	Dmitry Bogdanov <dbogdanov@marvell.com>,
+	Pavel Belous <pbelous@marvell.com>,
+	Nikita Danilov <ndanilov@marvell.com>
+Subject: [PATCH net-next] net: atlantic: add set_power to fw_ops for atl2 to fix wol
+Date: Sat, 28 Jun 2025 22:15:28 -0700
+Message-ID: <20250629051535.5172-1-work.eric@gmail.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/2] virtio-net: xsk: rx: move the xdp->data
- adjustment to buf_to_xdp()
-To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-References: <20250621144952.32469-1-minhquangbui99@gmail.com>
- <20250621144952.32469-3-minhquangbui99@gmail.com>
- <e6654755-3aa1-4f4b-a6ab-c7568d8a5d4e@redhat.com>
-Content-Language: en-US
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <e6654755-3aa1-4f4b-a6ab-c7568d8a5d4e@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/24/25 17:17, Paolo Abeni wrote:
-> On 6/21/25 4:49 PM, Bui Quang Minh wrote:
->> This commit does not do any functional changes. It moves xdp->data
->> adjustment for buffer other than first buffer to buf_to_xdp() helper so
->> that the xdp_buff adjustment does not scatter over different functions.
->>
->> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
->> ---
->>   drivers/net/virtio_net.c | 16 ++++++++++++++--
->>   1 file changed, 14 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
->> index 1eb237cd5d0b..4e942ea1bfa3 100644
->> --- a/drivers/net/virtio_net.c
->> +++ b/drivers/net/virtio_net.c
->> @@ -1159,7 +1159,19 @@ static struct xdp_buff *buf_to_xdp(struct virtnet_info *vi,
->>   		return NULL;
->>   	}
->>   
->> -	xsk_buff_set_size(xdp, len);
->> +	if (first_buf) {
->> +		xsk_buff_set_size(xdp, len);
->> +	} else {
->> +		/* This is the same as xsk_buff_set_size but with the adjusted
->> +		 * xdp->data.
->> +		 */
->> +		xdp->data = xdp->data_hard_start + XDP_PACKET_HEADROOM;
->> +		xdp->data -= vi->hdr_len;
->> +		xdp->data_meta = xdp->data;
->> +		xdp->data_end = xdp->data + len;
->> +		xdp->flags = 0;
->> +	}
->> +
->>   	xsk_buff_dma_sync_for_cpu(xdp);
->>   
->>   	return xdp;
->> @@ -1284,7 +1296,7 @@ static int xsk_append_merge_buffer(struct virtnet_info *vi,
->>   			goto err;
->>   		}
->>   
->> -		memcpy(buf, xdp->data - vi->hdr_len, len);
->> +		memcpy(buf, xdp->data, len);
->>   
->>   		xsk_buff_free(xdp);
->>   
-> I'm unsure if this change is in the right direction because it almost
-> open-code the existing xsk_buff_set_size() helper - any changes there
-> should be reflected here, too.
+Aquantia AQC113(C) using ATL2FW doesn't properly prepare the NIC for
+enabling wake-on-lan. The FW operation `set_power` was only implemented
+for `hw_atl` and not `hw_atl2`. Implement the `set_power` functionality
+for `hw_atl2`.
 
-I've found out that there is xdp_prepare_buff helper which gives more 
-control over the headroom so it can be used here. I'll update in the 
-next version.
+Tested with both AQC113 and AQC113C devices. Confirmed you can shutdown
+the system and wake from S5 using magic packets. NIC was previously
+powered off when entering S5. If the NIC was configured for WOL by the
+Windows driver, loading the atlantic driver would disable WOL.
 
-Thanks,
-Quang Minh.
+Partially cherry-picks changes from commit,
+https://github.com/Aquantia/AQtion/commit/37bd5cc
+
+Attributing original authors from Marvell for the referenced commit.
+
+Closes: https://github.com/Aquantia/AQtion/issues/70
+Co-developed-by: Igor Russkikh <irusskikh@marvell.com>
+Co-developed-by: Mark Starovoitov <mstarovoitov@marvell.com>
+Co-developed-by: Dmitry Bogdanov <dbogdanov@marvell.com>
+Co-developed-by: Pavel Belous <pbelous@marvell.com>
+Co-developed-by: Nikita Danilov <ndanilov@marvell.com>
+Signed-off-by: Eric Work <work.eric@gmail.com>
+---
+
+Notes:
+    The changes within this patch were originally written by developers from
+    Marvell (formerly Aquantia) as mentioned in the patch trailer using
+    Co-developed-by. Adding the `set_power` function for ATL2FW was one of
+    many changes that were released as part of the v2.4.7 update for the
+    vendor atlantic driver. I have only copied the functions necessary to
+    enable WoL and modified the required functions to work with the upstream
+    Linux kernel and followed netdev conventions (reverse xmas).
+    
+    The latest driver from Marvell can be obtained from the following page,
+    https://www.marvell.com/support/downloads.html, resulting in the link,
+    https://www.marvell.com/content/dam/marvell/en/drivers/07-18-24_Marvell_Linux_2.5.12.zip
+    
+    An earlier version of the driver was published by Aquantia on GitHub at
+    https://github.com/aquantia/AQtion. The community has been using this
+    GitHub project to discuss issues with the atlantic driver (even those
+    not present in the GitHub repo), including the lack of WoL support in
+    the upstream Linux kernel.
+
+ .../net/ethernet/aquantia/atlantic/aq_hw.h    |  2 +
+ .../atlantic/hw_atl2/hw_atl2_utils_fw.c       | 39 +++++++++++++++++++
+ 2 files changed, 41 insertions(+)
+
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_hw.h b/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
+index 42c0efc1b455..4e66fd9b2ab1 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
+@@ -113,6 +113,8 @@ struct aq_stats_s {
+ #define AQ_HW_POWER_STATE_D0   0U
+ #define AQ_HW_POWER_STATE_D3   3U
+ 
++#define	AQ_FW_WAKE_ON_LINK_RTPM BIT(10)
++
+ #define AQ_HW_FLAG_STARTED     0x00000004U
+ #define AQ_HW_FLAG_STOPPING    0x00000008U
+ #define AQ_HW_FLAG_RESETTING   0x00000010U
+diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c
+index 52e2070a4a2f..7370e3f76b62 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c
++++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c
+@@ -462,6 +462,44 @@ static int aq_a2_fw_get_mac_temp(struct aq_hw_s *self, int *temp)
+ 	return aq_a2_fw_get_phy_temp(self, temp);
+ }
+ 
++static int aq_a2_fw_set_wol_params(struct aq_hw_s *self, const u8 *mac, u32 wol)
++{
++	struct mac_address_aligned_s mac_address;
++	struct link_control_s link_control;
++	struct wake_on_lan_s wake_on_lan;
++
++	memcpy(mac_address.aligned.mac_address, mac, ETH_ALEN);
++	hw_atl2_shared_buffer_write(self, mac_address, mac_address);
++
++	memset(&wake_on_lan, 0, sizeof(wake_on_lan));
++
++	if (wol & WAKE_MAGIC)
++		wake_on_lan.wake_on_magic_packet = 1U;
++
++	if (wol & (WAKE_PHY | AQ_FW_WAKE_ON_LINK_RTPM))
++		wake_on_lan.wake_on_link_up = 1U;
++
++	hw_atl2_shared_buffer_write(self, sleep_proxy, wake_on_lan);
++
++	hw_atl2_shared_buffer_get(self, link_control, link_control);
++	link_control.mode = AQ_HOST_MODE_SLEEP_PROXY;
++	hw_atl2_shared_buffer_write(self, link_control, link_control);
++
++	return hw_atl2_shared_buffer_finish_ack(self);
++}
++
++static int aq_a2_fw_set_power(struct aq_hw_s *self, unsigned int power_state,
++			      const u8 *mac)
++{
++	u32 wol = self->aq_nic_cfg->wol;
++	int err = 0;
++
++	if (wol)
++		err = aq_a2_fw_set_wol_params(self, mac, wol);
++
++	return err;
++}
++
+ static int aq_a2_fw_set_eee_rate(struct aq_hw_s *self, u32 speed)
+ {
+ 	struct link_options_s link_options;
+@@ -605,6 +643,7 @@ const struct aq_fw_ops aq_a2_fw_ops = {
+ 	.set_state          = aq_a2_fw_set_state,
+ 	.update_link_status = aq_a2_fw_update_link_status,
+ 	.update_stats       = aq_a2_fw_update_stats,
++	.set_power          = aq_a2_fw_set_power,
+ 	.get_mac_temp       = aq_a2_fw_get_mac_temp,
+ 	.get_phy_temp       = aq_a2_fw_get_phy_temp,
+ 	.set_eee_rate       = aq_a2_fw_set_eee_rate,
+-- 
+2.49.0
 
