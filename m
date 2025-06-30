@@ -1,165 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156E21865FA;
-	Mon, 30 Jun 2025 21:00:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7393F245033
+	for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 21:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751317256; cv=none; b=ICYNKtP+zVL4+5kxY+BuMuNXRe/fjwKnDMsHe13N3Ewwos7HBSwLlvXXVeWXCQOBzZVnXAXuDFZy5l5iCWJCmEQ2Qbd2uN56Ec4hwFzPngn357lw0X86cpqryKAEyfJfGXtOPO3wz5ZMb4ih8stYA3KqRBP0NePTK0T/IuVLLOc=
+	t=1751317261; cv=none; b=mkLPASgw/SyPKNyBDHOqqkxqcoGp3pBCVRbxNDFvNw/bgc1TJIC9rl/TVP8JWtrHPT48cao9V46XzdPdVb+fbcEb4Jxvh/k4ZkJ7t+OPl7znVtWcOGpW8Ya9+FO4mnRBjzwHIeKdEXFLQ89nOAtSE1lKQUh2Bqx9r7yfeNpFIXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751317256; c=relaxed/simple;
-	bh=bgJMQE4amCsw0R8LqhB2mlYyLenEe+lgnpfI+NB2hLc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kfsWDHUHnT9GpfEYa68e67DVjR3LJIhFuHg8Umev5Zl/tEIrqW4qgCpSmQdQ5MBouQCEbK05lkAzZyFl9YjyOdqqexIjq6DCpnWY/8Ql4Q90UWG+JRy3TFVvXZBDrHP1YX4C7BKNNrSshEAapLeRBm4qEgCkPwv6Dzb/j7ZrlcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=glMyIbnz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751317261; c=relaxed/simple;
+	bh=Ab7yTKIzrBN0fZnVJDvddG5RIrRLRPP64to8BpX/EeM=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=DKPGf+WD1leB6KuKdKe7dHkQK8TS1gxLKecp2g4iaGnsdqReZV2u9CosuYk0YKxnb8jMl4iFkrUfyQz8uue6sgnoSffXkQ3GKG0b/4JyacRmh8v6FHuHAKB+GgDc4dHqYNFVvNFjy09grIWxlsTOmS1Y8LcgwLyDE25LcSI3VE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hMtLSb8N; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="glMyIbnz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF230C4CEE3;
-	Mon, 30 Jun 2025 21:00:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751317256;
-	bh=bgJMQE4amCsw0R8LqhB2mlYyLenEe+lgnpfI+NB2hLc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glMyIbnzKoQqYUS/Q2JPAaALgaROeHCEQjUvy58x44ISO0v+CKcI7NIynBplhlK6s
-	 eXWuKJpV2SBGD1h5A4+rLFJoX9WQUbk+D4XyeSjAu8uy5YPXTwEeqNaY5JTrFt/4MR
-	 7FZENH51OrHHkUlrOSCXBXuoTLpbQ1vd10o2E2LAAADsNdFqhOUXTEbKNZsA6/JW+P
-	 6qtzLDWKjdrqxd5fItfFI+bD4ON1EPUBDVzetZF1P1dlFxz7ZwepCw7tx3iCab2SOd
-	 nyGgq5D+S6CxWUIRh+PTiLQC5GyLiQbyIpEYzguHWNDFB9nukDLNcH7PGglECrnaxI
-	 eSP1GP3HxslAg==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Xiaowei Li <xiaowei.li@simcom.com>,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 07/14] net: usb: qmi_wwan: add SIMCom 8230C composition
-Date: Mon, 30 Jun 2025 16:46:32 -0400
-Message-Id: <20250630204639.1358777-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250630204639.1358777-1-sashal@kernel.org>
-References: <20250630204639.1358777-1-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hMtLSb8N"
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e73e9e18556so4934650276.0
+        for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 14:00:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751317258; x=1751922058; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZDipabjZNafCLqmhk3OVuhgwuJ+Tt0Hv+/phlQSVc1s=;
+        b=hMtLSb8Nb5OXz+FTEqJldJfZU1dQ/iossAPHgpip0m+4Ezvlzx1VblBRsKnIzDAubl
+         4Q4dAvRFTdoNyBBldCAjZ3pOMVxdVq61i9gBv/Ead6uMwp2sdI8oR10gsfJY9dxrUDPE
+         LYcX9aW3uG8BJtvKSb54tWVm31A7T2BEscgf9wkOknnfZ+TcQmu6n4ipyNwieLTeJy3C
+         MHvAcDP8yQVNso8u9IHUiMozqQeBkamoALlVJaAfdpg9vT4j5Qfi5vvfzsEI83hVP6o6
+         Sry7cfx7bxxRQb/VzVIaEu1R/BwPs3R5qCJBxCFeKhnnF9eVwer5TOCTl1aDGZgY160v
+         MDEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751317258; x=1751922058;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ZDipabjZNafCLqmhk3OVuhgwuJ+Tt0Hv+/phlQSVc1s=;
+        b=aD0ih+VOQzLs3YKoeBrDhpXzqmnqNLhiSZBTrQgbbM0fU6D5IVnWlnrczs9hGAbgly
+         zYVDq+m0/4U9/uhaTBb5USNtxcDwgp64vKefnARUpG8/yDXXcHNynjqk9p8T0p/D5B1n
+         2dkgDUR42EpjrYdJi7Wi+5YQs7IrYcKZh012XWASOX4ojMEB1qm2gy2Ybq/4C2qmFgrs
+         8nHdlrwRS63BK2fJO2S2lRRIy6/eVvOs+55pzMEo6jbJHjB39kIMgeneIu+0sNhe6aiv
+         0faq+syEINfr9SmwbnKstmdZnqxU3Q0kCmwQwi0bZcPjejsrONODKyQohCni4+WGDU8k
+         YsjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWoj9fLiELM+h55iZQx9JH2LD5F2ECsv8J/aPLWf1LY4Uc1mUWgxpC3gRQB5FQtuQu0/SAX7D8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7B1CQ5YBqmw/xZ8lMvdaxAHPKRS6c1J/7ODFtw7qqpBWbD4MM
+	LsBVUIFOhgy859NdAI6r5D9kJlORDPI7IXWYf+tC6FX6mWonvEqCTtIn
+X-Gm-Gg: ASbGnctd8aVYfjtJPfHoiWKOjfcHUj87G8UwZlOeyaYjg7/eQPd/LFo4Cg7pYcfPnvK
+	d0QrMyipENPicKwA6X4vk2BlcyK5se9bbBTPZODiTxCRWFkI01xGmNoFU6GZ9HNe/fLnXjWE0Zg
+	bRsnqpLLXdUf9kjaieoPifWsXQ+ZZ20HXkYCersLtcDnTyRJMSqMVTU/irvVZSyxng8oYo6I8By
+	dftn9DXRRKb2IaGjYl97m9lRCEhslhH0UQAZIUPX9VFyeZWy97ZA+y2bzBNv/2iVnY2/cLV+xNh
+	piuQAu8RyT5x+Xr2MbvgaAwJcw0Cz+juUMSAxo5ZYsxMQ1I3kfJFhCgvCnZsP2FG2XmgoYxyh3k
+	tUwuRBTV7NouEUxAABvYe37HXaObTh+UPesmXSDg=
+X-Google-Smtp-Source: AGHT+IHPo0Y2nNrDZIuoGXDdfDELUtTjCGvyC/vHwd+xJxIcKs/tzI3UA2xfLAjtSDpuRZ/IbXBiKA==
+X-Received: by 2002:a05:6902:909:b0:e84:76d5:cd84 with SMTP id 3f1490d57ef6-e896ee6e848mr1614060276.5.1751317258262;
+        Mon, 30 Jun 2025 14:00:58 -0700 (PDT)
+Received: from localhost (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with UTF8SMTPSA id 3f1490d57ef6-e87a6be5a6esm2562512276.46.2025.06.30.14.00.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Jun 2025 14:00:57 -0700 (PDT)
+Date: Mon, 30 Jun 2025 17:00:57 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Stanislav Fomichev <sdf@fomichev.me>, 
+ netdev@vger.kernel.org
+Cc: davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com
+Message-ID: <6862fb095090_183f832945b@willemb.c.googlers.com.notmuch>
+In-Reply-To: <20250630164222.712558-4-sdf@fomichev.me>
+References: <20250630164222.712558-1-sdf@fomichev.me>
+ <20250630164222.712558-4-sdf@fomichev.me>
+Subject: Re: [PATCH net-next v2 3/8] net:
+ s/dev_get_mac_address/netif_get_mac_address/
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.95
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-From: Xiaowei Li <xiaowei.li@simcom.com>
+Stanislav Fomichev wrote:
+> Commit cc34acd577f1 ("docs: net: document new locking reality")
+> introduced netif_ vs dev_ function semantics: the former expects locked
+> netdev, the latter takes care of the locking. We don't strictly
+> follow this semantics on either side, but there are more dev_xxx handlers
+> now that don't fit. Rename them to netif_xxx where appropriate.
+> 
+> netif_get_mac_address is used only by tun/tap, so move it into
+> NETDEV_INTERNAL namespace.
+> 
+> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> ---
+>  drivers/net/tap.c         | 6 ++++--
+>  drivers/net/tun.c         | 4 +++-
+>  include/linux/netdevice.h | 2 +-
+>  net/core/dev.c            | 4 ++--
+>  net/core/dev_ioctl.c      | 3 ++-
+>  net/core/net-sysfs.c      | 2 +-
+>  6 files changed, 13 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+> index bdf0788d8e66..4c85770c809b 100644
+> --- a/drivers/net/tap.c
+> +++ b/drivers/net/tap.c
+> @@ -28,6 +28,8 @@
+>  
+>  #include "tun_vnet.h"
+>  
+> +MODULE_IMPORT_NS("NETDEV_INTERNAL");
+> +
+>  #define TAP_IFFEATURES (IFF_VNET_HDR | IFF_MULTI_QUEUE)
+>  
+>  static struct proto tap_proto = {
+> @@ -1000,8 +1002,8 @@ static long tap_ioctl(struct file *file, unsigned int cmd,
+>  			return -ENOLINK;
+>  		}
+>  		ret = 0;
+> -		dev_get_mac_address((struct sockaddr *)&ss, dev_net(tap->dev),
+> -				    tap->dev->name);
+> +		netif_get_mac_address((struct sockaddr *)&ss, dev_net(tap->dev),
+> +				      tap->dev->name);
+>  		if (copy_to_user(&ifr->ifr_name, tap->dev->name, IFNAMSIZ) ||
+>  		    copy_to_user(&ifr->ifr_hwaddr, &ss, sizeof(ifr->ifr_hwaddr)))
+>  			ret = -EFAULT;
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index f8c5e2fd04df..4509ae68decf 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -85,6 +85,8 @@
+>  
+>  #include "tun_vnet.h"
+>  
+> +MODULE_IMPORT_NS("NETDEV_INTERNAL");
+> +
 
-[ Upstream commit 0b39b055b5b48cbbdf5746a1ca6e3f6b0221e537 ]
+Thanks for giving this a go. Now that you've implemented it, does the
+risk (of overlooking callers, mainly) indeed seem acceptable?
 
-Add support for SIMCom 8230C which is based on Qualcomm SDX35 chip.
-0x9071: tty (DM) + tty (NMEA) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=05 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1e0e ProdID=9071 Rev= 5.15
-S:  Manufacturer=SIMCOM
-S:  Product=SDXBAAGHA-IDP _SN:D744C4C5
-S:  SerialNumber=0123456789ABCDEF
-C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=none
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Documentation/core-api/symbol-namespaces.rst says
 
-Signed-off-by: Xiaowei Li <xiaowei.li@simcom.com>
-Acked-by: Bjørn Mork <bjorn@mork.no>
-Link: https://patch.msgid.link/tencent_21D781FAA4969FEACA6ABB460362B52C9409@qq.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+  It is advisable to add the MODULE_IMPORT_NS() statement close to other module
+  metadata definitions like MODULE_AUTHOR() or MODULE_LICENSE().
 
-**YES**
+No need to respin just for this from me. Something to consider,
+especially if anything else comes up.
 
-This commit should be backported to stable kernel trees. Here's my
-detailed analysis:
-
-## Rationale for Backporting:
-
-1. **Stable kernel rules explicitly allow device ID additions**:
-   According to Documentation/process/stable-kernel-rules.rst line 15,
-   patches must "either fix a real bug that bothers people or just add a
-   device ID." This commit clearly falls into the "add a device ID"
-   category.
-
-2. **Simple, low-risk change**: The commit adds exactly one line:
-  ```c
-  {QMI_QUIRK_SET_DTR(0x1e0e, 0x9071, 3)}, /* SIMCom 8230C ++ */
-  ```
-  This is a minimal change that only affects users with this specific
-  hardware (vendor ID 0x1e0e, product ID 0x9071).
-
-3. **Enables hardware that would otherwise not work**: Without this
-   device ID entry, users with the SIMCom 8230C modem cannot use their
-   hardware with the qmi_wwan driver. This directly impacts
-   functionality for those users.
-
-4. **Follows established patterns**: The commit uses `QMI_QUIRK_SET_DTR`
-   macro, consistent with the existing SIMCom entry at line 1428:
-  ```c
-  {QMI_QUIRK_SET_DTR(0x1e0e, 0x9001, 5)}, /* SIMCom 7100E, 7230E, 7600E
-  ++ */
-  ```
-  This shows the vendor has a history of requiring the DTR quirk for
-  their devices.
-
-5. **Historical precedent supports backporting**: Of the 5 similar
-   commits analyzed, 4 were backported to stable:
-   - Fibocom FG132 (YES)
-   - MeiG Smart SRM825L (YES)
-   - Telit FN912 compositions (YES)
-   - Telit FN920C04 compositions (YES)
-   - Quectel RG255C (NO)
-
-   The 80% backport rate for similar device ID additions suggests this
-type of change is generally considered appropriate for stable.
-
-6. **No risk to existing functionality**: The change only adds support
-   for a new device ID (0x9071) and doesn't modify any existing device
-   support or core driver functionality.
-
-The commit meets all criteria for stable backporting: it's obviously
-correct, tested (as evidenced by the detailed USB descriptor output in
-the commit message), small (1 line), and enables hardware support that
-users need.
-
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index dc84d9029c2c7..3976bc4295dd1 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1432,6 +1432,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x22de, 0x9051, 2)}, /* Hucom Wireless HM-211S/K */
- 	{QMI_FIXED_INTF(0x22de, 0x9061, 3)},	/* WeTelecom WPD-600N */
- 	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9001, 5)},	/* SIMCom 7100E, 7230E, 7600E ++ */
-+	{QMI_QUIRK_SET_DTR(0x1e0e, 0x9071, 3)},	/* SIMCom 8230C ++ */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0121, 4)},	/* Quectel EC21 Mini PCIe */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0191, 4)},	/* Quectel EG91 */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
--- 
-2.39.5
-
+Just curious, did you use the modpost and make nsdeps, or was it
+sufficient to find the callers with tools like cscope and grep?
