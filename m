@@ -1,41 +1,42 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7FB292B42
-	for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 16:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7658460
+	for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 16:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751302040; cv=none; b=S6Z8bdseW4hmHsVRhqiMNshObsy4j4ARDyz16SzbVPye54G7o4FdQvdHH1nVIhxY4OrZndcsRXTwsi+7K0JYUAbPxUVMKPhzmokaUSpYTpd5hM5aHhTLzUFh+B4NNp+e/rf29MwfPpAlAAoEVnjj4B1XAnGS5zICts4/x3aj0lM=
+	t=1751302199; cv=none; b=BhFJ5aQLrrYHz3EK/M0h79Hu9t+lCdv8w6KqV/LflellQIxv0yTVZeJtm14Ive7rUTL+9e/BykgVAOashEhFL2wJEnwBP0WyBRSL4ohzj6SGFXkpSwgdtOpQN1IePVU45lvTRN2YqY5vMt252hHdJPt6mKceSCU+h8YTstVhXEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751302040; c=relaxed/simple;
-	bh=OnplvDWqY/fmBz/eDfO1jNE31E/h7mDBy3gWEf0BK+w=;
+	s=arc-20240116; t=1751302199; c=relaxed/simple;
+	bh=amikl6o2wzAqKCLElLnXacASC7JbfG35i+pN+kkodpE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pCC8FMXxm1LwuRxJGIR50K++8C8LMWd1/5AzMcykHSLClZeXD/d2wAOOxb2u8X6uaCq2O4bGYDW8cotaWRno6BciTyw876/EaEyILWd1Nn55YXAZw//qMBL+QNb32qq64kadZLRZCrPTBBdaGlF9Qt87+ft9D1Sh4nt4A2Q7X9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=XivGe8eo; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=cC/U5+uEnwQSMIsxmXcdjOVBqKxvI0vGn2rIHo0mrLrugDmXDOkBXAP+DtOxtQcSoNUO5/glYiQrD56AyXY3BpVxNXpl7KZcF+KtQIwQjlIgPIOF/gMeVHq29yk+u7lShIjRMql1uRnD07W3wMG5RRz+V1y9I9xg92YwvZ679Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OAd73jTr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XivGe8eo"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=dyBSNECdVsrlQzLPqP8reGQdOgZVM1g/L8tQe2ognW8=; b=XivGe8eoIZ16xErDPmjQUXybui
-	OxFDm76Da1PIbz8vgU47KeaMr/R/XhRRuGEwv+OSHUIecNr4VRmU08zI+br4ajIGXSl2WuA7oecBw
-	xe3zxecgMOuSWVRG/n8gmlvXtAar7MJ9F7DZr4la1/aaEhuqKbCyDthZF5iGbEbAfPK4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uWHes-00HNt3-BY; Mon, 30 Jun 2025 18:47:06 +0200
-Date: Mon, 30 Jun 2025 18:47:06 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Raju Rangoju <Raju.Rangoju@amd.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	Shyam-sundar.S-k@amd.com
-Subject: Re: [PATCH net-next v2] amd-xgbe: add support for giant packet size
-Message-ID: <679e9678-8c9a-49ea-87a8-a38650a82e19@lunn.ch>
-References: <20250630152901.2644294-1-Raju.Rangoju@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OAd73jTr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54999C4CEE3;
+	Mon, 30 Jun 2025 16:49:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751302199;
+	bh=amikl6o2wzAqKCLElLnXacASC7JbfG35i+pN+kkodpE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OAd73jTr4Qx4sIewZhiPHeppN6ESqOnFVQaqI9pRlM4B2HGWGcZsuGSuhEOXM4LV9
+	 WigopD4UURVkN76D6r2SkpJlcDJ8LXCuMKxM7fC2YPTYPsQlAOrIu2U8kjj/0TvSzy
+	 C1qfPvpQDyWsVQNChAFxeB0ilLCfAwZuV+NAcQ7374+MAWNxzGseYkVtF5py+e5jvs
+	 gGgnhbRXWgrGEUty+jBhCNfuccsVb+6DiTVAfzO5rQ3FzU6uprQAtdb21HYljU0okB
+	 dz1QTgsHW21xBhXeNGwUi7IxQXhkGZOGN356knnqAxrnV73fdF9ql1KuPBe/iu6PtN
+	 pAqpYIE4UXbCw==
+Date: Mon, 30 Jun 2025 17:49:55 +0100
+From: Simon Horman <horms@kernel.org>
+To: Dennis Chen <dechen@redhat.com>
+Cc: netdev@vger.kernel.org, anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, intel-wired-lan@lists.osuosl.org
+Subject: Re: [PATCH net] i40e: report VF tx_dropped with tx_errors instead of
+ tx_discards
+Message-ID: <20250630164955.GK41770@horms.kernel.org>
+References: <20250618195240.95454-1-dechen@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,14 +45,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250630152901.2644294-1-Raju.Rangoju@amd.com>
+In-Reply-To: <20250618195240.95454-1-dechen@redhat.com>
 
-On Mon, Jun 30, 2025 at 08:59:01PM +0530, Raju Rangoju wrote:
-> AMD XGBE HW supports Giant packets up to 16K bytes. Add necessary
-> changes to enable the giant packet support.
+On Wed, Jun 18, 2025 at 03:52:40PM -0400, Dennis Chen wrote:
+> Currently the tx_dropped field in VF stats is not updated correctly
+> when reading stats from the PF. This is because it reads from
+> i40e_eth_stats.tx_discards which seems to be unused for per VSI stats,
+> as it is not updated by i40e_update_eth_stats() and the corresponding
+> register, GLV_TDPC, is not implemented[1].
+> 
+> Use i40e_eth_stats.tx_errors instead, which is actually updated by
+> i40e_update_eth_stats() by reading from GLV_TEPC.
 
-How does v2 differ from v1? You should include a change history.
+...
 
-You also need to wait 24 hours between posts.
+> Fixes: dc645daef9af5bcbd9c ("i40e: implement VF stats NDO")
+> Signed-off-by: Dennis Chen <dechen@redhat.com>
+>     Link: https://www.intel.com/content/www/us/en/content-details/596333/intel-ethernet-controller-x710-tm4-at2-carlsville-datasheet.html
 
-    Andrew
+Hi Dennis,
+
+Thanks for the detailed explanation, it's very much appreciated.
+
+One minor nit, is that there are some leading spaces before "Link: "
+a few lines above. But I suspect you don't need to repost just to
+address that.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
