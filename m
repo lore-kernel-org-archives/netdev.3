@@ -1,116 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABB82E6D2C
-	for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 16:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADB329344F
+	for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 16:12:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751299804; cv=none; b=QfulSB6LrcTVC+BDVbFfFkQ/3/RXzR/2nQuU5t7ajFWw/re16Eg7Pnng4DO8A3k+6VSEK7THCxof2BRiqmhy+rW3U5pi6JSRo+xMTqEZOJ9pWapa1iP+EwwW6sEph0128g2+tu/+83lco+IHJeachLvarORhQ/O5VHqoCJtbS+4=
+	t=1751299929; cv=none; b=DEMozOdtvbHOSQOoFnOWLu7WxYSskpJDjbrf5vj7StRefM+zQ1Y+K2uwNC0cs5RNqesUgi/Ojg3rOlop3Nq3oSaXchnHx/wcTst+Y6vrgo0OqxhigtYw9k6wpV8TjXR5H0MNjQT1qB/gLN/LumA8kf3vFDwznWa35z0QcFNRcYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751299804; c=relaxed/simple;
-	bh=H3ilVKcuOK7n7L69aSi30BR2lcZlbwLhQrJghnb5gY0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kUdsYSI/kSa4CnntSWrsvQ+3z3vHNFgtBqpOsS/MnGHB99xJbfTqQ+qjTTdjf1UFLF+bfWp4qccb9wjp4MCeE1ScQijM9E6hi5e4W7JvUH4qMPsrkh4cuGmNyy2MlmwEdFF1is9A9pobpUVoLH6FOCgPaHZijie4d3wAjt7IboI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u1b5G12s; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751299929; c=relaxed/simple;
+	bh=PCJyNTLH7Jg8C1gYIlHHucvSuf2Gopz4c8HoJCfZMJA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NsYzkTUPsRZTTip6a2DCHOoGXpog/e5pYNYOWF2ejAxhMWCynvphz3izycz38AtEZX8Cs/a3PJJ+mBmh6a4kRI3X8FG9GQFZVID0iJrFdW4G/kXWw8lnDFlhlOI7QVCq7CCDFcKRihuTIZVvlmlFNrJ4wMJDkQx14M5e4JbUafo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sAYQNAgd; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u1b5G12s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4310FC4CEF2;
-	Mon, 30 Jun 2025 16:10:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751299804;
-	bh=H3ilVKcuOK7n7L69aSi30BR2lcZlbwLhQrJghnb5gY0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u1b5G12s+pWYnJ8GRUnHWc72eFWrfHeaRnfpFd3pvdzxCi5H3Fht5KwqbWDMeyzfc
-	 aF4obyWFIfBEo+yKp11KXCnMA9+XYk+m8XJLUpCEP1W9w6mnF55suznUBGvbFGSsL0
-	 6L5a8L6IAhl8ZYhUZ/5P5BwfQQXOjKHBQlJyMubv54jrNg2JAT2BCPQygcaOm8yGoB
-	 dsMQOsAG7x/nBWhFyNot66uqncOPd5T4wE2AImjmTz3uWeLk9DMNNUzdyTfIreAzII
-	 hrOlLlWHa8xMx0M0DHgfGfdjPYCY5hqgPT0iF3KE2YWUDIYOkshFkBcLkXc/R29fXn
-	 dBsLBuJU2q3pQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	andrew@lunn.ch,
-	przemyslaw.kitszel@intel.com,
-	anthony.l.nguyen@intel.com,
-	sgoutham@marvell.com,
-	gakula@marvell.com,
-	sbhatta@marvell.com,
-	bbhushan2@marvell.com,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	leon@kernel.org,
-	gal@nvidia.com,
-	ecree.xilinx@gmail.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 5/5] net: ethtool: reduce indent for _rxfh_context ops
-Date: Mon, 30 Jun 2025 09:09:53 -0700
-Message-ID: <20250630160953.1093267-6-kuba@kernel.org>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250630160953.1093267-1-kuba@kernel.org>
-References: <20250630160953.1093267-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sAYQNAgd"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-237f270513bso322205ad.1
+        for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 09:12:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1751299927; x=1751904727; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l7BxjnsxuOM0CL9z4MQbMFwea7KaqP5DI3gVwQBqPDc=;
+        b=sAYQNAgds0BBHLJt71i2huOT84gbJrDQour+xPGRXkC2gYCRNX2RE9KyoaiKN9WAW8
+         VrG93U7+B03DsX5Od3Rwbo7nrdAI6YgegnqD9riAB2jzckUWnuWR6iIkCe7i1pSSXbTv
+         qMTARPxFz1Ud2IfHgC+Rn7nDzNfjdoqqIIO/rAddo5z3IHix+62Jgce+pZg3bK5NydSE
+         NgkwkRSx82bsQ+Ts2tULbm2D5jvqsJQdkkqx+rN/SS/Z5QRsAgqlQDWG7I8kb8YE+WeA
+         k6toSk99zqCwUyYd14BEBeDExYCtMIX8WNs4XsZPT7uACxh0ism84rcV/5GiO0b7YY8W
+         /yqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751299927; x=1751904727;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=l7BxjnsxuOM0CL9z4MQbMFwea7KaqP5DI3gVwQBqPDc=;
+        b=qsROSFmHF3CwaP/Dx8ws00HhyHEU+XXWKf04oLXyRMgO1ZK2N1oIt4pwH/2jvIYDmF
+         dgvduC2l0aIko4aFLaBhrKXj3ClR725ho54cv3Iq+3NvAAnUHTUGhVC9nRJ87KC+Xy28
+         u0UtI6TimglA6qbYj64x1EWo3Y7WNcPFYPLRrRWnwVnntY39JGQrll3zDFi2qmwDxeMF
+         rVCFCziYrZbjdAX8serWfxdsXNNUyJoP8q8deaZBNV/ZLVEfi6rwDbR8/ahMl3uMeYpH
+         awLCFQLQoTHnTEl+N1Sn1DdIgevmdwoCXqY05nrVmATLlIKdXnMu0H2v9mIRoP/DPz3O
+         qNjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUurqowdNMw2b9CT7rDfbq9oy8x1n6p55x61gabKxvBzsNOsbajNBeKwoHlsLhipunjXmWgLOM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrQC1gv82bA5FtIS6h57h7sVt+zFbSrQMpDVC4iTMnbHG3ZKuO
+	CegAsPD93mC402uuXevTF7c+6tbAmmxMV/s26MPUJR7V/BRTeGDd69NV5hW73mvw5GhSRBOCc1r
+	PhrD2oKxJhkRcPgt3QYP/QElnvYGj5762IBleeSiK
+X-Gm-Gg: ASbGnctB8caDYgUFkulCFvx0P9FnlTy+uQFTt5gVPcVrahwVAoJftzjaePIZnxQsQaq
+	1vfjPTaYkXOp2bKDq0s25fnwwhNQ3d1Ya4+A5s5WCoI9Ure8F6j8PXv3S7RmWJpTr8IWOG0wJdi
+	AayGoPl+SZAGicR92+1bZQOjqS2NXc7sYhVV+FN9tnNKBC
+X-Google-Smtp-Source: AGHT+IF8J0J76MOIb3DZGKGp4t47LLfeSRmXENjgq0heD66UgbUhctGKXAPxwJn9vBXMNX32PWRCS+R2LlHZQ5u+jBA=
+X-Received: by 2002:a17:902:c40d:b0:235:e1fa:1fbc with SMTP id
+ d9443c01a7336-23ae8d6e607mr5216235ad.0.1751299926903; Mon, 30 Jun 2025
+ 09:12:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250630092818.1449599-1-ap420073@gmail.com>
+In-Reply-To: <20250630092818.1449599-1-ap420073@gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Mon, 30 Jun 2025 09:11:53 -0700
+X-Gm-Features: Ac12FXzO9s36LkozDrT_BcqjTROlBBiE_WqB--UMdgwaC2la8YC3Lyb0q4yomdE
+Message-ID: <CAHS8izN9CWwwUk0tfDy1iGrfwYLTD9paiF622jP4z4mgD844uw@mail.gmail.com>
+Subject: Re: [PATCH net-next] selftests: devmem: configure HDS threshold
+To: Taehee Yoo <ap420073@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	edumazet@google.com, andrew+netdev@lunn.ch, shuah@kernel.org, sdf@fomichev.me, 
+	jdamato@fastly.com, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Now that we don't have the compat code we can reduce the indent
-a little. No functional changes.
+On Mon, Jun 30, 2025 at 2:28=E2=80=AFAM Taehee Yoo <ap420073@gmail.com> wro=
+te:
+>
+> The devmem TCP requires the hds-thresh value to be 0, but it doesn't
+> change it automatically.
+> Therefore, configure_hds_thresh() is added to handle this.
+>
+> The run_devmem_tests() now tests hds_thresh, but it skips test if the
+> hds_thresh_max value is 0.
+>
+> Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+> ---
+>  .../selftests/drivers/net/hw/ncdevmem.c       | 86 +++++++++++++++++++
+>  1 file changed, 86 insertions(+)
+>
+> diff --git a/tools/testing/selftests/drivers/net/hw/ncdevmem.c b/tools/te=
+sting/selftests/drivers/net/hw/ncdevmem.c
+> index cc9b40d9c5d5..d78b5e5697d7 100644
+> --- a/tools/testing/selftests/drivers/net/hw/ncdevmem.c
+> +++ b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
+> @@ -349,6 +349,72 @@ static int configure_headersplit(bool on)
+>         return ret;
+>  }
+>
+> +static int configure_hds_thresh(int len)
+> +{
+> +       struct ethtool_rings_get_req *get_req;
+> +       struct ethtool_rings_get_rsp *get_rsp;
+> +       struct ethtool_rings_set_req *req;
+> +       struct ynl_error yerr;
+> +       struct ynl_sock *ys;
+> +       int ret;
+> +
+> +       ys =3D ynl_sock_create(&ynl_ethtool_family, &yerr);
+> +       if (!ys) {
+> +               fprintf(stderr, "YNL: %s\n", yerr.msg);
+> +               return -1;
+> +       }
+> +
+> +       req =3D ethtool_rings_set_req_alloc();
+> +       ethtool_rings_set_req_set_header_dev_index(req, ifindex);
+> +       ethtool_rings_set_req_set_hds_thresh(req, len);
+> +       ret =3D ethtool_rings_set(ys, req);
+> +       if (ret < 0)
+> +               fprintf(stderr, "YNL failed: %s\n", ys->err.msg);
+> +       ethtool_rings_set_req_free(req);
+> +
+> +       if (ret =3D=3D 0) {
+> +               get_req =3D ethtool_rings_get_req_alloc();
+> +               ethtool_rings_get_req_set_header_dev_index(get_req, ifind=
+ex);
+> +               get_rsp =3D ethtool_rings_get(ys, get_req);
+> +               ethtool_rings_get_req_free(get_req);
+> +               if (get_rsp)
+> +                       fprintf(stderr, "HDS threshold: %d\n",
+> +                               get_rsp->hds_thresh);
+> +               ethtool_rings_get_rsp_free(get_rsp);
+> +       }
+> +
+> +       ynl_sock_destroy(ys);
+> +
+> +       return ret;
+> +}
+> +
+> +static int get_hds_thresh_max(void)
+> +{
+> +       struct ethtool_rings_get_req *get_req;
+> +       struct ethtool_rings_get_rsp *get_rsp;
+> +       struct ynl_error yerr;
+> +       unsigned int ret =3D 0;
+> +       struct ynl_sock *ys;
+> +
+> +       ys =3D ynl_sock_create(&ynl_ethtool_family, &yerr);
+> +       if (!ys) {
+> +               fprintf(stderr, "YNL: %s\n", yerr.msg);
+> +               return -1;
+> +       }
+> +
+> +       get_req =3D ethtool_rings_get_req_alloc();
+> +       ethtool_rings_get_req_set_header_dev_index(get_req, ifindex);
+> +       get_rsp =3D ethtool_rings_get(ys, get_req);
+> +       ethtool_rings_get_req_free(get_req);
+> +       if (get_rsp)
+> +               ret =3D get_rsp->hds_thresh_max;
+> +       ethtool_rings_get_rsp_free(get_rsp);
+> +
+> +       ynl_sock_destroy(ys);
+> +
+> +       return ret;
+> +}
+> +
+>  static int configure_rss(void)
+>  {
+>         return run_command("sudo ethtool -X %s equal %d >&2", ifname, sta=
+rt_queue);
+> @@ -565,6 +631,9 @@ static int do_server(struct memory_buffer *mem)
+>         if (configure_headersplit(1))
+>                 error(1, 0, "Failed to enable TCP header split\n");
+>
+> +       if (configure_hds_thresh(0))
+> +               error(1, 0, "Failed to set HDS threshold\n");
+> +
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- net/ethtool/ioctl.c | 31 +++++++++++++------------------
- 1 file changed, 13 insertions(+), 18 deletions(-)
+hds_thresh should probably be part of configuring headersplit.
 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index 17dbda6afd96..fcd2a9a20527 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -1668,25 +1668,20 @@ static noinline_for_stack int ethtool_set_rxfh(struct net_device *dev,
- 	rxfh_dev.rss_context = rxfh.rss_context;
- 	rxfh_dev.input_xfrm = rxfh.input_xfrm;
- 
--	if (rxfh.rss_context) {
--		if (create) {
--			ret = ops->create_rxfh_context(dev, ctx, &rxfh_dev,
--						       extack);
--			/* Make sure driver populates defaults */
--			WARN_ON_ONCE(!ret && !rxfh_dev.key &&
--				     ops->rxfh_per_ctx_key &&
--				     !memchr_inv(ethtool_rxfh_context_key(ctx),
--						 0, ctx->key_size));
--		} else if (rxfh_dev.rss_delete) {
--			ret = ops->remove_rxfh_context(dev, ctx,
--						       rxfh.rss_context,
--						       extack);
--		} else {
--			ret = ops->modify_rxfh_context(dev, ctx, &rxfh_dev,
--						       extack);
--		}
--	} else {
-+	if (!rxfh.rss_context) {
- 		ret = ops->set_rxfh(dev, &rxfh_dev, extack);
-+	} else if (create) {
-+		ret = ops->create_rxfh_context(dev, ctx, &rxfh_dev, extack);
-+		/* Make sure driver populates defaults */
-+		WARN_ON_ONCE(!ret && !rxfh_dev.key &&
-+			     ops->rxfh_per_ctx_key &&
-+			     !memchr_inv(ethtool_rxfh_context_key(ctx),
-+					 0, ctx->key_size));
-+	} else if (rxfh_dev.rss_delete) {
-+		ret = ops->remove_rxfh_context(dev, ctx,
-+					       rxfh.rss_context, extack);
-+	} else {
-+		ret = ops->modify_rxfh_context(dev, ctx, &rxfh_dev, extack);
- 	}
- 	if (ret) {
- 		if (create) {
--- 
-2.50.0
-
+But also, failing to set hds_thresh should not fail the test, to
+maintain compatibility with drivers that don't support configuring
+hds_thresh.
