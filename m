@@ -1,222 +1,210 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A76028B50A
-	for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 14:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD3D259CAC
+	for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 14:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751295287; cv=none; b=rFUArTk0AvIuYw1wCCF0n8IDdRhZGX4XbrwDQiWzGL/VE70vDLxRGFuglWDok++kRYUIXVUwn8Iqbw00kcDQv2IOi0jkOfH+7RsTxV46UKj2rO/m0E3Zkb858Q04K+tzsiohivOuFaKtJntyu2uTffiT7md/hQx0Y9cL2btv/tE=
+	t=1751295353; cv=none; b=LynVU3nn3VXV++4D4rCMj2UZ9Xp5XRUz+T3hPj8AT4zfl3OPJVL8zA155DowTMHAbGu52Irbx254B1QbRNPtZdaz8P1KtwBMhj0a0R2quhHdtuwDKB4/JgENsGoRSf4qjjit8pXlSmYkUR3p+a2RNAjyWrqBp62OXCkX4lUpATU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751295287; c=relaxed/simple;
-	bh=aLt1ZrspkXVq+7ZfamJt97k2eAHB68alTdtmafLRht0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=edIebmnNFLT9PZNQ5jFx7NZLyrDMUE124QaErU+/5jXYYcdNY0sMKFm9E7v/atCiEKRik9yE3wvbyJx8t3CN8/T/ywaDCmqk3LEedmKhbLNQtZR+x5wU8bqVGTxCe3JPbvFx0Ha8dquxRpH7WbGC/MQhP0zgNv+OsRgSKVuoq1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Pkru7PAe; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1751295353; c=relaxed/simple;
+	bh=ZJqmvniFMX4XUhe75n9Boxe1iERP6S83FqOmnL+lYyA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=l51FzcGv8FyPAqRkCdXMnun20agP8RlS3LZndmqHo2702aaUHxk3lRFVCKgmdcuBAQkO8LiPpUzqjiN4oD7/fr+oePBmjezR5xNQlkI6Z9OZ8pXjLiOxXMlGPOuwimdqByZWs6vIEmv9sA+waHVkGA3p6NRFXYmmw2iykOKWUf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=eIZaIdyz; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Pkru7PAe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751295284;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lDq2W9BFH4O+4v2QDHUZ/OXiJmC+AYZucENKup8acvQ=;
-	b=Pkru7PAezTy5zufVpIbGa1IxYWo1GaEIHRtEtVZ+rvMmy6Ow6rW9pVSQSLZXjgsPzr/fh5
-	tjGZNgfhuTRRv6u7iqWKl1FKcNgXHYuThCCZ5MDXLH01nv8cHVQN4ALKgCSgr067mUwoXB
-	AqZmJ+zwuZBg374j9ouDxkrB4qh5zjY=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-312-VcDM1RG5NN2uOkdkHJVJew-1; Mon, 30 Jun 2025 10:54:42 -0400
-X-MC-Unique: VcDM1RG5NN2uOkdkHJVJew-1
-X-Mimecast-MFC-AGG-ID: VcDM1RG5NN2uOkdkHJVJew_1751295282
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-ae0de1a6a80so178339066b.1
-        for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 07:54:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="eIZaIdyz"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-607ec30df2bso9398703a12.1
+        for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 07:55:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1751295350; x=1751900150; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uXMF1bMJVAy/JxAwyg6/YYGwbBD0IUDbCLswPPMo1gg=;
+        b=eIZaIdyzgTdtgqJSCAAlkP+Jsw2+K7c8K8AUkKi0/lcu7rBoH0zwNLQTzipNa3xPDX
+         XsvaqZdO8tjSVdxLaxUlsAMWSK2z6rD9yQtomW624qTZd+wus2vsjoYLFESjX6Wfx9uF
+         GZfy7LL9bcRCFhcNd/4lkrhwIutgFzZ5Vd2Ft8cVbXSmfQmejKSh2iS4JSd/7nqja5r0
+         LEJJX/AC36ILPynXdWOtkEUe+aJjesUM1uJZmTtPLoPQ7aVXfAtNDg/8o2PTcqMxYCWc
+         vuz7dwx2+GMw1JIgwpdwDiglN//eER3mTgQVuyF/sNtEMEjBT6ye/0tdSWZlyTpYFwFv
+         vIvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751295282; x=1751900082;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lDq2W9BFH4O+4v2QDHUZ/OXiJmC+AYZucENKup8acvQ=;
-        b=MZEMmCRhoyVMFw/dBq7/Wa2DTCg96ztbJWIMWSxvaHlS0kexxKnnF5u6ahtOunKrJg
-         RR1HLPRxp7wc/OzwslvaqAeqF9vEVxvOIMHHjUOISdEvDGLmlzna7tsuac8KVaoKoT3k
-         /7tvGqJx49uNgofVcCNWOFpeQG41BHv4Jm7+qdcyjf+tRxLRK9UzZB1Ykjh4pjEOM+NP
-         flwqBXELULASaPzA9+x8tj211Rs5LOCIcfR3Gr2dZJbu/o8VGHSg+ping0BTqJyO3Jtu
-         l6bpA7OPBKIEMf5NRHB8sWC+BPH47umEIC5/VbGZ5n5ciVvJ9nOnB7Wdm+kderBzbiCu
-         +JeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUur4OIMqFiMe1/lxynIG9n7XolvHthVkpjyL6uAusdgQZryx4iNjYsJVR4uKkFCSidVEWNTM8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9/yim2+5aq1B/wS+fJgjn/Z/Es0BHlKjmA6UQhjOMOVGObqZ6
-	Np3WxlXZWy9gefEAawsGJVF2cZhGZJxohOYU4CRqUl/jxG1iZZ9Ck59L0gFNwPufsdqL8j3EN5F
-	ghwU+uNACt9zcBUXuvlr5GN3DLObT0x6mUSsAyLYXI6d3Xfgn6gzkApW4uA==
-X-Gm-Gg: ASbGncvoYYqAzWLl6j69DHeXGytSbuxwI8pGwoqAOHkfHd8QnKpYTYZrUPGDgWJyg9L
-	4vm4whP5vyhMNXnMkpLnHUoggjR/t+wJU+qYnc4zI1raaD45vYDQGOlKRL5cQQtQ70LWx7P2GQ3
-	yXzqBhJve3dkUX/glNjlo1mFNsPkAxqdZHGt3139ch8DZVX2X7wsIl722DBHQ1TCtf9TPiy5bql
-	tY0P9lngbGwgufBG5D8nlMR80kWdZ9D5t58p64OObn1IYo166/EDMSQxZ3wqH02aU0EJzbihd8L
-	X6DIXSnSZus=
-X-Received: by 2002:a17:907:3c83:b0:ad8:e477:970c with SMTP id a640c23a62f3a-ae34fdc67demr1187814566b.23.1751295281519;
-        Mon, 30 Jun 2025 07:54:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEiDVHztt+YTUkaG1BJuQ7w5s/kr8yY1OSJDtV0Axqaw2I4tijYVvqW2nsMVoPwIigNr7w4kQ==
-X-Received: by 2002:a17:907:3c83:b0:ad8:e477:970c with SMTP id a640c23a62f3a-ae34fdc67demr1187812466b.23.1751295280964;
-        Mon, 30 Jun 2025 07:54:40 -0700 (PDT)
-Received: from redhat.com ([31.187.78.81])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae353c6bbfdsm688648166b.115.2025.06.30.07.54.39
+        d=1e100.net; s=20230601; t=1751295350; x=1751900150;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uXMF1bMJVAy/JxAwyg6/YYGwbBD0IUDbCLswPPMo1gg=;
+        b=R2+PjfEul/5/EfIZ49pXJmniaOl7wVeOdt4nY6dwsRw8wWDYakWMuz8+3D548I+nc7
+         datGFdqFWQuXvvJqP/dtWE0rbcdvHr3EQEtH/N37l8GFA0vQkWCEIxxJ41vKYK3EzSxC
+         Z8qKyFq6FGddNdEk82xa9E0ce7/PNuAaD6KbGdfeDzPv66D9F4GvvQlP+n7idlss3QgX
+         3txt84xF4PZa1veSIxx1Fgv6MCOpHqRwgMbYE+LOfVPauMVsy4/3y6O+PHHMC5mVmNEb
+         iPbU1T6H0KXzWJ9Kt6DXUrJ+Ilx5wpa3A4LIVfBkWmzYdoynUlZ9lx2R3Flz2zbDsQFE
+         2yhg==
+X-Forwarded-Encrypted: i=1; AJvYcCVR4o/dfUknddDTlu87lm9RJo+EWoQTLNFSgp20ejo45jiIiW0+X61VNZeQ3UMpUO2Iq8jNvic=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+oRwR3xDF/D2XfnKh4IRxnBY73nnjT3W+l+v/m7SBUZXNcygB
+	A7nUeoDcFh80m/prd+TKNkpK2be6KFNWfvkxJTx6vhBGwbFsG2YT15IuXFRCu+RNKNM=
+X-Gm-Gg: ASbGncswdq/4x8ori37OEPOu7bCoqn/sChBup56LsuvrxWWL7E3qKjsFRtwJLKJYVud
+	bxoWJ44gAkJhOaTuNQLrecig3yijPbY6flSKoeBiHT++W7rHST2iLluxq4/uDHDo2tUJz1VL1xV
+	qe8+sp4bFo53ViFJBKBZbvs/9qhXEP2JsstlXhNfdob8pvfg1TczMW5eqQK7BCuawrQH1lzdG+n
+	XCb9pl9ETEeZTDVvBDBsXUuwl4A7qDF7NgWwwsu/0CBUd99Dxn+UelBBCo2KrIaHD2l3/1SL1sX
+	DOafcd8maAfqKWQ9v9/AbmxqQtQHRBdchma3LriUz51CgrB2974jULF+aY+rmR/7
+X-Google-Smtp-Source: AGHT+IHV3ysTdOGShPm0baiE6A6iGQCNOjE79x1nfX2HGrcdah+u108I5dRkwxaYLylF6WTz6veY/w==
+X-Received: by 2002:a17:907:3d8c:b0:ae0:1fdf:ea65 with SMTP id a640c23a62f3a-ae34fd8821fmr1248099166b.17.1751295349536;
+        Mon, 30 Jun 2025 07:55:49 -0700 (PDT)
+Received: from cloudflare.com ([2a09:bac5:5063:2dc::49:10a])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae353c6bc2dsm695731866b.136.2025.06.30.07.55.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Jun 2025 07:54:40 -0700 (PDT)
-Date: Mon, 30 Jun 2025 10:54:38 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Zigit Zo <zuozhijie@bytedance.com>
-Cc: jasowang@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] virtio-net: fix a rtnl_lock() deadlock during probing
-Message-ID: <20250630105328-mutt-send-email-mst@kernel.org>
-References: <20250630095109.214013-1-zuozhijie@bytedance.com>
- <20250630103240-mutt-send-email-mst@kernel.org>
+        Mon, 30 Jun 2025 07:55:48 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+Subject: [PATCH bpf-next 00/13] Extend skb dynptr for metadata access from
+ TC
+Date: Mon, 30 Jun 2025 16:55:33 +0200
+Message-Id: <20250630-skb-metadata-thru-dynptr-v1-0-f17da13625d8@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250630103240-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGWlYmgC/x3MwQqDMAyA4VeRnBeozirsVcYOqY0zjHUlzYZDf
+ HeLx+/w/xsUVuECt2YD5Z8U+aSK9tLAtFB6Mkqshs513g3tgOUV8M1GkYzQFv1i/Kdsin0gP47
+ TNTrfQ82z8izrub5DyDMmXg0e+34A1AfnBnQAAAA=
+X-Change-ID: 20250616-skb-metadata-thru-dynptr-4ba577c3d054
+To: bpf@vger.kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>, 
+ Arthur Fabre <arthur@arthurfabre.com>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+ Jesse Brandeburg <jbrandeburg@cloudflare.com>, 
+ Joanne Koong <joannelkoong@gmail.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>, 
+ =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <thoiland@redhat.com>, 
+ Yan Zhai <yan@cloudflare.com>, netdev@vger.kernel.org, 
+ kernel-team@cloudflare.com, Stanislav Fomichev <sdf@fomichev.me>
+X-Mailer: b4 0.15-dev-07fe9
 
-On Mon, Jun 30, 2025 at 10:50:55AM -0400, Michael S. Tsirkin wrote:
-> On Mon, Jun 30, 2025 at 05:51:09PM +0800, Zigit Zo wrote:
-> > This bug happens if the VMM sends a VIRTIO_NET_S_ANNOUNCE request while
-> > the virtio-net driver is still probing with rtnl_lock() hold, this will
-> > cause a recursive mutex in netdev_notify_peers().
-> > 
-> > Fix it by skip acking the annouce in virtnet_config_changed_work() when
-> > probing. The annouce will still get done when ndo_open() enables the
-> > virtio_config_driver_enable().
-> 
-> I am not so sure it will be - while driver is not loaded, device does
-> not have to send interrupts, and there's no rule I'm aware of that says
-> we'll get one after DRIVER_OK.
-> 
-> How about, we instead just schedule the work to do it later?
-> 
-> 
-> Also, there is another bug here.
-> If ndo_open did not run, we actually should not send any announcements.
-> 
-> Do we care if carrier on is set on probe or on open?
-> If not, let's just defer this to ndo_open?
+TL;DR
+-----
 
-Hmm yes I think we do, device is visible to userspace is it not?
+This is the first step in an effort which aims to enable skb metadata
+access for all BPF programs which operate on an skb context.
 
-Hmm.  We can keep the announce bit set in vi->status and on open, check
-it and then schedule a work to do the announcement.
+By skb metadata we mean the custom metadata area which can be allocated
+from an XDP program with the bpf_xdp_adjust_meta helper. Network stack code
+accesses it using the skb_metadata_* helpers.
 
+Overview
+--------
 
-> 
-> > We've observed a softlockup with Ubuntu 24.04, and can be reproduced with
-> > QEMU sending the announce_self rapidly while booting.
-> > 
-> > [  494.167473] INFO: task swapper/0:1 blocked for more than 368 seconds.
-> > [  494.167667]       Not tainted 6.8.0-57-generic #59-Ubuntu
-> > [  494.167810] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> > [  494.168015] task:swapper/0       state:D stack:0     pid:1     tgid:1     ppid:0      flags:0x00004000
-> > [  494.168260] Call Trace:
-> > [  494.168329]  <TASK>
-> > [  494.168389]  __schedule+0x27c/0x6b0
-> > [  494.168495]  schedule+0x33/0x110
-> > [  494.168585]  schedule_preempt_disabled+0x15/0x30
-> > [  494.168709]  __mutex_lock.constprop.0+0x42f/0x740
-> > [  494.168835]  __mutex_lock_slowpath+0x13/0x20
-> > [  494.168949]  mutex_lock+0x3c/0x50
-> > [  494.169039]  rtnl_lock+0x15/0x20
-> > [  494.169128]  netdev_notify_peers+0x12/0x30
-> > [  494.169240]  virtnet_config_changed_work+0x152/0x1a0
-> > [  494.169377]  virtnet_probe+0xa48/0xe00
-> > [  494.169484]  ? vp_get+0x4d/0x100
-> > [  494.169574]  virtio_dev_probe+0x1e9/0x310
-> > [  494.169682]  really_probe+0x1c7/0x410
-> > [  494.169783]  __driver_probe_device+0x8c/0x180
-> > [  494.169901]  driver_probe_device+0x24/0xd0
-> > [  494.170011]  __driver_attach+0x10b/0x210
-> > [  494.170117]  ? __pfx___driver_attach+0x10/0x10
-> > [  494.170237]  bus_for_each_dev+0x8d/0xf0
-> > [  494.170341]  driver_attach+0x1e/0x30
-> > [  494.170440]  bus_add_driver+0x14e/0x290
-> > [  494.170548]  driver_register+0x5e/0x130
-> > [  494.170651]  ? __pfx_virtio_net_driver_init+0x10/0x10
-> > [  494.170788]  register_virtio_driver+0x20/0x40
-> > [  494.170905]  virtio_net_driver_init+0x97/0xb0
-> > [  494.171022]  do_one_initcall+0x5e/0x340
-> > [  494.171128]  do_initcalls+0x107/0x230
-> > [  494.171228]  ? __pfx_kernel_init+0x10/0x10
-> > [  494.171340]  kernel_init_freeable+0x134/0x210
-> > [  494.171462]  kernel_init+0x1b/0x200
-> > [  494.171560]  ret_from_fork+0x47/0x70
-> > [  494.171659]  ? __pfx_kernel_init+0x10/0x10
-> > [  494.171769]  ret_from_fork_asm+0x1b/0x30
-> > [  494.171875]  </TASK>
-> > 
-> > Fixes: df28de7b0050 ("virtio-net: synchronize operstate with admin state on up/down")
-> > Signed-off-by: Zigit Zo <zuozhijie@bytedance.com>
-> > ---
-> >  drivers/net/virtio_net.c | 15 ++++++++++++---
-> >  1 file changed, 12 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> > index e53ba600605a..0290d289ebee 100644
-> > --- a/drivers/net/virtio_net.c
-> > +++ b/drivers/net/virtio_net.c
-> > @@ -6211,7 +6211,8 @@ static const struct net_device_ops virtnet_netdev = {
-> >  	.ndo_tx_timeout		= virtnet_tx_timeout,
-> >  };
-> >  
-> > -static void virtnet_config_changed_work(struct work_struct *work)
-> > +static void __virtnet_config_changed_work(struct work_struct *work,
-> > +					  bool check_announce)
-> >  {
-> >  	struct virtnet_info *vi =
-> >  		container_of(work, struct virtnet_info, config_work);
-> 
-> So this will be schedule_announce instead of check_announce?
-> 
-> 
-> 
-> 
-> > @@ -6221,7 +6222,7 @@ static void virtnet_config_changed_work(struct work_struct *work)
-> >  				 struct virtio_net_config, status, &v) < 0)
-> >  		return;
-> >  
-> > -	if (v & VIRTIO_NET_S_ANNOUNCE) {
-> > +	if (check_announce && (v & VIRTIO_NET_S_ANNOUNCE)) {
-> >  		netdev_notify_peers(vi->dev);
-> >  		virtnet_ack_link_announce(vi);
-> >  	}
-> > @@ -6244,6 +6245,11 @@ static void virtnet_config_changed_work(struct work_struct *work)
-> >  	}
-> >  }
-> >  
-> > +static void virtnet_config_changed_work(struct work_struct *work)
-> > +{
-> > +	__virtnet_config_changed_work(work, true);
-> > +}
-> > +
-> >  static void virtnet_config_changed(struct virtio_device *vdev)
-> >  {
-> >  	struct virtnet_info *vi = vdev->priv;
-> > @@ -7030,7 +7036,10 @@ static int virtnet_probe(struct virtio_device *vdev)
-> >  	   otherwise get link status from config. */
-> >  	netif_carrier_off(dev);
-> >  	if (virtio_has_feature(vi->vdev, VIRTIO_NET_F_STATUS)) {
-> > -		virtnet_config_changed_work(&vi->config_work);
-> > +		/* The check_annouce work will get scheduled when ndo_open()
-> > +		 * doing the virtio_config_driver_enable().
-> > +		 */
-> > +		__virtnet_config_changed_work(&vi->config_work, false);
-> >  	} else {
-> >  		vi->status = VIRTIO_NET_S_LINK_UP;
-> >  		virtnet_update_settings(vi);
-> > 
-> > base-commit: 2def09ead4ad5907988b655d1e1454003aaf8297
-> > -- 
-> > 2.49.0
+Today, the skb metadata is accessible only by the BPF TC ingress programs
+through the __sk_buff->data_meta pointer. We propose a three step plan to
+make skb metadata available to all other BPF programs which operate on skb
+objects:
+
+ 1) Extend skb dynptr for metadata access from TC (this patch set)
+
+    This is a preparatory step, but it also stands on its own. Here we
+    enable access to the skb metadata through a bpf_dynptr, the same way we
+    can already access the skb payload today.
+
+    In the next step (2) we plan to relocate the metadata as skb travels
+    through the network stack. That will require a safe way to access the
+    metadata area irrespective of its location.
+
+    The checks relying on pointer arithmetic - __sk_buff->data_meta and
+    ->data - were not built for that. They require the metadata to be
+    located right in front of the payload. Otherwise their guarantees break
+    down.
+
+    This is where the dynptr [1] comes into play. It solves exactly that
+    problem. The dynptr to skb metadata can be backed by a memory area that
+    resides in a different location depending on code path.
+
+ 2) Persist skb metadata past the TC hook (future)
+
+    Keeping the metadata in front of the packet headers as the skb travels
+    through the network stack is problematic - see the discussion of
+    alternative approaches below. Hence, we plan to relocate as necessary
+    after the TC hook.
+
+    Where to? We don't know yet. There are a couple of options: (i) move it
+    to the top of skb headroom, or (ii) allocate dedicated memory for it.
+    They are not mutually exclusive. The right solution might be a mix.
+
+    When? That is also an open question. It could be done on device to
+    protocol handover or lazily when headers get pushed or headroom gets
+    resized.
+
+ 3) skb dynptr for sockops, sk_lookup, etc. (future)
+
+    There are BPF program types which don't get an __sk_buff as a context,
+    but they either have, or could have in some cases, access to the skb
+    itself. As a final touch, we want to provide a way to create an skb
+    dynptr from these special contexts.
+
+TIMTOWDI
+--------
+
+Alternative approaches which we considered:
+
+* Keep the metadata always in front of skb->data
+
+We think it is a bad idea for two reasons, outlined below. Nevertheless we
+are open to it if necessary.
+
+ 1) Performance concerns
+
+    It would require the network stack to move the metadata on each header
+    pull/push (see skb_reorder_vlan_header() for an example). While doable,
+    there is an expected performance overhead.
+
+ 2) Potential for bugs
+
+    In addition to updating skb_push/pull and pskp_expand_head, we would
+    need to audit any code paths which operate on skb->data pointer
+    directly without going through the helper. This creates a "known
+    unknown" risk.
+
+* Design a new custom metadata area from scratch
+
+We have tried that in Arthur's patch set [2]. One of the outcomes of the
+discussion there was that we don't want to have two places to store custom
+metadata. Hence the change of approach.
+
+-jkbs
+
+PS. This series is not as long as it looks. I kept the more granular commit
+split to "show the work". I can squash some together if needed.
+
+[1] https://docs.ebpf.io/linux/concepts/dynptrs/
+[2] https://lore.kernel.org/all/20250422-afabre-traits-010-rfc2-v2-0-92bcc6b146c9@arthurfabre.com/
+
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+---
+Jakub Sitnicki (13):
+      bpf: Ignore dynptr offset in skb data access
+      bpf: Helpers for skb dynptr read/write/slice
+      bpf: Add new variant of skb dynptr for the metadata area
+      bpf: Enable read access to skb metadata with bpf_dynptr_read
+      bpf: Enable write access to skb metadata with bpf_dynptr_write
+      bpf: Enable read-write access to skb metadata with dynptr slice
+      net: Clear skb metadata on handover from device to protocol
+      selftests/bpf: Pass just bpf_map to xdp_context_test helper
+      selftests/bpf: Parametrize test_xdp_context_tuntap
+      selftests/bpf: Cover read access to skb metadata via dynptr
+      selftests/bpf: Cover write access to skb metadata via dynptr
+      selftests/bpf: Cover lack of access to skb metadata at ip layer
+      selftests/bpf: Count successful bpf program runs
+
+ include/linux/filter.h                             |  25 ++-
+ include/uapi/linux/bpf.h                           |   9 +
+ kernel/bpf/helpers.c                               |  10 +-
+ net/core/dev.c                                     |   1 +
+ net/core/filter.c                                  | 104 +++++++++--
+ tools/include/uapi/linux/bpf.h                     |   9 +
+ .../bpf/prog_tests/xdp_context_test_run.c          | 194 +++++++++++++++++----
+ tools/testing/selftests/bpf/progs/test_xdp_meta.c  | 171 ++++++++++++++++--
+ tools/testing/selftests/bpf/test_progs.h           |   1 +
+ 9 files changed, 446 insertions(+), 78 deletions(-)
 
