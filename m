@@ -1,66 +1,66 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B0E28DEFF
-	for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 14:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6121628EC15
+	for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 14:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751295364; cv=none; b=nefiwxPacTdmqLXAOjY3W2gP8iAAzSr9JYAmmRp+z2KjdL269Zet/nXG4vGh5VdG2WxdJ0Y47zQ3/M/wLhUhzAvLphk6fEaYHWj8r5Pp1NKH/Uz7KLi+dAQZyphLB+X59pJ9cGI9x+K1OWwg1MPTEYw1eSa34sjkTrsLxUds/2U=
+	t=1751295367; cv=none; b=SniNpwhUcEWx0ThezjejUjEw0SJ40BQ9y6/v3pKa2f02ixq2VG7U0OUSD8aImvOI3WVYuzIZSG98oxM3sDdxhD0i7h7A/KnCrUqNO8Kligj7T9XzXSpwraE2qB+KedU3uvZoW2e0au7dHMhOHSdqgO4UQUCJbz1WLBOEdCDvmF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751295364; c=relaxed/simple;
-	bh=a3ROTLqAavkp4rwfffb8mrqANhf7FzXtyeXu16Yhpac=;
+	s=arc-20240116; t=1751295367; c=relaxed/simple;
+	bh=TDEFTacL7djEqHpABiIdeZuuRtjb8OR7YNrSJZFenlc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=t7cXbElMkscVa2USazZaOXvVBydWeVfMumo2A5VT/vtT3WZNXKmodm19IRtwJVuNYrui6kmTJueGLkt4ulJ16QbWbfs1yEU+eAerTB9T+FReWwJ4k9pISVyxGw1eRh4WJsZqcqTTVqbrNWJLC8lKBwplFNTOIJHkNeTaWFy2E44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=eXPjpdUa; arc=none smtp.client-ip=209.85.218.47
+	 In-Reply-To:To:Cc; b=nj6br0yBeScd9W2omlj67vDIzzmKX6/mW+XEdknmNE95d0SKWUVr0DH3En98g6k6j6CpuadxrXgfvly4k1NVogBkf8Sf5VeUBJxo/fiNP0H7ZT26Dg/QcnWBLft3KWFdnTWF4jGEUvZ76yIxh/sZ5yVjdJtX6mIo52idyViXW84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Xo9ug5pR; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="eXPjpdUa"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ae223591067so393492966b.3
-        for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 07:56:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Xo9ug5pR"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-60768f080d8so4759936a12.1
+        for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 07:56:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1751295361; x=1751900161; darn=vger.kernel.org;
+        d=cloudflare.com; s=google09082023; t=1751295364; x=1751900164; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iD26vKIyNfL79HGbpDEINEAFFrRHmSLhjJgTVN9WS8Q=;
-        b=eXPjpdUaQ/Jt3viyMeIsItSLO8b9ayRfwssZTkZ4Gx+ikKV6eBpbxTqdFaVa51f6BO
-         4l2y7nSenGqgawwIsHJKytL0Fb7KE4SM9p/xiNaxjRyNlCZiKQCe2pF+Ilzrx67/trzp
-         6OkGnk0ZaNju8e8QtY38jSRYRtt52uoRf56ugbfnm1JqO7EcXy/+Zet8OZjMW+dBq4wE
-         NijTJH7ue2NiQCJWw1XSyvOAeh2KrMd6Tlu0E6XVV7gBdA6l1ObL6py5zFxhJrQJL1gy
-         3Oo8Q3/ShWLo9kBMmlaVDMBsLqMEt97jGgGqYgjAvu0CyYZb+iY9nZlohrDK//YGSHu5
-         npDw==
+        bh=SCcnMwKNb++fyWYmbwcO1TGXRqyK5XVW7IW60BPy7mo=;
+        b=Xo9ug5pRsuOu4kwTS2JWL9uPh519PCv0u0yi4KMaUQtS+VomIEz06SkxUasvRc7ikw
+         MG2wArc1wL7Krr5rsxYbf0Y4Prad9Tfi+yZh40T9jQxM1gUNwo9760bjqjHrZT/gZ1bA
+         dxIP0lp3O9R8C4Q4sDmVH+inNGe/29LPjnFFvMWmxzI2Uslt7PWhXFNvkuCSaktYKheG
+         XnexFCFGOgzWv4y26EYKV7z62o9d5lJRH8tB5lECsohMf1eUMObmK61de1RCezO4V5os
+         lJkaYfaIAW7VT3D8HiE3AnqH115sK5YM6O0hA0g4Omot0o62t0AMDZnhXnCdw7rKBW52
+         RN6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751295361; x=1751900161;
+        d=1e100.net; s=20230601; t=1751295364; x=1751900164;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iD26vKIyNfL79HGbpDEINEAFFrRHmSLhjJgTVN9WS8Q=;
-        b=S0/yyujI0qjNgGX5h/CLeiAxOUxvddmC608eG6+MV813RADaEdngaJXKER66FkTDeS
-         wqKykdBvfkgv7K5FdWOOm4Y0IM9zbtDRjCpUknitzA+lE8jisS686mY/sXvzvMiI8oTs
-         +juFXAy1V9TlHF+gwXVX9AWIAUU1n8Y9fAol+9kRWpE3T0MEIIxewoHICIZvoOOqRHo3
-         8yt7B5p7KcPUmcMEu26xXc3gsAu/ZZjcMLx5+f/VCPy4kiUsgW08WyIU5Mxri68YJmjo
-         gpWBgewq1dBvULOcmuDPVMmrB0EITDzGILoQjn9AIDeWCsdiHXRFyLC22JHSiC9y7CCv
-         b01g==
-X-Forwarded-Encrypted: i=1; AJvYcCXBQ+7VUkoEBLQVUcerWNP/jPg5xY8r4467ptiL+cEFvBdUGCn2GAQhl6DaZXzl7dN0lFgkvIg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDtEV23jqfKyfuesC2tI2r65JpCU0Mt2TE8EiSTN4jBp3XiLgW
-	e1Ihxev2WqUjvukYYNdOJMHp5eOKM0xGasjsY36AjRrdLDCA/zN0nddGZ6CfEZj3il4=
-X-Gm-Gg: ASbGncuEqNOSSsN9M34vuymb5oH8QyD/SlmL6BzyEnBBLDvIaYSqcl8cY8w3/e5YK6L
-	DVcjik3YM9Ah/92fuRZ47Veru3D2KRT+AsxB9AzbS4ipm655M9vEO9bt4jG34tdzyargYFcJyNO
-	QuWUgVF7M4JxpBQdLetleVUBDrxjqa1gDZHzUcdn6uDtSEUeMHo3v3WXSujzzB+jmvLZ6V7Qo/M
-	htWmwk/svucXx+3VwXwkZp1fqF3iYO4myqA/yWFa/72mpZQ8z9bZDYYSXcoCDUXbhuGBQcG6AIA
-	Kq6/z2RgoaJJM/l1UedyBkBFX5d3qDYYzn6ICdJS8eYmeMFM178dFg==
-X-Google-Smtp-Source: AGHT+IE/Zb4rMlxmPjOzNJkDM1x0qOLrMzF1G2hhd8OLqR9/IZ6Ax0J9kuqbvn21eDwI6nQWBwUXDg==
-X-Received: by 2002:a17:907:968a:b0:ad2:2146:3b89 with SMTP id a640c23a62f3a-ae35019cefbmr1245806366b.47.1751295361273;
-        Mon, 30 Jun 2025 07:56:01 -0700 (PDT)
+        bh=SCcnMwKNb++fyWYmbwcO1TGXRqyK5XVW7IW60BPy7mo=;
+        b=AF6NFQ1QS6fz+g+fGkSQLqcX2xlEDE/p/1VxX63/FcjgXJZmxOMFFuf/4r2oIA/fQR
+         WCFvBBkM/Of0IulQKeRb9krX2pn5yVUMC1IoPT5gJaupmbNSrKuHWWuAyHnnMAtH4ssY
+         foeN1Tt9hRbfu9nDUZHPXcAxLFkgiuCs6mbSf5g2wnmiMKZx8G66Pf9cQCkGTj+32bpu
+         6HucjO0SqGIk+7BDF+qUZYdWIFwML2bdgWUnhY1dY6pypBlWQibr4dQeZpghktN5w9Hc
+         bVU95He7rDd0i6z+gfOT8KAkz9c0W9zLc2G9mg7Ynav4VFqEoPwEt/9wqsoCQ892dwno
+         6JgA==
+X-Forwarded-Encrypted: i=1; AJvYcCVt7jfum9JGnCOUU6L0/1olIlXrwO98elXUe4lfmkNzEKzZjZ4zXak7YILPToVw1S4Qxv+Q0X8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygGFWQcgcmA/3FdKG79NeZoeu5wdH8ljCM6nLXQf/UweuDUPgC
+	fpFH8WGbneGEdHm9R0jOmWS6eD1HPsOgkfOOoTQZKMHlW3y5hDM/WgVrlqY0juNNQ64=
+X-Gm-Gg: ASbGncv7LovkzeMS8hEluecUoxlugVtS4q/EH6EMsXXoyA85Yv7wzXJS8U8SP16iWT2
+	elQYlGHpWvO/wIoJrqa6tJ5+DfidriWScBXXMdhKKqO2ilMf22RBIpRMLauaJgYboCt2zT1DQFy
+	FIEgUuBKXrstxtO8w3NGLL8jj8cYMDSiLLNJ40b2UYCjtVMHg4YXNEOSfbXbblNttoKm197T5M2
+	w549J8DesJuY6wYmTafgfy2iUGtMb5JsV3Mwhdn7PhzBtryJrstzc9knvCGd9O9tCJ1YP4EGfx9
+	nlocAtqa5pmYVAZMqbTA7VyA2JvYkKmqO2mS/2ooS8EqPFf1A1so5o2unQ766Sit
+X-Google-Smtp-Source: AGHT+IH9Fa4kiQKfb7hemNPlqBf2T3m141VlECeU+kmO/yhtIpuASpkwJDEuTZHJnosNzrZ4altY3g==
+X-Received: by 2002:a05:6402:90c:b0:608:6754:ec67 with SMTP id 4fb4d7f45d1cf-60c88e3f3dfmr12149465a12.30.1751295363537;
+        Mon, 30 Jun 2025 07:56:03 -0700 (PDT)
 Received: from cloudflare.com ([2a09:bac5:5063:2dc::49:10a])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae353659fdesm692689966b.69.2025.06.30.07.56.00
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60c832073besm5840974a12.73.2025.06.30.07.56.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Jun 2025 07:56:00 -0700 (PDT)
+        Mon, 30 Jun 2025 07:56:02 -0700 (PDT)
 From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Mon, 30 Jun 2025 16:55:39 +0200
-Subject: [PATCH bpf-next 06/13] bpf: Enable read-write access to skb
- metadata with dynptr slice
+Date: Mon, 30 Jun 2025 16:55:40 +0200
+Subject: [PATCH bpf-next 07/13] net: Clear skb metadata on handover from
+ device to protocol
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250630-skb-metadata-thru-dynptr-v1-6-f17da13625d8@cloudflare.com>
+Message-Id: <20250630-skb-metadata-thru-dynptr-v1-7-f17da13625d8@cloudflare.com>
 References: <20250630-skb-metadata-thru-dynptr-v1-0-f17da13625d8@cloudflare.com>
 In-Reply-To: <20250630-skb-metadata-thru-dynptr-v1-0-f17da13625d8@cloudflare.com>
 To: bpf@vger.kernel.org
@@ -84,38 +84,38 @@ Cc: Alexei Starovoitov <ast@kernel.org>,
  kernel-team@cloudflare.com, Stanislav Fomichev <sdf@fomichev.me>
 X-Mailer: b4 0.15-dev-07fe9
 
-Make it possible to read from or write to skb metadata area using the
-dynptr slices creates with bpf_dynptr_slice() or bpf_dynptr_slice_rdwr().
+With the extension of bpf_dynptr_from_skb(BPF_DYNPTR_F_SKB_METADATA), all
+BPF programs authorized to call this kfunc now have access to the skb
+metadata area.
 
-This prepares ground for access to skb metadata from all BPF hooks
-which operate on __sk_buff context.
+These programs can read up to skb_shinfo(skb)->meta_len bytes located just
+before skb_mac_header(skb), regardless of what data is currently there.
+
+However, as the network stack processes the skb, headers may be added or
+removed. Hence, we cannot assume that skb_mac_header() always marks the end
+of the metadata area.
+
+To avoid potential pitfalls, reset the skb metadata length to zero before
+passing the skb to the protocol layers. This is a temporary measure until
+we can make metadata persist through protocol processing.
 
 Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 ---
- net/core/filter.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/core/dev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index ab6599f42bb7..020da46f93a7 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -12033,9 +12033,14 @@ void *bpf_dynptr_skb_slice(const struct bpf_dynptr_kern *ptr, u32 offset,
- 		else
- 			return skb_pointer_if_linear(skb, offset, len);
- 
--	case SKB_DYNPTR_METADATA:
--		return NULL;	/* not implemented */
-+	case SKB_DYNPTR_METADATA: {
-+		u32 meta_len = skb_metadata_len(skb);
- 
-+		if (len > meta_len || offset > meta_len - len)
-+			return NULL; /* out of bounds */
-+
-+		return skb_metadata_end(skb) - meta_len + offset;
-+	}
- 	default:
- 		WARN_ONCE(true, "%s: unknown skb dynptr offset %d\n", __func__, ptr->offset);
- 		return NULL;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index be97c440ecd5..4a2389997535 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -5839,6 +5839,7 @@ static int __netif_receive_skb_core(struct sk_buff **pskb, bool pfmemalloc,
+ 	}
+ #endif
+ 	skb_reset_redirect(skb);
++	skb_metadata_clear(skb);
+ skip_classify:
+ 	if (pfmemalloc && !skb_pfmemalloc_protocol(skb))
+ 		goto drop;
 
 -- 
 2.43.0
