@@ -1,572 +1,144 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE8026463E;
-	Tue,  1 Jul 2025 07:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EB9264628;
+	Tue,  1 Jul 2025 07:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751356459; cv=none; b=c96nigViOJ5dUytnFy+QB6BqgOKRAFHbKT9GlWKVE1VgYM822erVtgA7NfxYokHPVEPNnvF83fv3B2GdANZsx2NV4SONbBuoxRE2FdOtBlHtaafrWMG05P+AEPiy8As+OTxcL44+rWh/zHRx2kmevPqmFdvdYFCAGxEZEaqFDAA=
+	t=1751356528; cv=none; b=WopNewf9+6UIKd3UDQdV8qbxvrWZC4le2kEgSzFKMAkSQ6JjE8LLFgdiP/gQJAT9KcGPSTKVwY2jrxEeI4tnPLbv7Sessr5SScZdNBB12M0uyQtHimqO8LmZRGAzXNZOdYWTaeqGl6JABi2xpNUvdN7aCvHlJqdtkkWseai6/V8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751356459; c=relaxed/simple;
-	bh=aLp0OTQCW+cGVNmp1xaqhe81qVdtYj7yQtXstHlUy3k=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MRD0j1KKBSFZEk1h48hDhVQreWxx226Anmtu/jMQE/Wh5bnGLRDcwTnrijts06oyS3nz4VJ6T9KO0HkGnd8Nbrc8aIytvGnSJXlzbgNITOzTKTaJa4YL/5sRfN8+EgQ0T8LwQRn7JTxuaZfKsjE2uFvGsxr0GUTNJE9t/X5REAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bWZxf0Hfkz2TSwt;
-	Tue,  1 Jul 2025 15:52:22 +0800 (CST)
-Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
-	by mail.maildlp.com (Postfix) with ESMTPS id EDED6140276;
-	Tue,  1 Jul 2025 15:54:06 +0800 (CST)
-Received: from huawei.com (10.175.124.27) by dggpemf500016.china.huawei.com
- (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 1 Jul
- 2025 15:54:05 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <alex.aring@gmail.com>,
-	<dsahern@kernel.org>
-CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
-	<wangliang74@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>,
-	<linux-wpan@vger.kernel.org>
-Subject: [PATCH net-next v2] net: replace ND_PRINTK with dynamic debug
-Date: Tue, 1 Jul 2025 16:11:14 +0800
-Message-ID: <20250701081114.1378895-1-wangliang74@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1751356528; c=relaxed/simple;
+	bh=9ec1u3X1hswUlL/D+46m55ZLYNmlwFlrlevyxirbW94=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ANOKtGVKc9F81SQ3D8QugsZquq3VWPQfUTPKVd+jlroqjRpHP7/2OvV8ytA/9Zhj9JKD0dC8X/FwW9LlFas0WfX86eHTfbaTgx090kGIx+3dnj49ovWbA8TJKmltzgTugHIpWg0Wt6w9zETZdFgYVHJ9eZCTzF4a1LptX97koOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=RPCVe6qW; arc=none smtp.client-ip=54.207.22.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="RPCVe6qW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1751356516;
+	bh=kVonl+PK1ESVmG9azZvdAt29T3vBY7t0t1HKeM85rhI=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To;
+	b=RPCVe6qWMeh0L1KoCAaUpToeJF73nl/4uaOz8Tesl0qQkVZxkF7smEdDfSJZicN5s
+	 fxui5Td9gen7am0Z4N9YAqtA5nGts/xMLZA3Ws5sbXKfXFkKXB6sb0d9HGnL6x9VNJ
+	 phgkYjSch/FgCZuJpUk4ufBea22s/ZA7lPoN4Hb0=
+X-QQ-mid: esmtpgz11t1751356511t3eee1c54
+X-QQ-Originating-IP: uIMIDLdsZ/D1XDMaTtdpyHRjJA4q6V7tfk6huzd3aRk=
+Received: from mail-yw1-f174.google.com ( [209.85.128.174])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 01 Jul 2025 15:55:09 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 13363238083336646326
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-710bbd7a9e2so30045547b3.0;
+        Tue, 01 Jul 2025 00:55:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW0bEt/iv64aiNz+f2jdKskcFb2/32SuqHi5zIgUN0ehYP9MzpFdj49uP1QPf5UEn+4uG793Pka@vger.kernel.org, AJvYcCWTc8nspshMCLgdF7o6ZUYzjq7nZ8VSlMa6oe7DwxOlfoLNrBx+yTEVVjbSoMBEr97pX4YgQOxM2xBpgwg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmxLDX982cRFLjUyVX8vaGxCrc5VAwOSqB+fWm/JMaomNCjiBT
+	pJ2+SXnn+t5yoetWS0soNb/H2kwKJlzBczhsjG0Uzb0y4+vsp93BxfHUa61DMUF3uoFqxZRD+eX
+	gOgDo3DdbushoPat7Jf8VqaQaBOwKS7g=
+X-Google-Smtp-Source: AGHT+IF/JrE6CmFtz4xVWDk4L0eQar4iOXSbDoU2gCX5TO7LfKfgwY1Hcpg+2UwgYT4HAN5Wey2cPhMzu7MT0Sf0EwM=
+X-Received: by 2002:a05:690c:319:b0:712:d824:9202 with SMTP id
+ 00721157ae682-715171471femr202620807b3.9.1751356508652; Tue, 01 Jul 2025
+ 00:55:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf500016.china.huawei.com (7.185.36.197)
+References: <9EE5B02BB2EF6895+20250623041104.61044-1-wangyuli@uniontech.com>
+ <20250623131141.332c631c@kernel.org> <CAC1kPDMkYdPVy-dG3uv92-JG2Ui8BxRqYt2U86ey7fKuJxBa0w@mail.gmail.com>
+In-Reply-To: <CAC1kPDMkYdPVy-dG3uv92-JG2Ui8BxRqYt2U86ey7fKuJxBa0w@mail.gmail.com>
+From: Chen Linxuan <chenlinxuan@uniontech.com>
+Date: Tue, 1 Jul 2025 15:54:57 +0800
+X-Gmail-Original-Message-ID: <0F513DA3FF23E8A1+CAC1kPDNE+io5=KEXZkLq5DOQi2qzBEmgAwOj6x4qvhiNmC1rtQ@mail.gmail.com>
+X-Gm-Features: Ac12FXxOBex4Jesig6QUABAVCPRvvFOqEWQBN0RMoBwV77dRdQuVcwEsTNxzev8
+Message-ID: <CAC1kPDNE+io5=KEXZkLq5DOQi2qzBEmgAwOj6x4qvhiNmC1rtQ@mail.gmail.com>
+Subject: Re: [PATCH] nfp: nfp_alloc_bar: Fix double unlock
+To: Chen Linxuan <chenlinxuan@uniontech.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, WangYuli <wangyuli@uniontech.com>, louis.peens@corigine.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, viro@zeniv.linux.org.uk, oss-drivers@corigine.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	guanwentao@uniontech.com, niecheng1@uniontech.com, 
+	Jun Zhan <zhanjun@uniontech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5a-1
+X-QQ-XMAILINFO: Mtnmbwz1r7Eqqjl1CQl6m32qcgPJFhDXzPap09HT4oh6a0GfGQS9QuZT
+	D8Q56fOUGzNceoSYjYYLfA+5NzFTmlCOI7zv+kE29qfBXvB2yMFkZb6E1nrH5AcFHh+Xo8U
+	PrWaEKdPgXqtQAuT75YacrRTQ8b7z1rrNVjggNi/VItZjX3fydy5WkKadTfym2Xy4Si50wV
+	XxJMbGzZk2PT/kEON8wIlDceyNlaq93c0yuLbUU40yyRPtq3u1L3ed77bdUYaxO6CMAbMBK
+	o+yhQmLnpmgdMoOAZqsgBgEllHj2FnsJrKZ7VNDtAputjLasCs1wzWzhv/m8MoLXhwS0Rtn
+	9OM0nykb9D3uozgkmt+ZMzHGmTi2nHkrbdp7Q3Ry75WCyN10HbDculP7ypLVv7SEUKwY3oG
+	oGnxCiQiZmSGXMNXY9G9lw95Ix8Qa4U1Rxuv6cBprk9uqBF4Q0SkKv5L30J4ieHWQg+2xKE
+	o98rBjsF+OrhijPsdcpmObgxssOEslik6Uw+vlqRxq2wmAqb5R43piHH31WyBHL8QURT1Ba
+	zlzMDS6rtwY+gPujmvXAAb9JzlwzVTBEMal/KE8o1mcnmqgNOaUdQTjtmpcqWJnoY8D3yQC
+	xe8mbgv5Xtbtdbv9/C8t6kRtl25+dR4QxnJU8r4CHeJh5wjV5/FV3Y/17nEFe+UKYHonoll
+	53jHkbF9bEuFsuPIEjKVSuB8c4nnKm/an1HBIF8/FvSmj7rF+CJO0kEkKW2K0+7vRhP+EQh
+	iNZCh75ccuFmTDS1WpqSv8e7UOxXyohF+cn2NovW+PvwQhlaMmiGn810IiGQ+NxIb6n3Ej4
+	dkkXIpD5WA76M3gis1d/MHMdmol2gHGOBXAPS4O7GCNzm5TOmG2PdJ57sElTm3+BkzYxlBx
+	BNofIoB+vPY2Lymi/wp0aZ0sBQowpwP9HdTLH9Sub4KB3kSCzUIYLKljDAva05zU1R14E+j
+	xdgH9mBP17Req7KEBXXIL1ub3Kya4Vwq5QBFTDkfyjwYg+yO6+ndC22M2o/8rDxE8kIzJ7n
+	3D2wjvaQR21a5ass+7pW8l7PHfY9QUol8LaAF4ynwfNftaIRdm4f4tSVsfCt3hWVQS/54zy
+	BzVqGZS8aNW3cFO77qvK2jNQJMZ/mJSVPXJWfkwg7XXNNlWEuc+2Lo=
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-RECHKSPAM: 0
 
-ND_PRINTK with val > 1 only works when the ND_DEBUG was set in compilation
-phase. Replace it with dynamic debug. Convert ND_PRINTK with val <= 1 to
-net_{err,warn}_ratelimited, and convert the rest to net_dbg_ratelimited.
+On Tue, Jul 1, 2025 at 3:45=E2=80=AFPM Chen Linxuan <chenlinxuan@uniontech.=
+com> wrote:
+>
+> On Tue, Jun 24, 2025 at 4:12=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> =
+wrote:
+> >
+> > On Mon, 23 Jun 2025 12:11:04 +0800 WangYuli wrote:
+> > > The lock management in the nfp_alloc_bar function is problematic:
+> > >
+> > >  *1. The function acquires the lock at the beginning:
+> > > spin_lock_irqsave(&nfp->bar_lock, irqflags).
+> > >
+> > >   2. When barnum < 0 and in non-blocking mode, the code jumps to
+> > > the err_nobar label. However, in this non-blocking path, if
+> > > barnum < 0, the code releases the lock and calls nfp_wait_for_bar.
+> > >
+> > >   3. Inside nfp_wait_for_bar, find_unused_bar_and_lock is called,
+> > > which holds the lock upon success (indicated by the __release
+> > > annotation). Consequently, when nfp_wait_for_bar returns
+> > > successfully, the lock is still held.
+> > >
+> > >   4. But at the err_nobar label, the code always executes
+> > > spin_unlock_irqrestore(&nfp->bar_lock, irqflags).
+> > >
+> > >   5. The problem arises when nfp_wait_for_bar successfully finds a
+> > > BAR: the lock is still held, but if a subsequent reconfigure_bar
+> > > fails, the code will attempt to unlock it again at err_nobar,
+> > > leading to a double unlock.
+> >
+> > I don't understand what you're trying to say.
+> > If you think your analysis is correct please provide a more exact
+> > execution path with a code listing.
+>
+> In nfp_alloc_bar(), if
+>
+> - find_matching_bar() fails to find a bar
+> - find_unused_bar_noblock also fails to find a bar
+> - nonblocking =3D=3D false
+> - nfp_wait_for_bar returns 0
+>
+> In this situation, when executing nfp_bar_get(nfp, &nfp->bar[barnum]),
+> the code does not hold &nfp->bar_lock.
+> We referred to similar logic in other drivers:
+> https://elixir.bootlin.com/linux/v6.13/source/sound/usb/line6/driver.c#L5=
+65
+> It seems that a lock should be acquired here again.
 
-Suggested-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
----
-Changes in v2:
-Use dynamic debug instead of sysctl.
----
- include/net/ndisc.h |   9 ---
- net/6lowpan/ndisc.c |  16 ++---
- net/ipv6/ndisc.c    | 157 +++++++++++++++++---------------------------
- 3 files changed, 67 insertions(+), 115 deletions(-)
+Sorry, I found that find_unused_bar_and_lock already re-locks it. I
+didn't notice it before. Please ignore the entire thread.
 
-diff --git a/include/net/ndisc.h b/include/net/ndisc.h
-index 3c88d5bc5eed..d38783a2ce57 100644
---- a/include/net/ndisc.h
-+++ b/include/net/ndisc.h
-@@ -60,15 +60,6 @@ enum {
- 
- #include <net/neighbour.h>
- 
--/* Set to 3 to get tracing... */
--#define ND_DEBUG 1
--
--#define ND_PRINTK(val, level, fmt, ...)				\
--do {								\
--	if (val <= ND_DEBUG)					\
--		net_##level##_ratelimited(fmt, ##__VA_ARGS__);	\
--} while (0)
--
- struct ctl_table;
- struct inet6_dev;
- struct net_device;
-diff --git a/net/6lowpan/ndisc.c b/net/6lowpan/ndisc.c
-index c40b98f7743c..868d28583c0a 100644
---- a/net/6lowpan/ndisc.c
-+++ b/net/6lowpan/ndisc.c
-@@ -20,9 +20,8 @@ static int lowpan_ndisc_parse_802154_options(const struct net_device *dev,
- 	switch (nd_opt->nd_opt_len) {
- 	case NDISC_802154_SHORT_ADDR_LENGTH:
- 		if (ndopts->nd_802154_opt_array[nd_opt->nd_opt_type])
--			ND_PRINTK(2, warn,
--				  "%s: duplicated short addr ND6 option found: type=%d\n",
--				  __func__, nd_opt->nd_opt_type);
-+			net_dbg_ratelimited("%s: duplicated short addr ND6 option found: type=%d\n",
-+					    __func__, nd_opt->nd_opt_type);
- 		else
- 			ndopts->nd_802154_opt_array[nd_opt->nd_opt_type] = nd_opt;
- 		return 1;
-@@ -63,8 +62,7 @@ static void lowpan_ndisc_802154_update(struct neighbour *n, u32 flags,
- 			lladdr_short = __ndisc_opt_addr_data(ndopts->nd_802154_opts_src_lladdr,
- 							     IEEE802154_SHORT_ADDR_LEN, 0);
- 			if (!lladdr_short) {
--				ND_PRINTK(2, warn,
--					  "NA: invalid short link-layer address length\n");
-+				net_dbg_ratelimited("NA: invalid short link-layer address length\n");
- 				return;
- 			}
- 		}
-@@ -75,8 +73,7 @@ static void lowpan_ndisc_802154_update(struct neighbour *n, u32 flags,
- 			lladdr_short = __ndisc_opt_addr_data(ndopts->nd_802154_opts_tgt_lladdr,
- 							     IEEE802154_SHORT_ADDR_LEN, 0);
- 			if (!lladdr_short) {
--				ND_PRINTK(2, warn,
--					  "NA: invalid short link-layer address length\n");
-+				net_dbg_ratelimited("NA: invalid short link-layer address length\n");
- 				return;
- 			}
- 		}
-@@ -209,9 +206,8 @@ static void lowpan_ndisc_prefix_rcv_add_addr(struct net *net,
- 						   sllao, tokenized, valid_lft,
- 						   prefered_lft);
- 		if (err)
--			ND_PRINTK(2, warn,
--				  "RA: could not add a short address based address for prefix: %pI6c\n",
--				  &pinfo->prefix);
-+			net_dbg_ratelimited("RA: could not add a short address based address for prefix: %pI6c\n",
-+					    &pinfo->prefix);
- 	}
- }
- #endif
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index ecb5c4b8518f..591f0e084658 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -243,9 +243,8 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
- 		case ND_OPT_NONCE:
- 		case ND_OPT_REDIRECT_HDR:
- 			if (ndopts->nd_opt_array[nd_opt->nd_opt_type]) {
--				ND_PRINTK(2, warn,
--					  "%s: duplicated ND6 option found: type=%d\n",
--					  __func__, nd_opt->nd_opt_type);
-+				net_dbg_ratelimited("%s: duplicated ND6 option found: type=%d\n",
-+						    __func__, nd_opt->nd_opt_type);
- 			} else {
- 				ndopts->nd_opt_array[nd_opt->nd_opt_type] = nd_opt;
- 			}
-@@ -275,11 +274,8 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
- 			 * to accommodate future extension to the
- 			 * protocol.
- 			 */
--			ND_PRINTK(2, notice,
--				  "%s: ignored unsupported option; type=%d, len=%d\n",
--				  __func__,
--				  nd_opt->nd_opt_type,
--				  nd_opt->nd_opt_len);
-+			net_dbg_ratelimited("%s: ignored unsupported option; type=%d, len=%d\n",
-+					    __func__, nd_opt->nd_opt_type, nd_opt->nd_opt_len);
- 		}
- next_opt:
- 		opt_len -= l;
-@@ -751,9 +747,8 @@ static void ndisc_solicit(struct neighbour *neigh, struct sk_buff *skb)
- 	probes -= NEIGH_VAR(neigh->parms, UCAST_PROBES);
- 	if (probes < 0) {
- 		if (!(READ_ONCE(neigh->nud_state) & NUD_VALID)) {
--			ND_PRINTK(1, dbg,
--				  "%s: trying to ucast probe in NUD_INVALID: %pI6\n",
--				  __func__, target);
-+			net_warn_ratelimited("%s: trying to ucast probe in NUD_INVALID: %pI6\n",
-+					     __func__, target);
- 		}
- 		ndisc_send_ns(dev, target, target, saddr, 0);
- 	} else if ((probes -= NEIGH_VAR(neigh->parms, APP_PROBES)) < 0) {
-@@ -811,7 +806,7 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
- 		return SKB_DROP_REASON_PKT_TOO_SMALL;
- 
- 	if (ipv6_addr_is_multicast(&msg->target)) {
--		ND_PRINTK(2, warn, "NS: multicast target address\n");
-+		net_dbg_ratelimited("NS: multicast target address\n");
- 		return reason;
- 	}
- 
-@@ -820,7 +815,7 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
- 	 * DAD has to be destined for solicited node multicast address.
- 	 */
- 	if (dad && !ipv6_addr_is_solict_mult(daddr)) {
--		ND_PRINTK(2, warn, "NS: bad DAD packet (wrong destination)\n");
-+		net_dbg_ratelimited("NS: bad DAD packet (wrong destination)\n");
- 		return reason;
- 	}
- 
-@@ -830,8 +825,7 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
- 	if (ndopts.nd_opts_src_lladdr) {
- 		lladdr = ndisc_opt_addr_data(ndopts.nd_opts_src_lladdr, dev);
- 		if (!lladdr) {
--			ND_PRINTK(2, warn,
--				  "NS: invalid link-layer address length\n");
-+			net_dbg_ratelimited("NS: invalid link-layer address length\n");
- 			return reason;
- 		}
- 
-@@ -841,8 +835,7 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
- 		 *	in the message.
- 		 */
- 		if (dad) {
--			ND_PRINTK(2, warn,
--				  "NS: bad DAD packet (link-layer address option)\n");
-+			net_dbg_ratelimited("NS: bad DAD packet (link-layer address option)\n");
- 			return reason;
- 		}
- 	}
-@@ -859,10 +852,8 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
- 				if (nonce != 0 && ifp->dad_nonce == nonce) {
- 					u8 *np = (u8 *)&nonce;
- 					/* Matching nonce if looped back */
--					ND_PRINTK(2, notice,
--						  "%s: IPv6 DAD loopback for address %pI6c nonce %pM ignored\n",
--						  ifp->idev->dev->name,
--						  &ifp->addr, np);
-+					net_dbg_ratelimited("%s: IPv6 DAD loopback for address %pI6c nonce %pM ignored\n",
-+							    ifp->idev->dev->name, &ifp->addr, np);
- 					goto out;
- 				}
- 				/*
-@@ -1013,13 +1004,13 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
- 		return SKB_DROP_REASON_PKT_TOO_SMALL;
- 
- 	if (ipv6_addr_is_multicast(&msg->target)) {
--		ND_PRINTK(2, warn, "NA: target address is multicast\n");
-+		net_dbg_ratelimited("NA: target address is multicast\n");
- 		return reason;
- 	}
- 
- 	if (ipv6_addr_is_multicast(daddr) &&
- 	    msg->icmph.icmp6_solicited) {
--		ND_PRINTK(2, warn, "NA: solicited NA is multicasted\n");
-+		net_dbg_ratelimited("NA: solicited NA is multicasted\n");
- 		return reason;
- 	}
- 
-@@ -1038,8 +1029,7 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
- 	if (ndopts.nd_opts_tgt_lladdr) {
- 		lladdr = ndisc_opt_addr_data(ndopts.nd_opts_tgt_lladdr, dev);
- 		if (!lladdr) {
--			ND_PRINTK(2, warn,
--				  "NA: invalid link-layer address length\n");
-+			net_dbg_ratelimited("NA: invalid link-layer address length\n");
- 			return reason;
- 		}
- 	}
-@@ -1060,9 +1050,9 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
- 		   unsolicited advertisement.
- 		 */
- 		if (skb->pkt_type != PACKET_LOOPBACK)
--			ND_PRINTK(1, warn,
--				  "NA: %pM advertised our address %pI6c on %s!\n",
--				  eth_hdr(skb)->h_source, &ifp->addr, ifp->idev->dev->name);
-+			net_warn_ratelimited("NA: %pM advertised our address %pI6c on %s!\n",
-+					     eth_hdr(skb)->h_source, &ifp->addr,
-+					     ifp->idev->dev->name);
- 		in6_ifa_put(ifp);
- 		return reason;
- 	}
-@@ -1149,7 +1139,7 @@ static enum skb_drop_reason ndisc_recv_rs(struct sk_buff *skb)
- 
- 	idev = __in6_dev_get(skb->dev);
- 	if (!idev) {
--		ND_PRINTK(1, err, "RS: can't find in6 device\n");
-+		net_err_ratelimited("RS: can't find in6 device\n");
- 		return reason;
- 	}
- 
-@@ -1257,11 +1247,9 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 	optlen = (skb_tail_pointer(skb) - skb_transport_header(skb)) -
- 		sizeof(struct ra_msg);
- 
--	ND_PRINTK(2, info,
--		  "RA: %s, dev: %s\n",
--		  __func__, skb->dev->name);
-+	net_dbg_ratelimited("RA: %s, dev: %s\n", __func__, skb->dev->name);
- 	if (!(ipv6_addr_type(&ipv6_hdr(skb)->saddr) & IPV6_ADDR_LINKLOCAL)) {
--		ND_PRINTK(2, warn, "RA: source address is not link-local\n");
-+		net_dbg_ratelimited("RA: source address is not link-local\n");
- 		return reason;
- 	}
- 	if (optlen < 0)
-@@ -1269,15 +1257,14 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 
- #ifdef CONFIG_IPV6_NDISC_NODETYPE
- 	if (skb->ndisc_nodetype == NDISC_NODETYPE_HOST) {
--		ND_PRINTK(2, warn, "RA: from host or unauthorized router\n");
-+		net_dbg_ratelimited("RA: from host or unauthorized router\n");
- 		return reason;
- 	}
- #endif
- 
- 	in6_dev = __in6_dev_get(skb->dev);
- 	if (!in6_dev) {
--		ND_PRINTK(0, err, "RA: can't find inet6 device for %s\n",
--			  skb->dev->name);
-+		net_err_ratelimited("RA: can't find inet6 device for %s\n", skb->dev->name);
- 		return reason;
- 	}
- 
-@@ -1285,18 +1272,16 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 		return SKB_DROP_REASON_IPV6_NDISC_BAD_OPTIONS;
- 
- 	if (!ipv6_accept_ra(in6_dev)) {
--		ND_PRINTK(2, info,
--			  "RA: %s, did not accept ra for dev: %s\n",
--			  __func__, skb->dev->name);
-+		net_dbg_ratelimited("RA: %s, did not accept ra for dev: %s\n", __func__,
-+				    skb->dev->name);
- 		goto skip_linkparms;
- 	}
- 
- #ifdef CONFIG_IPV6_NDISC_NODETYPE
- 	/* skip link-specific parameters from interior routers */
- 	if (skb->ndisc_nodetype == NDISC_NODETYPE_NODEFAULT) {
--		ND_PRINTK(2, info,
--			  "RA: %s, nodetype is NODEFAULT, dev: %s\n",
--			  __func__, skb->dev->name);
-+		net_dbg_ratelimited("RA: %s, nodetype is NODEFAULT, dev: %s\n", __func__,
-+				    skb->dev->name);
- 		goto skip_linkparms;
- 	}
- #endif
-@@ -1325,18 +1310,16 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 		send_ifinfo_notify = true;
- 
- 	if (!READ_ONCE(in6_dev->cnf.accept_ra_defrtr)) {
--		ND_PRINTK(2, info,
--			  "RA: %s, defrtr is false for dev: %s\n",
--			  __func__, skb->dev->name);
-+		net_dbg_ratelimited("RA: %s, defrtr is false for dev: %s\n", __func__,
-+				    skb->dev->name);
- 		goto skip_defrtr;
- 	}
- 
- 	lifetime = ntohs(ra_msg->icmph.icmp6_rt_lifetime);
- 	if (lifetime != 0 &&
- 	    lifetime < READ_ONCE(in6_dev->cnf.accept_ra_min_lft)) {
--		ND_PRINTK(2, info,
--			  "RA: router lifetime (%ds) is too short: %s\n",
--			  lifetime, skb->dev->name);
-+		net_dbg_ratelimited("RA: router lifetime (%ds) is too short: %s\n", lifetime,
-+				    skb->dev->name);
- 		goto skip_defrtr;
- 	}
- 
-@@ -1346,9 +1329,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 	net = dev_net(in6_dev->dev);
- 	if (!READ_ONCE(in6_dev->cnf.accept_ra_from_local) &&
- 	    ipv6_chk_addr(net, &ipv6_hdr(skb)->saddr, in6_dev->dev, 0)) {
--		ND_PRINTK(2, info,
--			  "RA from local address detected on dev: %s: default router ignored\n",
--			  skb->dev->name);
-+		net_dbg_ratelimited("RA from local address detected on dev: %s: default router ignored\n",
-+				    skb->dev->name);
- 		goto skip_defrtr;
- 	}
- 
-@@ -1366,9 +1348,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 					 rt->fib6_nh->fib_nh_dev, NULL,
- 					  &ipv6_hdr(skb)->saddr);
- 		if (!neigh) {
--			ND_PRINTK(0, err,
--				  "RA: %s got default router without neighbour\n",
--				  __func__);
-+			net_err_ratelimited("RA: %s got default router without neighbour\n",
-+					    __func__);
- 			fib6_info_release(rt);
- 			return reason;
- 		}
-@@ -1381,10 +1362,10 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 		rt = NULL;
- 	}
- 
--	ND_PRINTK(3, info, "RA: rt: %p  lifetime: %d, metric: %d, for dev: %s\n",
--		  rt, lifetime, defrtr_usr_metric, skb->dev->name);
-+	net_dbg_ratelimited("RA: rt: %p  lifetime: %d, metric: %d, for dev: %s\n", rt, lifetime,
-+			    defrtr_usr_metric, skb->dev->name);
- 	if (!rt && lifetime) {
--		ND_PRINTK(3, info, "RA: adding default router\n");
-+		net_dbg_ratelimited("RA: adding default router\n");
- 
- 		if (neigh)
- 			neigh_release(neigh);
-@@ -1393,9 +1374,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 					 skb->dev, pref, defrtr_usr_metric,
- 					 lifetime);
- 		if (!rt) {
--			ND_PRINTK(0, err,
--				  "RA: %s failed to add default route\n",
--				  __func__);
-+			net_err_ratelimited("RA: %s failed to add default route\n", __func__);
- 			return reason;
- 		}
- 
-@@ -1403,9 +1382,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 					 rt->fib6_nh->fib_nh_dev, NULL,
- 					  &ipv6_hdr(skb)->saddr);
- 		if (!neigh) {
--			ND_PRINTK(0, err,
--				  "RA: %s got default router without neighbour\n",
--				  __func__);
-+			net_err_ratelimited("RA: %s got default router without neighbour\n",
-+					    __func__);
- 			fib6_info_release(rt);
- 			return reason;
- 		}
-@@ -1436,7 +1414,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 			fib6_metric_set(rt, RTAX_HOPLIMIT,
- 					ra_msg->icmph.icmp6_hop_limit);
- 		} else {
--			ND_PRINTK(2, warn, "RA: Got route advertisement with lower hop_limit than minimum\n");
-+			net_dbg_ratelimited("RA: Got route advertisement with lower hop_limit than minimum\n");
- 		}
- 	}
- 
-@@ -1492,8 +1470,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 			lladdr = ndisc_opt_addr_data(ndopts.nd_opts_src_lladdr,
- 						     skb->dev);
- 			if (!lladdr) {
--				ND_PRINTK(2, warn,
--					  "RA: invalid link-layer address length\n");
-+				net_dbg_ratelimited("RA: invalid link-layer address length\n");
- 				goto out;
- 			}
- 		}
-@@ -1507,9 +1484,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 	}
- 
- 	if (!ipv6_accept_ra(in6_dev)) {
--		ND_PRINTK(2, info,
--			  "RA: %s, accept_ra is false for dev: %s\n",
--			  __func__, skb->dev->name);
-+		net_dbg_ratelimited("RA: %s, accept_ra is false for dev: %s\n", __func__,
-+				    skb->dev->name);
- 		goto out;
- 	}
- 
-@@ -1517,9 +1493,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 	if (!READ_ONCE(in6_dev->cnf.accept_ra_from_local) &&
- 	    ipv6_chk_addr(dev_net(in6_dev->dev), &ipv6_hdr(skb)->saddr,
- 			  in6_dev->dev, 0)) {
--		ND_PRINTK(2, info,
--			  "RA from local address detected on dev: %s: router info ignored.\n",
--			  skb->dev->name);
-+		net_dbg_ratelimited("RA from local address detected on dev: %s: router info ignored.\n",
-+				    skb->dev->name);
- 		goto skip_routeinfo;
- 	}
- 
-@@ -1555,9 +1530,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- #ifdef CONFIG_IPV6_NDISC_NODETYPE
- 	/* skip link-specific ndopts from interior routers */
- 	if (skb->ndisc_nodetype == NDISC_NODETYPE_NODEFAULT) {
--		ND_PRINTK(2, info,
--			  "RA: %s, nodetype is NODEFAULT (interior routes), dev: %s\n",
--			  __func__, skb->dev->name);
-+		net_dbg_ratelimited("RA: %s, nodetype is NODEFAULT (interior routes), dev: %s\n",
-+				    __func__, skb->dev->name);
- 		goto out;
- 	}
- #endif
-@@ -1586,7 +1560,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 		}
- 
- 		if (mtu < IPV6_MIN_MTU || mtu > skb->dev->mtu) {
--			ND_PRINTK(2, warn, "RA: invalid mtu: %d\n", mtu);
-+			net_dbg_ratelimited("RA: invalid mtu: %d\n", mtu);
- 		} else if (READ_ONCE(in6_dev->cnf.mtu6) != mtu) {
- 			WRITE_ONCE(in6_dev->cnf.mtu6, mtu);
- 			fib6_metric_set(rt, RTAX_MTU, mtu);
-@@ -1605,7 +1579,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 	}
- 
- 	if (ndopts.nd_opts_tgt_lladdr || ndopts.nd_opts_rh) {
--		ND_PRINTK(2, warn, "RA: invalid RA options\n");
-+		net_dbg_ratelimited("RA: invalid RA options\n");
- 	}
- out:
- 	/* Send a notify if RA changed managed/otherconf flags or
-@@ -1633,15 +1607,13 @@ static enum skb_drop_reason ndisc_redirect_rcv(struct sk_buff *skb)
- 	switch (skb->ndisc_nodetype) {
- 	case NDISC_NODETYPE_HOST:
- 	case NDISC_NODETYPE_NODEFAULT:
--		ND_PRINTK(2, warn,
--			  "Redirect: from host or unauthorized router\n");
-+		net_dbg_ratelimited("Redirect: from host or unauthorized router\n");
- 		return reason;
- 	}
- #endif
- 
- 	if (!(ipv6_addr_type(&ipv6_hdr(skb)->saddr) & IPV6_ADDR_LINKLOCAL)) {
--		ND_PRINTK(2, warn,
--			  "Redirect: source address is not link-local\n");
-+		net_dbg_ratelimited("Redirect: source address is not link-local\n");
- 		return reason;
- 	}
- 
-@@ -1702,15 +1674,13 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
- 	}
- 
- 	if (ipv6_get_lladdr(dev, &saddr_buf, IFA_F_TENTATIVE)) {
--		ND_PRINTK(2, warn, "Redirect: no link-local address on %s\n",
--			  dev->name);
-+		net_dbg_ratelimited("Redirect: no link-local address on %s\n", dev->name);
- 		return;
- 	}
- 
- 	if (!ipv6_addr_equal(&ipv6_hdr(skb)->daddr, target) &&
- 	    ipv6_addr_type(target) != (IPV6_ADDR_UNICAST|IPV6_ADDR_LINKLOCAL)) {
--		ND_PRINTK(2, warn,
--			  "Redirect: target address is not link-local unicast\n");
-+		net_dbg_ratelimited("Redirect: target address is not link-local unicast\n");
- 		return;
- 	}
- 
-@@ -1729,8 +1699,7 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
- 	rt = dst_rt6_info(dst);
- 
- 	if (rt->rt6i_flags & RTF_GATEWAY) {
--		ND_PRINTK(2, warn,
--			  "Redirect: destination is not a neighbour\n");
-+		net_dbg_ratelimited("Redirect: destination is not a neighbour\n");
- 		goto release;
- 	}
- 
-@@ -1743,8 +1712,7 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
- 	if (dev->addr_len) {
- 		struct neighbour *neigh = dst_neigh_lookup(skb_dst(skb), target);
- 		if (!neigh) {
--			ND_PRINTK(2, warn,
--				  "Redirect: no neigh for target address\n");
-+			net_dbg_ratelimited("Redirect: no neigh for target address\n");
- 			goto release;
- 		}
- 
-@@ -1845,14 +1813,12 @@ enum skb_drop_reason ndisc_rcv(struct sk_buff *skb)
- 	__skb_push(skb, skb->data - skb_transport_header(skb));
- 
- 	if (ipv6_hdr(skb)->hop_limit != 255) {
--		ND_PRINTK(2, warn, "NDISC: invalid hop-limit: %d\n",
--			  ipv6_hdr(skb)->hop_limit);
-+		net_dbg_ratelimited("NDISC: invalid hop-limit: %d\n", ipv6_hdr(skb)->hop_limit);
- 		return SKB_DROP_REASON_IPV6_NDISC_HOP_LIMIT;
- 	}
- 
- 	if (msg->icmph.icmp6_code != 0) {
--		ND_PRINTK(2, warn, "NDISC: invalid ICMPv6 code: %d\n",
--			  msg->icmph.icmp6_code);
-+		net_dbg_ratelimited("NDISC: invalid ICMPv6 code: %d\n", msg->icmph.icmp6_code);
- 		return SKB_DROP_REASON_IPV6_NDISC_BAD_CODE;
- 	}
- 
-@@ -2003,9 +1969,8 @@ static int __net_init ndisc_net_init(struct net *net)
- 	err = inet_ctl_sock_create(&sk, PF_INET6,
- 				   SOCK_RAW, IPPROTO_ICMPV6, net);
- 	if (err < 0) {
--		ND_PRINTK(0, err,
--			  "NDISC: Failed to initialize the control socket (err %d)\n",
--			  err);
-+		net_err_ratelimited("NDISC: Failed to initialize the control socket (err %d)\n",
-+				    err);
- 		return err;
- 	}
- 
--- 
-2.34.1
-
+>
+> > --
+> > pw-bot: cr
+> >
+> >
