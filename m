@@ -1,112 +1,114 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA112236E1
-	for <netdev@vger.kernel.org>; Tue,  1 Jul 2025 12:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB8C2741B9;
+	Tue,  1 Jul 2025 13:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751374721; cv=none; b=Ws5sCG9EUyuHAP+jUFcOEHfep8/yjMhRrp7nvQeufIZ+agB1AshaX+5RE/1Tf5A8xDZ/ZETS/twWRgy/zw2PtJK4XuMZUlrUusz5LJMzTWET0Pmvl29CHNur7ep6KDQ2z4eFPV2flKgtLzeZXeNOSUF070jAXDIhEC4d6coltVo=
+	t=1751374814; cv=none; b=Ng51PrLVAhP269NhGwDLmZ9V+oFQ24opqUCzEU2AWahp2H5Aqi1DeaGcUnGSFuVzduysjaDp89NUH3G/DPCk1XdBcdylCpxZudKcIGmG5cxduES9McXmYAKNWm4L8VkB9rsHW7O5Sa3wQNjKCkJQ2qFXl21Ie1VbpE2ukg0bhzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751374721; c=relaxed/simple;
-	bh=mIP2s1TIthBEoedLW1VYusPCUtoNbQjNy0tejxxUJ7A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JIAuHJd+j7jq+BHkDB93SUOgj1tdBTyfJW0URYOf/4mR/bbBmjmNzY2NK7HnK1x6qT3Uo99axW2wV+F0se2aSC3QwlzFieJLTeeVbSw/6ajFgBuYjoJWftEW+K5FSlCjQy08dACvyvGZYmdw0DmP1ho3Oususgfh0pvua+BCf7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=koBgbaPi; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="koBgbaPi"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7d467a1d9e4so69570885a.0
-        for <netdev@vger.kernel.org>; Tue, 01 Jul 2025 05:58:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1751374719; x=1751979519; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ze37IfwTGTYDkV93HxTMG5nmfcE/GkCokySJR9DGq40=;
-        b=koBgbaPilZsjM4+N5jM+oqS2ODrzlKeFZyN+yCZZfxr9zc7k6KdDPwdJblTnEiANTU
-         HnuHkbLV9dSLqSQjFiGZb9ZzvMARwPaKxiTuUVZIUS6iggyWVgVAWKD0G2ZfRdEe+mHX
-         K7QXvxy/Z/JGH9SMnX90ccltLMI4UxCZhY+y+Vh52jbnk2Lkk9bjJCXEPT1pK9fBc0vC
-         zKqDtcTgPKuQ+/w6OxNLbFZ8wo9HjNtWuDnYBsMKrNibC+OuJHhIH3Gry7VXZOrwX1CD
-         oGmL8bCtxhfTXp3T9SYH9kBmPmjDU52R13O0mpMEu9oefBreyqwDWxHRB/+38ox+zpJV
-         tCyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751374719; x=1751979519;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ze37IfwTGTYDkV93HxTMG5nmfcE/GkCokySJR9DGq40=;
-        b=BKz374QJOgvRwIKROz73+Ln80RFevEsR9kxMv2ykWriFbuiwaKmxdfV0YYrkJfqBvQ
-         QcXo4xNK4UWwseStuunfKOfWU77kCNHQ6H6B9xGDotO6PF9nlC3W7NILOVi99VisyXRU
-         OHWctZi3hVNVFuLsK2g4ktAF2xWy5WzvpZ75u4Dl/TEYrFqQrHCv9vmASrhvyNWPLILF
-         6Uy2b0BJ/+PAy1Np01qNP47Ep08TcXePQvsg48RfOMMCGit7hVvR5jY24Oprdj63N1Cp
-         rJyJcW0iwIxkXIMcXpfKqJCkx75u9FD0W5OfNfCW+jjmYzsWd9jRzpMfxAHND7G6lgzk
-         19cw==
-X-Forwarded-Encrypted: i=1; AJvYcCVz14S8l+hIUTJiyRu5yOXgz3zr85Z/JhlZWWWXVuNsb7E/umaKbv642EwLqZi0JBo7a4/HuJI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzboizIGcQ2xHQQSmo7zHBUxFkZcIkYWVKinEj5zx6Bqta4KSPp
-	E/h471VD6GCD8ZEltZGT+KeCpyjpI6Fs6BXjVxJuCe3N2xOU8pl8x4b8YGPtzB+Vme2kRnxFTnV
-	bOqM=
-X-Gm-Gg: ASbGnct5pVBWtcONWwHjsg/VwRwjOwsNwbgY1iOFTiRQ8gueWlI3xN154g/hIC6YEUE
-	QB+gS6iZ9bhk1rMnqGSe5Fl3UaQT9jiU9hO1XTJAmYRuJOFAy121UwxI3G8cob4s0+NXLP8RgE0
-	zHPgaL8twbUDPDkRglYk9yh4mpCqCyiAUSZFn+qFfakSJdO7fnWmhtUDduF+jzbAvnIRK+DxSLl
-	FP12GfjSW6h7hYNGx93kWNt4rc4cEd6Nv76ixw8jBQRU7o2VUiSL/Q6wsXIGu9sNhfidAvLxfZH
-	59BV0B03TZ/XwVA5aZ8nB/x/q6HJx7BwMNpe6LGAK9FgA9BDhrIXdTWuKkJxEOtxmrZ9BTAA/1+
-	a2thz1e5rZHWw3jC74bVYL37eUIwnog==
-X-Google-Smtp-Source: AGHT+IF9nRaLL1IcDFwlUDmDehyYO3oDlaIYVuKBP1yWmFUiLDwz2KPs+TnD+zB75w9A+bS5jCD1cg==
-X-Received: by 2002:a05:622a:115:b0:4a8:1951:de with SMTP id d75a77b69052e-4a82eab431cmr50847661cf.18.1751374718679;
-        Tue, 01 Jul 2025 05:58:38 -0700 (PDT)
-Received: from ?IPV6:2804:7f1:e2c1:ca4a:289:b941:38b9:cf01? ([2804:7f1:e2c1:ca4a:289:b941:38b9:cf01])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a7fc57c537sm74512971cf.57.2025.07.01.05.58.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Jul 2025 05:58:38 -0700 (PDT)
-Message-ID: <13eecfb2-7609-485e-9ebf-fb3065cf10b5@mojatatu.com>
-Date: Tue, 1 Jul 2025 09:58:35 -0300
+	s=arc-20240116; t=1751374814; c=relaxed/simple;
+	bh=ZH/q3VNf/bXbhSvmsNcfK1lIDc6sWxMcPfDrISGe4GI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Pic0znNhKUkIVij1GYgnNEmmHF3kHVrnMwlhrU8BMRzAZT0uLo9wn61BC7gW92Bd7ltDFL09S1qi5x2Wq7MDBGPjrrc/EQHaYwidRCllfIEHGeZExktVn/a/IU2iKEyB1R84RmFqlUsior6kjOQLUWiPLu/Av7GpaPv9XP0s6IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bWjh85W7tz20sxk;
+	Tue,  1 Jul 2025 20:56:08 +0800 (CST)
+Received: from kwepemo200008.china.huawei.com (unknown [7.202.195.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 101BB1A016C;
+	Tue,  1 Jul 2025 21:00:09 +0800 (CST)
+Received: from huawei.com (10.67.175.28) by kwepemo200008.china.huawei.com
+ (7.202.195.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 1 Jul
+ 2025 21:00:08 +0800
+From: ZHENG Xinyu <zhengxinyu6@huawei.com>
+To: <mst@redhat.com>, <jasowang@redhat.com>
+CC: <pbonzini@redhat.com>, <stefanha@redhat.com>,
+	<virtualization@lists.linux-foundation.org>, <kvm@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH 5.10] vhost-scsi: protect vq->log_used with vq->mutex
+Date: Tue, 1 Jul 2025 12:48:48 +0000
+Message-ID: <20250701124848.4162114-1-zhengxinyu6@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Incomplete fix for recent bug in tc / hfsc
-To: Lion Ackermann <nnamrec@gmail.com>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org,
- Jiri Pirko <jiri@resnulli.us>, Mingi Cho <mincho@theori.io>,
- Cong Wang <xiyou.wangcong@gmail.com>
-References: <CAM0EoMm+xgb0vkTDMAWy9xCvTF+XjGQ1xO5A2REajmBN1DKu1Q@mail.gmail.com>
- <d23fe619-240a-4790-9edd-bec7ab22a974@gmail.com>
- <CAM0EoM=rU91P=9QhffXShvk-gnUwbRHQrwpFKUr9FZFXbbW1gQ@mail.gmail.com>
- <CAM0EoM=mey1f596GS_9-VkLyTmMqM0oJ7TuGZ6i73++tEVFAKg@mail.gmail.com>
- <aGGZBpA3Pn4ll7FO@pop-os.localdomain>
- <8e19395d-b6d6-47d4-9ce0-e2b59e109b2b@gmail.com>
- <CAM0EoMmoQuRER=eBUO+Th02yJUYvfCKu_g7Ppcg0trnA_m6v1Q@mail.gmail.com>
- <c13c3b00-cd15-4dcd-b060-eb731619034f@gmail.com>
- <CAM0EoMnwxMAdoPyqFVUPsNXE33ibw6O4_UE1TcWYUZKjwy3V6A@mail.gmail.com>
- <442716ca-ae2e-4fac-8a01-ced3562fd588@mojatatu.com>
- <aGMEsnYnv0lwBTcl@pop-os.localdomain>
- <2937fe13-d65f-4cb6-8535-3084b29af541@gmail.com>
-Content-Language: en-US
-From: Victor Nogueira <victor@mojatatu.com>
-In-Reply-To: <2937fe13-d65f-4cb6-8535-3084b29af541@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemo200008.china.huawei.com (7.202.195.61)
 
-On 7/1/25 09:41, Lion Ackermann wrote:
-> 
-> On 6/30/25 11:42 PM, Cong Wang wrote:
->> On Mon, Jun 30, 2025 at 02:52:19PM -0300, Victor Nogueira wrote:
->>> Lion, I attached a patch to this email that edits Cong's original tdc test
->>> case to account for your reproducer. Please resend your patch with it (after
->>> the 24 hour wait period).
->>
->> Or send it as a follow up patch? I am fine either way, since we don't
->> backport selftests, this is not a big deal.
->>
->> Thanks for improving the selftest!
-> 
-> Thanks a lot. Please just post as a follow up then if this is fine.
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-No problem, will do.
+The vhost-scsi completion path may access vq->log_base when vq->log_used is
+already set to false.
 
-cheers,
-Victor
+    vhost-thread                       QEMU-thread
+
+vhost_scsi_complete_cmd_work()
+-> vhost_add_used()
+   -> vhost_add_used_n()
+      if (unlikely(vq->log_used))
+                                      QEMU disables vq->log_used
+                                      via VHOST_SET_VRING_ADDR.
+                                      mutex_lock(&vq->mutex);
+                                      vq->log_used = false now!
+                                      mutex_unlock(&vq->mutex);
+
+				      QEMU gfree(vq->log_base)
+        log_used()
+        -> log_write(vq->log_base)
+
+Assuming the VMM is QEMU. The vq->log_base is from QEMU userpace and can be
+reclaimed via gfree(). As a result, this causes invalid memory writes to
+QEMU userspace.
+
+The control queue path has the same issue.
+
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Message-Id: <20250403063028.16045-2-dongli.zhang@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zheng Xinyu <zhengxinyu6@huawei.com>
+---
+ drivers/vhost/scsi.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index a23a65e7d828..fcde3752b4f1 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -579,8 +579,10 @@ static void vhost_scsi_complete_cmd_work(struct vhost_work *work)
+ 		ret = copy_to_iter(&v_rsp, sizeof(v_rsp), &iov_iter);
+ 		if (likely(ret == sizeof(v_rsp))) {
+ 			struct vhost_scsi_virtqueue *q;
+-			vhost_add_used(cmd->tvc_vq, cmd->tvc_vq_desc, 0);
+ 			q = container_of(cmd->tvc_vq, struct vhost_scsi_virtqueue, vq);
++			mutex_lock(&q->vq.mutex);
++			vhost_add_used(cmd->tvc_vq, cmd->tvc_vq_desc, 0);
++			mutex_unlock(&q->vq.mutex);
+ 			vq = q - vs->vqs;
+ 			__set_bit(vq, signal);
+ 		} else
+@@ -1193,8 +1195,11 @@ static void vhost_scsi_tmf_resp_work(struct vhost_work *work)
+ 	else
+ 		resp_code = VIRTIO_SCSI_S_FUNCTION_REJECTED;
+ 
++	mutex_lock(&tmf->svq->vq.mutex);
+ 	vhost_scsi_send_tmf_resp(tmf->vhost, &tmf->svq->vq, tmf->in_iovs,
+ 				 tmf->vq_desc, &tmf->resp_iov, resp_code);
++	mutex_unlock(&tmf->svq->vq.mutex);
++
+ 	vhost_scsi_release_tmf_res(tmf);
+ }
+ 
+-- 
+2.34.1
+
