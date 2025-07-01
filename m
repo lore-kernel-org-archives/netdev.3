@@ -1,194 +1,162 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07299279DB1;
-	Tue,  1 Jul 2025 14:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C336271A7C
+	for <netdev@vger.kernel.org>; Tue,  1 Jul 2025 14:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751379280; cv=none; b=bQW4BVg9tUp0tKlpe3pqT4khcRKxqJIEnO0ggRd3+tmPjdwoVBxoCZmWEc8zBur+A+iSGYbF9CLw1m//KmMPwFUmMtfpBZDrcM4eUjUI/KEICkIX07FBkrtNfaJ0IjJGr6aQ2edIGKQTtzLJSbqN7vvP6bQhlF68FN2qEksgNyo=
+	t=1751379324; cv=none; b=BR/EtZbcWMgXfUEEpw0hpvNPhpn6hLFkWlkUpWgUOepsjq9jKKrjYdz8J6E5z3KxjljoMM7LcZz0Zfunc1DMOAR+8NUBUDEj9hru0XHgx4Hhhue1G1rxxyUITntWhw+EASsBg22J3W7welcoUXUB1CZnVuY5BfIfHc8jF1oeN88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751379280; c=relaxed/simple;
-	bh=wY3pJ9nFlqmEeyPfW98+n/Y28S8S70pNb3omes9fzIQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMUBjdHcdlS7uw7IoneCn8X00LvDbNEKrzrCH2SgYBMJzdwGbSXvji3pIHA4kXoI3rSOWUqRlmMjmAC+BvIMPZc2vOBtCVRsIfRKLJeIMchwJHqaP0XXaBI1/91kL0oY8NEAVd2y7gsjQNDXYgldCbhXe7zwQmgOKMblHL+qmjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lbX99E/m; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751379324; c=relaxed/simple;
+	bh=5TyTjV5rc9VSI2AM/6duOYVNuC/8zLuG2kkklgMArbI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RX6xZkzqiteM6EsIi+QLFjcyfWIKBAWBEE4sCK/H7kKvZfYDWmZ0Yj5a878vQmQnf7Sfj83DT2D4WniKNcl9obTIYBtRvwJm8DIRWelCAMmGFzWfz8yNbRUBuOfWIYkqyKCfWgQZV6TUVWw08W0MnTsAIXTBsIiF3tVU8++49X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=j5g5HvU+; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lbX99E/m"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-235ea292956so29694695ad.1;
-        Tue, 01 Jul 2025 07:14:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="j5g5HvU+"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7426c44e014so5853103b3a.3
+        for <netdev@vger.kernel.org>; Tue, 01 Jul 2025 07:15:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751379278; x=1751984078; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1751379322; x=1751984122; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MhF5CcEqPzfan8Qj+FWBWIOdIwHq+OpoPrnKrGKGhts=;
-        b=lbX99E/mEnl40ISUYBTgKXRRs+lpjk4qZwn13KtDSSrMCiwybyZIX/YV4PtbQMPgSF
-         2S8OhC2X2aE3HIVWrosltix0ytK9M1tciSccZbQzLm0pUp2Ne+8z/C2kdp5azOk4CLDN
-         kMjGvPILacPhZK8OAY+NRLG3xMDhL43DLR26IMR2nSCZDrmWA4tO+LbcrKyN9PvXCHhI
-         Ke+LG8uKMyomx5tuwslbFP3wiY61zHDvzL1ibxOUXAXuVD8TycBnS0b/RES7ZIeN5MzK
-         MFe54PjDuGZ4Wfbwz4FsvX2oe1c/grUmnJEouEEdTBeo2a9P6Kadp1rmaIkgPZvLu+FK
-         FVBw==
+        bh=5TyTjV5rc9VSI2AM/6duOYVNuC/8zLuG2kkklgMArbI=;
+        b=j5g5HvU+uAj1reip0h0n8TIFjmJVdn6NaAocwdXApM+P8F987azjEAcHAuhswvNBMN
+         DGKk3uP/DfBI86PmrHfHXw/bDw9FgFPWaNQqLozxaILJb3T9/bIMBNegRqeVLaODNQP/
+         1Of2YbEV6PJU39Sz1yKK5K9xJAw13EUe65+4iJgv+D6WwwdBtmleF3a62rFyx3eMbrbg
+         6rEnDSs1hVTzPt4YW7tCKu/SpjdPfFOLvinZJQCKqca40odDDU8RijsSBKA1sU6GKbFG
+         W5NVdzfELdH5K6r/D0kRMhTHUyBGTuuBYl5c2A3JiZpKT9VueG6oYJ8Y4QK9VtKuGx1k
+         33Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751379278; x=1751984078;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1751379322; x=1751984122;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MhF5CcEqPzfan8Qj+FWBWIOdIwHq+OpoPrnKrGKGhts=;
-        b=CNIfwQdcrrteFtS7Pt9XvH+zU0UVB1WZHCxuDa9ktZrIeB4P3tqkILWVK6W+OxgHz9
-         eTPiyTYo2VawW6vB1gQERrADxSDQJ4SdoJFypKxf4CtVNBn6GurQkNrKmr36EOtvySBG
-         nAPPQjxrgrHCXtogsTHYKCGSRnP7nfi6+BOQ7WulQe+VgLjihu8xLPOPBZiE4Jm7tQzB
-         VmU5nJLCuMuCihP9NQoFN+Gu++of8qXg0WYmsJPSoP6Azlzvy6GBiTMfgbOxuLbgelKH
-         hZwJaL63MX/MJijCff39XpGHFneQk3g10igHL2lIGFeaYwhi/eyJcfNzZdeXhQpF+boe
-         EjKw==
-X-Forwarded-Encrypted: i=1; AJvYcCVH9JDFVYszkVwUpSZOffGTDP+NeBth1Or0oLKjUZYVpwCnoGWlowfSWgk+w4pnKhkJxlmbpm+sDE6M@vger.kernel.org, AJvYcCVJPx26M3QQT0J/Xw4qTe9mDdr3M1gStOjaU8UaeO48Q7hL5qpipPzemSzG+yfvw+V4s6nJ5sUon9QS@vger.kernel.org, AJvYcCWMosOxbzdcYrTXpFvfj8d6+R58oh7Hcg3yYGXg4RGhB7xrFu4Mnja0wFwehbCrxPKdyoVTMd6L@vger.kernel.org, AJvYcCXDzES5nBq/Huy4p8zGbE5CSUXLICTB81UaxbPd91BJBrNxddlBKLgMLiyN2nAt9ndDO/qgxsbfL8ONEZYRJiU=@vger.kernel.org, AJvYcCXUOXPMdbLF6BPIDP1rmmjmRSzjtWmUovoMYuX+/GPDMMd+NAFImn3ZtsoygU/JqUoYxTMxy5p66UVqmGy+@vger.kernel.org
-X-Gm-Message-State: AOJu0YzR0I+zcibeStVyZb3zKev0/8Ln1ZbErVIiyB/dM13XgE/tI6YA
-	jmNtHvodyq/ktf9ZbdQKz3dz5zYofShrGMBSfK5s1dEob0a6cIAaraQj
-X-Gm-Gg: ASbGnctXAdy8F01zTFbDTAuPf9TIOougqXAbA3r88OHWogJq1+pJ0RaK5uNWgDpJG4i
-	fIaVge48tgf7V7W8LySwrFmQSsqmStY0DYE/kJN5Ld3K/+n4gkxPa+VeqOYdlcI2OiLntk7cIw+
-	d8qQuaCnhwX2LjnvMcOEPVlTYFJItGzDobcJAO2KNnuXo+jWsyRuY9nGCENNtCulwgSNF/1IPF+
-	78/ChA12wrXhWJWjbABfpQdfLUfFY+CbOIbF9PvBh0dnXy7TNNpjPYIXKIxB0tXwzk8Z3+r+yO9
-	xvhrHZwldVHmy1Crb9NRQFo89miUFvsUBjsV36AXwzuSXMsd8y75UncDQyDOvcbHO4J0AEcpTE5
-	m/FASrSRUh2wj3y0UDjXi2D9p3XdQTWKikvo=
-X-Google-Smtp-Source: AGHT+IHs/sgaXxj0cg5nqN7WtEqfWV4a21o8vt1rWTuNUjMzgURiIciaiuN3uj8jT0zhbiEB8voasA==
-X-Received: by 2002:a17:902:e5cb:b0:235:779:edfd with SMTP id d9443c01a7336-23ac465ff41mr242885165ad.39.1751379278049;
-        Tue, 01 Jul 2025 07:14:38 -0700 (PDT)
-Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb3b8324sm107240885ad.178.2025.07.01.07.14.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jul 2025 07:14:37 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: alex.gaynor@gmail.com,
-	dakr@kernel.org,
-	gregkh@linuxfoundation.org,
-	ojeda@kernel.org,
-	rafael@kernel.org,
-	robh@kernel.org,
-	saravanak@google.com
-Cc: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	bhelgaas@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	david.m.ertman@intel.com,
-	devicetree@vger.kernel.org,
-	gary@garyguo.net,
-	ira.weiny@intel.com,
-	kwilczynski@kernel.org,
-	leon@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	lossin@kernel.org,
-	netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu
-Subject: [PATCH v2 3/3] rust: net::phy Change module_phy_driver macro to use module_device_table macro
-Date: Tue,  1 Jul 2025 23:12:52 +0900
-Message-ID: <20250701141252.600113-4-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250701141252.600113-1-fujita.tomonori@gmail.com>
-References: <20250701141252.600113-1-fujita.tomonori@gmail.com>
+        bh=5TyTjV5rc9VSI2AM/6duOYVNuC/8zLuG2kkklgMArbI=;
+        b=miP2o1EADxrWD39pCO/G2lBLBI61ddII5linFJIaeq2Ce2fSRbhMuOerssxHNNXuEl
+         4BJOROzXt5CLnu7zjt7y4iB8uecFKXxcggaFT0A+rWOARN/Gl6bOeBcyELHIDDI+4vtE
+         oySrJYl/N2vDlQfzY6emt//Y0Seh2B3ikqibGSPwWRux1V3noi5OhhbyhH/jGNM2bSYn
+         jI6xZE7BNshyWsaiqe+ssKWBJuEKwCtn1Le06/dXnm4RgT8s9LVTbw//bI3Q0EmehvvC
+         nspLZUZLNJVMzXFrL0AwDXbC+VnpQqsm7FTt+a5fDcyP5gnDYGaArTq6pZDDv1cnnokO
+         p5sg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZAtHI4rctVUBk8joRgKLGImN3Jz71jfo3be6d7CqUonWUy4GKXSIj5zf/cit0IEI+bDEFHwk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIHuFubpL89iKVZsg/oqfmHp2pfxpLdY6cJx0aXgngBtP4KgxN
+	dI6sJKJZzDxqtkOPlpPXD0p4VtbRdhU7OsezKNXUmxAivj6EDQ4oeFO98conKxXyweCr0sDw0S4
+	UUNWl1pr8iSg/kwYQR0R/0zdJ1Bupj6S6bfWTqOXIIo+iNQEYQI5WoQ==
+X-Gm-Gg: ASbGncvVxi37G7iNXtT/MKT1a+U3RBzRFcEy22cf/+FCnuqAV0hFDmAZZIlzWW5A67L
+	JuORFDARNPi8DQKWd24g4wOToZVerwSYpvddmTmaXjSMebPQYEELLFA4dAdzG9H8FjrM528tFz9
+	myzxPosa717pAGZGx0i1rtwt3paUQPLDNJc+DzDpZFtg==
+X-Google-Smtp-Source: AGHT+IHL2D9BYQJanb9784n4qc4e1Zm29e7PCnVRphAxB3I7BEJAToOJ1fVry6l+UnQ2yaP8vRD4aOi2iqpDV8NGGKM=
+X-Received: by 2002:a05:6a20:7f93:b0:203:9660:9e4a with SMTP id
+ adf61e73a8af0-220a1804eeamr30335684637.41.1751379321520; Tue, 01 Jul 2025
+ 07:15:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250627061600.56522-1-will@willsroot.io> <aF80DNslZSX7XT3l@pop-os.localdomain>
+ <sf650XmBNi0tyPjDgs_wVtj-7oFNDmX8diA3IzKTuTaZcLYNc5YZPLnAHd5eI2BDtxugv74Bv67017EAuIvfNbfB6y7Pr7IUZ2w1j6JEMrM=@willsroot.io>
+ <CAM0EoMkUi470+z86ztEMAGfYcG8aYiC2e5pP0z1BHz82O4RCPg@mail.gmail.com>
+ <aGGfLB+vlSELiEu3@pop-os.localdomain> <CAM0EoMnjS0kaNDttQtCZ+=hq9egOiRDANN+oQcMOBRnXLVjgRw@mail.gmail.com>
+ <aGMSPCjbWsxmlFuO@pop-os.localdomain>
+In-Reply-To: <aGMSPCjbWsxmlFuO@pop-os.localdomain>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Tue, 1 Jul 2025 10:15:10 -0400
+X-Gm-Features: Ac12FXzErkyILNyXohcB1bGYZZAn1EZu94j1IPLA5QmKLqv59FFK3Tt4ZQghsWk
+Message-ID: <CAM0EoMkhASg-NVegj77+Gj+snmWog69ebHYEj3Rcj41hiUBf_A@mail.gmail.com>
+Subject: Re: [PATCH net v4 1/2] net/sched: Restrict conditions for adding
+ duplicating netems to qdisc tree
+To: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: William Liu <will@willsroot.io>, netdev@vger.kernel.org, victor@mojatatu.com, 
+	pctammela@mojatatu.com, pabeni@redhat.com, kuba@kernel.org, 
+	stephen@networkplumber.org, dcaratti@redhat.com, savy@syst3mfailure.io, 
+	jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, horms@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Change module_phy_driver macro to build device tables which are
-exported to userspace by using module_device_table macro.
+On Mon, Jun 30, 2025 at 6:39=E2=80=AFPM Cong Wang <xiyou.wangcong@gmail.com=
+> wrote:
+>
+> On Mon, Jun 30, 2025 at 07:32:48AM -0400, Jamal Hadi Salim wrote:
+> > On Sun, Jun 29, 2025 at 4:16=E2=80=AFPM Cong Wang <xiyou.wangcong@gmail=
+.com> wrote:
+> > >
+> > > On Sat, Jun 28, 2025 at 05:25:25PM -0400, Jamal Hadi Salim wrote:
+> > > > your approach was to overwrite the netem specific cb which is expos=
+ed
+> > > > via the cb ->data that can be overwritten for example by a trivial
+> > > > ebpf program attach to any level of the hierarchy. This specific
+> > > > variant from Cong is not accessible to ebpf but as i expressed my v=
+iew
+> > > > in other email i feel it is not a good solution.
+> > > >
+> > > > https://lore.kernel.org/netdev/CAM0EoMk4dxOFoN_=3D3yOy+XrtU=3DyvjJX=
+Aw3fVTmN9=3DM=3DR=3DvtbxA@mail.gmail.com/
+> > >
+> > > Hi Jamal,
+> > >
+> > > I have two concerns regarding your/Will's proposal:
+> > >
+> > > 1) I am not sure whether disallowing such case is safe. From my
+> > > understanding this case is not obviously or logically wrong. So if we
+> > > disallow it, we may have a chance to break some application.
+> > >
+> >
+> > I dont intentionaly creating a loop-inside-a-loop as being correct.
+> > Stephen, is this a legit use case?
+> > Agreed that we need to be careful about some corner cases which may
+> > look crazy but are legit.
+>
+> Maybe I misunderstand your patch, to me duplicating packets in
+> parallel sub-hierarchy is not wrong, may be even useful.
+>
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/net/phy.rs | 51 ++++++++++++++++++++----------------------
- 1 file changed, 24 insertions(+), 27 deletions(-)
+TBH, there's no real world value for that specific config/repro and
+worse that it causes the infinite loop.
+I also cant see a good reason to have multiple netem children that all
+loop back to root.
+If there is one, we are going to find out when the patch goes in and
+someone complains.
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 940972ffadae..8bb362aefe27 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -6,7 +6,7 @@
- //!
- //! C headers: [`include/linux/phy.h`](srctree/include/linux/phy.h).
- 
--use crate::{error::*, prelude::*, types::Opaque};
-+use crate::{device_id::RawDeviceId, error::*, prelude::*, types::Opaque};
- use core::{marker::PhantomData, ptr::addr_of_mut};
- 
- pub mod reg;
-@@ -750,6 +750,12 @@ pub const fn mdio_device_id(&self) -> bindings::mdio_device_id {
-     }
- }
- 
-+// SAFETY: [`DeviceId`] is a `#[repr(transparent)` wrapper of `struct mdio_device_id`
-+// and does not add additional invariants, so it's safe to transmute to `RawType`.
-+unsafe impl RawDeviceId for DeviceId {
-+    type RawType = bindings::mdio_device_id;
-+}
-+
- enum DeviceMask {
-     Exact,
-     Model,
-@@ -850,19 +856,18 @@ const fn as_int(&self) -> u32 {
- ///     }
- /// };
- ///
--/// const _DEVICE_TABLE: [::kernel::bindings::mdio_device_id; 2] = [
--///     ::kernel::bindings::mdio_device_id {
--///         phy_id: 0x00000001,
--///         phy_id_mask: 0xffffffff,
--///     },
--///     ::kernel::bindings::mdio_device_id {
--///         phy_id: 0,
--///         phy_id_mask: 0,
--///     },
--/// ];
--/// #[cfg(MODULE)]
--/// #[no_mangle]
--/// static __mod_device_table__mdio__phydev: [::kernel::bindings::mdio_device_id; 2] = _DEVICE_TABLE;
-+/// const N: usize = 1;
-+///
-+/// const TABLE: ::kernel::device_id::IdArray<::kernel::net::phy::DeviceId, (), N> =
-+///     ::kernel::device_id::IdArray::new_without_index([
-+///         ::kernel::net::phy::DeviceId(
-+///             ::kernel::bindings::mdio_device_id {
-+///                 phy_id: 0x00000001,
-+///                 phy_id_mask: 0xffffffff,
-+///             }),
-+///     ]);
-+///
-+/// ::kernel::module_device_table!("mdio", phydev, TABLE);
- /// ```
- #[macro_export]
- macro_rules! module_phy_driver {
-@@ -873,20 +878,12 @@ macro_rules! module_phy_driver {
-     };
- 
-     (@device_table [$($dev:expr),+]) => {
--        // SAFETY: C will not read off the end of this constant since the last element is zero.
--        const _DEVICE_TABLE: [$crate::bindings::mdio_device_id;
--            $crate::module_phy_driver!(@count_devices $($dev),+) + 1] = [
--            $($dev.mdio_device_id()),+,
--            $crate::bindings::mdio_device_id {
--                phy_id: 0,
--                phy_id_mask: 0
--            }
--        ];
-+        const N: usize = $crate::module_phy_driver!(@count_devices $($dev),+);
-+
-+        const TABLE: $crate::device_id::IdArray<$crate::net::phy::DeviceId, (), N> =
-+            $crate::device_id::IdArray::new_without_index([ $(($dev,())),+, ]);
- 
--        #[cfg(MODULE)]
--        #[no_mangle]
--        static __mod_device_table__mdio__phydev: [$crate::bindings::mdio_device_id;
--            $crate::module_phy_driver!(@count_devices $($dev),+) + 1] = _DEVICE_TABLE;
-+        $crate::module_device_table!("mdio", phydev, TABLE);
-     };
- 
-     (drivers: [$($driver:ident),+ $(,)?], device_table: [$($dev:expr),+ $(,)?], $($f:tt)*) => {
--- 
-2.43.0
+> >
+> > > 2) Singling out this case looks not elegant to me.
+> >
+> > My thinking is to long term disallow all nonsense hierarchy use cases,
+> > such as this one, with some
+> > "feature bits". ATM, it's easy to catch the bad configs within a
+> > single qdisc in ->init() but currently not possible if it affects a
+> > hierarchy.
+>
+> The problem with this is it becomes harder to get a clear big picture,
+> today netem, tomorrow maybe hfsc etc.? We could end up with hiding such
+> bad-config-prevention code in different Qdisc's.
+>
+> With the approach I suggested, we have a central place (probably
+> sch_api.c) to have all the logics, nothing is hidden, easier to
+> understand and easier to introduce more bad-config-prevention code.
+>
+> I hope this makes sense to you.
+>
 
+To me the most positive outcome from the bounty hunters is getting
+clarity that we not only need a per-qdisc validation as we do today,
+but per-hierarchy as well; however, that is a different discussion we
+can have after.
+
+IIUC, we may be saying the same thing - a generic way to do hierarchy
+validation. I even had a patch which i didnt think was the right thing
+to do at the time. We can have that discussion.
+
+But let's _please_ move forward with this patch, it fixes the
+outstanding issues then we can discuss the best path forward more
+calmly. The issue this patch fixes can be retrofitted into whatever
+new scheme that we agree on after (and we may have to undo all the
+backlog fixes as well).
+
+cheers,
+jamal
