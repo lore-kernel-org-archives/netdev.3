@@ -1,78 +1,77 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490F72E406
-	for <netdev@vger.kernel.org>; Tue,  1 Jul 2025 02:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC8B1C3C1F
+	for <netdev@vger.kernel.org>; Tue,  1 Jul 2025 02:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751336411; cv=none; b=YN5wozBRC9/NSTxHFh7rGi+xhorbhgDZ9vHfVYRlBQT8bQIuHOCdsVBgvhODKIB/jNOzEl1bXWTF4QLdTc/ML2RuSMfbllUa0Mo1NitN9JuJeDtjaq7rMU+c9oPZ/kaANC3eVv0NvZd2F5M+Hv9jlzQZ+GsVgWrK3vIbc/cqz8g=
+	t=1751336435; cv=none; b=E+mI2CVid9PNtd2uPPlG03lzEOeyhc0ryEeCEOCf1lAlQNq6rIC/Dybdp4Z7QZH38OvuxEp6QxZBmPRO7YI2WW3SLSckKNdYm7A5gr73VFhg/IrPMxZraAZ39EJhNVRl4klXBO4BahSUlOC79vx02Lv7A4J9gZw61ZS8wD2cGl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751336411; c=relaxed/simple;
-	bh=Bz/86j3mpJf6RZwOMLVBi8P/cdclQpstyJilpZn/LWw=;
+	s=arc-20240116; t=1751336435; c=relaxed/simple;
+	bh=WRkNpi1+u755d+RTOomAEvo4QL0439YSaBkjP0jh4c0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ixLf0RWleMvf4xhRfEyheaF+qj/dFJZ0EzR2Vqx51G6qydV1mCh9uuZCZL4gglRK4jxs+cZb+m8BH7PYMgTvwsFCugZyjuT1VuWStRc279o2de2fYUIgHpXHeRMfDMO5bNfoiiXVMIQiUCso9um6lF0OOkfQ0QkMT1OW7/Ya+nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XitJT7rM; arc=none smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=GabU73YeTvlQyUHogEp/Jg6FZ0NAHIqLBGn2y/UPT8eERhLqSXR4n1otzgRQxR3yxDO4xt2rYcCXTGZPjEqOOID33rOQucqha9bByx4vHbk0jy/k+FEZ9uIf0fdx+TadZjRdXqWtDtqO3ww6Atn1ntiJb7U/w6v4JdAU9g14Rf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SRWedzt9; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XitJT7rM"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SRWedzt9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751336408;
+	s=mimecast20190719; t=1751336431;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Bz/86j3mpJf6RZwOMLVBi8P/cdclQpstyJilpZn/LWw=;
-	b=XitJT7rMcVfVnvFvEtiTtsObSRPFK+a70L5scblewEeMF8TbMA+mhgVzETLB0tobE4VrZA
-	mbEOHWZYl9pEa70KxAP314mQdty7ITBqKYq2cbRKGpJHzIlaokjTde4rr7YypwAxWMJRI+
-	ffhw6htbZjLLQUaMAjYEafXX3btQSdE=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=WRkNpi1+u755d+RTOomAEvo4QL0439YSaBkjP0jh4c0=;
+	b=SRWedzt9gehIEouxCaxiQeByhPPiP45tPrAQcJ+wjqEfWU4t8qiUbtzq7TrMdfN1mStl9q
+	fQbmB1mGbTmdvFiv3OTQcTLfo8kj8NeNiM4jcg9c9Jc7fJnU3LzSJzavcLWLsig5soB7TH
+	WYpqmqoakvpowM10fG8YF75qJpLOuBg=
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
+ [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-122-GRfNt-n_Ow-j4Jm33wBgIg-1; Mon, 30 Jun 2025 22:20:06 -0400
-X-MC-Unique: GRfNt-n_Ow-j4Jm33wBgIg-1
-X-Mimecast-MFC-AGG-ID: GRfNt-n_Ow-j4Jm33wBgIg_1751336406
-Received: by mail-vs1-f70.google.com with SMTP id ada2fe7eead31-4e81805effeso406580137.1
-        for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 19:20:06 -0700 (PDT)
+ us-mta-171-r40i-sL9M_qbFxeQ-HBnAA-1; Mon, 30 Jun 2025 22:20:21 -0400
+X-MC-Unique: r40i-sL9M_qbFxeQ-HBnAA-1
+X-Mimecast-MFC-AGG-ID: r40i-sL9M_qbFxeQ-HBnAA_1751336421
+Received: by mail-ua1-f71.google.com with SMTP id a1e0cc1a2514c-87ecd699753so38687241.2
+        for <netdev@vger.kernel.org>; Mon, 30 Jun 2025 19:20:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751336406; x=1751941206;
+        d=1e100.net; s=20230601; t=1751336421; x=1751941221;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Bz/86j3mpJf6RZwOMLVBi8P/cdclQpstyJilpZn/LWw=;
-        b=hA9Euw8m3Qu0P0LRlgL2qFEX7hIMDEcZt194s3RGp6J+AsWTPWS3GJbRgDLgQTqvqz
-         VgTKZnJTubw7bUCm1Mg58EOJNM5zC7X2df4grOekQaEfE3gXPM/1XGfmnQWcUVQFrOB6
-         p09qST5NkqLM5/X4T1yNbedDuvTUMs47oO1WFLJ1FLc6IUsJEJqiPFHgYrdysp5/7hVQ
-         vOksGwbOoJPTFa6wTl9g2Oihnd0NqbjpNZFhjDixqsMugSfiod1HK3qAizTqRgwQxM/M
-         QWyFqKLtMfrHTbtS0lau+BKVejU6wa1V/K3UfjYQ1fRhRxUNS3fkyYtyiYmnQ0HZFL03
-         sUFw==
-X-Gm-Message-State: AOJu0Yz0rcSifb7Iw8Nqn33bA8xCAr/BetxL4UZfNpktoyYIetkGAQfz
-	F/eTmtWi82jbesnbWogm7EOCAwNo6b05va0TtnDx4CSJguF4KslwpfQUI9kMuSSLV3y3djIMziy
-	LsmchUHt5wjUisWH/do/E5In/WMFpJSFoO0OB5hciZsRP0od/fzh6gfqrFkIuvr2KYTGZnPYd+R
-	yVZ1ulJu4ZKZ0P+oSlCu6mqBYDs/fzafb7
-X-Gm-Gg: ASbGncvNEokizMoCo3IqMQivfqN8p/Th+0ByHjMVmVY0J2+M+ET73/RVqIqeei0b7bp
-	zMoebAwtaicAwxerTLL+3E76OYEBL7yb3aNBa5hJAEkDPqADyMWtu7K0oCrWA7uFowB2ADq7FxV
-	6y
-X-Received: by 2002:a05:6102:b0f:b0:4e7:db51:ea5d with SMTP id ada2fe7eead31-4ee4f57b220mr9035444137.6.1751336405998;
-        Mon, 30 Jun 2025 19:20:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFfwt0IUN9XzbcPTMYkve3OC1WK/0fpTeOcXovTvrlwz1DP2O24mIjCZg0vVcRzjUe2M01DvNuq273bCwcQw/Y=
-X-Received: by 2002:a05:6102:b0f:b0:4e7:db51:ea5d with SMTP id
- ada2fe7eead31-4ee4f57b220mr9035421137.6.1751336405513; Mon, 30 Jun 2025
- 19:20:05 -0700 (PDT)
+        bh=WRkNpi1+u755d+RTOomAEvo4QL0439YSaBkjP0jh4c0=;
+        b=mshL/ydVp4DGsnlkkgA4drBf9UQTA3MGg36fyDM6L+wif6gSaM6wHZpcSb3W3C9B27
+         ZnAQvY3huUpv4tvW6QOnr1eBj6BaX79ybgiW1KhYIJmi+ZJd6eTmMBeurm/5EK+Dld0K
+         xe358Uy7zQlDAeSmr/+ROjoYk9ItydT4hePHPC1KguMp2Q9RSrL1gYL3ShZuLF/Tx0jw
+         geaFslY79qGgBJsY8i/pmw6w0uCDYtbi9+M6BeWEsHK2IaY9V8SvhzTDvD3NeLeeFlU8
+         EGfFJoscwEz2mIt6Ib+rrHWcsle5WOWQm5frhCXjWowfwjPF/4vWwB1R/sFJ/zjpLsY6
+         03IA==
+X-Gm-Message-State: AOJu0YyRYTMqMBCe/whDiQsKOgslPVH15PEJ7pHwXKTEm+x+VWwkm5G4
+	ert8bezlDImfNZdWUP+YrWddKkvZXkrDjUZV+5O2X2s6+IlM6/cW8k6BiL64ZOPru8mog3wTj4n
+	dXRJ9unsV1stIjJLwlDBzngP0BPtLTxACtgquEpJmcNTiTWnnYT9u7dqtSoSDdLEdqLUjpDXVEh
+	/6G7GdwnjoOHDJkYGQr/touSMF7BJxZ9ei
+X-Gm-Gg: ASbGnctS5OfakO6yw59uE9DoPidNsk7YmA1R/UXPBIJilaCn+4wb486jUAQHmO3kXL/
+	QG3M+Ncm2XJ9lXaFi8J3W4gr9PwHLnNLWokGxvxHHsov3bLoeksEuuh25oHzGzgNUulUtrKsHmO
+	y+
+X-Received: by 2002:a05:6102:2c05:b0:4e5:abd3:626e with SMTP id ada2fe7eead31-4ee4f9e6313mr10405275137.24.1751336421322;
+        Mon, 30 Jun 2025 19:20:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGcgqA4GY5HeNzIXNDy3m2/0QUTCkMPWazV2oM4SlXLsY44Iog87PMmTUv3dD5hme1ectzbCFF6OxMHcOYRnvk=
+X-Received: by 2002:a05:6102:2c05:b0:4e5:abd3:626e with SMTP id
+ ada2fe7eead31-4ee4f9e6313mr10405270137.24.1751336420966; Mon, 30 Jun 2025
+ 19:20:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250630144212.48471-1-minhquangbui99@gmail.com> <20250630144212.48471-2-minhquangbui99@gmail.com>
-In-Reply-To: <20250630144212.48471-2-minhquangbui99@gmail.com>
+References: <20250630144212.48471-1-minhquangbui99@gmail.com> <20250630144212.48471-4-minhquangbui99@gmail.com>
+In-Reply-To: <20250630144212.48471-4-minhquangbui99@gmail.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 1 Jul 2025 10:19:53 +0800
-X-Gm-Features: Ac12FXwg9udMXpdfqk8skCNczA1b4cFLqKAJ_PlRVtyvo3Mi9xA6wAsp9nIVFQs
-Message-ID: <CACGkMEuJk=PF2aGQj4FNhSv=VvOTzruK6PMpEykB9MVHwU4nDw@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/3] virtio-net: ensure the received length does
- not exceed allocated size
+Date: Tue, 1 Jul 2025 10:20:08 +0800
+X-Gm-Features: Ac12FXzTGbPc8d1stXK-UyjLYhm6Mh_lf0LlWolyX6yBYCOFZ2SRlUxOM8CEHbs
+Message-ID: <CACGkMEt9za5v2tWDBOs_1d8nCk20CC4XyadszKB7ezKRz=sBmg@mail.gmail.com>
+Subject: Re: [PATCH net v2 3/3] virtio-net: use the check_mergeable_len helper
 To: Bui Quang Minh <minhquangbui99@gmail.com>
 Cc: netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, 
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
@@ -81,20 +80,18 @@ Cc: netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
 	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
 	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
 	Stanislav Fomichev <sdf@fomichev.me>, virtualization@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 30, 2025 at 10:42=E2=80=AFPM Bui Quang Minh
+On Mon, Jun 30, 2025 at 10:43=E2=80=AFPM Bui Quang Minh
 <minhquangbui99@gmail.com> wrote:
 >
-> In xdp_linearize_page, when reading the following buffers from the ring,
-> we forget to check the received length with the true allocate size. This
-> can lead to an out-of-bound read. This commit adds that missing check.
+> Replace the current repeated code to check received length in mergeable
+> mode with the new check_mergeable_len helper.
 >
-> Cc: <stable@vger.kernel.org>
-> Fixes: 4941d472bf95 ("virtio-net: do not reset during XDP set")
 > Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+> ---
 
 Acked-by: Jason Wang <jasowang@redhat.com>
 
