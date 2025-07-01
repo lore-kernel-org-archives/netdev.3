@@ -1,119 +1,101 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD2427F736
-	for <netdev@vger.kernel.org>; Tue,  1 Jul 2025 16:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C5927FD60;
+	Tue,  1 Jul 2025 16:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751388317; cv=none; b=sXBLeUHI+nF/8+3tJxJ7t7F8tpoGo5rb2dXP99BN/LaydRB0AwuD0I8/Z4156fx/Eh9SlALyVYh+QAfATXCQuAg0MAMCRwwfhdZN0h72PWApW+Rm5yD1KyI4vBfSwkLaQ8lEPfCyowyE0JXF0TYlhtT8qd2b+fegE6iK8X2zfVk=
+	t=1751388318; cv=none; b=sC2DhRESpFQfiddQYeFimApK/PAvmcqVi2/qGtWNVuEx4pi7cPSAW9Qheym+EdAcPKDvdSLlymc6jVTGeXn+oRVRJ6ZQSy8FPWc+9/0PIJNUqUdCW1vsf8oe70y1zahazy57uW0zbyz26wn1NxJ2/bY65dRmt6FfGutMjculZxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751388317; c=relaxed/simple;
-	bh=GSh1yLctr/h7mt17iCABMV7donflOQ990q9vmjYKMeY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PttptsX1kiyzXgvkntVG2IXrO8x5ryeb3yW5MI4K7nSORLVyx1yaHeT3ppuLuAbLWJoXV/7MmaJaYirnJodakjIdSAUeGFEJpfXh9h3DSF/3KZs7Y1Jh3dE/3pF3kwGYGOxCNxnkRuzdzHXH75l2FqIQwDdiuP/+B+58ABHUMvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Wzp5qGce; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1751388318; c=relaxed/simple;
+	bh=iISDn9L+D3wVAHPNNIcp/TCqX/3WWeX/S60myFyZsyQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=MAWf8uaBb5PEWwq4/kJHuMjqeg0RBfnhuGwFvIWtHR5sCMXOEWODj774cILK4yzHJVK4TsxRc4SfY6Zf2fSTpXx/RzK8bmwFG369KkFHeYdPoCpiSU7d0SOJTrnYr+WCXf43Z+XeInC3g+d2MoYhXGIXaNB2rtFXKIzIehVh/1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XZxKbsjn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Wzp5qGce"
-Message-ID: <34647b2e-3d9d-42db-9851-34ad8621af02@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1751388303;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hdTOqogTp5JqM4b0+vAKcrKmgEFcq8WvFyC5EnR/3bg=;
-	b=Wzp5qGceGGl95r7D/0lKItVPsPO6qNrVY7lEmWjLAGnLkqaIy2i+/rkJvKWAmC7S0fs0w0
-	yTIWAk7S2uKU5znFYHxgjaUy2KY+6aBQepouQEfpE4CtempkqY8gkBezWqdM0GPVlkJYWK
-	sD7ARAAqL74oHVw5FGR3QlI77hxl8ig=
-Date: Tue, 1 Jul 2025 12:44:55 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XZxKbsjn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E564C4CEEB;
+	Tue,  1 Jul 2025 16:45:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751388318;
+	bh=iISDn9L+D3wVAHPNNIcp/TCqX/3WWeX/S60myFyZsyQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XZxKbsjnxeim9dro/dDexHotSos9MPh1hZEwwprrdBVkWopSRky5SfOKmk99xuGc8
+	 /EFW4YGONjdpQcXnsQaAAcAI1xDMpbxIY/o/CirhEf+z1d0iwAH92bvfrPVzrf3wS/
+	 GX5JNReJYcw3N7JjTkuPpMdiAXPnH7pE1eDqteRu8YXnZl/8wNXSNzsAyHg/RI9RUj
+	 YtNAhTYLqzLAzlYX9R/TgloOe/O6INgJ8oc44kVEFELJblgEOxvMqsfVxu396ITnU+
+	 4HKPmSWjTb3ICsOvpjOxIDyPLdxweWKNEq1NWztMTActZYxAY8ALNLNFTPtKy+NZTq
+	 UbfT6WsCvuK3g==
+From: Will Deacon <will@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: Will Deacon <will@kernel.org>,
+	Keir Fraser <keirf@google.com>,
+	Steven Moreland <smoreland@google.com>,
+	Frederick Mayle <fmayle@google.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/8] vhost/vsock: Avoid allocating arbitrarily-sized SKBs
+Date: Tue,  1 Jul 2025 17:45:00 +0100
+Message-Id: <20250701164507.14883-2-will@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250701164507.14883-1-will@kernel.org>
+References: <20250701164507.14883-1-will@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v2 13/18] net: macb: avoid double endianness swap
- in macb_set_hwaddr()
-To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Samuel Holland <samuel.holland@sifive.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Russell King <linux@armlinux.org.uk>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
- Gregory CLEMENT <gregory.clement@bootlin.com>,
- Cyrille Pitchen <cyrille.pitchen@atmel.com>,
- Harini Katakam <harini.katakam@xilinx.com>,
- Rafal Ozieblo <rafalo@cadence.com>,
- Haavard Skinnemoen <hskinnemoen@atmel.com>, Jeff Garzik <jeff@garzik.org>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-mips@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Tawfik Bayouk <tawfik.bayouk@mobileye.com>
-References: <20250627-macb-v2-0-ff8207d0bb77@bootlin.com>
- <20250627-macb-v2-13-ff8207d0bb77@bootlin.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <20250627-macb-v2-13-ff8207d0bb77@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-On 6/27/25 05:08, Théo Lebrun wrote:
-> writel() does a CPU->LE conversion. Drop manual cpu_to_le*() calls.
-> 
-> On little-endian system:
->  - cpu_to_le32() is a no-op (LE->LE),
->  - writel() is a no-op (LE->LE),
->  - dev_addr will therefore not be swapped and written as-is.
-> 
-> On big-endian system:
->  - cpu_to_le32() is a swap (BE->LE),
->  - writel() is a swap (BE->LE),
->  - dev_addr will therefore be swapped twice and written as a BE value.
-> 
-> This was found using sparse:
->    ⟩ make C=2 drivers/net/ethernet/cadence/macb_main.o
->    warning: incorrect type in assignment (different base types)
->       expected unsigned int [usertype] bottom
->       got restricted __le32 [usertype]
->    warning: incorrect type in assignment (different base types)
->       expected unsigned short [usertype] top
->       got restricted __le16 [usertype]
->    ...
-> 
-> Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
-> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-> ---
->  drivers/net/ethernet/cadence/macb_main.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index 578e72c7727d4f578478ff2b3d0a6316327271b1..34223dad2d01ae4bcefc0823c868a67f59435638 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -265,9 +265,9 @@ static void macb_set_hwaddr(struct macb *bp)
->  	u32 bottom;
->  	u16 top;
->  
-> -	bottom = cpu_to_le32(*((u32 *)bp->dev->dev_addr));
-> +	bottom = *((u32 *)bp->dev->dev_addr);
->  	macb_or_gem_writel(bp, SA1B, bottom);
-> -	top = cpu_to_le16(*((u16 *)(bp->dev->dev_addr + 4)));
-> +	top = *((u16 *)(bp->dev->dev_addr + 4));>  	macb_or_gem_writel(bp, SA1T, top);
->  
->  	if (gem_has_ptp(bp)) {
-> 
+vhost_vsock_alloc_skb() returns NULL for packets advertising a length
+larger than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE in the packet header. However,
+this is only checked once the SKB has been allocated and, if the length
+in the packet header is zero, the SKB may not be freed immediately.
 
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
+Hoist the size check before the SKB allocation so that an iovec larger
+than VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + the header size is rejected
+outright. The subsequent check on the length field in the header can
+then simply check that the allocated SKB is indeed large enough to hold
+the packet.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+Signed-off-by: Will Deacon <will@kernel.org>
+---
+ drivers/vhost/vsock.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index 802153e23073..66a0f060770e 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -344,6 +344,9 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
+ 
+ 	len = iov_length(vq->iov, out);
+ 
++	if (len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM)
++		return NULL;
++
+ 	/* len contains both payload and hdr */
+ 	skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
+ 	if (!skb)
+@@ -367,8 +370,7 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
+ 		return skb;
+ 
+ 	/* The pkt is too big or the length in the header is invalid */
+-	if (payload_len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE ||
+-	    payload_len + sizeof(*hdr) > len) {
++	if (payload_len + sizeof(*hdr) > len) {
+ 		kfree_skb(skb);
+ 		return NULL;
+ 	}
+-- 
+2.50.0.727.gbf7dc18ff4-goog
+
