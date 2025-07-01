@@ -1,135 +1,129 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64FB275872;
-	Tue,  1 Jul 2025 14:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA48C13C3F2;
+	Tue,  1 Jul 2025 14:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751379187; cv=none; b=cqLLuE9+KiasWQT5UsHCM7Ea+mGIpT68Pkdv1vVE44IuAPHvp0HYtGr0xZRBcQebtrgrUUw8xf6vdHbB14qj3fJN0soq3uo+7in85pfUqET0Sjr5jhk2B9zp0fTsQZXIDMk7mAiw+MLpmy17s44Yllnu20w97wa/EeDSP7Z1Dqo=
+	t=1751379265; cv=none; b=aj/tjaVf4DRXWO6ajl90L+MN6gv7UWaUWN7J2gWG2/7z7STk/PA01umqiB3WheVlsDdFS6cZjRU8qTVDc1eyEtbM4SJI9gLv+kBDB731j2O1moSKmzRFuiXHMVWPjwl3jLAbTAu4ygZMjP9erwEVauYsDhuVuMZo9Qynj7p54Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751379187; c=relaxed/simple;
-	bh=9M0xpRMMUDO10GmTj8Q2uDokp5+yvybmx8wNOiGURkY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=i7UfuijIAwEK2pbF5hsRT3XXO6mrndiD/iGustRYS9FPPv0XMC7ABCpQC2gRsAHnY0rymlXoXD+/q0iNFPQj85FEQbOd2ChDVKfRfIOJQNs8HPBiFKoKzNcW/Ra4OKhJR9IpTnaAPEuDZj6V+z4SrRhWRGQBjgu+zptfVE/RSBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QMPeiDZw; arc=none smtp.client-ip=209.85.208.49
+	s=arc-20240116; t=1751379265; c=relaxed/simple;
+	bh=8ETo8H9n7F/2G/4Ja2z58kxRn+BOSZ78QHcn7HYjt/w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aio0nGO3IDuMpogn258l1KrkmgBg0W1viBBsCXFTDZ7NLSUGhA871YRCYrav4Csfr5TlPMzZQJSA1/Lnr7NPjzaxXdPH+KLrcS5TT4UWljH3z5fPUFE9RWu6zfF3BBRxIV2Wal8zxuL5Ilh4VutQRRNmxYJ7LmBJHEeaeR9ibsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bBljitUU; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QMPeiDZw"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-60c79bedc19so5434432a12.3;
-        Tue, 01 Jul 2025 07:13:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bBljitUU"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2349f096605so37727835ad.3;
+        Tue, 01 Jul 2025 07:14:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751379184; x=1751983984; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=9M0xpRMMUDO10GmTj8Q2uDokp5+yvybmx8wNOiGURkY=;
-        b=QMPeiDZwDKmtIQdgB+Aet4U8hEQA+kuW+KhZMSdl1EA4gtwNTAxKCnpRgV/lPfQUra
-         uytkUf+E3PtBixWbs1Xyba767uxfY6zlU2ZV7LSr/VGE9DpZlaER4XDA6S0e82UqMDkB
-         P/KWns5gllgLhINZXVLjfQUqcF6zmc2lKP7z8X32WLzuQ+tMwuTBdmx4Z/Ajc+rEyL/H
-         zkysdKjK55LkYTATHQjg6uNcGDaj60/q9Bi2WaTFe2bb0JtWM2yA9tiWHd4+Rb6Tw6wz
-         tlFnqGR9MxhIDbG9tAAST22o1UJXb9LLMvjyEqkNNbNmBqT+tXiOKAiWNNVFecanbIzy
-         VLHA==
+        d=gmail.com; s=20230601; t=1751379263; x=1751984063; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cGOa1cF1iUH0+69hZgkZqAynW/NiPDvEYRmh1fAZi7Q=;
+        b=bBljitUUNW9QxfrqIbp0/K2vrVyjm7hfegAdSK9c95RKC07e9zLBoWef5ZR6U0FSJO
+         AJUY6L5bPxPmMmR61/6PZMjaNttOPs/9iY1qJV+e25Aryl4bz/bR/lMe4mJenF8DbHaQ
+         fmAR8OlK0aqosQXFepkDViY9z9kQE5PpcxTkwkRhinnCzQ8tLnb9Pzqj++1olKlfqZ6p
+         v1r+0CJcs2bsAPlie/Dn3P0MsxvFi25StK5HTzfpn4sZ5BYtQRDquxLjKWMMCHd/Rdzj
+         gtg11o7ulIQ9FtBuyB8+qogWnBlIyDUHmNzTTn8sfrEuy2cooDvqIA/on3EKWTOGw/DJ
+         HMjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751379184; x=1751983984;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9M0xpRMMUDO10GmTj8Q2uDokp5+yvybmx8wNOiGURkY=;
-        b=qJNtttZGYblDPZFcim4eqE3043UuT46/Te5MPc24m6kfh57Jg+b9rCYrlmaiyr7cpm
-         SoxjCnx9FhLUyplyFJokw3m9oVw96RdydYoV+r32KI5Ro9/hy1jo1nmm3HJQQdhdAZRt
-         5GSktyrAPltFnv8EH03hSoK8VbFjq39VwKxbCJo5pdWc+G5vIfnVsrkwsFvDph2Ayudw
-         BXmJpPB9HSVKnCADbgxKzEAzwpDOEkOjqVZ97nITUFC6Zv77NNIkJu3mKWma4CiPCvrF
-         sLVog0mnGyaVn0UWZ0idNhf6DHoAAStsBGwNr294HGugkj/63hb0T2Nnkvx01U6gKLBO
-         fhDg==
-X-Forwarded-Encrypted: i=1; AJvYcCVCvyNYYKdsUv6vK6uxuc17PQaejdpQkKrgnXBofIUQUPfAzTxLvhWxNV4laW9RF5vd4NeA4Usy14q7qfZU@vger.kernel.org, AJvYcCWnlqc8HUkukeyMgErvAvoG/9+2Wa0qzBKX/hmCQKf7VUrC5WI+gzjb7DLYSu6WwqYxVTTapF8SeINd@vger.kernel.org, AJvYcCXfGaQv0uy3fwv9mBZTqc6LMEkv9jfGA+HWCpVdyFjddsgOjhWL0cGdRghI8uJ5iJIoXoFUimMN@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0hNba4LbS0bcq0SLg6EmW7Jxi1kYDXClU4FcnTABgphDGqB60
-	3TK6XG1vM9hYDTezax7+Nrjf2h2tBdV3R6GXa3mylZsV4ylMq+4TN22e
-X-Gm-Gg: ASbGncvEfBbGdBwWjWwMBou5kPYuHG5OH/jbQzFBBOTVoD8REBlnRUnLC2OzwrgBF6s
-	7I16f3kXGD7rWYjygsUnjGng7Hmgh73x8rFNJIRLSA83R/yQ6Hc1dxy5+IzmdxFWSAY//W+2RpB
-	xjPClL0E1LJq7HUqlWyvaqHGMllxSOEpDJwSy62Zl9aR9gBW8K9RcYmuFdlI2/0ucLBpn+DvBkF
-	28VM995J/JqiDKsP2tDNMBHEW50OHGfOp3GLtqFuwdx1a0pkBkYMj9B5wRa4CZlVBQvgt7LlJ3n
-	WCvZ4re3V2VR/hnwXfIPAfgQRQ5FveW7RSsM5rSL3W8yE19pSp5p6gJKA+uI+EIsmOMirISkqC8
-	4V/9Mcw==
-X-Google-Smtp-Source: AGHT+IF1tB069kz6JY0KWxXptDNGH10wBVEBZiS6dvHv1zIbhdSfAx48xUxQ0wRn7sog+hmz8X53ww==
-X-Received: by 2002:a17:906:6a1a:b0:adb:2a66:85bc with SMTP id a640c23a62f3a-ae3500b8e5amr1624415066b.34.1751379183619;
-        Tue, 01 Jul 2025 07:13:03 -0700 (PDT)
-Received: from giga-mm-8.home ([2a02:1210:8608:9200:82ee:73ff:feb8:99e3])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae35363b369sm879228866b.3.2025.07.01.07.13.02
+        d=1e100.net; s=20230601; t=1751379263; x=1751984063;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cGOa1cF1iUH0+69hZgkZqAynW/NiPDvEYRmh1fAZi7Q=;
+        b=wkNDtWn281Nz9OC0R4ACekyYszz+WnGbnQPNGgQXyZNjBMS7gvTfUpTIqMUnEfK1f8
+         9DE7SybkGIKm3mV0OEEnVGyRHjz22W3arMV7sPw/coSHS5WNSbIPek/kTYMCxvxVptSP
+         l09MiBJ/5J6Hhk9AZ/fx8lfxt2bsjVYxSpi88cl7t10ZmL+PufbODUyJ1XCPZLseUjKg
+         BRywkq64i+DmEWijt9JehH5tk6mY9j7GHi3jyw4TISxfDORVPftQOt/siz+jYei/LMMt
+         xnAEW9DBEZvlEvfZsavgjJywPLHdGBLo9U/WXicHuGQJtpRoWud06deBcCZQpfLqm3Nd
+         CV4w==
+X-Forwarded-Encrypted: i=1; AJvYcCUakNZowJRVlcO9UBhQAz824LkVWPWI+taBTe/CAh8/RB7vLf1tdCRh2fjeckTRY4UDjwJd6t8XSvuzoYh4Op8=@vger.kernel.org, AJvYcCV3YGcG2K2X6YAawWprr1rsS+dObrh4HZoyKF0H8adP6u6l5Y1+l2R2gsTfWC9T4SW0SUX9jQy2njL5@vger.kernel.org, AJvYcCVKItcc5uqSqVuvLh2HshrDTEdfQUBBbYF0olgQuD/86UmrF/X/2tLITcrRN94S+OIL63J5cuVc@vger.kernel.org, AJvYcCX3H022YrHGxBmev1O/FyXVqht4TOOQrrcOTCBdqqPsQeb3tCzCKZAv7lM7QSBmYPGpiK3NwP44iyGr@vger.kernel.org, AJvYcCXayJOiZVE/ty65gk7g0pxf3V6yjLue20zo4Ls6IGQLPXU3G/H2sW//bDrmDKOzwz5sZS/y4Rek8d4NVoHS@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy49vakbKpNQI8HroSKSp4ZKG5KjeR+ierLZJLzIc4jf+SqGgLZ
+	cZrKvku3sKyeZmnOz5fliJ1lL/W+KcT1FaLCLYRFw83/oYs9Y/MEMZuZ
+X-Gm-Gg: ASbGncti3wNzPa6ZIJWcShJUnpPRS/TcmowU5fz5JAosZ4MYVeu1GksyslK7cPu1zyR
+	CkwnottBltBRYStrzcGB9vYo6ai0PKcmRQJihJlPeTuui2HiqrqMAgHJDiVwgDEWjBMA/dGm2PZ
+	pWO/3Yij7c7msdMQdyrBvwweakKt5LiZpDuXenhiBb5qt6N349TTFyk39ddPYqF6oYzyzCwuEL+
+	m1uAprj9kZMhfoA6tuqvk4rutNBjCVN8cFZoi18XTgCQlv9GWMtym78uQNPQC0FHB6VcvRpndcZ
+	zjrQUkysLrHRw7zPSQsqf9crMKFgh7uU6bF9fl0uYw7urEkpNwZap0+7dEdw7XVdnXszyg7emDr
+	DJuT1a5UWaHpky7QhY/1rmiw8gjSFrZfDd8Y=
+X-Google-Smtp-Source: AGHT+IGXEWlJgT1GJH4Lu3G7lkA9vOpM3RPD4pkXk4Jh5ip6sI+bOgT/C1FpaAIQB/cVKubhZC0uDw==
+X-Received: by 2002:a17:902:d4c5:b0:234:e655:a632 with SMTP id d9443c01a7336-23ac4883265mr257175855ad.51.1751379262756;
+        Tue, 01 Jul 2025 07:14:22 -0700 (PDT)
+Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb3b8324sm107240885ad.178.2025.07.01.07.14.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jul 2025 07:13:03 -0700 (PDT)
-Message-ID: <b986b184f2a29bb549daeff5c84547d64341f796.camel@gmail.com>
-Subject: Re: [PATCH net] dt-bindings: net: sophgo,sg2044-dwmac: Drop status
- from the example
-From: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Andrew Lunn	
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni	 <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Chen
- Wang	 <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, sophgo@lists.linux.dev,
- 	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Date: Tue, 01 Jul 2025 16:13:06 +0200
-In-Reply-To: <20250701063621.23808-2-krzysztof.kozlowski@linaro.org>
-References: <20250701063621.23808-2-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 
+        Tue, 01 Jul 2025 07:14:22 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: alex.gaynor@gmail.com,
+	dakr@kernel.org,
+	gregkh@linuxfoundation.org,
+	ojeda@kernel.org,
+	rafael@kernel.org,
+	robh@kernel.org,
+	saravanak@google.com
+Cc: a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	bhelgaas@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	david.m.ertman@intel.com,
+	devicetree@vger.kernel.org,
+	gary@garyguo.net,
+	ira.weiny@intel.com,
+	kwilczynski@kernel.org,
+	leon@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	lossin@kernel.org,
+	netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: [PATCH v2 0/3] rust: Build PHY device tables by using module_device_table macro
+Date: Tue,  1 Jul 2025 23:12:49 +0900
+Message-ID: <20250701141252.600113-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2025-07-01 at 08:36 +0200, Krzysztof Kozlowski wrote:
-> Examples should be complete and should not have a 'status' property,
-> especially a disabled one because this disables the dt_binding_check of
-> the example against the schema.=C2=A0 Dropping 'status' property shows
-> missing other properties - phy-mode and phy-handle.
->=20
-> Fixes: 114508a89ddc ("dt-bindings: net: Add support for Sophgo SG2044 dwm=
-ac")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Build PHY device tables by using module_device_table macro.
 
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+The PHY abstractions have been generating their own device tables
+manually instead of using the module_device_table macro provided by
+the device_id crate. However, the format of device tables occasionally
+changes [1] [2], requiring updates to both the device_id crate and the custom
+format used by the PHY abstractions, which is cumbersome to maintain.
 
-> ---
-> =C2=A0Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml | 3 =
-++-
-> =C2=A01 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.ya=
-ml b/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml
-> index 4dd2dc9c678b..8afbd9ebd73f 100644
-> --- a/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/sophgo,sg2044-dwmac.yaml
-> @@ -80,6 +80,8 @@ examples:
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 interrupt-parent =3D <&intc>;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 interrupts =3D <296 IRQ_TYPE_LEVEL_H=
-IGH>;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 interrupt-names =3D "macirq";
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 phy-handle =3D <&phy0>;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 phy-mode =3D "rgmii-id";
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 resets =3D <&rst 30>;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 reset-names =3D "stmmaceth";
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 snps,multicast-filter-bins =3D <0>;
-> @@ -91,7 +93,6 @@ examples:
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 snps,mtl-rx-config =3D <&gmac0_mtl_r=
-x_setup>;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 snps,mtl-tx-config =3D <&gmac0_mtl_t=
-x_setup>;
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 snps,axi-config =3D <&gmac0_stmmac_a=
-xi_setup>;
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 status =3D "disabled";
-> =C2=A0
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gmac0_mtl_rx_setup: rx-queues-config=
- {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 snps,rx-queues-to-use =
-=3D <8>;
+[1]: https://lore.kernel.org/lkml/20241119235705.1576946-14-masahiroy@kernel.org/
+[2]: https://lore.kernel.org/lkml/6e2f70b07a710e761eb68d089d96cee7b27bb2d5.1750511018.git.legion@kernel.org/
 
---=20
-Alexander Sverdlin.
+v2:
+- Split off index-related parts of RawDeviceId into RawDeviceIdIndex
+v1: https://lore.kernel.org/lkml/20250623060951.118564-1-fujita.tomonori@gmail.com/
+
+FUJITA Tomonori (3):
+  rust: device_id: split out index support into a separate trait
+  rust: net::phy represent DeviceId as transparent wrapper over
+    mdio_device_id
+  rust: net::phy Change module_phy_driver macro to use
+    module_device_table macro
+
+ rust/kernel/auxiliary.rs |   7 ++-
+ rust/kernel/device_id.rs |  80 +++++++++++++++++++++++-------
+ rust/kernel/net/phy.rs   | 104 +++++++++++++++++++--------------------
+ rust/kernel/of.rs        |  11 ++++-
+ rust/kernel/pci.rs       |   7 ++-
+ 5 files changed, 132 insertions(+), 77 deletions(-)
+
+
+base-commit: 769e324b66b0d92d04f315d0c45a0f72737c7494
+-- 
+2.43.0
+
