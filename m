@@ -1,114 +1,90 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB8C2741B9;
-	Tue,  1 Jul 2025 13:00:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663221487E9;
+	Tue,  1 Jul 2025 13:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751374814; cv=none; b=Ng51PrLVAhP269NhGwDLmZ9V+oFQ24opqUCzEU2AWahp2H5Aqi1DeaGcUnGSFuVzduysjaDp89NUH3G/DPCk1XdBcdylCpxZudKcIGmG5cxduES9McXmYAKNWm4L8VkB9rsHW7O5Sa3wQNjKCkJQ2qFXl21Ie1VbpE2ukg0bhzo=
+	t=1751374861; cv=none; b=iP1+k0Y6KU7yzYHtgO7YdPwR7oH+KT2hKiWy323OWuBdj/zFDcGEA+PZt+8zL8DOcy8c689hu1sp5LMy7zNR1FVHXyUcXmTDL1wC5pVRTsn7qMt/Tlun6PdYVOcoQ7civQ+jH8x2yNo8CvsdzzJGXVq0WZU+puhmZBiAtZ4sv6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751374814; c=relaxed/simple;
-	bh=ZH/q3VNf/bXbhSvmsNcfK1lIDc6sWxMcPfDrISGe4GI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Pic0znNhKUkIVij1GYgnNEmmHF3kHVrnMwlhrU8BMRzAZT0uLo9wn61BC7gW92Bd7ltDFL09S1qi5x2Wq7MDBGPjrrc/EQHaYwidRCllfIEHGeZExktVn/a/IU2iKEyB1R84RmFqlUsior6kjOQLUWiPLu/Av7GpaPv9XP0s6IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bWjh85W7tz20sxk;
-	Tue,  1 Jul 2025 20:56:08 +0800 (CST)
-Received: from kwepemo200008.china.huawei.com (unknown [7.202.195.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 101BB1A016C;
-	Tue,  1 Jul 2025 21:00:09 +0800 (CST)
-Received: from huawei.com (10.67.175.28) by kwepemo200008.china.huawei.com
- (7.202.195.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 1 Jul
- 2025 21:00:08 +0800
-From: ZHENG Xinyu <zhengxinyu6@huawei.com>
-To: <mst@redhat.com>, <jasowang@redhat.com>
-CC: <pbonzini@redhat.com>, <stefanha@redhat.com>,
-	<virtualization@lists.linux-foundation.org>, <kvm@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 5.10] vhost-scsi: protect vq->log_used with vq->mutex
-Date: Tue, 1 Jul 2025 12:48:48 +0000
-Message-ID: <20250701124848.4162114-1-zhengxinyu6@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1751374861; c=relaxed/simple;
+	bh=0xEo39UYir8VKYvKmSgF6qdDFKOYaTcqdh87szu1JXM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=qTnRasj/OmwW3bCxhUL79b4XaBFmSWFRmZnK28NVJRWRujYpFScKWiLsY3l/5Il8DRBZTx1M4RnzaBeEPUQzGikMRyyFPrKwATkLElU2bA9j2ai+34C8SV38tit6pgSeCTCgYQ2/IBxGzfj6JB4X8NY1oKM2z2nzj6vvCqBN7qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gmPLdk/O; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WxUo7Zx/; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gmPLdk/O";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WxUo7Zx/"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1751374857;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FlvDxm3AAf2lx7IpXIWXQXvmn9EsYxBzEGSE1FPW2Zk=;
+	b=gmPLdk/O8Riwcbqrmk61cvhCIuZimwcLa0VvVMoNOpY/7tZbRz10kQwuHTRkf58BQl8tSf
+	L1+EGPFCvzLtMJY2Zz57Gy32m6HVGuoEPlQEhJzFuLJyj+M7OQBzLLoiKO69Z4bCPUXD4r
+	ospDaqL988WKn8oru8PXZsP49IpmgrhTVKxDoryUulLUwYkOKZyh07P87ASAc3ikCngCpq
+	tr5VBSeP4OMDznPt/KxwSvCxRRlVtfME7fvvd0PFGaZJ8lx/7nbZ8YSEOZnDZihmgqCHWw
+	OgujMli+wPV2ouC5QO/lsYYmZspxkrsXs2oZzoDqJTr3O/WQpKZP0/nWcxXFLw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1751374857;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FlvDxm3AAf2lx7IpXIWXQXvmn9EsYxBzEGSE1FPW2Zk=;
+	b=WxUo7Zx/cQ6ItR0BYa1GCORtan58Jzu2mpQTU7vlL0vwkbbuX3NgcFCqNjw2s+kqo4SszN
+	t3eAcv2CDorEHbAg==
+To: LKML <linux-kernel@vger.kernel.org>
+Cc: netdev@vger.kernel.org, Richard Cochran <richardcochran@gmail.com>,
+ Christopher Hall <christopher.s.hall@intel.com>, John Stultz
+ <jstultz@google.com>, Frederic Weisbecker <frederic@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, Miroslav Lichvar
+ <mlichvar@redhat.com>, Werner Abt <werner.abt@meinberg-usa.com>, David
+ Woodhouse <dwmw2@infradead.org>, Stephen Boyd <sboyd@kernel.org>, Thomas
+ =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, Kurt
+ Kanzenbach
+ <kurt@linutronix.de>, Nam Cao <namcao@linutronix.de>, Antoine Tenart
+ <atenart@kernel.org>
+Subject: Re: [patch 3/3] ptp: Enable auxiliary clocks for
+ PTP_SYS_OFFSET_EXTENDED
+In-Reply-To: <20250626131708.544227586@linutronix.de>
+References: <20250626124327.667087805@linutronix.de>
+ <20250626131708.544227586@linutronix.de>
+Date: Tue, 01 Jul 2025 15:00:56 +0200
+Message-ID: <87tt3wkquv.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemo200008.china.huawei.com (7.202.195.61)
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+On Thu, Jun 26 2025 at 15:27, Thomas Gleixner wrote:
+> +	switch (extoff->clockid) {
+> +	case CLOCK_REALTIME:
+> +	case CLOCK_MONOTONIC:
+> +	case CLOCK_MONOTONIC_RAW:
+> +	case CLOCK_AUX ... CLOCK_AUX_LAST:
+> +		break;
 
-The vhost-scsi completion path may access vq->log_base when vq->log_used is
-already set to false.
+While trying to solve the merge logistics problem I noticed that this
+should be:
 
-    vhost-thread                       QEMU-thread
+	switch (extoff->clockid) {
+	case CLOCK_REALTIME:
+	case CLOCK_MONOTONIC:
+	case CLOCK_MONOTONIC_RAW:
+        	break;
+	case CLOCK_AUX ... CLOCK_AUX_LAST:
+        	if (IS_ENABLED(CONFIG_POSIX_AUX_CLOCKS))
+			break;
+		fallthrough;
 
-vhost_scsi_complete_cmd_work()
--> vhost_add_used()
-   -> vhost_add_used_n()
-      if (unlikely(vq->log_used))
-                                      QEMU disables vq->log_used
-                                      via VHOST_SET_VRING_ADDR.
-                                      mutex_lock(&vq->mutex);
-                                      vq->log_used = false now!
-                                      mutex_unlock(&vq->mutex);
+obviously as there is no point in going all the way down into the time
+stamping code to figure out that this is disabled.
 
-				      QEMU gfree(vq->log_base)
-        log_used()
-        -> log_write(vq->log_base)
-
-Assuming the VMM is QEMU. The vq->log_base is from QEMU userpace and can be
-reclaimed via gfree(). As a result, this causes invalid memory writes to
-QEMU userspace.
-
-The control queue path has the same issue.
-
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <20250403063028.16045-2-dongli.zhang@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Zheng Xinyu <zhengxinyu6@huawei.com>
----
- drivers/vhost/scsi.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index a23a65e7d828..fcde3752b4f1 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -579,8 +579,10 @@ static void vhost_scsi_complete_cmd_work(struct vhost_work *work)
- 		ret = copy_to_iter(&v_rsp, sizeof(v_rsp), &iov_iter);
- 		if (likely(ret == sizeof(v_rsp))) {
- 			struct vhost_scsi_virtqueue *q;
--			vhost_add_used(cmd->tvc_vq, cmd->tvc_vq_desc, 0);
- 			q = container_of(cmd->tvc_vq, struct vhost_scsi_virtqueue, vq);
-+			mutex_lock(&q->vq.mutex);
-+			vhost_add_used(cmd->tvc_vq, cmd->tvc_vq_desc, 0);
-+			mutex_unlock(&q->vq.mutex);
- 			vq = q - vs->vqs;
- 			__set_bit(vq, signal);
- 		} else
-@@ -1193,8 +1195,11 @@ static void vhost_scsi_tmf_resp_work(struct vhost_work *work)
- 	else
- 		resp_code = VIRTIO_SCSI_S_FUNCTION_REJECTED;
- 
-+	mutex_lock(&tmf->svq->vq.mutex);
- 	vhost_scsi_send_tmf_resp(tmf->vhost, &tmf->svq->vq, tmf->in_iovs,
- 				 tmf->vq_desc, &tmf->resp_iov, resp_code);
-+	mutex_unlock(&tmf->svq->vq.mutex);
-+
- 	vhost_scsi_release_tmf_res(tmf);
- }
- 
--- 
-2.34.1
-
+I blame it all on the heat wave of course :)
