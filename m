@@ -1,125 +1,121 @@
-Received: from mail-24422.protonmail.ch (mail-24422.protonmail.ch [109.224.244.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F1D2F2728
-	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 15:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7C3288C97
+	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 15:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751469672; cv=none; b=fruPYgVH54XW0K5iuB8Yf3CXmQ1LzD4NDMpFVyAuub9cIPz3XvUKFoEEn8h/wBiS3nG/3XYWDqnn0qZCxDh5P/S0bDHTZBO27jZm1cM2Klgp1/yjCPnF9yH1oG/n8SYaIMDud/fqayDYigEXurIubp5ir3QA3zyWXXZGLfJi+cI=
+	t=1751470003; cv=none; b=fyWpqBEOS67p3HnoA76QFb0DP0s6YC9huK608omqzaD6cnYxu/7dgXqgcZNRatAl+lycJ15T8k7LG28YCDubYwsLBmaYpG9X0RyZgk5yRBnCTRSDbOU7dGNwYyTrmtBXuOW0O6O0tP4FnQ3wGZ2XrvRfEQdLkZgQmaOo1/GbXBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751469672; c=relaxed/simple;
-	bh=2mEdTRDuApr5KvT1TxhMMLyqPVDBj8SlKj1v67WW7+I=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YeTh25xkvr6vazvwgz2s5UIeIcowCy5kfz+aWVO2Fe+1ekLXM1KekR7CKQYtt5k5HDT0R2jy4pak3zZ5+yEh+QwK3+IsGNyDPBKT8JxIvIRdo2temFSikiGLik2HOBC5cEWcRzZi4hoqb62BJkUEojCHzNSF9NSU+53EHl0b1MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io; spf=pass smtp.mailfrom=willsroot.io; dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b=svXgKaeO; arc=none smtp.client-ip=109.224.244.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=willsroot.io
+	s=arc-20240116; t=1751470003; c=relaxed/simple;
+	bh=yTwTjAEsqE8rj045/ciU4b52UtCHhuYIPzLwtPO2e/I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z/S98RwJrg3kPSkoU3tqh5OdnidGu2duxjlXUH4dSUx6LyfMXhzT1ThfRyH2b18o5tz/btpv8OFPgThY6Ykzpbw0tZ79OqP1PhNxIvDllbq/4cck+IQXFOjXdsjmMo8QfoEIJux+SH9GuojWgSXjUi9igwFj35ajjv/Q35Fzr1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qO0k6M2w; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b="svXgKaeO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=willsroot.io;
-	s=protonmail; t=1751469666; x=1751728866;
-	bh=2mEdTRDuApr5KvT1TxhMMLyqPVDBj8SlKj1v67WW7+I=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=svXgKaeOGcXvP2sd45hCDAfSFvjUbhbiJIPPV3xHvnDT9CxP41b9BxuZT7CqA9TYG
-	 utEHbNdERYEtFY97rBzMRifWsN0k6ODWDaKnTDXtevUYvD5DlEQw/O9NJDpiUqdjDw
-	 uQ92kAGBX+XeToXlkq5PVLcNrSVZ16T7r8PXgXG0HnzbHpnQTdd4ktT98rTzsCjaf2
-	 7PxNwPgsqXzbv2614zzOidTO/NBOoMPwQ2FFTcCScgmjY4+g2KaK+jrhR+rlhJA3ju
-	 eWMSz0pUE3Sudcc2KxIyIt6tSwOO72Ho3xyOVzfS3m1GcmZrOc8B1xEGasntZ3jMDH
-	 FrFjqGhyXZHFw==
-Date: Wed, 02 Jul 2025 15:20:50 +0000
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-From: William Liu <will@willsroot.io>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>, netdev@vger.kernel.org, stephen@networkplumber.org, Savino Dicanosa <savy@syst3mfailure.io>
-Subject: Re: [Patch net 1/2] netem: Fix skb duplication logic to prevent infinite loops
-Message-ID: <1tUrbP9EoC0snDQNBB8x_nmT2z1xjeEpsxnfS98xVcYAtGaJ6XWpUw6pHmCiC8f4c6WwcRpFMPIOivnco0aR8ZnVp2dC2lZyzgXzg7b8qDE=@willsroot.io>
-In-Reply-To: <CAM0EoM=CwJczYjCOYZzNJsjxz_dwaei5mTHyREYbS4iaE3drSg@mail.gmail.com>
-References: <20250701231306.376762-1-xiyou.wangcong@gmail.com> <20250701231306.376762-2-xiyou.wangcong@gmail.com> <aGSSF7K/M81Pjbyz@pop-os.localdomain> <CAM0EoMmDj9TOafynkjVPaBw-9s7UDuS5DoQ_K3kAtioEdJa1-g@mail.gmail.com> <CAM0EoMmBdZBzfUAms5-0hH5qF5ODvxWfgqrbHaGT6p3-uOD6vg@mail.gmail.com> <CAM0EoM=CwJczYjCOYZzNJsjxz_dwaei5mTHyREYbS4iaE3drSg@mail.gmail.com>
-Feedback-ID: 42723359:user:proton
-X-Pm-Message-ID: 8c021efbd0350ced884ebe9320f1503c173862eb
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qO0k6M2w"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4a98208fa69so202361cf.1
+        for <netdev@vger.kernel.org>; Wed, 02 Jul 2025 08:26:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1751470000; x=1752074800; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TCPXcNK+DUyogAPJxVpc3HAuduDHqfqUzIGLlK3xdwQ=;
+        b=qO0k6M2wEE0hfRDZm10j2qfUrNqLLa+SjG6m2Cz1GqSMLtbQXkt93fygg4dow70V6K
+         ZzXcE4rdHZtrNC6jAd3QbkNjJSjSEEo9AhTKvA6DXDKaI2wdRtKVIXno1OYyV7lSitkF
+         djWXeGXfPy6TydK2v3q5rHtm1njjalTzl1EW+9QoOzDwNtDjwf/T2Qtj2E2rIvtv1Sty
+         g+vmh9Sp4lRwQEiVNvJGDxngVAt6SbxzkKisNL0WjNL5aXdildWszBBnhlEVimvMJ+gw
+         SUgcSNTslYTo0mlmzi8oZfMiCqpSWSK3x1Ii2ajqXIKQmNBjQbxvmlWmmk43PCDWHfqK
+         iQQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751470000; x=1752074800;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TCPXcNK+DUyogAPJxVpc3HAuduDHqfqUzIGLlK3xdwQ=;
+        b=K36ozvbkwkVyt1q31CND2xIXmFqPeujpRuwjtDj4dqu29RrNj2utwtWMfT7MwBmhJz
+         3VzCR1qJJpaMe0N21NS+EX4q0vve9okdgy4etrEj5bDM+MArXmZMuSN1mWBfk+hilO8D
+         80r0tF0c6zOqiVr9SWUZs0U9MbjgWaX8CtVpKYRzjF9nGgIypBXdq03H7cyIu2Ds5Euw
+         0+pudI9GxhtMNxY/iW/xBwn/IRConbvP3nJk/EgPd1AdKGjuAOm+A7EVM0uzk9XV8qB6
+         ip3q5qGzpOxtzkau3zBiC/aY6usEZSAmtyUBSuZmJmHKmq09M/ceR9N0uP9nEU0VhP/a
+         Yk0Q==
+X-Gm-Message-State: AOJu0YyhjklHdQRjTIwxv7wyh7UJaU0nPAtXlEqBTQsDxD1yQOVCFCSZ
+	khJuzGi8505oOXe2hTYfaswbo92ZC9P2HvLgdJYrGl7y7bzduJ42Ty/AkC1JjGcOIYdt7H6SJlP
+	fihMNJx8vibXQhGg0a1bnyUSqnZ/qsX66kF9ij0fM
+X-Gm-Gg: ASbGnct6TU1FQ0uFj25SykodcNH5fjrH+on+/05Mt3l8zKhkulc/cUXsBOSXRyjoIzB
+	l7jPyca+umQ0DJqsI1Se5kszLvfcc0oUqtW9LOzKMN2DVEywEmd8Di/+bXy477SoxVQSm63S6uV
+	Mq3HpxsAnEK7vmhRDHGXiW4YpDhaWfIH0OibnqyJRr8Q==
+X-Google-Smtp-Source: AGHT+IH6CmHt8lPy9XENkmI+GA/Cv+r7CIhuq+Az9ScfxiFnyCFfXb99vMuNSbCmH6thvLn8wp9cASXm/JqpECT2UKc=
+X-Received: by 2002:a05:622a:4a0b:b0:4a8:191f:1893 with SMTP id
+ d75a77b69052e-4a9781a6c80mr46335991cf.26.1751469999922; Wed, 02 Jul 2025
+ 08:26:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250702141515.9414-1-oscmaes92@gmail.com>
+In-Reply-To: <20250702141515.9414-1-oscmaes92@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 2 Jul 2025 08:26:28 -0700
+X-Gm-Features: Ac12FXzRVX_eX2sqMm4YSTrDpzTWZI16IKpRrmn5eNbVSJYT11OpAEK61oHliW8
+Message-ID: <CANn89iK0Hu6CZQ=76+z6p-TPY4bTmEQh9SAgLu-==zNB9RrWMQ@mail.gmail.com>
+Subject: Re: [PATCH net] net: ipv4: fix incorrect MTU in broadcast routes
+To: Oscar Maes <oscmaes92@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
+On Wed, Jul 2, 2025 at 7:15=E2=80=AFAM Oscar Maes <oscmaes92@gmail.com> wro=
+te:
+>
+> Currently, __mkroute_output overrules the MTU value configured for
+> broadcast routes.
+>
+> This buggy behaviour can be reproduced with:
+>
+> ip link set dev eth1 mtu 9000
+> ip route del broadcast 192.168.0.255 dev eth1 proto kernel scope link src=
+ 192.168.0.2
+> ip route add broadcast 192.168.0.255 dev eth1 proto kernel scope link src=
+ 192.168.0.2 mtu 1500
+>
+> The maximum packet size should be 1500, but it is actually 8000:
+>
+> ping -b 192.168.0.255 -s 8000
+
+Looks sane to me, but could you add a test in tools/testing/selftests/net ?
 
 
 
-
-
-On Wednesday, July 2nd, 2025 at 3:06 PM, Jamal Hadi Salim <jhs@mojatatu.com=
-> wrote:
-
->=20
->=20
-> On Wed, Jul 2, 2025 at 11:04=E2=80=AFAM Jamal Hadi Salim jhs@mojatatu.com=
- wrote:
->=20
-> > On Wed, Jul 2, 2025 at 10:12=E2=80=AFAM Jamal Hadi Salim jhs@mojatatu.c=
-om wrote:
-> >=20
-> > > On Tue, Jul 1, 2025 at 9:57=E2=80=AFPM Cong Wang xiyou.wangcong@gmail=
-.com wrote:
-> > >=20
-> > > > On Tue, Jul 01, 2025 at 04:13:05PM -0700, Cong Wang wrote:
-> > > >=20
-> > > > > diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-> > > > > index fdd79d3ccd8c..33de9c3e4d1b 100644
-> > > > > --- a/net/sched/sch_netem.c
-> > > > > +++ b/net/sched/sch_netem.c
-> > > > > @@ -460,7 +460,8 @@ static int netem_enqueue(struct sk_buff *skb,=
- struct Qdisc *sch,
-> > > > > skb->prev =3D NULL;
-> > > > >=20
-> > > > > /* Random duplication */
-> > > > > - if (q->duplicate && q->duplicate >=3D get_crandom(&q->dup_cor, =
-&q->prng))
-> > > > > + if (tc_skb_cb(skb)->duplicate &&
-> > > >=20
-> > > > Oops, this is clearly should be !duplicate... It was lost during my
-> > > > stupid copy-n-paste... Sorry for this mistake.
-> > >=20
-> > > I understood you earlier, Cong. My view still stands:
-> > > You are adding logic to a common data structure for a use case that
-> > > really makes no sense. The ROI is not good.
-> > > BTW: I am almost certain you will hit other issues when this goes out
-> > > or when you actually start to test and then you will have to fix more
-> > > spots.
-> >=20
-> > Here's an example that breaks it:
-> >=20
-> > sudo tc qdisc add dev lo root handle 1: prio bands 3 priomap 0 0 0 0 0
-> > 0 0 0 0 0 0 0 0 0 0 0
-> > sudo tc filter add dev lo parent 1:0 protocol ip bpf obj
-> > netem_bug_test.o sec classifier/pass classid 1:1
-> > sudo tc qdisc add dev lo parent 1:1 handle 10: netem limit 4 duplicate =
-100%
-> > sudo tc qdisc add dev lo parent 10: handle 30: netem gap 1 limit 4
-> > duplicate 100% delay 1us reorder 100%
-> >=20
-> > And the ping 127.0.0.1 -c 1
-> > I had to fix your patch for correctness (attached)
-> >=20
-> > the ebpf prog is trivial - make it just return the classid or even zero=
-.
-> >=20
-> > William, as a middle ground can you take a crack at using cb_ext -
-> > take a look for example at struct tc_skb_ext_alloc in cls_api.c (that
-> > one is safe to extend).
->=20
-> Meant: struct tc_skb_ext *ex
->=20
-> If you need help ping me privately - some latency will be involved..
->=20
-> cheers,
-> jamal
-
-Sure, I can take a crack at it in the upcoming days.
-
-Best,
-Will
+>
+> Fix __mkroute_output to allow MTU values to be configured for
+> for broadcast routes (to support a mixed-MTU local-area-network).
+>
+> Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+> ---
+>  net/ipv4/route.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+> index fccb05fb3..a2a3b6482 100644
+> --- a/net/ipv4/route.c
+> +++ b/net/ipv4/route.c
+> @@ -2585,7 +2585,6 @@ static struct rtable *__mkroute_output(const struct=
+ fib_result *res,
+>         do_cache =3D true;
+>         if (type =3D=3D RTN_BROADCAST) {
+>                 flags |=3D RTCF_BROADCAST | RTCF_LOCAL;
+> -               fi =3D NULL;
+>         } else if (type =3D=3D RTN_MULTICAST) {
+>                 flags |=3D RTCF_MULTICAST | RTCF_LOCAL;
+>                 if (!ip_check_mc_rcu(in_dev, fl4->daddr, fl4->saddr,
+> --
+> 2.39.5
+>
