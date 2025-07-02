@@ -1,78 +1,79 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E80276036;
-	Wed,  2 Jul 2025 13:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A078A24DD18
+	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 13:12:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751461644; cv=none; b=uYtUTzhjYnmp5Rk4K3S7QqM14FXoS6eNmmdOMgParjUo4HCnFSFrKpevT0AwhweD6j5SOzflHMe67WcaDMy2CB294p1gTgKUWGpywUo5CmHbs9lGFKtCUqwftzlpIGRUG10Oi9xNppuYv+9WwesH15kGXvM9QH1gnbcc3YNfG9o=
+	t=1751461929; cv=none; b=FgCR1lW448G4uM9AITD9xdO9luj1ffJseGkp+dhAPbehQdWDxnWfHj0uNU2klSk8op8yADt57zP6PUtbflwGzsfO0aa/LPlyGvsPXcF4eOJqbe9B2JoLaiA5IPpnJl2Ek+ktpMVmS2g4R0m+Asm0KGAjfNT2IEt4Qvomwk7lPeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751461644; c=relaxed/simple;
-	bh=Cm6WaicpJR1AIZzJJeuWpanHV1tucP02+gdRbf+KF/Q=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=TIiEFllvYU5/cUHLcEmV5FzPZDh9rbG281hgFSSO8mE4xhvLE9X0uULOPrzuaRtfaVVA8hFGK4d8iOoMZx+yQ/g9gH2jY1jv4+2gZhSD7TgnY8ePQDp8uJLTmgROPYndcxuuciPYWh4rJUsZapy7Ay6MDNpHLWSSq40H24o8mAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bXKrY6Gsfz2TSH5;
-	Wed,  2 Jul 2025 21:05:33 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 59E561A0190;
-	Wed,  2 Jul 2025 21:07:20 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 2 Jul 2025 21:07:19 +0800
-Message-ID: <f3994ddd-9b9b-4bbb-bba4-89f7b4ae07f7@huawei.com>
-Date: Wed, 2 Jul 2025 21:07:19 +0800
+	s=arc-20240116; t=1751461929; c=relaxed/simple;
+	bh=ZScY/86v9KyFXwifYPN75p64yv0pDY8lPQNFywkOAtE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=esuNQOgp6VOMg/TbI+ZiYDnpKG88y5eqq51B+llBonwG7RdDGXaIche/do6kZxjrcWLKxRHF13CVEJP3TCIebor9+O0DH66J1k3dT48XZsxCiifJaFgdTYLS4e0EroZTjRa5Zv0Kghs906iwq8Txc3HRQKbbdGZFuXD/K5uTh/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pamtEIBP; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pamtEIBP"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1D1A24383D;
+	Wed,  2 Jul 2025 13:11:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1751461920;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AyhjB0RIepAPlBS+0exfN71rZWuzPQ7rKbNUsw2Z7bE=;
+	b=pamtEIBPLX7Pk66rCWf/5XNwZh63l2bRz+TCu/5yoBqI7zmEFvpbyOxGBwb19DTkZQxbQe
+	7HZ/VdOlm7axrjiH/nQZ+b0Oo5cVB4kNnsTarCxcCOfsj3eQYk02cEwPkYcQaDuWuGu2Mq
+	HNm0iHTuZ5AvdWedf3AQrGfoZg+2h8zPK0zXICK03qIfBFG47d3uC+sjuLni5ye6WXmgJq
+	hevOGzmOBVowsFpcoErEnLzRHzfROlf7LXTbAyQNQi5w3klr6CeOUlYftbszdwIEMIGSms
+	8Uj3lLSKEVhATCOzuLvwXZaIx3eTkrsEXeTg2GPNls7LsUbn8RrcnNFb9g19/w==
+Date: Wed, 2 Jul 2025 15:11:57 +0200
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Alexander Duyck <alexander.duyck@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next 1/3] net: phylink: restrict SFP interfaces to
+ those that are supported
+Message-ID: <20250702151157.5e5178b9@fedora.home>
+In-Reply-To: <E1uWu0u-005KXc-A4@rmk-PC.armlinux.org.uk>
+References: <aGT_hoBELDysGbrp@shell.armlinux.org.uk>
+	<E1uWu0u-005KXc-A4@rmk-PC.armlinux.org.uk>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
-	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next 0/4] There are some bugfix for the HNS3 ethernet
- driver
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-References: <20250702125731.2875331-1-shaojijie@huawei.com>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <20250702125731.2875331-1-shaojijie@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddujeeglecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegveeltddvveeuhefhvefhlefhkeevfedtgfeiudefffeiledttdfgfeeuhfeukeenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeelpdhrtghpthhtoheprhhmkhdokhgvrhhnvghlsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmp
+ dhrtghpthhtoheprghlvgigrghnuggvrhdrughuhigtkhesghhmrghilhdrtghomhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
+On Wed, 02 Jul 2025 10:44:24 +0100
+"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk> wrote:
 
-on 2025/7/2 20:57, Jijie Shao wrote:
-> There are some bugfix for the HNS3 ethernet driver
+> When configuring an optical SFP interface, restrict the bitmap of SFP
+> interfaces (pl->sfp_interfaces) to those that are supported by the
+> host, rather than calculating this in a local variable.
+> 
+> This will allow us to avoid recomputing this in the
+> phylink_ethtool_ksettings_set() path.
+> 
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-Sorry, ignore this patch set, they should be sent to net not net-next ...
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
->
-> Hao Lan (1):
->    net: hns3: fixed vf get max channels bug
->
-> Jian Shen (1):
->    net: hns3: fix concurrent setting vlan filter issue
->
-> Jijie Shao (1):
->    net: hns3: default enable tx bounce buffer when smmu enabled
->
-> Yonglong Liu (1):
->    net: hns3: disable interrupt when ptp init failed
->
->   .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 31 ++++++++++++++++
->   .../net/ethernet/hisilicon/hns3/hns3_enet.h   |  2 ++
->   .../ethernet/hisilicon/hns3/hns3_ethtool.c    | 33 +++++++++++++++++
->   .../hisilicon/hns3/hns3pf/hclge_main.c        | 36 +++++++++++--------
->   .../hisilicon/hns3/hns3pf/hclge_ptp.c         |  9 +++--
->   .../hisilicon/hns3/hns3vf/hclgevf_main.c      |  6 +---
->   6 files changed, 94 insertions(+), 23 deletions(-)
->
+Thanks Russell,
+
+Maxime
