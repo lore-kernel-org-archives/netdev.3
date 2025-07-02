@@ -1,45 +1,46 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC622280033
-	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 13:38:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799B528000B
+	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 13:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751463528; cv=none; b=EAG14UgeXG44rC2cTykLbM5KOtCO6oYyZKeyzug1toPna2TLx6kTl6TstE/lSEed31LyvPi8M0z6O201rd1qe8HbLstaQUgQSAEv5Dv72bE/bB/+/U765OPYlNY68OlzNfYy2eQdsraZBvXU/zjxVfheRdGqWc62J494dVcvkX0=
+	t=1751463528; cv=none; b=GdSwEcf4IBs0Qeg0B9DgXwT7WvDGp9WDrgcTUYLOAd3p05VzFsCAu3IJeKHrs9zDSjDKuIOfOyAXEhdLyQM0Gao6RKtVdn1xS6IxZTn4aQcbPI/rCvDoaobjG5ujHfGsSJMpdCuT7hmOistITyEKgXcJRRevj67ZxoMS3wRBKyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1751463528; c=relaxed/simple;
-	bh=6JXOJDpQtNZ8zItGvQx8hpOPdmVU4HwAecRO1928Ajg=;
+	bh=0eezVt/aGVbqRb2X6TVgbQGZVA1y28V3T+nWy0kU7RY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=epl7fZTgZuEBEYWfYsCqyRupzZYQ0llSmL/jJBSEF2/tz0sShDLvBBB+ENX2Yv5MmSnOrihnKTRWjomqIAgrsBJx+/9nfX7zMCS/vf51kCgxQ1nde+LOSYuINqu1opx2BKFcRDjDx4Hyk881s8DbKag2yo5YMr4QkvROx2r6S14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=HKhubmMf; arc=none smtp.client-ip=185.226.149.38
+	 In-Reply-To:To:Cc; b=J+F1yBqYCAfG2ce8P2nKXykSY3SeIbx/VufQ5gpNE9IDkifbtB53aY6jiftOpCyhhpM1QQ661ieV5jSJaNQ4Lbo1W6KUEUTn9qZvaGZvp0JpyOdKKV5hIUtnIf4f016Z7snfMlYNP6NHQeR20tsBJah80pZFUKIQIYAzw1tyX+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=OaZXxfJu; arc=none smtp.client-ip=185.226.149.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="HKhubmMf"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="OaZXxfJu"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1uWxfW-00GxOx-RY; Wed, 02 Jul 2025 15:38:34 +0200
+	id 1uWxfe-00GcLR-C1; Wed, 02 Jul 2025 15:38:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
 	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=sM+ZIkYQgoYjSyImGT5nQfsb+zR5DT3P9YWgOgmGZQE=; b=HKhubmMfKL7U9cqp0dMh0WOd9s
-	RWjfsza+e4mH8JywvaeQzPnYVqQv3dzd/wQyvfxWx2eJWqQP6SEX2oUDPXy6XtBzo+MqsXlwwBCxV
-	dpgvUlCS9GN6zAZVn1VQqEdhuAcbCYCXfUPgGCh6FMO/J28BhIRNxOcCaXPQ+3cbRVnPuu7BYD4UL
-	2dJZaZoVXuDxga3x1L+GsliVxqc+shcoLiKq92ud65zbkoJH2blEU7juEnomvDgE0xVlmGO6E0yMh
-	HVy7/0x998XfTHqTdOuCKMa9zs5lWqYOpw5ymTGfaPX3Lx243ga6KKqTE0f5RsXpjEjsJTfWyRdev
-	Yv3/dGtg==;
+	bh=vFYjW9Cjsjs34VZC5pCoDTbgDzAbHmFDVo/jHajaWgU=; b=OaZXxfJufB9Re57GF6OfRUFJYE
+	cHLRqSG8ebIGp0OWlyLO15x8WJs4IHYH7DlJ91CNAPvLpPis1+hVEfHukB3uk7K5IHhMchwkyi9Kc
+	ZVZwAavLkdRTlb/6Dg0713WqGimY9eb5RQlOi7e7IHOX3ARjl9nWqPa3SZ7GVr0eUZ1jC39gtKtbb
+	+ILBpSUw1t4+GsimtLdkARBgeWoJBo8Mh6xa1uQ9xBzmqwFv2nm1d8Fcki99ZA05Lo3XtJn62JIxM
+	F202h89xIhAJ73qHD105U1Fh+/lTdj4w1gba4barFxLtgYa6Qe68WG94xK7yuXOjXTfUsK9iIeFdW
+	Htei6tjw==;
 Received: from [10.9.9.73] (helo=submission02.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1uWxfW-0005Gl-8M; Wed, 02 Jul 2025 15:38:34 +0200
+	id 1uWxfd-0006FI-Ov; Wed, 02 Jul 2025 15:38:42 +0200
 Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.93)
-	id 1uWxfG-009LCR-SI; Wed, 02 Jul 2025 15:38:18 +0200
+	id 1uWxfF-009LCR-5B; Wed, 02 Jul 2025 15:38:17 +0200
 From: Michal Luczaj <mhal@rbox.co>
-Date: Wed, 02 Jul 2025 15:38:11 +0200
-Subject: [PATCH net-next v3 5/6] net: skbuff: Drop unused @skb
+Date: Wed, 02 Jul 2025 15:38:09 +0200
+Subject: [PATCH net-next v3 3/6] net: splice: Drop nr_pages_max
+ initialization
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,7 +49,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250702-splice-drop-unused-v3-5-55f68b60d2b7@rbox.co>
+Message-Id: <20250702-splice-drop-unused-v3-3-55f68b60d2b7@rbox.co>
 References: <20250702-splice-drop-unused-v3-0-55f68b60d2b7@rbox.co>
 In-Reply-To: <20250702-splice-drop-unused-v3-0-55f68b60d2b7@rbox.co>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -64,50 +65,31 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Michal Luczaj <mhal@rbox.co>
 X-Mailer: b4 0.14.2
 
-Since its introduction in commit ce098da1497c ("skbuff: Introduce
-slab_build_skb()"), __slab_build_skb() never used the @skb argument. Remove
-it and adapt both callers.
+splice_pipe_desc::nr_pages_max was initialized unnecessarily in commit
+41c73a0d44c9 ("net: speedup skb_splice_bits()"). spd_fill_page() compares
+spd->nr_pages against a constant MAX_SKB_FRAGS, which makes setting
+nr_pages_max redundant.
 
-No functional change intended.
+Remove the assignment. No functional change intended.
 
 Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- net/core/skbuff.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/core/skbuff.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 3041f7a3560d58270dffdf923825758f274c8511..4893350bc80a105e0a2870f0de03a687c1117217 100644
+index a34fe37cf7a508c8380e35522d9cde266aa440f9..3041f7a3560d58270dffdf923825758f274c8511 100644
 --- a/net/core/skbuff.c
 +++ b/net/core/skbuff.c
-@@ -384,8 +384,7 @@ static inline void __finalize_skb_around(struct sk_buff *skb, void *data,
- 	skb_set_kcov_handle(skb, kcov_common_handle());
- }
- 
--static inline void *__slab_build_skb(struct sk_buff *skb, void *data,
--				     unsigned int *size)
-+static inline void *__slab_build_skb(void *data, unsigned int *size)
- {
- 	void *resized;
- 
-@@ -418,7 +417,7 @@ struct sk_buff *slab_build_skb(void *data)
- 		return NULL;
- 
- 	memset(skb, 0, offsetof(struct sk_buff, tail));
--	data = __slab_build_skb(skb, data, &size);
-+	data = __slab_build_skb(data, &size);
- 	__finalize_skb_around(skb, data, size);
- 
- 	return skb;
-@@ -435,7 +434,7 @@ static void __build_skb_around(struct sk_buff *skb, void *data,
- 	 * using slab buffer should use slab_build_skb() instead.
- 	 */
- 	if (WARN_ONCE(size == 0, "Use slab_build_skb() instead"))
--		data = __slab_build_skb(skb, data, &size);
-+		data = __slab_build_skb(data, &size);
- 
- 	__finalize_skb_around(skb, data, size);
- }
+@@ -3189,7 +3189,6 @@ int skb_splice_bits(struct sk_buff *skb, struct sock *sk, unsigned int offset,
+ 	struct splice_pipe_desc spd = {
+ 		.pages = pages,
+ 		.partial = partial,
+-		.nr_pages_max = MAX_SKB_FRAGS,
+ 		.ops = &nosteal_pipe_buf_ops,
+ 		.spd_release = sock_spd_release,
+ 	};
 
 -- 
 2.49.0
