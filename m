@@ -1,590 +1,306 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B182147E5
-	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 06:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A752222B7;
+	Wed,  2 Jul 2025 06:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751437225; cv=none; b=Ys3sFqryzYIK40W8AFczHiXR+bngF6bdhYUe18ksm6+HWYFihtHLtatFbH95UKEZm8tuAFGbwh9QbgR5sT6DEFwidyMo5+9eYpeXSe3fSxHfzpL2Qdzuf3MTWGPASVp3zGUBxfMxuZ7R7Ygd4Eg9/gnTpU6bK5jGKCcvUcXHy+A=
+	t=1751437666; cv=none; b=cDM/znSNFpwnpoejju4YNAXWQ+huugExMc4IGDBpHOcZSCPseMLL9Z/rokB+lTA76WTcVfZju3Pr/GBS7LhfJhPHor9k91AqmsryYVP/XfDt+6Qhds8oqKnLhkddsYk23dBwqLGTGwVaGRHkFInFsCtuyU5YxLQu7+72IO7P4Oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751437225; c=relaxed/simple;
-	bh=FWlmWJxxI3+AneIOx0rf4y1R99kp7Jr/kL6AbyC3tHA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ayKfwKppYxvJsfgUVslI9nYvaN/1owEeVvY3nNBDcJhsNy+T/kHU4XmiK8o+zEYJP2Tec2TGm9nuk4vh1UsgX4LrdQuAyA/v+H4c3wJ7HhiNnu8PNzziKjMBO98kVVCjE+kGQkw0LdA7HZpzek+MD2Eo/KSpjLeTCio5Z7Zv5uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=DOzSfjmg; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1751437666; c=relaxed/simple;
+	bh=b1raSCnVk/x9Xxqknj4FVa7tpOBkc/kLtEQ6J+PvXac=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HW4fsV414MFGDpW0Vxa77Gmbk21e4soBXZHdBOOh0pqBl7qwbSQosibEWTH0qBp3kNUK+BEBnPrf6RYP1iA4p+8KfC/szmb04spZ/oxqaz1WOBY40LmTSTw7lpPbZ5gSFPe4T0+UTNoJBGnrGJOBJpM9JEzQlMWkIDh8RvvNeEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vj3cc4AQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="DOzSfjmg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1751437218;
-	bh=nbvMLvV/XgGPz0M75hyEzfKkkSRyU6M5/5D8Y/h6mPU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=DOzSfjmg2wOv7SXbvrjToR8IuaCqHnIL1kLLZ7ZJg1GR5X+eW4GayPzwFq/Bh4hnI
-	 rPK8i9w2PwCfU7gsUGUbXiCzo69ErjS/GfKc236cTc25wWMS9XKYN6y/VARdihuZkV
-	 CCfixDaOUDvSutWTbrc5cfvbkaGo9BK6N5UqRNjyuqhwyNHpQvUfLhwqRftFnX9w91
-	 79fvqZPOJ2ftHNvmlB6SswskUMQ0D5FJRVf5/hzR9PzkWSy+e/vA0xmLlksWkjGUsF
-	 ORgtiXnMncrEcy4hjM7dMjnP91l1PJjynIJ+ZKiuv/2juGSf7ljqZWKWRzqqr/PSPa
-	 qqPR4jEP0i61Q==
-Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id DA54F6A71B; Wed,  2 Jul 2025 14:20:18 +0800 (AWST)
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Wed, 02 Jul 2025 14:20:13 +0800
-Subject: [PATCH net-next v5 13/14] net: mctp: add gateway routing support
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vj3cc4AQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A6CC4CEEE;
+	Wed,  2 Jul 2025 06:27:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751437665;
+	bh=b1raSCnVk/x9Xxqknj4FVa7tpOBkc/kLtEQ6J+PvXac=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Vj3cc4AQYlH6o3b4qrzMkDKClYEhqGVqfZTckD7VMqGkGIUY7WUh/Ko5jVuW3rCnm
+	 ZXa5Sx3IEPsc+cL1Tbq8chjgbsc45sQFfiJMnit9G+RbmU4vhB9EPAzm9WWrIQAWD8
+	 qn18UO+OlhM4KV7rJEXx2striA4Ot5olpeXJYe8duS56D2UvvFm+FbwBlHnrsd1f1s
+	 zCnNneY2ScJSPHFO8O5qplzYNv1r1xhCw4GFB517MVDkw6tk25GzRZZPNIlKCQ6WXP
+	 K4FCbamQKRbvglxP6KRPz7KihZUZKAuBz6BIchdOJYUdx9mk3yuE6Y9919HgxxVipe
+	 hp4qruqsD8bKQ==
+Message-ID: <158755b2-7b1c-4b1c-8577-b00acbfadbdc@kernel.org>
+Date: Wed, 2 Jul 2025 08:27:37 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 01/14] dt-bindings: net: mediatek,net: allow irq names
+To: frank-w@public-files.de, Frank Wunderlich <linux@fw-web.de>
+Cc: MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>, Georgi Djakov <djakov@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Johnson Wang <johnson.wang@mediatek.com>, =?UTF-8?B?QXLEsW7DpyDDnE5BTA==?=
+ <arinc.unal@arinc9.com>, Landen Chao <Landen.Chao@mediatek.com>,
+ DENG Qingfang <dqfext@gmail.com>, Sean Wang <sean.wang@mediatek.com>,
+ Daniel Golle <daniel@makrotopia.org>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Felix Fietkau <nbd@nbd.name>, linux-pm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+References: <20250628165451.85884-1-linux@fw-web.de>
+ <20250628165451.85884-2-linux@fw-web.de>
+ <20250701-wisteria-walrus-of-perfection-bdfbec@krzk-bin>
+ <9AF787EF-A184-4492-A6F1-50B069D780E7@public-files.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <9AF787EF-A184-4492-A6F1-50B069D780E7@public-files.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250702-dev-forwarding-v5-13-1468191da8a4@codeconstruct.com.au>
-References: <20250702-dev-forwarding-v5-0-1468191da8a4@codeconstruct.com.au>
-In-Reply-To: <20250702-dev-forwarding-v5-0-1468191da8a4@codeconstruct.com.au>
-To: Matt Johnston <matt@codeconstruct.com.au>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-X-Mailer: b4 0.14.2
 
-This change allows for gateway routing, where a route table entry
-may reference a routable endpoint (by network and EID), instead of
-routing directly to a netdevice.
+On 01/07/2025 12:51, Frank Wunderlich wrote:
+> Am 1. Juli 2025 08:44:02 MESZ schrieb Krzysztof Kozlowski <krzk@kernel.org>:
+>> On Sat, Jun 28, 2025 at 06:54:36PM +0200, Frank Wunderlich wrote:
+>>> From: Frank Wunderlich <frank-w@public-files.de>
+>>>
+>>> In preparation for MT7988 and RSS/LRO allow the interrupt-names
+>>
+>> Why? What preparation, what is the purpose of adding the names, what do
+>> they solve?
+> 
+> Devicetree handled by the mtk_eth_soc driver have
+> a wild mix of shared and non-shared irq definitions
+> accessed by index (shared use index 0,
+> non-shared
+> using 1+2). Some soc have only 3 FE irqs (like mt7622).
+> 
+> This makes it unclear which irq is used for what
+> on which SoC. Adding names for irq cleans this a bit
+> in device tree and driver.
 
-We add support for a RTM_GATEWAY attribute for netlink route updates,
-with an attribute format of:
+It's implied ABI now, even if the binding did not express that. But
+interrupt-names are not necessary to express that at all. Look at other
+bindings: we express the list by describing the items:
+items:
+  - description: foo
+  - ... bar
 
-    struct mctp_fq_addr {
-        unsigned int net;
-        mctp_eid_t eid;
-    }
+> 
+>>> property. Also increase the maximum IRQ count to 8 (4 FE + 4 RSS),
+>>
+>> Why? There is no user of 8 items.
+> 
+> MT7988 *with* RSS/LRO (not yet supported by driver
+> yet,but i add the irqs in devicetree in this series)
+> use 8 irqs,but RSS is optional and 4 irqs get working
+> ethernet stack.
 
-- we need the net here to uniquely identify the target EID, as we no
-longer have the device reference directly (which would provide the net
-id in the case of direct routes).
+That's separate change than fixing ABI and that user MUST BE HERE. You
+cannot add some future interrupts for some future device. Adding new
+device is the only reason to add more interrupts.
 
-This makes route lookups recursive, as a route lookup that returns a
-gateway route must be resolved into a direct route (ie, to a device)
-eventually. We provide a limit to the route lookups, to prevent infinite
-loop routing.
+> 
+> I hope this explanation makes things clearer...
 
-The route lookup populates a new 'nexthop' field in the dst structure,
-which now specifies the key for the neighbour table lookup on device
-output, rather than using the packet destination address directly.
 
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Commit msg must explain all this, not me asking.
 
---
-v2:
- - prevent uninitialsed gateway variable in nlparse_common, as reported
-   by Simon Horman via smatch
----
- include/net/mctp.h        |  13 ++-
- include/uapi/linux/mctp.h |   8 ++
- net/mctp/route.c          | 206 +++++++++++++++++++++++++++++++++-------------
- net/mctp/test/utils.c     |   3 +-
- 4 files changed, 173 insertions(+), 57 deletions(-)
+> 
+>>> but set boundaries for all compatibles same as irq count.
+>>
+>> Your patch does not do it.
+> 
+> I set Min/max-items for interrupt names below like
+> interrupts count defined.
 
-diff --git a/include/net/mctp.h b/include/net/mctp.h
-index b3af0690f60749a9bf9f489c7118c82cfd9d577e..ac4f4ecdfc24f1f481ff22a5673cb95e1bf21310 100644
---- a/include/net/mctp.h
-+++ b/include/net/mctp.h
-@@ -237,8 +237,18 @@ struct mctp_route {
- 	mctp_eid_t		min, max;
- 
- 	unsigned char		type;
-+
- 	unsigned int		mtu;
--	struct mctp_dev		*dev;
-+
-+	enum {
-+		MCTP_ROUTE_DIRECT,
-+		MCTP_ROUTE_GATEWAY,
-+	} dst_type;
-+	union {
-+		struct mctp_dev	*dev;
-+		struct mctp_fq_addr gateway;
-+	};
-+
- 	int			(*output)(struct mctp_dst *dst,
- 					  struct sk_buff *skb);
- 
-@@ -256,6 +266,7 @@ struct mctp_route {
- struct mctp_dst {
- 	struct mctp_dev *dev;
- 	unsigned int mtu;
-+	mctp_eid_t nexthop;
- 
- 	/* set for direct addressing */
- 	unsigned char halen;
-diff --git a/include/uapi/linux/mctp.h b/include/uapi/linux/mctp.h
-index e1db65df9359fea810a876786b864743c77e2478..19ad12a0cd4b4599667519aaed73a12d2892aa25 100644
---- a/include/uapi/linux/mctp.h
-+++ b/include/uapi/linux/mctp.h
-@@ -37,6 +37,14 @@ struct sockaddr_mctp_ext {
- 	__u8			smctp_haddr[MAX_ADDR_LEN];
- };
- 
-+/* A "fully qualified" MCTP address, which includes the system-local network ID,
-+ * required to uniquely resolve a routable EID.
-+ */
-+struct mctp_fq_addr {
-+	unsigned int	net;
-+	mctp_eid_t	eid;
-+};
-+
- #define MCTP_NET_ANY		0x0
- 
- #define MCTP_ADDR_NULL		0x00
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 5eca3ce0ba3ceac2ea0567d4042a298abcf3c674..a20d6b11d4186b55cab9d76e367169ea712553c7 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -563,7 +563,6 @@ static int mctp_dst_input(struct mctp_dst *dst, struct sk_buff *skb)
- 
- static int mctp_dst_output(struct mctp_dst *dst, struct sk_buff *skb)
- {
--	struct mctp_hdr *hdr = mctp_hdr(skb);
- 	char daddr_buf[MAX_ADDR_LEN];
- 	char *daddr = NULL;
- 	int rc;
-@@ -586,7 +585,7 @@ static int mctp_dst_output(struct mctp_dst *dst, struct sk_buff *skb)
- 		daddr = dst->haddr;
- 	} else {
- 		/* If lookup fails let the device handle daddr==NULL */
--		if (mctp_neigh_lookup(dst->dev, hdr->dest, daddr_buf) == 0)
-+		if (mctp_neigh_lookup(dst->dev, dst->nexthop, daddr_buf) == 0)
- 			daddr = daddr_buf;
- 	}
- 
-@@ -610,7 +609,8 @@ static int mctp_dst_output(struct mctp_dst *dst, struct sk_buff *skb)
- static void mctp_route_release(struct mctp_route *rt)
- {
- 	if (refcount_dec_and_test(&rt->refs)) {
--		mctp_dev_put(rt->dev);
-+		if (rt->dst_type == MCTP_ROUTE_DIRECT)
-+			mctp_dev_put(rt->dev);
- 		kfree_rcu(rt, rcu);
- 	}
- }
-@@ -799,10 +799,16 @@ static struct mctp_sk_key *mctp_lookup_prealloc_tag(struct mctp_sock *msk,
- }
- 
- /* routing lookups */
-+static unsigned int mctp_route_netid(struct mctp_route *rt)
-+{
-+	return rt->dst_type == MCTP_ROUTE_DIRECT ?
-+		READ_ONCE(rt->dev->net) : rt->gateway.net;
-+}
-+
- static bool mctp_rt_match_eid(struct mctp_route *rt,
- 			      unsigned int net, mctp_eid_t eid)
- {
--	return READ_ONCE(rt->dev->net) == net &&
-+	return mctp_route_netid(rt) == net &&
- 		rt->min <= eid && rt->max >= eid;
- }
- 
-@@ -811,16 +817,21 @@ static bool mctp_rt_compare_exact(struct mctp_route *rt1,
- 				  struct mctp_route *rt2)
- {
- 	ASSERT_RTNL();
--	return rt1->dev->net == rt2->dev->net &&
-+	return mctp_route_netid(rt1) == mctp_route_netid(rt2) &&
- 		rt1->min == rt2->min &&
- 		rt1->max == rt2->max;
- }
- 
--static void mctp_dst_from_route(struct mctp_dst *dst, struct mctp_route *route)
-+/* must only be called on a direct route, as the final output hop */
-+static void mctp_dst_from_route(struct mctp_dst *dst, mctp_eid_t eid,
-+				unsigned int mtu, struct mctp_route *route)
- {
- 	mctp_dev_hold(route->dev);
-+	dst->nexthop = eid;
- 	dst->dev = route->dev;
--	dst->mtu = route->mtu ?: READ_ONCE(dst->dev->dev->mtu);
-+	dst->mtu = READ_ONCE(dst->dev->dev->mtu);
-+	if (mtu)
-+		dst->mtu = min(dst->mtu, mtu);
- 	dst->halen = 0;
- 	dst->output = route->output;
- }
-@@ -854,6 +865,7 @@ int mctp_dst_from_extaddr(struct mctp_dst *dst, struct net *net, int ifindex,
- 	dst->mtu = READ_ONCE(netdev->mtu);
- 	dst->halen = halen;
- 	dst->output = mctp_dst_output;
-+	dst->nexthop = 0;
- 	memcpy(dst->haddr, haddr, halen);
- 
- 	rc = 0;
-@@ -868,24 +880,54 @@ void mctp_dst_release(struct mctp_dst *dst)
- 	mctp_dev_put(dst->dev);
- }
- 
-+static struct mctp_route *mctp_route_lookup_single(struct net *net,
-+						   unsigned int dnet,
-+						   mctp_eid_t daddr)
-+{
-+	struct mctp_route *rt;
-+
-+	list_for_each_entry_rcu(rt, &net->mctp.routes, list) {
-+		if (mctp_rt_match_eid(rt, dnet, daddr))
-+			return rt;
-+	}
-+
-+	return NULL;
-+}
-+
- /* populates *dst on successful lookup, if set */
- int mctp_route_lookup(struct net *net, unsigned int dnet,
- 		      mctp_eid_t daddr, struct mctp_dst *dst)
- {
-+	const unsigned int max_depth = 32;
-+	unsigned int depth, mtu = 0;
- 	int rc = -EHOSTUNREACH;
--	struct mctp_route *rt;
- 
- 	rcu_read_lock();
- 
--	list_for_each_entry_rcu(rt, &net->mctp.routes, list) {
--		/* TODO: add metrics */
--		if (!mctp_rt_match_eid(rt, dnet, daddr))
--			continue;
-+	for (depth = 0; depth < max_depth; depth++) {
-+		struct mctp_route *rt;
- 
--		if (dst)
--			mctp_dst_from_route(dst, rt);
--		rc = 0;
--		break;
-+		rt = mctp_route_lookup_single(net, dnet, daddr);
-+		if (!rt)
-+			break;
-+
-+		/* clamp mtu to the smallest in the path, allowing 0
-+		 * to specify no restrictions
-+		 */
-+		if (mtu && rt->mtu)
-+			mtu = min(mtu, rt->mtu);
-+		else
-+			mtu = mtu ?: rt->mtu;
-+
-+		if (rt->dst_type == MCTP_ROUTE_DIRECT) {
-+			if (dst)
-+				mctp_dst_from_route(dst, daddr, mtu, rt);
-+			rc = 0;
-+			break;
-+
-+		} else if (rt->dst_type == MCTP_ROUTE_GATEWAY) {
-+			daddr = rt->gateway.eid;
-+		}
- 	}
- 
- 	rcu_read_unlock();
-@@ -902,10 +944,13 @@ static int mctp_route_lookup_null(struct net *net, struct net_device *dev,
- 	rcu_read_lock();
- 
- 	list_for_each_entry_rcu(rt, &net->mctp.routes, list) {
--		if (rt->dev->dev != dev || rt->type != RTN_LOCAL)
-+		if (rt->dst_type != MCTP_ROUTE_DIRECT || rt->type != RTN_LOCAL)
-+			continue;
-+
-+		if (rt->dev->dev != dev)
- 			continue;
- 
--		mctp_dst_from_route(dst, rt);
-+		mctp_dst_from_route(dst, 0, 0, rt);
- 		rc = 0;
- 		break;
- 	}
-@@ -1085,11 +1130,6 @@ int mctp_local_output(struct sock *sk, struct mctp_dst *dst,
- 	return rc;
- }
- 
--static unsigned int mctp_route_netid(struct mctp_route *rt)
--{
--	return rt->dev->net;
--}
--
- /* route management */
- 
- /* mctp_route_add(): Add the provided route, previously allocated via
-@@ -1097,9 +1137,9 @@ static unsigned int mctp_route_netid(struct mctp_route *rt)
-  * hold on rt->dev for usage in the route table. On failure a caller will want
-  * to mctp_route_release().
-  *
-- * We expect that the caller has set rt->type, rt->min, rt->max, rt->dev and
-- * rt->mtu, and that the route holds a reference to rt->dev (via mctp_dev_hold).
-- * Other fields will be populated.
-+ * We expect that the caller has set rt->type, rt->dst_type, rt->min, rt->max,
-+ * rt->mtu and either rt->dev (with a reference held appropriately) or
-+ * rt->gateway. Other fields will be populated.
-  */
- static int mctp_route_add(struct net *net, struct mctp_route *rt)
- {
-@@ -1108,7 +1148,10 @@ static int mctp_route_add(struct net *net, struct mctp_route *rt)
- 	if (!mctp_address_unicast(rt->min) || !mctp_address_unicast(rt->max))
- 		return -EINVAL;
- 
--	if (!rt->dev)
-+	if (rt->dst_type == MCTP_ROUTE_DIRECT && !rt->dev)
-+		return -EINVAL;
-+
-+	if (rt->dst_type == MCTP_ROUTE_GATEWAY && !rt->gateway.eid)
- 		return -EINVAL;
- 
- 	switch (rt->type) {
-@@ -1177,6 +1220,7 @@ int mctp_route_add_local(struct mctp_dev *mdev, mctp_eid_t addr)
- 
- 	rt->min = addr;
- 	rt->max = addr;
-+	rt->dst_type = MCTP_ROUTE_DIRECT;
- 	rt->dev = mdev;
- 	rt->type = RTN_LOCAL;
- 
-@@ -1203,7 +1247,7 @@ void mctp_route_remove_dev(struct mctp_dev *mdev)
- 
- 	ASSERT_RTNL();
- 	list_for_each_entry_safe(rt, tmp, &net->mctp.routes, list) {
--		if (rt->dev == mdev) {
-+		if (rt->dst_type == MCTP_ROUTE_DIRECT && rt->dev == mdev) {
- 			list_del_rcu(&rt->list);
- 			/* TODO: immediate RTM_DELROUTE */
- 			mctp_route_release(rt);
-@@ -1296,21 +1340,28 @@ static const struct nla_policy rta_mctp_policy[RTA_MAX + 1] = {
- 	[RTA_DST]		= { .type = NLA_U8 },
- 	[RTA_METRICS]		= { .type = NLA_NESTED },
- 	[RTA_OIF]		= { .type = NLA_U32 },
-+	[RTA_GATEWAY]		= NLA_POLICY_EXACT_LEN(sizeof(struct mctp_fq_addr)),
- };
- 
- static const struct nla_policy rta_metrics_policy[RTAX_MAX + 1] = {
- 	[RTAX_MTU]		= { .type = NLA_U32 },
- };
- 
--/* base parsing; common to both _lookup and _populate variants */
-+/* base parsing; common to both _lookup and _populate variants.
-+ *
-+ * For gateway routes (which have a RTA_GATEWAY, and no RTA_OIF), we populate
-+ * *gatweayp. for direct routes (RTA_OIF, no RTA_GATEWAY), we populate *mdev.
-+ */
- static int mctp_route_nlparse_common(struct net *net, struct nlmsghdr *nlh,
- 				     struct netlink_ext_ack *extack,
- 				     struct nlattr **tb, struct rtmsg **rtm,
- 				     struct mctp_dev **mdev,
-+				     struct mctp_fq_addr *gatewayp,
- 				     mctp_eid_t *daddr_start)
- {
-+	struct mctp_fq_addr *gateway = NULL;
-+	unsigned int ifindex = 0;
- 	struct net_device *dev;
--	unsigned int ifindex;
- 	int rc;
- 
- 	rc = nlmsg_parse(nlh, sizeof(struct rtmsg), tb, RTA_MAX,
-@@ -1326,11 +1377,44 @@ static int mctp_route_nlparse_common(struct net *net, struct nlmsghdr *nlh,
- 	}
- 	*daddr_start = nla_get_u8(tb[RTA_DST]);
- 
--	if (!tb[RTA_OIF]) {
--		NL_SET_ERR_MSG(extack, "ifindex missing");
-+	if (tb[RTA_OIF])
-+		ifindex = nla_get_u32(tb[RTA_OIF]);
-+
-+	if (tb[RTA_GATEWAY])
-+		gateway = nla_data(tb[RTA_GATEWAY]);
-+
-+	if (ifindex && gateway) {
-+		NL_SET_ERR_MSG(extack,
-+			       "cannot specify both ifindex and gateway");
-+		return -EINVAL;
-+
-+	} else if (ifindex) {
-+		dev = __dev_get_by_index(net, ifindex);
-+		if (!dev) {
-+			NL_SET_ERR_MSG(extack, "bad ifindex");
-+			return -ENODEV;
-+		}
-+		*mdev = mctp_dev_get_rtnl(dev);
-+		if (!*mdev)
-+			return -ENODEV;
-+		gatewayp->eid = 0;
-+
-+	} else if (gateway) {
-+		if (!mctp_address_unicast(gateway->eid)) {
-+			NL_SET_ERR_MSG(extack, "bad gateway");
-+			return -EINVAL;
-+		}
-+
-+		gatewayp->eid = gateway->eid;
-+		gatewayp->net = gateway->net != MCTP_NET_ANY ?
-+			gateway->net :
-+			READ_ONCE(net->mctp.default_net);
-+		*mdev = NULL;
-+
-+	} else {
-+		NL_SET_ERR_MSG(extack, "no route output provided");
- 		return -EINVAL;
- 	}
--	ifindex = nla_get_u32(tb[RTA_OIF]);
- 
- 	*rtm = nlmsg_data(nlh);
- 	if ((*rtm)->rtm_family != AF_MCTP) {
-@@ -1343,16 +1427,6 @@ static int mctp_route_nlparse_common(struct net *net, struct nlmsghdr *nlh,
- 		return -EINVAL;
- 	}
- 
--	dev = __dev_get_by_index(net, ifindex);
--	if (!dev) {
--		NL_SET_ERR_MSG(extack, "bad ifindex");
--		return -ENODEV;
--	}
--
--	*mdev = mctp_dev_get_rtnl(dev);
--	if (!*mdev)
--		return -ENODEV;
--
- 	return 0;
- }
- 
-@@ -1366,24 +1440,34 @@ static int mctp_route_nlparse_lookup(struct net *net, struct nlmsghdr *nlh,
- 				     unsigned int *daddr_extent)
- {
- 	struct nlattr *tb[RTA_MAX + 1];
-+	struct mctp_fq_addr gw;
- 	struct mctp_dev *mdev;
- 	struct rtmsg *rtm;
- 	int rc;
- 
- 	rc = mctp_route_nlparse_common(net, nlh, extack, tb, &rtm,
--				       &mdev, daddr_start);
-+				       &mdev, &gw, daddr_start);
- 	if (rc)
- 		return rc;
- 
--	*netid = mdev->net;
-+	if (mdev) {
-+		*netid = mdev->net;
-+	} else if (gw.eid) {
-+		*netid = gw.net;
-+	} else {
-+		/* bug: _nlparse_common should not allow this */
-+		return -1;
-+	}
-+
- 	*type = rtm->rtm_type;
- 	*daddr_extent = rtm->rtm_dst_len;
- 
- 	return 0;
- }
- 
--/* Full route parse for RTM_NEWROUTE: populate @rt. On success, the route will
-- * hold a reference to the dev.
-+/* Full route parse for RTM_NEWROUTE: populate @rt. On success,
-+ * MCTP_ROUTE_DIRECT routes (ie, those with a direct dev) will hold a reference
-+ * to that dev.
-  */
- static int mctp_route_nlparse_populate(struct net *net, struct nlmsghdr *nlh,
- 				       struct netlink_ext_ack *extack,
-@@ -1392,6 +1476,7 @@ static int mctp_route_nlparse_populate(struct net *net, struct nlmsghdr *nlh,
- 	struct nlattr *tbx[RTAX_MAX + 1];
- 	struct nlattr *tb[RTA_MAX + 1];
- 	unsigned int daddr_extent;
-+	struct mctp_fq_addr gw;
- 	mctp_eid_t daddr_start;
- 	struct mctp_dev *dev;
- 	struct rtmsg *rtm;
-@@ -1399,7 +1484,7 @@ static int mctp_route_nlparse_populate(struct net *net, struct nlmsghdr *nlh,
- 	int rc;
- 
- 	rc = mctp_route_nlparse_common(net, nlh, extack, tb, &rtm,
--				       &dev, &daddr_start);
-+				       &dev, &gw, &daddr_start);
- 	if (rc)
- 		return rc;
- 
-@@ -1425,8 +1510,15 @@ static int mctp_route_nlparse_populate(struct net *net, struct nlmsghdr *nlh,
- 	rt->min = daddr_start;
- 	rt->max = daddr_start + daddr_extent;
- 	rt->mtu = mtu;
--	rt->dev = dev;
--	mctp_dev_hold(rt->dev);
-+	if (gw.eid) {
-+		rt->dst_type = MCTP_ROUTE_GATEWAY;
-+		rt->gateway.eid = gw.eid;
-+		rt->gateway.net = gw.net;
-+	} else {
-+		rt->dst_type = MCTP_ROUTE_DIRECT;
-+		rt->dev = dev;
-+		mctp_dev_hold(rt->dev);
-+	}
- 
- 	return 0;
- }
-@@ -1446,7 +1538,8 @@ static int mctp_newroute(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	if (rc < 0)
- 		goto err_free;
- 
--	if (rt->dev->dev->flags & IFF_LOOPBACK) {
-+	if (rt->dst_type == MCTP_ROUTE_DIRECT &&
-+	    rt->dev->dev->flags & IFF_LOOPBACK) {
- 		NL_SET_ERR_MSG(extack, "no routes to loopback");
- 		rc = -EINVAL;
- 		goto err_free;
-@@ -1505,7 +1598,6 @@ static int mctp_fill_rtinfo(struct sk_buff *skb, struct mctp_route *rt,
- 	hdr->rtm_tos = 0;
- 	hdr->rtm_table = RT_TABLE_DEFAULT;
- 	hdr->rtm_protocol = RTPROT_STATIC; /* everything is user-defined */
--	hdr->rtm_scope = RT_SCOPE_LINK; /* TODO: scope in mctp_route? */
- 	hdr->rtm_type = rt->type;
- 
- 	if (nla_put_u8(skb, RTA_DST, rt->min))
-@@ -1522,13 +1614,17 @@ static int mctp_fill_rtinfo(struct sk_buff *skb, struct mctp_route *rt,
- 
- 	nla_nest_end(skb, metrics);
- 
--	if (rt->dev) {
-+	if (rt->dst_type == MCTP_ROUTE_DIRECT) {
-+		hdr->rtm_scope = RT_SCOPE_LINK;
- 		if (nla_put_u32(skb, RTA_OIF, rt->dev->dev->ifindex))
- 			goto cancel;
-+	} else if (rt->dst_type == MCTP_ROUTE_GATEWAY) {
-+		hdr->rtm_scope = RT_SCOPE_UNIVERSE;
-+		if (nla_put(skb, RTA_GATEWAY,
-+			    sizeof(rt->gateway), &rt->gateway))
-+			goto cancel;
- 	}
- 
--	/* TODO: conditional neighbour physaddr? */
--
- 	nlmsg_end(skb, nlh);
- 
- 	return 0;
-diff --git a/net/mctp/test/utils.c b/net/mctp/test/utils.c
-index 6b4dc40d882c912575e28dfd8f2e730bf346885f..97b05e340586f69d8ba04c970b0ee88391db006a 100644
---- a/net/mctp/test/utils.c
-+++ b/net/mctp/test/utils.c
-@@ -134,6 +134,7 @@ struct mctp_test_route *mctp_test_create_route(struct net *net,
- 	rt->rt.max = eid;
- 	rt->rt.mtu = mtu;
- 	rt->rt.type = RTN_UNSPEC;
-+	rt->rt.dst_type = MCTP_ROUTE_DIRECT;
- 	if (dev)
- 		mctp_dev_hold(dev);
- 	rt->rt.dev = dev;
-@@ -176,7 +177,7 @@ void mctp_test_route_destroy(struct kunit *test, struct mctp_test_route *rt)
- 	list_del_rcu(&rt->rt.list);
- 	rtnl_unlock();
- 
--	if (rt->rt.dev)
-+	if (rt->rt.dst_type == MCTP_ROUTE_DIRECT && rt->rt.dev)
- 		mctp_dev_put(rt->rt.dev);
- 
- 	refs = refcount_read(&rt->rt.refs);
+No, you don't. It's all fluid and flexible - limited constraints.
 
--- 
-2.39.5
+> 
+>>>
+>>> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+>>> ---
+>>> v7: fixed wrong rebase
+>>> v6: new patch splitted from the mt7988 changes
+>>> ---
+>>>  .../devicetree/bindings/net/mediatek,net.yaml | 38 ++++++++++++++++++-
+>>>  1 file changed, 37 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/net/mediatek,net.yaml b/Documentation/devicetree/bindings/net/mediatek,net.yaml
+>>> index 9e02fd80af83..6672db206b38 100644
+>>> --- a/Documentation/devicetree/bindings/net/mediatek,net.yaml
+>>> +++ b/Documentation/devicetree/bindings/net/mediatek,net.yaml
+>>> @@ -40,7 +40,19 @@ properties:
+>>>  
+>>>    interrupts:
+>>>      minItems: 1
+>>> -    maxItems: 4
+>>> +    maxItems: 8
+>>> +
+>>> +  interrupt-names:
+>>> +    minItems: 1
+>>> +    items:
+>>> +      - const: fe0
+>>> +      - const: fe1
+>>> +      - const: fe2
+>>> +      - const: fe3
+>>> +      - const: pdma0
+>>> +      - const: pdma1
+>>> +      - const: pdma2
+>>> +      - const: pdma3
+>>>  
+>>>    power-domains:
+>>>      maxItems: 1
+>>> @@ -135,6 +147,10 @@ allOf:
+>>>            minItems: 3
+>>>            maxItems: 3
+>>>  
+>>> +        interrupt-names:
+>>> +          minItems: 3
+>>> +          maxItems: 3
+>>> +
+>>>          clocks:
+>>>            minItems: 4
+>>>            maxItems: 4
+>>> @@ -166,6 +182,9 @@ allOf:
+>>>          interrupts:
+>>>            maxItems: 1
+>>>  
+>>> +        interrupt-namess:
+>>> +          maxItems: 1
+>>> +
+>>>          clocks:
+>>>            minItems: 2
+>>>            maxItems: 2
+>>> @@ -192,6 +211,10 @@ allOf:
+>>>            minItems: 3
+>>>            maxItems: 3
+>>>  
+>>> +        interrupt-names:
+>>> +          minItems: 3
+>>> +          maxItems: 3
+>>> +
+>>>          clocks:
+>>>            minItems: 11
+>>>            maxItems: 11
+>>> @@ -232,6 +255,10 @@ allOf:
+>>>            minItems: 3
+>>>            maxItems: 3
+>>>  
+>>> +        interrupt-names:
+>>> +          minItems: 3
+>>> +          maxItems: 3
+>>> +
+>>>          clocks:
+>>>            minItems: 17
+>>>            maxItems: 17
+>>> @@ -274,6 +301,9 @@ allOf:
+>>>          interrupts:
+>>>            minItems: 4
+>>>  
+>>> +        interrupt-names:
+>>> +          minItems: 4
+>>> +
+>>>          clocks:
+>>>            minItems: 15
+>>>            maxItems: 15
+>>> @@ -312,6 +342,9 @@ allOf:
+>>>          interrupts:
+>>>            minItems: 4
+>>>  
+>>> +        interrupt-names:
+>>> +          minItems: 4
+>>
+>> 8 interrupts is now valid?
+>>
+>>> +
+>>>          clocks:
+>>>            minItems: 15
+>>>            maxItems: 15
+>>> @@ -350,6 +383,9 @@ allOf:
+>>>          interrupts:
+>>>            minItems: 4
+>>>  
+>>> +        interrupt-names:
+>>> +          minItems: 4
+>>
+>> So why sudenly this device gets 8 interrupts? This makes no sense,
+>> nothing explained in the commit msg.
+> 
+> 4 FrameEngine IRQs are required to be defined (currently 2 are used in driver).
+> The other 4 are optional,but added in the devicetree
 
+There were only 4 before and you do not explain why all devices get 8.
+You mentioned that MT7988 has 8 but now make 8 for all other variants!
+
+Why you are not answering this question?
+
+> to not run into problems supporting old devicetree
+> when adding RSS/LRO to driver.
+
+This is not about driver, it does not matter for the driver. Binding and
+DTS are supposed to be complete.
+
+> 
+>> I understand nothing from this patch and I already asked you to clearly
+>> explain why you are doing things. This patch on its own makes no sense.
+>>
+>> Best regards,
+>> Krzysztof
+>>
+> 
+> 
+> regards Frank
+
+
+Best regards,
+Krzysztof
