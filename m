@@ -1,278 +1,102 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBB5238D32
-	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 08:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F87022F757;
+	Wed,  2 Jul 2025 09:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751446590; cv=none; b=clQ0nL7LHUp56+ar1GEYQkXkyzR8RVP9540ETk/OAzujGe3UVOQBvjv7i1IezqB4/mn/o0JlgUuZeI3HysYWucN4Pq8Bm9SrJ5WmbMW8ZyQBKhQigE+3gO17/03Kp4QJ5RuasJQisH8hyzEweJMIpzYFZQsIcycqqkAxdXZMFgw=
+	t=1751446867; cv=none; b=nMpdOBCftjrscxBE87m/IKqbOo9vIyldK+r0JoAVl8/M8Ad+GPHzqXnpTWq87DZ5zdQne8UhB3mheUDJG0PWzFX0XNK1Z/E3HdVzBiBcS16jg+mNvdcu+Rfu3wnhke8tc7LGxvSWGHk81TO0p9S+VYN2cY/wlH7J7iV2kXW2XTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751446590; c=relaxed/simple;
-	bh=qS9faP9kZQFAWHiAA+TgHbu1PnNiZZIItnQH+/KIz9U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jBtFlWMIZtBLRqS4jzpU+2er1MWhYYXMtE1iT6tin/YOD7kDAPjXH0hJDry3yW/SULI6FZBxEJhcXoW5qTWI4kOspQEKEjsRlZ6Qp8BLolLEZP1tIMk0pEjH3sTo9cKNFj42lfiNl45mtzRl4T4BzZVOkwLD84EJukEtp73w+cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dyNm9STq; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dyNm9STq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751446587;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ou5038YfCMSsezsc+TuKk3LIuL7hz0k+oG8D9Fl1kDU=;
-	b=dyNm9STq12W0cUx9+lvpZlv0JVu9B8RSVQ8C2lRtr1Rt5gxpDaw6ZlWkyZ/3LwuC2PIJxq
-	e8rdoVO0SX2gLdIt9o0bB6Fixm6vNuvVLSvdgTz7kQkFLFQUVdTIVF1LL2l/Lglo1xyTcZ
-	PuhNqUMJKpXiGpExhffJrNHQsvTUmfM=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-601-6r5P6C7ePe-6IrXwb9YvDg-1; Wed, 02 Jul 2025 04:56:26 -0400
-X-MC-Unique: 6r5P6C7ePe-6IrXwb9YvDg-1
-X-Mimecast-MFC-AGG-ID: 6r5P6C7ePe-6IrXwb9YvDg_1751446585
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-ade6db50bb4so319903866b.2
-        for <netdev@vger.kernel.org>; Wed, 02 Jul 2025 01:56:26 -0700 (PDT)
+	s=arc-20240116; t=1751446867; c=relaxed/simple;
+	bh=fZJzccDw6bL7Ls2PWdWua6e8l4VI/x3Ji22ej+rNsn0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P9IJEZk2YQqpVpopN29VFqWBrqtY94Wu5NYyWHdUx3J5UupK6MogepCSVjmmBnX9BBm5mAMwJjPfXBVqf+TUbaJrBt0sUBcholD+sZaoPw86DOGgFfa2nu7OA4cubVmRY5OvINJu48nyYJjWGJf+te4tWSypMRM/REs7epUqM/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-88131f0badcso2516816241.2;
+        Wed, 02 Jul 2025 02:01:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751446584; x=1752051384;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ou5038YfCMSsezsc+TuKk3LIuL7hz0k+oG8D9Fl1kDU=;
-        b=Gy96zyT43MtVg8hAmHgAWgt6BKXcQ7mVFcRIYQ3AVJPaDYQZAeWdXIBFGktQR80UMW
-         jynvSh/F5L8eegSsFRqxpoWf3KIMZT1ThbZJL9zOJchqZlJosDx74x5D13j018ZS+ImS
-         ik27XN2pbL9Aa6C1JXLmykxz9zXoewzAwQonT6zaNX1YR9LTIkjfntcFnY/zfNNAygtx
-         LieUijjQUlwOTuxG9CRZa908/4oDaCKdVbwAP4702jFabsjzPkQcWNCCyjwEtGsgw+XQ
-         3oG9b2ECcjbyknYDTZsiVJil4wiXVJ+izcjKBhXI46P1RvYABiSpXSZH+FQLs6ZqHi9U
-         Kksg==
-X-Gm-Message-State: AOJu0YyboHGcP8+J3zpjM0l/zM7VVnVvXRiRnoEAn15LjsuETDuoBq7s
-	GcPeM6IJ+3Dc9lHrJMqP+PljelH0UXp5zzGX+GFQRtvuVw4opD2ieshqpOG5i++O8le6phZIi4j
-	yvUiXgshJkJxZtTYL1JD2zD+zXAfS+MAQe2zHKrm5mp4qLMh9s5+HooeqSigOZCnE4w==
-X-Gm-Gg: ASbGncvm9nOW25wprKoRVfNzXjnyn9JWL73Kxs+6hj6E7oS+hVsdJJXtAefyDxz+OlZ
-	MVHKB/HTimeWPpGVg4oOppLCh0IFOPbgI4XowFAhe7XU0Y4t0E/PxWqp/EJa0RdEHbJo/1Jp7zZ
-	fVsGEAvoyjBtWBlRbGIH+P2QMxHUEAm4NXZ6sTf3tvZmGSzX2cPlaV4mvE3UQHMDArSEtuESI2b
-	woU4ya+QbvftI1hQUdxNyKDj7qCu3lO8WEXgP2s3OtNMgsYEZx6HLyp8rCA+Vqk2RAFZfiKeH6C
-	z/dzSaZYJ3EhESMDllsBReYKlB4LBEytzexXQojjFfht850=
-X-Received: by 2002:a17:907:94cc:b0:ae3:6f0e:4741 with SMTP id a640c23a62f3a-ae3c2d2e914mr207724466b.33.1751446584312;
-        Wed, 02 Jul 2025 01:56:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8sL2q5Kd2yoHDhMduHYdh46Uk0H1dY2JLseKFE/LONUPPIbDxFqR1MYvhezcbAnJ9sZCDPg==
-X-Received: by 2002:a17:907:94cc:b0:ae3:6f0e:4741 with SMTP id a640c23a62f3a-ae3c2d2e914mr207720166b.33.1751446583753;
-        Wed, 02 Jul 2025 01:56:23 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae35365a00bsm1020098966b.43.2025.07.02.01.56.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Jul 2025 01:56:22 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id AA1391B38030; Wed, 02 Jul 2025 10:56:19 +0200 (CEST)
-From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Date: Wed, 02 Jul 2025 10:55:56 +0200
-Subject: [PATCH net-next v2 1/2] net: netdevsim: Support setting
- dev->perm_addr on port creation
+        d=1e100.net; s=20230601; t=1751446863; x=1752051663;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p4ZaC8SZJJEqARXDIgMWg4EN0MjgSfBPCqeNJPMbVto=;
+        b=TQsShQ8Sn8syJahugGrGr2eLeVNXR1I0EU0XdNuQvtN2LwNzBNNeGFv/xx7QDUUMGF
+         eERgxEQMgEqtxVuJoOw2siMUDXLkTWv9iJpFCG3qzUHxWjGXDY82TaP2b3Q7nKU6eC6E
+         LmmeTTIGX9/zKl3ELHH6vNuwl2QpY37fnhD3ZcLMrGAcyPZwKJmOhlANu3g4Xm2Ih4/a
+         QVQM0ZuCfGvRp6F4ERHSNaikXe3gcGBy0X2Br5QIH2eGQKpbBsQsyei054U39U/oSnv2
+         EL/Vqg40ygSa7Q0qpNMjKoykWUQyDR+Jp2Xibd8d3y+BLfWlhy98bZbfxx6HVFVosCqw
+         uuog==
+X-Forwarded-Encrypted: i=1; AJvYcCVdNHh5WNQsXgNVG82ThtjsvoI7WoMe9p6FD+Bokn7Rsc+LTg4FXPJyD3HH1Gt4dfcB/KNrUU1Bcj2uLq/Hk1eRh5g=@vger.kernel.org, AJvYcCVwBjHDxQ0UoD2tbMIAWf4zNbgGxKfKIZxZ8avFeVJoBFrhJrdjSrYcfW/40gIWWrAaOPPMxo7q@vger.kernel.org, AJvYcCWZPybX0iZGinZsIHqJI6SmaJnYeGh8uqQoKD5rlVfHZ905YuFuocYva7fij2r5jeKjjiPb7a6A6pt7@vger.kernel.org, AJvYcCXbVBq+CVKbhchxYrJvzVhsfT38xndE3sU6Jyyb56bCmnlQUK8xusg8sh6U3HV7pom7RpWq2XQQt+5U@vger.kernel.org, AJvYcCXebHz5UMKPjQoN7dcgvt5YsCK9GUjiaFsSpzl6oMaU+hjOoIQJNl06psYooZuBxMQCouQ0mkLiFMhVV7z7@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7vt55ZKJsCn/Qt2Re6jM2kPk/6GPqOqa/HHDqeMCcrFGiB1zr
+	xYRLWGuD6nslI8hq4ICXBCtCaBcm7dWcJbsrwS0CczaPEIxn0duZ/3n2nqrGviIY
+X-Gm-Gg: ASbGncvWIM30SMiDi7XrKtYtRxqPkCQMVQRLiGe9/BAbsBRECeEycBqiuODyNcbt2CR
+	Xish0WKpk67GBu+xNx23+YZJnNBvGwsqwbvxpF8GcmSGwO5d0xvt0vvZTWbTmkJI3e8CEVCVMFV
+	q8dCaA6MWS5Pe1aMSIAcmMDX5ZrtPXSCcdERuS+pFLDTMbZaU/YNU5bUKM2/SvXHUYoxUvj14CK
+	yKcLOK6sn1dU5mfBojTsfZd5j5TPpcSzudY3CjHHJrxlyil2Tc6A5rDYMoSVwyUbBI8BaOtZ03z
+	Y9fYAwwHrwYW1uFGyRcuZNiFK6fbkIxv87afzodAVLoIAmpDb26X40D1u28UuTiFoWMHEgiq1s5
+	tAwL12gx7FGY4wFgBb364kaaKZauZ
+X-Google-Smtp-Source: AGHT+IGb/rdNczI7QkiwvzRrWHUozdrj2zm43+tzc1dsU7VwW1ZJW013I7vK9mQManbUXzrSz0VO+g==
+X-Received: by 2002:a05:6102:2d04:b0:4f1:37f4:8c32 with SMTP id ada2fe7eead31-4f1611617bbmr757041137.11.1751446862899;
+        Wed, 02 Jul 2025 02:01:02 -0700 (PDT)
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com. [209.85.221.180])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-884f3b2430fsm1444383241.9.2025.07.02.02.01.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Jul 2025 02:01:02 -0700 (PDT)
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-532dbe71e4eso2826478e0c.2;
+        Wed, 02 Jul 2025 02:01:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVFlDm2PqSkM1+MG5Ce0omji3QHarmDRFB+Qyb/J8Kp/nquTw7VdrGd4aRgYvPVkCaEskQDnr8rH+RdluWa@vger.kernel.org, AJvYcCVY+7Se18RfXi9VdEOC8y0esOHagnZid3JRBIyCVPXgePTOsakwZdSjCHkT/ZxKkvv+2dTNFF5R@vger.kernel.org, AJvYcCWcCrj906ieO0MTk1RQG4RCv9hulfgcTe9JISFaWMa4OI0luijzvWoDbdvYd7jmdv4B0T9jWhbGXJ5bM9tUnMHIqwI=@vger.kernel.org, AJvYcCWdtqqYUkvhIDd9cM1iAW/xgwHMzgAOKFjxEru+IMfzom+9B6Js7ke+eXPKVYm2aNr4ZwOPA/S5i5qA@vger.kernel.org, AJvYcCWfCeiTQI7eA1o13+qWjTb7x2lg73tCeBcxN1CAkUJZ8aC+8hhI49Y3vY/USuIVQSAJq+NsmTnRzUkL@vger.kernel.org
+X-Received: by 2002:a05:6122:8c8f:b0:52f:4776:f6a7 with SMTP id
+ 71dfb90a1353d-53457c1c1afmr1365164e0c.0.1751446861289; Wed, 02 Jul 2025
+ 02:01:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250702-netdevsim-perm_addr-v2-1-66359a6288f0@redhat.com>
-References: <20250702-netdevsim-perm_addr-v2-0-66359a6288f0@redhat.com>
-In-Reply-To: <20250702-netdevsim-perm_addr-v2-0-66359a6288f0@redhat.com>
-To: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, 
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-X-Mailer: b4 0.14.2
+References: <20250702005706.1200059-1-john.madieu.xa@bp.renesas.com> <20250702005706.1200059-2-john.madieu.xa@bp.renesas.com>
+In-Reply-To: <20250702005706.1200059-2-john.madieu.xa@bp.renesas.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 2 Jul 2025 11:00:49 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWN7K===8+a_xjbROXXwt31y=D9EhhtW0dcWhOW-xi3Fw@mail.gmail.com>
+X-Gm-Features: Ac12FXy3qvRlCCOU1J9rVOyXjvrgTG4HaTQsme_N6hvHGBENHVYbBkeMw8lB4F0
+Message-ID: <CAMuHMdWN7K===8+a_xjbROXXwt31y=D9EhhtW0dcWhOW-xi3Fw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] clk: renesas: r9a09g047: Add clock and reset
+ signals for the GBETH IPs
+To: John Madieu <john.madieu.xa@bp.renesas.com>
+Cc: magnus.damm@gmail.com, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, mturquette@baylibre.com, sboyd@kernel.org, 
+	richardcochran@gmail.com, prabhakar.mahadev-lad.rj@bp.renesas.com, 
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
+	netdev@vger.kernel.org, biju.das.jz@bp.renesas.com, john.madieu@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-Network management daemons that match on the device permanent address
-currently have no virtual interface types to test against.
-NetworkManager, in particular, has carried an out of tree patch to set
-the permanent address on netdevsim devices to use in its CI for this
-purpose.
+On Wed, 2 Jul 2025 at 02:57, John Madieu <john.madieu.xa@bp.renesas.com> wrote:
+> Add clock and reset entries for the Gigabit Ethernet Interfaces (GBETH 0-1)
+> IPs found on the RZ/G3E SoC. This includes various PLLs, dividers, and mux
+> clocks needed by these two GBETH IPs.
+>
+> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+> Signed-off-by: John Madieu <john.madieu.xa@bp.renesas.com>
 
-To support this use case, support setting netdev->perm_addr when
-creating a netdevsim port.
+> v4:
+>  - Renames clock names to match V2Hs
+>  - Uses DEF_MOD_MUX_EXTERNAL instead of DEF_MOD for Tx and Rx clks
+>  - Drops Tested-by tag from Biju
 
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
----
- drivers/net/netdevsim/bus.c       | 22 ++++++++++++++++++----
- drivers/net/netdevsim/dev.c       | 14 +++++++-------
- drivers/net/netdevsim/netdev.c    |  9 ++++++---
- drivers/net/netdevsim/netdevsim.h |  9 +++++----
- 4 files changed, 36 insertions(+), 18 deletions(-)
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+i.e. will queue in renesas-clk for v6.17.
 
-diff --git a/drivers/net/netdevsim/bus.c b/drivers/net/netdevsim/bus.c
-index 64c0cdd31bf85468ce4fa2b2af5c8aff4cfba897..422b3683afe154d9055878a601f95d7b39b30aaf 100644
---- a/drivers/net/netdevsim/bus.c
-+++ b/drivers/net/netdevsim/bus.c
-@@ -66,17 +66,31 @@ new_port_store(struct device *dev, struct device_attribute *attr,
- 	       const char *buf, size_t count)
- {
- 	struct nsim_bus_dev *nsim_bus_dev = to_nsim_bus_dev(dev);
-+	u8 eth_addr[ETH_ALEN] = {};
- 	unsigned int port_index;
-+	bool addr_set = false;
- 	int ret;
- 
- 	/* Prevent to use nsim_bus_dev before initialization. */
- 	if (!smp_load_acquire(&nsim_bus_dev->init))
- 		return -EBUSY;
--	ret = kstrtouint(buf, 0, &port_index);
--	if (ret)
--		return ret;
- 
--	ret = nsim_drv_port_add(nsim_bus_dev, NSIM_DEV_PORT_TYPE_PF, port_index);
-+	ret = sscanf(buf, "%u %hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &port_index,
-+		     &eth_addr[0], &eth_addr[1], &eth_addr[2], &eth_addr[3],
-+		     &eth_addr[4], &eth_addr[5]);
-+	switch (ret) {
-+	case 7:
-+		addr_set = true;
-+		fallthrough;
-+	case 1:
-+		break;
-+	default:
-+		pr_err("Format for adding new port is \"id [perm_addr]\" (uint MAC).\n");
-+		return -EINVAL;
-+	}
-+
-+	ret = nsim_drv_port_add(nsim_bus_dev, NSIM_DEV_PORT_TYPE_PF, port_index,
-+				addr_set ? eth_addr : NULL);
- 	return ret ? ret : count;
- }
- 
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index 3e0b61202f0c9824952040c8d4c79eb8775954c6..107b106be516bbc97735e93643a7f7cf3bfc0a73 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -576,7 +576,7 @@ static void nsim_dev_dummy_region_exit(struct nsim_dev *nsim_dev)
- 
- static int
- __nsim_dev_port_add(struct nsim_dev *nsim_dev, enum nsim_dev_port_type type,
--		    unsigned int port_index);
-+		    unsigned int port_index, u8 perm_addr[ETH_ALEN]);
- static void __nsim_dev_port_del(struct nsim_dev_port *nsim_dev_port);
- 
- static int nsim_esw_legacy_enable(struct nsim_dev *nsim_dev,
-@@ -600,7 +600,7 @@ static int nsim_esw_switchdev_enable(struct nsim_dev *nsim_dev,
- 	int i, err;
- 
- 	for (i = 0; i < nsim_dev_get_vfs(nsim_dev); i++) {
--		err = __nsim_dev_port_add(nsim_dev, NSIM_DEV_PORT_TYPE_VF, i);
-+		err = __nsim_dev_port_add(nsim_dev, NSIM_DEV_PORT_TYPE_VF, i, NULL);
- 		if (err) {
- 			NL_SET_ERR_MSG_MOD(extack, "Failed to initialize VFs' netdevsim ports");
- 			pr_err("Failed to initialize VF id=%d. %d.\n", i, err);
-@@ -1353,7 +1353,7 @@ static const struct devlink_ops nsim_dev_devlink_ops = {
- #define NSIM_DEV_TEST1_DEFAULT true
- 
- static int __nsim_dev_port_add(struct nsim_dev *nsim_dev, enum nsim_dev_port_type type,
--			       unsigned int port_index)
-+			       unsigned int port_index, u8 perm_addr[ETH_ALEN])
- {
- 	struct devlink_port_attrs attrs = {};
- 	struct nsim_dev_port *nsim_dev_port;
-@@ -1390,7 +1390,7 @@ static int __nsim_dev_port_add(struct nsim_dev *nsim_dev, enum nsim_dev_port_typ
- 	if (err)
- 		goto err_dl_port_unregister;
- 
--	nsim_dev_port->ns = nsim_create(nsim_dev, nsim_dev_port);
-+	nsim_dev_port->ns = nsim_create(nsim_dev, nsim_dev_port, perm_addr);
- 	if (IS_ERR(nsim_dev_port->ns)) {
- 		err = PTR_ERR(nsim_dev_port->ns);
- 		goto err_port_debugfs_exit;
-@@ -1446,7 +1446,7 @@ static int nsim_dev_port_add_all(struct nsim_dev *nsim_dev,
- 	int i, err;
- 
- 	for (i = 0; i < port_count; i++) {
--		err = __nsim_dev_port_add(nsim_dev, NSIM_DEV_PORT_TYPE_PF, i);
-+		err = __nsim_dev_port_add(nsim_dev, NSIM_DEV_PORT_TYPE_PF, i, NULL);
- 		if (err)
- 			goto err_port_del_all;
- 	}
-@@ -1702,7 +1702,7 @@ __nsim_dev_port_lookup(struct nsim_dev *nsim_dev, enum nsim_dev_port_type type,
- }
- 
- int nsim_drv_port_add(struct nsim_bus_dev *nsim_bus_dev, enum nsim_dev_port_type type,
--		      unsigned int port_index)
-+		      unsigned int port_index, u8 perm_addr[ETH_ALEN])
- {
- 	struct nsim_dev *nsim_dev = dev_get_drvdata(&nsim_bus_dev->dev);
- 	int err;
-@@ -1711,7 +1711,7 @@ int nsim_drv_port_add(struct nsim_bus_dev *nsim_bus_dev, enum nsim_dev_port_type
- 	if (__nsim_dev_port_lookup(nsim_dev, type, port_index))
- 		err = -EEXIST;
- 	else
--		err = __nsim_dev_port_add(nsim_dev, type, port_index);
-+		err = __nsim_dev_port_add(nsim_dev, type, port_index, perm_addr);
- 	devl_unlock(priv_to_devlink(nsim_dev));
- 	return err;
- }
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index e36d3e846c2dc314182efd1af03b59270397b007..f316e44130f722759f0ac4e5baac6a2f6956dc7d 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -998,8 +998,9 @@ static void nsim_exit_netdevsim(struct netdevsim *ns)
- 	mock_phc_destroy(ns->phc);
- }
- 
--struct netdevsim *
--nsim_create(struct nsim_dev *nsim_dev, struct nsim_dev_port *nsim_dev_port)
-+struct netdevsim *nsim_create(struct nsim_dev *nsim_dev,
-+			      struct nsim_dev_port *nsim_dev_port,
-+			      u8 perm_addr[ETH_ALEN])
- {
- 	struct net_device *dev;
- 	struct netdevsim *ns;
-@@ -1010,6 +1011,9 @@ nsim_create(struct nsim_dev *nsim_dev, struct nsim_dev_port *nsim_dev_port)
- 	if (!dev)
- 		return ERR_PTR(-ENOMEM);
- 
-+	if (perm_addr)
-+		memcpy(dev->perm_addr, perm_addr, ETH_ALEN);
-+
- 	dev_net_set(dev, nsim_dev_net(nsim_dev));
- 	ns = netdev_priv(dev);
- 	ns->netdev = dev;
-@@ -1031,7 +1035,6 @@ nsim_create(struct nsim_dev *nsim_dev, struct nsim_dev_port *nsim_dev_port)
- 	ns->qr_dfs = debugfs_create_file("queue_reset", 0200,
- 					 nsim_dev_port->ddir, ns,
- 					 &nsim_qreset_fops);
--
- 	return ns;
- 
- err_free_netdev:
-diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
-index 4a0c48c7a384e2036883c84dc847b82f992f1481..3a8b5510ec2914204beb15247ab60a5d9933f48d 100644
---- a/drivers/net/netdevsim/netdevsim.h
-+++ b/drivers/net/netdevsim/netdevsim.h
-@@ -143,8 +143,9 @@ struct netdevsim {
- 	struct netdev_net_notifier nn;
- };
- 
--struct netdevsim *
--nsim_create(struct nsim_dev *nsim_dev, struct nsim_dev_port *nsim_dev_port);
-+struct netdevsim *nsim_create(struct nsim_dev *nsim_dev,
-+			      struct nsim_dev_port *nsim_dev_port,
-+			      u8 perm_addr[ETH_ALEN]);
- void nsim_destroy(struct netdevsim *ns);
- bool netdev_is_nsim(struct net_device *dev);
- 
-@@ -361,8 +362,8 @@ void nsim_dev_exit(void);
- int nsim_drv_probe(struct nsim_bus_dev *nsim_bus_dev);
- void nsim_drv_remove(struct nsim_bus_dev *nsim_bus_dev);
- int nsim_drv_port_add(struct nsim_bus_dev *nsim_bus_dev,
--		      enum nsim_dev_port_type type,
--		      unsigned int port_index);
-+		      enum nsim_dev_port_type type, unsigned int port_index,
-+		      u8 perm_addr[ETH_ALEN]);
- int nsim_drv_port_del(struct nsim_bus_dev *nsim_bus_dev,
- 		      enum nsim_dev_port_type type,
- 		      unsigned int port_index);
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-2.50.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
