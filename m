@@ -1,161 +1,115 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E7B242D6A;
-	Wed,  2 Jul 2025 09:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B2523F41F;
+	Wed,  2 Jul 2025 09:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751448281; cv=none; b=oHm0IiSik6bzBzac6P8ZAVzaSqOGgwC843/AIhBAVOLGesZRw+A7a+xliSHxySlGBxOlixH0a2nRgd9lRNGbRCEiLaHbiAUtmRZEctulg/O8zy1ONx59Iw9SMpv8eBFotVrH2tlU1l6Ev/jZvW9KHDxA/Geeg51foqXxiMZp5iA=
+	t=1751448327; cv=none; b=FXy2QxLkJF1+N3sm1vpnb+O0KAQqz3q5EWZ7k9kV+HNdrUoExrujaaFT5MXRsUfmRIWyu0C9aRD9eWZvY3epJ0MaEmRi9nWxnGkMe8tfzOS81ZUB21HALwzkud1W6D3Opw8MDVvjgCCNsppUoYYdPGj0ym/lqGM7vQ4Q/PKQl6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751448281; c=relaxed/simple;
-	bh=uozv7cNUaahlahiBDNW7AVlln5pZNYvHzH6rHGccePU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=exe+0KGeZpkitK3p/F92et+sWcfbVMSAP4UQYoLpp4tnBy3K8Il1Wx3Y54SObbSJfdXTYlU8TKuSpBjQ7EFEm8HO/wfb4ghWW7euykFyGH0/BOEruRwXk/qHto0kcTHHbsdrk+8Dt8VGVOD90/9cAkT9bG/L1m6ZapgNWJ8PQto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hOpdSGgE; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1751448327; c=relaxed/simple;
+	bh=l+OXJNIycwkqxDvtkEQQL47AAcEoLyHKZN6dUMteqI8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RsizR78jxAtRVWLPG7xg8uVaMBjOWoZlL2cmT/XYNBvnQSuVFfwM1dW5Ux0uVeifkaGuMtBb34WiDQAAJvbR3PMk06VJ51hqyXkrUKflTh7iboHR4u6CldFfRV7OzpwsSa1PQKKb66Jfmk8jIW14scoiLYEGir41C28oMP7xkEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hOpdSGgE"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-73972a54919so4042934b3a.3;
-        Wed, 02 Jul 2025 02:24:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751448279; x=1752053079; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dZE6N4nGmdiPtxY4XuyNyLw3/3gBYqPRvNDO2zBmApA=;
-        b=hOpdSGgETya6jP5+IKFxM/MA1FvpAx56snokjHT6szJqM7MKK8mtCLlG3IgirtRc2w
-         8VUPZSIzuhsSsZkDFV9pkFVf8asX/VdPNEC6QQNyWbVCtCAroRoNw0a/JxFYkBg7mO3h
-         q/MZQ82xHBPgt1AgKNRAo/tsl7ONOI8XCt+bVzYgLKZy6RhmaaYonVW0hK4VuRrVxgnl
-         BanFF4TiN+dZxBiTDpCty9UD7p/HiRXZZsU0FUS6MmWF2MJd0ZaN3o87yQK4RycWrVIq
-         SsU0EgHjIj4DXlsRzCwGchffqHlLgeem8dCNnGwIMpoo1tzuAiIWFDqDWXU5Qpa22EPi
-         lZNw==
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ae0df6f5758so715155866b.0;
+        Wed, 02 Jul 2025 02:25:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751448279; x=1752053079;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dZE6N4nGmdiPtxY4XuyNyLw3/3gBYqPRvNDO2zBmApA=;
-        b=qDsnyca1zprFfWVz+a+nkubgPzQutt9O7mXBXJks3bvd+EJqi1RTprD0FwBmFJbr3J
-         4F2RkRu7/pjeertSZoqYsRnx3OqVlBLrmc7gYvQEZ+rqrVZsAE/fUC6bzCBrVxKz1MJI
-         9EBsEh7dal8xPf5Doz8W3bPzJBicRCkGSlz/EJnsqWrZr8y591mj2eLFQKB7kelz2Jhn
-         AdrN9tCPcdz57qeTvrB75NMfjk03uvpVAcW2I0TE7J+vjQN7SPqBJQ2++ZLwrtQfHA+v
-         d6rIfZO/2Yk8PyVRwXpPxEuVL/4fyIQuyzJFnk1f4mYj+n65rfATM8JBvzPND64JL4dt
-         OsDw==
-X-Forwarded-Encrypted: i=1; AJvYcCV/oGZtoaJ9Vshv30jO16gD2aZDZuwqVu6IR1X9YwxmJp7vG7lz2QcQqDOEBMx3kw/o/7BuYuPP@vger.kernel.org, AJvYcCVsb5220Sz/paxcJblLaXbP8fEzH/Tpox5DIlsiB+Lp+C4brCvKFw860SN5vVyKQ4h1vh3WVZVr2/HbmyM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBzPqgsC0DM659QK9ARodpUaEzUZMMfi4pSth8kOqxKsPHlvBV
-	XkmLd5hkCXhFvfZu0FvuZ7xGr3Em4YumvaGcOZH9bnTymNDoLLU9pZ+J
-X-Gm-Gg: ASbGnctCWazUiha6YCyi9/ye3TaNw5ay57tr3yOChr+lAF4a/cCXRrz5bGyPAbWN0Pk
-	A6cXMjHccXnRCH1rqAz4OF9hE/Nj5UIHipMEtlewz7X2M16KCcnFkAw5zTJry2+3DTDIm/55/Ei
-	5chnrQW862g4jUtmtN4BO58nztlhsHaZwRgjnpsizkiaJz/1uy3z1SUXEQJz65Y1b2H1djCI0GU
-	rzfLfwGfEkbHK5hIwJ5wXUK4WN9D1tVF7t1y2OrWglouFHhQlrZqhNhbs7oMDsImHMCZ/joJp5h
-	2c7ixpazAzfdQVz63hNcl3EZylzZ4ilEugAg6jZgY5g1kqmvvfWX+Ncm5FYmbSdG166Yfl3liML
-	Go9IKqhMMP8LVH23i/kWmQsiF+/DaCTfN
-X-Google-Smtp-Source: AGHT+IGOtg1lP0lTwk2tR464ubbW1oOPSOtDHggyRTkzkjzQQWzhD7RngmDcTAvFTLFO+wnBujfBSQ==
-X-Received: by 2002:a05:6a21:62c1:b0:216:6108:788f with SMTP id adf61e73a8af0-222d7f146f4mr4599239637.35.1751448278792;
-        Wed, 02 Jul 2025 02:24:38 -0700 (PDT)
-Received: from DESKTOP-NBGHJ1C.local.valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74af5409d62sm13176949b3a.27.2025.07.02.02.24.35
+        d=1e100.net; s=20230601; t=1751448323; x=1752053123;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iXqizztXrc6l617heC/AMuPzhsNfzw+4PJx5K3hl0+k=;
+        b=MryAo/6QeecAbzjwFSg26icdE9TF5htEpWRQJfS8IbieF5ROjtYqKdwLOOwPvO+/ot
+         y1YlMflM3Iulf6h0j5GvD13OinIZ0vk5fMV+eQQbXr2OC7ZAkXwJ8fqfKQLp5YcefaKT
+         Y13PEmsheI6t+p/zf0QlCjdBDEeH4E2wfj2PSSF0uSJwlwaYqIK6Y4WYXovecn1pzNit
+         YMcWcBgCux9rzbQ9MPHliFDTWZ8za+QoFXZ+NiIrMrBxA6KXqsv8IjQyYGUUK5rnKGDE
+         QOg0hrMuRErbqS/B3N/NlQ68Ugv8Pd2URu+LRnt3cVbct9GAjoOGvUfAm753YU/yE06N
+         IlMA==
+X-Forwarded-Encrypted: i=1; AJvYcCU+3IjLhCw00Dum6yE2dxFIi3/NCCiRNiR2pTt+GcwGXYbkk7hqk8x2Zi9cts+vniaAtFeBGMhdWbh53knOqM3J@vger.kernel.org, AJvYcCWfJLeoLZTvfU0HVtjNZvi4UMISxcKcvOd9bsVmCJBSbpn4+/IaKxDnioxofaEDbWy5IESfqmLsUYqsCuo=@vger.kernel.org, AJvYcCXlOfG1ytJEnYGTobvSBG1+T32AITwxqYjndapaVxbampIcIz60C/bjBqPyixT1a64hykdbp4eZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZ8+KPEIIrUa4wzQeMTmWh29LD+EUoKsg/JGC8xdtzSRUVI6aD
+	l04pA121klupbGOraIpRkOaq2115LsdvSWnZVtWtDfkzpbG+FFN3ma6a
+X-Gm-Gg: ASbGnctux9zyp7xjw7thWPe85mPVDq+IScCH+Do8cHjxcCTipX6+tvGl3nzpT+5Af5A
+	nzp5PjZiFKf6PE7Na+rJenhrg6HKeihqqsriK8vLXKU9J590bCn+8gm1WZKVeO8kMYK0qr/5Fhp
+	v1y5P+UEJTTMGIXcQ++Vfonv++2WzIAhYQX7qDiN5xx1JrXi97CIHd9jMCukdB78XKtYnSD+5vv
+	3jT+qLVsA9s1sYROn6fReqo1W4KXh6HWx8CMrQnAHbCv3DgAUAFcbYPLqqxOOy8hFwQcxgkBQxW
+	eZcv/UGIRBP8VpFq1oa/CTbkuCHW2frjN9DmMh78xOn7jft2OI85
+X-Google-Smtp-Source: AGHT+IFmRFolhslnQ3wJmOGKd1ZC652Hspez4xyKqE787ovmelWtlRNlsVeweq4XaspxJpAb3qWHMg==
+X-Received: by 2002:a17:907:2d09:b0:ae0:d1f3:f7f4 with SMTP id a640c23a62f3a-ae3c2a963d8mr240306566b.13.1751448323235;
+        Wed, 02 Jul 2025 02:25:23 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:6::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae353ca2edcsm1027763066b.180.2025.07.02.02.25.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Jul 2025 02:24:38 -0700 (PDT)
-From: Ryo Takakura <ryotkkr98@gmail.com>
-To: horms@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	florian.fainelli@broadcom.com,
-	kuba@kernel.org,
-	opendmb@gmail.com,
-	pabeni@redhat.com,
-	zakkemble@gmail.com
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Ryo Takakura <ryotkkr98@gmail.com>
-Subject: [PATCH net v2] net: bcmgenet: Initialize u64 stats seq counter
-Date: Wed,  2 Jul 2025 18:24:17 +0900
-Message-Id: <20250702092417.46486-1-ryotkkr98@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Wed, 02 Jul 2025 02:25:22 -0700 (PDT)
+Date: Wed, 2 Jul 2025 02:25:20 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, gustavold@gmail.com
+Subject: Re: [PATCH net-next 6/7] netpoll: move Ethernet setup to push_eth()
+ helper
+Message-ID: <aGT7ALhW060Tv22l@gmail.com>
+References: <20250627-netpoll_untagle_ip-v1-0-61a21692f84a@debian.org>
+ <20250627-netpoll_untagle_ip-v1-6-61a21692f84a@debian.org>
+ <20250701175325.5c1970b9@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250701175325.5c1970b9@kernel.org>
 
-Initialize u64 stats as it uses seq counter on 32bit machines
-as suggested by lockdep below.
+On Tue, Jul 01, 2025 at 05:53:25PM -0700, Jakub Kicinski wrote:
+> On Fri, 27 Jun 2025 10:55:52 -0700 Breno Leitao wrote:
+> > +static void push_eth(struct netpoll *np, struct sk_buff *skb)
+> > +{
+> > +	struct ethhdr *eth;
+> > +
+> > +	eth = eth_hdr(skb);
+> > +	ether_addr_copy(eth->h_source, np->dev->dev_addr);
+> > +	ether_addr_copy(eth->h_dest, np->remote_mac);
+> > +}
+> 
+> Can you move the pushing of the header and setting h_proto here?
+> 
+> if the goal of the series is to slice up the code per network layer
+> then its a bit odd for the IP layer handlers to be pushing the L2
+> header and setting its proto.
+> 
+> Just:
+> 
+> 	if (np->ipv6)
+> 		eth->h_proto = htons(ETH_P_IPV6);
+> 	else
+> 		eth->h_proto = htons(ETH_P_IP);
+> 
+> no?
 
-[    1.830953][    T1] INFO: trying to register non-static key.
-[    1.830993][    T1] The code is fine but needs lockdep annotation, or maybe
-[    1.831027][    T1] you didn't initialize this object before use?
-[    1.831057][    T1] turning off the locking correctness validator.
-[    1.831090][    T1] CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           6.16.0-rc2-v7l+ #1 PREEMPT
-[    1.831097][    T1] Tainted: [W]=WARN
-[    1.831099][    T1] Hardware name: BCM2711
-[    1.831101][    T1] Call trace:
-[    1.831104][    T1]  unwind_backtrace from show_stack+0x18/0x1c
-[    1.831120][    T1]  show_stack from dump_stack_lvl+0x8c/0xcc
-[    1.831129][    T1]  dump_stack_lvl from register_lock_class+0x9e8/0x9fc
-[    1.831141][    T1]  register_lock_class from __lock_acquire+0x420/0x22c0
-[    1.831154][    T1]  __lock_acquire from lock_acquire+0x130/0x3f8
-[    1.831166][    T1]  lock_acquire from bcmgenet_get_stats64+0x4a4/0x4c8
-[    1.831176][    T1]  bcmgenet_get_stats64 from dev_get_stats+0x4c/0x408
-[    1.831184][    T1]  dev_get_stats from rtnl_fill_stats+0x38/0x120
-[    1.831193][    T1]  rtnl_fill_stats from rtnl_fill_ifinfo+0x7f8/0x1890
-[    1.831203][    T1]  rtnl_fill_ifinfo from rtmsg_ifinfo_build_skb+0xd0/0x138
-[    1.831214][    T1]  rtmsg_ifinfo_build_skb from rtmsg_ifinfo+0x48/0x8c
-[    1.831225][    T1]  rtmsg_ifinfo from register_netdevice+0x8c0/0x95c
-[    1.831237][    T1]  register_netdevice from register_netdev+0x28/0x40
-[    1.831247][    T1]  register_netdev from bcmgenet_probe+0x690/0x6bc
-[    1.831255][    T1]  bcmgenet_probe from platform_probe+0x64/0xbc
-[    1.831263][    T1]  platform_probe from really_probe+0xd0/0x2d4
-[    1.831269][    T1]  really_probe from __driver_probe_device+0x90/0x1a4
-[    1.831273][    T1]  __driver_probe_device from driver_probe_device+0x38/0x11c
-[    1.831278][    T1]  driver_probe_device from __driver_attach+0x9c/0x18c
-[    1.831282][    T1]  __driver_attach from bus_for_each_dev+0x84/0xd4
-[    1.831291][    T1]  bus_for_each_dev from bus_add_driver+0xd4/0x1f4
-[    1.831303][    T1]  bus_add_driver from driver_register+0x88/0x120
-[    1.831312][    T1]  driver_register from do_one_initcall+0x78/0x360
-[    1.831320][    T1]  do_one_initcall from kernel_init_freeable+0x2bc/0x314
-[    1.831331][    T1]  kernel_init_freeable from kernel_init+0x1c/0x144
-[    1.831339][    T1]  kernel_init from ret_from_fork+0x14/0x20
-[    1.831344][    T1] Exception stack(0xf082dfb0 to 0xf082dff8)
-[    1.831349][    T1] dfa0:                                     00000000 00000000 00000000 00000000
-[    1.831353][    T1] dfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-[    1.831356][    T1] dfe0: 00000000 00000000 00000000 00000000 00000013 00000000
+yes. We can do it. In fact, if we want to do even better, we can move
+the can move the skb_push(skb, ETH_HLEN) and skb_reset_mac_header() here
+as well. This will slice up the code even better.
 
-Fixes: 59aa6e3072aa ("net: bcmgenet: switch to use 64bit statistics")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
----
+The function will look like the following:
 
-Changes since v1:
-[0] https://lore.kernel.org/netdev/20250629114109.214057-1-ryotkkr98@gmail.com/
+	static void push_eth(struct netpoll *np, struct sk_buff *skb)
+	{
+		struct ethhdr *eth;
 
-- Rebased on the net tree.
-- Add <Reviewed-by> by Florian. Thank you Florian!
-
----
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index fa0077bc67b7..97585c160de3 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -4092,6 +4092,12 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 	for (i = 0; i <= priv->hw_params->rx_queues; i++)
- 		priv->rx_rings[i].rx_max_coalesced_frames = 1;
- 
-+	/* Initialize u64 stats seq counter for 32bit machines */
-+	for (i = 0; i <= priv->hw_params->rx_queues; i++)
-+		u64_stats_init(&priv->rx_rings[i].stats64.syncp);
-+	for (i = 0; i <= priv->hw_params->tx_queues; i++)
-+		u64_stats_init(&priv->tx_rings[i].stats64.syncp);
-+
- 	/* libphy will determine the link state */
- 	netif_carrier_off(dev);
- 
--- 
-2.34.1
-
+		eth = skb_push(skb, ETH_HLEN);
+		skb_reset_mac_header(skb);
+		ether_addr_copy(eth->h_source, np->dev->dev_addr);
+		ether_addr_copy(eth->h_dest, np->remote_mac);
+		if (np->ipv6)
+			eth->h_proto = htons(ETH_P_IPV6);
+		else
+			eth->h_proto = htons(ETH_P_IP);
+	}
