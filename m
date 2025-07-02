@@ -1,48 +1,48 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A078A24DD18
-	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 13:12:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CA324DD18
+	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 13:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751461929; cv=none; b=FgCR1lW448G4uM9AITD9xdO9luj1ffJseGkp+dhAPbehQdWDxnWfHj0uNU2klSk8op8yADt57zP6PUtbflwGzsfO0aa/LPlyGvsPXcF4eOJqbe9B2JoLaiA5IPpnJl2Ek+ktpMVmS2g4R0m+Asm0KGAjfNT2IEt4Qvomwk7lPeM=
+	t=1751461964; cv=none; b=C9XPTxh4ytNtBZE+pqWCpyOx1GCC0uUWZRgdvbBVljhPXFkHCjDrW2JX/60qJcte48q9uLBRQj6x0hAVati6dZW2iCaendZh/47xtKTiw1AC8S7E7zN05Ec9s8TK0YzLUgbe6mMWiJ3QJKyTrDxUO26mJy3OLX4rk0znxSHOpH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751461929; c=relaxed/simple;
-	bh=ZScY/86v9KyFXwifYPN75p64yv0pDY8lPQNFywkOAtE=;
+	s=arc-20240116; t=1751461964; c=relaxed/simple;
+	bh=c6eIxpJ7az3L+OsYq9YR2Aa5anEZeVDSJbHdj4C/R3A=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=esuNQOgp6VOMg/TbI+ZiYDnpKG88y5eqq51B+llBonwG7RdDGXaIche/do6kZxjrcWLKxRHF13CVEJP3TCIebor9+O0DH66J1k3dT48XZsxCiifJaFgdTYLS4e0EroZTjRa5Zv0Kghs906iwq8Txc3HRQKbbdGZFuXD/K5uTh/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pamtEIBP; arc=none smtp.client-ip=217.70.183.194
+	 MIME-Version:Content-Type; b=tDCbWD4HVY42ET9qQA9YnzojvdLkQw2xPXnVO+/A1YUMMzvbcoI8kw8flrFOQJOQd8FsFXSrK65m6Qw9mi2mWoohYjcKzVejpXAMsrRoDDn64ZwwDemLoS5j3baWBgPNatoYxwAdGCq7dYvEi8FZHIlp2t6HlNqBvYneWXpGPeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JnbklXd5; arc=none smtp.client-ip=217.70.183.193
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pamtEIBP"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1D1A24383D;
-	Wed,  2 Jul 2025 13:11:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JnbklXd5"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3EAA643A19;
+	Wed,  2 Jul 2025 13:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751461920;
+	t=1751461955;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AyhjB0RIepAPlBS+0exfN71rZWuzPQ7rKbNUsw2Z7bE=;
-	b=pamtEIBPLX7Pk66rCWf/5XNwZh63l2bRz+TCu/5yoBqI7zmEFvpbyOxGBwb19DTkZQxbQe
-	7HZ/VdOlm7axrjiH/nQZ+b0Oo5cVB4kNnsTarCxcCOfsj3eQYk02cEwPkYcQaDuWuGu2Mq
-	HNm0iHTuZ5AvdWedf3AQrGfoZg+2h8zPK0zXICK03qIfBFG47d3uC+sjuLni5ye6WXmgJq
-	hevOGzmOBVowsFpcoErEnLzRHzfROlf7LXTbAyQNQi5w3klr6CeOUlYftbszdwIEMIGSms
-	8Uj3lLSKEVhATCOzuLvwXZaIx3eTkrsEXeTg2GPNls7LsUbn8RrcnNFb9g19/w==
-Date: Wed, 2 Jul 2025 15:11:57 +0200
+	bh=PMBzDClA3r83eYd0VVI/IzgedDv07I5CYy7KEhkq5K4=;
+	b=JnbklXd5H6Q/V9g68Au5Ia0E1odv9X5agZ/+Ymx+pCgMuO+4t4TP+VdfMe5+jaeeBvCshu
+	dKhMssvgbdzKsetv3X2gtVzYc4Yb316D4WWRM1yuMnQDGKhyQ6HxIAj+Y5+dq/s42KzZ1J
+	0vFE0vtw/+QYtZwmsFQIO54wwW/6xFiQFc34ipJvpdY8mY8F90PmJrTOHIRXPzxUeYf4Go
+	bv/FC1L7Imv+D/7U38qS11d/loQulk2IUaEsZeEnre+Kw9kwvF/b7Y7atGnra+wn5MZ2pw
+	VSTVFXibZ0lDheqU5nRwCC1MAfkJ1MrDf6BNEe85rbj7j8Cozbi9L6w3sc1iGA==
+Date: Wed, 2 Jul 2025 15:12:33 +0200
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
  Alexander Duyck <alexander.duyck@gmail.com>, "David S. Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
  <kuba@kernel.org>, netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 1/3] net: phylink: restrict SFP interfaces to
- those that are supported
-Message-ID: <20250702151157.5e5178b9@fedora.home>
-In-Reply-To: <E1uWu0u-005KXc-A4@rmk-PC.armlinux.org.uk>
+Subject: Re: [PATCH net-next 2/3] net: phylink: clear SFP interfaces when
+ not in use
+Message-ID: <20250702151233.6c75e84d@fedora.home>
+In-Reply-To: <E1uWu0z-005KXi-EM@rmk-PC.armlinux.org.uk>
 References: <aGT_hoBELDysGbrp@shell.armlinux.org.uk>
-	<E1uWu0u-005KXc-A4@rmk-PC.armlinux.org.uk>
+	<E1uWu0z-005KXi-EM@rmk-PC.armlinux.org.uk>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -59,21 +59,18 @@ X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddujeeglecutefuodetggdotef
  dhrtghpthhtoheprghlvgigrghnuggvrhdrughuhigtkhesghhmrghilhdrtghomhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
 X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On Wed, 02 Jul 2025 10:44:24 +0100
+On Wed, 02 Jul 2025 10:44:29 +0100
 "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk> wrote:
 
-> When configuring an optical SFP interface, restrict the bitmap of SFP
-> interfaces (pl->sfp_interfaces) to those that are supported by the
-> host, rather than calculating this in a local variable.
-> 
-> This will allow us to avoid recomputing this in the
-> phylink_ethtool_ksettings_set() path.
+> Clear the SFP interfaces bitmap when we're not using it - in other
+> words, when a module is unplugged, or we're using a PHY on the
+> module.
 > 
 > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
 Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-Thanks Russell,
+Thanks,
 
 Maxime
