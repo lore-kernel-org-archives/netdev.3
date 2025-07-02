@@ -1,272 +1,270 @@
-Received: from sysclose.org (smtp.sysclose.org [69.164.214.230])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CD3270ED7;
-	Wed,  2 Jul 2025 14:02:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=69.164.214.230
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994CE25333F;
+	Wed,  2 Jul 2025 14:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751464969; cv=none; b=F72z066ZWIdewWdKh9GTBz4+EY+zj3daVQR47H4GqwQYjasHpMqN4mnhZrMm5zDiooCn4bI/DCWZLu3tXmjKBNviJ102MRMQJlzMCpHKyfzaOo2hMTN7e0bh/JMxcqTtltRWo2Y1ETtWKcRgbSXzYRr+9E4IDPGBPaPKqJ3uZ0o=
+	t=1751465221; cv=none; b=esbDz5vD54hCKFSAtK6GD3/s6Le5Cdcf76yWrlCYijYUU7hz3yDcgRH+ACMbY6XbBLwxcVdZoCELukUvpKFddnInR6/4ipGieIQNINQj8P3YSNQloIk560vnkc2Sl7BUhk6h7N0WgXPENf2717DPIPxP9jvejHukVmicHQf/Jis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751464969; c=relaxed/simple;
-	bh=ljfa/P03WreNjE/dmoPXa7QWaelY6lDcWmaTaw/kRes=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fv8gO6/gGqkduk8xdmbMG2w7OHD6HMhqDOrh7MUjmiTYpfUrm/319x5C9Esid6IP59qHFo3F3otBwV3H/HQjt0LeKxGgbrVzGROjYivHwZU9CLggSf7nG0AObiHbLFb1JZQ9uJkn7bPu7Yg66X2r6eW0ZJXBCYPRsiJmquEwrpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sysclose.org; spf=pass smtp.mailfrom=sysclose.org; dkim=pass (2048-bit key) header.d=sysclose.org header.i=@sysclose.org header.b=iQuYNVMu; arc=none smtp.client-ip=69.164.214.230
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sysclose.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sysclose.org
+	s=arc-20240116; t=1751465221; c=relaxed/simple;
+	bh=AxG/9yhO3PduLsAnClpPnh6oJNA0YvH0sPU0M6PQCRo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GGiLRLcleBkHO6tAbTWhTKRSFkmW2W02fq1B+vj3AidCA3JMmKzW/zgb48jeG0VNofymT7089Ik/G+JkM/ZY6Ej0sVq0sHpULIxVaq5Ak5zwY/yunSHbdilQbtJVUwqg8IsQvFkirJuGhrP7Dhx8mJJFPwIxxYY/x5qOwgOozFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=KBTDeKzV; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sysclose.org header.i=@sysclose.org header.b="iQuYNVMu"
-Received: from uranium (unknown [131.100.62.92])
-	by sysclose.org (Postfix) with ESMTPSA id 4F1F0395ED;
-	Wed,  2 Jul 2025 13:53:19 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 sysclose.org 4F1F0395ED
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sysclose.org;
-	s=201903; t=1751464400;
-	bh=tziLTDpyItWKxbKGaI6qyfMyhaTQ8w2YyNAMXsvando=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iQuYNVMuU9HVYot4e7/voMi0OWfFzqh+FpDCyyBrrSWC09uLdGFwdZzVg9TmPc+tH
-	 rqe3eIIuxyZzl/fGVz1vZ5ZELG7zEOkhNIYKcVEN+e3XbENTLUT7ZSUhZOUvz9+/9c
-	 SxPg3Q4fx+CyxJ0J8+DhtYSHOSdNNJJqRC3HJ0HnbvjVf1OC5IY913Hr0IE3S6Qj/s
-	 VI+/AVBcE80D/WyvjhY45Ey3vqTZ3XyfH552cHXpDeMt+gj9Bzd2kzORrwxoHx/u/9
-	 137PfVkD+wwA2OSjxSydxM9Tz2NWg5Vk03kdTk3o4jWYRA//OYguSs/7ed6GXpnBkF
-	 swG5TI+BNwHYg==
-Date: Wed, 2 Jul 2025 10:53:16 -0300
-From: Flavio Leitner <fbl@sysclose.org>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: netdev@vger.kernel.org, dev@openvswitch.org,
- linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Simon
- Horman <horms@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>
-Subject: Re: [ovs-dev] [PATCH net-next] net: openvswitch: allow providing
- upcall pid for the 'execute' command
-Message-ID: <20250702105316.43017482@uranium>
-In-Reply-To: <20250627220219.1504221-1-i.maximets@ovn.org>
-References: <20250627220219.1504221-1-i.maximets@ovn.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="KBTDeKzV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=k8VAIUcXIYvgBJ9GgZ2cS9GDpuFygQfAsCDPTX94XCM=; b=KBTDeKzVrTCD/c6Efkmks7Ux+H
+	STtCSVxb8xuM7qXQm7FxLqtINyStekOAlRcCLmpXCiO6y3K8+71EQjfI+5ZHuqQGQ9ixkMKG5VFdW
+	YrTbWGDQQ73nEaheZMcKHPkB+68UaT4An88yN2Rz/AlB++g9GHrkmO7WpR0t8Yo/FjlA5ujzZgvHj
+	x1eouzDXssXQ4sqj1qqJ7UGjIE8E2jpxhd0T5HySD71ohAAoVhXP3oOhmTH57y3Xr2teHSIK4X0LT
+	y3tKPkwmP6vj3zDFNdcLB1QgAzoKaLA23hniI1juH9JxBR7rytH1/lZA8k6P2m0LyEp3RwGoN8pwW
+	o6Gn7QFg==;
+Received: from [122.175.9.182] (port=44129 helo=cypher.couthit.local)
+	by server.couthit.com with esmtpa (Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1uWy6v-00000004QcT-2089;
+	Wed, 02 Jul 2025 10:06:54 -0400
+From: Parvathi Pudi <parvathi@couthit.com>
+To: danishanwar@ti.com,
+	rogerq@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	ssantosh@kernel.org,
+	richardcochran@gmail.com,
+	s.hauer@pengutronix.de,
+	m-karicheri2@ti.com,
+	glaroque@baylibre.com,
+	afd@ti.com,
+	saikrishnag@marvell.com,
+	m-malladi@ti.com,
+	jacob.e.keller@intel.com,
+	diogo.ivo@siemens.com,
+	javier.carrasco.cruz@gmail.com,
+	horms@kernel.org,
+	s-anna@ti.com,
+	basharath@couthit.com,
+	parvathi@couthit.com
+Cc: linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	vadim.fedorenko@linux.dev,
+	pratheesh@ti.com,
+	prajith@ti.com,
+	vigneshr@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	rogerq@ti.com,
+	krishna@couthit.com,
+	pmohan@couthit.com,
+	mohan@couthit.com
+Subject: [PATCH net-next v10 00/11] PRU-ICSSM Ethernet Driver
+Date: Wed,  2 Jul 2025 19:36:22 +0530
+Message-Id: <20250702140633.1612269-1-parvathi@couthit.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
+X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Sat, 28 Jun 2025 00:01:33 +0200
-Ilya Maximets <i.maximets@ovn.org> wrote:
+Hi,
 
-> When a packet enters OVS datapath and there is no flow to handle it,
-> packet goes to userspace through a MISS upcall.  With per-CPU upcall
-> dispatch mechanism, we're using the current CPU id to select the
-> Netlink PID on which to send this packet.  This allows us to send
-> packets from the same traffic flow through the same handler.
-> 
-> The handler will process the packet, install required flow into the
-> kernel and re-inject the original packet via OVS_PACKET_CMD_EXECUTE.
-> 
-> While handling OVS_PACKET_CMD_EXECUTE, however, we may hit a
-> recirculation action that will pass the (likely modified) packet
-> through the flow lookup again.  And if the flow is not found, the
-> packet will be sent to userspace again through another MISS upcall.
-> 
-> However, the handler thread in userspace is likely running on a
-> different CPU core, and the OVS_PACKET_CMD_EXECUTE request is handled
-> in the syscall context of that thread.  So, when the time comes to
-> send the packet through another upcall, the per-CPU dispatch will
-> choose a different Netlink PID, and this packet will end up processed
-> by a different handler thread on a different CPU.
+The Programmable Real-Time Unit Industrial Communication Sub-system (PRU-ICSS)
+is available on the TI SOCs in two flavors: Gigabit ICSS (ICSSG) and the older
+Megabit ICSS (ICSSM).
 
+Support for ICSSG Dual-EMAC mode has already been mainlined [1] and the
+fundamental components/drivers such as PRUSS driver, Remoteproc driver,
+PRU-ICSS INTC, and PRU-ICSS IEP drivers are already available in the mainline
+Linux kernel. The current set of patch series builds on top of these components
+and introduces changes to support the Dual-EMAC using ICSSM on the TI AM57xx,
+AM437x and AM335x devices.
 
-The per-CPU dispatch mode is supposed to rely on the CPU context, 
-which according with what you said above, it is working okay on 
-the first MISS. However, when we hit a recirculation action and 
-there is another MISS, another thread from another CPU context 
-is selected, why?
+AM335x, AM437x and AM57xx devices may have either one or two PRU-ICSS instances
+with two 32-bit RISC PRU cores. Each PRU core has (a) dedicated Ethernet interface
+(MII, MDIO), timers, capture modules, and serial communication interfaces, and
+(b) dedicated data and instruction RAM as well as shared RAM for inter PRU
+communication within the PRU-ICSS.
 
-Thanks,
-Flavio
+These patches add support for the following features:
+- RX and TX over PRU Ethernet ports in Dual-EMAC mode
+- Full duplex with 100 Mbps link speed.
+- VLAN Filtering
+- Multicast Filtering
+- Promiscuous mode
+- Storm prevention
+- Interrupt coalescing
+- Linux PTP (ptp4l) Ordinary clock
 
-> 
-> The process continues as long as there are new recirculations, each
-> time the packet goes to a different handler thread before it is sent
-> out of the OVS datapath to the destination port.  In real setups the
-> number of recirculations can go up to 4 or 5, sometimes more.
-> 
-> There is always a chance to re-order packets while processing upcalls,
-> because userspace will first install the flow and then re-inject the
-> original packet.  So, there is a race window when the flow is already
-> installed and the second packet can match it and be forwarded to the
-> destination before the first packet is re-injected.  But the fact that
-> packets are going through multiple upcalls handled by different
-> userspace threads makes the reordering noticeably more likely, because
-> we not only have a race between the kernel and a userspace handler
-> (which is hard to avoid), but also between multiple userspace
-> handlers.
-> 
-> For example, let's assume that 10 packets got enqueued through a MISS
-> upcall for handler-1, it will start processing them, will install the
-> flow into the kernel and start re-injecting packets back, from where
-> they will go through another MISS to handler-2.  Handler-2 will
-> install the flow into the kernel and start re-injecting the packets,
-> while handler-1 continues to re-inject the last of the 10 packets,
-> they will hit the flow installed by handler-2 and be forwarded
-> without going to the handler-2, while handler-2 still re-injects the
-> first of these 10 packets.  Given multiple recirculations and misses,
-> these 10 packets may end up completely mixed up on the output from
-> the datapath.
-> 
-> Let's allow userspace to specify on which Netlink PID the packets
-> should be upcalled while processing OVS_PACKET_CMD_EXECUTE.
-> This makes it possible to ensure that all the packets are processed
-> by the same handler thread in the userspace even with them being
-> upcalled multiple times in the process.  Packets will remain in order
-> since they will be enqueued to the same socket and re-injected in the
-> same order.  This doesn't eliminate re-ordering as stated above, since
-> we still have a race between kernel and the userspace thread, but it
-> allows to eliminate races between multiple userspace threads.
-> 
-> Userspace knows the PID of the socket on which the original upcall is
-> received, so there is no need to send it up from the kernel.
-> 
-> Solution requires storing the value somewhere for the duration of the
-> packet processing.  There are two potential places for this: our skb
-> extension or the per-CPU storage.  It's not clear which is better,
-> so just following currently used scheme of storing this kind of things
-> along the skb.
-> 
-> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-> ---
->  include/uapi/linux/openvswitch.h |  6 ++++++
->  net/openvswitch/actions.c        |  6 ++++--
->  net/openvswitch/datapath.c       | 10 +++++++++-
->  net/openvswitch/datapath.h       |  3 +++
->  net/openvswitch/vport.c          |  1 +
->  5 files changed, 23 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/uapi/linux/openvswitch.h
-> b/include/uapi/linux/openvswitch.h index 3a701bd1f31b..3092c2c6f1d2
-> 100644 --- a/include/uapi/linux/openvswitch.h
-> +++ b/include/uapi/linux/openvswitch.h
-> @@ -186,6 +186,11 @@ enum ovs_packet_cmd {
->   * %OVS_PACKET_ATTR_USERSPACE action specify the Maximum received
-> fragment
->   * size.
->   * @OVS_PACKET_ATTR_HASH: Packet hash info (e.g. hash, sw_hash and
-> l4_hash in skb).
-> + * @OVS_PACKET_ATTR_UPCALL_PID: Netlink PID to use for upcalls while
-> + * processing %OVS_PACKET_CMD_EXECUTE.  Takes precedence over all
-> other ways
-> + * to determine the Netlink PID including %OVS_USERSPACE_ATTR_PID,
-> + * %OVS_DP_ATTR_UPCALL_PID, %OVS_DP_ATTR_PER_CPU_PIDS and the
-> + * %OVS_VPORT_ATTR_UPCALL_PID.
->   *
->   * These attributes follow the &struct ovs_header within the Generic
-> Netlink
->   * payload for %OVS_PACKET_* commands.
-> @@ -205,6 +210,7 @@ enum ovs_packet_attr {
->  	OVS_PACKET_ATTR_MRU,	    /* Maximum received IP
-> fragment size. */ OVS_PACKET_ATTR_LEN,	    /* Packet size
-> before truncation. */ OVS_PACKET_ATTR_HASH,	    /* Packet
-> hash. */
-> +	OVS_PACKET_ATTR_UPCALL_PID, /* u32 Netlink PID. */
->  	__OVS_PACKET_ATTR_MAX
->  };
->  
-> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-> index 3add108340bf..2832e0794197 100644
-> --- a/net/openvswitch/actions.c
-> +++ b/net/openvswitch/actions.c
-> @@ -941,8 +941,10 @@ static int output_userspace(struct datapath *dp,
-> struct sk_buff *skb, break;
->  
->  		case OVS_USERSPACE_ATTR_PID:
-> -			if (dp->user_features &
-> -			    OVS_DP_F_DISPATCH_UPCALL_PER_CPU)
-> +			if (OVS_CB(skb)->upcall_pid)
-> +				upcall.portid =
-> OVS_CB(skb)->upcall_pid;
-> +			else if (dp->user_features &
-> +				 OVS_DP_F_DISPATCH_UPCALL_PER_CPU)
->  				upcall.portid =
->  				  ovs_dp_get_upcall_portid(dp,
->  							   smp_processor_id());
-> diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-> index b990dc83504f..ec08ce72f439 100644
-> --- a/net/openvswitch/datapath.c
-> +++ b/net/openvswitch/datapath.c
-> @@ -267,7 +267,9 @@ void ovs_dp_process_packet(struct sk_buff *skb,
-> struct sw_flow_key *key) memset(&upcall, 0, sizeof(upcall));
->  		upcall.cmd = OVS_PACKET_CMD_MISS;
->  
-> -		if (dp->user_features &
-> OVS_DP_F_DISPATCH_UPCALL_PER_CPU)
-> +		if (OVS_CB(skb)->upcall_pid)
-> +			upcall.portid = OVS_CB(skb)->upcall_pid;
-> +		else if (dp->user_features &
-> OVS_DP_F_DISPATCH_UPCALL_PER_CPU) upcall.portid =
->  			    ovs_dp_get_upcall_portid(dp,
-> smp_processor_id()); else
-> @@ -616,6 +618,7 @@ static int ovs_packet_cmd_execute(struct sk_buff
-> *skb, struct genl_info *info) struct sw_flow_actions *sf_acts;
->  	struct datapath *dp;
->  	struct vport *input_vport;
-> +	u32 upcall_pid = 0;
->  	u16 mru = 0;
->  	u64 hash;
->  	int len;
-> @@ -651,6 +654,10 @@ static int ovs_packet_cmd_execute(struct sk_buff
-> *skb, struct genl_info *info) !!(hash & OVS_PACKET_HASH_L4_BIT));
->  	}
->  
-> +	if (a[OVS_PACKET_ATTR_UPCALL_PID])
-> +		upcall_pid =
-> nla_get_u32(a[OVS_PACKET_ATTR_UPCALL_PID]);
-> +	OVS_CB(packet)->upcall_pid = upcall_pid;
-> +
->  	/* Build an sw_flow for sending this packet. */
->  	flow = ovs_flow_alloc();
->  	err = PTR_ERR(flow);
-> @@ -719,6 +726,7 @@ static const struct nla_policy
-> packet_policy[OVS_PACKET_ATTR_MAX + 1] = { [OVS_PACKET_ATTR_PROBE] =
-> { .type = NLA_FLAG }, [OVS_PACKET_ATTR_MRU] = { .type = NLA_U16 },
->  	[OVS_PACKET_ATTR_HASH] = { .type = NLA_U64 },
-> +	[OVS_PACKET_ATTR_UPCALL_PID] = { .type = NLA_U32 },
->  };
->  
->  static const struct genl_small_ops dp_packet_genl_ops[] = {
-> diff --git a/net/openvswitch/datapath.h b/net/openvswitch/datapath.h
-> index cfeb817a1889..db0c3e69d66c 100644
-> --- a/net/openvswitch/datapath.h
-> +++ b/net/openvswitch/datapath.h
-> @@ -121,6 +121,8 @@ struct datapath {
->   * @cutlen: The number of bytes from the packet end to be removed.
->   * @probability: The sampling probability that was applied to this
-> skb; 0 means
->   * no sampling has occurred; U32_MAX means 100% probability.
-> + * @upcall_pid: Netlink socket PID to use for sending this packet to
-> userspace;
-> + * 0 means "not set" and default per-CPU or per-vport dispatch
-> should be used. */
->  struct ovs_skb_cb {
->  	struct vport		*input_vport;
-> @@ -128,6 +130,7 @@ struct ovs_skb_cb {
->  	u16			acts_origlen;
->  	u32			cutlen;
->  	u32			probability;
-> +	u32			upcall_pid;
->  };
->  #define OVS_CB(skb) ((struct ovs_skb_cb *)(skb)->cb)
->  
-> diff --git a/net/openvswitch/vport.c b/net/openvswitch/vport.c
-> index 8732f6e51ae5..6bbbc16ab778 100644
-> --- a/net/openvswitch/vport.c
-> +++ b/net/openvswitch/vport.c
-> @@ -501,6 +501,7 @@ int ovs_vport_receive(struct vport *vport, struct
-> sk_buff *skb, OVS_CB(skb)->mru = 0;
->  	OVS_CB(skb)->cutlen = 0;
->  	OVS_CB(skb)->probability = 0;
-> +	OVS_CB(skb)->upcall_pid = 0;
->  	if (unlikely(dev_net(skb->dev) !=
-> ovs_dp_get_net(vport->dp))) { u32 mark;
->  
+Further, note that these are the first set of patches for a single instance of
+PRU-ICSS Ethernet. Switch mode support for AM335x, AM437x and AM57x along with
+support for a second instance of PRU-ICSS on AM57x will be posted subsequently.
+
+The patches presented in this series have gone through the patch verification
+tools and no warnings or errors are reported. Sample test logs obtained from AM33x,
+AM43x and AM57x verifying the functionality on Linux next kernel are available here:
+
+[Interface up Testing](https://gist.github.com/ParvathiPudi/25e5b6d4d92d395c93b5a847fce3dda5)
+
+[Ping Testing](https://gist.github.com/ParvathiPudi/a026401293c45fe08fccf1ca2830a70a)
+
+[Iperf Testing](https://gist.github.com/ParvathiPudi/8f729db42e27f1e3e860f1832d276dc0)
+
+[1] https://lore.kernel.org/all/20230106121046.886863-1-danishanwar@ti.com/
+[2] https://lore.kernel.org/all/20250108125937.10604-1-basharath@couthit.com/
+
+This is the v10 of the patch series [v1]. This version of the patchset
+addresses the comments made on [v9] of the series.
+
+Changes from v9 to v10 :
+*) Addressed Vadim Fedorenko comments on patch 6 and 11 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v8 to v9 :
+
+*) Addressed Vadim Fedorenko comments on patch 6 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v7 to v8 :
+
+*) Addressed Paolo Abeni comments on patch 3 and 4 of the series.
+*) Replaced threaded IRQ logic with NAPI logic based on feedback from Paolo Abeni.
+*) Added Reviewed-by: tag from Rob Herring for patch 1.
+*) Rebased the series on latest net-next.
+
+Changes from v6 to v7 :
+
+*) Addressed Rob Herring comments on patch 1 of the series.
+*) Addressed Jakub Kicinski comments on patch 4, 5 and 6 of the series.
+*) Addressed Alok Tiwari comments on Patch 1, 4 and 5 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v5 to v6 :
+
+*) Addressed Simon Horman comments on patch 2, 7 and 11 of the series.
+*) Addressed Andrew Lunn comments on patch 5 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v4 to v5 :
+
+*) Addressed Andrew Lunn and Keller, Jacob E comments on patch 5 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v3 to v4 :
+
+*) Added support for AM33x and AM43x platforms.
+*) Removed SOC patch [2] and its dependencies.
+*) Addressed Jakub Kicinski, MD Danish Anwar and Nishanth Menon comments on cover
+   letter of the series.
+*) Addressed Rob Herring comments on patch 1 of the series.
+*) Addressed Ratheesh Kannoth comments on patch 2 of the series.
+*) Addressed Maxime Chevallier comments on patch 4 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v2 to v3 :
+
+*) Addressed Conor Dooley comments on patch 1 of the series.
+*) Addressed Simon Horman comments on patch 2, 3, 4, 5 and 6 of the series.
+*) Addressed Joe Damato comments on patch 4 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v1 to v2 :
+
+*) Addressed Andrew Lunn, Rob Herring comments on patch 1 of the series.
+*) Addressed Andrew Lunn comments on patch 2, 3, and 4 of the series.
+*) Addressed Richard Cochran, Jason Xing comments on patch 6 of the series.
+*) Rebased patchset on next-202401xx linux-next.
+
+[v1] https://lore.kernel.org/all/20250109105600.41297-1-basharath@couthit.com/
+[v2] https://lore.kernel.org/all/20250124122353.1457174-1-basharath@couthit.com/
+[v3] https://lore.kernel.org/all/20250214054702.1073139-1-parvathi@couthit.com/
+[v4] https://lore.kernel.org/all/20250407102528.1048589-1-parvathi@couthit.com/
+[v5] https://lore.kernel.org/all/20250414113458.1913823-1-parvathi@couthit.com/
+[v6] https://lore.kernel.org/all/20250423060707.145166-1-parvathi@couthit.com/
+[v7] https://lore.kernel.org/all/20250503121107.1973888-1-parvathi@couthit.com/
+[v8] https://lore.kernel.org/all/20250610105721.3063503-1-parvathi@couthit.com/
+[v9] https://lore.kernel.org/all/20250623135949.254674-1-parvathi@couthit.com/
+
+Thanks and Regards,
+Parvathi.
+
+Murali Karicheri (1):
+  net: ti: prueth: Adds support for RX interrupt coalescing/pacing
+
+Parvathi Pudi (1):
+  dt-bindings: net: ti: Adds DUAL-EMAC mode support on PRU-ICSS2 for
+    AM57xx, AM43xx and AM33xx SOCs
+
+Roger Quadros (9):
+  net: ti: prueth: Adds ICSSM Ethernet driver
+  net: ti: prueth: Adds PRUETH HW and SW configuration
+  net: ti: prueth: Adds link detection, RX and TX support.
+  net: ti: prueth: Adds ethtool support for ICSSM PRUETH Driver
+  net: ti: prueth: Adds HW timestamping support for PTP using PRU-ICSS
+    IEP module
+  net: ti: prueth: Adds support for network filters for traffic control
+    supported by PRU-ICSS
+  net: ti: prueth: Adds power management support for PRU-ICSS
+  net: ti: prueth: Adds support for PRUETH on AM33x and AM43x SOCs
+  net: ti: prueth: Adds PTP OC Support for AM335x and AM437x
+
+ .../devicetree/bindings/net/ti,icss-iep.yaml  |   10 +-
+ .../bindings/net/ti,icssm-prueth.yaml         |  233 ++
+ .../bindings/net/ti,pruss-ecap.yaml           |   32 +
+ .../devicetree/bindings/soc/ti/ti,pruss.yaml  |    9 +
+ drivers/net/ethernet/ti/Kconfig               |   24 +
+ drivers/net/ethernet/ti/Makefile              |    5 +
+ drivers/net/ethernet/ti/icssg/icss_iep.c      |  277 +-
+ drivers/net/ethernet/ti/icssg/icss_iep.h      |   12 +
+ drivers/net/ethernet/ti/icssm/icssm_ethtool.c |  337 +++
+ drivers/net/ethernet/ti/icssm/icssm_prueth.c  | 2487 +++++++++++++++++
+ drivers/net/ethernet/ti/icssm/icssm_prueth.h  |  464 +++
+ .../net/ethernet/ti/icssm/icssm_prueth_dos.c  |  222 ++
+ .../net/ethernet/ti/icssm/icssm_prueth_ecap.c |  312 +++
+ .../net/ethernet/ti/icssm/icssm_prueth_ecap.h |   47 +
+ .../net/ethernet/ti/icssm/icssm_prueth_ptp.h  |   85 +
+ drivers/net/ethernet/ti/icssm/icssm_switch.h  |  285 ++
+ .../ti/icssm/icssm_vlan_mcast_filter_mmap.h   |  120 +
+ 17 files changed, 4957 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
+ create mode 100644 Documentation/devicetree/bindings/net/ti,pruss-ecap.yaml
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_ethtool.c
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth.c
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth.h
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_dos.c
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_ecap.c
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_ecap.h
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_ptp.h
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_switch.h
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_vlan_mcast_filter_mmap.h
+
+-- 
+2.34.1
 
