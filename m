@@ -1,130 +1,121 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCCF4C6E;
-	Wed,  2 Jul 2025 10:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B26253F15
+	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 10:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751452999; cv=none; b=bx8Ip8R8BFxriCByQB+jS+p7MoNVuqWrmNW4RV5QecYLgwOsZXc2Vb0wa0HSSDaEV0YC4+hrEBPzvrk4U8sX6UK/pn30RngkkU2GSlRMUKDi6ZfuO8tR8w3NNBbhypitludwNBc0NkSre+1BXD6rf9/wamFs8YX+wdPIyIwKsGE=
+	t=1751453668; cv=none; b=A2H4MmfMA/MiPh+AhO8mhzg74YHroS3msS6Z0XZv5TQdl5g3qPJkaHdpz8FFM7UxanjgVFspfYEswIlpwGZPBRDJv4yXCmBRhg0cttbYEmLZd1kQZaZZDYbCWxjDCTYyJbAg7wpFihgAcsP0ZPjAXpjt53PF/5KEfW6p9nI/JEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751452999; c=relaxed/simple;
-	bh=RHLJ9D48DllsGUWCN1uoEd21Mm8wSzcmeliizhoLpy4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bhncK0RyPPm74ClZgX75qC1rAF0Euqt67pcKvppeoihQe4T/J0quGgHMPvcG6PyBjD4+CoDrp+uixOobVQgzNpfMhBpR8zhnjLcO83AYKJUVhXSFQP6wp1olStjRYGVouNl/xiJjpjTstHhCdlIczB9IGlRVYPEwqnhvOPHafcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q8oFkd6g; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751453668; c=relaxed/simple;
+	bh=DWeR+/uQQSYMmH/LvahmZ0RIw9E1q0WXOgj4Vn2Kq3c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bMiQFT6FOQZsy5IrHbRGk+MfrzotSpSdnXMXeR2aXcDdgr9rWkQ8NREGvb4ra3gH2AwYIuOJw2uuLupYTma6ihDI/AjHCd3JUrGSZrALNMFQsNJD5D43OyaFi+WEh6ih9EZLBT6yZu+SIVAJvbQb3p3K+g447t86YuGRsnZ+1sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=N2+PRhfs; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q8oFkd6g"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-747fc77bb2aso4044144b3a.3;
-        Wed, 02 Jul 2025 03:43:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="N2+PRhfs"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4538bc1cffdso40906175e9.0
+        for <netdev@vger.kernel.org>; Wed, 02 Jul 2025 03:54:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751452997; x=1752057797; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zdPAwwrb4QJU2IWSSlyaWAnqCnTmtH2bZk+NO2oHIiA=;
-        b=Q8oFkd6g03X6+RJo05Oae/BwHM4IqRUWtDU9EXA4UEK/Txbv73ZOpzOTf/jH9yLQ29
-         QYVgY3VRNI+8QWPbRmE2drNQV9QJhhGwtbDmPrjiUl7yHpTp5JimZEV7nIAsR4t+WHq7
-         UAupONbSUc/ErwBawa6cMS3RztwM+ZO53E/S2k0l62JyTOJpatvDIK066VbAhkrS2Y0A
-         REmaIQHJmGpddE+JUP1g8WXEE50Z0Yu213Ml1jQiwog3QrpNTiKo3Ci14B/LdjPfWuZ2
-         UCoYe+3KuUipUd/RF+wr14K3VeK7OdA+FZ3yKoUypxgF/n7ehuLCgVAgs+gttSSGpWzG
-         StxA==
+        d=suse.com; s=google; t=1751453664; x=1752058464; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2Jg9h1VCLy4qgpopj8IiT7Jm8iMsC+mvB1PgrDfbBVE=;
+        b=N2+PRhfscD0orJLHMjTS5mMyjsrnqnShvdO0j55Hvw2Ix+mMm0+yiKGtnMsidce9db
+         k5X2PZWu2GEwuOmHVf+M8Zn8T8rGQ8xtZvVC/33j7mYNgtrMSYZcovZNTjxjloWqgMpp
+         CqAlGhXVDA9VauMbUq7fTMSkExaFaIHd+RhUTnoSfUyNHM9NSzMA2tlWYkC/MpztWfvc
+         5jh2DVm03v9WzJZlRCJmqS+p3z1ZQEV3cyEaI6wdsaA+uk3nybOKub/z0nIYtjabUKh0
+         OFf5ZW77JrBjQl5m6WEf5jPO4+qsPYt73E00g9QT7sLO0k4YenAekQZYVVmru6sHYidR
+         muWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751452997; x=1752057797;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zdPAwwrb4QJU2IWSSlyaWAnqCnTmtH2bZk+NO2oHIiA=;
-        b=OF4/7pT4M1MR6iAboIK58hceMYFV+Ok82G46FVFoTE+hDhyFiOziJUSk9MhXBcPIiW
-         wCi7WKJz9z/tAPDMigDz0rqTh/L+NNeYc0hWcZtS/e5DtxOxJIKlGUnq+dxYrtkGuqSP
-         Y6o/at6g58zCiC4zmRm5h3GuH6JY8/LxlmGhrHxt1JBkLXjdjdffm0nrDPhxF9p9tgX+
-         vLSziH207QD0UN4vi5+xehGb19kGEM1wPey2fg941LS/YX8xRD2kZFJcQY6N5rfQJ2sz
-         s1NYGesNSB0upnDhC2XV6ooFAPN5nM63MlH11ZbHAdhlCzgDde5KYdSvLZPxAPlPwRZK
-         I+lA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKpUShm5E8lgmIIMPNn/tUG6aWvqK2UbugzdPuWppZR3f9rfYyuwIXYtuomichmWNW15M3GvwAxNsN5QCdTQM=@vger.kernel.org, AJvYcCUcSddts3HLE/BDmDXYwnBVbmhVDglQlB61G6RlUoYM5JJjvjSH27HGnWLZ7NXHnpJX0EVYAxHY@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5AGIyvPXm2fsK2yNIHI+x/XdzQO2491m/QZcOz7oWMGe7h91l
-	U7E+pAPJZVYMHWKw8OX+p/+4okXSGeGtxUkU4Fz1vly6CuHTU8kXbrez
-X-Gm-Gg: ASbGncvu04x1jra8JC9al47BsCTelL6b35sxwPreuGx/OFdk1fbbtJ2vdrGPBTRBO01
-	h547Y+m+CyHdt83lkORZtXYcZXNVELCt0hm8p5+qFTyEcMDzc7I4fLajUZoTm8Sq6OV3WsNU4r4
-	m5S0h2kU6abnlHaZHETXNNsXgeQSRf/Il/TzNY73V4ZL/29SvSA31teiO8hy4aagg5jhzbrc63s
-	ftaJaMDHxcZO2Fl5KVgzN0BdM2oF0KrlReA48x4ao8ma7gOcDTq5V0wBJOfz1P2SQkR5XkRUFc0
-	d1NHFSShNjd9UDQ6/TYKMrEJMH2/JRudzYQ+LXhkihBUNFZv29g=
-X-Google-Smtp-Source: AGHT+IEeiHFvgdgKJjn0wBnclG5KXDNWT8Pp2yzRR3R/ETtmSUop97FYezDUkFO3sL3XSJBZmVb8HA==
-X-Received: by 2002:a05:6a20:3ca3:b0:222:1802:2ddb with SMTP id adf61e73a8af0-222d7dc4e64mr5025821637.8.1751452996777;
-        Wed, 02 Jul 2025 03:43:16 -0700 (PDT)
-Received: from ap.. ([182.213.254.91])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74af54099besm14064227b3a.9.2025.07.02.03.43.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Jul 2025 03:43:16 -0700 (PDT)
-From: Taehee Yoo <ap420073@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	shuah@kernel.org,
-	almasrymina@google.com,
-	sdf@fomichev.me,
-	jdamato@fastly.com,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Cc: ap420073@gmail.com
-Subject: [PATCH v2 net-next] selftests: devmem: configure HDS threshold
-Date: Wed,  2 Jul 2025 10:42:49 +0000
-Message-Id: <20250702104249.1665034-1-ap420073@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1751453664; x=1752058464;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Jg9h1VCLy4qgpopj8IiT7Jm8iMsC+mvB1PgrDfbBVE=;
+        b=X9R454ddHImT/hiYtY/ZHFgvlLRZLej1VlSfF9mqvqJwR97U0cagjRWHaJWyTf3lUO
+         I+XPxo+wYUZSXJ/LxpS0qtjLEP7aAqQ8PIZlNp2zAIdk++dRHHcSBysbIR3Tjx9iuXNm
+         T6mE6jaoae8IwyhUMKm6Ngc/KumfgzRJ1PD4onAsWER0p9SjQ3oLzs5+o7Ckv/U7oxhv
+         4F/w/hQPyep6Cz/NaO1ohnEiwLVssDcAdqZAYwklAHLBgWal7QoFbvKS5Ra9g4AP0qr9
+         ULP2I2rjXgqheqykbm4hllD4fMiuyJ3Q0ACkvrsCQhRsplWb/yRWXfc5lLQtv4lPhm9h
+         EU6w==
+X-Forwarded-Encrypted: i=1; AJvYcCWEzGgbBuk11r2mOacP2BzoLDCuBs6Jr88c5JShy7yrNBlyZbVi55GS5QDeRKRNLdr+5VN8pF4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxH4X7nlySeU5Ru00OT89Won5yFj2Y+NppmiLgfASk6SaXV1o6
+	t0Jd17IZ7k1u5PDTga2CnDV368E5nEeazihUGqPnYyKnVhGvU1oHufAViAQf3bnuSXA=
+X-Gm-Gg: ASbGncuUdY3CBYgAkax9zL4VAMe+r4mrZLTF5VdA5Gw3hi/uP8WK1R3Qx41iEFb+BCP
+	c+XNlAq5J3WAk5FLzpmHzdUbS59277l6NpegSfGpTgEQ3srIjZVqIY9mEk3jBU5SloYXLCntDhM
+	J/bwlBg7wGAjvl+fgLjSl1ihBfXtkSYZdEMl6ZeTuZpRBVInbYQHSPB9FKr+OBJX/ohlxc6kIJF
+	CDAuGyvV4h7A+I0Hw21gA/qIUzQvLFFGj1tu54grGXXFBWDy3l2QKl2eZGqglcYHWATrKTf0Dkh
+	zhd7XJ+YYLFrBgwxh6lSpBDdpGLkZAe7i6LFQ65YMXUsaI/6XN5dYNam6NtabJgSWTdGg146SNv
+	m6YuAqQQjvRUJhD6E/AJ2lB9pnrzD
+X-Google-Smtp-Source: AGHT+IGAIK/G/I8tdPVOI217bep69ojNDn163oQvep1EwZXnaYnHz492awG91UUkdfrnfI0nWERljQ==
+X-Received: by 2002:a05:600c:3b24:b0:442:f12f:bd9f with SMTP id 5b1f17b1804b1-454a371d3eemr24456755e9.27.1751453664299;
+        Wed, 02 Jul 2025 03:54:24 -0700 (PDT)
+Received: from ?IPV6:2001:a61:13c3:8601:acfb:599e:12fa:d72a? ([2001:a61:13c3:8601:acfb:599e:12fa:d72a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a88c7e6f74sm15728135f8f.3.2025.07.02.03.54.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Jul 2025 03:54:24 -0700 (PDT)
+Message-ID: <560fa48a-7e0b-4b50-bebb-b3600efaadd3@suse.com>
+Date: Wed, 2 Jul 2025 12:54:23 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: usb: usbnet: fix use-after-free in race on workqueue
+To: Jakub Kicinski <kuba@kernel.org>, Oliver Neukum <oneukum@suse.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, "Peter GJ. Park"
+ <gyujoon.park@samsung.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Ming Lei <ming.lei@canonical.com>
+References: <CGME20250625093354epcas1p1c9817df6e1d1599e8b4eb16c5715a6fd@epcas1p1.samsung.com>
+ <20250625-usbnet-uaf-fix-v1-1-421eb05ae6ea@samsung.com>
+ <87a7f8a6-71b1-4b90-abc7-0a680f2a99cf@redhat.com>
+ <ebd0bb9b-8e66-4119-b011-c1a737749fb2@suse.com>
+ <20250701182617.07d6e437@kernel.org>
+Content-Language: en-US
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <20250701182617.07d6e437@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The devmem TCP requires the hds-thresh value to be 0, but it doesn't
-change it automatically.
-Therefore, make configure_headersplit() sets hds-thresh value to 0.
+On 02.07.25 03:26, Jakub Kicinski wrote:
+> On Tue, 1 Jul 2025 15:22:54 +0200 Oliver Neukum wrote:
 
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
----
+>> That is indeed a core question, which we really need an answer to.
+>> Do I interpret dev_close_many() correctly, if I state that the
+>> ndo_stop() method will _not_ be called if the device has never been
+>> opened?
+> 
+> Correct, open and close are paired. Most drivers would crash if we
+> tried to close them before they ever got opened.
 
-v2:
- - Do not implement configure_hds_thresh().
- - Make configure_headersplit() sets hds-thresh to 0.
+Thank you for clarifying that.
 
- tools/testing/selftests/drivers/net/hw/ncdevmem.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+>> I am sorry to be a stickler here, but if that turns out to be true,
+>> usbnet is not the only driver that has this bug.
+> 
+> Shooting from the hip slightly, but its unusual for a driver to start
+> link monitoring before open. After all there can be no packets on a
+> device that's closed. Why not something like:
 
-diff --git a/tools/testing/selftests/drivers/net/hw/ncdevmem.c b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-index cc9b40d9c5d5..52b72de11e3b 100644
---- a/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-+++ b/tools/testing/selftests/drivers/net/hw/ncdevmem.c
-@@ -331,6 +331,12 @@ static int configure_headersplit(bool on)
- 	ret = ethtool_rings_set(ys, req);
- 	if (ret < 0)
- 		fprintf(stderr, "YNL failed: %s\n", ys->err.msg);
-+	if (on) {
-+		ethtool_rings_set_req_set_hds_thresh(req, 0);
-+		ret = ethtool_rings_set(ys, req);
-+		if (ret < 0)
-+			fprintf(stderr, "YNL failed: %s\n", ys->err.msg);
-+	}
- 	ethtool_rings_set_req_free(req);
- 
- 	if (ret == 0) {
-@@ -338,9 +344,12 @@ static int configure_headersplit(bool on)
- 		ethtool_rings_get_req_set_header_dev_index(get_req, ifindex);
- 		get_rsp = ethtool_rings_get(ys, get_req);
- 		ethtool_rings_get_req_free(get_req);
--		if (get_rsp)
-+		if (get_rsp) {
- 			fprintf(stderr, "TCP header split: %s\n",
- 				tcp_data_split_str(get_rsp->tcp_data_split));
-+			fprintf(stderr, "HDS threshold: %u\n",
-+				get_rsp->hds_thresh);
-+		}
- 		ethtool_rings_get_rsp_free(get_rsp);
- 	}
- 
--- 
-2.34.1
+It turns out that user space wants to know whether there is carrier
+even before it uses an interface because it uses that information
+to decide whether to use the link.
+
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=444043
+
+However, it looks to me like the issue is specifically
+queuing work for kevent. That would call for reverting
+0162c55463057 ("usbnet: apply usbnet_link_change")
+[taking author into CC]
+
+	Regards
+		Oliver
 
