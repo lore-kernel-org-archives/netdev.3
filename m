@@ -1,222 +1,158 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2D727702D;
-	Wed,  2 Jul 2025 13:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D49D253F35
+	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 13:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751462169; cv=none; b=FWHcw12AOVf/mHvpESPkFJ5Z40j7jhoZydcQlgrLjpaJqW21173h3TFNF9a1btoY8+JRU8jex2e2Xz0yN+IDpguZ8pelrNLUSPnjmYW2234YjHsGcDteMb9alIrxYfH0CwDs5DYtTUytCuTvmgBLHagbrypL4fp9OVAN3slJavg=
+	t=1751462199; cv=none; b=JoFk4EHpucOJdAGXxsDpbV++l0MEKe4/r9q9Tx87H3bnvV7P688xiKr7nIKygJDHmOo3BTG2W99pdWCObH104EUIhk/6XrB20qe6NzmljIwCKIyiuxH+NFoUc0+oIikkhykbtAREIKY2p+AHU97uWLaoIINeBr5KIj22ZRyfTEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751462169; c=relaxed/simple;
-	bh=3f4gcrnMSKnMOdj6g/xhAF++jPkWPplseWiRneurOfM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jqoM3Y0C4aHQ6rm4NhYOCEr/0mUIUkeWiWom0uy6D/Q0nr9JAX5JOkvh0ohs9bC4pq1dv6hSVn0lNP5w3Nooch49nJGYnMfq+/8rz7k/8dkVV6X58u1Qv/vLKXEwWsyghocP/pObm3ZkOPBeOP9AgcY+GPfusMQ+pvS3xfarQrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4bXL3C3MP1ztSk3;
-	Wed,  2 Jul 2025 21:14:47 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3FB8414010D;
-	Wed,  2 Jul 2025 21:15:55 +0800 (CST)
-Received: from localhost.localdomain (10.90.31.46) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 2 Jul 2025 21:15:54 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
-	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<shaojijie@huawei.com>
-Subject: [PATCH net 4/4] net: hns3: default enable tx bounce buffer when smmu enabled
-Date: Wed, 2 Jul 2025 21:09:01 +0800
-Message-ID: <20250702130901.2879031-5-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20250702130901.2879031-1-shaojijie@huawei.com>
-References: <20250702130901.2879031-1-shaojijie@huawei.com>
+	s=arc-20240116; t=1751462199; c=relaxed/simple;
+	bh=1j1LyNigN5AHD08zHiexmmDlfFxiEshK30KkAloLUzs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KV1Lg5GEloH0kqhL9D/esfF/akFSXyQe13wYK2Kq8dMde++Ky5ENd6MSUiTS8DfJmkWoSY5pL8yd2swjwIZGr99sHSsa4Wz/kR2z9NpFjgqKeEA1RXDkbKDWDR+1oaaKhCQOmKavaIMqtMMjqOejhcIqIegtVlD0rI+w8f9yl5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OFpLAVJ9; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OFpLAVJ9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751462196;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sy4nWTHPkpPaaqEvDu9i4dBMnt5aD41NB3JYr++qf2M=;
+	b=OFpLAVJ9oUFP22/fqBDFeDG2TxYkk269JUXoghx6Xy/AoVsGzPGiuJLpDgBLs/cM4TC+NQ
+	ODguOszPhSit7aUOrHml/aHiA6dH0DVBPgOsbrx1hhyerxpiAqwA2aAHHzUieOPi9R7bdH
+	LpLhE1tUfkJ45jNm1iag+zQ8Qtci26g=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-502-4B43POM5N1iQhlZla6rhdA-1; Wed, 02 Jul 2025 09:16:35 -0400
+X-MC-Unique: 4B43POM5N1iQhlZla6rhdA-1
+X-Mimecast-MFC-AGG-ID: 4B43POM5N1iQhlZla6rhdA_1751462194
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-451deff247cso37106535e9.1
+        for <netdev@vger.kernel.org>; Wed, 02 Jul 2025 06:16:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751462194; x=1752066994;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sy4nWTHPkpPaaqEvDu9i4dBMnt5aD41NB3JYr++qf2M=;
+        b=G+7hJ9VCzP74B1RgniJBGGfMN2P+pyo9T5dBEopi40Jz6MeNvvVN7/1be5Z9FPaQgR
+         l/Bgi2KPOdXzIM9ZRmMvhpw3imMWdQydGHsCXaY45nc0ZYrPbK89Iyq+h8VsbHFCwfgC
+         HlG1QHM5ShWpNlLPLedyiBBMNNQfooQkoA93b3lRpoXCtXmDqu70N+UWlbxp+EvhSENx
+         8JT/V4jGRwIkWyw56ET8rx3d0Ocr/DEj+vAaT3cBVMTg/X8W5Fm15hgHb+k13yeEkE/k
+         WAJHdPQna3WXhBJcaKOD/voLg35xQA77z32qTb8BS5LU7MpXTzw8TErdihFTCrwhEI6d
+         16Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCUw/vDjKIbs8aItDFbkb2MpLKOQuYH4lhTrUkFFAhy2zcHxxa+ip/yKc3eh7SG56gc2zB53CqE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQYSGhyQO7C1JjdNtrMH1t+mVCAUlS3v6SgZR0iW1X2zUjGJqP
+	mkL7S6soAKCgtchcQHT/k12rGy8ufc4YskAoTcTxNThgqm20eGSsFR3l59ub4xYUbm464JVi1mN
+	2MjzguUo+FQOjvDHRRR1PI1Vduh6idhKxzEcayBDfsWzATi6+dWr5sfRiYA==
+X-Gm-Gg: ASbGncs9THpjwkopqD2z04CNtWbqaw7u78f8HpHEkkqNCscj/uALqOXX56VY8S6axNM
+	xEYWupl1F/EoFm0DGqUhRoZPzIS1Ju54rrBvhvD6GRQA060pZWImW6ND7aVDxNLQwO7u19HWedd
+	96Z+HVBKbYGaX23G/BQoI3xiGa3dyYcPJBNggSg0Nv/H3h2kaGK3SWn6U3Dj973TCUf6pjuk/1D
+	SXFjVSMos6hTR3ppg6OgAz6oMGPhzz+pq8/Rn1lWRCWi5rJMXfDHGtuYKHHT+smZTV0h2rh9tBF
+	vTEv434uoObH+c7cvnLY1HhW3zWd
+X-Received: by 2002:a05:600c:c0dc:b0:453:45f1:9c96 with SMTP id 5b1f17b1804b1-454a3c610camr23628635e9.14.1751462193946;
+        Wed, 02 Jul 2025 06:16:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEK+MShUn1qdie/bqB3hm1XM6IQ/XjWSETD0pYwme5TdPq6afvGUkaA/cLuoccNQG7Dhu4OBw==
+X-Received: by 2002:a05:600c:c0dc:b0:453:45f1:9c96 with SMTP id 5b1f17b1804b1-454a3c610camr23628285e9.14.1751462193306;
+        Wed, 02 Jul 2025 06:16:33 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.164.126])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a88c7e72c1sm15900209f8f.1.2025.07.02.06.16.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Jul 2025 06:16:32 -0700 (PDT)
+Date: Wed, 2 Jul 2025 15:16:19 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org, 
+	Keir Fraser <keirf@google.com>, Steven Moreland <smoreland@google.com>, 
+	Frederick Mayle <fmayle@google.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, netdev@vger.kernel.org, virtualization@lists.linux.dev
+Subject: Re: [PATCH v2 4/8] vsock/virtio: Resize receive buffers so that each
+ SKB fits in a page
+Message-ID: <3s4lvbnzdj72dcvvh2nnx4s7skyco4pbpwuyycccqv3iudqhnn@5szfvvgxojkb>
+References: <20250701164507.14883-1-will@kernel.org>
+ <20250701164507.14883-5-will@kernel.org>
+ <20250701201400.52442b0e@pumpkin>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250701201400.52442b0e@pumpkin>
 
-The SMMU engine on HIP09 chip has a hardware issue.
-SMMU pagetable prefetch features may prefetch and use a invalid PTE
-even the PTE is valid at that time. This will cause the device trigger
-fake pagefaults. The solution is to avoid prefetching by adding a
-SYNC command when smmu mapping a iova. But the performance of nic has a
-sharp drop. Then we do this workaround, always enable tx bounce buffer,
-avoid mapping/unmapping on TX path.
+On Tue, Jul 01, 2025 at 08:14:00PM +0100, David Laight wrote:
+>On Tue,  1 Jul 2025 17:45:03 +0100
+>Will Deacon <will@kernel.org> wrote:
+>
+>> When allocating receive buffers for the vsock virtio RX virtqueue, an
+>> SKB is allocated with a 4140 data payload (the 44-byte packet header +
+>> VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE). Even when factoring in the SKB
+>> overhead, the resulting 8KiB allocation thanks to the rounding in
+>> kmalloc_reserve() is wasteful (~3700 unusable bytes) and results in a
+>> higher-order page allocation for the sake of a few hundred bytes of
+>> packet data.
+>>
+>> Limit the vsock virtio RX buffers to a page per SKB, resulting in much
+>> better memory utilisation and removing the need to allocate higher-order
+>> pages entirely.
+>>
+>> Signed-off-by: Will Deacon <will@kernel.org>
+>> ---
+>>  include/linux/virtio_vsock.h     | 1 -
+>>  net/vmw_vsock/virtio_transport.c | 7 ++++++-
+>>  2 files changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+>> index eb6980aa19fd..1b5731186095 100644
+>> --- a/include/linux/virtio_vsock.h
+>> +++ b/include/linux/virtio_vsock.h
+>> @@ -109,7 +109,6 @@ static inline size_t virtio_vsock_skb_len(struct sk_buff *skb)
+>>  	return (size_t)(skb_end_pointer(skb) - skb->head);
+>>  }
+>>
+>> -#define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	(1024 * 4)
+>>  #define VIRTIO_VSOCK_MAX_BUF_SIZE		0xFFFFFFFFUL
+>>  #define VIRTIO_VSOCK_MAX_PKT_BUF_SIZE		(1024 * 64)
+>>
+>> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+>> index 488e6ddc6ffa..3daba06ed499 100644
+>> --- a/net/vmw_vsock/virtio_transport.c
+>> +++ b/net/vmw_vsock/virtio_transport.c
+>> @@ -307,7 +307,12 @@ virtio_transport_cancel_pkt(struct vsock_sock *vsk)
+>>
+>>  static void virtio_vsock_rx_fill(struct virtio_vsock *vsock)
+>>  {
+>> -	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM;
+>> +	/* Dimension the SKB so that the entire thing fits exactly into
+>> +	 * a single page. This avoids wasting memory due to alloc_skb()
+>> +	 * rounding up to the next page order and also means that we
+>> +	 * don't leave higher-order pages sitting around in the RX queue.
+>> +	 */
+>> +	int total_len = SKB_WITH_OVERHEAD(PAGE_SIZE);
+>
+>Should that be an explicit 4096?
+>Otherwise it is very wasteful of memory on systems with large pages.
 
-This issue only affects HNS3, so we always enable
-tx bounce buffer when smmu enabled to improve performance.
+This is a good point!
 
-Fixes: 295ba232a8c3 ("net: hns3: add device version to replace pci revision")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
----
- .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 31 +++++++++++++++++
- .../net/ethernet/hisilicon/hns3/hns3_enet.h   |  2 ++
- .../ethernet/hisilicon/hns3/hns3_ethtool.c    | 33 +++++++++++++++++++
- 3 files changed, 66 insertions(+)
+What about SKB_WITH_OVERHEAD(VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE) ?
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 49fcee7a6d0f..b028ca9a67a5 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -11,6 +11,7 @@
- #include <linux/irq.h>
- #include <linux/ip.h>
- #include <linux/ipv6.h>
-+#include <linux/iommu.h>
- #include <linux/module.h>
- #include <linux/pci.h>
- #include <linux/skbuff.h>
-@@ -1039,6 +1040,8 @@ static bool hns3_can_use_tx_sgl(struct hns3_enet_ring *ring,
- static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
- {
- 	u32 alloc_size = ring->tqp->handle->kinfo.tx_spare_buf_size;
-+	struct net_device *netdev = ring_to_netdev(ring);
-+	struct hns3_nic_priv *priv = netdev_priv(netdev);
- 	struct hns3_tx_spare *tx_spare;
- 	struct page *page;
- 	dma_addr_t dma;
-@@ -1080,6 +1083,7 @@ static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
- 	tx_spare->buf = page_address(page);
- 	tx_spare->len = PAGE_SIZE << order;
- 	ring->tx_spare = tx_spare;
-+	ring->tx_copybreak = priv->tx_copybreak;
- 	return;
- 
- dma_mapping_error:
-@@ -4874,6 +4878,30 @@ static void hns3_nic_dealloc_vector_data(struct hns3_nic_priv *priv)
- 	devm_kfree(&pdev->dev, priv->tqp_vector);
- }
- 
-+static void hns3_update_tx_spare_buf_config(struct hns3_nic_priv *priv)
-+{
-+#define HNS3_MIN_SPARE_BUF_SIZE (2 * 1024 * 1024)
-+#define HNS3_MAX_PACKET_SIZE (64 * 1024)
-+
-+	struct iommu_domain *domain = iommu_get_domain_for_dev(priv->dev);
-+	struct hnae3_ae_dev *ae_dev = hns3_get_ae_dev(priv->ae_handle);
-+	struct hnae3_handle *handle = priv->ae_handle;
-+
-+	if (ae_dev->dev_version < HNAE3_DEVICE_VERSION_V3)
-+		return;
-+
-+	if (!(domain && iommu_is_dma_domain(domain)))
-+		return;
-+
-+	priv->min_tx_copybreak = HNS3_MAX_PACKET_SIZE;
-+	priv->min_tx_spare_buf_size = HNS3_MIN_SPARE_BUF_SIZE;
-+
-+	if (priv->tx_copybreak < priv->min_tx_copybreak)
-+		priv->tx_copybreak = priv->min_tx_copybreak;
-+	if (handle->kinfo.tx_spare_buf_size < priv->min_tx_spare_buf_size)
-+		handle->kinfo.tx_spare_buf_size = priv->min_tx_spare_buf_size;
-+}
-+
- static void hns3_ring_get_cfg(struct hnae3_queue *q, struct hns3_nic_priv *priv,
- 			      unsigned int ring_type)
- {
-@@ -5107,6 +5135,7 @@ int hns3_init_all_ring(struct hns3_nic_priv *priv)
- 	int i, j;
- 	int ret;
- 
-+	hns3_update_tx_spare_buf_config(priv);
- 	for (i = 0; i < ring_num; i++) {
- 		ret = hns3_alloc_ring_memory(&priv->ring[i]);
- 		if (ret) {
-@@ -5311,6 +5340,8 @@ static int hns3_client_init(struct hnae3_handle *handle)
- 	priv->ae_handle = handle;
- 	priv->tx_timeout_count = 0;
- 	priv->max_non_tso_bd_num = ae_dev->dev_specs.max_non_tso_bd_num;
-+	priv->min_tx_copybreak = 0;
-+	priv->min_tx_spare_buf_size = 0;
- 	set_bit(HNS3_NIC_STATE_DOWN, &priv->state);
- 
- 	handle->msg_enable = netif_msg_init(debug, DEFAULT_MSG_LEVEL);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-index d3bad5d1b888..933e3527ed82 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-@@ -596,6 +596,8 @@ struct hns3_nic_priv {
- 	struct hns3_enet_coalesce rx_coal;
- 	u32 tx_copybreak;
- 	u32 rx_copybreak;
-+	u32 min_tx_copybreak;
-+	u32 min_tx_spare_buf_size;
- };
- 
- union l3_hdr_info {
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-index d5454e126c85..a752d0e3db3a 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-@@ -1927,6 +1927,31 @@ static int hns3_set_tx_spare_buf_size(struct net_device *netdev,
- 	return ret;
- }
- 
-+static int hns3_check_tx_copybreak(struct net_device *netdev, u32 copybreak)
-+{
-+	struct hns3_nic_priv *priv = netdev_priv(netdev);
-+
-+	if (copybreak < priv->min_tx_copybreak) {
-+		netdev_err(netdev, "tx copybreak %u should be no less than %u!\n",
-+			   copybreak, priv->min_tx_copybreak);
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
-+static int hns3_check_tx_spare_buf_size(struct net_device *netdev, u32 buf_size)
-+{
-+	struct hns3_nic_priv *priv = netdev_priv(netdev);
-+
-+	if (buf_size < priv->min_tx_spare_buf_size) {
-+		netdev_err(netdev,
-+			   "tx spare buf size %u should be no less than %u!\n",
-+			   buf_size, priv->min_tx_spare_buf_size);
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- static int hns3_set_tunable(struct net_device *netdev,
- 			    const struct ethtool_tunable *tuna,
- 			    const void *data)
-@@ -1943,6 +1968,10 @@ static int hns3_set_tunable(struct net_device *netdev,
- 
- 	switch (tuna->id) {
- 	case ETHTOOL_TX_COPYBREAK:
-+		ret = hns3_check_tx_copybreak(netdev, *(u32 *)data);
-+		if (ret)
-+			return ret;
-+
- 		priv->tx_copybreak = *(u32 *)data;
- 
- 		for (i = 0; i < h->kinfo.num_tqps; i++)
-@@ -1957,6 +1986,10 @@ static int hns3_set_tunable(struct net_device *netdev,
- 
- 		break;
- 	case ETHTOOL_TX_COPYBREAK_BUF_SIZE:
-+		ret = hns3_check_tx_spare_buf_size(netdev, *(u32 *)data);
-+		if (ret)
-+			return ret;
-+
- 		old_tx_spare_buf_size = h->kinfo.tx_spare_buf_size;
- 		new_tx_spare_buf_size = *(u32 *)data;
- 		netdev_info(netdev, "request to set tx spare buf size from %u to %u\n",
--- 
-2.33.0
+Thanks,
+Stefano
+
+>
+>	David
+>
+>>  	struct scatterlist pkt, *p;
+>>  	struct virtqueue *vq;
+>>  	struct sk_buff *skb;
+>
+>
 
