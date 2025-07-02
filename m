@@ -1,37 +1,37 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D88224AF3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66002248A4
 	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 06:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751437223; cv=none; b=AuaAxkGSqCVfJ/FmKUuA0gWOSU23qMrx61tV54PLcTVPEsfZfz5ZTsQ1blcQMA2t8Dkfu+ZCga0DHQoHYGD73YE6fEg0UMyE33UyjWuas0RZo+VqpDaf74OTXQcY1oN36kaoLTs9nYKc8NLz7/0pis+5Yw81Eatt6SYJlBrKTr4=
+	t=1751437224; cv=none; b=o/NSut7H8dr71OWImaNUEiai0aST2YjUu2MfMjN8+fJJUrCtjDM+GXRlev92YMdqf4TRaI2iVconTCsaEySCU2SzeA7c+eth5saoiRXjlzGa0+brMSyJCrqBspHQ/VjMG5ppkQisyunSbzYxvf+rNEQw0NbrqY7QSsyLQ2EFVkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751437223; c=relaxed/simple;
-	bh=Wp8qK0x4Mntim6GkVbirRgL94IZc5KBOmxaJCRksv84=;
+	s=arc-20240116; t=1751437224; c=relaxed/simple;
+	bh=97l9YhFjs/43lTLg87kuxP8tJWwfPufhAG3OITg7yT8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BcMA7NwA+R6KNNQn5fOceJdLtcfnV/O4LqLhFpyzr82RtJIhnmGt9rr56MNm+1w+EAWlBrzKuZ/bi83DkjE2W0HKZbOwABHuasiI67hg+LwH7L21clDkdsUT1S6f1oXE/nB+Z4n9czigxpFEnihzjCVz+oII3EvtIa5BjAGCbN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=DwWlsmjf; arc=none smtp.client-ip=203.29.241.158
+	 In-Reply-To:To:Cc; b=m3HfyHSoNf+m9PCuqG3y2/TqY8kfEoN9rg16Fvchhpq/KSY7/FEWEO3Y8nA4UrDIWPNj8/mQy7+3zBcysc+ChbRs3MFjlbkdiBkbnBFzVPCU1cEZgi4OukDoyZ6Q1whiYAV57N3uY7L1SiUoiyKKWid+xXF7x3BYJh3xjbVBFwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=K9dM3l8m; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="DwWlsmjf"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="K9dM3l8m"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1751437218;
-	bh=xYsJYGqtKd801bkK+OmEm3Hx1+FtDdTjR6myuYEtYxY=;
+	d=codeconstruct.com.au; s=2022a; t=1751437217;
+	bh=avcr2hbEWgg9BQA1OxqdKMw5wuLkoWXKtg8WKkmfafA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=DwWlsmjfyCpy2Y4mQZpa42dMYAF2f/aL06gvPyfMDALUjWCA8cQqnPBiOZifEku8L
-	 lS9kP0D4nfEPjSYEUdR46byFZdlxChBMEC6Vcf6muM8AD+K0pj9DjVXlzKoQ+6oKxo
-	 1PjbX+1pZ4oE+v0HNHTjneeocmdtT99OJB660zbBlTQi0vA6rLkiKub8omg6vOgNM6
-	 MHjjL9+Bp0dG9zVYw248+MgSuFwFFl7TxDNYBXt+xFQBi0hKeUg625MycVEGeLsi4U
-	 KMSU+wIReBDICWBd0uGG2Ruo2d/65bOVRxKueu5Vu1XEs+74ci3sVrU3B/2vNhBqax
-	 6K7qWs8hd7SZw==
+	b=K9dM3l8mQ0HifefrTKXcgCcpVSpjbtoMsRmpERibcKSMmrfZIv85G1cfX/srDZ7qj
+	 JtsVnVBjqVKgdYoJmE7sMrL9rwUz1t0fMdoTFSGEWu3h/ETeVHFg3ikujqEChAoAfR
+	 IXkPoKTO/IoeOROnVdBHzZnXWhepd5hCNwal45tJ5Ck4+YrtszIkcAKAYNj+dU7yiw
+	 25IRcRBKqoDFWB4/q2As2Vpqa0GMMyxMOHZ9nr08KDJoIHhBksg1UBne+APAliNTCt
+	 aCd4/BtKOT2/dzc2/05IJd94cr6DuH0Zd5N44LG1q5QP/B+1xiJnwazmwSa4FT/7ky
+	 usYc50+VUUmMQ==
 Received: by codeconstruct.com.au (Postfix, from userid 10000)
-	id 907CD6A71A; Wed,  2 Jul 2025 14:20:18 +0800 (AWST)
+	id ABDE56A713; Wed,  2 Jul 2025 14:20:17 +0800 (AWST)
 From: Jeremy Kerr <jk@codeconstruct.com.au>
-Date: Wed, 02 Jul 2025 14:20:12 +0800
-Subject: [PATCH net-next v5 12/14] net: mctp: allow NL parsing directly
- into a struct mctp_route
+Date: Wed, 02 Jul 2025 14:20:09 +0800
+Subject: [PATCH net-next v5 09/14] net: mctp: test: Add initial socket
+ tests
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250702-dev-forwarding-v5-12-1468191da8a4@codeconstruct.com.au>
+Message-Id: <20250702-dev-forwarding-v5-9-1468191da8a4@codeconstruct.com.au>
 References: <20250702-dev-forwarding-v5-0-1468191da8a4@codeconstruct.com.au>
 In-Reply-To: <20250702-dev-forwarding-v5-0-1468191da8a4@codeconstruct.com.au>
 To: Matt Johnston <matt@codeconstruct.com.au>, 
@@ -50,329 +50,266 @@ To: Matt Johnston <matt@codeconstruct.com.au>,
 Cc: netdev@vger.kernel.org
 X-Mailer: b4 0.14.2
 
-The netlink route parsing functions end up setting a bunch of output
-variables from the rt attributes. This will get messy when the routes
-become more complex.
-
-So, split the rt parsing into two types: a lookup (returning route
-target data suitable for a route lookup, like when deleting a route) and
-a populate (setting fields of a struct mctp_route).
-
-In doing this, we need to separate the route allocation from
-mctp_route_add, so add some comments on the lifetime semantics for the
-latter.
+Recent changes have modified the extaddr path a little, so add a couple
+of kunit tests to af-mctp.c. These check that we're correctly passing
+lladdr data between sendmsg/recvmsg and the routing layer.
 
 Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-
---
-v5:
-- reinstate IFF_LOOPBACK check for new routes. Reported by Paolo Abeni
-- move mctp_dev_hold() to nlparse_populate, so we're consistent in the
-  cleanup semantics. defer all stores to @rt to the success case.
 ---
- net/mctp/route.c | 202 ++++++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 140 insertions(+), 62 deletions(-)
+ net/mctp/route.c          |   5 ++
+ net/mctp/test/sock-test.c | 213 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 218 insertions(+)
 
 diff --git a/net/mctp/route.c b/net/mctp/route.c
-index f96265acf16f4ecedad7a3edf2367cfc7f56be7f..5eca3ce0ba3ceac2ea0567d4042a298abcf3c674 100644
+index 23f339b4364316817b90b4fb2952c9eac445dd24..c49c35c989d89e1c199c8f60ace4d6584ea0d8c8 100644
 --- a/net/mctp/route.c
 +++ b/net/mctp/route.c
-@@ -1091,25 +1091,32 @@ static unsigned int mctp_route_netid(struct mctp_route *rt)
- }
+@@ -17,6 +17,8 @@
+ #include <linux/rtnetlink.h>
+ #include <linux/skbuff.h>
  
- /* route management */
--static int mctp_route_add(struct net *net, struct mctp_dev *mdev,
--			  mctp_eid_t daddr_start, unsigned int daddr_extent,
--			  unsigned int mtu, unsigned char type)
++#include <kunit/static_stub.h>
 +
-+/* mctp_route_add(): Add the provided route, previously allocated via
-+ * mctp_route_alloc(). On success, takes ownership of @rt, which includes a
-+ * hold on rt->dev for usage in the route table. On failure a caller will want
-+ * to mctp_route_release().
-+ *
-+ * We expect that the caller has set rt->type, rt->min, rt->max, rt->dev and
-+ * rt->mtu, and that the route holds a reference to rt->dev (via mctp_dev_hold).
-+ * Other fields will be populated.
+ #include <uapi/linux/if_arp.h>
+ 
+ #include <net/mctp.h>
+@@ -1011,6 +1013,9 @@ int mctp_local_output(struct sock *sk, struct mctp_dst *dst,
+ 	int rc;
+ 	u8 tag;
+ 
++	KUNIT_STATIC_STUB_REDIRECT(mctp_local_output, sk, dst, skb, daddr,
++				   req_tag);
++
+ 	rc = -ENODEV;
+ 
+ 	spin_lock_irqsave(&dst->dev->addrs_lock, flags);
+diff --git a/net/mctp/test/sock-test.c b/net/mctp/test/sock-test.c
+index abaad82b4e256bead6c0a6ab0698bfa4f75f8473..5501f7794a8f96f1dcf26e93542bec04ddcfc769 100644
+--- a/net/mctp/test/sock-test.c
++++ b/net/mctp/test/sock-test.c
+@@ -1,10 +1,223 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
++#include <kunit/static_stub.h>
+ #include <kunit/test.h>
+ 
++#include <linux/socket.h>
++#include <linux/spinlock.h>
++
+ #include "utils.h"
+ 
++static const u8 dev_default_lladdr[] = { 0x01, 0x02 };
++
++/* helper for simple sock setup: single device, with dev_default_lladdr as its
++ * hardware address, assigned with a local EID 8, and a route to EID 9
 + */
-+static int mctp_route_add(struct net *net, struct mctp_route *rt)
- {
--	int (*rtfn)(struct mctp_dst *dst, struct sk_buff *skb);
--	struct mctp_route *rt, *ert;
-+	struct mctp_route *ert;
- 
--	if (!mctp_address_unicast(daddr_start))
-+	if (!mctp_address_unicast(rt->min) || !mctp_address_unicast(rt->max))
- 		return -EINVAL;
- 
--	if (daddr_extent > 0xff || daddr_start + daddr_extent >= 255)
-+	if (!rt->dev)
- 		return -EINVAL;
- 
--	switch (type) {
-+	switch (rt->type) {
- 	case RTN_LOCAL:
--		rtfn = mctp_dst_input;
-+		rt->output = mctp_dst_input;
- 		break;
- 	case RTN_UNICAST:
--		rtfn = mctp_dst_output;
-+		rt->output = mctp_dst_output;
- 		break;
- 	default:
- 		return -EINVAL;
-@@ -1117,22 +1124,9 @@ static int mctp_route_add(struct net *net, struct mctp_dev *mdev,
- 
- 	ASSERT_RTNL();
- 
--	rt = mctp_route_alloc();
--	if (!rt)
--		return -ENOMEM;
--
--	rt->min = daddr_start;
--	rt->max = daddr_start + daddr_extent;
--	rt->mtu = mtu;
--	rt->dev = mdev;
--	mctp_dev_hold(rt->dev);
--	rt->type = type;
--	rt->output = rtfn;
--
- 	/* Prevent duplicate identical routes. */
- 	list_for_each_entry(ert, &net->mctp.routes, list) {
- 		if (mctp_rt_compare_exact(rt, ert)) {
--			mctp_route_release(rt);
- 			return -EEXIST;
- 		}
- 	}
-@@ -1174,7 +1168,25 @@ static int mctp_route_remove(struct net *net, unsigned int netid,
- 
- int mctp_route_add_local(struct mctp_dev *mdev, mctp_eid_t addr)
- {
--	return mctp_route_add(dev_net(mdev->dev), mdev, addr, 0, 0, RTN_LOCAL);
-+	struct mctp_route *rt;
++static void __mctp_sock_test_init(struct kunit *test,
++				  struct mctp_test_dev **devp,
++				  struct mctp_test_route **rtp,
++				  struct socket **sockp)
++{
++	struct mctp_test_route *rt;
++	struct mctp_test_dev *dev;
++	struct socket *sock;
++	unsigned long flags;
++	u8 *addrs;
 +	int rc;
 +
-+	rt = mctp_route_alloc();
-+	if (!rt)
-+		return -ENOMEM;
++	dev = mctp_test_create_dev_lladdr(sizeof(dev_default_lladdr),
++					  dev_default_lladdr);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
 +
-+	rt->min = addr;
-+	rt->max = addr;
-+	rt->dev = mdev;
-+	rt->type = RTN_LOCAL;
++	addrs = kmalloc(1, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, addrs);
++	addrs[0] = 8;
 +
-+	mctp_dev_hold(rt->dev);
++	spin_lock_irqsave(&dev->mdev->addrs_lock, flags);
++	dev->mdev->num_addrs = 1;
++	swap(addrs, dev->mdev->addrs);
++	spin_unlock_irqrestore(&dev->mdev->addrs_lock, flags);
 +
-+	rc = mctp_route_add(dev_net(mdev->dev), rt);
-+	if (rc)
-+		mctp_route_release(rt);
++	kfree(addrs);
 +
-+	return rc;
- }
- 
- int mctp_route_remove_local(struct mctp_dev *mdev, mctp_eid_t addr)
-@@ -1286,13 +1298,16 @@ static const struct nla_policy rta_mctp_policy[RTA_MAX + 1] = {
- 	[RTA_OIF]		= { .type = NLA_U32 },
- };
- 
--/* Common part for RTM_NEWROUTE and RTM_DELROUTE parsing.
-- * tb must hold RTA_MAX+1 elements.
-- */
--static int mctp_route_nlparse(struct net *net, struct nlmsghdr *nlh,
--			      struct netlink_ext_ack *extack,
--			      struct nlattr **tb, struct rtmsg **rtm,
--			      struct mctp_dev **mdev, mctp_eid_t *daddr_start)
-+static const struct nla_policy rta_metrics_policy[RTAX_MAX + 1] = {
-+	[RTAX_MTU]		= { .type = NLA_U32 },
++	rt = mctp_test_create_route(dev_net(dev->ndev), dev->mdev, 9, 0);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, rt);
++
++	rc = sock_create_kern(&init_net, AF_MCTP, SOCK_DGRAM, 0, &sock);
++	KUNIT_ASSERT_EQ(test, rc, 0);
++
++	*devp = dev;
++	*rtp = rt;
++	*sockp = sock;
++}
++
++static void __mctp_sock_test_fini(struct kunit *test,
++				  struct mctp_test_dev *dev,
++				  struct mctp_test_route *rt,
++				  struct socket *sock)
++{
++	sock_release(sock);
++	mctp_test_route_destroy(test, rt);
++	mctp_test_destroy_dev(dev);
++}
++
++struct mctp_test_sock_local_output_config {
++	struct mctp_test_dev *dev;
++	size_t halen;
++	u8 haddr[MAX_ADDR_LEN];
++	bool invoked;
++	int rc;
 +};
 +
-+/* base parsing; common to both _lookup and _populate variants */
-+static int mctp_route_nlparse_common(struct net *net, struct nlmsghdr *nlh,
-+				     struct netlink_ext_ack *extack,
-+				     struct nlattr **tb, struct rtmsg **rtm,
-+				     struct mctp_dev **mdev,
-+				     mctp_eid_t *daddr_start)
- {
- 	struct net_device *dev;
- 	unsigned int ifindex;
-@@ -1323,61 +1338,126 @@ static int mctp_route_nlparse(struct net *net, struct nlmsghdr *nlh,
- 		return -EINVAL;
- 	}
- 
-+	if ((*rtm)->rtm_type != RTN_UNICAST) {
-+		NL_SET_ERR_MSG(extack, "rtm_type must be RTN_UNICAST");
-+		return -EINVAL;
-+	}
++static int mctp_test_sock_local_output(struct sock *sk,
++				       struct mctp_dst *dst,
++				       struct sk_buff *skb,
++				       mctp_eid_t daddr, u8 req_tag)
++{
++	struct kunit *test = kunit_get_current_test();
++	struct mctp_test_sock_local_output_config *cfg = test->priv;
 +
- 	dev = __dev_get_by_index(net, ifindex);
- 	if (!dev) {
- 		NL_SET_ERR_MSG(extack, "bad ifindex");
- 		return -ENODEV;
- 	}
++	KUNIT_EXPECT_PTR_EQ(test, dst->dev, cfg->dev->mdev);
++	KUNIT_EXPECT_EQ(test, dst->halen, cfg->halen);
++	KUNIT_EXPECT_MEMEQ(test, dst->haddr, cfg->haddr, dst->halen);
 +
- 	*mdev = mctp_dev_get_rtnl(dev);
- 	if (!*mdev)
- 		return -ENODEV;
- 
--	if (dev->flags & IFF_LOOPBACK) {
--		NL_SET_ERR_MSG(extack, "no routes to loopback");
--		return -EINVAL;
--	}
--
- 	return 0;
- }
- 
--static const struct nla_policy rta_metrics_policy[RTAX_MAX + 1] = {
--	[RTAX_MTU]		= { .type = NLA_U32 },
--};
--
--static int mctp_newroute(struct sk_buff *skb, struct nlmsghdr *nlh,
--			 struct netlink_ext_ack *extack)
-+/* Route parsing for lookup operations; we only need the "route target"
-+ * components (ie., network and dest-EID range).
-+ */
-+static int mctp_route_nlparse_lookup(struct net *net, struct nlmsghdr *nlh,
-+				     struct netlink_ext_ack *extack,
-+				     unsigned char *type, unsigned int *netid,
-+				     mctp_eid_t *daddr_start,
-+				     unsigned int *daddr_extent)
- {
--	struct net *net = sock_net(skb->sk);
- 	struct nlattr *tb[RTA_MAX + 1];
-+	struct mctp_dev *mdev;
-+	struct rtmsg *rtm;
-+	int rc;
++	cfg->invoked = true;
 +
-+	rc = mctp_route_nlparse_common(net, nlh, extack, tb, &rtm,
-+				       &mdev, daddr_start);
-+	if (rc)
-+		return rc;
++	kfree_skb(skb);
 +
-+	*netid = mdev->net;
-+	*type = rtm->rtm_type;
-+	*daddr_extent = rtm->rtm_dst_len;
-+
-+	return 0;
++	return cfg->rc;
 +}
 +
-+/* Full route parse for RTM_NEWROUTE: populate @rt. On success, the route will
-+ * hold a reference to the dev.
-+ */
-+static int mctp_route_nlparse_populate(struct net *net, struct nlmsghdr *nlh,
-+				       struct netlink_ext_ack *extack,
-+				       struct mctp_route *rt)
++static void mctp_test_sock_sendmsg_extaddr(struct kunit *test)
 +{
- 	struct nlattr *tbx[RTAX_MAX + 1];
-+	struct nlattr *tb[RTA_MAX + 1];
-+	unsigned int daddr_extent;
- 	mctp_eid_t daddr_start;
--	struct mctp_dev *mdev;
-+	struct mctp_dev *dev;
- 	struct rtmsg *rtm;
--	unsigned int mtu;
-+	u32 mtu = 0;
- 	int rc;
- 
--	rc = mctp_route_nlparse(net, nlh, extack, tb,
--				&rtm, &mdev, &daddr_start);
--	if (rc < 0)
-+	rc = mctp_route_nlparse_common(net, nlh, extack, tb, &rtm,
-+				       &dev, &daddr_start);
-+	if (rc)
- 		return rc;
- 
--	if (rtm->rtm_type != RTN_UNICAST) {
--		NL_SET_ERR_MSG(extack, "rtm_type must be RTN_UNICAST");
-+	daddr_extent = rtm->rtm_dst_len;
++	struct sockaddr_mctp_ext addr = {
++		.smctp_base = {
++			.smctp_family = AF_MCTP,
++			.smctp_tag = MCTP_TAG_OWNER,
++			.smctp_network = MCTP_NET_ANY,
++		},
++	};
++	struct mctp_test_sock_local_output_config cfg = { 0 };
++	u8 haddr[] = { 0xaa, 0x01 };
++	u8 buf[4] = { 0, 1, 2, 3 };
++	struct mctp_test_route *rt;
++	struct msghdr msg = { 0 };
++	struct mctp_test_dev *dev;
++	struct mctp_sock *msk;
++	struct socket *sock;
++	ssize_t send_len;
++	struct kvec vec = {
++		.iov_base = buf,
++		.iov_len = sizeof(buf),
++	};
 +
-+	if (daddr_extent > 0xff || daddr_extent + daddr_start >= 255) {
-+		NL_SET_ERR_MSG(extack, "invalid eid range");
- 		return -EINVAL;
- 	}
- 
--	mtu = 0;
- 	if (tb[RTA_METRICS]) {
- 		rc = nla_parse_nested(tbx, RTAX_MAX, tb[RTA_METRICS],
- 				      rta_metrics_policy, NULL);
--		if (rc < 0)
-+		if (rc < 0) {
-+			NL_SET_ERR_MSG(extack, "incorrect RTA_METRICS format");
- 			return rc;
-+		}
- 		if (tbx[RTAX_MTU])
- 			mtu = nla_get_u32(tbx[RTAX_MTU]);
- 	}
- 
--	rc = mctp_route_add(net, mdev, daddr_start, rtm->rtm_dst_len, mtu,
--			    rtm->rtm_type);
-+	rt->type = rtm->rtm_type;
-+	rt->min = daddr_start;
-+	rt->max = daddr_start + daddr_extent;
-+	rt->mtu = mtu;
-+	rt->dev = dev;
-+	mctp_dev_hold(rt->dev);
++	__mctp_sock_test_init(test, &dev, &rt, &sock);
 +
-+	return 0;
++	/* Expect to see the dst configured up with the addressing data we
++	 * provide in the struct sockaddr_mctp_ext
++	 */
++	cfg.dev = dev;
++	cfg.halen = sizeof(haddr);
++	memcpy(cfg.haddr, haddr, sizeof(haddr));
++
++	test->priv = &cfg;
++
++	kunit_activate_static_stub(test, mctp_local_output,
++				   mctp_test_sock_local_output);
++
++	/* enable and configure direct addressing */
++	msk = container_of(sock->sk, struct mctp_sock, sk);
++	msk->addr_ext = true;
++
++	addr.smctp_ifindex = dev->ndev->ifindex;
++	addr.smctp_halen = sizeof(haddr);
++	memcpy(addr.smctp_haddr, haddr, sizeof(haddr));
++
++	msg.msg_name = &addr;
++	msg.msg_namelen = sizeof(addr);
++
++	iov_iter_kvec(&msg.msg_iter, ITER_SOURCE, &vec, 1, sizeof(buf));
++	send_len = mctp_sendmsg(sock, &msg, sizeof(buf));
++	KUNIT_EXPECT_EQ(test, send_len, sizeof(buf));
++	KUNIT_EXPECT_TRUE(test, cfg.invoked);
++
++	__mctp_sock_test_fini(test, dev, rt, sock);
 +}
 +
-+static int mctp_newroute(struct sk_buff *skb, struct nlmsghdr *nlh,
-+			 struct netlink_ext_ack *extack)
++static void mctp_test_sock_recvmsg_extaddr(struct kunit *test)
 +{
-+	struct net *net = sock_net(skb->sk);
-+	struct mctp_route *rt;
++	struct sockaddr_mctp_ext recv_addr = { 0 };
++	u8 rcv_buf[1], rcv_data[] = { 0, 1 };
++	u8 haddr[] = { 0xaa, 0x02 };
++	struct mctp_test_route *rt;
++	struct mctp_test_dev *dev;
++	struct mctp_skb_cb *cb;
++	struct mctp_sock *msk;
++	struct sk_buff *skb;
++	struct mctp_hdr hdr;
++	struct socket *sock;
++	struct msghdr msg;
++	ssize_t recv_len;
 +	int rc;
++	struct kvec vec = {
++		.iov_base = rcv_buf,
++		.iov_len = sizeof(rcv_buf),
++	};
 +
-+	rt = mctp_route_alloc();
-+	if (!rt)
-+		return -ENOMEM;
++	__mctp_sock_test_init(test, &dev, &rt, &sock);
 +
-+	rc = mctp_route_nlparse_populate(net, nlh, extack, rt);
-+	if (rc < 0)
-+		goto err_free;
++	/* enable extended addressing on recv */
++	msk = container_of(sock->sk, struct mctp_sock, sk);
++	msk->addr_ext = true;
 +
-+	if (rt->dev->dev->flags & IFF_LOOPBACK) {
-+		NL_SET_ERR_MSG(extack, "no routes to loopback");
-+		rc = -EINVAL;
-+		goto err_free;
-+	}
++	/* base incoming header, using a nul-EID dest */
++	hdr.ver = 1;
++	hdr.dest = 0;
++	hdr.src = 9;
++	hdr.flags_seq_tag = MCTP_HDR_FLAG_SOM | MCTP_HDR_FLAG_EOM |
++			    MCTP_HDR_FLAG_TO;
 +
-+	rc = mctp_route_add(net, rt);
-+	if (!rc)
-+		return 0;
++	skb = mctp_test_create_skb_data(&hdr, &rcv_data);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, skb);
 +
-+err_free:
-+	mctp_route_release(rt);
- 	return rc;
- }
- 
-@@ -1385,23 +1465,21 @@ static int mctp_delroute(struct sk_buff *skb, struct nlmsghdr *nlh,
- 			 struct netlink_ext_ack *extack)
- {
- 	struct net *net = sock_net(skb->sk);
--	struct nlattr *tb[RTA_MAX + 1];
-+	unsigned int netid, daddr_extent;
-+	unsigned char type = RTN_UNSPEC;
- 	mctp_eid_t daddr_start;
--	struct mctp_dev *mdev;
--	struct rtmsg *rtm;
- 	int rc;
- 
--	rc = mctp_route_nlparse(net, nlh, extack, tb,
--				&rtm, &mdev, &daddr_start);
-+	rc = mctp_route_nlparse_lookup(net, nlh, extack, &type, &netid,
-+				       &daddr_start, &daddr_extent);
- 	if (rc < 0)
- 		return rc;
- 
- 	/* we only have unicast routes */
--	if (rtm->rtm_type != RTN_UNICAST)
-+	if (type != RTN_UNICAST)
- 		return -EINVAL;
- 
--	rc = mctp_route_remove(net, mdev->net, daddr_start, rtm->rtm_dst_len,
--			       RTN_UNICAST);
-+	rc = mctp_route_remove(net, netid, daddr_start, daddr_extent, type);
- 	return rc;
- }
++	mctp_test_skb_set_dev(skb, dev);
++
++	/* set incoming extended address data */
++	cb = mctp_cb(skb);
++	cb->halen = sizeof(haddr);
++	cb->ifindex = dev->ndev->ifindex;
++	memcpy(cb->haddr, haddr, sizeof(haddr));
++
++	/* Deliver to socket. The route input path pulls the network header,
++	 * leaving skb data at type byte onwards. recvmsg will consume the
++	 * type for addr.smctp_type
++	 */
++	skb_pull(skb, sizeof(hdr));
++	rc = sock_queue_rcv_skb(sock->sk, skb);
++	KUNIT_ASSERT_EQ(test, rc, 0);
++
++	msg.msg_name = &recv_addr;
++	msg.msg_namelen = sizeof(recv_addr);
++	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &vec, 1, sizeof(rcv_buf));
++
++	recv_len = mctp_recvmsg(sock, &msg, sizeof(rcv_buf),
++				MSG_DONTWAIT | MSG_TRUNC);
++
++	KUNIT_EXPECT_EQ(test, recv_len, sizeof(rcv_buf));
++
++	/* expect our extended address to be populated from hdr and cb */
++	KUNIT_EXPECT_EQ(test, msg.msg_namelen, sizeof(recv_addr));
++	KUNIT_EXPECT_EQ(test, recv_addr.smctp_base.smctp_family, AF_MCTP);
++	KUNIT_EXPECT_EQ(test, recv_addr.smctp_ifindex, dev->ndev->ifindex);
++	KUNIT_EXPECT_EQ(test, recv_addr.smctp_halen, sizeof(haddr));
++	KUNIT_EXPECT_MEMEQ(test, recv_addr.smctp_haddr, haddr, sizeof(haddr));
++
++	__mctp_sock_test_fini(test, dev, rt, sock);
++}
++
+ static struct kunit_case mctp_test_cases[] = {
++	KUNIT_CASE(mctp_test_sock_sendmsg_extaddr),
++	KUNIT_CASE(mctp_test_sock_recvmsg_extaddr),
+ 	{}
+ };
  
 
 -- 
