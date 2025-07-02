@@ -1,123 +1,71 @@
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745F922DA1B;
-	Wed,  2 Jul 2025 08:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522CB23AE96;
+	Wed,  2 Jul 2025 08:44:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751445773; cv=none; b=k7lHisfOH6PsNiBsmuBQ2xZoWuqkL/RwdY39REVWMgINurnQv6Pb3bsGCGMzew+8ScDH00lFNctaftpZYJi6uGID5vwmi4Xo87VWgB68FZKl9fQXFCp+vIZ2OA/iKi0+QK7vqYLjzG8IRC2yLZmXHg2U9GXn8Ww8zuvTJRSlM+A=
+	t=1751445847; cv=none; b=B8CzTMLONLlx3v7IJkV9iOB+gbts4AcBeDmSlTTAWE9plTPM51uNuWCfOK3r6UqdFF2YLGqesM/YN2twSJS+9MAc9cVHUWw/DlCZZKzdidTWdGT2TeEWRGhpVgcxYRzhvKivSU18JtcJgDFYnGEUwaznlJOa7WvLRl6p5p5PSlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751445773; c=relaxed/simple;
-	bh=ZWncWZqL3YVF7XFQNnWoJCmyi0/LyOh5Xf815k+EKh0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=l9IKspGw6K80TZ8I/4+TeAmNFq9AvdPCSynUcdsZdQfYbfZD6PleZnRWA0Eqlvski7os5H1yinFLl0wWwVVHQjQ0Q2tUQs6iUPulrHqTFBXvYLNja6/MNpCawgLyvjHue9T8yEsm5ikPQl57VT4vSfFJp0eM3QVW6rqVBQLxVjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bXCzJ696Qz2BdTy;
-	Wed,  2 Jul 2025 16:41:00 +0800 (CST)
-Received: from kwepemo200008.china.huawei.com (unknown [7.202.195.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9F8ED140278;
-	Wed,  2 Jul 2025 16:42:46 +0800 (CST)
-Received: from huawei.com (10.67.175.28) by kwepemo200008.china.huawei.com
- (7.202.195.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 2 Jul
- 2025 16:42:45 +0800
-From: Xinyu Zheng <zhengxinyu6@huawei.com>
-To: <mst@redhat.com>, <jasowang@redhat.com>, <pbonzini@redhat.com>,
-	<stefanha@redhat.com>, <virtualization@lists.linux-foundation.org>,
-	<kvm@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <gregkh@linuxfoundation.org>,
-	<stable@vger.kernel.org>
-CC: <zhengxinyu6@huawei.com>
-Subject: [PATCH v5.10] vhost-scsi: protect vq->log_used with vq->mutex
-Date: Wed, 2 Jul 2025 08:29:45 +0000
-Message-ID: <20250702082945.4164475-1-zhengxinyu6@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1751445847; c=relaxed/simple;
+	bh=Zus0B39HdcK8fM6qwczDQhZP2KPHRCHS1rXI3WaslCk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=gkdmy7daq4QwuTVUN5sED87QhY1qBVbVRl0E5LKnQTRXcepvpqqDwBt/vR3oPpZhqQgtzff2BRvv7TCM4+VCWKeXySn4OSsZ6Hd0WEEdncPYUPGVLwK6+UFAtaHRM1Ab2XPVZ9U4Bu+Nt4eFEamziK+TzwryEfaa/U4EDbYI34k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=206.189.21.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [115.197.243.13])
+	by mtasvr (Coremail) with SMTP id _____wB3cH888WRoRSHTAw--.16197S3;
+	Wed, 02 Jul 2025 16:43:41 +0800 (CST)
+Received: from linma$zju.edu.cn ( [115.197.243.13] ) by
+ ajax-webmail-mail-app2 (Coremail) ; Wed, 2 Jul 2025 16:43:31 +0800
+ (GMT+08:00)
+Date: Wed, 2 Jul 2025 16:43:31 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: "Lin Ma" <linma@zju.edu.cn>
+To: "Eric Dumazet" <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, mingo@kernel.org, tglx@linutronix.de,
+	pwn9uin@gmail.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: atm: Fix incorrect net_device lec check
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
+ 20250620(94335109) Copyright (c) 2002-2025 www.mailtech.cn zju.edu.cn
+In-Reply-To: <CANn89i+OJTG6YT1paZRigUuPB9gggL7p+sPym3_rZywKCaYqzQ@mail.gmail.com>
+References: <20250702033600.254-1-linma@zju.edu.cn>
+ <CANn89i+OJTG6YT1paZRigUuPB9gggL7p+sPym3_rZywKCaYqzQ@mail.gmail.com>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemo200008.china.huawei.com (7.202.195.61)
+Message-ID: <5b5551e5.8496.197ca4e31c6.Coremail.linma@zju.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:zC_KCgAnToUz8WRo9iFTAA--.10787W
+X-CM-SenderInfo: qtrwiiyqvtljo62m3hxhgxhubq/1tbiAwAPEmhjuY4KnQADs2
+X-CM-DELIVERINFO: =?B?hQF2xAXKKxbFmtjJiESix3B1w3tPqcowV1L23Bze5QtIr9Db75bEBiiEybVhThS0pI
+	APHjeUlN/wNeQBhT9FIlu3pf6/1K6m8mf9f20HFv7BPk3UYsqEH+yo8VGXizWSxqp0ZbEr
+	dPFW/bVI38OBulTYCi5EmSIoSdQDUT44KFT7+xqFQGKNllFEeyyn+z9QulQdLw==
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29K
+	BjDU0xBIdaVrnRJUUUQYb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26c
+	xKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vE
+	j48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxV
+	AFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x02
+	67AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI
+	0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280
+	aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48Icx
+	kI7VAKI48G6xCjnVAKz4kxM4xvF2IEb7IF0Fy264kE64k0F24lFcxC0VAYjxAxZF0Ex2Iq
+	xwACI402YVCY1x02628vn2kIc2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
+	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+	67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
+	IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UMVCEFcxC0V
+	AYjxAxZFUvcSsGvfC2KfnxnUUI43ZEXa7IU8rcTJUUUUU==
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
-
-[ Upstream commit f591cf9fce724e5075cc67488c43c6e39e8cbe27 ]
-
-The vhost-scsi completion path may access vq->log_base when vq->log_used is
-already set to false.
-
-    vhost-thread                       QEMU-thread
-
-vhost_scsi_complete_cmd_work()
--> vhost_add_used()
-   -> vhost_add_used_n()
-      if (unlikely(vq->log_used))
-                                      QEMU disables vq->log_used
-                                      via VHOST_SET_VRING_ADDR.
-                                      mutex_lock(&vq->mutex);
-                                      vq->log_used = false now!
-                                      mutex_unlock(&vq->mutex);
-
-				      QEMU gfree(vq->log_base)
-        log_used()
-        -> log_write(vq->log_base)
-
-Assuming the VMM is QEMU. The vq->log_base is from QEMU userpace and can be
-reclaimed via gfree(). As a result, this causes invalid memory writes to
-QEMU userspace.
-
-The control queue path has the same issue.
-
-CVE-2025-38074
-Cc: stable@vger.kernel.org#5.10.x
-Cc: gregkh@linuxfoundation.org
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <20250403063028.16045-2-dongli.zhang@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Conflicts in drivers/vhost/scsi.c
-  bacause vhost_scsi_complete_cmd_work() has been refactored. ]
-Signed-off-by: Xinyu Zheng <zhengxinyu6@huawei.com>
----
- drivers/vhost/scsi.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index a23a65e7d828..fcde3752b4f1 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -579,8 +579,10 @@ static void vhost_scsi_complete_cmd_work(struct vhost_work *work)
- 		ret = copy_to_iter(&v_rsp, sizeof(v_rsp), &iov_iter);
- 		if (likely(ret == sizeof(v_rsp))) {
- 			struct vhost_scsi_virtqueue *q;
--			vhost_add_used(cmd->tvc_vq, cmd->tvc_vq_desc, 0);
- 			q = container_of(cmd->tvc_vq, struct vhost_scsi_virtqueue, vq);
-+			mutex_lock(&q->vq.mutex);
-+			vhost_add_used(cmd->tvc_vq, cmd->tvc_vq_desc, 0);
-+			mutex_unlock(&q->vq.mutex);
- 			vq = q - vs->vqs;
- 			__set_bit(vq, signal);
- 		} else
-@@ -1193,8 +1195,11 @@ static void vhost_scsi_tmf_resp_work(struct vhost_work *work)
- 	else
- 		resp_code = VIRTIO_SCSI_S_FUNCTION_REJECTED;
- 
-+	mutex_lock(&tmf->svq->vq.mutex);
- 	vhost_scsi_send_tmf_resp(tmf->vhost, &tmf->svq->vq, tmf->in_iovs,
- 				 tmf->vq_desc, &tmf->resp_iov, resp_code);
-+	mutex_unlock(&tmf->svq->vq.mutex);
-+
- 	vhost_scsi_release_tmf_res(tmf);
- }
- 
--- 
-2.34.1
+SGkgRXJpYywKCj4gCj4gVGhpcyB3aWxsIGNyYXNoIGlmIGRldiBpcyBOVUxMCj4KCk9vcHMsIHlv
+dSBhcmUgcmlnaHQuIEkgd2lsbCBwcmVwYXJlIGEgbmV3IHZlcnNpb24gbGF0ZXIKClRoYW5rcwpM
+aW4K
 
