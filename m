@@ -1,104 +1,104 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B04248F54
-	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 18:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401F62F7D1F
+	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 19:18:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751482680; cv=none; b=MDNBOHKJdRx5NOGjZZQZGJWNfVwBXm7hY310stOPOfpI1pe/+Xuy+RCBaC+BlGPkkry2vnjxIw4LxMmhpa8VccCK74Qjvf77eyvaQmUJWCQlryNg/KEzwn68hZIZmWlozGkrEKRr0XSaByhsFKf1LJBbzD5pGq1FPjYiUWsZ/Xo=
+	t=1751483890; cv=none; b=Bmno2edVe8rbESZFr3UC4IEbcglsFBApFTT7xlhaHumgpKJQhVDMrG5vDh+HkESsqA50H38ZsqeOIoW0edYiz0UJPjo92XQbzI8LMP+f6D868LKzSqcGGThFGLNSGZQBXEbkDQHeqES3uxQTun9aWUs/f8e8+kmScZH1iRNvMWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751482680; c=relaxed/simple;
-	bh=YOy9dYklOOi4NqPwD/tdGPr59Q/ZLgkUfj6Gkhh+mbk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eVceMhzHmO/NRc2s3jrGMFPp/8ghPRNPUhnZYhfr+Z2M/EWWvUGDuCnzERO5yAye+xAHz7zRWj51onf5qwsXKdTFB6Lz/NTPM+v09NqYcR43XqMcXHKQKsI0uuBc4ReCD4c5iXiDmpvBDQf4ZiAnTydzl8zuimLDsZ9dEm6vEQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MTv40vFh; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751483890; c=relaxed/simple;
+	bh=I6ujcxcF/NbT6fX1yq4Bb5wFObPVExVItAn9msWNl/8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=txM3ItDGhUiyAhiuWB6Ei0U3veYgWOvGEQSz0N7lrhtpzJ3/NMxIHgL/a15HoFXMmmjAXbKn/YpZ8WgNPPLtDxXT1PaNzTfP/ZHDgYw34+9BR4Cr5hKK6wmoO1Es5xosf/1haXTy5lDdZz+F3PtK/a3rwnTuGORH1R97qvdVnLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=U27uauSu; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MTv40vFh"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4538bc1cffdso46035875e9.0
-        for <netdev@vger.kernel.org>; Wed, 02 Jul 2025 11:57:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751482677; x=1752087477; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lVXxVN+j4acOYXNJGE4TYsu0eo0UWgEj7WHyqs9riRI=;
-        b=MTv40vFh/j5oA5Ze2aUUyiMbdArKiiSzFFpHnQAa1jwOOnZyPYvh+gCFoTiBMk+BDO
-         ZJMwdojtNpwygmkNRY0uviqrxfhNP7ETuWoZU4pm6QqQglrV3MGSiTUpnZmIXYfrH2iD
-         31kQ1FIYVEktb/KhRiSY8hNJNEdCbFe802Mt7vgu/m97cb+egHbu9MEkMuo2YPWfUhsE
-         adAV8gSRU3F2p+5TIQXJmwoRugTG/6S+GEq0viQAGszAPb1GPqZTy7S3jXsY6O/D3o7g
-         3N4XmMuiekixb3Zy2FnrWEtxLIO1ZKCiajNpjvLE3Y6vP7Cjexhwi4k11cBwv/DERQLh
-         R2Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751482677; x=1752087477;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lVXxVN+j4acOYXNJGE4TYsu0eo0UWgEj7WHyqs9riRI=;
-        b=tbohUxJNEYdkprhukmhd4n+FuUJfZikm8TqjSrRyEeDw+t0cr0rqJyIcUGxlS9lobP
-         NSksIzF6nDt2G5k9qDDC4p8DWiLIB7qiBiip1ijdzZnXbik9W/cn78gY0i/3LCG/RP4z
-         iyQkCYBrA7hD6IwTdDk92+HzxYKF9mzbdMmFjt6TBBmebDFlRxlxWXFUonERaQAJLQEI
-         FsTGAuvpv4xEWWR3+fHWfh3tz65/CS9KWsuZJHKIXnzfQ33lvnoP2IFstF2RekS7OFzn
-         EtAfabYXUFKDQJfZyOyoCtwh6G0HCoMB9Q1b6mXd12I3xiq0Gz7vYG8HzXCWU4fF5LLM
-         FFsg==
-X-Gm-Message-State: AOJu0Yw8s4zGdMTjCrGsX0M02t8LSNOa5GVgn6svfnej2ioeC0oep3D3
-	rVJS8baiXi6Yxig8/VAZFd7qmBry1/0RkgyUeDRZJ0XfxduNrJzvpelA
-X-Gm-Gg: ASbGncuf7xaoKvyqzggCKV0Kf4C5ot+I8O6xoiLG6FtH72lWBAZ6MwJVaqAau9Lyfj7
-	HSms5Be6AmUONO1tXyVxgWthD/KHiOJr+tNbu5shASBhSg2ftUErjltVZbzHjbKSjkQmDmBRT4D
-	V2nJBshQOz7y4alSDJ2XQAEFDcsGRsXkj4bWc0uZish/VWBHZmpRzi5cEY75w+Il6iXz5Pmffqp
-	UY1dp9UEEaRw2l4ZNN7Jk2PAFp68xEMDKd8v8SPUa4/QRN3lVqJvB4HRLuGEH9viTJGJmp3yffC
-	EpjZA718/7L1yDwLDYLzLbMWWR9sfXi3Ve05LJGG9Rn9snTJLFCjI8n64Ia8IknAOecrVYp452v
-	0ukYaCdUsN2Y4aurmp/d6jXn6egLD5THgV6ROagxCYrAduWvuJQ==
-X-Google-Smtp-Source: AGHT+IFwFiQtJ6a9A4uioNj3Bz6ux9VsQKnJgaLiiDXgJE9PpN2CaQAS5UGxDCJJlTQfYDwypDfrGQ==
-X-Received: by 2002:a05:600c:3b24:b0:442:f12f:bd9f with SMTP id 5b1f17b1804b1-454a371d3eemr42461665e9.27.1751482676460;
-        Wed, 02 Jul 2025 11:57:56 -0700 (PDT)
-Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454a99bc81esm5604675e9.33.2025.07.02.11.57.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Jul 2025 11:57:56 -0700 (PDT)
-Message-ID: <06ad8469-56c0-4558-b214-232050143148@gmail.com>
-Date: Wed, 2 Jul 2025 19:57:54 +0100
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="U27uauSu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=cROEizyYEhT1ZzF4lcKLDdkzX7FxmK9SvKDTB3Kex44=; b=U27uauSusKqT9GBDL2QT3mM+Dn
+	CWnNRJMtoNEY3zAT7rWw1xCROd2IAj3Tx4lG3kjhKhjbN8nWGwXTd4jLzBkvCffNExZGeq6V7tk3D
+	rOL+sjZo5Qvja7S7C/8fzXqt16i4LQ1cXTF7vrPgPE5RjprtwXud5x5WmKkOQKBMc/AUIShuHcyVG
+	Dxy08XZm0LW1hlkWB8uhfxTJb/QgSgqT9/U1eww1tEfAL67qX2O+FA3+C4UfUblLFc7dBjR29fDsg
+	/HLTjZjHOWrL7aGlBnKhgxBj0C9EkQ8dg6OJPCpVP+zVZdWE8WrBz5toRVs7F1UQR3JecykRqC+Jl
+	JK/xbQSw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47714)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uX2y1-000888-0o;
+	Wed, 02 Jul 2025 20:18:01 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uX2xx-0004Jx-26;
+	Wed, 02 Jul 2025 20:17:57 +0100
+Date: Wed, 2 Jul 2025 20:17:57 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Alexander Duyck <alexander.duyck@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next 3/3] net: phylink: add
+ phylink_sfp_select_interface_speed()
+Message-ID: <aGWF5Wee3vfoFtMj@shell.armlinux.org.uk>
+References: <aGT_hoBELDysGbrp@shell.armlinux.org.uk>
+ <E1uWu14-005KXo-IO@rmk-PC.armlinux.org.uk>
+ <20250702151426.0d25a4ac@fedora.home>
+ <aGU2C3ipj8UmKHq_@shell.armlinux.org.uk>
+ <CAKgT0UcWGH14B0zZnpHeJKw+5VU96LHFR1vR4CXVjqM10iBJSg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 5/5] net: ethtool: reduce indent for
- _rxfh_context ops
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, andrew@lunn.ch,
- przemyslaw.kitszel@intel.com, anthony.l.nguyen@intel.com,
- sgoutham@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
- bbhushan2@marvell.com, tariqt@nvidia.com, mbloch@nvidia.com,
- leon@kernel.org, gal@nvidia.com
-References: <20250702030606.1776293-1-kuba@kernel.org>
- <20250702030606.1776293-6-kuba@kernel.org>
-Content-Language: en-GB
-From: Edward Cree <ecree.xilinx@gmail.com>
-In-Reply-To: <20250702030606.1776293-6-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKgT0UcWGH14B0zZnpHeJKw+5VU96LHFR1vR4CXVjqM10iBJSg@mail.gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 02/07/2025 04:06, Jakub Kicinski wrote:
-> Now that we don't have the compat code we can reduce the indent
-> a little. No functional changes.
+On Wed, Jul 02, 2025 at 11:07:52AM -0700, Alexander Duyck wrote:
+> On Wed, Jul 2, 2025 at 6:37 AM Russell King (Oracle)
+> <linux@armlinux.org.uk> wrote:
+> >
+> > On Wed, Jul 02, 2025 at 03:14:26PM +0200, Maxime Chevallier wrote:
+> > > On Wed, 02 Jul 2025 10:44:34 +0100
+> > > "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk> wrote:
+> > >
+> > > > Add phylink_sfp_select_interface_speed() which attempts to select the
+> > > > SFP interface based on the ethtool speed when autoneg is turned off.
+> > > > This allows users to turn off autoneg for SFPs that support multiple
+> > > > interface modes, and have an appropriate interface mode selected.
+> > > >
+> > > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > >
+> > > Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> > >
+> > > I don't have any hardware to perform relevant tests on this :(
+> >
+> > Me neither, I should've said. I'd like to see a t-b from
+> > Alexander Duyck who originally had the problem before this is
+> > merged.
 > 
-> Reviewed-by: Gal Pressman <gal@nvidia.com>
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> It will probably be several days before I can get around to testing it
+> since I am slammed with meetings most of the next two days, then have
+> a holiday weekend coming up.
 
-Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
+I, too, have a vacation - from tomorrow for three weeks. I may dip in
+and out of kernel emails during that period, but it depends what
+happens each day.
 
-...
-> +	} else if (create) {
-> +		ret = ops->create_rxfh_context(dev, ctx, &rxfh_dev, extack);
-> +		/* Make sure driver populates defaults */
-> +		WARN_ON_ONCE(!ret && !rxfh_dev.key &&
-> +			     ops->rxfh_per_ctx_key &&
-> +			     !memchr_inv(ethtool_rxfh_context_key(ctx),
-> +					 0, ctx->key_size));
-
-While we're here can we unsplit any of these lines without going over 80?
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
