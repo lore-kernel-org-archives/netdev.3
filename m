@@ -1,77 +1,121 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B6924CEE8
-	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 09:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E862571B9
+	for <netdev@vger.kernel.org>; Wed,  2 Jul 2025 09:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751449490; cv=none; b=HUEqvC/ZkVHTNexPUQITpOKvItNFabhlrTPd9z8yJtU3Nr3v+I11RuoFaIfdnLS1rHuPotjWVB3wVTm8FUubJru0vF+JLD5N24KNn4DbAYomb6wji4lJh825qJ5jaRDEiTltKUBgEmGQSXaSL91g8zhadZjNh/EMYOhj5TV/kSc=
+	t=1751449515; cv=none; b=UFoCssA4aiMbg/UmGSXz4HxTQIO6xxrb/s1pn2Z4h14kzp4bw3csb9NHCN76ZQS2sQqIoDYaHXBdXKaHS6oIXJ9TdTzvAscpVSM4X4bAVTyfDwsXEIQJu4UltVyNezSpnTJWd0Gf77JeYZ/aojel3zPn/4QRkbXKkrDn/KXym+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751449490; c=relaxed/simple;
-	bh=H3X+tAalFg6xL5vqc5Q7nWUH/kXb6a4Kghua/xziHwA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ubiIpmfwqXv3kjKmp8mL2gxLjGFrGPLIS8zfKuYBuVu0z46htCK1fRqf9QXcUe9OHEPV0WVplDf4gKs+Upj4mY51Gwd/5WjRelwOkiXSn72jVAq8T88DFivkpUKSxCXOYzPkJKuMSV3Yxs0RUFcs9eUe5Qx9nUlxG13gFSg3mcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=hmlYkAu7; arc=none smtp.client-ip=78.32.30.218
+	s=arc-20240116; t=1751449515; c=relaxed/simple;
+	bh=F9VW0d2Ycp8QnyLV8O0KgdwwvVlaoH//h4zVs3OY3b0=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=QhvZzWQGtQk+ds3u4LANmNCASvD82JXm4bScJXRo3l5GbIhNKjtQ2e7Ohjj++zPg+3oFz0c/yrq54KMuTFYKm02EPYG5m3dCJEqFKpFTkdirwqdKOHDdHGCeuCUOdX0ouV7j/UkW91nPyUjja/fkBarFfbcBge8LeiitGhTaRO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=yYTtOF1O; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="hmlYkAu7"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="yYTtOF1O"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Bujz/0okQveJaKmeJriq5TUUq4HkJpp0sZ50YUhfRRk=; b=hmlYkAu7N5uGJhqYFKth8JlpPh
-	UVUllVEV9pWlsp7R8QekH761BsCr5/ejZVW6has8I3+VL3v1sO2GQXxIY+8zHNiWZd8trSmg6X6tF
-	+mQUHTmXpKy3F+Y9SRpUICKtkhyLfAIA0I1r1BgSru95WbyzBpVoa8pO+9ZkwNLZDXosNhKjyQqNn
-	tP28+OtdH6iHxPxXKFVfBQCxvlHah+rvSMaF+7r00GnNboW7eirrtbTL+brhMBGgAz8C5TPZ9v03o
-	suPp7C7SrhjaQ0jBVlCojEiybfhR7RQlzQZa1OHNfhFjWn62mvX4Hx/Q4VZIG3Xa0Nxa6tk2jhhmc
-	eM59DaDw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:42972)
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=vz52zhiNVquPSLOpcWpWV/7ThJP+LhGH80lqUgQrr20=; b=yYTtOF1OOAQ1tbTrem7O9PfaJw
+	cDrJxZyPu09keLsf4s1jNwllDt3PXE9/zSqRKo943jn4mcHBTzAYYzBGiSz7wdh58XC7+l0i5ySaR
+	4k/kvtN3gafRCZAvIr6ka3Y6MtzB97tkf2XWuGr281rSvr8SX34uA/srNQYqXexvMujtRVWIYhI2G
+	yOCQ+1CwUl0vMi9MTXmTdeT/ukRlC67OE9ZbrURvPUD0Ml/o+lptFNcVvGXQhxMGjc1hwdu4KeCbR
+	BUV7k6UeYXolgRIfT7RRvfXFtlWMZD/lkXk6PJzBRI/QytAFn4xv8ufLqbbozj6FN5o8CrzSBNHOn
+	BjQBnM7w==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:52892 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1uWu1B-0007O3-0b;
-	Wed, 02 Jul 2025 10:44:41 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1uWu18-000403-0f;
-	Wed, 02 Jul 2025 10:44:38 +0100
-Date: Wed, 2 Jul 2025 10:44:38 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1uWu1a-0007OF-03;
+	Wed, 02 Jul 2025 10:45:06 +0100
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1uWu0u-005KXc-A4; Wed, 02 Jul 2025 10:44:24 +0100
+In-Reply-To: <aGT_hoBELDysGbrp@shell.armlinux.org.uk>
+References: <aGT_hoBELDysGbrp@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
 Cc: Alexander Duyck <alexander.duyck@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 0/3] net: phylink: support !autoneg configuration
- for SFPs
-Message-ID: <aGT_hoBELDysGbrp@shell.armlinux.org.uk>
+Subject: [PATCH net-next 1/3] net: phylink: restrict SFP interfaces to those
+ that are supported
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1uWu0u-005KXc-A4@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Wed, 02 Jul 2025 10:44:24 +0100
 
-This series comes from discussion during a patch series that was posted
-at the beginning of April, but these patches were never posted (I was
-too busy!)
+When configuring an optical SFP interface, restrict the bitmap of SFP
+interfaces (pl->sfp_interfaces) to those that are supported by the
+host, rather than calculating this in a local variable.
 
-We restrict ->sfp_interfaces to those that the host system supports,
-and ensure that ->sfp_interfaces is cleared when a SFP is removed. We
-then add phylink_sfp_select_interface_speed() which will select an
-appropriate interface from ->sfp_interfaces for the speed, and use that
-in our phylink_ethtool_ksettings_set() when a SFP bus is present on a
-directly connected host (not with a PHY.)
+This will allow us to avoid recomputing this in the
+phylink_ethtool_ksettings_set() path.
 
- drivers/net/phy/phylink.c | 60 ++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 54 insertions(+), 6 deletions(-)
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/phy/phylink.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 67218d278ce6..6420e76f8ab1 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -3582,7 +3582,6 @@ static int phylink_sfp_config_phy(struct phylink *pl, struct phy_device *phy)
+ static int phylink_sfp_config_optical(struct phylink *pl)
+ {
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(support);
+-	DECLARE_PHY_INTERFACE_MASK(interfaces);
+ 	struct phylink_link_state config;
+ 	phy_interface_t interface;
+ 	int ret;
+@@ -3596,9 +3595,9 @@ static int phylink_sfp_config_optical(struct phylink *pl)
+ 	/* Find the union of the supported interfaces by the PCS/MAC and
+ 	 * the SFP module.
+ 	 */
+-	phy_interface_and(interfaces, pl->config->supported_interfaces,
++	phy_interface_and(pl->sfp_interfaces, pl->config->supported_interfaces,
+ 			  pl->sfp_interfaces);
+-	if (phy_interface_empty(interfaces)) {
++	if (phy_interface_empty(pl->sfp_interfaces)) {
+ 		phylink_err(pl, "unsupported SFP module: no common interface modes\n");
+ 		return -EINVAL;
+ 	}
+@@ -3614,14 +3613,14 @@ static int phylink_sfp_config_optical(struct phylink *pl)
+ 	 * mask to only those link modes that can be supported.
+ 	 */
+ 	ret = phylink_validate_mask(pl, NULL, pl->sfp_support, &config,
+-				    interfaces);
++				    pl->sfp_interfaces);
+ 	if (ret) {
+ 		phylink_err(pl, "unsupported SFP module: validation with support %*pb failed\n",
+ 			    __ETHTOOL_LINK_MODE_MASK_NBITS, support);
+ 		return ret;
+ 	}
+ 
+-	interface = phylink_choose_sfp_interface(pl, interfaces);
++	interface = phylink_choose_sfp_interface(pl, pl->sfp_interfaces);
+ 	if (interface == PHY_INTERFACE_MODE_NA) {
+ 		phylink_err(pl, "failed to select SFP interface\n");
+ 		return -EINVAL;
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.30.2
+
