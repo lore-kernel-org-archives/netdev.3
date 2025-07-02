@@ -1,84 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f193.google.com (mail-yb1-f193.google.com [209.85.219.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1019C292B53;
-	Wed,  2 Jul 2025 14:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF0230AAD1;
+	Wed,  2 Jul 2025 14:58:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751468312; cv=none; b=FOhdEIR7qlqn6nLGwSKigJoK7FlOu7pqHo0L5nxm3pz8dLb8sPi01LHYPCWH48dEJNI0764SS5hHINiGOe6TMG66wosphvPl4NQ1iXyeehGLSkzWoNAbB2i1Ut41WwPSih9o+X3UuUYziN9NK0fcD7BQxYZMybSkWzh75AoJbm4=
+	t=1751468318; cv=none; b=aRDBVVNDjg8QaRjbhUKnJ4luSiCnw4eztnA0Hww6TRPfvGm1aRwNNFXssQGnKLaesaGk2u2L+RA8/+WPdghwqt2DdHyS65GLgDC97UHjTs9OO+SFPiWxoWoEhSQCCylvZaS0DF8K+asEcQUp/79jmnnr5zp+Pu87hSmDTgdLWSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751468312; c=relaxed/simple;
-	bh=DKc7Er4JVCfvqXu6MwgQwuoZumA/bmws5bxXOs7Jorw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H9vFjZK0CA0z8BFXmfeWGOr6+cMnBw/NISpRe8edr3SLYFu3nX17kZ3pZHEw2euznUydqOiHHIk1UXr4+Yjmr9j1J9RLGz2pxzSt1a0q7Iip3lUMWdlR4hfoBrQ2BPq1CmnJ2ShvoMPIUuu1iqPmRJmayjPiyeT42xa2Nb8Lzwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mbvlcwKe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751468318; c=relaxed/simple;
+	bh=oX/ZAtWzwJdsQhtNvalvhpcwa8JeOFlisMtV8cvuNIk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J3KSujmNWkbU6uUda6vCdZ2ewoeYTwNTbXuXGLAH5CoGHo1CnEV9OLBltL7jLx7xl4QaurjwWZ5e/UwLIX6omEJhZe80WB8PWyCI2/plU9pNZzHk4J2QvlOmi7uYoqKciHfaeygHwHT/FeJkEgXMDXuufJDbHldr/ydsdSzPDMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vfx/KsYX; arc=none smtp.client-ip=209.85.219.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mbvlcwKe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28394C4CEE7;
-	Wed,  2 Jul 2025 14:58:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751468311;
-	bh=DKc7Er4JVCfvqXu6MwgQwuoZumA/bmws5bxXOs7Jorw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=mbvlcwKedXAePme9LGS7rLkE/Ori3B6uwgvMjIzeTb7wObsMAJPoudJFOBUONQhOv
-	 hB/nc2Wdh/CHFEolcAQC8JKmfFWfnadP7HXjLAC856EnKaZ1ah4+G/fQSeER6ThodN
-	 yQUrqfJx6OEv+Wlxm/bNr4mwPne+/Szr2ND/Ie2aB9ekQylHOiKP4j54PdAPm3fn8u
-	 zTNVzcnRvwzYO8IIvyCLwjBteCFTsv3LL5HBTVWZDyavDHhw8/DPSZvns/HgoZQZVP
-	 ik9zHAgLRzONW3wKqGQWPUEQN4zBJCEJ1h1W/WnMurDtygkHgY/76Sdm/5UmQdrRXp
-	 GvyRLTGLCJsgQ==
-Subject: [PATCH bpf-next V2 2/7] selftests/bpf: Adjust test for maximum packet
- size in xdp_do_redirect
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-To: bpf@vger.kernel.org, netdev@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>, lorenzo@kernel.org
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>,
- Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <borkmann@iogearbox.net>,
- Eric Dumazet <eric.dumazet@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
- sdf@fomichev.me, kernel-team@cloudflare.com, arthur@arthurfabre.com,
- jakub@cloudflare.com
-Date: Wed, 02 Jul 2025 16:58:26 +0200
-Message-ID: <175146830610.1421237.2715806824407788172.stgit@firesoul>
-In-Reply-To: <175146824674.1421237.18351246421763677468.stgit@firesoul>
-References: <175146824674.1421237.18351246421763677468.stgit@firesoul>
-User-Agent: StGit/1.5
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vfx/KsYX"
+Received: by mail-yb1-f193.google.com with SMTP id 3f1490d57ef6-e897c8ca777so1195032276.2;
+        Wed, 02 Jul 2025 07:58:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751468314; x=1752073114; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=T1WkFzcqoZ9zfZk6rKFoEV4a3LB4LFCO7cfh2fSf18M=;
+        b=Vfx/KsYXuvVLuESzF8oqtv5MeUX9ouWcH2RsUgPsN//qn6aWgIhjf1oJdicaOPMwKl
+         +gu9rIbKTP7tgvj9ymrWc/ZGgRHhZEDM6fK0DB9za6EYWmHnppZIBuKaBaEWsBu+twXA
+         +rW2z/++D57u/HZVgC5/ztmxeDfYy6at6SanHtmTyuJuibNkYOEorrIGsSyA+DqVmrJG
+         DYTZU4JhX6eofDm4MqLeiuSI3/Pj9fOWA2rEufcqDfLbHCBK6YUfQ/JC0reiUyBYcyCb
+         8eHqtQCWKJqqPeoPKFIfF4bMqrOQw9hSnOnWci/dggeGHb0r/7jGNptFTsYwkbM9gyl3
+         I7dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751468314; x=1752073114;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T1WkFzcqoZ9zfZk6rKFoEV4a3LB4LFCO7cfh2fSf18M=;
+        b=P3x502jqfgVMs+s9EqURKCHmuFD3TW4T4V3vytCA/lDS53m/WUsOc8zsgyyNJ7ySTI
+         OpblIvp8Zc8dieEzR/1eMQ8Oo+8NPEAaL8k6H9vfjm0vjyhm5/TGmBKQ/hJkilX/JPLN
+         KfoXB0AY0WgDiPTh7ZJFvXwmb1I4XuA+dKlxWSrcbOh3nKLzv5V5w3QZSmroQ/9ik6+s
+         0dQI3SROKgdRuhtfhlNgb2dq1prckmOS9TxLMPiFZB6oeUZc+xqopPQm7f+9wuj71FPw
+         XeS2fF4gpn00DJTbI0/s8N9ZuPyrDcD3RJXgjMqvOH+0thmHX3FAzVPhJL0hT53oar9P
+         LvUg==
+X-Forwarded-Encrypted: i=1; AJvYcCUv/fv8vftjzD24Ac4X+8b3V1yYPz2iy6JOoMgFEe4D+L793Z3AC2RVVGF644PVORzQRc8PEE6C@vger.kernel.org, AJvYcCXcJ/EWnO3z35VvWWysY7RXfQme80/+xIYUY7xhTfRvd/4WJv/edYEoIIHMfihXK8glLfJbDyJD1JcVn1g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8YkgM7LbFH45/HZnE7Nz8D/I+FWPINQnSAe5VTwjLZZ+Ssd0Q
+	LbTZkwBagU8LmefrX4/ibg30X29R5VU9slWlVAbIvt6dadPREFnnk9QS
+X-Gm-Gg: ASbGncsxcUjvzjLNNVgq17e/jp2/ua4BJxBiB7BUXbD22YAGtTKl8XpcXwTUxRlTlW5
+	VaFSpVQRluNIi+/FBGodwHN06QTVhVN7SUiQ1OCW0gvl1seLLrAqgiSG2XerUYHXPIgYEvLNhie
+	g1rKiGrsKr5+nJ/Z+RD/2uCQn5lHTijS9Bjk0nB/1cVMi4rWhtx3UUUgxKS1s96mXIbS1jQtKSq
+	MOreXsp+YGqi3+zTweXSE6XK4juK8QiYOwofb4Fr6u8aRnxhU6TuPKmTSZAA1MQEWmrBeGogtUS
+	5Xe/WYhGG1XtfDfQ+t4I2vaC/WDzXX6seg7JeHO0H1AZW10r3tR/uN12xldrEmvAT4LLQR9OL8L
+	t0YaAHurg
+X-Google-Smtp-Source: AGHT+IGlSboF2WeQ17XUS4xFc2PW/wJIU1k/DVuD4yqPbLcGVoiUFPieioZSCcoMk0Qg2yQY9vZcjg==
+X-Received: by 2002:a05:6902:728:b0:e89:8cc2:8082 with SMTP id 3f1490d57ef6-e898cc2856cmr885356276.41.1751468314365;
+        Wed, 02 Jul 2025 07:58:34 -0700 (PDT)
+Received: from [10.102.6.66] ([208.97.243.82])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e8980a99c80sm480883276.56.2025.07.02.07.58.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Jul 2025 07:58:34 -0700 (PDT)
+Message-ID: <9c43747a-f73d-476d-a1dc-1646fcfb771f@gmail.com>
+Date: Wed, 2 Jul 2025 10:58:33 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: bridge: Do not offload IGMP/MLD messages
+To: Tobias Waldekranz <tobias@waldekranz.com>,
+ Joseph Huang <Joseph.Huang@garmin.com>, netdev@vger.kernel.org
+Cc: Nikolay Aleksandrov <razor@blackwall.org>,
+ Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, bridge@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20250701193639.836027-1-Joseph.Huang@garmin.com>
+ <87a55nyofq.fsf@waldekranz.com>
+Content-Language: en-US
+From: Joseph Huang <joseph.huang.2024@gmail.com>
+In-Reply-To: <87a55nyofq.fsf@waldekranz.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Patchset increased xdp_buff with a pointer 8 bytes, and the bpf/test_run
-struct xdp_page_head have two xdp_buff's.  Thus adjust test with 16 bytes.
+On 7/2/2025 4:41 AM, Tobias Waldekranz wrote:
+> On tis, jul 01, 2025 at 15:36, Joseph Huang <Joseph.Huang@garmin.com> wrote:
+>> Do not offload IGMP/MLD messages as it could lead to IGMP/MLD Reports
+>> being unintentionally flooded to Hosts. Instead, let the bridge decide
+>> where to send these IGMP/MLD messages.
+> 
+> Hi Joseph,
+> 
+> Do I understand the situation correctly that this is the case where the
+> local host is sending out reports in response to a remote querier?
+> 
+>          mcast-listener-process (IP_ADD_MEMBERSHIP)
+>             \
+>             br0
+>            /   \
+>         swp1   swp2
+>           |     |
+>     QUERIER     SOME-OTHER-HOST
+> 
+> So in the above setup, br0 will want to br_forward() reports for
+> mcast-listener-process's group(s) via swp1 to QUERIER; but since the
+> source hwdom is 0, the report is eligible for tx offloading, and is
+> flooded by hardware to both swp1 and swp2, reaching SOME-OTHER-HOST as
+> well?
 
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
----
- .../selftests/bpf/prog_tests/xdp_do_redirect.c     |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+That's exactly what's happening with my setup.
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c b/tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c
-index dd34b0cc4b4e..35c65518f55a 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_do_redirect.c
-@@ -59,12 +59,12 @@ static int attach_tc_prog(struct bpf_tc_hook *hook, int fd)
- 
- /* The maximum permissible size is: PAGE_SIZE - sizeof(struct xdp_page_head) -
-  * SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) - XDP_PACKET_HEADROOM =
-- * 3408 bytes for 64-byte cacheline and 3216 for 256-byte one.
-+ * 3392 bytes for 64-byte cacheline and 3200 for 256-byte one.
-  */
- #if defined(__s390x__)
--#define MAX_PKT_SIZE 3216
-+#define MAX_PKT_SIZE 3200
- #else
--#define MAX_PKT_SIZE 3408
-+#define MAX_PKT_SIZE 3392
- #endif
- 
- #define PAGE_SIZE_4K  4096
+Also, IIRC, the querier port (a.k.a. mrouter port) is not offloaded to 
+the switch (at least not for DSA switches). So depending on the 
+multicast_flood setting on the (querier) port, the Reports may not even 
+reach the querier if they are tx offloaded.
 
-
+Thanks,
+Joseph
