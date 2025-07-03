@@ -1,79 +1,60 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655782E6119
-	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 11:46:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6AB238C0D
+	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 11:46:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751543164; cv=none; b=o3neZFLEUS64SWvrdI4k3sSP80iaMYY8mH5/d/ILoG+jqdA7PU1FCrQSvrl+ujjdZD7LsUF+7xnORjTHRrTY3v9dYqoOuLSSstmjXqZV23KMt1fqVhxW9JJhOCCE2roKUjNPp1foa97n/N7gnX/T3cjA9FQ/tyk8w0nRtQARIWY=
+	t=1751543202; cv=none; b=u12MBFmIPgZXnbEreDo4mfovrMR5c1+gSnxYcmkkde8IJQiNnLkc2kwvMgyTpf4CZQWszQ41iZY/8inXB6ptgclLFowpvKSJS6qxDU3JbiIJTqEFqUk3F/R1HY9bYELYFO812YtCGqdM5OTJNqog25JB+eH7KxEP5+/p52nkusY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751543164; c=relaxed/simple;
-	bh=OaHL0WoVtSCHBsZtnFRPQP+sCQ5TBUCdEkm2wJZn4MM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWLwT2HI0LPZuHyStzNA8N/kCqR/YmPF3E4rWgnvopjlafhz2dumh4IRk9b8TZCOCz4Eu7rxppS8VL03/UbDYfw2lTpsxcRxE1cn2a+y+wb5KTATfVqsi5twGvizJTRl+UxbJ/+Q6oPttR9xmsa+IX9R4iJJX7JEXpuQozWtRxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=gSM2xjWZ; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1751543202; c=relaxed/simple;
+	bh=cgMuh17xA1ql/xkR2cAotkaIPYhgV1dPC0GUwBHrweQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=K78DjfGNAzaedGSkilktR5rTZm+E6YzsG+xmPw3gbs9T0PCQ/4xnJ9vkpxc2Nj+CuDvVhAmsjjxnGT6u7XLMCsrpPkguKjNkTRHseoYVapx5o/WalRTvD/R22+Xd0CB3KgyKz20PcxuzVrdXmX5sXOoJ7m0bAemCLXrCQeaYNS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iGwyaWD9; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="gSM2xjWZ"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-451d41e1ad1so53837095e9.1
-        for <netdev@vger.kernel.org>; Thu, 03 Jul 2025 04:46:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1751543160; x=1752147960; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vdn+w2J+xAdzSMamo0dJ/TGTDwnlFGPsWPEFbY1YCPo=;
-        b=gSM2xjWZKNg0O/8ftC9unG6zzcQl8QUc/iEuRzpu3huo/XklFyHeHQ9T6zR1XqF7sw
-         Qg+f92rzP3xYVK+AdWMd8qVY/6sV+CQG6bgE/H7P/6/kBRFzX3gvoWneG1S5KKz+nGTY
-         QjSmPJ0RaKfqJvhY2DbTkdAW2RzHo93jAfsXfN+1C2ZChJIL6sBft+ADzCYShP2ZycGW
-         FqzB5Jx87Vyv5MmDBG8jLVvUXlmsUoYrELKiaHvTdMajx4+u81/NMP2WiaRQJY9Yt40U
-         uqnJ41d8LE1SmOkpRL9amTpJ6Ott9hEnWPd7Fx28SE7m9pbGhfkx7sw4eEIC/B6hDAAg
-         Y1NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751543160; x=1752147960;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vdn+w2J+xAdzSMamo0dJ/TGTDwnlFGPsWPEFbY1YCPo=;
-        b=s5YjtxZu+7698JJFVBBMpXLKBGgcaQR1tXC1PWAxEFOFK66+p2f/T7ntKS1IFi7CHO
-         sSQgCj4zjj2MM3Do6JULrPEPcEGYw6E4n4MW2t+x4TzzyPh5OgHpVjXEhnp1ai7yFttF
-         vNhPM74qUMuOvLEg3jA58ZS8A1iIYpiqCkQ0sraPcIWY3axnFKvAnZriAcrDQGk4THeZ
-         puVSHQpjjv46zv/Fa419fhlxcyZo5zFdhGQPOnAH4v0+7w4p8MihoAdIkKLAfyAyl/lH
-         ar/qMOxcIVzpyOAQfbeBUnsqd2avfBzPIIi3VdEUKUZWvPwwMZKjxC6cjcoBkzSSMZmL
-         yR0g==
-X-Gm-Message-State: AOJu0YzBP0LOFNwl+JFC6Bn9uI/OfluSVAy/bFg7ww2M27Oty48X5MyY
-	kkgw/7SAYK+EizUmU1LFO1DotxiDFoYgkX9YnHfFtrvt4LwYUiMGeiegCtpIaZGJedS4pLAUPpT
-	pv5QQwLZxORPyfT1XbnmASbz0hx1Zb6bf5nlX0DGcIQYR565Vqv0BSFpiANPEuWJb
-X-Gm-Gg: ASbGncvMvQ616icQWcqqfc8hw6HD6Zz6+mce2yh7lnMuTkESTpkfz+ZsrxZPKE7Ld9/
-	tupWxav8jCHX0qJ3Pn5hNBvZUpAG1NawVFU6yMFczjfy0WtJ9oJDM5Kme1HPARWzr31UeKhqlgO
-	ELi/pfRQFnQ4EguULCRjJx7rxNq3pXJWgjuAHoxkoCvKCaYIoScZ0mleb9J0ufAKLjPB9iSd2yo
-	Wo9Hx1dwGArK8P8wZ+cUKyvAJRfC2kBZa5qthqz5kbwwnANsOL+a6fSOkdA5akcPux6R9mOUf0t
-	x7Cn4nueHzbhJIP08+m7A5fj/YivLPvPRyei4GRildyLYQFTu72wYgSo6qznwondut/Sj7OnHdB
-	hG9PVtgLG
-X-Google-Smtp-Source: AGHT+IFE3Wk6vZOjF6/LSa4SZImlydRgb0jq4IDhrvlJpJDFVSS8tM07gAX5Fb5PWPPq87asEGYrPg==
-X-Received: by 2002:a05:600c:19d4:b0:442:d9fc:7de with SMTP id 5b1f17b1804b1-454ab3a90c4mr22091155e9.22.1751543160261;
-        Thu, 03 Jul 2025 04:46:00 -0700 (PDT)
-Received: from inifinity.homelan.mandelbit.com ([2001:67c:2fbc:1:aeb1:428:2d89:85bc])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454a9be5bbfsm24174145e9.34.2025.07.03.04.45.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Jul 2025 04:45:59 -0700 (PDT)
-From: Antonio Quartulli <antonio@openvpn.net>
-To: netdev@vger.kernel.org
-Cc: Ralf Lici <ralf@mandelbit.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Gert Doering <gert@greenie.muc.de>,
-	Antonio Quartulli <antonio@openvpn.net>
-Subject: [PATCH net 3/3] ovpn: reset GSO metadata after decapsulation
-Date: Thu,  3 Jul 2025 13:45:12 +0200
-Message-ID: <20250703114513.18071-4-antonio@openvpn.net>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250703114513.18071-1-antonio@openvpn.net>
-References: <20250703114513.18071-1-antonio@openvpn.net>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iGwyaWD9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751543202; x=1783079202;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=cgMuh17xA1ql/xkR2cAotkaIPYhgV1dPC0GUwBHrweQ=;
+  b=iGwyaWD9mHgFnp0+u1bhZhOJQCtOJrvUdTIjyNhsp1qfQMd4fgEKQc7W
+   p+73jZXy2wtkeWMeig/8CLLPSGeoH6gTAKj14p97Iv81eD11dbpetFXI/
+   EzWLSdy70JSHd877MtlJYa6o/QzUv+x63/TKOBbBjRnyl5qq8wMpW2OdV
+   hPWC5yAYwwWXsOO79Kqv58KNmrwWmr64Rs6uY+bJLefbwYWKDGSnylCyh
+   7wyFQnQDnURurKwbAuhFUFeH3+LpdprMrsrHpjzWO6OsXEHBO8rHAjgtR
+   wFGVS8YLDYjt0PVQ3qHrRcUqxTx8wQ8TnOEymHyngkmwgxqZhYOYeLjZS
+   A==;
+X-CSE-ConnectionGUID: exYEp//hQoSZKDN+JAiXIQ==
+X-CSE-MsgGUID: R+CDUV8oTyeCH29kEI7g1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="76411120"
+X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; 
+   d="scan'208";a="76411120"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 04:46:41 -0700
+X-CSE-ConnectionGUID: RcthAU26TCegUM8ad0krlA==
+X-CSE-MsgGUID: CWKNUrJmSgSMWUd1meejsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; 
+   d="scan'208";a="153780323"
+Received: from os-delivery.igk.intel.com ([10.102.18.218])
+  by orviesa006.jf.intel.com with ESMTP; 03 Jul 2025 04:46:39 -0700
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org,
+	jiri@resnulli.us,
+	david.kaplan@amd.com,
+	dhowells@redhat.com,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH iwl-net v1 1/2] devlink: allow driver to freely name interfaces
+Date: Thu,  3 Jul 2025 13:30:21 +0200
+Message-Id: <20250703113022.1451223-1-jedrzej.jagielski@intel.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,61 +63,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Ralf Lici <ralf@mandelbit.com>
+Currently when adding devlink port it is prohibited to let
+a driver name an interface on its own. In some scenarios
+it would not be preferable to provide such limitation.
 
-The ovpn_netdev_write() function is responsible for injecting
-decapsulated and decrypted packets back into the local network stack.
+Remove triggering the warning when ndo_get_phys_port_name() is
+implemented for driver which interface is about to get a devlink
+port on.
 
-Prior to this patch, the skb could retain GSO metadata from the outer,
-encrypted tunnel packet. This original GSO metadata, relevant to the
-sender's transport context, becomes invalid and misleading for the
-tunnel/data path once the inner packet is exposed.
-
-Leaving this stale metadata intact causes internal GSO validation checks
-further down the kernel's network stack (validate_xmit_skb()) to fail,
-leading to packet drops. The reasons for these failures vary by
-protocol, for example:
-- for ICMP, no offload handler is registered;
-- for TCP and UDP, the respective offload handlers return errors when
-  comparing skb->len to the outdated skb_shinfo(skb)->gso_size.
-
-By calling skb_gso_reset(skb) we ensure the inner packet is presented to
-gro_cells_receive() with a clean state, correctly indicating it is an
-individual packet from the perspective of the local stack.
-
-This change eliminates the "Driver has suspect GRO implementation, TCP
-performance may be compromised" warning and improves overall TCP
-performance by allowing GSO/GRO to function as intended on the
-decapsulated traffic.
-
-Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
-Reported-by: Gert Doering <gert@greenie.muc.de>
-Closes: https://github.com/OpenVPN/ovpn-net-next/issues/4
-Tested-by: Gert Doering <gert@greenie.muc.de>
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Suggested-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 ---
- drivers/net/ovpn/io.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/devlink/port.c | 17 -----------------
+ 1 file changed, 17 deletions(-)
 
-diff --git a/drivers/net/ovpn/io.c b/drivers/net/ovpn/io.c
-index ebf1e849506b..3e9e7f8444b3 100644
---- a/drivers/net/ovpn/io.c
-+++ b/drivers/net/ovpn/io.c
-@@ -62,6 +62,13 @@ static void ovpn_netdev_write(struct ovpn_peer *peer, struct sk_buff *skb)
- 	unsigned int pkt_len;
- 	int ret;
+diff --git a/net/devlink/port.c b/net/devlink/port.c
+index 939081a0e615..f885c8e73307 100644
+--- a/net/devlink/port.c
++++ b/net/devlink/port.c
+@@ -1161,23 +1161,6 @@ static void devlink_port_type_netdev_checks(struct devlink_port *devlink_port,
+ {
+ 	const struct net_device_ops *ops = netdev->netdev_ops;
  
-+	/*
-+	 * GSO state from the transport layer is not valid for the tunnel/data
-+	 * path. Reset all GSO fields to prevent any further GSO processing
-+	 * from entering an inconsistent state.
-+	 */
-+	skb_gso_reset(skb);
-+
- 	/* we can't guarantee the packet wasn't corrupted before entering the
- 	 * VPN, therefore we give other layers a chance to check that
- 	 */
+-	/* If driver registers devlink port, it should set devlink port
+-	 * attributes accordingly so the compat functions are called
+-	 * and the original ops are not used.
+-	 */
+-	if (ops->ndo_get_phys_port_name) {
+-		/* Some drivers use the same set of ndos for netdevs
+-		 * that have devlink_port registered and also for
+-		 * those who don't. Make sure that ndo_get_phys_port_name
+-		 * returns -EOPNOTSUPP here in case it is defined.
+-		 * Warn if not.
+-		 */
+-		char name[IFNAMSIZ];
+-		int err;
+-
+-		err = ops->ndo_get_phys_port_name(netdev, name, sizeof(name));
+-		WARN_ON(err != -EOPNOTSUPP);
+-	}
+ 	if (ops->ndo_get_port_parent_id) {
+ 		/* Some drivers use the same set of ndos for netdevs
+ 		 * that have devlink_port registered and also for
 -- 
-2.49.0
+2.31.1
 
