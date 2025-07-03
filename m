@@ -1,30 +1,24 @@
-Received: from fgw21-4.mail.saunalahti.fi (fgw21-4.mail.saunalahti.fi [62.142.5.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E802BDC02
-	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 07:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B185B29B8D3;
+	Thu,  3 Jul 2025 07:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751529483; cv=none; b=LxFtA0+OfPxJpm1430H8vPuXeWG2i0LRCI99NatGZIQLbn7WCgEpxVekvmeYPidRHJWe85T6bittaixn2pD2NmwZbzmS6OePc/o1VqT1dnnzYcOFD/0HSKf8WvCFTFVL9ziMOYas/VegtAobflKSCeuVPnmZWpiJlRymnY6tyFQ=
+	t=1751529510; cv=none; b=OVDxYaekLS/T6VevD6Egc/HXxCXDFTG6jq+vpZ6JZMCMhGNDfRt7DjBqC1QSFH821jahELgONN85B7NgdXRUc1LiFRaC6NpG2a/GbeLT2P0qsN6+TVJfuhyroVXkGDx4Fr1VyfD1fTkjGu8fYg31xrQQU1eXv/mZxeYLdn4DcpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751529483; c=relaxed/simple;
-	bh=g19c+IauxYTWsFKQLDRooITj9glGLJ6G4sLtBu8I+po=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=DaslC0fCNDivhR+LsCNJs/jS0PREzkpm2MkdsY6a6uIHSp7X+CW8OQdwNbthC3fkX1tAV/EgTKJ3Weo4tkrf//A0haTVf5OUGJpvwiuNhqfznZd3cbQzpz6PkwbQxoa+AkXhX/UOwn8Tm7Q3wxed2pcFDZMmgtgHwHHSmwXqmd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lja.fi; spf=pass smtp.mailfrom=lja.fi; arc=none smtp.client-ip=62.142.5.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lja.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lja.fi
-Received: from mail.lja.fi (80-186-162-127.elisa-mobile.fi [80.186.162.127])
-	by fgw21.mail.saunalahti.fi (Halon) with ESMTPSA
-	id 46c29e3e-57e3-11f0-9796-005056bdd08f;
-	Thu, 03 Jul 2025 10:56:50 +0300 (EEST)
-Received: by mail.lja.fi (Postfix, from userid 120)
-	id 5E9F144E1DA0; Thu, 03 Jul 2025 07:56:50 +0000 (UTC)
-X-Spam-Level: 
-Received: from [192.168.1.186] (kytkin.sokeavartija.org [192.168.1.1])
-	by mail.lja.fi (Postfix) with ESMTPSA id 6DBD044E1D5E
-	for <netdev@vger.kernel.org>; Thu, 03 Jul 2025 07:56:25 +0000 (UTC)
-Message-ID: <e348c346-86fb-4f12-bb39-a9367130af1f@lja.fi>
-Date: Thu, 3 Jul 2025 10:56:25 +0300
+	s=arc-20240116; t=1751529510; c=relaxed/simple;
+	bh=xl9lrgJbw/eHsSEGyjSH+vpOnXH6veOcuAkE5UmNbKg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QvQRnqz9fNPidHZWHFpExIXLQOfutRdwlDB5BAtDcBegyLSTKxzArm3bmSEuS6NavcOndFUb+RmD9C9ZUrQgLh3v2dwfqqT3msML4P+42dFvG7VFyzvrTyhBl7YZP0oReHZ0ZGyV9ItzB2FW0N6WcDaOpX0oI/EOXExDvG82QbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [192.168.33.13] (unknown [210.73.43.2])
+	by APP-01 (Coremail) with SMTP id qwCowABHc6cMOGZoYsmpAA--.34529S2;
+	Thu, 03 Jul 2025 15:58:04 +0800 (CST)
+Message-ID: <cdf502cd-1ed1-427c-9de0-743315568118@iscas.ac.cn>
+Date: Thu, 3 Jul 2025 15:58:04 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -32,106 +26,488 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v3 2/5] net: spacemit: Add K1 Ethernet MAC
+To: Simon Horman <horms@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Vivian Wang <uwu@dram.page>,
+ Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20250702-net-k1-emac-v3-0-882dc55404f3@iscas.ac.cn>
+ <20250702-net-k1-emac-v3-2-882dc55404f3@iscas.ac.cn>
+ <20250703071949.GJ41770@horms.kernel.org>
 Content-Language: en-US
-From: Lauri Jakku <lja@lja.fi>
-Subject: New protocol: STCP Module
-Autocrypt: addr=lja@lja.fi; keydata=
- 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
- A3D2sYz2Kywkz93BSQTb1HXFN5nWuQ==
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Copyrighted-Material: https://paxsudos.com/
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+In-Reply-To: <20250703071949.GJ41770@horms.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:qwCowABHc6cMOGZoYsmpAA--.34529S2
+X-Coremail-Antispam: 1UD129KBjvAXoWfGw1UWr4kCF4DKFWUXw13Jwb_yoW8JryfWo
+	Z3Jrs2gF1fJFy7Cr18K34rtr1Yvw1Uur1UAay5A3Z3Wa4ay3WUuF45Ww45Aan8GF43JFWU
+	WF9rJa4jyFs2yr15n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UjIYCTnIWjp_UUUY97k0a2IF6w4kM7kC6x804xWl14x267AKxVW5JVWrJwAFc2x0
+	x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj4
+	1l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0
+	I7IYx2IY6xkF7I0E14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwV
+	C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Gr0_Cr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7
+	MxkF7I0En4kS14v26r4a6rW5MxkIecxEwVAFwVW8CwCF04k20xvY0x0EwIxGrwCFx2IqxV
+	CFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r10
+	6r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxV
+	WUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG
+	6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UYxBIdaVFxhVjvjDU0xZFpf9x07bVzVnUUUUU=
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
-Hi,
+Hi Simon,
 
+Thanks for the suggestions.
 
-    I'm in process to make kernel module out of my STCP (Secure TCP) 
-protocol. The protocol lives on top of
+On 7/3/25 15:19, Simon Horman wrote:
+> On Wed, Jul 02, 2025 at 02:01:41PM +0800, Vivian Wang wrote:
+>
+> ...
+>
+>> diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
+> ...
+>
+>> +static int emac_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+>> +{
+>> +	struct emac_priv *priv = netdev_priv(ndev);
+>> +	int nfrags = skb_shinfo(skb)->nr_frags;
+>> +	struct device *dev = &priv->pdev->dev;
+>> +
+>> +	if (unlikely(emac_tx_avail(priv) < nfrags + 1)) {
+>> +		if (!netif_queue_stopped(ndev)) {
+>> +			netif_stop_queue(ndev);
+>> +			dev_err_ratelimited(dev, "TX ring full, stop TX queue\n");
+>> +		}
+>> +		return NETDEV_TX_BUSY;
+>> +	}
+>> +
+>> +	emac_tx_mem_map(priv, skb);
+>> +
+>> +	ndev->stats.tx_packets++;
+>> +	ndev->stats.tx_bytes += skb->len;
+>> +
+>> +	/* Make sure there is space in the ring for the next TX. */
+>> +	if (unlikely(emac_tx_avail(priv) <= MAX_SKB_FRAGS + 2))
+>> +		netif_stop_queue(ndev);
+>> +
+>> +	return NETDEV_TX_OK;
+>> +}
+>> +
+>> +static u32 emac_tx_read_stat_cnt(struct emac_priv *priv, u8 cnt)
+>> +{
+>> +	u32 val, tmp;
+>> +	int ret;
+>> +
+>> +	val = 0x8000 | cnt;
+>> +	emac_wr(priv, MAC_TX_STATCTR_CONTROL, val);
+>> +	val = emac_rd(priv, MAC_TX_STATCTR_CONTROL);
+>> +
+>> +	ret = readl_poll_timeout_atomic(priv->iobase + MAC_TX_STATCTR_CONTROL,
+>> +					val, !(val & 0x8000), 100, 10000);
+>> +
+>> +	if (ret) {
+>> +		netdev_err(priv->ndev, "read TX stat timeout\n");
+>> +		return ret;
+>> +	}
+>> +
+>> +	tmp = emac_rd(priv, MAC_TX_STATCTR_DATA_HIGH);
+>> +	val = tmp << 16;
+>> +	tmp = emac_rd(priv, MAC_TX_STATCTR_DATA_LOW);
+>> +	val |= tmp;
+>> +
+>> +	return val;
+>> +}
+>> +
+>> +static u32 emac_rx_read_stat_cnt(struct emac_priv *priv, u8 cnt)
+>> +{
+>> +	u32 val, tmp;
+>> +	int ret;
+>> +
+>> +	val = 0x8000 | cnt;
+>> +	emac_wr(priv, MAC_RX_STATCTR_CONTROL, val);
+>> +	val = emac_rd(priv, MAC_RX_STATCTR_CONTROL);
+>> +
+>> +	ret = readl_poll_timeout_atomic(priv->iobase + MAC_RX_STATCTR_CONTROL,
+>> +					val, !(val & 0x8000), 100, 10000);
+>> +
+>> +	if (ret) {
+>> +		netdev_err(priv->ndev, "read RX stat timeout\n");
+>> +		return ret;
+>> +	}
+>> +
+>> +	tmp = emac_rd(priv, MAC_RX_STATCTR_DATA_HIGH);
+>> +	val = tmp << 16;
+>> +	tmp = emac_rd(priv, MAC_RX_STATCTR_DATA_LOW);
+>> +	val |= tmp;
+>> +
+>> +	return val;
+>> +}
+>> +
+>> +static int emac_set_mac_address(struct net_device *ndev, void *addr)
+>> +{
+>> +	struct emac_priv *priv = netdev_priv(ndev);
+>> +	int ret = eth_mac_addr(ndev, addr);
+>> +
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	/* If running, set now; if not running it will be set in emac_up. */
+>> +	if (netif_running(ndev))
+>> +		emac_set_mac_addr(priv, ndev->dev_addr);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static void emac_mac_multicast_filter_clear(struct emac_priv *priv)
+>> +{
+>> +	emac_wr(priv, MAC_MULTICAST_HASH_TABLE1, 0x0);
+>> +	emac_wr(priv, MAC_MULTICAST_HASH_TABLE2, 0x0);
+>> +	emac_wr(priv, MAC_MULTICAST_HASH_TABLE3, 0x0);
+>> +	emac_wr(priv, MAC_MULTICAST_HASH_TABLE4, 0x0);
+>> +}
+>> +
+>> +/* Configure Multicast and Promiscuous modes */
+>> +static void emac_rx_mode_set(struct net_device *ndev)
+>> +{
+>> +	struct emac_priv *priv = netdev_priv(ndev);
+>> +	u32 crc32, bit, reg, hash, val;
+>> +	struct netdev_hw_addr *ha;
+>> +	u32 mc_filter[4] = { 0 };
+>> +
+>> +	val = emac_rd(priv, MAC_ADDRESS_CONTROL);
+>> +
+>> +	val &= ~MREGBIT_PROMISCUOUS_MODE;
+>> +
+>> +	if (ndev->flags & IFF_PROMISC) {
+>> +		/* Enable promisc mode */
+>> +		val |= MREGBIT_PROMISCUOUS_MODE;
+>> +	} else if ((ndev->flags & IFF_ALLMULTI) ||
+>> +		   (netdev_mc_count(ndev) > HASH_TABLE_SIZE)) {
+>> +		/* Accept all multicast frames by setting every bit */
+>> +		emac_wr(priv, MAC_MULTICAST_HASH_TABLE1, 0xffff);
+>> +		emac_wr(priv, MAC_MULTICAST_HASH_TABLE2, 0xffff);
+>> +		emac_wr(priv, MAC_MULTICAST_HASH_TABLE3, 0xffff);
+>> +		emac_wr(priv, MAC_MULTICAST_HASH_TABLE4, 0xffff);
+>> +	} else if (!netdev_mc_empty(ndev)) {
+>> +		emac_mac_multicast_filter_clear(priv);
+>> +		netdev_for_each_mc_addr(ha, ndev) {
+>> +			/* Calculate the CRC of the MAC address */
+>> +			crc32 = ether_crc(ETH_ALEN, ha->addr);
+>> +
+>> +			/*
+>> +			 * The hash table is an array of 4 16-bit registers. It
+>> +			 * is treated like an array of 64 bits (bits[hash]). Use
+>> +			 * the upper 6 bits of the above CRC as the hash value.
+>> +			 */
+>> +			hash = (crc32 >> 26) & 0x3F;
+>> +			reg = hash / 16;
+>> +			bit = hash % 16;
+>> +			mc_filter[reg] |= BIT(bit);
+>> +		}
+>> +		emac_wr(priv, MAC_MULTICAST_HASH_TABLE1, mc_filter[0]);
+>> +		emac_wr(priv, MAC_MULTICAST_HASH_TABLE2, mc_filter[1]);
+>> +		emac_wr(priv, MAC_MULTICAST_HASH_TABLE3, mc_filter[2]);
+>> +		emac_wr(priv, MAC_MULTICAST_HASH_TABLE4, mc_filter[3]);
+>> +	}
+>> +
+>> +	emac_wr(priv, MAC_ADDRESS_CONTROL, val);
+>> +}
+>> +
+>> +static int emac_change_mtu(struct net_device *ndev, int mtu)
+>> +{
+>> +	struct emac_priv *priv = netdev_priv(ndev);
+>> +	u32 frame_len;
+>> +
+>> +	if (netif_running(ndev)) {
+>> +		netdev_err(ndev, "must be stopped to change MTU\n");
+>> +		return -EBUSY;
+>> +	}
+>> +
+>> +	frame_len = mtu + ETH_HLEN + ETH_FCS_LEN;
+>> +
+>> +	if (frame_len <= EMAC_DEFAULT_BUFSIZE)
+>> +		priv->dma_buf_sz = EMAC_DEFAULT_BUFSIZE;
+>> +	else if (frame_len <= EMAC_RX_BUF_2K)
+>> +		priv->dma_buf_sz = EMAC_RX_BUF_2K;
+>> +	else
+>> +		priv->dma_buf_sz = EMAC_RX_BUF_4K;
+>> +
+>> +	ndev->mtu = mtu;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static void emac_tx_timeout(struct net_device *ndev, unsigned int txqueue)
+>> +{
+>> +	struct emac_priv *priv = netdev_priv(ndev);
+>> +
+>> +	schedule_work(&priv->tx_timeout_task);
+>> +}
+>> +
+>> +static int emac_mii_read(struct mii_bus *bus, int phy_addr, int regnum)
+>> +{
+>> +	struct emac_priv *priv = bus->priv;
+>> +	u32 cmd = 0, val;
+>> +	int ret;
+>> +
+>> +	cmd |= phy_addr & 0x1F;
+>> +	cmd |= (regnum & 0x1F) << 5;
+>> +	cmd |= MREGBIT_START_MDIO_TRANS | MREGBIT_MDIO_READ_WRITE;
+>> +
+>> +	emac_wr(priv, MAC_MDIO_DATA, 0x0);
+>> +	emac_wr(priv, MAC_MDIO_CONTROL, cmd);
+>> +
+>> +	ret = readl_poll_timeout(priv->iobase + MAC_MDIO_CONTROL, val,
+>> +				 !((val >> 15) & 0x1), 100, 10000);
+>> +
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	val = emac_rd(priv, MAC_MDIO_DATA);
+>> +	return val;
+>> +}
+>> +
+>> +static int emac_mii_write(struct mii_bus *bus, int phy_addr, int regnum,
+>> +			  u16 value)
+>> +{
+>> +	struct emac_priv *priv = bus->priv;
+>> +	u32 cmd = 0, val;
+>> +	int ret;
+>> +
+>> +	emac_wr(priv, MAC_MDIO_DATA, value);
+>> +
+>> +	cmd |= phy_addr & 0x1F;
+>> +	cmd |= (regnum & 0x1F) << 5;
+>> +	cmd |= MREGBIT_START_MDIO_TRANS;
+>> +
+>> +	emac_wr(priv, MAC_MDIO_CONTROL, cmd);
+>> +
+>> +	ret = readl_poll_timeout(priv->iobase + MAC_MDIO_CONTROL, val,
+>> +				 !((val >> 15) & 0x1), 100, 10000);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int emac_mdio_init(struct emac_priv *priv)
+>> +{
+>> +	struct device *dev = &priv->pdev->dev;
+>> +	struct device_node *mii_np;
+>> +	struct mii_bus *mii;
+>> +	int ret;
+>> +
+>> +	mii = devm_mdiobus_alloc(dev);
+>> +	if (!mii)
+>> +		return -ENOMEM;
+>> +
+>> +	mii->priv = priv;
+>> +	mii->name = "k1_emac_mii";
+>> +	mii->read = emac_mii_read;
+>> +	mii->write = emac_mii_write;
+>> +	mii->parent = dev;
+>> +	mii->phy_mask = 0xffffffff;
+>> +	snprintf(mii->id, MII_BUS_ID_SIZE, "%s", priv->pdev->name);
+>> +
+>> +	mii_np = of_get_available_child_by_name(dev->of_node, "mdio-bus");
+>> +
+>> +	ret = devm_of_mdiobus_register(dev, mii, mii_np);
+>> +	if (ret)
+>> +		dev_err_probe(dev, ret, "Failed to register mdio bus\n");
+>> +
+>> +	of_node_put(mii_np);
+>> +	return ret;
+>> +}
+>> +
+>> +static void emac_get_strings(struct net_device *dev, u32 stringset, u8 *data)
+>> +{
+>> +	int i;
+>> +
+>> +	switch (stringset) {
+>> +	case ETH_SS_STATS:
+>> +		for (i = 0; i < ARRAY_SIZE(emac_ethtool_stats); i++) {
+>> +			memcpy(data, emac_ethtool_stats[i].str,
+>> +			       ETH_GSTRING_LEN);
+>> +			data += ETH_GSTRING_LEN;
+>> +		}
+>> +		break;
+>> +	}
+>> +}
+>> +
+>> +static int emac_get_sset_count(struct net_device *dev, int sset)
+>> +{
+>> +	switch (sset) {
+>> +	case ETH_SS_STATS:
+>> +		return ARRAY_SIZE(emac_ethtool_stats);
+>> +	default:
+>> +		return -EOPNOTSUPP;
+>> +	}
+>> +}
+>> +
+>> +static void emac_stats_update(struct emac_priv *priv)
+>> +{
+>> +	struct emac_hw_stats *hwstats = priv->hw_stats;
+>> +	u32 *stats = (u32 *)hwstats;
+>> +	int i;
+>> +
+>> +	for (i = 0; i < EMAC_TX_STATS_NUM; i++)
+>> +		stats[i] = emac_tx_read_stat_cnt(priv, i);
+>> +
+>> +	for (i = 0; i < EMAC_RX_STATS_NUM; i++)
+>> +		stats[i + EMAC_TX_STATS_NUM] = emac_rx_read_stat_cnt(priv, i);
+>> +}
+>> +
+>> +static void emac_get_ethtool_stats(struct net_device *dev,
+>> +				   struct ethtool_stats *stats, u64 *data)
+>> +{
+>> +	struct emac_priv *priv = netdev_priv(dev);
+>> +	struct emac_hw_stats *hwstats;
+>> +	unsigned long flags;
+>> +	u32 *data_src;
+>> +	u64 *data_dst;
+>> +	int i;
+>> +
+>> +	hwstats = priv->hw_stats;
+>> +
+>> +	if (netif_running(dev) && netif_device_present(dev)) {
+>> +		if (spin_trylock_irqsave(&priv->stats_lock, flags)) {
+>> +			emac_stats_update(priv);
+>> +			spin_unlock_irqrestore(&priv->stats_lock, flags);
+>> +		}
+>> +	}
+>> +
+>> +	data_dst = data;
+>> +
+>> +	for (i = 0; i < ARRAY_SIZE(emac_ethtool_stats); i++) {
+>> +		data_src = (u32 *)hwstats + emac_ethtool_stats[i].offset;
+>> +		*data_dst++ = (u64)(*data_src);
+>> +	}
+>> +}
+>> +
+>> +static int emac_ethtool_get_regs_len(struct net_device *dev)
+>> +{
+>> +	return (EMAC_DMA_REG_CNT + EMAC_MAC_REG_CNT) * sizeof(u32);
+>> +}
+>> +
+>> +static void emac_ethtool_get_regs(struct net_device *dev,
+>> +				  struct ethtool_regs *regs, void *space)
+>> +{
+>> +	struct emac_priv *priv = netdev_priv(dev);
+>> +	u32 *reg_space = space;
+>> +	int i;
+>> +
+>> +	regs->version = 1;
+>> +
+>> +	for (i = 0; i < EMAC_DMA_REG_CNT; i++)
+>> +		reg_space[i] = emac_rd(priv, DMA_CONFIGURATION + i * 4);
+>> +
+>> +	for (i = 0; i < EMAC_MAC_REG_CNT; i++)
+>> +		reg_space[i + EMAC_DMA_REG_CNT] =
+>> +			emac_rd(priv, MAC_GLOBAL_CONTROL + i * 4);
+>> +}
+>> +
+>> +static void emac_get_drvinfo(struct net_device *dev,
+>> +			     struct ethtool_drvinfo *info)
+>> +{
+>> +	strscpy(info->driver, DRIVER_NAME, sizeof(info->driver));
+>> +	info->n_stats = ARRAY_SIZE(emac_ethtool_stats);
+>> +}
+>> +
+>> +static void emac_tx_timeout_task(struct work_struct *work)
+>> +{
+>> +	struct net_device *ndev;
+>> +	struct emac_priv *priv;
+>> +
+>> +	priv = container_of(work, struct emac_priv, tx_timeout_task);
+>> +	ndev = priv->ndev;
+>> +
+>> +	rtnl_lock();
+>> +
+>> +	/* No need to reset if already down */
+>> +	if (!netif_running(ndev)) {
+>> +		rtnl_unlock();
+>> +		return;
+>> +	}
+>> +
+>> +	netdev_err(ndev, "MAC reset due to TX timeout\n");
+>> +
+>> +	netif_trans_update(ndev); /* prevent tx timeout */
+>> +	dev_close(ndev);
+>> +	dev_open(ndev, NULL);
+>> +
+>> +	rtnl_unlock();
+>> +}
+>> +
+>> +static void emac_sw_init(struct emac_priv *priv)
+>> +{
+>> +	priv->dma_buf_sz = EMAC_DEFAULT_BUFSIZE;
+>> +
+>> +	priv->tx_ring.total_cnt = DEFAULT_TX_RING_NUM;
+>> +	priv->rx_ring.total_cnt = DEFAULT_RX_RING_NUM;
+>> +
+>> +	spin_lock_init(&priv->stats_lock);
+>> +
+>> +	INIT_WORK(&priv->tx_timeout_task, emac_tx_timeout_task);
+>> +
+>> +	priv->tx_coal_frames = EMAC_TX_FRAMES;
+>> +	priv->tx_coal_timeout = EMAC_TX_COAL_TIMEOUT;
+>> +
+>> +	timer_setup(&priv->txtimer, emac_tx_coal_timer, 0);
+>> +}
+>> +
+> ...
+>
+>> +static irqreturn_t emac_interrupt_handler(int irq, void *dev_id)
+>> +{
+>> +	struct net_device *ndev = (struct net_device *)dev_id;
+>> +	struct emac_priv *priv = netdev_priv(ndev);
+>> +	bool should_schedule = false;
+>> +	u32 status;
+>> +	u32 clr = 0;
+> nit: Reverse xmas tree - longest line to shortest - for
+>      these local variable declarations please.
+>
+>      Edward Cree's tool can be helpful here:
+>      https://github.com/ecree-solarflare/xmastree/commits/master/
+>
+> ...
+>
+Thanks for the script. I was indeed doing reverse xmas tree manually.
 
-    normal TCP connection, that has AES encryption with elliptic key 
-exchange.
+I will fix next version.
 
+>> +static const struct net_device_ops emac_netdev_ops = {
+>> +	.ndo_open               = emac_open,
+>> +	.ndo_stop               = emac_close,
+>> +	.ndo_start_xmit         = emac_start_xmit,
+> I think that of emac_start_xmit should return netdev_tx_t rather than int
+> to match the type of the .ndo_start_xmit member of this structure.
+>
+> Flagged by Clang 20.1.7 [-Wincompatible-function-pointer-types-strict]
 
-    The packet format is [ 16/24/32 bytes of AES IV key ] + [ the 
-AES-encrypted payload ] , located at TCP-packet
+I will fix the type next version.
 
-    payload.
+Regards,
+Vivian "dramforever" Wang
 
+>> +	.ndo_set_mac_address    = emac_set_mac_address,
+>> +	.ndo_eth_ioctl          = phy_do_ioctl_running,
+>> +	.ndo_change_mtu         = emac_change_mtu,
+>> +	.ndo_tx_timeout         = emac_tx_timeout,
+>> +	.ndo_set_rx_mode        = emac_rx_mode_set,
+>> +};
+> ...
 
-    Packet handling:
-
-       Incoming:
-
-          Fetch the IV-vector of 16/24/32 bytes from incoming packet -> 
-use it and predefined AES key to decrypt
-
-          package, prior to handing the TCP-packet payload to receiver.
-
-
-       Outgoing:
-
-          Generate random IV-vector of 16/24/32 bytes and apply to 
-outgoing payload -> use it and predefined
-
-          AES key to encrypt package, prior to handing the sending the 
-message to wire.
-
-
---Lja
-
-.---<[ Paxsudos IT / Security Screening ]>---------------------------------------------------------------->
-| Known viruses: 8707574
-| Engine version: 1.4.3
-| Scanned directories: 0
-| Scanned files: 1
-| Infected files: 0
-| Data scanned: 0.00 MB
-| Data read: 0.00 MB (ratio 1.00:1)
-| Time: 22.996 sec (0 m 22 s)
-| Start Date: 2025:07:03 07:56:25
-| End Date:   2025:07:03 07:56:48
-| SPAM hints: []
-| SPAM hints: []
-| Message not from DMARC.
-`-------------------------------------------------------------------->
