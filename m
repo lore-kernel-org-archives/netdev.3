@@ -1,211 +1,307 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from sg-3-20.ptr.tlmpb.com (sg-3-20.ptr.tlmpb.com [101.45.255.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF08299A85;
-	Thu,  3 Jul 2025 07:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B2C299A8A
+	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 07:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.45.255.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751529227; cv=none; b=Ugu0o4NUfb47HGFjjjcu3J8inUmTTVlDX1kdnjWBH2DM9ulluXqyMAo5P7nGLAfGW4HomixGrZR4f3ax1bUUxFUh8f7OKrtvSwg5vR9GepBa7qmiaXu+MuKC49IEFGJaCNuPB2r83UNfwhG4+YKe1XjUCcFkiPMCkrTKlxhocX4=
+	t=1751529249; cv=none; b=tqR08Oozu1Xp+gfrJJWvCYn+29edshUfC4gQmXmJ3/BA+wGt3vI1d7zuVGMgbpfxfCVo5OH02w+Lz0hcgW/zyKUUS1c9OLiuZi/vMWTgTQVaGy0B+wJiyOF2SRgKYEkdvAKH7S2d67X7cCRIrCedpnMbpmAkENrK5TVQ96Y4b8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751529227; c=relaxed/simple;
-	bh=EAO/alnjYPf1u5+DtQLR/0pbf21VfVmpJZWS6+1VGvA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=knaBHDuAbduU4efoUZFWGKTQ65IciP+xyPYvsO9OD60XBPqHwhgmOc/QVla6KfIwGPcbBhnhl1RQnhK26pC7lG+LZ5q1dytb8aoxD4UVV03GCNV5sTyDzOWE37iZphRXL2f8cnGwrZ48urTZC1ZHJ7A0DXnfM2ZF9Y89ZOXhF2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mf01XLBc; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751529249; c=relaxed/simple;
+	bh=Lj6jthBiWmZdoYWVsQQGDrVzhO1/EFUG+CI4BhbCTQI=;
+	h=Cc:From:Subject:Message-Id:In-Reply-To:Content-Type:Date:
+	 Mime-Version:To:References; b=c04aqr6JwHVD3aNC567ksfHWpiFWlpMt+Gb8Fq5l3WnwwOcJbI4yJ9UivSFYMUFTKLLUOG1LGrQkEhhbCxCG1XeIIqdacp/CZZAFM0ElWSnk6v6cLaT8c24JNnfZCf6f0eaocIQH7XktnaY3He3oQKP0CSeB03AcyCcOhmUoxio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=EKm1M90d; arc=none smtp.client-ip=101.45.255.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mf01XLBc"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-31223a4cddeso3445235a91.1;
-        Thu, 03 Jul 2025 00:53:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751529225; x=1752134025; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o5Z3Ibg5dI0YI2U0Q0aEUI660v44K9U+DyvKSIB5G4w=;
-        b=mf01XLBc5PMojHYNULfLOA2L6G9YKwG7pzSZDrTKOBhGSkg1fUb8E7j8MyqCrYXodL
-         ZIAWCn+/Teqt8qs6lA9UDsV1GfdWIotqzOUnp9hZ0HKyJ94x1rSy+DKzT0qNYOdX3IBZ
-         W/Wv2WjyGmDhWqw+ln3UvUDbM+L3Z9Z1E9U3eXRPKsGDCSYmM4FV0jG4xfs5M5sfFPdJ
-         WUoX8g8VeZ4rtcrRZAbS0Dt61DjjTvYOUZmkkTsJA0N8+XKZ7WtUj6jQia8njlmSMCSQ
-         YyRRUk1TvGXOqVvOBR5v5N+/nhejnk9hBLwfwK1WNWuChSg37Yb/Xc1hApVc1hSu8Qnf
-         nFxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751529225; x=1752134025;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o5Z3Ibg5dI0YI2U0Q0aEUI660v44K9U+DyvKSIB5G4w=;
-        b=FkjugsMktYQw+K9qB6iYYxQ9esj7HxK9BU2zg+rkb71J8R8PTXDhr/Ovkdnh4v9MLT
-         /Rker0hAGuP/DGNMpLAu81Wy7592fxgEF5Fy9asV65kNgSN+ZV4HHfD6+USkRtRQa88d
-         vh8SmnDDhB1a5cDN2z43+/4mZMs9B7WVB/CgOpPscHCRhSzUsp99nApbBziiPG+FbLcz
-         ++ZH2Byvk6Dtj8qqGOXhjWNA+UpC08KBavZ/GtCzhOzqKRi9a3geKCFq05GyVl6mJnTr
-         +F8y4A+Np4vrc9GXlch3eeHtrXPn7w2tAumsXeRHUkXuT6upapiqbpy1d2bAqh3ocYo7
-         DX6w==
-X-Forwarded-Encrypted: i=1; AJvYcCUOt41p7ig/CboFg58xTapoafQ0lYVCmrmhHj8tWLEIfwwdB2DuPVZAR9vLG/8DqElwl8G51nDsBtqLdCy8@vger.kernel.org, AJvYcCUWrVp3EnwMgd9Nkf8ne38UUXPVUAn9wHFJCvNfh/gGCPnpA5Rmdg14c2bhlxbesa3+x30nmiil@vger.kernel.org, AJvYcCVLhhTMD5cj1EzMY38LO3tUR6OsRv7en2gIsVPcutk/9DLDqv9SeaZUonbepGLvxNU/C+s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjvdCBKUNV5029yTi0z6dZ3cGHlsi68PNpDnBXIKcu8dDmFGvg
-	U6Toq/ZfB1gWsX6ChTlGLNJDdfC67zThonEYtbt8Q2K9dqBNLwfZqTOeJhsXwdxgDulHGH6W
-X-Gm-Gg: ASbGncuRCQgb2q8h5X8Xy4yHRDrUD99JAbNIWsnBpB89womxCaddg5jwdEI35vsdi4q
-	aPBvjYDWIQWj/TEwEwRcb/o/QP76Zlx0kq4AwQQT9yiSNShTd7cA3KcR2iv1cIx+gpU/QZYW2l7
-	QSbM1LsqnPV2+G564BzLPYQxoMnc+W7XX2IzofIzrcwnjcvmVlBLL/zHlIXaI6mODQ27GbFxzNV
-	L3/5zyby95kIoUfuO5x6YcWikAu+13D7BM9yeJLyMmBXSvcQ2n2Het1ecZlTYgoh6QSMkviHKW4
-	zEdoV0xeO2xigqaz9YRsi+Yt9I/pQjulfH7FtQcix5JSi5uNXDfnk6vIzKW4jK28vxMKC9+/CSe
-	C0sbvHRmJV/u/Qd+v+Ws=
-X-Google-Smtp-Source: AGHT+IG5wCaASyniAIni8ifVqNeDb2b7kJdZU/BUNxpaGI75twsZCp3n4qDX+fcy/2jRkP4DZDxYgw==
-X-Received: by 2002:a17:90b:4c84:b0:312:1ae9:153a with SMTP id 98e67ed59e1d1-31a90bef1a8mr8956064a91.25.1751529224280;
-        Thu, 03 Jul 2025 00:53:44 -0700 (PDT)
-Received: from devant.antgroup-inc.local ([47.89.83.0])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31a9cc5a266sm1788596a91.12.2025.07.03.00.53.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Jul 2025 00:53:43 -0700 (PDT)
-From: Xuewei Niu <niuxuewei97@gmail.com>
-X-Google-Original-From: Xuewei Niu <niuxuewei.nxw@antgroup.com>
-To: sgarzare@redhat.com
-Cc: davem@davemloft.net,
-	decui@microsoft.com,
-	fupan.lfp@antgroup.com,
-	jasowang@redhat.com,
-	kvm@vger.kernel.org,
-	leonardi@redhat.com,
-	linux-kernel@vger.kernel.org,
-	mst@redhat.com,
-	netdev@vger.kernel.org,
-	niuxuewei.nxw@antgroup.com,
-	niuxuewei97@gmail.com,
-	pabeni@redhat.com,
-	stefanha@redhat.com,
-	virtualization@lists.linux.dev,
-	xuanzhuo@linux.alibaba.com
-Subject: Re: [RESEND PATCH net-next v4 3/4] test/vsock: Add retry mechanism to ioctl wrapper
-Date: Thu,  3 Jul 2025 15:53:28 +0800
-Message-Id: <20250703075328.1004942-1-niuxuewei.nxw@antgroup.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <ceulzs7srd77t57ozaauveim4dlp6stqmbvvjh5dketapmjzhv@nu6gruoyidze>
-References: <ceulzs7srd77t57ozaauveim4dlp6stqmbvvjh5dketapmjzhv@nu6gruoyidze>
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="EKm1M90d"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2403070942; d=yunsilicon.com; t=1751529241; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=QzUYWl+kPhDCZwIl/qiIBiSp40fFl8rLNCqkIRpaWws=;
+ b=EKm1M90d7vyvqBUZiQhcAur8+hejVo9Zq0gPr7X9O7aXtr95FxjGIkSTYBYXWm4vgefQhv
+ HACgLpZcct3BUXctP8qtOPg/5VZ67UjwfJsJ2h7kkcbsOduUbrCJIx8SPMt7HJDhakes0C
+ x4YcPcpe3K1TX1ubgv5bkFCmy4m48AMlS3mix4bWQslerbwsM26Hizb8tg4coqgTE8wfAE
+ VNWeayab5rT7OnKF9UBskbpIUl5UpEAwAy8KK+Uk4D5dpac23Y3HhT3T8S0iTTMJu+QglL
+ WfY6uhMELfE/jujLHoBWQatngiAS1YHTpQhJQJmP/cCpSdakPiz2aWd+n4mn9w==
+Content-Transfer-Encoding: 7bit
+Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
+	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
+	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
+	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <jacky@yunsilicon.com>, 
+	<horms@kernel.org>, <parthiban.veerasooran@microchip.com>, 
+	<masahiroy@kernel.org>, <kalesh-anakkur.purayil@broadcom.com>, 
+	<geert+renesas@glider.be>, <pabeni@redhat.com>, <geert@linux-m68k.org>
+From: "Xin Tian" <tianx@yunsilicon.com>
+Subject: [PATCH net-next v12 07/14] xsc: Init auxiliary device
+Message-Id: <20250703075357.3488773-8-tianx@yunsilicon.com>
+In-Reply-To: <20250703075341.3488773-1-tianx@yunsilicon.com>
+Content-Type: text/plain; charset=UTF-8
+Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Thu, 03 Jul 2025 15:53:58 +0800
+Date: Thu, 03 Jul 2025 15:53:59 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.25.1
+To: <netdev@vger.kernel.org>
+X-Lms-Return-Path: <lba+268663717+038903+vger.kernel.org+tianx@yunsilicon.com>
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+References: <20250703075341.3488773-1-tianx@yunsilicon.com>
 
-> On Thu, Jul 03, 2025 at 11:05:14AM +0800, Xuewei Niu wrote:
-> >Resend: the previous message was rejected due to HTML
-> >Resend: forgot to reply all...
-> >
-> >> On Mon, Jun 30, 2025 at 03:57:26PM +0800, Xuewei Niu wrote:
-> >> >Wrap the ioctl in `ioctl_int()`, which takes a pointer to the actual
-> >> >int value and an expected int value. The function will not return until
-> >> >either the ioctl returns the expected value or a timeout occurs, thus
-> >> >avoiding immediate failure.
-> >> >
-> >> >Signed-off-by: Xuewei Niu <niuxuewei.nxw@antgroup.com>
-> >> >---
-> >> > tools/testing/vsock/util.c | 32 +++++++++++++++++++++++---------
-> >> > tools/testing/vsock/util.h |  1 +
-> >> > 2 files changed, 24 insertions(+), 9 deletions(-)
-> >> >
-> >> >diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
-> >> >index 0c7e9cbcbc85..481c395227e4 100644
-> >> >--- a/tools/testing/vsock/util.c
-> >> >+++ b/tools/testing/vsock/util.c
-> >> >@@ -16,6 +16,7 @@
-> >> > #include <unistd.h>
-> >> > #include <assert.h>
-> >> > #include <sys/epoll.h>
-> >> >+#include <sys/ioctl.h>
-> >> > #include <sys/mman.h>
-> >> > #include <linux/sockios.h>
-> >> >
-> >> >@@ -97,28 +98,41 @@ void vsock_wait_remote_close(int fd)
-> >> > 	close(epollfd);
-> >> > }
-> >> >
-> >> >-/* Wait until transport reports no data left to be sent.
-> >> >- * Return false if transport does not implement the unsent_bytes()
-> >> >callback.
-> >> >+/* Wait until ioctl gives an expected int value.
-> >> >+ * Return false if the op is not supported.
-> >> >  */
-> >> >-bool vsock_wait_sent(int fd)
-> >> >+bool vsock_ioctl_int(int fd, unsigned long op, int *actual, int expected)
-> >>
-> >> Why we need the `actual` parameter?
-> >
-> >We can exit early `if (*actual == expected)`, and the `expected` can be any integer.
-> >I also make it to be a pointer, because the caller might need to have the actual value.
-> 
-> IIUC this function return true if `*actual == expected` or false if 
-> there was an error, so I don't see the point of aving `actual`, since it 
-> can only be equal to `expected` if it returns true, or invalid if it 
-> returs false.
+Our device supports both Ethernet and RDMA functionalities, and
+leveraging the auxiliary bus perfectly addresses our needs for
+managing these distinct features. This patch utilizes auxiliary
+device to handle the Ethernet functionality, while defining
+xsc_adev_list to reserve expansion space for future RDMA
+capabilities.
 
-Nice catch! I'll remove it in v5.
+Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
+Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
+Co-developed-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Xin Tian <tianx@yunsilicon.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+---
+ .../ethernet/yunsilicon/xsc/common/xsc_core.h |  14 +++
+ .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   3 +-
+ .../net/ethernet/yunsilicon/xsc/pci/adev.c    | 115 ++++++++++++++++++
+ .../net/ethernet/yunsilicon/xsc/pci/adev.h    |  14 +++
+ .../net/ethernet/yunsilicon/xsc/pci/main.c    |  10 ++
+ 5 files changed, 155 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/adev.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/adev.h
 
-Thanks,
-Xuewei
-
-> Thanks,
-> Stefano
-> 
-> >
-> >Thanks,
-> >Xuewei
-> >
-> >> > {
-> >> >-	int ret, sock_bytes_unsent;
-> >> >+	int ret;
-> >> >+	char name[32];
-> >> >+
-> >> >+	snprintf(name, sizeof(name), "ioctl(%lu)", op);
-> >> >
-> >> > 	timeout_begin(TIMEOUT);
-> >> > 	do {
-> >> >-		ret = ioctl(fd, SIOCOUTQ, &sock_bytes_unsent);
-> >> >+		ret = ioctl(fd, op, actual);
-> >> > 		if (ret < 0) {
-> >> > 			if (errno == EOPNOTSUPP)
-> >> > 				break;
-> >> >
-> >> >-			perror("ioctl(SIOCOUTQ)");
-> >> >+			perror(name);
-> >> > 			exit(EXIT_FAILURE);
-> >> > 		}
-> >> >-		timeout_check("SIOCOUTQ");
-> >> >-	} while (sock_bytes_unsent != 0);
-> >> >+		timeout_check(name);
-> >> >+	} while (*actual != expected);
-> >> > 	timeout_end();
-> >> >
-> >> >-	return !ret;
-> >> >+	return ret >= 0;
-> >> >+}
-> >> >+
-> >> >+/* Wait until transport reports no data left to be sent.
-> >> >+ * Return false if transport does not implement the unsent_bytes() callback.
-> >> >+ */
-> >> >+bool vsock_wait_sent(int fd)
-> >> >+{
-> >> >+	int sock_bytes_unsent;
-> >> >+
-> >> >+	return vsock_ioctl_int(fd, SIOCOUTQ, &sock_bytes_unsent, 0);
-> >> > }
-> >> >
-> >> > /* Create socket <type>, bind to <cid, port> and return the file descriptor. */
-> >> >diff --git a/tools/testing/vsock/util.h b/tools/testing/vsock/util.h
-> >> >index 5e2db67072d5..d59581f68d61 100644
-> >> >--- a/tools/testing/vsock/util.h
-> >> >+++ b/tools/testing/vsock/util.h
-> >> >@@ -54,6 +54,7 @@ int vsock_stream_listen(unsigned int cid, unsigned int port);
-> >> > int vsock_seqpacket_accept(unsigned int cid, unsigned int port,
-> >> > 			   struct sockaddr_vm *clientaddrp);
-> >> > void vsock_wait_remote_close(int fd);
-> >> >+bool vsock_ioctl_int(int fd, unsigned long op, int *actual, int expected);
-> >> > bool vsock_wait_sent(int fd);
-> >> > void send_buf(int fd, const void *buf, size_t len, int flags,
-> >> > 	      ssize_t expected_ret);
-> >> >--
-> >> >2.34.1
-> >> >
-> >
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
+index 60dde506e..e6863cb08 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
++++ b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
+@@ -7,6 +7,7 @@
+ #define __XSC_CORE_H
+ 
+ #include <linux/pci.h>
++#include <linux/auxiliary_bus.h>
+ 
+ #include "common/xsc_cmdq.h"
+ 
+@@ -210,6 +211,17 @@ struct xsc_irq_info {
+ 	char name[XSC_MAX_IRQ_NAME];
+ };
+ 
++/* adev */
++#define XSC_PCI_DRV_NAME "xsc_pci"
++#define XSC_ETH_ADEV_NAME "eth"
++
++struct xsc_adev {
++	struct auxiliary_device	adev;
++	struct xsc_core_device	*xdev;
++
++	int			idx;
++};
++
+ /* hw */
+ struct xsc_reg_addr {
+ 	u64	tx_db;
+@@ -347,6 +359,8 @@ struct xsc_dev_resource {
+ struct xsc_core_device {
+ 	struct pci_dev		*pdev;
+ 	struct device		*device;
++	int			adev_id;
++	struct xsc_adev		**xsc_adev_list;
+ 	void			*eth_priv;
+ 	struct xsc_dev_resource	*dev_res;
+ 	int			numa_node;
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+index 3525d1c74..ad0ecc122 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+@@ -6,4 +6,5 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
+ 
+ obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc_pci.o
+ 
+-xsc_pci-y := main.o cmdq.o hw.o qp.o cq.o alloc.o eq.o pci_irq.o
++xsc_pci-y := main.o cmdq.o hw.o qp.o cq.o alloc.o eq.o pci_irq.o adev.o
++
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/adev.c b/drivers/net/ethernet/yunsilicon/xsc/pci/adev.c
+new file mode 100644
+index 000000000..c9c6328a4
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/adev.c
+@@ -0,0 +1,115 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#include <linux/auxiliary_bus.h>
++#include <linux/idr.h>
++
++#include "adev.h"
++
++static DEFINE_IDA(xsc_adev_ida);
++
++enum xsc_adev_idx {
++	XSC_ADEV_IDX_ETH,
++};
++
++static const char * const xsc_adev_name[] = {
++	[XSC_ADEV_IDX_ETH] = XSC_ETH_ADEV_NAME,
++};
++
++static void xsc_release_adev(struct device *dev)
++{
++	struct xsc_adev *xsc_adev =
++		container_of(dev, struct xsc_adev, adev.dev);
++	struct xsc_core_device *xdev = xsc_adev->xdev;
++	int idx = xsc_adev->idx;
++
++	kfree(xsc_adev);
++	xdev->xsc_adev_list[idx] = NULL;
++}
++
++static int xsc_reg_adev(struct xsc_core_device *xdev, int idx)
++{
++	struct auxiliary_device	*adev;
++	struct xsc_adev *xsc_adev;
++	int ret;
++
++	xsc_adev = kzalloc(sizeof(*xsc_adev), GFP_KERNEL);
++	if (!xsc_adev)
++		return -ENOMEM;
++
++	adev = &xsc_adev->adev;
++	adev->name = xsc_adev_name[idx];
++	adev->id = xdev->adev_id;
++	adev->dev.parent = &xdev->pdev->dev;
++	adev->dev.release = xsc_release_adev;
++	xsc_adev->xdev = xdev;
++	xsc_adev->idx = idx;
++
++	ret = auxiliary_device_init(adev);
++	if (ret) {
++		kfree(xsc_adev);
++		return ret;
++	}
++
++	ret = auxiliary_device_add(adev);
++	if (ret) {
++		auxiliary_device_uninit(adev);
++		return ret;
++	}
++
++	xdev->xsc_adev_list[idx] = xsc_adev;
++
++	return 0;
++}
++
++static void xsc_unreg_adev(struct xsc_core_device *xdev, int idx)
++{
++	struct xsc_adev *xsc_adev = xdev->xsc_adev_list[idx];
++	struct auxiliary_device *adev = &xsc_adev->adev;
++
++	auxiliary_device_delete(adev);
++	auxiliary_device_uninit(adev);
++}
++
++int xsc_adev_init(struct xsc_core_device *xdev)
++{
++	struct xsc_adev **xsc_adev_list;
++	int adev_id;
++	int ret;
++
++	xsc_adev_list = kcalloc(ARRAY_SIZE(xsc_adev_name),
++				sizeof(struct xsc_adev *),
++				GFP_KERNEL);
++	if (!xsc_adev_list)
++		return -ENOMEM;
++	xdev->xsc_adev_list = xsc_adev_list;
++
++	adev_id = ida_alloc(&xsc_adev_ida, GFP_KERNEL);
++	if (adev_id < 0) {
++		ret = adev_id;
++		goto err_free_adev_list;
++	}
++	xdev->adev_id = adev_id;
++
++	ret = xsc_reg_adev(xdev, XSC_ADEV_IDX_ETH);
++	if (ret)
++		goto err_dalloc_adev_id;
++
++	return 0;
++err_dalloc_adev_id:
++	ida_free(&xsc_adev_ida, xdev->adev_id);
++err_free_adev_list:
++	kfree(xsc_adev_list);
++
++	return ret;
++}
++
++void xsc_adev_uninit(struct xsc_core_device *xdev)
++{
++	xsc_unreg_adev(xdev, XSC_ADEV_IDX_ETH);
++	ida_free(&xsc_adev_ida, xdev->adev_id);
++	kfree(xdev->xsc_adev_list);
++}
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/adev.h b/drivers/net/ethernet/yunsilicon/xsc/pci/adev.h
+new file mode 100644
+index 000000000..7515c85a6
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/adev.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#ifndef __XSC_ADEV_H
++#define __XSC_ADEV_H
++
++#include "common/xsc_core.h"
++
++int xsc_adev_init(struct xsc_core_device *xdev);
++void xsc_adev_uninit(struct xsc_core_device *xdev);
++
++#endif
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
+index febbca244..1ebf366dc 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
+@@ -10,6 +10,7 @@
+ #include "cq.h"
+ #include "eq.h"
+ #include "pci_irq.h"
++#include "adev.h"
+ 
+ static const struct pci_device_id xsc_pci_id_table[] = {
+ 	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MC_PF_DEV_ID) },
+@@ -215,7 +216,15 @@ static int xsc_load(struct xsc_core_device *xdev)
+ 		goto err_hw_cleanup;
+ 	}
+ 
++	err = xsc_adev_init(xdev);
++	if (err) {
++		pci_err(xdev->pdev, "xsc_adev_init failed %d\n", err);
++		goto err_irq_eq_destroy;
++	}
++
+ 	return 0;
++err_irq_eq_destroy:
++	xsc_irq_eq_destroy(xdev);
+ err_hw_cleanup:
+ 	xsc_hw_cleanup(xdev);
+ err_out:
+@@ -224,6 +233,7 @@ static int xsc_load(struct xsc_core_device *xdev)
+ 
+ static void xsc_unload(struct xsc_core_device *xdev)
+ {
++	xsc_adev_uninit(xdev);
+ 	xsc_irq_eq_destroy(xdev);
+ 	xsc_hw_cleanup(xdev);
+ }
+-- 
+2.43.0
