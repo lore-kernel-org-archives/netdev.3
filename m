@@ -1,280 +1,201 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363D02D5429
-	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 09:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7322D4B5B
+	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 09:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751533935; cv=none; b=i3ZVV/WQaGfPvoFR6kr0CN+SA6NcgmFnD3QydTrFYhyNXxn//jp44kRDvWzjJodpyy3MSfV4g6dkkY7qDh3JsLyjPJAk8spK3g/73qeM8drRw0NQbA/s4ex9NVvUxRcGX1pTSlMzQuNlpK+7p07WTV4V5K6vhmfLHI+YmMdD13U=
+	t=1751534039; cv=none; b=e1HYVVyJvNUYI7S58zD8Klz6uD3tFuqN6ia7nu9VlioGkxHCBEZJrgKnUQsQbOe1gW9OW7ozcG5kH11f6FJiQKambdKgVj4KyoSAB02FZYP1pGt2bY51HOP4jYSo9tkWmEYHwKWh2sHQMMyOkl7fvSONlZtHQXlyap3a3PFh/rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751533935; c=relaxed/simple;
-	bh=J4womWxCauLvTnV/beZ/Gy8IC6sKAjhc8Uc+Ca6KXkA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kW7K6AAu1BX+cVZlF10DzagGsKNi5kQDJdJHfpqCXzgdfyF3BxtHe28xVMi/Ar4RH7w2XUZb5kaIsdCIynWcxnLHZBFBMN96vcvUfvu/+wFPYRq7uFdo84xyOXoWD4Kn8t0yO2LMLIv+1BINT1NpfLsuh81Tqk0hYC57L3O/RP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=gRLDm2zT; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1751534039; c=relaxed/simple;
+	bh=2FJhwqOSUxIoDeCZEeXY6Q3vz2o4+XeHIQYBwmnKTZI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Q7isqInFXLw8RxDgnC72byEHii6w8vBfwWYhNkvH4OR3wJ2csS4Bvqov6G+UDk8VUtu0YIYwFgo0uxjrd2YD68oSURVV64hLzJR4bSGvHC5aRyTa9wReFizjeTiLlKp/bEjbKPeiiU2JRJzBkP/8bDgv6U3tg8xrE1VBPGThc4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QJW2Pkmq; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="gRLDm2zT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1751533923;
-	bh=ASpe6T/zb00+V5yjXfb8CECZRQ7kvBjXjkJvQQ8d9jM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=gRLDm2zTUQxVa+53kYdlqsUOxm/01eDDEmyeOSw8m1svcrWj/RPEtWkT2W9isjD7s
-	 1odj7PEW9m6Qqra20Y5YBw88EsLIN6y0gJBXFyI3Mbw1n/3OveiL+c137G9jDY6XzC
-	 u6OvDknikntOT5h8oitjvM85kApx17SxVDQ0GEmLz8oo8qh5qTtMFeFwpgQUZ2xUS8
-	 Ewfc3ejEC0NiBrVGip22SAG9L/hbsjQIAggX7qwm/Q44ZnU+kcnhdW1YquZrNgVOk1
-	 T1VkmB/e/zCaCHYgf6pt0vq38gYUwptPDpI6xdLSl5UXXk+NbnZjqGB1vlawV9SZUz
-	 6YvvwD4vsOmTw==
-Received: by codeconstruct.com.au (Postfix, from userid 10001)
-	id 5E4D06A8EC; Thu,  3 Jul 2025 17:12:03 +0800 (AWST)
-From: Matt Johnston <matt@codeconstruct.com.au>
-Date: Thu, 03 Jul 2025 17:11:52 +0800
-Subject: [PATCH net-next 5/7] net: mctp: Allow limiting binds to a peer
- address
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QJW2Pkmq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751534037;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OX+ytT49dmTr2vEb7Cm18JPywxCOwr2HkRwXRlWUGbI=;
+	b=QJW2PkmqaP84UPLzaA3QUS26StljkWlITdbxiIzx/bhRwAoDLToJ8J/U0JfJnoRIsJ2TGw
+	lKBkc8h1VvE/EReDIKvCH/GtB9XugFMKwhOls0X0CoqnTEKtwKTDuo3+cMU6sKzUlYqJsf
+	nSmFZO9g0uM3fVT5lTOvgYmoVdjFszQ=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-602-JB7CbwQ-MimANipbNrRqkw-1; Thu, 03 Jul 2025 05:13:54 -0400
+X-MC-Unique: JB7CbwQ-MimANipbNrRqkw-1
+X-Mimecast-MFC-AGG-ID: JB7CbwQ-MimANipbNrRqkw_1751534033
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a4f7ebfd00so3850334f8f.2
+        for <netdev@vger.kernel.org>; Thu, 03 Jul 2025 02:13:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751534033; x=1752138833;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OX+ytT49dmTr2vEb7Cm18JPywxCOwr2HkRwXRlWUGbI=;
+        b=CswN7Ic2ND/7Kn4xJph/F99DPdLx7PjtjfiIlbn0xflqNljCD4G/lLLLNQdX0kLsvJ
+         Y7fNhwcHy0XtbR4cyA2B9XAOOLW5b1espmPW+ihSyMwDIBjCV4CKZpOIQOOtrkxlXnbC
+         rx2gPHUWLV+5iV08LevFBfTz0enlvxmIe0twx5zUr8ViHY8kbEH0b2FM1ENOJexQCML4
+         QsgJgXvh6VXR+2v9w0YYvvnCTP2b9IaZIBzinbriJmlu7uAFj0nPY45SBfIQeatZqcaD
+         bQqUgxYqMmxOAtuwfJUKMNc5RSs6YNZrIPf1KAIr7O/15LNpsc/WnXEy/V4tc/AZ7mrl
+         9h9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVMdD6iAEbdQa9/4tNVy2OOIxLbblFngNNcX62THe44IIw7LwcxzVQsYEA7QOdq8GtBwEWB57U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcKV1CRBzB0gvDMhGI4uU639wXU032JXOTBUdiSMWHJuKKj5p1
+	KJHbyNppZpj/8aaEFEVFXzj6E6QSMHS05MaPshRshqeJALugT8e2UA1i+VsMjf3pfccapEXCWGX
+	0jr8WiJcsSTEM7I7y106QBsBmrPpur+58hx9I+SqDsxVGU6GJqILt0r1hHQ==
+X-Gm-Gg: ASbGnct2FqI68Y8TdTuMVvwo6Fg+3i8DRfEwPZc+ca1rgKRn+xS+Xix/pUlyuLKCUhN
+	2kxfNGeAvAEpr5i4kgWcMMyO2phelPGczV2b5rQJ2B49iNqWReyLm8e9mWl9KsNpOCDQTVujFwt
+	OUrtPSQYxkqiCXvfnephJxu2Ksh0Axnu/O/gKmg/Ik3X+1rlPGaeCSieTTLQBA32asTqUmzyVVF
+	wUupatxiFy2XyKE28QCn0MV496Ojc26cYkF1G030F81hWjLX8fuVTmpHW+uVv2YdcGt0VXOm9cw
+	btgc8oWlLttZJLuXwpbvFzOpnjzH2EV7IZP4jS4drgMYJa2MCdSknmy85wAFBzqvwWA=
+X-Received: by 2002:a05:6000:2387:b0:3a5:42:b17b with SMTP id ffacd0b85a97d-3b1ff9f58e5mr4716221f8f.29.1751534033044;
+        Thu, 03 Jul 2025 02:13:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGRRb+VUMKb5MUe0c9M+TZj8qdoFSn94nolph8HCnGsExIYZmC8zGq2a+/0WeZeN91ewkS2ow==
+X-Received: by 2002:a05:6000:2387:b0:3a5:42:b17b with SMTP id ffacd0b85a97d-3b1ff9f58e5mr4716188f8f.29.1751534032529;
+        Thu, 03 Jul 2025 02:13:52 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:270a:b10:5fbf:faa5:ef2b:6314? ([2a0d:3344:270a:b10:5fbf:faa5:ef2b:6314])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a892e529c5sm18486218f8f.63.2025.07.03.02.13.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Jul 2025 02:13:52 -0700 (PDT)
+Message-ID: <0547d8fd-e6ee-4f59-8a7e-93d2d11cdf5e@redhat.com>
+Date: Thu, 3 Jul 2025 11:13:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 2/2] net: pse-pd: Add Si3474 PSE controller
+ driver
+To: Piotr Kubik <piotr.kubik@adtran.com>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ Kory Maincent <kory.maincent@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <c0c284b8-6438-4163-a627-bbf5f4bcc624@adtran.com>
+ <4e55abda-ba02-4bc9-86e6-97c08e4e4a2d@adtran.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <4e55abda-ba02-4bc9-86e6-97c08e4e4a2d@adtran.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250703-mctp-bind-v1-5-bb7e97c24613@codeconstruct.com.au>
-References: <20250703-mctp-bind-v1-0-bb7e97c24613@codeconstruct.com.au>
-In-Reply-To: <20250703-mctp-bind-v1-0-bb7e97c24613@codeconstruct.com.au>
-To: Jeremy Kerr <jk@codeconstruct.com.au>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, Matt Johnston <matt@codeconstruct.com.au>
-X-Mailer: b4 0.15-dev-cbbb4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751533920; l=6659;
- i=matt@codeconstruct.com.au; s=20241018; h=from:subject:message-id;
- bh=J4womWxCauLvTnV/beZ/Gy8IC6sKAjhc8Uc+Ca6KXkA=;
- b=GD/NuQShrKGVUx03YtWTnIfY9Y/V9yNYWk+ZFggRLENou4K7C9zR/iswUuWbXmUvjz6E1zQvr
- LBcHMueKE7FDiGKtiHJHQL9V/BN/JtjN/OgxJABxJAmGfdY3NSVcJVc
-X-Developer-Key: i=matt@codeconstruct.com.au; a=ed25519;
- pk=exersTcCYD/pEBOzXGO6HkLd6kKXRuWxHhj+LXn3DYE=
 
-Prior to calling bind() a program may call connect() on a socket to
-restrict to a remote peer address.
+On 6/30/25 4:57 PM, Piotr Kubik wrote:
+> +static inline void si3474_get_channels(struct si3474_priv *priv, int id,
+> +				       u8 *chan0, u8 *chan1)
+> +{
 
-Using connect() is the normal mechanism to specify a remote network
-peer, so we use that here. In MCTP connect() is only used for bound
-sockets - send() is not available for MCTP since a tag must be provided
-for each message.
+Please don't use 'static inline' in c files. 'static' would do and will
+let the compiler do the better choice.
 
-The smctp_type must match between connect() and bind() calls.
+> +	*chan0 = priv->pi[id].chan[0];
+> +	*chan1 = priv->pi[id].chan[1];
+> +}
+> +
+> +static inline struct i2c_client *si3474_get_chan_client(struct si3474_priv *priv,
+> +							u8 chan)
 
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
----
- include/net/mctp.h |   5 ++-
- net/mctp/af_mctp.c | 104 +++++++++++++++++++++++++++++++++++++++++++++++++----
- net/mctp/route.c   |   6 +++-
- 3 files changed, 107 insertions(+), 8 deletions(-)
+Same as above.
 
-diff --git a/include/net/mctp.h b/include/net/mctp.h
-index 07d458990113d2bc2ca597e40152f3d30e41e5dd..8d3c45bd9cda642af2fc3b3bc403bf36fc8d2990 100644
---- a/include/net/mctp.h
-+++ b/include/net/mctp.h
-@@ -69,7 +69,10 @@ struct mctp_sock {
- 
- 	/* bind() params */
- 	unsigned int	bind_net;
--	mctp_eid_t	bind_addr;
-+	mctp_eid_t	bind_local_addr;
-+	mctp_eid_t	bind_peer_addr;
-+	unsigned int	bind_peer_net;
-+	bool		bind_peer_set;
- 	__u8		bind_type;
- 
- 	/* sendmsg()/recvmsg() uses struct sockaddr_mctp_ext */
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index 7638e22bf03848868768700fdac07f74891dad0d..a390460b2d5fc38555b8a6df45040c167cded628 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -79,20 +79,40 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
- 		goto out_release;
- 	}
- 
--	msk->bind_addr = smctp->smctp_addr.s_addr;
-+	msk->bind_local_addr = smctp->smctp_addr.s_addr;
- 
- 	/* MCTP_NET_ANY with a specific EID is resolved to the default net
- 	 * at bind() time.
- 	 * For bind_addr=MCTP_ADDR_ANY it is handled specially at route lookup time.
- 	 */
- 	if (smctp->smctp_network == MCTP_NET_ANY &&
--	    msk->bind_addr != MCTP_ADDR_ANY) {
-+	    msk->bind_local_addr != MCTP_ADDR_ANY) {
- 		msk->bind_net = mctp_default_net(net);
- 	} else {
- 		msk->bind_net = smctp->smctp_network;
- 	}
- 
--	msk->bind_type = smctp->smctp_type & 0x7f; /* ignore the IC bit */
-+	/* ignore the IC bit */
-+	smctp->smctp_type &= 0x7f;
-+
-+	if (msk->bind_peer_set) {
-+		if (msk->bind_type != smctp->smctp_type) {
-+			/* Prior connect() had a different type */
-+			return -EINVAL;
-+		}
-+
-+		if (msk->bind_net == MCTP_NET_ANY) {
-+			/* Restrict to the network passed to connect() */
-+			msk->bind_net = msk->bind_peer_net;
-+		}
-+
-+		if (msk->bind_net != msk->bind_peer_net) {
-+			/* connect() had a different net to bind() */
-+			return -EINVAL;
-+		}
-+	} else {
-+		msk->bind_type = smctp->smctp_type;
-+	}
- 
- 	rc = sk->sk_prot->hash(sk);
- 
-@@ -102,6 +122,67 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
- 	return rc;
- }
- 
-+/* Used to set a specific peer prior to bind. Not used for outbound
-+ * connections (Tag Owner set) since MCTP is a datagram protocol.
-+ */
-+static int mctp_connect(struct socket *sock, struct sockaddr *addr,
-+			int addrlen, int flags)
-+{
-+	struct sock *sk = sock->sk;
-+	struct mctp_sock *msk = container_of(sk, struct mctp_sock, sk);
-+	struct net *net = sock_net(&msk->sk);
-+	struct sockaddr_mctp *smctp;
-+	int rc;
-+
-+	if (addrlen != sizeof(*smctp))
-+		return -EINVAL;
-+
-+	if (addr->sa_family != AF_MCTP)
-+		return -EAFNOSUPPORT;
-+
-+	/* It's a valid sockaddr for MCTP, cast and do protocol checks */
-+	smctp = (struct sockaddr_mctp *)addr;
-+
-+	if (!mctp_sockaddr_is_ok(smctp))
-+		return -EINVAL;
-+
-+	/* Can't bind by tag */
-+	if (smctp->smctp_tag)
-+		return -EINVAL;
-+
-+	/* IC bit must be unset */
-+	if (smctp->smctp_type & 0x80)
-+		return -EINVAL;
-+
-+	lock_sock(sk);
-+
-+	if (sk_hashed(sk)) {
-+		/* bind() already */
-+		rc = -EADDRINUSE;
-+		goto out_release;
-+	}
-+
-+	if (msk->bind_peer_set) {
-+		/* connect() already */
-+		rc = -EADDRINUSE;
-+		goto out_release;
-+	}
-+
-+	msk->bind_peer_set = true;
-+	msk->bind_peer_addr = smctp->smctp_addr.s_addr;
-+	msk->bind_type = smctp->smctp_type;
-+	if (smctp->smctp_network == MCTP_NET_ANY)
-+		msk->bind_peer_net = mctp_default_net(net);
-+	else
-+		msk->bind_peer_net = smctp->smctp_network;
-+
-+	rc = 0;
-+
-+out_release:
-+	release_sock(sk);
-+	return rc;
-+}
-+
- static int mctp_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- {
- 	DECLARE_SOCKADDR(struct sockaddr_mctp *, addr, msg->msg_name);
-@@ -563,7 +644,7 @@ static const struct proto_ops mctp_dgram_ops = {
- 	.family		= PF_MCTP,
- 	.release	= mctp_release,
- 	.bind		= mctp_bind,
--	.connect	= sock_no_connect,
-+	.connect	= mctp_connect,
- 	.socketpair	= sock_no_socketpair,
- 	.accept		= sock_no_accept,
- 	.getname	= sock_no_getname,
-@@ -630,6 +711,7 @@ static int mctp_sk_init(struct sock *sk)
- 
- 	INIT_HLIST_HEAD(&msk->keys);
- 	timer_setup(&msk->key_expiry, mctp_sk_expire_keys, 0);
-+	msk->bind_peer_set = false;
- 	return 0;
- }
- 
-@@ -643,12 +725,17 @@ static int mctp_sk_hash(struct sock *sk)
- 	struct net *net = sock_net(sk);
- 	struct sock *existing;
- 	struct mctp_sock *msk;
-+	mctp_eid_t remote;
- 	u32 hash;
- 	int rc;
- 
- 	msk = container_of(sk, struct mctp_sock, sk);
- 
--	hash = mctp_bind_hash(msk->bind_type, msk->bind_addr, MCTP_ADDR_ANY);
-+	if (msk->bind_peer_set)
-+		remote = msk->bind_peer_addr;
-+	else
-+		remote = MCTP_ADDR_ANY;
-+	hash = mctp_bind_hash(msk->bind_type, msk->bind_local_addr, remote);
- 
- 	mutex_lock(&net->mctp.bind_lock);
- 
-@@ -656,8 +743,13 @@ static int mctp_sk_hash(struct sock *sk)
- 	sk_for_each(existing, &net->mctp.binds[hash]) {
- 		struct mctp_sock *mex = container_of(existing, struct mctp_sock, sk);
- 
-+		bool same_peer = (mex->bind_peer_set && msk->bind_peer_set &&
-+			mex->bind_peer_addr == msk->bind_peer_addr) ||
-+			(!mex->bind_peer_set && !msk->bind_peer_set);
-+
- 		if (mex->bind_type == msk->bind_type &&
--		    mex->bind_addr == msk->bind_addr &&
-+		    mex->bind_local_addr == msk->bind_local_addr &&
-+			same_peer &&
- 			mex->bind_net == msk->bind_net) {
- 			rc = -EADDRINUSE;
- 			goto out;
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 8a8c7841d2382717b3c9a6698036d56f64da77f0..3e5b87be312857282947399750566d90c474546c 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -63,7 +63,11 @@ static struct mctp_sock *mctp_lookup_bind_details(struct net *net,
- 		if (msk->bind_type != type)
- 			continue;
- 
--		if (!mctp_address_matches(msk->bind_addr, dest))
-+		if (msk->bind_peer_set &&
-+		    !mctp_address_matches(msk->bind_peer_addr, src))
-+			continue;
-+
-+		if (!mctp_address_matches(msk->bind_local_addr, dest))
- 			continue;
- 
- 		return msk;
+[...]
+> +static int si3474_pi_enable(struct pse_controller_dev *pcdev, int id)
+> +{
+> +	struct si3474_priv *priv = to_si3474_priv(pcdev);
+> +	struct i2c_client *client;
+> +	u8 chan0, chan1;
+> +	u8 val = 0;
+> +	s32 ret;
+> +
+> +	if (id >= SI3474_MAX_CHANS)
+> +		return -ERANGE;
+> +
+> +	si3474_get_channels(priv, id, &chan0, &chan1);
+> +	client = si3474_get_chan_client(priv, chan0);
+> +
+> +	/* Release PI from shutdown */
+> +	ret = i2c_smbus_read_byte_data(client, PORT_MODE_REG);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	val = (u8)ret;
+> +	val |= CHAN_MASK(chan0);
+> +	val |= CHAN_MASK(chan1);
+> +
+> +	ret = i2c_smbus_write_byte_data(client, PORT_MODE_REG, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* DETECT_CLASS_ENABLE must be set when using AUTO mode,
+> +	 * otherwise PI does not power up - datasheet section 2.10.2
+> +	 */
+> +	val = (CHAN_BIT(chan0) | CHAN_UPPER_BIT(chan0) |
+> +	       CHAN_BIT(chan1) | CHAN_UPPER_BIT(chan1));
 
--- 
-2.43.0
+Minor nit: brackets not needed above.
+
+> +	ret = i2c_smbus_write_byte_data(client, DETECT_CLASS_ENABLE_REG, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static int si3474_pi_disable(struct pse_controller_dev *pcdev, int id)
+> +{
+> +	struct si3474_priv *priv = to_si3474_priv(pcdev);
+> +	struct i2c_client *client;
+> +	u8 chan0, chan1;
+> +	u8 val = 0;
+> +	s32 ret;
+> +
+> +	if (id >= SI3474_MAX_CHANS)
+> +		return -ERANGE;
+> +
+> +	si3474_get_channels(priv, id, &chan0, &chan1);
+> +	client = si3474_get_chan_client(priv, chan0);
+> +
+> +	/* Set PI in shutdown mode */
+> +	ret = i2c_smbus_read_byte_data(client, PORT_MODE_REG);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	val = (u8)ret;
+> +	val &= ~(CHAN_MASK(chan0));
+> +	val &= ~(CHAN_MASK(chan1));
+
+Brackets not needed here, too and adding them makes the code IMHO less
+readable.
+
+> +
+> +	ret = i2c_smbus_write_byte_data(client, PORT_MODE_REG, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static int si3474_pi_get_chan_current(struct si3474_priv *priv, u8 chan)
+> +{
+> +	struct i2c_client *client;
+> +	s32 ret;
+> +	u8 reg;
+> +	u64 tmp_64;
+
+Please respect the reverse christmass tree order in variable
+declaration, here and elsewhere.
+
+/P
 
