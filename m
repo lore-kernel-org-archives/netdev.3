@@ -1,35 +1,57 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2E1288AD;
-	Thu,  3 Jul 2025 13:49:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34FD92E7635
+	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 13:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751550586; cv=none; b=c32UCLpBRlhnBzPLGcusbkDhby1+Jl9PooFjAJM4GhXLvUJDZ3dAMrz09sUKWRU46h4PQMn+znEF7OtIgZPs5gxG3cMZNfuTLLBNa5ao9vwW0jZgQD5PyNOA/vyqv0NoZ6lrULG0DhQMIcYxRK3TDHnc8IQFM7Nw70E/DoVRdDw=
+	t=1751550907; cv=none; b=RwcHqCU/xw0oyzu2+ryahUQXk+mbB5kLCdpM/kb2JTPdapqKXxgnK06EZD8bR50QjoRjY6EprxgrLe26+5G3NF/X+YmNXbGrMiy+SNWxa4VOxSCxk7QTqG3mFJeR2+iZ5Vzm4wHCfzEYvH41zH0XcEmmSovcd5iN7ar11haEgR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751550586; c=relaxed/simple;
-	bh=kPAjLXyowLhtCtDh0aOXOQEKznzaWQHyEqIjjgS/dww=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pUBHBEm2bmycI1bL8ieY4ux9lPz+ruPKzznhjzrkzlIZGrK0Lrs5u5Yqo9Z0BKNDW4KmEdjMLZNLJpjIbj7ifMadOckB4C5ZBbt+8Zh3j3oQKwVWnTVZRJp6QEi5SUsEqC8cLvDc5AdK4x2acXs8laewLOGe9iVOnrIJZMjeMzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=opJR6ktU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751550907; c=relaxed/simple;
+	bh=+54lP9mDg81fXI9UcMd+4iV2j0kH4ZJuSiWgoz5VMp4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LGzYwy6u5puWS8vx8yhraPzZY+C2L9U+p1rWhf7zlx7nER5gbWyUTKa9K+4TXyVHbK3pGyLAhdXLLNkgYL+qNbKhXEuavWwEyeBTQhI88vO4JpBmxaZyo3tetgbWgLLTAGE2zEuu/rVFIkxxQqI719BFre8GHz5LwIh9Uc6x/TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YZRXmPws; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="opJR6ktU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35AF7C4CEE3;
-	Thu,  3 Jul 2025 13:49:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751550586;
-	bh=kPAjLXyowLhtCtDh0aOXOQEKznzaWQHyEqIjjgS/dww=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=opJR6ktUH2uajNPLTTbVI4mbMVydU2aU+HlA0tMHaJ9D0SnBofdALLEUZaQQnMpJa
-	 e2LT5/fs/wJSY09LYEOZkuUWEK+9dA6s3l1DTdUJ09VQSpelB9Kh50XtjsUfzovYbH
-	 Mx3ZwVFwythLraYOYIfZzJeKwrjNIrcyJHnviSAW3cW+i+X34evQ5ReNrwMtPHVS5L
-	 Ahcb4iq2l+7FA7o0utYrJnhMwVwBBgxwzBObmS2GiHtyyWWkh4cApPpUinRlqZVZzq
-	 p+vHPIXrM/Mp4KFFr8WUEhQjwvFiT9Oqkha3pMmnQFyJVukl5NKYwwNErx3mEz4zDg
-	 7tEew9DXx9oYg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADEF1383B273;
-	Thu,  3 Jul 2025 13:50:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YZRXmPws"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751550906; x=1783086906;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+54lP9mDg81fXI9UcMd+4iV2j0kH4ZJuSiWgoz5VMp4=;
+  b=YZRXmPws6sSFOtGXI4fz08oUDju9i4cgoDS4//YgubPvpv0lVcOfIKMH
+   u+9GcqfTIPXnb7VTVb60yIhx6U1e2cGBNA4DTD62hhZHURxXk6QhURHEf
+   ODeugxI4Iok999QzEL2DNq6PEHpDeVuvz861CvDZUc+tCONumnjhR7SFc
+   OGvEd4dOhzM6iocGWzzleGmUel/xcnelbHQiHGYodZQCWbsXTgilOJvXG
+   hFY6dvC1S0h70Pw60ZX05GyL4pCVkNzdgc0K2uItfj8y/nR0Hx9ke542q
+   c/o1eZmwrD0Y5XgVGdYs3WHSSvcmpyv5TTyfq/xxdTA9nCOT4cqo1YQgF
+   w==;
+X-CSE-ConnectionGUID: XGPnf5YcTKqIkBfWnmtwQg==
+X-CSE-MsgGUID: RZQ5bKL5QZqWE5ym+1g/eg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="57686473"
+X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; 
+   d="scan'208";a="57686473"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2025 06:55:05 -0700
+X-CSE-ConnectionGUID: qk/NDg/CQqGXpK88qOdaeQ==
+X-CSE-MsgGUID: Tcy81jYfStyVG4fhdZsddQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,284,1744095600"; 
+   d="scan'208";a="153790451"
+Received: from amlin-018-252.igk.intel.com ([10.102.18.252])
+  by orviesa010.jf.intel.com with ESMTP; 03 Jul 2025 06:55:04 -0700
+From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	andrew@lunn.ch,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [iwl-next] ixgbe: add the 2.5G and 5G speed in auto-negotiation for E610
+Date: Thu,  3 Jul 2025 16:09:18 +0200
+Message-ID: <20250703140918.287365-1-piotr.kwapulinski@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,49 +59,70 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [patch V2 0/3] ptp: Provide support for auxiliary clocks for
- PTP_SYS_OFFSET_EXTENDED
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175155061051.1488621.18100322509615749135.git-patchwork-notify@kernel.org>
-Date: Thu, 03 Jul 2025 13:50:10 +0000
-References: <20250701130923.579834908@linutronix.de>
-In-Reply-To: <20250701130923.579834908@linutronix.de>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- richardcochran@gmail.com, christopher.s.hall@intel.com, jstultz@google.com,
- frederic@kernel.org, anna-maria@linutronix.de, mlichvar@redhat.com,
- werner.abt@meinberg-usa.com, dwmw2@infradead.org, sboyd@kernel.org,
- thomas.weissschuh@linutronix.de, kurt@linutronix.de, namcao@linutronix.de,
- atenart@kernel.org, pabeni@redhat.com
 
-Hello:
+Enable the 2.5G and 5G speed in auto-negotiation for E610 at driver load.
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 35 +++++++------------
+ 1 file changed, 12 insertions(+), 23 deletions(-)
 
-On Tue,  1 Jul 2025 15:26:56 +0200 (CEST) you wrote:
-> This is a follow up to the V1 series, which can be found here:
-> 
->      https://lore.kernel.org/all/20250626124327.667087805@linutronix.de
-> 
-> to address the merge logistics problem, which I created myself.
-> 
-> Changes vs. V1:
-> 
-> [...]
-
-Here is the summary with links:
-  - [V2,1/3] timekeeping: Provide ktime_get_clock_ts64()
-    https://git.kernel.org/netdev/net-next/c/5b605dbee07d
-  - [V2,2/3] ptp: Use ktime_get_clock_ts64() for timestamping
-    https://git.kernel.org/netdev/net-next/c/4c09a4cebd03
-  - [V2,3/3] ptp: Enable auxiliary clocks for PTP_SYS_OFFSET_EXTENDED
-    https://git.kernel.org/netdev/net-next/c/17c395bba1a3
-
-You are awesome, thank you!
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+index d741164..b202639 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+@@ -1953,6 +1953,16 @@ int ixgbe_identify_phy_e610(struct ixgbe_hw *hw)
+ 	    phy_type_low  & IXGBE_PHY_TYPE_LOW_1G_SGMII    ||
+ 	    phy_type_high & IXGBE_PHY_TYPE_HIGH_1G_USXGMII)
+ 		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_1GB_FULL;
++	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_T   ||
++	    phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_X   ||
++	    phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_KX  ||
++	    phy_type_high & IXGBE_PHY_TYPE_HIGH_2500M_SGMII ||
++	    phy_type_high & IXGBE_PHY_TYPE_HIGH_2500M_USXGMII)
++		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_2_5GB_FULL;
++	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_5GBASE_T  ||
++	    phy_type_low  & IXGBE_PHY_TYPE_LOW_5GBASE_KR ||
++	    phy_type_high & IXGBE_PHY_TYPE_HIGH_5G_USXGMII)
++		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_5GB_FULL;
+ 	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_10GBASE_T       ||
+ 	    phy_type_low  & IXGBE_PHY_TYPE_LOW_10G_SFI_DA      ||
+ 	    phy_type_low  & IXGBE_PHY_TYPE_LOW_10GBASE_SR      ||
+@@ -1963,31 +1973,10 @@ int ixgbe_identify_phy_e610(struct ixgbe_hw *hw)
+ 	    phy_type_high & IXGBE_PHY_TYPE_HIGH_10G_USXGMII)
+ 		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_10GB_FULL;
+ 
+-	/* 2.5 and 5 Gbps link speeds must be excluded from the
+-	 * auto-negotiation set used during driver initialization due to
+-	 * compatibility issues with certain switches. Those issues do not
+-	 * exist in case of E610 2.5G SKU device (0x57b1).
+-	 */
+-	if (!hw->phy.autoneg_advertised &&
+-	    hw->device_id != IXGBE_DEV_ID_E610_2_5G_T)
++	/* Initialize autoneg speeds */
++	if (!hw->phy.autoneg_advertised)
+ 		hw->phy.autoneg_advertised = hw->phy.speeds_supported;
+ 
+-	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_T   ||
+-	    phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_X   ||
+-	    phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_KX  ||
+-	    phy_type_high & IXGBE_PHY_TYPE_HIGH_2500M_SGMII ||
+-	    phy_type_high & IXGBE_PHY_TYPE_HIGH_2500M_USXGMII)
+-		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_2_5GB_FULL;
+-
+-	if (!hw->phy.autoneg_advertised &&
+-	    hw->device_id == IXGBE_DEV_ID_E610_2_5G_T)
+-		hw->phy.autoneg_advertised = hw->phy.speeds_supported;
+-
+-	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_5GBASE_T  ||
+-	    phy_type_low  & IXGBE_PHY_TYPE_LOW_5GBASE_KR ||
+-	    phy_type_high & IXGBE_PHY_TYPE_HIGH_5G_USXGMII)
+-		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_5GB_FULL;
+-
+ 	/* Set PHY ID */
+ 	memcpy(&hw->phy.id, pcaps.phy_id_oui, sizeof(u32));
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.47.1
 
