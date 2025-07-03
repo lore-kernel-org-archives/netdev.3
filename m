@@ -1,31 +1,31 @@
-Received: from va-1-19.ptr.blmpb.com (va-1-19.ptr.blmpb.com [209.127.230.19])
+Received: from va-2-39.ptr.blmpb.com (va-2-39.ptr.blmpb.com [209.127.231.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4271129CB39
-	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 07:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0816029DB8E
+	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 07:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751529277; cv=none; b=c2n8RlOoQ8GBELZmXDcGFcG5qDsBsRcK60xGaebnSC+32dImLjAwviAcr7GHdWAPlsxXScJoxk2kkOaNDaTqLHpX8Nv9Pi1PWGNpKrZseHWILQ5Mit/w2APiS5zU9wIZ/dMbFAFp7lsgxIZZku4ZLaHQMBq8PtvXiGGclibzatw=
+	t=1751529289; cv=none; b=ELLg7wkXYJ/ZD8yMjeyPSkQ/TblK0SNQIQV9LFSDlJsn2MThAE9bszRLA9FjM/IemweeNEwJ7PnniIC9xaWOrpGL6eRn9q821dmGeQJNDU96wXUKumGbtQ9GEAcRNSI0oh3qhWbkwtvB1/LvrZFFqTj7w8AGg3a7GeCQByK7vl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751529277; c=relaxed/simple;
-	bh=ogPhZUCPa4EJT+q4aaNWhiAMIBNclHTziTYIhkGoAHc=;
-	h=Cc:Subject:Mime-Version:Content-Type:References:To:Message-Id:
-	 In-Reply-To:From:Date; b=AFFsJmhoQ/mTlvQE4124wPvGzBiJQYYGQ3cO7VoLIFoW4dVIZcmv9paOwM1od6rgyTmlYkWJjfBNepGk78RACBFNkXJB8amMVmdiz9hxbJtRfgcbfxHbuvmUsceKjjtVFimrQLbbQ87XBjaF+QDMtU/0GWVJKbE4S/ZPOGuXsRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=dwc06PbT; arc=none smtp.client-ip=209.127.230.19
+	s=arc-20240116; t=1751529289; c=relaxed/simple;
+	bh=EM/rq1y88Z+q0tx3qVgxlkkOAEPmjcgnrdLt2cicOe4=;
+	h=Cc:In-Reply-To:References:Subject:To:Date:Mime-Version:From:
+	 Message-Id:Content-Type; b=ewqImzakkRpoKiOs0DcbguuYBvHquG60p/1MQov9h8TNgrlJObOUG0tQ8BofGXz8RW5Vu77LHXZEM18h9NOIBIbNbrw4h4+3cu1P6Yi/7TfRBHTZL5kD3/Ap/Z5hnCQ8TAjU5QWjd6sdYcC8ZbYo/bVDKNV8/d4sRp+JG7+ZDGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=bBKCzcCD; arc=none smtp.client-ip=209.127.231.39
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="dwc06PbT"
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="bBKCzcCD"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1751529225; h=from:subject:
+ s=feishu2403070942; d=yunsilicon.com; t=1751529239; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=fMNSgHmSqMpcu/yQNzvf3mxbUV86fL0McWYpNtS9/3k=;
- b=dwc06PbTbUVfZFfenbL97+uKxCSIwAvZL6iycFnv3ksTBIMnCzddT73QJoYrOh8wIbxHb3
- 6ly/dKfp7FMjFh+cQzMbAjjQw8+Ffl/cbC0uaMIYtqCa03+C1g/Ww+WDJl3H/3DgqRaNPX
- +typbaGvFjH/fk8DYd0Qx7+ny7FpvWxCVxTMCIqtw96orjN2FTWHFz1MmbS+5tJsaOfMKt
- EJY+3q77kr9bzloCzMl+UbuLV7abcE3ZRfwaYKojorJQQBElLURfkSJ02MOCEhL+OAy60P
- fE9I7gpAzNhTUKrn5PCku5d97L59kZqyRBN4y884SnO1qhW4mqjshKCYXHGT8g==
+ bh=RyeucjvJbI3qENFs+ajiDlbyvtoDSyBykK6Ec/J/tfI=;
+ b=bBKCzcCDzeC4rn/Y5YWVYqpmHSo9+vLYKp5RIpYYfnrZlEgaU7hrSSZ2tG4zzZMacmO1A/
+ j3i01JidTVBHcpZS+W8w1/FD3OQYf07zcLsxKxDiJBXWE6jtIaQAE+hlP3D04UzCauxs3r
+ kLe6J0mlTzA1Q+Bm81IWxNyqP6+W1qj47Ue6mhhzNzGO2Kji9kemZe8aPppa5ysO+pc2UH
+ g3D56W4RBF0cB7BxpJLzqyJlmPWfJvWFkWPA202EwWOnPLXjPdddUeur7z1v6U2qzYAcN6
+ TUOXS6WiQL8oKo90QDrnKuLCD/r94wlG/gWJ2ZeYXXgugt/jQwL2xXeA7FVjRQ==
 Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
 	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
 	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
@@ -33,29 +33,34 @@ Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>,
 	<horms@kernel.org>, <parthiban.veerasooran@microchip.com>, 
 	<masahiroy@kernel.org>, <kalesh-anakkur.purayil@broadcom.com>, 
 	<geert+renesas@glider.be>, <pabeni@redhat.com>, <geert@linux-m68k.org>
-Subject: [PATCH net-next v12 01/14] xsc: Add xsc driver basic framework
+In-Reply-To: <20250703075341.3488773-1-tianx@yunsilicon.com>
+References: <20250703075341.3488773-1-tianx@yunsilicon.com>
+X-Mailer: git-send-email 2.25.1
+Subject: [PATCH net-next v12 06/14] xsc: Init pci irq
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+To: <netdev@vger.kernel.org>
+Date: Thu, 03 Jul 2025 15:53:56 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-References: <20250703075341.3488773-1-tianx@yunsilicon.com>
-Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Thu, 03 Jul 2025 15:53:42 +0800
-To: <netdev@vger.kernel.org>
-Message-Id: <20250703075341.3488773-2-tianx@yunsilicon.com>
-X-Mailer: git-send-email 2.25.1
-X-Lms-Return-Path: <lba+268663707+759f1f+vger.kernel.org+tianx@yunsilicon.com>
+X-Lms-Return-Path: <lba+268663715+130cbf+vger.kernel.org+tianx@yunsilicon.com>
 Content-Transfer-Encoding: 7bit
-In-Reply-To: <20250703075341.3488773-1-tianx@yunsilicon.com>
-X-Original-From: Xin Tian <tianx@yunsilicon.com>
 From: "Xin Tian" <tianx@yunsilicon.com>
-Date: Thu, 03 Jul 2025 15:53:42 +0800
+Message-Id: <20250703075355.3488773-7-tianx@yunsilicon.com>
+Content-Type: text/plain; charset=UTF-8
+Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Thu, 03 Jul 2025 15:53:56 +0800
 
-1. Add yunsilicon xsc driver basic compile framework, including
-xsc_pci driver and xsc_eth driver
-2. Implemented PCI device initialization.
+This patch implements the initialization of PCI MSI-X interrupts.
+It handles the allocation of MSI-X interrupt vectors, registration
+of interrupt requests (IRQs), configuration of interrupt affinity
+, and interrupt handlers for different event types, including:
+
+- Completion events (handled via completion queues).
+- Command queue (cmdq) events (via xsc_cmd_handler).
+- Asynchronous events (via xsc_event_handler).
 
 Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
 Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
@@ -63,455 +68,549 @@ Co-developed-by: Lei Yan <jacky@yunsilicon.com>
 Signed-off-by: Lei Yan <jacky@yunsilicon.com>
 Signed-off-by: Xin Tian <tianx@yunsilicon.com>
 ---
- MAINTAINERS                                   |   7 +
- drivers/net/ethernet/Kconfig                  |   1 +
- drivers/net/ethernet/Makefile                 |   1 +
- drivers/net/ethernet/yunsilicon/Kconfig       |  26 +++
- drivers/net/ethernet/yunsilicon/Makefile      |   7 +
- .../ethernet/yunsilicon/xsc/common/xsc_core.h |  43 ++++
- .../net/ethernet/yunsilicon/xsc/net/Kconfig   |  17 ++
- .../net/ethernet/yunsilicon/xsc/net/Makefile  |   9 +
- .../net/ethernet/yunsilicon/xsc/pci/Kconfig   |  14 ++
- .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   9 +
- .../net/ethernet/yunsilicon/xsc/pci/main.c    | 214 ++++++++++++++++++
- 11 files changed, 348 insertions(+)
- create mode 100644 drivers/net/ethernet/yunsilicon/Kconfig
- create mode 100644 drivers/net/ethernet/yunsilicon/Makefile
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/Kconfig
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/Makefile
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/Kconfig
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/main.c
+ .../ethernet/yunsilicon/xsc/common/xsc_core.h |   6 +
+ .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   2 +-
+ .../net/ethernet/yunsilicon/xsc/pci/main.c    |  14 +-
+ .../net/ethernet/yunsilicon/xsc/pci/pci_irq.c | 426 ++++++++++++++++++
+ .../net/ethernet/yunsilicon/xsc/pci/pci_irq.h |  14 +
+ 5 files changed, 460 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.h
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 96b827049..19664829b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -26630,6 +26630,13 @@ S:	Maintained
- F:	Documentation/input/devices/yealink.rst
- F:	drivers/input/misc/yealink.*
- 
-+YUNSILICON XSC DRIVERS
-+M:	Honggang Wei <weihg@yunsilicon.com>
-+M:	Xin Tian <tianx@yunsilicon.com>
-+L:	netdev@vger.kernel.org
-+S:	Maintained
-+F:	drivers/net/ethernet/yunsilicon/xsc
-+
- Z8530 DRIVER FOR AX.25
- M:	Joerg Reuter <jreuter@yaina.de>
- L:	linux-hams@vger.kernel.org
-diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
-index 0baac25db..aa6016597 100644
---- a/drivers/net/ethernet/Kconfig
-+++ b/drivers/net/ethernet/Kconfig
-@@ -82,6 +82,7 @@ source "drivers/net/ethernet/i825xx/Kconfig"
- source "drivers/net/ethernet/ibm/Kconfig"
- source "drivers/net/ethernet/intel/Kconfig"
- source "drivers/net/ethernet/xscale/Kconfig"
-+source "drivers/net/ethernet/yunsilicon/Kconfig"
- 
- config JME
- 	tristate "JMicron(R) PCI-Express Gigabit Ethernet support"
-diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
-index c03203439..c16c34d4b 100644
---- a/drivers/net/ethernet/Makefile
-+++ b/drivers/net/ethernet/Makefile
-@@ -51,6 +51,7 @@ obj-$(CONFIG_NET_VENDOR_INTEL) += intel/
- obj-$(CONFIG_NET_VENDOR_I825XX) += i825xx/
- obj-$(CONFIG_NET_VENDOR_MICROSOFT) += microsoft/
- obj-$(CONFIG_NET_VENDOR_XSCALE) += xscale/
-+obj-$(CONFIG_NET_VENDOR_YUNSILICON) += yunsilicon/
- obj-$(CONFIG_JME) += jme.o
- obj-$(CONFIG_KORINA) += korina.o
- obj-$(CONFIG_LANTIQ_ETOP) += lantiq_etop.o
-diff --git a/drivers/net/ethernet/yunsilicon/Kconfig b/drivers/net/ethernet/yunsilicon/Kconfig
-new file mode 100644
-index 000000000..e66ab4376
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/Kconfig
-@@ -0,0 +1,26 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+# All rights reserved.
-+# Yunsilicon driver configuration
-+#
-+
-+config NET_VENDOR_YUNSILICON
-+	bool "Yunsilicon devices"
-+	default y
-+	depends on PCI
-+	depends on 64BIT || COMPILE_TEST
-+	help
-+	  If you have a network (Ethernet) device belonging to this class,
-+	  say Y.
-+
-+	  Note that the answer to this question doesn't directly affect the
-+	  kernel: saying N will just cause the configurator to skip all
-+	  the questions about Yunsilicon cards. If you say Y, you will be asked
-+	  for your specific card in the following questions.
-+
-+if NET_VENDOR_YUNSILICON
-+
-+source "drivers/net/ethernet/yunsilicon/xsc/net/Kconfig"
-+source "drivers/net/ethernet/yunsilicon/xsc/pci/Kconfig"
-+
-+endif # NET_VENDOR_YUNSILICON
-diff --git a/drivers/net/ethernet/yunsilicon/Makefile b/drivers/net/ethernet/yunsilicon/Makefile
-new file mode 100644
-index 000000000..05aa35c3c
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/Makefile
-@@ -0,0 +1,7 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+# All rights reserved.
-+# Makefile for the Yunsilicon device drivers.
-+#
-+
-+obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc/pci/
 diff --git a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-new file mode 100644
-index 000000000..0673e34fe
---- /dev/null
+index 78a77c708..60dde506e 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
 +++ b/drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
-@@ -0,0 +1,43 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+ * All rights reserved.
-+ */
+@@ -347,9 +347,12 @@ struct xsc_dev_resource {
+ struct xsc_core_device {
+ 	struct pci_dev		*pdev;
+ 	struct device		*device;
++	void			*eth_priv;
+ 	struct xsc_dev_resource	*dev_res;
+ 	int			numa_node;
+ 
++	void (*event_handler)(void *adapter);
 +
-+#ifndef __XSC_CORE_H
-+#define __XSC_CORE_H
-+
-+#include <linux/pci.h>
-+
-+#define XSC_PCI_VENDOR_ID		0x1f67
-+
-+#define XSC_MC_PF_DEV_ID		0x1011
-+#define XSC_MC_VF_DEV_ID		0x1012
-+#define XSC_MC_PF_DEV_ID_DIAMOND	0x1021
-+
-+#define XSC_MF_HOST_PF_DEV_ID		0x1051
-+#define XSC_MF_HOST_VF_DEV_ID		0x1052
-+#define XSC_MF_SOC_PF_DEV_ID		0x1053
-+
-+#define XSC_MS_PF_DEV_ID		0x1111
-+#define XSC_MS_VF_DEV_ID		0x1112
-+
-+#define XSC_MV_HOST_PF_DEV_ID		0x1151
-+#define XSC_MV_HOST_VF_DEV_ID		0x1152
-+#define XSC_MV_SOC_PF_DEV_ID		0x1153
-+
-+struct xsc_dev_resource {
-+	/* protect buffer allocation according to numa node */
-+	struct mutex		alloc_mutex;
-+};
-+
-+struct xsc_core_device {
-+	struct pci_dev		*pdev;
-+	struct device		*device;
-+	struct xsc_dev_resource	*dev_res;
-+	int			numa_node;
-+
-+	void __iomem		*bar;
-+	int			bar_num;
-+};
-+
-+#endif
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/Kconfig b/drivers/net/ethernet/yunsilicon/xsc/net/Kconfig
-new file mode 100644
-index 000000000..b2f95370f
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/Kconfig
-@@ -0,0 +1,17 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+# All rights reserved.
-+# Yunsilicon driver configuration
-+#
-+
-+config YUNSILICON_XSC_ETH
-+	tristate "Yunsilicon XSC ethernet driver"
-+	depends on YUNSILICON_XSC_PCI
-+	depends on NET
-+	select PAGE_POOL
-+	help
-+	  This driver provides ethernet support for
-+	  Yunsilicon XSC devices.
-+
-+	  To compile this driver as a module, choose M here. The module
-+	  will be called xsc_eth.
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/Makefile b/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
-new file mode 100644
-index 000000000..53300be3c
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
-@@ -0,0 +1,9 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+# All rights reserved.
-+
-+ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
-+
-+obj-$(CONFIG_YUNSILICON_XSC_ETH) += xsc_eth.o
-+
-+xsc_eth-y := main.o
-diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Kconfig b/drivers/net/ethernet/yunsilicon/xsc/pci/Kconfig
-new file mode 100644
-index 000000000..b707da28b
---- /dev/null
-+++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Kconfig
-@@ -0,0 +1,14 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+# All rights reserved.
-+# Yunsilicon PCI configuration
-+#
-+
-+config YUNSILICON_XSC_PCI
-+	tristate "Yunsilicon XSC PCI driver"
-+	help
-+	  This driver is common for Yunsilicon XSC
-+	  ethernet and RDMA drivers.
-+
-+	  To compile this driver as a module, choose M here. The module
-+	  will be called xsc_pci.
+ 	void __iomem		*bar;
+ 	int			bar_num;
+ 
+@@ -376,6 +379,7 @@ struct xsc_core_device {
+ 	u16			fw_version_patch;
+ 	u32			fw_version_tweak;
+ 	u8			fw_version_extra_flag;
++	cpumask_var_t		xps_cpumask;
+ };
+ 
+ int xsc_core_create_resource_common(struct xsc_core_device *xdev,
+@@ -383,6 +387,8 @@ int xsc_core_create_resource_common(struct xsc_core_device *xdev,
+ void xsc_core_destroy_resource_common(struct xsc_core_device *xdev,
+ 				      struct xsc_core_qp *qp);
+ struct xsc_eq *xsc_core_eq_get(struct xsc_core_device *xdev, int i);
++int xsc_core_vector2eqn(struct xsc_core_device *xdev, int vector, u32 *eqn,
++			unsigned int *irqn);
+ 
+ static inline void *xsc_buf_offset(struct xsc_buf *buf, unsigned long offset)
+ {
 diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-new file mode 100644
-index 000000000..709270df8
---- /dev/null
+index 667319958..3525d1c74 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
 +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-@@ -0,0 +1,9 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
-+# All rights reserved.
-+
-+ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
-+
-+obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc_pci.o
-+
-+xsc_pci-y := main.o
+@@ -6,4 +6,4 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
+ 
+ obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc_pci.o
+ 
+-xsc_pci-y := main.o cmdq.o hw.o qp.o cq.o alloc.o eq.o
++xsc_pci-y := main.o cmdq.o hw.o qp.o cq.o alloc.o eq.o pci_irq.o
 diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
-new file mode 100644
-index 000000000..b8fc25679
---- /dev/null
+index cad807e6b..febbca244 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
 +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
-@@ -0,0 +1,214 @@
+@@ -9,6 +9,7 @@
+ #include "qp.h"
+ #include "cq.h"
+ #include "eq.h"
++#include "pci_irq.h"
+ 
+ static const struct pci_device_id xsc_pci_id_table[] = {
+ 	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MC_PF_DEV_ID) },
+@@ -205,14 +206,25 @@ static int xsc_load(struct xsc_core_device *xdev)
+ 	err = xsc_hw_setup(xdev);
+ 	if (err) {
+ 		pci_err(xdev->pdev, "xsc_hw_setup failed %d\n", err);
+-		return err;
++		goto err_out;
++	}
++
++	err = xsc_irq_eq_create(xdev);
++	if (err) {
++		pci_err(xdev->pdev, "xsc_irq_eq_create failed %d\n", err);
++		goto err_hw_cleanup;
+ 	}
+ 
+ 	return 0;
++err_hw_cleanup:
++	xsc_hw_cleanup(xdev);
++err_out:
++	return err;
+ }
+ 
+ static void xsc_unload(struct xsc_core_device *xdev)
+ {
++	xsc_irq_eq_destroy(xdev);
+ 	xsc_hw_cleanup(xdev);
+ }
+ 
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.c b/drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.c
+new file mode 100644
+index 000000000..f8f95978b
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.c
+@@ -0,0 +1,426 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
 + * All rights reserved.
 + */
 +
-+#include "common/xsc_core.h"
++#include <linux/irqdomain.h>
++#include <linux/msi.h>
++#include <linux/interrupt.h>
++#include <linux/notifier.h>
++#include <linux/module.h>
++#ifdef CONFIG_RFS_ACCEL
++#include <linux/cpu_rmap.h>
++#endif
 +
-+static const struct pci_device_id xsc_pci_id_table[] = {
-+	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MC_PF_DEV_ID) },
-+	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MC_PF_DEV_ID_DIAMOND) },
-+	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MF_HOST_PF_DEV_ID) },
-+	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MF_SOC_PF_DEV_ID) },
-+	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MS_PF_DEV_ID) },
-+	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MV_HOST_PF_DEV_ID) },
-+	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MV_SOC_PF_DEV_ID) },
-+	{ 0 }
++#include "common/xsc_cmd_api.h"
++#include "common/xsc_core.h"
++#include "eq.h"
++#include "pci_irq.h"
++
++enum {
++	XSC_COMP_EQ_SIZE = 1024,
 +};
 +
-+static int xsc_set_dma_caps(struct pci_dev *pdev)
-+{
-+	int err;
++enum xsc_eq_type {
++	XSC_EQ_TYPE_COMP,
++	XSC_EQ_TYPE_ASYNC,
++};
 +
-+	err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(64));
-+	if (!err)
-+		dma_set_max_seg_size(&pdev->dev, SZ_2G);
++struct xsc_irq {
++	struct atomic_notifier_head nh;
++	cpumask_var_t mask;
++	char name[XSC_MAX_IRQ_NAME];
++};
++
++struct xsc_irq_table {
++	struct xsc_irq *irq;
++	int nvec;
++#ifdef CONFIG_RFS_ACCEL
++	struct cpu_rmap *rmap;
++#endif
++};
++
++static void xsc_free_irq(struct xsc_core_device *xdev, unsigned int vector)
++{
++	unsigned int irqn = 0;
++
++	irqn = pci_irq_vector(xdev->pdev, vector);
++	disable_irq(irqn);
++
++	if (xsc_fw_is_available(xdev))
++		free_irq(irqn, xdev);
++}
++
++static int set_comp_irq_affinity_hint(struct xsc_core_device *xdev, int i)
++{
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	struct xsc_eq *eq = xsc_core_eq_get(xdev, i);
++	int vecidx = table->eq_vec_comp_base + i;
++	unsigned int irqn;
++	int ret;
++
++	irqn = pci_irq_vector(xdev->pdev, vecidx);
++	if (!zalloc_cpumask_var(&eq->mask, GFP_KERNEL)) {
++		pci_err(xdev->pdev, "zalloc_cpumask_var rx cpumask failed");
++		return -ENOMEM;
++	}
++
++	if (!zalloc_cpumask_var(&xdev->xps_cpumask, GFP_KERNEL)) {
++		pci_err(xdev->pdev, "zalloc_cpumask_var tx cpumask failed");
++		return -ENOMEM;
++	}
++
++	cpumask_set_cpu(cpumask_local_spread(i, xdev->numa_node),
++			xdev->xps_cpumask);
++	ret = irq_set_affinity_hint(irqn, eq->mask);
++
++	return ret;
++}
++
++static void clear_comp_irq_affinity_hint(struct xsc_core_device *xdev, int i)
++{
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	struct xsc_eq *eq = xsc_core_eq_get(xdev, i);
++	int vecidx = table->eq_vec_comp_base + i;
++	int irqn;
++
++	irqn = pci_irq_vector(xdev->pdev, vecidx);
++	irq_set_affinity_hint(irqn, NULL);
++	free_cpumask_var(eq->mask);
++}
++
++static int set_comp_irq_affinity_hints(struct xsc_core_device *xdev)
++{
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	int nvec = table->num_comp_vectors;
++	int err;
++	int i;
++
++	for (i = 0; i < nvec; i++) {
++		err = set_comp_irq_affinity_hint(xdev, i);
++		if (err)
++			goto err_out;
++	}
++
++	return 0;
++
++err_out:
++	for (i--; i >= 0; i--)
++		clear_comp_irq_affinity_hint(xdev, i);
++	free_cpumask_var(xdev->xps_cpumask);
 +
 +	return err;
 +}
 +
-+static int xsc_pci_init(struct xsc_core_device *xdev,
-+			const struct pci_device_id *id)
++static void clear_comp_irq_affinity_hints(struct xsc_core_device *xdev)
 +{
-+	struct pci_dev *pdev = xdev->pdev;
-+	void __iomem *bar_base;
-+	int bar_num = 0;
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	int nvec = table->num_comp_vectors;
++	int i;
++
++	for (i = 0; i < nvec; i++)
++		clear_comp_irq_affinity_hint(xdev, i);
++	free_cpumask_var(xdev->xps_cpumask);
++}
++
++static int xsc_alloc_irq_vectors(struct xsc_core_device *xdev)
++{
++	struct xsc_dev_resource *dev_res = xdev->dev_res;
++	struct xsc_eq_table *table = &dev_res->eq_table;
++	int nvec = xdev->caps.msix_num;
++	int nvec_base;
 +	int err;
 +
-+	xdev->numa_node = dev_to_node(&pdev->dev);
-+
-+	err = pci_enable_device(pdev);
-+	if (err) {
-+		pci_err(pdev, "failed to enable PCI device: err=%d\n", err);
-+		goto err_out;
++	nvec_base = XSC_EQ_VEC_COMP_BASE;
++	if (nvec <= nvec_base) {
++		pci_err(xdev->pdev, "failed to alloc irq vector(%d)\n", nvec);
++		return -ENOMEM;
 +	}
 +
-+	err = pci_request_region(pdev, bar_num, KBUILD_MODNAME);
-+	if (err) {
-+		pci_err(pdev, "failed to request %s pci_region=%d: err=%d\n",
-+			KBUILD_MODNAME, bar_num, err);
-+		goto err_disable;
++	dev_res->irq_info = kcalloc(nvec, sizeof(*dev_res->irq_info),
++				    GFP_KERNEL);
++	if (!dev_res->irq_info)
++		return -ENOMEM;
++
++	nvec = pci_alloc_irq_vectors(xdev->pdev, nvec_base + 1, nvec,
++				     PCI_IRQ_MSIX);
++	if (nvec < 0) {
++		err = nvec;
++		goto err_free_irq_info;
 +	}
 +
-+	pci_set_master(pdev);
-+
-+	err = xsc_set_dma_caps(pdev);
-+	if (err) {
-+		pci_err(pdev, "failed to set DMA capabilities mask: err=%d\n",
-+			err);
-+		goto err_clr_master;
-+	}
-+
-+	bar_base = pci_ioremap_bar(pdev, bar_num);
-+	if (!bar_base) {
-+		pci_err(pdev, "failed to ioremap %s bar%d\n", KBUILD_MODNAME,
-+			bar_num);
-+		err = -ENOMEM;
-+		goto err_clr_master;
-+	}
-+
-+	err = pci_save_state(pdev);
-+	if (err) {
-+		pci_err(pdev, "pci_save_state failed: err=%d\n", err);
-+		goto err_io_unmap;
-+	}
-+
-+	xdev->bar_num = bar_num;
-+	xdev->bar = bar_base;
++	table->eq_vec_comp_base = nvec_base;
++	table->num_comp_vectors = nvec - nvec_base;
++	xdev->msix_vec_base = xdev->caps.msix_base;
 +
 +	return 0;
 +
-+err_io_unmap:
-+	pci_iounmap(pdev, bar_base);
-+err_clr_master:
-+	pci_clear_master(pdev);
-+	pci_release_region(pdev, bar_num);
-+err_disable:
-+	pci_disable_device(pdev);
++err_free_irq_info:
++	kfree(dev_res->irq_info);
++	return err;
++}
++
++static void xsc_free_irq_vectors(struct xsc_core_device *xdev)
++{
++	struct xsc_dev_resource *dev_res = xdev->dev_res;
++
++	if (!xsc_fw_is_available(xdev))
++		return;
++
++	pci_free_irq_vectors(xdev->pdev);
++	kfree(dev_res->irq_info);
++}
++
++int xsc_core_vector2eqn(struct xsc_core_device *xdev, int vector, u32 *eqn,
++			unsigned int *irqn)
++{
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	struct xsc_eq *eq, *n;
++	int err = -ENOENT;
++
++	if (!xdev->caps.msix_enable)
++		return 0;
++
++	spin_lock(&table->lock);
++	list_for_each_entry_safe(eq, n, &table->comp_eqs_list, list) {
++		if (eq->index == vector) {
++			*eqn = eq->eqn;
++			*irqn = eq->irqn;
++			err = 0;
++			break;
++		}
++	}
++	spin_unlock(&table->lock);
++
++	return err;
++}
++EXPORT_SYMBOL(xsc_core_vector2eqn);
++
++static void free_comp_eqs(struct xsc_core_device *xdev)
++{
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	struct xsc_eq *eq, *n;
++
++	spin_lock(&table->lock);
++	list_for_each_entry_safe(eq, n, &table->comp_eqs_list, list) {
++		list_del(&eq->list);
++		spin_unlock(&table->lock);
++		if (xsc_destroy_unmap_eq(xdev, eq))
++			pci_err(xdev->pdev, "failed to destroy EQ 0x%x\n",
++				eq->eqn);
++		kfree(eq);
++		spin_lock(&table->lock);
++	}
++	spin_unlock(&table->lock);
++}
++
++static int alloc_comp_eqs(struct xsc_core_device *xdev)
++{
++	struct xsc_eq_table *table = &xdev->dev_res->eq_table;
++	char name[XSC_MAX_IRQ_NAME];
++	struct xsc_eq *eq;
++	int ncomp_vec;
++	u32 nent;
++	int err;
++	int i;
++
++	INIT_LIST_HEAD(&table->comp_eqs_list);
++	ncomp_vec = table->num_comp_vectors;
++	nent = XSC_COMP_EQ_SIZE;
++
++	for (i = 0; i < ncomp_vec; i++) {
++		eq = kzalloc(sizeof(*eq), GFP_KERNEL);
++		if (!eq) {
++			err = -ENOMEM;
++			goto err_free;
++		}
++
++		snprintf(name, XSC_MAX_IRQ_NAME, "xsc_comp%d", i);
++		err = xsc_create_map_eq(xdev, eq,
++					i + table->eq_vec_comp_base,
++					nent, name);
++		if (err) {
++			kfree(eq);
++			goto err_free;
++		}
++
++		eq->index = i;
++		spin_lock(&table->lock);
++		list_add_tail(&eq->list, &table->comp_eqs_list);
++		spin_unlock(&table->lock);
++	}
++
++	return 0;
++
++err_free:
++	free_comp_eqs(xdev);
++	return err;
++}
++
++static irqreturn_t xsc_cmd_handler(int irq, void *arg)
++{
++	struct xsc_core_device *xdev = (struct xsc_core_device *)arg;
++	int err;
++
++	disable_irq_nosync(xdev->cmd.irqn);
++	err = xsc_cmd_err_handler(xdev);
++	if (!err)
++		xsc_cmd_resp_handler(xdev);
++	enable_irq(xdev->cmd.irqn);
++
++	return IRQ_HANDLED;
++}
++
++static int xsc_request_irq_for_cmdq(struct xsc_core_device *xdev, u8 vecidx)
++{
++	struct xsc_dev_resource *dev_res = xdev->dev_res;
++
++	writel(xdev->msix_vec_base + vecidx,
++	       XSC_REG_ADDR(xdev, xdev->cmd.reg.msix_vec_addr));
++
++	snprintf(dev_res->irq_info[vecidx].name, XSC_MAX_IRQ_NAME, "%s@pci:%s",
++		 "xsc_cmd", pci_name(xdev->pdev));
++	xdev->cmd.irqn = pci_irq_vector(xdev->pdev, vecidx);
++	return request_irq(xdev->cmd.irqn, xsc_cmd_handler, 0,
++		dev_res->irq_info[vecidx].name, xdev);
++}
++
++static void xsc_free_irq_for_cmdq(struct xsc_core_device *xdev)
++{
++	xsc_free_irq(xdev, XSC_VEC_CMD);
++}
++
++static irqreturn_t xsc_event_handler(int irq, void *arg)
++{
++	struct xsc_core_device *xdev = (struct xsc_core_device *)arg;
++
++	if (!xdev->eth_priv)
++		return IRQ_NONE;
++
++	if (!xdev->event_handler)
++		return IRQ_NONE;
++
++	xdev->event_handler(xdev->eth_priv);
++
++	return IRQ_HANDLED;
++}
++
++static int xsc_request_irq_for_event(struct xsc_core_device *xdev)
++{
++	struct xsc_dev_resource *dev_res = xdev->dev_res;
++
++	snprintf(dev_res->irq_info[XSC_VEC_CMD_EVENT].name,
++		 XSC_MAX_IRQ_NAME, "%s@pci:%s",
++		 "xsc_eth_event", pci_name(xdev->pdev));
++	return request_irq(pci_irq_vector(xdev->pdev, XSC_VEC_CMD_EVENT),
++			   xsc_event_handler, 0,
++			   dev_res->irq_info[XSC_VEC_CMD_EVENT].name, xdev);
++}
++
++static void xsc_free_irq_for_event(struct xsc_core_device *xdev)
++{
++	xsc_free_irq(xdev, XSC_VEC_CMD_EVENT);
++}
++
++static int xsc_cmd_enable_msix(struct xsc_core_device *xdev)
++{
++	struct xsc_msix_table_info_mbox_out out;
++	struct xsc_msix_table_info_mbox_in in;
++	int err;
++
++	memset(&in, 0, sizeof(in));
++	memset(&out, 0, sizeof(out));
++	in.hdr.opcode = cpu_to_be16(XSC_CMD_OP_ENABLE_MSIX);
++
++	err = xsc_cmd_exec(xdev, &in, sizeof(in), &out, sizeof(out));
++	if (err) {
++		pci_err(xdev->pdev, "xsc_cmd_exec enable msix failed %d\n",
++			err);
++		return err;
++	}
++
++	return 0;
++}
++
++int xsc_irq_eq_create(struct xsc_core_device *xdev)
++{
++	int err;
++
++	if (xdev->caps.msix_enable == 0)
++		return 0;
++
++	err = xsc_alloc_irq_vectors(xdev);
++	if (err) {
++		pci_err(xdev->pdev, "enable msix failed, err=%d\n", err);
++		goto err_out;
++	}
++
++	err = xsc_start_eqs(xdev);
++	if (err) {
++		pci_err(xdev->pdev, "failed to start EQs, err=%d\n", err);
++		goto err_free_irq_vectors;
++	}
++
++	err = alloc_comp_eqs(xdev);
++	if (err) {
++		pci_err(xdev->pdev, "failed to alloc comp EQs, err=%d\n", err);
++		goto err_stop_eqs;
++	}
++
++	err = xsc_request_irq_for_cmdq(xdev, XSC_VEC_CMD);
++	if (err) {
++		pci_err(xdev->pdev, "failed to request irq for cmdq, err=%d\n",
++			err);
++		goto err_free_comp_eqs;
++	}
++
++	err = xsc_request_irq_for_event(xdev);
++	if (err) {
++		pci_err(xdev->pdev, "failed to request irq for event, err=%d\n",
++			err);
++		goto err_free_irq_cmdq;
++	}
++
++	err = set_comp_irq_affinity_hints(xdev);
++	if (err) {
++		pci_err(xdev->pdev, "failed to alloc affinity hint cpumask, err=%d\n",
++			err);
++		goto err_free_irq_evnt;
++	}
++
++	xsc_cmd_use_events(xdev);
++	err = xsc_cmd_enable_msix(xdev);
++	if (err) {
++		pci_err(xdev->pdev, "xsc_cmd_enable_msix failed %d.\n", err);
++		xsc_cmd_use_polling(xdev);
++		goto err_free_irq_evnt;
++	}
++	return 0;
++
++err_free_irq_evnt:
++	xsc_free_irq_for_event(xdev);
++err_free_irq_cmdq:
++	xsc_free_irq_for_cmdq(xdev);
++err_free_comp_eqs:
++	free_comp_eqs(xdev);
++err_stop_eqs:
++	xsc_stop_eqs(xdev);
++err_free_irq_vectors:
++	xsc_free_irq_vectors(xdev);
 +err_out:
 +	return err;
 +}
 +
-+static void xsc_pci_fini(struct xsc_core_device *xdev)
++void xsc_irq_eq_destroy(struct xsc_core_device *xdev)
 +{
-+	struct pci_dev *pdev = xdev->pdev;
++	if (xdev->caps.msix_enable == 0)
++		return;
 +
-+	pci_iounmap(pdev, xdev->bar);
-+	pci_clear_master(pdev);
-+	pci_release_region(pdev, xdev->bar_num);
-+	pci_disable_device(pdev);
++	xsc_stop_eqs(xdev);
++	clear_comp_irq_affinity_hints(xdev);
++	free_comp_eqs(xdev);
++
++	xsc_free_irq_for_event(xdev);
++	xsc_free_irq_for_cmdq(xdev);
++	xsc_free_irq_vectors(xdev);
 +}
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.h b/drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.h
+new file mode 100644
+index 000000000..9a88e5b2c
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
 +
-+static int xsc_dev_res_init(struct xsc_core_device *xdev)
-+{
-+	struct xsc_dev_resource *dev_res;
++#ifndef __XSC_PCI_IRQ_H
++#define __XSC_PCI_IRQ_H
 +
-+	dev_res = kvzalloc(sizeof(*dev_res), GFP_KERNEL);
-+	if (!dev_res)
-+		return -ENOMEM;
++#include "common/xsc_core.h"
 +
-+	xdev->dev_res = dev_res;
-+	mutex_init(&dev_res->alloc_mutex);
++int xsc_irq_eq_create(struct xsc_core_device *xdev);
++void xsc_irq_eq_destroy(struct xsc_core_device *xdev);
 +
-+	return 0;
-+}
-+
-+static void xsc_dev_res_cleanup(struct xsc_core_device *xdev)
-+{
-+	kfree(xdev->dev_res);
-+}
-+
-+static int xsc_core_dev_init(struct xsc_core_device *xdev)
-+{
-+	int err;
-+
-+	err = xsc_dev_res_init(xdev);
-+	if (err) {
-+		pci_err(xdev->pdev, "xsc dev res init failed %d\n", err);
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
-+static void xsc_core_dev_cleanup(struct xsc_core_device *xdev)
-+{
-+	xsc_dev_res_cleanup(xdev);
-+}
-+
-+static int xsc_pci_probe(struct pci_dev *pci_dev,
-+			 const struct pci_device_id *id)
-+{
-+	struct xsc_core_device *xdev;
-+	int err;
-+
-+	xdev = kzalloc(sizeof(*xdev), GFP_KERNEL);
-+	if (!xdev)
-+		return -ENOMEM;
-+
-+	xdev->pdev = pci_dev;
-+	xdev->device = &pci_dev->dev;
-+
-+	pci_set_drvdata(pci_dev, xdev);
-+	err = xsc_pci_init(xdev, id);
-+	if (err) {
-+		pci_err(pci_dev, "xsc_pci_init failed %d\n", err);
-+		goto err_unset_pci_drvdata;
-+	}
-+
-+	err = xsc_core_dev_init(xdev);
-+	if (err) {
-+		pci_err(pci_dev, "xsc_core_dev_init failed %d\n", err);
-+		goto err_pci_fini;
-+	}
-+
-+	return 0;
-+err_pci_fini:
-+	xsc_pci_fini(xdev);
-+err_unset_pci_drvdata:
-+	pci_set_drvdata(pci_dev, NULL);
-+	kfree(xdev);
-+
-+	return err;
-+}
-+
-+static void xsc_pci_remove(struct pci_dev *pci_dev)
-+{
-+	struct xsc_core_device *xdev = pci_get_drvdata(pci_dev);
-+
-+	xsc_core_dev_cleanup(xdev);
-+	xsc_pci_fini(xdev);
-+	pci_set_drvdata(pci_dev, NULL);
-+	kfree(xdev);
-+}
-+
-+static struct pci_driver xsc_pci_driver = {
-+	.name		= "xsc-pci",
-+	.id_table	= xsc_pci_id_table,
-+	.probe		= xsc_pci_probe,
-+	.remove		= xsc_pci_remove,
-+};
-+
-+static int __init xsc_init(void)
-+{
-+	int err;
-+
-+	err = pci_register_driver(&xsc_pci_driver);
-+	if (err) {
-+		pr_err("failed to register pci driver\n");
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
-+static void __exit xsc_fini(void)
-+{
-+	pci_unregister_driver(&xsc_pci_driver);
-+}
-+
-+module_init(xsc_init);
-+module_exit(xsc_fini);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Yunsilicon XSC PCI driver");
++#endif
 -- 
 2.43.0
