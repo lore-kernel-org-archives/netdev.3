@@ -1,230 +1,372 @@
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sg-1-13.ptr.blmpb.com (sg-1-13.ptr.blmpb.com [118.26.132.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7689C29B783;
-	Thu,  3 Jul 2025 07:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD61190679
+	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 07:54:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751529269; cv=none; b=RswG9GqyfjgF6VQnAI3tfVfcKaq6RD99l2n+5ILJnjYyvKaTG4URkem3wRx0Scvmrdmf4OxtQ+PJlHG3z3wNZHuXUi91pOBkZ29/M2cddtdNRCzlkZwC002pabmS9urWAVxVUdyUUbllJrikkkzkOTN+i43YuXheUWbp6iCKrHc=
+	t=1751529269; cv=none; b=NKF8hNjejTgpfbUnrAf5jrFVO5UG/SWPb/76kPEvHePwJIUqac0clv4sUKnfPHSz2837/jFyLZJYj1tboYvH5TnVgalKWu/2qTM1ruQD592dp9I/plv9CArM5JdYf6xC1KnM5vGYi5y1X2/m3vMQ6eqoKXnP3Z8fN7RcVxYjt5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1751529269; c=relaxed/simple;
-	bh=lt+M87RByfReAxvdmnUfBWNo3o235T3tR6JtwxzdkGI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kz6r4CdWLgrtMRsjWW3rBq9zqqVQdIGmgJ0mVkpPXOcB8HvhXQ7n8W/jXby+nmeOhk//zTqlQzR8KnJh/KLGf9z1bDaoMA/9pBohYOkSWu8U9OZJ0WbwKIZFJZle7PzUYq8zu3kxKFkdBy6K5DE3pCxVb1GeGxPmllIOxOzlo5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bXpr70gs8z1R8fv;
-	Thu,  3 Jul 2025 15:51:51 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8903E1A016C;
-	Thu,  3 Jul 2025 15:54:22 +0800 (CST)
-Received: from kwepemq200002.china.huawei.com (7.202.195.90) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 3 Jul 2025 15:54:22 +0800
-Received: from localhost.localdomain (10.175.104.82) by
- kwepemq200002.china.huawei.com (7.202.195.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 3 Jul 2025 15:54:21 +0800
-From: Dong Chenchen <dongchenchen2@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <jiri@resnulli.us>,
-	<oscmaes92@gmail.com>, <linux@treblig.org>, <pedro.netdev@dondevamos.com>,
-	<idosch@idosch.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<zhangchangzhong@huawei.com>
-Subject: [PATCH net v2 1/2] net: vlan: fix VLAN 0 refcount imbalance of toggling filtering during runtime
-Date: Thu, 3 Jul 2025 15:57:01 +0800
-Message-ID: <20250703075702.1063149-2-dongchenchen2@huawei.com>
+	bh=AnVCARI1rD2MdTR5RdhbfZqdJKvrqfHUncSN1IoWVWM=;
+	h=Message-Id:Cc:From:Subject:Mime-Version:Content-Type:To:Date:
+	 References:In-Reply-To; b=CCpEjmLqRSBmaiyXeAevVRNlScnEBjxUTnHm3/I0qgw3LRCijXC8DFcfGdwSOmV97YhFNAh1pGlQLLIXjvbgeX9LifY/0IDbomMBptPwsYYozvFuKHVAQuzRkF/KyCiMuwEWyncuut3BltOR1kGEzfzsUW/ITc+mQFAxQ829xX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=MeWaz+N6; arc=none smtp.client-ip=118.26.132.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="MeWaz+N6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2403070942; d=yunsilicon.com; t=1751529260; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=SB3xm1zy/p2CY3C8K4woaxM7eQfJhmhxe98o0wQMVSM=;
+ b=MeWaz+N6slCbMQvulNDFoHiFfvnKevyf9gfmf1MzOhDwgksAP4QUDrSm8rBYzHnpc8VslG
+ g585/ZhKNkaKg17HQQ5jsKA7qt85+yI1WKKEAziVGO9U+rhh21EFHKhGplpQzRKQiLQJKQ
+ 6ZnpZmjgR4UxSlO84mZVXp+XW9V+K40wuiMZTuBqPbTee9xI8DOoU4P5ZwHwZDlotFQPte
+ d6YsDLBbm6C59QIupX36GLXsQvu3r2ycktCUdk88/2wBZgjPiLiz0dPVJP6hk38PsQNrLR
+ VAhSaEpGOtmUPaPRM177781B5FbzvGZ8EDr1Q4c61IVUSuKVjxN4Hu44GMQHdA==
+Message-Id: <20250703075416.3488773-15-tianx@yunsilicon.com>
+Received: from ubuntu-liun.yunsilicon.com ([58.34.192.114]) by smtp.feishu.cn with ESMTPS; Thu, 03 Jul 2025 15:54:18 +0800
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250703075702.1063149-1-dongchenchen2@huawei.com>
-References: <20250703075702.1063149-1-dongchenchen2@huawei.com>
+Cc: <leon@kernel.org>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>, 
+	<pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>, 
+	<jeff.johnson@oss.qualcomm.com>, <przemyslaw.kitszel@intel.com>, 
+	<weihg@yunsilicon.com>, <wanry@yunsilicon.com>, <jacky@yunsilicon.com>, 
+	<horms@kernel.org>, <parthiban.veerasooran@microchip.com>, 
+	<masahiroy@kernel.org>, <kalesh-anakkur.purayil@broadcom.com>, 
+	<geert+renesas@glider.be>, <pabeni@redhat.com>, <geert@linux-m68k.org>
+From: "Xin Tian" <tianx@yunsilicon.com>
+Subject: [PATCH net-next v12 14/14] xsc: add ndo_get_stats64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemq200002.china.huawei.com (7.202.195.90)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+X-Lms-Return-Path: <lba+26866372a+beeb24+vger.kernel.org+tianx@yunsilicon.com>
+To: <netdev@vger.kernel.org>
+Content-Transfer-Encoding: 7bit
+Date: Thu, 03 Jul 2025 15:54:18 +0800
+References: <20250703075341.3488773-1-tianx@yunsilicon.com>
+In-Reply-To: <20250703075341.3488773-1-tianx@yunsilicon.com>
 
-8021q(vlan_device_event) will add VLAN 0 when enabling the device, and
-remove it on disabling it if NETIF_F_HW_VLAN_CTAG_FILTER set.
-However, if changing filter feature during netdev runtime,
-null-ptr-unref[1] or bug_on[2] will be triggered by unregister_vlan_dev()
-for refcount imbalance.
+Added basic network interface statistics.
 
-[1]
-BUG: KASAN: null-ptr-deref in unregister_vlan_dev (net/8021q/vlan.h:90 net/8021q/vlan.c:110)
-Write of size 8 at addr 0000000000000000 by task ip/382
-CPU: 2 UID: 0 PID: 382 Comm: ip Not tainted 6.16.0-rc3 #60 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
-dump_stack_lvl (lib/dump_stack.c:123)
-kasan_report (mm/kasan/report.c:636)
-unregister_vlan_dev (net/8021q/vlan.h:90 net/8021q/vlan.c:110)
-rtnl_dellink (net/core/rtnetlink.c:3511 net/core/rtnetlink.c:3553)
-rtnetlink_rcv_msg (net/core/rtnetlink.c:6945)
-netlink_rcv_skb (net/netlink/af_netlink.c:2535)
-netlink_unicast (net/netlink/af_netlink.c:1314 net/netlink/af_netlink.c:1339)
-netlink_sendmsg (net/netlink/af_netlink.c:1883)
-____sys_sendmsg (net/socket.c:712 net/socket.c:727 net/socket.c:2566)
-
-[2]
-kernel BUG at net/8021q/vlan.c:99!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 382 Comm: ip Not tainted 6.16.0-rc3 #61 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-RIP: 0010:unregister_vlan_dev (net/8021q/vlan.c:99 (discriminator 1))
-RSP: 0018:ffff88810badf310 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff88810da84000 RCX: ffffffffb47ceb9a
-RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffff88810e8b43c8
-RBP: 0000000000000000 R08: 0000000000000000 R09: fffffbfff6cefe80
-R10: ffffffffb677f407 R11: ffff88810badf3c0 R12: ffff88810e8b4000
-R13: 0000000000000000 R14: ffff88810642a5c0 R15: 000000000000017e
-FS:  00007f1ff68c20c0(0000) GS:ffff888163a24000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1ff5dad240 CR3: 0000000107e56000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
-rtnl_dellink (net/core/rtnetlink.c:3511 net/core/rtnetlink.c:3553)
-rtnetlink_rcv_msg (net/core/rtnetlink.c:6945)
-netlink_rcv_skb (net/netlink/af_netlink.c:2535)
-netlink_unicast (net/netlink/af_netlink.c:1314 net/netlink/af_netlink.c:1339)
-netlink_sendmsg (net/netlink/af_netlink.c:1883)
-____sys_sendmsg (net/socket.c:712 net/socket.c:727 net/socket.c:2566)
-___sys_sendmsg (net/socket.c:2622)
-__sys_sendmsg (net/socket.c:2652)
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-
-Root cause is as below:
-step1: add vlan0 for real_dev, such as bond, team.
-register_vlan_dev
-    vlan_vid_add(real_dev,htons(ETH_P_8021Q),0) //refcnt=1
-step2: disable vlan filter feature and enable real_dev
-step3: change filter from 0 to 1
-vlan_device_event
-    vlan_filter_push_vids
-    	ndo_vlan_rx_add_vid //No refcnt added to real_dev vlan0
-step4: real_dev down
-vlan_device_event
-    vlan_vid_del(dev, htons(ETH_P_8021Q), 0); //refcnt=0
-        vlan_info_rcu_free //free vlan0
-step5: real_dev up
-vlan_device_event
-    vlan_vid_add(dev, htons(ETH_P_8021Q), 0);
-        vlan_info_alloc //alloc new empty vid0. refcnt=1
-step6: delete vlan0
-unregister_vlan_dev
-    BUG_ON(!vlan_info); //will trigger it if step5 was not executed
-    vlan_group_set_device
-        array = vg->vlan_devices_arrays
-	//null-ptr-ref will be triggered after step5
-
-E.g. the following sequence can reproduce null-ptr-ref
-
-$ ip link add bond0 type bond mode 0
-$ ip link add link bond0 name vlan0 type vlan id 0 protocol 802.1q
-$ ethtool -K bond0 rx-vlan-filter off
-$ ifconfig bond0 up
-$ ethtool -K bond0 rx-vlan-filter on
-$ ifconfig bond0 down
-$ ifconfig bond0 up
-$ ip link del vlan0
-
-Add the auto_vid0 flag to track the refcount of vlan0, and use this
-flag to determine whether to dec refcount while disabling real_dev.
-
-Fixes: ad1afb003939 ("vlan_dev: VLAN 0 should be treated as "no vlan tag" (802.1p packet)")
-Reported-by: syzbot+a8b046e462915c65b10b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a8b046e462915c65b10b
-Co-developed-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Co-developed-by: Honggang Wei <weihg@yunsilicon.com>
+Signed-off-by: Honggang Wei <weihg@yunsilicon.com>
+Co-developed-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Lei Yan <jacky@yunsilicon.com>
+Signed-off-by: Xin Tian <tianx@yunsilicon.com>
 ---
- net/8021q/vlan.c | 42 +++++++++++++++++++++++++++++++++---------
- net/8021q/vlan.h |  1 +
- 2 files changed, 34 insertions(+), 9 deletions(-)
+ .../net/ethernet/yunsilicon/xsc/net/Makefile  |  2 +-
+ .../net/ethernet/yunsilicon/xsc/net/main.c    | 31 ++++++++++++-
+ .../net/ethernet/yunsilicon/xsc/net/xsc_eth.h |  3 ++
+ .../ethernet/yunsilicon/xsc/net/xsc_eth_rx.c  |  4 ++
+ .../yunsilicon/xsc/net/xsc_eth_stats.c        | 46 +++++++++++++++++++
+ .../yunsilicon/xsc/net/xsc_eth_stats.h        | 34 ++++++++++++++
+ .../ethernet/yunsilicon/xsc/net/xsc_eth_tx.c  |  5 ++
+ .../ethernet/yunsilicon/xsc/net/xsc_queue.h   |  2 +
+ 8 files changed, 124 insertions(+), 3 deletions(-)
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
 
-diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-index 06908e37c3d9..9a6df8c1daf9 100644
---- a/net/8021q/vlan.c
-+++ b/net/8021q/vlan.c
-@@ -357,6 +357,35 @@ static int __vlan_device_event(struct net_device *dev, unsigned long event)
- 	return err;
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/Makefile b/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
+index 7cfc2aaa2..e1cfa3cdf 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/Makefile
+@@ -6,4 +6,4 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
+ 
+ obj-$(CONFIG_YUNSILICON_XSC_ETH) += xsc_eth.o
+ 
+-xsc_eth-y := main.o xsc_eth_wq.o xsc_eth_txrx.o xsc_eth_tx.o xsc_eth_rx.o
++xsc_eth-y := main.o xsc_eth_wq.o xsc_eth_txrx.o xsc_eth_tx.o xsc_eth_rx.o xsc_eth_stats.o
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/main.c b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
+index 3341d3cf1..35dce2ecd 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/main.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/main.c
+@@ -559,15 +559,20 @@ static int xsc_eth_open_qp_sq(struct xsc_channel *c,
+ 	u8 ele_log_size = psq_param->sq_attr.ele_log_size;
+ 	u8 q_log_size = psq_param->sq_attr.q_log_size;
+ 	struct xsc_modify_raw_qp_mbox_in *modify_in;
++	struct xsc_channel_stats *channel_stats;
+ 	struct xsc_create_qp_mbox_in *in;
+ 	struct xsc_core_device *xdev;
+ 	struct xsc_adapter *adapter;
++	struct xsc_stats *stats;
+ 	unsigned int hw_npages;
+ 	int inlen;
+ 	int ret;
+ 
+ 	adapter = c->adapter;
+ 	xdev  = adapter->xdev;
++	stats = adapter->stats;
++	channel_stats = &stats->channel_stats[c->chl_idx];
++	psq->stats = &channel_stats->sq[sq_idx];
+ 	psq_param->wq.db_numa_node = cpu_to_node(c->cpu);
+ 
+ 	ret = xsc_eth_wq_cyc_create(xdev, &psq_param->wq,
+@@ -868,11 +873,16 @@ static int xsc_eth_alloc_rq(struct xsc_channel *c,
+ 	u8 q_log_size = prq_param->rq_attr.q_log_size;
+ 	struct page_pool_params pagepool_params = {0};
+ 	struct xsc_adapter *adapter = c->adapter;
++	struct xsc_channel_stats *channel_stats;
+ 	u32 pool_size = 1 << q_log_size;
++	struct xsc_stats *stats;
+ 	int ret = 0;
+ 	u32 wq_sz;
+ 	int i, f;
+ 
++	stats = c->adapter->stats;
++	channel_stats = &stats->channel_stats[c->chl_idx];
++	prq->stats = &channel_stats->rq;
+ 	prq_param->wq.db_numa_node = cpu_to_node(c->cpu);
+ 
+ 	ret = xsc_eth_wq_cyc_create(c->adapter->xdev, &prq_param->wq,
+@@ -1653,6 +1663,14 @@ static int xsc_eth_close(struct net_device *netdev)
+ 	return ret;
  }
  
-+static void vlan_vid0_add(struct net_device *dev)
++static void xsc_eth_get_stats(struct net_device *netdev,
++			      struct rtnl_link_stats64 *stats)
 +{
-+	struct vlan_info *vlan_info;
-+	int err;
++	struct xsc_adapter *adapter = netdev_priv(netdev);
 +
-+	if (!(dev->features & NETIF_F_HW_VLAN_CTAG_FILTER))
-+		return;
-+
-+	pr_info("adding VLAN 0 to HW filter on device %s\n", dev->name);
-+
-+	err = vlan_vid_add(dev, htons(ETH_P_8021Q), 0);
-+	if (err)
-+		return;
-+
-+	vlan_info = rtnl_dereference(dev->vlan_info);
-+	vlan_info->auto_vid0 = true;
++	xsc_eth_fold_sw_stats64(adapter, stats);
 +}
 +
-+static void vlan_vid0_del(struct net_device *dev)
-+{
-+	struct vlan_info *vlan_info = rtnl_dereference(dev->vlan_info);
-+
-+	if (!vlan_info || !vlan_info->auto_vid0)
-+		return;
-+
-+	vlan_info->auto_vid0 = false;
-+	vlan_vid_del(dev, htons(ETH_P_8021Q), 0);
-+}
-+
- static int vlan_device_event(struct notifier_block *unused, unsigned long event,
- 			     void *ptr)
+ static int xsc_eth_set_hw_mtu(struct xsc_core_device *xdev,
+ 			      u16 mtu, u16 rx_buf_sz)
  {
-@@ -378,15 +407,10 @@ static int vlan_device_event(struct notifier_block *unused, unsigned long event,
- 			return notifier_from_errno(err);
- 	}
- 
--	if ((event == NETDEV_UP) &&
--	    (dev->features & NETIF_F_HW_VLAN_CTAG_FILTER)) {
--		pr_info("adding VLAN 0 to HW filter on device %s\n",
--			dev->name);
--		vlan_vid_add(dev, htons(ETH_P_8021Q), 0);
--	}
--	if (event == NETDEV_DOWN &&
--	    (dev->features & NETIF_F_HW_VLAN_CTAG_FILTER))
--		vlan_vid_del(dev, htons(ETH_P_8021Q), 0);
-+	if (event == NETDEV_UP)
-+		vlan_vid0_add(dev);
-+	else if (event == NETDEV_DOWN)
-+		vlan_vid0_del(dev);
- 
- 	vlan_info = rtnl_dereference(dev->vlan_info);
- 	if (!vlan_info)
-diff --git a/net/8021q/vlan.h b/net/8021q/vlan.h
-index 5eaf38875554..c7ffe591d593 100644
---- a/net/8021q/vlan.h
-+++ b/net/8021q/vlan.h
-@@ -33,6 +33,7 @@ struct vlan_info {
- 	struct vlan_group	grp;
- 	struct list_head	vid_list;
- 	unsigned int		nr_vids;
-+	bool			auto_vid0;
- 	struct rcu_head		rcu;
+@@ -1684,6 +1702,7 @@ static const struct net_device_ops xsc_netdev_ops = {
+ 	.ndo_open		= xsc_eth_open,
+ 	.ndo_stop		= xsc_eth_close,
+ 	.ndo_start_xmit		= xsc_eth_xmit_start,
++	.ndo_get_stats64	= xsc_eth_get_stats,
  };
  
+ static void xsc_eth_build_nic_netdev(struct xsc_adapter *adapter)
+@@ -1897,14 +1916,22 @@ static int xsc_eth_probe(struct auxiliary_device *adev,
+ 		goto err_nic_cleanup;
+ 	}
+ 
++	adapter->stats = kvzalloc(sizeof(*adapter->stats), GFP_KERNEL);
++	if (!adapter->stats) {
++		err = -ENOMEM;
++		goto err_detach;
++	}
++
+ 	err = register_netdev(netdev);
+ 	if (err) {
+ 		netdev_err(netdev, "register_netdev failed, err=%d\n", err);
+-		goto err_detach;
++		goto err_free_stats;
+ 	}
+ 
+ 	return 0;
+ 
++err_free_stats:
++	kvfree(adapter->stats);
+ err_detach:
+ 	xsc_eth_detach(xdev, adapter);
+ err_nic_cleanup:
+@@ -1929,7 +1956,7 @@ static void xsc_eth_remove(struct auxiliary_device *adev)
+ 		return;
+ 
+ 	unregister_netdev(adapter->netdev);
+-
++	kvfree(adapter->stats);
+ 	free_netdev(adapter->netdev);
+ 
+ 	xdev->eth_priv = NULL;
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+index 61354b892..5c46d8050 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+@@ -10,6 +10,7 @@
+ 
+ #include "common/xsc_device.h"
+ #include "xsc_eth_common.h"
++#include "xsc_eth_stats.h"
+ 
+ #define XSC_INVALID_LKEY	0x100
+ 
+@@ -47,6 +48,8 @@ struct xsc_adapter {
+ 
+ 	u32			status;
+ 	struct mutex		status_lock; /*protect status */
++
++	struct xsc_stats	*stats;
+ };
+ 
+ static inline struct net_device *xsc_dev_to_netdev(struct xsc_core_device *xdev)
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
+index 212e55d78..fa8e644e0 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
+@@ -155,6 +155,10 @@ static void xsc_complete_rx_cqe(struct xsc_rq *rq,
+ 				struct sk_buff *skb,
+ 				struct xsc_wqe_frag_info *wi)
+ {
++	struct xsc_rq_stats *stats = rq->stats;
++
++	stats->packets++;
++	stats->bytes += cqe_bcnt;
+ 	xsc_build_rx_skb(cqe, cqe_bcnt, rq, skb, wi);
+ }
+ 
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
+new file mode 100644
+index 000000000..38bab39b9
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#include "xsc_eth_stats.h"
++#include "xsc_eth.h"
++
++static int xsc_get_netdev_max_channels(struct xsc_adapter *adapter)
++{
++	struct net_device *netdev = adapter->netdev;
++
++	return min_t(unsigned int, netdev->num_rx_queues,
++		     netdev->num_tx_queues);
++}
++
++static int xsc_get_netdev_max_tc(struct xsc_adapter *adapter)
++{
++	return adapter->nic_param.num_tc;
++}
++
++void xsc_eth_fold_sw_stats64(struct xsc_adapter *adapter,
++			     struct rtnl_link_stats64 *s)
++{
++	int i, j;
++
++	for (i = 0; i < xsc_get_netdev_max_channels(adapter); i++) {
++		struct xsc_channel_stats *channel_stats;
++		struct xsc_rq_stats *rq_stats;
++
++		channel_stats = &adapter->stats->channel_stats[i];
++		rq_stats = &channel_stats->rq;
++
++		s->rx_packets   += rq_stats->packets;
++		s->rx_bytes     += rq_stats->bytes;
++
++		for (j = 0; j < xsc_get_netdev_max_tc(adapter); j++) {
++			struct xsc_sq_stats *sq_stats = &channel_stats->sq[j];
++
++			s->tx_packets    += sq_stats->packets;
++			s->tx_bytes      += sq_stats->bytes;
++			s->tx_dropped    += sq_stats->dropped;
++		}
++	}
++}
++
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
+new file mode 100644
+index 000000000..1828f4608
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
+@@ -0,0 +1,34 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2021-2025, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#ifndef __XSC_EN_STATS_H
++#define __XSC_EN_STATS_H
++
++#include "xsc_eth_common.h"
++
++struct xsc_rq_stats {
++	u64 packets;
++	u64 bytes;
++};
++
++struct xsc_sq_stats {
++	u64 packets;
++	u64 bytes;
++	u64 dropped;
++};
++
++struct xsc_channel_stats {
++	struct xsc_sq_stats sq[XSC_MAX_NUM_TC];
++	struct xsc_rq_stats rq;
++} ____cacheline_aligned_in_smp;
++
++struct xsc_stats {
++	struct xsc_channel_stats channel_stats[XSC_ETH_MAX_NUM_CHANNELS];
++};
++
++void xsc_eth_fold_sw_stats64(struct xsc_adapter *adapter,
++			     struct rtnl_link_stats64 *s);
++
++#endif /* XSC_EN_STATS_H */
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
+index 1237433b1..ddfc3702f 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
+@@ -221,6 +221,7 @@ static uint32_t xsc_eth_xmit_frame(struct sk_buff *skb,
+ 				   u16 pi)
+ {
+ 	struct xsc_core_device *xdev = sq->cq.xdev;
++	struct xsc_sq_stats *stats = sq->stats;
+ 	struct xsc_send_wqe_ctrl_seg *cseg;
+ 	struct xsc_wqe_data_seg *dseg;
+ 	struct xsc_tx_wqe_info *wi;
+@@ -242,11 +243,13 @@ static uint32_t xsc_eth_xmit_frame(struct sk_buff *skb,
+ 		ihs		= xsc_tx_get_gso_ihs(sq, skb);
+ 		num_bytes	= skb->len +
+ 				  (skb_shinfo(skb)->gso_segs - 1) * ihs;
++		stats->packets	+= skb_shinfo(skb)->gso_segs;
+ 	} else {
+ 		opcode		= XSC_OPCODE_RAW;
+ 		mss		= 0;
+ 		ihs		= 0;
+ 		num_bytes	= skb->len;
++		stats->packets++;
+ 	}
+ 
+ 	/*linear data in skb*/
+@@ -284,10 +287,12 @@ static uint32_t xsc_eth_xmit_frame(struct sk_buff *skb,
+ 
+ 	xsc_txwqe_complete(sq, skb, opcode, ds_cnt, num_wqebbs, num_bytes,
+ 			   num_dma, wi);
++	stats->bytes     += num_bytes;
+ 
+ 	return NETDEV_TX_OK;
+ 
+ err_drop:
++	stats->dropped++;
+ 	dev_kfree_skb_any(skb);
+ 
+ 	return NETDEV_TX_OK;
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
+index 4601eec3b..d063398ed 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
++++ b/drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
+@@ -124,6 +124,7 @@ struct xsc_rq {
+ 
+ 	unsigned long	state;
+ 	struct work_struct  recover_work;
++	struct xsc_rq_stats *stats;
+ 
+ 	u32 hw_mtu;
+ 	u32 frags_sz;
+@@ -171,6 +172,7 @@ struct xsc_sq {
+ 	/* read only */
+ 	struct xsc_wq_cyc         wq;
+ 	u32                        dma_fifo_mask;
++	struct xsc_sq_stats     *stats;
+ 	struct {
+ 		struct xsc_sq_dma         *dma_fifo;
+ 		struct xsc_tx_wqe_info    *wqe_info;
 -- 
-2.25.1
-
+2.43.0
