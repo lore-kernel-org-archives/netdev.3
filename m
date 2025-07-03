@@ -1,104 +1,187 @@
-Received: from sysclose.org (smtp.sysclose.org [69.164.214.230])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778462DE6E2;
-	Thu,  3 Jul 2025 11:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=69.164.214.230
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D72F2E49A7
+	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 11:32:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751542019; cv=none; b=KCkIidX0288sPVdRlQGVr+VLLnmpapIMLvMqQkBuHJMbBi3Y4HphxLR1+zlOXT89qzpz5oo60XdPAeUqevG50a2SquDHjXxTvPmHsP2aowKWDiha5iEOriuXVBoPpec35Gux8cgYrx2lvQhj6hk2TIBauOw/Zzt1dVkDOmlngug=
+	t=1751542334; cv=none; b=iUChlG2TgO34GU50xq+lzL7D5PZzjSIam/RhMpuF7uRmJCIAc5PC9wEQhjWVJvCrrOcJzUAipqRgTYV9DvC4dvfEAT/sNVKm72+pwCM3GdSXLHzlK/Fufqh8EQm6UUb6whorDN6rL9TrHpVcCrN2D9rg0ftd/C2B94xu6ZaQfPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751542019; c=relaxed/simple;
-	bh=TOKohPTb4tBgw655yIcU3rQarBR23hyIWvaTujm58uI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P2pjF5pKjFx1ga8B7pL1gIt0LH+VzH8Nif6AsEEPdkMNLf/ioAxMNjWmh9lKpWqx4naN+lY4igAdh1q64513w0080m+HN/5TQalazZMKJR5WQ6aEud5lz071nMZhRtDCQuxhWI1L8KDUCPjan78LAQ5BJCpXgWPESAPLUfHGYyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sysclose.org; spf=pass smtp.mailfrom=sysclose.org; dkim=pass (2048-bit key) header.d=sysclose.org header.i=@sysclose.org header.b=wYWJlGcV; arc=none smtp.client-ip=69.164.214.230
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sysclose.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sysclose.org
+	s=arc-20240116; t=1751542334; c=relaxed/simple;
+	bh=t7Rw2RFmoV5p0XvR9cNzRijdgWOmQ/h3xPMKrPegB+0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Z8NzqouAnFm7xsj0kD2K3Bg/G+o8gj8tHZtAlKoVZMlPCk4bve0/pioZ34OKegGrSDS/q7+CI0sroLLQGrvatAvb2HrKv3RIMyShxozA/MbZAFRNaObOMWoroeuCztE4ug4LOjnYC9XGHhW2UYwass8oz5NsSP3WtHQQ33SA5ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=enLfw1jg; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sysclose.org header.i=@sysclose.org header.b="wYWJlGcV"
-Received: from uranium (unknown [131.100.62.92])
-	by sysclose.org (Postfix) with ESMTPSA id D6A56396A5;
-	Thu,  3 Jul 2025 11:26:54 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 sysclose.org D6A56396A5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sysclose.org;
-	s=201903; t=1751542016;
-	bh=mXYVu7Hi/bd/OSmZ10ajRbQ29ztcfjFGLXOdStiCgV4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=wYWJlGcVO6c+b3LEnfm74rOtDnuYmKjPDDlNH2VLdC7IrHYrhPuC6C/arIO3vEiqO
-	 hE41Vl7ffjP7PcDOtUM/R8cCx3KK78hPqH2QUzVxQEQXO7RGFCY2ubUVS49uGY9ocE
-	 hXWzbFQvib+ucXQr4djcWn2CZL4W9wtMaipOfHI837Yf1NHsGuYXZUQ+7PzSlsR9N6
-	 jDu8d5U30Or0wTsS/wIBKuJ+nGsYSqa8vOID5KJe2UFc1UT/WreYT3zqF09zWUqfaq
-	 mTFpE2uyUN+kd07cB1r4jtlsKl8t/XPgOV3KAVtM1JLqMIDuaXLdCdxNEte2m+KiwC
-	 DcqCnhoNANZYQ==
-Date: Thu, 3 Jul 2025 08:26:53 -0300
-From: Flavio Leitner <fbl@sysclose.org>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: netdev@vger.kernel.org, dev@openvswitch.org,
- linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Simon
- Horman <horms@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>
-Subject: Re: [ovs-dev] [PATCH net-next] net: openvswitch: allow providing
- upcall pid for the 'execute' command
-Message-ID: <20250703082653.2e102d68@uranium>
-In-Reply-To: <1039a336-5f4e-4197-a27d-f91c58aa5104@ovn.org>
-References: <20250627220219.1504221-1-i.maximets@ovn.org>
-	<20250702105316.43017482@uranium>
-	<00067667-0329-4d8c-9c9a-a6660806b137@ovn.org>
-	<20250702200821.3119cb6c@uranium>
-	<5c0e9359-6bdd-4d49-b427-8fd1e8802b7c@ovn.org>
-	<20250703080411.21c45920@uranium>
-	<1039a336-5f4e-4197-a27d-f91c58aa5104@ovn.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="enLfw1jg"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-60c9d8a169bso9588890a12.1
+        for <netdev@vger.kernel.org>; Thu, 03 Jul 2025 04:32:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1751542330; x=1752147130; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KXZnqCa0GQL8uQA7nEZMoZ/7kqCQBMLXqTrUarlA00A=;
+        b=enLfw1jgOSJBB6fO8uI/NUWysFYBAoLAjNXl5qQh+KVYf/dr7bLpbGd0CbWVbA7rEf
+         nenUkkbEUUDf83g3ZDpzz+dg7uPH4Kx0J/A8pyFBMvcxf3LseNrBNBv9GMS4RkKtss8y
+         xFa1DcnngnBbAMhWx7Gdscs4YU/kIv5CQIKNVqStAVsfwLIt9ybsDe8sBrajZOb53j4w
+         tjjKzSnRU9U8PBaI1ZDziXHxJPuvvjwYGlLltlaw8na0NOQwk33B9A/+ORxUKczfa3Zq
+         dThJu+L+np+70RsC5ty3kFYLUBs5yN8m8odHe7yEpYWQy+7hmQuvYsY4L66WTHVfhhAO
+         tyvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751542330; x=1752147130;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KXZnqCa0GQL8uQA7nEZMoZ/7kqCQBMLXqTrUarlA00A=;
+        b=WL/7IwSkaUbatZYujTv1VXE0ny3d/1KTZoNLp2TcvAySoxbdi7LkGKTJLWscB+GGQS
+         Sgj77sdl8OjKmqa2m8Y0WymDrLv6EfzAZO+OYXDk1too3cmWZp6WNYwlenncampw0+jp
+         +vfOoNzLNmiUlu3+CxneTK/+asIDuqyTxXT4tMdxAMom44vswxu2yJcMGNH+z6HbSkIv
+         YHkaEcGjA16H6XzwtywBpn+HnkH3JE4yHuYBVYKEV9G0QqxPZj2YP7AK1n3gbdL65Hog
+         g06thQV+Qdq5jv9g8/vOgP0sGbTJguXNSu8SNpbkHntn69EXsq1l5NW0kcrwQk1q6R2f
+         1H2g==
+X-Forwarded-Encrypted: i=1; AJvYcCW0sELYCj0IlcDWQz8Gj1+tFkREiuRcXhf9dLLmjolrZyVMGEcy9q54SST3dsclP2L//6ScAXw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqzlU0BlLUZetxsizAebvkdpylte0x0er/bsKoSR4apLkK47F8
+	j6RYctrhznZvfCLxnXEhPeofjcXNNPvH50a33Yz/HbY7t6tewKkjJzSiNmp7OA829uo=
+X-Gm-Gg: ASbGnct1wP11v7sajGEKdzyaZ62AKgrS0paOB2nBLHyxp9ZFQAIQNZbEBR6ub6MGrCo
+	hGBgdR3pM5rGxwYqQLJ1q7U0/iMKtXy2scV+pkWmAKoitZi6xYRFqhZS8cXe+xTyNYepoRGiCfw
+	B8Pp8AR3+JPoLbGmk/zAlCpkvmZ/VVYu+mFcaA7cwcSCA064h5PfdhfGjfs27I0QRye6fvQvwCQ
+	9QAjbaJnFLS0BDN4szUrrBS7wY9UDQ+mzgUodaMZcJFWpUriEstXB6Ykr+nxyqX/qLu2saXr6k4
+	FMXYyHSm8uWSvm+4lZI9ZjqPBH4Ixn1tONd4mJf8i8Uxg6ktkP/kRBk=
+X-Google-Smtp-Source: AGHT+IG/30qzCkmB/dakJpdO+CkEBFRX2NB7Ny4KqfhIDtujGNiL6196Rp1R2ZZmiDcj3wDcKkRUWQ==
+X-Received: by 2002:a17:906:c141:b0:add:fe17:e970 with SMTP id a640c23a62f3a-ae3c2b854f7mr632069266b.14.1751542330402;
+        Thu, 03 Jul 2025 04:32:10 -0700 (PDT)
+Received: from cloudflare.com ([2a09:bac5:5063:2432::39b:c2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae35365a0fasm1245712166b.63.2025.07.03.04.32.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Jul 2025 04:32:09 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Zijian Zhang <zijianzhang@bytedance.com>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>,  netdev@vger.kernel.org,
+  bpf@vger.kernel.org,  john.fastabend@gmail.com,
+  zhoufeng.zf@bytedance.com,  Amery Hung <amery.hung@bytedance.com>,  Cong
+ Wang <cong.wang@bytedance.com>
+Subject: Re: [Patch bpf-next v4 4/4] tcp_bpf: improve ingress redirection
+ performance with message corking
+In-Reply-To: <509939c4-2e3e-41a6-888f-cbbf6d4c93cb@bytedance.com> (Zijian
+	Zhang's message of "Thu, 3 Jul 2025 10:17:09 +0800")
+References: <20250701011201.235392-1-xiyou.wangcong@gmail.com>
+	<20250701011201.235392-5-xiyou.wangcong@gmail.com>
+	<87ecuyn5x2.fsf@cloudflare.com>
+	<509939c4-2e3e-41a6-888f-cbbf6d4c93cb@bytedance.com>
+Date: Thu, 03 Jul 2025 13:32:08 +0200
+Message-ID: <87a55lmrwn.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 3 Jul 2025 13:15:17 +0200
-Ilya Maximets <i.maximets@ovn.org> wrote:
+On Thu, Jul 03, 2025 at 10:17 AM +08, Zijian Zhang wrote:
+> On 7/2/25 8:17 PM, Jakub Sitnicki wrote:
+>> On Mon, Jun 30, 2025 at 06:12 PM -07, Cong Wang wrote:
+>>> From: Zijian Zhang <zijianzhang@bytedance.com>
+>>>
+>>> The TCP_BPF ingress redirection path currently lacks the message corking
+>>> mechanism found in standard TCP. This causes the sender to wake up the
+>>> receiver for every message, even when messages are small, resulting in
+>>> reduced throughput compared to regular TCP in certain scenarios.
+>> I'm curious what scenarios are you referring to? Is it send-to-local or
+>> ingress-to-local? [1]
+>>=20
+>
+> Thanks for your attention and detailed reviewing!
+> We are referring to "send-to-local" here.
+>
+>> If the sender is emitting small messages, that's probably intended -
+>> that is they likely want to get the message across as soon as possible,
+>> because They must have disabled the Nagle algo (set TCP_NODELAY) to do
+>> that.
+>> Otherwise, you get small segment merging on the sender side by default.
+>> And if MTU is a limiting factor, you should also be getting batching
+>> from GRO.
+>> What I'm getting at is that I don't quite follow why you don't see
+>> sufficient batching before the sockmap redirect today?
+>>=20
+>
+> IMHO,
+>
+> In =E2=80=9Csend-to-local=E2=80=9D case, both sender and receiver sockets=
+ are added to
+> the sockmap. Their protocol is modified from TCP to eBPF_TCP, so that
+> sendmsg will invoke =E2=80=9Ctcp_bpf_sendmsg=E2=80=9D instead of =E2=80=
+=9Ctcp_sendmsg=E2=80=9D. In this
+> case, the whole process is building a skmsg and moving it to the
+> receiver socket=E2=80=99s queue immediately. In this process, there is no
+> sk_buff generated, and we cannot benefit from TCP stack optimizations.
+> As a result, small segments will not be merged by default, that's the
+> reason why I am implementing skmsg coalescing here.
+>
+>>> This change introduces a kernel worker-based intermediate layer to prov=
+ide
+>>> automatic message corking for TCP_BPF. While this adds a slight latency
+>>> overhead, it significantly improves overall throughput by reducing
+>>> unnecessary wake-ups and reducing the sock lock contention.
+>> "Slight" for a +5% increase in latency is an understatement :-)
+>> IDK about this being always on for every socket. For send-to-local
+>> [1], sk_msg redirs can be viewed as a form of IPC, where latency
+>> matters.
+>> I do understand that you're trying to optimize for bulk-transfer
+>> workloads, but please consider also request-response workloads.
+>> [1]
+>> https://github.com/jsitnicki/kubecon-2024-sockmap/blob/main/cheatsheet-s=
+ockmap-redirect.png
+>>=20
+>
+> Totally understand that request-response workloads are also very
+> important.
+>
+> Here are my thoughts:
+>
+> I had an idea before: when the user sets NO_DELAY, we could follow the
+> original code path. However, I'm concerned about a specific scenario: if
+> a user sends part of a message and then sets NO_DELAY to send another
+> message, it's possible that messages sent via kworker haven't yet
+> reached the ingress_msg (maybe due to delayed kworker scheduling), while
+> the messages sent with NO_DELAY have already arrived. This could disrupt
+> the order. Since there's no TCP packet formation or retransmission
+> mechanism in this process, once the order is disrupted, it stays that
+> way.
+>
+> As a result, I propose,
+>
+> - When the user sets NO_DELAY, introduce a wait (I haven't determined
+> the exact location yet; maybe in tcp_bpf_sendmsg) to ensure all messages
+> from kworker are sent before proceeding. Then follow the original path
+> for packet transmission.
+>
+> - When the user switches back from NO_DELAY to DELAY, it's less of an iss=
+ue. We
+>  can simply follow our current code path.
+>
+> If 5% degradation is not a blocker for this patchset, and the solution
+> looks good to you, we will do it in the next patchset.
 
-> On 7/3/25 1:04 PM, Flavio Leitner wrote:
-> > On Thu, 3 Jul 2025 10:38:49 +0200
-> > Ilya Maximets <i.maximets@ovn.org> wrote:
-> >   
-> >> On 7/3/25 1:08 AM, Flavio Leitner wrote:  
-> >>>>>> @@ -651,6 +654,10 @@ static int ovs_packet_cmd_execute(struct sk_buff
-> >>>>>> *skb, struct genl_info *info) !!(hash & OVS_PACKET_HASH_L4_BIT));
-> >>>>>>  	}
-> >>>>>>  
-> >>>>>> +	if (a[OVS_PACKET_ATTR_UPCALL_PID])
-> >>>>>> +		upcall_pid =
-> >>>>>> nla_get_u32(a[OVS_PACKET_ATTR_UPCALL_PID]);
-> >>>>>> +	OVS_CB(packet)->upcall_pid = upcall_pid;    
-> >>>
-> >>> Since this is coming from userspace, does it make sense to check if the
-> >>> upcall_pid is one of the pids in the dp->upcall_portids array?    
-> >>
-> >> Not really.  IMO, this would be an unnecessary artificial restriction.
-> >> We're not concerned about security here since OVS_PACKET_CMD_EXECUTE
-> >> requires the same privileges as the OVS_DP_CMD_NEW or the
-> >> OVS_DP_CMD_SET.  
-> > 
-> > What if the userspace is buggy or compromised?
-> > It seems netlink API will return -ECONNREFUSED and the upcall is dropped.
-> > Therefore, we would be okay either way, correct?  
-> 
-> If the userspace is compromised, it can overwrite the upcall_portids
-> and do many other things, since the userspace application here has a
-> CAP_NET_ADMIN.  And if it's buggy, then the packet will be just dropped
-> on validation or on the upcall, there isn't much difference.
-> 
-> It's a responsibility of the userspace application to make sure these
-> sockets exist before passing PIDs into the kernel.  From the kernel's
-> perspective dropping the upcall is completely fine.  So, yes, we should
-> be OK.
+I'm all for reaping the benefits of batching, but I'm not thrilled about
+having a backlog worker on the path. The one we have on the sk_skb path
+has been a bottleneck:
 
-ack, thanks!
---
-Flavio Leitner
+1) There's no backpressure propagation so you can have a backlog
+build-up. One thing to check is what happens if the receiver closes its
+window.
 
+2) There's a scheduling latency. That's why the performance of splicing
+sockets with sockmap (ingress-to-egress) looks bleak [1].
 
+So I have to dig deeper...
+
+Have you considered and/or evaluated any alternative designs? For
+instance, what stops us from having an auto-corking / coalescing
+strategy on the sender side?
+
+[1] https://blog.cloudflare.com/sockmap-tcp-splicing-of-the-future/
