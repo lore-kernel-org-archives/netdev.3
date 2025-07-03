@@ -1,16 +1,15 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965A4256C71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D112652B6
 	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 11:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751543399; cv=none; b=O7xDRIQmsm/pgfItZC0aTN9iXJbw+2oZR5Y3BWg2nsg8qwSVQ31vYNjZCue5TArbUHUEd+vL8dNcmV0uPrSVCy6HcTw85hHyxEGB21cSdQesM0/OUSc2fVatpdtdDuBCK7feO+L1ncxD3w6UID13MOE/q4Wv2K06Nbo9cg8QGwU=
+	t=1751543400; cv=none; b=iop6DNn3r1esug7jd/HnJ3Hbc9qHRrdzGenFftFaD384EsLs3vOkrTOSR1PBWXJ5JtWH9Q5cY9Vlybj1Q735wHGbaTjChK5TEYWPxj7v4lOhWpQ24Yp1yJfZ+xxEXIwAS9ruMCNW3HcovXHrGOXE8Kiy6Wl8MS8wRZ5x6Q0sQGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751543399; c=relaxed/simple;
-	bh=T1eznURLjuD0Abxq1edZummHu16xKukTlKv1spW65/Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Q8XLzZ47eHbT32/dijXySGOxHvTsY+g+1GtManpKTc5hUfVB6u/lXW/LUNbAjeIT2tArT5la+TaI4ozlTBWEK7xaY7cQdTLqqmBpauoU7e+PGlyIiRD+kLwsHM2tKLrPMy+ZgKTx9lnR1OPzMy5uRA1h+T3yzTYdPy5BDABoOKY=
+	s=arc-20240116; t=1751543400; c=relaxed/simple;
+	bh=nu9JXSZwUcrtrbeMb8GBu3E0t3shtkd3mlAhDbK/gP4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Sy+l8WsuQp1AXStH7/cwyov84AqADLv5SR1/n3ZzEYVH5dqd2FmaWV7xvXOlP+Cflj5BkSacwPId4l6I6x6APNa6UNs+WOrrWXP/kF1+GAExjKe64aUCLVm0iKviTej1l69jkF6zpiX8NCCfGFyAJlsE3rYD+uxLLZXd8Cm7Vgg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +17,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uXIRk-0004Pk-FK; Thu, 03 Jul 2025 13:49:44 +0200
+	id 1uXIRk-0004Pe-FK; Thu, 03 Jul 2025 13:49:44 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uXIRi-006awG-1f;
+	id 1uXIRi-006awF-1c;
 	Thu, 03 Jul 2025 13:49:42 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uXIRi-00DbtN-1Q;
+	id 1uXIRi-00DbtD-1K;
 	Thu, 03 Jul 2025 13:49:42 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Andrew Lunn <andrew@lunn.ch>,
@@ -37,18 +36,16 @@ To: Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andre Edich <andre.edich@microchip.com>,
 	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	Russell King <linux@armlinux.org.uk>,
 	netdev@vger.kernel.org,
+	Andre Edich <andre.edich@microchip.com>,
 	Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH net v2 1/3] net: phy: smsc: Fix Auto-MDIX configuration when disabled by strap
-Date: Thu,  3 Jul 2025 13:49:39 +0200
-Message-Id: <20250703114941.3243890-2-o.rempel@pengutronix.de>
+Subject: [PATCH net v2 0/4] net: phy: smsc: robustness fixes for LAN87xx/LAN9500
+Date: Thu,  3 Jul 2025 13:49:38 +0200
+Message-Id: <20250703114941.3243890-1-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250703114941.3243890-1-o.rempel@pengutronix.de>
-References: <20250703114941.3243890-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,44 +58,43 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Correct the Auto-MDIX configuration to ensure userspace settings are
-respected when the feature is disabled by the AUTOMDIX_EN hardware strap.
+changes v2:
+- drop IRQ patch.
+- no other changes are made
 
-The LAN9500 PHY allows its default MDI-X mode to be configured via a
-hardware strap. If this strap sets the default to "MDI-X off", the
-driver was previously unable to enable Auto-MDIX from userspace.
+Hi all,
 
-When handling the ETH_TP_MDI_AUTO case, the driver would set the
-SPECIAL_CTRL_STS_AMDIX_ENABLE_ bit but neglected to set the required
-SPECIAL_CTRL_STS_OVRRD_AMDIX_ bit. Without the override flag, the PHY
-falls back to its hardware strap default, ignoring the software request.
+The SMSC 10/100 PHYs (LAN87xx family) found in smsc95xx (lan95xx)
+USB-Ethernet adapters show several quirks around the Auto-MDIX feature:
 
-This patch corrects the behavior by also setting the override bit when
-enabling Auto-MDIX. This ensures that the userspace configuration takes
-precedence over the hardware strap, allowing Auto-MDIX to be enabled
-correctly in all scenarios.
+- A hardware strap (AUTOMDIX_EN) may boot the PHY in fixed-MDI mode, and
+  the current driver cannot always override it.
 
-Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andre Edich <andre.edich@microchip.com>
----
- drivers/net/phy/smsc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+- When Auto-MDIX is left enabled while autonegotiation is forced off,
+  the PHY endlessly swaps the TX/RX pairs and never links up.
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index 31463b9e5697..adf12d7108b5 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -167,7 +167,8 @@ static int lan87xx_config_aneg(struct phy_device *phydev)
- 			SPECIAL_CTRL_STS_AMDIX_STATE_;
- 		break;
- 	case ETH_TP_MDI_AUTO:
--		val = SPECIAL_CTRL_STS_AMDIX_ENABLE_;
-+		val = SPECIAL_CTRL_STS_OVRRD_AMDIX_ |
-+			SPECIAL_CTRL_STS_AMDIX_ENABLE_;
- 		break;
- 	default:
- 		return genphy_config_aneg(phydev);
--- 
+- The driver sets the enable bit for Auto-MDIX but forgets the override
+  bit, so userspace requests are silently ignored.
+
+- Rapid configuration changes can wedge the link if PHY IRQs are
+  enabled.
+
+The four patches below make the MDIX state fully predictable and prevent
+link failures in every tested strap / autoneg / MDI-X permutation.
+
+Tested on LAN9512 Eval board.
+
+Best Regards,
+Oleksij
+
+Oleksij Rempel (3):
+  net: phy: smsc: Fix Auto-MDIX configuration when disabled by strap
+  net: phy: smsc: Force predictable MDI-X state on LAN87xx
+  net: phy: smsc: Fix link failure in forced mode with Auto-MDIX
+
+ drivers/net/phy/smsc.c | 57 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 52 insertions(+), 5 deletions(-)
+
+--
 2.39.5
 
