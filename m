@@ -1,121 +1,191 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDDD2D3A63;
-	Thu,  3 Jul 2025 08:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4816E24A054;
+	Thu,  3 Jul 2025 09:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751533085; cv=none; b=PZpejuTxz6DIyJ5cH09340DUA2UygrFAVxjIIBdYMZ7xNT2g7It5YuEhQgSHqwxMWqDESMfl7ZJqG4AchATTz5jTymofSTABaB79Gt3l1WgHYLyanfZ9BfKrNSgfmNhcSdh9G1UPZeGRpaCaCIYagRHrEIER2zcpHsvHTTdOF24=
+	t=1751533287; cv=none; b=FDDudkzu/AaFyXrLvDz2jfWRkC9jsDarMxGjMV7YHI8GPYMSFvWSDjGNghvW2XCpmcIx8w5hEPOoBDPrhRU03Qgojn+pSJSx5DhivEdTlzVk0/QGCb1vAga/eGDs/D/ChlXwJXNVDzNbNZhAZnN9tGYY5OMm8HUBwatfYbRvKx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751533085; c=relaxed/simple;
-	bh=bQyWiZYdYm5aXqkw3t73tYwoLPNz7/6/IJf5Lxr78zA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ob6ltXcH/4JazrCfPK6+w/FQxxqJC6Q6v3IZOhR9jNcP23+5BEnFtSIMdfEOsl/avxV+3B2faPQEqxBPVko/gc2lQc5ipZB4j1R2XIJm6El3Iho0DneAYu2x8lSXCh/oJltfwvck8U+rcL6sTakRU7R5rb8FR0GchhEQd3towQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com; spf=pass smtp.mailfrom=eswincomputing.com; arc=none smtp.client-ip=13.75.44.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eswincomputing.com
-Received: from E0005182LT.eswin.cn (unknown [10.12.96.155])
-	by app2 (Coremail) with SMTP id TQJkCgBX9pT1RWZoWl2oAA--.28545S2;
-	Thu, 03 Jul 2025 16:57:28 +0800 (CST)
-From: weishangjuan@eswincomputing.com
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	rmk+kernel@armlinux.org.uk,
-	yong.liang.choong@linux.intel.com,
-	vladimir.oltean@nxp.com,
-	jszhang@kernel.org,
-	jan.petrous@oss.nxp.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	inochiama@gmail.com,
-	boon.khai.ng@altera.com,
-	dfustini@tenstorrent.com,
-	0x1207@gmail.com,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Cc: ningyu@eswincomputing.com,
-	linmin@eswincomputing.com,
-	lizhi2@eswincomputing.com,
-	Shangjuan Wei <weishangjuan@eswincomputing.com>
-Subject: [PATCH v3 0/2]  Add driver support for Eswin eic7700 SoC ethernet controller
-Date: Thu,  3 Jul 2025 16:57:24 +0800
-Message-Id: <20250703085724.1960-1-weishangjuan@eswincomputing.com>
-X-Mailer: git-send-email 2.31.1.windows.1
+	s=arc-20240116; t=1751533287; c=relaxed/simple;
+	bh=It4Yzf/cq/OZHF/i74LdCyTJ52/QRKsGa2yNEZKCaP4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=haCKmQnd+OKYHBVkiABtDHRhqIGqtBoViYA2aBFiGZ4Y2HMAjpS3K9VuGd4eTyxtthMLDEPPE/pv8H4/qAs5l020Y+eNPxz3ru1EqbKqKppaA860moKD8oEN0PPXj3SkjXvu+InQfvDNeJ2ilok+Nqt8pDJacc6ZvGs1elgxlb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=JZoiMtpI; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="JZoiMtpI"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5631xo9d024877;
+	Thu, 3 Jul 2025 09:01:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	qcppdkim1; bh=ywd6s1HBGy/xILoiidjOHLd2E+10hnFHI88SzQApckA=; b=JZ
+	oiMtpII60AGhwlSiSEVjNqX84F5RPPXCWaocdJmPlejNOBG2iKLgX1TzuyXWgIZc
+	/vUwxuD/scAv3zrqnupKQGLhkirgZyrjH6qypKiYxQZTdCBo2F+5+ioUPHTIjDq4
+	mrPQ6NUEftCQxNHjqKW4Gv3wGQh2FLrYDOy6ecj++c7H5UnA++Ix+w53YjNApGxP
+	v4NKWd4NqZBynmDkCbq8Ex2p1j6VzIL1kzM+IF2A7I0od5kvvQLGMxW1+DV1MAUJ
+	Zo+Jg79oj+Vj67jmwzjnM96VoE/HlKlzEzHV2V9mTZA2MFyyAQF6M6KUyDi5qqpl
+	D7wOU5fW4ocMqG0yjyow==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47j8027j9v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 03 Jul 2025 09:01:01 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 563910BX001271
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 3 Jul 2025 09:01:00 GMT
+Received: from hu-sarohasa-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Thu, 3 Jul 2025 02:00:55 -0700
+From: Sarosh Hasan <quic_sarohasa@quicinc.com>
+To: Wei Fang <wei.fang@nxp.com>, "andrew @ lunn . ch" <andrew@lunn.ch>,
+        Russell King <linux@armlinux.org.uk>,
+        Florian Fainelli
+	<f.fainelli@gmail.com>,
+        "hkallweit1 @ gmail . com" <hkallweit1@gmail.com>,
+        "davem @ davemloft . net" <davem@davemloft.net>,
+        "edumazet @ google . com"
+	<edumazet@google.com>,
+        "kuba @ kernel . org" <kuba@kernel.org>,
+        "pabeni @
+ redhat . com" <pabeni@redhat.com>,
+        "xiaolei . wang @ windriver . com"
+	<xiaolei.wang@windriver.com>,
+        "linux-kernel @ vger . kernel . org"
+	<linux-kernel@vger.kernel.org>,
+        "imx @ lists . linux . dev"
+	<imx@lists.linux.dev>,
+        "netdev @ vger . kernel . org"
+	<netdev@vger.kernel.org>
+CC: Prasad Sodagudi <quic_psodagud@quicinc.com>,
+        Abhishek Chauhan
+	<quic_abchauha@quicinc.com>,
+        Sagar Cheluvegowda <quic_scheluve@quicinc.com>,
+        Girish Potnuru <quic_gpotnuru@quicinc.com>, <kernel@oss.qualcomm.com>
+Subject: [PATCH net v1] net: phy: Change flag to autoremove the consumer
+Date: Thu, 3 Jul 2025 14:30:41 +0530
+Message-ID: <20250703090041.23137-1-quic_sarohasa@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:TQJkCgBX9pT1RWZoWl2oAA--.28545S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Aw1rGr1fKFy3tw4fZFW3trb_yoW8Cr18pa
-	yDCFy5Gw1ktryxJan3Jw10kFySqan7tr1a9r1Iq3WfXayqya90vw4avF4FkF9rArWDXF1a
-	qFW3urn8CFn8A3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBv14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r4a6rW5MxkIecxEwVCm-wCF04
-	k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18
-	MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr4
-	1lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1l
-	IxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4
-	A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRBOJnUUUUU=
-X-CM-SenderInfo: pzhl2xxdqjy31dq6v25zlqu0xpsx3x1qjou0bp/
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: YiaMy12t1KuOcPz3axauiUzftVNYJc04
+X-Authority-Analysis: v=2.4 cv=YPWfyQGx c=1 sm=1 tr=0 ts=686646cd cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
+ a=8AirrxEcAAAA:8 a=m1-PlO-VolDZHzCB4_kA:9 a=TjNXssC_j7lpFel5tvFf:22
+ a=ST-jHhOKWsTCqRlWije3:22
+X-Proofpoint-ORIG-GUID: YiaMy12t1KuOcPz3axauiUzftVNYJc04
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAzMDA3MyBTYWx0ZWRfX2x62OZcuq18L
+ IVSUNgpWqSYJ3CrWMdgOEtjg9l1Ml/Vv3hzJvOzA3B3hXKbYliMG07wSY+CfYlBP3xmVMYHGVlB
+ xpYYdLwbJslpzSEIF4/kjLzjuOjMpgFnZpxtADRbFPV00lj4SabqF2muTUawbm/HIorI2WYaHZn
+ ZLYZ924urdMRNzrvvHcbAGEKgpQn7G8igx2PQzHcCXdx0J5iTUdBceef0kPzVX2cLoTi551nHyM
+ +MpL+HqwXE+DLj/oWXHi7+tD9TTnEpNgteb65SbKHEKgIB0d2J+7hIrsw7J28mYK9ke1olv405E
+ fxS6AwF1AgNePs1Dxz2JxO9Hq2UFSMozSQX8zGz36CKHu6qhjwRqkwSFEvaFfXvcg8bG1hIPf3t
+ +qufYk+awGw/QNZGil+Xs+yFXZ0nK8UvejDu6qHFcBPfjzHUCp6swHSNrL6dTFVQgcPDtvH6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-03_02,2025-07-02_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxlogscore=845 mlxscore=0 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 clxscore=1015 impostorscore=0 adultscore=0
+ priorityscore=1501 bulkscore=0 phishscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507030073
 
-From: Shangjuan Wei <weishangjuan@eswincomputing.com>
+phy_detach() is not called when the MDIO controller driver is
+removed. So phydev->devlink is not cleared, but actually the device
+link has been removed by phy_device_remove()--> device_del().Therefore,
+it will cause the crash when the MAC controller driver is removed.
+In such case delete link between phy dev and mac dev. Change the 
+DL_FLAG_STATELESS flag to DL_FLAG_AUTOREMOVE_SUPPLIER,so that the
+consumer (MAC controller) driver will be automatically removed
+when the link is removed.
 
-This patch depends on the vendor prefix patch:
-https://lore.kernel.org/all/20250616112316.3833343-4-pinkesh.vaghela@einfochips.com/
+Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
+Link: https://lore.kernel.org/all/e6824f1a-c1a9-4c2e-9b46-6fe224877bfc@quicinc.com/
+Suggested-by: Wei Fang <wei.fang@nxp.com>
+Signed-off-by: Abhishek Chauhan <quic_abchauha@quicinc.com>
+Signed-off-by: Sarosh Hasan <quic_sarohasa@quicinc.com>
+---
+ drivers/net/phy/phy_device.c | 17 +++++++++--------
+ include/linux/phy.h          |  4 ----
+ 2 files changed, 9 insertions(+), 12 deletions(-)
 
-Updates:
-
-  Changes in v3:
-  - Updated eswin,eic7700-eth.yaml
-    - Add descriptions of snps,write-questions, snps,read-questions,
-      snps,burst-map attributes
-    - Remove the description of reg
-    - Delete snps,axi-config
-  - Updated dwmac-eic7700.c
-    - Simplify drivers and remove unnecessary API and DTS attribute configurations
-    - Increase the mapping from tx/rx_delay_ps to private dly
-  - Link to v2: https://lore.kernel.org/all/aDad+8YHEFdOIs38@mev-dev.igk.intel.com/
-
-  Changes in v2:
-  - Updated eswin,eic7700-eth.yaml
-    - Add snps,dwmac in binding file
-    - Chang the names of reset-names and phy-mode
-  - Updated dwmac-eic7700.c
-    - Remove the code related to PHY LED configuration from the MAC driver
-    - Adjust the code format and driver interfaces, such as replacing kzalloc
-      with devm_kzalloc, etc.
-    - Use phylib instead of the GPIO API in the driver to implement the PHY
-      reset function
-  - Link to v1: https://lore.kernel.org/all/20250516010849.784-1-weishangjuan@eswincomputing.com/
-
-Shangjuan Wei (2):
-  dt-bindings: ethernet: eswin: Document for EIC7700 SoC
-  ethernet: eswin: Add eic7700 ethernet driver
-
- .../bindings/net/eswin,eic7700-eth.yaml       | 175 ++++++++++++
- drivers/net/ethernet/stmicro/stmmac/Kconfig   |  11 +
- drivers/net/ethernet/stmicro/stmmac/Makefile  |   1 +
- .../ethernet/stmicro/stmmac/dwmac-eic7700.c   | 257 ++++++++++++++++++
- 4 files changed, 444 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml
- create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c
-
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 90951681523c..f3db3dd93c74 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1630,6 +1630,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 	struct mii_bus *bus = phydev->mdio.bus;
+ 	struct device *d = &phydev->mdio.dev;
+ 	struct module *ndev_owner = NULL;
++	struct device_link *devlink;
+ 	int err;
+ 
+ 	/* For Ethernet device drivers that register their own MDIO bus, we
+@@ -1760,9 +1761,14 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 	 * another mac interface, so we should create a device link between
+ 	 * phy dev and mac dev.
+ 	 */
+-	if (dev && phydev->mdio.bus->parent && dev->dev.parent != phydev->mdio.bus->parent)
+-		phydev->devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
+-						  DL_FLAG_PM_RUNTIME | DL_FLAG_STATELESS);
++	if (dev && phydev->mdio.bus->parent && dev->dev.parent != phydev->mdio.bus->parent) {
++		devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
++					  DL_FLAG_PM_RUNTIME | DL_FLAG_AUTOREMOVE_SUPPLIER);
++		if (!devlink) {
++			err = -ENOMEM;
++			goto error;
++		}
++	}
+ 
+ 	return err;
+ 
+@@ -1834,11 +1840,6 @@ void phy_detach(struct phy_device *phydev)
+ 	struct module *ndev_owner = NULL;
+ 	struct mii_bus *bus;
+ 
+-	if (phydev->devlink) {
+-		device_link_del(phydev->devlink);
+-		phydev->devlink = NULL;
+-	}
+-
+ 	if (phydev->sysfs_links) {
+ 		if (dev)
+ 			sysfs_remove_link(&dev->dev.kobj, "phydev");
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index b037aab7b71d..e20643fb6f41 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -507,8 +507,6 @@ struct macsec_ops;
+  *
+  * @mdio: MDIO bus this PHY is on
+  * @drv: Pointer to the driver for this PHY instance
+- * @devlink: Create a link between phy dev and mac dev, if the external phy
+- *           used by current mac interface is managed by another mac interface.
+  * @phyindex: Unique id across the phy's parent tree of phys to address the PHY
+  *	      from userspace, similar to ifindex. A zero index means the PHY
+  *	      wasn't assigned an id yet.
+@@ -613,8 +611,6 @@ struct phy_device {
+ 	/* And management functions */
+ 	const struct phy_driver *drv;
+ 
+-	struct device_link *devlink;
+-
+ 	u32 phyindex;
+ 	u32 phy_id;
+ 
 -- 
 2.17.1
 
