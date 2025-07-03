@@ -1,123 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1A22E7F05;
-	Thu,  3 Jul 2025 14:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70ADF1AF0B4;
+	Thu,  3 Jul 2025 14:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751552216; cv=none; b=HRecLmNVjtwgPvzvs1U6OM4+6YpZ6jd3eOGXoReERBIfT9VOFfsjQjhAN/cH4YMxtTw/YqsyCQLwY4ALayZueDD5wtoBQdogE6xofMAkW74SReA/vb1HThW90Q+/kq1ktZLdybMDz9MBo3UUHeR8HC8gNOtYMe4bAfOsC50VtIA=
+	t=1751552241; cv=none; b=Ouigj2Hu5IR3K+4LFiH88w766/pEDVNNELUSDeaChMiANPu5hX9KtEwUzjINpYWueGOXGVVfWfdQiOib/Vwcr8DgSEbMLsA32UQvoyVqnQUBgkx2AkGzRZBJrcbTCjkIYWv3K5rjn+w75U4qq3wY+CKInR0in1tek+ztxEdTPyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751552216; c=relaxed/simple;
-	bh=Z+KvS/dxZP26cr6F6SDuJm7LA9twCDJWcy1WXdpB8xU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Bq+7K5Oh2111d1MsH6/pL0obG/TqZdvhoximO3S7m8KSysxxWD86uWjLV411rAsT5/g0/IlootyfPwEeQ5mwq5RMlDkCb8kfydwdoJD+KcIwdsGDJC8BprSxiuFk5enrm2bIAxGQXOP3ZjcfX67yrgABs9SleLf6wMp3Uvidd0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KhOJVEuz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751552241; c=relaxed/simple;
+	bh=reBhGGUgnrJ139gpendbTey/6SeXB3WwExAdYkRGRZ0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JD9bi8lEh08hcTuewzLgQt7Z2I7MEr9R+QWOISJN4QBPhrl4syBhjX19K5XYan+ulCa0tDoKIa/0VDiBe2A+F0HkZ3H1p6FMIYETrgQY0kqudMJgpDm8B2PX4r0tLNTOChWyRW5QLSNHYHiXDdH1EFNur7z4dObBBQutaZ7v7o4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XUjrmYwL; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KhOJVEuz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43913C4CEED;
-	Thu,  3 Jul 2025 14:16:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751552215;
-	bh=Z+KvS/dxZP26cr6F6SDuJm7LA9twCDJWcy1WXdpB8xU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=KhOJVEuznJ1wqT+0SQw4lmkmZ+tr7yk8JaHHmApuIzFPOGyFmlx4ApXr7i7475qdY
-	 k41e3tbCK/y9gSQQJmTl5emyt0WnAS5YgdmB8TLELBu8nJkNL0AEKNZOXR2ZPPl/B8
-	 Gili6xy3GUAbUSbG7scQsC5rQUEQkl+7UUUdw3zKw6AT0Ah2R2/YqJB9nQySOikhyZ
-	 AFSZhN1VlJv3hFthIZg5EbmMrhzrASheUWh+W3Xrd7hQEaRIhMqx6DUSQJPo3pL+W7
-	 8Ko4J0faOZVi2eeVr7abvmHOAj3O7NADOByvtH5BXvoHetvpRgS6q5l86JtMfwoUqB
-	 lUC49pJ7E3dIw==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Thu, 03 Jul 2025 16:16:03 +0200
-Subject: [PATCH nf-next v3 2/2] selftests: netfilter: nft_flowtable.sh: Add
- IPIP flowtable selftest
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XUjrmYwL"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b31befde0a0so4028653a12.0;
+        Thu, 03 Jul 2025 07:17:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751552240; x=1752157040; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yl+pCOUgN8IvUzWEVj5uD0HOSNZhBVyVLHBB+osf1V4=;
+        b=XUjrmYwLWTPxrzGpIizGR6cq84Yy2kwtvhKvJ5Xg/QlcYqeJ8dTThqFwUWKiaxcRQR
+         wr400tpL5Da+CCFDVhJQRjasJp2xgIOoNOdDszQNdIo5tuRVWuiyAdSGJ4NNIjhGE3FX
+         Wi3Wd+CGMQkol+WEG4c72HWWfrVjXirTqe6YF5syIjl7QvlDU1OdHkmuRTCyaRo2vtiT
+         YV0Z0EZl9UqzJ8Gbbf74kvXLtRbLH6Cs2tyv4+aNvHJaSOvJjvDZ1o8VT08Ja6DKUH//
+         zvuBuLVe/81uHYPXIlRxkfI1gl2bOk23H9Zdw8PdaID6qNaIlVwxknR810COCp7SzVlu
+         plKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751552240; x=1752157040;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Yl+pCOUgN8IvUzWEVj5uD0HOSNZhBVyVLHBB+osf1V4=;
+        b=rV7V6xCR0lDIICykiO+TKAGnEpwaYMNxtJtrMrFaZnRTElYAduxVXVUt9Y2DMl0bgz
+         zjY5qWT9TrIO6lR0d27VdaL0fzCYsXt7RzRLuddYncuYHDs1mHEG4i4kR/dFoxdSUx83
+         Qp4OUW24L6PhnZlmfBEuWReOb1dvelVDi+bmkZ9w0Ph3VsYVwrYoYsLQ+rHormxwQckB
+         ZXvEST1otfX8slLwrADIrwIPungCp9jUxEpyLEBFee1tsQQhEYRNBfQ6+jcyzIP4Plv9
+         5oWJFKWt8zJ8EVBwv6kjC3+Yc+xS75G4UKyceSgtIFgGRJUlmQ0mQuLdpMh5dKafOiNg
+         ikpg==
+X-Forwarded-Encrypted: i=1; AJvYcCVqRAzN76XslfIcBHLIfgQRF69s+kAl67QrNQCuaNnXorFfzhfNDw6qOESg+5ae2yzKedh/uGQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUHgCzs7gvXEQf78FMu4JO3mdrBoTAEzQuZGaA0jLAjnAPVvoW
+	yqcwm2Lm5+QWIACvHmSd9HxsuZjA1vozS4Qab3WR25EU1+avuIyVRw4I
+X-Gm-Gg: ASbGncuKOn73jcREQSCtd3rwXDRcP5XXcK2ZueFGGQE8iSvolhkYQNhZnkddkjc6dOP
+	9IP735bpsAE2oLqEis+Hbt7vq0ZsjCD6KNjpFYtA4QE9JO9z9lpYO3sGK5NiyLJuXxsyLRvTTXJ
+	c8QOkjxpUQ4WSpyt3LkslWIdsyg4uabY+29AmBk3JdFcwXlcWiCdx4zT7dtml1VPOb2Dvqnp0y7
+	OoYuo4xax8xzKlDhnzruEFOybSTPN6SxYM5bbSaxeF6SxmPH2d+QmGlWUbd/t+5w2DT6bQ0Krme
+	XZCoNGiz1d+e2wms3r+NVfpMISncHmFoBnaNxr6ilz8tO627Q4F/NIlUZtrC0v+o6CVsk8nkRJJ
+	SKg9cBSeRANIw506DZWmufQ==
+X-Google-Smtp-Source: AGHT+IErrxkRFJTq7kH9uZXcG89aUQoUNBB16RTH+HXvcSml9cXuMyhQn6QZH4smqKQ8rsY2cTnndw==
+X-Received: by 2002:a05:6a21:6e8a:b0:1f5:95a7:8159 with SMTP id adf61e73a8af0-222d7de0c2amr12113792637.10.1751552239552;
+        Thu, 03 Jul 2025 07:17:19 -0700 (PDT)
+Received: from KERNELXING-MC1.tencent.com ([111.201.26.0])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b34e31da818sm13800150a12.61.2025.07.03.07.17.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Jul 2025 07:17:19 -0700 (PDT)
+From: Jason Xing <kerneljasonxing@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	bjorn@kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	jonathan.lemon@gmail.com,
+	sdf@fomichev.me,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	joe@dama.to,
+	willemdebruijn.kernel@gmail.com
+Cc: bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Jason Xing <kernelxing@tencent.com>
+Subject: [PATCH net-next v6 0/2] net: xsk: update tx queue consumer
+Date: Thu,  3 Jul 2025 22:17:10 +0800
+Message-Id: <20250703141712.33190-1-kerneljasonxing@gmail.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250703-nf-flowtable-ipip-v3-2-880afd319b9f@kernel.org>
-References: <20250703-nf-flowtable-ipip-v3-0-880afd319b9f@kernel.org>
-In-Reply-To: <20250703-nf-flowtable-ipip-v3-0-880afd319b9f@kernel.org>
-To: "David S. Miller" <davem@davemloft.net>, 
- David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>, 
- Jozsef Kadlecsik <kadlec@netfilter.org>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, 
- coreteam@netfilter.org, linux-kselftest@vger.kernel.org, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
-Introduce specific selftest for IPIP flowtable SW acceleration in
-nft_flowtable.sh
+From: Jason Xing <kernelxing@tencent.com>
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- .../selftests/net/netfilter/nft_flowtable.sh       | 40 ++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+Patch 1 makes sure the consumer is updated at the end of generic xmit.
+Patch 2 adds corresponding test.
 
-diff --git a/tools/testing/selftests/net/netfilter/nft_flowtable.sh b/tools/testing/selftests/net/netfilter/nft_flowtable.sh
-index a4ee5496f2a17cedf1ee71214397012c7906650f..d1c9d3eeda2c9874008f9d6de6cabaabea79b9fb 100755
---- a/tools/testing/selftests/net/netfilter/nft_flowtable.sh
-+++ b/tools/testing/selftests/net/netfilter/nft_flowtable.sh
-@@ -519,6 +519,44 @@ if ! test_tcp_forwarding_nat "$ns1" "$ns2" 1 ""; then
- 	ip netns exec "$nsr1" nft list ruleset
- fi
- 
-+# IPIP tunnel test:
-+# Add IPIP tunnel interfaces and check flowtable acceleration.
-+test_ipip() {
-+if ! ip -net "$nsr1" link add name tun0 type ipip \
-+     local 192.168.10.1 remote 192.168.10.2 >/dev/null;then
-+	echo "SKIP: could not add ipip tunnel"
-+	[ "$ret" -eq 0 ] && ret=$ksft_skip
-+	return
-+fi
-+ip -net "$nsr1" link set tun0 up
-+ip -net "$nsr1" addr add 192.168.100.1/24 dev tun0
-+ip netns exec "$nsr1" sysctl net.ipv4.conf.tun0.forwarding=1 > /dev/null
-+
-+ip -net "$nsr2" link add name tun0 type ipip local 192.168.10.2 remote 192.168.10.1
-+ip -net "$nsr2" link set tun0 up
-+ip -net "$nsr2" addr add 192.168.100.2/24 dev tun0
-+ip netns exec "$nsr2" sysctl net.ipv4.conf.tun0.forwarding=1 > /dev/null
-+
-+ip -net "$nsr1" route change default via 192.168.100.2
-+ip -net "$nsr2" route change default via 192.168.100.1
-+ip -net "$ns2" route add default via 10.0.2.1
-+
-+ip netns exec "$nsr1" nft -a insert rule inet filter forward 'meta oif tun0 accept'
-+ip netns exec "$nsr1" nft -a insert rule inet filter forward \
-+	'meta oif "veth0" tcp sport 12345 ct mark set 1 flow add @f1 counter name routed_repl accept'
-+
-+if ! test_tcp_forwarding_nat "$ns1" "$ns2" 1 "IPIP tunnel"; then
-+	echo "FAIL: flow offload for ns1/ns2 with IPIP tunnel" 1>&2
-+	ip netns exec "$nsr1" nft list ruleset
-+	ret=1
-+fi
-+
-+# Restore the previous configuration
-+ip -net "$nsr1" route change default via 192.168.10.2
-+ip -net "$nsr2" route change default via 192.168.10.1
-+ip -net "$ns2" route del default via 10.0.2.1
-+}
-+
- # Another test:
- # Add bridge interface br0 to Router1, with NAT enabled.
- test_bridge() {
-@@ -604,6 +642,8 @@ ip -net "$nsr1" addr add dead:1::1/64 dev veth0 nodad
- ip -net "$nsr1" link set up dev veth0
- }
- 
-+test_ipip
-+
- test_bridge
- 
- KEY_SHA="0x"$(ps -af | sha1sum | cut -d " " -f 1)
+Jason Xing (2):
+  net: xsk: update tx queue consumer immediately after transmission
+  selftests/bpf: add a new test to check the consumer update case
+
+ net/xdp/xsk.c                            | 17 ++++---
+ tools/testing/selftests/bpf/xskxceiver.c | 56 +++++++++++++++++++++++-
+ tools/testing/selftests/bpf/xskxceiver.h |  1 +
+ 3 files changed, 66 insertions(+), 8 deletions(-)
 
 -- 
-2.50.0
+2.41.3
 
