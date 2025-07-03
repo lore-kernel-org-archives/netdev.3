@@ -1,36 +1,36 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A443F2D372E
-	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 09:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560952D4B4B
+	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 09:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751533931; cv=none; b=Jxi/69SmH1BOIp95/EHvnl+RQdF5QWqE4osaPTLF5YscoG8YTyaMG6NY6PoBBubQ0EvG+Zx1OsFAdyXFUZ4+MfviVFcnyr7FNPcIlKXqrv1sNvOfuR/gfQFAmaFOfAr3o+1LrapvwgK6sTGovqhQShy6In3+rljUzs68X9sbuLI=
+	t=1751533933; cv=none; b=EFXu9Dd4FBCFEXuvfLJ7ts3pf1V3Orfg0c4YfXGJcdj46Cfj2Mna99bw+pwpg92jsgHtP3a1dH2SBZWh6aVHUcsNrZHlAKOhJgal0H3pbieNWWyNpf0/mOLTGBLgLWewu95Dc6bXEjN7Tj62G6zvrjtbhF2f0G2aXHoOFAqiX3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751533931; c=relaxed/simple;
-	bh=T9D3cGgcxtYMyyLnoDUEBXT7ruYRk1BAyF+UAcLllOo=;
+	s=arc-20240116; t=1751533933; c=relaxed/simple;
+	bh=h1/WNMKHkARD1Iz/8FaQM1BETREad0muGEJAlyqb6jM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mZceYnFAvlauwZIPTAjg7ISy7pIf+Y5mDWAmr0eBb3fTsv4kRiSe94YQjquZvRXPaTiYucdv5oBK7QAz4FvD8bWhMkE4kDNqApDeTb31TeO/HLg9KmBto9LV/d/3afh9t2hQ9UQv4CylaFJwIGCTQZnTjuAt4eLdpt20dEAuilo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=VtiJ6m6k; arc=none smtp.client-ip=203.29.241.158
+	 In-Reply-To:To:Cc; b=ri8Btfp8EKvt+X44nNme1dLEkYsMYap/aIla6JAm3PPogOzVbMhK0b5HxWUTaODlH2A23HZHcZtZwp++ILbYjiy0lOBqB6skZWyBi8vWpNLIh7fDU0fB0eIuqsmp7c9r8d8qWbFRSYrHZmZFt6zwwUlgZU2deD3C7sJMYYEYzOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=A4JAmwfK; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="VtiJ6m6k"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="A4JAmwfK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1751533921;
-	bh=Yzx7aAbdQUagiD5CS7GG4YC5/qNGZo6dHJRsflbibW8=;
+	d=codeconstruct.com.au; s=2022a; t=1751533922;
+	bh=ylAMupX1ZMnX08s4cbz8u5OF35hshPRCb6zmWRvg9+A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=VtiJ6m6kzHW8ajBYoLFGqLxvc66uXWoJhs7AjARyIcP0UOxhm/H9Xa/C6DzyMwsMa
-	 pkSTWvcQCvQdwC11CRBHyvoPDeAOsbI/UUSh/mFzE6MLFVIFQP42kzQy+4kcQlu1OG
-	 /pRdnjX+pROGtpzoek0pMRbu8ai8XIeV+IZYx7o961UMjxnfoxXiIkBSnJ8xeqj2zo
-	 cyJ5iZs+UPjIlUjHgI/xuuWt10+p+FBmR9u+XMwcscz6V1Z+oxktUKw3OnUj1UGppd
-	 3QPwc97nkEYx/NGSJpJkGAK0o2hXDfICZu7hoqYI+vUStzjzKTKbgho9M1gMOZxcgz
-	 gI5bLdhxztKng==
+	b=A4JAmwfK9jmRa0RhMEGtbYXpRxX2fSSv+37vXlz+DU4m8mUohq79UaPEKBz8qjEvv
+	 LnQftDm1lPotFD+StzJYLejSSAmynK+em2Elt+lCGWjJMdFzFnSbXxdNDudwvAu42C
+	 dstF2rx8zkyGTfvxF4FWKrDbEBt4ZPbQfEgIV6tB1tJSlWgtYjPU1BnyEXDT7cYEtB
+	 apbJI20KZkCb6wpSimxuQ+EuiYi5Ze84pp/zFqVyPYwGaik795DcU8GGoCdT+GL0PP
+	 HvCWQVVVwhB50BOculYPeAd3yO0ZYY5tjdTvHVotunB9+UYx8t3LXKvdoBw0LOO6Be
+	 4g9v7DVGdCEXw==
 Received: by codeconstruct.com.au (Postfix, from userid 10001)
-	id AE0776A8E5; Thu,  3 Jul 2025 17:12:01 +0800 (AWST)
+	id 996876A8EA; Thu,  3 Jul 2025 17:12:02 +0800 (AWST)
 From: Matt Johnston <matt@codeconstruct.com.au>
-Date: Thu, 03 Jul 2025 17:11:48 +0800
-Subject: [PATCH net-next 1/7] net: mctp: Prevent duplicate binds
+Date: Thu, 03 Jul 2025 17:11:50 +0800
+Subject: [PATCH net-next 3/7] net: mctp: Add test for conflicting bind()s
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,7 +39,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250703-mctp-bind-v1-1-bb7e97c24613@codeconstruct.com.au>
+Message-Id: <20250703-mctp-bind-v1-3-bb7e97c24613@codeconstruct.com.au>
 References: <20250703-mctp-bind-v1-0-bb7e97c24613@codeconstruct.com.au>
 In-Reply-To: <20250703-mctp-bind-v1-0-bb7e97c24613@codeconstruct.com.au>
 To: Jeremy Kerr <jk@codeconstruct.com.au>, 
@@ -48,78 +48,197 @@ To: Jeremy Kerr <jk@codeconstruct.com.au>,
  Simon Horman <horms@kernel.org>
 Cc: netdev@vger.kernel.org, Matt Johnston <matt@codeconstruct.com.au>
 X-Mailer: b4 0.15-dev-cbbb4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751533920; l=1996;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751533920; l=6405;
  i=matt@codeconstruct.com.au; s=20241018; h=from:subject:message-id;
- bh=T9D3cGgcxtYMyyLnoDUEBXT7ruYRk1BAyF+UAcLllOo=;
- b=FmGCcPFWhj964l+ukeMMo4Jrs4xgMjjpVVZaeahym5Io7Q3V46yrrNPxfnECxh3EYndRFUPPL
- ZrK2kqlXbThDsiLSs3CFenXXJY95A7N1bAC/Z5SHy+zDLp70lKeNUNj
+ bh=h1/WNMKHkARD1Iz/8FaQM1BETREad0muGEJAlyqb6jM=;
+ b=wJm0679kalS89S7BQ35kXbAYP4molkiF9jW2v1EAMf63jYzbDsMShYYNcWpWM/xrekwyA6zQi
+ SEFxvagDhbPBqiPFOaex69riARftDDFs2mhkYIjZWEIOJavOKCrcUCq
 X-Developer-Key: i=matt@codeconstruct.com.au; a=ed25519;
  pk=exersTcCYD/pEBOzXGO6HkLd6kKXRuWxHhj+LXn3DYE=
 
-Disallow bind() calls that have the same arguments as existing bound
-sockets.  Previously multiple sockets could bind() to the same
-type/local address, with an arbitrary socket receiving matched messages.
-
-This is only a partial fix, a future commit will define precedence order
-for MCTP_ADDR_ANY versus specific EID bind(), which are allowed to exist
-together.
+Test pairwise combinations of bind addresses and types.
 
 Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
 ---
- net/mctp/af_mctp.c | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ net/mctp/test/route-test.c | 157 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 156 insertions(+), 1 deletion(-)
 
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index 9b12ca97f412827c350fe7a03b7a6d365df74826..72ab8449ebfc68f6b7a9954cbf13a7be00543358 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -73,7 +73,6 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
- 
- 	lock_sock(sk);
- 
--	/* TODO: allow rebind */
- 	if (sk_hashed(sk)) {
- 		rc = -EADDRINUSE;
- 		goto out_release;
-@@ -629,15 +628,35 @@ static void mctp_sk_close(struct sock *sk, long timeout)
- static int mctp_sk_hash(struct sock *sk)
- {
- 	struct net *net = sock_net(sk);
-+	struct sock *existing;
-+	struct mctp_sock *msk;
-+	int rc;
-+
-+	msk = container_of(sk, struct mctp_sock, sk);
- 
- 	/* Bind lookup runs under RCU, remain live during that. */
- 	sock_set_flag(sk, SOCK_RCU_FREE);
- 
- 	mutex_lock(&net->mctp.bind_lock);
--	sk_add_node_rcu(sk, &net->mctp.binds);
--	mutex_unlock(&net->mctp.bind_lock);
- 
--	return 0;
-+	/* Prevent duplicate binds. */
-+	sk_for_each(existing, &net->mctp.binds) {
-+		struct mctp_sock *mex = container_of(existing, struct mctp_sock, sk);
-+
-+		if (mex->bind_type == msk->bind_type &&
-+		    mex->bind_addr == msk->bind_addr &&
-+			mex->bind_net == msk->bind_net) {
-+			rc = -EADDRINUSE;
-+			goto out;
-+		}
-+	}
-+
-+	sk_add_node_rcu(sk, &net->mctp.binds);
-+	rc = 0;
-+
-+out:
-+	mutex_unlock(&net->mctp.bind_lock);
-+	return rc;
+diff --git a/net/mctp/test/route-test.c b/net/mctp/test/route-test.c
+index 06c1897b685a8bdfd6bb4f1bccaacb53b0cd54ba..46f7765d9b5542e652332441761087ea0a416f3d 100644
+--- a/net/mctp/test/route-test.c
++++ b/net/mctp/test/route-test.c
+@@ -1237,7 +1237,160 @@ static void mctp_test_route_output_key_create(struct kunit *test)
+ 	mctp_test_destroy_dev(dev);
  }
  
- static void mctp_sk_unhash(struct sock *sk)
++struct mctp_test_bind_setup {
++	mctp_eid_t bind_addr;
++	int bind_net;
++	u8 bind_type;
++};
++
++static const struct mctp_test_bind_setup bind_addrany_netdefault_type1 = {
++	.bind_addr = MCTP_ADDR_ANY, .bind_net = MCTP_NET_ANY, .bind_type = 1,
++};
++
++static const struct mctp_test_bind_setup bind_addrany_net2_type1 = {
++	.bind_addr = MCTP_ADDR_ANY, .bind_net = 2, .bind_type = 1,
++};
++
++static const struct mctp_test_bind_setup bind_addr8_netdefault, type1 = {
++	.bind_addr = 8, .bind_net = MCTP_NET_ANY, .bind_type = 1,
++};
++
++/* 1 is default net */
++static const struct mctp_test_bind_setup bind_addr8_net1_type1 = {
++	.bind_addr = 8, .bind_net = 1, .bind_type = 1,
++};
++
++static const struct mctp_test_bind_setup bind_addrany_net1_type1 = {
++	.bind_addr = MCTP_ADDR_ANY, .bind_net = 1, .bind_type = 1,
++};
++
++/* 2 is an arbitrary net */
++static const struct mctp_test_bind_setup bind_addr8_net2_type1 = {
++	.bind_addr = 8, .bind_net = 2, .bind_type = 1,
++};
++
++static const struct mctp_test_bind_setup bind_addr8_netdefault_type1 = {
++	.bind_addr = 8, .bind_net = MCTP_NET_ANY, .bind_type = 1,
++};
++
++static const struct mctp_test_bind_setup bind_addrany_net2_type2 = {
++	.bind_addr = MCTP_ADDR_ANY, .bind_net = 2, .bind_type = 2,
++};
++
++struct mctp_bind_pair_test {
++	const struct mctp_test_bind_setup *bind1;
++	const struct mctp_test_bind_setup *bind2;
++	int error;
++};
++
++static const struct mctp_bind_pair_test mctp_bind_pair_tests[] = {
++	/* Both ADDR_ANY, conflict */
++	{ &bind_addrany_netdefault_type1, &bind_addrany_netdefault_type1, EADDRINUSE },
++	/* Same specific EID, conflict */
++	{ &bind_addr8_netdefault_type1, &bind_addr8_netdefault_type1, EADDRINUSE },
++	/* ADDR_ANY vs specific EID, OK */
++	{ &bind_addrany_netdefault_type1, &bind_addr8_netdefault_type1, 0 },
++	/* ADDR_ANY different types, OK */
++	{ &bind_addrany_net2_type2, &bind_addrany_net2_type1, 0 },
++	/* ADDR_ANY different nets, OK */
++	{ &bind_addrany_net2_type1, &bind_addrany_netdefault_type1, 0 },
++
++	/* specific EID, NET_ANY (resolves to default)
++	 *  vs specific EID, explicit default net 1, conflict
++	 */
++	{ &bind_addr8_netdefault_type1, &bind_addr8_net1_type1, EADDRINUSE },
++
++	/* specific EID, net 1 vs specific EID, net 2, ok */
++	{ &bind_addr8_net1_type1, &bind_addr8_net2_type1, 0 },
++
++	/* ANY_ADDR, NET_ANY (doesn't resolve to default)
++	 *  vs ADDR_ANY, explicit default net 1, OK
++	 */
++	{ &bind_addrany_netdefault_type1, &bind_addrany_net1_type1, 0 },
++};
++
++static void mctp_bind_pair_desc(const struct mctp_bind_pair_test *t, char *desc)
++{
++	snprintf(desc, KUNIT_PARAM_DESC_SIZE,
++		 "{bind(addr %d, type %d, net %d)} {bind(addr %d, type %d, net %d)} -> error %d",
++		 t->bind1->bind_addr, t->bind1->bind_type, t->bind1->bind_net,
++		 t->bind2->bind_addr, t->bind2->bind_type, t->bind2->bind_net,
++		 t->error);
++}
++
++KUNIT_ARRAY_PARAM(mctp_bind_pair, mctp_bind_pair_tests, mctp_bind_pair_desc);
++
++static void mctp_test_bind_run(struct kunit *test, const struct mctp_test_bind_setup *setup,
++			       int *ret_bind_errno, struct socket **sock)
++{
++	struct sockaddr_mctp addr;
++	int rc;
++
++	*ret_bind_errno = -EIO;
++
++	rc = sock_create_kern(&init_net, AF_MCTP, SOCK_DGRAM, 0, sock);
++	KUNIT_ASSERT_EQ(test, rc, 0);
++
++	memset(&addr, 0x0, sizeof(addr));
++	addr.smctp_family = AF_MCTP;
++	addr.smctp_network = setup->bind_net;
++	addr.smctp_addr.s_addr = setup->bind_addr;
++	addr.smctp_type = setup->bind_type;
++
++	*ret_bind_errno = kernel_bind(*sock, (struct sockaddr *)&addr, sizeof(addr));
++}
++
++static int mctp_test_bind_conflicts_inner(struct kunit *test,
++					  const struct mctp_test_bind_setup *bind1,
++	const struct mctp_test_bind_setup *bind2)
++{
++	struct socket *sock1 = NULL, *sock2 = NULL, *sock3 = NULL;
++	int bind_errno;
++
++	/* Bind to first address, always succeeds */
++	mctp_test_bind_run(test, bind1, &bind_errno, &sock1);
++	KUNIT_EXPECT_EQ(test, bind_errno, 0);
++
++	/* A second identical bind always fails */
++	mctp_test_bind_run(test, bind1, &bind_errno, &sock2);
++	KUNIT_EXPECT_EQ(test, -bind_errno, EADDRINUSE);
++
++	/* A different bind, result is returned */
++	mctp_test_bind_run(test, bind2, &bind_errno, &sock3);
++
++	if (sock1)
++		sock_release(sock1);
++	if (sock2)
++		sock_release(sock2);
++	if (sock3)
++		sock_release(sock3);
++
++	return bind_errno;
++}
++
++static void mctp_test_bind_conflicts(struct kunit *test)
++{
++	const struct mctp_bind_pair_test *pair;
++	int bind_errno;
++
++	pair = test->param_value;
++
++	bind_errno = mctp_test_bind_conflicts_inner(test, pair->bind1, pair->bind2);
++	KUNIT_EXPECT_EQ(test, -bind_errno, pair->error);
++
++	/* swapping the calls, the second bind should still fail */
++	bind_errno = mctp_test_bind_conflicts_inner(test, pair->bind2, pair->bind1);
++	KUNIT_EXPECT_EQ(test, -bind_errno, pair->error);
++}
++
++static void mctp_test_assumptions(struct kunit *test)
++{
++	/* check assumption of default net from bind_addr8_net1_type1 */
++	KUNIT_ASSERT_EQ(test, mctp_default_net(&init_net), 1);
++}
++
+ static struct kunit_case mctp_test_cases[] = {
++	KUNIT_CASE(mctp_test_assumptions),
+ 	KUNIT_CASE_PARAM(mctp_test_fragment, mctp_frag_gen_params),
+ 	KUNIT_CASE_PARAM(mctp_test_rx_input, mctp_rx_input_gen_params),
+ 	KUNIT_CASE_PARAM(mctp_test_route_input_sk, mctp_route_input_sk_gen_params),
+@@ -1253,7 +1406,9 @@ static struct kunit_case mctp_test_cases[] = {
+ 	KUNIT_CASE(mctp_test_fragment_flow),
+ 	KUNIT_CASE(mctp_test_route_output_key_create),
+ 	KUNIT_CASE(mctp_test_route_input_cloned_frag),
+-	{}
++	KUNIT_CASE_PARAM(mctp_test_bind_conflicts, mctp_bind_pair_gen_params),
++
++	{ /* terminator */ },
+ };
+ 
+ static struct kunit_suite mctp_test_suite = {
 
 -- 
 2.43.0
