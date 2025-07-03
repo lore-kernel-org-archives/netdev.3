@@ -1,38 +1,38 @@
 Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB08C1F5437
-	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 03:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBE21F5EA
+	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 03:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751512624; cv=none; b=uhXcr5eJigJSeEf8LyQqRckvTZ1xSskso1nFyMygngfeVxo9JqSCAVw3tXTyeoxK+qlAoBv/5v0CxIl9ylogqAcxKInSOjLlVa22/LnwqoyBgO0xCWrJvHBziiCw6+NA1zdj8ekby4+9oq7KVidVlX5iDp+Pk8XwpgpER/FFV38=
+	t=1751513325; cv=none; b=laD3Vys0z6Mctk3mCw4KUX18TiJxyRBEilL/H0JaN8VeqmgZnr+nOlS3G6/8c1XHuekNAaxr8omZzTUGfhyQkHIZLq3pl+A4aIoh7pYkWEMU7AkfDmlXAmJwyU6HlGz1w6vFzbZNlJoR2Nzq9INi23ShRRe9xakCBEuBHdMZUjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751512624; c=relaxed/simple;
-	bh=WfQo6VWW97Dd9tbJRF8NIjPGOh4v/l76zixni158weE=;
+	s=arc-20240116; t=1751513325; c=relaxed/simple;
+	bh=+TrFAZNrfgpfJW0t8z41Tyj0PEabD0DuhwFSTuw1hHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YvCMXc6TC8fNhqAcJCJNyiomG9jMPAQWpGKeK/r7qIwCAek5Rg3h6FZ/6DFakS3ikUfiqyzr6sLfGH+2ev//J5qw0hOcdzT8q5FJDjI2CgpbV4YYWnbvpP9rZNT1PM0U3G8LDE1ESGjDsU3emrNCw2bWm5MNKi4z7vXWOZEwZHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=ZG/xrzLd; arc=none smtp.client-ip=171.64.64.25
+	 MIME-Version; b=aCLnicbIK1H0A9QGtrjBw/tWfURIddFcJH5888dVQzAk+8xs4GsYne+Gqf0pOEVTQMwsFA41lVPmoNmKTanI5Hz37hf1IRByNzSaA1kkRVd1nmM4U+bRj/ngACNZf7yx1stj3dE6GOdksP5ENdHX2lN8kTuVroWH94H7s4QVUCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=orztZ7tQ; arc=none smtp.client-ip=171.64.64.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="ZG/xrzLd"
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="orztZ7tQ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hIxLajEFFO+kE/xI6d38sn/tW/Rlk/k00h8fWzbhVBA=; t=1751512622; x=1752376622; 
-	b=ZG/xrzLd182chouzSL5p24WGVlY7x/QJ8UOIbD10teRHUeDG1xZsJa5r1Wg2jKo9MzRLILnYwTp
-	tWD8m0d9EJWHLBEA4YzGEntpg/FeEvkmcbsFVWp0y+B3susK2T6ctUjABqT8EtzvwrRCN1soE2nJ8
-	PKS6KMLx6t31J+uBRyT0o7BwDvRcULzWALN9qDF0jQfEl3yG+CLXzaLZrmyP1IqMe+hlt/L9qmV1k
-	23qtv7stpVTt/Ag46xTFyO7BSrJ1vR5O9FH/k3ys0zVyH0yFD5SdaiQhoce37FhDGGwCmWXO+8XDp
-	Yt+BRE3y6sK9/Syj7yr5RC4AFyB9F18fkcmg==;
+	bh=8B8AU1fziyO7dE4sauHf2aM/bwp3zPKpfJMRasIp31k=; t=1751513323; x=1752377323; 
+	b=orztZ7tQnshuZOHtpUIof3Y/OPZzk/5UbIweuBC/z2YrEMI0BzexeLHx3XGEFNzUKmMNtIK4aGx
+	h2ce88ltJNVHxfAdHbPepsjv2UUge1rZR5FZm+bNLTYvYiiZHxIDYiHjm+j8Yv5qzTTmhEXXtN3fq
+	sq3gGFTxoEoIUMwx42X01nfzg+fuePUT6LHqXcFFoL48v77jYZfL3/Pf5WAHUF1LA8sOB88tSJE/m
+	8bFH7UqhZpSYRHGjzOtCfyg7fyXrM/f4jDy2Kslw0wmy/pd+46lZqN1DvhdiE6UqYX+756lrddRT3
+	xNKtzFz9oOz/QwzKEtPekmaEZ7RkCE8qeC4w==;
 Received: from 70-228-78-207.lightspeed.sntcca.sbcglobal.net ([70.228.78.207]:54972 helo=localhost.localdomain)
 	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ouster@cs.stanford.edu>)
-	id 1uXARZ-0006te-TM; Wed, 02 Jul 2025 20:17:02 -0700
+	id 1uXAQg-0006te-41; Wed, 02 Jul 2025 20:16:07 -0700
 From: John Ousterhout <ouster@cs.stanford.edu>
 To: netdev@vger.kernel.org
 Cc: pabeni@redhat.com,
@@ -40,9 +40,9 @@ Cc: pabeni@redhat.com,
 	horms@kernel.org,
 	kuba@kernel.org,
 	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [PATCH net-next v10 15/15] net: homa: create Makefile and Kconfig
-Date: Wed,  2 Jul 2025 20:13:23 -0700
-Message-ID: <20250703031445.569-16-ouster@cs.stanford.edu>
+Subject: [PATCH net-next v10 01/15] net: homa: define user-visible API for Homa
+Date: Wed,  2 Jul 2025 20:13:09 -0700
+Message-ID: <20250703031445.569-2-ouster@cs.stanford.edu>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20250703031445.569-1-ouster@cs.stanford.edu>
 References: <20250703031445.569-1-ouster@cs.stanford.edu>
@@ -54,97 +54,189 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -1.0
-X-Scan-Signature: 50c535147b6e7155177bcd7d65214eb3
+X-Scan-Signature: 43685be38b1c81fa84908b956b58f430
 
-Before this commit the Homa code is "inert": it won't be compiled
-in kernel builds. This commit adds Homa's Makefile and Kconfig, and
-also links Homa into net/Makefile and net/Kconfig, so that Homa
-will be built during kernel builds if enabled (it is disabled by
-default).
+Note: for man pages, see the Homa Wiki at:
+https://homa-transport.atlassian.net/wiki/spaces/HOMA/overview
 
 Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
----
- net/Kconfig       |  1 +
- net/Makefile      |  1 +
- net/homa/Kconfig  | 21 +++++++++++++++++++++
- net/homa/Makefile | 16 ++++++++++++++++
- 4 files changed, 39 insertions(+)
- create mode 100644 net/homa/Kconfig
- create mode 100644 net/homa/Makefile
 
-diff --git a/net/Kconfig b/net/Kconfig
-index ebc80a98fc91..cb89196c63ff 100644
---- a/net/Kconfig
-+++ b/net/Kconfig
-@@ -250,6 +250,7 @@ source "net/bridge/netfilter/Kconfig"
- endif
- 
- source "net/sctp/Kconfig"
-+source "net/homa/Kconfig"
- source "net/rds/Kconfig"
- source "net/tipc/Kconfig"
- source "net/atm/Kconfig"
-diff --git a/net/Makefile b/net/Makefile
-index aac960c41db6..71f740e0dc34 100644
---- a/net/Makefile
-+++ b/net/Makefile
-@@ -43,6 +43,7 @@ ifneq ($(CONFIG_VLAN_8021Q),)
- obj-y				+= 8021q/
- endif
- obj-$(CONFIG_IP_SCTP)		+= sctp/
-+obj-$(CONFIG_HOMA)		+= homa/
- obj-$(CONFIG_RDS)		+= rds/
- obj-$(CONFIG_WIRELESS)		+= wireless/
- obj-$(CONFIG_MAC80211)		+= mac80211/
-diff --git a/net/homa/Kconfig b/net/homa/Kconfig
+---
+Changes for v9:
+* Eliminate use of _Static_assert
+* Remove declarations related to now-defunct homa_api.c
+
+Changes for v7:
+* Add HOMA_SENDMSG_NONBLOCKING flag for sendmsg
+* API changes for new mechanism for waiting for incoming messages
+* Add setsockopt SO_HOMA_SERVER (enable incoming requests)
+* Use u64 and __u64 properly
+---
+ include/uapi/linux/homa.h | 155 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 155 insertions(+)
+ create mode 100644 include/uapi/linux/homa.h
+
+diff --git a/include/uapi/linux/homa.h b/include/uapi/linux/homa.h
 new file mode 100644
-index 000000000000..8ce5fbf08258
+index 000000000000..1136236ba675
 --- /dev/null
-+++ b/net/homa/Kconfig
-@@ -0,0 +1,21 @@
-+# SPDX-License-Identifier: BSD-2-Clause
-+#
-+# Homa transport protocol
-+#
++++ b/include/uapi/linux/homa.h
+@@ -0,0 +1,155 @@
++/* SPDX-License-Identifier: BSD-2-Clause */
 +
-+menuconfig HOMA
-+	tristate "The Homa transport protocol"
-+	depends on INET
-+	depends on IPV6
++/* This file defines the kernel call interface for the Homa
++ * transport protocol.
++ */
 +
-+	help
-+	  Homa is a network transport protocol for communication within
-+	  a datacenter. It provides significantly lower latency than TCP,
-+	  particularly for workloads containing a mixture of large and small
-+	  messages operating at high network utilization. At present, Homa
-+	  has been only partially upstreamed; this version provides bare-bones
-+	  functionality but is not performant. For more information see the
-+	  homa(7) man page or checkout the Homa Wiki at
-+	  https://homa-transport.atlassian.net/wiki/spaces/HOMA/overview.
++#ifndef _UAPI_LINUX_HOMA_H
++#define _UAPI_LINUX_HOMA_H
 +
-+	  If unsure, say N.
-diff --git a/net/homa/Makefile b/net/homa/Makefile
-new file mode 100644
-index 000000000000..ed894ebab176
---- /dev/null
-+++ b/net/homa/Makefile
-@@ -0,0 +1,16 @@
-+# SPDX-License-Identifier: BSD-2-Clause
-+#
-+# Makefile for the Linux implementation of the Homa transport protocol.
++#include <linux/types.h>
++#ifndef __KERNEL__
++#include <netinet/in.h>
++#include <sys/socket.h>
++#endif
 +
-+obj-$(CONFIG_HOMA) := homa.o
-+homa-y:=        homa_incoming.o \
-+		homa_interest.o \
-+		homa_outgoing.o \
-+		homa_pacer.o \
-+		homa_peer.o \
-+		homa_plumbing.o \
-+		homa_pool.o \
-+		homa_rpc.o \
-+		homa_sock.o \
-+		homa_timer.o \
-+		homa_utils.o
++/* IANA-assigned Internet Protocol number for Homa. */
++#define IPPROTO_HOMA 146
++
++/**
++ * define HOMA_MAX_MESSAGE_LENGTH - Maximum bytes of payload in a Homa
++ * request or response message.
++ */
++#define HOMA_MAX_MESSAGE_LENGTH 1000000
++
++/**
++ * define HOMA_BPAGE_SIZE - Number of bytes in pages used for receive
++ * buffers. Must be power of two.
++ */
++#define HOMA_BPAGE_SIZE (1 << HOMA_BPAGE_SHIFT)
++#define HOMA_BPAGE_SHIFT 16
++
++/**
++ * define HOMA_MAX_BPAGES - The largest number of bpages that will be required
++ * to store an incoming message.
++ */
++#define HOMA_MAX_BPAGES ((HOMA_MAX_MESSAGE_LENGTH + HOMA_BPAGE_SIZE - 1) >> \
++		HOMA_BPAGE_SHIFT)
++
++/**
++ * define HOMA_MIN_DEFAULT_PORT - The 16 bit port space is divided into
++ * two nonoverlapping regions. Ports 1-32767 are reserved exclusively
++ * for well-defined server ports. The remaining ports are used for client
++ * ports; these are allocated automatically by Homa. Port 0 is reserved.
++ */
++#define HOMA_MIN_DEFAULT_PORT 0x8000
++
++/**
++ * struct homa_sendmsg_args - Provides information needed by Homa's
++ * sendmsg; passed to sendmsg using the msg_control field.
++ */
++struct homa_sendmsg_args {
++	/**
++	 * @id: (in/out) An initial value of 0 means a new request is
++	 * being sent; nonzero means the message is a reply to the given
++	 * id. If the message is a request, then the value is modified to
++	 * hold the id of the new RPC.
++	 */
++	__u64 id;
++
++	/**
++	 * @completion_cookie: (in) Used only for request messages; will be
++	 * returned by recvmsg when the RPC completes. Typically used to
++	 * locate app-specific info about the RPC.
++	 */
++	__u64 completion_cookie;
++
++	/**
++	 * @flags: (in) OR-ed combination of bits that control the operation.
++	 * See below for values.
++	 */
++	__u32 flags;
++
++	/** @reserved: Not currently used. */
++	__u32 reserved;
++};
++
++/* Flag bits for homa_sendmsg_args.flags (see man page for documentation):
++ */
++#define HOMA_SENDMSG_PRIVATE       0x01
++#define HOMA_SENDMSG_VALID_FLAGS   0x01
++
++/**
++ * struct homa_recvmsg_args - Provides information needed by Homa's
++ * recvmsg; passed to recvmsg using the msg_control field.
++ */
++struct homa_recvmsg_args {
++	/**
++	 * @id: (in/out) Initial value is 0 to wait for any shared RPC;
++	 * nonzero means wait for that specific (private) RPC. Returns
++	 * the id of the RPC received.
++	 */
++	__u64 id;
++
++	/**
++	 * @completion_cookie: (out) If the incoming message is a response,
++	 * this will return the completion cookie specified when the
++	 * request was sent. For requests this will always be zero.
++	 */
++	__u64 completion_cookie;
++
++	/**
++	 * @num_bpages: (in/out) Number of valid entries in @bpage_offsets.
++	 * Passes in bpages from previous messages that can now be
++	 * recycled; returns bpages from the new message.
++	 */
++	__u32 num_bpages;
++
++	/**
++	 * @bpage_offsets: (in/out) Each entry is an offset into the buffer
++	 * region for the socket pool. When returned from recvmsg, the
++	 * offsets indicate where fragments of the new message are stored. All
++	 * entries but the last refer to full buffer pages (HOMA_BPAGE_SIZE
++	 * bytes) and are bpage-aligned. The last entry may refer to a bpage
++	 * fragment and is not necessarily aligned. The application now owns
++	 * these bpages and must eventually return them to Homa, using
++	 * bpage_offsets in a future recvmsg invocation.
++	 */
++	__u32 bpage_offsets[HOMA_MAX_BPAGES];
++};
++
++/** define SO_HOMA_RCVBUF: setsockopt option for specifying buffer region. */
++#define SO_HOMA_RCVBUF 10
++
++/**
++ * define SO_HOMA_SERVER: setsockopt option for specifying whether a
++ * socket will act as server.
++ */
++#define SO_HOMA_SERVER 11
++
++/** struct homa_rcvbuf_args - setsockopt argument for SO_HOMA_RCVBUF. */
++struct homa_rcvbuf_args {
++	/** @start: Address of first byte of buffer region in user space. */
++	__u64 start;
++
++	/** @length: Total number of bytes available at @start. */
++	size_t length;
++};
++
++/* Meanings of the bits in Homa's flag word, which can be set using
++ * "sysctl /net/homa/flags".
++ */
++
++/**
++ * define HOMA_FLAG_DONT_THROTTLE - disable the output throttling mechanism
++ * (always send all packets immediately).
++ */
++#define HOMA_FLAG_DONT_THROTTLE   2
++
++/* I/O control calls on Homa sockets. These are mapped into the
++ * SIOCPROTOPRIVATE range of 0x89e0 through 0x89ef.
++ */
++
++#define HOMAIOCFREEZE _IO(0x89, 0xef)
++
++#endif /* _UAPI_LINUX_HOMA_H */
 -- 
 2.43.0
 
