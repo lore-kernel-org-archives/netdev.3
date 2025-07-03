@@ -1,46 +1,35 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D40E2D6632;
-	Thu,  3 Jul 2025 09:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F19A2DBF7C
+	for <netdev@vger.kernel.org>; Thu,  3 Jul 2025 09:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751536474; cv=none; b=t2ihWeVzc9Zwo8fGz5x9ASi1AS9RGHUmb3LpwjwrAWGI0Tf6c1/DmTRTZM2oVooKitvpBvajfgFFBtUnm788fvNkOU2BXnkEGiSJUnJ5x62XocX1WbLJwj0CS5rQKbKVOTraApxctvzXhUBPcYxdWbiBdTPTTz01Gq4Q5UstPU8=
+	t=1751536791; cv=none; b=H/OMHebyyJawz6zGcmGt/P4BhKOukmOHJbnxR10hsrI5S1YjU+ye+UE5WiVvVZBnnXf3VvE5jbKOS2518MRptxCIt5cAjllvupQjScKGSG2y7IYEMaG9wz/Je/uYVV8lGKGkFmwrhb3mvcRjkUO7mPJj8X19iROxAJvUyH4SLYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751536474; c=relaxed/simple;
-	bh=M30E5phtsRgNt9bWOudN+Wz7g5IN3dIUI9pAYWfH0GI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rEJfRb5NErvfibJsvYOT94IdwOMmRGBj0S50rM0V6PaVRiETpkAfy5bTvzG7UWO6TV9aTE0C0ZIsT+PVDPY8lUZ+gd1RNqL5xxlErlim3+/IG/WtB8hYIfnO26gH5n65JQ8+3dwcECVh86PItpm/hlwPZsIIfL832LBoZ3YQ3FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=bAHTcEfK; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1751536791; c=relaxed/simple;
+	bh=vYaD9DYCNPBX7JW1GGz3dPNqi8+19ljdGZQlVlpzWj8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=WKzmVafmTulgGTUWguywyabwwsDf439iXTWBlePIRF1pQn8/lCuh67Id1I4mdAC5go+CK4ORFf7TnICyR1CZ5P9L5C/EI/TXXtskF67QxGWAQfnbhsrVdwUFBwI8rr16oaw4VZhrT+XOG4BQT19+jWhJ8JbAJRca3ZtO3aaeVzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THpAOasR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="bAHTcEfK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=zq
-	yqcmzFSBUDYjqKQmxZony3sGHurYaKa67pNQBSGA4=; b=bAHTcEfKSMHDjwiSZg
-	hJQ1k1nBR2UbZQb12xuRQuvCRQ9Xd9enEtlTpuU7z7n35kSLjZdBvnz2rD+e/ads
-	0g3RaJ0Ewzwe+dgE76P5mbh4YmVGgUTsIGrL4i6Co093ISlPjAWJJE1/9RuZ7pss
-	5zW9hO6D75dXQQmvKzQxzCc3U=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDXz5_hUmZo74LVCA--.57467S4;
-	Thu, 03 Jul 2025 17:52:34 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	stable@vger.kernel.org,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH v2] ice: Fix a null pointer dereference in ice_copy_and_init_pkg()
-Date: Thu,  3 Jul 2025 17:52:32 +0800
-Message-Id: <20250703095232.2539006-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THpAOasR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A737C4CEE3;
+	Thu,  3 Jul 2025 09:59:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751536791;
+	bh=vYaD9DYCNPBX7JW1GGz3dPNqi8+19ljdGZQlVlpzWj8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=THpAOasRS2Zm0daSia5Z/YojZlNmXOKqs/3HQm9NdMg3hkg4YHzAaDLI3Tb2aniR0
+	 Yb+u2aD1w2iYKol6E08MKdi3cUgAdtn1O5Q+snv5RH4AB13X7x77MAyhe1XEzSApWF
+	 ZDSHNxb+BRL3tDqDgLiE5pGesg4ortwdO/A21l8S48xL+d8SGMu3WD03OROzZNXF22
+	 UH/ML7bCCSc/n3DRmratk98/8JXG3zlbCkBX5GjBdArKylfLxnbFw6DY/qpn+cdKu+
+	 CcN31mogL0dgO4FO65LH9ZcRHuGJ1OThCKkYWxnMGBx4byrN/uA2vu+U/ApNuKtCfn
+	 UIf3R/YE7W8+w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE5C383B273;
+	Thu,  3 Jul 2025 10:00:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,41 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXz5_hUmZo74LVCA--.57467S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWruF1fXw1Duw47JFyDWr1xKrg_yoWkKFg_uw
-	4FvFyfArWUKr1F9w4YkF47Z34FyF1kXFykua12k39Y9w15GryDXa4DZr9xXr4qgF1DuFnx
-	Ars3JasFyFy2qjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRKiiSDUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbBEgB-bmhmSx75sAAAsR
+Subject: Re: [PATCH net v4 0/3] Fix IRQ vectors
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175153681551.1389884.4980983924046945780.git-patchwork-notify@kernel.org>
+Date: Thu, 03 Jul 2025 10:00:15 +0000
+References: <20250701063030.59340-1-jiawenwu@trustnetic.com>
+In-Reply-To: <20250701063030.59340-1-jiawenwu@trustnetic.com>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ michal.swiatkowski@linux.intel.com, larysa.zaremba@intel.com,
+ mengyuanlou@net-swift.com, duanqiangwen@net-swift.com
 
-Add check for the return value of devm_kmemdup()
-to prevent potential null pointer dereference.
+Hello:
 
-Fixes: c76488109616 ("ice: Implement Dynamic Device Personalization (DDP) download")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
----
-Changes in v2:
-- modify the Fixes commit number. Thanks, Michal!
----
- drivers/net/ethernet/intel/ice/ice_ddp.c | 2 ++
- 1 file changed, 2 insertions(+)
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ddp.c b/drivers/net/ethernet/intel/ice/ice_ddp.c
-index 59323c019544..351824dc3c62 100644
---- a/drivers/net/ethernet/intel/ice/ice_ddp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ddp.c
-@@ -2301,6 +2301,8 @@ enum ice_ddp_state ice_copy_and_init_pkg(struct ice_hw *hw, const u8 *buf,
- 		return ICE_DDP_PKG_ERR;
- 
- 	buf_copy = devm_kmemdup(ice_hw_to_dev(hw), buf, len, GFP_KERNEL);
-+	if (!buf_copy)
-+		return ICE_DDP_PKG_ERR;
- 
- 	state = ice_init_pkg(hw, buf_copy, len);
- 	if (!ice_is_init_pkg_successful(state)) {
+On Tue,  1 Jul 2025 14:30:27 +0800 you wrote:
+> The interrupt vector order was adjusted by [1]commit 937d46ecc5f9 ("net:
+> wangxun: add ethtool_ops for channel number") in Linux-6.8. Because at
+> that time, the MISC interrupt acts as the parent interrupt in the GPIO
+> IRQ chip. When the number of Rx/Tx ring changes, the last MISC
+> interrupt must be reallocated. Then the GPIO interrupt controller would
+> be corrupted. So the initial plan was to adjust the sequence of the
+> interrupt vectors, let MISC interrupt to be the first one and do not
+> free it.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v4,1/3] net: txgbe: request MISC IRQ in ndo_open
+    https://git.kernel.org/netdev/net/c/cc9f7f65cd2f
+  - [net,v4,2/3] net: wangxun: revert the adjustment of the IRQ vector sequence
+    https://git.kernel.org/netdev/net/c/e37546ad1f9b
+  - [net,v4,3/3] net: ngbe: specify IRQ vector when the number of VFs is 7
+    https://git.kernel.org/netdev/net/c/4174c0c331a2
+
+You are awesome, thank you!
 -- 
-2.25.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
