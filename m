@@ -1,26 +1,27 @@
-Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090C62EE26C
-	for <netdev@vger.kernel.org>; Fri,  4 Jul 2025 09:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC982E974C
+	for <netdev@vger.kernel.org>; Fri,  4 Jul 2025 09:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751622725; cv=none; b=k2TcpfqATSuZrCuFdDjZvwg14VRQkNZAPDlbqoz/Tg0EdqFYVLZqqJukRfQ7P/fTfSPORk2Q4XCbScUIiPak/73TPQcbb+XZCkc2+5Kj8/Ne+hYmPaVhUDubyd9zcVw6Qi5j/7QbFKv5KD6glMSbaRxPH11nxG2o6doIA7TjYEE=
+	t=1751622736; cv=none; b=rtkN0Bl6BUrD0NslT9s+7tNVWxqq2gqC6JsICnEceF+8eim88HJNQrqRO8nxnVwBNgKwPIq/HxepYbAq+lluJ6XnmyRNnBDiVtx3B19EoNERYnnMtd3I6+hCH/FGvjFqyve0Ep0YalsvxDtCVLQnSJwd1+3TP1YpCShPOOzc1Hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751622725; c=relaxed/simple;
-	bh=9qRKtS+WzjJTTD5QyW//CKZLR7hIfdP81RGgzB4fmR0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Sd7a0wKzZKoOabTXM+9fP/rZiDUHfmhz+d4xiiaXDLZKb+nOI5i4T05G4+q7iwIUVDGvjKsLuYej/PC53WoP9050tXfEh6LVAIqlhF2KAkfjVlpMNpjczrrUw+aQCfv52sSc/nZ2tlEQDYwTtAQ2esWnV6OvG/tKcmFGIrJ9PGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=15.184.224.54
+	s=arc-20240116; t=1751622736; c=relaxed/simple;
+	bh=bGBZRVNvn20ljGWqnan9JFfmDSpk7ft4e0v/0WFNrok=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Q9iT89zqR2K2Thl0PMzAgER+m6yAwyAHRNI349jw1UqACKKqe+i+7K8jtslRlhKQRBUHDNL9usEwLrwUFq/YmxFWN5godP/NjnaHOgZe0RJfxEC0WqP6wKgEtcbgnigP5CYiEbB1R9Hs6oR7n/bwk5T/1RyqMPq8aF0p/XXOskU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=18.194.254.142
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: zesmtpsz1t1751622576t21922ff0
-X-QQ-Originating-IP: zcwyq5q+SrG6D5EFtj4Mgx4KPcCl6ncCbaVmnBi8FC4=
+X-QQ-mid: zesmtpsz1t1751622667ta78f9de0
+X-QQ-Originating-IP: PCPB8T8SU6IxrzoIrXJXM7xHgW4m2RfgVC1tsQC4ZHo=
 Received: from localhost.localdomain ( [156.146.53.122])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 04 Jul 2025 17:49:28 +0800 (CST)
-X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 5266758040471983885
+	id ; Fri, 04 Jul 2025 17:51:00 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 11872626369487512020
 EX-QQ-RecipientCnt: 10
 From: Mengyuan Lou <mengyuanlou@net-swift.com>
 To: netdev@vger.kernel.org
@@ -33,116 +34,71 @@ Cc: michal.swiatkowski@linux.intel.com,
 	linglingzhang@trustnetic.com,
 	jiawenwu@trustnetic.com,
 	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net-next v3 00/12] Add vf drivers for wangxun virtual functions
-Date: Fri,  4 Jul 2025 17:49:11 +0800
-Message-Id: <20250704094923.652-1-mengyuanlou@net-swift.com>
+Subject: [PATCH net-next v3 12/12] net: ngbevf: add link update flow
+Date: Fri,  4 Jul 2025 17:49:23 +0800
+Message-Id: <20250704094923.652-13-mengyuanlou@net-swift.com>
 X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20250704094923.652-1-mengyuanlou@net-swift.com>
+References: <20250704094923.652-1-mengyuanlou@net-swift.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpsz:net-swift.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: NYxG6qQjWKuU0ParIIbODkBY396YXIfiZH5IMh+ynXugEJqShHEzd7XF
-	36VD9K0nwlLE6NpJl0ibzGFKwxMXY6KLtTBQn/sHhDmiFVV57x0xpYe4q1MAnZ6Ddg6br7o
-	xft7BY2BKVDuIxD7CIXo9fD11wrEBstlwZkQA9XdU90nuFHdFKhbV0FqHqQZNm6sNoBUh69
-	6KFb8EJ+IKUkSdvDGoSmQOHYypYmLfcqMMfkcVlsubUkwotsCo5LdFoiZu0iqOk0OnMG2lq
-	bsssfWmxNNE5OwEmQCoH9ZFeqlytBZ9xCg3F+mpSuW7Ca23Uio2/Z2Dgq8LD+GiaMXE0vuf
-	qIysPPI4EExE7+gZF7z2Dt3Tn9OEr5sG1/YSZ4denLvBTf3vNSW0wQ8vk/7c8Xs0ZndPv/s
-	53wiKG7+gRB5K6EqTzQN+iX+QHx892B9cvUs97pPFj25KQ9qXTQBVR7N3zl62Rd+Jd1spkn
-	dhpeV0PmeIu/7tV5Yrt7cVhcSCuj/nxDReKyegiCHkb27YPs3hvTc7ZejreXlUTsf2XdUGj
-	7FFnhKFhay3+IKZQaGxUqI1Mu86lpUrfXNWwZ4iydZSM0+VDY86dbUm2aj6CLIGEcteI8Wr
-	rqG4nM9hhfeWxNmwzLAy5EzrnJa8E3payzDvDS8XIA9mRq+KIxj7A3VDrL0O6r97eIy74mF
-	vFWsT1/i/krceO851FgrFpFPJCQ6Cx8XLKej3EHRDHGWFuQ6PiTmjz25icnVhhzVQCbOBUc
-	q6L4AmDU1SuuigsiEKa0w1MWEWhWIz66/O8ckd9bJImy1+qK/m7x2eX0JUENUMLe8t1C8DY
-	KlwqqqssKX1P6lLzkEvnqt1b3gaCHPznDMqU1HuPXcMw2c5oC6TfJQe1VL1UhRLj+8qwBsD
-	6I0o1BqGTtESZzUCiQqNZwajU8qkjNgTCZ3sBfhpAdqn6ps1W7H3LoPXQcbMkCMU8hiJnud
-	yA9foDJbGCdgYeu2lPmoMkwExCGWuUFHT0Fe337sqNm3/qc4wzabL6O9Zrndu2v6yf1k5aL
-	yLbpLGoUhPquhwaI83mCraNwqM+eIP6Pm9ceqREksklves2doenXhRh9RtS5Io0HZD/Kw5d
-	H17cfO4d4pes+XAcTTZLfR+iNoULTjwUbzgJV/gGqCJcUHvhLBBgIfeiO0P8MRCcmfD1gBo
-	EM+WDJAWYa2s1v+UAU0VNbG6Ub+PHAP1QhE8
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-QQ-XMAILINFO: Nkc2PsekgugWrQu3DfjmZovQOkXKVxVjtMysyWhfHkSk5iHdoO14KFgz
+	56bs2zcoP4vPuI1BjhNIC3LipkhPDV5Dt9lQO+SYeVNEOApR7uoQUFntq9uPtwDNMaeyHQW
+	SLLqoHnBDCf6Mza+OwsCmbtr9F6I1AB7DvsDHkP3MfrAJcoyj69plvtau9PDP5b7uv44YdO
+	R+IBVH9bUphEeX9JGyadGeh6C+Tc9M7NTKNIEvoHHPoSzVo8ygaag6/ZDcSb0KOFlJZoLdr
+	1Vat3JldIY+iioMc96xatranSDoCuHL7iuC0CZTQS6dsGMtfGctBcgBCwSsfHf3MeAsu01z
+	SrNfHsd1fApihfhFd0AZHKvyGDfDp3yPR9h9L9ckTUp0UBB0qrQkc9nxJGdxTL9nUiWAU7u
+	ev3PAYWWjb9p+1XcpTpjlGDvPSP9RPmDsPmuRhbrsPda7nz0pYPHho1XUdfa2LUewXFDNEK
+	6jCv3tIExDyuR1AOcGYP+t7HxGtuUBM+SBpkoK2k+/IVqvaCRxGkT4puSv709m4KH4vK/48
+	NZANRvY5JBiS3PP3L2e2ZGqJm0YoOvEPwvxeMukKlgA8mm5Nh39szK3fPxKio3Io1TerRCh
+	3iS0Zc8D6RJv0jQVWe1GnJ/yx8IJwGlOM99Z+aXFahc7Ck7jK0Mu/gP6L21qLuuTqsuBZBq
+	KkwDuljvaagIL6Jp8mQL2rqzXidwFuKdu03c5VpJSkgX4ibQ8Zsp4OEVj6yPpgqLeR5P72l
+	qD2k/Ez+yKGg1jWWIRdY4a2U5eJhb5k94Oi/LCmhyVivjrObgnyVey5gyDRxzmbINHdlDHJ
+	dz6X+0/zn8VF9AQz07d6t39FA5AJyh3OyuZwCY3Q2mhzjBsfTVZhC+/cz47HykMM4uFnIMV
+	PqvWd/Whr+dATDjEjz6/4EidC2R+xKjdFw04VAA9/ROQnnIZpjwpLAWCdch4laAEol9M+LA
+	NjGzj3Qycq0x1JUvSiFxWGN8mbpPBk5aaj5jCtN8VimwrgZLvRtYHXiQM1GF3vsgIzUlIq9
+	QY6zNKAtQPVjZYdHhFZBZQpfs8caUiRZ5P4KMSq0HOmvCa8oylN4Tqqb7Vlskn8tUFfEdMG
+	QAflrVeJlEl9JiC9sl5WvOjWU5EXFc/JKDjC/bBkHKEbHmr1voH2ogOIZAjPN+8OA==
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
 X-QQ-RECHKSPAM: 0
 
-Introduces basic support for Wangxun’s virtual function (VF) network
-drivers, specifically txgbevf and ngbevf. These drivers provide SR-IOV
-VF functionality for Wangxun 10/25/40G network devices.
-The first three patches add common APIs for Wangxun VF drivers, including
-mailbox communication and shared initialization logic.These abstractions
-are placed in libwx to reduce duplication across VF drivers.
-Patches 4–8 introduce the txgbevf driver, including:
-PCI device initialization, Hardware reset, Interrupt setup, Rx/Tx datapath
-implementation and link status changeing flow.
-Patches 9–12 implement the ngbevf driver, mirroring the functionality
-added in txgbevf.
+Add link update flow to wangxun 1G virtual functions.
+Get link status from pf in mbox, and if it is failed then
+check the vx_status, because vx_status switching is too slow.
 
-v3:
-- Remove phylink and add watchdog subtask to check mac link status.
-- Add reset subtask to do reset when receive pf reset done msg.
-v2: https://lore.kernel.org/netdev/20250625102058.19898-1-mengyuanlou@net-swift.com/
-- Fix the compilation issues.
-- Standardize the return format of the vf base API in patch2
-- Use read_poll_timeout replace vf_bit_check in patch1.
-v1: https://lore.kernel.org/netdev/20250611083559.14175-1-mengyuanlou@net-swift.com/
+Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
+---
+ drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Mengyuan Lou (12):
-  net: libwx: add mailbox api for wangxun vf drivers
-  net: libwx: add base vf api for vf drivers
-  net: libwx: add wangxun vf common api
-  net: wangxun: add txgbevf build
-  net: txgbevf: add sw init pci info and reset hardware
-  net: txgbevf: init interrupts and request irqs
-  net: txgbevf: Support Rx and Tx process path
-  net: txgbevf: add link update flow
-  net: wangxun: add ngbevf build
-  net: ngbevf: add sw init pci info and reset hardware
-  net: ngbevf: init interrupts and request irqs
-  net: ngbevf: add link update flow
-
- .../device_drivers/ethernet/index.rst         |   2 +
- .../ethernet/wangxun/ngbevf.rst               |  16 +
- .../ethernet/wangxun/txgbevf.rst              |  16 +
- drivers/net/ethernet/wangxun/Kconfig          |  33 +
- drivers/net/ethernet/wangxun/Makefile         |   2 +
- drivers/net/ethernet/wangxun/libwx/Makefile   |   1 +
- drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  14 +-
- drivers/net/ethernet/wangxun/libwx/wx_hw.h    |   2 +
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |   9 +-
- drivers/net/ethernet/wangxun/libwx/wx_mbx.c   | 243 +++++++
- drivers/net/ethernet/wangxun/libwx/wx_mbx.h   |  22 +
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  11 +
- drivers/net/ethernet/wangxun/libwx/wx_vf.c    | 599 ++++++++++++++++++
- drivers/net/ethernet/wangxun/libwx/wx_vf.h    | 127 ++++
- .../net/ethernet/wangxun/libwx/wx_vf_common.c | 414 ++++++++++++
- .../net/ethernet/wangxun/libwx/wx_vf_common.h |  22 +
- .../net/ethernet/wangxun/libwx/wx_vf_lib.c    | 280 ++++++++
- .../net/ethernet/wangxun/libwx/wx_vf_lib.h    |  14 +
- drivers/net/ethernet/wangxun/ngbevf/Makefile  |   9 +
- .../net/ethernet/wangxun/ngbevf/ngbevf_main.c | 261 ++++++++
- .../net/ethernet/wangxun/ngbevf/ngbevf_type.h |  29 +
- drivers/net/ethernet/wangxun/txgbevf/Makefile |   9 +
- .../ethernet/wangxun/txgbevf/txgbevf_main.c   | 314 +++++++++
- .../ethernet/wangxun/txgbevf/txgbevf_type.h   |  26 +
- 24 files changed, 2470 insertions(+), 5 deletions(-)
- create mode 100644 Documentation/networking/device_drivers/ethernet/wangxun/ngbevf.rst
- create mode 100644 Documentation/networking/device_drivers/ethernet/wangxun/txgbevf.rst
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_vf.c
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_vf.h
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_vf_common.h
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
- create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_vf_lib.h
- create mode 100644 drivers/net/ethernet/wangxun/ngbevf/Makefile
- create mode 100644 drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
- create mode 100644 drivers/net/ethernet/wangxun/ngbevf/ngbevf_type.h
- create mode 100644 drivers/net/ethernet/wangxun/txgbevf/Makefile
- create mode 100644 drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
- create mode 100644 drivers/net/ethernet/wangxun/txgbevf/txgbevf_type.h
-
+diff --git a/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c b/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
+index a629b645d3a1..c1246ab5239c 100644
+--- a/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
++++ b/drivers/net/ethernet/wangxun/ngbevf/ngbevf_main.c
+@@ -197,6 +197,7 @@ static int ngbevf_probe(struct pci_dev *pdev,
+ 	eth_hw_addr_set(netdev, wx->mac.perm_addr);
+ 	ether_addr_copy(netdev->perm_addr, wx->mac.addr);
+ 
++	wxvf_init_service(wx);
+ 	err = wx_init_interrupt_scheme(wx);
+ 	if (err)
+ 		goto err_free_sw_init;
+@@ -213,6 +214,8 @@ static int ngbevf_probe(struct pci_dev *pdev,
+ err_register:
+ 	wx_clear_interrupt_scheme(wx);
+ err_free_sw_init:
++	timer_delete_sync(&wx->service_timer);
++	cancel_work_sync(&wx->service_task);
+ 	kfree(wx->vfinfo);
+ 	kfree(wx->rss_key);
+ 	kfree(wx->mac_table);
 -- 
 2.30.1
 
