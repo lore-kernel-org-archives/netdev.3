@@ -1,93 +1,199 @@
-Received: from relay16.mail.gandi.net (relay16.mail.gandi.net [217.70.178.236])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF711288C19;
-	Fri,  4 Jul 2025 07:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.236
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE122E425B;
+	Fri,  4 Jul 2025 07:54:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751615644; cv=none; b=jm2gh2UE1i/mbQI1+Ek+ViKMqzjp9sm9cgckFv6UewBjQmNwa1P0JzNiOjWgMyaJ5MYa34VzL4WVhf6v7c2MeyjcLAEeRo7RHaJQ9aP5W/StCihzK/mMgYegWDbH8GUk7a9JE2udDUUWbHmIDY0YfbW5Tqzd4r5cfX+g0vPfyjk=
+	t=1751615684; cv=none; b=ivqMU5pmqK7c6EBR/NQXbZasYaG6EUa//luomj2iw+N5aXExcUMjtWuuX1DGz/6WN+19ne1Hlw2MJ/z8s+Ih0XmNnbQMVqKNkeC9gZwq92p56zo2XKYoRY2mzNanW6bOk+Zj3VFd6YUBX0Y7IWjd7kqq9AlDDXTXkogyOFFxrPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751615644; c=relaxed/simple;
-	bh=Ja1PvWH1xvcWWWPWhJqOm3iUtLfvIbMEc340tKKqjbo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tzIWVYTuUi0A+nEcgDL74OU/eK8oKSN9Tt1HVeGR2rmWdl7q8Jw75PIyFHpkBZwbZE+YsS3tSRLtKUkEwcO5dP1R22hHhubk0OI9wZPQsmws8dLfWiNeoASBr6eJX2gnI9ApfuVNmUPcktqASoT+ypqzU4SQxpwn88c2bbC6Czk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Pt13Wn75; arc=none smtp.client-ip=217.70.178.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1751615684; c=relaxed/simple;
+	bh=8QGS586pL2Vx2KX9XeLloe4i2zvKJP8iAOXD73uMv0c=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=T/r5Bg/e6e52vezdkVRfYHJPaez/mR+pTYVIVFNziKHV/aZTP4O58ZWYYQOmQYV102ZV5tjIua1XDNHmoYH0SW3fdvF0A/RD0znp+7WDt4HaRLWd6LnHYvQWqEGXeVW/4psrrrTIWHv1mchNLJk5iSA64jKQnySKzS8ngf7EjOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ieVxKGns; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Pt13Wn75"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 144F6449EC;
-	Fri,  4 Jul 2025 07:53:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751615639;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fGokUQU9D12trbOtyhmYZxUvKU7aVutPppQ14CcUIWA=;
-	b=Pt13Wn75RkhLV5K/mIBzGx1yeA+VpBMJm3BU4XhkWzkKw2E9ol0xa6glQFbWKhx+elBXGs
-	Dc4BttBnHVwL8SXxZXTREKDWncqJ7q+modSv7/clL2AOVFQq0dB6YASOsPnXwI/rf3eQc0
-	NUt6n+nifKwfOkLZMdmd2Zq7d1Q5xX8KBTRRzKXEBCDyBH+Lf+r0HTOo84F8vMq7KTT+u9
-	LZBLFX4VopTDErPvZod2fgZFwqXyKZiyw/Sia4i0J/jr/JxtZkM58XNc9J1XNSPe3XVqiT
-	JB4kdwQGsecuWUyY2Tf1WL3fsD2sFBu/RYiYOo6oEnWPDdiH9P2Ou/FgZWpa0A==
-Date: Fri, 4 Jul 2025 09:53:56 +0200
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Andre Edich <andre.edich@microchip.com>,
- kernel@pengutronix.de, linux-kernel@vger.kernel.org, Russell King
- <linux@armlinux.org.uk>, netdev@vger.kernel.org, Lukas Wunner
- <lukas@wunner.de>
-Subject: Re: [PATCH net v2 1/3] net: phy: smsc: Fix Auto-MDIX configuration
- when disabled by strap
-Message-ID: <20250704095356.680bd24b@fedora.home>
-In-Reply-To: <20250703114941.3243890-2-o.rempel@pengutronix.de>
-References: <20250703114941.3243890-1-o.rempel@pengutronix.de>
-	<20250703114941.3243890-2-o.rempel@pengutronix.de>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ieVxKGns"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751615683; x=1783151683;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=8QGS586pL2Vx2KX9XeLloe4i2zvKJP8iAOXD73uMv0c=;
+  b=ieVxKGnsRTK/XMNVsxHqXDSaL2XpkOb9qoibpfComGY3ASw7h8p3RZPY
+   yH1ltL3ifhdCpVPKXk2dBZxZhhndkqu+8klU8WmTX2awMr+MRZ+DIZa7y
+   QWRH+aUM3uBosadx3PgISIHCMJhHGFcbFtqk17VCJUsbkKLqMdAGXkNjf
+   L5mg9KeYfpsjpg95IOP7OAOk6cW9VVO9LlFmCCy9Vpqg19numRDUNbwVm
+   dzNmd7xJE78AmZD2x2WLNYg52qNlJlNsidzDFzbYB73moq/J8R42HSs8S
+   7/ybsrYQSl++NSgH9xgoysdvI+S2EsuuWWwhM1kn5VNRKT10FBWhDvHKF
+   g==;
+X-CSE-ConnectionGUID: ux1RhkpbReq2cnQJ5C8V+Q==
+X-CSE-MsgGUID: rItfn04ST+G9trjB7SviyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="64194118"
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
+   d="scan'208";a="64194118"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:54:42 -0700
+X-CSE-ConnectionGUID: A742lPtkQpWtJwUYEUKHpQ==
+X-CSE-MsgGUID: VgCYBLmTSoqFu9DCqiqNIA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
+   d="scan'208";a="158616578"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO svinhufvud.fi.intel.com) ([10.245.244.244])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:54:39 -0700
+Received: from svinhufvud.lan (localhost [IPv6:::1])
+	by svinhufvud.fi.intel.com (Postfix) with ESMTP id 02E4744394;
+	Fri,  4 Jul 2025 10:54:37 +0300 (EEST)
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Alex Elder <elder@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 47/80] net: ipa: Remove redundant pm_runtime_mark_last_busy() calls
+Date: Fri,  4 Jul 2025 10:54:36 +0300
+Message-Id: <20250704075436.3220762-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
+References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddvvdeiudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegveeltddvveeuhefhvefhlefhkeevfedtgfeiudefffeiledttdfgfeeuhfeukeenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedufedprhgtphhtthhopehordhrvghmphgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrt
- ghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprghnughrvgdrvgguihgthhesmhhitghrohgthhhiphdrtghomh
+Content-Transfer-Encoding: 8bit
 
-Hi Oleksij,
+pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
+pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
+to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
+pm_runtime_mark_last_busy().
 
-On Thu,  3 Jul 2025 13:49:39 +0200
-Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+---
+The cover letter of the set can be found here
+<URL:https://lore.kernel.org/linux-pm/20250704075225.3212486-1-sakari.ailus@linux.intel.com>.
 
-> Correct the Auto-MDIX configuration to ensure userspace settings are
-> respected when the feature is disabled by the AUTOMDIX_EN hardware strap.
-> 
-> The LAN9500 PHY allows its default MDI-X mode to be configured via a
-> hardware strap. If this strap sets the default to "MDI-X off", the
-> driver was previously unable to enable Auto-MDIX from userspace.
-> 
-> When handling the ETH_TP_MDI_AUTO case, the driver would set the
-> SPECIAL_CTRL_STS_AMDIX_ENABLE_ bit but neglected to set the required
-> SPECIAL_CTRL_STS_OVRRD_AMDIX_ bit. Without the override flag, the PHY
-> falls back to its hardware strap default, ignoring the software request.
-> 
-> This patch corrects the behavior by also setting the override bit when
-> enabling Auto-MDIX. This ensures that the userspace configuration takes
-> precedence over the hardware strap, allowing Auto-MDIX to be enabled
-> correctly in all scenarios.
-> 
-> Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Cc: Andre Edich <andre.edich@microchip.com>
+In brief, this patch depends on PM runtime patches adding marking the last
+busy timestamp in autosuspend related functions. The patches are here, on
+rc2:
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+        git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+                pm-runtime-6.17-rc1
 
-Maxime
+ drivers/net/ipa/ipa_interrupt.c | 1 -
+ drivers/net/ipa/ipa_main.c      | 1 -
+ drivers/net/ipa/ipa_modem.c     | 4 ----
+ drivers/net/ipa/ipa_smp2p.c     | 2 --
+ drivers/net/ipa/ipa_uc.c        | 2 --
+ 5 files changed, 10 deletions(-)
+
+diff --git a/drivers/net/ipa/ipa_interrupt.c b/drivers/net/ipa/ipa_interrupt.c
+index 245a06997055..8336596b1247 100644
+--- a/drivers/net/ipa/ipa_interrupt.c
++++ b/drivers/net/ipa/ipa_interrupt.c
+@@ -149,7 +149,6 @@ static irqreturn_t ipa_isr_thread(int irq, void *dev_id)
+ 		iowrite32(pending, ipa->reg_virt + reg_offset(reg));
+ 	}
+ out_power_put:
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ 
+ 	return IRQ_HANDLED;
+diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
+index f25f6e2cf58c..b37516de01fa 100644
+--- a/drivers/net/ipa/ipa_main.c
++++ b/drivers/net/ipa/ipa_main.c
+@@ -911,7 +911,6 @@ static int ipa_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_deconfig;
+ done:
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ 
+ 	return 0;
+diff --git a/drivers/net/ipa/ipa_modem.c b/drivers/net/ipa/ipa_modem.c
+index 8fe0d0e1a00f..9b136f6b8b4a 100644
+--- a/drivers/net/ipa/ipa_modem.c
++++ b/drivers/net/ipa/ipa_modem.c
+@@ -71,7 +71,6 @@ static int ipa_open(struct net_device *netdev)
+ 
+ 	netif_start_queue(netdev);
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ 
+ 	return 0;
+@@ -102,7 +101,6 @@ static int ipa_stop(struct net_device *netdev)
+ 	ipa_endpoint_disable_one(priv->rx);
+ 	ipa_endpoint_disable_one(priv->tx);
+ out_power_put:
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ 
+ 	return 0;
+@@ -175,7 +173,6 @@ ipa_start_xmit(struct sk_buff *skb, struct net_device *netdev)
+ 
+ 	ret = ipa_endpoint_skb_tx(endpoint, skb);
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ 
+ 	if (ret) {
+@@ -432,7 +429,6 @@ static void ipa_modem_crashed(struct ipa *ipa)
+ 		dev_err(dev, "error %d zeroing modem memory regions\n", ret);
+ 
+ out_power_put:
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ }
+ 
+diff --git a/drivers/net/ipa/ipa_smp2p.c b/drivers/net/ipa/ipa_smp2p.c
+index fcaadd111a8a..420098796eec 100644
+--- a/drivers/net/ipa/ipa_smp2p.c
++++ b/drivers/net/ipa/ipa_smp2p.c
+@@ -171,7 +171,6 @@ static irqreturn_t ipa_smp2p_modem_setup_ready_isr(int irq, void *dev_id)
+ 	WARN(ret != 0, "error %d from ipa_setup()\n", ret);
+ 
+ out_power_put:
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ 
+ 	return IRQ_HANDLED;
+@@ -213,7 +212,6 @@ static void ipa_smp2p_power_release(struct ipa *ipa)
+ 	if (!ipa->smp2p->power_on)
+ 		return;
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ 	ipa->smp2p->power_on = false;
+ }
+diff --git a/drivers/net/ipa/ipa_uc.c b/drivers/net/ipa/ipa_uc.c
+index 2963db83ab6b..dc7e92f2a4fb 100644
+--- a/drivers/net/ipa/ipa_uc.c
++++ b/drivers/net/ipa/ipa_uc.c
+@@ -158,7 +158,6 @@ static void ipa_uc_response_hdlr(struct ipa *ipa)
+ 		if (ipa->uc_powered) {
+ 			ipa->uc_loaded = true;
+ 			ipa_power_retention(ipa, true);
+-			pm_runtime_mark_last_busy(dev);
+ 			(void)pm_runtime_put_autosuspend(dev);
+ 			ipa->uc_powered = false;
+ 		} else {
+@@ -203,7 +202,6 @@ void ipa_uc_deconfig(struct ipa *ipa)
+ 	if (!ipa->uc_powered)
+ 		return;
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	(void)pm_runtime_put_autosuspend(dev);
+ }
+ 
+-- 
+2.39.5
 
