@@ -1,58 +1,76 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DC92D8DB1
-	for <netdev@vger.kernel.org>; Fri,  4 Jul 2025 12:52:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86A72D94B9;
+	Fri,  4 Jul 2025 12:52:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751633535; cv=none; b=X+a0UDU735J7SGxA5XkGAIGLfv7fGRUQGUT5xE9d1KFd0jEmw7a63XjgBXObNRgSLb9QF/ZNwOyJ8/fC+DwDTW8ahBFDG5+MYsZ2m0GhR/Y06OHJthPTqj8U7J6KsN99FRHPzBQ4umq0ZW1yicdtSXoNE9AHbZj8eMxy6U7hBVA=
+	t=1751633562; cv=none; b=TGP7otCtn/Jvv3mILeHJQmWhoN6zlOWLeK4cwmZc2PLvjnocY559KmMRAUREgROJJ81YqWuFIsXNAHUpWn/6O3rpL8kNjVLPU/JQ7OeWiTSCu0Ff4SgRTf/hWBX/9TMI9aCA2NrhZwquj6J2ALUx/UeYISAQVf00ldtgRJmtRGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751633535; c=relaxed/simple;
-	bh=UpJO7tHztgaENI7GQIg23EKFxr+O+WGUa8QjAu6KUcw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dMiixYBXiy7IcahsVt33xUlecwO7rsIUQ9ZdsmaPKwu33vMecTdspEr+uzmyX1mwJnUIDijeMHjzoNDPxDtF+RoJ9AraQxAquIHKKuDX525ab2v045ajdKrEJsylr+S44VK+pBuLV1LobDeAnLPF4Zxko5v24Jplwd0zjmJ4zZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tq+A+qyO; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1751633562; c=relaxed/simple;
+	bh=c0ayyYPG+6L6jSFBRrSSs/MMnb/OVuujyQj4eLgzJqk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SxuiI41L5N8fN+pC6BLWc4NPdIBjhISv7d2sPdMK0T11PR9BlLlQDnzPcxuoFlYc2CaPTr9BGiTyPJIl2eDanu8mTlgx25i508iIvChuH5K5Qu0U84jncc9HQhmeIxjPypPzbLEqlLMOsyh27eUfTNCaqAdc3U8avgVxIOG822o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NljcD97H; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tq+A+qyO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751633534; x=1783169534;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=UpJO7tHztgaENI7GQIg23EKFxr+O+WGUa8QjAu6KUcw=;
-  b=Tq+A+qyO2+fmZsGqQCUAY80i+Om6a1szIsDk1Iy9KjodoRTbgh/9w5ZS
-   8/Y+ntgI4HeIknwTJKZKY+3ypKivroLDZ2+BwG9FunFje3x73KaHlNwL6
-   0ViFV8UUXnl+NR6tNQAH7ZeQPd9JzjIRgCkm8j0cQcwja2Su6ig0cEOQa
-   MIGoGetrsV3f0qaycOY85F4DJ8ZQfaQXZWz/lL4KA1F5izMYK9pMb6X83
-   SoXb2gXPhSXOdHTNvZA0U04U95wMNkCSXmqWHEXDCM/3WdG6nfxExHeH/
-   cQ0hD4tsCmJC+cnbtNcejqGpsjKCwrWwMKvBe97ttJxIsYltr5wjfFBzy
-   g==;
-X-CSE-ConnectionGUID: thcRETOgQgqS6ces+f5UZw==
-X-CSE-MsgGUID: nmCUqVj7RLqDQ2zDKnjQbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="64660138"
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; 
-   d="scan'208";a="64660138"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 05:52:13 -0700
-X-CSE-ConnectionGUID: UvMSU6XUScas0Yn5Y0BKvQ==
-X-CSE-MsgGUID: ClfXJyNQStOm6u6sB87fig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; 
-   d="scan'208";a="154764656"
-Received: from amlin-018-252.igk.intel.com ([10.102.18.252])
-  by orviesa007.jf.intel.com with ESMTP; 04 Jul 2025 05:52:11 -0700
-From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	andrew@lunn.ch,
-	pmenzel@molgen.mpg.de,
-	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [iwl-next v2] ixgbe: add the 2.5G and 5G speeds in auto-negotiation for E610
-Date: Fri,  4 Jul 2025 15:06:24 +0200
-Message-ID: <20250704130624.372651-1-piotr.kwapulinski@intel.com>
-X-Mailer: git-send-email 2.47.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NljcD97H"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ae0dd7ac1f5so170559966b.2;
+        Fri, 04 Jul 2025 05:52:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751633559; x=1752238359; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0Fnp24A+F18p2VXKqfxoHkduyIpuB09MSbIN1sn/af0=;
+        b=NljcD97HfTSvJ9Vpit4R2M/dFIdoi6V15h5hdxNZtwb+NJIiEO3rVZ2mqApODpXmvf
+         OWbePds1hmLEV8Yvb8HU0thiHqf+9jWwX52eTHc1h+/ovHtXQuKVpX3m7fKmtuLYdsEF
+         tbmNyr7YofJzH50BI5txczXSl9a4fIlyznOJhNb57jyOF8EWEqff5a6bBBCpoNpnxA7J
+         dp+nDJOJo0aaKjJoVopVNA3mvCLqyJ8PPO6hQYAEr8I9UmSV7BZi0xcgRe7pF4JtGFPF
+         VIhscRQlyUw2v9dxslQMVjhcu6b8NyItLeZvNsQ0uplBB9wpXGeB2iHg2Pj4AWVG/OBI
+         L6+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751633559; x=1752238359;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0Fnp24A+F18p2VXKqfxoHkduyIpuB09MSbIN1sn/af0=;
+        b=pIifS7Qu+e9iUUfqq/+kV/nTHzRytHr0BQbrwcTiWjI+42HgZ5aG2tbttpbRVkEkqq
+         7opzf8wcm99i4EqEjHsbTfe2ecXPI6SqC+45as4YpC2nA5wdgad071HY9OJKQk/e3J+p
+         JjbXTd80y2Ww1K+6jo/3BnOPKsC2I0JaMdpAaNhV/0byYCTJ3PV2iOO9b/Q+NY0uhzCm
+         4M8it/PRB78D/hsDZXrgwQOptL4xCprZfxmR3hBT/0LE/UMEKzgWmhe5R2AfkV+nNrsr
+         f0Y+8+Xz4ACu/4ZI5WyIrnVI+nZnZhL+mwkx/h6k2VbkuNH19fowyeiW342izwDNv2va
+         4Jjw==
+X-Forwarded-Encrypted: i=1; AJvYcCU02lY3o5TSdtJeZ3Szf/59mUeCz4sv1/SrphnmtwfOztpPRKhd5mfvzHrqgjiird04qDRgZ6qVNL7gqWg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwH3U/U1KR54f5gNKDjxfAvOi/OSMTBXeIDxE1F9VXM4Rxdslb4
+	xsOFabdRoYPjBWbd4tPuE4lGO4Z8JIGSeb2GRvLjQCV/kbvZ5GtF95ffos0zCunb2dmUFg==
+X-Gm-Gg: ASbGncvJi3vPnFBSy3nNJI8O+hd46bQ0XyyLkgpqGfxINjd44i0qCCcTWDqsK2aGKAa
+	312XwMfGOhlYtY+6g3z0IY6LqoaMyj/j9zAQc7dwCad7n5IeKKAch4te2MFMLDbtgaiYGWvmrHa
+	OKl9xusVBTI1TeDS7BLlemjQhT2nKhSMbCXsuowOxXPXm96Ct1oOdlbrd9wTPjgKKHLdK9qSBim
+	56plTkHet2JQANWyyFy+sYM2qfY0XQ32jHhhT243hgW5GtspJN/8wAEFnldCieMKpwyxsisFQCl
+	+QSXP+XlX1PtKsycfBjSDuMVpYDD8fKTs5VHIPNBjiXIHjrNFIR4aTpcFmwUuD+vv5XUHN/cJMz
+	rTo584iOmRC34m26y3gPdA/CHiA/e2PaCpgpOs6lZOSPuivLmJmS/ciJh11zy4g==
+X-Google-Smtp-Source: AGHT+IFVmbHZUSILaEE/lAxcLbnmzBB8SiuydGw2FFP3jin7eyGZLSoBl6WUDvTGJQwVu3yzJWY5cg==
+X-Received: by 2002:a17:907:7249:b0:ae3:6708:941c with SMTP id a640c23a62f3a-ae3fbc2c1e0mr236415266b.6.1751633558609;
+        Fri, 04 Jul 2025 05:52:38 -0700 (PDT)
+Received: from legolas.fritz.box (p200300d0af416e00eb84418c678abf7e.dip0.t-ipconnect.de. [2003:d0:af41:6e00:eb84:418c:678a:bf7e])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f6b64f5asm166346066b.162.2025.07.04.05.52.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Jul 2025 05:52:38 -0700 (PDT)
+From: Markus Theil <theil.markus@gmail.com>
+To: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: davem@davemloft.net,
+	akpm@linux-foundation.org,
+	Jason@zx2c4.com,
+	Markus Theil <theil.markus@gmail.com>
+Subject: [PATCH v2 1/4] prandom: add usage comments for cryptography
+Date: Fri,  4 Jul 2025 14:52:30 +0200
+Message-ID: <20250704125233.2653779-2-theil.markus@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250704125233.2653779-1-theil.markus@gmail.com>
+References: <20250704125233.2653779-1-theil.markus@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,74 +79,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The auto-negotiation limitation for 2.5G and 5G speeds is no longer true
-for X550 successors like E610 adapter. Enable the 2.5G and 5G speeds in
-auto-negotiation for E610 at driver load.
+Make it more explicit, that the PRNG must not
+be used for cryptographic purposes.
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
----
-v1 -> v2
-  More details in commit message
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 35 +++++++------------
- 1 file changed, 12 insertions(+), 23 deletions(-)
+Future code may also check such things in checkpatch.pl,
+but it is probably hard to differentiate valid testing
+code only by looking at paths. Therefore this is left
+out here by intention.
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index d741164..b202639 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -1953,6 +1953,16 @@ int ixgbe_identify_phy_e610(struct ixgbe_hw *hw)
- 	    phy_type_low  & IXGBE_PHY_TYPE_LOW_1G_SGMII    ||
- 	    phy_type_high & IXGBE_PHY_TYPE_HIGH_1G_USXGMII)
- 		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_1GB_FULL;
-+	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_T   ||
-+	    phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_X   ||
-+	    phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_KX  ||
-+	    phy_type_high & IXGBE_PHY_TYPE_HIGH_2500M_SGMII ||
-+	    phy_type_high & IXGBE_PHY_TYPE_HIGH_2500M_USXGMII)
-+		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_2_5GB_FULL;
-+	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_5GBASE_T  ||
-+	    phy_type_low  & IXGBE_PHY_TYPE_LOW_5GBASE_KR ||
-+	    phy_type_high & IXGBE_PHY_TYPE_HIGH_5G_USXGMII)
-+		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_5GB_FULL;
- 	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_10GBASE_T       ||
- 	    phy_type_low  & IXGBE_PHY_TYPE_LOW_10G_SFI_DA      ||
- 	    phy_type_low  & IXGBE_PHY_TYPE_LOW_10GBASE_SR      ||
-@@ -1963,31 +1973,10 @@ int ixgbe_identify_phy_e610(struct ixgbe_hw *hw)
- 	    phy_type_high & IXGBE_PHY_TYPE_HIGH_10G_USXGMII)
- 		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_10GB_FULL;
+Signed-off-by: Markus Theil <theil.markus@gmail.com>
+---
+ include/linux/prandom.h | 2 ++
+ lib/random32.c          | 6 ++++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/include/linux/prandom.h b/include/linux/prandom.h
+index ff7dcc3fa105..63d1fe4b30c8 100644
+--- a/include/linux/prandom.h
++++ b/include/linux/prandom.h
+@@ -17,7 +17,9 @@ struct rnd_state {
+ 	__u32 s1, s2, s3, s4;
+ };
  
--	/* 2.5 and 5 Gbps link speeds must be excluded from the
--	 * auto-negotiation set used during driver initialization due to
--	 * compatibility issues with certain switches. Those issues do not
--	 * exist in case of E610 2.5G SKU device (0x57b1).
--	 */
--	if (!hw->phy.autoneg_advertised &&
--	    hw->device_id != IXGBE_DEV_ID_E610_2_5G_T)
-+	/* Initialize autoneg speeds */
-+	if (!hw->phy.autoneg_advertised)
- 		hw->phy.autoneg_advertised = hw->phy.speeds_supported;
++/* WARNING: this API MUST NOT be used for cryptographic purposes! */
+ u32 prandom_u32_state(struct rnd_state *state);
++/* WARNING: this API MUST NOT be used for cryptographic purposes! */
+ void prandom_bytes_state(struct rnd_state *state, void *buf, size_t nbytes);
+ void prandom_seed_full_state(struct rnd_state __percpu *pcpu_state);
  
--	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_T   ||
--	    phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_X   ||
--	    phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_KX  ||
--	    phy_type_high & IXGBE_PHY_TYPE_HIGH_2500M_SGMII ||
--	    phy_type_high & IXGBE_PHY_TYPE_HIGH_2500M_USXGMII)
--		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_2_5GB_FULL;
--
--	if (!hw->phy.autoneg_advertised &&
--	    hw->device_id == IXGBE_DEV_ID_E610_2_5G_T)
--		hw->phy.autoneg_advertised = hw->phy.speeds_supported;
--
--	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_5GBASE_T  ||
--	    phy_type_low  & IXGBE_PHY_TYPE_LOW_5GBASE_KR ||
--	    phy_type_high & IXGBE_PHY_TYPE_HIGH_5G_USXGMII)
--		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_5GB_FULL;
--
- 	/* Set PHY ID */
- 	memcpy(&hw->phy.id, pcaps.phy_id_oui, sizeof(u32));
- 
+diff --git a/lib/random32.c b/lib/random32.c
+index 24e7acd9343f..c808745a4b53 100644
+--- a/lib/random32.c
++++ b/lib/random32.c
+@@ -1,5 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
++ * WARNING: this API MUST NOT be used for cryptographic purposes!
++ *
+  * This is a maximally equidistributed combined Tausworthe generator
+  * based on code from GNU Scientific Library 1.5 (30 Jun 2004)
+  *
+@@ -48,6 +50,8 @@
+  *
+  *	This is used for pseudo-randomness with no outside seeding.
+  *	For more random results, use get_random_u32().
++ *
++ *	WARNING: this API MUST NOT be used for cryptographic purposes!
+  */
+ u32 prandom_u32_state(struct rnd_state *state)
+ {
+@@ -70,6 +74,8 @@ EXPORT_SYMBOL(prandom_u32_state);
+  *
+  *	This is used for pseudo-randomness with no outside seeding.
+  *	For more random results, use get_random_bytes().
++ *
++ *	WARNING: this API MUST NOT be used for cryptographic purposes!
+  */
+ void prandom_bytes_state(struct rnd_state *state, void *buf, size_t bytes)
+ {
 -- 
-2.47.1
+2.49.0
 
