@@ -1,117 +1,97 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEEC29A2;
-	Fri,  4 Jul 2025 19:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFB622FF2E;
+	Fri,  4 Jul 2025 19:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751657950; cv=none; b=YvITq0GhmxCmz2YjxRiqD8msv8gD2t0z8nQ8OH0Mrv31A9Cbm0sOmjOBkuGJxRGCnqfONhOIytgA20oOPdQecOZ8eKQtZSiDguEyg3rvPQpANpShOF7V+TfRt/KKhlBz6D5gLXFtzQtFvxynq2D4x3nEhEtZnes9ZxipAnbeLj4=
+	t=1751657959; cv=none; b=cYIH0D+I7DHhCpTgExR4RLiFESg83+Lt6ktc9vAIoP/I2k+u7JmGKiDbLL+BSk/o5bXbIsbaTLT1hwqe5keLScpVPm2yxN5au3f1oEKk3TubN7J0QnP56cV1AStB7H8+ZC9EZD2EGYJ4OhrhTgofxH1XeoytZTZlNxdpqfoaZao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751657950; c=relaxed/simple;
-	bh=q6BEyCDqiSgiBGBJ1ZkhyuwdBxeuGxHXg+GwZGubRJQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dn+m5rqJZqyMcWYlzBMAzGQbbHi1qQ581TufEyw9ntmcbgmnfGuO365k3EzAE1YQQrh8kCg1Ub97XAZSkt0WG6xSrquPN+Y9S9pGj5odYpzx4c7NIG8FzUJskaAxumtVd4qR1q1hrdP5z/sxvaNk39qC+H5Ei536L86tW86SuC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BAjRjh7j; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BAjRjh7j"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-32f1763673cso2316651fa.3;
-        Fri, 04 Jul 2025 12:39:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751657947; x=1752262747; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q6BEyCDqiSgiBGBJ1ZkhyuwdBxeuGxHXg+GwZGubRJQ=;
-        b=BAjRjh7jTxKEoLjNB7YkhK6JOHUiR4yOAnewAG1iTIdaTi/J7aeXGbYdIpZkCItNVk
-         H9HulQ96lxlhUmUGfBTNQkK++CEQVjDthN88nM5KHpwLD//Ka1dq7m6ejfGpnQTbY5hN
-         lDpx4Nrx2y3BO5jm9i7vRZoJ0QcQSn5dDEbbMkTnQZoihJM9TIASkPkxqYDG93e5qk1+
-         cI3hHs6QIrhD0sOGLoJ/nbaRumY2qt3u09iAFvwRpnm0gN81h4xKTaTxfyyMk4hJxYcR
-         qF/2L59gVc9Ne2ngC0B/TthIZU1VLfGtjfD3Vlp4FB/qS0nt9gfkGGETN8nVHlFcGZ6H
-         lDAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751657947; x=1752262747;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q6BEyCDqiSgiBGBJ1ZkhyuwdBxeuGxHXg+GwZGubRJQ=;
-        b=IaqpVJohbnDCOnP88IHSYnX7ZTnJIoegh7XcbTji56aAmzDRpBj83vBr2TFLMPXFaq
-         xMoTWGZ33DjOs6P9V/VVC1HMH9a9iwVNH/aWWXJ8UiWRaHrike0sv3SMyD/P582BT6dh
-         cU27egH8PjguSYHGK0OWPWr7HcmuOJTWRty+in+n9jSquLg+PIWZGS6JXJFt7uwaRq4c
-         zAkinS9Cv9ixQ22DovMgxBKgk4ZOs1r9MR49tKYJRHYgqBi6eDvbjVfWXoobbIf8kfXW
-         kwkGF+r3Tb7e2LExYdTaGAJ2fO2Fpd01oMSp5dslHYDX05f4nFwZmGJzTUbhpnmt3rXW
-         JudA==
-X-Forwarded-Encrypted: i=1; AJvYcCUFX1yQR5Gy0D2vn8A7oX6GPP/ZoJLtWQV0Mkc6YB6Qy4sjVo8m97bXaxdIJPmtUvecgDlp39vbeegZh+Y9@vger.kernel.org, AJvYcCUeun0WHfxLTRgwCCEuuermHz3kaZhIuFmnWOrbJS/B+E9o7fnTMzdhf8odKrxFdF/a6dSTugt+3Osh@vger.kernel.org, AJvYcCV67WaFXOfXlINeCDqsuFEUVZZ3QDQfv/cc27sn8aynfwnRCkQjDb3rOaFeu4djB4p8gHsAfpurGto=@vger.kernel.org, AJvYcCVL6qUMiKwANjyZkOGDFsKbUoV5+pShAOss0mMEctxin84QBcDvjf9zzyp92NUYghk5tQPa+qMKYrqSPgmFj5g=@vger.kernel.org, AJvYcCVm3oi71RWSx2vCpaLghA+H1GakJpWU+SK+PVOdonfc2GiBGIEhPRXGBxIbnURvda7M/34+W208sL82DEGCY9uy@vger.kernel.org, AJvYcCVxIz8+T7b83BBbcpsbmZdhfOviJlazOdGwi6NpHGzug2DA/rGbCHRGh1DSW29J960nETNaf+fD@vger.kernel.org, AJvYcCW+zRlnvQ0fNPAntXP9d2kky5PrpL3PAFSuK1UXt4yNDgxK8l3h8HscIygSVDfbgiCK85xMyjlLH1RK@vger.kernel.org, AJvYcCX1GyUdSv8EZZNODwoO1/xHNsY1MsuF6BAF92INiQj1UdNqo4d0KOL7S5GJbi+psf7+vnHFtbF/xrhT@vger.kernel.org, AJvYcCXRaVdLRaeSHf9Q3/fHevNInNdg2tQbyhoICcpJxGGx/DCjZBlVSdNzCK+CTS31y5vwyIkbU0ZQ+n6fsmU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgN0mLzyn2NkpQ4+Pt0B675Nz1DQ6556IRcojifBSe5JEYv9EJ
-	xz8NKtMcpiavc2oU9nPcXOImUl2TiNSsujBmOpSrh/6GKJBRu3ukeu5CBNWrLQ47vhAr2RDOrOa
-	WtXmjRNKDhwI2d3xt5Xo+HgEQXszKUAg=
-X-Gm-Gg: ASbGncu2fW9300SCJo0yssn3RRZvzhqjJsEuCHLVSiAXpvMwoyNDyTz7QrP8keGDCVL
-	7koAubqo+hZlzTnTX6h8ssvITInLEZ1dgrt2N95haaliYNt21Xe61IYPhbxUS6J0GtfG+ZNsPC+
-	4RbiEytX288bFgYtKB0h7dahX77mdEcXF486CeeymBauO7j+6j0g9vpoO8KQg9iSgThO8Yvzs92
-	9S5Hw==
-X-Google-Smtp-Source: AGHT+IELI7uW8JvZwN3QEoftXB7GsVNoqVv/ET67tZt2kJkg2u9kQKOlY5/6R0W6vFvmdwe3YBxK7+LcpnDSocUkLi4=
-X-Received: by 2002:a2e:a554:0:b0:32b:43a3:68a1 with SMTP id
- 38308e7fff4ca-32efb0afa55mr11642311fa.0.1751657946651; Fri, 04 Jul 2025
- 12:39:06 -0700 (PDT)
+	s=arc-20240116; t=1751657959; c=relaxed/simple;
+	bh=lPHtRsVC8ACE7H3Qk0sZVKAmOHVHICOKr2a/g9a9GZ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y/+lD+4zbOv3dnjhZC2jfeCiI+XDlMbzhKqra9UXHuvis93kxxOdR0R3hgWm3NHujny1af1s1vpTJvZ5NN6DIVZMxMKA4mU8o5BCIiOK4rFWm7sVIJVYulN+CHrSor9hdgAMcIB93Ckyt+LQlI34aTrfQa3cr8QjRdV5/TMewmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id DA62561260; Fri,  4 Jul 2025 21:39:13 +0200 (CEST)
+Date: Fri, 4 Jul 2025 21:39:13 +0200
+From: Florian Westphal <fw@strlen.de>
+To: Eric Woudstra <ericwouds@gmail.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
+	bridge@lists.linux.dev, netdev@vger.kernel.org
+Subject: Re: [PATCH v13 nf-next 1/3] netfilter: utils: nf_checksum(_partial)
+ correct data!=networkheader
+Message-ID: <aGgt4dUF2AsDXzdX@strlen.de>
+References: <20250704191135.1815969-1-ericwouds@gmail.com>
+ <20250704191135.1815969-2-ericwouds@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
- <20250701-cstr-core-v13-4-29f7d3eb97a6@gmail.com> <DB3AGL1QO4M4.2HANWHX9TF9WN@kernel.org>
-In-Reply-To: <DB3AGL1QO4M4.2HANWHX9TF9WN@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 4 Jul 2025 15:38:30 -0400
-X-Gm-Features: Ac12FXwvxhLPYgvBPM4F9xT26zkuHTZMocL5-5BvcjZhSL1NesztAaUplyK7LaY
-Message-ID: <CAJ-ks9kcW8PzUWPmwo-WQ1dJTgoXTvY6G8UppsLKehf9O0bUqQ@mail.gmail.com>
-Subject: Re: [PATCH v13 4/5] rust: replace `kernel::c_str!` with C-Strings
-To: Benno Lossin <lossin@kernel.org>
-Cc: Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-pci@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	linux-block@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250704191135.1815969-2-ericwouds@gmail.com>
 
-On Fri, Jul 4, 2025 at 9:01=E2=80=AFAM Benno Lossin <lossin@kernel.org> wro=
-te:
->
-> On Tue Jul 1, 2025 at 6:49 PM CEST, Tamir Duberstein wrote:
-> > C-String literals were added in Rust 1.77. Replace instances of
-> > `kernel::c_str!` with C-String literals where possible and rename
-> > `kernel::c_str!` to `str_to_cstr!` to clarify its intended use.
->
-> These two things can also be split? And it should also be possible to do
-> this by-subsystem, right?
+Eric Woudstra <ericwouds@gmail.com> wrote:
+> In the conntrack hook it may not always be the case that:
+> skb_network_header(skb) == skb->data.
+> 
+> This is problematic when L4 function nf_conntrack_handle_packet()
+> is accessing L3 data. This function uses thoff and ip_hdr()
+> to finds it's data. But it also calculates the checksum.
+> nf_checksum() and nf_checksum_partial() both use lower skb-checksum
+> functions that are based on using skb->data.
+> 
+> When skb_network_header(skb) != skb->data, adjust accordingly,
+> so that the checksum is calculated correctly.
+> 
+> Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+> ---
+>  net/netfilter/utils.c | 22 ++++++++++++++++------
+>  1 file changed, 16 insertions(+), 6 deletions(-)
+> 
+> diff --git a/net/netfilter/utils.c b/net/netfilter/utils.c
+> index 008419db815a..daee035c25b8 100644
+> --- a/net/netfilter/utils.c
+> +++ b/net/netfilter/utils.c
+> @@ -124,16 +124,21 @@ __sum16 nf_checksum(struct sk_buff *skb, unsigned int hook,
+>  		    unsigned int dataoff, u8 protocol,
+>  		    unsigned short family)
+>  {
+> +	unsigned int nhpull = skb_network_header(skb) - skb->data;
+>  	__sum16 csum = 0;
+>  
+> +	if (!pskb_may_pull(skb, nhpull))
+> +		return -ENOMEM;
 
-Yes.
+Hmm.  Not sure about this.  We should really audit all conntrack users
+to make sure the network header is in the linear area, i.e.
+ip_hdr() and friends return the right value, even though skb->data !=
+skb_network_header().
+
+Such may_pull, in case of skb->head reallocation, invalidate a pointer
+to e.g. ethernet header in the caller.
+
+No idea if we have callers that do this, I did not check, but such
+"hidden" pulls tend to cause hard to spot bugs.
+
+Maybe use
+       if (WARN_ON_ONCE(skb_pointer_if_linear())
+		return 0;
+
+instead?  That allows to track down any offenders.  Given conntrack
+takes presence of the l3 header in the linear area for granted, I don't
+see how this can ever trigger.  You could also use
+DEBUG_NET_WARN_ON_ONCE if you prefer, given this condition should never
+be true anyway.
