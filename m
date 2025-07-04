@@ -1,132 +1,134 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D738038FA3;
-	Fri,  4 Jul 2025 12:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DC92D8DB1
+	for <netdev@vger.kernel.org>; Fri,  4 Jul 2025 12:52:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751633218; cv=none; b=oiODozOc/mgvGiMAqFl9q3Kpl22L6BAysok5L4lirBZrRxdhLzn1YR/J42K4V7LcI2vBL7Sj0jMAc6dCLHI5u+5ZpoXlXv50baXdgVlRdpKixEw5wAZSvPuRxhINgz0R3Nrk2C7j98UKNHIu4YhwIk92y6B2J/Umb0uZNgmoLzU=
+	t=1751633535; cv=none; b=X+a0UDU735J7SGxA5XkGAIGLfv7fGRUQGUT5xE9d1KFd0jEmw7a63XjgBXObNRgSLb9QF/ZNwOyJ8/fC+DwDTW8ahBFDG5+MYsZ2m0GhR/Y06OHJthPTqj8U7J6KsN99FRHPzBQ4umq0ZW1yicdtSXoNE9AHbZj8eMxy6U7hBVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751633218; c=relaxed/simple;
-	bh=1rk86AvntVp/KK+qQBI5h2T2wnKgP6ZYTlqIVUIc8hY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=csJWBCVXjsSVxW7CPC1Lad7ipmobewzSvI4dKYO0M4+uflsqhduYSkmYD6BbomR53DZlCQH33e9Z0lwsXsmLMydoB13JA2t8Uoy5/v/BJtY7SL+wHi20o6PSm/CwQsNnfDhcHBdF2TF7K5ebE7imTInQrVZwqIirSF6Br6zdRaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MG0DJeXC; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1751633535; c=relaxed/simple;
+	bh=UpJO7tHztgaENI7GQIg23EKFxr+O+WGUa8QjAu6KUcw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dMiixYBXiy7IcahsVt33xUlecwO7rsIUQ9ZdsmaPKwu33vMecTdspEr+uzmyX1mwJnUIDijeMHjzoNDPxDtF+RoJ9AraQxAquIHKKuDX525ab2v045ajdKrEJsylr+S44VK+pBuLV1LobDeAnLPF4Zxko5v24Jplwd0zjmJ4zZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tq+A+qyO; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MG0DJeXC"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 247C743277;
-	Fri,  4 Jul 2025 12:46:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751633213;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Blod6Od3CkwpUAIdzJOd3oqDn6Iow/ARCeXK46AAgOA=;
-	b=MG0DJeXCi8aE5SYxQhke7ORPyHtu/OVya3p4KdhSUssSkrxEbj9bzoYQchj7ZYpDXsQ5Tg
-	AR6dExpLGnUAm8h/oNK4bMblTSIzDaRdRm1Yym94be0zLqTgtYoJoquvm3rfsHskdntbxk
-	lql01891TvwR8M2vUF2l265LsD+OSSa90KCT/PYQWLN+aJfcLfEE7QUk5oYruvpA2qihNU
-	YPkaO/2twXRxQnwyfqI1ZwP07qvp6HiZA0YA4w1SvJjwFOyxh82NCjCKC23yF5rH+SeIkT
-	BjMoSPymEgRV83TsK2Bg0sTmONPwA7z7NBsZDpiYdG5GIQKOQ0aHoPRw34+IrA==
-Date: Fri, 4 Jul 2025 14:46:51 +0200
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Simon Horman <horms@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com, Andrew Lunn
- <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
- <linux@armlinux.org.uk>, Florian Fainelli <f.fainelli@gmail.com>, Heiner
- Kallweit <hkallweit1@gmail.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
- =?UTF-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>, Oleksij Rempel
- <o.rempel@pengutronix.de>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next 1/3] net: netdevsim: Add PHY support in
- netdevsim
-Message-ID: <20250704144651.064e3c28@fedora.home>
-In-Reply-To: <20250704124336.GL41770@horms.kernel.org>
-References: <20250702082806.706973-1-maxime.chevallier@bootlin.com>
-	<20250702082806.706973-2-maxime.chevallier@bootlin.com>
-	<20250704124336.GL41770@horms.kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tq+A+qyO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751633534; x=1783169534;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=UpJO7tHztgaENI7GQIg23EKFxr+O+WGUa8QjAu6KUcw=;
+  b=Tq+A+qyO2+fmZsGqQCUAY80i+Om6a1szIsDk1Iy9KjodoRTbgh/9w5ZS
+   8/Y+ntgI4HeIknwTJKZKY+3ypKivroLDZ2+BwG9FunFje3x73KaHlNwL6
+   0ViFV8UUXnl+NR6tNQAH7ZeQPd9JzjIRgCkm8j0cQcwja2Su6ig0cEOQa
+   MIGoGetrsV3f0qaycOY85F4DJ8ZQfaQXZWz/lL4KA1F5izMYK9pMb6X83
+   SoXb2gXPhSXOdHTNvZA0U04U95wMNkCSXmqWHEXDCM/3WdG6nfxExHeH/
+   cQ0hD4tsCmJC+cnbtNcejqGpsjKCwrWwMKvBe97ttJxIsYltr5wjfFBzy
+   g==;
+X-CSE-ConnectionGUID: thcRETOgQgqS6ces+f5UZw==
+X-CSE-MsgGUID: nmCUqVj7RLqDQ2zDKnjQbg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="64660138"
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; 
+   d="scan'208";a="64660138"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 05:52:13 -0700
+X-CSE-ConnectionGUID: UvMSU6XUScas0Yn5Y0BKvQ==
+X-CSE-MsgGUID: ClfXJyNQStOm6u6sB87fig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; 
+   d="scan'208";a="154764656"
+Received: from amlin-018-252.igk.intel.com ([10.102.18.252])
+  by orviesa007.jf.intel.com with ESMTP; 04 Jul 2025 05:52:11 -0700
+From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	andrew@lunn.ch,
+	pmenzel@molgen.mpg.de,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [iwl-next v2] ixgbe: add the 2.5G and 5G speeds in auto-negotiation for E610
+Date: Fri,  4 Jul 2025 15:06:24 +0200
+Message-ID: <20250704130624.372651-1-piotr.kwapulinski@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddvfedulecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegveeltddvveeuhefhvefhlefhkeevfedtgfeiudefffeiledttdfgfeeuhfeukeenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedujedprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrt
- ghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhm
-X-GND-Sasl: maxime.chevallier@bootlin.com
+Content-Transfer-Encoding: 8bit
 
-Hi Simon,
+The auto-negotiation limitation for 2.5G and 5G speeds is no longer true
+for X550 successors like E610 adapter. Enable the 2.5G and 5G speeds in
+auto-negotiation for E610 at driver load.
 
-On Fri, 4 Jul 2025 13:43:36 +0100
-Simon Horman <horms@kernel.org> wrote:
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+---
+v1 -> v2
+  More details in commit message
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 35 +++++++------------
+ 1 file changed, 12 insertions(+), 23 deletions(-)
 
-> On Wed, Jul 02, 2025 at 10:28:03AM +0200, Maxime Chevallier wrote:
-> > With the introduction of phy_link_topology, we have the ability to keep
-> > track of PHY devices that sit behind a net_device. While we still can
-> > only attach one single PHY to a netdev, we can look at all these PHYs
-> > through netlink, with the ETHTOOL_MSG_PHY_GET command.
-> > 
-> > Moreover, netlink commands that are targeting PHY devices also now
-> > allow specifying which PHY we want to address in a given netlink
-> > command.
-> > 
-> > That whole process comes with its own complexity, and a few bugs were
-> > dicovered over the months following the introduction of  
-> 
-> Hi Maxime,
-> 
-> As it seems like there will be a v2 anyway: discovered
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+index d741164..b202639 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+@@ -1953,6 +1953,16 @@ int ixgbe_identify_phy_e610(struct ixgbe_hw *hw)
+ 	    phy_type_low  & IXGBE_PHY_TYPE_LOW_1G_SGMII    ||
+ 	    phy_type_high & IXGBE_PHY_TYPE_HIGH_1G_USXGMII)
+ 		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_1GB_FULL;
++	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_T   ||
++	    phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_X   ||
++	    phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_KX  ||
++	    phy_type_high & IXGBE_PHY_TYPE_HIGH_2500M_SGMII ||
++	    phy_type_high & IXGBE_PHY_TYPE_HIGH_2500M_USXGMII)
++		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_2_5GB_FULL;
++	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_5GBASE_T  ||
++	    phy_type_low  & IXGBE_PHY_TYPE_LOW_5GBASE_KR ||
++	    phy_type_high & IXGBE_PHY_TYPE_HIGH_5G_USXGMII)
++		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_5GB_FULL;
+ 	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_10GBASE_T       ||
+ 	    phy_type_low  & IXGBE_PHY_TYPE_LOW_10G_SFI_DA      ||
+ 	    phy_type_low  & IXGBE_PHY_TYPE_LOW_10GBASE_SR      ||
+@@ -1963,31 +1973,10 @@ int ixgbe_identify_phy_e610(struct ixgbe_hw *hw)
+ 	    phy_type_high & IXGBE_PHY_TYPE_HIGH_10G_USXGMII)
+ 		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_10GB_FULL;
+ 
+-	/* 2.5 and 5 Gbps link speeds must be excluded from the
+-	 * auto-negotiation set used during driver initialization due to
+-	 * compatibility issues with certain switches. Those issues do not
+-	 * exist in case of E610 2.5G SKU device (0x57b1).
+-	 */
+-	if (!hw->phy.autoneg_advertised &&
+-	    hw->device_id != IXGBE_DEV_ID_E610_2_5G_T)
++	/* Initialize autoneg speeds */
++	if (!hw->phy.autoneg_advertised)
+ 		hw->phy.autoneg_advertised = hw->phy.speeds_supported;
+ 
+-	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_T   ||
+-	    phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_X   ||
+-	    phy_type_low  & IXGBE_PHY_TYPE_LOW_2500BASE_KX  ||
+-	    phy_type_high & IXGBE_PHY_TYPE_HIGH_2500M_SGMII ||
+-	    phy_type_high & IXGBE_PHY_TYPE_HIGH_2500M_USXGMII)
+-		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_2_5GB_FULL;
+-
+-	if (!hw->phy.autoneg_advertised &&
+-	    hw->device_id == IXGBE_DEV_ID_E610_2_5G_T)
+-		hw->phy.autoneg_advertised = hw->phy.speeds_supported;
+-
+-	if (phy_type_low  & IXGBE_PHY_TYPE_LOW_5GBASE_T  ||
+-	    phy_type_low  & IXGBE_PHY_TYPE_LOW_5GBASE_KR ||
+-	    phy_type_high & IXGBE_PHY_TYPE_HIGH_5G_USXGMII)
+-		hw->phy.speeds_supported |= IXGBE_LINK_SPEED_5GB_FULL;
+-
+ 	/* Set PHY ID */
+ 	memcpy(&hw->phy.id, pcaps.phy_id_oui, sizeof(u32));
+ 
+-- 
+2.47.1
 
-Thanks :)
-
-> > phy_link_topology.  
-> 
-> ...
-> 
-> > +static struct phy_driver nsim_virtual_phy_drv[] = {
-> > +	{
-> > +		.name			= "Netdevsim virtual PHY driver",
-> > +		.get_features		= nsim_get_features,
-> > +		.match_phy_device	= nsim_match_phy_device,
-> > +		.config_aneg		= nsim_config_aneg,
-> > +		.read_status		= nsim_read_status,
-> > +	},
-> > +};
-> > +
-> > +module_phy_driver(nsim_virtual_phy_drv);  
-> 
-> I see that this has been flagged by Kernel Test Robot,
-> but as I had already written most of this it seems worth sending anyway.
-> 
-> I am somewhat guessing at the why here, but
-> I see build failures with this patch applied:
-> 
-> ld: drivers/net/netdevsim/phy.o: in function `phy_module_init':
-> phy.c:(.init.text+0x0): multiple definition of `init_module'; drivers/net/netdevsim/netdev.o:netdev.c:(.init.text+0x0): first defined here
-> ld: drivers/net/netdevsim/phy.o: in function `phy_module_exit':
-> phy.c:(.exit.text+0x0): multiple definition of `cleanup_module'; drivers/net/netdevsim/netdev.o:netdev.c:(.exit.text+0x0): first defined here
-> 
-> I am guessing that this is because above module_phy_driver() will define
-> init_module and phy_module_exit functions.  But the following lines near
-> the end of drivers/net/netdevsim/netdev.c also define functions with those
-> names.
-> 
-> module_init(nsim_module_init);
-> module_exit(nsim_module_exit);
-> 
-> ...
-
-I just received the kernel test robot report indeed :( Thanks for the
-investigation ! I'll rework that part, sorry about that :/
-
-Maxime
