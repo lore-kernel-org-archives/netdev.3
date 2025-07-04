@@ -1,130 +1,122 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E312874EF
-	for <netdev@vger.kernel.org>; Fri,  4 Jul 2025 09:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B222EA494
+	for <netdev@vger.kernel.org>; Fri,  4 Jul 2025 09:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751620653; cv=none; b=eO/iD6fftBLXSuSNg6+lUJC+iqssg8qGbiub9nJauFnPcSZQPZhzNhpy/RMZyBPMhmohc5oWWpmVxX3hB4nzEEkxV1ZUXHCXt4ejloCGNiqdp/wEUmyUedXV99CpYc6Ug8MrGAoDSCcPhRfuFVJUNNcASqmDdicY6hEOsGkXxj4=
+	t=1751620699; cv=none; b=RmMMcq1dU+KqtGIF4vwKg/l64WjR/ZEfq8mPTFf6Aush8QArOgMkqC+nxY+vrrhXWxg0f5w/PJLFwgrO8B5VxysFu+uBK6sewV4owU9Lf35HeK7BWNlwn39FciLesoID4Kcr5EX0tl475bgIlgc0rDMp0AmPCiq4neJY2y2M8KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751620653; c=relaxed/simple;
-	bh=nen0FQiNOdfZO4Q56xpz10TT78TaPWD+VpCvGeEfP+A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N9j8W+uEaGFvlJhPWEbxn5AHuQvQkOR7R8ZRswKbWFt0PIzxSPNxzQEb+JDWlFKV5BMp8w73quBMoIeIm4wReSgMd8XnbSSMTXF0F8LWn3WzX+Gx67Hl6HKx0CA5BRfYmPF2u5/YruRm+AM6AnfKiw6CMwWIs50sAK6974Q8z8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=UA9K8fHW; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1751620699; c=relaxed/simple;
+	bh=0zuS3RWBtUBodtvkf/ojgcQxdAESeriLKOF0Zsh0LuY=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=d268uJEphWmCZJAPL6cwPCE8CSX/MNt15X09UBMINfc4Y5cA+HwyGin8u8vLGnDmhaIXi4t85n0j+CR60RpPYLDJvS6IH/ZgUZFxZRfWg4LA7hwrHmC3QYD5YkS/PkdNevSXY73QPYwEMvqN3ef9JS2HaB970K/ISBQl+TiXh8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=Pq2h8jR9; arc=none smtp.client-ip=162.62.57.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="UA9K8fHW"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-453749aef9eso2341395e9.3
-        for <netdev@vger.kernel.org>; Fri, 04 Jul 2025 02:17:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1751620648; x=1752225448; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vXvwDn7itTHGGZLWAaah4dYCYgTFq/tKhFwCa5qaWyo=;
-        b=UA9K8fHW/T6xt5r4Jv+OjNYodBPJ4e0KrAw4V+XrQlCvpdZG/AEbyr8rvXdQBHwwZ7
-         UP3aPuNXQSU6LX4IkLCAmkbdLkRW5Ei4PWLNelGMfCVnRpJA8wGH29HFyVzpEBKsCtBm
-         RmKChBIVmNYTNjS2UbBOrp0FsFkvy8j1wzKJZ29YCgf3m1G69/wCSlYJxfLkfBkLnwpZ
-         ZoyURvBStFdMAEUITtvqzBig1gXMjJgane3J3u1seV++41zx0HVSLdS3TjgR3m/zM28t
-         7LBIvrj4E2YqlejXmf4BTzcRpTRd6B27ZEukG0HNYoz22RLkEvuNI2/P1eXfV8kAEEqx
-         Ttsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751620648; x=1752225448;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vXvwDn7itTHGGZLWAaah4dYCYgTFq/tKhFwCa5qaWyo=;
-        b=umVRLYDRllziBEUvMJd5stJ7v0SGzOvCEbOJmFealT03OJBJGuZYSVkF+FStfYbkU0
-         yzPyb9R/0hKNmtk3OhDlzzieAyJ/ZYqJ1Unpjd30ZLXgoUfkhJ+vJPeYJADUc18sYMI/
-         h+AnN3iMiOzs2JEiQ4w4xg/1PYqC9anPwZfsEtBw0CzaFKAh4H98TCroNPi3BvdeB9Ge
-         qivW/vv2HBcSFDueFAK5nx5OVdcJWdsSV97g1jklmMTh5jTwZLgrzxHxD8IdhnGhAsRI
-         raMxknCbI/xj8EZlY5NxWpRbK1T5lh3961mMWVaA26vKU/TMqnQBK1mFRzNpu/OouBM2
-         azWw==
-X-Forwarded-Encrypted: i=1; AJvYcCW+QIbJ6rSoQivhV0pmKDQQGNE2niMdgQz2KHtfunprdR3YT6BcIGCeK8dzBgiPKO4ay9ZWRsc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWMIQTi5wCtOEgORWuSmqMq5a6p69cJEMJVen/w9GaYG55szbM
-	4eG4/dRBuaBfRPnhSrqtkKAb96J6yMFF9N71v5a3QRQujFqToG1XRhdOsBORYaYH7+c=
-X-Gm-Gg: ASbGncsmD4kcKm0JVqC/f7HnQfcpU6a8gAjGobmL8DhsP/zWDqY97F1ZWaF0L+zMwrh
-	DxRghfNwvTTGsp2gqO2cVsT034Um6htv6Cmd7QRAu6ITd8FYzSZpyiT47a1qL9sTZBmBQddvFVl
-	DggdsajBos7J3CDfJekm4smE3eeWp5zJ6ZZZivmiiWrQ18ec75KbgRdv1LD3NU3IKYABdGlYjUQ
-	/pVcw8iVB7aKbP6NTrYstvJgksSuwoB5KGDL1iP8rSFKccnp492CF1g4RKQO1WwFuYqpa5hmNtr
-	dt0k71GIAq/sWrK3vd0m1nSz/7pTasrHeE8W2/+tbJ5xd2HXLXRVVXMAWnmxh5GayC2Klw==
-X-Google-Smtp-Source: AGHT+IFD4sOgB0QaLEA+zQ5wvucnFk0w/y8zzg8ON1aekW0QpH8D16ZTT07LE/HlxqbKBTMJuFlcrQ==
-X-Received: by 2002:a5d:588e:0:b0:3a5:8cc2:a4a1 with SMTP id ffacd0b85a97d-3b4964e2afcmr1633764f8f.39.1751620648183;
-        Fri, 04 Jul 2025 02:17:28 -0700 (PDT)
-Received: from jiri-mlt ([193.47.165.251])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b47030b9desm2014594f8f.19.2025.07.04.02.17.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Jul 2025 02:17:27 -0700 (PDT)
-Date: Fri, 4 Jul 2025 11:17:23 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com, 
-	netdev@vger.kernel.org, david.kaplan@amd.com, dhowells@redhat.com, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: Re: [PATCH iwl-net v1 1/2] devlink: allow driver to freely name
- interfaces
-Message-ID: <my4wiyu5dqlalt45e5pz2dfhjm3ytbnshhhjqlcdetp357z7u6@zvnq7wfcunlv>
-References: <20250703113022.1451223-1-jedrzej.jagielski@intel.com>
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="Pq2h8jR9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1751620690;
+	bh=TmZzzFDNWWd+HL9IKxavp2on0YiqSG6V5RQgmiQWl38=;
+	h=From:To:Cc:Subject:Date;
+	b=Pq2h8jR9FtAiClHIuBqLCbZp8HdH53ngCqY2l7c5QN3Zc/z0g6n9ts8NTMP5d1Wrs
+	 vE+5kYQ25s4RldjFQS3QXv60liRodgbXhsTeBQ8L+XXwexNr316YD0pNQzZ58p3xxJ
+	 Aqp3B5q3Ph+rwXTFKBaD5FLxhZS5XhWr+Kexdv2Q=
+Received: from leon-ssd.. ([2409:8762:315:25:f201:17a2:7f4f:c156])
+	by newxmesmtplogicsvrszc13-0.qq.com (NewEsmtp) with SMTP
+	id 2A736660; Fri, 04 Jul 2025 17:10:39 +0800
+X-QQ-mid: xmsmtpt1751620239tg1xl9jxa
+Message-ID: <tencent_87F4A935227D7FACE9A05E681FC13882F40A@qq.com>
+X-QQ-XMAILINFO: MRMtjO3A6C9XodI9PW+wxkOMr+IvwK49eI2hQONPfw0xcFsTGuhN1VbZLgSues
+	 P1AaFSrJ6yLtqeQz8WAdShrbfLpR/8zTKQ+13RzxpTcmjcZ+CRaF54jjuh2tuxkHjU2CqgWSUoDf
+	 X3+cckEKq8QfUukLt4a0tI02vP6EHwyymd2a+xQh8edjB/0HepEcwe8chn4Di9FYEm1fj04uCogT
+	 K0uE5Ql3EHPPzidjEtfAgkNXZKUNeeod7OEwa6TJ0RglWHcSBgEZ2ST32zTVTQGjFOrxrM+9P7iA
+	 PHsyM74qr4Iuj3cKcMzahIiXyyQUysmF45EeyIAVCT1e6vlPfv8OjpdWjAwli91ehLi0/UCHn6o6
+	 /Ed88H+nmSmx0o5P8FfzYeUoKD81Rz9e7AHvoJ/gEjrltFBSPYzl/VcrVE5YcD9Tu2p2YdGXqSdG
+	 XvqwSztJApVLWaoE8Obe7hl091BxoMsfYns5KFjG2HwJ//ysGm6OIDNu82vH+i5UCnsT1X1QGYvn
+	 5Z5jqJvsWYw57ogX7HDGBOO/STqOUr7sdHBjXmEduRkYNbXM5YPDP1pRtee+wBDIN0srmfpq9xD2
+	 3uh17AMifUq2WI7No9R5X3UrJQzixrvYLH+8OnUFWlXDH+ZiHqRXru9uMihLLhpVokulpuEqVPd2
+	 cwZ0JPePaL124wxE5yrNRDi+QWZ4S1GDPgpCuFw1yLHnRZZj89tII41ly/PV25kUIu/HyfQ0TvE2
+	 AWiTKzSxA7RxLPI9PqL8VCdlQyU3Q28oEy5xJJ9W4C89yJLRJagmkSDlRXfgtbywjLXMRJYNK61W
+	 0u7N+aT0x4/xvQbS7IehEsdK5Th83iuxt8KWajAnYoDv0ZqIfYHIOK+pToB7KkIu5kZyTwOc5hba
+	 KcXT67u10sL/KZDq8lkVERcZ5Mv/pfT1SDWw/fZm/V22YaOOt/AiiAKtbqsVjBQlDUPaq6uwX1kv
+	 3rxrqNfrF1HvCs1QypZ9cTHDd22k7xFpZjR2JcdUzU+jIXdyVsL9bdRpXpbTnaFxbFVA+40AAlzg
+	 XNZaX42AAkxs2Z2EE6YfhP6WTaosVXljxFd0iScNiEbpH5iyWd0O3t3VZso4Y3S6SU5zq6D6r8uo
+	 uTc9vcTcuEroY15J/MktDnUs12uw==
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+From: Liangming Liu <liangming.liu@foxmail.com>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	Liangming Liu <liangming.liu@foxmail.com>
+Subject: [PATCH] net: ipv4: fix mixed tab and space indentation in af_inet.c
+Date: Fri,  4 Jul 2025 17:10:11 +0800
+X-OQ-MSGID: <20250704091011.1342429-1-liangming.liu@foxmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250703113022.1451223-1-jedrzej.jagielski@intel.com>
+Content-Transfer-Encoding: 8bit
 
-Thu, Jul 03, 2025 at 01:30:21PM +0200, jedrzej.jagielski@intel.com wrote:
->Currently when adding devlink port it is prohibited to let
->a driver name an interface on its own. In some scenarios
->it would not be preferable to provide such limitation.
->
->Remove triggering the warning when ndo_get_phys_port_name() is
->implemented for driver which interface is about to get a devlink
->port on.
+Fixes mixed use of tabs and spaces in af_inet.c to comply with
+Linux kernel coding style. This change does not affect logic
+or functionality.
 
-What's the reason for this? If you are missing some formatting, you
-should add it to devlink.
+Signed-off-by: Liangming Liu <liangming.liu@foxmail.com>
+---
+ net/ipv4/af_inet.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-Please don't to this.
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 76e38092cd8a..5a5aabb962d8 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -501,7 +501,7 @@ int __inet_bind(struct sock *sk, struct sockaddr *uaddr, int addr_len,
+ 	 */
+ 	err = -EADDRNOTAVAIL;
+ 	if (!inet_addr_valid_or_nonlocal(net, inet, addr->sin_addr.s_addr,
+-	                                 chk_addr_ret))
++					 chk_addr_ret))
+ 		goto out;
+ 
+ 	snum = ntohs(addr->sin_port);
+@@ -1167,23 +1167,23 @@ static struct inet_protosw inetsw_array[] =
+ 		.prot =       &udp_prot,
+ 		.ops =        &inet_dgram_ops,
+ 		.flags =      INET_PROTOSW_PERMANENT,
+-       },
++	},
+ 
+-       {
++	{
+ 		.type =       SOCK_DGRAM,
+ 		.protocol =   IPPROTO_ICMP,
+ 		.prot =       &ping_prot,
+ 		.ops =        &inet_sockraw_ops,
+ 		.flags =      INET_PROTOSW_REUSE,
+-       },
+-
+-       {
+-	       .type =       SOCK_RAW,
+-	       .protocol =   IPPROTO_IP,	/* wild card */
+-	       .prot =       &raw_prot,
+-	       .ops =        &inet_sockraw_ops,
+-	       .flags =      INET_PROTOSW_REUSE,
+-       }
++	},
++
++	{
++		.type =       SOCK_RAW,
++		.protocol =   IPPROTO_IP,	/* wild card */
++		.prot =       &raw_prot,
++		.ops =        &inet_sockraw_ops,
++		.flags =      INET_PROTOSW_REUSE,
++	}
+ };
+ 
+ #define INETSW_ARRAY_LEN ARRAY_SIZE(inetsw_array)
+-- 
+2.43.0
 
->
->Suggested-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
->Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
->---
-> net/devlink/port.c | 17 -----------------
-> 1 file changed, 17 deletions(-)
->
->diff --git a/net/devlink/port.c b/net/devlink/port.c
->index 939081a0e615..f885c8e73307 100644
->--- a/net/devlink/port.c
->+++ b/net/devlink/port.c
->@@ -1161,23 +1161,6 @@ static void devlink_port_type_netdev_checks(struct devlink_port *devlink_port,
-> {
-> 	const struct net_device_ops *ops = netdev->netdev_ops;
-> 
->-	/* If driver registers devlink port, it should set devlink port
->-	 * attributes accordingly so the compat functions are called
->-	 * and the original ops are not used.
->-	 */
->-	if (ops->ndo_get_phys_port_name) {
->-		/* Some drivers use the same set of ndos for netdevs
->-		 * that have devlink_port registered and also for
->-		 * those who don't. Make sure that ndo_get_phys_port_name
->-		 * returns -EOPNOTSUPP here in case it is defined.
->-		 * Warn if not.
->-		 */
->-		char name[IFNAMSIZ];
->-		int err;
->-
->-		err = ops->ndo_get_phys_port_name(netdev, name, sizeof(name));
->-		WARN_ON(err != -EOPNOTSUPP);
->-	}
-> 	if (ops->ndo_get_port_parent_id) {
-> 		/* Some drivers use the same set of ndos for netdevs
-> 		 * that have devlink_port registered and also for
->-- 
->2.31.1
->
