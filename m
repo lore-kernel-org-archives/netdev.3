@@ -1,77 +1,146 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3B32E8E03;
-	Fri,  4 Jul 2025 09:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941F2287512;
+	Fri,  4 Jul 2025 09:11:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751620155; cv=none; b=S2lGR2+M4nCZn6T1NH5IOcmrcKTpJwATVi1tSWMRW3IkTFVBXLJHuM2FkNa49GVY0bPL+Yg3UMH7pTSbZrFno9Nw02+MJQmqaqGuoOJm0ZnEvKyPzEobSLB4hrG1FsMiVu+i27ZuKxA+WkbDQrkB5hxPqaBGfXhr7ngUWPHwst0=
+	t=1751620312; cv=none; b=S/KqNx2/cg6NN/+Jkiaz1q5bP1h4HrwJhzepXJq0xGttHJsMX9uzXjK5goTiYN9aJD+/FHXd7QpFvyIoK3we5gwV1PXG4WT0I+LQV1/8nLewUWHZbSLS+IwXWJV5G0Ztx9baDFalOukQHPh5GRhfde/YegHWMGNRS8XFIAPUsYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751620155; c=relaxed/simple;
-	bh=v9k5hOGsBzFXPC68vIzdXKUVHTyMCdZHS5bgukRHvDo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KzcyWK8PMgQW3fTInqiEStUTsvu8oIKLntjUKIOF8NwSiIc+1VTOEF4E47pOED2KlEc62hhh74jFciLSSx1X8oMo1v3vh5tqoy++fLUFGcFgk7haPY4S0R+BHdpwpS7Bdn/WeuCB/v05M5f8+m/UYFvslzkIcbnXXNit/xTos10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AUl0daSu; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1751620312; c=relaxed/simple;
+	bh=yS0QNxwxDu0AiPYpJA1/21h0q6wysIYsX3O6EKPG6k0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CXa0aTtl+J4twIUrjXtSwbmY+3l6ritd3WBnBta2xBhA93/nxIrVElBUfsb7LIHaYeOAFHXDGHUIiP/sTqxjLlip0bSIFVkNkP9U2rJzqtWM2EbqSa4nHnB0ucr9O1PM+/e+05MEP0/Xz5eSrFc8qQ59MQdntm8AkzTC1X/Yx8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=b/MMYRSM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YSyIDbcX; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AUl0daSu"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id ED10A4333F;
-	Fri,  4 Jul 2025 09:09:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751620145;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eyYT35dsDio4qjJzYgyZ6hDdsGQEMgy8YZyDCLNTbXI=;
-	b=AUl0daSuNSO1AriU1l6qpK47h2Gifi94b6WwPvM1CaNdkwczeQbdrxkm1F4tyMIcCX+3yL
-	DntDNV5KdLnmazt2rUnYZhsrkZ01yjdtBTfK1nWOlI5SWZRVyF4YvpCdAXhqtznFlQx3kC
-	rTuEjSPnJDaZv4Vdc9XdGz6hiROUlpHpWmBdRO3eVuwcaSUD8Fw9n4PtJ11UdkhXYSDk71
-	Og0oO9Rg3Q8MZGXyzWT7tQ1Y+Hocu/v7UQp3oBNiWivHPaqjG1Cufir4WUClATpSE1obtk
-	H8rVNVAjhs7WGfUFj09E60sj/DKkrzyo1ovWrNlo8JgcM41DfZdy3z0wIsRS7w==
-Date: Fri, 4 Jul 2025 11:09:02 +0200
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Luo Jie <quic_luoj@quicinc.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Viorel Suman
- <viorel.suman@nxp.com>, Li Yang <leoyang.li@nxp.com>, "Russell King
- (Oracle)" <rmk+kernel@armlinux.org.uk>, Wei Fang <wei.fang@nxp.com>,
- <linux-arm-msm@vger.kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH RESEND net 3/3] net: phy: qcom: qca807x: Enable WoL
- support using shared library
-Message-ID: <20250704110902.4fdef534@fedora.home>
-In-Reply-To: <20250704-qcom_phy_wol_support-v1-3-053342b1538d@quicinc.com>
-References: <20250704-qcom_phy_wol_support-v1-0-053342b1538d@quicinc.com>
-	<20250704-qcom_phy_wol_support-v1-3-053342b1538d@quicinc.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="b/MMYRSM";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YSyIDbcX"
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 9BDDE140034D;
+	Fri,  4 Jul 2025 05:11:49 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Fri, 04 Jul 2025 05:11:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1751620309;
+	 x=1751706709; bh=TmJ512/Jww3eYylS0I+H6Fl/bUdK5vYqrfOw1lN7BUU=; b=
+	b/MMYRSMVqXjxFp9ajb6Iw9ofgC1L9Qu5VTFiZKeTyqnMXlcpBBrxo81mStOwqVg
+	fh9jDkLXhxAVYIJ4Gw7IC159hkVscmIz0ocyxWLxlwiJamqNULyV5P5Gzr2ARVVB
+	kFfJld7h+exsDId/4UxdN7/uK4eaDCSu8f4brUnxN1h6jvKgbMoemXSzxme7zm6/
+	hlLiznRYEXXbzycix4cPVifR1C9KxoiqvLBbtnvG/DGAeNyfhLJ9raeOpjqgHXvI
+	efbxC55HdvlOOh3F7s8NGty959k9BLWOZd8K2puut7WkH2Vc6ipTcH2zZsDjDBGT
+	7RGDScYzrb1NEdvB0hlRtw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1751620309; x=
+	1751706709; bh=TmJ512/Jww3eYylS0I+H6Fl/bUdK5vYqrfOw1lN7BUU=; b=Y
+	SyIDbcXLACNp+qrebj6dqT3lbsdobCILuPiMc79XJu19cfNnDyxhP7OMdOOXF04i
+	1oWq57WBVRoD/3ASo2Hr04W7aLPllhRNTzMHJ2WdFFb6YUaJIH7svFLzgWst8t80
+	iNp00cezQAJ/OzVnESrMnN4nM7gHcWPr57MuKgE8LKdLyGqG7mlwdyDKJr/U78NQ
+	AHJuEa0cAVLW4T6w469m0wysh9wMKQ9MSEo5JWONvEm5EgTAUf9GbJyPEg/NoGeR
+	+MfdgDd9Hwjb5KtSZ4WQxPJlgX6SOFwGvfavEsrWTkRVue4AWd2iI1kjvy/+TSsw
+	x9XVliCEfDtJX0TxBRpfA==
+X-ME-Sender: <xms:1JpnaHsNU4-WPVKJVxtQLxwcCZhGbv-JlenjOf4v73RwE4qcseBNhQ>
+    <xme:1JpnaIdb0wPfkFjoYg08ZwoBniw8Jsxbsskpikral8IGqWJr2YotixaSCa30QNPl-
+    h8Pky0850dqxLYSd84>
+X-ME-Received: <xmr:1JpnaKyaDe-95u9uMoORZaqc_GusjwV6nCpOBoy7BuMVav1broInPlrJ6Cq6ciIYIVEnfVot_8tafoPWqrttYDpJvnGW9RbHNg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddvvdejiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomheppfhikhhlrghs
+    ucfunpguvghrlhhunhguuceonhhikhhlrghsrdhsohguvghrlhhunhgusehrrghgnhgrth
+    gvtghhrdhsvgeqnecuggftrfgrthhtvghrnhepveetgedtvddvhfdtkeeghfeffeehteeh
+    keekgeefjeduieduueelgedtheekkeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    hrrghmpehmrghilhhfrhhomhepnhhikhhlrghsrdhsohguvghrlhhunhgusehrrghgnhgr
+    thgvtghhrdhsvgdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprh
+    gtphhtthhopehmihgthhgrvghlrdguvghgvgesrhgvnhgvshgrshdrtghomhdprhgtphht
+    thhopeihohhshhhihhhirhhordhshhhimhhouggrrdhuhhesrhgvnhgvshgrshdrtghomh
+    dprhgtphhtthhopehprghulhesphgsrghrkhgvrhdruggvvhdprhgtphhtthhopegrnhgu
+    rhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvh
+    gvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgt
+    ohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprg
+    gsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdr
+    khgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:1JpnaGPPNAU-vY3DZuNwHYUPtfOqodm-H8bpJALe3_IV-2JpaMgK2g>
+    <xmx:1JpnaH8DV-91QjMWMGqwzutIvyxiT-R4xubK1SXqe1XWFqxnF3xKAQ>
+    <xmx:1JpnaGUzK_GSW4oPYYsf3DbHIQykA0f52R4hIiKCmBcon8WZ_qFrYQ>
+    <xmx:1JpnaIcxS-noELVEqMsihqUo43zuT7AK_WtEhAadpC1j_fewMzC0gQ>
+    <xmx:1ZpnaKWhUopiowa-Xem54WjTGxiGusGtO1917OruoHWL4zgGB6XV0jPd>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 4 Jul 2025 05:11:47 -0400 (EDT)
+Date: Fri, 4 Jul 2025 11:11:46 +0200
+From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
+To: Michael Dege <michael.dege@renesas.com>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Paul Barker <paul@pbarker.dev>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Subject: Re: [PATCH 1/3] net: renesas: rswitch: rename rswitch.c to
+ rswitch_main.c
+Message-ID: <20250704091146.GB137171@ragnatech.se>
+References: <20250704-add_l2_switching-v1-0-ff882aacb258@renesas.com>
+ <20250704-add_l2_switching-v1-1-ff882aacb258@renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddvvdejiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegveeltddvveeuhefhvefhlefhkeevfedtgfeiudefffeiledttdfgfeeuhfeukeenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduhedprhgtphhtthhopehquhhitggplhhuohhjsehquhhitghinhgtrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpt
- hhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomh
-X-GND-Sasl: maxime.chevallier@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250704-add_l2_switching-v1-1-ff882aacb258@renesas.com>
 
-On Fri, 4 Jul 2025 13:31:15 +0800
-Luo Jie <quic_luoj@quicinc.com> wrote:
+Hi Michael,
 
-> The Wake-on-LAN (WoL) functionality for the QCA807x series is identical
-> to that of the AT8031. WoL support for QCA807x is enabled by utilizing
-> the at8031_set_wol() function provided in the shared library.
+Thanks for your work.
+
+On 2025-07-04 07:51:15 +0200, Michael Dege wrote:
+> Adding new functionality to the driver. Therefore splitting into multiple
+> c files to keep them manageable. New functionality will be added to
+> separate files.
 > 
-> Signed-off-by: Luo Jie <quic_luoj@quicinc.com>
+> Signed-off-by: Michael Dege <michael.dege@renesas.com>
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-Maxime
+> ---
+>  drivers/net/ethernet/renesas/Makefile                      | 1 +
+>  drivers/net/ethernet/renesas/{rswitch.c => rswitch_main.c} | 0
+>  2 files changed, 1 insertion(+)
+> 
+> diff --git a/drivers/net/ethernet/renesas/Makefile b/drivers/net/ethernet/renesas/Makefile
+> index f65fc76f8b4df8dd9f24af836b6dc0772965366f..6222298bb5582b7091cf8de76acb83ac7dd39c11 100644
+> --- a/drivers/net/ethernet/renesas/Makefile
+> +++ b/drivers/net/ethernet/renesas/Makefile
+> @@ -8,6 +8,7 @@ obj-$(CONFIG_SH_ETH) += sh_eth.o
+>  ravb-objs := ravb_main.o ravb_ptp.o
+>  obj-$(CONFIG_RAVB) += ravb.o
+>  
+> +rswitch-objs := rswitch_main.o
+>  obj-$(CONFIG_RENESAS_ETHER_SWITCH) += rswitch.o
+>  
+>  obj-$(CONFIG_RENESAS_GEN4_PTP) += rcar_gen4_ptp.o
+> diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch_main.c
+> similarity index 100%
+> rename from drivers/net/ethernet/renesas/rswitch.c
+> rename to drivers/net/ethernet/renesas/rswitch_main.c
+> 
+> -- 
+> 2.49.0
+> 
+
+-- 
+Kind Regards,
+Niklas Söderlund
