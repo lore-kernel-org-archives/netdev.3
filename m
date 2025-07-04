@@ -1,122 +1,94 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [217.70.178.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8894326A58;
-	Fri,  4 Jul 2025 07:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976F328467F;
+	Fri,  4 Jul 2025 08:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751615865; cv=none; b=cDaMhBwWbO1DNHBi08PTmAI5q1r0TrfsEVn1pJge7w+07gJmfg5AdS54ZBvDCgfAE+cVBROpQNKXvbSPLJooufNB78vOB4ShfaMpZfPYw9Yh5JLvGJjuaVsznCRLAIbCMjQ1hwRu1opQ971XplUT5a1GBuqOAO6Gcv5n1Hkspbo=
+	t=1751616041; cv=none; b=PtXt1X5n9NbFU+0QKBx8nBjjzJR/JfevGAeq+MPElt9YE/XQMerPJocF6jrOXlb39pVZLfdBOWcqoC5KBQIW2pv/xJau8t2Yia+U4GkMnbizCOeW05hyTY38TGj8j1hkCb1uWu2kRm1dIs8Z8gwPoptr4krkqN7FwiAA9LSRSN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751615865; c=relaxed/simple;
-	bh=bPS2JYksrIppycfYjPG2JSlEWAOe/ZXoQROBn/MlDBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q+n42N1qAmQGfEgKQU7fEUxmTehC3RfmxKXaQl2hQ4PhipArRBasdEAUpdP+S1MVIZLYvViSi+GrQIh5qMQS8FtqOTI2DWKNeB6+ERR8KEj5jT+velnKS0+92nmktO5vRACuY3wMTqAuEbF8RiqfQcNmmehFeByDHPQQrOm+K3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jTK77Tij; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1751616041; c=relaxed/simple;
+	bh=NdsQLhu3apZCCsjVCTrZUaX7k09Iz1jpvghceMbRr1Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IO5b2L8xVsiwePawvVDVF6XAqbI9Q2rfZYNjruOwdaJOyd9Tv5Dznolw+nwi8pC4uugsSYCnfAVqCWzDx/RVs3vW8d4AODhsXeEOsowN2/IhP13gnYaSSKpM7OfziOeRUDCA0yz65Yn96n9p47KeYWGq3N5SEShSDraplhHXzD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=L/+xltRa; arc=none smtp.client-ip=217.70.178.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jTK77Tij"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=5qrkD9bX+jI4ab6c+XtoSydd7j+KnW2OaBzeTTEC/QE=; b=jTK77Tij9gZIa4yFat5vka5xRz
-	zxo2K3t3N98K2N9r3t0x1GzxeIxrNCnwCWaXoIAcYUClezLp6LYgcNldRMWVG6g9Wl76TbfZVdEJo
-	8webAKr8ryhcY5PYw6AJiDWHNqoMr5QS+4SvlL1Zc3qnZ4gKNAd4lQYtfsMSWHxyzqpY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uXbIH-000BBm-4J; Fri, 04 Jul 2025 09:57:13 +0200
-Date: Fri, 4 Jul 2025 09:57:13 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Benno Lossin <lossin@kernel.org>,
-	Michal Rostecki <vadorovsky@protonmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	llvm@lists.linux.dev, linux-pci@vger.kernel.org,
-	nouveau@lists.freedesktop.org, linux-block@vger.kernel.org,
-	linux-pm@vger.kernel.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v13 2/5] rust: support formatting of foreign types
-Message-ID: <efe97ed7-dd60-4f1c-ac5c-b700300f0390@lunn.ch>
-References: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
- <20250701-cstr-core-v13-2-29f7d3eb97a6@gmail.com>
- <DB2BDSN1JH51.14ZZPETJORBC6@kernel.org>
- <CAJ-ks9nC=AyBPXRY3nJ0NuZvjFskzMcOkVNrBEfXD2hZ5uRntQ@mail.gmail.com>
- <DB2IJ9HBIM0W.3N0JVGKX558QI@kernel.org>
- <CAJ-ks9nF5+m+_bn0Pzi9yU0pw0TyN7Fs4x--mQ4ygyHz4A6hzg@mail.gmail.com>
- <DB2PIGAQHCJR.3BF8ZHECYH3KB@kernel.org>
- <CAJ-ks9=WmuXLJ6KkMEOP2jTvM_YBJO10SNsq0DU2J+_d4jp7qw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="L/+xltRa"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D7A77442A6;
+	Fri,  4 Jul 2025 08:00:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1751616034;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=28LCPxaORx3LFMubXW62TY4Yq/7zWWZ/gh5lCqg/Pns=;
+	b=L/+xltRakFnyjQ2A4c5BsLY816WmWC2LnI2wrzcajwVQ8eoDWY6cg2NYerbdr0NYRskuK2
+	AvHNYCds7urK1AKjEbhQrAkBS4TK0IdGJcyjVm0f/QwF9o+ParUECQigu/LrkHlc6lDfZe
+	brP+CZLKI9I/udyeJYvKqUchOGWz5CMutNMfUhGCROf3inc+YB/DBLsH7WZpKUmhanjfPI
+	6u5NJVkEgp7g4zzaqLxPj8rxPfHVE1xNtve6SX256j2/H7G08Sv33pxwvSYqkFShgAs8c3
+	0JJoU/coLi3v6mZLLlYC3FDOTctfVc+Vcpb3KbXLFblxVlsLf9DCbKEttf6GiA==
+Date: Fri, 4 Jul 2025 10:00:31 +0200
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Andre Edich <andre.edich@microchip.com>,
+ kernel@pengutronix.de, linux-kernel@vger.kernel.org, Russell King
+ <linux@armlinux.org.uk>, netdev@vger.kernel.org, Lukas Wunner
+ <lukas@wunner.de>
+Subject: Re: [PATCH net v2 2/3] net: phy: smsc: Force predictable MDI-X
+ state on LAN87xx
+Message-ID: <20250704100031.19f95d3e@fedora.home>
+In-Reply-To: <20250703114941.3243890-3-o.rempel@pengutronix.de>
+References: <20250703114941.3243890-1-o.rempel@pengutronix.de>
+	<20250703114941.3243890-3-o.rempel@pengutronix.de>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJ-ks9=WmuXLJ6KkMEOP2jTvM_YBJO10SNsq0DU2J+_d4jp7qw@mail.gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddvvdeivdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegveeltddvveeuhefhvefhlefhkeevfedtgfeiudefffeiledttdfgfeeuhfeukeenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedufedprhgtphhtthhopehordhrvghmphgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrt
+ ghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprghnughrvgdrvgguihgthhesmhhitghrohgthhhiphdrtghomh
 
-> Yes, it probably can. As you say, some subsystems might interact - the
-> claimed benefit of doing this subsystem-by-subsystem split is that it
-> avoids conflicts with ongoing work that will conflict with a large
-> patch, but this is also the downside; if ongoing work changes the set
-> of interactions between subsystems then a maintainer may find
-> themselves unable to emit the log message they want (because one
-> subsystem is using kernel::fmt while another is still on core::fmt).
+On Thu,  3 Jul 2025 13:49:40 +0200
+Oleksij Rempel <o.rempel@pengutronix.de> wrote:
 
-This sounds like an abstraction problem. As a developer, i just want
-an API to print stuff. I don't care about what happens underneath.
+> Override the hardware strap configuration for MDI-X mode to ensure a
+> predictable initial state for the driver. The initial mode of the LAN87xx
+> PHY is determined by the AUTOMDIX_EN strap pin, but the driver has no
+> documented way to read its latched status.
+> 
+> This unpredictability means the driver cannot know if the PHY has
+> initialized with Auto-MDIX enabled or disabled, preventing it from
+> providing a reliable interface to the user.
+> 
+> This patch introduces a `config_init` hook that forces the PHY into a
+> known state by explicitly enabling Auto-MDIX.
+> 
+> Fixes: 05b35e7eb9a1 ("smsc95xx: add phylib support")
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Cc: Andre Edich <andre.edich@microchip.com>
 
-Could you add an implementation of the API which uses core:fmt
-underneath. Get that merged. You can then convert each subsystem one
-by one to use the new API. Since all you are changing is the API, not
-the implementation, there is no compatibility issues. Then, once all
-users are converted to the API, you can have one patch which flips the
-implementation from core:fmt to kernel:fmt. It might take you three
-kernel cycles to get this done, but that is relatively fast for a tree
-wide change, which sometimes takes years.
+The patch looks good to me, but I have a few questions.  As this
+overrides some configuration on existing HW, and I'm not utra familiar
+with auto-mdix, is there any chance this could cause regressions ?
 
-	Andrew
+Especially regarding your patch 3, is there any chance that the PHY is
+strapped in a fixed MDIX mode to address the broken autoneg off mode ? 
+
+I'm not saying that strapping is a good solution for that ofc :) it's a
+shame we can't read the strap config :/
+
+Maxime
+
