@@ -1,129 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mxout3.routing.net (mxout3.routing.net [134.0.28.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01DAE2E3701;
-	Sun,  6 Jul 2025 13:14:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505544C9D;
+	Sun,  6 Jul 2025 13:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751807665; cv=none; b=oyxxmBPC/xFAoYIpB+46OaGFm/5Mwk01HuxQXwv0lbMqWAZppIab4QEeUfN5HNuKAWowtd+lurzUqqnbESjiZADRAmRLfPrzItvfWFWEy895P4LweAfz4oVt8TYhUv9LZq+aKhXQWtOE53GwRI8nIutwqAh0HwLUBWoeU1xGT6s=
+	t=1751808158; cv=none; b=RGVQTXA67+1wRCQ4Zk0EnnElqTry5NISxv+4dWSelvP19DN6VNgmitLZW5/D+NZGyjvqq6oAZTwerVDlwQGcAPGH5JUxBtOQjJ3DJVQzepA2BaDJfs7nlvkwlnmBxT8ynMXJ2dVoRUmulubrzaPVY0h7QbgaQk4h9227N2cdspQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751807665; c=relaxed/simple;
-	bh=u8xJci6BCA/NPXr2bGUVttu27gcVFr7isab2Lo+Nre0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o0VcCat9uPJeXhUBjbUOIEBOkG6zl1C9Bss5nlSrB90P/yb1ZW/4jQ8PnNMAlnPkp1AJEo3nF9DdgM2N+eFHvzl2GkObXAvW6jDpbB8O9VU8bfSN0nGO54ejnmNM4s51NHGE9BgtnVqQCWIc5c/7r3Ff0wR9UOtDV1DGzGeI/+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H74tGhnO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751808158; c=relaxed/simple;
+	bh=+BvUX9y9HlznKTksf6XPUyfiHbJBnA3CB04YdeM1+w8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=R4ov2vRpB/IS+GdLkyPtOUcKAoSdi6wZROL4zRZ7wPEIQoUtIbjanDA9psGHNNyIJapOI+dUT9lGGyJDLQZcYhfa09UijofxV+sK64wkpQ/Fk9OoNM1i5vz1ykzWZJ2C7hZ/ksHDdMmA1L1Ih8aPo49KrVSF6+mCddUO8F3XSYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=QXuWPtnj; arc=none smtp.client-ip=134.0.28.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fw-web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H74tGhnO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F04BC4CEF4;
-	Sun,  6 Jul 2025 13:14:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751807664;
-	bh=u8xJci6BCA/NPXr2bGUVttu27gcVFr7isab2Lo+Nre0=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=H74tGhnOnclNfDF4L3HiqPatu/Ckv4SZwOZieRM9X1HBvT72eGWkjGnmDrv7miyw9
-	 /md3SO6VV9wp5un7SLJY585Cu/xC634IOPRqKSenlFAWLasra7D84WocasA5yNAdlD
-	 truaLbkyAf1bmoInf5c1WugXZSj9/M49L3VtGnO0G/wlS3W6obpgMsPh1oh5ZBHhLa
-	 OVciZG90FoRDiu/0VBG5iGHISg1+KxXT01I0j1NFUAoFVv/Y/X1jlDlCm1VwhNH99F
-	 l5V7Z5whmNhUv3QtzTCBJdRKtGTxMvkg62s/rmxA1PI1IvYi/g1Oi0d8wu9E/jWLMx
-	 5blPMHji5owrA==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-55628eaec6cso2112782e87.0;
-        Sun, 06 Jul 2025 06:14:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWesOGrBnNtEBaTu+Rgx9QLxBjgSkk6UzfJG6rN2hpqKBwniNO3Jeu39v48FExmG/MEdjpBYJTg@vger.kernel.org, AJvYcCXkrovdX4KjTXTX1cnRxPee/pR0AcEFfOBIEeSzjNDb6RjWw0AGLyctsZi5+NYD4pQ8SWHaJiTe9Ia+@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2Nwu2D3nRaBL8sVw9SAomqFQQg/n/QTJvHmByPn+/dElTosDY
-	uAaMh405X4q7S75TCUc5NS9D8HCFFBE8tkz1HXeJg9QB7EJGkzVETssk3dry6yj4PsZj/wJ82In
-	xDugZ+DAhychPosr1AuYrORydJLbKWsM=
-X-Google-Smtp-Source: AGHT+IEzN50658kYdEZu4z11IX1+qj76bRNUj9L9XsGay2m70Sqt76p+ZP6G4FZVEV9964rwYfujWQD+iVC6l49gAsw=
-X-Received: by 2002:a05:6512:4027:b0:553:ceed:c859 with SMTP id
- 2adb3069b0e04-557e5537687mr1059540e87.21.1751807662868; Sun, 06 Jul 2025
- 06:14:22 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="QXuWPtnj"
+Received: from mxbulk.masterlogin.de (unknown [192.168.10.85])
+	by mxout3.routing.net (Postfix) with ESMTP id C915C604DB;
+	Sun,  6 Jul 2025 13:22:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
+	s=20200217; t=1751808148;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EB6hNHt8FOhHLQ2d1gn4ZCXh4990JbNQXr8yU3xNg5Y=;
+	b=QXuWPtnjGrubMHvjoedppmQdjg5/RwFPMhmlbV5gQoeTmfH2yxE0oTsLz6Aer4dC65al4V
+	m4L0ER2jwxIQ6GGlGQV9c4ruSRZlN+mMKD8QT1ck5ZGwok/S+Hv7JQRh/jnoPlkTNrsqu0
+	9Z1k0oXV9RxDiHhcOgDlV5q7toYSD88=
+Received: from frank-u24.. (fttx-pool-194.15.86.111.bambit.de [194.15.86.111])
+	by mxbulk.masterlogin.de (Postfix) with ESMTPSA id 702CD1226A5;
+	Sun,  6 Jul 2025 13:22:27 +0000 (UTC)
+From: Frank Wunderlich <linux@fw-web.de>
+To: MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Georgi Djakov <djakov@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Johnson Wang <johnson.wang@mediatek.com>,
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Landen Chao <Landen.Chao@mediatek.com>,
+	DENG Qingfang <dqfext@gmail.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>
+Cc: Frank Wunderlich <frank-w@public-files.de>,
+	linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH v8 02/16] dt-bindings: net: mediatek,net: allow up to 8 IRQs
+Date: Sun,  6 Jul 2025 15:21:57 +0200
+Message-ID: <20250706132213.20412-3-linux@fw-web.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250706132213.20412-1-linux@fw-web.de>
+References: <20250706132213.20412-1-linux@fw-web.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250628054438.2864220-1-wens@kernel.org> <20250705083600.2916bf0c@minigeek.lan>
- <CAGb2v64My=A_Jw+CBCsqno3SsSSTtBFKXOrgLv+Nyq_z5oeYBg@mail.gmail.com>
- <e9c5949d-9ac5-4b33-810d-b716ccce5fe9@lunn.ch> <20250706002223.128ff760@minigeek.lan>
-In-Reply-To: <20250706002223.128ff760@minigeek.lan>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Sun, 6 Jul 2025 21:14:09 +0800
-X-Gmail-Original-Message-ID: <CAGb2v64vxtAVi3QK3a=mvDz2u+gKQ6XPMN-JB46eEuwfusMG2w@mail.gmail.com>
-X-Gm-Features: Ac12FXwracJUFtxrR-geU8AnCt2mihSX7AlHGCMKyxbdZy4UN94qheE6j6Zh998
-Message-ID: <CAGb2v64vxtAVi3QK3a=mvDz2u+gKQ6XPMN-JB46eEuwfusMG2w@mail.gmail.com>
-Subject: Re: [PATCH net 0/2] allwinner: a523: Rename emac0 to gmac0
-To: Andre Przywara <andre.przywara@arm.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jernej Skrabec <jernej@kernel.org>, Samuel Holland <samuel@sholland.org>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-sunxi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jul 6, 2025 at 7:23=E2=80=AFAM Andre Przywara <andre.przywara@arm.c=
-om> wrote:
->
-> On Sat, 5 Jul 2025 17:53:17 +0200
-> Andrew Lunn <andrew@lunn.ch> wrote:
->
-> Hi Andrew,
->
-> > > So it's really whatever Allwinner wants to call it. I would rather ha=
-ve
-> > > the names follow the datasheet than us making some scheme up.
-> >
-> > Are the datasheets publicly available?
->
-> We collect them in the sunxi wiki (see the links below), but just to
-> make sure:
-> I am not disputing that GMAC is the name mentioned in the A523 manual,
-> and would have probably been the right name to use originally - even
-> though it's not very consistent, as the same IP is called EMAC in the
-> older SoCs' manuals. I am also not against renaming identifiers or even
-> (internal) DT labels. But the problem here is that the renaming affects
-> the DT compatible string and the pinctrl function name, both of which
-> are used as an interface between the devicetree and its users, which is
-> not only the Linux kernel, but also U-Boot and other OSes like the BSDs.
+From: Frank Wunderlich <frank-w@public-files.de>
 
-I reiterate my position: they are not stable until they actually hit a
-release. This provides some time to fix mistakes before they are set in
-stone.
+Increase the maximum IRQ count to 8 (4 FE + 4 RSS/LRO).
 
-> In this particular case we would probably get away with it, because
-> it's indeed very early in the development cycle for this SoC, but for
-> instance the "emac0" function name is already used in some U-Boot
-> patch series on the list:
-> https://lore.kernel.org/linux-sunxi/20250323113544.7933-18-andre.przywara=
-@arm.com/
->
-> If we REALLY need to rename this, it wouldn't be the end of the world,
-> but would create some churn on the U-Boot side.
->
-> I just wanted to point out that any changes to the DT bindings have
-> some impact to other projects, even if they are proposed as a coherent
-> series on the Linux side. Hence my question if this is really necessary.
+Frame-engine-IRQs (max 4):
+MT7621, MT7628: 1 IRQ
+MT7622, MT7623: 3 IRQs (only two used by the driver for now)
+MT7981, MT7986, MT7988: 4 IRQs (only two used by the driver for now)
 
-For the compatible string, I can live with having a comment in the binding
-stating the name used in the datasheet for reference.
+Mediatek Filogic SoCs (mt798x) have 4 additional IRQs for RSS and/or
+LRO.
 
-For the pinctrl stuff, which is the contentious bit here, I thought the
-whole idea of the newer pinctrl bindings is that the driver uses
-"allwinner,pinmux" instead of "function". I think having both being valid
-is confusing, and likely to cause conflicts later on. If we're going to
-use the hardware register values in the device tree, I'd really like them
-to be the only source of truth. The commit message for the binding also
-sort of suggests that "allwinner,pinmux" is the part that matters.
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+---
+v8: separate irq-count change from interrupt-names patch
+---
+ Documentation/devicetree/bindings/net/mediatek,net.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/Documentation/devicetree/bindings/net/mediatek,net.yaml b/Documentation/devicetree/bindings/net/mediatek,net.yaml
+index 175d1d011dc6..766224e4ed86 100644
+--- a/Documentation/devicetree/bindings/net/mediatek,net.yaml
++++ b/Documentation/devicetree/bindings/net/mediatek,net.yaml
+@@ -40,7 +40,7 @@ properties:
+ 
+   interrupts:
+     minItems: 1
+-    maxItems: 4
++    maxItems: 8
+ 
+   power-domains:
+     maxItems: 1
+-- 
+2.43.0
 
-ChenYu
-
-> Cheers,
-> Andre
->
-> https://linux-sunxi.org/A64#Documentation
-> https://linux-sunxi.org/H616#Documentation
-> https://linux-sunxi.org/A523#Documentation
