@@ -1,136 +1,225 @@
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF06CA6F;
-	Sun,  6 Jul 2025 14:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C6572639
+	for <netdev@vger.kernel.org>; Sun,  6 Jul 2025 14:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751812222; cv=none; b=VtrVfBV6Jvb+Bh0RVSlYbQHeSE3sdEKW9hrWlr/dPN9eRoeEtra15uzWPxHSW0FFcMHhfvIyExSNXiU+sUtce0Uq/3BxHv4lH/HnQlkJHQwz2nNeq+prdQpMQBk9SCwwZDizCz+X6o1i4xXTchml9JAPvKi/9qDgi3PFIq1Ysuc=
+	t=1751813161; cv=none; b=TRjGRuOZFc2kfPnwg6KFPRbg75GNNcCrG2p4T/45aAHZO5P9jQ3DuGFls2zdiWUWzIfaSu7A/IbOGsQViX2N/ChBxcHhXNQZpBdgG4kkystfVz0LB8SbLl56RzPcN4kKpHfLRAgeoDp+mvqLRpEJDKByNApTjLnf/fW+c/nwU+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751812222; c=relaxed/simple;
-	bh=Os3p122TLkem1wFS19Yci4rOcV8RY/p5XKcAomC5zKk=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=S/z5H27Q2OrZCuiUnaimJArEN+zvZ9kkhiQyO2RouLsE8OCSbMghXvqOLEl5F1GKSRwuYMJGvPPl8/4UkjWe+pTguyzU3y0qYpeCP96EB0U0Xm0UE2Rc3tHbTxYBHvHnY83be9OLPjAG4cv0oq5Iq0APQ0kU63o5ASTfVBQDwhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qij0/zJo; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751813161; c=relaxed/simple;
+	bh=mFeREj8KVy9p4wg+TilWC0oWt5cRo1EpuHU2MeT1TH4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=JP1ot11S+NWbBxpAeZkuCnjcqTeXAunN7xrNoH1bWpdNfNZQ0pWCdIJh93KGzUZ1fYGBaovsflAdbWSLIRe4yzLbbKtvUFfS+iUDqEWzjcrNBrly6ZfC4I5/Q7D049JaKHijHGX2RfHVFp8zIesTBogaowSgj8P9Rs64jKK1EB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZSXXDCHa; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qij0/zJo"
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e8259b783f6so1757296276.3;
-        Sun, 06 Jul 2025 07:30:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751812219; x=1752417019; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ILk6V+IjCGdWOhQWfk6SrwBKe81/cN3kOICCBDFtPzw=;
-        b=Qij0/zJotKtNvL0NFyrVDuBOhanG5L655xQWOAEGGEOnMUxHhNOOxB/wHbkx1MJjyy
-         20zm+EN2Xo7KJ8n384QjGtKu77x5mPFg3VPh5pRiAH45heOBuCiRJ9Jqo0Nf93LAW5yu
-         r9zHt6gfA6Z3RKsCZ22EQ/DBXIaEkrxRa1ovqZ1MHTWUfkqSuSjqZqokpod1wrk+RtCD
-         yf/5fa1TGXbnooP6TvhJ22KbrGyOxU4JatR22PYUVMroS+c31NanUThBnru4FZLs+aqL
-         AEfX1DIKeGQ9nlSTPja0paBENwkKRSSeKhfVrZutCIVeYx2q791fxuC2jMrezmh8J5nJ
-         eD/w==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZSXXDCHa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751813158;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hbfg2vSIfe5USBXm9Aha2lp/UmKnS6YnRYBJ9S2zu5E=;
+	b=ZSXXDCHabGOy5o+ThGQ5/OWuP7EfjdAGHbQczxBUYVBpc41WyHrdgsCP69ZThj4yxNC8Bo
+	cRJq4rEpnP08YnGWfg5GDMYwBwRMxzUSzXfjDzuzqNpXUInyQti8nqjd61J1dArt8y1XrG
+	zBs0Td+lNQ+aneo8Mby1VLtGU3nz82k=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-111-dTJcPkCOPkugyco2lw7s7A-1; Sun, 06 Jul 2025 10:45:57 -0400
+X-MC-Unique: dTJcPkCOPkugyco2lw7s7A-1
+X-Mimecast-MFC-AGG-ID: dTJcPkCOPkugyco2lw7s7A_1751813156
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5551d40d2dbso1013299e87.1
+        for <netdev@vger.kernel.org>; Sun, 06 Jul 2025 07:45:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751812219; x=1752417019;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ILk6V+IjCGdWOhQWfk6SrwBKe81/cN3kOICCBDFtPzw=;
-        b=tdFq5A2LXRfSQKT11V/1ZjJSys3cer6pBnh/K0ZF0mRRgFgibFwaqhQLE/6WS/9fGc
-         lztNmH77Q72QmE/5lU+WBpxS6j6dU6Jk4EQDJAaie/gw4XJ2r7KkA0xIwBDfLN+Frh5O
-         JQkR2bKXLG8+f5nL+kHWh8btXE/7kl3oBK/L7d4lpPOYg7Yd3C+DrPGmd8fDb7haPuEX
-         /1R1k90XkPYbllyq6ONTlnJJQ5SAD5lqgiErgwErLkmfq7oWe/4gKNrjINAwveZRqe0v
-         gm8dDuaavsWm94V1B8PoDs2WoUJ6Ih1owJyEf35WJahKEnrJO0GiPkY0yrBJDOUoiX21
-         gEOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWCaQpRLqW9T7k2PuH3XZLmq3OxTW4n9Vl2yh4kSlXgBkKvBPoqfcemHMDK8L/W/xHtSoZflnIB@vger.kernel.org, AJvYcCWuqjA9TrQnZULVTSDXD4P+cVTTQHu7rKCN1inKbNpP3d51rdsEhLr4J23dvgaQp2Oh+mOO6PUE/0rIyTk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxV+IceVEMkv9/TwvpojLFtusEB2hCyG/7DWTPrkdFX0KMcI8/c
-	6Ae7hKauOJtT8KSHj7Z4Mo78VoDK2iFf1daYOQ2xvKbelQInT9o4UCGT
-X-Gm-Gg: ASbGncupq2WdgzJN3/2lf8a0o7RUsPtg4BfjKk5As/zpkN7prVV+20l+tYcFXYb+blt
-	FB6JlPeRYucLw8Zp/hwJOSp3KCD1hYD6BQQcRj/Hjn/qdk0Ar9PnAMGGs4GmSPKqYmUsOR9bHx8
-	RoWeq9Y4vzjGQw8tMxbb7UfpaM5Sg8M2csYZZFTGBOGUsvIUSadsumQb5vUfjduVhI9qOWARdfY
-	eOVKDqti9JyvFVLVU8X3ClOC5rYCadG45G9LYxJvDStsgjngYPYnW3sTFc4CbmBLCkQu+SAwEW4
-	VGydidDTERQOTMm1qWYsMMe0N8Qx7CxNzgigqBkaRsZRhLw0NEBMfdip7UZPKWeE/j1fqIf1Q7o
-	0mpx2eTC6yGMilx/A9RHtoq4PvKgo/FWaFDo05rA=
-X-Google-Smtp-Source: AGHT+IEBmKQ51ZAVM2knwYxTBZrzCKTaZIBinugB6wBxG5OAXF22jsYHYXdSZcwqnMwbxhIIzKhdhg==
-X-Received: by 2002:a05:690c:38a:b0:712:d946:788e with SMTP id 00721157ae682-7166b5f6d7emr106376527b3.14.1751812219293;
-        Sun, 06 Jul 2025 07:30:19 -0700 (PDT)
-Received: from localhost (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with UTF8SMTPSA id 3f1490d57ef6-e899c440e7bsm2016366276.37.2025.07.06.07.30.18
+        d=1e100.net; s=20230601; t=1751813156; x=1752417956;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hbfg2vSIfe5USBXm9Aha2lp/UmKnS6YnRYBJ9S2zu5E=;
+        b=aiEttihIsQjJD+mYfWuO81zUEgr0rNAI3F1F5NFSdcW6bYD+IVcr2rs3F815UPyut+
+         jjGkT+w2DeMzNKxJXKnzCe/8/bwtP8WFavtvCIo7yLHyg1qtchOzm9iD/FVc8PSoIXwn
+         yK8eHPcWILi2ee/ngvOxry5+VsBJgq0ZwBO/cZy4Ra/JGj5GGGga3TTX9t7C9NdoBPb5
+         6E013SNn+k6cEzZwfnzpq9om6gEt4UDDC2pFadupGlG942nwOOtAO8XgtYyj1oBTwey9
+         EGAHoCMP8fjwQcqpnL41ZNzqX8I6oex/RPvDE06esGwHSU2AEzaJBIT4LDCh2mzSp6j0
+         ABrg==
+X-Gm-Message-State: AOJu0YzArqx1KRXEf/JsCw9all1dk7oYiug/SUXMxXhhiMkhcOHa9Q3h
+	bt7uWpiw9CV9Z3wKNCAAxAYQhaBhf9R8WA6ke0+N461BdNLpWDpZc1iKAXgVcSPbdjuUMmQgj+r
+	5mocrWcITslJmMcpDPrjJURB2hmLhckMFIE8aCBHqvxHP9ioeP4/VsgtfTQ==
+X-Gm-Gg: ASbGncu1ouXrD0IIgeG4+i70iOmVZcK8SZXLt3fnb6wYsmu5zaMFprxNbrdRc02I1UY
+	UizeZblJkz/pxN4WFOyXuEcN69n3KqbKCHbLM56wyH46e5QlOWORmJQ45zV4e+8CpD1Zis5lRgZ
+	S85O/Yc7fhZK0zeF2KGgm+TzqWCb0NvLg9Zp5pUwKICuj6B73YOpJCFglmoIi7jOPxVFFkGD41C
+	qkcte/y4Jz1uyl6u0bI9s05nxKiMmK9rNDV2xfuiu+xG8NbHow/+iLiAkhaCRhuRNFbsobFs2FD
+	B628T3NcxXjrLHnpOZO/HZTbS6SfP0eGcoUO51WNxo98ayI=
+X-Received: by 2002:a2e:a549:0:b0:32a:8ae2:a8a7 with SMTP id 38308e7fff4ca-32f00c661bbmr30040191fa.8.1751813155599;
+        Sun, 06 Jul 2025 07:45:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH4E8Z6izy/7WuZXk9NrRfPbbNW8QTcI2DjS7BJoGZ1ym3EyUDD2d1tSAobmIFiqkI1UqbSXw==
+X-Received: by 2002:a2e:a549:0:b0:32a:8ae2:a8a7 with SMTP id 38308e7fff4ca-32f00c661bbmr30039991fa.8.1751813155097;
+        Sun, 06 Jul 2025 07:45:55 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32e1afc2356sm9599271fa.33.2025.07.06.07.45.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Jul 2025 07:30:18 -0700 (PDT)
-Date: Sun, 06 Jul 2025 10:30:18 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Cong Wang <xiyou.wangcong@gmail.com>, 
- Fengyuan Gong <gfengyuan@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- toke@toke.dk, 
- edumazet@google.com, 
- "David S . Miller" <davem@davemloft.net>, 
- Jamal Hadi Salim <jhs@mojatatu.com>, 
- Jiri Pirko <jiri@resnulli.us>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- Kuniyuki Iwashima <kuniyu@google.com>, 
- Ahmed Zaki <ahmed.zaki@intel.com>, 
- Alexander Lobakin <aleksander.lobakin@intel.com>, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- cake@lists.bufferbloat.net, 
- willemb@google.com
-Message-ID: <686a887a34d5a_3ad0f3294c@willemb.c.googlers.com.notmuch>
-In-Reply-To: <aGdZFhGu40UD6UDU@pop-os.localdomain>
-References: <20250702160741.1204919-1-gfengyuan@google.com>
- <aGdZFhGu40UD6UDU@pop-os.localdomain>
-Subject: Re: [PATCH net-next] net: account for encap headers in qdisc pkt len
+        Sun, 06 Jul 2025 07:45:54 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id EE45A1B89EAF; Sun, 06 Jul 2025 16:45:52 +0200 (CEST)
+From: =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Date: Sun, 06 Jul 2025 16:45:32 +0200
+Subject: [PATCH net-next v3 2/2] selftests: net: add netdev-l2addr.sh for
+ testing L2 address functionality
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250706-netdevsim-perm_addr-v3-2-88123e2b2027@redhat.com>
+References: <20250706-netdevsim-perm_addr-v3-0-88123e2b2027@redhat.com>
+In-Reply-To: <20250706-netdevsim-perm_addr-v3-0-88123e2b2027@redhat.com>
+To: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, 
+ =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+X-Mailer: b4 0.14.2
 
-Cong Wang wrote:
-> On Wed, Jul 02, 2025 at 04:07:41PM +0000, Fengyuan Gong wrote:
-> > diff --git a/net/core/dev.c b/net/core/dev.c
-> > index 11da1e272ec20..dfec541f68e3a 100644
-> > --- a/net/core/dev.c
-> > +++ b/net/core/dev.c
-> > @@ -3944,7 +3944,10 @@ static void qdisc_pkt_len_init(struct sk_buff *skb)
-> >  		unsigned int hdr_len;
-> >  
-> >  		/* mac layer + network layer */
-> > -		hdr_len = skb_transport_offset(skb);
-> > +		if (!skb->encapsulation)
-> > +			hdr_len = skb_transport_offset(skb);
-> > +		else
-> > +			hdr_len = skb_inner_transport_offset(skb);
-> 
-> This pattern seems repeated in a few places, other than the two you are
-> patching, I saw another one:
-> 
-> 2465 static netdev_features_t hns3_features_check(struct sk_buff *skb,
-> 2466                                              struct net_device *dev,
-> 2467                                              netdev_features_t features)
-> 2468 {
-> 2469 #define HNS3_MAX_HDR_LEN        480U
-> 2470 #define HNS3_MAX_L4_HDR_LEN     60U
-> 2471 
-> 2472         size_t len;
-> 2473 
-> 2474         if (skb->ip_summed != CHECKSUM_PARTIAL)
-> 2475                 return features;
-> 2476 
-> 2477         if (skb->encapsulation)
-> 2478                 len = skb_inner_transport_offset(skb);
-> 2479         else
-> 2480                 len = skb_transport_offset(skb);
+Add a new test script to the network selftests which tests getting and
+setting of layer 2 addresses through netlink, including the newly added
+support for setting a permaddr on netdevsim devices.
 
-From a quick grep, this is the only other case, right?
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+---
+ tools/testing/selftests/net/Makefile         |  1 +
+ tools/testing/selftests/net/lib.sh           | 23 ++++++++++
+ tools/testing/selftests/net/netdev-l2addr.sh | 69 ++++++++++++++++++++++++++++
+ 3 files changed, 93 insertions(+)
+
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index 54377659652907af7232907e570eea2a9c5ba3dc..66a3ef221ad758d7844034c66a1dff4497b1ab54 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -63,6 +63,7 @@ TEST_PROGS += ip_local_port_range.sh
+ TEST_PROGS += rps_default_mask.sh
+ TEST_PROGS += big_tcp.sh
+ TEST_PROGS += netns-sysctl.sh
++TEST_PROGS += netdev-l2addr.sh
+ TEST_PROGS_EXTENDED := toeplitz_client.sh toeplitz.sh xfrm_policy_add_speed.sh
+ TEST_GEN_FILES =  socket nettest
+ TEST_GEN_FILES += psock_fanout psock_tpacket msg_zerocopy reuseport_addr_any
+diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+index ff0dbe23e8e0c8d3a66159d9b82fdc1fc5d4804d..f4c3c90bd89acd3ee060b76d53afb43499a35a64 100644
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -240,6 +240,29 @@ create_netdevsim() {
+     echo nsim$id
+ }
  
-> Maybe worth a helper now?
++create_netdevsim_port() {
++    local nsim_id="$1"
++    local ns="$2"
++    local port_id="$3"
++    local perm_addr="$4"
++    local orig_dev
++    local new_dev
++    local nsim_path
++
++    nsim_path="/sys/bus/netdevsim/devices/netdevsim$nsim_id"
++
++    echo "$port_id $perm_addr" | ip netns exec "$ns" tee "$nsim_path"/new_port > /dev/null
++
++    orig_dev=$(ip netns exec "$ns" find "$nsim_path"/net/ -maxdepth 1 -name 'e*' | tail -n 1)
++    orig_dev=$(basename "$orig_dev")
++    new_dev="nsim${nsim_id}p$port_id"
++
++    ip -netns "$ns" link set dev "$orig_dev" name "$new_dev"
++    ip -netns "$ns" link set dev "$new_dev" up
++
++    echo "$new_dev"
++}
++
+ # Remove netdevsim with given id.
+ cleanup_netdevsim() {
+     local id="$1"
+diff --git a/tools/testing/selftests/net/netdev-l2addr.sh b/tools/testing/selftests/net/netdev-l2addr.sh
+new file mode 100755
+index 0000000000000000000000000000000000000000..a53f33ee368c2e59b1a867d5d1fdb391db1b67a8
+--- /dev/null
++++ b/tools/testing/selftests/net/netdev-l2addr.sh
+@@ -0,0 +1,69 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++source lib.sh
++set -o pipefail
++
++NSIM_ADDR=2025
++TEST_ADDR="d0:be:d0:be:d0:00"
++
++RET_CODE=0
++
++cleanup() {
++    cleanup_netdevsim "$NSIM_ADDR"
++    cleanup_ns "$NS"
++}
++
++trap cleanup EXIT
++
++fail() {
++    echo "ERROR: ${1:-unexpected return code} (ret: $_)" >&2
++    RET_CODE=1
++}
++
++get_addr()
++{
++    local found=0
++    local type="$1"
++    local dev="$2"
++    local ns="$3"
++    local output
++
++    output=$(ip -n "$ns" link show dev "$dev" | grep "link/")
++
++    for k in $output; do
++        if [ "$found" -eq "1" ]; then
++            echo "$k"
++            return 0
++        fi
++        if [[ "$k" == "$type" ]]; then
++            found=1
++        fi
++    done
++
++    return 1
++}
++
++setup_ns NS
++
++nsim=$(create_netdevsim $NSIM_ADDR "$NS")
++
++get_addr link/ether "$nsim" "$NS" >/dev/null || fail "Couldn't get ether addr"
++get_addr brd "$nsim" "$NS" >/dev/null || fail "Couldn't get brd addr"
++get_addr perm "$nsim" "$NS" && fail "Found perm_addr without setting it"
++
++ip -n "$NS" link set dev "$nsim" address "$TEST_ADDR"
++ip -n "$NS" link set dev "$nsim" brd "$TEST_ADDR"
++
++[[ "$(get_addr link/ether "$nsim" "$NS")" == "$TEST_ADDR" ]] || fail "Couldn't set ether addr"
++[[ "$(get_addr brd "$nsim" "$NS")" == "$TEST_ADDR" ]] || fail "Couldn't set brd addr"
++
++nsim_port=$(create_netdevsim_port "$NSIM_ADDR" "$NS" 2 "$TEST_ADDR")
++
++get_addr link/ether "$nsim_port" "$NS" >/dev/null || fail "Couldn't get ether addr"
++get_addr brd "$nsim_port" "$NS" >/dev/null || fail "Couldn't get brd addr"
++[[ "$(get_addr permaddr "$nsim_port" "$NS")" == "$TEST_ADDR" ]] || fail "Couldn't get permaddr"
++
++cleanup_netdevsim "$NSIM_ADDR" "$NS"
++
++exit $RET_CODE
 
-If only one more, I wouldn't respin for that.
+-- 
+2.50.0
+
