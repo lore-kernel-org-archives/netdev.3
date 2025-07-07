@@ -1,78 +1,60 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6CB1D5150;
-	Mon,  7 Jul 2025 09:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384FD2A1BA
+	for <netdev@vger.kernel.org>; Mon,  7 Jul 2025 09:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751879423; cv=none; b=DJHrFVlB+JtZo6qlGln6y1yT4TKuX1ujatc9CqyJEg0nzWX8wzi1J1ff1U7aRoiItrS86ZhnaB0Roxzp0GDmqayDKqGFz1Ject/hW7qREf7A3pPEgJk+TFMIYN9CShGUemllVe5Vz1AO9sKVo3trfva2B5wrq7XWoNW8ZzLij/Y=
+	t=1751879696; cv=none; b=aXGRYfoatV47WpSHo7UIOPeKjAGFp8yqZ7sCa0bC2IoZug+zlMMWlWsI8kDPEnhgt4i0xIRWmwb7J5VOYuusi8M3BSX3vXn0Tg9/c9I1/NfIYihawDg9+BvofZM0EuU2uC80GCEr4g30PUEN896NTEbOBUHOl/dIYkUlqvEQVgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751879423; c=relaxed/simple;
-	bh=1reYjJf5V0RxPsran44wFqB4/Ic92wmjl1koBdZ0fvg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h7i9SEAJ789wFj3BysW8giHqr4ejFbLYA+fTwMnJAQPZTL20yScz/2CYYrt/ISHWFfzk/HfU+suSlVvSe6WqSp50HUAzrqlfiNY4Tg0hqLUO5ZDSlEHcDKu6Shv9wyAgnrWzA25+IA8x3cTDotCHxp1HGaVmwwJolIynHHvtUjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ga8MPKPD; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751879696; c=relaxed/simple;
+	bh=86jbnWjsFrfyIh+jJs4CKjLVgJRfSWiYlFK4OCBp3sk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nkQPayN/aPKMoiFzkiG/dVFgKva8TsHALJhPL0tYHsPfpRSU63ps6w+LXQ0BUPKc71vx8KYQc69P3Zum8YbbCWxNZmgQ9qJYpYsDGeNIA1RWEXAUUVW0UCSiSdIv8N1sZb8wvXdlW2Be2DD8uvagAB1yxwKfMD8/g1h546g4c7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eWbKy5/m; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ga8MPKPD"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4535fc0485dso3578595e9.0;
-        Mon, 07 Jul 2025 02:10:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751879418; x=1752484218; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uJWtxT21l7c4nts93SF3UAZIecgeSHAqf7LSVji6R4A=;
-        b=ga8MPKPDHqt3nudGNCOYits4xdVjaU/tixbBSxTuNPJQVPmUp1krHBaP5C9oWOlMcH
-         szT8/lV2t2Q9737BBlKWsNiHFiQfG1rC7kjeClz3ywOrxp4qVTPzzi2bVPR5w2BVSKPv
-         Ql1Gu87E/ZH6keHCoNW1la8naonmUwPlLFbUxFAVQcTlRHylkmcueNXeYPsH5c8kvDZ6
-         xDeHLekg+IOHW9F5shIrCGObEMjqJbYJZJ+3AWEl5PoJRhaKP4zKHIzRbdnOY0Pv9qah
-         7iAXO5qogl3eo0KnnZsPSjeJdJdpJuQneyYcVYMRvHBHa/m+gjB8qZJiyhUhNeKP38XC
-         8F8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751879418; x=1752484218;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uJWtxT21l7c4nts93SF3UAZIecgeSHAqf7LSVji6R4A=;
-        b=AeBpJbR+RJZgoD4AJfRIRcFsrzhO2TEXxlxzZas5hsGUXTyn/fQiHncYxpwW58dqFS
-         kfwe28oyqnylTKuOY+dgJQhnsZh20uN+2YB4Vzb1C5JxdcjCLhyMsL9UX+H7IJ8q3/49
-         I2IZy6phvSv1XE21WUCU8FD99sl2VSiJJFQfRtMuJEG4ZF8OdrJKI1dmoh1IxqbW1VOQ
-         hkOHkc3ISC2ZfKV6fXSPHpGWAxx3NMWnxSQHPVjGMutHiRIttWUv+eC9psQcahT44g2S
-         rmjZh6g4VIXvgC8VrN7OXJaG/u1H3HOLUSG5ramqdV3SRYUWV6a6hGgmiAOiV++h/iWv
-         dGGA==
-X-Forwarded-Encrypted: i=1; AJvYcCWjmD36L/U1EX/eophszYhd7RQs3yMeXcLIi0+qoAhGMjiNHCnG+Bo2ovdz+//5EH7ZGtfXMudh@vger.kernel.org, AJvYcCXt9POXNZCkOyhvLTYwLMMhwApYt568O8B96WWGP63/oNicbnwUNMrvncwPbUw36EkCJo9o9/CvBUqgyB4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNl4mqWBVHqg0FkKM7uRPgbnzHKUJrPARn+GVsoILUTqlyg06r
-	yL65JL6g2oqLqCQeCWmeMFz1b5E1YjtSXGxGL5AgVb+CD28aKamVxISm
-X-Gm-Gg: ASbGncsIWwCKKpFpaTfXX0rEgl/YuqfQik6/5zkYTqMLNdb9+NYg8HtAvomAy3AEXWo
-	aMFjbjGfDgkVAometoCAMs+nEbFnGFuFxtFJAuJKb2WfAwFYQ+EgqTZnkyfclzfwaP7/atH90Lx
-	rmWPTnkVQDaQ1T1SjQLbD4oujhitTENxAqlq/baD3363qPsyG/CF/aDTz59nBBswheG5QVBekS7
-	KEuYArxW0xFXgzM+yNacl01OF0/NKwabkb+Z7Fw612RVfk6/DCE6J0SnPIMsUFTG4PmGQQzIxfx
-	DbCV1JZeOUxhucB+ZnsgQJjkkzLVvslLHMd9/rqSTDRPiNMbV7Npojma5JqVpithvH+VwOcK8C+
-	nAVDienyNV42bB3Gn1HAWXVLbmw==
-X-Google-Smtp-Source: AGHT+IG9qIcOORwlYLKL9hcbiQ/aV0Di5Lic/7gBgpHcgMVUALPO7xKmi5h6QOAydykVrTGwt2lNZA==
-X-Received: by 2002:a05:600c:a21c:b0:439:88bb:d00b with SMTP id 5b1f17b1804b1-454b3a7d3d7mr21356575e9.5.1751879418252;
-        Mon, 07 Jul 2025 02:10:18 -0700 (PDT)
-Received: from thomas-precision3591.imag.fr ([2001:660:5301:24:ef01:c9dd:1349:ddcf])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-454b161fb78sm106004905e9.1.2025.07.07.02.10.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Jul 2025 02:10:17 -0700 (PDT)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Mark Einon <mark.einon@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eWbKy5/m"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751879694; x=1783415694;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=86jbnWjsFrfyIh+jJs4CKjLVgJRfSWiYlFK4OCBp3sk=;
+  b=eWbKy5/mNAjHuR2TlYWehQwXQZUy+CCGtuILVloh17S6+fb0Jw+R6uXX
+   MfapXKtr48ba+Zuk+TdzT8q+ML9o3FBK0Cx7+tuGfkxf4z3le7ni6C0E6
+   8NRJ11IC+LVvvWt7DSAWx+1zill1dU5UsoNvAKJMh6GqlnsaW15aryerl
+   214DlsJzr6n0X97tqrj8wQaxDl7TF/Kf9Y/sxhdD+1BPuuP5O7VUMvyQE
+   xEPQVvqvjCx7ycTOqRpDLoI+WB/V8wOxVTjF5LpE61p/rnxU7D3wDqCzv
+   gf20l3oFEjWK5tXB0rHRhpis6YUdTwduzzzy7MhePjFQnIvt0+fuiQkkT
+   w==;
+X-CSE-ConnectionGUID: bJInxNgARJ+42FYFM+bTtw==
+X-CSE-MsgGUID: pKw7kdpETT6Q99l3afmXZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="57897098"
+X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
+   d="scan'208";a="57897098"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 02:14:54 -0700
+X-CSE-ConnectionGUID: D1hSd1KqSsyPbzd4ucoQSA==
+X-CSE-MsgGUID: oJwViJ0XTbuGe/IHjBdqnA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
+   d="scan'208";a="154578647"
+Received: from os-delivery.igk.intel.com ([10.102.18.218])
+  by orviesa006.jf.intel.com with ESMTP; 07 Jul 2025 02:14:51 -0700
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: anthony.l.nguyen@intel.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] ethernet: et131x:  Add missing check after DMA map
-Date: Mon,  7 Jul 2025 11:09:49 +0200
-Message-ID: <20250707090955.69915-1-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dhowells@redhat.com,
+	David.Kaplan@amd.com,
+	jiri@resnulli.us,
+	przemyslaw.kitszel@intel.com,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Subject: [PATCH iwl-net v2 1/2] devlink: allow driver to freely name interfaces
+Date: Mon,  7 Jul 2025 10:58:36 +0200
+Message-Id: <20250707085837.1461086-1-jedrzej.jagielski@intel.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,91 +63,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, unmap and return an error.
+Currently when adding devlink port it is prohibited to let
+a driver name an interface on its own. In some scenarios
+it would not be preferable to provide such limitation,
+eg some compatibility purposes.
 
-Fixes: 38df6492eb51 ("et131x: Add PCIe gigabit ethernet driver et131x to drivers/net")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Add flag skip_phys_port_name_get to devlink_port_attrs struct
+which indicates if devlink should not alter name of interface.
+
+Suggested-by: Jiri Pirko <jiri@resnulli.us>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 ---
- drivers/net/ethernet/agere/et131x.c | 37 +++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+v2: add skip_phys_port_name_get flag to skip changing if name
+---
+ include/net/devlink.h | 7 ++++++-
+ net/devlink/port.c    | 3 +++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/agere/et131x.c b/drivers/net/ethernet/agere/et131x.c
-index 678eddb36172..b32e2a5af779 100644
---- a/drivers/net/ethernet/agere/et131x.c
-+++ b/drivers/net/ethernet/agere/et131x.c
-@@ -2459,6 +2459,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 							  skb->data,
- 							  skb_headlen(skb),
- 							  DMA_TO_DEVICE);
-+				if (dma_mapping_error(&adapter->pdev->dev,
-+						      dma_addr))
-+					return -ENOMEM;
-+
- 				desc[frag].addr_lo = lower_32_bits(dma_addr);
- 				desc[frag].addr_hi = upper_32_bits(dma_addr);
- 				frag++;
-@@ -2468,6 +2472,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 							  skb->data,
- 							  skb_headlen(skb) / 2,
- 							  DMA_TO_DEVICE);
-+				if (dma_mapping_error(&adapter->pdev->dev,
-+						      dma_addr))
-+					return -ENOMEM;
-+
- 				desc[frag].addr_lo = lower_32_bits(dma_addr);
- 				desc[frag].addr_hi = upper_32_bits(dma_addr);
- 				frag++;
-@@ -2478,6 +2486,10 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 							  skb_headlen(skb) / 2,
- 							  skb_headlen(skb) / 2,
- 							  DMA_TO_DEVICE);
-+				if (dma_mapping_error(&adapter->pdev->dev,
-+						      dma_addr))
-+					goto unmap_first_out;
-+
- 				desc[frag].addr_lo = lower_32_bits(dma_addr);
- 				desc[frag].addr_hi = upper_32_bits(dma_addr);
- 				frag++;
-@@ -2489,6 +2501,9 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 						    0,
- 						    desc[frag].len_vlan,
- 						    DMA_TO_DEVICE);
-+			if (dma_mapping_error(&adapter->pdev->dev, dma_addr))
-+				goto unmap_out;
-+
- 			desc[frag].addr_lo = lower_32_bits(dma_addr);
- 			desc[frag].addr_hi = upper_32_bits(dma_addr);
- 			frag++;
-@@ -2578,6 +2593,28 @@ static int nic_send_packet(struct et131x_adapter *adapter, struct tcb *tcb)
- 		       &adapter->regs->global.watchdog_timer);
- 	}
- 	return 0;
-+
-+unmap_out:
-+	// Unmap everything from i-1 to 1
-+	while (--i) {
-+		frag--;
-+		dma_addr = desc[frag].addr_lo;
-+		dma_addr |= (u64)desc[frag].addr_hi << 32;
-+		dma_unmap_page(&adapter->pdev->dev, dma_addr,
-+			       desc[frag].len_vlan, DMA_TO_DEVICE);
-+	}
-+
-+unmap_first_out:
-+	// unmap header
-+	while (frag--) {
-+		frag--;
-+		dma_addr = desc[frag].addr_lo;
-+		dma_addr |= (u64)desc[frag].addr_hi << 32;
-+		dma_unmap_single(&adapter->pdev->dev, dma_addr,
-+				 desc[frag].len_vlan, DMA_TO_DEVICE);
-+	}
-+
-+	return -ENOMEM;
- }
+diff --git a/include/net/devlink.h b/include/net/devlink.h
+index 0091f23a40f7..414ae25de897 100644
+--- a/include/net/devlink.h
++++ b/include/net/devlink.h
+@@ -78,6 +78,7 @@ struct devlink_port_pci_sf_attrs {
+  * @flavour: flavour of the port
+  * @split: indicates if this is split port
+  * @splittable: indicates if the port can be split.
++ * @skip_phys_port_name_get: if set devlink doesn't alter interface name
+  * @lanes: maximum number of lanes the port supports. 0 value is not passed to netlink.
+  * @switch_id: if the port is part of switch, this is buffer with ID, otherwise this is NULL
+  * @phys: physical port attributes
+@@ -87,7 +88,11 @@ struct devlink_port_pci_sf_attrs {
+  */
+ struct devlink_port_attrs {
+ 	u8 split:1,
+-	   splittable:1;
++	   splittable:1,
++	   skip_phys_port_name_get:1; /* This is for compatibility only,
++				       * newly added driver/port instance
++				       * should never set this.
++				       */
+ 	u32 lanes;
+ 	enum devlink_port_flavour flavour;
+ 	struct netdev_phys_item_id switch_id;
+diff --git a/net/devlink/port.c b/net/devlink/port.c
+index 939081a0e615..bf52c8a57992 100644
+--- a/net/devlink/port.c
++++ b/net/devlink/port.c
+@@ -1522,6 +1522,9 @@ static int __devlink_port_phys_port_name_get(struct devlink_port *devlink_port,
+ 	if (!devlink_port->attrs_set)
+ 		return -EOPNOTSUPP;
  
- static int send_packet(struct sk_buff *skb, struct et131x_adapter *adapter)
++	if (devlink_port->attrs.skip_phys_port_name_get)
++		return 0;
++
+ 	switch (attrs->flavour) {
+ 	case DEVLINK_PORT_FLAVOUR_PHYSICAL:
+ 		if (devlink_port->linecard)
 -- 
-2.43.0
+2.31.1
 
