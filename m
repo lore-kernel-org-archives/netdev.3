@@ -1,62 +1,62 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6E02116E9
-	for <netdev@vger.kernel.org>; Mon,  7 Jul 2025 15:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6682116E9
+	for <netdev@vger.kernel.org>; Mon,  7 Jul 2025 15:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751903478; cv=none; b=BXYY+DfkSSqnpf/lCxwnuMhB/RtaVZ9aC6cmMF+pnnXcwgFkQz5/61dRA3AlAhVVgcSfn6DGX1lniP8bkCGVpzgccbtkdlsBvM4hZNF4+BkiAlgPDaH5C00Chqqq7q/lGrCfNky9gSphzg0RfsPpxH6+ZinGiyIhxVc2wJGNAZs=
+	t=1751903481; cv=none; b=J1imLrZHJS2Yer83mgaS4WOKgVBSXN6xKuby1a75WDl/0sNdz4sw43u/xK51107CA4dqk6VUeOp/s0SuNLNcHVwdNT4RMRXvaWFhFdT0gMuu5WZ1PlDjWMwfOOz27IMJCLlWH6erpMSwyCTCIQm4x3JT80hdeqXJojrR//3dglE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751903478; c=relaxed/simple;
-	bh=ii0lhnsuHEZZ21rnkBA0wx5pkbY0pk/4pyArG18nLsA=;
+	s=arc-20240116; t=1751903481; c=relaxed/simple;
+	bh=fyehYhxa8G/73wUbDFErCIWrrsV+XEDbPV1wHnsjius=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NnG8iRA3wA/a+xp8lBqWY8NnFT3ThNsQwKm7I3RvLiTMN+mANALNT3xJNiYFWsY5utC9pYuHGfZ8HnF+OSLP62qCofPGZQ7YrZOVhmCtnPUjtPUlNCLNM4TtWdZlUIUZvhtucBsRju0cuCAg98RnKdoulLUNRR+w4ZbM9DseXvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io; spf=none smtp.mailfrom=jrife.io; dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b=giUqaJDt; arc=none smtp.client-ip=209.85.214.180
+	 MIME-Version; b=Hq+0WxFW6paxPQz5Kd9IYS2JCk0wToYhetac/NIuF8ZK8rC5NifIMNBQKGitviYdGVFbxdK2M4PCv8kjz0DVniY48qM5UyB9GWZV6yMUotu1pYhjo95JSOCv6+0THKe1JY4D4nEN7HO8bGp9HUyOUJgiVeBG43fAGlddBFV6BJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io; spf=none smtp.mailfrom=jrife.io; dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b=iQsqCm/i; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=jrife.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b="giUqaJDt"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-235248ba788so2453935ad.0
-        for <netdev@vger.kernel.org>; Mon, 07 Jul 2025 08:51:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b="iQsqCm/i"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-748fadc0bc5so564514b3a.0
+        for <netdev@vger.kernel.org>; Mon, 07 Jul 2025 08:51:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jrife-io.20230601.gappssmtp.com; s=20230601; t=1751903476; x=1752508276; darn=vger.kernel.org;
+        d=jrife-io.20230601.gappssmtp.com; s=20230601; t=1751903479; x=1752508279; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BZZ0jvcYwhY5yt1MXnZuSSYPelQKSbT2EiEftdDOFWk=;
-        b=giUqaJDt+D6558aGL2nRTNr4tS3EKEcvnjMhWua3Erm24TAYAA/OBI/HEtsHD+E3No
-         ClvegUGyB7rCeydyPXopSME6Q1NCZH4oj+S9J09kGOJXuvyqPBEbvxHBE34Yc362zQl0
-         2X2EtiZtXVczSgFobwklq6RQg6S79NAgdYSqkQiT0KR6N0OKV6FY/MJcHax6DspPPu+P
-         liOtVDs3ajry1/mgTCf3qa5pARUH3LlkioCaKcChcKk7UdAq1Kc9c+h/r0cZyuG0cj/3
-         UJtsLqb6hgBi4GSejPjc9QtQzOVRXgocXH8I5DqRqVvPL+Y8n7zT2tE+Rizay5TIcLfb
-         a8yw==
+        bh=KXWCQ6+3YVI5NTJDWePIBPW7AX78zEDasUFUwt2Y1Ps=;
+        b=iQsqCm/iwqRFjtN65yUtN4Mw6rI339gfr/ypCMVQWh4h+a2S2hVYXJDTMbgk4aTK0G
+         CBvPefdyn83ljzrF7Kjsajqs9FbSx8OIpeoIZIWigD+xoT41/MXLAvyrJMq/bJH6tYPc
+         S6xDwvROnlEFDQJsYLKb+4M42YlRWv8DOewDDsWPoy2nuasykXBRXzPIUp5aS/X99/zf
+         oWg8nX27TzKZCkjIMx/9Ll++vQ1/ZU7uEpUef4WBCUiLy4rwjxFxeSSa0+64kq4NxW+f
+         PIgrpgV5g4uH7IpX5+fNuYUypUGGETjrLJse0FSWOtXIefAlmxp1XuUrgM0Za69LY6J5
+         TwuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751903476; x=1752508276;
+        d=1e100.net; s=20230601; t=1751903479; x=1752508279;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BZZ0jvcYwhY5yt1MXnZuSSYPelQKSbT2EiEftdDOFWk=;
-        b=KSfB8NnnPB7z1EX4NfJlAijdBlaiOcdg3SnYr1ruF+uFfygCvtZAYjK+Gt0yBZ9GNQ
-         zoW/dgTBrbZ+Jw1EbasSsxgJpBCk+Z8liPgqfOcPDdSJQRXi4FyVH2yRQbsvSZ79cVIn
-         QgUVsi/1/DbqV2NVkQ0dAMMK6bO66vYk/VALTecEcONhpI9F1q54FLBMoDSGsJbrYTax
-         sZluHDEyEIeFJ/8RTgFxhfYLhKKPUsFvZPRZR/zvVIyV8W/3imWijb0IYxdphbfrDFUD
-         /hDHwkP/fcAqucbqfOeZW5It7uVIWXGqccger9sfJ85amx55QRuh9DY0kq+CbeXOSWIR
-         9y4A==
-X-Gm-Message-State: AOJu0Ywm41MwzP3MWGkl/ueCl+1rxyR4uJhbFtE/te07U6ahXFq8Icl+
-	t/p7mYwDLQI9k+tczZ/Pe90HVrP1z9Jm7fm/+NmbJDJO++iNGzQqKJPgiabwSGUD3xeq0BlpPtV
-	oScY8
-X-Gm-Gg: ASbGnctHgKsiLFFJWHyx3zBNTOjKbx8ls+rr3G7C9jUySYn9l945bkR8FLyMBFsJmXw
-	ddI6V4w0i2L6nBT20i9fvnlqWQr2rKafoc7vDmjIZ7k5ipMrG186bAFHW5icuMHoexTdakqIZ/Z
-	6Az3gYTKChYEUIFp4Q/EX+DK0v9cl2xdUeRUsSw0LAvLs2oGu2GgGQsOuPyW/bcKVzXWBZEmsWH
-	3AWRAh/MLq6JgvMQDhB3NYxCDCCNAYT3B3YpPM1aW0MbNMv0q+BGv5MoQPnBBikqEnF+K1/DgKU
-	tVI31QDIdQma4nKm32Ev8HwM6lYJ2wTyIyUTmHNjNzl/jt5W78M=
-X-Google-Smtp-Source: AGHT+IHw6vqyjMErnWgTqW8VuB0mANsxbhhqZLqj4ip88jNAthOzZgeqLmVWUDX6ixTcy4HMwZvDoA==
-X-Received: by 2002:a17:903:2f8a:b0:236:71f1:d345 with SMTP id d9443c01a7336-23c85eb06femr73942495ad.1.1751903476665;
-        Mon, 07 Jul 2025 08:51:16 -0700 (PDT)
+        bh=KXWCQ6+3YVI5NTJDWePIBPW7AX78zEDasUFUwt2Y1Ps=;
+        b=lDMawWpMmY2PhKcfXbPa5MdKGoMXmsC9NlZAyR102dqYRMj3GcUDYkWiFsKmT/oMui
+         Le4gQoQ9JPtJDcyBgVNKdhUC0IQaB8CVSiJGYaeOgwkcytCS/8uI61R1GzfBLvqg7d1G
+         jmLqW/YoBcR/lT7DJxCKJMAooI7/HDF7uMok+NqFx9JYY0em4tc8vVorTqOKYxgvR1IZ
+         zxRJy85kHAlBnAorVLypc9a3AYBhi+RtweAu2SjwYtla65y4+uQBPlQRivyEliPId5iM
+         ECMmO2PjG/gP9FkAgpFd6V76ADk9aKfS/xZrW95ErHuJ+5K3Iqa6zbxqmN0KmHvH/MR3
+         DpLw==
+X-Gm-Message-State: AOJu0Yx11ldAZDKjW2g/MurULBqNb2zCLPmmB7178o3YxkZ3Z/v6S6go
+	KtMAmPc1x86HbdqHNsPS4sbPtgyYwzG/Vxo9dY7LSgxuk5VGMg/rVItZIiSe7KBx75hhq3GMJFM
+	/IDTM
+X-Gm-Gg: ASbGncsPuKcFan1wcKmHb+A9iP8jNFvQzhJQODBlDVgSQsu6/dbnpJBTcxZ7SDe/0Ih
+	yaF+0GULpxctGgDxBldY2y6xOn4k2JuXY9h8KkFxdWKRsZ8iAp+sYt20MjlOs5J9WwA/D0Lm/IO
+	yVLQkpMj/d3O3EGsj5YUJzkTk9+vHZgyL0x3PZloFKoyC3pHiRygjjQWKW3akvGu02xDddCNB5+
+	XE4QvM9hZ45++JtuPrY6KgH+IbT9JIUlLK+suNU1kT2db7t/u7HzLA7LMtrEEigkHznoRA6VR+f
+	T6PWhA4KZRk4bEpTjHnPZQuXU2zUynKaX3gJwTRvIWVc5mOMNUw=
+X-Google-Smtp-Source: AGHT+IFNwPOQ0+Ea+Zf477ylL1WBkeOblKh1A0EwysSZGArW8OtPPY1it65xHTOVu1d6Q2EsvdbwmA==
+X-Received: by 2002:a17:902:da84:b0:235:1ae7:a9ab with SMTP id d9443c01a7336-23c8723fc2cmr75987945ad.3.1751903479164;
+        Mon, 07 Jul 2025 08:51:19 -0700 (PDT)
 Received: from t14.. ([2001:5a8:4528:b100:e505:eb21:1277:21f5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23c8455eb3bsm95772065ad.115.2025.07.07.08.51.15
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23c8455eb3bsm95772065ad.115.2025.07.07.08.51.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Jul 2025 08:51:16 -0700 (PDT)
+        Mon, 07 Jul 2025 08:51:18 -0700 (PDT)
 From: Jordan Rife <jordan@jrife.io>
 To: netdev@vger.kernel.org,
 	bpf@vger.kernel.org
@@ -67,9 +67,9 @@ Cc: Jordan Rife <jordan@jrife.io>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
 	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
 	Stanislav Fomichev <stfomichev@gmail.com>
-Subject: [PATCH v4 bpf-next 07/12] selftests/bpf: Allow for iteration over multiple ports
-Date: Mon,  7 Jul 2025 08:50:55 -0700
-Message-ID: <20250707155102.672692-8-jordan@jrife.io>
+Subject: [PATCH v4 bpf-next 09/12] selftests/bpf: Make ehash buckets configurable in socket iterator tests
+Date: Mon,  7 Jul 2025 08:50:57 -0700
+Message-ID: <20250707155102.672692-10-jordan@jrife.io>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250707155102.672692-1-jordan@jrife.io>
 References: <20250707155102.672692-1-jordan@jrife.io>
@@ -81,62 +81,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Prepare to test TCP socket iteration over both listening and established
-sockets by allowing the BPF iterator programs to skip the port check.
+Prepare for bucket resume tests for established TCP sockets by making
+the number of ehash buckets configurable. Subsequent patches force all
+established sockets into the same bucket by setting ehash_buckets to
+one.
 
 Signed-off-by: Jordan Rife <jordan@jrife.io>
 ---
- tools/testing/selftests/bpf/prog_tests/sock_iter_batch.c | 7 ++-----
- tools/testing/selftests/bpf/progs/sock_iter_batch.c      | 4 ++++
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ .../bpf/prog_tests/sock_iter_batch.c          | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/bpf/prog_tests/sock_iter_batch.c b/tools/testing/selftests/bpf/prog_tests/sock_iter_batch.c
-index 2adacd91fdf8..0d0f1b4debff 100644
+index 4e15a0c2f237..18da2d901af7 100644
 --- a/tools/testing/selftests/bpf/prog_tests/sock_iter_batch.c
 +++ b/tools/testing/selftests/bpf/prog_tests/sock_iter_batch.c
-@@ -416,7 +416,6 @@ static void do_resume_test(struct test_case *tc)
+@@ -6,6 +6,7 @@
+ #include "sock_iter_batch.skel.h"
+ 
+ #define TEST_NS "sock_iter_batch_netns"
++#define TEST_CHILD_NS "sock_iter_batch_child_netns"
+ 
+ static const int init_batch_size = 16;
+ static const int nr_soreuse = 4;
+@@ -304,6 +305,7 @@ struct test_case {
+ 		     int *socks, int socks_len, struct sock_count *counts,
+ 		     int counts_len, struct bpf_link *link, int iter_fd);
+ 	const char *description;
++	int ehash_buckets;
+ 	int init_socks;
+ 	int max_socks;
+ 	int sock_type;
+@@ -410,13 +412,25 @@ static struct test_case resume_tests[] = {
+ static void do_resume_test(struct test_case *tc)
+ {
+ 	struct sock_iter_batch *skel = NULL;
++	struct sock_count *counts = NULL;
+ 	static const __u16 port = 10001;
++	struct nstoken *nstoken = NULL;
+ 	struct bpf_link *link = NULL;
+-	struct sock_count *counts;
  	int err, iter_fd = -1;
  	const char *addr;
  	int *fds = NULL;
--	int local_port;
  
++	if (tc->ehash_buckets) {
++		SYS_NOFAIL("ip netns del " TEST_CHILD_NS);
++		SYS(done, "sysctl -w net.ipv4.tcp_child_ehash_entries=%d",
++		    tc->ehash_buckets);
++		SYS(done, "ip netns add %s", TEST_CHILD_NS);
++		SYS(done, "ip -net %s link set dev lo up", TEST_CHILD_NS);
++		nstoken = open_netns(TEST_CHILD_NS);
++		if (!ASSERT_OK_PTR(nstoken, "open_child_netns"))
++			goto done;
++	}
++
  	counts = calloc(tc->max_socks, sizeof(*counts));
  	if (!ASSERT_OK_PTR(counts, "counts"))
-@@ -431,10 +430,8 @@ static void do_resume_test(struct test_case *tc)
- 				     tc->init_socks);
- 	if (!ASSERT_OK_PTR(fds, "start_reuseport_server"))
  		goto done;
--	local_port = get_socket_local_port(*fds);
--	if (!ASSERT_GE(local_port, 0, "get_socket_local_port"))
--		goto done;
--	skel->rodata->ports[0] = ntohs(local_port);
-+	skel->rodata->ports[0] = 0;
-+	skel->rodata->ports[1] = 0;
- 	skel->rodata->sf = tc->family;
- 
- 	err = sock_iter_batch__load(skel);
-diff --git a/tools/testing/selftests/bpf/progs/sock_iter_batch.c b/tools/testing/selftests/bpf/progs/sock_iter_batch.c
-index 8f483337e103..40dce6a38c30 100644
---- a/tools/testing/selftests/bpf/progs/sock_iter_batch.c
-+++ b/tools/testing/selftests/bpf/progs/sock_iter_batch.c
-@@ -52,6 +52,8 @@ int iter_tcp_soreuse(struct bpf_iter__tcp *ctx)
- 		idx = 0;
- 	else if (sk->sk_num == ports[1])
- 		idx = 1;
-+	else if (!ports[0] && !ports[1])
-+		idx = 0;
- 	else
- 		return 0;
- 
-@@ -92,6 +94,8 @@ int iter_udp_soreuse(struct bpf_iter__udp *ctx)
- 		idx = 0;
- 	else if (sk->sk_num == ports[1])
- 		idx = 1;
-+	else if (!ports[0] && !ports[1])
-+		idx = 0;
- 	else
- 		return 0;
- 
+@@ -453,6 +467,9 @@ static void do_resume_test(struct test_case *tc)
+ 	tc->test(tc->family, tc->sock_type, addr, port, fds, tc->init_socks,
+ 		 counts, tc->max_socks, link, iter_fd);
+ done:
++	close_netns(nstoken);
++	SYS_NOFAIL("ip netns del " TEST_CHILD_NS);
++	SYS_NOFAIL("sysctl -w net.ipv4.tcp_child_ehash_entries=0");
+ 	free(counts);
+ 	free_fds(fds, tc->init_socks);
+ 	if (iter_fd >= 0)
 -- 
 2.43.0
 
