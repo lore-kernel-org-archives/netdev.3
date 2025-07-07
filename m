@@ -1,64 +1,76 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7845B28CF6D
-	for <netdev@vger.kernel.org>; Mon,  7 Jul 2025 09:15:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14305278E63;
+	Mon,  7 Jul 2025 09:16:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751879707; cv=none; b=bann8pzHKhku79BOyCyRqBogvtTZjCsohBNN8x85fSLuxjqaV0tZEtVG0X+PwlTT8MluBpB+KClvAitr+UdqVOWzQfWU+KJCt1megmo2gqlv31C35CS9AQANH8mzRI7R8TGBpvLZJAkMp7zDyX0ysd6cscD+RUdCsFCeJ977Edw=
+	t=1751879765; cv=none; b=kRiBrDXwCqKyf0lxe2Pc5WqIuqGtNQe1qFtlW+YCaBLLoAc1bmTB3n4XZ2EzWQ9hZUMexkc1B4PGvwuYYgS7gd4l+cpEvJutEIukNM7MCUjh0Xfq7YvqkPI9W/hALx7LlFeVVo3IxXyVVOcJWiJ2dFWydS+H3tAOzsEhlpz7oOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751879707; c=relaxed/simple;
-	bh=Fnk2ILkbvf/XI4Kx3G6gmlk0qASx3GjBL2OnPBfp2pI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NA3qLgkcYG/vQPzeCryyBwXOn4u6CoURjXdw5kUDlmjeKhmMstq52/dujTh+HJx0cC/Odv/7oQaL3u/lTFKRvabmDE0pZxGeGCBA14ASE1NjaHfMj4n8K4tz5jnRfjeR1aFM6HguZ/yXNPNuKElIrEaDjL3Glr01lIivKGyAxz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O5jnQYb0; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1751879765; c=relaxed/simple;
+	bh=nC/FN3mVc3JR6bvleCxCfZLUGui1eUBpnn9Za7enxOI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MbmMj1tZ7TLTnk8ToXP8759s2XwzrW/x4fal81imlyXS1Czgll+Z6I5n1Y439l+QiVIyJL1TluDNr3wfbphG3YtaT4HtqoabELSD7PaqgHjdwP2TuBz61nbOHP9nYH6erRAdC551q5El4OUB86pF59WgeR9e6cgaqxA2xskBwpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AToOLn2z; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O5jnQYb0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751879705; x=1783415705;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Fnk2ILkbvf/XI4Kx3G6gmlk0qASx3GjBL2OnPBfp2pI=;
-  b=O5jnQYb0ec+Or+ZPmJDjV9FFiI4khu0UMVCC3kfB7E2UA8zkF5YUtgLl
-   agW2zYwmDDRr9L5aqYiAC7QXYGglrFCSMNjmBgNCgJ2g71CN/AOE5qNhY
-   9wXVtqh9tkw9d1C7N9mf+n4B4PhRKGIFZ6G74WYNz/WqpkPjcbTT3ObSl
-   RU91Je9+BLEu2/SOv4Hkh7OsPq8JLpG83mn1zFbzRIk9XRb6OjK+2pKFH
-   el8A0eExX7y89fjgNTR7S9moASv0tYHaDe2MV6vTX9i7YzTaLyxC99V13
-   TyZ0jAKKZlB7PeHrfnh4DWUNMa+ExOmuXijaBVUZNLHP18O5M/j1edbep
-   Q==;
-X-CSE-ConnectionGUID: aJz+LsbATa+5B8ia/LDsPA==
-X-CSE-MsgGUID: zQjJjc6+QgWkHc6D0fUozg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="57897114"
-X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
-   d="scan'208";a="57897114"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 02:15:04 -0700
-X-CSE-ConnectionGUID: EuHg3E3kRq6NYjZ3RsTS1Q==
-X-CSE-MsgGUID: HGQa/TbHR3Cjf3qgr3SoJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,293,1744095600"; 
-   d="scan'208";a="154578671"
-Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by orviesa006.jf.intel.com with ESMTP; 07 Jul 2025 02:15:01 -0700
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AToOLn2z"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-23dc5bcf49eso8485455ad.2;
+        Mon, 07 Jul 2025 02:16:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751879763; x=1752484563; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=H49/LGg+ueza8NJPHkaX8FcXqxyrWqBzkoXkHIKDikc=;
+        b=AToOLn2zYocmagtWP0dw3IO5XaW3lLODKacNsyOrvc0NkDlz+FdkJlNuuJmRl7Hbcc
+         Qvc1EIs9MSreWwMNYc64EkdmOXz+coHtw/exXFwD4UrFW64POzKGHv/qChTzlCWvZS9g
+         c6JsA7vG2q0q+o3IQPG+zwHUXhyi1ozbiwMAq/u0rmtidi3dPf4xQty7aimnuARPNrUW
+         uI8/Dyws5TLcTMBKt2QnoDvVqc4dPXws+j7bwTXJmKb/cIv+I0TtoX4JW1VgogvJhnob
+         JjHLXyOsuy53YrMY3TTXlrBCQpa/ItA+GLl7/bd0qAX+gqMHnXwhflyojaPMa7YFHNZ0
+         dwjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751879763; x=1752484563;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=H49/LGg+ueza8NJPHkaX8FcXqxyrWqBzkoXkHIKDikc=;
+        b=XHoB6JM05ILcU7Qo2ZaUMQseZNxgTAeFoRdf2yFmZVrtIqF3QgtfIC3g2rhTZ4miLS
+         rJIbciGciMJ05W9DhJa0P/RFE+49U+u7Y1JPgSq4bYlQueAHQyBLZqu3DWh3y8Bn0FLl
+         OjO0PKvs2DLKe0s9qdFyJBHZ169Xn3+7WJL+AVG8BpErTTxTYwgEv2tfeiRwDjaeIDzZ
+         rNSGjuCz57UFVPqUO+DYPXsZxkrTlhBk5XbkQNo9/i0mRPij+gWDorBmVxTLAmeOmdBq
+         L8LEjHDV11IKPfUJQRjtPoIVK0DSDNeUCmip92eaHbiVTSQm50NeN60hMgyuSyLXhg+4
+         fxBw==
+X-Forwarded-Encrypted: i=1; AJvYcCXE31+tOI2XBL24A3Mgl9h+BxDYmEh7Ui7iHOiA/SRmUDx9UOl9vqU+fK98EThCmAn+pPgpFE7S@vger.kernel.org, AJvYcCXe91KbBP4PaEJzgLaNz6KYYcPX6qNN3BA24U2MqhAR79oclz6vUVW512cTAA+vo3HNMWwhEXyUOZx3buM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPjw5FkWsI8HyUjV78VpObuH/B6Ts1YGNzo0LdrmQA+r2bX46W
+	n5KkDTQku1k9h+vgqulixt28Va5icfDrUsLnuCTxvJohYRFGS+OQHRMG5f/RtWl2fuU=
+X-Gm-Gg: ASbGncvwLuaNvq1nWWVvxjjc2C170gOt7fO7ZbG8PXswoylkH5wO+LFWwBmw4uOegFm
+	HipISve8CUwuxThobeuYPdNempGJYF7j5ram/WuheETglinJW1XYCn+iXLdF44fqCL17+OYsLTM
+	G9kyEtubHbRmSnPR2i78orf3CH9N0VOGN6r2qURjBC9nvNXm6XOrChquIgp2KNjLKKz/X1pJBDO
+	cAwqWmMeOBK2csG/eTqhebGYxi+418D2gCVnCWqOL5J5yeDKR7cmeinGbLVBYU9/1Y7Vl7miVKu
+	wrRbNLN6of3ZZmOS5W9xBkz8w/4XTIMjBlOi/Z/8kUzG2PyNV0orohbcMNj1EGZ0fU1hSb4t4fd
+	LnhuOPcNjzoVE
+X-Google-Smtp-Source: AGHT+IHuXjsRlCQg+cucVpZNwGxpgWu/tfCTLLvISb1DtSgYBy8ob4eM1nBJcpN/cMBbOa4daU9mRA==
+X-Received: by 2002:a17:902:d2cf:b0:236:363e:55d with SMTP id d9443c01a7336-23c90fc7ad0mr142454125ad.28.1751879763290;
+        Mon, 07 Jul 2025 02:16:03 -0700 (PDT)
+Received: from localhost.localdomain ([43.224.245.243])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23c845bdb15sm80504165ad.243.2025.07.07.02.16.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Jul 2025 02:16:03 -0700 (PDT)
+From: Wanchuan Li <gnblao@gmail.com>
+X-Google-Original-From: Wanchuan Li <liwanchuan@xiaomi.com>
+To: jv@jvosburgh.net
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	netdev@vger.kernel.org,
-	dhowells@redhat.com,
-	David.Kaplan@amd.com,
-	jiri@resnulli.us,
-	przemyslaw.kitszel@intel.com,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH iwl-net v2 2/2] ixgbe: prevent from unwanted interface name changes
-Date: Mon,  7 Jul 2025 10:58:37 +0200
-Message-Id: <20250707085837.1461086-2-jedrzej.jagielski@intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20250707085837.1461086-1-jedrzej.jagielski@intel.com>
-References: <20250707085837.1461086-1-jedrzej.jagielski@intel.com>
+	linux-kernel@vger.kernel.org,
+	Wanchuan Li <liwanchuan@xiaomi.com>
+Subject: [PATCH 1/2] bonding: exposure option coupled_control via sysfs
+Date: Mon,  7 Jul 2025 17:15:48 +0800
+Message-ID: <20250707091549.3995140-1-liwanchuan@xiaomi.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,41 +79,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Users of the ixgbe driver report that after adding devlink
-support by the commit a0285236ab93 ("ixgbe: add initial devlink support")
-their configs got broken due to unwanted changes of interfaces names.
-It's caused by changing names by devlink port initialization flow.
+Allow get/set of bonding parameter coupled_control
+via sysfs.
 
-To prevent from that set skip_phys_port_name_get flag for ixgbe
-devlink ports.
-
-Reported-by: David Howells <dhowells@redhat.com>
-Closes: https://lkml.org/lkml/2025/4/24/2052
-Reported-by: David Kaplan <David.Kaplan@amd.com>
-Closes: https://www.spinics.net/lists/netdev/msg1099410.html
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Fixes: a0285236ab93 ("ixgbe: add initial devlink support")
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Signed-off-by: Wanchuan Li <liwanchuan@xiaomi.com>
 ---
-v2: use new flag instead of creating blank implementation of
-    ndo_get_phys_port_name()
----
- drivers/net/ethernet/intel/ixgbe/devlink/devlink.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/bonding/bond_sysfs.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-index 54f1b83dfe42..47fae5035b9f 100644
---- a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-@@ -543,6 +543,7 @@ int ixgbe_devlink_register_port(struct ixgbe_adapter *adapter)
+diff --git a/drivers/net/bonding/bond_sysfs.c b/drivers/net/bonding/bond_sysfs.c
+index 1e13bb170515..5a8450b2269d 100644
+--- a/drivers/net/bonding/bond_sysfs.c
++++ b/drivers/net/bonding/bond_sysfs.c
+@@ -479,6 +479,18 @@ static ssize_t bonding_show_carrier(struct device *d,
+ static DEVICE_ATTR(use_carrier, 0644,
+ 		   bonding_show_carrier, bonding_sysfs_store_option);
  
- 	attrs.flavour = DEVLINK_PORT_FLAVOUR_PHYSICAL;
- 	attrs.phys.port_number = adapter->hw.bus.func;
-+	attrs.skip_phys_port_name_get = 1;
- 	ixgbe_devlink_set_switch_id(adapter, &attrs.switch_id);
++/* Show the coupled_control flag. */
++static ssize_t bonding_show_coupled_control(struct device *d,
++				    struct device_attribute *attr,
++				    char *buf)
++{
++	struct bonding *bond = to_bond(d);
++
++	return sysfs_emit(buf, "%d\n", bond->params.coupled_control);
++}
++static DEVICE_ATTR(coupled_control, 0644,
++		   bonding_show_coupled_control, bonding_sysfs_store_option);
++
  
- 	devlink_port_attrs_set(devlink_port, &attrs);
+ /* Show currently active_slave. */
+ static ssize_t bonding_show_active_slave(struct device *d,
+@@ -791,6 +803,7 @@ static struct attribute *per_bond_attrs[] = {
+ 	&dev_attr_ad_actor_system.attr,
+ 	&dev_attr_ad_user_port_key.attr,
+ 	&dev_attr_arp_missed_max.attr,
++	&dev_attr_coupled_control.attr,
+ 	NULL,
+ };
+ 
 -- 
-2.31.1
+2.49.0
 
