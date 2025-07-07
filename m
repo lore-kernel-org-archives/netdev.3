@@ -1,37 +1,36 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F50C1D7E54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F57A270574
 	for <netdev@vger.kernel.org>; Mon,  7 Jul 2025 05:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751867728; cv=none; b=qUcMiaIdLG5Rs6Ip6ZhcyqEXLfPkgymaKB6jvAuILXfKI+4cAwWJN6FVfiOvTy7BFn6z5r/lb1shsC1mCjPwqZRxndvwz87hdLrMNtGwvjSXK25CNMCQtPsr9ee93y8QMn2fh//L5VfFp5ZiIcDE7cE5yCO7ydzeg73/tukDKkg=
+	t=1751867728; cv=none; b=rVxLcV1TaM8abgFcsiD33AwJTVe2j13paRCx7PPIiA+rRcoCs34QI65oSrvomuZtZDufjlrLoy9Esg2tG5i41Ot47lS67jPc8zQJfeQLy2/W3wfi8qcGHcS0zn1GqbYhS5613Kl/Xq6cjGjI6b7ow0Xx9bDRtt2NiXd6wErupgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1751867728; c=relaxed/simple;
-	bh=uj+MTUqUYOkDwJRXzNWlWgm5TtGItZBAPzxck5afFn4=;
+	bh=AXPgzHyC0cNgFqxjL7SgmDUGjqAtPnSTijjTitRez2w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JzeXImzwLWtZmNhLxBX8VvVfpKwSB0K8ErPtib4MsCLXL5p+qBoOWdrUEz0CTUWrJwyZ20ys2J0Ma3QRT+3IzoMw72fljXcuYVycGQgt9SH4yITzugTpw7zTS8E+UYnYbP+8f289eYKgeH2lTnBByi1+fuql0xWcna/2kTfCTS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=VyT5cyTZ; arc=none smtp.client-ip=203.29.241.158
+	 In-Reply-To:To:Cc; b=Vf36uNkA47RDJwjX9AcWjARn2bcdQVRX9F02xHZgyU1bg34Yb7wCWEspxioGp0yQaD1PQ5IW2Yuyrz5xUu/FN5j+foKmkiJ/s2vUCIyw5tfhWO+N8VYjgGqPmiZEiW2Loq20AeqDhu4rBBhuQ8v4sWVXn1/xTs7+eDyk12qbHL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=cS+XD1bB; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="VyT5cyTZ"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="cS+XD1bB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1751867719;
-	bh=Qm5WvPjE6Ah16HuRdaFOQ8/A3GMEcUI/aYZjere7kzo=;
+	d=codeconstruct.com.au; s=2022a; t=1751867718;
+	bh=Mo0WLg3ezFpcbfGtnDmEBUlMGaryaOaSyC3rCW+QCkI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=VyT5cyTZoqbZfccyDibJM6WrgUDweBbT4Y4oQiM0Lwj4LuOxBBgYvBfj9NyZBUwpK
-	 zlUxBvlSNDT+o5q43lCxleio+NxhHwlXjqMXVIwBuj8/6wWZ6WPVL5rOSB9UG2FeWJ
-	 yRzTHQbIzUA96mXspI6+nvzkq4cyZ5R0Sym4qV/DIxYxqUbva2cNux9Hrjw3p2qe82
-	 lz6byOB5RnVYYHC+ax7GFGGwosllDU2sUiJeMvVLUVnwVtJSPmwFinmrnWRLZc3ybP
-	 qK5rYnX12OH4GTixo1KNiR8J5UHv/OplkxeJxI/Y9PHTAa8rqhMtolKfGnbBFI+zRU
-	 astlFHqma+lww==
+	b=cS+XD1bBqTOpRQHqHl5QqoShBrf7ur2STSTiJVHtNaVqfBF3SSm+UbTjMDhn1jYys
+	 cJZPAvIo65Tbyd+TX4FhDc71XFhYCgqydl1o81PARari79tnB3RZeb26JUzAKpLywm
+	 pvflXNfSXNPfEJgAlNz7QP9RNQPzDrVNZuO+cYK0DvXtiGxj2x7S0cUDkEOCaAsl8D
+	 i9vuGfSxvN1drW5i+mXG4gqoW/HCq8R4Xdli3kJs18MFP3WfyD+SAS4Bpnkcplfg1h
+	 zOVQeVPw7+ZxTCnDwd0jw3pFwN8kHV5eyf1UIwxXZhhsLCUb7TvPcXpjvHEIHTrraY
+	 ystyoBaIbPIBQ==
 Received: by codeconstruct.com.au (Postfix, from userid 10001)
-	id 23ECD6AC87; Mon,  7 Jul 2025 13:55:19 +0800 (AWST)
+	id 913E86AC84; Mon,  7 Jul 2025 13:55:18 +0800 (AWST)
 From: Matt Johnston <matt@codeconstruct.com.au>
-Date: Mon, 07 Jul 2025 13:55:15 +0800
-Subject: [PATCH net-next v2 2/7] net: mctp: Treat MCTP_NET_ANY specially in
- bind()
+Date: Mon, 07 Jul 2025 13:55:14 +0800
+Subject: [PATCH net-next v2 1/7] net: mctp: Prevent duplicate binds
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +39,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250707-mctp-bind-v2-2-fbaed8c1fb4d@codeconstruct.com.au>
+Message-Id: <20250707-mctp-bind-v2-1-fbaed8c1fb4d@codeconstruct.com.au>
 References: <20250707-mctp-bind-v2-0-fbaed8c1fb4d@codeconstruct.com.au>
 In-Reply-To: <20250707-mctp-bind-v2-0-fbaed8c1fb4d@codeconstruct.com.au>
 To: Jeremy Kerr <jk@codeconstruct.com.au>, 
@@ -49,63 +48,79 @@ To: Jeremy Kerr <jk@codeconstruct.com.au>,
  Simon Horman <horms@kernel.org>
 Cc: netdev@vger.kernel.org, Matt Johnston <matt@codeconstruct.com.au>
 X-Mailer: b4 0.15-dev-cbbb4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751867717; l=1794;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751867717; l=2005;
  i=matt@codeconstruct.com.au; s=20241018; h=from:subject:message-id;
- bh=uj+MTUqUYOkDwJRXzNWlWgm5TtGItZBAPzxck5afFn4=;
- b=k9fT2snXCQWZl2zafrVMR012VzXQxkk/GCkR07ggEUt/XUsc52LDD9WPKhUsB07nNXwjbK7dc
- RxKJRhIrSNMD2/xAa9F18tkcKJ4AA5Lqd63hD0RX3JjuGIrwOPKAXow
+ bh=AXPgzHyC0cNgFqxjL7SgmDUGjqAtPnSTijjTitRez2w=;
+ b=2p6OnLAcRfrhPlBPu+pUTjGQRJZZfyNm8LLdNrK3uXEgHJXp9kUhkPitmv4+2huBoKQd6ReFq
+ PY2PkaalfyPA1iBGkGEPs1w5/JiKMB+YB4kYW7+ZfQj+tHoOreQKT0G
 X-Developer-Key: i=matt@codeconstruct.com.au; a=ed25519;
  pk=exersTcCYD/pEBOzXGO6HkLd6kKXRuWxHhj+LXn3DYE=
 
-When a specific EID is passed as a bind address, it only makes sense to
-interpret with an actual network ID, so resolve that to the default
-network at bind time.
+Disallow bind() calls that have the same arguments as existing bound
+sockets.  Previously multiple sockets could bind() to the same
+type/local address, with an arbitrary socket receiving matched messages.
 
-For bind address of MCTP_ADDR_ANY, we want to be able to capture traffic
-to any network and address, so keep the current behaviour of matching
-traffic from any network interface (don't interpret MCTP_NET_ANY as
-the default network ID).
+This is only a partial fix, a future commit will define precedence order
+for MCTP_ADDR_ANY versus specific EID bind(), which are allowed to exist
+together.
 
 Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
 ---
- net/mctp/af_mctp.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ net/mctp/af_mctp.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
 diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index 9d5db3feedec57d18dd85599058761d3f6277ef0..4f456b1c82d182ac2c64acebb0e603726826a7e7 100644
+index 9b12ca97f412827c350fe7a03b7a6d365df74826..9d5db3feedec57d18dd85599058761d3f6277ef0 100644
 --- a/net/mctp/af_mctp.c
 +++ b/net/mctp/af_mctp.c
-@@ -53,6 +53,7 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
- {
- 	struct sock *sk = sock->sk;
- 	struct mctp_sock *msk = container_of(sk, struct mctp_sock, sk);
-+	struct net *net = sock_net(&msk->sk);
- 	struct sockaddr_mctp *smctp;
- 	int rc;
+@@ -73,7 +73,6 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
  
-@@ -77,8 +78,21 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
+ 	lock_sock(sk);
+ 
+-	/* TODO: allow rebind */
+ 	if (sk_hashed(sk)) {
  		rc = -EADDRINUSE;
  		goto out_release;
- 	}
--	msk->bind_net = smctp->smctp_network;
+@@ -629,15 +628,36 @@ static void mctp_sk_close(struct sock *sk, long timeout)
+ static int mctp_sk_hash(struct sock *sk)
+ {
+ 	struct net *net = sock_net(sk);
++	struct sock *existing;
++	struct mctp_sock *msk;
++	int rc;
 +
- 	msk->bind_addr = smctp->smctp_addr.s_addr;
++	msk = container_of(sk, struct mctp_sock, sk);
+ 
+ 	/* Bind lookup runs under RCU, remain live during that. */
+ 	sock_set_flag(sk, SOCK_RCU_FREE);
+ 
+ 	mutex_lock(&net->mctp.bind_lock);
+-	sk_add_node_rcu(sk, &net->mctp.binds);
+-	mutex_unlock(&net->mctp.bind_lock);
+ 
+-	return 0;
++	/* Prevent duplicate binds. */
++	sk_for_each(existing, &net->mctp.binds) {
++		struct mctp_sock *mex =
++			container_of(existing, struct mctp_sock, sk);
 +
-+	/* MCTP_NET_ANY with a specific EID is resolved to the default net
-+	 * at bind() time.
-+	 * For bind_addr=MCTP_ADDR_ANY it is handled specially at route
-+	 * lookup time.
-+	 */
-+	if (smctp->smctp_network == MCTP_NET_ANY &&
-+	    msk->bind_addr != MCTP_ADDR_ANY) {
-+		msk->bind_net = mctp_default_net(net);
-+	} else {
-+		msk->bind_net = smctp->smctp_network;
++		if (mex->bind_type == msk->bind_type &&
++		    mex->bind_addr == msk->bind_addr &&
++		    mex->bind_net == msk->bind_net) {
++			rc = -EADDRINUSE;
++			goto out;
++		}
 +	}
 +
- 	msk->bind_type = smctp->smctp_type & 0x7f; /* ignore the IC bit */
++	sk_add_node_rcu(sk, &net->mctp.binds);
++	rc = 0;
++
++out:
++	mutex_unlock(&net->mctp.bind_lock);
++	return rc;
+ }
  
- 	rc = sk->sk_prot->hash(sk);
+ static void mctp_sk_unhash(struct sock *sk)
 
 -- 
 2.43.0
