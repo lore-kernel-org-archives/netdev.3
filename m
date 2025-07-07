@@ -1,91 +1,67 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC688199934
-	for <netdev@vger.kernel.org>; Mon,  7 Jul 2025 08:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4CBB19F421;
+	Mon,  7 Jul 2025 09:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751878633; cv=none; b=q4eyIzeBXquCbvrFk9RWxRbktBREY+M6FtmxVEtjB19CcFkOdf5apZ4EMPyWtTgh+MqAwwHSLrO0Toi6ih8n7fl6gdRCAtawLiPTLWI6A7e2Xs1nuU9Lpex999RChrMm8cYxhvH3srU4Vb6GstmTBFh2WxvUcHfZHH/8CFlIVqY=
+	t=1751878869; cv=none; b=nMQKtD01x75iDfakbboxgsK3QwMbYcEm0yRbOOh/z0HnuZtEKdaWdbbNKYg+zSpPP4MMQMv9qx7Omb5JWqTmOVdPaSyF9ecCTeHhgSaKGHi3eKXkEqMIoTM+56fnh0/EBECDsRhze9xyIG/KYjFlJ4sdffZWRX7oKfhxredyzBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751878633; c=relaxed/simple;
-	bh=/S/SBpIcZK/dP+ifoH/vLTNDLlgzkijFUkOoCkc7ews=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=riErmtuBrE2lgdqAY097LWNC7q29PidN2TwsjhxPL8DfFLnC7Vl2lgqEFl/n7l4zHI6MhatBiHELKvnJzId9ksh+J67xgK38hqDAwFpptHGk6xeyuyE6PpKglMKpHXEGG+m3mOj6gaXRVJfngCdK+pLBYYk78KLtxSkcwbKOMNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=KCcn12zV; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1751878869; c=relaxed/simple;
+	bh=24gyF1taVTxprKDEd+rLNk+GtDDxWmbXhwmk849/WWI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E8fzZBSHiXldhH4SIrTwq6C41qhv3uAH54OCiqZMT9YJEWaApn/F/Dcr6h3WdnTCUcionsgtlBqYynnbzRG9hbEhDrFXwg4EQchDZNjXFP0pQCB+dREDpJ+9K9E2j1biRN5tEA5lmVGW8+vYcf2t6HIRXlPgAoA7lFSkwe9e90Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cwuIO+Mi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="KCcn12zV"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id BD5FC20189;
-	Mon,  7 Jul 2025 10:57:01 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id aoKzdQ4V2ESS; Mon,  7 Jul 2025 10:57:01 +0200 (CEST)
-Received: from EXCH-01.secunet.de (unknown [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 3C8EA207B0;
-	Mon,  7 Jul 2025 10:57:01 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 3C8EA207B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1751878621;
-	bh=bftrzlw8hEvW16PFn/qee4TnloIKFTcG7QZoa6kCz3Q=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=KCcn12zVDW69ZABYmgdrirFXlqlyMkJTyPlDUfiEcKuNI/V9LJ2rYOgFwNSArORPN
-	 aEWUvwvQnD/jk1ew9Q9iHIfj7EYsBtlQ4igI+MGG7wXURJQxkzTcDv83eWBVf4tB7K
-	 S+wj2DgY6D+YIY3LeSFCqcyy1qNMW7uIIP9OxIG2rVstZRypDQvfn8O9Al/m4okl/l
-	 GCov1v8U0NBIyETr0fYyGZ3O2Qx20ob9/1BKl3Cw1ub5tlFbfsiFHAUPTy+YXl+rUN
-	 Rn0PSeyfDuKjij6+E9lTLnE/4luHR1YJwVvri5Dx3VkYOVo8oeWRNeqYpuLUasVL/A
-	 D6R4Sw1H4GqwA==
-Received: from mbx-essen-02.secunet.de (10.53.40.198) by EXCH-01.secunet.de
- (10.32.0.171) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Mon, 7 Jul
- 2025 10:57:00 +0200
-Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
- (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 7 Jul
- 2025 10:57:00 +0200
-Received: by gauss2.secunet.de (Postfix, from userid 1000)
-	id 625DC3182BBE; Mon,  7 Jul 2025 10:57:00 +0200 (CEST)
-Date: Mon, 7 Jul 2025 10:57:00 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Jianbo Liu <jianbol@nvidia.com>
-CC: <netdev@vger.kernel.org>, <davem@davemloft.net>, <kuba@kernel.org>, "Leon
- Romanovsky" <leonro@nvidia.com>, Herbert Xu <herbert@gondor.apana.org.au>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>
-Subject: Re: [PATCH net-next] xfrm: Skip redundant statistics update for
- crypto offload
-Message-ID: <aGuL3BikwqfsOKb7@gauss3.secunet.de>
-References: <20250703084528.9517-1-jianbol@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cwuIO+Mi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A0AC4CEE3;
+	Mon,  7 Jul 2025 09:01:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751878869;
+	bh=24gyF1taVTxprKDEd+rLNk+GtDDxWmbXhwmk849/WWI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cwuIO+MiSF26xvbooegOGFArbkFQbJeMsk1yK4RPMXoLyRDKVgFGsod9UHyUoiJlm
+	 mgweD/93f6A+xjoYBX8uTrg225ptbSCuzwSXViwV7ZWFrMnKFk/y9Hh0HOa2MdyL3T
+	 0VAXkNAJIBLEjY6DmMRE7GS0ZUQsF8P8FuvVXFR0s7taBMmHxLD+mZtb/9CSULctf2
+	 C9XOsddfAPrDx5PObrvCF+DuVpUUn56lMyNT/XVx3MEYHT0Pk2aGzDwmDIdCR7/lc9
+	 9jPaxE4TD4r5JkdOdwh9brdRrSv6CfnT1LCdLujxnJ2v92CeM5q1D2RfXjuiS9fljv
+	 w6gPVmTb0XxTQ==
+Date: Mon, 7 Jul 2025 10:01:04 +0100
+From: Simon Horman <horms@kernel.org>
+To: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com,
+	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: Re: [PATCH v2] ice: Fix a null pointer dereference in
+ ice_copy_and_init_pkg()
+Message-ID: <20250707090104.GB89747@horms.kernel.org>
+References: <20250703095232.2539006-1-haoxiang_li2024@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250703084528.9517-1-jianbol@nvidia.com>
-X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
- mbx-essen-02.secunet.de (10.53.40.198)
+In-Reply-To: <20250703095232.2539006-1-haoxiang_li2024@163.com>
 
-On Thu, Jul 03, 2025 at 11:45:27AM +0300, Jianbo Liu wrote:
-> In the crypto offload path, every packet is still processed by the
-> software stack. The state's statistics required for the expiration
-> check are being updated in software.
+On Thu, Jul 03, 2025 at 05:52:32PM +0800, Haoxiang Li wrote:
+> Add check for the return value of devm_kmemdup()
+> to prevent potential null pointer dereference.
 > 
-> However, the code also calls xfrm_dev_state_update_stats(), which
-> triggers a query to the hardware device to fetch statistics. This
-> hardware query is redundant and introduces unnecessary performance
-> overhead.
-> 
-> Skip this call when it's crypto offload (not packet offload) to avoid
-> the unnecessary hardware access, thereby improving performance.
-> 
-> Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-> Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+> Fixes: c76488109616 ("ice: Implement Dynamic Device Personalization (DDP) download")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> ---
+> Changes in v2:
+> - modify the Fixes commit number. Thanks, Michal!
 
-Applied, thanks a lot Jianbo!
+Reviewed-by: Simon Horman <horms@kernel.org>
+
