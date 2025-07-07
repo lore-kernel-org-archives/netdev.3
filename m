@@ -1,55 +1,55 @@
-Received: from mail-io1-f73.google.com (mail-io1-f73.google.com [209.85.166.73])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFE629E101
-	for <netdev@vger.kernel.org>; Mon,  7 Jul 2025 13:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45B929E10F
+	for <netdev@vger.kernel.org>; Mon,  7 Jul 2025 13:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751893300; cv=none; b=krJvq73msfSOH71e463bdL0LgfIk+ookR7ciAqPGidJZbPRipXhl/KGEjNlKJ2+MC/ZZjfK/NhhEifSUZTd2DLuNrukQXM3GWuh/vEjp5atWT9JWXWzi51XzT0stQPxHyVup8A976EnIjwW0FzPjBrJOMj8xnFTKc+P2pg3XwR0=
+	t=1751893301; cv=none; b=Sl5rDjirrWHZsKAal6yBlgmsUtiVcKPWhUFlPCUdElmbg1i7Vh5xAd5WzH+x3F4KW2+zSvGt5EAkGmezN52SvY40vuzfnloSvh4J28CoNo99VHvPS3BwXasOMXgYzGvYAFc4ZQWCigpvFshKXLgoF8807vjA6ECFVz13TWoLPgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751893300; c=relaxed/simple;
-	bh=/T0HwzI9j8g/SI9eut487Fk66S2bL19IBr5B2TYqgrI=;
+	s=arc-20240116; t=1751893301; c=relaxed/simple;
+	bh=H6j6fraweO5OKoZOA6jOVgJuLNPX2/ptk0SlBuzJF8I=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CAqUdtt3o7G245d3ZN2LfkomLeXo+QXS/RFUi6ZPNNktq3Faa0tcaI0tUN8e4971oqsXw2hKxobepe3ZtDBQDsQqKZVjoudk8bZUlvzD88FYumY4Q2rOC8PasH6DIsMrox9BR3DnXCLyHUeM29K1KAfKxtBhqx4d4S0HeiZiaQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kgtYkFNv; arc=none smtp.client-ip=209.85.166.73
+	 To:Cc:Content-Type; b=bHSs39senpT70xt8ft68QUnYH1w6K5RR3Y7+9+y81nqWvkGKxd6ZCvKxgq2XuRCJfmgAPGG6YYubBjBS3v6eypJbxOuojHrKplevudvrrjqfsSiAE3oTELcgGWHjeQiR3cIFGR1lprGbp7fjr1dHK0p9skSO4RDdZlwbjy/mumU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vEQzb1HN; arc=none smtp.client-ip=209.85.219.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kgtYkFNv"
-Received: by mail-io1-f73.google.com with SMTP id ca18e2360f4ac-87632a0275dso244106139f.1
-        for <netdev@vger.kernel.org>; Mon, 07 Jul 2025 06:01:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vEQzb1HN"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e81b9217352so3176374276.1
+        for <netdev@vger.kernel.org>; Mon, 07 Jul 2025 06:01:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20230601; t=1751893298; x=1752498098; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HyAy4rJwM+bYLxcCHmtu4h/+tGct2PyAHPVu6Zt5GA4=;
-        b=kgtYkFNvTUlUvDomi9u3ptf9QsZbaRuL03Q2Di72SYXRUEmX8pBtuimZ5kBFawK6cN
-         /hCioXCd6CGLKwH5R5jSaOceD9hbccm1VOJ25SqFpdPgF2kKvniQNmcFZrwOXZTNppO4
-         qAWs/2AMrejic/ukv+uSpHax311wxJVXzWnztFOMTXlsQXfb/XF8oSxXUC91Bls1n6iu
-         sygZntApjF36YYUwP8fbW/xkIeKO6qYs8pH2Q5/AI9DgAvnB3kJx/VSwNQBBK72t0GF2
-         CA6dDqUUd8b9K+qz+USLu+6KmJRJUcxC6XdqnkdcFKG81G9rqGKexGPI3knlgK/PC2D2
-         16Nw==
+        bh=RJNoe2JjTr+fPc7Xlv71b7dllYfIIf53YkSiJuaG9R0=;
+        b=vEQzb1HNZRYZORxR8FxluwzGLKhCwEw2/JUstkNu0Rzykv5xGxxbFVCdVIGSaseJUG
+         8MX5mDWidKtfOepPUV+MI3JET4hUuiHMyqRUJLFdtYHafM9BEpBLSeTOR541mMp+Lnhx
+         7PejnNyd8ZSKa3YP5fH0h8ThZ03WC7tSXpxs+zYspQefm0PC3EfopK7e6JXoFnQ0tIeT
+         G3MTDxe4kxUqp0FVzx9Qa+oziwS6fbDLzSDOVTcQ9AvBmh4zTpBBdbts1eHj9YH4ldSv
+         zvyq2Z1UhjUcKvPXYlEo0kjtKbciK2ptBL4XbvG3+fdg7cpge8R6TqT1dNEjzRrZzgvm
+         kH6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1751893298; x=1752498098;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HyAy4rJwM+bYLxcCHmtu4h/+tGct2PyAHPVu6Zt5GA4=;
-        b=Ef4bxR2z7warpFzb+hPr+1tPfrHsaxKvnpR8GewyfAZf9V01klSBlecNqsdXke7G+Z
-         6vEpU1VZkC0ZaFAVka5rcSPCNUP73DqD4GEhKSN4oWFlKowuT3KF9XZ65Na50p768avA
-         +XZjqq/M22kUwcnhvio/xLKyEmOOSTfdVP7h7aEzijWDgxIv+IrsGzp2FLFT8XY1lr/7
-         U/j1d3J+o1oSSOBbLHA6dCzr7K7JkQX/PGSNVm7m5fQz2GQ4srYfIDF7vFRtZS50x3dQ
-         KfeBJ66i2vVuwiKhJeo5z52/sgC0VgUBybfPxpxfRLdgLSW5Al2uv9zyZCr8aoM4bI4j
-         gcyA==
-X-Forwarded-Encrypted: i=1; AJvYcCW4tDh0P2vxvses6ZneETXMwLD93hfnRCpaxuVgUcmuQnbv+4ypaW35TX5aqDh3SAPgAJkMGHE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/q2yCHQzlIr52rlan+5ghe1mcgp6lW0ie2QkNzasj9F1WfhXV
-	CFXV1GCgZFDRX/DjzmNk+3aTMXcKHrXhBIMMLQ28d7wK4WZbKfXzD8Ddf1OTbcEajNJ1IHWp7hi
-	RwV46elpvzEQJIA==
-X-Google-Smtp-Source: AGHT+IG1zI2Ca3j9z6f3FjWlEwPFCU5UKupxu3X3ecXTM2gb/wTPe2eSos2TVH1Tq+JIbHJq7du3pG8U69Z5RQ==
-X-Received: from qvc25.prod.google.com ([2002:a05:6214:8119:b0:6fd:3847:68])
+        bh=RJNoe2JjTr+fPc7Xlv71b7dllYfIIf53YkSiJuaG9R0=;
+        b=R6FluiJLJme+cVb3UHRHmgvtok0WOz0HoN6pF+UxxdGuxcvYt4F92XMr2NjwalD3EQ
+         kjBYZ+JUf0jOHqbp+XQ4FG/L+9yZ+y0y10l4cMGPs5NlsKbUAE6AWC5iTBuVVqZwVVGH
+         dwUibEH/ylqynkzGEWznPzT3Bpv/2JAi7jDPcNiXLg9ecILSXB6uSQPEDxHoVxrZZCHl
+         pSMWkSc0GJo/RZ9qgTTIUy/DhisZMRKrypLZJzkYINVLglEsgAWoretPneyIEQl2T3xx
+         FO+GuQJkRppGusTxe2mnFbF0OASWWHfmERvOFq6ku/UHpAuvIbq5rN2M1XO81uKZ35pq
+         K5Rg==
+X-Forwarded-Encrypted: i=1; AJvYcCXvQqsDGrcE+qAO0flSZTSRc/raiPn20XhYehSMP2AlETxCOYOtYmIbE34BqtZxQ53G0AhG3iw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQG5217XAGSdp3YP/0YlGHXYC6Rh3wcE/B9qjh0jOoarlCOu6t
+	XxTmviszdQJkw6885YdATOSeG2i8WuTR+n71CpaaFWulXvgXgLksTpMPGGHySCqyXhkCBVdvdMJ
+	qryOuOQFe8881Dg==
+X-Google-Smtp-Source: AGHT+IHGoTKJ39BVqm3MC0tqubgAXgqZLccUuMKDXQXNGA0FQhofdLGRBzTgK5cUa3V2/vzeReXpRJE6qfEaaw==
+X-Received: from qvbre17.prod.google.com ([2002:a05:6214:5e11:b0:6fb:4f55:79c6])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:2e4a:b0:6ff:b41b:b5bb with SMTP id 6a1803df08f44-702d167577emr145232396d6.26.1751893284075;
- Mon, 07 Jul 2025 06:01:24 -0700 (PDT)
-Date: Mon,  7 Jul 2025 13:01:05 +0000
+ 2002:a05:6102:5121:b0:4c3:6393:83f4 with SMTP id ada2fe7eead31-4f2f1e46a54mr7630332137.2.1751893279268;
+ Mon, 07 Jul 2025 06:01:19 -0700 (PDT)
+Date: Mon,  7 Jul 2025 13:01:02 +0000
 In-Reply-To: <20250707130110.619822-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250707130110.619822-1-edumazet@google.com>
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250707130110.619822-7-edumazet@google.com>
-Subject: [PATCH net-next 06/11] net_sched: act_ctinfo: use RCU in tcf_ctinfo_dump()
+Message-ID: <20250707130110.619822-4-edumazet@google.com>
+Subject: [PATCH net-next 03/11] net_sched: act_csum: use RCU in tcf_csum_dump()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -70,105 +70,85 @@ Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>,
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Also storing tcf_action into struct tcf_ctinfo_params
-makes sure there is no discrepancy in tcf_ctinfo_act().
+Also storing tcf_action into struct tcf_csum_params
+makes sure there is no discrepancy in tcf_csum_act().
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- include/net/tc_act/tc_ctinfo.h |  1 +
- net/sched/act_ctinfo.c         | 23 +++++++++++------------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ include/net/tc_act/tc_csum.h |  1 +
+ net/sched/act_csum.c         | 18 +++++++++---------
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/include/net/tc_act/tc_ctinfo.h b/include/net/tc_act/tc_ctinfo.h
-index a04bcac7adf4b61b73181d5dbd2ff9eee3cf5e97..7fe01ab236da4eaa0624db08d0a9599e36820bee 100644
---- a/include/net/tc_act/tc_ctinfo.h
-+++ b/include/net/tc_act/tc_ctinfo.h
-@@ -7,6 +7,7 @@
- struct tcf_ctinfo_params {
- 	struct rcu_head rcu;
- 	struct net *net;
+diff --git a/include/net/tc_act/tc_csum.h b/include/net/tc_act/tc_csum.h
+index 2515da0142a671be82f873183077a12b5c8600b2..8d0c7a9f934525cc5fa5fd2d5ea9808629b4a550 100644
+--- a/include/net/tc_act/tc_csum.h
++++ b/include/net/tc_act/tc_csum.h
+@@ -8,6 +8,7 @@
+ 
+ struct tcf_csum_params {
+ 	u32 update_flags;
 +	int action;
- 	u32 dscpmask;
- 	u32 dscpstatemask;
- 	u32 cpmarkmask;
-diff --git a/net/sched/act_ctinfo.c b/net/sched/act_ctinfo.c
-index 93ab3bcd6d3106a1561f043e078d0be5997ea277..71efe04d00b5c6195e43f1ea6dab1548f6f97293 100644
---- a/net/sched/act_ctinfo.c
-+++ b/net/sched/act_ctinfo.c
-@@ -88,13 +88,11 @@ TC_INDIRECT_SCOPE int tcf_ctinfo_act(struct sk_buff *skb,
- 	struct tcf_ctinfo_params *cp;
- 	struct nf_conn *ct;
- 	int proto, wlen;
--	int action;
+ 	struct rcu_head rcu;
+ };
  
- 	cp = rcu_dereference_bh(ca->params);
- 
- 	tcf_lastuse_update(&ca->tcf_tm);
- 	tcf_action_update_bstats(&ca->common, skb);
--	action = READ_ONCE(ca->tcf_action);
- 
- 	wlen = skb_network_offset(skb);
- 	switch (skb_protocol(skb, true)) {
-@@ -141,7 +139,7 @@ TC_INDIRECT_SCOPE int tcf_ctinfo_act(struct sk_buff *skb,
- 	if (thash)
- 		nf_ct_put(ct);
- out:
--	return action;
-+	return cp->action;
- }
- 
- static const struct nla_policy ctinfo_policy[TCA_CTINFO_MAX + 1] = {
-@@ -258,6 +256,8 @@ static int tcf_ctinfo_init(struct net *net, struct nlattr *nla,
- 		cp_new->mode |= CTINFO_MODE_CPMARK;
+diff --git a/net/sched/act_csum.c b/net/sched/act_csum.c
+index 5cc8e407e7911c6c9f252d58b458728174913317..0939e6b2ba4d1947df0f3dcfc09bfaa339a6ace2 100644
+--- a/net/sched/act_csum.c
++++ b/net/sched/act_csum.c
+@@ -99,6 +99,7 @@ static int tcf_csum_init(struct net *net, struct nlattr *nla,
+ 		goto put_chain;
  	}
+ 	params_new->update_flags = parm->update_flags;
++	params_new->action = parm->action;
  
-+	cp_new->action = actparm->action;
-+
- 	spin_lock_bh(&ci->tcf_lock);
- 	goto_ch = tcf_action_set_ctrlact(*a, actparm->action, goto_ch);
- 	cp_new = rcu_replace_pointer(ci->params, cp_new,
-@@ -282,25 +282,24 @@ static int tcf_ctinfo_init(struct net *net, struct nlattr *nla,
- static int tcf_ctinfo_dump(struct sk_buff *skb, struct tc_action *a,
- 			   int bind, int ref)
+ 	spin_lock_bh(&p->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+@@ -580,7 +581,7 @@ TC_INDIRECT_SCOPE int tcf_csum_act(struct sk_buff *skb,
+ 	tcf_lastuse_update(&p->tcf_tm);
+ 	tcf_action_update_bstats(&p->common, skb);
+ 
+-	action = READ_ONCE(p->tcf_action);
++	action = params->action;
+ 	if (unlikely(action == TC_ACT_SHOT))
+ 		goto drop;
+ 
+@@ -631,9 +632,9 @@ TC_INDIRECT_SCOPE int tcf_csum_act(struct sk_buff *skb,
+ static int tcf_csum_dump(struct sk_buff *skb, struct tc_action *a, int bind,
+ 			 int ref)
  {
--	struct tcf_ctinfo *ci = to_ctinfo(a);
-+	const struct tcf_ctinfo *ci = to_ctinfo(a);
-+	unsigned char *b = skb_tail_pointer(skb);
-+	const struct tcf_ctinfo_params *cp;
- 	struct tc_ctinfo opt = {
- 		.index   = ci->tcf_index,
- 		.refcnt  = refcount_read(&ci->tcf_refcnt) - ref,
- 		.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind,
++	const struct tcf_csum *p = to_tcf_csum(a);
+ 	unsigned char *b = skb_tail_pointer(skb);
+-	struct tcf_csum *p = to_tcf_csum(a);
+-	struct tcf_csum_params *params;
++	const struct tcf_csum_params *params;
+ 	struct tc_csum opt = {
+ 		.index   = p->tcf_index,
+ 		.refcnt  = refcount_read(&p->tcf_refcnt) - ref,
+@@ -641,10 +642,9 @@ static int tcf_csum_dump(struct sk_buff *skb, struct tc_action *a, int bind,
  	};
--	unsigned char *b = skb_tail_pointer(skb);
--	struct tcf_ctinfo_params *cp;
  	struct tcf_t t;
  
--	spin_lock_bh(&ci->tcf_lock);
--	cp = rcu_dereference_protected(ci->params,
--				       lockdep_is_held(&ci->tcf_lock));
+-	spin_lock_bh(&p->tcf_lock);
+-	params = rcu_dereference_protected(p->params,
+-					   lockdep_is_held(&p->tcf_lock));
+-	opt.action = p->tcf_action;
 +	rcu_read_lock();
-+	cp = rcu_dereference(ci->params);
++	params = rcu_dereference(p->params);
++	opt.action = params->action;
+ 	opt.update_flags = params->update_flags;
  
- 	tcf_tm_dump(&t, &ci->tcf_tm);
- 	if (nla_put_64bit(skb, TCA_CTINFO_TM, sizeof(t), &t, TCA_CTINFO_PAD))
+ 	if (nla_put(skb, TCA_CSUM_PARMS, sizeof(opt), &opt))
+@@ -653,12 +653,12 @@ static int tcf_csum_dump(struct sk_buff *skb, struct tc_action *a, int bind,
+ 	tcf_tm_dump(&t, &p->tcf_tm);
+ 	if (nla_put_64bit(skb, TCA_CSUM_TM, sizeof(t), &t, TCA_CSUM_PAD))
  		goto nla_put_failure;
- 
--	opt.action = ci->tcf_action;
-+	opt.action = cp->action;
- 	if (nla_put(skb, TCA_CTINFO_ACT, sizeof(opt), &opt))
- 		goto nla_put_failure;
- 
-@@ -337,11 +336,11 @@ static int tcf_ctinfo_dump(struct sk_buff *skb, struct tc_action *a,
- 			      TCA_CTINFO_PAD))
- 		goto nla_put_failure;
- 
--	spin_unlock_bh(&ci->tcf_lock);
+-	spin_unlock_bh(&p->tcf_lock);
 +	rcu_read_unlock();
+ 
  	return skb->len;
  
  nla_put_failure:
--	spin_unlock_bh(&ci->tcf_lock);
+-	spin_unlock_bh(&p->tcf_lock);
 +	rcu_read_unlock();
  	nlmsg_trim(skb, b);
  	return -1;
