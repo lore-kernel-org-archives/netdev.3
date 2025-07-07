@@ -1,179 +1,405 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10olkn2059.outbound.protection.outlook.com [40.92.42.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2E8211491
-	for <netdev@vger.kernel.org>; Mon,  7 Jul 2025 18:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751913875; cv=none; b=HAt+/fQc0daR0l0+9BdA7ZbTEZ+diDZ7lq8Pic3Q7CHarq26Z91VmCrhqe1YaNmk8Yog5PgpZr8Cki5rcnI+XR51qDB7fcsWK7c5EtL19penCIBFzz2SMGBPQedc5DxWJIOUYQ2AlCr4fcri/cQaeeSYPEiiSIqkq7k1A1c4Lxs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751913875; c=relaxed/simple;
-	bh=32i6sL3k/7n514hoK30bj6EDsZGKMdCRy9vDMTynO+w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L6aMQt5tW9l0sbmpr7vY4oskV/ElqiTRWSYg0oihIztM38X23D/SNi/sEV2U15vDFPB47P7T0AsmU2RvujPwsYTuRHPUIt0aGmrSgBIbhZrROZ7RKmzVgkYGhR+jrQBy/hkMjukZPpI7PNJTWaVSPy983lYRjSZLbjVs05C4TyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KZcwQHs0; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FEF5199E89;
+	Mon,  7 Jul 2025 18:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.42.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751914147; cv=fail; b=Qr0KIkxdLVJqA6y2vG8WCVSIfxZP8qbGEz0kjb9DKiSWNR1QWDOZ66HZwI9cf9eqWgJHuSlF0s+teR1e+iE0Jm1jGEVpKORFgxyto1xsXTYmKNBDcGLfZol4GBZZz0hke7xB9n/BhJT0mFz+a0TmoC5fIBxsFJOFzjRRtWWiSX4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751914147; c=relaxed/simple;
+	bh=yHeZUTuTqfVjqNmhUCEMwu+JE8Wx3ywe3DXepEDIXLA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=HuODuqVBP/SUR75O9BHlvUzZWEJv+CKVxXcoOoDf5+3IM9+WRP0EdJomXAbXtmQSBXCslBcMOhnQlyEi4lSbAHv4HZcgDMQWIYVU8VLSJbFrUMU1Xgg21Y6xUbQ3wHvwtow5KoFPRo0pdrCNocbTfPlh8yWAjz3gnddScaqMMUk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=a2sLvREU; arc=fail smtp.client-ip=40.92.42.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KZcwQHs0"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-237f270513bso33255ad.1
-        for <netdev@vger.kernel.org>; Mon, 07 Jul 2025 11:44:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751913873; x=1752518673; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K6Lvj3nCTG7249j78tV/ADB9mPIRZ2rxd8wAayUkP1w=;
-        b=KZcwQHs06mDyWXVQeNxYuLESlVxs4CDU4MeUD+nXCPNG8ood0ACenNWsxbYxqEPuO5
-         pCzJy58t6bxXxia3QGHM3apOuqrx1nO+98JDdY3Bj+DpMEFnJjXZVgh9oLklGZLcMn2V
-         SBsYIMyaoToKp3M24xaDAPIu2EWXEhemwHW0qJZNnRk68+LS5Dl/bJAJO11iiyWPJ2of
-         wdn2hqhgSGl8Y8ndHbOYPeaIvFFRRQndSLTG3UlSrzAPaAdvctNyXx1DaGUdOXN8FXaE
-         /i/0GHjzQ35vEKbeVyWNMhZd/BZY1Ba7HC7gkdnK6gwU9QxGVyfq3ICpMiX1w44kSjw0
-         VlWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751913873; x=1752518673;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K6Lvj3nCTG7249j78tV/ADB9mPIRZ2rxd8wAayUkP1w=;
-        b=D55AtTjUZxKwd2htlQwP3rVyFYMQmIjUvsKJePnI2IujhuEUYTjBIV28bvZxnescNA
-         yWIvf809HgHZZ6s6gaxDUTB2e6abYVJHqd5YGp0KjVr8pp9SjMmrqPW7VVTu56+gYFNd
-         C1XtZ5ZqpuBE9PZIwlcbvGlctz++mjGgaOxCqKh5dx95b5BpOnOvoMI/hk5JpzNHu/Uv
-         pYTTbBkwQyP53XMZcbSOEx9h7uJ6b+9PEWRnLvEVq8udi9RykYHawUbGPEEc+p2NQ/A6
-         hbkKVw1mGJb8MsQNjlsWu5NEwjaEnnhdQ5lJD1Fn3wNH7N8uUw7erOvzvfKGAAtZUIax
-         TlPw==
-X-Forwarded-Encrypted: i=1; AJvYcCX1hzWKGeYUWHI3J8hhMpcv6B0AzQIsjXELOw9o3Y7rXN3CKod7Utu3nEf+CSQBWdhhG1AY1ak=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/NYKnBRIuxTTE4rlEiK4SZdG2dKON0UG9vfnK+XEX85qbT1SC
-	R4IB04jWJzwHl45vHjaw1lTERDm0EKqPPyzgGp7DiccCeIllbPaLJLKs9/H08kJ9ncQWtiKaeo1
-	qDXjZMBTBZp9K3ZCmCuvZ2LVhNGnBgdCwtTYlY0e9
-X-Gm-Gg: ASbGncu7uom0FIftj69TQrvEL36qzoBYddOWOOj7DKojx3RF9DjSSqObr7aR0QEBzyY
-	H+avb6WHgjyaQaGG6qyWCj+Gjwj2AClzJmfRRJ/ClowvTjopNIkSuzIM0x3vHLQOyG58uoMu31j
-	qgThaYASfjBPwMut1eF2urv+1rXV2PG8e/2poupDq2REkm1UJJDhHK3MM8fBlhfDp8X8Jf7uvTZ
-	w==
-X-Google-Smtp-Source: AGHT+IE0tGwaA6D3IeEZZUqDhUheIQ389GY5jZhIJs/gD6HqNfIA4AeA6Ek54TDoRm2T5GpcZZVWVTYIC3i7IUlhDmg=
-X-Received: by 2002:a17:902:f707:b0:235:e1fa:1fbc with SMTP id
- d9443c01a7336-23dd0ee20c1mr440915ad.0.1751913872656; Mon, 07 Jul 2025
- 11:44:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="a2sLvREU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tg3TgCNZfX+71EEVGltswvFnAN4IYt6DJaNP5xbEHvwORQyIdTwZ5INotxpbh9el3/KKwUU0A3gjhyq2rxeiWx+ceL1Eghy08DLAtAzDAB/129ZWTwHMnbtqQRpIDBPI967bccwUzzO5aTPDnCrtOtx4zFDsuxbw9PLuU9arJ+LKS3HSOIMZ0CIkSr3NUaeqzjMRKYonbo1eB9disQ3sWcnHHVJJSPJZxQq36qvv5GSxqWSuaFRFYU9JH15nuZjDVLFBmIPG3IX65zevBRqXeqtkGxjK7o05JM3433P5uNARtKs7gg8mY6sfvVReQwknJo+IW4LI3cCTi64EdP0N7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6kSvKRL+6sADdx44ORttc/0mwM2YZk9r04HLkqfUj48=;
+ b=u+N2C0Fw2PgjCG6YKZeA4SiM61DKtUKJoGNhnH1whw4eeDavWhtQ09SiEDPYfliFgAvYHtmSxIhr3iXhnZQSqu/O2Ag/YG7YUMz4okpWVFy8YZxMOKyOqE7oJRzjmM3rYp0SsYdhcfXub618ZvLWBonHy7XpZvgRoaaGFvQrD4Ol7QajY7oSDo8VLlqvZKnvAkUk8XZf3X6p3ReM+DWR5PZDeEOyLiRCIDgFfWDnM0CsFJX9EO2n2Mv64quE2dRYBv5+JzKAcXRuBcgQilUdraGlqb/7R4bapUBDjRgaWovjBlJm3NM3WEmvtPTWw5rVx4Ig7q5FSzJ84Np6CPmWPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6kSvKRL+6sADdx44ORttc/0mwM2YZk9r04HLkqfUj48=;
+ b=a2sLvREUKgjDdN7Te/pDJfrovJqKfLY3CHl88yb327aw1cXKr5L1+5NjLneFcT7uniCgVYKZyrGeb22VypG3GDh46Mye5xr0vqCayF79EH4YutbzUocJ32vOhmxmvm3itw72utw4hYnA1RBGUOvJ8EJUKe6F0mj4vsUXyK2ZaKlz1TjXfSBiJsqQGvrWn8hGlMWxVTPnJa6nKoeCWAibMqx8C2KYWPoyhHubjSFUtOeJDqok206Sak2XKAljd0EzgRz8VeipoXGKkYooqj0cEYB97Ytyu9GUK/+0aGYjByWmN3XWqTu29lfPuuJ2vmcaVfZ8sCW0C3+Sa7OgaTgm/Q==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by MW4PR02MB7281.namprd02.prod.outlook.com (2603:10b6:303:66::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.24; Mon, 7 Jul
+ 2025 18:49:02 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df%4]) with mapi id 15.20.8901.018; Mon, 7 Jul 2025
+ 18:49:02 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Nam Cao <namcao@linutronix.de>, Marc Zyngier <maz@kernel.org>, Thomas
+ Gleixner <tglx@linutronix.de>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "open
+ list:Hyper-V/Azure CORE AND DRIVERS" <linux-hyperv@vger.kernel.org>
+CC: Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas
+	<bhelgaas@google.com>
+Subject: RE: [PATCH for-netdev v2 2/2] PCI: hv: Switch to
+ msi_create_parent_irq_domain()
+Thread-Topic: [PATCH for-netdev v2 2/2] PCI: hv: Switch to
+ msi_create_parent_irq_domain()
+Thread-Index: AQHb7xf/A8zJRWFEyk2mZWYCCrZaYbQm/Dxw
+Date: Mon, 7 Jul 2025 18:49:02 +0000
+Message-ID:
+ <SN6PR02MB41577987DB4DA08E86403738D44FA@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <cover.1751875853.git.namcao@linutronix.de>
+ <7b99cca47b41dacc9a82b96093935eab07cac43a.1751875853.git.namcao@linutronix.de>
+In-Reply-To:
+ <7b99cca47b41dacc9a82b96093935eab07cac43a.1751875853.git.namcao@linutronix.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|MW4PR02MB7281:EE_
+x-ms-office365-filtering-correlation-id: 6ff331ba-7351-4b1a-249b-08ddbd86f12a
+x-ms-exchange-slblob-mailprops:
+ dx7TrgQSB6eQGC/G7Dawllljy95FzHWbT6yKBgT772Qf4EbSIkMHVgZofVfovKAhCHDZdJTGdkTPxGHPw2KhmPOxgYuf/Kri8QzaqRVzrPAHXF2gAas6rQbRNJVAS1b53DHY3uY7252gSXlu8F5+/LxErT9+AEOo/lpw9xkvZsjjdiRxLTVURClwAVWzMUmPRUCWjRM89wxtQBZz2Pscvh+RreN1ETeXPc/XfmEOQv2PfrxrZdwlueiJ45M2PRDQzVRyN/taY88KgmXEC7v5tiKJVmfUhqMsztCcdypVRHTVUf1EkmZduuKMrC3ydb7+jxS1WjTyzswSv4JkdBkNPrHUFeckU/a+SwnavW6+WVVoOcwO6q29AFS/osfDwv2Lx2isnRxwi1gIlm6YigCHBRRwRAV8IWmCJQmKMvW1Y/dXplU2k/aFqQ990UsUNRIsKdfSZDDGZ5fUjs+BfuS4Bw1r994yJ0REdkIVl0KMJS3q5s25Kl2uBToN2w5ojsG5sxn0qiorQznYVaD1yq1N1AFEQwRIsI5hqJjLGsvC1ow1ID2+ME0kneUXdcqA5HVMv4v6px5w3vaB6aQ57Hk7+cnKOOYzpp2Xt3PP0y2pocFT2hMWSbP8k8LONixKFrFZtEhRjHWMG1JvTW/vVwJ70Eb0KRl4+y6EFOv8+hwrLjRwqVQc+G4WyewDjRTz+Rm0cghtWp6mwY9x62KWQq4kNye5EGF8JbfVAV+ILHsJOgAIyC7zRa6lVO8sEm/hvjrg+p45JqFbm5A=
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|8060799012|41001999006|461199028|8062599008|13031999003|40105399003|52005399003|3412199025|440099028|19111999003|12091999003|102099032;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?klzeea0quABvrQ6R/F2qHHntAGDj5ui1xgzYeZI12J/8BdewfhpkWdPfn7ba?=
+ =?us-ascii?Q?LNiHvtJGgRApxPLz/lHwhkfg7V3+fvIWh4sYXSZDVkXSgiNmlRPMGdnkBc+R?=
+ =?us-ascii?Q?3LwNsVlyCmAlGW7CUbKcbulbIcHhqBmJPBJdjbsi/CNMNEnjau1Wye80gvxK?=
+ =?us-ascii?Q?rak9iGU4tb1p+GR3ldN/Hdu7UnfJaOEeTnVe0wsGoBNUuMGn/DHbGfbLjccB?=
+ =?us-ascii?Q?xy+pn8PIiic/qkVo5fOaJtyWmSgonAbId+xiUnI6AT/CApHH89tnFcen+WVp?=
+ =?us-ascii?Q?vlornUPGqeg0VkHkXdGrPz7eahJUEW1BP9JmofdWtuqvUeejZV74hpE8114t?=
+ =?us-ascii?Q?3HvwoXd5Y3XEi2AFx0N/N6OdkMmanWP8mdUmOJDAsyusoQtd0gbSchgbAvAL?=
+ =?us-ascii?Q?G9k33ACPIGCLy5tS4/WMUmCOkFGo3qie1XR1hybwISkk+ExycbjacUw44vdo?=
+ =?us-ascii?Q?1y6kYYlxe8hFsMNqe+H9OwDlaeTkdUpFXlnqdtJcFy2p//Qy20j7GvLjcY4w?=
+ =?us-ascii?Q?iuavLMz62Cj/t6fIUiB9aP78QzS/QzviJgqBsb+5Z1phZ1oPO3kOlaD34YA3?=
+ =?us-ascii?Q?JU9VVDN9etLDrfMHhmq/b4X39NVhpmSHrDdSN8hnxJvUaUU+BRMwWpcaBtsk?=
+ =?us-ascii?Q?Q+XDM1ci2qmbgL9UF7UIn1vVlGUQ10UY+WpQdET3v9vrXo0cAveBjm641wPS?=
+ =?us-ascii?Q?75UT0ogNhBhbl+j6QOrhpANUfTaXeubOD2d3rdFH8c7QNY+HLxBFgeiw9v09?=
+ =?us-ascii?Q?n2R/9fU5bIoGfGyn9rYLAbUv3UbwsMUgiUVsucpqgZI0/NJeqV6AdnrlP/aX?=
+ =?us-ascii?Q?mKIYnTf7Z6O+cli7FpNzWZafXjKn0iqCTMpQAHi5uqGv+PqNzucaLLPpksdR?=
+ =?us-ascii?Q?1OJUO54Sef0heciN7tBNWLAcWMhKPgVPKL86uao65Xdu4g+t8yeqCramL/QA?=
+ =?us-ascii?Q?+ssh4xuXn9pROuC6cwbethS927ZgZRdtRl9IKd/JmCE9SRM5MeFa3leFyBKo?=
+ =?us-ascii?Q?5McoggqFImMa1xHu2s1NGBBuQu4nv341DLH9iwCKc0XmM2zGCPDV1Ghgrshu?=
+ =?us-ascii?Q?cJ75VEh9H6qhaAQgS5ltxULRvhnmB4GUyoYshhupnGxEO2WpZ+m6UKGO0sDC?=
+ =?us-ascii?Q?fEcfNYKCIpb3MsjwSSdkT+DOhjfZvIQERAxp+3WY1kPcfNFVAf1PQiIPznu7?=
+ =?us-ascii?Q?5yg6oY8XD8hx++WajrC5sQ3N1gQ1vjTy1UZQLg=3D=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?roMo70hx0Y8KSwteE3eclIuDUNGLY01GBCUoRvQDlYvifVGW9mSWW7870u+q?=
+ =?us-ascii?Q?7wLnrSz/lUkMcNxbxjIqsOVBI8o2WjbeBLZYS01Ns3NOpo9W1qX+mVIF7qVE?=
+ =?us-ascii?Q?aJ8r0DIilsXMfAe7l5CGDcRpUhFPfejOqJZZk+pWKaMlM1TC8u7mWaUVM/QN?=
+ =?us-ascii?Q?BELWUR3uBlZ0mzZOLciil4JK7TDsQt04Y8a/1fE97M+l62HmgpJNvdWkC2K4?=
+ =?us-ascii?Q?yC36X511lpDu6a/XBK8LXB4PkHq/TVlhcYrd879Thh76JW/BtD+E069pr8BI?=
+ =?us-ascii?Q?mdlTqPD1O930nVE/NszWNepHdjZrCWoP8gOt+VqtgKu4Vd4w1BwEJO30eBDS?=
+ =?us-ascii?Q?oQAuDXy1mE8fAoo4D6WUzTBMQDKVdR8lW2eR9/uTUVBSgKwnPoYoaYxH6AOj?=
+ =?us-ascii?Q?RvR95h/Ie2JxNa5fBZNectWDaB9HsydgFwXhhiK/5ZwgBuMU5GsJHqr1O0gQ?=
+ =?us-ascii?Q?D8IhTgiF9N9DL+q2bjbXhMQXsKcg5MGouHtByLa0nQL/xHJZBehjR5gWd7nQ?=
+ =?us-ascii?Q?GY953Qvsgn7UEHk+qr2upPbgHhM1zH7dWrzU9yL6AWAk6x9MnFplfK7jARH1?=
+ =?us-ascii?Q?wtkX7PFFPr8a8sJrTCGuehBhnDGB419CsoK0gaZOmjZSFJfnczm8DcDEU0Rh?=
+ =?us-ascii?Q?h3ZAmMk5jziabhUnP8d484Bp0/27FvZxJfo8svptXIxg8b7mAAdWzX4tsoi4?=
+ =?us-ascii?Q?aZakDf/ros9WqPUnEK58dUvD8wuqdgIfRfcwyKS4KJoltcEiG1yVk4HJV7iE?=
+ =?us-ascii?Q?q4fsuIV+SnKDHI91TrMoDcCtXvQVbeBiQZDTM8rEpoNHYYRL0+UtrVDvuEyi?=
+ =?us-ascii?Q?M7DCydOwfajSTOYINevATeeBcULE2LZ/a4xDSIJ3Aw2qxqhzN4I/MrlEESxo?=
+ =?us-ascii?Q?Hg3RVZkZ2OGQr41X0g4CDcgLbVkYAg9px4elC+eIDKr9LfKVSy5Jlvyo0dBd?=
+ =?us-ascii?Q?LJHkqQ3blfqggTPXB9AxwBtDA7GBzVmHr/vQSqzfzZLoe2prtH5cHRpSGInc?=
+ =?us-ascii?Q?xGwnXnVXFsMjg6fPOPh4MmeL4Hk3yr7ZXHD/zLvm8T6rgMpV61DzpsbyyBaK?=
+ =?us-ascii?Q?JmBRXAAkYf0mk2lZfTeUIF3dKOB49+5xUhXRO7QAZWLHu/FAoFK8hXi/7Hwz?=
+ =?us-ascii?Q?LJh5h4CpJ+EZUeZaa04q4uyapUakIvyRbnCWFhrkjnvRyMAcciUZihpVL9Iq?=
+ =?us-ascii?Q?Su2K2hRhlXMmwoEcacBBu/S1Kf6mllDnwjZWSL+QDeQ8RT95X4Eb38zkCm0?=
+ =?us-ascii?Q?=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250702172433.1738947-1-dtatulea@nvidia.com> <20250702172433.1738947-2-dtatulea@nvidia.com>
- <20250702113208.5adafe79@kernel.org> <c5pxc7ppuizhvgasy57llo2domksote5uvo54q65shch3sqmkm@bgcnojnxt4hh>
- <20250702135329.76dbd878@kernel.org> <CY8PR12MB7195361C14592016B8D2217DDC43A@CY8PR12MB7195.namprd12.prod.outlook.com>
- <22kf5wtxym5x3zllar7ek3onkav6nfzclf7w2lzifhebjme4jb@h4qycdqmwern>
-In-Reply-To: <22kf5wtxym5x3zllar7ek3onkav6nfzclf7w2lzifhebjme4jb@h4qycdqmwern>
-From: Mina Almasry <almasrymina@google.com>
-Date: Mon, 7 Jul 2025 11:44:19 -0700
-X-Gm-Features: Ac12FXw82IyNgu8OZzpM9U6ZsV8mDMv3r4jB-HKtgJZSMSlf1sY9fRc8lLDdPqo
-Message-ID: <CAHS8izN-yJ1tm0uUvQxq327-bU1Vzj8JVc6bqns0CwNnWhc_XQ@mail.gmail.com>
-Subject: Re: [RFC net-next 1/4] net: Allow non parent devices to be used for
- ZC DMA
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: Parav Pandit <parav@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, 
-	"asml.silence@gmail.com" <asml.silence@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Tariq Toukan <tariqt@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ff331ba-7351-4b1a-249b-08ddbd86f12a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Jul 2025 18:49:02.5189
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR02MB7281
 
-On Fri, Jul 4, 2025 at 6:11=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia.com>=
- wrote:
->
-> On Thu, Jul 03, 2025 at 01:58:50PM +0200, Parav Pandit wrote:
-> >
-> > > From: Jakub Kicinski <kuba@kernel.org>
-> > > Sent: 03 July 2025 02:23 AM
-> > >
-> [...]
-> > > Maybe someone with closer understanding can chime in. If the kind of
-> > > subfunctions you describe are expected, and there's a generic way of
-> > > recognizing them -- automatically going to parent of parent would ind=
-eed be
-> > > cleaner and less error prone, as you suggest.
-> >
-> > I am not sure when the parent of parent assumption would fail, but can =
-be
-> > a good start.
-> >
-> > If netdev 8 bytes extension to store dma_dev is concern,
-> > probably a netdev IFF_DMA_DEV_PARENT can be elegant to refer parent->pa=
-rent?
-> > So that there is no guess work in devmem layer.
-> >
-> > That said, my understanding of devmem is limited, so I could be mistake=
-n here.
-> >
-> > In the long term, the devmem infrastructure likely needs to be
-> > modernized to support queue-level DMA mapping.
-> > This is useful because drivers like mlx5 already support
-> > socket-direct netdev that span across two PCI devices.
-> >
-> > Currently, devmem is limited to a single PCI device per netdev.
-> > While the buffer pool could be per device, the actual DMA
-> > mapping might need to be deferred until buffer posting
-> > time to support such multi-device scenarios.
-> >
-> > In an offline discussion, Dragos mentioned that io_uring already
-> > operates at the queue level, may be some ideas can be picked up
-> > from io_uring?
-> The problem for devmem is that the device based API is already set in
-> stone so not sure how we can change this. Maybe Mina can chime in.
->
+From: Nam Cao <namcao@linutronix.de> Sent: Monday, July 7, 2025 1:20 AM
+>=20
+> Move away from the legacy MSI domain setup, switch to use
+> msi_create_parent_irq_domain().
+>=20
+> While doing the conversion, I noticed that hv_compose_msi_msg() is doing
+> more than it is supposed to (composing message). This function also
+> allocates and populates struct tran_int_desc, which should be done in
+> hv_pcie_domain_alloc() instead. It works, but it is not the correct desig=
+n.
+> However, I have no hardware to test such change, therefore I leave a TODO
+> note.
+>=20
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
 
-I think what's being discussed here is pretty straight forward and
-doesn't need UAPI changes, right? Or were you referring to another
-API?
+[Adding linux-hyperv@vger.kernel.org so that the Linux on Hyper-V folks
+have visibility.]
 
-> To sum the conversation up, there are 2 imperfect and overlapping
-> solutions:
->
-> 1) For the common case of having a single PCI device per netdev, going on=
-e
->    parent up if the parent device is not DMA capable would be a good
->    starting point.
->
-> 2) For multi-PF netdev [0], a per-queue get_dma_dev() op would be ideal
->    as it provides the right PF device for the given queue.
+This all looks good to me now. Thanks for the additional explanation of
+the TODO. I understand what you are suggesting. Moving the interaction
+with the Hyper-V host into hv_pcie_domain_alloc() has additional appeal
+because it should eliminate the need for the ugly polling for a VMBus
+response. However, I'm unlikely to be the person implementing the
+TODO. hv_compose_msi_msg() is a real beast of a function, and I lack
+access to hardware to fully test the move, particularly a device that
+does multi MSI. I don't think such a device is available in a VM in the
+Azure public cloud.
 
-Agreed these are the 2 options.
+I've tested this patch in an Azure VM that has a MANA NIC. The MANA
+driver has updates in linux-next to use MSIX dynamic allocation, and
+that dynamic allocation appears to work correctly with this patch. My
+testing included unbind and rebind the driver several times so that
+the full round-trip is tested.
 
-> io_uring
->    could use this but devmem can't. Devmem could use 1. but the
->    driver has to detect and block the multi PF case.
->
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
 
-Why? AFAICT both io_uring and devmem are in the exact same boat right
-now, and your patchset seems to show that? Both use dev->dev.parent as
-the mapping device, and AFAIU you want to use dev->dev.parent.parent
-or something like that?
+> ---
+> v2:
+>   - rebase onto netdev/next
+>   - clarify the TODO note
+>   - fixup arm64
+>   - Add HV_MSI_CHIP_FLAGS macro and reduce the amount of #ifdef
+> ---
+>  drivers/pci/Kconfig                 |   1 +
+>  drivers/pci/controller/pci-hyperv.c | 111 +++++++++++++++++++++-------
+>  2 files changed, 84 insertions(+), 28 deletions(-)
+>=20
+> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+> index 9c0e4aaf4e8c..9a249c65aedc 100644
+> --- a/drivers/pci/Kconfig
+> +++ b/drivers/pci/Kconfig
+> @@ -223,6 +223,7 @@ config PCI_HYPERV
+>  	tristate "Hyper-V PCI Frontend"
+>  	depends on ((X86 && X86_64) || ARM64) && HYPERV && PCI_MSI && SYSFS
+>  	select PCI_HYPERV_INTERFACE
+> +	select IRQ_MSI_LIB
+>  	help
+>  	  The PCI device frontend driver allows the kernel to import arbitrary
+>  	  PCI devices from a PCI backend to support PCI driver domains.
+> diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller=
+/pci-hyperv.c
+> index 86ca041bf74a..ebe39218479a 100644
+> --- a/drivers/pci/controller/pci-hyperv.c
+> +++ b/drivers/pci/controller/pci-hyperv.c
+> @@ -44,6 +44,7 @@
+>  #include <linux/delay.h>
+>  #include <linux/semaphore.h>
+>  #include <linux/irq.h>
+> +#include <linux/irqchip/irq-msi-lib.h>
+>  #include <linux/msi.h>
+>  #include <linux/hyperv.h>
+>  #include <linux/refcount.h>
+> @@ -508,7 +509,6 @@ struct hv_pcibus_device {
+>  	struct list_head children;
+>  	struct list_head dr_list;
+>=20
+> -	struct msi_domain_info msi_info;
+>  	struct irq_domain *irq_domain;
+>=20
+>  	struct workqueue_struct *wq;
+> @@ -576,9 +576,8 @@ struct hv_pci_compl {
+>  static void hv_pci_onchannelcallback(void *context);
+>=20
+>  #ifdef CONFIG_X86
+> -#define DELIVERY_MODE	APIC_DELIVERY_MODE_FIXED
+> -#define FLOW_HANDLER	handle_edge_irq
+> -#define FLOW_NAME	"edge"
+> +#define DELIVERY_MODE		APIC_DELIVERY_MODE_FIXED
+> +#define HV_MSI_CHIP_FLAGS	MSI_CHIP_FLAG_SET_ACK
+>=20
+>  static int hv_pci_irqchip_init(void)
+>  {
+> @@ -723,8 +722,7 @@ static void hv_arch_irq_unmask(struct irq_data *data)
+>  #define HV_PCI_MSI_SPI_START	64
+>  #define HV_PCI_MSI_SPI_NR	(1020 - HV_PCI_MSI_SPI_START)
+>  #define DELIVERY_MODE		0
+> -#define FLOW_HANDLER		NULL
+> -#define FLOW_NAME		NULL
+> +#define HV_MSI_CHIP_FLAGS	MSI_CHIP_FLAG_SET_EOI
+>  #define hv_msi_prepare		NULL
+>=20
+>  struct hv_pci_chip_data {
+> @@ -1687,7 +1685,7 @@ static void hv_msi_free(struct irq_domain *domain, =
+struct
+> msi_domain_info *info,
+>  	struct msi_desc *msi =3D irq_data_get_msi_desc(irq_data);
+>=20
+>  	pdev =3D msi_desc_to_pci_dev(msi);
+> -	hbus =3D info->data;
+> +	hbus =3D domain->host_data;
+>  	int_desc =3D irq_data_get_irq_chip_data(irq_data);
+>  	if (!int_desc)
+>  		return;
+> @@ -1705,7 +1703,6 @@ static void hv_msi_free(struct irq_domain *domain, =
+struct
+> msi_domain_info *info,
+>=20
+>  static void hv_irq_mask(struct irq_data *data)
+>  {
+> -	pci_msi_mask_irq(data);
+>  	if (data->parent_data->chip->irq_mask)
+>  		irq_chip_mask_parent(data);
+>  }
+> @@ -1716,7 +1713,6 @@ static void hv_irq_unmask(struct irq_data *data)
+>=20
+>  	if (data->parent_data->chip->irq_unmask)
+>  		irq_chip_unmask_parent(data);
+> -	pci_msi_unmask_irq(data);
+>  }
+>=20
+>  struct compose_comp_ctxt {
+> @@ -2101,25 +2097,87 @@ static void hv_compose_msi_msg(struct irq_data *d=
+ata, struct msi_msg *msg)
+>  	msg->data =3D 0;
+>  }
+>=20
+> +static bool hv_pcie_init_dev_msi_info(struct device *dev, struct irq_dom=
+ain *domain,
+> +				      struct irq_domain *real_parent, struct msi_domain_info *info)
+> +{
+> +	struct irq_chip *chip =3D info->chip;
+> +
+> +	if (!msi_lib_init_dev_msi_info(dev, domain, real_parent, info))
+> +		return false;
+> +
+> +	info->ops->msi_prepare =3D hv_msi_prepare;
+> +
+> +	chip->irq_set_affinity =3D irq_chip_set_affinity_parent;
+> +
+> +	if (IS_ENABLED(CONFIG_X86))
+> +		chip->flags |=3D IRQCHIP_MOVE_DEFERRED;
+> +
+> +	return true;
+> +}
+> +
+> +#define HV_PCIE_MSI_FLAGS_REQUIRED (MSI_FLAG_USE_DEF_DOM_OPS	| \
+> +				    MSI_FLAG_USE_DEF_CHIP_OPS		| \
+> +				    MSI_FLAG_PCI_MSI_MASK_PARENT)
+> +#define HV_PCIE_MSI_FLAGS_SUPPORTED (MSI_FLAG_MULTI_PCI_MSI	| \
+> +				     MSI_FLAG_PCI_MSIX			| \
+> +				     MSI_FLAG_PCI_MSIX_ALLOC_DYN	| \
+> +				     MSI_GENERIC_FLAGS_MASK)
+> +
+> +static const struct msi_parent_ops hv_pcie_msi_parent_ops =3D {
+> +	.required_flags		=3D HV_PCIE_MSI_FLAGS_REQUIRED,
+> +	.supported_flags	=3D HV_PCIE_MSI_FLAGS_SUPPORTED,
+> +	.bus_select_token	=3D DOMAIN_BUS_PCI_MSI,
+> +	.chip_flags		=3D HV_MSI_CHIP_FLAGS,
+> +	.prefix			=3D "HV-",
+> +	.init_dev_msi_info	=3D hv_pcie_init_dev_msi_info,
+> +};
+> +
+>  /* HW Interrupt Chip Descriptor */
+>  static struct irq_chip hv_msi_irq_chip =3D {
+>  	.name			=3D "Hyper-V PCIe MSI",
+>  	.irq_compose_msi_msg	=3D hv_compose_msi_msg,
+>  	.irq_set_affinity	=3D irq_chip_set_affinity_parent,
+> -#ifdef CONFIG_X86
+>  	.irq_ack		=3D irq_chip_ack_parent,
+> -	.flags			=3D IRQCHIP_MOVE_DEFERRED,
+> -#elif defined(CONFIG_ARM64)
+>  	.irq_eoi		=3D irq_chip_eoi_parent,
+> -#endif
+>  	.irq_mask		=3D hv_irq_mask,
+>  	.irq_unmask		=3D hv_irq_unmask,
+>  };
+>=20
+> -static struct msi_domain_ops hv_msi_ops =3D {
+> -	.msi_prepare	=3D hv_msi_prepare,
+> -	.msi_free	=3D hv_msi_free,
+> -	.prepare_desc	=3D pci_msix_prepare_desc,
+> +static int hv_pcie_domain_alloc(struct irq_domain *d, unsigned int virq,=
+ unsigned int nr_irqs,
+> +			       void *arg)
+> +{
+> +	/*
+> +	 * TODO: Allocating and populating struct tran_int_desc in hv_compose_m=
+si_msg()
+> +	 * should be moved here.
+> +	 */
+> +	int ret;
+> +
+> +	ret =3D irq_domain_alloc_irqs_parent(d, virq, nr_irqs, arg);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	for (int i =3D 0; i < nr_irqs; i++) {
+> +		irq_domain_set_hwirq_and_chip(d, virq + i, 0, &hv_msi_irq_chip, NULL);
+> +		if (IS_ENABLED(CONFIG_X86))
+> +			__irq_set_handler(virq + i, handle_edge_irq, 0, "edge");
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void hv_pcie_domain_free(struct irq_domain *d, unsigned int virq,=
+ unsigned int nr_irqs)
+> +{
+> +	struct msi_domain_info *info =3D d->host_data;
+> +
+> +	for (int i =3D 0; i < nr_irqs; i++)
+> +		hv_msi_free(d, info, virq + i);
+> +
+> +	irq_domain_free_irqs_top(d, virq, nr_irqs);
+> +}
+> +
+> +static const struct irq_domain_ops hv_pcie_domain_ops =3D {
+> +	.alloc	=3D hv_pcie_domain_alloc,
+> +	.free	=3D hv_pcie_domain_free,
+>  };
+>=20
+>  /**
+> @@ -2137,17 +2195,14 @@ static struct msi_domain_ops hv_msi_ops =3D {
+>   */
+>  static int hv_pcie_init_irq_domain(struct hv_pcibus_device *hbus)
+>  {
+> -	hbus->msi_info.chip =3D &hv_msi_irq_chip;
+> -	hbus->msi_info.ops =3D &hv_msi_ops;
+> -	hbus->msi_info.flags =3D (MSI_FLAG_USE_DEF_DOM_OPS |
+> -		MSI_FLAG_USE_DEF_CHIP_OPS | MSI_FLAG_MULTI_PCI_MSI |
+> -		MSI_FLAG_PCI_MSIX | MSI_FLAG_PCI_MSIX_ALLOC_DYN);
+> -	hbus->msi_info.handler =3D FLOW_HANDLER;
+> -	hbus->msi_info.handler_name =3D FLOW_NAME;
+> -	hbus->msi_info.data =3D hbus;
+> -	hbus->irq_domain =3D pci_msi_create_irq_domain(hbus->fwnode,
+> -						     &hbus->msi_info,
+> -						     hv_pci_get_root_domain());
+> +	struct irq_domain_info info =3D {
+> +		.fwnode		=3D hbus->fwnode,
+> +		.ops		=3D &hv_pcie_domain_ops,
+> +		.host_data	=3D hbus,
+> +		.parent		=3D hv_pci_get_root_domain(),
+> +	};
+> +
+> +	hbus->irq_domain =3D msi_create_parent_irq_domain(&info, &hv_pcie_msi_p=
+arent_ops);
+>  	if (!hbus->irq_domain) {
+>  		dev_err(&hbus->hdev->device,
+>  			"Failed to build an MSI IRQ domain\n");
+> --
+> 2.39.5
 
-Also AFAIU the driver won't need to block the multi PF case, it's
-actually core that would need to handle that. For example, if devmem
-wants to bind a dmabuf to 4 queues, but queues 0 & 1 use 1 dma device,
-but queues 2 & 3 use another dma-device, then core doesn't know what
-to do, because it can't map the dmabuf to both devices at once. The
-restriction would be at bind time that all the queues being bound to
-have the same dma device. Core would need to check that and return an
-error if the devices diverge. I imagine all of this is the same for
-io_uring, unless I'm missing something.
-
-> I think we need both. Either that or a netdev op with an optional queue
-> parameter. Any thoughts?
->
-
-At the moment, from your description of the problem, I would lean to
-going with Jakub's approach and handling the common case via #1. If
-more use cases that require a very custom dma device to be passed we
-can always move to #2 later, but FWIW I don't see a reason to come up
-with a super future proof complicated solution right now, but I'm
-happy to hear disagreements.
-
---=20
-Thanks,
-Mina
