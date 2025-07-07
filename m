@@ -1,118 +1,105 @@
-Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB0E28D8C9
-	for <netdev@vger.kernel.org>; Mon,  7 Jul 2025 09:16:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46811DA61B;
+	Mon,  7 Jul 2025 09:17:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751879799; cv=none; b=IZbyk+Ss3wHLSNfZMipOimcAB65Yroq+BbMCmrhhpNZ92On6yMbWlke0MdKUwEzTBH3WyjLPALL742jZpDXRiuvqbLA3gp2/hT8nu8TeVDNHo7iUolKsPk37IAtIJjnb/nQx/bdnDWyJttGyOFlYwGBuhti1nIdHjvA2lu1572k=
+	t=1751879877; cv=none; b=qGAtTAyNxJ7NtWipVVrb385Ov+Ttc5iKvFNxgSxxzdtFVRpJj5D1IH1HUPNtwQWN5Vnn0ndqw9il63KAohAzpYJn3buXfo/mY/cHcQSowfPN4Ofiw7teU8h6+df3JeSOiNNqf1u60JB58BeU8Qt5HWCenBTergNMNEMiZXSVdiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751879799; c=relaxed/simple;
-	bh=YlmNLEqX1lWlnBBlURn4NnXwmZjQoPjZCaPQjOL/ctg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IDVbzUbfi7mgxAyAk34fkLZe6hLVOC1z9xX0OjJQS+zIurNmp+A7l3+g9ctOkoD6B26CW5EHe5So04NEdPBDaJXYX/9pP1j8EpCdEkZZ7eRfXxO8hG4xanMh4IN3oDkGGifn67tXDV7dWIDwCg97vFfpDFifoAZ1ro9JPHuzfts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fMSU6SML; arc=none smtp.client-ip=209.85.219.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1751879877; c=relaxed/simple;
+	bh=1XdBHyS/TdX5GE0UMDNbHyzwdZxMDzmN0TovPALsqow=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V2m1FwTt43f7XEJxyr+VjeQ2ik7/Bd/NyDoRNotka0SYhTgfOBZGUQQdueAqO/NCcnBYGqFM6ak/nc1e0/dRT90oguYRhW1H1Pb6i/JLguKmu9Fx53mzBgVqYpL8gMGECt8BEmvKjp8YQAyKN0sR8vWQ/c1yggLyerbQds0rmsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=dn08LDGN; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fMSU6SML"
-Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-6ff81086f57so28731646d6.3
-        for <netdev@vger.kernel.org>; Mon, 07 Jul 2025 02:16:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751879796; x=1752484596; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+x2D0M7JvWYQsTE3x+pSo4iAW+pNxNO6kBhqYVqFIgA=;
-        b=fMSU6SML3EYi7utkigaD8pQgsk9klOSkzsoqsG9qlW8fRvJwBs9xfLYZcaqrVDV1t/
-         77Ce4l9l9QUDZyVZh93OAv7in0jwHM5OmVJyPqCNYSDEu9LSYeOKu+ezqwWjhO22G+Rr
-         GZhcotcMQBNhLRb59vSIBrHSaqVGs6C0s3J55F5PDdqGD41Vb9lSqAPyCRPid66ZYZz6
-         iLXQDd0Ld85cNkZFoUQn4rmcqkoLTxlCEN0Mk19PPUXbLdCjGb3txKw2PTonRHh15rPU
-         PY7y+KAIKHEMXMGW6TA8FKJQu4XSnfD3QLK5iy6nLa6/jIDHCQYAnVKgLIql69P0lDXX
-         2QMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751879796; x=1752484596;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+x2D0M7JvWYQsTE3x+pSo4iAW+pNxNO6kBhqYVqFIgA=;
-        b=k1EhVGvO+IfuByB5AQjiOCYmcdxCyuL9VWdajiTtAEXTsm0cqTk3unSRnUauKjF3yZ
-         1S/UDwBXUKaIsvX4tJw8pWLBW0BC68odQeJ+IPaUu+g/a8QZ07lvRzy4I9vdwqeAXnzw
-         ypmLP05eQjlhB5SITtF4GM8ybE6Yphdnm9hbKWpUJZt/fmfg+oIkCs1wa98bg9JkWQJS
-         BIelwJaEwtcFb8zH1lnQgplZrtB6Ha94drxj/OHOUtPsktMal8Ayi5oxmgjw3/DXGwEE
-         Ove3IiQr+oOCT7wNhGqU2BSxvS/BdOdHpQVKSgNbDauVniOQMGkA+fys24eVCMAEajvn
-         b7Yw==
-X-Forwarded-Encrypted: i=1; AJvYcCUx1B9F/SBQ/QVaydp79RdRWPvXpuGgFdLqteX9OZ0SFJ1Y5SGCFB77Rf5PJ38NuD88bpR9aUo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yydv4JGRsV4I3ZLAMfwVRnZ2BRBu9fbxvr5wJUDDf5f9ob1Ibk3
-	EIzjhdUqU3Zcdl2pEQj2pZSCYerhImlUBZzsrVy6ZAN3ULUteRUWZ3kSQ5e2ZHIbgCTu+/NIZ5s
-	1y6FBYOXTR+64aw==
-X-Google-Smtp-Source: AGHT+IGE/9wKrc73WpHMyHdgxSxeM/5oM1BrAuhjDqq3erwhYT3glzcDdFf5f4KSH+zxrRPZzCeuI4JxxKujnA==
-X-Received: from qvbrb24.prod.google.com ([2002:a05:6214:4e18:b0:702:da74:3342])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:5c42:b0:700:c179:f57c with SMTP id 6a1803df08f44-702c8ce64camr198461256d6.38.1751879796519;
- Mon, 07 Jul 2025 02:16:36 -0700 (PDT)
-Date: Mon,  7 Jul 2025 09:16:34 +0000
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="dn08LDGN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=BUqPmG1O7JzrnieJR9Ab76YUZOfd8wn7vgsa0nO9wJc=;
+	b=dn08LDGNj0yFFA1fHIbkp3GS4IE9C+AlqScgjyxRgeo4rRaHWo7gV4grsRwfD0
+	m0bdBzlf+JBtjSgvpYHPt6YYnz0XxzY/iirXuP2yR0daxk4WM7My2U/cMvp8xJ+P
+	AFk95Hn/LqB4OXeZ5Ip9xtxR2PmueLiChX0qfrrPJgh+o=
+Received: from [172.21.20.151] (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgD3HWCpkGtozG4IBg--.20542S2;
+	Mon, 07 Jul 2025 17:17:30 +0800 (CST)
+Message-ID: <a2834142-f683-4947-8fff-60727481d7e8@163.com>
+Date: Mon, 7 Jul 2025 17:17:28 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250707091634.311974-1-edumazet@google.com>
-Subject: [PATCH net-next] udp: remove udp_tunnel_gro_init()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] af_packet: fix soft lockup issue caused by tpacket_snd()
+To: Eric Dumazet <edumazet@google.com>
+Cc: willemdebruijn.kernel@gmail.com, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250707081629.10344-1-luyun_611@163.com>
+ <CANn89iKZRpJVduH0WZ57pqRaEma-HB2ymi9P9Q7aK-f7Q8r5XA@mail.gmail.com>
+Content-Language: en-US
+From: luyun <luyun_611@163.com>
+In-Reply-To: <CANn89iKZRpJVduH0WZ57pqRaEma-HB2ymi9P9Q7aK-f7Q8r5XA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgD3HWCpkGtozG4IBg--.20542S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tF13Jw4rWrWUKw1Dur4DJwb_yoW5JF13p3
+	y5t3y2yFnrCr40qw1rAr4rJr1Ivw4rJFs8GrZrKryfAr98tas7trWxtayY9as7urZ2kw4a
+	vF42gryUu34DtaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UfnY7UUUUU=
+X-CM-SenderInfo: pox130jbwriqqrwthudrp/1tbiWxaDzmhrhbjP4wABsT
 
-Use DEFINE_MUTEX() to initialize udp_tunnel_gro_type_lock.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- net/ipv4/udp_offload.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+在 2025/7/7 16:56, Eric Dumazet 写道:
+> On Mon, Jul 7, 2025 at 1:16 AM Yun Lu <luyun_611@163.com> wrote:
+>> From: Yun Lu <luyun@kylinos.cn>
+>>
+>> When MSG_DONTWAIT is not set, the tpacket_snd operation will wait for
+>> pending_refcnt to decrement to zero before returning. The pending_refcnt
+>> is decremented by 1 when the skb->destructor function is called,
+>> indicating that the skb has been successfully sent and needs to be
+>> destroyed.
+>>
+>> If an error occurs during this process, the tpacket_snd() function will
+>> exit and return error, but pending_refcnt may not yet have decremented to
+>> zero. Assuming the next send operation is executed immediately, but there
+>> are no available frames to be sent in tx_ring (i.e., packet_current_frame
+>> returns NULL), and skb is also NULL, the function will not execute
+>> wait_for_completion_interruptible_timeout() to yield the CPU. Instead, it
+>> will enter a do-while loop, waiting for pending_refcnt to be zero. Even
+>> if the previous skb has completed transmission, the skb->destructor
+>> function can only be invoked in the ksoftirqd thread (assuming NAPI
+>> threading is enabled). When both the ksoftirqd thread and the tpacket_snd
+>> operation happen to run on the same CPU, and the CPU trapped in the
+>> do-while loop without yielding, the ksoftirqd thread will not get
+>> scheduled to run. As a result, pending_refcnt will never be reduced to
+>> zero, and the do-while loop cannot exit, eventually leading to a CPU soft
+>> lockup issue.
+>>
+>> In fact, as long as pending_refcnt is not zero, even if skb is NULL,
+>> wait_for_completion_interruptible_timeout() should be executed to yield
+>> the CPU, allowing the ksoftirqd thread to be scheduled. Therefore, the
+>> execution condition of this function should be modified to check if
+>> pending_refcnt is not zero.
+>>
+>> Signed-off-by: Yun Lu <luyun@kylinos.cn>
+> I think you forgot a Fixes: tag.
+Thank you for your advise, I will add this tag in v2 version later.
+>
+> Also it seems the soft lockup could happen if MSG_DONTWAIT is set ?
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 85b5aa82d7d74a945d9139f7f94042d2c0f937bc..75c489edc4388176a798bfdf0c3cc4160e34052d 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -44,7 +44,7 @@ struct udp_tunnel_type_entry {
- 
- DEFINE_STATIC_CALL(udp_tunnel_gro_rcv, dummy_gro_rcv);
- static DEFINE_STATIC_KEY_FALSE(udp_tunnel_static_call);
--static struct mutex udp_tunnel_gro_type_lock;
-+static DEFINE_MUTEX(udp_tunnel_gro_type_lock);
- static struct udp_tunnel_type_entry udp_tunnel_gro_types[UDP_MAX_TUNNEL_TYPES];
- static unsigned int udp_tunnel_gro_type_nr;
- static DEFINE_SPINLOCK(udp_tunnel_gro_lock);
-@@ -144,11 +144,6 @@ void udp_tunnel_update_gro_rcv(struct sock *sk, bool add)
- }
- EXPORT_SYMBOL_GPL(udp_tunnel_update_gro_rcv);
- 
--static void udp_tunnel_gro_init(void)
--{
--	mutex_init(&udp_tunnel_gro_type_lock);
--}
--
- static struct sk_buff *udp_tunnel_gro_rcv(struct sock *sk,
- 					  struct list_head *head,
- 					  struct sk_buff *skb)
-@@ -165,8 +160,6 @@ static struct sk_buff *udp_tunnel_gro_rcv(struct sock *sk,
- 
- #else
- 
--static void udp_tunnel_gro_init(void) {}
--
- static struct sk_buff *udp_tunnel_gro_rcv(struct sock *sk,
- 					  struct list_head *head,
- 					  struct sk_buff *skb)
-@@ -1000,6 +993,5 @@ int __init udpv4_offload_init(void)
- 		},
- 	};
- 
--	udp_tunnel_gro_init();
- 	return inet_add_offload(&net_hotdata.udpv4_offload, IPPROTO_UDP);
- }
--- 
-2.50.0.727.gbf7dc18ff4-goog
+If MSG_DONTWAIT is set, need_wait will be false. In this case, once 
+there are no
+
+available frames to send (i.e., ph is NULL), the while loop condition 
+will not be
+
+satisfied, and the loop will exit and return immediately without waiting for
+
+pending_refcnt to decrease to 0. The soft lockup issue should no longer 
+occur.
+
+while (likely((ph != NULL) ||
+                  (need_wait && packet_read_pending(&po->tx_ring))));
 
