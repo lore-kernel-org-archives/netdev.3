@@ -1,126 +1,77 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0A61E22FC
-	for <netdev@vger.kernel.org>; Tue,  8 Jul 2025 21:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55062459C6;
+	Tue,  8 Jul 2025 21:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752009329; cv=none; b=D3sr70d6Q5roD+RA+dHTxZdKs9CvPFKqWHqTMAAproGBU4acus7+ExRiTZHAKoLZ8PkaDXYYwCp2NoHHig3Dn25EbC4cP7Gt8QEtfaMWAeXI2lcwr9EZe/lJO16+LBT68dEwXLLrvLwrG2h+827MR2/BjviqU5gEzaFDKqwGWh0=
+	t=1752009340; cv=none; b=VVRvNSWUCp3OKkw7w+K/zw4kpiJWi/vJG39WQC1NWevhABtIO54LIoewntB5vbKyoMb3gPiuyC2nVK20GavClQdhbm8A51DDp115dm4dUTNERXtb8j7FQJxbJmlk+F+x7d16ovT/TIMJCqsq988EikG1018Nj6QESYMhQJHW3+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752009329; c=relaxed/simple;
-	bh=oIwauWBitCHoTQ9VMTbdy7XKVlt9XvjiqRagcK4xxak=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DOM9jpHVZJcEhxB4WnvouiNzcTC6JbYn/Kp7WoMXi9ibJg+u5WJabkLpdDJnCVXYFMkVq/gNc+OWUwj7z55mWDi50u0zThvCkuBrdXUkn+nnTeaucLeK22i4vbIU1OC8g6KJ0HIs3Q7eGe2c0/DRmzGPsbNQmkOy9z0s3Ix7xqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ARIie/WY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1752009340; c=relaxed/simple;
+	bh=EsNrzNjV1ejegXwRqHZoNtXa4eBCU0UHv2etOg/t2Cs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=evyU04f1mVZLSf09j3VxH05WAqFXm8N9xu5pcLdD2+pBChlIn88MKlW3WlgFZ3/LaTytrin0EcCYwSazNhOgF1h3avgDHpz+iIkDbrgqTEAdMsmCl/lpyupiw4IvcYTmfYXhNhFFnhVXN4L8Mv+UxCnr6fn79oEf9PEoqjLBVDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jXLgx+Nc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ARIie/WY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752009326;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8rYMXhzORJFtpiFuOgBAdQlsclkOyaJAFhe4UXEpjmE=;
-	b=ARIie/WYEPQYOvb+vnX/vpXq1lJTyvrmPSt1yUMf7T3JRbbbK6T5fajbTeWQeygd/ZdZpX
-	gOOtxxAJVK3jFdhZ+ZAT8wHQbacqPmJabwpDFi669tEgYv4Khxgkn9rJSLpmVGEwdU75po
-	Mcv+pdiExxE2m++9hcRqmVZMVlYMrug=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-622-D5YAJfLiMmGaZhcGEkH-Uw-1; Tue,
- 08 Jul 2025 17:15:23 -0400
-X-MC-Unique: D5YAJfLiMmGaZhcGEkH-Uw-1
-X-Mimecast-MFC-AGG-ID: D5YAJfLiMmGaZhcGEkH-Uw_1752009321
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9FECC193F057;
-	Tue,  8 Jul 2025 21:15:20 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.81])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DACEF19560AB;
-	Tue,  8 Jul 2025 21:15:15 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
-	LePremierHomme <kwqcheii@proton.me>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH net v2 1/2] rxrpc: Fix bug due to prealloc collision
-Date: Tue,  8 Jul 2025 22:15:03 +0100
-Message-ID: <20250708211506.2699012-2-dhowells@redhat.com>
-In-Reply-To: <20250708211506.2699012-1-dhowells@redhat.com>
-References: <20250708211506.2699012-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jXLgx+Nc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1168CC4CEED;
+	Tue,  8 Jul 2025 21:15:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752009340;
+	bh=EsNrzNjV1ejegXwRqHZoNtXa4eBCU0UHv2etOg/t2Cs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jXLgx+Nc/Il0M8mnaWaTErBAJYW6UH/b3ChhI1LjEWZ1ml5fkzHdaCaYOl99XYH/f
+	 g1fyCkze9zHQfvieSG51xhB6PFC2OrGkDq77mm8FzJaQOQGL28nTAU6Im5pWJPQfNr
+	 xgqKcDlEBibsvEy1PMprvnPeFxlxa+i/MW9vQ5YjpWVQINxY8D89YrmlgshJrTMUJP
+	 Qn3QU3pn1T8APdplhYULYG5GDoEyHqAAUw8EvUfsB631uCVtnUbOzHcQD4jAKlGI+k
+	 uK0BTZzRanm6MTE1WDXUn9iqYvh9qBBbOzzGpGcMDpVWAee9dsresSCF62LDyVSqpa
+	 kjbm7xmjPgNnQ==
+Date: Tue, 8 Jul 2025 16:15:39 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Kamil =?iso-8859-1?Q?Hor=E1k?= - 2N <kamilh@axis.com>
+Cc: linux@armlinux.org.uk, corbet@lwn.net, linux-doc@vger.kernel.org,
+	krzk+dt@kernel.org, bcm-kernel-feedback-list@broadcom.com,
+	florian.fainelli@broadcom.com, hkallweit1@gmail.com,
+	pabeni@redhat.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, conor+dt@kernel.org,
+	netdev@vger.kernel.org, andrew+netdev@lunn.ch, horms@kernel.org,
+	davem@davemloft.net, edumazet@google.com,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, andrew@lunn.ch
+Subject: Re: [PATCH net-next v7 2/4] dt-bindings: ethernet-phy: add MII-Lite
+ phy interface type
+Message-ID: <175200933841.1032309.15245293992929519207.robh@kernel.org>
+References: <20250708090140.61355-1-kamilh@axis.com>
+ <20250708090140.61355-3-kamilh@axis.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+In-Reply-To: <20250708090140.61355-3-kamilh@axis.com>
 
-When userspace is using AF_RXRPC to provide a server, it has to preallocate
-incoming calls and assign to them call IDs that will be used to thread
-related recvmsg() and sendmsg() together.  The preallocated call IDs will
-automatically be attached to calls as they come in until the pool is empty.
 
-To the kernel, the call IDs are just arbitrary numbers, but userspace can
-use the call ID to hold a pointer to prepared structs.  In any case, the
-user isn't permitted to create two calls with the same call ID (call IDs
-become available again when the call ends) and EBADSLT should result from
-sendmsg() if an attempt is made to preallocate a call with an in-use call
-ID.
+On Tue, 08 Jul 2025 11:01:38 +0200, Kamil Horák - 2N wrote:
+> Some Broadcom PHYs are capable to operate in simplified MII mode,
+> without TXER, RXER, CRS and COL signals as defined for the MII.
+> The MII-Lite mode can be used on most Ethernet controllers with full
+> MII interface by just leaving the input signals (RXER, CRS, COL)
+> inactive. The absence of COL signal makes half-duplex link modes
+> impossible but does not interfere with BroadR-Reach link modes on
+> Broadcom PHYs, because they are all full-duplex only.
+> 
+> Add new interface type "mii-lite" to phy-connection-type enum.
+> 
+> Signed-off-by: Kamil Horák - 2N <kamilh@axis.com>
+> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> ---
+>  Documentation/devicetree/bindings/net/ethernet-controller.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-However, the cleanup in the error handling will trigger both assertions in
-rxrpc_cleanup_call() because the call isn't marked complete and isn't
-marked as having been released.
-
-Fix this by setting the call state in rxrpc_service_prealloc_one() and then
-marking it as being released before calling the cleanup function.
-
-Fixes: 00e907127e6f ("rxrpc: Preallocate peers, conns and calls for incoming service requests")
-Reported-by: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: LePremierHomme <kwqcheii@proton.me>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
----
-
-Notes:
-    Changes
-    =======
-    ver #2)
-     - Don't need to double-set RXRPC_CALL_RELEASED.
-
- net/rxrpc/call_accept.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/net/rxrpc/call_accept.c b/net/rxrpc/call_accept.c
-index a4b363b47cca..7271977b1683 100644
---- a/net/rxrpc/call_accept.c
-+++ b/net/rxrpc/call_accept.c
-@@ -149,6 +149,7 @@ static int rxrpc_service_prealloc_one(struct rxrpc_sock *rx,
- 
- id_in_use:
- 	write_unlock(&rx->call_lock);
-+	rxrpc_prefail_call(call, RXRPC_CALL_LOCAL_ERROR, -EBADSLT);
- 	rxrpc_cleanup_call(call);
- 	_leave(" = -EBADSLT");
- 	return -EBADSLT;
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
