@@ -1,31 +1,67 @@
-Received: from out28-124.mail.aliyun.com (out28-124.mail.aliyun.com [115.124.28.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617FC35962;
-	Tue,  8 Jul 2025 06:06:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7ED1F5413;
+	Tue,  8 Jul 2025 06:19:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751954814; cv=none; b=ijiPlY31IXbzcJ1Imgk/6ZLjKc3X86O4tKAYRv+rabqlNACbLmNb8fZOp01X+86kBTmfI9QyRDwEWsuNNz+rZ78rSFL1gqLHlfMq2alpnqZFAmBYF9i+QZapDwbxgCIAOQcY6+UBWe/wMiGwMKXH757A92Wqgi+0R6CRYY1n/64=
+	t=1751955571; cv=none; b=CXQZC94euVf7SHzEf/22D3aXszeekdOp3hcI144B1lTcGbr5chQ/aevvS3TwrGBaqNvA/Tv2L9YG12z9qb2fiZgWNXcAR2T1IMjb4HUGxJkfBqYLZkveKhAgG9zTtOF5ZY6czFMNnIv3ien5yx3i/ibQSuQVUXvymzAN61TrcL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751954814; c=relaxed/simple;
-	bh=mIOs9ZQv+Dge62egFi7/FYpUbNceMjDUj5FMhCzPzvQ=;
+	s=arc-20240116; t=1751955571; c=relaxed/simple;
+	bh=a9VQ/OKuMQxNDls3x39RI94adWFSYdHXGaxMD5Plndw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rr+C8zL4WcXLk7Qws22RlWoXt5OEYDNz252AZx4M5mEkWPY0xbUho9dG1gw8kb6M8I9lg3VLew0z4yaTnqsxbf1YdCKuyrIqr3FWEzYSnTh3Erir0iZ8az5PjmvmUypuBVqceada2d8laOd7/icr+dkpMJ6yC77J8NzSqV9oBzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=M6lAkofx; arc=none smtp.client-ip=115.124.28.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
+	 In-Reply-To:Content-Type; b=lU+zil2BvpPrr1xV0CLqWksSBA1h1CJJGpC6WsD4bOmR0lmSBEfc9zFQ4SyjDAQ0gLbsYbLe2/oK2zDEPeCp/iF2dEYcUxtHMy4nWaKWMSygJBLsyaif7w/99Ave488FmS8JDS3PZtW58arfjKrCyO/tsVRq2wx9Tio1CObpj3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WrvdItYj; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="M6lAkofx"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=antgroup.com; s=default;
-	t=1751954799; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=5JEqIO5uBY95Voa4tTrXdXEV+OOCe7hAnim8ZON5228=;
-	b=M6lAkofxCxoUdow3haGpU5j92GzWIdnZOogE2sEe7d24vi3UFMnJkN60DHVhPprGYUdTDEZE6yllLquZBsduar4YCuqqkb0n+gU6sYAKitfsEjQhZjEPv9G2V9ZYr4kcNsOFA+lwOMOsAuJ0h7z2bA8pTjKvNMYvPxIfODwWdOo=
-Received: from 30.172.244.77(mailfrom:niuxuewei.nxw@antgroup.com fp:SMTPD_---.dhEfNgk_1751951111 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 08 Jul 2025 13:05:12 +0800
-Message-ID: <0a969517-ba41-4aa9-8f1b-471422cc2593@antgroup.com>
-Date: Tue, 8 Jul 2025 13:05:10 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WrvdItYj"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5685BZBc006198;
+	Tue, 8 Jul 2025 06:19:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ppMPP8
+	ppoa84lSjqkTeweSkbyPG03QPa5F2neMbbDPU=; b=WrvdItYjSh2gjwq5iitiNW
+	tVKMx7eXkAcalY1zBI8ARZOa1FCzWs3ycvzy9/XkPiqSTpgRxIkZvkQmZcS2KXeQ
+	YxO+4zm9cbXkpXUIq2RzBq8hwjyfuH3uzvr73rf3csn/KZHa2xq0Y+S+BfgiqaTM
+	AKCihfKNPL6YSLWvVe8/O7Yn2C/0ealGtAACoU+QrNaMpwSSUWiq/OBEv4YLswnQ
+	XIOnfsqe1p0MhAGDtTZJPE3XDzFatjDVWrgmYQAS4Btzxn1A6u4t0CvfJ525e81/
+	ZGtyb002mBRymIMPtt8waWS0QpqyW4xOs6z0CW1ugLEJcrR7kBRKGOamfy95e3hg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47puk3x2s5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 08 Jul 2025 06:19:23 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5686JMfo002363;
+	Tue, 8 Jul 2025 06:19:22 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47puk3x2s1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 08 Jul 2025 06:19:22 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5683fohR024317;
+	Tue, 8 Jul 2025 06:19:21 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 47qh329aek-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 08 Jul 2025 06:19:21 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5686JJXR28443186
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 8 Jul 2025 06:19:19 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6D6A558055;
+	Tue,  8 Jul 2025 06:19:19 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0F39958066;
+	Tue,  8 Jul 2025 06:19:14 +0000 (GMT)
+Received: from [9.109.246.12] (unknown [9.109.246.12])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  8 Jul 2025 06:19:13 +0000 (GMT)
+Message-ID: <88176330-73c3-45d0-ac14-d7ae0a14e80d@linux.ibm.com>
+Date: Tue, 8 Jul 2025 11:49:12 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -33,123 +69,87 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 1/4] hv_sock: Return the readable bytes in
- hvs_stream_has_data()
-To: Stefano Garzarella <sgarzare@redhat.com>,
- Xuewei Niu <niuxuewei97@gmail.com>
-Cc: "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, fupan.lfp@antgroup.com
-References: <20250706-siocinq-v5-0-8d0b96a87465@antgroup.com>
- <20250706-siocinq-v5-1-8d0b96a87465@antgroup.com>
- <xhzslzuxrhdoixffmzwprn254ctolimj7giuxj4nfrfg23eesy@ycpe6kma5vih>
+Subject: Re: [PATCH net-next v2 1/2] net/smc: convert timeouts to
+ secs_to_jiffies()
+To: Easwar Hariharan <eahariha@linux.microsoft.com>,
+        "D. Wythe" <alibuda@linux.alibaba.com>,
+        Dust Li <dust.li@linux.alibaba.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>,
+        Mahanta Jambigi
+ <mjambigi@linux.ibm.com>,
+        Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        David Ahern <dsahern@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-rdma@vger.kernel.org,
+        linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20250707-netdev-secs-to-jiffies-part-2-v2-0-b7817036342f@linux.microsoft.com>
+ <20250707-netdev-secs-to-jiffies-part-2-v2-1-b7817036342f@linux.microsoft.com>
 Content-Language: en-US
-From: Xuewei Niu <niuxuewei.nxw@antgroup.com>
-In-Reply-To: <xhzslzuxrhdoixffmzwprn254ctolimj7giuxj4nfrfg23eesy@ycpe6kma5vih>
-Content-Type: text/plain; charset=UTF-8
+From: Sidraya Jayagond <sidraya@linux.ibm.com>
+In-Reply-To: <20250707-netdev-secs-to-jiffies-part-2-v2-1-b7817036342f@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA4MDA0OSBTYWx0ZWRfXyNZsdDHEcY90 u8UzrjIR5EU86PYRkYCM6Mxcj3byRjGQs0m1CrL+IIt595tsB5oUlWCI8b93uXBhXxR21rRFxa5 EDuS29D1SIzO3b6lQRiCEJLCkRhL/RShrie4QW5+b/ktEjLb3sQa3eYa0yJwBt7WrsbV7AB53nY
+ s59lh7HA3vVNtZEPqAkeG8wMCZKwfe92IH3UtiIDMYCrDpT58u5ZS7bxa0F9I0osqtAGsNTobn9 OfEnnu1SpNpy4tVOqsKDRGt94Mm5hDeEEVHKvVFeUVJSHr+0thHomgdDDYcZDSY5ehdCAaD6CHP oU4MEFs/iKib12OvqibScKv7O8UvYIgzEuGqkld33PONCMOQeOXz5Dyvsr4pf2jT7sxaIZL5S1i
+ brtHtPLVDExzHqgw75Ki1xDsLXF+T4ogiSn+UpNQfILh96GZfcVMoXn9ujmjo4V+4I3S1w30
+X-Authority-Analysis: v=2.4 cv=XYeJzJ55 c=1 sm=1 tr=0 ts=686cb86b cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=yMhMjlubAAAA:8 a=VnNF1IyMAAAA:8 a=Z_BCh-ONDyC5R4AT590A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: RMisSh4tEMnFjdxfY2J90WO6jupJWmpj
+X-Proofpoint-GUID: QFE95R7zLzfrV4WgjMEO0JngNJcfM5WB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-08_02,2025-07-07_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 priorityscore=1501 suspectscore=0
+ mlxscore=0 impostorscore=0 phishscore=0 bulkscore=0 clxscore=1011
+ spamscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507080049
 
 
 
-On 2025/7/7 21:40, Stefano Garzarella wrote:
-> On Sun, Jul 06, 2025 at 12:36:29PM +0800, Xuewei Niu wrote:
+On 08/07/25 3:33 am, Easwar Hariharan wrote:
+> Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+> secs_to_jiffies().  As the value here is a multiple of 1000, use
+> secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
 > 
-> Again, this patch should have `From: Dexuan Cui <decui@microsoft.com>` on first line, and this is done automatically by `git format-patch` (or others tools) if the author is the right one in your branch.
-> I'm not sure what is going on on your side, but you should avoid to reset the original author.
-> Applying this patch we will have:
+> This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
+> the following Coccinelle rules:
 > 
->     commit ed36075e04ecbb1dd02a3d8eba5bfac6469d73e4
->     Author: Xuewei Niu <niuxuewei97@gmail.com>
->     Date:   Sun Jul 6 12:36:29 2025 +0800
+> @depends on patch@
+> expression E;
+> @@
 > 
->         hv_sock: Return the readable bytes in hvs_stream_has_data()
+> -msecs_to_jiffies(E * 1000)
+> +secs_to_jiffies(E)
 > 
-> This is not what we want, right?
+> -msecs_to_jiffies(E * MSEC_PER_SEC)
+> +secs_to_jiffies(E)
 > 
->> When hv_sock was originally added, __vsock_stream_recvmsg() and
->> vsock_stream_has_data() actually only needed to know whether there
->> is any readable data or not, so hvs_stream_has_data() was written to
->> return 1 or 0 for simplicity.
->>
->> However, now hvs_stream_has_data() should return the readable bytes
->> because vsock_data_ready() -> vsock_stream_has_data() needs to know the
->> actual bytes rather than a boolean value of 1 or 0.
->>
->> The SIOCINQ ioctl support also needs hvs_stream_has_data() to return
->> the readable bytes.
->>
->> Let hvs_stream_has_data() return the readable bytes of the payload in
->> the next host-to-guest VMBus hv_sock packet.
->>
->> Note: there may be multpile incoming hv_sock packets pending in the
->> VMBus channel's ringbuffer, but so far there is not a VMBus API that
->> allows us to know all the readable bytes in total without reading and
->> caching the payload of the multiple packets, so let's just return the
->> readable bytes of the next single packet. In the future, we'll either
->> add a VMBus API that allows us to know the total readable bytes without
->> touching the data in the ringbuffer, or the hv_sock driver needs to
->> understand the VMBus packet format and parse the packets directly.
->>
->> Signed-off-by: Dexuan Cui <decui@microsoft.com>
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> ---
+>   net/smc/af_smc.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> Your S-o-b was fine here, I was talking about the author.
-
-I misunderstood the meaning of author. Sorry about that.
-
-Will update this in v6.
-
-Thanks,
-Xuewei 
-> Thanks,
-> Stefano
+> diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+> index 8d56e4db63e041724f156aa3ab30bab745a15bad..bdbaad17f98012c10d0bbc721c80d4c5ae4fb220 100644
+> --- a/net/smc/af_smc.c
+> +++ b/net/smc/af_smc.c
+> @@ -2735,8 +2735,7 @@ int smc_accept(struct socket *sock, struct socket *new_sock,
+>   
+>   	if (lsmc->sockopt_defer_accept && !(arg->flags & O_NONBLOCK)) {
+>   		/* wait till data arrives on the socket */
+> -		timeo = msecs_to_jiffies(lsmc->sockopt_defer_accept *
+> -								MSEC_PER_SEC);
+> +		timeo = secs_to_jiffies(lsmc->sockopt_defer_accept);
+>   		if (smc_sk(nsk)->use_fallback) {
+>   			struct sock *clcsk = smc_sk(nsk)->clcsock->sk;
+>   
 > 
->> ---
->> net/vmw_vsock/hyperv_transport.c | 17 ++++++++++++++---
->> 1 file changed, 14 insertions(+), 3 deletions(-)
->>
->> diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
->> index 31342ab502b4fc35feb812d2c94e0e35ded73771..432fcbbd14d4f44bd2550be8376e42ce65122758 100644
->> --- a/net/vmw_vsock/hyperv_transport.c
->> +++ b/net/vmw_vsock/hyperv_transport.c
->> @@ -694,15 +694,26 @@ static ssize_t hvs_stream_enqueue(struct vsock_sock *vsk, struct msghdr *msg,
->> static s64 hvs_stream_has_data(struct vsock_sock *vsk)
->> {
->>     struct hvsock *hvs = vsk->trans;
->> +    bool need_refill;
->>     s64 ret;
->>
->>     if (hvs->recv_data_len > 0)
->> -        return 1;
->> +        return hvs->recv_data_len;
->>
->>     switch (hvs_channel_readable_payload(hvs->chan)) {
->>     case 1:
->> -        ret = 1;
->> -        break;
->> +        need_refill = !hvs->recv_desc;
->> +        if (!need_refill)
->> +            return -EIO;
->> +
->> +        hvs->recv_desc = hv_pkt_iter_first(hvs->chan);
->> +        if (!hvs->recv_desc)
->> +            return -ENOBUFS;
->> +
->> +        ret = hvs_update_recv_data(hvs);
->> +        if (ret)
->> +            return ret;
->> +        return hvs->recv_data_len;
->>     case 0:
->>         vsk->peer_shutdown |= SEND_SHUTDOWN;
->>         ret = 0;
->>
->> -- 
->> 2.34.1
->>
-
-
+﻿﻿﻿Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
 
 
