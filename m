@@ -1,133 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from out28-145.mail.aliyun.com (out28-145.mail.aliyun.com [115.124.28.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B0523A98D;
-	Tue,  8 Jul 2025 04:11:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867821401B;
+	Tue,  8 Jul 2025 05:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751947881; cv=none; b=HhdcUFB6slYyFHnpgYaUAXMxj16fw/WR3B2ylYDQ+Whz/tdP9s5Ti6BXow6ltKy4+NklPjpJmeohh8IchD9foliEKBoyfo5HPdTf/3Ig72XsbeYTMpw/nWA0UEvdarCQSe/uWHHc1yEPJjRQWJhfOevD5+raqfjxYJK2ug0X1Ow=
+	t=1751951866; cv=none; b=cHoPnBmQv4ev3KqYCTzHDT0va59aBxoqurdMIQ9WtYPL9xpjjYbKvoZ+ZkAzsKej7VCLfL6os5Vm3H/jZX6EAoNQO0QuCF7LRwVqbfqkVF6ikt12NtEx2eX4jA9veAPWBaEf2HGbiyC4wSKMz+wak3ESeRxvEjcjKR40PthqG84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751947881; c=relaxed/simple;
-	bh=rXWlj/9LA/DLJXLyR14GgKkKykP6BE3a/HJ93b2Dcwk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aVxLW+nz1Y64kWRbPLLWAhNdtsZU5Pur+0DG2Vh4l0acaJIr2yHdfvljybbYAXcDNKAmwdM/VjE9UUvAUkTu/exSecB5pGN74pueV1ShNK2z2XBxEu5Gws+XqnBp4uRG9PuzXoDVad5HxPb/2lNuoVD0vbG9poUj59OYohLXIko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n3sdAxC6; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1751951866; c=relaxed/simple;
+	bh=59y7qEw4GpHqR9V5yVAvN9k1VJ4Mks0dolgkvU2v08Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rCRm/Rkgg5wrFE9ZxItkp2FJmz0nL2940YocabN84cBJ7P8a3CuByNyPShm2gTZFYRwcoaPtX76E4UUvPjHHKbRBS8GLVdGZ4vG7f6YpE682VhzI8MaSLfur+P6MYy8nDuN36toTKbSiPXO0ZZKgkO1gIJX6OJFBD8LiqwQExvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=fQ1NQV0g; arc=none smtp.client-ip=115.124.28.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n3sdAxC6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751947879; x=1783483879;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rXWlj/9LA/DLJXLyR14GgKkKykP6BE3a/HJ93b2Dcwk=;
-  b=n3sdAxC678OTAeNNqjjuCvb9IHbVeyrdPhvy4gztBalKxdNytNmH0sAi
-   XeQMl5zeRxbN3xekFr2DbrnMzmYJzoJA8MiZD1P38hv2U5qRXnLxdOTMH
-   qQoHqK6E1h3Cs9fyGYBHNGU6V/WPLaXgEshhSsUcG3+Fk2PvXj+i3sM+o
-   /WxonKTA/eS9lSzCs+14Kf6MCn9M3J9r69eY7jJeibw4KqkiD/l2jsBbG
-   eawMTmLGFLa72SxwjMyTux86E8hZ67TW89IIgxbuYb+kPvLJdGbTUHBHX
-   zYa2SlMXtSNMiOLYJpSQ+J5i2U017sEwQjr3P7b4BX2xvnneSFFcuO7tU
-   Q==;
-X-CSE-ConnectionGUID: lJS65IxDQACjYu7zmVvchg==
-X-CSE-MsgGUID: YXSaYOB9RQ2qLua6VIZ4sA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54102830"
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; 
-   d="scan'208";a="54102830"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2025 21:11:18 -0700
-X-CSE-ConnectionGUID: DZoxYoMGRzil7CEsBfKMlQ==
-X-CSE-MsgGUID: u20iTc/lRr6KYeJeE2AD3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; 
-   d="scan'208";a="154793097"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 07 Jul 2025 21:11:09 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uYzfe-0000yh-1p;
-	Tue, 08 Jul 2025 04:11:06 +0000
-Date: Tue, 8 Jul 2025 12:10:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Tao Chen <chen.dylane@linux.dev>, ast@kernel.org, daniel@iogearbox.net,
-	john.fastabend@gmail.com, andrii@kernel.org, martin.lau@linux.dev,
-	eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev,
-	kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com,
-	jolsa@kernel.org, mattbobrowski@google.com, rostedt@goodmis.org,
-	mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, kuniyu@amazon.com,
-	willemb@google.com, jakub@cloudflare.com, pablo@netfilter.org,
-	kadlec@netfilter.org, hawk@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH bpf-next 1/6] bpf: Add attach_type in bpf_link
-Message-ID: <202507081130.devFCURB-lkp@intel.com>
-References: <20250707153916.802802-2-chen.dylane@linux.dev>
+	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="fQ1NQV0g"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=antgroup.com; s=default;
+	t=1751951858; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=ll42IxvjGlWNCvhre5iXoxCnMkwXG5zTYn4NRTnJbTc=;
+	b=fQ1NQV0gOfvv4zK1Fip/DQ6VhcY4HG/Ffc7BrIqkhhSwsKjLJYY6fZcYqlreNmaHfXJkDFcgX9ObKGKTvUEavXPWhAwCmG584LtKL3TKw1RjNujiKSfha9uCLN3xzxnqthJ3cFIa2mPhTMdJ/IOuzTpAoKzy3ROm/ukwZKgEzbw=
+Received: from 30.172.244.77(mailfrom:niuxuewei.nxw@antgroup.com fp:SMTPD_---.dhG9apK_1751951856 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Tue, 08 Jul 2025 13:17:37 +0800
+Message-ID: <aaac1fda-7365-4643-b8df-df6412a42891@antgroup.com>
+Date: Tue, 8 Jul 2025 13:17:36 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250707153916.802802-2-chen.dylane@linux.dev>
-
-Hi Tao,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on bpf-next/master]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Tao-Chen/bpf-Add-attach_type-in-bpf_link/20250707-234517
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git master
-patch link:    https://lore.kernel.org/r/20250707153916.802802-2-chen.dylane%40linux.dev
-patch subject: [PATCH bpf-next 1/6] bpf: Add attach_type in bpf_link
-config: i386-randconfig-015-20250708 (https://download.01.org/0day-ci/archive/20250708/202507081130.devFCURB-lkp@intel.com/config)
-compiler: clang version 20.1.7 (https://github.com/llvm/llvm-project 6146a88f60492b520a36f8f8f3231e15f3cc6082)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250708/202507081130.devFCURB-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507081130.devFCURB-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/net/netkit.c:778:32: error: too few arguments to function call, expected 5, have 4
-     777 |         bpf_link_init(&nkl->link, BPF_LINK_TYPE_NETKIT,
-         |         ~~~~~~~~~~~~~
-     778 |                       &netkit_link_lops, prog);
-         |                                              ^
-   include/linux/bpf.h:2534:6: note: 'bpf_link_init' declared here
-    2534 | void bpf_link_init(struct bpf_link *link, enum bpf_link_type type,
-         |      ^             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    2535 |                    const struct bpf_link_ops *ops, struct bpf_prog *prog,
-         |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    2536 |                    enum bpf_attach_type attach_type);
-         |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 error generated.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v5 1/4] hv_sock: Return the readable bytes in
+ hvs_stream_has_data()
+To: Stefano Garzarella <sgarzare@redhat.com>,
+ Xuewei Niu <niuxuewei97@gmail.com>
+Cc: "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, fupan.lfp@antgroup.com
+References: <20250706-siocinq-v5-0-8d0b96a87465@antgroup.com>
+ <20250706-siocinq-v5-1-8d0b96a87465@antgroup.com>
+ <xphwpqqi42w5b3jug3vfooybrlft3z5ewravl7jvzci7ogs3nh@5i7yi66dg7fa>
+Content-Language: en-US
+From: Xuewei Niu <niuxuewei.nxw@antgroup.com>
+In-Reply-To: <xphwpqqi42w5b3jug3vfooybrlft3z5ewravl7jvzci7ogs3nh@5i7yi66dg7fa>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 
-vim +778 drivers/net/netkit.c
 
-35dfaad7188cdc Daniel Borkmann 2023-10-24  770  
-35dfaad7188cdc Daniel Borkmann 2023-10-24  771  static int netkit_link_init(struct netkit_link *nkl,
-35dfaad7188cdc Daniel Borkmann 2023-10-24  772  			    struct bpf_link_primer *link_primer,
-35dfaad7188cdc Daniel Borkmann 2023-10-24  773  			    const union bpf_attr *attr,
-35dfaad7188cdc Daniel Borkmann 2023-10-24  774  			    struct net_device *dev,
-35dfaad7188cdc Daniel Borkmann 2023-10-24  775  			    struct bpf_prog *prog)
-35dfaad7188cdc Daniel Borkmann 2023-10-24  776  {
-35dfaad7188cdc Daniel Borkmann 2023-10-24  777  	bpf_link_init(&nkl->link, BPF_LINK_TYPE_NETKIT,
-35dfaad7188cdc Daniel Borkmann 2023-10-24 @778  		      &netkit_link_lops, prog);
-35dfaad7188cdc Daniel Borkmann 2023-10-24  779  	nkl->location = attr->link_create.attach_type;
-35dfaad7188cdc Daniel Borkmann 2023-10-24  780  	nkl->dev = dev;
-35dfaad7188cdc Daniel Borkmann 2023-10-24  781  	return bpf_link_prime(&nkl->link, link_primer);
-35dfaad7188cdc Daniel Borkmann 2023-10-24  782  }
-35dfaad7188cdc Daniel Borkmann 2023-10-24  783  
+On 2025/7/7 21:42, Stefano Garzarella wrote:
+> On Sun, Jul 06, 2025 at 12:36:29PM +0800, Xuewei Niu wrote:
+>> When hv_sock was originally added, __vsock_stream_recvmsg() and
+>> vsock_stream_has_data() actually only needed to know whether there
+>> is any readable data or not, so hvs_stream_has_data() was written to
+>> return 1 or 0 for simplicity.
+>>
+>> However, now hvs_stream_has_data() should return the readable bytes
+>> because vsock_data_ready() -> vsock_stream_has_data() needs to know the
+>> actual bytes rather than a boolean value of 1 or 0.
+>>
+>> The SIOCINQ ioctl support also needs hvs_stream_has_data() to return
+>> the readable bytes.
+>>
+>> Let hvs_stream_has_data() return the readable bytes of the payload in
+>> the next host-to-guest VMBus hv_sock packet.
+>>
+>> Note: there may be multpile incoming hv_sock packets pending in the
+> 
+> s/multpile/multiple
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Will do.
+
+Thanks,
+Xuewei
+
+>> VMBus channel's ringbuffer, but so far there is not a VMBus API that
+>> allows us to know all the readable bytes in total without reading and
+>> caching the payload of the multiple packets, so let's just return the
+>> readable bytes of the next single packet. In the future, we'll either
+>> add a VMBus API that allows us to know the total readable bytes without
+>> touching the data in the ringbuffer, or the hv_sock driver needs to
+>> understand the VMBus packet format and parse the packets directly.
+>>
+>> Signed-off-by: Dexuan Cui <decui@microsoft.com>
+>> ---
+>> net/vmw_vsock/hyperv_transport.c | 17 ++++++++++++++---
+>> 1 file changed, 14 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+>> index 31342ab502b4fc35feb812d2c94e0e35ded73771..432fcbbd14d4f44bd2550be8376e42ce65122758 100644
+>> --- a/net/vmw_vsock/hyperv_transport.c
+>> +++ b/net/vmw_vsock/hyperv_transport.c
+>> @@ -694,15 +694,26 @@ static ssize_t hvs_stream_enqueue(struct vsock_sock *vsk, struct msghdr *msg,
+>> static s64 hvs_stream_has_data(struct vsock_sock *vsk)
+>> {
+>>     struct hvsock *hvs = vsk->trans;
+>> +    bool need_refill;
+>>     s64 ret;
+>>
+>>     if (hvs->recv_data_len > 0)
+>> -        return 1;
+>> +        return hvs->recv_data_len;
+>>
+>>     switch (hvs_channel_readable_payload(hvs->chan)) {
+>>     case 1:
+>> -        ret = 1;
+>> -        break;
+>> +        need_refill = !hvs->recv_desc;
+>> +        if (!need_refill)
+>> +            return -EIO;
+>> +
+>> +        hvs->recv_desc = hv_pkt_iter_first(hvs->chan);
+>> +        if (!hvs->recv_desc)
+>> +            return -ENOBUFS;
+>> +
+>> +        ret = hvs_update_recv_data(hvs);
+>> +        if (ret)
+>> +            return ret;
+>> +        return hvs->recv_data_len;
+>>     case 0:
+>>         vsk->peer_shutdown |= SEND_SHUTDOWN;
+>>         ret = 0;
+>>
+>> -- 
+>> 2.34.1
+>>
+
