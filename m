@@ -1,56 +1,56 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342F429ACED;
-	Tue,  8 Jul 2025 07:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E133438385;
+	Tue,  8 Jul 2025 07:54:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751961012; cv=none; b=axRw49IAdNUu5SkHqT9khBk2XI4gRuBmioH4/UalTzZk1L4kx9ZU0vW0Ql7q5jh/zzsmRFd+pLw1s0X/mtDZxnMlU3djMyBuR4JtCgQlzf3OOS8zBRtLCpJWtCl/3d75ZNpba9XTRzRM3JOwWHi/xMCmkq+v5XKB1nsdqLqKhaY=
+	t=1751961278; cv=none; b=LyFef7BqZexB3M4pN2xqKAPc90SjI7DS8+jsDskebV/tU3Ww1KTJAj73wLUpAOWyd6DBqxkLqV5IBc7AGGPK2IMh94mhCI07OD0WcE8GQBtkFNpnx/JNnonqbvn8HUZvsKvxh4Jb8NLI2MJT1sT/EAlviST6GAY8FxOfxgzNRTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751961012; c=relaxed/simple;
-	bh=HnGdA9rmUNMeqhHzuc3oI+jOUf+2CmsmtVhKZAqAw9U=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=j1zBuAS9BDpTHgg5X+7kLDqwX8cSBcjpgPVP+WDfum2bM1ge3u17zAdR/nTysPLS8o8r36tn7TkxoTUUrAQda0VM9sbKKNi6O+pQKZIqttIZ0ZNjz5CSxpewIcJ6lFHhEyCg6uzd42s/sFZKmBnh7oqyKarBmNpa4sw8Ovzo5cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mmKOdejG; arc=none smtp.client-ip=209.85.208.170
+	s=arc-20240116; t=1751961278; c=relaxed/simple;
+	bh=LcjjroJv6jUPN317HmzJPvVEqfeQXMCiRBvZixvv4rM=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Sq5FF1iepxz+KGCO+ob5qcQ0nVWcCnGynWAEOTrnoFEW50dVjxN+sBEFqY1fZEuf2pJzEsfxpf2HpPejQKDT48emebt9rsCo5GJjVdLj/d35d6ni2uuEFHcvmhmHe4ub96dONQKejLz0PBzMlDL/8uUWcio5jjVSj68KuouaU8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZF84yCMY; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mmKOdejG"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-32f144d0db8so22250021fa.0;
-        Tue, 08 Jul 2025 00:50:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZF84yCMY"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-32e14cf205cso32777891fa.1;
+        Tue, 08 Jul 2025 00:54:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751961009; x=1752565809; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751961275; x=1752566075; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=HnGdA9rmUNMeqhHzuc3oI+jOUf+2CmsmtVhKZAqAw9U=;
-        b=mmKOdejGXhJBjyM6ohwswnRyijqH/BT+P9Jo4JWe4fkZLkxWatJvMtv17H2LPQdHJ8
-         g3qVIrnNX8AYZoI852tdPr3DQ7Mkd1/Yym1iLX+8OEGPWlRZlVY+47d3XXpxDHFm2zkF
-         DMHXQytQSvfkUJSHEBAU+MmX/hnrt6hLoqEz+5eJeq35UwTu0Kt1lTf0iXKkblXUmAKD
-         q3C/qugkRw+YggwSBUNqaHS5Pq4Ulobhox/TCAnWOGpRiKYB6Ng62eTZv+INYAJfCHpr
-         EwH9xjKycbNO5w7B5kZ8jqmNt37hT9LQLTazp4irxKcCBZLm+SY9qbwV+v5YpgPMFm38
-         iNbw==
+        bh=LcjjroJv6jUPN317HmzJPvVEqfeQXMCiRBvZixvv4rM=;
+        b=ZF84yCMYvWCNQOzh8Vt0GWhPTlQRHU21D/M7QOHa14rgukAv9dgJm+LKc5gXwy1jwP
+         xZk1OK5gwYqROjRrxaOFA4iNTadcF/LkPn74SvcM2mkphZDWKHKxEiW25zQH3gxRnxi4
+         Zzzi220BcEwPGOVO9ee+js+QeDrPmSyvGA1atOikj+QGds6BiZ4m4RfXErWaxbfVJ9ZO
+         uqzt5yCPPvt47J1xa+nT9ruio96oLtDghLwQ6UTIx9QzmecPPuZWqWX6NJ+Tt0a6qWDb
+         WTVOo0OMbGOlOuHEBfNiQGywz8KelAPxL+oG4YagNR2Q8SI1wgk68s0wnDvuZ/ald7+a
+         +62w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751961009; x=1752565809;
+        d=1e100.net; s=20230601; t=1751961275; x=1752566075;
         h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=HnGdA9rmUNMeqhHzuc3oI+jOUf+2CmsmtVhKZAqAw9U=;
-        b=CoZ6Dgiaw9Jpgx8FNujljtkPb40DKlH5wWMcuVsb2AtHCvtoYWpgw7Au7hErKxeiVP
-         T43KIHZ5H5Ezo+i9Edomyop0oa00C+UukTMBxPaJiFuGfP+xjqtyW83115BJ+nKoiO3N
-         8+9YMsiH2j0y11tQR64SNtVmVb8a6OYJGU30M08894NEjBmrPWFEa6m+IQhEJ+ND6K+y
-         TINvuKWqjAjWptr/BfUz67cYcVUbyVriAVRpfxiQxM6AKjxF4duyaBN6GFaWvEosyxxZ
-         8nxZ7DSqHp/IRsFr+mdDCAiRto1oFxWSmlqWAk9nGUtzCpDMzrXt+qcZADmMvNvnEAuF
-         Aeew==
-X-Forwarded-Encrypted: i=1; AJvYcCUFc9y7PftF7cWfyH2F5EuQ0QbwzDK0Y6//SmgxZPYHFzQfjJoPZsnasbMks4YYme5D4lPE2e34@vger.kernel.org, AJvYcCXukVaiH7Dj+et1Xm9R+15gCT9MKhAWaQAq8voPbHcAGdXZEZQ5ZQpJIQu9gZv52eWujkYavt2l6m+d9g4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEfnpW8ljWz6izJg/U0UpgNInzpmw7cnLF1R6jWXqh3fuWNdaO
-	LUtCww3EpFZchEj8x+Ep9Oz7Mh2RqUyNjQAOcucpbp75Kg/y85Ku1Lgass0o2KT/Qr6kN7HdPJy
-	p++U2l+1B0GBBlD83k9t/C316oFrQMbA=
-X-Gm-Gg: ASbGncvTSrMXhGeXM5gK/lq3trZOgePq7ggVUEr7l5rbMnV7au3Ld2dnm1IUrOLSjtX
-	3ZMgchgn17ehyBgDk5wguyyhB1BjDxzE+gj/0pqgiZscMx5MxkhNwcyvpZcqC5ADg9bGnOdeHBM
-	uVmMeqCdN5XgLNTQxxrxCOEbLXkJtNcByl/qOvMVYvHuby4E3yoLZxALSLQ1IY05L0HaJZ/t9gl
-	gpX
-X-Google-Smtp-Source: AGHT+IG2Wm6AmQWCYYUqcI01Vck/UA6n8whkclDuyJ52pUQ/P8XUD+RthwIWzxq+tcVTZuysM9pJssY2Nnjffth6Uuk=
-X-Received: by 2002:a2e:bc18:0:b0:32b:7423:88b3 with SMTP id
- 38308e7fff4ca-32f39f58826mr5327771fa.5.1751961009121; Tue, 08 Jul 2025
- 00:50:09 -0700 (PDT)
+        bh=LcjjroJv6jUPN317HmzJPvVEqfeQXMCiRBvZixvv4rM=;
+        b=V/GXvKYFhWaw9VWNbkGoPRYu5tfaymFw4xrPGz3VqzwoC+APes0LVbbWAoOPZLYSW0
+         10RNeCWg93wppPxcXL0fuPujnLJTn+wGEbYctBeWUB7FSmmakK0iXse6PIwYxFPNd+4j
+         Sif0Z4oBfohkSbHYITRNOeYashxEY7OIg7clgqNq1BZbdpsGLgwH25FISGiRj1QZAo4x
+         /EZPN4OtNGKcXZS4+LMC954EolXu/jAEeXY4i+bCMcRZDZ7ImjxCR+gggLW6f8i/quCc
+         CT90QAMKwT70CMcNAFw+lNcY8yA8KHNCOWJyqvD0n2waiIeY1oMG2Kq8NyHw0sKvNEj+
+         HSGw==
+X-Forwarded-Encrypted: i=1; AJvYcCWW+lutmBYSkNEMdr17vUf/g1XEuScO8Ympp+ki+kANu0hZDEVPc3xez0+LSPGJvMOIKm6ufsa0k7NcysQ=@vger.kernel.org, AJvYcCXZnTPO09bf6ZwRa4sHEwLrU5qq3ehub8GqOYl/vONuYQ3Vr4OHbdU71uSCy1rOfy6Pgx7KFFyI@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfhtTfzqp7K2mfYC4zv1GDZ0ntnQ9t50WnW5ACT/qpBZ+AEJtz
+	AsfgprSbw1ZL/pntecmzUDYKsxkkVwyy71/jPUhMHU4kJHnBT+jjTHEVjoaFKcZRIWtVE4ofc52
+	1u95XNWV8F15/3DGduJR2Rk3bW1YHRN8=
+X-Gm-Gg: ASbGncs1d1hQ5koBWFD8EjYlayR7JtqsH/dMahsdw2el9Ar4rXXizdjs4lLSEO37VoE
+	gTA5LxhmxjgIbwKnqEA5RXNm0fU7hXIjVhQSP4rLYtDxm198rfD4JzUAV0jVn0iHUkhRTQvRikk
+	Mkp8/cC8qJ9ib4iHFoLIA2mQPGJRV5DI44E8aaZYj266YNgrYn6fwy8c9fRa5elFHWeLB9Ya9Y/
+	eHp
+X-Google-Smtp-Source: AGHT+IFf5eBlfFpolAmGJlktxY/InjcvTzbi2Xrq5uZ+pCp8vPsNCDeoGS4qGiKBx1+49FmEG4H801rd+Cno8Ka72vk=
+X-Received: by 2002:a05:651c:4093:b0:32a:8297:54e3 with SMTP id
+ 38308e7fff4ca-32e5f565509mr32071471fa.6.1751961274928; Tue, 08 Jul 2025
+ 00:54:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,13 +58,12 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 From: Luka <luka.2016.cs@gmail.com>
-Date: Tue, 8 Jul 2025 15:49:57 +0800
-X-Gm-Features: Ac12FXz8K146n5yLFjHHwH8kb3cbMN6gql5cJVJTWDEhcLqjGanIzNfGJsQTOPM
-Message-ID: <CALm_T+2NP6RguKihvZbi_W61Yutup1ZcuNZBr950TJCGj-p8WQ@mail.gmail.com>
-Subject: [Bug] soft lockup in sys_sendmmsg in Linux kernel v6.14
-To: Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@amazon.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+Date: Tue, 8 Jul 2025 15:54:22 +0800
+X-Gm-Features: Ac12FXzpe_0T1yBqD44q7eH33qC3hJW2DnJf5wQDwrUP6_f3yd8kOFQeyI2Sk9g
+Message-ID: <CALm_T+2rdmwCYLZVw=gALPDufXB5R8=pX8P2jhgYE=_0PCJJ_Q@mail.gmail.com>
+Subject: [Bug] soft lockup in neigh_timer_handler in Linux kernel v6.12
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
@@ -73,25 +72,23 @@ Dear Linux Kernel Maintainers,
 I hope this message finds you well.
 
 I am writing to report a potential vulnerability I encountered during
-testing of the Linux Kernel version v6.14.
+testing of the Linux Kernel version v6.12.
 
-Git Commit: 38fec10eb60d687e30c8c6b5420d86e8149f7557 (tag: v6.14)
+Git Commit: adc218676eef25575469234709c2d87185ca223a (tag: v6.12)
 
-Bug Location: __x64_sys_sendmmsg+0x9d/0x110 net/socket.c:2733
+Bug Location: neigh_timer_handler+0xc17/0xfe0 net/core/neighbour.c:1148
 
-Bug report: https://pastebin.com/YrfrS22B
+Bug report: https://pastebin.com/06NiBtXm
 
 Entire kernel config: https://pastebin.com/MRWGr3nv
 
 Root Cause Analysis:
 
-A soft lockup occurs during invocation of the sys_sendmmsg() syscall
-due to prolonged CPU occupation in packet transmission routines,
-likely caused by excessive memory allocation or reclaim activity in
-UDP socket send path. The issue involves __ip_append_data() and
-udp_sendmsg() functions exhausting CPU cycles within the softirq
-context, without yielding, which starves other kernel tasks and
-triggers a watchdog timeout.
+A soft lockup occurs in the neighbor subsystem due to prolonged
+execution within neigh_timer_handler(), where repeated neighbor entry
+invalidation and associated routing operations (e.g.,
+ipv4_link_failure() and arp_error_report()) lead to excessive CPU
+occupation without yielding, triggering the kernel watchdog.
 
 At present, I have not yet obtained a minimal reproducer for this
 issue. However, I am actively working on reproducing it, and I will
