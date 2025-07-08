@@ -1,140 +1,86 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023FE26656F;
-	Tue,  8 Jul 2025 09:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6C8266B67;
+	Tue,  8 Jul 2025 09:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751968204; cv=none; b=t0uTPgv6E+Wy77e4thCaBA9ar14TIv/azK3l/87HGoiSA/Sx0C0U/MMojzLUrZta0q4VGjXZmICvje1Ps+4rzwdYprPBRfOIbrRDN8yhjZfZywF9OAe9l7i6ciCwW3jXqexioC7PnPg/2u0nyAF49q5AY2CIykq4SzL9EhPegZQ=
+	t=1751968259; cv=none; b=WUMEBGxmZwKWXlQwYLZcM/1ASfubVo3XwyER1ExBBZPTN5SLUKItJvBy2qDUyV2BHCCkaWQ3VvhXa37XyXZeGhkExfiTQoWHSm0XAHdtQPY9E3UVnhOHeEOOFS8pL9fUtmOw9eg4G1ExOEhRyNadiUmLKbt7LZDN4WuuUzsCIcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751968204; c=relaxed/simple;
-	bh=a0Z9PfKfII98R7YGk4/s8F9FpfkBpu8y+L25NxNZzG8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l7m4IN7FxVmHoH7756zMf0VWgN0R1bOV3rwx8wmbVHJhEk+i5zI/s7ZDVetD+5HGccon8RuWggfhPOwLWfRTlYIj3whFsAaJ/8/KjjFOyOJMmaDQN7JtAj3CNM0f/Ln93pu+OKLsUQPV5qni6hUv3GNgwzUrM489Axf+CYGuJYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N7zAcvCh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BkSmsZcx; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N7zAcvCh";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BkSmsZcx"
-Date: Tue, 8 Jul 2025 11:49:59 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1751968201;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VuW917uep+A/nkbFezjMxXDYk2Q/n07Yq/IsuY9f8ek=;
-	b=N7zAcvChEgp7fViiM5aiPukmkcHV5BLHrqg8ggWSy4AHDecucujIU6irH3DVGRCn7ZKQ0i
-	U6UHmKcGayOHCZ30JXPNEhPh8+38DUv/QsSb2hRFta2Tp7+AjGoqIUDbc4DdwEuCzXqARr
-	cLiuFC7Q5yrzJyseEk5zT95Fjm5pYABf/f8CGCi7shG3eQlKWWVNeOBAaL60WJcEaAqP5+
-	xwmICliLklNi0GUuwhit9+WAiSY26Z46UxmECZlt9wkyWIWHcin9aRW1GxV9T+SI3Vc/EG
-	xaAdOnGx2UQ2f2nl6hjkCf0b5zRyUhpf/iQrsKiD/GV86b0k+mhhivMSEqBHDQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1751968201;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VuW917uep+A/nkbFezjMxXDYk2Q/n07Yq/IsuY9f8ek=;
-	b=BkSmsZcx6xnrvhUEP8tv10ymf9hwpIlnzDWRsxk0HNdl2rg6tsy8n1/V4Jn8nzcqeueRBW
-	FPhoCBixz9SBDeBg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: linux-ppp@vger.kernel.org, netdev@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	"David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Gao Feng <gfree.wind@vip.163.com>,
-	Guillaume Nault <g.nault@alphalink.fr>
-Subject: Re: [PATCH net-next] ppp: Replace per-CPU recursion counter with
- lock-owner field
-Message-ID: <20250708094959.zByWzNMQ@linutronix.de>
-References: <20250627105013.Qtv54bEk@linutronix.de>
- <9bffa021-2f33-4246-a8d4-cce0affe9efe@redhat.com>
- <20250704154806.twigjkbU@linutronix.de>
- <1eb149e6-68e7-4932-8090-34ee568c5832@redhat.com>
+	s=arc-20240116; t=1751968259; c=relaxed/simple;
+	bh=2eu5s8VoKRnSj6Fq1XRT5mEFWqsss2QcY2xiIuHGw44=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=nxbHRJPNLnOTpuy+xh7hI/IfOercRZR5eFGNCF1O4DV2vcnSvU1AX37nyvZIY8EoeldMpWvbwvVyLfQTZAZZBZE+vO5DchsA7iKSQrr3QMTJSCadlTjIQ2FiZXT9amv/CLMLNT8YfWLVgYjEz9YyQtALqwMbx0mtvF4+Ti+u3Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bbwlt6LWlz2FbNW;
+	Tue,  8 Jul 2025 17:28:58 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 680571A016C;
+	Tue,  8 Jul 2025 17:30:52 +0800 (CST)
+Received: from [10.67.120.192] (10.67.120.192) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 8 Jul 2025 17:30:51 +0800
+Message-ID: <f12322f7-d873-4c2d-b614-3fb40cf9ab4f@huawei.com>
+Date: Tue, 8 Jul 2025 17:30:51 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1eb149e6-68e7-4932-8090-34ee568c5832@redhat.com>
+User-Agent: Mozilla Thunderbird
+CC: <shaojijie@huawei.com>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
+	<shenjian15@huawei.com>, <liuyonglong@huawei.com>, <chenhao418@huawei.com>,
+	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
+	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net 1/4] net: hns3: fix concurrent setting vlan filter
+ issue
+To: Simon Horman <horms@kernel.org>
+References: <20250702130901.2879031-1-shaojijie@huawei.com>
+ <20250702130901.2879031-2-shaojijie@huawei.com>
+ <20250704155216.GF41770@horms.kernel.org>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <20250704155216.GF41770@horms.kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-On 2025-07-08 10:28:24 [+0200], Paolo Abeni wrote:
-> Hi,
-Hi,
 
-> I'm sorry for the latency, OoO here in between.
+on 2025/7/4 23:52, Simon Horman wrote:
+> On Wed, Jul 02, 2025 at 09:08:58PM +0800, Jijie Shao wrote:
+>> From: Jian Shen <shenjian15@huawei.com>
+>>
+>> The vport->req_vlan_fltr_en may be changed concurrently by function
+>> hclge_sync_vlan_fltr_state() called in periodic work task and
+>> function hclge_enable_vport_vlan_filter() called by user configuration.
+>> It may cause the user configuration inoperative. Fixes it by protect
+>> the vport->req_vlan_fltr by vport_lock.
+>>
+>> Fixes: fa6a262a2550 ("net: hns3: add support for VF modify VLAN filter state")
+> I think the commit sited above is for the VF driver, whereas this
+> patch addresses PF driver code. I think the following is the
+> correct tag:
 
-All good. I appreciate someone looking at it.
+Yeah, I will fix it in v2.
 
-> On 7/4/25 5:48 PM, Sebastian Andrzej Siewior wrote:
-> > On 2025-07-03 09:55:21 [+0200], Paolo Abeni wrote:
-> >> Is there any special reason to not use local_lock here? I find this
-> >> patch quite hard to read and follow, as opposed to the local_lock usage
-> >> pattern. Also the fact that the code change does not affect RT enabled
-> >> build only is IMHO a negative thing.
-> > 
-> > Adding a local_lock_t to "protect" the counter isn't that simple. I
-> > still have to check for the owner of the lock before the lock is
-> > acquired to avoid recursion on that local_lock_t. I need to acquire the
-> > lock before checking the counter because another task might have
-> > incremented the counter (so acquiring the lock would not deadlock). This
-> > is similar to the recursion detection in openvswitch. That means I would
-> > need to add the local_lock_t and an owner field next to the recursion
-> > counter.
-> 
-> IMHO using a similar approach to something already implemented is a
-> plus, and the OVS code did not look that scaring. Also it had the IMHO
-> significant advantage of keeping the changes constrained to the RT build.
+Thanks,
+Jijie Shao
 
-I intended to improve the code and making it more understandable of what
-happens here and why. Additionally it would also fit with RT and not
-just make this change to fit with RT.
-
-> > I've been looking at the counter and how it is used and it did not look
-> > right. The recursion, it should detect, was described in commit
-> > 55454a565836e ("ppp: avoid dealock on recursive xmit"). There are two
-> > locks that can be acquired due to recursion and that one counter is
-> > supposed to catch both cases based on current code flow.
-> > 
-> > It is also not obvious why ppp_channel_push() makes the difference
-> > depending on pch->ppp while ->start_xmit callback is invoked based on
-> > pch->chan.
-> > It looked more natural to avoid the per-CPU usage and detect the
-> > recursion based on the lock that might be acquired recursively. I hope
-> > this makes it easier to understand what is going on here.
-> 
-> Actually I'm a bit lost. According to 55454a565836e a single recursion
-> check in ppp_xmit_process() should be enough, and I think that keeping
-> the complexity constraint there be better.
-
-Okay. I didn't think that this complicated the code flow.
-
-> > While looking through the code I wasn't sure if
-> > ppp_channel_bridge_input() requires the same kind of check for recursion
-> > but adding it based on the lock, that is about to be acquired, would be
-> > easier.
-> 
-> (still lost in PPP, but) The xmit -> input path transition should have
-> already break the recursion (via the backlog). Recursion check in tx
-> should be sufficient.
-> 
-> All in all I think it would be safer the local lock based approach.
-
-Okay. I disagree but let me do as you suggested.
-
-Thank you.
-
-> Thanks,
-> 
-> Paolo
-
-Sebastian
+>
+> Fixes: 2ba306627f59 ("net: hns3: add support for modify VLAN filter state")
+>
+>> Signed-off-by: Jian Shen <shenjian15@huawei.com>
+>> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+> Otherwise, this looks good to me.
+>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+>
+>
+>
