@@ -1,105 +1,115 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320008F5E;
-	Tue,  8 Jul 2025 16:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082102DC34C;
+	Tue,  8 Jul 2025 17:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993539; cv=none; b=ONfpxd+mde+PtRz7tKLEywvZsk8YPrq1aTjbXXxMlAJ6ikb9PM8rTXuNuTCFmFVeZRPNHB216woeli6J8lM6ZVzyB2p6QXZRczzDlwmO732rInlc8EIO6T56cGK8ye+WhX3keGaDIUDivmmoCggh+KZbGYxU0i249EIBCdW+c7U=
+	t=1751994025; cv=none; b=CfBzMlRvUgXHUTugTBXSszQB5HJAicftKktNNJrN9C4Yfgv+4P3zsnHkAl+1L2+tEG6R/zUJrnd3pBmeR7d+dRBliw0dzhXirO5rWIf6g1hXYQJTkWRK+SKvkCxqJm6k3QFZm0BruJMYeSs68EdrAvhy7aygShR2/qiPyherhoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993539; c=relaxed/simple;
-	bh=x0s4vKXtQGcRzZcSyjECLh5CtsGE03bks9gI82RuAII=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=H45L58jq9RNi6tJMsVmTu+op0MVIUcLaMuHzzRqogB86tReuLAEwpXcvH3c17onVctbOygSvQUTE0v1hs9hHNArtoAna4uu07Y3AS7BLh7vTgvmXqkGhXDi9ducPLyLLHuOLKEMmq+qWDH69iNIPyJi1kp0TB+woRb5uz/DuOUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Yl9rFPHB; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1751994025; c=relaxed/simple;
+	bh=kyBGzQCcu1QGgb55QiBh3v3yUyjOk4xMqWCcW6viA0s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uKTMjf6KW3hgbwApdsWcI5dOz7EVUd9YxNTlFg1Bvl82RkyZ68c0sGGGH5jvstR1GLHbYQsk14Tw5qv6OdxnPm70ekTGW0/p+jf6Ah5JlChAMr3RSwVgpYIinMS7wx7CjpFnOECzV+noQF/65YH/pYAjx26zwuuOQa1F9eqZ35s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sm+6uEQZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Yl9rFPHB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id; bh=qWsk8ZwHDgxqYRw
-	HFFMeZK+uhE/KHO9DpLNrBBEM2ik=; b=Yl9rFPHB+UQOpXdume2OML+tQvwGWaA
-	WxqYuy2HVfemmvq97tBl0ud9qt7mfqnwyWoxUALB2pP8142yvWtnwG/gHwRWhQaa
-	WdX84sR4eO8l5KUOyXc2hmYwCiOpgKeXNXC2zdKuGgH+JHG/eJKkIPPf3+VAvS5i
-	rmok7Iri9uMM=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wC3YqRnTG1oypwxDg--.1262S2;
-	Wed, 09 Jul 2025 00:51:01 +0800 (CST)
-From: Lizhe <sensor1010@163.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	rmk+kernel@armlinux.org.uk,
-	vladimir.oltean@nxp.com,
-	maxime.chevallier@bootlin.com,
-	sensor1010@163.com
-Cc: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: stmmac: Support gpio high-level reset for devices requiring it
-Date: Tue,  8 Jul 2025 09:50:44 -0700
-Message-Id: <20250708165044.3923-1-sensor1010@163.com>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:_____wC3YqRnTG1oypwxDg--.1262S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WF15Aw17Zr48JF1kKr1kuFg_yoW8Ar48p3
-	yrua4UZr97Jr13tw4kXw48Zr95Ka93tr40k3Wfu3yS9rWDWFZIqr1a9rW3XFy3KrZ5uFya
-	vw1UCF13Zan0yaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piL0ePUUUUU=
-X-CM-SenderInfo: 5vhq20jurqiii6rwjhhfrp/1tbiKBKEq2htS5kM0AAAse
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sm+6uEQZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573A8C4CEF0;
+	Tue,  8 Jul 2025 17:00:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1751994024;
+	bh=kyBGzQCcu1QGgb55QiBh3v3yUyjOk4xMqWCcW6viA0s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Sm+6uEQZgjbUwG3F/SS2w1VoZqVGzSjF/QhaujlDVvzsEKFI4dtP3gntjGt3TJrgI
+	 LQon9Qp+0rWz/939J10G/xMUZkXMfbUCOXCmf5E3IQb4wdg6RZioydb0x3cXibkLVy
+	 KFbxXf15mG61BsAHpRfWJ6OvWb4JvWwP8kJbgi2A=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Bryan Tan <bryan-bt.tan@broadcom.com>,
+	Vishnu Dasa <vishnu.dasa@broadcom.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	stable <stable@kernel.org>,
+	HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+Subject: [PATCH 5.15 098/160] vsock/vmci: Clear the vmci transport packet properly when initializing it
+Date: Tue,  8 Jul 2025 18:22:15 +0200
+Message-ID: <20250708162234.216370055@linuxfoundation.org>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
+References: <20250708162231.503362020@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-some devices only reset when the GPIO is at a high level, but the
-current function lacks support for such devices. add high-level
-reset functionality to the function to support devices that require
-high-level triggering for reset
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
-Signed-off-by: Lizhe <sensor1010@163.com>
+------------------
+
+From: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+
+commit 223e2288f4b8c262a864e2c03964ffac91744cd5 upstream.
+
+In vmci_transport_packet_init memset the vmci_transport_packet before
+populating the fields to avoid any uninitialised data being left in the
+structure.
+
+Cc: Bryan Tan <bryan-bt.tan@broadcom.com>
+Cc: Vishnu Dasa <vishnu.dasa@broadcom.com>
+Cc: Broadcom internal kernel review list
+Cc: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: virtualization@lists.linux.dev
+Cc: netdev@vger.kernel.org
+Cc: stable <stable@kernel.org>
+Signed-off-by: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20250701122254.2397440-1-gregkh@linuxfoundation.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/vmw_vsock/vmci_transport.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-index 836f2848dfeb..cb989e6d7eac 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-@@ -458,6 +458,7 @@ int stmmac_mdio_reset(struct mii_bus *bus)
- 
- #ifdef CONFIG_OF
- 	if (priv->device->of_node) {
-+		int active_low = 0;
- 		struct gpio_desc *reset_gpio;
- 		u32 delays[3] = { 0, 0, 0 };
- 
-@@ -467,6 +468,9 @@ int stmmac_mdio_reset(struct mii_bus *bus)
- 		if (IS_ERR(reset_gpio))
- 			return PTR_ERR(reset_gpio);
- 
-+		if (reset_gpio)
-+			active_low = gpiod_is_active_low(reset_gpio);
+--- a/net/vmw_vsock/vmci_transport.c
++++ b/net/vmw_vsock/vmci_transport.c
+@@ -119,6 +119,8 @@ vmci_transport_packet_init(struct vmci_t
+ 			   u16 proto,
+ 			   struct vmci_handle handle)
+ {
++	memset(pkt, 0, sizeof(*pkt));
 +
- 		device_property_read_u32_array(priv->device,
- 					       "snps,reset-delays-us",
- 					       delays, ARRAY_SIZE(delays));
-@@ -474,11 +478,11 @@ int stmmac_mdio_reset(struct mii_bus *bus)
- 		if (delays[0])
- 			msleep(DIV_ROUND_UP(delays[0], 1000));
+ 	/* We register the stream control handler as an any cid handle so we
+ 	 * must always send from a source address of VMADDR_CID_ANY
+ 	 */
+@@ -131,8 +133,6 @@ vmci_transport_packet_init(struct vmci_t
+ 	pkt->type = type;
+ 	pkt->src_port = src->svm_port;
+ 	pkt->dst_port = dst->svm_port;
+-	memset(&pkt->proto, 0, sizeof(pkt->proto));
+-	memset(&pkt->_reserved2, 0, sizeof(pkt->_reserved2));
  
--		gpiod_set_value_cansleep(reset_gpio, 1);
-+		gpiod_set_value_cansleep(reset_gpio, active_low ? 1 : 0);
- 		if (delays[1])
- 			msleep(DIV_ROUND_UP(delays[1], 1000));
- 
--		gpiod_set_value_cansleep(reset_gpio, 0);
-+		gpiod_set_value_cansleep(reset_gpio, active_low ? 0 : 1);
- 		if (delays[2])
- 			msleep(DIV_ROUND_UP(delays[2], 1000));
- 	}
--- 
-2.17.1
+ 	switch (pkt->type) {
+ 	case VMCI_TRANSPORT_PACKET_TYPE_INVALID:
+
 
