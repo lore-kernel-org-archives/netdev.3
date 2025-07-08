@@ -1,76 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE442E7169
-	for <netdev@vger.kernel.org>; Tue,  8 Jul 2025 16:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AA62E718D;
+	Tue,  8 Jul 2025 16:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991001; cv=none; b=cNQbNkdXuO3z66hbWzwqXr/uAIP8J3Rk/OrHi0H8/qyzw7QdLbhIADjpKcuF8DafliM4VylYzKGIgIfXfp36BozX4FxgXgGql+C4HteDlwEwW7/4e+AaEYVMSFM/vWO0rFPORnF1+SQoL3AsGR8F3GupHvCdj0u9jVIMftqrIEs=
+	t=1751991002; cv=none; b=pYAMC+we1Y2sjr2RZ7J53BtN5pwRumWa3mIN2qPVRBPMOif9zQ3I3MeNzBkkoBlzi07ultZ61fFx2E+W5geVe/Dcp64Kap6czBwPXj+f3W3JAZo9JchCp9QQ/nAwPPLcGgSbLmhpDQaaTO3RKr7/W+x9RPmGUw2R0DBCxa+pJZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991001; c=relaxed/simple;
-	bh=bDhonFgpdihbC4A+dmq6P/KdH0SHRMNa1pih4wOKYG8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=LXzpxu/IOAlUDa967c8k0Ul3PN/2Y6S1PdBlqECMvlztZ5oD0ukpVj9BpFDgZgtQaPLxcY9kv2Vg/J+yeP51Hgk/WcPmrsBhaBe49/6XvdUlJFir2ZuzIKiikUaQwsreff7ITgKL1RKw/Z8JUJpMvL0L1klFMoTL8ntglUZsmqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uYT7nDvl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751991002; c=relaxed/simple;
+	bh=Vo8fKYBnprjiGYOH/VOVRMxkPm6Y8f4SzUdQeB2EkvQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VJWCA7g0iARzZQas3EMYnrkjT8XFVX2t4qTgTBJtff8fYj4B5Mi7DvkjDkoja/4z07Qrx0rJm8afyHUutE37Zg5nTUb6crAHxiGbfUORNqcfucnGQXLW7NZJlLMV3KvOVWID4z1LrZKrUKbEBNHNqfJ9blph2WNPRqyLxFvS8fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RkkJTDJc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uYT7nDvl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19211C4CEED;
-	Tue,  8 Jul 2025 16:10:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RkkJTDJc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86690C4CEEF;
+	Tue,  8 Jul 2025 16:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1751991001;
-	bh=bDhonFgpdihbC4A+dmq6P/KdH0SHRMNa1pih4wOKYG8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=uYT7nDvlSTVhYUhiRnf/5mVqWMZTuikr3R8lX1ppsFvBFsVYBUAR68AQTDGX+9GAp
-	 c+M48PFPMR9dLnfZDRfJ7kN9UtqOO2KEu/bRg6wN5kanLAT7Msl+s8g+YricH+3yCV
-	 8lq3/5MEWhq/eg0ITDD1eGk4nO+EJEFuPS6vsKBvK3C+nQledWOmC+fxPD5Z7rb/Z+
-	 Y4rOStUyov2UkRVma6HxyTRWlsSpzscRdEyp7xHuI3LdLrLpVQ6opDcmtWJVu/TXx7
-	 30JBDlkWDUxfq4sZKka9e165loL64/nreO9TZiZyW3HxSHsGhNYo9NC914RTGBv5go
-	 dEUTCy6tpzfPw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33C37380DBEE;
-	Tue,  8 Jul 2025 16:10:25 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	bh=Vo8fKYBnprjiGYOH/VOVRMxkPm6Y8f4SzUdQeB2EkvQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RkkJTDJcoQWJRX4CtG/Y5eIzaZrwjy+ME+DhcB/IdLAp/Zzij3x06XuRDm4RHHK8Q
+	 A+ZwodpgOWg5DHRJHYZ523KyUEygCcYwsDYunVlxcRsKa/KzhAIc7yW4AfMX8ceAt+
+	 e7MPYC9Y7eaxEqJOdnqcQkXSW+est2B7m3DtFUvi3JA0c6X8jyglTh0Xgu9tiP4RIx
+	 qXz8879OEWmFFouCA2bJjOkCLBRGleCc4VuDMLc2euvcqgg7s8o3NhhrG9CenJMvWt
+	 0YaMp8d+IuvC4zPN4xlrOJyZ0gosL1KVK38ZJ3dHnOCdJR+o+l3rjlcQ+tf0Fh73Z5
+	 O8luVhEZMEUJg==
+Date: Tue, 8 Jul 2025 17:09:57 +0100
+From: Simon Horman <horms@kernel.org>
+To: ALOK TIWARI <alok.a.tiwari@oracle.com>
+Cc: sgoutham@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	darren.kenny@oracle.com, linux-kernel@vger.kernel.org
+Subject: Re: [External] : Re: [PATCH net] net: thunderx: Fix
+ format-truncation warning in bgx_acpi_match_id()
+Message-ID: <20250708160957.GQ452973@horms.kernel.org>
+References: <20250706195145.1369958-1-alok.a.tiwari@oracle.com>
+ <20250707191644.GC452973@horms.kernel.org>
+ <96f8e9d7-6e4c-4f7a-bb66-a3b43e30182a@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: phy: declare package-related struct members
- only if CONFIG_PHY_PACKAGE is enabled
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175199102400.4122127.11571289435393980799.git-patchwork-notify@kernel.org>
-Date: Tue, 08 Jul 2025 16:10:24 +0000
-References: <f0daefa4-406a-4a06-a4f0-7e31309f82bc@gmail.com>
-In-Reply-To: <f0daefa4-406a-4a06-a4f0-7e31309f82bc@gmail.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: andrew@lunn.ch, linux@armlinux.org.uk, pabeni@redhat.com,
- edumazet@google.com, davem@davemloft.net, kuba@kernel.org,
- netdev@vger.kernel.org
+In-Reply-To: <96f8e9d7-6e4c-4f7a-bb66-a3b43e30182a@oracle.com>
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 3 Jul 2025 07:55:52 +0200 you wrote:
-> Now that we have an own config symbol for the PHY package module,
-> we can use it to reduce size of these structs if it isn't enabled.
+On Tue, Jul 08, 2025 at 08:34:39AM +0530, ALOK TIWARI wrote:
 > 
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> ---
->  include/linux/phy.h | 4 ++++
->  1 file changed, 4 insertions(+)
+> 
+> On 7/8/2025 12:46 AM, Simon Horman wrote:
+> > >    drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:23: note:
+> > > directive argument in the range [0, 255]
+> > >      snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+> > >                           ^~~~~~~
+> > >    drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:2: note:
+> > > ‘snprintf’ output between 5 and 7 bytes into a destination of size 5
+> > >      snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+> > > 
+> > > compiler warning due to insufficient snprintf buffer size.
+> > > 
+> > > Signed-off-by: Alok Tiwari<alok.a.tiwari@oracle.com>
+> > Thanks Alok,
+> > 
+> > I agree this is a good change.
+> > 
+> > However, by my reading the range of values of bgx->bgx_id is 0 - 8
+> > because of the application of BGX_ID_MASK which restricts the
+> > value to 3 bits.
+> > 
+> > If so, I don't think this is a bug and it should be targeted at net-next.
+> > With a description of why it is not a bug.
+> > 
+> > Conversely, you think it is a bug, then I think an explanation as to why
+> > would be nice to add to the commit description.  And A fixes tag is needed.
+> 
+> Thanks Simon,
+> It is compile warning, We can target it for net-next.
+> 
+> I will resend it with [PATCH net-next]
 
-Here is the summary with links:
-  - [net-next] net: phy: declare package-related struct members only if CONFIG_PHY_PACKAGE is enabled
-    https://git.kernel.org/netdev/net-next/c/c523058713ab
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks, good plan.
