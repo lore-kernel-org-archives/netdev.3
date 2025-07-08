@@ -1,89 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D181C6FF6
-	for <netdev@vger.kernel.org>; Tue,  8 Jul 2025 13:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392AE2676DE;
+	Tue,  8 Jul 2025 13:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751980749; cv=none; b=cgscBMtYJHbduVB8Ne0G3PqCyuBF7hdT+5Om1AtpShoe9j6KtGjj1ldpxs133QzhKWAFNrnGi5b284eEn/sNyrbKPn87EP0R46Z9xuDMsGM5OUjLpD4bWPTdGuNvYdScuU63kISp0U32VuIXkWfG74NMk5rUPv9bqEEeHCWvYe0=
+	t=1751980783; cv=none; b=XXAIK658q7au83Sxi1Tk0Ys0zOxh/eDFiAJF1NbOiZ2jbkKPUEX77mPHJhg/DS4ELc2xdJjpV/XQkUmJ1skNSJj6aJpg7y+2b81gF9VRWfTp56EXwsx4IGHOz4GWd4/1Mpz7Kuu10nKRVctc9ddf3PR37f7bfo5XifWtDI+S8x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751980749; c=relaxed/simple;
-	bh=H/7z0zl0K4yEmE1YViXotFIu2wusYnpEy/Xu/89tMoM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=neKxQeETt9H4saNUUOQf3haAbWwOUuA/w19QJg3WACTnYnxuni/0r1mqEkmqxZocXmdaxmQREbDGvYv5ZK7wclmETdxBMzqgg92Z8IzTXz09/q6EZljd1aqGFi4Pi/05od0hZgRzbbIJ9jCRTqCsZVcRt9hM3TWUObX+esW5p6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDnboWJh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751980783; c=relaxed/simple;
+	bh=F8c977p8EYNxBipgtTYkpJqxcsMaCXY02NkkHhb48wA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=juAxWQF9ptyXymGZdgy1AXbT/0l9IGKqk//WZfRNpRxH0q4yo2zCk2ExC5ujWLGGkJJMMS93ecF5RO3COZQtGI6HZ9ficNpbfwyFAZhYt6URBSbey2UKQQaQLpKR4jpqmmRXpxoxvfx4l5Hi1R51L6xe8kRdnjMV/m5pxc9hRcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YwoB7yKW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDnboWJh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8A5C4CEEF;
-	Tue,  8 Jul 2025 13:19:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YwoB7yKW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2EFC4CEEF;
+	Tue,  8 Jul 2025 13:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751980749;
-	bh=H/7z0zl0K4yEmE1YViXotFIu2wusYnpEy/Xu/89tMoM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RDnboWJhf874hi+RCgkumJnz/u0qZEnG7bqQHA5SNHA+q4OgggTxgp5CUSutKqOnL
-	 QIihnFCXooo2umRO8BR9+fe2MGPBfH0PBEtMroa+7okdaOlBcqsREQ0l8UoSxYIVYr
-	 cxCJyyTuFVF96nJF/eBXvRxFr4kCRzOV/Z1jx/6M/0CPBmJkOWE1u2rlcTFPtFLnBm
-	 YkK1BqIaCZ8mbpCgTDs3PfpTPD577KWFUgkxqtKiDsI8PuiFGu0sEvlIrG3lG3KTRG
-	 DXqfheFUMnPl1FX1zI+9PfmMTdkOKxA2XJG1TohWJU9BQVMKF0PLScdJioF94JXDeA
-	 yRN+yIaE7zoyQ==
-Date: Tue, 8 Jul 2025 14:19:05 +0100
-From: Simon Horman <horms@kernel.org>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, will@willsroot.io,
-	stephen@networkplumber.org
-Subject: Re: [Patch v2 net 2/2] selftests/tc-testing: Add a nested netem
- duplicate test
-Message-ID: <20250708131905.GK452973@horms.kernel.org>
-References: <20250707195015.823492-1-xiyou.wangcong@gmail.com>
- <20250707195015.823492-3-xiyou.wangcong@gmail.com>
+	s=k20201202; t=1751980783;
+	bh=F8c977p8EYNxBipgtTYkpJqxcsMaCXY02NkkHhb48wA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=YwoB7yKW3QUO2FzQanytUBu9kfvxqaoId32M/Czoy8Wwki7HmPmAasBG/Buiy/bpD
+	 eLxpNsYnEQ4PuwQLTmOk74arqEan2BDaEjFxlNjD5aaiIcz7Z/kSoL2AQROnIilFt6
+	 5zFt3g6NXuFhKLcN12tnBa1xiKx84lQYU/9VFyf/J60xJWni22J8OLaYtgs1kndzlG
+	 X/0pbYbhoCLNL+Aeir72i0sUETwEpn59usTC1sRzBL+W2z03k23MZfIQqCtOp7AUJX
+	 1TjEHqdUjZEaDb7aedsngeFhiiJfdf+QbhVCVto+4UPjRjMlv5H6x49hI2qaVhQ6Xp
+	 cRrD4nDHrrNmQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33A99380DBEE;
+	Tue,  8 Jul 2025 13:20:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250707195015.823492-3-xiyou.wangcong@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: replace ADDRLABEL with dynamic debug
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175198080601.4063193.10235961533622301288.git-patchwork-notify@kernel.org>
+Date: Tue, 08 Jul 2025 13:20:06 +0000
+References: <20250702104417.1526138-1-wangliang74@huawei.com>
+In-Reply-To: <20250702104417.1526138-1-wangliang74@huawei.com>
+To: Wang Liang <wangliang74@huawei.com>
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, yuehaibing@huawei.com,
+ zhangchangzhong@huawei.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Mon, Jul 07, 2025 at 12:50:15PM -0700, Cong Wang wrote:
-> Integrate the reproducer from William into tc-testing and use scapy
-> to generate packets for testing:
-> 
->  # ./tdc.py -e 1676
->   -- ns/SubPlugin.__init__
->   -- scapy/SubPlugin.__init__
->  Test 1676: NETEM nested duplicate 100%
->  [ 1154.071135] v0p0id1676: entered promiscuous mode
->  [ 1154.101066] virtio_net virtio0 enp1s0: entered promiscuous mode
->  [ 1154.146301] virtio_net virtio0 enp1s0: left promiscuous mode
->  .
->  Sent 1 packets.
->  [ 1154.173695] v0p0id1676: left promiscuous mode
->  [ 1154.216159] v0p0id1676: entered promiscuous mode
->  .
->  Sent 1 packets.
->  [ 1154.238398] v0p0id1676: left promiscuous mode
->  [ 1154.260909] v0p0id1676: entered promiscuous mode
->  .
->  Sent 1 packets.
->  [ 1154.282708] v0p0id1676: left promiscuous mode
->  [ 1154.309399] v0p0id1676: entered promiscuous mode
->  .
->  Sent 1 packets.
->  [ 1154.337949] v0p0id1676: left promiscuous mode
->  [ 1154.360924] v0p0id1676: entered promiscuous mode
->  .
->  Sent 1 packets.
->  [ 1154.383522] v0p0id1676: left promiscuous mode
-> 
->  All test results:
-> 
->  1..1
->  ok 1 1676 - NETEM nested duplicate 100%
-> 
-> Reported-by: William Liu <will@willsroot.io>
-> Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Hello:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Wed, 2 Jul 2025 18:44:17 +0800 you wrote:
+> ADDRLABEL only works when it was set in compilation phase. Replace it with
+> net_dbg_ratelimited().
+> 
+> Signed-off-by: Wang Liang <wangliang74@huawei.com>
+> ---
+>  net/ipv6/addrlabel.c | 32 +++++++++++---------------------
+>  1 file changed, 11 insertions(+), 21 deletions(-)
+
+Here is the summary with links:
+  - [net-next] net: replace ADDRLABEL with dynamic debug
+    https://git.kernel.org/netdev/net-next/c/5d288658eec1
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
