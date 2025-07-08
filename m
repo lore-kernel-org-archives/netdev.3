@@ -1,183 +1,197 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384272E2F0D;
-	Tue,  8 Jul 2025 16:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991571; cv=none; b=UErmYkh0dnDv7LATkpGwaUVC2nOcXUonaoExImWo0nRHt3rkU3qIMpSgvpMRBdyjCa7WmIMH1VJL183Hmhg65vmYLWMnD3RJsXQ25h/+fhRoXYsIlFnfAIrVkCDNby0xsDcXUlgt+iO114yiGrktB0damgg9x1u9k1otplADsPk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991571; c=relaxed/simple;
-	bh=FbQxrH/Dw119DQzHrfQwKTJr58MGjxzzu5kNV6dVSq8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X5IH2QvlLBjMW+IJVNFZOHs5YFdHbqspYcWPpFdZwhOLeGcnpe21xwlvoNeJyTWxzvJpa+PeTx1qaPsRa5aR/z3pvjB04RtjrirHSwcb3Lv6zaDtzHAsZCvDRG6YQM0areejebJEwL8U+3J82Hw7I8TNCBLIqmqAKWO8q9FSsAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mEci7oaz; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024902E1C65
+	for <netdev@vger.kernel.org>; Tue,  8 Jul 2025 16:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751991729; cv=fail; b=gxb8da2PkrMwpt1MvmRxaHAUH1GBMemNkZAla9yVGXZcb1zQVP2IVJP2ItnbMg6YoaMPOAUH0uRKGu7+Q3Czp70DRgSAkK/B1s8OPFNun03WVZN3+85kvqI8OUtWnnBKOtAVt95lf9xMdVAHL/ezOwXuXp2ugYj8gOYcCOVFZoU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751991729; c=relaxed/simple;
+	bh=h2mqIOnSVhr+tRqPjKjkWRREVNxWBrqLizJEcjMrwkE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ElsmlvlIeyOdYYzz12ioY/gkQc/doZVjTZxUFtbGg/7ETH4MFqCGuRtNuzIon1HPqjoyFQUSFeNJxUkGFjVaWW2pKRxpQQOhHJdnnJP12YcUX5UGis8GOMMOk3w3m2yQpCcu/h2g8Ni3Ub7J4WEPnqRDes1o1VDnEuiYujWSftI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bn24unPm; arc=fail smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mEci7oaz"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4530921461aso32877835e9.0;
-        Tue, 08 Jul 2025 09:19:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751991567; x=1752596367; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=mNlEKzyKmg+bvMIMD915056OhPGCfIEZ5L+VPCiMkuY=;
-        b=mEci7oazFnCGV/FkS4Qux2DDCXa7HtY++0BMKBavKHBYvjOrIZYOg2jNwtT7qfXYdg
-         jrrX2A1Ha0WPNyGTPAhORs/R5jpeaksdekBY511kO/0EjgovnpoPevJUk4xArki2x7rW
-         FTdJyaOMh0gMnuddxgW6tR/4mZMaWt3hbKJrx+NgLipJbFJ0auC1BXRCuT3r02p0Z1+5
-         mk79UzM/5HIS2uDxlLe90rFXGtHY5zZa9wMSCHNVCchRSJsX1HzaIoPzzuT8reOe012s
-         3E38qcWLTn9kaVqrA6b2B7LeqmnUVvcBX54YX3mRrfOZImVcB1TrCeRLSlCJ7tl5moaY
-         XIBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751991567; x=1752596367;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mNlEKzyKmg+bvMIMD915056OhPGCfIEZ5L+VPCiMkuY=;
-        b=fI4kzNY2t1J3TJyjLVOWabSyjvwBRrF7fzHnIwrW6k4Xkz6UcxQkqD07rRyymmHkBW
-         D53ZOkCSRl6cjT0ofmdXiv53ei+htPdrDUtgOMWamsehExdnoga21vx6zDlqN9EIM/O8
-         srZtSY52SN3Vrh02NARftK9OONUxwDfWyAtUt5Ba3KbUhhpWqU1hQKW52MNz8Rmil1kB
-         v/mh9hX+M6JwsvoNQTk26eA5hwQP4XGfopcZN4zyKL2SoGf4oL6h/jrVrRzFrCoowuSE
-         76x25EWC1uXDeVbKSC+4f786Vbs8bx755nWRjcoRaESx5Wh0QSzq0FxQ8T9bQ+z/+nEV
-         QqXw==
-X-Forwarded-Encrypted: i=1; AJvYcCVafXZohcQbTap6i4B4vBVNXLFxHxlc+gM9Z0/+PvKwa3wq6rYebkQMz8puwCKiq0ESMFMJtSSkXqo8lDn6@vger.kernel.org, AJvYcCWO3Fb/WYk6NJD4l9FPj5I2FZHuULEulLk9Q8Fz/LQPJmpjCKphOJhoXWT4dBhj2zLZa9eaDYgb@vger.kernel.org, AJvYcCWybD2fDsS9dFG0GXdxWdT3KL53WCQmmA8ihsmkodvadbRVlL/Nft4yHvXmVQirTRYwg4o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJo15gLqXvviiqS2517LZIqPlC7dBT2V3DkJkh3/ANNyV52DJ1
-	2GMZgJvImv0rnu8wavcSSgd3sdpUiH0OsTrgRsNp+cbe3ms95o3hpdJO
-X-Gm-Gg: ASbGncthZT46PzroKcvHX5gHGZJ2rsJyWfevHPdeO1lkmPCVnEroeKHVD4BJjRmYwvO
-	Ml393PknUI7Sm9BVu9N4cQQaTBGsit+GoleaGuoOmCRbJUe6u9ir3uorJqGr0hVyr+m+F7bG3sT
-	8Yj3AXSx8dcliPy9znpC6veEW3TpNuTc6Cbz4DlIGmteltxgEs8b3eAKzli7DkKlPF3iVni1Yii
-	OAJwdj8+Dh2g6Vt50CpaPLj5YyZCyMuNKDgJBas+79juycfcNxfb2aiU0WVEnsHrS8/dVimwIAp
-	WGrW9wNQqXh4NZZq1650jFWiJJuRlHrZCR/ASDOjZ/T1iMzuYTS1kjEsmA23XhsTZxvAyK96WUL
-	hiIWTNAEJglWntPQgMepN3tOP/UQLIyTD/pQJgFEzoVRUpExWRFW4Exw8/wo=
-X-Google-Smtp-Source: AGHT+IGFIuClLgsY3lb0dQaW9I9uaZLJqJRGUpTACufcAPdItHQEZq95+4sZp2nCEUmrqM7FEfhZcQ==
-X-Received: by 2002:a05:600c:4e56:b0:442:f482:c432 with SMTP id 5b1f17b1804b1-454cd518095mr42881425e9.18.1751991566889;
-        Tue, 08 Jul 2025 09:19:26 -0700 (PDT)
-Received: from mail.gmail.com (2a01cb0889497e003c0e09e1a0a8eb8f.ipv6.abo.wanadoo.fr. [2a01:cb08:8949:7e00:3c0e:9e1:a0a8:eb8f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454cd3dcf35sm26426625e9.36.2025.07.08.09.19.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jul 2025 09:19:26 -0700 (PDT)
-Date: Tue, 8 Jul 2025 18:19:24 +0200
-From: Paul Chaignon <paul.chaignon@gmail.com>
-To: Eduard Zingerman <eddyz87@gmail.com>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	syzbot <syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>, bpf <bpf@vger.kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>, Hao Luo <haoluo@google.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jiri Olsa <jolsa@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Network Development <netdev@vger.kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>, Song Liu <song@kernel.org>,
-	syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
-	Yonghong Song <yonghong.song@linux.dev>
-Subject: Re: [syzbot] [bpf?] WARNING in reg_bounds_sanity_check
-Message-ID: <aG1FDHAu-H2oH4DY@mail.gmail.com>
-References: <aGa3iOI1IgGuPDYV@Tunnel>
- <865f2345eaa61afbd26d9de0917e3b1d887c647d.camel@gmail.com>
- <aGgL_g3wA2w3yRrG@mail.gmail.com>
- <df2cdc5f4fa16a4e3e08e6a997af3722f3673d38.camel@gmail.com>
- <e43c25b451395edff0886201ad3358acd9670eda.camel@gmail.com>
- <aGxKcF2Ceany8q7W@mail.gmail.com>
- <2fb0a354ec117d36a24fe37a3184c1d40849ef1a.camel@gmail.com>
- <c35d5392b961a4d5b54bdb4b92c4e104bd7857cc.camel@gmail.com>
- <CAADnVQKKdpj-0wXKoKJC4uGhMivdr9FMYvMxZ6jLdPMdva0Vvw@mail.gmail.com>
- <4ae6fd0d54ff2650d0f6724fb44b33723e26ea49.camel@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bn24unPm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751991728; x=1783527728;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=h2mqIOnSVhr+tRqPjKjkWRREVNxWBrqLizJEcjMrwkE=;
+  b=Bn24unPmuR8w7qr5RDUAquFreIlnmV8QCf2yKpgUx0uZBypVyZqk83bK
+   Wq4n/JnvMcUZsJZBpqpJzeLnBU4jM3Dj2WLS81Z4sd6nNroK1nwZBLibq
+   a/T+10UzvB1klnqwNidaEr3JGGwKDXhQ6USRrAToc5EbUiNxX2OWCwfug
+   lKzpfqoFCF7vgqDIJHk8hByc2Vhzo3Ch+djus/xOufbhwT4eFOW8ehSjz
+   ZUm1izRbo4okayeF7900YowCoJ53Eb7Dsf4kfXkTkKv+kCH8mvAX5kowS
+   d4aVAZu3BGS1frRgYEdTXJpBWH2oYJY6yF/gx68kGr1p7eRwbUqKlO/He
+   A==;
+X-CSE-ConnectionGUID: LWSjE3bNS12KZjCLNrJteg==
+X-CSE-MsgGUID: G9kOb4aTQBaoIKMSifhUkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="53353172"
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; 
+   d="scan'208";a="53353172"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 09:22:07 -0700
+X-CSE-ConnectionGUID: viON2fkvTeGCWCazICtMZw==
+X-CSE-MsgGUID: qckFMA8xRzSR2nafkrUdBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; 
+   d="scan'208";a="160073943"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 09:22:07 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 8 Jul 2025 09:22:06 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Tue, 8 Jul 2025 09:22:06 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (40.107.237.89)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 8 Jul 2025 09:22:05 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AGPVNHZ3UJ11UF/uRtzukDt9IMZ/i9HJ33rteNai4tTtOLxvVPyJHBIwXgqHFHmCB7d9Hph5bjRJtkjvHcaG3L9tJfMx341Ut9tTO8H/LhX1T+kF0YLD9T3tN9pXWjnP+vWeMkRq+Lt3xTxMD+D/DRwG19Tht7iMrgkgMJVpzAl8+gcC9kiXSpz/dF9UNGgbeGzNUzhNmHFsNwClbRiIcszufFtwOjbfvaJvOnKO5DGF/g8NEtxmQwqptNVr0ifUyftCVAYO6LtpHmy4lbwRdGYHn2KutzYkY1l8FVqu7MJz1kH0fNTzrqqZVgsonBJbvZMzwGOuJGyyauMimeIxQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=h2mqIOnSVhr+tRqPjKjkWRREVNxWBrqLizJEcjMrwkE=;
+ b=k/uIxl/3MZaAwiXk8Zy36cXq4gUi2h5uED1pVKr4M8ofNOwbmndIhDmtalJ6+d79+qYh2bnZTb0pdotbJZAvptGIWJ+0ugs7LvyPcEt0H3a9FiOK7w8wKVvjlp6+PoW/LCl2M0HQQ4+Aog6WXkxd41MNYYgRRHwbTPRicVYlUtRR35ylN5jLXIRzuchaUm3+5RvEbcXI7cOFnByF8yRc7IDWk6DudJs8xbsvdOpptr60CQesaFIDHrEUWRCS45cdF9Hy0MvKBbK2LafjlzDJWd4M6nDM5SV2kCw9SA2O+lNsqrdPfydjN0ozu6hfAIX0Scb6TcgBTr4kEj+KsDvyEQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA1PR11MB6241.namprd11.prod.outlook.com (2603:10b6:208:3e9::5)
+ by SJ5PPF57F27BA08.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::82b) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.26; Tue, 8 Jul
+ 2025 16:22:03 +0000
+Received: from IA1PR11MB6241.namprd11.prod.outlook.com
+ ([fe80::7ac8:884c:5d56:9919]) by IA1PR11MB6241.namprd11.prod.outlook.com
+ ([fe80::7ac8:884c:5d56:9919%6]) with mapi id 15.20.8901.024; Tue, 8 Jul 2025
+ 16:22:03 +0000
+From: "Rinitha, SX" <sx.rinitha@intel.com>
+To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-net v1] ice: check correct pointer
+ in fwlog debugfs
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-net v1] ice: check correct pointer
+ in fwlog debugfs
+Thread-Index: AQHb5O/YA250IDDapUCpCU0Mx6GhsLQoJEVw
+Date: Tue, 8 Jul 2025 16:22:03 +0000
+Message-ID: <IA1PR11MB6241A55022C9FA1A930385E28B4EA@IA1PR11MB6241.namprd11.prod.outlook.com>
+References: <20250624092636.798390-1-michal.swiatkowski@linux.intel.com>
+In-Reply-To: <20250624092636.798390-1-michal.swiatkowski@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR11MB6241:EE_|SJ5PPF57F27BA08:EE_
+x-ms-office365-filtering-correlation-id: 1427ac6d-c797-4088-9b09-08ddbe3b92fc
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?W98rakulNmlWXCc5ExjQQxXgVIhJPyaUvpBTCbvHsbIhFHoR7hS27fEnQM1n?=
+ =?us-ascii?Q?AvTzXlvsbDbz8gmP0O/cqYbuHsQOStmHdYoeYIXDSyIeBSjFUeKR++ODyGKk?=
+ =?us-ascii?Q?mrbI5gIDGakYLREEllZ0i391andBB/rHeKChbOzwN6odfgJ8JnOZDutCAcbl?=
+ =?us-ascii?Q?W46BYF2kjIQfnV7xWN7zny2X7mPoegqgDqTvhqvDzfOOktt3Uir5w0GUOZJH?=
+ =?us-ascii?Q?Y8c2LpLJeNtc0M7AGwmfL2Tg45d7Q1UdQBKQSC2snQJYQB/I8cHhuXbjPLKX?=
+ =?us-ascii?Q?Ub68TjNQhs+vV4fDW/K3fZhIddGWVOFZJCvWN56MsoeNzMU18yegxWP/dd7I?=
+ =?us-ascii?Q?kyBENwAQu5fvUWFAXfZcURF8AE0ySoxxRyECE3jTRNaE5U+8O8Tyq8iZ7skx?=
+ =?us-ascii?Q?+Ub2cft73UslCDbd/24+P+a8xYYaQg+e4CzCtz4KNlI4V4Djf5GvwppQ+CYo?=
+ =?us-ascii?Q?yzwu/d6y3Ye8df9+wiiVoW5XjnMP+gyKalS5H1FwxtDMdGDQnoy1kQX6Hzje?=
+ =?us-ascii?Q?l3z/1+SYyZeqwwUt1ttSk2DQAgNprYs+MPDDX55KJ+M9JJ68fuu8fDiig7bC?=
+ =?us-ascii?Q?cQofR0Nl4SWboPkG4nUE78p2lGlTLcWn59CJUFyHOoCptLlNYB0BvgTsfp8s?=
+ =?us-ascii?Q?oQd7e/tzZwnCgWfAuEx61z16Uvx4xQCNd7cbKswQ6pSnoTlC3zSt7A1/eaeH?=
+ =?us-ascii?Q?cYjX16CtPXjUawgpqmu7e0P+0OY3v+PUcYrdJWq1kDdTEMDO9QvxDriWUn3S?=
+ =?us-ascii?Q?7Ahifi/R1+Ke9TiY0t75ySPMTvAgHPEnTmhF36cmumG6n0KKycKrQzGO0HgL?=
+ =?us-ascii?Q?autzTSZYYTXfV1hQyQGWybqpm7Jhb07al/uMcZ0YkYEP9cJxB0xkzUkY4VuA?=
+ =?us-ascii?Q?L4H11kk0aJmtvT/gyBHfYLahAV/bnoLHDiMpLoqgLzEa5SPzU9SiZI1xBwxJ?=
+ =?us-ascii?Q?9iWDxB4DbNVrXhGAXV2Jn71beGiCjSY6Wqv+cAU9Tysud2rPFUHjsyLczDzQ?=
+ =?us-ascii?Q?+yQnGsrEAkTTStMpA0bnr78mPxlbz852lHk8y3+5/l9wfWK8j4hgqDcjB7vj?=
+ =?us-ascii?Q?uzVpKBXW6pwqaMqBS+6ZEHGVNtn3TPfygUHP8P+cMIAlO50tgcyBwQA4x8zo?=
+ =?us-ascii?Q?JFg4sLGGKrkzrbPPiSGIdwFp93IGgPflA6jQiCHbOtKOSIqBg6zUoAGKgE/X?=
+ =?us-ascii?Q?2tA2v/frH2Z+jZrppPciqW2bEg9/t2VpLdKx+Rtyx5vZ5vXaKf+3by7zcz9C?=
+ =?us-ascii?Q?7Rtq/Aoo1itp8LzOiknNk1Vnp5511zf3Z1EkMVRg6XADeIVBdrfTb3n+D6WB?=
+ =?us-ascii?Q?W26vFMjh8nMK128YM4TnrQepas9BnxVcMh+jL5/LWZQ/0BEtr19K7VRg9wVk?=
+ =?us-ascii?Q?J0k58GMWGJL1Cbu0e6XbGWPcYVUQ9UDtt1PGEEAxz6i2KS5oELA8lbQBRMEf?=
+ =?us-ascii?Q?naJnp1dqwaHos2chEgFl9pjBH2WD9OJ+3d0zUZU6bwY5D2wgiZ678A=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6241.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?lR5tgXZNwVQVyQtAAlZLZzCnYkTAStXq4E4bAhqroE+rSGZa1+jIdU7WrJsR?=
+ =?us-ascii?Q?Gt2Gvgp/0klXQSS0iM4JY/DyI1wPMRGcDMP5uIF6e+D1ImZc2LdjQMIfBwPV?=
+ =?us-ascii?Q?s1EmZ74PYQju+upI10bqYE8ToPBtqZz0frU1rc5fTNxknz5O/haMUaL63KZ8?=
+ =?us-ascii?Q?ve2h5PoCk9QE7Jhqcnfyru8xUJBH9m8Usf9KoxqOD0djHBA/e+6xnLUzpw/h?=
+ =?us-ascii?Q?fNdHGqYPqT3pOo/9mBATpLAv24p9l0G2xwN22RUlPSM81lS1eCONOyb1Ojyq?=
+ =?us-ascii?Q?8KFcbMbQxEs/xil8fI5ljg9BEx7yiOeZ+8ofzWBOWrMealJCGR0yVKF0R1gh?=
+ =?us-ascii?Q?0gc9xTcw3VogoOv7QMe5z18+xpYd5gufKyZgSONWMWqUHqZ2ZSi2OiSazH5E?=
+ =?us-ascii?Q?gRQvLAINX2Ml9lCOs0VC5xK71E6sIetyLvbT4uXgIs76t8ZUWJWPfLR4a4lF?=
+ =?us-ascii?Q?lcKtq1mJkA2dvbR8C4Oo4+182L+hjXfF+Qb7DAgU48O4RiCl6GwCbDQ+7N7h?=
+ =?us-ascii?Q?NHNOQwjVnJVVI2JEqcs1uQb9Btuq2z8Cx/9vhx0IOWec+FRiWiCRYqK6IBjX?=
+ =?us-ascii?Q?k9h8bjvNRbqp5a9kbdNb/AC+DJOeGbAaKGZPvPOLcfA6DN7Ub0nsazyq+BWd?=
+ =?us-ascii?Q?L7z1GtVUYnghp7abhbQN0uJEpOFIttlBkq6zXdHRZ0iqMUY2kw2hHwsHKRd6?=
+ =?us-ascii?Q?EtvP4Zz/rti3vZVZ2BrCjuqSeeKT6uEQoYKU1wSpC41v356EbLQF6KepbfNF?=
+ =?us-ascii?Q?Gfs816LCGzW1KPR/jAA4yAzyUHviO6HCgAbch7BycpBKaRtDPIBTLlV/6zTK?=
+ =?us-ascii?Q?sMNr5RO0BlFZZIpEpQ+gFrUa8FL+cGdbV0uZa8RixCH9wY3x9YNXXBtbo3Np?=
+ =?us-ascii?Q?ZfhlnER7dwh5xNnchgI8NGF4TFADKTOP99I/1BI5W6YADsORecwOm2VOiI0F?=
+ =?us-ascii?Q?2jhcndeY9IKTdKDm5ctDD2KrGQK0j/YvYZ2k0IgBBHQFZOruvv90PLONMT7s?=
+ =?us-ascii?Q?orXzOD86ZlCHTpxTqfRVLJBBYYT2GTKfgcHHDO8Tbvw/EM9Inj1MqPn9Cf0n?=
+ =?us-ascii?Q?kQCS+zWDqtadipdDL4ipKXUyuURaP1P4EubSKYch9e/k8cp/cP74hkWtBITm?=
+ =?us-ascii?Q?ss1SY8U4369/iMZwxisEH4J1Hypve9U8Kk2VRUbkzuPNJRUD7Hdkv+9q5gd5?=
+ =?us-ascii?Q?8MW1bxU0zuQOUUBPSflMPnniJpRDhgGX6BlF0/4jDvHmsX1JOhKrgKwyi2/U?=
+ =?us-ascii?Q?QjLzuURMXvrd5Qd7AyH+irJ3WFHCU0mdF/1wacFASjdlD4pTQicLN+x4NYw2?=
+ =?us-ascii?Q?mrdYG6k8BhH9vErt8jIncsO5Rgu0lRmk54kjf5FgaOfq+ePn9y/MLYz3S1mr?=
+ =?us-ascii?Q?zZJYXaeEhZUx2+eh6xYUy0PBC1xtrki6wNm0rwRBOglBdOWkBJ9frG54RREG?=
+ =?us-ascii?Q?0un2EnrAZuY3+VzKqHTAqpy+1KxqvakrrbFUTM3uXIPOVE6JWKW6ngQAtKyo?=
+ =?us-ascii?Q?fu0+dXGeYtSL9QrBHEEQG5cGYHzdp5fatnhf6TbHYJ3+00FlfnP3bTxsDlRW?=
+ =?us-ascii?Q?fIqOCAp2Jr4TB+FClMtYewCoxz71a7sd70033kfj?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4ae6fd0d54ff2650d0f6724fb44b33723e26ea49.camel@gmail.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6241.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1427ac6d-c797-4088-9b09-08ddbe3b92fc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jul 2025 16:22:03.4540
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: aCjEmvrT2Y90NFLR9pH0nHtNLp1qgyzRGWgyaqDNaGWPAvy3DZm5fXqinN47luLV0+Q3GeS7wYaslV0ZXJ/sqw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF57F27BA08
+X-OriginatorOrg: intel.com
 
-On Mon, Jul 07, 2025 at 05:57:32PM -0700, Eduard Zingerman wrote:
-> On Mon, 2025-07-07 at 17:51 -0700, Alexei Starovoitov wrote:
-> > On Mon, Jul 7, 2025 at 5:37 PM Eduard Zingerman <eddyz87@gmail.com> wrote:
-> > >
-> > > On Mon, 2025-07-07 at 16:29 -0700, Eduard Zingerman wrote:
-> > > > On Tue, 2025-07-08 at 00:30 +0200, Paul Chaignon wrote:
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of M=
+ichal Swiatkowski
+> Sent: 24 June 2025 14:57
+> To: intel-wired-lan@lists.osuosl.org
+> Cc: netdev@vger.kernel.org; Kitszel, Przemyslaw <przemyslaw.kitszel@intel=
+.com>; Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Subject: [Intel-wired-lan] [PATCH iwl-net v1] ice: check correct pointer in=
+ fwlog debugfs
+>
+> pf->ice_debugfs_pf_fwlog should be check for an error here.
+>
+> Fixes: 96a9a9341cda ("ice: configure FW logging")
+> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> ---
+> drivers/net/ethernet/intel/ice/ice_debugfs.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
 
-[...]
-
-> > > But I think the program below would still be problematic:
-> > >
-> > > SEC("socket")
-> > > __success
-> > > __retval(0)
-> > > __naked void jset_bug1(void)
-> > > {
-> > >         asm volatile ("                                 \
-> > >         call %[bpf_get_prandom_u32];                    \
-> > >         if r0 < 2 goto 1f;                              \
-> > >         r0 |= 1;                                        \
-> > >         if r0 & -2 goto 1f;                             \
-> > > 1:      r0 = 0;                                         \
-> > >         exit;                                           \
-> > > "       :
-> > >         : __imm(bpf_get_prandom_u32)
-> > >         : __clobber_all);
-> > > }
-> > >
-> > > The possible_r0 would be changed by `if r0 & -2`, so new rule will not hit.
-> > > And the problem remains unsolved. I think we need to reset min/max
-> > > bounds in regs_refine_cond_op for JSET:
-> > > - in some cases range is more precise than tnum
-> > > - in these cases range cannot be compressed to a tnum
-> > > - predictions in jset are done for a tnum
-> > > - to avoid issues when narrowing tnum after prediction, forget the
-> > >   range.
-> >
-> > You're digging too deep. llvm doesn't generate JSET insn,
-> > so this is syzbot only issue. Let's address it with minimal changes.
-> > Do not introduce fancy branch taken analysis.
-> > I would be fine with reverting this particular verifier_bug() hunk.
-
-Ok, if LLVM doesn't generate JSETs, I agree there's not much point
-trying to reduce false positives. I like Eduard's solution below
-because it handles the JSET case without removing the warning. Given
-the number of crashes syzkaller is generating, I suspect this isn't
-only about JSET, so it'd be good to keep some visibility into invariant
-violations.
-
-> 
-> My point is that the fix should look as below (but extract it as a
-> utility function):
-> 
-> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> index 53007182b46b..b2fe665901b7 100644
-> --- a/kernel/bpf/verifier.c
-> +++ b/kernel/bpf/verifier.c
-> @@ -16207,6 +16207,14 @@ static void regs_refine_cond_op(struct bpf_reg_state *reg1, struct bpf_reg_state
->                         swap(reg1, reg2);
->                 if (!is_reg_const(reg2, is_jmp32))
->                         break;
-> +               reg1->u32_max_value = U32_MAX;
-> +               reg1->u32_min_value = 0;
-> +               reg1->s32_max_value = S32_MAX;
-> +               reg1->s32_min_value = S32_MIN;
-> +               reg1->umax_value = U64_MAX;
-> +               reg1->umin_value = 0;
-> +               reg1->smax_value = S64_MAX;
-> +               reg1->smin_value = S32_MIN;
-
-Looks like __mark_reg_unbounded :)
-
-I can send a test case + __mark_reg_unbounded for BPF_JSET | BPF_X in
-regs_refine_cond_op. I suspect we may need the same for the BPF_JSET
-case as well, but I'm unable to build a repro for that so far.
-
->                 val = reg_const_value(reg2, is_jmp32);
->                 if (is_jmp32) {
->                         t = tnum_and(tnum_subreg(reg1->var_off), tnum_const(~val));
-> 
-> ----
-> 
-> Because of irreconcilable differences in what can be represented as a
-> tnum and what can be represented as a range.
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
