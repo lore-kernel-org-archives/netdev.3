@@ -1,77 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5397223DE7;
-	Tue,  8 Jul 2025 15:24:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427A22E2653;
+	Tue,  8 Jul 2025 15:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751988246; cv=none; b=U9A/OeQoMO1zRC+VslE+zVNFCnJtKVSAR2OAxQDCJmMINAhKMPkGgFp7zcmygvfqkdGAS7ylhXsOkvULxXiC/xjDL3E8fZ9I6Su3OrB6UaXMrRZ0nPJmkJOnywSgY11Pq1zUOyHI636zngF7khLpZBTWM6atw3iei6nU7m1r4xw=
+	t=1751988352; cv=none; b=gHwrdu7MRzd1ewMEsSa0lw+BIa+qY9NOgwgcXrlrSCEZ+cjJG2GfpLpwdxGy12NAawKunKWceUYb6gibyOvu+qVN6nKmglB5PxVyiDU8qnxjxGIOEo9X4kHSgxAx2ZyOwoKPPGhcYNiX87g8tEnEJh78XpqnAI/7thwlecA4qDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751988246; c=relaxed/simple;
-	bh=yr3gvMFQgXX8b8aX0CGJXvc/BBawO2jjh3fHXaiX5m8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WYPi2Nnueua8WXH2EzNa3diQG0bUGwyqTJRtQiHZvO23DNkEmfalNf/UnRzShqabC0kfmuy3Lg7yiNtIZ1J2aVjj5E5Z1l1bE3AY3jCSCbBdiBrIXj7LZYdIQwNMta2VxJLDunGP6T6WSSRJcTYx4xjkV09qmeWXqC48t5iIoj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FSZVQxrj; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FSZVQxrj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727CAC4CEED;
-	Tue,  8 Jul 2025 15:24:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751988246;
-	bh=yr3gvMFQgXX8b8aX0CGJXvc/BBawO2jjh3fHXaiX5m8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FSZVQxrjumbhTPsELLC+VdAX7wVLp3/MDo5lNbcCtXBpdlQgxBKL1DNQ+CsBIMI8O
-	 SsEHdcJidLFVaW7J3EyzLXnuv/gwjW2wA/reUuxDDzh4D+BWHk1ViWMkyTHN+5TiIc
-	 qzJ1f/S9xcVNmY5UrlJfmOe6f3SaZnB0MJuI7h19e+HoSB6XWt+EtOgfJpveq3F/ga
-	 nKlR9gUeYuXAN9ixRxRB4HLn4Byx+zKDOqf6VQthlSEWEsMmd5aRvhV69cGtigTFTf
-	 H//en3rOBHi+ngpDo5YUWVO/9SjtDgIRC4k1mxYMnITgyn8uL1+GKUYjmKdpio1t67
-	 b5NqUZnLHcMtg==
-Date: Tue, 8 Jul 2025 08:24:04 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, Willem de
- Bruijn <willemdebruijn.kernel@gmail.com>, Jason Wang <jasowang@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, Eugenio =?UTF-8?B?UMOpcmV6?=
- <eperezma@redhat.com>, Yuri Benditovich <yuri.benditovich@daynix.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Jonathan Corbet <corbet@lwn.net>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v7 net-next 0/9] virtio: introduce GSO over UDP tunnel
-Message-ID: <20250708082404.21d1fe61@kernel.org>
-In-Reply-To: <20250708105816-mutt-send-email-mst@kernel.org>
-References: <cover.1751874094.git.pabeni@redhat.com>
-	<20250708105816-mutt-send-email-mst@kernel.org>
+	s=arc-20240116; t=1751988352; c=relaxed/simple;
+	bh=uGgX3GJd4mYElheRctbkZiUbQcWMpUgRQRqQiEn8HzM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z5ebym1HpN5XmP1TlHcQeElY9oqOvZJyjIfkKpAawBZXzQMNQdoeKZ0askdRXQpha6gEYXSGPlIVABrnx/mxTO63tIvqFJkM4OP+jIIalbKvFW2yCJ3j5idRhbwpfps3s67ajz0oePADHvYzh+WoIOw/QbWnpd/E6QMuaB1IuAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ae04d3d63e6so754887266b.2;
+        Tue, 08 Jul 2025 08:25:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751988348; x=1752593148;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OHdiudIvhlbsgKzAlTM7QB3ITrST0Cb2niiN+w8u02c=;
+        b=tuRE5PJt+++77tm01MNN+9oa8yoEswPo22GH67Pbul5le2m95HR1PnS0Q1EDAK5TQZ
+         KKzmEsdJ42tVvzUdPhPMziEVa/h8C6YA42hMN2kI+3gnxOBNF4TnnaDaSmWZJ/1bJZdt
+         7GrzVPFAvPK/3sqo3C9Vb6xu1/GkmaAIbHaJfJ2tok5lm0X9X7xCyL2OSy0gL+mngZXS
+         h4W61Hi2RCvOwjFN6NKh3CjaGz6TUie2zXENAlqquDdSFjcNFxQeOhCQYZJi3gzAFzR2
+         3z/80a9xnaPdPj5tND9B7X19J4QrX+QTqPOoRAZLAptKU0Qj5CVq/XYTPe9dSeWKwq6w
+         HMGg==
+X-Forwarded-Encrypted: i=1; AJvYcCUye+XpxnhsSgZlo2E8eGMfykZAUv2NcnbPSfYM7cUVGyr73qNHZ+1yyf1YS09a+cgH9IIQFbmPB6F1Gi/Q@vger.kernel.org, AJvYcCVz6Cmmntg0TWr8ZpIqAdVv5CzpqIoC32zJITzhXjPcjgoOhC+1zUYKzUyAm4kLngJP1rQ=@vger.kernel.org, AJvYcCWA+MFh/e2zQI+o0I8TGoNuCnSh/z2Jfnzj6MtKgMVW4TzYrooXa5VQhEARYrUQfh/SbqBdOWia@vger.kernel.org, AJvYcCXTGNZUHwYmjacCq2mn7nyxRXD1/lbhH8oKwqGOCzYFjqRCwfuucSHZOkcbuypzLKoeghklx0bYtMJ+2lujVr9S@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbAb7wSFCIHuGRXm0xV+5fLAfYph/rBMwyPYKod1QHD+jeyMQb
+	UIYN/fNABGTwjR1z71A+miH8B/ZbE3PoONgOG1hTzm7LQOWOfU8G+/hI
+X-Gm-Gg: ASbGncsgbg7deqaa1kv6+VY9ozjHE8UqlaNGjwea/dlFlkp5SAnAFLuF8mQM6ZZbFb1
+	yCyrG28qcxh+ROhx1Jf+dny3FAg4vuS9M3qf0IgWzgbwDaFgKznSe9wwHm0xPrR6QzSxjkJqCtQ
+	PibMu0KL3+fU9/MunvrlVv4hsuSI6CiV0uTY5ViHx3sEnn4czbdFRLOLf84s5NPM3/ThSP048sn
+	LjPed9xvfohQv+EgLDEL34ueuumJzPtzlYwG04s1/ryba3ySE7AMs8QS+PiDyxB1QOhoVXsiuVx
+	yWHE2c240Qbuxo27Q7f+089RP5PDLVfRzzd++t6nEOasIytthz72YQ==
+X-Google-Smtp-Source: AGHT+IEA+QZGmBo8k4QMmJoLm/1b04TQE9pmYlrZApkhUSPJ2o4Gc1WfGzMhLET8/ETifijZH+Wpmw==
+X-Received: by 2002:a17:907:d582:b0:ae0:bff9:98de with SMTP id a640c23a62f3a-ae3fbd50f78mr1862989866b.40.1751988348225;
+        Tue, 08 Jul 2025 08:25:48 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:74::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f6b5e757sm909637266b.156.2025.07.08.08.25.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Jul 2025 08:25:47 -0700 (PDT)
+Date: Tue, 8 Jul 2025 08:25:45 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH net-next v4 3/3] selftests: net: add netpoll basic
+ functionality test
+Message-ID: <aG04ece5RWJCpMmA@gmail.com>
+References: <20250702-netpoll_test-v4-0-cec227e85639@debian.org>
+ <20250702-netpoll_test-v4-3-cec227e85639@debian.org>
+ <686c88e0283_29b0d29422@willemb.c.googlers.com.notmuch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <686c88e0283_29b0d29422@willemb.c.googlers.com.notmuch>
 
-On Tue, 8 Jul 2025 11:01:30 -0400 Michael S. Tsirkin wrote:
-> > git@github.com:pabeni/linux-devel.git virtio_udp_tunnel_07_07_2025
-> > 
-> > The first 5 patches in this series, that is, the virtio features
-> > extension bits are also available at [2]:
-> > 
-> > git@github.com:pabeni/linux-devel.git virtio_features_extension_07_07_2025
-> > 
-> > Ideally the virtio features extension bit should go via the virtio tree
-> > and the virtio_net/tun patches via the net-next tree. The latter have
-> > a dependency in the first and will cause conflicts if merged via the
-> > virtio tree, both when applied and at merge window time - inside Linus
-> > tree.
-> > 
-> > To avoid such conflicts and duplicate commits I think the net-next
-> > could pull from [1], while the virtio tree could pull from [2].  
+Hello Willem,
+
+On Mon, Jul 07, 2025 at 10:56:32PM -0400, Willem de Bruijn wrote:
+> > +def test_netpoll(cfg: NetDrvEpEnv) -> None:
+
+<snip>
+
+> > +        bpftrace_stop()
 > 
-> Or I could just merge all of this in my tree, if that's ok
-> with others?
+> One risk with stateful tests is that the state is not reset if the
+> test exists (or crashes) before reaching the cleanup logic. There
+> are ways around it. Jakub added defer for this purpose, for one.
 
-No strong preference here. My first choice would be a branch based
-on v6.16-rc5 so we can all pull in and resolve the conflicts that
-already exist. But I haven't looked how bad the conflicts would 
-be for virtio if we did that. On net-next side they look manageable.
+Agree. Jakub suggested about "defer" a while ago, but I didn't realize
+we had a "defer" helper in our test framework. For a second I though
+Jakub was talking calling the stop later, my bad.
+
+Now that you raised it, I found that we have "defer" as a helper, and we
+definitely should use it. How about something as simple as:
+
+	diff --git a/tools/testing/selftests/drivers/net/netpoll_basic.py b/tools/testing/selftests/drivers/net/netpoll_basic.py
+	index 398ac959151b3..6017b71f154b2 100755
+	--- a/tools/testing/selftests/drivers/net/netpoll_basic.py
+	+++ b/tools/testing/selftests/drivers/net/netpoll_basic.py
+	@@ -27,6 +27,7 @@ from typing import Optional
+
+	from lib.py import (
+	bpftrace,
+	+    defer,
+	ip,
+	ethtool,
+	GenerateTraffic,
+	@@ -251,6 +252,7 @@ def do_netpoll_flush_monitored(cfg: NetDrvEpEnv, ifname: str, target_name: str)
+	# Start bpftrace in parallel, so, it is watching
+	# netpoll_poll_dev() while we are sending netconsole messages
+	bpftrace_start()
+	+    defer(bpftrace_stop)
+
+	do_netpoll_flush(cfg, ifname, target_name)
+
+	@@ -338,7 +340,6 @@ def test_netpoll(cfg: NetDrvEpEnv) -> None:
+		# Revert RX/TX queues
+		ethtool_set_rx_tx_queue(ifname, original_queues[0], original_queues[1])
+		netcons_delete_target(target_name)
+
+Thanks for th heads-up and review,
+--breno
