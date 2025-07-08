@@ -1,101 +1,107 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5C6D517;
-	Tue,  8 Jul 2025 07:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DED299A98;
+	Tue,  8 Jul 2025 07:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751960775; cv=none; b=nia5HpNR3li5dwQ4oebti4Y37FIW/W10o9TpZxhVlJOtiTfqcnP4uWze5L0PpVjF+tkpvMfUg/tSJhzKqF1BL1Cz5uWdsasgnQ9I7XVY4sllNLYhCtPdSSVH+MaXnrk0H+SYeDc8SfE7mcukaTjfssPqinPcCh1hbx2rDYcYBNo=
+	t=1751961003; cv=none; b=qD95ecw2fXhhtvz2947FGKkVLbGD8imUtoC3qiOwKmmxu4Yd9Io9Bsp0Eakc3kKPzWblvN3+aTCaiaUw9Rtar0HhxyJeyHIOeVXSjh+ERtgxs3mB/LulUWvodO6sav8hJnqT/DX1fWUM/VdGvMVHTz3kHaYqRkieZA3DkXalRJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751960775; c=relaxed/simple;
-	bh=SsJLEZUK5l4Kdov3Q7zzxDX+VX8QlmSpDy1dNsg5p6M=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=GDtqHczpn8FAjybdbhuphiIHMiLOjSzYLZ8Oab/2wGcLKWjLpCg2KcjT3v/W3/I+o+L8e2SsOILd7hA4tHyQgD49y7XKJ7/v06aDyhlT7w7MOFi24Ccq9AcXo0NfU9J1SMULUMjCnakoiYkbjCFY/Za25QTEbzXLXiEUMLoU9YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KmBIT9GV; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751961003; c=relaxed/simple;
+	bh=XacCg/pWwY0SSi8ng2IgCqBPKaxCukK1XmMQWs135yc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QxaxrpkqxM8C2i+mqiBQs4iSbVwY6UwAUg3a1ipyZH0gp0m1GoptpOCNHrEe9zS8fCzxTSERn6dAOJlZuOl4Ct7GjlSuwbR1cQgXbS+pSEW5CBUWFYWKAcTVqNjj1cIDKVKM2NY+t0L9T830Th6QuJi1UTg5tVHpK+I0Bi+jDzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SDdV7w3t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KmBIT9GV"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-32b7f41d3e6so48305471fa.1;
-        Tue, 08 Jul 2025 00:46:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751960772; x=1752565572; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=SsJLEZUK5l4Kdov3Q7zzxDX+VX8QlmSpDy1dNsg5p6M=;
-        b=KmBIT9GVhFdUXXyFL61rKqQeACdV2q6OkH2STJK6Ih5mG8sGBEGDsasOEipu3AJvap
-         RK1xUwfuHnDXXLzTv6zAXeb6OPmTc2BxisRC3acKgLaQgZztb+sDIT+Vh867yaIYe1ER
-         8NhtINM7kuw2WrSNqkH2thWdKv625NGsraFk2xYBTJ6wXftPgkKfs9bpxzjYjiIpg+m4
-         HDujVPrs/bPfVnOrHoTjJEWyv92rTGZARB6Q6IUbwU6ajxIO48SWuxkbV7mVdnjpDHPh
-         GW/Q+IC4060+xFAmEOiTt56Cjm3hP5tykOl0TUYlDrOFDPjGtmlDTZVYwBExJP9g8zRZ
-         oH7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751960772; x=1752565572;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SsJLEZUK5l4Kdov3Q7zzxDX+VX8QlmSpDy1dNsg5p6M=;
-        b=gFdKj9lB8U9XjksItk5NjPIpLE//WAwTdVo7y3nN2vpR6pw2K8PWk+1u5vp/zN0lSo
-         pra080gYu7LbxtNmIu3Oj9qgU6jm0k3R0KzOzInEwvO2h4XZYx1usWXhtM0cFGkRHlwl
-         60q256WzvwYBIz5NG/x6VmlCL2tUCwK6yQzAmdnFCl355bSvSU5/7jTr7kwnmKKNBu0n
-         h4ezsz0dUITmM8SivSwlLXBaWFLUHq0zOrZS3BGwwOMUDi1NndUF9Np2tUzWpX+rcS+L
-         0KYe85i8jyLdrbPt+VqTChVlm4I7Y2GX5f31vlEWtWfGyZBR7CLPxVDhyE0Re+ONbFwt
-         s4eA==
-X-Forwarded-Encrypted: i=1; AJvYcCU8sgtNVgx/pocCN5wUSqJdrWftSBt7du5NSQicFFDKnBg7yJRkySzukb1tVTNVxH+r8oqwIjJ7@vger.kernel.org, AJvYcCUccyEZTGZOAZ15EINBouJgcypJ/Rp9e6C4iwTBEqq7rPXnjTEOO18q3Bc3IWW8tKYTL4BZoJ6oOX6PU+Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvvXL0r/qHqnWl0GhCX0I/KMRRWPPB1aWM2ONEelLlCqYhD1MV
-	WHf4IbSodedU+CAkf0VVyjksBteX9VxN6F7J5g/9VmHWkHhekhd0VGJishben0lSFLT+74arSwV
-	ZwydkWu7XZCLOXE3amNnbKevqP9wmgRY=
-X-Gm-Gg: ASbGncsMixpfCur+Lg94V6tLhvaYDAZbFl+IodrtqZlIpS5oOV27ucHPJ5yDXr7tyOI
-	A7+j9A5mJcyVkz0iOACdfhWMdr7i31HjH0pX7KzguuPfrJjm8WJYyYfSTaBuGpxvwL0SSsZVY2N
-	QRLMjtHVNT6GATLydEfy+rS2CAQRV1tcbuIKCu+ZxHBK1D2mvwXZb6JXAKKkfyKNH8Lw==
-X-Google-Smtp-Source: AGHT+IGEd9Kz/5zhw01cj60Fqqv/m+I4Sm8jcaPps9mJ+ttQL5ZKCItccPpmMz/tXTWNQssl2xCYHuM/okPzQAf3cRs=
-X-Received: by 2002:a05:651c:2220:b0:32b:7614:5722 with SMTP id
- 38308e7fff4ca-32f3a095ccbmr4741481fa.13.1751960771442; Tue, 08 Jul 2025
- 00:46:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SDdV7w3t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B661EC4CEED;
+	Tue,  8 Jul 2025 07:50:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751961003;
+	bh=XacCg/pWwY0SSi8ng2IgCqBPKaxCukK1XmMQWs135yc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SDdV7w3twz3NWsBoHo6KNql/vvPCHZe3XbFqCc1ZOPS8Ueze9S97eLF+LJh7Xe88/
+	 3JM75pI782wgmDYJ6BUEhIbgtUp2/7xbZPw3K9180EAEt89kPIAeEcqJv8B1ze6WVZ
+	 q/LoKNeeV4eb3zEH9eVKQf+fuHAb1P8dHjdapDqTJpfNsE/hs3tllMfu328o9PJTsJ
+	 UgUS4CdDif74FHqsWC9S0xvJyg9dCjAMIowJHwLThkDmtp3cI9eV1rtUsnd4gFCpN6
+	 UTRtHpvg0QGJ5yOBfYQKPgPr8jxAGJIZHurW1j1ZpA7PdlYPiMyKKov/pOJde+LbXW
+	 aY2KQ9fu3FQBQ==
+Date: Tue, 8 Jul 2025 09:50:00 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Jacky Chou <jacky_chou@aspeedtech.com>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-aspeed@lists.ozlabs.org, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, joel@jms.id.au, andrew@codeconstruct.com.au, 
+	mturquette@baylibre.com, sboyd@kernel.org, p.zabel@pengutronix.de, horms@kernel.org, 
+	jacob.e.keller@intel.com, u.kleine-koenig@baylibre.com, hkallweit1@gmail.com, 
+	BMC-SW@aspeedtech.com
+Subject: Re: [net-next v3 1/4] dt-bindings: net: ftgmac100: Add resets
+ property
+Message-ID: <20250708-termite-of-legal-imagination-826a9d@krzk-bin>
+References: <20250708065544.201896-1-jacky_chou@aspeedtech.com>
+ <20250708065544.201896-2-jacky_chou@aspeedtech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Luka <luka.2016.cs@gmail.com>
-Date: Tue, 8 Jul 2025 15:45:59 +0800
-X-Gm-Features: Ac12FXyHNuVMuBc-KoksuHFizmYOY9_ntXLtiAiYsEQj7DrJSbrTPi-bbh2XYO0
-Message-ID: <CALm_T+2yh+PoxuCmSch8rgaZud6N4DBmA8OG9BdLvVu_F-EJ9A@mail.gmail.com>
-Subject: [Bug] soft lockup in packet_rcv in Linux kernel v6.15
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250708065544.201896-2-jacky_chou@aspeedtech.com>
 
-Dear Linux Kernel Maintainers,
+On Tue, Jul 08, 2025 at 02:55:41PM +0800, Jacky Chou wrote:
+> Add optional resets property for Aspeed SoCs to reset the MAC and
 
-I hope this message finds you well.
+s/Aspeed SoCs/Aspeed AST2600 SoCs/
 
-I am writing to report a potential vulnerability I encountered during
-testing of the Linux Kernel version v6.15.
+> RGMII/RMII.
 
-Git Commit: 0ff41df1cb268fc69e703a08a57ee14ae967d0ca (tag: v6.15)
+... because ? It was missing? Incomplete? You changed hardware?
 
-Bug Location: packet_rcv+0x3d1/0x1590 net/packet/af_packet.c:2208
+Make the commits useful, explain WHY you are doing, not repeating WHAT
+you are doing. What is obvious from the diff. You already got this
+feedback with other patches.
 
-Bug report: https://pastebin.com/vLWYxByZ
+> 
+> Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+> ---
+>  .../bindings/net/faraday,ftgmac100.yaml       | 23 ++++++++++++++++---
+>  1 file changed, 20 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+> index 55d6a8379025..a2e7d439074a 100644
+> --- a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+> +++ b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
+> @@ -6,9 +6,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+>  title: Faraday Technology FTGMAC100 gigabit ethernet controller
+>  
+> -allOf:
+> -  - $ref: ethernet-controller.yaml#
+> -
+>  maintainers:
+>    - Po-Yu Chuang <ratbert@faraday-tech.com>
+>  
+> @@ -35,6 +32,11 @@ properties:
+>        - description: MAC IP clock
+>        - description: RMII RCLK gate for AST2500/2600
+>  
+> +  resets:
+> +    maxItems: 1
+> +    description:
+> +      Optional reset control for the MAC controller
 
-Entire kernel config: https://pastebin.com/jQ30sdLk
+Drop description, redundant and obvious form the schema. It cannot be a
+reset for anything else than MAC controller, because this is the MAC
+controller. It cannot be "non optional" because schema says it is
+optional.
 
-Root Cause Analysis:
-
-The packet_rcv() function causes a soft lockup due to prolonged
-execution of BPF filter evaluation in the packet receive path,
-potentially resulting in unbounded CPU consumption under specific
-traffic or filter configurations without yielding.
-
-At present, I have not yet obtained a minimal reproducer for this
-issue. However, I am actively working on reproducing it, and I will
-promptly share any additional findings or a working reproducer as soon
-as it becomes available.
-
-Thank you very much for your time and attention to this matter. I
-truly appreciate the efforts of the Linux kernel community.
+Write concise and USEFUL descriptions/commit messages, not just
+something to satisfy line/patch count.
 
 Best regards,
-Luka
+Krzysztof
+
