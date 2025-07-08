@@ -1,40 +1,65 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AB41B6D08;
-	Tue,  8 Jul 2025 03:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21AC1DDD1;
+	Tue,  8 Jul 2025 03:17:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751944301; cv=none; b=pmUU5kOoZiN8LZBghbib75CtQ+wDNLEou4lHAbqn6M3iqOELNqg8JdlBTm/bIwkmmEbN39jspVDmXJ40TLHvNBx8Jzyada/spGBpo+yc9qn/qADmLO2JVjddjggdLzUXz6NUYSFjtOYSEncE6JKlOXI6ZiUgZfJ2XilkGaxGGDE=
+	t=1751944639; cv=none; b=sKPIdt+ywNmFV8tBzkExcP0z93mpSf5E/CE0LjExkG0m9yNuH2nVlZQbosfxqqJ2GPSmExdHuGBHckOY2wyDPzvR2ifEswLnDjoV3sA1D+zRdJQF8ine3hvzxoIYqeAb24nmujA9BlvbPiSsUHwBavdFrSngGENwXaX4MnUQ38Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751944301; c=relaxed/simple;
-	bh=Z0NPDqp5NTdgn7YLMA1y4FG+kMg/EMgdDJL/g4Nqm0s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ob1h0GTLEUveeFLWoTBP7t4GYpavoKBAozhwz7pnWKmn+xLK5dqpZHmC2faEfAFE0PYgYUkMEcne4pZjMlgv9rMIeeDmofwEgcgqq5uGQ2EV5lU8eLuhKViQCcuiivYJdRzXthL5bDK7bgZJeXy5OE0Erd9ivSqQjKcby+9GGKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4bbmKH1zsvz13Mkj;
-	Tue,  8 Jul 2025 11:08:51 +0800 (CST)
-Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7366E180B60;
-	Tue,  8 Jul 2025 11:11:28 +0800 (CST)
-Received: from huawei.com (10.175.124.27) by dggpemf500016.china.huawei.com
- (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 8 Jul
- 2025 11:11:27 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <alex.aring@gmail.com>,
-	<dsahern@kernel.org>
-CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
-	<wangliang74@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>,
-	<linux-wpan@vger.kernel.org>
-Subject: [PATCH net-next v3] net: replace ND_PRINTK with dynamic debug
-Date: Tue, 8 Jul 2025 11:33:42 +0800
-Message-ID: <20250708033342.1627636-1-wangliang74@huawei.com>
+	s=arc-20240116; t=1751944639; c=relaxed/simple;
+	bh=6bx/Zz1UqwlsyHy6BhYJRPtyPqCDinDZc1KRINGZhG0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fnflhTsMdYeoxfnGl1WtlCyDCnuLx4CjXrt3Yco57gHOhcbEs728C3zALTSiM9JZ3itM4IRTd1vrNlGn8khveBSAI2KRtFTgRmhqqkMzBCfllr1ivFrDc26rDCjZEnzTjp2/XU5BDwid5hjWFN8CeQeFp96XDr5Ry4tpoJujSgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Z7W406b5; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Z7W406b5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1751944635; x=1783480635;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=6bx/Zz1UqwlsyHy6BhYJRPtyPqCDinDZc1KRINGZhG0=;
+  b=Z7W406b5idZnnXKWsj3yEiO7c6+sa6wNQw0qPmQuR0g0lUDgoZQL8IaE
+   FgT9OVyrApSb/nbxWSE0/UBj7DGkp+nJcPZOzQ7P/Y5hfJI49xw0E3Ale
+   xOcH8gTPumR0AAx/Ma9/RVC4AQ1UsN5unoh/rcycUU8oben9iJ0J2BdAB
+   9RZmcbPxzVnojUhyn/0OcD3KvM8hPPWAXHvACA/95ZA8grppfm/jRrVyB
+   lHF9xQs/mV48xPeb9N0+FJr8vv29wTjDgZODGjdhseI7uoPAMjCpIntkR
+   yzO5AhAflnvwRKgSt28B1hQy7RlRq/JxEEY3s59Roc/DKwiDeaP6Nfpx7
+   g==;
+X-CSE-ConnectionGUID: cVEISvaDRiehsZPvdpmZNg==
+X-CSE-MsgGUID: 8aL1KSujTLOZQqVkxDzNYg==
+X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; 
+   d="scan'208";a="43198298"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Jul 2025 20:17:14 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Mon, 7 Jul 2025 20:16:45 -0700
+Received: from pop-os.microchip.com (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
+ Transport; Mon, 7 Jul 2025 20:16:44 -0700
+From: <Tristram.Ha@microchip.com>
+To: Woojung Huh <woojung.huh@microchip.com>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>, Rob Herring <robh@kernel.org>,
+	"Krzysztof Kozlowski" <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>
+CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
+	<UNGLinuxDriver@microchip.com>, <devicetree@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Tristram Ha
+	<tristram.ha@microchip.com>
+Subject: [PATCH net-next 2/6 v2] net: dsa: microchip: Add KSZ8463 switch support to KSZ DSA driver
+Date: Mon, 7 Jul 2025 20:16:44 -0700
+Message-ID: <20250708031648.6703-3-Tristram.Ha@microchip.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250708031648.6703-1-Tristram.Ha@microchip.com>
+References: <20250708031648.6703-1-Tristram.Ha@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,532 +68,512 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf500016.china.huawei.com (7.185.36.197)
 
-ND_PRINTK with val > 1 only works when the ND_DEBUG was set in compilation
-phase. Replace it with dynamic debug. Convert ND_PRINTK with val <= 1 to
-net_{err,warn}_ratelimited, and convert the rest to net_dbg_ratelimited.
+From: Tristram Ha <tristram.ha@microchip.com>
 
-Suggested-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
+KSZ8463 switch is a 3-port switch based from KSZ8863.  Its major
+difference from other KSZ SPI switches is its register access is not a
+simple continual 8-bit transfer with automatic address increase but uses
+a byte-enable mechanism specifying 8-bit, 16-bit, or 32-bit access.  Its
+registers are also defined in 16-bit format because it shares a design
+with a MAC controller using 16-bit access.  As a result some common
+register accesses need to be re-arranged.  The 64-bit access used by
+other switches needs to be broken into 2 32-bit accesses.
+
+This patch adds the basic structure for using KSZ8463.  It cannot use the
+same regmap table for other KSZ switches as it interprets the 16-bit
+value as little-endian and its SPI commands are different.
+
+KSZ8463's internal PHYs use standard PHY register definitions so there is
+no need to remap things.  However, the hardware has a bug that the high
+word and low word of the PHY id are swapped.  In addition the port
+registers are arranged differently so KSZ8463 has its own mapping for
+port registers and PHY registers.
+
+Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
 ---
-v2:
-- Use dynamic debug instead of sysctl.
-v3:
-- Keep print level.
----
- include/net/ndisc.h |   9 ---
- net/6lowpan/ndisc.c |  16 ++---
- net/ipv6/ndisc.c    | 157 +++++++++++++++++---------------------------
- 3 files changed, 67 insertions(+), 115 deletions(-)
+ drivers/net/dsa/microchip/ksz8.c            |  87 +++++++++++++++
+ drivers/net/dsa/microchip/ksz8.h            |   4 +
+ drivers/net/dsa/microchip/ksz8_reg.h        |  49 +++++++++
+ drivers/net/dsa/microchip/ksz_common.c      | 114 ++++++++++++++++++++
+ drivers/net/dsa/microchip/ksz_common.h      |  33 ++++++
+ drivers/net/dsa/microchip/ksz_spi.c         |  14 +++
+ include/linux/platform_data/microchip-ksz.h |   1 +
+ 7 files changed, 302 insertions(+)
 
-diff --git a/include/net/ndisc.h b/include/net/ndisc.h
-index 3c88d5bc5eed..d38783a2ce57 100644
---- a/include/net/ndisc.h
-+++ b/include/net/ndisc.h
-@@ -60,15 +60,6 @@ enum {
- 
- #include <net/neighbour.h>
- 
--/* Set to 3 to get tracing... */
--#define ND_DEBUG 1
--
--#define ND_PRINTK(val, level, fmt, ...)				\
--do {								\
--	if (val <= ND_DEBUG)					\
--		net_##level##_ratelimited(fmt, ##__VA_ARGS__);	\
--} while (0)
--
- struct ctl_table;
- struct inet6_dev;
- struct net_device;
-diff --git a/net/6lowpan/ndisc.c b/net/6lowpan/ndisc.c
-index c40b98f7743c..868d28583c0a 100644
---- a/net/6lowpan/ndisc.c
-+++ b/net/6lowpan/ndisc.c
-@@ -20,9 +20,8 @@ static int lowpan_ndisc_parse_802154_options(const struct net_device *dev,
- 	switch (nd_opt->nd_opt_len) {
- 	case NDISC_802154_SHORT_ADDR_LENGTH:
- 		if (ndopts->nd_802154_opt_array[nd_opt->nd_opt_type])
--			ND_PRINTK(2, warn,
--				  "%s: duplicated short addr ND6 option found: type=%d\n",
--				  __func__, nd_opt->nd_opt_type);
-+			net_dbg_ratelimited("%s: duplicated short addr ND6 option found: type=%d\n",
-+					    __func__, nd_opt->nd_opt_type);
- 		else
- 			ndopts->nd_802154_opt_array[nd_opt->nd_opt_type] = nd_opt;
- 		return 1;
-@@ -63,8 +62,7 @@ static void lowpan_ndisc_802154_update(struct neighbour *n, u32 flags,
- 			lladdr_short = __ndisc_opt_addr_data(ndopts->nd_802154_opts_src_lladdr,
- 							     IEEE802154_SHORT_ADDR_LEN, 0);
- 			if (!lladdr_short) {
--				ND_PRINTK(2, warn,
--					  "NA: invalid short link-layer address length\n");
-+				net_dbg_ratelimited("NA: invalid short link-layer address length\n");
- 				return;
- 			}
- 		}
-@@ -75,8 +73,7 @@ static void lowpan_ndisc_802154_update(struct neighbour *n, u32 flags,
- 			lladdr_short = __ndisc_opt_addr_data(ndopts->nd_802154_opts_tgt_lladdr,
- 							     IEEE802154_SHORT_ADDR_LEN, 0);
- 			if (!lladdr_short) {
--				ND_PRINTK(2, warn,
--					  "NA: invalid short link-layer address length\n");
-+				net_dbg_ratelimited("NA: invalid short link-layer address length\n");
- 				return;
- 			}
- 		}
-@@ -209,9 +206,8 @@ static void lowpan_ndisc_prefix_rcv_add_addr(struct net *net,
- 						   sllao, tokenized, valid_lft,
- 						   prefered_lft);
- 		if (err)
--			ND_PRINTK(2, warn,
--				  "RA: could not add a short address based address for prefix: %pI6c\n",
--				  &pinfo->prefix);
-+			net_dbg_ratelimited("RA: could not add a short address based address for prefix: %pI6c\n",
-+					    &pinfo->prefix);
- 	}
+diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
+index be433b4e2b1c..92a720ee1f71 100644
+--- a/drivers/net/dsa/microchip/ksz8.c
++++ b/drivers/net/dsa/microchip/ksz8.c
+@@ -3,6 +3,7 @@
+  * Microchip KSZ8XXX series switch driver
+  *
+  * It supports the following switches:
++ * - KSZ8463
+  * - KSZ8863, KSZ8873 aka KSZ88X3
+  * - KSZ8895, KSZ8864 aka KSZ8895 family
+  * - KSZ8794, KSZ8795, KSZ8765 aka KSZ87XX
+@@ -194,6 +195,7 @@ int ksz8_change_mtu(struct ksz_device *dev, int port, int mtu)
+ 	case KSZ8794_CHIP_ID:
+ 	case KSZ8765_CHIP_ID:
+ 		return ksz8795_change_mtu(dev, frame_size);
++	case KSZ8463_CHIP_ID:
+ 	case KSZ88X3_CHIP_ID:
+ 	case KSZ8864_CHIP_ID:
+ 	case KSZ8895_CHIP_ID:
+@@ -1947,6 +1949,91 @@ u32 ksz8_get_port_addr(int port, int offset)
+ 	return PORT_CTRL_ADDR(port, offset);
  }
+ 
++u32 ksz8463_get_port_addr(int port, int offset)
++{
++	return offset + 0x18 * port;
++}
++
++static inline u16 ksz8463_get_phy_addr(u16 phy, u16 reg, u16 offset)
++{
++	return offset + reg * 2 + phy * (P2MBCR - P1MBCR);
++}
++
++int ksz8463_r_phy(struct ksz_device *dev, u16 phy, u16 reg, u16 *val)
++{
++	bool processed = true;
++	u16 sw_reg = 0;
++	u16 data;
++	int ret;
++
++	if (phy > 1)
++		return -ENOSPC;
++	switch (reg) {
++	case MII_PHYSID1:
++		sw_reg = ksz8463_get_phy_addr(phy, 0, PHY1IHR);
++		break;
++	case MII_PHYSID2:
++		sw_reg = ksz8463_get_phy_addr(phy, 0, PHY1ILR);
++		break;
++	case MII_BMCR:
++	case MII_BMSR:
++	case MII_ADVERTISE:
++	case MII_LPA:
++		sw_reg = ksz8463_get_phy_addr(phy, reg, P1MBCR);
++		break;
++
++	/* No MMD access. */
++	case MII_MMD_CTRL:
++	case MII_MMD_DATA:
++		break;
++	case MII_TPISTATUS:
++		/* This register holds the PHY interrupt status for simulated
++		 * Micrel KSZ PHY.
++		 */
++		data = 0x0505;
++		break;
++	default:
++		processed = false;
++		break;
++	}
++	if (processed && sw_reg) {
++		ret = ksz_read16(dev, sw_reg, &data);
++		if (ret)
++			return ret;
++		*val = data;
++	}
++
++	return 0;
++}
++
++int ksz8463_w_phy(struct ksz_device *dev, u16 phy, u16 reg, u16 val)
++{
++	u16 sw_reg = 0;
++	int ret;
++
++	if (phy > 1)
++		return -ENOSPC;
++
++	/* No write to fiber port. */
++	if (dev->ports[phy].fiber)
++		return 0;
++	switch (reg) {
++	case MII_BMCR:
++	case MII_ADVERTISE:
++		sw_reg = ksz8463_get_phy_addr(phy, reg, P1MBCR);
++		break;
++	default:
++		break;
++	}
++	if (sw_reg) {
++		ret = ksz_write16(dev, sw_reg, val);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
+ int ksz8_switch_init(struct ksz_device *dev)
+ {
+ 	dev->cpu_port = fls(dev->info->cpu_ports) - 1;
+diff --git a/drivers/net/dsa/microchip/ksz8.h b/drivers/net/dsa/microchip/ksz8.h
+index e1c79ff97123..0f2cd1474b44 100644
+--- a/drivers/net/dsa/microchip/ksz8.h
++++ b/drivers/net/dsa/microchip/ksz8.h
+@@ -63,4 +63,8 @@ void ksz8_phylink_mac_link_up(struct phylink_config *config,
+ 			      bool tx_pause, bool rx_pause);
+ int ksz8_all_queues_split(struct ksz_device *dev, int queues);
+ 
++u32 ksz8463_get_port_addr(int port, int offset);
++int ksz8463_r_phy(struct ksz_device *dev, u16 phy, u16 reg, u16 *val);
++int ksz8463_w_phy(struct ksz_device *dev, u16 phy, u16 reg, u16 val);
++
  #endif
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index ecb5c4b8518f..1e6a100e9e93 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -243,9 +243,8 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
- 		case ND_OPT_NONCE:
- 		case ND_OPT_REDIRECT_HDR:
- 			if (ndopts->nd_opt_array[nd_opt->nd_opt_type]) {
--				ND_PRINTK(2, warn,
--					  "%s: duplicated ND6 option found: type=%d\n",
--					  __func__, nd_opt->nd_opt_type);
-+				net_dbg_ratelimited("%s: duplicated ND6 option found: type=%d\n",
-+						    __func__, nd_opt->nd_opt_type);
- 			} else {
- 				ndopts->nd_opt_array[nd_opt->nd_opt_type] = nd_opt;
- 			}
-@@ -275,11 +274,8 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
- 			 * to accommodate future extension to the
- 			 * protocol.
- 			 */
--			ND_PRINTK(2, notice,
--				  "%s: ignored unsupported option; type=%d, len=%d\n",
--				  __func__,
--				  nd_opt->nd_opt_type,
--				  nd_opt->nd_opt_len);
-+			net_dbg_ratelimited("%s: ignored unsupported option; type=%d, len=%d\n",
-+					    __func__, nd_opt->nd_opt_type, nd_opt->nd_opt_len);
- 		}
- next_opt:
- 		opt_len -= l;
-@@ -751,9 +747,8 @@ static void ndisc_solicit(struct neighbour *neigh, struct sk_buff *skb)
- 	probes -= NEIGH_VAR(neigh->parms, UCAST_PROBES);
- 	if (probes < 0) {
- 		if (!(READ_ONCE(neigh->nud_state) & NUD_VALID)) {
--			ND_PRINTK(1, dbg,
--				  "%s: trying to ucast probe in NUD_INVALID: %pI6\n",
--				  __func__, target);
-+			net_dbg_ratelimited("%s: trying to ucast probe in NUD_INVALID: %pI6\n",
-+					    __func__, target);
- 		}
- 		ndisc_send_ns(dev, target, target, saddr, 0);
- 	} else if ((probes -= NEIGH_VAR(neigh->parms, APP_PROBES)) < 0) {
-@@ -811,7 +806,7 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
- 		return SKB_DROP_REASON_PKT_TOO_SMALL;
+diff --git a/drivers/net/dsa/microchip/ksz8_reg.h b/drivers/net/dsa/microchip/ksz8_reg.h
+index 329688603a58..8f5845812383 100644
+--- a/drivers/net/dsa/microchip/ksz8_reg.h
++++ b/drivers/net/dsa/microchip/ksz8_reg.h
+@@ -729,6 +729,55 @@
+ #define PHY_POWER_SAVING_ENABLE		BIT(2)
+ #define PHY_REMOTE_LOOPBACK		BIT(1)
  
- 	if (ipv6_addr_is_multicast(&msg->target)) {
--		ND_PRINTK(2, warn, "NS: multicast target address\n");
-+		net_dbg_ratelimited("NS: multicast target address\n");
- 		return reason;
++/* KSZ8463 specific registers. */
++#define P1MBCR				0x4C
++#define P1MBSR				0x4E
++#define PHY1ILR				0x50
++#define PHY1IHR				0x52
++#define P1ANAR				0x54
++#define P1ANLPR				0x58
++#define P2MBCR				0x58
++#define P2MBSR				0x5A
++#define PHY2ILR				0x5C
++#define PHY2IHR				0x5E
++#define P2ANAR				0x60
++#define P2ANLPR				0x62
++
++#define P1CR1				0x6C
++#define P1CR2				0x6E
++#define P1CR3				0x72
++#define P1CR4				0x7E
++#define P1SR				0x80
++
++#define KSZ8463_FLUSH_TABLE_CTRL	0xAD
++
++#define KSZ8463_FLUSH_DYN_MAC_TABLE	BIT(2)
++#define KSZ8463_FLUSH_STA_MAC_TABLE	BIT(1)
++
++#define KSZ8463_REG_SW_CTRL_9		0xAE
++
++#define KSZ8463_REG_CFG_CTRL		0xD8
++
++#define PORT_2_COPPER_MODE		BIT(7)
++#define PORT_1_COPPER_MODE		BIT(6)
++#define PORT_COPPER_MODE_S		6
++
++#define KSZ8463_REG_SW_RESET		0x126
++
++#define KSZ8463_GLOBAL_SOFTWARE_RESET	BIT(0)
++
++#define KSZ8463_PTP_CLK_CTRL		0x600
++
++#define PTP_CLK_ENABLE			BIT(1)
++
++#define KSZ8463_PTP_MSG_CONF1		0x620
++
++#define PTP_ENABLE			BIT(6)
++
++#define KSZ8463_REG_DSP_CTRL_6		0x734
++
++#define COPPER_RECEIVE_ADJUSTMENT	BIT(13)
++
+ /* Chip resource */
+ 
+ #define PRIO_QUEUES			4
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 6e1daf0018bc..095e647b3897 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -331,6 +331,38 @@ static const struct phylink_mac_ops ksz8_phylink_mac_ops = {
+ 	.mac_enable_tx_lpi = ksz_phylink_mac_enable_tx_lpi,
+ };
+ 
++static const struct ksz_dev_ops ksz8463_dev_ops = {
++	.setup = ksz8_setup,
++	.get_port_addr = ksz8463_get_port_addr,
++	.cfg_port_member = ksz8_cfg_port_member,
++	.flush_dyn_mac_table = ksz8_flush_dyn_mac_table,
++	.port_setup = ksz8_port_setup,
++	.r_phy = ksz8463_r_phy,
++	.w_phy = ksz8463_w_phy,
++	.r_mib_cnt = ksz8_r_mib_cnt,
++	.r_mib_pkt = ksz8_r_mib_pkt,
++	.r_mib_stat64 = ksz88xx_r_mib_stats64,
++	.freeze_mib = ksz8_freeze_mib,
++	.port_init_cnt = ksz8_port_init_cnt,
++	.fdb_dump = ksz8_fdb_dump,
++	.fdb_add = ksz8_fdb_add,
++	.fdb_del = ksz8_fdb_del,
++	.mdb_add = ksz8_mdb_add,
++	.mdb_del = ksz8_mdb_del,
++	.vlan_filtering = ksz8_port_vlan_filtering,
++	.vlan_add = ksz8_port_vlan_add,
++	.vlan_del = ksz8_port_vlan_del,
++	.mirror_add = ksz8_port_mirror_add,
++	.mirror_del = ksz8_port_mirror_del,
++	.get_caps = ksz8_get_caps,
++	.config_cpu_port = ksz8_config_cpu_port,
++	.enable_stp_addr = ksz8_enable_stp_addr,
++	.reset = ksz8_reset_switch,
++	.init = ksz8_switch_init,
++	.exit = ksz8_switch_exit,
++	.change_mtu = ksz8_change_mtu,
++};
++
+ static const struct ksz_dev_ops ksz88xx_dev_ops = {
+ 	.setup = ksz8_setup,
+ 	.get_port_addr = ksz8_get_port_addr,
+@@ -517,6 +549,60 @@ static const struct ksz_dev_ops lan937x_dev_ops = {
+ 	.exit = lan937x_switch_exit,
+ };
+ 
++static const u16 ksz8463_regs[] = {
++	[REG_SW_MAC_ADDR]		= 0x10,
++	[REG_IND_CTRL_0]		= 0x30,
++	[REG_IND_DATA_8]		= 0x26,
++	[REG_IND_DATA_CHECK]		= 0x26,
++	[REG_IND_DATA_HI]		= 0x28,
++	[REG_IND_DATA_LO]		= 0x2C,
++	[REG_IND_MIB_CHECK]		= 0x2F,
++	[P_FORCE_CTRL]			= 0x0C,
++	[P_LINK_STATUS]			= 0x0E,
++	[P_LOCAL_CTRL]			= 0x0C,
++	[P_NEG_RESTART_CTRL]		= 0x0D,
++	[P_REMOTE_STATUS]		= 0x0E,
++	[P_SPEED_STATUS]		= 0x0F,
++	[S_TAIL_TAG_CTRL]		= 0xAD,
++	[P_STP_CTRL]			= 0x6F,
++	[S_START_CTRL]			= 0x01,
++	[S_BROADCAST_CTRL]		= 0x06,
++	[S_MULTICAST_CTRL]		= 0x04,
++};
++
++static const u32 ksz8463_masks[] = {
++	[PORT_802_1P_REMAPPING]		= BIT(3),
++	[SW_TAIL_TAG_ENABLE]		= BIT(0),
++	[MIB_COUNTER_OVERFLOW]		= BIT(7),
++	[MIB_COUNTER_VALID]		= BIT(6),
++	[VLAN_TABLE_FID]		= GENMASK(15, 12),
++	[VLAN_TABLE_MEMBERSHIP]		= GENMASK(18, 16),
++	[VLAN_TABLE_VALID]		= BIT(19),
++	[STATIC_MAC_TABLE_VALID]	= BIT(19),
++	[STATIC_MAC_TABLE_USE_FID]	= BIT(21),
++	[STATIC_MAC_TABLE_FID]		= GENMASK(25, 22),
++	[STATIC_MAC_TABLE_OVERRIDE]	= BIT(20),
++	[STATIC_MAC_TABLE_FWD_PORTS]	= GENMASK(18, 16),
++	[DYNAMIC_MAC_TABLE_ENTRIES_H]	= GENMASK(1, 0),
++	[DYNAMIC_MAC_TABLE_MAC_EMPTY]	= BIT(2),
++	[DYNAMIC_MAC_TABLE_NOT_READY]	= BIT(7),
++	[DYNAMIC_MAC_TABLE_ENTRIES]	= GENMASK(31, 24),
++	[DYNAMIC_MAC_TABLE_FID]		= GENMASK(19, 16),
++	[DYNAMIC_MAC_TABLE_SRC_PORT]	= GENMASK(21, 20),
++	[DYNAMIC_MAC_TABLE_TIMESTAMP]	= GENMASK(23, 22),
++};
++
++static u8 ksz8463_shifts[] = {
++	[VLAN_TABLE_MEMBERSHIP_S]	= 16,
++	[STATIC_MAC_FWD_PORTS]		= 16,
++	[STATIC_MAC_FID]		= 22,
++	[DYNAMIC_MAC_ENTRIES_H]		= 8,
++	[DYNAMIC_MAC_ENTRIES]		= 24,
++	[DYNAMIC_MAC_FID]		= 16,
++	[DYNAMIC_MAC_TIMESTAMP]		= 22,
++	[DYNAMIC_MAC_SRC_PORT]		= 20,
++};
++
+ static const u16 ksz8795_regs[] = {
+ 	[REG_SW_MAC_ADDR]		= 0x68,
+ 	[REG_IND_CTRL_0]		= 0x6E,
+@@ -1387,6 +1473,29 @@ static const struct regmap_access_table ksz8873_register_set = {
+ };
+ 
+ const struct ksz_chip_data ksz_switch_chips[] = {
++	[KSZ8463] = {
++		.chip_id = KSZ8463_CHIP_ID,
++		.dev_name = "KSZ8463",
++		.num_vlans = 16,
++		.num_alus = 0,
++		.num_statics = 8,
++		.cpu_ports = 0x4,	/* can be configured as cpu port */
++		.port_cnt = 3,
++		.num_tx_queues = 4,
++		.num_ipms = 4,
++		.ops = &ksz8463_dev_ops,
++		.phylink_mac_ops = &ksz88x3_phylink_mac_ops,
++		.mib_names = ksz88xx_mib_names,
++		.mib_cnt = ARRAY_SIZE(ksz88xx_mib_names),
++		.reg_mib_cnt = MIB_COUNTER_NUM,
++		.regs = ksz8463_regs,
++		.masks = ksz8463_masks,
++		.shifts = ksz8463_shifts,
++		.supports_mii = {false, false, true},
++		.supports_rmii = {false, false, true},
++		.internal_phy = {true, true, false},
++	},
++
+ 	[KSZ8563] = {
+ 		.chip_id = KSZ8563_CHIP_ID,
+ 		.dev_name = "KSZ8563",
+@@ -3400,6 +3509,7 @@ static enum dsa_tag_protocol ksz_get_tag_protocol(struct dsa_switch *ds,
+ 		proto = DSA_TAG_PROTO_KSZ8795;
+ 
+ 	if (dev->chip_id == KSZ88X3_CHIP_ID ||
++	    dev->chip_id == KSZ8463_CHIP_ID ||
+ 	    dev->chip_id == KSZ8563_CHIP_ID ||
+ 	    dev->chip_id == KSZ9893_CHIP_ID ||
+ 	    dev->chip_id == KSZ9563_CHIP_ID)
+@@ -3512,6 +3622,7 @@ static int ksz_max_mtu(struct dsa_switch *ds, int port)
+ 	case KSZ8794_CHIP_ID:
+ 	case KSZ8765_CHIP_ID:
+ 		return KSZ8795_HUGE_PACKET_SIZE - VLAN_ETH_HLEN - ETH_FCS_LEN;
++	case KSZ8463_CHIP_ID:
+ 	case KSZ88X3_CHIP_ID:
+ 	case KSZ8864_CHIP_ID:
+ 	case KSZ8895_CHIP_ID:
+@@ -3866,6 +3977,9 @@ static int ksz_switch_detect(struct ksz_device *dev)
+ 	id2 = FIELD_GET(SW_CHIP_ID_M, id16);
+ 
+ 	switch (id1) {
++	case KSZ84_FAMILY_ID:
++		dev->chip_id = KSZ8463_CHIP_ID;
++		break;
+ 	case KSZ87_FAMILY_ID:
+ 		if (id2 == KSZ87_CHIP_ID_95) {
+ 			u8 val;
+diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
+index a08417df2ca4..3ffca7054983 100644
+--- a/drivers/net/dsa/microchip/ksz_common.h
++++ b/drivers/net/dsa/microchip/ksz_common.h
+@@ -222,6 +222,7 @@ struct ksz_device {
+ 
+ /* List of supported models */
+ enum ksz_model {
++	KSZ8463,
+ 	KSZ8563,
+ 	KSZ8567,
+ 	KSZ8795,
+@@ -761,6 +762,7 @@ static inline bool ksz_is_sgmii_port(struct ksz_device *dev, int port)
+ #define REG_CHIP_ID0			0x00
+ 
+ #define SW_FAMILY_ID_M			GENMASK(15, 8)
++#define KSZ84_FAMILY_ID			0x84
+ #define KSZ87_FAMILY_ID			0x87
+ #define KSZ88_FAMILY_ID			0x88
+ #define KSZ8895_FAMILY_ID		0x95
+@@ -906,6 +908,9 @@ static inline bool ksz_is_sgmii_port(struct ksz_device *dev, int port)
+ #define KSZ_SPI_OP_RD		3
+ #define KSZ_SPI_OP_WR		2
+ 
++#define KSZ8463_SPI_OP_RD	0
++#define KSZ8463_SPI_OP_WR	1
++
+ #define swabnot_used(x)		0
+ 
+ #define KSZ_SPI_OP_FLAG_MASK(opcode, swp, regbits, regpad)		\
+@@ -939,4 +944,32 @@ static inline bool ksz_is_sgmii_port(struct ksz_device *dev, int port)
+ 		[KSZ_REGMAP_32] = KSZ_REGMAP_ENTRY(32, swp, (regbits), (regpad), (regalign)), \
  	}
  
-@@ -820,7 +815,7 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
- 	 * DAD has to be destined for solicited node multicast address.
- 	 */
- 	if (dad && !ipv6_addr_is_solict_mult(daddr)) {
--		ND_PRINTK(2, warn, "NS: bad DAD packet (wrong destination)\n");
-+		net_dbg_ratelimited("NS: bad DAD packet (wrong destination)\n");
- 		return reason;
- 	}
- 
-@@ -830,8 +825,7 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
- 	if (ndopts.nd_opts_src_lladdr) {
- 		lladdr = ndisc_opt_addr_data(ndopts.nd_opts_src_lladdr, dev);
- 		if (!lladdr) {
--			ND_PRINTK(2, warn,
--				  "NS: invalid link-layer address length\n");
-+			net_dbg_ratelimited("NS: invalid link-layer address length\n");
- 			return reason;
- 		}
- 
-@@ -841,8 +835,7 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
- 		 *	in the message.
- 		 */
- 		if (dad) {
--			ND_PRINTK(2, warn,
--				  "NS: bad DAD packet (link-layer address option)\n");
-+			net_dbg_ratelimited("NS: bad DAD packet (link-layer address option)\n");
- 			return reason;
- 		}
- 	}
-@@ -859,10 +852,8 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
- 				if (nonce != 0 && ifp->dad_nonce == nonce) {
- 					u8 *np = (u8 *)&nonce;
- 					/* Matching nonce if looped back */
--					ND_PRINTK(2, notice,
--						  "%s: IPv6 DAD loopback for address %pI6c nonce %pM ignored\n",
--						  ifp->idev->dev->name,
--						  &ifp->addr, np);
-+					net_dbg_ratelimited("%s: IPv6 DAD loopback for address %pI6c nonce %pM ignored\n",
-+							    ifp->idev->dev->name, &ifp->addr, np);
- 					goto out;
- 				}
- 				/*
-@@ -1013,13 +1004,13 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
- 		return SKB_DROP_REASON_PKT_TOO_SMALL;
- 
- 	if (ipv6_addr_is_multicast(&msg->target)) {
--		ND_PRINTK(2, warn, "NA: target address is multicast\n");
-+		net_dbg_ratelimited("NA: target address is multicast\n");
- 		return reason;
- 	}
- 
- 	if (ipv6_addr_is_multicast(daddr) &&
- 	    msg->icmph.icmp6_solicited) {
--		ND_PRINTK(2, warn, "NA: solicited NA is multicasted\n");
-+		net_dbg_ratelimited("NA: solicited NA is multicasted\n");
- 		return reason;
- 	}
- 
-@@ -1038,8 +1029,7 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
- 	if (ndopts.nd_opts_tgt_lladdr) {
- 		lladdr = ndisc_opt_addr_data(ndopts.nd_opts_tgt_lladdr, dev);
- 		if (!lladdr) {
--			ND_PRINTK(2, warn,
--				  "NA: invalid link-layer address length\n");
-+			net_dbg_ratelimited("NA: invalid link-layer address length\n");
- 			return reason;
- 		}
- 	}
-@@ -1060,9 +1050,9 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
- 		   unsolicited advertisement.
- 		 */
- 		if (skb->pkt_type != PACKET_LOOPBACK)
--			ND_PRINTK(1, warn,
--				  "NA: %pM advertised our address %pI6c on %s!\n",
--				  eth_hdr(skb)->h_source, &ifp->addr, ifp->idev->dev->name);
-+			net_warn_ratelimited("NA: %pM advertised our address %pI6c on %s!\n",
-+					     eth_hdr(skb)->h_source, &ifp->addr,
-+					     ifp->idev->dev->name);
- 		in6_ifa_put(ifp);
- 		return reason;
- 	}
-@@ -1149,7 +1139,7 @@ static enum skb_drop_reason ndisc_recv_rs(struct sk_buff *skb)
- 
- 	idev = __in6_dev_get(skb->dev);
- 	if (!idev) {
--		ND_PRINTK(1, err, "RS: can't find in6 device\n");
-+		net_err_ratelimited("RS: can't find in6 device\n");
- 		return reason;
- 	}
- 
-@@ -1257,11 +1247,9 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 	optlen = (skb_tail_pointer(skb) - skb_transport_header(skb)) -
- 		sizeof(struct ra_msg);
- 
--	ND_PRINTK(2, info,
--		  "RA: %s, dev: %s\n",
--		  __func__, skb->dev->name);
-+	net_dbg_ratelimited("RA: %s, dev: %s\n", __func__, skb->dev->name);
- 	if (!(ipv6_addr_type(&ipv6_hdr(skb)->saddr) & IPV6_ADDR_LINKLOCAL)) {
--		ND_PRINTK(2, warn, "RA: source address is not link-local\n");
-+		net_dbg_ratelimited("RA: source address is not link-local\n");
- 		return reason;
- 	}
- 	if (optlen < 0)
-@@ -1269,15 +1257,14 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 
- #ifdef CONFIG_IPV6_NDISC_NODETYPE
- 	if (skb->ndisc_nodetype == NDISC_NODETYPE_HOST) {
--		ND_PRINTK(2, warn, "RA: from host or unauthorized router\n");
-+		net_dbg_ratelimited("RA: from host or unauthorized router\n");
- 		return reason;
- 	}
++#define KSZ8463_REGMAP_ENTRY(width, swp, regbits, regpad, regalign)	\
++	{								\
++		.name = #width,						\
++		.val_bits = (width),					\
++		.reg_stride = 1,					\
++		.reg_bits = (regbits) + (regalign),			\
++		.pad_bits = (regpad),					\
++		.max_register = BIT(regbits) - 1,			\
++		.cache_type = REGCACHE_NONE,				\
++		.read_flag_mask =					\
++			KSZ_SPI_OP_FLAG_MASK(KSZ8463_SPI_OP_RD, swp,	\
++					     regbits, regpad),		\
++		.write_flag_mask =					\
++			KSZ_SPI_OP_FLAG_MASK(KSZ8463_SPI_OP_WR, swp,	\
++					     regbits, regpad),		\
++		.lock = ksz_regmap_lock,				\
++		.unlock = ksz_regmap_unlock,				\
++		.reg_format_endian = REGMAP_ENDIAN_BIG,			\
++		.val_format_endian = REGMAP_ENDIAN_LITTLE		\
++	}
++
++#define KSZ8463_REGMAP_TABLE(ksz, swp, regbits, regpad, regalign)	\
++	static const struct regmap_config ksz##_regmap_config[] = {	\
++		[KSZ_REGMAP_8] = KSZ8463_REGMAP_ENTRY(8, swp, (regbits), (regpad), (regalign)), \
++		[KSZ_REGMAP_16] = KSZ8463_REGMAP_ENTRY(16, swp, (regbits), (regpad), (regalign)), \
++		[KSZ_REGMAP_32] = KSZ8463_REGMAP_ENTRY(32, swp, (regbits), (regpad), (regalign)), \
++	}
++
  #endif
+diff --git a/drivers/net/dsa/microchip/ksz_spi.c b/drivers/net/dsa/microchip/ksz_spi.c
+index b633d263098c..d7ce2d1cc3f0 100644
+--- a/drivers/net/dsa/microchip/ksz_spi.c
++++ b/drivers/net/dsa/microchip/ksz_spi.c
+@@ -16,6 +16,10 @@
  
- 	in6_dev = __in6_dev_get(skb->dev);
- 	if (!in6_dev) {
--		ND_PRINTK(0, err, "RA: can't find inet6 device for %s\n",
--			  skb->dev->name);
-+		net_err_ratelimited("RA: can't find inet6 device for %s\n", skb->dev->name);
- 		return reason;
- 	}
+ #include "ksz_common.h"
  
-@@ -1285,18 +1272,16 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 		return SKB_DROP_REASON_IPV6_NDISC_BAD_OPTIONS;
++#define KSZ8463_SPI_ADDR_SHIFT			13
++#define KSZ8463_SPI_ADDR_ALIGN			1
++#define KSZ8463_SPI_TURNAROUND_SHIFT		2
++
+ #define KSZ8795_SPI_ADDR_SHIFT			12
+ #define KSZ8795_SPI_ADDR_ALIGN			3
+ #define KSZ8795_SPI_TURNAROUND_SHIFT		1
+@@ -28,6 +32,9 @@
+ #define KSZ9477_SPI_ADDR_ALIGN			3
+ #define KSZ9477_SPI_TURNAROUND_SHIFT		5
  
- 	if (!ipv6_accept_ra(in6_dev)) {
--		ND_PRINTK(2, info,
--			  "RA: %s, did not accept ra for dev: %s\n",
--			  __func__, skb->dev->name);
-+		net_dbg_ratelimited("RA: %s, did not accept ra for dev: %s\n", __func__,
-+				    skb->dev->name);
- 		goto skip_linkparms;
- 	}
++KSZ8463_REGMAP_TABLE(ksz8463, 16, KSZ8463_SPI_ADDR_SHIFT,
++		     KSZ8463_SPI_TURNAROUND_SHIFT, KSZ8463_SPI_ADDR_ALIGN);
++
+ KSZ_REGMAP_TABLE(ksz8795, 16, KSZ8795_SPI_ADDR_SHIFT,
+ 		 KSZ8795_SPI_TURNAROUND_SHIFT, KSZ8795_SPI_ADDR_ALIGN);
  
- #ifdef CONFIG_IPV6_NDISC_NODETYPE
- 	/* skip link-specific parameters from interior routers */
- 	if (skb->ndisc_nodetype == NDISC_NODETYPE_NODEFAULT) {
--		ND_PRINTK(2, info,
--			  "RA: %s, nodetype is NODEFAULT, dev: %s\n",
--			  __func__, skb->dev->name);
-+		net_dbg_ratelimited("RA: %s, nodetype is NODEFAULT, dev: %s\n", __func__,
-+				    skb->dev->name);
- 		goto skip_linkparms;
- 	}
- #endif
-@@ -1325,18 +1310,16 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 		send_ifinfo_notify = true;
+@@ -58,6 +65,8 @@ static int ksz_spi_probe(struct spi_device *spi)
+ 	dev->chip_id = chip->chip_id;
+ 	if (chip->chip_id == KSZ88X3_CHIP_ID)
+ 		regmap_config = ksz8863_regmap_config;
++	else if (chip->chip_id == KSZ8463_CHIP_ID)
++		regmap_config = ksz8463_regmap_config;
+ 	else if (chip->chip_id == KSZ8795_CHIP_ID ||
+ 		 chip->chip_id == KSZ8794_CHIP_ID ||
+ 		 chip->chip_id == KSZ8765_CHIP_ID)
+@@ -125,6 +134,10 @@ static void ksz_spi_shutdown(struct spi_device *spi)
+ }
  
- 	if (!READ_ONCE(in6_dev->cnf.accept_ra_defrtr)) {
--		ND_PRINTK(2, info,
--			  "RA: %s, defrtr is false for dev: %s\n",
--			  __func__, skb->dev->name);
-+		net_dbg_ratelimited("RA: %s, defrtr is false for dev: %s\n", __func__,
-+				    skb->dev->name);
- 		goto skip_defrtr;
- 	}
+ static const struct of_device_id ksz_dt_ids[] = {
++	{
++		.compatible = "microchip,ksz8463",
++		.data = &ksz_switch_chips[KSZ8463]
++	},
+ 	{
+ 		.compatible = "microchip,ksz8765",
+ 		.data = &ksz_switch_chips[KSZ8765]
+@@ -214,6 +227,7 @@ static const struct of_device_id ksz_dt_ids[] = {
+ MODULE_DEVICE_TABLE(of, ksz_dt_ids);
  
- 	lifetime = ntohs(ra_msg->icmph.icmp6_rt_lifetime);
- 	if (lifetime != 0 &&
- 	    lifetime < READ_ONCE(in6_dev->cnf.accept_ra_min_lft)) {
--		ND_PRINTK(2, info,
--			  "RA: router lifetime (%ds) is too short: %s\n",
--			  lifetime, skb->dev->name);
-+		net_dbg_ratelimited("RA: router lifetime (%ds) is too short: %s\n", lifetime,
-+				    skb->dev->name);
- 		goto skip_defrtr;
- 	}
+ static const struct spi_device_id ksz_spi_ids[] = {
++	{ "ksz8463" },
+ 	{ "ksz8765" },
+ 	{ "ksz8794" },
+ 	{ "ksz8795" },
+diff --git a/include/linux/platform_data/microchip-ksz.h b/include/linux/platform_data/microchip-ksz.h
+index 0e0e8fe6975f..028781ad4059 100644
+--- a/include/linux/platform_data/microchip-ksz.h
++++ b/include/linux/platform_data/microchip-ksz.h
+@@ -23,6 +23,7 @@
+ #include <linux/platform_data/dsa.h>
  
-@@ -1346,9 +1329,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 	net = dev_net(in6_dev->dev);
- 	if (!READ_ONCE(in6_dev->cnf.accept_ra_from_local) &&
- 	    ipv6_chk_addr(net, &ipv6_hdr(skb)->saddr, in6_dev->dev, 0)) {
--		ND_PRINTK(2, info,
--			  "RA from local address detected on dev: %s: default router ignored\n",
--			  skb->dev->name);
-+		net_dbg_ratelimited("RA from local address detected on dev: %s: default router ignored\n",
-+				    skb->dev->name);
- 		goto skip_defrtr;
- 	}
- 
-@@ -1366,9 +1348,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 					 rt->fib6_nh->fib_nh_dev, NULL,
- 					  &ipv6_hdr(skb)->saddr);
- 		if (!neigh) {
--			ND_PRINTK(0, err,
--				  "RA: %s got default router without neighbour\n",
--				  __func__);
-+			net_err_ratelimited("RA: %s got default router without neighbour\n",
-+					    __func__);
- 			fib6_info_release(rt);
- 			return reason;
- 		}
-@@ -1381,10 +1362,10 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 		rt = NULL;
- 	}
- 
--	ND_PRINTK(3, info, "RA: rt: %p  lifetime: %d, metric: %d, for dev: %s\n",
--		  rt, lifetime, defrtr_usr_metric, skb->dev->name);
-+	net_dbg_ratelimited("RA: rt: %p  lifetime: %d, metric: %d, for dev: %s\n", rt, lifetime,
-+			    defrtr_usr_metric, skb->dev->name);
- 	if (!rt && lifetime) {
--		ND_PRINTK(3, info, "RA: adding default router\n");
-+		net_dbg_ratelimited("RA: adding default router\n");
- 
- 		if (neigh)
- 			neigh_release(neigh);
-@@ -1393,9 +1374,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 					 skb->dev, pref, defrtr_usr_metric,
- 					 lifetime);
- 		if (!rt) {
--			ND_PRINTK(0, err,
--				  "RA: %s failed to add default route\n",
--				  __func__);
-+			net_err_ratelimited("RA: %s failed to add default route\n", __func__);
- 			return reason;
- 		}
- 
-@@ -1403,9 +1382,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 					 rt->fib6_nh->fib_nh_dev, NULL,
- 					  &ipv6_hdr(skb)->saddr);
- 		if (!neigh) {
--			ND_PRINTK(0, err,
--				  "RA: %s got default router without neighbour\n",
--				  __func__);
-+			net_err_ratelimited("RA: %s got default router without neighbour\n",
-+					    __func__);
- 			fib6_info_release(rt);
- 			return reason;
- 		}
-@@ -1436,7 +1414,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 			fib6_metric_set(rt, RTAX_HOPLIMIT,
- 					ra_msg->icmph.icmp6_hop_limit);
- 		} else {
--			ND_PRINTK(2, warn, "RA: Got route advertisement with lower hop_limit than minimum\n");
-+			net_dbg_ratelimited("RA: Got route advertisement with lower hop_limit than minimum\n");
- 		}
- 	}
- 
-@@ -1492,8 +1470,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 			lladdr = ndisc_opt_addr_data(ndopts.nd_opts_src_lladdr,
- 						     skb->dev);
- 			if (!lladdr) {
--				ND_PRINTK(2, warn,
--					  "RA: invalid link-layer address length\n");
-+				net_dbg_ratelimited("RA: invalid link-layer address length\n");
- 				goto out;
- 			}
- 		}
-@@ -1507,9 +1484,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 	}
- 
- 	if (!ipv6_accept_ra(in6_dev)) {
--		ND_PRINTK(2, info,
--			  "RA: %s, accept_ra is false for dev: %s\n",
--			  __func__, skb->dev->name);
-+		net_dbg_ratelimited("RA: %s, accept_ra is false for dev: %s\n", __func__,
-+				    skb->dev->name);
- 		goto out;
- 	}
- 
-@@ -1517,9 +1493,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 	if (!READ_ONCE(in6_dev->cnf.accept_ra_from_local) &&
- 	    ipv6_chk_addr(dev_net(in6_dev->dev), &ipv6_hdr(skb)->saddr,
- 			  in6_dev->dev, 0)) {
--		ND_PRINTK(2, info,
--			  "RA from local address detected on dev: %s: router info ignored.\n",
--			  skb->dev->name);
-+		net_dbg_ratelimited("RA from local address detected on dev: %s: router info ignored.\n",
-+				    skb->dev->name);
- 		goto skip_routeinfo;
- 	}
- 
-@@ -1555,9 +1530,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- #ifdef CONFIG_IPV6_NDISC_NODETYPE
- 	/* skip link-specific ndopts from interior routers */
- 	if (skb->ndisc_nodetype == NDISC_NODETYPE_NODEFAULT) {
--		ND_PRINTK(2, info,
--			  "RA: %s, nodetype is NODEFAULT (interior routes), dev: %s\n",
--			  __func__, skb->dev->name);
-+		net_dbg_ratelimited("RA: %s, nodetype is NODEFAULT (interior routes), dev: %s\n",
-+				    __func__, skb->dev->name);
- 		goto out;
- 	}
- #endif
-@@ -1586,7 +1560,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 		}
- 
- 		if (mtu < IPV6_MIN_MTU || mtu > skb->dev->mtu) {
--			ND_PRINTK(2, warn, "RA: invalid mtu: %d\n", mtu);
-+			net_dbg_ratelimited("RA: invalid mtu: %d\n", mtu);
- 		} else if (READ_ONCE(in6_dev->cnf.mtu6) != mtu) {
- 			WRITE_ONCE(in6_dev->cnf.mtu6, mtu);
- 			fib6_metric_set(rt, RTAX_MTU, mtu);
-@@ -1605,7 +1579,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 	}
- 
- 	if (ndopts.nd_opts_tgt_lladdr || ndopts.nd_opts_rh) {
--		ND_PRINTK(2, warn, "RA: invalid RA options\n");
-+		net_dbg_ratelimited("RA: invalid RA options\n");
- 	}
- out:
- 	/* Send a notify if RA changed managed/otherconf flags or
-@@ -1633,15 +1607,13 @@ static enum skb_drop_reason ndisc_redirect_rcv(struct sk_buff *skb)
- 	switch (skb->ndisc_nodetype) {
- 	case NDISC_NODETYPE_HOST:
- 	case NDISC_NODETYPE_NODEFAULT:
--		ND_PRINTK(2, warn,
--			  "Redirect: from host or unauthorized router\n");
-+		net_dbg_ratelimited("Redirect: from host or unauthorized router\n");
- 		return reason;
- 	}
- #endif
- 
- 	if (!(ipv6_addr_type(&ipv6_hdr(skb)->saddr) & IPV6_ADDR_LINKLOCAL)) {
--		ND_PRINTK(2, warn,
--			  "Redirect: source address is not link-local\n");
-+		net_dbg_ratelimited("Redirect: source address is not link-local\n");
- 		return reason;
- 	}
- 
-@@ -1702,15 +1674,13 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
- 	}
- 
- 	if (ipv6_get_lladdr(dev, &saddr_buf, IFA_F_TENTATIVE)) {
--		ND_PRINTK(2, warn, "Redirect: no link-local address on %s\n",
--			  dev->name);
-+		net_dbg_ratelimited("Redirect: no link-local address on %s\n", dev->name);
- 		return;
- 	}
- 
- 	if (!ipv6_addr_equal(&ipv6_hdr(skb)->daddr, target) &&
- 	    ipv6_addr_type(target) != (IPV6_ADDR_UNICAST|IPV6_ADDR_LINKLOCAL)) {
--		ND_PRINTK(2, warn,
--			  "Redirect: target address is not link-local unicast\n");
-+		net_dbg_ratelimited("Redirect: target address is not link-local unicast\n");
- 		return;
- 	}
- 
-@@ -1729,8 +1699,7 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
- 	rt = dst_rt6_info(dst);
- 
- 	if (rt->rt6i_flags & RTF_GATEWAY) {
--		ND_PRINTK(2, warn,
--			  "Redirect: destination is not a neighbour\n");
-+		net_dbg_ratelimited("Redirect: destination is not a neighbour\n");
- 		goto release;
- 	}
- 
-@@ -1743,8 +1712,7 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
- 	if (dev->addr_len) {
- 		struct neighbour *neigh = dst_neigh_lookup(skb_dst(skb), target);
- 		if (!neigh) {
--			ND_PRINTK(2, warn,
--				  "Redirect: no neigh for target address\n");
-+			net_dbg_ratelimited("Redirect: no neigh for target address\n");
- 			goto release;
- 		}
- 
-@@ -1845,14 +1813,12 @@ enum skb_drop_reason ndisc_rcv(struct sk_buff *skb)
- 	__skb_push(skb, skb->data - skb_transport_header(skb));
- 
- 	if (ipv6_hdr(skb)->hop_limit != 255) {
--		ND_PRINTK(2, warn, "NDISC: invalid hop-limit: %d\n",
--			  ipv6_hdr(skb)->hop_limit);
-+		net_dbg_ratelimited("NDISC: invalid hop-limit: %d\n", ipv6_hdr(skb)->hop_limit);
- 		return SKB_DROP_REASON_IPV6_NDISC_HOP_LIMIT;
- 	}
- 
- 	if (msg->icmph.icmp6_code != 0) {
--		ND_PRINTK(2, warn, "NDISC: invalid ICMPv6 code: %d\n",
--			  msg->icmph.icmp6_code);
-+		net_dbg_ratelimited("NDISC: invalid ICMPv6 code: %d\n", msg->icmph.icmp6_code);
- 		return SKB_DROP_REASON_IPV6_NDISC_BAD_CODE;
- 	}
- 
-@@ -2003,9 +1969,8 @@ static int __net_init ndisc_net_init(struct net *net)
- 	err = inet_ctl_sock_create(&sk, PF_INET6,
- 				   SOCK_RAW, IPPROTO_ICMPV6, net);
- 	if (err < 0) {
--		ND_PRINTK(0, err,
--			  "NDISC: Failed to initialize the control socket (err %d)\n",
--			  err);
-+		net_err_ratelimited("NDISC: Failed to initialize the control socket (err %d)\n",
-+				    err);
- 		return err;
- 	}
- 
+ enum ksz_chip_id {
++	KSZ8463_CHIP_ID = 0x8463,
+ 	KSZ8563_CHIP_ID = 0x8563,
+ 	KSZ8795_CHIP_ID = 0x8795,
+ 	KSZ8794_CHIP_ID = 0x8794,
 -- 
 2.34.1
 
