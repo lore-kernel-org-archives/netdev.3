@@ -1,97 +1,119 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F08917CA17;
-	Tue,  8 Jul 2025 10:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952EE285406;
+	Tue,  8 Jul 2025 10:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751971536; cv=none; b=qEk7fNBw24zibqBX+QUSRaM3+2Zorb3VtNBzoOK63u01HfEZb3kgxb2laFKFr30bW6XOjXQqPBR20oYDGQvDJqEMhyrnOt2wWzfZtl3ylZum2+9r5vt4RVmTCZAn8TL+ycbRZDluEXybT6JZYaO8WIACVMVvYz2sSmeHi/XRqao=
+	t=1751971583; cv=none; b=ol2Qt0XLvc2Jlk3kLOmOUVSoX0eIXSuaG72zGn/gCIlur71hBjXE23HFU8lK8kaKtmZrI+3Wl6RuLnQH+2viW9rT/iexDzJunpWCXMhFpfYFuKJb6+GhULMnBb+iSpS+D346y7SEkSyQN+Kt6SkqAb2zc+7hIQIL8AffLjjB+7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751971536; c=relaxed/simple;
-	bh=HSewAqhrTyK3ZVdcaOzrW5/o9Q0lTTzZYLPkKS9Ox8E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZrdScENM8odznKJ6MgE8RkLCVo6oHc4RmiO+kuC5NvEAVIchuNIn3uZPgBMVpIJM3LzXow7be7lUX25NbR4rOH0Mo01VnjAD2K1dA/bw9J28wFm70RgyeKrbZCmVqE5r5UBg72mZcLV4G6AgOtFqdjvMy93oy2oi56w/jYORIJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IAxNgi4H; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1751971583; c=relaxed/simple;
+	bh=ttQdL4tyQurb7Z1wSbCsRxZJsqZPUc/X/CgglrwIu14=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZTwgpqY+pf2qp4Jmo0QfaWQv2oFVFasUs5iXwUaC3xl1N0rIhjIzsYVYZcsbMc5S6D21Nql/sDCG0kGa/cqlfSF2STDLuY7CtrYV9kQeNIAbenLVNYzs51909f4ppmEGJIjqVtAxzqwe3gCZWhZjIPay5+k112RZiSNN3WuvGoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SOgprKRY; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IAxNgi4H"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-235248ba788so3316875ad.0;
-        Tue, 08 Jul 2025 03:45:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SOgprKRY"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6097d144923so8635862a12.1;
+        Tue, 08 Jul 2025 03:46:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751971534; x=1752576334; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HSewAqhrTyK3ZVdcaOzrW5/o9Q0lTTzZYLPkKS9Ox8E=;
-        b=IAxNgi4HIKGbQ/aUU+AbpOwHwd6lw5U2RGEVYDuVAXKgG+y3bymw9tZGQ+H0+AmhcZ
-         wV1XluQ3ua/uxQPUUEpix0h1vcXKi/GIYu6BIIFtmtjW8UZfmp7OgfR631+Hltt+5EjL
-         BVNEALKGlyf3tp7+uJtqKqeCZc/oDGXjJknb41t04cIz5cPf+VkN23vQOQKxcla9vf1A
-         muVT66yY9WEHvBrCtUSYn+IFVfI4t2GUOuij1o8vjhUF1vOAbmt/nufiEg/wi7ieexjz
-         kA062RcuaIwqa0aXDDBu13UQgFhcTyvgUpprWu6NbtUhGaccMI5dkX1UzUXYIWrVX0uu
-         YscQ==
+        d=gmail.com; s=20230601; t=1751971580; x=1752576380; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bSzcIEqfBflq6COaUtvcLoPgJp3tB4sR1/TnOwFihkA=;
+        b=SOgprKRYqIpbW8DXPVRJdagcwxSYNWGoMEJj7hwwBVXxlVM13CGz8X5abrJBEEXO+5
+         nN+WPOR+lqVeuw0gKWa/MCBwnl4UwA0vbhJBzIOnlBEvZw8sEDzTa6PlhcRJKqebEEKf
+         V9wv6SUeHXISVFE1o2UeUq4M2CXKSw9wc2PRlcA7LnbUUj2mlNmMIVoUPPU8Hhiy0h6C
+         6fWaecI9Oe+XC7AtrBcfnIqTgM1LnkAEwK4k7+Cb/B6x8rmVNa0boA2e57CnQHd1WkKH
+         kzN3Bx7dhVhmtjkLljwioxpRAH4oZMDUlNk1a1Ya7T7IzdJ6lVdmJ5p4sxvuhjBE/7o2
+         Kvxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751971534; x=1752576334;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HSewAqhrTyK3ZVdcaOzrW5/o9Q0lTTzZYLPkKS9Ox8E=;
-        b=Tw8m4QgbKzlXkxhyb7jHulHWRkrNK8s0bM/Aq9V5stsN9g4cW36tjINUuBpeNb04eS
-         Nc6UaZIBsiMxUkky27RwlKNgIrqsOqfbAn8hNAD7+ttLK8K0JZVdmGShczKsgpCTm5QQ
-         WklicEg5MPZ1i2zz1NgIQnC9gxE3c78WC5h3bP8YSRKLq+KqDbMqpFz3+Qt5kv0IZJdB
-         dxGXdR+4P1sDME4VmlnEHInBX1yB635L5yKCOZXNMERwST13tr8Gtu/zmZjb3B+IDjOQ
-         ESH97QFw4xNGaQZnUT/MbB2245rtkvjPHI36cbXsOTalcUZiUbpWYbfmh+2GA4jcbyqu
-         KNMw==
-X-Forwarded-Encrypted: i=1; AJvYcCVQ7pUiz7ZE/j4YHIQqJ6vmNM5OQLwn3LWoU80M0VjeVMN2l8lODXJKNOhPo0bU4/Qf8SMTd91u10st@vger.kernel.org, AJvYcCVRLod7NL8nj8rS/I2lfvBQKay7R1wnVsxeB+S4fil4AY+bMtK76i7IQXZyy5mjgrm2LYEZVk3VgDHXyfoW@vger.kernel.org, AJvYcCVTpXOMLsNMgFjY/piNSQ0hWOMgDs68GMtvRhbzGO4siObE6Kc94KITzAHyaCKWoHIwmOD8VGMf98Yr@vger.kernel.org, AJvYcCWI9P/T8kr+N0c86EtmeqU0nd7onR/idHp8HPyj+sA38yfic/uI33+bNQTsdp8KRziF82b8fNj3@vger.kernel.org, AJvYcCXJ//ytmM12ZVB8H+yDVQbbnsd737UVsKGmIVtj2u2b08UaLOpU1SSkYLH57p46S+tOGb/cL0HxPbz5Aowpr2k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOUGVUCpX68xuKruetSkWa6Z8FPofrsB0bk/NPtgRVc7TTa25O
-	PZ4JeDUwUoLoI3roif10XbqDTulown1ol1dl0I+85oJp6X/5CLzFJcNNI4EC5XrL55acAAzlH2P
-	/6jgfhX72qsHY5jZbbyQzQQDkiSik9ns=
-X-Gm-Gg: ASbGncuGO4qhHZYGPqeIpRoefwOx+hDB5yh2EnaW5GBbnsoaiPZh4aiu5Vbf33Emg6j
-	gc+nSA1Vg5Z3qbMX1fxzmhrBSGri3/Ldf3BW1Daw9fD2EdvwADzCqyZPE8StGa1KQQruXD3Y9CM
-	nkNxOwXt38LdI7VG/CKZZRKTSgRr4Tp3qK+jvCvm4ou9T0
-X-Google-Smtp-Source: AGHT+IEm3L7c8trcBPYqjxR6Ocp3T5kI3YMJkezrxQ89TyjzbFAZ+sfEnGRzsDPR5wrlqq6qJ/XkY9027ytzzYYdHeg=
-X-Received: by 2002:a17:902:e806:b0:234:bfe3:c4b8 with SMTP id
- d9443c01a7336-23c85eae541mr82553265ad.2.1751971533736; Tue, 08 Jul 2025
- 03:45:33 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751971580; x=1752576380;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bSzcIEqfBflq6COaUtvcLoPgJp3tB4sR1/TnOwFihkA=;
+        b=pgqTBwOj39EEzhZaP/HDDUMGlXLmfUZM/fs7uOOht8ZRYe+wJJfY+5sHrWUnhsTzOY
+         f5kPU+Ut6e28B6yzrrwMWdVUy9RlmpOxGYbSJ7n+K47Ms4vIGni/rQ1a/nBvnN3Ied0g
+         QzY0aBAlLLGNP+EB5BOpFdZRNxw32HR48NkFU7RuvqEyRw2DPDq6RSQ6uoImFf1Rb9vv
+         bZvxSBGI4EvhDf3lAdLktsEzsPAChKOSDoHel38Lqy1JaOeMFp89F+0DqWhm5WhrnXPk
+         fPdfVvyGvS3diQS+SWGxsEWdKPnhYVPIi8xKOIc3YU/Lmo9DkZSvH1rm9JfW3Q1HnVSs
+         iPUw==
+X-Forwarded-Encrypted: i=1; AJvYcCUGQgtEANpyRuwtAoNERW6hCgqTOR5cfy+CJcQn4sypC2PNlhOZUYCMWhY+LrTfdt/f6ACPM821VbyvYmo=@vger.kernel.org, AJvYcCV8qo1KGAmzuCz7fypakPJ5ldELwwVvphdkwSWRZeB/4+3Ga5UYI+kXkFapatYYwn1UQpHrgu0J@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUzyMROOEQ7HZ4Kz0sB3e3lAiiZlHvDYI/TVLmWKhmQd9GuL6j
+	jfSxxnepH2NRP3QkhbymJKVIlN51tBFHnEYZrMX2L0xCOPgolxiTTeFA
+X-Gm-Gg: ASbGncseQxE7FGSKEfGnYXDZAvItTI5uM8hAcCDylH8EBunW9y9hLFr5sXtsb0fOw5D
+	o/FZdvr+eo3Gem62Bt4fP7n3WZdl7Rk23GK0cR2W04chOFM+3+BhK2oil8M1/0ZyH6XBazdlH3a
+	GYsS163KZB3adkLJvjIGgVMvWPpl3QJ8mihn9BwD3DagS/cxk/Uj8rLOibmqoxGV9utY2XaWH/+
+	WW3Hah0rTyf2Rc4Iueof3cDib7G3JrzNX8ygaNWVfstx+sdllk7UTw7ipnIJHyOFFhU4bcfuys5
+	R4G7k7bRJYE/M5KBK8K2qlvQ0O4kMpSgt/zgJEhI8n8zJZyjyyR3wNW0AVxVbMYGwN/QXMAJDZU
+	=
+X-Google-Smtp-Source: AGHT+IGW8g7ypOx9xc5K0Ao5r6G+yDtrL+5c3NK/QrAUPDGwatJ+zP5X+l3M8rjoQKaiPuNFWlUIQg==
+X-Received: by 2002:a05:6402:691:b0:609:a4af:ae8 with SMTP id 4fb4d7f45d1cf-6104c079afemr1674355a12.11.1751971579599;
+        Tue, 08 Jul 2025 03:46:19 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::1ac? ([2620:10d:c092:600::1:4dfd])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60fc81a70e4sm6850991a12.0.2025.07.08.03.46.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Jul 2025 03:46:18 -0700 (PDT)
+Message-ID: <edff4079-294e-4428-a2fa-f69bf9578785@gmail.com>
+Date: Tue, 8 Jul 2025 11:47:46 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250704041003.734033-1-fujita.tomonori@gmail.com> <20250707175350.1333bd59@kernel.org>
-In-Reply-To: <20250707175350.1333bd59@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 8 Jul 2025 12:45:20 +0200
-X-Gm-Features: Ac12FXyxXkuLp9PUeC-mS4nwqMQ5TUf2kfGzbt31LyPz8JoP83cE9x-RhgyyVJM
-Message-ID: <CANiq72=LUKSx6Sb4ks7Df6pyNMVQFnUY8Jn6TpoRQt-Eh5bt8w@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] rust: Build PHY device tables by using
- module_device_table macro
-To: Jakub Kicinski <kuba@kernel.org>, gregkh@linuxfoundation.org, robh@kernel.org, 
-	saravanak@google.com
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, alex.gaynor@gmail.com, dakr@kernel.org, 
-	ojeda@kernel.org, rafael@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, bhelgaas@google.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, david.m.ertman@intel.com, devicetree@vger.kernel.org, 
-	gary@garyguo.net, ira.weiny@intel.com, kwilczynski@kernel.org, 
-	leon@kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
-	lossin@kernel.org, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC net-next 1/4] net: Allow non parent devices to be used for
+ ZC DMA
+To: Mina Almasry <almasrymina@google.com>,
+ Dragos Tatulea <dtatulea@nvidia.com>
+Cc: Parav Pandit <parav@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Cosmin Ratiu <cratiu@nvidia.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20250702172433.1738947-1-dtatulea@nvidia.com>
+ <20250702172433.1738947-2-dtatulea@nvidia.com>
+ <20250702113208.5adafe79@kernel.org>
+ <c5pxc7ppuizhvgasy57llo2domksote5uvo54q65shch3sqmkm@bgcnojnxt4hh>
+ <20250702135329.76dbd878@kernel.org>
+ <CY8PR12MB7195361C14592016B8D2217DDC43A@CY8PR12MB7195.namprd12.prod.outlook.com>
+ <22kf5wtxym5x3zllar7ek3onkav6nfzclf7w2lzifhebjme4jb@h4qycdqmwern>
+ <CAHS8izN-yJ1tm0uUvQxq327-bU1Vzj8JVc6bqns0CwNnWhc_XQ@mail.gmail.com>
+ <sdy27zexcqivv4bfccu36koe4feswl5panavq3t2k6nndugve3@bcbbjxiciaow>
+ <CAHS8izPTBY9vL-H31t26kEc4Y4UEMm+jW0K0NtbqmcsOA9s4Cw@mail.gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <CAHS8izPTBY9vL-H31t26kEc4Y4UEMm+jW0K0NtbqmcsOA9s4Cw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 8, 2025 at 2:53=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-> Does not apply to networking trees so I suspect someone else will take
-> these:
->
-> Acked-by: Jakub Kicinski <kuba@kernel.org>
+On 7/7/25 22:55, Mina Almasry wrote:
+> On Mon, Jul 7, 2025 at 2:35 PM Dragos Tatulea <dtatulea@nvidia.com> wrote:
+...>> Right. My patches show that. But the issue raised by Parav is different:
+>> different queues can belong to different DMA devices from different
+>> PFs in the case of Multi PF netdev.
+>>
+>> io_uring can do it because it maps individual buffers to individual
+>> queues. So it would be trivial to get the DMA device of each queue through
+>> a new queue op.
+>>
+> 
+> Right, devmem doesn't stop you from mapping individual buffers to
+> individual queues. It just also supports mapping the same buffer to
+> multiple queues. AFAIR, io_uring also supports mapping a single buffer
+> to multiple queues, but I could easily be very wrong about that. It's
 
-Thanks! Happy to take it through Rust tree if that is best.
+It doesn't, but it could benefit from sharing depending on userspace,
+so it might eventually come to the same problem.
 
-Greg, Rob/Saravana: Acked-by's for auxiliary and OF (in patch #1)
-appreciated, thanks!
+-- 
+Pavel Begunkov
 
-Cheers,
-Miguel
