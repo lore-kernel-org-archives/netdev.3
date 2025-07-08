@@ -1,238 +1,574 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433881E5215;
-	Tue,  8 Jul 2025 03:05:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751943907; cv=fail; b=GrDKeLBh579P+qDv7woWcw6PXhVdlUnfSm94gQwkm/IWjjLyRW11gNZtqzzDFikPG7+1zAzG4gZ3O/0uVPkTU5UJTePcE0VIrwlETygdmkcXpDxttMp9/R2Mi9/q4ADZsghK9SHCAww/XS4HW2qxiXiCM2hRZFyyW/FQlPbPxRE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751943907; c=relaxed/simple;
-	bh=Pgi33Qhz9RgvYgVgiTlAo/1jfY/7c8/isyv3WKQXxnU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=UriDFTkH8t762KB4UtD5KRRVnVbDz7EJQa/grSFScs1ARUUBbHbvCla7vLsWySoIM/Y4F3yxGddDiLm8pE0Ch/EWZLNBpeBv/6umN1fDl1BIsu/Uy0clu3Jo5A9yRPjeVAEmuBIxBS6jdFHmlNjdeF3DVPRllI2vQW1s85e/kGU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=DcDaFq7E; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=vEECTWPy; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="DcDaFq7E";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="vEECTWPy"
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5681ZCYf027482;
-	Tue, 8 Jul 2025 03:04:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=rU2MSiu18z1zDHtpfzFrJC4V4NI377HTUmzL/NuE8gQ=; b=
-	DcDaFq7EoCQi7R4eSfx+7ERqH5Fqn+NUhoTo97gDIss8yQcwQzvnsKKlyKUsuRfh
-	PoCa/5OuDPfdDTaqpcTEvcauwrHATkIYrhjLTtwYFahBzWYBQWSsTs8Cye78r8BU
-	J0E1Npn0/QbIsyU8VZv90vrpKbjjvqHZfYVHcf5yA3PLEKIORvuH/fA/Ezxby3gb
-	m1cDJZ9vrk2EAYa/ZdMx84sPCfr4T80kcnVyImE9de/OVv9b2ub48o5zhFfnCKwI
-	lIg9tTI1fE4rVpIVXyUwU4bfx0WG3pMrsvi06hXsV6wVa5PZna05aN1Az6AQYZeK
-	QqhM6IvJZzNVNR0nrsgSYw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47rrgjr53q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 08 Jul 2025 03:04:53 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5681nnUZ040631;
-	Tue, 8 Jul 2025 03:04:52 GMT
-Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam04on2084.outbound.protection.outlook.com [40.107.101.84])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47ptg99mvs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 08 Jul 2025 03:04:52 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AMD8ul9yxozcRREKws7CaH8u89Kpr6+a1VJufI7/7CqXGQV5GlXVQz9xSJjeHgC49NwCgTWeyQ2VSAbG8Mw0LJ3hUe2nIKId6Acjv8ejBd9v4UZO/xPv2iXuPCEqsELj5AMwYkda0/XlF2VHafV22fAmnirkTELieTKbhPOtGpFGAwCORlz3sWyOO/LnA1EStF3VnITqjEPMp/SAD70A2lbbf6ezCNbbVD1v+HlpuvQvDGXBxLbxO8sPrKjZRnXirxNUPhvB6ZNgVcXsN8Aa62Q3PiZbN1jvKkhsjXs/JT9kKBkoOlnmOZsR420IAd5fDS4LbB9qJDR8wOs7VdfiAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rU2MSiu18z1zDHtpfzFrJC4V4NI377HTUmzL/NuE8gQ=;
- b=CkpJH+NdYjodf0N7ppLPAn0OQz2WjxMqlvTKelbOqNVORt2PwRAy1dbTQf7V7djlguEXDtWdOAtBPla+6hQ18jTfVAX25MKzu9mIFuM+ulXLLxencA0YOYMb/vbMpjolTCuyj0MnVKCGasBE5ydFq/5betDxupEDp22rNW30BF2RP2AG/Jxm9+GIVz/mDlCNywOkUiOftcB05OxmewJttPQ9K8WHeX5gJ0HMJ1ECcM6cPceZCBylAd7OQeA7HV6Z3MuC8tojIq+tYG8WKmxDPh1mVIepJzPvy4AJpoN84RwnA3pzWdLGULlQQH1t2B7d2Wjg1hMQRRznPWnrW/DdeQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rU2MSiu18z1zDHtpfzFrJC4V4NI377HTUmzL/NuE8gQ=;
- b=vEECTWPyKK2aNNl1Jt7urTsKramGT8jUwoCINoqtUtJ6talbMhU9yQviTCyS7lObOcRXhIyJsp+DKMygqApqU2+xQhQi8LbQUelVWxg2VoKB8+P/5rFvkMoeAf4nuIk7yygYsy4Lys4dcLL+7VF84kf7pnVmgWce6lnus4gIqHI=
-Received: from DS7PR10MB5328.namprd10.prod.outlook.com (2603:10b6:5:3a6::12)
- by SJ0PR10MB5598.namprd10.prod.outlook.com (2603:10b6:a03:3d9::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.22; Tue, 8 Jul
- 2025 03:04:49 +0000
-Received: from DS7PR10MB5328.namprd10.prod.outlook.com
- ([fe80::ea13:c6c1:9956:b29c]) by DS7PR10MB5328.namprd10.prod.outlook.com
- ([fe80::ea13:c6c1:9956:b29c%5]) with mapi id 15.20.8901.024; Tue, 8 Jul 2025
- 03:04:48 +0000
-Message-ID: <96f8e9d7-6e4c-4f7a-bb66-a3b43e30182a@oracle.com>
-Date: Tue, 8 Jul 2025 08:34:39 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [External] : Re: [PATCH net] net: thunderx: Fix format-truncation
- warning in bgx_acpi_match_id()
-To: Simon Horman <horms@kernel.org>
-Cc: sgoutham@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        darren.kenny@oracle.com, linux-kernel@vger.kernel.org
-References: <20250706195145.1369958-1-alok.a.tiwari@oracle.com>
- <20250707191644.GC452973@horms.kernel.org>
-Content-Language: en-US
-From: ALOK TIWARI <alok.a.tiwari@oracle.com>
-In-Reply-To: <20250707191644.GC452973@horms.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PN3PR01CA0097.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:9b::16) To DS7PR10MB5328.namprd10.prod.outlook.com
- (2603:10b6:5:3a6::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AB41B6D08;
+	Tue,  8 Jul 2025 03:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751944301; cv=none; b=pmUU5kOoZiN8LZBghbib75CtQ+wDNLEou4lHAbqn6M3iqOELNqg8JdlBTm/bIwkmmEbN39jspVDmXJ40TLHvNBx8Jzyada/spGBpo+yc9qn/qADmLO2JVjddjggdLzUXz6NUYSFjtOYSEncE6JKlOXI6ZiUgZfJ2XilkGaxGGDE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751944301; c=relaxed/simple;
+	bh=Z0NPDqp5NTdgn7YLMA1y4FG+kMg/EMgdDJL/g4Nqm0s=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ob1h0GTLEUveeFLWoTBP7t4GYpavoKBAozhwz7pnWKmn+xLK5dqpZHmC2faEfAFE0PYgYUkMEcne4pZjMlgv9rMIeeDmofwEgcgqq5uGQ2EV5lU8eLuhKViQCcuiivYJdRzXthL5bDK7bgZJeXy5OE0Erd9ivSqQjKcby+9GGKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4bbmKH1zsvz13Mkj;
+	Tue,  8 Jul 2025 11:08:51 +0800 (CST)
+Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7366E180B60;
+	Tue,  8 Jul 2025 11:11:28 +0800 (CST)
+Received: from huawei.com (10.175.124.27) by dggpemf500016.china.huawei.com
+ (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 8 Jul
+ 2025 11:11:27 +0800
+From: Wang Liang <wangliang74@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <alex.aring@gmail.com>,
+	<dsahern@kernel.org>
+CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
+	<wangliang74@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>,
+	<linux-wpan@vger.kernel.org>
+Subject: [PATCH net-next v3] net: replace ND_PRINTK with dynamic debug
+Date: Tue, 8 Jul 2025 11:33:42 +0800
+Message-ID: <20250708033342.1627636-1-wangliang74@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR10MB5328:EE_|SJ0PR10MB5598:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8492719e-df2f-476b-1f06-08ddbdcc32ee
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cDhsbWxSNGZuMVhwaERONHZBNlFITllib1dES3E2ZzY4UGcvcUxBVzgzTGNk?=
- =?utf-8?B?QzZTMnAvb2kwL1lIQVVyZmRQallWRjRodTQrc3BuTUU3UjdXZjd3d2xRQUx5?=
- =?utf-8?B?cXRVOFBhdHdUbFd3RUxxR204bklNY0lySGhOQWFXNVhvbDhaS0R6WTdreito?=
- =?utf-8?B?NENjSGsvM0tvYUZ5dHRiQnRkRTJSWUc2TDEvRUhHbmpRc3NuNjNmZ2phaHJ6?=
- =?utf-8?B?aVJnTWZ4UkdEYjB2TzJkbjN2V1pHdThOcm94NDlDY2lQdENzVzV3R3hwMU9G?=
- =?utf-8?B?Z2hybHlLSmxha0xOTzdVWUVXWkFXOVFhOG9vcE9TbHZsbmtKK3FDcWwva0xk?=
- =?utf-8?B?cktmYnptOVF1K3NiUWozd0pjMFdMSlFFVXJiTkZ4bWhzcVBiL25UOTNNZFpQ?=
- =?utf-8?B?R2RPNXFLYm1BK2EyWlgzVWJZM3h1bEpEeUdTc0tJTmdtb2p5QVl4SUJadjdo?=
- =?utf-8?B?U0tubWt5LzhmTnA3UEd0VTZsTXI2WjhPU3pqaGpzNlRqM2QxVk83Yk9aQ1cv?=
- =?utf-8?B?cUlzd2swTUhzU1I3bHA3eUMvYzBTZnVsVVdTSWd6Q0ZrQjhDdWI3cmQwMng5?=
- =?utf-8?B?S0dCRVAzRmUwTVR4ZWZodlg1TWp4TmdzMUZWVTVYQzZVUXp0TFdrQjhNSTdz?=
- =?utf-8?B?MC9yYUYxRldhY0h5RnFDTnh0N0pvbTRoa0ErYUhydE1uZjdhcCt6MGhMQmt4?=
- =?utf-8?B?dFpocWN2Qk9MQUNuZENDT0lXcGlxMDRJTWVqbFIzdGV0bjBseWh5Rnh5YWs3?=
- =?utf-8?B?R0dxbk9NSzNwRGNNL3d5VHh0NFJiZDhDbmF5c3JVZk56MEpqUG0wN3lLTnJT?=
- =?utf-8?B?MElFQ3dHZ21LVEVGc3FoNWhOb0FvaUU1NURGL2tIWGRLYmtlRFlLdGE1eE1v?=
- =?utf-8?B?QW9GK2VJa2tIc1FYMWVrWDViWjN5aHlrN3FJVk1lZG9aeEJXTzJjMGI0RnV2?=
- =?utf-8?B?Qk1KOFJSekxoL213LzFMSGd3WHJKeU9ySEZKNlBEWEhvcUZUMlZYQVZCTnpo?=
- =?utf-8?B?WlVWalZwaUZWbU00RUtnTW5LRDl4VmFGL0NmSGJJVzV6dXpTeVVNbVJwT2xG?=
- =?utf-8?B?bVpCYmJzVmdNY3RiblJFYXJmSVBPQlFLbC9aRXRDNVRpeklEbno3b1FRQ1FH?=
- =?utf-8?B?eEdnY245R0VIVFJJeW9nekN3WDdlSHk4MHJ2RlhtbStDN29WcXRSRkJtSHBv?=
- =?utf-8?B?VlpORTNhNlo3ZVpRSXVOcjZFS3VuYjZ2cVRUVTM0NDdHazY1RWt0bEhtdEUy?=
- =?utf-8?B?YTRLeW9QZUtBSUJFZjZOOEcvUTMrdEJPVEJuanZ0TDFuc1NkN2c0U2hqQ2No?=
- =?utf-8?B?Zk42QjdpaDY1RmVIaEhJSHRGRjNWdTR6Z0oxNTlyd3dpaDV3TUlrVUxYUUU4?=
- =?utf-8?B?bldiNTFXRmxScXFyRWpkSGxWWkVES09lOVNZV0psQTQ5OXZ3a2RGWmVjUFdH?=
- =?utf-8?B?N3FIL01KQ1ZNTWlEVG91Z0F4Z0l2ZXp5SExmc2tvS1V5dFFjL29aUkFBOWJH?=
- =?utf-8?B?N2hLeUYyVEdlR2JFK085WHRBUGpWOUFyL2gweU9rTWZyaTQwZXVpS2dTZlRp?=
- =?utf-8?B?WmozbHRwaGQ0UzZLaUZhbDh4KzV5SXRxRE1BZ2NtT0M2S09kSlIwUE4wQlRC?=
- =?utf-8?B?czRabk8wblVNaFFVbUVsTklmV3ppODd6S05mZDkxRVE0TjQzSVNwWUpTbW13?=
- =?utf-8?B?UEFEeDhHZytIQ0R2TmpkM2VGS3R0MHBUSFQvT2JUVlVEbEdpdHlVOFpLZXNC?=
- =?utf-8?B?YmVWckEvcmUwQm5QRmMxTnVBdmUwUmJpNXEwRzNseldyN1ZzR2RmYnpzUVdx?=
- =?utf-8?B?WUx6L3djemF6MnpYU1k0VXJmNzhPdndJMGQ4L3dmVTlOQk45K203MVZVMTcr?=
- =?utf-8?B?eFhzS2I2TGJvYzlLeUtUSmJ0VFVGUG42VUY4RWpMVjJnZjJtVis0QUZKbUhN?=
- =?utf-8?Q?UJR5ynkAuvM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR10MB5328.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NTlxTjc4UW1MWlVtQnlqeVV0WHVkcmlqdTlRWGZ1dCtUMHdteXFMcWpzcVd3?=
- =?utf-8?B?QUcxaXQ0dEpQb3RWbmJXTTJYN01KV0RLM09RdWlHaWo0b0oxNlJGVUNMcG94?=
- =?utf-8?B?cjBPNXRYREZHSDBFMG52S3kzRVhkUi8vYzMwdXFHcDY0MTltbjBsMFFlTjZj?=
- =?utf-8?B?TUZIaGQxMm1reGUrQ0Yyc2Yydy82Vm5pNEREbm9Zc0FWMklDT1NhbXdtRVpo?=
- =?utf-8?B?THo1RFU1a1o4NGlpL1Y4bzdWc2pMME9ZalppN25JMlcxdHJ6ZFZJNHdHZndZ?=
- =?utf-8?B?NW80Vit2OUZ6V3FWaTdzWDZ3ZlpGa0RFVjYwZW5KcTFVdldwLzd2NzArZXpn?=
- =?utf-8?B?QTU5QWlhTFNKZm1VQjYyckpDSkg4L0xNVzljOUZ4OXV3bXhyK2dNTnc3SitH?=
- =?utf-8?B?WlFNM2J2WHNKM1IvaVU0dElnSmhJWmRqek1nRzVGVXZPWHUzUXdCdFZkT0k5?=
- =?utf-8?B?a0c5M0NlUVpHZnVySlErNkxHNk8weGdxT3pUT3kyS1dtMUpSYmVDVkJuckVk?=
- =?utf-8?B?eTlnTU4yQjBMK25RWjR6K05lYUthWHlHWmVvTXFiTlNlUHZKQUJ6MWhWZHhV?=
- =?utf-8?B?aGMvTjU1Y1NwM0t0MTBNTXg2V2llUTVNeXpqK0NCYlZXclJSbWdKcDBsdHls?=
- =?utf-8?B?cXRIZVlFZHAzU3cvWThiWlVBUGtiQkNsME5tNi9TMU9rS3duN2Y1d2g5VUVG?=
- =?utf-8?B?MWJDNGRaVjdhZ1RKZGF2bkpyUW9TWWx6RWk4d0lMWmsxVnM0dzY0TmNQYm9s?=
- =?utf-8?B?cDNaODJsUHkwaTNsUkM3a1ZWOEpvOUtLME9EOENUNFJHZVh2VDNyd3pDVnQx?=
- =?utf-8?B?MU5IVGM5WTFDN1lpR3R0NVkzSjZxV2NxSXlEd1ppTElLemdqMVJla3NzWG93?=
- =?utf-8?B?eUw1QmIxUXh1WjNzWjY1VHVqeHdnQWFFdlFDREVPTldFYVc2ZG9ncVFQemt3?=
- =?utf-8?B?SktHNStBaG9BbTBvQnBpRFlRNGpNVzRiNFN5clFNWUFGNjUrOHROaGZrdnZm?=
- =?utf-8?B?TlkyVk95QktVRVhZa2RtUXFEK0NpZmhjYTdCVHIzQitIcjdtWG1GcW9FVnkw?=
- =?utf-8?B?TTlXSE9FRTdxU2hyR0RCTzBLRnJ1YnJxU2dNMVdaWkNlMlNwWjlEa1Y2emRY?=
- =?utf-8?B?YSswWjUrcU5WUlFURUcybzM0a3pWZEZDcDFIclA4MTlobE1iTWROKzRQNnBk?=
- =?utf-8?B?UnlxRGdOR0ZSMTkzM1czK0FtQUJobDZBMWhoTlhYUU9UY0huSW9QcXFpNUZO?=
- =?utf-8?B?cnJQUjJHWHNMOU1LaUxGaWhsTGpDcFFxclZHSkpTeTVHaHYzemxsYzVLYkp6?=
- =?utf-8?B?OWZYSlRsMkJabForNGF1SHFmUkluR01oY1lEV3IvbFE0VTJMeXVKMW1vYTRF?=
- =?utf-8?B?NlE4eWRwSTdOeXhkdFNSa3VpR1Y2WDJTYkpGT1E4WTNMVjEzQ3ZMYSttaG1w?=
- =?utf-8?B?NEx6bjFwOUNMTTBzYm5hY09qaUc0dlR1L2lrZjZab083NjlKVXBPcTBHUWhX?=
- =?utf-8?B?aEVIVE5XbHNjOFFWbDE3NldUVWhPWUJmS3A3WEtQcXRFemh5UFprOHhLR1VY?=
- =?utf-8?B?cmIvUldBRUJQbzhwam9YbmRTdm9rVkJhRG9ZSzBTK2ZJa1ZuSm80ZGRORFRC?=
- =?utf-8?B?Yk1Ba2xuclV4czNWdHJUMWJiZjFZV05HTVNhY1MwZ3lPWHVrcDg0akNnZHV4?=
- =?utf-8?B?WnVQdHBFa2ZNVkk1MlFRRnN0MHJxa0dLd25XbjJiVDRCRlhnQ0lTZDNKMEFP?=
- =?utf-8?B?NllGVTF1RUtlK1N3dU1nN0FSd2VITlNPUGpMTHh4ZlQwM05BTUlsTFo0TnZs?=
- =?utf-8?B?a1doeXZLdUNzdWoxeFVmZjdna3RacHFTM09DaFZNK0o5dmNpQzFHOUg4Y0xB?=
- =?utf-8?B?QmdyYjNENTVQZjJGeDgyUU5JbkI3WEFSSnNCV080Y0xQb0lOdW1OZ0ZmbWZE?=
- =?utf-8?B?aERZK1hDNUQ4ZFc4Undvbml2RUxuZ3ZqZVQ2cEZOQm5KNmthK1l3N3AyRVVl?=
- =?utf-8?B?S2prNGozWVpzWENiZm5mSXRFK1lPZUcwRVZpeUFWeE9ZVjdZSmlPVCtWek5t?=
- =?utf-8?B?MnpjYVpaeThZL3pTVTNOSHhrN2UwSWF5dHJkN1F3OFlXVnNML0tpWjczdkxj?=
- =?utf-8?B?UU5EaTUxbjlCVlQ0dmdiVjM5Q094Y0dDVDY4YWRIQXE3a3ExRG5xQ2JkTlVX?=
- =?utf-8?B?aXc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	U0yJR96jj5t9WXwFVFueaHGqZDcWUAEzQjn8OgwaETKGTHDQCxdYOQ01TyM5YtMg7wCpmOWJBmUL+VLB+mje45T/IgJA4CWBgswoY6LR1Np5PbpRKcsHVKnDrgtLWIeIKcpvydG5qU5T1FqUPRZeO2h1PpEzF8QTAMgYWRb4zqB1qQjaODoXrVgFD1jqeJIIt5ZMTJuXa+URlyiu9Pxccg6TfOluKNT8uPU9ZO3RcszMCXJgafLTXAIHdouc48Xlf+AB0WsTsXtD3wMta8SQwiFcai8kNyRGxpuG4G/VR2q6Ksv88yFNyUWqToz9ViGwbphHw5M4AuHEqvxZzl3M8jc6W6zfk7I1jAgyvRF8U4DTew1npBU86hT4cEe89wDfsrYA4m4JsFKzncBRbRnsjJZMhS6que6pcm9aLLhmu8JA7nUmJzaN6ircXs9NdkWKFuQJ20Ck15j5/iN3E2i1/uMHJaQbvwExePVeNNVbIeRSMYdaOjWvkXAEH91S5weUTy1vZzOQyfsakOwTzx+XPUE+2acitpShT1W4n1ONrH1/uqUMmNmXRv5bRgjSPy9c16J9EL5Ah2kh75Q+Ym4KfbdYw+rVyrXuvKbh1aKe7x8=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8492719e-df2f-476b-1f06-08ddbdcc32ee
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR10MB5328.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 03:04:48.8675
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kcVOsM9mSBOgi4IHApcstOAmcqr9udzid+SLzaDqx5AyAfDXKT1WhPOw7hNOuJakUuDQjjiWSkvS4gq0mgCpE64uj/is1xbMW3m1nIMAOD0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5598
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-08_01,2025-07-07_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 malwarescore=0
- mlxlogscore=999 spamscore=0 phishscore=0 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507080023
-X-Proofpoint-GUID: O4fxwOXI_flpGjuC3ctFINg_xRPDlwo4
-X-Proofpoint-ORIG-GUID: O4fxwOXI_flpGjuC3ctFINg_xRPDlwo4
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA4MDAyMyBTYWx0ZWRfX6OkI55smtqfF MCD1TbxIO6Nm9fgAQaZIdatVyKYW/p0KWzLnMwxjjzN7ntdxRZTq/VRcn9mK9tgxSFjs1ge1n7o 3D32lfU1JldhwQseL34F/IdpmPg2+8K7fjSP/O+k1F7opS8b3D8+SGVJFDEAYlN+TdG+lfOaOG8
- 0W2vTlAUTieWj+VSmaWPFdw4eJNglRDEeBk4Lpgd8A+b5cXA0XoH6XQK/Gk+7R8RITxxy2kdkaF YzLWOhrpXG03E4Ze/WRR3KdgqyjOBfPW8fTSMdtLGyywnPlx58L8DTaMUg0fItAaDlsz1yBswVZ 2HM2gU0y37LIk8MU98vjcuNoZ4U95HDH1Z4P3f2XGRw1NJvk4lXdkYtUSho9AeDYE8I+AirTf74
- /+/rG19YyciiAncPmVX+KCVDOyH5vJFTShOaIlqJFIRUeAF1rIRXatYnHIDV05uU4+6yZn0n
-X-Authority-Analysis: v=2.4 cv=XYGJzJ55 c=1 sm=1 tr=0 ts=686c8ad5 cx=c_pps a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=nDGyuGEt-dMBVDX8:21 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=KhaVWU6-6cxH9EYoM7IA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf500016.china.huawei.com (7.185.36.197)
 
+ND_PRINTK with val > 1 only works when the ND_DEBUG was set in compilation
+phase. Replace it with dynamic debug. Convert ND_PRINTK with val <= 1 to
+net_{err,warn}_ratelimited, and convert the rest to net_dbg_ratelimited.
 
+Suggested-by: Ido Schimmel <idosch@idosch.org>
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+---
+v2:
+- Use dynamic debug instead of sysctl.
+v3:
+- Keep print level.
+---
+ include/net/ndisc.h |   9 ---
+ net/6lowpan/ndisc.c |  16 ++---
+ net/ipv6/ndisc.c    | 157 +++++++++++++++++---------------------------
+ 3 files changed, 67 insertions(+), 115 deletions(-)
 
-On 7/8/2025 12:46 AM, Simon Horman wrote:
->>    drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:23: note:
->> directive argument in the range [0, 255]
->>      snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
->>                           ^~~~~~~
->>    drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:2: note:
->> ‘snprintf’ output between 5 and 7 bytes into a destination of size 5
->>      snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
->>
->> compiler warning due to insufficient snprintf buffer size.
->>
->> Signed-off-by: Alok Tiwari<alok.a.tiwari@oracle.com>
-> Thanks Alok,
-> 
-> I agree this is a good change.
-> 
-> However, by my reading the range of values of bgx->bgx_id is 0 - 8
-> because of the application of BGX_ID_MASK which restricts the
-> value to 3 bits.
-> 
-> If so, I don't think this is a bug and it should be targeted at net-next.
-> With a description of why it is not a bug.
-> 
-> Conversely, you think it is a bug, then I think an explanation as to why
-> would be nice to add to the commit description.  And A fixes tag is needed.
+diff --git a/include/net/ndisc.h b/include/net/ndisc.h
+index 3c88d5bc5eed..d38783a2ce57 100644
+--- a/include/net/ndisc.h
++++ b/include/net/ndisc.h
+@@ -60,15 +60,6 @@ enum {
+ 
+ #include <net/neighbour.h>
+ 
+-/* Set to 3 to get tracing... */
+-#define ND_DEBUG 1
+-
+-#define ND_PRINTK(val, level, fmt, ...)				\
+-do {								\
+-	if (val <= ND_DEBUG)					\
+-		net_##level##_ratelimited(fmt, ##__VA_ARGS__);	\
+-} while (0)
+-
+ struct ctl_table;
+ struct inet6_dev;
+ struct net_device;
+diff --git a/net/6lowpan/ndisc.c b/net/6lowpan/ndisc.c
+index c40b98f7743c..868d28583c0a 100644
+--- a/net/6lowpan/ndisc.c
++++ b/net/6lowpan/ndisc.c
+@@ -20,9 +20,8 @@ static int lowpan_ndisc_parse_802154_options(const struct net_device *dev,
+ 	switch (nd_opt->nd_opt_len) {
+ 	case NDISC_802154_SHORT_ADDR_LENGTH:
+ 		if (ndopts->nd_802154_opt_array[nd_opt->nd_opt_type])
+-			ND_PRINTK(2, warn,
+-				  "%s: duplicated short addr ND6 option found: type=%d\n",
+-				  __func__, nd_opt->nd_opt_type);
++			net_dbg_ratelimited("%s: duplicated short addr ND6 option found: type=%d\n",
++					    __func__, nd_opt->nd_opt_type);
+ 		else
+ 			ndopts->nd_802154_opt_array[nd_opt->nd_opt_type] = nd_opt;
+ 		return 1;
+@@ -63,8 +62,7 @@ static void lowpan_ndisc_802154_update(struct neighbour *n, u32 flags,
+ 			lladdr_short = __ndisc_opt_addr_data(ndopts->nd_802154_opts_src_lladdr,
+ 							     IEEE802154_SHORT_ADDR_LEN, 0);
+ 			if (!lladdr_short) {
+-				ND_PRINTK(2, warn,
+-					  "NA: invalid short link-layer address length\n");
++				net_dbg_ratelimited("NA: invalid short link-layer address length\n");
+ 				return;
+ 			}
+ 		}
+@@ -75,8 +73,7 @@ static void lowpan_ndisc_802154_update(struct neighbour *n, u32 flags,
+ 			lladdr_short = __ndisc_opt_addr_data(ndopts->nd_802154_opts_tgt_lladdr,
+ 							     IEEE802154_SHORT_ADDR_LEN, 0);
+ 			if (!lladdr_short) {
+-				ND_PRINTK(2, warn,
+-					  "NA: invalid short link-layer address length\n");
++				net_dbg_ratelimited("NA: invalid short link-layer address length\n");
+ 				return;
+ 			}
+ 		}
+@@ -209,9 +206,8 @@ static void lowpan_ndisc_prefix_rcv_add_addr(struct net *net,
+ 						   sllao, tokenized, valid_lft,
+ 						   prefered_lft);
+ 		if (err)
+-			ND_PRINTK(2, warn,
+-				  "RA: could not add a short address based address for prefix: %pI6c\n",
+-				  &pinfo->prefix);
++			net_dbg_ratelimited("RA: could not add a short address based address for prefix: %pI6c\n",
++					    &pinfo->prefix);
+ 	}
+ }
+ #endif
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index ecb5c4b8518f..1e6a100e9e93 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -243,9 +243,8 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
+ 		case ND_OPT_NONCE:
+ 		case ND_OPT_REDIRECT_HDR:
+ 			if (ndopts->nd_opt_array[nd_opt->nd_opt_type]) {
+-				ND_PRINTK(2, warn,
+-					  "%s: duplicated ND6 option found: type=%d\n",
+-					  __func__, nd_opt->nd_opt_type);
++				net_dbg_ratelimited("%s: duplicated ND6 option found: type=%d\n",
++						    __func__, nd_opt->nd_opt_type);
+ 			} else {
+ 				ndopts->nd_opt_array[nd_opt->nd_opt_type] = nd_opt;
+ 			}
+@@ -275,11 +274,8 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
+ 			 * to accommodate future extension to the
+ 			 * protocol.
+ 			 */
+-			ND_PRINTK(2, notice,
+-				  "%s: ignored unsupported option; type=%d, len=%d\n",
+-				  __func__,
+-				  nd_opt->nd_opt_type,
+-				  nd_opt->nd_opt_len);
++			net_dbg_ratelimited("%s: ignored unsupported option; type=%d, len=%d\n",
++					    __func__, nd_opt->nd_opt_type, nd_opt->nd_opt_len);
+ 		}
+ next_opt:
+ 		opt_len -= l;
+@@ -751,9 +747,8 @@ static void ndisc_solicit(struct neighbour *neigh, struct sk_buff *skb)
+ 	probes -= NEIGH_VAR(neigh->parms, UCAST_PROBES);
+ 	if (probes < 0) {
+ 		if (!(READ_ONCE(neigh->nud_state) & NUD_VALID)) {
+-			ND_PRINTK(1, dbg,
+-				  "%s: trying to ucast probe in NUD_INVALID: %pI6\n",
+-				  __func__, target);
++			net_dbg_ratelimited("%s: trying to ucast probe in NUD_INVALID: %pI6\n",
++					    __func__, target);
+ 		}
+ 		ndisc_send_ns(dev, target, target, saddr, 0);
+ 	} else if ((probes -= NEIGH_VAR(neigh->parms, APP_PROBES)) < 0) {
+@@ -811,7 +806,7 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
+ 		return SKB_DROP_REASON_PKT_TOO_SMALL;
+ 
+ 	if (ipv6_addr_is_multicast(&msg->target)) {
+-		ND_PRINTK(2, warn, "NS: multicast target address\n");
++		net_dbg_ratelimited("NS: multicast target address\n");
+ 		return reason;
+ 	}
+ 
+@@ -820,7 +815,7 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
+ 	 * DAD has to be destined for solicited node multicast address.
+ 	 */
+ 	if (dad && !ipv6_addr_is_solict_mult(daddr)) {
+-		ND_PRINTK(2, warn, "NS: bad DAD packet (wrong destination)\n");
++		net_dbg_ratelimited("NS: bad DAD packet (wrong destination)\n");
+ 		return reason;
+ 	}
+ 
+@@ -830,8 +825,7 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
+ 	if (ndopts.nd_opts_src_lladdr) {
+ 		lladdr = ndisc_opt_addr_data(ndopts.nd_opts_src_lladdr, dev);
+ 		if (!lladdr) {
+-			ND_PRINTK(2, warn,
+-				  "NS: invalid link-layer address length\n");
++			net_dbg_ratelimited("NS: invalid link-layer address length\n");
+ 			return reason;
+ 		}
+ 
+@@ -841,8 +835,7 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
+ 		 *	in the message.
+ 		 */
+ 		if (dad) {
+-			ND_PRINTK(2, warn,
+-				  "NS: bad DAD packet (link-layer address option)\n");
++			net_dbg_ratelimited("NS: bad DAD packet (link-layer address option)\n");
+ 			return reason;
+ 		}
+ 	}
+@@ -859,10 +852,8 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
+ 				if (nonce != 0 && ifp->dad_nonce == nonce) {
+ 					u8 *np = (u8 *)&nonce;
+ 					/* Matching nonce if looped back */
+-					ND_PRINTK(2, notice,
+-						  "%s: IPv6 DAD loopback for address %pI6c nonce %pM ignored\n",
+-						  ifp->idev->dev->name,
+-						  &ifp->addr, np);
++					net_dbg_ratelimited("%s: IPv6 DAD loopback for address %pI6c nonce %pM ignored\n",
++							    ifp->idev->dev->name, &ifp->addr, np);
+ 					goto out;
+ 				}
+ 				/*
+@@ -1013,13 +1004,13 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
+ 		return SKB_DROP_REASON_PKT_TOO_SMALL;
+ 
+ 	if (ipv6_addr_is_multicast(&msg->target)) {
+-		ND_PRINTK(2, warn, "NA: target address is multicast\n");
++		net_dbg_ratelimited("NA: target address is multicast\n");
+ 		return reason;
+ 	}
+ 
+ 	if (ipv6_addr_is_multicast(daddr) &&
+ 	    msg->icmph.icmp6_solicited) {
+-		ND_PRINTK(2, warn, "NA: solicited NA is multicasted\n");
++		net_dbg_ratelimited("NA: solicited NA is multicasted\n");
+ 		return reason;
+ 	}
+ 
+@@ -1038,8 +1029,7 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
+ 	if (ndopts.nd_opts_tgt_lladdr) {
+ 		lladdr = ndisc_opt_addr_data(ndopts.nd_opts_tgt_lladdr, dev);
+ 		if (!lladdr) {
+-			ND_PRINTK(2, warn,
+-				  "NA: invalid link-layer address length\n");
++			net_dbg_ratelimited("NA: invalid link-layer address length\n");
+ 			return reason;
+ 		}
+ 	}
+@@ -1060,9 +1050,9 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
+ 		   unsolicited advertisement.
+ 		 */
+ 		if (skb->pkt_type != PACKET_LOOPBACK)
+-			ND_PRINTK(1, warn,
+-				  "NA: %pM advertised our address %pI6c on %s!\n",
+-				  eth_hdr(skb)->h_source, &ifp->addr, ifp->idev->dev->name);
++			net_warn_ratelimited("NA: %pM advertised our address %pI6c on %s!\n",
++					     eth_hdr(skb)->h_source, &ifp->addr,
++					     ifp->idev->dev->name);
+ 		in6_ifa_put(ifp);
+ 		return reason;
+ 	}
+@@ -1149,7 +1139,7 @@ static enum skb_drop_reason ndisc_recv_rs(struct sk_buff *skb)
+ 
+ 	idev = __in6_dev_get(skb->dev);
+ 	if (!idev) {
+-		ND_PRINTK(1, err, "RS: can't find in6 device\n");
++		net_err_ratelimited("RS: can't find in6 device\n");
+ 		return reason;
+ 	}
+ 
+@@ -1257,11 +1247,9 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 	optlen = (skb_tail_pointer(skb) - skb_transport_header(skb)) -
+ 		sizeof(struct ra_msg);
+ 
+-	ND_PRINTK(2, info,
+-		  "RA: %s, dev: %s\n",
+-		  __func__, skb->dev->name);
++	net_dbg_ratelimited("RA: %s, dev: %s\n", __func__, skb->dev->name);
+ 	if (!(ipv6_addr_type(&ipv6_hdr(skb)->saddr) & IPV6_ADDR_LINKLOCAL)) {
+-		ND_PRINTK(2, warn, "RA: source address is not link-local\n");
++		net_dbg_ratelimited("RA: source address is not link-local\n");
+ 		return reason;
+ 	}
+ 	if (optlen < 0)
+@@ -1269,15 +1257,14 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 
+ #ifdef CONFIG_IPV6_NDISC_NODETYPE
+ 	if (skb->ndisc_nodetype == NDISC_NODETYPE_HOST) {
+-		ND_PRINTK(2, warn, "RA: from host or unauthorized router\n");
++		net_dbg_ratelimited("RA: from host or unauthorized router\n");
+ 		return reason;
+ 	}
+ #endif
+ 
+ 	in6_dev = __in6_dev_get(skb->dev);
+ 	if (!in6_dev) {
+-		ND_PRINTK(0, err, "RA: can't find inet6 device for %s\n",
+-			  skb->dev->name);
++		net_err_ratelimited("RA: can't find inet6 device for %s\n", skb->dev->name);
+ 		return reason;
+ 	}
+ 
+@@ -1285,18 +1272,16 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 		return SKB_DROP_REASON_IPV6_NDISC_BAD_OPTIONS;
+ 
+ 	if (!ipv6_accept_ra(in6_dev)) {
+-		ND_PRINTK(2, info,
+-			  "RA: %s, did not accept ra for dev: %s\n",
+-			  __func__, skb->dev->name);
++		net_dbg_ratelimited("RA: %s, did not accept ra for dev: %s\n", __func__,
++				    skb->dev->name);
+ 		goto skip_linkparms;
+ 	}
+ 
+ #ifdef CONFIG_IPV6_NDISC_NODETYPE
+ 	/* skip link-specific parameters from interior routers */
+ 	if (skb->ndisc_nodetype == NDISC_NODETYPE_NODEFAULT) {
+-		ND_PRINTK(2, info,
+-			  "RA: %s, nodetype is NODEFAULT, dev: %s\n",
+-			  __func__, skb->dev->name);
++		net_dbg_ratelimited("RA: %s, nodetype is NODEFAULT, dev: %s\n", __func__,
++				    skb->dev->name);
+ 		goto skip_linkparms;
+ 	}
+ #endif
+@@ -1325,18 +1310,16 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 		send_ifinfo_notify = true;
+ 
+ 	if (!READ_ONCE(in6_dev->cnf.accept_ra_defrtr)) {
+-		ND_PRINTK(2, info,
+-			  "RA: %s, defrtr is false for dev: %s\n",
+-			  __func__, skb->dev->name);
++		net_dbg_ratelimited("RA: %s, defrtr is false for dev: %s\n", __func__,
++				    skb->dev->name);
+ 		goto skip_defrtr;
+ 	}
+ 
+ 	lifetime = ntohs(ra_msg->icmph.icmp6_rt_lifetime);
+ 	if (lifetime != 0 &&
+ 	    lifetime < READ_ONCE(in6_dev->cnf.accept_ra_min_lft)) {
+-		ND_PRINTK(2, info,
+-			  "RA: router lifetime (%ds) is too short: %s\n",
+-			  lifetime, skb->dev->name);
++		net_dbg_ratelimited("RA: router lifetime (%ds) is too short: %s\n", lifetime,
++				    skb->dev->name);
+ 		goto skip_defrtr;
+ 	}
+ 
+@@ -1346,9 +1329,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 	net = dev_net(in6_dev->dev);
+ 	if (!READ_ONCE(in6_dev->cnf.accept_ra_from_local) &&
+ 	    ipv6_chk_addr(net, &ipv6_hdr(skb)->saddr, in6_dev->dev, 0)) {
+-		ND_PRINTK(2, info,
+-			  "RA from local address detected on dev: %s: default router ignored\n",
+-			  skb->dev->name);
++		net_dbg_ratelimited("RA from local address detected on dev: %s: default router ignored\n",
++				    skb->dev->name);
+ 		goto skip_defrtr;
+ 	}
+ 
+@@ -1366,9 +1348,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 					 rt->fib6_nh->fib_nh_dev, NULL,
+ 					  &ipv6_hdr(skb)->saddr);
+ 		if (!neigh) {
+-			ND_PRINTK(0, err,
+-				  "RA: %s got default router without neighbour\n",
+-				  __func__);
++			net_err_ratelimited("RA: %s got default router without neighbour\n",
++					    __func__);
+ 			fib6_info_release(rt);
+ 			return reason;
+ 		}
+@@ -1381,10 +1362,10 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 		rt = NULL;
+ 	}
+ 
+-	ND_PRINTK(3, info, "RA: rt: %p  lifetime: %d, metric: %d, for dev: %s\n",
+-		  rt, lifetime, defrtr_usr_metric, skb->dev->name);
++	net_dbg_ratelimited("RA: rt: %p  lifetime: %d, metric: %d, for dev: %s\n", rt, lifetime,
++			    defrtr_usr_metric, skb->dev->name);
+ 	if (!rt && lifetime) {
+-		ND_PRINTK(3, info, "RA: adding default router\n");
++		net_dbg_ratelimited("RA: adding default router\n");
+ 
+ 		if (neigh)
+ 			neigh_release(neigh);
+@@ -1393,9 +1374,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 					 skb->dev, pref, defrtr_usr_metric,
+ 					 lifetime);
+ 		if (!rt) {
+-			ND_PRINTK(0, err,
+-				  "RA: %s failed to add default route\n",
+-				  __func__);
++			net_err_ratelimited("RA: %s failed to add default route\n", __func__);
+ 			return reason;
+ 		}
+ 
+@@ -1403,9 +1382,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 					 rt->fib6_nh->fib_nh_dev, NULL,
+ 					  &ipv6_hdr(skb)->saddr);
+ 		if (!neigh) {
+-			ND_PRINTK(0, err,
+-				  "RA: %s got default router without neighbour\n",
+-				  __func__);
++			net_err_ratelimited("RA: %s got default router without neighbour\n",
++					    __func__);
+ 			fib6_info_release(rt);
+ 			return reason;
+ 		}
+@@ -1436,7 +1414,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 			fib6_metric_set(rt, RTAX_HOPLIMIT,
+ 					ra_msg->icmph.icmp6_hop_limit);
+ 		} else {
+-			ND_PRINTK(2, warn, "RA: Got route advertisement with lower hop_limit than minimum\n");
++			net_dbg_ratelimited("RA: Got route advertisement with lower hop_limit than minimum\n");
+ 		}
+ 	}
+ 
+@@ -1492,8 +1470,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 			lladdr = ndisc_opt_addr_data(ndopts.nd_opts_src_lladdr,
+ 						     skb->dev);
+ 			if (!lladdr) {
+-				ND_PRINTK(2, warn,
+-					  "RA: invalid link-layer address length\n");
++				net_dbg_ratelimited("RA: invalid link-layer address length\n");
+ 				goto out;
+ 			}
+ 		}
+@@ -1507,9 +1484,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 	}
+ 
+ 	if (!ipv6_accept_ra(in6_dev)) {
+-		ND_PRINTK(2, info,
+-			  "RA: %s, accept_ra is false for dev: %s\n",
+-			  __func__, skb->dev->name);
++		net_dbg_ratelimited("RA: %s, accept_ra is false for dev: %s\n", __func__,
++				    skb->dev->name);
+ 		goto out;
+ 	}
+ 
+@@ -1517,9 +1493,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 	if (!READ_ONCE(in6_dev->cnf.accept_ra_from_local) &&
+ 	    ipv6_chk_addr(dev_net(in6_dev->dev), &ipv6_hdr(skb)->saddr,
+ 			  in6_dev->dev, 0)) {
+-		ND_PRINTK(2, info,
+-			  "RA from local address detected on dev: %s: router info ignored.\n",
+-			  skb->dev->name);
++		net_dbg_ratelimited("RA from local address detected on dev: %s: router info ignored.\n",
++				    skb->dev->name);
+ 		goto skip_routeinfo;
+ 	}
+ 
+@@ -1555,9 +1530,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ #ifdef CONFIG_IPV6_NDISC_NODETYPE
+ 	/* skip link-specific ndopts from interior routers */
+ 	if (skb->ndisc_nodetype == NDISC_NODETYPE_NODEFAULT) {
+-		ND_PRINTK(2, info,
+-			  "RA: %s, nodetype is NODEFAULT (interior routes), dev: %s\n",
+-			  __func__, skb->dev->name);
++		net_dbg_ratelimited("RA: %s, nodetype is NODEFAULT (interior routes), dev: %s\n",
++				    __func__, skb->dev->name);
+ 		goto out;
+ 	}
+ #endif
+@@ -1586,7 +1560,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 		}
+ 
+ 		if (mtu < IPV6_MIN_MTU || mtu > skb->dev->mtu) {
+-			ND_PRINTK(2, warn, "RA: invalid mtu: %d\n", mtu);
++			net_dbg_ratelimited("RA: invalid mtu: %d\n", mtu);
+ 		} else if (READ_ONCE(in6_dev->cnf.mtu6) != mtu) {
+ 			WRITE_ONCE(in6_dev->cnf.mtu6, mtu);
+ 			fib6_metric_set(rt, RTAX_MTU, mtu);
+@@ -1605,7 +1579,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 	}
+ 
+ 	if (ndopts.nd_opts_tgt_lladdr || ndopts.nd_opts_rh) {
+-		ND_PRINTK(2, warn, "RA: invalid RA options\n");
++		net_dbg_ratelimited("RA: invalid RA options\n");
+ 	}
+ out:
+ 	/* Send a notify if RA changed managed/otherconf flags or
+@@ -1633,15 +1607,13 @@ static enum skb_drop_reason ndisc_redirect_rcv(struct sk_buff *skb)
+ 	switch (skb->ndisc_nodetype) {
+ 	case NDISC_NODETYPE_HOST:
+ 	case NDISC_NODETYPE_NODEFAULT:
+-		ND_PRINTK(2, warn,
+-			  "Redirect: from host or unauthorized router\n");
++		net_dbg_ratelimited("Redirect: from host or unauthorized router\n");
+ 		return reason;
+ 	}
+ #endif
+ 
+ 	if (!(ipv6_addr_type(&ipv6_hdr(skb)->saddr) & IPV6_ADDR_LINKLOCAL)) {
+-		ND_PRINTK(2, warn,
+-			  "Redirect: source address is not link-local\n");
++		net_dbg_ratelimited("Redirect: source address is not link-local\n");
+ 		return reason;
+ 	}
+ 
+@@ -1702,15 +1674,13 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
+ 	}
+ 
+ 	if (ipv6_get_lladdr(dev, &saddr_buf, IFA_F_TENTATIVE)) {
+-		ND_PRINTK(2, warn, "Redirect: no link-local address on %s\n",
+-			  dev->name);
++		net_dbg_ratelimited("Redirect: no link-local address on %s\n", dev->name);
+ 		return;
+ 	}
+ 
+ 	if (!ipv6_addr_equal(&ipv6_hdr(skb)->daddr, target) &&
+ 	    ipv6_addr_type(target) != (IPV6_ADDR_UNICAST|IPV6_ADDR_LINKLOCAL)) {
+-		ND_PRINTK(2, warn,
+-			  "Redirect: target address is not link-local unicast\n");
++		net_dbg_ratelimited("Redirect: target address is not link-local unicast\n");
+ 		return;
+ 	}
+ 
+@@ -1729,8 +1699,7 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
+ 	rt = dst_rt6_info(dst);
+ 
+ 	if (rt->rt6i_flags & RTF_GATEWAY) {
+-		ND_PRINTK(2, warn,
+-			  "Redirect: destination is not a neighbour\n");
++		net_dbg_ratelimited("Redirect: destination is not a neighbour\n");
+ 		goto release;
+ 	}
+ 
+@@ -1743,8 +1712,7 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
+ 	if (dev->addr_len) {
+ 		struct neighbour *neigh = dst_neigh_lookup(skb_dst(skb), target);
+ 		if (!neigh) {
+-			ND_PRINTK(2, warn,
+-				  "Redirect: no neigh for target address\n");
++			net_dbg_ratelimited("Redirect: no neigh for target address\n");
+ 			goto release;
+ 		}
+ 
+@@ -1845,14 +1813,12 @@ enum skb_drop_reason ndisc_rcv(struct sk_buff *skb)
+ 	__skb_push(skb, skb->data - skb_transport_header(skb));
+ 
+ 	if (ipv6_hdr(skb)->hop_limit != 255) {
+-		ND_PRINTK(2, warn, "NDISC: invalid hop-limit: %d\n",
+-			  ipv6_hdr(skb)->hop_limit);
++		net_dbg_ratelimited("NDISC: invalid hop-limit: %d\n", ipv6_hdr(skb)->hop_limit);
+ 		return SKB_DROP_REASON_IPV6_NDISC_HOP_LIMIT;
+ 	}
+ 
+ 	if (msg->icmph.icmp6_code != 0) {
+-		ND_PRINTK(2, warn, "NDISC: invalid ICMPv6 code: %d\n",
+-			  msg->icmph.icmp6_code);
++		net_dbg_ratelimited("NDISC: invalid ICMPv6 code: %d\n", msg->icmph.icmp6_code);
+ 		return SKB_DROP_REASON_IPV6_NDISC_BAD_CODE;
+ 	}
+ 
+@@ -2003,9 +1969,8 @@ static int __net_init ndisc_net_init(struct net *net)
+ 	err = inet_ctl_sock_create(&sk, PF_INET6,
+ 				   SOCK_RAW, IPPROTO_ICMPV6, net);
+ 	if (err < 0) {
+-		ND_PRINTK(0, err,
+-			  "NDISC: Failed to initialize the control socket (err %d)\n",
+-			  err);
++		net_err_ratelimited("NDISC: Failed to initialize the control socket (err %d)\n",
++				    err);
+ 		return err;
+ 	}
+ 
+-- 
+2.34.1
 
-Thanks Simon,
-It is compile warning, We can target it for net-next.
-
-I will resend it with [PATCH net-next]
-
-Thanks,
-Alok
