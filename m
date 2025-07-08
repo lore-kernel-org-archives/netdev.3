@@ -1,48 +1,48 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EC97DA9C;
-	Tue,  8 Jul 2025 03:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34F32343C9;
+	Tue,  8 Jul 2025 03:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751944641; cv=none; b=Mfm7QVbXtSZEKWJQcpx0GWJqiR+ar5f3ua454ER5utD7o2AVs0ky2fg9vnMIJ5l6EqmJOVGGDZamrmyp9/6U80nI8D/9tq/o25Q3D8TY39LPBGjMM2Y/SHAU1uUtQLJv/3GKuHGGTr0RsnqHoY87++Iq/Z5xN5DZN4M3wZitF/U=
+	t=1751944641; cv=none; b=Xc6KoWkCnR57xnAvIRTgoRFags6CmNt7A/czPI1hU3p9q5/g4Q39S3UcnITu2u0gh1KkhTS7Jx6ixmsLK6iFUctK5Yy8qJJ4mzo13k9G2p0ftHQ7y94U8y3NtlLScIETu9x4h7zmxS3okjKlKyox6CnLyZxxvGCB5XxzA65eYfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1751944641; c=relaxed/simple;
-	bh=TPIb0xPK187K7rLue1DLpFCg5Yh7MklSC0DJpXh+ee4=;
+	bh=yaM4TO7Trs1zxekdm1BdALVDkOi1WzDqa6qkyV8slns=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i06WOXWQ6TLpZUoGYElakRGIKyiAvvyoYQqLufVARxDsCdJZl6xLDkIlDIlRFo9x4WZlFKXQP55KnSWFVW0+FRkE+u733SRR9U0Lz7U6el5NHV5sDPRk7eV0MkjAiO2EQAkCbvGzFaqST0nkWMf5ilE0vjTlev2fssgA2eQ21lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=fUhZlEwk; arc=none smtp.client-ip=68.232.154.123
+	 MIME-Version:Content-Type; b=MJqUMST+j1TTSdNSdIVrJdWHnD51vU8AOv/7JKgQkuSLBzvY+G++z6i+JWWdzsEZ0ZpNUC0f35voVhN+k0XxsXJgObYH6E34fXZB4Ttgi/amFNxOWnOEtAoDbp5M9SyWkyglnutQvAzH8cEALb69Ys/ncbLNGfKzRwy0TZgnvBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=DIYryuX7; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="fUhZlEwk"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="DIYryuX7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
   t=1751944639; x=1783480639;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=TPIb0xPK187K7rLue1DLpFCg5Yh7MklSC0DJpXh+ee4=;
-  b=fUhZlEwk723SyoIeLBZ5VU90X/XoTvz1o0DZg6+Jp7ygPx+8V5x2Ezfm
-   ivF/EKpRhHC9iGQD/es0phRyYbadQapdWTE5ZMhEmhkX+s8mXnYWg1hWG
-   5Ucvfw/COwlUGkDD/g3weqOMVX9eklF+ZAEQR87jnN9pNatmEjyxhLo5P
-   xzdvpavikS/fL/whhU5ukM4Cbq48NkpZnuQLAO5/EQ0EPzqK0r4NQ9Qz6
-   nIHCRD/94uSdrCPtBaEySl5Bvhp3CC/h1PcA1YBqDk6dwxbuEit4Kq2gp
-   ZIF6VvDRiSeTVGZMPBdZMb/raJyAx2dIFH9/y0puTeSRyQemjP45TI6UY
-   w==;
+  bh=yaM4TO7Trs1zxekdm1BdALVDkOi1WzDqa6qkyV8slns=;
+  b=DIYryuX7D/RIUHaWi7Ha+6aOic+z1uo1FSmk9DPPNFq7PCRYA/0Bm89O
+   AHXqEZ8inbWToAeyf/GH734MIrZxbuinCYyvYCKT46LVsoSUjgNZgVBm8
+   rZB/sLkWDu2bwAUgHBEGS/orIqq6/o1wF12yH9LYWNDMYTlGGlZoP4x7M
+   2nG68e+lswKRHfGzby81Z8MKHMlB3Mo8vyKlnkP6Em1ru9Vivwsd6ZuBd
+   KE+g8lFQXWZi70ccyFRyP0J2jt0t8jlhqE1WIpU+1Q+1FoyrP1JLhpHrs
+   tjyPFPipMs8g4wzyUZkUGxNiDSKso2WVQ2CVFv+c2Idyhe4w4aKIQ6dzD
+   Q==;
 X-CSE-ConnectionGUID: cVEISvaDRiehsZPvdpmZNg==
-X-CSE-MsgGUID: RaoMSu4ITc6n/SZ2t2Hj0w==
+X-CSE-MsgGUID: +EB7KnAmQT2nOQYvsqhkOQ==
 X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; 
-   d="scan'208";a="43198301"
+   d="scan'208";a="43198304"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Jul 2025 20:17:16 -0700
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Jul 2025 20:17:17 -0700
 Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 7 Jul 2025 20:16:46 -0700
+ 15.1.2507.44; Mon, 7 Jul 2025 20:16:47 -0700
 Received: from pop-os.microchip.com (10.10.85.11) by chn-vm-ex04.mchp-main.com
  (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
- Transport; Mon, 7 Jul 2025 20:16:46 -0700
+ Transport; Mon, 7 Jul 2025 20:16:47 -0700
 From: <Tristram.Ha@microchip.com>
 To: Woojung Huh <woojung.huh@microchip.com>, Andrew Lunn <andrew@lunn.ch>,
 	Vladimir Oltean <olteanv@gmail.com>, Rob Herring <robh@kernel.org>,
@@ -54,9 +54,9 @@ CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
 	<UNGLinuxDriver@microchip.com>, <devicetree@vger.kernel.org>,
 	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Tristram Ha
 	<tristram.ha@microchip.com>
-Subject: [PATCH net-next 4/6 v2] net: dsa: microchip: Use different registers for KSZ8463
-Date: Mon, 7 Jul 2025 20:16:46 -0700
-Message-ID: <20250708031648.6703-5-Tristram.Ha@microchip.com>
+Subject: [PATCH net-next 6/6 v2] net: dsa: microchip: Setup fiber ports for KSZ8463
+Date: Mon, 7 Jul 2025 20:16:48 -0700
+Message-ID: <20250708031648.6703-7-Tristram.Ha@microchip.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250708031648.6703-1-Tristram.Ha@microchip.com>
 References: <20250708031648.6703-1-Tristram.Ha@microchip.com>
@@ -71,362 +71,78 @@ Content-Type: text/plain
 
 From: Tristram Ha <tristram.ha@microchip.com>
 
-KSZ8463 does not use same set of registers as KSZ8863 so it is necessary
-to change some registers when using KSZ8463.
+The fiber ports in KSZ8463 cannot be detected internally, so it requires
+specifying that condition in the device tree.  Like the one used in
+Micrel PHY the port link can only be read and there is no write to the
+PHY.  The driver programs registers to operate fiber ports correctly.
+
+The PTP function of the switch is also turned off as it may interfere the
+normal operation of the MAC.
 
 Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
 ---
- drivers/net/dsa/microchip/ksz8.c       | 78 +++++++++++++++++++-------
- drivers/net/dsa/microchip/ksz_common.c | 35 +++++++++---
- drivers/net/dsa/microchip/ksz_dcb.c    | 10 +++-
- 3 files changed, 94 insertions(+), 29 deletions(-)
+ drivers/net/dsa/microchip/ksz8.c       | 26 ++++++++++++++++++++++++++
+ drivers/net/dsa/microchip/ksz_common.c |  3 +++
+ 2 files changed, 29 insertions(+)
 
 diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-index f0c6049afe51..904db68e11f3 100644
+index 904db68e11f3..1207879ef80c 100644
 --- a/drivers/net/dsa/microchip/ksz8.c
 +++ b/drivers/net/dsa/microchip/ksz8.c
-@@ -143,6 +143,11 @@ int ksz8_reset_switch(struct ksz_device *dev)
- 			KSZ8863_GLOBAL_SOFTWARE_RESET | KSZ8863_PCS_RESET, true);
- 		ksz_cfg(dev, KSZ8863_REG_SW_RESET,
- 			KSZ8863_GLOBAL_SOFTWARE_RESET | KSZ8863_PCS_RESET, false);
-+	} else if (ksz_is_ksz8463(dev)) {
-+		ksz_cfg(dev, KSZ8463_REG_SW_RESET,
-+			KSZ8463_GLOBAL_SOFTWARE_RESET, true);
-+		ksz_cfg(dev, KSZ8463_REG_SW_RESET,
-+			KSZ8463_GLOBAL_SOFTWARE_RESET, false);
- 	} else {
- 		/* reset switch */
- 		ksz_write8(dev, REG_POWER_MANAGEMENT_1,
-@@ -231,6 +236,11 @@ static int ksz8_port_queue_split(struct ksz_device *dev, int port, int queues)
- 			       WEIGHTED_FAIR_QUEUE_ENABLE);
- 		if (ret)
- 			return ret;
-+	} else if (ksz_is_ksz8463(dev)) {
-+		mask_4q = KSZ8873_PORT_4QUEUE_SPLIT_EN;
-+		mask_2q = KSZ8873_PORT_2QUEUE_SPLIT_EN;
-+		reg_4q = P1CR1;
-+		reg_2q = P1CR1 + 1;
- 	} else {
- 		mask_4q = KSZ8795_PORT_4QUEUE_SPLIT_EN;
- 		mask_2q = KSZ8795_PORT_2QUEUE_SPLIT_EN;
-@@ -1269,12 +1279,15 @@ int ksz8_w_phy(struct ksz_device *dev, u16 phy, u16 reg, u16 val)
- 
- void ksz8_cfg_port_member(struct ksz_device *dev, int port, u8 member)
- {
-+	int offset = P_MIRROR_CTRL;
- 	u8 data;
- 
--	ksz_pread8(dev, port, P_MIRROR_CTRL, &data);
--	data &= ~PORT_VLAN_MEMBERSHIP;
-+	if (ksz_is_ksz8463(dev))
-+		offset = P1CR2;
-+	ksz_pread8(dev, port, offset, &data);
-+	data &= ~dev->port_mask;
- 	data |= (member & dev->port_mask);
--	ksz_pwrite8(dev, port, P_MIRROR_CTRL, data);
-+	ksz_pwrite8(dev, port, offset, data);
- }
- 
- void ksz8_flush_dyn_mac_table(struct ksz_device *dev, int port)
-@@ -1282,6 +1295,8 @@ void ksz8_flush_dyn_mac_table(struct ksz_device *dev, int port)
- 	u8 learn[DSA_MAX_PORTS];
- 	int first, index, cnt;
- 	const u16 *regs;
-+	int reg = S_FLUSH_TABLE_CTRL;
-+	int mask = SW_FLUSH_DYN_MAC_TABLE;
- 
- 	regs = dev->info->regs;
- 
-@@ -1299,7 +1314,11 @@ void ksz8_flush_dyn_mac_table(struct ksz_device *dev, int port)
- 			ksz_pwrite8(dev, index, regs[P_STP_CTRL],
- 				    learn[index] | PORT_LEARN_DISABLE);
- 	}
--	ksz_cfg(dev, S_FLUSH_TABLE_CTRL, SW_FLUSH_DYN_MAC_TABLE, true);
-+	if (ksz_is_ksz8463(dev)) {
-+		reg = KSZ8463_FLUSH_TABLE_CTRL;
-+		mask = KSZ8463_FLUSH_DYN_MAC_TABLE;
-+	}
-+	ksz_cfg(dev, reg, mask, true);
- 	for (index = first; index < cnt; index++) {
- 		if (!(learn[index] & PORT_LEARN_DISABLE))
- 			ksz_pwrite8(dev, index, regs[P_STP_CTRL], learn[index]);
-@@ -1438,7 +1457,7 @@ int ksz8_fdb_del(struct ksz_device *dev, int port, const unsigned char *addr,
- int ksz8_port_vlan_filtering(struct ksz_device *dev, int port, bool flag,
- 			     struct netlink_ext_ack *extack)
- {
--	if (ksz_is_ksz88x3(dev))
-+	if (ksz_is_ksz88x3(dev) || ksz_is_ksz8463(dev))
- 		return -ENOTSUPP;
- 
- 	/* Discard packets with VID not enabled on the switch */
-@@ -1454,9 +1473,12 @@ int ksz8_port_vlan_filtering(struct ksz_device *dev, int port, bool flag,
- 
- static void ksz8_port_enable_pvid(struct ksz_device *dev, int port, bool state)
- {
--	if (ksz_is_ksz88x3(dev)) {
--		ksz_cfg(dev, REG_SW_INSERT_SRC_PVID,
--			0x03 << (4 - 2 * port), state);
-+	if (ksz_is_ksz88x3(dev) || ksz_is_ksz8463(dev)) {
-+		int reg = REG_SW_INSERT_SRC_PVID;
-+
-+		if (ksz_is_ksz8463(dev))
-+			reg = KSZ8463_REG_SW_CTRL_9;
-+		ksz_cfg(dev, reg, 0x03 << (4 - 2 * port), state);
- 	} else {
- 		ksz_pwrite8(dev, port, REG_PORT_CTRL_12, state ? 0x0f : 0x00);
- 	}
-@@ -1471,7 +1493,7 @@ int ksz8_port_vlan_add(struct ksz_device *dev, int port,
- 	u16 data, new_pvid = 0;
- 	u8 fid, member, valid;
- 
--	if (ksz_is_ksz88x3(dev))
-+	if (ksz_is_ksz88x3(dev) || ksz_is_ksz8463(dev))
- 		return -ENOTSUPP;
- 
- 	/* If a VLAN is added with untagged flag different from the
-@@ -1540,7 +1562,7 @@ int ksz8_port_vlan_del(struct ksz_device *dev, int port,
- 	u16 data, pvid;
- 	u8 fid, member, valid;
- 
--	if (ksz_is_ksz88x3(dev))
-+	if (ksz_is_ksz88x3(dev) || ksz_is_ksz8463(dev))
- 		return -ENOTSUPP;
- 
- 	ksz_pread16(dev, port, REG_PORT_CTRL_VID, &pvid);
-@@ -1570,19 +1592,23 @@ int ksz8_port_mirror_add(struct ksz_device *dev, int port,
- 			 struct dsa_mall_mirror_tc_entry *mirror,
- 			 bool ingress, struct netlink_ext_ack *extack)
- {
-+	int offset = P_MIRROR_CTRL;
-+
-+	if (ksz_is_ksz8463(dev))
-+		offset = P1CR2;
- 	if (ingress) {
--		ksz_port_cfg(dev, port, P_MIRROR_CTRL, PORT_MIRROR_RX, true);
-+		ksz_port_cfg(dev, port, offset, PORT_MIRROR_RX, true);
- 		dev->mirror_rx |= BIT(port);
- 	} else {
--		ksz_port_cfg(dev, port, P_MIRROR_CTRL, PORT_MIRROR_TX, true);
-+		ksz_port_cfg(dev, port, offset, PORT_MIRROR_TX, true);
- 		dev->mirror_tx |= BIT(port);
- 	}
- 
--	ksz_port_cfg(dev, port, P_MIRROR_CTRL, PORT_MIRROR_SNIFFER, false);
-+	ksz_port_cfg(dev, port, offset, PORT_MIRROR_SNIFFER, false);
- 
- 	/* configure mirror port */
- 	if (dev->mirror_rx || dev->mirror_tx)
--		ksz_port_cfg(dev, mirror->to_local_port, P_MIRROR_CTRL,
-+		ksz_port_cfg(dev, mirror->to_local_port, offset,
- 			     PORT_MIRROR_SNIFFER, true);
- 
- 	return 0;
-@@ -1591,20 +1617,23 @@ int ksz8_port_mirror_add(struct ksz_device *dev, int port,
- void ksz8_port_mirror_del(struct ksz_device *dev, int port,
- 			  struct dsa_mall_mirror_tc_entry *mirror)
- {
-+	int offset = P_MIRROR_CTRL;
- 	u8 data;
- 
-+	if (ksz_is_ksz8463(dev))
-+		offset = P1CR2;
- 	if (mirror->ingress) {
--		ksz_port_cfg(dev, port, P_MIRROR_CTRL, PORT_MIRROR_RX, false);
-+		ksz_port_cfg(dev, port, offset, PORT_MIRROR_RX, false);
- 		dev->mirror_rx &= ~BIT(port);
- 	} else {
--		ksz_port_cfg(dev, port, P_MIRROR_CTRL, PORT_MIRROR_TX, false);
-+		ksz_port_cfg(dev, port, offset, PORT_MIRROR_TX, false);
- 		dev->mirror_tx &= ~BIT(port);
- 	}
- 
--	ksz_pread8(dev, port, P_MIRROR_CTRL, &data);
-+	ksz_pread8(dev, port, offset, &data);
- 
- 	if (!dev->mirror_rx && !dev->mirror_tx)
--		ksz_port_cfg(dev, mirror->to_local_port, P_MIRROR_CTRL,
-+		ksz_port_cfg(dev, mirror->to_local_port, offset,
- 			     PORT_MIRROR_SNIFFER, false);
- }
- 
-@@ -1629,17 +1658,24 @@ void ksz8_port_setup(struct ksz_device *dev, int port, bool cpu_port)
- 	const u16 *regs = dev->info->regs;
- 	struct dsa_switch *ds = dev->ds;
+@@ -1715,6 +1715,7 @@ void ksz8_config_cpu_port(struct dsa_switch *ds)
  	const u32 *masks;
-+	int offset;
- 	u8 member;
+ 	const u16 *regs;
+ 	u8 remote;
++	u8 fiber_ports = 0;
+ 	int i;
  
  	masks = dev->info->masks;
- 
- 	/* enable broadcast storm limit */
--	ksz_port_cfg(dev, port, P_BCAST_STORM_CTRL, PORT_BROADCAST_STORM, true);
-+	offset = P_BCAST_STORM_CTRL;
-+	if (ksz_is_ksz8463(dev))
-+		offset = P1CR1;
-+	ksz_port_cfg(dev, port, offset, PORT_BROADCAST_STORM, true);
- 
- 	ksz8_port_queue_split(dev, port, dev->info->num_tx_queues);
- 
- 	/* replace priority */
--	ksz_port_cfg(dev, port, P_802_1P_CTRL,
-+	offset = P_802_1P_CTRL;
-+	if (ksz_is_ksz8463(dev))
-+		offset = P1CR2;
-+	ksz_port_cfg(dev, port, offset,
- 		     masks[PORT_802_1P_REMAPPING], false);
- 
- 	if (cpu_port)
-@@ -1905,7 +1941,7 @@ int ksz8_setup(struct dsa_switch *ds)
- 
- 	ksz_cfg(dev, S_MIRROR_CTRL, SW_MIRROR_RX_TX, false);
- 
--	if (!ksz_is_ksz88x3(dev))
-+	if (!ksz_is_ksz88x3(dev) && !ksz_is_ksz8463(dev))
- 		ksz_cfg(dev, REG_SW_CTRL_19, SW_INS_TAG_ENABLE, true);
- 
- 	for (i = 0; i < (dev->info->num_vlans / 4); i++)
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 5261747b7753..55108237180c 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -2951,6 +2951,7 @@ static int ksz_parse_drive_strength(struct ksz_device *dev);
- static int ksz_setup(struct dsa_switch *ds)
- {
- 	struct ksz_device *dev = ds->priv;
-+	u16 storm_mask, storm_rate;
- 	struct dsa_port *dp;
- 	struct ksz_port *p;
- 	const u16 *regs;
-@@ -2980,10 +2981,15 @@ static int ksz_setup(struct dsa_switch *ds)
- 	}
- 
- 	/* set broadcast storm protection 10% rate */
--	regmap_update_bits(ksz_regmap_16(dev), regs[S_BROADCAST_CTRL],
--			   BROADCAST_STORM_RATE,
--			   (BROADCAST_STORM_VALUE *
--			   BROADCAST_STORM_PROT_RATE) / 100);
-+	storm_mask = BROADCAST_STORM_RATE;
-+	storm_rate = (BROADCAST_STORM_VALUE * BROADCAST_STORM_PROT_RATE) / 100;
-+	if (ksz_is_ksz8463(dev)) {
-+		storm_mask = cpu_to_be16(storm_mask);
-+		storm_rate = cpu_to_be16(storm_rate);
+@@ -1745,6 +1746,31 @@ void ksz8_config_cpu_port(struct dsa_switch *ds)
+ 		else
+ 			ksz_port_cfg(dev, i, regs[P_STP_CTRL],
+ 				     PORT_FORCE_FLOW_CTRL, false);
++		if (p->fiber)
++			fiber_ports |= (1 << i);
 +	}
-+	regmap_update_bits(ksz_regmap_16(dev),
-+			   reg16(dev, regs[S_BROADCAST_CTRL]),
-+			   storm_mask, storm_rate);
- 
- 	dev->dev_ops->config_cpu_port(ds);
- 
-@@ -4222,6 +4228,17 @@ static int ksz_ets_band_to_queue(struct tc_ets_qopt_offload_replace_params *p,
- 	return p->bands - 1 - band;
++	if (ksz_is_ksz8463(dev)) {
++		/* Setup fiber ports. */
++		if (fiber_ports) {
++			regmap_update_bits(ksz_regmap_16(dev),
++					   reg16(dev, KSZ8463_REG_CFG_CTRL),
++					   fiber_ports << PORT_COPPER_MODE_S,
++					   0);
++			regmap_update_bits(ksz_regmap_16(dev),
++					   reg16(dev, KSZ8463_REG_DSP_CTRL_6),
++					   COPPER_RECEIVE_ADJUSTMENT, 0);
++		}
++
++		/* Turn off PTP function as the switch's proprietary way of
++		 * handling timestamp is not supported in current Linux PTP
++		 * stack implementation.
++		 */
++		regmap_update_bits(ksz_regmap_16(dev),
++				   reg16(dev, KSZ8463_PTP_MSG_CONF1),
++				   PTP_ENABLE, 0);
++		regmap_update_bits(ksz_regmap_16(dev),
++				   reg16(dev, KSZ8463_PTP_CLK_CTRL),
++				   PTP_CLK_ENABLE, 0);
+ 	}
  }
  
-+static u8 ksz8463_tc_ctrl(int port, int queue)
-+{
-+	u8 reg;
-+
-+	reg = 0xC8 + port * 4;
-+	reg += ((3 - queue) / 2) * 2;
-+	reg++;
-+	reg -= (queue & 1);
-+	return reg;
-+}
-+
- /**
-  * ksz88x3_tc_ets_add - Configure ETS (Enhanced Transmission Selection)
-  *                      for a port on KSZ88x3 switch
-@@ -4257,6 +4274,8 @@ static int ksz88x3_tc_ets_add(struct ksz_device *dev, int port,
- 		 * port/queue
- 		 */
- 		reg = KSZ8873_TXQ_SPLIT_CTRL_REG(port, queue);
-+		if (ksz_is_ksz8463(dev))
-+			reg = ksz8463_tc_ctrl(port, queue);
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index c08e6578a0df..b3153b45ced9 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -5441,6 +5441,9 @@ int ksz_switch_register(struct ksz_device *dev)
+ 						&dev->ports[port_num].interface);
  
- 		/* Clear WFQ enable bit to select strict priority scheduling */
- 		ret = ksz_rmw8(dev, reg, KSZ8873_TXQ_WFQ_ENABLE, 0);
-@@ -4292,6 +4311,8 @@ static int ksz88x3_tc_ets_del(struct ksz_device *dev, int port)
- 		 * port/queue
- 		 */
- 		reg = KSZ8873_TXQ_SPLIT_CTRL_REG(port, queue);
-+		if (ksz_is_ksz8463(dev))
-+			reg = ksz8463_tc_ctrl(port, queue);
- 
- 		/* Set WFQ enable bit to revert back to default scheduling
- 		 * mode
-@@ -4439,7 +4460,7 @@ static int ksz_tc_setup_qdisc_ets(struct dsa_switch *ds, int port,
- 	struct ksz_device *dev = ds->priv;
- 	int ret;
- 
--	if (is_ksz8(dev) && !ksz_is_ksz88x3(dev))
-+	if (is_ksz8(dev) && !(ksz_is_ksz88x3(dev) || ksz_is_ksz8463(dev)))
- 		return -EOPNOTSUPP;
- 
- 	if (qopt->parent != TC_H_ROOT) {
-@@ -4453,13 +4474,13 @@ static int ksz_tc_setup_qdisc_ets(struct dsa_switch *ds, int port,
- 		if (ret)
- 			return ret;
- 
--		if (ksz_is_ksz88x3(dev))
-+		if (ksz_is_ksz88x3(dev) || ksz_is_ksz8463(dev))
- 			return ksz88x3_tc_ets_add(dev, port,
- 						  &qopt->replace_params);
- 		else
- 			return ksz_tc_ets_add(dev, port, &qopt->replace_params);
- 	case TC_ETS_DESTROY:
--		if (ksz_is_ksz88x3(dev))
-+		if (ksz_is_ksz88x3(dev) || ksz_is_ksz8463(dev))
- 			return ksz88x3_tc_ets_del(dev, port);
- 		else
- 			return ksz_tc_ets_del(dev, port);
-diff --git a/drivers/net/dsa/microchip/ksz_dcb.c b/drivers/net/dsa/microchip/ksz_dcb.c
-index c3b501997ac9..7131c5caac54 100644
---- a/drivers/net/dsa/microchip/ksz_dcb.c
-+++ b/drivers/net/dsa/microchip/ksz_dcb.c
-@@ -16,10 +16,12 @@
-  * Therefore, we define the base offset as 0x00 here to align with that logic.
-  */
- #define KSZ8_REG_PORT_1_CTRL_0			0x00
-+#define KSZ8463_REG_PORT_1_CTRL_0		0x6C
- #define KSZ8_PORT_DIFFSERV_ENABLE		BIT(6)
- #define KSZ8_PORT_802_1P_ENABLE			BIT(5)
- #define KSZ8_PORT_BASED_PRIO_M			GENMASK(4, 3)
- 
-+#define KSZ8463_REG_TOS_DSCP_CTRL		0x16
- #define KSZ88X3_REG_TOS_DSCP_CTRL		0x60
- #define KSZ8765_REG_TOS_DSCP_CTRL		0x90
- 
-@@ -98,6 +100,8 @@ static void ksz_get_default_port_prio_reg(struct ksz_device *dev, int *reg,
- 		*reg = KSZ8_REG_PORT_1_CTRL_0;
- 		*mask = KSZ8_PORT_BASED_PRIO_M;
- 		*shift = __bf_shf(KSZ8_PORT_BASED_PRIO_M);
-+		if (ksz_is_ksz8463(dev))
-+			*reg = KSZ8463_REG_PORT_1_CTRL_0;
- 	} else {
- 		*reg = KSZ9477_REG_PORT_MRI_MAC_CTRL;
- 		*mask = KSZ9477_PORT_BASED_PRIO_M;
-@@ -122,10 +126,12 @@ static void ksz_get_dscp_prio_reg(struct ksz_device *dev, int *reg,
- 		*reg = KSZ8765_REG_TOS_DSCP_CTRL;
- 		*per_reg = 4;
- 		*mask = GENMASK(1, 0);
--	} else if (ksz_is_ksz88x3(dev)) {
-+	} else if (ksz_is_ksz88x3(dev) || ksz_is_ksz8463(dev)) {
- 		*reg = KSZ88X3_REG_TOS_DSCP_CTRL;
- 		*per_reg = 4;
- 		*mask = GENMASK(1, 0);
-+		if (ksz_is_ksz8463(dev))
-+			*reg = KSZ8463_REG_TOS_DSCP_CTRL;
- 	} else {
- 		*reg = KSZ9477_REG_DIFFSERV_PRIO_MAP;
- 		*per_reg = 2;
-@@ -151,6 +157,8 @@ static void ksz_get_apptrust_map_and_reg(struct ksz_device *dev,
- 		*map = ksz8_apptrust_map_to_bit;
- 		*reg = KSZ8_REG_PORT_1_CTRL_0;
- 		*mask = KSZ8_PORT_DIFFSERV_ENABLE | KSZ8_PORT_802_1P_ENABLE;
-+		if (ksz_is_ksz8463(dev))
-+			*reg = KSZ8463_REG_PORT_1_CTRL_0;
- 	} else {
- 		*map = ksz9477_apptrust_map_to_bit;
- 		*reg = KSZ9477_REG_PORT_MRI_PRIO_CTRL;
+ 				ksz_parse_rgmii_delay(dev, port_num, port);
++				dev->ports[port_num].fiber =
++					of_property_read_bool(port,
++							      "micrel,fiber-mode");
+ 			}
+ 			of_node_put(ports);
+ 		}
 -- 
 2.34.1
 
