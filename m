@@ -1,87 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AA62E718D;
-	Tue,  8 Jul 2025 16:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D45021B199;
+	Tue,  8 Jul 2025 16:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751991002; cv=none; b=pYAMC+we1Y2sjr2RZ7J53BtN5pwRumWa3mIN2qPVRBPMOif9zQ3I3MeNzBkkoBlzi07ultZ61fFx2E+W5geVe/Dcp64Kap6czBwPXj+f3W3JAZo9JchCp9QQ/nAwPPLcGgSbLmhpDQaaTO3RKr7/W+x9RPmGUw2R0DBCxa+pJZs=
+	t=1751991390; cv=none; b=GHj671il38FS2Zrcr9RUc+6dekQ4NvRKWgLQQZpKiTtQ/c+AP4nfEOoJU9yL8CIkLt42xd97Qu1peWvtNZGUiHCpw8w6PyTQBLB48ELwqMilA3zIUNNKxZOzGcUIWm5T5wUEKF4M2vah0v9KZUoY/kxGlMQqvja/XENJYswnvew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751991002; c=relaxed/simple;
-	bh=Vo8fKYBnprjiGYOH/VOVRMxkPm6Y8f4SzUdQeB2EkvQ=;
+	s=arc-20240116; t=1751991390; c=relaxed/simple;
+	bh=MlvZZ4a52AP4+QDRvUm5hDSogr1vDDiw9bguTeqre4k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VJWCA7g0iARzZQas3EMYnrkjT8XFVX2t4qTgTBJtff8fYj4B5Mi7DvkjDkoja/4z07Qrx0rJm8afyHUutE37Zg5nTUb6crAHxiGbfUORNqcfucnGQXLW7NZJlLMV3KvOVWID4z1LrZKrUKbEBNHNqfJ9blph2WNPRqyLxFvS8fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RkkJTDJc; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=NccFFEyXZOxZIcbzWgtPX1xRdUDtQnfnn+di6RswOUqM5TXZgzXxXUhT8yQ//qFQ+Zk/ff4GVLZzdZ81qtE9xgpZhfY7Z4uN+IO4pDZKlv0JYTQopDwe0QjAiJFMhD0cCjLVGnGWn8C2OQdn30M1NowpHfunpU7hdTGDf/kTcJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHkDMXpm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RkkJTDJc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86690C4CEEF;
-	Tue,  8 Jul 2025 16:09:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHkDMXpm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4BEC4CEED;
+	Tue,  8 Jul 2025 16:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751991001;
-	bh=Vo8fKYBnprjiGYOH/VOVRMxkPm6Y8f4SzUdQeB2EkvQ=;
+	s=k20201202; t=1751991390;
+	bh=MlvZZ4a52AP4+QDRvUm5hDSogr1vDDiw9bguTeqre4k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RkkJTDJcoQWJRX4CtG/Y5eIzaZrwjy+ME+DhcB/IdLAp/Zzij3x06XuRDm4RHHK8Q
-	 A+ZwodpgOWg5DHRJHYZ523KyUEygCcYwsDYunVlxcRsKa/KzhAIc7yW4AfMX8ceAt+
-	 e7MPYC9Y7eaxEqJOdnqcQkXSW+est2B7m3DtFUvi3JA0c6X8jyglTh0Xgu9tiP4RIx
-	 qXz8879OEWmFFouCA2bJjOkCLBRGleCc4VuDMLc2euvcqgg7s8o3NhhrG9CenJMvWt
-	 0YaMp8d+IuvC4zPN4xlrOJyZ0gosL1KVK38ZJ3dHnOCdJR+o+l3rjlcQ+tf0Fh73Z5
-	 O8luVhEZMEUJg==
-Date: Tue, 8 Jul 2025 17:09:57 +0100
-From: Simon Horman <horms@kernel.org>
-To: ALOK TIWARI <alok.a.tiwari@oracle.com>
-Cc: sgoutham@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	darren.kenny@oracle.com, linux-kernel@vger.kernel.org
-Subject: Re: [External] : Re: [PATCH net] net: thunderx: Fix
- format-truncation warning in bgx_acpi_match_id()
-Message-ID: <20250708160957.GQ452973@horms.kernel.org>
-References: <20250706195145.1369958-1-alok.a.tiwari@oracle.com>
- <20250707191644.GC452973@horms.kernel.org>
- <96f8e9d7-6e4c-4f7a-bb66-a3b43e30182a@oracle.com>
+	b=WHkDMXpma6mUHWY1TvjLFbvGC4viBk4MR8OV9MrwZ/dTNKgT07LJpTY/NtXTCDXrZ
+	 dLjEZd/2stfi0fb8CD8B0SfIzQ6PTtunA4hOdl0neEM346rL6WymLLAFpuM3/xZ6Gt
+	 QO9DkRI4enn0lmHhspykXYqEdWOWahdODkBNZ0jylxzCe7tU8dP/VwqS6CGmJWrNjv
+	 EAETLzByJ4JTzHbGr3uk4fmxiyz8y26a7mwrercqkQST5xUubduncf9Zx5ya/jTpl+
+	 AsCll8GNnqL7PMZs3WvYXratllAkSary35yho11OgaklEU601N3wuM3bez/8naSIX0
+	 JoFLA4S0GU+Ww==
+Date: Tue, 8 Jul 2025 11:16:28 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Chen-Yu Tsai <wens@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Conor Dooley <conor+dt@kernel.org>,
+	Samuel Holland <samuel@sholland.org>,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+	Jernej Skrabec <jernej@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH RFT net-next 01/10] dt-bindings: net: sun8i-emac: Add
+ A523 GMAC200 compatible
+Message-ID: <175199138810.517400.11158407408233098308.robh@kernel.org>
+References: <20250701165756.258356-1-wens@kernel.org>
+ <20250701165756.258356-2-wens@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <96f8e9d7-6e4c-4f7a-bb66-a3b43e30182a@oracle.com>
+In-Reply-To: <20250701165756.258356-2-wens@kernel.org>
 
-On Tue, Jul 08, 2025 at 08:34:39AM +0530, ALOK TIWARI wrote:
-> 
-> 
-> On 7/8/2025 12:46 AM, Simon Horman wrote:
-> > >    drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:23: note:
-> > > directive argument in the range [0, 255]
-> > >      snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-> > >                           ^~~~~~~
-> > >    drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:2: note:
-> > > ‘snprintf’ output between 5 and 7 bytes into a destination of size 5
-> > >      snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-> > > 
-> > > compiler warning due to insufficient snprintf buffer size.
-> > > 
-> > > Signed-off-by: Alok Tiwari<alok.a.tiwari@oracle.com>
-> > Thanks Alok,
-> > 
-> > I agree this is a good change.
-> > 
-> > However, by my reading the range of values of bgx->bgx_id is 0 - 8
-> > because of the application of BGX_ID_MASK which restricts the
-> > value to 3 bits.
-> > 
-> > If so, I don't think this is a bug and it should be targeted at net-next.
-> > With a description of why it is not a bug.
-> > 
-> > Conversely, you think it is a bug, then I think an explanation as to why
-> > would be nice to add to the commit description.  And A fixes tag is needed.
-> 
-> Thanks Simon,
-> It is compile warning, We can target it for net-next.
-> 
-> I will resend it with [PATCH net-next]
 
-Thanks, good plan.
+On Wed, 02 Jul 2025 00:57:47 +0800, Chen-Yu Tsai wrote:
+> From: Chen-Yu Tsai <wens@csie.org>
+> 
+> The Allwinner A523 SoC family has a second Ethernet controller, called
+> the GMAC200 in the BSP and T527 datasheet, and referred to as GMAC1 for
+> numbering. This controller, according to BSP sources, is fully
+> compatible with a slightly newer version of the Synopsys DWMAC core.
+> The glue layer around the controller is the same as found around older
+> DWMAC cores on Allwinner SoCs. The only slight difference is that since
+> this is the second controller on the SoC, the register for the clock
+> delay controls is at a different offset. Last, the integration includes
+> a dedicated clock gate for the memory bus and the whole thing is put in
+> a separately controllable power domain.
+> 
+> Add a compatible string entry for it, and work in the requirements for
+> a second clock and a power domain.
+> 
+> Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+> ---
+>  .../net/allwinner,sun8i-a83t-emac.yaml        | 68 ++++++++++++++++++-
+>  1 file changed, 66 insertions(+), 2 deletions(-)
+> 
+
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+
