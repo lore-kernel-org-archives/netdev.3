@@ -1,75 +1,75 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECC72DCBE0
-	for <netdev@vger.kernel.org>; Tue,  8 Jul 2025 13:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508CC269CE1;
+	Tue,  8 Jul 2025 13:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751979604; cv=none; b=HjwV5/fCmse1QdLK0k7l/g+twN1vQSPdjjDISNK0uOoCuOP0YEyR6exkm/ROjp8tPrtwRGhKBG7yrMOtWAy1KuodY/Ui6fcTumn2pCq/ihBn1g6fMp3nMYfncuX+ItyK1eTzQB37BsHBNIoJXN9nY/FkGBIJqAjrVmYoC4p5gqY=
+	t=1751979863; cv=none; b=TcGuzLLAOz0VnL8gG1f+YbdVIlAOVxMrgtp+dbKvvh1NEQrdbpq8ZkPbhZxXn+QusbWVpzgUAwhDcTScRlA0Sy/wRxhuP50tzT9GDlTfjK6hOa3clmiRWRG+mPb0+yILDbZCV8UugU7SeIsn69BNU+oCmzh8BCbGQ0br8jtOp1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751979604; c=relaxed/simple;
-	bh=HrX39qnuRphmeD6X1pyFMClfVUfwX7EDB4jhKskJGGE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GJz7EXCVVC4CmXmzYSWKQtrViTNSPgp6X0FoKYT9fIphxME3cdQ+1Jb8WPlENDJyZmrLyBoRpkPqeJtccixzz9uWOVKq49oSc8Z3WIxYW9aTZSYroRQAlWHeWBR65FX6T/+BVbkeoHcq1faDnsCDaSyDT543/pqUueTKFz4Wv9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sZf9RTjo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751979863; c=relaxed/simple;
+	bh=DtezwLTXiFgp57t7fhy5HMszcRxu9C3aPysmGZpjAak=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Poq1vEVa/x5G8eE3GUe1qh5oFdBh+F0x3MvGO0UxPUqUaJ5GFHr3lbxFnEdRnSQv7ccHa8B3s80bj+rXpz7duJghW7cp/BGun0G8CALzOkbbX31z2plvkNav7m9R7etHpnmcYvyZ5oIk5SWfxcjNRd+V1mKqhA36YyfFPYXuTJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pWuJ9qsq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sZf9RTjo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D80C4CEED;
-	Tue,  8 Jul 2025 13:00:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pWuJ9qsq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E77C4CEED;
+	Tue,  8 Jul 2025 13:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751979603;
-	bh=HrX39qnuRphmeD6X1pyFMClfVUfwX7EDB4jhKskJGGE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sZf9RTjoCviMSxTxGPh05dtZLyekkg+K5Kq6cM5FrG1US08/yTDVh57/ScEptxyU5
-	 kwALdaSduVLCJROXXG+Y4nLxUH0ZDgKmeZZl++AN1DxvgShGq5LTHoE7Mz3iMi21GW
-	 3Cqy9pNztWAu8El7rIld4I37fG+iHmTjExYuuwi9HjQNrPNovwTsuYs6tVBUB4DKo3
-	 43zCQMG3az6asquIs4lgb/vgJg+W5EUw84cqBMEQ4ilX0gi8Byh+vWew85cnLTMa/I
-	 rUq84GIaxGWposM/x+o2d+BxgemWxjMhBPtBLYXUcRzHg8yG4Isvu/snkO19UkX78f
-	 x9ZAvfZqfE1cQ==
-Date: Tue, 8 Jul 2025 13:59:58 +0100
-From: Simon Horman <horms@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
-	eric.dumazet@gmail.com
-Subject: Re: [PATCH net-next 08/11] net_sched: act_nat: use RCU in
- tcf_nat_dump()
-Message-ID: <20250708125958.GI452973@horms.kernel.org>
-References: <20250707130110.619822-1-edumazet@google.com>
- <20250707130110.619822-9-edumazet@google.com>
- <20250708125411.GG452973@horms.kernel.org>
+	s=k20201202; t=1751979862;
+	bh=DtezwLTXiFgp57t7fhy5HMszcRxu9C3aPysmGZpjAak=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=pWuJ9qsqMzGCiUAAzrOtN1fqP+naFqDuIPadLtGr2GG3Zjq2T33oIxnwjAq18jn++
+	 nFMmqToQ1OGbIrKGLFGj6Ft+7SzpWfu2pF/9jDMkfN2VwYIPTFfNAR/cEPhIFEzmRx
+	 C5wIIAKh0XYzRDg+/viWg2VQuSmzcuCy4vNBgODzluJmcvPBPsfcgT5gyS7L0apZTx
+	 0wspBrznhxaB9ajwG3p5I3dHfYDuPEcOh5IhjVIEBzHep4xu6FhcfM6yu+SzYgvmwC
+	 XBQm5qrtc19+qCcfLudptekvSugXgIDGNIL+X8bi7pTUg8L9EVIKJgu+EqLTkWemwI
+	 3LphDa6xo6ujA==
+Date: Tue, 8 Jul 2025 06:04:21 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: veritas501 <hxzene@gmail.com>
+Cc: davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ingo Molnar
+ <mingo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Herbert Xu
+ <herbert@gondor.apana.org.au>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: appletalk: Fix device refcount leak in
+ atrtr_create()
+Message-ID: <20250708060421.2b388dc6@kernel.org>
+In-Reply-To: <20250708090431.472195-1-hxzene@gmail.com>
+References: <20250708090431.472195-1-hxzene@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250708125411.GG452973@horms.kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 08, 2025 at 01:54:11PM +0100, Simon Horman wrote:
-> On Mon, Jul 07, 2025 at 01:01:07PM +0000, Eric Dumazet wrote:
-
-...
-
-> > @@ -294,12 +293,12 @@ static int tcf_nat_dump(struct sk_buff *skb, struct tc_action *a,
-> >  	tcf_tm_dump(&t, &p->tcf_tm);
-> >  	if (nla_put_64bit(skb, TCA_NAT_TM, sizeof(t), &t, TCA_NAT_PAD))
-> >  		goto nla_put_failure;
-> > -	spin_unlock_bh(&p->tcf_lock);
-> > +	rcu_read_lock();
+On Tue,  8 Jul 2025 09:04:30 +0000 veritas501 wrote:
+> When updating an existing route entry in atrtr_create(), the old device
+> reference was not being released before assigning the new device,
+> leading to a device refcount leak. Fix this by calling dev_put() to
+> release the old device reference before holding the new one.
 > 
-> Hi Eric,
-> 
-> Should this be rcu_read_unlock()?
->                         ^^
-> 
-> Flagged by Smatch.
+> Fixes: c7f905f0f6d4 ("[ATALK]: Add missing dev_hold() to atrtr_create().")
+> Signed-off-by: veritas501 <hxzene@gmail.com>
 
-s/Smatch/Sparse/
+we need your real name
 
-...
+> diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
+> index 73ea7e67f05a..e5708870a249 100644
+> --- a/net/appletalk/ddp.c
+> +++ b/net/appletalk/ddp.c
+> @@ -576,6 +576,8 @@ static int atrtr_create(struct rtentry *r, struct net_device *devhint)
+>  
+>  	/* Fill in the routing entry */
+>  	rt->target  = ta->sat_addr;
+> +	if (rt->dev)
+> +		dev_put(rt->dev); /* Release old device */
+
+null check is not necessary before dev_put()
+-- 
+pw-bot: cr
