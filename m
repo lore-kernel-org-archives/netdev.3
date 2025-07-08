@@ -1,152 +1,164 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416ED27054B;
-	Tue,  8 Jul 2025 10:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781242C374B
+	for <netdev@vger.kernel.org>; Tue,  8 Jul 2025 10:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751971666; cv=none; b=XcQFyvHAhlHdNk7/LXTgRKkoP+ddwPOOmna2kZ2Nq6XO3DjqhkEXvpceZgpGBL770hTRql55pyZNCLcuYzXOfY1gdnwtU7LIqUSyTnkM1/RjuoDkAxibZQHV4TveS5Gy7pSroWGQYHmVb04Lw0jrr7mNJClP/wQTeCZhHFzEPfo=
+	t=1751971790; cv=none; b=NGo09pWUEXUXwZJ4jiVDNDEcZpUJ900Mzq0O3tA7rH9MMfnHKyQJMANPJGMV9UJeK8wI5pLgX7wStNNvwB9FjEwbSIteUgZA/pdGRE3B/CQnLT6V/fxypxpqp0womnvyUGJ1K93pCtnGNVM36hv4h0q+EbOYK1zOHH5BAMyS6pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751971666; c=relaxed/simple;
-	bh=gNF5kIHsZITNZE/wVRzomd+2nIA/Rq2Srm2KIybh62I=;
+	s=arc-20240116; t=1751971790; c=relaxed/simple;
+	bh=O7wwD7eSFM539CC00ixDKAsR7sbvVfXkvwV0BcTBHvA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r7SYsuouvqVZslcbBd0agw9KE5bYG2+eQrOrLPxUcMnCPVurezCzw+AI9/sxFYyP2VG++QljWlUlZZzVGgQVXbkjRcn6CqhsXZFeliG4OGCpsSof48v0NoC1L/OzesGsNRz3QcTyficVeDPo5kIqqOzEUP2wFUsOH+kglya6obA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mWG37/zX; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=BsyqL+fClxF7OPFbSoRt1ej3JBq7TTXLe+uu/GsWyKoFcQGYca7PyUA7A4grFl24aAqGel8b1ZWqC7096iddiHQ2G/fi/6w4h1nIZXY13aHcWD2RohOrM5exu5CGRC1BXY7tIGxgyP2UkzDujnEgRvE0RYg5qhBQ5UckkrT/B54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BWg6xLdo; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mWG37/zX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E57EC4CEED;
-	Tue,  8 Jul 2025 10:47:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751971665;
-	bh=gNF5kIHsZITNZE/wVRzomd+2nIA/Rq2Srm2KIybh62I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mWG37/zXq8qflsPAZPW5mY2kWxxRKIzWGl+K7jvZFoBAI84nbX1aVYz0AZeVgrXki
-	 Ln7zdoEDFlNTYTl+dzs+KAe7I6bqA0Z5QrW4yX8V9cANDEeFXPhkBcDFFMgjCKjjop
-	 tMn4xt9n5mGQbGJ1uQIJoBvDnc1ARZDFH1NNP/HONRVvZcnYVrDbR+lpxrywhoO7jF
-	 hujxHev+nNHFZa+ByzUCT5sTdWR4kDu5dIyXbG7PVc/Ds0WNl0F6vJQv1iLv1zER3v
-	 TYlo9zzHyzv3K4NLKtVr3zAeDdEmRT9X6VDnszpNbr9NBFgx9X+NH+r77L9ZI2WMJt
-	 broObH8AWFYIg==
-Date: Tue, 8 Jul 2025 11:47:40 +0100
-From: Simon Horman <horms@kernel.org>
-To: Michael Dege <michael.dege@renesas.com>
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-	Paul Barker <paul@pbarker.dev>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Subject: Re: [PATCH v2 3/4] net: renesas: rswitch: add offloading for L2
- switching
-Message-ID: <20250708104740.GF452973@horms.kernel.org>
-References: <20250708-add_l2_switching-v2-0-f91f5556617a@renesas.com>
- <20250708-add_l2_switching-v2-3-f91f5556617a@renesas.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BWg6xLdo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751971787;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5iL4j1/i/5cwMCBnyJHYMariApq+4KsGPMs67Fmf6qo=;
+	b=BWg6xLdoRbxP4T3tJhhEp46STTZMqBYI/kuPElw5vu1e5Q8f45HcRfffvVXmJxo7GJ+6tE
+	wyOfMHdGsdOFn+ru36ViKjE2qzXYeBnZEFSg2IXuRXT36x19r2rgt77VGE/DgJlV9wAtJ0
+	YfO1reIm7XQciw4/CU+pSCPbrOQL3Vw=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-653-b4ZubaNDNOurmKynoM-PMA-1; Tue, 08 Jul 2025 06:49:46 -0400
+X-MC-Unique: b4ZubaNDNOurmKynoM-PMA-1
+X-Mimecast-MFC-AGG-ID: b4ZubaNDNOurmKynoM-PMA_1751971786
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4a587c85a60so85409301cf.2
+        for <netdev@vger.kernel.org>; Tue, 08 Jul 2025 03:49:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751971786; x=1752576586;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5iL4j1/i/5cwMCBnyJHYMariApq+4KsGPMs67Fmf6qo=;
+        b=G5x1HAN5uVfQ18p1P23x6TH8g4y2bI4e/21YBmmoTc1lYg2p2YHJ/i0xqSfXA19uAR
+         R/KDkhPlneBjlgijEjDq44UKYMN767M7y4SHy6jJCPiWINEhYfgd9Au+CEsBnSnXuMMm
+         XPAYFiR+C79rNbZJW/lmGFLcD8xRz3Uzgj7/j6RDuxckJSyt6569yN0Uw7s8fG6BhEB2
+         j9rNKWqlkLFaJOfkAVF3EKp1iqvpM5Jh9kRQw9HvunS3PhJKxmjFStsrah1ULcuH0dCu
+         /dsc73yhoCy+icbjo9dozmiCsZ12/oZaIrD/XbmirbthhVES1iRTF9dNQwkIfv3hLWi+
+         56yg==
+X-Forwarded-Encrypted: i=1; AJvYcCVJ+HR/Ztqnbv/L3oKnoOjHQ1o9WVvdAnH2l7AdhbR+bRkiulWYW1kfjvUQ18FFeN04afOGwtM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyanIs7mCdv+/6oilXOhxmdTWHs9YC8oFpmcd0BSLwq7q+8U8Cs
+	PpbuAkputqji9aeMyMnlLvMNWsXrUt7Sh29IJWOmOEcDC3m+bEyR/1yWx58T7G8ASKyHZFdLtkj
+	T6snXFm6MjTUAt3y42l/TUU7EaL7lAqZz6vmBEQaLfsoJBE+Q3nIkzREV+A==
+X-Gm-Gg: ASbGncvDJDxQMWY/Rb3Ipp1Xgfu8sjKc1T4yA+HVi2wAbzt9w0d6euu/RCOZoCded+k
+	SCrVtl2me+YWOE0WuGEcP70Xh7v2lBm7XCeuKdzenUG0NmSqgRTu0FkeL/n65BrdEhSOpiT9SIV
+	quhqCdus3ThQDuFdjIdmwEtrOLnR+3JnSVpAEURuSmIrGNM0MAJeSzHgOjLNwv0wDfy3GpjOGRx
+	1rfNXz7Zr9Chgumsgwo+BEwQMdFegL8ncZQg+vqmS6LwUax137otsVVvTWAv8RbWNSN+jgpGhgN
+	w8ADIQsxTqCwhYxO0aMmxV+4uM5p
+X-Received: by 2002:a05:622a:d07:b0:4a7:6e08:6294 with SMTP id d75a77b69052e-4a9cdeeddf0mr40374041cf.19.1751971785754;
+        Tue, 08 Jul 2025 03:49:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEhYlU0uqUvfcleoNVAAhyRWfQZX9q6ookm+/i8X2MtWsxRCFgVRxkOKlEb0p2JpI6O3Qdagg==
+X-Received: by 2002:a05:622a:d07:b0:4a7:6e08:6294 with SMTP id d75a77b69052e-4a9cdeeddf0mr40373621cf.19.1751971785234;
+        Tue, 08 Jul 2025 03:49:45 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.147.103])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a994a8e527sm78690641cf.67.2025.07.08.03.49.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Jul 2025 03:49:44 -0700 (PDT)
+Date: Tue, 8 Jul 2025 12:49:37 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Xuewei Niu <niuxuewei.nxw@antgroup.com>
+Cc: "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, niuxuewei97@gmail.com
+Subject: Re: [PATCH net-next v6 1/4] hv_sock: Return the readable bytes in
+ hvs_stream_has_data()
+Message-ID: <o2u6lj6m7ro73vmza4zlrwwlvonjzkgdtd4xxrjn57xpa2lmpb@yik2rrzp2sos>
+References: <20250708-siocinq-v6-0-3775f9a9e359@antgroup.com>
+ <20250708-siocinq-v6-1-3775f9a9e359@antgroup.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20250708-add_l2_switching-v2-3-f91f5556617a@renesas.com>
+In-Reply-To: <20250708-siocinq-v6-1-3775f9a9e359@antgroup.com>
 
-On Tue, Jul 08, 2025 at 11:27:39AM +0200, Michael Dege wrote:
-> This commit adds hardware offloading for L2 switching on R-Car S4.
-> 
-> On S4 brdev is limited to one per-device (not per port). Reasoning
-> is that hw L2 forwarding support lacks any sort of source port based
-> filtering, which makes it unusable to offload more than one bridge
-> device. Either you allow hardware to forward destination MAC to a
-> port, or you have to send it to CPU. You can't make it forward only
-> if src and dst ports are in the same brdev.
-> 
-> Signed-off-by: Michael Dege <michael.dege@renesas.com>
-> Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+On Tue, Jul 08, 2025 at 02:36:11PM +0800, Xuewei Niu wrote:
+>From: Dexuan Cui <decui@microsoft.com>
+>
+>When hv_sock was originally added, __vsock_stream_recvmsg() and
+>vsock_stream_has_data() actually only needed to know whether there
+>is any readable data or not, so hvs_stream_has_data() was written to
+>return 1 or 0 for simplicity.
+>
+>However, now hvs_stream_has_data() should return the readable bytes
+>because vsock_data_ready() -> vsock_stream_has_data() needs to know the
+>actual bytes rather than a boolean value of 1 or 0.
+>
+>The SIOCINQ ioctl support also needs hvs_stream_has_data() to return
+>the readable bytes.
+>
+>Let hvs_stream_has_data() return the readable bytes of the payload in
+>the next host-to-guest VMBus hv_sock packet.
+>
+>Note: there may be multiple incoming hv_sock packets pending in the
+>VMBus channel's ringbuffer, but so far there is not a VMBus API that
+>allows us to know all the readable bytes in total without reading and
+>caching the payload of the multiple packets, so let's just return the
+>readable bytes of the next single packet. In the future, we'll either
+>add a VMBus API that allows us to know the total readable bytes without
+>touching the data in the ringbuffer, or the hv_sock driver needs to
+>understand the VMBus packet format and parse the packets directly.
+>
+>Signed-off-by: Dexuan Cui <decui@microsoft.com>
+>Signed-off-by: Xuewei Niu <niuxuewei.nxw@antgroup.com>
+>---
+> net/vmw_vsock/hyperv_transport.c | 17 ++++++++++++++---
+> 1 file changed, 14 insertions(+), 3 deletions(-)
 
-...
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
 
-> diff --git a/drivers/net/ethernet/renesas/rswitch_l2.c b/drivers/net/ethernet/renesas/rswitch_l2.c
+>
+>diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+>index 31342ab502b4fc35feb812d2c94e0e35ded73771..432fcbbd14d4f44bd2550be8376e42ce65122758 100644
+>--- a/net/vmw_vsock/hyperv_transport.c
+>+++ b/net/vmw_vsock/hyperv_transport.c
+>@@ -694,15 +694,26 @@ static ssize_t hvs_stream_enqueue(struct vsock_sock *vsk, struct msghdr *msg,
+> static s64 hvs_stream_has_data(struct vsock_sock *vsk)
+> {
+> 	struct hvsock *hvs = vsk->trans;
+>+	bool need_refill;
+> 	s64 ret;
+>
+> 	if (hvs->recv_data_len > 0)
+>-		return 1;
+>+		return hvs->recv_data_len;
+>
+> 	switch (hvs_channel_readable_payload(hvs->chan)) {
+> 	case 1:
+>-		ret = 1;
+>-		break;
+>+		need_refill = !hvs->recv_desc;
+>+		if (!need_refill)
+>+			return -EIO;
+>+
+>+		hvs->recv_desc = hv_pkt_iter_first(hvs->chan);
+>+		if (!hvs->recv_desc)
+>+			return -ENOBUFS;
+>+
+>+		ret = hvs_update_recv_data(hvs);
+>+		if (ret)
+>+			return ret;
+>+		return hvs->recv_data_len;
+> 	case 0:
+> 		vsk->peer_shutdown |= SEND_SHUTDOWN;
+> 		ret = 0;
+>
+>-- 
+>2.34.1
+>
 
-...
-
-> +static void rswitch_update_offload_brdev(struct rswitch_private *priv,
-> +					 bool force_update_l2_offload)
-> +{
-> +	struct net_device *offload_brdev = NULL;
-> +	struct rswitch_device *rdev, *rdev2;
-> +
-> +	rswitch_for_all_ports(priv, rdev) {
-> +		if (!rdev->brdev)
-> +			continue;
-> +		rswitch_for_all_ports(priv, rdev2) {
-> +			if (rdev2 == rdev)
-> +				break;
-> +			if (rdev2->brdev == rdev->brdev) {
-> +				offload_brdev = rdev->brdev;
-> +				break;
-> +			}
-> +		}
-> +		if (offload_brdev)
-> +			break;
-> +	}
-> +
-> +	if (offload_brdev == priv->offload_brdev) {
-> +		if (offload_brdev && force_update_l2_offload)
-> +			rswitch_update_l2_offload(priv);
-> +		return;
-> +	}
-> +
-> +	if (offload_brdev && !priv->offload_brdev)
-> +		dev_dbg(&priv->pdev->dev, "starting l2 offload for %s\n",
-> +			netdev_name(offload_brdev));
-> +	else if (!offload_brdev && priv->offload_brdev)
-> +		dev_dbg(&priv->pdev->dev, "stopping l2 offload for %s\n",
-> +			netdev_name(priv->offload_brdev));
-> +	else
-> +		dev_dbg(&priv->pdev->dev,
-> +			"changing l2 offload from %s to %s\n",
-> +			netdev_name(priv->offload_brdev),
-> +			netdev_name(offload_brdev));
-
-Smatch flags a false-positive about possible NULL references by the
-netdev_name() calls on the line above.
-
-Due to the previous if statement it seems to me that cannot occur.
-But it did take me a few moments to convince myself of that.
-
-So while I don't think we should write our code to static analysis tooling.
-I did play around a bit to see if I could come up with something that is
-both easier on the eyes and keeps Smatch happy.
-
-Perhaps it isn't easier on the eyes, but rather I'm just more familiar with
-the code now. But in any case, I'm sharing what I came up with in case it
-is useful. (Compile tested only!).
-
-
-        if (!offload_brdev && !priv->offload_brdev)
-                return;
-
-        if (!priv->offload_brdev)
-                dev_dbg(&priv->pdev->dev, "starting l2 offload for %s\n",
-                        netdev_name(offload_brdev));
-        else if (!offload_brdev)
-                dev_dbg(&priv->pdev->dev, "stopping l2 offload for %s\n",
-                        netdev_name(priv->offload_brdev));
-        else if (offload_brdev != priv->offload_brdev)
-                dev_dbg(&priv->pdev->dev,
-                        "changing l2 offload from %s to %s\n",
-                        netdev_name(priv->offload_brdev),
-                        netdev_name(offload_brdev));
-        else if (!force_update_l2_offload)
-                return;
-
-> +
-> +	priv->offload_brdev = offload_brdev;
-> +
-> +	rswitch_update_l2_offload(priv);
-> +}
-
-...
