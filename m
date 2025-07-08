@@ -1,182 +1,152 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDB12E093E;
-	Tue,  8 Jul 2025 15:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8F92E11B5;
+	Tue,  8 Jul 2025 15:23:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751987551; cv=none; b=A4Op7Std2PBnbTUqWz+5pAnapVMVCgaqKv+eA7neFlYwZsOO8g2JPA3PLiWp+b1Eb3L8Js0vDd9zhn6+pglHcgLvd4OARsOBAP3apyzfjwtnHpVJq8NK6Z+7IATupvWrKxsXaCC6cmV6dLWKxLVvcHLmJVQJlOU79g+BBx2Ujuo=
+	t=1751988232; cv=none; b=JbgG2rqrVyNxU2KG7Zw/yM80v/axu7VeIiz9iKgvAC8oOB9ONSmhxuXa1V63U/MU+N9FIuJLBpYiosfQ4SZoPwgG5FeF7rlCBgwSz+LHfgx/S4qcvNtLCVHdXJz2zeTG5xIk3fTxAdrkmbjyfFr7PGNxRITuUQQnOJxRvEV0qpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751987551; c=relaxed/simple;
-	bh=Tp1Bz8yUu3aS2rr8dOstQpb0hyvWmmXi1gc2V+SaRL4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATpRlgSD3lLJK3o+Byvmr/F1kDP4QY5fJekR1QnqAKXi2W46bKCXk1EPva3iLknPhs7lBhBEnBn0QJBhXYvMPBV9cWuYjAAVw36JGk/dPPWu76LmlP1WETDdj4G3DYfmzuxMycGp78t34tmpS70mpTENCbMQ+VXvOSPEYrssUJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VffpZKe3; arc=none smtp.client-ip=209.85.218.42
+	s=arc-20240116; t=1751988232; c=relaxed/simple;
+	bh=t0zhsMdWcVtROYyTguyTKLpSA22YsdUrHGfVAEnY4hg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ROEgx3QV4G4V3cTaRybsD42AzNAfGke4J8DxkPRM+gdnO9OtdJooqc+YFsd5ZkS+c5qBqjwtg7ml55cdG5mVv4LmkoBn/6RxEDEOTSEY96JVCGulDec8ENl9+6Ns3MjMYrpwliayoHhjQjCMlFNa1NDHx2niDK49O1wozw+by2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PuvyT2zn; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VffpZKe3"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ae04d3d63e6so752130066b.2;
-        Tue, 08 Jul 2025 08:12:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PuvyT2zn"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-450cf0120cdso38982525e9.2;
+        Tue, 08 Jul 2025 08:23:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751987548; x=1752592348; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YAUBR/u+RT3eCuaRQRZ/Ht0agoAR4js0pHVirBrIafo=;
-        b=VffpZKe3sIcFw9ZGhoYAGo/gefP06C7zwHA6FZ9U/RTuWaW/80mBBLr2Rr2kY4HbfE
-         ZeCh/TogPDMrB0gaSPqaig/88ipiGvvrFMTBWQA/mLhryUzintCpkd7068/Bm+Qt+4ks
-         C4XsUtm7r4SomP01OaaNLgqg22CC+PHSNewyySCSQld9Mo/VXN2GMEgJNcZQ6321DvIa
-         UcZahslwFdYc6aOcg0zXQz9OZGXWGvgGoVpwaRhgtQBleiscmrLw2rpTbO51cJsW/yxt
-         4vzaxSyxZbhWw22stwSSNhDkwjkNSZstSal3GS3D1xPe31jMxXc6nCeSKglte2b345hc
-         wN2A==
+        d=gmail.com; s=20230601; t=1751988228; x=1752593028; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kcMUZCgeyReQcwT7hAu7bby9I4CBSBEcQAsKrmRUZHU=;
+        b=PuvyT2zn1yIrIZFJUdRZ8levt3/HmGfLYqqwjNkk4lucAEHpoDJGCXDN2LD4up2FgR
+         Fr8cnUtqnrBP722pc+dhjWqQumSW6wX3iP7SFAwpFIsh276GUOuzD/IFouqFqyD1Vagu
+         qDCb+wPqQjYU6XT/c9Zx6D7afzZDH6s3MJYDfAD7tpYcUSuTFToTvqu54lKHBKfKsy7t
+         0LZ6nMNMfZ3cshTPGoQPEEBLUrfRBVPJ9tVTJOl+0O95cl98duDq1Fjwd6Y6CkDWcMD5
+         /lLbmW7QpPdr9RMo9hzOVgN9c/OD4bZZ4vUkbLtyosWxFVXYmne3f/Q7NmO35HigWlQv
+         zWWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751987548; x=1752592348;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YAUBR/u+RT3eCuaRQRZ/Ht0agoAR4js0pHVirBrIafo=;
-        b=jyjan9MGwhVYpnqhAUjHrGoNb/Y4JPLDHeUy01jBBYTwqPRs9LnbnERuwZ0PqLa895
-         26QGsbpoztJ7JAiL+g0veoXWZfCl2t4r34RaF4HZA0ACsCySCpFBbnbsy4SAIOxFxdZ/
-         Ddy+u6GyqZLVQVZfrMdlZm9i+/OxIceiLA6mTyNFUT7RTdOwniH52EibIccl6gtT8J4t
-         F2m3gViKLBSVcY7y4oUwEq0qh3U0hqGxUPOLe522XsVd7UWhlcjKjo8FUTUb7ScAWTsJ
-         JiFTZvRmQfTGw2suVLZ3YS+rz0exkl6ntI2shpSlMS3LxRur7OtejoAlGnivXb8qaWmL
-         bsgg==
-X-Forwarded-Encrypted: i=1; AJvYcCVluoU9dpQixlb1DZR+xjsiPpc4pynORW5hJQwGFC050VTfBLjELSD48b2g+DDLKH3G6TIwWHg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQxRmslrj2cnrr3kYX4LPjxsJan1MHwlwCy3PkP3KgHaRGlOEv
-	Fkmxhqy2J+feau/TrmhAXUZf1yG0a0zxJFPFqyMmwRDTBFr1FClQ0N1c
-X-Gm-Gg: ASbGncvBYvhvIRmnv90X86Mo2ds/0FAiWonkpDivofvpxbZGbLUpSirJOW6O8XB0PxE
-	QVXDcOtfF3H3Uh6BKyOv2dBnYQq3Dl5riKvhSokrpuFJFUiKH/e2ZCOrji5BaiEORqanMDQca4h
-	exUYmXWha8RIltmIh4/xBXitkVogZOWJFXE/rj8kHefFFyjHEY2ucY5q3MSYuxcyi4EFwGwBA7M
-	vjgsmzbHuo8vuwpLJuajMPfQKSR1ZIGzKXF37rWHN9TIrJkaBXVepuXED8mnPQMJSzP/mbKtymN
-	k6J8K6hEYHLY4P3likKUjlCypCJGw5cj3OfvGMIN0ndSfe4x7f7AS0MT5+JdQFIq7AIa467aijd
-	auB6w2PKc1cm/RiLGhKBo1Ts7FYb7o6kKmdjtxP7FWdF7wpVdkIcxScRsIegPLCY6nDCgn6bDjA
-	AFOrBf
-X-Google-Smtp-Source: AGHT+IEv3oJ4Ui33L0KLof0NPPSG/UhfK4myNPOGcqm1VFqUfy96pX7vQ+1OxM6f0rlFUOuQBD3tVw==
-X-Received: by 2002:a17:906:6206:b0:ae3:cf41:b93b with SMTP id a640c23a62f3a-ae3fbd50f83mr1632665766b.41.1751987547316;
-        Tue, 08 Jul 2025 08:12:27 -0700 (PDT)
-Received: from localhost.localdomain (2001-1c00-020d-1300-1b1c-4449-176a-89ea.cable.dynamic.v6.ziggo.nl. [2001:1c00:20d:1300:1b1c:4449:176a:89ea])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f6b02a23sm907596766b.112.2025.07.08.08.12.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jul 2025 08:12:27 -0700 (PDT)
-From: Eric Woudstra <ericwouds@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netfilter-devel@vger.kernel.org,
-	bridge@lists.linux.dev,
-	netdev@vger.kernel.org,
-	Eric Woudstra <ericwouds@gmail.com>
-Subject: [PATCH v14 nf-next 3/3] netfilter: nft_chain_filter: Add bridge double vlan and pppoe
-Date: Tue,  8 Jul 2025 17:12:09 +0200
-Message-ID: <20250708151209.2006140-4-ericwouds@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250708151209.2006140-1-ericwouds@gmail.com>
-References: <20250708151209.2006140-1-ericwouds@gmail.com>
+        d=1e100.net; s=20230601; t=1751988228; x=1752593028;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kcMUZCgeyReQcwT7hAu7bby9I4CBSBEcQAsKrmRUZHU=;
+        b=q3LZ+h2oSumlmVYBwzIMZUa9yM3pzStmwR1nQugIDvwCGxUQ8KcltRfm1hdRQU2rrO
+         SV1lGXj/L4qEAorRr3ksEQbGPx/qnsnxp7xgw4jV1sP0EfFv9hFuFMSt5IJythhzij8Z
+         gICt28OWjOL1FfWNIExuw2/COGDG9h/7CKF3QXOJvoGSBzUUt2ubUqCxR1YPMfwP2Wx5
+         soai6zI+ZX5uNT3lG6mFitQh2e/bpunMsSwsIHwolV1kxVA1gaDDH93GLmTbAVNT88YE
+         pCv5Pt29vcwOJm2BHZ5auQltauhupkxg3JhV3eMets4RtB9qdp/ZaVh2Wf8c28sFMPGM
+         9Gbw==
+X-Forwarded-Encrypted: i=1; AJvYcCV5EK1rcMGNOoKnssNlpiK9+I+iBG2G28h50ipiMv2WZx3xOOtFWjuGn3DMwVL4mY5Vehha37++iVJ6KB8=@vger.kernel.org, AJvYcCW6lOAeZp3+OswamrP3X8ZjwVG7buoxgj5uBKJll71Pev2G2/54VXTVb97LQRSbjXSRya89XIOK@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+TQgP9LfadVnqLSnfodfoxHb3Ii+Q2cPogvjSB0GF38FoYj9D
+	M5GV0p9Q3yVg/LVwY4uMxNr374LfS7NvIV6S+JTarnsTdszYTQOwpOHe
+X-Gm-Gg: ASbGnctfFPG11BsNOlON5oOyrwXfTLvYEnfGA1DCYqIgfww1l9l1XpwiH85gtChGWTk
+	kAEAHs+NwaviXszRGfl7cxDupP0LAX7XRWu4JcxS/xG/v00IHcZiOIrwXRoVEdkChkOHHblvrMS
+	WzzCvRUs3ON8FT11h8kdLmEvVA/AYCHMJctSrk5qqMIQF4a9TTHw5q8E2L9la30aLPiBompZFYQ
+	5NoFjOwRXgHehDOr7W6HdEErmXyJq4pJt2e7mCGcDLAQc9mwN8vZLoxjPKiBi8z9ukyhVphL9gL
+	RByscI/R1a8oKtQbzblMt887eIEbmyWd+RzttFaeXvjOPdkbyUNa8BbbwtTj8i6tPZqtXsc=
+X-Google-Smtp-Source: AGHT+IFFRv7FyHwKi0RG8N4S4cEq/NWk0eTLY0KyjYMqoY8o5cwORJ/c7bHpDiinkUqtv3tNuYGFpw==
+X-Received: by 2002:a05:600c:4706:b0:454:a37a:db67 with SMTP id 5b1f17b1804b1-454b4ead1c5mr181254015e9.17.1751988228002;
+        Tue, 08 Jul 2025 08:23:48 -0700 (PDT)
+Received: from [192.168.8.100] ([185.69.144.115])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b47030bc79sm13226959f8f.9.2025.07.08.08.23.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Jul 2025 08:23:47 -0700 (PDT)
+Message-ID: <b6529a13-e967-4e4d-b934-707363b41f8b@gmail.com>
+Date: Tue, 8 Jul 2025 16:25:13 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC net-next 1/4] net: Allow non parent devices to be used for
+ ZC DMA
+To: Mina Almasry <almasrymina@google.com>
+Cc: Dragos Tatulea <dtatulea@nvidia.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Saeed Mahameed <saeedm@nvidia.com>, tariqt@nvidia.com, cratiu@nvidia.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250702172433.1738947-1-dtatulea@nvidia.com>
+ <20250702172433.1738947-2-dtatulea@nvidia.com>
+ <32cb77d8-a4a5-4fc7-a427-d723e60efc59@gmail.com>
+ <CAHS8izP5rLBYq-cdbEVmuaHBhFAd2ayRmvoiE-fqxr48zMp-qQ@mail.gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <CAHS8izP5rLBYq-cdbEVmuaHBhFAd2ayRmvoiE-fqxr48zMp-qQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-This adds the capability to evaluate 802.1ad, QinQ, PPPoE and PPPoE-in-Q
-packets in the bridge filter chain.
+On 7/8/25 15:10, Mina Almasry wrote:
+> On Tue, Jul 8, 2025 at 4:05 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
+>>
+>> On 7/2/25 18:24, Dragos Tatulea wrote:
+>>> For zerocopy (io_uring, devmem), there is an assumption that the
+>>> parent device can do DMA. However that is not always the case:
+>>> for example mlx5 SF devices have an auxiliary device as a parent.
+>>>
+>>> This patch introduces the possibility for the driver to specify
+>>> another DMA device to be used via the new dma_dev field. The field
+>>> should be set before register_netdev().
+>>>
+>>> A new helper function is added to get the DMA device or return NULL.
+>>> The callers can check for NULL and fail early if the device is
+>>> not capable of DMA.
+>>>
+>>> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+>>> ---
+>>>    include/linux/netdevice.h | 13 +++++++++++++
+>>>    1 file changed, 13 insertions(+)
+>>>
+>>> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+>>> index 5847c20994d3..83faa2314c30 100644
+>>> --- a/include/linux/netdevice.h
+>>> +++ b/include/linux/netdevice.h
+>>> @@ -2550,6 +2550,9 @@ struct net_device {
+>>>
+>>>        struct hwtstamp_provider __rcu  *hwprov;
+>>>
+>>> +     /* To be set by devices that can do DMA but not via parent. */
+>>> +     struct device           *dma_dev;
+>>> +
+>>>        u8                      priv[] ____cacheline_aligned
+>>>                                       __counted_by(priv_len);
+>>>    } ____cacheline_aligned;
+>>> @@ -5560,4 +5563,14 @@ extern struct net_device *blackhole_netdev;
+>>>                atomic_long_add((VAL), &(DEV)->stats.__##FIELD)
+>>>    #define DEV_STATS_READ(DEV, FIELD) atomic_long_read(&(DEV)->stats.__##FIELD)
+>>>
+>>> +static inline struct device *netdev_get_dma_dev(const struct net_device *dev)
+>>> +{
+>>> +     struct device *dma_dev = dev->dma_dev ? dev->dma_dev : dev->dev.parent;
+>>> +
+>>> +     if (!dma_dev->dma_mask)
+>>
+>> dev->dev.parent is NULL for veth and I assume other virtual devices as well.
+>>
+>> Mina, can you verify that devmem checks that? Seems like veth is rejected
+>> by netdev_need_ops_lock() in netdev_nl_bind_rx_doit(), but IIRC per netdev
+>> locking came after devmem got merged, and there are other virt devices that
+>> might already be converted.
+>>
+> 
+> We never attempt devmem binding on any devices that don't support the
+> queue API, even before the per netdev locking was merged (there was an
+> explicit ops check).
 
-Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
----
- net/netfilter/nft_chain_filter.c | 59 +++++++++++++++++++++++++++++++-
- 1 file changed, 58 insertions(+), 1 deletion(-)
+great!
 
-diff --git a/net/netfilter/nft_chain_filter.c b/net/netfilter/nft_chain_filter.c
-index 846d48ba8965..1d09015a64d6 100644
---- a/net/netfilter/nft_chain_filter.c
-+++ b/net/netfilter/nft_chain_filter.c
-@@ -232,11 +232,62 @@ nft_do_chain_bridge(void *priv,
- 		    struct sk_buff *skb,
- 		    const struct nf_hook_state *state)
- {
-+	__be16 outer_proto, proto = 0;
- 	struct nft_pktinfo pkt;
-+	int ret, offset = 0;
- 
- 	nft_set_pktinfo(&pkt, skb, state);
- 
- 	switch (eth_hdr(skb)->h_proto) {
-+	case htons(ETH_P_PPP_SES): {
-+		struct ppp_hdr {
-+			struct pppoe_hdr hdr;
-+			__be16 proto;
-+		} *ph;
-+
-+		if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
-+			break;
-+		ph = (struct ppp_hdr *)(skb->data);
-+		switch (ph->proto) {
-+		case htons(PPP_IP):
-+			offset = PPPOE_SES_HLEN;
-+			outer_proto = skb->protocol;
-+			proto = htons(ETH_P_IP);
-+			skb_set_network_header(skb, offset);
-+			skb->protocol = proto;
-+			break;
-+		case htons(PPP_IPV6):
-+			offset = PPPOE_SES_HLEN;
-+			outer_proto = skb->protocol;
-+			proto = htons(ETH_P_IPV6);
-+			skb_set_network_header(skb, offset);
-+			skb->protocol = proto;
-+			break;
-+		default:
-+			proto = eth_hdr(skb)->h_proto;
-+			break;
-+		}
-+		break;
-+	}
-+	case htons(ETH_P_8021Q): {
-+		struct vlan_hdr *vhdr;
-+
-+		if (!pskb_may_pull(skb, VLAN_HLEN))
-+			break;
-+		vhdr = (struct vlan_hdr *)(skb->data);
-+		offset = VLAN_HLEN;
-+		outer_proto = skb->protocol;
-+		proto = vhdr->h_vlan_encapsulated_proto;
-+		skb_set_network_header(skb, offset);
-+		skb->protocol = proto;
-+		break;
-+	}
-+	default:
-+		proto = eth_hdr(skb)->h_proto;
-+		break;
-+	}
-+
-+	switch (proto) {
- 	case htons(ETH_P_IP):
- 		nft_set_pktinfo_ipv4_validate(&pkt);
- 		break;
-@@ -248,7 +299,13 @@ nft_do_chain_bridge(void *priv,
- 		break;
- 	}
- 
--	return nft_do_chain(&pkt, priv);
-+	ret = nft_do_chain(&pkt, priv);
-+
-+	if (offset && ret == NF_ACCEPT) {
-+		skb_reset_network_header(skb);
-+		skb->protocol = outer_proto;
-+	}
-+	return ret;
- }
- 
- static const struct nft_chain_type nft_chain_filter_bridge = {
+io_uring doesn't look at ->queue_mgmt_ops, so the helper from this
+patch needs to handle it one way or another.
+
 -- 
-2.47.1
+Pavel Begunkov
 
