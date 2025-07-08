@@ -1,113 +1,116 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E79184540;
-	Tue,  8 Jul 2025 08:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B73267B07
+	for <netdev@vger.kernel.org>; Tue,  8 Jul 2025 08:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751962533; cv=none; b=Hv5KmJEej2x7r8l24CFpm0SJ9+A6zlUCW93se89/KcMNeZNbUu61rHJ2Eq9dLlL8RCXBvqDw3+09wgJFPANJlVmMwSX0RXHLvjXtto4qCq0Jtx3CVcuvr3f5bEWYikttr0ErWZ6GvpUpiDyPcPyUIlWGrVLxxnrV1xA0GG5plF4=
+	t=1751962581; cv=none; b=sBLb7WznOvXD6NAnOs8zR+lsaViRhDyMgM0y1jzjIE+gTk1pR6dPeSabXOln71ZS5DiBcFyx0LClzafhBWGaSqnUwGwlhgY1cCsk3Oa6AeTGAoGl+ERZN21utjcfHdAJSQMOpeas/dIkDWl86dinB6leTUaZREbycxJKzbe7r/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751962533; c=relaxed/simple;
-	bh=rYlFHlvjj1QePapukAiI/tzY5PooIzqMJ0D/NC0iFMI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=t5netZntwyWdSfwyqtEr1Pg1+uoCHKHwVLEcjqGwHxMHj2ObIK5Ywlnk46BuaTOlywB8y44rd+SJoltjTtRlbAzJcggJ8H2tSEfrp9zIVZewX9Zfy7loYF9dAbFygSSgEDS7zzq5ig8PlmFSPh0LEXTz0LQBlTUQjJDyBxU+ou8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QcsvsQnN; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1751962581; c=relaxed/simple;
+	bh=UO2Z/bTfKTqIs3KiTBzGr2WQH493d/AThkPY1/9jAvc=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:Content-Type; b=PG1zUSNRNZEO0DSbokJmgeyZP5vg4fJ+V3hLwGRq+0iIlDAzNph2ZBesmK1Ii6jp5q5xJldIO8EP0WNgoR0goE9Dg5ijY7wdVBtxhFxDpOydNYw6+cIBgXV0jBegKMmw2VGW5JkKUA8rsRSRXG5nc095NdmT4ZhmgsxHtYCTLfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jacekk.info; spf=pass smtp.mailfrom=jacekk.info; dkim=pass (2048-bit key) header.d=jacekk.info header.i=@jacekk.info header.b=OAc8y+KB; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jacekk.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jacekk.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QcsvsQnN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751962532; x=1783498532;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rYlFHlvjj1QePapukAiI/tzY5PooIzqMJ0D/NC0iFMI=;
-  b=QcsvsQnNf2BGJ8TgQURxzXaQfvtYosUeOA9ONdWHw1gQxhCDjOnzC3N6
-   wEnjU9G3k4xQYnOxKyqtRhTWQuO0OdkBZ0s+fjOP8eK9d9Fj5Zv/KSRnq
-   uIDBhFKCFJ+jTcH1376Ux7AhO1fAM9Pg2aZnq1xKam7bV+uQGu1IIC8/e
-   62fuCI/tK3Ums1riVOnwEj8ULQ2LukWkD4liOs47G10NDiJ7aHGzIoiuH
-   n0ewgfMPnrjgqG7pW3VmyUim3KNek5sw+KxZm1IwNRutBmXcuKHZYjjQ1
-   mxSD3Hcs7g7wrDUICeT17mbULMXwcTklarCS28b7OzjGb94qkWWtW0ChO
-   A==;
-X-CSE-ConnectionGUID: xWLD/eb7TNeh8qr2dSYUGw==
-X-CSE-MsgGUID: UJv/0a2PT726jDOW2FrdzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="64440584"
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; 
-   d="scan'208";a="64440584"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 01:15:32 -0700
-X-CSE-ConnectionGUID: VVE8yAZxRRiXIaLhf4YU3A==
-X-CSE-MsgGUID: NygHuXbBR32HQw2wSj3eeQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; 
-   d="scan'208";a="179106015"
-Received: from ubuntu.bj.intel.com ([10.238.156.109])
-  by fmviesa002.fm.intel.com with ESMTP; 08 Jul 2025 01:15:29 -0700
-From: Jun Miao <jun.miao@intel.com>
-To: o.rempel@pengutronix.de,
-	kuba@kernel.org,
-	oneukum@suse.com,
-	qiang.zhang@linux.dev
-Cc: netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: usb: enable the work after stop usbnet by ip down/up
-Date: Tue,  8 Jul 2025 16:16:53 +0800
-Message-Id: <20250708081653.307815-1-jun.miao@intel.com>
-X-Mailer: git-send-email 2.32.0
+	dkim=pass (2048-bit key) header.d=jacekk.info header.i=@jacekk.info header.b="OAc8y+KB"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ae361e8ec32so810618166b.3
+        for <netdev@vger.kernel.org>; Tue, 08 Jul 2025 01:16:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jacekk.info; s=g2024; t=1751962576; x=1752567376; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zX0N14y+ivi1tBXRE49xrBFjeTOrZmJtWYI5xIIo6pc=;
+        b=OAc8y+KBRmwi4bF8dxAUHEumEyEjB9FFiYpvyhGqYgLi73Emwp8ZLkniazCCfPj9Mi
+         pJYA247MjD3y8vTq8t683Ja6LIXoDWL9jEIkdd+Aaltb7JXNzQ47nR2+e7ehJxg6lDGW
+         jLNeoA5wEFuRryP6Q7iNPawLiQ0HvUUNJyLn0zihRn02QHhxcCpiiAD2ytiNlox6w9q+
+         +GQZN6xtIkVYYs2adI45L1MvP3ECgR5KpTuKnEQb34etafvQtVm4md26LpDxc3G4ImCq
+         JsZvHcYwl62JlRn3KgN6EHbkNGm3VOO8ekJQ40dF4ChdTVp9UvP9GHMh+9oQQx7dwwIJ
+         Rb0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751962576; x=1752567376;
+        h=content-transfer-encoding:content-language:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zX0N14y+ivi1tBXRE49xrBFjeTOrZmJtWYI5xIIo6pc=;
+        b=JBt6qCARaw/mfFGK7SBu8hIA/YYWycNlbsR/z+/HUw8eP7kPa8+um0xiNGPIsR3ZW6
+         ofhDf6gEeoZAK+NvX3PbXXy4rUWidlS4Mqjn6TIWA24efpFQ08ZaryeSzSQMg0rwz6mP
+         M2jXxYOaeH4GrSXEKbYY3hI9LofC7mza6lS0WCki0dNsqsHPcqhws7UnyqahEkwFoFcQ
+         2j9xCvAMwskR+/v2CfBLBqVtHr7OSFqNjr75HvZ0AlpEea9CL/eM/2D6nS9RDXgJBM3T
+         rSxfRiWrYivKhCaVNGdSYFWeFda+yCWQq/RImqNNPPfgL87/b4oF9XK2d9Y1YQ8S3Jz9
+         3Vng==
+X-Forwarded-Encrypted: i=1; AJvYcCVlePMDwt/mRo9IWZBtJLWLdL92vvJVzmYHwpqmZnI/6TETvDDWo/U928a2FHKu4X/Oq/XTM3M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2zjlF5zmxpHbEOB0BHWTi/T+lQs2/r7vmPo7bBdCuTClNFY8I
+	wPbngJwPFmMPuYSge+nuoN4NjzGFwzWRIGAbmIC0mjHALRTH6BjB/QvqMhvnWBjtLg==
+X-Gm-Gg: ASbGncvkHk7x6XV5W5LqDxPhalDevdMUwRE9SpeWLM4lazdRlDdNMXqrXMvfeegVuTu
+	+Q+ltNtXs2nJ9F5ccc671O5wFqsfYCV1pMOw1K3OEYP3z86JnjmYy6rv+efFhufLEJU0UxNyzoT
+	r0iHPcb+fsWRJ9u4O4RBLlS8DEJ2B8D/oTO6600NGOgE6ZXHmkCy40/vZJE02fik3C2SgZr0tk/
+	i67GyoqN02xC3yKjday3Bd7NXrs0OdCM0ukXRQ2IGqQjfqACTQMgryY0VXdQ4lFyXiIPEhyG1/l
+	0z+/LGi8aWlSHW5zq9diLQnsfqAUG8Olr/PrlyZ6SG6Xd8c/Ed8vP+xqwBpN1ulI
+X-Google-Smtp-Source: AGHT+IEEfsdJuAwx2RBd/D25PHj+3LLnLlD9Rv5k7fwF6VFsK1BsqBstgUYy7xzOJP6DzbbwMbM8CQ==
+X-Received: by 2002:a17:907:3f87:b0:ad5:7bc4:84be with SMTP id a640c23a62f3a-ae6b0eaf680mr201405766b.52.1751962576253;
+        Tue, 08 Jul 2025 01:16:16 -0700 (PDT)
+Received: from [192.168.0.114] ([91.196.212.106])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f6929ab5sm834750566b.46.2025.07.08.01.16.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Jul 2025 01:16:15 -0700 (PDT)
+From: Jacek Kowalski <jacek@jacekk.info>
+X-Google-Original-From: Jacek Kowalski <Jacek@jacekk.info>
+Message-ID: <b4ee0893-6e57-471d-90f4-fe2a7c0a2ada@jacekk.info>
+Date: Tue, 8 Jul 2025 10:16:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH iwl-next v2 0/5] drop unnecessary constant casts to u16
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Zqiang <qiang.zhang@linux.dev>
+As requested by Simon Horman, here's the patch set to drop casts of
+constants to u16 in comparisons and subtractions.
 
-Oleksij reported that:
-The smsc95xx driver fails after one down/up cycle, like this:
- $ nmcli device set enu1u1 managed no
- $ p a a 10.10.10.1/24 dev enu1u1
- $ ping -c 4 10.10.10.3
- $ ip l s dev enu1u1 down
- $ ip l s dev enu1u1 up
- $ ping -c 4 10.10.10.3
-The second ping does not reach the host. Networking also fails on other interfaces.
+Changes are applied across all Intel wired drivers.
 
-Enable the work by replacing the disable_work_sync() with cancel_work_sync().
+No behavioural changes intended.
+Compile tested only.
 
-[Jun Miao: completely write the commit changelog]
+v1 -> v2: drop casts in subtractions as well
 
-Fixes: 2c04d279e857 ("net: usb: Convert tasklet API to new bottom half workqueue mechanism")
-Reported-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-Signed-off-by: Jun Miao <jun.miao@intel.com>
----
- drivers/net/usb/usbnet.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Jacek Kowalski (5):
+  e1000: drop unnecessary constant casts to u16
+  e1000e: drop unnecessary constant casts to u16
+  igb: drop unnecessary constant casts to u16
+  igc: drop unnecessary constant casts to u16
+  ixgbe: drop unnecessary constant casts to u16
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 9564478a79cc..6a3cca104af9 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -861,14 +861,14 @@ int usbnet_stop (struct net_device *net)
- 	/* deferred work (timer, softirq, task) must also stop */
- 	dev->flags = 0;
- 	timer_delete_sync(&dev->delay);
--	disable_work_sync(&dev->bh_work);
-+	cancel_work_sync(&dev->bh_work);
- 	cancel_work_sync(&dev->kevent);
- 
- 	/* We have cyclic dependencies. Those calls are needed
- 	 * to break a cycle. We cannot fall into the gaps because
- 	 * we have a flag
- 	 */
--	disable_work_sync(&dev->bh_work);
-+	cancel_work_sync(&dev->bh_work);
- 	timer_delete_sync(&dev->delay);
- 	cancel_work_sync(&dev->kevent);
- 
+ drivers/net/ethernet/intel/e1000/e1000_ethtool.c | 2 +-
+ drivers/net/ethernet/intel/e1000/e1000_hw.c      | 4 ++--
+ drivers/net/ethernet/intel/e1000/e1000_main.c    | 2 +-
+ drivers/net/ethernet/intel/e1000e/ethtool.c      | 2 +-
+ drivers/net/ethernet/intel/e1000e/nvm.c          | 4 ++--
+ drivers/net/ethernet/intel/igb/e1000_82575.c     | 4 ++--
+ drivers/net/ethernet/intel/igb/e1000_i210.c      | 2 +-
+ drivers/net/ethernet/intel/igb/e1000_nvm.c       | 4 ++--
+ drivers/net/ethernet/intel/igc/igc_i225.c        | 2 +-
+ drivers/net/ethernet/intel/igc/igc_nvm.c         | 4 ++--
+ drivers/net/ethernet/intel/ixgbe/ixgbe_common.c  | 2 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c    | 2 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c    | 2 +-
+ 13 files changed, 18 insertions(+), 18 deletions(-)
+
 -- 
-2.32.0
+2.47.2
 
