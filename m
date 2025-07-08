@@ -1,99 +1,59 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2243231830;
-	Tue,  8 Jul 2025 03:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53FA1799F
+	for <netdev@vger.kernel.org>; Tue,  8 Jul 2025 03:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=163.172.96.212
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751944647; cv=none; b=XWuEvqxPLg2OX8cdq6FlNs0N233VavyDABXYmS5+AokGUuHbwFxPcD/wD5DzDL8JzgWNT+Pg1/F8ggZf61R1FTKS4qFPw4Ex5NsbdFycvYGHucU949zvo1/0W84anpufCQHZ1+QyRBF49obagHa+3tVpXW8ghf3PJXyDL8rQa2I=
+	t=1751944718; cv=none; b=Vn+KiuACxNFRrlg3ORLHRkGKVuHqOi16p/SMxXxs9PzEqWniDIfF9NVkoza26sPlw58KwK51IbTnKkW6KeZ4sQhxSWk/O1TnWcRsqHvjWglcP9p/jqqHNjAuKKj+MrjROgeLCIbmJcThSMhncQmdAi63hBiiDUI0l/i9uuksJn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751944647; c=relaxed/simple;
-	bh=cRIyKtVNHxEkRXCQQhpfzkO1G4puRnV/5rOXJha/Vn0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nctnjVgiI8oj+yhZzoloJhZhwCRX/n5YmfptQkz1aAtddxm1BIvp+50HlJz9Z453OG2BEaiqCqmVgIpF1cWPxXRbYyCDtdgXaKb0a7Qpj7RuPA45D9JmF27Yc/C8BFoOpWkO9ojLWNJD0muf1Yd1wNNbucypqbm84bJnZJbmO44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=qPFloZvu; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="qPFloZvu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1751944645; x=1783480645;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=cRIyKtVNHxEkRXCQQhpfzkO1G4puRnV/5rOXJha/Vn0=;
-  b=qPFloZvu2QADe9S+2sVnpr4YnRsHAwvY88sjhTgRcH6OT+z6D6cE4MKO
-   unZPw1bRafS9k616EkTcr1aUEhY4QcaQzhxi6GgaCuCw/lJnjY4rYAC2h
-   MXltNzv7jZEpX7eb9qditpEgQpVIgpwyZTBTs8VJc1Qpjbnz/TlAD4GDM
-   LAM7N8b4FbAEdldliDTN7gdFDhZwvrZPHSAIaoLv1eKRQmKIxHY+xUofk
-   MPDRgZHpOxf/lO61p4UhOrZqA+DBKwTrEo5NAxhN9hLqB5uaq4o4KWuGq
-   uxnRcEKW+8vjN2K1N+NgvVxSlHGBKZXavmjGJXTXCrLDTwmTMcK6BlKSR
-   g==;
-X-CSE-ConnectionGUID: Xj5xTQr8TOOb2tovSmM8jA==
-X-CSE-MsgGUID: TGeA1eCdQFSZsaOP8DD0Hw==
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; 
-   d="scan'208";a="44305506"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Jul 2025 20:17:24 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 7 Jul 2025 20:16:44 -0700
-Received: from pop-os.microchip.com (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
- Transport; Mon, 7 Jul 2025 20:16:43 -0700
-From: <Tristram.Ha@microchip.com>
-To: Woojung Huh <woojung.huh@microchip.com>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>, Rob Herring <robh@kernel.org>,
-	"Krzysztof Kozlowski" <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>
-CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
-	<UNGLinuxDriver@microchip.com>, <devicetree@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Tristram Ha
-	<tristram.ha@microchip.com>
-Subject: [PATCH net-next 0/6 v2] net: dsa: microchip: Add KSZ8463 switch support
-Date: Mon, 7 Jul 2025 20:16:42 -0700
-Message-ID: <20250708031648.6703-1-Tristram.Ha@microchip.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1751944718; c=relaxed/simple;
+	bh=R+ZagSF0Ru2D3X6Unig2RnbtvbHgqFx+w/C9pPD6aTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xh7sDeDlL3GEoQhiwb/9X52Abe2HgC0JQyHgJy6M6aOoDbXM1L2bk5KGukmXeXs70Fqajyjk8vZbzdUjfpJQYGSQNuVvRiZMcepFHa0QGvyXAANJuvjdQel2jPstyVHwwKMSWi1Xzo8kWOeEzJCsJqceSM29nHp7PLfSKPo2/+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; arc=none smtp.client-ip=163.172.96.212
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
+Received: (from willy@localhost)
+	by pcw.home.local (8.15.2/8.15.2/Submit) id 5683IIH1004546;
+	Tue, 8 Jul 2025 05:18:18 +0200
+Date: Tue, 8 Jul 2025 05:18:18 +0200
+From: Willy Tarreau <w@1wt.eu>
+To: Xiang Mei <xmei5@asu.edu>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>, netdev@vger.kernel.org,
+        gregkh@linuxfoundation.org, jhs@mojatatu.com, jiri@resnulli.us,
+        security@kernel.org
+Subject: Re: [PATCH v1] net/sched: sch_qfq: Fix race condition on
+ qfq_aggregate
+Message-ID: <20250708031818.GA4539@1wt.eu>
+References: <aGdevOopELhzlJvf@pop-os.localdomain>
+ <20250705223958.4079242-1-xmei5@asu.edu>
+ <aGwMBj5BBRuITOlA@pop-os.localdomain>
+ <aGxgzS2dZo8fKUw5@xps>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aGxgzS2dZo8fKUw5@xps>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-From: Tristram Ha <tristram.ha@microchip.com>
+On Mon, Jul 07, 2025 at 05:05:33PM -0700, Xiang Mei wrote:
+> I have two more questions:
+> 
+> 1) Is the patch provider the person who usually adds the "Reported-by" tag?
 
-This series of patches is to add KSZ8463 switch support to the KSZ DSA
-driver.
+Yes, usually when one person authors a patch to fix a problem reported
+by someone else, a Reported-by tag is added to credit that reporter.
+When it's the same person as the one who authors the patch, it's not
+needed.
 
-v2
-- Break the KSZ8463 driver code into several patches for easy review
-- Replace ntohs with cpu_to_be16
+> 2) Am I allowed to request a CVE number for this race condition bug?
 
-Tristram Ha (6):
-  dt-bindings: net: dsa: microchip: Add KSZ8463 switch support
-  net: dsa: microchip: Add KSZ8463 switch support to KSZ DSA driver
-  net: dsa: microchip: Transform register for use with KSZ8463
-  net: dsa: microchip: Use different registers for KSZ8463
-  net: dsa: microchip: Write switch MAC address differently for KSZ8463
-  net: dsa: microchip: Setup fiber ports for KSZ8463
+No, this will happen automatically once the fix is considered for
+backporting by the stable team, and the cve team decides which fixes
+need a CVE. The process is described here: Documentation/process/cve.rst.
 
- .../bindings/net/dsa/microchip,ksz.yaml       |   1 +
- drivers/net/dsa/microchip/ksz8.c              | 201 +++++++++++++++---
- drivers/net/dsa/microchip/ksz8.h              |   4 +
- drivers/net/dsa/microchip/ksz8_reg.h          |  49 +++++
- drivers/net/dsa/microchip/ksz_common.c        | 168 ++++++++++++++-
- drivers/net/dsa/microchip/ksz_common.h        | 104 +++++++--
- drivers/net/dsa/microchip/ksz_dcb.c           |  10 +-
- drivers/net/dsa/microchip/ksz_spi.c           |  14 ++
- include/linux/platform_data/microchip-ksz.h   |   1 +
- 9 files changed, 503 insertions(+), 49 deletions(-)
-
--- 
-2.34.1
-
+Regards,
+Willy
