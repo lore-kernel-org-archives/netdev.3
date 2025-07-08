@@ -1,115 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EC918EAB;
-	Tue,  8 Jul 2025 16:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B4D14A60D
+	for <netdev@vger.kernel.org>; Tue,  8 Jul 2025 16:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993342; cv=none; b=EJf/qNi2DDdBjyhCAInsxkxN1s9Uecelq7RO+BAA9gtnpIvfDuDu/VDm1NgMO6xzbJhIksHjJ9+wCoKB94Hhefu5naFf5//F/ucVP391sh0gb7xQlRwDprzvnXkGKNtxLpAvOBKnwv+YaisXKFSN+TKL740gqv1WdxWIXOudkPY=
+	t=1751993503; cv=none; b=Kk+2ZVLB/Kkf61tlkKT+29oZ3Z9X0xhtzlaz98K94iPnHQMW+PU8Dz0ZsOLdmW3A5Cg+Z3r9fDxjexjxg2/fI/TzLJhHBbSiUeCIvV79PElCriBnXUYnTCIBdZNry/HaOww+QfKIDYQDA45QmTj0RW0qUT8LIjX0IRipg09drDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993342; c=relaxed/simple;
-	bh=CJuZZnS8E1IrIBoxNdGTRrydZnA/1nREEWJwecd/M1I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aoj4vcYUT1KL/2Fujsp3uCup07uA3s41ttPWi2L3YqVLsO+drOImLONLZKzckKK9ZNpb/36OTqf+hLUmYld4WfAp3RaoTce6/U7zJhFH7i5oIJBoYZbZEB1J02nVciLJ4vYwRUB3OzTAdBLdgVaYfmACqKzrFy7V/nYkJKGj5DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLztgBcx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751993503; c=relaxed/simple;
+	bh=OyljT9PSVKnpfH3jdIqUZjzrh0JCfRE96BnTBLczcIo=;
+	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
+	 Content-Type:Date:Message-ID; b=mpk7RHHAANUNBQ3m0PC+83Sm9m2mQQgRdhfQ3cYsBpjMAOajUyW/ad/nVR+ufG6zA4qXz0HtGAllZqOMZgrUqbvx8UG7EsbRMVPduTI2caA+1L7/DuoxWAPknTGaRfJiHVC3JWe+x/K7a3HnUr2JnY7qZ4gNOAgVQAeggVmEG9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=p8VNGwrW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dZevqjWv; arc=none smtp.client-ip=202.12.124.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLztgBcx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759F4C4CEF0;
-	Tue,  8 Jul 2025 16:49:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993342;
-	bh=CJuZZnS8E1IrIBoxNdGTRrydZnA/1nREEWJwecd/M1I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLztgBcxNqjQ9J+3IVaEHdisVSB8JbwT7RXJRxnZFH+OR4sjSCTmZNq6UpL4ZezfA
-	 izmnP6vgLe2muWZhXib+cXhU2QYh2zUVocOVA0fr0aPWWISCZUheYOZGxmjoPtR3uy
-	 QBlQrKEluCerGfvjGndhExLOOc6A4hd8K7FNuWIM=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Bryan Tan <bryan-bt.tan@broadcom.com>,
-	Vishnu Dasa <vishnu.dasa@broadcom.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	stable <stable@kernel.org>,
-	HarshaVardhana S A <harshavardhana.sa@broadcom.com>
-Subject: [PATCH 6.15 010/178] vsock/vmci: Clear the vmci transport packet properly when initializing it
-Date: Tue,  8 Jul 2025 18:20:47 +0200
-Message-ID: <20250708162236.819209078@linuxfoundation.org>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
-References: <20250708162236.549307806@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="p8VNGwrW";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dZevqjWv"
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 3C90A7A0295;
+	Tue,  8 Jul 2025 12:51:39 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 08 Jul 2025 12:51:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
+	 h=cc:cc:content-id:content-transfer-encoding:content-type
+	:content-type:date:date:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to; s=fm3; t=1751993499; x=1752079899; bh=azCWh3JV1z2s7t1pYzDf4
+	+nhXiDyVCZ87JjSSxlCDFg=; b=p8VNGwrWBY2bnjh5RlYFBJUFsLE+7ReG92oRV
+	2edqxd/NmijGLN6NRCx+X9Z7QR2TQruKTDDum52OaaUumUpk9Z/0bKP4XRTbntJN
+	XFGjAasnqzNeFGUDGt6ybMMt/MCtzVK0n/TH39qv+xyjPDu3cNDn9ofwOvIrsQfQ
+	sy3wWN5sjJgcv2OH5Y92gDn9gk2RCJVCkS7su1kybvbq1ad2HJtwr4xqmySJdsvI
+	EQCLBG5ryvydXHYDOpgtgbCVa6snnGLE4iKQTiVjX3Jta32F4/9Zvr7PS82V6Uu7
+	5By/IgV4DvE6bg1dKqkiKGC5owEZPVki3oHQQqWmk9B1wXRdQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-id
+	:content-transfer-encoding:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1751993499; x=1752079899; bh=azCWh3JV1z2s7t1pYzDf4+nhXiDyVCZ87Jj
+	SSxlCDFg=; b=dZevqjWv9YjjPeTVcWEPxQDSitNRBJAXouZJlhbb8UyiOsXYakR
+	gJvCzt/eskjDiksdoad4zn5JqmvjBOQ/ozFjybl7oXxykrtkVUQ8RrHlKEPDBogY
+	Ky8YL+Zc4LRZa8UpdnvuZyV/QGhUrbrXa4Fdwn0fX9SrCik/ZPI6OAaTf5OOfINd
+	luhHyjETMorU8RTm5xl1VPVLHxUO2lp6GnRcGVAQumYUsCTeqt3FITdOoyh2T8Yh
+	C6wTfwbiyj6eqf4EAe6KOsw1mSBgTrz1Cc/3ePLJYqjgFesvMZJYFnRM/fP2Lyhz
+	G4iuPTgIdHxIHiGW0ZxHZ3a+kK5R0E0ysAw==
+X-ME-Sender: <xms:mkxtaGDlQcOA3aapOKmmat2HDFNgweIIU6A1LVsfU0q9nCWYpmamZg>
+    <xme:mkxtaN7BwGekLt-ktlLLj0IZBykiDMfnwNPbtT9CVlFXFR9CHSGv8PqbFUtWQQLAI
+    qjZ48LRf2cRlxWS3W8>
+X-ME-Received: <xmr:mkxtaA536nAB6zvUGrEdRPQtXMEXrbykXeHb3Ns0klAeyCsr1438FBhYFxs4BETZJrThSw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdefhedvtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefhvfevufgjfhfogggtgfffkfesthhqredtredtvdenucfhrhhomheplfgrhicuggho
+    shgsuhhrghhhuceojhhvsehjvhhoshgsuhhrghhhrdhnvghtqeenucggtffrrghtthgvrh
+    hnpeeifedvleefleejveethfefieduueeivdefieevleffuddvveeftdehffffteefffen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjvhesjh
+    hvohhssghurhhghhdrnhgvthdpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphho
+    uhhtpdhrtghpthhtohepughsrghhvghrnhesghhmrghilhdrtghomhdprhgtphhtthhope
+    hprhgruggvvghpsheslhhinhhugidrvhhnvghtrdhisghmrdgtohhmpdhrtghpthhtohep
+    shhtvghphhgvnhesnhgvthifohhrkhhplhhumhgsvghrrdhorhhgpdhrtghpthhtohepih
+    drmhgrgihimhgvthhssehovhhnrdhorhhgpdhrtghpthhtoheprghmohhrvghnohiisehr
+    vgguhhgrthdrtghomhdprhgtphhtthhopehhrghlihhusehrvgguhhgrthdrtghomhdprh
+    gtphhtthhopehprhgruggvvghpsehushdrihgsmhdrtghomhdprhgtphhtthhopeifihhl
+    uggvrhesuhhsrdhisghmrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkh
+    gvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:mkxtaPStczP27yg2mG6hOR1ehSagb_GOGE6Dj12m6enbSIhu-5JhwQ>
+    <xmx:mkxtaI9Z7I2XtPzHb3GkErc5m6kY5CY4zDolrfbdNouzcuLzOkgFbQ>
+    <xmx:mkxtaAZeZ-H4V2FwUukBsD013RNEiM-HuhHB-CgiDkYqWwOnQbtCEg>
+    <xmx:mkxtaJryfBsnmUseD6UJdLVFuxcGb5A_1FFAgBkU_7T0FulsDsTCcw>
+    <xmx:m0xtaJHgLD8cR8w3UI1jPIEtDDs4-0dn-z6BlMoD6DeFO6YnKW1MumUJ>
+Feedback-ID: i53714940:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 8 Jul 2025 12:51:38 -0400 (EDT)
+Received: by famine.localdomain (Postfix, from userid 1000)
+	id 521BE9FC54; Tue,  8 Jul 2025 09:51:37 -0700 (PDT)
+Received: from famine (localhost [127.0.0.1])
+	by famine.localdomain (Postfix) with ESMTP id 4ECD79FC3F;
+	Tue,  8 Jul 2025 09:51:37 -0700 (PDT)
+From: Jay Vosburgh <jv@jvosburgh.net>
+To: David Wilder <wilder@us.ibm.com>
+cc: netdev@vger.kernel.org, pradeeps@linux.vnet.ibm.com,
+    pradeep@us.ibm.com, i.maximets@ovn.org, amorenoz@redhat.com,
+    haliu@redhat.com, stephen@networkplumber.org, dsahern@gmail.com
+Subject: Re: [PATCH iproute2-next v1 1/1] iproute: Extend bonding's
+ "arp_ip_target" parameter to add vlan tags.
+In-reply-to: <20250627202430.1791970-2-wilder@us.ibm.com>
+References: <20250627202430.1791970-1-wilder@us.ibm.com>
+ <20250627202430.1791970-2-wilder@us.ibm.com>
+Comments: In-reply-to David Wilder <wilder@us.ibm.com>
+   message dated "Fri, 27 Jun 2025 13:23:44 -0700."
+X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <163666.1751993497.1@famine>
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 08 Jul 2025 09:51:37 -0700
+Message-ID: <163667.1751993497@famine>
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+David Wilder <wilder@us.ibm.com> wrote:
 
-------------------
+>This change extends the "arp_ip_target" parameter format to allow for
+>a list of vlan tags to be included for each arp target.
+>
+>The new format for arp_ip_target is:
+>arp_ip_target=3Dipv4-address[vlan-tag\...],...
+>
+>Examples:
+>arp_ip_target=3D10.0.0.1[10]
+>arp_ip_target=3D10.0.0.1[100/200]
+>
+>Signed-off-by: David Wilder <wilder@us.ibm.com>
+>---
+> ip/iplink_bond.c | 62 +++++++++++++++++++++++++++++++++++++++++++++---
+> 1 file changed, 59 insertions(+), 3 deletions(-)
+>
+>diff --git a/ip/iplink_bond.c b/ip/iplink_bond.c
+>index 19af67d0..bb0b6e84 100644
+>--- a/ip/iplink_bond.c
+>+++ b/ip/iplink_bond.c
+>@@ -173,6 +173,45 @@ static void explain(void)
+> 	print_explain(stderr);
+> }
+> =
 
-From: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+>+#define BOND_VLAN_PROTO_NONE htons(0xffff)
+>+
+>+struct bond_vlan_tag {
+>+	__be16	vlan_proto;
+>+	__be16	vlan_id;
+>+};
+>+
+>+static inline struct bond_vlan_tag *bond_vlan_tags_parse(char *vlan_list=
+, int level, int *size)
+>+{
+>+	struct bond_vlan_tag *tags =3D NULL;
+>+	char *vlan;
+>+	int n;
+>+
+>+	if (!vlan_list || strlen(vlan_list) =3D=3D 0) {
+>+		tags =3D calloc(level + 1, sizeof(*tags));
+>+		*size =3D (level + 1) * (sizeof(*tags));
+>+		if (tags)
+>+			tags[level].vlan_proto =3D BOND_VLAN_PROTO_NONE;
+>+		return tags;
+>+	}
+>+
+>+	for (vlan =3D strsep(&vlan_list, "/"); (vlan !=3D 0); level++) {
+>+		tags =3D bond_vlan_tags_parse(vlan_list, level + 1, size);
+>+		if (!tags)
+>+			continue;
+>+
+>+		tags[level].vlan_proto =3D htons(ETH_P_8021Q);
+>+		n =3D sscanf(vlan, "%hu", &(tags[level].vlan_id));
+>+
+>+		if (n !=3D 1 || tags[level].vlan_id < 1 ||
+>+		    tags[level].vlan_id > 4094)
+>+			return NULL;
+>+
+>+		return tags;
+>+	}
+>+
+>+	return NULL;
+>+}
+>+
+> static int bond_parse_opt(struct link_util *lu, int argc, char **argv,
+> 			  struct nlmsghdr *n)
+> {
+>@@ -239,12 +278,29 @@ static int bond_parse_opt(struct link_util *lu, int=
+ argc, char **argv,
+> 				NEXT_ARG();
+> 				char *targets =3D strdupa(*argv);
+> 				char *target =3D strtok(targets, ",");
+>-				int i;
+>+				struct bond_vlan_tag *tags;
+>+				int size, i;
+> =
 
-commit 223e2288f4b8c262a864e2c03964ffac91744cd5 upstream.
+> 				for (i =3D 0; target && i < BOND_MAX_ARP_TARGETS; i++) {
+>-					__u32 addr =3D get_addr32(target);
+>+					struct Data {
+>+						__u32 addr;
+>+						struct bond_vlan_tag vlans[];
+>+					} data;
+>+					char *vlan_list, *dup;
+>+
+>+					dup =3D strdupa(target);
+>+					data.addr =3D get_addr32(strsep(&dup, "["));
+>+					vlan_list =3D strsep(&dup, "]");
+>+
+>+					if (vlan_list) {
+>+						tags =3D bond_vlan_tags_parse(vlan_list, 0, &size);
+>+						memcpy(&data.vlans, tags, size);
+>+						addattr_l(n, 1024, i, &data,
+>+							  sizeof(data.addr)+size);
+>+					} else {
+>+						addattr32(n, 1024, i, data.addr);
+>+					}
+> =
 
-In vmci_transport_packet_init memset the vmci_transport_packet before
-populating the fields to avoid any uninitialised data being left in the
-structure.
+>-					addattr32(n, 1024, i, addr);
 
-Cc: Bryan Tan <bryan-bt.tan@broadcom.com>
-Cc: Vishnu Dasa <vishnu.dasa@broadcom.com>
-Cc: Broadcom internal kernel review list
-Cc: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: virtualization@lists.linux.dev
-Cc: netdev@vger.kernel.org
-Cc: stable <stable@kernel.org>
-Signed-off-by: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20250701122254.2397440-1-gregkh@linuxfoundation.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	Another question occurred to me: is this method for sending the
+VLAN tags going to break compatibility?  New versions of iproute2 need
+to work on older kernels, so we can't simply change existing APIs in
+ways that require a lockstep change of iproute versions (going either
+forwards or backwards).
+
+	The above looks like it changes the structure being conveyed
+into the kernel, which I don't think we can do.  In the kernel, the old
+API will need to continue to function, and therefore the new "with VLAN
+tag" case will need to use a new API.
+
+	The existing IFLA_BOND_ARP_IP_TARGET type doesn't use nested
+netlink types, it just sends binary data, so I'm thinking we can't just
+change that binary data, and would need a new IFLA_BOND_ type.
+
+	-J
+
+> 					target =3D strtok(NULL, ",");
+> 				}
+> 				addattr_nest_end(n, nest);
+>-- =
+
+>2.43.5
+>
+
 ---
- net/vmw_vsock/vmci_transport.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -119,6 +119,8 @@ vmci_transport_packet_init(struct vmci_t
- 			   u16 proto,
- 			   struct vmci_handle handle)
- {
-+	memset(pkt, 0, sizeof(*pkt));
-+
- 	/* We register the stream control handler as an any cid handle so we
- 	 * must always send from a source address of VMADDR_CID_ANY
- 	 */
-@@ -131,8 +133,6 @@ vmci_transport_packet_init(struct vmci_t
- 	pkt->type = type;
- 	pkt->src_port = src->svm_port;
- 	pkt->dst_port = dst->svm_port;
--	memset(&pkt->proto, 0, sizeof(pkt->proto));
--	memset(&pkt->_reserved2, 0, sizeof(pkt->_reserved2));
- 
- 	switch (pkt->type) {
- 	case VMCI_TRANSPORT_PACKET_TYPE_INVALID:
-
-
+	-Jay Vosburgh, jv@jvosburgh.net
