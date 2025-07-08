@@ -1,29 +1,29 @@
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2800F2E0405;
-	Tue,  8 Jul 2025 13:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93BD2DECB5;
+	Tue,  8 Jul 2025 13:08:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751980091; cv=none; b=dtKue19l4sgP76/k1/ardy2UPjD+qMNtPYTzclKZM4JOm14GfueB+gd95Xcucy5KT6lOLi+mFmD8gPKtk1nYnU0GZ+3jwPuFPWzDC+obYg3UHxh0xwEWDMRHkqXK66MUncuPMV7pxSbHQqnuS75pgHS19l6vH50ml373cos0f4g=
+	t=1751980092; cv=none; b=HSIfnpiU7hYApNn9/c4EmmZ0ZfRmV/Hl8aGF2I8BAyIIIstl9qMCjKWCNFkNwF5LXbWc1c7d7Bflb8h9M6DkUgJApsTSQEDdn/QG2hkWg8IArltVU+uF8Ri5BDSIcv41pZxldxJbUilbiEyVY6dcBoz8kC+nh6iUkvc9xcv/OD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751980091; c=relaxed/simple;
-	bh=B/1kMsFRtEb2m3csbnx8etyOhPcOrAv1/uncxHjgkCU=;
+	s=arc-20240116; t=1751980092; c=relaxed/simple;
+	bh=SYn6/xvL1irec70hS1gy44irh9YtMxDzpKxJbwdyTYA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ufMp7ouVMXW92hCmB5K8pYXBBG0GYwzmj/+k3AKV8zhV2ITdd8CAadvyrGTuNtjZah3OefyC68Cr8NrzZ9VTARHXdORJtEHePww1G4OkYToCiEIYBswATxbE8XMDk8ooT40SYhCgs0ij3zGX3oYlCRkMQ6DpPBxVu7bEin/AiJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+	 MIME-Version:Content-Type; b=ni4TXaCWy7xBMxTZnCoWdWYAQBcH50Kws/Wl93DuBuol6w+QbVlm1XL101tVa2Z1YmL4f4WF2fSsSRU+gh3R6BZfCXiOEfkDqPYc2SlGI6c7A5l2x221j0vr8aSSPEHpIj+ZT9Mhtkq66zkscSDDbmzjH+FHYGW5Vk/aD6ZIN4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4bc1ZN10Vqz2Bcnv;
-	Tue,  8 Jul 2025 21:06:04 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4bc1Yb3xClz1d1sZ;
+	Tue,  8 Jul 2025 21:05:23 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id F14051400D4;
-	Tue,  8 Jul 2025 21:07:58 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 154821800B1;
+	Tue,  8 Jul 2025 21:08:01 +0800 (CST)
 Received: from localhost.localdomain (10.90.31.46) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 8 Jul 2025 21:07:58 +0800
+ 15.2.1544.11; Tue, 8 Jul 2025 21:08:00 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -32,9 +32,9 @@ CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
 	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
 	<arnd@kernel.org>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<shaojijie@huawei.com>
-Subject: [PATCH net-next 05/11] net: hns3: use seq_file for files in tm/ in debugfs
-Date: Tue, 8 Jul 2025 21:00:23 +0800
-Message-ID: <20250708130029.1310872-6-shaojijie@huawei.com>
+Subject: [PATCH net-next 09/11] net: hns3: use seq_file for files in common/ of hclge layer
+Date: Tue, 8 Jul 2025 21:00:27 +0800
+Message-ID: <20250708130029.1310872-10-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20250708130029.1310872-1-shaojijie@huawei.com>
 References: <20250708130029.1310872-1-shaojijie@huawei.com>
@@ -49,1111 +49,842 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  kwepemk100013.china.huawei.com (7.202.194.61)
 
-From: Jian Shen <shenjian15@huawei.com>
-
-Use seq_file for files in debugfs. This is the first
-modification for reading in hclge_debugfs.c.
+From: Yonglong Liu <liuyonglong@huawei.com>
 
 This patch use seq_file for the following nodes:
-tm_nodes/tm_priority/tm_qset/tm_map/tm_pg/tm_port/tc_sch_info/
-qos_pause_cfg/qos_pri_map/qos_dscp_map/qos_buf_cfg
+mng_tbl/loopback/interrupt_info/reset_info/imp_info/ncl_config/
+mac_tnl_status/service_task_info/vlan_config/ptp_info
 
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
 Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
- drivers/net/ethernet/hisilicon/hns3/hnae3.h   |   5 +
- .../ethernet/hisilicon/hns3/hns3_debugfs.c    |  45 +-
- .../hisilicon/hns3/hns3pf/hclge_debugfs.c     | 516 +++++++-----------
- .../hisilicon/hns3/hns3pf/hclge_debugfs.h     |   1 +
- .../hisilicon/hns3/hns3pf/hclge_main.c        |   1 +
- .../hisilicon/hns3/hns3pf/hclge_main.h        |   2 +
- 6 files changed, 236 insertions(+), 334 deletions(-)
+ .../ethernet/hisilicon/hns3/hns3_debugfs.c    |  22 +-
+ .../hisilicon/hns3/hns3pf/hclge_debugfs.c     | 426 ++++++++----------
+ 2 files changed, 200 insertions(+), 248 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.h b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-index 474cc6c8d748..5e8dbe9230f8 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-@@ -602,6 +602,8 @@ typedef int (*read_func)(struct seq_file *s, void *data);
-  *   Get wake on lan info
-  * set_wol
-  *   Config wake on lan
-+ * dbg_get_read_func
-+ *   Return the read func for debugfs seq file
-  */
- struct hnae3_ae_ops {
- 	int (*init_ae_dev)(struct hnae3_ae_dev *ae_dev);
-@@ -804,6 +806,9 @@ struct hnae3_ae_ops {
- 			struct ethtool_wolinfo *wol);
- 	int (*set_wol)(struct hnae3_handle *handle,
- 		       struct ethtool_wolinfo *wol);
-+	int (*dbg_get_read_func)(struct hnae3_handle *handle,
-+				 enum hnae3_dbg_cmd cmd,
-+				 read_func *func);
- };
- 
- struct hnae3_dcb_ops {
 diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-index a08f8402eea0..e687e47393e4 100644
+index e471d6fcdd1b..7e9208e69c74 100644
 --- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
 +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-@@ -43,6 +43,7 @@ static struct hns3_dbg_dentry_info hns3_dbg_dentry[] = {
- static int hns3_dbg_bd_file_init(struct hnae3_handle *handle, u32 cmd);
- static int hns3_dbg_common_file_init(struct hnae3_handle *handle, u32 cmd);
- static int hns3_dbg_common_init_t1(struct hnae3_handle *handle, u32 cmd);
-+static int hns3_dbg_common_init_t2(struct hnae3_handle *handle, u32 cmd);
- 
- static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
- 	{
-@@ -50,77 +51,77 @@ static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
- 		.cmd = HNAE3_DBG_CMD_TM_NODES,
- 		.dentry = HNS3_DBG_DENTRY_TM,
+@@ -163,49 +163,49 @@ static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
+ 		.cmd = HNAE3_DBG_CMD_MNG_TBL,
+ 		.dentry = HNS3_DBG_DENTRY_COMMON,
  		.buf_len = HNS3_DBG_READ_LEN,
 -		.init = hns3_dbg_common_file_init,
 +		.init = hns3_dbg_common_init_t2,
  	},
  	{
- 		.name = "tm_priority",
- 		.cmd = HNAE3_DBG_CMD_TM_PRI,
- 		.dentry = HNS3_DBG_DENTRY_TM,
+ 		.name = "loopback",
+ 		.cmd = HNAE3_DBG_CMD_LOOPBACK,
+ 		.dentry = HNS3_DBG_DENTRY_COMMON,
  		.buf_len = HNS3_DBG_READ_LEN,
 -		.init = hns3_dbg_common_file_init,
 +		.init = hns3_dbg_common_init_t2,
  	},
  	{
- 		.name = "tm_qset",
- 		.cmd = HNAE3_DBG_CMD_TM_QSET,
- 		.dentry = HNS3_DBG_DENTRY_TM,
- 		.buf_len = HNS3_DBG_READ_LEN_1MB,
--		.init = hns3_dbg_common_file_init,
-+		.init = hns3_dbg_common_init_t2,
- 	},
- 	{
- 		.name = "tm_map",
- 		.cmd = HNAE3_DBG_CMD_TM_MAP,
- 		.dentry = HNS3_DBG_DENTRY_TM,
- 		.buf_len = HNS3_DBG_READ_LEN_1MB,
--		.init = hns3_dbg_common_file_init,
-+		.init = hns3_dbg_common_init_t2,
- 	},
- 	{
- 		.name = "tm_pg",
- 		.cmd = HNAE3_DBG_CMD_TM_PG,
- 		.dentry = HNS3_DBG_DENTRY_TM,
+ 		.name = "interrupt_info",
+ 		.cmd = HNAE3_DBG_CMD_INTERRUPT_INFO,
+ 		.dentry = HNS3_DBG_DENTRY_COMMON,
  		.buf_len = HNS3_DBG_READ_LEN,
 -		.init = hns3_dbg_common_file_init,
 +		.init = hns3_dbg_common_init_t2,
  	},
  	{
- 		.name = "tm_port",
- 		.cmd = HNAE3_DBG_CMD_TM_PORT,
- 		.dentry = HNS3_DBG_DENTRY_TM,
+ 		.name = "reset_info",
+ 		.cmd = HNAE3_DBG_CMD_RESET_INFO,
+ 		.dentry = HNS3_DBG_DENTRY_COMMON,
  		.buf_len = HNS3_DBG_READ_LEN,
 -		.init = hns3_dbg_common_file_init,
 +		.init = hns3_dbg_common_init_t2,
  	},
  	{
- 		.name = "tc_sch_info",
- 		.cmd = HNAE3_DBG_CMD_TC_SCH_INFO,
- 		.dentry = HNS3_DBG_DENTRY_TM,
+ 		.name = "imp_info",
+ 		.cmd = HNAE3_DBG_CMD_IMP_INFO,
+ 		.dentry = HNS3_DBG_DENTRY_COMMON,
  		.buf_len = HNS3_DBG_READ_LEN,
 -		.init = hns3_dbg_common_file_init,
 +		.init = hns3_dbg_common_init_t2,
  	},
  	{
- 		.name = "qos_pause_cfg",
- 		.cmd = HNAE3_DBG_CMD_QOS_PAUSE_CFG,
- 		.dentry = HNS3_DBG_DENTRY_TM,
+ 		.name = "ncl_config",
+ 		.cmd = HNAE3_DBG_CMD_NCL_CONFIG,
+ 		.dentry = HNS3_DBG_DENTRY_COMMON,
+ 		.buf_len = HNS3_DBG_READ_LEN_128KB,
+-		.init = hns3_dbg_common_file_init,
++		.init = hns3_dbg_common_init_t2,
+ 	},
+ 	{
+ 		.name = "mac_tnl_status",
+ 		.cmd = HNAE3_DBG_CMD_MAC_TNL_STATUS,
+ 		.dentry = HNS3_DBG_DENTRY_COMMON,
  		.buf_len = HNS3_DBG_READ_LEN,
 -		.init = hns3_dbg_common_file_init,
 +		.init = hns3_dbg_common_init_t2,
  	},
  	{
- 		.name = "qos_pri_map",
- 		.cmd = HNAE3_DBG_CMD_QOS_PRI_MAP,
- 		.dentry = HNS3_DBG_DENTRY_TM,
+ 		.name = "bios_common",
+@@ -317,21 +317,21 @@ static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
+ 		.cmd = HNAE3_DBG_CMD_SERV_INFO,
+ 		.dentry = HNS3_DBG_DENTRY_COMMON,
  		.buf_len = HNS3_DBG_READ_LEN,
 -		.init = hns3_dbg_common_file_init,
 +		.init = hns3_dbg_common_init_t2,
  	},
  	{
- 		.name = "qos_dscp_map",
- 		.cmd = HNAE3_DBG_CMD_QOS_DSCP_MAP,
- 		.dentry = HNS3_DBG_DENTRY_TM,
+ 		.name = "vlan_config",
+ 		.cmd = HNAE3_DBG_CMD_VLAN_CONFIG,
+ 		.dentry = HNS3_DBG_DENTRY_COMMON,
  		.buf_len = HNS3_DBG_READ_LEN,
 -		.init = hns3_dbg_common_file_init,
 +		.init = hns3_dbg_common_init_t2,
  	},
  	{
- 		.name = "qos_buf_cfg",
- 		.cmd = HNAE3_DBG_CMD_QOS_BUF_CFG,
- 		.dentry = HNS3_DBG_DENTRY_TM,
+ 		.name = "ptp_info",
+ 		.cmd = HNAE3_DBG_CMD_PTP_INFO,
+ 		.dentry = HNS3_DBG_DENTRY_COMMON,
  		.buf_len = HNS3_DBG_READ_LEN,
 -		.init = hns3_dbg_common_file_init,
 +		.init = hns3_dbg_common_init_t2,
  	},
  	{
- 		.name = "dev_info",
-@@ -1144,6 +1145,28 @@ static int hns3_dbg_common_init_t1(struct hnae3_handle *handle, u32 cmd)
+ 		.name = "fd_counter",
+@@ -345,7 +345,7 @@ static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
+ 		.cmd = HNAE3_DBG_CMD_UMV_INFO,
+ 		.dentry = HNS3_DBG_DENTRY_COMMON,
+ 		.buf_len = HNS3_DBG_READ_LEN,
+-		.init = hns3_dbg_common_file_init,
++		.init = hns3_dbg_common_init_t2,
+ 	},
+ 	{
+ 		.name = "page_pool_info",
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
+index a8b87b8ec292..00cf6cc89eda 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
+@@ -1950,19 +1950,17 @@ static int hclge_dbg_dump_qos_buf_cfg(struct seq_file *s, void *data)
  	return 0;
  }
  
-+static int hns3_dbg_common_init_t2(struct hnae3_handle *handle, u32 cmd)
+-static int hclge_dbg_dump_mng_table(struct hclge_dev *hdev, char *buf, int len)
++static int hclge_dbg_dump_mng_table(struct seq_file *s, void *data)
+ {
++	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
+ 	struct hclge_mac_ethertype_idx_rd_cmd *req0;
+ 	struct hclge_desc desc;
+ 	u32 msg_egress_port;
+-	int pos = 0;
+ 	int ret, i;
+ 
+-	pos += scnprintf(buf + pos, len - pos,
+-			 "entry  mac_addr          mask  ether  ");
+-	pos += scnprintf(buf + pos, len - pos,
+-			 "mask  vlan  mask  i_map  i_dir  e_type  ");
+-	pos += scnprintf(buf + pos, len - pos, "pf_id  vf_id  q_id  drop\n");
++	seq_puts(s, "entry  mac_addr          mask  ether  ");
++	seq_puts(s, "mask  vlan  mask  i_map  i_dir  e_type  ");
++	seq_puts(s, "pf_id  vf_id  q_id  drop\n");
+ 
+ 	for (i = 0; i < HCLGE_DBG_MNG_TBL_MAX; i++) {
+ 		hclge_cmd_setup_basic_desc(&desc, HCLGE_MAC_ETHERTYPE_IDX_RD,
+@@ -1980,30 +1978,27 @@ static int hclge_dbg_dump_mng_table(struct hclge_dev *hdev, char *buf, int len)
+ 		if (!req0->resp_code)
+ 			continue;
+ 
+-		pos += scnprintf(buf + pos, len - pos, "%02u     %pM ",
+-				 le16_to_cpu(req0->index), req0->mac_addr);
++		seq_printf(s, "%02u     %pM ",
++			   le16_to_cpu(req0->index), req0->mac_addr);
+ 
+-		pos += scnprintf(buf + pos, len - pos,
+-				 "%x     %04x   %x     %04x  ",
+-				 !!(req0->flags & HCLGE_DBG_MNG_MAC_MASK_B),
+-				 le16_to_cpu(req0->ethter_type),
+-				 !!(req0->flags & HCLGE_DBG_MNG_ETHER_MASK_B),
+-				 le16_to_cpu(req0->vlan_tag) &
+-				 HCLGE_DBG_MNG_VLAN_TAG);
++		seq_printf(s, "%x     %04x   %x     %04x  ",
++			   !!(req0->flags & HCLGE_DBG_MNG_MAC_MASK_B),
++			   le16_to_cpu(req0->ethter_type),
++			   !!(req0->flags & HCLGE_DBG_MNG_ETHER_MASK_B),
++			   le16_to_cpu(req0->vlan_tag) &
++			   HCLGE_DBG_MNG_VLAN_TAG);
+ 
+-		pos += scnprintf(buf + pos, len - pos,
+-				 "%x     %02x     %02x     ",
+-				 !!(req0->flags & HCLGE_DBG_MNG_VLAN_MASK_B),
+-				 req0->i_port_bitmap, req0->i_port_direction);
++		seq_printf(s, "%x     %02x     %02x     ",
++			   !!(req0->flags & HCLGE_DBG_MNG_VLAN_MASK_B),
++			   req0->i_port_bitmap, req0->i_port_direction);
+ 
+ 		msg_egress_port = le16_to_cpu(req0->egress_port);
+-		pos += scnprintf(buf + pos, len - pos,
+-				 "%x       %x      %02x     %04x  %x\n",
+-				 !!(msg_egress_port & HCLGE_DBG_MNG_E_TYPE_B),
+-				 msg_egress_port & HCLGE_DBG_MNG_PF_ID,
+-				 (msg_egress_port >> 3) & HCLGE_DBG_MNG_VF_ID,
+-				 le16_to_cpu(req0->egress_queue),
+-				 !!(msg_egress_port & HCLGE_DBG_MNG_DROP_B));
++		seq_printf(s, "%x       %x      %02x     %04x  %x\n",
++			   !!(msg_egress_port & HCLGE_DBG_MNG_E_TYPE_B),
++			   msg_egress_port & HCLGE_DBG_MNG_PF_ID,
++			   (msg_egress_port >> 3) & HCLGE_DBG_MNG_VF_ID,
++			   le16_to_cpu(req0->egress_queue),
++			   !!(msg_egress_port & HCLGE_DBG_MNG_DROP_B));
+ 	}
+ 
+ 	return 0;
+@@ -2213,74 +2208,95 @@ int hclge_dbg_dump_rst_info(struct hclge_dev *hdev, char *buf, int len)
+ 	return 0;
+ }
+ 
+-static int hclge_dbg_dump_serv_info(struct hclge_dev *hdev, char *buf, int len)
++static int hclge_dbg_seq_dump_rst_info(struct seq_file *s, void *data)
 +{
-+	const struct hnae3_ae_ops *ops = hns3_get_ops(handle);
-+	struct device *dev = &handle->pdev->dev;
-+	struct dentry *entry_dir;
-+	read_func func;
-+	int ret;
++	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
++	u32 i, offset;
 +
-+	if (!ops->dbg_get_read_func)
-+		return 0;
++	seq_printf(s, "PF reset count: %u\n", hdev->rst_stats.pf_rst_cnt);
++	seq_printf(s, "FLR reset count: %u\n", hdev->rst_stats.flr_rst_cnt);
++	seq_printf(s, "GLOBAL reset count: %u\n",
++		   hdev->rst_stats.global_rst_cnt);
++	seq_printf(s, "IMP reset count: %u\n", hdev->rst_stats.imp_rst_cnt);
++	seq_printf(s, "reset done count: %u\n", hdev->rst_stats.reset_done_cnt);
++	seq_printf(s, "HW reset done count: %u\n",
++		   hdev->rst_stats.hw_reset_done_cnt);
++	seq_printf(s, "reset count: %u\n", hdev->rst_stats.reset_cnt);
++	seq_printf(s, "reset fail count: %u\n", hdev->rst_stats.reset_fail_cnt);
 +
-+	ret = ops->dbg_get_read_func(handle, hns3_dbg_cmd[cmd].cmd, &func);
-+	if (ret)
-+		return ret;
++	for (i = 0; i < ARRAY_SIZE(hclge_dbg_rst_info); i++) {
++		offset = hclge_dbg_rst_info[i].offset;
++		seq_printf(s, "%s: 0x%x\n",
++			   hclge_dbg_rst_info[i].message,
++			   hclge_read_dev(&hdev->hw, offset));
++	}
 +
-+	entry_dir = hns3_dbg_dentry[hns3_dbg_cmd[cmd].dentry].dentry;
-+	debugfs_create_devm_seqfile(dev, hns3_dbg_cmd[cmd].name, entry_dir,
-+				    func);
++	seq_printf(s, "hdev state: 0x%lx\n", hdev->state);
 +
 +	return 0;
 +}
 +
- int hns3_dbg_init(struct hnae3_handle *handle)
- {
- 	struct hnae3_ae_dev *ae_dev = hns3_get_ae_dev(handle);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-index f130020a1227..e5a5680c2088 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-@@ -12,6 +12,9 @@
- #include "hclge_tm.h"
- #include "hnae3.h"
- 
-+#define hclge_seq_file_to_hdev(s)	\
-+		((struct hclge_dev *)(hnae3_seq_file_to_ae_dev(s)->priv))
-+
- static const char * const hclge_mac_state_str[] = {
- 	"TO_ADD", "TO_DEL", "ACTIVE"
- };
-@@ -1298,12 +1301,12 @@ static int hclge_dbg_dump_reg_cmd(struct hclge_dev *hdev,
- 	return ret;
- }
- 
--static int hclge_dbg_dump_tc(struct hclge_dev *hdev, char *buf, int len)
-+static int hclge_dbg_dump_tc(struct seq_file *s, void *data)
++static int hclge_dbg_dump_serv_info(struct seq_file *s, void *data)
  {
 +	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
- 	struct hclge_ets_tc_weight_cmd *ets_weight;
-+	const char *sch_mode_str;
+ 	unsigned long rem_nsec;
+-	int pos = 0;
+ 	u64 lc;
+ 
+ 	lc = local_clock();
+ 	rem_nsec = do_div(lc, HCLGE_BILLION_NANO_SECONDS);
+ 
+-	pos += scnprintf(buf + pos, len - pos, "local_clock: [%5lu.%06lu]\n",
+-			 (unsigned long)lc, rem_nsec / 1000);
+-	pos += scnprintf(buf + pos, len - pos, "delta: %u(ms)\n",
+-			 jiffies_to_msecs(jiffies - hdev->last_serv_processed));
+-	pos += scnprintf(buf + pos, len - pos,
+-			 "last_service_task_processed: %lu(jiffies)\n",
+-			 hdev->last_serv_processed);
+-	pos += scnprintf(buf + pos, len - pos, "last_service_task_cnt: %lu\n",
+-			 hdev->serv_processed_cnt);
++	seq_printf(s, "local_clock: [%5lu.%06lu]\n",
++		   (unsigned long)lc, rem_nsec / 1000);
++	seq_printf(s, "delta: %u(ms)\n",
++		   jiffies_to_msecs(jiffies - hdev->last_serv_processed));
++	seq_printf(s, "last_service_task_processed: %lu(jiffies)\n",
++		   hdev->last_serv_processed);
++	seq_printf(s, "last_service_task_cnt: %lu\n", hdev->serv_processed_cnt);
+ 
+ 	return 0;
+ }
+ 
+-static int hclge_dbg_dump_interrupt(struct hclge_dev *hdev, char *buf, int len)
++static int hclge_dbg_dump_interrupt(struct seq_file *s, void *data)
+ {
+-	int pos = 0;
++	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
+ 
+-	pos += scnprintf(buf + pos, len - pos, "num_nic_msi: %u\n",
+-			 hdev->num_nic_msi);
+-	pos += scnprintf(buf + pos, len - pos, "num_roce_msi: %u\n",
+-			 hdev->num_roce_msi);
+-	pos += scnprintf(buf + pos, len - pos, "num_msi_used: %u\n",
+-			 hdev->num_msi_used);
+-	pos += scnprintf(buf + pos, len - pos, "num_msi_left: %u\n",
+-			 hdev->num_msi_left);
++	seq_printf(s, "num_nic_msi: %u\n", hdev->num_nic_msi);
++	seq_printf(s, "num_roce_msi: %u\n", hdev->num_roce_msi);
++	seq_printf(s, "num_msi_used: %u\n", hdev->num_msi_used);
++	seq_printf(s, "num_msi_left: %u\n", hdev->num_msi_left);
+ 
+ 	return 0;
+ }
+ 
+-static void hclge_dbg_imp_info_data_print(struct hclge_desc *desc_src,
+-					  char *buf, int len, u32 bd_num)
++static void hclge_dbg_imp_info_data_print(struct seq_file *s,
++					  struct hclge_desc *desc_src,
++					  u32 bd_num)
+ {
+ #define HCLGE_DBG_IMP_INFO_PRINT_OFFSET 0x2
+ 
+ 	struct hclge_desc *desc_index = desc_src;
+ 	u32 offset = 0;
+-	int pos = 0;
+ 	u32 i, j;
+ 
+-	pos += scnprintf(buf + pos, len - pos, "offset | data\n");
++	seq_puts(s, "offset | data\n");
+ 
+ 	for (i = 0; i < bd_num; i++) {
+ 		j = 0;
+ 		while (j < HCLGE_DESC_DATA_LEN - 1) {
+-			pos += scnprintf(buf + pos, len - pos, "0x%04x | ",
+-					 offset);
+-			pos += scnprintf(buf + pos, len - pos, "0x%08x  ",
+-					 le32_to_cpu(desc_index->data[j++]));
+-			pos += scnprintf(buf + pos, len - pos, "0x%08x\n",
+-					 le32_to_cpu(desc_index->data[j++]));
++			seq_printf(s, "0x%04x | ", offset);
++			seq_printf(s, "0x%08x  ",
++				   le32_to_cpu(desc_index->data[j++]));
++			seq_printf(s, "0x%08x\n",
++				   le32_to_cpu(desc_index->data[j++]));
+ 			offset += sizeof(u32) * HCLGE_DBG_IMP_INFO_PRINT_OFFSET;
+ 		}
+ 		desc_index++;
+ 	}
+ }
+ 
+-static int
+-hclge_dbg_get_imp_stats_info(struct hclge_dev *hdev, char *buf, int len)
++static int hclge_dbg_get_imp_stats_info(struct seq_file *s, void *data)
+ {
++	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
+ 	struct hclge_get_imp_bd_cmd *req;
+ 	struct hclge_desc *desc_src;
  	struct hclge_desc desc;
--	char *sch_mode_str;
--	int pos = 0;
- 	int ret;
- 	u8 i;
- 
-@@ -1323,72 +1326,37 @@ static int hclge_dbg_dump_tc(struct hclge_dev *hdev, char *buf, int len)
- 
- 	ets_weight = (struct hclge_ets_tc_weight_cmd *)desc.data;
- 
--	pos += scnprintf(buf + pos, len - pos, "enabled tc number: %u\n",
--			 hdev->tm_info.num_tc);
--	pos += scnprintf(buf + pos, len - pos, "weight_offset: %u\n",
--			 ets_weight->weight_offset);
-+	seq_printf(s, "enabled tc number: %u\n", hdev->tm_info.num_tc);
-+	seq_printf(s, "weight_offset: %u\n", ets_weight->weight_offset);
- 
--	pos += scnprintf(buf + pos, len - pos, "TC    MODE  WEIGHT\n");
-+	seq_puts(s, "TC    MODE  WEIGHT\n");
- 	for (i = 0; i < HNAE3_MAX_TC; i++) {
- 		sch_mode_str = ets_weight->tc_weight[i] ? "dwrr" : "sp";
--		pos += scnprintf(buf + pos, len - pos, "%u     %4s    %3u\n",
--				 i, sch_mode_str, ets_weight->tc_weight[i]);
-+		seq_printf(s, "%u     %4s    %3u\n", i, sch_mode_str,
-+			   ets_weight->tc_weight[i]);
- 	}
- 
- 	return 0;
- }
- 
--static const struct hclge_dbg_item tm_pg_items[] = {
--	{ "ID", 2 },
--	{ "PRI_MAP", 2 },
--	{ "MODE", 2 },
--	{ "DWRR", 2 },
--	{ "C_IR_B", 2 },
--	{ "C_IR_U", 2 },
--	{ "C_IR_S", 2 },
--	{ "C_BS_B", 2 },
--	{ "C_BS_S", 2 },
--	{ "C_FLAG", 2 },
--	{ "C_RATE(Mbps)", 2 },
--	{ "P_IR_B", 2 },
--	{ "P_IR_U", 2 },
--	{ "P_IR_S", 2 },
--	{ "P_BS_B", 2 },
--	{ "P_BS_S", 2 },
--	{ "P_FLAG", 2 },
--	{ "P_RATE(Mbps)", 0 }
--};
--
--static void hclge_dbg_fill_shaper_content(struct hclge_tm_shaper_para *para,
--					  char **result, u8 *index)
-+static void hclge_dbg_fill_shaper_content(struct seq_file *s,
-+					  struct hclge_tm_shaper_para *para)
- {
--	sprintf(result[(*index)++], "%3u", para->ir_b);
--	sprintf(result[(*index)++], "%3u", para->ir_u);
--	sprintf(result[(*index)++], "%3u", para->ir_s);
--	sprintf(result[(*index)++], "%3u", para->bs_b);
--	sprintf(result[(*index)++], "%3u", para->bs_s);
--	sprintf(result[(*index)++], "%3u", para->flag);
--	sprintf(result[(*index)++], "%6u", para->rate);
-+	seq_printf(s, "%-8u%-8u%-8u%-8u%-8u%-8u%-14u", para->ir_b, para->ir_u,
-+		   para->ir_s, para->bs_b, para->bs_s, para->flag, para->rate);
- }
- 
--static int __hclge_dbg_dump_tm_pg(struct hclge_dev *hdev, char *data_str,
--				  char *buf, int len)
-+static int hclge_dbg_dump_tm_pg(struct seq_file *s, void *data)
- {
- 	struct hclge_tm_shaper_para c_shaper_para, p_shaper_para;
--	char *result[ARRAY_SIZE(tm_pg_items)], *sch_mode_str;
--	u8 pg_id, sch_mode, weight, pri_bit_map, i, j;
--	char content[HCLGE_DBG_TM_INFO_LEN];
--	int pos = 0;
-+	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
-+	u8 pg_id, sch_mode, weight, pri_bit_map;
-+	const char *sch_mode_str;
- 	int ret;
- 
--	for (i = 0; i < ARRAY_SIZE(tm_pg_items); i++) {
--		result[i] = data_str;
--		data_str += HCLGE_DBG_DATA_STR_LEN;
--	}
--
--	hclge_dbg_fill_content(content, sizeof(content), tm_pg_items,
--			       NULL, ARRAY_SIZE(tm_pg_items));
--	pos += scnprintf(buf + pos, len - pos, "%s", content);
-+	seq_puts(s, "ID  PRI_MAP  MODE  DWRR  C_IR_B  C_IR_U  C_IR_S  C_BS_B  ");
-+	seq_puts(s, "C_BS_S  C_FLAG  C_RATE(Mbps)  P_IR_B  P_IR_U  P_IR_S  ");
-+	seq_puts(s, "P_BS_B  P_BS_S  P_FLAG  P_RATE(Mbps)\n");
- 
- 	for (pg_id = 0; pg_id < hdev->tm_info.num_pg; pg_id++) {
- 		ret = hclge_tm_get_pg_to_pri_map(hdev, pg_id, &pri_bit_map);
-@@ -1418,68 +1386,41 @@ static int __hclge_dbg_dump_tm_pg(struct hclge_dev *hdev, char *data_str,
- 		sch_mode_str = sch_mode & HCLGE_TM_TX_SCHD_DWRR_MSK ? "dwrr" :
- 				       "sp";
- 
--		j = 0;
--		sprintf(result[j++], "%02u", pg_id);
--		sprintf(result[j++], "0x%02x", pri_bit_map);
--		sprintf(result[j++], "%4s", sch_mode_str);
--		sprintf(result[j++], "%3u", weight);
--		hclge_dbg_fill_shaper_content(&c_shaper_para, result, &j);
--		hclge_dbg_fill_shaper_content(&p_shaper_para, result, &j);
--
--		hclge_dbg_fill_content(content, sizeof(content), tm_pg_items,
--				       (const char **)result,
--				       ARRAY_SIZE(tm_pg_items));
--		pos += scnprintf(buf + pos, len - pos, "%s", content);
-+		seq_printf(s, "%02u  0x%-7x%-6s%-6u", pg_id, pri_bit_map,
-+			   sch_mode_str, weight);
-+		hclge_dbg_fill_shaper_content(s, &c_shaper_para);
-+		hclge_dbg_fill_shaper_content(s, &p_shaper_para);
-+		seq_puts(s, "\n");
- 	}
- 
- 	return 0;
- }
- 
--static int hclge_dbg_dump_tm_pg(struct hclge_dev *hdev, char *buf, int len)
--{
--	char *data_str;
--	int ret;
--
--	data_str = kcalloc(ARRAY_SIZE(tm_pg_items),
--			   HCLGE_DBG_DATA_STR_LEN, GFP_KERNEL);
--	if (!data_str)
--		return -ENOMEM;
--
--	ret = __hclge_dbg_dump_tm_pg(hdev, data_str, buf, len);
--
--	kfree(data_str);
--
--	return ret;
--}
--
--static int hclge_dbg_dump_tm_port(struct hclge_dev *hdev,  char *buf, int len)
-+static int hclge_dbg_dump_tm_port(struct seq_file *s, void *data)
- {
-+	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
- 	struct hclge_tm_shaper_para shaper_para;
--	int pos = 0;
- 	int ret;
- 
- 	ret = hclge_tm_get_port_shaper(hdev, &shaper_para);
- 	if (ret)
+@@ -2317,7 +2333,7 @@ hclge_dbg_get_imp_stats_info(struct hclge_dev *hdev, char *buf, int len)
  		return ret;
- 
--	pos += scnprintf(buf + pos, len - pos,
--			 "IR_B  IR_U  IR_S  BS_B  BS_S  FLAG  RATE(Mbps)\n");
--	pos += scnprintf(buf + pos, len - pos,
--			 "%3u   %3u   %3u   %3u   %3u     %1u   %6u\n",
--			 shaper_para.ir_b, shaper_para.ir_u, shaper_para.ir_s,
--			 shaper_para.bs_b, shaper_para.bs_s, shaper_para.flag,
--			 shaper_para.rate);
-+	seq_puts(s, "IR_B  IR_U  IR_S  BS_B  BS_S  FLAG  RATE(Mbps)\n");
-+	seq_printf(s, "%3u   %3u   %3u   %3u   %3u     %1u   %6u\n",
-+		   shaper_para.ir_b, shaper_para.ir_u, shaper_para.ir_s,
-+		   shaper_para.bs_b, shaper_para.bs_s, shaper_para.flag,
-+		   shaper_para.rate);
- 
- 	return 0;
- }
- 
- static int hclge_dbg_dump_tm_bp_qset_map(struct hclge_dev *hdev, u8 tc_id,
--					 char *buf, int len)
-+					 struct seq_file *s)
- {
- 	u32 qset_mapping[HCLGE_BP_EXT_GRP_NUM];
- 	struct hclge_bp_to_qs_map_cmd *map;
- 	struct hclge_desc desc;
--	int pos = 0;
- 	u8 group_id;
- 	u8 grp_num;
- 	u16 i = 0;
-@@ -1505,27 +1446,27 @@ static int hclge_dbg_dump_tm_bp_qset_map(struct hclge_dev *hdev, u8 tc_id,
- 		qset_mapping[group_id] = le32_to_cpu(map->qs_bit_map);
  	}
  
--	pos += scnprintf(buf + pos, len - pos, "INDEX | TM BP QSET MAPPING:\n");
-+	seq_puts(s, "INDEX | TM BP QSET MAPPING:\n");
- 	for (group_id = 0; group_id < grp_num / 8; group_id++) {
--		pos += scnprintf(buf + pos, len - pos,
--			 "%04d  | %08x:%08x:%08x:%08x:%08x:%08x:%08x:%08x\n",
--			 group_id * 256, qset_mapping[i + 7],
--			 qset_mapping[i + 6], qset_mapping[i + 5],
--			 qset_mapping[i + 4], qset_mapping[i + 3],
--			 qset_mapping[i + 2], qset_mapping[i + 1],
--			 qset_mapping[i]);
-+		seq_printf(s,
-+			   "%04d  | %08x:%08x:%08x:%08x:%08x:%08x:%08x:%08x\n",
-+			   group_id * 256, qset_mapping[i + 7],
-+			   qset_mapping[i + 6], qset_mapping[i + 5],
-+			   qset_mapping[i + 4], qset_mapping[i + 3],
-+			   qset_mapping[i + 2], qset_mapping[i + 1],
-+			   qset_mapping[i]);
- 		i += 8;
- 	}
+-	hclge_dbg_imp_info_data_print(desc_src, buf, len, bd_num);
++	hclge_dbg_imp_info_data_print(s, desc_src, bd_num);
  
--	return pos;
-+	return 0;
+ 	kfree(desc_src);
+ 
+@@ -2328,7 +2344,7 @@ hclge_dbg_get_imp_stats_info(struct hclge_dev *hdev, char *buf, int len)
+ #define HCLGE_MAX_NCL_CONFIG_LENGTH	16384
+ 
+ static void hclge_ncl_config_data_print(struct hclge_desc *desc, int *index,
+-					char *buf, int len, int *pos)
++					struct seq_file *s)
+ {
+ #define HCLGE_CMD_DATA_NUM		6
+ 
+@@ -2340,9 +2356,8 @@ static void hclge_ncl_config_data_print(struct hclge_desc *desc, int *index,
+ 			if (i == 0 && j == 0)
+ 				continue;
+ 
+-			*pos += scnprintf(buf + *pos, len - *pos,
+-					  "0x%04x | 0x%08x\n", offset,
+-					  le32_to_cpu(desc[i].data[j]));
++			seq_printf(s, "0x%04x | 0x%08x\n", offset,
++				   le32_to_cpu(desc[i].data[j]));
+ 
+ 			offset += sizeof(u32);
+ 			*index -= sizeof(u32);
+@@ -2353,19 +2368,18 @@ static void hclge_ncl_config_data_print(struct hclge_desc *desc, int *index,
+ 	}
  }
  
--static int hclge_dbg_dump_tm_map(struct hclge_dev *hdev, char *buf, int len)
-+static int hclge_dbg_dump_tm_map(struct seq_file *s, void *data)
+-static int
+-hclge_dbg_dump_ncl_config(struct hclge_dev *hdev, char *buf, int len)
++static int hclge_dbg_dump_ncl_config(struct seq_file *s, void *data)
  {
+ #define HCLGE_NCL_CONFIG_LENGTH_IN_EACH_CMD	(20 + 24 * 4)
+ 
+ 	struct hclge_desc desc[HCLGE_CMD_NCL_CONFIG_BD_NUM];
 +	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
- 	u16 queue_id;
- 	u16 qset_id;
- 	u8 link_vld;
+ 	int bd_num = HCLGE_CMD_NCL_CONFIG_BD_NUM;
+ 	int index = HCLGE_MAX_NCL_CONFIG_LENGTH;
 -	int pos = 0;
- 	u8 pri_id;
- 	u8 tc_id;
+ 	u32 data0;
  	int ret;
-@@ -1544,32 +1485,28 @@ static int hclge_dbg_dump_tm_map(struct hclge_dev *hdev, char *buf, int len)
+ 
+-	pos += scnprintf(buf + pos, len - pos, "offset | data\n");
++	seq_puts(s, "offset | data\n");
+ 
+ 	while (index > 0) {
+ 		data0 = HCLGE_MAX_NCL_CONFIG_LENGTH - index;
+@@ -2378,27 +2392,26 @@ hclge_dbg_dump_ncl_config(struct hclge_dev *hdev, char *buf, int len)
  		if (ret)
  			return ret;
  
--		pos += scnprintf(buf + pos, len - pos,
--				 "QUEUE_ID   QSET_ID   PRI_ID   TC_ID\n");
--		pos += scnprintf(buf + pos, len - pos,
--				 "%04u        %4u       %3u      %2u\n",
--				 queue_id, qset_id, pri_id, tc_id);
-+		seq_puts(s, "QUEUE_ID   QSET_ID   PRI_ID   TC_ID\n");
-+		seq_printf(s, "%04u        %4u       %3u      %2u\n",
-+			   queue_id, qset_id, pri_id, tc_id);
- 
- 		if (!hnae3_dev_dcb_supported(hdev))
- 			continue;
- 
--		ret = hclge_dbg_dump_tm_bp_qset_map(hdev, tc_id, buf + pos,
--						    len - pos);
-+		ret = hclge_dbg_dump_tm_bp_qset_map(hdev, tc_id, s);
- 		if (ret < 0)
- 			return ret;
--		pos += ret;
- 
--		pos += scnprintf(buf + pos, len - pos, "\n");
-+		seq_puts(s, "\n");
+-		hclge_ncl_config_data_print(desc, &index, buf, len, &pos);
++		hclge_ncl_config_data_print(desc, &index, s);
  	}
  
  	return 0;
  }
  
--static int hclge_dbg_dump_tm_nodes(struct hclge_dev *hdev, char *buf, int len)
-+static int hclge_dbg_dump_tm_nodes(struct seq_file *s, void *data)
+-static int hclge_dbg_dump_loopback(struct hclge_dev *hdev, char *buf, int len)
++static int hclge_dbg_dump_loopback(struct seq_file *s, void *data)
  {
 +	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
- 	struct hclge_tm_nodes_cmd *nodes;
+ 	struct phy_device *phydev = hdev->hw.mac.phydev;
+ 	struct hclge_config_mac_mode_cmd *req_app;
+ 	struct hclge_common_lb_cmd *req_common;
  	struct hclge_desc desc;
+ 	u8 loopback_en;
 -	int pos = 0;
  	int ret;
  
- 	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_TM_NODES, true);
-@@ -1582,65 +1519,36 @@ static int hclge_dbg_dump_tm_nodes(struct hclge_dev *hdev, char *buf, int len)
+ 	req_app = (struct hclge_config_mac_mode_cmd *)desc.data;
+ 	req_common = (struct hclge_common_lb_cmd *)desc.data;
  
- 	nodes = (struct hclge_tm_nodes_cmd *)desc.data;
+-	pos += scnprintf(buf + pos, len - pos, "mac id: %u\n",
+-			 hdev->hw.mac.mac_id);
++	seq_printf(s, "mac id: %u\n", hdev->hw.mac.mac_id);
  
--	pos += scnprintf(buf + pos, len - pos, "       BASE_ID  MAX_NUM\n");
--	pos += scnprintf(buf + pos, len - pos, "PG      %4u      %4u\n",
--			 nodes->pg_base_id, nodes->pg_num);
--	pos += scnprintf(buf + pos, len - pos, "PRI     %4u      %4u\n",
--			 nodes->pri_base_id, nodes->pri_num);
--	pos += scnprintf(buf + pos, len - pos, "QSET    %4u      %4u\n",
--			 le16_to_cpu(nodes->qset_base_id),
--			 le16_to_cpu(nodes->qset_num));
--	pos += scnprintf(buf + pos, len - pos, "QUEUE   %4u      %4u\n",
--			 le16_to_cpu(nodes->queue_base_id),
--			 le16_to_cpu(nodes->queue_num));
-+	seq_puts(s, "       BASE_ID  MAX_NUM\n");
-+	seq_printf(s, "PG      %4u      %4u\n", nodes->pg_base_id,
-+		   nodes->pg_num);
-+	seq_printf(s, "PRI     %4u      %4u\n", nodes->pri_base_id,
-+		   nodes->pri_num);
-+	seq_printf(s, "QSET    %4u      %4u\n",
-+		   le16_to_cpu(nodes->qset_base_id),
-+		   le16_to_cpu(nodes->qset_num));
-+	seq_printf(s, "QUEUE   %4u      %4u\n",
-+		   le16_to_cpu(nodes->queue_base_id),
-+		   le16_to_cpu(nodes->queue_num));
+ 	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_CONFIG_MAC_MODE, true);
+ 	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
+@@ -2410,8 +2423,7 @@ static int hclge_dbg_dump_loopback(struct hclge_dev *hdev, char *buf, int len)
+ 
+ 	loopback_en = hnae3_get_bit(le32_to_cpu(req_app->txrx_pad_fcs_loop_en),
+ 				    HCLGE_MAC_APP_LP_B);
+-	pos += scnprintf(buf + pos, len - pos, "app loopback: %s\n",
+-			 str_on_off(loopback_en));
++	seq_printf(s, "app loopback: %s\n", str_on_off(loopback_en));
+ 
+ 	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_COMMON_LOOPBACK, true);
+ 	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
+@@ -2422,24 +2434,22 @@ static int hclge_dbg_dump_loopback(struct hclge_dev *hdev, char *buf, int len)
+ 		return ret;
+ 	}
+ 
+-	loopback_en = req_common->enable & HCLGE_CMD_SERDES_SERIAL_INNER_LOOP_B;
+-	pos += scnprintf(buf + pos, len - pos, "serdes serial loopback: %s\n",
+-			 str_on_off(loopback_en));
++	loopback_en = req_common->enable &
++		      HCLGE_CMD_SERDES_SERIAL_INNER_LOOP_B;
++	seq_printf(s, "serdes serial loopback: %s\n", str_on_off(loopback_en));
+ 
+ 	loopback_en = req_common->enable &
+-			HCLGE_CMD_SERDES_PARALLEL_INNER_LOOP_B ? 1 : 0;
+-	pos += scnprintf(buf + pos, len - pos, "serdes parallel loopback: %s\n",
+-			 str_on_off(loopback_en));
++		      HCLGE_CMD_SERDES_PARALLEL_INNER_LOOP_B ? 1 : 0;
++	seq_printf(s, "serdes parallel loopback: %s\n",
++		   str_on_off(loopback_en));
+ 
+ 	if (phydev) {
+ 		loopback_en = phydev->loopback_enabled;
+-		pos += scnprintf(buf + pos, len - pos, "phy loopback: %s\n",
+-				 str_on_off(loopback_en));
++		seq_printf(s, "phy loopback: %s\n", str_on_off(loopback_en));
+ 	} else if (hnae3_dev_phy_imp_supported(hdev)) {
+ 		loopback_en = req_common->enable &
+ 			      HCLGE_CMD_GE_PHY_INNER_LOOP_B;
+-		pos += scnprintf(buf + pos, len - pos, "phy loopback: %s\n",
+-				 str_on_off(loopback_en));
++		seq_printf(s, "phy loopback: %s\n", str_on_off(loopback_en));
+ 	}
+ 
+ 	return 0;
+@@ -2448,23 +2458,20 @@ static int hclge_dbg_dump_loopback(struct hclge_dev *hdev, char *buf, int len)
+ /* hclge_dbg_dump_mac_tnl_status: print message about mac tnl interrupt
+  * @hdev: pointer to struct hclge_dev
+  */
+-static int
+-hclge_dbg_dump_mac_tnl_status(struct hclge_dev *hdev, char *buf, int len)
++static int hclge_dbg_dump_mac_tnl_status(struct seq_file *s, void *data)
+ {
++	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
+ 	struct hclge_mac_tnl_stats stats;
+ 	unsigned long rem_nsec;
+-	int pos = 0;
+ 
+-	pos += scnprintf(buf + pos, len - pos,
+-			 "Recently generated mac tnl interruption:\n");
++	seq_puts(s, "Recently generated mac tnl interruption:\n");
+ 
+ 	while (kfifo_get(&hdev->mac_tnl_log, &stats)) {
+ 		rem_nsec = do_div(stats.time, HCLGE_BILLION_NANO_SECONDS);
+ 
+-		pos += scnprintf(buf + pos, len - pos,
+-				 "[%07lu.%03lu] status = 0x%x\n",
+-				 (unsigned long)stats.time, rem_nsec / 1000,
+-				 stats.status);
++		seq_printf(s, "[%07lu.%03lu] status = 0x%x\n",
++			   (unsigned long)stats.time, rem_nsec / 1000,
++			   stats.status);
+ 	}
+ 
+ 	return 0;
+@@ -2498,35 +2505,28 @@ static void hclge_dbg_dump_mac_list(struct seq_file *s, bool is_unicast)
+ 	}
+ }
+ 
+-static int hclge_dbg_dump_umv_info(struct hclge_dev *hdev, char *buf, int len)
++static int hclge_dbg_dump_umv_info(struct seq_file *s, void *data)
+ {
++	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
+ 	u8 func_num = pci_num_vf(hdev->pdev) + 1;
+ 	struct hclge_vport *vport;
+-	int pos = 0;
+ 	u8 i;
+ 
+-	pos += scnprintf(buf, len, "num_alloc_vport   : %u\n",
+-			  hdev->num_alloc_vport);
+-	pos += scnprintf(buf + pos, len - pos, "max_umv_size     : %u\n",
+-			 hdev->max_umv_size);
+-	pos += scnprintf(buf + pos, len - pos, "wanted_umv_size  : %u\n",
+-			 hdev->wanted_umv_size);
+-	pos += scnprintf(buf + pos, len - pos, "priv_umv_size    : %u\n",
+-			 hdev->priv_umv_size);
++	seq_printf(s, "num_alloc_vport   : %u\n", hdev->num_alloc_vport);
++	seq_printf(s, "max_umv_size     : %u\n", hdev->max_umv_size);
++	seq_printf(s, "wanted_umv_size  : %u\n", hdev->wanted_umv_size);
++	seq_printf(s, "priv_umv_size    : %u\n", hdev->priv_umv_size);
+ 
+ 	mutex_lock(&hdev->vport_lock);
+-	pos += scnprintf(buf + pos, len - pos, "share_umv_size   : %u\n",
+-			 hdev->share_umv_size);
++	seq_printf(s, "share_umv_size   : %u\n", hdev->share_umv_size);
+ 	for (i = 0; i < func_num; i++) {
+ 		vport = &hdev->vport[i];
+-		pos += scnprintf(buf + pos, len - pos,
+-				 "vport(%u) used_umv_num : %u\n",
+-				 i, vport->used_umv_num);
++		seq_printf(s, "vport(%u) used_umv_num : %u\n",
++			   i, vport->used_umv_num);
+ 	}
+ 	mutex_unlock(&hdev->vport_lock);
+ 
+-	pos += scnprintf(buf + pos, len - pos, "used_mc_mac_num  : %u\n",
+-			 hdev->used_mc_mac_num);
++	seq_printf(s, "used_mc_mac_num  : %u\n", hdev->used_mc_mac_num);
  
  	return 0;
  }
+@@ -2668,38 +2668,12 @@ static int hclge_get_port_vlan_filter_bypass_state(struct hclge_dev *hdev,
+ 	return 0;
+ }
  
--static const struct hclge_dbg_item tm_pri_items[] = {
--	{ "ID", 4 },
--	{ "MODE", 2 },
--	{ "DWRR", 2 },
--	{ "C_IR_B", 2 },
--	{ "C_IR_U", 2 },
--	{ "C_IR_S", 2 },
--	{ "C_BS_B", 2 },
--	{ "C_BS_S", 2 },
--	{ "C_FLAG", 2 },
--	{ "C_RATE(Mbps)", 2 },
--	{ "P_IR_B", 2 },
--	{ "P_IR_U", 2 },
--	{ "P_IR_S", 2 },
--	{ "P_BS_B", 2 },
--	{ "P_BS_S", 2 },
--	{ "P_FLAG", 2 },
--	{ "P_RATE(Mbps)", 0 }
+-static const struct hclge_dbg_item vlan_filter_items[] = {
+-	{ "FUNC_ID", 2 },
+-	{ "I_VF_VLAN_FILTER", 2 },
+-	{ "E_VF_VLAN_FILTER", 2 },
+-	{ "PORT_VLAN_FILTER_BYPASS", 0 }
 -};
 -
--static int hclge_dbg_dump_tm_pri(struct hclge_dev *hdev, char *buf, int len)
-+static int hclge_dbg_dump_tm_pri(struct seq_file *s, void *data)
- {
- 	struct hclge_tm_shaper_para c_shaper_para, p_shaper_para;
--	char *result[ARRAY_SIZE(tm_pri_items)], *sch_mode_str;
--	char content[HCLGE_DBG_TM_INFO_LEN];
--	u8 pri_num, sch_mode, weight, i, j;
--	char *data_str;
--	int pos, ret;
-+	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
-+	u8 pri_num, sch_mode, weight, i;
-+	const char *sch_mode_str;
-+	int ret;
- 
- 	ret = hclge_tm_get_pri_num(hdev, &pri_num);
- 	if (ret)
- 		return ret;
- 
--	data_str = kcalloc(ARRAY_SIZE(tm_pri_items), HCLGE_DBG_DATA_STR_LEN,
--			   GFP_KERNEL);
--	if (!data_str)
--		return -ENOMEM;
--
--	for (i = 0; i < ARRAY_SIZE(tm_pri_items); i++)
--		result[i] = &data_str[i * HCLGE_DBG_DATA_STR_LEN];
--
--	hclge_dbg_fill_content(content, sizeof(content), tm_pri_items,
--			       NULL, ARRAY_SIZE(tm_pri_items));
--	pos = scnprintf(buf, len, "%s", content);
-+	seq_puts(s, "ID  MODE  DWRR  C_IR_B  C_IR_U  C_IR_S  C_BS_B  ");
-+	seq_puts(s, "C_BS_S  C_FLAG  C_RATE(Mbps)  P_IR_B  P_IR_U  P_IR_S  ");
-+	seq_puts(s, "P_BS_B  P_BS_S  P_FLAG  P_RATE(Mbps)\n");
- 
- 	for (i = 0; i < pri_num; i++) {
- 		ret = hclge_tm_get_pri_sch_mode(hdev, i, &sch_mode);
-@@ -1666,59 +1574,31 @@ static int hclge_dbg_dump_tm_pri(struct hclge_dev *hdev, char *buf, int len)
- 		sch_mode_str = sch_mode & HCLGE_TM_TX_SCHD_DWRR_MSK ? "dwrr" :
- 			       "sp";
- 
--		j = 0;
--		sprintf(result[j++], "%04u", i);
--		sprintf(result[j++], "%4s", sch_mode_str);
--		sprintf(result[j++], "%3u", weight);
--		hclge_dbg_fill_shaper_content(&c_shaper_para, result, &j);
--		hclge_dbg_fill_shaper_content(&p_shaper_para, result, &j);
--		hclge_dbg_fill_content(content, sizeof(content), tm_pri_items,
--				       (const char **)result,
--				       ARRAY_SIZE(tm_pri_items));
--		pos += scnprintf(buf + pos, len - pos, "%s", content);
-+		seq_printf(s, "%04u  %-6s%-6u", i, sch_mode_str, weight);
-+		hclge_dbg_fill_shaper_content(s, &c_shaper_para);
-+		hclge_dbg_fill_shaper_content(s, &p_shaper_para);
-+		seq_puts(s, "\n");
- 	}
- 
- out:
--	kfree(data_str);
- 	return ret;
- }
- 
--static const struct hclge_dbg_item tm_qset_items[] = {
--	{ "ID", 4 },
--	{ "MAP_PRI", 2 },
--	{ "LINK_VLD", 2 },
--	{ "MODE", 2 },
--	{ "DWRR", 2 },
--	{ "IR_B", 2 },
--	{ "IR_U", 2 },
--	{ "IR_S", 2 },
--	{ "BS_B", 2 },
--	{ "BS_S", 2 },
--	{ "FLAG", 2 },
--	{ "RATE(Mbps)", 0 }
+-static const struct hclge_dbg_item vlan_offload_items[] = {
+-	{ "FUNC_ID", 2 },
+-	{ "PVID", 4 },
+-	{ "ACCEPT_TAG1", 2 },
+-	{ "ACCEPT_TAG2", 2 },
+-	{ "ACCEPT_UNTAG1", 2 },
+-	{ "ACCEPT_UNTAG2", 2 },
+-	{ "INSERT_TAG1", 2 },
+-	{ "INSERT_TAG2", 2 },
+-	{ "SHIFT_TAG", 2 },
+-	{ "STRIP_TAG1", 2 },
+-	{ "STRIP_TAG2", 2 },
+-	{ "DROP_TAG1", 2 },
+-	{ "DROP_TAG2", 2 },
+-	{ "PRI_ONLY_TAG1", 2 },
+-	{ "PRI_ONLY_TAG2", 0 }
 -};
 -
--static int hclge_dbg_dump_tm_qset(struct hclge_dev *hdev, char *buf, int len)
-+static int hclge_dbg_dump_tm_qset(struct seq_file *s, void *data)
- {
--	char data_str[ARRAY_SIZE(tm_qset_items)][HCLGE_DBG_DATA_STR_LEN];
--	char *result[ARRAY_SIZE(tm_qset_items)], *sch_mode_str;
-+	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
- 	u8 priority, link_vld, sch_mode, weight;
- 	struct hclge_tm_shaper_para shaper_para;
--	char content[HCLGE_DBG_TM_INFO_LEN];
-+	const char *sch_mode_str;
- 	u16 qset_num, i;
--	int ret, pos;
--	u8 j;
-+	int ret;
- 
- 	ret = hclge_tm_get_qset_num(hdev, &qset_num);
- 	if (ret)
- 		return ret;
- 
--	for (i = 0; i < ARRAY_SIZE(tm_qset_items); i++)
--		result[i] = &data_str[i][0];
--
--	hclge_dbg_fill_content(content, sizeof(content), tm_qset_items,
--			       NULL, ARRAY_SIZE(tm_qset_items));
--	pos = scnprintf(buf, len, "%s", content);
-+	seq_puts(s, "ID    MAP_PRI  LINK_VLD  MODE  DWRR  IR_B  IR_U  IR_S  ");
-+	seq_puts(s, "BS_B  BS_S  FLAG  RATE(Mbps)\n");
- 
- 	for (i = 0; i < qset_num; i++) {
- 		ret = hclge_tm_get_qset_map_pri(hdev, i, &priority, &link_vld);
-@@ -1740,29 +1620,22 @@ static int hclge_dbg_dump_tm_qset(struct hclge_dev *hdev, char *buf, int len)
- 		sch_mode_str = sch_mode & HCLGE_TM_TX_SCHD_DWRR_MSK ? "dwrr" :
- 			       "sp";
- 
--		j = 0;
--		sprintf(result[j++], "%04u", i);
--		sprintf(result[j++], "%4u", priority);
--		sprintf(result[j++], "%4u", link_vld);
--		sprintf(result[j++], "%4s", sch_mode_str);
--		sprintf(result[j++], "%3u", weight);
--		hclge_dbg_fill_shaper_content(&shaper_para, result, &j);
--
--		hclge_dbg_fill_content(content, sizeof(content), tm_qset_items,
--				       (const char **)result,
--				       ARRAY_SIZE(tm_qset_items));
--		pos += scnprintf(buf + pos, len - pos, "%s", content);
-+		seq_printf(s, "%04u  %-9u%-10u%-6s%-6u", i, priority, link_vld,
-+			   sch_mode_str, weight);
-+		seq_printf(s, "%-6u%-6u%-6u%-6u%-6u%-6u%-14u\n",
-+			   shaper_para.ir_b, shaper_para.ir_u, shaper_para.ir_s,
-+			   shaper_para.bs_b, shaper_para.bs_s, shaper_para.flag,
-+			   shaper_para.rate);
- 	}
- 
- 	return 0;
- }
- 
--static int hclge_dbg_dump_qos_pause_cfg(struct hclge_dev *hdev, char *buf,
--					int len)
-+static int hclge_dbg_dump_qos_pause_cfg(struct seq_file *s, void *data)
- {
-+	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
- 	struct hclge_cfg_pause_param_cmd *pause_param;
- 	struct hclge_desc desc;
--	int pos = 0;
- 	int ret;
- 
- 	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_CFG_MAC_PARA, true);
-@@ -1775,23 +1648,21 @@ static int hclge_dbg_dump_qos_pause_cfg(struct hclge_dev *hdev, char *buf,
- 
- 	pause_param = (struct hclge_cfg_pause_param_cmd *)desc.data;
- 
--	pos += scnprintf(buf + pos, len - pos, "pause_trans_gap: 0x%x\n",
--			 pause_param->pause_trans_gap);
--	pos += scnprintf(buf + pos, len - pos, "pause_trans_time: 0x%x\n",
--			 le16_to_cpu(pause_param->pause_trans_time));
-+	seq_printf(s, "pause_trans_gap: 0x%x\n", pause_param->pause_trans_gap);
-+	seq_printf(s, "pause_trans_time: 0x%x\n",
-+		   le16_to_cpu(pause_param->pause_trans_time));
- 	return 0;
- }
- 
- #define HCLGE_DBG_TC_MASK		0x0F
- 
--static int hclge_dbg_dump_qos_pri_map(struct hclge_dev *hdev, char *buf,
--				      int len)
-+static int hclge_dbg_dump_qos_pri_map(struct seq_file *s, void *data)
- {
- #define HCLGE_DBG_TC_BIT_WIDTH		4
- 
-+	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
- 	struct hclge_qos_pri_map_cmd *pri_map;
- 	struct hclge_desc desc;
--	int pos = 0;
- 	u8 *pri_tc;
- 	u8 tc, i;
- 	int ret;
-@@ -1806,33 +1677,33 @@ static int hclge_dbg_dump_qos_pri_map(struct hclge_dev *hdev, char *buf,
- 
- 	pri_map = (struct hclge_qos_pri_map_cmd *)desc.data;
- 
--	pos += scnprintf(buf + pos, len - pos, "vlan_to_pri: 0x%x\n",
--			 pri_map->vlan_pri);
--	pos += scnprintf(buf + pos, len - pos, "PRI  TC\n");
-+	seq_printf(s, "vlan_to_pri: 0x%x\n", pri_map->vlan_pri);
-+	seq_puts(s, "PRI  TC\n");
- 
- 	pri_tc = (u8 *)pri_map;
- 	for (i = 0; i < HNAE3_MAX_TC; i++) {
- 		tc = pri_tc[i >> 1] >> ((i & 1) * HCLGE_DBG_TC_BIT_WIDTH);
- 		tc &= HCLGE_DBG_TC_MASK;
--		pos += scnprintf(buf + pos, len - pos, "%u     %u\n", i, tc);
-+		seq_printf(s, "%u     %u\n", i, tc);
- 	}
- 
- 	return 0;
- }
- 
--static int hclge_dbg_dump_qos_dscp_map(struct hclge_dev *hdev, char *buf,
--				       int len)
-+static int hclge_dbg_dump_qos_dscp_map(struct seq_file *s, void *data)
- {
--	struct hnae3_knic_private_info *kinfo = &hdev->vport[0].nic.kinfo;
-+	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
- 	struct hclge_desc desc[HCLGE_DSCP_MAP_TC_BD_NUM];
-+	struct hnae3_knic_private_info *kinfo;
- 	u8 *req0 = (u8 *)desc[0].data;
- 	u8 *req1 = (u8 *)desc[1].data;
- 	u8 dscp_tc[HNAE3_MAX_DSCP];
--	int pos, ret;
-+	int ret;
- 	u8 i, j;
- 
--	pos = scnprintf(buf, len, "tc map mode: %s\n",
--			tc_map_mode_str[kinfo->tc_map_mode]);
-+	kinfo = &hdev->vport[0].nic.kinfo;
-+
-+	seq_printf(s, "tc map mode: %s\n", tc_map_mode_str[kinfo->tc_map_mode]);
- 
- 	if (kinfo->tc_map_mode != HNAE3_TC_MAP_MODE_DSCP)
- 		return 0;
-@@ -1847,7 +1718,7 @@ static int hclge_dbg_dump_qos_dscp_map(struct hclge_dev *hdev, char *buf,
- 		return ret;
- 	}
- 
--	pos += scnprintf(buf + pos, len - pos, "\nDSCP  PRIO  TC\n");
-+	seq_puts(s, "\nDSCP  PRIO  TC\n");
- 
- 	/* The low 32 dscp setting use bd0, high 32 dscp setting use bd1 */
- 	for (i = 0; i < HNAE3_MAX_DSCP / HCLGE_DSCP_MAP_TC_BD_NUM; i++) {
-@@ -1865,18 +1736,17 @@ static int hclge_dbg_dump_qos_dscp_map(struct hclge_dev *hdev, char *buf,
- 		if (kinfo->dscp_prio[i] == HNAE3_PRIO_ID_INVALID)
- 			continue;
- 
--		pos += scnprintf(buf + pos, len - pos, " %2u    %u    %u\n",
--				 i, kinfo->dscp_prio[i], dscp_tc[i]);
-+		seq_printf(s, " %2u    %u    %u\n", i, kinfo->dscp_prio[i],
-+			   dscp_tc[i]);
- 	}
- 
- 	return 0;
- }
- 
--static int hclge_dbg_dump_tx_buf_cfg(struct hclge_dev *hdev, char *buf, int len)
-+static int hclge_dbg_dump_tx_buf_cfg(struct hclge_dev *hdev, struct seq_file *s)
- {
- 	struct hclge_tx_buff_alloc_cmd *tx_buf_cmd;
- 	struct hclge_desc desc;
--	int pos = 0;
- 	int i, ret;
- 
- 	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_TX_BUFF_ALLOC, true);
-@@ -1889,19 +1759,17 @@ static int hclge_dbg_dump_tx_buf_cfg(struct hclge_dev *hdev, char *buf, int len)
- 
- 	tx_buf_cmd = (struct hclge_tx_buff_alloc_cmd *)desc.data;
- 	for (i = 0; i < HCLGE_MAX_TC_NUM; i++)
--		pos += scnprintf(buf + pos, len - pos,
--				 "tx_packet_buf_tc_%d: 0x%x\n", i,
--				 le16_to_cpu(tx_buf_cmd->tx_pkt_buff[i]));
-+		seq_printf(s, "tx_packet_buf_tc_%d: 0x%x\n", i,
-+			   le16_to_cpu(tx_buf_cmd->tx_pkt_buff[i]));
- 
--	return pos;
-+	return 0;
- }
- 
--static int hclge_dbg_dump_rx_priv_buf_cfg(struct hclge_dev *hdev, char *buf,
--					  int len)
-+static int hclge_dbg_dump_rx_priv_buf_cfg(struct hclge_dev *hdev,
-+					  struct seq_file *s)
- {
- 	struct hclge_rx_priv_buff_cmd *rx_buf_cmd;
- 	struct hclge_desc desc;
--	int pos = 0;
- 	int i, ret;
- 
- 	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_RX_PRIV_BUFF_ALLOC, true);
-@@ -1912,26 +1780,24 @@ static int hclge_dbg_dump_rx_priv_buf_cfg(struct hclge_dev *hdev, char *buf,
- 		return ret;
- 	}
- 
--	pos += scnprintf(buf + pos, len - pos, "\n");
-+	seq_puts(s, "\n");
- 
- 	rx_buf_cmd = (struct hclge_rx_priv_buff_cmd *)desc.data;
- 	for (i = 0; i < HCLGE_MAX_TC_NUM; i++)
--		pos += scnprintf(buf + pos, len - pos,
--				 "rx_packet_buf_tc_%d: 0x%x\n", i,
--				 le16_to_cpu(rx_buf_cmd->buf_num[i]));
-+		seq_printf(s, "rx_packet_buf_tc_%d: 0x%x\n", i,
-+			   le16_to_cpu(rx_buf_cmd->buf_num[i]));
- 
--	pos += scnprintf(buf + pos, len - pos, "rx_share_buf: 0x%x\n",
--			 le16_to_cpu(rx_buf_cmd->shared_buf));
-+	seq_printf(s, "rx_share_buf: 0x%x\n",
-+		   le16_to_cpu(rx_buf_cmd->shared_buf));
- 
--	return pos;
-+	return 0;
- }
- 
--static int hclge_dbg_dump_rx_common_wl_cfg(struct hclge_dev *hdev, char *buf,
--					   int len)
-+static int hclge_dbg_dump_rx_common_wl_cfg(struct hclge_dev *hdev,
-+					   struct seq_file *s)
- {
- 	struct hclge_rx_com_wl *rx_com_wl;
- 	struct hclge_desc desc;
--	int pos = 0;
- 	int ret;
- 
- 	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_RX_COM_WL_ALLOC, true);
-@@ -1943,21 +1809,19 @@ static int hclge_dbg_dump_rx_common_wl_cfg(struct hclge_dev *hdev, char *buf,
- 	}
- 
- 	rx_com_wl = (struct hclge_rx_com_wl *)desc.data;
--	pos += scnprintf(buf + pos, len - pos, "\n");
--	pos += scnprintf(buf + pos, len - pos,
--			 "rx_com_wl: high: 0x%x, low: 0x%x\n",
--			 le16_to_cpu(rx_com_wl->com_wl.high),
--			 le16_to_cpu(rx_com_wl->com_wl.low));
-+	seq_puts(s, "\n");
-+	seq_printf(s, "rx_com_wl: high: 0x%x, low: 0x%x\n",
-+		   le16_to_cpu(rx_com_wl->com_wl.high),
-+		   le16_to_cpu(rx_com_wl->com_wl.low));
- 
--	return pos;
-+	return 0;
- }
- 
--static int hclge_dbg_dump_rx_global_pkt_cnt(struct hclge_dev *hdev, char *buf,
--					    int len)
-+static int hclge_dbg_dump_rx_global_pkt_cnt(struct hclge_dev *hdev,
-+					    struct seq_file *s)
- {
- 	struct hclge_rx_com_wl *rx_packet_cnt;
- 	struct hclge_desc desc;
--	int pos = 0;
- 	int ret;
- 
- 	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_RX_GBL_PKT_CNT, true);
-@@ -1969,20 +1833,18 @@ static int hclge_dbg_dump_rx_global_pkt_cnt(struct hclge_dev *hdev, char *buf,
- 	}
- 
- 	rx_packet_cnt = (struct hclge_rx_com_wl *)desc.data;
--	pos += scnprintf(buf + pos, len - pos,
--			 "rx_global_packet_cnt: high: 0x%x, low: 0x%x\n",
--			 le16_to_cpu(rx_packet_cnt->com_wl.high),
--			 le16_to_cpu(rx_packet_cnt->com_wl.low));
-+	seq_printf(s, "rx_global_packet_cnt: high: 0x%x, low: 0x%x\n",
-+		   le16_to_cpu(rx_packet_cnt->com_wl.high),
-+		   le16_to_cpu(rx_packet_cnt->com_wl.low));
- 
--	return pos;
-+	return 0;
- }
- 
--static int hclge_dbg_dump_rx_priv_wl_buf_cfg(struct hclge_dev *hdev, char *buf,
--					     int len)
-+static int hclge_dbg_dump_rx_priv_wl_buf_cfg(struct hclge_dev *hdev,
+-static int hclge_dbg_dump_vlan_filter_config(struct hclge_dev *hdev, char *buf,
+-					     int len, int *pos)
++static int hclge_dbg_dump_vlan_filter_config(struct hclge_dev *hdev,
 +					     struct seq_file *s)
  {
- 	struct hclge_rx_priv_wl_buf *rx_priv_wl;
- 	struct hclge_desc desc[2];
--	int pos = 0;
- 	int i, ret;
+-	char content[HCLGE_DBG_VLAN_FLTR_INFO_LEN], str_id[HCLGE_DBG_ID_LEN];
+-	const char *result[ARRAY_SIZE(vlan_filter_items)];
+-	u8 i, j, vlan_fe, bypass, ingress, egress;
+ 	u8 func_num = pci_num_vf(hdev->pdev) + 1; /* pf and enabled vf num */
++	u8 i, vlan_fe, bypass, ingress, egress;
++	char str_id[HCLGE_DBG_ID_LEN];
+ 	int ret;
  
- 	hclge_cmd_setup_basic_desc(&desc[0], HCLGE_OPC_RX_PRIV_WL_ALLOC, true);
-@@ -1997,28 +1859,25 @@ static int hclge_dbg_dump_rx_priv_wl_buf_cfg(struct hclge_dev *hdev, char *buf,
+ 	ret = hclge_get_vlan_filter_state(hdev, HCLGE_FILTER_TYPE_PORT, 0,
+@@ -2709,14 +2683,11 @@ static int hclge_dbg_dump_vlan_filter_config(struct hclge_dev *hdev, char *buf,
+ 	ingress = vlan_fe & HCLGE_FILTER_FE_NIC_INGRESS_B;
+ 	egress = vlan_fe & HCLGE_FILTER_FE_NIC_EGRESS_B ? 1 : 0;
  
- 	rx_priv_wl = (struct hclge_rx_priv_wl_buf *)desc[0].data;
- 	for (i = 0; i < HCLGE_TC_NUM_ONE_DESC; i++)
--		pos += scnprintf(buf + pos, len - pos,
--			 "rx_priv_wl_tc_%d: high: 0x%x, low: 0x%x\n", i,
--			 le16_to_cpu(rx_priv_wl->tc_wl[i].high),
--			 le16_to_cpu(rx_priv_wl->tc_wl[i].low));
-+		seq_printf(s, "rx_priv_wl_tc_%d: high: 0x%x, low: 0x%x\n", i,
-+			   le16_to_cpu(rx_priv_wl->tc_wl[i].high),
-+			   le16_to_cpu(rx_priv_wl->tc_wl[i].low));
+-	*pos += scnprintf(buf, len, "I_PORT_VLAN_FILTER: %s\n",
+-			  str_on_off(ingress));
+-	*pos += scnprintf(buf + *pos, len - *pos, "E_PORT_VLAN_FILTER: %s\n",
+-			  str_on_off(egress));
++	seq_printf(s, "I_PORT_VLAN_FILTER: %s\n", str_on_off(ingress));
++	seq_printf(s, "E_PORT_VLAN_FILTER: %s\n", str_on_off(egress));
  
- 	rx_priv_wl = (struct hclge_rx_priv_wl_buf *)desc[1].data;
- 	for (i = 0; i < HCLGE_TC_NUM_ONE_DESC; i++)
--		pos += scnprintf(buf + pos, len - pos,
--			 "rx_priv_wl_tc_%d: high: 0x%x, low: 0x%x\n",
--			 i + HCLGE_TC_NUM_ONE_DESC,
--			 le16_to_cpu(rx_priv_wl->tc_wl[i].high),
--			 le16_to_cpu(rx_priv_wl->tc_wl[i].low));
-+		seq_printf(s, "rx_priv_wl_tc_%d: high: 0x%x, low: 0x%x\n",
-+			   i + HCLGE_TC_NUM_ONE_DESC,
-+			   le16_to_cpu(rx_priv_wl->tc_wl[i].high),
-+			   le16_to_cpu(rx_priv_wl->tc_wl[i].low));
+-	hclge_dbg_fill_content(content, sizeof(content), vlan_filter_items,
+-			       NULL, ARRAY_SIZE(vlan_filter_items));
+-	*pos += scnprintf(buf + *pos, len - *pos, "%s", content);
++	seq_puts(s, "FUNC_ID  I_VF_VLAN_FILTER  E_VF_VLAN_FILTER  ");
++	seq_puts(s, "PORT_VLAN_FILTER_BYPASS\n");
  
--	return pos;
-+	return 0;
+ 	for (i = 0; i < func_num; i++) {
+ 		ret = hclge_get_vlan_filter_state(hdev, HCLGE_FILTER_TYPE_VF, i,
+@@ -2729,37 +2700,32 @@ static int hclge_dbg_dump_vlan_filter_config(struct hclge_dev *hdev, char *buf,
+ 		ret = hclge_get_port_vlan_filter_bypass_state(hdev, i, &bypass);
+ 		if (ret)
+ 			return ret;
+-		j = 0;
+-		result[j++] = hclge_dbg_get_func_id_str(str_id, i);
+-		result[j++] = str_on_off(ingress);
+-		result[j++] = str_on_off(egress);
+-		result[j++] = test_bit(HNAE3_DEV_SUPPORT_PORT_VLAN_BYPASS_B,
+-				       hdev->ae_dev->caps) ?
+-			      str_on_off(bypass) : "NA";
+-		hclge_dbg_fill_content(content, sizeof(content),
+-				       vlan_filter_items, result,
+-				       ARRAY_SIZE(vlan_filter_items));
+-		*pos += scnprintf(buf + *pos, len - *pos, "%s", content);
+-	}
+-	*pos += scnprintf(buf + *pos, len - *pos, "\n");
++
++		seq_printf(s, "%-9s%-18s%-18s%s\n",
++			   hclge_dbg_get_func_id_str(str_id, i),
++			   str_on_off(ingress), str_on_off(egress),
++			   test_bit(HNAE3_DEV_SUPPORT_PORT_VLAN_BYPASS_B,
++				    hdev->ae_dev->caps) ?
++						str_on_off(bypass) : "NA");
++	}
++	seq_puts(s, "\n");
+ 
+ 	return 0;
  }
  
- static int hclge_dbg_dump_rx_common_threshold_cfg(struct hclge_dev *hdev,
--						  char *buf, int len)
-+						  struct seq_file *s)
+-static int hclge_dbg_dump_vlan_offload_config(struct hclge_dev *hdev, char *buf,
+-					      int len, int *pos)
++static int hclge_dbg_dump_vlan_offload_config(struct hclge_dev *hdev,
++					      struct seq_file *s)
  {
- 	struct hclge_rx_com_thrd *rx_com_thrd;
- 	struct hclge_desc desc[2];
--	int pos = 0;
- 	int i, ret;
+-	char str_id[HCLGE_DBG_ID_LEN], str_pvid[HCLGE_DBG_ID_LEN];
+-	const char *result[ARRAY_SIZE(vlan_offload_items)];
+-	char content[HCLGE_DBG_VLAN_OFFLOAD_INFO_LEN];
+ 	u8 func_num = pci_num_vf(hdev->pdev) + 1; /* pf and enabled vf num */
+ 	struct hclge_dbg_vlan_cfg vlan_cfg;
++	char str_id[HCLGE_DBG_ID_LEN];
+ 	int ret;
+-	u8 i, j;
++	u8 i;
  
- 	hclge_cmd_setup_basic_desc(&desc[0], HCLGE_OPC_RX_COM_THRD_ALLOC, true);
-@@ -2031,62 +1890,53 @@ static int hclge_dbg_dump_rx_common_threshold_cfg(struct hclge_dev *hdev,
- 		return ret;
+-	hclge_dbg_fill_content(content, sizeof(content), vlan_offload_items,
+-			       NULL, ARRAY_SIZE(vlan_offload_items));
+-	*pos += scnprintf(buf + *pos, len - *pos, "%s", content);
++	seq_puts(s, "FUNC_ID  PVID  ACCEPT_TAG1  ACCEPT_TAG2 ACCEPT_UNTAG1  ");
++	seq_puts(s, "ACCEPT_UNTAG2  INSERT_TAG1  INSERT_TAG2  SHIFT_TAG  ");
++	seq_puts(s, "STRIP_TAG1  STRIP_TAG2  DROP_TAG1  DROP_TAG2  ");
++	seq_puts(s, "PRI_ONLY_TAG1  PRI_ONLY_TAG2\n");
+ 
+ 	for (i = 0; i < func_num; i++) {
+ 		ret = hclge_get_vlan_tx_offload_cfg(hdev, i, &vlan_cfg);
+@@ -2770,92 +2736,78 @@ static int hclge_dbg_dump_vlan_offload_config(struct hclge_dev *hdev, char *buf,
+ 		if (ret)
+ 			return ret;
+ 
+-		sprintf(str_pvid, "%u", vlan_cfg.pvid);
+-		j = 0;
+-		result[j++] = hclge_dbg_get_func_id_str(str_id, i);
+-		result[j++] = str_pvid;
+-		result[j++] = str_on_off(vlan_cfg.accept_tag1);
+-		result[j++] = str_on_off(vlan_cfg.accept_tag2);
+-		result[j++] = str_on_off(vlan_cfg.accept_untag1);
+-		result[j++] = str_on_off(vlan_cfg.accept_untag2);
+-		result[j++] = str_on_off(vlan_cfg.insert_tag1);
+-		result[j++] = str_on_off(vlan_cfg.insert_tag2);
+-		result[j++] = str_on_off(vlan_cfg.shift_tag);
+-		result[j++] = str_on_off(vlan_cfg.strip_tag1);
+-		result[j++] = str_on_off(vlan_cfg.strip_tag2);
+-		result[j++] = str_on_off(vlan_cfg.drop_tag1);
+-		result[j++] = str_on_off(vlan_cfg.drop_tag2);
+-		result[j++] = str_on_off(vlan_cfg.pri_only1);
+-		result[j++] = str_on_off(vlan_cfg.pri_only2);
+-
+-		hclge_dbg_fill_content(content, sizeof(content),
+-				       vlan_offload_items, result,
+-				       ARRAY_SIZE(vlan_offload_items));
+-		*pos += scnprintf(buf + *pos, len - *pos, "%s", content);
++		seq_printf(s, "%-9s", hclge_dbg_get_func_id_str(str_id, i));
++		seq_printf(s, "%-6u", vlan_cfg.pvid);
++		seq_printf(s, "%-13s", str_on_off(vlan_cfg.accept_tag1));
++		seq_printf(s, "%-12s", str_on_off(vlan_cfg.accept_tag2));
++		seq_printf(s, "%-15s", str_on_off(vlan_cfg.accept_untag1));
++		seq_printf(s, "%-15s", str_on_off(vlan_cfg.accept_untag2));
++		seq_printf(s, "%-13s", str_on_off(vlan_cfg.insert_tag1));
++		seq_printf(s, "%-13s", str_on_off(vlan_cfg.insert_tag2));
++		seq_printf(s, "%-11s", str_on_off(vlan_cfg.shift_tag));
++		seq_printf(s, "%-12s", str_on_off(vlan_cfg.strip_tag1));
++		seq_printf(s, "%-12s", str_on_off(vlan_cfg.strip_tag2));
++		seq_printf(s, "%-11s", str_on_off(vlan_cfg.drop_tag1));
++		seq_printf(s, "%-11s", str_on_off(vlan_cfg.drop_tag2));
++		seq_printf(s, "%-15s", str_on_off(vlan_cfg.pri_only1));
++		seq_printf(s, "%s\n", str_on_off(vlan_cfg.pri_only2));
  	}
  
--	pos += scnprintf(buf + pos, len - pos, "\n");
-+	seq_puts(s, "\n");
- 	rx_com_thrd = (struct hclge_rx_com_thrd *)desc[0].data;
- 	for (i = 0; i < HCLGE_TC_NUM_ONE_DESC; i++)
--		pos += scnprintf(buf + pos, len - pos,
--			 "rx_com_thrd_tc_%d: high: 0x%x, low: 0x%x\n", i,
--			 le16_to_cpu(rx_com_thrd->com_thrd[i].high),
--			 le16_to_cpu(rx_com_thrd->com_thrd[i].low));
-+		seq_printf(s, "rx_com_thrd_tc_%d: high: 0x%x, low: 0x%x\n", i,
-+			   le16_to_cpu(rx_com_thrd->com_thrd[i].high),
-+			   le16_to_cpu(rx_com_thrd->com_thrd[i].low));
- 
- 	rx_com_thrd = (struct hclge_rx_com_thrd *)desc[1].data;
- 	for (i = 0; i < HCLGE_TC_NUM_ONE_DESC; i++)
--		pos += scnprintf(buf + pos, len - pos,
--			 "rx_com_thrd_tc_%d: high: 0x%x, low: 0x%x\n",
--			 i + HCLGE_TC_NUM_ONE_DESC,
--			 le16_to_cpu(rx_com_thrd->com_thrd[i].high),
--			 le16_to_cpu(rx_com_thrd->com_thrd[i].low));
-+		seq_printf(s, "rx_com_thrd_tc_%d: high: 0x%x, low: 0x%x\n",
-+			   i + HCLGE_TC_NUM_ONE_DESC,
-+			   le16_to_cpu(rx_com_thrd->com_thrd[i].high),
-+			   le16_to_cpu(rx_com_thrd->com_thrd[i].low));
- 
--	return pos;
-+	return 0;
+ 	return 0;
  }
  
--static int hclge_dbg_dump_qos_buf_cfg(struct hclge_dev *hdev, char *buf,
+-static int hclge_dbg_dump_vlan_config(struct hclge_dev *hdev, char *buf,
 -				      int len)
-+static int hclge_dbg_dump_qos_buf_cfg(struct seq_file *s, void *data)
++static int hclge_dbg_dump_vlan_config(struct seq_file *s, void *data)
  {
 -	int pos = 0;
 +	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
  	int ret;
  
--	ret = hclge_dbg_dump_tx_buf_cfg(hdev, buf + pos, len - pos);
-+	ret = hclge_dbg_dump_tx_buf_cfg(hdev, s);
- 	if (ret < 0)
- 		return ret;
--	pos += ret;
- 
--	ret = hclge_dbg_dump_rx_priv_buf_cfg(hdev, buf + pos, len - pos);
-+	ret = hclge_dbg_dump_rx_priv_buf_cfg(hdev, s);
- 	if (ret < 0)
- 		return ret;
--	pos += ret;
- 
--	ret = hclge_dbg_dump_rx_common_wl_cfg(hdev, buf + pos, len - pos);
-+	ret = hclge_dbg_dump_rx_common_wl_cfg(hdev, s);
- 	if (ret < 0)
- 		return ret;
--	pos += ret;
- 
--	ret = hclge_dbg_dump_rx_global_pkt_cnt(hdev, buf + pos, len - pos);
-+	ret = hclge_dbg_dump_rx_global_pkt_cnt(hdev, s);
- 	if (ret < 0)
- 		return ret;
--	pos += ret;
- 
--	pos += scnprintf(buf + pos, len - pos, "\n");
-+	seq_puts(s, "\n");
- 	if (!hnae3_dev_dcb_supported(hdev))
- 		return 0;
- 
--	ret = hclge_dbg_dump_rx_priv_wl_buf_cfg(hdev, buf + pos, len - pos);
-+	ret = hclge_dbg_dump_rx_priv_wl_buf_cfg(hdev, s);
- 	if (ret < 0)
- 		return ret;
--	pos += ret;
- 
--	ret = hclge_dbg_dump_rx_common_threshold_cfg(hdev, buf + pos,
--						     len - pos);
-+	ret = hclge_dbg_dump_rx_common_threshold_cfg(hdev, s);
- 	if (ret < 0)
+-	ret = hclge_dbg_dump_vlan_filter_config(hdev, buf, len, &pos);
++	ret = hclge_dbg_dump_vlan_filter_config(hdev, s);
+ 	if (ret)
  		return ret;
  
-@@ -3060,47 +2910,47 @@ static int hclge_dbg_dump_mac_mc(struct hclge_dev *hdev, char *buf, int len)
- static const struct hclge_dbg_func hclge_dbg_cmd_func[] = {
- 	{
- 		.cmd = HNAE3_DBG_CMD_TM_NODES,
--		.dbg_dump = hclge_dbg_dump_tm_nodes,
-+		.dbg_read_func = hclge_dbg_dump_tm_nodes,
- 	},
- 	{
- 		.cmd = HNAE3_DBG_CMD_TM_PRI,
--		.dbg_dump = hclge_dbg_dump_tm_pri,
-+		.dbg_read_func = hclge_dbg_dump_tm_pri,
- 	},
- 	{
- 		.cmd = HNAE3_DBG_CMD_TM_QSET,
--		.dbg_dump = hclge_dbg_dump_tm_qset,
-+		.dbg_read_func = hclge_dbg_dump_tm_qset,
- 	},
- 	{
- 		.cmd = HNAE3_DBG_CMD_TM_MAP,
--		.dbg_dump = hclge_dbg_dump_tm_map,
-+		.dbg_read_func = hclge_dbg_dump_tm_map,
- 	},
- 	{
- 		.cmd = HNAE3_DBG_CMD_TM_PG,
--		.dbg_dump = hclge_dbg_dump_tm_pg,
-+		.dbg_read_func = hclge_dbg_dump_tm_pg,
- 	},
- 	{
- 		.cmd = HNAE3_DBG_CMD_TM_PORT,
--		.dbg_dump = hclge_dbg_dump_tm_port,
-+		.dbg_read_func = hclge_dbg_dump_tm_port,
- 	},
- 	{
- 		.cmd = HNAE3_DBG_CMD_TC_SCH_INFO,
--		.dbg_dump = hclge_dbg_dump_tc,
-+		.dbg_read_func = hclge_dbg_dump_tc,
- 	},
- 	{
- 		.cmd = HNAE3_DBG_CMD_QOS_PAUSE_CFG,
--		.dbg_dump = hclge_dbg_dump_qos_pause_cfg,
-+		.dbg_read_func = hclge_dbg_dump_qos_pause_cfg,
- 	},
- 	{
- 		.cmd = HNAE3_DBG_CMD_QOS_PRI_MAP,
--		.dbg_dump = hclge_dbg_dump_qos_pri_map,
-+		.dbg_read_func = hclge_dbg_dump_qos_pri_map,
- 	},
- 	{
- 		.cmd = HNAE3_DBG_CMD_QOS_DSCP_MAP,
--		.dbg_dump = hclge_dbg_dump_qos_dscp_map,
-+		.dbg_read_func = hclge_dbg_dump_qos_dscp_map,
- 	},
- 	{
- 		.cmd = HNAE3_DBG_CMD_QOS_BUF_CFG,
--		.dbg_dump = hclge_dbg_dump_qos_buf_cfg,
-+		.dbg_read_func = hclge_dbg_dump_qos_buf_cfg,
- 	},
- 	{
- 		.cmd = HNAE3_DBG_CMD_MAC_UC,
-@@ -3230,3 +3080,23 @@ int hclge_dbg_read_cmd(struct hnae3_handle *handle, enum hnae3_dbg_cmd cmd,
- 	dev_err(&hdev->pdev->dev, "invalid command(%d)\n", cmd);
- 	return -EINVAL;
+-	return hclge_dbg_dump_vlan_offload_config(hdev, buf, len, &pos);
++	return hclge_dbg_dump_vlan_offload_config(hdev, s);
  }
+ 
+-static int hclge_dbg_dump_ptp_info(struct hclge_dev *hdev, char *buf, int len)
++static int hclge_dbg_dump_ptp_info(struct seq_file *s, void *data)
+ {
++	struct hclge_dev *hdev = hclge_seq_file_to_hdev(s);
+ 	struct hclge_ptp *ptp = hdev->ptp;
+ 	u32 sw_cfg = ptp->ptp_cfg;
+ 	unsigned int tx_start;
+ 	unsigned int last_rx;
+-	int pos = 0;
+ 	u32 hw_cfg;
+ 	int ret;
+ 
+-	pos += scnprintf(buf + pos, len - pos, "phc %s's debug info:\n",
+-			 ptp->info.name);
+-	pos += scnprintf(buf + pos, len - pos, "ptp enable: %s\n",
+-			 str_yes_no(test_bit(HCLGE_PTP_FLAG_EN, &ptp->flags)));
+-	pos += scnprintf(buf + pos, len - pos, "ptp tx enable: %s\n",
+-			 str_yes_no(test_bit(HCLGE_PTP_FLAG_TX_EN,
+-					     &ptp->flags)));
+-	pos += scnprintf(buf + pos, len - pos, "ptp rx enable: %s\n",
+-			 str_yes_no(test_bit(HCLGE_PTP_FLAG_RX_EN,
+-					     &ptp->flags)));
++	seq_printf(s, "phc %s's debug info:\n", ptp->info.name);
++	seq_printf(s, "ptp enable: %s\n",
++		   str_yes_no(test_bit(HCLGE_PTP_FLAG_EN, &ptp->flags)));
++	seq_printf(s, "ptp tx enable: %s\n",
++		   str_yes_no(test_bit(HCLGE_PTP_FLAG_TX_EN, &ptp->flags)));
++	seq_printf(s, "ptp rx enable: %s\n",
++		   str_yes_no(test_bit(HCLGE_PTP_FLAG_RX_EN, &ptp->flags)));
+ 
+ 	last_rx = jiffies_to_msecs(ptp->last_rx);
+-	pos += scnprintf(buf + pos, len - pos, "last rx time: %lu.%lu\n",
+-			 last_rx / MSEC_PER_SEC, last_rx % MSEC_PER_SEC);
+-	pos += scnprintf(buf + pos, len - pos, "rx count: %lu\n", ptp->rx_cnt);
++	seq_printf(s, "last rx time: %lu.%lu\n",
++		   last_rx / MSEC_PER_SEC, last_rx % MSEC_PER_SEC);
++	seq_printf(s, "rx count: %lu\n", ptp->rx_cnt);
+ 
+ 	tx_start = jiffies_to_msecs(ptp->tx_start);
+-	pos += scnprintf(buf + pos, len - pos, "last tx start time: %lu.%lu\n",
+-			 tx_start / MSEC_PER_SEC, tx_start % MSEC_PER_SEC);
+-	pos += scnprintf(buf + pos, len - pos, "tx count: %lu\n", ptp->tx_cnt);
+-	pos += scnprintf(buf + pos, len - pos, "tx skipped count: %lu\n",
+-			 ptp->tx_skipped);
+-	pos += scnprintf(buf + pos, len - pos, "tx timeout count: %lu\n",
+-			 ptp->tx_timeout);
+-	pos += scnprintf(buf + pos, len - pos, "last tx seqid: %u\n",
+-			 ptp->last_tx_seqid);
++	seq_printf(s, "last tx start time: %lu.%lu\n",
++		   tx_start / MSEC_PER_SEC, tx_start % MSEC_PER_SEC);
++	seq_printf(s, "tx count: %lu\n", ptp->tx_cnt);
++	seq_printf(s, "tx skipped count: %lu\n", ptp->tx_skipped);
++	seq_printf(s, "tx timeout count: %lu\n", ptp->tx_timeout);
++	seq_printf(s, "last tx seqid: %u\n", ptp->last_tx_seqid);
 +
-+int hclge_dbg_get_read_func(struct hnae3_handle *handle, enum hnae3_dbg_cmd cmd,
-+			    read_func *func)
-+{
-+	struct hclge_vport *vport = hclge_get_vport(handle);
-+	const struct hclge_dbg_func *cmd_func;
-+	struct hclge_dev *hdev = vport->back;
-+	u32 i;
-+
-+	for (i = 0; i < ARRAY_SIZE(hclge_dbg_cmd_func); i++) {
-+		if (cmd == hclge_dbg_cmd_func[i].cmd) {
-+			cmd_func = &hclge_dbg_cmd_func[i];
-+			*func = cmd_func->dbg_read_func;
-+			return 0;
-+		}
-+	}
-+
-+	dev_err(&hdev->pdev->dev, "invalid command(%d)\n", cmd);
-+	return -EINVAL;
-+}
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.h
-index 2b998cbed826..317f79efd54c 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.h
-@@ -92,6 +92,7 @@ struct hclge_dbg_func {
- 	int (*dbg_dump)(struct hclge_dev *hdev, char *buf, int len);
- 	int (*dbg_dump_reg)(struct hclge_dev *hdev, enum hnae3_dbg_cmd cmd,
- 			    char *buf, int len);
-+	read_func dbg_read_func;
+ 
+ 	ret = hclge_ptp_cfg_qry(hdev, &hw_cfg);
+ 	if (ret)
+ 		return ret;
+ 
+-	pos += scnprintf(buf + pos, len - pos, "sw_cfg: %#x, hw_cfg: %#x\n",
+-			 sw_cfg, hw_cfg);
++	seq_printf(s, "sw_cfg: %#x, hw_cfg: %#x\n", sw_cfg, hw_cfg);
+ 
+-	pos += scnprintf(buf + pos, len - pos, "tx type: %d, rx filter: %d\n",
+-			 ptp->ts_cfg.tx_type, ptp->ts_cfg.rx_filter);
++	seq_printf(s, "tx type: %d, rx filter: %d\n",
++		   ptp->ts_cfg.tx_type, ptp->ts_cfg.rx_filter);
+ 
+ 	return 0;
+ }
+@@ -2929,31 +2881,31 @@ static const struct hclge_dbg_func hclge_dbg_cmd_func[] = {
+ 	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_MNG_TBL,
+-		.dbg_dump = hclge_dbg_dump_mng_table,
++		.dbg_read_func = hclge_dbg_dump_mng_table,
+ 	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_LOOPBACK,
+-		.dbg_dump = hclge_dbg_dump_loopback,
++		.dbg_read_func = hclge_dbg_dump_loopback,
+ 	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_PTP_INFO,
+-		.dbg_dump = hclge_dbg_dump_ptp_info,
++		.dbg_read_func = hclge_dbg_dump_ptp_info,
+ 	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_INTERRUPT_INFO,
+-		.dbg_dump = hclge_dbg_dump_interrupt,
++		.dbg_read_func = hclge_dbg_dump_interrupt,
+ 	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_RESET_INFO,
+-		.dbg_dump = hclge_dbg_dump_rst_info,
++		.dbg_read_func = hclge_dbg_seq_dump_rst_info,
+ 	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_IMP_INFO,
+-		.dbg_dump = hclge_dbg_get_imp_stats_info,
++		.dbg_read_func = hclge_dbg_get_imp_stats_info,
+ 	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_NCL_CONFIG,
+-		.dbg_dump = hclge_dbg_dump_ncl_config,
++		.dbg_read_func = hclge_dbg_dump_ncl_config,
+ 	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_REG_BIOS_COMMON,
+@@ -3005,15 +2957,15 @@ static const struct hclge_dbg_func hclge_dbg_cmd_func[] = {
+ 	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_MAC_TNL_STATUS,
+-		.dbg_dump = hclge_dbg_dump_mac_tnl_status,
++		.dbg_read_func = hclge_dbg_dump_mac_tnl_status,
+ 	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_SERV_INFO,
+-		.dbg_dump = hclge_dbg_dump_serv_info,
++		.dbg_read_func = hclge_dbg_dump_serv_info,
+ 	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_VLAN_CONFIG,
+-		.dbg_dump = hclge_dbg_dump_vlan_config,
++		.dbg_read_func = hclge_dbg_dump_vlan_config,
+ 	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_FD_COUNTER,
+@@ -3021,7 +2973,7 @@ static const struct hclge_dbg_func hclge_dbg_cmd_func[] = {
+ 	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_UMV_INFO,
+-		.dbg_dump = hclge_dbg_dump_umv_info,
++		.dbg_read_func = hclge_dbg_dump_umv_info,
+ 	},
  };
  
- struct hclge_dbg_status_dfx_info {
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 35c984a256ab..9c9e87c22b80 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -12865,6 +12865,7 @@ static const struct hnae3_ae_ops hclge_ops = {
- 	.enable_fd = hclge_enable_fd,
- 	.add_arfs_entry = hclge_add_fd_entry_by_arfs,
- 	.dbg_read_cmd = hclge_dbg_read_cmd,
-+	.dbg_get_read_func = hclge_dbg_get_read_func,
- 	.handle_hw_ras_error = hclge_handle_hw_ras_error,
- 	.get_hw_reset_stat = hclge_get_hw_reset_stat,
- 	.ae_dev_resetting = hclge_ae_dev_resetting,
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-index b9fc719880bb..57c09e8fd583 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.h
-@@ -1144,6 +1144,8 @@ void hclge_vport_stop(struct hclge_vport *vport);
- int hclge_set_vport_mtu(struct hclge_vport *vport, int new_mtu);
- int hclge_dbg_read_cmd(struct hnae3_handle *handle, enum hnae3_dbg_cmd cmd,
- 		       char *buf, int len);
-+int hclge_dbg_get_read_func(struct hnae3_handle *handle, enum hnae3_dbg_cmd cmd,
-+			    read_func *func);
- u16 hclge_covert_handle_qid_global(struct hnae3_handle *handle, u16 queue_id);
- int hclge_notify_client(struct hclge_dev *hdev,
- 			enum hnae3_reset_notify_type type);
 -- 
 2.33.0
 
