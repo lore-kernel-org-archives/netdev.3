@@ -1,68 +1,54 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE7125A328
-	for <netdev@vger.kernel.org>; Wed,  9 Jul 2025 10:41:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E5F28ECCD
+	for <netdev@vger.kernel.org>; Wed,  9 Jul 2025 10:42:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752057687; cv=none; b=ODPFcwOoM0zGqx0GnZDrXC/pZD6OtVLAb+5Z1NRqG40yqr/2GvvIHz/nME00RVX8XZx9oAPK/VGidnaXRKVOWHA71i09ZE7ok0lYs29bB/vZkmATtWtTGAH/OWUYF3Vq8ETNIHnWYz+dVc69JO6WakG7258W+ZETK2wkUVLcsb0=
+	t=1752057753; cv=none; b=lL18zy3JrtdeaofK4bimMlYrU+v72tEoyG5VJ86gXRXMYE993oYDfaejbPhcuXFKuvsQrmc8+hJMCv9ERjnXKAu0YdDOtVQcIaGg2R4v/+wDn6ja6pDq1TTdMrJDc0fMzr27lb33KJuBEJ2K2qKSRleOb7EpxbkBd77b1ay6txA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752057687; c=relaxed/simple;
-	bh=OCY+mClOeK7sM0Ol0HfXlFD8zhKNW2ZermGu9yYRbOk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=clOQdTovNjMiTo8pYtzrjW+b+mTpmZgR0WgKvhw+jXNHMxegnpq6MYrc0pqY2d3ee6OIpmzlA+kq17kaEPyOgeXkkTocdehEFxVhD3ZA/jGOyHZkcbi4qPlX2KIOsr7/pfEHVnRJGVLb/+vexacRnyWZWWy6DLsfYAxR/P+x4v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vm4MKNHp; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vm4MKNHp"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-553d52cb80dso798790e87.1
-        for <netdev@vger.kernel.org>; Wed, 09 Jul 2025 03:41:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752057683; x=1752662483; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jXOXZf5Gh2EJLgHqRNDMSChjUo6sp6JqqE5u4Jpt24E=;
-        b=Vm4MKNHpmGN3IBzo4v5HZDHTC6tG4fdHohEs1bOgZ6IbQBB1pJa0++Fbffw3i/zH9k
-         Dz90zWJSg5/ivnKDBc6FgZafMLbe3Pci+esma29KMnWDKV2mmWwFnp2f5OjeuzLZjcCq
-         fL5um2qKv4Lw6I4Gs4Jr5WZPRuVs6Se39ZjEx1Ut6T6V8zz3d6U0q35y/Dc7ZuGxYxdV
-         D8dJ5iKbMbX0LUvvTKwLPGW0MkcDOA7LV6x1gsCwgu9vN1DdqKraFQrycoRKsY5r9AUT
-         dsZG8Mg9+Gm4//AC2uHpdl7M5TegUGdylUvyUSmhzxU/fp97OEKergJjNQiCJ1zA6GGt
-         RRpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752057683; x=1752662483;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jXOXZf5Gh2EJLgHqRNDMSChjUo6sp6JqqE5u4Jpt24E=;
-        b=f/LhWQPdaaKlpji6/BkLwmHm1DgLn2118/LC17Ncj3PErRz3J/hcI3AuCJQQwqIJvs
-         oyCYyR786dTb0iKjtRnDR6JDcsVks/2zeM5mK9V5hWYp+L619AzjoDjs0u2wgfps+enJ
-         cr7MAK3O2GhN9am49zOtUYuuk/qVLlcAx2R67/v665m7ggKAfSdSl/W5Cvi9jPI5WDOC
-         D7TvBlRNPazswC9j7gTMGSTeyAAJR0lru9NmPj8RLIy93DwMiAMbgPXrAL/73tnN4791
-         UcTWzLPcaBkKRu4TRTCMTkNHWXXFA4oBUyWsqRTE0/RLlT6tiTak54MHJ5tJHWnhA2cc
-         Vxqw==
-X-Gm-Message-State: AOJu0Yy6zcvLSdfcvwPGPFoPgqdzBXKjROXmTds0Xnq8oNkr84guqnYR
-	Oia7ChPXiOYvMlL2dBOTHS5rnZKKxZyGladVn5YtZa2uSYFqkS9EF9ao
-X-Gm-Gg: ASbGncsqRIpzStAc+ZjkidtQsjr556Cc/7edK9dhRBARZKHR5w6Q9ASY2MMmaPZ9Ndb
-	InQmW4bT2hmTzVR8DGth3oDEVtH+ffxv3bdSlX8pA2Z4gEB1+ZFSZcn3dWCnwqbG49ID6nZh7gn
-	jtj+3ntjOIZnv2tALoBKHrdZmDayAVwLPsQYeanfSQvs2L4GttG5OEzALonlsskDoZCcIPXCZ0D
-	DVFh1mYsiC97QsJZZP6UGC0HcZ0Pub33YlX5ZxXEUWah7le0/rMsghZdXIG7IHEvneB1igI5irq
-	6fMUDRian77VW2Ei1ZCOXyic6a0IRAIhKo6Ap/Trc+FGyZOuN+l0xyaHQY8YyP5DgKiq4xlv9G0
-	PcXiLMbis6zbxPYGNaT+VwZQCF5KgzOPoQSqiavd7tPREBXQ=
-X-Google-Smtp-Source: AGHT+IGGGyHHqaBocgr7VNSt3LLW+9SNd1kLjq6UZ4uuH2SVbC+S6+ctihLPeP6hi9Xe7FFyELEpog==
-X-Received: by 2002:a05:6512:108e:b0:553:268e:5011 with SMTP id 2adb3069b0e04-557f8a6850bmr2011211e87.26.1752057683355;
-        Wed, 09 Jul 2025 03:41:23 -0700 (PDT)
-Received: from lnb0tqzjk.rasu.local (109-252-120-31.nat.spd-mgts.ru. [109.252.120.31])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-556383d906asm1947898e87.81.2025.07.09.03.41.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Jul 2025 03:41:22 -0700 (PDT)
-From: Anton Moryakov <ant.v.moryakov@gmail.com>
-To: mkubecek@suse.cz
-Cc: netdev@vger.kernel.org,
-	Anton Moryakov <ant.v.moryakov@gmail.com>
-Subject: [PATCH] ethtool: fix potential NULL pointer dereference in find_option
-Date: Wed,  9 Jul 2025 13:41:20 +0300
-Message-Id: <20250709104120.74112-1-ant.v.moryakov@gmail.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1752057753; c=relaxed/simple;
+	bh=IyPWsI1Cj47xSOp5+E79wdgdEyYTtJq4mJUYWfGQ6lk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=CpNSTnhybnudzoAxojRbVCXqr84T9JAnG8a28CTS07cRvqPN+tEXb5Hxj6mpbLMJIuie8lDoTn0xeCZV82QkTToA/yuxRXCNM3m0uSD3bcCCEuLy+oFwZGdeSHRrywz5bklvkPwmsoAJqhdn1pCZopoVDe51P8y/KJE+VOxff9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uZSFh-0004mq-8w; Wed, 09 Jul 2025 12:42:13 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uZSFf-007ZJj-2T;
+	Wed, 09 Jul 2025 12:42:11 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uZSFf-00FyRU-2D;
+	Wed, 09 Jul 2025 12:42:11 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	Russell King <linux@armlinux.org.uk>,
+	netdev@vger.kernel.org,
+	Andre Edich <andre.edich@microchip.com>,
+	Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH net v2 1/3] net: phy: enable polling when driver implements get_next_update_time
+Date: Wed,  9 Jul 2025 12:42:08 +0200
+Message-Id: <20250709104210.3807203-2-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250709104210.3807203-1-o.rempel@pengutronix.de>
+References: <20250709104210.3807203-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,41 +56,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Static analyzer reported a possible NULL pointer dereference:
+Currently, phy_polling_mode() enables polling only if:
+- the PHY is in interrupt-less mode, or
+- the driver provides an update_stats() callback.
 
-- In main(), 'argp' is dereferenced and passed to find_option()
-	without checking if *argp is NULL.
-	
-- The function find_option() does not validate its input argument,
-	which may lead to undefined behavior when using strncmp() or strcspn()
-	with a NULL pointer.
+This excludes drivers that implement get_next_update_time()
+to support adaptive polling but do not provide update_stats().
+As a result, the state machine timer will not run, and the
+get_next_update_time() callback is never used.
 
-This patch adds proper NULL check in find_option() to prevent invalid memory access.
-Additionally, it improves robustness by making sure that the input argument
-is valid before passing it to find_option().
+This patch extends the polling condition to include drivers that
+implement get_next_update_time(). This change is required to support
+adaptive polling in the SMSC LAN9512/LAN8700 PHY family, which cannot
+reliably use interrupts.
 
-Found by Svace static analysis tool.
+No in-tree drivers rely on this mechanism yet, so existing behavior is
+unchanged. If any out-of-tree driver incorrectly implements
+get_next_update_time(), enabling polling is still the correct behavior.
 
-Signed-off-by: Anton Moryakov <ant.v.moryakov@gmail.com>
+Fixes: 8bf47e4d7b87 ("net: phy: Add support for driver-specific next update time")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- ethtool.c | 3 +++
- 1 file changed, 3 insertions(+)
+changes v2:
+- update commit message
+---
+ include/linux/phy.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/ethtool.c b/ethtool.c
-index 0513a1a..4250add 100644
---- a/ethtool.c
-+++ b/ethtool.c
-@@ -6395,6 +6395,9 @@ static int show_usage(struct cmd_context *ctx __maybe_unused)
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 543a94751a6b..3d4e5c41235e 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -1632,7 +1632,7 @@ static inline bool phy_polling_mode(struct phy_device *phydev)
+ 		if (phydev->drv->flags & PHY_POLL_CABLE_TEST)
+ 			return true;
  
- static int find_option(char *arg)
- {
-+	if(!arg)
-+		return -1;
-+		
- 	const char *opt;
- 	size_t len;
- 	int k;
+-	if (phydev->drv->update_stats)
++	if (phydev->drv->update_stats || phydev->drv->get_next_update_time)
+ 		return true;
+ 
+ 	return phydev->irq == PHY_POLL;
 -- 
-2.39.2
+2.39.5
 
