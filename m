@@ -1,52 +1,63 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BCF1E7C27;
-	Wed,  9 Jul 2025 06:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17011BE6C;
+	Wed,  9 Jul 2025 06:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752041546; cv=none; b=UKDRZHU9tPmlWTWQ1VogFk/JygT6qAMjt769mGb1uXIdqxdUTZeOl624did26vrAxM90YysL3jeJJPCxDs8KbAfY8BnEwuz1Y31H453LMZ8X9ggoBi53ZYx+fUNv+E9jPhymBNhbulWdNoZazC8Flxjc+BeCw5tDOOpQUFPY4Xo=
+	t=1752042999; cv=none; b=eCKWV7AQsOOR0WMcWnvBBT/ItQkpTGBsdSGqiD7EkDdDC8z8H3EUBwFeblf57izHLG+4smOrJCmUxwKYpoZnIdgyU/m9XEWUdvKOftx1u55ZSZIr+L7PK/HwklEVEaNP38sJQNFXK2Md8nMAKDzwXpN45gx105DkU3HOs8NuAr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752041546; c=relaxed/simple;
-	bh=b6fHflmKbdoQM8mgBF82jn0LzwgDIvXGI4ngEOI9Kho=;
+	s=arc-20240116; t=1752042999; c=relaxed/simple;
+	bh=t7TNE8T/BN5q/u1c7kQTCoIQImHkT+2oHgODk/uKb1k=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RrkYAehLCrFCtVyHziVwBzX6B3pkV6kwKafcuxNVH24AvwMbaaCX+NtKldr9EkqmCZP2c1bIkmOXHmGTP3Gq850oTlymFWB7Gb4G2c5Ev3GZ9BWf+kabKGkNOK24TR/hZnoHhJ4qPvSxBErvbuyCpy4yxrrcQlN3jr1mqyjVQNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=N1V6uSds; arc=none smtp.client-ip=217.70.183.195
+	 MIME-Version:Content-Type; b=ab8dBbQUYcpH+WBtFc4F2MAF08/7pyDFO5209QNpiYFsr4anJrhqTI3ZVKmpy+35rXciLFrq0pWGMcwneu8AZ/0TEFik7pyDx14xw7sRVDYPAwLpasIx9tzli4QEhwqwnbM6yqsyKjRWDnogqYvnnTaC3O3NdezAs11hEVOcTVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KRn8V0Zu; arc=none smtp.client-ip=217.70.183.193
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="N1V6uSds"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B1A661FCF0;
-	Wed,  9 Jul 2025 06:12:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KRn8V0Zu"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4CBC64435E;
+	Wed,  9 Jul 2025 06:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1752041541;
+	t=1752042994;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4KsS1Bbbca9XQYHQZD5JFcdb0dmQjAJZfp72T1bNefM=;
-	b=N1V6uSdsMSier0lYnfeBmwUGUxNP++lSOFVGh8ovo3TyUfJyrOMJWiFxiVxH8vJSJq1Trv
-	3sDyDQTjtNBBg2Jlyi77dJpiaOZrpzE5v/tGuXhA+Kyc7MXwqdtz9Ff0WtMhaKm4/PAPsn
-	zDwoY2Bt6stQZTDWS2YNg+Hui7CeGr0UxeNJH1k5oB49ADbef7NZfWNRRgD8c4e8DXWC9U
-	Rw7z24mcaiQp35pHC7rEZFfgNTWE01B6/5nkd0AIihjMpgcnmIsurJ+5a6AcLUhDPBVOnT
-	+xFv01g+7556/0rl/xHhBOwct960Rk6hXKlam+YPtJxLzC/EaHP+0p0Gy9hqkQ==
-Date: Wed, 9 Jul 2025 08:12:17 +0200
+	bh=vUc1rTTw2VyF7BAekd7omjo2Z8aYGYza6CVNbqcGY2U=;
+	b=KRn8V0Zu0jfIjR28YR78LyIj8tqF3rpxEbNoc3XNnxRi4aiiY/gECZ+tae/K/8LhdGI9tD
+	UpSGuZpA8HRAJL7Upe2d7+exLpLO1ditmmG2MwmYf5tuI+EkAz4JCWrWmOCEAZ280BveNy
+	uAuDKP/tG/i+8krVn1cYjqS451yYW3M0bubz7NN1UkBgB0urhghuq+jtdJRUly0mOHD9Zz
+	KdT1ByLn3BPKYv7vu0mnLVu602OfAhMjLmjQKxtJqU2cpqfy7XWDfbxSwJQGpPZUHjC9GB
+	anUGsx253/1Obtp2OXvDkdMhT9gzxIPqjGVf8B1xqWaBrS2uxNsHCck9FVzbOw==
+Date: Wed, 9 Jul 2025 08:36:29 +0200
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: <Tristram.Ha@microchip.com>
-Cc: <Woojung.Huh@microchip.com>, <andrew@lunn.ch>, <olteanv@gmail.com>,
- <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
- <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
- <pabeni@redhat.com>, <marex@denx.de>, <UNGLinuxDriver@microchip.com>,
- <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next 6/6 v2] net: dsa: microchip: Setup fiber ports
- for KSZ8463
-Message-ID: <20250709081217.368e1f7d@fedora>
-In-Reply-To: <DM3PR11MB8736DE8A01523BD67AF73766EC4EA@DM3PR11MB8736.namprd11.prod.outlook.com>
-References: <20250708031648.6703-1-Tristram.Ha@microchip.com>
-	<20250708031648.6703-7-Tristram.Ha@microchip.com>
-	<20250708122237.08f4dd7c@device-24.home>
-	<DM3PR11MB8736DE8A01523BD67AF73766EC4EA@DM3PR11MB8736.namprd11.prod.outlook.com>
+To: Rob Herring <robh@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski
+ <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, Heiner Kallweit
+ <hkallweit1@gmail.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ =?UTF-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>, Marek
+ =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>, Oleksij Rempel
+ <o.rempel@pengutronix.de>, =?UTF-8?B?Tmljb2zDsg==?= Veronese
+ <nicveronese@gmail.com>, Simon Horman <horms@kernel.org>,
+ mwojtas@chromium.org, Antoine Tenart <atenart@kernel.org>,
+ devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Romain Gantois
+ <romain.gantois@bootlin.com>, Daniel Golle <daniel@makrotopia.org>, Dimitri
+ Fedrau <dimitri.fedrau@liebherr.com>
+Subject: Re: [PATCH net-next v7 01/15] dt-bindings: net: Introduce the
+ ethernet-connector description
+Message-ID: <20250709083629.51c95507@fedora>
+In-Reply-To: <20250708155733.GA481837-robh@kernel.org>
+References: <20250630143315.250879-1-maxime.chevallier@bootlin.com>
+	<20250630143315.250879-2-maxime.chevallier@bootlin.com>
+	<20250708155733.GA481837-robh@kernel.org>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -58,129 +69,117 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdefieektdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeevledtvdevueehhfevhfelhfekveeftdfgiedufeffieeltddtgfefuefhueeknecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjedphhgvlhhopehfvgguohhrrgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduiedprhgtphhtthhopefvrhhishhtrhgrmhdrjfgrsehmihgtrhhotghhihhprdgtohhmpdhrtghpthhtohephghoohhjuhhnghdrjfhuhhesmhhitghrohgthhhiphdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopeholhhtvggrnhhvsehgmhgri
- hhlrdgtohhmpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvth
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdefieekiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedvudehfffgudefhfefgeeufeekkeekheeufeeiudehtdehuddtgedvvdfhueeuteenucffohhmrghinhepuggvvhhitggvthhrvggvrdhorhhgnecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjedphhgvlhhopehfvgguohhrrgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeeftddprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehnvghtuggvvhesv
+ hhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhmshhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrgh
 X-GND-Sasl: maxime.chevallier@bootlin.com
 
-Hi Tristram
+Hi Rob,
 
-On Tue, 8 Jul 2025 19:45:44 +0000
-<Tristram.Ha@microchip.com> wrote:
+On Tue, 8 Jul 2025 10:57:33 -0500
+Rob Herring <robh@kernel.org> wrote:
 
-> > Hi Tristram,
+> On Mon, Jun 30, 2025 at 04:33:00PM +0200, Maxime Chevallier wrote:
+> > The ability to describe the physical ports of Ethernet devices is useful
+> > to describe multi-port devices, as well as to remove any ambiguity with
+> > regard to the nature of the port.
 > > 
-> > On Mon, 7 Jul 2025 20:16:48 -0700
-> > <Tristram.Ha@microchip.com> wrote:
-> >   
-> > > From: Tristram Ha <tristram.ha@microchip.com>
-> > >
-> > > The fiber ports in KSZ8463 cannot be detected internally, so it requires
-> > > specifying that condition in the device tree.  Like the one used in
-> > > Micrel PHY the port link can only be read and there is no write to the
-> > > PHY.  The driver programs registers to operate fiber ports correctly.
-> > >
-> > > The PTP function of the switch is also turned off as it may interfere the
-> > > normal operation of the MAC.
-> > >
-> > > Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
-> > > ---
-> > >  drivers/net/dsa/microchip/ksz8.c       | 26 ++++++++++++++++++++++++++
-> > >  drivers/net/dsa/microchip/ksz_common.c |  3 +++
-> > >  2 files changed, 29 insertions(+)
-> > >
-> > > diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-> > > index 904db68e11f3..1207879ef80c 100644
-> > > --- a/drivers/net/dsa/microchip/ksz8.c
-> > > +++ b/drivers/net/dsa/microchip/ksz8.c
-> > > @@ -1715,6 +1715,7 @@ void ksz8_config_cpu_port(struct dsa_switch *ds)
-> > >       const u32 *masks;
-> > >       const u16 *regs;
-> > >       u8 remote;
-> > > +     u8 fiber_ports = 0;
-> > >       int i;
-> > >
-> > >       masks = dev->info->masks;
-> > > @@ -1745,6 +1746,31 @@ void ksz8_config_cpu_port(struct dsa_switch *ds)
-> > >               else
-> > >                       ksz_port_cfg(dev, i, regs[P_STP_CTRL],
-> > >                                    PORT_FORCE_FLOW_CTRL, false);
-> > > +             if (p->fiber)
-> > > +                     fiber_ports |= (1 << i);
-> > > +     }
-> > > +     if (ksz_is_ksz8463(dev)) {
-> > > +             /* Setup fiber ports. */  
+> > Moreover, describing ports allows for a better description of features
+> > that are tied to connectors, such as PoE through the PSE-PD devices.
 > > 
-> > What does fiber port mean ? Is it 100BaseFX ? As this configuration is
-> > done only for the CPU port (it seems), looks like this mode is planned
-> > to be used as the MAC to MAC mode on the DSA conduit. So, instead of
-> > using this property maybe you should implement that as handling the
-> > "100base-x" phy-mode ?
-> >   
-> > > +             if (fiber_ports) {
-> > > +                     regmap_update_bits(ksz_regmap_16(dev),
-> > > +                                        reg16(dev, KSZ8463_REG_CFG_CTRL),
-> > > +                                        fiber_ports << PORT_COPPER_MODE_S,
-> > > +                                        0);
-> > > +                     regmap_update_bits(ksz_regmap_16(dev),
-> > > +                                        reg16(dev, KSZ8463_REG_DSP_CTRL_6),
-> > > +                                        COPPER_RECEIVE_ADJUSTMENT, 0);
-> > > +             }
-> > > +
-> > > +             /* Turn off PTP function as the switch's proprietary way of
-> > > +              * handling timestamp is not supported in current Linux PTP
-> > > +              * stack implementation.
-> > > +              */
-> > > +             regmap_update_bits(ksz_regmap_16(dev),
-> > > +                                reg16(dev, KSZ8463_PTP_MSG_CONF1),
-> > > +                                PTP_ENABLE, 0);
-> > > +             regmap_update_bits(ksz_regmap_16(dev),
-> > > +                                reg16(dev, KSZ8463_PTP_CLK_CTRL),
-> > > +                                PTP_CLK_ENABLE, 0);
-> > >       }
-> > >  }
-> > >
-> > > diff --git a/drivers/net/dsa/microchip/ksz_common.c  
-> > b/drivers/net/dsa/microchip/ksz_common.c  
-> > > index c08e6578a0df..b3153b45ced9 100644
-> > > --- a/drivers/net/dsa/microchip/ksz_common.c
-> > > +++ b/drivers/net/dsa/microchip/ksz_common.c
-> > > @@ -5441,6 +5441,9 @@ int ksz_switch_register(struct ksz_device *dev)
-> > >                                               &dev->ports[port_num].interface);
-> > >
-> > >                               ksz_parse_rgmii_delay(dev, port_num, port);
-> > > +                             dev->ports[port_num].fiber =
-> > > +                                     of_property_read_bool(port,
-> > > +                                                           "micrel,fiber-mode");  
+> > Introduce a binding to allow describing the ports, for now with 2
+> > attributes :
 > > 
-> > Shouldn't this be described in the binding ?
-> >   
-> > >                       }
-> > >                       of_node_put(ports);
-> > >               }  
+> >  - The number of lanes, which is a quite generic property that allows
+> >    differentating between multiple similar technologies such as BaseT1
+> >    and "regular" BaseT (which usually means BaseT4).
+> > 
+> >  - The media that can be used on that port, such as BaseT for Twisted
+> >    Copper, BaseC for coax copper, BaseS/L for Fiber, BaseK for backplane
+> >    ethernet, etc. This allows defining the nature of the port, and
+> >    therefore avoids the need for vendor-specific properties such as
+> >    "micrel,fiber-mode" or "ti,fiber-mode".
+> > 
+> > The port description lives in its own file, as it is intended in the
+> > future to allow describing the ports for phy-less devices.
+> > 
+> > Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> > ---
+> >  .../bindings/net/ethernet-connector.yaml      | 47 +++++++++++++++++++
+> >  .../devicetree/bindings/net/ethernet-phy.yaml | 18 +++++++
+> >  MAINTAINERS                                   |  1 +
+> >  3 files changed, 66 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/net/ethernet-connector.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/net/ethernet-connector.yaml b/Documentation/devicetree/bindings/net/ethernet-connector.yaml
+> > new file mode 100644
+> > index 000000000000..2aa28e6c1523
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/ethernet-connector.yaml
+> > @@ -0,0 +1,47 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/ethernet-connector.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Generic Ethernet Connector
+> > +
+> > +maintainers:
+> > +  - Maxime Chevallier <maxime.chevallier@bootlin.com>
+> > +
+> > +description:
+> > +  An Ethernet Connectr represents the output of a network component such as  
 > 
-> The "micrel,fiber-mode" is described in Documentation/devicetree/
-> bindings/net/micrel.txt.
+> typo
+> 
+> > +  a PHY, an Ethernet controller with no PHY, or an SFP module.
+> > +
+> > +properties:
+> > +
+> > +  lanes:
+> > +    description:
+> > +      Defines the number of lanes on the port, that is the number of physical
+> > +      channels used to convey the data with the link partner.
+> > +    $ref: /schemas/types.yaml#/definitions/uint32  
+> 
+> maximum?
+> 
+> Or I'd guess this is power of 2 values?
 
-Yes but that's for PHYs right ? Yours is under the DSA "ports"
-node.
+All values that exist so far are indeed power of 2 values, but that's
+not a strict requirement, there may be other values one day. I'll add
+all possible values (1, 2 , 4 , 8) so far.
+> 
+> > +
+> > +  media:
+> > +    description:
+> > +      The mediums, as defined in 802.3, that can be used on the port.
+> > +    items:
+> > +      enum:
+> > +        - BaseT
+> > +        - BaseK
+> > +        - BaseS
+> > +        - BaseC
+> > +        - BaseL
+> > +        - BaseD
+> > +        - BaseE
+> > +        - BaseF
+> > +        - BaseV
+> > +        - BaseMLD
+> > +        - BaseX  
+
+Heh I need to remove BaseX
 
 > 
-> Some old KSZ88XX switches have option of using fiber in a port running
-> 100base-fx.  Typically they have a register indicating that configuration
-> and the driver just treats the port as having a PHY and reads the link
-> status and speed as normal except there is no write to those PHY related
-> registers.  KSZ8463 does not have that option so the driver needs to be
-> told.
+> This can be multiple values? But then how does one know what is actually 
+> attached?
 
-That's what I understood from your comments indeed, what thew me off
-guard is that all ports's fiber mode is configured in the
-config_cpu_port() callback.
+I don't see a scenario where we would put multiple values actually. I
+need to update the code accordingly, but if we are in the case where we
+need to specify in DT which medium we use, then that means we can only
+use one.
 
-I'd like to one day be able to deprecate these
-micrel,fiber-mode/ti,fiber-mode properties in favor of the ports API
-that's being worked on, but I guess we can roll with it for now.
+Thanks you for reviewing,
 
 Maxime
-
-
