@@ -1,37 +1,36 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA5E274FD1
-	for <netdev@vger.kernel.org>; Wed,  9 Jul 2025 08:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0FE274B48
+	for <netdev@vger.kernel.org>; Wed,  9 Jul 2025 08:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752049890; cv=none; b=QnCftJLPNBWNeUXbA9yXuiLehAwjSNMT7ZjQyOIHjVXmhQsZNFtnAcDU4rF+/JVIhmoftHu9j6VTtvzU5JniOXzEo5P8J9/DxZX3nxKwIV7XRJPiTIjiv9JcDzurbkY39furhEdhuQppyN6vjMsurkaaVxpFd1pQSNG4c7gyc0s=
+	t=1752049890; cv=none; b=NePYO25bMfsIiitspb5NvoOyCkaHnL0UUT7151g7d7srsDC0E1QIQxT2MgeuYvAGIx3lY+m+YcB780uKjkGwV7Nl5TsMmgnYIOkZs5UV4L+VLI9M0uetgR6xH8GXDgNdPB6LgBFTGb0MlQPBt/wGbuZIjpH3UGlVFgrlVO+L6AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752049890; c=relaxed/simple;
-	bh=KMcNS7CJHO4AwRQ80vFOSA3Y0XRaHZZ9Qfc/28fKiPg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qbhOX9CfHwRwy9Ivn7zeB8js0ytVTkKogWGyXOnVmp44HXr6v8BKb7vKdNm98m5/jAJTrCI3Gl7ra3yaSE7yfGj+jbZ0b/voOzPOxdESNUdaQ5WAgA9mwJbO4K9boeohUse/ZklsLgeghJouhTGjiipLyawGZO7osGwQYKuAjfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=I9ToArK6; arc=none smtp.client-ip=203.29.241.158
+	bh=8Cc8vYayrEg/fUhvqL8UmdMZ45EOHGUlbb01UjvmRjU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=c9qBEyfgPVcK+opVvbHyeW9q8ANl8kmq6C08oeei8N2PdvxIZsAsiNjM4yHkk2zDyXpnPLTvejrsKCVYVTgaQFwV58PcrVft/nGbDhdjkWq2x5K6wx5EHtmbdkZ8v1eS05tvdykmkGJZXkr/E1Czxugt43sdFvS3TrO9g/qKfYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=Yh3d9S3c; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="I9ToArK6"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="Yh3d9S3c"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1752049880;
-	bh=51/6kCJDW/9Pwh6ELpqSSSf8JtzRdT4alycO7cdblXs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=I9ToArK6D5/vd+OC5FZ0MYnyD9htXH/2DejPy16Df2CGHhXKbALL++B1TNIR1uagU
-	 F/UncnjX1ywQjRKljRPRk9cjF6APa4D4W/49Mjk8BLEx878EtASiDbtAFCvhsDM78c
-	 +K+qfa1k2kTbhfYxqEI+BNlb3OaidoEsWdl6ysTGxzeLlujVbG1p6BpAfTKbcCNASl
-	 hmZZgkZDDK9FZYxqHzEJUGC2VzDKN/M3AeXFGeaOad7etyUCBrDAjMn7g1MWxwlJEA
-	 memxFUuQU0PF4ML98L5wyZTd2a8t6/fxbAo+9KgaQeFHTM/OcqpkDTcuqYthR4mqCw
-	 Np4Trun2VZUDw==
+	d=codeconstruct.com.au; s=2022a; t=1752049879;
+	bh=ITrxfJWGyQsJ3Vn/O+6zvqyFnyfIsfGYltnS0fvPwp8=;
+	h=From:Subject:Date:To:Cc;
+	b=Yh3d9S3cum4urUeWq1W6W0TeJ0qwSfqw1irBqCaGq7fA6lxQOnVAed/M2YURZwhnx
+	 2UMLMJHShmSSNE5tIJbk33DNWRcTYFc0EnhOQfbEoKJx1hm5SCxURLeFxzjPusv3u9
+	 N05VabO56NV5WoR3Bh8jTFhPnyEIMXqKAI3U16/jXnJyy8iB6s2FLSpdt0tnLYpW6Y
+	 bW0/uEfYMNc1Sy9o+9vRYvmGcHlRG8wnhxFFmv+SQImGdGG0FqgO34WI2irM3P0rZI
+	 drFf+ecx9S9sqCaI+LVbq2+l4IkFv5lRSIp42wFWnitg+SRq5Nq/l7zhkCW6qZzHdc
+	 3AJ6hoR7wMFFw==
 Received: by codeconstruct.com.au (Postfix, from userid 10001)
-	id 85BD36B162; Wed,  9 Jul 2025 16:31:20 +0800 (AWST)
+	id 4E73B6B153; Wed,  9 Jul 2025 16:31:19 +0800 (AWST)
 From: Matt Johnston <matt@codeconstruct.com.au>
-Date: Wed, 09 Jul 2025 16:31:04 +0800
-Subject: [PATCH net-next v3 3/8] net: mctp: Treat MCTP_NET_ANY specially in
- bind()
+Subject: [PATCH net-next v3 0/8] net: mctp: Improved bind handling
+Date: Wed, 09 Jul 2025 16:31:01 +0800
+Message-Id: <20250709-mctp-bind-v3-0-eac98bbf5e95@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,73 +39,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250709-mctp-bind-v3-3-eac98bbf5e95@codeconstruct.com.au>
-References: <20250709-mctp-bind-v3-0-eac98bbf5e95@codeconstruct.com.au>
-In-Reply-To: <20250709-mctp-bind-v3-0-eac98bbf5e95@codeconstruct.com.au>
+X-B4-Tracking: v=1; b=H4sIAMUobmgC/3XNvQ6DIBwE8FcxzMXwYUU79T2aDgJ/KoNgAImN8
+ d1LmFw6Xu7yuwNFCBYiejQHCpBttN6VwG8NUvPkPoCtLhkxwu6EM4oXlVYsrdMYhBj7wdCBGI3
+ Kfg1g7F6tF3KQsIM9oXdpZhuTD996kmntqycIv3iZYoKlFDAKxbqe8qfyGpR3MYVNpVb5pZ22C
+ mZ2RcQVYQUxcgI9KGpkp/8g53n+ANHHW1r8AAAA
+X-Change-ID: 20250321-mctp-bind-e77968f180fd
 To: Jeremy Kerr <jk@codeconstruct.com.au>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
  Simon Horman <horms@kernel.org>
 Cc: netdev@vger.kernel.org, Matt Johnston <matt@codeconstruct.com.au>
 X-Mailer: b4 0.15-dev-cbbb4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1752049878; l=1794;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752049878; l=2870;
  i=matt@codeconstruct.com.au; s=20241018; h=from:subject:message-id;
- bh=KMcNS7CJHO4AwRQ80vFOSA3Y0XRaHZZ9Qfc/28fKiPg=;
- b=ofdHZ5jLdD3cwxkmf2mHsyvHJv5Yyrk4UbluJ4IwOyBTui+Jlzk/pBmRk/3WKE1/L7RlycJ87
- NnetyZLpSWxDq/5bkx2/w5SH90aYhiTMi9G5AvuV8iRqms+iMrvMkVA
+ bh=8Cc8vYayrEg/fUhvqL8UmdMZ45EOHGUlbb01UjvmRjU=;
+ b=0io8gpkGC69qpuZjtTXeZP60KbmKWS+iKJI/aZswOxHUam1LR4BR+OjBwnieFgjt5W0m17jrV
+ x31GNb2oM6kAKzx2SWLpWZoJZ4WJWd5oIeNKPCqKuang0oACsl5n4dM
 X-Developer-Key: i=matt@codeconstruct.com.au; a=ed25519;
  pk=exersTcCYD/pEBOzXGO6HkLd6kKXRuWxHhj+LXn3DYE=
 
-When a specific EID is passed as a bind address, it only makes sense to
-interpret with an actual network ID, so resolve that to the default
-network at bind time.
+This series improves a couple of aspects of MCTP bind() handling.
 
-For bind address of MCTP_ADDR_ANY, we want to be able to capture traffic
-to any network and address, so keep the current behaviour of matching
-traffic from any network interface (don't interpret MCTP_NET_ANY as
-the default network ID).
+MCTP wasn't checking whether the same MCTP type was bound by multiple
+sockets. That would result in messages being received by an arbitrary
+socket, which isn't useful behaviour. Instead it makes more sense to
+have the duplicate binds fail, the same as other network protocols.
+An exception is made for more-specific binds to particular MCTP
+addresses.
+
+It is also useful to be able to limit a bind to only receive incoming
+request messages (MCTP TO bit set) from a specific peer+type, so that
+individual processes can communicate with separate MCTP peers. One
+example is a PLDM firmware update requester, which will initiate
+communication with a device, and then the device will connect back to the
+requester process. 
+
+These limited binds are implemented by a connect() call on the socket
+prior to bind. connect() isn't used in the general case for MCTP, since
+a plain send() wouldn't provide the required MCTP tag argument for
+addressing.
 
 Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
 ---
- net/mctp/af_mctp.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+Changes in v3:
+- Rebased to net-next
+- kunit tests have been updated for MCTP gateway routing changes
+- Bind conflict tests are now in the new mctp/tests/sock-test.c
+- Added patch for mctp_test_route_extaddr_input kunit socket cleanup
+  (fixes MCTP gateway routing change in net-next, required by tests in
+  this series)
+- Link to v2: https://lore.kernel.org/r/20250707-mctp-bind-v2-0-fbaed8c1fb4d@codeconstruct.com.au
 
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index 0d073bc32ec17905ac0118d1aa653a46d829b150..20edaf840a607700c04b740708763fbd02a2df47 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -53,6 +53,7 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
- {
- 	struct sock *sk = sock->sk;
- 	struct mctp_sock *msk = container_of(sk, struct mctp_sock, sk);
-+	struct net *net = sock_net(&msk->sk);
- 	struct sockaddr_mctp *smctp;
- 	int rc;
- 
-@@ -77,8 +78,21 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
- 		rc = -EADDRINUSE;
- 		goto out_release;
- 	}
--	msk->bind_net = smctp->smctp_network;
-+
- 	msk->bind_addr = smctp->smctp_addr.s_addr;
-+
-+	/* MCTP_NET_ANY with a specific EID is resolved to the default net
-+	 * at bind() time.
-+	 * For bind_addr=MCTP_ADDR_ANY it is handled specially at route
-+	 * lookup time.
-+	 */
-+	if (smctp->smctp_network == MCTP_NET_ANY &&
-+	    msk->bind_addr != MCTP_ADDR_ANY) {
-+		msk->bind_net = mctp_default_net(net);
-+	} else {
-+		msk->bind_net = smctp->smctp_network;
-+	}
-+
- 	msk->bind_type = smctp->smctp_type & 0x7f; /* ignore the IC bit */
- 
- 	rc = sk->sk_prot->hash(sk);
+Changes in v2:
+- Use DECLARE_HASHTABLE
+- Remove unused kunit test case
+- Avoid kunit test snprintf truncation warning
+- Fix lines >80 characters
+- Link to v1: https://lore.kernel.org/r/20250703-mctp-bind-v1-0-bb7e97c24613@codeconstruct.com.au
 
+---
+Matt Johnston (8):
+      net: mctp: mctp_test_route_extaddr_input cleanup
+      net: mctp: Prevent duplicate binds
+      net: mctp: Treat MCTP_NET_ANY specially in bind()
+      net: mctp: Add test for conflicting bind()s
+      net: mctp: Use hashtable for binds
+      net: mctp: Allow limiting binds to a peer address
+      net: mctp: Test conflicts of connect() with bind()
+      net: mctp: Add bind lookup test
+
+ include/net/mctp.h         |   5 +-
+ include/net/netns/mctp.h   |  20 ++++-
+ net/mctp/af_mctp.c         | 146 +++++++++++++++++++++++++++++++---
+ net/mctp/route.c           |  85 ++++++++++++++++----
+ net/mctp/test/route-test.c | 194 ++++++++++++++++++++++++++++++++++++++++++++-
+ net/mctp/test/sock-test.c  | 167 ++++++++++++++++++++++++++++++++++++++
+ net/mctp/test/utils.c      |  36 +++++++++
+ net/mctp/test/utils.h      |  17 ++++
+ 8 files changed, 635 insertions(+), 35 deletions(-)
+---
+base-commit: ea988b450690448d5b12ce743a598ade7a8c34b1
+change-id: 20250321-mctp-bind-e77968f180fd
+
+Best regards,
 -- 
-2.43.0
+Matt Johnston <matt@codeconstruct.com.au>
 
