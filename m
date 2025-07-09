@@ -1,28 +1,27 @@
-Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEF326B75C;
-	Wed,  9 Jul 2025 06:41:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569A926B96A
+	for <netdev@vger.kernel.org>; Wed,  9 Jul 2025 06:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752043318; cv=none; b=SQEkpZW9i6W5tNAyLzUJ9t1LXLqZj0oPZLoAtwxv/YYahNU+wnprtMXq6HHLHehfOtj4ZLasyUZuNGlV3G0MU7R3iEcoP6ntIZDRe7HwzlqzOimjppG33nKzD4P4kU3rVNZiD44gTD7jVRzJH59lw1OS+qad0CGtOPrP/aCnRxo=
+	t=1752043319; cv=none; b=A9Zfyuhs4gEgFhssmkEbmUeqY7MuqPKnddXq1iYnoZ0Zbj6BNw8SVcZJUfKj2nPP1f5Bfl9J3TZRsYJvg557s6l84h7Y+VSSIi2/+RYmRtF4qHyMP8gcfreQX4rjktf9F+Co+ONVa/G87jQA0ohmQEa6mK95icGcYvKQX0mY6kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752043318; c=relaxed/simple;
-	bh=H9HrPg7DIsGR9qJFMgiIkdZD6FjYeVkRwMB0lzEp6QI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m+b0z8F13+kVfrEb45dBYbskbhRyycaP6T8ERJUR3s2V1FsE9S+nFppdvyH8WxUhL9ns0dT8U2b1bKgRuZa+E11dSqqM1ONuEwpIUwHvnDAPOpG9HoMzaNE76mRrmHOwhH8w3W/+VlQZfTARVKN9Qn/NzyacT1rUppOR05WedBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=15.184.224.54
+	s=arc-20240116; t=1752043319; c=relaxed/simple;
+	bh=ST3X6UAnlQHvBgEeaB+GTiZNXNe0+OIR9F5Zd8U3IiE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JL3x6/ndAbuXAPdaphmJLEGKSHm3E+5SILAI6O4Xd9TfreRH/SpKmmx5BKy+RhxBm3OR87colKEINgFSfpCUHsLzP7wobixORBiHMP++pETwJERukkMM/hDRi4RH/4Z76y4LypENFa7IZRux13aFc5dBjtrJ7+NGh16Sq5IQ558=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.22.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpgz10t1752043246t128a2e9c
-X-QQ-Originating-IP: y2+5PbEK5WDlhHAbE3efsxdZevrjew8XYqzSgefqPvQ=
+X-QQ-mid: esmtpgz10t1752043242tf0ad3802
+X-QQ-Originating-IP: fJI8y6x9OdiHR7dMuuZjvX4YTFtaKrurT55ZdeDMOzQ=
 Received: from lap-jiawenwu.trustnetic.com ( [36.20.45.108])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 09 Jul 2025 14:40:45 +0800 (CST)
+	id ; Wed, 09 Jul 2025 14:40:39 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 15836940012302802655
-EX-QQ-RecipientCnt: 12
+X-BIZMAIL-ID: 15461137682457919814
+EX-QQ-RecipientCnt: 11
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch,
@@ -34,14 +33,11 @@ To: netdev@vger.kernel.org,
 	michal.kubiak@intel.com
 Cc: mengyuanlou@net-swift.com,
 	duanqiangwen@net-swift.com,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/3] net: libwx: fix the using of Rx buffer DMA
-Date: Wed,  9 Jul 2025 14:40:24 +0800
-Message-Id: <20250709064025.19436-3-jiawenwu@trustnetic.com>
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net 0/3] Fix Rx fatal errors
+Date: Wed,  9 Jul 2025 14:40:22 +0800
+Message-Id: <20250709064025.19436-1-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20250709064025.19436-1-jiawenwu@trustnetic.com>
-References: <20250709064025.19436-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,77 +47,42 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: OKK2DAMrOULS6Ly0fIf38DFW1+lJNk4Hn409swjBuDecgPwnghpMuhX6
-	NhmmWnSbydVaQr/mL5DI98h+7AEJ6liRRH/OwwdIGY2Zpi+AJDO+jFBnenjvTrJgHtQ7mpC
-	aEEXulNnW9ZNd+krHGNdfgLjdPMFRUd0R0zJwLyLsrs1XK1OcR0owXv2Q4GDh67WaGdCLhM
-	p4tpzfDgAuLosqZ9Gm+D7EMsmwfU9ULj91yMb1ZB9xj4qivcXAjzJR1ykz4euxMiOAy17WD
-	tAcZ05o+ZGqVoeZDbY8tI+y/SvYKHmxwidgjXKTSgefnoLYve2Mcpc3jOd1GxSlbIt1Ibva
-	b9p1wKssGh4abSyZcWbj00NGx4N9D4/vjKDCsIiYOjggq0gvzwGJwK9RK5yMAY/Q8XtQq9L
-	RTAHLBgDI3aFcbHERbli7U8zzeWyAMqqPhWNgDotllAI5x2EkdJTDOwMtob7gfSHHxa+sty
-	V/6pmEwV2aAO01WvQj8VI5HuX+/tVeHYmyyrzgQ/XnGiB4U8OmWpyAJ5ad9bRubDpl935fD
-	IAnWoWBD2XqqraVF2TbH3ib6MLsAYfP7PSUZ25DcKe9tGsIOYB8NSgY5v76218Iw1cnzxBj
-	gTlanofjTDKB6vUlCRG4uKrJSfa1Hl2d6r9hJ4EPRzMJdDXqOlO5kyplGxLPbPJSPhlzQ41
-	qEPF9wmLB75ekdk6F7EYcozIkhpAvb+MAtlPiW2y6Lunm/Qe6MMEdDt92dkXUQC3++XuaU/
-	Xe8Vdtqvvut+VXe6Fq95hYr7jhyD8oiw0S79zUySaCzg13ff1XmIQLcB4YNOZGJxwO9WpWL
-	LKh2ogwJ5Ad7osFlJ8fyxfC/Dab9mAoMAdd7Dp/w/ZvgiCgEphOaUL51SzKTt6ObzCEeTWq
-	9KQtPyFH72bt9xySWO/v0PxFre4zkr4DcjEM3V64afAKyx7Y/J4tCEh65djWIA59yuDrMvv
-	FeO+rhXbUUNzKGimE799VBWPo2MKfhZ+J5Y5uExrTQWNDPkETK1Ix66T06QO3IXfqcD3WXn
-	MV1wknMo6/aOq7NoWkcgHTvpilBHmhVqBBKQQfbYd0w5nXH7TmJynNTCHxoNqQNB26D3mML
-	A==
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+X-QQ-XMAILINFO: NvGGTAUhB2iWJeoK5ai6KYrrEah0F5+EQMkoYtcbwEZ40CYft2Aw8/vf
+	kXkbYRlYZdTDWIAhfVJTS7rU9qb4KV4Zt1StR12g74dI7iDzo9gZj4vVvF3BQa6NVTEYw1w
+	9YL9kehcsQF5Jp4hm6dS7738frNiBR8j3HPdyHH/9nFdi6IHfY1UVfD1F0lONMelgEibKQh
+	JV39+LrJlLkyYha+fGjrWVvr3DVzMK3JgftyX+/qYZ2E5Md3GZsWdRHgh1LQZJ2xxjIdvU/
+	q5e4aCwwo6+vmq7A0HAIsgoSyEm1vg+vzNSzDuCKKNY0OUBPm3RV20NiUZGCFwzeOCo9kNc
+	TI+TE9PIQjBXKnV9KaOaDJMt5EV1CIspHJ1DJBdrKV6YMa2Nx4ufIifwjb8UbBr7GjuSHkc
+	N3TP/A69y/wjr6KdxJQEeixIYAd02pUq/yIpnt/d8Du5hHJvC4Wqs/zljUerScwxAsMTiyV
+	F6jlVYc5aF6l6Y7PhOQTFFy0YFwF8JMS6mkcKQpPVl6bXxCDpd/4W1cryaMsVfdWYbv3LIA
+	MDMcGrHByJhdSruKrLFeAcdYN43+fSkDVrM+9PAXseXcdG21hUN5c7H1oIr7qM1r9ReP10u
+	g8t+BAFB+rLtWGyrFz7Gd4H1A+Z76ZXn4dsXZ+8rWjrnu8UosawhHM1InvyQSIU9lr7Ub/3
+	8ipav6+NnPfpG4+8/y8k/XELvvik2eKH+elAvesv7FdB+Rig1I9SwDPJOv2u7VLbIPg6F0C
+	qYNSjlffDSEWnNvtmjFL9rmYDGNl/Bg4xarBody2pACZ3tm/vd9uOaivK5u8axf/pn+I2tH
+	2DHomEAa3fmCZ5pXmaMZh1LAQj3vbfAWtkl+QdkTKmUhD9zVR7DCTL3cHOgzAir2K2HcQij
+	XDdgdjfYJbVBZ61C8N/hCL2AU8FdcLHw/CS+UhaDVg2UM8Tl9GBqkAiX1hB94orQRfz1FHN
+	lQHp7ASEwI0F72ednHtnQOe2G1qt2JSgBMFHH59OEUUbTh4QRFRTaeBEXKVLeokC29e2Yen
+	uL5/rB2xejXhqvuqvh+EMjBWUvfikBoOKP15Nv1QdEAIGS6BGTfoREm0NfqH4=
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
 X-QQ-RECHKSPAM: 0
 
-The wx_rx_buffer structure contained two DMA address fields: 'dma' and
-'page_dma'. However, only 'page_dma' was actually initialized and used
-to program the Rx descriptor. But 'dma' was uninitialized and used in
-some paths.
+There are some fatal errors on the Rx NAPI path, which can cause the
+kernel to crash. Fix known issues and potential risks.
 
-This could lead to undefined behavior, including DMA errors or
-use-after-free, if the uninitialized 'dma' was used. Althrough such
-error has not yet occurred, it is worth fixing in the code.
+The part of the patches has been mentioned before[1].
 
-Fixes: 3c47e8ae113a ("net: libwx: Support to receive packets in NAPI")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_lib.c  | 4 ++--
- drivers/net/ethernet/wangxun/libwx/wx_type.h | 1 -
- 2 files changed, 2 insertions(+), 3 deletions(-)
+[1]: https://lore.kernel.org/all/C8A23A11DB646E60+20250630094102.22265-1-jiawenwu@trustnetic.com/
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index 7e3d7fb61a52..c91487909811 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -307,7 +307,7 @@ static bool wx_alloc_mapped_page(struct wx_ring *rx_ring,
- 		return false;
- 	dma = page_pool_get_dma_addr(page);
- 
--	bi->page_dma = dma;
-+	bi->dma = dma;
- 	bi->page = page;
- 	bi->page_offset = 0;
- 
-@@ -344,7 +344,7 @@ void wx_alloc_rx_buffers(struct wx_ring *rx_ring, u16 cleaned_count)
- 						 DMA_FROM_DEVICE);
- 
- 		rx_desc->read.pkt_addr =
--			cpu_to_le64(bi->page_dma + bi->page_offset);
-+			cpu_to_le64(bi->dma + bi->page_offset);
- 
- 		rx_desc++;
- 		bi++;
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index c363379126c0..f5a8ce681a68 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -998,7 +998,6 @@ struct wx_tx_buffer {
- struct wx_rx_buffer {
- 	struct sk_buff *skb;
- 	dma_addr_t dma;
--	dma_addr_t page_dma;
- 	struct page *page;
- 	unsigned int page_offset;
- };
+Jiawen Wu (3):
+  net: libwx: remove duplicate page_pool_put_full_page()
+  net: libwx: fix the using of Rx buffer DMA
+  net: libwx: properly reset Rx ring descriptor
+
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c   |  7 +++----
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c  | 20 +++++++-------------
+ drivers/net/ethernet/wangxun/libwx/wx_type.h |  1 -
+ 3 files changed, 10 insertions(+), 18 deletions(-)
+
 -- 
 2.48.1
 
