@@ -1,180 +1,164 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4068D28469F
-	for <netdev@vger.kernel.org>; Wed,  9 Jul 2025 09:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F394F2820BA
+	for <netdev@vger.kernel.org>; Wed,  9 Jul 2025 09:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752051745; cv=none; b=SLUy8hyU/cdZ7qpFz4FXj5TzvcJ1IFWKlD6GV0Znye+QhXlLfDGNF9+m8YtyNZLs+dxeVamXfAqMxGWZjp/9l4/5zhNgWROStVdDp6fIJVI34GiGSY+eAZSlEmT2Q7PMK9BB8SgG6UXfcUFdLXXmcq8MMyqAvFY9tK3KaaOdvlY=
+	t=1752051745; cv=none; b=aAin1waVIHDvaKi7QH324HQWdjIe0D8sV2/27rxjXNuDsTC70cniOjAxo3xrxVLXo4UANykvohSPcZFSJ2s1NmzHaKznIAojhjUrPUZAuL/aVecWL25ifxIO4m59FUTgUi8stKDAw65DfLwJvJkHaAlDANdg92Lyww61j4WnwLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752051745; c=relaxed/simple;
-	bh=/J0ESgh0mnZJh7VIVascAzPB03YG2Nks06BWwBkQ7wA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FoAGFDHJT4cXuI1P7f1DG48LWl6pP9eL6nSzyFUgcXTVhFnTJRgLhPmH6aEZ8zEG+UyAZsh+jmU2Z+0YEbQtH0WmlL21WuZGD44fjXdIL0OyvPECs+QI+p+qZGNjAJrSSdKGcedT+yljELd1IfEH7F66hQmlYs7Df63S3NiNLgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cdcyfnAd; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	bh=CcejGQ8SHPlI1MV1L5CIzh1g4+lLG87YAF8mEG3K2Kg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BE5rE13n8UNs9GJgHGvkNTl0KvSBDVdQy8idUc27QeBgW2n7YAXAVWJXoXiTGuJF4V5/+8Y8+TvHxIlMpze8a65OijW1JkRpGCtcLlchUJEETmxJnKU5Itw737ahYA8+p6lRTyp+EY9+cMgQeTevvuxjkJ2IqpNJoY0ATedrirY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o5JsV314; arc=none smtp.client-ip=209.85.222.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cdcyfnAd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752051742;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gP/GXbkE1NcvqZ2RDyr5+g96OSyeyTW+E8pt68Nv348=;
-	b=cdcyfnAdDecCXP6N7ALPN6Wnh2huithZFmn3G9SCyLW9xrKhmyBUZpVSgTD+1hVKaG2Soh
-	T9l3Vbyh42064+Ux/Vb7pR5wiFb5XOFlVSW6PBMnccdf7E5SJaFuicVVeNY6Ppq3oNa921
-	DEhlpEAoG41kCXKtvKe9Gioh7hLVeOY=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-327-4zHzcV1FPnK7N-ZA8J4sHg-1; Wed, 09 Jul 2025 05:02:21 -0400
-X-MC-Unique: 4zHzcV1FPnK7N-ZA8J4sHg-1
-X-Mimecast-MFC-AGG-ID: 4zHzcV1FPnK7N-ZA8J4sHg_1752051740
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3a6d90929d6so2273803f8f.2
-        for <netdev@vger.kernel.org>; Wed, 09 Jul 2025 02:02:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o5JsV314"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-7d40185a630so909648785a.2
+        for <netdev@vger.kernel.org>; Wed, 09 Jul 2025 02:02:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752051743; x=1752656543; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pzOJVWd/gQVz8kTkQbl/2Rgc6oY4s5cublCArg1AdME=;
+        b=o5JsV3140D094Of+EhiTT5F+4cEaxkEX/kQFgObe1CcpmNPgnNWJCZAS7KhgQSWctB
+         tmGzJRb1phAraSuLTN7l6jTP7xrxEdu6JZzFbmjg2VDEajrxhtYxYzY9FoUw6gLTokjJ
+         FcWw/nN/5r53YhB7OIhN5Fk3yzEc2kU5HUP2SoP2z5dB3dMzrYwIe1CoibS2nGpFboGy
+         D7TvSYZ48OJHT34LNUFBGKzhTKWBtO9dfYUDy9+7VJq+SycB0aFB29A9McZmdCTGAjx6
+         9+iqFc/s791tlHsvphW/tKQxfWpVIpVv9XGh2J4Ks55z6KvSyghZ61ercxasGftJxpf4
+         m0Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752051740; x=1752656540;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gP/GXbkE1NcvqZ2RDyr5+g96OSyeyTW+E8pt68Nv348=;
-        b=jSkeyvkg/kiKKALPXORAwj4TgNRlvOGqr9sUU5hXYGKJla1/kGMXJBWd8hSt/r/wS+
-         hfcewFa7L7YDNfm/bpG+u2/AQWGxtRStgm2egTlCBWQ2YZekLASgPubwCZy63OgszQ7T
-         AjKJlKWWWaWgqaa2PLmdYyq/sLrbyBV4amDXes8MQAcg1Ars6exSICZ+PI2kCDPszyZq
-         DbRAji4cDUzrXk/ic0x+TZfbCspkiR84+/SvRtp3ic1utGglkQGT9mgNjs6qMwewYej6
-         Odhy5nWjdt5RyeQdOmwPzirJTo9Myx3T7A5ubUWVMD8VA0mmYdvn1LfcCSVcMoW/jRz/
-         NhqQ==
-X-Gm-Message-State: AOJu0YydEJIJL7qjkqtrZhH5xdxgvHZ1ssP/0jHdrLVtVJyCIq9sw1de
-	u6ou0V/apR8KPkUqE5abX9DHxq/jRK0v2GGbt/FI7WP+vffhfsY02dgVDeOGx7eoPSBBqqujieT
-	TwVYd/yT2o3RSfH3cC1yFe+MQf/8Xv6XernWJNearfPmMyBOKZAQdEminyA==
-X-Gm-Gg: ASbGnct5hZSFsKOk5i+MKTSqwwHYyHs2tDVBVmpGWVSdbOJdZdDDSADfXbhXDhcqDfK
-	TS3nZAmI4KFBsTfD4f6JuXvotSOz3s5P10wsUj0Es9/pAt/ft35ZX6NnejXr8kO8QhNetsifGet
-	nAat9/+ktBbnDo0mPAzqYHY65fDfOspRTCA7TZ3un9S2nMzrtq3L+mlYPZqq3u/FnOTWPR8+Jds
-	foLO6X5NqaOhWJdeI2iMJtOpqUu3VtnPsdaMdr+Dr9kwRDBwXgUXkQIT5qxARecpnAgV5hf1lzD
-	ozgpH58DTTkrBsNYRNia3hHRijL4lw+kxRd7iCQzPf1ZGh4bC9oW0dUog9MCSHabCzrPug==
-X-Received: by 2002:a05:6000:401e:b0:3a4:dd16:a26d with SMTP id ffacd0b85a97d-3b5e4557000mr1138904f8f.38.1752051739630;
-        Wed, 09 Jul 2025 02:02:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEw4zbfGS21uIVcbjgAQJWRQweoo04GUYIyOc9k/VYy3AR2hTTjemFRoGraFLo8yVdWPnB2Pw==
-X-Received: by 2002:a05:6000:401e:b0:3a4:dd16:a26d with SMTP id ffacd0b85a97d-3b5e4557000mr1138868f8f.38.1752051739120;
-        Wed, 09 Jul 2025 02:02:19 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:271f:bc10:144e:d87a:be22:d005? ([2a0d:3344:271f:bc10:144e:d87a:be22:d005])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b47030ba29sm14962982f8f.2.2025.07.09.02.02.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Jul 2025 02:02:18 -0700 (PDT)
-Message-ID: <cc4d09e8-d11a-4188-9f80-3ac7bb6e89e9@redhat.com>
-Date: Wed, 9 Jul 2025 11:02:17 +0200
+        d=1e100.net; s=20230601; t=1752051743; x=1752656543;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pzOJVWd/gQVz8kTkQbl/2Rgc6oY4s5cublCArg1AdME=;
+        b=LLjwCCOT/hQjgGjpg38fw4ZpzEOx8DofzHhLFGTQ7cuB3a5Yt50DC0EDDqCpCVcub9
+         keb5OM0U8Hx/o1QPtJ+AoKJqc5YU/aLzejxSBNQOnC0UXn8pwRIzcANKDE+RifCVCjA9
+         GbTDquJ6InS2c8rj/7/5LpxrMJscKJN2SQEJYLECdwqsGJaV4d3XnFR03Qf/LHrjU0Ox
+         zKZ7cb7Zncz4C5SN3Svla45AbnypKdG9DhhcCEfxOwL45RxUawppLcVHistxMJ1eVxBe
+         tbzatXFhW9TfiC+D2/ynMJ4SRrdd5pAeFDyDT+fK12O5R+1HOhEOdmJQUV115Gg+Anvl
+         2xgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUq38gb3MCeE+mUMhjpCLk/TGiPpuVkBmCz22rXKxQD0owfWZKm9imUrPXYbq/OXLB9igi2ie4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyx/EaPjiPHoh7OAS30I1ZTXgD20W4hD/JKzHrad2EDUmiWV41E
+	dvqez9yxLnzhV9wsYV0uc0xKqmbO0p+Kp0GxO1tejhHVEGyoGvsdQChkrfimIQOM0YNidURbCPd
+	A5FVttNPbFhaR7w==
+X-Google-Smtp-Source: AGHT+IGLSmxy7f805JQwOeQx5Y9Qqzyo/S/ugm5E7//Fv2BofeTdkE9d1DK3tRqQZ4YFWlOmN3aZg8/W3qY49Q==
+X-Received: from qtbbx4.prod.google.com ([2002:a05:622a:904:b0:4a4:350c:ed45])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:192a:b0:7d3:ed55:c92b with SMTP id af79cd13be357-7db7d59d117mr197399385a.38.1752051742980;
+ Wed, 09 Jul 2025 02:02:22 -0700 (PDT)
+Date: Wed,  9 Jul 2025 09:02:02 +0000
+In-Reply-To: <20250709090204.797558-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 net-next 0/9] virtio: introduce GSO over UDP tunnel
-To: "Michael S. Tsirkin" <mst@redhat.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>, Jason Wang <jasowang@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Yuri Benditovich <yuri.benditovich@daynix.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Jonathan Corbet <corbet@lwn.net>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org
-References: <cover.1751874094.git.pabeni@redhat.com>
- <20250708105816-mutt-send-email-mst@kernel.org>
- <20250708082404.21d1fe61@kernel.org>
- <20250708120014-mutt-send-email-mst@kernel.org>
- <27d6b80a-3153-4523-9ccf-0471a85cb245@redhat.com>
- <20250708142248-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250708142248-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20250709090204.797558-1-edumazet@google.com>
+X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
+Message-ID: <20250709090204.797558-11-edumazet@google.com>
+Subject: [PATCH v2 net-next 10/11] net_sched: act_police: use RCU in tcf_police_dump()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, 
+	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 7/8/25 8:23 PM, Michael S. Tsirkin wrote:
-> On Tue, Jul 08, 2025 at 06:43:17PM +0200, Paolo Abeni wrote:
->> On 7/8/25 6:00 PM, Michael S. Tsirkin wrote:
->>> On Tue, Jul 08, 2025 at 08:24:04AM -0700, Jakub Kicinski wrote:
->>>> On Tue, 8 Jul 2025 11:01:30 -0400 Michael S. Tsirkin wrote:
->>>>>> git@github.com:pabeni/linux-devel.git virtio_udp_tunnel_07_07_2025
->>>>>>
->>>>>> The first 5 patches in this series, that is, the virtio features
->>>>>> extension bits are also available at [2]:
->>>>>>
->>>>>> git@github.com:pabeni/linux-devel.git virtio_features_extension_07_07_2025
->>>>>>
->>>>>> Ideally the virtio features extension bit should go via the virtio tree
->>>>>> and the virtio_net/tun patches via the net-next tree. The latter have
->>>>>> a dependency in the first and will cause conflicts if merged via the
->>>>>> virtio tree, both when applied and at merge window time - inside Linus
->>>>>> tree.
->>>>>>
->>>>>> To avoid such conflicts and duplicate commits I think the net-next
->>>>>> could pull from [1], while the virtio tree could pull from [2].  
->>>>>
->>>>> Or I could just merge all of this in my tree, if that's ok
->>>>> with others?
->>>>
->>>> No strong preference here. My first choice would be a branch based
->>>> on v6.16-rc5 so we can all pull in and resolve the conflicts that
->>>> already exist. But I haven't looked how bad the conflicts would 
->>>> be for virtio if we did that. On net-next side they look manageable.
->>>
->>> OK, let's do it the way Paolo wants then.
->>
->> I actually messed a bit with my proposal, as I forgot I need to use a
->> common ancestor for the branches I shared.
->>
->> git@github.com:pabeni/linux-devel.git virtio_features_extension_07_07_2025
->>
->> is based on current net-next and pulling from such tag will take a lot
->> of unwanted stuff into the vhost tree.
->>
->> @Michael: AFAICS the current vhost devel tree is based on top of
->> v6.15-rc7, am I correct?
-> 
-> Yes I'll rebase it soon.
+Also storing tcf_action into struct tcf_police_params
+makes sure there is no discrepancy in tcf_police_act().
 
-I see you rebase on v6.16-rc5, thanks!
-
-The whole series in now also available based on top of v6.16-rc5 here:
-
-git@github.com:pabeni/linux-devel.git virtio_udp_tunnel_08_07_2025
-
-I'm not sending the above to netdev, as it will likely foul the bot and
-the CI. Please LMK if you prefer otherwise.
-
-With default config/strategy I can pull the above on top of the vhost
-tree with no conflicts and auto merging.
-
-Pulling on net-next will see a conflict in patch 8/9, file tun.c inside
-tun_xdp_one(), and the resolution is as follow, which will yield the
-code posted here:
-
-https://lore.kernel.org/netdev/f076f2e1fa91041b15cf46efadc6708924afe8e0.1751874094.git.pabeni@redhat.com/
-
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
-diff --cc drivers/net/tun.c
-index 447c37959504,abc91f28dac4..49bcd12a4ac8
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@@ -2356,12 -2378,15 +2378,14 @@@ static int tun_xdp_one(struct tun_struc
-                       struct tun_page *tpage)
-  {
-        unsigned int datasize = xdp->data_end - xdp->data;
- -      struct tun_xdp_hdr *hdr = xdp->data_hard_start;
- +      struct virtio_net_hdr *gso = xdp->data_hard_start;
-+       struct virtio_net_hdr_v1_hash_tunnel *tnl_hdr;
- -      struct virtio_net_hdr *gso = &hdr->gso;
-        struct bpf_prog *xdp_prog;
-        struct sk_buff *skb = NULL;
-        struct sk_buff_head *queue;
-+       netdev_features_t features;
-        u32 rxhash = 0, act;
- -      int buflen = hdr->buflen;
- +      int buflen = xdp->frame_sz;
-        int metasize = 0;
+ include/net/tc_act/tc_police.h |  3 ++-
+ net/sched/act_police.c         | 18 +++++++++---------
+ 2 files changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/include/net/tc_act/tc_police.h b/include/net/tc_act/tc_police.h
+index 490d88cb52338592f57e43fb79d1c6955a9684eb..a89fc8e68b1e4343bb3f6ecfc06737ebbc385f0c 100644
+--- a/include/net/tc_act/tc_police.h
++++ b/include/net/tc_act/tc_police.h
+@@ -5,10 +5,11 @@
+ #include <net/act_api.h>
+ 
+ struct tcf_police_params {
++	int			action;
+ 	int			tcfp_result;
+ 	u32			tcfp_ewma_rate;
+-	s64			tcfp_burst;
+ 	u32			tcfp_mtu;
++	s64			tcfp_burst;
+ 	s64			tcfp_mtu_ptoks;
+ 	s64			tcfp_pkt_burst;
+ 	struct psched_ratecfg	rate;
+diff --git a/net/sched/act_police.c b/net/sched/act_police.c
+index a214ed68114206ed0770725ab91d867bab35aa09..0e1c611833790b4b1d941faf0a05ef1bde2adcb9 100644
+--- a/net/sched/act_police.c
++++ b/net/sched/act_police.c
+@@ -198,6 +198,7 @@ static int tcf_police_init(struct net *net, struct nlattr *nla,
+ 		psched_ppscfg_precompute(&new->ppsrate, pps);
+ 	}
+ 
++	new->action = parm->action;
+ 	spin_lock_bh(&police->tcf_lock);
+ 	spin_lock_bh(&police->tcfp_lock);
+ 	police->tcfp_t_c = ktime_get_ns();
+@@ -254,8 +255,8 @@ TC_INDIRECT_SCOPE int tcf_police_act(struct sk_buff *skb,
+ 	tcf_lastuse_update(&police->tcf_tm);
+ 	bstats_update(this_cpu_ptr(police->common.cpu_bstats), skb);
+ 
+-	ret = READ_ONCE(police->tcf_action);
+ 	p = rcu_dereference_bh(police->params);
++	ret = p->action;
+ 
+ 	if (p->tcfp_ewma_rate) {
+ 		struct gnet_stats_rate_est64 sample;
+@@ -338,9 +339,9 @@ static void tcf_police_stats_update(struct tc_action *a,
+ static int tcf_police_dump(struct sk_buff *skb, struct tc_action *a,
+ 			       int bind, int ref)
+ {
++	const struct tcf_police *police = to_police(a);
+ 	unsigned char *b = skb_tail_pointer(skb);
+-	struct tcf_police *police = to_police(a);
+-	struct tcf_police_params *p;
++	const struct tcf_police_params *p;
+ 	struct tc_police opt = {
+ 		.index = police->tcf_index,
+ 		.refcnt = refcount_read(&police->tcf_refcnt) - ref,
+@@ -348,10 +349,9 @@ static int tcf_police_dump(struct sk_buff *skb, struct tc_action *a,
+ 	};
+ 	struct tcf_t t;
+ 
+-	spin_lock_bh(&police->tcf_lock);
+-	opt.action = police->tcf_action;
+-	p = rcu_dereference_protected(police->params,
+-				      lockdep_is_held(&police->tcf_lock));
++	rcu_read_lock();
++	p = rcu_dereference(police->params);
++	opt.action = p->action;
+ 	opt.mtu = p->tcfp_mtu;
+ 	opt.burst = PSCHED_NS2TICKS(p->tcfp_burst);
+ 	if (p->rate_present) {
+@@ -392,12 +392,12 @@ static int tcf_police_dump(struct sk_buff *skb, struct tc_action *a,
+ 	tcf_tm_dump(&t, &police->tcf_tm);
+ 	if (nla_put_64bit(skb, TCA_POLICE_TM, sizeof(t), &t, TCA_POLICE_PAD))
+ 		goto nla_put_failure;
+-	spin_unlock_bh(&police->tcf_lock);
++	rcu_read_unlock();
+ 
+ 	return skb->len;
+ 
+ nla_put_failure:
+-	spin_unlock_bh(&police->tcf_lock);
++	rcu_read_unlock();
+ 	nlmsg_trim(skb, b);
+ 	return -1;
+ }
+-- 
+2.50.0.727.gbf7dc18ff4-goog
 
