@@ -1,30 +1,33 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2236D143756;
-	Wed,  9 Jul 2025 06:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08D61B4153;
+	Wed,  9 Jul 2025 06:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752043633; cv=none; b=iL2PlHqNfpCqE4CwIg5dTgg4rYra6RsGWrL0vpFnLXtx6Aur0Yei6zQIollw52JbQrGSA3mAYQeCS+13Dj2DUSeOyoJ8WloqMjogPNVw2OBWvYBUXyOKznVZiaUwlgHNByT6T4N/K0kMB2DLrDPD0/QQF5mAMKj9d2YkC7Ob3mg=
+	t=1752044070; cv=none; b=AjCvZAMUUGHhrA4oJZ06nY7P+CXTdAq1QqUU9jw6+mrqKhMuB7mrpEeZRuiu5k7QWilhLSrM/vFnhMtP1oPwadc9Htxbs4flkTv6AF5kz0R/MN3Kdsv/UQYjU00u9zZGtFFNLUtgQ0rhwBJGCv3naxoWmCyvs4BPiW0VmYv5L8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752043633; c=relaxed/simple;
-	bh=5MVuqaCQntb5JtIugF7A6fTbeoPf+3u2mNbPEF7Q8vc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=syhA3S0HlBcQRiq1AO2hFsq0kQT+VcrzLH30zvDkNNKxjDKfnJUSLskGYkX6tsJacoihgLBlgbgzxY6KWGyPlUPEXJRwFJ9y5qKRJK4qADbTplGGDoim46cfyN8cJ4blP5+HLtp+JKr3u3gVR8gSxZ0UMG+9MzE4F3dsWN+dQDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=pP6+Z8jq; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1752044070; c=relaxed/simple;
+	bh=jSkYtAbBZp35/z4jcL3yY2+kEXDrxQhSiS5zpSyzP+Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Te69uJES/QI578g62g87Zy+2bQVu3/aMJbZpq/WuKt+tOQnAJyzAOPY0I/QjEqgNFl786pSHLUpwBJ2Kv3bWPXvaIl+15uoByrvGboRkwEq7hfPE2mtF06+hnVZQGb/7usvrej3GIjMrF8qJAZvw7HESLuV12Ca2a0Jionf1SVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eqrLfrxI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="pP6+Z8jq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=eXkWVq4EtCwhZq2i+eo9+Z/EXNvoL3Qh87oqx3qXN6c=;
-	b=pP6+Z8jq7y8smai+St3plJP6dx3SmX4diMrVJz/lJz60RwoQeqJBl1UpBQFx+e
-	5zsT8/pyFZp1gySMBTMnrYXA2UTtSes423P3c5LsXJhU/mvzD5qt31ArvaWzb3FY
-	wxywTEiokbyh62uMFvtxyFB7Q98th2KFF2zuTIrZilvWk=
-Received: from [172.21.20.151] (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgDH16G0DG5os4xFBg--.28968S2;
-	Wed, 09 Jul 2025 14:31:18 +0800 (CST)
-Message-ID: <ca2f65f5-0ec3-4bd2-af8b-530b9feff2ca@163.com>
-Date: Wed, 9 Jul 2025 14:31:16 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eqrLfrxI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC80C4CEF0;
+	Wed,  9 Jul 2025 06:54:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752044070;
+	bh=jSkYtAbBZp35/z4jcL3yY2+kEXDrxQhSiS5zpSyzP+Y=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=eqrLfrxIJhdGA2IsXhWrEJpqblQOzBS0DIG7bpfPkEFjfbv2ZgTlcmnuVLkSSvatt
+	 9cCXVUGd1akJACFXvD9uYvlvVgkGhbfjLlJg2bUoIlxyKPC6nFXuQN0TKPnLepa3LM
+	 bm2xvxXGLHIrrpv3KZGn8IntV5OwCzcZ6ssW92n+u7KEYxn93C3NqEfBEKtt8QKv0w
+	 eNAMvvSjJhkIk6O4JGBlu8hzxDqnNcE0XEqvitet6a5CR9Ax+OyoJYmFejqJdk7Cf+
+	 RlEfhyR7lN0mIcDlTTfj+dETee/zO7azwR7bbkw2XmxcsukunnEs9/EkSE2HBgz7hP
+	 +Zcb59XohjuSQ==
+Message-ID: <b752c340-bbb5-479f-bc2c-a9e8541509c3@kernel.org>
+Date: Wed, 9 Jul 2025 08:54:24 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -32,211 +35,96 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] af_packet: fix soft lockup issue caused by
- tpacket_snd()
-To: Eric Dumazet <edumazet@google.com>
-Cc: willemdebruijn.kernel@gmail.com, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250708020642.27838-1-luyun_611@163.com>
- <CANn89i+6g+VwByu-xeJ-PVuaw8X_yQdC2buB7q=YO5S3MzMTUw@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: net: altr,socfpga-stmmac.yaml: add minItems
+ to iommus
+To: Matthew Gerlach <matthew.gerlach@altera.com>, dinguyen@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+References: <20250707154409.15527-1-matthew.gerlach@altera.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: luyun <luyun_611@163.com>
-In-Reply-To: <CANn89i+6g+VwByu-xeJ-PVuaw8X_yQdC2buB7q=YO5S3MzMTUw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgDH16G0DG5os4xFBg--.28968S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3JF4rAFWUGry8KFy3uw1kGrg_yoWxKF18pa
-	y5Kryjva1DJry2gr4xJa1kXr12qw4rJFs3GrZ5Xa4Sywnrtr9aqr4xK34j9Fy8ZFWkAay3
-	XF4vvr4UCw1Dta7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UfOz-UUUUU=
-X-CM-SenderInfo: pox130jbwriqqrwthudrp/1tbiOg6FzmhuB+6luAAAsN
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250707154409.15527-1-matthew.gerlach@altera.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 07/07/2025 17:44, Matthew Gerlach wrote:
+> Add missing 'minItems: 1' to iommus property of the Altera SOCFPGA SoC
+> implementation of the Synopsys DWMAC.
 
-在 2025/7/8 15:12, Eric Dumazet 写道:
-> On Mon, Jul 7, 2025 at 7:06 PM Yun Lu <luyun_611@163.com> wrote:
->> From: Yun Lu <luyun@kylinos.cn>
->>
->> When MSG_DONTWAIT is not set, the tpacket_snd operation will wait for
->> pending_refcnt to decrement to zero before returning. The pending_refcnt
->> is decremented by 1 when the skb->destructor function is called,
->> indicating that the skb has been successfully sent and needs to be
->> destroyed.
->>
->> If an error occurs during this process, the tpacket_snd() function will
->> exit and return error, but pending_refcnt may not yet have decremented to
->> zero. Assuming the next send operation is executed immediately, but there
->> are no available frames to be sent in tx_ring (i.e., packet_current_frame
->> returns NULL), and skb is also NULL, the function will not execute
->> wait_for_completion_interruptible_timeout() to yield the CPU. Instead, it
->> will enter a do-while loop, waiting for pending_refcnt to be zero. Even
->> if the previous skb has completed transmission, the skb->destructor
->> function can only be invoked in the ksoftirqd thread (assuming NAPI
->> threading is enabled). When both the ksoftirqd thread and the tpacket_snd
->> operation happen to run on the same CPU, and the CPU trapped in the
->> do-while loop without yielding, the ksoftirqd thread will not get
->> scheduled to run. As a result, pending_refcnt will never be reduced to
->> zero, and the do-while loop cannot exit, eventually leading to a CPU soft
->> lockup issue.
->>
->> In fact, as long as pending_refcnt is not zero, even if skb is NULL,
->> wait_for_completion_interruptible_timeout() should be executed to yield
->> the CPU, allowing the ksoftirqd thread to be scheduled. Therefore, the
->> execution condition of this function should be modified to check if
->> pending_refcnt is not zero.
->>
->> Fixes: 89ed5b519004 ("af_packet: Block execution of tasks waiting for transmit to complete in AF_PACKET")
->> Suggested-by: LongJun Tang <tanglongjun@kylinos.cn>
->> Signed-off-by: Yun Lu <luyun@kylinos.cn>
->>
->> ---
->> Changes in v2:
->> - Add a Fixes tag.
->> - Link to v1: https://lore.kernel.org/all/20250707081629.10344-1-luyun_611@163.com/
->> ---
->>   net/packet/af_packet.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
->> index 3d43f3eae759..7df96311adb8 100644
->> --- a/net/packet/af_packet.c
->> +++ b/net/packet/af_packet.c
->> @@ -2845,7 +2845,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
->>                  ph = packet_current_frame(po, &po->tx_ring,
->>                                            TP_STATUS_SEND_REQUEST);
->>                  if (unlikely(ph == NULL)) {
->> -                       if (need_wait && skb) {
->> +                       if (need_wait && packet_read_pending(&po->tx_ring)) {
->>                                  timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
->>                                  timeo = wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
->>                                  if (timeo <= 0) {
-> packet_read_pending() is super expensive on hosts with 256 cpus (or more)
->
-> We are going to call it a second time at the end of the block:
->
-> do { ...
-> } while (ph != NULL || (need_wait && packet_read_pending(&po->tx_ring)...
->
-> Perhaps we can remove the second one ?
+Why? Explain why you are doing thing, not what you are doing. What is
+obvious which makes entire two-line commit msg redundant and useless.
 
-As mentioned in the commit message, the soft lockup issue only occurs 
-when tpacket_snd() is called to send,  with the pending_refcnt is 
-non-zero, and there are no available packets in the tx_ring.
+Original binding had no iommus and referenced commit does not explain
+why they appeared during conversion in the first place.
 
-Therefore, at the first start of the loop, packet_read_pending() only 
-needs to be called once. If the return result is already 0, the loop can 
-exit directly. Otherwise, wait_for_completion_interruptible_timeout() 
-needs to be executed for waiting. Later, this function should only be 
-called at the end to check whether the loop can exit.
+> 
+> Fixes: 6d359cf464f4 ("dt-bindings: net: Convert socfpga-dwmac bindings to yaml")
+> Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
+> ---
+>  Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml b/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
+> index c5d8dfe5b801..ec34daff2aa0 100644
+> --- a/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/altr,socfpga-stmmac.yaml
+> @@ -59,6 +59,7 @@ properties:
+>        - const: ptp_ref
+>  
+>    iommus:
+> +    minItems: 1
+>      maxItems: 2
 
+Why this has to be flexible on given SoC? This is weird. Same hardware
+differs somehow?
 
->
-> Also I think there is another problem with the code.
->
-> We should call sock_sndtimeo() only once, otherwise SO_SNDTIMEO
-> constraint could be way off.
-
-Yes, due to the changes in commit 581073f626e3 ("af_packet: do not call 
-packet_read_pending() from tpacket_destruct_skb()"), every time 
-tpacket_destruct_skb is executed, the skb_completion is marked as 
-completed. When wait_for_completion_interruptible_timeout returns 
-completed, the pending_refcnt has not yet been reduced to 0. Therefore, 
-when ph is NULL, the wait function may need to be called multiple times 
-untill packet_read_pending finally returns 0.
-
-
-I have revised the code (as shown below), and it seems to be more 
-reasonable. I also look forward to any better suggestions you may have. 
-Thank you!
-
-
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 7df96311adb8..401ae8f6481b 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2785,7 +2785,9 @@ static int tpacket_snd(struct packet_sock *po, 
-struct msghdr *msg)
-         int len_sum = 0;
-         int status = TP_STATUS_AVAILABLE;
-         int hlen, tlen, copylen = 0;
--       long timeo = 0;
-+       long timeo;
-+       unsigned int pending;
-+       bool first = true;
-
-         mutex_lock(&po->pg_vec_lock);
-
-@@ -2839,18 +2841,27 @@ static int tpacket_snd(struct packet_sock *po, 
-struct msghdr *msg)
-         if ((size_max > dev->mtu + reserve + VLAN_HLEN) && !vnet_hdr_sz)
-                 size_max = dev->mtu + reserve + VLAN_HLEN;
-
-+       timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
-         reinit_completion(&po->skb_completion);
-
-         do {
-                 ph = packet_current_frame(po, &po->tx_ring,
-                                           TP_STATUS_SEND_REQUEST);
-                 if (unlikely(ph == NULL)) {
--                       if (need_wait && 
-packet_read_pending(&po->tx_ring)) {
--                               timeo = sock_sndtimeo(&po->sk, 
-msg->msg_flags & MSG_DONTWAIT);
--                               timeo = 
-wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
--                               if (timeo <= 0) {
--                                       err = !timeo ? -ETIMEDOUT : 
--ERESTARTSYS;
--                                       goto out_put;
-+                       if (need_wait) {
-+                               if (skb == NULL && fisrt) {
-+                                       pending = 
-packet_read_pending(&po->tx_ring);
-+                                       if (!pending)
-+                                               goto out_put;
-+                                       else
-+                                               first = false;
-+                               }
-+                               if (skb || pending) {
-+                                       timeo = 
-wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
-+                                       if (timeo <= 0) {
-+                                               err = !timeo ? 
--ETIMEDOUT : -ERESTARTSYS;
-+                                               goto out_put;
-+                                       }
-                                 }
-                         }
-                         /* check for additional frames */
-
-
->
-> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> index f6b1ff883c9318facdcb9c3112b94f0b6e40d504..486ade64bddfddb1af91968dbdf70015cfb93eb5
-> 100644
-> --- a/net/packet/af_packet.c
-> +++ b/net/packet/af_packet.c
-> @@ -2785,8 +2785,9 @@ static int tpacket_snd(struct packet_sock *po,
-> struct msghdr *msg)
->          int len_sum = 0;
->          int status = TP_STATUS_AVAILABLE;
->          int hlen, tlen, copylen = 0;
-> -       long timeo = 0;
-> +       long timeo;
->
-> +       timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
->          mutex_lock(&po->pg_vec_lock);
->
->          /* packet_sendmsg() check on tx_ring.pg_vec was lockless,
-> @@ -2846,7 +2847,6 @@ static int tpacket_snd(struct packet_sock *po,
-> struct msghdr *msg)
->                                            TP_STATUS_SEND_REQUEST);
->                  if (unlikely(ph == NULL)) {
->                          if (need_wait && skb) {
-> -                               timeo = sock_sndtimeo(&po->sk,
-> msg->msg_flags & MSG_DONTWAIT);
->                                  timeo =
-> wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
->                                  if (timeo <= 0) {
->                                          err = !timeo ? -ETIMEDOUT :
-> -ERESTARTSYS;
-
+Best regards,
+Krzysztof
