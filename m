@@ -1,92 +1,139 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA96928FA87
-	for <netdev@vger.kernel.org>; Wed,  9 Jul 2025 15:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24E88F40;
+	Wed,  9 Jul 2025 15:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752076499; cv=none; b=KTqnDKKDoXVVWeHaxE6avtL87FZ9lF2CYNOIN1QlEMHjXFxvNSrRcOuYeYzwfuyH/13WMXxoHd6SEq9+TQx8zgQOo3ktZN+ub8Vga7U57cjLq+TI3ggpDDz8wt00FSTXh+mlXaPMcQ79nbPABMIyZcbzvoOkCBXxPoN8McUtkFQ=
+	t=1752076749; cv=none; b=K6i4zIBYT3+Uavqe9Vh1SbF1WJoWOL4X4lqhhlPZJEQukNWXszhJl+XkKFO+TRxqkayy27PsIfx73v2n31qoon5k6XovONGKh1X8pPuFJxbftbsL4gqgZUavMfseZqz6pfMq5SPNtTkrnj/RYngmdxCCYtBMBibfGaEwVIXb81E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752076499; c=relaxed/simple;
-	bh=EGikTbvBF2syQch5jgb4dmltcuiumTrNJspLguBUfb8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fQ5TGtw7d/UHWKMA7wzYMU6iSwQZK2giDtpDmfKyQAK832w0DHAUbCDsNLPvaGwk98JOtIz/9v2LM8jMjO04rpJ0JQ1Y6EkekEhLlj4OP8nWoYQ/cGUGH3D1NBjxh6K2h69qrh7Yxg3XNliOkCJ1OiQjwZIdwjyzYXnwJCgRwa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=myFOEgTC; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1752076749; c=relaxed/simple;
+	bh=W4oDpda6kbCRnn0ODm8ONN7mKwlVwM/eB17fbg3mJL0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sy//IaFxB79lAwxU9o9TO8N0Aer9W/DbSew/Ytk1RX7CT2Yh7QvL97hhP+VFtJ5T9tLysjBUEABpWE7wLSCGvnDFTxpGb1Ruj3EJDkKYDLrcrPVaQuFP6KY4vYEec21J66psQ1O9hIFWkc86i5V6T7dAJLoRcVneaG2/RVN58is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G5mxQYhJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="myFOEgTC"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=KbSirPMmB5eX3BcZjMHK6bPrETltrETej1IAsJuVw/4=; b=myFOEgTC5mS/hkCbOaQvkieYK1
-	Lr+6vlXUXax0KUOBZ2gDNReWFOPpBU1a1/ydRtWuqYgz+Vu0R5srzrIAqs3iVaoIfgJotPv8ez19M
-	Uav6QaK1QGUL1bFRpIlWaL/kIwgDGGcBxlpcwrZ4uqHxh7V26SAe5F6vtBl3Andg6dA4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uZX88-000xV4-WB; Wed, 09 Jul 2025 17:54:45 +0200
-Date: Wed, 9 Jul 2025 17:54:44 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Alexander Duyck <alexander.duyck@gmail.com>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G5mxQYhJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA21FC4CEF6;
+	Wed,  9 Jul 2025 15:59:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752076748;
+	bh=W4oDpda6kbCRnn0ODm8ONN7mKwlVwM/eB17fbg3mJL0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=G5mxQYhJQ3plU3wn+9g6HVoJfWZcRPJBnbUJzowJTsPBApSdXe7iGzpvPCAzzLjZg
+	 bthsN1+Q5vZ6h3CPV7xFff5AP55LB0ZL6v1ZcNs4gaJAxZdqAYVdEwSyntaPtuhz2b
+	 2W7ifLwtaXrL5wdf9KTyHot0EKpUfn0ylg88B/QwQPHjRNCH+m3ooUgf3V6JYoZhwN
+	 iGtsD3VQHxoZtdO9sjWcEWHwvmaZ2Q0dluiBaLosq1F/RTOstxtr9CXpj/vhPm5LTN
+	 P4WFvU+y0r/+1DHiM0E0sutUToD6nG3YrVED6uXiG+tg+safuyyOkBPMLUI2gMRKVo
+	 lK+Oswv5c9bYQ==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
+	(envelope-from <mchehab@kernel.org>)
+	id 1uZXCJ-00000000Igp-0lkF;
+	Wed, 09 Jul 2025 17:59:03 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	"Akira Yokosawa" <akiyks@gmail.com>,
+	"Breno Leitao" <leitao@debian.org>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 3/3] net: phylink: add
- phylink_sfp_select_interface_speed()
-Message-ID: <14b442ad-c0ab-4276-8491-c692f0b7c5c9@lunn.ch>
-References: <aGT_hoBELDysGbrp@shell.armlinux.org.uk>
- <E1uWu14-005KXo-IO@rmk-PC.armlinux.org.uk>
- <20250702151426.0d25a4ac@fedora.home>
- <aGU2C3ipj8UmKHq_@shell.armlinux.org.uk>
- <CAKgT0UcWGH14B0zZnpHeJKw+5VU96LHFR1vR4CXVjqM10iBJSg@mail.gmail.com>
- <aGWF5Wee3vfoFtMj@shell.armlinux.org.uk>
- <CAKgT0UdVW6_hewR7zNzMd_h7b_Lm_SHdt72yVhc7cLHcfFxuYQ@mail.gmail.com>
+	"Donald Hunter" <donald.hunter@gmail.com>,
+	"Eric Dumazet" <edumazet@google.com>,
+	"Ignacio Encinas Rubio" <ignacio@iencinas.com>,
+	"Jan Stancek" <jstancek@redhat.com>,
+	"Marco Elver" <elver@google.com>,
+	"Paolo Abeni" <pabeni@redhat.com>,
+	"Randy Dunlap" <rdunlap@infradead.org>,
+	"Ruben Wauters" <rubenru09@aol.com>,
+	"Shuah Khan" <skhan@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	joel@joelfernandes.org,
+	linux-kernel-mentees@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	lkmm@lists.linux.dev,
+	netdev@vger.kernel.org,
+	peterz@infradead.org,
+	stern@rowland.harvard.edu
+Subject: [PATCH v9 01/13] docs: netlink: netlink-raw.rst: use :ref: instead of :doc:
+Date: Wed,  9 Jul 2025 17:58:45 +0200
+Message-ID: <9d6089d93e9cd25e8773d7966f6e60ed016d2ccd.1752076293.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <cover.1752076293.git.mchehab+huawei@kernel.org>
+References: <cover.1752076293.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKgT0UdVW6_hewR7zNzMd_h7b_Lm_SHdt72yVhc7cLHcfFxuYQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-> Settings for enp1s0:
->         Supported ports: [  ]
->         Supported link modes:   50000baseCR/Full
->                                 100000baseCR2/Full
->         Supported pause frame use: Symmetric Receive-only
->         Supports auto-negotiation: No
->         Supported FEC modes: RS
->         Advertised link modes:  100000baseCR2/Full
->         Advertised pause frame use: Symmetric Receive-only
->         Advertised auto-negotiation: No
->         Advertised FEC modes: RS
->         Link partner advertised link modes:  100000baseCR2/Full
->         Link partner advertised pause frame use: No
->         Link partner advertised auto-negotiation: No
->         Link partner advertised FEC modes: RS
+Currently, rt documents are referred with:
 
-This all looks suspicious. If it does not support autoneg, how can it
-know what the link partner is advertising?
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`rt-link<../../networking/netlink_spec/rt-link>`
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
+Documentation/userspace-api/netlink/netlink-raw.rst: :doc:`tc<../../networking/netlink_spec/tc>`
 
-If you look at what phylib does, for plain old 1G devices:
+Having :doc: references with relative paths doesn't always work,
+as it may have troubles when O= is used. Also that's hard to
+maintain, and may break if we change the way rst files are
+generated from yaml. Better to use instead a reference for
+the netlink family.
 
-genphy_read_status() calls genphy_read_lpa()
+So, replace them by Sphinx cross-reference tag that are
+created by ynl_gen_rst.py.
 
-genphy_read_lpa() then looks to see if autoneg is enabled, and if not
-it does linkmode_zero(phydev->lp_advertising).
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+---
+ Documentation/userspace-api/netlink/netlink-raw.rst | 6 +++---
+ tools/net/ynl/pyynl/ynl_gen_rst.py                  | 5 +++--
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-So it will not report any link partner information.
+diff --git a/Documentation/userspace-api/netlink/netlink-raw.rst b/Documentation/userspace-api/netlink/netlink-raw.rst
+index 31fc91020eb3..aae296c170c5 100644
+--- a/Documentation/userspace-api/netlink/netlink-raw.rst
++++ b/Documentation/userspace-api/netlink/netlink-raw.rst
+@@ -62,8 +62,8 @@ Sub-messages
+ ------------
+ 
+ Several raw netlink families such as
+-:doc:`rt-link<../../networking/netlink_spec/rt-link>` and
+-:doc:`tc<../../networking/netlink_spec/tc>` use attribute nesting as an
++:ref:`rt-link<netlink-rt-link>` and
++:ref:`tc<netlink-tc>` use attribute nesting as an
+ abstraction to carry module specific information.
+ 
+ Conceptually it looks as follows::
+@@ -162,7 +162,7 @@ then this is an error.
+ Nested struct definitions
+ -------------------------
+ 
+-Many raw netlink families such as :doc:`tc<../../networking/netlink_spec/tc>`
++Many raw netlink families such as :ref:`tc<netlink-tc>`
+ make use of nested struct definitions. The ``netlink-raw`` schema makes it
+ possible to embed a struct within a struct definition using the ``struct``
+ property. For example, the following struct definition embeds the
+diff --git a/tools/net/ynl/pyynl/ynl_gen_rst.py b/tools/net/ynl/pyynl/ynl_gen_rst.py
+index 0cb6348e28d3..7bfb8ceeeefc 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_rst.py
++++ b/tools/net/ynl/pyynl/ynl_gen_rst.py
+@@ -314,10 +314,11 @@ def parse_yaml(obj: Dict[str, Any]) -> str:
+ 
+     # Main header
+ 
+-    lines.append(rst_header())
+-
+     family = obj['name']
+ 
++    lines.append(rst_header())
++    lines.append(rst_label("netlink-" + family))
++
+     title = f"Family ``{family}`` netlink specification"
+     lines.append(rst_title(title))
+     lines.append(rst_paragraph(".. contents:: :depth: 3\n"))
+-- 
+2.49.0
 
-What is wrong, that it is reporting LP information, or that it is
-reporting it does not support autoneg when in fact it is actually
-doing autoneg?
-
-	Andrew
