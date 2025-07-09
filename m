@@ -1,104 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D467511CAF;
-	Wed,  9 Jul 2025 00:30:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91E2EEBD;
+	Wed,  9 Jul 2025 00:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752021040; cv=none; b=hIQhupziDqhe3bPdMoxb/UHRVAULELdW9N+PxiOSmQEqurZ1Q3YdBx8m5DVLnT1aa7zA49RjLTvhfwqF4bs7sj/QIuV+l4uUaAhysHfvWL6wcweEaKEEJNYX5euwIhSg/OI4YZ24+q6WnwFpDsjs5Uy49OuVhUOXUw9I1XVKhxM=
+	t=1752021185; cv=none; b=jRa9XBRWpVBMhaZgpCq0gF8evBNESgGpRn2ziMoSmt8Y2gI4fT4bYDdUi4pz+unJXUE5FAPvJxE/XMQMIlSag9vQdrec8c7379lbdFG49j41R0vju+wzDEm0mDdFl4jXzRr0kUrrfhx/bsifq+Lq6THoUJXA90/inT3gmlkTnOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752021040; c=relaxed/simple;
-	bh=IX+f5IYNiy4OuL+44U5och/XYwwWGit0ZCFaSU7M+Xs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m2EgMjesGbe94Aacvbf8rwyGwFkyE8aDQLwGgcWGHOutXxm0MT2C6GJtkFfrlWP8a+ALDTIhBXdmze4nZNihDVbpRExC6M/JZD5jQVxO9jnB+JoMRPsOdvzeGY7VgHKlsfGdyOkvlAf3mBbKX8xYqc4F4Pq2c3+Rf19jtNkxeLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qYY7gRPf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752021185; c=relaxed/simple;
+	bh=nbHCZnjrkstbidgrzhyUGpiUbbGUAR3CtOOXEtfl+NM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=N6d6Cg62p0NDQszl4lkQavvuYYOLtWNlSKKdMjM6ydypvIT24e6+VSWBtZ43M3UuSekBqR4khMZTyYnqZvoig2lxhK6f/Tpz+VBqSYZI5Y9TBLCgRs/3h2viM8CAMtKwEWRkHUB1X5f1lH4hJlx3WyegOO0LRbgNEtIYcXcOTPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=UcWMJQA5; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qYY7gRPf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00316C4CEEF;
-	Wed,  9 Jul 2025 00:30:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752021040;
-	bh=IX+f5IYNiy4OuL+44U5och/XYwwWGit0ZCFaSU7M+Xs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qYY7gRPf2h34WRutsM2qs76Y9UlB4SfbWwoCZ4nl9d6e6cIK7oebAVZih0jvj09wn
-	 lcgjoFcarRZup3rPU0+UmEHNFn5IuT7NQaO3rO4sXgFiqBsYDcrZKoFP8dhkBuFegY
-	 LBHYuyoFWC8xCNx+w0c7o7BfnRkq5frR3zgqIrSvqNtwtsOt6J3azWU0wK6sstYfCc
-	 svLcLCAAnj08qwIAKCrO7jQTF7XD2T0Bvp1z3DM53aA4UyWr7ktuHXTuC2R1PWFtAB
-	 +et1Q/Mg7PnxdFv1Cz8x3l2hT1GuGgRhG9pYa5RXDkUpkkTZy4BluP2Q7qgxL0Zfmq
-	 LkWiudQYkpvlg==
-Date: Tue, 8 Jul 2025 17:30:38 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Chia-Yu Chang (Nokia)" <chia-yu.chang@nokia-bell-labs.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, "alok.a.tiwari@oracle.com"
- <alok.a.tiwari@oracle.com>, "pctammela@mojatatu.com"
- <pctammela@mojatatu.com>, "horms@kernel.org" <horms@kernel.org>,
- "donald.hunter@gmail.com" <donald.hunter@gmail.com>, "xandfury@gmail.com"
- <xandfury@gmail.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "dave.taht@gmail.com" <dave.taht@gmail.com>, "jhs@mojatatu.com"
- <jhs@mojatatu.com>, "stephen@networkplumber.org"
- <stephen@networkplumber.org>, "xiyou.wangcong@gmail.com"
- <xiyou.wangcong@gmail.com>, "jiri@resnulli.us" <jiri@resnulli.us>,
- "davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
- <edumazet@google.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "ast@fiberby.net" <ast@fiberby.net>, "liuhangbin@gmail.com"
- <liuhangbin@gmail.com>, "shuah@kernel.org" <shuah@kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "ij@kernel.org" <ij@kernel.org>, "ncardwell@google.com"
- <ncardwell@google.com>, "Koen De Schepper (Nokia)"
- <koen.de_schepper@nokia-bell-labs.com>, "g.white@cablelabs.com"
- <g.white@cablelabs.com>, "ingemar.s.johansson@ericsson.com"
- <ingemar.s.johansson@ericsson.com>, "mirja.kuehlewind@ericsson.com"
- <mirja.kuehlewind@ericsson.com>, "cheshire@apple.com" <cheshire@apple.com>,
- "rs.ietf@gmx.at" <rs.ietf@gmx.at>, "Jason_Livingood@comcast.com"
- <Jason_Livingood@comcast.com>, "vidhi_goel@apple.com"
- <vidhi_goel@apple.com>
-Subject: Re: [PATCH v21 net-next 1/6] sched: Struct definition and parsing
- of dualpi2 qdisc
-Message-ID: <20250708173038.46d25979@kernel.org>
-In-Reply-To: <PAXPR07MB798488E0305080CE891E8286A34EA@PAXPR07MB7984.eurprd07.prod.outlook.com>
-References: <20250702032817.13274-1-chia-yu.chang@nokia-bell-labs.com>
-	<20250702032817.13274-2-chia-yu.chang@nokia-bell-labs.com>
-	<13b00d4f-ad0a-409a-b9c1-0f4e195450a9@redhat.com>
-	<PAXPR07MB798488E0305080CE891E8286A34EA@PAXPR07MB7984.eurprd07.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="UcWMJQA5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1752021184; x=1783557184;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=nbHCZnjrkstbidgrzhyUGpiUbbGUAR3CtOOXEtfl+NM=;
+  b=UcWMJQA5vYO0/MkGZwBCSn1luMcwJbNl0eJWur1uioR52OMZTsWQ6fq6
+   0siUBnjHeb4h72fYuGcQugJxC8WHccKyxwURKM5bFthzPalqQ4gkMEM3f
+   Mf9KIBNxhEoV0n43u5iSTBGUmVF5MLk1mfPZIDRoXJTw32JaTMRLJA9XP
+   +wtYNlVButGGAJUC0lx0f8F0yoxdvja1HzSEyqlekxbw+etXHg+lhX5Dj
+   kFW0TuNXdUjolh1cY8qIVNopDslg5D2RksSugdFVDS3gAFsU56TP6lRvb
+   yBixsJeEvWrrB8lsH2/S1Dyj3peKfJNxCgAMQDETTjBWh61YRV6Wnhlld
+   A==;
+X-CSE-ConnectionGUID: 6Mp8GMV4SjKiBLDMr7TPXA==
+X-CSE-MsgGUID: iuU4nyynSnqR9E2xm2jrQg==
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="44354046"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 08 Jul 2025 17:32:56 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Tue, 8 Jul 2025 17:32:34 -0700
+Received: from pop-os.microchip.com (10.10.85.11) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
+ Transport; Tue, 8 Jul 2025 17:32:34 -0700
+From: <Tristram.Ha@microchip.com>
+To: Woojung Huh <woojung.huh@microchip.com>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>, Rob Herring <robh@kernel.org>,
+	"Krzysztof Kozlowski" <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>
+CC: Maxime Chevallier <maxime.chevallier@bootlin.com>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Marek Vasut
+	<marex@denx.de>, <UNGLinuxDriver@microchip.com>,
+	<devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Tristram Ha <tristram.ha@microchip.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH net-next v3 1/7] dt-bindings: net: dsa: microchip: Add KSZ8463 switch support
+Date: Tue, 8 Jul 2025 17:32:27 -0700
+Message-ID: <20250709003234.50088-2-Tristram.Ha@microchip.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250709003234.50088-1-Tristram.Ha@microchip.com>
+References: <20250709003234.50088-1-Tristram.Ha@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Tue, 8 Jul 2025 20:22:23 +0000 Chia-Yu Chang (Nokia) wrote:
-> The original patch looks like below, and I see the option is
-> mandatory otherwise it will return -EINVAL.
-> 
-> Is this what you mean in your comments or you mean other things?
-> 
-> +       if (!opt) {
-> +               NL_SET_ERR_MSG_MOD(extack, "Dualpi2 options are reuqired");
-> +               return -EINVAL;
-> +       }
+From: Tristram Ha <tristram.ha@microchip.com>
 
-To speed this up a bit across timezones -- I'm pretty sure what Paolo
-means is that you reject the situation where user provides no
-[TCA_OPTIONS] at the netlink level. But if the user provides an empty 
-one its fine.
+KSZ8463 switch is a 3-port switch based from KSZ8863.  Its register
+access is significantly different from the other KSZ SPI switches.
 
-So normal config looks something like eg (indent means nesting):
+Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+---
+ Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-[TCA_KIND]
-[TCA_OPTIONS]
-  [TCA_DUALPI2_LIMIT]
-  [TCA_DUALPI2_TARGET]
+diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
+index 62ca63e8a26f..eb4607460db7 100644
+--- a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
++++ b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
+@@ -18,6 +18,7 @@ properties:
+   # required and optional properties.
+   compatible:
+     enum:
++      - microchip,ksz8463
+       - microchip,ksz8765
+       - microchip,ksz8794
+       - microchip,ksz8795
+-- 
+2.34.1
 
-If there is no TCA_OPTIONS you'd error out:
-
-[TCA_KIND]
-
-But if TCA_OPTIONS is empty you dont:
-
-[TCA_KIND]
-[TCA_OPTIONS]
-
-Just return 0 instead of an error if TCA_OPTIONS is not there.
