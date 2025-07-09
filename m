@@ -1,96 +1,108 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mxout1.routing.net (mxout1.routing.net [134.0.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893442701CE;
-	Wed,  9 Jul 2025 11:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58FB28DB49;
+	Wed,  9 Jul 2025 11:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752059489; cv=none; b=DABH78rZ+obVP2y/nf0ruMNVipWmznJuijT8SFFcjFQKwu4rHpZ2Jeoxa48r253J0kjSfRVHcR9VgKPhNaZYbbLmiYfQuATTxZ4b8BGzXVjOu/ZHDTg8tLnohCwv3iryD58nM1jZJxFvsCJSsL2eYLj+AWwGHMosEQSBCZMeWM8=
+	t=1752059526; cv=none; b=Lu3PV/GlOB64sOrDzLk8eKCOFn3qC0qmPSNrgUYC4Aywli8hJeJnh+PKwD2l2w+Y4Dg4ExsIozCKU6I6Bdx+29nS3PFhlBr04jKfCAYsvBMj5+uV68FQ4H1WLi6kIFJTG2ywmUkaAa4lhGiKffAd+2pxPFyQOq62ZOK+O8VhDfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752059489; c=relaxed/simple;
-	bh=VYDWf/aAkJYjnnaRdav3Kgh7Iq+nP304+3f+U8BMrlM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M71hcCqfx3EkgjidFyo0xoloJ0WCG2sFdoGaf0yCmkJjDWDtAo97T2qexAXc9K1g4qS0J3cSOEF9YEsUflPKZ6jp24OSF0Psrrjn5aH8xmWID7bDXLmcvc6ZddjMp2zp//jlX6NUXM0pLWiXvrT/fPguYd/h2k5/ynFLJmIOVnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=YvNUzQZE; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1752059526; c=relaxed/simple;
+	bh=GbWaO6C8SVL0MTrQUBPai4tQm9kGMFCFoPeWn9KjrLA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GpXGGuy/jvC5oAmBmSghgAEGgwpMlLk29XXQ0vhbMPWeHcRzdOXf0Ab0F5iQWAY4cFd0F91PmXGI9+7DOaD2RzoXmi0gFa1PO2zMCcdMxqQ1nEaf8h+7NX/T4TuBi/a18JeXB+6a6lvNlkc14bKlNQVs/bViWMTrWSIMYYfsbvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=ZexAPPkG; arc=none smtp.client-ip=134.0.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fw-web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="YvNUzQZE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=vvZq130tiT45bvyCEcIJ+K9zjA5skCS0X4i6X4l6Bi0=; b=YvNUzQZEcwdbrQV8j3ZTIqZJZa
-	4HP+dnk7X61abQxSvtPEiHSu67e/O70tubpndvJGshW1wE7Rw645Ghcv6TIyLcFBige9a9uYqop0I
-	R+OOU+roJBWbQIWazOyqgOYN03OH07FCTN1B+SCFOc+GyasPNYxKsT+rRiyl9Miig+bNXl/9jzseA
-	Ex/MpQ1pYFn0Z9pAdk4tUwreZdx4z7qxGTsudBKN75fGUIXOFkF8Ld2b3KcO2bX2CqnUyg7K2HQls
-	mQhCdO2KqiqrVlw89GJpy1CPr2OQLsJyqVOieoY5DpNj0+86Jd41OsT+AMSNe/oyayroPljcDFRWQ
-	S4S+1uCw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55728)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1uZShg-0007qh-2n;
-	Wed, 09 Jul 2025 12:11:09 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1uZSha-0002bB-1i;
-	Wed, 09 Jul 2025 12:11:02 +0100
-Date: Wed, 9 Jul 2025 12:11:02 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: lizhe <sensor1010@163.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com, vladimir.oltean@nxp.com,
-	maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: Re: Re: [PATCH] net: stmmac: Support gpio high-level reset for
- devices requiring it
-Message-ID: <aG5ORmbgMYd08eNR@shell.armlinux.org.uk>
-References: <20250708165044.3923-1-sensor1010@163.com>
- <52b71fe7-d10a-4680-9549-ca55fd2e2864@lunn.ch>
- <5c7adfef.1876.197ece74c25.Coremail.sensor1010@163.com>
- <aG3vj1WYn3TjcBZe@shell.armlinux.org.uk>
- <5bb49dc0.6933.197ee28444e.Coremail.sensor1010@163.com>
+	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="ZexAPPkG"
+Received: from mxbulk.masterlogin.de (unknown [192.168.10.85])
+	by mxout1.routing.net (Postfix) with ESMTP id AB37341A15;
+	Wed,  9 Jul 2025 11:11:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
+	s=20200217; t=1752059516;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RH5WdhVK7EinTfZXKFUPt/JLvwf0Zd06FmJFOD2Rltk=;
+	b=ZexAPPkG8nkwl9FfZvh0ia1UVyCDwjR/9vVlh0dlIyt5bMBvyYAwn+kbA7RV9Nb0A4rY3W
+	Ip/CybEmY2Dy3diD81PrlEdaTcZKb2G+UcKofd9OFUp2VvOou1mn1BnSHp4rNdg5aOWG0L
+	/0vMtCyIq89cdpiAVGjvubUyLw4VI6s=
+Received: from frank-u24.. (fttx-pool-217.61.157.99.bambit.de [217.61.157.99])
+	by mxbulk.masterlogin.de (Postfix) with ESMTPSA id 4B080122701;
+	Wed,  9 Jul 2025 11:11:56 +0000 (UTC)
+From: Frank Wunderlich <linux@fw-web.de>
+To: MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Georgi Djakov <djakov@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Johnson Wang <johnson.wang@mediatek.com>,
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	Landen Chao <Landen.Chao@mediatek.com>,
+	DENG Qingfang <dqfext@gmail.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>
+Cc: Frank Wunderlich <frank-w@public-files.de>,
+	linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v9 01/13] dt-bindings: net: mediatek,net: update mac subnode pattern for mt7988
+Date: Wed,  9 Jul 2025 13:09:37 +0200
+Message-ID: <20250709111147.11843-2-linux@fw-web.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250709111147.11843-1-linux@fw-web.de>
+References: <20250709111147.11843-1-linux@fw-web.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5bb49dc0.6933.197ee28444e.Coremail.sensor1010@163.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 09, 2025 at 03:48:25PM +0800, lizhe wrote:
-> Hi, 
-> 
-> after replacing with this function, the function returns 0, meaning the gpio is
-> still at a low voltage level.
-> 
-> +              int gpio_state = -1;
-> 
-> 
->                 if (delays[2])
->                         msleep(DIV_ROUND_UP(delays[2], 1000));
-> +
-> +               gpio_state = gpiod_get_raw_value_cansleep(reset_gpio);
-> +               pr_info("gpio_state: %d\n", gpio_state);
-> +               pr_info("gpio_state: %d\n", gpio_state);
-> 
->  gpio-111 (                    |snps,reset          ) out lo
-> 
-> 
-> [    3.899319] gpio_state: 0
-> [    3.899324] gpio_state: 0
+From: Frank Wunderlich <frank-w@public-files.de>
 
-How have you declared the snps,reset-gpio property in DT?
+MT7888 have 3 Macs and so its nodes have names from mac0 - mac2. Update
+pattern to fix this.
 
+Fixes: c94a9aabec36 ("dt-bindings: net: mediatek,net: add mt7988-eth binding")
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ Documentation/devicetree/bindings/net/mediatek,net.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/net/mediatek,net.yaml b/Documentation/devicetree/bindings/net/mediatek,net.yaml
+index 9e02fd80af83..175d1d011dc6 100644
+--- a/Documentation/devicetree/bindings/net/mediatek,net.yaml
++++ b/Documentation/devicetree/bindings/net/mediatek,net.yaml
+@@ -382,7 +382,7 @@ allOf:
+             - const: xgp3
+ 
+ patternProperties:
+-  "^mac@[0-1]$":
++  "^mac@[0-2]$":
+     type: object
+     unevaluatedProperties: false
+     allOf:
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.43.0
+
