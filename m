@@ -1,69 +1,64 @@
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357142E0B74
-	for <netdev@vger.kernel.org>; Wed,  9 Jul 2025 13:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3922C187
+	for <netdev@vger.kernel.org>; Wed,  9 Jul 2025 13:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752068021; cv=none; b=RMkrf/i7DfTwMA7mhONY0HnvWj2Zpl6lMHfLdAbyNtWp5MKaqGmGuYPrg2hV/Xjsswv9WGC5uGaY1OOW6+FNtakT42Mk/OxKb9T8m58u1RzjndmVjWeD7kn4uLcLCGv1G7vOsjJSPC7hK3RwOm/hFzS+ELYamAkq+2V2sC9GFpM=
+	t=1752068156; cv=none; b=oLs2YF8JQZDa1s+25l5ViLEeUQPbGTfRyFb3KT3BjhDxu+Lqnl+s/RzTu26oTL0ItWPJjOzfNJH6vYTsSnT+zGNQqVVwbjjFMoHqhyq37DbMSF1Ge3dWuEAbudKOp3b6lTPJhDqLML11lnRCbBwjOtlLTnOYSvT9zvDQ1XGInWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752068021; c=relaxed/simple;
-	bh=oBbi2dwj3JlrxNgNY8Hz815kTsf3eBPKfewu1okkeYw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iNHiAh9/+ssC5zDj/Y88aMjauELT/s3kcZfCYMJHAyHDH2bf3VfNu1hmiOO82blPpKRl1ZcvGjGgqs0pY6hJapxM9wTh6Y8HXelL5bkMtN517tem/t5ylhctZSqJEbm9ozAsnsF01Z+vQQEmmLTjGnpuwRL3/KvS5Un5aORqNQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oxeeR58i; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1752068156; c=relaxed/simple;
+	bh=gKiGZ0AksMwzHB5RRv/vFdwH3Y2aHQGDuyLyd2pl6Io=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mEzJ8dNJi9d8cSkByJKb3iEYPrhZKSvmGbCyuzjMM3orjOjqJGwkLMG2rq/QXurd9Dft9f63/fRQbcyAnOgm9y5Zo7Sv1Cab+WaNyZp/+RbL1XrRnyHaYuDW7cMA+fH358rFlZpjPnELWG3X0+FnnS+6e7ymsn0RH3UK5OST1+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z0Eb8pt1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oxeeR58i"
-Message-ID: <96cdeb5c-dd55-4800-9046-09ebbb818e8b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1752068006;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oBCmCKP8OFqBTk3+dFLXu6PLZZQVW5qJrW4VdVurS6A=;
-	b=oxeeR58i97heGcVCJSXRS5kIf0ZoWpaKVFuA1xKOPE+tM0xYffXEnHqt78071Q38yjPNko
-	Y4QRgF2X96dBafUfFZFFomZzR2RN8iTojzn16xNJ2BGFlpZdo3QQlSlTAnAQukTkr/bWSZ
-	vBhyC3OI7QXek+HvuxOrQSuPL9B5Xfo=
-Date: Wed, 9 Jul 2025 14:33:21 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z0Eb8pt1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C586C4CEEF;
+	Wed,  9 Jul 2025 13:35:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752068155;
+	bh=gKiGZ0AksMwzHB5RRv/vFdwH3Y2aHQGDuyLyd2pl6Io=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Z0Eb8pt1bpcj917PTMIV7dERDEjIPA83VaeWi0xqf0VnWpiOJ32+AWhoKbKIf8BaC
+	 6AAMcymB6tg/TVaa7hMqvpr+suQrRG3uBS5k9Xrd4yc7rn1hTwwhJD6EDA2qS2A1Jz
+	 w72e06qilRUH/RqJAcKrqEsS7Q0ICsD7EEGZbzfZutGGCoXP8P/YA5/ulwigT3ZB3f
+	 DFilxbP108NAqWAhYsyf++ToFBlTsRr8PKPcO8DXpLdFrx95Tdl3Zhk7j2UMxkgp4b
+	 +h03B97wXt4gtEzGLW5qp3T6smdW2ZTs82gldathYfYmLMd2jdy+OjoLEuqZZiKarj
+	 fFvo80qnVxCGA==
+Date: Wed, 9 Jul 2025 06:35:54 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Stanislav Fomichev <sdf@fomichev.me>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com
+Subject: Re: [PATCH net-next v3 5/8] net: s/__dev_set_mtu/__netif_set_mtu/
+Message-ID: <20250709063554.7c771beb@kernel.org>
+In-Reply-To: <20250708213829.875226-6-sdf@fomichev.me>
+References: <20250708213829.875226-1-sdf@fomichev.me>
+	<20250708213829.875226-6-sdf@fomichev.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v3 7/7] net: dsa: microchip: Disable PTP function
- of KSZ8463
-To: Tristram.Ha@microchip.com, Woojung Huh <woojung.huh@microchip.com>,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Marek Vasut <marex@denx.de>, UNGLinuxDriver@microchip.com,
- devicetree@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250709003234.50088-1-Tristram.Ha@microchip.com>
- <20250709003234.50088-8-Tristram.Ha@microchip.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20250709003234.50088-8-Tristram.Ha@microchip.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
-On 09/07/2025 01:32, Tristram.Ha@microchip.com wrote:
-> From: Tristram Ha <tristram.ha@microchip.com>
-> 
-> The PTP function of KSZ8463 is on by default.  However, its proprietary
-> way of storing timestamp directly in a reserved field inside the PTP
-> message header is not suitable for use with the current Linux PTP stack
-> implementation.  It is necessary to disable the PTP function to not
-> interfere the normal operation of the MAC.
+On Tue,  8 Jul 2025 14:38:26 -0700 Stanislav Fomichev wrote:
+>  int netif_set_mtu_ext(struct net_device *dev, int new_mtu,
+>  		      struct netlink_ext_ack *extack)
+>  {
+>  	int err, orig_mtu;
+>  
+> +	netdev_assert_locked_or_invisible(dev);
 
-Could you please explain the "proprietary way of storing timestamps"?
-Maybe you can provide some examples of headers with timestamps?
+This one fires, should it be ops-locked?
+
+[ 3137.181693][T26830] ------------[ cut here ]------------
+[ 3137.182161][T26830] WARNING: CPU: 1 PID: 26830 at ./include/net/netdev_lock.h:17 netif_set_mtu_ext+0x27f/0x5c0
+[ 3137.185509][T26830] RIP: 0010:netif_set_mtu_ext+0x27f/0x5c0
+[ 3137.193144][T26830]  do_setlink.constprop.0+0x6b1/0x2480
+[ 3137.198661][T26830]  rtnl_newlink+0x69a/0xa60
+-- 
+pw-bot: cr
