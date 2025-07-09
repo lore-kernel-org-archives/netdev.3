@@ -1,125 +1,75 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548A02222D0;
-	Wed,  9 Jul 2025 08:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D18627453;
+	Wed,  9 Jul 2025 08:08:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752048426; cv=none; b=rhDxtPTctKOX+CGeHoAtP5qncJsJWap2n6zlB5MAVvq9YoioBC5d33Mp7jFtdb98WGG1nnhz1OHb6r4+9Eq5EQwuRFj9RufnfYKpSwJlVTXsqe3h0IV9vKFCYCeHa5VLBZFasZTbnp39lvwZx1RurhdoZNoI6j2H4i/vLTcD2u4=
+	t=1752048492; cv=none; b=eqYLAgxWF9ebQeMHVWtxCSt7uuESW8ngTGTLUa01QVPxAiozUCyBVeN5bnSks6kkBu0G419iUYafiXykA3v0F2l7CLn8UTeqTV7R2ValHJAHDCW5kZWP52LTViYLqxGZIpCrdD29oddt5q6H7KHHdT9WDknXXDQs+okCL5MziuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752048426; c=relaxed/simple;
-	bh=qHFlp0Eymzpq0DGn/ABKDHy5ssBB/JtPZafxiGG8/jk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=KXXc2Z6qTcLrXxa+QlLYvFSMGpAkWwfYSsVyPwmZkp9yQRI7AHDFrAD9zLn07kIr2gIFkenQPNCEmzKZ9/wrmrprM6UkuKU9t/eCLfQmVrn1PzmBF7yeDnt/04MpGr5uqtqBqON6D5NPHEFv1Bably6Or7UGfhF+OQIMRSodO+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nhPt3EcG; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nhPt3EcG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752048423; x=1783584423;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=qHFlp0Eymzpq0DGn/ABKDHy5ssBB/JtPZafxiGG8/jk=;
-  b=nhPt3EcGIFWTQDTwQdQzaM3B03qRrMHiFzj0gDTT5lC6seAVLyzCemzD
-   2HHn6whhbIJAoxhQMkBzizoFK/ZN0qYyKTZ5f15+wcP2OuT8QECF/hDq/
-   bFLqCS/jGIftRmz8wvD6tURrOnQIfllLMk6ipl6rhgWIgSxkP8dfbWNW/
-   d69KGR1YRUjyEvAPwHP6TAsQ0yrKUYRMDN0WZrkcwWw2ZVG7oB3bSeL5r
-   phfog63q0VpasWgzg+YHvHWd5T73FBOMMcpOQ+INNftAzz2Jemyl9N95C
-   uAGe26apIyyw3ctXPCi5VlKuGS+kRITBr5joLGSpN0bfJzvD1N55UC1SG
-   w==;
-X-CSE-ConnectionGUID: GgXhjHteSgOHBJQhQOpXCg==
-X-CSE-MsgGUID: pak3XXKeQwOkByDRB2IXYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="58106220"
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="58106220"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 01:07:03 -0700
-X-CSE-ConnectionGUID: nKnaAaCNQLKlfhQL+i2/ag==
-X-CSE-MsgGUID: itnNVE9jRp+vu1HGp5yBlA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="156043916"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 09 Jul 2025 01:07:01 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uZPpT-0003HZ-00;
-	Wed, 09 Jul 2025 08:06:59 +0000
-Date: Wed, 9 Jul 2025 16:06:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-	netdev@vger.kernel.org
-Subject: [mst-vhost:vhost 4/8] include/linux/pci.h:2738:7: error: call to
- undeclared function 'pci_device_is_present'; ISO C99 and later do not
- support implicit function declarations
-Message-ID: <202507091645.aPGUJH6X-lkp@intel.com>
+	s=arc-20240116; t=1752048492; c=relaxed/simple;
+	bh=8e5DJ6eb/9lk9z4u6yIhTJJ+olqISSeokcWp/4UTNAo=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GumNQODnbSJOLGC4eOmSaLr6FIIlJry1/0nV3XKMFPl4sEGuV4q5kBOrrKx9FhFbmWWgsKnM15u3ezT2oBIjTH2hZR2qrDRR7C7cvBMkraLCSjO8yagHHbcjC8sHfCnHakvKhVXuuN41geZkglAKsv6bRifUXQoRlaEYPMey2y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bcVtt1fWRz6GCbc;
+	Wed,  9 Jul 2025 16:07:02 +0800 (CST)
+Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
+	by mail.maildlp.com (Postfix) with ESMTPS id 63FA6140257;
+	Wed,  9 Jul 2025 16:08:07 +0800 (CST)
+Received: from china (10.220.118.114) by frapeml500005.china.huawei.com
+ (7.182.85.13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 9 Jul
+ 2025 10:07:53 +0200
+From: Gur Stavi <gur.stavi@huawei.com>
+To: <vadim.fedorenko@linux.dev>
+CC: <andrew+netdev@lunn.ch>, <christophe.jaillet@wanadoo.fr>,
+	<corbet@lwn.net>, <davem@davemloft.net>, <edumazet@google.com>,
+	<gongfan1@huawei.com>, <guoxin09@huawei.com>, <gur.stavi@huawei.com>,
+	<helgaas@kernel.org>, <horms@kernel.org>, <jdamato@fastly.com>,
+	<kuba@kernel.org>, <lee@trager.us>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <luosifu@huawei.com>,
+	<meny.yossefi@huawei.com>, <mpe@ellerman.id.au>, <netdev@vger.kernel.org>,
+	<pabeni@redhat.com>, <przemyslaw.kitszel@intel.com>,
+	<shenchenyang1@hisilicon.com>, <shijing34@huawei.com>, <sumang@marvell.com>,
+	<wulike1@huawei.com>, <zhoushuai28@huawei.com>, <zhuyikai1@h-partners.com>
+Subject: Re: [PATCH net-next v06 5/8] hinic3: TX & RX Queue coalesce interfaces
+Date: Wed, 9 Jul 2025 11:26:20 +0300
+Message-ID: <20250709082620.1015213-1-gur.stavi@huawei.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <ef88247b-e726-4f8b-9aec-b3601e44390f@linux.dev>
+References: <ef88247b-e726-4f8b-9aec-b3601e44390f@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ frapeml500005.china.huawei.com (7.182.85.13)
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git vhost
-head:   97d5f469f45a2312a124376fd6fa368ef8419dff
-commit: b7468115b6045e555aa8a8f2fa327c1c073fc6df [4/8] pci: report surprise removal event
-config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20250709/202507091645.aPGUJH6X-lkp@intel.com/config)
-compiler: clang version 20.1.7 (https://github.com/llvm/llvm-project 6146a88f60492b520a36f8f8f3231e15f3cc6082)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250709/202507091645.aPGUJH6X-lkp@intel.com/reproduce)
+> On 27/06/2025 07:12, Fan Gong wrote:
+> > Add TX RX queue coalesce interfaces initialization.
+> > It configures the parameters of tx & tx msix coalesce.
+> >
+> > Co-developed-by: Xin Guo <guoxin09@huawei.com>
+> > Signed-off-by: Xin Guo <guoxin09@huawei.com>
+> > Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
+> > Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
+> > Signed-off-by: Fan Gong <gongfan1@huawei.com>
+> > ---
+> >   .../net/ethernet/huawei/hinic3/hinic3_main.c  | 61 +++++++++++++++++--
+> >   .../ethernet/huawei/hinic3/hinic3_nic_dev.h   | 10 +++
+> >   2 files changed, 66 insertions(+), 5 deletions(-)
+> >
+>
+> Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507091645.aPGUJH6X-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from kernel/dma/direct.c:16:
-   In file included from include/linux/pci-p2pdma.h:14:
->> include/linux/pci.h:2738:7: error: call to undeclared function 'pci_device_is_present'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    2738 |         if (!pci_device_is_present(pdev))
-         |              ^
-   include/linux/pci.h:2738:7: note: did you mean 'pci_dev_present'?
-   include/linux/pci.h:2042:19: note: 'pci_dev_present' declared here
-    2042 | static inline int pci_dev_present(const struct pci_device_id *ids)
-         |                   ^
-   kernel/dma/direct.c:148:20: warning: shift count >= width of type [-Wshift-count-overflow]
-     148 |                     phys_limit < DMA_BIT_MASK(64) &&
-         |                                  ^~~~~~~~~~~~~~~~
-   include/linux/dma-mapping.h:73:54: note: expanded from macro 'DMA_BIT_MASK'
-      73 | #define DMA_BIT_MASK(n) (((n) == 64) ? ~0ULL : ((1ULL<<(n))-1))
-         |                                                      ^ ~~~
-   1 warning and 1 error generated.
-
-
-vim +/pci_device_is_present +2738 include/linux/pci.h
-
-  2722	
-  2723	/*
-  2724	 * Caller must initialize @pdev->disconnect_work before invoking this.
-  2725	 * The work function must run and check pci_test_and_clear_disconnect_enable.
-  2726	 * Note that device can go away right after this call.
-  2727	 */
-  2728	static inline void pci_set_disconnect_work(struct pci_dev *pdev)
-  2729	{
-  2730		/* Make sure WQ has been initialized already */
-  2731		smp_wmb();
-  2732	
-  2733		WRITE_ONCE(pdev->disconnect_work_enable, 0x1);
-  2734	
-  2735		/* check the device did not go away meanwhile. */
-  2736		mb();
-  2737	
-> 2738		if (!pci_device_is_present(pdev))
-  2739			schedule_work(&pdev->disconnect_work);
-  2740	}
-  2741	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Procedural question about submissions:
+Are we allowed (or expected) to copy the "Reviewed-by" above to future
+submissions as long as we do not modify this specific patch?
