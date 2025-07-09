@@ -1,46 +1,65 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A498A28C2D6;
-	Wed,  9 Jul 2025 13:45:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB452DCF5B;
+	Wed,  9 Jul 2025 13:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752068711; cv=none; b=X00hs9ijKHjR7QJi967ILTR3pib6dc7Huul0wdTKRdQGK3bhnVwIaCENgnkEg3IhP3QB1ZrxhW0Hqa9qI2bUAMCmxECljFjph/YZE6yKrt0CFWfPkwUg0cCuiAhkEZk59s47DqGc9hgSfP3XM5T+chiuPMm9nc3GoISR8KuXfak=
+	t=1752068945; cv=none; b=oahORcSBQ8asRSsBjPPDSj7kEK6Kb+yRg6xL4l7v81fyxCrfhUFXCyXK0T3ruz0RL0Jg9wPVrgHoLbsweJWKcDozp4uK503qHfLIIry3Z/5W6IokYFIguOYNacGHvqUPcP95yhRkU2wSb5S0UEfLXrYGYBDV0fRuyFoYMTj+5qY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752068711; c=relaxed/simple;
-	bh=aPHsDSBdtEEptbtmIwoK6MNqu46gsm8gDMnyidk10rk=;
+	s=arc-20240116; t=1752068945; c=relaxed/simple;
+	bh=d60WP6pubxI4wztZMJX26s9D12yMKyxg6mc078wlQIo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RoFatNvH+EQHASj9Udtm7hvb2FceB7QL5icN3jgBtcHaVa4DdbNIAfujzvqYsDX7pKEy01fAC4Gy3oO3JtjF1xJ9W2An0eJ8GIhNlXAFCBpuTpOXraz8avvlEf7T8Paq6Vdt/6Pp4ojHwOehDQxUTO8bfX/BCZHATpW9P0sR9gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=MXB+x5qv; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	 In-Reply-To:Content-Type; b=buoyN0jHHQKXqKs3/x6r4I9w3HtBjz9TG6ecwswi5cS/TPJsoS7XXRo/WTBzVyeHlwK/98/6UWEftoIlVyV0Z2qV2i8S0ZqMNN3fWX5hipqY8OkwzmV/0nqjGwRYxdT2HU+xpBPW9ZtmaOA9APPTHdR1DfeJ9blLiYSzmWJXtxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e44AM8vZ; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="MXB+x5qv"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=H/uqrPFxDiQ80xovGsc1jjlvo/n5Lc6EIccoR88PfBo=; b=MXB+x5qvtF/CtdbY8lu+q4wOqG
-	rqm6ohGnlPOqs+dmX2cid6ovz0mQtqA9EIbRHUL3tkyR8q9zijOMp6tNPYm2zqh0YwUli9/lZPLAP
-	b75OrEAwGWPQHEH8CqEtIPozrqrS3Cr/rJAhmCOx5pAploGziWbWsn29pbOj97I4H2wbYSuSx7XUd
-	qrQ8Gu5TRsv+wUhZtAMIaDq44SqKCl9MtqVX7aZXMWd2aNtQnVvmonVkdxhRlSWrSLpE1RjCR7PCv
-	cmBwDVA8slCNqkAqZekKhE0HVulkUKa0kq/6WcSK+jE+z3azLs6W0GovpdtJi5TvlaxyqTEWMrBZa
-	5yiadZCw==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1uZUeE-000AUS-3B;
-	Wed, 09 Jul 2025 15:15:43 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1uZUeC-0003Lj-2A;
-	Wed, 09 Jul 2025 15:15:41 +0200
-Message-ID: <9393fab5-2b8a-4e56-aa5a-5f601d570b47@iogearbox.net>
-Date: Wed, 9 Jul 2025 15:15:40 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e44AM8vZ"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ae3be3eabd8so219750166b.1;
+        Wed, 09 Jul 2025 06:49:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752068942; x=1752673742; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7tPZ2snfZJMpsUBAg/+z6Smy+g9cPqG2rxkyRsXfVc4=;
+        b=e44AM8vZvAzEQJXmAdebRGlpTfVJSMtlp85UgJp1/LI1OU+mpYaF/yZ+ju0DBV7Wkl
+         jX4Mvz+i6Ksl3CXjFY30sw/G/hGCC0wCX7Jef4X5BnSwMNFmIiUmN93ADxt5G60qbzxU
+         4LWPX8yL1XxWWntmbJRE0oHSvTmWbKcych1bDoS4Bk2jGMa6zuHmOpEGJAj3Bp0N/Tj9
+         J5LBpczW3ZlE+eCfoGolNrD1RISvzeBEN97zkihYRUTfJExvEfvs4xa2DbbPu4jxLiTS
+         hI0X+lGBzUgwteKUxzFOhs8gkG3DgDXAzlnsP7qwgjHFsa7AxYkbUtqYhabCPPbzanKJ
+         5ung==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752068942; x=1752673742;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7tPZ2snfZJMpsUBAg/+z6Smy+g9cPqG2rxkyRsXfVc4=;
+        b=u4T5QJc1iWkLkDd59B0YCMJbpbyvI3oPTptIkPHaWbOXLQiKqWp99CAm5jB38F9kS9
+         V8dPjWeyhFs5ejiQULLrZ1Eyz87KVoO34AgDUCdG8zj0MmaKbePxWQKpsU0/HEQYXzyo
+         Q/PgNMspEjM7A9vOlcW99UiGSVtoMjL/dK7d7TzemukzAhLBZttMgDddSwcL/RVsxmd7
+         5VR7xfGqPOSZ7Bjnz38CjsTbViMwOXfVksU0zRS4L+xVy425NWxP1VQSHRbHCD43M0wv
+         Oi5ZI3GJM8PBxNaWa6VccfUiZiwYbe+rQken3iUA/EQi6uCA8zcIids8Tzas7Xjw7QAd
+         6E7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUepg/e4EJ4uP6MQ2WJbFh8kbqarz+ViSiLH+fHIRqXy0YPNWbfX9cFldwiP1lxPrmuukX/xgaN@vger.kernel.org, AJvYcCWi8ISsSOYsDWb6tDErPPnpbydGezDtcFox7uNK/B/29eJvPcOc0CCMUG0p5MVOY7fYGU8f24Uu4w==@vger.kernel.org, AJvYcCWvsAoJiVdB6WK1Ex/x52xvOokjBPDADLQ2yiknexFTz6pTFaKD5nBxoAz0qgsXS8mPFBwL9smErgf9Mvg9@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxc19Angtd668f/J+tJO8EE75dpQ+SPTBeqO5fCFdhomNfzUU1j
+	/sqM2ma1dZCjWL3/fF5Uh5b2CV3yPf4qz9ykutBVx7VNEM6CQEhIFdYcmrLObg==
+X-Gm-Gg: ASbGncvj6HkhmfeEZIjnvc244upWqYJ5afiIh7mKG22aiFc9Nuq6qU485pIBN/4G309
+	26sGRSXtVeOxMP4aNKe/rfjfXoXUsftTYcH5aFQbxFafeAv/9KnlK366La2wmqhn2w/D2RlLie0
+	TXclNpEWRyeutcf074oC9U0MFdJxv4gvjuSf7Rkzb2l9uDsawzyqyMr4YTc2F/d2a2FWlKtrl+1
+	KTN6I13tcBn/JzlnSxkTp5yaynJWWCu7G58fpjXiXrYTN47X2ifdftKmkzTLXpuwItLnmg7FBXp
+	5cWpgV79P53KBDEz+i3Y6M+eMtfG/X+9mg7GejYkNUPj59GrLtdnFfGQwrvhJJvJyTbAWnN00v4
+	=
+X-Google-Smtp-Source: AGHT+IF31JR2looeKB7ac3iqDu1s74r171lLgGcy1Nj4GskaS7HfgrExrdlbN4zWs9o6Zi51j02V/A==
+X-Received: by 2002:a17:906:eecd:b0:ae6:dd93:2cac with SMTP id a640c23a62f3a-ae6dd932d17mr65632466b.7.1752068942242;
+        Wed, 09 Jul 2025 06:49:02 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::1ac? ([2620:10d:c092:600::1:e3ec])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f6abfd8bsm1103765266b.81.2025.07.09.06.49.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Jul 2025 06:49:01 -0700 (PDT)
+Message-ID: <020a278f-2fae-4242-b55a-7b4faab37e55@gmail.com>
+Date: Wed, 9 Jul 2025 14:50:24 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,131 +67,53 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v3 1/7] bpf: Add attach_type in bpf_link
-To: Tao Chen <chen.dylane@linux.dev>, razor@blackwall.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, andrii@kernel.org,
- martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
- mattbobrowski@google.com, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, horms@kernel.org, willemb@google.com,
- jakub@cloudflare.com, pablo@netfilter.org, kadlec@netfilter.org,
- hawk@kernel.org
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org
-References: <20250709030802.850175-1-chen.dylane@linux.dev>
- <20250709030802.850175-2-chen.dylane@linux.dev>
+Subject: Re: [PATCH net] net: Allow non parent devices to be used for ZC DMA
+To: Dragos Tatulea <dtatulea@nvidia.com>, almasrymina@google.com,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ Simona Vetter <simona.vetter@ffwll.ch>, Willem de Bruijn
+ <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
+Cc: cratiu@nvidia.com, parav@nvidia.com, Tariq Toukan <tariqt@nvidia.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ io-uring@vger.kernel.org
+References: <20250709124059.516095-2-dtatulea@nvidia.com>
 Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- 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
-In-Reply-To: <20250709030802.850175-2-chen.dylane@linux.dev>
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250709124059.516095-2-dtatulea@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27694/Wed Jul  9 10:42:34 2025)
 
-On 7/9/25 5:07 AM, Tao Chen wrote:
-> Attach_type will be set when link created from user, it is better
-> to record attach_type in bpf_link directly suggested by Andrii. So
-> add the attach_type field in bpf_link and move the sleepable field to
-> the end just to fill the byte hole.
+On 7/9/25 13:40, Dragos Tatulea wrote:
+> For zerocopy (io_uring, devmem), there is an assumption that the
+> parent device can do DMA. However that is not always the case:
+> ScalableFunction devices have the DMA device in the grandparent.
 > 
-> Acked-by: Jiri Olsa <jolsa@kernel.org>
-> Signed-off-by: Tao Chen <chen.dylane@linux.dev>
+> This patch adds a helper for getting the DMA device for a netdev from
+> its parent or grandparent if necessary. The NULL case is handled in the
+> callers.
+> 
+> devmem and io_uring are updated accordingly to use this helper instead
+> of directly using the parent.
+> 
+> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Fixes: 170aafe35cb9 ("netdev: support binding dma-buf to netdevice")
+> Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
 > ---
->   drivers/net/netkit.c           |  2 +-
->   include/linux/bpf.h            | 28 ++++++++++++++++-----------
->   kernel/bpf/bpf_iter.c          |  3 ++-
->   kernel/bpf/bpf_struct_ops.c    |  5 +++--
->   kernel/bpf/cgroup.c            |  4 ++--
->   kernel/bpf/net_namespace.c     |  2 +-
->   kernel/bpf/syscall.c           | 35 +++++++++++++++++++++-------------
->   kernel/bpf/tcx.c               |  3 ++-
->   kernel/bpf/trampoline.c        | 10 ++++++----
->   kernel/trace/bpf_trace.c       |  4 ++--
->   net/bpf/bpf_dummy_struct_ops.c |  3 ++-
->   net/core/dev.c                 |  3 ++-
->   net/core/sock_map.c            |  3 ++-
->   net/netfilter/nf_bpf_link.c    |  3 ++-
->   14 files changed, 66 insertions(+), 42 deletions(-)
-[...]
+> Changes in v1:
+> - Upgraded from RFC status.
+> - Dropped driver specific bits for generic solution.
+> - Implemented single patch as a fix as requested in RFC.
+> - Handling of multi-PF netdevs will be handled in a subsequent patch
+>    series.
+> 
+> RFC: https://lore.kernel.org/all/20250702172433.1738947-2-dtatulea@nvidia.com/
+I can't say anything about the walking to grand parent part, but
+the rest looks good.
 
-> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-> index 34dd90ec7fa..dd5070039de 100644
-> --- a/include/linux/bpf.h
-> +++ b/include/linux/bpf.h
-> @@ -1729,12 +1729,10 @@ struct bpf_link {
->   	enum bpf_link_type type;
->   	const struct bpf_link_ops *ops;
->   	struct bpf_prog *prog;
-> -	/* whether BPF link itself has "sleepable" semantics, which can differ
-> -	 * from underlying BPF program having a "sleepable" semantics, as BPF
-> -	 * link's semantics is determined by target attach hook
-> -	 */
-> -	bool sleepable;
-> +
->   	u32 flags;
-> +	enum bpf_attach_type attach_type;
-> +
->   	/* rcu is used before freeing, work can be used to schedule that
->   	 * RCU-based freeing before that, so they never overlap
->   	 */
-> @@ -1742,6 +1740,11 @@ struct bpf_link {
->   		struct rcu_head rcu;
->   		struct work_struct work;
->   	};
-> +	/* whether BPF link itself has "sleepable" semantics, which can differ
-> +	 * from underlying BPF program having a "sleepable" semantics, as BPF
-> +	 * link's semantics is determined by target attach hook
-> +	 */
-> +	bool sleepable;
->   };
+Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
 
-lgtm, it looks a bit weird at the end here after rcu/work but in future if other
-attributes get added to the link obj and a new hole frees up we can move it up
-again. Definitely good the rationale for the move is documented in the commit msg.
+-- 
+Pavel Begunkov
 
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
