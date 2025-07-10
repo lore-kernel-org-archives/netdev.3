@@ -1,180 +1,212 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2055.outbound.protection.outlook.com [40.107.220.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9718A280022
-	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 17:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752168797; cv=fail; b=DMs4MFJxTfzmLMUDeKIiHn7nY1Z8udS39KotILXSIR03HVS2EWXOR6ONdS0vaZwU7+F9PCndi+SDZq5NQdZGWQ/Fponf7S341ACyvoMCN8+iQPpWh/9M+cvdgRSbR/M0rHDO3eOs1RLuLEQbdL79HAZ15O0YHpjRf3/rStHhgzs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752168797; c=relaxed/simple;
-	bh=NRsnECf7dmQ0G5WKgnuTmpdtdtvF2rIemxmZcBo4Omo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Oe3kw08rxd6vjkvd9+YQqCMD2aWkcGGx6EVUPdt1u5S6xbYMVD/FODk9y5BWiZTb3AtQ/BYaOtU45mN1WXCM//DCg3Codu7bTfNLI0GUdhuq8T0f5YhhZ6ldrA9p49XYLea5a7AllQ3rnzVKdajzQeYt93dHLmfQbiL+6K53vdc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=L024UipV; arc=fail smtp.client-ip=40.107.220.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075AB12B71
+	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 17:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752169137; cv=none; b=qco2oYzfRk4Sa3lRzWSIJs7KyvwsTwqECqjSbkUa3nj3MxY2SQBD4bdU1ilsjWMnAgPlV3ID26qfUeVxvG8yih3rIYTpoKwwWg8KTTGuPV/hIgJMXreqXf8SmeRpDUcqD9jKyXFcWwG/2DZ0S48dS31r4NxofywRJ5c5vgNX2X8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752169137; c=relaxed/simple;
+	bh=up7NF+qg2LjW7zSeDc2sVY7H3Evwc2L65+Rz3KIir3E=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:References:
+	 From:In-Reply-To; b=lnV5dlW3HCCLnEv34g6b48QeCvQUu6Md/MXw4coFLMsXs6uhZBrwu8QcGJkmjljMO+/6XUqyOmvyPTqfuZGkEp1nti3jTOwpzAhnDlcLxCrtOpKK4NzSSZhyOH0Sdn02xF9XRJY76r8FS2wXUxoykLfBchuV3GmdQum+skq6IUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=I5MKr1+6; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="L024UipV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tLGIUff0+FoACJFJHgkhgzDheT170hmF8eZty8OdE3UvCT81Ppl7dLCOB2LuakTTAKWyOf1RQvCcLL+mZpPL+ei+GZWubTG0HnqiwaURRKEDDqlltLaU41HkXSJ2EYzjL7ORzhk7omfolYNJizxleTqBJKITARp4CtSEAmXRIYzx+lhyzRMx0kimuk32E/VPJ8Z4hmv//uSCUpxfbsazukD23+Yq/tRnb0sKAsQnI1qYsnY75qyfiX7Ga6Z8ZX4gJbxMh7R6CQAAsFgAQnJzMlFLyieecop/D0OAd30OQ8Z6jeXMnpvF0eJxYRG+SQv3/YS0M8nYMo1O9P/5ZgR9ng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c3CSBEgzZ9K6mboBeJqp0tSgoOLOtavqrL1BgX5YT0o=;
- b=xJLaSF9Lc+yTXkIPT5i5PhYpGBqxgk/9VFi5kSwVuj9tsiGy4s3UU2RyQsRKCJfUdh0TwRy21xCmFx/vh9zAWM2KeMx+idzvkY/APFVcyu3rqepqSzuUUgwL3CxEvZggwQ6ctLpwBksGn/KSMoQoATueiJC48X2McHaBmfNqsaO45gBzBzF+YI4fiZnJAhTrhPbcutHCznpYjUPNHGb9qR7Qb+UApbcPXA0/SmnViarEl2prhBPYsvIOz0qtfiPd+mvFwWWlrECBPPh2bJPkmfstGxDlMQdtof2TXWfXYL13WQhF+Vpnwunp7iAH/v5e1u7l6pG/a+I/IoeBZvh2Tw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=davemloft.net smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c3CSBEgzZ9K6mboBeJqp0tSgoOLOtavqrL1BgX5YT0o=;
- b=L024UipVPevAkJ/uUXi3pSAgt2wj7fLfRclSHGkrE9Ghf9+H5Zvbp6hajRGVC3a7dfBU7+QtPzmpT1BuOD49QbmWx4oNpPyZcNIS73ncPu7vu73tsDn0EntE8aXuQR3/Qg3Bbm5vLGepsODWKuH/Gizf9rlTcVj4uDjz+tRplKk=
-Received: from SJ0PR13CA0147.namprd13.prod.outlook.com (2603:10b6:a03:2c6::32)
- by DS0PR12MB6461.namprd12.prod.outlook.com (2603:10b6:8:c7::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.25; Thu, 10 Jul
- 2025 17:33:13 +0000
-Received: from SJ1PEPF00002312.namprd03.prod.outlook.com
- (2603:10b6:a03:2c6:cafe::30) by SJ0PR13CA0147.outlook.office365.com
- (2603:10b6:a03:2c6::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.5 via Frontend Transport; Thu,
- 10 Jul 2025 17:33:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- SJ1PEPF00002312.mail.protection.outlook.com (10.167.242.166) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8922.22 via Frontend Transport; Thu, 10 Jul 2025 17:33:12 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 10 Jul
- 2025 12:33:11 -0500
-Received: from xcbecree42x.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39 via Frontend
- Transport; Thu, 10 Jul 2025 12:33:10 -0500
-From: <edward.cree@amd.com>
-To: <linux-net-drivers@amd.com>, <davem@davemloft.net>, <kuba@kernel.org>,
-	<edumazet@google.com>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>
-CC: Edward Cree <ecree.xilinx@gmail.com>, <netdev@vger.kernel.org>
-Subject: [PATCH net-next] sfc: falcon: refactor and document ef4_ethtool_get_rxfh_fields
-Date: Thu, 10 Jul 2025 18:32:13 +0100
-Message-ID: <20250710173213.1638397-1-edward.cree@amd.com>
-X-Mailer: git-send-email 2.27.0
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="I5MKr1+6"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a507e88b0aso1040025f8f.1
+        for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 10:38:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1752169133; x=1752773933; darn=vger.kernel.org;
+        h=in-reply-to:from:content-language:references:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=X8olT3jIxXo9GDZvffvU2cJpwCqE12Xm18w/fSCB43I=;
+        b=I5MKr1+6QoKSNZu8snwvssA/2lhGKY1JC3lLrkG0+dXr4mjKvEkyXPJKmeu9WPA5zh
+         EmZsTMnulEZs1T+Dx9jF4z2SE0bVCSVMmkk9GO+d6SyYq0TbaqEf/tWliYZ7gWnB9D58
+         pFd+nXK7V96as1MWJGS9/53O56W9tDrLDlX+8XS/eJZ9akBXm0wguYCUjRHaMLsjZAco
+         +siL5oqHxJ1YN1zxqW3H3QjOv4snDxHjVWV3+C8NNw77WTQvh469Mss6vNcqhDCILGb5
+         t79czZUmqHUiMkOckAGcGcIaQifDWGRy3ZvxKxiFJsb/rvqvscEz5ZPulepwmZ3gLGAU
+         ZHrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752169133; x=1752773933;
+        h=in-reply-to:from:content-language:references:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=X8olT3jIxXo9GDZvffvU2cJpwCqE12Xm18w/fSCB43I=;
+        b=OXV9WWhbff/rixkqhUmN+i6uaVFcUPzdRKFLlKhQMxiR+9fAt/KoJnVbEGq3LqPwyF
+         cFPRKzkdbORW/ve7jtd4OfPkJ1c3akRcwL32qEZYr3dJYBxRvpdwQz4GQnsRKovZATpL
+         SoTwJBLbwcklRgPDL4GBQI/0ymxos4m+kmffDVClyvC+kiURkIlrzvTNJ5mpFTXtAB7d
+         +kenYnXomwCiwj5KFXwx73TDFl9BlPEsA0+NS/OWLDS5J1ToZm5E1b/NNDRk3jPgoEGh
+         27uDKMDMptVrPVRc4FdrkED3+LqM+ECq9s/G+9gaDG6TWrpa9r7JgXDJHBfrTvDLfXkt
+         A1FA==
+X-Forwarded-Encrypted: i=1; AJvYcCWirGFrXz6xIPbZUbM2HsdTAMZhlG5yVkRbGHM29HV/SJ79LjtBYyawSqn1yCjLy/TSBkVxodA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJ6rLdb3fsnAxCOrbAgR/slPRpLkuwIaS5n3vbkr6m/4UrMM44
+	lYTOEfu2o2R0eRbPmbKOcPldFsYkpNK3LoAv0Ja6d+Msr6Dgicq7l4qZsnYTk9K4mFg=
+X-Gm-Gg: ASbGncu7fHM8TpQVzfUIK1u/fwW5SHUXaWfNTrut+NwtE1QOVzEKTed1R4JJJeJoIlJ
+	IPQuKYBaYzBA7JkwMYmaUDzZXw2Va9v/yOji7yucXEmbsR68G5muDruUoVabnnJElXlZZ1RQTmi
+	C0D1gWfvD7dBA4KvdG/xVWPvgXZfctS1I00NYi2/MO5CiLN//Mfh2zOqPwBPspGd5pgsUiUAIYC
+	BxPv7NBW8imh+PZXZkV+QbiUevUX/qQE/s/mXb3vroFkGGNm+dINGlO6PfB5VcqsDXROumNI/M6
+	YTyzDbgY2jreDmgVSSeNKU1eyt3e/C2FykYVqA/xWMUVCwcM+/YByhUUR3VXQ0QUT/xUtFCW0BB
+	YtUGW1FhezUh/ifiMJAPPLGoNAJZ3rSSAXN4ronhq
+X-Google-Smtp-Source: AGHT+IHtjvE5FAA4thxmURUcNTJoyyPTzbj77/L86O60CO4xhxxXBpYFNOuPAHW1QyImtf+mR3ISzA==
+X-Received: by 2002:adf:b601:0:b0:3a5:1240:6802 with SMTP id ffacd0b85a97d-3b5f18fbaf2mr308438f8f.57.1752169133101;
+        Thu, 10 Jul 2025 10:38:53 -0700 (PDT)
+Received: from ?IPV6:2001:a61:1310:c801:2bae:e301:b9d4:9d20? ([2001:a61:1310:c801:2bae:e301:b9d4:9d20])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8e2710bsm2387780f8f.99.2025.07.10.10.38.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Jul 2025 10:38:52 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------NMHI7eV2XxDr6VI3emVtvQ6a"
+Message-ID: <4687a61d-e4e7-4a1f-bbf6-59d3decd6fcc@suse.com>
+Date: Thu, 10 Jul 2025 19:38:51 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: edward.cree@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002312:EE_|DS0PR12MB6461:EE_
-X-MS-Office365-Filtering-Correlation-Id: 536fba1c-86ae-4a10-c83c-08ddbfd7d890
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ko1a+kQQ0ejQElL67/XjQ2C7aRrSQRra+zIJFa5OgsuQtDFH0rQs4GZyuywe?=
- =?us-ascii?Q?Nqo4ER3wiii1uGIw6ZNXOC8KxwEJTd5AZMB5nlpnDxHK6pdtUqV5mM08QKiT?=
- =?us-ascii?Q?PkXK2xQBv/sChweNrFr1hMEdV3ePO7sArQ69LEegEBLJd5u2wsBSwjfw9hbf?=
- =?us-ascii?Q?loWOkJ37EIBh6LpEDdKwhWTWYiobRSUc8DOYt+T1eaqT+hNf0mS08AP5EVPp?=
- =?us-ascii?Q?tuQYygyECOczmWx5nq/PvzZw/h3Kdn9cGiC8CSAyyH1tImEBSwI5AdolL3qa?=
- =?us-ascii?Q?1sMgPVw62rRBwar5O/Mj4Q4B9gEUYAVOwBb8t+n6fB5BfUpPhfxDq50u9D2q?=
- =?us-ascii?Q?xnQDixnGIyGik+diU17nKZ0gOjIK7F2/5TZtAjkTGLeP7Rt2OPsyxmEmgylV?=
- =?us-ascii?Q?wl4eWOeFwqkuMNQolH73AQuqi258RJ4yvNXNjZns+t6yB1VNpd1U6ps5Oedw?=
- =?us-ascii?Q?UD/tw/lYNNawbZgX6lDxvwVdQTm6VQdfjCf+GwRAN47ywCcXqBroAG88Ry2t?=
- =?us-ascii?Q?oLqqxGw4kfvAwSpq70Bo84GQFd2ARCQ2g0UcMUvE3pQzW099bRXpw07lfg5a?=
- =?us-ascii?Q?7mFz+//ELstQyTLWx9HZocToiY/1H1Q/Q4VSGdFN0Xv0C0hfkkMWHdx2urfj?=
- =?us-ascii?Q?RmBUojb6CaLKSKxVFUVXxg/7xBmRPiwTqpLnJRlkM/tZUl5bTA4tWnuYF6F7?=
- =?us-ascii?Q?5/7Wj6A/HVcSyrCsT59AxlwEMfIMD3wyMfVqsyWn4qC0BAtrYy+O0rZimXFy?=
- =?us-ascii?Q?cJn3k7PkCBcurMLOiRwPS2evRsx3ZoBVJhfbYdRRXBRFkkf5vksfqcAOQP9D?=
- =?us-ascii?Q?Mw8fTRM18lnBSc1qGi0iu6MEbwU3Gdh2hFJcY1kiFs7R1PNerSk5IdcpyM0l?=
- =?us-ascii?Q?4gICkvZwygoVm+mai2Y8+D2INv2smQZCr/IRRRwQ2Y2FuSqtEAfQOnnXvZJd?=
- =?us-ascii?Q?y3i2VwXc5rPng7qom2gQ9ZbHDDlZdnRLoLCHZbRJZzYfVj7R6OTtpJkAta4a?=
- =?us-ascii?Q?20xmF115NM8FvIXYZoFwxR+ACn16ldrhGwg5nhXA4R+NOp0picivnzdNYtBi?=
- =?us-ascii?Q?VSmgTQoc+UxgJaUTuHGUeXEr3XIm5zoouNN+BEfWHjunPvxsGpjB99Xv8cbu?=
- =?us-ascii?Q?E0fq0Yxe92FCXdcjR5GvQ199YpJVn/x3cQbggIstojP+otb3fcS19hIFs8kw?=
- =?us-ascii?Q?2Ia7j46fOFPypN8RSMYQoumDfY3evnsZEr8CW6qBLY9rskCuvaVvYq5KzqvI?=
- =?us-ascii?Q?rT/oPFRnV451SqV9hJ/Z84JNG1AsfRKDwUnqnXEWocdCgQhk9Btbf3VFq+SQ?=
- =?us-ascii?Q?IzswhAbKf6WLmEe8nwWl83ZQBtHN9VGNp85jdm5ZmE7jPirxX3xniLNzUeVP?=
- =?us-ascii?Q?gxon9r/Oqb1MPOIEeCI4vnRXZtEafSQOFLudEamU35vQxJAlpC99iFUQeTSw?=
- =?us-ascii?Q?xN5vhaqWlWpSuykLtDZoX+/Jz1buOtz1hV/SuoaLk6dFFoX8AC2hNuEknX5b?=
- =?us-ascii?Q?v2MbJQwRTfc/RfZ9YDX1rqTo5muhQC1N3C7p?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 17:33:12.7425
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 536fba1c-86ae-4a10-c83c-08ddbfd7d890
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002312.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6461
+User-Agent: Mozilla Thunderbird
+Subject: Re: [syzbot] [usb?] WARNING in usbnet_status_start
+To: syzbot <syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com>,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ netdev@vger.kernel.org, oneukum@suse.com, pabeni@redhat.com,
+ syzkaller-bugs@googlegroups.com
+References: <686d5a9f.050a0220.1ffab7.0017.GAE@google.com>
+Content-Language: en-US
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <686d5a9f.050a0220.1ffab7.0017.GAE@google.com>
 
-From: Edward Cree <ecree.xilinx@gmail.com>
+This is a multi-part message in MIME format.
+--------------NMHI7eV2XxDr6VI3emVtvQ6a
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The code had some rather odd control flow inherited from when it was
- shared with siena and ef10 before this driver was split out.
-Simplify that for easier reading.
-Also add a comment explaining why we return the values we do, since
- some Falcon documents and datasheets confusingly mention the part
- supporting 4-tuple UDP hashing.
-(I couldn't find any record of exactly what was "broken" about the
- original Falcon A hash, I'm just trusting that falcon_init_rx_cfg()
- had a good reason for not using it.)
 
-Signed-off-by: Edward Cree <ecree.xilinx@gmail.com>
----
- drivers/net/ethernet/sfc/falcon/ethtool.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/sfc/falcon/ethtool.c b/drivers/net/ethernet/sfc/falcon/ethtool.c
-index 6685e71ab13f..27d1cd6f24ca 100644
---- a/drivers/net/ethernet/sfc/falcon/ethtool.c
-+++ b/drivers/net/ethernet/sfc/falcon/ethtool.c
-@@ -948,9 +948,16 @@ ef4_ethtool_get_rxfh_fields(struct net_device *net_dev,
- 			    struct ethtool_rxfh_fields *info)
- {
- 	struct ef4_nic *efx = netdev_priv(net_dev);
--	unsigned int min_revision = 0;
- 
- 	info->data = 0;
-+	/* Falcon A0 and A1 had a 4-tuple hash for TCP and UDP, but it was
-+	 * broken so we do not enable it.
-+	 * Falcon B0 adds a Toeplitz hash, 4-tuple for TCP and 2-tuple for
-+	 * other IPv4, including UDP.
-+	 * See falcon_init_rx_cfg().
-+	 */
-+	if (ef4_nic_rev(efx) < EF4_REV_FALCON_B0)
-+		return 0;
- 	switch (info->flow_type) {
- 	case TCP_V4_FLOW:
- 		info->data |= RXH_L4_B_0_1 | RXH_L4_B_2_3;
-@@ -960,13 +967,10 @@ ef4_ethtool_get_rxfh_fields(struct net_device *net_dev,
- 	case AH_ESP_V4_FLOW:
- 	case IPV4_FLOW:
- 		info->data |= RXH_IP_SRC | RXH_IP_DST;
--		min_revision = EF4_REV_FALCON_B0;
- 		break;
- 	default:
- 		break;
- 	}
--	if (ef4_nic_rev(efx) < min_revision)
--		info->data = 0;
- 	return 0;
- }
- 
+On 08.07.25 19:51, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    d1b07cc0868f arm64: dts: s32g: Add USB device tree informa..
+> git tree:https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+> console output:https://syzkaller.appspot.com/x/log.txt?x=1554d582580000
+> kernel config:https://syzkaller.appspot.com/x/.config?x=28729dff5d03ad1
+> dashboard link:https://syzkaller.appspot.com/bug?extid=3f89ec3d1d0842e95d50
+> compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+> syz repro:https://syzkaller.appspot.com/x/repro.syz?x=11680a8c580000
+> C reproducer:https://syzkaller.appspot.com/x/repro.c?x=14c9abd4580000
+> 
+> Downloadable assets:
+> disk image:https://storage.googleapis.com/syzbot-assets/3eab0cb43ae2/disk-d1b07cc0.raw.xz
+> vmlinux:https://storage.googleapis.com/syzbot-assets/934d59614ed5/vmlinux-d1b07cc0.xz
+> kernel image:https://storage.googleapis.com/syzbot-assets/4b24078bc227/bzImage-d1b07cc0.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by:syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
+> 
+> sierra_net 4-1:0.11 wwan0: register 'sierra_net' at usb-dummy_hcd.3-1, Sierra Wireless USB-to-WWAN Modem, 00:00:00:00:01:0b
+> ------------[ cut here ]------------
+> WARNING: CPU: 1 PID: 37 at drivers/net/usb/usbnet.c:266 usbnet_status_start+0x189/0x1e0 drivers/net/usb/usbnet.c:266
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 37 Comm: kworker/1:1 Not tainted 6.16.0-rc4-syzkaller-00311-gd1b07cc0868f #0 PREEMPT(voluntary)
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+> Workqueue: usb_hub_wq hub_event
+> RIP: 0010:usbnet_status_start+0x189/0x1e0 drivers/net/usb/usbnet.c:266
+> Code: 00 fc ff df 48 c1 ea 03 80 3c 02 00 75 4e 48 8b bb 70 03 00 00 89 ee e8 25 95 0c 00 41 89 c5 e9 36 ff ff ff e8 a8 3f ec fc 90 <0f> 0b 90 45 31 ed e9 39 ff ff ff 4c 89 ff e8 d4 41 49 fd e9 e9 fe
+> RSP: 0018:ffffc90000277098 EFLAGS: 00010293
+> RAX: 0000000000000000 RBX: ffff888100f80d00 RCX: ffffffff84930727
+> RDX: ffff888105693a00 RSI: ffffffff84919188 RDI: ffff888100f80d00
+> RBP: 0000000000000cc0 R08: 0000000000000005 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000001 R12: ffff888100f81070
+> R13: ffffffff89be8f70 R14: ffff88811da1f028 R15: ffff88811da1f024
+> FS:  0000000000000000(0000) GS:ffff888269262000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007ffd6ab63358 CR3: 0000000116716000 CR4: 00000000003506f0
+> Call Trace:
+>   <TASK>
+>   sierra_net_probe drivers/net/usb/sierra_net.c:929 [inline]
+>   sierra_net_probe+0x70/0xb0 drivers/net/usb/sierra_net.c:921
+>   usb_probe_interface+0x303/0x9c0 drivers/usb/core/driver.c:396
+>   call_driver_probe drivers/base/dd.c:579 [inline]
+>   really_probe+0x23e/0xa90 drivers/base/dd.c:657
+>   __driver_probe_device+0x1de/0x440 drivers/base/dd.c:799
+>   driver_probe_device+0x4c/0x1b0 drivers/base/dd.c:829
+>   __device_attach_driver+0x1df/0x310 drivers/base/dd.c:957
+>   bus_for_each_drv+0x156/0x1e0 drivers/base/bus.c:462
+>   __device_attach+0x1e4/0x4b0 drivers/base/dd.c:1029
+>   bus_probe_device+0x17f/0x1c0 drivers/base/bus.c:537
+>   device_add+0x1148/0x1a70 drivers/base/core.c:3692
+>   usb_set_configuration+0x1187/0x1e20 drivers/usb/core/message.c:2210
+>   usb_generic_driver_probe+0xb1/0x110 drivers/usb/core/generic.c:250
+>   usb_probe_device+0xef/0x3e0 drivers/usb/core/driver.c:291
+>   call_driver_probe drivers/base/dd.c:579 [inline]
+>   really_probe+0x23e/0xa90 drivers/base/dd.c:657
+>   __driver_probe_device+0x1de/0x440 drivers/base/dd.c:799
+>   driver_probe_device+0x4c/0x1b0 drivers/base/dd.c:829
+>   __device_attach_driver+0x1df/0x310 drivers/base/dd.c:957
+>   bus_for_each_drv+0x156/0x1e0 drivers/base/bus.c:462
+>   __device_attach+0x1e4/0x4b0 drivers/base/dd.c:1029
+>   bus_probe_device+0x17f/0x1c0 drivers/base/bus.c:537
+>   device_add+0x1148/0x1a70 drivers/base/core.c:3692
+>   usb_new_device+0xd07/0x1a20 drivers/usb/core/hub.c:2694
+>   hub_port_connect drivers/usb/core/hub.c:5566 [inline]
+>   hub_port_connect_change drivers/usb/core/hub.c:5706 [inline]
+>   port_event drivers/usb/core/hub.c:5866 [inline]
+>   hub_event+0x2f85/0x5030 drivers/usb/core/hub.c:5948
+>   process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
+>   process_scheduled_works kernel/workqueue.c:3321 [inline]
+>   worker_thread+0x6c8/0xf10 kernel/workqueue.c:3402
+>   kthread+0x3c2/0x780 kernel/kthread.c:464
+>   ret_from_fork+0x5b3/0x6c0 arch/x86/kernel/process.c:148
+>   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>   </TASK>
+> 
+> 
+> ---
+> This report is generated by a bot. It may contain errors.
+> Seehttps://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached atsyzkaller@googlegroups.com.
+> 
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> 
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+> 
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+#syz test: https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git d1b07cc0868f
+
+
+--------------NMHI7eV2XxDr6VI3emVtvQ6a
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-usb-net-sierra-check-for-no-status-endpoint.patch"
+Content-Disposition: attachment;
+ filename="0001-usb-net-sierra-check-for-no-status-endpoint.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSBhYWQxNzY1ZmM2ZDRkODAzNmZjNWE5OTc4ZjE5MzE0N2IxODAwNGRkIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBPbGl2ZXIgTmV1a3VtIDxvbmV1a3VtQHN1c2UuY29t
+PgpEYXRlOiBUaHUsIDEwIEp1bCAyMDI1IDE5OjMwOjM1ICswMjAwClN1YmplY3Q6IFtQQVRD
+SF0gdXNiOiBuZXQ6IHNpZXJyYTogY2hlY2sgZm9yIG5vIHN0YXR1cyBlbmRwb2ludAoKVGhl
+IGRyaXZlciBjaGVja3MgZm9yIGhhdmluZyB0aHJlZSBlbmRwb2ludHMgYW5kCmhhdmluZyBi
+dWxrIGluIGFuZCBvdXQgZW5kcG9pbnRzLCBidXQgbm90IHRoYXQKdGhlIHRoaXJkIGVuZHBv
+aW50IGlzIGludGVycnVwdCBpbnB1dC4KUmVjdGlmeSB0aGUgb21pc3Npb24uCgpTaWduZWQt
+b2ZmLWJ5OiBPbGl2ZXIgTmV1a3VtIDxvbmV1a3VtQHN1c2UuY29tPgotLS0KIGRyaXZlcnMv
+bmV0L3VzYi9zaWVycmFfbmV0LmMgfCA0ICsrKysKIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2Vy
+dGlvbnMoKykKCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC91c2Ivc2llcnJhX25ldC5jIGIv
+ZHJpdmVycy9uZXQvdXNiL3NpZXJyYV9uZXQuYwppbmRleCBjMzBjYTQxNWQxZDMuLjM2Yzcz
+ZGI0NGY3NyAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvdXNiL3NpZXJyYV9uZXQuYworKysg
+Yi9kcml2ZXJzL25ldC91c2Ivc2llcnJhX25ldC5jCkBAIC02ODksNiArNjg5LDEwIEBAIHN0
+YXRpYyBpbnQgc2llcnJhX25ldF9iaW5kKHN0cnVjdCB1c2JuZXQgKmRldiwgc3RydWN0IHVz
+Yl9pbnRlcmZhY2UgKmludGYpCiAJCQlzdGF0dXMpOwogCQlyZXR1cm4gLUVOT0RFVjsKIAl9
+CisJaWYgKCFkZXYtPnN0YXR1cykgeworCQlkZXZfZXJyKCZkZXYtPnVkZXYtPmRldiwgIk5v
+IHN0YXR1cyBlbmRwb2ludCBmb3VuZCIpOworCQlyZXR1cm4gLUVOT0RFVjsKKwl9CiAJLyog
+SW5pdGlhbGl6ZSBzaWVycmEgcHJpdmF0ZSBkYXRhICovCiAJcHJpdiA9IGt6YWxsb2Moc2l6
+ZW9mICpwcml2LCBHRlBfS0VSTkVMKTsKIAlpZiAoIXByaXYpCi0tIAoyLjUwLjAKCg==
+
+--------------NMHI7eV2XxDr6VI3emVtvQ6a--
