@@ -1,53 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1785A29ACEE;
-	Thu, 10 Jul 2025 11:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF321944F;
+	Thu, 10 Jul 2025 11:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752146536; cv=none; b=Z46Ye3lK8IPkRR3QQKn/nT6QSAf8CzLzcEEtl2GV6ksg9lMmNF3YCsqNoBTGweG2/E4qsX5kjwscdUO1KwAdskWXT7zNYmo7Df1jSLUswJzfbz+mJBxuKzzbtt3kGHj9O5EdPyGRSIG9Cm9TgX07XUW+m72//q/Ly3CbUnAtryg=
+	t=1752146816; cv=none; b=npxCQ7Rbi3tubhaAaEJAYJrxfTi5rYutHnIyD9dwpovxazGMFfUpLpRsRlyEK5f63PpzXvXA8vtVkYsZYnnnjDuUvp1QxFL8FCpGFCJdlMNBW2DqfILvPkZMcaKWBg9hLezrY2MJuGxSfeYCPumjASda1E7U0NAE4NiADxsAW9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752146536; c=relaxed/simple;
-	bh=FO1OCNrq6w735NJWEpXhsPUksW6u1+YSWEZEvqgzblw=;
+	s=arc-20240116; t=1752146816; c=relaxed/simple;
+	bh=YsnzDVQg/DVkrhs774taeeXQ+MFgNHcGDxgkiSjhU6E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D8WOA2TzV15cozOAQt56IVJQTyz2SGuZI0qlhl2eCvGhjfOfEdyHExOzlg3aky1nVnsnURnB2CaRibWNKLbzlpKd/GwhbUSIROnqyIsHWWyalDlVyUAJfZh1IpGpd5wQDxO5A0asuWRiNeyqsZj3oMvy7lfkFd/hHc6tpqx9MJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BEBUgTqK; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qqs/kLiPc5zP+IlLRlXrwi4wOV9ly5aDPhTO4R7TM5nLJw5MXrLcGsDnZlBJngbwj/F/5A/eVKV4Y2ShPxp72SO7mhL7qfjq/07s0iSs7mP8bUIdoY23JqviDlCXpUOJ9E/MIKw1c2xYa1H5IJs9kTkf+SaWfl+TqyLUpAS7ksU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=faLhZDzg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BEBUgTqK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5026C4CEE3;
-	Thu, 10 Jul 2025 11:22:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="faLhZDzg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0AEC4CEE3;
+	Thu, 10 Jul 2025 11:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752146535;
-	bh=FO1OCNrq6w735NJWEpXhsPUksW6u1+YSWEZEvqgzblw=;
+	s=k20201202; t=1752146815;
+	bh=YsnzDVQg/DVkrhs774taeeXQ+MFgNHcGDxgkiSjhU6E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BEBUgTqK5FsHJbbli1kLU6kCReCBYxmxDLzUtsHhyEcHly/o0I9ntYjbBPbdKlU3y
-	 BEPrgzxj0Ea6Kj8AN1W5Jj96n9eUeGF4UEXvD9w+dQwig3y0kCIeGDXKpsvvXeJjp4
-	 JyUa8VVGGuspSAmUTe2jlcd2YGdCkZ9YZg4wLZwwXQv0Hty8r6PVIubIKVaN9LhPGz
-	 bRUAdB8gSMAZeGHwZYdTuivHaBVSkHY3ThQYhEnaGY6JyhRuYAgOFPJYv3fm1g5wML
-	 7wYa2KD2BXFAu3FBwBXQqj5IjPQTREOwHIuKnW7sqh1d4r5fn8JkkxpdIZmgAf5XqM
-	 Fm7j6ckGZg7vw==
-Date: Thu, 10 Jul 2025 12:22:08 +0100
+	b=faLhZDzgdqb/3jBhBBX/zTH/N4QurnqFsyCi048n7aREzmjV8pBAl1a5w4HHtcQ0A
+	 D1OYkmMiNpVVb+i1oP9aOd7MLe7pxkJ/UVYNZkksz/AU6h4tgMkDLA+h25YFxL6UCp
+	 fMjjRNpCPWB9pwJOwaMr22x6f2IEvg1r8cQqNZP4pxjtwmvXsgTxroowFWV9/5QUbs
+	 uqfpPIp/ht01Qf3q2h3P+O4j3/TPA0DPBNlzJKEAVukOlB3A0nUTn9wQ6ctbZHci/6
+	 nLkUcu3Mm/lEBSfKX40ZlVtubMskrW4VR9bP/hfTxZrGwLD6175HGyjNSaV2RuTqo7
+	 e0HUNzAALuVtg==
+Date: Thu, 10 Jul 2025 12:26:50 +0100
 From: Simon Horman <horms@kernel.org>
-To: y.oudjana@protonmail.com
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Luca Weiss <luca@lucaweiss.eu>,
-	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] QRTR bus and Qualcomm Sensor Manager IIO drivers
-Message-ID: <20250710112208.GR721198@horms.kernel.org>
-References: <20250710-qcom-smgr-v2-0-f6e198b7aa8e@protonmail.com>
+To: Suraj Gupta <suraj.gupta2@amd.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, michal.simek@amd.com, vkoul@kernel.org,
+	radhey.shyam.pandey@amd.com, netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	dmaengine@vger.kernel.org, harini.katakam@amd.com
+Subject: Re: [PATCH V2 2/4] dmaengine: xilinx_dma: Fix irq handler and start
+ transfer path for AXI DMA
+Message-ID: <20250710112650.GS721198@horms.kernel.org>
+References: <20250710101229.804183-1-suraj.gupta2@amd.com>
+ <20250710101229.804183-3-suraj.gupta2@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,52 +47,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250710-qcom-smgr-v2-0-f6e198b7aa8e@protonmail.com>
+In-Reply-To: <20250710101229.804183-3-suraj.gupta2@amd.com>
 
-On Thu, Jul 10, 2025 at 09:06:26AM +0100, Yassine Oudjana via B4 Relay wrote:
-> Sensor Manager is a QMI service available on several Qualcomm SoCs which
-> exposes available sensors and allows for getting data from them. This
-> service is provided by either:
+On Thu, Jul 10, 2025 at 03:42:27PM +0530, Suraj Gupta wrote:
+> AXI DMA driver incorrectly assumes complete transfer completion upon
+> IRQ reception, particularly problematic when IRQ coalescing is active.
+> Updating the tail pointer dynamically fixes it.
+> Remove existing idle state validation in the beginning of
+> xilinx_dma_start_transfer() as it blocks valid transfer initiation on
+> busy channels with queued descriptors.
+> Additionally, refactor xilinx_dma_start_transfer() to consolidate coalesce
+> and delay configurations while conditionally starting channels
+> only when idle.
 > 
-> - SSC (Snapdragon Sensor Core): Also known as SLPI (Sensor Low Power
->   Island). Has its own set of pins and peripherals to which sensors are
->   connected. These peripherals are generally inaccessible from the AP,
->   meaning sensors need to be operated exclusively through SSC. The only
->   known SoCs in this category are MSM8996 and MSM8998 (and their
->   derivatives).
-> - ADSP (Audio DSP): Shares pins and peripherals with the AP. At least on
->   some devices, these pins could be configured as GPIOs which allows the AP
->   to access sensors by bit-banging their interfaces. Some SoCs in this
->   category are SDM630/660, MSM8953, MSM8974 and MSM8226.
-> 
-> Before Sensor Manager becomes accessible, another service known as Sensor
-> Registry needs to be provided by the AP. The remote processor that provides
-> Sensor Manager will then request data from it, and once that process is
-> done, will expose several services including Sensor Manager.
-> 
-> This series adds a kernel driver for the Sensor Manager service, exposing
-> sensors accessible through it as IIO devices. To facilitate probing of this
->  driver, QRTR is turned into a bus, with services being exposed as devices.
-> Once the Sensor Manager service becomes available, the kernel attaches its
-> device to the driver added in this series. This allows for dynamic probing
-> of Sensor Manager without the need for static DT bindings, which would also
-> not be ideal because they would be describing software rather than
-> hardware. Sensor Manager is given as a working example of the QRTR bus.
-> Kernel drivers for other services may also be able to benefit from this
-> change.
+> Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
+> Fixes: Fixes: c0bba3a99f07 ("dmaengine: vdma: Add Support for Xilinx AXI Direct Memory Access Engine")
+
+Hi, 
+
+This is not a proper review.
+And there is probably no need to repost just becuse of it.
+But:
+
+s/Fixes: Fixes: /Fixes: /
 
 ...
-
-Hi Yassine,
-
-This series both adds an IIO driver and updates Networking code.
-
-I'd suggest splitting the series so that the Networking updates can be
-targeted at net-next, while the IIO driver is targeted at a different tree.
-
-Also, I note that this series does not compile against current net-next.
-This seems like it should be addressed, at least for the Networking
-changes.
-
--- 
-pw-bot: changes-requested
