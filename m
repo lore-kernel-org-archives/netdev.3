@@ -1,132 +1,157 @@
-Received: from mail.actia.se (mail.actia.se [212.181.117.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010043.outbound.protection.outlook.com [52.101.69.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB03928E56B;
-	Thu, 10 Jul 2025 09:05:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752138357; cv=none; b=kOqTYhu2U4OXB0SQcp14uHi44SC3ForY66WzrShixZUpZWBMrenG6ssY03BpNvKAmqyVKLooCnZuCzjcp6MgPvaoTv7lc90/7+gnA7Whhp5mSMRzv5yNPYeeQ3piCGcim155wWfQX6ncJxOqDuFKHIWGLXy9vc9XSwfR4St8/7U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752138357; c=relaxed/simple;
-	bh=7WYC0Q01SuTeXVO2p/jlKOCMn9aAW/fTfixuG0PDXYo=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=UKLmLO6gkeJC/jyoQ9kLbtYwXvChoBjXsnKeb52t8Oo9QEzqszpRAMfvDUW913EX1qcN/SoUljd0vwT75cLGyYpnxOJlB+b3JClJNwvNLh2C2OHBtue7sWQNljUSdFtNM/pKkGWImNbFt+/X4snha5/d/Lc4MfS6qQr/9Wzf5h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
-Received: from S036ANL.actianordic.se (10.12.31.117) by S035ANL.actianordic.se
- (10.12.31.116) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Thu, 10 Jul
- 2025 10:50:40 +0200
-Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
- S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%6]) with mapi id
- 15.01.2507.057; Thu, 10 Jul 2025 10:50:40 +0200
-From: John Ernberg <john.ernberg@actia.se>
-To: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Ming Lei <ming.lei@canonical.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-usb@vger.kernel.org"
-	<linux-usb@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, John Ernberg <john.ernberg@actia.se>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
-Thread-Topic: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
- event
-Thread-Index: AQHb8Xe2qza52xx55UmGbnkg6Pc/lg==
-Date: Thu, 10 Jul 2025 08:50:40 +0000
-Message-ID: <20250710085028.1070922-1-john.ernberg@actia.se>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-mailer: git-send-email 2.49.0
-x-esetresult: clean, is OK
-x-esetid: 37303A2956B14450657066
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9761328CF77;
+	Thu, 10 Jul 2025 09:06:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752138392; cv=fail; b=Tma7UoKmIpKQpYe4dD8NP9LpxdI5sc9/m4KazeppXOFfWSm1Rp1bcjQgWxV1nFWmsf2vGQEUI7b+Cn/FUgZ/koFzN+aukv8CMCrjtm3ZhEGeAX0PAeKolse2Iuc1qRDBGkfzVvfCuTSYiItZdeXC6gmaeeq21iGsDs/upstRxxc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752138392; c=relaxed/simple;
+	bh=/Aw/PHqD9tu/fmEVV6QszjC2GyWzmSzFh+NVDnU0XKs=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=KX26Znos22EPP+0I0BRQWDqAwhvSAzfhDCUIF40sR4OGR8eZDrStyflFc9qUEQDZXIfnt5gGQuLHGz4KGyoEoDewlg4TnsJk7X3yS7OJqUsegfg+Jdj0xLA8Z/6AoAzKaMxTRh9s0ss+uS0H1xO8fQu++TURPQXlZWWBO/NlDl8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nvYrl4HQ; arc=fail smtp.client-ip=52.101.69.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nvYrl4HQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bRL9sYnFSp6wuv7nURNWq29Te3Doq1WcnCzN141a5jb1LHhaQlS1dJhN5X2kG3n8fHN6+ZwOVs8dw9siuewo6q3rvRbwKmKEvYX17QwxKxqijZ4xYRb5K9a43FVZZeQaTc1J2AaINanZrlfr5+zq+5sgj9FHAv+UU8dCwYEiaDhs6tXgJ31H1fFQxjqO6nOb6brYsxVsvFP57izWHGs7SwIs42hf6y5LOXECRoH2Y3pMWg24ZVxOM1ntWaA7dZE3ZNY/ym2PmWqfFkxA5axI5yRE2diOh+7UX2N6IIvOoadwZZo54TUUyk7kNiWHIL0pMoT1nIDh2FeyXeaC7AAO2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qws2xTHjY08XebTp3ivmMedALmi2k4ywRd6hyYGFzwA=;
+ b=iDnQL4ySKMD5240ChqhaknJd7uK2rDsS09+YWldmQNgfuIqkTqbR1M/KtyjopTV3m+9+gvfcEwYITdHQRuaeEhttl/5wsnLB/i+/ckQ1HYqo2Q8d8fnpv5xD2rUhlObkyYC11zLPd7VoSJT7AvOFDtlCGDGS19QkSeqknvzLOzPYYDIKi9px7gfw/ZWcVT3Lb9UQKEeH+aLA6bCCYF1jvPODDOhdT5abVmxq1fzYL9EmCo0ybeFnTPB0hxh5oQ2ExIH2d7mAJ5KVO+0wBCi+ULaw/TiXrSmfAtm76sczaqgE3Wos/cV1LOdTGpCICZh4c38tuQ+cowfPCaZwzCOUnQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qws2xTHjY08XebTp3ivmMedALmi2k4ywRd6hyYGFzwA=;
+ b=nvYrl4HQIfl96V07kfp0WVLtaXOJp14xw9JAEP+ekkyXBIHeGHePle3kGHaT6E+HqoDAVn89Kyil6Lzc3pu4OBy3v4fPkTuBAqU82hAeSNwllNYEs0MmROQ08HyVb82QV1K7lZWv4vLd0Ik/xEiMOBI8CfxbZitoSjL7wWW+Gl4dq0/IQf5hHO2TVX+Ock7VbgGryCtdBHoXrxJudZO5FshFZZ7HHmySjmBVcYqz/CnYjEEwluFFQLXUDwh+6J+eirXWx6K0QuQ+1HOEQ7NF+eohnQg5qtrWND34YrIJYE+HxzQNw8++0gklccPwkg/Eo8/H2xKyX8mDRgFflLuuBA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DB9PR04MB8233.eurprd04.prod.outlook.com (2603:10a6:10:24b::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.25; Thu, 10 Jul
+ 2025 09:06:27 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8901.024; Thu, 10 Jul 2025
+ 09:06:27 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: shenwei.wang@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH net-next 0/3] net: fec: add some optimizations
+Date: Thu, 10 Jul 2025 17:08:59 +0800
+Message-Id: <20250710090902.1171180-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA0PR01CA0038.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:81::11) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DB9PR04MB8233:EE_
+X-MS-Office365-Filtering-Correlation-Id: 117d5178-3e4c-4326-dbc3-08ddbf910d1c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|366016|19092799006|1800799024|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?K7Il1dGK/Q1ZLqbIgO/wQ6OgkLSbFWsrFmkFqb68F+br/v9aRD6gu+xQocD3?=
+ =?us-ascii?Q?fNhRFYwKYhqJXn+0o7wzVhraF+9oLXo3OrsQib/TKIm8xJA3fnFJHbpprhp3?=
+ =?us-ascii?Q?XrJWKEglZnIkamn/NrdyoJKj5WXtCeCIjSjikJDgOUvzI7luFILDnP75mqES?=
+ =?us-ascii?Q?Q1FQnORCQzfh38UaW3/kKeQyxyQNiaKR/ecXS5RwRkdC00Ery7vcE75tjzOw?=
+ =?us-ascii?Q?TY5bD/FjFGAJ9xKX3CJqqkA6GTlVXBxs0ui3CkOifJEpWKn6pXLALP0Kv60Z?=
+ =?us-ascii?Q?DCEOAjlcp9YQDjiEhp8+daiJjCbJJiheHEoDjF29qCOS+utb299t/PRkxtVG?=
+ =?us-ascii?Q?oFqb4s9CDaO8wkXI6MjK6uoRrX8YXDjJmyPuwkJODai2qgPDQaCBbtxIyshx?=
+ =?us-ascii?Q?EJdk5eCZnvtAKucdKEiegmUGTr0m9HJxYvIRZAcIecci8u5W9PU1mACkfpQF?=
+ =?us-ascii?Q?TMEFHaXAzNpaU1YzMFgeEjxxEAZRqve5yF8exF+NIivJf7NnVMpOiP5YwSj3?=
+ =?us-ascii?Q?sHqHvr/sPLPZgIz3YqT4Prr6XEeJBV7lzxOTSbZiSoIh4x6qxeNLXCn5tXYi?=
+ =?us-ascii?Q?XXtxdEjn9+hY60leM3kN4qK+SizhAWqDTmFDak2fNpuOpEhK/9zfe7WodJ+o?=
+ =?us-ascii?Q?fc6RK6fS++xTssN3/oP1EoICgqc+mBYkAWcsTFbZHeUELsQcKwLta70BhKzi?=
+ =?us-ascii?Q?MQXn5SuLhN5tchctaoniXFidfKXhzdxYUGER0x4OxkbMDzqagsj0X5pZoRgb?=
+ =?us-ascii?Q?9U1gjSWdmgQ1bTrnOXLyXkhJ0/ZteY8uziqjHk3bhrQcvezQ9U7C2mJwD8hV?=
+ =?us-ascii?Q?Biti+h7nLRO1oAQZd0GSlaIcqtKOI7SVAXpi9CnUy1LucIMUD1ZeEk3cIdu4?=
+ =?us-ascii?Q?uFdMaEHA34NXKAYEZlNBYgt/2n1HmYMGQx4DCG/yvo2pvj0Af2bQ9WOThKbF?=
+ =?us-ascii?Q?RjDbCrs2xpuQqdzkriPSZ4Vz89a64yn3o64XyXr3XHPx/bhfwpZeS0SQVlxt?=
+ =?us-ascii?Q?tDiDYjIqg6RO+DM13OuTvX2xQ45JJ0XpHyYOD3JlSePdQFF7HlfH//lsRhD/?=
+ =?us-ascii?Q?KKwY7mrZBYAI+ukNYVKxGZV/5XAeLhmGk8wHhzh+Z6046y0il6IcCaacQeDN?=
+ =?us-ascii?Q?bTFnZc20M2qA2ZBAxImPx/OTS/bKU7dOjxDYfHucOFZRDluOvgBw/YD59YtC?=
+ =?us-ascii?Q?H4J7x2EhR3rm8k5cmNgbiSG4+I0l9gSln4LyPuy4Wzklfe9iT+vmwRu/Bc85?=
+ =?us-ascii?Q?A1yO/BRH4T2lUDO695S3G4K2B/troFFOpXO58EBlvWJnjpOe8bhvlAIfEv19?=
+ =?us-ascii?Q?7qsS0g4dyYxTzlb/bvgicc4Gz76CXDvLJ/WoEgP97QKyxAQvKtHjlYsL9Cg4?=
+ =?us-ascii?Q?A/ESEq4TUm4KEujx7dFYMObFr5KfOASnOgeRB1YFiATqiqdbK0i8Ss620NX3?=
+ =?us-ascii?Q?H1lQMEbSX4XwvlyYsj+2anT1OWuf+PyxFnKH+O/oObDMcRE7IEyd4w=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(19092799006)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?TK2V4JsE54xkQj2KwfUT01btZUz0cQ0TZ2iXO8PGLixLhjyb9tOvI3CFATp0?=
+ =?us-ascii?Q?YFOWSB95P8QDi0CXHXMOfV74FHPEjmphxySgGmP4mWAzw/IpnMNSiSjO5bI7?=
+ =?us-ascii?Q?Phck3LtIuF6wjo1WVMe02tVIt62hFbZzYVO6rVxgHJFkB4E64i2kWdXvFZui?=
+ =?us-ascii?Q?t57w+bpWtFPuyuEJnp2hHvpLgqIkpjzDWO4XjAzEOS1i2mLISKdBzxOfrVKr?=
+ =?us-ascii?Q?r+bkjE28b4GPa0HgzYCMM6Xa8aPupURL4uiJ9NeRnf8W9Rh3d3hOBjMLOKDO?=
+ =?us-ascii?Q?/o9VPATJHPDs2zI7+Q+yqeT9ROOBa3aEFNfHKxopUq7k/fSGyl1dnk16SDCG?=
+ =?us-ascii?Q?cY5vpV6JuuKNi7R3/fqUESEN39Bst24PcE5ju22fClryxKzLdNhCb8OyWyLu?=
+ =?us-ascii?Q?bNZ8EceDW3wSpFrKh7R39hdsVEfrqexaxpV3ms2kG9LvUsOi9e5bJSdPHzNq?=
+ =?us-ascii?Q?YuQgjMw6j8bMN1JCFMgk8V0Xnxp9Kb/KCL1/JlzQQe3d7WQ9cJ2jFVzBAMlr?=
+ =?us-ascii?Q?J1v+LAtcKy8eJxpjgAICu2qYn6swKQQ1xZrW6fOyGqIU/aXTankstZjydoAg?=
+ =?us-ascii?Q?cgX58PZh4rxAZRH0YsxkdkgrMhPdIOVUfPORh+xhcHIvd6u7O3WpQgJamVrK?=
+ =?us-ascii?Q?eK+eblUnT3sZtD8qVjwO+/Fzjp7u+b6trmOeCKRQrkfhc2W7yitngjEDu/39?=
+ =?us-ascii?Q?QIz5qy5LfcVTxZPHJ0m650cmrvOLUfTN/eXA5RO4Wi/H2eHpfwR9uYEz9Ehc?=
+ =?us-ascii?Q?rkcvc8na0XT5w5IY3jBKs2r6Sl5ZJHtSTi+1FCUnCQYB0UsJG5V3uMQLsiO7?=
+ =?us-ascii?Q?sSKbQn5dVjrHL8MesmA4QK1Bzay54Z8pKU4VK8VJXKP6gRYQPbDknQB/uVEJ?=
+ =?us-ascii?Q?jSqQwJM67L1rQm4obfEnTFOt8hvxMslb8MBrpwqtozqmmVlXde/Y1097Di6n?=
+ =?us-ascii?Q?2Yzl11gyWjS7TEYhc9qmmafbI+FPhhO7fUghe9d+tQGUkZYYdwzDYpx4oCnC?=
+ =?us-ascii?Q?xLFFoBNd6HphxAHdPUd4Q3iuZ9OQySCF/q8uSK+QhyipwMNfn8zsou8Kix+8?=
+ =?us-ascii?Q?u1P059dxoCXmyPW+jKqgpwQrhxQ3vCf2u0qCEV0NbMdNMCHgt/WIUqWwfDU4?=
+ =?us-ascii?Q?CS6w/s+IWmeeexZzxrG1IsB2toN8H4t+HUaiMqL9xYUfIbDFTJpe0He3to72?=
+ =?us-ascii?Q?7NF0rWSNgfp+UBF55V/f7rK6AG4YLz+BSgJfjXYDKQB83eoyqmZl3zA+apWd?=
+ =?us-ascii?Q?9vkX7v3DpZ7J8xsDEpi0q/TW3t+13gV3C1NvhiF4oOACFr7F8i+iSbtFMcln?=
+ =?us-ascii?Q?qnLRWrH3l5l3Hkcd9auJuhPfz2xwHcem8xD75q3fGiyuQeWULZYzBwYNE4e1?=
+ =?us-ascii?Q?DLpuLc6U1wx0PmiuHOMlCrz0g7AyFKtbyGAWPilbL9v2k7b7ZCC5rUE8ONUn?=
+ =?us-ascii?Q?9/LPGHtNmrHpYYkhq2+Os/RjRgIM3uMuUTlgYjVrqnPWdCOp6FZ06MJh6S/R?=
+ =?us-ascii?Q?mOJHwrC2ES86C0LlgSXudVcLLhsRAupKpT+SA0HuBWnMNfA09V39Nerdm/ao?=
+ =?us-ascii?Q?hUHWyfXtbvnndZXFGEyeb2VFPHrYhDp6hTRD1eYb?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 117d5178-3e4c-4326-dbc3-08ddbf910d1c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 09:06:27.1028
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4g4f0c2F32Y8XYXSPR9tswlWXhmu95OJHXqY3+Noh+3D7DcBngZYmiyTVtdCGHj/M6egSNmsl/GknDtYcI5cCg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8233
 
-Having a Gemalto Cinterion PLS83-W modem attached to USB and activating the
-cellular data link would sometimes yield the following RCU stall, leading
-to a system freeze:
+Add some optimizations to the fec driver, see each patch for details.
 
-    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... =
-} 33108 jiffies s: 201 root: 0x1/.
-    rcu: blocking rcu_node structures (internal RCU debug):
-    Sending NMI from CPU 1 to CPUs 0:
-    NMI backtrace for cpu 0
+Wei Fang (3):
+  net: fec: use phy_interface_mode_is_rgmii() to check RGMII mode
+  net: fec: add more macros for bits of FEC_ECR
+  net: fec: add fec_set_hw_mac_addr() helper function
 
-    Call trace:
-     arch_local_irq_enable+0x4/0x8
-     local_bh_enable+0x18/0x20
-     __netdev_alloc_skb+0x18c/0x1cc
-     rx_submit+0x68/0x1f8 [usbnet]
-     rx_alloc_submit+0x4c/0x74 [usbnet]
-     usbnet_bh+0x1d8/0x218 [usbnet]
-     usbnet_bh_tasklet+0x10/0x18 [usbnet]
-     tasklet_action_common+0xa8/0x110
-     tasklet_action+0x2c/0x34
-     handle_softirqs+0x2cc/0x3a0
-     __do_softirq+0x10/0x18
-     ____do_softirq+0xc/0x14
-     call_on_irq_stack+0x24/0x34
-     do_softirq_own_stack+0x18/0x20
-     __irq_exit_rcu+0xa8/0xb8
-     irq_exit_rcu+0xc/0x30
-     el1_interrupt+0x34/0x48
-     el1h_64_irq_handler+0x14/0x1c
-     el1h_64_irq+0x68/0x6c
-     _raw_spin_unlock_irqrestore+0x38/0x48
-     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
-     unlink1+0xd4/0xdc [usbcore]
-     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
-     usb_unlink_urb+0x24/0x44 [usbcore]
-     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
-     __handle_link_change+0x34/0x70 [usbnet]
-     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
-     process_scheduled_works+0x2d0/0x48c
-     worker_thread+0x150/0x1dc
-     kthread+0xd8/0xe8
-     ret_from_fork+0x10/0x20
+ drivers/net/ethernet/freescale/fec_main.c | 44 ++++++++++++-----------
+ 1 file changed, 23 insertions(+), 21 deletions(-)
 
-It turns out that during the link activation a LINK_CHANGE event is emitted
-which causes the active RX URBs to be unlinked, while that is happening
-rx_submit() may begin pushing new URBs to the queue being emptied.
-Causing the unlink queue to never empty.
+-- 
+2.34.1
 
-Use the same approach as commit 43daa96b166c ("usbnet: Stop RX Q on MTU
-change") and pause the RX queue while unlinking the URBs on LINK_CHANGE
-as well.
-
-Fixes: 4b49f58fff00 ("usbnet: handle link change")
-Cc: stable@vger.kernel.org
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-
----
-
-Tested on 6.12.20 and forward ported.
----
- drivers/net/usb/usbnet.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index c04e715a4c2a..156f0e85a135 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1115,7 +1115,9 @@ static void __handle_link_change(struct usbnet *dev)
-=20
- 	if (!netif_carrier_ok(dev->net)) {
- 		/* kill URBs for reading packets to save bus bandwidth */
-+		usbnet_pause_rx(dev);
- 		unlink_urbs(dev, &dev->rxq);
-+		usbnet_resume_rx(dev);
-=20
- 		/*
- 		 * tx_timeout will unlink URBs for sending packets and
---=20
-2.49.0
