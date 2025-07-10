@@ -1,106 +1,84 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5373112B71;
-	Thu, 10 Jul 2025 17:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2F6264FB3
+	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 17:41:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752169175; cv=none; b=jyHefC7LBNLDTQD6GB9sQLxhjuDvQWA9xR+c5Ho0YULSOm3VDQUlWAEuFZ8DXIk9NLnWJVIQ7gtO70nEtVtgEZkUmcuaqIfYEHO6M49Dz3Ul54wYcA4fv3ZI9DIac2BfVv164ZfxnxUc6sI+wS7xkroiWSsweJL7ymckxnYfl90=
+	t=1752169263; cv=none; b=QL6Qu1qruLydMSUyj90A/Yd5yq9nE40/KTxIqDXXcykhFISS/1WA0y4O1e1Wh3zm9raxbkRcAide1u8EfwiGI9bOLJ3VxtHhViMs/RhHqigmi/gl6c6rszsO68Rm0yYyPqUwcpc5fAG3L/No6X0Y8XhqA+lxyio8ZmFi95HxRSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752169175; c=relaxed/simple;
-	bh=zLub8N//C+GGcogUcLGBKxJjGKX4CYLw9ra/Jl4VpzQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=px61i3I47abYS/B3fUXEyLu9l4SCitfZ34nuo+tY9pHziD5A1Z5mmxKkZuDgZn8t4LAd1EqYgA24LcfFq/w5b/x0vaZw3bu1aqmsFfLky0nb5I0cj6BruAJXGDnkg/ygd+3wBve1HCDdnPR/IUb79dn+x2kSf6epNXBFeSdCudg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=MVBf/IEN; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1752169263; c=relaxed/simple;
+	bh=L857CHlhsuSTW0TQ7rB6RRCcVIwDIbTqeg3ypLKG03U=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=SBXRdx5B8xIvkSliMka4zomnyEeyOdWc/Uio+so6J7Zw75zkt5TC523UDibXQMdBnkNzijbrLDO4YsDzc4yPfpAPe2yarpbwDzl3zQK9BbcNdH+hEj9J94ZM7Mtx8pUBTyj5Jcy9ZkTqrdxW3ksMu9MtRx3tE28AOuo7Sf4TR24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JeSzlV3b; arc=none smtp.client-ip=95.215.58.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="MVBf/IEN"
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56AHYxFm008594;
-	Thu, 10 Jul 2025 17:39:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=c8FeSJ9m13CyoarXH4iTrYZVBXZu3
-	gJ4ofG/36xGTbU=; b=MVBf/IENqHqT0eCGYLzf+aow/dkLl2x/0UpAjSFMQEayf
-	5b3fs6tzYjgxR7bRuqfenEz0/zcqc+0ZD18BcbuIF6bHOjMJNK0GwMG9uWqgQy9L
-	y1+73aeW8Gogih3GExXJ5JmnDYXoSQYudXxWnG5aQjMwHybGx71preSq4gmRMH8x
-	AZY8VhjE0QW+7XNW3+uFxsRUcrNtSetkaMsoKdC6oKCa4YcZjD3/7rsy4u8sTnQ0
-	xzuIiVBCEVhRodVtDpyt0wxzdCLcN54TmQTDm4OVhm1R8ud2flXdwcfa3T6IT9qK
-	FjH104KFKeS4KW0e0J5YSigJIqHuu8pB2zCRXnv0Q==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47thb884gt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Jul 2025 17:39:21 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56AG02XZ024219;
-	Thu, 10 Jul 2025 17:39:20 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47ptgctvwa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Jul 2025 17:39:20 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56AHbwtn003025;
-	Thu, 10 Jul 2025 17:39:19 GMT
-Received: from ca-dev110.us.oracle.com (ca-dev110.us.oracle.com [10.129.136.45])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 47ptgctvv7-1;
-	Thu, 10 Jul 2025 17:39:19 +0000
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
-To: abin.joseph@amd.com, radhey.shyam.pandey@amd.com, michal.simek@amd.com,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-        netdev@vger.kernel.org
-Cc: alok.a.tiwari@oracle.com, darren.kenny@oracle.com,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: emaclite: Fix missing pointer increment in aligned_read()
-Date: Thu, 10 Jul 2025 10:38:46 -0700
-Message-ID: <20250710173849.2381003-1-alok.a.tiwari@oracle.com>
-X-Mailer: git-send-email 2.46.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JeSzlV3b"
+Message-ID: <1019ee40-e7df-43a9-ae3f-ad3172e5bf3e@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1752169249;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n+ATdybQuRHQN8pHe9yiY9p1Aahzgdi9W0V+GBopZ7g=;
+	b=JeSzlV3bGL7GVxrL5W/GIoU8aHFdnOtC0RpkYg+LYzCk+cSKcIzUJ7Ym3K9jqEkO1gsxrK
+	8j0Z3HBn4MAWYgTYOquf/JPtD8lWZSveIs3YbtA7HtJ065fl77er4AJlZv1f7YFR30sGpZ
+	VzZ+w3FRt1ZZZrodbUuJiIp0RL530VY=
+Date: Thu, 10 Jul 2025 13:40:33 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH net] net: phy: Don't register LEDs for genphy
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+ "David S . Miller" <davem@davemloft.net>,
+ Florian Fainelli <f.fainelli@gmail.com>, Eric Dumazet <edumazet@google.com>,
+ Christian Marangi <ansuelsmth@gmail.com>
+References: <20250707195803.666097-1-sean.anderson@linux.dev>
+ <20250707163219.64c99f4d@kernel.org>
+ <3aae1c17-2ce8-4229-a397-a8a25cc58fe9@linux.dev>
+Content-Language: en-US
+In-Reply-To: <3aae1c17-2ce8-4229-a397-a8a25cc58fe9@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-10_04,2025-07-09_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 bulkscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=999 adultscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507100150
-X-Proofpoint-GUID: 5k9rPI_JtGZ6kdUU9BmPnape8Ja8n8aB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEwMDE1MCBTYWx0ZWRfX7DTJhPPI5/tw W9W/UlUKHqCUvjRlBAla9Rqn6sZLYF1V0GdLUrr5VFTyDeO5bxrJyTE+Bsz7ksoLmgR/ox5HEQr +N6Kmd0LStUwtYQAZNUVB+0VXS8oLgcSiWDCAVsyCzDVuMYqDSc6Gbv2BraXruovJVrXa1sGclu
- TKUS2Tuc6YZbh7q2DTeN1kiXjPY17IjFtZwiY69FSkAEuAX3pSro8o0oAe3tWzjPfBvH3eLZbRr besFlLznpphU//ar+/7vQBxXexHW4GTADoEkf5aJVz6uT4WIJeXuFJb/hQ09HG6JdNyVPEKBFm/ QmH/+ifoQLHjzIIQqiyA96Ndz4c3cSDyAjQriPaCa7137cSgKPY7900uGD/8zWE0UbZhjuSj/tT
- Vsy5aDLlfST2Rvk+zcTSI/KSefqHOAb2Ff63Pv9wJuhSggwKx/JuEIP8Caa1nfVppEMYle7+
-X-Authority-Analysis: v=2.4 cv=U9iSDfru c=1 sm=1 tr=0 ts=686ffac9 b=1 cx=c_pps a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17 a=Wb1JkmetP80A:10 a=yPCof4ZbAAAA:8 a=GbX1-k0q0cNaDmerjHAA:9
-X-Proofpoint-ORIG-GUID: 5k9rPI_JtGZ6kdUU9BmPnape8Ja8n8aB
+X-Migadu-Flow: FLOW_OUT
 
-Add missing post-increment operators for byte pointers in the
-loop that copies remaining bytes in xemaclite_aligned_read().
-Without the increment, the same byte was written repeatedly
-to the destination.
-This update aligns with xemaclite_aligned_write()
+Hi Jakub,
 
-Fixes: bb81b2ddfa19 ("net: add Xilinx emac lite device driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
----
- drivers/net/ethernet/xilinx/xilinx_emaclite.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 7/8/25 11:52, Sean Anderson wrote:
+> On 7/7/25 19:32, Jakub Kicinski wrote:
+>> On Mon,  7 Jul 2025 15:58:03 -0400 Sean Anderson wrote:
+>>> -	if (IS_ENABLED(CONFIG_PHYLIB_LEDS))
+>>> +	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev) &&
+>>> +	    !phy_driver_is_genphy_10g(phydev))
+>> 
+>> Breaks build for smaller configs:
+>> 
+>> drivers/net/phy/phy_device.c: In function ‘phy_probe’:
+>> drivers/net/phy/phy_device.c:3506:14: error: implicit declaration of function ‘phy_driver_is_genphy_10g’; did you mean ‘phy_driver_is_genphy’? [-Werror=implicit-function-declaration]
+>>  3506 |             !phy_driver_is_genphy_10g(phydev))
+>>       |              ^~~~~~~~~~~~~~~~~~~~~~~~
+>>       |              phy_driver_is_genphy
+> 
+> This is due to
+> https://github.com/linux-netdev/testing/commit/42ed7f7e94da01391d3519ffb5747698d2be0a67
+> which is not in net/main yet.
+> 
+> --Sean
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_emaclite.c b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-index ecf47107146dc..4719d40a63ba3 100644
---- a/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-@@ -286,7 +286,7 @@ static void xemaclite_aligned_read(u32 *src_ptr, u8 *dest_ptr,
- 
- 		/* Read the remaining data */
- 		for (; length > 0; length--)
--			*to_u8_ptr = *from_u8_ptr;
-+			*to_u8_ptr++ = *from_u8_ptr++;
- 	}
- }
- 
--- 
-2.46.0
+I see this is marked "Changes Requested" in patchwork. However, I don't
+believe that I need to change anything until the above commit is merged
+into net/main. Will you be merging that commit? Or should I just resend
+without changes?
 
+--Sean
