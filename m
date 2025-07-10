@@ -1,281 +1,391 @@
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569D1156F4A;
-	Thu, 10 Jul 2025 08:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7A8156F4A;
+	Thu, 10 Jul 2025 08:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752137249; cv=none; b=UM60QQqoEsIvSWQVS6k7WQJZwKAhFSTQsKx2ZR1RfEI9DUoB2XG1qP/H5Oz9E6Jq4kZBmakHsBwzcl+duuPgAU1HMfPhBCePenIFzh1nkEG6gULtYVlH8cvScqzhHsgqkxxWgd0JEnYaoAphcPPBApfM8dAg30PyMQiAYcWebds=
+	t=1752137625; cv=none; b=InofNi0aeo9j031P0ftO6mdCTqFR/w8M9YrSTlsmNhmZqElBcqmhv4ThYSNWVvh4ZJdpwLsfI9HZh/VP359RFzToW51l/O60yq8L8fpDP6zGTHF8XEBwJrPfRgX23bgStIX4jG4CglLSp3TA46eXKL90ngJdqZT7V0lbowCy1xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752137249; c=relaxed/simple;
-	bh=ekuLnQdZp5hBMg0GrYtuko9ZZ1jvyVh9UAP2a1KyHk4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AiYfK5hpNSbnoA50EiacBpUJUiRL7AvOz5YKwtCMSpgYjoo+vhWa3hTSbHY05lTTOO5qsIVEMWArFvPESwxSndFkVI4PCY3T0m9CxAT/a/2w5q2803VZheUco7U2s3E4a/navcg6k9bqdiE8YnppxPqMeV4gArniSWnNSxKngo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-681ff7000002311f-30-686f7e191331
-Date: Thu, 10 Jul 2025 17:47:16 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: willy@infradead.org, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kernel_team@skhynix.com, kuba@kernel.org, almasrymina@google.com,
-	ilias.apalodimas@linaro.org, harry.yoo@oracle.com, hawk@kernel.org,
-	akpm@linux-foundation.org, davem@davemloft.net,
-	john.fastabend@gmail.com, andrew+netdev@lunn.ch,
-	asml.silence@gmail.com, toke@redhat.com, tariqt@nvidia.com,
-	edumazet@google.com, pabeni@redhat.com, saeedm@nvidia.com,
-	leon@kernel.org, ast@kernel.org, daniel@iogearbox.net,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, horms@kernel.org,
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-	vishal.moola@gmail.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	jackmanb@google.com
-Subject: Re: [PATCH net-next v9 0/8] Split netmem from struct page
-Message-ID: <20250710084716.GA36026@system.software.com>
-References: <20250710082807.27402-1-byungchul@sk.com>
+	s=arc-20240116; t=1752137625; c=relaxed/simple;
+	bh=j8B+TB81hLh/C1n4b+kDAND4dFAeJvtHpDR1GqvCfC0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IJX0WKx3lqUcaKciWEWgfs+KRSSPLpCUauw29afyetsb8UMO40DGbXxb/b8KYpCiKnr2ahiZUSIjPR1s+bsuYSzTmr4/MJGrIZSJv7OUXTtNrDO/dI46G6MgMX/i7anovAPF022YFrPKc4Zkk6vli7qAjMvKYRqInWUMCQLxF8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WmgaNJaV; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WmgaNJaV"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-60c4521ae2cso1259464a12.0;
+        Thu, 10 Jul 2025 01:53:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752137621; x=1752742421; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=69Ugmuq7ybV9YKhFzvOAb5xdvwi1/kSdd3sFQ7b/L4w=;
+        b=WmgaNJaVLqPiOR7LIy6MqJtcP1fDEG+HCoJkjmukBJ+UbF6UmWdS8snEmt/nEoyN36
+         PNtF1s+SaQvVnNgJAfs8Vym9M8gMRQ+1xAjV8xyz9CfK3rXo4djVs8EEAY3lb9J2IiFN
+         eqnvuakm93tCCursYVUD2RTaWB0eM0aky4aiKrjjH4yexcIsKpY/K3L+7XBF3+u+wvCB
+         Cml1e5tbV4vRfiQiVBlPA8gjlwOCqSMgexBJ6N5rHCnZKqqk5JTOtx9vRyp2s/aWS+te
+         J234DIkSz04f+WEzi8vxou77Q7a7My/wZbx72Yez5VCWdc5o0Y64qCMOmjKMHcXTG4FC
+         DMwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752137621; x=1752742421;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=69Ugmuq7ybV9YKhFzvOAb5xdvwi1/kSdd3sFQ7b/L4w=;
+        b=VizJd1QQCqSnrm+m2vAUYL2NFEimrSBz40r0QTSUcnard+mr0rPis6xr6nVO4ikWKe
+         fv1xOoONaj+F46tQHJoVE63GbcDLBqcmnijHpLC3s07Nwl+zuKMURC6YVSyJWzVOqTLP
+         G2jOhO9W5+Pu3QdNiFg0umOPB+pPkkD8WeW3rSWQ30JrDhYJ8+EIymhmFdEUZU9lwXuN
+         DISzkW4ptiW9hp/IK0W2DPLO1+Qciux7vUiC/5Rf09VQ/et5/xv5O2Kvm6dPmHiMxEpu
+         CtOr2yVBAn6B/NfBROjJH/5ug1DgmkRO1S5JiyFtQLJGV7pTZUtDhcTHjjX2V7DyzVsW
+         MDCw==
+X-Forwarded-Encrypted: i=1; AJvYcCV5Xw5HvvkIiucK06r6+YEKOUPmK7Fb7r0TP0UPXNfMNDBEqCnvYMUN7mt0FHO5tG8rkuJGpCOetErzz3JV@vger.kernel.org, AJvYcCVloVggDNjOB3p00rGtqjSxaIezGLAJGiwKVgK1xQXTM47GoUVyCWLwT+Ko6feTDsPHi2nq+YrTxtaxhWuE@vger.kernel.org, AJvYcCWfmW/pHk2yzmYgts4/sRG5Z2ib1CEeXuI4dOA6EOFiOmXK+ADBc1f3agUFybkQ9al9vxqNgutflMg0@vger.kernel.org, AJvYcCXAZYr16xrDvES9z8Is3wXrcMbG6lb6BMMlMCYhzWKAAR+YLjzU6NbdG1BICmK6XG8njT2FTSF3@vger.kernel.org, AJvYcCXroUoNhEtJpM0r+n7KQW1T+URzrLHvNhAL9DTqKk7K0C7P6qliH86ajHKAElsVlDEmvUbYgVC4chauYWHn@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7Kzngmh+twlArkdeg2cvO+ZrLr/EGp18By4wqCbEpFeklqri8
+	baSF17za6qjfugWkDCmNi+8Fmm0UZNVsKyYjmxZVMcnCCWawZI1zDXtYoa51Q95xNAkz1YM7CYQ
+	knBee1Yd7fv8tJRY0nGsZYwBzjPVq048=
+X-Gm-Gg: ASbGncvlo+cuqm2csNk6bZaxbUKktisp3FzCEL9IRbxl7y1FlcZMxvcd0qt2qHtsx70
+	EX1oPt1+q6RqFfpjk4SO4XT3dRM+joenpsNaF3u64l/cYZbT7cqLsHhwPns0o6oZVGnSS+DsHq6
+	RBOVEUv3LvncYXrN34fYMl957skoo56oGFsb5d8VjJ+iXHFA==
+X-Google-Smtp-Source: AGHT+IE/057CHjK/mOyiohxDHs24SY8jAE5xKdEv0ZJOoCjA/SIh8PibhxLy6qD7qDjnRhCyTxBW5bPj8u8UyJ1K09g=
+X-Received: by 2002:a17:906:8f01:b0:ae0:d332:f637 with SMTP id
+ a640c23a62f3a-ae6e13a247amr316221766b.31.1752137621158; Thu, 10 Jul 2025
+ 01:53:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250710082807.27402-1-byungchul@sk.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0iTYRTHefa8e/e6Wr1OsyfrS6sIDLOrnCC6GNVTEAlFZNFl5UvvaJuy
-	eS0qK0Wbl0qDai6aROYNVkvm7GI1zbQLyUpbFy9oFlFprbQtQ3NG1Lcf5/zP75wPh8PKs9Jw
-	TqNPEgx6tVbFyhn55/ElkeGHE8R53m4ZWGxVLFT60uBKl1MKlgoHgu/+1zL41vCAhUslgxgs
-	TzMZGLD9xNDbODpQad8AnaXvGLiVXYOh+2QTC/mZQxhu+/tkcMxZJoEWR4EUzvy8jKEmo0sG
-	z25YWOioGpHCO1c+A83mcgY6C1ZAozUMBh99QtBgq5HAYN4FForcVhZ6MjsRuOu7GSg+WoDA
-	VueRwpBv1FF8v0O2Yiat/9SPaXX5SwmtNbfLqNWeTK+XRVCTx42pveIES+3eQhl903aLpU3n
-	hhha6/wmofnH+1j6tfcVQ/vrWllqq25l6GNrgyw2eJt8abyg1aQIhqhlu+XipQEHm+iISTud
-	RzNQ7UITCuIIv4j0l/ZK//Lrch8TYIafRWxZdWyAWX428Xj82IQ4LpSPIm2FcSYk5zB/nCWF
-	rf6xfAgfQ85/fIEDrOCBjOTeGWMlv5gMtZqYP/Vg0nz+7RhjPoJ4hj9IAk7MTyVXhrkABvHR
-	xNlzMJCYxM8gdx0PJIFVhHdyJPeHG/85cwq5V+ZhTiHe/J/V/J/V/M9qRbgCKTX6FJ1ao100
-	V0zXa9Lm7k3Q2dHou5Qe+rXdibwtm1yI55BqvKJln15UStUpxnSdCxEOq0IVvq1aUamIV6cf
-	EAwJuwzJWsHoQlM5RjVZsWAwNV7J71MnCfsFIVEw/O1KuKDwDCRumRg6fFrescYzkGW8sTqu
-	9GZYdZHkSaMmp8mXt6r72brN5Fh586r0JbqNOTsWJoaIjX2pIRPcVcHbc5Mta3vGjQurfbP6
-	yPO+7KJi3fDspmuc6C3+cPTQ9Mjs5b73kSV76h+eKNw158vVzf6N06J3Rl3sXOltj+hP2NbQ
-	7jKsv9oWq2KMonp+BDYY1b8BtN2KSioDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRjHec97dnYcLk7L6mT1ZWkXITO6+EA3kcIXNRH6UEm3Yx3capu2
-	qWhRWFPK1TQ1QeeElWVqwWjaNsOs1LwVFcZq3WZo96vdzGl0mRH17cf/+f/+nx4WK/x0KKvW
-	ZYp6naBRMjJalrTMOH/a/nRVlK84Cqz2cwycHcmBM0/cErA2OBF88T+UwueOLgZqTgxjsN7K
-	p+GrfRTDs84BKZx1rIX+2uc0tBxyYRgo7mbAnD+G4ZL/vRQOuusoaK/ukcBtZ5EEjo+exuDK
-	eyKFOxetDPjO/ZTA8zYzDT2Wehr6i2Kg0zYFhq+/RdBhd1EwfLSagbI+GwOD+f0I+toHaKg6
-	UITA3uqVwNjI742qaz5pTDhpf/sBk6b6+xRptjyWEpsjizTWRRCTtw8TR0MhQxyfSqXk0d0W
-	hnRXjNGk2f2ZImbje4Z8fPaAJh9aPQypeTlEEXuTh05WpMiW7xA16mxRv2DlNpmq5quTyXDG
-	5pQcJXmoeZEJBbE8t5h/WD9CB5jmwnl7QSsTYIabw3u9fmxCLBvCLeDvlm40IRmLOSPDl3r8
-	4/1JXCxf+eYeDrCcA/7nkcvjrOCW8GMeE/0nn8j3VD4dZ8xF8N4fr6jAJuam82d+sAEM4pby
-	7sG9gcZkbhZ/xdlFHUNyy3+y5T/Z8k+2IdyAQtS6bK2g1iyJNOxS5erUOZHb07UO9Pshavd9
-	L3GjL3fi2hDHImWw/HaaTqWQCNmGXG0b4lmsDJGPbNCoFPIdQu4eUZ++VZ+lEQ1taDpLK6fK
-	49eL2xRcmpAp7hLFDFH/90qxQaF5aF6YkOG7Wteyr1FaNi1heePqd7BuQpq/3HrdUzb7cFzi
-	/lM3FFbn63WJyhWuzKTzrat6LxNivOoI3dyb6sYnC4aaMjpjhVqYGzoj2OxLTXS+KCxbyWmp
-	BKPhRHl0QUp2Z9am3VvMvUPJL1Meaft2fpt5YY3rcEkFrQuObrgZH6akDSphYQTWG4RfWB2W
-	HAwDAAA=
-X-CFilter-Loop: Reflected
+References: <20250710-qcom-smgr-v2-0-f6e198b7aa8e@protonmail.com> <20250710-qcom-smgr-v2-2-f6e198b7aa8e@protonmail.com>
+In-Reply-To: <20250710-qcom-smgr-v2-2-f6e198b7aa8e@protonmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Thu, 10 Jul 2025 11:53:04 +0300
+X-Gm-Features: Ac12FXxhcKgMVc-WwlJ7x50JyK0vY6h0yIvi7Sw6HCxlOsEYDe0XTFuJUJDzFbg
+Message-ID: <CAHp75Ved4cnpmiUzidoJqRbdnz=L-0F_KdyWifOOrZHUUf2KQA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] net: qrtr: Turn QRTR into a bus
+To: y.oudjana@protonmail.com
+Cc: Manivannan Sadhasivam <mani@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Luca Weiss <luca@lucaweiss.eu>, linux-arm-msm@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 10, 2025 at 05:27:59PM +0900, Byungchul Park wrote:
-> Hi all,
-> 
-> The MM subsystem is trying to reduce struct page to a single pointer.
-> See the following link for your information:
-> 
->    https://kernelnewbies.org/MatthewWilcox/Memdescs/Path
-> 
-> The first step towards that is splitting struct page by its individual
-> users, as has already been done with folio and slab.  This patchset does
-> that for page pool.
-> 
-> Matthew Wilcox tried and stopped the same work, you can see in:
-> 
->    https://lore.kernel.org/linux-mm/20230111042214.907030-1-willy@infradead.org/
-> 
-> I focused on removing the page pool members in struct page this time,
-> not moving the allocation code of page pool from net to mm.  It can be
-> done later if needed.
-> 
-> The final patch removing the page pool fields will be posted once all
-> the converting of page to netmem are done:
-> 
->    1. converting use of the pp fields in struct page in prueth_swdata.
->    2. converting use of the pp fields in struct page in freescale driver.
+On Thu, Jul 10, 2025 at 11:06=E2=80=AFAM Yassine Oudjana via B4 Relay
+<devnull+y.oudjana.protonmail.com@kernel.org> wrote:
+>
+> Implement a QRTR bus to allow for creating drivers for individual QRTR
+> services. With this in place, devices are dynamically registered for QRTR
+> services as they become available, and drivers for these devices are
+> matched using service and instance IDs.
 
-     3. converting use of the pp fields in strcut page in libeth.
+...
 
-	Byungchul
+> +struct qrtr_device_id {
+> +       __u16 service;
+> +       __u16 instance;
+> +       kernel_ulong_t driver_data;     /* Data private to the driver */
 
-> For our discussion, I'm sharing what the final patch looks like, in this
-> cover letter.
-> 
-> 	Byungchul
-> --8<--
-> commit 1847d9890f798456b21ccb27aac7545303048492
-> Author: Byungchul Park <byungchul@sk.com>
-> Date:   Wed May 28 20:44:55 2025 +0900
-> 
->     mm, netmem: remove the page pool members in struct page
->     
->     Now that all the users of the page pool members in struct page have been
->     gone, the members can be removed from struct page.
->     
->     However, since struct netmem_desc still uses the space in struct page,
->     the important offsets should be checked properly, until struct
->     netmem_desc has its own instance from slab.
->     
->     Remove the page pool members in struct page and modify static checkers
->     for the offsets.
->     
->     Signed-off-by: Byungchul Park <byungchul@sk.com>
-> 
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 32ba5126e221..db2fe0d0ebbf 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -120,17 +120,6 @@ struct page {
->  			 */
->  			unsigned long private;
->  		};
-> -		struct {	/* page_pool used by netstack */
-> -			/**
-> -			 * @pp_magic: magic value to avoid recycling non
-> -			 * page_pool allocated pages.
-> -			 */
-> -			unsigned long pp_magic;
-> -			struct page_pool *pp;
-> -			unsigned long _pp_mapping_pad;
-> -			unsigned long dma_addr;
-> -			atomic_long_t pp_ref_count;
-> -		};
->  		struct {	/* Tail pages of compound page */
->  			unsigned long compound_head;	/* Bit zero is set */
->  		};
-> diff --git a/include/net/netmem.h b/include/net/netmem.h
-> index 8f354ae7d5c3..3414f184d018 100644
-> --- a/include/net/netmem.h
-> +++ b/include/net/netmem.h
-> @@ -42,11 +42,8 @@ struct netmem_desc {
->  	static_assert(offsetof(struct page, pg) == \
->  		      offsetof(struct netmem_desc, desc))
->  NETMEM_DESC_ASSERT_OFFSET(flags, _flags);
-> -NETMEM_DESC_ASSERT_OFFSET(pp_magic, pp_magic);
-> -NETMEM_DESC_ASSERT_OFFSET(pp, pp);
-> -NETMEM_DESC_ASSERT_OFFSET(_pp_mapping_pad, _pp_mapping_pad);
-> -NETMEM_DESC_ASSERT_OFFSET(dma_addr, dma_addr);
-> -NETMEM_DESC_ASSERT_OFFSET(pp_ref_count, pp_ref_count);
-> +NETMEM_DESC_ASSERT_OFFSET(lru, pp_magic);
-> +NETMEM_DESC_ASSERT_OFFSET(mapping, _pp_mapping_pad);
->  #undef NETMEM_DESC_ASSERT_OFFSET
->  
->  /*
-> ---
-> Changes from v8:
-> 	1. Rebase on net-next/main as of Jul 10.
-> 	2. Exclude non-controversial patches that have already been
-> 	   merged to net-next.
-> 	3. Re-add the patches that focus on removing accessing the page
-> 	   pool fields in struct page.
-> 	4. Add utility APIs e.g. casting, to use struct netmem_desc as
-> 	   descriptor, to support __netmem_get_pp() that has started to
-> 	   be used again e.g. by libeth.
-> 
-> Changes from v7 (no actual updates):
-> 	1. Exclude "netmem: introduce struct netmem_desc mirroring
-> 	   struct page" that might be controversial.
-> 	2. Exclude "netmem: introduce a netmem API,
-> 	   virt_to_head_netmem()" since there are no users.
-> 
-> Changes from v6 (no actual updates):
-> 	1. Rebase on net-next/main as of Jun 25.
-> 	2. Supplement a comment describing struct net_iov.
-> 	3. Exclude a controversial patch, "page_pool: access ->pp_magic
-> 	   through struct netmem_desc in page_pool_page_is_pp()".
-> 	4. Exclude "netmem: remove __netmem_get_pp()" since the API
-> 	   started to be used again by libeth.
-> 
-> Changes from v5 (no actual updates):
-> 	1. Rebase on net-next/main as of Jun 20.
-> 	2. Add given 'Reviewed-by's and 'Acked-by's, thanks to all.
-> 	3. Add missing cc's.
-> 
-> Changes from v4:
-> 	1. Add given 'Reviewed-by's, thanks to all.
-> 	2. Exclude potentially controversial patches.
-> 
-> Changes from v3:
-> 	1. Relocates ->owner and ->type of net_iov out of netmem_desc
-> 	   and make them be net_iov specific.
-> 	2. Remove __force when casting struct page to struct netmem_desc.
-> 
-> Changes from v2:
-> 	1. Introduce a netmem API, virt_to_head_netmem(), and use it
-> 	   when it's needed.
-> 	2. Introduce struct netmem_desc as a new struct and union'ed
-> 	   with the existing fields in struct net_iov.
-> 	3. Make page_pool_page_is_pp() access ->pp_magic through struct
-> 	   netmem_desc instead of struct page.
-> 	4. Move netmem alloc APIs from include/net/netmem.h to
-> 	   net/core/netmem_priv.h.
-> 	5. Apply trivial feedbacks, thanks to Mina, Pavel, and Toke.
-> 	6. Add given 'Reviewed-by's, thanks to Mina.
-> 
-> Changes from v1:
-> 	1. Rebase on net-next's main as of May 26.
-> 	2. Check checkpatch.pl, feedbacked by SJ Park.
-> 	3. Add converting of page to netmem in mt76.
-> 	4. Revert 'mlx5: use netmem descriptor and APIs for page pool'
-> 	   since it's on-going by Tariq Toukan.  I will wait for his
-> 	   work to be done.
-> 	5. Revert 'page_pool: use netmem APIs to access page->pp_magic
-> 	   in page_pool_page_is_pp()' since we need more discussion.
-> 	6. Revert 'mm, netmem: remove the page pool members in struct
-> 	   page' since there are some prerequisite works to remove the
-> 	   page pool fields from struct page.  I can submit this patch
-> 	   separatedly later.
-> 	7. Cancel relocating a page pool member in struct page.
-> 	8. Modify static assert for offests and size of struct
-> 	   netmem_desc.
-> 
-> Changes from rfc:
-> 	1. Rebase on net-next's main branch.
-> 	   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/
-> 	2. Fix a build error reported by kernel test robot.
-> 	   https://lore.kernel.org/all/202505100932.uzAMBW1y-lkp@intel.com/
-> 	3. Add given 'Reviewed-by's, thanks to Mina and Ilias.
-> 	4. Do static_assert() on the size of struct netmem_desc instead
-> 	   of placing place-holder in struct page, feedbacked by
-> 	   Matthew.
-> 	5. Do struct_group_tagged(netmem_desc) on struct net_iov instead
-> 	   of wholly renaming it to strcut netmem_desc, feedbacked by
-> 	   Mina and Pavel.
-> 
-> Byungchul Park (8):
->   netmem: introduce struct netmem_desc mirroring struct page
->   netmem: introduce utility APIs to use struct netmem_desc
->   page_pool: access ->pp_magic through struct netmem_desc in
->     page_pool_page_is_pp()
->   netmem: use netmem_desc instead of page to access ->pp in
->     __netmem_get_pp()
->   netmem: introduce a netmem API, virt_to_head_netmem()
->   mlx4: use netmem descriptor and APIs for page pool
->   netdevsim: use netmem descriptor and APIs for page pool
->   mt76: use netmem descriptor and APIs for page pool
-> 
->  drivers/net/ethernet/mellanox/mlx4/en_rx.c    |  48 ++---
->  drivers/net/ethernet/mellanox/mlx4/en_tx.c    |   8 +-
->  drivers/net/ethernet/mellanox/mlx4/mlx4_en.h  |   4 +-
->  drivers/net/netdevsim/netdev.c                |  19 +-
->  drivers/net/netdevsim/netdevsim.h             |   2 +-
->  drivers/net/wireless/mediatek/mt76/dma.c      |   6 +-
->  drivers/net/wireless/mediatek/mt76/mt76.h     |  12 +-
->  .../net/wireless/mediatek/mt76/sdio_txrx.c    |  24 +--
->  drivers/net/wireless/mediatek/mt76/usb.c      |  10 +-
->  include/linux/mm.h                            |  12 --
->  include/net/netmem.h                          | 183 +++++++++++++++---
->  mm/page_alloc.c                               |   1 +
->  12 files changed, 231 insertions(+), 98 deletions(-)
-> 
-> 
-> base-commit: c65d34296b2252897e37835d6007bbd01b255742
-> -- 
-> 2.17.1
+Can we not repeat mistakes from the past and use const void * from day 1 pl=
+ease?
+
+> +};
+> +
+>  /* dmi */
+
+Wouldn't it be better to keep sections ordered alphabetically so 'q'
+will go at least after 'd'?
+
+...
+
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +
+> +#ifndef __QCOM_QRTR_H__
+> +#define __QCOM_QRTR_H__
+> +
+> +#include <linux/mod_devicetable.h>
+
+Not enough. Please, follow IWYU principle and include / forward
+declare all this header uses.
+
+> +struct qrtr_device {
+> +       struct device dev;
+> +       unsigned int node;
+> +       unsigned int port;
+> +       u16 service;
+> +       u16 instance;
+> +};
+> +
+> +#define to_qrtr_device(d) container_of(d, struct qrtr_device, dev)
+> +
+> +struct qrtr_driver {
+> +       int (*probe)(struct qrtr_device *qdev);
+> +       void (*remove)(struct qrtr_device *qdev);
+> +       const struct qrtr_device_id *id_table;
+> +       struct device_driver driver;
+> +};
+> +
+> +#define to_qrtr_driver(d) container_of(d, struct qrtr_driver, driver)
+> +
+> +#define qrtr_driver_register(drv) __qrtr_driver_register(drv, THIS_MODUL=
+E)
+> +
+> +int __qrtr_driver_register(struct qrtr_driver *drv, struct module *owner=
+);
+> +void qrtr_driver_unregister(struct qrtr_driver *drv);
+> +
+> +#define module_qrtr_driver(__qrtr_driver) \
+> +       module_driver(__qrtr_driver, qrtr_driver_register, \
+> +                       qrtr_driver_unregister)
+> +
+> +#endif /* __QCOM_QRTR_H__ */
+
+...
+
+> +       int ret =3D 0;
+
+What is this assignment for? (The below is left for the context)
+
+>         if (cb->type =3D=3D QRTR_TYPE_NEW_SERVER) {
+>                 /* Remote node endpoint can bridge other distant nodes */
+>                 qrtr_node_assign(node, le32_to_cpu(pkt->server.node));
+> +
+> +               /* Create a QRTR device */
+> +               ret =3D ep->add_device(ep, le32_to_cpu(pkt->server.node),
+> +                                              le32_to_cpu(pkt->server.po=
+rt),
+> +                                              le32_to_cpu(pkt->server.se=
+rvice),
+> +                                              le32_to_cpu(pkt->server.in=
+stance));
+> +               if (ret)
+> +                       goto err;
+> +       } else if (cb->type =3D=3D QRTR_TYPE_DEL_SERVER) {
+> +               /* Remove QRTR device corresponding to service */
+> +               ret =3D ep->del_device(ep, le32_to_cpu(pkt->server.port))=
+;
+> +               if (ret)
+> +                       goto err;
+>         }
+
+...
+
+> +       return ret ? ret : -EINVAL;
+
+It's also possible
+
+       return ret ?: -EINVAL;
+
+>  }
+
+...
+
+> +++ b/net/qrtr/smd.c
+> @@ -7,6 +7,7 @@
+>  #include <linux/module.h>
+>  #include <linux/skbuff.h>
+>  #include <linux/rpmsg.h>
+> +#include <linux/soc/qcom/qrtr.h>
+
+Can we keep this more ordered?
+
+Also include export.h when the code uses one of the EXPORT_*() macros.
+
+...
+
+> +static int qcom_smd_qrtr_device_match(struct device *dev, const struct d=
+evice_driver *drv)
+> +{
+> +       struct qrtr_device *qdev =3D to_qrtr_device(dev);
+> +       struct qrtr_driver *qdrv =3D to_qrtr_driver(drv);
+> +       const struct qrtr_device_id *id =3D qdrv->id_table;
+> +
+> +       if (!id)
+> +               return 0;
+> +
+> +       while (id->service !=3D 0) {
+
+' !=3D 0' is redundant
+
+> +               if (id->service =3D=3D qdev->service && id->instance =3D=
+=3D qdev->instance)
+> +                       return 1;
+> +               id++;
+> +       }
+> +
+> +       return 0;
+> +}
+
+...
+
+> +static int qcom_smd_qrtr_match_device_by_port(struct device *dev, const =
+void *data)
+> +{
+> +       struct qrtr_device *qdev =3D to_qrtr_device(dev);
+> +       unsigned const int *port =3D data;
+
+Why not
+
+       unsigned int port =3D *((const unsigned int *)data);
+
+> +       return qdev->port =3D=3D *port;
+> +}
+
+...
+
+> +static void qcom_smd_qrtr_add_device_worker(struct work_struct *work)
+> +{
+> +       struct qrtr_new_server *new_server =3D container_of(work, struct =
+qrtr_new_server, work);
+> +       struct qrtr_smd_dev *qsdev =3D new_server->parent;
+> +       struct qrtr_device *qdev;
+> +       int ret;
+> +
+> +       qdev =3D kzalloc(sizeof(*qdev), GFP_KERNEL);
+> +       if (!qdev)
+> +               return;
+> +
+> +       *qdev =3D (struct qrtr_device) {
+> +               .node =3D new_server->node,
+> +               .port =3D new_server->port,
+> +               .service =3D new_server->service,
+> +               .instance =3D new_server->instance
+
+Leave trailing comma.
+
+> +       };
+
+> +       devm_kfree(qsdev->dev, new_server);
+
+?!?! No, just no. Please, fix the object lifetimes and use proper
+allocators (not managed).
+
+> +       dev_set_name(&qdev->dev, "%d-%d", qdev->node, qdev->port);
+
+No error check?
+
+> +       qdev->dev.bus =3D &qrtr_bus;
+> +       qdev->dev.parent =3D qsdev->dev;
+> +       qdev->dev.release =3D qcom_smd_qrtr_dev_release;
+> +
+> +       ret =3D device_register(&qdev->dev);
+> +       if (ret) {
+> +               dev_err(qsdev->dev, "Failed to register QRTR device: %pe\=
+n", ERR_PTR(ret));
+> +               put_device(&qdev->dev);
+> +       }
+> +}
+
+...
+
+> +static int qcom_smd_qrtr_add_device(struct qrtr_endpoint *parent, unsign=
+ed int node,
+> +                                   unsigned int port, u16 service, u16 i=
+nstance)
+> +{
+> +       struct qrtr_smd_dev *qsdev =3D container_of(parent, struct qrtr_s=
+md_dev, ep);
+> +       struct qrtr_new_server *new_server;
+> +
+> +       new_server =3D devm_kzalloc(qsdev->dev, sizeof(*new_server), GFP_=
+KERNEL);
+
+Why is the managed API in use?!
+
+> +       if (!new_server)
+> +               return -ENOMEM;
+> +
+> +       *new_server =3D (struct qrtr_new_server) {
+> +               .parent =3D qsdev,
+> +               .node =3D node,
+> +               .port =3D port,
+> +               .service =3D service,
+> +               .instance =3D instance
+
+Leave trailing comma.
+
+> +       };
+> +
+> +       INIT_WORK(&new_server->work, qcom_smd_qrtr_add_device_worker);
+> +       schedule_work(&new_server->work);
+> +
+> +       return 0;
+> +}
+> +
+> +static int qcom_smd_qrtr_del_device(struct qrtr_endpoint *parent, unsign=
+ed int port)
+> +{
+> +       struct qrtr_smd_dev *qsdev =3D container_of(parent, struct qrtr_s=
+md_dev, ep);
+> +       struct qrtr_del_server *del_server;
+> +
+> +       del_server =3D devm_kzalloc(qsdev->dev, sizeof(*del_server), GFP_=
+KERNEL);
+
+Ditto.
+
+> +       if (!del_server)
+> +               return -ENOMEM;
+> +
+> +       del_server->parent =3D qsdev;
+> +       del_server->port =3D port;
+> +
+> +       INIT_WORK(&del_server->work, qcom_smd_qrtr_del_device_worker);
+> +       schedule_work(&del_server->work);
+> +
+> +       return 0;
+> +}
+
+...
+
+> +static int qcom_smd_qrtr_device_unregister(struct device *dev, void *dat=
+a)
+> +{
+> +       device_unregister(dev);
+> +
+> +       return 0;
+
+Why? Can't this function be void?
+
+> +}
+
+...
+
+>  {
+>         struct qrtr_smd_dev *qsdev =3D dev_get_drvdata(&rpdev->dev);
+>
+> +       device_for_each_child(qsdev->dev, NULL, qcom_smd_qrtr_device_unre=
+gister);
+
+Perhaps _reversed() ?
+
+>         qrtr_endpoint_unregister(&qsdev->ep);
+>
+>         dev_set_drvdata(&rpdev->dev, NULL);
+
+>  };
+
+
+> +static void __exit qcom_smd_qrtr_exit(void)
+> +{
+> +       unregister_rpmsg_driver(&qcom_smd_qrtr_driver);
+> +       bus_unregister(&qrtr_bus);
+> +}
+> +
+> +subsys_initcall(qcom_smd_qrtr_init);
+> +module_exit(qcom_smd_qrtr_exit);
+
+Move these two closer to the mentioned callbacks.
+
+--
+With Best Regards,
+Andy Shevchenko
