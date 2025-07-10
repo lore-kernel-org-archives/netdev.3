@@ -1,270 +1,268 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AE72F0C5C;
-	Thu, 10 Jul 2025 16:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752165173; cv=fail; b=b3Q2G1b0tpy5K7lbJFf9VRZyRKBCyyMMLNcotip6/dypFr3+BPwKmKhzvODo9OqyTAxQQ0RctABqEoQiNhrhlQRlzeU22PRzUAyBiugJI1FvAqY/+VCWSsSHMaldxU+gI2++noi5f3jASozTAoX3oXhwm6WkkaHklJHtC1SiOuY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752165173; c=relaxed/simple;
-	bh=NeydbvkfKfUMqp4xi29Vv+xGfUwS5EDvN47m9vOYELk=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Vpi6gXVFtexsIk5kRE0gZejX8YCmdFXRD5mCzX8sh6xvavy6pCUAEjfUCATqlTewDfEh9yxbmL+gC8alQBPqMDG19FzwvQqKpjY9YoTcFdlQ4cvJPqe8gLFNy9vOFJ4KkdF9ZI6jY5Wz9EMxcB/JdXw7jJlJ9pusv60bqOIMghw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wg2XYe1f; arc=fail smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357552AE6D
+	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 16:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752166432; cv=none; b=DV2FpxsZnvyE9rqr7cIQo8UJsxsa4S8cS0gP0bDEScutGHXLMgNf0QuMLDnjJuKW7WBcichmtyc6QsHU39i3fxdMSdZ/x/9OFb8T2MsWfqx3wG8uKkjEWKMBWlQIZ2+W0JPHQPexbGNuZ96oUkI/OQf1pJLhll7cV5gAm8u1f1k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752166432; c=relaxed/simple;
+	bh=9p5PIIDJExfDkdS7BDiEdk4vP461ia5bkZdIubSjNnM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oRByFrb4rEBn7fzpkGtU2gfI4j46u6vhY4/MAdt8ND4wfdwplwc/5pKOKakV22xMNoDgyyGVqBDyNgcmum8JnL6ByfQoAyJyGn0aCkxSkJ6MIDcV/DtRoeUSMfn1akBYd1VZh2EftTpMfHWhclavEiwt+41BEf/jHhPmLZLTZk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=eaZDr9HK; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wg2XYe1f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752165173; x=1783701173;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:mime-version;
-  bh=NeydbvkfKfUMqp4xi29Vv+xGfUwS5EDvN47m9vOYELk=;
-  b=Wg2XYe1flWRKVgoYxyK+WPvvkKvhLxq/DtJnKFRWa7I96GKY2DJc9hOC
-   JdYrxDHEO1/oZUgxZz+9W0vsovq5g5RaeJJc9AQUriqvPiAqbMp0GNT2W
-   BeGOUK5C8gdj/5BPPES+Jc2ANRWuesJGRQZOWkoQNywJAWBRWqDr70gLl
-   UmKTVFvxVEx6mHn7mZc598bFOtxGlSPUCQBVEBUD3BqCSmGTLXKLT7Bqm
-   4N4FZuyZI3H/0DlCcnxBZuw4Y1hVtAdJbid9AfIX9M40p4Y0xA9HC1y77
-   OANSogMXUpQz2n4EFW0nnB8AgHZMpgG0/QlHeTPvT9hv0RmFc1+YLZiCK
-   A==;
-X-CSE-ConnectionGUID: WfkhMTC8Sr6IuVQrbBeh7g==
-X-CSE-MsgGUID: v4xJv9UkTC6uJuyNnjkp1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54581305"
-X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="asc'?scan'208";a="54581305"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 09:32:52 -0700
-X-CSE-ConnectionGUID: gvxsel4xTTSLDjoMp1ANnw==
-X-CSE-MsgGUID: 1cXCs1yDSGaduXVDZQE2BA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="asc'?scan'208";a="155771167"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 09:32:51 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 10 Jul 2025 09:32:50 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Thu, 10 Jul 2025 09:32:50 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.73)
- by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 10 Jul 2025 09:32:49 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EH/9ijHxgJIg9uWST6yJk1V8IDJH3dsrwSYI5xToiRVO1SWe3pX7CLKILWwVNuqN5fTD938M8TsO0cUMv5cOzB7ysBOvd+poc3DZIkvexOz/NtoqX2/7FXi++E6jIEdLv9grQuEayxPJUxp8wRSzF8R201ieLxT7/S+tmJ+09H3CFTgnqSYSIMRnnsExLz95oXuBCCLp3ZHmBlRVhAJ70Hh9T3Y+RmoXfSyzd27mI1hqdqp2YHup9sRANq929+GG4kCkbEze/zwROIWw2gbB5AlQXeHpUPT8odaa0ixxlV3WS36zqbVrajI7AsIXxPeRxYfCSNHrkho9GHUxIEaenw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NeydbvkfKfUMqp4xi29Vv+xGfUwS5EDvN47m9vOYELk=;
- b=hwRHpXi/2w0Ytl2zZ3Uy14dM1Mgtrc+peuprZAm03jn0q5a4X61e9driAfEEsL2s3jj6H8pzhI0XvuhRhzgmOK0g3oNe1cLsmwQG7tXgQ4ryiGPWYVi3nm5AXFXlrLL3bTAN6YbFcdPIzwBvQubwscpRxQ67YsGAndL/t8tRi+gmpcMDe/lfrcPvloe4nEmBrRRnxv2UxkmT31fD6bcy/LsNuAxbmfITKfCMEWWbzUHwCRq9xbgpbOVjuxvxqBJpryp6fyFKwmc0fjbQ/y4QlIt18h8VT25GQ8kKLMdQEtyrz4eCT5hF08j0j8O5CXtOQIGebgDahAHPzfILUXmmRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO1PR11MB5089.namprd11.prod.outlook.com (2603:10b6:303:9b::16)
- by PH8PR11MB6731.namprd11.prod.outlook.com (2603:10b6:510:1c7::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.26; Thu, 10 Jul
- 2025 16:32:47 +0000
-Received: from CO1PR11MB5089.namprd11.prod.outlook.com
- ([fe80::81f7:c6c0:ca43:11c3]) by CO1PR11MB5089.namprd11.prod.outlook.com
- ([fe80::81f7:c6c0:ca43:11c3%5]) with mapi id 15.20.8901.024; Thu, 10 Jul 2025
- 16:32:41 +0000
-Message-ID: <4756f803-6794-4f62-9694-779ab3b97992@intel.com>
-Date: Thu, 10 Jul 2025 09:32:40 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 3/3] net/mlx5e: Add new prio for promiscuous mode
-To: Tariq Toukan <tariqt@nvidia.com>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Andrew
- Lunn" <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>
-CC: Saeed Mahameed <saeed@kernel.org>, Gal Pressman <gal@nvidia.com>, "Leon
- Romanovsky" <leon@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch
-	<mbloch@nvidia.com>, <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Jianbo Liu <jianbol@nvidia.com>
-References: <1752155624-24095-1-git-send-email-tariqt@nvidia.com>
- <1752155624-24095-4-git-send-email-tariqt@nvidia.com>
-Content-Language: en-US
-From: Jacob Keller <jacob.e.keller@intel.com>
-Autocrypt: addr=jacob.e.keller@intel.com; keydata=
- xjMEaFx9ShYJKwYBBAHaRw8BAQdAE+TQsi9s60VNWijGeBIKU6hsXLwMt/JY9ni1wnsVd7nN
- J0phY29iIEtlbGxlciA8amFjb2IuZS5rZWxsZXJAaW50ZWwuY29tPsKTBBMWCgA7FiEEIEBU
- qdczkFYq7EMeapZdPm8PKOgFAmhcfUoCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AA
- CgkQapZdPm8PKOiZAAEA4UV0uM2PhFAw+tlK81gP+fgRqBVYlhmMyroXadv0lH4BAIf4jLxI
- UPEL4+zzp4ekaw8IyFz+mRMUBaS2l+cpoBUBzjgEaFx9ShIKKwYBBAGXVQEFAQEHQF386lYe
- MPZBiQHGXwjbBWS5OMBems5rgajcBMKc4W4aAwEIB8J4BBgWCgAgFiEEIEBUqdczkFYq7EMe
- apZdPm8PKOgFAmhcfUoCGwwACgkQapZdPm8PKOjbUQD+MsPBANqBUiNt+7w0dC73R6UcQzbg
- cFx4Yvms6cJjeD4BAKf193xbq7W3T7r9BdfTw6HRFYDiHXgkyoc/2Q4/T+8H
-In-Reply-To: <1752155624-24095-4-git-send-email-tariqt@nvidia.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature";
-	boundary="------------7khk9Hn6ScvdIqFJ29EL2k9Y"
-X-ClientProxiedBy: MW4PR04CA0211.namprd04.prod.outlook.com
- (2603:10b6:303:87::6) To CO1PR11MB5089.namprd11.prod.outlook.com
- (2603:10b6:303:9b::16)
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="eaZDr9HK"
+Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56A9tqId032057;
+	Thu, 10 Jul 2025 09:53:40 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=s2048-2025-q2; bh=4gNO+Wk2qrWK5U2TND
+	gjCxSVrM4K8TX+5xEPWyGrPQ4=; b=eaZDr9HKCHu2rDHwA45TUPs9Hpgxg6SGTO
+	aMxTnrG/s8Mp+mt4UvuUJtPfj3iSf3k+e6AI5JoZ+q51ZYNWmafukmjlCLIPo0Nj
+	I3PDdlVIb9zalPbqqBnSsGxHN5MRMwz3dtd33AqjZTQ9heEZIE+G7TProTV7g4CA
+	S4IZpjPSIOQlHUOLfE07glttnfNDPoGc3uNozB+TeT6Apqo7apIYpJOlZ0BWw4Oh
+	SUII/LgwvIHb1STCNB7n6nJ6szigvLmpMWs3/sV+wSckjyL00EMaUoOB4J4fWWn8
+	5hVc/sDb61JGdyyIEf/3uhDOnXK4/ocn6WR70690OBX9y4xTmAfg==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 47tbak2w5r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 10 Jul 2025 09:53:39 -0700 (PDT)
+Received: from localhost (2620:10d:c0a8:1c::1b) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.24; Thu, 10 Jul
+ 2025 16:53:38 +0000
+From: Vishwanath Seshagiri <vishs@meta.com>
+To: "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, David Wei <dw@davidwei.uk>,
+        "Joe
+ Damato" <jdamato@fastly.com>, Simon Horman <horms@kernel.org>,
+        <netdev@vger.kernel.org>, Vishwanath Seshagiri <vishs@fb.com>
+Subject: [PATCH net-next v2] selftests: flip local/remote endpoints in iou-zcrx.py
+Date: Thu, 10 Jul 2025 09:53:37 -0700
+Message-ID: <20250710165337.614159-1-vishs@meta.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR11MB5089:EE_|PH8PR11MB6731:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3f6cc972-b102-49cb-72c4-08ddbfcf644a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UlZpb0hiWnlMZTFDYWh1S0p1UW1uWTllQyt0RjB4RlZhRElzdkV3dzhoZ2ZJ?=
- =?utf-8?B?MG41QUU5OXNTdTgrWDhwM2lHdjFrOStBNUJNandwQ0k5UmFJUWpaY0JjcThB?=
- =?utf-8?B?bkExakQ1Ym9lUk5uWndmOGkzeThXc25oVEcvdGNNczlqVGZ0cjVOSFcxOVFC?=
- =?utf-8?B?SVdhT0cxQW9zT0U2SGtyVXgxdU81MW96SVhMZUNTVy9BRElUektWa1ZSYTdY?=
- =?utf-8?B?b3VqaHdFcjFmbVowWDV1WElxbGxTUGNkQmRWbS8yQ0h5YURpa2ZkVEpKSTI4?=
- =?utf-8?B?YisyZVRqekc2bDBrRHh3dVVvL2RYaHRSTE1tZVJFUjgwbnJpM0MzNmNuejhv?=
- =?utf-8?B?cFpDMlNiaG1WQkJkQUYvcnRSNlNBdmRsSUQ1VUpwcmtMMFd0dGFzR3g4M1Yx?=
- =?utf-8?B?UUR6RTZjRjVGbFpDNlhpVlpWbGp1YjBKRE9mRXVkVUx4V2FSdVhyRldlRTNE?=
- =?utf-8?B?NlBrWXBLb0N5cWFtUFNVYUtZRDhIaFNxT09SQUxFSmJZeDlYWFdjWWJ3enZG?=
- =?utf-8?B?cUJTcjYzaE44aURraytSZ01WT0doS1luQWRHVG5VdE9USlA3TGhXdllpWnVQ?=
- =?utf-8?B?a3pSNVZRaU4za09xOE5YSmI2bzFnamgrVTFlQ3F4MFVhMWlVanVaS2xaWTlX?=
- =?utf-8?B?UEFmdE02UGFvQ01NM1VtL1dvVkJIYkNPQi9GSURnakFLdzVUVjZydkhBeS9H?=
- =?utf-8?B?ang1d2RIVVYvZVVVdFdiR2hnbUEyWjJ0TytQaE9wa1gzSi84WTRlZCt2cUNK?=
- =?utf-8?B?eTZGdUkzSHdsOEhXcTVZdE1DNUYzcFpGM0s4NVo3Zkt5Nm1TK2JpU1ZuWEhk?=
- =?utf-8?B?RU9NZitRaVZ1MkUwdE0xaXJkKzcrNk9YN29DQURobmVENHBWQmozR0gxSnZj?=
- =?utf-8?B?dTJvMzhPMkZxYXN0OGtaWmFEUGowS1hkUGFMbGN2MStHNGtvaFcvVjl3T3BS?=
- =?utf-8?B?dWFHdk1mTlJhWHl3emxyWGh1cURqWSsxU2pTUGdpdzVzcDBYbkdnRUYzYThy?=
- =?utf-8?B?TFR6ZmN4cXhkMTNiREYyWlJSYUM0eTROZU9yNnl2RUptYTNTSHRORWtsRWdY?=
- =?utf-8?B?bGVDRUJwcFRFSlppU3RkcXc0Q1E2RzJCeXNoVUNRMXIvRkU5UWxZdjh2cmoz?=
- =?utf-8?B?VHd1QU1Ea3JJOGl0K3lGYnQxNVA5VXg4cFExT01MSUhXeW9LUEl5cjEwN0hE?=
- =?utf-8?B?bDdOMG03OXVTQVp3OTIrZTUyaHlsWUdVcTh2WlF4QWJiMFpzSnRpZnhtRGZz?=
- =?utf-8?B?VjUvclRDdFB2NldPSFczejVFTzR5d3RoU29lYWRzMDREOEdjZ2VkeERCenVD?=
- =?utf-8?B?SllJTFJzc0tCajRGVE40QXhxSmxidmo2c21EYmpHVHpvNHl5UUF0UGFQK0lk?=
- =?utf-8?B?bkkvcVUzdm96a3g3ZW1TOWRMa0pKNXJrYWNRQ0w1YVoxRGYyTmFlM1BLTnlC?=
- =?utf-8?B?TUh4aVVZelpQN0wrNDNUbTJoZktuQzBHS21yQ0NyWERYMHloTXhxbm9IQlkx?=
- =?utf-8?B?Qy9sa1F3L1BEMFE4ZTVwMVpnaWxFUXBWN0IrVTlEVG1rWWtMWU00MVZ4N2pW?=
- =?utf-8?B?ZitUQ3ZIaUlmdjdyK3BCZDlkaXd1cldJbDkyakZxcTc0NWZSVE5ERjFQS3M5?=
- =?utf-8?B?dVYwWHJudW9YTEp3N2svK1R1Yk9NOFE5NTQ0b2FpcTl4dTFhUGt4dUk1NG1m?=
- =?utf-8?B?ZDQ2YWEvYlBkSGw2eWliWTBXbWcrWDI1MjlRUWVPNzdVZTVvSFBQVXZ1Vmhz?=
- =?utf-8?B?QlFMZDVsQm9HTVh5TUJFalV6T3lQVWw0RjRmc1FyTzF0QmpTWm1Yb2k2NjlG?=
- =?utf-8?B?TSszWUxuTURKRFByTVVMdUM4MHRyaHlIRml5MXgwZDNoVms4eE9pTUlWaGNU?=
- =?utf-8?B?dmExYUNYYUlaYjZaOWJoT1Z6allFNnFNQmlHVy9QVTdtcTlJdlpLNVJxQ1JW?=
- =?utf-8?Q?DNCijmZFhDo=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB5089.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UXdTSExPVSthWmtzblc3WFhDcm1XbTBIVnB0WFFPeElPTFdvbm43UmZHcTNw?=
- =?utf-8?B?bytqQUNkN3BWck5RdFpaWVZSYmJkZDBDcVdwQ3p4NEdyUXd0eEF4R3NFYWkz?=
- =?utf-8?B?YUdKSTZ2dk1SN1F2bWkxQmt0dlZRcmpXeHJsYm5WbVV5VGlUYXRpNDZia3Jh?=
- =?utf-8?B?K1R2NE1OT21LSWVITWE3aXdXRHZ4eGlDY0RPODdvWlFEY2pSUVE4enlOR3lY?=
- =?utf-8?B?b2VpVGEwbHAzM0UwaWdFbTMwUjRkQzdMOVB4R1llNnU0WURsNnVIbFVyUkFS?=
- =?utf-8?B?MHA2VnFFWUJpNlZUSWM4cVZNS2wxeUx0WVFsRUFRajJyb0c4dW1CVEVJYTRn?=
- =?utf-8?B?UzkrTUVGRHNSd2EzU2FIbU1HZ0NrRG00TlpNRzdLNEIzbXlqZXVEVjJmRzlo?=
- =?utf-8?B?eXQxdENIdGx6MVQ4YWJVOUk2a2Nwa1F4bUtGSUY5NlRnVWZpUEFWcmFscC90?=
- =?utf-8?B?VGNDTWxucmFtc0tQcjNNeHBYU0dKdUc4V1RNVTVmNTBzMWxsY2o2UnNzdFF5?=
- =?utf-8?B?bmNtYjF6dmdoYmw4dHcrWHUyQ3o4bUp6QnRVZEJQVFYvQkRwNXE3QXVWeWxC?=
- =?utf-8?B?eFFyV1N0WERyZThtRk1pL21wMkhWOXI3emptUjcyWnRHcERGRCs0akRlZHE5?=
- =?utf-8?B?eXJEb2luVVFrTUkwOFJIZlRlMDF5STlML29jMzZVVExSVDZTd0NrdGI3SjF2?=
- =?utf-8?B?K1V2cE5weWZHSXFSRzF3UHlnckMwOTlZUkNrZDhnN2VBMzQzd1JCRWwzOEgw?=
- =?utf-8?B?Z3ZHZXlvUndnWkJkNkVBU0ZPV2FZeHpEL1RIdFRrNFAzSkl3bXF4UmlYeTlZ?=
- =?utf-8?B?dE5nM3pqbUY4cjk2TWVqVXpVdnQ4bTlsajRmK3lDeWc0bEhzTThtWXBrVHNS?=
- =?utf-8?B?eVhPQXJUY3N6R3JQd3c2S21QdWdvaktLMDd1V2JURDZWWFEveXVKbFVVS25s?=
- =?utf-8?B?Q2xielVoYkt2SWNiOW13dXJualJ3ZGN1U244Wmk0UkhPUU03MXF5b2E0N09X?=
- =?utf-8?B?QzlSWnpvU2luOFJBUHZUZ2E5RlNyOWE0cHdOOUhmelpSc2N2cThIMGY1OWtE?=
- =?utf-8?B?RnNLSFQxMUdLc2sxVkVXdGhrSzRxWGhrUVZhT2V3WGZHMUt6VnowUlhsK3px?=
- =?utf-8?B?VkR4dHJ0ODdqWHFzOExrWFZSSDJlWFBSUGVGQ21RS2RDYXNPSWFIWEZJNU03?=
- =?utf-8?B?eHJacXgxd0xiM3JCOFN3MW81cnFBTy8zWm14T0lWY1hxL05EcE83b2QwT1pS?=
- =?utf-8?B?clFJRlNWbnI4MWhHVkM1NEZFbHNCSWpTWHhCRlZraG5hbkdyZng0QVVFZ2hL?=
- =?utf-8?B?QXN4U3FoWEhxWlUzMUZ6Rlc1TWhka2xFbzQxUHNMTVhBd1J6QncwSFkzZmRH?=
- =?utf-8?B?dGN1ZzFERE8xa1J4dS9POGtWLzVUNlhET054eEFMY244WkNRMGpjbWZwdjUx?=
- =?utf-8?B?dkpBOFVSa1FjN25TVzBqc0d6T0NuNklkdEl2ZE9hdzJHZWFYVldGQzJuMzJO?=
- =?utf-8?B?T3NycE52WUozM0M3NUhMa0l3Z0dJM0hqU0R0Nm9lMmRXZEcvdm1aWUk5aUNY?=
- =?utf-8?B?U1VXeXR5ejgrTTlZdnFnYjY5V1lPZEw1QTJyYzhYWE1sbmtVVWdDSHR3OFBn?=
- =?utf-8?B?MlhQVTlpWlM4WXdFNW5DZ29zdXI0emdJRkJDRGhaSHdxY3h6YXRtMnZRL0p4?=
- =?utf-8?B?eEp5TXJFaUdQVVo2aXRFSE5iNmFxaCtZZGh1bjdTWTR3UVc0K0FTalFLVWRu?=
- =?utf-8?B?TTdxdExJSjF1ZXFUNGJiVGNnZ2t4VGNDV3lXYUdVVzNiUFhzZ0RkdWsyd3ZU?=
- =?utf-8?B?TzJHakRPMTdJZm1TcTZKZWtQT2Zvd1dXMFpLRTI0OC8wSitsTTd5WkZqdkhu?=
- =?utf-8?B?OHN6NWdHc2psb2M2Z1NldmoxL0hPeWZYS2Nzb3AyWVplZ2JVRE96N3Z1OVgy?=
- =?utf-8?B?S0VWb1pvODVlSjd0Zzl6SW1oeTlPN1ZValA4S3QvR09GVlN3NDVSNElkOWk2?=
- =?utf-8?B?Sk1MYm1TV0NRZnkrdkR0NE5KSWIzNExxdG1JbE5GbmxXVlFZdUFEZHNhK1VS?=
- =?utf-8?B?NklmcDdGclN0NzV6V3RSUVRTemdoejUrRzMrOS9iamlHWnFEc2pwT2JJTnYz?=
- =?utf-8?B?Lzdkc2w1bUErQWc0NHgzRlpxeW50ZGJJTzg4QjB4K2dvMExKV0JXa3doeTlk?=
- =?utf-8?B?ZlE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f6cc972-b102-49cb-72c4-08ddbfcf644a
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5089.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 16:32:41.9425
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZCvVtcrIAxeK4ZC7rmTUMjOLeJ3V+5yOc3s1WcJUMvfA/DQ6dGXS7BXmqdqZEVXlo9QBjjOQ60uC0GF4JShQNtuqISQw4NQ4SOIRM4Z7IoI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6731
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: xyW6N7lC5ymfdO8OKsKzKVTlIHWDaktH
+X-Authority-Analysis: v=2.4 cv=Ip4ecK/g c=1 sm=1 tr=0 ts=686ff013 cx=c_pps a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8 a=FOH2dFAWAAAA:8 a=efhq1SeH5nsRmTzY6XAA:9 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEwMDE0NCBTYWx0ZWRfX+LUXx4fBPygn c/XVkSprFfDLrWzfPsmQkRwHkYNliqnCi5+TF+bcCar9KieuXpqDM4fPW9HEk8Xb8GB0LZRZjLU H7uK2vWzgOrjLaER0Y2iKePS70NugcUDOCmvGDRuFB/N/fe435yWQj3Fo+USDYa8X0wnZ4B9E/P
+ 3EmH2OfIS4HeR3iykxeqTAGvWsQWzOloR5zkGRIajYlHw+KqmRgEwMnJJQhgl65ynujYGx17dhA gwcO1F43ALh+gudOqRQ7fE61E4bRej1oDyTgH9ZGvpyg/FFcf3cAHnldhvUhzLmt8FS386h+DPb pgqTfI2gPzd8k+Fn+6+chwTId2E5w4Dj5j8Je3C8BB4bZ2e6JwQqTkGcXFjcwOQSheuB4d0n/e3
+ aFKPyParkBOkWaGslu56/79JiAzQrVfuzHR0A6Gsz35H+uyVIHKH7ivYUN4yEFhwyE77Zzcc
+X-Proofpoint-GUID: xyW6N7lC5ymfdO8OKsKzKVTlIHWDaktH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-10_04,2025-07-09_01,2025-03-28_01
 
---------------7khk9Hn6ScvdIqFJ29EL2k9Y
-Content-Type: multipart/mixed; boundary="------------H2JRCHIsEhfNcLnixvnhBAUg";
- protected-headers="v1"
-From: Jacob Keller <jacob.e.keller@intel.com>
-To: Tariq Toukan <tariqt@nvidia.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>
-Cc: Saeed Mahameed <saeed@kernel.org>, Gal Pressman <gal@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
- Mark Bloch <mbloch@nvidia.com>, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jianbo Liu <jianbol@nvidia.com>
-Message-ID: <4756f803-6794-4f62-9694-779ab3b97992@intel.com>
-Subject: Re: [PATCH net 3/3] net/mlx5e: Add new prio for promiscuous mode
-References: <1752155624-24095-1-git-send-email-tariqt@nvidia.com>
- <1752155624-24095-4-git-send-email-tariqt@nvidia.com>
-In-Reply-To: <1752155624-24095-4-git-send-email-tariqt@nvidia.com>
+From: Vishwanath Seshagiri <vishs@fb.com>
 
---------------H2JRCHIsEhfNcLnixvnhBAUg
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+The iou-zcrx selftest currently runs the server on the remote host
+and the client on the local host. This commit flips the endpoints
+such that server runs on localhost and client on remote.
+This change brings the iou-zcrx selftest in convention with other
+selftests.
 
+Drive-by fix for a missing import exception that happens when the
+network interface has less than 2 combined channels.
 
+Test plan: ran iou-zcrx.py selftest between 2 physical machines
 
-On 7/10/2025 6:53 AM, Tariq Toukan wrote:
-> From: Jianbo Liu <jianbol@nvidia.com>
->=20
-> An optimization for promiscuous mode adds a high-priority steering
-> table with a single catch-all rule to steer all traffic directly to
-> the TTC table.
->=20
-> However, a gap exists between the creation of this table and the
-> insertion of the catch-all rule. Packets arriving in this brief window
-> would miss as no rule was inserted yet, unnecessarily incrementing the
-> 'rx_steer_missed_packets' counter and dropped.
->=20
-> This patch resolves the issue by introducing a new prio for this
-> table, placing it between MLX5E_TC_PRIO and MLX5E_NIC_PRIO. By doing
-> so, packets arriving during the window now fall through to the next
-> prio (at MLX5E_NIC_PRIO) instead of being dropped.
->=20
-> Fixes: 1c46d7409f30 ("net/mlx5e: Optimize promiscuous mode")
-> Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-> Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-> ---
+Signed-off-by: Vishwanath Seshagiri <vishs@fb.com>
+---
+Changelog:
+v2: Updated patch title, description to provide more context on the
+specific changes made.
+v1 link: https://lore.kernel.org/netdev/20250707232223.190242-1-vishs@meta.com/T/#u
+---
+ .../selftests/drivers/net/hw/iou-zcrx.py      | 98 +++++++++----------
+ 1 file changed, 49 insertions(+), 49 deletions(-)
 
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.py b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
+index 9c03fd777f3d..712c806508b5 100755
+--- a/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
++++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
+@@ -3,37 +3,37 @@
+ 
+ import re
+ from os import path
+-from lib.py import ksft_run, ksft_exit
++from lib.py import ksft_run, ksft_exit, KsftSkipEx
+ from lib.py import NetDrvEpEnv
+ from lib.py import bkg, cmd, defer, ethtool, rand_port, wait_port_listen
+ 
+ 
+ def _get_current_settings(cfg):
+-    output = ethtool(f"-g {cfg.ifname}", json=True, host=cfg.remote)[0]
++    output = ethtool(f"-g {cfg.ifname}", json=True)[0]
+     return (output['rx'], output['hds-thresh'])
+ 
+ 
+ def _get_combined_channels(cfg):
+-    output = ethtool(f"-l {cfg.ifname}", host=cfg.remote).stdout
++    output = ethtool(f"-l {cfg.ifname}").stdout
+     values = re.findall(r'Combined:\s+(\d+)', output)
+     return int(values[1])
+ 
+ 
+ def _create_rss_ctx(cfg, chan):
+-    output = ethtool(f"-X {cfg.ifname} context new start {chan} equal 1", host=cfg.remote).stdout
++    output = ethtool(f"-X {cfg.ifname} context new start {chan} equal 1").stdout
+     values = re.search(r'New RSS context is (\d+)', output).group(1)
+     ctx_id = int(values)
+-    return (ctx_id, defer(ethtool, f"-X {cfg.ifname} delete context {ctx_id}", host=cfg.remote))
++    return (ctx_id, defer(ethtool, f"-X {cfg.ifname} delete context {ctx_id}"))
+ 
+ 
+ def _set_flow_rule(cfg, port, chan):
+-    output = ethtool(f"-N {cfg.ifname} flow-type tcp6 dst-port {port} action {chan}", host=cfg.remote).stdout
++    output = ethtool(f"-N {cfg.ifname} flow-type tcp6 dst-port {port} action {chan}").stdout
+     values = re.search(r'ID (\d+)', output).group(1)
+     return int(values)
+ 
+ 
+ def _set_flow_rule_rss(cfg, port, ctx_id):
+-    output = ethtool(f"-N {cfg.ifname} flow-type tcp6 dst-port {port} context {ctx_id}", host=cfg.remote).stdout
++    output = ethtool(f"-N {cfg.ifname} flow-type tcp6 dst-port {port} context {ctx_id}").stdout
+     values = re.search(r'ID (\d+)', output).group(1)
+     return int(values)
+ 
+@@ -47,26 +47,26 @@ def test_zcrx(cfg) -> None:
+     (rx_ring, hds_thresh) = _get_current_settings(cfg)
+     port = rand_port()
+ 
+-    ethtool(f"-G {cfg.ifname} tcp-data-split on", host=cfg.remote)
+-    defer(ethtool, f"-G {cfg.ifname} tcp-data-split auto", host=cfg.remote)
++    ethtool(f"-G {cfg.ifname} tcp-data-split on")
++    defer(ethtool, f"-G {cfg.ifname} tcp-data-split auto")
+ 
+-    ethtool(f"-G {cfg.ifname} hds-thresh 0", host=cfg.remote)
+-    defer(ethtool, f"-G {cfg.ifname} hds-thresh {hds_thresh}", host=cfg.remote)
++    ethtool(f"-G {cfg.ifname} hds-thresh 0")
++    defer(ethtool, f"-G {cfg.ifname} hds-thresh {hds_thresh}")
+ 
+-    ethtool(f"-G {cfg.ifname} rx 64", host=cfg.remote)
+-    defer(ethtool, f"-G {cfg.ifname} rx {rx_ring}", host=cfg.remote)
++    ethtool(f"-G {cfg.ifname} rx 64")
++    defer(ethtool, f"-G {cfg.ifname} rx {rx_ring}")
+ 
+-    ethtool(f"-X {cfg.ifname} equal {combined_chans - 1}", host=cfg.remote)
+-    defer(ethtool, f"-X {cfg.ifname} default", host=cfg.remote)
++    ethtool(f"-X {cfg.ifname} equal {combined_chans - 1}")
++    defer(ethtool, f"-X {cfg.ifname} default")
+ 
+     flow_rule_id = _set_flow_rule(cfg, port, combined_chans - 1)
+-    defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}", host=cfg.remote)
++    defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}")
+ 
+-    rx_cmd = f"{cfg.bin_remote} -s -p {port} -i {cfg.ifname} -q {combined_chans - 1}"
+-    tx_cmd = f"{cfg.bin_local} -c -h {cfg.remote_addr_v['6']} -p {port} -l 12840"
+-    with bkg(rx_cmd, host=cfg.remote, exit_wait=True):
+-        wait_port_listen(port, proto="tcp", host=cfg.remote)
+-        cmd(tx_cmd)
++    rx_cmd = f"{cfg.bin_local} -s -p {port} -i {cfg.ifname} -q {combined_chans - 1}"
++    tx_cmd = f"{cfg.bin_remote} -c -h {cfg.addr_v['6']} -p {port} -l 12840"
++    with bkg(rx_cmd, exit_wait=True):
++        wait_port_listen(port, proto="tcp")
++        cmd(tx_cmd, host=cfg.remote)
+ 
+ 
+ def test_zcrx_oneshot(cfg) -> None:
+@@ -78,26 +78,26 @@ def test_zcrx_oneshot(cfg) -> None:
+     (rx_ring, hds_thresh) = _get_current_settings(cfg)
+     port = rand_port()
+ 
+-    ethtool(f"-G {cfg.ifname} tcp-data-split on", host=cfg.remote)
+-    defer(ethtool, f"-G {cfg.ifname} tcp-data-split auto", host=cfg.remote)
++    ethtool(f"-G {cfg.ifname} tcp-data-split on")
++    defer(ethtool, f"-G {cfg.ifname} tcp-data-split auto")
+ 
+-    ethtool(f"-G {cfg.ifname} hds-thresh 0", host=cfg.remote)
+-    defer(ethtool, f"-G {cfg.ifname} hds-thresh {hds_thresh}", host=cfg.remote)
++    ethtool(f"-G {cfg.ifname} hds-thresh 0")
++    defer(ethtool, f"-G {cfg.ifname} hds-thresh {hds_thresh}")
+ 
+-    ethtool(f"-G {cfg.ifname} rx 64", host=cfg.remote)
+-    defer(ethtool, f"-G {cfg.ifname} rx {rx_ring}", host=cfg.remote)
++    ethtool(f"-G {cfg.ifname} rx 64")
++    defer(ethtool, f"-G {cfg.ifname} rx {rx_ring}")
+ 
+-    ethtool(f"-X {cfg.ifname} equal {combined_chans - 1}", host=cfg.remote)
+-    defer(ethtool, f"-X {cfg.ifname} default", host=cfg.remote)
++    ethtool(f"-X {cfg.ifname} equal {combined_chans - 1}")
++    defer(ethtool, f"-X {cfg.ifname} default")
+ 
+     flow_rule_id = _set_flow_rule(cfg, port, combined_chans - 1)
+-    defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}", host=cfg.remote)
++    defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}")
+ 
+-    rx_cmd = f"{cfg.bin_remote} -s -p {port} -i {cfg.ifname} -q {combined_chans - 1} -o 4"
+-    tx_cmd = f"{cfg.bin_local} -c -h {cfg.remote_addr_v['6']} -p {port} -l 4096 -z 16384"
+-    with bkg(rx_cmd, host=cfg.remote, exit_wait=True):
+-        wait_port_listen(port, proto="tcp", host=cfg.remote)
+-        cmd(tx_cmd)
++    rx_cmd = f"{cfg.bin_local} -s -p {port} -i {cfg.ifname} -q {combined_chans - 1} -o 4"
++    tx_cmd = f"{cfg.bin_remote} -c -h {cfg.addr_v['6']} -p {port} -l 4096 -z 16384"
++    with bkg(rx_cmd, exit_wait=True):
++        wait_port_listen(port, proto="tcp")
++        cmd(tx_cmd, host=cfg.remote)
+ 
+ 
+ def test_zcrx_rss(cfg) -> None:
+@@ -109,27 +109,27 @@ def test_zcrx_rss(cfg) -> None:
+     (rx_ring, hds_thresh) = _get_current_settings(cfg)
+     port = rand_port()
+ 
+-    ethtool(f"-G {cfg.ifname} tcp-data-split on", host=cfg.remote)
+-    defer(ethtool, f"-G {cfg.ifname} tcp-data-split auto", host=cfg.remote)
++    ethtool(f"-G {cfg.ifname} tcp-data-split on")
++    defer(ethtool, f"-G {cfg.ifname} tcp-data-split auto")
+ 
+-    ethtool(f"-G {cfg.ifname} hds-thresh 0", host=cfg.remote)
+-    defer(ethtool, f"-G {cfg.ifname} hds-thresh {hds_thresh}", host=cfg.remote)
++    ethtool(f"-G {cfg.ifname} hds-thresh 0")
++    defer(ethtool, f"-G {cfg.ifname} hds-thresh {hds_thresh}")
+ 
+-    ethtool(f"-G {cfg.ifname} rx 64", host=cfg.remote)
+-    defer(ethtool, f"-G {cfg.ifname} rx {rx_ring}", host=cfg.remote)
++    ethtool(f"-G {cfg.ifname} rx 64")
++    defer(ethtool, f"-G {cfg.ifname} rx {rx_ring}")
+ 
+-    ethtool(f"-X {cfg.ifname} equal {combined_chans - 1}", host=cfg.remote)
+-    defer(ethtool, f"-X {cfg.ifname} default", host=cfg.remote)
++    ethtool(f"-X {cfg.ifname} equal {combined_chans - 1}")
++    defer(ethtool, f"-X {cfg.ifname} default")
+ 
+     (ctx_id, delete_ctx) = _create_rss_ctx(cfg, combined_chans - 1)
+     flow_rule_id = _set_flow_rule_rss(cfg, port, ctx_id)
+-    defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}", host=cfg.remote)
++    defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}")
+ 
+-    rx_cmd = f"{cfg.bin_remote} -s -p {port} -i {cfg.ifname} -q {combined_chans - 1}"
+-    tx_cmd = f"{cfg.bin_local} -c -h {cfg.remote_addr_v['6']} -p {port} -l 12840"
+-    with bkg(rx_cmd, host=cfg.remote, exit_wait=True):
+-        wait_port_listen(port, proto="tcp", host=cfg.remote)
+-        cmd(tx_cmd)
++    rx_cmd = f"{cfg.bin_local} -s -p {port} -i {cfg.ifname} -q {combined_chans - 1}"
++    tx_cmd = f"{cfg.bin_remote} -c -h {cfg.addr_v['6']} -p {port} -l 12840"
++    with bkg(rx_cmd, exit_wait=True):
++        wait_port_listen(port, proto="tcp")
++        cmd(tx_cmd, host=cfg.remote)
+ 
+ 
+ def main() -> None:
+-- 
+2.47.1
 
---------------H2JRCHIsEhfNcLnixvnhBAUg--
-
---------------7khk9Hn6ScvdIqFJ29EL2k9Y
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wnsEABYIACMWIQQgQFSp1zOQVirsQx5qll0+bw8o6AUCaG/rKAUDAAAAAAAKCRBqll0+bw8o6GjG
-AQCh9JmbuQ25I6vv/PvukweVe1pMPMuYQEGIp/bBeHMFpQD/Xq1WqoniZx36OSk92tTpWreojZqR
-lxIgT0I2B5qrjwQ=
-=u6WU
------END PGP SIGNATURE-----
-
---------------7khk9Hn6ScvdIqFJ29EL2k9Y--
