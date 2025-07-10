@@ -1,36 +1,37 @@
 Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17529291C0C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A343B2918F0
 	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 08:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752137776; cv=none; b=kgY/Wq90fO6IinVh/Rfq+n1IHUw5uiymjaVaLyUcjtnEDkXZIw+T8jKQHK8hQYRDyRG/0PCnCUz/bvjzWaIgpf0SpVAyXc2xl4PpP4/32Kzr/a43REkfzarP/Zfj+BBoI9Fsm3L+WEavGlMUg4J0QgIuzPTkcmXTh1ImXgL/GHE=
+	t=1752137776; cv=none; b=kI1QqRxP+9gLqisO/D+B7fy3SQ8rvpQBcy159tKRPz/Jx9CqF3euH/IBootDHIxi3xxAl068lMYvvEhWd56o3cw6VmIHECuCQdO4bZZcOUE6uEURU1RHNyVCyj/UBygH53nm+we/39k4YgsUkFZ7ce5MZqSN4utbsNgeIzeK0pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752137776; c=relaxed/simple;
-	bh=wkTX24QUeGjoDBX6IuLL7fb1Jrrycfyelw3mkC6fqSw=;
+	bh=T+HFA9g8VXxrJq3B7GU3Ec4uQ1aV1Uh/sFdG+UqwTEw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ioNSiT5RZC7N94jcpSjji6Qsfciu4I0eKbM+SucqDIJAo5CtGSDnYogFdZXkJr5/w+fg4b5J8Zt8zafxfEMgWmVLzAi8RTmWB7j9IqfyU1xbAIBkpS6glC2tZqd1VaJb3ko+5bPxClOc9wZDHRZ3T6osLnOcnfvRooGfdxPFSA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=V+zLeg4l; arc=none smtp.client-ip=203.29.241.158
+	 In-Reply-To:To:Cc; b=lDGMOLsI73Rjubng+vlLfAFXBXVzxROzqYy1aSmDuOEPZczHpKR+c8uE4HsHmK0BKFG7QpGBE2z67JBRYcWLasE1ID6ggz+hLAqwYK5ht9YSc9sNm6bJ9yTZhYOx/XZw9M06XXFJ7ptH6cQ6uKpZKbajyu53/xBznheLhUmyyfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=j5z6YJqu; arc=none smtp.client-ip=203.29.241.158
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="V+zLeg4l"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="j5z6YJqu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1752137765;
-	bh=BGc/mGri4LQHmsAQ9MPdTKgLHOxlZHBdUFSasVdGhRc=;
+	d=codeconstruct.com.au; s=2022a; t=1752137764;
+	bh=4AvVg0CRmyVrIOlC6it+JQYC82VtRZwn+Kme2dzFgfA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=V+zLeg4lBi+fvUVA4Hg0vZM1JNHVdXYoilbbDk2DESp23yBYAibNzPN8iCjjCc9Ee
-	 ptLQvzpTpXZ0y3MpUyD8w+G8IdhmkpPBhFEaHmxA+ySms667+whPxcCFaHNuDZ1oBz
-	 guM+gx/YPHfj6TjEYP3crfEK12scnIQknwwPW4IAqXNJcdtEkVq77m88p1bQifhJhF
-	 /YmQk/1NRKiwnZQeqPRTtXzNFE7GrAjnzk2OjIPj8DcZDra49H8Aflt57yu5P0JcUy
-	 qQyG2hpk8E0xWxV0z7FADZQEcRTKXaLylUfubVjO11xjFA30axTdONZpUaXvCAXtFC
-	 8nWnO7pM+LX4A==
+	b=j5z6YJqux5kNPh94JzgL9kY1VSeI+NtGMPy29j0tW00uJ/zBuLLyDrKxFECorvnmS
+	 5iq2w26a4u68rrZEvdoOEWSuPmTseERF86BliQdifRyja2z683qRoelbPFgO1j3QcS
+	 xCPft+A5IBPMK5s3ZZx1ccxTxwZmNsIggBGCA6QKgp69bHttpHCQlfsQXRnkDK9JFb
+	 ysmSPS9YJ1hWkJR3wClpAcAaDnEEDcla8PY8LR6K6bBoJkPIh3OeLyOeNpqXlN9LiD
+	 dpVGZmsqEDA+eDi+INonxxPg7M/n7FscVgxBgR28p0/R2gjPw0CT0FQIVfkNAACrTg
+	 Pb/WLWiteNMZg==
 Received: by codeconstruct.com.au (Postfix, from userid 10001)
-	id 29E336B24A; Thu, 10 Jul 2025 16:56:05 +0800 (AWST)
+	id 51ED66B247; Thu, 10 Jul 2025 16:56:04 +0800 (AWST)
 From: Matt Johnston <matt@codeconstruct.com.au>
-Date: Thu, 10 Jul 2025 16:56:01 +0800
-Subject: [PATCH net-next v4 8/8] net: mctp: Add bind lookup test
+Date: Thu, 10 Jul 2025 16:55:59 +0800
+Subject: [PATCH net-next v4 6/8] net: mctp: Allow limiting binds to a peer
+ address
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250710-mctp-bind-v4-8-8ec2f6460c56@codeconstruct.com.au>
+Message-Id: <20250710-mctp-bind-v4-6-8ec2f6460c56@codeconstruct.com.au>
 References: <20250710-mctp-bind-v4-0-8ec2f6460c56@codeconstruct.com.au>
 In-Reply-To: <20250710-mctp-bind-v4-0-8ec2f6460c56@codeconstruct.com.au>
 To: Jeremy Kerr <jk@codeconstruct.com.au>, 
@@ -48,247 +49,237 @@ To: Jeremy Kerr <jk@codeconstruct.com.au>,
  Simon Horman <horms@kernel.org>
 Cc: netdev@vger.kernel.org, Matt Johnston <matt@codeconstruct.com.au>
 X-Mailer: b4 0.15-dev-cbbb4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1752137761; l=8413;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752137761; l=6742;
  i=matt@codeconstruct.com.au; s=20241018; h=from:subject:message-id;
- bh=wkTX24QUeGjoDBX6IuLL7fb1Jrrycfyelw3mkC6fqSw=;
- b=dsDgHssW9Pucpl7fim+GztBjHkeSpRKXreuJSOFZ2U5hMMj6L9Et9jtLqm7/GvIZVRe59cgM2
- MSfsdPNfvzVCwqIalOOUqwUD/iXg+1sww3YnKmHYdqAbRiLToBkQaoP
+ bh=T+HFA9g8VXxrJq3B7GU3Ec4uQ1aV1Uh/sFdG+UqwTEw=;
+ b=VeDb1Yu9A5G97xwv6RA8FI3u2huKFkPYrJZ04eTsRi6x97yuHTDxqSeLBqtnHETbNcWvA0F4K
+ IR5RlOq3wliBG0iwKQ0WdZvDj/j42CWQtw/fLvM0lfLqxvjDe6XLaUO
 X-Developer-Key: i=matt@codeconstruct.com.au; a=ed25519;
  pk=exersTcCYD/pEBOzXGO6HkLd6kKXRuWxHhj+LXn3DYE=
 
-Test the preference order of bound socket matches with a series of test
-packets.
+Prior to calling bind() a program may call connect() on a socket to
+restrict to a remote peer address.
+
+Using connect() is the normal mechanism to specify a remote network
+peer, so we use that here. In MCTP connect() is only used for bound
+sockets - send() is not available for MCTP since a tag must be provided
+for each message.
+
+The smctp_type must match between connect() and bind() calls.
 
 Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
 
 ---
-v3:
-- Updated test code for changes from net-next
+v4:
+- Fix socket release on error paths
 ---
- net/mctp/test/route-test.c | 188 +++++++++++++++++++++++++++++++++++++++++++++
- net/mctp/test/utils.h      |   3 +
- 2 files changed, 191 insertions(+)
+ include/net/mctp.h |   5 ++-
+ net/mctp/af_mctp.c | 105 ++++++++++++++++++++++++++++++++++++++++++++++++++---
+ net/mctp/route.c   |   6 ++-
+ 3 files changed, 108 insertions(+), 8 deletions(-)
 
-diff --git a/net/mctp/test/route-test.c b/net/mctp/test/route-test.c
-index 12811032a2696167b4f319cbc9c81fef4cb2d951..fb6b46a952cb432163f6adb40bb395d658745efd 100644
---- a/net/mctp/test/route-test.c
-+++ b/net/mctp/test/route-test.c
-@@ -1408,6 +1408,193 @@ static void mctp_test_route_gw_output(struct kunit *test)
- 	kfree_skb(skb);
- }
+diff --git a/include/net/mctp.h b/include/net/mctp.h
+index ac4f4ecdfc24f1f481ff22a5673cb95e1bf21310..c3207ce98f07fcbb436e968d503bc45666794fdc 100644
+--- a/include/net/mctp.h
++++ b/include/net/mctp.h
+@@ -69,7 +69,10 @@ struct mctp_sock {
  
-+struct mctp_bind_lookup_test {
-+	/* header of incoming message */
-+	struct mctp_hdr hdr;
-+	u8 ty;
-+	/* mctp network of incoming interface (smctp_network) */
-+	unsigned int net;
+ 	/* bind() params */
+ 	unsigned int	bind_net;
+-	mctp_eid_t	bind_addr;
++	mctp_eid_t	bind_local_addr;
++	mctp_eid_t	bind_peer_addr;
++	unsigned int	bind_peer_net;
++	bool		bind_peer_set;
+ 	__u8		bind_type;
+ 
+ 	/* sendmsg()/recvmsg() uses struct sockaddr_mctp_ext */
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index 16341de5cf2893bbc04a8c05a038c30be6570296..df4e8cf33899befeffc82044b68a70b38f3a9b74 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -79,7 +79,7 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
+ 		goto out_release;
+ 	}
+ 
+-	msk->bind_addr = smctp->smctp_addr.s_addr;
++	msk->bind_local_addr = smctp->smctp_addr.s_addr;
+ 
+ 	/* MCTP_NET_ANY with a specific EID is resolved to the default net
+ 	 * at bind() time.
+@@ -87,13 +87,35 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
+ 	 * lookup time.
+ 	 */
+ 	if (smctp->smctp_network == MCTP_NET_ANY &&
+-	    msk->bind_addr != MCTP_ADDR_ANY) {
++	    msk->bind_local_addr != MCTP_ADDR_ANY) {
+ 		msk->bind_net = mctp_default_net(net);
+ 	} else {
+ 		msk->bind_net = smctp->smctp_network;
+ 	}
+ 
+-	msk->bind_type = smctp->smctp_type & 0x7f; /* ignore the IC bit */
++	/* ignore the IC bit */
++	smctp->smctp_type &= 0x7f;
 +
-+	/* expected socket, matches .name in lookup_binds, NULL for dropped */
-+	const char *expect;
-+};
-+
-+/* Single-packet TO-set message */
-+#define LK(src, dst) RX_HDR(1, (src), (dst), FL_S | FL_E | FL_TO)
-+
-+/* Input message test cases for bind lookup tests.
-+ *
-+ * 10 and 11 are local EIDs.
-+ * 20 and 21 are remote EIDs.
-+ */
-+static const struct mctp_bind_lookup_test mctp_bind_lookup_tests[] = {
-+	/* both local-eid and remote-eid binds, remote eid is preferenced */
-+	{ .hdr = LK(20, 10),  .ty = 1, .net = 1, .expect = "remote20" },
-+
-+	{ .hdr = LK(20, 255), .ty = 1, .net = 1, .expect = "remote20" },
-+	{ .hdr = LK(20, 0),   .ty = 1, .net = 1, .expect = "remote20" },
-+	{ .hdr = LK(0, 255),  .ty = 1, .net = 1, .expect = "any" },
-+	{ .hdr = LK(0, 11),   .ty = 1, .net = 1, .expect = "any" },
-+	{ .hdr = LK(0, 0),    .ty = 1, .net = 1, .expect = "any" },
-+	{ .hdr = LK(0, 10),   .ty = 1, .net = 1, .expect = "local10" },
-+	{ .hdr = LK(21, 10),  .ty = 1, .net = 1, .expect = "local10" },
-+	{ .hdr = LK(21, 11),  .ty = 1, .net = 1, .expect = "remote21local11" },
-+
-+	/* both src and dest set to eid=99. unusual, but accepted
-+	 * by MCTP stack currently.
-+	 */
-+	{ .hdr = LK(99, 99),  .ty = 1, .net = 1, .expect = "any" },
-+
-+	/* unbound smctp_type */
-+	{ .hdr = LK(20, 10),  .ty = 3, .net = 1, .expect = NULL },
-+
-+	/* smctp_network tests */
-+
-+	{ .hdr = LK(0, 0),    .ty = 1, .net = 7, .expect = "any" },
-+	{ .hdr = LK(21, 10),  .ty = 1, .net = 2, .expect = "any" },
-+
-+	/* remote EID 20 matches, but MCTP_NET_ANY in "remote20" resolved
-+	 * to net=1, so lookup doesn't match "remote20"
-+	 */
-+	{ .hdr = LK(20, 10),  .ty = 1, .net = 3, .expect = "any" },
-+
-+	{ .hdr = LK(21, 10),  .ty = 1, .net = 3, .expect = "remote21net3" },
-+	{ .hdr = LK(21, 10),  .ty = 1, .net = 4, .expect = "remote21net4" },
-+	{ .hdr = LK(21, 10),  .ty = 1, .net = 5, .expect = "remote21net5" },
-+
-+	{ .hdr = LK(21, 10),  .ty = 1, .net = 5, .expect = "remote21net5" },
-+
-+	{ .hdr = LK(99, 10),  .ty = 1, .net = 8, .expect = "local10net8" },
-+
-+	{ .hdr = LK(99, 10),  .ty = 1, .net = 9, .expect = "anynet9" },
-+	{ .hdr = LK(0, 0),    .ty = 1, .net = 9, .expect = "anynet9" },
-+	{ .hdr = LK(99, 99),  .ty = 1, .net = 9, .expect = "anynet9" },
-+	{ .hdr = LK(20, 10),  .ty = 1, .net = 9, .expect = "anynet9" },
-+};
-+
-+/* Binds to create during the lookup tests */
-+static const struct mctp_test_bind_setup lookup_binds[] = {
-+	/* any address and net, type 1 */
-+	{ .name = "any", .bind_addr = MCTP_ADDR_ANY,
-+		.bind_net = MCTP_NET_ANY, .bind_type = 1, },
-+	/* local eid 10, net 1 (resolved from MCTP_NET_ANY) */
-+	{ .name = "local10", .bind_addr = 10,
-+		.bind_net = MCTP_NET_ANY, .bind_type = 1, },
-+	/* local eid 10, net 8 */
-+	{ .name = "local10net8", .bind_addr = 10,
-+		.bind_net = 8, .bind_type = 1, },
-+	/* any EID, net 9 */
-+	{ .name = "anynet9", .bind_addr = MCTP_ADDR_ANY,
-+		.bind_net = 9, .bind_type = 1, },
-+
-+	/* remote eid 20, net 1, any local eid */
-+	{ .name = "remote20", .bind_addr = MCTP_ADDR_ANY,
-+		.bind_net = MCTP_NET_ANY, .bind_type = 1,
-+		.have_peer = true, .peer_addr = 20, .peer_net = MCTP_NET_ANY, },
-+
-+	/* remote eid 20, net 1, local eid 11 */
-+	{ .name = "remote21local11", .bind_addr = 11,
-+		.bind_net = MCTP_NET_ANY, .bind_type = 1,
-+		.have_peer = true, .peer_addr = 21, .peer_net = MCTP_NET_ANY, },
-+
-+	/* remote eid 21, specific net=3 for connect() */
-+	{ .name = "remote21net3", .bind_addr = MCTP_ADDR_ANY,
-+		.bind_net = MCTP_NET_ANY, .bind_type = 1,
-+		.have_peer = true, .peer_addr = 21, .peer_net = 3, },
-+
-+	/* remote eid 21, net 4 for bind, specific net=4 for connect() */
-+	{ .name = "remote21net4", .bind_addr = MCTP_ADDR_ANY,
-+		.bind_net = 4, .bind_type = 1,
-+		.have_peer = true, .peer_addr = 21, .peer_net = 4, },
-+
-+	/* remote eid 21, net 5 for bind, specific net=5 for connect() */
-+	{ .name = "remote21net5", .bind_addr = MCTP_ADDR_ANY,
-+		.bind_net = 5, .bind_type = 1,
-+		.have_peer = true, .peer_addr = 21, .peer_net = 5, },
-+};
-+
-+static void mctp_bind_lookup_desc(const struct mctp_bind_lookup_test *t,
-+				  char *desc)
-+{
-+	snprintf(desc, KUNIT_PARAM_DESC_SIZE,
-+		 "{src %d dst %d ty %d net %d expect %s}",
-+		 t->hdr.src, t->hdr.dest, t->ty, t->net, t->expect);
-+}
-+
-+KUNIT_ARRAY_PARAM(mctp_bind_lookup, mctp_bind_lookup_tests,
-+		  mctp_bind_lookup_desc);
-+
-+static void mctp_test_bind_lookup(struct kunit *test)
-+{
-+	const struct mctp_bind_lookup_test *rx;
-+	struct socket *socks[ARRAY_SIZE(lookup_binds)];
-+	struct sk_buff *skb_pkt = NULL, *skb_sock = NULL;
-+	struct socket *sock_ty0, *sock_expect = NULL;
-+	struct mctp_test_pktqueue tpq;
-+	struct mctp_test_dev *dev;
-+	struct mctp_dst dst;
-+	int rc;
-+
-+	rx = test->param_value;
-+
-+	__mctp_route_test_init(test, &dev, &dst, &tpq, &sock_ty0, rx->net);
-+	/* Create all binds */
-+	for (size_t i = 0; i < ARRAY_SIZE(lookup_binds); i++) {
-+		mctp_test_bind_run(test, &lookup_binds[i],
-+				   &rc, &socks[i]);
-+		KUNIT_ASSERT_EQ(test, rc, 0);
-+
-+		/* Record the expected receive socket */
-+		if (rx->expect &&
-+		    strcmp(rx->expect, lookup_binds[i].name) == 0) {
-+			KUNIT_ASSERT_NULL(test, sock_expect);
-+			sock_expect = socks[i];
++	if (msk->bind_peer_set) {
++		if (msk->bind_type != smctp->smctp_type) {
++			/* Prior connect() had a different type */
++			rc = -EINVAL;
++			goto out_release;
 +		}
-+	}
-+	KUNIT_ASSERT_EQ(test, !!sock_expect, !!rx->expect);
 +
-+	/* Create test message */
-+	skb_pkt = mctp_test_create_skb_data(&rx->hdr, &rx->ty);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, skb_pkt);
-+	mctp_test_skb_set_dev(skb_pkt, dev);
-+	mctp_test_pktqueue_init(&tpq);
++		if (msk->bind_net == MCTP_NET_ANY) {
++			/* Restrict to the network passed to connect() */
++			msk->bind_net = msk->bind_peer_net;
++		}
 +
-+	rc = mctp_dst_input(&dst, skb_pkt);
-+	if (rx->expect) {
-+		/* Test the message is received on the expected socket */
-+		KUNIT_EXPECT_EQ(test, rc, 0);
-+		skb_sock = skb_recv_datagram(sock_expect->sk,
-+					     MSG_DONTWAIT, &rc);
-+		if (!skb_sock) {
-+			/* Find which socket received it instead */
-+			for (size_t i = 0; i < ARRAY_SIZE(lookup_binds); i++) {
-+				skb_sock = skb_recv_datagram(socks[i]->sk,
-+							     MSG_DONTWAIT, &rc);
-+				if (skb_sock) {
-+					KUNIT_FAIL(test,
-+						   "received on incorrect socket '%s', expect '%s'",
-+						   lookup_binds[i].name,
-+						   rx->expect);
-+					goto cleanup;
-+				}
-+			}
-+			KUNIT_FAIL(test, "no message received");
++		if (msk->bind_net != msk->bind_peer_net) {
++			/* connect() had a different net to bind() */
++			rc = -EINVAL;
++			goto out_release;
 +		}
 +	} else {
-+		KUNIT_EXPECT_NE(test, rc, 0);
++		msk->bind_type = smctp->smctp_type;
++	}
+ 
+ 	rc = sk->sk_prot->hash(sk);
+ 
+@@ -103,6 +125,67 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
+ 	return rc;
+ }
+ 
++/* Used to set a specific peer prior to bind. Not used for outbound
++ * connections (Tag Owner set) since MCTP is a datagram protocol.
++ */
++static int mctp_connect(struct socket *sock, struct sockaddr *addr,
++			int addrlen, int flags)
++{
++	struct sock *sk = sock->sk;
++	struct mctp_sock *msk = container_of(sk, struct mctp_sock, sk);
++	struct net *net = sock_net(&msk->sk);
++	struct sockaddr_mctp *smctp;
++	int rc;
++
++	if (addrlen != sizeof(*smctp))
++		return -EINVAL;
++
++	if (addr->sa_family != AF_MCTP)
++		return -EAFNOSUPPORT;
++
++	/* It's a valid sockaddr for MCTP, cast and do protocol checks */
++	smctp = (struct sockaddr_mctp *)addr;
++
++	if (!mctp_sockaddr_is_ok(smctp))
++		return -EINVAL;
++
++	/* Can't bind by tag */
++	if (smctp->smctp_tag)
++		return -EINVAL;
++
++	/* IC bit must be unset */
++	if (smctp->smctp_type & 0x80)
++		return -EINVAL;
++
++	lock_sock(sk);
++
++	if (sk_hashed(sk)) {
++		/* bind() already */
++		rc = -EADDRINUSE;
++		goto out_release;
 +	}
 +
-+cleanup:
-+	kfree_skb(skb_sock);
-+	kfree_skb(skb_pkt);
++	if (msk->bind_peer_set) {
++		/* connect() already */
++		rc = -EADDRINUSE;
++		goto out_release;
++	}
 +
-+	/* Drop all binds */
-+	for (size_t i = 0; i < ARRAY_SIZE(lookup_binds); i++)
-+		sock_release(socks[i]);
++	msk->bind_peer_set = true;
++	msk->bind_peer_addr = smctp->smctp_addr.s_addr;
++	msk->bind_type = smctp->smctp_type;
++	if (smctp->smctp_network == MCTP_NET_ANY)
++		msk->bind_peer_net = mctp_default_net(net);
++	else
++		msk->bind_peer_net = smctp->smctp_network;
 +
-+	__mctp_route_test_fini(test, dev, &dst, &tpq, sock_ty0);
++	rc = 0;
++
++out_release:
++	release_sock(sk);
++	return rc;
 +}
 +
- static struct kunit_case mctp_test_cases[] = {
- 	KUNIT_CASE_PARAM(mctp_test_fragment, mctp_frag_gen_params),
- 	KUNIT_CASE_PARAM(mctp_test_rx_input, mctp_rx_input_gen_params),
-@@ -1429,6 +1616,7 @@ static struct kunit_case mctp_test_cases[] = {
- 	KUNIT_CASE(mctp_test_route_gw_loop),
- 	KUNIT_CASE_PARAM(mctp_test_route_gw_mtu, mctp_route_gw_mtu_gen_params),
- 	KUNIT_CASE(mctp_test_route_gw_output),
-+	KUNIT_CASE_PARAM(mctp_test_bind_lookup, mctp_bind_lookup_gen_params),
- 	{}
- };
+ static int mctp_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
+ {
+ 	DECLARE_SOCKADDR(struct sockaddr_mctp *, addr, msg->msg_name);
+@@ -546,7 +629,7 @@ static const struct proto_ops mctp_dgram_ops = {
+ 	.family		= PF_MCTP,
+ 	.release	= mctp_release,
+ 	.bind		= mctp_bind,
+-	.connect	= sock_no_connect,
++	.connect	= mctp_connect,
+ 	.socketpair	= sock_no_socketpair,
+ 	.accept		= sock_no_accept,
+ 	.getname	= sock_no_getname,
+@@ -613,6 +696,7 @@ static int mctp_sk_init(struct sock *sk)
  
-diff --git a/net/mctp/test/utils.h b/net/mctp/test/utils.h
-index c2aaba5188ab82237cb3bcc00d5abf1942753b9d..06bdb6cb5eff6560c7378cf37a1bb17757938e82 100644
---- a/net/mctp/test/utils.h
-+++ b/net/mctp/test/utils.h
-@@ -39,6 +39,9 @@ struct mctp_test_bind_setup {
- 	bool have_peer;
- 	mctp_eid_t peer_addr;
- 	int peer_net;
+ 	INIT_HLIST_HEAD(&msk->keys);
+ 	timer_setup(&msk->key_expiry, mctp_sk_expire_keys, 0);
++	msk->bind_peer_set = false;
+ 	return 0;
+ }
+ 
+@@ -626,12 +710,17 @@ static int mctp_sk_hash(struct sock *sk)
+ 	struct net *net = sock_net(sk);
+ 	struct sock *existing;
+ 	struct mctp_sock *msk;
++	mctp_eid_t remote;
+ 	u32 hash;
+ 	int rc;
+ 
+ 	msk = container_of(sk, struct mctp_sock, sk);
+ 
+-	hash = mctp_bind_hash(msk->bind_type, msk->bind_addr, MCTP_ADDR_ANY);
++	if (msk->bind_peer_set)
++		remote = msk->bind_peer_addr;
++	else
++		remote = MCTP_ADDR_ANY;
++	hash = mctp_bind_hash(msk->bind_type, msk->bind_local_addr, remote);
+ 
+ 	mutex_lock(&net->mctp.bind_lock);
+ 
+@@ -640,8 +729,12 @@ static int mctp_sk_hash(struct sock *sk)
+ 		struct mctp_sock *mex =
+ 			container_of(existing, struct mctp_sock, sk);
+ 
++		bool same_peer = (mex->bind_peer_set && msk->bind_peer_set &&
++				  mex->bind_peer_addr == msk->bind_peer_addr) ||
++				 (!mex->bind_peer_set && !msk->bind_peer_set);
 +
-+	/* optional name. Used for comparison in "lookup" tests */
-+	const char *name;
- };
+ 		if (mex->bind_type == msk->bind_type &&
+-		    mex->bind_addr == msk->bind_addr &&
++		    mex->bind_local_addr == msk->bind_local_addr && same_peer &&
+ 		    mex->bind_net == msk->bind_net) {
+ 			rc = -EADDRINUSE;
+ 			goto out;
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index 69cfb0e6c545c2b44e5defdfac4e602c4f0265b1..2b2b958ef6a37525cc4d3f6a5758bd3880c98e6c 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -65,7 +65,11 @@ static struct mctp_sock *mctp_lookup_bind_details(struct net *net,
+ 		if (msk->bind_type != type)
+ 			continue;
  
- struct mctp_test_dev *mctp_test_create_dev(void);
+-		if (!mctp_address_matches(msk->bind_addr, dest))
++		if (msk->bind_peer_set &&
++		    !mctp_address_matches(msk->bind_peer_addr, src))
++			continue;
++
++		if (!mctp_address_matches(msk->bind_local_addr, dest))
+ 			continue;
+ 
+ 		return msk;
 
 -- 
 2.43.0
