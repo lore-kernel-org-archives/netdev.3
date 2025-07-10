@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E851822FDFA
-	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 21:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B69C293C57
+	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 21:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752183932; cv=none; b=W2dwSyuayuX7RpfBXUDeRh8+G0E4cvnImYlyaXMj3F+aUy2hE8aZInJdNd0crrTyEnwfjicix+xCpXZINsX0wKF6mv8pfscnWbg/zyx6wCPxFEEitMdoIX0cu2fIRm7i9btyzmvevk2KKeyHgcXAg6VIh6vPMsssRmpkIbHZLg8=
+	t=1752183932; cv=none; b=mkm2nCOfheguf2Opcw/0fCcUiaWpoSRU3jDCq0SCsqyUY9qU3osF4h0dqztlmboKfxgzCjrhDmkR6DRjHnIOPTQ71WEmbsif47Bl4gl1dYkt7D31Z6HfhVXqksxivnVXk7yKkJSAFN79xHyuUBZ8FJhIBQUHwTWzGYQEfIYARfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752183932; c=relaxed/simple;
-	bh=FFEy91odWCdkta6vhA4hUKv0G7R09vfph0TqUxMA/b4=;
+	bh=ru3zARL+IYX5nXukE4JANWjxynAQnZOH8TVajAU4p+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+i9lnK6cqS5jTGyIcZDcgTL4A24PTiD/ITA1FXhfzMzAyTSwL5/csMOttROn1CNQQ2/rYVTb/qrTu2sXftZEw2FIlOLJwoenbxOprNfDU7LuOU/Qi6O5RE+WVsGzyJJWsHudzp4pu88k0YWXxKwmdavhPqeJqelZiI7L1QZKO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JKoXEmmW; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=pYgiVjO8Hvq3WV19g8cMX2Ipf4eRmkF1dEX3XYzG/x/W4NTWCjEpdo2ecpl8s7W/93SIDhJGsBJOXsOmLtwhmb5S9ZnglMoF9x6d9fe9qe+x0xv2NEiqSqYScsanyqj0cpZmiQmSdrLd5MFQJwRAVy/hS6DwpVF6zHn0RJBEY2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E3dUbaUV; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JKoXEmmW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E3dUbaUV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1752183932; x=1783719932;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=FFEy91odWCdkta6vhA4hUKv0G7R09vfph0TqUxMA/b4=;
-  b=JKoXEmmWySc42DglJ5kpMwkUMCD0SnWQD0ngIjOKX9RrzSgLrxHm9snr
-   4+t9aAK3TmzVdBjx0qNb5DpyYf7eJyU1IpgNIX4BXqD7DLwEtBvVCwpY2
-   FjwHPDR4xUHoKjxzw2j63lKk2qyGzLms4noOPYMTZuEZtenzcmmtG3U0E
-   /lv0iuXv48Cf+USymQXawZ+VgxmUDRmQqaJ4wiLcJYl2450wsFN6kdlgE
-   7GtmU3TB7SNr1YR2xOHfzy6dCWRe/YCfKZkFlWXGNNAjy+BX2+m/OHqBp
-   xg2M+pqcJpCxAr4FOs2e2BW0c483WW5huSkrrvInc6jJLSAoaRlg7GF6/
+  bh=ru3zARL+IYX5nXukE4JANWjxynAQnZOH8TVajAU4p+g=;
+  b=E3dUbaUVQ2LtIf/21BTBbFiI3N8dH4DBmKrrOZR2IynUgQ5XfihqimNa
+   rAYEz0aEO11AjWCyBU1Jm6ZvObWFDkL9GbDAWwMlLHqSP3jlBZoP6DZ6w
+   JiBhS8do6h/4Jw5F3mOkNCVeEK0bO1i2h99qLkadb6fOb1DV/A4lByFj0
+   ai7bJgZbU3W4KSxFuSl0E4Sr5tZqNxFMNJ4gDsZYoa3V2i5WMN6ZsCnrq
+   c2UtkDMd8L6uf7S2CoLygG9IftFq7h5KskWYbCbcHvISHCe0QkJTurCzR
+   GpBy7bYaePrUr8sVNzL/CpY7wnOmoWhCAgOVaEuuSEgAHH/HOsP4A/sff
    A==;
-X-CSE-ConnectionGUID: 1xj8ViSZQriiJH28yUVX1g==
-X-CSE-MsgGUID: Vi+nVmAYQjyHbb8aol27mg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54192385"
+X-CSE-ConnectionGUID: twMaavwsTNekPaOSfrWOGg==
+X-CSE-MsgGUID: dInWHFd9TBGFQPoQL2lmFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54192392"
 X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="54192385"
+   d="scan'208";a="54192392"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 14:45:28 -0700
-X-CSE-ConnectionGUID: 9DxF1Q29Q/6AActKXZ5vaw==
-X-CSE-MsgGUID: mG1IBrndSPe4EaVkAJOwIA==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 14:45:29 -0700
+X-CSE-ConnectionGUID: 6SajvlRWReSbNkyNDQQlLg==
+X-CSE-MsgGUID: AbLJOso1QZWE6h3P4r3Nyg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="161764961"
+   d="scan'208";a="161764964"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa004.fm.intel.com with ESMTP; 10 Jul 2025 14:45:27 -0700
+  by fmviesa004.fm.intel.com with ESMTP; 10 Jul 2025 14:45:28 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -56,9 +56,9 @@ Cc: Jacob Keller <jacob.e.keller@intel.com>,
 	yahui.cao@intel.com,
 	przemyslaw.kitszel@intel.com,
 	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net-next 7/8] ice: avoid rebuilding if MSI-X vector count is unchanged
-Date: Thu, 10 Jul 2025 14:45:16 -0700
-Message-ID: <20250710214518.1824208-8-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next 8/8] ice: introduce ice_get_vf_by_dev() wrapper
+Date: Thu, 10 Jul 2025 14:45:17 -0700
+Message-ID: <20250710214518.1824208-9-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250710214518.1824208-1-anthony.l.nguyen@intel.com>
 References: <20250710214518.1824208-1-anthony.l.nguyen@intel.com>
@@ -72,44 +72,86 @@ Content-Transfer-Encoding: 8bit
 
 From: Jacob Keller <jacob.e.keller@intel.com>
 
-Commit 05c16687e0cc ("ice: set MSI-X vector count on VF") added support to
-change the vector count for VFs as part of ice_sriov_set_msix_vec_count().
-This function modifies and rebuilds the target VF with the requested number
-of MSI-X vectors.
+The ice_get_vf_by_id() function is used to obtain a reference to a VF
+structure based on its ID. The ice_sriov_set_msix_vec_count() function
+needs to get a VF reference starting from the VF PCI device, and uses
+pci_iov_vf_id() to get the VF ID. This pattern is currently uncommon in the
+ice driver. However, the live migration module will introduce many more
+such locations.
 
-Future support for live migration will add a call to
-ice_sriov_set_msix_vec_count() to ensure that a migrated VF has the proper
-MSI-X vector count. In most cases, this request will be to set the MSI-X
-vector count to its current value. In that case, no work is necessary.
-Rather than requiring the caller to check this, update the function to
-check and exit early if the vector count is already at the requested value.
-This avoids an unnecessary VF rebuild.
+Add a helper wrapper ice_get_vf_by_dev() which takes the VF PCI device and
+calls ice_get_vf_by_id() using pci_iov_vf_id() to get the VF ID.
 
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_sriov.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_sriov.c  |  7 +------
+ drivers/net/ethernet/intel/ice/ice_vf_lib.h | 18 ++++++++++++++++++
+ 2 files changed, 19 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index f88bfd2f3f00..f78d5d8d516c 100644
+index f78d5d8d516c..c434326a4694 100644
 --- a/drivers/net/ethernet/intel/ice/ice_sriov.c
 +++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -966,6 +966,12 @@ int ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count)
+@@ -933,7 +933,6 @@ int ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count)
+ 	bool needs_rebuild = false;
+ 	struct ice_vsi *vsi;
+ 	struct ice_vf *vf;
+-	int id;
+ 
+ 	if (!ice_get_num_vfs(pf))
  		return -ENOENT;
- 	}
+@@ -952,11 +951,7 @@ int ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count)
+ 	if (msix_vec_count < ICE_MIN_INTR_PER_VF)
+ 		return -EINVAL;
  
-+	/* No need to rebuild if we're setting to the same value */
-+	if (msix_vec_count == vf->num_msix) {
-+		ice_put_vf(vf);
-+		return 0;
-+	}
+-	id = pci_iov_vf_id(vf_dev);
+-	if (id < 0)
+-		return id;
+-
+-	vf = ice_get_vf_by_id(pf, id);
++	vf = ice_get_vf_by_dev(pf, vf_dev);
+ 	if (!vf)
+ 		return -ENOENT;
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.h b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
+index a5ee380f8c9e..ffe1f9f830ea 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_lib.h
++++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
+@@ -239,6 +239,18 @@ static inline bool ice_vf_is_lldp_ena(struct ice_vf *vf)
+ 
+ #ifdef CONFIG_PCI_IOV
+ struct ice_vf *ice_get_vf_by_id(struct ice_pf *pf, u16 vf_id);
 +
- 	prev_msix = vf->num_msix;
- 	prev_queues = vf->num_vf_qs;
++static inline struct ice_vf *ice_get_vf_by_dev(struct ice_pf *pf,
++					       struct pci_dev *vf_dev)
++{
++	int vf_id = pci_iov_vf_id(vf_dev);
++
++	if (vf_id < 0)
++		return NULL;
++
++	return ice_get_vf_by_id(pf, pci_iov_vf_id(vf_dev));
++}
++
+ void ice_put_vf(struct ice_vf *vf);
+ bool ice_has_vfs(struct ice_pf *pf);
+ u16 ice_get_num_vfs(struct ice_pf *pf);
+@@ -265,6 +277,12 @@ static inline struct ice_vf *ice_get_vf_by_id(struct ice_pf *pf, u16 vf_id)
+ 	return NULL;
+ }
  
++static inline struct ice_vf *ice_get_vf_by_dev(struct ice_pf *pf,
++					       struct pci_dev *vf_dev)
++{
++	return NULL;
++}
++
+ static inline void ice_put_vf(struct ice_vf *vf)
+ {
+ }
 -- 
 2.47.1
 
