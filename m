@@ -1,35 +1,35 @@
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A12270EC8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4894271441;
 	Thu, 10 Jul 2025 13:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752155152; cv=none; b=tM014+OtoJWZN1I/dSjvbP9u7cezk5vNWDdfUJYj4eZrFlR9q9YTKQ3sUrNwIOkHw+Cjnt2tRyfRFkGZfYRRPu8fIUH/1IT2Vujk1NPdeywNGCLVS4Bq3ajs4biGDnTpUw1c6avzFHO02XsY4+2vqZObUvkN3Z00TZMJZB6YoMU=
+	t=1752155153; cv=none; b=MU92XdwPP/06SkB6eYfVMN7Cn8OwYXUfFH867WqzJ4lfwR4mONpcE/HYCPE1ERFzLBi5pgl9BNIfWyWde2Tau7A6lOA6ZtaYeW0pgcuxbduZ3zojSCZj0ZdkjomjicX+Zpw/0uaqWNwC39r8vVxdumwWblP9ffTAAojSRpZlJeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752155152; c=relaxed/simple;
-	bh=SUEQMfhRus7h2jOE4uAeD1DBT+oTKf86l4cLX8hrcZE=;
+	s=arc-20240116; t=1752155153; c=relaxed/simple;
+	bh=ledOylaqQEPvYTq4QluUMz8TIlo24U83PUwVTnek9Io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RWTRBA7oKkMBRs7ddamALr4l0zZIrs+hGwEXAZXrGrHQyvIuCtOPYwjpIpPj8/QoV0/vTjOcKgK78nvV/N7ENF6+jM95Hs9ZgqgfIbONWoS7dMUvyLPM8qHFdNYDUfVqN5xF1ofzFLUvA6cakaGcZhN/QUQVlOmlzAh8waikxgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WOhs+Ukn; arc=none smtp.client-ip=217.70.183.201
+	 MIME-Version; b=lTAeH0T5alrksQ/0n8s22ZSg3zc+YXFJ7RhmU183ixexTAh0rYjP9Lpuaif5EhX9XR9Pf0MfvknAmbantyxTc2fF8K2H0NPNkQ9cew4+Eab0w5hO7q+BXOyntg3ISbby0AVsC/PjikQdnrUfiEpFsVpDcf1eN98dMhmO8GjKB6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fzagjTlX; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WOhs+Ukn"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7007344451;
-	Thu, 10 Jul 2025 13:45:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fzagjTlX"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B5B8444452;
+	Thu, 10 Jul 2025 13:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1752155142;
+	t=1752155149;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1gkCNSIJipCtJ8F7BWcSLctUsRTjVD/kU0v4Esvy09U=;
-	b=WOhs+UknWDnRTs/K6H+DNs0ElTRI5p15wW1eoN94RTLcSU0l6hiEtOA0G6efJz+0W+JPRx
-	MAXJYvKzY3zrMBV6aT8gGGiU0YMOHKfm33TJWYlXeFbXa2tFqZFeQDSXuYWeRdQ92qVUCG
-	84AobJKjrjY1NwTlU+QQdCwIgj45vlmkj3yyB1iTvUMZdwYb34T+TJ6RgswWPzr7eLEYqG
-	TKXb6Sv3VkSj753quEdNVpD8tQTsgOqPSrwj8qBV54tlnKLFrOpHMNS0MkfA68G7p4qHVP
-	RRAHm0447lYNeMmRPhkWsQtp5+mYVF7z2cUWtAgCZ0oDbbCAdDFAogXMiUpDQA==
+	bh=ls8RnJEssPCa5uoWcxolHCb+Nu+Fel/IUlUzMf7lyj8=;
+	b=fzagjTlX19kDDVk2AXH1NYE4yDaeBU70tQS20hVXR+HU8zKk41M5Xlj1d1sYtyqt9qkUT/
+	lVnk1TnFNKbW86SdeY7ip500YKucvFBQOwEQ4g1dJu22adONrYm8oeCFM8rsYER945S90W
+	IZVPvtxEUjpQHvs0h4YDU81Ltc6wCnJ9J/WFxRajOunFlteKLP8uWOj/r56sKR11A31B8x
+	3whPVkJX2Rg+2lWW8AJWFg7F3zKQipDNmmSWWI4H1QheBZott2uC4L1VsEDY3YtWD4O+wT
+	xhpnqjWtF7TWXt6fxYkC1+gFMjHYRHUu6OqFNIKrhMaS8aqB+n94aYOrow9L8A==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net
 Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
@@ -62,9 +62,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Romain Gantois <romain.gantois@bootlin.com>,
 	Daniel Golle <daniel@makrotopia.org>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: [PATCH net-next v8 02/15] net: ethtool: common: Indicate that BaseT works on up to 4 lanes
-Date: Thu, 10 Jul 2025 15:45:19 +0200
-Message-ID: <20250710134533.596123-3-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v8 06/15] net: phy: Create a phy_port for PHY-driven SFPs
+Date: Thu, 10 Jul 2025 15:45:23 +0200
+Message-ID: <20250710134533.596123-7-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250710134533.596123-1-maxime.chevallier@bootlin.com>
 References: <20250710134533.596123-1-maxime.chevallier@bootlin.com>
@@ -77,64 +77,98 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegtdehlecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevgedtffelffelveeuleelgfejfeevvdejhfehgeefgfffvdefteegvedutefftdenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefuddprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkv
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegtdehlecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevgedtffelffelveeuleelgfejfeevvdejhfehgeefgfffvdefteegvedutefftdenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpeefnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefuddprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkv
  ghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhmshhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrgh
 X-GND-Sasl: maxime.chevallier@bootlin.com
 
-The way BaseT modes (Ethernet over twisted copper pairs) are represented
-in the kernel are through the following modes :
+Some PHY devices may be used as media-converters to drive SFP ports (for
+example, to allow using SFP when the SoC can only output RGMII). This is
+already supported to some extend by allowing PHY drivers to registers
+themselves as being SFP upstream.
 
-  ETHTOOL_LINK_MODE_10baseT_Half
-  ETHTOOL_LINK_MODE_10baseT_Full
-  ETHTOOL_LINK_MODE_100baseT_Half
-  ETHTOOL_LINK_MODE_100baseT_Full
-  ETHTOOL_LINK_MODE_1000baseT_Half
-  ETHTOOL_LINK_MODE_1000baseT_Full
-  ETHTOOL_LINK_MODE_2500baseT_Full
-  ETHTOOL_LINK_MODE_5000baseT_Full
-  ETHTOOL_LINK_MODE_10000baseT_Full
-  ETHTOOL_LINK_MODE_100baseT1_Full
-  ETHTOOL_LINK_MODE_1000baseT1_Full
-  ETHTOOL_LINK_MODE_10baseT1L_Full
-  ETHTOOL_LINK_MODE_10baseT1S_Full
-  ETHTOOL_LINK_MODE_10baseT1S_Half
-  ETHTOOL_LINK_MODE_10baseT1S_P2MP_Half
-  ETHTOOL_LINK_MODE_10baseT1BRR_Full
+However, the logic to drive the SFP can actually be split to a per-port
+control logic, allowing support for multi-port PHYs, or PHYs that can
+either drive SFPs or Copper.
 
-The baseT1* modes explicitly specify that they work on a single,
-unshielded twister copper pair.
-
-However, the other modes do not state the number of pairs that are used
-to carry the link. 10 and 100BaseT use 2 twisted copper pairs, while
-1GBaseT and higher use 4 pairs.
-
-although 10 and 100BaseT use 2 pairs, they can work on a Cat3/4/5+
-cables that contain 4 pairs.
-
-Change the number of pairs associated to BaseT modes to indicate the
-allowable number of pairs for BaseT. Further commits will then refine
-the minimum number of pairs required for the linkmode to work.
-
-BaseT1 modes aren't affected by this commit.
+To that extent, create a phy_port when registering an SFP bus onto a
+PHY. This port is considered a "serdes" port, in that it can feed data
+to anther entity on the link. The PHY driver needs to specify the
+various PHY_INTERFACE_MODE_XXX that this port supports.
 
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- net/ethtool/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/phy_device.c | 24 ++++++++++++++++++++++++
+ drivers/net/phy/phy_port.c   | 15 +++++++++++++++
+ 2 files changed, 39 insertions(+)
 
-diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-index d62dc56f2f5b..17ee0efc7bc3 100644
---- a/net/ethtool/common.c
-+++ b/net/ethtool/common.c
-@@ -267,7 +267,7 @@ static_assert(ARRAY_SIZE(link_mode_names) == __ETHTOOL_LINK_MODE_MASK_NBITS);
- #define __LINK_MODE_LANES_LR8_ER8_FR8	8
- #define __LINK_MODE_LANES_LRM		1
- #define __LINK_MODE_LANES_MLD2		2
--#define __LINK_MODE_LANES_T		1
-+#define __LINK_MODE_LANES_T		4
- #define __LINK_MODE_LANES_T1		1
- #define __LINK_MODE_LANES_X		1
- #define __LINK_MODE_LANES_FX		1
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 4ec21c31e6c6..e491d3de0189 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1627,6 +1627,26 @@ static void phy_del_port(struct phy_device *phydev, struct phy_port *port)
+ 	phydev->n_ports--;
+ }
+ 
++static int phy_setup_sfp_port(struct phy_device *phydev)
++{
++	struct phy_port *port = phy_port_alloc();
++
++	if (!port)
++		return -ENOMEM;
++
++	port->parent_type = PHY_PORT_PHY;
++	port->phy = phydev;
++
++	/* The PHY is a media converter, the port connected to the SFP cage
++	 * is a MII port.
++	 */
++	port->is_mii = true;
++
++	phy_add_port(phydev, port);
++
++	return 0;
++}
++
+ /**
+  * phy_sfp_probe - probe for a SFP cage attached to this PHY device
+  * @phydev: Pointer to phy_device
+@@ -1648,6 +1668,10 @@ int phy_sfp_probe(struct phy_device *phydev,
+ 		ret = sfp_bus_add_upstream(bus, phydev, ops);
+ 		sfp_bus_put(bus);
+ 	}
++
++	if (phydev->sfp_bus)
++		ret = phy_setup_sfp_port(phydev);
++
+ 	return ret;
+ }
+ EXPORT_SYMBOL(phy_sfp_probe);
+diff --git a/drivers/net/phy/phy_port.c b/drivers/net/phy/phy_port.c
+index 51870f2378ec..36de8c5c9ad5 100644
+--- a/drivers/net/phy/phy_port.c
++++ b/drivers/net/phy/phy_port.c
+@@ -113,6 +113,21 @@ void phy_port_update_supported(struct phy_port *port)
+ 		phy_caps_medium_get_supported(supported, i, port->lanes);
+ 		linkmode_or(port->supported, port->supported, supported);
+ 	}
++
++	/* Serdes ports supported may through SFP may not have any medium set,
++	 * as they will output PHY_INTERFACE_MODE_XXX modes. In that case, derive
++	 * the supported list based on these interfaces
++	 */
++	if (port->is_mii && linkmode_empty(supported)) {
++		unsigned long interface, link_caps = 0;
++
++		/* Get each interface's caps */
++		for_each_set_bit(interface, port->interfaces,
++				 PHY_INTERFACE_MODE_MAX)
++			link_caps |= phy_caps_from_interface(interface);
++
++		phy_caps_linkmodes(link_caps, port->supported);
++	}
+ }
+ EXPORT_SYMBOL_GPL(phy_port_update_supported);
+ 
 -- 
 2.49.0
 
