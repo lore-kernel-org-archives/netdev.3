@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0B129008F
-	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 21:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E851822FDFA
+	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 21:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752183931; cv=none; b=LYSbGxM18df/+oRwauZvid7I57gbzM8ArJmS7e6gKj0BOhFmtJpbLc8N6RJ8iBU6xaw7Au/mFR67WRf4P+sJhtxPLk1PvR3JXGAclFfqEIwxMfhesSr0rNECGCokyYNHx6pt4WSQFhQqE5vIRLPKzdiUQpKnnFaE/ApgTq53u28=
+	t=1752183932; cv=none; b=W2dwSyuayuX7RpfBXUDeRh8+G0E4cvnImYlyaXMj3F+aUy2hE8aZInJdNd0crrTyEnwfjicix+xCpXZINsX0wKF6mv8pfscnWbg/zyx6wCPxFEEitMdoIX0cu2fIRm7i9btyzmvevk2KKeyHgcXAg6VIh6vPMsssRmpkIbHZLg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752183931; c=relaxed/simple;
-	bh=rXcABTbaGaryer10VBbN64sUyww6zPo8asu698F4Z2g=;
+	s=arc-20240116; t=1752183932; c=relaxed/simple;
+	bh=FFEy91odWCdkta6vhA4hUKv0G7R09vfph0TqUxMA/b4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lpABtlezToV4SUl0ihTxgl5nTkBmgx7i7RQXh7+iMVeAVIxlGutopWMc3/aM8bNOD3Km2j+3Shvb4T2wsa2R6oeLxbwUd25rzPD6b8YU2V7lN/I8ILVZM+IRdkohnImdRJuQYrcYAbYMBG+elp69hRtKWjgCZoL+vLsa+ifjhwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nncuk1zU; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=Z+i9lnK6cqS5jTGyIcZDcgTL4A24PTiD/ITA1FXhfzMzAyTSwL5/csMOttROn1CNQQ2/rYVTb/qrTu2sXftZEw2FIlOLJwoenbxOprNfDU7LuOU/Qi6O5RE+WVsGzyJJWsHudzp4pu88k0YWXxKwmdavhPqeJqelZiI7L1QZKO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JKoXEmmW; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nncuk1zU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JKoXEmmW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752183930; x=1783719930;
+  t=1752183932; x=1783719932;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=rXcABTbaGaryer10VBbN64sUyww6zPo8asu698F4Z2g=;
-  b=nncuk1zUAb/5G1GCBkId0yK9xtfts6JBqJkbQzoB8R2uOQJiknCZHE5c
-   USXSHlSlN0BZgtaFC9UrRSE6omcmZEs9bTANRDD8A0FwpGwqR5CVIqTt2
-   S/3Ww8CNRbVyfqfUNYagaLr+v7MSnLddCGoINPufVYc0DCMwOmXMXwVo8
-   dnR2g/lvCO5wGXMCmmR0RW//Y1xUnG61GbSZt5NuxCOFuXCsQcSrHsdF+
-   7TrPOvjPwFpRXm4+eSJlQad2Cthd1TGpX0UnjDRJPbl/2igjxa7R9mtC1
-   GxioDjzIT3kgrMJ9EJSJEyx3pz8LKUBotFjlG7h+hSj/2LN8lztLMtmhk
-   g==;
-X-CSE-ConnectionGUID: y0hlDFaMRUWGgQjolmfMBQ==
-X-CSE-MsgGUID: AUKq985iSI272acnn8fOdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54192373"
+  bh=FFEy91odWCdkta6vhA4hUKv0G7R09vfph0TqUxMA/b4=;
+  b=JKoXEmmWySc42DglJ5kpMwkUMCD0SnWQD0ngIjOKX9RrzSgLrxHm9snr
+   4+t9aAK3TmzVdBjx0qNb5DpyYf7eJyU1IpgNIX4BXqD7DLwEtBvVCwpY2
+   FjwHPDR4xUHoKjxzw2j63lKk2qyGzLms4noOPYMTZuEZtenzcmmtG3U0E
+   /lv0iuXv48Cf+USymQXawZ+VgxmUDRmQqaJ4wiLcJYl2450wsFN6kdlgE
+   7GtmU3TB7SNr1YR2xOHfzy6dCWRe/YCfKZkFlWXGNNAjy+BX2+m/OHqBp
+   xg2M+pqcJpCxAr4FOs2e2BW0c483WW5huSkrrvInc6jJLSAoaRlg7GF6/
+   A==;
+X-CSE-ConnectionGUID: 1xj8ViSZQriiJH28yUVX1g==
+X-CSE-MsgGUID: Vi+nVmAYQjyHbb8aol27mg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54192385"
 X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="54192373"
+   d="scan'208";a="54192385"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
   by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 14:45:28 -0700
-X-CSE-ConnectionGUID: WgZQdM4vS7SYSTHWz3F8sw==
-X-CSE-MsgGUID: nKQ73p0WQWmZAaN9Bkv5bg==
+X-CSE-ConnectionGUID: 9DxF1Q29Q/6AActKXZ5vaw==
+X-CSE-MsgGUID: mG1IBrndSPe4EaVkAJOwIA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="161764951"
+   d="scan'208";a="161764961"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa004.fm.intel.com with ESMTP; 10 Jul 2025 14:45:26 -0700
+  by fmviesa004.fm.intel.com with ESMTP; 10 Jul 2025 14:45:27 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -54,10 +54,11 @@ Cc: Jacob Keller <jacob.e.keller@intel.com>,
 	anthony.l.nguyen@intel.com,
 	madhu.chittim@intel.com,
 	yahui.cao@intel.com,
-	przemyslaw.kitszel@intel.com
-Subject: [PATCH net-next 5/8] ice: expose VF functions used by live migration
-Date: Thu, 10 Jul 2025 14:45:14 -0700
-Message-ID: <20250710214518.1824208-6-anthony.l.nguyen@intel.com>
+	przemyslaw.kitszel@intel.com,
+	Rafal Romanowski <rafal.romanowski@intel.com>
+Subject: [PATCH net-next 7/8] ice: avoid rebuilding if MSI-X vector count is unchanged
+Date: Thu, 10 Jul 2025 14:45:16 -0700
+Message-ID: <20250710214518.1824208-8-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250710214518.1824208-1-anthony.l.nguyen@intel.com>
 References: <20250710214518.1824208-1-anthony.l.nguyen@intel.com>
@@ -71,135 +72,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Jacob Keller <jacob.e.keller@intel.com>
 
-The live migration process will require configuring the target VF with the
-data provided from the source host. A few helper functions in ice_sriov.c
-and ice_virtchnl.c will be needed for this process, but are currently
-static.
+Commit 05c16687e0cc ("ice: set MSI-X vector count on VF") added support to
+change the vector count for VFs as part of ice_sriov_set_msix_vec_count().
+This function modifies and rebuilds the target VF with the requested number
+of MSI-X vectors.
 
-Expose these functions in their respective headers so that the live
-migration module can use them during the migration process.
+Future support for live migration will add a call to
+ice_sriov_set_msix_vec_count() to ensure that a migrated VF has the proper
+MSI-X vector count. In most cases, this request will be to set the MSI-X
+vector count to its current value. In that case, no work is necessary.
+Rather than requiring the caller to check this, update the function to
+check and exit early if the vector count is already at the requested value.
+This avoids an unnecessary VF rebuild.
 
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_sriov.h    |  7 +++++++
- drivers/net/ethernet/intel/ice/ice_virtchnl.c | 13 ++++++-------
- drivers/net/ethernet/intel/ice/ice_virtchnl.h | 19 +++++++++++++++++++
- 3 files changed, 32 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_sriov.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.h b/drivers/net/ethernet/intel/ice/ice_sriov.h
-index 96549ca5c52c..d1a998a4bef6 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.h
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.h
-@@ -64,6 +64,7 @@ bool
- ice_vc_validate_pattern(struct ice_vf *vf, struct virtchnl_proto_hdrs *proto);
- u32 ice_sriov_get_vf_total_msix(struct pci_dev *pdev);
- int ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count);
-+int ice_vf_vsi_dis_single_txq(struct ice_vf *vf, struct ice_vsi *vsi, u16 q_id);
- #else /* CONFIG_PCI_IOV */
- static inline void ice_process_vflr_event(struct ice_pf *pf) { }
- static inline void ice_free_vfs(struct ice_pf *pf) { }
-@@ -164,5 +165,11 @@ ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count)
- {
- 	return -EOPNOTSUPP;
- }
-+
-+static inline int ice_vf_vsi_dis_single_txq(struct ice_vf *vf,
-+					    struct ice_vsi *vsi, u16 q_id)
-+{
-+	return -EOPNOTSUPP;
-+}
- #endif /* CONFIG_PCI_IOV */
- #endif /* _ICE_SRIOV_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-index 307252500f02..9460b6561b69 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-@@ -1427,7 +1427,7 @@ static bool ice_vc_validate_vqs_bitmaps(struct virtchnl_queue_select *vqs)
-  * @vsi: VSI of the VF to configure
-  * @q_idx: VF queue index used to determine the queue in the PF's space
-  */
--static void ice_vf_ena_txq_interrupt(struct ice_vsi *vsi, u32 q_idx)
-+void ice_vf_ena_txq_interrupt(struct ice_vsi *vsi, u32 q_idx)
- {
- 	struct ice_hw *hw = &vsi->back->hw;
- 	u32 pfq = vsi->txq_map[q_idx];
-@@ -1450,7 +1450,7 @@ static void ice_vf_ena_txq_interrupt(struct ice_vsi *vsi, u32 q_idx)
-  * @vsi: VSI of the VF to configure
-  * @q_idx: VF queue index used to determine the queue in the PF's space
-  */
--static void ice_vf_ena_rxq_interrupt(struct ice_vsi *vsi, u32 q_idx)
-+void ice_vf_ena_rxq_interrupt(struct ice_vsi *vsi, u32 q_idx)
- {
- 	struct ice_hw *hw = &vsi->back->hw;
- 	u32 pfq = vsi->rxq_map[q_idx];
-@@ -1566,8 +1566,7 @@ static int ice_vc_ena_qs_msg(struct ice_vf *vf, u8 *msg)
-  * disabled then clear q_id bit in the enabled queues bitmap and return
-  * success. Otherwise return error.
-  */
--static int
--ice_vf_vsi_dis_single_txq(struct ice_vf *vf, struct ice_vsi *vsi, u16 q_id)
-+int ice_vf_vsi_dis_single_txq(struct ice_vf *vf, struct ice_vsi *vsi, u16 q_id)
- {
- 	struct ice_txq_meta txq_meta = { 0 };
- 	struct ice_tx_ring *ring;
-@@ -2621,7 +2620,7 @@ static bool ice_vf_vlan_offload_ena(u32 caps)
-  * ice_is_vlan_promisc_allowed - check if VLAN promiscuous config is allowed
-  * @vf: VF used to determine if VLAN promiscuous config is allowed
-  */
--static bool ice_is_vlan_promisc_allowed(struct ice_vf *vf)
-+bool ice_is_vlan_promisc_allowed(struct ice_vf *vf)
- {
- 	if ((test_bit(ICE_VF_STATE_UC_PROMISC, vf->vf_states) ||
- 	     test_bit(ICE_VF_STATE_MC_PROMISC, vf->vf_states)) &&
-@@ -2640,8 +2639,8 @@ static bool ice_is_vlan_promisc_allowed(struct ice_vf *vf)
-  * This function should only be called if VLAN promiscuous mode is allowed,
-  * which can be determined via ice_is_vlan_promisc_allowed().
-  */
--static int ice_vf_ena_vlan_promisc(struct ice_vf *vf, struct ice_vsi *vsi,
--				   struct ice_vlan *vlan)
-+int ice_vf_ena_vlan_promisc(struct ice_vf *vf, struct ice_vsi *vsi,
-+			    struct ice_vlan *vlan)
- {
- 	u8 promisc_m = 0;
- 	int status;
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.h b/drivers/net/ethernet/intel/ice/ice_virtchnl.h
-index b3eece8c6780..71bb456e2d71 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl.h
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.h
-@@ -92,12 +92,31 @@ ice_vc_send_msg_to_vf(struct ice_vf *vf, u32 v_opcode,
- bool ice_vc_isvalid_vsi_id(struct ice_vf *vf, u16 vsi_id);
- void ice_vc_process_vf_msg(struct ice_pf *pf, struct ice_rq_event_info *event,
- 			   struct ice_mbx_data *mbxdata);
-+void ice_vf_ena_rxq_interrupt(struct ice_vsi *vsi, u32 q_idx);
-+void ice_vf_ena_txq_interrupt(struct ice_vsi *vsi, u32 q_idx);
-+int ice_vf_ena_vlan_promisc(struct ice_vf *vf, struct ice_vsi *vsi,
-+			    struct ice_vlan *vlan);
-+bool ice_is_vlan_promisc_allowed(struct ice_vf *vf);
- #else /* CONFIG_PCI_IOV */
- static inline void ice_virtchnl_set_dflt_ops(struct ice_vf *vf) { }
- static inline void ice_virtchnl_set_repr_ops(struct ice_vf *vf) { }
- static inline void ice_vc_notify_vf_link_state(struct ice_vf *vf) { }
- static inline void ice_vc_notify_link_state(struct ice_pf *pf) { }
- static inline void ice_vc_notify_reset(struct ice_pf *pf) { }
-+static inline void ice_vf_ena_rxq_interrupt(struct ice_vsi *vsi, u32 q_idx) { }
-+static inline void ice_vf_ena_txq_interrupt(struct ice_vsi *vsi, u32 q_idx) { }
-+
-+static inline int ice_vf_ena_vlan_promisc(struct ice_vf *vf,
-+					  struct ice_vsi *vsi,
-+					  struct ice_vlan *vlan)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline bool ice_is_vlan_promisc_allowed(struct ice_vf *vf)
-+{
-+	return false;
-+}
+diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
+index f88bfd2f3f00..f78d5d8d516c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sriov.c
++++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+@@ -966,6 +966,12 @@ int ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count)
+ 		return -ENOENT;
+ 	}
  
- static inline int
- ice_vc_send_msg_to_vf(struct ice_vf *vf, u32 v_opcode,
++	/* No need to rebuild if we're setting to the same value */
++	if (msix_vec_count == vf->num_msix) {
++		ice_put_vf(vf);
++		return 0;
++	}
++
+ 	prev_msix = vf->num_msix;
+ 	prev_queues = vf->num_vf_qs;
+ 
 -- 
 2.47.1
 
