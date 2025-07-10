@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D11D290092
-	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 21:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8F328C5D7
+	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 21:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752183930; cv=none; b=uA9v8hUec1WzGg3RudNceMGeMqHb3DQtGbtKksqSRCsVf9B7rfxdVCV9PR36yeKwiWXyTWEK+Al1POUARs7cKfhQHHzh4pLehppOix9nLpr4ZI14UDd2M8mjoO7ovUdM0GCAlUWpVtYnUCYTKDpWRX6/4JCEyEKrkG7j2MYRsKQ=
+	t=1752183930; cv=none; b=Dz05v4+zvwUKTh9qaUCIBXf0BNZaeYHrdQKa7mMrroJ/kOAFy0HDwkKvd6GNGvtMjc15Yv0pxs5vu3NQvfKV5EluODLmInnMvd5su2zbGg/zrSuo1MYEEUVJ4TB76XUMnCwF3v51+iHSA1BB5ibEcPmVU5CJ5N4BnHPOu22yEMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752183930; c=relaxed/simple;
-	bh=kSUBMduIJUz8yB+qRtfONeCYT946k82w+UBMPAUxQvo=;
+	bh=MygzWOTDA7UX2BwDbEodU/cuDRwq8KwrXWE+XmhXeBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JprZc4MNDVqyMjo+4Z/5OCXbBlTjPqe7K/11f2ewNDb+3LVEbDOVZXLX2rhrlEVoEhnNm+V77aIzJAVyaqnpzVdw2B7sDLw6CZxsW6v+oT8kptZJE72xMbY9jhT/4fJDdXyhxPUlJ7tSvlKmYb9zi76YAePcNF6XZBIeN+8Ivs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ga3wSaOL; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=gFeVYd3DPVB05kFk5dmzIKnwSHIP4KcMh3eNsq4SD/seVdN+Yb+kqBwWpjIryDJpUVk+xDIu1rYI2zmv+K/OtKW5r3Sv3rAMDPty6FirZwbfwNwr9a9t4J8oKMWGbSun2g3ZruLac3K/0n8a5r3rNYcLkda1ZcwlFJHn5SVcCSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TaUw3EVu; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ga3wSaOL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TaUw3EVu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752183930; x=1783719930;
+  t=1752183929; x=1783719929;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=kSUBMduIJUz8yB+qRtfONeCYT946k82w+UBMPAUxQvo=;
-  b=Ga3wSaOLK9SJlI7eyFna2jdjDeVe1v9TuTzI+MyjwffuoRIgI73/DUzD
-   iEgnlukDjmq2l8WbLzRrgy6m2qf7VHZq7ZGjvIdZJdWh0swsfVDRcFJ91
-   4gkEoCzcC3fV6ol2vDGT67l7zYjy/T9BxgIHUu3OvStBUJ7gWN5iAdFzp
-   Fd92nejDh9otWLpAZoTHdocz+RWC8nQDCpdfcy9IO79lz4z3SXGM0xzMn
-   WgqyRWd6fBRhFTWNoQQ+NC+rrX7Ehhznu8idxsicP+oAj5v8wyA7MMkCR
-   Pe8q2DmpR/LT2JQZ+9qXI8rhhO/TU5fjVyCBa9hb2ENrYSa5UZ4nL2zCI
-   g==;
-X-CSE-ConnectionGUID: pk4ntGABSHCIb1CPDsvf9Q==
-X-CSE-MsgGUID: zBf5LguiSPaE0IIZpy3VzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54192379"
+  bh=MygzWOTDA7UX2BwDbEodU/cuDRwq8KwrXWE+XmhXeBQ=;
+  b=TaUw3EVuk2JyHtMeCrJcJX9UFdthth/xFijEdEAk7yTPkgGEX7XKf/5L
+   HjQhYk04g/ghlRSkQ6v2/fnrUCd8ylhns3OoYzN+mZ6andoPfg2q0No3g
+   Aj6oWmtHnD0eotQLEDHnwo+gwedTxAjIbERNryufugqamiJeboM8n52gJ
+   E1GY4ZIcQQrHgb7J+PMnRxR4wa4mfNJh4r+3K264QtyPiwctB2xc+fyYW
+   Lei7qja3Xxehs1GkmnndTGZg6dnASSOncpYPq7efbOX+bz8DPuF4/YUe5
+   G+74VQvweEi+LizJ3oNS1af4+7C2ZIzPi841wWvnEOWHDBrbRxgZq9B/U
+   w==;
+X-CSE-ConnectionGUID: 6PpJh2aeRJihY8dCNMUtxw==
+X-CSE-MsgGUID: +KYx+ZLoSf6KKpKa+djV8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="54192366"
 X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="54192379"
+   d="scan'208";a="54192366"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 14:45:28 -0700
-X-CSE-ConnectionGUID: o/rGrV7kTYyF2AIQNlNrSA==
-X-CSE-MsgGUID: ii1loF/0RdSrh0NUzniHQQ==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 14:45:27 -0700
+X-CSE-ConnectionGUID: ld3OF/vnTyKypx8fOSFkSA==
+X-CSE-MsgGUID: ICE7prvBRbyR15C+TSZ2cQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,301,1744095600"; 
-   d="scan'208";a="161764955"
+   d="scan'208";a="161764947"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa004.fm.intel.com with ESMTP; 10 Jul 2025 14:45:27 -0700
+  by fmviesa004.fm.intel.com with ESMTP; 10 Jul 2025 14:45:26 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -54,11 +54,10 @@ Cc: Jacob Keller <jacob.e.keller@intel.com>,
 	anthony.l.nguyen@intel.com,
 	madhu.chittim@intel.com,
 	yahui.cao@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net-next 6/8] ice: use pci_iov_vf_id() to get VF ID
-Date: Thu, 10 Jul 2025 14:45:15 -0700
-Message-ID: <20250710214518.1824208-7-anthony.l.nguyen@intel.com>
+	przemyslaw.kitszel@intel.com
+Subject: [PATCH net-next 4/8] ice: move ice_vsi_update_l2tsel to ice_lib.c
+Date: Thu, 10 Jul 2025 14:45:13 -0700
+Message-ID: <20250710214518.1824208-5-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250710214518.1824208-1-anthony.l.nguyen@intel.com>
 References: <20250710214518.1824208-1-anthony.l.nguyen@intel.com>
@@ -72,48 +71,142 @@ Content-Transfer-Encoding: 8bit
 
 From: Jacob Keller <jacob.e.keller@intel.com>
 
-The ice_sriov_set_msix_vec_count() obtains the VF device ID in a strange
-way by iterating over the possible VF IDs and calling
-pci_iov_virtfn_devfn to calculate the device and function combos and
-compare them to the pdev->devfn.
+A future change is going to need to call ice_vsi_update_l2tsel from a new
+context outside of ice_virtchnl.c
 
-This is unnecessary. The pci_iov_vf_id() helper already exists which does
-the reverse calculation of pci_iov_virtfn_devfn(), which is much simpler
-and avoids the loop construction. Use this instead.
+Since this function deals with a generic VSI, move it into ice_lib.c to
+enable calling it from other places in the ice driver.
 
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_sriov.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_lib.c      | 35 ++++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_lib.h      |  8 ++++
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c | 42 -------------------
+ 3 files changed, 43 insertions(+), 42 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index 0e4dc1a5cff0..f88bfd2f3f00 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -952,17 +952,11 @@ int ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count)
- 	if (msix_vec_count < ICE_MIN_INTR_PER_VF)
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 2f1782e9357f..1be1e429a7c8 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -4020,3 +4020,38 @@ ice_vsi_update_local_lb(struct ice_vsi *vsi, bool set)
+ 	vsi->info = ctx.info;
+ 	return 0;
+ }
++
++/**
++ * ice_vsi_update_l2tsel - update l2tsel field for all Rx rings on this VSI
++ * @vsi: VSI used to update l2tsel on
++ * @l2tsel: l2tsel setting requested
++ *
++ * Use the l2tsel setting to update all of the Rx queue context bits for l2tsel.
++ * This will modify which descriptor field the first offloaded VLAN will be
++ * stripped into.
++ */
++void ice_vsi_update_l2tsel(struct ice_vsi *vsi, enum ice_l2tsel l2tsel)
++{
++	struct ice_hw *hw = &vsi->back->hw;
++	u32 l2tsel_bit;
++	int i;
++
++	if (l2tsel == ICE_L2TSEL_EXTRACT_FIRST_TAG_L2TAG2_2ND)
++		l2tsel_bit = 0;
++	else
++		l2tsel_bit = BIT(ICE_L2TSEL_BIT_OFFSET);
++
++	for (i = 0; i < vsi->alloc_rxq; i++) {
++		u16 pfq = vsi->rxq_map[i];
++		u32 qrx_context_offset;
++		u32 regval;
++
++		qrx_context_offset =
++			QRX_CONTEXT(ICE_L2TSEL_QRX_CONTEXT_REG_IDX, pfq);
++
++		regval = rd32(hw, qrx_context_offset);
++		regval &= ~BIT(ICE_L2TSEL_BIT_OFFSET);
++		regval |= l2tsel_bit;
++		wr32(hw, qrx_context_offset, regval);
++	}
++}
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.h b/drivers/net/ethernet/intel/ice/ice_lib.h
+index 654516c5fc3e..2cb1eb98b9da 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.h
++++ b/drivers/net/ethernet/intel/ice/ice_lib.h
+@@ -11,6 +11,13 @@
+ #define ICE_VSI_FLAG_INIT	BIT(0)
+ #define ICE_VSI_FLAG_NO_INIT	0
  
--	/* Transition of PCI VF function number to function_id */
--	for (id = 0; id < pci_num_vf(pdev); id++) {
--		if (vf_dev->devfn == pci_iov_virtfn_devfn(pdev, id))
--			break;
++#define ICE_L2TSEL_QRX_CONTEXT_REG_IDX	3
++#define ICE_L2TSEL_BIT_OFFSET		23
++enum ice_l2tsel {
++	ICE_L2TSEL_EXTRACT_FIRST_TAG_L2TAG2_2ND,
++	ICE_L2TSEL_EXTRACT_FIRST_TAG_L2TAG1,
++};
++
+ const char *ice_vsi_type_str(enum ice_vsi_type vsi_type);
+ 
+ bool ice_pf_state_is_nominal(struct ice_pf *pf);
+@@ -116,4 +123,5 @@ void ice_set_feature_support(struct ice_pf *pf, enum ice_feature f);
+ void ice_clear_feature_support(struct ice_pf *pf, enum ice_feature f);
+ void ice_init_feature_support(struct ice_pf *pf);
+ bool ice_vsi_is_rx_queue_active(struct ice_vsi *vsi);
++void ice_vsi_update_l2tsel(struct ice_vsi *vsi, enum ice_l2tsel l2tsel);
+ #endif /* !_ICE_LIB_H_ */
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+index 0a8f15ecac1f..307252500f02 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -3860,48 +3860,6 @@ ice_vc_ena_vlan_offload(struct ice_vsi *vsi,
+ 	return 0;
+ }
+ 
+-#define ICE_L2TSEL_QRX_CONTEXT_REG_IDX	3
+-#define ICE_L2TSEL_BIT_OFFSET		23
+-enum ice_l2tsel {
+-	ICE_L2TSEL_EXTRACT_FIRST_TAG_L2TAG2_2ND,
+-	ICE_L2TSEL_EXTRACT_FIRST_TAG_L2TAG1,
+-};
+-
+-/**
+- * ice_vsi_update_l2tsel - update l2tsel field for all Rx rings on this VSI
+- * @vsi: VSI used to update l2tsel on
+- * @l2tsel: l2tsel setting requested
+- *
+- * Use the l2tsel setting to update all of the Rx queue context bits for l2tsel.
+- * This will modify which descriptor field the first offloaded VLAN will be
+- * stripped into.
+- */
+-static void ice_vsi_update_l2tsel(struct ice_vsi *vsi, enum ice_l2tsel l2tsel)
+-{
+-	struct ice_hw *hw = &vsi->back->hw;
+-	u32 l2tsel_bit;
+-	int i;
+-
+-	if (l2tsel == ICE_L2TSEL_EXTRACT_FIRST_TAG_L2TAG2_2ND)
+-		l2tsel_bit = 0;
+-	else
+-		l2tsel_bit = BIT(ICE_L2TSEL_BIT_OFFSET);
+-
+-	for (i = 0; i < vsi->alloc_rxq; i++) {
+-		u16 pfq = vsi->rxq_map[i];
+-		u32 qrx_context_offset;
+-		u32 regval;
+-
+-		qrx_context_offset =
+-			QRX_CONTEXT(ICE_L2TSEL_QRX_CONTEXT_REG_IDX, pfq);
+-
+-		regval = rd32(hw, qrx_context_offset);
+-		regval &= ~BIT(ICE_L2TSEL_BIT_OFFSET);
+-		regval |= l2tsel_bit;
+-		wr32(hw, qrx_context_offset, regval);
 -	}
+-}
 -
--	if (id == pci_num_vf(pdev))
--		return -ENOENT;
-+	id = pci_iov_vf_id(vf_dev);
-+	if (id < 0)
-+		return id;
- 
- 	vf = ice_get_vf_by_id(pf, id);
--
- 	if (!vf)
- 		return -ENOENT;
- 
+ /**
+  * ice_vc_ena_vlan_stripping_v2_msg
+  * @vf: VF the message was received from
 -- 
 2.47.1
 
