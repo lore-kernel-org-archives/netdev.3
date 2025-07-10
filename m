@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1278B27FD70
-	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 02:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB7727FB28
+	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 02:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752116014; cv=none; b=CjjG/2YM7wW4LN3InjcHHdvjLyw5+72EjNyRKFPO/KmfEFREf+B75szdOAjjFl2e7WC9vPmrWNwOvFWaQ0AvO05+kcpHqw8GSQVbYB/yPZio10dd0laLFzld1RGLueWJlbNhppc3BmoCEBMq8orlBi2yQFZnmKj1MUHeM8dLJfA=
+	t=1752116284; cv=none; b=ThcQEeVilZXwzCboZN8U8FlUh3RHVqptHP/ONtfW+Ed9eKjbyWh3i4b//BHKButQX8kpOsLdEy54UzxUvx5DmNBA2qW/EPrY4tiMSSRpUFQTQlrdKgAVh+vkXsNMm4WpnGRMX8BLsoJUeR+BjhizT0N4tUU3H7VJYe+TfS2HBog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752116014; c=relaxed/simple;
-	bh=szhD46FA9Jb4pmeNs4mqHyQqIw+xigPwtBfx3ji5DsI=;
+	s=arc-20240116; t=1752116284; c=relaxed/simple;
+	bh=Gqm8PWF15zuOwtrsFXijzjZhcOtUGc7/VaR9KIJV5Dc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N04z5hyjRI16MYqKLBAKb9rw2i7FVpblcGdj6eMRC/KOuu9DWwPG3dEXn92nvd2AUTrs3RxzeWdx90ffquK2Nimk/I2Qx+3ykhHUJ0wAPEbdlTk6pe7q8T1Xlq5fVN9ubuVWlKe/nPkMxRzAff3/0umYP+eUczSQHUhGsQGL5jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o5gSlwCY; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Jm9gTQMzsxfFkDgGfHGEbd5Z66q+nHze6W60XKQxC2zA3mBroYJkPVNMFSkADaESk3VJuIxVfZGrjEfyLzBRbK0sv7BCk9+UfK/pXXpbCE1/7NtIk+2lPbyeQCsuqnYK3eWGSt+nErmdVvaNLsVisjDdoUe2ngS+UclJUV7v+cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=htNbUoDa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o5gSlwCY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7A7C4CEEF;
-	Thu, 10 Jul 2025 02:53:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="htNbUoDa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABD3C4CEEF;
+	Thu, 10 Jul 2025 02:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752116013;
-	bh=szhD46FA9Jb4pmeNs4mqHyQqIw+xigPwtBfx3ji5DsI=;
+	s=k20201202; t=1752116283;
+	bh=Gqm8PWF15zuOwtrsFXijzjZhcOtUGc7/VaR9KIJV5Dc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=o5gSlwCYy/lOIUrlAPe7e8atRhjFUf9hkXfLKm1s8g61hMx/tH14veoi17i+sR0OT
-	 DuY9+xzAR8V7VqXlB4DsC8eiwKAoJ78Tl7MLXLY35c3hBV+iSaV0si9oy4kSQOnOiC
-	 jziskmWJrVn/G3BDbUriCQ6hejMG8MVUGscjNaR7yUzq5Ax1kVNb0ZyQk79ng/PZAc
-	 NI0IJ9Jt6efU9ZrS7H3Dc/GeOcuhsEwifIxPnR5Ykuh0z4S+YP61t+rvSkciMZTPLm
-	 ggaspJRDnKeOn7F/KSKwdplnsZdN8Cd21dk9+d4PUslX8XCNup+FhGYsV4hqXe7OSb
-	 2RFWAubne1bag==
-Date: Wed, 9 Jul 2025 19:53:31 -0700
+	b=htNbUoDaMIKu4yULUOOaBU5mEG1+MQvFmItKmbPcfIXjSxWOKdMPUGDvqV1VIM9oV
+	 4m2D5M/9jx4z+xAaLbiTIaW7bnjphKYMLoES8HfyL8DC7I1qjEwfVviKMHP4P1Jgh7
+	 eGOSsJd5Z/p8yRR9g9NK8KL8kJiR/vIMTqFnfFTCByIZ4cnLlq/nUQADEe3Ar5UpJv
+	 cnP+r492/ThvK7Ry31QupFRwIxrCX2DU+JGS2D/yOQZCRKg+C6L5OAh6vWBd1AvoWb
+	 6EsaO1BC9qimjfcn/r4m0XCGVgmVpuJ1o1+ddRWzozbULaeZx0mSDFdpX81qtQ7ULw
+	 bQPfJI8H31IaA==
+Date: Wed, 9 Jul 2025 19:58:01 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Saeed Mahameed <saeed@kernel.org>
 Cc: "David S. Miller" <davem@davemloft.net>, Paolo Abeni
@@ -34,14 +34,13 @@ Cc: "David S. Miller" <davem@davemloft.net>, Paolo Abeni
  <saeedm@nvidia.com>, netdev@vger.kernel.org, Tariq Toukan
  <tariqt@nvidia.com>, Gal Pressman <gal@nvidia.com>, Leon Romanovsky
  <leonro@nvidia.com>, Jiri Pirko <jiri@nvidia.com>, Simon Horman
- <horms@kernel.org>, Vlad Dumitrescu <vdumitrescu@nvidia.com>, Kamal Heib
- <kheib@redhat.com>
-Subject: Re: [PATCH net-next V6 01/13] devlink: Add 'total_vfs' generic
- device param
-Message-ID: <20250709195331.197b1305@kernel.org>
-In-Reply-To: <20250709030456.1290841-2-saeed@kernel.org>
+ <horms@kernel.org>
+Subject: Re: [PATCH net-next V6 09/13] devlink: Add 'keep_link_up' generic
+ devlink device param
+Message-ID: <20250709195801.60b3f4f2@kernel.org>
+In-Reply-To: <20250709030456.1290841-10-saeed@kernel.org>
 References: <20250709030456.1290841-1-saeed@kernel.org>
-	<20250709030456.1290841-2-saeed@kernel.org>
+	<20250709030456.1290841-10-saeed@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,9 +50,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue,  8 Jul 2025 20:04:43 -0700 Saeed Mahameed wrote:
-> +   * - ``total_vfs``
-> +     - u32
-> +     - The total number of Virtual Functions (VFs) supported by the PF.
+On Tue,  8 Jul 2025 20:04:51 -0700 Saeed Mahameed wrote:
+> Devices that support this in permanent mode will be requested to keep the
+> port link up even when driver is not loaded, netdev carrier state won't
+> affect the physical port link state.
+> 
+> This is useful for when the link is needed to access onboard management
+> such as BMC, even if the host driver isn't loaded.
 
-"supported" is not the right word for a tunable..
+Dunno. This deserves a fuller API, and it's squarely and netdev thing.
+Let's not add it to devlink.
