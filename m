@@ -1,72 +1,71 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A014F2EF9DE
-	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 18:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFE52F0C4A
+	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 18:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752171987; cv=none; b=ixSiwHaVwFHukd1nbkJ45W3xoxEXcEM4i9glH1IFu43NWv0bP9Ocf44IPN1eFShfCzaFYmg6ZNTN3hdrzijLB+uUB729/t7HyAcRPcF4EcjtLqf28krrA4wzuKGeIIKDEO12WD95capR45O6AfEIZRaYyV2CKgJZgaDTx2Zt254=
+	t=1752172008; cv=none; b=hRWz6VjMVV2VUCYSO0O1vFbul7JouQwMdARqDxYmQSixhexsWMv7m2aUlqvuLK7Ikp1kqdpOaQ8v31gJj+/GyekGON9qWL105xc1rf86LR3AtvKSYQForvBbX43FgSmqh/hb5yx0cMSScwgh4JQGtyPiH30ogRRkUTl9ciiLfEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752171987; c=relaxed/simple;
-	bh=DQ/y57eCcvCivMqXieykxCIkDza/1dPM5uPabJRz16o=;
+	s=arc-20240116; t=1752172008; c=relaxed/simple;
+	bh=CO5Opoa/OmSz3i+hnCKFjmnvtISOpAfSUDXaxlY/TL0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CTYG3c2KwH48boDAZW0eTekYZkXudjVUVQHqPd7ObIVMUcONnaVbDCldwNZypyDabkSa5R41//aOn+SRNro8hue6jSqFqh3v3GtC6iSB5+3Slg0Jp8XKAZ4tylT071M8kXuKszlCt2q/ypofng6fLkhZ+xW2tnkwj1okYqzYS4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qObU1zue; arc=none smtp.client-ip=209.85.208.53
+	 To:Cc:Content-Type; b=KRSVylZ3JiFv1ouIQhMzNsYv3w1SsoVIVbx6xuv4Q3ZdTzds+cxEc7BgXV8xfkqAQx9AgVVorzFejhBy+3RQff+OeV2NSrx6sfuMAyngChYmmXBq9nLz2MZEK/7r7D9iOqmaeOJ9Oq7i1BmdgcUU4yQJW8aP2qVcz39l8oCSy+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DPB42v4G; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qObU1zue"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-611d32903d5so2115a12.0
-        for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 11:26:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DPB42v4G"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-23dd9ae5aacso23755ad.1
+        for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 11:26:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752171983; x=1752776783; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1752172006; x=1752776806; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YpVeUDzlloshth7hyY4uUrRygX8GK+L0hY7EdHxCTWk=;
-        b=qObU1zuerGhbYWlfulILtsMApJEO572cb99Ey657M5ZIW5FJn9qSNnybTUmZwPXmoo
-         6P1pcpOL17ZItstd3CjuuSqb+erRZa4J7rQHM4ORASF5f11JNxKu0xDSlD/J1YA71gHW
-         fRONoNj2vmMzTagcuqJ8ulV5PLMfLTdVZdq9OlnKV82aY69cKtL9CZ7kzUANxH271wGA
-         P/Hks07foD1XCHZENTyruReqQLmOfQkLM1ii2gdSVPyMb9nohjNE0lRXOR4A/JvkN58F
-         LwP+GaUG6r4NOEEdxPUCvO054zG9vCYleh3rFncue61UmbDCdFOBqnJEfIScIY/iHIC5
-         JcDA==
+        bh=HLWdG5QIg2mai05rpIRhikJd5Q+5BEB1qd+ciSsX0UM=;
+        b=DPB42v4G/IkPbm/RBSbPSHy9muNwCHEq+rU0kjERl62A86e34meAqQtP6kty3RVgPi
+         KYgm5VKyiA/KUT1FKQ+nUjX2KtypHJcr2xctMfQjKuzSrht4n9rWf8DS4sUHjSqs4RNs
+         p+i2wsxwmEzt9kwZsr7lqNzSx2EdSz8fZtKq1CThJx3q+UjyN/WHIEY4wlmqiCk23kZX
+         78rAfUyZtHkuj9hB7OHhPf+mFS6CAiGvqJBBFLLYWULFBO3mkALoTtqtUIJe6WL3fDi9
+         OBx7TZhUUcXNkJ15ywmqGsLqWegEYTzQZaZDobic8QUryFRfiprCqMSNBJTUQrTErj5C
+         Pu4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752171983; x=1752776783;
+        d=1e100.net; s=20230601; t=1752172006; x=1752776806;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YpVeUDzlloshth7hyY4uUrRygX8GK+L0hY7EdHxCTWk=;
-        b=FHUhHWpnaOD6vmzz1X4HJmVRHG+wNykdyQDN5QEmC6SoUEb/mzkc150luNtr2fVr3p
-         DDPR9CsJ65a9G/FiO7b4uRmJMOpJvZHI4sd949dpwK8fxmYIsFPhVUnvRM/PX+DXs6D9
-         zJrZNyRYi121YGKcT3c2izq4YCCzqdgEkGc0ie4JuDKkFjvnakpCkU5cb+w4z1Z+fFDB
-         KZ2QQxTdiyii4iOKjwtydq79IBGTNkfemdom009hnJmSERxd/syQQP9sQpDIKJ2ZzOuD
-         PDSSi0CoOpos4+EP+avamLE1olnNPne7POFhPaJN5zuBiSlkGhoecU9Nhn1Dq7Mx09QP
-         fVpA==
-X-Forwarded-Encrypted: i=1; AJvYcCXud8Z40Is+3y9Mw6Xus2sbRo1KOuHIegDD3fgihsvmBrR8BiqbUvoj3eagh4KWsUUGspMhd9U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiQGJxKTP2vk/LLAUGYEDWJNkQCwKgdAk/ygPBExzSF/vJDwOk
-	reo9RvoMnW1cfKSb6FK1sbaAoEdvUGN140lqwJWACE6TR7eKQ6F29s6ujbg4Akk6JvcUxvL46hO
-	O7MeKpYFbge3Yk3Nm3dAPQyy+EiYV3Mp1CCZYhBCJ
-X-Gm-Gg: ASbGnctg+o3xEl8qpoCCe1vYogC9eASpsy2YyHL58tm0wFl/G2zRrSvnA1Z2xX5nkNs
-	0cdJcZzpVUbNWbLWyoJYgL+Fp9jM65/9bJkBLcOuqXlJvHmKfM3W8f0JmbgngXS5dejAUNf+hpJ
-	N0yj3D+Hz2b4sg3aHYRYqCClncrM5l7M5EFN7VPOoLhjwg1ZYM+I/7awhIm7c6cu99pxeL2zM=
-X-Google-Smtp-Source: AGHT+IFt7W8JAheHiVqwt4ZBR3CQtXpumX/T7A5/rBmH2QebswkJBxnWs6YN36d9U3n7K42s+O7r2vNQ3sha7Qd9AVA=
-X-Received: by 2002:a05:6402:24d3:b0:607:d206:7657 with SMTP id
- 4fb4d7f45d1cf-611e687e614mr10195a12.2.1752171982710; Thu, 10 Jul 2025
- 11:26:22 -0700 (PDT)
+        bh=HLWdG5QIg2mai05rpIRhikJd5Q+5BEB1qd+ciSsX0UM=;
+        b=CBcgOIYIyIwkl/7E3mi85+htnTlmLYNPdsTXMZFPHtlffBswwYsqdQTvlXgE0qS4YL
+         HdGrrEPROMuqcXzWHHTh4rNnJMk8puu4GFTzK5G4ivQUF/YV5IFnbHAvUp4IELhB08G7
+         9dnp8+noQ7iLR8eQVHyINT330WM8Z4IeGSIN7K1kPTiUcx3Y1n5gDqObM5tT9ZXGlClL
+         +dtaAqguoKF6k3VprWZCXTguVoOQVT/PdteHDwJl7Zpp387jhAN/UrcRxOYzTQpvl2h2
+         vPmDHvJm9SA313i6UKqrimO68h5EDLof+/toJrhcYI6HEJE1kvxRMfjFbDnmsdoiNBwz
+         aB6g==
+X-Forwarded-Encrypted: i=1; AJvYcCUsorI0GP8ecDAhL5MlJiSo1YPCH681CUGxC+G6eEBsYFj/5u3eQGPGf3m9Mz0p1TZ82RpMycI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9zKzJq9aC7ELnUYmQxYCvu0AHDUfpFGBEc6koevIJ0w6uSPuk
+	XzZ2Fr5kq6q7be6TVqKLQhByEWe5hJhpdSiCu1xlpZYIlgL2a/mhM/JoLHNxLXdaz0j7TuSZPxs
+	iuOolKcnrHu0OPbZJOl8QmNkvTrNJgbfmhDqvjllN
+X-Gm-Gg: ASbGncsjbJN9GdR3N8qT4er050OBo8KwurQsGNPBaeRaAfbvDnwbJxPl7u5spWna03n
+	5yjt6TYpVSSMgoRR2SCFgd+zWNo6bFBnKLlefno/Xjpxhe7erJaYsK8QgBQ2+y6Z0x+Ltc7UQXJ
+	8S7Z7RThsP2TYm3RtddcwdNlCdsjttoc7H5Q40ciqjfxlkfdBtiaYpaSGPrFGmNCW0Yqz2ncQ=
+X-Google-Smtp-Source: AGHT+IEUv11GoDA74MpuU9fS3o9a3eqD1q+cu8l2HYgLYe6uliXPSQxP8a4sDFv/oCh0jr80Pb8TBrI9QM4N3Linmw0=
+X-Received: by 2002:a17:903:1ac5:b0:234:a44e:fee8 with SMTP id
+ d9443c01a7336-23dee52851emr122665ad.27.1752172006199; Thu, 10 Jul 2025
+ 11:26:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250710082807.27402-1-byungchul@sk.com> <20250710082807.27402-8-byungchul@sk.com>
-In-Reply-To: <20250710082807.27402-8-byungchul@sk.com>
+References: <20250710082807.27402-1-byungchul@sk.com> <20250710082807.27402-6-byungchul@sk.com>
+In-Reply-To: <20250710082807.27402-6-byungchul@sk.com>
 From: Mina Almasry <almasrymina@google.com>
-Date: Thu, 10 Jul 2025 11:26:05 -0700
-X-Gm-Features: Ac12FXyyC8r-KEBOBjPhKMa8MrPinEu-RU7EeVBu--QTlNg-z0ciuFeVDRS6Ldc
-Message-ID: <CAHS8izMo5QLb5CrrdfBnaG_1kWd=D7iQM+2vB0Gm-pbH9tmk1g@mail.gmail.com>
-Subject: Re: [PATCH net-next v9 7/8] netdevsim: use netmem descriptor and APIs
- for page pool
+Date: Thu, 10 Jul 2025 11:26:33 -0700
+X-Gm-Features: Ac12FXwW7H3G-qeQbel8Nw9wnsgeAnPp62bnkpSCDdADm7fjJ0ddRC2LvQnTlMY
+Message-ID: <CAHS8izMCwPOXD02xLe6baM0-m3eq2Y7QGsnj7xht-1sgXLCovg@mail.gmail.com>
+Subject: Re: [PATCH net-next v9 5/8] netmem: introduce a netmem API, virt_to_head_netmem()
 To: Byungchul Park <byungchul@sk.com>
 Cc: willy@infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-mm@kvack.org, kernel_team@skhynix.com, kuba@kernel.org, 
@@ -85,53 +84,39 @@ Content-Transfer-Encoding: quoted-printable
 On Thu, Jul 10, 2025 at 1:28=E2=80=AFAM Byungchul Park <byungchul@sk.com> w=
 rote:
 >
-> To simplify struct page, the effort to separate its own descriptor from
-> struct page is required and the work for page pool is on going.
+> To eliminate the use of struct page in page pool, the page pool code
+> should use netmem descriptor and APIs instead.
 >
-> Use netmem descriptor and APIs for page pool in netdevsim code.
+> As part of the work, introduce a netmem API to convert a virtual address
+> to a head netmem allowing the code to use it rather than the existing
+> API, virt_to_head_page() for struct page.
 >
 > Signed-off-by: Byungchul Park <byungchul@sk.com>
+> Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+> Reviewed-by: Mina Almasry <almasrymina@google.com>
 > ---
->  drivers/net/netdevsim/netdev.c    | 19 ++++++++++---------
->  drivers/net/netdevsim/netdevsim.h |  2 +-
->  2 files changed, 11 insertions(+), 10 deletions(-)
+>  include/net/netmem.h | 7 +++++++
+>  1 file changed, 7 insertions(+)
 >
-> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netde=
-v.c
-> index e36d3e846c2d..ba19870524c5 100644
-> --- a/drivers/net/netdevsim/netdev.c
-> +++ b/drivers/net/netdevsim/netdev.c
-> @@ -812,7 +812,7 @@ nsim_pp_hold_read(struct file *file, char __user *dat=
-a,
->         struct netdevsim *ns =3D file->private_data;
->         char buf[3] =3D "n\n";
+> diff --git a/include/net/netmem.h b/include/net/netmem.h
+> index 283b4a997fbc..b92c7f15166a 100644
+> --- a/include/net/netmem.h
+> +++ b/include/net/netmem.h
+> @@ -372,6 +372,13 @@ static inline bool page_pool_page_is_pp(struct page =
+*page)
+>  }
+>  #endif
 >
-> -       if (ns->page)
-> +       if (ns->netmem)
->                 buf[0] =3D 'y';
->
->         return simple_read_from_buffer(data, count, ppos, buf, 2);
-> @@ -832,18 +832,19 @@ nsim_pp_hold_write(struct file *file, const char __=
-user *data,
->
->         rtnl_lock();
->         ret =3D count;
-> -       if (val =3D=3D !!ns->page)
-> +       if (val =3D=3D !!ns->netmem)
->                 goto exit;
->
->         if (!netif_running(ns->netdev) && val) {
->                 ret =3D -ENETDOWN;
->         } else if (val) {
-> -               ns->page =3D page_pool_dev_alloc_pages(ns->rq[0]->page_po=
-ol);
-> -               if (!ns->page)
-> +               ns->netmem =3D page_pool_alloc_netmems(ns->rq[0]->page_po=
-ol,
-> +                                                    GFP_ATOMIC | __GFP_N=
-OWARN);
+> +static inline netmem_ref virt_to_head_netmem(const void *x)
+> +{
+> +       netmem_ref netmem =3D virt_to_netmem(x);
+> +
+> +       return netmem_compound_head(netmem);
+> +}
+> +
 
-Add page_pool_dev_alloc_netmems helper.
+Squash with the first user of this helper please.
 
 
 --=20
