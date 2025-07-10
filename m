@@ -1,464 +1,132 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.actia.se (mail.actia.se [212.181.117.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC60128C86D
-	for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 09:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB03928E56B;
+	Thu, 10 Jul 2025 09:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752138341; cv=none; b=mkX5rRylqz7HDPy9POYA4MLnx/eszBRIsW9c7xx3QmpwYeDkkixkPJiph/9ESReUMTnAsjCn8tZxopzDDEkyNnOm/2cGqySoegx+IAUeAq9LKh0ucX9SaxzvPp+OTalsfJ6kXnYNgtHtzVZUIX2ZxFRk8fHuhUuElu1V/VgWYQ0=
+	t=1752138357; cv=none; b=kOqTYhu2U4OXB0SQcp14uHi44SC3ForY66WzrShixZUpZWBMrenG6ssY03BpNvKAmqyVKLooCnZuCzjcp6MgPvaoTv7lc90/7+gnA7Whhp5mSMRzv5yNPYeeQ3piCGcim155wWfQX6ncJxOqDuFKHIWGLXy9vc9XSwfR4St8/7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752138341; c=relaxed/simple;
-	bh=j0Z0zRrr3ssYNkM66fAa2HOWOC26bsaeF2oqhFM4/BA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r45VgooFSZ6gVqqNw9RkAEyDX0bfag2viZCCw7jWVzlLUF9wWBaSJe9uaPSN/39dome1mk73SKtxazEPx/HGTsxVLTbTBhS3pAZtiJnN0kWCdasMjlPRs1xfWmGk4+2svdLi+YKcRz6h4GZprbK0WSnQXmmHx+NrD5S+7JJlmXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EgGb5KGe; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EgGb5KGe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752138337;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ELPN7dWyCZLdlcwfXSAJnmpH83GKTbo95QXWYshsc1c=;
-	b=EgGb5KGetnI8KCaky3Vthi5tYuxdlg8opnYfo2cxBCy++j1MbQYA7EkXFIKNfQdvU3rHwV
-	zG5fgjBy+yIt15QMRtQ+bCuf4txKBSWU1KRbFixjuaVKzEeR1gIND31teaHZcUaHLf0vqD
-	D8vOSydMMebjRVVxqRgFQceu1toQues=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-601-av7CZ2EFPPmn-3MAAjPlQQ-1; Thu, 10 Jul 2025 05:05:36 -0400
-X-MC-Unique: av7CZ2EFPPmn-3MAAjPlQQ-1
-X-Mimecast-MFC-AGG-ID: av7CZ2EFPPmn-3MAAjPlQQ_1752138335
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-234fedd3e51so8304635ad.1
-        for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 02:05:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752138335; x=1752743135;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ELPN7dWyCZLdlcwfXSAJnmpH83GKTbo95QXWYshsc1c=;
-        b=GYRiYKESv0dvKOjVEHHn2Cv0c6+MCXSFfTKcqNNLh8YpKqmSV0sqUTay2VSGMMNcrc
-         DKEq3YBqBd8bUg9X1auy3/pnzFaKQP0++GFv2Fr8Fw7QCErIApyIrbxc/Me1ahyTGJgA
-         e+ga8xHmmbiN07gqRzuK2Kz4gjnWocwnfcpbTC8qA7eh43JG0OlJoEVrvKge6d6y9im3
-         S6S9QAThTp0eFC1TfW3lCmDFBTlMXe34bVSDDmHkqou+12+mDtCLQcxBlKzCHp4aRWbh
-         eBYC9JqwnRmBnJpJJ8rw4HNV/Mw27lV/s1zTvSKFmsdC+3bvOdMig2Sk9AP1tgLaxX+x
-         pN4A==
-X-Forwarded-Encrypted: i=1; AJvYcCUKzeh0/kA35aiSjkHx+O0MNEaT+TX7x/c33GsQM/HnqChDI7os7ukVOewgtTitYNVs5+kIHQ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybuFDHwH0/89h5Byuf+m33e8qJu4+U7yWDFPAoXxj4YlPiKqs6
-	q2bS+xZGgSiszVXLiqAqgf+ssdzD2rINw6DufCoCwixC5BoFAa6sC0NSP1zC72kIsF2cCg4KXrp
-	Iv/8A5RfOD4mb/+s+9Nva56JJZjldVEZjit7eEcUiPWDbMJdQzLxF+bDNWGox/666gOy+zgsxFU
-	l5Eszn/wzJmFDwiRJ8GGbjZ5PAVB3VwyrR
-X-Gm-Gg: ASbGncvJnvgs1ULDIjDz03f6YmlH/cZl79FywBFjoibNVoiszkQTxk14bj8YY4OnIwV
-	7jlPUlScHqbAfK6k7CxP4jJUbFav1TE8LZWeIArQVi36wBP9zEi6EbyxisqaYP3DQtPiZ65oWKx
-	MaTg==
-X-Received: by 2002:a17:903:987:b0:235:27b6:a897 with SMTP id d9443c01a7336-23de24d9427mr45542165ad.34.1752138335284;
-        Thu, 10 Jul 2025 02:05:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYgwDFL37wizCbgFvblhzCZLAftrZzVUBJsvql0aQJ1N+J4r7URnw4pwnQac/9iQ+fy9xkqMqFeZaVAg94jj8=
-X-Received: by 2002:a17:903:987:b0:235:27b6:a897 with SMTP id
- d9443c01a7336-23de24d9427mr45541675ad.34.1752138334753; Thu, 10 Jul 2025
- 02:05:34 -0700 (PDT)
+	s=arc-20240116; t=1752138357; c=relaxed/simple;
+	bh=7WYC0Q01SuTeXVO2p/jlKOCMn9aAW/fTfixuG0PDXYo=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=UKLmLO6gkeJC/jyoQ9kLbtYwXvChoBjXsnKeb52t8Oo9QEzqszpRAMfvDUW913EX1qcN/SoUljd0vwT75cLGyYpnxOJlB+b3JClJNwvNLh2C2OHBtue7sWQNljUSdFtNM/pKkGWImNbFt+/X4snha5/d/Lc4MfS6qQr/9Wzf5h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
+Received: from S036ANL.actianordic.se (10.12.31.117) by S035ANL.actianordic.se
+ (10.12.31.116) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Thu, 10 Jul
+ 2025 10:50:40 +0200
+Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
+ S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%6]) with mapi id
+ 15.01.2507.057; Thu, 10 Jul 2025 10:50:40 +0200
+From: John Ernberg <john.ernberg@actia.se>
+To: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Ming Lei <ming.lei@canonical.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, John Ernberg <john.ernberg@actia.se>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
+Thread-Topic: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
+ event
+Thread-Index: AQHb8Xe2qza52xx55UmGbnkg6Pc/lg==
+Date: Thu, 10 Jul 2025 08:50:40 +0000
+Message-ID: <20250710085028.1070922-1-john.ernberg@actia.se>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-mailer: git-send-email 2.49.0
+x-esetresult: clean, is OK
+x-esetid: 37303A2956B14450657066
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250708064819.35282-1-jasowang@redhat.com> <20250708064819.35282-2-jasowang@redhat.com>
-In-Reply-To: <20250708064819.35282-2-jasowang@redhat.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Thu, 10 Jul 2025 11:04:57 +0200
-X-Gm-Features: Ac12FXyHZjv6bYmUmFfIrKVLig19wL7u-dIRFQ5H8_6poP2Jx517nMSHjWYxzk4
-Message-ID: <CAJaqyWd4K7tHHg+GCCN9+q3HdhkRdQ0R4iW+RXTP_6=xrP53VA@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] vhost: basic in order support
-To: Jason Wang <jasowang@redhat.com>
-Cc: mst@redhat.com, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, jonah.palmer@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 8, 2025 at 8:48=E2=80=AFAM Jason Wang <jasowang@redhat.com> wro=
-te:
->
-> This patch adds basic in order support for vhost. Two optimizations
-> are implemented in this patch:
->
-> 1) Since driver uses descriptor in order, vhost can deduce the next
->    avail ring head by counting the number of descriptors that has been
->    used in next_avail_head. This eliminate the need to access the
->    available ring in vhost.
->
-> 2) vhost_add_used_and_singal_n() is extended to accept the number of
->    batched buffers per used elem. While this increases the times of
->    usersapce memory access but it helps to reduce the chance of
+Having a Gemalto Cinterion PLS83-W modem attached to USB and activating the
+cellular data link would sometimes yield the following RCU stall, leading
+to a system freeze:
 
-s/usersapce/userspace/
+    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... =
+} 33108 jiffies s: 201 root: 0x1/.
+    rcu: blocking rcu_node structures (internal RCU debug):
+    Sending NMI from CPU 1 to CPUs 0:
+    NMI backtrace for cpu 0
 
->    used ring access of both the driver and vhost.
->
-> Vhost-net will be the first user for this.
->
-> Signed-off-by: Jason Wang <jasowang@redhat.com>
-> ---
->  drivers/vhost/net.c   |   6 ++-
->  drivers/vhost/vhost.c | 121 +++++++++++++++++++++++++++++++++++-------
->  drivers/vhost/vhost.h |   8 ++-
->  3 files changed, 111 insertions(+), 24 deletions(-)
->
-> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-> index 7cbfc7d718b3..4f9c67f17b49 100644
-> --- a/drivers/vhost/net.c
-> +++ b/drivers/vhost/net.c
-> @@ -374,7 +374,8 @@ static void vhost_zerocopy_signal_used(struct vhost_n=
-et *net,
->         while (j) {
->                 add =3D min(UIO_MAXIOV - nvq->done_idx, j);
->                 vhost_add_used_and_signal_n(vq->dev, vq,
-> -                                           &vq->heads[nvq->done_idx], ad=
-d);
-> +                                           &vq->heads[nvq->done_idx],
-> +                                           NULL, add);
->                 nvq->done_idx =3D (nvq->done_idx + add) % UIO_MAXIOV;
->                 j -=3D add;
->         }
-> @@ -457,7 +458,8 @@ static void vhost_net_signal_used(struct vhost_net_vi=
-rtqueue *nvq)
->         if (!nvq->done_idx)
->                 return;
->
-> -       vhost_add_used_and_signal_n(dev, vq, vq->heads, nvq->done_idx);
-> +       vhost_add_used_and_signal_n(dev, vq, vq->heads, NULL,
-> +                                   nvq->done_idx);
->         nvq->done_idx =3D 0;
->  }
->
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index 3a5ebb973dba..c7ed069fc49e 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -364,6 +364,7 @@ static void vhost_vq_reset(struct vhost_dev *dev,
->         vq->avail =3D NULL;
->         vq->used =3D NULL;
->         vq->last_avail_idx =3D 0;
-> +       vq->next_avail_head =3D 0;
->         vq->avail_idx =3D 0;
->         vq->last_used_idx =3D 0;
->         vq->signalled_used =3D 0;
-> @@ -455,6 +456,8 @@ static void vhost_vq_free_iovecs(struct vhost_virtque=
-ue *vq)
->         vq->log =3D NULL;
->         kfree(vq->heads);
->         vq->heads =3D NULL;
-> +       kfree(vq->nheads);
-> +       vq->nheads =3D NULL;
->  }
->
->  /* Helper to allocate iovec buffers for all vqs. */
-> @@ -472,7 +475,9 @@ static long vhost_dev_alloc_iovecs(struct vhost_dev *=
-dev)
->                                         GFP_KERNEL);
->                 vq->heads =3D kmalloc_array(dev->iov_limit, sizeof(*vq->h=
-eads),
->                                           GFP_KERNEL);
-> -               if (!vq->indirect || !vq->log || !vq->heads)
-> +               vq->nheads =3D kmalloc_array(dev->iov_limit, sizeof(*vq->=
-nheads),
-> +                                          GFP_KERNEL);
-> +               if (!vq->indirect || !vq->log || !vq->heads || !vq->nhead=
-s)
->                         goto err_nomem;
->         }
->         return 0;
-> @@ -1990,14 +1995,15 @@ long vhost_vring_ioctl(struct vhost_dev *d, unsig=
-ned int ioctl, void __user *arg
->                         break;
->                 }
->                 if (vhost_has_feature(vq, VIRTIO_F_RING_PACKED)) {
-> -                       vq->last_avail_idx =3D s.num & 0xffff;
-> +                       vq->next_avail_head =3D vq->last_avail_idx =3D
-> +                                             s.num & 0xffff;
->                         vq->last_used_idx =3D (s.num >> 16) & 0xffff;
->                 } else {
->                         if (s.num > 0xffff) {
->                                 r =3D -EINVAL;
->                                 break;
->                         }
-> -                       vq->last_avail_idx =3D s.num;
-> +                       vq->next_avail_head =3D vq->last_avail_idx =3D s.=
-num;
+    Call trace:
+     arch_local_irq_enable+0x4/0x8
+     local_bh_enable+0x18/0x20
+     __netdev_alloc_skb+0x18c/0x1cc
+     rx_submit+0x68/0x1f8 [usbnet]
+     rx_alloc_submit+0x4c/0x74 [usbnet]
+     usbnet_bh+0x1d8/0x218 [usbnet]
+     usbnet_bh_tasklet+0x10/0x18 [usbnet]
+     tasklet_action_common+0xa8/0x110
+     tasklet_action+0x2c/0x34
+     handle_softirqs+0x2cc/0x3a0
+     __do_softirq+0x10/0x18
+     ____do_softirq+0xc/0x14
+     call_on_irq_stack+0x24/0x34
+     do_softirq_own_stack+0x18/0x20
+     __irq_exit_rcu+0xa8/0xb8
+     irq_exit_rcu+0xc/0x30
+     el1_interrupt+0x34/0x48
+     el1h_64_irq_handler+0x14/0x1c
+     el1h_64_irq+0x68/0x6c
+     _raw_spin_unlock_irqrestore+0x38/0x48
+     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
+     unlink1+0xd4/0xdc [usbcore]
+     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
+     usb_unlink_urb+0x24/0x44 [usbcore]
+     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
+     __handle_link_change+0x34/0x70 [usbnet]
+     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
+     process_scheduled_works+0x2d0/0x48c
+     worker_thread+0x150/0x1dc
+     kthread+0xd8/0xe8
+     ret_from_fork+0x10/0x20
 
-Why not just reuse last_avail_idx instead of creating next_avail_head?
+It turns out that during the link activation a LINK_CHANGE event is emitted
+which causes the active RX URBs to be unlinked, while that is happening
+rx_submit() may begin pushing new URBs to the queue being emptied.
+Causing the unlink queue to never empty.
 
-At first glance it seemed to me that it was done this way to support
-rewinding, but in_order path will happily reuse next_avail_head
-without checking for last_avail_idx except for checking if the ring is
-empty. Am I missing something?
+Use the same approach as commit 43daa96b166c ("usbnet: Stop RX Q on MTU
+change") and pause the RX queue while unlinking the URBs on LINK_CHANGE
+as well.
 
->                 }
->                 /* Forget the cached index value. */
->                 vq->avail_idx =3D vq->last_avail_idx;
-> @@ -2590,11 +2596,12 @@ int vhost_get_vq_desc(struct vhost_virtqueue *vq,
->                       unsigned int *out_num, unsigned int *in_num,
->                       struct vhost_log *log, unsigned int *log_num)
->  {
-> +       bool in_order =3D vhost_has_feature(vq, VIRTIO_F_IN_ORDER);
->         struct vring_desc desc;
->         unsigned int i, head, found =3D 0;
->         u16 last_avail_idx =3D vq->last_avail_idx;
->         __virtio16 ring_head;
-> -       int ret, access;
-> +       int ret, access, c =3D 0;
->
->         if (vq->avail_idx =3D=3D vq->last_avail_idx) {
->                 ret =3D vhost_get_avail_idx(vq);
-> @@ -2605,17 +2612,21 @@ int vhost_get_vq_desc(struct vhost_virtqueue *vq,
->                         return vq->num;
->         }
->
-> -       /* Grab the next descriptor number they're advertising, and incre=
-ment
-> -        * the index we've seen. */
-> -       if (unlikely(vhost_get_avail_head(vq, &ring_head, last_avail_idx)=
-)) {
-> -               vq_err(vq, "Failed to read head: idx %d address %p\n",
-> -                      last_avail_idx,
-> -                      &vq->avail->ring[last_avail_idx % vq->num]);
-> -               return -EFAULT;
-> +       if (in_order)
-> +               head =3D vq->next_avail_head & (vq->num - 1);
-> +       else {
-> +               /* Grab the next descriptor number they're
-> +                * advertising, and increment the index we've seen. */
-> +               if (unlikely(vhost_get_avail_head(vq, &ring_head,
-> +                                                 last_avail_idx))) {
-> +                       vq_err(vq, "Failed to read head: idx %d address %=
-p\n",
-> +                               last_avail_idx,
-> +                               &vq->avail->ring[last_avail_idx % vq->num=
-]);
-> +                       return -EFAULT;
-> +               }
-> +               head =3D vhost16_to_cpu(vq, ring_head);
->         }
->
-> -       head =3D vhost16_to_cpu(vq, ring_head);
-> -
->         /* If their number is silly, that's an error. */
->         if (unlikely(head >=3D vq->num)) {
->                 vq_err(vq, "Guest says index %u > %u is available",
-> @@ -2658,6 +2669,7 @@ int vhost_get_vq_desc(struct vhost_virtqueue *vq,
->                                                 "in indirect descriptor a=
-t idx %d\n", i);
->                                 return ret;
->                         }
-> +                       ++c;
->                         continue;
->                 }
->
-> @@ -2693,10 +2705,12 @@ int vhost_get_vq_desc(struct vhost_virtqueue *vq,
->                         }
->                         *out_num +=3D ret;
->                 }
-> +               ++c;
->         } while ((i =3D next_desc(vq, &desc)) !=3D -1);
->
->         /* On success, increment avail index. */
->         vq->last_avail_idx++;
-> +       vq->next_avail_head +=3D c;
->
->         /* Assume notifications from guest are disabled at this point,
->          * if they aren't we would need to update avail_event index. */
-> @@ -2720,8 +2734,9 @@ int vhost_add_used(struct vhost_virtqueue *vq, unsi=
-gned int head, int len)
->                 cpu_to_vhost32(vq, head),
->                 cpu_to_vhost32(vq, len)
->         };
-> +       u16 nheads =3D 1;
->
-> -       return vhost_add_used_n(vq, &heads, 1);
-> +       return vhost_add_used_n(vq, &heads, &nheads, 1);
->  }
->  EXPORT_SYMBOL_GPL(vhost_add_used);
->
-> @@ -2757,10 +2772,10 @@ static int __vhost_add_used_n(struct vhost_virtqu=
-eue *vq,
->         return 0;
->  }
->
-> -/* After we've used one of their buffers, we tell them about it.  We'll =
-then
-> - * want to notify the guest, using eventfd. */
-> -int vhost_add_used_n(struct vhost_virtqueue *vq, struct vring_used_elem =
-*heads,
-> -                    unsigned count)
-> +static int vhost_add_used_n_ooo(struct vhost_virtqueue *vq,
-> +                               struct vring_used_elem *heads,
-> +                               u16 *nheads,
-> +                               unsigned count)
+Fixes: 4b49f58fff00 ("usbnet: handle link change")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
 
-nheads is not used in this function and it is checked to be NULL in
-the caller, should we remove it from the parameter list?
+---
 
->  {
->         int start, n, r;
->
-> @@ -2775,6 +2790,70 @@ int vhost_add_used_n(struct vhost_virtqueue *vq, s=
-truct vring_used_elem *heads,
->         }
->         r =3D __vhost_add_used_n(vq, heads, count);
->
-> +       return r;
+Tested on 6.12.20 and forward ported.
+---
+ drivers/net/usb/usbnet.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Nit: We can merge with the previous statement and do "return
-__vhost_add_used_n(vq, heads, count);"
-
-> +}
-> +
-> +static int vhost_add_used_n_in_order(struct vhost_virtqueue *vq,
-> +                                    struct vring_used_elem *heads,
-> +                                    u16 *nheads,
-
-Nit: we can const-ify nheads, and do the same for _in_order variant
-and vhost_add_used_n. Actually we can do it with heads too but it
-requires more changes to existing code. I think it would be nice to
-constify *nheads if you need to respin.
-
-> +                                    unsigned count)
-> +{
-> +       vring_used_elem_t __user *used;
-> +       u16 old, new =3D vq->last_used_idx;
-> +       int start, i;
-> +
-> +       if (!nheads)
-> +               return -EINVAL;
-> +
-> +       start =3D vq->last_used_idx & (vq->num - 1);
-> +       used =3D vq->used->ring + start;
-> +
-> +       for (i =3D 0; i < count; i++) {
-> +               if (vhost_put_used(vq, &heads[i], start, 1)) {
-> +                       vq_err(vq, "Failed to write used");
-> +                       return -EFAULT;
-> +               }
-> +               start +=3D nheads[i];
-> +               new +=3D nheads[i];
-> +               if (start >=3D vq->num)
-> +                       start -=3D vq->num;
-> +       }
-> +
-> +       if (unlikely(vq->log_used)) {
-> +               /* Make sure data is seen before log. */
-> +               smp_wmb();
-> +               /* Log used ring entry write. */
-> +               log_used(vq, ((void __user *)used - (void __user *)vq->us=
-ed),
-> +                        (vq->num - start) * sizeof *used);
-> +               if (start + count > vq->num)
-> +                       log_used(vq, 0,
-> +                                (start + count - vq->num) * sizeof *used=
-);
-> +       }
-> +
-> +       old =3D vq->last_used_idx;
-> +       vq->last_used_idx =3D new;
-> +       /* If the driver never bothers to signal in a very long while,
-> +        * used index might wrap around. If that happens, invalidate
-> +        * signalled_used index we stored. TODO: make sure driver
-> +        * signals at least once in 2^16 and remove this. */
-> +       if (unlikely((u16)(new - vq->signalled_used) < (u16)(new - old)))
-> +               vq->signalled_used_valid =3D false;
-> +       return 0;
-> +}
-> +
-> +/* After we've used one of their buffers, we tell them about it.  We'll =
-then
-> + * want to notify the guest, using eventfd. */
-> +int vhost_add_used_n(struct vhost_virtqueue *vq, struct vring_used_elem =
-*heads,
-> +                    u16 *nheads, unsigned count)
-> +{
-> +       bool in_order =3D vhost_has_feature(vq, VIRTIO_F_IN_ORDER);
-> +       int r;
-> +
-> +       if (!in_order || !nheads)
-> +               r =3D vhost_add_used_n_ooo(vq, heads, nheads, count);
-> +       else
-> +               r =3D vhost_add_used_n_in_order(vq, heads, nheads, count)=
-;
-> +
-
-I just realized the original code didn't do it either, but we should
-return if r < 0 here. Otherwise, used->ring[] has a random value and
-used->idx is incremented covering these values. This should be
-triggable in a guest that set used->idx valid but used->ring[]
-invalid, for example.
-
->         /* Make sure buffer is written before we update index. */
->         smp_wmb();
->         if (vhost_put_used_idx(vq)) {
-> @@ -2853,9 +2932,11 @@ EXPORT_SYMBOL_GPL(vhost_add_used_and_signal);
->  /* multi-buffer version of vhost_add_used_and_signal */
->  void vhost_add_used_and_signal_n(struct vhost_dev *dev,
->                                  struct vhost_virtqueue *vq,
-> -                                struct vring_used_elem *heads, unsigned =
-count)
-> +                                struct vring_used_elem *heads,
-> +                                u16 *nheads,
-> +                                unsigned count)
->  {
-> -       vhost_add_used_n(vq, heads, count);
-> +       vhost_add_used_n(vq, heads, nheads, count);
->         vhost_signal(dev, vq);
->  }
->  EXPORT_SYMBOL_GPL(vhost_add_used_and_signal_n);
-> diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
-> index bb75a292d50c..dca9f309d396 100644
-> --- a/drivers/vhost/vhost.h
-> +++ b/drivers/vhost/vhost.h
-> @@ -103,6 +103,8 @@ struct vhost_virtqueue {
->          * Values are limited to 0x7fff, and the high bit is used as
->          * a wrap counter when using VIRTIO_F_RING_PACKED. */
->         u16 last_avail_idx;
-> +       /* Next avail ring head when VIRTIO_F_IN_ORDER is neogitated */
-
-s/neogitated/negotiated/
-
-> +       u16 next_avail_head;
->
->         /* Caches available index value from user. */
->         u16 avail_idx;
-> @@ -129,6 +131,7 @@ struct vhost_virtqueue {
->         struct iovec iotlb_iov[64];
->         struct iovec *indirect;
->         struct vring_used_elem *heads;
-> +       u16 *nheads;
->         /* Protected by virtqueue mutex. */
->         struct vhost_iotlb *umem;
->         struct vhost_iotlb *iotlb;
-> @@ -213,11 +216,12 @@ bool vhost_vq_is_setup(struct vhost_virtqueue *vq);
->  int vhost_vq_init_access(struct vhost_virtqueue *);
->  int vhost_add_used(struct vhost_virtqueue *, unsigned int head, int len)=
-;
->  int vhost_add_used_n(struct vhost_virtqueue *, struct vring_used_elem *h=
-eads,
-> -                    unsigned count);
-> +                    u16 *nheads, unsigned count);
->  void vhost_add_used_and_signal(struct vhost_dev *, struct vhost_virtqueu=
-e *,
->                                unsigned int id, int len);
->  void vhost_add_used_and_signal_n(struct vhost_dev *, struct vhost_virtqu=
-eue *,
-> -                              struct vring_used_elem *heads, unsigned co=
-unt);
-> +                                struct vring_used_elem *heads, u16 *nhea=
-ds,
-> +                                unsigned count);
->  void vhost_signal(struct vhost_dev *, struct vhost_virtqueue *);
->  void vhost_disable_notify(struct vhost_dev *, struct vhost_virtqueue *);
->  bool vhost_vq_avail_empty(struct vhost_dev *, struct vhost_virtqueue *);
-> --
-> 2.31.1
->
-
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index c04e715a4c2a..156f0e85a135 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1115,7 +1115,9 @@ static void __handle_link_change(struct usbnet *dev)
+=20
+ 	if (!netif_carrier_ok(dev->net)) {
+ 		/* kill URBs for reading packets to save bus bandwidth */
++		usbnet_pause_rx(dev);
+ 		unlink_urbs(dev, &dev->rxq);
++		usbnet_resume_rx(dev);
+=20
+ 		/*
+ 		 * tx_timeout will unlink URBs for sending packets and
+--=20
+2.49.0
