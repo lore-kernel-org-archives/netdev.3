@@ -1,52 +1,52 @@
 Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5803299A82;
-	Fri, 11 Jul 2025 12:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5914A24;
+	Fri, 11 Jul 2025 12:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752237007; cv=none; b=R6yKJqVTYs2nL2GImC4ycSdjbeSra+8M4/UVu+l1+YwiQ3l/il5rWJG6EPbzcIUx13gIypPhlI3xa1iMKQ9wr7Tsj1BMBd/r0rzB4l8uP1rO5sbJI5HVd/7ro9u5JBoSCTYPG9ESi1qX+IaDC0Iv1NjAErXzsVkgbu9JQ2XkPtk=
+	t=1752237201; cv=none; b=VW8U1tPSnb+Qr9bOS/A64oHhbHOjQ/efcIkr7qSeB4WrChHR1njnpArGIQELlXcHbjejQCGu0ShWWf5rilMczNU+colRrKzxV34YZM0tW9tG9M4+02y5v58IwlFD4GXqIGUakVyRU3+eH2XNcI74T1gWOEFNw9VeZgUzQ/ynjRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752237007; c=relaxed/simple;
-	bh=0dxJOqsvNf9YI6ttikFKyQFzL+BZ/9qDNKVRZ9z1T0U=;
+	s=arc-20240116; t=1752237201; c=relaxed/simple;
+	bh=WYWKVt6dUPJaMiGKNZZnN/uJcyMEGDqbOYOvPwKRwbo=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=ZBgWbtqEYSDqYnbwRqr9WhZ/du+zSD5D7Ai5VGScKyOEOHzfi5WyQSH+ZjDOKNHYPxUNqElwNA60R7ISjWPB6va7aK7UMJ4+oJnpIsAg7xHQJUq64AvT1dmgRTLc/EePnsY2bMUkYQUMusEpUKDDo3F5i+EVtBG8Cs9dMPJ0TYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=29TjSso5; arc=none smtp.client-ip=162.240.164.96
+	 MIME-Version:Content-Type; b=Qo4snAcKQQMhEKWce10Ct5aQSR/gxuN//5577UmKbfVcs1iN3eFgAuDNzB4E3ITyc+vl9peppeTtUs8az9fBlPq4O7dRqPBiQj0ZGlBcDAnCbrhMvlAeKxFrOZTJs9TJnBqIM3GiYkzuc/eztQABhXAeZetYcIdFGoqYwrDjydA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=bja6yI4b; arc=none smtp.client-ip=162.240.164.96
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="29TjSso5"
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="bja6yI4b"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
 	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
 	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=+mZwtOnORz1zUe5SEHz2Hy5URcUgxMWga++pbIoA72M=; b=29TjSso5NUVzpIbIMeTLBFozU8
-	a/49n3lqFqyPoZFcLVNitCd+/vq9uiOFbubAN8iDwg5m4e+cxvhtom09NZ1q9eHbjMFqOHLaTDCPz
-	KSAbXgDlI7CkLrVI13E0HXOn77ZOEZok5wQW7DnsipF9UrzVtxEwHMvmhv7ll6ztrtXPatwUxUeoo
-	EvjgQ9ztRyOUQIywqKTkqO+8gMOyfsPN4VGqlJMyhpz7Q2XT6exugj/pOT91A89sKCrPCFXQDln4G
-	PbDkmZ4kbPo1TMW0kQMakfLJSBi50+6tUSm2BmZrQirU1XLAdCidVB/rOXnckLCrgmii3Jy5QhBfp
-	DZScMP5g==;
-Received: from [122.175.9.182] (port=57395 helo=zimbra.couthit.local)
+	bh=AJW9cOBCmrxXxZqHEQ8adQkukE2W2AgflGt7EU89058=; b=bja6yI4bhC5Up2flT2VGnPrBJi
+	AI9jYvgSAP3+3hJEpZz9uckqmm/D/4jscytgnNi9jXJOlZregJWSUc4jnwX3txw3D69KK6igl+Aya
+	dV0jotGglD6S4CUsOKbD0R6kbgWNNts/4dX3kfMR1kGHO5z9qc8GeyQoxqErzFirVVN5NhoovO1q1
+	4NiBqtG/0W1JNj16URhLgFOjUZsWyUUyL2ir3EQyKrbxx7tWq4WUwbIlmebiF8WtR41+QcoQ3XF87
+	yIPufMuzKE2gnaMtF9nqKb2rJHTw1NxY/nuFkZ0fJkl0LktfLSo2THBWYv+cncQsHSuAbC7orQM09
+	BOPVLmBA==;
+Received: from [122.175.9.182] (port=12257 helo=zimbra.couthit.local)
 	by server.couthit.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.1)
 	(envelope-from <parvathi@couthit.com>)
-	id 1uaCjj-0000000CkrI-2Xqr;
-	Fri, 11 Jul 2025 08:20:19 -0400
+	id 1uaCwE-0000000Cl5L-2uHd;
+	Fri, 11 Jul 2025 08:33:15 -0400
 Received: from zimbra.couthit.local (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTPS id 998741781A71;
-	Fri, 11 Jul 2025 17:50:11 +0530 (IST)
+	by zimbra.couthit.local (Postfix) with ESMTPS id 4D7A017820AC;
+	Fri, 11 Jul 2025 18:03:09 +0530 (IST)
 Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id 7262017820AC;
-	Fri, 11 Jul 2025 17:50:11 +0530 (IST)
+	by zimbra.couthit.local (Postfix) with ESMTP id 2E52517820F5;
+	Fri, 11 Jul 2025 18:03:09 +0530 (IST)
 Received: from zimbra.couthit.local ([127.0.0.1])
 	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 4htU6JcfYILf; Fri, 11 Jul 2025 17:50:11 +0530 (IST)
+	with ESMTP id hCs-qG7o16wZ; Fri, 11 Jul 2025 18:03:09 +0530 (IST)
 Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
-	by zimbra.couthit.local (Postfix) with ESMTP id 3020C1781A71;
-	Fri, 11 Jul 2025 17:50:11 +0530 (IST)
-Date: Fri, 11 Jul 2025 17:50:10 +0530 (IST)
+	by zimbra.couthit.local (Postfix) with ESMTP id DD32117820AC;
+	Fri, 11 Jul 2025 18:03:08 +0530 (IST)
+Date: Fri, 11 Jul 2025 18:03:08 +0530 (IST)
 From: Parvathi Pudi <parvathi@couthit.com>
 To: kuba <kuba@kernel.org>
 Cc: parvathi <parvathi@couthit.com>, danishanwar <danishanwar@ti.com>, 
@@ -74,10 +74,11 @@ Cc: parvathi <parvathi@couthit.com>, danishanwar <danishanwar@ti.com>,
 	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
 	krishna <krishna@couthit.com>, pmohan <pmohan@couthit.com>, 
 	mohan <mohan@couthit.com>
-Message-ID: <1001900168.1712445.1752236410964.JavaMail.zimbra@couthit.local>
-In-Reply-To: <20250708173310.5415b635@kernel.org>
-References: <20250702140633.1612269-1-parvathi@couthit.com> <20250708173310.5415b635@kernel.org>
-Subject: Re: [PATCH net-next v10 00/11] PRU-ICSSM Ethernet Driver
+Message-ID: <723330733.1712525.1752237188810.JavaMail.zimbra@couthit.local>
+In-Reply-To: <20250708180107.7886ea41@kernel.org>
+References: <20250702140633.1612269-1-parvathi@couthit.com> <20250702151756.1656470-5-parvathi@couthit.com> <20250708180107.7886ea41@kernel.org>
+Subject: Re: [PATCH net-next v10 04/11] net: ti: prueth: Adds link
+ detection, RX and TX support.
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,10 +86,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - GC138 (Linux)/8.8.15_GA_3968)
-Thread-Topic: PRU-ICSSM Ethernet Driver
-Thread-Index: TXP7pHbOvWv5H2YAdaWH+8TjmJE3lA==
+Thread-Topic: prueth: Adds link detection, RX and TX support.
+Thread-Index: frcZHpE/y/6hXxyDNRDspT8aDcWlcQ==
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - server.couthit.com
 X-AntiAbuse: Original Domain - vger.kernel.org
@@ -100,20 +101,55 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
+
 Hi,
 
-> On Wed,  2 Jul 2025 19:36:22 +0530 Parvathi Pudi wrote:
->>  17 files changed, 4957 insertions(+), 4 deletions(-)
-> 
-> Please try to remove some features from the series.
-> The chances that a maintainer will have time to look thru 5kLoC
-> in one sitting are quite low.
+> On Wed,  2 Jul 2025 20:47:49 +0530 Parvathi Pudi wrote:
+>> +=09=09=09if (emac->port_id) {
+>> +=09=09=09=09regmap_update_bits
+>> +=09=09=09=09=09(prueth->mii_rt,
+>> +=09=09=09=09=09 PRUSS_MII_RT_TXCFG1,
+>> +=09=09=09=09=09 PRUSS_MII_RT_TXCFG_TX_CLK_DELAY_MASK,
+>> +=09=09=09=09=09 delay);
+>=20
+> Instead of breaking the lines up like this you should factor the code
+> out or find some other way to reduce the indentation.
+>=20
 
-We are refactoring and limiting features without affecting
-fundamental functionality for AM33x, AM43x and AM57x platforms.
+Sure, we will address this in the next version.
 
-We will post the updated patch series shortly.
+>> +=09qid =3D icssm_prueth_get_tx_queue_id(emac->prueth, skb);
+>> +=09ret =3D icssm_prueth_tx_enqueue(emac, skb, qid);
+>> +=09if (ret) {
+>> +=09=09if (ret !=3D -ENOBUFS && netif_msg_tx_err(emac) &&
+>> +=09=09    net_ratelimit())
+>> +=09=09=09netdev_err(ndev, "packet queue failed: %d\n", ret);
+>> +=09=09goto fail_tx;
+>> +=09}
+>=20
+>> +=09if (ret =3D=3D -ENOBUFS) {
+>> +=09=09ret =3D NETDEV_TX_BUSY;
+>=20
+>=20
+> Something needs to stop the queue, right? Otherwise the stack will
+> send the frame right back to the driver.
+>=20
 
+Yes, we will notify upper layer with =E2=80=9Cnetif_tx_stop_queue()=E2=80=
+=9D when returning
+=E2=80=9CNETDEV_TX_BUSY=E2=80=9D to not push again immediately.
+
+>> +static inline void icssm_emac_finish_napi(struct prueth_emac *emac,
+>> +=09=09=09=09=09  struct napi_struct *napi,
+>> +=09=09=09=09=09  int irq)
+>> +{
+>> +=09napi_complete(napi);
+>> +=09enable_irq(irq);
+>=20
+> This helper has a single caller, just put the two lines of code directly
+> there. And use napi_complete_done(), please.
+
+We will address this in the next version.
 
 Thanks and Regards,
 Parvathi.
