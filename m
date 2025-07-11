@@ -1,55 +1,55 @@
-Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
+Received: from mail-qv1-f73.google.com (mail-qv1-f73.google.com [209.85.219.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02CF2DCF58
-	for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 11:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BA82951D4
+	for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 11:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752234021; cv=none; b=ZaOcV/DE37Ci5UdxsKkik9TL53nzivQBqIzl/i1i6fUr4J4Ehwr5xL2mYIwTG1blAPtDM+MVi6x20ymqqvBuIyyPyIeWBI7AE0xaWAva8XJdysSFNUjQ8sje/StiDupPIy9tPVkdA3gkd+KLFK6qVvjt3Q3N58YCL2yjAmFL73M=
+	t=1752234022; cv=none; b=Bw/tck190TWR12Lzn8mf2UitkphM3CR2XyKGy/mtWR1ubP1Ed/M4x40N3yx2znuy667CrFkso53LiSH+72fOlMpe6DeNktVuktWdVXIxdH4D31rnPKBPgSVe0LyZ4O5KmNXBLc1EG1eFIfLbv5tKtG72iJiOPh5MYSXYLXlDHqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752234021; c=relaxed/simple;
-	bh=11veCuVfCwlerfP7WzrV6vOqN9EuqGYXUyf0jxReflk=;
+	s=arc-20240116; t=1752234022; c=relaxed/simple;
+	bh=G8rmjqBDBzKeqtTSs/qEUlXdHQ2n5Ih1MKgyF+ybnqk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DokMQdASesTNfj13aig94kLaPefBHLSKKeuajwAGLQCXQZz+6+5zPcV/1LsUZpuxg0tmh6z91m3+itl9dvoXI+2yo1BaNU/hQDB+9atZQkMMHSgQSf28NAxTB372E+9G6D31Ip1SgfpjOJSSyUGQPC13XdhpXmoGK1eavMYDKiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r5H96pja; arc=none smtp.client-ip=209.85.160.202
+	 To:Cc:Content-Type; b=RgHgSUKMbRaKMTh5WO1yMnHaf+cUtZjZEiQ+8fh2OvAep6EBVuJovfHsN9QHrlGAuQM3vl/OuXLUSfrMw/UKD2tyRN555R9MWE9laZThoV69XzC1zpvNE9VZKCP3jOOL23arW43uDiCV5Y418inHIQtIUCIVtDkWSZ3hAnZKVv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1tB5TBH6; arc=none smtp.client-ip=209.85.219.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r5H96pja"
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-478f78ff9beso55582751cf.1
-        for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 04:40:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1tB5TBH6"
+Received: by mail-qv1-f73.google.com with SMTP id 6a1803df08f44-6fad29c1b72so28897596d6.1
+        for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 04:40:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752234015; x=1752838815; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1752234018; x=1752838818; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AoY4cSvNqKq2rzCmD29r2ZE0mj2EsT23qIvSlxkuOvM=;
-        b=r5H96pjafOIx/GSgjnmevvTAFVUyZj2NOmLwgdxtfpPuiZK5L2H+YOpGnFfE7MLrME
-         oOpThR4Pa6ENYDqXYwE/owjqOiCp7l1wroG7QRkeAZ3G8NUMy4GVY6p9BPdshwBxKeKk
-         Iy0dXdZFbH63SfIklinUd2SEkSjmuDu0KnggQVIebWI/7rE4qgOgK50pRehIXVoY+pLg
-         ynN4dDm7hE/v5T7iGNbUbdMQ5ICz9OLzcgipOW2hds7MW2So+nJwoCWqnRnOELZVEH+1
-         tqR84xnQOALJh8FwrlFXN5pyBBD7Uf3KNi82kNV6MAjj3oCfewydHso4qToKzaYeNquI
-         aorw==
+        bh=IycLlzcc4MgFlSuZ1ZaEmIedaHzTPqWoWqroxrMY27s=;
+        b=1tB5TBH6+NHoKjSiMVx8PD0Q+7/ZZH3ZNpRP2t+QLIVfFJPuiXeGyraV30cJPwJaRw
+         jyDwxedD1WdGh+IR/ZnGSwlHbVS6xjHSivQlkDTUjWo/xG4xQHmdm0hKfwkQg4lQtnb6
+         wlteulGOj8M0o5SWfardo98mFnEXH86QPblI7QFHxe/ufTO7rh7TYJA6SoVldYxyviSu
+         6M+zj7qPvQVZjyZ5x8NtnNMdV7zDZ9aG7rhbVM9esK9r11mdNIXuWsFX3lbO/mLkNZaD
+         Pjn4JNSS5NsOAGoZC+ksXP00HDNquz9aQArIYAkfrMXhB3gtph2BhjeVasZ4kLuV8JBj
+         hADQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752234015; x=1752838815;
+        d=1e100.net; s=20230601; t=1752234018; x=1752838818;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AoY4cSvNqKq2rzCmD29r2ZE0mj2EsT23qIvSlxkuOvM=;
-        b=fkcFMHvoAaTS80iR/OlZS16QgpiCbqB6xx30Y27uu7aMEBYo2z9FtIcstv5rDxZmbJ
-         dDi/LbA9t2ovNgMR22dKM/TvU2EseRNaBkUCW9t0vD0MPnVFGewQr+cRH3cT5HpBm7LL
-         q7Zuoexcx96dvOXIwnjAhEXudoMqo8yQh53e9as4apqcHthZwOxp5j0WoXpRn5Bf66/I
-         MWF58R7KH+O2Frw9eONZ6196O18juCYOLr7/AnjTr+JJipid6B//wNmfTFu+Zmk/LfF9
-         uFAVtipz6ap8B2HS8r4L4XwIb/7OKglIv2COKtjsVVgMAzQUm5vXpC95oEX7B6TY9vCH
-         QBjw==
-X-Forwarded-Encrypted: i=1; AJvYcCV8nz5Qjt2baH6gg5RgOPbRTj/I0+SUZrnqe2DgCdWh9QkygJIzoA3eiK2aw4R1zS/bZa4Amj8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/+On47HBg2RpXoDtaRa/Jh/rRxyc/0Ps9lfYBC6uHzBngwrqk
-	JEe966dC1vv5G3oD9eHMKZJ+R45nqRXSoBI+HW7Vykh2MGk4ZXwHAu8GuDZ6J8S7RaHvG04Eorq
-	RlUPunZ/HI+A9og==
-X-Google-Smtp-Source: AGHT+IHSloZeyvX7DyLvGuM3o7vK9+zP//SmGBUBz/5krjVKWz+f9O8FGzZWGUM2d0uVlfKCWBsqtH9UNMdWOw==
-X-Received: from qtbjb5.prod.google.com ([2002:a05:622a:7105:b0:480:3049:24e2])
+        bh=IycLlzcc4MgFlSuZ1ZaEmIedaHzTPqWoWqroxrMY27s=;
+        b=wzqEbw8frD2Oad/nctOG5g3vxMa2ELZ7oqmo2SKfXfSrmwFnRm94GNJDpxegR2kvRm
+         P9iHoOkBrzIve1OMJeXaD5QOWNmBRpWtROEsw9OsBP615T88lf2827SNjZARhZ1jpRgF
+         mRdyRFfnvwewiq6pnLtjBSXKv4g9qBK2mue4usfQRWJBoeQucEEPRsN5igdie9izqO7U
+         oeRgy4+AH14P4+Xx/ip7JvYoNlojbyUCwhcgV+6M1y7KfzbwY3G7JqzXzkbkoGWKBMx0
+         K60vyZzKEnpAB1CiDf4AQq8TlXujrInhuQoyE2s4izEpGqdDwGY8NQ7+FeUa5a/mHrQk
+         O7FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWHWbf2DV6xnx4LHSGHshW5fMjFa59pjv7jvj813lAxWgt8SoO28XtvZmH2rUacyyZ3tZbrh9M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx66PyQKGqvmgh/5yREXurJ6wHvQNGSel8auxIbyR2zvWB+qLBf
+	kyDbbBRGQukyIYsFVz74FViRSmMec3CBlBskcvPGnMSWq1BLm/+ODx4KdeZ84hmNQbNugGB/gce
+	I9aSXWdBkPWzZ5A==
+X-Google-Smtp-Source: AGHT+IH4p568BgVM2BBbFmJXvsyuVOKIcrnnFyPnK2ZVRNkZH0NAV6a5x3ZKKywSjlmehNHbIWhevLSXwf/SdQ==
+X-Received: from qvbob6.prod.google.com ([2002:a05:6214:2f86:b0:702:d3ad:7565])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:a74b:b0:4aa:ea4a:edd7 with SMTP id d75a77b69052e-4aaea4afeffmr13819981cf.0.1752234015186;
- Fri, 11 Jul 2025 04:40:15 -0700 (PDT)
-Date: Fri, 11 Jul 2025 11:40:02 +0000
+ 2002:ad4:5cc2:0:b0:704:7df9:ada9 with SMTP id 6a1803df08f44-704a38beb83mr55042976d6.28.1752234018377;
+ Fri, 11 Jul 2025 04:40:18 -0700 (PDT)
+Date: Fri, 11 Jul 2025 11:40:04 +0000
 In-Reply-To: <20250711114006.480026-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250711114006.480026-1-edumazet@google.com>
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250711114006.480026-5-edumazet@google.com>
-Subject: [PATCH net-next 4/8] tcp: call tcp_measure_rcv_mss() for ooo packets
+Message-ID: <20250711114006.480026-7-edumazet@google.com>
+Subject: [PATCH net-next 6/8] tcp: add const to tcp_try_rmem_schedule() and
+ sk_rmem_schedule() skb
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>
@@ -69,32 +70,40 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-tcp_measure_rcv_mss() is used to update icsk->icsk_ack.rcv_mss
-(tcpi_rcv_mss in tcp_info) and tp->scaling_ratio.
+These functions to not modify the skb, add a const qualifier.
 
-Calling it from tcp_data_queue_ofo() makes sure these
-fields are updated, and permits a better tuning
-of sk->sk_rcvbuf, in the case a new flow receives many ooo
-packets.
-
-Fixes: dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv4/tcp_input.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/net/sock.h   | 2 +-
+ net/ipv4/tcp_input.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 0f2443d4ec581639eb3bdc46cb9b2932123e9246..c8a4b283df6fc4b931270502ddbb5df7ae1e4aa2 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1553,7 +1553,7 @@ __sk_rmem_schedule(struct sock *sk, int size, bool pfmemalloc)
+ }
+ 
+ static inline bool
+-sk_rmem_schedule(struct sock *sk, struct sk_buff *skb, int size)
++sk_rmem_schedule(struct sock *sk, const struct sk_buff *skb, int size)
+ {
+ 	return __sk_rmem_schedule(sk, size, skb_pfmemalloc(skb));
+ }
 diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 5e2d82c273e2fc914706651a660464db4aba8504..78da05933078b5b665113b57a0edc03b29820496 100644
+index 78da05933078b5b665113b57a0edc03b29820496..39de55ff898e6ec9c6e5bc9dc7b80ec9d235ca44 100644
 --- a/net/ipv4/tcp_input.c
 +++ b/net/ipv4/tcp_input.c
-@@ -4923,6 +4923,7 @@ static void tcp_data_queue_ofo(struct sock *sk, struct sk_buff *skb)
- 		return;
- 	}
+@@ -4888,7 +4888,7 @@ static void tcp_ofo_queue(struct sock *sk)
+ static bool tcp_prune_ofo_queue(struct sock *sk, const struct sk_buff *in_skb);
+ static int tcp_prune_queue(struct sock *sk, const struct sk_buff *in_skb);
  
-+	tcp_measure_rcv_mss(sk, skb);
- 	/* Disable header prediction. */
- 	tp->pred_flags = 0;
- 	inet_csk_schedule_ack(sk);
+-static int tcp_try_rmem_schedule(struct sock *sk, struct sk_buff *skb,
++static int tcp_try_rmem_schedule(struct sock *sk, const struct sk_buff *skb,
+ 				 unsigned int size)
+ {
+ 	if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf ||
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
