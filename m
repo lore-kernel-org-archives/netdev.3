@@ -1,55 +1,55 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827BB2F3C18
-	for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 19:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CFA2F3C0D
+	for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 19:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752261026; cv=none; b=FpiWnB6RRxha0QdgaJqaGABa/iRLK4pHOM7b/o7Xkh6mI01iWPRWWReuul3v3fHBf8rb7tz3xVIcRDCf5p0Ue7sisgqo369lhGAadE4evnZFzAaaHD1TOI8/Tpf/UnLKFE9zS9GKSnTxwK5Wkx/UMlsF/mrbdEfm7h8GwCTIcKI=
+	t=1752261027; cv=none; b=tZMRqZVbFrqzF1D3vXV17Xq18ZvmTPP7mIFyAgJJ7/3ggZBOUch9Mge9iOZgKAnLdGHUFvRq0f/2f0+FaHFxTCmZGIyuPt8eTs1nwL1TJLnnoL6KtLd5k+0mKkHjMLJaIf/bGWTVZNjD4Ge9J56Duy4O33Kf40UZoDGPi8A57UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752261026; c=relaxed/simple;
-	bh=JwSEfumaOfW3To0OyQ2Wbf6eOB7q5mcr5A294aX1/8A=;
+	s=arc-20240116; t=1752261027; c=relaxed/simple;
+	bh=afxFgp7+DxgWy70N0aJWpnxw7SEgoETWrdWJeOqJ+lg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cDrFTm0MQ/6WFCTp/9gg3WCxl/SBJXgXii5MlA0RzT5Rnsis44/WR01GbB49AfkliK++o5jhhTbgYRH4SJ3kRvYt98c0HOZatUAiorKmjA00/5lFI/tv+60Q/2gThtug1XK/wkfJho9dTMOmKMmNN19yo4IvfLjIGrOUFk7FG1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RByzESUX; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=P0QQkbUb+iMPKtmIw201kv3HXE5NALQ5+G/uHabRDXtymJ1FmC7qdSjNctvgkv1D+HoCAc58jMhf56m99OYVTwrF841zdYUFhqHPNZnR8L5Sl72Dn+mVJG3X884FUQQmXdrBBMe7YCI769zPiSd8UYzEZOsW8ClaZCeJXd3DDzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mb59gfCo; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RByzESUX"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-748cf01de06so3664416b3a.3
-        for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 12:10:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mb59gfCo"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-234a102faa3so18445295ad.0
+        for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 12:10:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752261025; x=1752865825; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1752261022; x=1752865822; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dUl5d/bzGzSLj/eSdqWPRwCXwkpLsp2JAZMV+3OVpmU=;
-        b=RByzESUXDfH7dsRpP5xEjBDzmnhyhgmFB1QbC/OlNV/7Nx+gfJVH25VfBoj52J9029
-         jnyqJdFkoTiK08Ay+UCX3e/4FuvgPwNNIGYrqhkq7lPcU1QTwMGdJ7h4B+wx00GoDQfD
-         lHXEKAKt0MZLGwf9EGAzDmbuXmcIygg6yxKANIeDJQc6otHicwqd4Ct1xp5ywkb0/wPi
-         ixHuC2XbCe9nNBPKDxfZV3/7y89DohfGzVmxz4N6u6SDH3XuSVDZBW4KguVvfglafpJS
-         ximMNw02JjBuEHvnQhL5biIPzvcXICJKBlY4sxj2KZWBDBgZyMWPgaKCp21NvNCAiUSJ
-         +zsw==
+        bh=t+vmelULdOP2oyeTqkHP7aVERGND3AuW4vvp5WniXAo=;
+        b=Mb59gfCobTDZNdDpgDV6M5BtlzA+KCVGb4fok3fA4t6JAAaUfCcCreFOXdZPeIQ/EU
+         r0EpgdhBGLvnRUlE+aQjJYNBto5ZximqiygUcqx5dwAUMqcIS3d3wv29nqsqvqtePI3u
+         tE680P63l/eLsivfICXrIij8klwo49HqfRTGssyLhOTvXvrkvAz5d6M7HzjE71VcgW7L
+         XomM6KLVJ7xP50Trpf18HXzF34cxM4dNH929Oqgw8LpmJjC1lLe6WsVHfU5hpQhlgDas
+         pz2uzU4VeOuIKRrVaU0648zkCufZRLK3uhwC5mprZwWo1rNHbe9yuw62tKMqbvtiCdpI
+         NvOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752261025; x=1752865825;
+        d=1e100.net; s=20230601; t=1752261022; x=1752865822;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dUl5d/bzGzSLj/eSdqWPRwCXwkpLsp2JAZMV+3OVpmU=;
-        b=mauzo9ydu9+ohivl4Ir56rGkHBGtIIVAGm9kKln6T7bNb1KQkZBw96kAHoX7QXz9tS
-         LjsgWdlVp88+PUbdoiGITQEtI5R3+ko8YW3ezkF2u9dKpCp0TmQzzyUjX7jnbNc50MCl
-         XT/1B8WlbINysp6ZQQljCcox96evTCuhWttSP0e3Nr0WidjLmfsVPtvyvofQt4rFmdJE
-         p5hkfuBpDb9ammODHvzDNVVMQ3E2GKndxGNSZEeyL/vOMY3sr6imbQnhXZ4ouUP54x1p
-         UQsMIiL/bucXm9mIxjyRYLWKvyfTWYmAy5LGnbvTPrCthpj9bHPlkATdvaPiCX+c6dBv
-         ++qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU6qBcJq82Nitg2ce++mZJY3MuLmbBTggJ4HAylS4oaFOsTxL+LWKPNqdStjsF8KjaIhWv47rY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJjXgP4cz5Zy/nHk9d/cuNLvY1rr5IKum9kTnxAquJPfT+rt51
-	aehV76dVu2t2hcPDdRNq2u3R8EjiFovgIz/kqtSNeuYExgex8thueO+nlmUQtCKIktr2V46erI0
-	/f7alPw==
-X-Google-Smtp-Source: AGHT+IG5Eijt9KgtsEeeGZKKakYsNM1Bl0GS5opw6SyteNZ4MCzidK9XEoWRgqKAJoPsKc69nTPLAFOYT8w=
-X-Received: from pgkm13.prod.google.com ([2002:a63:ed4d:0:b0:b31:d727:24a4])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:c217:b0:231:acae:1983
- with SMTP id adf61e73a8af0-231acae1e66mr3961709637.3.1752261024844; Fri, 11
- Jul 2025 12:10:24 -0700 (PDT)
-Date: Fri, 11 Jul 2025 19:06:14 +0000
+        bh=t+vmelULdOP2oyeTqkHP7aVERGND3AuW4vvp5WniXAo=;
+        b=RDZvjiWF9773ATJdf+Tb1qHmfAI/h9o6NPPa4VcGPb8A4uU8Wg2tvt7kDw/xSUZHgs
+         QOFyHgkbU6wc8t+sc+LjNq/cTtPSRMa1UG6ZOd43GQWTpAkA6Itv4+YviJDO7uy335OS
+         ix+7NfhSzglCBJi9Q3M0j/NG32j5/VfrJ7p3RrBnvT2SZv9rfP0GGaO6GZOwxVNI/r9d
+         dZue41qJCU281I5RPW0emwjl9HlfS+a99WbxRhzz1k//soiRYZTFkpbHPXY3QZpnKra/
+         KR1uN6pJ6QFgjTzRzOZIv+AFbwrpPAVYGO394PXAAHRR3zyMlBtBmZVIhz9v4ZHKSHHk
+         AWjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWtX/ETyrsiVTdOMSfIWMhu8q6cFX7KzPbAqOv92yA8x0xwXpd72C40qG1JRTcLJtBqjf0zECc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+WOpG6zIAKunFBUF915cPOGIK9R7p9ZqwgxltCSecNz0bjkOl
+	AD/dLCV9eW6oDY7H22QwVa2UkJDP3Vj//m8C96gVZyCzT2X3u0Uhdgyg8M1ZI0XyvgSM1bOymhM
+	bTnMrjg==
+X-Google-Smtp-Source: AGHT+IFaCbaLxmywoQSzp8GTN4Nt1kAYGuszskef9QlFPYllVc8NVbK18pbB9jCPxHePvcvoY/tX8eB6IkA=
+X-Received: from plhy4.prod.google.com ([2002:a17:902:d644:b0:234:46ed:43f1])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a68:b0:234:8ec1:4af6
+ with SMTP id d9443c01a7336-23dede9222dmr60681935ad.45.1752261021970; Fri, 11
+ Jul 2025 12:10:21 -0700 (PDT)
+Date: Fri, 11 Jul 2025 19:06:12 +0000
 In-Reply-To: <20250711191007.3591938-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250711191007.3591938-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250711191007.3591938-10-kuniyu@google.com>
-Subject: [PATCH v1 net-next 09/14] neighbour: Drop read_lock_bh(&tbl->lock) in pneigh_dump_table().
+Message-ID: <20250711191007.3591938-8-kuniyu@google.com>
+Subject: [PATCH v1 net-next 07/14] neighbour: Annotate access to struct pneigh_entry.{flags,protocol}.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>
@@ -68,54 +68,58 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Now pneigh_entry is guaranteed to be alive during the
-RCU critical section even without holding tbl->lock.
+We will convert pneigh readers to RCU, and its flags and protocol
+will be read locklessly.
 
-Let's drop read_lock_bh(&tbl->lock) and use rcu_dereference()
-to iterate tbl->phash_buckets[] in pneigh_dump_table()
+Let's annotate the access to the two fields.
+
+Note that all access to pn->permanent is under RTNL (neigh_add()
+and pneigh_ifdown_and_unlock()), so WRITE_ONCE() and READ_ONCE()
+are not needed.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- net/core/neighbour.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ net/core/neighbour.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index c5bd52dfd3e5b..e8ca84e2ddf30 100644
+index 6725a40b2db3a..e88b9a4bfe6ea 100644
 --- a/net/core/neighbour.c
 +++ b/net/core/neighbour.c
-@@ -2801,12 +2801,11 @@ static int pneigh_dump_table(struct neigh_table *tbl, struct sk_buff *skb,
- 	if (filter->dev_idx || filter->master_idx)
- 		flags |= NLM_F_DUMP_FILTERED;
- 
--	read_lock_bh(&tbl->lock);
--
- 	for (h = s_h; h <= PNEIGH_HASHMASK; h++) {
- 		if (h > s_h)
- 			s_idx = 0;
--		for (n = tbl->phash_buckets[h], idx = 0; n; n = n->next) {
-+		for (n = rcu_dereference(tbl->phash_buckets[h]), idx = 0; n;
-+		     n = rcu_dereference(n->next)) {
- 			if (idx < s_idx || pneigh_net(n) != net)
- 				goto next;
- 			if (neigh_ifindex_filtered(n->dev, filter->dev_idx) ||
-@@ -2815,16 +2814,13 @@ static int pneigh_dump_table(struct neigh_table *tbl, struct sk_buff *skb,
- 			err = pneigh_fill_info(skb, n, NETLINK_CB(cb->skb).portid,
- 					       cb->nlh->nlmsg_seq,
- 					       RTM_NEWNEIGH, flags, tbl);
--			if (err < 0) {
--				read_unlock_bh(&tbl->lock);
-+			if (err < 0)
- 				goto out;
--			}
- 		next:
- 			idx++;
+@@ -2039,10 +2039,10 @@ static int neigh_add(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		err = -ENOBUFS;
+ 		pn = pneigh_create(tbl, net, dst, dev);
+ 		if (pn) {
+-			pn->flags = ndm_flags;
++			WRITE_ONCE(pn->flags, ndm_flags);
+ 			pn->permanent = !!(ndm->ndm_state & NUD_PERMANENT);
+ 			if (protocol)
+-				pn->protocol = protocol;
++				WRITE_ONCE(pn->protocol, protocol);
+ 			err = 0;
  		}
- 	}
+ 		goto out;
+@@ -2678,8 +2678,9 @@ static int pneigh_fill_info(struct sk_buff *skb, struct pneigh_entry *pn,
+ 	if (nlh == NULL)
+ 		return -EMSGSIZE;
  
--	read_unlock_bh(&tbl->lock);
- out:
- 	cb->args[3] = h;
- 	cb->args[4] = idx;
+-	neigh_flags_ext = pn->flags >> NTF_EXT_SHIFT;
+-	neigh_flags     = pn->flags & NTF_OLD_MASK;
++	neigh_flags = READ_ONCE(pn->flags);
++	neigh_flags_ext = neigh_flags >> NTF_EXT_SHIFT;
++	neigh_flags &= NTF_OLD_MASK;
+ 
+ 	ndm = nlmsg_data(nlh);
+ 	ndm->ndm_family	 = tbl->family;
+@@ -2693,7 +2694,7 @@ static int pneigh_fill_info(struct sk_buff *skb, struct pneigh_entry *pn,
+ 	if (nla_put(skb, NDA_DST, tbl->key_len, pn->key))
+ 		goto nla_put_failure;
+ 
+-	if (pn->protocol && nla_put_u8(skb, NDA_PROTOCOL, pn->protocol))
++	if (pn->protocol && nla_put_u8(skb, NDA_PROTOCOL, READ_ONCE(pn->protocol)))
+ 		goto nla_put_failure;
+ 	if (neigh_flags_ext && nla_put_u32(skb, NDA_FLAGS_EXT, neigh_flags_ext))
+ 		goto nla_put_failure;
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
