@@ -1,55 +1,55 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18762F364E
-	for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 19:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60992F1FFC
+	for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 19:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752261022; cv=none; b=PocCVVtV/1GPfvSroCOjunpJ0PUVqw+Wu4MEi1Bi7erb36CmrNvFmn0T+HCSxRYI7bFgrdB6I3l/WVAhtUNpdTnNDkZbdzO9R8Uoi0w8/vUioHap2TDZSsIVeSv+eCUGexDFV0OK1B12bkqO9skf91xbIYBrMN67l+ZJWIiUt1M=
+	t=1752261025; cv=none; b=Jmb8fp8qGWPa+aj5cay2pzHycRm87p7SldGE4L7EY7LW37yAMffNDuSP9KejrL+vDiXgBSOAMB0ENdFGZZyd/WBMMTUcIC2YYPymBhYKsF9coYR+Cr+LuBeSO6t0Np/l55NflEVQCA2T5imlGjSMi7Lr20WLZEoUYgoA1xXXPAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752261022; c=relaxed/simple;
-	bh=0RePPyxd6CgVBU5QhO5s7TM2jekRUzvVj8Dkn1Zk95o=;
+	s=arc-20240116; t=1752261025; c=relaxed/simple;
+	bh=ODGIZF9+UPjMnwfZU4BuQnCwEGPg+OpBiCmUoXSE6e8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FYr4+0m8wYnlaVqNF396P4xH+bm9KZKKbDy/CWDIYjRvMG1ReLoYAeNIQ+ynVg28MpM46QMhbWLZffuX3I9+PeI9aUTIvjkVFsaXvoqn5AOjS0uRTJDvp9CUE7msmgKfhCgzWtyDce9gW6uZ8kuo9un02tOvg85v+4QRolNM1Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ML66RWZ/; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=MFINWpBRiDaXnJ1Lv9+X6NEiNLIPI6T9T0TxmiSBIjGu1LYYLp4jePfa3S7Snzjp+YLbS4UUMr9TPvK3JlJJFs/ceDorCnP6VAOrCDtliIX1wX8LLpKPJYaCEx2Bs+cJot1h+Fil0pfnxVhb0CXQAY+x+czyBOrk/wyu3cYIRiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZiLgiUMr; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ML66RWZ/"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3138e65efe2so2369311a91.1
-        for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 12:10:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZiLgiUMr"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-315b60c19d4so2068232a91.0
+        for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 12:10:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752261020; x=1752865820; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1752261023; x=1752865823; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ETGspppFhzKgFwop2RykbhE6KEOVYDeXOFB1SESG5iM=;
-        b=ML66RWZ/HbrEVx8eMZfznPcclz51ut+VhtIZyK/GE3EaEVhBd/6BO4TbJHj87OqMwL
-         O9UDcnBUUpH2VhcCNS15Fk8DyVm2YFoLrinVgy0dzJKG/aJUkZC8FKb3VfdcT1MaQ+TQ
-         +1RMdAbBgBpnYm7qUwWk2p2KU8AqI3mlKm5cHbXE8Olx5+IFSPHeYcWrm9cmfTTwl59A
-         xm+a872tSPSDcBk8ZK51rFo5oJFS7BdVHo5FH8vrq993mJ3epUEC9VVk0PPMsRDKQF27
-         OrWwWRhw2dtSwi9SwsaoUlk+iZ4Y9mRgrpub9++0MoiTorOOcvVWar4rjw2yhvXVXh+D
-         4sXA==
+        bh=qkJwcKJg+tZTk2PUq5SxJEgWnAxAeKWGsOVHC65hVSY=;
+        b=ZiLgiUMr8/l2qaHjrp4F2ex7Whnqk9PFJgvK1isQUSk67/mnFF1OHBYfVm+uOhpbLl
+         198AOSVNDxRmwvc3k+wZTKNBnLEd4tBwH4le7HS9BY65bHH4K4SqYX9dvBJwtoy5N6BR
+         87jz35HfBCC8OVKJgGddwaIkUJc91Hq68vk0j4dKK6vVBfQcCfVmlwnDwBL4PDFd6m6J
+         skGRrBKnVWU6e23CLWY3SlcPrd4uUAE4bhJUCqq7whTVV61QlJzOxLZo/gpCacdCsqoU
+         7M61ncAAAKC91rRGy0lExayAm5tgfoUlDPoEeAlJhbkUFpwKtO47mpdpXcpgKeuEN81D
+         iuog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752261020; x=1752865820;
+        d=1e100.net; s=20230601; t=1752261023; x=1752865823;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ETGspppFhzKgFwop2RykbhE6KEOVYDeXOFB1SESG5iM=;
-        b=c1u/KIh92EoxnUEPUju4YIYRgDgaHGsbbvSsA7oMOK8tEiE3kaazF4/S9Hm8dko4N0
-         xJHDQoawUUtigainKKtjY5a/q4q+TKUWKsCZUv7bG6EkIuWxpuFyeguwtswIt8BiZtoL
-         AGlTW1PAo7FTcCFiCfL4otyxL1eX/JLAKJg2UaBdwmORELYIQh8XvizEfxO2YgDmtVGn
-         MB8gnbVBf064/KujZ40Ud7FIeJ2Y0/MJhgNKVHB1nvpKpBHZ84NjRoMbDP9hBxt6wZDX
-         sSj8Mlw/77W/tlimXgsjqjb1STtdKFYWrllp/wQMNf3rl6VDrL8FRUJNanKdBJLMp4D8
-         LPvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWvt9Pis4quiMkUIdx3YeR8RciBN7KzLFleaw8jpJiM8bsDgHtiIjTXSG3THVlJJ6KDllzzXAw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZnk51/836DavGHZRX9EWuICsvUZJ5xi9qeX8lKMd45j5nHwGY
-	gNUmj1Mvu4Ps8UkvWONWl2ukLiQ3rXt2qPJ6pNCqFm/GLBjSylRxWvWnM+R+swzTM9AF0NJ7FGL
-	9iYTUjw==
-X-Google-Smtp-Source: AGHT+IEhXr/p/UojodpKVae0aU+smLid8RwNo1YZ9YTxZ6aF3Ci2RSzVkfeHZNdT+NxhA5n2Qe4jaYA7PKI=
-X-Received: from pjbsq7.prod.google.com ([2002:a17:90b:5307:b0:311:ea2a:3919])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17d1:b0:311:b5ac:6f6b
- with SMTP id 98e67ed59e1d1-31c4ccbbec2mr6763254a91.9.1752261020486; Fri, 11
- Jul 2025 12:10:20 -0700 (PDT)
-Date: Fri, 11 Jul 2025 19:06:11 +0000
+        bh=qkJwcKJg+tZTk2PUq5SxJEgWnAxAeKWGsOVHC65hVSY=;
+        b=HDd3JJZvEyTMADBpFHNNaZeV4Epw7a8WuyaddPMJkEIdZbiR/+c4eJSYd0y6ePq3xD
+         4GQb5pDW7N37E9S/It3/SlU1PESs36yvkR2rQ2z9J+3+tryV9r6RdF2hJZNphgtIKu/m
+         Yr70gLqo7litYHQwbfHvLw9YO9uqSCAcMtYGoWVFlWQ7bQjtHTHjcLlh+7EDHUOe26sL
+         FXRFNOaLZuNDQYVBq7m4C2HXV0HxFxbY307DVeNCSAM3ia0FIrnvJ9U1Il43CVEfUBXw
+         XCI0tsipWwnf8uVPAHFXBmb+jiDZeP56WDaHkDLxk0pbU4M/Ejm3nzQuynR1kKIktWai
+         YaeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVFx+rMUhzWpddayOO1TBQXd9B/x7nB60gvKzGW7Fjzgb0N96bCFRbYBTBspRwC7hXL9RM9M2Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXd9xvsapybPNJKKip6w8ORzs6tILfgZs6dPUIVFXcQqvj017s
+	/7ikQ76y5BfyNEFh8TlDDozI5eQVZirEADyDlu5kjyCJHvbBMlPUGmhpeU9KgZaaXZw21Z+bJoD
+	h39bcxw==
+X-Google-Smtp-Source: AGHT+IFc38Qj+PXnvK2nOe3R60tTwNNHNHrQywts3HikaLJJCkxZVgZnMSSmO+9psXo+imL+CDxPnoO9s/8=
+X-Received: from pjbpl3.prod.google.com ([2002:a17:90b:2683:b0:311:462d:cb60])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2689:b0:311:d05c:936
+ with SMTP id 98e67ed59e1d1-31c4ccdd5cdmr7289806a91.17.1752261023470; Fri, 11
+ Jul 2025 12:10:23 -0700 (PDT)
+Date: Fri, 11 Jul 2025 19:06:13 +0000
 In-Reply-To: <20250711191007.3591938-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -59,9 +59,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250711191007.3591938-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250711191007.3591938-7-kuniyu@google.com>
-Subject: [PATCH v1 net-next 06/14] neighbour: Free pneigh_entry after RCU
- grace period.
+Message-ID: <20250711191007.3591938-9-kuniyu@google.com>
+Subject: [PATCH v1 net-next 08/14] neighbour: Convert RTM_GETNEIGH to RCU.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>
@@ -69,161 +68,59 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-We will convert RTM_GETNEIGH to RCU.
+Only __dev_get_by_index() is the RTNL dependant in neigh_get().
 
-neigh_get() looks up pneigh_entry by pneigh_lookup() and passes
-it to pneigh_fill_info().
-
-Then, we must ensure that the entry is alive till pneigh_fill_info()
-completes, but read_lock_bh(&tbl->lock) in pneigh_lookup() does not
-guarantee that.
-
-Also, we will convert all readers of tbl->phash_buckets[] to RCU.
-
-Let's use call_rcu() to free pneigh_entry and update phash_buckets[]
-and ->next by rcu_assign_pointer().
-
-pneigh_ifdown_and_unlock() uses list_head to avoid overwriting
-->next and moving RCU iterators to another list.
-
-pndisc_destructor() (only IPv6 ndisc uses this) uses a mutex, so it
-is not delayed to call_rcu(), where we cannot sleep.  This is fine
-because the mcast code works with RCU and ipv6_dev_mc_dec() frees
-mcast objects after RCU grace period.
-
-While at it, we change the return type of pneigh_ifdown_and_unlock()
-to void.
+Let's replace it with dev_get_by_index_rcu() and convert RTM_GETNEIGH
+to RCU.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- include/net/neighbour.h |  4 ++++
- net/core/neighbour.c    | 51 +++++++++++++++++++++++++----------------
- 2 files changed, 35 insertions(+), 20 deletions(-)
+ net/core/neighbour.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/neighbour.h b/include/net/neighbour.h
-index 7f3d57da5689a..a877e56210b22 100644
---- a/include/net/neighbour.h
-+++ b/include/net/neighbour.h
-@@ -180,6 +180,10 @@ struct pneigh_entry {
- 	possible_net_t		net;
- 	struct net_device	*dev;
- 	netdevice_tracker	dev_tracker;
-+	union {
-+		struct list_head	free_node;
-+		struct rcu_head		rcu;
-+	};
- 	u32			flags;
- 	u8			protocol;
- 	bool			permanent;
 diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 814a45fb1962e..6725a40b2db3a 100644
+index e88b9a4bfe6ea..c5bd52dfd3e5b 100644
 --- a/net/core/neighbour.c
 +++ b/net/core/neighbour.c
-@@ -54,9 +54,9 @@ static void neigh_timer_handler(struct timer_list *t);
- static void __neigh_notify(struct neighbour *n, int type, int flags,
- 			   u32 pid);
- static void neigh_update_notify(struct neighbour *neigh, u32 nlmsg_pid);
--static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
--				    struct net_device *dev,
--				    bool skip_perm);
-+static void pneigh_ifdown_and_unlock(struct neigh_table *tbl,
-+				     struct net_device *dev,
-+				     bool skip_perm);
+@@ -3048,6 +3048,8 @@ static int neigh_get(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 	if (!skb)
+ 		return -ENOBUFS;
  
- #ifdef CONFIG_PROC_FS
- static const struct seq_operations neigh_stat_seq_ops;
-@@ -803,12 +803,20 @@ struct pneigh_entry *pneigh_create(struct neigh_table *tbl,
++	rcu_read_lock();
++
+ 	tbl = neigh_find_table(ndm->ndm_family);
+ 	if (!tbl) {
+ 		NL_SET_ERR_MSG(extack, "Unsupported family in header for neighbor get request");
+@@ -3064,7 +3066,7 @@ static int neigh_get(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 	dst = nla_data(tb[NDA_DST]);
  
- 	write_lock_bh(&tbl->lock);
- 	n->next = tbl->phash_buckets[hash_val];
--	tbl->phash_buckets[hash_val] = n;
-+	rcu_assign_pointer(tbl->phash_buckets[hash_val], n);
- 	write_unlock_bh(&tbl->lock);
- out:
- 	return n;
- }
- 
-+static void pneigh_destroy(struct rcu_head *rcu)
-+{
-+	struct pneigh_entry *n = container_of(rcu, struct pneigh_entry, rcu);
-+
-+	netdev_put(n->dev, &n->dev_tracker);
-+	kfree(n);
-+}
-+
- int pneigh_delete(struct neigh_table *tbl, struct net *net, const void *pkey,
- 		  struct net_device *dev)
- {
-@@ -821,12 +829,13 @@ int pneigh_delete(struct neigh_table *tbl, struct net *net, const void *pkey,
- 	     np = &n->next) {
- 		if (!memcmp(n->key, pkey, key_len) && n->dev == dev &&
- 		    net_eq(pneigh_net(n), net)) {
--			*np = n->next;
-+			rcu_assign_pointer(*np, n->next);
- 			write_unlock_bh(&tbl->lock);
-+
- 			if (tbl->pdestructor)
- 				tbl->pdestructor(n);
--			netdev_put(n->dev, &n->dev_tracker);
--			kfree(n);
-+
-+			call_rcu(&n->rcu, pneigh_destroy);
- 			return 0;
- 		}
+ 	if (ndm->ndm_ifindex) {
+-		dev = __dev_get_by_index(net, ndm->ndm_ifindex);
++		dev = dev_get_by_index_rcu(net, ndm->ndm_ifindex);
+ 		if (!dev) {
+ 			NL_SET_ERR_MSG(extack, "Unknown device ifindex");
+ 			err = -ENODEV;
+@@ -3099,8 +3101,11 @@ static int neigh_get(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 			goto err;
  	}
-@@ -834,11 +843,12 @@ int pneigh_delete(struct neigh_table *tbl, struct net *net, const void *pkey,
- 	return -ENOENT;
+ 
++	rcu_read_unlock();
++
+ 	return rtnl_unicast(skb, net, pid);
+ err:
++	rcu_read_unlock();
+ 	kfree_skb(skb);
+ 	return err;
  }
- 
--static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
--				    struct net_device *dev,
--				    bool skip_perm)
-+static void pneigh_ifdown_and_unlock(struct neigh_table *tbl,
-+				     struct net_device *dev,
-+				     bool skip_perm)
- {
--	struct pneigh_entry *n, **np, *freelist = NULL;
-+	struct pneigh_entry *n, **np;
-+	LIST_HEAD(head);
- 	u32 h;
- 
- 	for (h = 0; h <= PNEIGH_HASHMASK; h++) {
-@@ -847,25 +857,26 @@ static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
- 			if (skip_perm && n->permanent)
- 				goto skip;
- 			if (!dev || n->dev == dev) {
--				*np = n->next;
--				n->next = freelist;
--				freelist = n;
-+				rcu_assign_pointer(*np, n->next);
-+				list_add(&n->free_node, &head);
- 				continue;
- 			}
- skip:
- 			np = &n->next;
- 		}
- 	}
-+
- 	write_unlock_bh(&tbl->lock);
--	while ((n = freelist)) {
--		freelist = n->next;
--		n->next = NULL;
-+
-+	while (!list_empty(&head)) {
-+		n = list_first_entry(&head, typeof(*n), free_node);
-+		list_del(&n->free_node);
-+
- 		if (tbl->pdestructor)
- 			tbl->pdestructor(n);
--		netdev_put(n->dev, &n->dev_tracker);
--		kfree(n);
-+
-+		call_rcu(&n->rcu, pneigh_destroy);
- 	}
--	return -ENOENT;
- }
- 
- static inline void neigh_parms_put(struct neigh_parms *parms)
+@@ -3900,7 +3905,7 @@ static const struct rtnl_msg_handler neigh_rtnl_msg_handlers[] __initconst = {
+ 	{.msgtype = RTM_NEWNEIGH, .doit = neigh_add},
+ 	{.msgtype = RTM_DELNEIGH, .doit = neigh_delete},
+ 	{.msgtype = RTM_GETNEIGH, .doit = neigh_get, .dumpit = neigh_dump_info,
+-	 .flags = RTNL_FLAG_DUMP_UNLOCKED},
++	 .flags = RTNL_FLAG_DOIT_UNLOCKED | RTNL_FLAG_DUMP_UNLOCKED},
+ 	{.msgtype = RTM_GETNEIGHTBL, .dumpit = neightbl_dump_info},
+ 	{.msgtype = RTM_SETNEIGHTBL, .doit = neightbl_set},
+ };
 -- 
 2.50.0.727.gbf7dc18ff4-goog
 
