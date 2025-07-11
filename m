@@ -1,97 +1,99 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE353625
-	for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 05:32:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75806192D83;
+	Fri, 11 Jul 2025 05:40:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752211933; cv=none; b=uf0kvValnoihuOIj/lgzL8uF+LNGBwKWopjhrfOcnZRILep8ol5zaawW1tG6q+pDNv08Fw/+BBknSStP59273aAOb5O0mkdeI5rYOqvKK6MEw8yPdG8uUDfm9pjCYuM0JSRU7UDHfyW48iRwIqnDpXJQ0LoQ04rjI2PxgOWNzHI=
+	t=1752212446; cv=none; b=LP/OK0R1AKPbQT/HyM9HgXChrG6Q2MGAgy66iOlHsL0zbz9D4ciBLjNq75Z3UUWBJ+F4J73IQu67alXnDlN3WcW66Z0VSFh1JVitkASmCt3HcW6KEsKKBEEkaMrBoJN387+YxMuUSTekyz3IiUaylJq2mrMg3H6Yaef9fu/Phwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752211933; c=relaxed/simple;
-	bh=YvGgwL+U6Lw9F2MqRICbQeZggtn9fyJsXdAv22NAYpg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ZSakGSTLnJFC/ASUvwpDNGTpQxxq7HLq+aI2dED05YALb75n/Tfc7819oSz7K0EjG8p8amt2iLTJ2okgnFHtSuuFhUURUsFvgCQU8Gn0zIKzqgbG6pTZP49BO3mObC8/hmGODTWBirr0DRJPV9s4Fh0F6q7hvTBdtqzWG9mmsRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oBK0LgU/; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oBK0LgU/"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-313f702d37fso1859178a91.3
-        for <netdev@vger.kernel.org>; Thu, 10 Jul 2025 22:32:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752211931; x=1752816731; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=to8LUEEWePW5vOL9+mdZts8hAQhgCYx2zuIVL7aP9E8=;
-        b=oBK0LgU//Q5u4MMrZmr+LAlb42HYFOMqD/wWz/aubWbVelgisybr7Reb2XiH7Jow8x
-         e8xgH+27AhQeAdCO/td9tyAcb5HZpVEa5qm6m4AxLWxlvjUR0wvP/6bKY5ZjpgOLWnB3
-         D4X0cxGkzYGpFoYH2ifNjtBBaN3tC2eOIju0BeDypFe1T2WCtKA9VReoSyhjlKHoRTl9
-         eBf5N0uYr4yXOxmKJKOKdlD7x1oHvYYFzKceOsTfDrFFJTMhsGud4WtCErn9otiKkD9H
-         fXPpqLCc6gZTNULqd6oewJ/6X9hYdSFSCPH2pjDwkfquCdvRnwczsT52JZtfzvlcgseD
-         12VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752211931; x=1752816731;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=to8LUEEWePW5vOL9+mdZts8hAQhgCYx2zuIVL7aP9E8=;
-        b=Ix/35dICh8L+IFpS82JRKVgASZSrDDW+9vQrGE62mc7xobLTXtsMk1a7jTHH70R0mL
-         DqfVveFMrQctTr02SYTMx4SdzFhAGGtkUd6mW83r/NoKKefJhjhkeMt3oDDqy5Uzox6O
-         owFkeO0V9vlN+PKzjLEvIR3ANaoYJKDrhoxAa0oq40k1seYNDfa0jRaRzU/JzYlhljUw
-         m4VB3IHB7yYOEAuYOPRAVVqO7ppHQ/V2zvsLDOEmgXMTrdfmSkejyqb3g/Ja3wZd3BdB
-         X+FeIY4tWbtCvS+MSn1m++isSZpEobT2fhfsk1nb3wKm6VXhFjIyhQNJ1LFV+ui6p2yU
-         MLnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXP9+bbV43LCvNEiL5zjXB7eNvidgZWdFnxekrKy4qHBueE/TayvDhz+p6r/+d3yIHpONRxjDU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/ggBJcXzkkUR+7opSoDNad6uwA8RmiDyAKYhpxQYyE1FkCu8N
-	faBkv1ya0DPTO5DML9vxt0LL+qdRev680VMjXxlZW1PyIT3EvyaTYZXsaTTfksWnZN2Ar1gBZwL
-	jVm3Ruw==
-X-Google-Smtp-Source: AGHT+IHCKx9hCFV6evQH0LTGzIfcK9waQIJWfhNGr3rtH0NqYo/z3TDmPQBAhzWOvN+HguUl/mALkD5RDiw=
-X-Received: from pjv16.prod.google.com ([2002:a17:90b:5650:b0:31c:32f8:3f88])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:180e:b0:311:9c1f:8524
- with SMTP id 98e67ed59e1d1-31c4f4bf9d7mr2129604a91.15.1752211931063; Thu, 10
- Jul 2025 22:32:11 -0700 (PDT)
-Date: Fri, 11 Jul 2025 05:32:07 +0000
+	s=arc-20240116; t=1752212446; c=relaxed/simple;
+	bh=cLcSoW4RHFm1zNpR3N8xD4FvB98ZNkaDU1D2fYe6qoE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S+MH7ThJtaadhVWHStjTPVaE0zd8c2qUBClA0+3nbvhfgVYvQtdW0BDzRdn2ek90vrZ1XbHqpyAtOu1KAuITHZimlwFoNiHS4BEye/pM5nxa11UNq0HRvk1lD4ZqShEIo/uL5T13oBovvsxByrbGI9r3R87WNh2aLbkD/pWvQuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+X-CSE-ConnectionGUID: 8ouIrc07RPWR8qAsOQQyXw==
+X-CSE-MsgGUID: 5T/umF0RT5ygupuhHbcXYQ==
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 11 Jul 2025 14:40:36 +0900
+Received: from localhost.localdomain (unknown [10.226.92.72])
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 58B70413B428;
+	Fri, 11 Jul 2025 14:40:32 +0900 (JST)
+From: Biju Das <biju.das.jz@bp.renesas.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Biju Das <biju.das.jz@bp.renesas.com>,
+	Russell King <linux@armlinux.org.uk>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Biju Das <biju.das.au@gmail.com>,
+	linux-renesas-soc@vger.kernel.org
+Subject: [PATCH net-next v2] net: phy: micrel: Add ksz9131_resume()
+Date: Fri, 11 Jul 2025 06:40:21 +0100
+Message-ID: <20250711054029.48536-1-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250711053208.2965945-1-kuniyu@google.com>
-Subject: [PATCH v1 net] netlink: Fix rmem check in netlink_broadcast_deliver().
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-We need to allow queuing at least one skb even when skb is
-larger than sk->sk_rcvbuf.
+The Renesas RZ/G3E SMARC EVK uses KSZ9131RNXC phy. On deep power state,
+PHY loses the power and on wakeup the rgmii delays are not reconfigured
+causing it to fail.
 
-The cited commit made a mistake while converting a condition
-in netlink_broadcast_deliver().
+Replace the callback kszphy_resume()->ksz9131_resume() for reconfiguring
+the rgmii_delay when it exits from PM suspend state.
 
-Let's correct the rmem check for the allow-one-skb rule.
-
-Fixes: ae8f160e7eb24 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 ---
- net/netlink/af_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v1->v2:
+ * Added ksz9131-specific phy_driver->resume to reconfigure the rgmii
+   delays on exit from PM suspend state.
+ * Replaced 'priv->is_suspended'->'phydev->suspended' for checking
+   exit from PM state.
+ * Updated commit description.
+Ref:
+ https://patchwork.kernel.org/project/linux-renesas-soc/patch/20250705170326.106073-1-biju.das.jz@bp.renesas.com/#26459627
+---
+ drivers/net/phy/micrel.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 79fbaf7333ce2..2d107a8a75d99 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1395,7 +1395,7 @@ static int netlink_broadcast_deliver(struct sock *sk, struct sk_buff *skb)
- 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
- 	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 74fd6ff32c6c..f678c1bdacdf 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -5633,6 +5633,14 @@ static int lan8841_suspend(struct phy_device *phydev)
+ 	return kszphy_generic_suspend(phydev);
+ }
  
--	if ((rmem != skb->truesize || rmem <= rcvbuf) &&
-+	if ((rmem == skb->truesize || rmem <= rcvbuf) &&
- 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
- 		netlink_skb_set_owner_r(skb, sk);
- 		__netlink_sendskb(sk, skb);
++static int ksz9131_resume(struct phy_device *phydev)
++{
++	if (phydev->suspended && phy_interface_is_rgmii(phydev))
++		ksz9131_config_rgmii_delay(phydev);
++
++	return kszphy_resume(phydev);
++}
++
+ static struct phy_driver ksphy_driver[] = {
+ {
+ 	.phy_id		= PHY_ID_KS8737,
+@@ -5879,7 +5887,7 @@ static struct phy_driver ksphy_driver[] = {
+ 	.get_strings	= kszphy_get_strings,
+ 	.get_stats	= kszphy_get_stats,
+ 	.suspend	= kszphy_suspend,
+-	.resume		= kszphy_resume,
++	.resume		= ksz9131_resume,
+ 	.cable_test_start	= ksz9x31_cable_test_start,
+ 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
+ 	.get_features	= ksz9477_get_features,
 -- 
-2.50.0.727.gbf7dc18ff4-goog
+2.43.0
 
