@@ -1,97 +1,60 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42F11A7AF7;
-	Fri, 11 Jul 2025 04:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACAB1A2389
+	for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 04:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752207041; cv=none; b=KamQJi9NiM+ynDM/uBPyff7j87fVmz8vUbeygXqS9SxJ0C5VCCLNYZRYX746OvOaZq9N56eSyTnkCNLslEXNY4Mb6J/9JkZG7MZ00bNbbABo88F06iRk7fcLuaXiS6iUyrpGFEVZZm2pATCYCdl0Vw3RRxk91mDU3C8s5zstN+0=
+	t=1752207445; cv=none; b=sUbBspxKZ2Hd8KRHiVKsMcnsmvZbGT5I1jWefVR5wyChdwxVqCMSCfYylZJAoQUBwRoh+8rqwZqCiF0HYlnMS77GGo/PXxkl8DHo+N1Y4VCakmsyP2sXglY9QNcDwwYaoVv8VbWoMJ3KVyGRwSueUigx/OPd47H1KpPVbXvQuK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752207041; c=relaxed/simple;
-	bh=hJB5UNZJFKPG2CgDqbDXrpAZl8wnBtsy+3T2LOvpdKs=;
+	s=arc-20240116; t=1752207445; c=relaxed/simple;
+	bh=VGjzDZZ1+cEoortXl63nVR2f4+drZLd97eNMlNObsxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LbinDTYNsuEu4Nxs6ztSUwcpTHE7FDAPLD7rtJpwUUDpLBu+O0YcqmbeD09G6Ed1ETb4zSqbwGHPVL+VU3Wm47FRBp6iuf4TZajXDub/T6shVSwXmfkRybZOPxKgSTK+3hMaMWzpLW9vTx1RtXL/C8WcQM7Ii3xt4ni/tdqtDIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E3L0xCES; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version; b=jVzXSmowJt0mHcgvpjSWTr23Lia5HZ37eNH7LbWT4CcwO4FFL49ZUxyjUGi9JFxqEKDfXbyL6k60+07wvcShKGrDVU3Bnx4oRWWF8v6W2m0N3yvhAYcsCRCL0ZSua4SkCTqc+737Jd/CVCZ5j8N4/87NW3VoeZc5Ys2cLLdi8uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FpIEQgcZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E3L0xCES"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3137c20213cso1656423a91.3;
-        Thu, 10 Jul 2025 21:10:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752207039; x=1752811839; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FftY+H42oo78/iJj/bhTIQoeZQcrJ3tJuTl2e4g04Ts=;
-        b=E3L0xCESOOmFpI7BP8S10EU/fXyujfybEG9/C4I0/hFHukm/wndUNjxiTWKx/OVLRF
-         xAOGtS+zZdIAQUm0Ii56m9B4le4zGdpRM3xu6VsxL+tMHfmpzRCGj2a01K0uO+9kzoQ9
-         IFV5725v2tE4VsS9JW3/jPDHC5rQ/c1Vy7VU0hUnyaD4KY+2QUdH3Fzy6H5q0wr9Phff
-         P7zD1OcGHejgP6SGaOEhH8Fapny+DrvMo7RBg1AfMJ723JnMANbxJCAb+BH03w8RPGr6
-         Y6uaMi3Sl5X/5CLo6d79j+FOVOVwL/ly/ZwpE7EbBFCPPS2EXrSXC254GO3wOqrKQaix
-         nx9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752207039; x=1752811839;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FftY+H42oo78/iJj/bhTIQoeZQcrJ3tJuTl2e4g04Ts=;
-        b=MhEMnZUJRyWW31LG8wjSm3KA0h3TNkaI/ek/bNtUQlV3KjMCAu3LTszlr+akt8fawN
-         GLQ/Mgh8U4Xog1ZtH6mXhRgXXjYz3iVID8w7xoh9e+wAU2BdZXOTV2YSEA6LwzLLDrxV
-         OvtNRHyh8BZb6DYOeRHkfbS41ZelUpCQmc5Xi4e+Z72V2Cm96dkEUAHAru57MQw+yU5C
-         PUH6CncZc2oK/MFkQNcO8oOAskqIZRwjl0WJwd5Y/DcuCXgYvDYsWIz313nQOp9107br
-         BDlfzz1NjFojWuRdwZYwErovjG4Gu/UJRNIw60EQLbBBZVhuvFZtSvyvZuUj6+vDwWoA
-         y4+w==
-X-Forwarded-Encrypted: i=1; AJvYcCUMCvHqQy5pU73/hWkKkeJWlF1+1NCmjJeKvlaGg9ydhi+ulLESPdiSQGsUQhkEf+7UhjFfci3ER/uX@vger.kernel.org, AJvYcCUNorcnO+jTy247qD7v+Q0Yhmda4lH/p9rqO5hReFv2yefAGEZTIgAjhaI0iHsYnkdK6xzs/dL2dLvD@vger.kernel.org, AJvYcCUROa0mZ3BVr8e7ILLV6EixPyUIDNH1dAw0FWs9hOpgCS1k4/AJCSZbH3SuM9viEmJjCC5MSGKoBU7nu9A/@vger.kernel.org, AJvYcCUz8SCgOYckDyyP5UOxLWDyY0vOy/Fb30Mm9uEs8zcsOEu4e+GbW444OEoajcGIpOVXCGeB9sZKVRBiVw==@vger.kernel.org, AJvYcCXQUB56XFQ8Nq7MT/USBEHVX1QmJhGR5r23GJs2CzJ/to+erJ+OGYfQrflyU/ZGlSu5aOaA5gDs@vger.kernel.org, AJvYcCXR0lfFUCWV6X6a1mm83ux7CGvp06lHNOU2IWkSiFy83CgWci0G6K2e4jnBxauSXG43UGfmLSTuKC9dNxHqdcs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9eLflw/pchEqWlIrtdsew6NyAJEFmGzoeV2VPKjwRQKJc1ynE
-	8pFq0u4dftRMRMJHialrGIRzENENsdCckvXdLg4L1LABt8WwOFO+8cvx
-X-Gm-Gg: ASbGncv9iUa3haI734IMp0KQDlL+IZyTIyrw4o0tmjEaMZbXLFHtNRYz7hazfxhFtKu
-	1t8vvgBa2a7roEtxJd/kCk48szX2cshecGHFSi4EW3vKApFNNZw1ozXs8kwgs/yFMQ50+xdLm/M
-	Bls5bwNHKBMITuODE/TTTTiNJAz//izg7WxSwJUp1hxemH/IM6zh8B051fd/5L4hVUNAxGaIuDT
-	hDgILrz86ORZDCgeIInoF1JVUVhXg8MPMLnFHTmP5pdVAdLny9H80iSWhrmj8gbS1B5ZqSnw1Rz
-	j6S45w1aLsWqXeBBHk90Ads2oNlO2L3v+7PENa0kZKmVwaFivVHbXv1+YvxmCITTSb0lm2tdwvI
-	VrHWAeupnFOivuoVFqQQhvCBFUlaXOeY60Dw+ewBwzTsgQw/3EKZdhZfl65pT1YHcpRNvKCKJQ/
-	UbRp+fEg==
-X-Google-Smtp-Source: AGHT+IFWTiFyINY3p3GkFh9rLrPAgb2Rm2YLBk8fWEOnNPV1fS36WcePgUDPT5GTTf3HkIlDqW/aCA==
-X-Received: by 2002:a17:90b:2ecb:b0:311:f99e:7f4a with SMTP id 98e67ed59e1d1-31c4ccedab5mr2713396a91.26.1752207039080;
-        Thu, 10 Jul 2025 21:10:39 -0700 (PDT)
-Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3bbe6f4fc8sm3902095a12.51.2025.07.10.21.10.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 21:10:38 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: alex.gaynor@gmail.com,
-	dakr@kernel.org,
-	gregkh@linuxfoundation.org,
-	ojeda@kernel.org,
-	rafael@kernel.org,
-	robh@kernel.org,
-	saravanak@google.com,
-	tmgross@umich.edu
-Cc: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	bhelgaas@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	david.m.ertman@intel.com,
-	devicetree@vger.kernel.org,
-	gary@garyguo.net,
-	ira.weiny@intel.com,
-	kwilczynski@kernel.org,
-	lenb@kernel.org,
-	leon@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	lossin@kernel.org,
-	netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v4 3/3] rust: net::phy Change module_phy_driver macro to use module_device_table macro
-Date: Fri, 11 Jul 2025 13:09:47 +0900
-Message-ID: <20250711040947.1252162-4-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250711040947.1252162-1-fujita.tomonori@gmail.com>
-References: <20250711040947.1252162-1-fujita.tomonori@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FpIEQgcZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752207442;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PrgWwIjSYaWR14oGi13NO50VuL8N7hygSneHcVyTJRg=;
+	b=FpIEQgcZGUWwixWzZbHOuwb2mxYMBD3qMorKgqk5C7vmCHczMBe5frqTFu5JcAzoj9/vt0
+	jExDsTGqMoRC3kDyseAZ8zH/FDFZYeQZtW1Yk9jJf0O9G6bPvF+WRMmH32NUtxkPyDZQvf
+	lJxbWNO8RBSqufHS8TqTphrqjAyvnkU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-8-udV0WTznP6uO1Q1QBSRUxQ-1; Fri,
+ 11 Jul 2025 00:17:16 -0400
+X-MC-Unique: udV0WTznP6uO1Q1QBSRUxQ-1
+X-Mimecast-MFC-AGG-ID: udV0WTznP6uO1Q1QBSRUxQ_1752207435
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E92CA1956096;
+	Fri, 11 Jul 2025 04:17:14 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.72.116.32])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F2A7E19560A3;
+	Fri, 11 Jul 2025 04:17:08 +0000 (UTC)
+From: Li Tian <litian@redhat.com>
+To: netdev@vger.kernel.org,
+	linux-hyperv@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Long Li <longli@microsoft.com>
+Subject: [PATCH v2] hv_netvsc: Set VF priv_flags to IFF_NO_ADDRCONF before open to prevent IPv6 addrconf
+Date: Fri, 11 Jul 2025 12:17:00 +0800
+Message-ID: <20250711041700.13103-1-litian@redhat.com>
+In-Reply-To: <20250710024603.10162-1-litian@redhat.com>
+References: <20250710024603.10162-1-litian@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -99,100 +62,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Change module_phy_driver macro to build device tables which are
-exported to userspace by using module_device_table macro.
+Set an additional flag IFF_NO_ADDRCONF to prevent ipv6 addrconf.
 
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Commit 8a321cf7becc6c065ae595b837b826a2a81036b9
+("net: add IFF_NO_ADDRCONF and use it in bonding to prevent ipv6 addrconf")
+
+This new flag change was not made to hv_netvsc resulting in the VF being
+assinged an IPv6.
+
+Fixes: 8a321cf7becc ("net: add IFF_NO_ADDRCONF and use it in bonding to prevent ipv6 addrconf")
+
+Suggested-by: Cathy Avery <cavery@redhat.com>
+
+Signed-off-by: Li Tian <litian@redhat.com>
 ---
- rust/kernel/net/phy.rs | 51 ++++++++++++++++++++----------------------
- 1 file changed, 24 insertions(+), 27 deletions(-)
+ drivers/net/hyperv/netvsc_drv.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index f44e8107cec4..8b94f964f936 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -6,7 +6,7 @@
- //!
- //! C headers: [`include/linux/phy.h`](srctree/include/linux/phy.h).
+diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
+index c41a025c66f0..8be9bce66a4e 100644
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2317,8 +2317,11 @@ static int netvsc_prepare_bonding(struct net_device *vf_netdev)
+ 	if (!ndev)
+ 		return NOTIFY_DONE;
  
--use crate::{error::*, prelude::*, types::Opaque};
-+use crate::{device_id::RawDeviceId, error::*, prelude::*, types::Opaque};
- use core::{marker::PhantomData, ptr::addr_of_mut};
- 
- pub mod reg;
-@@ -750,6 +750,12 @@ pub const fn mdio_device_id(&self) -> bindings::mdio_device_id {
-     }
+-	/* set slave flag before open to prevent IPv6 addrconf */
++	/* Set slave flag and no addrconf flag before open
++	 * to prevent IPv6 addrconf.
++	 */
+ 	vf_netdev->flags |= IFF_SLAVE;
++	vf_netdev->priv_flags |= IFF_NO_ADDRCONF;
+ 	return NOTIFY_DONE;
  }
  
-+// SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `struct mdio_device_id`
-+// and does not add additional invariants, so it's safe to transmute to `RawType`.
-+unsafe impl RawDeviceId for DeviceId {
-+    type RawType = bindings::mdio_device_id;
-+}
-+
- enum DeviceMask {
-     Exact,
-     Model,
-@@ -850,19 +856,18 @@ const fn as_int(&self) -> u32 {
- ///     }
- /// };
- ///
--/// const _DEVICE_TABLE: [::kernel::bindings::mdio_device_id; 2] = [
--///     ::kernel::bindings::mdio_device_id {
--///         phy_id: 0x00000001,
--///         phy_id_mask: 0xffffffff,
--///     },
--///     ::kernel::bindings::mdio_device_id {
--///         phy_id: 0,
--///         phy_id_mask: 0,
--///     },
--/// ];
--/// #[cfg(MODULE)]
--/// #[no_mangle]
--/// static __mod_device_table__mdio__phydev: [::kernel::bindings::mdio_device_id; 2] = _DEVICE_TABLE;
-+/// const N: usize = 1;
-+///
-+/// const TABLE: ::kernel::device_id::IdArray<::kernel::net::phy::DeviceId, (), N> =
-+///     ::kernel::device_id::IdArray::new_without_index([
-+///         ::kernel::net::phy::DeviceId(
-+///             ::kernel::bindings::mdio_device_id {
-+///                 phy_id: 0x00000001,
-+///                 phy_id_mask: 0xffffffff,
-+///             }),
-+///     ]);
-+///
-+/// ::kernel::module_device_table!("mdio", phydev, TABLE);
- /// ```
- #[macro_export]
- macro_rules! module_phy_driver {
-@@ -873,20 +878,12 @@ macro_rules! module_phy_driver {
-     };
- 
-     (@device_table [$($dev:expr),+]) => {
--        // SAFETY: C will not read off the end of this constant since the last element is zero.
--        const _DEVICE_TABLE: [$crate::bindings::mdio_device_id;
--            $crate::module_phy_driver!(@count_devices $($dev),+) + 1] = [
--            $($dev.mdio_device_id()),+,
--            $crate::bindings::mdio_device_id {
--                phy_id: 0,
--                phy_id_mask: 0
--            }
--        ];
-+        const N: usize = $crate::module_phy_driver!(@count_devices $($dev),+);
-+
-+        const TABLE: $crate::device_id::IdArray<$crate::net::phy::DeviceId, (), N> =
-+            $crate::device_id::IdArray::new_without_index([ $(($dev,())),+, ]);
- 
--        #[cfg(MODULE)]
--        #[no_mangle]
--        static __mod_device_table__mdio__phydev: [$crate::bindings::mdio_device_id;
--            $crate::module_phy_driver!(@count_devices $($dev),+) + 1] = _DEVICE_TABLE;
-+        $crate::module_device_table!("mdio", phydev, TABLE);
-     };
- 
-     (drivers: [$($driver:ident),+ $(,)?], device_table: [$($dev:expr),+ $(,)?], $($f:tt)*) => {
 -- 
-2.43.0
+2.50.0
 
