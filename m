@@ -1,16 +1,15 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B9827EFE4
-	for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 10:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2775821ABCB
+	for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 10:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752229036; cv=none; b=FMPwFCbE6MmowDfBXTz9O6JblLrUhBGkSn3lInLkIdv4usGxUSxG0Xo7B9//zAtj0hb0i8x01ubumzvf2fqwztPnduSPNJFPbZ6E1vP5nMBJI4qJH2VCOWQCiB5v88AYzYmSYt6vc4TykD+1R1LuBWyNN/L2DG2hOmND5GnWERo=
+	t=1752229036; cv=none; b=G1j1r3w4A81TxGqMtqi9JEacPnfBh4vj6JWmbrVe1AS9PH2uDItaCxIQ79yWwUpwlBTXVLlKHkR3ZXx1pVbVC7jvlOwHqg/nbV4cHI5dl4lmQ8V8buCUEq0cAqBZZ2wZ7+/CioH3EPCdKmhakrEF64y8fAWvUm4TrtKHns0xNpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752229036; c=relaxed/simple;
-	bh=Ekq+xAKvXAsqXPLqVu7/Y+AwTXUDuteGIScKB8RA+SY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iMyMR1RqUaCJkFw2l9O804lkHPq3oFMEwxUjILZ+HjX6Aa1D7Iy8ouOgIDeWE8JEq1IyXTgjGb8MIjugiV2WNLu1/Pqa1kGoMZZSIC7TCrymN4Hazwtdw2itFxVTSHDut5PuoAPWcA44ghj+RuNoSC35vlGOuRk4F5hI4cmAx2Q=
+	bh=MfKKQy7H71bFuQfQ3gBqA+0Rnkt9sHoMRgP27H0LjaI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X5C5jg57Wq34yKE3QIXySAJv9QWJf1H4Fev4snxKbP3j29sybvDXEd1G+EUYg98GFgGXQxMVnuJ9wqHgbSV18Uqx52LIEHIaKArtovj81hPg+Oz7pZNJNvZTTSpyy49o2u03kvYQxu4RqkP07STTfyWLJ88K/RZyH1b36415tAo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,43 +17,37 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1uaAoZ-000424-H7
-	for netdev@vger.kernel.org; Fri, 11 Jul 2025 12:17:11 +0200
+	id 1uaAoY-0003zl-EA
+	for netdev@vger.kernel.org; Fri, 11 Jul 2025 12:17:10 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1uaAoZ-007uAk-0v
+	id 1uaAoY-007uA7-0l
 	for netdev@vger.kernel.org;
-	Fri, 11 Jul 2025 12:17:11 +0200
+	Fri, 11 Jul 2025 12:17:10 +0200
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id F23F143C7ED
-	for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 10:17:10 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id E3B9C43C7E5
+	for <netdev@vger.kernel.org>; Fri, 11 Jul 2025 10:17:09 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 0909F43C7DA;
-	Fri, 11 Jul 2025 10:17:09 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id A5A6B43C7D6;
+	Fri, 11 Jul 2025 10:17:08 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 5c466603;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 58746210;
 	Fri, 11 Jul 2025 10:17:07 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 2/2] can: rcar_canfd: Drop unused macros
-Date: Fri, 11 Jul 2025 12:15:09 +0200
-Message-ID: <20250711101706.2822687-3-mkl@pengutronix.de>
+	kernel@pengutronix.de
+Subject: [PATCH net-next 0/2] pull-request: can-next 2025-07-11
+Date: Fri, 11 Jul 2025 12:15:07 +0200
+Message-ID: <20250711101706.2822687-1-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250711101706.2822687-1-mkl@pengutronix.de>
-References: <20250711101706.2822687-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,176 +60,44 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+Hello netdev-team,
 
-Drop unused macros from the rcar_canfd.c.
+this is a pull request of 2 patches for net-next/main.
 
-Reported-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Closes: https://lore.kernel.org/all/7ff93ff9-f578-4be2-bdc6-5b09eab64fe6@wanadoo.fr/
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250702120539.98490-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+The first patch is by Geert Uytterhoeven and converts the rcar_can
+driver to DEFINE_SIMPLE_DEV_PM_OPS.
+
+The last patch is by Biju Das and removes unused macros from the
+rcar_canfd driver.
+
+regards,
+Marc
+
 ---
- drivers/net/can/rcar/rcar_canfd.c | 93 -------------------------------
- 1 file changed, 93 deletions(-)
 
-diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index 417d9196f41e..b3c8c592fb0e 100644
---- a/drivers/net/can/rcar/rcar_canfd.c
-+++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -224,8 +224,6 @@
- 
- /* RSCFDnCFDRFPTRx */
- #define RCANFD_RFPTR_RFDLC(x)		(((x) >> 28) & 0xf)
--#define RCANFD_RFPTR_RFPTR(x)		(((x) >> 16) & 0xfff)
--#define RCANFD_RFPTR_RFTS(x)		(((x) >> 0) & 0xffff)
- 
- /* RSCFDnCFDRFFDSTSx */
- #define RCANFD_RFFDSTS_RFFDF		BIT(2)
-@@ -257,12 +255,9 @@
- /* RSCFDnCFDCFIDk */
- #define RCANFD_CFID_CFIDE		BIT(31)
- #define RCANFD_CFID_CFRTR		BIT(30)
--#define RCANFD_CFID_CFID_MASK(x)	((x) & 0x1fffffff)
- 
- /* RSCFDnCFDCFPTRk */
- #define RCANFD_CFPTR_CFDLC(x)		(((x) & 0xf) << 28)
--#define RCANFD_CFPTR_CFPTR(x)		(((x) & 0xfff) << 16)
--#define RCANFD_CFPTR_CFTS(x)		(((x) & 0xff) << 0)
- 
- /* RSCFDnCFDCFFDCSTSk */
- #define RCANFD_CFFDCSTS_CFFDF		BIT(2)
-@@ -328,59 +323,6 @@
- #define RCANFD_CFPCTR(gpriv, ch, idx) \
- 	((gpriv)->info->regs->cfpctr + (0x0c * (ch)) + (0x04 * (idx)))
- 
--/* RSCFDnCFDFESTS / RSCFDnFESTS */
--#define RCANFD_FESTS			(0x0238)
--/* RSCFDnCFDFFSTS / RSCFDnFFSTS */
--#define RCANFD_FFSTS			(0x023c)
--/* RSCFDnCFDFMSTS / RSCFDnFMSTS */
--#define RCANFD_FMSTS			(0x0240)
--/* RSCFDnCFDRFISTS / RSCFDnRFISTS */
--#define RCANFD_RFISTS			(0x0244)
--/* RSCFDnCFDCFRISTS / RSCFDnCFRISTS */
--#define RCANFD_CFRISTS			(0x0248)
--/* RSCFDnCFDCFTISTS / RSCFDnCFTISTS */
--#define RCANFD_CFTISTS			(0x024c)
--
--/* RSCFDnCFDTMCp / RSCFDnTMCp */
--#define RCANFD_TMC(p)			(0x0250 + (0x01 * (p)))
--/* RSCFDnCFDTMSTSp / RSCFDnTMSTSp */
--#define RCANFD_TMSTS(p)			(0x02d0 + (0x01 * (p)))
--
--/* RSCFDnCFDTMTRSTSp / RSCFDnTMTRSTSp */
--#define RCANFD_TMTRSTS(y)		(0x0350 + (0x04 * (y)))
--/* RSCFDnCFDTMTARSTSp / RSCFDnTMTARSTSp */
--#define RCANFD_TMTARSTS(y)		(0x0360 + (0x04 * (y)))
--/* RSCFDnCFDTMTCSTSp / RSCFDnTMTCSTSp */
--#define RCANFD_TMTCSTS(y)		(0x0370 + (0x04 * (y)))
--/* RSCFDnCFDTMTASTSp / RSCFDnTMTASTSp */
--#define RCANFD_TMTASTS(y)		(0x0380 + (0x04 * (y)))
--/* RSCFDnCFDTMIECy / RSCFDnTMIECy */
--#define RCANFD_TMIEC(y)			(0x0390 + (0x04 * (y)))
--
--/* RSCFDnCFDTXQCCm / RSCFDnTXQCCm */
--#define RCANFD_TXQCC(m)			(0x03a0 + (0x04 * (m)))
--/* RSCFDnCFDTXQSTSm / RSCFDnTXQSTSm */
--#define RCANFD_TXQSTS(m)		(0x03c0 + (0x04 * (m)))
--/* RSCFDnCFDTXQPCTRm / RSCFDnTXQPCTRm */
--#define RCANFD_TXQPCTR(m)		(0x03e0 + (0x04 * (m)))
--
--/* RSCFDnCFDTHLCCm / RSCFDnTHLCCm */
--#define RCANFD_THLCC(m)			(0x0400 + (0x04 * (m)))
--/* RSCFDnCFDTHLSTSm / RSCFDnTHLSTSm */
--#define RCANFD_THLSTS(m)		(0x0420 + (0x04 * (m)))
--/* RSCFDnCFDTHLPCTRm / RSCFDnTHLPCTRm */
--#define RCANFD_THLPCTR(m)		(0x0440 + (0x04 * (m)))
--
--/* RSCFDnCFDGTINTSTS0 / RSCFDnGTINTSTS0 */
--#define RCANFD_GTINTSTS0		(0x0460)
--/* RSCFDnCFDGTINTSTS1 / RSCFDnGTINTSTS1 */
--#define RCANFD_GTINTSTS1		(0x0464)
--/* RSCFDnCFDGTSTCFG / RSCFDnGTSTCFG */
--#define RCANFD_GTSTCFG			(0x0468)
--/* RSCFDnCFDGTSTCTR / RSCFDnGTSTCTR */
--#define RCANFD_GTSTCTR			(0x046c)
--/* RSCFDnCFDGLOCKK / RSCFDnGLOCKK */
--#define RCANFD_GLOCKK			(0x047c)
- /* RSCFDnCFDGRMCFG */
- #define RCANFD_GRMCFG			(0x04fc)
- 
-@@ -398,12 +340,6 @@
- /* RSCFDnGAFLXXXj offset */
- #define RCANFD_C_GAFL_OFFSET		(0x0500)
- 
--/* RSCFDnRMXXXq -> RCANFD_C_RMXXX(q) */
--#define RCANFD_C_RMID(q)		(0x0600 + (0x10 * (q)))
--#define RCANFD_C_RMPTR(q)		(0x0604 + (0x10 * (q)))
--#define RCANFD_C_RMDF0(q)		(0x0608 + (0x10 * (q)))
--#define RCANFD_C_RMDF1(q)		(0x060c + (0x10 * (q)))
--
- /* RSCFDnRFXXx -> RCANFD_C_RFXX(x) */
- #define RCANFD_C_RFOFFSET	(0x0e00)
- #define RCANFD_C_RFID(x)	(RCANFD_C_RFOFFSET + (0x10 * (x)))
-@@ -423,17 +359,6 @@
- #define RCANFD_C_CFDF(ch, idx, df) \
- 	(RCANFD_C_CFOFFSET + 0x08 + (0x30 * (ch)) + (0x10 * (idx)) + (0x04 * (df)))
- 
--/* RSCFDnTMXXp -> RCANFD_C_TMXX(p) */
--#define RCANFD_C_TMID(p)		(0x1000 + (0x10 * (p)))
--#define RCANFD_C_TMPTR(p)		(0x1004 + (0x10 * (p)))
--#define RCANFD_C_TMDF0(p)		(0x1008 + (0x10 * (p)))
--#define RCANFD_C_TMDF1(p)		(0x100c + (0x10 * (p)))
--
--/* RSCFDnTHLACCm */
--#define RCANFD_C_THLACC(m)		(0x1800 + (0x04 * (m)))
--/* RSCFDnRPGACCr */
--#define RCANFD_C_RPGACC(r)		(0x1900 + (0x04 * (r)))
--
- /* R-Car Gen4 Classical and CAN FD mode specific register map */
- #define RCANFD_GEN4_GAFL_OFFSET		(0x1800)
- 
-@@ -452,12 +377,6 @@ struct rcar_canfd_f_c {
- /* RSCFDnCFDGAFLXXXj offset */
- #define RCANFD_F_GAFL_OFFSET		(0x1000)
- 
--/* RSCFDnCFDRMXXXq -> RCANFD_F_RMXXX(q) */
--#define RCANFD_F_RMID(q)		(0x2000 + (0x20 * (q)))
--#define RCANFD_F_RMPTR(q)		(0x2004 + (0x20 * (q)))
--#define RCANFD_F_RMFDSTS(q)		(0x2008 + (0x20 * (q)))
--#define RCANFD_F_RMDF(q, b)		(0x200c + (0x04 * (b)) + (0x20 * (q)))
--
- /* RSCFDnCFDRFXXx -> RCANFD_F_RFXX(x) */
- #define RCANFD_F_RFOFFSET(gpriv)	((gpriv)->info->regs->rfoffset)
- #define RCANFD_F_RFID(gpriv, x)		(RCANFD_F_RFOFFSET(gpriv) + (0x80 * (x)))
-@@ -482,23 +401,11 @@ struct rcar_canfd_f_c {
- 	(RCANFD_F_CFOFFSET(gpriv) + 0x0c + (0x180 * (ch)) + (0x80 * (idx)) + \
- 	 (0x04 * (df)))
- 
--/* RSCFDnCFDTMXXp -> RCANFD_F_TMXX(p) */
--#define RCANFD_F_TMID(p)		(0x4000 + (0x20 * (p)))
--#define RCANFD_F_TMPTR(p)		(0x4004 + (0x20 * (p)))
--#define RCANFD_F_TMFDCTR(p)		(0x4008 + (0x20 * (p)))
--#define RCANFD_F_TMDF(p, b)		(0x400c + (0x20 * (p)) + (0x04 * (b)))
--
--/* RSCFDnCFDTHLACCm */
--#define RCANFD_F_THLACC(m)		(0x6000 + (0x04 * (m)))
--/* RSCFDnCFDRPGACCr */
--#define RCANFD_F_RPGACC(r)		(0x6400 + (0x04 * (r)))
--
- /* Constants */
- #define RCANFD_FIFO_DEPTH		8	/* Tx FIFO depth */
- #define RCANFD_NAPI_WEIGHT		8	/* Rx poll quota */
- 
- #define RCANFD_NUM_CHANNELS		8	/* Eight channels max */
--#define RCANFD_CHANNELS_MASK		BIT((RCANFD_NUM_CHANNELS) - 1)
- 
- #define RCANFD_GAFL_PAGENUM(entry)	((entry) / 16)
- #define RCANFD_CHANNEL_NUMRULES		1	/* only one rule per channel */
--- 
-2.47.2
+The following changes since commit 0f26870a989bf69957ed69d10c7ffc57ca5a7f52:
 
+  Merge tag 'nf-next-25-07-10' of git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next (2025-07-10 18:18:41 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next.git tags/linux-can-next-for-6.17-20250711
+
+for you to fetch changes up to 0e6639c8505d70e821bc27f951a0ff6303f10d4d:
+
+  can: rcar_canfd: Drop unused macros (2025-07-11 11:48:02 +0200)
+
+----------------------------------------------------------------
+linux-can-next-for-6.17-20250711
+
+----------------------------------------------------------------
+Biju Das (1):
+      can: rcar_canfd: Drop unused macros
+
+Geert Uytterhoeven (1):
+      can: rcar_can: Convert to DEFINE_SIMPLE_DEV_PM_OPS()
+
+ drivers/net/can/rcar/rcar_can.c   |  9 ++--
+ drivers/net/can/rcar/rcar_canfd.c | 93 ---------------------------------------
+ 2 files changed, 5 insertions(+), 97 deletions(-)
 
