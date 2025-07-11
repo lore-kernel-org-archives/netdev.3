@@ -1,80 +1,43 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2087.outbound.protection.outlook.com [40.107.92.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D2226D4F1;
-	Fri, 11 Jul 2025 09:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752226088; cv=fail; b=mJWvXb5G66ymOy0x9XCZc6NwZeaKR/VyWtBTH9yjjHKXbrHvcfZPvVDOa2L4IyMaBGX+R0KjPOHt3jXiamrCGTkR3cHCe4yo6tlClfi48s4VTVHKNZpqL7J5jdPwkGbDlyye1XEzEI2+bOrecJoUg4NaMoeXYLM4efqEeKN6WRw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752226088; c=relaxed/simple;
-	bh=ENzdGdh+hdgRfESHVabyyoybodtXs7CcJMqesE/8Kyo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tllQ0CyWo7RBE1AAbTrGulB4ykrfmUkvG6WyF6e2mwjRDsnG1lYrnzM08UXG8eWQpBJzMxrJK77V+YFUeCp6dy7YjMBgptxWB4hd07sXdnb5oQcmltBFATfRyIkWTxlJCbGGaBr54VGOy4ObXOhNKXs5DgWTNDBa66UzPFtMupc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pGfk/dKy; arc=fail smtp.client-ip=40.107.92.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E0F27AC5C;
+	Fri, 11 Jul 2025 09:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752226412; cv=none; b=kOjsiJLyulhYltZIgbQGbJG7h8Tu9wiq+V8EGH3OaWub3BT5qTM6O7rJZh/Gq0PQ+VLd8XY6lNEEuLn5py6nww6blTyz76m+02gURVuHtf++Rg1fMM1hMKGDPBBsoLHaDB0cn5O8cWrJCxxPf44Jqb3WlKFKTahYxr3+c2HfaWQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752226412; c=relaxed/simple;
+	bh=V7vFD7/Fb8G++Y1kaiWeRxlwbZhdhohmLHeU+PMkKdI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UnBvxN18JO0MSpmTaQhFJtPv8V0Z9NPat4o+KhLRyc9ydiOvxbT1lcStzgUX8KHV4ozRpEtBG90RhsjTwAK1mWDTSiRCftpsGgeGijOMUsnyqXdW3T8HDuGIEvranRyC2KkTIa5M9Nltj3gv8WK54jcuo5Sfo4ug3sEMZEbTSgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Vrtw05AQ; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pGfk/dKy"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MTGhQ6FND88UWNZ6+UnmH4/mJZvoPVynHvWEGFvSrbjzRugmPU9B0hh6ode2Y6HibH3YV5Qn1FbNBHLtt+xeaPlrmliHQ3KiTGhjQmvDFYvu7imtb6Pq6uY8+69ln/p/R/vUpdksVboBQ6xINp+miciJngFBdLuVuZXfgXuXoYy4YutXLKN2yBdwmxF0WGfo7d8uTSoQ/VxihQn5qY0ZXcWDc1UZnQw7uvlIPc9HnjWhKWyA+5VkZNe5BM8NN/Nx9EAGBFZY3BSYyoJ6vdsfZCOzuR1uJlPQdwNroGEVCwDn2QkL7bbQhxwLT7jzstm9mBJ0Xw8f4mgUCTiPYb/Kkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BnNUUO7ZOjyiOxEqrt3lOyMf/QW5pZzdyNFioe2DbD4=;
- b=gkYktbR8L5CryZIT+QAT0nJpm9/zJPX3Cer/akiEvIgm8lhsOtw8NGn+cUcI9YYcbQOKR/s8faGBkvKqGeJg5lPpt7Ye6ILexoxXnt9z9wRRjyVM68F7yyYSCew6SEiFTj9UTgksjIRrv8G+flPZLX7bta1p1ezeKb0soc1oXcG8GBd8ivVpJg8aXWmKVmGfIVYPiADrFFiK3r+l+O74a2wcOc/KNmeb65DcnLGj4gkFXFY+9H/hCFDQ/onErLH48dnb4Su6ltBPOIzIHXI7VNq+xgpYMVIfuPyaozsNsfbtumRPU9Hlvz74tbSM58JIN1DjMTNgaN7+kM/LyYFDDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BnNUUO7ZOjyiOxEqrt3lOyMf/QW5pZzdyNFioe2DbD4=;
- b=pGfk/dKyi051OX2h7q6coGEawQNgAP8Fc10EZqj10yccIV+WEjJXldVsoGQyVuIdTm8aI4hxIEYNO+SgCaKU75HPj1HplW1mCtzAje754Ahfa2zU4QYiMuLseafSI1PC8x8RZycCKUqO4sS4UyNgGDgMJH6UDIXrZQl4lS7sywBEvofMifd4fXECdE1yG+RHbi2/KylqoumN/pPCnKCUsied7Ow4pX0/+vqlhQws2EZ808ooED1oGHpAfgcF1DauIpswHCCQ8WJAytWTKOnK2PNWaUHj15/WEo3AI+coYTlYE0c4eubNIoGsiGdTH/BzUDa+Ub2aLSISvZUp5O8jMA==
-Received: from DS7PR05CA0002.namprd05.prod.outlook.com (2603:10b6:5:3b9::7) by
- CY8PR12MB7146.namprd12.prod.outlook.com (2603:10b6:930:5e::14) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8835.19; Fri, 11 Jul 2025 09:28:02 +0000
-Received: from CY4PEPF0000EE34.namprd05.prod.outlook.com
- (2603:10b6:5:3b9:cafe::27) by DS7PR05CA0002.outlook.office365.com
- (2603:10b6:5:3b9::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.7 via Frontend Transport; Fri,
- 11 Jul 2025 09:28:02 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- CY4PEPF0000EE34.mail.protection.outlook.com (10.167.242.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8922.22 via Frontend Transport; Fri, 11 Jul 2025 09:28:01 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 11 Jul
- 2025 02:27:49 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Fri, 11 Jul 2025 02:27:48 -0700
-Received: from dtatulea-c3.nvidia.com (10.127.8.13) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server id 15.2.1544.14 via Frontend
- Transport; Fri, 11 Jul 2025 02:27:45 -0700
-From: Dragos Tatulea <dtatulea@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Jens Axboe <axboe@kernel.dk>
-CC: <parav@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>, Cosmin Ratio
-	<cratiu@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Pavel Begunkov
-	<asml.silence@gmail.com>, Mina Almasry <almasrymina@google.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<io-uring@vger.kernel.org>
-Subject: [PATCH v2 net-next] net: Allow SF devices to be used for ZC DMA
-Date: Fri, 11 Jul 2025 09:26:34 +0000
-Message-ID: <20250711092634.2733340-2-dtatulea@nvidia.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Vrtw05AQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=9j
+	sQItpI3KggjxElmfZojdWrsrVGwjxm/rP2m4AKOMA=; b=Vrtw05AQ/LpDlPXBx/
+	0rQtJnfmOZhONRG8BbCPLXSdGgFCx4XK2bYBVlc2AJkvQ8bUxdKHgh0FT4KhGTV5
+	VXSgB3nkgbHR8KY6OpWmZxe32/sATEU3Bv/gTKthxLm/pXFz5hM542obfw8S9Ie8
+	OA1gGc5gKzix/178lVHyiq0yI=
+Received: from kylin-ERAZER-H610M.. (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wA3hOpP2nBo+FkNEQ--.57493S3;
+	Fri, 11 Jul 2025 17:33:03 +0800 (CST)
+From: Yun Lu <luyun_611@163.com>
+To: willemdebruijn.kernel@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 1/2] af_packet: fix the SO_SNDTIMEO constraint not effective on tpacked_snd()
+Date: Fri, 11 Jul 2025 17:32:59 +0800
+Message-ID: <20250711093300.9537-2-luyun_611@163.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250711093300.9537-1-luyun_611@163.com>
+References: <20250711093300.9537-1-luyun_611@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,175 +45,65 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE34:EE_|CY8PR12MB7146:EE_
-X-MS-Office365-Filtering-Correlation-Id: 307290d3-911c-4efd-5f6e-08ddc05d3b4d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700013|82310400026|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7HGFA3q33AIAdkstuuqd5TYY8c4oF+4vH0dL9j7gsPh4qHCfJn6JKohdyr0n?=
- =?us-ascii?Q?3kZpyEDM3ty3xm0zi07u8jHj6j7RbNc/WBYsCZvGw1rREM/kEyXWiPKzA7Jr?=
- =?us-ascii?Q?kGSliaol+V/E5QO2VdXvYZbe8p7INaml1Z+MJSGhryT87ywgIqfqj7Mh9vi1?=
- =?us-ascii?Q?Zi+ApHFB7HymFDg5SGAWRoAbE2zO0kXPWKKMrMfXdmnslidrD8r0Y6X6JpLm?=
- =?us-ascii?Q?H4uD/pgweylbySmUPA118XMJoAqfxN1hNJZr4uxYH4U6+3etkfQ562u6MUIE?=
- =?us-ascii?Q?TDBX3Ln7x/rcJEwm2Lcdgqen0Ru/+X9VDI6105q8g4cEY2jZ18pOSvY6kdDt?=
- =?us-ascii?Q?8gA8gGUtUlfhfuA34IVqhnr38I9VK2vKgngdvjOuBMQxEArtSuRdtMNUK1hO?=
- =?us-ascii?Q?kqggV6HW6QUBswPLmYhkonCTTULelQIPnexYdWvSsUECGH5Il4IrvWqvzx7J?=
- =?us-ascii?Q?qHMe34VKCHXoDPsT5VtfVbrq1+/NcWid9IuyUpakeuM9dD2IZWQFCuyAkC5I?=
- =?us-ascii?Q?qYxhlj7bQpSaD0fKOr6cgoIhXD5URa/EmD8NTm00jdleEfWnCneuUpX1pCk/?=
- =?us-ascii?Q?GYqNiiW84P+IaApz1LE2ns3vcr7sNWZVUreuKWIVBIE72dMWWw6KLGlXX44m?=
- =?us-ascii?Q?Ug7GCiIuBiffHz9VN5sDW6E+KU9s2lUnNkYnH5bYK6vqccIGJHl3h6nHrS5O?=
- =?us-ascii?Q?RHDNjfq7Svu9W2VPTvJ5+o5IV5FjN+0g/0TpWtORRZKCBUh/yh7mTFDye47e?=
- =?us-ascii?Q?qqChqnJXor0YZ11IHGR9zvAGVRsPb8uWLz4goYNEb2s43M+axYhtQ780xFvU?=
- =?us-ascii?Q?o5YsQ0EM+XCXlO5JbCWIs7HfsadeRWbOf5bS0pPZr5cJ14woR7ibd1lc1Tch?=
- =?us-ascii?Q?PeTQl/52c8DSk+BKSI5l29ubNPKbOMpuXR561gZYKeiGAutk14zElOPy9gI1?=
- =?us-ascii?Q?5baM0/+mdlqTzg0Yw9/KF+6Il4iWHte9rJfJvgK22w9l36gHh3HgDnCUa6+S?=
- =?us-ascii?Q?RQAWF9XaVx6VHx7sQj1m3SmeNM91zNsFBB9f/c3zhMxdy+6HlKxjlxZ4SFHp?=
- =?us-ascii?Q?kkKVhkH3mWzlypd8F62LC1MsYhnf0PryF297bhNR/eQOhahj6vadM9m0Z2oD?=
- =?us-ascii?Q?3YgL5MlMCcxhkdOpCFfBmv2e6qM4zfUBCbD7Lc6nnRjwUeL2+t3Grj8aiegi?=
- =?us-ascii?Q?nLD8fJwQhWJEqaQminmFA0plcwGc85rB8e6fPrrjQUgfCjTlOmB2zztDVzxF?=
- =?us-ascii?Q?42Uz4gl78fWzohtHeexrawvXbH+4kZZQpzWRbbRbdN2d+Znn55IXBqe6RBmO?=
- =?us-ascii?Q?V37WM89tPTXWBArOy7qEmRbfzW045klLtKxxeqOPPJq/HJNPiWDINDp42oU3?=
- =?us-ascii?Q?8iVmQ3jYEh4DcL5dcc7bGer69bc9H67RLdn19MSBElCA/DOjPD5B/wcnPyz/?=
- =?us-ascii?Q?jhZed4LSHvmA+fbujL8hUem1l44EKtixEGM7t7s/Wcwf+iGy8xO3iWP5IWQg?=
- =?us-ascii?Q?x+cx5ssyJdMXP+EX9w5Ko3pt5k7pc/K/8BXoeNSChdXtqLTH43J0t53DWQ?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700013)(82310400026)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2025 09:28:01.4219
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 307290d3-911c-4efd-5f6e-08ddc05d3b4d
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EE34.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7146
+X-CM-TRANSID:_____wA3hOpP2nBo+FkNEQ--.57493S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJr13Zr17KF13tF1fJryfXrb_yoW8tr4rpa
+	y5K347XayrJr10gr1xJ3Z8X3W3X3y8JrZ3CryFv3Waywnxtr9aqF18t3yj9FyrZaykAa43
+	JF1vvr45Aw1Uta7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07js9N3UUUUU=
+X-CM-SenderInfo: pox130jbwriqqrwthudrp/1tbiOgqHzmhw1LywqQAAsQ
 
-For zerocopy (io_uring, devmem), there is an assumption that the
-parent device can do DMA. However that is not always the case:
-scalable function netdevs [1] have the DMA device in the grandparent.
+From: Yun Lu <luyun@kylinos.cn>
 
-This patch adds a helper for getting the DMA device for a netdev from
-its parent or grandparent if necessary. The NULL case is handled in the
-callers.
+Due to the changes in commit 581073f626e3 ("af_packet: do not call
+packet_read_pending() from tpacket_destruct_skb()"), every time
+tpacket_destruct_skb() is executed, the skb_completion is marked as
+completed. When wait_for_completion_interruptible_timeout() returns
+completed, the pending_refcnt has not yet been reduced to zero.
+Therefore, when ph is NULL, the wait function may need to be called
+multiple times until packet_read_pending() finally returns zero.
 
-devmem and io_uring are updated accordingly to use this helper instead
-of directly using the parent.
+We should call sock_sndtimeo() only once, otherwise the SO_SNDTIMEO
+constraint could be way off.
 
-[1] Documentation/networking/device_drivers/ethernet/mellanox/mlx5/switchdev.rst
-
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Cosmin Ratio <cratiu@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-----
-Changes in v2 [2]:
-- Dropped the Fixes tag.
-- Added more documentation as requeseted.
-- Renamed the patch title to better reflect its purpose.
-
-Changes in v1 [1]:
-- Upgraded from RFC status.
-- Dropped driver specific bits for generic solution.
-- Implemented single patch as a fix as requested in RFC.
-- Handling of multi-PF netdevs will be handled in a subsequent patch
-  series.
-
-[1] RFC: https://lore.kernel.org/all/20250702172433.1738947-2-dtatulea@nvidia.com/
-[2] v2: https://lore.kernel.org/all/20250709124059.516095-2-dtatulea@nvidia.com/
+Fixes: 581073f626e3 ("af_packet: do not call packet_read_pending() from tpacket_destruct_skb()")
+Cc: stable@kernel.org
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 ---
- include/linux/netdevice.h | 21 +++++++++++++++++++++
- io_uring/zcrx.c           |  2 +-
- net/core/devmem.c         | 10 +++++++++-
- 3 files changed, 31 insertions(+), 2 deletions(-)
+ net/packet/af_packet.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 5847c20994d3..53aa63d6e5a3 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -5560,4 +5560,25 @@ extern struct net_device *blackhole_netdev;
- 		atomic_long_add((VAL), &(DEV)->stats.__##FIELD)
- #define DEV_STATS_READ(DEV, FIELD) atomic_long_read(&(DEV)->stats.__##FIELD)
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 3d43f3eae759..7089b8c2a655 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2785,7 +2785,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 	int len_sum = 0;
+ 	int status = TP_STATUS_AVAILABLE;
+ 	int hlen, tlen, copylen = 0;
+-	long timeo = 0;
++	long timeo;
  
-+static inline struct device *netdev_get_dma_dev(const struct net_device *dev)
-+{
-+	struct device *dma_dev = dev->dev.parent;
-+
-+	if (!dma_dev)
-+		return NULL;
-+
-+	/* Common case: dma device is parent device of netdev. */
-+	if (dma_dev->dma_mask)
-+		return dma_dev;
-+
-+	/* SF netdevs have an auxdev device as parent, the dma device being the
-+	 * grandparent.
-+	 */
-+	dma_dev = dma_dev->parent;
-+	if (dma_dev && dma_dev->dma_mask)
-+		return dma_dev;
-+
-+	return NULL;
-+}
-+
- #endif	/* _LINUX_NETDEVICE_H */
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 797247a34cb7..93462e5b2207 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -584,7 +584,7 @@ int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
- 		goto err;
- 	}
+ 	mutex_lock(&po->pg_vec_lock);
  
--	ifq->dev = ifq->netdev->dev.parent;
-+	ifq->dev = netdev_get_dma_dev(ifq->netdev);
- 	if (!ifq->dev) {
- 		ret = -EOPNOTSUPP;
- 		goto err;
-diff --git a/net/core/devmem.c b/net/core/devmem.c
-index b3a62ca0df65..881044e0ae0e 100644
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -183,6 +183,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
- {
- 	struct net_devmem_dmabuf_binding *binding;
- 	static u32 id_alloc_next;
-+	struct device *dma_dev;
- 	struct scatterlist *sg;
- 	struct dma_buf *dmabuf;
- 	unsigned int sg_idx, i;
-@@ -193,6 +194,13 @@ net_devmem_bind_dmabuf(struct net_device *dev,
- 	if (IS_ERR(dmabuf))
- 		return ERR_CAST(dmabuf);
+@@ -2839,6 +2839,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 	if ((size_max > dev->mtu + reserve + VLAN_HLEN) && !vnet_hdr_sz)
+ 		size_max = dev->mtu + reserve + VLAN_HLEN;
  
-+	dma_dev = netdev_get_dma_dev(dev);
-+	if (!dma_dev) {
-+		err = -EOPNOTSUPP;
-+		NL_SET_ERR_MSG(extack, "Device doesn't support dma");
-+		goto err_put_dmabuf;
-+	}
-+
- 	binding = kzalloc_node(sizeof(*binding), GFP_KERNEL,
- 			       dev_to_node(&dev->dev));
- 	if (!binding) {
-@@ -209,7 +217,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
++	timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
+ 	reinit_completion(&po->skb_completion);
  
- 	binding->dmabuf = dmabuf;
- 
--	binding->attachment = dma_buf_attach(binding->dmabuf, dev->dev.parent);
-+	binding->attachment = dma_buf_attach(binding->dmabuf, dma_dev);
- 	if (IS_ERR(binding->attachment)) {
- 		err = PTR_ERR(binding->attachment);
- 		NL_SET_ERR_MSG(extack, "Failed to bind dmabuf to device");
+ 	do {
+@@ -2846,7 +2847,6 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 					  TP_STATUS_SEND_REQUEST);
+ 		if (unlikely(ph == NULL)) {
+ 			if (need_wait && skb) {
+-				timeo = sock_sndtimeo(&po->sk, msg->msg_flags & MSG_DONTWAIT);
+ 				timeo = wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
+ 				if (timeo <= 0) {
+ 					err = !timeo ? -ETIMEDOUT : -ERESTARTSYS;
 -- 
 2.43.0
 
