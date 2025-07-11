@@ -1,229 +1,218 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012064.outbound.protection.outlook.com [52.101.66.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F94A21ABD0;
-	Fri, 11 Jul 2025 07:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752218303; cv=fail; b=jPPDnD3vs8l5FfUoArX/1OVwNAsLPj41R6jo3YwtYN9iksDaAPqGea7ou0oAY08guloXM1iOl4s5rSVLyuLXAA4mP2pkXRBaTM93fCVQrOhMwXqAriFJXF8uHx0XJ0ucPsKjSI5GuGthZMkXbW1fe7lPfvckyDfM9fGFyc+u64M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752218303; c=relaxed/simple;
-	bh=HSnrVp0ozWn5I3ggTDQ2pLI3mgf8wiqH4j7dBm9QE3s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QUWqgWQdMiG+LC+SS5CscypTU1m8n6BX4A7oHpharr/e88E9el6TMwJjcE9rDUePhzpQOsosyClEF7FIDFwR+Hp4cH4roe0stUu1DBMBDnA1Je8Rc476A7g/MRCVzeuteyffouge+nkLwgphGzhTKqO0FfWDYiZXLKPObHkhP2E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VCSBbsIs; arc=fail smtp.client-ip=52.101.66.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3A31EFF9B;
+	Fri, 11 Jul 2025 07:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752218458; cv=none; b=KHl8N1zhVC0s0+Ls0/xbSV/gC7m7xC2qmLMYxEne+RYcoAM4bh+ox+/UnK7m1jqXi5HSOm+AIIvkZgCRXqhmrbPNlTPan4IN1mH9ZI9Fa+81i+x+e7n5yTAfj4M4G86P29/VAEPsrenhV8UkwF8J4tx6cQ3mUMQ6Xp+jpvUmbtQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752218458; c=relaxed/simple;
+	bh=Sr42ywoQy8AyYBFRt7eUXbqxZakD2B6wyAnQRkhNU7I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nuoiEWeW76MEN0Gx0nJXMbltfnrt5qvHkn2bM0rFZ/sJN79nIs82sfLc/fyVZes9LVn0ZZvc2wxn7FTwO3P9dZ69OIcwvfFdW287y8IhFOAXxwnZ5f71hz6rMN0Ba/tJv3NWyEMG65Ka6eYvwPHBtNGxfenzgI0DrSfDIGJsPTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=mL5R8Od2; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VCSBbsIs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VzBHA5oi4EGaGxSvovYctiqygqEmPnJLEQTBFVQNZMwz2lLIVMHGDY2+1rK2QN6HDWrSSft7gmo/yJ7YSwIogbdbworebt4rlGU35m+uQGsUvt9Nacf+ez77kX7NyxwOPRBHD7+QKV0PFliOkCs5jpZLgSoeVmR1V6Jp0Ae1lk2UvgOpeDgHGtnf1Lj2yf+FUfNc+VXufwVPEJ904Zkl+l2T5I7adbJBJ7pCKZ7qXgVBr3PmQf8QlJeIUKGMGr9mBqRxM6vJegLHOhBt4Zl0a/R1nmSt3VHhG3soiuqFo9ZtyLcjRoQYVQElIz0/ulus29lV7UptsFduc91jxK4uzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iD4Dhs5cNDhmUTJEBH/01v9XDnV2TK+P5rhG1VqJapI=;
- b=J+e7HV3vHTVW5xp/mr4Z8EVsUZHJiIxGS8ulFNCyUqH6VS1ZQB1bZntUkWLWO+gLRwB4XjT7PCs3RZDn2MW+Ygtxvv3DHMAqylpTeJvlwfeASt/gvWv1yeaK9sE/CyLAeFMPaRdrhT2kLmYVaNHGNedlXO3BwyIJFN6Tuii/MU/szCqwTbOHevbMXC3v7VMlrMbPrzFM9TIO7j9NHAOWaj7JKyjcrEXvKsXQ1bJZTofFq7dBngeEJQL9uw1OxkASW7uG+5WP59junIn92wyREHWNTY3B96Oezzvu8mUuxPa7JVwkiw7NiqFDh2btdVFwt5WzZyLKUMcWnuw0TWS1cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iD4Dhs5cNDhmUTJEBH/01v9XDnV2TK+P5rhG1VqJapI=;
- b=VCSBbsIsrbP6Kvvybm7fjKPJ/utyNTT3y+bwwNDeBRrJCJzE25CXT3wcQx1e683znHnd+4KHHBEPp1RGl7bPJCNpLH1gP5tF7xi2Di/gQC/4+drvBl7ZcqjmZggo1eo946suToil+moQzSR09Lg4ZDqlXIyaw6iODryQWK7GbIU3e6Pg8MRJoVNWH3iTDiVtKTvrtjZu7HK4J25lEJIHqhWRonmloSUDujsQhlMznsXaIpPBwBnOeMETwsRZHqlXskUZkRgypm41fVqDVmIdrUS5UJzGBMV5vK4MH3rgZbhuscbo9kJLOdoz+gzZeGPnu+QPwiUyp/NPKSUP/MIN8g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DU4PR04MB11361.eurprd04.prod.outlook.com (2603:10a6:10:5cd::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.25; Fri, 11 Jul
- 2025 07:18:21 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8901.024; Fri, 11 Jul 2025
- 07:18:20 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	richardcochran@gmail.com,
-	claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: fushi.peng@nxp.com,
-	devicetree@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH net-next 12/12] net: enetc: don't update sync packet checksum if checksum offload is used
-Date: Fri, 11 Jul 2025 14:57:48 +0800
-Message-Id: <20250711065748.250159-13-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250711065748.250159-1-wei.fang@nxp.com>
-References: <20250711065748.250159-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MAXP287CA0004.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a00:49::14) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="mL5R8Od2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=xhsgskadebniNmrBk5hnagfJTp/8LcUkYv/Wop6E+Qc=;
+	b=mL5R8Od2fjhgwYt0/d92XP7chHPdOGXDY/mM/47u0mrud81MpH03wWeoYxlpGV
+	vstbIDPxzzJgnuoKiB0YxfYGNyKH3SdkOZog5GdiogMWepjjJ0p/RWu+kA3evqDl
+	wrO0o1184FrCcJkZEhDrrqYjFbyh3PVo2fnvyD1qxRjpk=
+Received: from [172.21.20.151] (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgD3Hw00u3Bo3oMJAA--.1286S2;
+	Fri, 11 Jul 2025 15:20:21 +0800 (CST)
+Message-ID: <515fc9c6-a4a2-4fdf-8d91-396e42c95767@163.com>
+Date: Fri, 11 Jul 2025 15:20:20 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DU4PR04MB11361:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8310eb10-889f-4940-4862-08ddc04b1d6b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|52116014|19092799006|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?SaxXLoTsWQjeXS3NaPaPC3IdvklhSovWkkENxMx7Tj9UG1BXW0Ooe633eoH9?=
- =?us-ascii?Q?Av8CYbihzSrOkJiFkLnXPFtl9AUyVelHUYyJwdWCIqewFZQ8fAqRnnuYSeUy?=
- =?us-ascii?Q?PTNXMFn4/KszLjKfaVfcpwCIZ+HlGVWttRdLLkNpjJ2jvNl+rWUAMnXs3OEA?=
- =?us-ascii?Q?prfz8IXzyur5SBEablKwuttKh8yiukxqYQWy3rKwP9YBMCssNzJrJ72P2bDL?=
- =?us-ascii?Q?rzQXGu9uWoife2imn+KBRWrFrJmb6DOIsVK2Y3YxXBgTCeZKGZRgXDq4OYR7?=
- =?us-ascii?Q?7HBbH0+F9nMjWHV6PJZyV2Biazartb62PfV01cg5H3gJT85HWI7uESlnW6oi?=
- =?us-ascii?Q?2O2/keaizRgKckILtoVEe0Noau+tAJseZCSlgdL8mrU3D4NMvujLcrRxX6y9?=
- =?us-ascii?Q?pZZm0AwxccDZx7x3s9fuicZI9Cu0bDqj8b+kSBVahtmbT1EY+Yp37f9/mcxQ?=
- =?us-ascii?Q?gqMkjxVnAejR9ZWVMX8DBriDJCtrvwmIiNtj4p9DS3ODx8xI4OFbFy6TSRuO?=
- =?us-ascii?Q?HelbgcQV5xemDWis0sXloYt4pxr6DqzX8RONb6cVczBJ9rJAaYMXlhR30AVQ?=
- =?us-ascii?Q?jv0AmjCJlwCcmFuQMRbcTJ5xP/odg4stuVpEv7J9V7sQy9xNKq5Zyzcq7a0R?=
- =?us-ascii?Q?QWDLmttVFj2KVHK7I1Ldmqr53P/VNcaatKZpGBjA1B71Ig9JHkILWZFFZ1iU?=
- =?us-ascii?Q?fR3Pb6Gq0Uxr8q9zQfvc2+qOv+c7lToSEdQUtqsgqvfBtc2IJVLdBVCEuwXh?=
- =?us-ascii?Q?uEJAcg8u0PYsDBLSAZVQpQ/4nX48ho8i3Vd3DRYx/+x9NAxbJR42PAEjiNzr?=
- =?us-ascii?Q?jLquUvGkPBUxZtf9aansWnVHr+zrFUn8t0fhoZ75zI77k9o/9Zfs6+cGDSmN?=
- =?us-ascii?Q?riGNcvu5bgUE+VwsHHeTj7BbdCjd2VNWHCJlmCqWQZ16SGtaW28ER82wpjf+?=
- =?us-ascii?Q?a0ASfEME1g37ltzo8yhNayjszozSo/BR6QmVTMtf2bG8FyRy1Op9I2wRH6Rw?=
- =?us-ascii?Q?8qkuZKnNS7jDeCHRCIEml1FXF9HGrLKFFx2VuyI9yQm5ttIlQLwCrLLM4os1?=
- =?us-ascii?Q?v+RppHiYS/571yy1CI3S8OVq/K4rOasNIe9g4B84KSj8WXDEd24j1cdbmRtz?=
- =?us-ascii?Q?hSBVvBUMcDzQxlElqY6GL3C0EDOQHlCCmcvi/I6Qu0L7Pcz0Qff1loyA5w6u?=
- =?us-ascii?Q?bCCjg2Q7+/e8h0YCVJlmv/GMVEn6J8dSQoQia58Md3EjY8+y6/YjWxy7MN1D?=
- =?us-ascii?Q?sdo77UKRuXoFrpUysV7rEkjuLKxtQpd0UODyjR3UM9mbqocXJOeqi731PeUv?=
- =?us-ascii?Q?0kexC/P8HhlcKyB9iFT37b5zivX/7VwlphsABQKrxY9mYUisnZQck1ovV4eh?=
- =?us-ascii?Q?tVctlXSA2/iu9VTRELqg9PRivHCakSeYQNYYIoIy35+1s9BBkqV+hngOpy4z?=
- =?us-ascii?Q?0PX8QS864ocduHtem7b9Z1TS6I1VPa41jKeqcx/621+3OCzJk015IPH1N9iP?=
- =?us-ascii?Q?jDcEH8t7M10c+9A=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(52116014)(19092799006)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kN2pmrBwHtXZlpWcEVWtKTP7LQ9dqtU6Z+hrRdrI6G3tO/A1DExmHlpmMGKD?=
- =?us-ascii?Q?KbroVljNvj7d1qwRMUa+wzRna9MfXeydxdKkGmbs7rwOHH4+YEViq1IHi/ht?=
- =?us-ascii?Q?nFAqaUE8kKPQZ+9M7/JPa5GSvGs2EBGX4YVKwNJ75Uh1lqrucUEWkukzkxKK?=
- =?us-ascii?Q?OIm/3cbkfLupnrTpOQiexG2R1AtlsORq/KInv7v4dynnh7WKRrcVkxYZjOS7?=
- =?us-ascii?Q?yQoUT+53fmh2dnkTWSK2NaoRNdHvGOROGxfzz4QRC9fZW+4F6DaQCFMesijw?=
- =?us-ascii?Q?7jPfWRZ3ipSuq7IiUFy2RZe19D2O/3T3pJ6KI1k2jDKrAMydcQNGGZKss8+d?=
- =?us-ascii?Q?Dq0xEt7ZSLjlv9vr83nWlDzJyL9x/auI4JEOYT+WOeLGlFTadqJKIvjFqCqJ?=
- =?us-ascii?Q?aIRmWqYYMNhI6AYO+pwtoztAooVeu5a0FPPs9MQzB6BE6r9pVg8Bw4uotah7?=
- =?us-ascii?Q?74wwVZZcQPi6RKJSuauQWDnJB8wolyhEvS8ojKAqw7RHQ4SGArAo8wSR4fnm?=
- =?us-ascii?Q?hcENG6ox6IIo+I0qSA2Qiih38QA2Xx2U1vWNU5u3rZiPP/lxWH6y5OtBn9Q1?=
- =?us-ascii?Q?XKgfW2fb6MLNPExy5ZLb4REHiM+LeZXh3LtOYK3Oufr5cATEmXtcHwQ8if1a?=
- =?us-ascii?Q?YsOkJqirlbQvnWIcjACKfKzCA0FShS4STDxGVlqbptIAm56LZvLS85oDfGSU?=
- =?us-ascii?Q?oTrfzwEXWBMLDtn1T9xaLA3WHkZUzlvAk6opeLRqOZqZsqNJx9qw/w3p7Oow?=
- =?us-ascii?Q?Dv1VhBVk/8xLPgJeZ+Gzzyhq1/sgDhJUIxj5kV3SOzWz0N7Zo6T68ZBQrW4A?=
- =?us-ascii?Q?Ctdd64j5+nSr3KWPvO2AQvZS7Eu+lX24dvHO9BNkEiBFYmCIloeUe4UC+iJX?=
- =?us-ascii?Q?AfuTvuIkbr13VtVjZYm1NQfotFDmAqHlQH+3A0bqdqj35Na0JfKKTsb9Niqi?=
- =?us-ascii?Q?bE7+vPwm5dyV3NwukEy94UdWLaViOkm/hlokSgyJlDNjPvV5oMe69+hh1AZh?=
- =?us-ascii?Q?sVhKm7+9WIblSYXifBVdYE3032UIPPg/IkH2kgzIn0g9nLogEVCNE5SXtI4V?=
- =?us-ascii?Q?W7RLjBb6AKrWt8uJKmW4JQSYaaKoW5PEjj0LHgbChqKCpdFM7mUKk2MOZAAK?=
- =?us-ascii?Q?aTWgWx1V8sU46HqkXNhFO2ZiSNpFasqgwftxTufYgBNDSVfGxzeIRq8hwFDw?=
- =?us-ascii?Q?KRjNt31efNzMM84QBr3SkGsrOnJD6GazbctX7EJIIcibt4wZCbkGqYXjRP7c?=
- =?us-ascii?Q?jmSZussKrsN6Wj1HlOSkY32PCyawUgHDWEUqreG7Ov9YEV1qRMJ3+isyT+xg?=
- =?us-ascii?Q?vj0RZs2uLEqfaS+5SWnv6xn3r1ucNnId8sC1T+MUcYBxclqT3ysxtsa9arjD?=
- =?us-ascii?Q?0R/MSchtEayyP30NWNzHemmzuQSR7TRZGajuTPWNh7Pf8mtzOMGZYtWbB9xR?=
- =?us-ascii?Q?kTzfyXDqnMp3pw4wSJYquptiEryCU+ALffiMVvNqGWVqwJENyiwYvPFeeps4?=
- =?us-ascii?Q?LGlC+V0AUIjTCw0FSUbs4Ee1X/qzvjpLU/pn1gUnQCXNUeChfNikQm9C9Bfb?=
- =?us-ascii?Q?ghUVcn6USn7v8HiEqRCAWlSKcvxgIktLvr4ZxgVF?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8310eb10-889f-4940-4862-08ddc04b1d6b
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2025 07:18:20.8887
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xWa/yv/fPhcdLR3TjM2BaMzCP5vgGUmrpn4uNIthvFatcVWahgCCmXGizBTfzBiS9NjYW4WfjYFbN7mnmH6pXQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11361
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/3] af_packet: fix soft lockup issue caused by
+ tpacket_snd()
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250710102639.280932-1-luyun_611@163.com>
+ <20250710102639.280932-3-luyun_611@163.com>
+ <686fc5051bdb8_fd38829485@willemb.c.googlers.com.notmuch>
+Content-Language: en-US
+From: luyun <luyun_611@163.com>
+In-Reply-To: <686fc5051bdb8_fd38829485@willemb.c.googlers.com.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgD3Hw00u3Bo3oMJAA--.1286S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Xr47Zw13KrW8Jw18Kw1kGrg_yoWxGr4Dpa
+	yUKrWqka1DXr1Iyw4xJF4kJF12vws5JFs3GrZ5X34SywnxtasavFWIkrWY9Fy8uFWkt3W2
+	vF4qqr4UC34qya7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UVxRgUUUUU=
+X-CM-SenderInfo: pox130jbwriqqrwthudrp/1tbiOh6HzmhwtTbNTQAAs2
 
-For ENETC v4, the hardware has the capability to support Tx checksum
-offload. so the enetc driver does not need to update the UDP checksum
-of PTP sync packets if Tx checksum offload is enabled.
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- drivers/net/ethernet/freescale/enetc/enetc.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+在 2025/7/10 21:49, Willem de Bruijn 写道:
+> Yun Lu wrote:
+>> From: Yun Lu <luyun@kylinos.cn>
+>>
+>> When MSG_DONTWAIT is not set, the tpacket_snd operation will wait for
+>> pending_refcnt to decrement to zero before returning. The pending_refcnt
+>> is decremented by 1 when the skb->destructor function is called,
+>> indicating that the skb has been successfully sent and needs to be
+>> destroyed.
+>>
+>> If an error occurs during this process, the tpacket_snd() function will
+>> exit and return error, but pending_refcnt may not yet have decremented to
+>> zero. Assuming the next send operation is executed immediately, but there
+>> are no available frames to be sent in tx_ring (i.e., packet_current_frame
+>> returns NULL), and skb is also NULL, the function will not execute
+>> wait_for_completion_interruptible_timeout() to yield the CPU. Instead, it
+>> will enter a do-while loop, waiting for pending_refcnt to be zero. Even
+>> if the previous skb has completed transmission, the skb->destructor
+>> function can only be invoked in the ksoftirqd thread (assuming NAPI
+>> threading is enabled). When both the ksoftirqd thread and the tpacket_snd
+>> operation happen to run on the same CPU, and the CPU trapped in the
+>> do-while loop without yielding, the ksoftirqd thread will not get
+>> scheduled to run. As a result, pending_refcnt will never be reduced to
+>> zero, and the do-while loop cannot exit, eventually leading to a CPU soft
+>> lockup issue.
+>>
+>> In fact, skb is true for all but the first iterations of that loop, and
+>> as long as pending_refcnt is not zero, even if incremented by a previous
+>> call, wait_for_completion_interruptible_timeout() should be executed to
+>> yield the CPU, allowing the ksoftirqd thread to be scheduled. Therefore,
+>> the execution condition of this function should be modified to check if
+>> pending_refcnt is not zero, instead of check skb.
+>>
+>> As a result, packet_read_pending() may be called twice in the loop. This
+>> will be optimized in the following patch.
+>>
+>> Fixes: 89ed5b519004 ("af_packet: Block execution of tasks waiting for transmit to complete in AF_PACKET")
+>> Cc: stable@kernel.org
+>> Suggested-by: LongJun Tang <tanglongjun@kylinos.cn>
+>> Signed-off-by: Yun Lu <luyun@kylinos.cn>
+>>
+>> ---
+>> Changes in v4:
+>> - Split to the fix alone. Thanks: Willem de Bruijn.
+>> - Link to v3: https://lore.kernel.org/all/20250709095653.62469-3-luyun_611@163.com/
+>>
+>> Changes in v3:
+>> - Simplify the code and reuse ph to continue. Thanks: Eric Dumazet.
+>> - Link to v2: https://lore.kernel.org/all/20250708020642.27838-1-luyun_611@163.com/
+>>
+>> Changes in v2:
+>> - Add a Fixes tag.
+>> - Link to v1: https://lore.kernel.org/all/20250707081629.10344-1-luyun_611@163.com/
+>> ---
+>> ---
+>>   net/packet/af_packet.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+>> index 7089b8c2a655..581a96ec8e1a 100644
+>> --- a/net/packet/af_packet.c
+>> +++ b/net/packet/af_packet.c
+>> @@ -2846,7 +2846,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+>>   		ph = packet_current_frame(po, &po->tx_ring,
+>>   					  TP_STATUS_SEND_REQUEST);
+>>   		if (unlikely(ph == NULL)) {
+>> -			if (need_wait && skb) {
+>> +			if (need_wait && packet_read_pending(&po->tx_ring)) {
+> Unfortunately I did not immediately fully appreciate Eric's
+> suggestion.
+>
+> My comments was
+>
+>      If [..] the extra packet_read_pending() is already present, not
+>      newly introduced with the fix
+>
+> But of course that expensive call is newly introduced, so my
+> suggestion was invalid.
+>
+> It's btw also not possible to mix net and net-next patches in a single
+> series like this (see Documentation/process/maintainer-netdev.rst).
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 6e04dd825a95..cf72d50246a9 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -247,7 +247,7 @@ static void enetc4_set_one_step_ts(struct enetc_si *si, bool udp, int offset)
- }
- 
- static u32 enetc_update_ptp_sync_msg(struct enetc_ndev_priv *priv,
--				     struct sk_buff *skb)
-+				     struct sk_buff *skb, bool csum_offload)
- {
- 	struct enetc_skb_cb *enetc_cb = ENETC_SKB_CB(skb);
- 	u16 tstamp_off = enetc_cb->origin_tstamp_off;
-@@ -269,18 +269,17 @@ static u32 enetc_update_ptp_sync_msg(struct enetc_ndev_priv *priv,
- 	 * - 48 bits seconds field
- 	 * - 32 bits nanseconds field
- 	 *
--	 * In addition, the UDP checksum needs to be updated
--	 * by software after updating originTimestamp field,
--	 * otherwise the hardware will calculate the wrong
--	 * checksum when updating the correction field and
--	 * update it to the packet.
-+	 * In addition, if csum_offload is false, the UDP checksum needs
-+	 * to be updated by software after updating originTimestamp field,
-+	 * otherwise the hardware will calculate the wrong checksum when
-+	 * updating the correction field and update it to the packet.
- 	 */
- 
- 	data = skb_mac_header(skb);
- 	new_sec_h = htons((sec >> 32) & 0xffff);
- 	new_sec_l = htonl(sec & 0xffffffff);
- 	new_nsec = htonl(nsec);
--	if (enetc_cb->udp) {
-+	if (enetc_cb->udp && !csum_offload) {
- 		struct udphdr *uh = udp_hdr(skb);
- 		__be32 old_sec_l, old_nsec;
- 		__be16 old_sec_h;
-@@ -319,6 +318,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
- 	struct enetc_tx_swbd *tx_swbd;
- 	int len = skb_headlen(skb);
- 	union enetc_tx_bd temp_bd;
-+	bool csum_offload = false;
- 	union enetc_tx_bd *txbd;
- 	int i, count = 0;
- 	skb_frag_t *frag;
-@@ -345,6 +345,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
- 				temp_bd.l4_aux = FIELD_PREP(ENETC_TX_BD_L4T,
- 							    ENETC_TXBD_L4T_UDP);
- 			flags |= ENETC_TXBD_FLAGS_CSUM_LSO | ENETC_TXBD_FLAGS_L4CS;
-+			csum_offload = true;
- 		} else if (skb_checksum_help(skb)) {
- 			return 0;
- 		}
-@@ -352,7 +353,7 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
- 
- 	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
- 		do_onestep_tstamp = true;
--		tstamp = enetc_update_ptp_sync_msg(priv, skb);
-+		tstamp = enetc_update_ptp_sync_msg(priv, skb, csum_offload);
- 	} else if (enetc_cb->flag & ENETC_F_TX_TSTAMP) {
- 		do_twostep_tstamp = true;
- 	}
--- 
-2.34.1
+Sorry, I misunderstood your comments. In the next version, I will 
+combine the second and third patches together.
+
+>
+> But, instead of going back entirely to v2, perhaps we can make the
+> logic a bit more obvious by just having a while (1) at the end to show
+> that the only way to exit the loop (except errors) is in the ph == NULL
+> branch. And break in that loop directly.
+>
+> There are two other ways to reach that while statement. A continue
+> on PACKET_SOCK_TP_LOSS, or by regular control flow. In both cases, ph
+> is non-zero, so the condition is true anyway.
+
+Following your suggestion, I tried modifying the code (as shown below),  
+now the loop condition is still the same as origin, but the logic is now 
+clearer and more obvious.
+
+Thanks.
+
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 7089b8c2a655..be608f07441f 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2846,15 +2846,21 @@ static int tpacket_snd(struct packet_sock *po, 
+struct msghdr *msg)
+                 ph = packet_current_frame(po, &po->tx_ring,
+                                           TP_STATUS_SEND_REQUEST);
+                 if (unlikely(ph == NULL)) {
+-                       if (need_wait && skb) {
++                       /* Note: packet_read_pending() might be slow if we
++                        * have to call it as it's per_cpu variable, but in
++                        * fast-path we don't have to call it, only when ph
++                        * is NULL, we need to check the pending_refcnt.
++                        */
++                       if (need_wait && 
+packet_read_pending(&po->tx_ring)) {
+                                 timeo = 
+wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
+                                 if (timeo <= 0) {
+                                         err = !timeo ? -ETIMEDOUT : 
+-ERESTARTSYS;
+                                         goto out_put;
+                                 }
+-                       }
+-                       /* check for additional frames */
+-                       continue;
++                               /* check for additional frames */
++                               continue;
++                       } else
++                               break;
+                 }
+
+                 skb = NULL;
+@@ -2943,14 +2949,7 @@ static int tpacket_snd(struct packet_sock *po, 
+struct msghdr *msg)
+                 }
+                 packet_increment_head(&po->tx_ring);
+                 len_sum += tp_len;
+-       } while (likely((ph != NULL) ||
+-               /* Note: packet_read_pending() might be slow if we have
+-                * to call it as it's per_cpu variable, but in fast-path
+-                * we already short-circuit the loop with the first
+-                * condition, and luckily don't have to go that path
+-                * anyway.
+-                */
+-                (need_wait && packet_read_pending(&po->tx_ring))));
++       } while (1);
+
+         err = len_sum;
+         goto out_put;
+
+
+
+>
+>>   				timeo = wait_for_completion_interruptible_timeout(&po->skb_completion, timeo);
+>>   				if (timeo <= 0) {
+>>   					err = !timeo ? -ETIMEDOUT : -ERESTARTSYS;
+>> -- 
+>> 2.43.0
+>>
 
