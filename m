@@ -1,104 +1,92 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8B81F560B
-	for <netdev@vger.kernel.org>; Sat, 12 Jul 2025 21:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987BF2206BB
+	for <netdev@vger.kernel.org>; Sat, 12 Jul 2025 21:12:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752354282; cv=none; b=GCa+/lzvlKzbfmjSPC5jnc2I9OabnqBup4BKBXjInb44WLN06byZY9Z31ytD9mKGtgadZsNEdDD3HakzUG9EO/EAwF9E5CnqKH5G384SqRDH3gfX6fo+ZUMSv8Tn3j7ysGVAA15ZRJTcFyPN5/LPaDf0jUBcrBMTHDS9abI9cWE=
+	t=1752354729; cv=none; b=b1CyrTv2TV52zFd2cjiiu9eOa8I3Rpw7bU4LQJO2/aHiRLiNReZ6up7t1C2r4RVqN1j4pozDRYOMycbBhbDxs5f7LeQ0Dat23ndz25s3pV2sFCxX0jK9hJO4/Gv2Z7VpGEJED8eGsuSUigmluIvAe77TtmDSZBppp+nNCrmZF7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752354282; c=relaxed/simple;
-	bh=qNyJkm7PeaSYbzvL4wRwzO+7J0l1FEJhgQ8HD0Y7GWs=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELDxSLAtDC7lSj5V81SWD9NrJefrefU9TikYrMWk7jNFL4Tow+lL3UTRroTWOGVJM86Zgka67af4dXuY9pzHjQNaqRdtfRJCylJmGdjld92yKKCa5/08/kHLCRhuS3vZN1NQ0L41NGqrfy6GsLWgPB2TbisIdRiBzfkwAsGhCgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQyTZ+pD; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752354729; c=relaxed/simple;
+	bh=MoDtDbP0YFxuDH/+1SuRsmy69O8Pw/0YdqsPzDF2evI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ukb4q4S7NpZNheM2q1gpam4Cj7nit6YsmOR3nyPhLH853YyjioniOA5/PajOsjBTbHLmv/qm+c9YzeIlV3B8sJvNcLvknIYj7+5Zr1r+TPfs0C8kTh9dP2RQtYXM7clhouupPLx3wlx/6YMjGeVV8sEW0NPOmRUsMUmGG9unH2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e+X8/216; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQyTZ+pD"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b31d489a76dso2835577a12.1
-        for <netdev@vger.kernel.org>; Sat, 12 Jul 2025 14:04:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e+X8/216"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b3aa2a0022cso3268631a12.1
+        for <netdev@vger.kernel.org>; Sat, 12 Jul 2025 14:12:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752354277; x=1752959077; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SfbqWqhAF1GPPRiAu1364uXMrz946WcMqg/i/HnGuaI=;
-        b=bQyTZ+pDV0zmUyznpu1un2v5aY7NmDEH+KHklEPCpVz3ZWAj03zxUM3+qBwJDW4OYv
-         jX9XYMYkxGlyLPOqZevjEalwByrJASfEXnCqyhUzJZVFuEq47b2HATDIiPF3ZQmRfnX1
-         XRDwdmt0IKIhL4u2qVsYnPqsUaL+EoSnTX1kr8ZqLyiJOOF/5DDI3Lsy0Y1IkKZSa9m+
-         wkiUnI91CZ+vyie61ZnhtKMvmO8W7bdLeFhJc4tqf1zvP6rgISHnANf6pMqPV21iS20F
-         KFMKhTxDLJLuIA660ZiCU3zUyNOpMGacZ3uN4NI8gn5NJYy7gu/RH/b2Sgx9LSlayD+U
-         AMPg==
+        d=google.com; s=20230601; t=1752354727; x=1752959527; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MoDtDbP0YFxuDH/+1SuRsmy69O8Pw/0YdqsPzDF2evI=;
+        b=e+X8/216c4/B1l/3YaW6U7+SPyrDZ778zTb30Q1da8UMrvbyWxIwaueVT/mTHdC1pb
+         8k07zLIwuJwFL/3QM0j5pAXVozjvEi2rajezqDjWaccokuOGSONN8DdrMhnK4+oWrp7t
+         ++ayGcmCv7gIl/ECC8LDWaCUdMlAvwfguyLfQkFBv8QcyEV37nptKIYL+WesOR3Nmx79
+         Bjtx1wm6kNIzvVhHcnH48kBC4CZbXjV0SvYmfZQR8hJCqhKsDQjS5Jp0MC3ER/SPVelM
+         PI7dFVJmOO5Zp/Hl33rfMtsGzI5ALOpP/zNCY7GztnqClV30rE1kbcptAJb1ymdL1c3i
+         CoAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752354277; x=1752959077;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1752354727; x=1752959527;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SfbqWqhAF1GPPRiAu1364uXMrz946WcMqg/i/HnGuaI=;
-        b=lCkJJQSAueAU3370YzveTtF2vtex/b/AEg0mAd2Al/LFpeBLUdVna7ZG5Q/LkjDUlV
-         mYwrUgHTF/4jxoqnnt5PUnAVd5NTuQ8+pvJMBJ0qSY8JWHlUByS/c/vdQbgBo4zGVHE/
-         2bzMAKjavTueD0jAO1bqU6OTBLn0aGFKpNHry/bb21K16UTXaYAkupzIkmxtLFH6Z09x
-         lzz7U/yDG20LyaCwtU9CPtsChm5kS0JcniW9i1OTZbJjzPocLUGoIU+9wIJPSKT9hX6T
-         ho+qWXGkkxPEfUMOofFUVgQJHT8jSgztIY8gpzcglvkriYzaTRrenG3ZiM6FSgO0A7Hv
-         Sh6w==
-X-Gm-Message-State: AOJu0Yw3hIPPDktZ06z2mBLgfp/ZVNYV+nGnzOq46eyfEh4S+G4eRpQ2
-	HlG2SYr6oySC3OBYR7orZptZZqA0e0vIHL++A3pIZQPTYAbGRbaaiA8q0Ak4HlKa
-X-Gm-Gg: ASbGncsl1H2T1mUtkrQQdMBZ5374PNQe1XFLeJjayULaG2nn5NJLbE5jKt+f8EVVehI
-	BQ0ipgTGU8bUjhqxZy/NOf9N1HwBYAWS/irP3kDQZinotRMI/4JOcgE5uKYWZMghOh3HZ4Y8end
-	CEya7MA0eHXJN2ZMbhAWxh4Q2EonRRRF4jGAUPqSTh3LvLCOElNmlupcuCLzQLib8WaMFMxVPlb
-	h/Bzh7xBvXQwel/lWwynBj78K+N6BU1oP7lfvAUnfPjbWJv1kLaQriTK6sw+vcIlSeprFclXgsG
-	4WtHFpC/jtBm3eMaCrjjY0oHB00u6nCX8vYWRZJ2k/p4VeZKFMAfG320SLYbawANf/oVt8/4BQp
-	aHmU=
-X-Google-Smtp-Source: AGHT+IGdq9rd+Zh8k//xDxUuPL3qzdqjBo6ZEFvBsdEzM5Kf3lT/Pfvhhm7k2mmQenmCQh/Wga7iCQ==
-X-Received: by 2002:a17:902:e889:b0:235:f143:9b07 with SMTP id d9443c01a7336-23dee1ae98cmr115977965ad.5.1752354277449;
-        Sat, 12 Jul 2025 14:04:37 -0700 (PDT)
-Received: from archlinux.lan ([2601:644:8200:dab8::1f6])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de435cb63sm66828735ad.235.2025.07.12.14.04.36
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Jul 2025 14:04:37 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: netdev@vger.kernel.org
-Subject: [PATCHv4 wireless-next 1/7] wifi: rt2x00: add COMPILE_TEST
-Date: Sat, 12 Jul 2025 14:04:29 -0700
-Message-ID: <20250712210435.429264-2-rosenp@gmail.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250712210435.429264-1-rosenp@gmail.com>
-References: <20250712210435.429264-1-rosenp@gmail.com>
+        bh=MoDtDbP0YFxuDH/+1SuRsmy69O8Pw/0YdqsPzDF2evI=;
+        b=L/R+wF9wCDHHaac3sGyeWm983MhOndp3qsXzClwP6Ok9plcy9VZnlORWErlV4sAoqs
+         eEcYfWlKR7tp7GqjgIguHhxBw+z/2Y+Dj63wSTopwQATEDMoOG7dHwW064TBbO/4HWge
+         v7JvMaCamnOXC5eI/9WYmwWEpqASOcpXf3Ka5Zhca/FVlW8JPN2yXa3WVI1uYZw4be44
+         j8c327HowfZoIWkGs3ULMYRaB2zts8hQqcqlu+4y9/MeREGGRuu3C/GdSn6R6xML0McO
+         FJy5DwA6FIvLIdvcZLwXHo7bqoV4uzIMKByQ72/Dit5uCSdwyc+5laimuNCJYiThHlqI
+         diOw==
+X-Forwarded-Encrypted: i=1; AJvYcCXbIs3Qz0tRg32RjbxfiF3nxpAC/IzQVL03grfYjS3cp8z/XTjPeig/89ehZHJ71zL/Ap1o6LQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4S2K2gp6RRYEmcKsK9L0oMdh/3JIQGelBLPd4e5PBmgdzZnpU
+	6dJDuZleqlfYq3hlXbhv6lkMm0EEDFR/TIdwpY58AVs3etqjD/7dABO59U+WgdQDrGqyWkSodFC
+	YoWSnzJe9MNYAN8gwZnPeXUE/mvNWCV9Tu6Wo34hl
+X-Gm-Gg: ASbGnct8XqLQR46OCZtJ5HAh+6I6325CKmz3uyY73KH3S2BK5V8X5OCocPzzMgwZlGc
+	n0FkPXmMRSDpWD2tnHtte+8m8Aw0zaypIT4iQOQN3d5V7bszFKlVjINviq+bWcDKtWIvvUMGx2o
+	lInVSfcl20EuwKxlTF5/8ZQaAHdsC7zO+NWz39lU4zUGk+wagOjC+vFQt5DbvNOTTwyhBrB4JT0
+	0R2HEhVJ2wNZna3Zvpv/fsDe1OJyYmicNvyHK13
+X-Google-Smtp-Source: AGHT+IFiO72spmSrY4RtvHl1AKlICLdLR0c6CK5zP8dzcFaGhA3Smmzd/1c6H7XotRF6xmMaoYZcXUEgB4fIzBcIAxI=
+X-Received: by 2002:a17:90b:58f0:b0:311:df4b:4b94 with SMTP id
+ 98e67ed59e1d1-31c4ca64d62mr12297786a91.4.1752354726604; Sat, 12 Jul 2025
+ 14:12:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250711114006.480026-1-edumazet@google.com> <20250711114006.480026-5-edumazet@google.com>
+In-Reply-To: <20250711114006.480026-5-edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Sat, 12 Jul 2025 14:11:54 -0700
+X-Gm-Features: Ac12FXxV8wNl9usAukcOCZxr-VP2PjM6eXVtNdE0XRMiCKeIz3tmHqZeRRcCC40
+Message-ID: <CAAVpQUAfuefjm9d4_ny8EP2F4XUB2Nk8-VgvufJLQ+8Rq=NuBQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 4/8] tcp: call tcp_measure_rcv_mss() for ooo packets
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>, 
+	Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-While this driver is for a specific arch, there is nothing preventing it
-from being compiled on other platforms.
+On Fri, Jul 11, 2025 at 4:40=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> tcp_measure_rcv_mss() is used to update icsk->icsk_ack.rcv_mss
+> (tcpi_rcv_mss in tcp_info) and tp->scaling_ratio.
+>
+> Calling it from tcp_data_queue_ofo() makes sure these
+> fields are updated, and permits a better tuning
+> of sk->sk_rcvbuf, in the case a new flow receives many ooo
+> packets.
+>
+> Fixes: dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-Allows the various bots to test compilation and complain if a patch is
-bad.
-
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
----
- drivers/net/wireless/ralink/rt2x00/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ralink/rt2x00/Kconfig b/drivers/net/wireless/ralink/rt2x00/Kconfig
-index d1fd66d44a7e..3a32ceead54f 100644
---- a/drivers/net/wireless/ralink/rt2x00/Kconfig
-+++ b/drivers/net/wireless/ralink/rt2x00/Kconfig
-@@ -202,7 +202,7 @@ endif
- 
- config RT2800SOC
- 	tristate "Ralink WiSoC support"
--	depends on SOC_RT288X || SOC_RT305X || SOC_MT7620
-+	depends on SOC_RT288X || SOC_RT305X || SOC_MT7620 || COMPILE_TEST
- 	select RT2X00_LIB_SOC
- 	select RT2X00_LIB_MMIO
- 	select RT2X00_LIB_CRYPTO
--- 
-2.50.0
-
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
