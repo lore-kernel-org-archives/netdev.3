@@ -1,83 +1,96 @@
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08CB24A066;
-	Mon, 14 Jul 2025 13:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3FE248F60;
+	Mon, 14 Jul 2025 13:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752500388; cv=none; b=i3giDhycYNQodpL8jwnLbl6D6oprdfBUzM2LNnErl41JgL7YBSJvDuzhIFYj/f37JpUr4vO8dPzm7w/iFvUl1SuRwM2HhL1VlcheFqGacNSBn4SMAy/yfT7m0GCoehAF9YGLI8Une+2m72WXk1Ct5H+S47gZQeojJhLHn/A1AkU=
+	t=1752500417; cv=none; b=BU/elULybZho26T/CpYZzWke6zcfqbUrqYpkU3m+zWyaFDIDr9grWr+lQDhq/uqZYYGr9L5hhTv/tcKkGOdysJoujeLbK/TyMNesZ6tPUEnCSuzsgaVg2VHms2UuACdROzthZxjOCT3q7JTuloRrxlB/ae58zEiCfg0SrK49KRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752500388; c=relaxed/simple;
-	bh=ISa+F8ZRrtnqdWN7xQllm5UdUGup/iPHoyTVMgXu4SY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=G9Hgm8s6XvRrX4HoN+rjai3mfeKGZsKVxLCGsXlF/ZxEsxstiDnQTVxZyQWl1X+pIo50Nt3wbQxUc7kGR7wmsovP52yv4fYg93DSUE4IbmTw5WJjjrH83gOHW8yqAIGWeW5vb1Rf99muC/gCd1hevRtpY8nr8EjmrHFbHljgWio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bgjzL6N7zz29drq;
-	Mon, 14 Jul 2025 21:37:02 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 69576140230;
-	Mon, 14 Jul 2025 21:39:39 +0800 (CST)
-Received: from huawei.com (10.175.124.27) by dggpemf500002.china.huawei.com
- (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 14 Jul
- 2025 21:39:38 +0800
-From: Yue Haibing <yuehaibing@huawei.com>
-To: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<yuehaibing@huawei.com>
-Subject: [PATCH net-next] ipv6: mcast: Simplify mld_clear_{report|query}()
-Date: Mon, 14 Jul 2025 22:01:27 +0800
-Message-ID: <20250714140127.3300393-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1752500417; c=relaxed/simple;
+	bh=ZbTnyFu2wdFpma2HJU3wztP0Nr+eewvviXPIjhzHS7U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aDTEaIbxYtM6fC3PZaP8pcRKPSEmGcpBp3apdv5zV6pls4xSwOBYaR6DsG8Iv0gMNCZClUUoMFTjguVOPvegPcO66VKrDxYBhDJblcHPqLKGJZtyTfAmrpeTOf5SGK4COSmsXsfa5S4NncSAn1tyq5Y0mYgV8s5W32rLKXcveJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O9OMVAFa; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O9OMVAFa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC30CC4CEED;
+	Mon, 14 Jul 2025 13:40:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752500417;
+	bh=ZbTnyFu2wdFpma2HJU3wztP0Nr+eewvviXPIjhzHS7U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O9OMVAFaYpKkEUo00VozeeMaavQOzwZLjAlgLt8ICUjTf1vDJGPmPiVM3dxUiQT8W
+	 4VRwcoLQPJ6JrniWAoHeMOl0Y7I99B7kBMzoowssvE7vvbJD99wGH+WqyeduyxvpiE
+	 LFyTzOvhFSUSJalcrHQy3+4qT/AwKsvDWEJMVZJ9ttMUJkd+Zn1hL7vUYIym4+A5lG
+	 Nbg4PYgM5l/qXtq27N0m06xeSHOQnvTqco088zagti/MB+TNyP4Zi51PU8IHExyzn7
+	 /cSLgh9xO92hCf5ggN+Sa9BM4yu/tdDtKQgIgmfTrwZUDTk//QGnPMaS3QdxcHdY74
+	 WwgdJjslLUiQg==
+Date: Mon, 14 Jul 2025 14:40:12 +0100
+From: Simon Horman <horms@kernel.org>
+To: rohan.g.thomas@altera.com
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Romain Gantois <romain.gantois@bootlin.com>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Matthew Gerlach <matthew.gerlach@altera.com>
+Subject: Re: [PATCH net-next 3/3] net: stmmac: Set CIC bit only for TX queues
+ with COE
+Message-ID: <20250714134012.GN721198@horms.kernel.org>
+References: <20250714-xgmac-minor-fixes-v1-0-c34092a88a72@altera.com>
+ <20250714-xgmac-minor-fixes-v1-3-c34092a88a72@altera.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250714-xgmac-minor-fixes-v1-3-c34092a88a72@altera.com>
 
-Use __skb_queue_purge() instead of re-implementing it.
+On Mon, Jul 14, 2025 at 03:59:19PM +0800, Rohan G Thomas via B4 Relay wrote:
+> From: Rohan G Thomas <rohan.g.thomas@altera.com>
+> 
+> Currently, in the AF_XDP transmit paths, the CIC bit of
+> TX Desc3 is set for all packets. Setting this bit for
+> packets transmitting through queues that don't support
+> checksum offloading causes the TX DMA to get stuck after
+> transmitting some packets. This patch ensures the CIC bit
+> of TX Desc3 is set only if the TX queue supports checksum
+> offloading.
+> 
+> Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+> Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
- net/ipv6/mcast.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+Hi Rohan,
 
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index 8aecdd85a6ae..36ca27496b3c 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -845,21 +845,15 @@ static void mld_clear_delrec(struct inet6_dev *idev)
- 
- static void mld_clear_query(struct inet6_dev *idev)
- {
--	struct sk_buff *skb;
--
- 	spin_lock_bh(&idev->mc_query_lock);
--	while ((skb = __skb_dequeue(&idev->mc_query_queue)))
--		kfree_skb(skb);
-+	__skb_queue_purge(&idev->mc_query_queue);
- 	spin_unlock_bh(&idev->mc_query_lock);
- }
- 
- static void mld_clear_report(struct inet6_dev *idev)
- {
--	struct sk_buff *skb;
--
- 	spin_lock_bh(&idev->mc_report_lock);
--	while ((skb = __skb_dequeue(&idev->mc_report_queue)))
--		kfree_skb(skb);
-+	__skb_queue_purge(&idev->mc_report_queue);
- 	spin_unlock_bh(&idev->mc_report_lock);
- }
- 
--- 
-2.34.1
+I notice that stmmac_xmit() handles a few other cases where
+checksum offload should not be requested via stmmac_prepare_tx_desc:
 
+        csum_insertion = (skb->ip_summed == CHECKSUM_PARTIAL);
+        /* DWMAC IPs can be synthesized to support tx coe only for a few tx
+         * queues. In that case, checksum offloading for those queues that don't
+         * support tx coe needs to fallback to software checksum calculation.
+         *
+         * Packets that won't trigger the COE e.g. most DSA-tagged packets will
+         * also have to be checksummed in software.
+         */
+        if (csum_insertion &&
+            (priv->plat->tx_queues_cfg[queue].coe_unsupported ||
+             !stmmac_has_ip_ethertype(skb))) {
+                if (unlikely(skb_checksum_help(skb)))
+                        goto dma_map_err;
+                csum_insertion = !csum_insertion;
+        }
+
+Do we need to care about them in stmmac_xdp_xmit_zc()
+and stmmac_xdp_xmit_xdpf() too?
+
+...
