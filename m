@@ -1,107 +1,94 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1402620E5;
-	Mon, 14 Jul 2025 15:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17C8264A73;
+	Mon, 14 Jul 2025 15:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752506890; cv=none; b=ExBGu8Jw07dqioKQgYyBVx16X008PH30dZ6NoTRhlU14gfHjpZ4pzDDWSOsE5iH+uhgabDEJeVy+vVKm7FVfum2isCZvKpY1VHjSrRjPhjPgYeVQkdCBPLI/wjUwJWPM1ptbhoD9D1w+xrmuxmbqONNbqOCiE07EVIEYidMaTBE=
+	t=1752506962; cv=none; b=R9gw07Z35NB0T1YxoK+4N8JZpTX8ma0+DMj6aEQjs6/osEKgdAwaXRxUUZwlhOabZ49cyL0Kk3kbLBYcQkbnaDz3nOZBpGr4bTtG/cf3oXitor7Lw2iSqtmvoW4U9JFMoZYpbakgLWaLAGNjOYvgRoyVi/R0IkuWg6GlfHikEMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752506890; c=relaxed/simple;
-	bh=oc+GlE+Ii/Y1/zyiLxV403jXwmHI4Vq7Wn9/5LCARxQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nhNdVm8wlw8xtb0cM+LtFp3e7PctdykE8OGA8st38V3ktAyETPZ8/iXyHzojVdT4YmsG02xMwj/1LH2cntfRiM3P2PXR6S/X4ex0qdaXsuwsHMsWeMgnlUOAo0jTSWZE9P0mhXFxkasg4RDVWscD1I2gY6j361vCE37VR1D/y2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MKINuZM5; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752506962; c=relaxed/simple;
+	bh=kH+76pQfe8h+nA25aD3uhXFxx4VONMtqA+YpB33JP94=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZneXn3PQE2fdF/BVqoPnkVmAHnliGls9qxWhSzWJrWPlk7TIRaSEjNnFCWnBn/VFhdHMmAXkj6Cx1TrqbzX/X4jiQYPFBDQGV1wi8bZ+bD/mV/hFToYDIOsY1wHNuHqVybmZtdVofGrY6eQpQh/9NH5WsQ5bRNvGjAD9K+scj7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=nRCiH0M9; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MKINuZM5"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-32b50f357ecso38289711fa.2;
-        Mon, 14 Jul 2025 08:28:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752506887; x=1753111687; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oc+GlE+Ii/Y1/zyiLxV403jXwmHI4Vq7Wn9/5LCARxQ=;
-        b=MKINuZM5XBC02FZi9X8B2BpUiYUbZe3b/+InaAbCUxH7f2XJLrJFuVtpiIngGvntjJ
-         hvRMo7pvkLmp2D7jLb+NHuaO0d2cgX7DfwFtWniHOdM8gW8U3uhGPvv6JeYWdIYCngiT
-         IlS3nbV8swHJ8bFQ/ZoEUZohkCydAi3DgZnMCy+o3h+AQkdcGKZ/6hgXZNEaKCyUDtOm
-         5ZhFS7Pppnph7dQoW+Vp/uW+y3cAIAMVvW19aIf8wVvCgnkW0TfMQSmm2L2Ekk1/v8pi
-         zSPlAoAGYI/uwxH/jcKdXWRsTQKNhzZVbs2XfXTEKEt3TJMT3/gRZ7chnNuWZIg9iIaq
-         aS8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752506887; x=1753111687;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oc+GlE+Ii/Y1/zyiLxV403jXwmHI4Vq7Wn9/5LCARxQ=;
-        b=sZOJIZx5TXYVCTG/Jbctn8PMKbJVRyudeityIP8h25OpnKr95L6n7gjF5cfZsADoi2
-         TJyolL8jVC9n7JbWC42Y1F1A36F0KwxrYx2sYW0XA5nB5yL2qBa7hrXxeoLEBhQmsB1J
-         jBNhfTYv0C/yjT27tgwJN0ZU7TcbZ6y7Qq41/fLYMafzhdtckFUjAj2LKkYbqKxQJU/+
-         SCTJag9qJuzJgPtpiVqr+e9G9jyWiJ6CGODw7c9TUEFZ0KTggO5aN9g1Ki9YOx8QwGSb
-         cYYUKiP1ElpcyrTxGYbFgxOIgiu0xYgt1Z4K6z4iCjcnOh4q5qxmESqrur45OUa9n3tY
-         CYfA==
-X-Forwarded-Encrypted: i=1; AJvYcCVYdDE4e/JZwz0s2VYg7E3XeFLCgJBe4k8yPI1kI1bp+NjHSCiwDsDCrGLV2m0P8l9yhWfy/4swLPR04FNslWU=@vger.kernel.org, AJvYcCVhMjFDZ2thAjd0esYBdiogLwI/93ks3VOudz9tQuVUDUz/f9qrsQRz614gCwRwIwKeeUrRZwplpmsa@vger.kernel.org, AJvYcCVwX84X3gbuqomAT81pr0W56yf7A3irraveYlwa7p26LuUBRtZpZ2wz7TNVYo5IdelKfcWeClvUG7NvodG4uITn@vger.kernel.org, AJvYcCWcT3ylMRjt2ZFpxevrWv7SOh7V12Zc8lfKcg3tH+yHluF6yFvXViFyW+LPcUiQ605rDJNaVlz/xYI=@vger.kernel.org, AJvYcCXDVMTKhLkUZRM/pc23a91woiS0qHllT7uWxWUVsEfCodEQIv0aTg9nzx4e4WPrjjpnp0WS06egfAQ5aQQu@vger.kernel.org, AJvYcCXayz3cgG1LDPsCJdPmkdYZYHMrMBjiZI8CIi1L7oPhIC25VMIjDKRBR3kMmQB73rVHCDn1VHmO@vger.kernel.org
-X-Gm-Message-State: AOJu0YyP2+pNtfFQaKy8GGfyPGJBS95zN09fgliC4f24CthcKLen8NXZ
-	LUCcPmN2nJiu9NHRvwLBrqlDUDndUr78MCuCZR/Bf2ljuHAGCgPHvtCJ/68JFhjqJK0klBZE5gE
-	0WhuoQKMxfRu6F6ZXIgg/5V8ZYvgZbdk=
-X-Gm-Gg: ASbGnctbidaRkLNybqmHGhxv0LGqB2zfnh71s4llVdikH5UtDNebnrMKSP5pno4HDJ8
-	3envqA5/2Y5aR2vlaDQoxZlEF/XAEyOqS1BdNXGgb9Ak+y5q6WSlN7uoRDtVk6bTK4J00/eg4ZL
-	Uc5er305CRHXLszkHccPQVOcf+vVkUIJ/t2sVqHautxn/pzMCuLKvwhrz9KTF6NokXi/VpTXYhk
-	Hmqh68GoEge/297he1WA8MRW5+UUC4lU2+U3/wX9g==
-X-Google-Smtp-Source: AGHT+IH+F8scuE37tUd3Pg2ae8pcuxAEv4ojDDepRKjbKvYeGMh+F2C6iR06+KNOVOtz/FNk6yomF9YDFaXHlblFUCU=
-X-Received: by 2002:a05:651c:1108:10b0:32a:77a3:8781 with SMTP id
- 38308e7fff4ca-3305344519fmr27998491fa.30.1752506886586; Mon, 14 Jul 2025
- 08:28:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="nRCiH0M9"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 56EFSctL62444685, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1752506918; bh=kH+76pQfe8h+nA25aD3uhXFxx4VONMtqA+YpB33JP94=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=nRCiH0M9XTTm+KVkMleEMU+EQFkvopUfvgApC7PkSX+yJu1mF6n5hJSxUpnBxMfj0
+	 9ZsRmvCLon1TuuN4DZZyfogmbtBawZHeLdpvKr3KDZsOuUODA0hm+Gjd3VHOSM1bsQ
+	 XL/+VvUCoh13bbDjF/X3FlFwdOWYNUrhuHKdNNoARBqXgm2XKMa4Q7307XVYAw/N6E
+	 qdl/2FZ530FbKb9HzokeZdvVaATz+OaCoBLkfP5lRKH/HrlZHrYH1/7+biiHyBRZY+
+	 cr+fe2AC8vZrXAwbOa53+GtJPHUdWuhR9BeDM/bkscT4MxASNH8CA7M4fkFQiSc1eT
+	 mHtKLlGvbN0hw==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 56EFSctL62444685
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 14 Jul 2025 23:28:38 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 14 Jul 2025 23:28:38 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 14 Jul 2025 23:28:37 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47]) by
+ RTEXMBS04.realtek.com.tw ([fe80::81fc:50c6:85d5:cb47%5]) with mapi id
+ 15.01.2507.035; Mon, 14 Jul 2025 23:28:37 +0800
+From: Hau <hau@realtek.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+        nic_swsd
+	<nic_swsd@realtek.com>,
+        "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com"
+	<edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net-next] r8169: add quirk for RTL8116af SerDes
+Thread-Topic: [PATCH net-next] r8169: add quirk for RTL8116af SerDes
+Thread-Index: AQHb8hYZ3m83qQJc5k6oVaa3M0JZALQvxoaAgAH73gA=
+Date: Mon, 14 Jul 2025 15:28:37 +0000
+Message-ID: <50df9352e81e4688b917072949b2ee4c@realtek.com>
+References: <20250711034412.17937-1-hau@realtek.com>
+ <9291f271-eafe-4f65-aa08-3c6cb4236f64@lunn.ch>
+In-Reply-To: <9291f271-eafe-4f65-aa08-3c6cb4236f64@lunn.ch>
+Accept-Language: zh-TW, en-US
+Content-Language: en-US
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250709-core-cstr-fanout-1-v1-0-fd793b3e58a2@gmail.com>
- <20250709-core-cstr-fanout-1-v1-1-fd793b3e58a2@gmail.com> <DBBQE3GJ0CHT.5PEF7RLS6C33@kernel.org>
- <CAJ-ks9=ZHtzeyyFSZaVuA1t-3C8-hc40n6r8qFWxn628qT-OeA@mail.gmail.com> <CANiq72kyQQMutGDkHH=McRQens+V+wkHLpiSfivmnAwwgXE62w@mail.gmail.com>
-In-Reply-To: <CANiq72kyQQMutGDkHH=McRQens+V+wkHLpiSfivmnAwwgXE62w@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 14 Jul 2025 11:27:30 -0400
-X-Gm-Features: Ac12FXy_EgfuBW5UCKV_g6NQQc-Ao21V9VhJ3CJtjS90O4a7j1zHA01rM8fcK4c
-Message-ID: <CAJ-ks9kzrihJ7Jb8kAp0LpbPCfdouDQdFK06AHN3xi9pXNWZ9w@mail.gmail.com>
-Subject: Re: [PATCH 01/10] gpu: nova-core: use `core::ffi::CStr` method names
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, Javier Martinez Canillas <javierm@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On Mon, Jul 14, 2025 at 11:18=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Mon, Jul 14, 2025 at 2:35=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
-m> wrote:
-> >
-> > How should I respin this one? the subject should be drm/panic, I think.
->
-> I would mimic what the previous commits did, i.e. drm/panic indeed.
->
-> (If I happen to pick it up before a resend, I could fix it on my side)
-
-Yep, that's what I was going to do - but do I resend the whole series,
-or somehow just this patch?
+>=20
+> Can you give us a few more details. What is on the other end of the SERDE=
+S?
+> An SGMII PHY? An SFP cage? An Ethernet switch chip?
+>=20
+> A quick search suggests it is used with an SFP cage. How is the I2C bus
+> connected? What about GPIOs? Does the RTL8116af itself have GPIOs and an
+> I2C bus?
+>=20
+RTL8116af 's SERDES will connect to a SFP cage. It has GPIO and a I2C bus. =
+But driver did not use it to access SFP cage.
+Driver depends on mac io 0x6c (LinkStatus) to check link status.
