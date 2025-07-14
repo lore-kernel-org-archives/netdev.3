@@ -1,31 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFBA27A444;
-	Mon, 14 Jul 2025 23:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FDB290BA5;
+	Mon, 14 Jul 2025 23:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752534443; cv=none; b=fqiZIhSdVUbr40Bs9yhUdfwGcJuYoqi5u5b6U16GszErX6xGLiO3Wac9q2ncbL8Q84XMNnyY8mHIUBmjPuEsytO2kyzCspNkRvFP8+mm4XjKJs+qOMk+msLfqvtJa5wqTTN8zqE6bO7vVktIK38u6SUpcD2CnHZRAouPK8kGx2Y=
+	t=1752534470; cv=none; b=mAaVv8eUW20aYdYuDjoMQg4JWCOqHjb6U8R92i8kpnIAabbQDSQTCk4GQNlHa1f5G2xCuy7dtVsDfFQ6repPBCN5QvXpbw5W8gwivaS5sGQ/WZU4SfvK51sSYQUKwFWuBs7Hs9bZxqjYjzBc8xY4HVOPz0vJf7a4MmuMLywZeaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752534443; c=relaxed/simple;
-	bh=hsFS1F2DNe4e5GEf8JnX5lUC+2YRjDfH3CvTbXpOY7g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uYX2mfSAtay1GWQHk+j53dLZ1T6T66eeOm2G8Rg9KYz5IX0EDjDVlln87/cRoOn2mfWVrQoCzA0ymGrp8atCenpgJepssq2iyvkKuvaDMEB5CzoF0p547/+a+A93xt+0stR0JalBtzvcFUoPdRY4+cScnC7nGkU0pE4ruHUWKMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yr3QkWkC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752534470; c=relaxed/simple;
+	bh=uGyRRMRnX6W2HSzpn2bV1k1KFiIJ0Fo4LhUkRbfoTlo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pYeZZ8r3ymc7Acqe8dNfSkddtzKKpYfTOu46fz3TbThRVnyTsym2nyAA4EEJNH+PegDj9kgJjt8ItA3IDqmDG5fyjFs5p7pmv/STyR+jKYFxpPdpHNcvta2XO7l/+ZTJhEdEG6kiF1ykR5Z1//cmz+etC8qzePQHzu5GWY9zp7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n7l/XiYL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yr3QkWkC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273D0C4CEED;
-	Mon, 14 Jul 2025 23:07:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n7l/XiYL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD3BC4CEED;
+	Mon, 14 Jul 2025 23:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752534442;
-	bh=hsFS1F2DNe4e5GEf8JnX5lUC+2YRjDfH3CvTbXpOY7g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yr3QkWkCp4ezFB2Wf30eNo53Sz5bfn8/thuTPJZBY1JPk00cpOUGrYqlgotPCzwCU
-	 ZiHSwfZj63b6QsossP0hH8tYH5TZwGTpIBIZGZFqXkM6GG1p2dLPiGt8by5Q7x8IwH
-	 7+kpHohxqxbTglqp348kuDwRLTrRU4lIzuPM8SOf0si+YjCl11rW2Q6zBhdT6bi8h6
-	 +QYFjT1SxBjlNEYAMe8WiZ1Xcgv+0PQmhLwNY6JIJkiud788fKrDQLyOmoIZJpDNMu
-	 +u6+cqoQRVApaI3E3LlZXue+keHb85QLU0bkWhTExt1a6Lr8IWeDn5oFssePDlAqOn
-	 0CD0LkCy2yHsw==
+	s=k20201202; t=1752534469;
+	bh=uGyRRMRnX6W2HSzpn2bV1k1KFiIJ0Fo4LhUkRbfoTlo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=n7l/XiYLNOs06RvuioVk13mT5Uuu/6QSBL1JtNo8IKwEtZ3Cl9kBpjTg23zDw6Ki/
+	 +jdC97WLdcjZ6t3sXqudyGr+HO0bYRCCzlvpbjjbSerW1aTt3BuUsu8IybyhLnJsrd
+	 pXtv8qAFNkCox/lMUQ704ZNSZIWDg8C/WC3AtskAm2eNJBoOzAw0JFyPr1IiariTQ9
+	 rpcx6OFUjoyN5DBKNLC0iTCNYgge7T48WauqPsMcsYqyFJjhXzFIU5h+l+n5MhBfHg
+	 TwtGwd5E7uV7l1Z2YsWeYRON7qgTZy+jPaHt6ZgDFzeR6VWBoFpR1YYyssM114p3RR
+	 e6VZ3nSVssJmQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -39,12 +38,10 @@ Cc: Xiang Mei <xmei5@asu.edu>,
 	edumazet@google.com,
 	kuba@kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 02/12] net/sched: sch_qfq: Fix null-deref in agg_dequeue
-Date: Mon, 14 Jul 2025 19:07:05 -0400
-Message-Id: <20250714230715.3710039-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 1/6] net/sched: sch_qfq: Fix null-deref in agg_dequeue
+Date: Mon, 14 Jul 2025 19:07:38 -0400
+Message-Id: <20250714230744.3710270-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250714230715.3710039-1-sashal@kernel.org>
-References: <20250714230715.3710039-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,7 +50,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.38
+X-stable-base: Linux 6.6.98
 Content-Transfer-Encoding: 8bit
 
 From: Xiang Mei <xmei5@asu.edu>
@@ -162,10 +159,10 @@ well.
  4 files changed, 25 insertions(+), 28 deletions(-)
 
 diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-index d7b7b6cd4aa10..8a75c73fc5558 100644
+index 15960564e0c36..4d72d24b1f33e 100644
 --- a/include/net/pkt_sched.h
 +++ b/include/net/pkt_sched.h
-@@ -114,7 +114,6 @@ struct qdisc_rate_table *qdisc_get_rtab(struct tc_ratespec *r,
+@@ -112,7 +112,6 @@ struct qdisc_rate_table *qdisc_get_rtab(struct tc_ratespec *r,
  					struct netlink_ext_ack *extack);
  void qdisc_put_rtab(struct qdisc_rate_table *tab);
  void qdisc_put_stab(struct qdisc_size_table *tab);
@@ -173,7 +170,7 @@ index d7b7b6cd4aa10..8a75c73fc5558 100644
  bool sch_direct_xmit(struct sk_buff *skb, struct Qdisc *q,
  		     struct net_device *dev, struct netdev_queue *txq,
  		     spinlock_t *root_lock, bool validate);
-@@ -290,4 +289,28 @@ static inline bool tc_qdisc_stats_dump(struct Qdisc *sch,
+@@ -306,4 +305,28 @@ static inline bool tc_qdisc_stats_dump(struct Qdisc *sch,
  	return true;
  }
  
@@ -203,7 +200,7 @@ index d7b7b6cd4aa10..8a75c73fc5558 100644
 +
  #endif
 diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 26378eac1bd08..f716133f1987b 100644
+index 282423106f15d..ae63b3199b1d1 100644
 --- a/net/sched/sch_api.c
 +++ b/net/sched/sch_api.c
 @@ -594,16 +594,6 @@ void __qdisc_calculate_pkt_len(struct sk_buff *skb,
@@ -224,7 +221,7 @@ index 26378eac1bd08..f716133f1987b 100644
  {
  	struct qdisc_watchdog *wd = container_of(timer, struct qdisc_watchdog,
 diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index 5a7745170e84b..d8fd35da32a7c 100644
+index afcb83d469ff6..751b1e2c35b3f 100644
 --- a/net/sched/sch_hfsc.c
 +++ b/net/sched/sch_hfsc.c
 @@ -835,22 +835,6 @@ update_vf(struct hfsc_class *cl, unsigned int len, u64 cur_time)
@@ -251,7 +248,7 @@ index 5a7745170e84b..d8fd35da32a7c 100644
  hfsc_adjust_levels(struct hfsc_class *cl)
  {
 diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index aa4fbd2fae29e..73335025a4599 100644
+index 5e557b960bde3..e0cefa21ce21c 100644
 --- a/net/sched/sch_qfq.c
 +++ b/net/sched/sch_qfq.c
 @@ -992,7 +992,7 @@ static struct sk_buff *agg_dequeue(struct qfq_aggregate *agg,
