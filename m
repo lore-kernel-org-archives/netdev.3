@@ -1,224 +1,318 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012053.outbound.protection.outlook.com [52.101.66.53])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3155D218596;
-	Mon, 14 Jul 2025 06:14:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752473653; cv=fail; b=cpdu/hefC32vbQ/DlWlRvtKihkV7pKROh061klxYlYPF7P7KwtbZkrjbjZLNGizPW1k//e5c572MJ2G0mokUqIfeekHw6tI6Kl+kF8x81VQyx8V41+AaIxstoGKRjMcF7oxHyjC44af/5cjiluXvG/eliwRSoAzjmqYrUrvV+/Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752473653; c=relaxed/simple;
-	bh=owIYnV4SEqyeQic9rvA0V8bM+L02etgsQMPyeknJ0BY=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=uRO+5EtHzeMXMKQJesyRPSwVHnh3V5NGaB8Qiap5n0kap47GDxXTyBRNzcowDItVq6TIJ8t53hZTkI2GvSuWWzBBtyEIXm2CZHEdSqNMzyD8IQYPpzaMWAAe433rixZFzbE40CBvDl+1uHHs/YrRNSLRj2sRRU5/E1AqRtoj0HU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=tDOPrq/e; arc=fail smtp.client-ip=52.101.66.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="tDOPrq/e"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RQJRDDcn5wic9AfybP0W3nMPUDoAp06x0UfBBw+vPUg5xWNku8wIsF1uQ8V00Bego2VQihVDO/QhruP0yqVEzxtzbovzb2Tg5wxWwsetr/bEemIp15ogP4AEhAjuBpPlGq3ZVevFndRykS3o6ZwNqoBL4Cr7usURG+lxcPPOLMlsSfiNTX20i6TEEtQTcRC74xRufTpOVQ3lMF91jgO8p7tsZmeWp8st2EQHUz6g78zu7kRN3BErr1ZyX1uOg7scIIeR1iMEd3qnXfFw4deUtxDAev2GeISV4ogV5iXKwa1KTTcD+1BoXP2WnlDJm0imNdPLJlRvGE17g5sPGvKPjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OrSBfvJNFpjRAAXlemAbM4YVdIm1sXZA12o576VMPg4=;
- b=DRxnBC54tpyDxozjVauZSffVDcxpNJWA4vowlUJ9BuYI8EnHi52rwPhs/AUt8ysBYxNDc1StNVCgZGhoayz8VaofSbsps9Fnlf6WNfdTulRv43b+7NBdxkbGwICsgtxwTTw/3xwQRnemr4RsLgKWpr1NyK+4FcirEldVbfYeQO6gKyh3HjxY21d5xIkCMY8uvISVJ7HlpywXPQjtiiA+qSQr5dSAq7SjtGDK4Ysae4O82rgdtFK7/z9MIaKtoondPLPGYcX/iPu6nlczEO1kZvGL1D/Xa6hVwL3MhDrnV1IwYK8w6+/gAfwcrCqF/kvYlJwx7iSm4ymzn6EEv7iZfA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nokia-bell-labs.com; dmarc=pass action=none
- header.from=nokia-bell-labs.com; dkim=pass header.d=nokia-bell-labs.com;
- arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OrSBfvJNFpjRAAXlemAbM4YVdIm1sXZA12o576VMPg4=;
- b=tDOPrq/eGm9zh/R18o96uKMTz2lFNOtHZcYO6433pYSyEIY7EyY7dFLZ77xpiswa70CWTmDz7f/CXRPlLMIsUo2Y9l4Cy/G1CL4IHJ0WybDCX0NWz81ibRd9n9oINGYHyfjInCLTp2uPuPC4VGELXOujMg6w3A9da/eIrCbCM3Z143b7Zh/BRV4voKlhTXPScNGGRsQQv0qdusUT/QuCLWR3nyKhkjOElM0UrLK5d04m+nSjgwS60wie5TOviiYky3wCp+DvS45a2ZnN9Ygglu6FmgH4vdzJqZoo6oH+jdgjaCd/2v2mbJ6ueQQ2113Y9jzwJTZ6+xYEPbWbpupVjg==
-Received: from PAXPR07MB7984.eurprd07.prod.outlook.com (2603:10a6:102:133::12)
- by PA4PR07MB7311.eurprd07.prod.outlook.com (2603:10a6:102:d3::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Mon, 14 Jul
- 2025 06:14:08 +0000
-Received: from PAXPR07MB7984.eurprd07.prod.outlook.com
- ([fe80::b7f8:dc0a:7e8d:56]) by PAXPR07MB7984.eurprd07.prod.outlook.com
- ([fe80::b7f8:dc0a:7e8d:56%6]) with mapi id 15.20.8922.028; Mon, 14 Jul 2025
- 06:14:08 +0000
-From: "Chia-Yu Chang (Nokia)" <chia-yu.chang@nokia-bell-labs.com>
-To: Victor Nogueira <victor@mojatatu.com>, "alok.a.tiwari@oracle.com"
-	<alok.a.tiwari@oracle.com>, "pctammela@mojatatu.com"
-	<pctammela@mojatatu.com>, "horms@kernel.org" <horms@kernel.org>,
-	"donald.hunter@gmail.com" <donald.hunter@gmail.com>, "xandfury@gmail.com"
-	<xandfury@gmail.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"dave.taht@gmail.com" <dave.taht@gmail.com>, "pabeni@redhat.com"
-	<pabeni@redhat.com>, "jhs@mojatatu.com" <jhs@mojatatu.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "stephen@networkplumber.org" <stephen@networkplumber.org>,
-	"xiyou.wangcong@gmail.com" <xiyou.wangcong@gmail.com>, "jiri@resnulli.us"
-	<jiri@resnulli.us>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "ast@fiberby.net" <ast@fiberby.net>,
-	"liuhangbin@gmail.com" <liuhangbin@gmail.com>, "shuah@kernel.org"
-	<shuah@kernel.org>, "linux-kselftest@vger.kernel.org"
-	<linux-kselftest@vger.kernel.org>, "ij@kernel.org" <ij@kernel.org>,
-	"ncardwell@google.com" <ncardwell@google.com>, "Koen De Schepper (Nokia)"
-	<koen.de_schepper@nokia-bell-labs.com>, "g.white@cablelabs.com"
-	<g.white@cablelabs.com>, "ingemar.s.johansson@ericsson.com"
-	<ingemar.s.johansson@ericsson.com>, "mirja.kuehlewind@ericsson.com"
-	<mirja.kuehlewind@ericsson.com>, "cheshire@apple.com" <cheshire@apple.com>,
-	"rs.ietf@gmx.at" <rs.ietf@gmx.at>, "Jason_Livingood@comcast.com"
-	<Jason_Livingood@comcast.com>, "vidhi_goel@apple.com" <vidhi_goel@apple.com>
-Subject: RE: [PATCH v22 net-next 5/6] selftests/tc-testing: Add selftests for
- qdisc DualPI2
-Thread-Topic: [PATCH v22 net-next 5/6] selftests/tc-testing: Add selftests for
- qdisc DualPI2
-Thread-Index: AQHb8nCgdyoY2HJck0ybSTf6+6zluLQtSvMAgAPb80A=
-Date: Mon, 14 Jul 2025 06:14:07 +0000
-Message-ID:
- <PAXPR07MB798429728A10CA40CEEDB0DCA354A@PAXPR07MB7984.eurprd07.prod.outlook.com>
-References: <20250711143208.66722-1-chia-yu.chang@nokia-bell-labs.com>
- <20250711143208.66722-6-chia-yu.chang@nokia-bell-labs.com>
- <01a580b4-0c8d-4d22-a3e4-264335d7a947@mojatatu.com>
-In-Reply-To: <01a580b4-0c8d-4d22-a3e4-264335d7a947@mojatatu.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nokia-bell-labs.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR07MB7984:EE_|PA4PR07MB7311:EE_
-x-ms-office365-filtering-correlation-id: 42306967-8bce-4fc5-1d88-08ddc29da46c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007|38070700018|921020;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?Vih9kBtNPyFHfBukWThoLxxeePqPzclq+aUbL75zfYoUIBzeCCv7B7OZmlV3?=
- =?us-ascii?Q?Cz7kYCPoQl5KNYtAPTsHwe3HRgaex5NUVqKY+4yKF/sRl/oXo7ZnxuhommvS?=
- =?us-ascii?Q?4rb65wc7GZ1VDFtLu/cUDhxzFVyJHdp0J4AXaAkhaT88pl8wHV8vIxVgS5Ra?=
- =?us-ascii?Q?grlaLHJz6mQUjNQb2SPaq2CPgK4XyFLJTA668iT4liFa+1chEpSAa08YkoC2?=
- =?us-ascii?Q?CgScQ76b9gaDYIuU4bmqumWAVy559gpipvBcYlYD7rIrAuFKfgnS/qjQqUWx?=
- =?us-ascii?Q?l3+WC8QTaGaTFTiyDY+Hu2LFmlEzz00fKY1olVfHyWlMrBnTV5Y/qb2SARhz?=
- =?us-ascii?Q?Ps4OSCM+QQQREaqpQMvOSjz9I6Y+KqgeTtnz4b4NWIe7fvxLOXyBn0ITDltl?=
- =?us-ascii?Q?DAAfcwzVFLZorNWu2MrZ5ZoCWofO0+qVnt7y2tXVMOaBv1L0Q45gN7sfENV4?=
- =?us-ascii?Q?yBGG4J98Zm+GdZ1KxyivlSctJoUGxNtUhSfJif7PxiZqE/CHvsoWA8xNR+Ow?=
- =?us-ascii?Q?Kv0Iwc3zK7qnYWnEfPsXaHJHoK4SaFVKGszMyq01lih/jQLAeDW+lstm4vOH?=
- =?us-ascii?Q?wVO5ug/lh80ZeImGxOGUPLXZ2JlpXtIaP1u37uPpEDrfZgTFiEuYyFVY8C9s?=
- =?us-ascii?Q?10aTj9BueXOVTWDBtrmYwW40t04e6uleVY7++0uzlVnJBRy+qhpSWTA41y5b?=
- =?us-ascii?Q?4mxIW/7zZ0qn0RpxPx1Pvw9DGsT0HzmZhPbaxcBRo7kRZIFNqQpOTFNSRqTT?=
- =?us-ascii?Q?QakYMqvpPS1S/0udyrsmBKYnEYQfI/G1Jom/456fWT1x4JNPVdaknaOgT7s1?=
- =?us-ascii?Q?QrTPtzv+ccx58tyui4eVpRk1YImu3vVYYZJH91PRYYyKENRGz5OI0WDdJfk7?=
- =?us-ascii?Q?0Z6vU1dvkZGPL4j3J209AQJPFWLAUNw8V80mMeJF7LY26uc7zx+AQYN0V9YI?=
- =?us-ascii?Q?YaB/6htnd6uTi395NFbH+4GD1gLid6orhRZSSBc7ugusiIOxzu6VVLCtj02l?=
- =?us-ascii?Q?SUysEjk60SVSyPvUzfKxCcBEyY/t/Cw4cNQN6KuLkdenSwz+LEaC/NEIlyrP?=
- =?us-ascii?Q?NZsrzdRv2o6PX3EWfrdWy4putp1B1mOL6VSG7zUPosaHoU1S50ynxpMcUsHw?=
- =?us-ascii?Q?2iD+vt6fSRoS5hDVM9iG8zYb7RAOTQBGiZP80nbFONXWnk7YgmKkTAW/K0jS?=
- =?us-ascii?Q?bgeO9INHNFKoSaCToNswhxU/Y5li1t1P/6Q9L2trK2Pbx4LxGzQJYjAUOdUe?=
- =?us-ascii?Q?fXzk1bXj6AZS4NDadGxbUv3GO4UDnuAc1T+Znn8aU5bdAtko0AflSgB6JhEk?=
- =?us-ascii?Q?gvlGz/JoRFB8D8hjiMZLMUlUX2MM7eFZKUyEeVcvMlNrIfqyZ1uD1Gv+h+sC?=
- =?us-ascii?Q?i0EfkDMeYU7zDXCNq+dcSurp+fjDlVPhpOhSmdbNBKwW5q660hzt1h1bdZo1?=
- =?us-ascii?Q?hDT16tWzJRibXatLRhR20+byCI9eyAUUtDF5ujyrZ/miUDFppFwzZoDPilY6?=
- =?us-ascii?Q?kOTkXDex3Di9p4Z9h4o67OLrTAWp7idl7J1F?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR07MB7984.eurprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007)(38070700018)(921020);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?LAFOCvxKAZZpqkwMSG/FO2h7yQejRMhD1LI0P9TlS8DVCnnBU4Ou5ooYcmTc?=
- =?us-ascii?Q?8zUcJUY5Vzbgvpey6PouIdHPh+wI55jrVmnCywEcxURKwIwC1u4WqQgMR2ji?=
- =?us-ascii?Q?jm8cAeQ4c59Oxxu4I+Hd5Ry8FkfTqX/KxCLlcTkbbLAuot+y668whkSxrH8G?=
- =?us-ascii?Q?vcj9RA6hYZCRyxK3j1mxd28T8kqqdV0t44En89VusC2pQ8skxcb3scqb/ur7?=
- =?us-ascii?Q?37bnNg0PqQx2YJbRID5d/qlrMVz36uWhIQkuW6TEjpp0VMCDsWtLrUSybEKk?=
- =?us-ascii?Q?iBJ9322/B/Bnq6bI5KGyZf82Ae9Hw5Y794XnfLNKj1FPAOOCr7vr3fQncvqB?=
- =?us-ascii?Q?tytawMS/MkTL/Uesl895B+dSWUg53zIXT0vCmgQP2tx9P/ivzXtst+EBCteq?=
- =?us-ascii?Q?C04b9ZVi8qIomiS3oGnoRSDoerb/6r+xdeDY9r0V6eGTIRC1YUFgosenlso7?=
- =?us-ascii?Q?VhJNX53UVPb2iPXNeRV35vPrtWpWF/7+f1u6c4RQp6Sq2N3daWa6tirCh73x?=
- =?us-ascii?Q?sWhLqYQAJ+Oga3bVDJAQvoDjRrfz+gxQpnvWruElwsXEgSXkRV4DXGxE0vOw?=
- =?us-ascii?Q?sD5z+OsFoQA1lvurvTo7KbZzkZDsQJSg3dMf6a26sNHNA1qXBx6pgVYvr3AI?=
- =?us-ascii?Q?rVlg+7SHB4CelcwvUR4laGKfCdFxu3jTTeVZEvSOPF24aSumo0ZhSOVO9Q84?=
- =?us-ascii?Q?OAeKr5VKFGUAMrEU2xu2STCqKQQntxccH8PLv/imSkqss0Nic5tYHbepiDwV?=
- =?us-ascii?Q?fLfU0BC8Y6tMdidYpwqHU6kb5rAQkeImY00JC64vGq0ES2hrtNwOxR66vb7T?=
- =?us-ascii?Q?y76qnk16dEj3VFUKr4Aos2OMWBzoVGK+3bn/wMrpl17Jg+XwtJaVtvLegLOD?=
- =?us-ascii?Q?sUI0z2oE+beahhnyHQYG4Ao8gBO/Tw9HXNYXcRf27yf4PdkYOhdiw2zqU/Sy?=
- =?us-ascii?Q?vVuUTczuQMyX7LMMbd0uZdrygt6t1Lgnr3/Mix17CIS9XoT2Vq2iKQp9F9o0?=
- =?us-ascii?Q?lCGRdnOhiRdANXjZe094FD/gWIcbRYvFIteDp+6x7k2Cf4XRoA2EnqiIaI7d?=
- =?us-ascii?Q?D7v1Ek3jYfBXU5qfozw2VmSf7axKKf4V6oycWBJURzf9jqkd6f3LK7yRr7mr?=
- =?us-ascii?Q?b7+icBSUFwWaw1TSb8LgE97rRxMjE0azz9XPi05ajtX/2SVFwDTieYQ8h3aQ?=
- =?us-ascii?Q?AYUxvmpV56Pf4iO9phhtD4fEQwO8tXruo00uozSeeOt+WvExLOU2mgueKtXD?=
- =?us-ascii?Q?ibHNnpj705wo/jYfcURiy/NjYOiC2xhATRG1ToJdOvveUZldVBGT7DQ1t1V/?=
- =?us-ascii?Q?rYCr8mH+312BPIjHsEUlwGZ4WDNMzr8AXbxd2VJK7eSsmxiGSEJ6YUy1d0Z/?=
- =?us-ascii?Q?kDG6pZtrjl/YkyjB5pWZA4H+8TsYoUnrAJWl9/4E5tPPXBMX3AHfN8ufhruL?=
- =?us-ascii?Q?VM6sL3zreREeG2oP8MI+nYntuKwirEn5/Z4Im64qZ/evbtzrLZ0XexWhLF7X?=
- =?us-ascii?Q?kPMeC3gKM/OAzyVAGjlt/IIsd9nXtgwwkrXqmmuwdMMrgxKgeazgtrJVlaSb?=
- =?us-ascii?Q?CAQj+MrQ3gf4DuSLlXurl1uavb8SmwFLVvcS9SCssLT7T4qk+Wo18OHLYSBD?=
- =?us-ascii?Q?/A=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD481547CC;
+	Mon, 14 Jul 2025 06:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752473880; cv=none; b=UwFLcPVp0j+E3oMRjQHHZInNeVT/xed0U89Hybdi3A2NKJgWH6sgBDQgBrzItbKi3gCnkkx1Kv/GlGsny+aH8eHp0s6nFllHgdjqZl+YZYUHltJoCRM3t4yHzQfF0/sPPMZOZXoatRlyeaQhx9WATdtciIxhrEXWiIxakvmSvMA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752473880; c=relaxed/simple;
+	bh=hERdZR+kkHYGhOhKQMKBJVnuPqUcLCNOZQAXw5r5yHo=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=s/+o+MssJAFlL4P499Zaw/b06kzrUkvdTURZsZ6AdC/zoXvLt8qsu7oOmREp/DmsW9Yat3m2yiURU66bTRLJ5ArR55cT6sXOo70BtjzX/hPtEwli5FxgpVI0WNR9Di7Nxusp9a1H3VvHiRGH0ghpeR46l2b28Zf28NWh86FnL+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bgX9g3nspz29dqR;
+	Mon, 14 Jul 2025 14:15:19 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id DA598140123;
+	Mon, 14 Jul 2025 14:17:55 +0800 (CST)
+Received: from localhost.localdomain (10.90.31.46) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 14 Jul 2025 14:17:55 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
+	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
+	<arnd@kernel.org>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<shaojijie@huawei.com>
+Subject: [PATCH V3 net-next 02/10] net: hns3: clean up the build warning in debugfs by use seq file
+Date: Mon, 14 Jul 2025 14:10:29 +0800
+Message-ID: <20250714061037.2616413-3-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20250714061037.2616413-1-shaojijie@huawei.com>
+References: <20250714061037.2616413-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nokia-bell-labs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR07MB7984.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 42306967-8bce-4fc5-1d88-08ddc29da46c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2025 06:14:08.0149
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5d471751-9675-428d-917b-70f44f9630b0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JfAbIVNed7Vmt6DuRmivNFcpky84vFGxmMpC1+UW+MhJKyq0yvk+KHjMjXcNr4WIgf7CvLmve3U+zL0QSUAj/+3ZS0gZNZ5l3BqnuW7P1qIS0/E3NOt4bfnDIT5iTdRW
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR07MB7311
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-> -----Original Message-----
-> From: Victor Nogueira <victor@mojatatu.com>=20
-> Sent: Friday, July 11, 2025 9:14 PM
-> To: Chia-Yu Chang (Nokia) <chia-yu.chang@nokia-bell-labs.com>; alok.a.tiw=
-ari@oracle.com; pctammela@mojatatu.com; horms@kernel.org; donald.hunter@gma=
-il.com; xandfury@gmail.com; netdev@vger.kernel.org; dave.taht@gmail.com; pa=
-beni@redhat.com; jhs@mojatatu.com; kuba@kernel.org; stephen@networkplumber.=
-org; xiyou.wangcong@gmail.com; jiri@resnulli.us; davem@davemloft.net; eduma=
-zet@google.com; andrew+netdev@lunn.ch; ast@fiberby.net; liuhangbin@gmail.co=
-m; shuah@kernel.org; linux-kselftest@vger.kernel.org; ij@kernel.org; ncardw=
-ell@google.com; Koen De Schepper (Nokia) <koen.de_schepper@nokia-bell-labs.=
-com>; g.white@cablelabs.com; ingemar.s.johansson@ericsson.com; mirja.kuehle=
-wind@ericsson.com; cheshire@apple.com; rs.ietf@gmx.at; Jason_Livingood@comc=
-ast.com; vidhi_goel@apple.com
-> Subject: Re: [PATCH v22 net-next 5/6] selftests/tc-testing: Add selftests=
- for qdisc DualPI2
->=20
-> [You don't often get email from victor@mojatatu.com. Learn why this is im=
-portant at https://aka.ms/LearnAboutSenderIdentification ]
->=20
-> CAUTION: This is an external email. Please be very careful when clicking =
-links or opening attachments. See the URL nok.it/ext for additional informa=
-tion.
->=20
->=20
->=20
-> On 7/11/25 11:32, chia-yu.chang@nokia-bell-labs.com wrote:
-> > From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-> >
-> > Update configuration of tc-tests and preload DualPI2 module for=20
-> > self-tests, and add following self-test cases for DualPI2:
-> >
-> >    Test a4c7: Create DualPI2 with default setting
->=20
-> This test case is failing now:
->=20
-> Test a4c7: Create DualPI2 with default setting
-> exit: 2
-> exit: 0
-> Error: sch_dualpi2: Dualpi2 options are required.
->=20
-> cheers,
-> Victor
+From: Jian Shen <shenjian15@huawei.com>
 
-Hi Victor and All,
+Arnd reported that there are two build warning for on-stasck
+buffer oversize. As Arnd's suggestion, using seq file way
+to avoid the stack buffer or kmalloc buffer allocating.
 
-The above issue of v22 is fixed in the re-submitted v23.
-However, I see v23 now is labelled as "Changes Requested" but I do not see =
-email.
-Would it be possible to let me know which changes are needed for v23? Thank=
-s.
+Reported-by: Arnd Bergmann <arnd@kernel.org>
+Closes: https://lore.kernel.org/all/20250610092113.2639248-1-arnd@kernel.org/
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+---
+ChangeLog:
+v1 -> v2:
+  - Remove unnecessary cast, suggested by Andrew Lunn
+  v1: https://lore.kernel.org/all/20250708130029.1310872-1-shaojijie@huawei.com/
+---
+ drivers/net/ethernet/hisilicon/hns3/hnae3.h   |   7 +
+ .../ethernet/hisilicon/hns3/hns3_debugfs.c    | 128 ++++++++----------
+ .../net/ethernet/hisilicon/hns3/hns3_enet.c   |   2 +
+ 3 files changed, 62 insertions(+), 75 deletions(-)
 
-Best Regards,
-Chia-Yu
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.h b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
+index 8dc7d6fae224..db9639c3c402 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hnae3.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
+@@ -339,6 +339,10 @@ enum hnae3_dbg_cmd {
+ 	HNAE3_DBG_CMD_UNKNOWN,
+ };
+ 
++#define hnae3_seq_file_to_ae_dev(s)	(dev_get_drvdata((s)->private))
++#define hnae3_seq_file_to_handle(s)	\
++		(((struct hnae3_ae_dev *)hnae3_seq_file_to_ae_dev(s))->handle)
++
+ enum hnae3_tc_map_mode {
+ 	HNAE3_TC_MAP_MODE_PRIO,
+ 	HNAE3_TC_MAP_MODE_DSCP,
+@@ -434,8 +438,11 @@ struct hnae3_ae_dev {
+ 	u32 dev_version;
+ 	DECLARE_BITMAP(caps, HNAE3_DEV_CAPS_MAX_NUM);
+ 	void *priv;
++	struct hnae3_handle *handle;
+ };
+ 
++typedef int (*read_func)(struct seq_file *s, void *data);
++
+ /* This struct defines the operation on the handle.
+  *
+  * init_ae_dev(): (mandatory)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+index aec719ce3ccd..52877ffec928 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+@@ -3,6 +3,7 @@
+ 
+ #include <linux/debugfs.h>
+ #include <linux/device.h>
++#include <linux/seq_file.h>
+ #include <linux/string_choices.h>
+ 
+ #include "hnae3.h"
+@@ -41,6 +42,7 @@ static struct hns3_dbg_dentry_info hns3_dbg_dentry[] = {
+ 
+ static int hns3_dbg_bd_file_init(struct hnae3_handle *handle, u32 cmd);
+ static int hns3_dbg_common_file_init(struct hnae3_handle *handle, u32 cmd);
++static int hns3_dbg_common_init_t1(struct hnae3_handle *handle, u32 cmd);
+ 
+ static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
+ 	{
+@@ -300,7 +302,7 @@ static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
+ 		.cmd = HNAE3_DBG_CMD_TX_QUEUE_INFO,
+ 		.dentry = HNS3_DBG_DENTRY_QUEUE,
+ 		.buf_len = HNS3_DBG_READ_LEN_1MB,
+-		.init = hns3_dbg_common_file_init,
++		.init = hns3_dbg_common_init_t1,
+ 	},
+ 	{
+ 		.name = "fd_tcam",
+@@ -674,77 +676,45 @@ static int hns3_dbg_rx_queue_info(struct hnae3_handle *h,
+ 	return 0;
+ }
+ 
+-static const struct hns3_dbg_item tx_queue_info_items[] = {
+-	{ "QUEUE_ID", 2 },
+-	{ "BD_NUM", 2 },
+-	{ "TC", 2 },
+-	{ "TAIL", 2 },
+-	{ "HEAD", 2 },
+-	{ "FBDNUM", 2 },
+-	{ "OFFSET", 2 },
+-	{ "PKTNUM", 5 },
+-	{ "RING_EN", 2 },
+-	{ "TX_RING_EN", 2 },
+-	{ "BASE_ADDR", 10 },
+-};
+-
+ static void hns3_dump_tx_queue_info(struct hns3_enet_ring *ring,
+-				    struct hnae3_ae_dev *ae_dev, char **result,
+-				    u32 index)
++				    struct seq_file *s, u32 index)
+ {
++	struct hnae3_ae_dev *ae_dev = hnae3_seq_file_to_ae_dev(s);
++	void __iomem *base = ring->tqp->io_base;
+ 	u32 base_add_l, base_add_h;
+-	u32 j = 0;
+ 
+-	sprintf(result[j++], "%u", index);
+-	sprintf(result[j++], "%u", readl_relaxed(ring->tqp->io_base +
+-		HNS3_RING_TX_RING_BD_NUM_REG));
+-
+-	sprintf(result[j++], "%u", readl_relaxed(ring->tqp->io_base +
+-		HNS3_RING_TX_RING_TC_REG));
+-
+-	sprintf(result[j++], "%u", readl_relaxed(ring->tqp->io_base +
+-		HNS3_RING_TX_RING_TAIL_REG));
+-
+-	sprintf(result[j++], "%u", readl_relaxed(ring->tqp->io_base +
+-		HNS3_RING_TX_RING_HEAD_REG));
+-
+-	sprintf(result[j++], "%u", readl_relaxed(ring->tqp->io_base +
+-		HNS3_RING_TX_RING_FBDNUM_REG));
+-
+-	sprintf(result[j++], "%u", readl_relaxed(ring->tqp->io_base +
+-		HNS3_RING_TX_RING_OFFSET_REG));
+-
+-	sprintf(result[j++], "%u", readl_relaxed(ring->tqp->io_base +
+-		HNS3_RING_TX_RING_PKTNUM_RECORD_REG));
+-
+-	sprintf(result[j++], "%s",
+-		str_on_off(readl_relaxed(ring->tqp->io_base +
+-					 HNS3_RING_EN_REG)));
++	seq_printf(s, "%-10u", index);
++	seq_printf(s, "%-8u",
++		   readl_relaxed(base + HNS3_RING_TX_RING_BD_NUM_REG));
++	seq_printf(s, "%-4u", readl_relaxed(base + HNS3_RING_TX_RING_TC_REG));
++	seq_printf(s, "%-6u", readl_relaxed(base + HNS3_RING_TX_RING_TAIL_REG));
++	seq_printf(s, "%-6u", readl_relaxed(base + HNS3_RING_TX_RING_HEAD_REG));
++	seq_printf(s, "%-8u",
++		   readl_relaxed(base + HNS3_RING_TX_RING_FBDNUM_REG));
++	seq_printf(s, "%-8u",
++		   readl_relaxed(base + HNS3_RING_TX_RING_OFFSET_REG));
++	seq_printf(s, "%-11u",
++		   readl_relaxed(base + HNS3_RING_TX_RING_PKTNUM_RECORD_REG));
++	seq_printf(s, "%-9s",
++		   str_on_off(readl_relaxed(base + HNS3_RING_EN_REG)));
+ 
+ 	if (hnae3_ae_dev_tqp_txrx_indep_supported(ae_dev))
+-		sprintf(result[j++], "%s",
+-			str_on_off(readl_relaxed(ring->tqp->io_base +
+-						 HNS3_RING_TX_EN_REG)));
++		seq_printf(s, "%-12s",
++			   str_on_off(readl_relaxed(base +
++						    HNS3_RING_TX_EN_REG)));
+ 	else
+-		sprintf(result[j++], "%s", "NA");
++		seq_printf(s, "%-12s", "NA");
+ 
+-	base_add_h = readl_relaxed(ring->tqp->io_base +
+-					HNS3_RING_TX_RING_BASEADDR_H_REG);
+-	base_add_l = readl_relaxed(ring->tqp->io_base +
+-					HNS3_RING_TX_RING_BASEADDR_L_REG);
+-	sprintf(result[j++], "0x%08x%08x", base_add_h, base_add_l);
++	base_add_h = readl_relaxed(base + HNS3_RING_TX_RING_BASEADDR_H_REG);
++	base_add_l = readl_relaxed(base + HNS3_RING_TX_RING_BASEADDR_L_REG);
++	seq_printf(s, "0x%08x%08x\n", base_add_h, base_add_l);
+ }
+ 
+-static int hns3_dbg_tx_queue_info(struct hnae3_handle *h,
+-				  char *buf, int len)
++static int hns3_dbg_tx_queue_info(struct seq_file *s, void *data)
+ {
+-	char data_str[ARRAY_SIZE(tx_queue_info_items)][HNS3_DBG_DATA_STR_LEN];
+-	struct hnae3_ae_dev *ae_dev = hns3_get_ae_dev(h);
+-	char *result[ARRAY_SIZE(tx_queue_info_items)];
++	struct hnae3_handle *h = hnae3_seq_file_to_handle(s);
+ 	struct hns3_nic_priv *priv = h->priv;
+-	char content[HNS3_DBG_INFO_LEN];
+ 	struct hns3_enet_ring *ring;
+-	int pos = 0;
+ 	u32 i;
+ 
+ 	if (!priv->ring) {
+@@ -752,12 +722,8 @@ static int hns3_dbg_tx_queue_info(struct hnae3_handle *h,
+ 		return -EFAULT;
+ 	}
+ 
+-	for (i = 0; i < ARRAY_SIZE(tx_queue_info_items); i++)
+-		result[i] = &data_str[i][0];
+-
+-	hns3_dbg_fill_content(content, sizeof(content), tx_queue_info_items,
+-			      NULL, ARRAY_SIZE(tx_queue_info_items));
+-	pos += scnprintf(buf + pos, len - pos, "%s", content);
++	seq_puts(s, "QUEUE_ID  BD_NUM  TC  TAIL  HEAD  FBDNUM  OFFSET  ");
++	seq_puts(s, "PKTNUM     RING_EN  TX_RING_EN  BASE_ADDR\n");
+ 
+ 	for (i = 0; i < h->kinfo.num_tqps; i++) {
+ 		/* Each cycle needs to determine whether the instance is reset,
+@@ -769,12 +735,7 @@ static int hns3_dbg_tx_queue_info(struct hnae3_handle *h,
+ 			return -EPERM;
+ 
+ 		ring = &priv->ring[i];
+-		hns3_dump_tx_queue_info(ring, ae_dev, result, i);
+-		hns3_dbg_fill_content(content, sizeof(content),
+-				      tx_queue_info_items,
+-				      (const char **)result,
+-				      ARRAY_SIZE(tx_queue_info_items));
+-		pos += scnprintf(buf + pos, len - pos, "%s", content);
++		hns3_dump_tx_queue_info(ring, s, i);
+ 	}
+ 
+ 	return 0;
+@@ -1170,10 +1131,6 @@ static const struct hns3_dbg_func hns3_dbg_cmd_func[] = {
+ 		.cmd = HNAE3_DBG_CMD_RX_QUEUE_INFO,
+ 		.dbg_dump = hns3_dbg_rx_queue_info,
+ 	},
+-	{
+-		.cmd = HNAE3_DBG_CMD_TX_QUEUE_INFO,
+-		.dbg_dump = hns3_dbg_tx_queue_info,
+-	},
+ 	{
+ 		.cmd = HNAE3_DBG_CMD_PAGE_POOL_INFO,
+ 		.dbg_dump = hns3_dbg_page_pool_info,
+@@ -1310,6 +1267,27 @@ hns3_dbg_common_file_init(struct hnae3_handle *handle, u32 cmd)
+ 	return 0;
+ }
+ 
++static int hns3_dbg_common_init_t1(struct hnae3_handle *handle, u32 cmd)
++{
++	struct device *dev = &handle->pdev->dev;
++	struct dentry *entry_dir;
++	read_func func = NULL;
++
++	switch (hns3_dbg_cmd[cmd].cmd) {
++	case HNAE3_DBG_CMD_TX_QUEUE_INFO:
++		func = hns3_dbg_tx_queue_info;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	entry_dir = hns3_dbg_dentry[hns3_dbg_cmd[cmd].dentry].dentry;
++	debugfs_create_devm_seqfile(dev, hns3_dbg_cmd[cmd].name, entry_dir,
++				    func);
++
++	return 0;
++}
++
+ int hns3_dbg_init(struct hnae3_handle *handle)
+ {
+ 	struct hnae3_ae_dev *ae_dev = hns3_get_ae_dev(handle);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 49fcee7a6d0f..52f42fe1d56f 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -5299,6 +5299,8 @@ static int hns3_client_init(struct hnae3_handle *handle)
+ 	struct net_device *netdev;
+ 	int ret;
+ 
++	ae_dev->handle = handle;
++
+ 	handle->ae_algo->ops->get_tqps_and_rss_info(handle, &alloc_tqps,
+ 						    &max_rss_size);
+ 	netdev = alloc_etherdev_mq(sizeof(struct hns3_nic_priv), alloc_tqps);
+-- 
+2.33.0
+
