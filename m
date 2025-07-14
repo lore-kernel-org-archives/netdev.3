@@ -1,277 +1,171 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EBB259C9F;
-	Mon, 14 Jul 2025 14:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A75258CF2;
+	Mon, 14 Jul 2025 14:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752505165; cv=none; b=j8UJyLBAt8pvSZdaXV5BWSZ8GuC7V/ninnTD9vpSYf2N6/s783hBW9l46IF2hQ/L//aRBDGfLt+yHm3jzmag1drMfcLzhP+QIfMC7ttZSoHJg6hIh8DAsgEjsnODTW/CwSFITyScX+12Xi+AFetUlP9iIMJS+FUHyEw3cYXjbi0=
+	t=1752505178; cv=none; b=N0McramoUpGy/KSXoMwPsmrOIimmZbGcXTwWgqjTJdvDjJxzttp1qWor60lexHugQOlUyb2Tak39pGmEU9jBDWXg2ZP9a91CBGdYuTVvS7Qw11A0CkCT4RAVXeQh38EYgfW6lE9ulrwpOBoSwYJYufewqG9VphIsA/15LHBO1hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752505165; c=relaxed/simple;
-	bh=LoJlg3EAlbipWWqeMfoaXHl8EBht7nYYHONIWaDbPlg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fHKtXImslIIn6yTRB/b3oUkiAeYcsQq9wFGpaKnl8Eg5z0hyMmoIQJOXgTf/qfNsuQiXF3V0jKb1p8YPAmgNt84xcB33ipdnHRtcCvYbVJlIMgu8SCI6u+JbrEyd9wwVIwBHdByeG+2oUa2MGJHTlkUUnX77TQb5QIH3G0bY3fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.42] (g42.guest.molgen.mpg.de [141.14.220.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id C11E161E64847;
-	Mon, 14 Jul 2025 16:58:58 +0200 (CEST)
-Message-ID: <21eded54-3460-4000-baba-815522012e02@molgen.mpg.de>
-Date: Mon, 14 Jul 2025 16:58:58 +0200
+	s=arc-20240116; t=1752505178; c=relaxed/simple;
+	bh=zdIA1OrZ3QwuE1iTyT9RAIBjGDyxK+dHldknrTLLHLA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=C2lKphpp/zAsdwTMueY5fy7VxWNAq8/u6GFD1W5D5mVwdnDSWgPDU4LwyALm/7G5VQbosnjoUiaWDjka8Tur7l/l9G9Tk5XYK2iGQiGok/nrq/BlKMh9XM8b1541lCXpYppXFI9siL2yyeHlQ8q3mwDlgKRAR0H5gc89BfxdFiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=k6obcYIq; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="k6obcYIq"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56E9rYvw004879;
+	Mon, 14 Jul 2025 14:59:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	UxWZKZdiJDX0DMRAQWw1ZpYiBrf/IfhPklk9LZUV/sw=; b=k6obcYIq8QPiPF6D
+	1Glu3uLOaLiBFhXPFKMdpnAi9yusHq3lzS2Osgp88/eFtR5EGr93I7nxt1/up0Wb
+	ilpNWHh3BVUY4017Lixt92wvO1DtOJFIBynfBc1hC5ZuKL4q4RPM8WJ6XVWU73gh
+	7j6m/SqcbgKzyS1jkWy/g0LpvtrEMo+5kskudy1gAE7ie9l67UjzQ/CoFhLuvVVp
+	01JzkGjUySrfYWSRVaE5DGByVYHfGnCwMMjsavMWGvkko8NS2AsTIjTRq8He0akd
+	iJfTDhgXmFarHE/lKcSlJkDC3g73SCxvvefiVSkKxLOg7bO3bixKoTS+wQ/iwSLM
+	pP7KQQ==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47ufxaw19d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Jul 2025 14:59:23 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 56EExMVU010472
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Jul 2025 14:59:22 GMT
+Received: from nsssdc-sh01-lnx.ap.qualcomm.com (10.80.80.8) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Mon, 14 Jul 2025 07:59:20 -0700
+From: Luo Jie <quic_luoj@quicinc.com>
+Date: Mon, 14 Jul 2025 22:58:56 +0800
+Subject: [PATCH net-next v2 2/3] net: phy: qcom: qca808x: Support PHY
+ counter
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Bluetooth: ISO: add socket option to report packet seqnum
- via CMSG
-To: Pauli Virtanen <pav@iki.fi>
-Cc: linux-bluetooth@vger.kernel.org, marcel@holtmann.org,
- johan.hedberg@gmail.com, luiz.dentz@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <474a5321753aba17ec2819ba59adfd157ecfb343.1752501596.git.pav@iki.fi>
- <bbdbe42b-614c-4f66-8712-f0ab8d54b490@molgen.mpg.de>
- <e647579c99fcbfeb0c89f041ea5ea61e608be099.camel@iki.fi>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <e647579c99fcbfeb0c89f041ea5ea61e608be099.camel@iki.fi>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20250714-qcom_phy_counter-v2-2-94dde9d9769f@quicinc.com>
+References: <20250714-qcom_phy_counter-v2-0-94dde9d9769f@quicinc.com>
+In-Reply-To: <20250714-qcom_phy_counter-v2-0-94dde9d9769f@quicinc.com>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Luo Jie <quic_luoj@quicinc.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752505154; l=2215;
+ i=quic_luoj@quicinc.com; s=20250209; h=from:subject:message-id;
+ bh=zdIA1OrZ3QwuE1iTyT9RAIBjGDyxK+dHldknrTLLHLA=;
+ b=JX1f5ezzhLbuBLwQYxqQSAPSQP6dfGPdEa8q5z1pEn6eKx/+sM8mjCW/MzVJ6RSLsRFlYcJpK
+ x7EQ8HJk3b9Cwm1eGU/omvhFs6lDyM56GmZMtRAF08s9kUF+jgfAfcA
+X-Developer-Key: i=quic_luoj@quicinc.com; a=ed25519;
+ pk=pzwy8bU5tJZ5UKGTv28n+QOuktaWuriznGmriA9Qkfc=
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: x-xXOVSIxoh_vZae32JroFRfs-Pzcn9y
+X-Proofpoint-ORIG-GUID: x-xXOVSIxoh_vZae32JroFRfs-Pzcn9y
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDA4OCBTYWx0ZWRfX3yTmPeLt/tPV
+ U2a8hfGitmMrJyYGu2DQIo+bE0IWdMQuuK2d4IzNGqpkRRQro7A4CBE2QRCasPJLqRvesyGf/Sw
+ 92FOWkrsG9sO6sLtmODbo56eh/I5dAJj+3Gp55SLtnt4tjUbG0bD1WZPJ8AOK2wVPR8GkXyZ5G/
+ bx1QDKh0elL+X/fkvPIzDCZcR4uygD0EiPE97wBEQ0hShMnbkjmjmYvD+/i8lc14eo/VbtHbtan
+ U7/7mCD3/JJVBBnQNAsduTN42rGQtaOPh7NMUCn+efZ1TPHDt6EMQuBDD62qFliKytdHub9ftPy
+ w+c9NLb/W1yKlJxYcKWsS81KBUIy7ylORcaFYCcgd7JvtzqsxHMF1d8qEZGUhm4ASmLOV4LtatC
+ dpkqM9an8g8YuEe5OoNyJiTEjIL7ljb3E4bdoY0m+dTW2u9G3Bii66Rq+sMlKqDUKivOnu8J
+X-Authority-Analysis: v=2.4 cv=Xc2JzJ55 c=1 sm=1 tr=0 ts=68751b4b cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=COk6AnOGAAAA:8
+ a=_JwSswBLOsKPZBXwtL4A:9 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-14_01,2025-07-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxscore=0 priorityscore=1501 adultscore=0 mlxlogscore=999
+ phishscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0 impostorscore=0
+ clxscore=1015 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507140088
 
-Dear Pauli,
+Enable CRC checking for received and transmitted frames, and configure
+counters to clear after being read within config_init() for accurate
+counter recording. Additionally, add PHY counter operations and integrate
+shared functions.
 
+Signed-off-by: Luo Jie <quic_luoj@quicinc.com>
+---
+ drivers/net/phy/qcom/qca808x.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-Thank you for your prompt reply.
+diff --git a/drivers/net/phy/qcom/qca808x.c b/drivers/net/phy/qcom/qca808x.c
+index 6de16c0eaa08..8eb51b1a006c 100644
+--- a/drivers/net/phy/qcom/qca808x.c
++++ b/drivers/net/phy/qcom/qca808x.c
+@@ -93,6 +93,7 @@ MODULE_LICENSE("GPL");
+ 
+ struct qca808x_priv {
+ 	int led_polarity_mode;
++	struct qcom_phy_hw_stats hw_stats;
+ };
+ 
+ static int qca808x_phy_fast_retrain_config(struct phy_device *phydev)
+@@ -243,6 +244,10 @@ static int qca808x_config_init(struct phy_device *phydev)
+ 
+ 	qca808x_fill_possible_interfaces(phydev);
+ 
++	ret = qcom_phy_counter_config(phydev);
++	if (ret)
++		return ret;
++
+ 	/* Configure adc threshold as 100mv for the link 10M */
+ 	return at803x_debug_reg_mask(phydev, QCA808X_PHY_DEBUG_ADC_THRESHOLD,
+ 				     QCA808X_ADC_THRESHOLD_MASK,
+@@ -622,6 +627,22 @@ static int qca808x_led_polarity_set(struct phy_device *phydev, int index,
+ 			      active_low ? 0 : QCA808X_LED_ACTIVE_HIGH);
+ }
+ 
++static int qca808x_update_stats(struct phy_device *phydev)
++{
++	struct qca808x_priv *priv = phydev->priv;
++
++	return qcom_phy_update_stats(phydev, &priv->hw_stats);
++}
++
++static void qca808x_get_phy_stats(struct phy_device *phydev,
++				  struct ethtool_eth_phy_stats *eth_stats,
++				  struct ethtool_phy_stats *stats)
++{
++	struct qca808x_priv *priv = phydev->priv;
++
++	qcom_phy_get_stats(stats, priv->hw_stats);
++}
++
+ static struct phy_driver qca808x_driver[] = {
+ {
+ 	/* Qualcomm QCA8081 */
+@@ -651,6 +672,8 @@ static struct phy_driver qca808x_driver[] = {
+ 	.led_hw_control_set	= qca808x_led_hw_control_set,
+ 	.led_hw_control_get	= qca808x_led_hw_control_get,
+ 	.led_polarity_set	= qca808x_led_polarity_set,
++	.update_stats		= qca808x_update_stats,
++	.get_phy_stats		= qca808x_get_phy_stats,
+ }, };
+ 
+ module_phy_driver(qca808x_driver);
 
+-- 
+2.34.1
 
-Am 14.07.25 um 16:53 schrieb Pauli Virtanen:
-
-> ma, 2025-07-14 kello 16:15 +0200, Paul Menzel kirjoitti:
-
->> Am 14.07.25 um 16:02 schrieb Pauli Virtanen:
->>> User applications need a way to track which ISO interval a given SDU
->>> belongs to, to properly detect packet loss. All controllers do not set
->>> timestamps, and it's not guaranteed user application receives all packet
->>> reports (small socket buffer, or controller doesn't send all reports
->>> like Intel AX210 is doing).
->>>
->>> Add socket option BT_PKT_SEQNUM that enables reporting of received
->>> packet ISO sequence number in BT_SCM_PKT_SEQNUM CMSG.
->>
->> Are there user applications already supporting this, so it can be tested?
-> 
-> I sent the associated tests to linux-bluetooth list
-> 
-> https://lore.kernel.org/linux-bluetooth/c9a75585e3640d8a1efca0bf96158eec1ca25fdc.1752501450.git.pav@iki.fi/
-
-Awesome. Can this be referenced in the commit message?
-
->>> Signed-off-by: Pauli Virtanen <pav@iki.fi>
->>> ---
->>>
->>> Notes:
->>>       Intel AX210 is not sending all reports:
->>>       
->>>       $ btmon -r dump.btsnoop -I -C90|grep -A1 'ISO Data RX: Handle 2304'
->>>       ...
->>>       > ISO Data RX: Handle 2304 flags 0x02 dlen 64                      #1713 [hci0] 22.567744
->>>               dd 01 3c 00 6d 08 e9 14 1e 3b 85 7b 35 c2 25 0b  ..<.m....;.{5.%.
->>>       --
->>>       > ISO Data RX: Handle 2304 flags 0x02 dlen 64                      #1718 [hci0] 22.573745
->>>               de 01 3c 00 41 65 22 4f 99 9b 0b b6 ff cb 06 00  ..<.Ae"O........
->>>       --
->>>       > ISO Data RX: Handle 2304 flags 0x02 dlen 64                      #1727 [hci0] 22.587933
->>>               e0 01 3c 00 8b 6e 33 44 65 51 ee d7 e0 ee 49 d8  ..<..n3DeQ....I.
->>>       --
->>>       > ISO Data RX: Handle 2304 flags 0x02 dlen 64                      #1732 [hci0] 22.596742
->>>               e1 01 3c 00 a7 48 54 a7 c1 9f dc 37 66 fe 04 ab  ..<..HT....7f...
->>>       ...
->>>       
->>>       Here, report for packet with sequence number 0x01df is missing.
->>
->> Sorry, but where are the sequence number in the trace?
-> 
-> It's the first two bytes, see Core specification Vol 4E Sec 5.4.5 "HCI
-> ISO Data packets".
-
-Now I see it. Thank you!
-
->>>       
->>>       This may be spec violation by the controller, see Core v6.1 pp. 3702
->>>       
->>>           All SDUs shall be sent to the upper layer including the indication
->>>           of validity of data. A report shall be sent to the upper layer if
->>>           the SDU is completely missing.
->>>       
->>>       Regardless, it will be easier for user applications to see the HW
->>>       sequence numbers directly, so they don't have to count packets and it's
->>>       in any case more reliable if packets get dropped due to socket buffer
->>>       size.
->>
->> I wouldn’t mind to have the note in the commit message.
-> 
-> I'm not sure it's a spec violation --- the text in the specification is
-> not fully clear what "All SDUs" means in the context here --- so I
-> don't really want to say so in the commit message.
-> 
-> The limited socket buffer and that AX210 drops some reports is mentioned
-> in the commit message.
-
-True.
-
->>>    include/net/bluetooth/bluetooth.h |  9 ++++++++-
->>>    net/bluetooth/af_bluetooth.c      |  7 +++++++
->>>    net/bluetooth/iso.c               | 21 ++++++++++++++++++---
->>>    3 files changed, 33 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
->>> index 114299bd8b98..0e31779a3341 100644
->>> --- a/include/net/bluetooth/bluetooth.h
->>> +++ b/include/net/bluetooth/bluetooth.h
->>> @@ -244,6 +244,10 @@ struct bt_codecs {
->>>    
->>>    #define BT_ISO_BASE		20
->>>    
->>> +#define BT_PKT_SEQNUM		21
->>> +
->>> +#define BT_SCM_PKT_SEQNUM	0x05
->>> +
->>>    __printf(1, 2)
->>>    void bt_info(const char *fmt, ...);
->>>    __printf(1, 2)
->>> @@ -391,7 +395,8 @@ struct bt_sock {
->>>    enum {
->>>    	BT_SK_DEFER_SETUP,
->>>    	BT_SK_SUSPEND,
->>> -	BT_SK_PKT_STATUS
->>> +	BT_SK_PKT_STATUS,
->>> +	BT_SK_PKT_SEQNUM,
->>>    };
->>>    
->>>    struct bt_sock_list {
->>> @@ -475,6 +480,7 @@ struct bt_skb_cb {
->>>    	u8 pkt_type;
->>>    	u8 force_active;
->>>    	u16 expect;
->>> +	u16 pkt_seqnum;
->>
->> Excuse my ignorance, just want to make sure, the type is big enough.
-> 
-> The hardware sequence number is also 16 bits.
-
-Understood.
-
->>>    	u8 incoming:1;
->>>    	u8 pkt_status:2;
->>>    	union {
->>> @@ -488,6 +494,7 @@ struct bt_skb_cb {
->>>    
->>>    #define hci_skb_pkt_type(skb) bt_cb((skb))->pkt_type
->>>    #define hci_skb_pkt_status(skb) bt_cb((skb))->pkt_status
->>> +#define hci_skb_pkt_seqnum(skb) bt_cb((skb))->pkt_seqnum
->>>    #define hci_skb_expect(skb) bt_cb((skb))->expect
->>>    #define hci_skb_opcode(skb) bt_cb((skb))->hci.opcode
->>>    #define hci_skb_event(skb) bt_cb((skb))->hci.req_event
->>> diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
->>> index 6ad2f72f53f4..44b7acb20a67 100644
->>> --- a/net/bluetooth/af_bluetooth.c
->>> +++ b/net/bluetooth/af_bluetooth.c
->>> @@ -364,6 +364,13 @@ int bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
->>>    			put_cmsg(msg, SOL_BLUETOOTH, BT_SCM_PKT_STATUS,
->>>    				 sizeof(pkt_status), &pkt_status);
->>>    		}
->>> +
->>> +		if (test_bit(BT_SK_PKT_SEQNUM, &bt_sk(sk)->flags)) {
->>> +			u16 pkt_seqnum = hci_skb_pkt_seqnum(skb);
->>> +
->>> +			put_cmsg(msg, SOL_BLUETOOTH, BT_SCM_PKT_SEQNUM,
->>> +				 sizeof(pkt_seqnum), &pkt_seqnum);
->>> +		}
->>>    	}
->>>    
->>>    	skb_free_datagram(sk, skb);
->>> diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
->>> index fc22782cbeeb..469450bb6b6c 100644
->>> --- a/net/bluetooth/iso.c
->>> +++ b/net/bluetooth/iso.c
->>> @@ -1687,6 +1687,17 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
->>>    			clear_bit(BT_SK_PKT_STATUS, &bt_sk(sk)->flags);
->>>    		break;
->>>    
->>> +	case BT_PKT_SEQNUM:
->>> +		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
->>> +		if (err)
->>> +			break;
->>> +
->>> +		if (opt)
->>> +			set_bit(BT_SK_PKT_SEQNUM, &bt_sk(sk)->flags);
->>> +		else
->>> +			clear_bit(BT_SK_PKT_SEQNUM, &bt_sk(sk)->flags);
->>> +		break;
->>> +
->>>    	case BT_ISO_QOS:
->>>    		if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND &&
->>>    		    sk->sk_state != BT_CONNECT2 &&
->>> @@ -2278,7 +2289,7 @@ static void iso_disconn_cfm(struct hci_conn *hcon, __u8 reason)
->>>    void iso_recv(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
->>>    {
->>>    	struct iso_conn *conn = hcon->iso_data;
->>> -	__u16 pb, ts, len;
->>> +	__u16 pb, ts, len, sn;
->>
->> Use `seqnum` for consistency with the parts above.
->>
->>>    
->>>    	if (!conn)
->>>    		goto drop;
->>> @@ -2308,6 +2319,7 @@ void iso_recv(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
->>>    				goto drop;
->>>    			}
->>>    
->>> +			sn = hdr->sn;
->>>    			len = __le16_to_cpu(hdr->slen);
->>>    		} else {
->>>    			struct hci_iso_data_hdr *hdr;
->>> @@ -2318,18 +2330,20 @@ void iso_recv(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
->>>    				goto drop;
->>>    			}
->>>    
->>> +			sn = hdr->sn;
->>>    			len = __le16_to_cpu(hdr->slen);
->>>    		}
->>>    
->>>    		flags  = hci_iso_data_flags(len);
->>>    		len    = hci_iso_data_len(len);
->>>    
->>> -		BT_DBG("Start: total len %d, frag len %d flags 0x%4.4x", len,
->>> -		       skb->len, flags);
->>> +		BT_DBG("Start: total len %d, frag len %d flags 0x%4.4x sn %d",
->>> +		       len, skb->len, flags, sn);
->>>    
->>>    		if (len == skb->len) {
->>>    			/* Complete frame received */
->>>    			hci_skb_pkt_status(skb) = flags & 0x03;
->>> +			hci_skb_pkt_seqnum(skb) = sn;
->>>    			iso_recv_frame(conn, skb);
->>>    			return;
->>>    		}
->>> @@ -2352,6 +2366,7 @@ void iso_recv(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
->>>    			goto drop;
->>>    
->>>    		hci_skb_pkt_status(conn->rx_skb) = flags & 0x03;
->>> +		hci_skb_pkt_seqnum(conn->rx_skb) = sn;
->>>    		skb_copy_from_linear_data(skb, skb_put(conn->rx_skb, skb->len),
->>>    					  skb->len);
->>>    		conn->rx_len = len - skb->len;
-
-Kind regards,
-
-Paul
