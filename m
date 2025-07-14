@@ -1,138 +1,109 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E56423A6
-	for <netdev@vger.kernel.org>; Mon, 14 Jul 2025 11:13:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6046519AD48
+	for <netdev@vger.kernel.org>; Mon, 14 Jul 2025 11:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752491615; cv=none; b=UooLcgUBJGnQtaFXBCePV3EALX4N5+1dwJ6pwBVFWBTcTc6FAEc16Uz70LL5ra9+rVzfCJQtsDMUNjNUOz1KGylWw+yexxAzk+RkPsRHdWhRSQu5RlkLQskVj4Nf4iytcHMBmNfCirqWJVbsJP4fA7iBM3OgeIpgWgste4XaEDk=
+	t=1752492017; cv=none; b=IpLgApNzjMP2xFMOD5uM3/ivEEoOUktGbgp2h2ymbMbC8YTdF8rei+iTHoHOLceyO1Y9hWwHryzdQuZxXPOw/PNSF/5KYut3Dh3Lr6N6lxNOJ3uT2qpo5M6IXjcVGVTMe8BhzAabf58/lAQIhlGO8R2Vsds52ao7+M1ValSiJgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752491615; c=relaxed/simple;
-	bh=7USVDM8kQAjUZfvUm9YvSO+W60rTXx1vHR9TIKPX0dc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KqL/bjy054OENjjNGe5IxyPjDUNKH8DK+nM/pPTzlIEh0mzM6nqJLQcEgv5tN9p7ol3xLs6/cDUOowzG4kgRnByhXTkGMqZnfh+RYTrR0CBUsqjduvqwQVl3OCyPrB1f8RCWsqPw3ij80qIT/qSzEfmmIZJ4EemF9lxpMyREKC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=SGWclml9; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=SGWclml9; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1752492017; c=relaxed/simple;
+	bh=U+ABV2Z/K8FhS1tVsDtWSNLoxl2AP1Zy78uF8iTobqs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=h5e0EGXwMfjwUT53yKbM2EIz2NnlNyO7jKwftEIjzQiSq8esDmGR/g5mfmfePQW0La/iIySGnLXxzPs/R5FBbeSDl+QU6K6telUwvUTyosEhD36qqZGqppJ02c12ZYwKKQp0QielPf1vXtitG0+3bRDV/a9Z/00GYxW6sJ6t+iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TCo43i71; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="SGWclml9";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="SGWclml9"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 020C9211FC;
-	Mon, 14 Jul 2025 11:13:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1752491611; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=xncQ4JZyfBu8qDa2hhTZYFb9vsPFqn8rnyGClhhvb80=;
-	b=SGWclml98AaoTkiRq3UNmlkki7FJdYV+LPhRSGeZKqqoMjk+KlJAgRAMN9fyaptaZhIcr7
-	uacX/xjf4gwnVREs1UlgRvq5z+LaTewLs89iSzrPAldDQVPOFO6/DX2blIe8oW8a3WoXzK
-	W1I7HRCny2csvQkEPAYbfn664v4UmBE=
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=SGWclml9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1752491611; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=xncQ4JZyfBu8qDa2hhTZYFb9vsPFqn8rnyGClhhvb80=;
-	b=SGWclml98AaoTkiRq3UNmlkki7FJdYV+LPhRSGeZKqqoMjk+KlJAgRAMN9fyaptaZhIcr7
-	uacX/xjf4gwnVREs1UlgRvq5z+LaTewLs89iSzrPAldDQVPOFO6/DX2blIe8oW8a3WoXzK
-	W1I7HRCny2csvQkEPAYbfn664v4UmBE=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC266138A1;
-	Mon, 14 Jul 2025 11:13:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id FvbSKFrmdGguYgAAD6G6ig
-	(envelope-from <oneukum@suse.com>); Mon, 14 Jul 2025 11:13:30 +0000
-From: Oliver Neukum <oneukum@suse.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Oliver Neukum <oneukum@suse.com>,
-	syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
-Subject: [PATCH net] usb: net: sierra: check for no status endpoint
-Date: Mon, 14 Jul 2025 13:12:56 +0200
-Message-ID: <20250714111326.258378-1-oneukum@suse.com>
-X-Mailer: git-send-email 2.50.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TCo43i71"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752492013;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1Y2GjFqzQOcWBUPguZ9USD97IUATEowPrFd5x574Jlc=;
+	b=TCo43i71mxbIFTPT/vwzSGnUEtXb3Hjb3IMFYn40LP3/UAwGr6K87DzTxp0oOAmFl9kFk1
+	NlwV8UxpB5h5APA2ZXySSL3XxSEfiF4IoWX1qbRRA84gXQDCY5A8KeQ+rTy6U4ejmhwrho
+	le56Hs2AM2PXctT+f8WTI+lT0ZV3AJI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-631-C7NToHHNOAqiJr38uynuMQ-1; Mon, 14 Jul 2025 07:20:12 -0400
+X-MC-Unique: C7NToHHNOAqiJr38uynuMQ-1
+X-Mimecast-MFC-AGG-ID: C7NToHHNOAqiJr38uynuMQ_1752492011
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3a5780e8137so2792427f8f.1
+        for <netdev@vger.kernel.org>; Mon, 14 Jul 2025 04:20:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752492011; x=1753096811;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Y2GjFqzQOcWBUPguZ9USD97IUATEowPrFd5x574Jlc=;
+        b=C0DQcJjcn4sT3B6KIBgwRVTvZq/743wdC8irtdmxWanHubpOAdL3Vcsbjc7CxlmSPm
+         qrrQH9KurlA+kYYS7fxYcbbUrSdWIPFZLcaVOEr8vHripcOQ9PhqUYx2N7eR9qe+uVHW
+         i/wSQSrBCNNTAahWCjAQIzRxbiB/6xStqBuKQR3H+4zk8LWytHhL0L0Ghxnv6k2TaQdg
+         wLRQ3vEUyfj5DnS/Iv7x6A1eaHt8FnBtCefmQH/6uoN9VvNJi4gZSqoAfFbxDaGEtH/x
+         IM8klMG4xbnoqsXrXy5M6xB7MWjXu53KKutzt1uu4ky5mRDVbrJ0jEgcDvZXVBrlJI9e
+         z2tQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUide6qB6nAEOSQfy3OhgWM+PbXYTzTiFhJieIAy70c2jidFvZeZusEE1fVn2RvhP1ADbkkdo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywh+L5PDubtKq66aEcVgxC/qy2z6Z0LEcWS8pH1GZDSAZQHOguS
+	+LtQRFYrMnEss3JKAvQyT+IwUValvrbDyi1+/fMc4iDYjdXlJP2QYJg+B+03nSwayFzJ9n9aOlb
+	Q4rMzwhRKyxKkEm6G8FgObqGk3Cq82ndG2+mFGSczxKmVSe839PJ3PV3h0A==
+X-Gm-Gg: ASbGncuL3eeSQtcQS2FgYuDvPG2tCWWviL9XGrg31FjxWGn9b79YOJ/s9RGtC7q2mN5
+	YO/q7XQpF40AcwU2Ddq8tbY2fRdsqmEfnmcwYINu0CD0D545aTPqQPcCfpMF0zKwnDYfyUR1yoL
+	QiCoVsnC0R3Rg6pOeFMNiGM8U3/tY+MmYIimzwYGwURmlIoILp0hbgSSE+Sb6TcHjUGcbVB+lx7
+	6b7gNhAx70Ot2pMAm/A55xUJoZKeHzMdym23488A4pxMTZKkBn+hht8ORxBKisREkRX9OrP5mk3
+	6dGJ8cP3MmMhp5JaSs0zeNVHkmNZE7efEebfNs624GQ=
+X-Received: by 2002:a05:6000:240e:b0:3a3:70ab:b274 with SMTP id ffacd0b85a97d-3b5e7f13a0amr13230082f8f.12.1752492010670;
+        Mon, 14 Jul 2025 04:20:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFY5XrOya3yhJllGztjovrFQKpCxb10L3EkWzmPKdKNg7g1cHqucJ9l4yQULMvIkstPwMqvTQ==
+X-Received: by 2002:a05:6000:240e:b0:3a3:70ab:b274 with SMTP id ffacd0b85a97d-3b5e7f13a0amr13230053f8f.12.1752492010098;
+        Mon, 14 Jul 2025 04:20:10 -0700 (PDT)
+Received: from [192.168.0.115] ([212.105.155.228])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8dc201asm11984844f8f.22.2025.07.14.04.20.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Jul 2025 04:20:09 -0700 (PDT)
+Message-ID: <b8f0ae48-b059-4137-9b74-f69c122f98f9@redhat.com>
+Date: Mon, 14 Jul 2025 13:20:06 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 020C9211FC
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	DWL_DNSWL_MED(-2.00)[suse.com:dkim];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_HAS_DN(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TAGGED_RCPT(0.00)[netdev,3f89ec3d1d0842e95d50];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:dkim,suse.com:mid,suse.com:email]
-X-Spam-Score: -3.51
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 net-next 04/15] tcp: ecn functions in separated
+ include file
+To: chia-yu.chang@nokia-bell-labs.com, edumazet@google.com,
+ linux-doc@vger.kernel.org, corbet@lwn.net, horms@kernel.org,
+ dsahern@kernel.org, kuniyu@amazon.com, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, dave.taht@gmail.com, jhs@mojatatu.com,
+ kuba@kernel.org, stephen@networkplumber.org, xiyou.wangcong@gmail.com,
+ jiri@resnulli.us, davem@davemloft.net, andrew+netdev@lunn.ch,
+ donald.hunter@gmail.com, ast@fiberby.net, liuhangbin@gmail.com,
+ shuah@kernel.org, linux-kselftest@vger.kernel.org, ij@kernel.org,
+ ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com,
+ g.white@cablelabs.com, ingemar.s.johansson@ericsson.com,
+ mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at,
+ Jason_Livingood@comcast.com, vidhi_goel@apple.com
+References: <20250704085345.46530-1-chia-yu.chang@nokia-bell-labs.com>
+ <20250704085345.46530-5-chia-yu.chang@nokia-bell-labs.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250704085345.46530-5-chia-yu.chang@nokia-bell-labs.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The driver checks for having three endpoints and
-having bulk in and out endpoints, but not that
-the third endpoint is interrupt input.
-Rectify the omission.
+On 7/4/25 10:53 AM, chia-yu.chang@nokia-bell-labs.com wrote:
+> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> 
+> The following patches will modify ECN helpers and add AccECN herlpers,
+> and this patch moves the existing ones into a separated include file.
+> 
+> No functional changes.
+> 
+> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 
-Reported-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/686d5a9f.050a0220.1ffab7.0017.GAE@google.com/
-Tested-by: syzbot+3f89ec3d1d0842e95d50@syzkaller.appspotmail.com
-Fixes: eb4fd8cd355c8 ("net/usb: add sierra_net.c driver")
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
----
- drivers/net/usb/sierra_net.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/usb/sierra_net.c b/drivers/net/usb/sierra_net.c
-index c30ca415d1d3..36c73db44f77 100644
---- a/drivers/net/usb/sierra_net.c
-+++ b/drivers/net/usb/sierra_net.c
-@@ -689,6 +689,10 @@ static int sierra_net_bind(struct usbnet *dev, struct usb_interface *intf)
- 			status);
- 		return -ENODEV;
- 	}
-+	if (!dev->status) {
-+		dev_err(&dev->udev->dev, "No status endpoint found");
-+		return -ENODEV;
-+	}
- 	/* Initialize sierra private data */
- 	priv = kzalloc(sizeof *priv, GFP_KERNEL);
- 	if (!priv)
--- 
-2.50.0
+Acked-by: Paolo Abeni <pabeni@redhat.com>
 
