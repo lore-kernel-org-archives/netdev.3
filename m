@@ -1,108 +1,83 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511BE2F22;
-	Mon, 14 Jul 2025 13:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08CB24A066;
+	Mon, 14 Jul 2025 13:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752500100; cv=none; b=k0ClVnX5bI62Mkc1XEc7Jjaqbs/k/mbDUKxJ5mTnBtp8ujpweCTXzfKNmBJLxumwvhPgS8ulyFEO3OZsT3zWJF5wavF8yyT0153SA1rZpJfSnax8NBpXscYp5UMSBtSqCjNDFut3qXGysNf+uhZR+iaYAMOZaA6FFD/PGAMWYI8=
+	t=1752500388; cv=none; b=i3giDhycYNQodpL8jwnLbl6D6oprdfBUzM2LNnErl41JgL7YBSJvDuzhIFYj/f37JpUr4vO8dPzm7w/iFvUl1SuRwM2HhL1VlcheFqGacNSBn4SMAy/yfT7m0GCoehAF9YGLI8Une+2m72WXk1Ct5H+S47gZQeojJhLHn/A1AkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752500100; c=relaxed/simple;
-	bh=CEkKa/aikU/CDzdfcPAjOT99jNpHypxstJjnFfoQF3M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m5VF5/nClZzIYxlJba8mqM+mGtULo4d9jEqZ8IsOB47QZWqc6EK1g1gy4DAc4KfZ8PiQrRSJXW91a8QPZBmK5JZIdRKEgpt6HaiBI2tyfAouFNSqy7I3q04Bzvtihi4cqUTfAIxw2pmhaHxPrO1s/icfBKMMuF9c82QFHvoL7kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qPYqJaoS; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qPYqJaoS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=rkKA5JFXkaqeIgKnZeTRvq/H+eMfFQ7tSAFHadzv+i4=; b=qPYqJaoStTW6WZY8E3xsfppAcV
-	GciwfhUoAIxtaUx5hRVyOQZL595Nutl12IeZGQ+2QwMLot/GFSllOAsMkFzzwfSJiTKTwqNREFIWM
-	u1tdKdG9gNKJ9cvGzr99Z+DlXIe3rzBruOF4Hcro7UHi3k4oDscE48rIsYpUmNuaWcqU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1ubJKR-001SkI-Ao; Mon, 14 Jul 2025 15:34:47 +0200
-Date: Mon, 14 Jul 2025 15:34:47 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: rohan.g.thomas@altera.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Romain Gantois <romain.gantois@bootlin.com>, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Matthew Gerlach <matthew.gerlach@altera.com>
-Subject: Re: [PATCH net-next 1/3] net: stmmac: xgmac: Disable RX FIFO
- Overflow interrupts
-Message-ID: <bef4d761-8909-4f90-8822-8c344291cb93@lunn.ch>
-References: <20250714-xgmac-minor-fixes-v1-0-c34092a88a72@altera.com>
- <20250714-xgmac-minor-fixes-v1-1-c34092a88a72@altera.com>
+	s=arc-20240116; t=1752500388; c=relaxed/simple;
+	bh=ISa+F8ZRrtnqdWN7xQllm5UdUGup/iPHoyTVMgXu4SY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=G9Hgm8s6XvRrX4HoN+rjai3mfeKGZsKVxLCGsXlF/ZxEsxstiDnQTVxZyQWl1X+pIo50Nt3wbQxUc7kGR7wmsovP52yv4fYg93DSUE4IbmTw5WJjjrH83gOHW8yqAIGWeW5vb1Rf99muC/gCd1hevRtpY8nr8EjmrHFbHljgWio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bgjzL6N7zz29drq;
+	Mon, 14 Jul 2025 21:37:02 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 69576140230;
+	Mon, 14 Jul 2025 21:39:39 +0800 (CST)
+Received: from huawei.com (10.175.124.27) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 14 Jul
+ 2025 21:39:38 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>
+Subject: [PATCH net-next] ipv6: mcast: Simplify mld_clear_{report|query}()
+Date: Mon, 14 Jul 2025 22:01:27 +0800
+Message-ID: <20250714140127.3300393-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250714-xgmac-minor-fixes-v1-1-c34092a88a72@altera.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-On Mon, Jul 14, 2025 at 03:59:17PM +0800, Rohan G Thomas via B4 Relay wrote:
-> From: Rohan G Thomas <rohan.g.thomas@altera.com>
-> 
-> Enabling RX FIFO Overflow interrupts is counterproductive
-> and causes an interrupt storm when RX FIFO overflows.
-> Disabling this interrupt has no side effect and eliminates
-> interrupt storms when the RX FIFO overflows.
-> 
-> Commit 8a7cb245cf28 ("net: stmmac: Do not enable RX FIFO
-> overflow interrupts") disables RX FIFO overflow interrupts
-> for DWMAC4 IP and removes the corresponding handling of
-> this interrupt. This patch is doing the same thing for
-> XGMAC IP.
-> 
-> Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-> Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Use __skb_queue_purge() instead of re-implementing it.
 
-Please take a read of:
-
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
-
-This appears to be a fixed, so the Subject: line should indicate this.
-Please also include a Fixes: tag, and Cc: stable.
-
-> ---
->  drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c | 4 ----
->  1 file changed, 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-> index 5dcc95bc0ad28b756accf9670c5fa00aa94fcfe3..7201a38842651a865493fce0cefe757d6ae9bafa 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-> @@ -203,10 +203,6 @@ static void dwxgmac2_dma_rx_mode(struct stmmac_priv *priv, void __iomem *ioaddr,
->  	}
->  
->  	writel(value, ioaddr + XGMAC_MTL_RXQ_OPMODE(channel));
-> -
-> -	/* Enable MTL RX overflow */
-> -	value = readl(ioaddr + XGMAC_MTL_QINTEN(channel));
-> -	writel(value | XGMAC_RXOIE, ioaddr + XGMAC_MTL_QINTEN(channel));
-
-What is the reset default? Would it make sense to explicitly disable
-it, rather than never enable it? What does 8a7cb245cf28 do?
-
-    Andrew
-
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
 ---
-pw-bot: cr
+ net/ipv6/mcast.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index 8aecdd85a6ae..36ca27496b3c 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -845,21 +845,15 @@ static void mld_clear_delrec(struct inet6_dev *idev)
+ 
+ static void mld_clear_query(struct inet6_dev *idev)
+ {
+-	struct sk_buff *skb;
+-
+ 	spin_lock_bh(&idev->mc_query_lock);
+-	while ((skb = __skb_dequeue(&idev->mc_query_queue)))
+-		kfree_skb(skb);
++	__skb_queue_purge(&idev->mc_query_queue);
+ 	spin_unlock_bh(&idev->mc_query_lock);
+ }
+ 
+ static void mld_clear_report(struct inet6_dev *idev)
+ {
+-	struct sk_buff *skb;
+-
+ 	spin_lock_bh(&idev->mc_report_lock);
+-	while ((skb = __skb_dequeue(&idev->mc_report_queue)))
+-		kfree_skb(skb);
++	__skb_queue_purge(&idev->mc_report_queue);
+ 	spin_unlock_bh(&idev->mc_report_lock);
+ }
+ 
+-- 
+2.34.1
 
