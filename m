@@ -1,260 +1,817 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791D34501A
-	for <netdev@vger.kernel.org>; Mon, 14 Jul 2025 04:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752467805; cv=fail; b=qu+pi8a/Y89yNjyZmPfWa/Zi42Mu94PDt7WP3KP2PVGuuEdZJ9ve+h4LuAPmQfCvQ9B1CnN7GWIQwisyn3rawH9lJWX0R6eWIMBFmjcoQohEMbIARzymUaamD80XrGbo2sx+QTwRBXOx1Jn2rTx+CFmvwvausWDomXfF1YlTE2M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752467805; c=relaxed/simple;
-	bh=mttDDeqpogMz77el2pesjiofTjA0dlcrpr1Kf5874+0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ajKp2PhYeRWfCEIvERcNOnybDRW7kEQCcFd3+ltuR+jpHGJMsHNGxslw/F2jxqtnMEMOQnNxOGB4x7CXUd6FZ5PUnFXMM9RaVQwTr7c2yZgtoKt9SOqU8sRl9TrAdVDUdHSZ1IZ/C2jUCXpLVgA9CDCaC+ZYvg3h/HfpbIgomV4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=b2SMA/mW; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=uxZLDyq+; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226761F418F
+	for <netdev@vger.kernel.org>; Mon, 14 Jul 2025 04:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752468317; cv=none; b=IJui8C0ucXNgmALTs6fVgMJDkJZep00hBv7+YxBl98flssdO4z+2QQyxhta61U+BTRcGGtzV25qr7813YTDAqd931wteV9+1VUqViVG4YwXTiQ94XETTnYGX1raKtTU6PQVWn4XyjhzvzXejHCL94AmpI4O42LLNYLic8k1wfWk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752468317; c=relaxed/simple;
+	bh=8UvuabZtZbkYEzwmBfvtAwquQfX/qRraqD9A2IiPxV8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eUMQLerbnwlWlFUKb/HI+4cJ2jvdhp0/4GmFhUnESdVDIA+CsEzKZXp5RUQB+tiZceEJc5N+xXvd0RVM8TMo5068OXZCIcIpb/ZL+QuZf7MLIVOKofGepkLfHtMTaYWc0Wa4KLsVby0EWT8x1ZAAvJx1v485Pavk3saRZKvHpY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=Kihd/CWg; arc=none smtp.client-ip=171.64.64.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="b2SMA/mW";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="uxZLDyq+"
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56DLW6sq007691;
-	Mon, 14 Jul 2025 04:36:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-id:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=mttDDeqpogMz77el2pesjiofTjA0dlcrpr1Kf5874+0=; b=
-	b2SMA/mWz83x5atm1KRqPM86j97leYc4UvcJdZIQXSkegU5UN1bxqAE24MqbHbYd
-	Cw1cqbe3mHfKfAaiONetsLfp9Ho1/NpaBdVyEqjAqQWIgWm/yyKoVMaIL0vhdmAE
-	e5iVrR+lUrY+A+4Ac3k8fqY0g2dlLKKqovDAcKSWEGBDj/hkEp/UnN+yHnyDCMLf
-	m1P8ASVPePpjC7MvNT8ddx17iRpiJzCbW9/1zIf4TgpoEH3fIZJqZUz3PHY4t4vS
-	XPqdt2VBIxW0+XBOTqEaHrh/btJPEgbKgDepr36sLqs7gOeY8tPFWh2NRxOqGTed
-	NxoVSwmSryhFp6GOM24DSA==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47uk1aubub-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Jul 2025 04:36:41 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 56E2Wwtk023985;
-	Mon, 14 Jul 2025 04:36:41 GMT
-Received: from sj2pr03cu002.outbound.protection.outlook.com (mail-westusazon11013048.outbound.protection.outlook.com [52.101.44.48])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47ue583e64-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Jul 2025 04:36:40 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x9znFxwNzVKoe27I9uYLljdjfZw2yW95Vr8gOYT8kXb/b8CI9C8S6g3AIR+mqWf/n5OkZb0xaub0/l53USulfLFoGNpPh2LwOCVX6j+HpbV9N0Y2EM/t8BwO6mEp9urjznaIR8OkvlFm9MZSjv7auOw/MNiE/a/b7zKAHmTW5n05NXw2fzbs7WfNkmUs+w1RulegYRZQ2LIXUQECOl6YQkAbGgH/xxw4pdzHRO1otFiFr0u9SuR7zXs444ibSWAgNeWcumrLQnt93Nz+Win6GTd0kKkaXRecKvoO4Xk5OlvHqghwQEeC9iXwS18T7ALyChAzrZN4w0jgWjYBeZtnDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mttDDeqpogMz77el2pesjiofTjA0dlcrpr1Kf5874+0=;
- b=OIbTSvZccrMT68oVjdm9Qb0eGELgAvVCpYRYYNbGDaCP2MCSDps16lcgW8EXahj5SJup5pr0PB+eRTrdmZt7TzUyQkArqziEmNbO9OnfusdHczkiiWN3Twa0xWogm0tbO5yyManQ0NXujTOdNmilCfjPiczHiXN9sdGwbk/a407UA2SU3TuYQ8JW8f3r8iTYpiPyIyxDHXnsXv/g7OP7lzVxvwVsmma4+wKogadaw6QuR0/naQYJVpxoZLONzkn8cYSYYYi64BZ7jnI3DMhGYiUCbrlESZI3RtlLRHMxBwzNWzw/xcRAW0lPfpevFE2NPewsEpwHVNgX6Kj9sPmRnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mttDDeqpogMz77el2pesjiofTjA0dlcrpr1Kf5874+0=;
- b=uxZLDyq++MWK8MJHrbqR3mnrarjXOcbpSiJfveH8FAiRZDtqGwm1m6vufC4w1p3/tSNKpRvRV9Sx9ywbZst68drHtdPC21Vb0Xd2oxGsV+sDr9lwgcv55xsbQzPXXc4u/0nkVLOTafsLLKvuIZ2a6c5VEwVs/wRY8ExebywHrK0=
-Received: from IA1PR10MB7417.namprd10.prod.outlook.com (2603:10b6:208:448::15)
- by DM3PR10MB7925.namprd10.prod.outlook.com (2603:10b6:0:46::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.29; Mon, 14 Jul
- 2025 04:36:33 +0000
-Received: from IA1PR10MB7417.namprd10.prod.outlook.com
- ([fe80::4970:7ab6:8d74:aaf9]) by IA1PR10MB7417.namprd10.prod.outlook.com
- ([fe80::4970:7ab6:8d74:aaf9%4]) with mapi id 15.20.8901.024; Mon, 14 Jul 2025
- 04:36:33 +0000
-From: Allison Henderson <allison.henderson@oracle.com>
-To: "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [RFC][PATCH] don't open-code kernel_accept() in
- rds_tcp_accept_one()
-Thread-Topic: [RFC][PATCH] don't open-code kernel_accept() in
- rds_tcp_accept_one()
-Thread-Index: AQHb9CA2QLpUxMoCe0CMXsyeXGlURLQxCX2A
-Date: Mon, 14 Jul 2025 04:36:32 +0000
-Message-ID: <2eb0df2c5dd8b16b5103f0e2859690519c4f2dad.camel@oracle.com>
-References: <20250713180134.GC1880847@ZenIV>
-In-Reply-To: <20250713180134.GC1880847@ZenIV>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1 
-autocrypt: addr=allison.henderson@oracle.com; prefer-encrypt=mutual;
- keydata=mQGNBGMrSUYBDADDX1fFY5pimVrKxscCUjLNV6CzjMQ/LS7sN2gzkSBgYKblSsCpzcbO/
- qa0m77Dkf7CRSYJcJHm+euPWh7a9M/XLHe8JDksGkfOfvGAc5kkQJP+JHUlblt4hYSnNmiBgBOO3l
- O6vwjWfv99bw8t9BkK1H7WwedHr0zI0B1kFoKZCqZ/xs+ZLPFTss9xSCUGPJ6Io6Yrv1b7xxwZAw0
- bw9AA1JMt6NS2mudWRAE4ycGHEsQ3orKie+CGUWNv5b9cJVYAsuo5rlgoOU1eHYzU+h1k7GsX3Xv8
- HgLNKfDj7FCIwymKeir6vBQ9/Mkm2PNmaLX/JKe5vwqoMRCh+rbbIqAs8QHzQPsuAvBVvVUaUn2XD
- /d42XjNEDRFPCqgVE9VTh2p1Ge9ovQFc/zpytAoif9Y3QGtErhdjzwGhmZqbAXu1EHc9hzrHhUF8D
- I5Y4v3i5pKjV0hvpUe0OzIvHcLzLOROjCHMA89z95q1hcxJ7LnBd8wbhwN39r114P4PQiixAUAEQE
- AAbQwQWxsaXNvbiBIZW5kZXJzb24gPGFsbGlzb24uaGVuZGVyc29uQG9yYWNsZS5jb20+iQHOBBMB
- CgA4AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEElfnzzkkP0cwschd6yD6kYDBH6bMFAme1o
- KoACgkQyD6kYDBH6bO6PQv/S0JX125/DVO+mI3GXj00Bsbb5XD+tPUwo7qtMfSg5X80mG6GKao9hL
- ZP22dNlYdQJidNRoVew3pYLKLFcsm1qbiLHBbNVSynGaJuLDbC5sqfsGDmSBrLznefRW+XcKfyvCC
- sG2/fomT4Dnc+8n2XkDYN40ptOTy5/HyVHZzC9aocoXKVGegPwhnz70la3oZfzCKR3tY2Pt368xyx
- jbUOCHx41RHNGBKDyqmzcOKKxK2y8S69k1X+Cx/z+647qaTgEZjGCNvVfQj+DpIef/w6x+y3DoACY
- CfI3lEyFKX6yOy/enjqRXnqz7IXXjVJrLlDvIAApEm0yT25dTIjOegvr0H6y3wJqz10jbjmIKkHRX
- oltd2lIXs2VL419qFAgYIItuBFQ3XpKKMvnO45Nbey1zXF8upDw0s9r9rNDykG7Am2LDUi7CQtKeq
- p9Hjoueq8wWOsPDIzZ5LeRanH/UNYEzYt+MilFukg9btNGoxDCo9rwipAHMx6VGgNER6bVDER
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR10MB7417:EE_|DM3PR10MB7925:EE_
-x-ms-office365-filtering-correlation-id: 3b6df3c5-57ce-44d5-f4e8-08ddc29002af
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?N1ZHcHhvRnFFcGREWFRqQXF1ejZMY0c2MjRBR0I1dVQrOWcyRlZ6eTZBTC9U?=
- =?utf-8?B?UE5BRzczMForUzhDaktXZ0xSWjUzWGsyT2xBNURVZkoxbjVkTEIyMVkwTXRs?=
- =?utf-8?B?OWlBZDBGOE40bUgzVDNMd3c2MFpkYVo2cUU1WU94OHBLcEVtT0x2RGxFUC9h?=
- =?utf-8?B?VTI3T3Y2dXdjcmVBMXpuakJJeUhKbTZLU0l1QXFrQTluNStyczdIbHEvbTNV?=
- =?utf-8?B?SGh5ZEJHOXpqN0RSUlpqcGVRbXFOU0ZYTWhNeVdQZU5aNzAyeWFKeERQN25x?=
- =?utf-8?B?WkJ4NlcydW1nNms4MnNudDRvVlZDcThpbnZ5TnU3TDZUbmVLbFE0MGk3amNw?=
- =?utf-8?B?SWVFc2VPYWRibGRYMUhsVjAzQklRLzNnODBvM2lxaTVoQ0dWdmlBMWc5T3Q4?=
- =?utf-8?B?SGlpNGVjYmdwRmRhSXkzMGpZcTI4UE5DUHdMSktxMVdyaCtLd0xhNEpsQTVx?=
- =?utf-8?B?eENYbGg0ZVN1K09pcEZxMXVTK1loVmdYMUVrZGRURVBiWnhBODlKUFlWUVpw?=
- =?utf-8?B?UnZSWVNlNFZYeSttL2ltb2Y4MEZST1RGck1kNndCZ2R1dUNuTjdHNE9PQ2Rn?=
- =?utf-8?B?RE8vTklPVjA4ZUJ3Y2x0eGxGbVlnSnVvVFkwWjY2R1YwTFV0UW9kbnpVaE1J?=
- =?utf-8?B?bFVtZStONUxVZ0FWVmhrRC9hNnF4TEN6SFRFTytNTUM4NUFKK2RUVmFlTUs4?=
- =?utf-8?B?NjJDeFNEc0pSZFozanRwbHNaSUVYQm13eGU1aVpGZEgvckNQc3liUlpzdW1t?=
- =?utf-8?B?QnlwUHM1TUdzWGJiUlFMNjlaNmw5TUU4dGlaUkV4U2luaU05SG1IZXNKNXho?=
- =?utf-8?B?TURlN1BCNmhnbWo3YWhXRThMTk1NN3JHbTdVcUthSFJTc2ZTeFhRZDJqa1E5?=
- =?utf-8?B?RVJ4NGR3WTRVQTBWN21kL0szanZOSjlmWmpBQndBVVdBTlI3dFFZS0x1azhp?=
- =?utf-8?B?MkJ6VWlHbUxLb01MSDFpZHlGbUZjNTdEeEVhRnZjeVp6QWVOTVNYNHZnQ1JC?=
- =?utf-8?B?VUxidjhiUTBBdlZMdXJDeEV2SmtLKzBpM0pwNnUxMGNnYUxzZDdjZGtnZGk3?=
- =?utf-8?B?RzdEdjd1MlFZN2JFbTlOblpmc1pFSHp6cHdVeEFVTm1mU3B1SDRiVSt2SjRP?=
- =?utf-8?B?TGNISVlNQmh1dXlVazc3YmRzMFZJV2NqRGxXRHJWU2prV2hXVjBiMkpMN2pm?=
- =?utf-8?B?eG5ZWitUZitBMzJtRG90SGRhcXpkRFU3ako0QzNoa3I2bzhpWXlHeGR1QW5J?=
- =?utf-8?B?SkFDOU5BUHVyNGgwK3lqcGNhTUJZVE9BZFl0R1BDNVpXL3pZd3Rzd3YzQzl4?=
- =?utf-8?B?Z214dnNtQnlzVDEzVEtBT0VEUkNYNFc1L3czcGRHYXBqYm8yTk9rYmNibnBP?=
- =?utf-8?B?S2hoejI2SnFEMGdFeDF4Sm9kR3JQUnVJQjRaMUJoSHpwVml4Zm1OT1JiVDdj?=
- =?utf-8?B?ZlBlNDRSeXBNYXlsYU9relpxNGpGei8rYUliL1QxckxpQWNmVkFPbmRxMWQy?=
- =?utf-8?B?TlRrd09LOHQ5MHMwd3RhQUIyd0ltVWdkSWpjbi81cDRVK3YyLytsZXVsUWV1?=
- =?utf-8?B?ckZXM2twWWVXMjFKRFp6NmdnY1pUeU1JUmJFUXVYTUxQVFIraDFIN1BROXor?=
- =?utf-8?B?eDZuZHorSDlac21WKzd5NFV5dlQ4Z2s0M2lTQmhab1p1Z0RsUFZCbWxsSG9O?=
- =?utf-8?B?K0xDYnplNU5HNXJhSFhoMHdDV2t2TitMTWo1YTRvRWVpRnhEeFFLSEJrQ3ls?=
- =?utf-8?B?LzRvcWdCbWhwQTBIb1BBL252ZWhiR1FybW11b0o5M1BwQTI0cHBEQ092NGhK?=
- =?utf-8?B?SjlZWldGeVgzZ3BBdms2MWxncVB2YkFsZnZXcHBzTjcvc2FVekxuWW1SbTRs?=
- =?utf-8?B?d3J6RXBvejFSOGVKd1N5a1hDeWIyZTk0SXFkZHNwcWRBN1h2bnJYM2dhc21S?=
- =?utf-8?B?VFJEajQxM2Y4QkZPQVhBbi9FWjdTNEgyZ09DTFRVb2xsTTRnbTdQMlBVUFdr?=
- =?utf-8?B?RW1kWlV4QTNBPT0=?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR10MB7417.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?YmdDZFhyMkRTVmxUcHJCZ2loUFY0Sm90djlVblVXV1RiUExaZmhOakNzb1Q4?=
- =?utf-8?B?Mk9KOEoxMXBvenhpUm1WQ2kxazE5bEJZaTlGeUJlc3VtbkhYQUkwbXYxZDdl?=
- =?utf-8?B?V29jeUNuT1lHSi9sWjcreGdJdUc4RUIyRFNiTlZvRWROSHVGSW5KWU9OMGo5?=
- =?utf-8?B?M2psN2dvM2dKR2FoQjI5RkFuL3F6dStmMFlqUDlPbS9IOG0zL1FwWE9Gck84?=
- =?utf-8?B?dUswSmlRbnJIcU1GRnA0WG5QYW84RERZT05heVMrdWovcHVWTnBudzV1ZlZI?=
- =?utf-8?B?T1A5TG8vOUkwaWx0ZlIrbklPQ1VqaUlsSyt4Z3c3WG5KdE5EeHJZbFlRV0Zp?=
- =?utf-8?B?SHcwc2dXODI1YWkzSkR2YWgrUnpGU0NjUWxjblRKdGh3QXQ2ZGpBNXZYcWdQ?=
- =?utf-8?B?U0M3dUNaUk5iZXNzaTA0MTRnNlA0VThVNkVpM3F1TFRQd0YwTms5bE1RRU5y?=
- =?utf-8?B?dGRaWkxjemFKUk1TcC84L2Rsb0U3OEwrRFMvUWFEWkZGWHJhM2tiYVRtcjZN?=
- =?utf-8?B?UzhEMkZkQkZ0akMzSWorWWZSZFgyRVU4Q3ZWSjluQ0l6RVNpM0NFSmJKdE1Z?=
- =?utf-8?B?R2M3aDNCTzkzNXNHWkJEZjNwRUJKTWN4VVBiQm1jOG1IU0VpMXIyRWUxd09G?=
- =?utf-8?B?WitxNVcwanhnenp4SDhpTTB4RmlZZG1hVFhTbWIrWTVyMmxwM1BmMkJCbjJq?=
- =?utf-8?B?SlV6VzdTb0JCU3JSR2V5aUljc29hYUdvVkl3OVpiVFlwNGVjd3BqWFRnTnlp?=
- =?utf-8?B?YjFYaDZiMTlaRDRqUXBIOXh4VmJlTDZubHFwNngxNFdmN0xFMkFOdnFvVE1s?=
- =?utf-8?B?bHlVWjM2clY3YzQvS05ESW5pV3pDN0ozRUMxMlJETXZhMVFTKy9EL1RQYmlO?=
- =?utf-8?B?ajRpME1wa1g3YWtMbHZHUlJndUJZZ2FPZ1B6YWE4Rm5CeWYySkN3OS9SR2VU?=
- =?utf-8?B?RXVHQWRtL0tWY29kQjVycGF4aGpMekRMQ1B4QlI4bldYdVR5a2RBRVFoQ1VM?=
- =?utf-8?B?YWRaRUttaEl5QXpqVW92NmV6Sm4zelp5d3pvdXBOTm5IQXFGWXpkM09uVnZh?=
- =?utf-8?B?NDJ2eUllRExSR0Y5NysyalJnOVhGY1VpOHNNWWJRUER2elg1Qmh2cklqMFlu?=
- =?utf-8?B?R013ckpkQzFPSmthZi96dXcybEFwNnRCcEwwTDBuZDJtSUNxMm1VSUNPTUFa?=
- =?utf-8?B?bFhpd2ZpbEpsbXdsSlU2cTdKMnNIckR5bmNqckQxajFEeTN2Z1hQY1h5K0RW?=
- =?utf-8?B?NEhlOU13dm9DR05zZDNtd284VkVRYlk1MEY3K205bTVsYVBiM0RTd2xLZFM4?=
- =?utf-8?B?dHpPQW5mL09WMFNOVzRuWXhHZ0ZNbEZsL05yWW1teW1uOTFiZDJOT3VINGpZ?=
- =?utf-8?B?ZmdLVGMzbC9XY0dsZ0pUeHE2SFNueFhhQUh0TGxxVmx6WU1laU5SQWV6cy9Q?=
- =?utf-8?B?U0dqdGxNSE9WR1BPRy9TbUxRMVpBdkVQYy9NWWFhd3d6MDV0RkxTN2E0REZW?=
- =?utf-8?B?dTFXMVBMY0w4bjVxWXN0OFZLNGNxVzladWFkRE16a2RlUng0eVgvaEVXNCtj?=
- =?utf-8?B?WmladERTMDUwRFkxenovakNEYlNiTFVLMUVCNVB2TnQvTkxwYzd3a3B6cnBo?=
- =?utf-8?B?ODNGWlV4RWdwUjVReTh1U0FVZzlzUEZHUFQ5Y0NnUG5zQWxWRHZxdkNJN090?=
- =?utf-8?B?OVBUZmhCQllVWXRrajQ2NFJSakU3QWQ0NnVxc2VwVjZsZFJTOEpNZlQ5LzZY?=
- =?utf-8?B?eTdabE5SY1dPODJoa1NvZjgzaWlPaUxENkFFczN3RDhQZGZJUFlmTTFKQUJr?=
- =?utf-8?B?b0xvMURIcVVrWVpSZm1tb0oyOU5XQW1xZ0RVTWNheHJ3RkVLNThtNHZJRHJV?=
- =?utf-8?B?WFhueWtldmI3R0hoZU1reXoydU1vNFZERWtXSnUvSFUxc0RMZ3Z1YVFKNVVU?=
- =?utf-8?B?VmVPRkdZNmRNRld4eWNHaXMvV25hcFJ6N3IyTXdOTjdTenEyazMwcXFFQk9Y?=
- =?utf-8?B?QWVYTkhHQ1NBemp0eHAxZmx4YUpjVTRFNE53VThkbnhRazBMSDRWWDA4VGk4?=
- =?utf-8?B?Q3RQRVpWdmpNNzljKzdHUEh3L1ZtU0sxdGtRV3puamZpWjVqMlZIc3ZwL3M1?=
- =?utf-8?B?dmlnNDI0OThxdzVSMWptRDhYcHZWZGM0cmhvQ0dUbU1JNmY0VXdMMGNjMGdI?=
- =?utf-8?B?SHc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <12B356F71489FC46BDB2189786D378F8@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="Kihd/CWg"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=RnuodvRwR5pjUqWg2oW4tXl6JUsnzGaFBhlgEPXNoE8=; t=1752468315; x=1753332315; 
+	b=Kihd/CWga9ir3Pzf441S5HAdgaO4AgqxCe26NyJD+rMgDAckAR4TjiSUiEn/kq0k8rKQZnTLdMY
+	jZZPTXYEp5uE/i9v7XFxJY8Ct8OBC0OCRFs3WYci6nwj7cWiPh1ND8eUUTDHUTLwsKPXPpkWyOQpd
+	DETvDEvkKIEnpVJblihLO0whE9HmO7B3DQAKXKE+gSBunwCqWNHI4y+Kq7x8Y8VEx6z+2zG1Si3aA
+	0aW2kP9+di2NVutLxtNnXLMTdiHOLxtpLOXjLRU138pJ304hvgrgimmbg5Bm+D9UX7xBIEQPlSF5c
+	dL3LIzAr5Detu3W0u/z3r6iNWwY2S6NDtkNw==;
+Received: from 70-228-78-207.lightspeed.sntcca.sbcglobal.net ([70.228.78.207]:63266 helo=localhost.localdomain)
+	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ouster@cs.stanford.edu>)
+	id 1ubB3w-00080i-KS; Sun, 13 Jul 2025 21:45:14 -0700
+From: John Ousterhout <ouster@cs.stanford.edu>
+To: netdev@vger.kernel.org
+Cc: pabeni@redhat.com,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	John Ousterhout <ouster@cs.stanford.edu>
+Subject: [PATCH net-next v11 03/15] net: homa: create shared Homa header files
+Date: Sun, 13 Jul 2025 21:44:35 -0700
+Message-ID: <20250714044448.254-4-ouster@cs.stanford.edu>
+X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20250714044448.254-1-ouster@cs.stanford.edu>
+References: <20250714044448.254-1-ouster@cs.stanford.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	NzL90ta6sQhARXERKjvYJB+YrcR/Ir4eDWUIDfI6LdbUDUMYQCEX3g8QPvGakzbDISBElicLIAnXky48j3PMOWTfow6rIUP4Zp/PooMoriQ0zLNv9Jb2v6r4AqztlJb7X70twYbpm/gQwXbxDOBh3zeBheioycg2fLdE7QM7eQv+Z5/wTTC6ypn4Haeq6fMyj9sBpySoeBfbJB2PTMM/OqSz6ty1qX6nAo/414+5QzByTOkYD4XbkdT47cEwxPm2rCG0Bc0owv3zpLwZbEhvcAIKEjV4nHbHxOkVvGSkVQQcYtlbkKVU9JNKfSI5hbNTr9y1cwyiEVUoWOiUdK+cLNPKjhT8Pnaw8cJVCudfO+0LQAmDBg6IHAkcDmoMNRI+nio+RdCdXEawUOs6BUHS+CZ+t5xO262JL0AxWXvTVVUeO1TvyadJHQ/u30UGjTn8rZ5vG+YS5pBKTs2fPdjmLVJHnXWR9QiM/SYDGTt5St1rTWWzTp4WPpvdF9xVvivofIKqwPg405O23HguOmzgX4Wa7mThWljfhtW7xWBAZs9iX4NXYuwk+X9Q9iVeS9mwDqaUPH1kmFUPMQBfHRbFMDMZLhd6cc9HGu/x5P2/6ZA=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR10MB7417.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b6df3c5-57ce-44d5-f4e8-08ddc29002af
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2025 04:36:33.2394
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: a1Gw9YU82hUvdZgIJKNcMS28UiaXsaDPjjDYRnAjSdsjyN6lBVxjff2+VbnsdIQ52GERUDxUuGj2dtrFw/F9Yy+u28Fxkz5yLxLYpxMVpuE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR10MB7925
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-14_01,2025-07-09_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- mlxlogscore=999 malwarescore=0 mlxscore=0 suspectscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507140024
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDAyNCBTYWx0ZWRfXxC5/QbawOdn0 JKCX9L2t4QgAPES7VXHDYiQ2VrY2j4Ivu+zPJFvBaI9VgSkgzX6NqeeqexYF0y3q+JP0xVYK4p7 5SJH+CFPWVrONy3Qe/SoA+jJBAMXZEe7Xetf5sWCgLeEfQchHzhq7vtOCkYC2qKcpS1YXHKJsCL
- I9Sbz0YMjs9VhDOdW5lSfxeV70PUmhz36XKxZVUZ7RikOci+CIbmmAY/6VrzjuCdej0wYSmxVgd RidIo77NVDOOpyb7JO9qDltb+gxiPo/yzH80NDkfv1awKYR85nVKT/AsXvFMm/BJBAk378pidQw w5wvixm7qWDHK1GBkPbtCjEGh+Iqcdp8sm0pKhQlopm2EuqC21XsY/V/aUaBVR/5c+OgC/IjRxY
- ZJ5dmM66/mfYDE+7stCoe2PnJoRT5GjQvHXP6j5+yGMGQMxwdxH2H1RDbbnFyBQ5/tiPUgw+
-X-Proofpoint-GUID: 3-Qx_C4hPazKADtir2cGKPCBrVoxmL_D
-X-Proofpoint-ORIG-GUID: 3-Qx_C4hPazKADtir2cGKPCBrVoxmL_D
-X-Authority-Analysis: v=2.4 cv=J8mq7BnS c=1 sm=1 tr=0 ts=6874895a b=1 cx=c_pps a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=drOt6m5kAAAA:8 a=lg7cvda2CWqSLD4-RrwA:9 a=QEXdDO2ut3YA:10 a=RMMjzBEyIzXRtoq5n5K6:22
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -1.0
+X-Scan-Signature: 49439e0750f33f6fe9a3a0c911130f31
 
-T24gU3VuLCAyMDI1LTA3LTEzIGF0IDE5OjAxICswMTAwLCBBbCBWaXJvIHdyb3RlOg0KPiAJcmRz
-X3RjcF9hY2NlcHRfb25lKCkgc3RhcnRzIHdpdGggYSBwcmV0dHkgbXVjaCB2ZXJiYXRpbQ0KPiBj
-b3B5IG9mIGtlcm5lbF9hY2NlcHQoKS4gIE1pZ2h0IGFzIHdlbGwgdXNlIHRoZSByZWFsIHRoaW5n
-Li4uDQo+IA0KPiAJVGhhdCBjb2RlIHdlbnQgaW50byBtYWlubGluZSBpbiAyMDA5LCBrZXJuZWxf
-YWNjZXB0KCkNCj4gaGFkIGJlZW4gYWRkZWQgaW4gQXVnIDIwMDYsIHRoZSBjb3B5cmlnaHQgb24g
-cmRzL3RjcF9saXN0ZW4uYw0KPiBpcyAiQ29weXJpZ2h0IChjKSAyMDA2IE9yYWNsZSIsIHNvIGl0
-J3MgZW50aXJlbHkgcG9zc2libGUNCj4gdGhhdCBpdCBwcmVkYXRlcyB0aGUgaW50cm9kdWN0aW9u
-IG9mIGtlcm5lbF9hY2NlcHQoKS4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEFsIFZpcm8gPHZpcm9A
-emVuaXYubGludXgub3JnLnVrPg0KPiAtLS0NCj4gZGlmZiAtLWdpdCBhL25ldC9yZHMvdGNwX2xp
-c3Rlbi5jIGIvbmV0L3Jkcy90Y3BfbGlzdGVuLmMNCj4gaW5kZXggZDg5YmQ4ZDBjMzU0Li5hZjM2
-ZjViZjg2NDkgMTAwNjQ0DQo+IC0tLSBhL25ldC9yZHMvdGNwX2xpc3Rlbi5jDQo+ICsrKyBiL25l
-dC9yZHMvdGNwX2xpc3Rlbi5jDQo+IEBAIC0xMDUsMTAgKzEwNSw2IEBAIGludCByZHNfdGNwX2Fj
-Y2VwdF9vbmUoc3RydWN0IHNvY2tldCAqc29jaykNCj4gIAlpbnQgY29ubl9zdGF0ZTsNCj4gIAlz
-dHJ1Y3QgcmRzX2Nvbm5fcGF0aCAqY3A7DQo+ICAJc3RydWN0IGluNl9hZGRyICpteV9hZGRyLCAq
-cGVlcl9hZGRyOw0KPiAtCXN0cnVjdCBwcm90b19hY2NlcHRfYXJnIGFyZyA9IHsNCj4gLQkJLmZs
-YWdzID0gT19OT05CTE9DSywNCj4gLQkJLmtlcm4gPSB0cnVlLA0KPiAtCX07DQo+ICAjaWYgIUlT
-X0VOQUJMRUQoQ09ORklHX0lQVjYpDQo+ICAJc3RydWN0IGluNl9hZGRyIHNhZGRyLCBkYWRkcjsN
-Cj4gICNlbmRpZg0KPiBAQCAtMTE3LDI1ICsxMTMsOSBAQCBpbnQgcmRzX3RjcF9hY2NlcHRfb25l
-KHN0cnVjdCBzb2NrZXQgKnNvY2spDQo+ICAJaWYgKCFzb2NrKSAvKiBtb2R1bGUgdW5sb2FkIG9y
-IG5ldG5zIGRlbGV0ZSBpbiBwcm9ncmVzcyAqLw0KPiAgCQlyZXR1cm4gLUVORVRVTlJFQUNIOw0K
-PiAgDQo+IC0JcmV0ID0gc29ja19jcmVhdGVfbGl0ZShzb2NrLT5zay0+c2tfZmFtaWx5LA0KPiAt
-CQkJICAgICAgIHNvY2stPnNrLT5za190eXBlLCBzb2NrLT5zay0+c2tfcHJvdG9jb2wsDQo+IC0J
-CQkgICAgICAgJm5ld19zb2NrKTsNCj4gKwlyZXQgPSBrZXJuZWxfYWNjZXB0KHNvY2ssICZuZXdf
-c29jaywgT19OT05CTE9DSyk7DQo+ICAJaWYgKHJldCkNCj4gLQkJZ290byBvdXQ7DQo+IC0NCj4g
-LQlyZXQgPSBzb2NrLT5vcHMtPmFjY2VwdChzb2NrLCBuZXdfc29jaywgJmFyZyk7DQo+IC0JaWYg
-KHJldCA8IDApDQo+IC0JCWdvdG8gb3V0Ow0KPiAtDQo+IC0JLyogc29ja19jcmVhdGVfbGl0ZSgp
-IGRvZXMgbm90IGdldCBhIGhvbGQgb24gdGhlIG93bmVyIG1vZHVsZSBzbyB3ZQ0KPiAtCSAqIG5l
-ZWQgdG8gZG8gaXQgaGVyZS4gIE5vdGUgdGhhdCBzb2NrX3JlbGVhc2UoKSB1c2VzIHNvY2stPm9w
-cyB0bw0KPiAtCSAqIGRldGVybWluZSBpZiBpdCBuZWVkcyB0byBkZWNyZW1lbnQgdGhlIHJlZmVy
-ZW5jZSBjb3VudC4gIFNvIHNldA0KPiAtCSAqIHNvY2stPm9wcyBhZnRlciBjYWxsaW5nIGFjY2Vw
-dCgpIGluIGNhc2UgdGhhdCBmYWlscy4gIEFuZCB0aGVyZSdzDQo+IC0JICogbm8gbmVlZCB0byBk
-byB0cnlfbW9kdWxlX2dldCgpIGFzIHRoZSBsaXN0ZW5lciBzaG91bGQgaGF2ZSBhIGhvbGQNCj4g
-LQkgKiBhbHJlYWR5Lg0KPiAtCSAqLw0KPiAtCW5ld19zb2NrLT5vcHMgPSBzb2NrLT5vcHM7DQo+
-IC0JX19tb2R1bGVfZ2V0KG5ld19zb2NrLT5vcHMtPm93bmVyKTsNCj4gKwkJcmV0dXJuIHJldDsN
-CkkgdGhpbmsgd2UgbmVlZCB0aGUgImdvdG8gb3V0IiBoZXJlLCBvciB3ZSB3aWxsIG1pc3MgdGhl
-IG11dGV4IHVubG9jay4gIE90aGVyd2lzZSBrZXJuZWxfYWNjZXB0IGxvb2tzIGxpa2UgYSBwcmV0
-dHkNCnN5bm9ueW1vdXMgd3JhcHBlci4NCg0KVGhhbmtzIQ0KQWxsaXNvbg0KDQo+ICANCj4gIAly
-ZHNfdGNwX2tlZXBhbGl2ZShuZXdfc29jayk7DQo+ICAJaWYgKCFyZHNfdGNwX3R1bmUobmV3X3Nv
-Y2spKSB7DQoNCg==
+homa_impl.h defines "struct homa", which contains overall information
+about the Homa transport, plus various odds and ends that are used
+throughout the Homa implementation.
+
+homa_stub.h is a temporary header file that provides stubs for
+facilities that have omitted for this first patch series. This file
+will go away once Home is fully upstreamed.
+
+Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
+
+---
+Changes for v11:
+* Move link_mbps variable from struct homa_pacer back to struct homa.
+
+Changes for v10:
+* Eliminate __context__ definition
+* Replace __u16 with u16, __u8 with u8, etc.
+* Refactor resend mechanism
+
+Changes for v9:
+* Move information from sync.txt into comments in homa_impl.h
+* Add limits on number of active peer structs
+* Introduce homa_net objects; there is now a single global struct homa
+  shared by all network namespaces, with one homa_net per network namespace
+  with netns-specific information.
+* Introduce homa_clock as an abstraction layer for the fine-grain clock.
+* Various name improvements (e.g. use "alloc" instead of "new" for functions
+  that allocate memory)
+* Eliminate sizeof32 definition
+
+Changes for v8:
+* Pull out pacer-related fields into separate struct homa_pacer in homa_pacer.h
+
+Changes for v7:
+* Make Homa a per-net subsystem
+* Track tx buffer memory usage
+* Refactor waiting mechanism for incoming packets: simplify wait
+  criteria and use standard Linux mechanisms for waiting
+* Remove "lock_slow" functions, which don't add functionality in this
+  patch series
+* Rename homa_rpc_free to homa_rpc_end
+* Add homa_make_header_avl function
+* Use u64 and __u64 properly
+---
+ net/homa/homa_impl.h | 603 +++++++++++++++++++++++++++++++++++++++++++
+ net/homa/homa_stub.h |  91 +++++++
+ 2 files changed, 694 insertions(+)
+ create mode 100644 net/homa/homa_impl.h
+ create mode 100644 net/homa/homa_stub.h
+
+diff --git a/net/homa/homa_impl.h b/net/homa/homa_impl.h
+new file mode 100644
+index 000000000000..52bdcb8c5e81
+--- /dev/null
++++ b/net/homa/homa_impl.h
+@@ -0,0 +1,603 @@
++/* SPDX-License-Identifier: BSD-2-Clause */
++
++/* This file contains definitions that are shared across the files
++ * that implement Homa for Linux.
++ */
++
++#ifndef _HOMA_IMPL_H
++#define _HOMA_IMPL_H
++
++#include <linux/bug.h>
++
++#include <linux/audit.h>
++#include <linux/icmp.h>
++#include <linux/init.h>
++#include <linux/list.h>
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/kthread.h>
++#include <linux/completion.h>
++#include <linux/proc_fs.h>
++#include <linux/sched/signal.h>
++#include <linux/skbuff.h>
++#include <linux/socket.h>
++#include <linux/vmalloc.h>
++#include <net/icmp.h>
++#include <net/ip.h>
++#include <net/netns/generic.h>
++#include <net/protocol.h>
++#include <net/inet_common.h>
++#include <net/gro.h>
++#include <net/rps.h>
++
++#include <linux/homa.h>
++#include "homa_wire.h"
++
++/* Forward declarations. */
++struct homa;
++struct homa_peer;
++struct homa_rpc;
++struct homa_sock;
++
++/**
++ * union sockaddr_in_union - Holds either an IPv4 or IPv6 address (smaller
++ * and easier to use than sockaddr_storage).
++ */
++union sockaddr_in_union {
++	/** @sa: Used to access as a generic sockaddr. */
++	struct sockaddr sa;
++
++	/** @in4: Used to access as IPv4 socket. */
++	struct sockaddr_in in4;
++
++	/** @in6: Used to access as IPv6 socket.  */
++	struct sockaddr_in6 in6;
++};
++
++/**
++ * struct homa - Stores overall information about the Homa transport, which
++ * is shared across all Homa sockets and all network namespaces.
++ */
++struct homa {
++	/**
++	 * @next_outgoing_id: Id to use for next outgoing RPC request.
++	 * This is always even: it's used only to generate client-side ids.
++	 * Accessed without locks. Note: RPC ids are unique within a
++	 * single client machine.
++	 */
++	atomic64_t next_outgoing_id;
++
++	/**
++	 * @pacer:  Information related to the pacer; managed by homa_pacer.c.
++	 */
++	struct homa_pacer *pacer;
++
++	/**
++	 * @peertab: Info about all the other hosts we have communicated with;
++	 * includes peers from all network namespaces.
++	 */
++	struct homa_peertab *peertab;
++
++	/**
++	 * @socktab: Information about all open sockets. Dynamically
++	 * allocated; must be kfreed.
++	 */
++	struct homa_socktab *socktab;
++
++	/** @max_numa: Highest NUMA node id in use by any core. */
++	int max_numa;
++
++	/**
++	 * @link_mbps: The raw bandwidth of the network uplink, in
++	 * units of 1e06 bits per second.  Set externally via sysctl.
++	 */
++	int link_mbps;
++
++	/**
++	 * @resend_ticks: When an RPC's @silent_ticks reaches this value,
++	 * start sending RESEND requests.
++	 */
++	int resend_ticks;
++
++	/**
++	 * @resend_interval: minimum number of homa timer ticks between
++	 * RESENDs for the same RPC.
++	 */
++	int resend_interval;
++
++	/**
++	 * @timeout_ticks: abort an RPC if its silent_ticks reaches this value.
++	 */
++	int timeout_ticks;
++
++	/**
++	 * @timeout_resends: Assume that a server is dead if it has not
++	 * responded after this many RESENDs have been sent to it.
++	 */
++	int timeout_resends;
++
++	/**
++	 * @request_ack_ticks: How many timer ticks we'll wait for the
++	 * client to ack an RPC before explicitly requesting an ack.
++	 * Set externally via sysctl.
++	 */
++	int request_ack_ticks;
++
++	/**
++	 * @reap_limit: Maximum number of packet buffers to free in a
++	 * single call to home_rpc_reap.
++	 */
++	int reap_limit;
++
++	/**
++	 * @dead_buffs_limit: If the number of packet buffers in dead but
++	 * not yet reaped RPCs is less than this number, then Homa reaps
++	 * RPCs in a way that minimizes impact on performance but may permit
++	 * dead RPCs to accumulate. If the number of dead packet buffers
++	 * exceeds this value, then Homa switches to a more aggressive approach
++	 * to reaping RPCs. Set externally via sysctl.
++	 */
++	int dead_buffs_limit;
++
++	/**
++	 * @max_dead_buffs: The largest aggregate number of packet buffers
++	 * in dead (but not yet reaped) RPCs that has existed so far in a
++	 * single socket.  Readable via sysctl, and may be reset via sysctl
++	 * to begin recalculating.
++	 */
++	int max_dead_buffs;
++
++	/**
++	 * @max_gso_size: Maximum number of bytes that will be included
++	 * in a single output packet that Homa passes to Linux. Can be set
++	 * externally via sysctl to lower the limit already enforced by Linux.
++	 */
++	int max_gso_size;
++
++	/**
++	 * @gso_force_software: A non-zero value will cause Homa to perform
++	 * segmentation in software using GSO; zero means ask the NIC to
++	 * perform TSO. Set externally via sysctl.
++	 */
++	int gso_force_software;
++
++	/**
++	 * @wmem_max: Limit on the value of sk_sndbuf for any socket. Set
++	 * externally via sysctl.
++	 */
++	int wmem_max;
++
++	/**
++	 * @timer_ticks: number of times that homa_timer has been invoked
++	 * (may wraparound, which is safe).
++	 */
++	u32 timer_ticks;
++
++	/**
++	 * @flags: a collection of bits that can be set using sysctl
++	 * to trigger various behaviors.
++	 */
++	int flags;
++
++	/**
++	 * @bpage_lease_usecs: how long a core can own a bpage (microseconds)
++	 * before its ownership can be revoked to reclaim the page.
++	 */
++	int bpage_lease_usecs;
++
++	/**
++	 * @bpage_lease_cycles: same as bpage_lease_usecs except in
++	 * homa_clock() units.
++	 */
++	int bpage_lease_cycles;
++
++	/**
++	 * @next_id: Set via sysctl; causes next_outgoing_id to be set to
++	 * this value; always reads as zero. Typically used while debugging to
++	 * ensure that different nodes use different ranges of ids.
++	 */
++	int next_id;
++
++	/**
++	 * @destroyed: True means that this structure is being destroyed
++	 * so everyone should clean up.
++	 */
++	bool destroyed;
++
++};
++
++/**
++ * struct homa_net - Contains Homa information that is specific to a
++ * particular network namespace.
++ */
++struct homa_net {
++	/** @net: Network namespace corresponding to this structure. */
++	struct net *net;
++
++	/** @homa: Global Homa information. */
++	struct homa *homa;
++
++	/**
++	 * @prev_default_port: The most recent port number assigned from
++	 * the range of default ports.
++	 */
++	u16 prev_default_port;
++
++	/**
++	 * @num_peers: The total number of struct homa_peers that exist
++	 * for this namespace. Managed by homa_peer.c under the peertab lock.
++	 */
++	int num_peers;
++};
++
++/**
++ * struct homa_skb_info - Additional information needed by Homa for each
++ * outbound DATA packet. Space is allocated for this at the very end of the
++ * linear part of the skb.
++ */
++struct homa_skb_info {
++	/**
++	 * @next_skb: used to link together all of the skb's for a Homa
++	 * message (in order of offset).
++	 */
++	struct sk_buff *next_skb;
++
++	/**
++	 * @wire_bytes: total number of bytes of network bandwidth that
++	 * will be consumed by this packet. This includes everything,
++	 * including additional headers added by GSO, IP header, Ethernet
++	 * header, CRC, preamble, and inter-packet gap.
++	 */
++	int wire_bytes;
++
++	/**
++	 * @data_bytes: total bytes of message data across all of the
++	 * segments in this packet.
++	 */
++	int data_bytes;
++
++	/** @seg_length: maximum number of data bytes in each GSO segment. */
++	int seg_length;
++
++	/**
++	 * @offset: offset within the message of the first byte of data in
++	 * this packet.
++	 */
++	int offset;
++};
++
++/**
++ * homa_get_skb_info() - Return the address of Homa's private information
++ * for an sk_buff.
++ * @skb:     Socket buffer whose info is needed.
++ * Return: address of Homa's private information for @skb.
++ */
++static inline struct homa_skb_info *homa_get_skb_info(struct sk_buff *skb)
++{
++	return (struct homa_skb_info *)(skb_end_pointer(skb)) - 1;
++}
++
++/**
++ * homa_set_doff() - Fills in the doff TCP header field for a Homa packet.
++ * @h:     Packet header whose doff field is to be set.
++ * @size:  Size of the "header", bytes (must be a multiple of 4). This
++ *         information is used only for TSO; it's the number of bytes
++ *         that should be replicated in each segment. The bytes after
++ *         this will be distributed among segments.
++ */
++static inline void homa_set_doff(struct homa_data_hdr *h, int size)
++{
++	/* Drop the 2 low-order bits from size and set the 4 high-order
++	 * bits of doff from what's left.
++	 */
++	h->common.doff = size << 2;
++}
++
++/** skb_is_ipv6() - Return true if the packet is encapsulated with IPv6,
++ *  false otherwise (presumably it's IPv4).
++ */
++static inline bool skb_is_ipv6(const struct sk_buff *skb)
++{
++	return ipv6_hdr(skb)->version == 6;
++}
++
++/**
++ * ipv6_to_ipv4() - Given an IPv6 address produced by ipv4_to_ipv6, return
++ * the original IPv4 address (in network byte order).
++ * @ip6:  IPv6 address; assumed to be a mapped IPv4 address.
++ * Return: IPv4 address stored in @ip6.
++ */
++static inline __be32 ipv6_to_ipv4(const struct in6_addr ip6)
++{
++	return ip6.in6_u.u6_addr32[3];
++}
++
++/**
++ * canonical_ipv6_addr() - Convert a socket address to the "standard"
++ * form used in Homa, which is always an IPv6 address; if the original address
++ * was IPv4, convert it to an IPv4-mapped IPv6 address.
++ * @addr:   Address to canonicalize (if NULL, "any" is returned).
++ * Return: IPv6 address corresponding to @addr.
++ */
++static inline struct in6_addr canonical_ipv6_addr(const union sockaddr_in_union
++						  *addr)
++{
++	struct in6_addr mapped;
++
++	if (addr) {
++		if (addr->sa.sa_family == AF_INET6)
++			return addr->in6.sin6_addr;
++		ipv6_addr_set_v4mapped(addr->in4.sin_addr.s_addr, &mapped);
++		return mapped;
++	}
++	return in6addr_any;
++}
++
++/**
++ * skb_canonical_ipv6_saddr() - Given a packet buffer, return its source
++ * address in the "standard" form used in Homa, which is always an IPv6
++ * address; if the original address was IPv4, convert it to an IPv4-mapped
++ * IPv6 address.
++ * @skb:   The source address will be extracted from this packet buffer.
++ * Return: IPv6 address for @skb's source machine.
++ */
++static inline struct in6_addr skb_canonical_ipv6_saddr(struct sk_buff *skb)
++{
++	struct in6_addr mapped;
++
++	if (skb_is_ipv6(skb))
++		return ipv6_hdr(skb)->saddr;
++	ipv6_addr_set_v4mapped(ip_hdr(skb)->saddr, &mapped);
++	return mapped;
++}
++
++/**
++ * is_homa_pkt() - Return true if @skb is a Homa packet, false otherwise.
++ * @skb:    Packet buffer to check.
++ * Return:  see above.
++ */
++static inline bool is_homa_pkt(struct sk_buff *skb)
++{
++	struct iphdr *iph = ip_hdr(skb);
++
++	return iph->protocol == IPPROTO_HOMA;
++}
++
++/**
++ * homa_make_header_avl() - Invokes pskb_may_pull to make sure that all the
++ * Homa header information for a packet is in the linear part of the skb
++ * where it can be addressed using skb_transport_header.
++ * @skb:     Packet for which header is needed.
++ * Return:   The result of pskb_may_pull (true for success)
++ */
++static inline bool homa_make_header_avl(struct sk_buff *skb)
++{
++	int pull_length;
++
++	pull_length = skb_transport_header(skb) - skb->data + HOMA_MAX_HEADER;
++	if (pull_length > skb->len)
++		pull_length = skb->len;
++	return pskb_may_pull(skb, pull_length);
++}
++
++#define UNIT_LOG(...)
++#define UNIT_HOOK(...)
++
++extern unsigned int homa_net_id;
++
++/**
++ * homa_net_from_net() - Return the struct homa_net associated with a particular
++ * struct net.
++ * @net:     Get the Homa data for this net namespace.
++ * Return:   see above.
++ */
++static inline struct homa_net *homa_net_from_net(struct net *net)
++{
++	return (struct homa_net *)net_generic(net, homa_net_id);
++}
++
++/**
++ * homa_from_skb() - Return the struct homa associated with a particular
++ * sk_buff.
++ * @skb:     Get the struct homa for this packet buffer.
++ * Return:   see above.
++ */
++static inline struct homa *homa_from_skb(struct sk_buff *skb)
++{
++	struct homa_net *hnet;
++
++	hnet = net_generic(dev_net(skb->dev), homa_net_id);
++	return hnet->homa;
++}
++
++/**
++ * homa_net_from_skb() - Return the struct homa_net associated with a particular
++ * sk_buff.
++ * @skb:     Get the struct homa for this packet buffer.
++ * Return:   see above.
++ */
++static inline struct homa_net *homa_net_from_skb(struct sk_buff *skb)
++{
++	struct homa_net *hnet;
++
++	hnet = net_generic(dev_net(skb->dev), homa_net_id);
++	return hnet;
++}
++
++/**
++ * homa_clock() - Return a fine-grain clock value that is monotonic and
++ * consistent across cores.
++ * Return: see above.
++ */
++static inline u64 homa_clock(void)
++{
++	/* As of May 2025 there does not appear to be a portable API that
++	 * meets Homa's needs:
++	 * - The Intel X86 TSC works well but is not portable.
++	 * - sched_clock() does not guarantee monotonicity or consistency.
++	 * - ktime_get_mono_fast_ns and ktime_get_raw_fast_ns are very slow
++	 *   (27 ns to read, vs 8 ns for TSC)
++	 * Thus we use a hybrid approach that uses TSC (via get_cycles) where
++	 * available (which should be just about everywhere Homa runs).
++	 */
++#ifdef CONFIG_X86_TSC
++	return get_cycles();
++#else
++	return ktime_get_mono_fast_ns();
++#endif /* CONFIG_X86_TSC */
++}
++
++/**
++ * homa_clock_khz() - Return the frequency of the values returned by
++ * homa_clock, in units of KHz.
++ * Return: see above.
++ */
++static inline u64 homa_clock_khz(void)
++{
++#ifdef CONFIG_X86_TSC
++	return cpu_khz;
++#else
++	return 1000000;
++#endif /* CONFIG_X86_TSC */
++}
++
++/**
++ * homa_ns_to_cycles() - Convert from units of nanoseconds to units of
++ * homa_clock().
++ * @ns:      A time measurement in nanoseconds
++ * Return:   The time in homa_clock() units corresponding to @ns.
++ */
++static inline u64 homa_ns_to_cycles(u64 ns)
++{
++#ifdef CONFIG_X86_TSC
++	u64 tmp;
++
++	tmp = ns * cpu_khz;
++	do_div(tmp, 1000000);
++	return tmp;
++#else
++	return ns;
++#endif /* CONFIG_X86_TSC */
++}
++
++/**
++ * homa_usecs_to_cycles() - Convert from units of microseconds to units of
++ * homa_clock().
++ * @usecs:   A time measurement in microseconds
++ * Return:   The time in homa_clock() units corresponding to @usecs.
++ */
++static inline u64 homa_usecs_to_cycles(u64 usecs)
++{
++#ifdef CONFIG_X86_TSC
++	u64 tmp;
++
++	tmp = usecs * cpu_khz;
++	do_div(tmp, 1000);
++	return tmp;
++#else
++	return usecs * 1000;
++#endif /* CONFIG_X86_TSC */
++}
++
++/* Homa Locking Strategy:
++ *
++ * (Note: this documentation is referenced in several other places in the
++ * Homa code)
++ *
++ * In the Linux TCP/IP stack the primary locking mechanism is a sleep-lock
++ * per socket. However, per-socket locks aren't adequate for Homa, because
++ * sockets are "larger" in Homa. In TCP, a socket corresponds to a single
++ * connection between two peers; an application can have hundreds or
++ * thousands of sockets open at once, so per-socket locks leave lots of
++ * opportunities for concurrency. With Homa, a single socket can be used for
++ * communicating with any number of peers, so there will typically be just
++ * one socket per thread. As a result, a single Homa socket must support many
++ * concurrent RPCs efficiently, and a per-socket lock would create a bottleneck
++ * (Homa tried this approach initially).
++ *
++ * Thus, the primary locks used in Homa spinlocks at RPC granularity. This
++ * allows operations on different RPCs for the same socket to proceed
++ * concurrently. Homa also has socket locks (which are spinlocks different
++ * from the official socket sleep-locks) but these are used much less
++ * frequently than RPC locks.
++ *
++ * Lock Ordering:
++ *
++ * There are several other locks in Homa besides RPC locks, all of which
++ * are spinlocks. When multiple locks are held, they must be acquired in a
++ * consistent order in order to prevent deadlock. Here are the rules for Homa:
++ * 1. Except for RPC and socket locks, all locks should be considered
++ *    "leaf" locks: don't acquire other locks while holding them.
++ * 2. The lock order is:
++ *    * RPC lock
++ *    * Socket lock
++ *    * Other lock
++ * 3. It is not safe to wait on an RPC lock while holding any other lock.
++ * 4. It is safe to wait on a socket lock while holding an RPC lock, but
++ *    not while holding any other lock.
++ *
++ * It may seem surprising that RPC locks are acquired *before* socket locks,
++ * but this is essential for high performance. Homa has been designed so that
++ * many common operations (such as processing input packets) can be performed
++ * while holding only an RPC lock; this allows operations on different RPCs
++ * to proceed in parallel. Only a few operations, such as handing off an
++ * incoming message to a waiting thread, require the socket lock. If socket
++ * locks had to be acquired first, any operation that might eventually need
++ * the socket lock would have to acquire it before the RPC lock, which would
++ * severely restrict concurrency.
++ *
++ * Socket Shutdown:
++ *
++ * It is possible for socket shutdown to begin while operations are underway
++ * that hold RPC locks but not the socket lock. For example, a new RPC
++ * creation might be underway when a socket is shut down. The RPC creation
++ * will eventually acquire the socket lock and add the new RPC to those
++ * for the socket; it would be very bad if this were to happen after
++ * homa_sock_shutdown things is has deleted all RPCs for the socket.
++ * In general, any operation that acquires a socket lock must check
++ * hsk->shutdown after acquiring the lock and abort if hsk->shutdown is set.
++ *
++ * Spinlock Implications:
++ *
++ * Homa uses spinlocks exclusively; this is needed because locks typically
++ * need to be acquired at atomic level, such as in SoftIRQ code.
++ *
++ * Operations that can block, such as memory allocation and copying data
++ * to/from user space, are not permitted while holding spinlocks (spinlocks
++ * disable interrupts, so the holder must not block. This results in awkward
++ * code in several places to move restricted operations outside locked
++ * regions. Such code typically looks like this:
++ *   - Acquire a reference on an object such as an RPC, in order to prevent
++ *     the object from being deleted.
++ *   - Release the object's lock.
++ *   - Perform the restricted operation.
++ *   - Re-acquire the lock.
++ *   - Release the reference.
++ * It is possible that the object may have been modified by some other party
++ * while it was unlocked, so additional checks may be needed after reacquiring
++ * the lock. As one example, an RPC may have been terminated, in which case
++ * any operation in progress on that RPC should be aborted after reacquiring
++ * the lock.
++ *
++ * Lists of RPCs:
++ *
++ * There are a few places where Homa needs to process all of the RPCs
++ * associated with a socket, such as the timer. Such code must first lock
++ * the socket (to protect access to the link pointers) then lock
++ * individual RPCs on the list. However, this violates the rules for locking
++ * order. It isn't safe to unlock the socket before locking the individual RPCs,
++ * because RPCs could be deleted and their memory recycled between the unlock
++ * of the socket lock and the lock of the RPC; this could result in corruption.
++ * Homa uses two different approaches to handle this situation:
++ * 1. Use ``homa_protect_rpcs`` to prevent RPC reaping for a socket. RPCs can
++ *    still be terminated, but their memory won't go away until
++ *    homa_unprotect_rpcs is invoked. This allows the socket lock to be
++ *    released before acquiring RPC locks; after acquiring each RPC lock,
++ *    the RPC must be checked to see if it has been terminated; if so, skip it.
++ * 2. Use ``spin_trylock_bh`` to acquire the RPC lock while still holding the
++ *    socket lock. If this fails, then release the socket lock and retry
++ *    both the socket lock and the RPC lock. Of course, the state of both
++ *    socket and RPC could change before the locks are finally acquired.
++ */
++
++#endif /* _HOMA_IMPL_H */
+diff --git a/net/homa/homa_stub.h b/net/homa/homa_stub.h
+new file mode 100644
+index 000000000000..aefe816db1c2
+--- /dev/null
++++ b/net/homa/homa_stub.h
+@@ -0,0 +1,91 @@
++/* SPDX-License-Identifier: BSD-2-Clause */
++
++/* This file contains stripped-down replacements that have been
++ * temporarily removed from Homa during the Linux upstreaming
++ * process. By the time upstreaming is complete this file will
++ * have gone away.
++ */
++
++#ifndef _HOMA_STUB_H
++#define _HOMA_STUB_H
++
++#include "homa_impl.h"
++
++static inline int homa_skb_init(struct homa *homa)
++{
++	return 0;
++}
++
++static inline void homa_skb_cleanup(struct homa *homa)
++{}
++
++static inline void homa_skb_release_pages(struct homa *homa)
++{}
++
++static inline int homa_skb_append_from_iter(struct homa *homa,
++					    struct sk_buff *skb,
++					    struct iov_iter *iter, int length)
++{
++	char *dst = skb_put(skb, length);
++
++	if (copy_from_iter(dst, length, iter) != length)
++		return -EFAULT;
++	return 0;
++}
++
++static inline int homa_skb_append_to_frag(struct homa *homa,
++					  struct sk_buff *skb, void *buf,
++					  int length)
++{
++	char *dst = skb_put(skb, length);
++
++	memcpy(dst, buf, length);
++	return 0;
++}
++
++static inline int  homa_skb_append_from_skb(struct homa *homa,
++					    struct sk_buff *dst_skb,
++					    struct sk_buff *src_skb,
++					    int offset, int length)
++{
++	return homa_skb_append_to_frag(homa, dst_skb,
++			skb_transport_header(src_skb) + offset, length);
++}
++
++static inline void homa_skb_free_tx(struct homa *homa, struct sk_buff *skb)
++{
++	kfree_skb(skb);
++}
++
++static inline void homa_skb_free_many_tx(struct homa *homa,
++					 struct sk_buff **skbs, int count)
++{
++	int i;
++
++	for (i = 0; i < count; i++)
++		kfree_skb(skbs[i]);
++}
++
++static inline void homa_skb_get(struct sk_buff *skb, void *dest, int offset,
++				int length)
++{
++	memcpy(dest, skb_transport_header(skb) + offset, length);
++}
++
++static inline struct sk_buff *homa_skb_alloc_tx(int length)
++{
++	struct sk_buff *skb;
++
++	skb = alloc_skb(HOMA_SKB_EXTRA + sizeof(struct homa_skb_info) + length,
++			GFP_ATOMIC);
++	if (likely(skb)) {
++		skb_reserve(skb, HOMA_SKB_EXTRA);
++		skb_reset_transport_header(skb);
++	}
++	return skb;
++}
++
++static inline void homa_skb_stash_pages(struct homa *homa, int length)
++{}
++
++#endif /* _HOMA_STUB_H */
+-- 
+2.43.0
+
