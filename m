@@ -1,16 +1,15 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36FC24466E
-	for <netdev@vger.kernel.org>; Mon, 14 Jul 2025 09:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43435245003
+	for <netdev@vger.kernel.org>; Mon, 14 Jul 2025 09:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752486776; cv=none; b=l/yKmMA6tMvVDPbURnBxN189uvQcrQxVPLidN2mesdIf0KpMkVBSFLVp4gGn1OgPkwhg4gKyMx8p7Mi4+seSTwbxL9rOmUci1Y47RCyeCRlrmKkzaqKpciWx7YeHRD2tZxYBPS3g5uilLHpWoILXPXLbuBE4uk9nvnmFTccIBtE=
+	t=1752486776; cv=none; b=q4l3g82k5WI4dgWMmDoIFYM3hGuCflAhcja/bWGteXiFrVwLZTxYPGt5pI5e0hi7YIpamAAZxIfjV3Ii7+bHOWAutxrvn7ko5nugEs1eOrbGwqwut6VUQzY8ahPsnm6L9hn4071WQ0Eqh79JMAANj61kw4vciJ+rMtJc3aGUuQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752486776; c=relaxed/simple;
-	bh=KBBCA4ST0AIfZMPfEBu51s+rw1J0kOK14uQSN909J8M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gl30N6VUqxYxiRVBtsVTf54YZMJpEtb/yI1WsVVAG4fgfltr1Rtqqx4X+45cWpNfzlo4Cr5/IwpZQzmpn8u7wz742Ma07a6/N/B6tBlXDZ/7tDaCxLv/IosMV8ujGq7B7aTEd+N++jluiEiz9Nofxi2mVhCARm99kaTMXou96Bc=
+	bh=D5CvmAgCCjBvIHXiyJ3CxBj3MAYBomV1tblVpffaJro=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=k2sm26RpszsTkrh9RHxmzaufxnHmnXQkWiADi5WdhZRcgZide8k1O5uQWM8DUkpJmOB3CNGR7BGeEf2RjrdcfbEB4uNClPUyvcrSx9SUzVbHQLuIAuAJKuUDsXLhFwZqBPN5NZI6t1fqeiIpjHqPK7DazLMEM6NQ2Wm61LbjDm0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +17,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1ubFrX-0006Hs-1G; Mon, 14 Jul 2025 11:52:43 +0200
+	id 1ubFrX-0006Hp-1J; Mon, 14 Jul 2025 11:52:43 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1ubFrV-008OKY-2G;
+	id 1ubFrV-008OKV-22;
 	Mon, 14 Jul 2025 11:52:41 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1ubFrV-00BmIQ-1z;
+	id 1ubFrV-00BmHw-1l;
 	Mon, 14 Jul 2025 11:52:41 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Andrew Lunn <andrew@lunn.ch>,
@@ -37,157 +36,84 @@ To: Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Lukas Wunner <lukas@wunner.de>,
 	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	Russell King <linux@armlinux.org.uk>,
 	netdev@vger.kernel.org,
-	Andre Edich <andre.edich@microchip.com>
-Subject: [PATCH net v4 3/3] net: phy: smsc: recover missed link-up IRQs on LAN8700 with adaptive polling
-Date: Mon, 14 Jul 2025 11:52:40 +0200
-Message-Id: <20250714095240.2807202-4-o.rempel@pengutronix.de>
+	Andre Edich <andre.edich@microchip.com>,
+	Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH net v4 0/3] net: phy: smsc: use IRQ + relaxed polling to fix missed link-up
+Date: Mon, 14 Jul 2025 11:52:37 +0200
+Message-Id: <20250714095240.2807202-1-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250714095240.2807202-1-o.rempel@pengutronix.de>
-References: <20250714095240.2807202-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Fix unreliable link detection on the LAN8700 PHY (integrated in LAN9512
-and related USB adapters) when configured for 10 Mbit/s half- or
-full-duplex with autonegotiation disabled, and connected to a link
-partner that still advertises autonegotiation.
+This series makes the SMSC LAN8700 (as used in LAN9512 and similar USB
+adapters) reliable again in configurations where it is forced to 10 Mb/s
+and the link partner still advertises autonegotiation.
 
-In this scenario, the PHY may emit several link-down interrupts during
-negotiation but fail to raise a final link-up interrupt. As a result,
-phylib never observes the transition and the kernel keeps the network
-interface down, even though the link is actually up.
+In this scenario, the PHY may miss the final link-up interrupt, causing
+the network interface to remain down even though a valid link is
+present.
 
-To handle this, add a get_next_update_time() callback that performs 1 Hz
-polling for up to 30 seconds after the last interrupt, but only while
-the PHY is in this problematic configuration and the link is still down.
-This ensures link-up detection without unnecessary long delays or
-full-time polling.
+To address this:
 
-After 30 seconds with no further interrupt, the driver switches back to
-IRQ-only mode. In all other configurations, IRQ-only mode is used
-immediately.
+Patch 1 – phylib: Enable polling if the driver implements
+get_next_update_time(). This ensures the state machine is active even
+without update_stats().
 
-This patch depends on:
-- commit 8bf47e4d7b87 ("net: phy: Add support for driver-specific next
-  update time")
-- a prior patch in this series:
+Patch 2 – phylib: Allow drivers to return PHY_STATE_IRQ to explicitly
+disable polling.
+
+Patch 3 – smsc: Implement get_next_update_time() with adaptive 1 Hz
+polling for up to 30 seconds after the last interrupt in the affected
+10M autoneg-off mode.  All other configurations rely on IRQs only.
+
+Testing:
+
+The LAN9512 (LAN8700 core) was tested against an Intel I350 NIC using
+baseline, parallel-detection, and advertisement test suites. All
+relevant tests passed.
+
+Changes in v4:
+- address -Wformat-security for WARN_ONCE()
+
+Changes in v3:
+- handle conflicting configuration if update_stats are supported
+
+Changes in v2:
+- Introduced explicit disable polling via PHY_STATE_IRQ
+- Changed the workaround logic to apply 1 Hz polling only for 30 seconds
+  after the last IRQ
+- Dropped relaxed 30s polling while link is up
+- Reworded commit messages and comments to reflect updated logic
+- Split core changes into two separate patches for clarity
+
+Thanks,
+Oleksij Rempel
+
+Oleksij Rempel (3):
   net: phy: enable polling when driver implements get_next_update_time
   net: phy: allow drivers to disable polling via get_next_update_time()
+  net: phy: smsc: recover missed link-up IRQs on LAN8700 with adaptive
+    polling
 
-Fixes: 1ce8b37241ed ("usbnet: smsc95xx: Forward PHY interrupts to PHY driver to avoid polling")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Lukas Wunner <lukas@wunner.de>
----
-changes v2:
-- Switch to hybrid approach: 1 Hz polling for 30 seconds after last IRQ
-  instead of relaxed 30s polling while link is up
-- Only enable polling in problematic 10M autoneg-off mode while link is down
-- Return PHY_STATE_IRQ in all other configurations
-- Updated commit message and comments to reflect new logic
----
+ drivers/net/phy/phy.c  | 27 ++++++++++++++++++++-------
  drivers/net/phy/smsc.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ include/linux/phy.h    | 17 +++++++++++++++--
+ 3 files changed, 75 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index b6489da5cfcd..88eb15700dbd 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -39,6 +39,9 @@
- /* interval between phylib state machine runs in ms */
- #define PHY_STATE_MACH_MS		1000
- 
-+/* max retry window for missed link-up */
-+#define SMSC_IRQ_MAX_POLLING_TIME	secs_to_jiffies(30)
-+
- struct smsc_hw_stat {
- 	const char *string;
- 	u8 reg;
-@@ -54,6 +57,7 @@ struct smsc_phy_priv {
- 	unsigned int edpd_mode_set_by_user:1;
- 	unsigned int edpd_max_wait_ms;
- 	bool wol_arp;
-+	unsigned long last_irq;
- };
- 
- static int smsc_phy_ack_interrupt(struct phy_device *phydev)
-@@ -100,6 +104,7 @@ static int smsc_phy_config_edpd(struct phy_device *phydev)
- 
- irqreturn_t smsc_phy_handle_interrupt(struct phy_device *phydev)
- {
-+	struct smsc_phy_priv *priv = phydev->priv;
- 	int irq_status;
- 
- 	irq_status = phy_read(phydev, MII_LAN83C185_ISF);
-@@ -113,6 +118,8 @@ irqreturn_t smsc_phy_handle_interrupt(struct phy_device *phydev)
- 	if (!(irq_status & MII_LAN83C185_ISF_INT_PHYLIB_EVENTS))
- 		return IRQ_NONE;
- 
-+	WRITE_ONCE(priv->last_irq, jiffies);
-+
- 	phy_trigger_machine(phydev);
- 
- 	return IRQ_HANDLED;
-@@ -684,6 +691,38 @@ int smsc_phy_probe(struct phy_device *phydev)
- }
- EXPORT_SYMBOL_GPL(smsc_phy_probe);
- 
-+static unsigned int smsc_phy_get_next_update(struct phy_device *phydev)
-+{
-+	struct smsc_phy_priv *priv = phydev->priv;
-+
-+	/* If interrupts are disabled, fall back to default polling */
-+	if (phydev->irq == PHY_POLL)
-+		return PHY_STATE_TIME;
-+
-+	/*
-+	 * LAN8700 may miss the final link-up IRQ when forced to 10 Mbps
-+	 * (half/full duplex) and connected to an autonegotiating partner.
-+	 *
-+	 * To recover, poll at 1 Hz for up to 30 seconds after the last
-+	 * interrupt - but only in this specific configuration and while
-+	 * the link is still down.
-+	 *
-+	 * This keeps link-up latency low in common cases while reliably
-+	 * detecting rare transitions. Outside of this mode, rely on IRQs.
-+	 */
-+	if (phydev->autoneg == AUTONEG_DISABLE && phydev->speed == SPEED_10 &&
-+	    !phydev->link) {
-+		unsigned long last_irq = READ_ONCE(priv->last_irq);
-+
-+		if (!time_is_before_jiffies(last_irq +
-+					    SMSC_IRQ_MAX_POLLING_TIME))
-+			return PHY_STATE_TIME;
-+	}
-+
-+	/* switching to IRQ without polling */
-+	return PHY_STATE_IRQ;
-+}
-+
- static struct phy_driver smsc_phy_driver[] = {
- {
- 	.phy_id		= 0x0007c0a0, /* OUI=0x00800f, Model#=0x0a */
-@@ -749,6 +788,7 @@ static struct phy_driver smsc_phy_driver[] = {
- 	/* IRQ related */
- 	.config_intr	= smsc_phy_config_intr,
- 	.handle_interrupt = smsc_phy_handle_interrupt,
-+	.get_next_update_time = smsc_phy_get_next_update,
- 
- 	/* Statistics */
- 	.get_sset_count = smsc_get_sset_count,
--- 
+--
 2.39.5
 
