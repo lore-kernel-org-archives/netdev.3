@@ -1,135 +1,115 @@
-Received: from mxout70.expurgate.net (mxout70.expurgate.net [91.198.224.70])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811D421858E;
-	Mon, 14 Jul 2025 06:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.198.224.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5BA13A86C;
+	Mon, 14 Jul 2025 06:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752474468; cv=none; b=MWOnXUla8NMvbdxd9hBKYg5CYl3BRgMiUoTsMPyn55hIhzq0zqS7xix4DcR3qzz9noZKNPXUqt6ac3j7udoZ0kHN50TnsdLUwhrjM4iir0aJyH3OEw4CpHOOTznhx7hnkery7NAWpqn6XdviBbGVAzusUU47MQdCMWsZ8m8W8NM=
+	t=1752475453; cv=none; b=DAgdQH+N40lcCen4j3PmorjGpvFAMRcoKjBYPdY2sWNRkNnQbXDz/LEJltJbi5dKQ7IrwhJ+8vK7vCB5rJfYNXYRIk5tg+mcv4AmCr8B9GdmAet0cDfMq5ef7RdOwIsDduOne59nOuWzDLtnKiTpXWoz6T4rdzfX0/5Z3B3ufF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752474468; c=relaxed/simple;
-	bh=FokIb/jsQEmBa3MveOcLQeQ5FcS9JKxSSYV1cXqWoyI=;
-	h=MIME-Version:Content-Type:Date:From:To:Cc:Subject:In-Reply-To:
-	 References:Message-ID; b=U8VFd2GVH5Mir0S5tpJkhzJAbBM7PMS8hVm8eqcVVUU0gNCW///IAezRVSHZo6FJVbFEt4pxj4g0oJt+F0tTlEtQ9yJo2f+A67TShVZ9G+uH5zNbT1Ka/QFOhxBrlakULRXmKFCRpannrhomPqGl3SH8lmNSXWnJGSCEUgdOK7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dev.tdt.de; spf=pass smtp.mailfrom=dev.tdt.de; dkim=temperror (0-bit key) header.d=dev.tdt.de header.i=@dev.tdt.de header.b=SonpvYYC; arc=none smtp.client-ip=91.198.224.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dev.tdt.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dev.tdt.de
+	s=arc-20240116; t=1752475453; c=relaxed/simple;
+	bh=3gmL7rjyWzxXlZQp4lpwIQABbTj7vbN8aapxCnC0n+M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p9rQKFzO235DjEJnsVNV0uHv5vNc67BI0XNxJqWpj/PXBc+rfGKzxtYmLV65mKg8oEhcSZAgFFzjfbghCKqPhrobp1oxpkYXlJlBiWj/e5rBBR1JPtTT1vNiJaUGV/MTTNjnD71uv/+EQQeA8oTc+v78qwjzxGtNWoANRWA92bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Brup725k; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=dev.tdt.de header.i=@dev.tdt.de header.b="SonpvYYC"
-Received: from [194.37.255.9] (helo=mxout.expurgate.net)
-	by relay.expurgate.net with smtp (Exim 4.92)
-	(envelope-from <prvs=5304a106dc=ms@dev.tdt.de>)
-	id 1ubCPo-008vkV-Br; Mon, 14 Jul 2025 08:11:52 +0200
-Received: from [195.243.126.94] (helo=securemail.tdt.de)
-	by relay.expurgate.net with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ms@dev.tdt.de>)
-	id 1ubCPn-003z0h-4E; Mon, 14 Jul 2025 08:11:51 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dev.tdt.de;
-	s=z1-selector1; t=1752473510;
-	bh=0+9k2CPi1wzcWs6e7GPr7hixdhS1n+Z8U0EKokBj2LU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SonpvYYC2v4hw3y55rz75vTgWjRVNDCVoag/JL2Pfgdk83IuTLgR6oDkbDcSfEQ8p
-	 QCbV/Kx+krEYGvSF0l6yLyB7cV4h7gFH/SdiECkhpSwxspORDO5DJ58jRCQ8GGrRVS
-	 Qe5Kl/ldjT0qLU3kKBIcqibpDHb4SsWmx+kxv9cFVaoXpnLRLsW7YcjSzAqFwTX/Mv
-	 gTvK1bjU7USyv/a8fKNI0hHlb8zhHVdCoE1ERDhxvTRM6r5gf00QMu8y3hyhI9KiEI
-	 J57OUy0bF52g8DRheDcZhVGwv+42EaPmj4prpxZ+B0iX5FBIOVEVOcJvIO8cytVtSL
-	 971g8LZecMN6A==
-Received: from securemail.tdt.de (localhost [127.0.0.1])
-	by securemail.tdt.de (Postfix) with ESMTP id 9859F240040;
-	Mon, 14 Jul 2025 08:11:50 +0200 (CEST)
-Received: from mail.dev.tdt.de (unknown [10.2.4.42])
-	by securemail.tdt.de (Postfix) with ESMTP id 88C61240036;
-	Mon, 14 Jul 2025 08:11:50 +0200 (CEST)
-Received: from mail.dev.tdt.de (localhost [IPv6:::1])
-	by mail.dev.tdt.de (Postfix) with ESMTP id BCF7E214EB;
-	Mon, 14 Jul 2025 08:11:49 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Brup725k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752475452; x=1784011452;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3gmL7rjyWzxXlZQp4lpwIQABbTj7vbN8aapxCnC0n+M=;
+  b=Brup725kIGhUkM0k+TSGSl0BFEG703EGaTUfV6llAFCO+2h0kXhKMFA+
+   HsrUWKyw98bm5D/wGGHQdhe0pP96VFWHQ5qz0wqqk5QPyBY7Lpr8/QQ5q
+   O5AOp2f4rHUXbYM9zDQHurVHJAkO0PBMkMIikURSUI/HM/vkpK9VYuvL6
+   95O2UQc22TjsMh1aIPdLHAd1s+2J3diPP2Tl26JnazgJrgwtNs0VQX9vW
+   lhyjtelaVgEizZJFTRX5naKdph4rScZTPvgCtIruoGn+QyBemh5VWtABl
+   jsd9goqrTJVpU0vHOwfIBfIyjUr/oA92YUoMl2XE69PO2bp8n1GTJfjfD
+   w==;
+X-CSE-ConnectionGUID: 4/CdFXU0R7GlMpc+WNa1uQ==
+X-CSE-MsgGUID: sV/zTeFrR6CLpnvgHz3KlQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="65360063"
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; 
+   d="scan'208";a="65360063"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2025 23:44:11 -0700
+X-CSE-ConnectionGUID: fYwSSvNZSNqHUsz3jfG30A==
+X-CSE-MsgGUID: bcTFa//hRzaoX68h8vkNfw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,310,1744095600"; 
+   d="scan'208";a="156957374"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2025 23:44:08 -0700
+Date: Mon, 14 Jul 2025 08:43:04 +0200
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Saeed Mahameed <saeed@kernel.org>, Gal Pressman <gal@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Lama Kayal <lkayal@nvidia.com>
+Subject: Re: [PATCH net-next 1/6] net/mlx5: HWS, Enable IPSec hardware
+ offload in legacy mode
+Message-ID: <aHSm7SHg1xTMNE0F@mev-dev.igk.intel.com>
+References: <1752471585-18053-1-git-send-email-tariqt@nvidia.com>
+ <1752471585-18053-2-git-send-email-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Mon, 14 Jul 2025 08:11:49 +0200
-From: Martin Schiller <ms@dev.tdt.de>
-To: linux@treblig.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, linux-x25@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net/x25: Remove unused x25_terminate_link()
-Organization: TDT AG
-In-Reply-To: <20250712205759.278777-1-linux@treblig.org>
-References: <20250712205759.278777-1-linux@treblig.org>
-Message-ID: <6c677b5f49f57abdaaf499db719131f8@dev.tdt.de>
-X-Sender: ms@dev.tdt.de
-User-Agent: Roundcube Webmail/1.3.17
-X-purgate: clean
-X-purgate-type: clean
-X-purgate-ID: 151534::1752473511-AE7FA327-B4D8B24F/0/0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1752471585-18053-2-git-send-email-tariqt@nvidia.com>
 
-On 2025-07-12 22:57, linux@treblig.org wrote:
-> From: "Dr. David Alan Gilbert" <linux@treblig.org>
+On Mon, Jul 14, 2025 at 08:39:40AM +0300, Tariq Toukan wrote:
+> From: Lama Kayal <lkayal@nvidia.com>
 > 
-> x25_terminate_link() has been unused since the last use was removed
-> in 2020 by:
-> commit 7eed751b3b2a ("net/x25: handle additional netdev events")
+> IPSec hardware offload in legacy mode should not be affected by the
+> steering mode, hence it should also work properly with hmfs mode.
+
+What about dmfs mode? I am not sure, if you didn't remove it because it
+is still needed or just forgot about removing it.
+
+In case it is ok as it is:
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+
+Thanks
+
 > 
-> Remove it.
+> Remove steering mode validation when calculating the cap for packet
+> offload, this will also enable the missing cap MLX5_IPSEC_CAP_PRIO
+> needed for crypto offload.
 > 
-> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+> Signed-off-by: Lama Kayal <lkayal@nvidia.com>
+> Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 > ---
->  include/net/x25.h |  1 -
->  net/x25/x25_dev.c | 22 ----------------------
->  2 files changed, 23 deletions(-)
+>  .../net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c   | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/include/net/x25.h b/include/net/x25.h
-> index 5e833cfc864e..414f3fd99345 100644
-> --- a/include/net/x25.h
-> +++ b/include/net/x25.h
-> @@ -203,7 +203,6 @@ void x25_send_frame(struct sk_buff *, struct 
-> x25_neigh *);
->  int x25_lapb_receive_frame(struct sk_buff *, struct net_device *,
->  			   struct packet_type *, struct net_device *);
->  void x25_establish_link(struct x25_neigh *);
-> -void x25_terminate_link(struct x25_neigh *);
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+> index 820debf3fbbf..ef7322d381af 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+> @@ -42,8 +42,7 @@ u32 mlx5_ipsec_device_caps(struct mlx5_core_dev *mdev)
+>  
+>  	if (MLX5_CAP_IPSEC(mdev, ipsec_full_offload) &&
+>  	    (mdev->priv.steering->mode == MLX5_FLOW_STEERING_MODE_DMFS ||
+> -	     (mdev->priv.steering->mode == MLX5_FLOW_STEERING_MODE_SMFS &&
+> -	     is_mdev_legacy_mode(mdev)))) {
+> +	     is_mdev_legacy_mode(mdev))) {
+>  		if (MLX5_CAP_FLOWTABLE_NIC_TX(mdev,
+>  					      reformat_add_esp_trasport) &&
+>  		    MLX5_CAP_FLOWTABLE_NIC_RX(mdev,
+> -- 
+> 2.40.1
 > 
->  /* x25_facilities.c */
->  int x25_parse_facilities(struct sk_buff *, struct x25_facilities *,
-> diff --git a/net/x25/x25_dev.c b/net/x25/x25_dev.c
-> index 748d8630ab58..fb8ac1aa5826 100644
-> --- a/net/x25/x25_dev.c
-> +++ b/net/x25/x25_dev.c
-> @@ -170,28 +170,6 @@ void x25_establish_link(struct x25_neigh *nb)
->  	dev_queue_xmit(skb);
->  }
-> 
-> -void x25_terminate_link(struct x25_neigh *nb)
-> -{
-> -	struct sk_buff *skb;
-> -	unsigned char *ptr;
-> -
-> -	if (nb->dev->type != ARPHRD_X25)
-> -		return;
-> -
-> -	skb = alloc_skb(1, GFP_ATOMIC);
-> -	if (!skb) {
-> -		pr_err("x25_dev: out of memory\n");
-> -		return;
-> -	}
-> -
-> -	ptr  = skb_put(skb, 1);
-> -	*ptr = X25_IFACE_DISCONNECT;
-> -
-> -	skb->protocol = htons(ETH_P_X25);
-> -	skb->dev      = nb->dev;
-> -	dev_queue_xmit(skb);
-> -}
-> -
->  void x25_send_frame(struct sk_buff *skb, struct x25_neigh *nb)
->  {
->  	unsigned char *dptr;
-
-Acked-by: Martin Schiller <ms@dev.tdt.de>
