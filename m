@@ -1,64 +1,277 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738AD253F2D
-	for <netdev@vger.kernel.org>; Mon, 14 Jul 2025 14:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EBB259C9F;
+	Mon, 14 Jul 2025 14:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752505094; cv=none; b=a1xMNBKiKzMFW3WwfUooAnpsQoe79Yyl3pLrOjiZQMsptuizMyEZj+iQeD+WwmitYG4kO4OL7zHw82QtWERK2YmqaJsDF+EdN41VeG8fI1jH2jV8O/GdskxxjdNpUXv5sHhzfQTI1VTsLqUhaZ4I/omJgtOmejOrXapYMaXqfjo=
+	t=1752505165; cv=none; b=j8UJyLBAt8pvSZdaXV5BWSZ8GuC7V/ninnTD9vpSYf2N6/s783hBW9l46IF2hQ/L//aRBDGfLt+yHm3jzmag1drMfcLzhP+QIfMC7ttZSoHJg6hIh8DAsgEjsnODTW/CwSFITyScX+12Xi+AFetUlP9iIMJS+FUHyEw3cYXjbi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752505094; c=relaxed/simple;
-	bh=C5eyEDFv4nwgx18b0gkYabeNyMzfmzsJGMHUO9ziknE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nup03eIhiGfa5pybRv1OT7N4qynV69GrVSv5agRxS+R7uxwtyDWpBVGMad3lokDieEXyv8WHJarzxhYk49laBn6YciKs6oB6pvKu9cMDv75oeXc4d/eMdHMVdaB0HFVF2PL1rbHZa6wM/OOY83jxV2I8lXNd9Fkls446eZ5E3lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HrOilTh7; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HrOilTh7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935FCC4CEED;
-	Mon, 14 Jul 2025 14:58:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752505094;
-	bh=C5eyEDFv4nwgx18b0gkYabeNyMzfmzsJGMHUO9ziknE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HrOilTh7MQ3a6Vj2AmxUAktMb1VW6crNILq2KGgq7bROJXZ5cavJWmpLE9NpDcwL4
-	 OV21j6Q7ktUXgpwyonFpUnT/Vrj4eCrGyGPi6UQQBBAqIgZUGKJUHBLImQ0oaW8AlX
-	 AbOyMdY5gUPyY+NqkMyJRnu57EC//qsSmtq9GAt4BVvcFZJuFb7P/CAgjPAJYaCsI+
-	 APPRTFhWUjqZ+8Z9OM8GjuNR40QO00drBCkATzBrtba+0LNod1ZIzwYuMZSJomvqQ6
-	 T9YNg3xatAFRkp0i6t+ptvs+78yF1FHzjUHIXWjbZliBJVImhYFT5thGyIp0z8LPKc
-	 F7tM4BJRwiJow==
-Date: Mon, 14 Jul 2025 07:58:12 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: William Liu <will@willsroot.io>
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, xiyou.wangcong@gmail.com,
- victor@mojatatu.com, pctammela@mojatatu.com, pabeni@redhat.com,
- stephen@networkplumber.org, dcaratti@redhat.com, savy@syst3mfailure.io,
- jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
- horms@kernel.org
-Subject: Re: [PATCH net v5 1/2] net/sched: Restrict conditions for adding
- duplicating netems to qdisc tree
-Message-ID: <20250714075812.3e9adfed@kernel.org>
-In-Reply-To: <Xkn0k1T1WExEErBWNX2KpV5LgS9_QyNobWmlUUjcpihDZ5oJrCtZyvuXfiTnrGiOGQnKVQatnw0suv3voQl_6lMrncCe5NdO3NaQliF16mc=@willsroot.io>
-References: <20250708164141.875402-1-will@willsroot.io>
-	<20250711155506.48bbb351@kernel.org>
-	<Xkn0k1T1WExEErBWNX2KpV5LgS9_QyNobWmlUUjcpihDZ5oJrCtZyvuXfiTnrGiOGQnKVQatnw0suv3voQl_6lMrncCe5NdO3NaQliF16mc=@willsroot.io>
+	s=arc-20240116; t=1752505165; c=relaxed/simple;
+	bh=LoJlg3EAlbipWWqeMfoaXHl8EBht7nYYHONIWaDbPlg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fHKtXImslIIn6yTRB/b3oUkiAeYcsQq9wFGpaKnl8Eg5z0hyMmoIQJOXgTf/qfNsuQiXF3V0jKb1p8YPAmgNt84xcB33ipdnHRtcCvYbVJlIMgu8SCI6u+JbrEyd9wwVIwBHdByeG+2oUa2MGJHTlkUUnX77TQb5QIH3G0bY3fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [141.14.220.42] (g42.guest.molgen.mpg.de [141.14.220.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id C11E161E64847;
+	Mon, 14 Jul 2025 16:58:58 +0200 (CEST)
+Message-ID: <21eded54-3460-4000-baba-815522012e02@molgen.mpg.de>
+Date: Mon, 14 Jul 2025 16:58:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Bluetooth: ISO: add socket option to report packet seqnum
+ via CMSG
+To: Pauli Virtanen <pav@iki.fi>
+Cc: linux-bluetooth@vger.kernel.org, marcel@holtmann.org,
+ johan.hedberg@gmail.com, luiz.dentz@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <474a5321753aba17ec2819ba59adfd157ecfb343.1752501596.git.pav@iki.fi>
+ <bbdbe42b-614c-4f66-8712-f0ab8d54b490@molgen.mpg.de>
+ <e647579c99fcbfeb0c89f041ea5ea61e608be099.camel@iki.fi>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <e647579c99fcbfeb0c89f041ea5ea61e608be099.camel@iki.fi>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, 12 Jul 2025 16:51:39 +0000 William Liu wrote:
-> > We already had one regression scare this week, so given that Cong
-> > is not relenting I'll do the unusual thing of parking this fix in
-> > net-next. It will reach Linus during the merge window, hopefully
-> > the <2 week delay is not a big deal given how long we've taken already.  
+Dear Pauli,
+
+
+Thank you for your prompt reply.
+
+
+Am 14.07.25 um 16:53 schrieb Pauli Virtanen:
+
+> ma, 2025-07-14 kello 16:15 +0200, Paul Menzel kirjoitti:
+
+>> Am 14.07.25 um 16:02 schrieb Pauli Virtanen:
+>>> User applications need a way to track which ISO interval a given SDU
+>>> belongs to, to properly detect packet loss. All controllers do not set
+>>> timestamps, and it's not guaranteed user application receives all packet
+>>> reports (small socket buffer, or controller doesn't send all reports
+>>> like Intel AX210 is doing).
+>>>
+>>> Add socket option BT_PKT_SEQNUM that enables reporting of received
+>>> packet ISO sequence number in BT_SCM_PKT_SEQNUM CMSG.
+>>
+>> Are there user applications already supporting this, so it can be tested?
 > 
-> If this is going to net-next, will this still be a candidate for
-> backporting like other recent net/sched bug-fixes? Or will this only
-> be considered fixed starting 6.17 onwards?
+> I sent the associated tests to linux-bluetooth list
+> 
+> https://lore.kernel.org/linux-bluetooth/c9a75585e3640d8a1efca0bf96158eec1ca25fdc.1752501450.git.pav@iki.fi/
 
-It will be a candidate for backporting once it reaches Linus.
-The only difference is timing.
+Awesome. Can this be referenced in the commit message?
+
+>>> Signed-off-by: Pauli Virtanen <pav@iki.fi>
+>>> ---
+>>>
+>>> Notes:
+>>>       Intel AX210 is not sending all reports:
+>>>       
+>>>       $ btmon -r dump.btsnoop -I -C90|grep -A1 'ISO Data RX: Handle 2304'
+>>>       ...
+>>>       > ISO Data RX: Handle 2304 flags 0x02 dlen 64                      #1713 [hci0] 22.567744
+>>>               dd 01 3c 00 6d 08 e9 14 1e 3b 85 7b 35 c2 25 0b  ..<.m....;.{5.%.
+>>>       --
+>>>       > ISO Data RX: Handle 2304 flags 0x02 dlen 64                      #1718 [hci0] 22.573745
+>>>               de 01 3c 00 41 65 22 4f 99 9b 0b b6 ff cb 06 00  ..<.Ae"O........
+>>>       --
+>>>       > ISO Data RX: Handle 2304 flags 0x02 dlen 64                      #1727 [hci0] 22.587933
+>>>               e0 01 3c 00 8b 6e 33 44 65 51 ee d7 e0 ee 49 d8  ..<..n3DeQ....I.
+>>>       --
+>>>       > ISO Data RX: Handle 2304 flags 0x02 dlen 64                      #1732 [hci0] 22.596742
+>>>               e1 01 3c 00 a7 48 54 a7 c1 9f dc 37 66 fe 04 ab  ..<..HT....7f...
+>>>       ...
+>>>       
+>>>       Here, report for packet with sequence number 0x01df is missing.
+>>
+>> Sorry, but where are the sequence number in the trace?
+> 
+> It's the first two bytes, see Core specification Vol 4E Sec 5.4.5 "HCI
+> ISO Data packets".
+
+Now I see it. Thank you!
+
+>>>       
+>>>       This may be spec violation by the controller, see Core v6.1 pp. 3702
+>>>       
+>>>           All SDUs shall be sent to the upper layer including the indication
+>>>           of validity of data. A report shall be sent to the upper layer if
+>>>           the SDU is completely missing.
+>>>       
+>>>       Regardless, it will be easier for user applications to see the HW
+>>>       sequence numbers directly, so they don't have to count packets and it's
+>>>       in any case more reliable if packets get dropped due to socket buffer
+>>>       size.
+>>
+>> I wouldn’t mind to have the note in the commit message.
+> 
+> I'm not sure it's a spec violation --- the text in the specification is
+> not fully clear what "All SDUs" means in the context here --- so I
+> don't really want to say so in the commit message.
+> 
+> The limited socket buffer and that AX210 drops some reports is mentioned
+> in the commit message.
+
+True.
+
+>>>    include/net/bluetooth/bluetooth.h |  9 ++++++++-
+>>>    net/bluetooth/af_bluetooth.c      |  7 +++++++
+>>>    net/bluetooth/iso.c               | 21 ++++++++++++++++++---
+>>>    3 files changed, 33 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
+>>> index 114299bd8b98..0e31779a3341 100644
+>>> --- a/include/net/bluetooth/bluetooth.h
+>>> +++ b/include/net/bluetooth/bluetooth.h
+>>> @@ -244,6 +244,10 @@ struct bt_codecs {
+>>>    
+>>>    #define BT_ISO_BASE		20
+>>>    
+>>> +#define BT_PKT_SEQNUM		21
+>>> +
+>>> +#define BT_SCM_PKT_SEQNUM	0x05
+>>> +
+>>>    __printf(1, 2)
+>>>    void bt_info(const char *fmt, ...);
+>>>    __printf(1, 2)
+>>> @@ -391,7 +395,8 @@ struct bt_sock {
+>>>    enum {
+>>>    	BT_SK_DEFER_SETUP,
+>>>    	BT_SK_SUSPEND,
+>>> -	BT_SK_PKT_STATUS
+>>> +	BT_SK_PKT_STATUS,
+>>> +	BT_SK_PKT_SEQNUM,
+>>>    };
+>>>    
+>>>    struct bt_sock_list {
+>>> @@ -475,6 +480,7 @@ struct bt_skb_cb {
+>>>    	u8 pkt_type;
+>>>    	u8 force_active;
+>>>    	u16 expect;
+>>> +	u16 pkt_seqnum;
+>>
+>> Excuse my ignorance, just want to make sure, the type is big enough.
+> 
+> The hardware sequence number is also 16 bits.
+
+Understood.
+
+>>>    	u8 incoming:1;
+>>>    	u8 pkt_status:2;
+>>>    	union {
+>>> @@ -488,6 +494,7 @@ struct bt_skb_cb {
+>>>    
+>>>    #define hci_skb_pkt_type(skb) bt_cb((skb))->pkt_type
+>>>    #define hci_skb_pkt_status(skb) bt_cb((skb))->pkt_status
+>>> +#define hci_skb_pkt_seqnum(skb) bt_cb((skb))->pkt_seqnum
+>>>    #define hci_skb_expect(skb) bt_cb((skb))->expect
+>>>    #define hci_skb_opcode(skb) bt_cb((skb))->hci.opcode
+>>>    #define hci_skb_event(skb) bt_cb((skb))->hci.req_event
+>>> diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
+>>> index 6ad2f72f53f4..44b7acb20a67 100644
+>>> --- a/net/bluetooth/af_bluetooth.c
+>>> +++ b/net/bluetooth/af_bluetooth.c
+>>> @@ -364,6 +364,13 @@ int bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+>>>    			put_cmsg(msg, SOL_BLUETOOTH, BT_SCM_PKT_STATUS,
+>>>    				 sizeof(pkt_status), &pkt_status);
+>>>    		}
+>>> +
+>>> +		if (test_bit(BT_SK_PKT_SEQNUM, &bt_sk(sk)->flags)) {
+>>> +			u16 pkt_seqnum = hci_skb_pkt_seqnum(skb);
+>>> +
+>>> +			put_cmsg(msg, SOL_BLUETOOTH, BT_SCM_PKT_SEQNUM,
+>>> +				 sizeof(pkt_seqnum), &pkt_seqnum);
+>>> +		}
+>>>    	}
+>>>    
+>>>    	skb_free_datagram(sk, skb);
+>>> diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+>>> index fc22782cbeeb..469450bb6b6c 100644
+>>> --- a/net/bluetooth/iso.c
+>>> +++ b/net/bluetooth/iso.c
+>>> @@ -1687,6 +1687,17 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
+>>>    			clear_bit(BT_SK_PKT_STATUS, &bt_sk(sk)->flags);
+>>>    		break;
+>>>    
+>>> +	case BT_PKT_SEQNUM:
+>>> +		err = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
+>>> +		if (err)
+>>> +			break;
+>>> +
+>>> +		if (opt)
+>>> +			set_bit(BT_SK_PKT_SEQNUM, &bt_sk(sk)->flags);
+>>> +		else
+>>> +			clear_bit(BT_SK_PKT_SEQNUM, &bt_sk(sk)->flags);
+>>> +		break;
+>>> +
+>>>    	case BT_ISO_QOS:
+>>>    		if (sk->sk_state != BT_OPEN && sk->sk_state != BT_BOUND &&
+>>>    		    sk->sk_state != BT_CONNECT2 &&
+>>> @@ -2278,7 +2289,7 @@ static void iso_disconn_cfm(struct hci_conn *hcon, __u8 reason)
+>>>    void iso_recv(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
+>>>    {
+>>>    	struct iso_conn *conn = hcon->iso_data;
+>>> -	__u16 pb, ts, len;
+>>> +	__u16 pb, ts, len, sn;
+>>
+>> Use `seqnum` for consistency with the parts above.
+>>
+>>>    
+>>>    	if (!conn)
+>>>    		goto drop;
+>>> @@ -2308,6 +2319,7 @@ void iso_recv(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
+>>>    				goto drop;
+>>>    			}
+>>>    
+>>> +			sn = hdr->sn;
+>>>    			len = __le16_to_cpu(hdr->slen);
+>>>    		} else {
+>>>    			struct hci_iso_data_hdr *hdr;
+>>> @@ -2318,18 +2330,20 @@ void iso_recv(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
+>>>    				goto drop;
+>>>    			}
+>>>    
+>>> +			sn = hdr->sn;
+>>>    			len = __le16_to_cpu(hdr->slen);
+>>>    		}
+>>>    
+>>>    		flags  = hci_iso_data_flags(len);
+>>>    		len    = hci_iso_data_len(len);
+>>>    
+>>> -		BT_DBG("Start: total len %d, frag len %d flags 0x%4.4x", len,
+>>> -		       skb->len, flags);
+>>> +		BT_DBG("Start: total len %d, frag len %d flags 0x%4.4x sn %d",
+>>> +		       len, skb->len, flags, sn);
+>>>    
+>>>    		if (len == skb->len) {
+>>>    			/* Complete frame received */
+>>>    			hci_skb_pkt_status(skb) = flags & 0x03;
+>>> +			hci_skb_pkt_seqnum(skb) = sn;
+>>>    			iso_recv_frame(conn, skb);
+>>>    			return;
+>>>    		}
+>>> @@ -2352,6 +2366,7 @@ void iso_recv(struct hci_conn *hcon, struct sk_buff *skb, u16 flags)
+>>>    			goto drop;
+>>>    
+>>>    		hci_skb_pkt_status(conn->rx_skb) = flags & 0x03;
+>>> +		hci_skb_pkt_seqnum(conn->rx_skb) = sn;
+>>>    		skb_copy_from_linear_data(skb, skb_put(conn->rx_skb, skb->len),
+>>>    					  skb->len);
+>>>    		conn->rx_len = len - skb->len;
+
+Kind regards,
+
+Paul
