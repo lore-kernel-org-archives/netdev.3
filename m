@@ -1,340 +1,551 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC01B248195;
-	Mon, 14 Jul 2025 14:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752503008; cv=fail; b=oeBDiHvm/WZczrnmc9McFifvTPrmNdL30U+xwebbGp3PePlixEhm/mDQbEZwPTjEfPmm/ihckFIgy0yy9P3+QKCJBBt3QDQU7iYIN0j8rMpv0Pt5Mk/BLj1Lgt0rpkDCqC79BsCZXAs4polaaM7MkF6vpmXz+urBA/ifZxzbFro=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752503008; c=relaxed/simple;
-	bh=5BdM9vAs3ZjSLzFLIJ9k3TukaOA4HfO81Gdffy91AjM=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=OL3q6GG0Xo7AfU9FMtW5Arv/vDXHWc7cHUXg8pFZw+evPSXijsx96dQOkD68rY/fL7JNrvEuqvBZjeDEcOd9cOSwlPshtVr633lhjhnn9cQNbakjDDN4iRKmFaxliepmgXWjdcz7BkY55h4IsyNfJYPTE8EJtuGPlynnxIHUxI8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VmhsyiVg; arc=fail smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF7022129F
+	for <netdev@vger.kernel.org>; Mon, 14 Jul 2025 14:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752503552; cv=none; b=GXdBDy6XAE3D8iXwyiHdyQMx25oeJK3r5CKbaWQ+a2Lz7Wlr5JGBFxYsSXhand2npyNBtmZjYyBnj6+EHDIp2n+UHBBu9jDX5+tKdWBfIRW+Tqb60yEdodTMfI6QlKj5/+ATq0MTSJ389lZIJe/lw50jJwqHUKLPkl6J8YMC8fI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752503552; c=relaxed/simple;
+	bh=D2Shg9wiVYkET3gKkKNW+4ySokqdmq1tWoJefiMv2gs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=J/dll5uAT7376Uvk4cAdy38IVx7KjaYHjSdxe+PXxIpEaYfOnSKY9P440vzW9AH2L1CVbLmC29VKZCc1LzUsxHwziph5mhCE/WKXoTWxhRvuAuxNc+/4M7c9FUnTAXdGO68BCNR6Axt61qdnuth0WVgnVUTY6et1q+hS9Wzkwpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KSgG5zGe; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VmhsyiVg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752503007; x=1784039007;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=5BdM9vAs3ZjSLzFLIJ9k3TukaOA4HfO81Gdffy91AjM=;
-  b=VmhsyiVgl6My9gaIr0qe5JtjUwYCUUdQTA1PkE2ynvwhHE5sruN13USs
-   gYtVbBw460aJweyJsaaECMs5Fu/F8XuelheS1NtdiGNr7a69xM6AuCyJh
-   1qkn1CDKtA1D3An8zk7oZ8R3pceKbsrBoKwQYFTFBpjXIjcwtltDp8SlT
-   5jMz0rjSy6MHQPI3EyR8JJTz9PDwKhERmegEJ4QwfrbtekSapuD50IFsc
-   6yOKddCwC46fxgh1qrX99zmaylzyCgjfLizP/Vs6yVuK3VZMvCWsp2JgX
-   prbV6B9YN0a2JP/BZCj0EJL75J5SpwBxpef5UvbNTJtSwMZtnJlvJjEaQ
-   g==;
-X-CSE-ConnectionGUID: 0IMR3FOyRHCw2ALmhStHCw==
-X-CSE-MsgGUID: 5Mrj4SZtRkGZLwUfq6/wOQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="66057048"
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; 
-   d="scan'208";a="66057048"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2025 07:23:25 -0700
-X-CSE-ConnectionGUID: m9S8gMCWRkidB5PTpxzo8A==
-X-CSE-MsgGUID: RrnbobX7TVyuhtUnB7Ffqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,311,1744095600"; 
-   d="scan'208";a="161248050"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2025 07:23:24 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 14 Jul 2025 07:23:22 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Mon, 14 Jul 2025 07:23:22 -0700
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (40.107.95.72) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 14 Jul 2025 07:23:18 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Qlc1gU2s/f0scQqW7nmpBAuUd1CET5Sjt5CjR4yHMireB4REiVDPoj6ahauV1EppT17Y7MWd/5YGgZWKBf0zVfDsvqSdcboQxlZGU6tdbepCeV6aInjeFldINabNLxPmjojun8YODDA65j8+CceS141N8RK420ko/snzC7l2+H4kdR1GREP6OzMyAYGpzM2QR5zYv6dXvC2qQRX4wZsNqfYCL3/thd5JGAidDQrLT89RVaThp3LRUVpDN76m3cLVrtIF87C/ue3mJommrZXa9da4/vnbkZz3yMnO/agXmpKM3XuULNDMw0qw3C1eVLEdFbVa3xfStlbZVv9YZNAAzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j0sSMOCbRW2K4SEcNgB4KC1kq3VPGHFdJlXm432ACjU=;
- b=L8TvEGfA5ljdNRPR9rwL0J+rwzXupQj4KOKNHPCbbbsTO3sRZz/eZTufFtPGHf+9kgaHguQqCpBFz061oUenmciIHb8XvdopWAPBm+BH3xIxj/dEz30Tnv5RBopZAMW2kx4Osyl9lDQHiBFXbg5CgfFQ7cQtLYfyp6r/Mr32S/Tfi3DrxDYXaPcPCr+ylkqHvQ5jFHMEq7SNSVQScEUc2xWXQWQjk3puxCACMlk4QOAIlsrQ5GRdXcLY0WMjtJdwc2IWUOJEtEVOZCeTApg5+Ib5Hn1Ma8dcTIiEjI1IwAPxkYhrqU6oB1ng/D++gHkrUjEg/25zH2xMyQKUJtolEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
- by IA1PR11MB7200.namprd11.prod.outlook.com (2603:10b6:208:42f::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.29; Mon, 14 Jul
- 2025 14:22:35 +0000
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::4b3b:9dbe:f68c:d808]) by DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::4b3b:9dbe:f68c:d808%3]) with mapi id 15.20.8922.028; Mon, 14 Jul 2025
- 14:22:35 +0000
-Message-ID: <98c8c7d7-4b1a-474f-86b6-884d79ea4e41@intel.com>
-Date: Mon, 14 Jul 2025 16:20:14 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/2] net/mlx5: Avoid copying payload to the skb's
- linear part
-To: <cpaasch@openai.com>
-CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, <linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>
-References: <20250713-cpaasch-pf-927-netmlx5-avoid-copying-the-payload-to-the-malloced-area-v1-0-ecaed8c2844e@openai.com>
- <20250713-cpaasch-pf-927-netmlx5-avoid-copying-the-payload-to-the-malloced-area-v1-2-ecaed8c2844e@openai.com>
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-Content-Language: en-US
-In-Reply-To: <20250713-cpaasch-pf-927-netmlx5-avoid-copying-the-payload-to-the-malloced-area-v1-2-ecaed8c2844e@openai.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DUZPR01CA0089.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:46a::12) To DS0PR11MB8718.namprd11.prod.outlook.com
- (2603:10b6:8:1b9::20)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KSgG5zGe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752503549;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FGD1KU8sFNPJUcSBHbtbleDSQjiotSa+EZbqlJ6lMfw=;
+	b=KSgG5zGerxtkU2xiSgxhEdcz0oSZLP89UJmVYjbxiKOjRzWnA2LJz3mY1tl5yKNzplTSF4
+	/R+7lbSxiBSs0LxfkbXw9rZyYp5nufMBSkzuC/dLlZavkkiG7JUUmfgAkES9QIoL1M7nOT
+	0LathwJ1dZVec4EKlIFaEFW2yIVBVi4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-562-UGkDa4CkPH6SkN5hwQ7sxw-1; Mon, 14 Jul 2025 10:32:26 -0400
+X-MC-Unique: UGkDa4CkPH6SkN5hwQ7sxw-1
+X-Mimecast-MFC-AGG-ID: UGkDa4CkPH6SkN5hwQ7sxw_1752503545
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-456013b59c1so12530275e9.3
+        for <netdev@vger.kernel.org>; Mon, 14 Jul 2025 07:32:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752503545; x=1753108345;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FGD1KU8sFNPJUcSBHbtbleDSQjiotSa+EZbqlJ6lMfw=;
+        b=oeDGpNbLqQ/D2HAEzgUQoOO959fq54FcoYDsSuPha8VETHDwM+LckJLAjXtMZIKnUq
+         Up05QE3xB3bz/W9Nk0Rd/oxBX7E40m+m7gGToO2ld6xNcouZYCq5KwdSN+RpYckikYH9
+         S9G2kod5gUAQv2jX/9P31ALRcKzudnB/nofbb2um23jK0oPy63VvPkmMJIvIhr3q5LR9
+         uFjkZckjmREJ07aSYGRUbCH4ja2t4sbvKhuma30jGilMI8RIgIFbXYA71WPdiJ3+5fe/
+         wp4B3uPaj3zuhF5G99i+CKohG/MUpA0TnmtIB1iYzsrzAX7RPHX2/VMGEdwnVQApQwqu
+         0QBw==
+X-Forwarded-Encrypted: i=1; AJvYcCVA9x1BSfaTZsp5SBwLV9Lj+Ock5G4lnbzlIEvwMDd66vp3/KeVZRzZoJ6hivHQtfd7KAW9De8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxa4eo4Q4IP/Kt9kViPtGwg6jHdhoSSIoFi/CUyNE4yinOgOXAI
+	uYLAnCLvDS00fMLzvPHPxIWY24ba8j5PKyMa5c6ou34mUhIHwtkjQHxB4gtwOMMJV/i6rIlsi11
+	d0MWop5pUyZ+5/2dilXTrahg+wc1Zjm0ZSVksfJ9HpFfc4UGD8lGIfBeXQw==
+X-Gm-Gg: ASbGncvIz+oBZAQV9DJb7Ql+2eCaC+PkHsws/kjM0gPyd8n1NPpa6AS2qEr3Ic2Z866
+	oAo9eW4Ll1yrgpO0CynIJ9dk4lhtB3ixF4DWHYrZPuzekboZW1isVv02oNs26+MNlfbjKfdGe7h
+	IZv8CbbnR5+LYm83LZVvQRanGbGosiyxxPzK007xhs6ElLDxRl1p6alTD3CQEDgD9hV5n0ObogR
+	ZdXJmgDvHXPQNfZpojSG2GRnOcWXubIvjYM+PktJQQ7ZKzYW6NzAPHXxQF++1Lm+dAymSuODqBn
+	MoMN25SjhsGEUpjRVBhYT556Z6I4QWYjbKIrlyneKO8=
+X-Received: by 2002:a05:600c:c176:b0:43c:eeee:b713 with SMTP id 5b1f17b1804b1-454ec263d7cmr97272125e9.20.1752503544771;
+        Mon, 14 Jul 2025 07:32:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEDqtqpXfxIzSlI6jl0FMnFo64VbI1ICPI5atHbMGBa01OvZMbXirZbtZS7pc3Ed9lpvPQOIw==
+X-Received: by 2002:a05:600c:c176:b0:43c:eeee:b713 with SMTP id 5b1f17b1804b1-454ec263d7cmr97271575e9.20.1752503544153;
+        Mon, 14 Jul 2025 07:32:24 -0700 (PDT)
+Received: from [192.168.0.115] ([212.105.155.228])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454dd474a9csm133909225e9.16.2025.07.14.07.32.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Jul 2025 07:32:23 -0700 (PDT)
+Message-ID: <0ddc5daf-adb4-4d97-9e8e-e60fdf9a007f@redhat.com>
+Date: Mon, 14 Jul 2025 16:32:20 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|IA1PR11MB7200:EE_
-X-MS-Office365-Filtering-Correlation-Id: aa1777db-ea0d-4fd4-67b9-08ddc2e1e107
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?akpBSDB2Qkd3eTRITzBJTzU2OVZvTklaRTZYTHNleGducVZUUWtJVm51Y0NW?=
- =?utf-8?B?eGU0a1ZrM05nbGNWSFc0ZHhmQThaeWxsejVaUU5Tc1RWZEE5bmp6T1FESW5m?=
- =?utf-8?B?UHhTeFZxZ1k3QXBIcFhHZktaU3g0RUorRGhqY1pXSjJyT052dmpWMDlmempj?=
- =?utf-8?B?bWhqVFg3bWV5U29EbS8rUGVjOWpONWZ0UEl1OTNaZE10VHZwcGtidkY1TUhq?=
- =?utf-8?B?MVpTWGRmbzYzN0VKR3l4S2x5VlZ6NTNTU1lDZ2FwU1RxY1BLekVEU1AvQ2Nw?=
- =?utf-8?B?dTZUbVI5YTRMTy85U1JPd2M1aW1oRnJFTDRrZDNQQUd2d25ZVytvc1BpRTRM?=
- =?utf-8?B?U0pGOHpyOFlISkFFa0g3YUZjcEcxUzNLVXh4aFo3Zk9yK2d0RzNYTmdlZkZy?=
- =?utf-8?B?VXZadjYvdk9UQWpySkROZzlsWUdqVVRZOUxpRTQvRFlheDlaRHdvdndOQ1VI?=
- =?utf-8?B?bm1VUXBBa1VQTGszc01Cd1Rsa2lxaGliQlR0VDE3SDdzQmh3dnhrdndXUmYw?=
- =?utf-8?B?YXIrSVBrM1VqSHJNSXRwNUlYaWt4YWx3TlBEaDNQckhWMENrdlpCTEw0YjRl?=
- =?utf-8?B?OTBWQ3hOKzNabFJKWDFvZmpYa1A3Y2V0VVIrWDhHaW8zdU1JV08xT2tmSkto?=
- =?utf-8?B?Ny96d05FNzI1MDZYMXlEVFJUT2l3Zlc5UDIzdHlib0VmMXEvYXFvaW9xaCtC?=
- =?utf-8?B?ZVFZRjRyajhldGVESG9LdnFnRTc2M3U0S3pzM2pUWC93bDlzZnZRU3FaanRS?=
- =?utf-8?B?SDN5WEl5ZEorZ0ZwV24xMVpFS1JKdG1Pc014dTc5MjBCZTdHM05mNkpCVHNW?=
- =?utf-8?B?d3poaEZMS1d1ZjB0T0d1eTBBeGZXenhMN0pTbWxhNWw0UHE4S3BpWmJma2ZI?=
- =?utf-8?B?amJzbk9EdlJzZGtGZWc4ZnB6MGNPS24rR1BLWFREalVBcDVPQUtzalFSdDI5?=
- =?utf-8?B?VTVlc0w1Z3BaN2Jya1VRL2pHYjhXTm0xd0toZUpRcW9WYkNxMlFhbzZubTNS?=
- =?utf-8?B?T3FsUHV3YS9jZ2IyM2MrYnhDZ0M2WGdFTlo3SzhSWFhqNFhmYUJRUnU4cElz?=
- =?utf-8?B?WDk2MHBJZ2lzc3B5UjZkUWd5bjVFVEdtZURYSEFqSVA1YjVHMk1SaHdzQ3Rt?=
- =?utf-8?B?bDFrVTBGSnl0OHhiaTZ5L1duRkhWOGNkcjI3THNMRmZpb2IrN1I5eGQ0VTE4?=
- =?utf-8?B?MnRITS9HOUR3VlRDK0FJRWZ5eDJPeUovK2t6eG1hYzhMaWRJNUtmQ3lDQWtM?=
- =?utf-8?B?Tzh2NXlaT0tDL1BocGYyNnVoK1FyOEp3TmZOOGtmN1phYkNRa3I0aXRod3Z0?=
- =?utf-8?B?UVduM2tkU3lZbEVkZnR0b3lpdXNUSHBzam1JbXQyVkZkb2ZpUW5OUVVES09u?=
- =?utf-8?B?UVZSZldqYlFXd1dCcEgrUk5RRnRjODFTNWRjdGlGV1doSHE2TExvRVpyV21P?=
- =?utf-8?B?MnNpcWVSQzFKeEFRL3NGN3F5emJMMWpsQ0pQM1JtaXoxMFk0QWF4M0hvYnBq?=
- =?utf-8?B?UE16UVZ3WTI0REJ5R2xySzhMeVg5U29DN1A2dXhBajduNVE3clpWcjhZUGw4?=
- =?utf-8?B?MFJPRmRVa0VtaHVZWmM5dE5ydWFreXNBQjB5bmR3WVhwTWxVMk4zc2d5RThH?=
- =?utf-8?B?Q3VCcnVNcXAzdkVwc1FsSEhqS1E4R05uN09nSGFhcXhjcU55Y0lPSldIM1g3?=
- =?utf-8?B?RXJ3Rk1rQlVSQ2pKbkU5TkI0RE8wTGEyTlVVQVpBczFQakhFWUxNWWluRkJz?=
- =?utf-8?B?OVh5Z0pJWWxkVkliV0tXVjJBWStIU2xJdkIzbnZyanREQ242UHBkQ2lpNUpN?=
- =?utf-8?B?VVFVSXk4bWJmQm55aWo1bWhzWHNjemN2WkRkZ05hd0drWWxTOThqVmRWZkt1?=
- =?utf-8?B?QXh2UzRiSlF6ZnZ4UWxYRm5WbGFYWkcvUUxJeHVYY3JxVDRTa0NVUXZRNUVy?=
- =?utf-8?Q?ClhIdaAZP4I=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L1Y3TFpzUE9oSUVpVWdIYUFqY3lONkxUWFZzOVFJSEpFcDhlcHdySFg1V3Yw?=
- =?utf-8?B?YnBOaWMyaGRPRHVLbHphWDVsbDh6VDJvSDhpemlGRi81ZDNCdFBYUTNmYU5y?=
- =?utf-8?B?c0VCZzAwZlVmdmpuUjlPeFo5ZURNTHRsVXR3Q3lTUW5Sc3NGMDBSdHVmaGM0?=
- =?utf-8?B?eSsyTjFGUWVJa083QkJxaG5xQmdVbzZVc0o0UEs4bXFqblJjYWhtSHdKT29M?=
- =?utf-8?B?OXltdklaNHpzVk9TTXhiQk1KVTU4eVZVeDdZVnY2SXZ0NGNqRVJGaExXVW9k?=
- =?utf-8?B?YW1za2E4SVI0dnBCenRsUkhrb2ErbjRWaWNrdjRyb3ZHVVhSRjNsN0ZzNkFG?=
- =?utf-8?B?c29yUjVvc25zT1R5dFh6U0FuUTE0eVFnMks2eWVGREQwSlV6bVJTL1FWTFAy?=
- =?utf-8?B?Rk9NcnBYNUZNZ3VpeG9FQ0dpb0NjNGJBSnZTMHc1UlFFQTFBVGJ6c0dxNWt4?=
- =?utf-8?B?d0lvZFVxVWVRMjgyenFYSWdXdzVyYVFVTTZBbEhrT1kxZGcwWHdZVFdZU1JC?=
- =?utf-8?B?NTJaenZSZW5XVGJMdWNldFRNSm9xbDhaeWswZS96MTZMR0ticmp1WnB0RDI3?=
- =?utf-8?B?dkFIRHdjS1VBRkh1MHdmWFl6TkRPMlZsdkE4ck1rTXFyMTRJMTdqK2ZYSDQ4?=
- =?utf-8?B?UjZucUZPQ09lNWFDa1U5UnBwOGQ0MUxXUFFLeVM5S21heVVvbmNIUVY2Y2hL?=
- =?utf-8?B?enNpOEtZSnZveWlVSmZ4QXZlNGxNY2hoMS9QTkU4cXZlYVlDUzlyc25naElL?=
- =?utf-8?B?NHkxRVdSOGNVWjBEajNxbUNCUDM3N2daWE5hY3VvYlM2anZRdlJOb2dPaVQ0?=
- =?utf-8?B?UlVDSnRrblQ3cTZrSnhWbm5mS0xJNm5yMWtPdllkVVNLMG5wUzZSamFVV1N6?=
- =?utf-8?B?Z2N3L3NzY2d6OWxET2FpY2YzRUQ5RUhxZ1A2UUJqQ1FhN1EzdkVLdUNBclpu?=
- =?utf-8?B?WlgwM3AyempJd1k1UlU4RUNpdW1BUXpkd1RpV2VMVUNsTWlxNi96RWoxMjBs?=
- =?utf-8?B?cklrN3Y0Sll6cWNTUVZ3NUJscnNabXZSbEhsWTJ3dzJWUW5kSVVzOVpYTWpX?=
- =?utf-8?B?MUl2WVphbTJaYm1LcHZra2d4bzlWRWlYUWlHK0ZXSGp2ekU0VVZiQnM4TVZY?=
- =?utf-8?B?cnF4RHV2TlBsaThYc1QvczFVQWw1bUZqVzBtWDAwM2tRdEE3R3ViUW9WVk5B?=
- =?utf-8?B?bDA2Zkg5cDBtdlJ3MWNBOWJnSlBrUUgySFNwZWlwSVFzcTNiM0F1K1I3WkZj?=
- =?utf-8?B?YkVSLzhtR3Uvb2t2eGVlVnNyUTM1M1MxL3MvMGVwaWdqSUF6cnhobUMrK0tX?=
- =?utf-8?B?UzRXV2I2RjU4VkQ1aGF0VDNCT2hZenFnUjcwbERqZmE5YmsxS2twTk01alcr?=
- =?utf-8?B?RkRacVR0a0wxNjhReUdXQ1poWkdUaHpoQUEzY1pLZ0N4SktRMmZXd2RNT3hY?=
- =?utf-8?B?UUdrbW9mZTRIbnNGakl2UTdWZy8vUFZ1UHdpWmNneDhBMDBBYk4yWmxLT0Qz?=
- =?utf-8?B?dXpha0lpZjJUcExDMzNiZmlZeVhkVCtWMncrOUYzYXhvekQzY3BVVTZhbWVs?=
- =?utf-8?B?NlkzUFEzU2s3YzhmN3BXQ0RJMWF6cDdJeUpGd2hTT3pyWDBvcVUrcSt0eUV4?=
- =?utf-8?B?c0U5TFl6U2pTcVdzdWVENHNhQ0ppdnVKTW4zQXJpQWpSSXc0MjNsM0ZmMVVu?=
- =?utf-8?B?SFlhd3g4SmFJNlphK3E5TFcrSHplWEpKYmhCOGtjYlZNUy94d29tTGdlWkZ2?=
- =?utf-8?B?UjVZK1d6SVljRVpveW9NU2NPRWJzbzAxSzZJWTJUZXNoNTFWVVEveUsrL0JP?=
- =?utf-8?B?R0ZxazJtK0oxc3lXT0dueHI5UEQ2b1lXU2tZV08vTXBQbnNZdythZXdRaENY?=
- =?utf-8?B?cDg2U2doSktYd3FoNWo0dm1jR1NRWWxHY043bDhubkE2dkNaRDNXVUlUWm1D?=
- =?utf-8?B?Wm9hU3hCcGhuVjN1NWRKL2Y3TVlhelg4b1ZUWHNxeC9FYXovSWIvbVR3cU0x?=
- =?utf-8?B?cTZYOUd3R29xMGxabnlUOXJ2MGlURzdLUUtRTzlkbXBnUFVjMFhFMUI2bEMx?=
- =?utf-8?B?RlNnMytRSGhXZEZGTnliaTZFQnZVMzZrSEtXcWcyUXprT0Nid1pBOENBOTlH?=
- =?utf-8?B?YzZxdHFyRlphd0JuVnFFTHhkRDltSm5Wa2lmSkV6bVFHM0NxWXFBRVhQMVVC?=
- =?utf-8?B?MFE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: aa1777db-ea0d-4fd4-67b9-08ddc2e1e107
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2025 14:22:35.7709
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y+xPVrXzKhlXkrTAV+jn54PFEey7TlvfaIm7xku8RCIhMmUtVH/sFcd4NtAMmceSDVoWvfx0BXkHI3U255ln8ObSjgngzzdQYX2AP7jpE8Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7200
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 net-next 11/15] tcp: accecn: AccECN option
+To: chia-yu.chang@nokia-bell-labs.com, edumazet@google.com,
+ linux-doc@vger.kernel.org, corbet@lwn.net, horms@kernel.org,
+ dsahern@kernel.org, kuniyu@amazon.com, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, dave.taht@gmail.com, jhs@mojatatu.com,
+ kuba@kernel.org, stephen@networkplumber.org, xiyou.wangcong@gmail.com,
+ jiri@resnulli.us, davem@davemloft.net, andrew+netdev@lunn.ch,
+ donald.hunter@gmail.com, ast@fiberby.net, liuhangbin@gmail.com,
+ shuah@kernel.org, linux-kselftest@vger.kernel.org, ij@kernel.org,
+ ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com,
+ g.white@cablelabs.com, ingemar.s.johansson@ericsson.com,
+ mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at,
+ Jason_Livingood@comcast.com, vidhi_goel@apple.com
+References: <20250704085345.46530-1-chia-yu.chang@nokia-bell-labs.com>
+ <20250704085345.46530-12-chia-yu.chang@nokia-bell-labs.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250704085345.46530-12-chia-yu.chang@nokia-bell-labs.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Christoph Paasch Via B4 Relay <devnull+cpaasch.openai.com@kernel.org>
-Date: Sun, 13 Jul 2025 16:33:07 -0700
-
-> From: Christoph Paasch <cpaasch@openai.com>
-> 
-> mlx5e_skb_from_cqe_mpwrq_nonlinear() copies MLX5E_RX_MAX_HEAD (256)
-> bytes from the page-pool to the skb's linear part. Those 256 bytes
-> include part of the payload.
-> 
-> When attempting to do GRO in skb_gro_receive, if headlen > data_offset
-> (and skb->head_frag is not set), we end up aggregating packets in the
-
-How did you end up with ->head_frag not set? IIRC mlx5 uses
-napi_build_skb(), which explicitly sets ->head_frag to true.
-It should be false only for kmalloced linear parts.
-
-> frag_list.
-> 
-> This is of course not good when we are CPU-limited. Also causes a worse
-> skb->len/truesize ratio,...
-> 
-> So, let's avoid copying parts of the payload to the linear part. The
-> goal here is to err on the side of caution and prefer to copy too little
-> instead of copying too much (because once it has been copied over, we
-> trigger the above described behavior in skb_gro_receive).
-> 
-> So, we can do a rough estimate of the header-space by looking at
-> cqe_l3/l4_hdr_type and kind of do a lower-bound estimate. This is now
-> done in mlx5e_cqe_get_min_hdr_len(). We always assume that TCP timestamps
-> are present, as that's the most common use-case.
-> 
-> That header-len is then used in mlx5e_skb_from_cqe_mpwrq_nonlinear for
-> the headlen (which defines what is being copied over). We still
-> allocate MLX5E_RX_MAX_HEAD for the skb so that if the networking stack
-> needs to call pskb_may_pull() later on, we don't need to reallocate
-> memory.
-> 
-> This gives a nice throughput increase (ARM Neoverse-V2 with CX-7 NIC and
-> LRO enabled):
-> 
-> BEFORE:
-> =======
-> (netserver pinned to core receiving interrupts)
-> $ netperf -H 10.221.81.118 -T 80,9 -P 0 -l 60 -- -m 256K -M 256K
->  87380  16384 262144    60.01    32547.82
-> 
-> (netserver pinned to adjacent core receiving interrupts)
-> $ netperf -H 10.221.81.118 -T 80,10 -P 0 -l 60 -- -m 256K -M 256K
->  87380  16384 262144    60.00    52531.67
-> 
-> AFTER:
-> ======
-> (netserver pinned to core receiving interrupts)
-> $ netperf -H 10.221.81.118 -T 80,9 -P 0 -l 60 -- -m 256K -M 256K
->  87380  16384 262144    60.00    52896.06
-> 
-> (netserver pinned to adjacent core receiving interrupts)
->  $ netperf -H 10.221.81.118 -T 80,10 -P 0 -l 60 -- -m 256K -M 256K
->  87380  16384 262144    60.00    85094.90
-> 
-> Signed-off-by: Christoph Paasch <cpaasch@openai.com>
-> ---
->  drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 33 ++++++++++++++++++++++++-
->  1 file changed, 32 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-> index 2bb32082bfccdc85d26987f792eb8c1047e44dd0..2de669707623882058e3e77f82d74893e5d6fefe 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-> @@ -1986,13 +1986,40 @@ mlx5e_shampo_fill_skb_data(struct sk_buff *skb, struct mlx5e_rq *rq,
->  	} while (data_bcnt);
->  }
->  
-> +static u16
-> +mlx5e_cqe_get_min_hdr_len(const struct mlx5_cqe64 *cqe)
+On 7/4/25 10:53 AM, chia-yu.chang@nokia-bell-labs.com wrote:
+> +/* Maps AccECN option field #nr to IP ECN field ECT/CE bits */
+> +static inline unsigned int tcp_accecn_optfield_to_ecnfield(unsigned int option,
+> +							   bool order)
 > +{
-> +	u16 min_hdr_len = sizeof(struct ethhdr);
-> +	u8 l3_type = get_cqe_l3_hdr_type(cqe);
-> +	u8 l4_type = get_cqe_l4_hdr_type(cqe);
+> +	u8 tmp;
 > +
-> +	if (cqe_has_vlan(cqe))
-> +		min_hdr_len += VLAN_HLEN;
-
-Can't Q-in-Q be here?
-
+> +	/* Below is modified from Table 5 of the AccECN spec to explain
+> +	 * how the ECN fields are mapped baed on two input arguemnts:
+> +	 * +=======================================+=======================+
+> +	 * |                                       |  order=0  |  order=1  |
+> +	 * ++======================================+===========+===========+
+> +	 * | 1st field in AccECN option (option=0) |   ECT(0)  |   ECT(1)  |
+> +	 * | 2nd field in AccECN option (option=1) |    CE     |    CE     |
+> +	 * | 3rd field in AccECN option (option=2) |   ECT(1)  |   ECT(0)  |
+> +	 * +=======================================+===========+===========+
+> +	 */
 > +
-> +	if (l3_type == CQE_L3_HDR_TYPE_IPV4)
-> +		min_hdr_len += sizeof(struct iphdr);
-> +	else if (l3_type == CQE_L3_HDR_TYPE_IPV6)
-> +		min_hdr_len += sizeof(struct ipv6hdr);
-
-You don't account extensions and stuff here.
-
+> +	option = order ? 2 - option : option;
+> +	tmp = option + 2;
 > +
-> +	if (l4_type == CQE_L4_HDR_TYPE_UDP)
-> +		min_hdr_len += sizeof(struct udphdr);
-> +	else if (l4_type & (CQE_L4_HDR_TYPE_TCP_NO_ACK |
-> +			    CQE_L4_HDR_TYPE_TCP_ACK_NO_DATA |
-> +			    CQE_L4_HDR_TYPE_TCP_ACK_AND_DATA))
-> +		/* Previous condition works because we know that
-> +		 * l4_type != 0x2 (CQE_L4_HDR_TYPE_UDP)
-> +		 */
-> +		min_hdr_len += sizeof(struct tcphdr) + TCPOLEN_TSTAMP_ALIGNED;
-> +
-> +	return min_hdr_len;
+> +	return (tmp + (tmp >> 2)) & INET_ECN_MASK;
+
+Possibly/likely computing the above with an explicit static array lookup
+would be simpler and more clear.
+
 > +}
 > +
->  static struct sk_buff *
->  mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *wi,
->  				   struct mlx5_cqe64 *cqe, u16 cqe_bcnt, u32 head_offset,
->  				   u32 page_idx)
+> +/* Handles AccECN option ECT and CE 24-bit byte counters update into
+> + * the u32 value in tcp_sock. As we're processing TCP options, it is
+> + * safe to access from - 1.
+> + */
+> +static inline s32 tcp_update_ecn_bytes(u32 *cnt, const char *from,
+> +				       u32 init_offset)
+> +{
+> +	u32 truncated = (get_unaligned_be32(from - 1) - init_offset) &
+> +			0xFFFFFFU;
+> +	u32 delta = (truncated - *cnt) & 0xFFFFFFU;
+> +
+> +	/* If delta has the highest bit set (24th bit) indicating
+> +	 * negative, sign extend to correct an estimation using
+> +	 * sign_extend32(delta, 24 - 1)
+> +	 */
+> +	delta = sign_extend32(delta, 23);
+
+I'm under the impression that delta could be simply:
+
+	delta = (truncated - *cnt)
+
+What am I missing?
+
+> +/* Returns true if the byte counters can be used */
+> +static bool tcp_accecn_process_option(struct tcp_sock *tp,
+> +				      const struct sk_buff *skb,
+> +				      u32 delivered_bytes, int flag)
+> +{
+> +	u8 estimate_ecnfield = tp->est_ecnfield;
+> +	bool ambiguous_ecn_bytes_incr = false;
+> +	bool first_changed = false;
+> +	unsigned int optlen;
+> +	bool order1, res;
+> +	unsigned int i;
+> +	u8 *ptr;
+> +
+> +	if (!(flag & FLAG_SLOWPATH) || !tp->rx_opt.accecn) {
+> +		if (estimate_ecnfield) {
+> +			u8 ecnfield = estimate_ecnfield - 1;
+> +
+> +			tp->delivered_ecn_bytes[ecnfield] += delivered_bytes;
+> +			return true;
+> +		}
+> +		return false;
+> +	}
+> +
+> +	ptr = skb_transport_header(skb) + tp->rx_opt.accecn;
+> +	optlen = ptr[1] - 2;
+> +	WARN_ON_ONCE(ptr[0] != TCPOPT_ACCECN0 && ptr[0] != TCPOPT_ACCECN1);
+
+Likely/possibly:
+
+	if (WARN_ON_ONCE(ptr[0] != TCPOPT_ACCECN0 && ptr[0] != TCPOPT_ACCECN1))
+		return false;
+
+> +	order1 = (ptr[0] == TCPOPT_ACCECN1);
+> +	ptr += 2;
+> +
+> +	res = !!estimate_ecnfield;
+> +	for (i = 0; i < 3; i++) {
+> +		u32 init_offset;
+> +		u8 ecnfield;
+> +		s32 delta;
+> +		u32 *cnt;
+> +
+> +		if (optlen < TCPOLEN_ACCECN_PERFIELD)
+> +			break;
+> +
+> +		ecnfield = tcp_accecn_optfield_to_ecnfield(i, order1);
+> +		init_offset = tcp_accecn_field_init_offset(ecnfield);
+> +		cnt = &tp->delivered_ecn_bytes[ecnfield - 1];
+> +		delta = tcp_update_ecn_bytes(cnt, ptr, init_offset);
+> +		if (delta && delta < 0) {
+> +			res = false;
+> +			ambiguous_ecn_bytes_incr = true;
+> +		}
+> +		if (delta && ecnfield != estimate_ecnfield) {
+> +			if (!first_changed) {
+> +				tp->est_ecnfield = ecnfield;
+> +				first_changed = true;
+> +			} else {
+> +				res = false;
+> +				ambiguous_ecn_bytes_incr = true;
+> +			}
+> +		}
+> +
+> +		optlen -= TCPOLEN_ACCECN_PERFIELD;
+> +		ptr += TCPOLEN_ACCECN_PERFIELD;
+> +	}
+> +	if (ambiguous_ecn_bytes_incr)
+> +		tp->est_ecnfield = 0;
+> +
+> +	return res;
+> +}
+> +
+>  static void tcp_count_delivered_ce(struct tcp_sock *tp, u32 ecn_count)
 >  {
->  	struct mlx5e_frag_page *frag_page = &wi->alloc_units.frag_pages[page_idx];
-> -	u16 headlen = min_t(u16, MLX5E_RX_MAX_HEAD, cqe_bcnt);
->  	struct mlx5e_frag_page *head_page = frag_page;
->  	struct mlx5e_xdp_buff *mxbuf = &rq->mxbuf;
->  	u32 frag_offset    = head_offset;
-> @@ -2004,10 +2031,14 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
->  	u32 linear_frame_sz;
->  	u16 linear_data_len;
->  	u16 linear_hr;
-> +	u16 headlen;
->  	void *va;
+>  	tp->delivered_ce += ecn_count;
+> @@ -400,7 +467,8 @@ static void tcp_count_delivered(struct tcp_sock *tp, u32 delivered,
 >  
->  	prog = rcu_dereference(rq->xdp_prog);
+>  /* Returns the ECN CE delta */
+>  static u32 __tcp_accecn_process(struct sock *sk, const struct sk_buff *skb,
+> -				u32 delivered_pkts, int flag)
+> +				u32 delivered_pkts, u32 delivered_bytes,
+> +				int flag)
+>  {
+>  	const struct tcphdr *th = tcp_hdr(skb);
+>  	struct tcp_sock *tp = tcp_sk(sk);
+> @@ -411,6 +479,8 @@ static u32 __tcp_accecn_process(struct sock *sk, const struct sk_buff *skb,
+>  	if (!(flag & (FLAG_FORWARD_PROGRESS | FLAG_TS_PROGRESS)))
+>  		return 0;
 >  
-> +	headlen = min3(mlx5e_cqe_get_min_hdr_len(cqe), cqe_bcnt,
-> +		       (u16)MLX5E_RX_MAX_HEAD);
+> +	tcp_accecn_process_option(tp, skb, delivered_bytes, flag);
+> +
+>  	if (!(flag & FLAG_SLOWPATH)) {
+>  		/* AccECN counter might overflow on large ACKs */
+>  		if (delivered_pkts <= TCP_ACCECN_CEP_ACE_MASK)
+> @@ -436,12 +506,14 @@ static u32 __tcp_accecn_process(struct sock *sk, const struct sk_buff *skb,
+>  }
+>  
+>  static u32 tcp_accecn_process(struct sock *sk, const struct sk_buff *skb,
+> -			      u32 delivered_pkts, int *flag)
+> +			      u32 delivered_pkts, u32 delivered_bytes,
+> +			      int *flag)
+>  {
+>  	struct tcp_sock *tp = tcp_sk(sk);
+>  	u32 delta;
+>  
+> -	delta = __tcp_accecn_process(sk, skb, delivered_pkts, *flag);
+> +	delta = __tcp_accecn_process(sk, skb, delivered_pkts,
+> +				     delivered_bytes, *flag);
+>  	if (delta > 0) {
+>  		tcp_count_delivered_ce(tp, delta);
+>  		*flag |= FLAG_ECE;
+> @@ -3973,6 +4045,7 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
+>  	if (tcp_ecn_mode_accecn(tp))
+>  		ecn_count = tcp_accecn_process(sk, skb,
+>  					       tp->delivered - delivered,
+> +					       sack_state.delivered_bytes,
+>  					       &flag);
+>  
+>  	tcp_in_ack_event(sk, flag);
+> @@ -4012,6 +4085,7 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
+>  	if (tcp_ecn_mode_accecn(tp))
+>  		ecn_count = tcp_accecn_process(sk, skb,
+>  					       tp->delivered - delivered,
+> +					       sack_state.delivered_bytes,
+>  					       &flag);
+>  	tcp_in_ack_event(sk, flag);
+>  	/* If data was DSACKed, see if we can undo a cwnd reduction. */
+> @@ -4139,6 +4213,7 @@ void tcp_parse_options(const struct net *net,
+>  
+>  	ptr = (const unsigned char *)(th + 1);
+>  	opt_rx->saw_tstamp = 0;
+> +	opt_rx->accecn = 0;
+>  	opt_rx->saw_unknown = 0;
+>  
+>  	while (length > 0) {
+> @@ -4230,6 +4305,12 @@ void tcp_parse_options(const struct net *net,
+>  					ptr, th->syn, foc, false);
+>  				break;
+>  
+> +			case TCPOPT_ACCECN0:
+> +			case TCPOPT_ACCECN1:
+> +				/* Save offset of AccECN option in TCP header */
+> +				opt_rx->accecn = (ptr - 2) - (__u8 *)th;
+> +				break;
+> +
+>  			case TCPOPT_EXP:
+>  				/* Fast Open option shares code 254 using a
+>  				 * 16 bits magic number.
+> @@ -4290,11 +4371,14 @@ static bool tcp_fast_parse_options(const struct net *net,
+>  	 */
+>  	if (th->doff == (sizeof(*th) / 4)) {
+>  		tp->rx_opt.saw_tstamp = 0;
+> +		tp->rx_opt.accecn = 0;
+>  		return false;
+>  	} else if (tp->rx_opt.tstamp_ok &&
+>  		   th->doff == ((sizeof(*th) + TCPOLEN_TSTAMP_ALIGNED) / 4)) {
+> -		if (tcp_parse_aligned_timestamp(tp, th))
+> +		if (tcp_parse_aligned_timestamp(tp, th)) {
+> +			tp->rx_opt.accecn = 0;
+>  			return true;
+> +		}
+>  	}
+>  
+>  	tcp_parse_options(net, skb, &tp->rx_opt, 1, NULL);
+> @@ -6094,6 +6178,7 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb)
+>  	 */
+>  
+>  	tp->rx_opt.saw_tstamp = 0;
+> +	tp->rx_opt.accecn = 0;
+>  
+>  	/*	pred_flags is 0xS?10 << 16 + snd_wnd
+>  	 *	if header_prediction is to be made
+> diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+> index b95e4ed227cb..1da7c5e4da32 100644
+> --- a/net/ipv4/tcp_ipv4.c
+> +++ b/net/ipv4/tcp_ipv4.c
+> @@ -3451,6 +3451,7 @@ static void __net_init tcp_set_hashinfo(struct net *net)
+>  static int __net_init tcp_sk_init(struct net *net)
+>  {
+>  	net->ipv4.sysctl_tcp_ecn = TCP_ECN_IN_ECN_OUT_NOECN;
+> +	net->ipv4.sysctl_tcp_ecn_option = TCP_ACCECN_OPTION_FULL;
+>  	net->ipv4.sysctl_tcp_ecn_fallback = 1;
+>  
+>  	net->ipv4.sysctl_tcp_base_mss = TCP_BASE_MSS;
+> diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+> index d98a1a17eb52..2169fd28594e 100644
+> --- a/net/ipv4/tcp_output.c
+> +++ b/net/ipv4/tcp_output.c
+> @@ -385,6 +385,7 @@ static inline bool tcp_urg_mode(const struct tcp_sock *tp)
+>  #define OPTION_SMC		BIT(9)
+>  #define OPTION_MPTCP		BIT(10)
+>  #define OPTION_AO		BIT(11)
+> +#define OPTION_ACCECN		BIT(12)
+>  
+>  static void smc_options_write(__be32 *ptr, u16 *options)
+>  {
+> @@ -406,6 +407,8 @@ struct tcp_out_options {
+>  	u16 mss;		/* 0 to disable */
+>  	u8 ws;			/* window scale, 0 to disable */
+>  	u8 num_sack_blocks;	/* number of SACK blocks to include */
+> +	u8 num_accecn_fields:7,	/* number of AccECN fields needed */
+> +	   use_synack_ecn_bytes:1; /* Use synack_ecn_bytes or not */
+>  	u8 hash_size;		/* bytes in hash_location */
+>  	u8 bpf_opt_len;		/* length of BPF hdr option */
+>  	__u8 *hash_location;	/* temporary pointer, overloaded */
+> @@ -621,6 +624,8 @@ static void tcp_options_write(struct tcphdr *th, struct tcp_sock *tp,
+>  			      struct tcp_out_options *opts,
+>  			      struct tcp_key *key)
+>  {
+> +	u8 leftover_highbyte = TCPOPT_NOP; /* replace 1st NOP if avail */
+> +	u8 leftover_lowbyte = TCPOPT_NOP;  /* replace 2nd NOP in succession */
+>  	__be32 *ptr = (__be32 *)(th + 1);
+>  	u16 options = opts->options;	/* mungable copy */
+>  
+> @@ -656,15 +661,79 @@ static void tcp_options_write(struct tcphdr *th, struct tcp_sock *tp,
+>  		*ptr++ = htonl(opts->tsecr);
+>  	}
+>  
+> +	if (OPTION_ACCECN & options) {
+> +		/* Initial values for AccECN option, ordered is based on ECN field bits
+> +		 * similar to received_ecn_bytes. Used for SYN/ACK AccECN option.
+> +		 */
+> +		static u32 synack_ecn_bytes[3] = { 0, 0, 0 };
 
-For your usecase, have you tried setting headlen to just ETH_HLEN here?
-Fast GRO should still work for this case, then VLAN/IP/L4 layers will
-do a couple memcpy()s to pull their headers, but even on 32-bit MIPS
-this was faster than let's say eth_get_headlen() (which involves Flow
-Dissector) or open-coded header length assumptions as above.
+I think this does not address Eric's concern on v9 WRT global variable,
+as every CPU will still touch the same memory while accessing the above
+array.
 
-(the above was correct for 2020 when I last time played with router
- drivers, but I hope nothing's been broken since then)
+> +		const u8 ect0_idx = INET_ECN_ECT_0 - 1;
+> +		const u8 ect1_idx = INET_ECN_ECT_1 - 1;
+> +		const u8 ce_idx = INET_ECN_CE - 1;
+> +		u32 e0b;
+> +		u32 e1b;
+> +		u32 ceb;
+> +		u8 len;
+> +
+> +		if (opts->use_synack_ecn_bytes) {
+> +			e0b = synack_ecn_bytes[ect0_idx] + TCP_ACCECN_E0B_INIT_OFFSET;
+> +			e1b = synack_ecn_bytes[ect1_idx] + TCP_ACCECN_E1B_INIT_OFFSET;
+> +			ceb = synack_ecn_bytes[ce_idx] + TCP_ACCECN_CEB_INIT_OFFSET;
+
+On the flip side I don't see such array modified here, not in later
+patches?!? If so you could make it const and a global variable would be ok.
+
+
+
+> +		} else {
+> +			e0b = tp->received_ecn_bytes[ect0_idx] + TCP_ACCECN_E0B_INIT_OFFSET;
+> +			e1b = tp->received_ecn_bytes[ect1_idx] + TCP_ACCECN_E1B_INIT_OFFSET;
+> +			ceb = tp->received_ecn_bytes[ce_idx] + TCP_ACCECN_CEB_INIT_OFFSET;
+> +		}
+
+Also it looks like the above two blocks could be condensed to something
+alike:
+
+		const u32 *ecn_bytes = opts->use_synack_ecn_bytes ?
+					synack_ecn_bytes :
+					tp->received_ecn_bytes;
+
+		e0b = ecn_bytes[ect0_idx] + TCP_ACCECN_E0B_INIT_OFFSET;
+		e1b = ecn_bytes[ect1_idx] + TCP_ACCECN_E1B_INIT_OFFSET;
+		ceb = ecn_bytes[ce_idx] + TCP_ACCECN_CEB_INIT_OFFSET;
 
 > +
->  	if (prog) {
->  		/* area for bpf_xdp_[store|load]_bytes */
->  		net_prefetchw(netmem_address(frag_page->netmem) + frag_offset);
+> +		len = TCPOLEN_ACCECN_BASE +
+> +		      opts->num_accecn_fields * TCPOLEN_ACCECN_PERFIELD;
+> +
+> +		if (opts->num_accecn_fields == 2) {
+> +			*ptr++ = htonl((TCPOPT_ACCECN1 << 24) | (len << 16) |
+> +				       ((e1b >> 8) & 0xffff));
+> +			*ptr++ = htonl(((e1b & 0xff) << 24) |
+> +				       (ceb & 0xffffff));
+> +		} else if (opts->num_accecn_fields == 1) {
+> +			*ptr++ = htonl((TCPOPT_ACCECN1 << 24) | (len << 16) |
+> +				       ((e1b >> 8) & 0xffff));
+> +			leftover_highbyte = e1b & 0xff;
+> +			leftover_lowbyte = TCPOPT_NOP;
+> +		} else if (opts->num_accecn_fields == 0) {
+> +			leftover_highbyte = TCPOPT_ACCECN1;
+> +			leftover_lowbyte = len;
+> +		} else if (opts->num_accecn_fields == 3) {
+> +			*ptr++ = htonl((TCPOPT_ACCECN1 << 24) | (len << 16) |
+> +				       ((e1b >> 8) & 0xffff));
+> +			*ptr++ = htonl(((e1b & 0xff) << 24) |
+> +				       (ceb & 0xffffff));
+> +			*ptr++ = htonl(((e0b & 0xffffff) << 8) |
+> +				       TCPOPT_NOP);
+> +		}
+> +		if (tp)
+> +			tp->accecn_minlen = 0;
+> +	}
+> +
+>  	if (unlikely(OPTION_SACK_ADVERTISE & options)) {
+> -		*ptr++ = htonl((TCPOPT_NOP << 24) |
+> -			       (TCPOPT_NOP << 16) |
+> +		*ptr++ = htonl((leftover_highbyte << 24) |
+> +			       (leftover_lowbyte << 16) |
+>  			       (TCPOPT_SACK_PERM << 8) |
+>  			       TCPOLEN_SACK_PERM);
+> +		leftover_highbyte = TCPOPT_NOP;
+> +		leftover_lowbyte = TCPOPT_NOP;
+>  	}
+>  
+>  	if (unlikely(OPTION_WSCALE & options)) {
+> -		*ptr++ = htonl((TCPOPT_NOP << 24) |
+> +		u8 highbyte = TCPOPT_NOP;
+> +
+> +		/* Do not split the leftover 2-byte to fit into a single
+> +		 * NOP, i.e., replace this NOP only when 1 byte is leftover
+> +		 * within leftover_highbyte.
+> +		 */
+> +		if (unlikely(leftover_highbyte != TCPOPT_NOP &&
+> +			     leftover_lowbyte == TCPOPT_NOP)) {
+> +			highbyte = leftover_highbyte;
+> +			leftover_highbyte = TCPOPT_NOP;
+> +		}
+> +		*ptr++ = htonl((highbyte << 24) |
+>  			       (TCPOPT_WINDOW << 16) |
+>  			       (TCPOLEN_WINDOW << 8) |
+>  			       opts->ws);
+> @@ -675,11 +744,13 @@ static void tcp_options_write(struct tcphdr *th, struct tcp_sock *tp,
+>  			tp->duplicate_sack : tp->selective_acks;
+>  		int this_sack;
+>  
+> -		*ptr++ = htonl((TCPOPT_NOP  << 24) |
+> -			       (TCPOPT_NOP  << 16) |
+> +		*ptr++ = htonl((leftover_highbyte << 24) |
+> +			       (leftover_lowbyte << 16) |
+>  			       (TCPOPT_SACK <<  8) |
+>  			       (TCPOLEN_SACK_BASE + (opts->num_sack_blocks *
+>  						     TCPOLEN_SACK_PERBLOCK)));
+> +		leftover_highbyte = TCPOPT_NOP;
+> +		leftover_lowbyte = TCPOPT_NOP;
+>  
+>  		for (this_sack = 0; this_sack < opts->num_sack_blocks;
+>  		     ++this_sack) {
+> @@ -688,6 +759,14 @@ static void tcp_options_write(struct tcphdr *th, struct tcp_sock *tp,
+>  		}
+>  
+>  		tp->rx_opt.dsack = 0;
+> +	} else if (unlikely(leftover_highbyte != TCPOPT_NOP ||
+> +			    leftover_lowbyte != TCPOPT_NOP)) {
+> +		*ptr++ = htonl((leftover_highbyte << 24) |
+> +			       (leftover_lowbyte << 16) |
+> +			       (TCPOPT_NOP << 8) |
+> +			       TCPOPT_NOP);
+> +		leftover_highbyte = TCPOPT_NOP;
+> +		leftover_lowbyte = TCPOPT_NOP;
+>  	}
+>  
+>  	if (unlikely(OPTION_FAST_OPEN_COOKIE & options)) {
+> @@ -768,6 +847,59 @@ static void mptcp_set_option_cond(const struct request_sock *req,
+>  	}
+>  }
+>  
+> +static u32 tcp_synack_options_combine_saving(struct tcp_out_options *opts)
+> +{
+> +	/* How much there's room for combining with the alignment padding? */
+> +	if ((opts->options & (OPTION_SACK_ADVERTISE | OPTION_TS)) ==
+> +	    OPTION_SACK_ADVERTISE)
+> +		return 2;
+> +	else if (opts->options & OPTION_WSCALE)
+> +		return 1;
+> +	return 0;
+> +}
+> +
+> +/* Calculates how long AccECN option will fit to @remaining option space.
+> + *
+> + * AccECN option can sometimes replace NOPs used for alignment of other
+> + * TCP options (up to @max_combine_saving available).
+> + *
+> + * Only solutions with at least @required AccECN fields are accepted.
+> + *
+> + * Returns: The size of the AccECN option excluding space repurposed from
+> + * the alignment of the other options.
+> + */
+> +static int tcp_options_fit_accecn(struct tcp_out_options *opts, int required,
+> +				  int remaining)
+> +{
+> +	int size = TCP_ACCECN_MAXSIZE;
+> +	int max_combine_saving;
+> +
+> +	if (opts->use_synack_ecn_bytes)
+> +		max_combine_saving = tcp_synack_options_combine_saving(opts);
+> +	else
+> +		max_combine_saving = opts->num_sack_blocks > 0 ? 2 : 0;
+> +	opts->num_accecn_fields = TCP_ACCECN_NUMFIELDS;
+> +	while (opts->num_accecn_fields >= required) {
+> +		int leftover_size = size & 0x3;
+> +		/* Pad to dword if cannot combine */
+> +		if (leftover_size > max_combine_saving)
+> +			leftover_size = -((4 - leftover_size) & 0x3);
 
-Thanks,
-Olek
+I *think* that with the above you mean something alike:
+
+			size = ALIGN(size, 4);
+			leftover_size = 0
+
+?
+
+The used code looks quite obscure to me.
+
+/P
+
