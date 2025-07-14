@@ -1,65 +1,63 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D952663CB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F21B433B3;
 	Mon, 14 Jul 2025 01:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752458255; cv=none; b=EjOlKb3/CdVcBcAuHJYacV5cdMCP+isEEiaag/Er25hg8SOvtSJJRMzWJbGrciQsuB6J1TOtCSaqdTxssmwDZtmMN750pzZRxh3K5Tc7PImU08QcB2D0K64mDs5qbRt5arGozys6xMU7Nvvma0AWZFB4OSoWzJj3bvID3rnO2W0=
+	t=1752458255; cv=none; b=MPGHby8Nz1NK3JpE/3Hm9BXwKcCWrXYPlYvyQLVlaoCgShg447Jbbfwu2yE+6jwH9mHFIhqDSJS2sy1G/FZRNYrDx87uBCcdx6LPJySN9fuoam5FwZ6aSrP/Y4wtCfyz3VIwj7au4HtXHfAOfpsM2nhf+kSDpwasAaS9aUjtZfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752458255; c=relaxed/simple;
-	bh=tXjeutRppXmvBhfxh8YB3OK5XDbxuYC5z68U92vFtas=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X2IzPXKn1lWt1D9pbkVHx9fSdX5MXG8jgsBL8V6f1ftujQ6ERWsPm4vrvYnsxmEDRrVvoKKMncGCNaa68cCLHUW3XgSzlyUNmRj80iXcow6ugS5nCRrtaQWbBuszp8QCAuK2X8ylXlq8CYUG4C3VTy1Yn396VFe5b7nNDrC6rqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MgfbiZps; arc=none smtp.client-ip=209.85.208.41
+	bh=nshxwRS/+UyxHkQOYE9Fk36v0JMlpdCU+qxIFnNJs3k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qiCyb1KSOhQitWSHJbt7EjdV0GbH08kxK3HI7q6IRBervopGY+Jj3wRu6EUJj70Bknx8HKv/XmweD0bO2rUwN/NLCflqB1AN3eA31w7oGDw26TR0tQzh5MhNHW1H9IVT/KkqKFJX9UWf0xa+BQxeMZHoVdxacXozx+qUh0v9DqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eBlBQdA8; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MgfbiZps"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-60c3aafae23so10158632a12.1;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eBlBQdA8"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ae401ebcbc4so674848866b.1;
         Sun, 13 Jul 2025 18:57:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1752458252; x=1753063052; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iSUx2XgUMsGQsj10m/9SoX9P5P+4nF9nfb9/i8DE2zc=;
-        b=MgfbiZpsf3yb57MaohNVp0DMTgFNWrcbagmDF8ccuppah+tPU5tKnm6GEOv6FCxIpE
-         mI97zcAIQujZ/iHMUnzp1y0r7vS4w7Vt52YP/bE2PhuFKrYWjtpFHKFJHA03fpkQv4mf
-         gpK/xvp8khYl8EL4Tqdgk1g8wRUm4EkyczD6gga8/pYt+9WKEMkhODK6TyVIl5sZMIgL
-         rOYwWVdnov6uOO1qyBnhPIBgFTZG9Cuw/a2gv4oY8VQD8bHY9kRrbScL+g56RgmJ5pqj
-         h4cuNiCKn2RmfwrtgGT+2p9WOXo7ov6jTBvVJhNSDk64fgpEzvmLkSVEJy2vBo68+p/J
-         Z1QA==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=G8LBFqVjLhKB/rrOkLWdjE91pXMr5HHe2wnD4KcukNE=;
+        b=eBlBQdA8THQI+K7fjDWB1JUhqSP2HjA5WrQ/Vyb8ok/UoDsLLnLbUVFDtpBlBIh5s9
+         IXkpjzqcZKN+k3FTDKOOOYCE/YaD9n0jC+azzHSnDXnjSAt63bnB+g5i9Zl80lnInIN8
+         S1eYTDCkJOvYZkPBzu2qoZTAhonqoCT04sUGupVTTttqwGh3xCE9hUNXt1nQl9SPz2wO
+         NEurytqfCrLxADf0bUZrYYbcm2QWn23Xo7gVHwJhAvMT51INmYuLk9EgNOBHiIh6K4hp
+         IAXb8zbgSJ9d8/uC6ahkjwlCD3qNO6r13AS6lpsKXuhSq5G+CTjNFqmdQZ86OKcKL6gL
+         ehAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1752458252; x=1753063052;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iSUx2XgUMsGQsj10m/9SoX9P5P+4nF9nfb9/i8DE2zc=;
-        b=ZVqUvppzWwQyTQ/h4eM694smLB3dYx0swbOUzWodk2unK/FcWR2U5nn3ObuKvYmY3D
-         MKfGlNWrDVkQ0W5A5lUL7fAKf6SL+luOtkYvqOU+b5mv26f0Yp+F1QR7XUyeSxY8EeJf
-         jhyuZK07GrQsjuQocknaXi7frDpNaEGcs8A72hBszVTu+TeMQsYHzTP7/2kRa6y+GmR1
-         keu8ClIqtXxpFywZa/Gfbplk/ir3B+G59dXuInCqiMkqgRHfF9chjNwcDbX/yLB1JZCc
-         7hUeaMdcIaksmzkuI5+vaRNoP4B0WCdVN2aDU36mp/DHEd3JHjYS+j8mKp2v37Cxz882
-         re0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW1toqHwFZA8s+lEk4egTme/NXeIr284qGpeFPifI6JKEM9haHdXedXX+dMreGauPsWDfsq3+7sVJ8=@vger.kernel.org, AJvYcCWAzRgELnAHyR50GVZQvq2lzJw9ZRjDmHKgohnqFLLCT32XU7AfmBzVE5oNKk2SbocuY90Ny8Nc@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywkm0Xr4OU1C6xSdFHW5xiY9JqB47nAEu9U4RsAs1NaufcuzQUp
-	qqlRUTrwKipwCwSNytsuo3Wz+UssOLbojakXlaxDh+JzxepnO2zznis/LugqUw==
-X-Gm-Gg: ASbGncvTVg2H0+IDpTE5GL8Zuhw6awo/92hA+n3PKZxT2+2rCjcjJ8zoZGeQwp6hULw
-	MXZPfPybb3l7saF+FayrVK2MJMaZRL8IAtY4VyRdmQ31QoP+i4RhjTbhrAe7viXGGv0fT3Rdw+l
-	99VTiQ3e7coZns0fGkKXqJaRuFJ1wsyktA/Ilwx2LJ8lcb6U0mPhA5yVeeYg9KPlmjax8CEiGSW
-	nVUQrNKnrmIaRi6iU8kZYdSwjq4VjC1QnPoU9MllGoHyZW5HkzqKrdFjtQx39ajqawKFxCp5ASx
-	0n9FBNd8/nGygBpJFHCyphI520kRh3Tz9KJr7hxHKf/FMDENmgESngtAfpXplbs/B8nf7PHtAKn
-	DIy4Uwfw4WqPVUo/TCBSN1w==
-X-Google-Smtp-Source: AGHT+IFa6svVjL9+AuRkaH2jgR8aBmJ4UX+oCB50F4KPWSBsF/RKWL0tGAWDm4/rqm8K87yCWsE0Qw==
-X-Received: by 2002:a17:907:6d1f:b0:ae6:f7b5:70b4 with SMTP id a640c23a62f3a-ae6f7b570dfmr1450290666b.16.1752458251864;
-        Sun, 13 Jul 2025 18:57:31 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G8LBFqVjLhKB/rrOkLWdjE91pXMr5HHe2wnD4KcukNE=;
+        b=mMr1GRaTlkG5OaK37MREJOUofsgFXLY8IXCA3jaH9b9by+vTZ38rr+i/xwroPvoZ9w
+         CZ8OQICWks4UKeHre6jGcTPVyTm5zD9BiRKjlhfGecWbgV0a+8UOlhWB3Flz8CTqqbGj
+         f/JZpQaAVBTZuJc3V0nGaa77fMa3bUKSuzfxwx9Onu4U/GiN+dVOdynSzETKVCmfw9yj
+         /9Xr8YqX25MT4OHXdyEm9eVlTbz4HL6em4O3h2FnqdswjT0vpzMGkSEnrtV0GiXPNRiN
+         1/+FxE8xS01VbvJydcI8oX0hT9xv2iGLFC4bghEZ5XS6lf2w4fFhGdFz/tE29A7L0glt
+         NsOw==
+X-Forwarded-Encrypted: i=1; AJvYcCWGfFtWSE0cmmi2zsKkkFmTUbKDUXYD53WG2r1p4+gAMNjC0gBnPY60VBgU2AWNi4x3n8bxkY3o/MM=@vger.kernel.org, AJvYcCXetskaZOu0cq9o4PDoUAoQc6+4E8ZQH/Y3uLqUaHia0r3sh0M4l6yRwRG6VpSnoNUUukPgdZ8i@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlVJCpWAagnod4pkgTkEmSWvlE1Dk12htTFov0A4HvzYXws+hY
+	Odg1T6aOj1P0Au+knmi6jj7XczwpDyCGfyqdenGnbSUrzcekrMA/klQ3
+X-Gm-Gg: ASbGncse+XtDt1K6bZ937w6Tf4o6ztFKE3alZ4bVnX79cEEH2x/mYEFCQtzAHwK+EPY
+	lwpioyKpP6uo86lFxeuoMX/oKU39XzfXF+/kQougZtKt90gQBFSIklxhNe+RCChbAUwSs90mzzi
+	KNJKa+HuOgojWGB73ULK3JxS5APtM9J1adsepsIN3a+W8icgPtnwtZq041wFuB4WjxqNNVEyJME
+	EVmzFKuucBE37AHjuI0M3fTT/dnZhNd0YhvmPjVOc5OkrK1ZDYYtlazdU9aRKcLjk6NIW22N7Mf
+	VrCYWOt93W6GXnrlu8hjmgS4h30o62OPxQIJTEUg/gZWKx23UrIbc+/x7HsCSmNzzI0TE/Gg2Bn
+	uKnYutRtZgN+C7OnPkwMuR8NF7RoTn02B
+X-Google-Smtp-Source: AGHT+IGmgIuCRL7RTUjPKjOceujeeWJzHq3mfEJ8vB+TPCTqr1FpZH6XatXdtf3E0P66B3n4E72FoQ==
+X-Received: by 2002:a17:907:f1cb:b0:ae3:a71d:1984 with SMTP id a640c23a62f3a-ae6fc200bc2mr1213901466b.57.1752458252215;
+        Sun, 13 Jul 2025 18:57:32 -0700 (PDT)
 Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e82dedd3sm734161566b.150.2025.07.13.18.57.30
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e7eeae5fsm741704266b.64.2025.07.13.18.57.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Sun, 13 Jul 2025 18:57:31 -0700 (PDT)
 Received: by archie.me (Postfix, from userid 1000)
-	id B2806420A81A; Mon, 14 Jul 2025 08:57:26 +0700 (WIB)
+	id 26369420A817; Mon, 14 Jul 2025 08:57:25 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux Documentation <linux-doc@vger.kernel.org>,
@@ -74,48 +72,50 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
 	Andrew Donnellan <ajd@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nathan Lynch <nathanl@linux.ibm.com>
-Subject: [PATCH v2 3/3] Documentation: ioctl-number: Correct full path to papr-physical-attestation.h
-Date: Mon, 14 Jul 2025 08:57:10 +0700
-Message-ID: <20250714015711.14525-4-bagasdotme@gmail.com>
+Subject: [PATCH v2 0/3] ioctl numbers list cleanup for papr-physical-attestation.h
+Date: Mon, 14 Jul 2025 08:57:07 +0700
+Message-ID: <20250714015711.14525-1-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250714015711.14525-1-bagasdotme@gmail.com>
-References: <20250714015711.14525-1-bagasdotme@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1882; i=bagasdotme@gmail.com; h=from:subject; bh=tXjeutRppXmvBhfxh8YB3OK5XDbxuYC5z68U92vFtas=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBklSTl6Dp0rCm97Xc+uSnTQllRb980lXb5uonTy+zO3D P8uU93bUcrCIMbFICumyDIpka/p9C4jkQvtax1h5rAygQxh4OIUgIn0PWb4X8t4eUWfhOdLpiXa 1rFbbz01nnHVffehXxVzg9iEYlOY7jH8lbff8Ye5363l3zzvNRcyOdOsX4S1Tt/zbPbGB4mzepa wsQEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1142; i=bagasdotme@gmail.com; h=from:subject; bh=nshxwRS/+UyxHkQOYE9Fk36v0JMlpdCU+qxIFnNJs3k=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBklSenbP7s6TY77w/Zxcfnc8LP7VJes4kp6vF0q88g27 d0bNG8HdJSyMIhxMciKKbJMSuRrOr3LSORC+1pHmDmsTCBDGLg4BWAiNvcZ/imW9x55t+FFW8yN UDfZ/t8xE2e9vrBgT9TpyTkNPX/Nvu9h+O9ssn1pdt7N/elHOB+aaz52Xjdxn1pm2e8DZ9Sktjn k3+QFAA==
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
 
-Commit 03c9d1a5a30d93 ("Documentation: Fix description format for
-powerpc RTAS ioctls") fixes Sphinx warning by chopping arch/ path
-component of papr-physical-attestation.h to fit existing "Include File"
-column. Now that the column has been widened just enough for that
-header file, add back its arch/ path component.
+Hi,
 
-Fixes: 03c9d1a5a30d ("Documentation: Fix description format for powerpc RTAS ioctls")
-Reviewed-by: Haren Myneni <haren@linux.ibm.com>
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
----
- Documentation/userspace-api/ioctl/ioctl-number.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This is the cleanup series following up from 03c9d1a5a30d93 ("Documentation:
+Fix description format for powerpc RTAS ioctls"). It is based on docs-next
+tree. The end result should be the same as my previous fixup patch [1].
 
-diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
-index a7f729eb0c3694..24c7f480e31057 100644
---- a/Documentation/userspace-api/ioctl/ioctl-number.rst
-+++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -369,7 +369,7 @@ Code  Seq#    Include File                                             Comments
-                                                                        <mailto:linuxppc-dev@lists.ozlabs.org>
- 0xB2  06-07  arch/powerpc/include/uapi/asm/papr-platform-dump.h        powerpc/pseries Platform Dump API
-                                                                        <mailto:linuxppc-dev@lists.ozlabs.org>
--0xB2  08     powerpc/include/uapi/asm/papr-physical-attestation.h      powerpc/pseries Physical Attestation API
-+0xB2  08     arch/powerpc/include/uapi/asm/papr-physical-attestation.h powerpc/pseries Physical Attestation API
-                                                                        <mailto:linuxppc-dev@lists.ozlabs.org>
- 0xB3  00     linux/mmc/ioctl.h
- 0xB4  00-0F  linux/gpio.h                                              <mailto:linux-gpio@vger.kernel.org>
+Enjoy!
+
+Changes since v1 (RESEND) [2]:
+
+  * Add Fixes: and Reviewed-by: trailers (Haren)
+  * Expand tabs for uapi/misc/amd-apml.h to match other entries
+
+Jon: Would you like to apply this series on docs-next or should powerpc
+folks handle it?
+
+[1]: https://lore.kernel.org/linuxppc-dev/20250429130524.33587-2-bagasdotme@gmail.com/
+[2]: https://lore.kernel.org/lkml/20250708004334.15861-1-bagasdotme@gmail.com/
+
+Bagas Sanjaya (3):
+  Documentation: ioctl-number: Fix linuxppc-dev mailto link
+  Documentation: ioctl-number: Extend "Include File" column width
+  Documentation: ioctl-number: Correct full path to
+    papr-physical-attestation.h
+
+ .../userspace-api/ioctl/ioctl-number.rst      | 516 +++++++++---------
+ 1 file changed, 258 insertions(+), 258 deletions(-)
+
+
+base-commit: f55b3ca3cf1d1652c4b3481b671940461331d69f
 -- 
 An old man doll... just what I always wanted! - Clara
 
