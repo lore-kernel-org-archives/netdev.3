@@ -1,59 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C3425E824;
-	Mon, 14 Jul 2025 15:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80F5258CF1;
+	Mon, 14 Jul 2025 15:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752506825; cv=none; b=usjMHs5lwHOVD+8s89jT6VQr9tkHCXb2KEsI8+80TYYC5NsRynm00OG/uwMLjhFxwa4INxJuGY9/PHgFQZEBtSHxqssr1pKLmt1wXtH6Bq2ztN7NzDRkvmb5jCZluewshRHYHZ9FbF2WZ2i8pYET8wv9oKyPwLmk+MVRAdoY+ps=
+	t=1752506879; cv=none; b=hguxv+DPsY5wjhVsjtsnp9K+OFxS6avv1+hOgdPCBH6WEla7LEewKUy8MM27PHmbqSWnlAHTXTAY9y++2NQIt+T49IE7IxOO4Q1YCFTIs617MOy+u0qL9At3kc4Urz4tSUEBZ0lcxQ6cPrdRJ6UAhLcbz1BTluRuh6We66GulKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752506825; c=relaxed/simple;
-	bh=CPLE1p+qZm9bk1t2sLfSrZ2YNotCwR4UDxuJhB4GjzI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OfQbILXn3aVIW3vnghe5RTIR0573/F58/TyrBD9x9zSQSsE7oN/Gp6rmI0Fx1pgLC67h2ZTdX/L5FwMHZUHlk3SD3qQZatNzwIhnXxPTsCn/H8XyUeRUXUAlun2hEIgFYV2AEC6kndDK9yivrxt2z32oozbS/Bio4zfGDO6OmUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJXmeLtT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752506879; c=relaxed/simple;
+	bh=JfYzcH35yQEz/AvVHc+jJi4BFe3B6cDYMbptaM286xE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CHHgWTBlJpibIPS13bhrtuR4Vr0btVXydBdS/+2yDwy7JXFbHkuL5gudjsSemzrzVYoIYJNvOJv5XnIpguDM41o2A7ZkTdGqoO6ekBQSaVCJyLrixcIleX78SKhbPCcNQD/X6OmZw3jAmDK1xrBKjE04bgQRMRyZVUo+TlK1SCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HKf71UNI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJXmeLtT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D079BC4CEF0;
-	Mon, 14 Jul 2025 15:27:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HKf71UNI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE304C4CEED;
+	Mon, 14 Jul 2025 15:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752506825;
-	bh=CPLE1p+qZm9bk1t2sLfSrZ2YNotCwR4UDxuJhB4GjzI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sJXmeLtTjA5wBa0009sVY3hhufOHNvRzLUk5K4DnMoEkjd7+kOSgiWfQBH+7IekPR
-	 ePTnmD8RiIjAuYzFDzyadYZy8PpWE6QL/ZsLqah2iZ1Ndn0lIV6CkuGUjkN2EyTNFm
-	 f2vcw1M60E4CYLSOecKg6SisTagZe7qgS7zigDG6m4SRAR5i0hq9TnPm9qLCmzf+Ha
-	 SrcPM4GGLLPYUrLDW0YwjSuWqToOXrlIvISY80c+uSfHDc63Uze+VX6ekFqmyRQrtk
-	 T1BZh+dRh1Cvd3ZvqMjvu0O8bdvU8IuGLdw+Ex02itt1KEjAGnK5U0AGX/5vzJPGS0
-	 iQ8M3lKWpurlg==
-Date: Mon, 14 Jul 2025 16:27:01 +0100
-From: Simon Horman <horms@kernel.org>
-To: Yue Haibing <yuehaibing@huawei.com>
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] ipv6: mcast: Simplify mld_clear_{report|query}()
-Message-ID: <20250714152701.GO721198@horms.kernel.org>
-References: <20250714140127.3300393-1-yuehaibing@huawei.com>
+	s=k20201202; t=1752506878;
+	bh=JfYzcH35yQEz/AvVHc+jJi4BFe3B6cDYMbptaM286xE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HKf71UNITsHDLVJW75pB1mMFXL1+YZTv3tvoDVnuraQEa7N9cl9VjY5S87qbVuWQF
+	 OILDihjolZvV/JwtFurZbuBCaLcR4ucyx+BCVz/bTsw1zIBQlr7mwlXQqj3lgNJEz+
+	 7hGVrdGWikxGxVc4jfJYBzJadau2NrTdzGaA95cuCAdEiXhDF5rRJ4YizuomAdaWs1
+	 heiLZb9lki4gN8vS2EnSKmYIfaXyJg0rtBanFSm10YR4o3/OPqcq3qhMFf/9KIhGDB
+	 +s0Cu3oLlts3nefLDYIjx7j4nxDELKiYLcTlQ31PuiC0o8SBF45iPcz7emriMnPUhZ
+	 f2EaILjeegeyg==
+Date: Mon, 14 Jul 2025 08:27:56 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Carolina Jubran <cjubran@nvidia.com>
+Cc: Arnd Bergmann <arnd@kernel.org>, Jiri Pirko <jiri@resnulli.us>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Mark Bloch <mbloch@nvidia.com>, Tariq Toukan
+ <tariqt@nvidia.com>, Arnd Bergmann <arnd@arndb.de>, Simon Horman
+ <horms@kernel.org>, Cosmin Ratiu <cratiu@nvidia.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] [v2] devlink: move DEVLINK_ATTR_MAX-sized array off
+ stack
+Message-ID: <20250714082756.40ad644c@kernel.org>
+In-Reply-To: <5ca43852-0586-4811-bc45-99e19232ce9d@nvidia.com>
+References: <20250709145908.259213-1-arnd@kernel.org>
+	<20250709174547.3604c42b@kernel.org>
+	<40196680-c34f-4b41-a6cb-36e3a6089634@nvidia.com>
+	<5ca43852-0586-4811-bc45-99e19232ce9d@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250714140127.3300393-1-yuehaibing@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 14, 2025 at 10:01:27PM +0800, Yue Haibing wrote:
-> Use __skb_queue_purge() instead of re-implementing it.
+On Sun, 13 Jul 2025 15:28:11 +0300 Carolina Jubran wrote:
+> > Sure, testing it. Will update.
+>=20
+> I have tested and it looks good. Thanks!
 
-Hi,
+Awesome, would you be willing to post the official patch?
+Add my as "suggested-by" and with my sign off.
+Most of the work here was the testing :)
 
-I think some mention of the changed drop reason is
-warranted here.
+> >> diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/=
+=20
+> >> netlink/specs/devlink.yaml
+> >> index 1c4bb0cbe5f0..3d75bc530b30 100644
+> >> --- a/Documentation/netlink/specs/devlink.yaml
+> >> +++ b/Documentation/netlink/specs/devlink.yaml
+> >> @@ -1271,12 +1259,20 @@ doc: Partial family for Devlink.
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 type: flag
+> >> =C2=A0=C2=A0=C2=A0 -
+> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 name: dl-rate-tc-bws
+> >> -=C2=A0=C2=A0=C2=A0 subset-of: devlink
+> >> +=C2=A0=C2=A0=C2=A0 name-prefix: devlink-attr- =20
+>=20
+> Maybe use name-prefix: devlink-attr-rate-tc- instead?
 
-> 
-> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-
-...
+Sounds good!
