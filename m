@@ -1,180 +1,115 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F42F25C804;
-	Mon, 14 Jul 2025 14:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA8025A2B2
+	for <netdev@vger.kernel.org>; Mon, 14 Jul 2025 15:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752505180; cv=none; b=PMk+Dp8xswF+AWrIiBSD4YPOOIafzjCTYZbljboZHZiZbnmDxCwvxuPLvKG/F0kBZW62Ngw3lPpUTwc7NeQWz6wy/uyMLIUerGPv5c5JcQBdK8f9SM7h6afP+/d0YLr2I592l7hmePXTxY0T73HfK1pyoOFjSTahtvi0BdxYeEU=
+	t=1752505237; cv=none; b=iZwixSGmJyYouoBvIgA+krMa3jGo9xZlOsqZswVasa4g0oNQyNP8jA5p59cq6DcPdXzrKtIITl8DIEUhU4F0vw/aoNpfAfw+H//RzA1rFYgrR0OIz9JIaIuwg4BBlCUPs7UjhzTgmJx7/I5iqa+tNT1HkrmBpH2U93f7nnEzeYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752505180; c=relaxed/simple;
-	bh=Sf+4eY2bRsCMo0zv2ROC1H3bQJQUZwTqapVWUaGcPyI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=ckBFj8FHg8JFOlHlhCaeNfgWu918kP+yNZk+qgD9AjSCgWGcm15jrON+xLwi3ySHmDyc2YofFHZ50h05yuYLXekeJTIJIfhV3+/ec3ly5yEyn4IZydtJR+o5oBphJmGEz2AQRJpoYIg2rqXN6iYH54+3FsJVtM4o7CMTTCnAsEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aJAyI15a; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1752505237; c=relaxed/simple;
+	bh=IHKSZdBg3WcFhFDOVCLrgHqXdaBXMkfRz+CGmXp1u3w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=VT9utcRnPWkJVyhdwrBrQEzg5Weu0hgHIquHi/QGiPFs13SmMdVRJ2JN21eIu5/m+tT0y0bNHkTu9wXFSjnwDlerUo5/gv2sYYQx2NZzwtaaH/+Bxi4j+CpjJTvccqWRRof50KzP0Kr6pgPvVeBWfVAUMyIgA1RpQ4yDvMfFG+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cHlm/59X; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aJAyI15a"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56EC3LgK000797;
-	Mon, 14 Jul 2025 14:59:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	aze+Cds7D/XOCL4YrNJPzNJdEgywaovIlQABSpTXB/c=; b=aJAyI15avZ8sW0ug
-	/4uYO5YaOSIRjaFSY0y1ysasVC7Oho2qy1SXy/yAGpJ5Zqiq/FXp+LfHrdL1zQ6C
-	nFtgDy/4TDN/bM62VE22Kt3sqpPJJePa5AW9wN7MWBhbstK/Xf7XABIwF0vKl7kW
-	5ERwOTQA5IfU7aFtWxyqe3ZJ7WmtGn53d4+Ktq4N1zTOi3z7Pdfv9fiRaxgROhSv
-	gAs/ESQoHgN92C3j2+8ivVQSDJ5GFI2gLYU+OknjgddQH5gszso2H9Vy9yboECl6
-	8lanxkiIxTT/Y/fb4DcYQOAwJt/ncNuXq1FdaxhDFztpRwpKy801JPyfghCNH3cv
-	ckjwdQ==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47vvay1kyd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Jul 2025 14:59:25 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 56EExPG9004124
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Jul 2025 14:59:25 GMT
-Received: from nsssdc-sh01-lnx.ap.qualcomm.com (10.80.80.8) by
- nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Mon, 14 Jul 2025 07:59:22 -0700
-From: Luo Jie <quic_luoj@quicinc.com>
-Date: Mon, 14 Jul 2025 22:58:57 +0800
-Subject: [PATCH net-next v2 3/3] net: phy: qcom: qca807x: Support PHY
- counter
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cHlm/59X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752505234;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aFwyX6lIQ0fjoLyREcaVc/pevM031iihhbAQ/uu7vB8=;
+	b=cHlm/59XL6xIPLOGB9cvD+Ggupaog3r1L3iWBVLpiLXsOy4fl5VARqwHbd23tUOAs1qJeo
+	8CLDht86gwKF/bQDCs8diJbsL9YbqhKVrDkWzKUL/KGxXZUFDh9gdFHiAcbYDdyE1VNPHW
+	PvAapgmlfLLsG7uC9b52QioxhKUTyXM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-499-YVEg5eUuPseeHe2isjPP7Q-1; Mon, 14 Jul 2025 11:00:30 -0400
+X-MC-Unique: YVEg5eUuPseeHe2isjPP7Q-1
+X-Mimecast-MFC-AGG-ID: YVEg5eUuPseeHe2isjPP7Q_1752505229
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-455f79a2a16so22082065e9.2
+        for <netdev@vger.kernel.org>; Mon, 14 Jul 2025 08:00:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752505229; x=1753110029;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aFwyX6lIQ0fjoLyREcaVc/pevM031iihhbAQ/uu7vB8=;
+        b=wDsOcPzpIYccfYvVIKdsemQHIEd6mta3imWwya0c8dz6OQIVNjtaFwct1aXIPkPf60
+         ss9Rr0RywGP1uzRTfRZDmLnGM4zGyIZp+waeWeehjiELuk5kL+leMIVQj5TK/BYWUAxm
+         /JbiuJXUNcJ7YtjFtF9knRxDpXI/2JsGohZS/Qx/fZ0ssfaK6xzvDTpX+2PQapt91gKy
+         vTONk+taIkaRgYsrHjOtqgwVfQSvR/+QdoumWIckNK2mdkeeZq+F8Q2XJsptdCLCeBf4
+         oRyMHVt32iQr256TfoMHoLv+aOQJd8L7shuCb2FiDJMyFdAeZH00zNWUz7VdRT0Zl8eX
+         vfmg==
+X-Forwarded-Encrypted: i=1; AJvYcCXu7Kq7bDIF/BCaZMiXeiJVvqUCZajfYF7wnfYOsM8L4pjARhKnv9cF1aebb+pP4y9m9fzpdJc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqCgt9mno+cyznVk7+CKLA25kNBMtXclTqTK9DV9vo3IAjcKBC
+	NQ6ELF4lpf7s0lKTo7cIyYMxVks7LysfJETHN9EsX39jLxszUCvAo9VTFZ9kcdG16iwEKa8pl2X
+	lkggEz4D7+MFNUbgRX+vuxiuGY3V1QNXh9ZpPd0fv7EJfAQikxOi6PksMYg==
+X-Gm-Gg: ASbGncudYeGJIxtmGQ4B5VbMH9xlawUec6KJ6btmVdjvMh05Zz6NCiwYDsebbw2FUNq
+	JI+dZ1E36R4ZJ8jRDlKV/JdlhLSQMf1qAlBCPs1x7JFmBV9qC3Y9SatxvlWbsd3P93iPoemXfTB
+	Pd4j4mNVDqjTYgkCURwAMjNsu2V4izVbKQcyiB9Ig5Ls7dgN1kAcUmH3BcQ0Qkq2f6IGNAkCGUf
+	idmKM5DhG9WUbq0v4ewmNKuZWw2AuFAft4knaRnemQrNExGVzeD917kFrzsif6tJ2ct9mzLOBDl
+	8UT9dLAkI8dHI5wu61xeK+kcpmcWiEfII7aNm4/loJo=
+X-Received: by 2002:a05:600c:37cf:b0:456:fd4:5322 with SMTP id 5b1f17b1804b1-4560fd45573mr66168795e9.11.1752505229187;
+        Mon, 14 Jul 2025 08:00:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF/DiiAZoBKMtGEbuxHY6nd18x8tIp6jAQkUUQbuvelaXC253z18SXm8PELPhx5Rs/OhWM7Ng==
+X-Received: by 2002:a05:600c:37cf:b0:456:fd4:5322 with SMTP id 5b1f17b1804b1-4560fd45573mr66168005e9.11.1752505228616;
+        Mon, 14 Jul 2025 08:00:28 -0700 (PDT)
+Received: from [192.168.0.115] ([212.105.155.228])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4560ddf5e0esm69819555e9.18.2025.07.14.08.00.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Jul 2025 08:00:28 -0700 (PDT)
+Message-ID: <0e71834c-881e-4a13-a2c0-3443e2ab7605@redhat.com>
+Date: Mon, 14 Jul 2025 17:00:25 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 net-next 13/15] tcp: accecn: AccECN option failure
+ handling
+To: chia-yu.chang@nokia-bell-labs.com, edumazet@google.com,
+ linux-doc@vger.kernel.org, corbet@lwn.net, horms@kernel.org,
+ dsahern@kernel.org, kuniyu@amazon.com, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, dave.taht@gmail.com, jhs@mojatatu.com,
+ kuba@kernel.org, stephen@networkplumber.org, xiyou.wangcong@gmail.com,
+ jiri@resnulli.us, davem@davemloft.net, andrew+netdev@lunn.ch,
+ donald.hunter@gmail.com, ast@fiberby.net, liuhangbin@gmail.com,
+ shuah@kernel.org, linux-kselftest@vger.kernel.org, ij@kernel.org,
+ ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com,
+ g.white@cablelabs.com, ingemar.s.johansson@ericsson.com,
+ mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at,
+ Jason_Livingood@comcast.com, vidhi_goel@apple.com
+References: <20250704085345.46530-1-chia-yu.chang@nokia-bell-labs.com>
+ <20250704085345.46530-14-chia-yu.chang@nokia-bell-labs.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250704085345.46530-14-chia-yu.chang@nokia-bell-labs.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-ID: <20250714-qcom_phy_counter-v2-3-94dde9d9769f@quicinc.com>
-References: <20250714-qcom_phy_counter-v2-0-94dde9d9769f@quicinc.com>
-In-Reply-To: <20250714-qcom_phy_counter-v2-0-94dde9d9769f@quicinc.com>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Luo Jie <quic_luoj@quicinc.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1752505154; l=2565;
- i=quic_luoj@quicinc.com; s=20250209; h=from:subject:message-id;
- bh=Sf+4eY2bRsCMo0zv2ROC1H3bQJQUZwTqapVWUaGcPyI=;
- b=76PkpLdc11Yo0o1dp4xRksC2SVnQqVUXk4/BeZAoKNUP3iNWaZfkhNMJ/yO6Ub4kYt+qLNaTf
- g8Kmo9/g59jDAReYVAbmdyYicSP2kAPSUUu4N3XWLMmYD7IIlAHpw8m
-X-Developer-Key: i=quic_luoj@quicinc.com; a=ed25519;
- pk=pzwy8bU5tJZ5UKGTv28n+QOuktaWuriznGmriA9Qkfc=
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 4wQZe1e_bO5gppnJxWI3JxbCyLhImKBx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDA4OCBTYWx0ZWRfX8qSi0XNmWyHi
- sYBxTH03cOC+jJytomVUnj7oWi/gqcxQcnO/KJV1BPyabuHBI8ucFaGYBlyiixUqGH9kWdx3tKG
- 8dJXf0dQYKCQuQYURbUmWodM4WbIIOxyaUv/JZVuNgZBGqIKaCSA1wZTrrqjKrD3oyXihFDkx84
- hfONAKsYKnWlkXpV40vN6t/ocxIKuH0kFnHZxO/GeCdsnr0gX0Nx3rUy4vo+uapEaEWCnq7+mIz
- ZGAAlDj0WNFLOjqg39z7lckXJxmXg6iYX+I63TYJ+GxFdFxVJcUoGkrAJVXP1ENbo2aaHBpwzfH
- 6EXO4+rJDFN0bVQwXJFuQ7jbmhyONQ0K9aBo1heEsM/XJSXsYeReAVsrnxExLFEm43MYOq+yB1/
- OhyetIQp4SLCXvMYlkOKgwD7T3dclP1Izj6Bt0kuxpz5Y01IfyRih0K/fWhc8B+lfkVSQ9Bq
-X-Authority-Analysis: v=2.4 cv=GNIIEvNK c=1 sm=1 tr=0 ts=68751b4d cx=c_pps
- a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=COk6AnOGAAAA:8
- a=uQsTNyxmMXL8gVczaX4A:9 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: 4wQZe1e_bO5gppnJxWI3JxbCyLhImKBx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-14_01,2025-07-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 phishscore=0 adultscore=0 impostorscore=0 malwarescore=0
- mlxscore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0 suspectscore=0
- priorityscore=1501 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507140088
 
-Within the QCA807X PHY operation's config_init() function, enable CRC
-checking for received and transmitted frames and configure counter to
-clear after being read to support counter recording. Additionally, add
-support for PHY counter operations.
+On 7/4/25 10:53 AM, chia-yu.chang@nokia-bell-labs.com wrote:
+> @@ -443,9 +456,34 @@ static inline void tcp_accecn_set_ace(struct tcp_sock *tp, struct sk_buff *skb,
+>  	}
+>  }
+>  
+> +static inline u8 tcp_accecn_option_init(const struct sk_buff *skb,
+> +					u8 opt_offset)
+> +{
+> +	u8 *ptr = skb_transport_header(skb) + opt_offset;
+> +	unsigned int optlen = ptr[1] - 2;
+> +
+> +	WARN_ON_ONCE(ptr[0] != TCPOPT_ACCECN0 && ptr[0] != TCPOPT_ACCECN1);
 
-Signed-off-by: Luo Jie <quic_luoj@quicinc.com>
----
- drivers/net/phy/qcom/qca807x.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+You should probably error out from this function when WARN_ON_ONCE() is
+true. I've no idea about the possibly meaningful error value to be returned.
 
-diff --git a/drivers/net/phy/qcom/qca807x.c b/drivers/net/phy/qcom/qca807x.c
-index 6d10ef7e9a8a..291f052ea53c 100644
---- a/drivers/net/phy/qcom/qca807x.c
-+++ b/drivers/net/phy/qcom/qca807x.c
-@@ -124,6 +124,7 @@ struct qca807x_priv {
- 	bool dac_full_amplitude;
- 	bool dac_full_bias_current;
- 	bool dac_disable_bias_current_tweak;
-+	struct qcom_phy_hw_stats hw_stats;
- };
- 
- static int qca807x_cable_test_start(struct phy_device *phydev)
-@@ -768,6 +769,10 @@ static int qca807x_config_init(struct phy_device *phydev)
- 			return ret;
- 	}
- 
-+	ret = qcom_phy_counter_config(phydev);
-+	if (ret)
-+		return ret;
-+
- 	control_dac = phy_read_mmd(phydev, MDIO_MMD_AN,
- 				   QCA807X_MMD7_1000BASE_T_POWER_SAVE_PER_CABLE_LENGTH);
- 	control_dac &= ~QCA807X_CONTROL_DAC_MASK;
-@@ -782,6 +787,22 @@ static int qca807x_config_init(struct phy_device *phydev)
- 			     control_dac);
- }
- 
-+static int qca807x_update_stats(struct phy_device *phydev)
-+{
-+	struct qca807x_priv *priv = phydev->priv;
-+
-+	return qcom_phy_update_stats(phydev, &priv->hw_stats);
-+}
-+
-+static void qca807x_get_phy_stats(struct phy_device *phydev,
-+				  struct ethtool_eth_phy_stats *eth_stats,
-+				  struct ethtool_phy_stats *stats)
-+{
-+	struct qca807x_priv *priv = phydev->priv;
-+
-+	qcom_phy_get_stats(stats, priv->hw_stats);
-+}
-+
- static struct phy_driver qca807x_drivers[] = {
- 	{
- 		PHY_ID_MATCH_EXACT(PHY_ID_QCA8072),
-@@ -800,6 +821,8 @@ static struct phy_driver qca807x_drivers[] = {
- 		.suspend	= genphy_suspend,
- 		.cable_test_start	= qca807x_cable_test_start,
- 		.cable_test_get_status	= qca808x_cable_test_get_status,
-+		.update_stats		= qca807x_update_stats,
-+		.get_phy_stats		= qca807x_get_phy_stats,
- 	},
- 	{
- 		PHY_ID_MATCH_EXACT(PHY_ID_QCA8075),
-@@ -823,6 +846,8 @@ static struct phy_driver qca807x_drivers[] = {
- 		.led_hw_is_supported = qca807x_led_hw_is_supported,
- 		.led_hw_control_set = qca807x_led_hw_control_set,
- 		.led_hw_control_get = qca807x_led_hw_control_get,
-+		.update_stats		= qca807x_update_stats,
-+		.get_phy_stats		= qca807x_get_phy_stats,
- 	},
- };
- module_phy_driver(qca807x_drivers);
-
--- 
-2.34.1
+/P
 
