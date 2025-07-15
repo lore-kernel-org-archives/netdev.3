@@ -1,71 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C1E238C1B
-	for <netdev@vger.kernel.org>; Tue, 15 Jul 2025 09:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE46C23C50C;
+	Tue, 15 Jul 2025 09:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752573018; cv=none; b=ZqZ5EGFcIMX6ZqQAcAud9ffCZrc+MLwzMTkXPNHbgo2hZzsDYKLdzA6iHSA9GG7wVW9QFFO0cPKPBignXfvagqOffC+axCmXFg8trxiZWDIhnoGRXTbXZIOoIKzQYvKhxnGgUEnR5twY7oRyD/jOr8ocXtDlvavTzjY1Lhr895c=
+	t=1752573120; cv=none; b=LOXexVnxlHXnPhKwH77AgibCeZcbpZltnO/US3SCbgXY62hlrtTDPByKHKD+mtsiz4DXNyhLno/e4oetN45BOlmkEslStK/gZW09pahB3fIhCq1+YcnpUzXnB0pNK/LnC/qZoQv4TfuhojEaFN/an+dzEVB4DfrjnpoIc9i1nHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752573018; c=relaxed/simple;
-	bh=Ki0SgJl307cBiI+Sug5JFb+Pdax20SoV1tLcDKXVkeQ=;
+	s=arc-20240116; t=1752573120; c=relaxed/simple;
+	bh=k3CNpSgw96RBK8czQPmVQadqD4U/8VJrNaiW2Cv3fEM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P99TrLJGe4QX2pyOhufC7Kwb4tygofLXK/BXLtC+mSp964mKRggvtMcpcygQOuEOaSM0rbKm7ZH/4Kh8YUxylniy0Dt2EC+IvmTEd1XJpCvxUFFLKsqxs16MupsDcv6B/GRd9nfCO4sU3e3f256JbChdlQC9E/KWaIylgjMK2UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RYdxeWU8; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=GbQbN5NQmvIg7PVHmBCfsYuKYk2vInC6hRZ3erkDEDJ8U3S0ARWNnQuMNEz/bhrvZayYafEjL029P61JuqsNVKmLCtnrW38JnBTXq2nWvWzdlMXvbFig52Hrj8SJkvrvCTzc35FUkG3CPa6T29W9YGStigjVHjsss5JXYC3gF2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eNved4Uu; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RYdxeWU8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752573015;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iQEjAlaLqgiRX099uVhM3nPBv3g2I22KqeqxbeRqaJI=;
-	b=RYdxeWU8+3oqnA+N0lHHjM+bCtw0xcflPhJ3d1+0jjzavOR+WOErJiwKfvNi+WukDlaPZ9
-	Qrh2gWEmo7n7JSKVwbmo+4smSBQ2xo2UOds5jr8MLW63c51+I0BGThJr+tpb3fYLq7Jdur
-	csGI0kTCskPEk8S+jG6a1P2jlCbPG7c=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-Ppo_D_rUNaKFwofYBopmUw-1; Tue, 15 Jul 2025 05:50:13 -0400
-X-MC-Unique: Ppo_D_rUNaKFwofYBopmUw-1
-X-Mimecast-MFC-AGG-ID: Ppo_D_rUNaKFwofYBopmUw_1752573013
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45624f0be48so4923935e9.3
-        for <netdev@vger.kernel.org>; Tue, 15 Jul 2025 02:50:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eNved4Uu"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-60707b740a6so8066138a12.0;
+        Tue, 15 Jul 2025 02:51:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752573117; x=1753177917; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+JfCVmz7dmcyIZuFeXL/VPi/f+vUofPTsyu4Vo/HNV8=;
+        b=eNved4Uu3gpthM18zIQOnbgo+JH8BygfgQjFTzmafl7Y8nA4oRTgQksKLCnTnFKlII
+         mmIBx2ndZxI4Ep1K9rxXSx7wOg3uLfEvzBeZpQZwbPCguGUg7U6fP7Ml0DPTREKplowe
+         KnPZNTo0g8xp2slnNlLWN9vZqZpiM1PYWFi0ywbO6YexEm9tJB4k/jeWyb6nxQP5bsWl
+         n+IRsS7fvyChdxWtK7Hfq9y3+hU3r8MUiZeqCWQK+Baq9+bSlpgUzHMJCkkVnT50xlBV
+         MHSU+0dpMkqZeBoG88pWesjSweBM33FwXBVBjjy2dKwp5Nkrk7WoiyE157Lo55Mx6JHN
+         8ecw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752573012; x=1753177812;
+        d=1e100.net; s=20230601; t=1752573117; x=1753177917;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iQEjAlaLqgiRX099uVhM3nPBv3g2I22KqeqxbeRqaJI=;
-        b=rLywSbHb1idKkOHT5D1j6dYl48P4/0gm92zreof4p7ZVx1zjzRp7CtQDA3+CW1/Hsd
-         qcB3u60zqYO4uk1MOuTKwTZ0s6wt40MsR4ZUwQMjyreYgtjInyXg5CxV6LSCULviZW0E
-         lS7ovqO0lOtvnkJCzGPZM/Dyn+MZcCswcISoz03mP+qpqsvzxSum85SKRFIJPpF66O4t
-         p9vXOggfT3JmsN24VGZ8Bc7BF04ivhJiECFQ86tvKwo6GLyf0ZLPDM9ThgsQyRfSHfQG
-         9iUHUIYB+uHe1Wf/z0BmuudAcH7hSDEmz6OoU104h3TtFZogu0dk+uEUGdtvixDhNqob
-         aXpQ==
-X-Gm-Message-State: AOJu0YzKWsWDcTNdEVNtdF333MyOs7XMvGn0snD7SejklO5fdL6kd6eg
-	f2hx6esvzJ7CBLl9r66qiTTI5HOArG2M99KQ6+ytLIj3hKilbD0o4HQlF8R6ctHmKaltEBilZSN
-	qzODRumV+B8zTDW/SxHhLE7oYSML1UXvcyRT75K7wvkAIJ2CVlnJuue1SsQ==
-X-Gm-Gg: ASbGncse98JfdpD8SEor8mLGtv0X8rqiHyq4sIHleEBwxE+qNHlJmX7HULsiv1fodLL
-	giegOR7yn1x94mCkxb1qssBehhjtHNwPuQW3gWmq2pFT+xsPR5fhY3sf+d4sIbKKKCUBfpWhlCo
-	RS+t3VE+r0NZ5TipSDXO2nqDbzH90iWWcZ+sswyOSyiRmLe9HwbxL9d+kYBDVvO2MC8gDNoI4oK
-	mcKE/HBf89zn72eBTjH6ROLOuPubVmFEavNQPSlso242Pj2EzH+DWE1ESf3WZyvCMP3wkXfOc0w
-	m+sWX0BxyvRm8cACcAPOkQ2bBKtXfjBON0IHm6PJ3abZmgKK8lH6GlHRHtNoBDksmkZPg3YfgVY
-	twt+3938yOYA=
-X-Received: by 2002:a05:600c:8505:b0:453:1058:f8c1 with SMTP id 5b1f17b1804b1-4555f895526mr150680125e9.3.1752573012539;
-        Tue, 15 Jul 2025 02:50:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE9E+SICra0WsD4nKZHDqyXOhwE+ihUk3ntWqvTNfrBMrLXWeidWJig86sG8z6W3uhU/mZe/w==
-X-Received: by 2002:a05:600c:8505:b0:453:1058:f8c1 with SMTP id 5b1f17b1804b1-4555f895526mr150679795e9.3.1752573012118;
-        Tue, 15 Jul 2025 02:50:12 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4561b176f87sm54947305e9.35.2025.07.15.02.50.11
+        bh=+JfCVmz7dmcyIZuFeXL/VPi/f+vUofPTsyu4Vo/HNV8=;
+        b=s+aSh21xvIxxbFEWZaOs/joj9goQdOFIxPutVi24gWFKyDEvlbN0bKMPLzDBqsOCkI
+         2kmJbl/gOEk5qNh1OmGABXWQKOC0wYSUtvtz25FGc6CyqlMVrTvfOb9hOkt/vyi6YxBj
+         om+92LAahAozX5236wRzny+jhGaviUQpRxwDl+McI06StHfg1/uNR6IpwbMUTch7XX9V
+         UzoJbhOnjCHon0jvSfUxBW5cOFC2e5NrWRiOz8pXjf9U6IcNLxGVjIa0Ot6BPju4cDRr
+         t9GL/gjTf3lWNvyEnVkWZrTelnTQ7tSbGkKIGaGqCJ5buhVVwFeGSJlKKjNicwhDaMPU
+         lRNg==
+X-Forwarded-Encrypted: i=1; AJvYcCVlh9e5Y5hZZH6XiJR5ahXNfgrRgKVpaKoVRvZSzn8MMWmRL9+mXJOnKOH69Trq2HeRzFc=@vger.kernel.org, AJvYcCWbUG+/TyQ2G7JNdk8LMFV7EYTTzntBa8yQf0BOtUem3RFfVvPzs+dPbQfkgsWBTx7nhdz0ILskr73Jyg==@vger.kernel.org, AJvYcCXctGl2Fs4eZAyfD/dqrSExkO9xh9OPVROUVUVVN3NczQh33UM6zZtyftvIrG1VvkGu/ieaOtawMp1O93vv@vger.kernel.org, AJvYcCXomE5DZjDdOCiqZLT5C/Q0OIaep/22Dk2I2seoP7369Ap6uLl27/zv8ER3JvIOXFqJwDGkxEM2@vger.kernel.org
+X-Gm-Message-State: AOJu0YzabtnDN+tujhk7wJbI8/SFoaQsfhqBSwyCeBgZF90irsQuFXxP
+	wZuDTtJEgmTCprm1P06klZQp3dD0drED11OFXAttJ1nDphM68tddxkB4+WjTqCad
+X-Gm-Gg: ASbGncsmae6QB14m7LOw1dH4LwStfCEUszMMQ7rpaubkQ3nVmap1uWmyDKGvGPebefn
+	N0fzIJ9x4aFz0MT1Son/tWHG/dg+vnJGYioArwm4m8Pd7nt2GHuldGy2DXGYg+ThN7WfDFtw2c7
+	jGKTSHWP5tSeVtcyckxz62NgbYUb4exxdSgRDhqGe12kVOk7mHtKb0bf4o64XGknSf5ey97SAMe
+	ayD/iXRHoZrRIN4GW3qMklnF4Z7BXYkZXQWuFw3GojbgFhxSYkWzFZ3AZTkvXOvhu0UZsRCtT3X
+	DmsNJ6yr/S61/osIMcLiv6KG13YmjI2+rBxhPvHdfVJWC7/T0bOnW9/mnOnKYDZeiFGbIrhDupu
+	FQ4To4VWyXMSCECTKNbgRbjVx/4CmBCLOe7B97PO4r9adMQ==
+X-Google-Smtp-Source: AGHT+IFtyv+behObgwuhkDzO4fwWTfcA9W4Bzf00R+XfXl6ZnDUgjY9rXODXpIsVAPEVnRVB4STm/Q==
+X-Received: by 2002:a50:cd87:0:b0:5f3:857f:2b38 with SMTP id 4fb4d7f45d1cf-611e84aa0e9mr10404889a12.17.1752573116791;
+        Tue, 15 Jul 2025 02:51:56 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::1ac? ([2620:10d:c092:600::1:a4c1])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-611c94f3753sm7018754a12.16.2025.07.15.02.51.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Jul 2025 02:50:11 -0700 (PDT)
-Message-ID: <dc01a67a-9946-456b-bfe8-fb20df0dc464@redhat.com>
-Date: Tue, 15 Jul 2025 11:50:10 +0200
+        Tue, 15 Jul 2025 02:51:55 -0700 (PDT)
+Message-ID: <ecb71c6f-9a9e-439f-b64c-2779ee5afdd8@gmail.com>
+Date: Tue, 15 Jul 2025 10:53:24 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,69 +67,59 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 2/8] net: mctp: Prevent duplicate binds
-To: Matt Johnston <matt@codeconstruct.com.au>,
- Jeremy Kerr <jk@codeconstruct.com.au>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-References: <20250710-mctp-bind-v4-0-8ec2f6460c56@codeconstruct.com.au>
- <20250710-mctp-bind-v4-2-8ec2f6460c56@codeconstruct.com.au>
+Subject: Re: [PATCH net-next v9 3/8] page_pool: access ->pp_magic through
+ struct netmem_desc in page_pool_page_is_pp()
+To: Mina Almasry <almasrymina@google.com>, Byungchul Park <byungchul@sk.com>
+Cc: willy@infradead.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel_team@skhynix.com,
+ kuba@kernel.org, ilias.apalodimas@linaro.org, harry.yoo@oracle.com,
+ hawk@kernel.org, akpm@linux-foundation.org, davem@davemloft.net,
+ john.fastabend@gmail.com, andrew+netdev@lunn.ch, toke@redhat.com,
+ tariqt@nvidia.com, edumazet@google.com, pabeni@redhat.com,
+ saeedm@nvidia.com, leon@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ horms@kernel.org, linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+ vishal.moola@gmail.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ jackmanb@google.com
+References: <20250710082807.27402-1-byungchul@sk.com>
+ <20250710082807.27402-4-byungchul@sk.com>
+ <CAHS8izMXkyGvYmf1u6r_kMY_QGSOoSCECkF0QJC4pdKx+DOq0A@mail.gmail.com>
+ <20250711011435.GC40145@system.software.com>
+ <CAHS8izNbE+sb8U2Ws2_0C9H6Tf2DzJjh2beu04uyzxk7xFw4ng@mail.gmail.com>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250710-mctp-bind-v4-2-8ec2f6460c56@codeconstruct.com.au>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <CAHS8izNbE+sb8U2Ws2_0C9H6Tf2DzJjh2beu04uyzxk7xFw4ng@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 7/10/25 10:55 AM, Matt Johnston wrote:
-> @@ -611,15 +610,36 @@ static void mctp_sk_close(struct sock *sk, long timeout)
->  static int mctp_sk_hash(struct sock *sk)
->  {
->  	struct net *net = sock_net(sk);
-> +	struct sock *existing;
-> +	struct mctp_sock *msk;
-> +	int rc;
-> +
-> +	msk = container_of(sk, struct mctp_sock, sk);
->  
->  	/* Bind lookup runs under RCU, remain live during that. */
->  	sock_set_flag(sk, SOCK_RCU_FREE);
->  
->  	mutex_lock(&net->mctp.bind_lock);
-> -	sk_add_node_rcu(sk, &net->mctp.binds);
-> -	mutex_unlock(&net->mctp.bind_lock);
->  
-> -	return 0;
-> +	/* Prevent duplicate binds. */
-> +	sk_for_each(existing, &net->mctp.binds) {
-> +		struct mctp_sock *mex =
-> +			container_of(existing, struct mctp_sock, sk);
-> +
-> +		if (mex->bind_type == msk->bind_type &&
-> +		    mex->bind_addr == msk->bind_addr &&
-> +		    mex->bind_net == msk->bind_net) {
-> +			rc = -EADDRINUSE;
-> +			goto out;
-> +		}
-
-It looks like the list size is bounded only implicitly by ulimit -n.
-Fuzzers or bad setup could hung the kernel with extreme long list traversal.
-
-Not blocking this patch, but I suggest to either use an hash/tree to
-store the binding, or check for "rescheduling needed" in the loop.
-
-/P
-
-> +	}
-> +
-> +	sk_add_node_rcu(sk, &net->mctp.binds);
-> +	rc = 0;
-> +
-> +out:
-> +	mutex_unlock(&net->mctp.bind_lock);
-> +	return rc;
->  }
->  
->  static void mctp_sk_unhash(struct sock *sk)
+On 7/14/25 20:09, Mina Almasry wrote:
+> On Thu, Jul 10, 2025 at 6:14 PM Byungchul Park <byungchul@sk.com> wrote:
+...>> Both the mainline code and this patch can make sense *only if* it's
+>> actually a pp page.  It's unevitable until mm provides a way to identify
+>> the type of page for page pool.  Thoughts?
 > 
+> I don't see mainline having a problem. Mainline checks that the page
+> is a pp page via the magic before using any of the pp fields. This is
+> because a page* can be a pp page or a non-pp page.
+> 
+> With netmem_desc, having a netmem_desc* should imply that the
+> underlying memory is a pp page. Having a netmem_desc* that is not
+> valid because the pp_magic is not correct complicates the code for no
+> reason. Every user of netmem_desc has to check pp_magic before
+> actually using the fields. page_to_nmdesc should just refuse to return
+> a netmem_desc* if the page is not a pp page.
+> 
+> Also, this patch has my Reviewed-by, even though I honestly don't see
+> it as acceptable and I clearly have feedback (and Pavel seems too?).
+
+I was fine with it as a transitory solution, but there is nothing
+to argue about anymore since mm already got a nice way to type
+check pages and we can use that.
+  > __please__, when you make significant changes to a patch, you have to
+> reset the Reviewed-by tags.
+> 
+
+-- 
+Pavel Begunkov
 
