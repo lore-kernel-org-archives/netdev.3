@@ -1,59 +1,35 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4182D2FB
-	for <netdev@vger.kernel.org>; Tue, 15 Jul 2025 10:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39589275873
+	for <netdev@vger.kernel.org>; Tue, 15 Jul 2025 10:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752574594; cv=none; b=FmTDc+hf+Sohc3uPXg3fUj03ZuajN3i6HPTrGjik2AMl+hJrAmEF4gfPiNeP5c0f+gB0hsEZp5rDctiQb9CicQx1OmQ5EUrkDcTMZH2vOKlRivEumO5/2kXAh3LzPuKstN5hZ1ZQEYdLQrk/qRBPKZK7+TJUDLNGo4YZphpAAJw=
+	t=1752574795; cv=none; b=bGhllLtqGFgdVtQhRjBEHWV7wpzmO7RKZrRPeg5lpC7oTjwxJhgTU8KR150koOFE5I4rfy37uhJUoq89K6+CKZLrN8YRJEWzawIaDNTngjjOE0HvMKThc05Ian56zHjzj58U2asMDkN1VaWTAiErdEPlKxrkYNDIvHs+rbeivMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752574594; c=relaxed/simple;
-	bh=gD+GeB+lf8v2O5O56DTadj/7H5+Tvqc7ZbMei6Dhv5M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGlQA1AgwnUfeOQTiarcJ8rmxE13fzBs2btEC7pZ5ZR9b51kGoejLU6wRDU45v+UuUuepDgUzd8LZ40GE2cWtpkGhSaKq5y4aL7x3ZhcBldQHFUkPDbhb2lyvCXRD7yMgBMhIWX2PSMLL/VoJ1TVdcFGigyr+KqhxBMyyBUP0c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1ubci5-0008Ma-S8
-	for netdev@vger.kernel.org; Tue, 15 Jul 2025 12:16:29 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1ubci5-008Z0t-29
-	for netdev@vger.kernel.org;
-	Tue, 15 Jul 2025 12:16:29 +0200
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 544364422FB
-	for <netdev@vger.kernel.org>; Tue, 15 Jul 2025 10:16:29 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 728A74422EB;
-	Tue, 15 Jul 2025 10:16:27 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 372304e2;
-	Tue, 15 Jul 2025 10:16:26 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Brett Werling <brett.werling@garmin.com>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net] can: tcan4x5x: fix reset gpio usage during probe
-Date: Tue, 15 Jul 2025 12:13:39 +0200
-Message-ID: <20250715101625.3202690-2-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250715101625.3202690-1-mkl@pengutronix.de>
-References: <20250715101625.3202690-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1752574795; c=relaxed/simple;
+	bh=BNKxjY/W7+prDJejNl+rrxKqZXwSei0aj4Vkuz4lVsA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=oBM4++t9JAOh86E7vzVh4LMMcPZwGMa5qW6j5sBgTi4n4mLkv+/1p+5wfoF+EBGy8ibz0KVQdQgqV35dySG4nRCn6IZxvtOb035XKl/0Qt8YM2B+GvVqO7oA9y9glfDd3kUnqByP+m906zAFWETuu6ebrX6LMvIq7kcVFQbaVoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eNlPbPE/; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eNlPbPE/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C453AC4CEF1;
+	Tue, 15 Jul 2025 10:19:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752574794;
+	bh=BNKxjY/W7+prDJejNl+rrxKqZXwSei0aj4Vkuz4lVsA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=eNlPbPE/30tp0HMf5oT3DhoOlLPxXPsH+FGI38E1ln9h+pdpWo1l/kxC7EZXKRIHP
+	 QWjBGM2IrSRgaU2WqJZ8cF1XRXO+lxl5/nfDmmbzPl8Jg4MYSuYLeNvEcMQ7nkc1wT
+	 +DKFk1UCjvQxRj3oVhEuDKCvGTT2xMDU6B2SQh7ktZiGq4Nf+RNEWjQe1qJxxIAre4
+	 O2Ez35ZRQ8aiGV2a3aprszbapU2exPGTWAH6MVf667voyWtXXhdJgYKE8Ib+6bf53D
+	 +FRQR5pwLPmVJwVqJBPrsZHQNuG7EG5vO+QU21F7tcIbC1FvR6eeL0Xla5a3/l9zIf
+	 wlQQQIEbHujKA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE0E383BA08;
+	Tue, 15 Jul 2025 10:20:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,142 +37,55 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v4 0/8] net: mctp: Improved bind handling
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175257481551.2793.9987057213083962280.git-patchwork-notify@kernel.org>
+Date: Tue, 15 Jul 2025 10:20:15 +0000
+References: <20250710-mctp-bind-v4-0-8ec2f6460c56@codeconstruct.com.au>
+In-Reply-To: <20250710-mctp-bind-v4-0-8ec2f6460c56@codeconstruct.com.au>
+To: Matt Johnston <matt@codeconstruct.com.au>
+Cc: jk@codeconstruct.com.au, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org
 
-From: Brett Werling <brett.werling@garmin.com>
+Hello:
 
-Fixes reset GPIO usage during probe by ensuring we retrieve the GPIO and
-take the device out of reset (if it defaults to being in reset) before
-we attempt to communicate with the device. This is achieved by moving
-the call to tcan4x5x_get_gpios() before tcan4x5x_find_version() and
-avoiding any device communication while getting the GPIOs. Once we
-determine the version, we can then take the knowledge of which GPIOs we
-obtained and use it to decide whether we need to disable the wake or
-state pin functions within the device.
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-This change is necessary in a situation where the reset GPIO is pulled
-high externally before the CPU takes control of it, meaning we need to
-explicitly bring the device out of reset before we can start
-communicating with it at all.
+On Thu, 10 Jul 2025 16:55:53 +0800 you wrote:
+> This series improves a couple of aspects of MCTP bind() handling.
+> 
+> MCTP wasn't checking whether the same MCTP type was bound by multiple
+> sockets. That would result in messages being received by an arbitrary
+> socket, which isn't useful behaviour. Instead it makes more sense to
+> have the duplicate binds fail, the same as other network protocols.
+> An exception is made for more-specific binds to particular MCTP
+> addresses.
+> 
+> [...]
 
-This also has the effect of fixing an issue where a reset of the device
-would occur after having called tcan4x5x_disable_wake(), making the
-original behavior not actually disable the wake. This patch should now
-disable wake or state pin functions well after the reset occurs.
+Here is the summary with links:
+  - [net-next,v4,1/8] net: mctp: mctp_test_route_extaddr_input cleanup
+    https://git.kernel.org/netdev/net-next/c/3558ab79a2f2
+  - [net-next,v4,2/8] net: mctp: Prevent duplicate binds
+    https://git.kernel.org/netdev/net-next/c/3954502377ec
+  - [net-next,v4,3/8] net: mctp: Treat MCTP_NET_ANY specially in bind()
+    https://git.kernel.org/netdev/net-next/c/5000268c2982
+  - [net-next,v4,4/8] net: mctp: Add test for conflicting bind()s
+    https://git.kernel.org/netdev/net-next/c/4ec4b7fc04a7
+  - [net-next,v4,5/8] net: mctp: Use hashtable for binds
+    https://git.kernel.org/netdev/net-next/c/1aeed732f4f8
+  - [net-next,v4,6/8] net: mctp: Allow limiting binds to a peer address
+    https://git.kernel.org/netdev/net-next/c/3549eb08e550
+  - [net-next,v4,7/8] net: mctp: Test conflicts of connect() with bind()
+    https://git.kernel.org/netdev/net-next/c/b7e28129b667
+  - [net-next,v4,8/8] net: mctp: Add bind lookup test
+    https://git.kernel.org/netdev/net-next/c/e6d8e7dbc5a3
 
-Signed-off-by: Brett Werling <brett.werling@garmin.com>
-Link: https://patch.msgid.link/20250711141728.1826073-1-brett.werling@garmin.com
-Cc: Markus Schneider-Pargmann <msp@baylibre.com>
-Fixes: 142c6dc6d9d7 ("can: tcan4x5x: Add support for tcan4552/4553")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/m_can/tcan4x5x-core.c | 61 ++++++++++++++++++---------
- 1 file changed, 41 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/net/can/m_can/tcan4x5x-core.c b/drivers/net/can/m_can/tcan4x5x-core.c
-index 8edaa339d590..39b0b5277b11 100644
---- a/drivers/net/can/m_can/tcan4x5x-core.c
-+++ b/drivers/net/can/m_can/tcan4x5x-core.c
-@@ -343,21 +343,19 @@ static void tcan4x5x_get_dt_data(struct m_can_classdev *cdev)
- 		of_property_read_bool(cdev->dev->of_node, "ti,nwkrq-voltage-vio");
- }
- 
--static int tcan4x5x_get_gpios(struct m_can_classdev *cdev,
--			      const struct tcan4x5x_version_info *version_info)
-+static int tcan4x5x_get_gpios(struct m_can_classdev *cdev)
- {
- 	struct tcan4x5x_priv *tcan4x5x = cdev_to_priv(cdev);
- 	int ret;
- 
--	if (version_info->has_wake_pin) {
--		tcan4x5x->device_wake_gpio = devm_gpiod_get(cdev->dev, "device-wake",
--							    GPIOD_OUT_HIGH);
--		if (IS_ERR(tcan4x5x->device_wake_gpio)) {
--			if (PTR_ERR(tcan4x5x->device_wake_gpio) == -EPROBE_DEFER)
--				return -EPROBE_DEFER;
-+	tcan4x5x->device_wake_gpio = devm_gpiod_get_optional(cdev->dev,
-+							     "device-wake",
-+							     GPIOD_OUT_HIGH);
-+	if (IS_ERR(tcan4x5x->device_wake_gpio)) {
-+		if (PTR_ERR(tcan4x5x->device_wake_gpio) == -EPROBE_DEFER)
-+			return -EPROBE_DEFER;
- 
--			tcan4x5x_disable_wake(cdev);
--		}
-+		tcan4x5x->device_wake_gpio = NULL;
- 	}
- 
- 	tcan4x5x->reset_gpio = devm_gpiod_get_optional(cdev->dev, "reset",
-@@ -369,14 +367,31 @@ static int tcan4x5x_get_gpios(struct m_can_classdev *cdev,
- 	if (ret)
- 		return ret;
- 
--	if (version_info->has_state_pin) {
--		tcan4x5x->device_state_gpio = devm_gpiod_get_optional(cdev->dev,
--								      "device-state",
--								      GPIOD_IN);
--		if (IS_ERR(tcan4x5x->device_state_gpio)) {
--			tcan4x5x->device_state_gpio = NULL;
--			tcan4x5x_disable_state(cdev);
--		}
-+	tcan4x5x->device_state_gpio = devm_gpiod_get_optional(cdev->dev,
-+							      "device-state",
-+							      GPIOD_IN);
-+	if (IS_ERR(tcan4x5x->device_state_gpio))
-+		tcan4x5x->device_state_gpio = NULL;
-+
-+	return 0;
-+}
-+
-+static int tcan4x5x_check_gpios(struct m_can_classdev *cdev,
-+				const struct tcan4x5x_version_info *version_info)
-+{
-+	struct tcan4x5x_priv *tcan4x5x = cdev_to_priv(cdev);
-+	int ret;
-+
-+	if (version_info->has_wake_pin && !tcan4x5x->device_wake_gpio) {
-+		ret = tcan4x5x_disable_wake(cdev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (version_info->has_state_pin && !tcan4x5x->device_state_gpio) {
-+		ret = tcan4x5x_disable_state(cdev);
-+		if (ret)
-+			return ret;
- 	}
- 
- 	return 0;
-@@ -468,15 +483,21 @@ static int tcan4x5x_can_probe(struct spi_device *spi)
- 		goto out_m_can_class_free_dev;
- 	}
- 
-+	ret = tcan4x5x_get_gpios(mcan_class);
-+	if (ret) {
-+		dev_err(&spi->dev, "Getting gpios failed %pe\n", ERR_PTR(ret));
-+		goto out_power;
-+	}
-+
- 	version_info = tcan4x5x_find_version(priv);
- 	if (IS_ERR(version_info)) {
- 		ret = PTR_ERR(version_info);
- 		goto out_power;
- 	}
- 
--	ret = tcan4x5x_get_gpios(mcan_class, version_info);
-+	ret = tcan4x5x_check_gpios(mcan_class, version_info);
- 	if (ret) {
--		dev_err(&spi->dev, "Getting gpios failed %pe\n", ERR_PTR(ret));
-+		dev_err(&spi->dev, "Checking gpios failed %pe\n", ERR_PTR(ret));
- 		goto out_power;
- 	}
- 
-
-base-commit: f0f2b992d8185a0366be951685e08643aae17d6d
+You are awesome, thank you!
 -- 
-2.47.2
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
