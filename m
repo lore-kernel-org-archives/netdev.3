@@ -1,194 +1,171 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2461F0E47;
-	Tue, 15 Jul 2025 07:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC76626F478;
+	Tue, 15 Jul 2025 07:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752563571; cv=none; b=FxqAAx6ko9WPJfWTCHf/KdMoxXVl+RtpKW+/MqZGufi5ehV4hnmBr/EVqa7fNNTbsQCiyPWd82R/36L1/IfXYMMwZJL8ZpqTpzl7iz74wKj3Skk72efxpUGN7f9is4MnqxUJaV6aUqkZGUYdIM1AjhdUAS44rpUJoz+mqn7uYGE=
+	t=1752563741; cv=none; b=kpXW3UxySfinsoUGjR78q7bulE1f1DZH+t0qB1LeRU8b+uhdf+YrcK32IXhlVCrl9oeCHOd36zWC4iR8py0/1O430oanVknIcsQ0DOqAllKu8j9RLW0andlhy2f7aV6rPXpMNlJwQzAsEzoNCZLZQLS5XjFbOu3K8EhP9W/1T/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752563571; c=relaxed/simple;
-	bh=rZPRty/lSCX5vm6yrv0Hu71JqpZY3WP2TgGV7xhvpYY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hYh/7V9cVtz1jP9rf8MD1SDwCoyUd/NDGKXUEnQSQgvxt1bl2L317ohN99sX/RxEFoLKiFo+zoHfLEl9X6Lh2hMOg4DXv8gfBaxbo6RS+tETVpqrNLCmgPckSvITwc/3db2pVw59GeG9vI+bdIBd8JogyDYhcLGGQcBjf7iHBCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CqksxLSW; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1752563741; c=relaxed/simple;
+	bh=66XFHTlp/vLtCpVft2/nBl04cFbKoI8kcWKDesGdOEQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lTy/ggFCXmbCGXKOZXW3xJeqsOH/RtjEKAhkUxIbtm+PXMYW5/EuLxshyLtsIgli+DiarqMGB0jI8HooRUFtegpAOCtP1k7v76yn2MJlGEcD2+CblgptLdGU8gVGvNwofiIxJ6gqFWhB9+vyV4442vH9vCD1FekNOfvD1MBWwBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l5bWZrNa; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CqksxLSW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l5bWZrNa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752563569; x=1784099569;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rZPRty/lSCX5vm6yrv0Hu71JqpZY3WP2TgGV7xhvpYY=;
-  b=CqksxLSWCJE1i4581AZuXU0cPRC6Eh2JVFT1hoEeLAO/8Nfeitf/Nyfu
-   CYNGZcEroAVrnx6yLs4vzreBNRGp7EB31BTMFnoXERX1X3rk4NzTffK7x
-   0Wq2Zo/uQYnutozYZ+wFsqBi/ZhWfsfHxMqsi5Syp18tk5Q8pSNkvO+ds
-   uilTaXPN4PoXh0KBGHAlW2S9U+KLLlI0b828t4PUdGfNLjAPoTkPwx2tI
-   vNBWaXuxEKdR0BqVAVI1sHwe/0x8nYBKJ8Z6RzkIuVvCmW44rbJO4LPlf
-   HHsfRmM+zR/K6Q6NOFrXh5zaIGcH4BHE2MopM9w9FspxzxCk02ttxUAlj
+  t=1752563740; x=1784099740;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=66XFHTlp/vLtCpVft2/nBl04cFbKoI8kcWKDesGdOEQ=;
+  b=l5bWZrNa0njdriL2m/+9rSIR/4fq6BVyvF293cGYIRATyuj6cypdDcUn
+   Tl2tqV0/hnk7Wyj0oK4J1bWbrrAs+ZY4D/WZ4yQqiCr7aKgnJNqJ8N2qV
+   TQY/bp2dnrkUmfxmWW+mqwuiSHkFdGc0LIGF0laBQ/T0S9WQyyQiev2eG
+   RSA0Y0MpXWq/YEzEGOpjONx+COp6VPiAcj37rBX89uqe7gAK1YvOeuVsJ
+   S4VWpaG5BbcVnN3DERjwLiiXtX8/I/dRmkM/Zdcs8azK8x9rkXMHH4SyN
+   tTUx0vUxzqyovWrN2MbHd71H5N7b4g2w7jV/mf5wdAw7UZnm8q/LEMel7
    g==;
-X-CSE-ConnectionGUID: n6hTX3vHS6eul1PT+nFWrw==
-X-CSE-MsgGUID: VcRguCZhQoKyI1qK5tmQXg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54744391"
+X-CSE-ConnectionGUID: dgq2UFbaTx2XxRaw9v5qyg==
+X-CSE-MsgGUID: vrWH766zSq2CD5X/dZz7bA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="58427976"
 X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="54744391"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 00:12:48 -0700
-X-CSE-ConnectionGUID: 6Ae7C+vXQjqMjY7x8zb8Fw==
-X-CSE-MsgGUID: BtQsFqauS320gUsLpOn0xg==
+   d="scan'208";a="58427976"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 00:15:36 -0700
+X-CSE-ConnectionGUID: Pv1ZxgCOTJONF08bK+CveQ==
+X-CSE-MsgGUID: j90nGgMtTZuXn4FtKbEdaA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="162693322"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 00:12:44 -0700
-Date: Tue, 15 Jul 2025 09:11:40 +0200
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+   d="scan'208";a="188155495"
+Received: from p12ill20yoongsia.png.intel.com ([10.88.227.38])
+  by fmviesa001.fm.intel.com with ESMTP; 15 Jul 2025 00:15:32 -0700
+From: Song Yoong Siang <yoong.siang.song@intel.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Saeed Mahameed <saeed@kernel.org>, Gal Pressman <gal@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Lama Kayal <lkayal@nvidia.com>
-Subject: Re: [PATCH net-next 4/6] net/mlx5e: SHAMPO, Cleanup reservation size
- formula
-Message-ID: <aHX/LMSuUBG3X5Ph@mev-dev.igk.intel.com>
-References: <1752471585-18053-1-git-send-email-tariqt@nvidia.com>
- <1752471585-18053-5-git-send-email-tariqt@nvidia.com>
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>
+Cc: netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH bpf-next,v4 1/1] doc: clarify XDP Rx metadata handling and driver requirements
+Date: Tue, 15 Jul 2025 15:15:02 +0800
+Message-Id: <20250715071502.3503440-1-yoong.siang.song@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1752471585-18053-5-git-send-email-tariqt@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 14, 2025 at 08:39:43AM +0300, Tariq Toukan wrote:
-> From: Lama Kayal <lkayal@nvidia.com>
-> 
-> The reservation size formula can be reduced to a simple evaluation of
-> MLX5E_SHAMPO_WQ_RESRV_SIZE. This leaves mlx5e_shampo_get_log_rsrv_size()
-> with one single use, which can be replaced with a macro for simplicity.
-> 
-> Also, function mlx5e_shampo_get_log_rsrv_size() is used only throughout
-> params.c, make it static.
-> 
-> Signed-off-by: Lama Kayal <lkayal@nvidia.com>
-> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-> ---
->  drivers/net/ethernet/mellanox/mlx5/core/en.h  |  5 +--
->  .../ethernet/mellanox/mlx5/core/en/params.c   | 34 +++++++------------
->  .../ethernet/mellanox/mlx5/core/en/params.h   |  4 ---
->  3 files changed, 15 insertions(+), 28 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-> index 64e69e616b1f..019bc6ca4455 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-> @@ -85,8 +85,9 @@ struct page_pool;
->  #define MLX5E_SHAMPO_WQ_HEADER_PER_PAGE (PAGE_SIZE >> MLX5E_SHAMPO_LOG_MAX_HEADER_ENTRY_SIZE)
->  #define MLX5E_SHAMPO_LOG_WQ_HEADER_PER_PAGE (PAGE_SHIFT - MLX5E_SHAMPO_LOG_MAX_HEADER_ENTRY_SIZE)
->  #define MLX5E_SHAMPO_WQ_BASE_HEAD_ENTRY_SIZE (64)
-> -#define MLX5E_SHAMPO_WQ_RESRV_SIZE (64 * 1024)
-> -#define MLX5E_SHAMPO_WQ_BASE_RESRV_SIZE (4096)
-> +#define MLX5E_SHAMPO_WQ_RESRV_SIZE_BASE_SHIFT (12)
-> +#define MLX5E_SHAMPO_WQ_LOG_RESRV_SIZE (16)
-> +#define MLX5E_SHAMPO_WQ_RESRV_SIZE BIT(MLX5E_SHAMPO_WQ_LOG_RESRV_SIZE)
->  
->  #define MLX5_MPWRQ_MIN_LOG_STRIDE_SZ(mdev) \
->  	(6 + MLX5_CAP_GEN(mdev, cache_line_128byte)) /* HW restriction */
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-> index fc945bce933a..616251ec6d69 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+Improves the documentation for XDP Rx metadata handling, especially for
+AF_XDP use cases. It clarifies that drivers must remove any device-reserved
+metadata from the data_meta area before passing the frame to the XDP
+program.
 
-[...]
+Besides, expand the explanation of how userspace and BPF programs should
+coordinate the use of METADATA_SIZE, and adds a detailed diagram to
+illustrate pointer adjustments and metadata layout.
 
->  
->  u8 mlx5e_mpwqe_get_log_stride_size(struct mlx5_core_dev *mdev,
-> @@ -834,10 +825,9 @@ static u32 mlx5e_shampo_get_log_cq_size(struct mlx5_core_dev *mdev,
->  					struct mlx5e_params *params,
->  					struct mlx5e_xsk_param *xsk)
->  {
-> -	int rsrv_size = BIT(mlx5e_shampo_get_log_rsrv_size(mdev, params)) *
-> -		MLX5E_SHAMPO_WQ_BASE_RESRV_SIZE;
-> +	int rsrv_size = MLX5E_SHAMPO_WQ_RESRV_SIZE;
+Additional, describe the requirements and constraints enforced by
+bpf_xdp_adjust_meta().
 
-Broken RCT, you can use MLX5E_SHAMPO_WQ_RESRV_SIZE directly in
-order_base_2() call.
+Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+---
 
->  	u16 num_strides = BIT(mlx5e_mpwqe_get_log_num_strides(mdev, params, xsk));
-> -	int pkt_per_rsrv = BIT(mlx5e_shampo_get_log_pkt_per_rsrv(mdev, params));
-> +	int pkt_per_rsrv = BIT(mlx5e_shampo_get_log_pkt_per_rsrv(params));
->  	u8 log_stride_sz = mlx5e_mpwqe_get_log_stride_size(mdev, params, xsk);
->  	int wq_size = BIT(mlx5e_mpwqe_get_log_rq_size(mdev, params, xsk));
->  	int wqe_size = BIT(log_stride_sz) * num_strides;
-> @@ -932,10 +922,11 @@ int mlx5e_build_rq_param(struct mlx5_core_dev *mdev,
->  
->  		MLX5_SET(wq, wq, shampo_enable, true);
->  		MLX5_SET(wq, wq, log_reservation_size,
-> -			 mlx5e_shampo_get_log_rsrv_size(mdev, params));
-> +			 MLX5E_SHAMPO_WQ_LOG_RESRV_SIZE -
-> +			 MLX5E_SHAMPO_WQ_RESRV_SIZE_BASE_SHIFT);
->  		MLX5_SET(wq, wq,
->  			 log_max_num_of_packets_per_reservation,
-> -			 mlx5e_shampo_get_log_pkt_per_rsrv(mdev, params));
-> +			 mlx5e_shampo_get_log_pkt_per_rsrv(params));
->  		MLX5_SET(wq, wq, log_headers_entry_size,
->  			 mlx5e_shampo_get_log_hd_entry_size(mdev, params));
->  		lro_timeout =
-> @@ -1048,18 +1039,17 @@ u32 mlx5e_shampo_hd_per_wqe(struct mlx5_core_dev *mdev,
->  			    struct mlx5e_params *params,
->  			    struct mlx5e_rq_param *rq_param)
->  {
-> -	int resv_size = BIT(mlx5e_shampo_get_log_rsrv_size(mdev, params)) *
-> -		MLX5E_SHAMPO_WQ_BASE_RESRV_SIZE;
-> +	int rsrv_size = MLX5E_SHAMPO_WQ_RESRV_SIZE;
+V4:
+  - update the documentation to indicate that drivers are expected to copy
+    any device-reserved metadata from the metadata area (Jakub)
+  - remove selftest tool changes.
 
-Can be moved down to have RCT.
+V3: https://lore.kernel.org/netdev/20250702165757.3278625-1-yoong.siang.song@intel.com/
+  - update doc and commit msg accordingly.
 
->  	u16 num_strides = BIT(mlx5e_mpwqe_get_log_num_strides(mdev, params, NULL));
-> -	int pkt_per_resv = BIT(mlx5e_shampo_get_log_pkt_per_rsrv(mdev, params));
-> +	int pkt_per_resv = BIT(mlx5e_shampo_get_log_pkt_per_rsrv(params));
->  	u8 log_stride_sz = mlx5e_mpwqe_get_log_stride_size(mdev, params, NULL);
->  	int wqe_size = BIT(log_stride_sz) * num_strides;
->  	u32 hd_per_wqe;
->  
->  	/* Assumption: hd_per_wqe % 8 == 0. */
-> -	hd_per_wqe = (wqe_size / resv_size) * pkt_per_resv;
-> +	hd_per_wqe = (wqe_size / rsrv_size) * pkt_per_resv;
->  	mlx5_core_dbg(mdev, "%s hd_per_wqe = %d rsrv_size = %d wqe_size = %d pkt_per_resv = %d\n",
-> -		      __func__, hd_per_wqe, resv_size, wqe_size, pkt_per_resv);
-> +		      __func__, hd_per_wqe, rsrv_size, wqe_size, pkt_per_resv);
->  	return hd_per_wqe;
->  }
->  
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.h b/drivers/net/ethernet/mellanox/mlx5/core/en/params.h
-> index bd5877acc5b1..919895f64dcd 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.h
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.h
-> @@ -97,10 +97,6 @@ u8 mlx5e_mpwqe_get_log_rq_size(struct mlx5_core_dev *mdev,
->  			       struct mlx5e_xsk_param *xsk);
->  u8 mlx5e_shampo_get_log_hd_entry_size(struct mlx5_core_dev *mdev,
->  				      struct mlx5e_params *params);
-> -u8 mlx5e_shampo_get_log_rsrv_size(struct mlx5_core_dev *mdev,
-> -				  struct mlx5e_params *params);
-> -u8 mlx5e_shampo_get_log_pkt_per_rsrv(struct mlx5_core_dev *mdev,
-> -				     struct mlx5e_params *params);
->  u32 mlx5e_shampo_hd_per_wqe(struct mlx5_core_dev *mdev,
->  			    struct mlx5e_params *params,
->  			    struct mlx5e_rq_param *rq_param);
+V2: https://lore.kernel.org/netdev/20250702030349.3275368-1-yoong.siang.song@intel.com/
+  - unconditionally do bpf_xdp_adjust_meta with -XDP_METADATA_SIZE (Stanislav)
 
-Just small nits, otherwise:
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+V1: https://lore.kernel.org/netdev/20250701042940.3272325-1-yoong.siang.song@intel.com/
+---
+ Documentation/networking/xdp-rx-metadata.rst | 47 ++++++++++++++------
+ 1 file changed, 34 insertions(+), 13 deletions(-)
 
-> -- 
-> 2.40.1
+diff --git a/Documentation/networking/xdp-rx-metadata.rst b/Documentation/networking/xdp-rx-metadata.rst
+index a6e0ece18be5..2e067eb6c5d6 100644
+--- a/Documentation/networking/xdp-rx-metadata.rst
++++ b/Documentation/networking/xdp-rx-metadata.rst
+@@ -49,7 +49,10 @@ as follows::
+              |                 |
+    xdp_buff->data_meta   xdp_buff->data
+ 
+-An XDP program can store individual metadata items into this ``data_meta``
++Certain devices may utilize the ``data_meta`` area for specific purposes.
++Drivers for these devices must move any hardware-related metadata out from the
++``data_meta`` area before presenting the frame to the XDP program. This ensures
++that the XDP program can store individual metadata items into this ``data_meta``
+ area in whichever format it chooses. Later consumers of the metadata
+ will have to agree on the format by some out of band contract (like for
+ the AF_XDP use case, see below).
+@@ -63,18 +66,36 @@ the final consumer. Thus the BPF program manually allocates a fixed number of
+ bytes out of metadata via ``bpf_xdp_adjust_meta`` and calls a subset
+ of kfuncs to populate it. The userspace ``XSK`` consumer computes
+ ``xsk_umem__get_data() - METADATA_SIZE`` to locate that metadata.
+-Note, ``xsk_umem__get_data`` is defined in ``libxdp`` and
+-``METADATA_SIZE`` is an application-specific constant (``AF_XDP`` receive
+-descriptor does _not_ explicitly carry the size of the metadata).
+-
+-Here is the ``AF_XDP`` consumer layout (note missing ``data_meta`` pointer)::
+-
+-  +----------+-----------------+------+
+-  | headroom | custom metadata | data |
+-  +----------+-----------------+------+
+-                               ^
+-                               |
+-                        rx_desc->address
++Note, ``xsk_umem__get_data`` is defined in ``libxdp`` and ``METADATA_SIZE`` is
++an application-specific constant. Since the ``AF_XDP`` receive descriptor does
++_not_ explicitly carry the size of the metadata, it is the responsibility of the
++driver to copy any device-reserved metadata out from the metadata area and
++ensure that ``xdp_buff->data_meta`` is set equal to ``xdp_buff->data`` before a
++BPF program is executed. This is necessary so that, after the BPF program
++adjusts the metadata area, the consumer can reliably retrieve the metadata
++address using ``METADATA_SIZE`` offset.
++
++The following diagram shows how custom metadata is positioned relative to the
++packet data and how pointers are adjusted for metadata access (note the absence
++of the ``data_meta`` pointer in ``xdp_desc``)::
++
++              |<-- bpf_xdp_adjust_meta(xdp_buff, -METADATA_SIZE) --|
++  new xdp_buff->data_meta                              old xdp_buff->data_meta
++              |                                                    |
++              |                                            xdp_buff->data
++              |                                                    |
++   +----------+----------------------------------------------------+------+
++   | headroom |                  custom metadata                   | data |
++   +----------+----------------------------------------------------+------+
++              |                                                    |
++              |                                            xdp_desc->addr
++              |<------ xsk_umem__get_data() - METADATA_SIZE -------|
++
++``bpf_xdp_adjust_meta`` ensures that ``METADATA_SIZE`` is aligned to 4 bytes,
++does not exceed 252 bytes, and leaves sufficient space for building the
++xdp_frame. If these conditions are not met, it returns a negative error. In this
++case, the BPF program should not proceed to populate data into the ``data_meta``
++area.
+ 
+ XDP_PASS
+ ========
+-- 
+2.34.1
+
