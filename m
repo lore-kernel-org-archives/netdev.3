@@ -1,76 +1,261 @@
-Received: from mail.actia.se (mail.actia.se [212.181.117.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93416270EB0;
-	Tue, 15 Jul 2025 07:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD26271444
+	for <netdev@vger.kernel.org>; Tue, 15 Jul 2025 07:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752563765; cv=none; b=lMLH1mpNdqS45bELoZOskWytT1+9hIU0z0Gl/eWjlecdR5yJY1q0H6rb1ljrZZbQWrmrhXw4J4ueAsU0O4rwS4mJaqOhMQsyhVA+OGrQ9xZS8C8Q2WincjVovsv8+Na/DyyPWgvnIkl4Eb50Pn1vz5oQjOW8KMFmav/kH0y1nr4=
+	t=1752563801; cv=none; b=utc3TZumvuWXr7TBZSDRWPs9Nq03HXMKcMQ9FlLAd+sMM79NglRCFquxPs34UhoPnPgT+z31qHWHnXIGawYBORQIM2vxkyU1eW6btaSQUps4IrNGBJXoDBQtVaFoHafDXfNHoZHt2u1KVW62p4I93ppA5E8DLFAZ1/gFBUxk1xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752563765; c=relaxed/simple;
-	bh=Lyytan91LGxiGOiz6/sBkllxKJCm/8j0ZtObVauBKEA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=t5qkQyd2xRcUW7TYaQMKuUl/E5BjvQ1IH+/MKXkcGuJQjntt/OQp3tSx2Rt/kuS13bm2F8zse/p6J3mrEJ4Qt2HTIsljwl3K9eDc4OAXmm09I3SrO5Lcz1lkYJB999Nitq2NLplAaHPCtjMxgfZDQzep+qSu15f5Nv7CjYLqwsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
-Received: from S036ANL.actianordic.se (10.12.31.117) by S035ANL.actianordic.se
- (10.12.31.116) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Tue, 15 Jul
- 2025 09:15:52 +0200
-Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
- S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%6]) with mapi id
- 15.01.2507.057; Tue, 15 Jul 2025 09:15:52 +0200
-From: John Ernberg <john.ernberg@actia.se>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>, Ming Lei <ming.lei@canonical.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
- event
-Thread-Topic: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
- event
-Thread-Index: AQHb8Xe2qza52xx55UmGbnkg6Pc/lrQyK2OAgACAvYA=
-Date: Tue, 15 Jul 2025 07:15:51 +0000
-Message-ID: <74a87648-bc02-4edb-9e6a-102cb6621547@actia.se>
-References: <20250710085028.1070922-1-john.ernberg@actia.se>
- <20250714163505.44876e62@kernel.org>
-In-Reply-To: <20250714163505.44876e62@kernel.org>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-esetresult: clean, is OK
-x-esetid: 37303A2956B14450647564
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <2368C8D7F7F3C84C9856F28BFA337566@actia.se>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1752563801; c=relaxed/simple;
+	bh=3tRzF+eAG69iCFJsLHqK7qCIOSv/sCoudEUDZNrr2KA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ikm2VJxaU/CPba5oRhko4qEPEED31MkXtkuZIw6SNKXVxylJOOz/sWt9YBmekgaz29K8xRa1f5Pxdt5++KTpwH18VvFtTCsBuJ3f2Q5Ez1goPEpSpzBrTL3+gbV2P+pR0eP1m2sk4vvgn5ZXQATQCfzGW1cMfiDcXp4ui+xuyZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=fGVxSsnO; arc=none smtp.client-ip=18.169.211.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="fGVxSsnO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1752563604;
+	bh=RFKqX/8jGLZ0gCM1lRc1v1zeuP3fiXSjkW615zWkF/8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=fGVxSsnOyLb+URLacjA1Sd3bbCsbyuEhRq1fqx/9kf9hxKAfgwJglUml0EAcf66lr
+	 qP5bwH2xTPNO89oJgiIGSIe7rO7+BstjN+GEPqloQKhHWEeVxqnQCBXEKNUyVVL6S2
+	 Zn3uC07ASOaEv2fW+Hoe7yFbmdxKoXTBgjiZK0Vc=
+X-QQ-mid: zesmtpip3t1752563587t54e86ea1
+X-QQ-Originating-IP: LAPbbLpI8/WwODO7cz/sB4Ix6FIzw86cgmvoh1lVP0U=
+Received: from avenger-e500 ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 15 Jul 2025 15:13:02 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 14369993403465055196
+EX-QQ-RecipientCnt: 63
+From: WangYuli <wangyuli@uniontech.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	dave@stgolabs.net,
+	jonathan.cameron@huawei.com,
+	dave.jiang@intel.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	dan.j.williams@intel.com,
+	lucas.demarchi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	marcin.s.wojtas@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	arend.vanspriel@broadcom.com,
+	ilpo.jarvinen@linux.intel.com,
+	andriy.shevchenko@linux.intel.com,
+	gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	jgross@suse.com,
+	sstabellini@kernel.org,
+	oleksandr_tyshchenko@epam.com,
+	akpm@linux-foundation.org
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	wangyuli@uniontech.com,
+	ming.li@zohomail.com,
+	linux-cxl@vger.kernel.org,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	netdev@vger.kernel.org,
+	kvalo@kernel.org,
+	johannes.berg@intel.com,
+	quic_ramess@quicinc.com,
+	ragazenta@gmail.com,
+	jeff.johnson@oss.qualcomm.com,
+	mingo@kernel.org,
+	j@jannau.net,
+	linux@treblig.org,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-serial@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	shenlichuan@vivo.com,
+	yujiaoliang@vivo.com,
+	colin.i.king@gmail.com,
+	cvam0000@gmail.com,
+	zhanjun@uniontech.com,
+	niecheng1@uniontech.com,
+	guanwentao@uniontech.com
+Subject: [PATCH] treewide: Fix typo "notifer"
+Date: Tue, 15 Jul 2025 15:12:45 +0800
+Message-ID: <B3C019B63C93846F+20250715071245.398846-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: Nj7jiM2mkr3wuQga4E8Ap70nRURNWdUayhETDW1ovZAv4COlH4JghuhG
+	/pvfuzDSwLXOANE+dnBiwMQsv1i0z9oMYkFfmb6iVDB5Ny49o+KcQTbGDHphoR2EHm2hZRt
+	EtXwn8dBz7hEVzKVqIDmbVSQtvuy47FEDZrE1ObeA5O/5CsCmy4rc+h+lDjOOURGBImub8T
+	CbXVoldTO/tK7t+yoGQ/Z4mia54GsQtuF3xrk+9Lz+DUu2h3g2D+pilTiVYpi0NNEw6KSpm
+	RtCYoSF8AXcLmb6pUoJofHXxaws4vTmJ3cG1YyXebrQyIep78h08HY/J/yeB00Cm8/aVG09
+	EoGb9DpDQw0k2LUB2R07OW3tE+FB0mvcckuhAo1kpV1rxyQPJ3oq211lIjLjJ2WpztR8lCC
+	BrNRSEvogIlmothapVbvRTVlKglfGxDIh+qle8gBV1La2I2glQcBm80O2dN+jqdBYqx4fLq
+	1HNUlZppA+fLOFSBGGXu8usHNaWG0Ad4eVIRuBmr0rO/HCCAMrooGxhAVJSfGQk2nTgamSQ
+	kUvfA3ikDRjzWMYrIuDMynnw8tCqiC2vUa2WCwc22XOZBKa4lmGtTuLeT0GyFhfFvfIE04J
+	KCwxVccvQ9pKLXNPHDLZIeCPgxWnUs3gJGKfD1SyZBJFaegz2Q1gAcu5xlohxgAqZpMnWyz
+	81ozAGfM8eClmUsCKk7OxJeQYircldWyZstyKNcSy05kg3uR+v5qoNuAJI/V8L0piRG7gGP
+	dw92gnOoe99Uqkndl9qV1BgSkUZgxd0QyZ8bAuS1z4lKZkHa/YdwPa4XHfJujHLJWyIScAa
+	gT7Y+gxMGnSgkiqZRDUyC4/qwzO7k/Tjw47RqlchN42vDUUQplVxWuIvKAN9ONw+3forklc
+	XhDGBbsMCYfJyhYMMufpftC4NXu/E4WJmgVPbFCVfVrhAnrITVl4d5dbX5TuFTWnRXkI3+B
+	PUjxDfvaXwoHlGzPgaKqAY4GVqaTYt7tHUiClbX1Q0En42ezA6O4qKEMpPpOtqGl09GBC8G
+	5woDYNMdvK9oXAvx+Ry8rFNG3HtTot3Sq3mYT4jInZCKS+Ojx2
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+X-QQ-RECHKSPAM: 0
 
-SGkgSmFrdWIsDQoNCk9uIDcvMTUvMjUgMTozNSBBTSwgSmFrdWIgS2ljaW5za2kgd3JvdGU6DQo+
-IE9uIFRodSwgMTAgSnVsIDIwMjUgMDg6NTA6NDAgKzAwMDAgSm9obiBFcm5iZXJnIHdyb3RlOg0K
-Pj4gSGF2aW5nIGEgR2VtYWx0byBDaW50ZXJpb24gUExTODMtVyBtb2RlbSBhdHRhY2hlZCB0byBV
-U0IgYW5kIGFjdGl2YXRpbmcgdGhlDQo+PiBjZWxsdWxhciBkYXRhIGxpbmsgd291bGQgc29tZXRp
-bWVzIHlpZWxkIHRoZSBmb2xsb3dpbmcgUkNVIHN0YWxsLCBsZWFkaW5nDQo+PiB0byBhIHN5c3Rl
-bSBmcmVlemU6DQo+IA0KPiBEbyB5b3Uga25vdyB3aGljaCBzdWItZHJpdmVyIGl0J3MgdXNpbmc/
-DQoNClRoZSBtb2RlbSB1c2VzIGNkY19ldGhlciAoYW5kIG9wdGlvbiBmb3IgdGhlIFRUWXMpLg0K
-DQo+IEknbSB3b3JyaWVkIHRoYXQgdGhpcyBpcyBzdGlsbCByYWN5Lg0KPiBTaW5jZSB1c2JuZXRf
-YmggY2hlY2tzIGlmIGNhcnJpZXIgaXMgb2sgYW5kIF9faGFuZGxlX2xpbmtfY2hhbmdlKCkNCj4g
-Y2hlY2tzIHRoZSBvcHBvc2l0ZSBzb21ldGhpbmcgbXVzdCBiZSBvdXQgb2Ygc3luYyBpZiBib3Ro
-IHJ1bi4NCj4gTW9zdCBsaWtlbHkgc29tZXRoaW5nIHJlc3RvcmVkIHRoZSBjYXJyaWVyIHdoaWxl
-IHdlJ3JlIHN0aWxsIGhhbmRsaW5nDQo+IHRoZSBwcmV2aW91cyBjYXJyaWVyIGxvc3MuDQoNClRo
-ZXJlIGNvdWxkIGRlZmluaXRlbHkgYmUgb3RoZXIgZmFjdG9ycywgSSdsbCB0cnkgdG8gZGlnIHNv
-bWUgaW4gDQpjZGNfZXRoZXIgYW5kIHNlZSBpZiBzb21ldGhpbmcgdGhlcmUgY291bGQgYmUgY2F1
-c2luZyBwcm9ibGVtcyBmb3IgdGhlIA0KdXNibmV0IGNvcmUuDQpJIGhvbmVzdGx5IGtpbmRhIHN0
-b3BwZWQgZGlnZ2luZyB3aGVuIEkgZm91bmQgdW5saW5rX3VyYnMoKSBiZWluZyANCndyYXBwZWQg
-d2l0aCBhIHBhdXNlL3VucGF1c2UgYXQgYW5vdGhlciBwbGFjZSB0aWVkIHRvIGEgY29tbWl0IHNl
-ZWluZyBhIA0Kc2ltaWxhciBpc3N1ZS4NCg0KVGhhbmtzISAvLyBKb2huIEVybmJlcmc=
+There are some spelling mistakes of 'notifer' in comments which
+should be 'notifier'.
+
+Fix them and add it to scripts/spelling.txt.
+
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+---
+ arch/x86/kvm/i8254.c                                        | 4 ++--
+ drivers/cxl/core/mce.h                                      | 2 +-
+ drivers/gpu/drm/xe/xe_vm_types.h                            | 2 +-
+ drivers/net/ethernet/marvell/mvneta.c                       | 2 +-
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
+ drivers/tty/serial/8250/8250_dw.c                           | 2 +-
+ include/xen/xenbus.h                                        | 2 +-
+ scripts/spelling.txt                                        | 1 +
+ 8 files changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/arch/x86/kvm/i8254.c b/arch/x86/kvm/i8254.c
+index 739aa6c0d0c3..9ff55112900a 100644
+--- a/arch/x86/kvm/i8254.c
++++ b/arch/x86/kvm/i8254.c
+@@ -641,7 +641,7 @@ static void kvm_pit_reset(struct kvm_pit *pit)
+ 	kvm_pit_reset_reinject(pit);
+ }
+ 
+-static void pit_mask_notifer(struct kvm_irq_mask_notifier *kimn, bool mask)
++static void pit_mask_notifier(struct kvm_irq_mask_notifier *kimn, bool mask)
+ {
+ 	struct kvm_pit *pit = container_of(kimn, struct kvm_pit, mask_notifier);
+ 
+@@ -694,7 +694,7 @@ struct kvm_pit *kvm_create_pit(struct kvm *kvm, u32 flags)
+ 
+ 	pit_state->irq_ack_notifier.gsi = 0;
+ 	pit_state->irq_ack_notifier.irq_acked = kvm_pit_ack_irq;
+-	pit->mask_notifier.func = pit_mask_notifer;
++	pit->mask_notifier.func = pit_mask_notifier;
+ 
+ 	kvm_pit_reset(pit);
+ 
+diff --git a/drivers/cxl/core/mce.h b/drivers/cxl/core/mce.h
+index ace73424eeb6..ca272e8db6c7 100644
+--- a/drivers/cxl/core/mce.h
++++ b/drivers/cxl/core/mce.h
+@@ -7,7 +7,7 @@
+ 
+ #ifdef CONFIG_CXL_MCE
+ int devm_cxl_register_mce_notifier(struct device *dev,
+-				   struct notifier_block *mce_notifer);
++				   struct notifier_block *mce_notifier);
+ #else
+ static inline int
+ devm_cxl_register_mce_notifier(struct device *dev,
+diff --git a/drivers/gpu/drm/xe/xe_vm_types.h b/drivers/gpu/drm/xe/xe_vm_types.h
+index 1979e9bdbdf3..0ca27579fd1f 100644
+--- a/drivers/gpu/drm/xe/xe_vm_types.h
++++ b/drivers/gpu/drm/xe/xe_vm_types.h
+@@ -259,7 +259,7 @@ struct xe_vm {
+ 		 * up for revalidation. Protected from access with the
+ 		 * @invalidated_lock. Removing items from the list
+ 		 * additionally requires @lock in write mode, and adding
+-		 * items to the list requires either the @userptr.notifer_lock in
++		 * items to the list requires either the @userptr.notifier_lock in
+ 		 * write mode, OR @lock in write mode.
+ 		 */
+ 		struct list_head invalidated;
+diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
+index 147571fdada3..ee4696600146 100644
+--- a/drivers/net/ethernet/marvell/mvneta.c
++++ b/drivers/net/ethernet/marvell/mvneta.c
+@@ -4610,7 +4610,7 @@ static int mvneta_stop(struct net_device *dev)
+ 		/* Inform that we are stopping so we don't want to setup the
+ 		 * driver for new CPUs in the notifiers. The code of the
+ 		 * notifier for CPU online is protected by the same spinlock,
+-		 * so when we get the lock, the notifer work is done.
++		 * so when we get the lock, the notifier work is done.
+ 		 */
+ 		spin_lock(&pp->lock);
+ 		pp->is_stopped = true;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index b94c3619526c..bcd56c7c4e42 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -8313,7 +8313,7 @@ struct brcmf_cfg80211_info *brcmf_cfg80211_attach(struct brcmf_pub *drvr,
+ 	cfg->d11inf.io_type = (u8)io_type;
+ 	brcmu_d11_attach(&cfg->d11inf);
+ 
+-	/* regulatory notifer below needs access to cfg so
++	/* regulatory notifier below needs access to cfg so
+ 	 * assign it now.
+ 	 */
+ 	drvr->config = cfg;
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index 1902f29444a1..6d9af6417620 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -392,7 +392,7 @@ static void dw8250_set_termios(struct uart_port *p, struct ktermios *termios,
+ 	rate = clk_round_rate(d->clk, newrate);
+ 	if (rate > 0) {
+ 		/*
+-		 * Note that any clock-notifer worker will block in
++		 * Note that any clock-notifier worker will block in
+ 		 * serial8250_update_uartclk() until we are done.
+ 		 */
+ 		ret = clk_set_rate(d->clk, newrate);
+diff --git a/include/xen/xenbus.h b/include/xen/xenbus.h
+index 3f90bdd387b6..00b84f2e402b 100644
+--- a/include/xen/xenbus.h
++++ b/include/xen/xenbus.h
+@@ -180,7 +180,7 @@ int xenbus_printf(struct xenbus_transaction t,
+  * sprintf-style type string, and pointer. Returns 0 or errno.*/
+ int xenbus_gather(struct xenbus_transaction t, const char *dir, ...);
+ 
+-/* notifer routines for when the xenstore comes up */
++/* notifier routines for when the xenstore comes up */
+ extern int xenstored_ready;
+ int register_xenstore_notifier(struct notifier_block *nb);
+ void unregister_xenstore_notifier(struct notifier_block *nb);
+diff --git a/scripts/spelling.txt b/scripts/spelling.txt
+index c9a6df5be281..d824c4b17390 100644
+--- a/scripts/spelling.txt
++++ b/scripts/spelling.txt
+@@ -1099,6 +1099,7 @@ notication||notification
+ notications||notifications
+ notifcations||notifications
+ notifed||notified
++notifer||notifier
+ notity||notify
+ notfify||notify
+ nubmer||number
+-- 
+2.50.0
+
