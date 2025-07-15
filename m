@@ -1,118 +1,87 @@
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDBE27465B;
-	Tue, 15 Jul 2025 11:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3C12749D6;
+	Tue, 15 Jul 2025 11:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752579323; cv=none; b=NX3+UkjRUBAN3s6JI7p1RUia2bqlJHqUWrXDQ+VFJVGcZOdJxF3bV+DZkjvBX2qCYht6Ie7GRbYBFpgdMa5k6HaRLgztk0dNcdp4Y6LLj2gp/0UMUBKnHGY84RL5ivQXWu4sffwghi7jcaTAlz4Zt5CKV0m2HJWa9j/fTmqxQx8=
+	t=1752579957; cv=none; b=C/7ttzy/bM5GFBY3rDHlX0y5XuKbETRUIprBR2ElsqQC8YmCObP+OYdmJJRXaAZGb7NxGaWSGrNiXO2Ythzl+HMrQRWZVFwDnhOybaV9XsJXFZAEfBvxP6RRAxGGAXg6jp+rYOt14HGe6fLR37CQU2sBpMkJdVC0RKfv1xmHY/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752579323; c=relaxed/simple;
-	bh=THkSLQGTMsX7Fdbhve8y28Aa2BhuUAw66zvj6IMFz7I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Qe+ytQUaoTDWIYbYdqY8oyfSHzrrKGLoLA7pJzELW34grHwiw+YXJoflV3x6RMmxTpmwbpTNDJy2xXI9m5uc0iWhjZJMeR55soLeRkMAabnKt8Twa2Ntc8xWtFsoL2wLmj85jM9+ZsEcjFdGPv7NS5G22VtLTIIZQMRNoPyeD28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=nXC/W3HS; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="nXC/W3HS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=JTAXuxhoCTpmlrj2PLz1NIWHz+APNjNKXFIRCUVGU2g=; b=nXC/W3HSEvfvTE7dklSO76sEZg
-	gwE0DWhX8zW3M6T+UctzJdi3n2gKu8g4fiXfwR7jbMgzlqjuZoW07cb33TqcOgqTNRIoJbZUH2AaK
-	IlPx44BbBahwNzrA1XBrAPNJiQqwvlPn27dzoK1E7BXW0OseQvs6CDm71FuckxP24tHc=;
-Received: from p5b2062ed.dip0.t-ipconnect.de ([91.32.98.237] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1ubdwH-00CCXu-1i;
-	Tue, 15 Jul 2025 13:35:13 +0200
-Message-ID: <ba71e590-6751-49c1-85c9-97e5dc34ee3c@nbd.name>
-Date: Tue, 15 Jul 2025 13:35:12 +0200
+	s=arc-20240116; t=1752579957; c=relaxed/simple;
+	bh=TJj1GBM3kY96ER4pDl0GjSYNA4pjhWLv2UTd9LIoEPU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BlRl+vY7eV6sZXp+mnb67jpzeXyfmX7CBu+BL2x5sFPqLOpsiexc4kDRyzC1ZqNd5P/UYh7Fn8sdVLiW5nrnlHSCypW6oIBGqehruKcvVm9/a8Z7YJgiyjEpZa/9ozGKry0MegQM84fdD4XUWj+VW0H5b9njD0UmtEI0xWOJYJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bhHMr1CPDz2CfpH;
+	Tue, 15 Jul 2025 19:41:44 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id BB1A61A0188;
+	Tue, 15 Jul 2025 19:45:50 +0800 (CST)
+Received: from huawei.com (10.175.124.27) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 15 Jul
+ 2025 19:45:49 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>
+Subject: [PATCH v2 net-next] ipv6: mcast: Simplify mld_clear_{report|query}()
+Date: Tue, 15 Jul 2025 20:07:09 +0800
+Message-ID: <20250715120709.3941510-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: fix segmentation after TCP/UDP fraglist GRO
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>,
- Richard Gobert <richardbgobert@gmail.com>
-Cc: linux-kernel@vger.kernel.org
-References: <20250705150622.10699-1-nbd@nbd.name>
- <686a7e07728fc_3aa654294f9@willemb.c.googlers.com.notmuch>
-Content-Language: en-US
-From: Felix Fietkau <nbd@nbd.name>
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <686a7e07728fc_3aa654294f9@willemb.c.googlers.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-On 06.07.25 15:45, Willem de Bruijn wrote:
-> Felix Fietkau wrote:
->> Since "net: gro: use cb instead of skb->network_header", the skb network
->> header is no longer set in the GRO path.
->> This breaks fraglist segmentation, which relies on ip_hdr()/tcp_hdr()
-> 
-> Only ip_hdr is in scope.
-> 
-> Reviewing TCP and UDP GSO, tcp_hdr/transport header is used also
-> outside segment list. Non segment list GSO also uses ip_hdr in case
-> pseudo checksum needs to be set.
-> 
-> The GSO code is called with skb->data at the relevant header, so L4
-> helpers are not strictly needed. The main issue is that data will be
-> at the L4 header, and some GSO code also needs to see the IP header
-> (e.g., for aforementioned pseudo checksum calculation).
+Use __skb_queue_purge() instead of re-implementing it. Note that it uses
+kfree_skb_reason() instead of kfree_skb() internally, and pass
+SKB_DROP_REASON_QUEUE_PURGE drop reason to the kfree_skb tracepoint.
 
-I just spent some time reviewing the code in order to understand how to 
-fix it properly, and I still don't fully understand what you wrote 
-above, especially the part related to "Non segment list GSO".
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+v2: Add drop reason note
+---
+ net/ipv6/mcast.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-The issue that I'm trying to fix is that the skb network header is wrong 
-for all skbs stored in the frag_list of the first skb.
-The main skb is fine, since the offsets are handled by the network 
-stack. For all the extra fragment skbs, the offsets are unset because we 
-bypassed the part of the stack that sets them.
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index 8aecdd85a6ae..36ca27496b3c 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -845,21 +845,15 @@ static void mld_clear_delrec(struct inet6_dev *idev)
+ 
+ static void mld_clear_query(struct inet6_dev *idev)
+ {
+-	struct sk_buff *skb;
+-
+ 	spin_lock_bh(&idev->mc_query_lock);
+-	while ((skb = __skb_dequeue(&idev->mc_query_queue)))
+-		kfree_skb(skb);
++	__skb_queue_purge(&idev->mc_query_queue);
+ 	spin_unlock_bh(&idev->mc_query_lock);
+ }
+ 
+ static void mld_clear_report(struct inet6_dev *idev)
+ {
+-	struct sk_buff *skb;
+-
+ 	spin_lock_bh(&idev->mc_report_lock);
+-	while ((skb = __skb_dequeue(&idev->mc_report_queue)))
+-		kfree_skb(skb);
++	__skb_queue_purge(&idev->mc_report_queue);
+ 	spin_unlock_bh(&idev->mc_report_lock);
+ }
+ 
+-- 
+2.34.1
 
-Since non-segment-list GSO skbs don't carry extra frag_list skbs, I 
-don't see how they can share the same issue.
-
-If I misread what you wrote, please point me at the relevant code 
-context that I'm missing.
-
-Thanks,
-
-- Felix
