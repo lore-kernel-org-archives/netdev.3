@@ -1,182 +1,149 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2046.outbound.protection.outlook.com [40.107.92.46])
+Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3828B672
-	for <netdev@vger.kernel.org>; Tue, 15 Jul 2025 06:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752561230; cv=fail; b=UgTdjWCqRK+Do1nUw9zmC8QU+T9WurxhNvrQo/Se2nyFkS1qiH6C4seHhwtX6qY3CVyEF4HAkOxPEjHkWF/xQ91C1hEdNaKAsZ0RU0f1bjObZUGV8d6aPs1r2uZSqwHWzsHBs/+6pnM5tq96wGsXRr5XjOBveUYKwBTDo6wBMf0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752561230; c=relaxed/simple;
-	bh=WCkaGb3pS9dEIBfuNoz5inXgSvfckXcUezCjhCJDkg0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=lek7cY5/3v8kelsAJcbrlIzlLa0hJA+1hLyHQbs5H/vgVDnJZZ6IY1vpzdCx4jpwJtaWfGtC89tjXDNOS6nmfi92TnXuaVuoQKAhZQNCGbQb4xLOLtSvX4FDiLRfuvZbxAddHqd8pEQFDw3QYxunEFLpqbGSu8XwPfP9ZMdEYWM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=K6LIfz5g; arc=fail smtp.client-ip=40.107.92.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74014B672;
+	Tue, 15 Jul 2025 06:33:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752561238; cv=none; b=R64eqBFUFXtOicstF0q9lZmB36aMNTAUZGXBYe8v+MlydeOLr3q8Jphso521mbi2xLmKLiYXTpJ0dL76LHoYnEQh2KPo4PfcPoVjhxmq0M8RdY5a7YRpu94d2HbPKzVx3m/Dh3bOHK3JOJEiYnoPZqOmSOmdFCdxBetmpegcai0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752561238; c=relaxed/simple;
+	bh=WC45c/DnzmSKE85Z1Qai86T8LgFzFt5mXdfv7rXwSO0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dVOcVpYxzLANZk2/YmVgVR+5mi1e+XHmBPKc4WxQieqpUXA/vXdye58fszg3WhXF52SsMoFHNtm0njD9iev4TKCv367itgrUHCCzzgk/rLQ87zJ4V2O+eM1lH1gbmoAnYosUJgekO2qXxQxoEbuN+yhySycqrUqfekwfg6B+5WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VkJuX+M2; arc=none smtp.client-ip=217.70.178.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="K6LIfz5g"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kBrFsFQQaLR7qnOOiPZqkyJQdFMKWgaL9Ida2zTZAi9BbQqt9SK8B+Ih5+UYO5N3hy/S5lZ4jjcQZfVncC8QO6lvm8B0N6ByVAERryeCtANPngKjugkOVt9wBj7A9xn55YyVo9prDBDS0oHG+KOv8x3LsQAQwysEaVG8dJ70xrTPpX2bn+kYn6U0PPIRSEEgAUWQ06sDNFjnKsgkzWYQ6om/SXYOmyY3cMGzKvn8Nhriw10+sudJL/2nL1Jo4XYp8pPamUrBcOztBqlRNrj4tZSRlOHZIXlXxmIAdwS3/ksKhD1BifYfmwU63RY1VUbeTNnR0Y6NV4ks+zKw6AmEGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V2wnwuX8jJA821xOg/DjVzCUaA7CtN7UCIdYlJzdaa0=;
- b=f5JTfRCwaWeN9I2Ig2iyjCaABLh/mXnh2QO3LmnLDxEOiGI/EqB7ZHnEJwnX+nuOMofo0kNe883TvxYCY1QljOZw9ojBPe8OkS/mP1IF/zB5P2R8zo0ThR4sjrTUImIs6arV2GdQBqu0GQVEcl4SGIPMjnF781dJii+Vxx2Kq1DnUY56BbW337LWlTgOTWqlVwc9dyhtPGSn6NjUqDX/Ij6MNSpgMMA7776u+PhesqoJ6IVXm8ucHd4pcjNLYqoFm63rZ/avqU7jX7wjqAjpUeZs+yRcJ+Ov40yqWHE+CyMmrjKOSeWe6fMTH3jp6z4LeolUf9BYrSUoLmvFmitVmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V2wnwuX8jJA821xOg/DjVzCUaA7CtN7UCIdYlJzdaa0=;
- b=K6LIfz5grdMwyAQm9cEhP5pZSJNWXtM1K+0wnBI4xcTeTAzA7ZsfwD4dcNlknBCtfACdj2wyfuTNsRLAto93OH9358Xp9gTOoXahyMzKrbnqC/x5lkklT73H33wqcomoZKWupqPMjAnFjcLt+K2K03kURLOs0xFNh1TWoghs248kaojYlzqz8K0M5AJG87cDQYf4TijKbZk8pXU0Lu89Tx4nyEz81Dqi61xkZZsct5c/B6nnL3bGEO4EWZeV7KysWGQHrgpn0Ff6TblB9JN3ZhBj2zZjbd+viHHZ9NkjfhrA+uO9h2pmqNn5XziaUwPL5dPcF+rib54RcFPgkIXwMg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB7500.namprd12.prod.outlook.com (2603:10b6:610:148::17)
- by PH8PR12MB6843.namprd12.prod.outlook.com (2603:10b6:510:1ca::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.27; Tue, 15 Jul
- 2025 06:33:46 +0000
-Received: from CH3PR12MB7500.namprd12.prod.outlook.com
- ([fe80::7470:5626:d269:2bf2]) by CH3PR12MB7500.namprd12.prod.outlook.com
- ([fe80::7470:5626:d269:2bf2%4]) with mapi id 15.20.8922.023; Tue, 15 Jul 2025
- 06:33:45 +0000
-Message-ID: <7f9b4414-a972-4256-953e-103e3055276b@nvidia.com>
-Date: Tue, 15 Jul 2025 09:33:38 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 00/11] ethtool: rss: support RSS_SET via Netlink
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- donald.hunter@gmail.com, shuah@kernel.org, kory.maincent@bootlin.com,
- maxime.chevallier@bootlin.com, sdf@fomichev.me, ecree.xilinx@gmail.com
-References: <20250711015303.3688717-1-kuba@kernel.org>
- <24aa8c69-89bb-440c-8d63-79d630800c88@nvidia.com>
- <20250714093537.438fc6fa@kernel.org>
-Content-Language: en-US
-From: Gal Pressman <gal@nvidia.com>
-In-Reply-To: <20250714093537.438fc6fa@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TL2P290CA0004.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:2::13) To CH3PR12MB7500.namprd12.prod.outlook.com
- (2603:10b6:610:148::17)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VkJuX+M2"
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
+	by mslow3.mail.gandi.net (Postfix) with ESMTP id C11B8587043;
+	Tue, 15 Jul 2025 06:05:42 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3A02E44354;
+	Tue, 15 Jul 2025 06:05:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1752559535;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9vRRRofKzYTk4D1n78QDRieI6X+rxdAzS6AVWnX1z1A=;
+	b=VkJuX+M2u8O9YDU70VOX5FCojosBhI8llh9v5jiH+jd27KMO5RVflqQX+rDLZmZmOptQIB
+	S04bNJ5t/QKOVxc+qJ6hAoJ09ZMl4nvxEHmQQ7n32u0IoEGKdj1j155KJnHfbVxFUf6vku
+	S6Fadh5pANHce0LFYSpI8KTZ+HWb1agKX8jbACJjR44yrzCcD+t83r9oI8fl7xMFrKSr6V
+	ioZZ0nEpQBR+nwEDnuVEX1KOQD29IBRa4oioNTeniKDxizJffYOJwWaapVJ0I1q/1mWXlF
+	pRpMroalkrMQfOWbBfxaGXZ+WG8w83j1Myw+WAAdqtghs6vVnvhCjhw5JX/B+g==
+Date: Tue, 15 Jul 2025 08:05:32 +0200
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: davem@davemloft.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com, Jakub Kicinski
+ <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, Florian Fainelli
+ <f.fainelli@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>, Vladimir
+ Oltean <vladimir.oltean@nxp.com>, =?UTF-8?B?S8O2cnk=?= Maincent
+ <kory.maincent@bootlin.com>, Oleksij Rempel <o.rempel@pengutronix.de>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v3 1/3] net: netdevsim: Add PHY support in
+ netdevsim
+Message-ID: <20250715080532.07883d74@fedora.home>
+In-Reply-To: <560e7969-b859-45ed-b368-350a62cec678@lunn.ch>
+References: <20250710062248.378459-1-maxime.chevallier@bootlin.com>
+	<20250710062248.378459-2-maxime.chevallier@bootlin.com>
+	<560e7969-b859-45ed-b368-350a62cec678@lunn.ch>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB7500:EE_|PH8PR12MB6843:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1c15e5f9-0456-4ef7-f5a8-08ddc3698cb1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dm9TRWtYdjlvWm5uOFdBMGI4ekdoMmJJVE04aDFhTGk2Y2xtbXVkZnJYNzY2?=
- =?utf-8?B?ZnZCN2FldWdKQm5PV2tidlVsUEphMU9oTGFaSktxN3JyY3g0TnE1cGVLOVNw?=
- =?utf-8?B?dE1mN0dtblhOSFN6cTNwZXZ2dG5mRUlIejBKajVtK29TY0xCM3dSSGs2WFZm?=
- =?utf-8?B?YmRKUG04OGdJUFV4a01kaEIySk1RS3grbTF2VXpkK1lsTndmUlJsQXF6dzY3?=
- =?utf-8?B?OWovM1h0ck9vcHJNOHhEMDhENmRXUGVTZHdCMHFGM1pYT3hiQ3haMU1pVGVp?=
- =?utf-8?B?Sm1UeFBjdktQQUxuSWtvNU5qVWdKTlB6d3BIb0IzQ1VmMU84SVM2T0FmL2J0?=
- =?utf-8?B?RDFKaFpZT1pheHJuUVVrdXFMVzdPWTJiYWgvQm1kZTBwRlFFUWR5VFJoTyt3?=
- =?utf-8?B?ZEFJcjhud0pCcTNwWFdldUplVXZIOXlLR2VpbkJVa21XQXIzQlZpaDMyN1U5?=
- =?utf-8?B?M0JtTWVBZkpqRDd6RERkSk15M2FmNTlOMkNxM1dGcU9udWUxMnliYlhDY3Zv?=
- =?utf-8?B?VklrcXd0ZDhDUEhndW1KaVQxM3ZiNFNEZXBkT2dmazc2c1BKL05EUmE4c1h2?=
- =?utf-8?B?dXEvU0h4dkxIdVRsVUlNdnpyQmtNOXBQTnY0a1QrZW96RVFzbTBRVGpKSHlZ?=
- =?utf-8?B?SFRnWG1lU0hnVGoyb1VUVGkxRmc2ZFBsaTlKTzJWVWNhcG5XVkppZUdqVjB3?=
- =?utf-8?B?L0UrN0NvYW1PRy9LOG81OXRKa3JzbXlBN3ZBVkFTWlk1cVNCL05Dc1hyeE9Z?=
- =?utf-8?B?cENCb09ybDdHZkx6alpuZVQxUXAvdktleklKSm56MU9aeG9qY0VXRmdMeWg2?=
- =?utf-8?B?bThWamNIbFRaWGtkaUhlY0tFQ0RJSlhWVWVmeS9sWTl5RHZvSjMzdnVXM0NR?=
- =?utf-8?B?OFZrdU5KN2xiVFgvZlJPR2hWcVZ3MzAxRTFxdWdIT2oyNW9FY0UvQXFjRVp5?=
- =?utf-8?B?ZUR6aG9yUFFJbVVDdjlMZ3lHWjlsVUcvOXczYWpWVXFyamNEcDZ1ZElxL2FT?=
- =?utf-8?B?eUlsNUk3M0d4YlMrWHh5em9KekJBWlR0QXFIa1I2QTY2Z2IzbUtLclVDeTRU?=
- =?utf-8?B?ZHc0OGdmYkFOeTBEUDZVRGRYWmhkK1diUmpUTXJ6dVhJL1hrWGwvZ3dmd2ZN?=
- =?utf-8?B?dDJqc0ZyM3B6c1lPL0RIdWpQRnBBK0NKWTZxODFkbEwrNkxiN0V6WlRPQjY5?=
- =?utf-8?B?LzdHNDRyWXcrTDNqc3RWdmRJOXVKZURobnRPSUhUNC9WK2V2dk01VGlOckFG?=
- =?utf-8?B?UURlTU5rR3JYV005Y3BUUVU5blpLS2VjdTFxTzdkZU5nVDJRd0tuU2pleThI?=
- =?utf-8?B?ZmJrU3VpTEFHSW1kcFJLSDZOdWg0R2pObkRVMjc0d2NyVWNEc0pHSWpCUHNi?=
- =?utf-8?B?d1ZPOEY5dDRDODFlYXE3Qk80WGdiTEJVbTJvdSs2bzZpL2dYc0pCd0tMOU9p?=
- =?utf-8?B?MDlMNDltamZMWEwvdzZpUlA3allWT1k1N0NBWFlORGhxaDNHTXZyZ1hOWERi?=
- =?utf-8?B?S0E3Qks2T1lXYm90ZFlva2tmYUpqYnY1VXlBSGdmYVViMnNVdE00ald3aWxE?=
- =?utf-8?B?Z0tYT2RvWXRvMTVZbFcxZHlJK3RSKzdFd045MTMvTHBaM1R5WWFIZndVTnBo?=
- =?utf-8?B?SEZ1UlFtdHQ1Nk4xU2VtV1pKYWJYVlIzNytBVlN0RGxRdXBGSnNLbHlYWEhD?=
- =?utf-8?B?eHRPMXRNWXozV2VTS0Ztb0VnS01CdXlPemJpSU1tUzZUODN5eGJYMDBpYVRO?=
- =?utf-8?B?MHk5K2RWdlpVRUg1REVFb3BBZG11VTdiYXVDMXQ0UUV6Vk9kNFZrOXMwcFlw?=
- =?utf-8?B?WUJiczBSS1Q5MkJVU3hmS0pSTktiME1FdUJ4YmhVOHhVdjYvWmpocHZ0YVRi?=
- =?utf-8?B?MVRUSU53ekFvLzJZNDl4Sk1tQ0pZc0lFcUZRdzBWamI2cVIvZFpGSlplcFMr?=
- =?utf-8?Q?WzodAp5Xrus=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB7500.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WEh4VmVQRWxVT1p6bGE3ejA1a1EvYUhqQ3B6U0NFZERpVlNaU0VqQWRIYVFX?=
- =?utf-8?B?azVaWFZnbGJqbVdTRmViNG5OZG9SaUtTS1pRM2U4NnJqaFZFMkpxaHhEdk8v?=
- =?utf-8?B?NmViRWVpdjNpTzdwQ0tvOG9oV0JrZ1dwaXRQN0ptek1IUXZqU0R3M3FwRFJZ?=
- =?utf-8?B?ZWNCelRoUFBITkZaRytzc2Frb053WW1jNHhiaHg3L1VLVjVkbVhRVDRWb0VL?=
- =?utf-8?B?TS9QQytURU4vVForS05sdVM3R1g4ZG90c0JsR1RCZ2JRQjE0SjVmOER6ZG8y?=
- =?utf-8?B?MEJaekkxVG43cFpOUWlWT1ZKZUFiVkJPYitCdStUMEFEYk5ZTzNtaWdvb01j?=
- =?utf-8?B?NzNzY0xJQzZkN08yM0pNYjQvbU1sb240Yjc2SzZXa0t4ZXhmMUNUOUIwYkkx?=
- =?utf-8?B?azFQdnRzeWFPY3BaQWVpMUYya0ZwSVRwZW9vcURtNSthaHZqNHVhblhIK28z?=
- =?utf-8?B?YVZZNi9MWi9meC9kSVRFWm1UZ3kreEVldUJBTzAxVWVPZ2hWdTBkNXRQR2FH?=
- =?utf-8?B?eDJtSlZtZCs4RjFXN1lyR0xMUnRGVllJK2o4UVZOUFpnb2VEdkNSaUV6NjNG?=
- =?utf-8?B?YjZkRkpSbnMrc2pTdnl0bVlqd0Y3c0NtVGVCQ2tDYzlLUzA4VEpCVERuWTNW?=
- =?utf-8?B?aDdMK04vMzNqQ1A0WGtjNWlSS1JUSzhjbWpRb2R3LzYyZldMVm0vdzkwMHdO?=
- =?utf-8?B?ZC9KYnNBd2Q0VktaQi9ya3c0a0hVbnlwVVBQb2pMYWtZUld1N1QyblJKTEd5?=
- =?utf-8?B?d1ZvK1dKaFlpOFAyK3JVdmlNMTdCWExhWlNQL0xWczhwOGwydjZ3SHpyaGNy?=
- =?utf-8?B?MVU2a0RGZ0VpVlNJNDhFUlRIdmRvMjJMTktaQ1FjUHExYk5TYkJLaFd2YnBi?=
- =?utf-8?B?bmYrSlQxcHZCTWFoeFkxb2dPR0Nyd3NqMVRPM3REbTZjMG9Qc0hGYlJqYUkz?=
- =?utf-8?B?bldxNE9yekZnaXU3RTlsWTcyQVFOMTQ3WG9KanhVd24ySmp1K0lLK2NjMGdh?=
- =?utf-8?B?M25naTBRZGdVb3lXbjlicmZvTWN1U1Y4bWZDNTRhK1RFY1pMSWtKdTdPdmlL?=
- =?utf-8?B?NTc2UGJIYkpJTktMZ0NPc2VFb3AzZUsxK1h5TW5adE9LMkJ2NkdhYVF2ektV?=
- =?utf-8?B?WXNKQmFPckVaajBrb1dVaTMvc0o1VGx6ckxSTWErRVk5ejVWUFpuUGM4M1Rm?=
- =?utf-8?B?Ukw5aFp5UXZ4ODhFTHd5NzhDSnpTcStBa1JneStqMEFBUlVTM055V1UvL1Mz?=
- =?utf-8?B?VHlkK2xSL1h6ZjZUWkJkdm5tc0U2UVpOUXdGN21OSHNWcThiUkx5VytBcXEw?=
- =?utf-8?B?d3g5RVpBNGJaRlNkbTUwZ1dlbkoxNGx2bGJRZ2M0NndLcWlvcm8wckNUcVhs?=
- =?utf-8?B?V0czWlRKdzJOYStxdVBKUk9HQnpLSVNNTGdpL3JlQ0pOQkZYais0b1RrWmtB?=
- =?utf-8?B?eFZGTlhTRGxvM1JIU2xDc0lCcUZWKzRpS0hSMWk4YXFtc1VIZ0lyODdiWk5M?=
- =?utf-8?B?dUFDY3VqM1Y5ZjkzRFJzcnI1NVl3MjBoTmM4OHlYcjNTMTB3SklGb0lDcWxs?=
- =?utf-8?B?aUpORksxeHgrNHkwSXNoWHNmbkIzWlNvTjRkT0YvNmRhUEdyMWlZQnBvZ2lF?=
- =?utf-8?B?TDIyS3V1Vzk5NjZUL2ZKR0d1Smw2ZStiY00zUGpPZjVRRGgwL1UzNkFwVkRm?=
- =?utf-8?B?RzFLcXpYVkRwRlRPTkRhYjlwSTN1Z2hJQTkzOVVsdnJlQ01YOUthb2ZYdHFX?=
- =?utf-8?B?Z3dZdjN4VC8vM0pQQS9PdThUcmJaSXdzQzhwUVd3RTB3RWdQZFJtUWg3a3dL?=
- =?utf-8?B?bTlYcURyVE52Qk9UOXBNY1ZuRXcrNXN3d0lzdzQ0V3dtL0JiUUo3RjZhQnpy?=
- =?utf-8?B?N0RTQkcrNUprOHh2aWtRR3RIVlZWTFRveW5RRld5QnR6clp4VjdyeXVENzlX?=
- =?utf-8?B?NXF0L3E3aDJKRE90QzlDSFRlZkppT0RzVWFxNEZrTXpVdklONElSNHgvNVNR?=
- =?utf-8?B?WU53SWErTEwySWJUMEVkV1JXZXNyL3lYeDJDY3VVUmE1YWpadFZETnhTZHFi?=
- =?utf-8?B?endJUVBiM05VeThvMXRZb2VwTnJud25RSWorV2R4Uit0d2daY2M3T0UrenVD?=
- =?utf-8?Q?eHSd04B4uNCkxzD0WIc3f7bJo?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1c15e5f9-0456-4ef7-f5a8-08ddc3698cb1
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB7500.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 06:33:45.9014
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Vvn1rG+WJjAZ9Wm8ZUN6OEpCL7soRt8wdAaMOk8ByfA+SXVECcTsOw4oK/YLUsg8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6843
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehgedtjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthhqredtredtvdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevieevgeehgfekgedtledvleeuieelheegiefftdeuhfelvddufeelheegteevgeenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedujedprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpt
+ hhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomh
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On 14/07/2025 19:35, Jakub Kicinski wrote:
-> On Sun, 13 Jul 2025 14:06:25 +0300 Gal Pressman wrote:
->> On 11/07/2025 4:52, Jakub Kicinski wrote:
->>> Support configuring RSS settings via Netlink.
->>> Creating and removing contexts remains for the following series.  
->>
->> I was also working on this, but admittedly your version looks better.
-> 
-> Oh, sorry :S
-> 
->> Given the fact that this is not "feature complete" compared to the ioctl
->> interface, isn't it considered a degradation from the user's perspective?
->>
->> New userspace ethtool will choose the netlink path and some of the
->> functionality will be lost. I assume rss_ctx.py fails?
-> 
-> I'm planning / hoping to get all of the functionality implemented
-> before the merge window.
+On Sat, 12 Jul 2025 18:54:38 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-Are you also working on the userspace part?
+> > +static int nsim_mdio_read(struct mii_bus *bus, int phy_addr, int reg_n=
+um)
+> > +{
+> > +	return 0;
+> > +}
+> > +
+> > +static int nsim_mdio_write(struct mii_bus *bus, int phy_addr, int reg_=
+num,
+> > +			   u16 val)
+> > +{
+> > +	return 0;
+> > +} =20
+>=20
+> If i'm reading the code correctly, each PHY has its own MDIO bus? And
+> the PHY is always at address 0?
+
+Yes indeed.=20
+
+> Maybe for address !=3D 0, these should return -ENODEV?
+
+That could be done yes, but I don't think this will ever happen as this
+is only ever going to be used in netdevsim, which also controls the PHY
+instantiation. I'm OK to add the ENODEV though :)
+
+For the record, the first draft implementation I had locally used a
+single MDIO bus on which we could register up to 32 netdevsim PHYs, but
+that wasn't enough. At some point Jakub pointed me to the case of
+netlink DUMP requests that would be too large to fit in a single
+netlink message (default threshold for that is > 4K messages), so to
+test that with the phy_link_topology stuff, I had to add around 150
+PHYs...
+
+> I'm guessing the PHY core is going to perform reads/writes for things
+> like EEE? And if the MAC driver has an IOCTL handler, it could also do
+> reads/writes. So something is needed here, but i do wounder if hard
+> coded 0 is going to work out O.K? Have you looked at what accesses the
+> core actually does?
+
+I don't see that driver being useful outside of netdevsim, so at
+least we have a good idea of what the MAC driver will do.
+
+There'e no ioctl, but we can be on the safe side and stub it a bit more.
+
+=46rom the tests I've been running, I didn't encounter any side-effect
+but I only tested very simple cases (set link up, run ethtool, etc.)
+
+I've considered re-using swphy for example, and using an emulated MDIO
+bus for netdevsim PHY, but my fear was that this would in the end get
+too complex. Let's say we want to add a new netdevsim debugfs
+file that allows us to control what is the speed reported by the phy,
+if we want to report say 10G speeds, we also need to emulate C45, etc.
+
+I guess at some point, we will run into scenarios where phylib is going
+to call some genphy helpers, it really depends on how deep we want to go
+with this netdevsim PHY driver.
+
+The use-cases that I saw were :
+ - Being able to test the netlink stuff now that we have the ability to
+know which PHY handles which command
+ - In the future, write some tests for the linkmode reporting (that I
+broke once with phy_caps)
+ - When PHY Muxes eventually get there, I'd also like to netdevsim
+that.
+
+However that's just my view of the thing, we could also consider having
+this driver rely purely on MDIO emulation, where the MDIO registers
+would behave exactly as specified in C22/C37/C45, but that's quite more
+complex :)
+
+I'm open for any improvement or ideas on that driver :)
+
+>      Andrew
+
+Thanks for the review,
+
+Maxime
