@@ -1,115 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4852EBBA2;
-	Tue, 15 Jul 2025 13:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592742EBDC3;
+	Tue, 15 Jul 2025 13:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752587607; cv=none; b=WhvSJHCJXfr1NQkHPL6B/RpmdXyuVHZygVo17+nHuhnv7lDR48yjPblOUNnM1e+q+P8Gzs91doGcIf6yIIcY0pNPrhLCgRDo9EG681WZSt+evUuZBu8S5HhmRmWO4UZ5T+e5z9GfcWWONFbm2GiTf7tGmSEflpqTKI54Q78AS3Q=
+	t=1752587645; cv=none; b=LgJevWxCsLS4Kt03vntLrsA+GRh4esI6YX1NPxtBhPn/k/LJn5meUI0zSyhaL0NnbNlhVjExoqAtwWHPadiE2zrlU8QhLREl249xtnmu4JqnW9IETgueRhQ1tDZOsv4JAGL3mQoXWlLFSKK4dHmI2YUwCUTOI00i++gdda1qzgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752587607; c=relaxed/simple;
-	bh=2WPMFMyikH/G6/16u51IVbRdVX9Mzx6gAQHNVq6vYjo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/CKbQ4xU6q4fcfm9FPxNRn3owQoJpoD0Oj1kYqJLQwatoX0IFWr2cr0Z8BsF88a00CrbDQuqwOr0e4ZTlY4JY8rqYR7WXUT7SukQNvZrka32NCSrIwJ+D4vRyDZrgKkTxgWBD+akXJR32i73OupXlc85fM95QKVljHSwLpfHn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+xt6hlu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752587645; c=relaxed/simple;
+	bh=1xRksTaDRgRjBjZIJNwdzAtfvCb5wQYItHCj8+duVLM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fAyuU3oArqg1xlqj/AJwzl8VnFyzKSfwitrIFZDNNugn5LHjFsOLRQgJlLVDdFdoNUtv+bisnnXRLry2rw2ZVmSNAP3JMgI1uJHho2xNS/3uNj/Ae356Ot/skSAJXY0hYK92VH/zJXDSfLekVbCN01j8rMexqq08kCq/TUq5d9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sXFQbtwh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+xt6hlu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA20AC4CEE3;
-	Tue, 15 Jul 2025 13:53:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752587607;
-	bh=2WPMFMyikH/G6/16u51IVbRdVX9Mzx6gAQHNVq6vYjo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+xt6hlu2zvPTa/1Izyq1xRBoA6dJZy7gjp381ieNBYWR8qVWU0GKwfqirmiYwNJa
-	 hk/ygK+Eb+/0BtgBhAPRzCBz5CjWuqlFyy+N9ak0zCz19EgLN6dkRU4NWDg8/PD1j+
-	 ugOAw7jlUhpGhFmMROy9eRAmG8W0lovavcF1Fn8Q=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Bryan Tan <bryan-bt.tan@broadcom.com>,
-	Vishnu Dasa <vishnu.dasa@broadcom.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	stable <stable@kernel.org>,
-	HarshaVardhana S A <harshavardhana.sa@broadcom.com>
-Subject: [PATCH 5.10 076/208] vsock/vmci: Clear the vmci transport packet properly when initializing it
-Date: Tue, 15 Jul 2025 15:13:05 +0200
-Message-ID: <20250715130813.988873492@linuxfoundation.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130810.830580412@linuxfoundation.org>
-References: <20250715130810.830580412@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sXFQbtwh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658B4C4CEE3;
+	Tue, 15 Jul 2025 13:54:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752587644;
+	bh=1xRksTaDRgRjBjZIJNwdzAtfvCb5wQYItHCj8+duVLM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sXFQbtwhjlensPrNb2Ua3WXJt8ii6PGJWzKy6I5QxY2HwOYYAwr6TleWr5QCTHtVY
+	 2O1svq0fKeTw/YpRluEQ1C+Mbk1p/5PN/nDIJpxlEvPvA5N7/mM40Vj6wO+4tUAc4B
+	 UD1L/LDaw81sCJgmz9O/im8Jl2RPJE3idnsiF8U7NBfE9kqhAjro9UIdfqQIf4jAaW
+	 uneMK9bvk5j/Fvbyda7xa/Gov4uSi+Zxh1vd0cwNIcQb94i4zDB6UUjBN9qtC90OX0
+	 YXzoy5PbJvyaY7xE+fTLcNvtIKtwX6ql58xx2LTxjOlbv8tSsbiOLE5L/DCRrH71Cw
+	 iBGkKCeLarqYg==
+Date: Tue, 15 Jul 2025 06:54:03 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: John Ernberg <john.ernberg@actia.se>
+Cc: Oliver Neukum <oneukum@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Ming Lei
+ <ming.lei@canonical.com>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>, "linux-usb@vger.kernel.org"
+ <linux-usb@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH] net: usbnet: Avoid potential RCU stall on LINK_CHANGE
+ event
+Message-ID: <20250715065403.641e4bd7@kernel.org>
+In-Reply-To: <74a87648-bc02-4edb-9e6a-102cb6621547@actia.se>
+References: <20250710085028.1070922-1-john.ernberg@actia.se>
+	<20250714163505.44876e62@kernel.org>
+	<74a87648-bc02-4edb-9e6a-102cb6621547@actia.se>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+On Tue, 15 Jul 2025 07:15:51 +0000 John Ernberg wrote:
+> > I'm worried that this is still racy.
+> > Since usbnet_bh checks if carrier is ok and __handle_link_change()
+> > checks the opposite something must be out of sync if both run.
+> > Most likely something restored the carrier while we're still handling
+> > the previous carrier loss.  
+> 
+> There could definitely be other factors, I'll try to dig some in 
+> cdc_ether and see if something there could be causing problems for the 
+> usbnet core.
+> I honestly kinda stopped digging when I found unlink_urbs() being 
+> wrapped with a pause/unpause at another place tied to a commit seeing a 
+> similar issue.
 
-------------------
+Looking at cdc_ether:
 
-From: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
+static void usbnet_cdc_zte_status(struct usbnet *dev, struct urb *urb)
+[...]
+        if (event->wValue &&                                                    
+            netif_carrier_ok(dev->net))                                         
+                netif_carrier_off(dev->net);  
 
-commit 223e2288f4b8c262a864e2c03964ffac91744cd5 upstream.
-
-In vmci_transport_packet_init memset the vmci_transport_packet before
-populating the fields to avoid any uninitialised data being left in the
-structure.
-
-Cc: Bryan Tan <bryan-bt.tan@broadcom.com>
-Cc: Vishnu Dasa <vishnu.dasa@broadcom.com>
-Cc: Broadcom internal kernel review list
-Cc: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: virtualization@lists.linux.dev
-Cc: netdev@vger.kernel.org
-Cc: stable <stable@kernel.org>
-Signed-off-by: HarshaVardhana S A <harshavardhana.sa@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20250701122254.2397440-1-gregkh@linuxfoundation.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- net/vmw_vsock/vmci_transport.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -119,6 +119,8 @@ vmci_transport_packet_init(struct vmci_t
- 			   u16 proto,
- 			   struct vmci_handle handle)
- {
-+	memset(pkt, 0, sizeof(*pkt));
-+
- 	/* We register the stream control handler as an any cid handle so we
- 	 * must always send from a source address of VMADDR_CID_ANY
- 	 */
-@@ -131,8 +133,6 @@ vmci_transport_packet_init(struct vmci_t
- 	pkt->type = type;
- 	pkt->src_port = src->svm_port;
- 	pkt->dst_port = dst->svm_port;
--	memset(&pkt->proto, 0, sizeof(pkt->proto));
--	memset(&pkt->_reserved2, 0, sizeof(pkt->_reserved2));
- 
- 	switch (pkt->type) {
- 	case VMCI_TRANSPORT_PACKET_TYPE_INVALID:
-
-
+This looks sus. Is the Gemalto Cinterion PLS83-W ZTE based?
