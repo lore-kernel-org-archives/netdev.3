@@ -1,149 +1,150 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74014B672;
-	Tue, 15 Jul 2025 06:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAF426D4FB;
+	Tue, 15 Jul 2025 06:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752561238; cv=none; b=R64eqBFUFXtOicstF0q9lZmB36aMNTAUZGXBYe8v+MlydeOLr3q8Jphso521mbi2xLmKLiYXTpJ0dL76LHoYnEQh2KPo4PfcPoVjhxmq0M8RdY5a7YRpu94d2HbPKzVx3m/Dh3bOHK3JOJEiYnoPZqOmSOmdFCdxBetmpegcai0=
+	t=1752561447; cv=none; b=oJldxafm2hcOEt2EJw2MeDr5Fmbhe9B1d7vuZ+9/Os4+bc8urIf/JwYJEodo5LY8CzyfgmHQWIQ0jb8f8SOnJZBQlrz304Qs6oII4Z2NfGU2iFe+abgizY1W8uO89brYgvTGuxsGQ3PCc6ziXC+VLKFSA1ktVcUXgnGGLa7OFGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752561238; c=relaxed/simple;
-	bh=WC45c/DnzmSKE85Z1Qai86T8LgFzFt5mXdfv7rXwSO0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dVOcVpYxzLANZk2/YmVgVR+5mi1e+XHmBPKc4WxQieqpUXA/vXdye58fszg3WhXF52SsMoFHNtm0njD9iev4TKCv367itgrUHCCzzgk/rLQ87zJ4V2O+eM1lH1gbmoAnYosUJgekO2qXxQxoEbuN+yhySycqrUqfekwfg6B+5WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VkJuX+M2; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1752561447; c=relaxed/simple;
+	bh=QJSYFEA+ygE2WZbbXWc8V+Ze9PznoxhoiLjS/1W8Pdc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NdmbQovy+D82AEN6+ck5Su3xuLuU++3jaZGEZK58EYzSog9DIkDqRB8Zjs0tgVttEfw0WeAKWdhEipP6pdygRC/LLDQkelcpSW0mI2QwuUaZMRNfzXTWTTWUQnBFUw3iNZpM3HPubKmyV1aH+SZC3zE6LeaMwgSmB43E6Pcu43I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1S5+Xly; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VkJuX+M2"
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id C11B8587043;
-	Tue, 15 Jul 2025 06:05:42 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3A02E44354;
-	Tue, 15 Jul 2025 06:05:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1752559535;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9vRRRofKzYTk4D1n78QDRieI6X+rxdAzS6AVWnX1z1A=;
-	b=VkJuX+M2u8O9YDU70VOX5FCojosBhI8llh9v5jiH+jd27KMO5RVflqQX+rDLZmZmOptQIB
-	S04bNJ5t/QKOVxc+qJ6hAoJ09ZMl4nvxEHmQQ7n32u0IoEGKdj1j155KJnHfbVxFUf6vku
-	S6Fadh5pANHce0LFYSpI8KTZ+HWb1agKX8jbACJjR44yrzCcD+t83r9oI8fl7xMFrKSr6V
-	ioZZ0nEpQBR+nwEDnuVEX1KOQD29IBRa4oioNTeniKDxizJffYOJwWaapVJ0I1q/1mWXlF
-	pRpMroalkrMQfOWbBfxaGXZ+WG8w83j1Myw+WAAdqtghs6vVnvhCjhw5JX/B+g==
-Date: Tue, 15 Jul 2025 08:05:32 +0200
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: davem@davemloft.net, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com, Jakub Kicinski
- <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, Florian Fainelli
- <f.fainelli@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>, Vladimir
- Oltean <vladimir.oltean@nxp.com>, =?UTF-8?B?S8O2cnk=?= Maincent
- <kory.maincent@bootlin.com>, Oleksij Rempel <o.rempel@pengutronix.de>,
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v3 1/3] net: netdevsim: Add PHY support in
- netdevsim
-Message-ID: <20250715080532.07883d74@fedora.home>
-In-Reply-To: <560e7969-b859-45ed-b368-350a62cec678@lunn.ch>
-References: <20250710062248.378459-1-maxime.chevallier@bootlin.com>
-	<20250710062248.378459-2-maxime.chevallier@bootlin.com>
-	<560e7969-b859-45ed-b368-350a62cec678@lunn.ch>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1S5+Xly"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E56C4CEE3;
+	Tue, 15 Jul 2025 06:37:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752561447;
+	bh=QJSYFEA+ygE2WZbbXWc8V+Ze9PznoxhoiLjS/1W8Pdc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=d1S5+Xlym8m1xhCN+RL7SmlmYMlEQoimgRj8dtFHMuFYLtwUxQntRpOZNE5w01T5k
+	 Tc7y0bVEGblVy1nvT2JTUd3pQPKO1ZVlb7Vlunq35TTmMa9gPXs/SWs0BfmrBWRfCm
+	 pmNhdAnufbGtTq8/4AaHW+xW49jnx1aQ9iZhj+3YeRSoD8sNH2G5nGjrv4y20hGy27
+	 5bkHotqpSu6ect6KuhitrhMZG4O0Olrjungw2valKmSrXw0vpZtkfehBAlNmbM8wDj
+	 xB5jjK7McXvY2byRsc+PxCqVvCE1NbgL8Pc0HNK1Y+XZ18JicHebgsc7UOFUBaNBrj
+	 SeZdKiE7lZRCQ==
+Message-ID: <62b0f514-a8a9-4147-a5c0-da9dbe13ce39@kernel.org>
+Date: Tue, 15 Jul 2025 08:37:21 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehgedtjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthhqredtredtvdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevieevgeehgfekgedtledvleeuieelheegiefftdeuhfelvddufeelheegteevgeenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedujedprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpt
- hhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomh
-X-GND-Sasl: maxime.chevallier@bootlin.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 1/3] dt-bindings: sram: qcom,imem: Allow
+ modem-tables
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alex Elder <elder@kernel.org>
+Cc: Marijn Suijten <marijn.suijten@somainline.org>,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ Alex Elder <elder@riscstar.com>
+References: <20250527-topic-ipa_imem-v2-0-6d1aad91b841@oss.qualcomm.com>
+ <20250527-topic-ipa_imem-v2-1-6d1aad91b841@oss.qualcomm.com>
+ <97724a4d-fad5-4e98-b415-985e5f19f911@kernel.org>
+ <e7ee4653-194c-417a-9eda-2666e9f5244d@oss.qualcomm.com>
+ <68622599-02d0-45ca-82f5-cf321c153cde@kernel.org>
+ <bf78d681-723b-4372-86e0-c0643ecc2399@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <bf78d681-723b-4372-86e0-c0643ecc2399@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 12 Jul 2025 18:54:38 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
+On 14/07/2025 19:53, Konrad Dybcio wrote:
+> On 5/27/25 1:42 PM, Krzysztof Kozlowski wrote:
+>> On 27/05/2025 13:36, Konrad Dybcio wrote:
+>>>>> diff --git a/Documentation/devicetree/bindings/sram/qcom,imem.yaml b/Documentation/devicetree/bindings/sram/qcom,imem.yaml
+>>>>> index 2711f90d9664b70fcd1e2f7e2dfd3386ed5c1952..7c882819222dc04190db357ac6f9a3a35137cc9e 100644
+>>>>> --- a/Documentation/devicetree/bindings/sram/qcom,imem.yaml
+>>>>> +++ b/Documentation/devicetree/bindings/sram/qcom,imem.yaml
+>>>>> @@ -51,6 +51,9 @@ properties:
+>>>>>      $ref: /schemas/power/reset/syscon-reboot-mode.yaml#
+>>>>>  
+>>>>>  patternProperties:
+>>>>> +  "^modem-tables@[0-9a-f]+$":
+>>>>> +    description: Region reserved for the IP Accelerator
+>>>>
+>>>> Missing additionalProperties: false, which would point you that this is
+>>>> incomplete (or useless because empty).
+>>>
+>>> How do I describe a 'stupid' node that is just a reg?
+>> With "reg" - similarly to many syscon bindings.
+> 
+> Is this sort of inline style acceptable, or should I introduce
+> a separate file?
 
-> > +static int nsim_mdio_read(struct mii_bus *bus, int phy_addr, int reg_n=
-um)
-> > +{
-> > +	return 0;
-> > +}
-> > +
-> > +static int nsim_mdio_write(struct mii_bus *bus, int phy_addr, int reg_=
-num,
-> > +			   u16 val)
-> > +{
-> > +	return 0;
-> > +} =20
->=20
-> If i'm reading the code correctly, each PHY has its own MDIO bus? And
-> the PHY is always at address 0?
+It's fine, assuming that it is desired in general. We do not describe
+individual memory regions of syscon nodes and this is a syscon.
 
-Yes indeed.=20
+If this is NVMEM (which it looks like), then could use NVMEM bindings to
+describe its cells - individual regions. But otherwise we just don't.
 
-> Maybe for address !=3D 0, these should return -ENODEV?
+There are many exceptions in other platforms, mostly old or even
+unreviewed by DT maintainers, so they are not a recommended example.
 
-That could be done yes, but I don't think this will ever happen as this
-is only ever going to be used in netdevsim, which also controls the PHY
-instantiation. I'm OK to add the ENODEV though :)
+This would need serious justification WHY you need to describe the
+child. Why phandle to the main node is not enough for consumers.
 
-For the record, the first draft implementation I had locally used a
-single MDIO bus on which we could register up to 32 netdevsim PHYs, but
-that wasn't enough. At some point Jakub pointed me to the case of
-netlink DUMP requests that would be too large to fit in a single
-netlink message (default threshold for that is > 4K messages), so to
-test that with the phy_link_topology stuff, I had to add around 150
-PHYs...
+If the reason is - to instantiate child device driver - then as well no.
+This has been NAKed on the lists many times - you need resources if the
+child should be a separate node. Address space is one resource but not
+enough, because it can easily be obtained from the parent/main node.
 
-> I'm guessing the PHY core is going to perform reads/writes for things
-> like EEE? And if the MAC driver has an IOCTL handler, it could also do
-> reads/writes. So something is needed here, but i do wounder if hard
-> coded 0 is going to work out O.K? Have you looked at what accesses the
-> core actually does?
 
-I don't see that driver being useful outside of netdevsim, so at
-least we have a good idea of what the MAC driver will do.
 
-There'e no ioctl, but we can be on the safe side and stub it a bit more.
-
-=46rom the tests I've been running, I didn't encounter any side-effect
-but I only tested very simple cases (set link up, run ethtool, etc.)
-
-I've considered re-using swphy for example, and using an emulated MDIO
-bus for netdevsim PHY, but my fear was that this would in the end get
-too complex. Let's say we want to add a new netdevsim debugfs
-file that allows us to control what is the speed reported by the phy,
-if we want to report say 10G speeds, we also need to emulate C45, etc.
-
-I guess at some point, we will run into scenarios where phylib is going
-to call some genphy helpers, it really depends on how deep we want to go
-with this netdevsim PHY driver.
-
-The use-cases that I saw were :
- - Being able to test the netlink stuff now that we have the ability to
-know which PHY handles which command
- - In the future, write some tests for the linkmode reporting (that I
-broke once with phy_caps)
- - When PHY Muxes eventually get there, I'd also like to netdevsim
-that.
-
-However that's just my view of the thing, we could also consider having
-this driver rely purely on MDIO emulation, where the MDIO registers
-would behave exactly as specified in C22/C37/C45, but that's quite more
-complex :)
-
-I'm open for any improvement or ideas on that driver :)
-
->      Andrew
-
-Thanks for the review,
-
-Maxime
+Best regards,
+Krzysztof
