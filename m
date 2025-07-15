@@ -1,115 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0DC4C83;
-	Tue, 15 Jul 2025 15:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E054202C49;
+	Tue, 15 Jul 2025 15:13:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752592316; cv=none; b=Tn80zKzIgoUxgSppROpoWp8SIHnO1bCx2gpjmU6+DrmzoJvOcFZGn7k4sUGRsjckeQdQsDM2Df9BgSO4QJAgXL71Z8D1CPv0gmRG49Vj53NmS8DDh8dRs6wqmRlDFDlbThb+h8g4ARtwF8cuRSz1SAHQM32XgpGkhs52gZS62LU=
+	t=1752592423; cv=none; b=Cwndt3JnQZE3X6c39RP1XNW+O5pBoCLiD9JBdN9UHcFpy3fxHFOWt8dblxuQLKVboaj1z27pAVIcFAKMiROiH+IlJb7IiPcgWDAqBMqyaxVAhRbe1b3SsnYvUfLBCeh+p2J1F6FFIPk+UzmqkpjJyfz8plvbRqQdaml1Uivh0UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752592316; c=relaxed/simple;
-	bh=GT9YCMpmO/oGbAXwtofhY5F7e46WJk2TBT21YGNxioQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dlmFh192/alda5xZXKqeBHgfRxdwWIzLeMza3dupvtlqs8FFMyB3hrPSVi0/hv3X7G3R1ga6Gr77CXxLeZd44glUGDFaxZGWAh2DVzWuwYtj/JyP8M5W/e2/2x2aM0iDqLKtuI0wwkadALXhW4hOhUk9wYuR7tOefsISSmCyeWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q0ndQ6mS; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q0ndQ6mS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752592315; x=1784128315;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=GT9YCMpmO/oGbAXwtofhY5F7e46WJk2TBT21YGNxioQ=;
-  b=Q0ndQ6mSMIuQOLDINHH5prIeJmLF8CE1RMrncLNEZorDHJMwsB5k2UGx
-   ppy5y8Te1J+hDDTGm8OhLFziwgLr1iNJFK+4t08kEsswbgKeCnEcRvTmk
-   DmksVl3dM1rgQhFw3QaO9pnJpQ0IOagiK4OwOcI055ZxtCEU584dPq6E7
-   wd49OylARGVDaBVphLwWGdUq47vqHJaXlQS67P679iR8OLKVIk+9eNu8H
-   tKdx2ymhVp59Iby8RtNlHBX4zMPd+ozL4GHwhLzVUeT3AY+N6raphXxnr
-   vmqJpAFZ8GOyMenp5cTFEeQPdptb2Ih9ThG/1KmkqIx9z6QwctcuJEnPa
-   g==;
-X-CSE-ConnectionGUID: sk9lAPRSSH+je3lRNl9JQQ==
-X-CSE-MsgGUID: E79l3cX5Sx2XYzLQSlAIdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54907821"
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="54907821"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 08:09:24 -0700
-X-CSE-ConnectionGUID: kRlxMx3/SPu8BGSVLj+Ezg==
-X-CSE-MsgGUID: VgyJUB25RxeWdk6pmX7cWw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="157354678"
-Received: from tcingleb-desk1.amr.corp.intel.com (HELO [10.125.111.148]) ([10.125.111.148])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 08:09:19 -0700
-Message-ID: <841e6d14-e3cc-4c23-9256-96f0c4e2d761@intel.com>
-Date: Tue, 15 Jul 2025 08:09:18 -0700
+	s=arc-20240116; t=1752592423; c=relaxed/simple;
+	bh=kKxqrmLt4lcjaPEkskXnTFZjIxXnpmJGM1JM7tMvYNo=;
+	h=Date:Message-ID:In-Reply-To:References:Mime-Version:From:To:Cc:
+	 Subject:Content-Type; b=USS8lT/UhU6Mubzv8bYpIQ9QVCPY9/3fA36UvlgeVO0Yy5683Do5XMCFvyUedW1roMfzIXdsgAzrcaPX+2HHxiiB/Atr98Np3a2yZ7MyUekt5l/1Ll1ZAJfDnBLaPJb+UiFN75llYaqeFBdygh9QY7d7qVpVVN6fv8ILIXBgfJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4bhN4700wSz8R039;
+	Tue, 15 Jul 2025 23:13:27 +0800 (CST)
+Received: from xaxapp02.zte.com.cn ([10.88.97.241])
+	by mse-fl1.zte.com.cn with SMTP id 56FFDLSd040471;
+	Tue, 15 Jul 2025 23:13:21 +0800 (+08)
+	(envelope-from fan.yu9@zte.com.cn)
+Received: from mapi (xaxapp02[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Tue, 15 Jul 2025 23:13:25 +0800 (CST)
+Date: Tue, 15 Jul 2025 23:13:25 +0800 (CST)
+X-Zmail-TransId: 2afa6876701553c-d3fb8
+X-Mailer: Zmail v1.0
+Message-ID: <20250715231325415aMAZWoPQiUJ2Fe-ongTRW@zte.com.cn>
+In-Reply-To: <20250715072058.12f343bb@kernel.org>
+References: 20250714164625.788f7044@kernel.org,20250715072058.12f343bb@kernel.org
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/8] cxl: mce: Fix typo "notifer"
-To: WangYuli <wangyuli@uniontech.com>
-Cc: airlied@gmail.com, akpm@linux-foundation.org, alison.schofield@intel.com,
- andrew+netdev@lunn.ch, andriy.shevchenko@linux.intel.com,
- arend.vanspriel@broadcom.com, bp@alien8.de,
- brcm80211-dev-list.pdl@broadcom.com, brcm80211@lists.linux.dev,
- colin.i.king@gmail.com, cvam0000@gmail.com, dan.j.williams@intel.com,
- dave.hansen@linux.intel.com, dave@stgolabs.net, davem@davemloft.net,
- dri-devel@lists.freedesktop.org, edumazet@google.com,
- gregkh@linuxfoundation.org, guanwentao@uniontech.com, hpa@zytor.com,
- ilpo.jarvinen@linux.intel.com, intel-xe@lists.freedesktop.org,
- ira.weiny@intel.com, j@jannau.net, jeff.johnson@oss.qualcomm.com,
- jgross@suse.com, jirislaby@kernel.org, johannes.berg@intel.com,
- jonathan.cameron@huawei.com, kuba@kernel.org, kvalo@kernel.org,
- kvm@vger.kernel.org, linux-cxl@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux@treblig.org, lucas.demarchi@intel.com,
- marcin.s.wojtas@gmail.com, ming.li@zohomail.com, mingo@kernel.org,
- mingo@redhat.com, netdev@vger.kernel.org, niecheng1@uniontech.com,
- oleksandr_tyshchenko@epam.com, pabeni@redhat.com, pbonzini@redhat.com,
- quic_ramess@quicinc.com, ragazenta@gmail.com, rodrigo.vivi@intel.com,
- seanjc@google.com, shenlichuan@vivo.com, simona@ffwll.ch,
- sstabellini@kernel.org, tglx@linutronix.de,
- thomas.hellstrom@linux.intel.com, vishal.l.verma@intel.com, x86@kernel.org,
- xen-devel@lists.xenproject.org, yujiaoliang@vivo.com, zhanjun@uniontech.com
-References: <BD5C52D2838AEA48+20250715134050.539234-1-wangyuli@uniontech.com>
- <65FC7B96ECBDB052+20250715134407.540483-2-wangyuli@uniontech.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <65FC7B96ECBDB052+20250715134407.540483-2-wangyuli@uniontech.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+From: <fan.yu9@zte.com.cn>
+To: <kuba@kernel.org>
+Cc: <edumazet@google.com>, <kuniyu@amazon.com>, <ncardwell@google.com>,
+        <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+        <yang.yang29@zte.com.cn>, <xu.xin16@zte.com.cn>,
+        <tu.qiang35@zte.com.cn>, <jiang.kun2@zte.com.cn>, <pabeni@redhat.com>,
+        <horms@kernel.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCBuZXQtbmV4dCB2NF0gdGNwOiBleHRlbmQgdGNwX3JldHJhbnNtaXRfc2tiIHRyYWNlcG9pbnQgd2l0aCBmYWlsdXJlIHJlYXNvbnM=?=
+Content-Type: multipart/mixed;
+	boundary="=====_001_next====="
+X-MAIL:mse-fl1.zte.com.cn 56FFDLSd040471
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 68767016.000/4bhN4700wSz8R039
 
 
 
-On 7/15/25 6:44 AM, WangYuli wrote:
-> According to the context, "mce_notifer" should be "mce_notifier".
-> 
-> Link: https://lore.kernel.org/all/B3C019B63C93846F+20250715071245.398846-1-wangyuli@uniontech.com/
-> Fixes: 516e5bd0b6bf ("cxl: Add mce notifier to emit aliased address for extended linear cache")
-> Signed-off-by: WangYuli <wangyuli@uniontech.com>
+--=====_001_next=====
+Content-Type: multipart/related;
+	boundary="=====_002_next====="
 
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-> ---
->  drivers/cxl/core/mce.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/cxl/core/mce.h b/drivers/cxl/core/mce.h
-> index ace73424eeb6..ca272e8db6c7 100644
-> --- a/drivers/cxl/core/mce.h
-> +++ b/drivers/cxl/core/mce.h
-> @@ -7,7 +7,7 @@
->  
->  #ifdef CONFIG_CXL_MCE
->  int devm_cxl_register_mce_notifier(struct device *dev,
-> -				   struct notifier_block *mce_notifer);
-> +				   struct notifier_block *mce_notifier);
->  #else
->  static inline int
->  devm_cxl_register_mce_notifier(struct device *dev,
+
+--=====_002_next=====
+Content-Type: multipart/alternative;
+	boundary="=====_003_next====="
+
+
+--=====_003_next=====
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+PiA+IEkgYWdyZWUgdGhhdCBzb21lIG9mIHRoZSByZXN1bHQgdHlwZXMgKGUuZy4sIEVOT01FTSwg
+RU5EX1NFUV9FUlJPUikNCj4gPiBtYXkgYmUgcmVkdW5kYW50IG9yIHVubGlrZWx5IGluIHByYWN0
+aWNlLiBJZiB3ZSBmb2N1cyBvbmx5IG9uIHRoZSBtb3N0DQo+ID4gY3JpdGljYWwgY2FzZXMsIHdv
+dWxkIHRoZSBmb2xsb3dpbmcgc3Vic2V0IGJlIG1vcmUgYWNjZXB0YWJsZT8NCj4gPiAtIFRDUF9S
+RVRSQU5TX0ZBSUxfUVVFVUVEIChwYWNrZXQgc3R1Y2sgaW4gaG9zdC9kcml2ZXIgcXVldWUpDQo+
+ID4gLSBUQ1BfUkVUUkFOU19GQUlMX1pFUk9fV0lORE9XIChyZWNlaXZlciB3aW5kb3cgY2xvc2Vk
+KQ0KPiA+IC0gVENQX1JFVFJBTlNfRkFJTF9ST1VURSAocm91dGluZyBpc3N1ZXMpDQo+ID4gLSBU
+Q1BfUkVUUkFOU19GQUlMX0RFRkFVTFQgKGNhdGNoLWFsbCBmb3IgdW5leHBlY3RlZCBmYWlsdXJl
+cykNCj4gDQo+IElzbid0IGl0IGVub3VnaCB0byBhZGQgdGhlIHJldHZhbCB0byB0aGUgdHJhY2Vw
+b2ludD8NCj4gQWxsIHRoZSBjYXNlcyB3ZSBjYXJlIGFib3V0IGFscmVhZHkgaGF2ZSBtZWFuaW5n
+ZnVsIGFuZCBkaXN0aW5jdCBlcnJvcg0KPiBjb2Rlcy4NCkhpIEpha3ViLA0KSSBhZ3JlZSB0aGF0
+IHVzaW5nIGV4aXN0aW5nIGVycm9yIGNvZGVzIChyZXR2YWwpIGluDQpjb3VsZCBiZSBhIHNpbXBs
+ZXIgYW5kIG1vcmUgbWFpbnRhaW5hYmxlIGFwcHJvYWNoLg0KDQpJbnN0ZWFkIG9mIGludHJvZHVj
+aW5nIG5ldyBUQ1BfUkVUUkFOU18qIGVudW1zLCBJ4oCZbGwgZGlyZWN0bHkNCnBhc3MgdGhlIHJl
+dHZhbCB0byB0aGUgdHJhY2Vwb2ludCBpbiBwYXRjaCB2NS4=
+
+
+--=====_003_next=====
+Content-Type: text/html ;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
+
+PGRpdiBjbGFzcz0iemNvbnRlbnRSb3ciPjxwPiZndDsgJmd0OyBJIGFncmVlIHRoYXQgc29tZSBv
+ZiB0aGUgcmVzdWx0IHR5cGVzIChlLmcuLCBFTk9NRU0sIEVORF9TRVFfRVJST1IpPC9wPjxwPiZn
+dDsgJmd0OyBtYXkgYmUgcmVkdW5kYW50IG9yIHVubGlrZWx5IGluIHByYWN0aWNlLiBJZiB3ZSBm
+b2N1cyBvbmx5IG9uIHRoZSBtb3N0PC9wPjxwPiZndDsgJmd0OyBjcml0aWNhbCBjYXNlcywgd291
+bGQgdGhlIGZvbGxvd2luZyBzdWJzZXQgYmUgbW9yZSBhY2NlcHRhYmxlPzwvcD48cD4mZ3Q7ICZn
+dDsgLSBUQ1BfUkVUUkFOU19GQUlMX1FVRVVFRCAocGFja2V0IHN0dWNrIGluIGhvc3QvZHJpdmVy
+IHF1ZXVlKTwvcD48cD4mZ3Q7ICZndDsgLSBUQ1BfUkVUUkFOU19GQUlMX1pFUk9fV0lORE9XIChy
+ZWNlaXZlciB3aW5kb3cgY2xvc2VkKTwvcD48cD4mZ3Q7ICZndDsgLSBUQ1BfUkVUUkFOU19GQUlM
+X1JPVVRFIChyb3V0aW5nIGlzc3Vlcyk8L3A+PHA+Jmd0OyAmZ3Q7IC0gVENQX1JFVFJBTlNfRkFJ
+TF9ERUZBVUxUIChjYXRjaC1hbGwgZm9yIHVuZXhwZWN0ZWQgZmFpbHVyZXMpPC9wPjxwPiZndDsm
+bmJzcDs8L3A+PHA+Jmd0OyBJc24ndCBpdCBlbm91Z2ggdG8gYWRkIHRoZSByZXR2YWwgdG8gdGhl
+IHRyYWNlcG9pbnQ/PC9wPjxwPiZndDsgQWxsIHRoZSBjYXNlcyB3ZSBjYXJlIGFib3V0IGFscmVh
+ZHkgaGF2ZSBtZWFuaW5nZnVsIGFuZCBkaXN0aW5jdCBlcnJvcjwvcD48cD4mZ3Q7IGNvZGVzLjwv
+cD48cD5IaSBKYWt1Yiw8L3A+PHA+SSBhZ3JlZSB0aGF0IHVzaW5nIGV4aXN0aW5nIGVycm9yIGNv
+ZGVzIChyZXR2YWwpIGluPC9wPjxwPmNvdWxkIGJlIGEgc2ltcGxlciBhbmQgbW9yZSBtYWludGFp
+bmFibGUgYXBwcm9hY2guPC9wPjxwPjxicj48L3A+PHA+SW5zdGVhZCBvZiBpbnRyb2R1Y2luZyBu
+ZXcgVENQX1JFVFJBTlNfKiBlbnVtcywgSeKAmWxsIGRpcmVjdGx5PC9wPjxwPnBhc3MgdGhlIHJl
+dHZhbCB0byB0aGUgdHJhY2Vwb2ludCBpbiBwYXRjaCB2NS48L3A+PC9kaXY+
+
+
+--=====_003_next=====--
+
+--=====_002_next=====--
+
+--=====_001_next=====--
 
