@@ -1,129 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay16.mail.gandi.net (relay16.mail.gandi.net [217.70.178.236])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0135255F24;
-	Tue, 15 Jul 2025 05:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EA12D29CD;
+	Tue, 15 Jul 2025 06:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752559032; cv=none; b=H/oRjwtXmXAJvia2cdLs9Ogn9n7mnBOXx/hLTkV5e5KArztjHqE9nqBF40C1pfw9xS6tS7BalVsXh2uWoG9bJCul/VkPC3tWL/dAaExUMSZPe9EfBSAl/0A3JtakHhPndiB+PWiteG9TSGVIvLCKADOin+Gd8jj0ghB6fmRbm0Q=
+	t=1752559725; cv=none; b=oPvrweweZvUeO7CZrpA5XOZaM2Dtx3LEz9N8fjLShVPmjeMVZNl9/8wXuLrTB6865idhE8GT+ySG5kKWUMHsGkcJGg66CngR2z+61UcJcQFgyBXohrUq3kde88G8x7/0MFEkyv9w8Dl3WphtMdbi/O0ZlgcHhzhaG9WfKeegWcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752559032; c=relaxed/simple;
-	bh=wmvN79kkI2uY89k/rrcdVS6059/8dQL8TezMZWnf+rM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UuwIH4MM45hCUNMHgWeG49I8VJJPNO+tDblhdMsyAS6SLXsvums274nez4bdkmBpRHmgcQVvy+dcvx/U8TpauUDIrGNZH5I666NUa6m4PMYmWs+EuE6gjCwhU9KOTjL1dqgjLfgt2v/lRyFze5eGQvRWAwEOexHm9oLHVTKbEs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJ0kddfR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752559725; c=relaxed/simple;
+	bh=sHNNy41ZchjJYhjkgZlkZaOxhThztJMGb/eo2DxdCqo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MLyUvfEhHlub53dQl9oQ/HJ7YLxPNQWLklkD9TFzci5jDyQ6RF0gU+kVMwSAWStJXJ9lqh2X/0Z9VNDokt5j+ldUWSIz4WYLUA8RKDKKUOJBd9pbdz50Xxg2xGN+IIeIsIHfjhqtuDR62gHdz/4c3QkbUUzuwPtzA/Fm2AKNhos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FL3YtFnb; arc=none smtp.client-ip=217.70.178.236
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJ0kddfR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8964C4CEE3;
-	Tue, 15 Jul 2025 05:57:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752559031;
-	bh=wmvN79kkI2uY89k/rrcdVS6059/8dQL8TezMZWnf+rM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jJ0kddfRq/wi2cczPvscCBtaQBOvPPubaZPv3FhypEw+5UKK0WhctGzJqakUE47mj
-	 0hgvMUtevpezIfVJrccsqdtSYPd2sjN0nRb9tN0vghFJ+c05Vt5+gWGqNDdNJk7p6H
-	 Sh8oWOAYHvlvgAcM5ZwOV2KbvC/4LCYKyIt/WgUJb5b0ER0EaKLDgyQwMcQxcdZpWG
-	 yRZoRdLWkXFBN0aAu91ZYkfbMxd4cRB9BrlHetz/bw9JgY4rGuKT9x+znMMEXCi7ry
-	 xSs/2RLQ/Ed9IUoMZM+nwW7VQ7Wh00EVvhINdsIUSq31XrazAB7+UGLadWmjzYO5wH
-	 BcbPsbS4HX8Vw==
-Date: Tue, 15 Jul 2025 08:57:07 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org, llvm@lists.linux.dev,
-	Ingo Molnar <mingo@redhat.com>, Bill Wendling <morbo@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Salil Mehta <salil.mehta@huawei.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-	Yisen Zhuang <yisen.zhuang@huawei.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Mark Rutland <mark.rutland@arm.com>,
-	Michael Guralnik <michaelgur@mellanox.com>, patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Jijie Shao <shaojijie@huawei.com>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v3 6/6] IB/mlx5: Use __iowrite64_copy() for write
- combining stores
-Message-ID: <20250715055707.GC5882@unreal>
-References: <0-v3-1893cd8b9369+1925-mlx5_arm_wc_jgg@nvidia.com>
- <6-v3-1893cd8b9369+1925-mlx5_arm_wc_jgg@nvidia.com>
- <20250714215504.GA2083014@nvidia.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FL3YtFnb"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A220C44A1C;
+	Tue, 15 Jul 2025 06:08:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1752559720;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0tOZktrYT4fpzyCPv7EqQuQ/zV//e8X9GJdSl7TB5LE=;
+	b=FL3YtFnbN1gjy9855J0Qbii5j3/f3m9kN0wV4K/I9bvgSG4cJwsDcaKZrM8H4P2xWIVTuw
+	/PFKDz4wConScqL1Cv/3kUhiIbLHQYkrhQHxMjYeecubgGW4x2pBsl28cxmePEq9DC9kIo
+	MCh+Pknl1cJlb+G+MEFWcRMT9LRP/VEuwST716f6Vqo+USktaZ+M+20/H96wkmYNb5E+Kk
+	QTnScV97ODulv7dHlsVBfL5UF0cDn+01fEAxBGVwMm3pOinstlwkJsfJ9VD/t4RtwgMjbt
+	Sq75sPbfYdW2sYp4w3SgQ2mYulyfUsKFeW8hI/LtFA76gyu+Ih1J0KQoVrZ/OA==
+Date: Tue, 15 Jul 2025 08:08:37 +0200
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com, Andrew Lunn
+ <andrew@lunn.ch>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, Florian Fainelli
+ <f.fainelli@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>, Vladimir
+ Oltean <vladimir.oltean@nxp.com>, =?UTF-8?B?S8O2cnk=?= Maincent
+ <kory.maincent@bootlin.com>, Oleksij Rempel <o.rempel@pengutronix.de>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v3 1/3] net: netdevsim: Add PHY support in
+ netdevsim
+Message-ID: <20250715080837.1aa0e9dd@fedora.home>
+In-Reply-To: <20250711165541.586f51e8@kernel.org>
+References: <20250710062248.378459-1-maxime.chevallier@bootlin.com>
+	<20250710062248.378459-2-maxime.chevallier@bootlin.com>
+	<20250711165541.586f51e8@kernel.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250714215504.GA2083014@nvidia.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehgedtjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegveeltddvveeuhefhvefhlefhkeevfedtgfeiudefffeiledttdfgfeeuhfeukeenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedujedprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtp
+ hhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomh
 
-On Mon, Jul 14, 2025 at 06:55:04PM -0300, Jason Gunthorpe wrote:
-> On Thu, Apr 11, 2024 at 01:46:19PM -0300, Jason Gunthorpe wrote:
-> > mlx5 has a built in self-test at driver startup to evaluate if the
-> > platform supports write combining to generate a 64 byte PCIe TLP or
-> > not. This has proven necessary because a lot of common scenarios end up
-> > with broken write combining (especially inside virtual machines) and there
-> > is other way to learn this information.
-> > 
-> > This self test has been consistently failing on new ARM64 CPU
-> > designs (specifically with NVIDIA Grace's implementation of Neoverse
-> > V2). The C loop around writeq() generates some pretty terrible ARM64
-> > assembly, but historically this has worked on a lot of existing ARM64 CPUs
-> > till now.
-> > 
-> > We see it succeed about 1 time in 10,000 on the worst effected
-> > systems. The CPU architects speculate that the load instructions
-> > interspersed with the stores makes the WC buffers statistically flush too
-> > often and thus the generation of large TLPs becomes infrequent. This makes
-> > the boot up test unreliable in that it indicates no write-combining,
-> > however userspace would be fine since it uses a ST4 instruction.
-> 
-> Hi Catalin,
-> 
-> After a year of testing this in real systems it turns out that still
-> some systems are not good enough with the unrolled 8 byte store loop.
-> In my view the CPUs are quite bad here and this WC performance
-> optimization is not working very well.
-> 
-> There are only two more options to work around this issue, use the
-> unrolled 16 byte STP or the single Neon instruction 64 byte store.
-> 
-> Since STP was rejected alread we've only tested the Neon version. It
-> does make a huge improvement, but it still somehow fails to combine
-> rarely sometimes. The CPU is really bad at this :(
-> 
-> So we want to make mlx5 use the single 64 byte neon store instruction
-> like userspace has been using for a long time for this testing
-> algorithm.
-> 
-> It is simple enough, but the question has come up where to put the
-> code.  Do you want to somehow see the neon option to be in the
-> arch/arm64 code or should we stick it in the driver under a #ifdef?
-> 
-> The entry/exit from neon is slow enough I don't think any driver doing
-> performance work would want to use neon instead of __iowrite64_copy(),
-> so I do not think it should be hidden inside __iowrite64_copy(). Nor
-> have I thought of a name for an arch generic function..
+On Fri, 11 Jul 2025 16:55:41 -0700
+Jakub Kicinski <kuba@kernel.org> wrote:
 
-__iowrite64_slow_copy() ????
-
+> On Thu, 10 Jul 2025 08:22:45 +0200 Maxime Chevallier wrote:
+> > @@ -1098,6 +1101,10 @@ static int __init nsim_module_init(void)
+> >  {
+> >  	int err;
+> >  
+> > +	err = nsim_phy_drv_register();
+> > +	if (err)
+> > +		return err;
+> > +
+> >  	err = nsim_dev_init();
+> >  	if (err)
+> >  		return err;  
 > 
-> Thanks,
-> Jason
+> I think you're missing error handling in this function if something
+> after drv_register fails.
+
+Ah true... Thanks
+
+> > @@ -1124,6 +1131,7 @@ static void __exit nsim_module_exit(void)
+> >  	rtnl_link_unregister(&nsim_link_ops);
+> >  	nsim_bus_exit();
+> >  	nsim_dev_exit();
+> > +	nsim_phy_drv_unregister();
+> >  }  
+> 
+> > +free_mdiobus:
+> > +	atomic_dec(&bus_num);
+> > +	mdiobus_free(mb->mii);
+> > +free_pdev:
+> > +	platform_device_unregister(mb->pdev);
+> > +free_mb:  
+> 
+> Others have added netdevsim code so the entire code base doesn't follow
+> what I'm about to say, but if you dont mind indulging my personal coding
+> style - error handling labels on a path disjoint from the success path
+> should be prefixed with err_$first-undo-action. If the error handling
+> shares the path with success the label prefix should be exit_$..
+> You can look at drivers/net/netdevsim/bpf.c for examples
+
+That's totally fine by me, it makes sense :)
+
+> > +	kfree(mb);
+> > +
+> > +	return NULL;
+> > +}
+> > +
+> > +static ssize_t
+> > +nsim_phy_add_write(struct file *file, const char __user *data,
+> > +		   size_t count, loff_t *ppos)
+> > +{
+> > +	struct net_device *dev = file->private_data;
+> > +	struct netdevsim *ns = netdev_priv(dev);
+> > +	struct nsim_phy_device *ns_phy;
+> > +	struct phy_device *pphy;
+> > +	u32 parent_id;
+> > +	char buf[10];
+> > +	ssize_t ret;
+> > +	int err;
+> > +
+> > +	if (*ppos != 0)
+> > +		return 0;
+> > +
+> > +	if (count >= sizeof(buf))
+> > +		return -ENOSPC;
+> > +
+> > +	ret = copy_from_user(buf, data, count);
+> > +	if (ret)
+> > +		return -EFAULT;
+> > +	buf[count] = '\0';
+> > +
+> > +	ret = kstrtouint(buf, 10, &parent_id);
+> > +	if (ret)
+> > +		return -EINVAL;
+> > +
+> > +	ns_phy = nsim_phy_register();
+> > +	if (IS_ERR(ns_phy))
+> > +		return PTR_ERR(ns_phy);
+> > +
+> > +	if (!parent_id) {
+> > +		if (!dev->phydev) {
+> > +			err = phy_connect_direct(dev, ns_phy->phy, nsim_adjust_link,
+> > +						 PHY_INTERFACE_MODE_NA);
+> > +			if (err)
+> > +				return err;
+> > +
+> > +			phy_attached_info(ns_phy->phy);
+> > +
+> > +			phy_start(ns_phy->phy);
+> > +		} else {
+> > +			phy_link_topo_add_phy(dev, ns_phy->phy, PHY_UPSTREAM_MAC, dev);
+> > +		}
+> > +	} else {
+> > +		pphy = phy_link_topo_get_phy(dev, parent_id);
+> > +		if (!pphy)
+> > +			return -EINVAL;
+> > +
+> > +		phy_link_topo_add_phy(dev, ns_phy->phy, PHY_UPSTREAM_PHY, pphy);
+> > +	}
+> > +
+> > +	nsim_phy_debugfs_create(ns->nsim_dev_port, ns_phy);
+> > +
+> > +	list_add(&ns_phy->node, &ns->nsim_dev->phy_list);  
+> 
+> No locks needed.. for any of this.. ?
+
+Heh I guess some locking is needed indeed... Let me add that in the
+next round...
+
+Maxime
