@@ -1,151 +1,205 @@
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2047.outbound.protection.outlook.com [40.107.102.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618DD2C374E
-	for <netdev@vger.kernel.org>; Tue, 15 Jul 2025 02:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752546007; cv=fail; b=dfsuCkbHZvOtNqhsgzsSqqDyjPNhYEuUR5IN74594PgqLzaqyqCjJKa8OhtG/seW10DGSIafIBZ6xiM3duA6SyUBzKqFlOsYhGtZpg4BlHgA/Hgasn7tFqQ7RMRTRhHGBGF7oWeSd1ekeuvCEoREpMtnDQY5eQekHgpcly87oHo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752546007; c=relaxed/simple;
-	bh=iZ1KxJxjWNn7U1sRfrqijrz9e2mCSYi3ioMZ8oUp0o4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BFTYjfrI4ZIBY9yQVaxULivwhtDQ2+y5aQog7neja54H+WQbPoUmqmh5ssHVNSsJJ2KmSUE6xi72gR5X4d6TZ5Uy3Fqc4F7GJ0Ld9jreJlG2yTq1sIP7kGtjhVtLNvROcTU4NBNftCmHPsH2Q0kPrQxBCDtG8gia/SJiojD5jm0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=maxlinear.com; spf=pass smtp.mailfrom=maxlinear.com; dkim=pass (2048-bit key) header.d=maxlinear.com header.i=@maxlinear.com header.b=RgRrruNJ; arc=fail smtp.client-ip=40.107.102.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=maxlinear.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maxlinear.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDB8155A4E;
+	Tue, 15 Jul 2025 02:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752546338; cv=none; b=lGjWQXMeiCYswPBdyXZOt6ESuCYz0hreQlDk3rp0jlBlp6rkM22NEUxOeegF88von6WcVciNVqOHYPYMm8gLgoWGxoBws8MTPOahuCnPl0vrbQD2MQsrer1LUdkdYBmOxXN+UkpsV/PKk8Qgtu+kqkD2AoazTkrz+ApBlE9B7Fg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752546338; c=relaxed/simple;
+	bh=/1mQXHiO2/QpEbjJNqw1AAh6kwW4leTVsVh4GnX9Ges=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OObNrKtfnBLRZ8POLyj+Zyi2s/BkrzTxxNybuubciwkjvmF0KeWDtG5E8DakW4T6AQWuK/m7EdEh/JKBWuu46yHbEEVKsVZlNdvfbTGnUFilVNWnqFbNQmg9nun3GqAtw5WswE7lTe+gMyDv3OnCYeg1SSDPn3wv7qWeeMLsP18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jhiPMDpR; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=maxlinear.com header.i=@maxlinear.com header.b="RgRrruNJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O53Q3e2a1FrPG8OXefGJbmoywQODn0BIhjR3FcbqHVJbncn4VKN+VKp1w9+mA7IrMhJq9xD02qeK89/RNzV7lvYjb7TSMfYFQfTJz2gBR2QmmCHEXpluLWPkOBrhavKPEbWwXUQ9YbLNxU+SqS2OXwBOHjHqz2vL++Y6cjTg8/raoBn3S66x/fGqFu5lNloRr0Jo4pKp2OQAuV6S9FBkUOGA+Kkj0wtLIbfPm0V4zjMkZXcmRp34T4MAk4SWpt5hEFiNvaAhxHSLvkHCNitYY/mXcIBMghVh5qoztL1H3oK0vCrW0+FWkcPwDHyTnWJRIJY04Q5Ti8+W5ZYwoV8Q/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2lfGezpH1ahmuQuVR6oRHMoSbBiFKjr3oM9Ml390r0g=;
- b=zHD/O9S5X9inmyEO6GWYADBImw70bwm4i+2Oixx0iiuUSvqA4gcwlpYmtMeb24naG7kEY2AFQjEgtTjw2DWO8/MMYoY/fjjrnkzLAhn29sJmxE8hK2jHLVRFlqusGzXVqg+MyKaEylaMwJMnQzhxNzwamv2yfjLCD8Pu/eNoN6fP8f/dheZo9f60xgP0tOtfTp7rMcvuRiUfhnYwrcV14UKvc6XofSxmgaBmQgp/OVM2Ks1cus0qYTKwZ1KsI0uPnewqB+q4dYLD6XB2hMtn45NzIPfLBEfaQvRckzXkQiF9Ax2uwVnNvBWFikHtIDimVh73ghBe2LSFDTia64oa7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 174.47.1.83) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=maxlinear.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=maxlinear.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maxlinear.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2lfGezpH1ahmuQuVR6oRHMoSbBiFKjr3oM9Ml390r0g=;
- b=RgRrruNJ50MuIgob1uD8jwE5FYjQd7QeGhrhhj1Gli6Rf8Gd47QQOBmilkSZ6SnS7n9ge0Oz/2yS4khNWCs0B4Ea1Wms9AXFQmXPiSPriCqS8cci07qkdSHk/IaW/VQCpwEv69mYEWYfH4oEhX1pCNjiHBIKfKBeRnC5ATzSWlKdGb/y45ncLNV1/rmEyXaU7gDGOKjDgsO2X/Hr1/VCrkBajGcBIbUIRNGd8UwBDuC7YlXWJubPlJrTaxDAcYoVwZldxs3nRad24igK+Q1o+8VdtLrhM6t8QR9E4ZYQ4mFvunThrrFZ3qPFWzb5uErc3ZlckjTszB7YGhaq0brQ4w==
-Received: from SN4PR0501CA0035.namprd05.prod.outlook.com
- (2603:10b6:803:40::48) by PH0PR19MB5018.namprd19.prod.outlook.com
- (2603:10b6:510:96::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Tue, 15 Jul
- 2025 02:20:01 +0000
-Received: from SA2PEPF00001508.namprd04.prod.outlook.com
- (2603:10b6:803:40:cafe::e8) by SN4PR0501CA0035.outlook.office365.com
- (2603:10b6:803:40::48) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.16 via Frontend Transport; Tue,
- 15 Jul 2025 02:20:01 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 174.47.1.83)
- smtp.mailfrom=maxlinear.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=maxlinear.com;
-Received-SPF: Pass (protection.outlook.com: domain of maxlinear.com designates
- 174.47.1.83 as permitted sender) receiver=protection.outlook.com;
- client-ip=174.47.1.83; helo=usmxlcas.maxlinear.com; pr=C
-Received: from usmxlcas.maxlinear.com (174.47.1.83) by
- SA2PEPF00001508.mail.protection.outlook.com (10.167.242.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.8922.22 via Frontend Transport; Tue, 15 Jul 2025 02:20:01 +0000
-Received: from sgb016.sgsw.maxlinear.com (10.23.238.16) by mail.maxlinear.com
- (10.23.38.120) with Microsoft SMTP Server id 15.1.2507.39; Mon, 14 Jul 2025
- 19:19:58 -0700
-From: Jack Ping CHNG <jchng@maxlinear.com>
-To: <netdev@vger.kernel.org>
-CC: <davem@davemloft.net>, <fancer.lancer@gmail.com>, <yzhu@maxlinear.com>,
-	<sureshnagaraj@maxlinear.com>, Jack Ping CHNG <jchng@maxlinear.com>
-Subject: [PATCH net-next v2] net: pcs: xpcs: Use devm_clk_get_optional
-Date: Tue, 15 Jul 2025 10:19:56 +0800
-Message-ID: <20250715021956.3335631-1-jchng@maxlinear.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jhiPMDpR"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a4f72cba73so3857495f8f.1;
+        Mon, 14 Jul 2025 19:25:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752546335; x=1753151135; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ia/GRWEj/tyEXlu02YhC4uvz3h3Vs8vLzxqDT6FKBPE=;
+        b=jhiPMDpRI63buaWQGgigx7He9B4a2Q4RqiRDDNR+IeO+RHntDXuzD7sR2xOoD9Hb5L
+         bacPgAGiH/zJIpyvG88zsNy7EcqHJnGNOTpQSBxGfSGn84tThYXttdWI5k6uQxkFnay1
+         WRA3Byw0H1jusK/wuGlRF9sYFW2WwdjQwUm9Z2uKYTfRk1dBb1A5C+2v4xBOBRfaHR/a
+         vFFVPFyKomlXE7rKtKm2tD0YZaVE7/H+YOMRu002YBZEZkCyZNqUFIw5AKDYuiLkc9L5
+         OdSrrSuifGviudW4mnwoI+EQkfgC9R6a8sOJwhULDNgiJyjHrBBa5Iw58HGz4BFFJBYx
+         KYWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752546335; x=1753151135;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ia/GRWEj/tyEXlu02YhC4uvz3h3Vs8vLzxqDT6FKBPE=;
+        b=YvMMaIhp9LFGmGqlefMWxT6Q/WJTMCEm9EKT/JS92KAAhuJFLF+S/wj2MltCbzaNPm
+         bA38/+yTHx3Y5j15xGHvbZr9fTxCfYFsBpaS2hERZjPmlGsJiRIP/He4S0mH3EsLcHNq
+         2qoD5mwj+khxP4QmdlWCZdOByKmDbVldqvFV4Uim0jrztteDTK5hnI4DC0DbOaeLXiSk
+         daRBC6qf9DtQ7xX65d+ZmhcNXbni35JyR+lh3yo/lsfXK2EVJs8CRTNjxH26g6/eIkPI
+         r5is4vpMkxDLp7xgaQb4HLfAyUu8W6r1KyNpEv9A8d6eB4IRSnjqn3pfjbalfLn3yDnF
+         yIEw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDc5lcW5onjEq+Wm3+4nmdkFku5QZOqo3VBvshBEH3PVhBgf+MpEXeLc0QC6SRxib2IWs=@vger.kernel.org, AJvYcCUkVXlN1IZ6k5VZW+4p9PL5Yxo8LuMmNGt6XpPlxHwlH/uD+2zjIjZRNehreoay34DGCx46TXlM@vger.kernel.org, AJvYcCWlX9lmzr4S4RAwTqhor38npYgIzhyky7y5oS7BDeRB3TNOUywQTsw7LCfo7hd+LU4lrXQftoiogHScwl2j@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9VdKROC66g1LGMs2Hx6Vtv20wNz2xjxRh7iDXxwbjBXb8q8MJ
+	YRu634cgWIeOPWendIjlkTf7f0a19XdK9oPI8SjC7rGcu0CRlQrL4qtpxkZDk6qiKK7tFKiMVfG
+	7muEqu1ce/+ITgoNrm7963Suqz2mVOZg=
+X-Gm-Gg: ASbGncvoW0AKH9nxfWapX5piA5HYuWsoi1UT+iYBss1Cac4z5etfwyqBKoPdsz35OwB
+	/LhiyOrgQtr2Kc5rwRuWf0gMNjpQ5GPlA4IhcWhh/CgcSkUIxiXpfp+rI2djHmaFb0BOT1BWpgv
+	pVtMWd4r/E/8nIy/g76nK9YGSHYZtyKfygf+b094WoxFJkGAP1ffu56S2EXGedQs2GGJsryuuwg
+	6F9N8PWE7ceYEa+wutmxVsTYLpg7b2qpPbKXSrPY5Y7JzQ=
+X-Google-Smtp-Source: AGHT+IGuwQzYuIpJZi1NG4UT4eHh4+LyZK9k+RZgdv9IIoBRBvgX5VWGm4NjUczRGG+YiTorsStAsEIUCfl64xxMvqM=
+X-Received: by 2002:a05:6000:4a0e:b0:3a4:f7ae:77c9 with SMTP id
+ ffacd0b85a97d-3b609522273mr1270675f8f.5.1752546334914; Mon, 14 Jul 2025
+ 19:25:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001508:EE_|PH0PR19MB5018:EE_
-X-MS-Office365-Filtering-Correlation-Id: 79b3f7e3-67c0-420f-60cd-08ddc3461a43
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ypDCDysLyk3qabuve0DrdppXfvcT+Ja0nM1O9UH/1Tkp4vWgbLHPL8w1XF04?=
- =?us-ascii?Q?3G+kOpPP5aLjuiVO8FT53N1Bg1iHb46CNeQym95VjbMIYbaUzcZbiZ7ooQzd?=
- =?us-ascii?Q?EGa63IkRWAlG3R4O6cRtldl0Fn7vgcUJ9/tbjY0/yClv+jJiWLmX5POHtu19?=
- =?us-ascii?Q?rORgnZQHPrcEolz5X5CCgknf/KO6vrVCN/4ItLeB7C8Lw40rK0CtO/y+7KMI?=
- =?us-ascii?Q?7WNfGW1XkeKMnYc02333iL3OXjEZFesKdSJiJfncGy3ew81a8JKgZqTgkOWJ?=
- =?us-ascii?Q?hDUozqjsIEKkh37Srr2fflQ4CBOtq3hNZpezwRIeVOfQFCtcatp+26+nDx+H?=
- =?us-ascii?Q?Q7SVVyWFgPDBxouY2lsksibduX8A0YfBYH9SYHP3moFZlvmGhlDMS/0i/Q0t?=
- =?us-ascii?Q?nlqxkUWyo+hki8fokJZJfTvi6x4DFM8iC31a14wMuuHgoc2XIIyjvsWjc8qR?=
- =?us-ascii?Q?9to/yXf+3GEfwBsV8WyeUeWQcZvK3WZKgVLBTiaYINkGoJ53RzBRs5Fg3odh?=
- =?us-ascii?Q?afTU2N1YakIQ6Zf61YC4IW1vfxczG1B400EilhON4vKH3s0DNKoLBKjEi0Hz?=
- =?us-ascii?Q?o/NXB4zNbia5Ad0aj9DYLVBi5S3/UiE9/qnLF8mlFngL17Z45wQ9DS+1weep?=
- =?us-ascii?Q?R4ArhoJtO/M4NzDqtLUMGw+JcSH9JdV4G4a9KB0Yk5NHMXXrN/nRWct+YeNF?=
- =?us-ascii?Q?sKC+mCWPVHEm+8DHEplk6Z3pus9hsPqkU+/K5HUL5gkH7VWDy7pizj5AA/bh?=
- =?us-ascii?Q?y0hFh6ktI7IVxeNlLUqdE+cAmcUfWR+CGzJyGeiVKcBXeBn6q9g6mUouu/P3?=
- =?us-ascii?Q?Yti3canVdPweIEYTd7QwjkhokZQGgNan+uRLWKXtEFbWpzrjjr++BvR+wZfA?=
- =?us-ascii?Q?E5+OuJQxo/T1xg6J168eNE6Af06MhpyjCV6nTLhvaNwMMpd5/8c35EIk6Zw3?=
- =?us-ascii?Q?0LgxJp5NTPSpX5mVr9/iniXUd75//kI/9D2Usts2XiuX28kpNGN5AyzElEfH?=
- =?us-ascii?Q?RVS1gEKexQjL2+n5qBQNpidgNJ8iCcnpsoTZNjYwrE8aqC3KPgLxPcc7d2C2?=
- =?us-ascii?Q?qzBpXJa8ek+xwwxbe3hcrEGvE48nQAlkH+qlcRiFFrMiu41Dt6RBqIps4kX6?=
- =?us-ascii?Q?iAtZhDK8prFQYPQCp94qVZYPswJ2PHqF9omZh62hu+bU+KdWBm6/BWLRghX/?=
- =?us-ascii?Q?Pl9joaAe0hpxBNhocaQ2kitau6I29y8jLKCFhj7FrkXJrX/BlCLl93L+Pr4w?=
- =?us-ascii?Q?yLJDfEfqtoRPQrk6rLzZtsCrw+C/cnuSoVN+zVXmboYesI9UWajIOlGvulVL?=
- =?us-ascii?Q?BMsHlJB9Ihty/kMsXypHaEveFrVKYfp3l3+MhINZF9TUT2sKHs+h5TEPN+Sx?=
- =?us-ascii?Q?kWTlyGP1BfvepGRS+mIHDzxLqLl4yAVyYuF6muZP2vWfX7NxV1CvheH/rYVO?=
- =?us-ascii?Q?BXJNj49E+oXQ3r/Ffs2P3/6Eo1H/PFCLIQLiZRUg07926/b6XCtuoZy0Xiw1?=
- =?us-ascii?Q?p/t2aKszO1l+LPrlHwJyTdu8fE/LHAESIUzEEnO6xjL6a3T4K1mDPkMFrQ?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:174.47.1.83;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:usmxlcas.maxlinear.com;PTR:174-47-1-83.static.ctl.one;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: maxlinear.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 02:20:01.1287
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79b3f7e3-67c0-420f-60cd-08ddc3461a43
-X-MS-Exchange-CrossTenant-Id: dac28005-13e0-41b8-8280-7663835f2b1d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=dac28005-13e0-41b8-8280-7663835f2b1d;Ip=[174.47.1.83];Helo=[usmxlcas.maxlinear.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00001508.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR19MB5018
+References: <20250703121521.1874196-1-dongml2@chinatelecom.cn> <20250703121521.1874196-3-dongml2@chinatelecom.cn>
+In-Reply-To: <20250703121521.1874196-3-dongml2@chinatelecom.cn>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Mon, 14 Jul 2025 19:25:22 -0700
+X-Gm-Features: Ac12FXwGpB_axbDiCsJ-zcVn8kfmssggV-vZEusEaGLoymarUYN3vBaVAIsWRXw
+Message-ID: <CAADnVQKP1-gdmq1xkogFeRM6o3j2zf0Q8Atz=aCEkB0PkVx++A@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v2 02/18] x86,bpf: add bpf_global_caller for
+ global trampoline
+To: Menglong Dong <menglong8.dong@gmail.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Jiri Olsa <jolsa@kernel.org>, bpf <bpf@vger.kernel.org>, 
+	Menglong Dong <dongml2@chinatelecom.cn>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+	LKML <linux-kernel@vger.kernel.org>, Network Development <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Synopsys DesignWare XPCS CSR clock is optional,
-so it is better to use devm_clk_get_optional
-instead of devm_clk_get.
+On Thu, Jul 3, 2025 at 5:17=E2=80=AFAM Menglong Dong <menglong8.dong@gmail.=
+com> wrote:
+>
+> +static __always_inline void
+> +do_origin_call(unsigned long *args, unsigned long *ip, int nr_args)
+> +{
+> +       /* Following code will be optimized by the compiler, as nr_args
+> +        * is a const, and there will be no condition here.
+> +        */
+> +       if (nr_args =3D=3D 0) {
+> +               asm volatile(
+> +                       RESTORE_ORIGIN_0 CALL_NOSPEC "\n"
+> +                       "movq %%rax, %0\n"
+> +                       : "=3Dm"(args[nr_args]), ASM_CALL_CONSTRAINT
+> +                       : [args]"r"(args), [thunk_target]"r"(*ip)
+> +                       :
+> +               );
+> +       } else if (nr_args =3D=3D 1) {
+> +               asm volatile(
+> +                       RESTORE_ORIGIN_1 CALL_NOSPEC "\n"
+> +                       "movq %%rax, %0\n"
+> +                       : "=3Dm"(args[nr_args]), ASM_CALL_CONSTRAINT
+> +                       : [args]"r"(args), [thunk_target]"r"(*ip)
+> +                       : "rdi"
+> +               );
+> +       } else if (nr_args =3D=3D 2) {
+> +               asm volatile(
+> +                       RESTORE_ORIGIN_2 CALL_NOSPEC "\n"
+> +                       "movq %%rax, %0\n"
+> +                       : "=3Dm"(args[nr_args]), ASM_CALL_CONSTRAINT
+> +                       : [args]"r"(args), [thunk_target]"r"(*ip)
+> +                       : "rdi", "rsi"
+> +               );
+> +       } else if (nr_args =3D=3D 3) {
+> +               asm volatile(
+> +                       RESTORE_ORIGIN_3 CALL_NOSPEC "\n"
+> +                       "movq %%rax, %0\n"
+> +                       : "=3Dm"(args[nr_args]), ASM_CALL_CONSTRAINT
+> +                       : [args]"r"(args), [thunk_target]"r"(*ip)
+> +                       : "rdi", "rsi", "rdx"
+> +               );
+> +       } else if (nr_args =3D=3D 4) {
+> +               asm volatile(
+> +                       RESTORE_ORIGIN_4 CALL_NOSPEC "\n"
+> +                       "movq %%rax, %0\n"
+> +                       : "=3Dm"(args[nr_args]), ASM_CALL_CONSTRAINT
+> +                       : [args]"r"(args), [thunk_target]"r"(*ip)
+> +                       : "rdi", "rsi", "rdx", "rcx"
+> +               );
+> +       } else if (nr_args =3D=3D 5) {
+> +               asm volatile(
+> +                       RESTORE_ORIGIN_5 CALL_NOSPEC "\n"
+> +                       "movq %%rax, %0\n"
+> +                       : "=3Dm"(args[nr_args]), ASM_CALL_CONSTRAINT
+> +                       : [args]"r"(args), [thunk_target]"r"(*ip)
+> +                       : "rdi", "rsi", "rdx", "rcx", "r8"
+> +               );
+> +       } else if (nr_args =3D=3D 6) {
+> +               asm volatile(
+> +                       RESTORE_ORIGIN_6 CALL_NOSPEC "\n"
+> +                       "movq %%rax, %0\n"
+> +                       : "=3Dm"(args[nr_args]), ASM_CALL_CONSTRAINT
+> +                       : [args]"r"(args), [thunk_target]"r"(*ip)
+> +                       : "rdi", "rsi", "rdx", "rcx", "r8", "r9"
+> +               );
+> +       }
+> +}
 
-Signed-off-by: Jack Ping CHNG <jchng@maxlinear.com>
----
-v2:
-  - indicate net-next in the subject line
-v1: https://lore.kernel.org/netdev/20250714022348.2147396-1-jchng@maxlinear.com/
----
- drivers/net/pcs/pcs-xpcs-plat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+What is the performance difference between 0-6 variants?
+I would think save/restore of regs shouldn't be that expensive.
+bpf trampoline saves only what's necessary because it can do
+this micro optimization, but for this one, I think, doing
+_one_ global trampoline that covers all cases will simplify the code
+a lot, but please benchmark the difference to understand
+the trade-off.
 
-diff --git a/drivers/net/pcs/pcs-xpcs-plat.c b/drivers/net/pcs/pcs-xpcs-plat.c
-index 629315f1e57c..137d91038fb4 100644
---- a/drivers/net/pcs/pcs-xpcs-plat.c
-+++ b/drivers/net/pcs/pcs-xpcs-plat.c
-@@ -280,7 +280,7 @@ static int xpcs_plat_init_clk(struct dw_xpcs_plat *pxpcs)
- 	struct device *dev = &pxpcs->pdev->dev;
- 	int ret;
- 
--	pxpcs->cclk = devm_clk_get(dev, "csr");
-+	pxpcs->cclk = devm_clk_get_optional(dev, "csr");
- 	if (IS_ERR(pxpcs->cclk))
- 		return dev_err_probe(dev, PTR_ERR(pxpcs->cclk),
- 				     "Failed to get CSR clock\n");
--- 
-2.43.0
+The major simplification will be due to skipping nr_args.
+There won't be a need to do btf model and count the args.
+Just do one trampoline for them all.
 
+Also funcs with 7+ arguments need to be thought through
+from the start.
+I think it's ok trade-off if we allow global trampoline
+to be safe to attach to a function with 7+ args (and
+it will not mess with the stack), but bpf prog can only
+access up to 6 args. The kfuncs to access arg 7 might be
+more complex and slower. It's ok trade off.
+
+> +
+> +static __always_inline notrace void
+> +run_tramp_prog(struct kfunc_md_tramp_prog *tramp_prog,
+> +              struct bpf_tramp_run_ctx *run_ctx, unsigned long *args)
+> +{
+> +       struct bpf_prog *prog;
+> +       u64 start_time;
+> +
+> +       while (tramp_prog) {
+> +               prog =3D tramp_prog->prog;
+> +               run_ctx->bpf_cookie =3D tramp_prog->cookie;
+> +               start_time =3D bpf_gtramp_enter(prog, run_ctx);
+> +
+> +               if (likely(start_time)) {
+> +                       asm volatile(
+> +                               CALL_NOSPEC "\n"
+> +                               : : [thunk_target]"r"(prog->bpf_func), [a=
+rgs]"D"(args)
+> +                       );
+
+Why this cannot be "call *(prog->bpf_func)" ?
+
+> +               }
+> +
+> +               bpf_gtramp_exit(prog, start_time, run_ctx);
+> +               tramp_prog =3D tramp_prog->next;
+> +       }
+> +}
+> +
+> +static __always_inline notrace int
+> +bpf_global_caller_run(unsigned long *args, unsigned long *ip, int nr_arg=
+s)
+
+Pls share top 10 from "perf report" while running the bench.
+I'm curious about what's hot.
+Last time I benchmarked fentry/fexit migrate_disable/enable were
+one the hottest functions. I suspect it's the case here as well.
