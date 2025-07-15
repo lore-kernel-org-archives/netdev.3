@@ -1,46 +1,45 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1134F2BE641
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0602BE7D9
 	for <netdev@vger.kernel.org>; Tue, 15 Jul 2025 20:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752611410; cv=none; b=gq1P2vMs0eusX4H18rlin3lmbgaFBpGTQGvH8yfwHqk76OC3rb4cjVXC9hM4gGUuVQMuGFGgi3MTAfiSAc7mO94NqSsnxog+76dAIZbsgHol5p191MIv2YO1pArop3HVgYRy+i5yUgcU3kDsFj66Bpre4J0WZhUzGA40UF771TQ=
+	t=1752611411; cv=none; b=tkU4GJ/1CTx/0jfx0BrkIqF2E+pE/2ctPv8vZuA37hIjPULfPwK/1ws1oHzAj+xw+Qeh8ThpuBoo7mY/+q7YJzMSPgDHKU2fVJsovx9omRcFPTz4Tce2mHvR9qY0VzpSUjXYxsWSxd9+tDTQJgtxNuKfMiBj6H2wBZXeswcZH2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752611410; c=relaxed/simple;
-	bh=/oUdp1eUjc8e9Lgd7+wGCZ0B94uY7ood0jBLhM2gczY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hg52gqcPHiy85vm1t46DIcDmEQaQlb/O6stCdzPjAIeXjCyeD/SGrENzJNsa/atChvyKIHArMO1BZ6f3zihyBfW8aHuqiNW427T453BzrURIjW62XznlFDQBLaoM7xC7XoNt4nXTmPzaXz/xkvQXliAz6RE0fO8lHzuTYArxUY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BGNdkHHW; arc=none smtp.client-ip=198.175.65.19
+	s=arc-20240116; t=1752611411; c=relaxed/simple;
+	bh=+EZbieku3jQwHF444gDfC/CmkvoQGsIP3RWn3DAu1RM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HyOdIC9g+JQzo6slUNqskPrB+B3s6VMrpsnXAwosP7C86N5vA37b5lvfp2UiiG+r97T4AUQwTJcXomJrMp5fDZB0T2/kfkjMm2gxbdtdBqSlq5qh9DOyBjviON1wzKrBvSiBlQWfYeRF2A7kcLf6oQiqmVDWwazhounly183DUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gR6J6lvi; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BGNdkHHW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gR6J6lvi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752611409; x=1784147409;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=/oUdp1eUjc8e9Lgd7+wGCZ0B94uY7ood0jBLhM2gczY=;
-  b=BGNdkHHWhVhsK8HbYlvdiPce8ZMf/76nycvVo2pTXbM5vaOo6VNVnvzb
-   yPlNm9ds1eLG4VME0vHC4iXXDUHshkZA9QmI9FvDfIaVP4VIoDgkUEuCK
-   XUvax5tdruA0zdtj+8/cvPb1Y6Lmz1q0TLWFj+s7Ha4Bn6kT5Fy2H026+
-   qwOL+pGBOiFT7H67YVEzu0vOr/tqE8NlqQq+QYYG12JLx1GhPDk08HAQz
-   Ns7hL8/q2eiDMSRqbcbbA3f4aa6J/WG4HTmCRAk36B/Cuzbxf4FVBuJca
-   0itzpHmGWC+O3H7EDBIraC7bjcdP3V1ilzlO70NpNxpN1P3k5k46fR7c9
+  t=1752611410; x=1784147410;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+EZbieku3jQwHF444gDfC/CmkvoQGsIP3RWn3DAu1RM=;
+  b=gR6J6lvif7yqHSWRinUrXWGI06rXcGMFCnVjNo4m7ja3RP25cnh07jhv
+   TgNVzeE75++/SF5bpGLOUjvRFMApHtHJogORexwz3poJS4kCJVagDhyyT
+   oYAmiVZ+ZzFMyoxl8UsYA0jtx8taLTjTg9GKfhQuF/7pepYdSKWE3Af6h
+   g3lAKJ0Y6yr/iK/HsAhJfhVpuJmIkxlvkGmIjz8MYDHyA0ttSx0QiCRNj
+   ZO1BA0AYbj2rZc94bxSKtxrevoJ95fRTAzK+bPFFppSzEHG/1NBBhv1K3
+   V7mOGYUl2grXyUmavYUhJ+mIKuWZQMoNq6ReozZ1lOrr7Quy1aBrBcgJW
    Q==;
-X-CSE-ConnectionGUID: SyCYL58FR6GSrzeZz3iv+Q==
-X-CSE-MsgGUID: peRx+I3ESka9Juyajliq2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54699826"
+X-CSE-ConnectionGUID: LntwD756RnyEBqTmIRp44A==
+X-CSE-MsgGUID: eM6D4R2UR1C6ktQ8efY+Lg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54699805"
 X-IronPort-AV: E=Sophos;i="6.16,314,1744095600"; 
-   d="scan'208";a="54699826"
+   d="scan'208";a="54699805"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 13:29:58 -0700
-X-CSE-ConnectionGUID: XQwbfGLMQP+25/KDxH03Wg==
-X-CSE-MsgGUID: ZnBOBT3rQRy+vYMkIyebow==
+X-CSE-ConnectionGUID: iR6M8i9gQKi2ZD4qoup3bQ==
+X-CSE-MsgGUID: +7MhOC6+SCqLDYkGKNRYnw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,314,1744095600"; 
-   d="scan'208";a="194449525"
+   d="scan'208";a="194449513"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa001.jf.intel.com with ESMTP; 15 Jul 2025 13:29:58 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,52 +49,49 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	anthony.l.nguyen@intel.com,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net 3/3] ice: check correct pointer in fwlog debugfs
-Date: Tue, 15 Jul 2025 13:29:46 -0700
-Message-ID: <20250715202948.3841437-4-anthony.l.nguyen@intel.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH net 0/3][pull request] Intel Wired LAN Driver Updates 2025-07-15 (ixgbe, fm10k, i40e, ice)
+Date: Tue, 15 Jul 2025 13:29:43 -0700
+Message-ID: <20250715202948.3841437-1-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250715202948.3841437-1-anthony.l.nguyen@intel.com>
-References: <20250715202948.3841437-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Arnd Bergmann resolves compile issues with large NR_CPUS for ixgbe, fm10k,
+and i40e.
 
-pf->ice_debugfs_pf_fwlog should be checked for an error here.
+For ice:
+Dave adds a NULL check for LAG netdev.
 
-Fixes: 96a9a9341cda ("ice: configure FW logging")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
+Michal corrects a pointer check in debugfs initialization.
+
+The following are changes since commit 0e9418961f897be59b1fab6e31ae1b09a0bae902:
+  selftests: net: increase inter-packet timeout in udpgro.sh
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue 100GbE
+
+Arnd Bergmann (1):
+  ethernet: intel: fix building with large NR_CPUS
+
+Dave Ertman (1):
+  ice: add NULL check in eswitch lag check
+
+Michal Swiatkowski (1):
+  ice: check correct pointer in fwlog debugfs
+
+ drivers/net/ethernet/intel/fm10k/fm10k.h     | 3 ++-
+ drivers/net/ethernet/intel/i40e/i40e.h       | 2 +-
  drivers/net/ethernet/intel/ice/ice_debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_lag.c     | 3 ++-
+ drivers/net/ethernet/intel/ixgbe/ixgbe.h     | 3 ++-
+ 5 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_debugfs.c b/drivers/net/ethernet/intel/ice/ice_debugfs.c
-index 9fc0fd95a13d..cb71eca6a85b 100644
---- a/drivers/net/ethernet/intel/ice/ice_debugfs.c
-+++ b/drivers/net/ethernet/intel/ice/ice_debugfs.c
-@@ -606,7 +606,7 @@ void ice_debugfs_fwlog_init(struct ice_pf *pf)
- 
- 	pf->ice_debugfs_pf_fwlog = debugfs_create_dir("fwlog",
- 						      pf->ice_debugfs_pf);
--	if (IS_ERR(pf->ice_debugfs_pf))
-+	if (IS_ERR(pf->ice_debugfs_pf_fwlog))
- 		goto err_create_module_files;
- 
- 	fw_modules_dir = debugfs_create_dir("modules",
 -- 
 2.47.1
 
