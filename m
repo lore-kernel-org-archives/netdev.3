@@ -1,49 +1,50 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B022673A9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BCD2741A1;
 	Tue, 15 Jul 2025 11:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752577387; cv=none; b=Om+lnMWqteGMEYyC15lt0EpnDdgOcKVW0vgT//piiJOjJIb004yiYjZlPkVu1S7bZjVi02jwDQd9nMSi6JcRp5Q/mIfno9IAmez+qbJHVtwhtdOXNuf9al0I1u7m7HHXFQw6mlU1M7RdfNvm8EtHroXwc4/WdCR3SJKuWptcUPc=
+	t=1752577387; cv=none; b=jOSrq99YykbFtmFsbYGR8B8rqUCFMu8kb+WjAhyel1ao2eSrCPdBbj48PG+8XyP2gPsjM2L8ficf748002eFtU7NTL68MVNqGlMgUXK0u4bPlM5HCWO/7DF+CgvijliqFZCE1Ck+Nn1J72OCD7AxZb9a8uPllGw1X4EovbHKr5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752577387; c=relaxed/simple;
-	bh=6+1tfxhRAKeckRR71WjO7SHqYCGup9Q/qfjkGi5il68=;
-	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=NA+QTdfNSmFfAheVm00aw784e1xNhY/uXTE/ijGxd8SB5if1qfxAm37Dv7/9Ua1u1onofU3HwROVbCyl2baXacH3xx7Gz0xVu7KcbW9sF0uq/2SDGR39spTaMGvkpwFj3FgX+q9+D9aievG4cv87WdZmg4RPVEZ0fA1OF2iyG+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=acbrdwET; arc=none smtp.client-ip=205.220.168.131
+	bh=zdIA1OrZ3QwuE1iTyT9RAIBjGDyxK+dHldknrTLLHLA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=D+3Uycnz3W81eZd7kz/cdkawrOypL8GkfyjzB19OETxWdAyEb5u2sYF3HtYZlQC/r6usg4Jqv5bm2ikHuTf7wDGfDtMZBrJEOFhgbUNKExjy/yeU2cGOPogiXefxBalCXZqWqkzN3cNSmbjPu7rVen8YsEDOmeMvTa3zm3Q2Yuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FJeD3l0Y; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="acbrdwET"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56F5c0oM011542;
-	Tue, 15 Jul 2025 11:02:41 GMT
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FJeD3l0Y"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56F8k5Qx026465;
+	Tue, 15 Jul 2025 11:02:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=NWEBi6E9kskv6BEIyPrdnk
-	sgs6FzVCDGGRu5t+yBxd4=; b=acbrdwETygV/M9A7hyLhbxz+6eKSnwcvCI/IIh
-	mSnE2XAw9B+vh3gSWBwDQJRWJvyNETPSBMMS8fJOpUaoIRPFchezSOHotDfj56ZP
-	rk8l84NydRTEAcqm3IlVgmieaC++0U+xK33V65YU3Z7LExLvJyC0kqds+u7dFLne
-	f+TDtMrgTyhp1OTPi90NyFi7BttKwq1y/WR8NMD2tOgr2SgZ0bRyO4LZB9p8697c
-	HGUByVlw0U+xzVe3uIcwJsn/d3hGEDS3/5ACf2zh24HveiyAfhLRsY2wwn42OK7O
-	2boNNtsd2EgYTK1UqXfhZuU2uVgbPr9HiVf2gucp6trk7AsQ==
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	UxWZKZdiJDX0DMRAQWw1ZpYiBrf/IfhPklk9LZUV/sw=; b=FJeD3l0YUwHyNyUD
+	FfFiza3INiF7nBxrbrhQRzRZ0zu4ldqkfhZwNLzyNx6fMxBzWKyXRFszwZM6bR1s
+	Su6tvUFU1OQcfLIT2j7JCAMuniG+o7Gv9Xm4wWoLmjacxUvVzdAl3XCD8cW+R7Ws
+	rZKMVq/wox5NM/cNeUYSf+CWuxwzQDSW3P+qsT8iXyFo9JeAORiqTRPUs4SzBIes
+	dbS7S5P5c8PDWGxaWhAAHMtNRcxQ4jO+RHF5BTz60Ys16CN2TEQIYFV0tGvd4iwa
+	Qxmf0R+ScEuAmfYo9l/GQFqqWEGePhvLzbn5HMPpIgPIyVdFifsQSjHADO/QYjrw
+	/hMqfQ==
 Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47w5dyjqxn-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47wkrugfrd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Jul 2025 11:02:40 +0000 (GMT)
+	Tue, 15 Jul 2025 11:02:46 +0000 (GMT)
 Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 56FB2e5o003607
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 56FB2jFV003970
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Jul 2025 11:02:40 GMT
+	Tue, 15 Jul 2025 11:02:45 GMT
 Received: from nsssdc-sh01-lnx.ap.qualcomm.com (10.80.80.8) by
  nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Tue, 15 Jul 2025 04:02:37 -0700
+ 15.2.1748.10; Tue, 15 Jul 2025 04:02:43 -0700
 From: Luo Jie <quic_luoj@quicinc.com>
-Subject: [PATCH net-next v3 0/3] Add shared PHY counter support for QCA807x
- and QCA808x
-Date: Tue, 15 Jul 2025 19:02:25 +0800
-Message-ID: <20250715-qcom_phy_counter-v3-0-8b0e460a527b@quicinc.com>
+Date: Tue, 15 Jul 2025 19:02:27 +0800
+Subject: [PATCH net-next v3 2/3] net: phy: qcom: qca808x: Support PHY
+ counter
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,10 +53,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEI1dmgC/3XNQQ6DIBAF0KsY1qUBRA1d9R5NYwwMlUVBAYnGe
- PdSVm3SLn/+/Dc7CuANBHSpduQhmWCczaE+VUiOg30ANipnxAhrSEcEnqV79tO49dItNoLHXGg
- QNeNUK4XybPKgzVrIG7IQsYU1ontuRhOi81v5lWjp/7OJYoJFPTR8IExI3l7nxUhj5TlfFi6xD
- 4LyHwR7E1wpEEp0rdDfxHEcLzwt4Q//AAAA
+Message-ID: <20250715-qcom_phy_counter-v3-2-8b0e460a527b@quicinc.com>
+References: <20250715-qcom_phy_counter-v3-0-8b0e460a527b@quicinc.com>
+In-Reply-To: <20250715-qcom_phy_counter-v3-0-8b0e460a527b@quicinc.com>
 To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
         Russell King <linux@armlinux.org.uk>,
         "David S. Miller"
@@ -66,81 +66,106 @@ To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
 CC: <netdev@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, Luo Jie <quic_luoj@quicinc.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1752577357; l=1750;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752577357; l=2215;
  i=quic_luoj@quicinc.com; s=20250209; h=from:subject:message-id;
- bh=6+1tfxhRAKeckRR71WjO7SHqYCGup9Q/qfjkGi5il68=;
- b=syaXrqIz6oMh3k9FbyBwaRsO2WRqPxwDS1L5urb563thEUI4iWr4QrZs1HDAKH5kyqNYylGAw
- KuSx6znkE6zBoYpQPCP/QQrt1IydoVQaWv38vYBqmOiUB00IixhiIuh
+ bh=zdIA1OrZ3QwuE1iTyT9RAIBjGDyxK+dHldknrTLLHLA=;
+ b=DeLTp8f2COmpL6s89gfQrsxZPIrMHcmrPloC3dNA83DHouhd6BSuFAi03TUgQlviMM4XXx7+n
+ SC62PXXjcDHC98bj62E8DwrSOj57AJlBX6whSUXsrCXJls7k+Zrv6Zs
 X-Developer-Key: i=quic_luoj@quicinc.com; a=ed25519;
  pk=pzwy8bU5tJZ5UKGTv28n+QOuktaWuriznGmriA9Qkfc=
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nasanex01b.na.qualcomm.com (10.46.141.250)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: zEuudNBPeD3f-D-qAvR-qW0ZMo9tTc_P
-X-Authority-Analysis: v=2.4 cv=RtXFLDmK c=1 sm=1 tr=0 ts=68763550 cx=c_pps
+X-Proofpoint-GUID: vAh1auAu5Mh_tbE40PM8JsAt9xxbu1DK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE1MDEwMCBTYWx0ZWRfX2ZGczkuJ9RLU
+ LXLGHPSYXDsdhsIPyFg969ePkFnQhs9HH1O76m36QaRvWfd/Au40Xl2uvSKFSJNUhCCb8nEQaDc
+ j2jwQ5WX8Odr9afD9T5+8+WdZ7mhbUXLnDl6a+7Nz+C3iBLHy63vCOIrDzhZgGE5EHObvc/39mR
+ bKtHlqtwDEELTn/5oAbtWAqVfiyNoZrxfk51BXW0dpleZQARrSjnsGMcb6HRurTJmnFmNwyXHs+
+ Rg6rl0o5WHbvgV6vw87loukYPjZwaf9J8h8oXkW4h4PWwchPjhL3NIbCswfp7sK4NGOOLwkZpP7
+ AQoL8BhecGkqU3w4+yz7L2dU3Cdvk4w3v2b0WpCbnbr65Bz3NgBX93nPXzjZa/EIrSn7Rag/Uy8
+ 5nhPb/Ul9mbDhfTcH03orloXF/AVuGkZeR/EpdRTRGvBlsQoeErSW/xsQYL+k+spnI9zpX/O
+X-Authority-Analysis: v=2.4 cv=WqUrMcfv c=1 sm=1 tr=0 ts=68763556 cx=c_pps
  a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8
- a=COk6AnOGAAAA:8 a=cCCatxcZxqH0WtuQzukA:9 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE1MDA5OSBTYWx0ZWRfX9xrvinzkCJMM
- XIuruZ7PMPLiCdVbGJ+yY3iOO1iyKj31FUQU1/oiNvujXhG4seyQfLDKn/ZMMZQCu6EmTW++s5Y
- AEa2jidXEbMT7THiWDX/0EFTfqIDICl1HaNAuUPHkiehnDD9RscX8YqezsKAkz6/uN2GJzNVNpY
- vp8jXIAbA9OgAr3f864gsSU73i/FeGKpiXgKe8osdyLO+KGKrY6t5q8/ZglgzUfb7aDvtKZZ7jy
- yMbWM2bGdMqpYM8RRUeL5H0Tl4ObkckxrkrfOhwKoRAENkHZctHVV3OJTzJ5DHlSVmfJfkoaPK2
- yZ2uayOSjkCLXQQCXqQ7QFAHRatnvjPLKCaD1HRlbd5joVXrxf24O+CoWyMjC3w0vkDH0HeBg6B
- Zax72r7zKaOxyrTnvJYxmfiUSewQK5GmaD03d30/GaPlVe5l4/QYvXMtn6+z0iCzMQTB4LLP
-X-Proofpoint-GUID: zEuudNBPeD3f-D-qAvR-qW0ZMo9tTc_P
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=COk6AnOGAAAA:8
+ a=_JwSswBLOsKPZBXwtL4A:9 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: vAh1auAu5Mh_tbE40PM8JsAt9xxbu1DK
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-07-15_01,2025-07-14_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
- impostorscore=0 malwarescore=0 clxscore=1015 mlxlogscore=999
- priorityscore=1501 phishscore=0 spamscore=0 classifier=spam authscore=0
+ suspectscore=0 phishscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
+ adultscore=0 priorityscore=1501 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 malwarescore=0 spamscore=0 classifier=spam authscore=0
  authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507150099
+ engine=8.19.0-2505280000 definitions=main-2507150100
 
-The implementation of the PHY counter is identical for both QCA808x and
-QCA807x series devices. This includes counters for both good and bad CRC
-frames in the RX and TX directions, which are active when CRC checking
-is enabled.
-
-This patch series introduces PHY counter functions into a shared library,
-enabling counter support for the QCA808x and QCA807x families through this
-common infrastructure. Additionally, enable CRC checking and configure
-automatic clearing of counters after reading within config_init() to ensure
-accurate counter recording.
+Enable CRC checking for received and transmitted frames, and configure
+counters to clear after being read within config_init() for accurate
+counter recording. Additionally, add PHY counter operations and integrate
+shared functions.
 
 Signed-off-by: Luo Jie <quic_luoj@quicinc.com>
 ---
-Changes in v3:
-- Resolved the compilation error on the ARCH_i386 platform as reported by
-  the kernel test robot.
-- Link to v2: https://lore.kernel.org/r/20250714-qcom_phy_counter-v2-0-94dde9d9769f@quicinc.com
+ drivers/net/phy/qcom/qca808x.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-Changes in v2:
-- Update to use the standardized PHY statistics framework.
-- Enabled automatic clearing of counters following each read operation,
-  ensuring support for 64-bit statistics.
-- Link to v1: https://lore.kernel.org/r/20250709-qcom_phy_counter-v1-0-93a54a029c46@quicinc.com
+diff --git a/drivers/net/phy/qcom/qca808x.c b/drivers/net/phy/qcom/qca808x.c
+index 6de16c0eaa08..8eb51b1a006c 100644
+--- a/drivers/net/phy/qcom/qca808x.c
++++ b/drivers/net/phy/qcom/qca808x.c
+@@ -93,6 +93,7 @@ MODULE_LICENSE("GPL");
+ 
+ struct qca808x_priv {
+ 	int led_polarity_mode;
++	struct qcom_phy_hw_stats hw_stats;
+ };
+ 
+ static int qca808x_phy_fast_retrain_config(struct phy_device *phydev)
+@@ -243,6 +244,10 @@ static int qca808x_config_init(struct phy_device *phydev)
+ 
+ 	qca808x_fill_possible_interfaces(phydev);
+ 
++	ret = qcom_phy_counter_config(phydev);
++	if (ret)
++		return ret;
++
+ 	/* Configure adc threshold as 100mv for the link 10M */
+ 	return at803x_debug_reg_mask(phydev, QCA808X_PHY_DEBUG_ADC_THRESHOLD,
+ 				     QCA808X_ADC_THRESHOLD_MASK,
+@@ -622,6 +627,22 @@ static int qca808x_led_polarity_set(struct phy_device *phydev, int index,
+ 			      active_low ? 0 : QCA808X_LED_ACTIVE_HIGH);
+ }
+ 
++static int qca808x_update_stats(struct phy_device *phydev)
++{
++	struct qca808x_priv *priv = phydev->priv;
++
++	return qcom_phy_update_stats(phydev, &priv->hw_stats);
++}
++
++static void qca808x_get_phy_stats(struct phy_device *phydev,
++				  struct ethtool_eth_phy_stats *eth_stats,
++				  struct ethtool_phy_stats *stats)
++{
++	struct qca808x_priv *priv = phydev->priv;
++
++	qcom_phy_get_stats(stats, priv->hw_stats);
++}
++
+ static struct phy_driver qca808x_driver[] = {
+ {
+ 	/* Qualcomm QCA8081 */
+@@ -651,6 +672,8 @@ static struct phy_driver qca808x_driver[] = {
+ 	.led_hw_control_set	= qca808x_led_hw_control_set,
+ 	.led_hw_control_get	= qca808x_led_hw_control_get,
+ 	.led_polarity_set	= qca808x_led_polarity_set,
++	.update_stats		= qca808x_update_stats,
++	.get_phy_stats		= qca808x_get_phy_stats,
+ }, };
+ 
+ module_phy_driver(qca808x_driver);
 
----
-Luo Jie (3):
-      net: phy: qcom: Add PHY counter support
-      net: phy: qcom: qca808x: Support PHY counter
-      net: phy: qcom: qca807x: Support PHY counter
-
- drivers/net/phy/qcom/qca807x.c      | 25 +++++++++++++
- drivers/net/phy/qcom/qca808x.c      | 23 ++++++++++++
- drivers/net/phy/qcom/qcom-phy-lib.c | 75 +++++++++++++++++++++++++++++++++++++
- drivers/net/phy/qcom/qcom.h         | 23 ++++++++++++
- 4 files changed, 146 insertions(+)
----
-base-commit: 06baf9bfa6ca8db7d5f32e12e27d1dc1b7cb3a8a
-change-id: 20250709-qcom_phy_counter-49fe93241fdd
-
-Best regards,
 -- 
-Luo Jie <quic_luoj@quicinc.com>
+2.34.1
 
