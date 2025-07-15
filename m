@@ -1,123 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864CF19DF6A;
-	Tue, 15 Jul 2025 10:15:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FA1222574
+	for <netdev@vger.kernel.org>; Tue, 15 Jul 2025 10:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752574535; cv=none; b=kiAYg2MpLvE7LBUaY04B8p+rYWTMjfBuAmwgqpvRQTm9pE2nSsJEu9rXEChHz1Dq39QDdX1knnLokWcdD9qBFBID5fQDVaLl3nDmxI/DLssa8rQaLUUb1Hq5Pq6h0oJikGbmYLNVAim/VyWLVzpKO6HPKyGFH5qSGGKiYgQTmxk=
+	t=1752574593; cv=none; b=c9YFv0CkRmiGohBwXOIx5RCw4UmnSnORNfxSNnN/Ww/csrbEEfjvajoGWXyGHPUBXBu/3woU1qy+nO04pZ2ki67U0/FVI1NOCLF+/fAy/vb6kVeaHWKg65dOKkW8kjKxqkJyU5fk1DYW4GubDpQ8PmXGxPbvFaMr774zuHdwW+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752574535; c=relaxed/simple;
-	bh=IBYVlI+orIMPRgYFaIqphL4RshTJzkbjmDni9IWE3vI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i9wBC96AnWHFHeISRa0spUnaZedyx4fzGTPcG8R9koKsnPWxcs4jmOoXIDp+8uqEez8kHJdlBA7J3aYLwx+xZUMd6+qMUMobOfkj1uro9Kpmh4KpExEtQywP7lzxKFOUqUskx7eOfvUKOsYFl/YGzMvbkxsbmWnJhVhJ4HA/dkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FztlJ1OF; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FztlJ1OF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BDCC4CEE3;
-	Tue, 15 Jul 2025 10:15:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752574535;
-	bh=IBYVlI+orIMPRgYFaIqphL4RshTJzkbjmDni9IWE3vI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FztlJ1OFq4eDjn612gnPl+YVBf7o63I7kavAKkN6NFFz2JarOIQLE/JFJXeCg6HIL
-	 z4ZOGtGZqr2hPQKCDh6IFKndGWXk3RHqqyPPB3czhiyvHdDfjkLQATIl9Lfl8M5gID
-	 0HJtGGxF+rGCtt710YXgmyHq4m4s6ORR7QRXexgQRC8ZUNIjSNQXBlfwaF88VnHy5Q
-	 DAeqFE4EsBQdtOCEvZ/PIaHSEYH78SR85B5+0dobS6Zx5s4O7OpqEuvklCOv/kkzQZ
-	 i3ZfJH1M7EPMLX9i6abuLL0sl0GpzfeP8svATD4gLx1MMmUlMd7S/CH7JSvW9yWmk3
-	 gd5aHtoOobY1A==
-Date: Tue, 15 Jul 2025 11:15:25 +0100
-From: Will Deacon <will@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Leon Romanovsky <leon@kernel.org>,
-	linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-	llvm@lists.linux.dev, Ingo Molnar <mingo@redhat.com>,
-	Bill Wendling <morbo@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Salil Mehta <salil.mehta@huawei.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-	Yisen Zhuang <yisen.zhuang@huawei.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Leon Romanovsky <leonro@mellanox.com>, linux-arch@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Mark Rutland <mark.rutland@arm.com>,
-	Michael Guralnik <michaelgur@mellanox.com>, patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Jijie Shao <shaojijie@huawei.com>
-Subject: Re: [PATCH v3 6/6] IB/mlx5: Use __iowrite64_copy() for write
- combining stores
-Message-ID: <aHYqPRqgcl5DQOpq@willie-the-truck>
-References: <0-v3-1893cd8b9369+1925-mlx5_arm_wc_jgg@nvidia.com>
- <6-v3-1893cd8b9369+1925-mlx5_arm_wc_jgg@nvidia.com>
- <20250714215504.GA2083014@nvidia.com>
+	s=arc-20240116; t=1752574593; c=relaxed/simple;
+	bh=9NQXbLYHLCVTUaqTmaD5MLKq5KGNRk+/GTkeDF2gbFA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YOAiKojyt+L0f/AA4QmPfv6oDGAd72HBddJ+MTWh3hMDydJHCqCs+K07WDIq2QwEevn3KHGcXfGFp5EbEsNVwP2/+bvt7HQxa2nD/lNZaUXTQ3cdYA3/jlJjWj06PAjl07MO+JLCSXXvFNhYYGeBn3OREJqXtgbg4N5unroZRBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1ubci4-0008KE-WB
+	for netdev@vger.kernel.org; Tue, 15 Jul 2025 12:16:29 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1ubci4-008Z0W-2Z
+	for netdev@vger.kernel.org;
+	Tue, 15 Jul 2025 12:16:28 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id 7C2864422F7
+	for <netdev@vger.kernel.org>; Tue, 15 Jul 2025 10:16:28 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 64BBC4422EA;
+	Tue, 15 Jul 2025 10:16:27 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id c18f7048;
+	Tue, 15 Jul 2025 10:16:26 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: [PATCH net 0/1] pull-request: can 2025-07-15
+Date: Tue, 15 Jul 2025 12:13:38 +0200
+Message-ID: <20250715101625.3202690-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250714215504.GA2083014@nvidia.com>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Mon, Jul 14, 2025 at 06:55:04PM -0300, Jason Gunthorpe wrote:
-> On Thu, Apr 11, 2024 at 01:46:19PM -0300, Jason Gunthorpe wrote:
-> > mlx5 has a built in self-test at driver startup to evaluate if the
-> > platform supports write combining to generate a 64 byte PCIe TLP or
-> > not. This has proven necessary because a lot of common scenarios end up
-> > with broken write combining (especially inside virtual machines) and there
-> > is other way to learn this information.
-> > 
-> > This self test has been consistently failing on new ARM64 CPU
-> > designs (specifically with NVIDIA Grace's implementation of Neoverse
-> > V2). The C loop around writeq() generates some pretty terrible ARM64
-> > assembly, but historically this has worked on a lot of existing ARM64 CPUs
-> > till now.
-> > 
-> > We see it succeed about 1 time in 10,000 on the worst effected
-> > systems. The CPU architects speculate that the load instructions
-> > interspersed with the stores makes the WC buffers statistically flush too
-> > often and thus the generation of large TLPs becomes infrequent. This makes
-> > the boot up test unreliable in that it indicates no write-combining,
-> > however userspace would be fine since it uses a ST4 instruction.
-> 
-> After a year of testing this in real systems it turns out that still
-> some systems are not good enough with the unrolled 8 byte store loop.
-> In my view the CPUs are quite bad here and this WC performance
-> optimization is not working very well.
-> 
-> There are only two more options to work around this issue, use the
-> unrolled 16 byte STP or the single Neon instruction 64 byte store.
-> 
-> Since STP was rejected alread we've only tested the Neon version. It
-> does make a huge improvement, but it still somehow fails to combine
-> rarely sometimes. The CPU is really bad at this :(
+Hello netdev-team,
 
-I think the thread was from last year so I've forgotten most of the
-details, but wasn't STP rejected because it wasn't virtualisable? In
-which case, doesn't NEON suffer from exactly the same (or possibly
-worse) problem?
+this is a pull request of 1 patch for net/main.
 
-Also, have you managed to investigate why the CPU tends not to get this
-right? Do we e.g. end up taking interrupts/exceptions while the self
-test is running or something like that?
+Brett Werling's patch for the tcan4x5x glue code driver fixes the
+detection of chips which are held in reset/sleep and must be woken up
+by GPIO prior to communication.
 
-Sorry for the wall of questions!
+regards,
+Marc
 
-Will
+---
+
+The following changes since commit f0f2b992d8185a0366be951685e08643aae17d6d:
+
+  net: phy: Don't register LEDs for genphy (2025-07-14 17:53:09 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can.git tags/linux-can-fixes-for-6.16-20250715
+
+for you to fetch changes up to 0f97a7588db7a545ea07ee0d512789bfad4931d8:
+
+  can: tcan4x5x: fix reset gpio usage during probe (2025-07-15 11:59:43 +0200)
+
+----------------------------------------------------------------
+linux-can-fixes-for-6.16-20250715
+
+----------------------------------------------------------------
+Brett Werling (1):
+      can: tcan4x5x: fix reset gpio usage during probe
+
+ drivers/net/can/m_can/tcan4x5x-core.c | 61 +++++++++++++++++++++++------------
+ 1 file changed, 41 insertions(+), 20 deletions(-)
+
