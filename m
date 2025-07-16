@@ -1,61 +1,63 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D92E10F1;
-	Wed, 16 Jul 2025 00:29:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967911448D5;
+	Wed, 16 Jul 2025 00:29:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752625773; cv=none; b=FkvjXZ5Za5dRjqn5l00B5hqPXtypAjpc/u2lmOUrCWjyxdD2yeE7MrbMErZeP7v9OGuTkM8LpSTzrne0oyPqoA1cn2Ditl+XihmBZwgXtL1plJsr7pbGn6Cs4wwzyIkKsXSyBcSxQ8bfLSKiYH2PI+PIpBQMIYluShf+QqBln1M=
+	t=1752625779; cv=none; b=WlvKY1izqqu7JKwyjF6NrwtMj/0eF6n7vTf4KAn3aYhs3Z23e9CapXX9sfHAOHH9qCq217Q0pjibn4iwMCmEVSxy1tgFrtUXYqQD1rk9hNj3VlD86MyhALBCS4eAWrmqFPeSrFemV35bY71Q+fhQ0/VCudagsl0qPYpN9d/NiO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752625773; c=relaxed/simple;
-	bh=+efdQf5cLlAt8xNFBURfx6ooWHxzt2Y/0ClqNFyG/Co=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tYq7rbgJxymafh4PX/rX3d+hU3XW7KVqdBJuH2D777h7P+yeQCZgPUX9Eo8MH8v3VL7VeaBfeEiPtmavHWnq9QDyjbv2liDHQ4VuGcxYpgEL57NrUlrO03jdE0ynqKxn37Ehg48S3wv0rUlORaYVFENQyyGgQVA2dJGL4YaLATY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=axaNz0Ij; arc=none smtp.client-ip=209.85.210.182
+	s=arc-20240116; t=1752625779; c=relaxed/simple;
+	bh=2Z+6ava4xwu7u6Yc1S3o+CtXLhSW5qVEEE9nA1nMS5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mMexfKP8ekS709xoj11UB3NBemfrooYBhkkP3NsygChIx/hr8Z/0i2/nhbm+zpyf03GOtbD7/kJyaPzRsZ3B/J8EydahIQS8KEzpIjTDmVSnrbBcSHeMgSTEf51I1Ua6XXksshmohkWHimvtfpl85K0LtEW7vp/5jl3piUeN81Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GRzkX1eI; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="axaNz0Ij"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-747fba9f962so349945b3a.0;
-        Tue, 15 Jul 2025 17:29:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GRzkX1eI"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7481600130eso6836564b3a.3;
+        Tue, 15 Jul 2025 17:29:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752625771; x=1753230571; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KG7b0qLVSsn5JbWgyM54NAxlyaG6RebnutmHkj5W+n8=;
-        b=axaNz0IjPSSJE/GpGP3YKUihjMiatP7X1yOScuqbijjb31REPRfGtU5253+II8MVZr
-         Aq/wf1j/wE1KaMeDFmh66JmUNizVivN+i7VvRQ65nyMBQK6bRsbl+UhQMDNv5ml1blpE
-         HekAwY4ovRWMTp3HkuGdFESOhMFBl2U6wrekxvwHqrBrg7A38fJJiVlHsfTAO+bTldnv
-         3eLg/JZ2fhDNZ8uZ/DiyXZ1lzettm0qgHPwSNQkHGt8mCkz7k5NJRcIHmJBT9A2myjfB
-         +ZhrozMISWJjIaX2CQqSs0W7ZKFLAA5inbIKJGRtK+e5QO0okuwjQD97CNYaBWYrqHUW
-         XvTQ==
+        d=gmail.com; s=20230601; t=1752625777; x=1753230577; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X25TgPjcZ3fkjftiPDPm5horCo+r7wLhcQXafmRaqwU=;
+        b=GRzkX1eIJoEFaaWpHFOsYGZS/TFj6UJhKGOw9A7Puiu2jCjKCBOO3fpdpgsGGYQc8k
+         29GDS8WyYdw41Y8UBNlJzoY7LZq4O8MrDjYP7ZAA+qMVp8s4uDvJjRV0+F3YFHmQqE5D
+         EnGVCG657BhXw9JJtE40pQ/LuRxLBn+3hKWmyLEaTv6EFhTzrhoM46kA6JRAYCsO48hx
+         SefLR7QaQzz+3dzmdjRoTP88WLHpVZFC1PsC9NPqjgX44oB94PVjW/dxfQaTkOsOuqSX
+         uk4dKzBUNwW+xhq+LPXl0FMP2TSC0vWDhK3s59AuJoPNtXGlAMya3KIwPHrAoJiVgDKw
+         jRGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752625771; x=1753230571;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KG7b0qLVSsn5JbWgyM54NAxlyaG6RebnutmHkj5W+n8=;
-        b=AXkYzKxQSkMg35pI4XbTFowfsYA2P1YGnM9kHyOkHzfC7daeoDXo4sNqwGI0svO7ES
-         cqBI7xXLOJRZb2kblgqdUO748l3q8tIpl3Z2wKEg9SvlcemBFwdxQg7ZZoGAYLu/VYV+
-         dDV6VrafuTwDEBR4gLF2pjCSM+WzxojkWxukpTYq/fXc3q4sQcAeRxe501BQu13pOfkS
-         hTr0tZblMhzh7R9c01H1tEt+X0fD6c2hOjkEzzGFdVRTXRUJeDOEb9L/W6GEfsBY+sVO
-         0I4qhEvHfUgglMWxM1AlDy+QVuZWaljRhZG+X629YCXeysOXvFmQMy/piPCK9m9feD0m
-         fwiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVKrDtIsob6pPvLiKtKA1/CPATh1xlt6AznQAxRdxVDCL9cxN1Z1/uNl3P4bG25MGKpL0ErwWZrn0yI@vger.kernel.org, AJvYcCW5ODjZRYcocQT0OD1KbCTc7LT9G0aWgTQtw5uKQ4bbM34b5RpZ/kNwkSQsbTH0KagLucFDOkY654+gvnRT@vger.kernel.org, AJvYcCWfigiqnVtEg3eu7nSQTbEqCyOOJhgCAmEheeztqoaBpeFnwghFqtccGaK/WotMKdM62/DiDbkY@vger.kernel.org
-X-Gm-Message-State: AOJu0YzK8KRbv4cmdd8i8RMp6zmPLJhePRf1UvaogiubjxU66y/VxzGc
-	YW6+3MH0fqCuqRYpB8woQty/KeFJ0IpSzzxqRARnho0GNoME79bn5h3K
-X-Gm-Gg: ASbGncuFEMOfEhPGkz/qSie8RCB8EUqNvltE7djjbIgta4KIijagY5gj5/m3JmI30tA
-	DizQXjfxyQox8fbQAC9pYfAvnoe0MzdRPcQrYvJ9CtTkKrx0nL1vSwaNnyPMxa3HL8K3V4mckyw
-	CoVLmUMIXUSjjl2hWh53dlsTAlsmk4BX/aHUNj0z4ifUlroFFRzxagZks/mKTN/LzDo1FJCFeHL
-	XChAoR1fgGsjg7C6xzMWLh+PK45lDORq7jazEGjmacOTRrTrBrdTRHZoxH2SdSfu/NDodsQVGhG
-	TXSVode1/eD9NfwoFRtNLJyP21qCra4/Y0VUZCGQmQJh14Sz1/zYVMAolZV1afZj96hSJXz2HYi
-	cC6hk+1fzR9h2zhi6+6i1wxD2e8/wknOk0YRa5tLV
-X-Google-Smtp-Source: AGHT+IH9V2Q49YMKUDjTBc4USjKcyj0gOV+RrCAvnPWQuK+oUMf2+nf3H8yBLmX/J67DP37IA1LaIA==
-X-Received: by 2002:a05:6a20:a108:b0:1f3:20be:c18a with SMTP id adf61e73a8af0-237e295f087mr1748101637.10.1752625770597;
-        Tue, 15 Jul 2025 17:29:30 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752625777; x=1753230577;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X25TgPjcZ3fkjftiPDPm5horCo+r7wLhcQXafmRaqwU=;
+        b=gc4kJOPpYYKSK7FpJiry4BiiN/D71aP6uoxvyAX/4itdFpc1/QpllNN70GQcTM6R/R
+         1favUu7EE2sbtJTMnr+Bv1WENPiOhazhadVPwCz7LGh8TRp25c7LGVMnuZFV3lM4dkUK
+         iqYzOW3eitA5RABmqBHZdnlX0MO7NBXrVeBFG6fKoJ5ZtHNFxn64lm/3/gesb8quXcee
+         +ES6L6E+hsuO6EXpFQ3oiuJ6V0y+WOxGDcuzSgVRkHCDo/XWAVo3aW/4ryFVcs7pVPj5
+         mRIP3CSH7qDAq5JI5LonVUGQEYXvHooGguX7bgF9f6I7Aa47wBcw4ka9miV6yCZfL9kY
+         HWgw==
+X-Forwarded-Encrypted: i=1; AJvYcCVKJm981rRjVWVX/Fvq1eETv6xGdRudjAnDe3JAmEeQhfoaOa4Oq5QCJ+jajZmIFSNLJRs+JEI5mxKo2vaS@vger.kernel.org, AJvYcCVhJk4Audc8keFbFgUW1G8q+I5mjotXklTLieEGsfdXOUUAm8UfNKXHcVkaFOs2if49Vfgp7z0q@vger.kernel.org, AJvYcCWMcfTDAynp2w3OPLh7tw4LZNbmS0H4TxVcww3xMU3plx+2yHZ/60qFBcDQeq19o/Vhk7xX5uhvKIjG@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywk7MKxd1z9DjOVx4Krh6+viioEHwA3Zd1WeIJw+aFXqZ0G2vSq
+	1atdd+PLTwEuGylFswRMUNnVF+20jz7KJjydyJMjxDbT8K0qv03nZKrC
+X-Gm-Gg: ASbGncvK1OUecvFbBy7we0TdWm3JPqcZr7EjIwv19mJ5VXlFSEODoIGgOElyW742Qq0
+	oK22LLXT3wioLUmhq4+JIxMeXgP6LgT2AqwyLo3xSZ+V9uC7j/zlcUq//s8X5iW6LGMIj/R2hjx
+	buns1eSbKzYflmz45rZfeYKoO+7R2aNml98Gib64F3ye4O+lpdiDUzUfcbwwxRMoXr/WxHAcpw/
+	BrtZ/mRQHt7Jzv2/RSGP1rFYV2ovVcf03u3ct9+yJ37UjRywIwA0PB8NGxtNfPqOVRRTkL5zNdE
+	XsI0mFJQsvYiUayXZ0LnV3sqHsZjb7KMv0hl5k5c+Yp6OlH+dVFM1xd9wIpYYOdNRfwY1s0Hvy/
+	7JhGJk/rPhVqmxZpvb/nhtctp0xSkTD+Dno4n5faD
+X-Google-Smtp-Source: AGHT+IFE9vyelHDv/p73IS1h2jFDZ/yGTkiztrsUWLi5qARJHMYYf94EZUy1KUk+a78S2mim3wbJYg==
+X-Received: by 2002:a05:6a20:548d:b0:236:355d:5f27 with SMTP id adf61e73a8af0-23813664463mr760682637.42.1752625776893;
+        Tue, 15 Jul 2025 17:29:36 -0700 (PDT)
 Received: from localhost.localdomain ([207.34.150.221])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74ebfd2d26asm11145720b3a.76.2025.07.15.17.29.29
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74ebfd2d26asm11145720b3a.76.2025.07.15.17.29.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Jul 2025 17:29:30 -0700 (PDT)
+        Tue, 15 Jul 2025 17:29:36 -0700 (PDT)
 From: Kyle Hendry <kylehendrydev@gmail.com>
 To: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -75,10 +77,12 @@ Cc: noltari@gmail.com,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 0/8] net: dsa: b53: mmap: Add bcm63xx EPHY power control
-Date: Tue, 15 Jul 2025 17:28:59 -0700
-Message-ID: <20250716002922.230807-1-kylehendrydev@gmail.com>
+Subject: [PATCH net-next 2/8] net: dsa: b53: mmap: Add reference to bcm63xx gpio controller
+Date: Tue, 15 Jul 2025 17:29:01 -0700
+Message-ID: <20250716002922.230807-3-kylehendrydev@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250716002922.230807-1-kylehendrydev@gmail.com>
+References: <20250716002922.230807-1-kylehendrydev@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,33 +91,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The gpio controller on some bcm63xx SoCs has a register for
-controlling functionality of the internal fast ethernet phys.
-These patches allow the b53 driver to enable/disable phy
-power.
-
-The register also contains reset bits which will be set by
-a reset driver in another patch series:
-https://lore.kernel.org/all/20250715234605.36216-1-kylehendrydev@gmail.com/
+On bcm63xx SoCs there are registers that control the PHYs in
+the GPIO controller. Allow the b53 driver to access them
+by passing in the syscon through the device tree.
 
 Signed-off-by: Kyle Hendry <kylehendrydev@gmail.com>
+---
+ drivers/net/dsa/b53/b53_mmap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Kyle Hendry (8):
-  net: dsa: b53: Add phy_enable(), phy_disable() methods
-  net: dsa: b53: mmap: Add reference to bcm63xx gpio controller
-  dt-bindings: net: dsa: b53: Document brcm,gpio-ctrl property
-  net: dsa: b53: Define chip IDs for more bcm63xx SoCs
-  net: dsa: b53: mmap: Add register layout for bcm63268
-  net: dsa: b53: mmap: Add register layout for bcm6318
-  net: dsa: b53: mmap: Add register layout for bcm6368
-  net: dsa: b53: mmap: Implement bcm63xx ephy power control
-
- .../devicetree/bindings/net/dsa/brcm,b53.yaml |   5 +
- drivers/net/dsa/b53/b53_common.c              |  27 ++---
- drivers/net/dsa/b53/b53_mmap.c                | 107 +++++++++++++++++-
- drivers/net/dsa/b53/b53_priv.h                |  15 ++-
- 4 files changed, 133 insertions(+), 21 deletions(-)
-
+diff --git a/drivers/net/dsa/b53/b53_mmap.c b/drivers/net/dsa/b53/b53_mmap.c
+index c687360a5b7f..a0c06d703861 100644
+--- a/drivers/net/dsa/b53/b53_mmap.c
++++ b/drivers/net/dsa/b53/b53_mmap.c
+@@ -21,6 +21,7 @@
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/io.h>
++#include <linux/mfd/syscon.h>
+ #include <linux/platform_device.h>
+ #include <linux/platform_data/b53.h>
+ 
+@@ -28,6 +29,7 @@
+ 
+ struct b53_mmap_priv {
+ 	void __iomem *regs;
++	struct regmap *gpio_ctrl;
+ };
+ 
+ static int b53_mmap_read8(struct b53_device *dev, u8 page, u8 reg, u8 *val)
+@@ -313,6 +315,8 @@ static int b53_mmap_probe(struct platform_device *pdev)
+ 
+ 	priv->regs = pdata->regs;
+ 
++	priv->gpio_ctrl = syscon_regmap_lookup_by_phandle(np, "brcm,gpio-ctrl");
++
+ 	dev = b53_switch_alloc(&pdev->dev, &b53_mmap_ops, priv);
+ 	if (!dev)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
