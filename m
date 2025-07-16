@@ -1,455 +1,139 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forwardcorp1d.mail.yandex.net (forwardcorp1d.mail.yandex.net [178.154.239.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43112F7D19
-	for <netdev@vger.kernel.org>; Wed, 16 Jul 2025 16:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0F02F3C3E;
+	Wed, 16 Jul 2025 16:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752682705; cv=none; b=U6bCN1SVog3KUcZW579iu4/G1dR0J4OCMTEuxxK7MsYZg+y0GcMGxlYVX8lnQXzoZBpHkOXx71E1VOrWWpY2H4qm4WLvQhvmgOHGym3M4t3zy6YTQ6OwOcTMwITiHdK3qVskTfN36DjQBH/AqGit2b7iolb0AKoXFLhufALXx80=
+	t=1752683070; cv=none; b=IU7rXkQNA4lauaUZmlPuazYmY7TNtHPlBS4rqfQYSodrRmGm4xwkhyjGWZ/LGCbQfX2SX2hmxT+Vb2I1rEq2GJ0oOFGuHGR5qp5nLdGC3UOV8V3ygHIeLk2f/TFxK6n2YovSEutplzHFOxGmGAR5a00gqC2oSi7itAqJhExD61w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752682705; c=relaxed/simple;
-	bh=nmrWICZ6sC0GiCREMZnd4dDFEn/w1jxMkGsMLm5qZBI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BUxZImVvurCgHdvCcQtq3lzpTusiEM5RDjz0wPMYOTd45JEXYIug5im3aWHckh3TZn58cNLxxICGgvj/Qp4GI0vWXrxGKiEV/C2FGP3eufuYjcA8roJd+gTPiRTe5p3KM+NSDgrP4EIrWlZochBQnMJznJAeY4yfNKsdTlpK0as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=KKyjr2Ln; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1752683070; c=relaxed/simple;
+	bh=kVoWv3/iwWNxGI8jNRCZPVMbIMQrh2BMtxaTtjHOzdA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A03xwgHOlMIxSBtV8loomCdf0ShHrID1TYumq9ne0FXyr+aEqy2EVRfMH8xK09c8HXdHaNmypEu4CXAfZO0Nzw7q70Z9d4cRSNgfABU3WX6lPV6k2mYex7fPVOSBAWERVqTcGSFJ4a/6BGpZGd3w15iKanXzv5qLqEvlONTFzPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=YdrDG6Nv; arc=none smtp.client-ip=178.154.239.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="KKyjr2Ln"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55511c3e203so47676e87.3
-        for <netdev@vger.kernel.org>; Wed, 16 Jul 2025 09:18:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1752682700; x=1753287500; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KK7lG1pDGeFo+ydjUJgmH+GwzbMyw2KIaRIMzfyHLto=;
-        b=KKyjr2LnRG6RtxgvXvF7cYhoOzhmsWzZF39GRypPvhBDAz3l+rix/f65rzRKy+y1Mo
-         yuPiWcLjLE4P/Vaf4qoyVaYicS2/npSaesejXSTu8Jh89DJgoz/PGytW2W5H0TYTBBaG
-         6XdR0M1TJs/SWPJgBhq06xx/oul4h4LkvlLfY4UvX00qX1dPsXA8mZ+OAHRdmPUseTgj
-         pPx2q5GTASnMLwboeDl7Uj0dXQRCyTonSWZuEJDC1DnuEoUYakAmIh750IxD6IBwR3HL
-         k+JKnuZjeQ4MlFUDaxfhIDuO8jrE9RI/qkCuZwKNSzLh+JGtFqg0ky3qRGmEFRCD1/2C
-         +x/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752682700; x=1753287500;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KK7lG1pDGeFo+ydjUJgmH+GwzbMyw2KIaRIMzfyHLto=;
-        b=SthcXTNKUv+9PVRudaR5i4/r3GMSq1uvFvFSCfVgIgp6qlNzcOF/CVC6V71m+TaeOz
-         Ik60BcbmuTuZibPp9j3I6M1nSUosm4/0+WS/7L80Ga7LX+4f6HfYZ6svjO8PLRFFRMaP
-         r4ndPokJH3S4NZxLrdhVebTFMpgdXcbKL44j924i+zZsxaeHJBtCs+mdk4gyBXXOMxZD
-         kLMUTUemg6hLR+Ge5OYrUoo9I5cJdb/JAsmLYKjAy9ZCaDSu/FPiIe0urjf6kfNhpPnb
-         cQgfZsGhBlTK7lljYPFCo+72WQ9GKcVbOEenXuhCYJbHpOEZuZR1L0S4w0w6wzhvrN9j
-         fdUA==
-X-Forwarded-Encrypted: i=1; AJvYcCXcyOEfmmMrmtGRpErG3fIaPdTZ+qYaN9JBd2uHkFPyq3Xx3ZPBKRa+pA5YCIVqM1qj67tITuc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0g+2TwHgFm5LMDuDSLMRkWFvDuOisB3DSpgAmTBRn9CzNBc+T
-	H8bQjHPpz5buvI8KTfFait1WLLnFfUUgmz08kMevxjMz324CelPE0T74OtjBvcbIGHE=
-X-Gm-Gg: ASbGncvPKcOdUcQPllFeit514Oh5BwCGoLLI7uulbP00Lc/mAEock+phiuw1WhLuC1W
-	SWnwAsePCWBZtqlsjY/coEL0my4jUPEoXRP/PtfuH9CDE5PHQrEucmGgXdSt+jhu5CivMHTtufd
-	H+HpV6T4wHSPXJeyTav4kbSDxtJ6vZCi3WGXW3fo0pSfdou8y7dbNY1X6b6xVQUx1dYmzN0i56X
-	y/uDzCo9R0F6o7MMQgT3qUUIFQPjz22mnZd/btG4ea7sOhUcHSWEDBuZQz2y+aQBgJrzNy8XRkg
-	DCkq0e22qS8FuSY5whXLQIqXAiqW4qgxDObBrN/hM5LcYKR4AefduHjCqJ1LMhK+V6nmhluTuPz
-	t1RgqUgAsz5iMWVqiSseKonOLtCVeNVaBrvHdMODvQq8xc7qd0YsMKswo7c6sV4/F9XyD
-X-Google-Smtp-Source: AGHT+IHnCLWsB2WxfIEk0mLNqCQPeyAvaHgBKIMKvdI5vsI5r875f6X+MQfBE+kbZ501qPpsGIBSPQ==
-X-Received: by 2002:a05:6512:61c:10b0:553:3492:b708 with SMTP id 2adb3069b0e04-55a23f87f69mr728217e87.49.1752682699484;
-        Wed, 16 Jul 2025 09:18:19 -0700 (PDT)
-Received: from cloudflare.com (79.184.150.73.ipv4.supernova.orange.pl. [79.184.150.73])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5593c7bbf49sm2676931e87.15.2025.07.16.09.18.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 09:18:18 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Wed, 16 Jul 2025 18:16:56 +0200
-Subject: [PATCH bpf-next v2 12/13] selftests/bpf: Cover lack of access to
- skb metadata at ip layer
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="YdrDG6Nv"
+Received: from mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:d42b:0:640:f3fc:0])
+	by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 5A3C060AFE;
+	Wed, 16 Jul 2025 19:22:56 +0300 (MSK)
+Received: from kniv-nix.yandex-team.ru (unknown [2a02:6bf:8080:a75::1:7])
+	by mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id nMP7Db0GwW20-oO643L00;
+	Wed, 16 Jul 2025 19:22:55 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1752682975;
+	bh=/lRCgvKC2NqnnCP6neakgrl2Mgl3BpNaQQjJ8bFZqVM=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=YdrDG6NvtUApDy+jUsqDv7peLcj/w2Jxu3hDLFaZWAk1fINhDPP+RynnBH4Z/MdKI
+	 Kmm90wBRxeiJWZCCI+UmC06pOQVwG+qJSQjZtw2ks8bNqWeqo22q3diIWf5R/HvODm
+	 XoJC15jJgqoVUVeAhtnCNdOpPxpbG6+jCjup6MHw=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-56.klg.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Nikolay Kuratov <kniv@yandex-team.ru>
+To: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	stable@vger.kernel.org,
+	Andrey Ryabinin <arbn@yandex-team.com>,
+	Andrey Smetanin <asmetanin@yandex-team.ru>
+Subject: [PATCH] vhost/net: Replace wait_queue with completion in ubufs reference
+Date: Wed, 16 Jul 2025 19:22:43 +0300
+Message-Id: <20250716162243.1401676-1-kniv@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250716-skb-metadata-thru-dynptr-v2-12-5f580447e1df@cloudflare.com>
-References: <20250716-skb-metadata-thru-dynptr-v2-0-5f580447e1df@cloudflare.com>
-In-Reply-To: <20250716-skb-metadata-thru-dynptr-v2-0-5f580447e1df@cloudflare.com>
-To: bpf@vger.kernel.org
-Cc: Alexei Starovoitov <ast@kernel.org>, 
- Andrii Nakryiko <andrii@kernel.org>, Arthur Fabre <arthur@arthurfabre.com>, 
- Daniel Borkmann <daniel@iogearbox.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
- Jesse Brandeburg <jbrandeburg@cloudflare.com>, 
- Joanne Koong <joannelkoong@gmail.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>, 
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <thoiland@redhat.com>, 
- Yan Zhai <yan@cloudflare.com>, kernel-team@cloudflare.com, 
- netdev@vger.kernel.org, Stanislav Fomichev <sdf@fomichev.me>
-X-Mailer: b4 0.15-dev-07fe9
+Content-Transfer-Encoding: 8bit
 
-Currently we don't expect skb metadata to persist beyond the device hooks.
-Extend the test run BPF program from the Netfilter pre-routing hook to
-verify this behavior.
+When operating on struct vhost_net_ubuf_ref, the following execution
+sequence is theoretically possible:
+CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
+                             // &ubufs->refcount == 2
+vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
+                                                     vhost_net_ubuf_put_and_wait()
+                                                       vhost_net_ubuf_put()
+                                                         int r = atomic_sub_return(1, &ubufs->refcount);
+                                                         // r = 1
+int r = atomic_sub_return(1, &ubufs->refcount);
+// r = 0
+                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
+                                                      // no wait occurs here because condition is already true
+                                                    kfree(ubufs);
+if (unlikely(!r))
+  wake_up(&ubufs->wait);  // use-after-free
 
-Note, that the added test has no observable side-effect yet. This will be
-addressed by the next change.
+This leads to use-after-free on ubufs access. This happens because CPU1
+skips waiting for wake_up() when refcount is already zero.
 
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+To prevent that use a completion instead of wait_queue as the ubufs
+notification mechanism. wait_for_completion() guarantees that there will
+be complete() call prior to its return.
+
+We also need to reinit completion because refcnt == 0 does not mean
+freeing in case of vhost_net_flush() - it then sets refcnt back to 1.
+AFAIK concurrent calls to vhost_net_ubuf_put_and_wait() with the same
+ubufs object aren't possible since those calls (through vhost_net_flush()
+or vhost_net_set_backend()) are protected by the device mutex.
+So reinit_completion() right after wait_for_completion() should be fine.
+
+Cc: stable@vger.kernel.org
+Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
+Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
+Suggested-by: Andrey Smetanin <asmetanin@yandex-team.ru>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
 ---
- .../bpf/prog_tests/xdp_context_test_run.c          | 95 ++++++++++++++++------
- tools/testing/selftests/bpf/progs/test_xdp_meta.c  | 64 ++++++++++-----
- tools/testing/selftests/bpf/test_progs.h           |  1 +
- 3 files changed, 117 insertions(+), 43 deletions(-)
+ drivers/vhost/net.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-index 602fa69afecb..97e1dae9a2e7 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-@@ -19,6 +19,9 @@ static const __u8 test_payload[TEST_PAYLOAD_LEN] = {
- 	0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38,
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index 7cbfc7d718b3..454d179fffeb 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -94,7 +94,7 @@ struct vhost_net_ubuf_ref {
+ 	 * >1: outstanding ubufs
+ 	 */
+ 	atomic_t refcount;
+-	wait_queue_head_t wait;
++	struct completion wait;
+ 	struct vhost_virtqueue *vq;
  };
  
-+#define PACKET_LEN \
-+	(sizeof(struct ethhdr) + sizeof(struct iphdr) + TEST_PAYLOAD_LEN)
-+
- void test_xdp_context_error(int prog_fd, struct bpf_test_run_opts opts,
- 			    __u32 data_meta, __u32 data, __u32 data_end,
- 			    __u32 ingress_ifindex, __u32 rx_queue_index,
-@@ -120,18 +123,38 @@ void test_xdp_context_test_run(void)
- 	test_xdp_context_test_run__destroy(skel);
+@@ -240,7 +240,7 @@ vhost_net_ubuf_alloc(struct vhost_virtqueue *vq, bool zcopy)
+ 	if (!ubufs)
+ 		return ERR_PTR(-ENOMEM);
+ 	atomic_set(&ubufs->refcount, 1);
+-	init_waitqueue_head(&ubufs->wait);
++	init_completion(&ubufs->wait);
+ 	ubufs->vq = vq;
+ 	return ubufs;
+ }
+@@ -249,14 +249,15 @@ static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
+ {
+ 	int r = atomic_sub_return(1, &ubufs->refcount);
+ 	if (unlikely(!r))
+-		wake_up(&ubufs->wait);
++		complete_all(&ubufs->wait);
+ 	return r;
  }
  
-+static void init_test_packet(__u8 *pkt)
-+{
-+	struct ethhdr *eth = &(struct ethhdr){
-+		.h_dest = { 0x02, 0x00, 0x00, 0x00, 0x00, 0x01 },
-+		.h_source = { 0x02, 0x00, 0x00, 0x00, 0x00, 0x02 },
-+		.h_proto = htons(ETH_P_IP),
-+	};
-+	struct iphdr *iph = &(struct iphdr){
-+		.ihl = 5,
-+		.version = IPVERSION,
-+		.ttl = IPDEFTTL,
-+		.protocol = 61, /* host internal protocol */
-+		.saddr = inet_addr("10.0.0.2"),
-+		.daddr = inet_addr("10.0.0.1"),
-+	};
-+
-+	eth = memcpy(pkt, eth, sizeof(*eth));
-+	pkt += sizeof(*eth);
-+	iph = memcpy(pkt, iph, sizeof(*iph));
-+	pkt += sizeof(*iph);
-+	memcpy(pkt, test_payload, sizeof(test_payload));
-+
-+	iph->tot_len = htons(sizeof(*iph) + sizeof(test_payload));
-+	iph->check = build_ip_csum(iph);
-+}
-+
- static int send_test_packet(int ifindex)
+ static void vhost_net_ubuf_put_and_wait(struct vhost_net_ubuf_ref *ubufs)
  {
-+	__u8 packet[PACKET_LEN];
- 	int n, sock = -1;
--	__u8 packet[sizeof(struct ethhdr) + TEST_PAYLOAD_LEN];
--
--	/* The ethernet header is not relevant for this test and doesn't need to
--	 * be meaningful.
--	 */
--	struct ethhdr eth = { 0 };
- 
--	memcpy(packet, &eth, sizeof(eth));
--	memcpy(packet + sizeof(eth), test_payload, TEST_PAYLOAD_LEN);
-+	init_test_packet(packet);
- 
- 	sock = socket(AF_PACKET, SOCK_RAW, IPPROTO_RAW);
- 	if (!ASSERT_GE(sock, 0, "socket"))
-@@ -271,17 +294,18 @@ void test_xdp_context_veth(void)
- static void test_tuntap(struct bpf_program *xdp_prog,
- 			struct bpf_program *tc_prio_1_prog,
- 			struct bpf_program *tc_prio_2_prog,
-+			struct bpf_program *nf_prog,
- 			struct bpf_map *result_map)
- {
- 	LIBBPF_OPTS(bpf_tc_hook, tc_hook, .attach_point = BPF_TC_INGRESS);
--	LIBBPF_OPTS(bpf_tc_opts, tc_opts, .handle = 1, .priority = 1);
-+	struct bpf_link *nf_link = NULL;
- 	struct netns_obj *ns = NULL;
--	__u8 packet[sizeof(struct ethhdr) + TEST_PAYLOAD_LEN];
-+	__u8 packet[PACKET_LEN];
- 	int tap_fd = -1;
- 	int tap_ifindex;
- 	int ret;
- 
--	if (!clear_test_result(result_map))
-+	if (result_map && !clear_test_result(result_map))
- 		return;
- 
- 	ns = netns_new(TAP_NETNS, true);
-@@ -292,6 +316,8 @@ static void test_tuntap(struct bpf_program *xdp_prog,
- 	if (!ASSERT_GE(tap_fd, 0, "open_tuntap"))
- 		goto close;
- 
-+	SYS(close, "ip link set dev " TAP_NAME " addr 02:00:00:00:00:01");
-+	SYS(close, "ip addr add dev " TAP_NAME " 10.0.0.1/24");
- 	SYS(close, "ip link set dev " TAP_NAME " up");
- 
- 	tap_ifindex = if_nametoindex(TAP_NAME);
-@@ -303,10 +329,14 @@ static void test_tuntap(struct bpf_program *xdp_prog,
- 	if (!ASSERT_OK(ret, "bpf_tc_hook_create"))
- 		goto close;
- 
--	tc_opts.prog_fd = bpf_program__fd(tc_prio_1_prog);
--	ret = bpf_tc_attach(&tc_hook, &tc_opts);
--	if (!ASSERT_OK(ret, "bpf_tc_attach"))
--		goto close;
-+	if (tc_prio_1_prog) {
-+		LIBBPF_OPTS(bpf_tc_opts, tc_opts, .handle = 1, .priority = 1,
-+			    .prog_fd = bpf_program__fd(tc_prio_1_prog));
-+
-+		ret = bpf_tc_attach(&tc_hook, &tc_opts);
-+		if (!ASSERT_OK(ret, "bpf_tc_attach"))
-+			goto close;
-+	}
- 
- 	if (tc_prio_2_prog) {
- 		LIBBPF_OPTS(bpf_tc_opts, tc_opts, .handle = 1, .priority = 2,
-@@ -317,28 +347,33 @@ static void test_tuntap(struct bpf_program *xdp_prog,
- 			goto close;
- 	}
- 
-+	if (nf_prog) {
-+		LIBBPF_OPTS(bpf_netfilter_opts, nf_opts,
-+			    .pf = NFPROTO_IPV4, .hooknum = NF_INET_PRE_ROUTING);
-+
-+		nf_link = bpf_program__attach_netfilter(nf_prog, &nf_opts);
-+		if (!ASSERT_OK_PTR(nf_link, "attach_netfilter"))
-+			goto close;
-+	}
-+
- 	ret = bpf_xdp_attach(tap_ifindex, bpf_program__fd(xdp_prog),
- 			     0, NULL);
- 	if (!ASSERT_GE(ret, 0, "bpf_xdp_attach"))
- 		goto close;
- 
--	/* The ethernet header is not relevant for this test and doesn't need to
--	 * be meaningful.
--	 */
--	struct ethhdr eth = { 0 };
--
--	memcpy(packet, &eth, sizeof(eth));
--	memcpy(packet + sizeof(eth), test_payload, TEST_PAYLOAD_LEN);
--
-+	init_test_packet(packet);
- 	ret = write(tap_fd, packet, sizeof(packet));
- 	if (!ASSERT_EQ(ret, sizeof(packet), "write packet"))
- 		goto close;
- 
--	assert_test_result(result_map);
-+	if (result_map)
-+		assert_test_result(result_map);
- 
- close:
- 	if (tap_fd >= 0)
- 		close(tap_fd);
-+	if (nf_link)
-+		bpf_link__destroy(nf_link);
- 	netns_free(ns);
+ 	vhost_net_ubuf_put(ubufs);
+-	wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
++	wait_for_completion(&ubufs->wait);
++	reinit_completion(&ubufs->wait);
  }
  
-@@ -354,32 +389,44 @@ void test_xdp_context_tuntap(void)
- 		test_tuntap(skel->progs.ing_xdp,
- 			    skel->progs.ing_cls,
- 			    NULL, /* tc prio 2 */
-+			    NULL, /* netfilter */
- 			    skel->maps.test_result);
- 	if (test__start_subtest("dynptr_read"))
- 		test_tuntap(skel->progs.ing_xdp,
- 			    skel->progs.ing_cls_dynptr_read,
- 			    NULL, /* tc prio 2 */
-+			    NULL, /* netfilter */
- 			    skel->maps.test_result);
- 	if (test__start_subtest("dynptr_slice"))
- 		test_tuntap(skel->progs.ing_xdp,
- 			    skel->progs.ing_cls_dynptr_slice,
- 			    NULL, /* tc prio 2 */
-+			    NULL, /* netfilter */
- 			    skel->maps.test_result);
- 	if (test__start_subtest("dynptr_write"))
- 		test_tuntap(skel->progs.ing_xdp_zalloc_meta,
- 			    skel->progs.ing_cls_dynptr_write,
- 			    skel->progs.ing_cls_dynptr_read,
-+			    NULL, /* netfilter */
- 			    skel->maps.test_result);
- 	if (test__start_subtest("dynptr_slice_rdwr"))
- 		test_tuntap(skel->progs.ing_xdp_zalloc_meta,
- 			    skel->progs.ing_cls_dynptr_slice_rdwr,
- 			    skel->progs.ing_cls_dynptr_slice,
-+			    NULL, /* netfilter */
- 			    skel->maps.test_result);
- 	if (test__start_subtest("dynptr_offset"))
- 		test_tuntap(skel->progs.ing_xdp_zalloc_meta,
- 			    skel->progs.ing_cls_dynptr_offset_wr,
- 			    skel->progs.ing_cls_dynptr_offset_rd,
-+			    NULL, /* netfilter */
- 			    skel->maps.test_result);
-+	if (test__start_subtest("dynptr_nf_hook"))
-+		test_tuntap(skel->progs.ing_xdp,
-+			    NULL, /* tc prio 1 */
-+			    NULL, /* tc prio 2 */
-+			    skel->progs.ing_nf,
-+			    NULL /* ignore result for now */);
- 
- 	test_xdp_meta__destroy(skel);
- }
-diff --git a/tools/testing/selftests/bpf/progs/test_xdp_meta.c b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-index 8f61aa997f74..a42a6dd4343c 100644
---- a/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-+++ b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-@@ -1,15 +1,25 @@
- #include <stdbool.h>
- #include <linux/bpf.h>
- #include <linux/if_ether.h>
-+#include <linux/ip.h>
- #include <linux/pkt_cls.h>
- 
-+#include <bpf/bpf_endian.h>
- #include <bpf/bpf_helpers.h>
- #include "bpf_kfuncs.h"
- 
-+#define META_OFFSET (sizeof(struct ethhdr) + sizeof(struct iphdr))
- #define META_SIZE 32
- 
-+#define NF_DROP 0
-+#define NF_ACCEPT 1
-+
- #define ctx_ptr(ctx, mem) (void *)(unsigned long)ctx->mem
- 
-+struct bpf_nf_ctx {
-+	struct sk_buff *skb;
-+} __attribute__((preserve_access_index));
-+
- /* Demonstrates how metadata can be passed from an XDP program to a TC program
-  * using bpf_xdp_adjust_meta.
-  * For the sake of testing the metadata support in drivers, the XDP program uses
-@@ -60,6 +70,20 @@ int ing_cls_dynptr_read(struct __sk_buff *ctx)
- 	return TC_ACT_SHOT;
- }
- 
-+/* Check that we can't get a dynptr slice to skb metadata yet */
-+SEC("netfilter")
-+int ing_nf(struct bpf_nf_ctx *ctx)
-+{
-+	struct __sk_buff *skb = (struct __sk_buff *)ctx->skb;
-+	struct bpf_dynptr meta;
-+
-+	bpf_dynptr_from_skb_meta(skb, 0, &meta);
-+	if (bpf_dynptr_size(&meta) != 0)
-+		return NF_DROP;
-+
-+	return NF_ACCEPT;
-+}
-+
- /* Write to metadata using bpf_dynptr_write helper */
- SEC("tc")
- int ing_cls_dynptr_write(struct __sk_buff *ctx)
-@@ -68,7 +92,7 @@ int ing_cls_dynptr_write(struct __sk_buff *ctx)
- 	__u8 *src;
- 
- 	bpf_dynptr_from_skb(ctx, 0, &data);
--	src = bpf_dynptr_slice(&data, sizeof(struct ethhdr), NULL, META_SIZE);
-+	src = bpf_dynptr_slice(&data, META_OFFSET, NULL, META_SIZE);
- 	if (!src)
- 		return TC_ACT_SHOT;
- 
-@@ -108,7 +132,7 @@ int ing_cls_dynptr_slice_rdwr(struct __sk_buff *ctx)
- 	__u8 *src, *dst;
- 
- 	bpf_dynptr_from_skb(ctx, 0, &data);
--	src = bpf_dynptr_slice(&data, sizeof(struct ethhdr), NULL, META_SIZE);
-+	src = bpf_dynptr_slice(&data, META_OFFSET, NULL, META_SIZE);
- 	if (!src)
- 		return TC_ACT_SHOT;
- 
-@@ -169,7 +193,7 @@ int ing_cls_dynptr_offset_wr(struct __sk_buff *ctx)
- 	struct bpf_dynptr meta;
- 	__u8 *dst, *src;
- 
--	bpf_skb_load_bytes(ctx, sizeof(struct ethhdr), payload, sizeof(payload));
-+	bpf_skb_load_bytes(ctx, META_OFFSET, payload, sizeof(payload));
- 	src = payload;
- 
- 	/* 1. Regular write */
-@@ -199,14 +223,18 @@ int ing_cls_dynptr_offset_wr(struct __sk_buff *ctx)
- SEC("xdp")
- int ing_xdp_zalloc_meta(struct xdp_md *ctx)
- {
--	struct ethhdr *eth = ctx_ptr(ctx, data);
-+	const void *data_end = ctx_ptr(ctx, data_end);
-+	const struct ethhdr *eth;
-+	const struct iphdr *iph;
- 	__u8 *meta;
- 	int ret;
- 
--	/* Drop any non-test packets */
--	if (eth + 1 > ctx_ptr(ctx, data_end))
-+	/* Expect Eth | IPv4 (proto=61) | ... */
-+	eth = ctx_ptr(ctx, data);
-+	if (eth + 1 > data_end || eth->h_proto != bpf_htons(ETH_P_IP))
- 		return XDP_DROP;
--	if (eth->h_proto != 0)
-+	iph = (void *)(eth + 1);
-+	if (iph + 1 > data_end || iph->protocol != 61)
- 		return XDP_DROP;
- 
- 	ret = bpf_xdp_adjust_meta(ctx, -META_SIZE);
-@@ -226,7 +254,8 @@ SEC("xdp")
- int ing_xdp(struct xdp_md *ctx)
- {
- 	__u8 *data, *data_meta, *data_end, *payload;
--	struct ethhdr *eth;
-+	const struct ethhdr *eth;
-+	const struct iphdr *iph;
- 	int ret;
- 
- 	ret = bpf_xdp_adjust_meta(ctx, -META_SIZE);
-@@ -237,18 +266,15 @@ int ing_xdp(struct xdp_md *ctx)
- 	data_end  = ctx_ptr(ctx, data_end);
- 	data      = ctx_ptr(ctx, data);
- 
--	eth = (struct ethhdr *)data;
--	payload = data + sizeof(struct ethhdr);
--
--	if (payload + META_SIZE > data_end ||
--	    data_meta + META_SIZE > data)
-+	/* Expect Eth | IPv4 (proto=61) | meta blob */
-+	eth = (void *)data;
-+	if (eth + 1 > data_end || eth->h_proto != bpf_htons(ETH_P_IP))
- 		return XDP_DROP;
--
--	/* The Linux networking stack may send other packets on the test
--	 * interface that interfere with the test. Just drop them.
--	 * The test packets can be recognized by their ethertype of zero.
--	 */
--	if (eth->h_proto != 0)
-+	iph = (void *)(eth + 1);
-+	if (iph + 1 > data_end || iph->protocol != 61)
-+		return XDP_DROP;
-+	payload = (void *)(iph + 1);
-+	if (payload + META_SIZE > data_end || data_meta + META_SIZE > data)
- 		return XDP_DROP;
- 
- 	__builtin_memcpy(data_meta, payload, META_SIZE);
-diff --git a/tools/testing/selftests/bpf/test_progs.h b/tools/testing/selftests/bpf/test_progs.h
-index df2222a1806f..204f54cdaab1 100644
---- a/tools/testing/selftests/bpf/test_progs.h
-+++ b/tools/testing/selftests/bpf/test_progs.h
-@@ -20,6 +20,7 @@ typedef __u16 __sum16;
- #include <linux/ip.h>
- #include <linux/ipv6.h>
- #include <linux/filter.h>
-+#include <linux/netfilter.h>
- #include <linux/perf_event.h>
- #include <linux/socket.h>
- #include <linux/unistd.h>
-
+ static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
 -- 
-2.43.0
+2.34.1
 
