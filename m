@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6823570830
-	for <netdev@vger.kernel.org>; Wed, 16 Jul 2025 00:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A69F339A8
+	for <netdev@vger.kernel.org>; Wed, 16 Jul 2025 00:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752624257; cv=none; b=dczDNIPwOlPPan/DdIUUmH5nLpaqtPQWbCdrMuhlIX158FpWg9r3ie7XzPJhJe23r14KFDFw/kqPZMaK9T2X2zo6BwVd9Ie7blG10TPKnLtOZ7rjTlGNjtJZEWffZPjCxFxJX5i5uRCl79nuL5QqEkkOTJ1EnvpfIgxgyuqKsHs=
+	t=1752624257; cv=none; b=qbp2KJcf4Z9S1Yc63F574x/fbEnSZvAQvgoGqpb2qXkyeXvQNdrhT0bKM+vvJ/whbJS5rflu33vi637c2iYkznwO7MRqHMZ1eHUZJBRoYjXvf3MQvtGn5pO47VdDED4A3ksyHVrPsZkxGT6lV+BqPAWpJSWo9n3ASB+CkTVdl44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752624257; c=relaxed/simple;
-	bh=KHPt8s4bKECNUQfB/9WjvpVUlEINokQhHtfz11aTCsY=;
+	bh=yFsb48K8POIueDxbVCJoK+OgWBzU5wk3QICaCpXND9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GwTnSfdKUXGhh1gpXvU9k7Z6EyKFVVSVQcnOC2cq/9QrQXy6rFvWNw+AzVprWg6tBAmf/xyR94RSmE8tdmqYVPW3uolv7NIyOkF8DRYNSC731U22L5SjuCoVyamMOWZ0A2KEJZhPvnNssLxrKwqY0vaMgGOMsYiRibb1WDxte8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MGSNokCx; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=SXrkwLYaIwfKorDBhaBOQnKt5mDixr38YPhXGF7pelJqk7aRzx3xQyDYHofkhfgH1jwsXIyeAAFqy8cTHGtq/GkYlDKhgknefepNHFsk7B/26+Y9bwAcR0ZB4gLLZQBQjtQ4IM9ZY1vWcCSq2+XMkHkH0Yq7mXIAAS37Amuy0kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6n+Mjbq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MGSNokCx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FBAC4CEFA;
-	Wed, 16 Jul 2025 00:04:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6n+Mjbq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763D0C4CEFB;
+	Wed, 16 Jul 2025 00:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752624255;
-	bh=KHPt8s4bKECNUQfB/9WjvpVUlEINokQhHtfz11aTCsY=;
+	s=k20201202; t=1752624257;
+	bh=yFsb48K8POIueDxbVCJoK+OgWBzU5wk3QICaCpXND9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MGSNokCxDL3JIZKOvAhNn3DkteyOccM6SJJ+c79eZFEc5a+5w3pQlj0UiMmHCekZx
-	 0UPkDTveF3yVljMspUcOuoJYN/1xnpVAx3/lJeeX0C4KJGi00ZjiGytBEcFEyATTy2
-	 jGC8WSzlsNzkc0xAHWF/3hPyzsEA64HsLGUL1tvp4KZGG9nDGUcFW+hfvePo62NroK
-	 Bcc6+7FtgbgigeOAjvHoy9+Y+y6SbTr7I2AZDNqsvDiJOiG0FuwYIYveJZswJqZ8/z
-	 AQblUiJzjZlYOR0mzqaoE8kk875QYDwxYXH34WyL1+/TIBjPek6P5mD++lxxKsu3gy
-	 tm6peqMK79p3A==
+	b=R6n+Mjbq1mKtjVwCYzEolmZW6hFp+QPLtseh3tM5Gf5vUDsWnEnjE6BpiJTGCIW1e
+	 CRrb32h+F3MIf7DHR6HIlS880FlGKiVtZ8xNk1hHSmoKSB8ZmXq5xOUbTAoKQLYDHc
+	 vtNPNcfvZMSAzEf1+lbn4eHObw8WiManoEhAlgPSasbsM4VW8UDQd9u3d0+oP3EaEm
+	 +0yOSoOxZ6YpUTej1TRfIHQmD4aAipyUajWlsRC+NoYzwOl/GO85TRJi9QdCZjTkeq
+	 WID1YyX2zmpvd+odD0zaiIgcJT6U0pjMSI0jxrAxEJtsd/0McvP0FICOCqT/5WHJg0
+	 lTYSIV0B/uFxQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -43,9 +43,9 @@ Cc: netdev@vger.kernel.org,
 	jdamato@fastly.com,
 	andrew@lunn.ch,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v3 02/11] selftests: drv-net: rss_api: factor out checking min queue count
-Date: Tue, 15 Jul 2025 17:03:22 -0700
-Message-ID: <20250716000331.1378807-3-kuba@kernel.org>
+Subject: [PATCH net-next v3 04/11] selftests: drv-net: rss_api: test setting indirection table via Netlink
+Date: Tue, 15 Jul 2025 17:03:24 -0700
+Message-ID: <20250716000331.1378807-5-kuba@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250716000331.1378807-1-kuba@kernel.org>
 References: <20250716000331.1378807-1-kuba@kernel.org>
@@ -57,55 +57,152 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Multiple tests check min queue count, create a helper.
+Test setting indirection table via Netlink.
 
+  # ./tools/testing/selftests/drivers/net/hw/rss_api.py
+  TAP version 13
+  1..6
+  ok 1 rss_api.test_rxfh_nl_set_fail
+  ok 2 rss_api.test_rxfh_nl_set_indir
+  ok 3 rss_api.test_rxfh_nl_set_indir_ctx
+  ok 4 rss_api.test_rxfh_indir_ntf
+  ok 5 rss_api.test_rxfh_indir_ctx_ntf
+  ok 6 rss_api.test_rxfh_fields
+  # Totals: pass:6 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- .../testing/selftests/drivers/net/hw/rss_api.py | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+v3:
+ - adjust docstring
+v2:
+ - test set on lo which doesn't have any ops (expected to fail)
+---
+ .../selftests/drivers/net/hw/rss_api.py       | 96 ++++++++++++++++++-
+ 1 file changed, 93 insertions(+), 3 deletions(-)
 
 diff --git a/tools/testing/selftests/drivers/net/hw/rss_api.py b/tools/testing/selftests/drivers/net/hw/rss_api.py
-index 6ae908bed1a4..2c76fbdb2617 100755
+index 2c76fbdb2617..7353e8f3e1a4 100755
 --- a/tools/testing/selftests/drivers/net/hw/rss_api.py
 +++ b/tools/testing/selftests/drivers/net/hw/rss_api.py
-@@ -13,6 +13,13 @@ from lib.py import EthtoolFamily
+@@ -6,10 +6,10 @@ API level tests for RSS (mostly Netlink vs IOCTL).
+ """
+ 
+ import glob
+-from lib.py import ksft_run, ksft_exit, ksft_eq, ksft_is, ksft_ne
++from lib.py import ksft_run, ksft_exit, ksft_eq, ksft_is, ksft_ne, ksft_raises
+ from lib.py import KsftSkipEx, KsftFailEx
+-from lib.py import defer, ethtool
+-from lib.py import EthtoolFamily
++from lib.py import defer, ethtool, CmdExitFailure
++from lib.py import EthtoolFamily, NlError
  from lib.py import NetDrvEnv
  
  
-+def _require_2qs(cfg):
-+    qcnt = len(glob.glob(f"/sys/class/net/{cfg.ifname}/queues/rx-*"))
-+    if qcnt < 2:
-+        raise KsftSkipEx(f"Local has only {qcnt} queues")
-+    return qcnt
+@@ -59,6 +59,95 @@ from lib.py import NetDrvEnv
+     return ret
+ 
+ 
++def test_rxfh_nl_set_fail(cfg):
++    """
++    Test error path of Netlink SET.
++    """
++    _require_2qs(cfg)
++
++    ethnl = EthtoolFamily()
++    ethnl.ntf_subscribe("monitor")
++
++    with ksft_raises(NlError):
++        ethnl.rss_set({"header": {"dev-name": "lo"},
++                       "indir": None})
++
++    with ksft_raises(NlError):
++        ethnl.rss_set({"header": {"dev-index": cfg.ifindex},
++                       "indir": [100000]})
++    ntf = next(ethnl.poll_ntf(duration=0.2), None)
++    ksft_is(ntf, None)
 +
 +
- def _ethtool_create(cfg, act, opts):
-     output = ethtool(f"{act} {cfg.ifname} {opts}").stdout
-     # Output will be something like: "New RSS context is 1" or
-@@ -57,10 +64,7 @@ from lib.py import NetDrvEnv
-     Check that Netlink notifications are generated when RSS indirection
-     table was modified.
-     """
--
--    qcnt = len(glob.glob(f"/sys/class/net/{cfg.ifname}/queues/rx-*"))
--    if qcnt < 2:
--        raise KsftSkipEx(f"Local has only {qcnt} queues")
++def test_rxfh_nl_set_indir(cfg):
++    """
++    Test setting indirection table via Netlink.
++    """
++    qcnt = _require_2qs(cfg)
++
++    # Test some SETs with a value
++    reset = defer(cfg.ethnl.rss_set,
++                  {"header": {"dev-index": cfg.ifindex}, "indir": None})
++    cfg.ethnl.rss_set({"header": {"dev-index": cfg.ifindex},
++                       "indir": [1]})
++    rss = cfg.ethnl.rss_get({"header": {"dev-index": cfg.ifindex}})
++    ksft_eq(set(rss.get("indir", [-1])), {1})
++
++    cfg.ethnl.rss_set({"header": {"dev-index": cfg.ifindex},
++                       "indir": [0, 1]})
++    rss = cfg.ethnl.rss_get({"header": {"dev-index": cfg.ifindex}})
++    ksft_eq(set(rss.get("indir", [-1])), {0, 1})
++
++    # Make sure we can't set the queue count below max queue used
++    with ksft_raises(CmdExitFailure):
++        ethtool(f"-L {cfg.ifname} combined 0 rx 1")
++    with ksft_raises(CmdExitFailure):
++        ethtool(f"-L {cfg.ifname} combined 1 rx 0")
++
++    # Test reset back to default
++    reset.exec()
++    rss = cfg.ethnl.rss_get({"header": {"dev-index": cfg.ifindex}})
++    ksft_eq(set(rss.get("indir", [-1])), set(range(qcnt)))
++
++
++def test_rxfh_nl_set_indir_ctx(cfg):
++    """
++    Test setting indirection table for a custom context via Netlink.
++    """
 +    _require_2qs(cfg)
- 
-     ethnl = EthtoolFamily()
-     ethnl.ntf_subscribe("monitor")
-@@ -88,10 +92,7 @@ from lib.py import NetDrvEnv
-     Check that Netlink notifications are generated when RSS indirection
-     table was modified on an additional RSS context.
++
++    # Get setting for ctx 0, we'll make sure they don't get clobbered
++    dflt = cfg.ethnl.rss_get({"header": {"dev-index": cfg.ifindex}})
++
++    # Create context
++    ctx_id = _ethtool_create(cfg, "-X", "context new")
++    defer(ethtool, f"-X {cfg.ifname} context {ctx_id} delete")
++
++    cfg.ethnl.rss_set({"header": {"dev-index": cfg.ifindex},
++                       "context": ctx_id, "indir": [1]})
++    rss = cfg.ethnl.rss_get({"header": {"dev-index": cfg.ifindex},
++                             "context": ctx_id})
++    ksft_eq(set(rss.get("indir", [-1])), {1})
++
++    ctx0 = cfg.ethnl.rss_get({"header": {"dev-index": cfg.ifindex}})
++    ksft_eq(ctx0, dflt)
++
++    cfg.ethnl.rss_set({"header": {"dev-index": cfg.ifindex},
++                       "context": ctx_id, "indir": [0, 1]})
++    rss = cfg.ethnl.rss_get({"header": {"dev-index": cfg.ifindex},
++                             "context": ctx_id})
++    ksft_eq(set(rss.get("indir", [-1])), {0, 1})
++
++    ctx0 = cfg.ethnl.rss_get({"header": {"dev-index": cfg.ifindex}})
++    ksft_eq(ctx0, dflt)
++
++    # Make sure we can't set the queue count below max queue used
++    with ksft_raises(CmdExitFailure):
++        ethtool(f"-L {cfg.ifname} combined 0 rx 1")
++    with ksft_raises(CmdExitFailure):
++        ethtool(f"-L {cfg.ifname} combined 1 rx 0")
++
++
+ def test_rxfh_indir_ntf(cfg):
      """
--
--    qcnt = len(glob.glob(f"/sys/class/net/{cfg.ifname}/queues/rx-*"))
--    if qcnt < 2:
--        raise KsftSkipEx(f"Local has only {qcnt} queues")
-+    _require_2qs(cfg)
+     Check that Netlink notifications are generated when RSS indirection
+@@ -129,6 +218,7 @@ from lib.py import NetDrvEnv
+     """ Ksft boiler plate main """
  
-     ctx_id = _ethtool_create(cfg, "-X", "context new")
-     defer(ethtool, f"-X {cfg.ifname} context {ctx_id} delete")
+     with NetDrvEnv(__file__, nsim_test=False) as cfg:
++        cfg.ethnl = EthtoolFamily()
+         ksft_run(globs=globals(), case_pfx={"test_"}, args=(cfg, ))
+     ksft_exit()
+ 
 -- 
 2.50.1
 
