@@ -1,123 +1,142 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830BA186294;
-	Wed, 16 Jul 2025 17:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183AA2E3715
+	for <netdev@vger.kernel.org>; Wed, 16 Jul 2025 17:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752685471; cv=none; b=T5ivyT8PWvsqm6KeD7wt8tTuPvY3Ep4op53Zg+54AptFHhURljEjemNth46+GQ5pBWIMgb+Aj5ZlOWlq/PydztXfexl6ISIsUtMIQjg0wwXKhQLIoyKOYmyevPXpDHXuA5FQuLCMrIqfI3aGhgPTmjEtav1MHPU2i6vmpeb8TSQ=
+	t=1752686743; cv=none; b=D9wrWKTFC2GDcxpKDrsFfy3DxGMFLfvFbTkL+eDeqASZ4q62611CqVNttBwx8ndkdvkOZfZrxHm7fjh71IlykwgYWBCufriv83SdxuVpOmsbtYCbR2serdIDqTPp7kPM7IZj0hGYOj3YQA96QQ+Lr0+/wQtsIMPjFGj11u79oBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752685471; c=relaxed/simple;
-	bh=pfDCSCBF20xGHAe1g8MHqdHKoqvKbZb6FrEiuiU5isE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M7x9glD9ZDLRiq37GovboNRbklMBZH8Mxwu6DqGcGvdzp53PJOpFc34P7Zr4U8b5ji2zIqvWKyMDPMH1uGZpnRZsZi7MZaEixDm/IzBnZTfvOgjplgaaQRUp043JT1WSQJ3fF6zHjdgTOi7L77Yu9zRV7ib6zJDbThhTphpDx4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CmqfGpxn; arc=none smtp.client-ip=209.85.208.45
+	s=arc-20240116; t=1752686743; c=relaxed/simple;
+	bh=B9+0g+0d/EHpDoGPUSylaxswVKsYOn1l/2vSjay4OQo=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=SX6/sqRmcX+pgK8u6QNkls1CqdISupH+Z3Yedpa28SLjSUnUPo7Pz6gqVPsOlN1XnyOXWGPzvaI1F24zQa58aJDM6NzeekBS0iT/mIl7RsHx7iXec6ikYoa+ubCwNKhVxpKznMGSdYZ44d7RdPh45z+aVRS2TQ4F6kB2u4Pgm2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGWaMnF3; arc=none smtp.client-ip=209.85.219.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CmqfGpxn"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-60c51860bf5so64895a12.1;
-        Wed, 16 Jul 2025 10:04:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGWaMnF3"
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e740a09eb00so162602276.0
+        for <netdev@vger.kernel.org>; Wed, 16 Jul 2025 10:25:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752685468; x=1753290268; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1752686740; x=1753291540; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=q7oYQp9TxI4Fj95McwORlYyfvoBodxMgz2aYymOhtlQ=;
-        b=CmqfGpxnApb0w3PmsNh7Oz2oPNElP6FOg2JHq00liLAFtyyWXfiG34m8kBDLTe9Yj9
-         sKqU4Ac0HVp2e77BKS1qjV3b6YT4urtczCwYBWQK8C+3EXF6cFaNebAxnmg6qTwzYE0h
-         7pJQsihbuN6CCtx8r5STsT9+7FE5e/AxaUt/YibkAMO0BgrS2/TLGGPm9NpVzarKcCBB
-         y8qKm4IDiggbVhky4kBxSNT6eDArjxsebE/0ju7fqWgOCCFQ+vf4wzFQWvEFwThhXhcV
-         yE/K0mj5M0TpwD4ToFamZ1hdxw9NjNAHPwDkUcwP9/9N6c0VCCchfAUNDEl2/L7nev/M
-         kdMw==
+        bh=2mIl+KPOc5RydPnrmXCqMrITXsgkZJDaXRKUgFte5ck=;
+        b=OGWaMnF3CIkvBRcUzT4i4Ksief3tmbtz+oAXm/zazwiLil48rghtCO+bpakvDkTqCe
+         dDNjscFW87VhNZ0Hpu1UP6WSjBz0mALuUSSRVzhUtNFobvv3uqDw2JYWh1BpEWcUHDTZ
+         24tuaj6mORGjnBvJbaR/3fEFs5PpjIm5h2BfLrGV7O6osIYp7hLk0zLZIc6bgPm1EIZC
+         nFaRNyAkvDVENKK3OCOZeRZgNil1EKb9xZg3kKc1oPWNGC6mEGxihQN+EO3mAbljEb8X
+         gyCzddWi4ygJdeDJ2mT6GEk2pYNl8DdtesLY35td4xHTr/LShe3FOUzhdvwcAHfBwbkB
+         clfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752685468; x=1753290268;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q7oYQp9TxI4Fj95McwORlYyfvoBodxMgz2aYymOhtlQ=;
-        b=H3he4aWY7ysk+66exsU2nItEyU0uXTtAuR+FYVKE0kPLp7BnfqWH+zLBrb55zd3F2V
-         sTgirKd5OVL9JUxFU68kPwR9GDbL1bu+0NW8o9N+ST1qMSPuA3wXURje1k6aw3TRBxb3
-         57UJFdfxCpWWC6OaqqjyB4KIuuTwRP8AQ5Ky2TsxY7F9nMXdgs3fnC8rKzAPpzXSs3gj
-         tMHaVjffNkTayPua5qLzYvTk1VsFcvsFYSh4pVC3FEd3cOPfYrMuvfp81jlj4Ybrej+d
-         DTm9QIicoRO1kTgrRfFbrfJnX4jR09w/kEJALzclRG4S+9o9dBi6+vDXH5Y0ckhtvuWq
-         fpYg==
-X-Forwarded-Encrypted: i=1; AJvYcCU4QDCf9SapSc5MFuVcUJ1cPcDhicJ37YPLSdrYI6cu4unUMiO+VUcZ4/ODq31CFPmbMR8=@vger.kernel.org, AJvYcCWRPcP/7wYQcVkLWfMGnAiZUNmHdPWn0B1JQofOnI5JRyj5bHNaz4wZVKczEm/yLsB5uaC27Jkl@vger.kernel.org, AJvYcCWkK00Q1iEkZoyUcGYdcfgsukQ4GzILE4VoWUu0PO7lo1MYJfCte5JVaiGnEs1yej/eP3NE8JKSenpNrZd+@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywk6ifeiXeZ4tsOqu4Qh9+2O/zDYfS/4VpxFtjGbxbmFMODU2dI
-	bDdUg6yNlg7a8hzDzYlb3H5cIjNVgJqFHomNx5HEgbE8K/MzhxLv14t54uQ2aEsQUOjIHWjD+hh
-	FEekqNIadu7tS8QPhXByAuoMd+jH3WG/oYzae
-X-Gm-Gg: ASbGncv817ARo7EBC1FUe8P8RereHP14Q2n1uOfJAcz0k2aqpxu3F/fYNGaHSjWe8Zd
-	zHy5K4TSpCF3cukSAfm5J1Mx1K4fhvdK6OtXTSEnQO9k9jg7LMLtcGcyuQfOb+AEwxZ5HmNySQg
-	oEQ7S+T2vgDt51CVIvTRkA+biGY1dZ6qyz3xXwS1QWjm3UwL2U1pHMIneIhVZx77DXvlCfdPVtH
-	L2aFi+b4MK/DnV7QHua5Svo72dV8Wf3atYH
-X-Google-Smtp-Source: AGHT+IFamd7Y4MRHtmq2184BO6w8sFgyxYl7Zh4itA6app2I7UPsgQc9mmLYflqnadMMT9/lraUol3z1FAgnq1p09mo=
-X-Received: by 2002:a05:6000:288f:b0:3a5:1410:71c0 with SMTP id
- ffacd0b85a97d-3b60dd95b34mr2909840f8f.38.1752684982596; Wed, 16 Jul 2025
- 09:56:22 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752686740; x=1753291540;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=2mIl+KPOc5RydPnrmXCqMrITXsgkZJDaXRKUgFte5ck=;
+        b=ST44GkujPBYGSd+ph/20WvKdiLJQLBGcfYFOCVEkNbDMKWr0jyFSGby90jxBNc7x9v
+         KUfCcg1hhqY0ktTavU7gr1qhtjr6SYhFYTGNSvJK53XNKB8/STugR93nlJUXYleJgibk
+         7vB73XDkDeS5LzjipMfGRJ022CYxv/4DLfK5/PXRy0n4zUA6PNy5Va+fFYwdEQKT+uYZ
+         UeNb3CZw/8af+wIo88qJdHAqiPjgA0yU818ftLI/KvRZHr0M0SA2K96X5ygvCDAObbsP
+         xUp3TyPXX7RSHIQ4wpS/2qoIRYfGWkshmc/zZy9iSXyY41bVPW9p1/kZu5EUFcuUcGTl
+         vIHA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+upOGzgOGSpjLo8HuJtYVq5ONf4CWqje/Ecd45t+HRgc4ZTuLe0XbSya4Ghy7HYgsOb2nzSU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV/l6FWD63dIF33WFDs4nP8kWvT5uza0cXZW/1EpDNH3jvdFVu
+	6NYOcdGzmns19DqjYW6A16Yz4O43Rn3YuDm/gP2lJ4cjzwA8O+vNo/KI
+X-Gm-Gg: ASbGncvK3ppi77WJbPzVpf+gnt2LjLu89Hj90fF8iUBhcwQS3N0QUxfisMcDI+Mler6
+	afKPiWjrhDiacU4LIyl3mWdk4EDZa1cIeVGsbR8wfIc+j5HB7nfn2pkHCkLkSRO4LkLEN1RO5uB
+	5ZMUOsC9qQoM3yAETL58XWgo5HD12QSpL4TQqBA+8FXE8AQS63JymY4pKMqmkl9I4hw4LDrXCzD
+	OR8bKfbKick+saPAy/O3u8vh02fwR4W1wd84bsBTgMTDIgORyRj1yR5W3nFEZf9i3rTCk2n4dMh
+	stRuXzWvQ428ZYeCiTtfFCdky793T8xkkbrbFgpr7jMxvzoGAFbF9UGVXf87aNZCiBzjota8zNx
+	w0cDebdKj4c+/0m8Lrd/wJp+JF+qtp43fuNEwIHHjrccZ4soDjmNjcw0ftSTPYc8Ja3c1lQ==
+X-Google-Smtp-Source: AGHT+IF7AasOlz+8EtxqS+q+1PxKgh0uMD0GhW8oujBwQWNf50Q/JI6tbI2He1T/3Oa+LrQo42ZZSg==
+X-Received: by 2002:a05:690c:4b0f:b0:70e:2168:7344 with SMTP id 00721157ae682-718374f0f89mr46338687b3.23.1752686739928;
+        Wed, 16 Jul 2025 10:25:39 -0700 (PDT)
+Received: from localhost (23.67.48.34.bc.googleusercontent.com. [34.48.67.23])
+        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-717c5d4f9eesm30041777b3.13.2025.07.16.10.25.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Jul 2025 10:25:39 -0700 (PDT)
+Date: Wed, 16 Jul 2025 13:25:38 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Daniel Zahka <daniel.zahka@gmail.com>, 
+ Donald Hunter <donald.hunter@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Saeed Mahameed <saeedm@nvidia.com>, 
+ Leon Romanovsky <leon@kernel.org>, 
+ Tariq Toukan <tariqt@nvidia.com>, 
+ Boris Pismenny <borisp@nvidia.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ David Ahern <dsahern@kernel.org>, 
+ Neal Cardwell <ncardwell@google.com>, 
+ Patrisious Haddad <phaddad@nvidia.com>, 
+ Raed Salem <raeds@nvidia.com>, 
+ Jianbo Liu <jianbol@nvidia.com>, 
+ Dragos Tatulea <dtatulea@nvidia.com>, 
+ Rahul Rameshbabu <rrameshbabu@nvidia.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>, 
+ Alexander Lobakin <aleksander.lobakin@intel.com>, 
+ Jacob Keller <jacob.e.keller@intel.com>, 
+ netdev@vger.kernel.org
+Message-ID: <6877e092c394d_796ff294dc@willemb.c.googlers.com.notmuch>
+In-Reply-To: <20250716144551.3646755-5-daniel.zahka@gmail.com>
+References: <20250716144551.3646755-1-daniel.zahka@gmail.com>
+ <20250716144551.3646755-5-daniel.zahka@gmail.com>
+Subject: Re: [PATCH net-next v4 04/19] tcp: add datapath logic for PSP with
+ inline key exchange
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250703121521.1874196-1-dongml2@chinatelecom.cn>
- <20250703121521.1874196-3-dongml2@chinatelecom.cn> <CAADnVQKP1-gdmq1xkogFeRM6o3j2zf0Q8Atz=aCEkB0PkVx++A@mail.gmail.com>
- <45f4d349-7b08-45d3-9bec-3ab75217f9b6@linux.dev> <3bccb986-bea1-4df0-a4fe-1e668498d5d5@linux.dev>
-In-Reply-To: <3bccb986-bea1-4df0-a4fe-1e668498d5d5@linux.dev>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Wed, 16 Jul 2025 09:56:11 -0700
-X-Gm-Features: Ac12FXzz97G1BInpuw1CatASNIHUf58Eb9JFMy5wt8frDaYX3XmuvRo8Dbo2D70
-Message-ID: <CAADnVQ+Afov4E=9t=3M=zZmO9z4ZqT6imWD5xijDHshTf3J=RA@mail.gmail.com>
-Subject: Inlining migrate_disable/enable. Was: [PATCH bpf-next v2 02/18]
- x86,bpf: add bpf_global_caller for global trampoline
-To: Menglong Dong <menglong.dong@linux.dev>, Peter Zijlstra <peterz@infradead.org>
-Cc: Menglong Dong <menglong8.dong@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Jiri Olsa <jolsa@kernel.org>, bpf <bpf@vger.kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, 
-	LKML <linux-kernel@vger.kernel.org>, Network Development <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 15, 2025 at 2:31=E2=80=AFAM Menglong Dong <menglong.dong@linux.=
-dev> wrote:
->
->  Following are the test results for fentry-multi:
->    36.36% bpf_prog_2dcccf652aac1793_bench_trigger_fentry_multi [k]
-> bpf_prog_2dcccf652aac1793_bench_trigger_fentry_multi
->    20.54% [kernel] [k] migrate_enable
->    19.35% [kernel] [k] bpf_global_caller_5_run
->    6.52% [kernel] [k] bpf_global_caller_5
->    3.58% libc.so.6 [.] syscall
->    2.88% [kernel] [k] entry_SYSCALL_64
->    1.50% [kernel] [k] memchr_inv
->    1.39% [kernel] [k] fput
->    1.04% [kernel] [k] migrate_disable
->    0.91% [kernel] [k] _copy_to_user
->
-> And I also did the testing for fentry:
->    54.63% bpf_prog_2dcccf652aac1793_bench_trigger_fentry [k]
-> bpf_prog_2dcccf652aac1793_bench_trigger_fentry
->    10.43% [kernel] [k] migrate_enable
->    10.07% bpf_trampoline_6442517037 [k] bpf_trampoline_6442517037
->    8.06% [kernel] [k] __bpf_prog_exit_recur
->    4.11% libc.so.6 [.] syscall
->    2.15% [kernel] [k] entry_SYSCALL_64
->    1.48% [kernel] [k] memchr_inv
->    1.32% [kernel] [k] fput
->    1.16% [kernel] [k] _copy_to_user
->    0.73% [kernel] [k] bpf_prog_test_run_raw_tp
+Daniel Zahka wrote:
+> From: Jakub Kicinski <kuba@kernel.org>
+> 
+> Add validation points and state propagation to support PSP key
+> exchange inline, on TCP connections. The expectation is that
+> application will use some well established mechanism like TLS
+> handshake to establish a secure channel over the connection and
+> if both endpoints are PSP-capable - exchange and install PSP keys.
+> Because the connection can existing in PSP-unsecured and PSP-secured
+> state we need to make sure that there are no race conditions or
+> retransmission leaks.
+> 
+> On Tx - mark packets with the skb->decrypted bit when PSP key
+> is at the enqueue time. Drivers should only encrypt packets with
+> this bit set. This prevents retransmissions getting encrypted when
+> original transmission was not. Similarly to TLS, we'll use
+> sk->sk_validate_xmit_skb to make sure PSP skbs can't "escape"
+> via a PSP-unaware device without being encrypted.
+> 
+> On Rx - validation is done under socket lock. This moves the validation
+> point later than xfrm, for example. Please see the documentation patch
+> for more details on the flow of securing a connection, but for
+> the purpose of this patch what's important is that we want to
+> enforce the invariant that once connection is secured any skb
+> in the receive queue has been encrypted with PSP.
+> 
+> Add trivialities like GRO and coalescing checks.
+> 
+> This change only adds the validation points, for ease of review.
+> Subsequent change will add the ability to install keys, and flesh
+> the enforcement logic out
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Co-developed-by: Daniel Zahka <daniel.zahka@gmail.com>
+> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 
-Let's pause fentry-multi stuff and fix this as a higher priority.
-Since migrate_disable/enable is so hot in yours and my tests,
-let's figure out how to inline it.
-
-As far as I can see both functions can be moved to a header file
-including this_rq() macro, but we need to keep
-struct rq private to sched.h. Moving the whole thing is not an option.
-Luckily we only need nr_pinned from there.
-Maybe we can offsetof(struct rq, nr_pinned) in a precompile step
-the way it's done for asm-offsets ?
-And then use that constant to do nr_pinned ++, --.
-__set_cpus_allowed_ptr() is a slow path and can stay .c
-
-Maybe Peter has better ideas ?
+Reviewed-by: Willem de Bruijn <willemb@google.com>
