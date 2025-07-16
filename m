@@ -1,35 +1,54 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CEB2D7803;
-	Tue, 15 Jul 2025 23:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7997610F1
+	for <netdev@vger.kernel.org>; Wed, 16 Jul 2025 00:01:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752623999; cv=none; b=BvC2uiwMq46Tbs8HNQy2aw2UhUvLei1wLNPy1+DtkV2XeZa/UjZICHxFhFlcZhcmbrFz6KS0XgZoasQte9yuys6cQjIlMnlTbdRxDd67ZsdTJ0wKySitJ6oEYh94vhSFdrjGavIlP3FUEvjpwN1RZaOUhYP5+zan9hKN4WFE14E=
+	t=1752624097; cv=none; b=WDUDf01WIa2wIAsWeFnl2S5PBWTbmkWT93UP3Img5S7iAVIj0G+BCuGJb62TYFxb2p4gA/q/wzyKCL7kZeQONZyGtRxD56/+6w8yMwBJeprTdX+XjZw223vYX8GZiDQDXL9tHX01X4Ybo14b0T+o/vRggYWpJCuR2Xc4a4woM7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752623999; c=relaxed/simple;
-	bh=tgH2czOnoOGUkpLM1SSPMTlXXL7+hEPthxtMRn2obwA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=HFa4vafMbGPKOs0Wufhsc/OTda3H5PqoIlDoWWTXJO9jKwhAaP1Tr9Y1t/x0Wj2+WVoLIXtmO2KqxMkhLgOgLelH4uhccLvOFE1+F0FXU6xHvAYMnzKF6xoJIN5ix4vWrsZ1Xsb+/+wK5jUKlC/bbA6f5rl2NSHO7KzFRXBIuD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C0DOPHr6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752624097; c=relaxed/simple;
+	bh=ptCTmsUmw+ZgmwvdsK7zWBp6fQ3EHDqqTzKOdIFWImA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=t1iIowP43RYiFAI5QShh65e7xGitsq/3SwGOEKPX/mkIyuJdnaHsDCKY4lSODAf3dAU+krn20Z46BOqKZHDd++3pQw5H32KTaPpkTDwT5MfRLtTAivJ8pfY3D9XiwEAeakfdokehkpXVU1GY7GzIJwUs2O9lkWToZshpsjgfvQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=naZ8PxKC; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C0DOPHr6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75922C4CEF7;
-	Tue, 15 Jul 2025 23:59:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752623998;
-	bh=tgH2czOnoOGUkpLM1SSPMTlXXL7+hEPthxtMRn2obwA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=C0DOPHr6P2unBF70Ne/wpCcQh5JAv/ZikFizLbhF+jZFpU3qnUGxPINjSd2hqJjv6
-	 G+A8B+D7pVBI3s9fiMUZQczkdEVDuFc/9M8ap0xWvbJKrp3Kqx1CMpuTzE5mAsxuWs
-	 pGWRqSYgUK/LeQz2rpgwROmOKrCuzV8BqBVY3sb8jIDZej07Q9wbWRTIzN5BcamNsu
-	 GpSAvXgwyYgZDBemehV7UlTVNVjKp347BXvoKeLv6eOIT4gicC8fZ3tpe02jzt6jLU
-	 0Kze8KXUod3tqnWMPkedu17HUPOgtfn2c1nqeq77iWK9BCqsYLFw7Sfjf2p0FCb2q4
-	 HpzEGajP9b16Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33C26383BA30;
-	Wed, 16 Jul 2025 00:00:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="naZ8PxKC"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1752624093;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iRuFXoOx7ugRu+xZOn9KsE5pqVIii62tEGweLLSB5Os=;
+	b=naZ8PxKCh+sRYCLRMgsA1O5bc1h3AEmUMvXomw4BnYQE0xmjLIGBYLSwyRDLZgXMjx0YgP
+	7p7FimTn7tm3+6oqPO8LoXgGIsHl847LvEoUrnIeH8/mbL+mXh8MhS+6XXJCJ/XuTizSIY
+	vZtQMxotcOGussgvOl+f6bSErOdx2xc=
+From: Sean Anderson <sean.anderson@linux.dev>
+To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Dave Ertman <david.m.ertman@intel.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Michal Simek <michal.simek@amd.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Ira Weiny <ira.weiny@intel.com>,
+	Sean Anderson <sean.anderson@linux.dev>
+Subject: [PATCH net v2 1/4] auxiliary: Support hexadecimal ids
+Date: Tue, 15 Jul 2025 20:01:07 -0400
+Message-Id: <20250716000110.2267189-2-sean.anderson@linux.dev>
+In-Reply-To: <20250716000110.2267189-1-sean.anderson@linux.dev>
+References: <20250716000110.2267189-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,68 +56,77 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH V3 net-next 00/10] net: hns3: use seq_file for debugfs
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175262401900.621373.9648094414037251084.git-patchwork-notify@kernel.org>
-Date: Wed, 16 Jul 2025 00:00:19 +0000
-References: <20250714061037.2616413-1-shaojijie@huawei.com>
-In-Reply-To: <20250714061037.2616413-1-shaojijie@huawei.com>
-To: Jijie Shao <shaojijie@huawei.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- shenjian15@huawei.com, liuyonglong@huawei.com, chenhao418@huawei.com,
- jonathan.cameron@huawei.com, shameerali.kolothum.thodi@huawei.com,
- salil.mehta@huawei.com, arnd@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+X-Migadu-Flow: FLOW_OUT
 
-Hello:
+Support creating auxiliary devices with the id included as part of the
+name. This allows for hexadecimal ids, which may be more appropriate for
+auxiliary devices created as children of memory-mapped devices. If an
+auxiliary device's id is set to AUXILIARY_DEVID_NONE, the name must
+be of the form "name.id".
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+With this patch, dmesg logs from an auxiliary device might look something
+like
 
-On Mon, 14 Jul 2025 14:10:27 +0800 you wrote:
-> Arnd reported that there are two build warning for on-stasck
-> buffer oversize. As Arnd's suggestion, using seq file way
-> to avoid the stack buffer or kmalloc buffer allocating.
-> 
-> ---
-> ChangeLog:
-> v2 -> v3:
->   - Merge patch (11/11) into the previous two, suggested by Simon Horman
->   v2: https://lore.kernel.org/all/20250711061725.225585-1-shaojijie@huawei.com/
-> v1 -> v2:
->   - Remove unused functions in advance to eliminate compilation warnings, suggested by Jakub Kicinski
->   - Remove unnecessary cast, suggested by Andrew Lunn
->   v1: https://lore.kernel.org/all/20250708130029.1310872-1-shaojijie@huawei.com/
-> 
-> [...]
+[    4.781268] xilinx_axienet 80200000.ethernet: autodetected 64-bit DMA range
+[   21.889563] xilinx_emac.mac xilinx_emac.mac.80200000 net4: renamed from eth0
+[   32.296965] xilinx_emac.mac xilinx_emac.mac.80200000 net4: PHY [axienet-80200000:05] driver [RTL8211F Gigabit Ethernet] (irq=70)
+[   32.313456] xilinx_emac.mac xilinx_emac.mac.80200000 net4: configuring for inband/sgmii link mode
+[   65.095419] xilinx_emac.mac xilinx_emac.mac.80200000 net4: Link is Up - 1Gbps/Full - flow control rx/tx
 
-Here is the summary with links:
-  - [V3,net-next,01/10] net: hns3: remove tx spare info from debugfs.
-    https://git.kernel.org/netdev/net-next/c/277ed0cc9d73
-  - [V3,net-next,02/10] net: hns3: clean up the build warning in debugfs by use seq file
-    https://git.kernel.org/netdev/net-next/c/c557c1832626
-  - [V3,net-next,03/10] net: hns3: use seq_file for files in queue/ in debugfs
-    https://git.kernel.org/netdev/net-next/c/eced3d1c41db
-  - [V3,net-next,04/10] net: hns3: use seq_file for files in common/ of hns3 layer
-    https://git.kernel.org/netdev/net-next/c/2b65524d106e
-  - [V3,net-next,05/10] net: hns3: use seq_file for files in tm/ in debugfs
-    https://git.kernel.org/netdev/net-next/c/08a6476e2875
-  - [V3,net-next,06/10] net: hns3: use seq_file for files in mac_list/ in debugfs
-    https://git.kernel.org/netdev/net-next/c/00f9ea261d9c
-  - [V3,net-next,07/10] net: hns3: use seq_file for files in reg/ in debugfs
-    https://git.kernel.org/netdev/net-next/c/2363145ad86e
-  - [V3,net-next,08/10] net: hns3: use seq_file for files in fd/ in debugfs
-    https://git.kernel.org/netdev/net-next/c/3945d94c9f4b
-  - [V3,net-next,09/10] net: hns3: use seq_file for files in common/ of hclge layer
-    https://git.kernel.org/netdev/net-next/c/9e1545b48818
-  - [V3,net-next,10/10] net: hns3: use seq_file for files in tx_bd_info/ and rx_bd_info/ in debugfs
-    https://git.kernel.org/netdev/net-next/c/b0aabb3b1efb
+this is especially useful when compared to what might happen if there is
+an error before userspace has the chance to assign a name to the netdev:
 
-You are awesome, thank you!
+[    4.947215] xilinx_emac.mac xilinx_emac.mac.1 (unnamed net_device) (uninitialized): incorrect link mode  for in-band status
+
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+---
+
+Changes in v2:
+- Add example log output to commit message
+
+ drivers/base/auxiliary.c      | 6 +++++-
+ include/linux/auxiliary_bus.h | 4 +++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/base/auxiliary.c b/drivers/base/auxiliary.c
+index dba7c8e13a53..64a0d5e2eb83 100644
+--- a/drivers/base/auxiliary.c
++++ b/drivers/base/auxiliary.c
+@@ -331,7 +331,11 @@ int __auxiliary_device_add(struct auxiliary_device *auxdev, const char *modname)
+ 		return -EINVAL;
+ 	}
+ 
+-	ret = dev_set_name(dev, "%s.%s.%d", modname, auxdev->name, auxdev->id);
++	if (auxdev->id == AUXILIARY_DEVID_NONE)
++		ret = dev_set_name(dev, "%s.%s", modname, auxdev->name);
++	else
++		ret = dev_set_name(dev, "%s.%s.%d", modname, auxdev->name,
++				   auxdev->id);
+ 	if (ret) {
+ 		dev_err(dev, "auxiliary device dev_set_name failed: %d\n", ret);
+ 		return ret;
+diff --git a/include/linux/auxiliary_bus.h b/include/linux/auxiliary_bus.h
+index 4086afd0cc6b..76904cf2c3dd 100644
+--- a/include/linux/auxiliary_bus.h
++++ b/include/linux/auxiliary_bus.h
+@@ -51,6 +51,8 @@
+  * unregisters the auxiliary device.
+  */
+ 
++#define AUXILIARY_DEVID_NONE	(-1)
++
+ /**
+  * struct auxiliary_device - auxiliary device object.
+  * @dev: Device,
+@@ -269,7 +271,7 @@ struct auxiliary_device *__devm_auxiliary_device_create(struct device *dev,
+ 
+ #define devm_auxiliary_device_create(dev, devname, platform_data)     \
+ 	__devm_auxiliary_device_create(dev, KBUILD_MODNAME, devname,  \
+-				       platform_data, 0)
++				       platform_data, AUXILIARY_DEVID_NONE)
+ 
+ /**
+  * module_auxiliary_driver() - Helper macro for registering an auxiliary driver
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.35.1.1320.gc452695387.dirty
 
