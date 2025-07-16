@@ -1,98 +1,241 @@
-Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD461922C0
-	for <netdev@vger.kernel.org>; Wed, 16 Jul 2025 03:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989E6186294;
+	Wed, 16 Jul 2025 04:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752637341; cv=none; b=jG50CWiMOAsxRJNPEyCWC80cxPns9f+hDQ2/P7dG/aGqpRwSf+l72VDljz7RNXiHDHTu2E5BvPfkZFuvoD7/FWnOKfF/s2dEcZPX/e+6jvSvzVaBNPNtAGYZAb61vXnPOwwYfyP6ty5wUIWTOIFPi76alHeXYktV5pivDPT36g0=
+	t=1752639595; cv=none; b=fi1tW2vgR4s0fkoYxVOyVDc5CVFU3mYu5VQur9YGUwT4Ime1jz9C2eo/eP9YXg7MTqKZdQ7prskReHi7ZNky/6gdEgrpbFNY6MjkAT88xNXTJymy4urwdJTBhdkNZCkyax4cHQ40ZRMy4EZcCQFL2cMJBJviEUGIrbMueQe7M4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752637341; c=relaxed/simple;
-	bh=UuaLMxTKea938w5zQmKUuVpfcPsgJ04RnFqeNc/J9TU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=binLnir+Ouei5qjqVrJ4pfCSbaDyEmJ1AM3JJZR67TfBtA9kLZElSueSjNDmx+ZD1JnNKKpeKqYbU52XcQiB34lU/p4SZAZbc07L/3OESxiSehLxn8+ybhTOZqsJ0UcjyWAF5+ltGpODF0RsNxiWk7dmj1m7qjRRH9aiix/TR3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d+m7gYfb; arc=none smtp.client-ip=209.85.166.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752639595; c=relaxed/simple;
+	bh=DcSq4O2836qVIYEQkJ5ppCzyb5Q+J91I208VZqlFPLI=;
+	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
+	 Content-Type:Date:Message-ID; b=Oc29zBBHVODIxaz6XJcTIV3Xi3OEdsFx4XRmjKNOEcidQLaTNrGrz3gnlRdZ+2dkgNimhOzvKaIlKm5glULmclMcIXMOdcxwR8/BOXnuC0s99Qe68Pn94albJes4OEakZgY3ppyWaWqk4li7ZW3NM9yMLS1XwQqSVu2b0qSlHQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=g1aqZFJW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OLsjRP99; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d+m7gYfb"
-Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-3df3891e28fso18291515ab.3
-        for <netdev@vger.kernel.org>; Tue, 15 Jul 2025 20:42:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752637339; x=1753242139; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zK0LYgXvk8ioUzC1S2Ik9h3JQIJNRHwofmVViAm9Zrc=;
-        b=d+m7gYfbQj+RjSy0My1owTIGYecYP6Don1uNwCxSfo9FAbh6pS0f56dbEIXw1kBi+O
-         QnhqjPLhyl7VwK7J7b20HOm6F4l/+fB3bDIsuG6qoxTbIzaTuENt0TJwO9t4/ZmzMtdZ
-         Uy48cKVfGY18IBm6H63j0HO/kGpQHYJejeuPBdo7UdXbwTmiNRJU4ZOx6ouj/Tx2SmLn
-         DYYVuzLhsgXjdc44nrwLGCXXpK52ip/ikRY5eumNdPQASyRoO4p9bDRfAFwes8zNPY35
-         vV5ywqwOqslyS0efTKvO/Oy0bSCmtJgXg7xRjthWWYj70kanx2Zd3+z2FpQKOk9p51Cl
-         U+pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752637339; x=1753242139;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zK0LYgXvk8ioUzC1S2Ik9h3JQIJNRHwofmVViAm9Zrc=;
-        b=e8H4k2Sj0/1RTwe8CyxwGe8NmFHSoAECxd7FcQlXbe41BWQ6PYHhAm4w6UpB/itBs8
-         IJJuYExA6x6tIQI6PxN9i1pVgxEz7sqL3wAzORkqwwwaiMdGPa0rNeFPj1adjCrKWczC
-         bz+iCKCx46yJkSo01e9hWLx283LTzAtVOntw6xyZBwzSbDuQdLZxk1XYq7cE2XmV4cSU
-         B3fFjfgGcxbJOXlqPGQSR0wue58/nEHzEyXtMx1BWt+aGlhkmQWm+LoZ8CBNEqD5OoIO
-         Ht5Pbwnbd8IlDJZoiC3Zh8K0BhAnwMNfYjpRi8d2J77g2l+5EXMreLhCzcHuQzY3sUvR
-         1UCA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvE5WucO8J/m2EfSM7Rlk+uZgPsNMoG5FA+eZT9FdJne+NtWbs8IzGrWIvBwrrEJduI/BS4Lo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfCyUlSg7F0vpKnzbxcc5pLxqeU6cZnT4zIcAIoEqNTddzCt1M
-	79hb1hXnzGE+qmSM/AmPJX/mhE+xMD+T58QPqM9DoNy+RoZsZRlp9i+YW+4l4UQqpSp1qNRkF8C
-	y7QyIhxjER5k/UKnha0VkGtIXTvkZ0rs=
-X-Gm-Gg: ASbGnct0Cwk0OTU/0rEYQDMvpJTKin6ChgLv3JnTQKOktVVeep8eSfuIurxOPzxR90r
-	anJ/2e3zsW6Io0A+TSAKbuosdtY247IVgCe/GOd5IO4a2kT+OkdI8bE5twILj90zVf0vDzgzqfV
-	KudqmQdg30Zie1sIsCJHzaW7Ni4X+XjL6I68MPVn1nF7JSD+93uYP4WxsCbgPUnTZlIxZllvVkd
-	IspMc/yBwdU4Upv
-X-Google-Smtp-Source: AGHT+IF5lPdD68qW+BJ9+XBjqLPHkHbS0EY1gMC0z9CI8MeTWYuTU9ZySq8wpzWIBNWOMZRTCZj9NT5b22STa9RKiuw=
-X-Received: by 2002:a05:6e02:260f:b0:3e0:546c:bdc3 with SMTP id
- e9e14a558f8ab-3e282e29c9dmr13263225ab.11.1752637338679; Tue, 15 Jul 2025
- 20:42:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="g1aqZFJW";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OLsjRP99"
+Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 84EF514000CC;
+	Wed, 16 Jul 2025 00:19:51 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Wed, 16 Jul 2025 00:19:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1752639591; x=1752725991; bh=pUsexg3Nn8SGdsJqhAr2zCNOoqqk8OpJ
+	XOBdo5Vrryw=; b=g1aqZFJWjRM2hnkzUCybrAiEsSYDgiORTcxWRpBcDxHRTWuQ
+	8RIwJ7gBqWpvSb+heJ/bVEof5sJeR+h0CrtUXYc0KLBhUemufGi8G+QYI0QFXyau
+	YI5omEUZp2j6n6bMAwiwbey4VzS2NbO488KFqGO4CWl/ofndXL6zgkVc2UaxK28S
+	j336Ya3geKQlq5AFieXYmnFsunc8I0pvH/DH2xx9n8cRTen9rz4xEKI8xfG+A47W
+	/tEleqJ5E6BviryuO67rurWPzXb0GXuF0KhFvvh1nkIQxTQEUpPDzKLd4HB2JiqG
+	in7o5t+Dr7ICw5PNEsSrCs86bJEGhlEjD2WagQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1752639591; x=
+	1752725991; bh=pUsexg3Nn8SGdsJqhAr2zCNOoqqk8OpJXOBdo5Vrryw=; b=O
+	LsjRP990o7AwpIPiy7T3R3XpSdlyP9mCZURuM49OKBH9Gvzp4ruTu0QXq/0CRBTf
+	/1zgSrkImFa1wt3uQW/tGnfH4cb3Qln8ayFIooE8xplPdD12BBlwqeUaGdM6XSmO
+	jPPnyhfJSMu/UuyzFXa5pzsxEdyzMYjPpy0xRk70lF25ilRNspPYQzmAERtPipmU
+	ZcC2UUSByC5M216+TXx8nJUmx4jm8+vF0djiBIK21lFdqWqFEtZ0Uqv1y1MOnQcc
+	l3KeblYFcVF5GjgV/6rpAR4yp5AZ0SEcRU9oiCT+F4+H69fv2P+qZ+5y/xw9lenb
+	1Q9H+CgbMTvDT8+Tzc3KA==
+X-ME-Sender: <xms:Zih3aHu4Z43qBZ1zCxnHGsNjwU9IXPOyWrXcBiEViUDqMtX-oK5Zcg>
+    <xme:Zih3aC4c5ekRi0KP5U8cc12Ffzw4qRS-dD1ioLF28Ik4kVlWGt5um_QoN6lFvO6DP
+    9zHJ1th8umSqJw-L60>
+X-ME-Received: <xmr:Zih3aCTSsJ5Cjmj6VC1u__AGn3-T7BAlKS5qMEiEbkIuLeaeF4jlSd5YFCLoW0xy12KKTw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehieejfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefhvfevufgjfhfogggtgfffkfesthhqredtredtjeenucfhrhhomheplfgrhicuggho
+    shgsuhhrghhhuceojhhvsehjvhhoshgsuhhrghhhrdhnvghtqeenucggtffrrghtthgvrh
+    hnpeegfefghffghffhjefgveekhfeukeevffethffgtddutdefffeuheelgeelieeuhfen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjvhesjh
+    hvohhssghurhhghhdrnhgvthdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopehrrgiiohhrsegslhgrtghkfigrlhhlrdhorhhgpdhrtghpth
+    htohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehlihhuhhgr
+    nhhgsghinhesghhmrghilhdrtghomhdprhgtphhtthhopegvughumhgriigvthesghhooh
+    hglhgvrdgtohhmpdhrtghpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghp
+    thhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhhurghhsehkvg
+    hrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdr
+    tghhpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomh
+X-ME-Proxy: <xmx:Zih3aNvyNdyozWJzk0mY_s_cQ6r9mXIf2a78CW5Ww8Urld7ckFx0Yw>
+    <xmx:Zih3aM_IemzAtplYMdwjSXMpBbs6Nz1pSC4UB_aUpIxcDdkb9AZTSw>
+    <xmx:Zih3aOyEb7pH3prx-1VfIA_YnA3FFh9yEWbUGF2mVA7AE-nz17Q3jg>
+    <xmx:Zih3aG_sIdJkS8yEHZf9kntYOm7IMFWV7tn57PYcbC0-v7ZoN8aKiA>
+    <xmx:Zyh3aAglPoruP3qSP8LM4f88MoV6GhDd4ZHPr17Kr2ruUbGL2MPWlxbM>
+Feedback-ID: i53714940:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 16 Jul 2025 00:19:50 -0400 (EDT)
+Received: by famine.localdomain (Postfix, from userid 1000)
+	id 35EB19FC97; Tue, 15 Jul 2025 21:19:49 -0700 (PDT)
+Received: from famine (localhost [127.0.0.1])
+	by famine.localdomain (Postfix) with ESMTP id 32B079FC54;
+	Tue, 15 Jul 2025 21:19:49 -0700 (PDT)
+From: Jay Vosburgh <jv@jvosburgh.net>
+To: Hangbin Liu <liuhangbin@gmail.com>
+cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+    "David S. Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+    Paolo Abeni <pabeni@redhat.com>,
+    Nikolay Aleksandrov <razor@blackwall.org>,
+    Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+    linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 1/2] bonding: update ntt to true in passive mode
+In-reply-to: <20250709090344.88242-2-liuhangbin@gmail.com>
+References: <20250709090344.88242-1-liuhangbin@gmail.com> <20250709090344.88242-2-liuhangbin@gmail.com>
+Comments: In-reply-to Hangbin Liu <liuhangbin@gmail.com>
+   message dated "Wed, 09 Jul 2025 09:03:43 -0000."
+X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Wed, 16 Jul 2025 11:41:42 +0800
-X-Gm-Features: Ac12FXyj9mwSvcbXbbQHSKhEOCSBNqSHx-aIvgMPkMveKkGzcBng-JAan5szDoM
-Message-ID: <CAL+tcoCTHTptwmok9vhp7GEwQgMhNsBJxT3PStJDeVOLR_-Q3g@mail.gmail.com>
-Subject: ixgbe driver stops sending normal data when using xsk
-To: Jakub Kicinski <kuba@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, przemyslaw.kitszel@intel.com, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 15 Jul 2025 21:19:49 -0700
+Message-ID: <765825.1752639589@famine>
 
-Hi all,
+Hangbin Liu <liuhangbin@gmail.com> wrote:
 
-I'm currently faced with one tough issue caused by zero copy mode in
-xsk with ixgbe driver loaded. The case is that if we use xdpsock to
-send descs, nearly at the same time normal packets from other tx
-queues cannot be transmitted/completed at all.
+>When lacp_active is set to off, the bond operates in passive mode, meaning=
+ it
+>will only "speak when spoken to." However, the current kernel implementati=
+on
+>only sends an LACPDU in response when the partner's state changes.
+>
+>In this situation, once LACP negotiation succeeds, the actor stops sending
+>LACPDUs until the partner times out and sends an "expired" LACPDU.
+>This leads to endless LACP state flapping.
 
-Here is how I try:
-1. run iperf or ping to see if the transmission is successful.
-2. then run "timeout 5 ./xdpsock -i enp2s0f0 -t  -z -s 64"
+	From the above, I suspect our implementation isn't compliant to
+the standard.  Per IEEE 802.1AX-2014 6.4.1 LACP design elements:
 
-You will obviously find the whole machine loses connection. It can
-only recover as soon as the xdpsock is stopped due to timeout.
+c)	Active or passive participation in LACP is controlled by
+	LACP_Activity, an administrative control associated with each
+	Aggregation Port, that can take the value Active LACP or Passive
+	LACP. Passive LACP indicates the Aggregation Port=E2=80=99s preference
+	for not transmitting LACPDUs unless its Partner=E2=80=99s control value
+	is Active LACP (i.e., a preference not to speak unless spoken
+	to). Active LACP indicates the Aggregation Port=E2=80=99s preference to
+	participate in the protocol regardless of the Partner=E2=80=99s control
+	value (i.e., a preference to speak regardless).
 
-I tried a lot and then traced down to this line in ixgbe driver:
-ixgbe_clean_tx_irq()
-    -> if (!(eop_desc->wb.status & cpu_to_le32(IXGBE_TXD_STAT_DD)))
-            break;
-The above line always 'breaks' the sending process.
+d)	Periodic transmission of LACPDUs occurs if the LACP_Activity
+	control of either the Actor or the Partner is Active LACP. These
+	periodic transmissions will occur at either a slow or fast
+	transmission rate depending upon the expressed LACP_Timeout
+	preference (Long Timeout or Short Timeout) of the Partner
+	System.
 
-I also managed to make the external ixgbe 6.15 work and it turned out
-to be the same issue as before.
+	Which, in summary, means that if either end (actor or partner)
+has LACP_Activity set, both ends must send periodic LACPDUs at the rate
+specified by their respective partner's LACP_Timeout rate.
 
-I have no idea on how to analyze further in this driver. Could someone
-point out a direction that I can take? Is it a known issue?
+>To avoid this, we need update ntt to true once received an LACPDU from the
+>partner, ensuring an immediate reply. With this fix, the link becomes stab=
+le
+>in most cases, except for one specific scenario:
+>
+>Actor: lacp_active=3Doff, lacp_rate=3Dslow
+>Partner: lacp_active=3Don, lacp_rate=3Dfast
+>
+>In this case, the partner expects frequent LACPDUs (every 1 second), but t=
+he
+>actor only responds after receiving an LACPDU, which, in this setup, the
+>partner sends every 30 seconds due to the actor's lacp_rate=3Dslow. By the=
+ time
+>the actor replies, the partner has already timed out and sent an "expired"
+>LACPDU.
 
-Thanks,
-Jason
+	Presuming that I'm correct that we're not implementing 6.4.1 d),
+above, correctly, then I don't think this is a proper fix, as it kind of
+band-aids over the problem a bit.
+
+	Looking at the code, I suspect the problem revolves around the
+"lacp_active" check in ad_periodic_machine():
+
+static void ad_periodic_machine(struct port *port, struct bond_params *bond=
+_params)
+{
+	periodic_states_t last_state;
+
+	/* keep current state machine state to compare later if it was changed */
+	last_state =3D port->sm_periodic_state;
+
+	/* check if port was reinitialized */
+	if (((port->sm_vars & AD_PORT_BEGIN) || !(port->sm_vars & AD_PORT_LACP_ENA=
+BLED) || !port->is_enabled) ||
+	    (!(port->actor_oper_port_state & LACP_STATE_LACP_ACTIVITY) && !(port->=
+partner_oper.port_state & LACP_STATE_LACP_ACTIVITY)) ||
+	    !bond_params->lacp_active) {
+		port->sm_periodic_state =3D AD_NO_PERIODIC;
+	}
+
+	In the above, because all the tests are chained with ||, the
+lacp_active test overrides the two correct-looking
+LACP_STATE_LACP_ACTIVITY tests.
+
+	It looks like ad_initialize_port() always sets
+LACP_STATE_LACP_ACTIVITY in the port->actor_oper_port_state, and nothing
+ever clears it.
+
+	Thinking out loud, perhaps this could be fixed by
+
+	a) remove the test of bond_params->lacp_active here, and,
+
+	b) The lacp_active option setting controls whether LACP_ACTIVITY
+is set in port->actor_oper_port_state.
+
+	Thoughts?
+
+	-J
+
+>Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+>---
+> drivers/net/bonding/bond_3ad.c | 6 ++++++
+> 1 file changed, 6 insertions(+)
+>
+>diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad=
+.c
+>index c6807e473ab7..e001d1c8a49b 100644
+>--- a/drivers/net/bonding/bond_3ad.c
+>+++ b/drivers/net/bonding/bond_3ad.c
+>@@ -666,6 +666,8 @@ static void __update_default_selected(struct port *por=
+t)
+>  */
+> static void __update_ntt(struct lacpdu *lacpdu, struct port *port)
+> {
+>+	struct bonding *bond;
+>+
+> 	/* validate lacpdu and port */
+> 	if (lacpdu && port) {
+> 		/* check if any parameter is different then
+>@@ -683,6 +685,10 @@ static void __update_ntt(struct lacpdu *lacpdu, struc=
+t port *port)
+> 		   ) {
+> 			port->ntt =3D true;
+> 		}
+>+
+>+		bond =3D __get_bond_by_port(port);
+>+		if (bond && !bond->params.lacp_active)
+>+			port->ntt =3D true;
+> 	}
+> }
+>=20
+>--=20
+>2.46.0
+>
+
+---
+	-Jay Vosburgh, jv@jvosburgh.net
+
