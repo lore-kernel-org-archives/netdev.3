@@ -1,77 +1,44 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4A6256C6D;
-	Wed, 16 Jul 2025 10:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1792F2727;
+	Wed, 16 Jul 2025 10:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752660172; cv=none; b=VUOod25eHy0vAPNQU4q35eb3qaEp6kQS6FGIn9/5Eh4CNX0ScyV4NEL663cAREvcaJhHsNR/vawiCiQkAHKUj9tqmsvN5pmvNUAlG1yteUh3uVj07yjukwVP2qe0w182fTafE7DWn96cK2T/ElwMHXli41sOMaBF57J7dIY82Rk=
+	t=1752660471; cv=none; b=F/xqwHhT9CKrN08b3sfi88RVrufW5XTYUXDzBsMP5jsnrWYZj8j5KmmUHWeW8WiLVwCtQsWmgfrIkeHA1AIvQ1ge/a7eP6wXDkogYv4IXotJ6mD030Ubd0oJ7zgEueJxOCetUbe8zs7Hx++YaN01od0Z4K6A9bvlqxOE/EvU6ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752660172; c=relaxed/simple;
-	bh=Q6W7KX29Jk928R1qVVNWD5JXLZbZXkTQ9C5nRhOJYqA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cWbQQOkielLjPFr7y1is07ovq8FUJrLnWiFZvT5kXexB8R+y/4VjfMBnIdruQioVPk6isnKRAm4KAU9j70kTmAqExVjvOFq5Sxhaq7juYhG5y/tjfyfvNtbPScgMgWL+434+OscpnxJPTb9JcXU97TQIdNk/FXqhtjotShGwTcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FIityDdL; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FIityDdL"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a524caf77eso665600f8f.3;
-        Wed, 16 Jul 2025 03:02:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752660169; x=1753264969; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=j8wz/ZahP4wIDUhx29OUaHi7Qy3IKMSy66Iy4Sl+Bos=;
-        b=FIityDdL+61H9jCYQ7ThP70f1E0D3BzCRREMio/Z/FZmqrBBP0YqJ65I+948poN77O
-         MJWYPpss2JWg+E1vywI7Wpj1PoCOXI/hLq/Pbfw572e8TJSu5/8GkOlbusejvQmkL7cO
-         zyCqRID5pt8z9AprDfnnnBEJQhv1NRTkFN5zgmZFOjSw81bsW+JibQLVkzOE9xlRZCQv
-         aQb7ZXIclo7zq7nw+ZNvJLgofy0sid/thoH3ucS9QCCvBHgnVWqari13g84QJMvwnT35
-         wt2skpAY1aF/lVThxssYEgQx13bnP/jR6noBgZ9OuTmLiQ5JfMkQFzQMPH+U+8pGKgJN
-         BQbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752660169; x=1753264969;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j8wz/ZahP4wIDUhx29OUaHi7Qy3IKMSy66Iy4Sl+Bos=;
-        b=G848GgfIfmL78wDlFcjkG/+dHKE/V88jLPneOHaqr8NVxXK9diZl2lRvr6mTn5fZKX
-         e0TrAttzMerss1HLpwAYMwz3Mzwg2VFNIVkTecsGDF/kxaUI2zSpyeXji/hfPBOphfef
-         5EYDq39qBW+5332Ev5yccMwL1sPRlDTlFR6VmTOLkn5MrvxQHQqvAPiMaPIsHvW27V/Q
-         KTclNvToW5XOvRcJpC4+lcKQp0ZkvL5cRIG9It8qbTH728eESTitLuUI6TzCXpx6Ooty
-         H02FUH70ZfYk1bGIrd5NyVOVY+mfC8NafDT4ASoeZvADT6LkD85v0PpakS1xWb0RmwIi
-         PlzA==
-X-Forwarded-Encrypted: i=1; AJvYcCWT3Gc59fwHG6jTYRklZAwbnR6MnVLemoP7zsGe+OC8cVOEHHcesdwWOvaLorYsqPsgb7G9cv16tE8VTCw=@vger.kernel.org, AJvYcCWUDpVy2aiZRRnPMwgBcx3hzhX58Kv8c55Ffmttw/DeCD3Xa0qC3sZKEa1WTdQpWVdcYPlx9Hus@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaN4LEObMwNg+BN5VYPk7cN3Q9zagZIm7wh5vAqMd53E6NQ1sL
-	5wFyvYcZG3N/k2HNNaQ5nt1+I8tiE1DQhTYzFiYyJFE/kYiZUCNoXWOL
-X-Gm-Gg: ASbGncuR+Axi/vcw/Tp6HN/68k7NAJ+8+YubkM4E24V7QEZ/hXiZKhSCdtneCfoH7RD
-	BQiNvmI+Kgtt0KlRm+TcPgDplpxZuxt9dL0NdPiJrSGqohVRM9tZu925xGowhOTvrxyEQqEW0og
-	ArVQP7jhabxSLHsq7hc9mnkMMAfsbNv4oWO3I1BG6Ljg8/e8kb4bztpVNrXB7B2Fm/TpCBt5EpV
-	WTkDJi59FzbvtA+aT7if4QwFoCxEXn8e4lf95RKKGDQwEhWlQ1jhsmWb1eDiRXQLMn7Ki7Kgshl
-	sLTxscbnAUFbiJtkSIOlsFxO3q+DlXJv+XuorS9B27NlXR7z8ckas+PuWPo2S/arhXB7OWtYhwT
-	iRDFHxZNCY+y/E8hlLQvvXRmtS0IlzxTQUO4j+9plfiphQznddcU=
-X-Google-Smtp-Source: AGHT+IGRmALVudWUgbbTD+N67O8rohnNgtorDH43lpCcRFVuNAi5vwWQyweV7/kSPGRdbZpl5fWZ+A==
-X-Received: by 2002:adf:b601:0:b0:3a4:eb46:7258 with SMTP id ffacd0b85a97d-3b60dd892c5mr658102f8f.15.1752660168913;
-        Wed, 16 Jul 2025 03:02:48 -0700 (PDT)
-Received: from thomas-precision3591.imag.fr ([2001:660:5301:24:962d:ebf0:4a44:e416])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3b5e8bd1776sm17609677f8f.12.2025.07.16.03.02.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 03:02:48 -0700 (PDT)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Chris Snook <chris.snook@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] net: ag71xx: Add missing check after DMA map
-Date: Wed, 16 Jul 2025 11:57:25 +0200
-Message-ID: <20250716095733.37452-3-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1752660471; c=relaxed/simple;
+	bh=7XlPuIRpbg6BDhvE2ZYzUP4ltOm43y0M0k7+AdOguNU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z9VN7i4jNr590BGFD6PrxGiaQShR2b9yt8TRD2HjwLgNfxaum4AbdhrPSDweRdC1O6Tj1o89c9PQMHPj2ShhLlzCng8weuE3JfACgVAUB7p81wyFG1APE7Gbl6IxEKK4p3QPpdFopX+o8mvKz/KIw0zyQOqCUUHDQ1AEcQH7954=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bhsBX6ylCz2TT43;
+	Wed, 16 Jul 2025 18:05:40 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4BDAD1402DA;
+	Wed, 16 Jul 2025 18:07:45 +0800 (CST)
+Received: from localhost.localdomain (10.90.31.46) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 16 Jul 2025 18:07:44 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
+	<Frank.Sae@motor-comm.com>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
+	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<shaojijie@huawei.com>
+Subject: [PATCH net-next 1/2] net: phy: motorcomm: Add support for PHY LEDs on YT8521
+Date: Wed, 16 Jul 2025 18:00:40 +0800
+Message-ID: <20250716100041.2833168-2-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20250716100041.2833168-1-shaojijie@huawei.com>
+References: <20250716100041.2833168-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,45 +46,163 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-The DMA map functions can fail and should be tested for errors.
+Add minimal LED controller driver supporting
+the most common uses with the 'netdev' trigger.
 
-Fixes: d51b6ce441d3 ("net: ethernet: add ag71xx driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 ---
-v1 -> v2:
-  - do not pass free function to ag71xx_fill_rx_buf()
+ drivers/net/phy/motorcomm.c | 120 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 120 insertions(+)
 
- drivers/net/ethernet/atheros/ag71xx.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
-index d8e6f23e1432..cbc730c7cff2 100644
---- a/drivers/net/ethernet/atheros/ag71xx.c
-+++ b/drivers/net/ethernet/atheros/ag71xx.c
-@@ -1213,6 +1213,11 @@ static bool ag71xx_fill_rx_buf(struct ag71xx *ag, struct ag71xx_buf *buf,
- 	buf->rx.rx_buf = data;
- 	buf->rx.dma_addr = dma_map_single(&ag->pdev->dev, data, ag->rx_buf_size,
- 					  DMA_FROM_DEVICE);
-+	if (dma_mapping_error(&ag->pdev->dev, buf->rx.dma_addr)) {
-+		skb_free_frag(data);
-+		buf->rx.rx_buf = NULL;
-+		return false;
-+	}
- 	desc->data = (u32)buf->rx.dma_addr + offset;
- 	return true;
+diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+index 0e91f5d1a4fd..e1a1c3a1c9d0 100644
+--- a/drivers/net/phy/motorcomm.c
++++ b/drivers/net/phy/motorcomm.c
+@@ -213,6 +213,23 @@
+ #define YT8521_RC1R_RGMII_2_100_NS		14
+ #define YT8521_RC1R_RGMII_2_250_NS		15
+ 
++/* LED CONFIG */
++#define YT8521_MAX_LEDS				3
++#define YT8521_LED0_CFG_REG			0xA00C
++#define YT8521_LED1_CFG_REG			0xA00D
++#define YT8521_LED2_CFG_REG			0xA00E
++#define YT8521_LED_ACT_BLK_IND			BIT(13)
++#define YT8521_LED_FDX_ON_EN			BIT(12)
++#define YT8521_LED_HDX_ON_EN			BIT(11)
++#define YT8521_LED_TXACT_BLK_EN			BIT(10)
++#define YT8521_LED_RXACT_BLK_EN			BIT(9)
++/* 1000Mbps */
++#define YT8521_LED_GT_ON_EN			BIT(6)
++/* 100Mbps */
++#define YT8521_LED_HT_ON_EN			BIT(5)
++/* 10Mbps */
++#define YT8521_LED_BT_ON_EN			BIT(4)
++
+ #define YTPHY_MISC_CONFIG_REG			0xA006
+ #define YTPHY_MCR_FIBER_SPEED_MASK		BIT(0)
+ #define YTPHY_MCR_FIBER_1000BX			(0x1 << 0)
+@@ -1681,6 +1698,106 @@ static int yt8521_config_init(struct phy_device *phydev)
+ 	return phy_restore_page(phydev, old_page, ret);
  }
-@@ -1511,6 +1516,10 @@ static netdev_tx_t ag71xx_hard_start_xmit(struct sk_buff *skb,
  
- 	dma_addr = dma_map_single(&ag->pdev->dev, skb->data, skb->len,
- 				  DMA_TO_DEVICE);
-+	if (dma_mapping_error(&ag->pdev->dev, dma_addr)) {
-+		netif_dbg(ag, tx_err, ndev, "DMA mapping error\n");
-+		goto err_drop;
++static const unsigned long supported_trgs = (BIT(TRIGGER_NETDEV_FULL_DUPLEX) |
++					     BIT(TRIGGER_NETDEV_HALF_DUPLEX) |
++					     BIT(TRIGGER_NETDEV_LINK)        |
++					     BIT(TRIGGER_NETDEV_LINK_10)     |
++					     BIT(TRIGGER_NETDEV_LINK_100)    |
++					     BIT(TRIGGER_NETDEV_LINK_1000)   |
++					     BIT(TRIGGER_NETDEV_RX)          |
++					     BIT(TRIGGER_NETDEV_TX));
++
++static int yt8521_led_hw_is_supported(struct phy_device *phydev, u8 index,
++				      unsigned long rules)
++{
++	if (index >= YT8521_MAX_LEDS)
++		return -EINVAL;
++
++	/* All combinations of the supported triggers are allowed */
++	if (rules & ~supported_trgs)
++		return -EOPNOTSUPP;
++
++	return 0;
++}
++
++static int yt8521_led_hw_control_set(struct phy_device *phydev, u8 index,
++				     unsigned long rules)
++{
++	u16 val = 0;
++
++	if (index >= YT8521_MAX_LEDS)
++		return -EINVAL;
++
++	if (test_bit(TRIGGER_NETDEV_LINK, &rules)) {
++		val |= YT8521_LED_BT_ON_EN;
++		val |= YT8521_LED_HT_ON_EN;
++		val |= YT8521_LED_GT_ON_EN;
 +	}
- 
- 	i = ring->curr & ring_mask;
- 	desc = ag71xx_ring_desc(ring, i);
++
++	if (test_bit(TRIGGER_NETDEV_LINK_10, &rules))
++		val |= YT8521_LED_BT_ON_EN;
++
++	if (test_bit(TRIGGER_NETDEV_LINK_100, &rules))
++		val |= YT8521_LED_HT_ON_EN;
++
++	if (test_bit(TRIGGER_NETDEV_LINK_1000, &rules))
++		val |= YT8521_LED_GT_ON_EN;
++
++	if (test_bit(TRIGGER_NETDEV_FULL_DUPLEX, &rules))
++		val |= YT8521_LED_HDX_ON_EN;
++
++	if (test_bit(TRIGGER_NETDEV_HALF_DUPLEX, &rules))
++		val |= YT8521_LED_FDX_ON_EN;
++
++	if (test_bit(TRIGGER_NETDEV_TX, &rules) ||
++	    test_bit(TRIGGER_NETDEV_RX, &rules))
++		val |= YT8521_LED_ACT_BLK_IND;
++
++	if (test_bit(TRIGGER_NETDEV_TX, &rules))
++		val |= YT8521_LED_TXACT_BLK_EN;
++
++	if (test_bit(TRIGGER_NETDEV_RX, &rules))
++		val |= YT8521_LED_RXACT_BLK_EN;
++
++	return ytphy_write_ext(phydev, YT8521_LED0_CFG_REG + index, val);
++}
++
++static int yt8521_led_hw_control_get(struct phy_device *phydev, u8 index,
++				     unsigned long *rules)
++{
++	int val;
++
++	if (index >= YT8521_MAX_LEDS)
++		return -EINVAL;
++
++	val = ytphy_read_ext(phydev, YT8521_LED0_CFG_REG + index);
++	if (val < 0)
++		return val;
++
++	if (val & YT8521_LED_TXACT_BLK_EN)
++		set_bit(TRIGGER_NETDEV_TX, rules);
++
++	if (val & YT8521_LED_RXACT_BLK_EN)
++		set_bit(TRIGGER_NETDEV_RX, rules);
++
++	if (val & YT8521_LED_FDX_ON_EN)
++		set_bit(TRIGGER_NETDEV_FULL_DUPLEX, rules);
++
++	if (val & YT8521_LED_HDX_ON_EN)
++		set_bit(TRIGGER_NETDEV_HALF_DUPLEX, rules);
++
++	if (val & YT8521_LED_GT_ON_EN)
++		set_bit(TRIGGER_NETDEV_LINK_1000, rules);
++
++	if (val & YT8521_LED_HT_ON_EN)
++		set_bit(TRIGGER_NETDEV_LINK_100, rules);
++
++	if (val & YT8521_LED_BT_ON_EN)
++		set_bit(TRIGGER_NETDEV_LINK_10, rules);
++
++	return 0;
++}
++
+ static int yt8531_config_init(struct phy_device *phydev)
+ {
+ 	struct device_node *node = phydev->mdio.dev.of_node;
+@@ -2920,6 +3037,9 @@ static struct phy_driver motorcomm_phy_drvs[] = {
+ 		.soft_reset	= yt8521_soft_reset,
+ 		.suspend	= yt8521_suspend,
+ 		.resume		= yt8521_resume,
++		.led_hw_is_supported = yt8521_led_hw_is_supported,
++		.led_hw_control_set = yt8521_led_hw_control_set,
++		.led_hw_control_get = yt8521_led_hw_control_get,
+ 	},
+ 	{
+ 		PHY_ID_MATCH_EXACT(PHY_ID_YT8531),
 -- 
-2.43.0
+2.33.0
 
