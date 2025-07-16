@@ -1,32 +1,30 @@
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8863D220F41
-	for <netdev@vger.kernel.org>; Wed, 16 Jul 2025 00:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDC9242D67
+	for <netdev@vger.kernel.org>; Wed, 16 Jul 2025 00:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752624102; cv=none; b=gvXiK8/bJ6Xgza4VgTI4l6t6VvFXlAgiNKteV6LUN8PWOyI5PBIULiOTX96pN977NaZl2CE+GyyO+8u/jbCmBeaVj7EWfNmcPVODddKmo2ahduyTVEzOg3KyBvcF8sSOGhQl1vG1/rdq10EpI5fiod5/S9uOcH+IbjTlwhSpooE=
+	t=1752624104; cv=none; b=JVujUT3cxm9We2tRf54zS3toiUACJc6TTg7g49xxltSliagCxZ811GH/a7r6KND+nkCJhGfB9203GDBddmkMmZ537L0VKMtN7wV6XXkBv8h5ZIm4wqx/8nPEg8l+JP5vWUFqZZZOTEkzmlGU3rBSmZjI5h6E/adDSuX6/vbnD78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752624102; c=relaxed/simple;
-	bh=2i1FxjxOMTCwOm03sAbB/L2Jx/vMon7IQsQ4YXaWjB8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QDjZU8nBwUHfrtNPHEbYW/14feX1Z6vvXMjzc8eTymxtPM9xGoZTSes4HYdB7UmJvqvM6qi7FAl7X0lryvoqLwmfU5j6PwFCQwyZK/qzqMPl6Ac3psdwDp6+a1nj6rsQPSdJkh4xJvc2zYWNDj1yO++O+X++5TkqllNjk7OOIyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gXJFCa7A; arc=none smtp.client-ip=95.215.58.179
+	s=arc-20240116; t=1752624104; c=relaxed/simple;
+	bh=7TcSB0KV5v2ivHNMn+2amZ4S5ERARJNZ0E9iaiJqJyc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=T1oRrDa1RJxjRxObRS+3/SDgp78TipgTfbD16GJlYcfOQ02dw56nz2dkpyYmNXuuypHEOH0h5RUYaI9MtmOQ95Al6k7J0nbjyuVrKtwNKatCSEFMuYwpw4ru3aVu3JCv2Y3coCWbhzYCtPNEFg0GYw+y1NPhitJc5FR9zlfP3p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TxwBT1ea; arc=none smtp.client-ip=95.215.58.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gXJFCa7A"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TxwBT1ea"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1752624098;
+	t=1752624090;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aSPJIQb7zZXYaxjVPnZA2dEJZu7SMOpHsNQQVyaAN70=;
-	b=gXJFCa7AKfGi9aAZ1fJlrVQl8e8dlfMkQ926d3oyDKFqN3LQznfY+iwmBmMo7bUomtHNwI
-	swwiCFYq39XPV0wXe44C1O5u0vvneVnkO6CK9m+6htRYq++/f0G9v3kuYIWi8pu8R5XRv+
-	BfUZTaYQmCIfOTxGqLVc92q1MKYIaFA=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zc6W1LqWhosxLy6inD+3Mw6xi1MjCToPHphw8hvqQkQ=;
+	b=TxwBT1eaS2c9mz51J1mXjV4Nx+b/d5R9SKThusI7I+QKlZwzbwvHUzbdDXdN0iu5BY+jqW
+	KkK49bWAWz+bvPDIjmEDw7HVvaS0Hnq2U2t1fvQwlJy2avkzw3FwBJ1sfxHhqhKyhmJgib
+	MOgX6hzT+p5l2Mx5CAUA5wqCi5ID2po=
 From: Sean Anderson <sean.anderson@linux.dev>
 To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -44,11 +42,9 @@ Cc: Dave Ertman <david.m.ertman@intel.com>,
 	linux-arm-kernel@lists.infradead.org,
 	Ira Weiny <ira.weiny@intel.com>,
 	Sean Anderson <sean.anderson@linux.dev>
-Subject: [PATCH net v2 3/4] net: axienet: Rearrange lifetime functions
-Date: Tue, 15 Jul 2025 20:01:09 -0400
-Message-Id: <20250716000110.2267189-4-sean.anderson@linux.dev>
-In-Reply-To: <20250716000110.2267189-1-sean.anderson@linux.dev>
-References: <20250716000110.2267189-1-sean.anderson@linux.dev>
+Subject: [PATCH net v2 0/4] net: axienet: Fix deferred probe loop
+Date: Tue, 15 Jul 2025 20:01:06 -0400
+Message-Id: <20250716000110.2267189-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,301 +54,28 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Rearrange the lifetime functions (probe, remove, etc.) in preparation
-for the next commit. No functional change intended.
+Please refer to patch 4/4 for an extended look at the problem this
+series is attempting to solve.
 
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
----
+Changes in v2:
+- Add example log output to commit message
+- Fix building as a module
+- Expand commit message with much more info on the problem and possible
+  solutions
 
-(no changes since v1)
+Sean Anderson (4):
+  auxiliary: Support hexadecimal ids
+  net: axienet: Fix resource release ordering
+  net: axienet: Rearrange lifetime functions
+  net: axienet: Split into MAC and MDIO drivers
 
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 252 +++++++++---------
- 1 file changed, 133 insertions(+), 119 deletions(-)
+ drivers/base/auxiliary.c                      |   6 +-
+ drivers/net/ethernet/xilinx/Kconfig           |   1 +
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 422 ++++++++++--------
+ .../net/ethernet/xilinx/xilinx_axienet_mdio.c |  31 +-
+ include/linux/auxiliary_bus.h                 |   4 +-
+ 5 files changed, 263 insertions(+), 201 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 1f277e5e4a62..c2512c04a88f 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -2749,6 +2749,134 @@ static void axienet_disable_misc(void *clocks)
- 	clk_bulk_disable_unprepare(XAE_NUM_MISC_CLOCKS, clocks);
- }
- 
-+static int axienet_mac_probe(struct axienet_local *lp)
-+{
-+	struct net_device *ndev = lp->ndev;
-+	struct device_node *np;
-+	int ret;
-+
-+	SET_NETDEV_DEV(ndev, lp->dev);
-+	if (lp->phy_mode == PHY_INTERFACE_MODE_SGMII ||
-+	    lp->phy_mode == PHY_INTERFACE_MODE_1000BASEX) {
-+		np = of_parse_phandle(lp->dev->of_node, "pcs-handle", 0);
-+		if (!np) {
-+			/* Deprecated: Always use "pcs-handle" for pcs_phy.
-+			 * Falling back to "phy-handle" here is only for
-+			 * backward compatibility with old device trees.
-+			 */
-+			np = of_parse_phandle(lp->dev->of_node, "phy-handle", 0);
-+		}
-+		if (!np) {
-+			dev_err(lp->dev,
-+				"pcs-handle (preferred) or phy-handle required for 1000BaseX/SGMII\n");
-+			return -EINVAL;
-+		}
-+		lp->pcs_phy = of_mdio_find_device(np);
-+		of_node_put(np);
-+		if (!lp->pcs_phy)
-+			return -EPROBE_DEFER;
-+		lp->pcs.ops = &axienet_pcs_ops;
-+		lp->pcs.poll = true;
-+	}
-+
-+	lp->phylink_config.dev = &ndev->dev;
-+	lp->phylink_config.type = PHYLINK_NETDEV;
-+	lp->phylink_config.mac_managed_pm = true;
-+	lp->phylink_config.mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE |
-+		MAC_10FD | MAC_100FD | MAC_1000FD;
-+
-+	__set_bit(lp->phy_mode, lp->phylink_config.supported_interfaces);
-+	if (lp->switch_x_sgmii) {
-+		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
-+			  lp->phylink_config.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_SGMII,
-+			  lp->phylink_config.supported_interfaces);
-+	}
-+
-+	lp->phylink = phylink_create(&lp->phylink_config, lp->dev->fwnode,
-+				     lp->phy_mode,
-+				     &axienet_phylink_ops);
-+	if (IS_ERR(lp->phylink)) {
-+		ret = PTR_ERR(lp->phylink);
-+		dev_err(lp->dev, "phylink_create error (%i)\n", ret);
-+		goto cleanup_pcs;
-+	}
-+
-+	ret = register_netdev(ndev);
-+	if (ret) {
-+		dev_err(lp->dev, "register_netdev() error (%i)\n", ret);
-+		goto cleanup_phylink;
-+	}
-+
-+	return 0;
-+
-+cleanup_phylink:
-+	phylink_destroy(lp->phylink);
-+cleanup_pcs:
-+	if (lp->pcs_phy)
-+		put_device(&lp->pcs_phy->dev);
-+	return ret;
-+}
-+
-+static void axienet_mac_remove(struct platform_device *pdev)
-+{
-+	struct net_device *ndev = platform_get_drvdata(pdev);
-+	struct axienet_local *lp = netdev_priv(ndev);
-+
-+	unregister_netdev(ndev);
-+	phylink_destroy(lp->phylink);
-+	if (lp->pcs_phy)
-+		put_device(&lp->pcs_phy->dev);
-+}
-+
-+static void axienet_mac_shutdown(struct platform_device *pdev)
-+{
-+	struct net_device *ndev = platform_get_drvdata(pdev);
-+
-+	rtnl_lock();
-+	netif_device_detach(ndev);
-+
-+	if (netif_running(ndev))
-+		dev_close(ndev);
-+
-+	rtnl_unlock();
-+}
-+
-+static int axienet_suspend(struct device *dev)
-+{
-+	struct net_device *ndev = dev_get_drvdata(dev);
-+
-+	if (!netif_running(ndev))
-+		return 0;
-+
-+	netif_device_detach(ndev);
-+
-+	rtnl_lock();
-+	axienet_stop(ndev);
-+	rtnl_unlock();
-+
-+	return 0;
-+}
-+
-+static int axienet_resume(struct device *dev)
-+{
-+	struct net_device *ndev = dev_get_drvdata(dev);
-+
-+	if (!netif_running(ndev))
-+		return 0;
-+
-+	rtnl_lock();
-+	axienet_open(ndev);
-+	rtnl_unlock();
-+
-+	netif_device_attach(ndev);
-+
-+	return 0;
-+}
-+
-+static DEFINE_SIMPLE_DEV_PM_OPS(axienet_pm_ops,
-+				axienet_suspend, axienet_resume);
-+
- /**
-  * axienet_probe - Axi Ethernet probe function.
-  * @pdev:	Pointer to platform device structure.
-@@ -3051,69 +3179,10 @@ static int axienet_probe(struct platform_device *pdev)
- 		dev_warn(&pdev->dev,
- 			 "error registering MDIO bus: %d\n", ret);
- 
--	if (lp->phy_mode == PHY_INTERFACE_MODE_SGMII ||
--	    lp->phy_mode == PHY_INTERFACE_MODE_1000BASEX) {
--		np = of_parse_phandle(pdev->dev.of_node, "pcs-handle", 0);
--		if (!np) {
--			/* Deprecated: Always use "pcs-handle" for pcs_phy.
--			 * Falling back to "phy-handle" here is only for
--			 * backward compatibility with old device trees.
--			 */
--			np = of_parse_phandle(pdev->dev.of_node, "phy-handle", 0);
--		}
--		if (!np) {
--			dev_err(&pdev->dev, "pcs-handle (preferred) or phy-handle required for 1000BaseX/SGMII\n");
--			ret = -EINVAL;
--			goto cleanup_mdio;
--		}
--		lp->pcs_phy = of_mdio_find_device(np);
--		if (!lp->pcs_phy) {
--			ret = -EPROBE_DEFER;
--			of_node_put(np);
--			goto cleanup_mdio;
--		}
--		of_node_put(np);
--		lp->pcs.ops = &axienet_pcs_ops;
--		lp->pcs.poll = true;
--	}
-+	ret = axienet_mac_probe(lp);
-+	if (!ret)
-+		return 0;
- 
--	lp->phylink_config.dev = &ndev->dev;
--	lp->phylink_config.type = PHYLINK_NETDEV;
--	lp->phylink_config.mac_managed_pm = true;
--	lp->phylink_config.mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE |
--		MAC_10FD | MAC_100FD | MAC_1000FD;
--
--	__set_bit(lp->phy_mode, lp->phylink_config.supported_interfaces);
--	if (lp->switch_x_sgmii) {
--		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
--			  lp->phylink_config.supported_interfaces);
--		__set_bit(PHY_INTERFACE_MODE_SGMII,
--			  lp->phylink_config.supported_interfaces);
--	}
--
--	lp->phylink = phylink_create(&lp->phylink_config, pdev->dev.fwnode,
--				     lp->phy_mode,
--				     &axienet_phylink_ops);
--	if (IS_ERR(lp->phylink)) {
--		ret = PTR_ERR(lp->phylink);
--		dev_err(&pdev->dev, "phylink_create error (%i)\n", ret);
--		goto cleanup_mdio;
--	}
--
--	ret = register_netdev(lp->ndev);
--	if (ret) {
--		dev_err(lp->dev, "register_netdev() error (%i)\n", ret);
--		goto cleanup_phylink;
--	}
--
--	return 0;
--
--cleanup_phylink:
--	phylink_destroy(lp->phylink);
--
--cleanup_mdio:
--	if (lp->pcs_phy)
--		put_device(&lp->pcs_phy->dev);
- 	if (lp->mii_bus)
- 		axienet_mdio_teardown(lp);
- 	return ret;
-@@ -3124,69 +3193,14 @@ static void axienet_remove(struct platform_device *pdev)
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct axienet_local *lp = netdev_priv(ndev);
- 
--	unregister_netdev(ndev);
--
--	if (lp->phylink)
--		phylink_destroy(lp->phylink);
--
--	if (lp->pcs_phy)
--		put_device(&lp->pcs_phy->dev);
--
-+	axienet_mac_remove(pdev);
- 	axienet_mdio_teardown(lp);
- }
- 
--static void axienet_shutdown(struct platform_device *pdev)
--{
--	struct net_device *ndev = platform_get_drvdata(pdev);
--
--	rtnl_lock();
--	netif_device_detach(ndev);
--
--	if (netif_running(ndev))
--		dev_close(ndev);
--
--	rtnl_unlock();
--}
--
--static int axienet_suspend(struct device *dev)
--{
--	struct net_device *ndev = dev_get_drvdata(dev);
--
--	if (!netif_running(ndev))
--		return 0;
--
--	netif_device_detach(ndev);
--
--	rtnl_lock();
--	axienet_stop(ndev);
--	rtnl_unlock();
--
--	return 0;
--}
--
--static int axienet_resume(struct device *dev)
--{
--	struct net_device *ndev = dev_get_drvdata(dev);
--
--	if (!netif_running(ndev))
--		return 0;
--
--	rtnl_lock();
--	axienet_open(ndev);
--	rtnl_unlock();
--
--	netif_device_attach(ndev);
--
--	return 0;
--}
--
--static DEFINE_SIMPLE_DEV_PM_OPS(axienet_pm_ops,
--				axienet_suspend, axienet_resume);
--
- static struct platform_driver axienet_driver = {
- 	.probe = axienet_probe,
- 	.remove = axienet_remove,
--	.shutdown = axienet_shutdown,
-+	.shutdown = axienet_mac_shutdown,
- 	.driver = {
- 		 .name = "xilinx_axienet",
- 		 .pm = &axienet_pm_ops,
 -- 
 2.35.1.1320.gc452695387.dirty
 
