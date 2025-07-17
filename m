@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5DA2185AC;
-	Thu, 17 Jul 2025 06:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A832F21B9E2;
+	Thu, 17 Jul 2025 06:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752735491; cv=none; b=BoSpJsK85EH7PJFUDDwWi7Ahl6VuMM1BS87AaqpztbEpCgpBgs1mIyc07CHYOHn8q/PovVQIk4lARvR+NXnyw02LDCccmQF6uUA0npm71ddf81mSDF2bDE/jH1tnOIbr4UiDdkf0KUlZZYM7EVNXTkbmYJ1XXWsU/+HlxJM9g+Y=
+	t=1752735494; cv=none; b=XQ5MTfg2j5HprvxkkM2j/2AfRaOJgO99fTfCE7sR3EWTo+UGY8yXyY1XmxVgZ6sGXqbt+UZ/6nTahm9SrmdLPyCrcuON2q3AK0zEJ12VcUasoxYDZZds5jP+TaUMncRTCXrH0p9Vi5CUSRrYYwcM3ud6balu775SRs1RViXaF4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752735491; c=relaxed/simple;
-	bh=DTAc1QH2SG3wBIaDqh/zWN6e5pCpQY2YlQrMVLcHS5I=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=n6WcHvyRrIhRgXaMUhBXH+BuYPtGQP6QDt/nX/TeqilJNlWp4atWMJQdTLyhacEMA9XMAmlFK1u7te+BZZuPNJvYT0xosyJP43sgcQffSFhOxI9zu+em/8KINFZdZlUsgJcwgMVPoDDYBjqzwz0u7+A25bg/FG84cc1zjwa0oeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFtfpfXc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752735494; c=relaxed/simple;
+	bh=+GGAMF7MuMhiA/+l9JWL1k4u4nOfRTZzdne1gu79CMg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=M2zMB3VLGDrVY1+TDFjZG+3YR1PIAUZ055bVjM6lf6QXsvuHGK3+b2/rDY3co1MHi15KsfKNciwW9Uw8x6hxLuYxk34QCrIF92FgXc22MQWn7ZBuXRX1q+H4u3DHmyoDSvx8jLXm8dCKKEhLr9XmgxYdQDfiYPrRToRHlByXRn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ll3g5XMv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFtfpfXc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A348AC4CEE3;
-	Thu, 17 Jul 2025 06:58:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ll3g5XMv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE345C4CEF8;
+	Thu, 17 Jul 2025 06:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752735491;
-	bh=DTAc1QH2SG3wBIaDqh/zWN6e5pCpQY2YlQrMVLcHS5I=;
-	h=From:Subject:Date:To:Cc:From;
-	b=OFtfpfXcIQiBCe61xRDUOlE+OyqUKE3/2zysnAzg4uwVKvXYg9yMZT2Zjc74s1Guh
-	 uLB/CQ0TP7E7m7H1ZUUkFelcKsrVRayDJDDnVHvAbv9s/mVcrZUiQnZOH7KvECCJXU
-	 e7RNwPgMvZlYzdbQSvkOvPuGyDkzRvHbq2ge1adI/YdhuquPbNl3e3YTKf6F0rjecy
-	 Z4NoK8IJmf+54AytWdILySv7EsuFl93VH2j0OCHThnbbz9cxEclPVQFpgY30PXi1zn
-	 xFPQX4qM8LSlBMAZllksPfLRp3MGag18cSRe6A17jAAYuQaSMa14n1xwVRLYqv0tna
-	 W2mnLSzgleaAA==
+	s=k20201202; t=1752735494;
+	bh=+GGAMF7MuMhiA/+l9JWL1k4u4nOfRTZzdne1gu79CMg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=Ll3g5XMvsZzxTXYytdaeojvyyNxhJIscnsvxiHqj8Kg0sYkZVdbthJovKsgobpan0
+	 SkPkLMy3+D4mMMywf3AReIqq2O+ha9a3/tZrRU2KjpPMYzqQ+xtSR3t/iAkvtNrHPn
+	 TFHTrNqYxfENd5KiH8gu++71FFY5Mz+IRcZerOkK9iYnxTyJGlzAd0lufJVrKnHVO3
+	 eT1BOqmUjQWNJOKOFYAAkwW/Ofjx60Vzouqu5Gpc1TTY2zlNrcuvXT7pggDg5tegGo
+	 Jtx6fLUE4yJoLO29pkEio7uc2f0xtEBZuk4xHmRr20TPILeh+NriFxa+DynTEM9nud
+	 0N3yN15PR4G9g==
 From: Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: [PATCH net-next v4 0/7] net: airoha: Introduce NPU callbacks for
- wlan offloading
-Date: Thu, 17 Jul 2025 08:57:41 +0200
-Message-Id: <20250717-airoha-en7581-wlan-offlaod-v4-0-6db178391ed2@kernel.org>
+Date: Thu, 17 Jul 2025 08:57:42 +0200
+Subject: [PATCH net-next v4 1/7] dt-bindings: net: airoha: npu: Add memory
+ regions used for wlan offload
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,11 +38,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOWeeGgC/33OQQ6CMBCF4auYrq2ZtkCLK+9hXAwwlUbSmmJQQ
- 7i7hcQEY8Lyn8X3ZmQ9RUc9O+5GFmlwvQs+RbbfsbpFfyXumtRMgsxBg+DoYmiRk9e5EfzZoef
- B2g5Dwwtdlw1aazKtWALukax7Lfj5krp1/SPE97I1iPn6ZeUWOwgO3IACKDVApczpRtFTdwjxy
- mZ3kGsr37RkslRtldQmJ2XEn6VWlsg2LbX8hZUtEKmk7MeapukDMEhRYl0BAAA=
-X-Change-ID: 20250701-airoha-en7581-wlan-offlaod-67c9daff8473
+Message-Id: <20250717-airoha-en7581-wlan-offlaod-v4-1-6db178391ed2@kernel.org>
+References: <20250717-airoha-en7581-wlan-offlaod-v4-0-6db178391ed2@kernel.org>
+In-Reply-To: <20250717-airoha-en7581-wlan-offlaod-v4-0-6db178391ed2@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -53,53 +51,55 @@ Cc: Simon Horman <horms@kernel.org>, linux-arm-kernel@lists.infradead.org,
  devicetree@vger.kernel.org
 X-Mailer: b4 0.14.2
 
-Similar to wired traffic, EN7581 SoC allows to offload traffic to/from
-the MT76 wireless NIC configuring the NPU module via the Netfilter
-flowtable. This series introduces the necessary NPU callback used by
-the MT7996 driver in order to enable the offloading.
-MT76 support has been posted as RFC in [0] in order to show how the
-APIs are consumed.
+Document memory regions used by Airoha EN7581 NPU for wlan traffic
+offloading. The brand new added memory regions do not introduce any
+backward compatibility issues since they will be used just to offload
+traffic to/from the MT76 wireless NIC and the MT76 probing will not fail
+if these memory regions are not provide, it will just disable offloading
+via the NPU module.
 
-[0] https://lore.kernel.org/linux-wireless/cover.1752505597.git.lorenzo@kernel.org/T/#t
-
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
-Changes in v4:
-- Improve commit messages
-- Link to v3: https://lore.kernel.org/r/20250714-airoha-en7581-wlan-offlaod-v3-0-80abf6aae9e4@kernel.org
+ .../devicetree/bindings/net/airoha,en7581-npu.yaml    | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-Changes in v3:
-- Rename 'binary' memory region in 'firmware'
-- Do not make memory-region-names property required
-- Link to v2: https://lore.kernel.org/r/20250705-airoha-en7581-wlan-offlaod-v2-0-3cf32785e381@kernel.org
+diff --git a/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml b/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml
+index 76dd97c3fb4004674dc30a54c039c1cc19afedb3..f99d60f75bb03931a1c4f35066c72c709e337fd2 100644
+--- a/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml
++++ b/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml
+@@ -41,9 +41,18 @@ properties:
+       - description: wlan irq line5
+ 
+   memory-region:
+-    maxItems: 1
+-    description:
+-      Memory used to store NPU firmware binary.
++    items:
++      - description: NPU firmware binary region
++      - description: NPU wlan offload RX buffers region
++      - description: NPU wlan offload TX buffers region
++      - description: NPU wlan offload TX packet identifiers region
++
++  memory-region-names:
++    items:
++      - const: firmware
++      - const: pkt
++      - const: tx-pkt
++      - const: tx-bufid
+ 
+ required:
+   - compatible
+@@ -79,6 +88,8 @@ examples:
+                      <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>,
+                      <GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>,
+                      <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>;
+-        memory-region = <&npu_binary>;
++        memory-region = <&npu_firmware>, <&npu_pkt>, <&npu_txpkt>,
++                        <&npu_txbufid>;
++        memory-region-names = "firmware", "pkt", "tx-pkt", "tx-bufid";
+       };
+     };
 
-Changes in v2:
-- Introduce binding for memory regions used for wlan offload
-- Rely on of_reserved_mem_region_to_resource_byname
-- Export just wlan_{send,get}_msg NPU callback for MT76
-- Improve commit messages
-- Link to v1: https://lore.kernel.org/r/20250702-airoha-en7581-wlan-offlaod-v1-0-803009700b38@kernel.org
-
----
-Lorenzo Bianconi (7):
-      dt-bindings: net: airoha: npu: Add memory regions used for wlan offload
-      net: airoha: npu: Add NPU wlan memory initialization commands
-      net: airoha: npu: Add wlan_{send,get}_msg NPU callbacks
-      net: airoha: npu: Add wlan irq management callbacks
-      net: airoha: npu: Read NPU wlan interrupt lines from the DTS
-      net: airoha: npu: Enable core 3 for WiFi offloading
-      net: airoha: Add airoha_offload.h header
-
- .../devicetree/bindings/net/airoha,en7581-npu.yaml |  19 +-
- drivers/net/ethernet/airoha/airoha_npu.c           | 180 +++++++++++++-
- drivers/net/ethernet/airoha/airoha_npu.h           |  36 ---
- drivers/net/ethernet/airoha/airoha_ppe.c           |   2 +-
- include/linux/soc/airoha/airoha_offload.h          | 259 +++++++++++++++++++++
- 5 files changed, 452 insertions(+), 44 deletions(-)
----
-base-commit: cd031354087d8ae005404f0c552730f0bd33ac33
-change-id: 20250701-airoha-en7581-wlan-offlaod-67c9daff8473
-
-Best regards,
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+2.50.1
 
