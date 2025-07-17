@@ -1,134 +1,149 @@
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB1219DFA2;
-	Thu, 17 Jul 2025 09:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BF428A414
+	for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 09:39:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752745074; cv=none; b=HQ0tt6vnvFF7mtqd2bxLqUihNRiZSR2gps+b4f9gHv2N0ROpb79Nstn57yir0ExiWrWOgN2JIb/w+7GZA7QfjAcLGE+dJfgibd7MTzlcTj2e4LM0/4NcyJa90HEr1UBHlVQFRYWC9BvKmD/gSYCK/az3EJTyS0nCGqo7MtUCAig=
+	t=1752745166; cv=none; b=ONUEs0Wa54rfsY7afxF7ZUm7UlhrKshcVFt7i36l5A8T/APzOY/be4huP/XYFpcbwj7b0dUnB5Z8H2Wz13/4aMVRlXxGqtMdf194sGLbNuyVE2OAZeYlBGN2o6rfV8s+JG8oNSvZddIp54AQBvT9x9dc5fE4qXsA6Cp3NUajXew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752745074; c=relaxed/simple;
-	bh=M8y+OfB3/gTGlHiZRmj3zVXgpIHR8e4nTN+jjclnz8E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=fAwQapQlmlwrIhTpyRwqT54pd7dA1kUN7lJgiFDT9Vj0wcI7Mprg1opyBx8BLQm1vYFSTVoCGa785CMxfxRVkMc5IcVbpSLwavxkMukxrUNVPyFOkdw7g9xh/j4P8tA7DksJLU18dkkOhS9DaIogProA5LDhEPye5p5ggovJ9Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Jt+ZgRWa; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1752745166; c=relaxed/simple;
+	bh=dXeJz3vwBSLIWWCWuP+elspZU7SI9LsUKQsf9/I2RiU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oS0OJS8MWW7ceKrpOQ6KqlsT3xvVKmGQHTxCN1GNLQ4NxBFD4y2bSnZRCd0lxMApGvfdsiWlV63bhOsgKLa1uaS8pJIc7mWRialF0wTmlG0IWwC1noozKJN/C0okiFOQ8+JKmYckfFQFtU8XTGpcyxYub24nMMXxfgSrYnHoB4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ro/NMiji; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Jt+ZgRWa"
-Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56H9bMY33050978;
-	Thu, 17 Jul 2025 04:37:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1752745042;
-	bh=rnORj6AwUklafQliia+PljSSSNZViblW/zSxNbyZ6Ks=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=Jt+ZgRWaRZ9mL/QoDBRinVRNWfgjmmowSR6IC9lqeRJJRsT+As4WaU6+WafqPJuzf
-	 e02vXZR4TEY59hWvhsAL1Hip/MTvyoJXyoTk3yrpg9dVQu9hHcCh0NIIpI4SpI8phA
-	 xPs8ZgH2RnJpazm6Q9ldLMnN00LEMttHjOp51pS4=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56H9bLWX128452
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Thu, 17 Jul 2025 04:37:22 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 17
- Jul 2025 04:37:21 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Thu, 17 Jul 2025 04:37:21 -0500
-Received: from [172.24.29.51] (ltpw0g6zld.dhcp.ti.com [172.24.29.51])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56H9bBNA1949782;
-	Thu, 17 Jul 2025 04:37:12 -0500
-Message-ID: <94196b50-1fd7-410e-83e8-b71bb6835acd@ti.com>
-Date: Thu, 17 Jul 2025 15:07:10 +0530
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ro/NMiji"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752745163;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lKvVQQJMq+hy7WZue3QcEAM5iltBaD3HiRA66HLusuo=;
+	b=Ro/NMijiX9eVge9zN5YWfB1dJn68jDbTT8KRkZ4Pw6EHHcG2RGSXWjSmBTp3ip/Az/fTMc
+	QVFGF0nKFvqL/JmSImRO3svU7j126lOokInPWA7sPwQxBP5y6RPksUR9ByOvnDwToGA1N/
+	pDbkNnCXi27X80st/PWNS5ySSFDxtJg=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-50-AKcZDGC0OOC_FEErePjqhw-1; Thu, 17 Jul 2025 05:39:21 -0400
+X-MC-Unique: AKcZDGC0OOC_FEErePjqhw-1
+X-Mimecast-MFC-AGG-ID: AKcZDGC0OOC_FEErePjqhw_1752745161
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7da0850c9e5so116037685a.0
+        for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 02:39:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752745161; x=1753349961;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lKvVQQJMq+hy7WZue3QcEAM5iltBaD3HiRA66HLusuo=;
+        b=woDgR7GoPSW9WxX5JU7XD3RNKstevXFn/IcP8t1lAvKrpXIJrznxd24lbHTmuA45wH
+         8usyd8URdi7vdqzVaLBXG3bDMzN6kC3Ig7d7xLuX3ha3KmtwakFp0dGaVfSbk0VmbpI3
+         /IXDJTTCDBjWmpibF2vPsmnMu+8N0yj3+0XvUNvAEwZ/q7dfZsEMcknR4Pj3NEebOKfs
+         LNdiCObBthZVTI/3LfcWGR5OH8IY/5B4kGrVoEbHZ4+H0U7dJ2PKLbW2CQlT0L/+15Tg
+         Iv3eGk+C+x8onlbUlxdxnhG7mtKq228xytk6xJ0m2Mpx6fu3JsAPiWYKBOBAWhQwXaci
+         28Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCWFBFtafJDZd1vFzbjmcX77esqAIN51Ti4B0msDB9AQsf+hB5p0ZHu+WTata+eTUdlpYvntuZ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4KTZlptLMUHaokZQBXc4wuX6GPwTRXKyfCvFsqUha31S4Lh2d
+	w746d/F8LrUYZgJpZULWJEiYVZY/WFVy1zc/pyxTQj4jfeQmShZm3nG2lv2SoATcAZZFFZo64b3
+	0+mxPXy8inNQrDiP5KVoX23WFhAJ6KjZUQdVMqoYFqjJzjolO9J5fa2s20g==
+X-Gm-Gg: ASbGncu5hfq763ThRJDHWevhDfZgljlKGak3LRsZgLY99Eo74ulnOZcvacdIE2jBXCL
+	braBlDrk1iCuNyfgDh00TI/qsTzX1l4lBpxvO+gSsBQ2k7b7xcLflfGPjEriDCavk1vPIxOKUs6
+	e9uh0mQouH+Ps0XtPUHcfNI1UdaIVuBWSSuv4ohlRrVk/PqCmC5YjF+mOYdjNZ34W/bvBQx8Pyv
+	E46GLtTl4VXXa4asVkyKRX6wg1UfeHmddL1gt8m8SqfXDU5N3eu1LUkqN3AkWPFbR2ztT6T6h4G
+	HQ9978/ASaoF2TNQAUwnGaqvuWoBFdqG+yqixmiro6bInqT6atA4XLDzzjQJ6Lu7avSbjRzbUHY
+	YLlH6Hh+0VP9QSG4=
+X-Received: by 2002:a05:620a:6542:b0:7e3:4413:e494 with SMTP id af79cd13be357-7e34413e88dmr561235285a.60.1752745160467;
+        Thu, 17 Jul 2025 02:39:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGLjVGLBAruZTnyYcI3XjIk2LiSOrCmNEhnAfiMWz9ibsQjoRXzWcmxwJLI++dPE/3qhXbt3A==
+X-Received: by 2002:a05:620a:6542:b0:7e3:4413:e494 with SMTP id af79cd13be357-7e34413e88dmr561231885a.60.1752745159997;
+        Thu, 17 Jul 2025 02:39:19 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-45-205-118.retail.telecomitalia.it. [79.45.205.118])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e2635b0b2fsm519799085a.0.2025.07.17.02.39.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Jul 2025 02:39:19 -0700 (PDT)
+Date: Thu, 17 Jul 2025 11:39:12 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Will Deacon <will@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Keir Fraser <keirf@google.com>, 
+	Steven Moreland <smoreland@google.com>, Frederick Mayle <fmayle@google.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	netdev@vger.kernel.org, virtualization@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v4 2/9] vsock/virtio: Validate length in packet header
+ before skb_put()
+Message-ID: <y6taqbyskzr4k7tetixgkhdo2z2dgrionsor3jriuo4bxlqdfc@fjnq7tig4bik>
+References: <20250717090116.11987-1-will@kernel.org>
+ <20250717090116.11987-3-will@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: ti: icssg-prueth: Fix buffer allocation for
- ICSSG
-To: Simon Horman <horms@kernel.org>
-CC: <pabeni@redhat.com>, <kuba@kernel.org>, <edumazet@google.com>,
-        <davem@davemloft.net>, <andrew+netdev@lunn.ch>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
-        Vignesh Raghavendra
-	<vigneshr@ti.com>,
-        Roger Quadros <rogerq@kernel.org>, <danishanwar@ti.com>,
-        <m-malladi@ti.com>, <pratheesh@ti.com>, <prajith@ti.com>
-References: <20250710131250.1294278-1-h-mittal1@ti.com>
- <20250711144323.GV721198@horms.kernel.org>
- <b626dc40-e05b-40e0-b300-45ced82d2f97@ti.com>
- <20250715102943.GU721198@horms.kernel.org>
-Content-Language: en-US
-From: "MITTAL, HIMANSHU" <h-mittal1@ti.com>
-In-Reply-To: <20250715102943.GU721198@horms.kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250717090116.11987-3-will@kernel.org>
 
+On Thu, Jul 17, 2025 at 10:01:09AM +0100, Will Deacon wrote:
+>When receiving a vsock packet in the guest, only the virtqueue buffer
+>size is validated prior to virtio_vsock_skb_rx_put(). Unfortunately,
+>virtio_vsock_skb_rx_put() uses the length from the packet header as the
+>length argument to skb_put(), potentially resulting in SKB overflow if
+>the host has gone wonky.
+>
+>Validate the length as advertised by the packet header before calling
+>virtio_vsock_skb_rx_put().
+>
+>Cc: <stable@vger.kernel.org>
+>Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+>Signed-off-by: Will Deacon <will@kernel.org>
+>---
+> net/vmw_vsock/virtio_transport.c | 12 ++++++++++--
+> 1 file changed, 10 insertions(+), 2 deletions(-)
 
-On 7/15/2025 3:59 PM, Simon Horman wrote:
-> On Tue, Jul 15, 2025 at 12:37:45PM +0530, MITTAL, HIMANSHU wrote:
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+
 >
-> ...
+>diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+>index f0e48e6911fc..eb08a393413d 100644
+>--- a/net/vmw_vsock/virtio_transport.c
+>+++ b/net/vmw_vsock/virtio_transport.c
+>@@ -624,8 +624,9 @@ static void virtio_transport_rx_work(struct work_struct *work)
+> 	do {
+> 		virtqueue_disable_cb(vq);
+> 		for (;;) {
+>+			unsigned int len, payload_len;
+>+			struct virtio_vsock_hdr *hdr;
+> 			struct sk_buff *skb;
+>-			unsigned int len;
 >
->>>> +-----+-----------------------------------------------+
->>>> |     |       SLICE 0       |        SLICE 1          |
->>>> |     +------------+----------+------------+----------+
->>>> |     | Start addr | End addr | Start addr | End addr |
->>>> +-----+------------+----------+------------+----------+
->>>> | EXP | 70024000   | 70028000 | 7002C000   | 70030000 | <-- Overlapping
->>> Thanks for the detailed explanation with these tables.
->>> It is very helpful. I follow both the existing and new mappings
->>> with their help. Except for one thing.
->>>
->>> It's not clear how EXP was set to the values on the line above.
->>> Probably I'm missing something very obvious.
->>> Could you help me out here?
->> The root cause for this issue is that, buffer configuration for Express
->> Frames
->> in function: prueth_fw_offload_buffer_setup() is missing.
->>
->>
->> Details:
->> The driver implements two distinct buffer configuration functions that are
->> invoked
->> based on the driver state and ICSSG firmware:-
->> prueth_fw_offload_buffer_setup()
->> - prueth_emac_buffer_setup()
->>
->> During initialization, the driver creates standard network interfaces
->> (netdevs) and
->> configures buffers via prueth_emac_buffer_setup(). This function properly
->> allocates
->> and configures all required memory regions including:
->> - LI buffers
->> - Express packet buffers
->> - Preemptible packet buffers
->>
->> However, when the driver transitions to an offload mode (switch/HSR/PRP),
->> buffer reconfiguration is handled by prueth_fw_offload_buffer_setup().
->> This function does not reconfigure the buffer regions required for Express
->> packets,
->> leading to incorrect buffer allocation.
-> Thanks for your patience, I see that now :)
+> 			if (!virtio_transport_more_replies(vsock)) {
+> 				/* Stop rx until the device processes already
+>@@ -642,12 +643,19 @@ static void virtio_transport_rx_work(struct work_struct *work)
+> 			vsock->rx_buf_nr--;
 >
-> I'm sorry to drag this out, but I do think it would be useful to add
-> information above the lines of the above to the patch description.
-Thanks for the feedback, I will add this information and create an 
-updated patch.
->>>> | PRE | 70030000   | 70033800 | 70034000   | 70037800 |
->>>> +-----+------------+----------+------------+----------+
->>>>
->>>> +---------------------+----------+----------+
->>>> |                     | SLICE 0  |  SLICE 1 |
->>>> +---------------------+----------+----------+
->>>> | Default Drop Offset | 00000000 | 00000000 |     <-- Field not configured
->>>> +---------------------+----------+----------+
->>> ...
+> 			/* Drop short/long packets */
+>-			if (unlikely(len < sizeof(struct virtio_vsock_hdr) ||
+>+			if (unlikely(len < sizeof(*hdr) ||
+> 				     len > virtio_vsock_skb_len(skb))) {
+> 				kfree_skb(skb);
+> 				continue;
+> 			}
+>
+>+			hdr = virtio_vsock_hdr(skb);
+>+			payload_len = le32_to_cpu(hdr->len);
+>+			if (unlikely(payload_len > len - sizeof(*hdr))) {
+>+				kfree_skb(skb);
+>+				continue;
+>+			}
+>+
+> 			virtio_vsock_skb_rx_put(skb);
+> 			virtio_transport_deliver_tap_pkt(skb);
+> 			virtio_transport_recv_pkt(&virtio_transport, skb);
+>-- 
+>2.50.0.727.gbf7dc18ff4-goog
+>
+
