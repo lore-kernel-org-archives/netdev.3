@@ -1,239 +1,145 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012027.outbound.protection.outlook.com [52.101.66.27])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FEC289808;
-	Thu, 17 Jul 2025 09:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752746132; cv=fail; b=X86TdmxwNHGOsNGvZhGKbNrbhBc7zUG1a9+krFyykxDgNeRQgh8I84c2vKaa91arcKJVVRqA+KUJfin/sTA/sjaGHy8daui8XS7vX8OiDVXntEqrkHZRmF8gu3NNHWEikiJeXTPwa79Ewl2I4FY7xWVSBYOZsaFg9GWoQmT+IBg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752746132; c=relaxed/simple;
-	bh=uoxGsRGw8hQilp1RbNODIvNL+AdeGh3CiNPS93w8cn8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=c3GTeWMMCmh6EO7Jvf3EABER7oWW9jkmbBr+bexMk0rC8tnm0Wz66DOGgFVUck54QrmmJypq2ZUyO9urS1QiQw05Gg0rk1oQxCEwijS/1nicbosUNmNcXUUNZpi7KPKeLpTYeBpSy6aSnACkzoWb2VH47FXsD2yJjvB7b1GJOqg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=atLZUgjb; arc=fail smtp.client-ip=52.101.66.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089B1291C35;
+	Thu, 17 Jul 2025 09:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752746299; cv=none; b=LFM0Wwts+xH+M0z1pmEOyqGe44OHfggQiWeiEEsHmLj/TMqWSsl6MnOQawA54XxD+hF+rgV0Dq9yFipUA4BVMObMm6TCzPPy9Z3EvS6Ef8y9NnVC0V8so8uF+PmCinmSeI83DWBJ63ZYCNC07aA9JnQmbmeJVHdxJCVCoGMtoQc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752746299; c=relaxed/simple;
+	bh=IitlOvrP9UBYpXrZVQEVsXlUBKMU5UVgWLqMcPYE3sg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s5zWU2wDfI12TW5bC59S1HY6QAMhEuYe8De/7Io0forGhIu+iwnURp6FOPDJ4CSWvRjHycoz7fEdzeeXL6wmMVD6KbL6Qd/moF1JXX04Jm1CAkzOwAsuV/pIy76iHmQvojz6tSooMOsEc19kZFxbmoA8DOzCFM9HFnGJntQeCVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=btzKArSC; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=p3mPJg6i; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="atLZUgjb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FmbuPBMrCOuO1zN/SDWhhX1cAjKJ/v+O1Pis3tWASPo4LCZ689NB9we6JjAqih6UrVJv008/5mfl15V1Hoz3AyuID5Aw9fHZXi4g2QVOlu3xrqUdT7x02op2oH+5NdGKCyKTGx8ir8hk3pnS3IsWsBEVt1chATteEyt7DXlerIWKG7AoQxEFgFg1BpAi1dJBS5ZPw63ALpFB8uxgSSOSlaAJ4p5KMbDVEXoMHISS2JBlbVMTju5VdWdeYUE0P4m+fJQixJgmG0PiWnMkLeENgfAXHxGGxwU1XN752NMfs5VpfFQkJLCAvINbFIdoYg5zmZFN9MGnksHtaElhP6oEBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3TE0Jfsgea3vtBesOG2n1aauV/JHEIZxe6lCGcaU/KE=;
- b=q26EZxDaOTFY2UyvKGzCTgqED1tVSvbslN+HoQQvQCdTX0vCFg4sjh2vDkCvQAysIuOlsC5M9Z/2MxE3VVqeW++U/sktluRSOsbvKDS4/bwSXzN9tXJTlkBnCorIijES+7EzzhgOWsLPBDTMBtSVyjiwolKM7I1kUli8eKJYoWd9iCZSdnTyUVpPLWYRr5zVr4sVXprAgtJDzbgH6u1KlsB/0iFovyBfklxPTts33D+Pu2wl7hgOVSs56eNK5285DjK3WnJDdaEoR5eHAryQllhMTuUnjJA27KmIo62Rx3gY9Xm2HclJpBQ7u++FfqHjc2JeL6UgaNWb3b1zspZ6Mg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3TE0Jfsgea3vtBesOG2n1aauV/JHEIZxe6lCGcaU/KE=;
- b=atLZUgjbam63kOBXOvR9AfYDZSQchEUU8YJ9H+uYt4244/aRangaZHmPLYbH5c7z/M5+X901Dr/wIMxPS205zMGeOx6THIZUWO2yOUYhLndmeS6EDM4KV0ZIKrng1TFcXhcmglYxfgzC76gn1amsrkYUsEGakc0/eCIuMy7dv6JjfMJAMemjaxcw/hX2oTzFLEGsYR+r+TQeXQJ1PIq0ja4ht15dm1wTqk444XvIBEQU/0dU/VFlo/vaHZlqTsxEAQF2k4Oi5EPIqgeToXYM3spOZ6u01GnMorMrWVnMYtKdnSifosRx/Npg1t5lZOhe9eIx0Q5UmOfa3Ayo8xMg4g==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PA1PR04MB10441.eurprd04.prod.outlook.com (2603:10a6:102:447::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Thu, 17 Jul
- 2025 09:55:27 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8922.028; Thu, 17 Jul 2025
- 09:55:27 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-CC: Krzysztof Kozlowski <krzk@kernel.org>, "robh@kernel.org"
-	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>, "richardcochran@gmail.com"
-	<richardcochran@gmail.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Clark
- Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>, Frank Li
-	<frank.li@nxp.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, "F.S. Peng" <fushi.peng@nxp.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "kernel@pengutronix.de"
-	<kernel@pengutronix.de>
-Subject: RE: [PATCH v2 net-next 01/14] dt-bindings: ptp: add NETC Timer PTP
- clock
-Thread-Topic: [PATCH v2 net-next 01/14] dt-bindings: ptp: add NETC Timer PTP
- clock
-Thread-Index: AQHb9iZhkd5V4Hmtg0ufc8muIqXiyLQ178gAgAAHnYCAABBFgIAADJmA
-Date: Thu, 17 Jul 2025 09:55:27 +0000
-Message-ID:
- <PAXPR04MB851096B3E7F59181C7377A128851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250716073111.367382-1-wei.fang@nxp.com>
- <20250716073111.367382-2-wei.fang@nxp.com>
- <20250717-furry-hummingbird-of-growth-4f5f1d@kuoka>
- <PAXPR04MB8510F642E509E915B85062318851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250717090547.f5c46ehp5rzey26b@skbuf>
-In-Reply-To: <20250717090547.f5c46ehp5rzey26b@skbuf>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PA1PR04MB10441:EE_
-x-ms-office365-filtering-correlation-id: 12f56428-e722-40c3-1a90-08ddc5180e8d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|19092799006|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?Y2MaY0E9tDayQ8H5ZD/8obEXC3bbDZ6YmXw1zJq/R587dNfolueVvt48tJ3O?=
- =?us-ascii?Q?L2hkrOYy6sN3hdX8yXR0o7uWV317k+UtVDE7NrelL9eVDTsJoQI5/GcmdRkw?=
- =?us-ascii?Q?1nda2jd6MMzfOtDXk9q5qCRt18KK3CWSd7gsOardju1mrG/RmxVzwHMksZQE?=
- =?us-ascii?Q?EILWicIPgWDdwpB1iRKZFX8peJ4vTh4kfXPJXOENmClW4uQhk63KsMMZu47x?=
- =?us-ascii?Q?Ht+nEZOn3/w2GYw8IzDdrZT5K6q3MrZ4uarunxkUrKtGFg2qZaUhPG0AUayA?=
- =?us-ascii?Q?lDxO2/a/5tFGk9ihB5aFMB9IE+8yzK9PCIgESKR6/pX4IkN2MpRxOZ6zflXG?=
- =?us-ascii?Q?ZXX/OnHkmCzJ+53RXy+LB5DVuagO/6uJWtXJN85jdcWIoah6P5B/BZjFBXZw?=
- =?us-ascii?Q?/YorCoSvwC0qJuUnToN0bVnMpVpPV6DQhfVez2ejkCz/PzHb/g9JIRaz+v8M?=
- =?us-ascii?Q?SAosrQGY0gCxp06xbZ42e1eNehfVScNW5VQRMCJmLp47qWBpBV/SsPBaIczW?=
- =?us-ascii?Q?2RpYgwWsp8Qc+ZWXXygICN04h/AqEA3gvi3EylGtHZjtKalGpT2+UrT56L/j?=
- =?us-ascii?Q?vDmpcbWWBNxaeG+LZJBPl5X3rDODXdvFc9HucwWrHC4t2FWCHLl+CuF8cSjX?=
- =?us-ascii?Q?CYowMLDJNvgpjRxjd5JPkpgyn5JiAoY9CpkI1FSXlTJvzs3cnCM1JtEyXmsZ?=
- =?us-ascii?Q?4pNvNxRkhknh2UuDjKIMfzAggvd/2yYkhPmxKoDxFfEgRfziiONekwGEJm55?=
- =?us-ascii?Q?FoNhic5Aid6JgVc3oUpXfUlzBXSrr3G2EY21PDrv/24LVe/IqbesFJh2Uouu?=
- =?us-ascii?Q?5BCcF4ZP9tIRtpYgCOj015GzsRU52dZwHeSfwNQB2w7m4MXbWV5dR+9qSR+N?=
- =?us-ascii?Q?goWD4tr2tF2Mop3Ir+aA/0NQbaiX4WvsGuQleODL3ylqqvCjHl6CRgfde8SB?=
- =?us-ascii?Q?av5QWTii8dLAEDPHSo8ZkIB4fyyGmTiQxeBdwJLMo0Ra1UfYDsbizJc5ch13?=
- =?us-ascii?Q?sIWcxwDUhVLZvkxfTABuAfaOyV7qdxh2PmsOBSD7Z9nnXvvYGnXtsfkOlMcF?=
- =?us-ascii?Q?1Utg/MAyA8HSbXrOBFHkdUBml1clKxxA/1vrzOGV7r8t21gWn6/h+2bhTXMd?=
- =?us-ascii?Q?5fAEyo3w0jByLkUdEiHZ0/Uo/L/zk7loEhLsPJPkjzb5b5n0pV0wrVw+o+Pa?=
- =?us-ascii?Q?kR3+9KOfqQuxeCfuDT+YJMvviuTifv+3/bUhhd7ZHDawWtmfA8ZSnYTbsZQA?=
- =?us-ascii?Q?9Vo8MkxYYFQII37XCbeGn/ygphajAOU0txMP0DNYbwN7BVTKMsNmlx9BJ9AB?=
- =?us-ascii?Q?HkXkoXV1/GXUjOgsb78cVlfbfiQn2+DnF2rFTa71aLR/6gzCXgqPzlf08KPy?=
- =?us-ascii?Q?c4WhQpoFNbCejC5icPrU2lmGVp91jk4mnrozYWHnI9UQZAknNv77qDsqfMQV?=
- =?us-ascii?Q?+8QvvZtTf13gUb2qYJyLveY4+Iz8lz6zmVnsdgWk7r6+3qQVGxlwJg=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(19092799006)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?aQu8R69OKmEJDNPqeQk7cTDhDUlN6wcMEGVymWEGH4RqAj7lWu9IEq+IpKeL?=
- =?us-ascii?Q?WNQX2Vdx5vdmLyM9b5CnuBE6HPzoFyRTRuCismp52i4yhYkZTyZL16oD2Ls9?=
- =?us-ascii?Q?yJrv3Dg8GkN41V8OzHBt4kdxSO1ldQKtsXiwSLVB3HmFt2qTgm3DjJiPX1zM?=
- =?us-ascii?Q?N/uE0LFKGuJnftGGWHRhHKdzNGCtXFuN6NXWp7POmcaIXiI3x5TXiEry/aY6?=
- =?us-ascii?Q?G1VFPM10rXGd7n5mGGCQiqMHv4h4hRGiZV30OicVaXI3MS5I8B+0msu8ISbq?=
- =?us-ascii?Q?GIBcHzynlcYO+0zjh6Kf4br9WOfzgfE1TlW5TsF1hrTnxaIGLk2z8bM7+ASg?=
- =?us-ascii?Q?znTVmdwI2LTvxM5h/6qJaiGkxVa74bLSQjM7zKuMoCiFrgnUqSmPD84iqTko?=
- =?us-ascii?Q?77NiSuYNa6DVRNABM/vjNpXCgSe7hy4LytyrqzL3lJjoz+sED0Z9VTekyo+K?=
- =?us-ascii?Q?GahSMRBHwa6vyqftdALuABTqJaguCwDxupsBHgeiCklURMZE8mvaDfOIWPgs?=
- =?us-ascii?Q?NzubD+svTG0vKWEcrn/Pn/2muc2F8LaMJa+RCcThVPaV04Hbyo93OXM82jsr?=
- =?us-ascii?Q?ZzRAlIkanvUIGSH0mQnOEQk5ODIttSEVvaVNCiwnAKX1emSoelhTGCfX+tJO?=
- =?us-ascii?Q?s3SfqzMxLVYTPvbhozXo7EmHFHym7IuR8ZA3AhE8Bn91VdR1ChKuPbFVrv8F?=
- =?us-ascii?Q?XDATprKXFflRbFNbmTjJ1xXeKBA2pnY4wygo1S1HUMbJKQDueJmf54o9j7+V?=
- =?us-ascii?Q?WndC7eWaxRCFcyMf6dzDihjVA7q3C/CZ/tw1+Pp5QOLpqX8abo+V/YBvCix5?=
- =?us-ascii?Q?JbEoG0OtAmX51fJJ0S0DFVRLRqeErsuARBMwMFEAmsaFiThwQem2uy79ZMMy?=
- =?us-ascii?Q?Y4/LAabrcF20GJY39gT2m/UenOvSc6z6H6pqIl4KJxH6pUl59X+INZyUGQA0?=
- =?us-ascii?Q?Y44MHHmijkTW8ejx8MiYJhMy2FyV76NdNHMTZTyleDflEz0SFGtNMltQ2Wsx?=
- =?us-ascii?Q?4ldcktsno3qLIGPGZLjAWDrOjDIRUt6np94QcDohKouQONaO1ghfPYmzUZCH?=
- =?us-ascii?Q?7EUZDu1GQT5BftXh5PujEgwHXaT4ZIgGoQ+2SQMTpZUfMcK1M85w5DKYcq0l?=
- =?us-ascii?Q?9lU9F3z4cEdY0S2Au/J5+9Ds0vcJ3maDRsyqQWhIlNvY0hD0/AezGeeg4xbU?=
- =?us-ascii?Q?F3Ny7wZdiJgDqAwdRe/bMlkUvVJOqKRtb6l1pn6pE0S++hHHROXTrn5CU/G2?=
- =?us-ascii?Q?iDSWvHyqvtz9qMrQLxA1jjerr1Gi4uOuN5Sz7ZdWPxhcxn30yKHRWP6PYSPz?=
- =?us-ascii?Q?GFm3aqxPG0P8kP+PtMlO4KOEm2whxHEgBUfbuQovFnWbIcCmH/zzuPzhvZ0B?=
- =?us-ascii?Q?jIFqUak0r0BBzfDPAQSIWZL3O8rY5pUbj+MA3rbDuBZErzIOs9bySm9lEMzB?=
- =?us-ascii?Q?hdhgVU0dKQ9TtYJenvfXynxJyMnRYJTGKvPjNNTv9nm7vi+5mkRq4bnluaPM?=
- =?us-ascii?Q?JG9GL1Y8iCTn09M4Nqf4IT6FXep8j4vzAfVbq8r0HDX/56shq1bnabEXsZka?=
- =?us-ascii?Q?bGcrS+CEhqMmtdphLUE=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="btzKArSC";
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="p3mPJg6i"
+Received: by mail.netfilter.org (Postfix, from userid 109)
+	id 7AAE26027C; Thu, 17 Jul 2025 11:58:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1752746294;
+	bh=88JEEQLgSPqzOHz03uNrXUThhGHY1rzhxSXA0VAghhI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=btzKArSCmH/03vM3RFIJTIL1fIrwPcu/kO6nSFrOw9FWPJKapK/lTwg8kUoGAfRi/
+	 b5rLML+yoJIhC/10uS1/Ib2x4MClmeG/JAPvcC2DZztfXQskqPkWTGWIAJUf3vMI8G
+	 Zi/EnPvAUnd/bC6qTQtjeb8KtNzPXscc7ywLHTJRbjj24d0/xrHZusi9JkgQ67XmXf
+	 1enjlAmnaIkPXFCIhkSW7fY4JOPbZVW0qdwMcFbNDBrp+Lcpvo/szSEdzT4vkIHLYF
+	 Vded7fMljN/J4/RqeSOnVoUVBwMw3Klf/MJCD5tdplEPcYFwdP5U28qQSlWvj2f6Bd
+	 CV6CMjG52mBWA==
+X-Spam-Level: 
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 460CA6027C;
+	Thu, 17 Jul 2025 11:58:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1752746292;
+	bh=88JEEQLgSPqzOHz03uNrXUThhGHY1rzhxSXA0VAghhI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=p3mPJg6iJRMZVnPshj1bXbqusc3eNNkkai3kk0fVkt4JPOy/Htps8Ed5yxUeYmyQ9
+	 tBDBHAI5NL+J4+OQzdQSfRnXaTK1QJUYCznN854raQ+xC4FtYVoQtVIcBkm8v/tFPv
+	 Fz2mdmAWb1BYUk4fWEqHgjKM2uGF3wdZ+GWmI67UQscpCjjhCV4iQgvMq6oDS4EQKM
+	 fZi8cPJ/fNSEKAaNpYqtqVZwX1fwS2M1BCjE53h5GvNHfRiuRJg9RQkz1NtwT5Mg/n
+	 9Tu26keoR+ov3ReS6hDeLmlTRA7twbT1OipO4EJBrvqI4Br0yADjOHO6/Kgfyy7SDu
+	 yYRakWk+GVu7w==
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	fw@strlen.de,
+	horms@kernel.org
+Subject: [PATCH net,v2 0/7] Netfilter fixes for net
+Date: Thu, 17 Jul 2025 11:58:08 +0200
+Message-Id: <20250717095808.41725-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12f56428-e722-40c3-1a90-08ddc5180e8d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Jul 2025 09:55:27.0443
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WzWCWBmTZmBrDLsUWAvYPXRiiWLLY9GuYnKAuafc9Bq1XOLhq4jhbgQ9+puqG+V9vOYyh8p43mueSF0aGC+JAg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10441
+Content-Transfer-Encoding: 8bit
 
-> On Thu, Jul 17, 2025 at 11:30:14AM +0300, Wei Fang wrote:
-> > > On Wed, Jul 16, 2025 at 03:30:58PM +0800, Wei Fang wrote:
-> > > > +properties:
-> > > > +  compatible:
-> > > > +    enum:
-> > > > +      - pci1131,ee02
-> > > > +
-> > > > +  reg:
-> > > > +    maxItems: 1
-> > > > +
-> > > > +  clocks:
-> > > > +    maxItems: 1
-> > > > +    description:
-> > > > +      The reference clock of NETC Timer, if not present, indicates=
- that
-> > > > +      the system clock of NETC IP is selected as the reference clo=
-ck.
-> > >
-> > > If not present...
-> > >
-> > > > +
-> > > > +  clock-names:
-> > >
-> > > ... this also is not present...
-> > >
-> > > > +    description:
-> > > > +      NETC Timer has three reference clock sources, set
-> TMR_CTRL[CK_SEL]
-> > > > +      by parsing clock name to select one of them as the reference
-> clock.
-> > > > +      The "system" means that the system clock of NETC IP is used =
-as
-> the
-> > > > +      reference clock.
-> > > > +      The "ccm_timer" means another clock from CCM as the referenc=
-e
-> clock.
-> > > > +      The "ext_1588" means the reference clock comes from external
-> IO pins.
-> > > > +    enum:
-> > > > +      - system
-> > >
-> > > So what does system mean?
-> > >
-> >
-> > "system" is the system clock of the NETC subsystem, we can explicitly s=
-pecify
-> > this clock as the PTP reference clock of the Timer in the DT node. Or d=
-o not
-> > add clock properties to the DT node, it implicitly indicates that the r=
-eference
-> > clock of the Timer is the "system" clock.
->=20
-> It's unusual to name the clock after the source rather than after the
-> destination. When "clock-names" takes any of the above 3 values, it's
-> still the same single IP clock, just taken from 3 different sources.
->=20
-> I see you need to update TMR_CTRL[CK_SEL] depending on where the IP
-> clock is sourced from. You use the "clock-names" for that. Whereas the
-> very similar ptp-qoriq uses a separate "fsl,cksel" property. Was that
-> not an acceptable solution, do we need a new way of achieving the same
-> thing?
->=20
+v2: Include conntrack fix in cover letter.
 
-This an option, as I also mentioned in v1, either we have to parse the
-clock-names or we need to add a new property.
+-o-
 
-> Also, why are "clocks" and "clock-names" not required properties? The
-> Linux implementation fails probing if they are absent.
+Hi,
 
-The current ptp_netc driver will not fail if they are absent, and it will a=
-lways
-use the NETC system clock by default, because the system clock of NETC is
-always available to the Timer.
+The following batch contains Netfilter fixes for net:
 
+1) Three patches to enhance conntrack selftests for resize and clash
+   resolution, from Florian Westphal.
+
+2) Expand nft_concat_range.sh selftest to improve coverage from error
+   path, from Florian Westphal.
+
+3) Hide clash bit to userspace from netlink dumps until there is a
+   good reason to expose, from Florian Westphal.
+
+4) Revert notification for device registration/unregistration for
+   nftables basechains and flowtables, we decided to go for a better
+   way to handle this through the nfnetlink_hook infrastructure which
+   will come via nf-next, patch from Phil Sutter.
+
+5) Fix crash in conntrack due to race related to SLAB_TYPESAFE_BY_RCU
+   that results in removing a recycled object that is not yet in the
+   hashes. Move IPS_CONFIRM setting after the object is in the hashes.
+   From Florian Westphal.
+
+Please, pull these changes from:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-25-07-17
+
+Thanks.
+
+----------------------------------------------------------------
+
+The following changes since commit 7727ec1523d7973defa1dff8f9c0aad288d04008:
+
+  net: emaclite: Fix missing pointer increment in aligned_read() (2025-07-11 16:37:06 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git tags/nf-25-07-17
+
+for you to fetch changes up to 2d72afb340657f03f7261e9243b44457a9228ac7:
+
+  netfilter: nf_conntrack: fix crash due to removal of uninitialised entry (2025-07-17 11:23:33 +0200)
+
+----------------------------------------------------------------
+netfilter pull request 25-07-17
+
+----------------------------------------------------------------
+Florian Westphal (6):
+      selftests: netfilter: conntrack_resize.sh: extend resize test
+      selftests: netfilter: add conntrack clash resolution test case
+      selftests: netfilter: conntrack_resize.sh: also use udpclash tool
+      selftests: netfilter: nft_concat_range.sh: send packets to empty set
+      netfilter: nf_tables: hide clash bit from userspace
+      netfilter: nf_conntrack: fix crash due to removal of uninitialised entry
+
+Phil Sutter (1):
+      Revert "netfilter: nf_tables: Add notifications for hook changes"
+
+ include/net/netfilter/nf_conntrack.h               |  15 +-
+ include/net/netfilter/nf_tables.h                  |   5 -
+ include/uapi/linux/netfilter/nf_tables.h           |  10 --
+ include/uapi/linux/netfilter/nfnetlink.h           |   2 -
+ net/netfilter/nf_conntrack_core.c                  |  26 ++-
+ net/netfilter/nf_tables_api.c                      |  59 -------
+ net/netfilter/nf_tables_trace.c                    |   3 +
+ net/netfilter/nfnetlink.c                          |   1 -
+ net/netfilter/nft_chain_filter.c                   |   2 -
+ tools/testing/selftests/net/netfilter/.gitignore   |   1 +
+ tools/testing/selftests/net/netfilter/Makefile     |   3 +
+ .../selftests/net/netfilter/conntrack_clash.sh     | 175 +++++++++++++++++++++
+ .../selftests/net/netfilter/conntrack_resize.sh    |  97 +++++++++++-
+ .../selftests/net/netfilter/nft_concat_range.sh    |   3 +
+ tools/testing/selftests/net/netfilter/udpclash.c   | 158 +++++++++++++++++++
+ 15 files changed, 468 insertions(+), 92 deletions(-)
+ create mode 100755 tools/testing/selftests/net/netfilter/conntrack_clash.sh
+ create mode 100644 tools/testing/selftests/net/netfilter/udpclash.c
