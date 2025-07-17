@@ -1,187 +1,131 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D27A2BDC00
-	for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 12:06:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB3429DB8E
+	for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 12:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752754016; cv=none; b=NgZUMT2VyQRObO/SoOlq5s6Ukg0tGNLnkMX8Xj/GpUJD9FoJB7vgFThF4/0gb3oyIOw0/jMoCEb+4/FSEmjbVos5vJkJmsEmxKyDCKQDa+EO1Xg9aFTImqOCWcs0Rr7v9DkMNVdn+DDn8iZ+OU3BI9f3qNMKGJa/EuWedypPLU4=
+	t=1752754288; cv=none; b=sVxTv2g+egQhAQ6m1NngYmovRWmVjFT1n0UCaWDrYwFc2Gb2kynsPBVCHq7/bL5fAmPKIsB9+dExNdyoep9wiq9emSuxA//mdHJH7sKrhpPYpYr/qNAVZBcZqwIQBLL2Zk8WcU65H6H1j67xsJbPBhYw4Afm7elk9Agy5RHnwEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752754016; c=relaxed/simple;
-	bh=gGb2jgBsCojcWza9wiagDxthFwZh1W6ZG8iNoWvj7Jk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gsjb9sRMRqarZLOAjsZvbrID5ejX0xFIDnUNscfPOZia/eKngZiLNtrYzZTl7KAiSekkld6a27yyVz1EZ5wJlbfzRQAtsAxUkxOmiwQLf4PWsCoSRnbBu9Y7+b4EsHIqriRw9jJnKDSr4yZIXXnn3M6ar6mxS2Q5hDulf5lGXcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=pIb6NMyb; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=pIb6NMyb; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1752754288; c=relaxed/simple;
+	bh=P8vk5Hgw1tgxUgUlGpEEfcEnINzDHJTtnJgc36ojQPg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Jw08QcmpUHQXkIBSloakRmwhmfDyJjDMTicwNPaDhSD6/Uv+kIMY1l4YA/dH8MUYgCnSX3W1gYwztqbKBGQIH5vE7HSq7DuJCIUutBmvqkOcpVooX+mpd8dQZKxZwDXMhvWv1XKJiiZcIbpcZkldWrlSlINpPL6kIT+lAO3NulA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=YqFTEXi9; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="pIb6NMyb";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="pIb6NMyb"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 96FA71F7E3;
-	Thu, 17 Jul 2025 12:06:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1752754012; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=YDUIHgMD435OAQEX8tU8R8HZ98QfNa9nf3ITFiXrue8=;
-	b=pIb6NMybRN1pK7UDvXC/CG2x3KMLQQ40Ixax04HRuiDeJ8jk5ioCCT0XvHlmewu2DR650x
-	y+EshR+slNjEpOobVsfiQdcNnu9wK5TCaZBLKfJSzf3RAvlZY3Ig1mH2jYLwWRUSwbIipd
-	2eHfB/Wn7Ml0BAQPBhTF4rhcA9+pAoU=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1752754012; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=YDUIHgMD435OAQEX8tU8R8HZ98QfNa9nf3ITFiXrue8=;
-	b=pIb6NMybRN1pK7UDvXC/CG2x3KMLQQ40Ixax04HRuiDeJ8jk5ioCCT0XvHlmewu2DR650x
-	y+EshR+slNjEpOobVsfiQdcNnu9wK5TCaZBLKfJSzf3RAvlZY3Ig1mH2jYLwWRUSwbIipd
-	2eHfB/Wn7Ml0BAQPBhTF4rhcA9+pAoU=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5E82713A6C;
-	Thu, 17 Jul 2025 12:06:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id b6buFVzneGjtBwAAD6G6ig
-	(envelope-from <oneukum@suse.com>); Thu, 17 Jul 2025 12:06:52 +0000
-From: Oliver Neukum <oneukum@suse.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH net-next] net: usb: cdc-ncm: check for filtering capability
-Date: Thu, 17 Jul 2025 14:06:17 +0200
-Message-ID: <20250717120649.2090929-1-oneukum@suse.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="YqFTEXi9"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ad572ba1347so127573366b.1
+        for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 05:11:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1752754285; x=1753359085; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+OKtnDxQN1rQvgUExQEfgNocGu+aFrd+PlVCR98yHgE=;
+        b=YqFTEXi9NAioggDzwMmOxhXF0esWRaJQp+X1D+N2LPEXYvu9GqKzZk7bUEvUCTtOod
+         ynH8hRlTzFZYjizI6fW3wwHrAKfG97UpbSiPMF0PeqNbh/pt755++LAEs7UnaaQg19eM
+         NoJpZzfLWmogNw00UlOUSxf2U+Je1zkF45GBnQo1axme5ZD9e8y7QdErJRhQf9uv0Pmj
+         KWLR8BDtueSEv5lGDy0pfnV7ftkg2Ej9jIFifIUKo+dDjXTEs1JjAmqTp2F93B5xDOpQ
+         eOLr1wDZn8s1SwnYiYviJsEd+697LnDBCa1Yb1uXncQxGyu3bEp50AGlkRe48ztysmZ3
+         3T9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752754285; x=1753359085;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+OKtnDxQN1rQvgUExQEfgNocGu+aFrd+PlVCR98yHgE=;
+        b=rNOeR+5woJtmKqP5D9f/aivIGf9SN9b1ynkMADpqOYEUhI4E0lbqOjiBCCDOFMfnXL
+         f9S3lnnVEgdpT7EeKBU6FWCUoo8xbfhT+rc/rd9v75lKE1SXHAyaVtNQAPI1CT1d4aMD
+         kUbB9kzl2ojn3/te0jBGgrrB2TcKoUwvVGiXikdqLxEgw3nMYBIuECARU2So4E8wX+Q4
+         bU6KZjw3OmvUzT/E96w4CLOmsbUNiGzcLqI4eRwA/S0cQBOvgVDPfEJ29/TJUyDsnHbC
+         A5LCmAYcAgA4JYbj/OR0HlcP3tj7Qa3ey8v2Qfupkkojz+nhmnClM7urLfo+BlxI6LS1
+         accQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVzoBK9mVGAkIYSD0qHbEOik0Nnh2PWPe5LjQTTnD8lkmxrJJzEwoAdCxChrf5lt9PHrPZO5QQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVg6FLNBiheaJENERYZ2Am1SJD4ibiXttWtmPWmY5nS2jCL9Wy
+	ghuz0f1PwkEAdzKkxn7wqdvMlE3IOoHWA7sQZvWdZfJTrBBbWQy+n3VospjwAmHXFg8=
+X-Gm-Gg: ASbGncvXRG5s/eHAeezYQD8ZYaUMYVExNLrDs5VHVEZriVNLnDjA2vDLhkLRS4NP8Gr
+	RHDC5arYpBZdep/xWa5t1NsHKGsmu4+FtMTNwVHMURJunTUcecA1pbGS4A3KqiwWuztJpvtSqB/
+	Eym7Xlfzn6SuSKPGO4FdcIbJ3YAYwXuWAa++VvKazv65g1tW+rvTIbPsikrVlAGsY8yanWwkDPv
+	13S92GGsMtykEkpnzz914xFh4gD+QHYW84zf0Pqyy3oR/6BH+6VvGn6mqW0HYXe3Q+hiOBeddtO
+	AjgW6zwJNONYobJeXguSBlIZsV+9CEkDVPMVeFwN1FUQzdw48+jst+4rOkov8H1dK3Mz+aoFDWN
+	xe1vryxlxTzoTGLs=
+X-Google-Smtp-Source: AGHT+IEQBx5AReVAmevU1wjvhgFcUY3uymJWzKp1I9F2AG1oQKieVEeU4QVXRXuh/1fjL6QehswnJA==
+X-Received: by 2002:a17:907:b1a:b0:ae3:cc60:8cf0 with SMTP id a640c23a62f3a-ae9ce0b938cmr429270066b.34.1752754284873;
+        Thu, 17 Jul 2025 05:11:24 -0700 (PDT)
+Received: from cloudflare.com ([2a09:bac5:5063:2432::39b:e5])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e7ee48f6sm1372348366b.55.2025.07.17.05.11.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Jul 2025 05:11:22 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Jesper Dangaard Brouer <hawk@kernel.org>
+Cc: bpf@vger.kernel.org,  netdev@vger.kernel.org,  Jakub Kicinski
+ <kuba@kernel.org>,  lorenzo@kernel.org,  Alexei Starovoitov
+ <ast@kernel.org>,  Daniel Borkmann <borkmann@iogearbox.net>,  Eric Dumazet
+ <eric.dumazet@gmail.com>,  "David S. Miller" <davem@davemloft.net>,  Paolo
+ Abeni <pabeni@redhat.com>,  sdf@fomichev.me,  kernel-team@cloudflare.com,
+  arthur@arthurfabre.com
+Subject: Re: [PATCH bpf-next V2 5/7] net: veth: Read xdp metadata from
+ rx_meta struct if available
+In-Reply-To: <175146832628.1421237.12409230319726025813.stgit@firesoul>
+	(Jesper Dangaard Brouer's message of "Wed, 02 Jul 2025 16:58:46
+	+0200")
+References: <175146824674.1421237.18351246421763677468.stgit@firesoul>
+	<175146832628.1421237.12409230319726025813.stgit@firesoul>
+Date: Thu, 17 Jul 2025 14:11:21 +0200
+Message-ID: <87a553dnkm.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TAGGED_RCPT(0.00)[netdev];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:email,imap1.dmz-prg2.suse.org:helo];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spam-Score: -1.30
+Content-Type: text/plain
 
-If the decice does not support filtering, filtering
-must not be used and all packets delivered for the
-upper layers to sort.
+On Wed, Jul 02, 2025 at 04:58 PM +02, Jesper Dangaard Brouer wrote:
+> From: Lorenzo Bianconi <lorenzo@kernel.org>
+>
+> Report xdp_rx_meta info if available in xdp_buff struct in
+> xdp_metadata_ops callbacks for veth driver
+>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  drivers/net/veth.c |   12 +++++++++++
+>  include/net/xdp.h  |   57 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 69 insertions(+)
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
----
- drivers/net/usb/cdc_ncm.c   | 20 ++++++++++++++++----
- include/linux/usb/cdc_ncm.h |  1 +
- 2 files changed, 17 insertions(+), 4 deletions(-)
+[...]
 
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 34e82f1e37d9..ea0e5e276cd6 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -892,6 +892,10 @@ int cdc_ncm_bind_common(struct usbnet *dev, struct usb_interface *intf, u8 data_
- 		}
- 	}
- 
-+	if (ctx->func_desc)
-+		ctx->filtering_supported = !!(ctx->func_desc->bmNetworkCapabilities
-+			& USB_CDC_NCM_NCAP_ETH_FILTER);
-+
- 	iface_no = ctx->data->cur_altsetting->desc.bInterfaceNumber;
- 
- 	/* Device-specific flags */
-@@ -1898,6 +1902,14 @@ static void cdc_ncm_status(struct usbnet *dev, struct urb *urb)
- 	}
- }
- 
-+static void cdc_ncm_update_filter(struct usbnet *dev)
-+{
-+	struct cdc_ncm_ctx *ctx = (struct cdc_ncm_ctx *)dev->data[0];
-+
-+	if (ctx->filtering_supported)
-+		usbnet_cdc_update_filter(dev);
-+}
-+
- static const struct driver_info cdc_ncm_info = {
- 	.description = "CDC NCM (NO ZLP)",
- 	.flags = FLAG_POINTTOPOINT | FLAG_NO_SETINT | FLAG_MULTI_PACKET
-@@ -1908,7 +1920,7 @@ static const struct driver_info cdc_ncm_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- /* Same as cdc_ncm_info, but with FLAG_SEND_ZLP  */
-@@ -1922,7 +1934,7 @@ static const struct driver_info cdc_ncm_zlp_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- /* Same as cdc_ncm_info, but with FLAG_SEND_ZLP */
-@@ -1964,7 +1976,7 @@ static const struct driver_info wwan_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- /* Same as wwan_info, but with FLAG_NOARP  */
-@@ -1978,7 +1990,7 @@ static const struct driver_info wwan_noarp_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- static const struct usb_device_id cdc_devs[] = {
-diff --git a/include/linux/usb/cdc_ncm.h b/include/linux/usb/cdc_ncm.h
-index 2d207cb4837d..4ac082a63173 100644
---- a/include/linux/usb/cdc_ncm.h
-+++ b/include/linux/usb/cdc_ncm.h
-@@ -119,6 +119,7 @@ struct cdc_ncm_ctx {
- 	u32 timer_interval;
- 	u32 max_ndp_size;
- 	u8 is_ndp16;
-+	u8 filtering_supported;
- 	union {
- 		struct usb_cdc_ncm_ndp16 *delayed_ndp16;
- 		struct usb_cdc_ncm_ndp32 *delayed_ndp32;
--- 
-2.50.1
+> diff --git a/include/net/xdp.h b/include/net/xdp.h
+> index 3d1a9711fe82..2b495feedfb0 100644
+> --- a/include/net/xdp.h
+> +++ b/include/net/xdp.h
+> @@ -158,6 +158,23 @@ static __always_inline bool xdp_buff_has_valid_meta_area(struct xdp_buff *xdp)
+>  	return !!(xdp->flags & XDP_FLAGS_META_AREA);
+>  }
+>  
+> +static __always_inline bool
+> +xdp_buff_has_rx_meta_hash(const struct xdp_buff *xdp)
+> +{
+> +	return !!(xdp->flags & XDP_FLAGS_META_RX_HASH);
+> +}
+> +
+> +static __always_inline bool
+> +xdp_buff_has_rx_meta_vlan(const struct xdp_buff *xdp)
+> +{
+> +	return !!(xdp->flags & XDP_FLAGS_META_RX_VLAN);
+> +}
+> +
+> +static __always_inline bool xdp_buff_has_rx_meta_ts(const struct xdp_buff *xdp)
+> +{
+> +	return !!(xdp->flags & XDP_FLAGS_META_RX_TS);
+> +}
+> +
+>  static __always_inline void
+>  xdp_init_buff(struct xdp_buff *xdp, u32 frame_sz, struct xdp_rxq_info *rxq)
+>  {
 
+Nit: Why not have one set of generic helpers (macros) for checking if
+the flags are set? If you want strict type checking, you can
+additionally use _Generic type dispatch.
+
+[...]
