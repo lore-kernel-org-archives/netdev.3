@@ -1,300 +1,267 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F40F2FE320
-	for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 16:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752771469; cv=none; b=UesYllJymBDjelHNAiRFfoLoLYwn3Q5reFaHO+Wz7nhvlbfUIOmurLExM1Kn2sTsxtBlAPSSFc6/NzF1v3WzmMVMkogwuEtn43sDnIVAHt0faRKe3vEGMFdngd9zbb86HZJitTKgwKJUYbJwIbPgfm7Gai9NUcJ9qOmHFsAXR7M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752771469; c=relaxed/simple;
-	bh=VWXfSpgm0nFcoshv5HB8fhusJAyHwqzvzzhuTfNYcJc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=c+gwbXA+7kW6PlfQY20RxODenZx+NfNwMaUQcymVMlJdeDLIBJW0wP9dlMX6rQ/44eyoj6x/sIsRliducRLfBFKFI+c/7WS4fifQWAzPEAXKwZ41sn1SIXCnoNDW+qrShMd6xHAV2razAOO69t7lgqJNDOYKSYEskXp+vfeYW9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O3XcBYSH; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6165EA93D;
+	Thu, 17 Jul 2025 17:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752771838; cv=fail; b=qDYngYkdxZbTBm988+pM4zevQF45ltS8EAaKubuTEBhsBRDLo9+r75liU0rMm6rEpFoqRQZyt3VbqZ+fGsPmbX7LXUSA31qvIKOdxeet5SsEiIJ4MVxo98d4kl32BXcjfzaHa/aydwwYPacysUCBPmYxVCjsLY+8ydqjQQC6PWM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752771838; c=relaxed/simple;
+	bh=tdYwAnQu5Xr916YINYMfsr+OHPJapFdQVNrrg9kqgiQ=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=n7v4EKpREowdy1Jx4KMh3+HWDyCmLWLhQSf3fU9TMtVq79//Rcor80TzqanpGT4q/08w3/T6Y8yZT558OarRDTzBLfD4odvFZMsbq9tWE/1VCMZml7mrEGKxWapcbNPaty9a2nXNA2YZSpb8nTLETD0E61xtuvkQoHhgxDJnyEw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DC3k79id; arc=fail smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O3XcBYSH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DC3k79id"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752771466; x=1784307466;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=VWXfSpgm0nFcoshv5HB8fhusJAyHwqzvzzhuTfNYcJc=;
-  b=O3XcBYSHIpf7xWLp8KXBFIArEx4BthddoJ+fLhAkBfrRIg5l5LJ5BLVY
-   GOlqXgy1WmdnlwTAJAF2VYfIubPHAx9dKYj7tbHFqMibNBIbFijFw0DSu
-   rU3HHJfZx8vgrqLHQNH2TE6HhoWOdKs8lJIRwB1ZUPw/YVT2XrEeXh2LU
-   dKg/10IKsr8GTmg6xlPNQnZ5wKv4X4VRskUliBiY9ULpAHB9HBJ/gPcdj
-   oVsPqDvDAowed4ULc6DZLri4H5eVA3uZisThXZHq2H7W3K4cWVI+gwlRy
-   OCJ8yAPiC/QHcA7lF5gTeYkvkPa3HZQwuLFwcLWKpgdjSWRgD4nVIdSdh
-   Q==;
-X-CSE-ConnectionGUID: NH1esfUAT2SssyOCtW23yA==
-X-CSE-MsgGUID: Vkmay0P8TOyP3FWJyuUPJw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="55211389"
+  t=1752771836; x=1784307836;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:mime-version;
+  bh=tdYwAnQu5Xr916YINYMfsr+OHPJapFdQVNrrg9kqgiQ=;
+  b=DC3k79idNgD/S7pVl/mQtzniu/m7M8zZbXeDmRZ0hGmdw3nrto24EGKr
+   K1bYhFnay0PeY8IpBMQLF4y6nRg6KzmdLAW7OS/Ator5m9FyQxduiFF0F
+   Is7QW0/kGAdROS0fqUUFAQQtRjQMOEi1hD2wPHSjRIBAJbJPS5CVR0gha
+   xnFGb0N01TlK/Hy29lWboSp7/57Jo5xAjI7/AnefujOKT+Vvu9NFhdTLZ
+   01tLZ4SUMyX2MEPyJnYB61IlMgrDrlmhI8FMk24is4iFAKhzq/hYUc93B
+   uvhayslW0CFfPbqribhCJDumbvtWpBPCyxb6ljYk/QA4LapDuglxGQpoa
+   w==;
+X-CSE-ConnectionGUID: Nk09zjcWTWSKS6We61/8Jg==
+X-CSE-MsgGUID: zXdzUJlPSbuJncaRt9+F5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="58726870"
 X-IronPort-AV: E=Sophos;i="6.16,319,1744095600"; 
-   d="scan'208";a="55211389"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 09:57:43 -0700
-X-CSE-ConnectionGUID: yC0u1lUaQ32R9+62+xDLKw==
-X-CSE-MsgGUID: h9lqSHrfTKKZ3p6DMIqKgA==
+   d="asc'?scan'208";a="58726870"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 10:03:54 -0700
+X-CSE-ConnectionGUID: wo7XIiGuTAOpreDpX+I+7A==
+X-CSE-MsgGUID: /5E7/cYhS5OIzfx4QH5Czg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,319,1744095600"; 
-   d="scan'208";a="158199872"
-Received: from jekeller-desk.jf.intel.com ([10.166.241.15])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 09:57:43 -0700
+   d="asc'?scan'208";a="163486939"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 10:03:55 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Thu, 17 Jul 2025 10:03:53 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Thu, 17 Jul 2025 10:03:53 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.84)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 17 Jul 2025 10:03:53 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZAbxbR0kTpqCr/exp0FuWsZ7tgrFfUQDHii3nvTLIfcUUanv1zJQopGTnfS/QWToWO5Sbhah0cBNeJNAYoE5SfHGqWWcqzzoHC7dMnLrQJk7cWNyB59C9wSlwIb3u1rzazV6EtLLyAyBh1++x+VizAhiOWf8ISFgXVmJpQhAS9Z3GxXF+ArTO+OY1FzHiRpZct7Qd4qjJXW3j8zYiYQPFBb/tzbZWGztzIrEVUmIhOBssFnLksFO+u6Lcf2RvD2GKmLG4gULGp4uUU6G5wAuMT3nb7rYM2SIjK0tqvnY10/JAy3kg3DLA7VAOKzEY+nlZcGBEp8c2kl0KauC8xmnsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tdYwAnQu5Xr916YINYMfsr+OHPJapFdQVNrrg9kqgiQ=;
+ b=Z+5RnB7irFRcB0vUuaytZdls7wWzTi4pSI4EiM1xOWYuLxJJ0d0IimYhamL7Vh2OR0ZDFUrPiJllVUmP82KMxIfg0kON6RGdvjUQ6Lm0RgN45zYE4ygegbzq+BqpMX1JHMONZjqAbHs08M7wOeKsducF94PEWyKrNxuE+huaVinFVOeocXrBPc/SZEurT8x1VgOTBI+TzA1k7AaU+QLsmPUQi8M3it5IaWndjJm1VEVZ7FUrRxW6X4g5neNAlrRKu4L+hLyVBXxbEl1oHuc32f+U8KgQvBXFEJDvKH/CNXezjfDt6z6Abhu8Px4U/62yaH4KYzSgWWsi9cYjGMBi1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB5095.namprd11.prod.outlook.com (2603:10b6:510:3b::14)
+ by LV3PR11MB8531.namprd11.prod.outlook.com (2603:10b6:408:1b6::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Thu, 17 Jul
+ 2025 17:03:52 +0000
+Received: from PH0PR11MB5095.namprd11.prod.outlook.com
+ ([fe80::215b:e85e:1973:8189]) by PH0PR11MB5095.namprd11.prod.outlook.com
+ ([fe80::215b:e85e:1973:8189%5]) with mapi id 15.20.8922.037; Thu, 17 Jul 2025
+ 17:03:52 +0000
+Message-ID: <489c52d1-cad2-473d-86ab-cdae51b043c7@intel.com>
+Date: Thu, 17 Jul 2025 10:03:49 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: We found a bug in i40e_debugfs.c for the latest linux
+To: Wang Haoran <haoranwangsec@gmail.com>, Simon Horman <horms@kernel.org>
+CC: <anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <CANZ3JQRRiOdtfQJoP9QM=6LS1Jto8PGBGw6y7-TL=BcnzHQn1Q@mail.gmail.com>
+ <20250714181032.GS721198@horms.kernel.org>
+ <db65ea9a-7e23-48b9-a05a-cdd98c084598@intel.com>
+ <20250716083731.GI721198@horms.kernel.org>
+ <CANZ3JQRwO=4u24Y17cP3byP8mS9VOP5g=sy_Ch_g0xKSDJLhKA@mail.gmail.com>
+Content-Language: en-US
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Thu, 17 Jul 2025 09:57:09 -0700
-Subject: [PATCH iwl-net 2/2] ice: don't leave device non-functional if Tx
- scheduler config fails
+Autocrypt: addr=jacob.e.keller@intel.com; keydata=
+ xjMEaFx9ShYJKwYBBAHaRw8BAQdAE+TQsi9s60VNWijGeBIKU6hsXLwMt/JY9ni1wnsVd7nN
+ J0phY29iIEtlbGxlciA8amFjb2IuZS5rZWxsZXJAaW50ZWwuY29tPsKTBBMWCgA7FiEEIEBU
+ qdczkFYq7EMeapZdPm8PKOgFAmhcfUoCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AA
+ CgkQapZdPm8PKOiZAAEA4UV0uM2PhFAw+tlK81gP+fgRqBVYlhmMyroXadv0lH4BAIf4jLxI
+ UPEL4+zzp4ekaw8IyFz+mRMUBaS2l+cpoBUBzjgEaFx9ShIKKwYBBAGXVQEFAQEHQF386lYe
+ MPZBiQHGXwjbBWS5OMBems5rgajcBMKc4W4aAwEIB8J4BBgWCgAgFiEEIEBUqdczkFYq7EMe
+ apZdPm8PKOgFAmhcfUoCGwwACgkQapZdPm8PKOjbUQD+MsPBANqBUiNt+7w0dC73R6UcQzbg
+ cFx4Yvms6cJjeD4BAKf193xbq7W3T7r9BdfTw6HRFYDiHXgkyoc/2Q4/T+8H
+In-Reply-To: <CANZ3JQRwO=4u24Y17cP3byP8mS9VOP5g=sy_Ch_g0xKSDJLhKA@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature";
+	boundary="------------vfeSAzf3ts5NFeXSaJVrImb5"
+X-ClientProxiedBy: MW4P221CA0022.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:303:8b::27) To PH0PR11MB5095.namprd11.prod.outlook.com
+ (2603:10b6:510:3b::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250717-jk-ddp-safe-mode-issue-v1-2-e113b2baed79@intel.com>
-References: <20250717-jk-ddp-safe-mode-issue-v1-0-e113b2baed79@intel.com>
-In-Reply-To: <20250717-jk-ddp-safe-mode-issue-v1-0-e113b2baed79@intel.com>
-To: Anthony Nguyen <anthony.l.nguyen@intel.com>, 
- Intel Wired LAN <intel-wired-lan@lists.osuosl.org>, 
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Cc: Jacob Keller <jacob.e.keller@intel.com>, vgrinber@redhat.com, 
- netdev@vger.kernel.org
-X-Mailer: b4 0.15-dev-d4ca8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10067;
- i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=VWXfSpgm0nFcoshv5HB8fhusJAyHwqzvzzhuTfNYcJc=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhoxK7bb7T6Ov5NTGaGfcOuYTdU6x0p75YU5ySMWE57tW8
- dZ0tMR3lLIwiHExyIopsig4hKy8bjwhTOuNsxzMHFYmkCEMXJwCMJGGn4wM5+eZ5jtz202LyOK5
- yTSh3VHD5O7M7S+z3Xmmfetu6FVbzvBP0fxNiY26rH04S75K4Ebf/ntuU/iF0xkOcwX6pb32Oc8
- GAA==
-X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
- fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5095:EE_|LV3PR11MB8531:EE_
+X-MS-Office365-Filtering-Correlation-Id: 224ea281-1e38-4911-c928-08ddc553e782
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?aHdxQ1Y3elBwWjI1dnpLNTRKM29RaFBFNmwwUkhCRWVpb1AzWmVrZWxOeEEx?=
+ =?utf-8?B?VnVCNVZHVkpCdHhEdm1DMmlDM0F1c0JVSkhKN0hHZjhRclMrK3ZsTGpyWUFv?=
+ =?utf-8?B?azRya01DS1R3dzVDTGo1NTFmbTc3SmZBQjZCazZUV0RiZUFIYi80NnN0RFU0?=
+ =?utf-8?B?NFNiUkZ6UExWWURNejlyQ1pjb2p3ajBYenpmWG9XMnJJbmh5Kzhxc00zRXdJ?=
+ =?utf-8?B?M1E2cGVoTHhBT0dPdC8zNlpScTNKV3pMQ2lMQWlOQjh5eUM0eUR2SjRDTXFy?=
+ =?utf-8?B?T3QxMlhlZzhkZzRzVGFIL2FqTkRRYko3eDErMVhTK0dKdmxHeUV6YVRVcFhW?=
+ =?utf-8?B?UEJ5czNEelhtMlorTG1KcisrTkRVSjZQM2FEOHF2cVJzOVFEWjBraDRKZTdu?=
+ =?utf-8?B?d0NrbUE0bTNuTnZsZndidVBWNVFnZGNEemZ1K2tPOWc0VmtzUFlRQ0RRMS9V?=
+ =?utf-8?B?UDAxMDV3L0JpZ1RUTmxQZkc4T2t0S3dvTGpZNnpvZWhhdlIvdmRuQlF6aXZX?=
+ =?utf-8?B?Q0p0dEpBRlVVUjBkZE5GV1NLUVFsREc1aWw2OTlqY01TNDdXam04NHY3OWZo?=
+ =?utf-8?B?K1FRc3dEdUNSL1dLNTRTUC9sNjZNWXQvRHRrTHZYZ3A2UFpkMmJuQU1pSXZ3?=
+ =?utf-8?B?UURIU3dybzl6cEtFMjdZVWhLSmdKdFhVc1ZDWlk1UmJ2SXRyTE5Ibmc4M1py?=
+ =?utf-8?B?bWhNM3QxU1E3Y05SWSthZ0RWYlNDcmdvSWlkR2llUkxTVVh6NHpvZEtxTFBN?=
+ =?utf-8?B?SC9jY1JKSDVGaGl6d2tTNWtycUJiUVZTYnlFNDEra2ZGaUs2clZKbVpBblBE?=
+ =?utf-8?B?U2xLczFiaGg0NVdSVmZuQTZDY2VuSHh0VVpUdjBDUXIvTHhVSWlVN0lJY1FT?=
+ =?utf-8?B?Z3NLVE1SNEcyMzNCa3pCNWd4WGEyYWtTcE1FSFN5ZmFhdytjM2U3aDAvclEy?=
+ =?utf-8?B?ekUyV0tSNGwwV2NDVVl6Zk95bk80TllQTGZOdno5RzJqZndFdmpOaVFCak1P?=
+ =?utf-8?B?Ky9DT29mc3dHaEVXQURvL1lCdVpiYjMxUGo5ZW1majR2VW16T1ArM0RLMFBX?=
+ =?utf-8?B?WEpKWDFieE0rbWgrNkxFWDRuaS9DU1g5UWJPeVVNT0w4SUVQYURWZmZQTFAy?=
+ =?utf-8?B?cTB1U1p3dy9Jb1BydXVKYUpnUGMxR1V6Wk8vRDBzZVo5UTZFdFpPUHp6L2JY?=
+ =?utf-8?B?VU1xNTZSYnBkeUYrVlpFaFJUN2poTzRqdUVjc2ZxcGwrTTZIbzhneDUzS2tM?=
+ =?utf-8?B?OHVaazZCeUltazZkT2Q4YWxwTCtuNGpHNkxJSzdVMWhRRG1CSkVSMlNwTTAv?=
+ =?utf-8?B?MndETlpwcmk5UjVrV1I0MUsvaFpuS3lBTE1yTUd6QzE5UWZpbTNyOFJDd2RM?=
+ =?utf-8?B?cDNuZndKNFl2L0dJUmZCZldHOTFENTFzQ0NyVzFwOGpJa2N4YmprazV3MlBI?=
+ =?utf-8?B?Q0tIWloxQ2F1VFRFaUhCNzNMRUxxTGIrR2RTWWJLSmM5UWtzMlpqWUhWQ0JV?=
+ =?utf-8?B?MkNIL2FVNGErdFRRa3ZqamZpSlFvOXE5UWtPcDlIRW50VkZoOGxMOE91aklo?=
+ =?utf-8?B?TE1DcWtVRElrVVR5M3NHSGE2eEtFVzFBODJpa09UcXFUTnRZZzE0NGRmRlpl?=
+ =?utf-8?B?YjRQWStaVnN4NHRoczJNWUtJdEF6YUZoajIxc01iTDhPK2UxZVRhQi9qVVFN?=
+ =?utf-8?B?RXNpcFd6ZUZXS1dSZnpaMEtkNWJXSlB4UUJTdzhKMjBrQ3N2NEc4MjlsajF6?=
+ =?utf-8?B?OVE1QUNmQnoyVFNUVXVuZ2FwTWtaL3lkZlVvT1FQeDJoemxRRk9DWks3RHJn?=
+ =?utf-8?B?Sjk0ejR3SDdtNzUyMG0ybVFvSVI1K0ZoUkJaRlRnT2FraXc2VHlTaWdHcWNV?=
+ =?utf-8?B?WkdMTGRUWDJubXBxL01vMmp3LzE4SWxDZ2ZVRTg5aE9SQXc9PQ==?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5095.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UlNqT3ZKYXJxWXZtSUo2TDhCOHNDS2xqc3hSK3F6MUYvaW5vNVJnejJCN1lt?=
+ =?utf-8?B?QzhPL3BjdExBL3hMN2xUS1REaEdaL2lCb0VVblZZQndydHZEMi9BclJXOUZI?=
+ =?utf-8?B?a0VJSXY2T1l2VkNmcGRoQndsL1A4NmgwUUxhSC82bUxNVDZ1bEUyN3Y5TGF5?=
+ =?utf-8?B?Z3JWeUVuMG1XUEoyempCcHV2UmJQalhLOC9PcXhkSHY5QlhQdCt4dEFDaWox?=
+ =?utf-8?B?V25MQXZRbFBqRFNIRHBwd09NQ01PeGJHanlQdVhMUU9aMFkwTHVSVEhENkRB?=
+ =?utf-8?B?ZXR2VWFNZUQ3K2IzSG95UEhtNEVsZkcvb2hhbVFmYkZiRXJLNXBYKzcxYzVn?=
+ =?utf-8?B?eDdHTnpIQm8rM1BBMEdaN2tjUjJPaTZ0eHJSdUppaWF3em1pY0xYUkE1SThi?=
+ =?utf-8?B?c1dBcUdYTHRWTWRSVm1WRUNCU1BSNE5LMy9yOGRMKzg0d3QwY1p2dENNSzFr?=
+ =?utf-8?B?cytjOXJlVEpYUjVla1QyVFpJd1hlcG1XTGFod1VRZFIvTWJxTlJ5TWxWOExO?=
+ =?utf-8?B?Qzh1MEt0YzZybjRRUVlZc3JuaDZpTXpJSm9OYjF4cCtJL2hMRGF2T0ZmdFBw?=
+ =?utf-8?B?ZUNpRm9GNHcyZ3VGTWlJUmlTZDZvZkZWMVhkQ2NpRTFsVDkvV011ak9HVG5y?=
+ =?utf-8?B?WUk3dEtHd093b1J0TUw0RW5OcldpUVB2Mk9TTTlXWlNCMjlIK1FaOWRuOVhh?=
+ =?utf-8?B?Z2tFdFpGZFlwVHNFQ3pGNVRUM2xhaW5USUtCdW9VMC9aRjQxUlJEajh2dFp5?=
+ =?utf-8?B?eVZCVmdjM2VKOXJVMnoyRE1FK1NlMDNrb2QwRllDTkw4b0d6L2pOS0IwWENk?=
+ =?utf-8?B?NXJEa3NhVXVHUnlnYWdLM1lLcUhaTUs4UU9Fci8wTnhGUlNpZFVoZis1czNx?=
+ =?utf-8?B?NVFDUnlHeFdScGJNTHBUOXRHQUtwSllNcVU5WnBTdjlUVmpXY0x6TE9MV2tp?=
+ =?utf-8?B?RDFQeUhUTXJaYytwZDBkREhPeU9sRlhtbW9NUE1TYUZpRjhpYk4xOWdzMGwr?=
+ =?utf-8?B?eTRLR1VnejRDeTJQZS9FdkNRYTkxNyt0T0RuUG85TmRhMkNrLzk1LzBGSmFL?=
+ =?utf-8?B?bXRUWkRsZ2M5T1RNQmJSZmlEZGY1NUlveGpsT2twcXlhb2dZNnE0VjJqTTFN?=
+ =?utf-8?B?WGhvYTI2ZjV6aVlTSm5nRkZyMU04ZjFONXZCa1NUZU1NK3RRMzVLVXE2N0d3?=
+ =?utf-8?B?VVphTFdvUSt0MUJoaU80VFhqcldCT3Q4TVY0NlNhTGdsL011RTZyeHkzUVdu?=
+ =?utf-8?B?OVFaalFjbXZIb0NlZnlmOWwzSzBYUjZYczlocW5GS0Jud1Y3M2JtWUZNRnJv?=
+ =?utf-8?B?NzlrcGJrdUNtRVN4c0pFNFFUZGNscS84MTVjS05adFNnZGJJR2ZKb3JYWTk4?=
+ =?utf-8?B?cU1kYmludktCcU1FMlpUdzQ5aktQY2x4RDJ0Zk1iL3cxUVI3UUhIYUhZbE5H?=
+ =?utf-8?B?bWJEQ2pDVFlCVHVYNGxIOERibys4K1Y0WTNzTUdSakRnVHovSGVCR08zQ1Zt?=
+ =?utf-8?B?R3ZnVXRkR1VGL3lQc3dRODZyY0pDaktPMG44dU80dFg5a05LS1l4NkhmaFg5?=
+ =?utf-8?B?ZE9NUk15MkdPc1pnaDdXZUdZL1FvcEZTYWh4RDlnN0FkQVZ2enhXM1Y3dzBn?=
+ =?utf-8?B?VXFpdjVFbnBlWWFJS2tnbDFXQWFvQnBSeEJ3RUkxL2N6amJVLy9ONjlWakRs?=
+ =?utf-8?B?VlBSKzNVeEhaTmRjdHEyRFR4c2VoRTFYbkJTTnpBbWt0d0ZVd1hROXJianI2?=
+ =?utf-8?B?RFRlL0hxak1xYnBTZTJvMzZaVUExN2svTzFULzlqUmxoeXRVUnQwVWhDeGNy?=
+ =?utf-8?B?QmpWeE9LeDQzc253V0Qya2V2YW1GRHJ1S0djVy9qcHJZbUp4YitlVjVKQTBN?=
+ =?utf-8?B?OVpJRnNMRnlRL3liSHpxU0VJRFNtRTBkek04Z1RPRDFSeWpnZnkrUE9kcWVx?=
+ =?utf-8?B?ay9GYTE3OTdrVjVBdld3WUpYSGR4cmxIbE9PbXlCZlhBSjh6dS94VkM1NFJn?=
+ =?utf-8?B?Vm56U3kzYWNTWjF1T1V5U0dLaThZSDZ2ZElJSjdGclMycXhNY2JLMnFKRDZM?=
+ =?utf-8?B?L0FjZHpzdnBpNlNQa3pIeWpZc2hKTVA3em0rWjNEN2ZKcVJ0RWNRajcvaFNu?=
+ =?utf-8?B?WWJjd3ZqQVJPMHd6R09KMTdJMWlrejZjWkh3bjFkSFhRdGQ0eUo5TS9GczBZ?=
+ =?utf-8?B?M1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 224ea281-1e38-4911-c928-08ddc553e782
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5095.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2025 17:03:52.1241
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 29b9SSMAwl/N9aYjstpGkFMTm++M7KKYTek2U9V3EnLUeGS87CKq36PGcVrcASvPHcwJ6NS9r9KYxo5EyCX9sc9m9kT8FUhaA8sDV4h72Xk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8531
+X-OriginatorOrg: intel.com
 
-The ice_cfg_tx_topo function attempts to apply Tx scheduler topology
-configuration based on NVM parameters, selecting either a 5 or 9 layer
-topology.
+--------------vfeSAzf3ts5NFeXSaJVrImb5
+Content-Type: multipart/mixed; boundary="------------HDXzVHx3L4v3frZprpXx48TI";
+ protected-headers="v1"
+From: Jacob Keller <jacob.e.keller@intel.com>
+To: Wang Haoran <haoranwangsec@gmail.com>, Simon Horman <horms@kernel.org>
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-ID: <489c52d1-cad2-473d-86ab-cdae51b043c7@intel.com>
+Subject: Re: We found a bug in i40e_debugfs.c for the latest linux
+References: <CANZ3JQRRiOdtfQJoP9QM=6LS1Jto8PGBGw6y7-TL=BcnzHQn1Q@mail.gmail.com>
+ <20250714181032.GS721198@horms.kernel.org>
+ <db65ea9a-7e23-48b9-a05a-cdd98c084598@intel.com>
+ <20250716083731.GI721198@horms.kernel.org>
+ <CANZ3JQRwO=4u24Y17cP3byP8mS9VOP5g=sy_Ch_g0xKSDJLhKA@mail.gmail.com>
+In-Reply-To: <CANZ3JQRwO=4u24Y17cP3byP8mS9VOP5g=sy_Ch_g0xKSDJLhKA@mail.gmail.com>
 
-As part of this flow, the driver acquires the "Global Configuration Lock",
-which is a hardware resource associated with programming the DDP package
-to the device. This "lock" is implemented by firmware as a way to
-guarantee that only one PF can program the DDP for a device. Unlike a
-traditional lock, once a PF has acquired this lock, no other PF will be
-able to acquire it again (including that PF) until a CORER of the device.
-Future requests to acquire the lock report that global configuration has
-already completed.
+--------------HDXzVHx3L4v3frZprpXx48TI
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-The following flow is used to program the Tx topology:
 
- * Read the DDP package for scheduler configuration data
- * Acquire the global configuration lock
- * Program Tx scheduler topology according to DDP package data
- * Trigger a CORER which clears the global configuration lock
 
-This is followed by the flow for programming the DDP package:
+On 7/16/2025 5:52 AM, Wang Haoran wrote:
+> Thanks for the clarification regarding i40e_dbg_command_buf.
+>=20
+> Please let me know if you'd like me to submit a patch to
+> remove this interface, or to replace snprintf() with scnprintf().
+>=20
+>=20
+Since this is a debugfs interface, I think we're safe to drop the read
+accesses entirely, without fear of backwards compatibility violations. I
+think I can handle making a patch for that, but I'm happy to accept a
+patch from you if you want.
 
- * Acquire the global configuration lock (again)
- * Download the DDP package to the device
- * Release the global configuration lock.
+It looks like there is some complication as the
+i40e_dbg_netdev_ops_write() does appear to use this buffer for scratch
+space. I think that would need cleanup to align with how the
+i40e_dbg_command_write() function works with an allocated buffer rather
+than using this static space in the driver.
 
-However, if configuration of the Tx topology fails, (i.e.
-ice_get_set_tx_topo returns an error code), the driver exits
-ice_cfg_tx_topo() immediately, and fails to trigger CORER.
+Thanks,
+Jake
 
-While the global configuration lock is held, the firmware rejects most
-AdminQ commands, as it is waiting for the DDP package download (or Tx
-scheduler topology programming) to occur.
 
-The current driver flows assume that the global configuration lock has been
-reset by CORER after programming the Tx topology. Thus, the same PF
-attempts to acquire the global lock again, and fails. This results in the
-driver reporting "an unknown error occurred when loading the DDP package".
-It then attempts to enter safe mode, but ultimately fails to finish
-ice_probe() since nearly all AdminQ command report error codes, and the
-driver stops loading the device at some point during its initialization.
+--------------HDXzVHx3L4v3frZprpXx48TI--
 
-The only currently known way that ice_get_set_tx_topo() can fail is with
-certain older DDP packages which contain invalid topology configuration, on
-firmware versions which strictly validate this data. The most recent
-releases of the DDP have resolved the invalid data. However, it is still
-poor practice to essentially brick the device, and prevent access to the
-device even through safe mode or recovery mode. It is also plausible that
-this command could fail for some other reason in the future.
+--------------vfeSAzf3ts5NFeXSaJVrImb5
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-We cannot simply release the global lock after a failed call to
-ice_get_set_tx_topo(). Releasing the lock indicates to firmware that global
-configuration (downloading of the DDP) has completed. Future attempts by
-this or other PFs to load the DDP will fail with a report that the DDP
-package has already been downloaded. Then, PFs will enter safe mode as they
-realize that the package on the device does not meet the minimum version
-requirement to load. The reported error messages are confusing, as they
-indicate the version of the default "safe mode" package in the NVM, rather
-than the version of the file loaded from /lib/firmware.
+-----BEGIN PGP SIGNATURE-----
 
-Instead, we need to trigger CORER to clear global configuration. This is
-the lowest level of hardware reset which clears the global configuration
-lock and related state. It also clears any already downloaded DDP.
-Crucially, it does *not* clear the Tx scheduler topology configuration.
+wnsEABYIACMWIQQgQFSp1zOQVirsQx5qll0+bw8o6AUCaHks9QUDAAAAAAAKCRBqll0+bw8o6LXC
+AQCa4prXVkLzCzHmTXa123H8F15VhhOOK9PlWGRPqcjnRAD/bJGJbNy4Ai0X4LJWhpm96W6I69Ct
+4lxxA4UPkHpofwQ=
+=yp+3
+-----END PGP SIGNATURE-----
 
-Refactor ice_cfg_tx_topo() to always trigger a CORER after acquiring the
-global lock, regardless of success or failure of the topology
-configuration.
-
-We need to re-initialize the HW structure when we trigger the CORER. Thus,
-it makes sense for this to be the responsibility of ice_cfg_tx_topo()
-rather than its caller, ice_init_tx_topology(). This avoids needless
-re-initialization in cases where we don't attempt to update the Tx
-scheduler topology, such as if it has already been programmed.
-
-There is one catch: failure to re-initialize the HW struct should stop
-ice_probe(). If this function fails, we won't have a valid HW structure and
-cannot ensure the device is functioning properly. To handle this, ensure
-ice_cfg_tx_topo() returns a limited set of error codes. Set aside one
-specifically, -ENODEV, to indicate that the ice_init_tx_topology() should
-fail and stop probe.
-
-Other error codes indicate failure to apply the Tx scheduler topology. This
-is treated as a non-fatal error, with an informational message informing
-the system administrator that the updated Tx topology did not apply. This
-allows the device to load and function with the default Tx scheduler
-topology, rather than failing to load entirely.
-
-Note that this use of CORER will not result in loops with future PFs
-attempting to also load the invalid Tx topology configuration. The first PF
-will acquire the global configuration lock as part of programming the DDP.
-Each PF after this will attempt to acquire the global lock as part of
-programming the Tx topology, and will fail with the indication from
-firmware that global configuration is already complete. Tx scheduler
-topology configuration is only performed during driver init (probe or
-devlink reload) and not during cleanup for a CORER that happens after probe
-completes.
-
-Fixes: 91427e6d9030 ("ice: Support 5 layer topology")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_ddp.c  | 44 ++++++++++++++++++++++---------
- drivers/net/ethernet/intel/ice/ice_main.c | 14 ++++++----
- 2 files changed, 41 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_ddp.c b/drivers/net/ethernet/intel/ice/ice_ddp.c
-index 59323c019544..bc525de019de 100644
---- a/drivers/net/ethernet/intel/ice/ice_ddp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ddp.c
-@@ -2374,7 +2374,13 @@ ice_get_set_tx_topo(struct ice_hw *hw, u8 *buf, u16 buf_size,
-  * The function will apply the new Tx topology from the package buffer
-  * if available.
-  *
-- * Return: zero when update was successful, negative values otherwise.
-+ * Return:
-+ * * 0 - Successfully applied topology configuration.
-+ * * -EBUSY - Failed to acquire global configuration lock.
-+ * * -EEXIST - Topology configuration has already been applied.
-+ * * -EIO - Unable to apply topology configuration.
-+ * * -ENODEV - Failed to re-initialize device after applying configuration.
-+ * * Other negative error codes indicate unexpected failures.
-  */
- int ice_cfg_tx_topo(struct ice_hw *hw, const void *buf, u32 len)
- {
-@@ -2407,7 +2413,7 @@ int ice_cfg_tx_topo(struct ice_hw *hw, const void *buf, u32 len)
- 
- 	if (status) {
- 		ice_debug(hw, ICE_DBG_INIT, "Get current topology is failed\n");
--		return status;
-+		return -EIO;
- 	}
- 
- 	/* Is default topology already applied ? */
-@@ -2494,31 +2500,45 @@ int ice_cfg_tx_topo(struct ice_hw *hw, const void *buf, u32 len)
- 				 ICE_GLOBAL_CFG_LOCK_TIMEOUT);
- 	if (status) {
- 		ice_debug(hw, ICE_DBG_INIT, "Failed to acquire global lock\n");
--		return status;
-+		return -EBUSY;
- 	}
- 
- 	/* Check if reset was triggered already. */
- 	reg = rd32(hw, GLGEN_RSTAT);
- 	if (reg & GLGEN_RSTAT_DEVSTATE_M) {
--		/* Reset is in progress, re-init the HW again */
- 		ice_debug(hw, ICE_DBG_INIT, "Reset is in progress. Layer topology might be applied already\n");
- 		ice_check_reset(hw);
--		return 0;
-+		/* Reset is in progress, re-init the HW again */
-+		goto reinit_hw;
- 	}
- 
- 	/* Set new topology */
- 	status = ice_get_set_tx_topo(hw, new_topo, size, NULL, NULL, true);
- 	if (status) {
--		ice_debug(hw, ICE_DBG_INIT, "Failed setting Tx topology\n");
--		return status;
-+		ice_debug(hw, ICE_DBG_INIT, "Failed to set Tx topology, status %pe\n",
-+			  ERR_PTR(status));
-+		/* only report -EIO here as the caller checks the error value
-+		 * and reports an informational error message informing that
-+		 * the driver failed to program Tx topology.
-+		 */
-+		status = -EIO;
- 	}
- 
--	/* New topology is updated, delay 1 second before issuing the CORER */
-+	/* Even if Tx topology config failed, we need to CORE reset here to
-+	 * clear the global configuration lock. Delay 1 second to allow
-+	 * hardware to settle then issue a CORER
-+	 */
- 	msleep(1000);
- 	ice_reset(hw, ICE_RESET_CORER);
--	/* CORER will clear the global lock, so no explicit call
--	 * required for release.
--	 */
-+	ice_check_reset(hw);
- 
--	return 0;
-+reinit_hw:
-+	/* Since we triggered a CORER, re-initialize hardware */
-+	ice_deinit_hw(hw);
-+	if (ice_init_hw(hw)) {
-+		ice_debug(hw, ICE_DBG_INIT, "Failed to re-init hardware after setting Tx topology\n");
-+		return -ENODEV;
-+	}
-+
-+	return status;
- }
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index c44bb8153ad0..b31b3aa2b662 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4532,17 +4532,21 @@ ice_init_tx_topology(struct ice_hw *hw, const struct firmware *firmware)
- 			dev_info(dev, "Tx scheduling layers switching feature disabled\n");
- 		else
- 			dev_info(dev, "Tx scheduling layers switching feature enabled\n");
--		/* if there was a change in topology ice_cfg_tx_topo triggered
--		 * a CORER and we need to re-init hw
-+		return 0;
-+	} else if (err == -ENODEV) {
-+		/* If we failed to re-initialize the device, we can no longer
-+		 * continue loading.
- 		 */
--		ice_deinit_hw(hw);
--		err = ice_init_hw(hw);
--
-+		dev_warn(dev, "Failed to initialize hardware after applying Tx scheduling configuration.\n");
- 		return err;
- 	} else if (err == -EIO) {
- 		dev_info(dev, "DDP package does not support Tx scheduling layers switching feature - please update to the latest DDP package and try again\n");
-+		return 0;
- 	}
- 
-+	/* Do not treat this as a fatal error. */
-+	dev_info(dev, "Failed to apply Tx scheduling configuration, err %pe\n",
-+		 ERR_PTR(err));
- 	return 0;
- }
- 
-
--- 
-2.50.0.349.ga842a77808e9
-
+--------------vfeSAzf3ts5NFeXSaJVrImb5--
