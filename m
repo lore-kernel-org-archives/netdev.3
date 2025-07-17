@@ -1,110 +1,167 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9072F850;
-	Thu, 17 Jul 2025 09:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C772C28A407
+	for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 09:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752743928; cv=none; b=WITTxhZ2V2Ph9TFfsqAHBiAum8E7WT5riyhjW3/zAudLd+sBBUd1Xo/YsnJ86b39m3Eh/25EjKMg0z9GfhaRZYKu6r9d7clV1BizeAIGsaSpoItovwzRLJ7aApdYg+S44ArDlqjNH3pmub1ynHOm1JrYiz5HYXbOxHdmOSm32AI=
+	t=1752744005; cv=none; b=hcFYrbk3deAa8LNS8gnc20ooBIImXlyujHahfI0eCDgeSvX0hDXhOx0pNVjWTBRN/N23M9Udi1YzAVT3rvk0t3OEbdMTjJsv43GUBM2XmhmXi3HjRmKR+LLKsp+1ZEjOoCmkMW/+Dg52/Q+DX1hUnHqOBZcmiLfDswWk4TU1ZM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752743928; c=relaxed/simple;
-	bh=Hxeoe/IyZ1r0U3+EapO3WzBH4XGJpbd0CWwOlhq8Km8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a+ODC7In2wKI7yw9ZAqbVVoqEKzJkRaEhb02ygFZZ1GMq5vgTdo/s7grlmni7V/h+x0/0c2880AdtJMOKfvx7pWch/v0ETw0z2DkeJ96ohg5ec7VUctZH7M/FNQE/aVkF7q6+an6O0qdy8j+uIRW8Ydd1saXhZHkotVN/cu4xMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=pSKWh3+Y; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1752744005; c=relaxed/simple;
+	bh=4It3i10W2FunpmCz+Sfp2fYBu5KdHjFA5JJ5PdWIsGA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=M7bb95wg+izo6BMnDfrQPAQGhENGpREi9diyQ17oQ/7u6ofebVAo/7WAIQx9xWpYMh0gh6ta5Aat4OfDezE+Gb9lWc1jckbgKfwSLE2NrE9AECCqLoHoJLsnM3SMumbsfwM4EZg5zPo6aYKxC1T/kR9Xp1rfebmATDNB3vOOwsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=GCQct+zG; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="pSKWh3+Y"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=J2DU8BinJtTj6zWNKckPvPSU7LpvWApu/5nBDO4nfpQ=; t=1752743927; x=1753953527; 
-	b=pSKWh3+YCIRGGEstI5/rdYvyiz/Meza9uupIsZrPNTIgxXUOW0Z6aek9/nWcQSJx9b6CiTgiSE8
-	XjXV8NGskFYauD1lcg+Q91OBq4H3OOQZnSxGbtEfvli1hN6cfcL69WMlcfZtiWl81RkOzW7ob3WF4
-	FnQSPyf4JOBkOypGDCuAFXOxz5PZ1b4n0OY/PewJSKfd1+wRt9QfyF4M7XmiRlxFlBtPOmN5eH3X4
-	ayFdr4TBvLs+MUqQYwpKVl551fzg8xTtwMFNRUK9Gd3wLUMWDGM+yTdeMNNcZ9BgjpoDIFFxZbuc/
-	M6lC4LaizW1yJKFXe1HXBhMqOxQGzJez4kUg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1ucKl9-0000000AFf9-48pq;
-	Thu, 17 Jul 2025 11:18:36 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2025-07-17
-Date: Thu, 17 Jul 2025 11:17:10 +0200
-Message-ID: <20250717091831.18787-5-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="GCQct+zG"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ae0de0c03e9so109111666b.2
+        for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 02:20:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1752744002; x=1753348802; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=U8eVvkHXeO923oNuVhByESesfiOJRGb3nsdgZl+ywT4=;
+        b=GCQct+zGQrmgrHQX1uMrSUmlxktfMFevuwpQMoQMFCh2nT3LVUFwzDwWVFH4pxm1gt
+         jLgmEegFG8PrxkOBtsNI9XmQ9cMUBz0hvkGzIibZKTj1/ggbtj9z8MFBstOu6Ab/MrNT
+         vyuKEIaOrDjRZDoT+1+9WJSqEXE9qXVS0qusnzIoD5vCVZDnL5VdFiZTTCkMMLc7ZtNS
+         L5XDYm+D5q2OiSQp+hr9df528PgV2hMTkDyo3MWD3CkDDcpVhrr9Ez9jEKEFRrm0XMBN
+         0ACctYoFZaKFpmo1/U8Efp4v1hiaML9onba3l1sSPtdEZkao8Y0XyMJLjkkAuuElegyc
+         oUJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752744002; x=1753348802;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U8eVvkHXeO923oNuVhByESesfiOJRGb3nsdgZl+ywT4=;
+        b=tnOrE66cwUe1KJTU5o12Hq341JXpkbl3Gj5hNDBD3I7Z8OXJYSBuB0NB3qK/qmSGDZ
+         bmmOIyehIXDXJ2ItdFJ3nJ0d2ifqhoeVJ1pQulPgP2yRYoQoOn+jTKONekVyEn3rOYQf
+         BqzZQAPqwlk+2hlOwgMNwm1BY5uAdE8P7uPmOHnBrgEstLKLIqrVNKuNcDAtY7+ygxjC
+         HkBDpfkYxO8x978sqvMgotCkjVXVfZ1B8DgOKyUcid75ASo1LRp1kcOMHfm0zuFETBrx
+         AuSbyqhQ652Hd/q5VZkmVnw/dryr7STUDHc9J+iQ9mOuiXZMZx8coJvOHgkl9E+GDajA
+         BSpw==
+X-Forwarded-Encrypted: i=1; AJvYcCWLUmT0JUJx3w/ZlJqIxKLJoDo2GcEhwCvikKJbe2L/QGnNF3+QVDNWOSRISwlDX8ctgUBM5bw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypSTEDSBSlYX8xedQHbkIQxvjlC7UbENktlRok7QRJneRIkf5Q
+	Fv1QKCa2qpEMOyQciT5E+QOX8lghpvQp/ywzdv51Iu04BVbHppltP9syiHzOCTX4tJ4=
+X-Gm-Gg: ASbGncvX/KJZjoRUE70CdA+9ccXuEcULiTyHB3wEFayMkwrrf6l+V8UuI7QKjBUzKs+
+	0NCUY+FX+VyUEQ2FAJq0mpoSCvlD4jREbkQFT234sMiOqOCc27lFZQebtoDmvbIPB9071gUZNf9
+	6RzLbQNm++YtEv1Ib9kE/0V5PJawJdNt1tsvwcZ+ZGWjj+ewVgirRlxApvdtPffMtlz1Ye8uBlz
+	qGT4UPOrJ/BFZTyJsHqtAozfi/Lf5vyBYFImKv6cV4UrNVcxt1bHOcOYn1kmqCfgqz3i5gOZPS5
+	kyYwmAMpPu6niMnSNpU03kD5IDPymLVK9pLYtls/gEqdJztAis23MHAP/V2J/ybHWkDZ24hLoGv
+	MI4WUO9IrlTENkiY=
+X-Google-Smtp-Source: AGHT+IFgEwswSoad0QRUcDTwtT9lksr66BmfJK6JYnd1OJ4UVj825ik2KhJgRWjruIAfJbcQuIBRbg==
+X-Received: by 2002:a17:907:3d02:b0:ae0:b46b:decd with SMTP id a640c23a62f3a-ae9c9ac13b7mr684620766b.31.1752744001963;
+        Thu, 17 Jul 2025 02:20:01 -0700 (PDT)
+Received: from cloudflare.com ([2a09:bac5:5063:2432::39b:e5])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e8294d4fsm1309361266b.129.2025.07.17.02.20.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Jul 2025 02:20:01 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Jesper Dangaard Brouer <hawk@kernel.org>
+Cc: bpf@vger.kernel.org,  netdev@vger.kernel.org,  Jakub Kicinski
+ <kuba@kernel.org>,  lorenzo@kernel.org,  Alexei Starovoitov
+ <ast@kernel.org>,  Daniel Borkmann <borkmann@iogearbox.net>,  Eric Dumazet
+ <eric.dumazet@gmail.com>,  "David S. Miller" <davem@davemloft.net>,  Paolo
+ Abeni <pabeni@redhat.com>,  sdf@fomichev.me,  kernel-team@cloudflare.com,
+  arthur@arthurfabre.com
+Subject: Re: [PATCH bpf-next V2 1/7] net: xdp: Add xdp_rx_meta structure
+In-Reply-To: <175146829944.1421237.13943404585579626611.stgit@firesoul>
+	(Jesper Dangaard Brouer's message of "Wed, 02 Jul 2025 16:58:19
+	+0200")
+References: <175146824674.1421237.18351246421763677468.stgit@firesoul>
+	<175146829944.1421237.13943404585579626611.stgit@firesoul>
+Date: Thu, 17 Jul 2025 11:19:59 +0200
+Message-ID: <87v7nrdvi8.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 
-Hi,
+On Wed, Jul 02, 2025 at 04:58 PM +02, Jesper Dangaard Brouer wrote:
+> From: Lorenzo Bianconi <lorenzo@kernel.org>
+>
+> Introduce the `xdp_rx_meta` structure to serve as a container for XDP RX
+> hardware hints within XDP packet buffers. Initially, this structure will
+> accommodate `rx_hash` and `rx_vlan` metadata. (The `rx_timestamp` hint will
+> get stored in `skb_shared_info`).
+>
+> A key design aspect is making this metadata accessible both during BPF
+> program execution (via `struct xdp_buff`) and later if an `struct
+> xdp_frame` is materialized (e.g., for XDP_REDIRECT).
+> To achieve this:
+>   - The `struct xdp_frame` embeds an `xdp_rx_meta` field directly for
+>     storage.
+>   - The `struct xdp_buff` includes an `xdp_rx_meta` pointer. This pointer
+>     is initialized (in `xdp_prepare_buff`) to point to the memory location
+>     within the packet buffer's headroom where the `xdp_frame`'s embedded
+>     `rx_meta` field would reside.
+>
+> This setup allows BPF kfuncs, operating on `xdp_buff`, to populate the
+> metadata in the precise location where it will be found if an `xdp_frame`
+> is subsequently created.
+>
+> The availability of this metadata storage area within the buffer is
+> indicated by the `XDP_FLAGS_META_AREA` flag in `xdp_buff->flags` (and
+> propagated to `xdp_frame->flags`). This flag is only set if sufficient
+> headroom (at least `XDP_MIN_HEADROOM`, currently 192 bytes) is present.
+> Specific hints like `XDP_FLAGS_META_RX_HASH` and `XDP_FLAGS_META_RX_VLAN`
+> will then denote which types of metadata have been populated into the
+> `xdp_rx_meta` structure.
+>
+> This patch is a step for enabling the preservation and use of XDP RX
+> hints across operations like XDP_REDIRECT.
+>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+> ---
+>  include/net/xdp.h       |   57 +++++++++++++++++++++++++++++++++++------------
+>  net/core/xdp.c          |    1 +
+>  net/xdp/xsk_buff_pool.c |    4 ++-
+>  3 files changed, 47 insertions(+), 15 deletions(-)
+>
+> diff --git a/include/net/xdp.h b/include/net/xdp.h
+> index b40f1f96cb11..f52742a25212 100644
+> --- a/include/net/xdp.h
+> +++ b/include/net/xdp.h
+> @@ -71,11 +71,31 @@ struct xdp_txq_info {
+>  	struct net_device *dev;
+>  };
+>  
+> +struct xdp_rx_meta {
+> +	struct xdp_rx_meta_hash {
+> +		u32 val;
+> +		u32 type; /* enum xdp_rss_hash_type */
+> +	} hash;
+> +	struct xdp_rx_meta_vlan {
+> +		__be16 proto;
+> +		u16 tci;
+> +	} vlan;
+> +};
+> +
+> +/* Storage area for HW RX metadata only available with reasonable headroom
+> + * available. Less than XDP_PACKET_HEADROOM due to Intel drivers.
+> + */
+> +#define XDP_MIN_HEADROOM	192
+> +
+>  enum xdp_buff_flags {
+>  	XDP_FLAGS_HAS_FRAGS		= BIT(0), /* non-linear xdp buff */
+>  	XDP_FLAGS_FRAGS_PF_MEMALLOC	= BIT(1), /* xdp paged memory is under
+>  						   * pressure
+>  						   */
+> +	XDP_FLAGS_META_AREA		= BIT(2), /* storage area available */
 
-So, I thought we'd not have anything, but clearly wasn't fully
-aware of what the drivers were doing, and then also syzbot came
-up with _another_ complaint about __counted_by(), at which point
-I took a closer look and just removed it there (with all the
-reasons in the commit message.) Fingers crossed that's it :)
+Idea: Perhaps this could be called *HW*_META_AREA to differentiate from
+the existing custom metadata area:
 
-Please pull and let us know if there's any problem.
+https://docs.kernel.org/networking/xdp-rx-metadata.html#af-xdp
 
-Thanks,
-johannes
+> +	XDP_FLAGS_META_RX_HASH		= BIT(3), /* hw rx hash */
+> +	XDP_FLAGS_META_RX_VLAN		= BIT(4), /* hw rx vlan */
+> +	XDP_FLAGS_META_RX_TS		= BIT(5), /* hw rx timestamp */
+>  };
+>  
 
-
-
-The following changes since commit c7979c3917fa1326dae3607e1c6a04c12057b194:
-
-  Merge tag 'net-6.16-rc6-2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-07-11 10:18:51 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2025-07-17
-
-for you to fetch changes up to bbc19fef578970158847a41d9b6b6b218034b8c2:
-
-  Merge tag 'iwlwifi-fixes-2025-07-15' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next (2025-07-15 13:07:43 +0200)
-
-----------------------------------------------------------------
-Couple of fixes:
- - ath12k performance regression from -rc1
- - cfg80211 counted_by() removal for scan request
-   as it doesn't match usage and keeps complaining
- - iwlwifi crash with certain older devices
- - iwlwifi missing an error path unlock
- - iwlwifi compatibility with certain BIOS updates
-
-----------------------------------------------------------------
-Johannes Berg (4):
-      wifi: iwlwifi: pcie: fix locking on invalid TOP reset
-      Merge tag 'ath-current-20250714' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
-      wifi: cfg80211: remove scan request n_channels counted_by
-      Merge tag 'iwlwifi-fixes-2025-07-15' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
-
-Nithyanantham Paramasivam (1):
-      wifi: ath12k: Fix packets received in WBM error ring with REO LUT enabled
-
-Pagadala Yesu Anjaneyulu (1):
-      wifi: iwlwifi: mask reserved bits in chan_state_active_bitmap
-
-Ville Syrjälä (1):
-      wifi: iwlwifi: Fix botched indexing conversion
-
- drivers/net/wireless/ath/ath12k/dp_rx.c              | 3 ++-
- drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h  | 5 +++--
- drivers/net/wireless/intel/iwlwifi/fw/regulatory.c   | 1 +
- drivers/net/wireless/intel/iwlwifi/mld/regulatory.c  | 4 +++-
- drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c | 6 ++++--
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c         | 8 ++++----
- include/net/cfg80211.h                               | 2 +-
- 7 files changed, 18 insertions(+), 11 deletions(-)
+[...]
