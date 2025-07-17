@@ -1,68 +1,84 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C010825A34F
-	for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 07:44:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487CC21B1BC
+	for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 07:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752738283; cv=none; b=Xj6a0Tzbl6xJWoG8EHXaRAu04MoYtc/t9hYEeZLl9hSG9zo9TLA3q71JtOqunfhcFM4IJljb1KQMshfUGinlJtoFVlwUn9C12j0E+opuU4ndq+Oae1zOwNcgFAaFjS73X7PEHRaEfDWj1sv+v2GWk2dA7LMyOecELNUtqV/UJC0=
+	t=1752739030; cv=none; b=mr2HLRkG+8Azs+IVn8vRytCo2hpeZQVW4bk6LKa1h/KlKqc2jMaGTkqf7l5vBDi3apOsqWYVWp4/6aIqzrJrSxxeyR3zNAxwTgk98YeAel4pOpreLAxhBwU2uInCU+umQIa4v5BezGe0H1nALBcs5jPl29BYmsWfIj/MBJr075g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752738283; c=relaxed/simple;
-	bh=VqkAKQ06zuDBxT1InigwkYWey8fIft48GLNxeyinELw=;
+	s=arc-20240116; t=1752739030; c=relaxed/simple;
+	bh=lWOn16S5K+JL2aOA+3Vb/eh9UmaQ1QwZwyxOOM975qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lysuSkNwcecPjQBWc5iRpBnud4jeGAw/E3ggCHZsAwzePb8wBNhyW/xmJR2r6j1D7cOf1iE9cBneRlo0nyCjI8kdVGTlD/s63z5n0cwXiStvyDr/5k+fbPdYCb0saPBQvKarL7zZd3+KHF+WPq/g/QXD6GIUlBQ4TXXB25iD2aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KjM951zE; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 MIME-Version; b=lRUZu/gGKVg/JdvQQWm+XlZ+y0FLGH5iqOu9Z1GZ7hDJkZiknNhllKH+iWyhCe8sUsCrlfwhHIt2P5krDS69MWfExhu5uRjjIhNrNcKamAZcJi6c+rJuQXuKxqG2hR0aj6RIP4VbMphnOSezzNk35X92GYvY7MlYzIIK2DGqUA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hvHA5Zk4; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KjM951zE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752738280;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SAficW741eLddPXCBV20kWATJLxNZFQgJW7lDxysDlw=;
-	b=KjM951zEtaGGsBgbYSAgOhN/YGthQjRyXQKxFgHmfBVOuaYNRz+l5Ks8mRhenurdYqzCln
-	0++s6FD48/KSfz/I2lHHLvB1XO41GAwdYl3I1bNTBDnOwLEvgCrE2VIH5ZWMcfaWJgQMwd
-	+auMhEAO9AasMrGAAeNjoozjrXM3Uro=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-344-RlCiFFR5PBmjpEHwfb0agA-1; Thu,
- 17 Jul 2025 03:44:37 -0400
-X-MC-Unique: RlCiFFR5PBmjpEHwfb0agA-1
-X-Mimecast-MFC-AGG-ID: RlCiFFR5PBmjpEHwfb0agA_1752738276
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8468319560B4;
-	Thu, 17 Jul 2025 07:44:30 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.2])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E074C18016F9;
-	Thu, 17 Jul 2025 07:44:25 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hvHA5Zk4"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-235f9e87f78so5888525ad.2
+        for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 00:57:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752739028; x=1753343828; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6X8aIWTs3119y70F91xFMzdQTMba+5CavefOUWs2SAo=;
+        b=hvHA5Zk4deggihH1spgJitS/9K3GUTN/PU9dxEOCj2FMrt1Far81GsavTJPHkA2HcK
+         4BAaaEcDHTYurKjF2efTWJ0OkFs9U9FF/Wlqcfcdhc9wybVeYAQwCbRqZ85sE5dIO7ff
+         rsz8NFplwTphoU40ave4rV9jK28NyUa1AHeM5E/4XVylIANIqVumazcfJaXTa4MZhnEG
+         N24Osl+46M/AumQPs6eb1hQg8GNoZDF0jG9NvynGu/5KOw5QabBvgocYrYGU1ELiRh8t
+         bTBrxDEMeHIDOprlBpU0MqE93Zi2jTLpcvEpjzO7Qfbs8seLa5ZuaXNo0LyO8+zyTjpJ
+         rPHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752739028; x=1753343828;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6X8aIWTs3119y70F91xFMzdQTMba+5CavefOUWs2SAo=;
+        b=qkl+8mXqia0pJlRIuxdIPlmxiN9nHWJSqgKu1UPTSj+qYgriVp8QNdQLaOCS3thU0J
+         ki7HoWgvUWrxtJ7JePBMDmtTlj10q/qNpPs6cQpRc46znlWk4tLUryk7PNQhBUl2anAi
+         iEhij8pAFp/vQ3k/O8ZFZIvNOhN03I//H4D8AYuJiriLix023DkIR2D02wQGsueZHu4L
+         4ezsLlR5e538pybj/ybZjKsNDFp7t6N2tkQJrAnRoRy16oQD9rpDmxb5V1PSt36G53jK
+         FVp4HQIiCT6aAXcxfb5jPJVkMrzQ6G2uY0DJJBB9244Ezl2pARcyMaE7rbh9xzyWy+QS
+         NUlQ==
+X-Gm-Message-State: AOJu0YznrL4RYZCoyHLtxvpS4iQ8qInAjv1fyyPydRL/1atm1YulvrVC
+	WLYnf6I39f1mtCGO+rlvFtwcEg+8RAU5Wq575HUHwPhYJPlKqKsHI74x+XFkJhzw
+X-Gm-Gg: ASbGncuvxMCL/5DhOCSPFtPd69t1mSc+dxVwudl2Q2WZdoq9htvDpfBO54a506VJEn1
+	+9yz5v0Pk/eIscEXxnqTEH4rdNYEFMIVFZadx2XJKcg07Ma7B9gw91irnUFByNwZmEgZzFhGBc0
+	+BEFU8CnNPf7iZPj1RVIRgJZaFG6950FEWOuirhEkkgdyGT/+Xe41UX2pEXyCCh/TUJoBk3Fn0U
+	up9Suezgz4DHAmRL277BY4fydQLDL9yx/EjVUS5/lifIEmdjiME912vrIewGY7pMLA3jayt0RRg
+	+WcBtdGrnCcJ8j7w9cLAj7995kGQrg8tslg87TLa6nChpsif5PHJUSuSSdu/uZUyuW1Xo5SX//5
+	I295Lnr/89F6FUiTlB76fZ3keEKLwNnJT0Xo=
+X-Google-Smtp-Source: AGHT+IGsGh7YY8/CoSZJTq6uZzKjYXxjII40LARRlo0kXaABbi22FZjbx1jvxbMMXu/k7LxQuSQtrQ==
+X-Received: by 2002:a17:902:d4cd:b0:234:ef42:5d5b with SMTP id d9443c01a7336-23e2569b40amr78318895ad.16.1752739028148;
+        Thu, 17 Jul 2025 00:57:08 -0700 (PDT)
+Received: from krishna-laptop.localdomain ([134.238.240.50])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4322e92sm143118425ad.128.2025.07.17.00.57.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Jul 2025 00:57:07 -0700 (PDT)
+From: Krishna Kumar <krikku@gmail.com>
 To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>,
-	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
-	LePremierHomme <kwqcheii@proton.me>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 4/5] rxrpc: Fix transmission of an abort in response to an abort
-Date: Thu, 17 Jul 2025 08:43:44 +0100
-Message-ID: <20250717074350.3767366-5-dhowells@redhat.com>
-In-Reply-To: <20250717074350.3767366-1-dhowells@redhat.com>
-References: <20250717074350.3767366-1-dhowells@redhat.com>
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	tom@herbertland.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	sdf@fomichev.me,
+	kuniyu@google.com,
+	ahmed.zaki@intel.com,
+	aleksander.lobakin@intel.com,
+	atenart@kernel.org,
+	jdamato@fastly.com,
+	krishna.ku@flipkart.com,
+	krikku@gmail.com
+Subject: [PATCH v3 net-next 0/2] net: RPS table overwrite prevention and flow_id caching
+Date: Thu, 17 Jul 2025 13:26:56 +0530
+Message-ID: <20250717075659.2725245-1-krikku@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250715112431.2178100-1-krikku@gmail.com>
+References: <20250715112431.2178100-1-krikku@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,48 +86,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Under some circumstances, such as when a server socket is closing, ABORT
-packets will be generated in response to incoming packets.  Unfortunately,
-this also may include generating aborts in response to incoming aborts -
-which may cause a cycle.  It appears this may be made possible by giving
-the client a multicast address.
+This series splits the previous RPS patch [1] into two patches for
+net-next following reviewer feedback. It also addresses a kernel test
+robot warning by ensuring rps_flow_is_active() is defined only when
+aRFS is enabled. I tested v3 with four builds and reboots: two for
+[PATCH 1/2] with aRFS enabled/disabled, and two for [PATCH 2/2].
 
-Fix this such that rxrpc_reject_packet() will refuse to generate aborts in
-response to aborts.
+The first patch prevents RPS table overwrite for active flows thereby
+improving aRFS stability.
 
-Fixes: 248f219cb8bc ("rxrpc: Rewrite the data and ack handling code")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-cc: LePremierHomme <kwqcheii@proton.me>
-cc: Linus Torvalds <torvalds@linux-foundation.org>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: stable@vger.kernel.org
+The second patch caches hash & flow_id in get_rps_cpu() to avoid
+recalculating it in set_rps_cpu() (this patch depends on the first).
+
+[1] https://lore.kernel.org/netdev/20250708081516.53048-1-krikku@gmail.com/
+
+Signed-off-by: Krishna Kumar <krikku@gmail.com>
 ---
- net/rxrpc/output.c | 3 +++
- 1 file changed, 3 insertions(+)
+Changes v2->v3:
+  - Wrapped rps_flow_is_active() in #ifdef CONFIG_RFS_ACCEL to fix
+    unused function warning reported by kernel test robot.
+Changes v1->v2:
+  - Split original patch into two: RPS table overwrite prevention and hash/
+    flow_id caching.
+  - Targeted net-next as per reviewer feedback.
 
-diff --git a/net/rxrpc/output.c b/net/rxrpc/output.c
-index ef7b3096c95e..17c33b5cf7dd 100644
---- a/net/rxrpc/output.c
-+++ b/net/rxrpc/output.c
-@@ -814,6 +814,9 @@ void rxrpc_reject_packet(struct rxrpc_local *local, struct sk_buff *skb)
- 	__be32 code;
- 	int ret, ioc;
- 
-+	if (sp->hdr.type == RXRPC_PACKET_TYPE_ABORT)
-+		return; /* Never abort an abort. */
-+
- 	rxrpc_see_skb(skb, rxrpc_skb_see_reject);
- 
- 	iov[0].iov_base = &whdr;
+Krishna Kumar (2):
+  net: Prevent RPS table overwrite for active flows
+  net: Cache hash and flow_id to avoid recalculation
+
+ include/net/rps.h    |  5 ++-
+ net/core/dev.c       | 91 ++++++++++++++++++++++++++++++++++++++------
+ net/core/net-sysfs.c |  4 +-
+ 3 files changed, 86 insertions(+), 14 deletions(-)
+
+-- 
+2.43.0
 
