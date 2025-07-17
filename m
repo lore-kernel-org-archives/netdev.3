@@ -1,312 +1,158 @@
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2087.outbound.protection.outlook.com [40.107.243.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05301EE7B9
-	for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 06:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752734888; cv=none; b=EOVmk6pUpIVE5VQDMpI2iwYZlwfRSdoEb8wFxtxdRYUFFd4St7JGgoGMCWatm907w6uKK5RPpYYJkAX2VdHxUZoEMgo81BLzVjRYac/fwSllYTeH/e++AnExqdFYclWK9v7TfoLBEFfMogCtDMovxu2e9/ikskQCthsgHAFRslk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752734888; c=relaxed/simple;
-	bh=k3IOfqIHR0LNmbzW492JUqxcw7yfnJcbs15cVeL+ZfM=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To:
-	 Content-Type; b=eD8DbOeh53u0+jkXEIfr00T1j4cKK2w4exdNh4j4GPj+ESTgBn3Q/8saJO/whQ3Std0VmajMO5sHPmgX+oAHPfcS8sYH76uhk9MhAWZKLj6SAj4FEQABM7GeSfWbHlsr5z+Ww2dkk+KldupMQOHM5cyBGOojRLtEdkdfYaAz0PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=HjPg/0PI; arc=none smtp.client-ip=115.124.30.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEE717B425;
+	Thu, 17 Jul 2025 06:49:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.87
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752734948; cv=fail; b=gUPIVZb7HP0WE1if3+W5KP5TS1Q6Wb9OPIzLbfARYV6ekrazK+CHHW1jOYHJHlxB5KXTpVtR4zcpBRRc/TopG0owEKMxNGSL2VFUhytgq28afMOEgUIGYQdJTfi9k3IfZOqiTra5TA0fNDF0DWFMSXN4y1UoWkBZep+SyKQsB6I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752734948; c=relaxed/simple;
+	bh=7+7ZYHpM3eDpUNG7j0M9E6wQrCw3QStS/SszMvOh3Rw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AqTUh3e31DxPIqMELmKTR+UqP+hi2lCx0fPuWMEF+i4+nIep63U4cn8Q9/5xyyI/EVoYxQSw1t+9lcS6jAgbUheabJiUyWW8rXMLPHLBejQkUgBKDrC08zcOjt9HGAGfP+byIIGkmqkrivdMRo4inM0pJHmahDUcpCvOKq0Wfvc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QYEdiZs1; arc=fail smtp.client-ip=40.107.243.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="HjPg/0PI"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1752734883; h=Message-ID:Subject:Date:From:To:Content-Type;
-	bh=mPaod5drLelf/0HvjwlrijNY1NSEwpTKbNA/WUD4u74=;
-	b=HjPg/0PI0MuiVW+eCJQzUVLg5MRpgpLIN3XEjeK5Z3ciZ6jr6ojGPSwsdl+hYbfQjWEn8rwW47Zb9lhHUYNHCDQnMylFE7AuPssmIYcM3UQLYfVK7bjznuPa/2MKpoJYi5TvVvCRdm9yfXPa5pTcuKDStxndwCQdOPjvDlqn384=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0Wj75G.w_1752734881 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 17 Jul 2025 14:48:02 +0800
-Message-ID: <1752733075.7055798-1-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net-next] eea: Add basic driver framework for Alibaba Elastic Ethernet Adaptor
-Date: Thu, 17 Jul 2025 14:17:55 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Wen Gu <guwen@linux.alibaba.com>,
- Philo Lu <lulie@linux.alibaba.com>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Lukas Bulwahn <lukas.bulwahn@redhat.com>,
- Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Alexander Duyck <alexanderduyck@fb.com>,
- Dust Li <dust.li@linux.alibaba.com>
-References: <20250710112817.85741-1-xuanzhuo@linux.alibaba.com>
- <7b957110-c675-438a-b0c2-ebc161a5d8e7@lunn.ch>
- <1752644852.1458855-1-xuanzhuo@linux.alibaba.com>
- <322af656-d359-44d8-9e40-4f997a8b7e0f@lunn.ch>
-In-Reply-To: <322af656-d359-44d8-9e40-4f997a8b7e0f@lunn.ch>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QYEdiZs1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZsqS3Ptgh3/wtXv4AkX8HZiutUx1RInG9HYv3qU74crQqpwHaspY+QfhpM0S13WUn464Hgt5Mk9aTGSfhxlvsNUFg/Hdttn0qY/UqKWkTJ867nLfDOAAXk0fOXYF6yEKPMCxIMtsDbYMpEENicXjEOLm6dgP6K8bij5l3k21MKgjLQx4v2vqN+7kQf0jiZ9ACYen/AlESpBH+NzkcByz9G2wFL849tNUWApReipyBoyk2LyL3/+fpcNgc2+qUGVQPtJSuoS4xmRBKkXh08XEwBBdZXGQ/pObUn9JXvEQVQU5I6YQCFnIqmzmUrz6+qlo78HTPpvcrHpcD/yKBwvIbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=juQxD3G6CYOUToyQHQeTDqbR/JUZsHM0T3QEskU/jOA=;
+ b=o8I5+TBaD/cQvTu0dqykBUxai6KNPIjHABr+EH7ym6Kc7Q6lA+eB3pA+9HgHrLD5IqiOiIZXjNiFM6+XWuvDfykEFLwC7tfLz4xDdTB3uJOTnzeJq+qGI8f3ZhPyoVEjO5QnOstdZqiyzodQXjAd8iEVyIabM+bn/Kuj4ScHlEGktOrdYoHzzxQgZZ5b5F8wtwzsvR01OylcBjiNclDDFJJpZpfpUprn04gT9NjloSmmmni07fCnuGgQImm4s3KD9KbW+XGU7jq72e4NDzrQP/foOmTQfDO/1QuzJ5yh4WOgSCMKqayg1y5XSh8ztCGFroAL8kzkPSX7pnO95B/Kiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=juQxD3G6CYOUToyQHQeTDqbR/JUZsHM0T3QEskU/jOA=;
+ b=QYEdiZs1Hzgv1mZPs4+qFCVQSxb1egqUIGneY5PcdGmZjhqFNW8tL+NXLNfsmhuxSk+a8hSpIbJN75hb9NXToYsRaLNY3o7TzRAse3Lp+hA4GU5oef0hRbBe55Bsf5AVAtaKTcsZFdxbG9ez5NwXWL0PSU1/GdDTTcws8shZqTGwPrGj8znZyQxGYlF+Ntc+AOLdNjssoydOHdJ1gyE6G2Cc+M8OHPoAwmQnDa9hbMXfcpgPPkM+5qZhsn91lrYqozvwtQhD6Xk8hX/kc99mk9+x/eEQzTUngD2sS+xJzTIn4WfL3j8jrj+exq5zGhjfbFFHVkrGRcqlx3qNQr6lTg==
+Received: from MW4PR03CA0017.namprd03.prod.outlook.com (2603:10b6:303:8f::22)
+ by BL3PR12MB6548.namprd12.prod.outlook.com (2603:10b6:208:38f::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.24; Thu, 17 Jul
+ 2025 06:49:01 +0000
+Received: from CY4PEPF0000E9DB.namprd05.prod.outlook.com
+ (2603:10b6:303:8f:cafe::8c) by MW4PR03CA0017.outlook.office365.com
+ (2603:10b6:303:8f::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.23 via Frontend Transport; Thu,
+ 17 Jul 2025 06:49:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CY4PEPF0000E9DB.mail.protection.outlook.com (10.167.241.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8943.21 via Frontend Transport; Thu, 17 Jul 2025 06:49:00 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 16 Jul
+ 2025 23:48:41 -0700
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 16 Jul
+ 2025 23:48:41 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.7)
+ with Microsoft SMTP Server id 15.2.1544.14 via Frontend Transport; Wed, 16
+ Jul 2025 23:48:37 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Saeed Mahameed <saeed@kernel.org>, Leon Romanovsky <leon@kernel.org>
+CC: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Gal Pressman <gal@nvidia.com>, "Saeed
+ Mahameed" <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch
+	<mbloch@nvidia.com>, <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH mlx5-next 0/3] mlx5-next updates 2025-07-17
+Date: Thu, 17 Jul 2025 09:48:12 +0300
+Message-ID: <1752734895-257735-1-git-send-email-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.8.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9DB:EE_|BL3PR12MB6548:EE_
+X-MS-Office365-Filtering-Correlation-Id: 556207a8-0f32-4d48-8862-08ddc4fe02e4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|82310400026|1800799024|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?MtLWhc2CN/YYe7BHXEaN4IFW2f+oaMj+hRlJWGyCV04mrymZbFYL8e4b65c8?=
+ =?us-ascii?Q?c+PPVoLCF4mHARufVn8O78FOQveG57hZWrFY+J3iwEGuUahpKwZMwqefRKR3?=
+ =?us-ascii?Q?7Vb0EwIe22oHL1ncqzVNslVjKZOqfKjBm/UXYx+BjKpyn5cFACocOf9kJVtP?=
+ =?us-ascii?Q?bogOHZjv3DPR/Et5oGxnuQpr4pl+2Ve5EoJeSGftMEVkfKH+KM9jAjeO8blU?=
+ =?us-ascii?Q?BmXW5IZn0bo+GQ7gt441QdDISh2CILjgshBNW8LUtjZ6b4/hc46cmw28IezU?=
+ =?us-ascii?Q?fzv4dkdC0ysgAt5oNyiybAUo860pQ43vSvZePzi7DYo5WdMm5cAOQguI449t?=
+ =?us-ascii?Q?u0+jXyGtYczixCQt0Pe2O0lRfRlC7rVPa4bVYgCnbxXUonuYlFDMcxWvlz2A?=
+ =?us-ascii?Q?gSrVPZ2SXIr037Uyigj7jKTqTl+RzX71RNZkXjAPhk3CLhNG/gjnf5ISHpeF?=
+ =?us-ascii?Q?IdCiRnVCJYdJAzZ4qa4LAKS3s1KhB22nd8J6jNHIu5Ml7TZKxyEoiP6p8QeW?=
+ =?us-ascii?Q?szv1G5ulQAQ7iC2CdicyLT29AWJDb0ha9MzF7BSkNNq/owDLjWELsb9Odlar?=
+ =?us-ascii?Q?xXAtgj1khlkaJiLSSWF0+vRWbbnyJT3CAA/K1SS6hs5NCMHqXArJ/I+FL2iN?=
+ =?us-ascii?Q?xaqM4aY2vOCNtVu3M7O31vtS0BEPlSStc/wfPx0qFBQvYSPWUPw2z32G562S?=
+ =?us-ascii?Q?A89oPgNyNeWujtSaYsLVwLS9NLmiLFdGc3zFk13uTyMqhe+euvqG1JKtZ2db?=
+ =?us-ascii?Q?08FnRl1t3KM7+LlWuYBwbiNaFNUl9dLzd+SPl82Prfl40l7YuR1Qq7A+uEbR?=
+ =?us-ascii?Q?XPVllcNstHa8kcXbsS1kurGnI3PQBaMzXlO1Y2zEhXdJCtuqeIMB2DBPG7hH?=
+ =?us-ascii?Q?WCbZSHU/WjvvT1CAx2vooieu314pByz0NkBeiCxmEqP0Arr/nbgpkc+WHOMJ?=
+ =?us-ascii?Q?J59NNa1Iag8LLfYAMYhpajlW5375LyDO9EbMvSz/9Q2GtbZ3PKR9vfYq6o9I?=
+ =?us-ascii?Q?y0SGZ0WTdjR3EcWfTOueSCr/1oawp6YuoFJXetOPRK4Oo67wCdbz71i75Crk?=
+ =?us-ascii?Q?FXMtweOM0R14n2E+8bUafW7OxRtexmf6psxHFvE4hfluYqNcJzMHNSFb0BIc?=
+ =?us-ascii?Q?1DnQJISexu9SJG7v6jo1Faf46XQGwnHJfBGA+uK1qzDVtmVoVjqk33PhE9Aj?=
+ =?us-ascii?Q?TvBNiGWgAoeCN8TiF7ELEnscJTfIa4NRgzRiNiUrpnzvHXL/PUIRa/mEdv5Y?=
+ =?us-ascii?Q?BMt9sO59R74QOjqgB/PdqSFo5ySGizeiXxptKPN7Ql1IsLaY35ak8gs5zPEr?=
+ =?us-ascii?Q?qAsEb0Cz5dV7ZzDueSbf89SaW00Qh7RqMLmVsClxQ8luMMDdrzDIywG+xXAy?=
+ =?us-ascii?Q?/yc8MH2kMV4n9lEc/ILWJ9lnVV2xwHJeUajb2njYhVOigGNbL/dQOD+qCX/1?=
+ =?us-ascii?Q?pTv21n+37+GMTVGZKzWR3VHgN6KSHeYYAavMVbTP+Ks9lsdeqe5bA+lZNi9x?=
+ =?us-ascii?Q?8rE0ztkQ1HbA+mZ7hPksfpVW7ocXEk/X1XG9?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2025 06:49:00.4707
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 556207a8-0f32-4d48-8862-08ddc4fe02e4
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000E9DB.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6548
 
-On Wed, 16 Jul 2025 18:25:40 +0200, Andrew Lunn <andrew@lunn.ch> wrote:
-> On Wed, Jul 16, 2025 at 01:47:32PM +0800, Xuan Zhuo wrote:
-> > Thank you for your valuable feedback. We've addressed most of the comme=
-nts
-> > and will include the fixes in the next version. A few remaining items a=
-re still
-> > under discussion and listed below for reference.
-> >
-> > On Thu, 10 Jul 2025 15:45:38 +0200, Andrew Lunn <andrew@lunn.ch> wrote:
-> > > > +module_param(aq_timeout, uint, 0644);
-> > >
-> > > No module params please.
-> > >
-> > > > +struct eea_aq_host_info_cfg {
-> > > > +#ifndef EEA_OS_DISTRO
-> > > > +#define EEA_OS_DISTRO		0
-> > > > +#endif
-> > > > +
-> > > > +#ifndef EEA_DRV_TYPE
-> > > > +#define EEA_DRV_TYPE		0
-> > > > +#endif
-> > > > +
-> > > > +#define EEA_OS_LINUX		1
-> > > > +#define EEA_SPEC_VER_MAJOR	1
-> > > > +#define EEA_SPEC_VER_MINOR	0
-> > > > +	__le16	os_type;        /* Linux, Win.. */
-> > > > +	__le16	os_dist;
-> > > > +	__le16	drv_type;
-> > > > +
-> > > > +	__le16	kern_ver_major;
-> > > > +	__le16	kern_ver_minor;
-> > > > +	__le16	kern_ver_sub_minor;
-> > > > +
-> > > > +	__le16	drv_ver_major;
-> > > > +	__le16	drv_ver_minor;
-> > > > +	__le16	drv_ver_sub_minor;
-> > > > +
-> > > > +	__le16	spec_ver_major;
-> > > > +	__le16	spec_ver_minor;
-> > > > +	__le16	pci_bdf;
-> > > > +	__le32	pci_domain;
-> > > > +
-> > > > +	u8      os_ver_str[64];
-> > > > +	u8      isa_str[64];
-> > >
-> > > Why does it care about the OS, kernel version etc?
-> >
-> > Then the device can know the version, the dpu can do something for bug =
-of the
-> > driver.
->
-> That is not a very good explanation. Do you see any other system in
-> Linux were the firmware works around bug in Linux drivers using the
-> kernel version?
+Hi,
 
-Actually, there is one, we noticed that the ena driver has a similar mechan=
-ism.
+This series contains mlx5 shared updates as preparation for upcoming
+features.
 
-	struct ena_admin_host_info
-
->
-> You also need to think about enterprise kernels, like RedHat,
-> Oracle. They don't give a truthful kernel version, they have thousands
-> of patches on top fixing, and creating bugs. How will you handle that?
->
-> Please drop all this, and just fix the bugs in the driver.
+Regards,
+Tariq
 
 
-Fixing bugs in Linux is, of course, the necessary work. However, if certain=
- bugs
-already exist and customers are using such drivers, there is a risk involve=
-d. We
-can record these buggy versions in the DPU, and notify users via dmesg when=
- they
-initialize the driver. This way, customers will be aware that the current
-version might have issues, and they can be guided to upgrade their kernel.
+Jianbo Liu (1):
+  net/mlx5: Add IFC bits to support RSS for IPSec offload
 
-Version-related issues are indeed quite tricky, and we do encounter various
-complications because of them. Therefore, our plan is to manually update our
-version tracking with every code change, combined with some additional
-information.
+Oren Sidi (2):
+  net/mlx5: Add IFC bits and enums for buf_ownership
+  net/mlx5: Expose cable_length field in PFCC register
 
-In the end, if we cannot confidently determine the situation, we will simply
-choose to do nothing =E2=80=94 after all, it won't make things any worse th=
-an they
-already are.
-
->
-> > > > +	start =3D get_jiffies_64();
-> > > > +	while (!(cdesc =3D ering_cq_get_desc(enet->adminq.ring))) {
-> > > > +		cond_resched();
-> > > > +		cpu_relax();
-> > > > +
-> > > > +		timeout =3D secs_to_jiffies(READ_ONCE(aq_timeout));
-> > > > +		if (time_after64(get_jiffies_64(), start + timeout)) {
-> > > > +			netdev_err(enet->netdev, "admin queue timeout. timeout %d\n",
-> > > > +				   READ_ONCE(aq_timeout));
-> > > > +			return -1;
-> > > > +		}
-> > > > +	}
-> > >
-> > > See if you can one of the macros from iopoll.h
-> >
-> > Here we do not access the pci register directly, if we use the iopoll.h
-> > we need to break the api ering_cq_get_desc. So I think we should not use
-> > the api of iopoll.h here.
->
-> #define read_poll_timeout(op, val, cond, sleep_us, timeout_us, \
->                                 sleep_before_read, args...) \
-> ({ \
->         u64 __timeout_us =3D (timeout_us); \
->         unsigned long __sleep_us =3D (sleep_us); \
->         ktime_t __timeout =3D ktime_add_us(ktime_get(), __timeout_us); \
->         might_sleep_if((__sleep_us) !=3D 0); \
->         if (sleep_before_read && __sleep_us) \
->                 usleep_range((__sleep_us >> 2) + 1, __sleep_us); \
->         for (;;) { \
->                 (val) =3D op(args); \
->                 if (cond) \
->                         break; \
->
->
-> op: ering_cq_get_desc.
-> val: cdesc.
-> args: enet->adminq.ring
-> cond: !cdesc
->
-> I might be wrong, but i think you can make this work.
+ .../mellanox/mlx5/core/steering/hws/definer.c | 13 +++--
+ include/linux/mlx5/mlx5_ifc.h                 | 58 ++++++++++++++-----
+ 2 files changed, 53 insertions(+), 18 deletions(-)
 
 
-Ohhh, You're right. I hadn't thought through this issue in detail before, a=
-nd
-yes, doing it this way is indeed feasible. During testing in certain scenar=
-ios
-=E2=80=94 especially in model environments =E2=80=94 the execution speed ca=
-n be quite slow, so
-we sometimes set a larger timeout value to accommodate that.
+base-commit: cd1746cb6555a2238c4aae9f9d60b637a61bf177
+-- 
+2.31.1
 
-However, once we've identified the problem, we would prefer for the operati=
-on to
-time out and exit, so that we can reload the new .ko module. In this proces=
-s, we
-may adjust the module parameters to reduce the originally large timeout val=
-ue,
-forcing it to exit faster. This use case is actually very helpful during our
-development process and significantly improves our efficiency.
-
-That's why you see me using READ_ONCE() when comparing each timeout value =
-=E2=80=94 to
-ensure we always read the latest updated value.
-
-
->
-> > > > +static void eea_get_drvinfo(struct net_device *netdev,
-> > > > +			    struct ethtool_drvinfo *info)
-> > > > +{
-> > > > +	struct eea_net *enet =3D netdev_priv(netdev);
-> > > > +	struct eea_device *edev =3D enet->edev;
-> > > > +
-> > > > +	strscpy(info->driver,   KBUILD_MODNAME,     sizeof(info->driver));
-> > > > +	strscpy(info->bus_info, eea_pci_name(edev), sizeof(info->bus_info=
-));
-> > > > +	snprintf(info->version, sizeof(info->version), "%d.%d.%d",
-> > > > +		 EEA_VER_MAJOR, EEA_VER_MINOR, EEA_VER_SUB_MINOR);
-> > >
-> > > A hard coded version is pointless, because it never changes, yet the
-> > > kernel around the driver changes every week. Don't set version, and
-> > > the core will fill in the git hash, which is useful.
-> >
-> > In our plan, we will increase this version when we change the code.
->
-> So you will be submitting a patch for GregKH for every single stable
-> kernel? That will be around 5 patches, every two weeks, for the next
-> 30 years?
-
-Of course we won't be doing that. Our plan is that whenever we update the c=
-ode
-=E2=80=94 for example, fixing a bug and updating the version from 1.0.0 to =
-1.0.1, or
-introducing a new feature and bumping the version to 1.0.2 =E2=80=94 then w=
-hen this
-change is backported to stable releases, the version should also be backpor=
-ted
-accordingly.
-
->
-> As i said, the driver is not standalone, it is embedded within the
-> kernel. Changes to the kernel can break the driver. When you get a bug
-> report from a customer, and they say version v42 of the driver is
-> broken, isn't the first thing you are going to ask is what kernel
-> version? Is it a vendor kernel? Which vendor?
->
-> If you leave version unfilled, ethtool will report something like:
->
-> version: 6.12.29-amd64
->
-> which is much more useful.
-
-I actually think the approach you mentioned =E2=80=94 printing the hash val=
-ue =E2=80=94 is
-also useful. We may want to reconsider that method as well. But in my opini=
-on,
-this doesn=E2=80=99t affect the current patch. We might adjust that part la=
-ter.
-
->
-> > > > +	mtu =3D le16_to_cpu(cfg->mtu);
-> > > > +	if (mtu < netdev->min_mtu) {
-> > > > +		dev_err(edev->dma_dev, "device MTU too small. %d < %d", mtu, net=
-dev->min_mtu);
-> > > > +		return -EINVAL;
-> > > > +	}
-> > > > +
-> > > > +	netdev->mtu =3D mtu;
-> > > > +	netdev->max_mtu =3D mtu;
-> > >
-> > > Setting mtu the same as max_mtu is unusual? Are you defaulting to jum=
-bo?
-> >
-> > In the cloud the dpu controls this.
->
-> No, linux controls this. This driver controls this, using these line
-> here. Userspace can change it later, but this is the default. And 99%
-> of Linux systems default to 1500. Is max_mtu 1500? Or is it some jumbo
-> value? You at last need to add a comment you are ignoring what
-> everybody else does and are setting the MTU to something larger,
-> because that is what your use case is.
->
-> You are aiming to write an Ethenet driver which looks pretty much like
-> every other Ethernet driver in Linux. When you do something different,
-> you need to justify it, add a comment why your device is special and
-> needs to do something different.
-
-No problem, I'll add a comment to explain this. I didn't realize there was
-anything special about it at first. However, in cloud scenarios, this issue=
- is
-relatively straightforward =E2=80=94 it's a bit different from physical NIC=
- drivers.
-When users purchase a machine or NIC, they=E2=80=99ve already decided wheth=
-er the
-working environment uses 1500 or jumbo frames. Our hardware will return eit=
-her
-1500 or 9000 based on whether jumbo frames are enabled in hardware.
-
-The reason we wrote the driver this way is to automatically configure an MT=
-U of
-9000 in jumbo frame scenarios, so that users don=E2=80=99t have to do much =
-manual
-configuration.
-
-Thanks.
-
->
-> 	Andrew
