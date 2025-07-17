@@ -1,471 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B831D218AC4;
-	Thu, 17 Jul 2025 06:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F4E217723;
+	Thu, 17 Jul 2025 07:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752735510; cv=none; b=UuQYUghDYDE12Z53NePne2Qe7/dgPpAevzmYCH5oMcXlfYxd8ulVY0A2VctOVImDClsEi9LPY2BoMVVwZpPXPB0Aut28nLZ+YUGqrs46sO1uQT2i2xvpiGBvlSlUBM51HPkg9iSQhuI2/Y0te3SrGLBS8D0mjYn1sEpfP7bG8+w=
+	t=1752735672; cv=none; b=ZrNwLOb+SJ+QGhOhexxDKo5jZ6ycpFnYe/6CzW84V5JUFQoDBzmhv0z08Zuw43Ez5nnjWrUbGDFhj4wKQ0sfxyM0A0u3LaP8pKN6t0cOul00pWWM8+pQjI10IptdCZutHYC02prd1GAExs+dC3fcgnkk3i6yvl31bZ9Xz6nEVa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752735510; c=relaxed/simple;
-	bh=yAgzo0iDKo5qKAsCdozZMYWrSjDHH+AyXPr4T/UOJPU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qvNOWnY1vgNjoyWE5vAI7/9O6KHXOm+qE8I1W3M2hFFh5tC6qxAe/kcTN/B042QmO0mVJK2uQj/wQijfGq8ROA8LogrgGYzHitELdGMAvkoDCP146Gf4L18IzvfLMjFof7Y3we79TF0wJW/lr3BkdaUHlhtcSb4ouTkFD35IxJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sx4+Aff0; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sx4+Aff0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF399C4CEE3;
-	Thu, 17 Jul 2025 06:58:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752735510;
-	bh=yAgzo0iDKo5qKAsCdozZMYWrSjDHH+AyXPr4T/UOJPU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Sx4+Aff05yj76+qBta03KUIm9HSB1/KDKW5ORbOO3F3Hw1val80vcI6vy9NQ2/vCc
-	 QHH57slZrZRM064bB2MEt2H/BFxP1ot/5v1I00ewToUX57FDoWYdhWOTau3Adz6/Fx
-	 rpsJEWVMKrL9Pes9C65+dssv8P09qfL57fLjQi4ZdmY+C83mSlFeEivqixGSpDgxI6
-	 NcG5WglVcgW3eaRiRFr2mM55wJQbNwsCnKe2IkitSFds7luVutzpEu8YjbnzLl+LSP
-	 axO4kEkXClLZ9ymVJIJLuZbtxIipdU7XX2koxcGbsB8Tmc7v7ZEKe9GwJRD3H/V5vH
-	 vsFFiKTA6NrGQ==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Thu, 17 Jul 2025 08:57:48 +0200
-Subject: [PATCH net-next v4 7/7] net: airoha: Add airoha_offload.h header
+	s=arc-20240116; t=1752735672; c=relaxed/simple;
+	bh=KQ1Soy0mWqukdCEA5OCmYYHkHskKEoGTFa1vQZDsDDI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=eFcNUkBc/uySNiLRO28QUsdF9QPd1+u8m33JYGkVFjZsgTT0+5C2Lps+eDQtwwD87fOkViTatYleFeUtY8v77pTrZ7IvaxnfyMPJlrZ9n/dUPWXrGVtASREV5DFg/1LbzescLCmqioky0iZRcw9h8rUSUBW4G4pLn1+m0uMBTjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-669ff7000002311f-02-68789fb30538
+From: Byungchul Park <byungchul@sk.com>
+To: willy@infradead.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel_team@skhynix.com,
+	almasrymina@google.com,
+	ilias.apalodimas@linaro.org,
+	harry.yoo@oracle.com,
+	akpm@linux-foundation.org,
+	andrew+netdev@lunn.ch,
+	asml.silence@gmail.com,
+	toke@redhat.com,
+	david@redhat.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-rdma@vger.kernel.org,
+	bpf@vger.kernel.org,
+	vishal.moola@gmail.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	jackmanb@google.com,
+	wei.fang@nxp.com,
+	shenwei.wang@nxp.com,
+	xiaoning.wang@nxp.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	sgoutham@marvell.com,
+	gakula@marvell.com,
+	sbhatta@marvell.com,
+	hkelam@marvell.com,
+	bbhushan2@marvell.com,
+	tariqt@nvidia.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	mbloch@nvidia.com,
+	danishanwar@ti.com,
+	rogerq@kernel.org,
+	nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	aleksander.lobakin@intel.com,
+	horms@kernel.org,
+	m-malladi@ti.com,
+	krzysztof.kozlowski@linaro.org,
+	matthias.schiffer@ew.tq-group.com,
+	robh@kernel.org,
+	imx@lists.linux.dev,
+	intel-wired-lan@lists.osuosl.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH net-next v11 04/12] netdevsim: access ->pp through netmem_desc instead of page
+Date: Thu, 17 Jul 2025 16:00:44 +0900
+Message-Id: <20250717070052.6358-5-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20250717070052.6358-1-byungchul@sk.com>
+References: <20250717070052.6358-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0yTdxTG/b/3dtS9q2R7p/GyGuImERUxOTHTEL/4+sFLhA9T8dKMN7ax
+	oGu1gsmUcdHQaCFeQaqrXJRSAqQVKFrYVphURVcrNkWQIgyC4eKlgi11dq2Xb788T87znJMc
+	Bpf2kHMZZeYhQZ0pV8koMSGeiClfZv09S7HixL/xYKivpeCh/yoJ5kAWXB+wkeA2cXDLFcDA
+	UNOE4E2wlwZLYR8O/o5OCiquTuMQbDhNgOGffAKm6mdwGL49SIPT8R8BZssm8F0bIcB+shmH
+	9qk4GCxyUnA6P4RDaX8BBeEnIRJag5M05NqqMWgda6TB1aQn4dxMFQ7NOQORriEPCY9uGih4
+	lPcQQX9tmIQRR6RwvLqPBr35EgLHHyYKcvNXwXjjGxpenu/AwadPhvclWrht/Bqm740j6K16
+	jEHYbqPhQX8dCR31zRh0PwviMH3qMgW6iSIEj0tvYtB1uYGEynvdWGSPFPCE32Fw1m2kYCjf
+	h8DdPkhA2W96BPVtXhJe2SMnhwIGKnk93z7+AudtTysRf8PUg/Gjxe8x3tt2F+NbLj2leaPl
+	MG+tXspX2J9jvM7rxnlLTSHFW16fofk+j53inSUhgrdWHudHraVo6/wd4h/TBZVSK6iXr9sr
+	VgTMHnSwQpT1xBbEcpCL1iERw7FJXPNLE/WZu4svkFGm2CWc1xvEoxzLruT8g52EDokZnL0f
+	w7VaS7CoMYfdzQ07LkaYYQg2juupSo7KkkiOvvftp8yFnLnhzw85InY1Fzp35oMujXaV59DR
+	TI4tE3GmwgL848C33F/VXqIYSYxoVg2SKjO1GXKlKilBkZ2pzEr4+UCGBUUe7tqv73ba0GtX
+	igOxDJLFSPY2HFFISblWk53hQByDy2IlZ91ahVSSLs8+KqgP7FEfVgkaB5rHELJvJInTR9Kl
+	7D75IWG/IBwU1J9djBHNzUHrx06Uxfx07Jb/QtuWuh27Er5vzzvasmFjadeK735p2R5vTTXG
+	09d1xXVfEanBO4kaV6/3ZOWaVbGiodG12IKhxanb0sA9e9GMx/PMUZF7ZbgrLe2VLP7LkYJu
+	55qk8K6B8i+eJxYNbxr1dQYmyn6Yf8Osmj3jm3Tuu+L/e52hbWPKZhmhUchXLsXVGvn/Rquh
+	wmwDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRzF+923o8FtWV0yCgYVBFlRwZeKEIS6BEVQ0AvKS97acE7ZdOlC
+	MltEK5e9tbQsH+kWObbUZbPHNsxeptPWzFdqhdHs5TLXrLUV/Xe+58D5fP84DC5rIGczSnWW
+	qFELKjklISSbVh9ZbL+ao1haeH0GlNbdpKBj7BoJlokcuPHGQYK3loO77RMYlJobEARDPTTY
+	jvfiMOZ5REHFtXEcQtZCAkpfGAj4XvcTh3ctQzS0un4RYLFthIHq9wQ4jzXi4P4+H4ZOtVJQ
+	aAjjUNJ/lILI6zAJzaFPNBQ4ajBwlz2Onh/raWhvMJFw7mcVDo35b6LAYR8JnU2lFHQe6UDQ
+	fzNCwntXlBqo6aXBZLmEwHW/loICw3II1Adp+HLeg8OAKQl+F+ugpXwmjD8NIOipeolBxOmg
+	oa3/FgmeukYMugZDOIyfLKPAOHoKwcuSJgyelVlJqHzahUX/2AK+yCQGZ73lFAwbBhB43UME
+	XD5sQlB3z0/CV6eBSErm3YHPOO/oq0T87dpujB8p+o3x/ntPMP7OpT6aL7dl8/aaRXyF8wPG
+	G/1enLeZj1O87dsZmu/1OSm+tThM8PbKQ/yIvQRtnrtTsiZVVCl1ombJ2hSJYsLiQ5kVcTmv
+	HSEsH7XTRhTHcOwKrqvoAhnTFLuQ8/tDeEzHs8u4saFHhBFJGJx9PpVrthdjsWA6u5t757oY
+	1QxDsPO57qqkmC2N9ph6flD/OudxFuuDvz1x7EoufO7MX18WY13Pp4uQpBxNMaN4pVqXLihV
+	KxO1aYpctTIncW9Gug1F11SdN3nagYKd612IZZB8qjTFekAhIwWdNjfdhTgGl8dLz3p1Cpk0
+	VcjVi5qMPZpslah1oQSGkM+SbtgmpsjY/UKWmCaKmaLmf4oxcbPz0WLN6pGDHbuUOzzjQt+0
+	25OrytQFtWj47onWtyN6q3OB/NgW8/bmVH1AjirS1p5w96YkSwan+Ab1Cb42jLlifKgtbsmy
+	GvsieXcCz03TwsGPsCZv3ZM5TRlbPdlp5urk7lFJwqv06rA+ddbog32W/dt/tFVuVrmCHQff
+	ZgqOL3JCqxCWLcI1WuEPXGe7KUkDAAA=
+X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250717-airoha-en7581-wlan-offlaod-v4-7-6db178391ed2@kernel.org>
-References: <20250717-airoha-en7581-wlan-offlaod-v4-0-6db178391ed2@kernel.org>
-In-Reply-To: <20250717-airoha-en7581-wlan-offlaod-v4-0-6db178391ed2@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org
-X-Mailer: b4 0.14.2
 
-Move NPU definitions to airoha_offload.h in include/linux/soc/airoha/ in
-order to allow the MT76 driver to access the callback definitions.
+To eliminate the use of struct page in page pool, the page pool users
+should use netmem descriptor and APIs instead.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Make netdevsim access ->pp through netmem_desc instead of page.
+
+Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- drivers/net/ethernet/airoha/airoha_npu.c  |   2 +-
- drivers/net/ethernet/airoha/airoha_npu.h  | 102 ------------
- drivers/net/ethernet/airoha/airoha_ppe.c  |   2 +-
- include/linux/soc/airoha/airoha_offload.h | 259 ++++++++++++++++++++++++++++++
- 4 files changed, 261 insertions(+), 104 deletions(-)
+ drivers/net/netdevsim/netdev.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
-index 90000496b6a234897d4f208ab78d54af14be4aac..00c0144224a7a9e6321e9959c02400e3cb384126 100644
---- a/drivers/net/ethernet/airoha/airoha_npu.c
-+++ b/drivers/net/ethernet/airoha/airoha_npu.c
-@@ -11,9 +11,9 @@
- #include <linux/of_platform.h>
- #include <linux/of_reserved_mem.h>
- #include <linux/regmap.h>
-+#include <linux/soc/airoha/airoha_offload.h>
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index e36d3e846c2d..d6b3a7755f14 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -842,7 +842,8 @@ nsim_pp_hold_write(struct file *file, const char __user *data,
+ 		if (!ns->page)
+ 			ret = -ENOMEM;
+ 	} else {
+-		page_pool_put_full_page(ns->page->pp, ns->page, false);
++		page_pool_put_full_page(pp_page_to_nmdesc(ns->page)->pp,
++					ns->page, false);
+ 		ns->page = NULL;
+ 	}
  
- #include "airoha_eth.h"
--#include "airoha_npu.h"
+@@ -1069,7 +1070,8 @@ void nsim_destroy(struct netdevsim *ns)
  
- #define NPU_EN7581_FIRMWARE_DATA		"airoha/en7581_npu_data.bin"
- #define NPU_EN7581_FIRMWARE_RV32		"airoha/en7581_npu_rv32.bin"
-diff --git a/drivers/net/ethernet/airoha/airoha_npu.h b/drivers/net/ethernet/airoha/airoha_npu.h
-deleted file mode 100644
-index 981b283806fa8347256f6dce756729daa4736e47..0000000000000000000000000000000000000000
---- a/drivers/net/ethernet/airoha/airoha_npu.h
-+++ /dev/null
-@@ -1,102 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/*
-- * Copyright (c) 2025 AIROHA Inc
-- * Author: Lorenzo Bianconi <lorenzo@kernel.org>
-- */
--
--#define NPU_NUM_CORES		8
--#define NPU_NUM_IRQ		6
--
--enum airoha_npu_wlan_set_cmd {
--	WLAN_FUNC_SET_WAIT_PCIE_ADDR,
--	WLAN_FUNC_SET_WAIT_DESC,
--	WLAN_FUNC_SET_WAIT_NPU_INIT_DONE,
--	WLAN_FUNC_SET_WAIT_TRAN_TO_CPU,
--	WLAN_FUNC_SET_WAIT_BA_WIN_SIZE,
--	WLAN_FUNC_SET_WAIT_DRIVER_MODEL,
--	WLAN_FUNC_SET_WAIT_DEL_STA,
--	WLAN_FUNC_SET_WAIT_DRAM_BA_NODE_ADDR,
--	WLAN_FUNC_SET_WAIT_PKT_BUF_ADDR,
--	WLAN_FUNC_SET_WAIT_IS_TEST_NOBA,
--	WLAN_FUNC_SET_WAIT_FLUSHONE_TIMEOUT,
--	WLAN_FUNC_SET_WAIT_FLUSHALL_TIMEOUT,
--	WLAN_FUNC_SET_WAIT_IS_FORCE_TO_CPU,
--	WLAN_FUNC_SET_WAIT_PCIE_STATE,
--	WLAN_FUNC_SET_WAIT_PCIE_PORT_TYPE,
--	WLAN_FUNC_SET_WAIT_ERROR_RETRY_TIMES,
--	WLAN_FUNC_SET_WAIT_BAR_INFO,
--	WLAN_FUNC_SET_WAIT_FAST_FLAG,
--	WLAN_FUNC_SET_WAIT_NPU_BAND0_ONCPU,
--	WLAN_FUNC_SET_WAIT_TX_RING_PCIE_ADDR,
--	WLAN_FUNC_SET_WAIT_TX_DESC_HW_BASE,
--	WLAN_FUNC_SET_WAIT_TX_BUF_SPACE_HW_BASE,
--	WLAN_FUNC_SET_WAIT_RX_RING_FOR_TXDONE_HW_BASE,
--	WLAN_FUNC_SET_WAIT_TX_PKT_BUF_ADDR,
--	WLAN_FUNC_SET_WAIT_INODE_TXRX_REG_ADDR,
--	WLAN_FUNC_SET_WAIT_INODE_DEBUG_FLAG,
--	WLAN_FUNC_SET_WAIT_INODE_HW_CFG_INFO,
--	WLAN_FUNC_SET_WAIT_INODE_STOP_ACTION,
--	WLAN_FUNC_SET_WAIT_INODE_PCIE_SWAP,
--	WLAN_FUNC_SET_WAIT_RATELIMIT_CTRL,
--	WLAN_FUNC_SET_WAIT_HWNAT_INIT,
--	WLAN_FUNC_SET_WAIT_ARHT_CHIP_INFO,
--	WLAN_FUNC_SET_WAIT_TX_BUF_CHECK_ADDR,
--	WLAN_FUNC_SET_WAIT_DEBUG_ARRAY_ADDR,
--};
--
--enum airoha_npu_wlan_get_cmd {
--	WLAN_FUNC_GET_WAIT_NPU_INFO,
--	WLAN_FUNC_GET_WAIT_LAST_RATE,
--	WLAN_FUNC_GET_WAIT_COUNTER,
--	WLAN_FUNC_GET_WAIT_DBG_COUNTER,
--	WLAN_FUNC_GET_WAIT_RXDESC_BASE,
--	WLAN_FUNC_GET_WAIT_WCID_DBG_COUNTER,
--	WLAN_FUNC_GET_WAIT_DMA_ADDR,
--	WLAN_FUNC_GET_WAIT_RING_SIZE,
--	WLAN_FUNC_GET_WAIT_NPU_SUPPORT_MAP,
--	WLAN_FUNC_GET_WAIT_MDC_LOCK_ADDRESS,
--};
--
--struct airoha_npu {
--	struct device *dev;
--	struct regmap *regmap;
--
--	struct airoha_npu_core {
--		struct airoha_npu *npu;
--		/* protect concurrent npu memory accesses */
--		spinlock_t lock;
--		struct work_struct wdt_work;
--	} cores[NPU_NUM_CORES];
--
--	int irqs[NPU_NUM_IRQ];
--
--	struct airoha_foe_stats __iomem *stats;
--
--	struct {
--		int (*ppe_init)(struct airoha_npu *npu);
--		int (*ppe_deinit)(struct airoha_npu *npu);
--		int (*ppe_flush_sram_entries)(struct airoha_npu *npu,
--					      dma_addr_t foe_addr,
--					      int sram_num_entries);
--		int (*ppe_foe_commit_entry)(struct airoha_npu *npu,
--					    dma_addr_t foe_addr,
--					    u32 entry_size, u32 hash,
--					    bool ppe2);
--		int (*wlan_init_reserved_memory)(struct airoha_npu *npu);
--		int (*wlan_send_msg)(struct airoha_npu *npu, int ifindex,
--				     enum airoha_npu_wlan_set_cmd func_id,
--				     u32 data, gfp_t gfp);
--		int (*wlan_get_msg)(struct airoha_npu *npu, int ifindex,
--				    enum airoha_npu_wlan_get_cmd func_id,
--				    u32 *data, gfp_t gfp);
--		u32 (*wlan_get_queue_addr)(struct airoha_npu *npu, int qid,
--					   bool xmit);
--		void (*wlan_set_irq_status)(struct airoha_npu *npu, u32 val);
--		u32 (*wlan_get_irq_status)(struct airoha_npu *npu, int q);
--		void (*wlan_enable_irq)(struct airoha_npu *npu, int q);
--		void (*wlan_disable_irq)(struct airoha_npu *npu, int q);
--	} ops;
--};
--
--struct airoha_npu *airoha_npu_get(struct device *dev, dma_addr_t *stats_addr);
--void airoha_npu_put(struct airoha_npu *npu);
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index c354d536bc66e97ab853792e4ab4273283d2fb91..5d12bde6b20a89b3037ae4405b383d75307e8239 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -7,10 +7,10 @@
- #include <linux/ip.h>
- #include <linux/ipv6.h>
- #include <linux/rhashtable.h>
-+#include <linux/soc/airoha/airoha_offload.h>
- #include <net/ipv6.h>
- #include <net/pkt_cls.h>
+ 	/* Put this intentionally late to exercise the orphaning path */
+ 	if (ns->page) {
+-		page_pool_put_full_page(ns->page->pp, ns->page, false);
++		page_pool_put_full_page(pp_page_to_nmdesc(ns->page)->pp,
++					ns->page, false);
+ 		ns->page = NULL;
+ 	}
  
--#include "airoha_npu.h"
- #include "airoha_regs.h"
- #include "airoha_eth.h"
- 
-diff --git a/include/linux/soc/airoha/airoha_offload.h b/include/linux/soc/airoha/airoha_offload.h
-new file mode 100644
-index 0000000000000000000000000000000000000000..299455abc6dad82791eef6d03adff65f08ed8d2f
---- /dev/null
-+++ b/include/linux/soc/airoha/airoha_offload.h
-@@ -0,0 +1,259 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (c) 2025 AIROHA Inc
-+ * Author: Lorenzo Bianconi <lorenzo@kernel.org>
-+ */
-+#ifndef AIROHA_OFFLOAD_H
-+#define AIROHA_OFFLOAD_H
-+
-+#include <linux/spinlock.h>
-+#include <linux/workqueue.h>
-+
-+#define NPU_NUM_CORES		8
-+#define NPU_NUM_IRQ		6
-+#define NPU_RX0_DESC_NUM	512
-+#define NPU_RX1_DESC_NUM	512
-+
-+/* CTRL */
-+#define NPU_RX_DMA_DESC_LAST_MASK	BIT(29)
-+#define NPU_RX_DMA_DESC_LEN_MASK	GENMASK(28, 15)
-+#define NPU_RX_DMA_DESC_CUR_LEN_MASK	GENMASK(14, 1)
-+#define NPU_RX_DMA_DESC_DONE_MASK	BIT(0)
-+/* INFO */
-+#define NPU_RX_DMA_PKT_COUNT_MASK	GENMASK(31, 28)
-+#define NPU_RX_DMA_PKT_ID_MASK		GENMASK(28, 26)
-+#define NPU_RX_DMA_SRC_PORT_MASK	GENMASK(25, 21)
-+#define NPU_RX_DMA_CRSN_MASK		GENMASK(20, 16)
-+#define NPU_RX_DMA_FOE_ID_MASK		GENMASK(15, 0)
-+/* DATA */
-+#define NPU_RX_DMA_SID_MASK		GENMASK(31, 16)
-+#define NPU_RX_DMA_FRAG_TYPE_MASK	GENMASK(15, 14)
-+#define NPU_RX_DMA_PRIORITY_MASK	GENMASK(13, 10)
-+#define NPU_RX_DMA_RADIO_ID_MASK	GENMASK(9, 6)
-+#define NPU_RX_DMA_VAP_ID_MASK		GENMASK(5, 2)
-+#define NPU_RX_DMA_FRAME_TYPE_MASK	GENMASK(1, 0)
-+
-+struct airoha_npu_rx_dma_desc {
-+	u32 ctrl;
-+	u32 info;
-+	u32 data;
-+	u32 addr;
-+	u64 rsv;
-+} __packed;
-+
-+/* CTRL */
-+#define NPU_TX_DMA_DESC_SCHED_MASK	BIT(31)
-+#define NPU_TX_DMA_DESC_LEN_MASK	GENMASK(30, 18)
-+#define NPU_TX_DMA_DESC_VEND_LEN_MASK	GENMASK(17, 1)
-+#define NPU_TX_DMA_DESC_DONE_MASK	BIT(0)
-+
-+#define NPU_TXWI_LEN	192
-+
-+struct airoha_npu_tx_dma_desc {
-+	u32 ctrl;
-+	u32 addr;
-+	u64 rsv;
-+	u8 txwi[NPU_TXWI_LEN];
-+} __packed;
-+
-+enum airoha_npu_wlan_set_cmd {
-+	WLAN_FUNC_SET_WAIT_PCIE_ADDR,
-+	WLAN_FUNC_SET_WAIT_DESC,
-+	WLAN_FUNC_SET_WAIT_NPU_INIT_DONE,
-+	WLAN_FUNC_SET_WAIT_TRAN_TO_CPU,
-+	WLAN_FUNC_SET_WAIT_BA_WIN_SIZE,
-+	WLAN_FUNC_SET_WAIT_DRIVER_MODEL,
-+	WLAN_FUNC_SET_WAIT_DEL_STA,
-+	WLAN_FUNC_SET_WAIT_DRAM_BA_NODE_ADDR,
-+	WLAN_FUNC_SET_WAIT_PKT_BUF_ADDR,
-+	WLAN_FUNC_SET_WAIT_IS_TEST_NOBA,
-+	WLAN_FUNC_SET_WAIT_FLUSHONE_TIMEOUT,
-+	WLAN_FUNC_SET_WAIT_FLUSHALL_TIMEOUT,
-+	WLAN_FUNC_SET_WAIT_IS_FORCE_TO_CPU,
-+	WLAN_FUNC_SET_WAIT_PCIE_STATE,
-+	WLAN_FUNC_SET_WAIT_PCIE_PORT_TYPE,
-+	WLAN_FUNC_SET_WAIT_ERROR_RETRY_TIMES,
-+	WLAN_FUNC_SET_WAIT_BAR_INFO,
-+	WLAN_FUNC_SET_WAIT_FAST_FLAG,
-+	WLAN_FUNC_SET_WAIT_NPU_BAND0_ONCPU,
-+	WLAN_FUNC_SET_WAIT_TX_RING_PCIE_ADDR,
-+	WLAN_FUNC_SET_WAIT_TX_DESC_HW_BASE,
-+	WLAN_FUNC_SET_WAIT_TX_BUF_SPACE_HW_BASE,
-+	WLAN_FUNC_SET_WAIT_RX_RING_FOR_TXDONE_HW_BASE,
-+	WLAN_FUNC_SET_WAIT_TX_PKT_BUF_ADDR,
-+	WLAN_FUNC_SET_WAIT_INODE_TXRX_REG_ADDR,
-+	WLAN_FUNC_SET_WAIT_INODE_DEBUG_FLAG,
-+	WLAN_FUNC_SET_WAIT_INODE_HW_CFG_INFO,
-+	WLAN_FUNC_SET_WAIT_INODE_STOP_ACTION,
-+	WLAN_FUNC_SET_WAIT_INODE_PCIE_SWAP,
-+	WLAN_FUNC_SET_WAIT_RATELIMIT_CTRL,
-+	WLAN_FUNC_SET_WAIT_HWNAT_INIT,
-+	WLAN_FUNC_SET_WAIT_ARHT_CHIP_INFO,
-+	WLAN_FUNC_SET_WAIT_TX_BUF_CHECK_ADDR,
-+	WLAN_FUNC_SET_WAIT_DEBUG_ARRAY_ADDR,
-+};
-+
-+enum airoha_npu_wlan_get_cmd {
-+	WLAN_FUNC_GET_WAIT_NPU_INFO,
-+	WLAN_FUNC_GET_WAIT_LAST_RATE,
-+	WLAN_FUNC_GET_WAIT_COUNTER,
-+	WLAN_FUNC_GET_WAIT_DBG_COUNTER,
-+	WLAN_FUNC_GET_WAIT_RXDESC_BASE,
-+	WLAN_FUNC_GET_WAIT_WCID_DBG_COUNTER,
-+	WLAN_FUNC_GET_WAIT_DMA_ADDR,
-+	WLAN_FUNC_GET_WAIT_RING_SIZE,
-+	WLAN_FUNC_GET_WAIT_NPU_SUPPORT_MAP,
-+	WLAN_FUNC_GET_WAIT_MDC_LOCK_ADDRESS,
-+};
-+
-+struct airoha_npu {
-+#if (IS_BUILTIN(CONFIG_NET_AIROHA_NPU) || IS_MODULE(CONFIG_NET_AIROHA_NPU))
-+	struct device *dev;
-+	struct regmap *regmap;
-+
-+	struct airoha_npu_core {
-+		struct airoha_npu *npu;
-+		/* protect concurrent npu memory accesses */
-+		spinlock_t lock;
-+		struct work_struct wdt_work;
-+	} cores[NPU_NUM_CORES];
-+
-+	int irqs[NPU_NUM_IRQ];
-+
-+	struct airoha_foe_stats __iomem *stats;
-+
-+	struct {
-+		int (*ppe_init)(struct airoha_npu *npu);
-+		int (*ppe_deinit)(struct airoha_npu *npu);
-+		int (*ppe_flush_sram_entries)(struct airoha_npu *npu,
-+					      dma_addr_t foe_addr,
-+					      int sram_num_entries);
-+		int (*ppe_foe_commit_entry)(struct airoha_npu *npu,
-+					    dma_addr_t foe_addr,
-+					    u32 entry_size, u32 hash,
-+					    bool ppe2);
-+		int (*wlan_init_reserved_memory)(struct airoha_npu *npu);
-+		int (*wlan_send_msg)(struct airoha_npu *npu, int ifindex,
-+				     enum airoha_npu_wlan_set_cmd func_id,
-+				     u32 data, gfp_t gfp);
-+		int (*wlan_get_msg)(struct airoha_npu *npu, int ifindex,
-+				    enum airoha_npu_wlan_get_cmd func_id,
-+				    u32 *data, gfp_t gfp);
-+		u32 (*wlan_get_queue_addr)(struct airoha_npu *npu, int qid,
-+					   bool xmit);
-+		void (*wlan_set_irq_status)(struct airoha_npu *npu, u32 val);
-+		u32 (*wlan_get_irq_status)(struct airoha_npu *npu, int q);
-+		void (*wlan_enable_irq)(struct airoha_npu *npu, int q);
-+		void (*wlan_disable_irq)(struct airoha_npu *npu, int q);
-+	} ops;
-+#endif
-+};
-+
-+#if (IS_BUILTIN(CONFIG_NET_AIROHA_NPU) || IS_MODULE(CONFIG_NET_AIROHA_NPU))
-+struct airoha_npu *airoha_npu_get(struct device *dev, dma_addr_t *stats_addr);
-+void airoha_npu_put(struct airoha_npu *npu);
-+
-+static inline int airoha_npu_wlan_init_reserved_memory(struct airoha_npu *npu)
-+{
-+	return npu->ops.wlan_init_reserved_memory(npu);
-+}
-+
-+static inline int airoha_npu_wlan_send_msg(struct airoha_npu *npu,
-+					   int ifindex,
-+					   enum airoha_npu_wlan_set_cmd cmd,
-+					   u32 data, gfp_t gfp)
-+{
-+	return npu->ops.wlan_send_msg(npu, ifindex, cmd, data, gfp);
-+}
-+
-+static inline int airoha_npu_wlan_get_msg(struct airoha_npu *npu, int ifindex,
-+					  enum airoha_npu_wlan_get_cmd cmd,
-+					  u32 *data, gfp_t gfp)
-+{
-+	return npu->ops.wlan_get_msg(npu, ifindex, cmd, data, gfp);
-+}
-+
-+static inline u32 airoha_npu_wlan_get_queue_addr(struct airoha_npu *npu,
-+						 int qid, bool xmit)
-+{
-+	return npu->ops.wlan_get_queue_addr(npu, qid, xmit);
-+}
-+
-+static inline void airoha_npu_wlan_set_irq_status(struct airoha_npu *npu,
-+						  u32 val)
-+{
-+	npu->ops.wlan_set_irq_status(npu, val);
-+}
-+
-+static inline u32 airoha_npu_wlan_get_irq_status(struct airoha_npu *npu, int q)
-+{
-+	return npu->ops.wlan_get_irq_status(npu, q);
-+}
-+
-+static inline void airoha_npu_wlan_enable_irq(struct airoha_npu *npu, int q)
-+{
-+	npu->ops.wlan_enable_irq(npu, q);
-+}
-+
-+static inline void airoha_npu_wlan_disable_irq(struct airoha_npu *npu, int q)
-+{
-+	npu->ops.wlan_disable_irq(npu, q);
-+}
-+#else
-+static inline struct airoha_npu *airoha_npu_get(struct device *dev,
-+						dma_addr_t *foe_stats_addr)
-+{
-+	return NULL;
-+}
-+
-+static inline void airoha_npu_put(struct airoha_npu *npu)
-+{
-+}
-+
-+static inline int airoha_npu_wlan_init_reserved_memory(struct airoha_npu *npu)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline int airoha_npu_wlan_send_msg(struct airoha_npu *npu,
-+					   int ifindex,
-+					   enum airoha_npu_wlan_set_cmd cmd,
-+					   u32 data, gfp_t gfp)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline int airoha_npu_wlan_get_msg(struct airoha_npu *npu, int ifindex,
-+					  enum airoha_npu_wlan_get_cmd cmd,
-+					  u32 *data, gfp_t gfp)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline u32 airoha_npu_wlan_get_queue_addr(struct airoha_npu *npu,
-+						 int qid, bool xmit)
-+{
-+	return 0;
-+}
-+
-+static inline void airoha_npu_wlan_set_irq_status(struct airoha_npu *npu,
-+						  u32 val)
-+{
-+}
-+
-+static inline u32 airoha_npu_wlan_get_irq_status(struct airoha_npu *npu,
-+						 int q)
-+{
-+	return 0;
-+}
-+
-+static inline void airoha_npu_wlan_enable_irq(struct airoha_npu *npu, int q)
-+{
-+}
-+
-+static inline void airoha_npu_wlan_disable_irq(struct airoha_npu *npu, int q)
-+{
-+}
-+#endif
-+
-+#endif /* AIROHA_OFFLOAD_H */
-
 -- 
-2.50.1
+2.17.1
 
