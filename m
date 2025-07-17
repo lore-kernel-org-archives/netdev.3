@@ -1,21 +1,22 @@
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D8B1E9B31;
-	Thu, 17 Jul 2025 02:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64581EB9E1;
+	Thu, 17 Jul 2025 02:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752719050; cv=none; b=E73OEqAM8/C1ydfaMfb0wIec6MYTTN0nKoFvfTvwr0W2cjmEnBi76gVO44W7CnawV9Ke+pkZtE78n9fAhsCxYjbXloESie2SQYFBvuIzD/uSjS/k54p84SeHgr/RpAe8Rc+LIVW1oBXpQze+ftaU+avsCAkst8EE4lLIv+BH9D4=
+	t=1752719051; cv=none; b=HDhOEf77ojD11leKxNxiopwxmRO8QwzzuC3rppalWh1EYsETXr/05VQH4HiNmjSQGhgbAXEaqd/8P4CxzCJE5I6Yf2a7vlBlZLv0hsFi9mjJXn/HDnwWAPNlgrilygvIL4+SAKBj02yFmIyF3SHThnR9EhwE9XLKfbWHeOQJvig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752719050; c=relaxed/simple;
-	bh=/icmgIGii7N3f0cYDBAVW1Lucr/0sMY6bBurog1528Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FdU7dF/1Vo+jEw3pB1VqblEQJqbGVavzdEXTqk4NGJJD1RqpWcTFDTX6esXdE84Y2bs7eHqFyW851h9ZA4M2yWm+VYZnqPxZgtIKESlb9d+jJutFbHhWrP3+SKhgFBgzsrdJWr6jEpU18g4NjMG8Dxis+rVibwDTCWK0U/YM3lk=
+	s=arc-20240116; t=1752719051; c=relaxed/simple;
+	bh=i0em1g0OYljs2NENi+GHha9uquM7drJTCuBSMnI1Uik=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=YtK2FPFGlZnXOxNUIvVceotpe07U4llpfrgCGraWClj/RWm9opP8xLV9SB/SHU1LBFmrzaD5XybE+m97ZU/LXjA6z7An5BwKzzJ7kgZj1rp2YAaAT4IfrxCppbWcVk3dqwYkQh51g8oryT5hXGrQFJ1TDpY3IVXH7ddraz0dBSY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [211.71.28.34])
-	by APP-03 (Coremail) with SMTP id rQCowACX74CvXnhoGPjBBA--.29325S2;
-	Thu, 17 Jul 2025 10:23:47 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowACX74CvXnhoGPjBBA--.29325S4;
+	Thu, 17 Jul 2025 10:23:57 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
 To: ioana.ciornei@nxp.com,
 	davem@davemloft.net,
@@ -29,10 +30,12 @@ Cc: netdev@vger.kernel.org,
 	akpm@linux-foundation.org,
 	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH net v2 1/3] bus: fsl-mc: Fix potential double device reference in fsl_mc_get_endpoint()
-Date: Thu, 17 Jul 2025 10:23:07 +0800
-Message-Id: <20250717022309.3339976-1-make24@iscas.ac.cn>
+Subject: [PATCH net v2 3/3] dpaa2-switch: Fix device reference count leak in MAC endpoint handling
+Date: Thu, 17 Jul 2025 10:23:09 +0800
+Message-Id: <20250717022309.3339976-3-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250717022309.3339976-1-make24@iscas.ac.cn>
+References: <20250717022309.3339976-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,83 +43,81 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACX74CvXnhoGPjBBA--.29325S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ar4DWF45WFyxGry3AFWkWFg_yoW8tF15pF
-	nxXa40yrWDtryDWr18ZF4qk3W5tr40v343CFy0y3sakF13JrnYqrykGr1FqF18uFZxZa1j
-	qrnrA3WYgr1UGrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
-	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
-	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
+X-CM-TRANSID:rQCowACX74CvXnhoGPjBBA--.29325S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7ur1xZw1kJry3Kw13ZrWkWFg_yoW8ZrWfpF
+	W8Aa45XrykJF47Wrs7ua18ZFy5Ca109a4rWFyxu34fZan8X345WrWUtryjvr109rZ7ZrW5
+	JrWqya109FyDCaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQ214x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
+	8EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr0_GcWl
+	nxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4
+	CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvj
+	eVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I
+	1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOzV1UUUUU
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-The fsl_mc_get_endpoint() function may call fsl_mc_device_lookup() 
-twice, which would increment the device's reference count twice if 
-both lookups find a device. This could lead to a reference count leak.
+The fsl_mc_get_endpoint() function uses device_find_child() for
+localization, which implicitly calls get_device() to increment the
+device's reference count before returning the pointer. However, the
+caller dpaa2_switch_port_connect_mac() fails to properly release this 
+reference in multiple scenarios. We should call put_device() to 
+decrement reference count properly.
+
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
 
 Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: 1ac210d128ef ("bus: fsl-mc: add the fsl_mc_get_endpoint function")
+Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ .../net/ethernet/freescale/dpaa2/dpaa2-switch.c   | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index 7671bd158545..c1c0a4759c7e 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -943,6 +943,7 @@ struct fsl_mc_device *fsl_mc_get_endpoint(struct fsl_mc_device *mc_dev,
- 	struct fsl_mc_obj_desc endpoint_desc = {{ 0 }};
- 	struct dprc_endpoint endpoint1 = {{ 0 }};
- 	struct dprc_endpoint endpoint2 = {{ 0 }};
-+	struct fsl_mc_bus *mc_bus;
- 	int state, err;
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+index 147a93bf9fa9..4643a3380618 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -1448,12 +1448,19 @@ static int dpaa2_switch_port_connect_mac(struct ethsw_port_priv *port_priv)
+ 	if (PTR_ERR(dpmac_dev) == -EPROBE_DEFER)
+ 		return PTR_ERR(dpmac_dev);
  
- 	mc_bus_dev = to_fsl_mc_device(mc_dev->dev.parent);
-@@ -966,6 +967,8 @@ struct fsl_mc_device *fsl_mc_get_endpoint(struct fsl_mc_device *mc_dev,
- 	strcpy(endpoint_desc.type, endpoint2.type);
- 	endpoint_desc.id = endpoint2.id;
- 	endpoint = fsl_mc_device_lookup(&endpoint_desc, mc_bus_dev);
-+	if (endpoint)
-+		return endpoint;
+-	if (IS_ERR(dpmac_dev) || dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type)
++	if (IS_ERR(dpmac_dev))
+ 		return 0;
  
- 	/*
- 	 * We know that the device has an endpoint because we verified by
-@@ -973,17 +976,13 @@ struct fsl_mc_device *fsl_mc_get_endpoint(struct fsl_mc_device *mc_dev,
- 	 * yet discovered by the fsl-mc bus, thus the lookup returned NULL.
- 	 * Force a rescan of the devices in this container and retry the lookup.
- 	 */
--	if (!endpoint) {
--		struct fsl_mc_bus *mc_bus = to_fsl_mc_bus(mc_bus_dev);
--
--		if (mutex_trylock(&mc_bus->scan_mutex)) {
--			err = dprc_scan_objects(mc_bus_dev, true);
--			mutex_unlock(&mc_bus->scan_mutex);
--		}
--
--		if (err < 0)
--			return ERR_PTR(err);
-+	mc_bus = to_fsl_mc_bus(mc_bus_dev);
-+	if (mutex_trylock(&mc_bus->scan_mutex)) {
-+		err = dprc_scan_objects(mc_bus_dev, true);
-+		mutex_unlock(&mc_bus->scan_mutex);
- 	}
-+	if (err < 0)
-+		return ERR_PTR(err);
++	if (dpmac_dev->dev.type != &fsl_mc_bus_dpmac_type) {
++		err = 0;
++		goto out_put_device;
++	}
++
+ 	mac = kzalloc(sizeof(*mac), GFP_KERNEL);
+-	if (!mac)
+-		return -ENOMEM;
++	if (!mac) {
++		err = -ENOMEM;
++		goto out_put_device;
++	}
  
- 	endpoint = fsl_mc_device_lookup(&endpoint_desc, mc_bus_dev);
- 	/*
+ 	mac->mc_dev = dpmac_dev;
+ 	mac->mc_io = port_priv->ethsw_data->mc_io;
+@@ -1483,6 +1490,8 @@ static int dpaa2_switch_port_connect_mac(struct ethsw_port_priv *port_priv)
+ 	dpaa2_mac_close(mac);
+ err_free_mac:
+ 	kfree(mac);
++out_put_device:
++	put_device(&dpmac_dev->dev);
+ 	return err;
+ }
+ 
 -- 
 2.25.1
 
