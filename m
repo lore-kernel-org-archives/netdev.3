@@ -1,67 +1,48 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA91C26529A
-	for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 07:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EEB2652A4;
+	Thu, 17 Jul 2025 07:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752738272; cv=none; b=Lopr94VaC14HZ2QB5daj4bgGDuaXenm51XD1KXfPqag4z9D0pZyI5xrP+DoMNv0w+R0tPEftLlxE7ayOcbECm3hunUoBFe4D8imNuSERkS9zMFz7oGNJgoKeKcFyDEpj1sXS+1iRLcQIBwGTkVDJ6jsyvQ+jzFeT3As6ycDODLI=
+	t=1752738275; cv=none; b=QnciFdzLPC/CfTJmNb9P45RT/fa8oIe+NMTQkboBwGRVA9W6NpzMMBiahT7tKGvuMP3G15kPCRQ0aVGvX/NpURBOuwXOuTGl5V+60YoVUpJsK1retUYOJRy7P49KrfG7aOGPzL4OMKgGXEM5TXOeyRInKTUuE118r97Sc/DFO8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752738272; c=relaxed/simple;
-	bh=NivspibC5Ar+l4fo7XhiPM74d5GHcCKgpPQsarKpa6c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lPxp1t3Hh1d0blYXgeoG6z+vDdWnDX06T0vvG7u+TNjZvZdiyHZUtGx1OZb350W6e9mGZMjAqb9crQmRT88dk26YQVmMPfM3RsCLFi6o0Z+Lnqvxdkj8X82gaGfscPksFVrL+8qGY1+Gc8sPuuO04ioYACCTbymCBJ190vKe9qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hWzJXUHP; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hWzJXUHP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752738269;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ySKCD9H+f5jDMmODuJA3EecbcSXS8rN66SNZmiDu2dY=;
-	b=hWzJXUHPcjuEBHfedAp1ouo1+L/LjJ9GkMTPc1WXd8/uklCpRtn0YCmgBLqa6JT8/ifh1h
-	fAYHkNmu3cDh4W/Npw728nyWUOidAmWZIy30h2xyKHyIXFsibCUktvMHba8B4Q5cTsOdQC
-	VULpERMxfQa0axxCnbU6y2OC5CRU7d0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-465-S4T2HXWyOMaBR22p9Dputw-1; Thu,
- 17 Jul 2025 03:44:26 -0400
-X-MC-Unique: S4T2HXWyOMaBR22p9Dputw-1
-X-Mimecast-MFC-AGG-ID: S4T2HXWyOMaBR22p9Dputw_1752738264
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 52FD61800295;
-	Thu, 17 Jul 2025 07:44:24 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.2])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BF5D5180045B;
-	Thu, 17 Jul 2025 07:44:17 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>,
-	"Junvyyang, Tencent Zhuque Lab" <zhuque@tencent.com>,
-	LePremierHomme <kwqcheii@proton.me>,
-	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 3/5] rxrpc: Fix notification vs call-release vs recvmsg
-Date: Thu, 17 Jul 2025 08:43:43 +0100
-Message-ID: <20250717074350.3767366-4-dhowells@redhat.com>
-In-Reply-To: <20250717074350.3767366-1-dhowells@redhat.com>
-References: <20250717074350.3767366-1-dhowells@redhat.com>
+	s=arc-20240116; t=1752738275; c=relaxed/simple;
+	bh=FJLPW+xkiOM0Q/3rwnBQCTizQkRpW2AF55c+O40YFD0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hTaE9bvijFaBBMdr1OAkoqr4Zvsg63PGS9/8hLrnKKEsYHeuDNHcQQZ3ODtZDHengBRTs85D3NZqAjImXTXAXW9AHBZOgX6oG1s3/lekZIb/x/321ejwSEy1y5A/hOLQXQpBS9Ta381VoQ8otG50dm0nBvp54ieq6QOnmvmMk/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bjPzm6693z6L5H4;
+	Thu, 17 Jul 2025 15:43:16 +0800 (CST)
+Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
+	by mail.maildlp.com (Postfix) with ESMTPS id 41D99140257;
+	Thu, 17 Jul 2025 15:44:30 +0800 (CST)
+Received: from china (10.220.118.114) by frapeml500005.china.huawei.com
+ (7.182.85.13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 17 Jul
+ 2025 09:44:16 +0200
+From: Gur Stavi <gur.stavi@huawei.com>
+To: <kuba@kernel.org>
+CC: <andrew+netdev@lunn.ch>, <christophe.jaillet@wanadoo.fr>,
+	<corbet@lwn.net>, <davem@davemloft.net>, <edumazet@google.com>,
+	<fuguiming@h-partners.com>, <gongfan1@huawei.com>, <guoxin09@huawei.com>,
+	<gur.stavi@huawei.com>, <helgaas@kernel.org>, <horms@kernel.org>,
+	<jdamato@fastly.com>, <lee@trager.us>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <luosifu@huawei.com>,
+	<meny.yossefi@huawei.com>, <mpe@ellerman.id.au>, <netdev@vger.kernel.org>,
+	<pabeni@redhat.com>, <przemyslaw.kitszel@intel.com>,
+	<shenchenyang1@hisilicon.com>, <shijing34@huawei.com>, <sumang@marvell.com>,
+	<vadim.fedorenko@linux.dev>, <wulike1@huawei.com>, <zhoushuai28@huawei.com>,
+	<zhuyikai1@h-partners.com>
+Subject: Re: [PATCH net-next v09 1/8] hinic3: Async Event Queue interfaces
+Date: Thu, 17 Jul 2025 11:02:29 +0300
+Message-ID: <20250717080229.1054761-1-gur.stavi@huawei.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250716183208.26b87aa8@kernel.org>
+References: <20250716183208.26b87aa8@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,146 +50,55 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ frapeml500005.china.huawei.com (7.182.85.13)
 
-When a call is released, rxrpc takes the spinlock and removes it from
-->recvmsg_q in an effort to prevent racing recvmsg() invocations from
-seeing the same call.  Now, rxrpc_recvmsg() only takes the spinlock when
-actually removing a call from the queue; it doesn't, however, take it in
-the lead up to that when it checks to see if the queue is empty.  It *does*
-hold the socket lock, which prevents a recvmsg/recvmsg race - but this
-doesn't prevent sendmsg from ending the call because sendmsg() drops the
-socket lock and relies on the call->user_mutex.
+On Tue, 15 Jul 2025 08:28:36 +0800 Fan Gong wrote:
+> +/* Data provided to/by cmdq is arranged in structs with little endian fields but
+> + * every dword (32bits) should be swapped since HW swaps it again when it
+> + * copies it from/to host memory. This is a mandatory swap regardless of the
+> + * CPU endianness.
 
-Fix this by firstly removing the bit in rxrpc_release_call() that dequeues
-the released call and, instead, rely on recvmsg() to simply discard
-released calls (done in a preceding fix).
+> This comment makes no sense, FWIW. The device writes a byte steam
+> to host memory. For what you're saying to make sense the device would
+> have to intentionally switch the endian based on the host CPU.
+> And if it could do that why wouldn't it do it in the opposite
+> direction, avoiding the swap ? :/
+>
+> I suppose the device is always writing in be32 words, and you should
+> be converting from be32.
+>
 
-Secondly, rxrpc_notify_socket() is abandoned if the call is already marked
-as released rather than trying to be clever by setting both pointers in
-call->recvmsg_link to NULL to trick list_empty().  This isn't perfect and
-can still race, resulting in a released call on the queue, but recvmsg()
-will now clean that up.
+Lets assume the following is a simplified PACKED cmdq struct:
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Junvyyang, Tencent Zhuque Lab <zhuque@tencent.com>
-cc: LePremierHomme <kwqcheii@proton.me>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: stable@vger.kernel.org
----
+struct some_cmdq {
+	__le16 a;
+	__le32 b;
+	__le16 c;
+};
 
-Notes:
-    Changes
-    =======
-    ver #2)
-     - Moved in missing trace note declaration from later patch
+Lets denote x0 as lsb of field x. x3 as msb of 32 bits field.
 
- include/trace/events/rxrpc.h |  3 ++-
- net/rxrpc/call_object.c      | 28 ++++++++++++----------------
- net/rxrpc/recvmsg.c          |  4 ++++
- 3 files changed, 18 insertions(+), 17 deletions(-)
+Byte stream in CPU memory is:
+a0, a1, b0, b1, b2, b3, c0, c1
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index e7dcfb1369b6..de6f6d25767c 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -322,10 +322,10 @@
- 	EM(rxrpc_call_put_kernel,		"PUT kernel  ") \
- 	EM(rxrpc_call_put_poke,			"PUT poke    ") \
- 	EM(rxrpc_call_put_recvmsg,		"PUT recvmsg ") \
-+	EM(rxrpc_call_put_release_recvmsg_q,	"PUT rls-rcmq") \
- 	EM(rxrpc_call_put_release_sock,		"PUT rls-sock") \
- 	EM(rxrpc_call_put_release_sock_tba,	"PUT rls-sk-a") \
- 	EM(rxrpc_call_put_sendmsg,		"PUT sendmsg ") \
--	EM(rxrpc_call_put_unnotify,		"PUT unnotify") \
- 	EM(rxrpc_call_put_userid_exists,	"PUT u-exists") \
- 	EM(rxrpc_call_put_userid,		"PUT user-id ") \
- 	EM(rxrpc_call_see_accept,		"SEE accept  ") \
-@@ -338,6 +338,7 @@
- 	EM(rxrpc_call_see_disconnected,		"SEE disconn ") \
- 	EM(rxrpc_call_see_distribute_error,	"SEE dist-err") \
- 	EM(rxrpc_call_see_input,		"SEE input   ") \
-+	EM(rxrpc_call_see_notify_released,	"SEE nfy-rlsd") \
- 	EM(rxrpc_call_see_recvmsg,		"SEE recvmsg ") \
- 	EM(rxrpc_call_see_release,		"SEE release ") \
- 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
-diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
-index 15067ff7b1f2..918f41d97a2f 100644
---- a/net/rxrpc/call_object.c
-+++ b/net/rxrpc/call_object.c
-@@ -561,7 +561,7 @@ static void rxrpc_cleanup_rx_buffers(struct rxrpc_call *call)
- void rxrpc_release_call(struct rxrpc_sock *rx, struct rxrpc_call *call)
- {
- 	struct rxrpc_connection *conn = call->conn;
--	bool put = false, putu = false;
-+	bool putu = false;
- 
- 	_enter("{%d,%d}", call->debug_id, refcount_read(&call->ref));
- 
-@@ -573,23 +573,13 @@ void rxrpc_release_call(struct rxrpc_sock *rx, struct rxrpc_call *call)
- 
- 	rxrpc_put_call_slot(call);
- 
--	/* Make sure we don't get any more notifications */
-+	/* Note that at this point, the call may still be on or may have been
-+	 * added back on to the socket receive queue.  recvmsg() must discard
-+	 * released calls.  The CALL_RELEASED flag should prevent further
-+	 * notifications.
-+	 */
- 	spin_lock_irq(&rx->recvmsg_lock);
--
--	if (!list_empty(&call->recvmsg_link)) {
--		_debug("unlinking once-pending call %p { e=%lx f=%lx }",
--		       call, call->events, call->flags);
--		list_del(&call->recvmsg_link);
--		put = true;
--	}
--
--	/* list_empty() must return false in rxrpc_notify_socket() */
--	call->recvmsg_link.next = NULL;
--	call->recvmsg_link.prev = NULL;
--
- 	spin_unlock_irq(&rx->recvmsg_lock);
--	if (put)
--		rxrpc_put_call(call, rxrpc_call_put_unnotify);
- 
- 	write_lock(&rx->call_lock);
- 
-@@ -638,6 +628,12 @@ void rxrpc_release_calls_on_socket(struct rxrpc_sock *rx)
- 		rxrpc_put_call(call, rxrpc_call_put_release_sock);
- 	}
- 
-+	while ((call = list_first_entry_or_null(&rx->recvmsg_q,
-+						struct rxrpc_call, recvmsg_link))) {
-+		list_del_init(&call->recvmsg_link);
-+		rxrpc_put_call(call, rxrpc_call_put_release_recvmsg_q);
-+	}
-+
- 	_leave("");
- }
- 
-diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
-index 6990e37697de..7fa7e77f6bb9 100644
---- a/net/rxrpc/recvmsg.c
-+++ b/net/rxrpc/recvmsg.c
-@@ -29,6 +29,10 @@ void rxrpc_notify_socket(struct rxrpc_call *call)
- 
- 	if (!list_empty(&call->recvmsg_link))
- 		return;
-+	if (test_bit(RXRPC_CALL_RELEASED, &call->flags)) {
-+		rxrpc_see_call(call, rxrpc_call_see_notify_released);
-+		return;
-+	}
- 
- 	rcu_read_lock();
- 
+The HW expects the following byte stream:
+b1, b0, a1, a0, c1, c0, b3 ,b2
 
+A native struct would be:
+
+struct some_cmdq {
+	__be16 b_lo;
+	__be16 a;
+	__be16 c;
+	__be16 b_hi;
+}
+
+It does not make sense from code readability perspective.
+While this is a simplified example, there are similar problems in real cmdq
+structs.
+Also group of fields that makes sense (based on their names) for being
+logically near each other become separated in "native" big endian arrangements.
+
+This is a case where driver need to compensate for bad HW decisions.
