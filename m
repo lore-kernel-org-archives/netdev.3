@@ -1,117 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31F52C18A;
-	Thu, 17 Jul 2025 09:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE05912C544;
+	Thu, 17 Jul 2025 09:15:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752743568; cv=none; b=Ofq2pZ2cDDjD8wecKbpmXMQVtqRYdu8mU/heBxBAx/Nq6sms8BILz/jRmVOF7xTau8PGBhAxt6Z2KrzVB0aHI0v/F0OqvF9Mk5uGZWaaYsUAiztRjSUH1bV/cS3Eo0q+UmKj2AxKAFBZSdqqhiq85Vp2GZXxJ8lmNyZdiX96ohI=
+	t=1752743758; cv=none; b=RVXebvS2gWKxZbv1XP4JLMMY/n0GQZZbOgIf+sjmka1mgFwKTQkqrC8gnedoxgUYeVc1384XJStxVx06Tu3wfNzrwNlHyjpSXLdu5SGfirGIZsndfrv60hZQ5EMSfIoKbYmjDYJHWlGFMAZ6bctRCz4sQZEG4UD1So4goW/Kl7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752743568; c=relaxed/simple;
-	bh=FfwpwvFvStXJyzoqvzeHLBsOgdYmdv3YtoCDXdc0Ltk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m4eb72xs9X3OOHk3KYRjBJ/bWOBhWscXeHcXNb7/2lxknhwURF25th++5pqbkdq86sJ8l2UloM29ltImKVwogX+lEoVKMJMAbVUNiUNwFnZGA5O6icwVd6ZDAutgNJa8NK4MPn34oHeigTl2cnkmaqfSBie/9vv0hPtmBmzvn38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FjXc1KzS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752743758; c=relaxed/simple;
+	bh=7xiU6lQp5gZes9PPa5o+K6K/0XTTIF97z1CduNvdwPQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a8+pg/vR/beXdzLUNe+laAdvBjv2JlKl8wQnC+z8aWiJEnmxivniHkINg4231cQVDoQXibNL2fLWXenehnIi4PE/P/vbJ/xbNntjivT7rpqMXgmM27Gc9lJTRLLuKmyuxNSnklWXSuxW7YSkcD2fpYKURwp3oy8EpglopKPQnYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LRMpg/3c; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FjXc1KzS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A0BC4CEE3;
-	Thu, 17 Jul 2025 09:12:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752743568;
-	bh=FfwpwvFvStXJyzoqvzeHLBsOgdYmdv3YtoCDXdc0Ltk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FjXc1KzSobL8KtiQgBk1n9ZYmUhFqG3aHt3Bd3wAmLGgjGl1wCOWG3LeIAdwiN7lF
-	 wRBb3ihKXuBpcRxylaVohY1jPgYQG0kxx0Wf9W9OLnlsnLBcFtdTD/dwZI13X/0mAJ
-	 OUTvZagO24sLI6dbEPRkN0SQrJEawITbP4GKeHp+e+67sivX6er5X7FYbzURtkA7GG
-	 B5hyNU1japqRDiQOCBMWSV6DmcauoIRnDg1z9T9O/0vYyrgLFXS79HZ/ZkKo2UH2Ba
-	 mN5q4aZPFWTjQjFi7LPkscVVsx7eINZi+jMpQ7CIUZF599uv6F56pSFrWgkNyQBfYg
-	 TK0hYH7Ytdnrg==
-Date: Thu, 17 Jul 2025 11:12:45 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "robh@kernel.org" <robh@kernel.org>, 
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
-	"richardcochran@gmail.com" <richardcochran@gmail.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, 
-	Vladimir Oltean <vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>, 
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>, 
-	"pabeni@redhat.com" <pabeni@redhat.com>, "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>, 
-	Frank Li <frank.li@nxp.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"F.S. Peng" <fushi.peng@nxp.com>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: [PATCH v2 net-next 02/14] dt-bindings: net: add nxp,netc-timer
- property
-Message-ID: <20250717-masterful-uppish-impala-b1d256@kuoka>
-References: <20250716073111.367382-1-wei.fang@nxp.com>
- <20250716073111.367382-3-wei.fang@nxp.com>
- <20250717-sceptical-quoll-of-protection-9c2104@kuoka>
- <PAXPR04MB8510EB38C3DCF5713C6AC5C48851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LRMpg/3c"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-adfb562266cso123622666b.0;
+        Thu, 17 Jul 2025 02:15:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752743755; x=1753348555; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XuQuLev07eyWeKHWKCNdTOJWBDIr2mJkHs95ZW2/jJQ=;
+        b=LRMpg/3cLLdpJvFqJGGaQqJ3LxQS8SZzFGKBWTIqPrPXrYIeiFHNVO/oZ/YGE+Z4Vj
+         5bnP9+PbRq2kRgbQBmHKo00Y4oEOJXwF5ruKUDjNp4L9UjjZuX9Qb/G7JiIPuIUUeyXU
+         OPQicYbFX3BhW+aXO+GF6m0n7bwpPx6/rva/y9TVYaNbKCbYDnvC3R9o/Loo56NPHgIp
+         pYK/2yDmdWwo2miqCUwGnGK0FwfKDSdp1ZCNeIUJPLSaFnHTJ0ZbFurNaJxpAw1cDsAU
+         pL5Msv8EZxvXcTN4AWbB+bfjrcK14pq4MFuVMQZOGvS8LmL7JC1qQF9jtvEQcaptZdU4
+         CpPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752743755; x=1753348555;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XuQuLev07eyWeKHWKCNdTOJWBDIr2mJkHs95ZW2/jJQ=;
+        b=DHDCYmpapE6N11YK+X3t4wXHWacmgdMSjdrqfZAd1E6efJUomLhGoA+6CYfEJW90MG
+         O5i7PPZx6ceXcVPX8BYtLwxhVXlXhCk3pnlr57E3a9oXMjoCGdyGOs9kX6xkSL2DWdd1
+         UVwb7KaQnlRbw0xhSkGXta1TWHZno+eazAQWIrB2+fx53FxqlI9wjX53Lg0MF4DZ/xWI
+         UFCsKMYoS4n3UhnvPihpS+b/wgMkv5TRS2zKv0CHs07cZ1+9qsrxT6SWIU4MnhDuGmpi
+         dOsXQ5ol3MPO3ZAnJ0ik5JxEVrER8WFpLuVD/sq3jNa2uxO8LvBs6nFd9TSz0KDWyxii
+         Rtgg==
+X-Forwarded-Encrypted: i=1; AJvYcCU3Hts5IJiyt6oC25xfiPK1hNWDziJRH5RbBmOMtNUrdV30KbkwPiR/zDggRl84yYwBb0M=@vger.kernel.org, AJvYcCVlz651BlNAzeggwJX77ikNqIp7aHNevlMjJp6KYzoWrhEbrORiLY8WcU7isQ4ts6jLPTJ48AAVFvx91qXaaTM=@vger.kernel.org, AJvYcCVmnjhrxkm+msW3vTotmXV71zlBeSBl1o07ggom6xGrkMZqYdMymFlEXPZP+6FWLe2gDtQw5qpDMly8NiKA@vger.kernel.org, AJvYcCWdwQ5PHWp8DnEq3mkpUVNIDMlnL/XQcBaLHV092iVrdx/zOr9atf1rJwKRJQUaF2FXsVw4ZXszeoiwjQ==@vger.kernel.org, AJvYcCWfkinIl8776SBtBvaLNlzJNdX8H9HJUzeE6jwNW427WlFdihUkKPLyWtOSklMtMGX4PAv0lJca@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvCO4TUYWsUNcnraCJjok17itv3Gkt8px9N0dmw5puPOJZh/bt
+	PvARvgvZ0b9Z/HbaPUff/tFTOTduoFvPfDQJ81eTmoEk6ym5h17uvfa1
+X-Gm-Gg: ASbGncuybiAAGLGbKlXTEhNpIawef5cQNsOTpKmBAPQ2uUv+BUvkfg820QuVtg6sdS3
+	Mr/I2a+JHZrp3IxkNSMv+5Ae0idb7xJXHyeNJmpgiejOWlYNHANmz0VJXKZG7vHOLfJqPE2//Ce
+	iqjsy3C7kVhwGTvzwsnhyK/1zc5QcJWPJ8HHIVou08neK4KLhSZMpb6QlYKuwF/a8d4/umEY48L
+	YQSy5plKQ2AfwAPBVKK3hBwQqld6KqxBChChxv2JUJn1hkpK1ucMglwuXtPVvQWaOTkiFIT1Gsh
+	roXv8ubNjdhsgEkflHsEm5Y8n3Jx+Vp8Uu9K9h+h9vfRpJA7zLIZM7kHXNLMuHEgCudL4cLfHe6
+	BC0cwKQlat/NxodrnFNEZs3+TfgZKGloGNMo=
+X-Google-Smtp-Source: AGHT+IEBp5fKU5jFwU7T/e+ghWZTAi9JtfLyT40aPkuCdbIfMXgA11Q2utS7ZVnD76C8XR+vIqhT6w==
+X-Received: by 2002:a17:907:c290:b0:ae9:876a:4f14 with SMTP id a640c23a62f3a-ae9c9ba50a9mr629028466b.59.1752743754656;
+        Thu, 17 Jul 2025 02:15:54 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::1ac? ([2620:10d:c092:600::1:72cc])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-611f7365c7bsm8194693a12.62.2025.07.17.02.15.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Jul 2025 02:15:53 -0700 (PDT)
+Message-ID: <6e4a4ae7-b84e-470d-81e9-a58ecf9c9157@gmail.com>
+Date: Thu, 17 Jul 2025 10:17:17 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB8510EB38C3DCF5713C6AC5C48851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v10 02/12] netmem: use netmem_desc instead of
+ page to access ->pp in __netmem_get_pp()
+To: Mina Almasry <almasrymina@google.com>, Byungchul Park <byungchul@sk.com>,
+ "Lobakin, Aleksander" <aleksander.lobakin@intel.com>
+Cc: willy@infradead.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel_team@skhynix.com,
+ ilias.apalodimas@linaro.org, harry.yoo@oracle.com,
+ akpm@linux-foundation.org, andrew+netdev@lunn.ch, toke@redhat.com,
+ david@redhat.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, linux-rdma@vger.kernel.org,
+ bpf@vger.kernel.org, vishal.moola@gmail.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, jackmanb@google.com, wei.fang@nxp.com, shenwei.wang@nxp.com,
+ xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com,
+ przemyslaw.kitszel@intel.com, sgoutham@marvell.com, gakula@marvell.com,
+ sbhatta@marvell.com, hkelam@marvell.com, bbhushan2@marvell.com,
+ tariqt@nvidia.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+ leon@kernel.org, mbloch@nvidia.com, danishanwar@ti.com, rogerq@kernel.org,
+ nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
+ shayne.chen@mediatek.com, sean.wang@mediatek.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, horms@kernel.org, m-malladi@ti.com,
+ krzysztof.kozlowski@linaro.org, matthias.schiffer@ew.tq-group.com,
+ robh@kernel.org, imx@lists.linux.dev, intel-wired-lan@lists.osuosl.org,
+ linux-arm-kernel@lists.infradead.org, linux-wireless@vger.kernel.org,
+ linux-mediatek@lists.infradead.org
+References: <20250714120047.35901-1-byungchul@sk.com>
+ <20250714120047.35901-3-byungchul@sk.com>
+ <CAHS8izO393X_BDJxnX2d-auhTwrUZK5wYdoAh_tJc0GBf0AqcQ@mail.gmail.com>
+ <CAHS8izNh7aCJOb1WKTx7CXNDPv_UBqFyq2XEHHhqHH=5JPmJCQ@mail.gmail.com>
+ <20250715013626.GA49874@system.software.com>
+ <CAHS8izNgfrN-MimH1uv349AqNudvQJoeOsyHpoBT_QokF3Zv=w@mail.gmail.com>
+ <20250716045124.GB12760@system.software.com>
+ <CAHS8izMK2JA4rGNMRMqQbZtJVEP8b_QPLXzoKNeVgQFzAmdv3g@mail.gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <CAHS8izMK2JA4rGNMRMqQbZtJVEP8b_QPLXzoKNeVgQFzAmdv3g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 17, 2025 at 08:32:38AM +0000, Wei Fang wrote:
-> > On Wed, Jul 16, 2025 at 03:30:59PM +0800, Wei Fang wrote:
-> > > NETC is a multi-function PCIe Root Complex Integrated Endpoint (RCiEP)
-> > > that contains multiple PCIe functions, such as ENETC and Timer. Timer
-> > > provides PTP time synchronization functionality and ENETC provides the
-> > > NIC functionality.
-> > >
-> > > For some platforms, such as i.MX95, it has only one timer instance, so
-> > > the binding relationship between Timer and ENETC is fixed. But for some
-> > > platforms, such as i.MX943, it has 3 Timer instances, by setting the
-> > > EaTBCR registers of the IERB module, we can specify any Timer instance
-> > > to be bound to the ENETC instance.
-> > >
-> > > Therefore, add "nxp,netc-timer" property to bind ENETC instance to a
-> > > specified Timer instance so that ENETC can support PTP synchronization
-> > > through Timer.
-> > >
-> > > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > >
-> > > ---
-> > > v2 changes:
-> > > new patch
-> > > ---
-> > >  .../devicetree/bindings/net/fsl,enetc.yaml    | 23 +++++++++++++++++++
-> > >  1 file changed, 23 insertions(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > > index ca70f0050171..ae05f2982653 100644
-> > > --- a/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > > +++ b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> > > @@ -44,6 +44,13 @@ properties:
-> > >      unevaluatedProperties: false
-> > >      description: Optional child node for ENETC instance, otherwise use
-> > NETC EMDIO.
-> > >
-> > > +  nxp,netc-timer:
-> > 
-> > Heh, you got comments to use existing properties for PTP devices and
-> > consumers. I also said to you to use cell arguments how existing
-> > bindings use it.
-> > 
-> > You did not respond that you are not going to use existing properties.
-> > 
-> > So why existing timestamper is not correct? Is this not a timestamper?
-> > If it is, why do we need to repeat the same discussion...
-> > 
+On 7/16/25 20:41, Mina Almasry wrote:
+...>> I will kill __netmem_get_pp() as you and I prefer.  However,
+>> __netmem_get_pp() users e.i. libeth_xdp_return_va() and
+>> libeth_xdp_tx_fill_buf() should be altered.  I will modify the code like:
+>>
+>> as is: __netmem_get_pp(netmem)
+>> to be: __netmem_nmdesc(netmem)->pp
+>>
+>> Is it okay with you?
+>>
 > 
-> I do not think it is timestamper. Each ENETC has the ability to record the
-> sending/receiving timestamp of the packets on the Tx/Rx BD, but the
-> timestamp comes from the Timer. For platforms have multiple Timer
+> When Pavel and I were saying 'remove __netmem_get_pp', I think we
+> meant to remove the entire concept of unsafe netmem -> page
+> conversions. I think we both don't like them. From this perspective,
+> __netmem_nmdesc(netmem)->pp is just as bad as __netmem_get_pp(netmem).
 
-Isn't this exactly what timestamper is supposed to do?
+Yes. It'd great to have all of them gone. IMHO it's much better
+to let the caller do the casting so at least it's explicit and
+assumptions are not hidden. E.g. instead of
 
-Best regards,
-Krzysztof
+pp = __netmem_nmdesc(netmem)->pp;
+
+It'd be
+
+struct page *page = __netmem_to_page(netmem);
+
+page_to_nmdesc(page)->pp;
+// or page_get_pp(page), or whatever the helper is
+
+That might be easier as well.
+
+-- 
+Pavel Begunkov
 
