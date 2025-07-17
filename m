@@ -1,83 +1,56 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2077.outbound.protection.outlook.com [40.107.92.77])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DB030206D;
-	Thu, 17 Jul 2025 17:04:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752771900; cv=fail; b=iqh2F7ptNA0Izkz0TLS7BnteZXRYtbfDNIIRn5bXyf/tLHr6BV3z8sYP1uOnbzAZF0RQQFD9RXTvhWSJ4CvMBUbTKQjKFL3T7181ZEUP/yUu8iBH8tFA9WerHE4+HjKhqY9Pbc0dRKl23R22yQ3OQjtTReZeoojs6iNZ8//cTDU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752771900; c=relaxed/simple;
-	bh=TJccO/jSBGTmUnNR8Vi/rSyh/pIRh+e5/ij2IP2/Pks=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HqpKCWadOFZQIAsX26zKKPT6/fl4tZgHI3ZguoKA9tLounJdn7P+weWxJksEJKiCOldWumsjKDTkzQaM/jRll38JFOVQ5Kv6VV/qpV+x9Bm1V3zi9nE41qzS2jRTGajBQKvjqNNbeagDghhfpfGLiHXTMlVpqiRmUvYT3letZjQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=W7cIueY6; arc=fail smtp.client-ip=40.107.92.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964BA149C6F
+	for <netdev@vger.kernel.org>; Thu, 17 Jul 2025 17:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752772197; cv=none; b=Y0jvckN9lwyLQim81cCl+lL2KMiYAbYioBD17HZyd7mVvp31pbE41KGRhFhj0I8rwmcNpg8uIzGYPCaJuIdeoZr6viaI3Dla9sMGn5CJH8Ec4syHjFPsHCWnbBPkwdtj0GuEHuilecgEQ3UCeQ/DWMAr5Dx4zzVi65mSjOgfVS4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752772197; c=relaxed/simple;
+	bh=XVjSXiN74gS6WGbl2bnhCkDcLGTo2S9JWJurSow44Oc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Iqm0zaAd5/CQTNjP+e2a1EX3Ndu+EU23a8AseN/Z+3lTn2ZSj1xrp4K12m+oTWJ685L1KWTUxWyXxlznuGDBacNFRjLPiWcPfh0TrGAOvUkoPxAoNIvujSg41r7buWZHalimp8SKW4MckdcWw5WbSs1GbKqWzU+mWch3qf8MUAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=NiSmRnE0; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="W7cIueY6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qksquEtL5aRNgmvQc+E1dZQCgdR9FHhx+KuXEtQxBuMbwIjbDTvvYX6BGfhPwES4pze9T1ReXzYzO9fCpQDVlMSdTQI/RXE0Ik571TY2j2XHhfKWuLNI+3m2dmF8DSegmJxpIarefN09a37iIlTAre3CuUSrHEOtd5C7mQA9jo+e/Bh6P0GSjxYWaGslR3TbvtkGpwinu69FvlnX2BATZQWcRnN7OmV338lPIKts71eIk8ueQcykrgop2O69Tz9uc+30RQbGJwAUPBDk+oSurUvypbw/Mxj+myuT8713sGW4pXlmHZY7Wh/L28B26yBShWim7li05kVuajbM19xH+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dCMjTO/XnrMam6OspOQ4i9ACFILSLvP6WMpsPzskZr0=;
- b=yGtgLTanvVVrTm32zVFCAhyH4J0g8cx6QYXupihV/fV2UypcTcGBHOoiCWJfYSMBO3eKtWtphKuqQiAscTz5m7bKvmXCz7cx2NgH6muqhpW8G3KY6X0yT/w12DTVmtJ1nKfxMMpftrthhRzq988HvKxwOXuh8gDrK2P6ZjwtNvv07dlc0ZdDP3008sUjX6d5o+G9Oys5HuCDcU6ydSLhb8dqQPV+dsKmC0RZL9xhr10t/bBmGf4r7tb2rTa+4UKO5X+Obxd+AHO910JIhN4CV9CevxlSg/YniMIqriOSzLuXMr5YwCO3pjaXPSU85wQWFEnhwIYA9Bm0BXFA+RWuZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dCMjTO/XnrMam6OspOQ4i9ACFILSLvP6WMpsPzskZr0=;
- b=W7cIueY6L8rleAceZWfkdhGjctgtigd2KL9/xBPxsfmtuMSKW0533vBE9L6nmB2aB3hsOdtxEbRgW+PKcBxLyxnubOGWXtfc37+Wnh+OD7CWDcQ6sI4JNr0DDgIJ85Bp4Lk64YlFTWpNTh3ro2wO1Xqj0WfQkB4P4YUOe3IaJwgBkRHokNJol42JJI1bpRNu/YvHQ7jYjYhDPftiT7d7Ytz9ab6BPSPr4sbq+sSiBIrzXdEEZmmoMMR3hX4kPkch77kh37BzxiWMK1bLD0cbYRBuDVynZrXT6zmT3hY/HQgJGiQK48ZRoVUeqiuBQsmfZtHhUkN910rWHlet4R6p2Q==
-Received: from BLAPR03CA0035.namprd03.prod.outlook.com (2603:10b6:208:32d::10)
- by CY5PR12MB6081.namprd12.prod.outlook.com (2603:10b6:930:2b::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Thu, 17 Jul
- 2025 17:04:55 +0000
-Received: from BL6PEPF0001AB77.namprd02.prod.outlook.com
- (2603:10b6:208:32d:cafe::5) by BLAPR03CA0035.outlook.office365.com
- (2603:10b6:208:32d::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.17 via Frontend Transport; Thu,
- 17 Jul 2025 17:04:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BL6PEPF0001AB77.mail.protection.outlook.com (10.167.242.170) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8943.21 via Frontend Transport; Thu, 17 Jul 2025 17:04:54 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 17 Jul
- 2025 10:04:37 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 17 Jul
- 2025 10:04:36 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server id 15.2.1544.14 via Frontend Transport; Thu, 17
- Jul 2025 10:04:32 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>
-CC: Saeed Mahameed <saeed@kernel.org>, Gal Pressman <gal@nvidia.com>, "Leon
- Romanovsky" <leon@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, "Tariq
- Toukan" <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Feng Liu <feliu@nvidia.com>
-Subject: [PATCH net-next 3/3] net/mlx5e: Expose TIS via devlink tx reporter diagnose
-Date: Thu, 17 Jul 2025 20:03:12 +0300
-Message-ID: <1752771792-265762-4-git-send-email-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.8.0
-In-Reply-To: <1752771792-265762-1-git-send-email-tariqt@nvidia.com>
-References: <1752771792-265762-1-git-send-email-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="NiSmRnE0"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56H9e7IL019754;
+	Thu, 17 Jul 2025 10:09:32 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	pfpt0220; bh=jH+tkKRTcksK+481hjLrYVCvFCq5KqPLWW+9RBxwaq8=; b=NiS
+	mRnE0QuHErwUvcSj0L/D+yC0sWe+xlHZHaRXTaWMAP5olJt6zzwbHg/pkMUaRO1P
+	mSYLOpNdyP8LdAC3T5P8TJRQQntqOBrVpls7Qb3sd8F0NbskUc1oynPNTQCaBVE1
+	JznGoyXqg5oTAbGrJ4bqqOIlgRa55aVEnt16NKd5Y29I4/5AKQoxyPNHpOPYzuTh
+	IrOoHz805aQSnyF8TerVUwghjN/MNVjf72UV/j54ir1kK7PEg+cRxJvELIOuAK2o
+	a563ScQAIJOY5uW32dbyWH42QADFoGHgCzqu0LDwT/MfjI8O4cowMlrRNUrkPdiH
+	26Mxb3OchuZ+Ft/oA1Q==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 47xvpc96rt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Jul 2025 10:09:32 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Thu, 17 Jul 2025 10:09:31 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Thu, 17 Jul 2025 10:09:31 -0700
+Received: from hyd1358.marvell.com (unknown [10.29.37.11])
+	by maili.marvell.com (Postfix) with ESMTP id 398B43F7044;
+	Thu, 17 Jul 2025 10:09:26 -0700 (PDT)
+From: Subbaraya Sundeep <sbhatta@marvell.com>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+CC: <gakula@marvell.com>, <hkelam@marvell.com>, <bbhushan2@marvell.com>,
+        <jerinj@marvell.com>, <lcherian@marvell.com>, <sgoutham@marvell.com>,
+        <netdev@vger.kernel.org>, Subbaraya Sundeep <sbhatta@marvell.com>
+Subject: [net-next PATCH v3 00/11] Add CN20K NIX and NPA contexts
+Date: Thu, 17 Jul 2025 22:37:32 +0530
+Message-ID: <1752772063-6160-1-git-send-email-sbhatta@marvell.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,118 +58,76 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB77:EE_|CY5PR12MB6081:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8265839b-81e0-418d-5ca0-08ddc5540d5a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+mjFiqaN43ESv7gUKAdonZeYu3any9Z8b18o+bbs2U7P8x2BQg6jwAYD8zT2?=
- =?us-ascii?Q?JlhLPPXI95gscEf1WRKoLo9RbOa4JFoan1ejuQEpVOx/D6WBViLv1lYPwsNo?=
- =?us-ascii?Q?0Dv7M5rDaXpPWNQClseL+g5oJFLHZhzWyDPIyOKwdkS516/1R7f+vMqCunG6?=
- =?us-ascii?Q?XQ39JvWVn8XksDk6sRMIp+1FPbEABc3pq2OCAtn3rtLpeo+ceUYIj72Rzs7n?=
- =?us-ascii?Q?XOuYXAOVOFZLFJ2jCOWe3vruXYEAioRPc4uk1WrFywGvOu/jv4G62QHqE9D9?=
- =?us-ascii?Q?sKFfk2ab0i3jTNiKJhTjoo3ahu5n5psbJoEnSHsGLtc5eE1w8AGSYMYYYA9J?=
- =?us-ascii?Q?/0O2VMIWGygX7rr03Q2+fZjjlF1gekVncFzSQ0I2bLLbYo5vO5PoBDrX3KcX?=
- =?us-ascii?Q?GS9hKDjdmdvohYSNLBXne6myk+L68x6YTnzafZBwB78cXHOJw3ZNkX+1Lq1i?=
- =?us-ascii?Q?OS20jf064bvIe7Z3eHYDL5MeJIwq/cqcG+eko7+Smpc2+LvDTN/vGiewQl5B?=
- =?us-ascii?Q?7uqZiX6rJeEbHDspZcCs4bnhGCpzO+f9UgsEego+VRdUFcwM50pMut1IKUF0?=
- =?us-ascii?Q?hd/VFg/dXH1dwxSwmVeWCYZ+RB+R5julIEj4oZOWCuYmKOaJUkPldQHlwVaC?=
- =?us-ascii?Q?/KnP+osMdxGE4OUiJ6S9kIi/iZ8t6eQifKitS6Y6vu/uvvmgQ3ssRAuuFNfs?=
- =?us-ascii?Q?5c5mmvbLuplxbgRStDXciKdTjge7dT5iPv3aTUy+Pe9pIoci/yjF39gz6Igu?=
- =?us-ascii?Q?LsBMp+UcB4K0f8ibvgu33CCCcDWSJxiFR1Fnlzc52RVZrsEVnmJ3OP/w01+5?=
- =?us-ascii?Q?M1A0ULmughX0wSInDAO98X5BEXhvxyE0XCcRrYL2qtv6IHDd0b8OTMThd+jv?=
- =?us-ascii?Q?6OA9ZeUV/7vNnL7UKWjJSqsC2FXLHg/HIDKGl5DVEeKpt+QoDzDDx9bIlY9x?=
- =?us-ascii?Q?IbfCYGnCAosPcHSk1SbNX/xY9OvPvW7DG3xHoQU/aitAGZIZAlDoF01KDw7W?=
- =?us-ascii?Q?SAy0aN/O4E1J0MR+2TUyNoQx5biNMBJzj2OvtOmvVOMqyVKAudkChlP7s57c?=
- =?us-ascii?Q?KtDRy5z6oh3oTNNBAsF8NIG0Dv0RA94ffWgXAUNVBciL/CpzQIznw2E1iB1H?=
- =?us-ascii?Q?V/dlznv+nN7IwtskvqH3r9DRSjZ+wxwtUGrRaRLK+tDobWwUJ1u/kQpGSFwB?=
- =?us-ascii?Q?rwGMDb1qhztkoC5upyPKP+oleB3n7kmHh1TYxWMn6Xxpvqx9BxVeo08czVKk?=
- =?us-ascii?Q?GV1r6Sxulx7T451rv/fmIoaNw0dj0oKmro38gqY7bg+wnMeYQ8XMTF316qWm?=
- =?us-ascii?Q?1W69zw0L1XKlgcjZYk4iD+Is1tyEwEbZNXTtjjWOImMCQlqB5QMN499ScJAG?=
- =?us-ascii?Q?Ienq+i5tJRvx8dR5DIDUPaCvdq5P7EzJCnxP8iMsUJ90oI3RhYoljB/vgmqZ?=
- =?us-ascii?Q?4DFqwqp3jLOhTkZNkXxkZFVNOoVbs0I8Sz5ovSSMUv4J6QQZAith2yNTAl5+?=
- =?us-ascii?Q?R/27whA5/diTzVLuZRJphil2voCQf2sGI9/Z?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2025 17:04:54.6552
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8265839b-81e0-418d-5ca0-08ddc5540d5a
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB77.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6081
+X-Authority-Analysis: v=2.4 cv=U8ySDfru c=1 sm=1 tr=0 ts=68792e4c cx=c_pps a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17 a=Wb1JkmetP80A:10 a=lrQ1NdiutdG-QJFGSGwA:9
+X-Proofpoint-GUID: UU7E5MOJ3oA6zz8-sEPIvG9k1xjZzxJX
+X-Proofpoint-ORIG-GUID: UU7E5MOJ3oA6zz8-sEPIvG9k1xjZzxJX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE3MDE1MSBTYWx0ZWRfX/EGXr5kpWKgl 4IX606k4kaIewng25jbwCix2O9vtdqKFybXWKg76V2dcjq959GYJcOkQOfarpfExu1o+AzF4PVs 6u+r/I0QAhlEWUF1jeF9M0t+C3JId5Qg88n4oY/M3LJ4M4v2ZgKukO4gX5edqcxKYsX8zefWZsZ
+ EXr1nBRvGovfuno/aLrT4n5oJemcV/uvgdBHLPfliaDzuTYsE3zqh2t16AAdXEvJe6gvaitGfrm GGdVyAEzW4y48EMSS0aYgzrtErOwSjjV2AWSwtkms5VSnq2VN82X176ci8goTZv1VVSlAZ+IxEy vcQFb2325x6/5nUfjZe+lUu1GxSs2xRKL8Ym5r9g8J+Hin6s3baMzyeYp/KGfMaJ6hJ6RIiQQ8s
+ AU/iII5XiIeNQ0HGuWT7D+0Kf91qfRdr6GjwfblUipO43Gi72ln6nJF2ffBdOEWl06GkyVa8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-17_02,2025-07-17_02,2025-03-28_01
 
-From: Feng Liu <feliu@nvidia.com>
+The hardware contexts of blocks NIX and NPA in CN20K silicon are
+different than that of previous silicons CN10K and CN9XK. This
+patchset adds the new contexts of CN20K in AF and PF drivers.
+A new mailbox for enqueuing contexts to hardware is added.
 
-Underneath "TIS Config" tag expose TIS diagnostic information.
-Expose the tisn of each TC under each lag port.
+Patch 1 simplifies context writing and reading by using max context
+size supported by hardware instead of using each context size.
+Patch 2 and 3 adds NIX block contexts in AF driver and extends
+debugfs to display those new contexts
+Patch 4 and 5 adds NPA block contexts in AF driver and extends
+debugfs to display those new contexts
+Patch 6 omits NDC configuration since CN20K NPA does not use NDC
+for caching its contexts
+Patch 7 and 8 uses the new NIX and NPA contexts in PF/VF driver.
+Patch 9, 10 and 11 are to support more bandwidth profiles present in
+CN20K for RX ratelimiting and to display new profiles in debugfs
 
-$ sudo devlink health diagnose auxiliary/mlx5_core.eth.2/131072 reporter tx
-......
-  TIS Config:
-      lag port: 0 tc: 0 tisn: 0
-      lag port: 1 tc: 0 tisn: 8
-......
+v3 changes:
+ Added static_assert as suggested by Michal Swiatkowski
+v2 changes:
+ Fixed string fortifier warnings by padding structures
 
-Signed-off-by: Feng Liu <feliu@nvidia.com>
-Reviewed-by: Aya Levin <ayal@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- .../mellanox/mlx5/core/en/reporter_tx.c       | 25 +++++++++++++++++++
- 1 file changed, 25 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-index bd96988e102c..85d5cb39b107 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-@@ -311,6 +311,30 @@ mlx5e_tx_reporter_diagnose_common_config(struct devlink_health_reporter *reporte
- 	mlx5e_health_fmsg_named_obj_nest_end(fmsg);
- }
- 
-+static void
-+mlx5e_tx_reporter_diagnose_tis_config(struct devlink_health_reporter *reporter,
-+				      struct devlink_fmsg *fmsg)
-+{
-+	struct mlx5e_priv *priv = devlink_health_reporter_priv(reporter);
-+	u8 num_tc = mlx5e_get_dcb_num_tc(&priv->channels.params);
-+	u32 tc, i, tisn;
-+
-+	devlink_fmsg_arr_pair_nest_start(fmsg, "TIS Config");
-+	for (i = 0; i < mlx5e_get_num_lag_ports(priv->mdev); i++) {
-+		for (tc = 0; tc < num_tc; tc++) {
-+			tisn = mlx5e_profile_get_tisn(priv->mdev, priv,
-+						      priv->profile, i, tc);
-+
-+			devlink_fmsg_obj_nest_start(fmsg);
-+			devlink_fmsg_u32_pair_put(fmsg, "lag port", i);
-+			devlink_fmsg_u32_pair_put(fmsg, "tc", tc);
-+			devlink_fmsg_u32_pair_put(fmsg, "tisn", tisn);
-+			devlink_fmsg_obj_nest_end(fmsg);
-+		}
-+	}
-+	devlink_fmsg_arr_pair_nest_end(fmsg);
-+}
-+
- static int mlx5e_tx_reporter_diagnose(struct devlink_health_reporter *reporter,
- 				      struct devlink_fmsg *fmsg,
- 				      struct netlink_ext_ack *extack)
-@@ -326,6 +350,7 @@ static int mlx5e_tx_reporter_diagnose(struct devlink_health_reporter *reporter,
- 		goto unlock;
- 
- 	mlx5e_tx_reporter_diagnose_common_config(reporter, fmsg);
-+	mlx5e_tx_reporter_diagnose_tis_config(reporter, fmsg);
- 	devlink_fmsg_arr_pair_nest_start(fmsg, "SQs");
- 
- 	for (i = 0; i < priv->channels.num; i++) {
+Linu Cherian (4):
+  octeontx2-af: Add cn20k NPA block contexts
+  octeontx2-af: Extend debugfs support for cn20k NPA
+  octeontx2-af: Skip NDC operations for cn20k
+  octeontx2-pf: Initialize cn20k specific aura and pool contexts
+
+Subbaraya Sundeep (7):
+  octeontx2-af: Simplify context writing and reading to hardware
+  octeontx2-af: Add cn20k NIX block contexts
+  octeontx2-af: Extend debugfs support for cn20k NIX
+  octeontx2-pf: Initialize new NIX SQ context for cn20k
+  octeontx2-af: Accommodate more bandwidth profiles for cn20k
+  octeontx2-af: Display new bandwidth profiles too in debugfs
+  octeontx2-pf: Use new bandwidth profiles in receive queue
+
+ .../ethernet/marvell/octeontx2/af/Makefile    |   3 +-
+ .../marvell/octeontx2/af/cn20k/debugfs.c      | 216 ++++++++++++
+ .../marvell/octeontx2/af/cn20k/debugfs.h      |  28 ++
+ .../ethernet/marvell/octeontx2/af/cn20k/nix.c |  20 ++
+ .../ethernet/marvell/octeontx2/af/cn20k/npa.c |  21 ++
+ .../marvell/octeontx2/af/cn20k/struct.h       | 326 ++++++++++++++++++
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  |  73 ++++
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |   3 +
+ .../marvell/octeontx2/af/rvu_debugfs.c        |  39 ++-
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   |  67 ++--
+ .../ethernet/marvell/octeontx2/af/rvu_npa.c   |  29 +-
+ .../marvell/octeontx2/af/rvu_struct.h         |  21 +-
+ .../ethernet/marvell/octeontx2/nic/cn10k.c    |  10 +
+ .../ethernet/marvell/octeontx2/nic/cn20k.c    | 212 +++++++++++-
+ .../marvell/octeontx2/nic/otx2_common.c       |  14 +
+ .../marvell/octeontx2/nic/otx2_common.h       |  10 +
+ 16 files changed, 1038 insertions(+), 54 deletions(-)
+ create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c
+ create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.h
+ create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/cn20k/nix.c
+ create mode 100644 drivers/net/ethernet/marvell/octeontx2/af/cn20k/npa.c
+
 -- 
-2.31.1
+2.34.1
 
