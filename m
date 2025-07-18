@@ -1,55 +1,61 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11779478
-	for <netdev@vger.kernel.org>; Fri, 18 Jul 2025 00:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA1B1EF1D
+	for <netdev@vger.kernel.org>; Fri, 18 Jul 2025 00:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752797661; cv=none; b=T2s0a64scas4jA5jmFG9kFrEGbEXjSjwEZHBQEaLgVpwYKa6i/7wLTV5wLH4NGv8NXJR8v9Ny/8Gm6XLbsNYgaiEi/gcYvRb51swI+GPC+1UbnE0ZZ5L4OjmAQZd8HCuGh/rVR+yjjobjHlNtwPAHGb+DARQ3olQJVzq+ZDTp/k=
+	t=1752797663; cv=none; b=E71JPsqDz5UKFbi6fEBzFbi6OuV6Enzd/8gsA91/kMyJ+tdjLViLqVGv6Lf7Axr9F+ufyyCwiqxHZ8J82dNLI6DldBdCUXBNYySZIlj2x51VsKawIrj7aXJBwFb933mMNSNhbQO2DayAE1pICK0mECHJ1k//NI/Trl5vszUf8Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752797661; c=relaxed/simple;
-	bh=VHHNB2MwVgwGwQ+xTyeeu9wxDG/2ySU3eiEJpAVpU7Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gW1kmoY4jztZ9oda1qSsmRPVBibmnZA6O/m/K9xrO63JGJUeLErD6AssxbabmGrW3vvfd/OJvxRfW6bE5kRCuFV1JCidLkwC8wLKRe5MmcIAHy/GtGNU0whzdpWlkmmTgFbBvcXnHayBdQzMh3ZzhEtMA700vVugGztjk50s79U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y1OYWgzU; arc=none smtp.client-ip=198.175.65.11
+	s=arc-20240116; t=1752797663; c=relaxed/simple;
+	bh=ljbvlVxTlhjFo3SaePkeosgc0qu/xefuvNJDbQHT7iI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nfcWgp1OP6RJb3oZnCa8/5fPJ1lO4mjjXCfE6ySv2vqQTRwOUIcr3YMldESUBVw0GtpINEmdSOozGExsnEZqVjveSWC0dA+WIAI8RaAEy2pogjXXl/fuTUTD9tMx2JR2dTvvLEce6nGdaVyK0a2It3Wf2+bKaTUcgyPMvaVEZr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZAbOcayZ; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y1OYWgzU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZAbOcayZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752797660; x=1784333660;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=VHHNB2MwVgwGwQ+xTyeeu9wxDG/2ySU3eiEJpAVpU7Q=;
-  b=Y1OYWgzUvY+QgbMXMGV81FT+O2psujw9R+QlWnQOIBu0dt8HWHQVJQZR
-   bpCpNk1C7TVo+zeJxd+Y5lDxvCjDn70pva8AALi1/wSGqswuJAVYKoYXo
-   TJCPtEFHyS4NREG46DgccLZEh5Ldajh+lEDVZvEejbnbOsB2ztnX64cED
-   wBisIHHWZyuQA8dL6qrdA1QNhhSXr1NuZrH3FqEyEa7ML2Y5yOEC0T0HC
-   6WQ4yhkP2W+VH4SI6HxGed3jbp1EMky3Jv8Pb+7cObLt+e/9wU34b58kH
-   wjMDkzjZhG8IcjaEGgy9inu72l6KGsP2bsBHVOlPIDrgNv242YSRrAccN
+  t=1752797662; x=1784333662;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ljbvlVxTlhjFo3SaePkeosgc0qu/xefuvNJDbQHT7iI=;
+  b=ZAbOcayZWtsRLb+SsHMRbykXNHMuHErAwNVRa4ed/XconoXgMEE56dxX
+   IjmkmbDkLtDiGW4WzcRBFfmBv7b50Dq01xb+yjo3xx8izdLFeW3/cQ3PA
+   F6Ed8cM3C7ybmiMDjMHhL5eNhJZQ3ZvZhy4pMpr+PsQOFNyGJQSQmYstm
+   YFe44MJF1WMrCssQoRhS89tFybGoMHQFzr0aPP68/IGKwsqJfI1Ow5mLz
+   Vt0JCh55ZQ/0v7gnQAF3I8GxnR8f7del66IcpkEcSRPEpQAUhThKl6+gU
+   MHZd4awMYb35fWXRT+l7I5t2+/hFdo3kY6h+i79veK5qak7EHWiIN39hS
    g==;
-X-CSE-ConnectionGUID: Pj5gmo9RRIWOPmSbPDbPaw==
-X-CSE-MsgGUID: DFSRh/vCTM+1s8L2nHPzvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="65345424"
+X-CSE-ConnectionGUID: gVgTtZq7S7C9Rpjn2iWZlg==
+X-CSE-MsgGUID: 8S+IguVXT/+3H+QRpeDSjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="65345430"
 X-IronPort-AV: E=Sophos;i="6.16,320,1744095600"; 
-   d="scan'208";a="65345424"
+   d="scan'208";a="65345430"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 17:14:20 -0700
-X-CSE-ConnectionGUID: ghu+GQr1QXKu3cBBUt8qkw==
-X-CSE-MsgGUID: T2tZTX73SqWHgcXl9Tg7CQ==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 17:14:21 -0700
+X-CSE-ConnectionGUID: DDJ1J2sPT/OXjUjDfQyxfg==
+X-CSE-MsgGUID: OhcP73LlQ0+l9A80gO+aVQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,320,1744095600"; 
-   d="scan'208";a="188908842"
+   d="scan'208";a="188908850"
 Received: from dcskidmo-m40.jf.intel.com ([10.166.241.13])
-  by fmviesa001.fm.intel.com with ESMTP; 17 Jul 2025 17:14:18 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 17 Jul 2025 17:14:20 -0700
 From: Joshua Hay <joshua.a.hay@intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
-	Joshua Hay <joshua.a.hay@intel.com>
-Subject: [Intel-wired-lan] [PATCH net v2 0/6] idpf: replace Tx flow scheduling buffer ring with buffer pool
-Date: Thu, 17 Jul 2025 17:21:44 -0700
-Message-Id: <20250718002150.2724409-1-joshua.a.hay@intel.com>
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Luigi Rizzo <lrizzo@google.com>,
+	Brian Vazquez <brianvv@google.com>,
+	Madhu Chittim <madhu.chittim@intel.com>
+Subject: [Intel-wired-lan] [PATCH net v2 2/6] idpf: improve when to set RE bit logic
+Date: Thu, 17 Jul 2025 17:21:46 -0700
+Message-Id: <20250718002150.2724409-3-joshua.a.hay@intel.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20250718002150.2724409-1-joshua.a.hay@intel.com>
+References: <20250718002150.2724409-1-joshua.a.hay@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,48 +64,112 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series fixes a stability issue in the flow scheduling Tx send/clean
-path that results in a Tx timeout.
+Track the gap between next_to_use and the last RE index. Set RE again
+if the gap is large enough to ensure RE bit is set frequently. This is
+critical before removing the stashing mechanisms because the
+opportunistic descriptor ring cleaning from the out-of-order completions
+will go away. Previously the descriptors would be "cleaned" by both the
+descriptor (RE) completion and the out-of-order completions. Without the
+latter, we must ensure the RE bit is set more frequently. Otherwise,
+it's theoretically possible for the descriptor ring next_to_clean to
+never advance.  The previous implementation was dependent on the start
+of a packet falling on a 64th index in the descriptor ring, which is not
+guaranteed with large packets.
 
-The existing guardrails in the Tx path were not sufficient to prevent
-the driver from reusing completion tags that were still in flight (held
-by the HW).  This collision would cause the driver to erroneously clean
-the wrong packet thus leaving the descriptor ring in a bad state.
-
-The main point of this refactor is to replace the flow scheduling buffer
-ring with a large pool/array of buffers.  The completion tag then simply
-is the index into this array.  The driver tracks the free tags and pulls
-the next free one from a refillq.  The cleaning routines simply use the
-completion tag from the completion descriptor to index into the array to
-quickly find the buffers to clean.
-
-All of the code to support the refactor is added first to ensure traffic
-still passes with each patch.  The final patch then removes all of the
-obsolete stashing code.
-
+Signed-off-by: Luigi Rizzo <lrizzo@google.com>
+Signed-off-by: Brian Vazquez <brianvv@google.com>
+Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
 ---
-v2:
-- Add a new patch "idpf: simplify and fix splitq Tx packet rollback
-  error path" that fixes a bug in the error path. It also sets up
-  changes in patch 4 that are necessary to prevent a crash when a packet
-  rollback occurs using the buffer pool.
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 20 +++++++++++++++++++-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h |  6 ++++--
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
-v1:
-https://lore.kernel.org/intel-wired-lan/c6444d15-bc20-41a8-9230-9bb266cb2ac6@molgen.mpg.de/T/#maf9f464c598951ee860e5dd24ef8a451a488c5a0
-
-Joshua Hay (6):
-  idpf: add support for Tx refillqs in flow scheduling mode
-  idpf: improve when to set RE bit logic
-  idpf: simplify and fix splitq Tx packet rollback error path
-  idpf: replace flow scheduling buffer ring with buffer pool
-  idpf: stop Tx if there are insufficient buffer resources
-  idpf: remove obsolete stashing code
-
- .../ethernet/intel/idpf/idpf_singleq_txrx.c   |  61 +-
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 723 +++++++-----------
- drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  87 +--
- 3 files changed, 356 insertions(+), 515 deletions(-)
-
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index d5908126163d..3359b3b52625 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -294,6 +294,8 @@ static int idpf_tx_desc_alloc(const struct idpf_vport *vport,
+ 	 */
+ 	idpf_queue_change(GEN_CHK, refillq);
+ 
++	tx_q->last_re = tx_q->desc_count - IDPF_TX_SPLITQ_RE_MIN_GAP;
++
+ 	return 0;
+ 
+ err_alloc:
+@@ -2912,6 +2914,21 @@ static void idpf_tx_set_tstamp_desc(union idpf_flex_tx_ctx_desc *ctx_desc,
+ { }
+ #endif /* CONFIG_PTP_1588_CLOCK */
+ 
++/**
++ * idpf_tx_splitq_need_re - check whether RE bit needs to be set
++ * @tx_q: pointer to Tx queue
++ *
++ * Return: true if RE bit needs to be set, false otherwise
++ */
++static bool idpf_tx_splitq_need_re(struct idpf_tx_queue *tx_q)
++{
++	int gap = tx_q->next_to_use - tx_q->last_re;
++
++	gap += (gap < 0) ? tx_q->desc_count : 0;
++
++	return gap >= IDPF_TX_SPLITQ_RE_MIN_GAP;
++}
++
+ /**
+  * idpf_tx_splitq_frame - Sends buffer on Tx ring using flex descriptors
+  * @skb: send buffer
+@@ -2998,9 +3015,10 @@ static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
+ 		 * MIN_RING size to ensure it will be set at least once each
+ 		 * time around the ring.
+ 		 */
+-		if (!(tx_q->next_to_use % IDPF_TX_SPLITQ_RE_MIN_GAP)) {
++		if (idpf_tx_splitq_need_re(tx_q)) {
+ 			tx_params.eop_cmd |= IDPF_TXD_FLEX_FLOW_CMD_RE;
+ 			tx_q->txq_grp->num_completions_pending++;
++			tx_q->last_re = tx_q->next_to_use;
+ 		}
+ 
+ 		if (skb->ip_summed == CHECKSUM_PARTIAL)
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+index 6924bee6ff5b..65acad4c929d 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+@@ -609,6 +609,8 @@ libeth_cacheline_set_assert(struct idpf_rx_queue, 64,
+  * @netdev: &net_device corresponding to this queue
+  * @next_to_use: Next descriptor to use
+  * @next_to_clean: Next descriptor to clean
++ * @last_re: last descriptor index that RE bit was set
++ * @tx_max_bufs: Max buffers that can be transmitted with scatter-gather
+  * @cleaned_bytes: Splitq only, TXQ only: When a TX completion is received on
+  *		   the TX completion queue, it can be for any TXQ associated
+  *		   with that completion queue. This means we can clean up to
+@@ -619,7 +621,6 @@ libeth_cacheline_set_assert(struct idpf_rx_queue, 64,
+  *		   only once at the end of the cleaning routine.
+  * @clean_budget: singleq only, queue cleaning budget
+  * @cleaned_pkts: Number of packets cleaned for the above said case
+- * @tx_max_bufs: Max buffers that can be transmitted with scatter-gather
+  * @stash: Tx buffer stash for Flow-based scheduling mode
+  * @refillq: Pointer to refill queue
+  * @compl_tag_bufid_m: Completion tag buffer id mask
+@@ -662,6 +663,8 @@ struct idpf_tx_queue {
+ 	__cacheline_group_begin_aligned(read_write);
+ 	u16 next_to_use;
+ 	u16 next_to_clean;
++	u16 last_re;
++	u16 tx_max_bufs;
+ 
+ 	union {
+ 		u32 cleaned_bytes;
+@@ -669,7 +672,6 @@ struct idpf_tx_queue {
+ 	};
+ 	u16 cleaned_pkts;
+ 
+-	u16 tx_max_bufs;
+ 	struct idpf_txq_stash *stash;
+ 	struct idpf_sw_queue *refillq;
+ 
 -- 
 2.39.2
 
