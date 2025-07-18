@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950162E92AB
-	for <netdev@vger.kernel.org>; Fri, 18 Jul 2025 18:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A892E88AB
+	for <netdev@vger.kernel.org>; Fri, 18 Jul 2025 18:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752864692; cv=none; b=Arote9VHQfC2QNMnfF1lt0jrM5ySlGtpSxD6O+iNzqVADOiH1tbde30jOzVacYxzSJzznPU5suTzKcoernp2urgwOUdMUYZj8PpIDKnXbyj658+Bj7vMtmDSMaRa+SQYxwLczSg50SX5r1XV9ho503xWnDofA85e8M0b7TRaPVk=
+	t=1752864693; cv=none; b=hL9NCpecaiVPCnesmtyBBBKt/SXMGfWNPZT0oZvaMINserKbaoB/rddMkZSb6Pgrd/etpVR2e02tXMmt4xzTiOapECcPKC9ryiV7Zcl9IN87RN62u67H5S7W+Esege7LgNsWXYt2abmrwCwsxhm6l6Tunk0Leyok8dCBiHPijUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752864692; c=relaxed/simple;
-	bh=Tu7SBkY4In4RAY4eyBvHFGljmhfw8osd2Y5k8s5p5Co=;
+	s=arc-20240116; t=1752864693; c=relaxed/simple;
+	bh=cykOqrsbgsjq602xlMnmGbwDj5FfMBEAq/MYI35EVIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9DMS9rhg6KrH5q+vY2KwLbR0+XCotsP/6PwQCsdroo6OfYYqZAKhgs5t6ebpXerO3h/LrqtekdvXRGDZkREcZpkhwmKkKOcic9oohlepAbwCJf+on0H3+znKHeaRURSkQgAo6p3odFb6644/AF8A+J6LPBiuzglwXJOFIM3gY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WMXHVGb3; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=SgJt13BtnfDvxq9YE9cva/ht271vd0kS+GG4imbp0aDLOhqiucLwLpD1fQWnnKh76RGAw9WXWQE5V6KYA6vqHeZvSoMscXdCDpGfWk6PHjk0GVsoy+fulXC68X+Errm0HNAOpIkKkdY5d5DWLTmwOTjuziqaKXmnrSmxyXSKvv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fJIMdbVh; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WMXHVGb3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fJIMdbVh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752864690; x=1784400690;
+  t=1752864691; x=1784400691;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Tu7SBkY4In4RAY4eyBvHFGljmhfw8osd2Y5k8s5p5Co=;
-  b=WMXHVGb3P5dn+ua6wFWbzYlvovq18Qneb8iwTPWwI4KvnzOWi9sqtA0h
-   ewklhlkv6J7UfUloATjd9FjuftCbbsjuXVllBIa1O4Wz5qzihr8ZZt6qd
-   l7YtlKSQnnxujg6jiv62UbxV0vYlCkdOFZ9rf11WTsVtGVuyUUPPh3mCe
-   lrRuqOWcj9cAaBy4hexS5C1ZJxJ2srylw8xU4uM570WGnWG7DPBPnqYgS
-   6sLvj5Bwn3CVhWgh1PIDVCP5zmSWUbLwsR0L3YvT5GK0vQDIUQm2+Ffjn
-   5Sw9m8fVW5pjtZDx7ZKgHEsVPxb/4luXZKa1ZX4URqmHQC5FmxK6Cmi+D
-   A==;
-X-CSE-ConnectionGUID: Q+t015UJSQOzCuYbGrk1fA==
-X-CSE-MsgGUID: RU0bD4IeQASIX0INAr9C1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11496"; a="55320593"
+  bh=cykOqrsbgsjq602xlMnmGbwDj5FfMBEAq/MYI35EVIY=;
+  b=fJIMdbVhxftxqjAundVCY1iC24KKCtdwbAkgZo73lscRN5YsWOAhIgkt
+   e5aBb1sCriZ/mDz4zHU4osCfxozd2bn061EcFm+yFw5AYdjBodYD8IIRY
+   K4z+9ooJ26CBtN0rf8POJKPiYN6Ymawy6L7giJHCf685sWnTKxYd5hhv2
+   TW09ebCm2OVhqj/e/Dn2dYfwwRq5pQ/2ptdtY+b+KAb38N4mcwhU0xgba
+   nYmPyZkVTFlS9oQty8wJVXo42vtPDXSw4SzYilpDMCVrkBV0t8LMcoBus
+   i66GhDsni9iDSY2J97ani6RDuVNY9iSp4krL2HoUj80dajg3JajwUpfQa
+   w==;
+X-CSE-ConnectionGUID: 4rD/bKGjSsKpRAy7QPoapg==
+X-CSE-MsgGUID: PW6DnA4NRKGEHL5tLvUqQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11496"; a="55320608"
 X-IronPort-AV: E=Sophos;i="6.16,322,1744095600"; 
-   d="scan'208";a="55320593"
+   d="scan'208";a="55320608"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2025 11:51:24 -0700
-X-CSE-ConnectionGUID: RpuCygosSVmLuSszIiGyhw==
-X-CSE-MsgGUID: LoTosDSXQVqlDvJRqPNrgw==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2025 11:51:25 -0700
+X-CSE-ConnectionGUID: +vkGIVsFTYWVdN2y7i1Uyw==
+X-CSE-MsgGUID: bilj0gluRD2TTDaXXmMUZA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,322,1744095600"; 
-   d="scan'208";a="157506897"
+   d="scan'208";a="157506904"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa006.jf.intel.com with ESMTP; 18 Jul 2025 11:51:25 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,15 +50,12 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+Cc: Dave Ertman <david.m.ertman@intel.com>,
 	anthony.l.nguyen@intel.com,
-	paul.greenwalt@intel.com,
-	Konrad Knitter <konrad.knitter@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net-next 07/13] ice: add E835 device IDs
-Date: Fri, 18 Jul 2025 11:51:08 -0700
-Message-ID: <20250718185118.2042772-8-anthony.l.nguyen@intel.com>
+	Marcin Szycik <marcin.szycik@linux.intel.com>
+Subject: [PATCH net-next 09/13] ice: breakout common LAG code into helpers
+Date: Fri, 18 Jul 2025 11:51:10 -0700
+Message-ID: <20250718185118.2042772-10-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250718185118.2042772-1-anthony.l.nguyen@intel.com>
 References: <20250718185118.2042772-1-anthony.l.nguyen@intel.com>
@@ -70,103 +67,190 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+From: Dave Ertman <david.m.ertman@intel.com>
 
-E835 is an enhanced version of the E830.
-It continues to use the same set of commands, registers and interfaces
-as other devices in the 800 Series.
+In the VF handling code, parts of the code for lag can be broken out into
+helper functions to reduce code duplication. Break this code out into
+helper functions
 
-Following device IDs are added:
-- 0x1248: Intel(R) Ethernet Controller E835-CC for backplane
-- 0x1249: Intel(R) Ethernet Controller E835-CC for QSFP
-- 0x124A: Intel(R) Ethernet Controller E835-CC for SFP
-- 0x1261: Intel(R) Ethernet Controller E835-C for backplane
-- 0x1262: Intel(R) Ethernet Controller E835-C for QSFP
-- 0x1263: Intel(R) Ethernet Controller E835-C for SFP
-- 0x1265: Intel(R) Ethernet Controller E835-L for backplane
-- 0x1266: Intel(R) Ethernet Controller E835-L for QSFP
-- 0x1267: Intel(R) Ethernet Controller E835-L for SFP
-
-Reviewed-by: Konrad Knitter <konrad.knitter@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c |  9 +++++++++
- drivers/net/ethernet/intel/ice/ice_devids.h | 18 ++++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_main.c   |  9 +++++++++
- 3 files changed, 36 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_lag.c      | 42 +++++++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_lag.h      |  2 +
+ drivers/net/ethernet/intel/ice/ice_vf_lib.c   | 19 ++-------
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c | 23 ++--------
+ 4 files changed, 51 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index b4fe096ace08..b542e1e0f0c9 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -171,6 +171,15 @@ static int ice_set_mac_type(struct ice_hw *hw)
- 	case ICE_DEV_ID_E830_XXV_QSFP:
- 	case ICE_DEV_ID_E830C_SFP:
- 	case ICE_DEV_ID_E830_XXV_SFP:
-+	case ICE_DEV_ID_E835CC_BACKPLANE:
-+	case ICE_DEV_ID_E835CC_QSFP56:
-+	case ICE_DEV_ID_E835CC_SFP:
-+	case ICE_DEV_ID_E835C_BACKPLANE:
-+	case ICE_DEV_ID_E835C_QSFP:
-+	case ICE_DEV_ID_E835C_SFP:
-+	case ICE_DEV_ID_E835_L_BACKPLANE:
-+	case ICE_DEV_ID_E835_L_QSFP:
-+	case ICE_DEV_ID_E835_L_SFP:
- 		hw->mac_type = ICE_MAC_E830;
- 		break;
- 	default:
-diff --git a/drivers/net/ethernet/intel/ice/ice_devids.h b/drivers/net/ethernet/intel/ice/ice_devids.h
-index 34fd604132f5..bd4e66df0372 100644
---- a/drivers/net/ethernet/intel/ice/ice_devids.h
-+++ b/drivers/net/ethernet/intel/ice/ice_devids.h
-@@ -6,6 +6,24 @@
+diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
+index d132eb477551..c8b4fa3efbd4 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lag.c
++++ b/drivers/net/ethernet/intel/ice/ice_lag.c
+@@ -822,6 +822,48 @@ ice_lag_cfg_cp_fltr(struct ice_lag *lag, bool add)
+ 	kfree(s_rule);
+ }
  
- /* Device IDs */
- #define ICE_DEV_ID_E822_SI_DFLT         0x1888
-+/* Intel(R) Ethernet Controller E835-CC for backplane */
-+#define ICE_DEV_ID_E835CC_BACKPLANE	0x1248
-+/* Intel(R) Ethernet Controller E835-CC for QSFP */
-+#define ICE_DEV_ID_E835CC_QSFP56	0x1249
-+/* Intel(R) Ethernet Controller E835-CC for SFP */
-+#define ICE_DEV_ID_E835CC_SFP		0x124A
-+/* Intel(R) Ethernet Controller E835-C for backplane */
-+#define ICE_DEV_ID_E835C_BACKPLANE	0x1261
-+/* Intel(R) Ethernet Controller E835-C for QSFP */
-+#define ICE_DEV_ID_E835C_QSFP		0x1262
-+/* Intel(R) Ethernet Controller E835-C for SFP */
-+#define ICE_DEV_ID_E835C_SFP		0x1263
-+/* Intel(R) Ethernet Controller E835-L for backplane */
-+#define ICE_DEV_ID_E835_L_BACKPLANE	0x1265
-+/* Intel(R) Ethernet Controller E835-L for QSFP */
-+#define ICE_DEV_ID_E835_L_QSFP		0x1266
-+/* Intel(R) Ethernet Controller E835-L for SFP */
-+#define ICE_DEV_ID_E835_L_SFP		0x1267
- /* Intel(R) Ethernet Connection E823-L for backplane */
- #define ICE_DEV_ID_E823L_BACKPLANE	0x124C
- /* Intel(R) Ethernet Connection E823-L for SFP */
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index af68869693ed..204e906af591 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -5897,6 +5897,15 @@ static const struct pci_device_id ice_pci_tbl[] = {
- 	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E830_XXV_QSFP), },
- 	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E830C_SFP), },
- 	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E830_XXV_SFP), },
-+	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835CC_BACKPLANE), },
-+	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835CC_QSFP56), },
-+	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835CC_SFP), },
-+	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835C_BACKPLANE), },
-+	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835C_QSFP), },
-+	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835C_SFP), },
-+	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835_L_BACKPLANE), },
-+	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835_L_QSFP), },
-+	{ PCI_VDEVICE(INTEL, ICE_DEV_ID_E835_L_SFP), },
- 	/* required last entry */
- 	{}
- };
++/**
++ * ice_lag_prepare_vf_reset - helper to adjust vf lag for reset
++ * @lag: lag struct for interface that owns VF
++ *
++ * Context: must be called with the lag_mutex lock held.
++ *
++ * Return: active lport value or ICE_LAG_INVALID_PORT if nothing moved.
++ */
++u8 ice_lag_prepare_vf_reset(struct ice_lag *lag)
++{
++	u8 pri_prt, act_prt;
++
++	if (lag && lag->bonded && lag->primary && lag->upper_netdev) {
++		pri_prt = lag->pf->hw.port_info->lport;
++		act_prt = lag->active_port;
++		if (act_prt != pri_prt && act_prt != ICE_LAG_INVALID_PORT) {
++			ice_lag_move_vf_nodes_cfg(lag, act_prt, pri_prt);
++			return act_prt;
++		}
++	}
++
++	return ICE_LAG_INVALID_PORT;
++}
++
++/**
++ * ice_lag_complete_vf_reset - helper for lag after reset
++ * @lag: lag struct for primary interface
++ * @act_prt: which port should be active for lag
++ *
++ * Context: must be called while holding the lag_mutex.
++ */
++void ice_lag_complete_vf_reset(struct ice_lag *lag, u8 act_prt)
++{
++	u8 pri_prt;
++
++	if (lag && lag->bonded && lag->primary &&
++	    act_prt != ICE_LAG_INVALID_PORT) {
++		pri_prt = lag->pf->hw.port_info->lport;
++		ice_lag_move_vf_nodes_cfg(lag, pri_prt, act_prt);
++	}
++}
++
+ /**
+  * ice_lag_info_event - handle NETDEV_BONDING_INFO event
+  * @lag: LAG info struct
+diff --git a/drivers/net/ethernet/intel/ice/ice_lag.h b/drivers/net/ethernet/intel/ice/ice_lag.h
+index bab2c83142a1..69347d9f986b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lag.h
++++ b/drivers/net/ethernet/intel/ice/ice_lag.h
+@@ -70,4 +70,6 @@ void ice_deinit_lag(struct ice_pf *pf);
+ void ice_lag_rebuild(struct ice_pf *pf);
+ bool ice_lag_is_switchdev_running(struct ice_pf *pf);
+ void ice_lag_move_vf_nodes_cfg(struct ice_lag *lag, u8 src_prt, u8 dst_prt);
++u8 ice_lag_prepare_vf_reset(struct ice_lag *lag);
++void ice_lag_complete_vf_reset(struct ice_lag *lag, u8 act_prt);
+ #endif /* _ICE_LAG_H_ */
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+index c639ce716d32..5ee74f3e82dc 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+@@ -859,16 +859,13 @@ static void ice_notify_vf_reset(struct ice_vf *vf)
+ int ice_reset_vf(struct ice_vf *vf, u32 flags)
+ {
+ 	struct ice_pf *pf = vf->pf;
+-	struct ice_lag *lag;
+ 	struct ice_vsi *vsi;
+-	u8 act_prt, pri_prt;
+ 	struct device *dev;
+ 	int err = 0;
++	u8 act_prt;
+ 	bool rsd;
+ 
+ 	dev = ice_pf_to_dev(pf);
+-	act_prt = ICE_LAG_INVALID_PORT;
+-	pri_prt = pf->hw.port_info->lport;
+ 
+ 	if (flags & ICE_VF_RESET_NOTIFY)
+ 		ice_notify_vf_reset(vf);
+@@ -884,16 +881,8 @@ int ice_reset_vf(struct ice_vf *vf, u32 flags)
+ 	else
+ 		lockdep_assert_held(&vf->cfg_lock);
+ 
+-	lag = pf->lag;
+ 	mutex_lock(&pf->lag_mutex);
+-	if (lag && lag->bonded && lag->primary) {
+-		act_prt = lag->active_port;
+-		if (act_prt != pri_prt && act_prt != ICE_LAG_INVALID_PORT &&
+-		    lag->upper_netdev)
+-			ice_lag_move_vf_nodes_cfg(lag, act_prt, pri_prt);
+-		else
+-			act_prt = ICE_LAG_INVALID_PORT;
+-	}
++	act_prt = ice_lag_prepare_vf_reset(pf->lag);
+ 
+ 	if (ice_is_vf_disabled(vf)) {
+ 		vsi = ice_get_vf_vsi(vf);
+@@ -979,9 +968,7 @@ int ice_reset_vf(struct ice_vf *vf, u32 flags)
+ 	ice_reset_vf_mbx_cnt(vf);
+ 
+ out_unlock:
+-	if (lag && lag->bonded && lag->primary &&
+-	    act_prt != ICE_LAG_INVALID_PORT)
+-		ice_lag_move_vf_nodes_cfg(lag, pri_prt, act_prt);
++	ice_lag_complete_vf_reset(pf->lag, act_prt);
+ 	mutex_unlock(&pf->lag_mutex);
+ 
+ 	if (flags & ICE_VF_RESET_LOCK)
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+index 9460b6561b69..05511157c571 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -1996,24 +1996,13 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
+ 	    (struct virtchnl_vsi_queue_config_info *)msg;
+ 	struct virtchnl_queue_pair_info *qpi;
+ 	struct ice_pf *pf = vf->pf;
+-	struct ice_lag *lag;
+ 	struct ice_vsi *vsi;
+-	u8 act_prt, pri_prt;
+ 	int i = -1, q_idx;
+ 	bool ena_ts;
++	u8 act_prt;
+ 
+-	lag = pf->lag;
+ 	mutex_lock(&pf->lag_mutex);
+-	act_prt = ICE_LAG_INVALID_PORT;
+-	pri_prt = pf->hw.port_info->lport;
+-	if (lag && lag->bonded && lag->primary) {
+-		act_prt = lag->active_port;
+-		if (act_prt != pri_prt && act_prt != ICE_LAG_INVALID_PORT &&
+-		    lag->upper_netdev)
+-			ice_lag_move_vf_nodes_cfg(lag, act_prt, pri_prt);
+-		else
+-			act_prt = ICE_LAG_INVALID_PORT;
+-	}
++	act_prt = ice_lag_prepare_vf_reset(pf->lag);
+ 
+ 	if (!test_bit(ICE_VF_STATE_ACTIVE, vf->vf_states))
+ 		goto error_param;
+@@ -2141,9 +2130,7 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
+ 		}
+ 	}
+ 
+-	if (lag && lag->bonded && lag->primary &&
+-	    act_prt != ICE_LAG_INVALID_PORT)
+-		ice_lag_move_vf_nodes_cfg(lag, pri_prt, act_prt);
++	ice_lag_complete_vf_reset(pf->lag, act_prt);
+ 	mutex_unlock(&pf->lag_mutex);
+ 
+ 	/* send the response to the VF */
+@@ -2160,9 +2147,7 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
+ 				vf->vf_id, i);
+ 	}
+ 
+-	if (lag && lag->bonded && lag->primary &&
+-	    act_prt != ICE_LAG_INVALID_PORT)
+-		ice_lag_move_vf_nodes_cfg(lag, pri_prt, act_prt);
++	ice_lag_complete_vf_reset(pf->lag, act_prt);
+ 	mutex_unlock(&pf->lag_mutex);
+ 
+ 	ice_lag_move_new_vf_nodes(vf);
 -- 
 2.47.1
 
