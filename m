@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85042E8E09
-	for <netdev@vger.kernel.org>; Fri, 18 Jul 2025 18:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F9D2E92B7
+	for <netdev@vger.kernel.org>; Fri, 18 Jul 2025 18:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752864691; cv=none; b=XnH8xXjKE8P4sGi4WuqGd1FqIznF4Kd6QF/XmeEQ8cmGVuXqUi3BfcECqtKVBoB2R0zmCHErlglZGebY79O80mZWbnoYWZFXKlWySQZj6dk1ajREmb8F5OsMTcH1+/XyKC4B7EgEfkWUJsBoxjKLbOAz7JobmAmAWV6V05flLnQ=
+	t=1752864692; cv=none; b=j8N1OW9H3fY4a/ihnSELBskCfYHCAl0MLeDLBBn8lPN6Czagb71y10AmaL0BFVni+uQqJ03aoy3b+zcu5RfZktoeNoC6rV/ZyyfhOeOF/Uxd2HPAvaDbLadhakZT0Hgp0MaW0zQ2ecYJbXZZFunWr4210FSX+5Re0SU9+n2Jz7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752864691; c=relaxed/simple;
-	bh=H608TvNVr8uyXpdswA7EVmVV6+i3osiV32Iv4kCGcJk=;
+	s=arc-20240116; t=1752864692; c=relaxed/simple;
+	bh=tq8002epkrGoFB5qbixc2N92ov3xim81YvkW2dNjLG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3fF2rQg9L3I5GZIcNIl0pOCUMX0cYDsym5Wgv9LfINCG0rt3C5atD3Gfov+/2rPcglr+kBxOrLwjBkAg2F3x0RSdRRPSB+T/puk+PbqGhj9lfipurymQOB2mB5Xk9KostG+GKj0wL0Yzavme0gxH7EQoMhoEgy1bw5MucT6iBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JfqYAweL; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=CKZf6lPKoLmAH84P9WnMUkynQPFJhnsF/utAVo9oLSAu82o/T4WFzUxRtzvxZSdOReDkoGcEEwvT0ir52vFh+zjGuj9RLwepi4JDcaen7FFZArmDwLhfRyF0NS5oA5YnM3BtpADwGIBgjlff9lxveP56gwzo4q7ZtflNNIgUl3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aBQ7DI4C; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JfqYAweL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aBQ7DI4C"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1752864690; x=1784400690;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=H608TvNVr8uyXpdswA7EVmVV6+i3osiV32Iv4kCGcJk=;
-  b=JfqYAweL4M3Z2+5Raf+Kle7DD6HHO9HxuvZq8/SCdxIWSqFhn14eDnfM
-   EXqjWR/cEfFFDuRZzWtw/ZpSkfB+h+IdgLKTNHbyb6Eftou6yz+E3ycGX
-   aT+ShHH4AEBpCJ9+6t+USK/b8qj1QjrC1L+p3bPVPsqZornAH7/OQ23sj
-   XKKrTaDNGLVMOjx9TFTSLONZB0VSfElhNJRF28ShwnWYBH9DJGIF4uum6
-   vGg0p6h9LGTig8LfqVQAXlpUQ0ZT6KXMW6AkYXMLN+jOrjDjeJ/aqoSL2
-   OCa6v5SjW8r9XnpC/uLEdSDMTfKCakwH+/VcH4dFoOwliZc+ibGfbpQwH
-   A==;
-X-CSE-ConnectionGUID: fgDm0cS4QNmgjO51r7m3wQ==
-X-CSE-MsgGUID: cW1XDkk7Q62cLY7RLqaQhg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11496"; a="55320586"
+  bh=tq8002epkrGoFB5qbixc2N92ov3xim81YvkW2dNjLG0=;
+  b=aBQ7DI4CtcGUG+dc8blWCRO8w3WNyt5ueZFOwQwyltzrhGo9iuBPMtPy
+   F3yuTaExZOqTCbprmaQU8E/95zJlWWSuVVOu8qF0aWJAmkDBkmOi8R8/z
+   WtHTjvW2z12K+SRuMoyfW+RcKE2vfzSJ+cwAlP43U0tmu0NaBm4FrlV0Q
+   uY0mo9c3J3PZyCgu/xQlDlyUxHSQXnVPdy29FTiHHLwVL+X63c9pMRkav
+   wz458GiA3i9YKTQw3qLTCJlQYBU1IvqfpVEwmIaAu49A6gOQ0nKL9B2lT
+   OEsz/wQc4BCrrNX9FwYlRUJgb7VBPtqtpn5BNI9VsptCAKQG5mEd+jEuw
+   w==;
+X-CSE-ConnectionGUID: 0rzCJCPrRSmsAOZj8y/LZg==
+X-CSE-MsgGUID: +h+uTfkPRJuAA8hHwX1YFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11496"; a="55320600"
 X-IronPort-AV: E=Sophos;i="6.16,322,1744095600"; 
-   d="scan'208";a="55320586"
+   d="scan'208";a="55320600"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2025 11:51:24 -0700
-X-CSE-ConnectionGUID: Ck6rQm3HTXiv3X8sfwSuYw==
-X-CSE-MsgGUID: Dvh2LfJcQpO+qSlg9gUeCQ==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2025 11:51:25 -0700
+X-CSE-ConnectionGUID: ZMXg6PcxT1e7Rny6+IODlg==
+X-CSE-MsgGUID: u4IaRFFyQFGGa1jUtTreUA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,322,1744095600"; 
-   d="scan'208";a="157506893"
+   d="scan'208";a="157506900"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa006.jf.intel.com with ESMTP; 18 Jul 2025 11:51:25 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,15 +50,16 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	anthony.l.nguyen@intel.com,
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
 	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net-next 06/13] ice: add 40G speed to Admin Command GET PORT OPTION
-Date: Fri, 18 Jul 2025 11:51:07 -0700
-Message-ID: <20250718185118.2042772-7-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next 08/13] ice: convert ice_add_prof() to bitmap
+Date: Fri, 18 Jul 2025 11:51:09 -0700
+Message-ID: <20250718185118.2042772-9-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250718185118.2042772-1-anthony.l.nguyen@intel.com>
 References: <20250718185118.2042772-1-anthony.l.nguyen@intel.com>
@@ -70,95 +71,178 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Jesse Brandeburg <jesse.brandeburg@intel.com>
 
-Introduce the ICE_AQC_PORT_OPT_MAX_LANE_40G constant and update the code
-to process this new option in both the devlink and the Admin Queue Command
-GET PORT OPTION (opcode 0x06EA) message, similar to existing constants like
-ICE_AQC_PORT_OPT_MAX_LANE_50G, ICE_AQC_PORT_OPT_MAX_LANE_100G, and so on.
+Previously the ice_add_prof() took an array of u8 and looped over it with
+for_each_set_bit(), examining each 8 bit value as a bitmap.
+This was just hard to understand and unnecessary, and was triggering
+undefined behavior sanitizers with unaligned accesses within bitmap
+fields (on our internal tools/builds). Since the @ptype being passed in
+was already declared as a bitmap, refactor this to use native types with
+the advantage of simplifying the code to use a single loop.
 
-This feature allows the driver to correctly report configuration options
-for 2x40G on E823 and other cards in the future via devlink.
-
-Example command:
- devlink port split pci/0000:01:00.0/0 count 2
-
-Example dmesg:
- ice 0000:01:00.0: Available port split options and max port speeds (Gbps):
- ice 0000:01:00.0: Status  Split      Quad 0          Quad 1
- ice 0000:01:00.0:         count  L0  L1  L2  L3  L4  L5  L6  L7
- ice 0000:01:00.0:         2      40   -   -   -  40   -   -   -
- ice 0000:01:00.0:         2      50   -  50   -   -   -   -   -
- ice 0000:01:00.0:         4      25  25  25  25   -   -   -   -
- ice 0000:01:00.0:         4      25  25   -   -  25  25   -   -
- ice 0000:01:00.0: Active  8      10  10  10  10  10  10  10  10
- ice 0000:01:00.0:         1     100   -   -   -   -   -   -   -
-
+Co-developed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
 Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
+CC: Jesse Brandeburg <jbrandeburg@cloudflare.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/devlink/port.c   | 2 ++
- drivers/net/ethernet/intel/ice/ice_adminq_cmd.h | 1 +
- drivers/net/ethernet/intel/ice/ice_common.c     | 2 +-
- drivers/net/ethernet/intel/ice/ice_ethtool.c    | 3 ++-
- 4 files changed, 6 insertions(+), 2 deletions(-)
+ .../net/ethernet/intel/ice/ice_flex_pipe.c    | 78 +++++++------------
+ .../net/ethernet/intel/ice/ice_flex_pipe.h    |  7 +-
+ drivers/net/ethernet/intel/ice/ice_flow.c     |  4 +-
+ 3 files changed, 34 insertions(+), 55 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/devlink/port.c b/drivers/net/ethernet/intel/ice/devlink/port.c
-index 767419a67fef..63fb36fc4b3d 100644
---- a/drivers/net/ethernet/intel/ice/devlink/port.c
-+++ b/drivers/net/ethernet/intel/ice/devlink/port.c
-@@ -30,6 +30,8 @@ static const char *ice_devlink_port_opt_speed_str(u8 speed)
- 		return "10";
- 	case ICE_AQC_PORT_OPT_MAX_LANE_25G:
- 		return "25";
-+	case ICE_AQC_PORT_OPT_MAX_LANE_40G:
-+		return "40";
- 	case ICE_AQC_PORT_OPT_MAX_LANE_50G:
- 		return "50";
- 	case ICE_AQC_PORT_OPT_MAX_LANE_100G:
-diff --git a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-index 97f9ebd62d93..39d99c2f7976 100644
---- a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-+++ b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-@@ -1684,6 +1684,7 @@ struct ice_aqc_get_port_options_elem {
- #define ICE_AQC_PORT_OPT_MAX_LANE_50G	6
- #define ICE_AQC_PORT_OPT_MAX_LANE_100G	7
- #define ICE_AQC_PORT_OPT_MAX_LANE_200G	8
-+#define ICE_AQC_PORT_OPT_MAX_LANE_40G	9
+diff --git a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+index ed95072ca6e3..363ae79a3620 100644
+--- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
++++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+@@ -3043,16 +3043,16 @@ ice_disable_fd_swap(struct ice_hw *hw, u8 prof_id)
+  * the ID value used here.
+  */
+ int
+-ice_add_prof(struct ice_hw *hw, enum ice_block blk, u64 id, u8 ptypes[],
+-	     const struct ice_ptype_attributes *attr, u16 attr_cnt,
+-	     struct ice_fv_word *es, u16 *masks, bool symm, bool fd_swap)
++ice_add_prof(struct ice_hw *hw, enum ice_block blk, u64 id,
++	     unsigned long *ptypes, const struct ice_ptype_attributes *attr,
++	     u16 attr_cnt, struct ice_fv_word *es, u16 *masks, bool symm,
++	     bool fd_swap)
+ {
+-	u32 bytes = DIV_ROUND_UP(ICE_FLOW_PTYPE_MAX, BITS_PER_BYTE);
+ 	DECLARE_BITMAP(ptgs_used, ICE_XLT1_CNT);
+ 	struct ice_prof_map *prof;
+-	u8 byte = 0;
+-	u8 prof_id;
+ 	int status;
++	u8 prof_id;
++	u16 ptype;
  
- 	u8 global_scid[2];
- 	u8 phy_scid[2];
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index 1b435e108d3c..b4fe096ace08 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -4307,7 +4307,7 @@ int ice_get_phy_lane_number(struct ice_hw *hw)
+ 	bitmap_zero(ptgs_used, ICE_XLT1_CNT);
  
- 		speed = options[active_idx].max_lane_speed;
- 		/* If we don't get speed for this lane, it's unoccupied */
--		if (speed > ICE_AQC_PORT_OPT_MAX_LANE_200G)
-+		if (speed > ICE_AQC_PORT_OPT_MAX_LANE_40G)
+@@ -3102,57 +3102,35 @@ ice_add_prof(struct ice_hw *hw, enum ice_block blk, u64 id, u8 ptypes[],
+ 	prof->context = 0;
+ 
+ 	/* build list of ptgs */
+-	while (bytes && prof->ptg_cnt < ICE_MAX_PTG_PER_PROFILE) {
+-		u8 bit;
++	for_each_set_bit(ptype, ptypes, ICE_FLOW_PTYPE_MAX) {
++		u8 ptg;
+ 
+-		if (!ptypes[byte]) {
+-			bytes--;
+-			byte++;
++		/* The package should place all ptypes in a non-zero
++		 * PTG, so the following call should never fail.
++		 */
++		if (ice_ptg_find_ptype(hw, blk, ptype, &ptg))
  			continue;
+-		}
  
- 		if (hw->pf_id == lport) {
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index e54221fba849..58ed875093cf 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -667,7 +667,8 @@ static int ice_get_port_topology(struct ice_hw *hw, u8 lport,
+-		/* Examine 8 bits per byte */
+-		for_each_set_bit(bit, (unsigned long *)&ptypes[byte],
+-				 BITS_PER_BYTE) {
+-			u16 ptype;
+-			u8 ptg;
+-
+-			ptype = byte * BITS_PER_BYTE + bit;
+-
+-			/* The package should place all ptypes in a non-zero
+-			 * PTG, so the following call should never fail.
+-			 */
+-			if (ice_ptg_find_ptype(hw, blk, ptype, &ptg))
+-				continue;
++		/* If PTG is already added, skip and continue */
++		if (test_bit(ptg, ptgs_used))
++			continue;
  
- 		if (max_speed == ICE_AQC_PORT_OPT_MAX_LANE_100G)
- 			port_topology->serdes_lane_count = 4;
--		else if (max_speed == ICE_AQC_PORT_OPT_MAX_LANE_50G)
-+		else if (max_speed == ICE_AQC_PORT_OPT_MAX_LANE_50G ||
-+			 max_speed == ICE_AQC_PORT_OPT_MAX_LANE_40G)
- 			port_topology->serdes_lane_count = 2;
- 		else
- 			port_topology->serdes_lane_count = 1;
+-			/* If PTG is already added, skip and continue */
+-			if (test_bit(ptg, ptgs_used))
+-				continue;
++		set_bit(ptg, ptgs_used);
++		/* Check to see there are any attributes for this ptype, and
++		 * add them if found.
++		 */
++		status = ice_add_prof_attrib(prof, ptg, ptype, attr, attr_cnt);
++		if (status == -ENOSPC)
++			break;
++		if (status) {
++			/* This is simple a ptype/PTG with no attribute */
++			prof->ptg[prof->ptg_cnt] = ptg;
++			prof->attr[prof->ptg_cnt].flags = 0;
++			prof->attr[prof->ptg_cnt].mask = 0;
+ 
+-			__set_bit(ptg, ptgs_used);
+-			/* Check to see there are any attributes for
+-			 * this PTYPE, and add them if found.
+-			 */
+-			status = ice_add_prof_attrib(prof, ptg, ptype,
+-						     attr, attr_cnt);
+-			if (status == -ENOSPC)
++			if (++prof->ptg_cnt >= ICE_MAX_PTG_PER_PROFILE)
+ 				break;
+-			if (status) {
+-				/* This is simple a PTYPE/PTG with no
+-				 * attribute
+-				 */
+-				prof->ptg[prof->ptg_cnt] = ptg;
+-				prof->attr[prof->ptg_cnt].flags = 0;
+-				prof->attr[prof->ptg_cnt].mask = 0;
+-
+-				if (++prof->ptg_cnt >=
+-				    ICE_MAX_PTG_PER_PROFILE)
+-					break;
+-			}
+ 		}
+-
+-		bytes--;
+-		byte++;
+ 	}
+ 
+ 	list_add(&prof->list, &hw->blk[blk].es.prof_map);
+diff --git a/drivers/net/ethernet/intel/ice/ice_flex_pipe.h b/drivers/net/ethernet/intel/ice/ice_flex_pipe.h
+index 28b0897adf32..ee5d9f9c9d53 100644
+--- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.h
++++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.h
+@@ -39,9 +39,10 @@ bool ice_hw_ptype_ena(struct ice_hw *hw, u16 ptype);
+ 
+ /* XLT2/VSI group functions */
+ int
+-ice_add_prof(struct ice_hw *hw, enum ice_block blk, u64 id, u8 ptypes[],
+-	     const struct ice_ptype_attributes *attr, u16 attr_cnt,
+-	     struct ice_fv_word *es, u16 *masks, bool symm, bool fd_swap);
++ice_add_prof(struct ice_hw *hw, enum ice_block blk, u64 id,
++	     unsigned long *ptypes, const struct ice_ptype_attributes *attr,
++	     u16 attr_cnt, struct ice_fv_word *es, u16 *masks, bool symm,
++	     bool fd_swap);
+ struct ice_prof_map *
+ ice_search_prof_id(struct ice_hw *hw, enum ice_block blk, u64 id);
+ int
+diff --git a/drivers/net/ethernet/intel/ice/ice_flow.c b/drivers/net/ethernet/intel/ice/ice_flow.c
+index 278e57686274..6d5c939dc8a5 100644
+--- a/drivers/net/ethernet/intel/ice/ice_flow.c
++++ b/drivers/net/ethernet/intel/ice/ice_flow.c
+@@ -1421,7 +1421,7 @@ ice_flow_add_prof_sync(struct ice_hw *hw, enum ice_block blk,
+ 	}
+ 
+ 	/* Add a HW profile for this flow profile */
+-	status = ice_add_prof(hw, blk, prof_id, (u8 *)params->ptypes,
++	status = ice_add_prof(hw, blk, prof_id, params->ptypes,
+ 			      params->attr, params->attr_cnt, params->es,
+ 			      params->mask, symm, true);
+ 	if (status) {
+@@ -1617,7 +1617,7 @@ ice_flow_set_parser_prof(struct ice_hw *hw, u16 dest_vsi, u16 fdir_vsi,
+ 		break;
+ 	}
+ 
+-	status = ice_add_prof(hw, blk, id, (u8 *)prof->ptypes,
++	status = ice_add_prof(hw, blk, id, prof->ptypes,
+ 			      params->attr, params->attr_cnt,
+ 			      params->es, params->mask, false, false);
+ 	if (status)
 -- 
 2.47.1
 
