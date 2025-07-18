@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1542E7170
-	for <netdev@vger.kernel.org>; Fri, 18 Jul 2025 17:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7531C7017
+	for <netdev@vger.kernel.org>; Fri, 18 Jul 2025 17:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752859546; cv=none; b=uQ3rI1E9X2tCIgaM9vEG80orHMbw14LDta6gzeshKaeyxl1Hu5Zpf/oPKEPCD7TrIiVIg9FInityw4jHMtSr+7PNXXI70yj9uJz1S/lMH2UPiLkeZHUW27bmyDxcZG5+YQM065DUSC6YeJT0GT7wPtnDx/VAgYL28tnMIEqPqlw=
+	t=1752859546; cv=none; b=tm6yAWLPPVISXgRJWf9C/O+fiDoe1fncgsfOSNE6fA1UPXr29InAldT4J+kjJwRFUp4HxeX8cuBZ+N3kV7pAdirPkw9OFedpsZVvCbPAmJ+UFHfxxc4UVLvoNusU9kCTgjHCd68YhM5gGZ3VGCixrDe48onoLssd8ftp+Hweu+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752859546; c=relaxed/simple;
-	bh=YX1bhxN+n9TvqqWdmyDvDLEF5Q1clD0vQCL43xziC10=;
+	bh=c8dR5IZiYjEpOHpXVT+lccuXbYqVyPdyyciqTdGyPP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NUdkDMt3fMkRH4h3xP07XB7fk5MbflGAaV8UislXTMfZ7mnU9Ecxm5vVLx8tES3hMLyRVrmxvIpxCos0zsQeD7C+r3e0qnqnqh4eM0rtLKS69k1IozCe3tA6r/oe0yvwjpBK1qoixEzFd2hQhgwoW/AaPTcXwnPVemw2VbURmKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hsMm2K+V; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=heZnxhkHbXiAzX28lAzsyc3HQZw72Qsb21Foav8YxQjDvcvPXdEMQoz/MjK1C3NKM/VnzhHb3+tDubOy2yzO51rNcDUF74EHMuk+wDEpFHz66F5exeChX2fgf6Qxge+OyO3jMpxfSl8We/JVeVY2eSb29LoZA6PsGoUAuZADEQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KxMwMO0w; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hsMm2K+V"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KxMwMO0w"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752859543;
+	s=mimecast20190719; t=1752859541;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=r6z06SNgQkgg/pmS3wf9f6RZQ8DJRjUIKLlUuIYuBis=;
-	b=hsMm2K+Vs47JzHKKxAPxQKuAz4cISaiQ1ZrrVDf8NtCzg7szTS/5NEO9oovF96kqixI4M4
-	nIt/qjJTghGDSBFb4tWgMbZLgV7HvqvyyrbhJyvvcGjJyxMUi6se8oqsfXYIndJ4SvVLtm
-	s9bInKHEi7zHb7O7xq9+RkkzjdCyZJs=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=3dvlbKmSns3n4/H902vQs0IWi1iOjvbeV8Rx/MZFWUE=;
+	b=KxMwMO0wRLnUYf0ir/9Mk6dp1ukYC3a/sVembqVGkM6xXD+py1nhcCh6wt77rRkVHiUuSu
+	OQV55PXxkqYhPQ/A+MErKCFIaB/Xu90uTcgAUBDjfdXFOeGVyZt8nQuSv0aaHHUtdHqSdj
+	7VZjo8PwrG6G117nEwpio3dq5M5v7WU=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-275-AMnMRhbSO8KIfYCeNy8fjg-1; Fri,
- 18 Jul 2025 13:25:40 -0400
-X-MC-Unique: AMnMRhbSO8KIfYCeNy8fjg-1
-X-Mimecast-MFC-AGG-ID: AMnMRhbSO8KIfYCeNy8fjg_1752859538
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-47-8vaMj4J5NFGWRx4rp09a9Q-1; Fri,
+ 18 Jul 2025 13:25:36 -0400
+X-MC-Unique: 8vaMj4J5NFGWRx4rp09a9Q-1
+X-Mimecast-MFC-AGG-ID: 8vaMj4J5NFGWRx4rp09a9Q_1752859534
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7F25A19541A7;
-	Fri, 18 Jul 2025 17:25:38 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6FB461800366;
+	Fri, 18 Jul 2025 17:25:34 +0000 (UTC)
 Received: from gerbillo.redhat.com (unknown [10.44.33.19])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9524718016F9;
-	Fri, 18 Jul 2025 17:25:35 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AF963180035E;
+	Fri, 18 Jul 2025 17:25:31 +0000 (UTC)
 From: Paolo Abeni <pabeni@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Eric Dumazet <edumazet@google.com>,
@@ -52,9 +52,9 @@ Cc: Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Simon Horman <horms@kernel.org>,
 	Matthieu Baerts <matttbe@kernel.org>
-Subject: [PATCH net-next 2/2] tcp: do not increment BeyondWindow MIB for old seq
-Date: Fri, 18 Jul 2025 19:25:13 +0200
-Message-ID: <33f764b857dd28273784da12a3bac8dac039fbcb.1752859383.git.pabeni@redhat.com>
+Subject: [PATCH net-next 1/2] tcp: do not set a zero size receive buffer
+Date: Fri, 18 Jul 2025 19:25:12 +0200
+Message-ID: <3e080bdba9981988ff86e120df40a5f0dc6cd033.1752859383.git.pabeni@redhat.com>
 In-Reply-To: <cover.1752859383.git.pabeni@redhat.com>
 References: <cover.1752859383.git.pabeni@redhat.com>
 Precedence: bulk
@@ -66,35 +66,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-The mentioned MIB is currently incremented even when a packet
-with an old sequence number (i.e. a zero window probe) is received,
-which is IMHO misleading.
+The nipa CI is reporting frequent failures in the mptcp_connect
+self-tests.
 
-Explicitly restrict such MIB increment at the relevant events.
+In the failing scenarios (TCP -> MPTCP) the involved sockets are
+actually plain TCP ones, as fallback for passive socket at 2whs
+time cause the MPTCP listener to actually create a TCP socket.
 
-Fixes: 6c758062c64d ("tcp: add LINUX_MIB_BEYOND_WINDOW")
+The transfer is stuck due to the receiver buffer being zero.
+With the stronger check in place, tcp_clamp_window() can be invoked
+while the TCP socket has sk_rmem_alloc == 0, and the receive buffer
+will be zeroed, too.
+
+Pass to tcp_clamp_window() even the current skb truesize, so that
+such helper could compute and use the actual limit enforced by
+the stack.
+
+Fixes: 1d2fbaad7cd8 ("tcp: stronger sk_rcvbuf checks")
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 ---
- net/ipv4/tcp_input.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_input.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index c98de02a3c57..b708287df9b7 100644
+index 672cbfbdcec1..c98de02a3c57 100644
 --- a/net/ipv4/tcp_input.c
 +++ b/net/ipv4/tcp_input.c
-@@ -5911,7 +5911,11 @@ static bool tcp_validate_incoming(struct sock *sk, struct sk_buff *skb,
- 		if (!th->rst) {
- 			if (th->syn)
- 				goto syn_challenge;
--			NET_INC_STATS(sock_net(sk), LINUX_MIB_BEYOND_WINDOW);
-+
-+			if (reason == SKB_DROP_REASON_TCP_INVALID_SEQUENCE ||
-+			    reason == SKB_DROP_REASON_TCP_INVALID_END_SEQUENCE)
-+				NET_INC_STATS(sock_net(sk),
-+					      LINUX_MIB_BEYOND_WINDOW);
- 			if (!tcp_oow_rate_limited(sock_net(sk), skb,
- 						  LINUX_MIB_TCPACKSKIPPEDSEQ,
- 						  &tp->last_oow_ack_time))
+@@ -610,24 +610,24 @@ static void tcp_init_buffer_space(struct sock *sk)
+ }
+ 
+ /* 4. Recalculate window clamp after socket hit its memory bounds. */
+-static void tcp_clamp_window(struct sock *sk)
++static void tcp_clamp_window(struct sock *sk, int truesize)
+ {
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 	struct net *net = sock_net(sk);
+-	int rmem2;
++	int rmem2, needed;
+ 
+ 	icsk->icsk_ack.quick = 0;
+ 	rmem2 = READ_ONCE(net->ipv4.sysctl_tcp_rmem[2]);
++	needed = atomic_read(&sk->sk_rmem_alloc) + truesize;
+ 
+ 	if (sk->sk_rcvbuf < rmem2 &&
+ 	    !(sk->sk_userlocks & SOCK_RCVBUF_LOCK) &&
+ 	    !tcp_under_memory_pressure(sk) &&
+ 	    sk_memory_allocated(sk) < sk_prot_mem_limits(sk, 0)) {
+-		WRITE_ONCE(sk->sk_rcvbuf,
+-			   min(atomic_read(&sk->sk_rmem_alloc), rmem2));
++		WRITE_ONCE(sk->sk_rcvbuf, min(needed, rmem2));
+ 	}
+-	if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf)
++	if (needed > sk->sk_rcvbuf)
+ 		tp->rcv_ssthresh = min(tp->window_clamp, 2U * tp->advmss);
+ }
+ 
+@@ -5552,7 +5552,7 @@ static int tcp_prune_queue(struct sock *sk, const struct sk_buff *in_skb)
+ 	NET_INC_STATS(sock_net(sk), LINUX_MIB_PRUNECALLED);
+ 
+ 	if (!tcp_can_ingest(sk, in_skb))
+-		tcp_clamp_window(sk);
++		tcp_clamp_window(sk, in_skb->truesize);
+ 	else if (tcp_under_memory_pressure(sk))
+ 		tcp_adjust_rcv_ssthresh(sk);
+ 
 -- 
 2.50.0
 
