@@ -1,48 +1,47 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF03C1D9663;
-	Sat, 19 Jul 2025 01:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB187260A;
+	Sat, 19 Jul 2025 01:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752888102; cv=none; b=LaWDUmBqMIIxYnXohmAeezkWUzcmNRTS+xxW3QPo6DFE+QYP7k6HxhD/Mib3EaDE4EIEv1ASeSL2vPs5jwFMl6P79q/02nJ2g1eeDtqZKtoJb7JfA4j8ARwIfxYPV2cJB43IqjEMlJmw0afvdcFZ2Lo0506MA5InQ4hRL/zRw7E=
+	t=1752888152; cv=none; b=H4if3wGrvfOkqB9NQDCWjoNY8HQ5TAycgLl+Mv3hfEz0jmpEvb9VgeF3dLgkkyZdLUSJvccnA4dRbChy1jeq6/h3P27Y1t63Q8Q271S6Sg16ew/q5ZJzQ2umTTM9iSAMo8lGYu4gAQCQQ9mUDiFX+GG8GNTFMIGaVeCgxXk4VRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752888102; c=relaxed/simple;
-	bh=+15FpSPkrACA+ciSacePLD07LJ6qgZseg7M8b2CYqv0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BxzDOGfWbn9c+9Hw+ATLKPWV6ZC0REq5UwRx3vG8fC8aSvOqwz1tYSf1tI7UUnfSjHF+mdjhGdSusC4aO5edMOXN88gfg/Q7XqAns2TUM6KZdDBrTkQOIR8q0We9lLPp+mKnV2ylk2u2SzWG1gLbSAG/XmBfMRL442hNuRGJGgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Ux6+uGi/; arc=none smtp.client-ip=68.232.153.233
+	s=arc-20240116; t=1752888152; c=relaxed/simple;
+	bh=OVbbYkCBcZ+CNDoO6CgnMGQXExnG7/i7qu3C3IVJKkE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UtwsejbMTZBOWsd5H4BI6FaUyATvEEp4PBBxQbbBVQCvgSvSeqN/dquMQT+4/Xd6ADPArWF9o8HnF5oIyZPMZfwB2mkeHL3xmjLNVfLjHY4Fyf/nRQQFuvpcXzOiVKe27VyPUZ+IhycLNp7J2YHzWIJdG6CzgWEj7Iqfn7FkGKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=CZ7FP1xL; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Ux6+uGi/"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="CZ7FP1xL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1752888101; x=1784424101;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=+15FpSPkrACA+ciSacePLD07LJ6qgZseg7M8b2CYqv0=;
-  b=Ux6+uGi/o5N2yEZNwsn5hIgdOQYDzJ2xQdxHC4odkU6/XqlkHFEW76qT
-   z9i2Fe7sZaO5dpByMe3cy+EKJzxjE1KATj0vZXpL3wMqp4JGaC8KSV+Nl
-   Syqrc5s0xA+/4MTt6HG6iEXUcgNXBH3FwuqvEDN8t5gAsz2bmjueCYPwg
-   8wJZtHJbiNF7dxdO3m4NuhQ/B79I4idCVhW9oML+yN+sRWxmLv8uJZ/rb
-   Q8Gj+wHTg22dzZIy2Dgen/IJ0pt4/eIYPp0D1qxkiTwhnncH9CmZlLZyN
-   dwDbejLPwdghuLD8+PtXN7Ql1WFDIMiI6CXv/4Wqu01HEaGHhU0xwsxPT
-   A==;
-X-CSE-ConnectionGUID: nNeMYTH9S7+QK+h8shmrqw==
-X-CSE-MsgGUID: lGzN1hEtQlWgjPNfy49msA==
+  t=1752888151; x=1784424151;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OVbbYkCBcZ+CNDoO6CgnMGQXExnG7/i7qu3C3IVJKkE=;
+  b=CZ7FP1xLqHhNaPJU7oYzZEHvk9S1RwAoMKb4UnCn+274Xfdek4LzgWRe
+   N/Sfj7VB2yPmHjXUZyrZu/qcz8dGrRCJjd/S9DrZF7XKR49g+ELaTo5eY
+   VbT71AXyW/JS4wIprLCxEiuYoMeAdldwluFDanXMwapto09o3gsAWnLnm
+   /4zhJJB2p8+YFGJtPRMCJGlJCKmL+kcQsP1K8JyUn/87cJ5KDuJtG0ZP4
+   VHVH15aOXnlK7b1NuUGw3WL93TXI7M5Fnh7Ue5qX7AsyrFPV+DW41w692
+   8WFcDnLYKctQy5SVKbIi28gU4YdGS9x0aMBHVU7pnB4p3+Pa6BDkgH/W3
+   g==;
+X-CSE-ConnectionGUID: ddxsHBV8SmSEFdelM5WBgw==
+X-CSE-MsgGUID: zNzCk4BARD2ljdhwTloXvw==
 X-IronPort-AV: E=Sophos;i="6.16,323,1744095600"; 
-   d="scan'208";a="44154238"
+   d="scan'208";a="275554253"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Jul 2025 18:21:37 -0700
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Jul 2025 18:21:23 -0700
 Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Fri, 18 Jul 2025 18:21:07 -0700
+ 15.1.2507.44; Fri, 18 Jul 2025 18:21:02 -0700
 Received: from pop-os.microchip.com (10.10.85.11) by chn-vm-ex01.mchp-main.com
  (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
- Transport; Fri, 18 Jul 2025 18:21:06 -0700
+ Transport; Fri, 18 Jul 2025 18:21:02 -0700
 From: <Tristram.Ha@microchip.com>
 To: Woojung Huh <woojung.huh@microchip.com>, Andrew Lunn <andrew@lunn.ch>,
 	Vladimir Oltean <olteanv@gmail.com>, Rob Herring <robh@kernel.org>,
@@ -54,12 +53,10 @@ CC: Maxime Chevallier <maxime.chevallier@bootlin.com>, "David S. Miller"
 	<marex@denx.de>, <UNGLinuxDriver@microchip.com>,
 	<devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, Tristram Ha <tristram.ha@microchip.com>
-Subject: [PATCH net-next v4 7/7] net: dsa: microchip: Disable PTP function of KSZ8463
-Date: Fri, 18 Jul 2025 18:21:06 -0700
-Message-ID: <20250719012106.257968-8-Tristram.Ha@microchip.com>
+Subject: [PATCH net-next v4 0/7] net: dsa: microchip: Add KSZ8463 switch support
+Date: Fri, 18 Jul 2025 18:20:59 -0700
+Message-ID: <20250719012106.257968-1-Tristram.Ha@microchip.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250719012106.257968-1-Tristram.Ha@microchip.com>
-References: <20250719012106.257968-1-Tristram.Ha@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,42 +68,42 @@ Content-Type: text/plain
 
 From: Tristram Ha <tristram.ha@microchip.com>
 
-The PTP function of KSZ8463 is on by default.  However, its proprietary
-way of storing timestamp directly in a reserved field inside the PTP
-message header is not suitable for use with the current Linux PTP stack
-implementation.  It is necessary to disable the PTP function to not
-interfere the normal operation of the MAC.
+This series of patches is to add KSZ8463 switch support to the KSZ DSA
+driver.
 
-Note the PTP driver for KSZ switches does not work for KSZ8463 and is not
-activated for it.
+v4
+- Fix a typo in ksz8_reg.h
+- Fix logic in ksz8463_r_phy()
 
-Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
----
- drivers/net/dsa/microchip/ksz8.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+v3
+- Replace cpu_to_be16() with swab16() to avoid compiler warning
+- Disable PTP function in a separate patch
 
-diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-index 1fb0ebd0c50d..59e7960a754d 100644
---- a/drivers/net/dsa/microchip/ksz8.c
-+++ b/drivers/net/dsa/microchip/ksz8.c
-@@ -1761,6 +1761,17 @@ void ksz8_config_cpu_port(struct dsa_switch *ds)
- 					   reg16(dev, KSZ8463_REG_DSP_CTRL_6),
- 					   COPPER_RECEIVE_ADJUSTMENT, 0);
- 		}
-+
-+		/* Turn off PTP function as the switch's proprietary way of
-+		 * handling timestamp is not supported in current Linux PTP
-+		 * stack implementation.
-+		 */
-+		regmap_update_bits(ksz_regmap_16(dev),
-+				   reg16(dev, KSZ8463_PTP_MSG_CONF1),
-+				   PTP_ENABLE, 0);
-+		regmap_update_bits(ksz_regmap_16(dev),
-+				   reg16(dev, KSZ8463_PTP_CLK_CTRL),
-+				   PTP_CLK_ENABLE, 0);
- 	}
- }
- 
+v2
+- Break the KSZ8463 driver code into several patches for easy review
+- Replace ntohs with cpu_to_be16
+
+
+Tristram Ha (7):
+  dt-bindings: net: dsa: microchip: Add KSZ8463 switch support
+  net: dsa: microchip: Add KSZ8463 switch support to KSZ DSA driver
+  net: dsa: microchip: Transform register for use with KSZ8463
+  net: dsa: microchip: Use different registers for KSZ8463
+  net: dsa: microchip: Write switch MAC address differently for KSZ8463
+  net: dsa: microchip: Setup fiber ports for KSZ8463
+  net: dsa: microchip: Disable PTP function of KSZ8463
+
+ .../bindings/net/dsa/microchip,ksz.yaml       |   1 +
+ drivers/net/dsa/microchip/ksz8.c              | 195 +++++++++++++++---
+ drivers/net/dsa/microchip/ksz8.h              |   4 +
+ drivers/net/dsa/microchip/ksz8_reg.h          |  49 +++++
+ drivers/net/dsa/microchip/ksz_common.c        | 168 ++++++++++++++-
+ drivers/net/dsa/microchip/ksz_common.h        | 104 ++++++++--
+ drivers/net/dsa/microchip/ksz_dcb.c           |  10 +-
+ drivers/net/dsa/microchip/ksz_spi.c           |  14 ++
+ include/linux/platform_data/microchip-ksz.h   |   1 +
+ 9 files changed, 497 insertions(+), 49 deletions(-)
+
 -- 
 2.34.1
 
