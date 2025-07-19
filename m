@@ -1,299 +1,91 @@
-Received: from mail-10624.protonmail.ch (mail-10624.protonmail.ch [79.135.106.24])
+Received: from mail.ionic.de (ionic.de [145.239.234.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB1D19E806
-	for <netdev@vger.kernel.org>; Sat, 19 Jul 2025 18:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9337421FF27;
+	Sat, 19 Jul 2025 18:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.234.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752948534; cv=none; b=Rez563j2fJoy1nONa0GDlZzEgyPi+z3txVNp4HAKhx/lxlB0BTpyc1NXtxK1vRog3tqtkuYv7y/ohEfD3zsj57vm+HI7ujO1N42P+08CvlEw8VCQ8XEYsq85vrlTDnkYMyX5/BWX1TQqk0quJ/1+P0ad2dYqHh5o6kU0xJ+eVSc=
+	t=1752951582; cv=none; b=X0x4NO1Qx6SxstnHofX3CyKvCJSZqiZ2/TJGX/15cvMDn+Ud3TmyQE7atURVj8eoHsJyBuO8PqAZtgtudBw3k2FaePgowVL152NmXSyGVJwAiW29UeFxakcAx0k+CltNAEjafK50D0W0ud5iQBVgpoFyDnZJK6KZyaVu7IAP9sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752948534; c=relaxed/simple;
-	bh=iqm/OYtfOPclwUYLAETaKoJ8BpJPg0xIMtE90PVnoR0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u1cuOzvUZndywj7z7UgSvCL8pEPw01YeefEDOXfTfhLWbm4MKAGNPq/04I0L0nOk5+aymMni+EG/bQH2ln2/bvYP0DU7pUWoTZcTR7z9BsAdLUlF3QBQK2KUIl2PmABFaRoLdh2QMdCeuRFB1cym/HGnlOstAv88FnfItKxafVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io; spf=pass smtp.mailfrom=willsroot.io; dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b=G+FiDcGk; arc=none smtp.client-ip=79.135.106.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=willsroot.io
+	s=arc-20240116; t=1752951582; c=relaxed/simple;
+	bh=5WNVUfHylyAj4ZyLXapU3bnDcOlJ2/W3vLBcHDDqmY0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VS0xbbjjxnYiIRXO5awaohBg26Ng9FvjiY4ytjv+IrP2qFRWY8W4nkxmSnGQwjbMKg1qPCPaRRBRsKVm+ie+4YJZtQwUEVxB2eqfHRsA8P6nD5IuL+fLj+lPtaxDHjQdjf3MFIIwoPx51YNPjuJmB69EqP7a7QpHTj8318pxmJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=mwDhVTvM; arc=none smtp.client-ip=145.239.234.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionic.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b="G+FiDcGk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=willsroot.io;
-	s=protonmail; t=1752948524; x=1753207724;
-	bh=ZBp34tqxxYA9JsG+z0lIT30r7T3akk9BPIkC/OSKalQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=G+FiDcGk6DWyu4FySDk9ESkha23/nDN0g6U5RXp+XBsYZegy8AyL4PdRmFi3ybq94
-	 L8OHd88DzY2P2Y3zClbhU4BWIT3bnO/CjVsOVSkhoZVDwR466oW+N04swmeHpVMzDl
-	 EjIwZir4pGEDCHJ+HOTXeK36DVv5EykRPlbrJNB0Zki46pCYfYtr3sYDj9zr6KSw+7
-	 9ADMUAdYYCWlucMZXPn8s/Mhuf8A2wRraYIU3gYC7/KaNcU3uAe6Hj5A7bB+32W7ka
-	 Ig2I+k3WX443Ft1h2TRAWm0Y37YGWa1QGcuh4XCH2P9gZKafKXvFqxC5FBL0IqquxB
-	 Fcngb39hXVIxQ==
-Date: Sat, 19 Jul 2025 18:08:38 +0000
-To: netdev@vger.kernel.org
-From: William Liu <will@willsroot.io>
-Cc: jhs@mojatatu.com, xiyou.wangcong@gmail.com, pabeni@redhat.com, kuba@kernel.org, jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, horms@kernel.org, savy@syst3mfailure.io, William Liu <will@willsroot.io>
-Subject: [PATCH net 2/2] selftests/tc-testing: Check backlog stats in gso_skb case
-Message-ID: <20250719180819.189347-1-will@willsroot.io>
-In-Reply-To: <20250719180746.189247-1-will@willsroot.io>
-References: <20250719180746.189247-1-will@willsroot.io>
-Feedback-ID: 42723359:user:proton
-X-Pm-Message-ID: 3974d6b592a791b3061830651ca70219ea4a5940
+	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="mwDhVTvM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ionic.de; s=default;
+	t=1752951577; bh=5WNVUfHylyAj4ZyLXapU3bnDcOlJ2/W3vLBcHDDqmY0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mwDhVTvMdjUD9TIbesJfQL21s22ImJ4GOkMeRseyrij47gne6YgnBHY9W0pzyBmEE
+	 Luko0yqMD+dmSEWR7FJY6tVe+mXdRa5iOfrIAPKVmZH2YrOO4A3wycNOj1hgwiJBHn
+	 jaVmSGuIAHIf880hoTjiXl9K+Y06xmpwwAkVb8k4=
+Received: from grml.local.home.ionic.de (unknown [IPv6:2a00:11:fb41:7a00:21b:21ff:fe5e:dddc])
+	by mail.ionic.de (Postfix) with ESMTPSA id 01B061488382;
+	Sat, 19 Jul 2025 20:59:36 +0200 (CEST)
+From: Mihai Moldovan <ionic@ionic.de>
+To: linux-arm-msm@vger.kernel.org,
+	Manivannan Sadhasivam <mani@kernel.org>
+Cc: Denis Kenzior <denkenz@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH v2 01/10] net: qrtr: ns: validate msglen before ctrl_pkt use
+Date: Sat, 19 Jul 2025 20:59:21 +0200
+Message-ID: <866f309e9739d770dce7e8c648b562d37db1d8b5.1752947108.git.ionic@ionic.de>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <cover.1752947108.git.ionic@ionic.de>
+References: <cover.1752947108.git.ionic@ionic.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Add tests to ensure proper backlog accounting in hhf, codel, pie, fq,
-fq_pie, and fq_codel qdiscs. For hhf, codel, and pie, we check for
-the correct packet count and packet size. For fq, fq_pie, and fq_codel,
-we check to make sure the backlog statistics do not underflow in tbf
-after removing those qdiscs, which was an original bug symptom.
+From: Denis Kenzior <denkenz@gmail.com>
 
-Signed-off-by: William Liu <will@willsroot.io>
-Reviewed-by: Savino Dicanosa <savy@syst3mfailure.io>
+The qrtr_ctrl_pkt structure is currently accessed without checking
+if the received payload is large enough to hold the structure's fields.
+Add a check to ensure the payload length is sufficient.
+
+Signed-off-by: Denis Kenzior <denkenz@gmail.com>
+Reviewed-by: Marcel Holtmann <marcel@holtmann.org>
+Reviewed-by: Andy Gross <agross@kernel.org>
+Signed-off-by: Mihai Moldovan <ionic@ionic.de>
+
 ---
- .../tc-testing/tc-tests/infra/qdiscs.json     | 201 ++++++++++++++++++
- 1 file changed, 201 insertions(+)
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json =
-b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
-index c6db7fa94f55..867654a31a95 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
-@@ -185,6 +185,207 @@
-             "$IP addr del 10.10.10.10/24 dev $DUMMY || true"
-         ]
-     },
-+    {
-+        "id": "34c0",
-+        "name": "Test TBF with HHF Backlog Accounting in gso_skb case",
-+        "category": [
-+            "qdisc",
-+            "tbf",
-+            "hhf"
-+        ],
-+        "plugins": {
-+            "requires": [
-+                "nsPlugin",
-+                "scapyPlugin"
-+            ]
-+        },
-+        "setup": [
-+            "$IP link set dev $DUMMY up || true",
-+            "$IP addr add 10.10.11.10/24 dev $DUMMY || true",
-+            "$TC qdisc add dev $DUMMY root handle 1: tbf rate 8bit burst 1=
-00b latency 100ms",
-+            "$TC qdisc replace dev $DUMMY handle 2: parent 1:1 hhf limit 1=
-000",
-+            [
-+                "ping -I $DUMMY  -f -c8 -s32 -W0.001 10.10.11.11",
-+                1
-+            ]
-+        ],
-+        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 2: parent 1:1 =
-hhf limit 1",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
-+        "matchPattern": "backlog 74b 1p",
-+        "matchCount": "2",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "fd68",
-+        "name": "Test TBF with CODEL Backlog Accounting in gso_skb case",
-+        "category": [
-+            "qdisc",
-+            "tbf",
-+            "codel"
-+        ],
-+        "plugins": {
-+            "requires": [
-+                "nsPlugin",
-+                "scapyPlugin"
-+            ]
-+        },
-+        "setup": [
-+            "$IP link set dev $DUMMY up || true",
-+            "$IP addr add 10.10.11.10/24 dev $DUMMY || true",
-+            "$TC qdisc add dev $DUMMY root handle 1: tbf rate 8bit burst 1=
-00b latency 100ms",
-+            "$TC qdisc replace dev $DUMMY handle 2: parent 1:1 codel limit=
- 1000",
-+            [
-+                "ping -I $DUMMY  -f -c8 -s32 -W0.001 10.10.11.11",
-+                1
-+            ]
-+        ],
-+        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 2: parent 1:1 =
-codel limit 1",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
-+        "matchPattern": "backlog 74b 1p",
-+        "matchCount": "2",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "514e",
-+        "name": "Test TBF with PIE Backlog Accounting in gso_skb case",
-+        "category": [
-+            "qdisc",
-+            "tbf",
-+            "pie"
-+        ],
-+        "plugins": {
-+            "requires": [
-+                "nsPlugin",
-+                "scapyPlugin"
-+            ]
-+        },
-+        "setup": [
-+            "$IP link set dev $DUMMY up || true",
-+            "$IP addr add 10.10.11.10/24 dev $DUMMY || true",
-+            "$TC qdisc add dev $DUMMY root handle 1: tbf rate 8bit burst 1=
-00b latency 100ms",
-+            "$TC qdisc replace dev $DUMMY handle 2: parent 1:1 pie limit 1=
-000",
-+            [
-+                "ping -I $DUMMY  -f -c8 -s32 -W0.001 10.10.11.11",
-+                1
-+            ]
-+        ],
-+        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 2: parent 1:1 =
-pie limit 1",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
-+        "matchPattern": "backlog 74b 1p",
-+        "matchCount": "2",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "6c97",
-+        "name": "Test TBF with FQ Backlog Accounting in gso_skb case again=
-st underflow",
-+        "category": [
-+            "qdisc",
-+            "tbf",
-+            "fq"
-+        ],
-+        "plugins": {
-+            "requires": [
-+                "nsPlugin",
-+                "scapyPlugin"
-+            ]
-+        },
-+        "setup": [
-+            "$IP link set dev $DUMMY up || true",
-+            "$IP addr add 10.10.11.10/24 dev $DUMMY || true",
-+            "$TC qdisc add dev $DUMMY root handle 1: tbf rate 8bit burst 1=
-00b latency 100ms",
-+            "$TC qdisc replace dev $DUMMY handle 2: parent 1:1 fq limit 10=
-00",
-+            [
-+                "ping -I $DUMMY  -f -c8 -s32 -W0.001 10.10.11.11",
-+                1
-+            ],
-+            "$TC qdisc change dev $DUMMY handle 2: parent 1:1 fq limit 1"
-+        ],
-+        "cmdUnderTest": "$TC qdisc del dev $DUMMY handle 2: parent 1:1",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
-+        "matchPattern": "backlog 0b 0p",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "5d0b",
-+        "name": "Test TBF with FQ_CODEL Backlog Accounting in gso_skb case=
- against underflow",
-+        "category": [
-+            "qdisc",
-+            "tbf",
-+            "fq_codel"
-+        ],
-+        "plugins": {
-+            "requires": [
-+                "nsPlugin",
-+                "scapyPlugin"
-+            ]
-+        },
-+        "setup": [
-+            "$IP link set dev $DUMMY up || true",
-+            "$IP addr add 10.10.11.10/24 dev $DUMMY || true",
-+            "$TC qdisc add dev $DUMMY root handle 1: tbf rate 8bit burst 1=
-00b latency 100ms",
-+            "$TC qdisc replace dev $DUMMY handle 2: parent 1:1 fq_codel li=
-mit 1000",
-+            [
-+                "ping -I $DUMMY  -f -c8 -s32 -W0.001 10.10.11.11",
-+                1
-+            ],
-+            "$TC qdisc change dev $DUMMY handle 2: parent 1:1 fq_codel lim=
-it 1"
-+        ],
-+        "cmdUnderTest": "$TC qdisc del dev $DUMMY handle 2: parent 1:1",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
-+        "matchPattern": "backlog 0b 0p",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-+    {
-+        "id": "21c3",
-+        "name": "Test TBF with FQ_PIE Backlog Accounting in gso_skb case a=
-gainst underflow",
-+        "category": [
-+            "qdisc",
-+            "tbf",
-+            "fq_pie"
-+        ],
-+        "plugins": {
-+            "requires": [
-+                "nsPlugin",
-+                "scapyPlugin"
-+            ]
-+        },
-+        "setup": [
-+            "$IP link set dev $DUMMY up || true",
-+            "$IP addr add 10.10.11.10/24 dev $DUMMY || true",
-+            "$TC qdisc add dev $DUMMY root handle 1: tbf rate 8bit burst 1=
-00b latency 100ms",
-+            "$TC qdisc replace dev $DUMMY handle 2: parent 1:1 fq_pie limi=
-t 1000",
-+            [
-+                "ping -I $DUMMY  -f -c8 -s32 -W0.001 10.10.11.11",
-+                1
-+            ],
-+            "$TC qdisc change dev $DUMMY handle 2: parent 1:1 fq_pie limit=
- 1"
-+        ],
-+        "cmdUnderTest": "$TC qdisc del dev $DUMMY handle 2: parent 1:1",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC -s qdisc show dev $DUMMY",
-+        "matchPattern": "backlog 0b 0p",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-+    },
-     {
-         "id": "a4bb",
-         "name": "Test FQ_CODEL with HTB parent - force packet drop with em=
-pty queue",
---=20
-2.43.0
+v2:
+  - rebase against current master
+  - use correct size of packet structure as per review comment
+---
+ net/qrtr/ns.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index 3de9350cbf30..2bcfe539dc3e 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -619,6 +619,9 @@ static void qrtr_ns_worker(struct work_struct *work)
+ 			break;
+ 		}
+ 
++		if ((size_t)msglen < sizeof(*pkt))
++			break;
++
+ 		pkt = recv_buf;
+ 		cmd = le32_to_cpu(pkt->cmd);
+ 		if (cmd < ARRAY_SIZE(qrtr_ctrl_pkt_strings) &&
+-- 
+2.50.0
 
