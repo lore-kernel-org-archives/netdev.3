@@ -1,329 +1,222 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DCB1E7660;
-	Sat, 19 Jul 2025 01:22:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9892E62C;
+	Sat, 19 Jul 2025 01:28:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752888156; cv=none; b=lPUnugk0wEoiWQpgbbKGEOmJ1qV0F5xjFgrjRDi+q4jrwBWHUtcD/t3Mv85nLOIxahOcxSOVbWobf2utR2P+Fc884DMgwxBwG8uo22+pv4GA5lwhqNT1BcyEDi6PNmsD8mT/34U19gnRDjVlyHS2E9416TZK7F4/OJbXhYDefmE=
+	t=1752888524; cv=none; b=W/eX3e8mO60Q62xjMB9b9tkAkIvj59nxrgOPBTDu3MGHg1kOiThHlUoaZKHdgdx4bVtK2EpOVzwOAfhiDqEIp03N3Tm6XonY9q7Be76CP1O69+O2P/qvTXjssapsvjKvbe8ZdcCb8nUMPw0A+ume4lH0M/+GcZTHoIrbnTVRI7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752888156; c=relaxed/simple;
-	bh=Jx1J05vMOsGM+RldcEIJYrW+onPwnHZVn/EGoiUXuyk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KgzVcb8MLjkzEyd4v2Fm2V0rSD1GaEVjuBUrRZR31wdcWoyaIjNvgin9ll7UCBSLKn4hiiq2zEIQsPkSWuogcV+/UZO71gYcYOA25YoZSj5I/Ui/LhQFv7+Ffce0G69yD+hSmr5VQSZPggAaLelkp8xELO+oOvkEzZZX0372sb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=HokFhpJ0; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1752888524; c=relaxed/simple;
+	bh=Xgk+Vyd7x+6zQrEAnXg5atZzEmalN4PkM8Ip/CYxqwQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WAdzsmeULWkR7ofedd56wiSJB6DACf5fsn+2dVqZb+tdBKSTRQ+3IwWrDD4Y1P0DaBbouH+KuhR/X8aGs/Fiz9nqNJK1oZybgP3vWMZ+QNykPPfy1N2ie4FTllhqnb+ATAItvKfSMEEAHWNtJIylKg2IZm3rGjykLlb9oHXl8FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lfPZkFoA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="HokFhpJ0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1752888155; x=1784424155;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Jx1J05vMOsGM+RldcEIJYrW+onPwnHZVn/EGoiUXuyk=;
-  b=HokFhpJ0YdpqopzJ5X1gYmB5T4yZ19MoyojYJeHc25584ldxV/Baswmf
-   qqp9XPhFhnfUCoen95jtxp3wKMloxjzoknZHYlIjtvUkyGbpLDverLiJk
-   ifkw5NUrKa1wIvo7gul3EBa4RFI4SD/QpiMhVULfrE7MQaCUqYVtMx8hF
-   Xur1axqICMTYxWKElAL75iUNWUkaugb3/F8d8mNlWPeffQIXAHLvha3Y/
-   9avrC2WtJKcKXAKF0ZkOA12nelSO+fYLXohP9EFAu6IpRJXVqIx1srFj4
-   t1izIV6QgFNWALrQ0asvlEnaPIF+gGAujOAqyiCtlTkRZylGzppsswlAo
-   w==;
-X-CSE-ConnectionGUID: ddxsHBV8SmSEFdelM5WBgw==
-X-CSE-MsgGUID: ntn7bTh2ReqGow62oPIABA==
-X-IronPort-AV: E=Sophos;i="6.16,323,1744095600"; 
-   d="scan'208";a="275554257"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Jul 2025 18:21:24 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Fri, 18 Jul 2025 18:21:04 -0700
-Received: from pop-os.microchip.com (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
- Transport; Fri, 18 Jul 2025 18:21:04 -0700
-From: <Tristram.Ha@microchip.com>
-To: Woojung Huh <woojung.huh@microchip.com>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>, Rob Herring <robh@kernel.org>,
-	"Krzysztof Kozlowski" <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>
-CC: Maxime Chevallier <maxime.chevallier@bootlin.com>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Marek Vasut
-	<marex@denx.de>, <UNGLinuxDriver@microchip.com>,
-	<devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Tristram Ha <tristram.ha@microchip.com>
-Subject: [PATCH net-next v4 3/7] net: dsa: microchip: Transform register for use with KSZ8463
-Date: Fri, 18 Jul 2025 18:21:02 -0700
-Message-ID: <20250719012106.257968-4-Tristram.Ha@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250719012106.257968-1-Tristram.Ha@microchip.com>
-References: <20250719012106.257968-1-Tristram.Ha@microchip.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lfPZkFoA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E19C4CEEB;
+	Sat, 19 Jul 2025 01:28:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752888521;
+	bh=Xgk+Vyd7x+6zQrEAnXg5atZzEmalN4PkM8Ip/CYxqwQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=lfPZkFoA3Z24WBBd9MMRnhKZMdp5gnVosdYE8Q/i9PYWIAZzRroRFMzV8QnwfDvt4
+	 kz+/Jv8t7a2RGS2sWVjDCYSqG47HmNk6ye1KTrG5zhMf9Ns8LsdwbvDkHU/lW0WM57
+	 ATL1F175Bz0rUtgcrTp65YYpio0cbeoRyAO4bv5i88hiGDLdj6D03jGgsyR4L5+/DS
+	 kUz8MkJ2autaMOIDVk1fMopa3pRG1uEEUigHlDcnvJioMxW6vhhLTCWYVXyHV5pcWA
+	 HURmrr9AXzwN6pqvM/E+SS11bhWPDrvd+ybRm5wGr4PDF/XZUBnCbKGrS8dQUACnRO
+	 Va2gPWTaJ+UxA==
+Date: Fri, 18 Jul 2025 18:28:40 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
+Subject: Re: [net-next v15 06/12] net: mtip: Add net_device_ops functions to
+ the L2 switch driver
+Message-ID: <20250718182840.7ab7e202@kernel.org>
+In-Reply-To: <20250716214731.3384273-7-lukma@denx.de>
+References: <20250716214731.3384273-1-lukma@denx.de>
+	<20250716214731.3384273-7-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Tristram Ha <tristram.ha@microchip.com>
+On Wed, 16 Jul 2025 23:47:25 +0200 Lukasz Majewski wrote:
+> +static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
+> +					struct net_device *dev, int port)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	struct switch_enet_private *fep = priv->fep;
+> +	unsigned short status;
+> +	struct cbd_t *bdp;
+> +	void *bufaddr;
+> +
+> +	spin_lock(&fep->hw_lock);
 
-KSZ8463 uses a byte-enable mechanism to specify 8-bit, 16-bit, and 32-bit
-access.  The register is first shifted right by 2 then left by 4.  Extra
-4 bits are added.  If the access is 8-bit one of the 4 bits is set.  If
-the access is 16-bit two of the 4 bits are set.  If the access is 32-bit
-all 4 bits are set.  The SPI command for read or write is then added.
+I see some inconsistencies in how you take this lock.
+Bunch of bare spin_lock() calls from BH context, but there's also
+a _irqsave() call in mtip_adjust_link(). Please align to the strictest
+context (not sure if the irqsave is actually needed, at a glance, IOW
+whether the lock is taken from an IRQ)
 
-As there are no automatic address increase and continuous SPI transfer
-the 64-bit access needs to broken into 2 32-bit accesses.
+> +	if (!fep->link[0] && !fep->link[1]) {
+> +		/* Link is down or autonegotiation is in progress. */
+> +		netif_stop_queue(dev);
+> +		spin_unlock(&fep->hw_lock);
+> +		return NETDEV_TX_BUSY;
+> +	}
+> +
+> +	/* Fill in a Tx ring entry */
+> +	bdp = fep->cur_tx;
+> +
+> +	/* Force read memory barier on the current transmit description */
 
-All common access functions in ksz_common.h are updated to include
-register transformation call so that the correct register access is used
-for KSZ8463.
+Barrier are between things. What is this barrier separating, and what
+write barrier does it pair with? As far as I can tell cur_tx is just
+a value in memory, and accesses are under ->hw_lock, so there should
+be no ordering concerns.
 
-KSZ8463/KSZ8795/KSZ8863/KSZ8895 common code for switch access is updated
-to include the register transformation function if common access
-functions in ksz_common.h are not used.  In addition PORT_CTRL_ADDR is
-replaced with the get_port_addr helper function as KSZ8463 has different
-port register arrangement.
+> +	rmb();
+> +	status = bdp->cbd_sc;
+> +
+> +	if (status & BD_ENET_TX_READY) {
+> +		/* All transmit buffers are full. Bail out.
+> +		 * This should not happen, since dev->tbusy should be set.
+> +		 */
+> +		netif_stop_queue(dev);
+> +		dev_err(&fep->pdev->dev, "%s: tx queue full!.\n", dev->name);
 
-Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
----
- drivers/net/dsa/microchip/ksz8.c       | 10 ++--
- drivers/net/dsa/microchip/ksz_common.c |  5 +-
- drivers/net/dsa/microchip/ksz_common.h | 71 +++++++++++++++++++++-----
- 3 files changed, 67 insertions(+), 19 deletions(-)
+This needs to be rate limited, we don't want to flood the logs in case
+there's a bug.
 
-diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-index 7236be5bab0f..eb8a86eaa0cd 100644
---- a/drivers/net/dsa/microchip/ksz8.c
-+++ b/drivers/net/dsa/microchip/ksz8.c
-@@ -36,13 +36,15 @@
- 
- static void ksz_cfg(struct ksz_device *dev, u32 addr, u8 bits, bool set)
- {
--	regmap_update_bits(ksz_regmap_8(dev), addr, bits, set ? bits : 0);
-+	regmap_update_bits(ksz_regmap_8(dev), reg8(dev, addr), bits,
-+			   set ? bits : 0);
- }
- 
- static void ksz_port_cfg(struct ksz_device *dev, int port, int offset, u8 bits,
- 			 bool set)
- {
--	regmap_update_bits(ksz_regmap_8(dev), PORT_CTRL_ADDR(port, offset),
-+	regmap_update_bits(ksz_regmap_8(dev),
-+			   reg8(dev, dev->dev_ops->get_port_addr(port, offset)),
- 			   bits, set ? bits : 0);
- }
- 
-@@ -1888,14 +1890,14 @@ int ksz8_setup(struct dsa_switch *ds)
- 	ksz_cfg(dev, S_LINK_AGING_CTRL, SW_LINK_AUTO_AGING, true);
- 
- 	/* Enable aggressive back off algorithm in half duplex mode. */
--	regmap_update_bits(ksz_regmap_8(dev), REG_SW_CTRL_1,
-+	regmap_update_bits(ksz_regmap_8(dev), reg8(dev, REG_SW_CTRL_1),
- 			   SW_AGGR_BACKOFF, SW_AGGR_BACKOFF);
- 
- 	/*
- 	 * Make sure unicast VLAN boundary is set as default and
- 	 * enable no excessive collision drop.
- 	 */
--	regmap_update_bits(ksz_regmap_8(dev), REG_SW_CTRL_2,
-+	regmap_update_bits(ksz_regmap_8(dev), reg8(dev, REG_SW_CTRL_2),
- 			   UNICAST_VLAN_BOUNDARY | NO_EXC_COLLISION_DROP,
- 			   UNICAST_VLAN_BOUNDARY | NO_EXC_COLLISION_DROP);
- 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 095e647b3897..5261747b7753 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -2991,7 +2991,8 @@ static int ksz_setup(struct dsa_switch *ds)
- 
- 	ds->num_tx_queues = dev->info->num_tx_queues;
- 
--	regmap_update_bits(ksz_regmap_8(dev), regs[S_MULTICAST_CTRL],
-+	regmap_update_bits(ksz_regmap_8(dev),
-+			   reg8(dev, regs[S_MULTICAST_CTRL]),
- 			   MULTICAST_STORM_DISABLE, MULTICAST_STORM_DISABLE);
- 
- 	ksz_init_mib_timer(dev);
-@@ -3051,7 +3052,7 @@ static int ksz_setup(struct dsa_switch *ds)
- 		goto out_ptp_clock_unregister;
- 
- 	/* start switch */
--	regmap_update_bits(ksz_regmap_8(dev), regs[S_START_CTRL],
-+	regmap_update_bits(ksz_regmap_8(dev), reg8(dev, regs[S_START_CTRL]),
- 			   SW_START, SW_START);
- 
- 	return 0;
-diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
-index 3ffca7054983..cdf89e50238a 100644
---- a/drivers/net/dsa/microchip/ksz_common.h
-+++ b/drivers/net/dsa/microchip/ksz_common.h
-@@ -485,10 +485,36 @@ static inline struct regmap *ksz_regmap_32(struct ksz_device *dev)
- 	return dev->regmap[KSZ_REGMAP_32];
- }
- 
-+static inline bool ksz_is_ksz8463(struct ksz_device *dev)
-+{
-+	return dev->chip_id == KSZ8463_CHIP_ID;
-+}
-+
-+static inline u32 reg8(struct ksz_device *dev, u32 reg)
-+{
-+	if (ksz_is_ksz8463(dev))
-+		return ((reg >> 2) << 4) | (1 << (reg & 3));
-+	return reg;
-+}
-+
-+static inline u32 reg16(struct ksz_device *dev, u32 reg)
-+{
-+	if (ksz_is_ksz8463(dev))
-+		return ((reg >> 2) << 4) | (reg & 2 ? 0x0c : 0x03);
-+	return reg;
-+}
-+
-+static inline u32 reg32(struct ksz_device *dev, u32 reg)
-+{
-+	if (ksz_is_ksz8463(dev))
-+		return ((reg >> 2) << 4) | 0xf;
-+	return reg;
-+}
-+
- static inline int ksz_read8(struct ksz_device *dev, u32 reg, u8 *val)
- {
- 	unsigned int value;
--	int ret = regmap_read(ksz_regmap_8(dev), reg, &value);
-+	int ret = regmap_read(ksz_regmap_8(dev), reg8(dev, reg), &value);
- 
- 	if (ret)
- 		dev_err(dev->dev, "can't read 8bit reg: 0x%x %pe\n", reg,
-@@ -501,7 +527,7 @@ static inline int ksz_read8(struct ksz_device *dev, u32 reg, u8 *val)
- static inline int ksz_read16(struct ksz_device *dev, u32 reg, u16 *val)
- {
- 	unsigned int value;
--	int ret = regmap_read(ksz_regmap_16(dev), reg, &value);
-+	int ret = regmap_read(ksz_regmap_16(dev), reg16(dev, reg), &value);
- 
- 	if (ret)
- 		dev_err(dev->dev, "can't read 16bit reg: 0x%x %pe\n", reg,
-@@ -514,7 +540,7 @@ static inline int ksz_read16(struct ksz_device *dev, u32 reg, u16 *val)
- static inline int ksz_read32(struct ksz_device *dev, u32 reg, u32 *val)
- {
- 	unsigned int value;
--	int ret = regmap_read(ksz_regmap_32(dev), reg, &value);
-+	int ret = regmap_read(ksz_regmap_32(dev), reg32(dev, reg), &value);
- 
- 	if (ret)
- 		dev_err(dev->dev, "can't read 32bit reg: 0x%x %pe\n", reg,
-@@ -529,7 +555,17 @@ static inline int ksz_read64(struct ksz_device *dev, u32 reg, u64 *val)
- 	u32 value[2];
- 	int ret;
- 
--	ret = regmap_bulk_read(ksz_regmap_32(dev), reg, value, 2);
-+	if (ksz_is_ksz8463(dev)) {
-+		int i;
-+
-+		for (i = 0; i < 2; i++)
-+			ret = regmap_read(ksz_regmap_32(dev),
-+					  reg32(dev, reg + i * 4),
-+					  &value[i]);
-+		*val = (u64)value[0] << 32 | value[1];
-+		return ret;
-+	}
-+	ret = regmap_bulk_read(ksz_regmap_32(dev), reg32(dev, reg), value, 2);
- 	if (ret)
- 		dev_err(dev->dev, "can't read 64bit reg: 0x%x %pe\n", reg,
- 			ERR_PTR(ret));
-@@ -543,7 +579,7 @@ static inline int ksz_write8(struct ksz_device *dev, u32 reg, u8 value)
- {
- 	int ret;
- 
--	ret = regmap_write(ksz_regmap_8(dev), reg, value);
-+	ret = regmap_write(ksz_regmap_8(dev), reg8(dev, reg), value);
- 	if (ret)
- 		dev_err(dev->dev, "can't write 8bit reg: 0x%x %pe\n", reg,
- 			ERR_PTR(ret));
-@@ -555,7 +591,7 @@ static inline int ksz_write16(struct ksz_device *dev, u32 reg, u16 value)
- {
- 	int ret;
- 
--	ret = regmap_write(ksz_regmap_16(dev), reg, value);
-+	ret = regmap_write(ksz_regmap_16(dev), reg16(dev, reg), value);
- 	if (ret)
- 		dev_err(dev->dev, "can't write 16bit reg: 0x%x %pe\n", reg,
- 			ERR_PTR(ret));
-@@ -567,7 +603,7 @@ static inline int ksz_write32(struct ksz_device *dev, u32 reg, u32 value)
- {
- 	int ret;
- 
--	ret = regmap_write(ksz_regmap_32(dev), reg, value);
-+	ret = regmap_write(ksz_regmap_32(dev), reg32(dev, reg), value);
- 	if (ret)
- 		dev_err(dev->dev, "can't write 32bit reg: 0x%x %pe\n", reg,
- 			ERR_PTR(ret));
-@@ -580,7 +616,7 @@ static inline int ksz_rmw16(struct ksz_device *dev, u32 reg, u16 mask,
- {
- 	int ret;
- 
--	ret = regmap_update_bits(ksz_regmap_16(dev), reg, mask, value);
-+	ret = regmap_update_bits(ksz_regmap_16(dev), reg16(dev, reg), mask, value);
- 	if (ret)
- 		dev_err(dev->dev, "can't rmw 16bit reg 0x%x: %pe\n", reg,
- 			ERR_PTR(ret));
-@@ -593,7 +629,7 @@ static inline int ksz_rmw32(struct ksz_device *dev, u32 reg, u32 mask,
- {
- 	int ret;
- 
--	ret = regmap_update_bits(ksz_regmap_32(dev), reg, mask, value);
-+	ret = regmap_update_bits(ksz_regmap_32(dev), reg32(dev, reg), mask, value);
- 	if (ret)
- 		dev_err(dev->dev, "can't rmw 32bit reg 0x%x: %pe\n", reg,
- 			ERR_PTR(ret));
-@@ -610,14 +646,22 @@ static inline int ksz_write64(struct ksz_device *dev, u32 reg, u64 value)
- 	val[0] = swab32(value & 0xffffffffULL);
- 	val[1] = swab32(value >> 32ULL);
- 
--	return regmap_bulk_write(ksz_regmap_32(dev), reg, val, 2);
-+	if (ksz_is_ksz8463(dev)) {
-+		int i, ret;
-+
-+		for (i = 0; i < 2; i++)
-+			ret = regmap_write(ksz_regmap_32(dev),
-+					   reg32(dev, reg + i * 4), val[i]);
-+		return ret;
-+	}
-+	return regmap_bulk_write(ksz_regmap_32(dev), reg32(dev, reg), val, 2);
- }
- 
- static inline int ksz_rmw8(struct ksz_device *dev, int offset, u8 mask, u8 val)
- {
- 	int ret;
- 
--	ret = regmap_update_bits(ksz_regmap_8(dev), offset, mask, val);
-+	ret = regmap_update_bits(ksz_regmap_8(dev), reg8(dev, offset), mask, val);
- 	if (ret)
- 		dev_err(dev->dev, "can't rmw 8bit reg 0x%x: %pe\n", offset,
- 			ERR_PTR(ret));
-@@ -710,12 +754,13 @@ static inline bool ksz_is_8895_family(struct ksz_device *dev)
- static inline bool is_ksz8(struct ksz_device *dev)
- {
- 	return ksz_is_ksz87xx(dev) || ksz_is_ksz88x3(dev) ||
--	       ksz_is_8895_family(dev);
-+	       ksz_is_8895_family(dev) || ksz_is_ksz8463(dev);
- }
- 
- static inline bool is_ksz88xx(struct ksz_device *dev)
- {
--	return ksz_is_ksz88x3(dev) || ksz_is_8895_family(dev);
-+	return ksz_is_ksz88x3(dev) || ksz_is_8895_family(dev) ||
-+	       ksz_is_ksz8463(dev);
- }
- 
- static inline bool is_ksz9477(struct ksz_device *dev)
--- 
-2.34.1
+Also at a glance it seems like you have one fep for multiple netdevs.
+So stopping one netdev's Tx queue when fep fills up will not stop the
+other ports from pushing frames, right?
 
+> +		spin_unlock(&fep->hw_lock);
+> +		return NETDEV_TX_BUSY;
+> +	}
+> +
+> +	/* Clear all of the status flags */
+> +	status &= ~BD_ENET_TX_STATS;
+> +
+> +	/* Set buffer length and buffer pointer */
+> +	bufaddr = skb->data;
+> +	bdp->cbd_datlen = skb->len;
+> +
+> +	/* On some FEC implementations data must be aligned on
+> +	 * 4-byte boundaries. Use bounce buffers to copy data
+> +	 * and get it aligned.spin
+> +	 */
+> +	if ((unsigned long)bufaddr & MTIP_ALIGNMENT) {
+
+I think you should add 
+
+	if ... ||
+           fep->quirks & FEC_QUIRK_SWAP_FRAME)
+
+here. You can't modify skb->data without calling skb_cow_data()
+but you already have buffers allocated so can as well use them.
+
+> +		unsigned int index;
+> +
+> +		index = bdp - fep->tx_bd_base;
+> +		memcpy(fep->tx_bounce[index],
+> +		       (void *)skb->data, skb->len);
+
+this fits on one 80 char line BTW, quite easily:
+
+		memcpy(fep->tx_bounce[index], (void *)skb->data, skb->len);
+
+Also the cast to void * is not necessary in C.
+
+> +		bufaddr = fep->tx_bounce[index];
+> +	}
+> +
+> +	if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
+> +		swap_buffer(bufaddr, skb->len);
+> +
+> +	/* Save skb pointer. */
+> +	fep->tx_skbuff[fep->skb_cur] = skb;
+> +
+> +	fep->skb_cur = (fep->skb_cur + 1) & TX_RING_MOD_MASK;
+
+Not sure if this is buggy, but maybe delay updating things until the
+mapping succeeds? Fewer things to unwind.
+
+> +	/* Push the data cache so the CPM does not get stale memory
+> +	 * data.
+> +	 */
+> +	bdp->cbd_bufaddr = dma_map_single(&fep->pdev->dev, bufaddr,
+> +					  MTIP_SWITCH_TX_FRSIZE,
+> +					  DMA_TO_DEVICE);
+> +	if (unlikely(dma_mapping_error(&fep->pdev->dev, bdp->cbd_bufaddr))) {
+> +		dev_err(&fep->pdev->dev,
+> +			"Failed to map descriptor tx buffer\n");
+> +		dev->stats.tx_errors++;
+> +		dev->stats.tx_dropped++;
+
+dropped and errors are two different counters
+I'd stick to dropped
+
+> +		dev_kfree_skb_any(skb);
+> +		goto err;
+> +	}
+> +
+> +	/* Send it on its way.  Tell FEC it's ready, interrupt when done,
+> +	 * it's the last BD of the frame, and to put the CRC on the end.
+> +	 */
+> +
+> +	status |= (BD_ENET_TX_READY | BD_ENET_TX_INTR
+> +			| BD_ENET_TX_LAST | BD_ENET_TX_TC);
+
+The | goes at the end of the previous line, start of new line adjusts 
+to the opening brackets..
+
+> +
+> +	/* Synchronize all descriptor writes */
+> +	wmb();
+> +	bdp->cbd_sc = status;
+> +
+> +	netif_trans_update(dev);
+
+Is this call necessary?
+
+> +	skb_tx_timestamp(skb);
+> +
+> +	/* Trigger transmission start */
+> +	writel(MCF_ESW_TDAR_X_DES_ACTIVE, fep->hwp + ESW_TDAR);
+> +
+> +	dev->stats.tx_bytes += skb->len;
+> +	/* If this was the last BD in the ring,
+> +	 * start at the beginning again.
+> +	 */
+> +	if (status & BD_ENET_TX_WRAP)
+> +		bdp = fep->tx_bd_base;
+> +	else
+> +		bdp++;
+> +
+> +	if (bdp == fep->dirty_tx) {
+> +		fep->tx_full = 1;
+> +		netif_stop_queue(dev);
+> +	}
+> +
+> +	fep->cur_tx = bdp;
+> + err:
+> +	spin_unlock(&fep->hw_lock);
+> +
+> +	return NETDEV_TX_OK;
+> +}
