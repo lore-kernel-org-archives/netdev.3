@@ -1,125 +1,570 @@
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A616E2DAFA1
-	for <netdev@vger.kernel.org>; Mon, 21 Jul 2025 14:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64AA2D77FA
+	for <netdev@vger.kernel.org>; Mon, 21 Jul 2025 14:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753106967; cv=none; b=QR7uSiKGzXsuM/m1Qk7Cl3zPE1L1rUa1raaMRtenHd8isI06hW9Uv1STWTTW67rkkCsGKJtQMRwmhNknU3Pr3MJ32EloZvvYC6UFRTYWwiaZ/DCItcdKdAFyVhasknftQE5Lzy8iYbvJfLrQGMHyJdfhuzxvhWjcgO/+1CW42u4=
+	t=1753107694; cv=none; b=ikGhnDsjJiAwElKivYa71u1ZXjEcemQErz0BN0ma+2oOXh1J2joRvGOHuqWUHFZxS36b+Y7c7QS2WVrBAfJskwT9Runfqrvb0jFVZHSr88A4vm++cwWIixejKCakO0Z8XrTzHYeTaPBbnRj5wIbf4lcGpQzijNe2Vuhi1HHeSEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753106967; c=relaxed/simple;
-	bh=++Ox7gKvHdwky39WdQJFmk0HB160GJNorAa3/n8tZP0=;
+	s=arc-20240116; t=1753107694; c=relaxed/simple;
+	bh=PTWSl+wAEhXohoDtp9bVp5FIerEdPinZroN3Hbl7BSY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bHuEKip5q7gwpVJ73Cw/o8NfGU/4dG83NvGi8wWkPhvlKOtQpw0a4cD4DpF7yAkl3U+lGqQ1xliS3c3M8UAUk9XwFQXg4QPReoyyL7mlcaydw4LqJq/M8Fr1BJnJWlpgL3igLzydrPCBe754BRwhuPr8fF0B1J2NUg8LAxIhjR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=z5K6lEMl; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	 In-Reply-To:Content-Type; b=ekxO17xOjVtnAd5L5aFQRAIxNLXUCsqYXRNxq1twv92WOMixXI1NYpIAfJ2d/bC594JHb5oc4TG1tbebJxQsKjBjOOqU7eP88PM56zGlSBQKiozws+ygcNKpq5z6o7PUoRztA9ZVs/AvAD+OA5ChXyxSqmrji3bIFu7nPAC948Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NibAJOcY; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="z5K6lEMl"
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-73e82d2ec52so429585a34.1
-        for <netdev@vger.kernel.org>; Mon, 21 Jul 2025 07:09:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1753106964; x=1753711764; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+LnLWJUsAr+JAkpxUkcXadAzf96B3tnYqEVcIVAbTvg=;
-        b=z5K6lEMl8JmkEUT/7Ok1G0iQxZb6TAGi9hc3Gt48hT/ZgTT3YKcTBUai8YkopcbpvF
-         mxwi6k1EJkqez7O7uD4BgGZ7bNeUo3YQOtlDZryCx1vrQgytASP0vndrc4qV+EzSgYVa
-         q85iw736SXmkEWipZjlY8XWTfXrmuGuCOpxPP+WXzKV/gm2Z1ebR6O8cr4VwacvuBUHR
-         HozkpzdGWoDNtbon+i2/X23UkBHg4DyGoWViVKDFhDjmsK82gsrHWVa+WCK9xAG7J+my
-         xwz+Kn1/h20pFzhx08zQ77QjYGLqFopn4maqP15AGb+y+zHxZmskqM/RbJdyWSlx9YZv
-         51TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753106964; x=1753711764;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+LnLWJUsAr+JAkpxUkcXadAzf96B3tnYqEVcIVAbTvg=;
-        b=InfksNzzMYwiWUr6LQc8WLFBC1Q3Ws0ENEJEIcHIaCUHg3pvvd6TJ30zm2K/pYcosd
-         LjUALvylbCjk3OLJkApFyzVhsc2PTQaUCeL5a6CcX0K/OnyCY+H7agHgZem5IACm/FPe
-         TR8vEvroZqLa7Z7OrhnngeVnzWrHWMRGAR+/Obu5d6MMpqqnZtF6hc2kh693bz8tFHBw
-         3/FRAoX9kjgSOa0oYo3jlbRxglZA6jcBhXQNK3m4/gllACSojgIpZ/i5lqDrwh2CfWpk
-         +9UGxaxqITzhdlFgh0FIFZEm0FETIf8nosJc5eBJmsKeTKkBIvRubhc1khEqaGOFlU+Y
-         xAqA==
-X-Forwarded-Encrypted: i=1; AJvYcCWW0pmDPNLOa89fzkzFyVVBzbimVY+V8UW8NfcUsGeBc6eIbI+FvSoCefcovF6J9gIz22JOCXw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzsNs4OyYYDyqmByiTJ9Kvb5fduRmsJ23xyCivNZ+j8Xnbgkd/
-	MOq3DPl4MFaoFyrOGVzEKYEbyqfkLfUQDMfPYAqfM9cNrmKcj043dRZDL2o7vHlPfTA=
-X-Gm-Gg: ASbGncvgHE/QAX8BKyYvkG7EmDI4adNPshCfL5dIf92mkV+obnTT/86cifjOTLKgFrZ
-	EQi4EGvYLDc14GzGELrBxR9hl4vtVtyH8P7VasEeEkRRdGRQkfafoeo8oEkZ4cAxYvWQbwhyG4w
-	v7Ad6obPonkdsinv4tQW966KgyN0ty1WVCB21noedVyTc6SrI/13UUjW3oCcFzSmPCSLzhpAh+x
-	NBauC1Hq1ZWgWEC4lC/36MhYe+hK6GFXNbF7wBMmvx3YR7Y68zaQwkZjog+jLp8O8F8TyoQV8/n
-	b2A4JDJ1E8rokmH1LyN2L0MU8oBDQ+lY4Yv0kWC8jZ+oaRe/S5tAcSkEe/F/FmPqaF1f53TAHCI
-	2xEo9h4QnpE/2A7iwGzBZQhoGVZzEs7dAyuxUTPdSTXRClnBG092WMRenPqbpsPaQDGP764OESI
-	A=
-X-Google-Smtp-Source: AGHT+IEYJ69qw8hWrbyhfCDdoYCGwahdtxo+pfFxwMph5mSmiJShT9DMVnokAtIY6hWFVoiT1iMVrw==
-X-Received: by 2002:a05:6830:3e8b:b0:735:af51:5ea5 with SMTP id 46e09a7af769-73e665b9181mr11113510a34.22.1753106963677;
-        Mon, 21 Jul 2025 07:09:23 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:3bea:f296:60f2:c6cb? ([2600:8803:e7e4:1d00:3bea:f296:60f2:c6cb])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73e83bf667fsm2820418a34.65.2025.07.21.07.09.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Jul 2025 07:09:23 -0700 (PDT)
-Message-ID: <35eba285-2c49-49ac-9da2-29636e257196@baylibre.com>
-Date: Mon, 21 Jul 2025 09:09:22 -0500
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NibAJOcY"
+Message-ID: <b4233af1-7143-402b-a45c-379c39edf274@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753107688;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KF58D9MGsLNUYJPC/+9oNbaKPqecsAp57941TID+TE8=;
+	b=NibAJOcY8cWSKRZykmD3aK5y5oaFU4cqzAJz45wCEdzhwG/5d3V2bS8tGeI4aIeX33juUz
+	ybPHzbl0VEknxZkO+V0PLynaWpV6BlGg6U4LuP4s62qmYrzpMmoD/Wve2g26CnbRmCbw9U
+	70zHIGitc8KnkGchjTFBW3p5JWcHX48=
+Date: Mon, 21 Jul 2025 15:21:23 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re:
-To: Sanjay Suthar <sanjaysuthar661996@gmail.com>,
- Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-iio@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- ribalda@kernel.org, jic23@kernel.org, nuno.sa@analog.com, andy@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, neil.armstrong@linaro.org,
- khilman@baylibre.com, jbrunet@baylibre.com,
- martin.blumenstingl@googlemail.com
-References: <CADU64hCr7mshqfBRE2Wp8zf4BHBdJoLLH=VJt2MrHeR+zHOV4w@mail.gmail.com>
- <20250720182627.39384-1-sanjaysuthar661996@gmail.com>
- <84ad0f66-311e-4560-870d-851852c6f902@baylibre.com>
- <9574826f-3023-4fe1-9346-eacd70990d73@kernel.org>
- <CADU64hDZeyaCpHXBmSG1rtHjpxmjejT7asK9oGBUMF55eYeh4w@mail.gmail.com>
+Subject: Re: [PATCH v2 02/15] net: rnpgbe: Add n500/n210 chip support
+To: Dong Yibo <dong100@mucse.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, corbet@lwn.net, gur.stavi@huawei.com,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, danishanwar@ti.com, lee@trager.us,
+ gongfan1@huawei.com, lorenzo@kernel.org, geert+renesas@glider.be,
+ Parthiban.Veerasooran@microchip.com, lukas.bulwahn@redhat.com,
+ alexanderduyck@fb.com, richardcochran@gmail.com
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250721113238.18615-1-dong100@mucse.com>
+ <20250721113238.18615-3-dong100@mucse.com>
 Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <CADU64hDZeyaCpHXBmSG1rtHjpxmjejT7asK9oGBUMF55eYeh4w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20250721113238.18615-3-dong100@mucse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On 7/21/25 5:15 AM, Sanjay Suthar wrote:
-> On Mon, Jul 21, 2025 at 12:22 PM Krzysztof Kozlowski <krzk@kernel.org <mailto:krzk@kernel.org>> wrote:
->>
->> On 20/07/2025 21:30, David Lechner wrote:
->> >>    - Ricardo Ribalda Delgado <ricardo@ribalda.com <mailto:ricardo@ribalda.com>>
->> >> diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
->> >> index 0cd78d71768c..5c91716d1f21 100644
->> >> --- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
->> >> +++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
->> >> @@ -149,7 +149,7 @@ properties:
->> >>        - description:
->> >>            The first register range should be the one of the DWMAC controller
->> >>        - description:
->> >> -          The second range is is for the Amlogic specific configuration
->> >> +          The second range is for the Amlogic specific configuration
->> >>            (for example the PRG_ETHERNET register range on Meson8b and newer)
->> >>
->> >>    interrupts:
->> >
->> > I would be tempted to split this into two patches. It's a bit odd to have
->>
->>
->> No, it's a churn to split this into more than one patch.
->>
+On 21/07/2025 12:32, Dong Yibo wrote:
+> Initialize n500/n210 chip bar resource map and
+> dma, eth, mbx ... info for future use.
 > 
-> Thanks for the reply. Since there are suggestions on patch split as it is touching different subsystems, still not clear if I should split the patch or single patch is fine. I would appreciate if you can guide on the next steps to be taken
+> Signed-off-by: Dong Yibo <dong100@mucse.com>
+> ---
+>   drivers/net/ethernet/mucse/rnpgbe/Makefile    |   4 +-
+>   drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    | 138 ++++++++++++++++++
+>   .../net/ethernet/mucse/rnpgbe/rnpgbe_chip.c   | 138 ++++++++++++++++++
+>   drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h |  27 ++++
+>   .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   |  68 ++++++++-
+>   5 files changed, 370 insertions(+), 5 deletions(-)
+>   create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+>   create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
 > 
-> Best Regards,
-> Sanjay Suthar
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/Makefile b/drivers/net/ethernet/mucse/rnpgbe/Makefile
+> index 0942e27f5913..42c359f459d9 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/Makefile
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/Makefile
+> @@ -5,5 +5,5 @@
+>   #
+>   
+>   obj-$(CONFIG_MGBE) += rnpgbe.o
+> -
+> -rnpgbe-objs := rnpgbe_main.o
+> +rnpgbe-objs := rnpgbe_main.o\
+> +	       rnpgbe_chip.o
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+> index 224e395d6be3..2ae836fc8951 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+> @@ -4,21 +4,156 @@
+>   #ifndef _RNPGBE_H
+>   #define _RNPGBE_H
+>   
+> +#include <linux/types.h>
+> +#include <linux/netdevice.h>
+> +
+> +extern const struct rnpgbe_info rnpgbe_n500_info;
+> +extern const struct rnpgbe_info rnpgbe_n210_info;
+> +extern const struct rnpgbe_info rnpgbe_n210L_info;
+> +
+>   enum rnpgbe_boards {
+>   	board_n500,
+>   	board_n210,
+>   	board_n210L,
+>   };
+>   
+> +enum rnpgbe_hw_type {
+> +	rnpgbe_hw_n500 = 0,
+> +	rnpgbe_hw_n210,
+> +	rnpgbe_hw_n210L,
+> +	rnpgbe_hw_unknow
+> +};
+> +
+> +struct mucse_dma_info {
+> +	u8 __iomem *dma_base_addr;
+> +	u8 __iomem *dma_ring_addr;
+> +	void *back;
+> +	u32 max_tx_queues;
+> +	u32 max_rx_queues;
+> +	u32 dma_version;
+> +};
+> +
+> +#define RNPGBE_MAX_MTA 128
+> +struct mucse_eth_info {
+> +	u8 __iomem *eth_base_addr;
+> +	void *back;
+> +	u32 mta_shadow[RNPGBE_MAX_MTA];
+> +	int mc_filter_type;
+> +	u32 mcft_size;
+> +	u32 vft_size;
+> +	u32 num_rar_entries;
+> +};
+> +
+> +struct mii_regs {
+> +	unsigned int addr; /* MII Address */
+> +	unsigned int data; /* MII Data */
+> +	unsigned int addr_shift; /* MII address shift */
+> +	unsigned int reg_shift; /* MII reg shift */
+> +	unsigned int addr_mask; /* MII address mask */
+> +	unsigned int reg_mask; /* MII reg mask */
+> +	unsigned int clk_csr_shift;
+> +	unsigned int clk_csr_mask;
+> +};
+> +
+> +struct mucse_mac_info {
+> +	u8 __iomem *mac_addr;
+> +	void *back;
+> +	struct mii_regs mii;
+> +	int phy_addr;
+> +	int clk_csr;
+> +};
+> +
+> +#define MAX_VF_NUM (8)
+> +
+> +struct mucse_mbx_info {
+> +	u32 timeout;
+> +	u32 usec_delay;
+> +	u32 v2p_mailbox;
+> +	u16 size;
+> +	u16 vf_req[MAX_VF_NUM];
+> +	u16 vf_ack[MAX_VF_NUM];
+> +	u16 fw_req;
+> +	u16 fw_ack;
+> +	/* lock for only one use mbx */
+> +	struct mutex lock;
+> +	bool irq_enabled;
+> +	int mbx_size;
+> +	int mbx_mem_size;
+> +#define MBX_FEATURE_NO_ZERO BIT(0)
+> +#define MBX_FEATURE_WRITE_DELAY BIT(1)
+> +	u32 mbx_feature;
+> +	/* fw <--> pf mbx */
+> +	u32 fw_pf_shm_base;
+> +	u32 pf2fw_mbox_ctrl;
+> +	u32 pf2fw_mbox_mask;
+> +	u32 fw_pf_mbox_mask;
+> +	u32 fw2pf_mbox_vec;
+> +	/* pf <--> vf mbx */
+> +	u32 pf_vf_shm_base;
+> +	u32 pf2vf_mbox_ctrl_base;
+> +	u32 pf_vf_mbox_mask_lo;
+> +	u32 pf_vf_mbox_mask_hi;
+> +	u32 pf2vf_mbox_vec_base;
+> +	u32 vf2pf_mbox_vec_base;
+> +	u32 fw_vf_share_ram;
+> +	int share_size;
+> +};
+> +
+> +struct mucse_hw {
+> +	void *back;
+> +	u8 pfvfnum;
+> +	u8 pfvfnum_system;
+> +	u8 __iomem *hw_addr;
+> +	u8 __iomem *ring_msix_base;
+> +	struct pci_dev *pdev;
+> +	u16 device_id;
+> +	u16 vendor_id;
+> +	u16 subsystem_device_id;
+> +	u16 subsystem_vendor_id;
+> +	enum rnpgbe_hw_type hw_type;
+> +	struct mucse_dma_info dma;
+> +	struct mucse_eth_info eth;
+> +	struct mucse_mac_info mac;
+> +	struct mucse_mbx_info mbx;
+> +#define M_NET_FEATURE_SG BIT(0)
+> +#define M_NET_FEATURE_TX_CHECKSUM BIT(1)
+> +#define M_NET_FEATURE_RX_CHECKSUM BIT(2)
+> +#define M_NET_FEATURE_TSO BIT(3)
+> +#define M_NET_FEATURE_TX_UDP_TUNNEL BIT(4)
+> +#define M_NET_FEATURE_VLAN_FILTER BIT(5)
+> +#define M_NET_FEATURE_VLAN_OFFLOAD BIT(6)
+> +#define M_NET_FEATURE_RX_NTUPLE_FILTER BIT(7)
+> +#define M_NET_FEATURE_TCAM BIT(8)
+> +#define M_NET_FEATURE_RX_HASH BIT(9)
+> +#define M_NET_FEATURE_RX_FCS BIT(10)
+> +#define M_NET_FEATURE_HW_TC BIT(11)
+> +#define M_NET_FEATURE_USO BIT(12)
+> +#define M_NET_FEATURE_STAG_FILTER BIT(13)
+> +#define M_NET_FEATURE_STAG_OFFLOAD BIT(14)
+> +#define M_NET_FEATURE_VF_FIXED BIT(15)
+> +#define M_VEB_VLAN_MASK_EN BIT(16)
+> +#define M_HW_FEATURE_EEE BIT(17)
+> +#define M_HW_SOFT_MASK_OTHER_IRQ BIT(18)
+> +	u32 feature_flags;
+> +	u16 usecstocount;
+> +};
+> +
+>   struct mucse {
+>   	struct net_device *netdev;
+>   	struct pci_dev *pdev;
+> +	struct mucse_hw hw;
+>   	/* board number */
+>   	u16 bd_number;
+>   
+>   	char name[60];
+>   };
+>   
+> +struct rnpgbe_info {
+> +	int total_queue_pair_cnts;
+> +	enum rnpgbe_hw_type hw_type;
+> +	void (*get_invariants)(struct mucse_hw *hw);
+> +};
+> +
+>   /* Device IDs */
+>   #ifndef PCI_VENDOR_ID_MUCSE
+>   #define PCI_VENDOR_ID_MUCSE 0x8848
+> @@ -30,4 +165,7 @@ struct mucse {
+>   #define PCI_DEVICE_ID_N210 0x8208
+>   #define PCI_DEVICE_ID_N210L 0x820a
+>   
+> +#define m_rd_reg(reg) readl(reg)
+> +#define m_wr_reg(reg, val) writel((val), reg)
+> +
+>   #endif /* _RNPGBE_H */
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> new file mode 100644
+> index 000000000000..38c094965db9
+> --- /dev/null
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> @@ -0,0 +1,138 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/* Copyright(c) 2020 - 2025 Mucse Corporation. */
+> +
+> +#include <linux/types.h>
+> +#include <linux/string.h>
+> +
+> +#include "rnpgbe.h"
+> +#include "rnpgbe_hw.h"
+> +
+> +/**
+> + * rnpgbe_get_invariants_n500 - setup for hw info
+> + * @hw: hw information structure
+> + *
+> + * rnpgbe_get_invariants_n500 initializes all private
+> + * structure, such as dma, eth, mac and mbx base on
+> + * hw->addr for n500
+> + **/
+> +static void rnpgbe_get_invariants_n500(struct mucse_hw *hw)
+> +{
+> +	struct mucse_dma_info *dma = &hw->dma;
+> +	struct mucse_eth_info *eth = &hw->eth;
+> +	struct mucse_mac_info *mac = &hw->mac;
+> +	struct mucse_mbx_info *mbx = &hw->mbx;
+> +
+> +	/* setup msix base */
+> +	hw->ring_msix_base = hw->hw_addr + 0x28700;
+> +	/* setup dma info */
+> +	dma->dma_base_addr = hw->hw_addr;
+> +	dma->dma_ring_addr = hw->hw_addr + RNPGBE_RING_BASE;
+> +	dma->max_tx_queues = RNPGBE_MAX_QUEUES;
+> +	dma->max_rx_queues = RNPGBE_MAX_QUEUES;
+> +	dma->back = hw;
+> +	/* setup eth info */
+> +	eth->eth_base_addr = hw->hw_addr + RNPGBE_ETH_BASE;
+> +	eth->back = hw;
+> +	eth->mc_filter_type = 0;
+> +	eth->mcft_size = RNPGBE_MC_TBL_SIZE;
+> +	eth->vft_size = RNPGBE_VFT_TBL_SIZE;
+> +	eth->num_rar_entries = RNPGBE_RAR_ENTRIES;
+> +	/* setup mac info */
+> +	mac->mac_addr = hw->hw_addr + RNPGBE_MAC_BASE;
+> +	mac->back = hw;
+> +	/* set mac->mii */
+> +	mac->mii.addr = RNPGBE_MII_ADDR;
+> +	mac->mii.data = RNPGBE_MII_DATA;
+> +	mac->mii.addr_shift = 11;
+> +	mac->mii.addr_mask = 0x0000F800;
+> +	mac->mii.reg_shift = 6;
+> +	mac->mii.reg_mask = 0x000007C0;
+> +	mac->mii.clk_csr_shift = 2;
+> +	mac->mii.clk_csr_mask = GENMASK(5, 2);
+> +	mac->clk_csr = 0x02; /* csr 25M */
+> +	/* hw fixed phy_addr */
+> +	mac->phy_addr = 0x11;
+> +
+> +	mbx->mbx_feature |= MBX_FEATURE_NO_ZERO;
+> +	/* mbx offset */
+> +	mbx->vf2pf_mbox_vec_base = 0x28900;
+> +	mbx->fw2pf_mbox_vec = 0x28b00;
+> +	mbx->pf_vf_shm_base = 0x29000;
+> +	mbx->mbx_mem_size = 64;
+> +	mbx->pf2vf_mbox_ctrl_base = 0x2a100;
+> +	mbx->pf_vf_mbox_mask_lo = 0x2a200;
+> +	mbx->pf_vf_mbox_mask_hi = 0;
+> +	mbx->fw_pf_shm_base = 0x2d000;
+> +	mbx->pf2fw_mbox_ctrl = 0x2e000;
+> +	mbx->fw_pf_mbox_mask = 0x2e200;
+> +	mbx->fw_vf_share_ram = 0x2b000;
+> +	mbx->share_size = 512;
+> +
+> +	/* setup net feature here */
+> +	hw->feature_flags |= M_NET_FEATURE_SG |
+> +			     M_NET_FEATURE_TX_CHECKSUM |
+> +			     M_NET_FEATURE_RX_CHECKSUM |
+> +			     M_NET_FEATURE_TSO |
+> +			     M_NET_FEATURE_VLAN_FILTER |
+> +			     M_NET_FEATURE_VLAN_OFFLOAD |
+> +			     M_NET_FEATURE_RX_NTUPLE_FILTER |
+> +			     M_NET_FEATURE_RX_HASH |
+> +			     M_NET_FEATURE_USO |
+> +			     M_NET_FEATURE_RX_FCS |
+> +			     M_NET_FEATURE_STAG_FILTER |
+> +			     M_NET_FEATURE_STAG_OFFLOAD;
+> +	/* start the default ahz, update later */
+> +	hw->usecstocount = 125;
+> +}
+> +
+> +/**
+> + * rnpgbe_get_invariants_n210 - setup for hw info
+> + * @hw: hw information structure
+> + *
+> + * rnpgbe_get_invariants_n210 initializes all private
+> + * structure, such as dma, eth, mac and mbx base on
+> + * hw->addr for n210
+> + **/
+> +static void rnpgbe_get_invariants_n210(struct mucse_hw *hw)
+> +{
+> +	struct mucse_mbx_info *mbx = &hw->mbx;
+> +	/* get invariants based from n500 */
+> +	rnpgbe_get_invariants_n500(hw);
 
-Krzysztof is one of the devicetree maintainers and I am not, so you
-should do what Krzysztof says - leave it as one patch. :-)
+it's not a good pattern. if you have some configuration that is
+shared amoung devices, it's better to create *base() or *common()
+helper and call it from each specific initializer. BTW, why do you
+name these functions get_invariants*()? They don't get anything, but
+rather init/setup configuration values. It's better to rename it
+according to the function.
+
+> +
+> +	/* update msix base */
+> +	hw->ring_msix_base = hw->hw_addr + 0x29000;
+> +	/* update mbx offset */
+> +	mbx->vf2pf_mbox_vec_base = 0x29200;
+> +	mbx->fw2pf_mbox_vec = 0x29400;
+> +	mbx->pf_vf_shm_base = 0x29900;
+> +	mbx->mbx_mem_size = 64;
+> +	mbx->pf2vf_mbox_ctrl_base = 0x2aa00;
+> +	mbx->pf_vf_mbox_mask_lo = 0x2ab00;
+> +	mbx->pf_vf_mbox_mask_hi = 0;
+> +	mbx->fw_pf_shm_base = 0x2d900;
+> +	mbx->pf2fw_mbox_ctrl = 0x2e900;
+> +	mbx->fw_pf_mbox_mask = 0x2eb00;
+> +	mbx->fw_vf_share_ram = 0x2b900;
+> +	mbx->share_size = 512;
+> +	/* update hw feature */
+> +	hw->feature_flags |= M_HW_FEATURE_EEE;
+> +	hw->usecstocount = 62;
+> +}
+> +
+> +const struct rnpgbe_info rnpgbe_n500_info = {
+> +	.total_queue_pair_cnts = RNPGBE_MAX_QUEUES,
+> +	.hw_type = rnpgbe_hw_n500,
+> +	.get_invariants = &rnpgbe_get_invariants_n500,
+> +};
+> +
+> +const struct rnpgbe_info rnpgbe_n210_info = {
+> +	.total_queue_pair_cnts = RNPGBE_MAX_QUEUES,
+> +	.hw_type = rnpgbe_hw_n210,
+> +	.get_invariants = &rnpgbe_get_invariants_n210,
+> +};
+> +
+> +const struct rnpgbe_info rnpgbe_n210L_info = {
+> +	.total_queue_pair_cnts = RNPGBE_MAX_QUEUES,
+> +	.hw_type = rnpgbe_hw_n210L,
+> +	.get_invariants = &rnpgbe_get_invariants_n210,
+> +};
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> new file mode 100644
+> index 000000000000..2c7372a5e88d
+> --- /dev/null
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> @@ -0,0 +1,27 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/* Copyright(c) 2020 - 2025 Mucse Corporation. */
+> +
+> +#ifndef _RNPGBE_HW_H
+> +#define _RNPGBE_HW_H
+> +/*                     BAR                   */
+> +/* ----------------------------------------- */
+> +/*      module  | size  |  start   |    end  */
+> +/*      DMA     | 32KB  | 0_0000H  | 0_7FFFH */
+> +/*      ETH     | 64KB  | 1_0000H  | 1_FFFFH */
+> +/*      MAC     | 32KB  | 2_0000H  | 2_7FFFH */
+> +/*      MSIX    | 32KB  | 2_8000H  | 2_FFFFH */
+> +
+> +#define RNPGBE_RING_BASE (0x1000)
+> +#define RNPGBE_MAC_BASE (0x20000)
+> +#define RNPGBE_ETH_BASE (0x10000)
+> +/* chip resourse */
+> +#define RNPGBE_MAX_QUEUES (8)
+> +/* multicast control table */
+> +#define RNPGBE_MC_TBL_SIZE (128)
+> +/* vlan filter table */
+> +#define RNPGBE_VFT_TBL_SIZE (128)
+> +#define RNPGBE_RAR_ENTRIES (32)
+
+no need for extra parentheses
+
+> +
+> +#define RNPGBE_MII_ADDR 0x00000010 /* MII Address */
+> +#define RNPGBE_MII_DATA 0x00000014 /* MII Data */
+> +#endif /* _RNPGBE_HW_H */
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> index 13b49875006b..08f773199e9b 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> @@ -11,6 +11,11 @@
+>   #include "rnpgbe.h"
+>   
+>   char rnpgbe_driver_name[] = "rnpgbe";
+> +static const struct rnpgbe_info *rnpgbe_info_tbl[] = {
+> +	[board_n500] = &rnpgbe_n500_info,
+> +	[board_n210] = &rnpgbe_n210_info,
+> +	[board_n210L] = &rnpgbe_n210L_info,
+> +};
+>   
+>   /* rnpgbe_pci_tbl - PCI Device ID Table
+>    *
+> @@ -33,6 +38,7 @@ static struct pci_device_id rnpgbe_pci_tbl[] = {
+>   /**
+>    * rnpgbe_add_adapter - add netdev for this pci_dev
+>    * @pdev: PCI device information structure
+> + * @ii: chip info structure
+>    *
+>    * rnpgbe_add_adapter initializes a netdev for this pci_dev
+>    * structure. Initializes Bar map, private structure, and a
+> @@ -40,16 +46,24 @@ static struct pci_device_id rnpgbe_pci_tbl[] = {
+>    *
+>    * @return: 0 on success, negative on failure
+>    **/
+> -static int rnpgbe_add_adapter(struct pci_dev *pdev)
+> +static int rnpgbe_add_adapter(struct pci_dev *pdev,
+> +			      const struct rnpgbe_info *ii)
+>   {
+>   	struct mucse *mucse = NULL;
+> +	struct mucse_hw *hw = NULL;
+> +	u8 __iomem *hw_addr = NULL;
+>   	struct net_device *netdev;
+>   	static int bd_number;
+> +	u32 dma_version = 0;
+> +	int err = 0;
+> +	u32 queues;
+>   
+> -	netdev = alloc_etherdev_mq(sizeof(struct mucse), 1);
+> +	queues = ii->total_queue_pair_cnts;
+> +	netdev = alloc_etherdev_mq(sizeof(struct mucse), queues);
+>   	if (!netdev)
+>   		return -ENOMEM;
+>   
+> +	SET_NETDEV_DEV(netdev, &pdev->dev);
+>   	mucse = netdev_priv(netdev);
+>   	mucse->netdev = netdev;
+>   	mucse->pdev = pdev;
+> @@ -58,7 +72,54 @@ static int rnpgbe_add_adapter(struct pci_dev *pdev)
+>   		 rnpgbe_driver_name, mucse->bd_number);
+>   	pci_set_drvdata(pdev, mucse);
+>   
+> +	hw = &mucse->hw;
+> +	hw->back = mucse;
+> +	hw->hw_type = ii->hw_type;
+> +
+> +	switch (hw->hw_type) {
+> +	case rnpgbe_hw_n500:
+> +		/* n500 use bar2 */
+> +		hw_addr = devm_ioremap(&pdev->dev,
+> +				       pci_resource_start(pdev, 2),
+> +				       pci_resource_len(pdev, 2));
+> +		if (!hw_addr) {
+> +			dev_err(&pdev->dev, "map bar2 failed!\n");
+> +			return -EIO;
+> +		}
+> +
+> +		/* get dma version */
+> +		dma_version = m_rd_reg(hw_addr);
+> +		break;
+> +	case rnpgbe_hw_n210:
+> +	case rnpgbe_hw_n210L:
+> +		/* check bar0 to load firmware */
+> +		if (pci_resource_len(pdev, 0) == 0x100000)
+> +			return -EIO;
+> +		/* n210 use bar2 */
+> +		hw_addr = devm_ioremap(&pdev->dev,
+> +				       pci_resource_start(pdev, 2),
+> +				       pci_resource_len(pdev, 2));
+> +		if (!hw_addr) {
+> +			dev_err(&pdev->dev, "map bar2 failed!\n");
+> +			return -EIO;
+> +		}
+> +
+> +		/* get dma version */
+> +		dma_version = m_rd_reg(hw_addr);
+> +		break;
+> +	default:
+> +		err = -EIO;
+> +		goto err_free_net;
+> +	}
+> +	hw->hw_addr = hw_addr;
+> +	hw->dma.dma_version = dma_version;
+> +	ii->get_invariants(hw);
+> +
+>   	return 0;
+> +
+> +err_free_net:
+> +	free_netdev(netdev);
+> +	return err;
+>   }
+
+You have err_free_net label, which is used only in really impossible
+case of unknown device, while other cases can return directly and
+memleak netdev...
+
+
+>   
+>   /**
+> @@ -74,6 +135,7 @@ static int rnpgbe_add_adapter(struct pci_dev *pdev)
+>    **/
+>   static int rnpgbe_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>   {
+> +	const struct rnpgbe_info *ii = rnpgbe_info_tbl[id->driver_data];
+>   	int err;
+>   
+>   	err = pci_enable_device_mem(pdev);
+> @@ -97,7 +159,7 @@ static int rnpgbe_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>   
+>   	pci_set_master(pdev);
+>   	pci_save_state(pdev);
+> -	err = rnpgbe_add_adapter(pdev);
+> +	err = rnpgbe_add_adapter(pdev, ii);
+>   	if (err)
+>   		goto err_regions;
+>   
+
