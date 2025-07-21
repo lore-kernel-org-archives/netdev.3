@@ -1,166 +1,161 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013034.outbound.protection.outlook.com [40.107.159.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2942BE026;
-	Mon, 21 Jul 2025 12:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753100448; cv=fail; b=VfgDdqJCZz1lKXWOerCFYlbMFpS9K/tOB6Xaau+1y+loaJuvyM2kzuGw28sVWdQvr0VhWwy+qROiISkrI4tDwiTok6RNKbyARqebnftGJw+XXMKweoFjh/XPIHzA6rusYGVnUyHDVYQyQDSSitR8wLeh6Lc06w/w/L2T+hkOJys=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753100448; c=relaxed/simple;
-	bh=PELtoaULHM1neNcXmc/t7UQqw2mkhV6XtBsbH+O/vPA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HLmPCgM7yNlqy8STG3ZQqpJXhcqbbXzKnT7ZPxywhsce1VFXa0qVPG2oSL5CyarX14LtzEAPixp+yRGdab4TeL9e2V+zkKt0C1Q0F7WmM6xJIonrNHAeOLd1dcQaCI/JEat1Dz/iYDc7CiYj8QBOhLkmU8+ts3ys4YjIECfT3U4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iQi7UIeK; arc=fail smtp.client-ip=40.107.159.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AC6176AC8;
+	Mon, 21 Jul 2025 12:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753100632; cv=none; b=A/31OfZPzCi5h/hOWUM7goRgfjZ3gI6l8sV6+UKXIxCoXhZ6jmqF+mVTR8hhomconEkSJdtca/uE9OYk+bh62NdsxeHP5SwADkQabH6cqfNbnYlomfsmMYB7J8MNqOfHzA0SgRRJV+SrdzZEWOuQXdDixR1O+7JwlM2gmMlheJ0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753100632; c=relaxed/simple;
+	bh=lK05y5EfyxlFdSQJMti7U0pF1916g64aU29cskH7E+E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZQG77On6In6+53CEQCutU2Jo0rlwo72q/TNfn5KdzgyANjmuLUgA9oNPhWjcgtjDKtM05DY4LryqrY7g5Vs0YC85vL6IdZQo8bUrG321j2VhLwArgkqSvjKmvik+gLquoAK/COJ9U2ZIYf6/JQ0c3U8dfxe3YHXSA6QSrLzKyb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s7fGIw3N; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iQi7UIeK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=glYojiX6glKthSrQ/Xfo5QpFWhPKggnXJ/81ZM0vT0j1XeqagTVnu19z2733Cf3J203KEeOyA/F0C6c50lsBOtm/Bc1hnpkj102VTkuy/U6L78cj4R3QP8nY14G7esWfw/LZnRaO9lMIjI04R6X2QZkgivEewtJ7Sf+t3sdT+Sy6VSp10uNwRvyRoKJZWSucWnUwE/7jjy7rsmDX4rwkQ6xraAhfCSKfQ7t4w4XmxH4VTbp33dPOpWIG5sJE6zHtFcs46X/ZmnQ1wt5U4+w5/UmNyQ3Bipyt+pZp7HXBKTVVTEEDtC5voMv1823GJVEukgniRkw8AKG2ieNVucUYLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PELtoaULHM1neNcXmc/t7UQqw2mkhV6XtBsbH+O/vPA=;
- b=PcFsFW/IUp63DEPKH6Uj8mI9fIuhQxIHn2KRMzbGsPIRBCCQNzh229hwBuuAk4bWm0gCF+XSgFsXiRsjXrqTTMIPySciiVNqibW6SUCBvZEhxtHBeWauw26nB233GtwSPGJEHRuXn9ozNEkyRTZy9bRL7g3By9f6YTxBogFZnqOnM19egXaenmRT/ppORz8eUIdDLK9hnXKBQwyDLVNG1sR0qPXpOxDRcH1JR3OSpiBlv9dTh2h1DpIVYVlQplMA2Vvx+PV2iVu8eghhHKLBLgzb4PbybA4BNt1T9LEEkJvcUHA8yo6iMhYYka9pJBmHJCOUKGCgIc3ihWu/QNEGpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PELtoaULHM1neNcXmc/t7UQqw2mkhV6XtBsbH+O/vPA=;
- b=iQi7UIeKgiLxtIti3ABYyaaW/YeTAc22uGE7Bl6BUiIGf+TYGZE1FZMeXvNrv9elj+3qNxSP/YYdiZ5z6i//rDknTUmzoithPuVR/asXbEFsB1GybJDchZto78YCG8pgwKTWfZJfkMysJYNZaM6ap40R3eeQXRs/vcki39VDPvfsFJ+jTtNIK6EpJTkWisUxGGb1buSIR8FOgVpbDBMETXVhjVbhFTEwq63dvHYOGuK13+msGj6cdB+/Hsh28uFE2oidVtqaADnsohlOnjKINgS0K2VaCVG8e7xw9c7ufDIz8W3xj1fgqg7GCPvaiU4zXQQ4V15i2wt/PZDQzHx5jA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by PA2PR04MB10185.eurprd04.prod.outlook.com (2603:10a6:102:401::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.25; Mon, 21 Jul
- 2025 12:20:42 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%5]) with mapi id 15.20.8943.029; Mon, 21 Jul 2025
- 12:20:42 +0000
-Date: Mon, 21 Jul 2025 15:20:33 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Jeongjun Park <aha310510@gmail.com>
-Cc: richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	yangbo.lu@nxp.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+7cfb66a237c4a5fb22ad@syzkaller.appspotmail.com
-Subject: Re: [PATCH net v3] ptp: prevent possible ABBA deadlock in
- ptp_clock_freerun()
-Message-ID: <20250721122033.3pszhnhqtgs2swt6@skbuf>
-References: <20250719124022.1536524-1-aha310510@gmail.com>
- <20250721083011.zesywxhisw435g73@skbuf>
- <CAO9qdTFwFpQh8O-sQuLDXj2eH7L_yBGTk6jdinZVGg9ShQtssw@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAO9qdTFwFpQh8O-sQuLDXj2eH7L_yBGTk6jdinZVGg9ShQtssw@mail.gmail.com>
-X-ClientProxiedBy: VI1P189CA0036.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:802:2a::49) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s7fGIw3N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFF3C4CEED;
+	Mon, 21 Jul 2025 12:23:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753100632;
+	bh=lK05y5EfyxlFdSQJMti7U0pF1916g64aU29cskH7E+E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=s7fGIw3NZXpV2Fk5Vf1Kp4PwBNjcUE/L3hCyjNwqc3Ozv0XfB3nd9uMQK7Bg/O6SY
+	 OYtkV655pHUDzzj1Wwkl6wtoCxSHtAtLpt9xyro42qX8YPEyMEveR2d1rOE71j7jzU
+	 hQm2zEAgDgYkqLzGELqH0oawrBvuVgntZCUEtIWBvQaZNQ+9U2PY4V3anZJBvKsSbt
+	 p8KaRnJJTUXrwQHmCdGDIr+uX8no7K8V/gDFsPLSul2hohIXNarZ991ImIBE6senma
+	 +nXfWRemvRin4baWmcZh4STewq3NEjhwDChCH28sQgN5q6W6msTKXq4APBo+b+opzp
+	 uYfmOfjWQcxQA==
+Message-ID: <79e28c65-8dbe-4449-b795-645029c37f88@kernel.org>
+Date: Mon, 21 Jul 2025 14:23:45 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|PA2PR04MB10185:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63cc8d5f-e8c5-491c-5b02-08ddc85102ed
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|10070799003|19092799006|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?TAIS5xBaVwsaCYQ0WHJTYNww2D7rCfdaKSOO/GlnbjqUKT6Z3anT8orvt82e?=
- =?us-ascii?Q?TZHq6gSGhrrbx48tj7WXjMzu9gCetrNW2iCk4UUKy/cIja31KXGNf7yqPdpm?=
- =?us-ascii?Q?1jvwFSHIaw4jkDM3ZOHs3LS12Ggy+t4Q1NUCP/hcE5MrWw8wNTCDunBe9hKP?=
- =?us-ascii?Q?9/Tu9viYWr3BCfQk91piRmBtLfmtigCokctIfgyHXg6JgHXi0vZZGHEeKoMx?=
- =?us-ascii?Q?8GJhef7Bmu/Tid4K8lCETvQ4bPLPMqFeAFvNkDjhuWCrMgTZX0lNSY5yhXxH?=
- =?us-ascii?Q?yWaz4vvnQhaUmMJz6YIHJlq5L9eixAVyX+ZSfc20hILsDEK9sfrAc0eat/if?=
- =?us-ascii?Q?2MT2HHDuZE8VAfhqx55CHkWuZ1JjeJYmt2Ih9zk1n2oZquXN6bmIFb3Kz59S?=
- =?us-ascii?Q?FM/6xF+Q+9VfcC2OYgni8RHeGC9NMiuc3TOo4V2DMeGctPSlV39e8tj0/lqc?=
- =?us-ascii?Q?lLU3Jyi7YWoXAr10XtcDm+IT8qBGmQszCsZabJ/KQdpKWoQhf2iNt1fhpVNY?=
- =?us-ascii?Q?6PaJNBkhEfLPqY83EGFA5vbHDpuk8b3POauF4gRzJY8Y8YaHN/bobd1WtXWY?=
- =?us-ascii?Q?k/eZjcOAUXYuIqGSE3W4et2K03P9T9QX8JxGQOcwojFOIvO1yuaHOli/RF7A?=
- =?us-ascii?Q?Wrfe96khoSWV6djuD78aQnRGR07AOKyHq/XeuSa6dM7dwDLcuNxoiSNcTDV8?=
- =?us-ascii?Q?zowoX2aZ0bT7+MyhMIrzOalc12HRZIlgQo/gb2Xlx/PXg87XkCyUVdQpbmK9?=
- =?us-ascii?Q?o1msEo4kT+PL63VWgE7VsUhs9bQeOziPbxIMkXijRpEMOEHJy43SGPuvvQxQ?=
- =?us-ascii?Q?w34Grf468e6Vcq463LdlZF4D/h5K1o3KsAJ11uZS/HpfP04o3tmQukyf7w6X?=
- =?us-ascii?Q?O8x2GS+Vvd/R5/SSQZp6GnWOTTkbv0csCne6qJubwdiOOiFO0EuQB78bohmI?=
- =?us-ascii?Q?0BaAxKdTBXOysG2HNsShfY5wzSKJKDqTUTT5tl5M16bmmJHgezEfbEaWXkrB?=
- =?us-ascii?Q?HErVRzm0i3MBDPE15gNn310Q1bxEZe3MXfCVxyi6feetAAfpAkKqPDUHzWxW?=
- =?us-ascii?Q?AkuFCaOESrRmgtTNNGy7qNj19zCsI1WW0qROjS2oT5++kbQJKjl4H75bFnnj?=
- =?us-ascii?Q?xs6cA9vK9f8TuXFzJRHAT0WMPt8U4IoNubdtCxUgZDpO3wowsj1w781l4daq?=
- =?us-ascii?Q?gRtSnkjj9FNUZax8azTFM3yQLZlVfktnbR6+/1jndV0wBRUWFgln+Gy8DX8y?=
- =?us-ascii?Q?aiyEjVxrlyCKd5pD1sZf754sc0RSGzp6YS0Zvap0HPrIACXylDMRnw+JzFJ0?=
- =?us-ascii?Q?Op638RYMDwwMDTbn6l7OkU0OyWC9sXGZmy+PE1xkmPZB2N/lyQYmUMV/dP8Q?=
- =?us-ascii?Q?5G1SMJl6PFo9yPDXtzghdPtKbZKrJJhID8G84/M9tTywbAck/g=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(19092799006)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?shUyP/1vU6wo546Cg/AVJQsqoqHci4hR/FUknM4FGMFB992kmlTCGPmez3ml?=
- =?us-ascii?Q?gEXXbN3l9TGzNzpHbI3LjLF7lY+P6g731gyOp/jIYCWhu9IRV8Hc7lJC1UJx?=
- =?us-ascii?Q?LwfldoPB2eLpLY6+FNblMxHE/lJeI1QkI0HRyc9SYhciPlCpSSBxGVamWDyx?=
- =?us-ascii?Q?3jYVHZp/UttbSlgkZ9jrEoRowrk63ty42G0O81jdTPsdLm4+ufykliumYyfb?=
- =?us-ascii?Q?hfdKVPZyZxKK317KuW5DvCRFku5Rn0Jw+d0f6ydx/7PRP6uGrOBLAdxKzbVy?=
- =?us-ascii?Q?P8j5MIkT+1dTi8UL0YeL8u87RXSQ9lZ5awIqEms7gG8AwiSlfvhSb6lkm6Wk?=
- =?us-ascii?Q?sc7aU970nA+tBPe/Ce2J2lms/RryCMz8rYpGcwzaknTBfGLKSAJgxmLl+TSc?=
- =?us-ascii?Q?1mBvOygbvN8KslFVoC5lCipKDp2opCn9voMlG1cec1Zw5q1WmVpRZ6Mut5iq?=
- =?us-ascii?Q?WEeXHiKwiGSLjn27bZdu7CTssHGz5dBI/GKpnzSo8+5H7bi0J7WGDOn5HA+M?=
- =?us-ascii?Q?bilLxk2V2xo5+YGvZURxz3QzI66ws/GBkraWyojD1TcHnjZk9a8VErNQ+MRe?=
- =?us-ascii?Q?46AE9QLHGgHXceicbZ4GCBhlwkVTi0pajaQPMDR0TZDI8ZRqXEzg41XtQriI?=
- =?us-ascii?Q?k5aDqxLb6HJBCMQ55Pou6NUPSV/b92SvoQ2MQpSa4A0ZxcknJ9Idx8OeU8Bn?=
- =?us-ascii?Q?Vboc6cBSqwUjZ9AKbXJZZ4a8BnNerEkGVHpA7Z4g8HZouke3W88vLCloISXo?=
- =?us-ascii?Q?4bvDqoka8NYtLyLirHQNuKRd7imd0hjO6CXxgjKRSckZXtA1cQUdz/XNrW9U?=
- =?us-ascii?Q?sT+sayBdccNEHcO98qelYMhckTClHIm/c2rjv387dNGUqcvGZb+wJJK97L+b?=
- =?us-ascii?Q?Ki1xKtEES8l1Ruw5JSpk3Zg3oxNcLrSOgE5mT5JYSdL/ZTYuzsFu8cCBVMTN?=
- =?us-ascii?Q?lTAxKd9PJceyJn/YXo9iQ6vEy3BJDsBd7CAjYZcv9zHA7DrDp0siwZcdE5Li?=
- =?us-ascii?Q?52sMQrhlF1TuRjMjmIE7A8gqOs0YQS7cdtpL0/7NSbZfKpKEUhrvdAgCI0Hu?=
- =?us-ascii?Q?/YZ8JB600NVeuVpCPlcM1Xth4AJPRDq4dTSkHL3J6bOP29XzqJB+vPGo47wy?=
- =?us-ascii?Q?WhaoQjDMCUAskyTG+rPRt4Xf4ebHksdGcBMCTwI3/wnjuFzRslYE/raI8PBn?=
- =?us-ascii?Q?Op1jGAaLZRRvIpvmBMoVwmKH6xGjzAaERKmtg37v5jhpgRkkRcSQTAJ9xP9F?=
- =?us-ascii?Q?8EaZJWd+YcfzZiP+yTKP1JUPujAD9LuQzr+lNqEzf1KjYdVHl9FZ5CVnE8kF?=
- =?us-ascii?Q?yuP6Xl9v2K/AuQX8U4nev8YKq8F0eVhi2Nxrkgu8RArCkAbI+d1Afc3ZQo3N?=
- =?us-ascii?Q?tQwRFqVInwZiIqmDKpbh+2bFlVz9X8xy8VQeh7Tspo2JNX98Dz1HQTbZmVX5?=
- =?us-ascii?Q?7oQPeerEe9h/P3pRtvWfWeyK4omKLsF99oypTOJnBdnSe2Ro2vpgB0pYWLy6?=
- =?us-ascii?Q?mqVuASgTaUFKcgyAEgb6MNByitOWtC7fPyp/R/t+iTFFIOiLfekTqVPdb0tF?=
- =?us-ascii?Q?7FbRsMzMugGcMxofarwMsOBqIebEJ1/hdjy2N6IsXTrL6KWruwSGAz2Pkz0R?=
- =?us-ascii?Q?KuGljLa1OjPsFLsQnVvoAQbkWb4lJYjc1tC1FWJGF+EEpaP8gQX1tjOD6laS?=
- =?us-ascii?Q?FW+k6w=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63cc8d5f-e8c5-491c-5b02-08ddc85102ed
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2025 12:20:42.5362
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ETA962JTQhKQWBw5BJ2z1oROnOPuyFYhgV49S3gF/Ak0HTeylN4qf4O12dAdf1qI8Xtpx7yILLKJHS1Vxn+pxA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10185
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net-next 02/14] dt-bindings: net: add nxp,netc-timer
+ property
+To: Vladimir Oltean <vladimir.oltean@nxp.com>,
+ "richardcochran@gmail.com" <richardcochran@gmail.com>
+Cc: Wei Fang <wei.fang@nxp.com>, "robh@kernel.org" <robh@kernel.org>,
+ "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+ "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "vadim.fedorenko@linux.dev"
+ <vadim.fedorenko@linux.dev>, Frank Li <frank.li@nxp.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+ "festevam@gmail.com" <festevam@gmail.com>, "F.S. Peng" <fushi.peng@nxp.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>
+References: <20250716073111.367382-1-wei.fang@nxp.com>
+ <20250716073111.367382-3-wei.fang@nxp.com>
+ <20250717-sceptical-quoll-of-protection-9c2104@kuoka>
+ <PAXPR04MB8510EB38C3DCF5713C6AC5C48851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250717-masterful-uppish-impala-b1d256@kuoka>
+ <PAXPR04MB85109FE64C4FCAD6D46895428851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <af75073c-4ce8-44c1-9e48-b22902373e81@kernel.org>
+ <PAXPR04MB8510426F58E3065B22943D8C8851A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250718-enchanted-cornflower-llama-f7baea@kuoka>
+ <20250718120105.b42gyo7ywj42fcw4@skbuf>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250718120105.b42gyo7ywj42fcw4@skbuf>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 21, 2025 at 08:36:17PM +0900, Jeongjun Park wrote:
-> However, I think ptp->n_vclocks_mux also needs to be annotating lock
-> subclass because there may be false positives due to recursive locking
-> between physical and virtual clocks.
+On 18/07/2025 14:01, Vladimir Oltean wrote:
+>> Maybe there is another property describing a time provider in the
+>> kernel or dtschema. Please look for it. This all looks like you are
+>> implementing typical use case in non-typical, but vendor-like, way.
+>>
+>> Best regards,
+>> Krzysztof
+> 
+> An MII timestamper and a PTP clock (as integrated in a MAC or a PHY) are
+> similar but have some notable differences.
+> 
+> A timestamper is an external device with a free-running counter, which
+> sniffs the MII bus between the MAC and the PHY, and provides timestamps
+> when the first octet of a packet hits the wire.
+> 
+> A PTP clock is also a high precision counter, which can be free-running
+> or it can be precisely adjusted. It does not have packet timestamping
+> capabilities itself, instead the Ethernet MAC can snapshot this counter
+> when it places the first octet of a packet on the MII bus. PTP clocks
+> frequently have other auxiliary functions, like emitting external
+> signals based on the internal time, or snapshotting external signals.
+> 
+> The timestamper is not required to have these functions. In fact, I am
+> looking at ptp_ines.c, the only non-PHY MII timestamper supported by the
+> kernel, and I am noting the fact that it does not call ptp_clock_register()
+> at all, presumably because it has no controllable PTP clock to speak of.
+> 
+> That being said, my understanding is based on analyzing the public code
+> available to me, and I do not have practical experience with MII bus
+> snooping devices, so if Richard could chime in, it would be great.
+> 
+> I am also in favor of using the "ptp-timer" phandle to describe the link
 
-Did you miss the part where I reiterated, in my review comment to your v2,
-that after commit 5ab73b010cad ("ptp: fix breakage after ptp_vclock_in_use()
-rework"), ptp->n_vclocks_mux is only acquired by physical clocks, not by
-virtual clocks?
 
-Also, in general I think it would be useful to include more substantial
-pieces of my explanation in your commit message, or link to it in its
-entirety. I am worried that the info from it becomes denatured, for
-example this piece from your commit message: "Functions like
-clock_adjtime() can only be called with physical clocks." I did not say
-that, I said that **in order for the clock_adjtime() call to acquire
-&ptp->n_vclocks_mux**, then the clock must have been physical.
-In general, adjusting a virtual clock is perfectly possible, thus your
-restatement is false, and it proves a lack of understanding of the
-ptp->n_vclocks_mux locking convention.
+And it is already used in other binding, so yes, that's the candidate.
+
+> between the MAC and the internal PTP clock that will be snapshot when
+> taking packet timestamps. The fman-dtsec.yaml schema also uses it for an
+> identical purpose.
+
+
+Best regards,
+Krzysztof
