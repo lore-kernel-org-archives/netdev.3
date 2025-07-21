@@ -1,158 +1,138 @@
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299573C0C;
-	Mon, 21 Jul 2025 12:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CAC288C80
+	for <netdev@vger.kernel.org>; Mon, 21 Jul 2025 12:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753100809; cv=none; b=Oy26WRXPsNVKLdteESUZwViDSRifKwpJ+WcAiHqSB++Kh8hcrfptNmFzPe8n42BBGMT2CPtUxmN6yiwr9yROIBJjmJISt6RgsCgeEgmrRFfji/AJExwesfswqXyLmOUBPKgy6NKvIx4ef72/ID9kPBAWN1m9eqIIEbaG5K/ZToE=
+	t=1753101064; cv=none; b=ISJx9RjE8rmC/r1NtAa1jCpZGexLdiqcUol3nh1TANgJ7aceBBpsmCmvP1uEmlWg6rzKmxUkudLPcxvH3qXUh7jAbCjbkvEuaXyyeSpURqAuEAscZsKr87iDwgHK/fnXztofLCF2hvQFeslHgQ63SFkETHo6XJr6KbCwa8S2uAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753100809; c=relaxed/simple;
-	bh=7SYBp9Zb4m3gELQ7tCurU5ja2w/hoGsVa4I9FvSKshg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=YlUHBGA2M36ZcQtmZCD7I1cbQj4lGskUikaOtnb/Dw5EvmWjJXbKOxvK059kel8OOPV9beO8zTLksaf53tClYvijPHWaHEHCcevlOZU2fZp5rDmXqviW8DsDi5KRLEgsZcSAK1v3bjOpo63CY3xqr/ZumMttgGIcLgK5Eh7on9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=DAyLPBEA; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	s=arc-20240116; t=1753101064; c=relaxed/simple;
+	bh=8nenQ53s+cHDNk/eJ6AsD0FRHplg+zBhNK1F3i6c+2E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kH55iX55kMwaU4Z4pkM2rniy68B+4lfn04Px4j3Kj+evxoqL+70uxstKrtobih7ZgoJJijvYthwVADrjYSdo0sg4xv1ntfxA53fDAjgZLF1kR/j7I9DBJPhj14u6I0q9TwJNge3nQUUqZEAhywUjgNW117Wr/qABVgQOmVp3KUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CPDqX0u7; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="DAyLPBEA"
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56LCB6IN007054;
-	Mon, 21 Jul 2025 14:26:25 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	fqiwAVutR1r5EQfU0bWFAUEcQiPbqDN4nQ+mORgbmZw=; b=DAyLPBEAplfXgm0X
-	o93LZeJwbDtNejaod2Dtz+F0rJSKVcNuTfA8NE1KghKatYoZ3/0IcygcXYkoASoe
-	zEN/P+q4CSd4zAqlViY2B+SC3gd82JhjD6eY0nDP+zDwI+9VHZQtpMx64ghQ8G1z
-	7GlfFqfrDZ1b8QpSZanCAOI/VykHbgASaUp2DbRXvaaVFCu+6kO0LMlodu08HsSH
-	MTJY9ox9uug/nPb/MrOkP1kxXx7+zdjn7c2KQLqh3C0ZK7yHRzo5UC5DiV4cm/28
-	HVMXPWAZCEfXT+PvLJd7Ls6uk3fzkEjiiF8EXa+at4Mfdd7r/Esojzkev0DL+s7l
-	shNFCQ==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 48028g0fh8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Jul 2025 14:26:24 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 56DDC40047;
-	Mon, 21 Jul 2025 14:24:42 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 6CF5B7A4C92;
-	Mon, 21 Jul 2025 14:23:30 +0200 (CEST)
-Received: from [10.48.87.141] (10.48.87.141) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 21 Jul
- 2025 14:23:29 +0200
-Message-ID: <1fc9d75e-459d-454f-b8dc-1fb7f59d09b4@foss.st.com>
-Date: Mon, 21 Jul 2025 14:23:28 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CPDqX0u7"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4ab5e2ae630so50395741cf.3
+        for <netdev@vger.kernel.org>; Mon, 21 Jul 2025 05:31:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753101062; x=1753705862; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oG3s6mUPko8JmKCEZA0jAx+ufejcC0f/4tYeTxDXVYU=;
+        b=CPDqX0u7v7lsYfzUP/jOS7sBlWt6FONjeVk4rmW7MChHWNumXKM53SSzrMQnRkmglM
+         LRrvXsGS38MG0AMlvJ8G1w1rMNzdANy7OdLsTw2IK6YpXviXbAAgYdvlAzKtkkNees7Y
+         aviWmsZQbDrjQTiaZhUDe383zsqYb0/GbSofwnBMg17QSVAvY8mnhNUVTcXR8rphJWRg
+         sAXA6CK6LacKXWw4npKk6Rlf0+M/U1LIwsnjUJGk0vUHS0s7yJkg0rfzJJUBrCS7pUc4
+         Dt9koJoo6MONhpTGsE2W8ha5kNLmj4TxnbCcaLSnF9FJbPYyFdfeNZk5CfoO0dF5DisS
+         zkgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753101062; x=1753705862;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oG3s6mUPko8JmKCEZA0jAx+ufejcC0f/4tYeTxDXVYU=;
+        b=L8ajGdLlmurqOgOwi5w8hW8En6kyZ74amqtrUw5OzK0+q0YrWvXU7x3jY3PZ9/faw/
+         IOU9YJK3ZBrcmXJWz3syDLBD2s7iuJtFYRQrZIX/3ItOJvnt/uG6VWHUu/dcrKbseHy1
+         9DGGOKcsFHZc52YTTFa7zpUOa7FAAgAjtcYO0gVvvHsi8egLXpQNgaOC1EBjLGb1SJi/
+         LWiQpfZZxljqbyhBgUtq+s3epeWbkRrXjodFHXLnkhwVloiAMkiKggJfK1H/xbIZM503
+         pvdizPNOk36XWnkz1TEcc1IPqPBId3AynfeRTusXfkOBDUBU12zO6EepP/A6u+vVMEG0
+         4DuQ==
+X-Gm-Message-State: AOJu0YyR87nS72U0MCU7hJCsMjNf+72tt/DA4Y8ND9bQq8HCqsKy+aiF
+	uFz5unwVfOt+4dE6dfXfGnSOWXhOZzKenvoFng4Ku5YsgUW9DItCOHKb2aU368zgXSv2TCj1tkM
+	2Jbr3k7gxwoLtIn1qw3MSwSgrKCaWNdT1jUvw6mpA
+X-Gm-Gg: ASbGncvbyNs5ndmpIpl45m6tW7RSMNxarj3CLIo9Xuldx96SdTvNAyMWklmgRQF8Foq
+	SO6aRoDMKtuSj6Ff42o0nAyPIMQx01NsOTURP62KkYr20vDBNrg38qM91vhS62hmi2tUEBJOfHo
+	T/+QlOM4aMAa48JE6NdxPkhhla7pU1JGdQ6u+9C+jA40eAWwN2rSG8EvuGtzG8f5VJILeuqUkP7
+	NlpCrc=
+X-Google-Smtp-Source: AGHT+IHhbEV6R+HtlpXyKfOSyb1h/u1IDSZpj8U6vH3hJNm9xkFT+VxIOL+HYM1+PbyRuW73amTekCzMdVEBk9X4dLs=
+X-Received: by 2002:ac8:5a10:0:b0:4ab:78a8:195c with SMTP id
+ d75a77b69052e-4ab93cb7272mr342892451cf.19.1753101061452; Mon, 21 Jul 2025
+ 05:31:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/4] net: phy: smsc: fix and improve WoL support
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre
- Torgue <alexandre.torgue@foss.st.com>,
-        Christophe Roullier
-	<christophe.roullier@foss.st.com>,
-        Andrew Lunn <andrew@lunn.ch>, Heiner
- Kallweit <hkallweit1@gmail.com>,
-        Simon Horman <horms@kernel.org>,
-        Tristram Ha
-	<Tristram.Ha@microchip.com>,
-        Florian Fainelli
-	<florian.fainelli@broadcom.com>,
-        <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-References: <20250721-wol-smsc-phy-v1-0-89d262812dba@foss.st.com>
- <20250721-wol-smsc-phy-v1-3-89d262812dba@foss.st.com>
- <aH4kVBTxd4zRYv2l@shell.armlinux.org.uk>
-Content-Language: en-US
-From: Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
-In-Reply-To: <aH4kVBTxd4zRYv2l@shell.armlinux.org.uk>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-21_03,2025-07-21_01,2025-03-28_01
+References: <cover.1752859383.git.pabeni@redhat.com> <3e080bdba9981988ff86e120df40a5f0dc6cd033.1752859383.git.pabeni@redhat.com>
+ <CANn89i+KCsw+LH1X1yzmgr1wg5Vxm47AbAEOeOnY5gqq4ngH4w@mail.gmail.com> <f8178814-cf90-4021-a3e2-f2494dbf982a@redhat.com>
+In-Reply-To: <f8178814-cf90-4021-a3e2-f2494dbf982a@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 21 Jul 2025 05:30:49 -0700
+X-Gm-Features: Ac12FXy1RHX2yaNiJGR3GfeQSGanKLyPojueB3VBY-EeT_sR8FwYNfAZ2-Hp3lE
+Message-ID: <CANn89i+baSpvbJM6gcbSjZMmWVyvwsFotvH1czui9ARVRjS5Bw@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/2] tcp: do not set a zero size receive buffer
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Matthieu Baerts <matttbe@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Russel,
+On Mon, Jul 21, 2025 at 3:50=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> On 7/21/25 10:04 AM, Eric Dumazet wrote:
+> > On Fri, Jul 18, 2025 at 10:25=E2=80=AFAM Paolo Abeni <pabeni@redhat.com=
+> wrote:
+> >>
+> >> The nipa CI is reporting frequent failures in the mptcp_connect
+> >> self-tests.
+> >>
+> >> In the failing scenarios (TCP -> MPTCP) the involved sockets are
+> >> actually plain TCP ones, as fallback for passive socket at 2whs
+> >> time cause the MPTCP listener to actually create a TCP socket.
+> >>
+> >> The transfer is stuck due to the receiver buffer being zero.
+> >> With the stronger check in place, tcp_clamp_window() can be invoked
+> >> while the TCP socket has sk_rmem_alloc =3D=3D 0, and the receive buffe=
+r
+> >> will be zeroed, too.
+> >>
+> >> Pass to tcp_clamp_window() even the current skb truesize, so that
+> >> such helper could compute and use the actual limit enforced by
+> >> the stack.
+> >>
+> >> Fixes: 1d2fbaad7cd8 ("tcp: stronger sk_rcvbuf checks")
+> >> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> >> ---
+> >>  net/ipv4/tcp_input.c | 12 ++++++------
+> >>  1 file changed, 6 insertions(+), 6 deletions(-)
+> >>
+> >> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> >> index 672cbfbdcec1..c98de02a3c57 100644
+> >> --- a/net/ipv4/tcp_input.c
+> >> +++ b/net/ipv4/tcp_input.c
+> >> @@ -610,24 +610,24 @@ static void tcp_init_buffer_space(struct sock *s=
+k)
+> >>  }
+> >>
+> >>  /* 4. Recalculate window clamp after socket hit its memory bounds. */
+> >> -static void tcp_clamp_window(struct sock *sk)
+> >> +static void tcp_clamp_window(struct sock *sk, int truesize)
+> >
+> >
+> > I am unsure about this one. truesize can be 1MB here, do we want that
+> > in general ?
+>
+> I'm unsure either. But I can't think of a different approach?!? If the
+> incoming truesize is 1M the socket should allow for at least 1M rcvbuf
+> size to accept it, right?
 
-On 7/21/25 13:28, Russell King (Oracle) wrote:
-> On Mon, Jul 21, 2025 at 01:14:45PM +0200, Gatien Chevallier wrote:
->> +static int smsc_phy_suspend(struct phy_device *phydev)
->> +{
->> +	if (!phydev->wol_enabled)
->> +		return genphy_suspend(phydev);
-> 
-> This should not be necessary. Take a look at phy_suspend(). Notice:
-> 
->          phydev->wol_enabled = phy_drv_wol_enabled(phydev) ||
->                                (netdev && netdev->ethtool->wol_enabled);
->          /* If the device has WOL enabled, we cannot suspend the PHY */
->          if (phydev->wol_enabled && !(phydrv->flags & PHY_ALWAYS_CALL_SUSPEND))
->                  return -EBUSY;
-> 
-> PHY_ALWAYS_CALL_SUSPEND is not set for this PHY, therefore if
-> phydev->wol_enabled is set by the above code, phydrv->suspend will
-> not be called.
-> 
+What I meant was :
 
-Indeed, thank you for pointing this out. I will remove this callback for
-v2.
+This is the generic point, accepting skb->truesize as additional input
+here would make us more vulnerable, or we could risk other
+regressions.
 
->> +
->> +	return 0;
->> +}
->> +
->> +static int smsc_phy_resume(struct phy_device *phydev)
->> +{
->> +	int rc;
->> +
->> +	if (!phydev->wol_enabled)
->> +		return genphy_resume(phydev);
->> +
->> +	rc = phy_read_mmd(phydev, MDIO_MMD_PCS, MII_LAN874X_PHY_MMD_WOL_WUCSR);
->> +	if (rc < 0)
->> +		return rc;
->> +
->> +	if (!(rc & MII_LAN874X_PHY_WOL_STATUS_MASK))
->> +		return 0;
->> +
->> +	dev_info(&phydev->mdio.dev, "Woke up from LAN event.\n");
->> +	rc = phy_write_mmd(phydev, MDIO_MMD_PCS, MII_LAN874X_PHY_MMD_WOL_WUCSR,
->> +			   rc | MII_LAN874X_PHY_WOL_STATUS_MASK);
->> +
->> +	return rc;
-> 
-> Note that this will be called multiple times, e.g. during attachment of
-> the PHY to the network device, when the device is opened, etc even
-> without ->suspend having been called, and before ->wol_enabled has
-> been set. Make sure your code is safe for this.
-> 
+The question is : why does MPTCP end up here in the first place.
+Perhaps an older issue with an incorrectly sized sk_rcvbuf ?
 
-If ->wol_enabled isn't set, then we should fallback to the previous
-implementation so I expect it to be fine for that matter.
-Then, I expect flags to be set only in case of WoL event received.
-Nevertheless, I will double check the phy_* API used in this sequence
-for V2, thank you.
-
-Best regards,
-Gatien
+Or maybe the test about the receive queue being empty (currently done
+in tcp_data_queue()) should be moved to a more strategic place.
