@@ -1,126 +1,154 @@
-Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF8B28152D
-	for <netdev@vger.kernel.org>; Mon, 21 Jul 2025 07:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1D6469D
+	for <netdev@vger.kernel.org>; Mon, 21 Jul 2025 08:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753084534; cv=none; b=RfZnIAU6AQBDSXQznYeoaCMm3fZKAIY3uzonD36+cjNyT2KvJ2TFvRnui0cu+buS3wccLwrUaXPS5vq86XDObi+FXdVCv/ZxRVb48pYvAxP41Cvy/uZFw5xA4hrt541sIhiQQtx9wMzDI3Tn03Es6g9FIM9BdDSZFx/xNNLHabg=
+	t=1753084970; cv=none; b=H92WDcaDNAvQuVoEdjqtL/AYyULu9BpFmxFfEtuJuWXcMQDItLjcFZjb0wjMDzJoxN+Prj/Wi6IM3iQuqM2xdr2Nzdm1ctPtt0y2WX8WTxosR5Qub1FJWH7UEFi2iN8BxKdoTN3QVeHX1r3J2kbeGY9bIU4V7XJb2Or315COLtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753084534; c=relaxed/simple;
-	bh=0lse8KOroGbQPPspT2o3Gt8TESQEfPdvvUFUEyZmqtI=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=XBIXO6Z8hJT6HrZd18379q5cLoR3oANFutxfS3bqmAFx6y7nCZMvyZcXmatbfMXnfuXMJqZgtt/GW/xSC+ltgvJbYFEo4IDPvx+wUefTTVVTdvHOWckc2kdKlZi1e5kSQOqPxkOyZJeFx2q1PVr6owvpdMcV9Jf+52mQWYE0h4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-86cc7cdb86fso366483539f.1
-        for <netdev@vger.kernel.org>; Mon, 21 Jul 2025 00:55:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753084531; x=1753689331;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mpGtJjSTE4Hb4CxYNFdEl6s+ZrPvAdZM8nTLITHu/AU=;
-        b=TzhgxvpRc4Obvmcd6dhtH15kxmK8KFnhmHut3HyMB9aquEhMQbPuWs8sAXm7lsLOxz
-         U/300TsoT2WxTTLeoP4Q2NH2i6U57wug7jI5Oci3i1nvuyFNsn9BiKfjZJtQrZxCm6jI
-         QHGYWiCjVRSSw7YxRXF1h54G6wD+wnFZ55nRykQxBk5NUC/8LYUQALBAbrsHtPf4xjiN
-         /EBtE78EiU2H0wjVPdtVyBC8A+qmb47HUbNA46uPapJ7VbXC/c0QwIGAZ1j3q6A5qQno
-         OVf547rmfCjgVhGwu29OMR6EPdCvS+bD1PPYwZaGccancRJiSlCHr2dOZIzHvRnUVnLi
-         Kzbg==
-X-Forwarded-Encrypted: i=1; AJvYcCXWD+b7Ejk3d93ZS67dW3gT9I4iLZKlBF+sYi1M+xUZzZh+KEneZRFr0O5xcfq5a5ZCiYELN3s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNkUNayV0ItGjofkpFFHE6OG/BsukB4sFmTzFpK5hEk5OLjS83
-	yiHtw1tDJSNNdvjFlQ3q5mmZeF5eQpdGWCIB/LfMSbCSSatxG+Zb35S0sV8ulUs4nfTSOlCUhnc
-	G7iAN7nqNRID9PtFWCypb2iu2zwJ6DzIjmpIauYngKkzQ/PMXc+LsitoJOwE=
-X-Google-Smtp-Source: AGHT+IFIii7JfNpq4baM+HOiCqn2j+ywL/ztT7mpBre9UykTQTr4wVD4CtdvbbnhWSyoT5DxFd/EvfOjyL0s3IfX+e1ASXPbA95t
+	s=arc-20240116; t=1753084970; c=relaxed/simple;
+	bh=8pjqn7Plrn+id9IfY8/4DIYjODFkHMG+uWBAlpHYTtk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=lE4x/ohCTiVbLsnpKFV8uvcETkq3lSBbPE/Fkky4QH8Iu+E0jPbUNazjDvn7vAD3kny8K+L8l/KEHZ9p+LuHM2azzHnuWaGixalv/i9x4+QezKd4hTWDRMC2GJMoPsRu96CXkpZQaC6JQVckZkdlBDbWxcPc7WfGU7REfSyHKt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz21t1753084895t79760790
+X-QQ-Originating-IP: lMoZS5z64F4I2OKInSG8LFMKWTHBk6GlMbgficM0jQ8=
+Received: from lap-jiawenwu.trustnetic.com ( [36.24.205.22])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 21 Jul 2025 16:01:34 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 14552170565156338871
+EX-QQ-RecipientCnt: 9
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v2 1/3] net: wangxun: change the default ITR setting
+Date: Mon, 21 Jul 2025 16:01:01 +0800
+Message-Id: <20250721080103.30964-2-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20250721080103.30964-1-jiawenwu@trustnetic.com>
+References: <20250721080103.30964-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:3d1:b0:875:d675:55f2 with SMTP id
- ca18e2360f4ac-879c28caec0mr2189233839f.7.1753084531607; Mon, 21 Jul 2025
- 00:55:31 -0700 (PDT)
-Date: Mon, 21 Jul 2025 00:55:31 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <687df273.a70a0220.693ce.00e5.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in cfg80211_switch_netns
-From: syzbot <syzbot+3515319a302224e081b4@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: Nw9C1WBu09hPmMTJZZ0EIrpHJV2/KLqC68VTWz+2jxlFL3buGDv1f8uh
+	0OQKK+b12em4nD2ofxmLiFaTF3/4x9AR9EI5aFK1/Bm3lLCZZ3At7MdQEWCrEOjmzyqpA/G
+	Gb7UQeyMT/LlAdTW1z6fcoxzWVTBJoBMb2VZS+7zubGZQUjozct90U8FrwMxuknBkolEOgG
+	O2/JPE79SU1SxuqlI3gklj6h8qqzOOZ8oTKnu0ew00kTuPH21cTVQaY7fpn4gj5KwjIToQq
+	0I3fYNbNOLa3jWPmgXV6CpjN2F4k9egHyXZHisB7HPszdwI5mKzGyDWf+22VnUFfUdxIcFV
+	c2sSCjB2hleQmq+QXpE5z9mxdE3n/MAy6U8g67RKihRM4TGz2LwtWJnjU2yAazNHqzKhf5T
+	COoHnYhji/NbJgurT6swPfi82x546JsaLe510+ZszjVOWRNR0/x/3ATLlICFRrVnaPKWakw
+	VXDupuRvItLlHv3zJWTt931FUrMiGCcUk4s8AU5bavc1EHJlQPeWaMzKDy7zLpscZTyBp6/
+	EuHIhacsLfb4Kks+gksb1nJx7Pv6dUhIUWtL8pls+K1UvSZUOulpiMBWtq+9JA5rDpNDD+a
+	/+zX4RyaoiWdGgwuOU7mFXRpdcNi+GqAPBjOzqGS0KzbYr+zCRiQZaUvECnzxlJ176Qq6hZ
+	Fw3vs1TCXnu+mDoFnssMIJV56Rl8gRuYN/PFCPzMq3dd1Vt71eGhSHo+bDm8N3+bXXzgfr1
+	y/4C1mMWiYnBDz5EbYJPSlIH4MqV1YF8ZNXXKr7wK5/gMsLvLDIV6cE9fxRXJmJhRikXFqO
+	KWoagiEfz7LPPMmBqsEg6ohmmV98ZaVpDSEMU4rvbFLA7Il2nk/FbE5wkd780bkGZDsK6V0
+	84wpHiRnZNeo9sXV4FRTytqLdR+rFO/9Qsqtj2dPeyVielO4iE+0JHNjnjvc1z8FJZYTYlV
+	C1fDK7iSNK5j6ZMsag+u/oXdaNsToY+5p7kH6LFzkDhuMr1e+I4cVp3CjYyxkc8O2eNnQSA
+	wc+CplQcOe3o9spz2XsyCe7yDJyXU=
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-RECHKSPAM: 0
 
-Hello,
+For various types of devices, change their default ITR settings
+according to their hardware design.
 
-syzbot found the following issue on:
-
-HEAD commit:    4701ee5044fb be2net: Use correct byte order and format str..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=142f77d4580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1a940d1173246e73
-dashboard link: https://syzkaller.appspot.com/bug?extid=3515319a302224e081b4
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/5771927b98f6/disk-4701ee50.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/e9e498c37560/vmlinux-4701ee50.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/377ae84313ff/bzImage-4701ee50.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+3515319a302224e081b4@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 6759 at net/wireless/core.c:204 cfg80211_switch_netns+0x560/0x590 net/wireless/core.c:204
-Modules linked in:
-CPU: 1 UID: 0 PID: 6759 Comm: kworker/u8:18 Not tainted 6.16.0-rc6-syzkaller-01576-g4701ee5044fb #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Workqueue: netns cleanup_net
-RIP: 0010:cfg80211_switch_netns+0x560/0x590 net/wireless/core.c:204
-Code: e1 07 38 c1 7c 8c 4c 89 e7 e8 dc be 63 f7 eb 82 e8 45 b0 01 f7 e9 63 fe ff ff e8 3b b0 01 f7 e9 59 fe ff ff e8 31 b0 01 f7 90 <0f> 0b 90 e9 a9 fd ff ff 89 d9 80 e1 07 80 c1 03 38 c1 0f 8c cb fa
-RSP: 0018:ffffc9001ba67860 EFLAGS: 00010293
-RAX: ffffffff8abe7a1f RBX: ffff888031530d78 RCX: ffff88802a70da00
-RDX: 0000000000000000 RSI: 00000000ffffffef RDI: 0000000000000000
-RBP: 00000000ffffffef R08: ffffffff8fa22af7 R09: 1ffffffff1f4455e
-R10: dffffc0000000000 R11: fffffbfff1f4455f R12: ffff888031530700
-R13: ffff888027fc9580 R14: dffffc0000000000 R15: ffff8880315308f0
-FS:  0000000000000000(0000) GS:ffff888125d16000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007faceb4e56c0 CR3: 0000000080016000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- cfg80211_pernet_exit+0xa2/0x140 net/wireless/core.c:1671
- ops_exit_list net/core/net_namespace.c:198 [inline]
- ops_undo_list+0x497/0x990 net/core/net_namespace.c:251
- cleanup_net+0x4c5/0x800 net/core/net_namespace.c:682
- process_one_work kernel/workqueue.c:3238 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3321
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3402
- kthread+0x70e/0x8a0 kernel/kthread.c:464
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 24 +++++++------------
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  5 ++--
+ 2 files changed, 10 insertions(+), 19 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index c12a4cb951f6..85fb23b238d1 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -340,13 +340,19 @@ int wx_set_coalesce(struct net_device *netdev,
+ 	switch (wx->mac.type) {
+ 	case wx_mac_sp:
+ 		max_eitr = WX_SP_MAX_EITR;
++		rx_itr_param = WX_20K_ITR;
++		tx_itr_param = WX_12K_ITR;
+ 		break;
+ 	case wx_mac_aml:
+ 	case wx_mac_aml40:
+ 		max_eitr = WX_AML_MAX_EITR;
++		rx_itr_param = WX_20K_ITR;
++		tx_itr_param = WX_12K_ITR;
+ 		break;
+ 	default:
+ 		max_eitr = WX_EM_MAX_EITR;
++		rx_itr_param = WX_7K_ITR;
++		tx_itr_param = WX_7K_ITR;
+ 		break;
+ 	}
+ 
+@@ -359,9 +365,7 @@ int wx_set_coalesce(struct net_device *netdev,
+ 	else
+ 		wx->rx_itr_setting = ec->rx_coalesce_usecs;
+ 
+-	if (wx->rx_itr_setting == 1)
+-		rx_itr_param = WX_20K_ITR;
+-	else
++	if (wx->rx_itr_setting != 1)
+ 		rx_itr_param = wx->rx_itr_setting;
+ 
+ 	if (ec->tx_coalesce_usecs > 1)
+@@ -369,20 +373,8 @@ int wx_set_coalesce(struct net_device *netdev,
+ 	else
+ 		wx->tx_itr_setting = ec->tx_coalesce_usecs;
+ 
+-	if (wx->tx_itr_setting == 1) {
+-		switch (wx->mac.type) {
+-		case wx_mac_sp:
+-		case wx_mac_aml:
+-		case wx_mac_aml40:
+-			tx_itr_param = WX_12K_ITR;
+-			break;
+-		default:
+-			tx_itr_param = WX_20K_ITR;
+-			break;
+-		}
+-	} else {
++	if (wx->tx_itr_setting != 1)
+ 		tx_itr_param = wx->tx_itr_setting;
+-	}
+ 
+ 	/* mixed Rx/Tx */
+ 	if (wx->q_vector[0]->tx.count && wx->q_vector[0]->rx.count)
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index e0fc897b0a58..3fff73ae44af 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -119,9 +119,8 @@ static int ngbe_sw_init(struct wx *wx)
+ 						   num_online_cpus());
+ 	wx->rss_enabled = true;
+ 
+-	/* enable itr by default in dynamic mode */
+-	wx->rx_itr_setting = 1;
+-	wx->tx_itr_setting = 1;
++	wx->rx_itr_setting = WX_7K_ITR;
++	wx->tx_itr_setting = WX_7K_ITR;
+ 
+ 	/* set default ring sizes */
+ 	wx->tx_ring_count = NGBE_DEFAULT_TXD;
+-- 
+2.48.1
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
