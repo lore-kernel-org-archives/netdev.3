@@ -1,62 +1,59 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864B32135AC
-	for <netdev@vger.kernel.org>; Mon, 21 Jul 2025 17:21:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0491D2E11AD
+	for <netdev@vger.kernel.org>; Mon, 21 Jul 2025 17:37:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753118478; cv=none; b=jmffczYNu5t0uHA3gKQ5/qe/VLSeBOR663tMYwcMrDsZYYYFgFL5Q2ZEoS8jRQWlHasLwimna7e7f8wB3Xfq+yvvrgrTCXSi4/4fbvYeVBZwlrq+WZdrL/MImX9XGwOEmteX5rakvQ7KqzDmkDtyeTK9iru1XY2D3HXKDDmmKtE=
+	t=1753119462; cv=none; b=Po1lBAZ3auixEO1uinSL+ds+VKSc0T5K/yUDo03xRadffzGJlMu0wEtnqbW9Usx5l1JUI17ugQA3fXi1HP27IU6NuBh/JrMX8M0SmLhTPaeUtOjSvznTW/Wzh/pJJyldHarfKatYdmxn+URGVlfbB0ISHOV8k9/fSrZMKPI24cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753118478; c=relaxed/simple;
-	bh=oI+83+W4oozQ8EHmlpoBZiy3lMrSKUK4EzNWOf/BIW0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lcugMD1Fi3PMAFKeXIN6BcAKz43hW6Y6VJVeXmwbM4m+G3whIy9QA+40wOZUqdRdyrrqQrcO9jTeJi5nBrjpN0d1XxQtv0t9aHAZ9p0Ahl1om5oDJeCaCyVXzaVXDbuzV9RiU+qCG8RGltg8J3f2Cm3jAN5IZ67BVxCKqvOBuCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CJmQ7m+0; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1753119462; c=relaxed/simple;
+	bh=U33D7Ggo4901SjIq8nqFRQSf0OmN6QQsO4GqiAznGW4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lGah9slq0/g0ICbXAVm/4yHDtVOnvUUZNcDKVcgaX+0CewFiRN2EhjU2BJ0yRdkC1VCPVuuxHSt/XDhE6/fqJolXRrUCMEMYyKKqW3hRMoBAqYER5V/g9mD4FAZRa8GXNSJunedOVtoeQkByfuDgdsJfhqx4x5JZePG9XKdX1/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y34iCGVC; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CJmQ7m+0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753118474;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lhdEmQSDbCt7QBX8iC6DLnRD97GE6x+SallBwyKuccU=;
-	b=CJmQ7m+0PF4H9OMGcD/FUQWLh6hGcU2QWIAabir1yyYlioRWJUQOkulq3i+GxkGURk1Fr7
-	HAucjpkco3qMI2j0KQZgoOHSblssZtChSlj9lsmkdql4A+FJgcX9lluE8auTF5hgezoUX5
-	7FyBRW+Zh+QpY8ajoYybmxhZw0y9E+w=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-56-y2gAl8j5Pe2PUN-QdSkkOw-1; Mon,
- 21 Jul 2025 13:21:08 -0400
-X-MC-Unique: y2gAl8j5Pe2PUN-QdSkkOw-1
-X-Mimecast-MFC-AGG-ID: y2gAl8j5Pe2PUN-QdSkkOw_1753118466
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DDF101800EF2;
-	Mon, 21 Jul 2025 17:20:34 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.32.21])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0A6371800D82;
-	Mon, 21 Jul 2025 17:20:31 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>
-Subject: [PATCH v2 net-next 1/2] tcp: do not set a zero size receive buffer
-Date: Mon, 21 Jul 2025 19:20:21 +0200
-Message-ID: <20c18165d3f848e1c5c1b782d88c1a5ab38b3f70.1753118029.git.pabeni@redhat.com>
-In-Reply-To: <cover.1753118029.git.pabeni@redhat.com>
-References: <cover.1753118029.git.pabeni@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y34iCGVC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753119461; x=1784655461;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=U33D7Ggo4901SjIq8nqFRQSf0OmN6QQsO4GqiAznGW4=;
+  b=Y34iCGVCKVfG1ZzeUd2vqb1eEL0CsrcrX6FLqNpSwyHMT6n8VJJrOanI
+   Y0DorPp1fj/wA6kA2SWcpcMOMOQMoJTehjw4WLn02jE2/RAAKaWLgnRwn
+   PJtQA3yz07Wtv4zr4id5quWobflMNSV2jSNI6a2H963uJHGYvza30EDPz
+   BhzGa+Vt2PJVEHt96+1RktPSL40MzLbok4Wj9zU9F6oqppSFlcXCIW/yj
+   9eXGQDBCSgbx+fOrWI7xPx7g1BEzQMy2+YMhz3CilhwvAEqTLSUOxwQin
+   uBWvD2sBbhXVQVEl6VYKpa2jZFugvtP3oshzq9/PmkEDT/29PJ/spiIIb
+   g==;
+X-CSE-ConnectionGUID: cAYN7SjLTbOIf7/zcDXfnQ==
+X-CSE-MsgGUID: ILVPWkKCT02uYuZ/bBEuGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="55193173"
+X-IronPort-AV: E=Sophos;i="6.16,329,1744095600"; 
+   d="scan'208";a="55193173"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 10:37:41 -0700
+X-CSE-ConnectionGUID: 80SW/4A1QJaeW5xB1ELuOQ==
+X-CSE-MsgGUID: fyB1d6X+QwKMRIvYc8RsHw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,329,1744095600"; 
+   d="scan'208";a="158231556"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by orviesa006.jf.intel.com with ESMTP; 21 Jul 2025 10:37:41 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH net 0/5][pull request] Intel Wired LAN Driver Updates 2025-07-21 (i40e, ice, e1000e)
+Date: Mon, 21 Jul 2025 10:37:21 -0700
+Message-ID: <20250721173733.2248057-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,48 +61,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-The nipa CI is reporting frequent failures in the mptcp_connect
-self-tests.
+For i40e:
+Dennis Chen adjusts reporting of VF Tx dropped to a more appropriate
+field.
 
-In the failing scenarios (TCP -> MPTCP) the involved sockets are
-actually plain TCP ones, as fallback for passive socket at 2whs
-time cause the MPTCP listener to actually create a TCP socket.
+Jamie Bainbridge fixes a check which can cause a PF set VF MAC address
+to be lost.
 
-The transfer is stuck due to the receiver buffer being zero.
-With the stronger check in place, tcp_clamp_window() can be invoked
-while the TCP socket has sk_rmem_alloc == 0, and the receive buffer
-will be zeroed, too.
+For ice:
+Haoxiang Li adds an error check in DDP load to prevent NULL pointer
+dereference.
 
-Check for the critical condition in tcp_prune_queue() and just
-drop the packet without shrinking the receiver buffer.
+For e1000e:
+Jacek Kowalski adds workarounds for issues surrounding Tiger Lake
+platforms with uninitialized NVMs.
 
-Fixes: 1d2fbaad7cd8 ("tcp: stronger sk_rcvbuf checks")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
----
-v1 -> v2:
-  - do not account for truesize, check for 0 rmem instead
----
- net/ipv4/tcp_input.c | 4 ++++
- 1 file changed, 4 insertions(+)
+The following are changes since commit 81e0db8e839822b8380ce4716cd564a593ccbfc5:
+  Merge branch 'mlx5-misc-fixes-2025-07-17'
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue 40GbE
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 672cbfbdcec1..81b6d3770812 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5549,6 +5549,10 @@ static int tcp_prune_queue(struct sock *sk, const struct sk_buff *in_skb)
- {
- 	struct tcp_sock *tp = tcp_sk(sk);
- 
-+	/* Do nothing if our queues are empty. */
-+	if (!atomic_read(&sk->sk_rmem_alloc))
-+		return -1;
-+
- 	NET_INC_STATS(sock_net(sk), LINUX_MIB_PRUNECALLED);
- 
- 	if (!tcp_can_ingest(sk, in_skb))
+Dennis Chen (1):
+  i40e: report VF tx_dropped with tx_errors instead of tx_discards
+
+Haoxiang Li (1):
+  ice: Fix a null pointer dereference in ice_copy_and_init_pkg()
+
+Jacek Kowalski (2):
+  e1000e: disregard NVM checksum on tgp when valid checksum bit is not
+    set
+  e1000e: ignore uninitialized checksum word on tgp
+
+Jamie Bainbridge (1):
+  i40e: When removing VF MAC filters, only check PF-set MAC
+
+ drivers/net/ethernet/intel/e1000e/defines.h        | 3 +++
+ drivers/net/ethernet/intel/e1000e/ich8lan.c        | 2 ++
+ drivers/net/ethernet/intel/e1000e/nvm.c            | 6 ++++++
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 6 +++---
+ drivers/net/ethernet/intel/ice/ice_ddp.c           | 2 ++
+ 5 files changed, 16 insertions(+), 3 deletions(-)
+
 -- 
-2.50.0
+2.47.1
 
