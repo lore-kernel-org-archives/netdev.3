@@ -1,27 +1,27 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A202BF00A;
-	Mon, 21 Jul 2025 11:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE942D29D8;
+	Mon, 21 Jul 2025 11:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753097676; cv=none; b=jurBh5bdupMQRVxkoDLaQKOVkotk0Ftb4j+ddEStF6lXcLDtDjdHQs5j0krvu4P/rsg9nQBcFMGPVGPIOPUV74bqQmpnSSsq1HYuh2QGmmKVdgP07f00eheDtK6njR6c8kO4nf9N6qOQVOfGlNzoThMSTi3MwNND56xlRcVEJxM=
+	t=1753097682; cv=none; b=rH5Pc3NLyZ+EqQ2NWOu3rxqP8MSjWT3f/4UfciyW9IbOoAGJG7umHwFqrfynNZS1b0zrtWzLwjcim4TEfK2/xJvT8x/TJBLaGgRa1zBc+5N0ZepyKFDv0HiB4TOBikdV+28THuDjgQ7h3JEoEp7Fn+aQpajlIgrlULHnIohWGhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753097676; c=relaxed/simple;
-	bh=/5tRiCruW16YP1EWsW8VPd7uw4Tx08ZfkHHwSdGir/s=;
+	s=arc-20240116; t=1753097682; c=relaxed/simple;
+	bh=DTUYV1e6EHZF9z0ThQa5/erkc+t56AU4jOeZWsYYigw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ufN95sszPPxcBqBKYHyt1vW4+PjB+RTGrloRCUYVdM2HRNCc+zzAH9coTspi/ATjD9YNmMIjTWXvKiPXuJuOCG7ZUVfRKizj5llR1x8y4Snz9LqTUTWZ9OpvMrLykh8lcbnpH4PIYdSQYtBNb648zhq42IoGAHmWpkvg7Liiqcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=18.194.254.142
+	 MIME-Version; b=nmhLMOy0knQpzMsF+0PBGe4XMOQzic9EqtTsXJDvDlIye+WR/fb4C3FQgTZlFP0BulrVFK69WMktKWHlusnYcHKNUzglD7YWEwKfhYIldEGHVimcs6HRUZmIYso+alzZJn6h6ewbN9U+tlfWFjD1TGw0m7xEjT+D7oorcuZVYFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=54.254.200.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: esmtpsz18t1753097585ta82c196e
-X-QQ-Originating-IP: ojWMH25vXFN9Vox2NJyof+ppRKgPqk+huNUdYYgAAbM=
+X-QQ-mid: esmtpsz18t1753097608tbf371e3e
+X-QQ-Originating-IP: zGrKS85rYRkLmemFiNjwNtfEjBmyv8pxC+l/gyQv9Jo=
 Received: from localhost.localdomain ( [203.174.112.180])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 21 Jul 2025 19:33:02 +0800 (CST)
+	id ; Mon, 21 Jul 2025 19:33:25 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 6991744939570703964
+X-BIZMAIL-ID: 7820022088678493601
 EX-QQ-RecipientCnt: 23
 From: Dong Yibo <dong100@mucse.com>
 To: andrew+netdev@lunn.ch,
@@ -47,9 +47,9 @@ Cc: netdev@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	dong100@mucse.com
-Subject: [PATCH v2 04/15] net: rnpgbe: Add get_capability mbx_fw ops support
-Date: Mon, 21 Jul 2025 19:32:27 +0800
-Message-Id: <20250721113238.18615-5-dong100@mucse.com>
+Subject: [PATCH v2 09/15] net: rnpgbe: Add netdev register and init tx/rx memory
+Date: Mon, 21 Jul 2025 19:32:32 +0800
+Message-Id: <20250721113238.18615-10-dong100@mucse.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250721113238.18615-1-dong100@mucse.com>
 References: <20250721113238.18615-1-dong100@mucse.com>
@@ -62,814 +62,742 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:mucse.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: OaT+pqEEl7HNweYJmzPIevHrkn399SWQl+jtYNTXSqdSU6C6CA6q9sVn
-	avrXck3kWku46q3RBBBTwk5Au9cg6AmrXftMckfZNm0zsrIHzqu7MjgQfINNqvYgGDAMZp5
-	GzpKioKHuYRRXY+iwWVZ0x4eLvB67J9sqe7caPIet0SK14p7+6oYOnDsWGiitGDQjBIM9Vu
-	mL1OXvriFa7HLlLLlQVGO2/Q+GPftZ3woJAFuS5THVX6yhx5qfFYbjtw8pIRij2jax9bq31
-	FJxTU/lmNxCNFTKaXLKWaCmHzs4MVRrCCT8x2K3dQMPT84gUlLWBnXYXJ2G+FYs698s+oz0
-	pkMb4pwwjwfzyWOL2gkUwq0SXbPz6HkMsG53hGgzcoliMi2a3O9Ipb0DTSpqMoMCrRem32q
-	f4fR4auCrjf8fLhJXbn8JJiQEWFF/moILCPlBGYiMRE1KR5xbN7ntXBPWgnhRR8lUvCddTy
-	KmrKnJVX+kQsK8RWZoCRner2rh7eao2dP3sbRMZTrz35SBTThaGlDKRVPDIRR7kbNLPAHYm
-	5+nDa7i495B6OzLBnT3eTHo9ZXkZbxvQkNCPzS3S8vx0TkQ2y4ZDlT3fZFbNhxNIG7VkbIY
-	PrXLLRiVwtoXGbz4o7s+LwHYCROacz76afysfjISMbU2E2lRH1kpMP0Uq5XX2Nbqgj5B3cM
-	P8QvVCwTO1b6rs7O7PojeYag9//p5NnpVIXNI3ln6ICsCqzMyiUYI3tg2qgF91aL1qv7LsZ
-	V3EgpbMNmswYYT1Yju363GfA8SIF+TRwrxDWV4U0sOGeG9oGg6YIIWPdD6pkJfJeInPj32B
-	Kh84+0Nu7vPhJnl2jtvwy7VzDJfUqVDcB4tNe7acJaRrMpMwBQKm8WImUIH3nAru9pHCku6
-	wiwAbxr0y6PGIUq26/QM/NZ3u4WhHQ7HC/YGczHNbfxB/OnjBYLBL5Xf8xz0Uc05pGOshkR
-	pbDNgscJzKRBCQskRDU5VH4rPZs5/BYCC00TQDGLJznCq5N4ldBU//nTW6J3DG5G1yp9gRG
-	RT06jP5pXFNaqyVEYYh9twGTE+nJCIDqDahF31tF/pR9wN8AXw
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+X-QQ-XMAILINFO: MzDEtv5QipDt9Snp9S65y16728JGm38IG4udaC7Qk7QG12b0bF//73Kg
+	++xtirktcBoreYCb9YcelD7RUz7VWD1nXLVQ8e7IsYE43A8s9xdIuzxSwBc2ZcYTmD175Wx
+	xnI/OFE7l1MFwZhlya6SruSR1j1j40oN+2pfT1lpGoGU+xdnDEWRwDGLEfkygAEVVTJeaw1
+	3kk4BkqrSWfichvuIJOmfZ/j5HE5xh0shXOddqULpAUbUIU6a8OiCMTkSWs+ykmgxMjVewZ
+	GzkHbA1f8iRCah698Du2/HYFBXv4AO+fzrEMpqHKm94qZk0kSMNI6BKb7EaXy4B2C3F5aVB
+	E1ffZYKgNEYfDb/zczMXQ67l2sM3mbGSM0D1vRgpBs1BiZSoc8MORBcojgtBKr23lkz7X7o
+	xgd5HA4DrzeUKGv+0Bm2fzQxSF4sBhSSdsb6cjlGdwwPyvNiUw4pGSXPKTBfMpPkbssLI4l
+	reazDG0GbH5UnC/1olugXHguYDkfsglfdugET9Ejx/Cw3/wWU2oJPFvm1oKNknvYC6Lions
+	26bL6cpkmddWQ0VHi7Z3vkAHS1Sh0qH+NnUTr/NaOshcOZHaAzK05C+7kWOW3CCQGx24Wdj
+	YhcZ0hdkqWyTbBooytaoo4o2+EObKLHj/lNCMyylbeh/Bognf4goIs3ajEXg/0jTvtLmGsJ
+	smC2rpoLp97rj9jBJpZqP84IRIAb65qQwbsdZ7eeXDqhcbQXbG3MKRQtVEoaHI8TZEJudT3
+	zYuI8Py6zXrzKeqat4w+ma9MhlNrQzYmU/b20+KuWBHbtYPxSJYc1fAQOMEhKrvmQOHSLXq
+	SjL7radX3RrehZECr47DFvIwrA1XnotsPlxr1ubAVtrTTC7EPDjHpznmmOy1/4jyIZBzH/P
+	UW2LD7I8XrMfzzgT0boza9rkNORXnVCFeJwSfU2J46ATTF+Tr/1PuK1a8tsD1H1v5c6fRJw
+	rqM+G0zj4NXVM/NiKTfwKvwHXpH8D1WH9Wu86fcSSGlHRMLYhgIuury0jAcN8jF0/mZQLt3
+	uEJ4sjs7L67DVS2tyhtVoUJp8OH4ac3DNjzttb3lCscLQjKX4xM+gOLR1A8nk=
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
 X-QQ-RECHKSPAM: 0
 
-Initialize get hw capability from mbx_fw ops.
+Initialize tx/rx memory for tx/rx desc.
 
 Signed-off-by: Dong Yibo <dong100@mucse.com>
 ---
- drivers/net/ethernet/mucse/rnpgbe/Makefile    |   3 +-
- drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |   8 +
- .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   |   8 +
- .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c | 140 +++++
- .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h | 568 ++++++++++++++++++
- 5 files changed, 726 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
- create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h
+ drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    | 140 +++++++
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.c    | 355 ++++++++++++++++++
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.h    |   2 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   |  94 ++++-
+ 4 files changed, 589 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mucse/rnpgbe/Makefile b/drivers/net/ethernet/mucse/rnpgbe/Makefile
-index 41177103b50c..fd455cb111a9 100644
---- a/drivers/net/ethernet/mucse/rnpgbe/Makefile
-+++ b/drivers/net/ethernet/mucse/rnpgbe/Makefile
-@@ -7,4 +7,5 @@
- obj-$(CONFIG_MGBE) += rnpgbe.o
- rnpgbe-objs := rnpgbe_main.o \
- 	       rnpgbe_chip.o \
--	       rnpgbe_mbx.o
-+	       rnpgbe_mbx.o \
-+	       rnpgbe_mbx_fw.o
 diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
-index 46e2bb2fe71e..4514bc1223c1 100644
+index 212e5b8fd7b4..cb0d73589687 100644
 --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
 +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
-@@ -154,6 +154,14 @@ struct mucse_hw {
- 	u16 vendor_id;
- 	u16 subsystem_device_id;
- 	u16 subsystem_vendor_id;
-+	u32 wol;
-+	u32 wol_en;
-+	u32 fw_version;
-+	u32 axi_mhz;
-+	u32 bd_uid;
-+	int ncsi_en;
-+	int force_en;
-+	int force_cap;
- 	int max_vfs;
- 	int max_vfs_noari;
- 	enum rnpgbe_hw_type hw_type;
-diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-index 1e8360cae560..aeb560145c47 100644
---- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-+++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-@@ -9,6 +9,7 @@
- #include <linux/etherdevice.h>
+@@ -248,6 +248,7 @@ struct mucse_hw {
+ };
  
+ enum mucse_state_t {
++	__MUCSE_TESTING,
+ 	__MUCSE_DOWN,
+ 	__MUCSE_SERVICE_SCHED,
+ 	__MUCSE_PTP_TX_IN_PROGRESS,
+@@ -307,6 +308,129 @@ struct mucse_rx_queue_stats {
+ 	u64 rx_clean_count;
+ };
+ 
++union rnpgbe_rx_desc {
++	struct {
++		union {
++			__le64 pkt_addr;
++			struct {
++				__le32 addr_lo;
++				__le32 addr_hi;
++			};
++		};
++		__le64 resv_cmd;
++#define M_RXD_FLAG_RS (0)
++	};
++	struct {
++		__le32 rss_hash;
++		__le16 mark;
++		__le16 rev1;
++#define M_RX_L3_TYPE_MASK BIT(15)
++#define VEB_VF_PKG BIT(1)
++#define VEB_VF_IGNORE_VLAN BIT(0)
++#define REV_OUTER_VLAN BIT(5)
++		__le16 len;
++		__le16 padding_len;
++		__le16 vlan;
++		__le16 cmd;
++#define M_RXD_STAT_VLAN_VALID BIT(15)
++#define M_RXD_STAT_STAG BIT(14)
++#define M_RXD_STAT_TUNNEL_NVGRE (0x02 << 13)
++#define M_RXD_STAT_TUNNEL_VXLAN (0x01 << 13)
++#define M_RXD_STAT_TUNNEL_MASK (0x03 << 13)
++#define M_RXD_STAT_ERR_MASK (0x1f << 8)
++#define M_RXD_STAT_SCTP_MASK (0x04 << 8)
++#define M_RXD_STAT_L4_MASK (0x02 << 8)
++#define M_RXD_STAT_L4_SCTP (0x02 << 6)
++#define M_RXD_STAT_L4_TCP (0x01 << 6)
++#define M_RXD_STAT_L4_UDP (0x03 << 6)
++#define M_RXD_STAT_IPV6 BIT(5)
++#define M_RXD_STAT_IPV4 (0 << 5)
++#define M_RXD_STAT_PTP BIT(4)
++#define M_RXD_STAT_DD BIT(1)
++#define M_RXD_STAT_EOP BIT(0)
++	} wb;
++} __packed;
++
++struct rnpgbe_tx_desc {
++	union {
++		__le64 pkt_addr;
++		struct {
++			__le32 adr_lo;
++			__le32 adr_hi;
++		};
++	};
++	union {
++		__le64 vlan_cmd_bsz;
++		struct {
++			__le32 blen_mac_ip_len;
++			__le32 vlan_cmd;
++		};
++	};
++#define M_TXD_FLAGS_VLAN_PRIO_MASK 0xe000
++#define M_TX_FLAGS_VLAN_PRIO_SHIFT 13
++#define M_TX_FLAGS_VLAN_CFI_SHIFT 12
++#define M_TXD_VLAN_VALID (0x80000000)
++#define M_TXD_SVLAN_TYPE (0x02000000)
++#define M_TXD_VLAN_CTRL_NOP (0x00 << 13)
++#define M_TXD_VLAN_CTRL_RM_VLAN (0x20000000)
++#define M_TXD_VLAN_CTRL_INSERT_VLAN (0x40000000)
++#define M_TXD_L4_CSUM (0x10000000)
++#define M_TXD_IP_CSUM (0x8000000)
++#define M_TXD_TUNNEL_MASK (0x3000000)
++#define M_TXD_TUNNEL_VXLAN (0x1000000)
++#define M_TXD_TUNNEL_NVGRE (0x2000000)
++#define M_TXD_L4_TYPE_UDP (0xc00000)
++#define M_TXD_L4_TYPE_TCP (0x400000)
++#define M_TXD_L4_TYPE_SCTP (0x800000)
++#define M_TXD_FLAG_IPv4 (0)
++#define M_TXD_FLAG_IPv6 (0x200000)
++#define M_TXD_FLAG_TSO (0x100000)
++#define M_TXD_FLAG_PTP (0x4000000)
++#define M_TXD_CMD_RS (0x040000)
++#define M_TXD_CMD_INNER_VLAN (0x08000000)
++#define M_TXD_STAT_DD (0x020000)
++#define M_TXD_CMD_EOP (0x010000)
++#define M_TXD_PAD_CTRL (0x01000000)
++};
++
++struct mucse_tx_buffer {
++	struct rnpgbe_tx_desc *next_to_watch;
++	unsigned long time_stamp;
++	struct sk_buff *skb;
++	unsigned int bytecount;
++	unsigned short gso_segs;
++	bool gso_need_padding;
++	__be16 protocol;
++	__be16 priv_tags;
++	DEFINE_DMA_UNMAP_ADDR(dma);
++	DEFINE_DMA_UNMAP_LEN(len);
++	union {
++		u32 mss_len_vf_num;
++		struct {
++			u16 mss_len;
++			u8 vf_num;
++			u8 l4_hdr_len;
++		};
++	};
++	union {
++		u32 inner_vlan_tunnel_len;
++		struct {
++			u8 tunnel_hdr_len;
++			u8 inner_vlan_l;
++			u8 inner_vlan_h;
++			u8 resv;
++		};
++	};
++	bool ctx_flag;
++};
++
++struct mucse_rx_buffer {
++	struct sk_buff *skb;
++	dma_addr_t dma;
++	struct page *page;
++	__u32 page_offset;
++};
++
+ struct mucse_ring {
+ 	struct mucse_ring *next;
+ 	struct mucse_q_vector *q_vector;
+@@ -350,6 +474,7 @@ struct mucse_ring {
+ 	u16 next_to_use;
+ 	u16 next_to_clean;
+ 	u16 device_id;
++	u16 next_to_alloc;
+ 	struct mucse_queue_stats stats;
+ 	struct u64_stats_sync syncp;
+ 	union {
+@@ -436,6 +561,21 @@ struct rnpgbe_info {
+ 	void (*get_invariants)(struct mucse_hw *hw);
+ };
+ 
++static inline struct netdev_queue *txring_txq(const struct mucse_ring *ring)
++{
++	return netdev_get_tx_queue(ring->netdev, ring->queue_index);
++}
++
++#define M_RXBUFFER_1536 (1536)
++static inline unsigned int mucse_rx_bufsz(struct mucse_ring *ring)
++{
++	return (M_RXBUFFER_1536 - NET_IP_ALIGN);
++}
++
++#define M_TX_DESC(R, i) (&(((struct rnpgbe_tx_desc *)((R)->desc))[i]))
++#define M_RX_DESC(R, i) (&(((union rnpgbe_rx_desc *)((R)->desc))[i]))
++
++#define M_RX_DMA_ATTR (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING)
+ /* Device IDs */
+ #ifndef PCI_VENDOR_ID_MUCSE
+ #define PCI_VENDOR_ID_MUCSE 0x8848
+diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+index 2bf8a7f7f303..abf3eef3291a 100644
+--- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
++++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+@@ -1,6 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /* Copyright(c) 2020 - 2025 Mucse Corporation. */
+ 
++#include <linux/vmalloc.h>
++
  #include "rnpgbe.h"
-+#include "rnpgbe_mbx_fw.h"
+ #include "rnpgbe_lib.h"
  
- char rnpgbe_driver_name[] = "rnpgbe";
- static const struct rnpgbe_info *rnpgbe_info_tbl[] = {
-@@ -116,6 +117,13 @@ static int rnpgbe_add_adapter(struct pci_dev *pdev,
- 	ii->get_invariants(hw);
- 	hw->mbx.ops.init_params(hw);
- 
-+	err = mucse_mbx_get_capability(hw);
-+	if (err) {
-+		dev_err(&pdev->dev,
-+			"mucse_mbx_get_capability failed!\n");
-+		goto err_free_net;
-+	}
-+
- 	return 0;
- 
- err_free_net:
-diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-new file mode 100644
-index 000000000000..1674229fcd43
---- /dev/null
-+++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-@@ -0,0 +1,140 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright(c) 2020 - 2025 Mucse Corporation. */
-+
-+#include <linux/pci.h>
-+
-+#include "rnpgbe_mbx_fw.h"
+@@ -498,3 +500,356 @@ void rnpgbe_clear_interrupt_scheme(struct mucse *mucse)
+ 	rnpgbe_free_q_vectors(mucse);
+ 	rnpgbe_reset_interrupt_capability(mucse);
+ }
 +
 +/**
-+ * mucse_fw_send_cmd_wait - Send cmd req and wait for response
-+ * @hw: Pointer to the HW structure
-+ * @req: Pointer to the cmd req structure
-+ * @reply: Pointer to the fw reply structure
++ * rnpgbe_clean_tx_ring - Free Tx Buffers
++ * @tx_ring: ring to be cleaned
++ **/
++static void rnpgbe_clean_tx_ring(struct mucse_ring *tx_ring)
++{
++	struct mucse_tx_buffer *tx_buffer;
++	u16 i = tx_ring->next_to_clean;
++	unsigned long size;
++
++	tx_buffer = &tx_ring->tx_buffer_info[i];
++	/* ring already cleared, nothing to do */
++	if (!tx_ring->tx_buffer_info)
++		return;
++
++	while (i != tx_ring->next_to_use) {
++		struct rnpgbe_tx_desc *eop_desc, *tx_desc;
++
++		dev_kfree_skb_any(tx_buffer->skb);
++		/* unmap skb header data */
++		dma_unmap_single(tx_ring->dev, dma_unmap_addr(tx_buffer, dma),
++				 dma_unmap_len(tx_buffer, len), DMA_TO_DEVICE);
++		eop_desc = tx_buffer->next_to_watch;
++		tx_desc = M_TX_DESC(tx_ring, i);
++		/* unmap remaining buffers */
++		while (tx_desc != eop_desc) {
++			tx_buffer++;
++			tx_desc++;
++			i++;
++			if (unlikely(i == tx_ring->count)) {
++				i = 0;
++				tx_buffer = tx_ring->tx_buffer_info;
++				tx_desc = M_TX_DESC(tx_ring, 0);
++			}
++
++			/* unmap any remaining paged data */
++			if (dma_unmap_len(tx_buffer, len))
++				dma_unmap_page(tx_ring->dev,
++					       dma_unmap_addr(tx_buffer, dma),
++					       dma_unmap_len(tx_buffer, len),
++					       DMA_TO_DEVICE);
++		}
++		/* move us one more past the eop_desc for start of next pkt */
++		tx_buffer++;
++		i++;
++		if (unlikely(i == tx_ring->count)) {
++			i = 0;
++			tx_buffer = tx_ring->tx_buffer_info;
++		}
++	}
++
++	netdev_tx_reset_queue(txring_txq(tx_ring));
++	size = sizeof(struct mucse_tx_buffer) * tx_ring->count;
++	memset(tx_ring->tx_buffer_info, 0, size);
++	/* Zero out the descriptor ring */
++	memset(tx_ring->desc, 0, tx_ring->size);
++	tx_ring->next_to_use = 0;
++	tx_ring->next_to_clean = 0;
++}
++
++/**
++ * rnpgbe_free_tx_resources - Free Tx Resources per Queue
++ * @tx_ring: tx descriptor ring for a specific queue
 + *
-+ * mucse_fw_send_cmd_wait sends req to pf-fw mailbox and wait
-+ * reply from fw.
++ * Free all transmit software resources
++ **/
++static void rnpgbe_free_tx_resources(struct mucse_ring *tx_ring)
++{
++	rnpgbe_clean_tx_ring(tx_ring);
++	vfree(tx_ring->tx_buffer_info);
++	tx_ring->tx_buffer_info = NULL;
++	/* if not set, then don't free */
++	if (!tx_ring->desc)
++		return;
++
++	dma_free_coherent(tx_ring->dev, tx_ring->size, tx_ring->desc,
++			  tx_ring->dma);
++	tx_ring->desc = NULL;
++}
++
++/**
++ * rnpgbe_setup_tx_resources - allocate Tx resources (Descriptors)
++ * @tx_ring: tx descriptor ring (for a specific queue) to setup
++ * @mucse: pointer to private structure
 + *
 + * @return: 0 on success, negative on failure
 + **/
-+static int mucse_fw_send_cmd_wait(struct mucse_hw *hw,
-+				  struct mbx_fw_cmd_req *req,
-+				  struct mbx_fw_cmd_reply *reply)
++static int rnpgbe_setup_tx_resources(struct mucse_ring *tx_ring,
++				     struct mucse *mucse)
 +{
-+	int len = le32_to_cpu(req->datalen) + MBX_REQ_HDR_LEN;
-+	int retry_cnt = 3;
++	struct device *dev = tx_ring->dev;
++	int orig_node = dev_to_node(dev);
++	int numa_node = NUMA_NO_NODE;
++	int size;
++
++	size = sizeof(struct mucse_tx_buffer) * tx_ring->count;
++
++	if (tx_ring->q_vector)
++		numa_node = tx_ring->q_vector->numa_node;
++	tx_ring->tx_buffer_info = vzalloc_node(size, numa_node);
++	if (!tx_ring->tx_buffer_info)
++		tx_ring->tx_buffer_info = vzalloc(size);
++	if (!tx_ring->tx_buffer_info)
++		goto err;
++	/* round up to nearest 4K */
++	tx_ring->size = tx_ring->count * sizeof(struct rnpgbe_tx_desc);
++	tx_ring->size = ALIGN(tx_ring->size, 4096);
++	set_dev_node(dev, numa_node);
++	tx_ring->desc = dma_alloc_coherent(dev, tx_ring->size, &tx_ring->dma,
++					   GFP_KERNEL);
++	set_dev_node(dev, orig_node);
++	if (!tx_ring->desc)
++		tx_ring->desc = dma_alloc_coherent(dev, tx_ring->size,
++						   &tx_ring->dma,
++						   GFP_KERNEL);
++	if (!tx_ring->desc)
++		goto err;
++
++	memset(tx_ring->desc, 0, tx_ring->size);
++	tx_ring->next_to_use = 0;
++	tx_ring->next_to_clean = 0;
++	return 0;
++
++err:
++	vfree(tx_ring->tx_buffer_info);
++	tx_ring->tx_buffer_info = NULL;
++	return -ENOMEM;
++}
++
++/**
++ * rnpgbe_setup_all_tx_resources - allocate all queues Tx resources
++ * @mucse: pointer to private structure
++ *
++ * Allocate memory for tx_ring.
++ * @return: 0 on success, negative on failure
++ **/
++static int rnpgbe_setup_all_tx_resources(struct mucse *mucse)
++{
++	int i, err = 0;
++
++	for (i = 0; i < (mucse->num_tx_queues); i++) {
++		err = rnpgbe_setup_tx_resources(mucse->tx_ring[i], mucse);
++		if (!err)
++			continue;
++
++		goto err_setup_tx;
++	}
++
++	return 0;
++err_setup_tx:
++	while (i--)
++		rnpgbe_free_tx_resources(mucse->tx_ring[i]);
++	return err;
++}
++
++/**
++ * rnpgbe_free_all_tx_resources - Free Tx Resources for All Queues
++ * @mucse: pointer to private structure
++ *
++ * Free all transmit software resources
++ **/
++static void rnpgbe_free_all_tx_resources(struct mucse *mucse)
++{
++	int i;
++
++	for (i = 0; i < (mucse->num_tx_queues); i++)
++		rnpgbe_free_tx_resources(mucse->tx_ring[i]);
++}
++
++/**
++ * rnpgbe_setup_rx_resources - allocate Rx resources (Descriptors)
++ * @rx_ring: rx descriptor ring (for a specific queue) to setup
++ * @mucse: pointer to private structure
++ *
++ * @return: 0 on success, negative on failure
++ **/
++static int rnpgbe_setup_rx_resources(struct mucse_ring *rx_ring,
++				     struct mucse *mucse)
++{
++	struct device *dev = rx_ring->dev;
++	int orig_node = dev_to_node(dev);
++	int numa_node = NUMA_NO_NODE;
++	int size;
++
++	size = sizeof(struct mucse_rx_buffer) * rx_ring->count;
++	if (rx_ring->q_vector)
++		numa_node = rx_ring->q_vector->numa_node;
++
++	rx_ring->rx_buffer_info = vzalloc_node(size, numa_node);
++	if (!rx_ring->rx_buffer_info)
++		rx_ring->rx_buffer_info = vzalloc(size);
++
++	if (!rx_ring->rx_buffer_info)
++		goto err;
++	/* Round up to nearest 4K */
++	rx_ring->size = rx_ring->count * sizeof(union rnpgbe_rx_desc);
++	rx_ring->size = ALIGN(rx_ring->size, 4096);
++	set_dev_node(dev, numa_node);
++	rx_ring->desc = dma_alloc_coherent(dev, rx_ring->size,
++					   &rx_ring->dma,
++					   GFP_KERNEL);
++	set_dev_node(dev, orig_node);
++	if (!rx_ring->desc)
++		rx_ring->desc = dma_alloc_coherent(dev, rx_ring->size,
++						   &rx_ring->dma,
++						   GFP_KERNEL);
++	if (!rx_ring->desc)
++		goto err;
++	memset(rx_ring->desc, 0, rx_ring->size);
++	rx_ring->next_to_clean = 0;
++	rx_ring->next_to_use = 0;
++
++	return 0;
++err:
++	vfree(rx_ring->rx_buffer_info);
++	rx_ring->rx_buffer_info = NULL;
++	return -ENOMEM;
++}
++
++/**
++ * rnpgbe_clean_rx_ring - Free Rx Buffers per Queue
++ * @rx_ring: ring to free buffers from
++ **/
++static void rnpgbe_clean_rx_ring(struct mucse_ring *rx_ring)
++{
++	struct mucse_rx_buffer *rx_buffer;
++	u16 i = rx_ring->next_to_clean;
++
++	rx_buffer = &rx_ring->rx_buffer_info[i];
++	/* Free all the Rx ring sk_buffs */
++	while (i != rx_ring->next_to_alloc) {
++		if (rx_buffer->skb) {
++			struct sk_buff *skb = rx_buffer->skb;
++
++			dev_kfree_skb(skb);
++			rx_buffer->skb = NULL;
++		}
++		dma_sync_single_range_for_cpu(rx_ring->dev, rx_buffer->dma,
++					      rx_buffer->page_offset,
++					      mucse_rx_bufsz(rx_ring),
++					      DMA_FROM_DEVICE);
++		rx_buffer->page = NULL;
++		i++;
++		rx_buffer++;
++		if (i == rx_ring->count) {
++			i = 0;
++			rx_buffer = rx_ring->rx_buffer_info;
++		}
++	}
++
++	rx_ring->next_to_alloc = 0;
++	rx_ring->next_to_clean = 0;
++	rx_ring->next_to_use = 0;
++}
++
++/**
++ * rnpgbe_free_rx_resources - Free Rx Resources
++ * @rx_ring: ring to clean the resources from
++ *
++ * Free all receive software resources
++ **/
++static void rnpgbe_free_rx_resources(struct mucse_ring *rx_ring)
++{
++	rnpgbe_clean_rx_ring(rx_ring);
++	vfree(rx_ring->rx_buffer_info);
++	rx_ring->rx_buffer_info = NULL;
++	/* if not set, then don't free */
++	if (!rx_ring->desc)
++		return;
++
++	dma_free_coherent(rx_ring->dev, rx_ring->size, rx_ring->desc,
++			  rx_ring->dma);
++	rx_ring->desc = NULL;
++}
++
++/**
++ * rnpgbe_setup_all_rx_resources - allocate all queues Rx resources
++ * @mucse: pointer to private structure
++ *
++ * @return: 0 on success, negative on failure
++ **/
++static int rnpgbe_setup_all_rx_resources(struct mucse *mucse)
++{
++	int i, err = 0;
++
++	for (i = 0; i < mucse->num_rx_queues; i++) {
++		err = rnpgbe_setup_rx_resources(mucse->rx_ring[i], mucse);
++		if (!err)
++			continue;
++
++		goto err_setup_rx;
++	}
++
++	return 0;
++err_setup_rx:
++	while (i--)
++		rnpgbe_free_rx_resources(mucse->rx_ring[i]);
++	return err;
++}
++
++/**
++ * rnpgbe_free_all_rx_resources - Free Rx Resources for All Queues
++ * @mucse: pointer to private structure
++ *
++ * Free all receive software resources
++ **/
++static void rnpgbe_free_all_rx_resources(struct mucse *mucse)
++{
++	int i;
++
++	for (i = 0; i < (mucse->num_rx_queues); i++) {
++		if (mucse->rx_ring[i]->desc)
++			rnpgbe_free_rx_resources(mucse->rx_ring[i]);
++	}
++}
++
++/**
++ * rnpgbe_setup_txrx - Allocate Tx/Rx Resources for All Queues
++ * @mucse: pointer to private structure
++ *
++ * Allocate all send/receive software resources
++ *
++ * @return: 0 on success, negative on failure
++ **/
++int rnpgbe_setup_txrx(struct mucse *mucse)
++{
 +	int err;
 +
-+	err = mutex_lock_interruptible(&hw->mbx.lock);
++	err = rnpgbe_setup_all_tx_resources(mucse);
 +	if (err)
 +		return err;
 +
-+	err = hw->mbx.ops.write_posted(hw, (u32 *)req,
-+				       L_WD(len),
-+				       MBX_FW);
-+	if (err) {
-+		mutex_unlock(&hw->mbx.lock);
-+		return err;
-+	}
++	err = rnpgbe_setup_all_rx_resources(mucse);
++	if (err)
++		goto err_setup_rx;
++	return 0;
++err_setup_rx:
++	rnpgbe_free_all_tx_resources(mucse);
++	return err;
++}
 +
-+retry:
-+	retry_cnt--;
-+	if (retry_cnt < 0)
-+		return -EIO;
++/**
++ * rnpgbe_free_txrx - Clean Tx/Rx Resources for All Queues
++ * @mucse: pointer to private structure
++ *
++ * Free all send/receive software resources
++ **/
++void rnpgbe_free_txrx(struct mucse *mucse)
++{
++	rnpgbe_free_all_tx_resources(mucse);
++	rnpgbe_free_all_rx_resources(mucse);
++}
+diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
+index 0df519a50185..6b2f68320c9e 100644
+--- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
++++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
+@@ -24,5 +24,7 @@
+ 
+ int rnpgbe_init_interrupt_scheme(struct mucse *mucse);
+ void rnpgbe_clear_interrupt_scheme(struct mucse *mucse);
++int rnpgbe_setup_txrx(struct mucse *mucse);
++void rnpgbe_free_txrx(struct mucse *mucse);
+ 
+ #endif /* _RNPGBE_LIB_H */
+diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+index 8fc1af1c00bc..16a111a10862 100644
+--- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
++++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+@@ -8,6 +8,7 @@
+ #include <linux/string.h>
+ #include <linux/etherdevice.h>
+ #include <linux/firmware.h>
++#include <linux/rtnetlink.h>
+ 
+ #include "rnpgbe.h"
+ #include "rnpgbe_mbx_fw.h"
+@@ -83,6 +84,78 @@ static void rnpgbe_service_task(struct work_struct *work)
+ {
+ }
+ 
++/**
++ * rnpgbe_open - Called when a network interface is made active
++ * @netdev: network interface device structure
++ *
++ * The open entry point is called when a network interface is made
++ * active by the system (IFF_UP).
++ *
++ * @return: 0 on success, negative value on failure
++ **/
++static int rnpgbe_open(struct net_device *netdev)
++{
++	struct mucse *mucse = netdev_priv(netdev);
++	int err;
 +
-+	err = hw->mbx.ops.read_posted(hw, (u32 *)reply,
-+				      L_WD(sizeof(*reply)),
-+				      MBX_FW);
-+	if (err) {
-+		mutex_unlock(&hw->mbx.lock);
-+		return err;
-+	}
++	/* disallow open during test */
++	if (test_bit(__MUCSE_TESTING, &mucse->state))
++		return -EBUSY;
 +
-+	if (reply->opcode != req->opcode)
-+		goto retry;
++	netif_carrier_off(netdev);
++	err = rnpgbe_setup_txrx(mucse);
 +
-+	mutex_unlock(&hw->mbx.lock);
++	return err;
++}
 +
-+	if (reply->error_code)
-+		return -EIO;
++/**
++ * rnpgbe_close - Disables a network interface
++ * @netdev: network interface device structure
++ *
++ * The close entry point is called when an interface is de-activated
++ * by the OS.
++ *
++ * @return: 0, this is not allowed to fail
++ **/
++static int rnpgbe_close(struct net_device *netdev)
++{
++	struct mucse *mucse = netdev_priv(netdev);
++
++	rnpgbe_free_txrx(mucse);
 +
 +	return 0;
 +}
 +
 +/**
-+ * mucse_fw_get_capability - Get hw abilities from fw
-+ * @hw: Pointer to the HW structure
-+ * @abil: Pointer to the hw_abilities structure
++ * rnpgbe_xmit_frame - Send a skb to driver
++ * @skb: skb structure to be sent
++ * @netdev: network interface device structure
 + *
-+ * mucse_fw_get_capability tries to get hw abilities from
-+ * hw.
-+ *
-+ * @return: 0 on success, negative on failure
++ * @return: NETDEV_TX_OK or NETDEV_TX_BUSY
 + **/
-+static int mucse_fw_get_capability(struct mucse_hw *hw,
-+				   struct hw_abilities *abil)
++static netdev_tx_t rnpgbe_xmit_frame(struct sk_buff *skb,
++				     struct net_device *netdev)
 +{
-+	struct mbx_fw_cmd_reply reply;
-+	struct mbx_fw_cmd_req req;
-+	int err = 0;
-+
-+	memset(&req, 0, sizeof(req));
-+	memset(&reply, 0, sizeof(reply));
-+	build_phy_abalities_req(&req, &req);
-+	err = mucse_fw_send_cmd_wait(hw, &req, &reply);
-+	if (err == 0)
-+		memcpy(abil, &reply.hw_abilities, sizeof(*abil));
-+
-+	return err;
++	dev_kfree_skb_any(skb);
++	return NETDEV_TX_OK;
 +}
++
++const struct net_device_ops rnpgbe_netdev_ops = {
++	.ndo_open = rnpgbe_open,
++	.ndo_stop = rnpgbe_close,
++	.ndo_start_xmit = rnpgbe_xmit_frame,
++};
 +
 +/**
-+ * mucse_mbx_get_capability - Get hw abilities from fw
-+ * @hw: Pointer to the HW structure
-+ *
-+ * mucse_mbx_get_capability tries to some capabities from
-+ * hw. Many retrys will do if it is failed.
-+ *
-+ * @return: 0 on success, negative on failure
++ * rnpgbe_assign_netdev_ops - Assign netdev ops to the device
++ * @dev: network interface device structure
 + **/
-+int mucse_mbx_get_capability(struct mucse_hw *hw)
++static void rnpgbe_assign_netdev_ops(struct net_device *dev)
 +{
-+	struct hw_abilities ability;
-+	int try_cnt = 3;
-+	int err = 0;
++	dev->netdev_ops = &rnpgbe_netdev_ops;
++	dev->watchdog_timeo = 5 * HZ;
++}
 +
-+	memset(&ability, 0, sizeof(ability));
+ /**
+  * rnpgbe_sw_init - Init driver private status
+  * @mucse: pointer to private structure
+@@ -289,7 +362,7 @@ static int rnpgbe_add_adapter(struct pci_dev *pdev,
+ 			"mucse_mbx_get_capability failed!\n");
+ 		goto err_free_net;
+ 	}
+-
++	rnpgbe_assign_netdev_ops(netdev);
+ 	err = rnpgbe_sw_init(mucse);
+ 	if (err)
+ 		goto err_free_net;
+@@ -305,6 +378,7 @@ static int rnpgbe_add_adapter(struct pci_dev *pdev,
+ 	netdev->features |= NETIF_F_HIGHDMA;
+ 	netdev->priv_flags |= IFF_UNICAST_FLT;
+ 	netdev->priv_flags |= IFF_SUPP_NOFCS;
++	netdev->hw_features |= netdev->features;
+ 	eth_hw_addr_set(netdev, hw->perm_addr);
+ 	memcpy(netdev->perm_addr, hw->perm_addr, netdev->addr_len);
+ 	ether_addr_copy(hw->addr, hw->perm_addr);
+@@ -314,11 +388,17 @@ static int rnpgbe_add_adapter(struct pci_dev *pdev,
+ 	err = rnpgbe_init_interrupt_scheme(mucse);
+ 	if (err)
+ 		goto err_free_net;
 +
-+	while (try_cnt--) {
-+		err = mucse_fw_get_capability(hw, &ability);
-+		if (err == 0) {
-+			u16 nic_mode = le16_to_cpu(ability.nic_mode);
-+			u32 wol = le32_to_cpu(ability.wol_status);
-+
-+			hw->ncsi_en = (nic_mode & 0x4) ? 1 : 0;
-+			hw->pfvfnum = le16_to_cpu(ability.pfnum);
-+			hw->fw_version = le32_to_cpu(ability.fw_version);
-+			hw->axi_mhz = le32_to_cpu(ability.axi_mhz);
-+			hw->bd_uid = le32_to_cpu(ability.bd_uid);
-+
-+			if (hw->fw_version >= 0x0001012C) {
-+				/* this version can get wol_en from hw */
-+				hw->wol = wol & 0xff;
-+				hw->wol_en = wol & 0x100;
-+			} else {
-+				/* other version only pf0 or ncsi can wol */
-+				hw->wol = wol & 0xff;
-+				if (hw->ncsi_en || !hw->pfvfnum)
-+					hw->wol_en = 1;
-+			}
-+			/* 0.1.5.0 can get force status from fw */
-+			if (hw->fw_version >= 0x00010500) {
-+				ability_update_host_endian(&ability);
-+				hw->force_en = ability.e_host.force_down_en;
-+				hw->force_cap = 1;
-+			}
-+			return 0;
-+		}
+ 	err = register_mbx_irq(mucse);
+ 	if (err)
+ 		goto err_free_irq;
+-
++	strscpy(netdev->name, "eth%d", sizeof(netdev->name));
++	err = register_netdev(netdev);
++	if (err)
++		goto err_register;
+ 	return 0;
++err_register:
++	remove_mbx_irq(mucse);
+ err_free_irq:
+ 	rnpgbe_clear_interrupt_scheme(mucse);
+ err_free_net:
+@@ -389,8 +469,14 @@ static void rnpgbe_rm_adapter(struct mucse *mucse)
+ 
+ 	rnpgbe_devlink_unregister(mucse);
+ 	netdev = mucse->netdev;
++	if (mucse->flags2 & M_FLAG2_NO_NET_REG) {
++		free_netdev(netdev);
++		return;
 +	}
-+
-+	return err;
-+}
-diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h
-new file mode 100644
-index 000000000000..a24c5d4e0075
---- /dev/null
-+++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h
-@@ -0,0 +1,568 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright(c) 2020 - 2025 Mucse Corporation. */
-+
-+#ifndef _RNPGBE_MBX_FW_H
-+#define _RNPGBE_MBX_FW_H
-+
-+#include <linux/types.h>
-+#include <linux/errno.h>
-+#include <linux/wait.h>
-+
-+#include "rnpgbe.h"
-+
-+#define MBX_REQ_HDR_LEN 24
-+#define L_WD(x) ((x) / 4)
-+
-+struct mbx_fw_cmd_reply;
-+typedef void (*cookie_cb)(struct mbx_fw_cmd_reply *reply, void *priv);
-+
-+struct mbx_req_cookie {
-+	int magic;
-+#define COOKIE_MAGIC 0xCE
-+	cookie_cb cb;
-+	int timeout_jiffes;
-+	int errcode;
-+	wait_queue_head_t wait;
-+	int done;
-+	int priv_len;
-+	char priv[];
-+};
-+
-+enum MUCSE_FW_CMD {
-+	GET_VERSION = 0x0001,
-+	READ_REG = 0xFF03,
-+	WRITE_REG = 0xFF04,
-+	MODIFY_REG = 0xFF07,
-+	IFUP_DOWN = 0x0800,
-+	SEND_TO_PF = 0x0801,
-+	SEND_TO_VF = 0x0802,
-+	DRIVER_INSMOD = 0x0803,
-+	SYSTEM_SUSPUSE = 0x0804,
-+	SYSTEM_FORCE = 0x0805,
-+	GET_PHY_ABALITY = 0x0601,
-+	GET_MAC_ADDRES = 0x0602,
-+	RESET_PHY = 0x0603,
-+	LED_SET = 0x0604,
-+	GET_LINK_STATUS = 0x0607,
-+	LINK_STATUS_EVENT = 0x0608,
-+	SET_LANE_FUN = 0x0609,
-+	GET_LANE_STATUS = 0x0610,
-+	SFP_SPEED_CHANGED_EVENT = 0x0611,
-+	SET_EVENT_MASK = 0x0613,
-+	SET_LOOPBACK_MODE = 0x0618,
-+	SET_PHY_REG = 0x0628,
-+	GET_PHY_REG = 0x0629,
-+	PHY_LINK_SET = 0x0630,
-+	GET_PHY_STATISTICS = 0x0631,
-+	PHY_PAUSE_SET = 0x0632,
-+	PHY_PAUSE_GET = 0x0633,
-+	PHY_EEE_SET = 0x0636,
-+	PHY_EEE_GET = 0x0637,
-+	SFP_MODULE_READ = 0x0900,
-+	SFP_MODULE_WRITE = 0x0901,
-+	FW_UPDATE = 0x0700,
-+	FW_MAINTAIN = 0x0701,
-+	FW_UPDATE_GBE = 0x0702,
-+	WOL_EN = 0x0910,
-+	GET_DUMP = 0x0a00,
-+	SET_DUMP = 0x0a10,
-+	GET_TEMP = 0x0a11,
-+	SET_WOL = 0x0a12,
-+	SET_TEST_MODE = 0x0a13,
-+	SHOW_TX_STAMP = 0x0a14,
-+	LLDP_TX_CTRL = 0x0a15,
-+};
-+
-+struct hw_abilities {
-+	u8 link_stat;
-+	u8 lane_mask;
-+	__le32 speed;
-+	__le16 phy_type;
-+	__le16 nic_mode;
-+	__le16 pfnum;
-+	__le32 fw_version;
-+	__le32 axi_mhz;
-+	union {
-+		u8 port_id[4];
-+		__le32 port_ids;
-+	};
-+	__le32 bd_uid;
-+	__le32 phy_id;
-+	__le32 wol_status;
-+	union {
-+		__le32 ext_ability;
-+		struct {
-+			__le32 valid : 1; /* 0 */
-+			__le32 wol_en : 1; /* 1 */
-+			__le32 pci_preset_runtime_en : 1; /* 2 */
-+			__le32 smbus_en : 1; /* 3 */
-+			__le32 ncsi_en : 1; /* 4 */
-+			__le32 rpu_en : 1; /* 5 */
-+			__le32 v2 : 1; /* 6 */
-+			__le32 pxe_en : 1; /* 7 */
-+			__le32 mctp_en : 1; /* 8 */
-+			__le32 yt8614 : 1; /* 9 */
-+			__le32 pci_ext_reset : 1; /* 10 */
-+			__le32 rpu_availble : 1; /* 11 */
-+			__le32 fw_lldp_ability : 1; /* 12 */
-+			__le32 lldp_enabled : 1; /* 13 */
-+			__le32 only_1g : 1; /* 14 */
-+			__le32 force_down_en: 1; /* 15 */
-+		} e;
-+		struct {
-+			u32 valid : 1; /* 0 */
-+			u32 wol_en : 1; /* 1 */
-+			u32 pci_preset_runtime_en : 1; /* 2 */
-+			u32 smbus_en : 1; /* 3 */
-+			u32 ncsi_en : 1; /* 4 */
-+			u32 rpu_en : 1; /* 5 */
-+			u32 v2 : 1; /* 6 */
-+			u32 pxe_en : 1; /* 7 */
-+			u32 mctp_en : 1; /* 8 */
-+			u32 yt8614 : 1; /* 9 */
-+			u32 pci_ext_reset : 1; /* 10 */
-+			u32 rpu_availble : 1; /* 11 */
-+			u32 fw_lldp_ability : 1; /* 12 */
-+			u32 lldp_enabled : 1; /* 13 */
-+			u32 only_1g : 1; /* 14 */
-+			u32 force_down_en: 1; /* 15 */
-+		} e_host;
-+	};
-+} __packed;
-+
-+static inline void ability_update_host_endian(struct hw_abilities *abi)
-+{
-+	u32 host_val = le32_to_cpu(abi->ext_ability);
-+
-+	abi->e_host = *(typeof(abi->e_host) *)&host_val;
-+}
-+
-+struct phy_pause_data {
-+	u32 pause_mode;
-+};
-+
-+struct lane_stat_data {
-+	u8 nr_lane;
-+	u8 pci_gen : 4;
-+	u8 pci_lanes : 4;
-+	u8 pma_type;
-+	u8 phy_type;
-+	__le16 linkup : 1;
-+	__le16 duplex : 1;
-+	__le16 autoneg : 1;
-+	__le16 fec : 1;
-+	__le16 an : 1;
-+	__le16 link_traing : 1;
-+	__le16 media_availble : 1;
-+	__le16 is_sgmii : 1;
-+	__le16 link_fault : 4;
-+#define LINK_LINK_FAULT BIT(0)
-+#define LINK_TX_FAULT BIT(1)
-+#define LINK_RX_FAULT BIT(2)
-+#define LINK_REMOTE_FAULT BIT(3)
-+	__le16 is_backplane : 1;
-+	__le16 tp_mdx : 2;
-+	union {
-+		u8 phy_addr;
-+		struct {
-+			u8 mod_abs : 1;
-+			u8 fault : 1;
-+			u8 tx_dis : 1;
-+			u8 los : 1;
-+		} sfp;
-+	};
-+	u8 sfp_connector;
-+	__le32 speed;
-+	__le32 si_main;
-+	__le32 si_pre;
-+	__le32 si_post;
-+	__le32 si_tx_boost;
-+	__le32 supported_link;
-+	__le32 phy_id;
-+	__le32 advertised_link;
-+} __packed;
-+
-+struct yt_phy_statistics {
-+	__le32 pkg_ib_valid; /* rx crc good and length 64-1518 */
-+	__le32 pkg_ib_os_good; /* rx crc good and length >1518 */
-+	__le32 pkg_ib_us_good; /* rx crc good and length <64 */
-+	__le16 pkg_ib_err; /* rx crc wrong and length 64-1518 */
-+	__le16 pkg_ib_os_bad; /* rx crc wrong and length >1518 */
-+	__le16 pkg_ib_frag; /* rx crc wrong and length <64 */
-+	__le16 pkg_ib_nosfd; /* rx sfd missed */
-+	__le32 pkg_ob_valid; /* tx crc good and length 64-1518 */
-+	__le32 pkg_ob_os_good; /* tx crc good and length >1518 */
-+	__le32 pkg_ob_us_good; /* tx crc good and length <64 */
-+	__le16 pkg_ob_err; /* tx crc wrong and length 64-1518 */
-+	__le16 pkg_ob_os_bad; /* tx crc wrong and length >1518 */
-+	__le16 pkg_ob_frag; /* tx crc wrong and length <64 */
-+	__le16 pkg_ob_nosfd; /* tx sfd missed */
-+} __packed;
-+
-+struct phy_statistics {
-+	union {
-+		struct yt_phy_statistics yt;
-+	};
-+} __packed;
-+
-+struct port_stat {
-+	u8 phyid;
-+	u8 duplex : 1;
-+	u8 autoneg : 1;
-+	u8 fec : 1;
-+	__le16 speed;
-+	union {
-+		__le16 stat;
-+		struct {
-+			__le16 pause : 4;
-+			__le16 local_eee : 3;
-+			__le16 partner_eee : 3;
-+			__le16 tp_mdx : 2;
-+			__le16 lldp_status : 1;
-+			__le16 revs : 3;
-+		} v;
-+		struct {
-+			u16 pause : 4;
-+			u16 local_eee : 3;
-+			u16 partner_eee : 3;
-+			u16 tp_mdx : 2;
-+			u16 lldp_status : 1;
-+			u16 revs : 3;
-+		} v_host;
-+	};
-+} __packed;
-+
-+#define FLAGS_DD BIT(0) /* driver clear 0, FW must set 1 */
-+/* driver clear 0, FW must set only if it reporting an error */
-+#define FLAGS_ERR BIT(2)
-+
-+/* req is little endian. bigendian should be conserened */
-+struct mbx_fw_cmd_req {
-+	__le16 flags; /* 0-1 */
-+	__le16 opcode; /* 2-3 enum GENERIC_CMD */
-+	__le16 datalen; /* 4-5 */
-+	__le16 ret_value; /* 6-7 */
-+	union {
-+		struct {
-+			__le32 cookie_lo; /* 8-11 */
-+			__le32 cookie_hi; /* 12-15 */
-+		};
-+
-+		void *cookie;
-+	};
-+	__le32 reply_lo; /* 16-19 5dw */
-+	__le32 reply_hi; /* 20-23 */
-+	union {
-+		u8 data[32];
-+		struct {
-+			__le32 addr;
-+			__le32 bytes;
-+		} r_reg;
-+
-+		struct {
-+			__le32 addr;
-+			__le32 bytes;
-+			__le32 data[4];
-+		} w_reg;
-+
-+		struct {
-+			__le32 lanes;
-+		} ptp;
-+
-+		struct {
-+			__le32 lane;
-+			__le32 up;
-+		} ifup;
-+
-+		struct {
-+			__le32 sec;
-+			__le32 nanosec;
-+
-+		} tstamps;
-+
-+		struct {
-+			__le32 lane;
-+			__le32 status;
-+		} ifinsmod;
-+
-+		struct {
-+			__le32 lane;
-+			__le32 status;
-+		} ifforce;
-+
-+		struct {
-+			__le32 lane;
-+			__le32 status;
-+		} ifsuspuse;
-+
-+		struct {
-+			__le32 nr_lane;
-+		} get_lane_st;
-+
-+		struct {
-+			__le32 nr_lane;
-+			__le32 func;
-+#define LANE_FUN_AN 0
-+#define LANE_FUN_LINK_TRAING 1
-+#define LANE_FUN_FEC 2
-+#define LANE_FUN_SI 3
-+#define LANE_FUN_SFP_TX_DISABLE 4
-+#define LANE_FUN_PCI_LANE 5
-+#define LANE_FUN_PRBS 6
-+#define LANE_FUN_SPEED_CHANGE 7
-+			__le32 value0;
-+			__le32 value1;
-+			__le32 value2;
-+			__le32 value3;
-+		} set_lane_fun;
-+
-+		struct {
-+			__le32 flag;
-+			__le32 nr_lane;
-+		} set_dump;
-+
-+		struct {
-+			__le32 lane;
-+			__le32 enable;
-+		} wol;
-+
-+		struct {
-+			__le32 lane;
-+			__le32 mode;
-+		} gephy_test;
-+
-+		struct {
-+			__le32 lane;
-+			__le32 op;
-+			__le32 enable;
-+			__le32 inteval;
-+		} lldp_tx;
-+
-+		struct {
-+			__le32 bytes;
-+			__le32 nr_lane;
-+			__le32 bin_offset;
-+			__le32 no_use;
-+		} get_dump;
-+
-+		struct {
-+			__le32 nr_lane;
-+			__le32 value;
-+#define LED_IDENTIFY_INACTIVE 0
-+#define LED_IDENTIFY_ACTIVE 1
-+#define LED_IDENTIFY_ON 2
-+#define LED_IDENTIFY_OFF 3
-+		} led_set;
-+
-+		struct {
-+			__le32 addr;
-+			__le32 data;
-+			__le32 mask;
-+		} modify_reg;
-+
-+		struct {
-+			__le32 adv_speed_mask;
-+			__le32 autoneg;
-+			__le32 speed;
-+			__le32 duplex;
-+			__le32 nr_lane;
-+			__le32 tp_mdix_ctrl;
-+		} phy_link_set;
-+
-+		struct {
-+			__le32 pause_mode;
-+			__le32 nr_lane;
-+		} phy_pause_set;
-+
-+		struct {
-+			__le32 pause_mode;
-+			__le32 nr_lane;
-+		} phy_pause_get;
-+
-+		struct {
-+			__le32 local_eee;
-+			__le32 tx_lpi_timer;
-+			__le32 nr_lane;
-+		} phy_eee_set;
-+
-+		struct {
-+			__le32 nr_lane;
-+			__le32 sfp_adr; /* 0xa0 or 0xa2 */
-+			__le32 reg;
-+			__le32 cnt;
-+		} sfp_read;
-+
-+		struct {
-+			__le32 nr_lane;
-+			__le32 sfp_adr; /* 0xa0 or 0xa2 */
-+			__le32 reg;
-+			__le32 val;
-+		} sfp_write;
-+
-+		struct {
-+			__le32 nr_lane; /* 0-3 */
-+		} get_linkstat;
-+
-+		struct {
-+			__le16 changed_lanes;
-+			__le16 lane_status;
-+			__le32 port_st_magic;
-+#define SPEED_VALID_MAGIC 0xa4a6a8a9
-+			struct port_stat st[4];
-+		} link_stat; /* FW->RC */
-+
-+		struct {
-+			__le16 enable_stat;
-+			__le16 event_mask;
-+		} stat_event_mask;
-+
-+		struct {
-+			__le32 cmd;
-+			__le32 arg0;
-+			__le32 req_bytes;
-+			__le32 reply_bytes;
-+			__le32 ddr_lo;
-+			__le32 ddr_hi;
-+		} maintain;
-+
-+		struct { /* set phy register */
-+			u8 phy_interface;
-+			union {
-+				u8 page_num;
-+				u8 external_phy_addr;
-+			};
-+			__le32 phy_reg_addr;
-+			__le32 phy_w_data;
-+			__le32 reg_addr;
-+			__le32 w_data;
-+			/* 1 = ignore page_num, use last QSFP */
-+			u8 recall_qsfp_page : 1;
-+			/* page value */
-+			/* 0 = use page_num for QSFP */
-+			u8 nr_lane;
-+		} set_phy_reg;
-+
-+		struct {
-+			__le32 lane_mask;
-+			__le32 pfvf_num;
-+		} get_mac_addr;
-+
-+		struct {
-+			u8 phy_interface;
-+			union {
-+				u8 page_num;
-+				u8 external_phy_addr;
-+			};
-+			__le32 phy_reg_addr;
-+			u8 nr_lane;
-+		} get_phy_reg;
-+
-+		struct {
-+			__le32 nr_lane;
-+		} phy_statistics;
-+
-+		struct {
-+			u8 paration;
-+			__le32 bytes;
-+			__le32 bin_phy_lo;
-+			__le32 bin_phy_hi;
-+		} fw_update;
-+	};
-+} __packed;
-+
-+#define EEE_1000BT BIT(2)
-+#define EEE_100BT BIT(1)
-+
-+struct rnpgbe_eee_cap {
-+	__le32 local_capability;
-+	__le32 local_eee;
-+	__le32 partner_eee;
-+};
-+
-+/* firmware -> driver */
-+struct mbx_fw_cmd_reply {
-+	/* fw must set: DD, CMP, Error(if error), copy value */
-+	__le16 flags;
-+	/* from command: LB,RD,VFC,BUF,SI,EI,FE */
-+	__le16 opcode; /* 2-3: copy from req */
-+	__le16 error_code; /* 4-5: 0 if no error */
-+	__le16 datalen; /* 6-7: */
-+	union {
-+		struct {
-+			__le32 cookie_lo; /* 8-11: */
-+			__le32 cookie_hi; /* 12-15: */
-+		};
-+		void *cookie;
-+	};
-+	/* ===== data ==== [16-64] */
-+	union {
-+		u8 data[40];
-+
-+		struct version {
-+			__le32 major;
-+			__le32 sub;
-+			__le32 modify;
-+		} version;
-+
-+		struct {
-+			__le32 value[4];
-+		} r_reg;
-+
-+		struct {
-+			__le32 new_value;
-+		} modify_reg;
-+
-+		struct get_temp {
-+			__le32 temp;
-+			__le32 volatage;
-+		} get_temp;
-+
-+		struct {
-+#define MBX_SFP_READ_MAX_CNT 32
-+			u8 value[MBX_SFP_READ_MAX_CNT];
-+		} sfp_read;
-+
-+		struct mac_addr {
-+			__le32 lanes;
-+			struct _addr {
-+				/*
-+				 * for macaddr:01:02:03:04:05:06
-+				 * mac-hi=0x01020304 mac-lo=0x05060000
-+				 */
-+				u8 mac[8];
-+			} addrs[4];
-+		} mac_addr;
-+
-+		struct get_dump_reply {
-+			__le32 flags;
-+			__le32 version;
-+			__le32 bytes;
-+			__le32 data[4];
-+		} get_dump;
-+
-+		struct get_lldp_reply {
-+			__le32 value;
-+			__le32 inteval;
-+		} get_lldp;
-+
-+		struct rnpgbe_eee_cap phy_eee_abilities;
-+		struct lane_stat_data lanestat;
-+		struct hw_abilities hw_abilities;
-+		struct phy_statistics phy_statistics;
-+	};
-+} __packed;
-+
-+static inline void build_phy_abalities_req(struct mbx_fw_cmd_req *req,
-+					   void *cookie)
-+{
-+	req->flags = 0;
-+	req->opcode = cpu_to_le32(GET_PHY_ABALITY);
-+	req->datalen = 0;
-+	req->reply_lo = 0;
-+	req->reply_hi = 0;
-+	req->cookie = cookie;
-+}
-+
-+int mucse_mbx_get_capability(struct mucse_hw *hw);
-+
-+#endif /* _RNPGBE_MBX_FW_H */
+ 	cancel_work_sync(&mucse->service_task);
+ 	timer_delete_sync(&mucse->service_timer);
++	if (netdev->reg_state == NETREG_REGISTERED)
++		unregister_netdev(netdev);
+ 	hw->ops.driver_status(hw, false, mucse_driver_insmod);
+ 	remove_mbx_irq(mucse);
+ 	rnpgbe_clear_interrupt_scheme(mucse);
+@@ -432,6 +518,10 @@ static void rnpgbe_dev_shutdown(struct pci_dev *pdev,
+ 
+ 	*enable_wake = false;
+ 	netif_device_detach(netdev);
++	rtnl_lock();
++	if (netif_running(netdev))
++		rnpgbe_free_txrx(mucse);
++	rtnl_unlock();
+ 	remove_mbx_irq(mucse);
+ 	rnpgbe_clear_interrupt_scheme(mucse);
+ 	pci_disable_device(pdev);
 -- 
 2.25.1
 
