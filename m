@@ -1,219 +1,100 @@
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B6C22D785;
-	Tue, 22 Jul 2025 11:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1F92475C7
+	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 11:51:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753184223; cv=none; b=XxxPOyjGKw8i2ZWBDGq9S8f0TKgwtvGz3LADW7OE0jwf75QEX7cF/uUm0vndZlHISt8djnUm7T86PfJP9mvCE1BgHYsauZwOKVw+vXc+xd6wAlpLWNf3RlW06X7RPCaoUFiW7J3g8WaLS/8c8hHb0DG/bL6Qzz8uZAdBDScaxS0=
+	t=1753185096; cv=none; b=qMFg4n27YcScDagNyaSVx3DOZfacj7Ox3LYnGCma9hoO8KCct5YQxCR1tAqPWsq54wjhG4jtYll24erJ7K2hDLGAL5thk6x+cgtkmBole15p3lXYACs5ok164GGl6C5i28edgw1b7qlJtb0rihpWEUvKOSoPQ0zuwEL2dgCxcIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753184223; c=relaxed/simple;
-	bh=TutmRf7PRvoKREEcIUUFk8BWwUfQUx3DrBW6pjmWn2g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qfecgbXoV1iRB2ZL0U0noXWXsX32DKHDR/KZrvUnW6HZcQt6veLr83AL7oGS/Q+hhfID+iQjPn+HD4wXWbW/ZfNjqs3jQvJ/dn0h8PKfZQxF3sErytP+hVoxjBEfrSCHcB4HRDI6hSLPsfT/IvcLctHd0NX9jofD6xyxWBA52XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=54.207.19.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: esmtpgz11t1753184144t1f8fdf7d
-X-QQ-Originating-IP: KVJj6lsYqr7FQs6PH3TtIfw1/RHylvVAcTptgkbtrUs=
-Received: from localhost ( [203.174.112.180])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 22 Jul 2025 19:35:41 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 18378057600828906183
-Date: Tue, 22 Jul 2025 19:35:41 +0800
-From: Yibo Dong <dong100@mucse.com>
-To: MD Danish Anwar <danishanwar@ti.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	corbet@lwn.net, gur.stavi@huawei.com, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, lee@trager.us, gongfan1@huawei.com,
-	lorenzo@kernel.org, geert+renesas@glider.be,
-	Parthiban.Veerasooran@microchip.com, lukas.bulwahn@redhat.com,
-	alexanderduyck@fb.com, richardcochran@gmail.com,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 00/15] Add driver for 1Gbe network chips from MUCSE
-Message-ID: <49D59FF93211A147+20250722113541.GA126730@nic-Precision-5820-Tower>
-References: <20250721113238.18615-1-dong100@mucse.com>
- <5bce6424-51f9-4cc1-9289-93a2c15aa0c1@ti.com>
+	s=arc-20240116; t=1753185096; c=relaxed/simple;
+	bh=fDs/lkiikr8lrDjSXMBJGZzg2+NaAuigQIEX/Ky00/s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TOmQuYKtQPhRa/iJhymyvgdz2qwTQPasbXcNcpFQRUx1nF1WCNpYFuGnkF9eMJSkMGS6vYC2gRiSTjZcLyWZu6doS7nX0Uy3HLlhJem/2U1nwoJh+vtWUOYKX1VlBh5/Iqgj51P02YWoNFbajm55QB2TEpbF8AVHlgVBjWgXYUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=msjJ8Yrz; arc=none smtp.client-ip=209.85.166.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="msjJ8Yrz"
+Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-3da73df6c4eso44394095ab.0
+        for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 04:51:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753185093; x=1753789893; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ALwbxiasFzPrPDT/PXeVaomnxgv+oiue00P4Ij8jwo0=;
+        b=msjJ8YrzNiAv8GLfm7430phdsg1xC+aX0siJOozQT0+N/Jys+1bfTDO/ZSuHjnf6o3
+         HaHahv6W5Rd7/uCQUSSmQ6aF9p79xcSiBQBy+wZ1so6muPvg8A8AahB6B2m47piC3cv5
+         Ht5WU45/3nWXci6VrJJima1VdAoEtMnrzqe6j5R4ot2CNwV0qaHBfR/hzKo27vfL9gdt
+         uCxl/p+3zZoLpm8TSpU58pzS7afX/0xIFvBtGIhWMBui0sCwxy+kDXqCYxDAU6W21JcL
+         mD5HfI6c8lLXtoKIqkaF4uvJzuoLqsbIB1tJUPG7vRTHAnT2XodmVHhK5KOEtfee/sBs
+         7nKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753185093; x=1753789893;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ALwbxiasFzPrPDT/PXeVaomnxgv+oiue00P4Ij8jwo0=;
+        b=Gshp+EJMxgW4suznccsxYsI5CUftc49oWzp/93ClzXSJ93SFaHQnlF7a0bLcJje3ef
+         NDdPOgoINXBvlUSd4g04AzZH7Sq3P/a7FlsTp/bQ2WyNnRlaHKfT/xa9se0gzl43ARl7
+         FzsIyZ1lKOhLvDc8BJbWx/EgQYM2/FM6ZJr1mRgZIaB7QYCw+/Dk4ARWuY4bnSeDPXHD
+         z+FbWHsWqU8dOnnrfbRzJ85+A3fCo7BbCaM9EtMLmTNM/gxGl1aAuxsDqZKPZCWZ6KxX
+         ow1jCobwdnpH1Fhl8z8zgoLGUyDFPEKC6gbYgS/FVMud7U2MDuY4TlPj8+3DfwN1oqou
+         36yw==
+X-Forwarded-Encrypted: i=1; AJvYcCXeSDTpyz6ce0lg6YPgSmm9WcqWxC3bxo5DyjVNwk6/E8OwxOCvT3bfRRFQW9r9cepWdbBqnME=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywq1Zw7U/RWeZ1IPbgCsY865vykho/IuWdQnPk9utbpccZBCfTP
+	yru0j8XjX4JHi6qt92CFw9/m/IyrLSViw1zviYBNT6/q2TUlYc+NxeOEsuvJOnuEv/3utM4O3ri
+	RkJvtFZ7NbFn8Xvuuo/IEbcoAaND30iZJHCRQ
+X-Gm-Gg: ASbGncvZ0e59xaIXCLEMdN5GIVKjMrN8A/FJd6k0+c4gShTFNpe0ffNUKXygdJeuBct
+	TvTI5gCbqrJdiUfHx2+62KD255oBQBdH005jfpmQyCYtcPMag/Jj44Yif2glXjz37UCmam1E9JE
+	BoG66ONDwB+F2eRW74O/cbMzE1rzEIUr9Op0AAGMU4KPJSetZfDKFOoJGR9DBNcOTD6Gn5J9zW8
+	kekBo0NvqKHC1F64g==
+X-Google-Smtp-Source: AGHT+IGXR9clp3Zfn1b/yJO8h2n6Rfk8AbS1/Kj2GNIusLGv2n5VulhfCfmGKWZ3xKH4iJ3wftLJSDYdsDNoCHSxTKI=
+X-Received: by 2002:a05:6e02:350b:b0:3dd:f743:d182 with SMTP id
+ e9e14a558f8ab-3e2822fce43mr339664415ab.5.1753185093608; Tue, 22 Jul 2025
+ 04:51:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5bce6424-51f9-4cc1-9289-93a2c15aa0c1@ti.com>
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:mucse.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MbSuBwOrED9vqnGG2pMcqPoQdDSXzvGHY5MtSKudTE9DHEa99Btoqz5v
-	l+1yqYQCaez5yjo1Hn5NYzEQMlS4tfV5JjrloWb8vTz4OFQwn2QJxsBOmcvpgRCLQjZOK3q
-	vi1oC/8PeSz1dK9cmaDZ3eFGK2PO7kuzBSQao6pjV2yYIJLaqoAAxdcj+G8e9LA+HU1WkA9
-	BpeTV2sA8EVj3JqDj+6hEH3AQn7RM630H+YlquJ6/Fkd28KDdSQUraFc63pAlcVUQPIybSo
-	QTIP9v5b5PQkGldJmY5RGqZy1rtx50XTp65VL9tKesH/ldYNaM1Ru4PESM9EQJjOLxMjX5Y
-	+K3iuQmRdYeAFim4FQAc/OjNFm/ZlFaJRZdRKyQ+5e5JojVAbaYzvy0Yyw1zoheo+MJX8dA
-	lCOHRzi92SzbNDGoaZqaDJy6GV3bHGSCX3s7BzAtoGIOdVc9fjWgyqxH0+pQaibpwhECbTm
-	fC4K4vYT/E93ESaeq/EVou5jCfevvfEZZlAHQLJjRLiZvlVmB87zbqQt0Zl2sSb61fA1QpS
-	2ycZn4OAStX2x07YDfZX2R3ufhc0TdRwoY7xrI9W1h309S/g/oRTDbiTkYISwGPFYjm7xW2
-	5xsrf+l+WHKe1r9i+2CTDFFxE0MYjqfM2m7uLNpmc/HSsrjUB/XAS54TP89m+ZHt+8oZ+HS
-	9++1XLg0e985SR+MyQBRCio2saVqtk1zUg6xWNTTE6FI1/o7Y/bBDHVjaoVGs+BqfFyCZxS
-	xjXEmUJHGSqsSpoxHPIlPhmxo9tv52CynqIOJwr+FXAXK6FPDPwgR7yWQ65w0EHONeI4O5C
-	bmN3Mulos9JP7tmUHuzq2xMf1EWLeJ6CTn63m+Qyerbywis53r8mwkm08o1o4hxe/Yi4QR5
-	9Du7eLh2Uq16irbEJ0mxtMsInkmdzAWcpIFvcLKPIrMABZ/h/yb3+GXflSdPl27uS4jVmtO
-	aSDd/8Nx54/XbQQ6OnsGT4bKOoCpUFvj7yXaAoCBzXYyrmq2XC+SP3le8YdO3fJZ5ejsqNc
-	2cw02tEM69AvCXhUAkOvjaSjvdDi2Lbj+3QIyvvZFP/dSU2LA9WXPdQDrZQwUqfYjtEw78V
-	A==
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-X-QQ-RECHKSPAM: 0
+References: <20250717152839.973004-1-jeroendb@google.com> <20250717152839.973004-5-jeroendb@google.com>
+ <CAL+tcoBu0ZQzLA0MvwAzsYYpz=Z=xR7LiLmFwJUXcHFDvFZVPg@mail.gmail.com> <534146d9-53b1-4b4a-8978-206f6ad4f77e@redhat.com>
+In-Reply-To: <534146d9-53b1-4b4a-8978-206f6ad4f77e@redhat.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Tue, 22 Jul 2025 19:50:57 +0800
+X-Gm-Features: Ac12FXxZ_vgWastcEpiWlVbERTJiWIJfn-QYMbgCRW_O9wklUPWTEa8uoXvsIoI
+Message-ID: <CAL+tcoDR7O327uDMLgZ_74X_Vkvnx1ACpcs0BMNjTZRD0pY9kw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 4/5] gve: implement DQO TX datapath for AF_XDP zero-copy
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Jeroen de Borst <jeroendb@google.com>, netdev@vger.kernel.org, hramamurthy@google.com, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, willemb@google.com, 
+	Joshua Washington <joshwash@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 22, 2025 at 04:50:48PM +0530, MD Danish Anwar wrote:
-> Hi Dong,
-> 
-> On 21/07/25 5:02 pm, Dong Yibo wrote:
-> > Hi maintainers,
-> > 
-> > This patch series introduces support for MUCSE N500/N210 1Gbps Ethernet
-> > controllers. Only basic tx/rx is included, more features can be added in
-> > the future.
-> > 
-> > The driver has been tested on the following platform:
-> >    - Kernel version: 6.16.0-rc3
-> >    - Intel Xeon Processor
-> > 
-> > Changelog:
-> > v1 -> v2: 
-> >   [patch 01/15]:
-> >   1. Fix changed section in MAINTAINERs file by mistake.
-> >   2. Fix odd indentaition in 'drivers/net/ethernet/mucse/Kconfig'.
-> >   3. Drop pointless driver version.
-> >   4. Remove pr_info prints.
-> >   5. Remove no need 'memset' for priv after alloc_etherdev_mq.
-> >   6. Fix __ function names.
-> >   7. Fix description errors from 'kdoc summry'.
-> >   [patch 02/15]:
-> >   1. Fix define by using the BIT() macro.
-> >   2. Remove wrong 'void *' cast.
-> >   3. Fix 'reverse Christmas tree' format for local variables.
-> >   4. Fix description errors from 'kdoc summry'.
-> >   [patch 03/15]:
-> >   1. Remove inline functions in C files.
-> >   2. Remove use s32, use int.
-> >   3. Use iopoll to instead rolling own.
-> >   4. Fix description errors from 'kdoc summry'.
-> >   [patch 04/15]:
-> >   1. Using __le32/__le16 in little endian define.
-> >   2. Remove all defensive code.
-> >   3. Remove pcie hotplug relative code.
-> >   4. Fix 'replace one error code with another' error.
-> >   5. Turn 'fw error code' to 'linux/POSIX error code'.
-> >   6. Fix description errors from 'kdoc summry'.
-> >   [patch 05/15]:
-> >   1. Use iopoll to instead rolling own.
-> >   2. Use 'linux/POSIX error code'.
-> >   3. Use devlink to download flash.
-> >   4. Fix description errors from 'kdoc summry'.
-> >   [patch 06/15] - [patch 15/15]:
-> >   1. Check errors similar to the patches [1-5].
-> >   2. Fix description errors from 'kdoc summry'.
-> > 
-> > v1: Initial submission
-> >   https://lore.kernel.org/netdev/20250703014859.210110-1-dong100@mucse.com/T/#t
-> > 
-> > 
-> > Dong Yibo (15):
-> >   net: rnpgbe: Add build support for rnpgbe
-> >   net: rnpgbe: Add n500/n210 chip support
-> >   net: rnpgbe: Add basic mbx ops support
-> >   net: rnpgbe: Add get_capability mbx_fw ops support
-> >   net: rnpgbe: Add download firmware for n210 chip
-> >   net: rnpgbe: Add some functions for hw->ops
-> >   net: rnpgbe: Add get mac from hw
-> >   net: rnpgbe: Add irq support
-> >   net: rnpgbe: Add netdev register and init tx/rx memory
-> >   net: rnpgbe: Add netdev irq in open
-> >   net: rnpgbe: Add setup hw ring-vector, true up/down hw
-> >   net: rnpgbe: Add link up handler
-> >   net: rnpgbe: Add base tx functions
-> >   net: rnpgbe: Add base rx function
-> >   net: rnpgbe: Add ITR for rx
-> > 
-> 
-> This series has lots of checkpatch errors / warnings.
-> 
-> Before posting the series please try to run checkpatch on all patches.
-> 
-> 	./scripts/checkpatch.pl --strict --codespell <PATH_TO_PATCHES>
-> 
-> For patches within net subsystem, for declaring variables, please follow
-> https://www.kernel.org/doc/html/v6.3/process/maintainer-netdev.html#local-variable-ordering-reverse-xmas-tree-rcs
-> 
-> You can use https://github.com/ecree-solarflare/xmastree to verify
-> locally before posting.
-> 
-> The series also has kdoc warnings, please run below script on all the
-> files that the series is modifying.
-> 	./scripts/kernel-doc -none -Wall
-> 
+On Tue, Jul 22, 2025 at 5:32=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> On 7/22/25 1:37 AM, Jason Xing wrote:
+> > On Thu, Jul 17, 2025 at 11:29=E2=80=AFPM Jeroen de Borst <jeroendb@goog=
+le.com> wrote:
+> >> +
+> >> +               pkt =3D gve_alloc_pending_packet(tx);
+> >
+> > I checked gve_alloc_pending_packet() and noticed there is one slight
+> > chance to return NULL? If so, it will trigger a NULL dereference
+> > issue.
+>
+> IIRC, a similar thing was already mentioned on an older patch. Still
+> IIRC, the trick is that there is a previous, successful call to
+> gve_has_avail_slots_tx_dqo() that ensures there are free TX packets
+> avail and operations racing in between on other CPUs could only add more
+> free pkts.
 
-Great, I really need this. Thank you!
+Oh, thanks for clarifying this. It does make sense :)
 
-> >  .../device_drivers/ethernet/index.rst         |    1 +
-> >  .../device_drivers/ethernet/mucse/rnpgbe.rst  |   21 +
-> >  MAINTAINERS                                   |    8 +
-> >  drivers/net/ethernet/Kconfig                  |    1 +
-> >  drivers/net/ethernet/Makefile                 |    1 +
-> >  drivers/net/ethernet/mucse/Kconfig            |   35 +
-> >  drivers/net/ethernet/mucse/Makefile           |    7 +
-> >  drivers/net/ethernet/mucse/rnpgbe/Makefile    |   13 +
-> >  drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  733 ++++++
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_chip.c   |  593 +++++
-> >  drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h |   66 +
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.c    | 2320 +++++++++++++++++
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.h    |  175 ++
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   |  901 +++++++
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c    |  623 +++++
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.h    |   49 +
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c |  753 ++++++
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h |  695 +++++
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_sfc.c    |  476 ++++
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_sfc.h    |   30 +
-> >  20 files changed, 7501 insertions(+)
-> 
-> 7.5K Lines of change is a too much for a series. It becomes very
-> difficult for maintainers to review a series like this.
-> 
-> Please try to split this into multiple series if possible.
-> 
-
-A series patches can be accepted without achieving the basic tx/rx
-functions for a network card? If so, I can split this.
-
-> >  create mode 100644 Documentation/networking/device_drivers/ethernet/mucse/rnpgbe.rst
-> >  create mode 100644 drivers/net/ethernet/mucse/Kconfig
-> >  create mode 100644 drivers/net/ethernet/mucse/Makefile
-> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/Makefile
-> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
-> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
-> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
-> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
-> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
-> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
-> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.h
-> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h
-> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_sfc.c
-> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_sfc.h
-> > 
-> 
-> 
-> -- 
-> Thanks and Regards,
-> Danish
-> 
-
-Thanks for your feedback.
-
+Thanks,
+Jason
