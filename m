@@ -1,93 +1,124 @@
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD8B28B3FD
-	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 11:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C8C1DE2B5
+	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 11:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753182117; cv=none; b=A1dvU6BMbcgWkF2KOkCMC64pSHGPOTQ0zI6EA23vCeB51RefKi97pUChZ8wVwNVFSMEGITfUqLuZxTnfXl6oQWofs3g401QcBKtLO2z7Mh18IyQtFQpfc4zAmyBBYmL03kk8poMaUaEnk90Vi+DEfreYcMonvwf4lffwMZb3UlI=
+	t=1753182384; cv=none; b=XPEMFYeAGI07Wn6S2pjGV7wEImlUKBOUw49Tu3kvEHgIgGyhX/VCPgUj8b3fS1cVsdTPth4H70WyRf8iHmQSeVJP1HERjSFgsYlxpPqMZcve0snFJMfuUSzV0x0yMY1Oz+yssuR4uLsF8Tu0WM25K8QxC1zBmwUiGJsy/2IEdRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753182117; c=relaxed/simple;
-	bh=SO2hEIIygcqUmsfzqTzuYifhFtH/JQkR4TGs52igfY0=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=pC0pb1UPbwa/7AMJ15BtUo/zsBl7c4Ff7vkjIyKFWkO96X8V/+R4pa12/Q2UT1nRTgeov35lSV89CHFsIdX6JaB5EO11X5hBDv0gxtuHJXI858v4QTT1vuZ7DKd0Psd1F3kM7SGSmLV2+OjEUXC2WhmSV5tnejgQySbJOb458LY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=wuN5tHkA; arc=none smtp.client-ip=115.124.30.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="wuN5tHkA"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1753182111; h=Message-ID:Subject:Date:From:To;
-	bh=i9av63v9ikh8fxngZ0AhF0nnehbnS74YVIRzE3DQcZE=;
-	b=wuN5tHkAhbVYyPTsNU8TRc8x2i3XLMfKbl0Nfy7AxNP/SvRWE8Za6jRWF+kH/V6uyQyJ99O7gXdjJ8dOhU65myBTa+aTS7k1e97SVx4ZHQpPIVLVxnv8pa+4SBJPYzeWvRxPdQ4135UIqFB8vAvMfsgrUvzgYGM8xCEXQiH7CbQ=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WjW.xsl_1753182110 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 22 Jul 2025 19:01:50 +0800
-Message-ID: <1753181623.6635778-1-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net-next] eea: Add basic driver framework for Alibaba Elastic Ethernet Adaptor
-Date: Tue, 22 Jul 2025 18:53:43 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Wen Gu <guwen@linux.alibaba.com>,
- Philo Lu <lulie@linux.alibaba.com>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Lukas Bulwahn <lukas.bulwahn@redhat.com>,
- Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Alexander Duyck <alexanderduyck@fb.com>,
- Dust Li <dust.li@linux.alibaba.com>
-References: <20250710112817.85741-1-xuanzhuo@linux.alibaba.com>
- <7b957110-c675-438a-b0c2-ebc161a5d8e7@lunn.ch>
- <1752644852.1458855-1-xuanzhuo@linux.alibaba.com>
- <322af656-d359-44d8-9e40-4f997a8b7e0f@lunn.ch>
- <1752733075.7055798-1-xuanzhuo@linux.alibaba.com>
- <161e69d8-eb8e-4a5d-9b4e-875fa6253c67@lunn.ch>
- <1752803672.0477452-1-xuanzhuo@linux.alibaba.com>
- <9e208e97-23ef-41e7-94d0-0a391cba9b59@lunn.ch>
-In-Reply-To: <9e208e97-23ef-41e7-94d0-0a391cba9b59@lunn.ch>
+	s=arc-20240116; t=1753182384; c=relaxed/simple;
+	bh=osaPJphBkG3Oc5IjP9rPY0C6ox0p0oIZq0W6NW8vKys=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ltnMe/60nO3GzYCDaxxgtmKlAaEHtLSfNWEz5sJQQKHNU1ZbvKOZ5cS0DXS6RactoTPPehQ7ksk6wJ/iJoxcLqVKR5iX+0rf59oachbPFvdDWf6s1z58ntxmHWUXXedXBVqsZiNHLAD5JJoZAg6xraM5RpEleQ8jRg0xIKsuXbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=54.254.200.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
+X-QQ-mid: esmtpgz15t1753182360tf29cfbad
+X-QQ-Originating-IP: FXuqZDVo/GZ6z9v0ge1P2MCwsAK4t9NGsisCs29wpck=
+Received: from localhost ( [203.174.112.180])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 22 Jul 2025 19:05:58 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 1745295540662431408
+Date: Tue, 22 Jul 2025 19:05:58 +0800
+From: Yibo Dong <dong100@mucse.com>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	corbet@lwn.net, gur.stavi@huawei.com, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, danishanwar@ti.com, lee@trager.us,
+	gongfan1@huawei.com, lorenzo@kernel.org, geert+renesas@glider.be,
+	Parthiban.Veerasooran@microchip.com, lukas.bulwahn@redhat.com,
+	alexanderduyck@fb.com, richardcochran@gmail.com,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 01/15] net: rnpgbe: Add build support for rnpgbe
+Message-ID: <6D29CA59CCFC37A8+20250722110558.GA125862@nic-Precision-5820-Tower>
+References: <20250721113238.18615-1-dong100@mucse.com>
+ <20250721113238.18615-2-dong100@mucse.com>
+ <32fc367c-46a4-4c76-b8a8-494bf79a6409@linux.dev>
+ <D6DDF24A13236761+20250722030245.GA96891@nic-Precision-5820-Tower>
+ <60ac707f-b57b-4f31-8c54-b59e75200181@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <60ac707f-b57b-4f31-8c54-b59e75200181@linux.dev>
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:mucse.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: ND3CPZxVFFQclkUGnDuw2KhdoEn5w8Fdnw0Xbqd29jZXIKj8Q9MZlZfB
+	Eh4M9SvS+E1Y0bUm99oj9itV/m5xd7bNuPXtBekr0pWlFomUNNx/eku1YSjRyFZlXxhDyDe
+	X5L+Bz4qLaWAbG7WZE1KRx0+4FV4zBGBxOEhZ1PB6qlRXITqx+i6hbc7MhP7hr5S5UlMcKu
+	lNxR8PCJqdDRk9nFkUVhn+yxDavKQJutvqdGoaAz95KppIR75T1zJqdua9whanmrp/LaMxX
+	PonMRey2STguPD2PaqHdYfxqmF4m5rALIb4mJ8wtvo4RunJPyoONa3VZkvGl42pyFK3Fn5/
+	6VC8yrOqTmRRk8JgZia1FT3S7+6pogpCt20joFyMTMTHxnLUx4W6WuzdA3GVuAqKdwt6jhy
+	ZMY4EhyYS0s/ljh/NUaXxUIpdkXiVGbbFsntjjr4qjA7W1QDU1mcJKjTLQDSTPsCqY11pZl
+	57Lg/zO3NedCSYuID9OMMZrsZVtEAeYzupirJvRlZFHauKr4ehRfZggaxRNl7P0Qf0gowtk
+	LBWJkVVO6u6YCLXRlRTmV7D+vduraaxDDKYJ0FO1ea2uAGZA038wbB6w7UJHtkHan3RBSlJ
+	6gZSSUe0SosOflLFkB3718MoWMQye7pzjZM6WKjjddvSyT11mHTEAnP0krQSDn/MCFQlGkm
+	SMCwR3oGBcFOXpj/hg3Yeuy2YVH8b7i1XJOAjPMn971L7C0YaZ2vcOWPyl7rrPA85PNio2e
+	nIMsKa4YXKJra1EtQWsLfJnYlBoJZd6yXAofxEh/F9FVVY+ruT9Q+uWBsztIQLtR/teHW5l
+	xr9aIb1aP2TfEEnEn6NiSi3eOUqS7C8rKangc7h6041lyt1ZE7A5Om2jjRtftSqe4Ji5dgs
+	ekyTwBHdmemcVrHFvLAqU/NJjY7iQvl9qr2EJby9+vPrhyDC8KPVxGFDtCg8MQmWwZ0OQwo
+	zHk0foPzYHlxbMfZT08zbRXHHTFeebgJxHpFaN02kFoFsxne/1Eay/Wv+ZnMJCOfrtOmrZy
+	D60kJUdg==
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+X-QQ-RECHKSPAM: 0
 
-On Fri, 18 Jul 2025 18:59:32 +0200, Andrew Lunn <andrew@lunn.ch> wrote:
-> > We have our own distribution "Anolis".
->
-> This driver can be used with any distribution. So it needs to work
-> equally well for all distributions.
->
-> If you want this feature in Anolis, you can take the upstream version
-> and hack in the feature in your downstream kernel.
-
-By inspecting the kernel release string (utsname()->release), we can identify
-the Linux distribution in use, such as Anolis, Red Hat, or Ubuntu. This allows
-us to provide support for these and other mainstream distributions. While we
-plan to offer enhanced support on Anolis and these specific platforms, this
-approach will not negatively impact other systems. Therefore, we see this as a
-method that can only improve functionality without introducing any drawbacks.
-
-Thanks.
-
-
->
-> > > No module parameters. You are doing development work, just use $EDITOR
-> > > and change the timeout.
-> >
-> > Our use case has already been explained. We will set a long timeout to help with
-> > issue diagnosis, and once the problem is identified, we will immediately adjust
-> > the timeout to let the driver exit quickly. Honestly, this is a very useful
-> > feature for us during the development process. Of course, it seems that you are
-> > strongly opposed to it, so we will remove it in the next version.
->
-> We have been pushing back on module parameters for years. You should
-> of seen this in multiple review comments on the netdev list.
->
-> 	Andrew
->
+On Tue, Jul 22, 2025 at 11:17:03AM +0100, Vadim Fedorenko wrote:
+> On 22/07/2025 04:02, Yibo Dong wrote:
+> > On Mon, Jul 21, 2025 at 02:30:40PM +0100, Vadim Fedorenko wrote:
+> > > On 21/07/2025 12:32, Dong Yibo wrote:
+> > > > Add build options and doc for mucse.
+> > > > Initialize pci device access for MUCSE devices.
+> > > > 
+> > > > Signed-off-by: Dong Yibo <dong100@mucse.com>
+> > > > ---
+> 
+> [...]
+> 
+> > > > +
+> > > > +struct mucse {
+> > > > +	struct net_device *netdev;
+> > > > +	struct pci_dev *pdev;
+> > > > +	/* board number */
+> > > > +	u16 bd_number;
+> > > > +
+> > > > +	char name[60];
+> > > > +};
+> > > > +
+> > > > +/* Device IDs */
+> > > > +#ifndef PCI_VENDOR_ID_MUCSE
+> > > > +#define PCI_VENDOR_ID_MUCSE 0x8848
+> > > > +#endif /* PCI_VENDOR_ID_MUCSE */
+> > > 
+> > > this should go to include/linux/pci_ids.h without any ifdefs
+> > > 
+> > 
+> > Got it, I will update this.
+> 
+> As Andrew said, my suggestion is not fully correct, if you are not going
+> to implement more drivers, keep PCI_VENDOR_ID_MUCSE in rnpgbe.h but
+> without #ifdef
+> 
+> 
+Ok, Got it.
+> > > > +
+> > > > +#define PCI_DEVICE_ID_N500_QUAD_PORT 0x8308
+> > > > +#define PCI_DEVICE_ID_N500_DUAL_PORT 0x8318
+> > > > +#define PCI_DEVICE_ID_N500_VF 0x8309
+> > > > +#define PCI_DEVICE_ID_N210 0x8208
+> > > > +#define PCI_DEVICE_ID_N210L 0x820a
+> > > > +
+> > > > +#endif /* _RNPGBE_H */
+> > > 
+> > > [...]
+> > > 
+> 
+> 
