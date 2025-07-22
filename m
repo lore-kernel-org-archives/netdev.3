@@ -1,37 +1,37 @@
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971292D3A7C;
-	Tue, 22 Jul 2025 07:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F532E267C
+	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 07:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753169776; cv=none; b=ZcN0QAwGO7l8ZC9F24I9qDt9E3WwYw5EhHWc5T8XV1GE+3oC+S5wMTtiLvny930L1UUDGypziUKq/Ai8DwAgf4l3OM6gA9WGKA0Hb1/Yv+X8WECmzlQ/O6GuT3n3tmiSZGfgLlag0Jp7E9AaGS6aAWGktRzBPFIOZrdCLMIdF3s=
+	t=1753169817; cv=none; b=nrs8+L6m9Ayp1tf5Yz4TSc1jOUeTq2GJFNorXkM2Qi3dySAELO4dlN9Fco9j8hxFTH9lrejiBE+8/OQTRoSebQmek1g6pyfw9FQqicjqDVnO+DFBJPTczFBV/cGl1YJmKCs4T2ZG113xpnEqdOVjQ2x2mTx6sSXJ0ZGA297XmBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753169776; c=relaxed/simple;
-	bh=rywSG7/hojbAEstBjYEc9OoFmb1XPODVYxsk2EuootY=;
+	s=arc-20240116; t=1753169817; c=relaxed/simple;
+	bh=4fQbOkFumQDDWNx6jR1IKKMFPloxmWTIMq7lm4Y9pSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWAmfZG7vUMoc2yHV0awpMTSH59/lmFyqYGzzSB/jxL2qt7ljcyBPAi5P9vCYpcemPCdIUNXc2pPCOMjDCySAN9EzLcgCa+LazuJJ7mo3+GWcpswUbBMHJ9bEke5kvm7OVrfPb+0OCHe+BePNDJbAS/r9BBWrQb5XlMW1p/DrN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=MJFkxAG3; arc=none smtp.client-ip=54.92.39.34
+	 MIME-Version; b=Akk0B0fZ8NyxT6f5FuSXfjDCqC3IiSU/yJgqCPw+hUTBhB2IWe6XcED6fQbcA0IfkuqyitZPmIc07I69kFKHnVddNtLqEhXYk5bd+3bebDLEnITrQ4jVp+f+qJnhLPDNfOAqqGHS5R3GyEWF/MkZ9kSZnM3SqATlbNJbZva7OyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=PIk9V3e/; arc=none smtp.client-ip=54.207.19.206
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="MJFkxAG3"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="PIk9V3e/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1753169768;
-	bh=JwyCRpM1FWaTLNFe5LSvBKJz+ZtIxups+3c5ci7f0O0=;
+	s=onoh2408; t=1753169751;
+	bh=dOWhiNCJZis4pN9M5V0BjfzioRHW2TPCHsRRvp01fVg=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=MJFkxAG3TnOaoyZ4tzb12gT1fPu5yyG16H1Jl1iJ/oYnB9Kts6izQRSiY9a7OPcm7
-	 WZleUri6Ry182mEzkPtL2iDmtU3MLCXxT/Vu/l1qM1DNsBuz5jKinRM3iFv1jNlTlK
-	 Fc9kOnytqsgB5JVJNE2AOdrQsN15jb66+sxQDTV4=
-X-QQ-mid: zesmtpip2t1753169705t5d8d5b17
-X-QQ-Originating-IP: sO//PwrBzanzWIpX43hUjMW25ZeVM74q8qXSuUHVttA=
+	b=PIk9V3e/6y2ETdy7wlvTtHI/xNuO75T9WPsBWxW37ipx08yntI76orC8zMpQV4xD6
+	 KeNakI3kyHbH8ZKwNRCH6zDcynKCYtNDDhbOYo+13JIg+Mn8Iw7wh8cr/R8/jLrLA1
+	 Pgy9q/DqiHQp38cfJC8ArMjjwb77Zux6nobrM7Ts=
+X-QQ-mid: zesmtpip2t1753169688te102d84b
+X-QQ-Originating-IP: 2AH89LdOk3yAx2MwkPBNl41lOKSpE4iMrtdRIyTFm7k=
 Received: from avenger-e500 ( [localhost])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 22 Jul 2025 15:35:00 +0800 (CST)
+	id ; Tue, 22 Jul 2025 15:34:44 +0800 (CST)
 X-QQ-SSF: 0002000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 13053412534972424115
-EX-QQ-RecipientCnt: 65
+X-BIZMAIL-ID: 12113963411255090427
+EX-QQ-RecipientCnt: 64
 From: WangYuli <wangyuli@uniontech.com>
 To: wangyuli@uniontech.com
 Cc: airlied@gmail.com,
@@ -96,11 +96,10 @@ Cc: airlied@gmail.com,
 	x86@kernel.org,
 	xen-devel@lists.xenproject.org,
 	yujiaoliang@vivo.com,
-	zhanjun@uniontech.com,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH v3 4/8] net: mvneta: Fix typo "notifer"
-Date: Tue, 22 Jul 2025 15:34:27 +0800
-Message-ID: <0CB4300CB6F49007+20250722073431.21983-4-wangyuli@uniontech.com>
+	zhanjun@uniontech.com
+Subject: [PATCH v3 2/8] cxl: mce: Fix typo "notifer"
+Date: Tue, 22 Jul 2025 15:34:25 +0800
+Message-ID: <E1EB1BA9FDF07D53+20250722073431.21983-2-wangyuli@uniontech.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <576F0D85F6853074+20250722072734.19367-1-wangyuli@uniontech.com>
 References: <576F0D85F6853074+20250722072734.19367-1-wangyuli@uniontech.com>
@@ -113,48 +112,49 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: OLsBWtCIHsg6qpyUVgLKJSgwSlAKGQTxXOnZVJNFFd4AQWPB2BjvZZt8
-	2wgW4YXeCgyJCjYbAnzceUWlGLhA1te78istOv0Nk1hEiUUVDgV17BZ5q6Tdiyth7YZTfAR
-	pepTKbRe/Bw/4jW2yVaCTNK5wF6QHSy8EBu9w9bHCVKKJi4v5FsdNACW3dBkY0y2fjpPp68
-	AJt6+XmryWCnDmBOni4XzxxEgkRTAIVudwhv/2sxAsAYRpDHiE3RlbqG1LLzW6vi/q2qtRM
-	0tdjKhUaazURm+S/exHXwWswXA/80tYYJe/um8gTx3oB5F/OjKNB+PSmBZj6pHQnpoOyTXa
-	aRkrMK/NHUtsGm2KD6GE2b3BHm/LIPFuX0ka3ZVAzdhuIw1HdxIno/FG73WIqNJ2xWQC9lH
-	sliMvciP6/NPcliBimaJhBBYRZDkkK+BDtPYP3df2QxGcEyJLj5NhkYL3/Um4M8DCvJe15J
-	nvwByVEInbw+KtHNnPGqDe4joaIKcVLSpHXB4H6hi32mhCIOJyTyi/utkt3Jo+qFPgWuJrI
-	hGt++YRsr1tdLgMiGZJZQXELfMXzYwAHDmYfZz17x3cATEzKMUKEmfoNEFnPPD1gZZWACl3
-	EY2UpZnnf4Zouo6p0q/mU09CxsjQL898Kg3L/ruyEfsKBDDSMYtZxW/G79vhlMtshFGhvRv
-	8FRYQSOQ85OW8q3LqQVU18BkfoRgxMoDHd7z/wFWENKZ63JPaQ/soUM+0TtI95phljixouL
-	6CoT5iVYkVEzBPxbwJ5jg9eFJk7FQPkEs0yWTXjLwHH7POuGGy81+VC4Gp1TMu4Dy9JdFBf
-	HILJqTFWMiQVws6sDYwntn8l4OC59MCJCXs+AKU6rw5t5MiwxAPD7BoKB2IZDxv6TiZAg+8
-	4hSvE3LTxdwc9MYhFY7h8aRnPI2zMlssunpCHnePdmzWJIMW7QHJ1su0ypTUkYAd6ZrERvS
-	AzYDkng4WfXu5+GKhizgRrJtIEJWmtxVvNvLvbYIQSrftXdLna2gYIWO2utj2/X0YnJg4LE
-	Lz0kPewy8Jr0rB0DABZK5/5Hh4h/VSf+VBwwHCILiO4yOzGP2z7pwATgjwD0MURCnxEfQwE
-	7szkTlAp+hjzGdFpMbHApv12IPDZa0+oQ==
+X-QQ-XMAILINFO: Nk6GG49oRMZh53M8V7JVKqAEVPJ8lMByd23gFWktcOVeOgAeuOYynTF+
+	5w/gyOn0ErfCHMTLInlCuXcMx+CSu5D2RdN1OX0FXKw1mjEeRxB3DiAicHry70/TLNxE3tP
+	ORsg/k08x2v8RORa0rpoPNPXbCjAJpHFc/yD1MBPahptNO8+iGBtg24AKtsWdg2bC374rdw
+	DYYmqUTQDy++W4UqVSQ7Km0N3YirLpWKo6Vtbx2zJUieA5j40Xlt0sdqrbf5FHJ/qEsXl0i
+	eonOc9+sV7aS+IUrc4MWbg2gLNtOcJvMv+grDz4idZQFsP+UxxYG7D8Elsy7nndkMyZz178
+	gopNrJjD2is6FsBO/dkYYlYsBCbueCcy89kpywZcXqyr8cPGByfxEhkFIo/CqGl1GQv56IG
+	Gn5MmVFlkDkLpfrAzHrnI6J9ywB7/0w8YhTsBoZvDVz+TkI8vNqFPl9YPYIy8GbbW67AtIe
+	0Tvpf7DLSdBzWlZV1LySmQvI6W1AVNJCbKvNP8tSTRwJvnkfDxC9npFbSQCwbqmklYcXwzX
+	8SWmYqG9UBnDhUEvGMvJSvtnsSBJ60CkWVBxOvyYE/qsb9+ArG4JQUt84DtrHbkgcdJJido
+	2D5EGF/UBSuwTEnc+WeKbZ3zOe3wQsw5ofb3sE1ehmoqT7YCcEKBFF3Qi7Tzvmyp/5vJrrg
+	3pN+rerrK89H75GsyArbUz5g1lcl2eAuVEliQJk1UEtAuMQHL5bBPSp0grSacO3lufc6jPE
+	reWLWKbe58+qpQkE3B3I1ezifQEjBSRLfAxZqIIGynqEAi+JtseqsmCRikgbwbfZI95zo8O
+	vrKMzmdx0Q+3RAT08BTIupT51UCc87zb1/CiTj2DZLMin4mp7CFbLRbh3CvlHUAAs3+fxDe
+	6vIZemmA+XcDyXu5CwGtf2nU7WbBiIgUfueeyzJbJRg+8XxSA6ECM73UsgVxwY/E6KQUxDV
+	GJ980RKH4hxUjlUWW00ZzA3QpEd2TqEk+r6pZ26rqvTBdqSOoY+NbAXUHVCXAy6zysYUYPx
+	xzAT42n578v/ohwnRRTJy9pOul6edidTRnmFbvsvAUMH2Awr5DcVx7uyVOziS/1C7sJ/DC6
+	Y1CqjIEXXVnx2XEvUE3Big4KL4dFtJoVdCkgo4hYUs7
 X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
 X-QQ-RECHKSPAM: 0
 
-There is a spelling mistake of 'notifer' in the comment which
-should be 'notifier'.
+According to the context, "mce_notifer" should be "mce_notifier".
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 516e5bd0b6bf ("cxl: Add mce notifier to emit aliased address for extended linear cache")
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: WangYuli <wangyuli@uniontech.com>
 ---
- drivers/net/ethernet/marvell/mvneta.c | 2 +-
+ drivers/cxl/core/mce.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-index 147571fdada3..ee4696600146 100644
---- a/drivers/net/ethernet/marvell/mvneta.c
-+++ b/drivers/net/ethernet/marvell/mvneta.c
-@@ -4610,7 +4610,7 @@ static int mvneta_stop(struct net_device *dev)
- 		/* Inform that we are stopping so we don't want to setup the
- 		 * driver for new CPUs in the notifiers. The code of the
- 		 * notifier for CPU online is protected by the same spinlock,
--		 * so when we get the lock, the notifer work is done.
-+		 * so when we get the lock, the notifier work is done.
- 		 */
- 		spin_lock(&pp->lock);
- 		pp->is_stopped = true;
+diff --git a/drivers/cxl/core/mce.h b/drivers/cxl/core/mce.h
+index ace73424eeb6..ca272e8db6c7 100644
+--- a/drivers/cxl/core/mce.h
++++ b/drivers/cxl/core/mce.h
+@@ -7,7 +7,7 @@
+ 
+ #ifdef CONFIG_CXL_MCE
+ int devm_cxl_register_mce_notifier(struct device *dev,
+-				   struct notifier_block *mce_notifer);
++				   struct notifier_block *mce_notifier);
+ #else
+ static inline int
+ devm_cxl_register_mce_notifier(struct device *dev,
 -- 
 2.50.0
 
