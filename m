@@ -1,118 +1,116 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8218F189902;
-	Tue, 22 Jul 2025 09:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52E0539A
+	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 09:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753176272; cv=none; b=DlUlAhNpldZkz0ooqfPapBxY/KnuOA6TrrMT4w0sE6uE1V/ZuM+iGZC/sEMdeniXDgqhatVUoy1nc+Q0XO/MtZyOk+zNL3htQRzS5nAECnc590d4MdaZ+yrD5dPn/SLP6rt6Sw6FnM7u7UY1lU2VH/ZNOnzuGjgw+1iHWXoGOKo=
+	t=1753176730; cv=none; b=OE+rtgY5KHLEIWzEzvMtize46t6Mmo5qKtR0DkNjyjphVfmmOSzY0jUPUpUSRgFMNA6QvJQ37gjZxmxUmAL8n0Q0IwFxxqSR+wsgiycuXe+4T/afCz/URAHjsnQgqRK7x/Y5xHiBGvQgpICwj1KyGDmjLXkFoapMsEVD+RGojDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753176272; c=relaxed/simple;
-	bh=Ksr4RcpyiaVxvdAz9Ft+gR94b9IMq2d1CEO85zHMm3o=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ozdi7zxKbUqjVpS7bhPaGPOyba+XSkcY455kr2390EfonGP85biUUp9cXiGLNr9gVbbeTJ+MgwGtO0D32hkHab3nWo1xwF/bGoaBk/cKjpIi85g6kTgFijANpAAaCz9w+glrzCbw2yUhCsIgjDjHfmCUPY2N4E2iLwGsY0Fld2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MjJRYeJZ; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1753176730; c=relaxed/simple;
+	bh=F2cD0lh42oqXi5BEc6kGuYPLi06w+y7Z2KqPM/63v+Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fUgIjXJFS8eBNDzP64aifSQZyyielJVYP5oCT9XG1oTh70lgBkVGjUDIseckAM0yj+T3ixzDLZhJ7SmY6KZrxL3JZxzvYCkT3zQnXQLLQxJXmmPFI9QrkyMvvL/zZlu5c2cFRVIm2fQyTE57gWITo3repnPlYVUxoRklJ07lVLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jo9iLYVY; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MjJRYeJZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753176271; x=1784712271;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=Ksr4RcpyiaVxvdAz9Ft+gR94b9IMq2d1CEO85zHMm3o=;
-  b=MjJRYeJZpalrlHw+UcPoLhG0hsnDsFWT4Vl198E033SFSD8VB0j88IgK
-   tsdjYlB+nUlOBtv2gmxqzWzz9v+1Vz7qcqmQRLBAvR7KjSNbfuZ3TSzwx
-   6qaTp8+EIIpqjbs7F1OpPp5qYQBh9Dmgn1p5WW0Z46zH98v9JSfFuaIof
-   mP7E3btZygMf7XIArG3cCmTUHgD3AJV5tezE1D566DfnmyOrKeYuvS5xy
-   aEiF4fT4jF51WLsfHPlb0dYBL8C8bnah7e9LuE9zS+DhxKao1yeS5i3uh
-   FKU4YUYIuD8NilU9B5NSz6N2dJHzhdmg7f0JBMvNqHTQ++GDVFQ8Titq4
-   w==;
-X-CSE-ConnectionGUID: dXx7JM3uS8aac5OU3dpXgA==
-X-CSE-MsgGUID: L+02RNx2QLSMDZdllhWsjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="55574717"
-X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; 
-   d="scan'208";a="55574717"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 02:24:30 -0700
-X-CSE-ConnectionGUID: cbehGU95QkWPRtX5+LVZGA==
-X-CSE-MsgGUID: 7OhfXV8JRdOAnLadikdZ1w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,331,1744095600"; 
-   d="scan'208";a="163133052"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO [10.245.244.202]) ([10.245.244.202])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 02:24:17 -0700
-Message-ID: <ffd58e1a8b51c98cac9be49e85d367f1a3a24c2d.camel@linux.intel.com>
-Subject: Re: [PATCH v3 3/8] drm/xe: Fix typo "notifer"
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: WangYuli <wangyuli@uniontech.com>
-Cc: airlied@gmail.com, akpm@linux-foundation.org,
- alison.schofield@intel.com, 	andrew+netdev@lunn.ch,
- andriy.shevchenko@linux.intel.com, 	arend.vanspriel@broadcom.com,
- bp@alien8.de, brcm80211-dev-list.pdl@broadcom.com, 
-	brcm80211@lists.linux.dev, colin.i.king@gmail.com, cvam0000@gmail.com, 
-	dan.j.williams@intel.com, dave.hansen@linux.intel.com,
- dave.jiang@intel.com, 	dave@stgolabs.net, davem@davemloft.net,
- dri-devel@lists.freedesktop.org, 	edumazet@google.com,
- gregkh@linuxfoundation.org, guanwentao@uniontech.com, 	hpa@zytor.com,
- ilpo.jarvinen@linux.intel.com, intel-xe@lists.freedesktop.org, 
-	ira.weiny@intel.com, j@jannau.net, jeff.johnson@oss.qualcomm.com,
- jgross@suse.com, 	jirislaby@kernel.org, johannes.berg@intel.com,
- jonathan.cameron@huawei.com, 	kuba@kernel.org, kvalo@kernel.org,
- kvm@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linux@treblig.org,
- lucas.demarchi@intel.com, 	marcin.s.wojtas@gmail.com, ming.li@zohomail.com,
- mingo@kernel.org, 	mingo@redhat.com, netdev@vger.kernel.org,
- niecheng1@uniontech.com, 	oleksandr_tyshchenko@epam.com, pabeni@redhat.com,
- pbonzini@redhat.com, 	quic_ramess@quicinc.com, ragazenta@gmail.com,
- rodrigo.vivi@intel.com, 	seanjc@google.com, shenlichuan@vivo.com,
- simona@ffwll.ch, sstabellini@kernel.org, 	tglx@linutronix.de,
- vishal.l.verma@intel.com, wangyuli@deepin.org, x86@kernel.org, 
-	xen-devel@lists.xenproject.org, yujiaoliang@vivo.com, zhanjun@uniontech.com
-Date: Tue, 22 Jul 2025 11:24:15 +0200
-In-Reply-To: <94190C5F54A19F3E+20250722073431.21983-3-wangyuli@uniontech.com>
-References: <576F0D85F6853074+20250722072734.19367-1-wangyuli@uniontech.com>
-	 <94190C5F54A19F3E+20250722073431.21983-3-wangyuli@uniontech.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jo9iLYVY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753176726;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g7LWZokVF/1hrAIOvo9v+bZrv5fbjEPa8YAjh4c6+4U=;
+	b=Jo9iLYVYUmw1rz92Wv68SFq+wl5HDme9KWxWWTVb0I8v+j/wFm9W6sghdK5xB4Y5Btu9PW
+	isTucic82w/I4eWFguoXtUbvpDhRyZE8oCURjYOQ4yFb4TDktSIBQP1w5Y3sJMEnXykGjB
+	vfMbghiBj9w2/832FgVkqI8iQIjNlp0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-428-ZK9j-hv3MVCWYwo0mdvwcQ-1; Tue, 22 Jul 2025 05:32:04 -0400
+X-MC-Unique: ZK9j-hv3MVCWYwo0mdvwcQ-1
+X-Mimecast-MFC-AGG-ID: ZK9j-hv3MVCWYwo0mdvwcQ_1753176724
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-451d3f03b74so32441825e9.3
+        for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 02:32:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753176723; x=1753781523;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g7LWZokVF/1hrAIOvo9v+bZrv5fbjEPa8YAjh4c6+4U=;
+        b=DyOfXzG4/aVte5HH0Q+LaDQrsFUWN9Xvk6Ou01MIIm3WAixpc0IZn8q/l31Me0eojQ
+         /F1r7oo/k2eMgUmJwu1b63dt2XEqJ0gn2RTL17xCB5LM6Jd6/Kfnqy8jZPSgPsAnSdps
+         juQm4ZBh+jtBBkcbhy3GHf+DWOveWmdL0He0oiWg9fo/rDA8DzRW4D8vCViYyr3nGBCc
+         9OtyVppJohKz+ihk/mEYwvT746397nn0XXYLoZfqN4hGaNqItkCDluSnUEJ4brLhkhJ1
+         wpDOSA0mlJHK2HvsH2wjjmZ94KK2nYeliJvHdR9oyx+wWcRASoRtRuThRSZh2p8mOPzp
+         iTfQ==
+X-Gm-Message-State: AOJu0YzUCpMHw9IO433c0GbUDYJXg5Sn1TeKkllRwVHum9R1W5tdyXuE
+	wdGU2KmrYUVGGrAiraMnHGcUPT85LQ+Be8K3G/WdzJ3oOcDlkrJD+aSF11u/tjy4EtDBdDLD7tS
+	ZN5NyQuIhxpm1Txyi6FAKxtCoUcLv+onrhaMZKI6OZLhH6mLsjyQ2z+4wuBYyVJBQCw==
+X-Gm-Gg: ASbGncv3qKsK7XFvRk6F1U25PUo49YJXAtmBlwVHuaLytiFKMHvZLl2yGlTMWtozdO1
+	2HFchMmnzS0uNAtQuvr9oWrkUc88LJFxOsAG1y+ZKIFfiWdCGV8KAHtCa47Bn+xOqfedl4KM+NK
+	KRHIfR75Hq7/wxagunVBSNhgdKZ/tPnCW3sTArMHaZ4d6L8ds416V5unu3BBLv8vBE+YbooDdcD
+	QdwcsLHlEexoBDo78H8gp1ezSd7VDyHL/+uqulc5/4Adb7kZyjZLN1wQrqfHJ2lhHpJfQsqoKVE
+	/WZ/8WpdaprHrXVgG2xX/mMrO+W0wK6vbQBWqOJLhSsWPFDWQLcMvGe7a6XBxVc9eMdTIYsm4Kx
+	KI8kAw9Vo56E=
+X-Received: by 2002:a05:6000:178b:b0:3a4:ea40:4d3f with SMTP id ffacd0b85a97d-3b613eab0d2mr15579514f8f.53.1753176723111;
+        Tue, 22 Jul 2025 02:32:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGmsa4NK5CvXrlrvzjlVtB18euqqeNBYO+LlnRx23yLJFvIP3MyVY6T65aKKwavruY+KJ3CVA==
+X-Received: by 2002:a05:6000:178b:b0:3a4:ea40:4d3f with SMTP id ffacd0b85a97d-3b613eab0d2mr15579475f8f.53.1753176722584;
+        Tue, 22 Jul 2025 02:32:02 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca4d581sm12788758f8f.64.2025.07.22.02.32.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Jul 2025 02:32:02 -0700 (PDT)
+Message-ID: <534146d9-53b1-4b4a-8978-206f6ad4f77e@redhat.com>
+Date: Tue, 22 Jul 2025 11:32:00 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 4/5] gve: implement DQO TX datapath for AF_XDP
+ zero-copy
+To: Jason Xing <kerneljasonxing@gmail.com>,
+ Jeroen de Borst <jeroendb@google.com>
+Cc: netdev@vger.kernel.org, hramamurthy@google.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, willemb@google.com,
+ Joshua Washington <joshwash@google.com>,
+ Praveen Kaligineedi <pkaligineedi@google.com>
+References: <20250717152839.973004-1-jeroendb@google.com>
+ <20250717152839.973004-5-jeroendb@google.com>
+ <CAL+tcoBu0ZQzLA0MvwAzsYYpz=Z=xR7LiLmFwJUXcHFDvFZVPg@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CAL+tcoBu0ZQzLA0MvwAzsYYpz=Z=xR7LiLmFwJUXcHFDvFZVPg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2025-07-22 at 15:34 +0800, WangYuli wrote:
-> There is a spelling mistake of 'notifer' in the comment which
-> should be 'notifier'.
->=20
-> Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+On 7/22/25 1:37 AM, Jason Xing wrote:
+> On Thu, Jul 17, 2025 at 11:29 PM Jeroen de Borst <jeroendb@google.com> wrote:
+>> +
+>> +               pkt = gve_alloc_pending_packet(tx);
+> 
+> I checked gve_alloc_pending_packet() and noticed there is one slight
+> chance to return NULL? If so, it will trigger a NULL dereference
+> issue.
 
-> ---
-> =C2=A0drivers/gpu/drm/xe/xe_vm_types.h | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/xe/xe_vm_types.h
-> b/drivers/gpu/drm/xe/xe_vm_types.h
-> index 1979e9bdbdf3..0ca27579fd1f 100644
-> --- a/drivers/gpu/drm/xe/xe_vm_types.h
-> +++ b/drivers/gpu/drm/xe/xe_vm_types.h
-> @@ -259,7 +259,7 @@ struct xe_vm {
-> =C2=A0		 * up for revalidation. Protected from access with
-> the
-> =C2=A0		 * @invalidated_lock. Removing items from the list
-> =C2=A0		 * additionally requires @lock in write mode, and
-> adding
-> -		 * items to the list requires either the
-> @userptr.notifer_lock in
-> +		 * items to the list requires either the
-> @userptr.notifier_lock in
-> =C2=A0		 * write mode, OR @lock in write mode.
-> =C2=A0		 */
-> =C2=A0		struct list_head invalidated;
+IIRC, a similar thing was already mentioned on an older patch. Still
+IIRC, the trick is that there is a previous, successful call to
+gve_has_avail_slots_tx_dqo() that ensures there are free TX packets
+avail and operations racing in between on other CPUs could only add more
+free pkts.
+
+So the above looks safe to me.
+
+Side note: since this looks like a recurrining topic, I guess it would
+be nice a follow-up adding some comments above the relevant functions.
+
+Thanks,
+
+Paolo
 
