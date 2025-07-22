@@ -1,53 +1,53 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4745288C97;
-	Tue, 22 Jul 2025 14:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94442E406;
+	Tue, 22 Jul 2025 14:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753195797; cv=none; b=Krj9xYXxuaDVASXh+W3TvK1BGPNtI/bldXcOhK1zG3+09fqIRqwGwdoBPrIBvwjZzGSnrMz0nXay1Mo6mVpiqpGOtLOkuwe5PDvSU3GUQpv55f/kSNqwrzmAvoapvdcHT+W/tGwH/jCF6/omwW1moUE4d05IwIHIbqCSM6jmK4Y=
+	t=1753195798; cv=none; b=BfjtSL9yDuY/hpVAa2p3mTzMxDsRcwsJizV/tQGE0gg8MAectqj6hi5Y1clBfjYghKMbIfqezxLL8qgdzeaXgs4ZdGx1vFQ/hy2e+XIsRcX/j9zY658onJH7CHv/C0/MErG7F3UxBIswUT8CAYTiwl8L1QDFU8VZb/fUyEq/hX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753195797; c=relaxed/simple;
-	bh=DazRL8AE/bIEIUAKDue57BSiAps8bFGNBtLnaM2taUU=;
+	s=arc-20240116; t=1753195798; c=relaxed/simple;
+	bh=H0DHi2Ayr85MLLjcI9cg68R/51EB+mkdsZl2gRfKZ0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xl72Mey3pR5MaNg9S/EGorCvKa93DxLy5Shf02hlaTftQ1Ryby2W+UBHEdYHW5ppWVWcWoJo9FdbhVwI4bboy04VQzjLwkm+/z5cvcNO3HN83SUNUWRFjT/lEAinEE1taZWDeutcsEYfmdyHDF/SIMSpErTROzkEu9Z56SubQEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=iEExogYt; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version; b=p8CKDX+vJhXaHiDXIsanJX6mjz7Zi6bw+g91f/9XBPWZhAyh3oGjo8efNCEL5ito2hdf4YajVwA3qgQicvU5GGOhpZdpTdzmfy6Va1nYt8uE4+GTaM6gjxj5FxRjaPSRZo90R1ugrhN20BV5IoOk2m496fvo04QFuZwzi+ikyDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=moIYHtoy; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="iEExogYt"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56M7RhWE020141;
-	Tue, 22 Jul 2025 14:49:52 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="moIYHtoy"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56M7P0g4013299;
+	Tue, 22 Jul 2025 14:49:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=+g8UvhkBXNX
-	8esK7Orun0ESVfZiTY12DFfsiAId+bUY=; b=iEExogYtQl5JhPSUIMPJL7ihpqb
-	on+mxoCcHBhuR++Z9QzbfyumJawAkTbUQg8y877HbYObcuuTnUm1kjwWyUpM+Apm
-	kwr9jvFhlYrFpA60QaCxr2kQWQewBVVJj3PDSOrIgtutp6218CYSXiP+/WV++z3Y
-	mHhvaH8WnKTAbaSyqR6QhW6Dpy0aXqDAV+OvIJT7YMVQHZwvtnjxyT+O4s+pYWHt
-	sC8XoOy57DM7zwePl4x3RRIiJ6wnfisX7EGy5E1Qva7RSHaQ2p32pmUgl/dapKvz
-	PNyMvw++U5XdkeqBGhaKtYtgxx1FXaP0Sy/gBhuSCWrm1pg4Ml98fRX2Iwg==
+	:mime-version:references:subject:to; s=qcppdkim1; bh=jNQNcG9max6
+	s0FJRouqtkJdxm2srAvnF/3oi/2A5GQQ=; b=moIYHtoyC/QeeKo4VrckvfhN1ry
+	8DuAaDxmPeNMSk4HbxtMSod7lY4wYAu0qaKfN35VclK1B6fE1Nd3JtmKIf9t/FAB
+	gI6ixJ9zkvwZnOFK+QNslwDIUHiwwDAbfj8a7MWbxQ0atS8EqQTRwbwY+QN+sC+X
+	rf1zzxHxYDGF6yGrIOAhFfNHs3tCmoYYgHrKXqbX9EuTlAUqJMkPu2s9gG29jHQk
+	4V5wMgwYjvmDTX7YCDs3prnlJ6T6NS6L3V1N28BYUuix/be/QDmwuCOMQZcHiSex
+	X0bjbvKl1Hu08u13yM+K64EZMB6qgeUKirs7GJR3ueLSaBS+oBOiYbCdXDw==
 Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4804na07n2-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 481g3emmwb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Jul 2025 14:49:51 +0000 (GMT)
+	Tue, 22 Jul 2025 14:49:52 +0000 (GMT)
 Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 56MEnlpZ023765;
-	Tue, 22 Jul 2025 14:49:47 GMT
+	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 56MEnl3A023795;
+	Tue, 22 Jul 2025 14:49:49 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4804ekgeve-1
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4804ekgevy-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Jul 2025 14:49:47 +0000
+	Tue, 22 Jul 2025 14:49:49 +0000
 Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56MEnlvp023731;
-	Tue, 22 Jul 2025 14:49:47 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56MEnms7023812;
+	Tue, 22 Jul 2025 14:49:48 GMT
 Received: from hu-devc-hyd-u22-c.qualcomm.com (hu-wasimn-hyd.qualcomm.com [10.147.246.180])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 56MEnkRg023730
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 56MEnmY5023808
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Jul 2025 14:49:47 +0000
+	Tue, 22 Jul 2025 14:49:48 +0000
 Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 3944840)
-	id D7E08589; Tue, 22 Jul 2025 20:19:45 +0530 (+0530)
+	id E940C5E9; Tue, 22 Jul 2025 20:19:45 +0530 (+0530)
 From: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
 To: Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -57,9 +57,9 @@ To: Bjorn Andersson <andersson@kernel.org>,
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         kernel@oss.qualcomm.com, Wasim Nazir <wasim.nazir@oss.qualcomm.com>
-Subject: [PATCH 1/7] arm64: dts: qcom: Rename sa8775p SoC to "lemans"
-Date: Tue, 22 Jul 2025 20:19:20 +0530
-Message-ID: <20250722144926.995064-2-wasim.nazir@oss.qualcomm.com>
+Subject: [PATCH 6/7] dt-bindings: arm: qcom: Refactor QCS9100 and SA8775P board names to reflect Lemans variants
+Date: Tue, 22 Jul 2025 20:19:25 +0530
+Message-ID: <20250722144926.995064-7-wasim.nazir@oss.qualcomm.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250722144926.995064-1-wasim.nazir@oss.qualcomm.com>
 References: <20250722144926.995064-1-wasim.nazir@oss.qualcomm.com>
@@ -74,60 +74,87 @@ X-QCInternal: smtphost
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: JqbrDXA18y7Y8bnkZYRGY_CmZpzhstui
-X-Proofpoint-ORIG-GUID: JqbrDXA18y7Y8bnkZYRGY_CmZpzhstui
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDEyMyBTYWx0ZWRfX7DrNKlWzczPa
- O4nPR9K6NHj63DC0kgceOkD3VZy8AAuCtS3nYgMnbmGYczcaG4/V84ZZrhkQNXBbbqUOD5pKkxE
- D85CwJDhfmW48fN3eU0Qba0rF4ST8IzOYoLdrUxmglL/VUPreBLwx5ki8P2NZYkKY0rBxvphBHJ
- 5ekA3/V0tb3iqfLw77/7+AzpH1TMxlVu/5umOIjCqmmeC4H7QRLo/6h3fc+TUIHfUdSupAOBOYz
- LShy7MO/q9bb1MUD+dZ9hXSpbraIQQYzJTI+7bgl4l3NH+EiviH16pfQ84kjsZzEdhatsaq3bNz
- +17NpSEzYLJqySK0rdnPC+ZLkLsPF9c3fOikKypQ0DUMFW8xY0q78Z4TuADk4G9cdpftXPATSOb
- xJLQf+e4OMW8appfVxXm91tKYrb4HO12p+/Z+JBSo9A1V3UhVLTZlu5wMAXKVo2eNnkHAVgx
-X-Authority-Analysis: v=2.4 cv=DoFW+H/+ c=1 sm=1 tr=0 ts=687fa510 cx=c_pps
+X-Proofpoint-ORIG-GUID: 2ao_Fmx1o6l43KCIXBDk9l0_J0MLXACC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDEyMyBTYWx0ZWRfX1wrSAaPRxILa
+ smUuXZKs5eH9mgl3jeCqsp/lAOOakgAf4Q45TNObLVAXlNDdroA2sm6FJ7iNRD8kXnVaimyh3Ep
+ 76Gj/dPu4CLkpTX5CsKk7e9joK+dV2vflijTBoC2UNXX9NYrI+8g++QGVlUe2PSuhmAkCqwCAp/
+ oy/a3jFiwfJQ+wRSkPMflHABzGrIfwdOXK5AjF/OxA/xkE8ednGM6e3yj7Zt+ji3snB6fZ4vukC
+ /0h8+72dIyC7m/Tu4YjLnuOoz7ROxZMaUoopMKYnHYxlxPa9mLjubsyQCpYXYVf5xMVpcIRQYa3
+ Z31UnFDnIwTQiX9FGXNZs6codqBZSO5PmqtprlqX8e5shoesSjcU9dw+vi37cPZrUdcz8rugNQL
+ AZOJg750N5hvf6BQ0/ChKu+IHvU6Ti1DPpmW2oN+/n4/vjv+iE6Rir98AVMH8okGiOLcxCV2
+X-Authority-Analysis: v=2.4 cv=Q+fS452a c=1 sm=1 tr=0 ts=687fa511 cx=c_pps
  a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=jOAJb6FKr1HTawZlcaoA:9
+ a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=HatfvUxMQJORWfWOivQA:9
+X-Proofpoint-GUID: 2ao_Fmx1o6l43KCIXBDk9l0_J0MLXACC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-07-22_02,2025-07-21_02,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 clxscore=1011 mlxscore=0 mlxlogscore=999
- bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
- spamscore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ clxscore=1015 adultscore=0 phishscore=0 mlxscore=0 lowpriorityscore=0
+ mlxlogscore=999 suspectscore=0 spamscore=0 priorityscore=1501 malwarescore=0
+ bulkscore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2507220123
 
-SA8775P, QCS9100 and QCS9075 are all variants of the same die,
-collectively referred to as lemans. Most notably, the last of them
-has the SAIL (Safety Island) fused off, but remains identical
-otherwise.
+Remove qcs9100 SoC and rename its associated boards to "lemans-*",
+to represent the IoT variants.
+Rename sa8775p based boards to "lemans-auto-*", derived from "lemans",
+to represent boards which uses old automotive memory-map.
 
-In an effort to streamline the codebase, rename the SoC DTSI, moving
-away from less meaningful numerical model identifiers.
+Preserve sa8775p SoC definition to maintain backward compatibility.
+
+Both "lemans" and "lemans-auto" are essentially the same non-safe chips,
+since the safety monitoring feature of Safety Island (SAIL) subsystem is
+not supported, but they differ in memory-map.
+
+Introduce new bindings for the Lemans Evaluation Kit (EVK), an
+additional IoT board without safety features.
 
 Signed-off-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
 ---
- arch/arm64/boot/dts/qcom/{sa8775p.dtsi => lemans.dtsi} | 0
- arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi             | 2 +-
- 2 files changed, 1 insertion(+), 1 deletion(-)
- rename arch/arm64/boot/dts/qcom/{sa8775p.dtsi => lemans.dtsi} (100%)
+ Documentation/devicetree/bindings/arm/qcom.yaml | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sa8775p.dtsi b/arch/arm64/boot/dts/qcom/lemans.dtsi
-similarity index 100%
-rename from arch/arm64/boot/dts/qcom/sa8775p.dtsi
-rename to arch/arm64/boot/dts/qcom/lemans.dtsi
-diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
-index 63b3031cfcc1..bcd284c0f939 100644
---- a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
-@@ -8,7 +8,7 @@
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index 47a7b1cb3cac..174ef6924906 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -59,14 +59,13 @@ description: |
+         qcs8550
+         qcm2290
+         qcm6490
+-        qcs9100
+         qdu1000
+         qrb2210
+         qrb4210
+         qru1000
+         sa8155p
+         sa8540p
+-        sa8775p
++        sa8775p    # lemans
+         sar2130p
+         sc7180
+         sc7280
+@@ -972,15 +971,10 @@ properties:
 
--#include "sa8775p.dtsi"
-+#include "lemans.dtsi"
- #include "sa8775p-pmics.dtsi"
+       - items:
+           - enum:
+-              - qcom,sa8775p-ride
+-              - qcom,sa8775p-ride-r3
+-          - const: qcom,sa8775p
+-
+-      - items:
+-          - enum:
+-              - qcom,qcs9100-ride
+-              - qcom,qcs9100-ride-r3
+-          - const: qcom,qcs9100
++              - qcom,lemans-evk
++              - qcom,lemans-ride-r3
++              - qcom,lemans-auto-ride
++              - qcom,lemans-auto-ride-r3
+           - const: qcom,sa8775p
 
- / {
+       - items:
 --
 2.49.0
 
