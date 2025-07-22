@@ -1,86 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C7A323D;
-	Tue, 22 Jul 2025 01:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B4F2E370E
+	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 01:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753147089; cv=none; b=XiaMb7QzbKSsbINlAfOXgfWNxbvB0aLXOw8RsOA8jhsSczRUUnqmWL0C/XubpFNNbdHeywuxY8evuemKjju1xm6sNpM2aiW5JsB6PegXjR0IsC/b73ynyIngC1JytPrW2biA1Rauf8QCjX7K3WGYUccnnBj1EoofCJydMGuCnN4=
+	t=1753148400; cv=none; b=kWtV5Iz0NKXDPXvV7pyWrSFZOPacPb+q+jiZSZ0mO1BrRVjkz6hbycknSKFnYtHHZLfTQ0YjdNjl/BcoXh70Xo+pP0w+3G0iuj8zaF4d+XkX/O/l7R02pWDmujCKlIRlk5SuJ9utsaUyU6cxjmOZw0d0EhhmjvRW4xto5EBMDRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753147089; c=relaxed/simple;
-	bh=58G4hQ5/WYB9qMDV9HoXS6b9QDxGVyYptlpx2v3QD/Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p3h/EVFynzDz1ZySlwQuz4u6K+FBkG6qHq8C2EMlpXq097/gn+5wqIjfj/HIg4EYtqosIZYyGcn+VXjoodFbAC64J+lbOMiU/g6By4tlYB+SozWZQonsuEnqey6uRL28qwNNnZqOIblgcHYIAMyG7UYTrhz/ArDGHJqJViT9/1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkvE889j; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753148400; c=relaxed/simple;
+	bh=u+Icubsd7Ub1Mh2tVHBNRGVP+xcHzT/4pq4xLIFNuLM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Kep9itQZASsFu/tLFwKnpZqsL2Fyps+joMVb1BOol62A8mb6Ya5tWv3I6veptk0VTa3Iq+xvRTdK5H3L+vZb/Y27Dtqs7zHzQPw2lC3iSiQYgC+V2EqqIb/KND3HmYL8whMjXFa6eOhCQXQsDA82bsJGo0Nv2N/aaoBTmCkqBIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tmLOp6+v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkvE889j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8779C4CEED;
-	Tue, 22 Jul 2025 01:18:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tmLOp6+v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A51C4CEED;
+	Tue, 22 Jul 2025 01:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753147088;
-	bh=58G4hQ5/WYB9qMDV9HoXS6b9QDxGVyYptlpx2v3QD/Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SkvE889jbt5tv9l+yFT7rv5B6aYpVQUYphLe3loTTj5Osrqt+yE7GmeObt1mh/NPo
-	 HnoUSXMZiacKTQlKXFI5emlCOhuTWYN5t9/5rsXf7v0uXzquyb1yRBlcpme3PTmNjU
-	 QLool18G89qHgen63lJWGy8G2a9E3veXOQrKr36cQe6tvB7GDCHeHP4qHzgOeN+jfE
-	 a/CY8n8m2thbYipGA1H+B3SEUMBwkNYA6Vhmvsa2lDMKLjWvAVerqJ4MXTIH7dZqv3
-	 di4zdID86qSBaDL+EVYGGB5uhd8MlXJg/KK2CeNa5au2VC4iJTJynX49EeovcUBwue
-	 Q7qW4kf3QIbwQ==
-Date: Mon, 21 Jul 2025 18:18:07 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jason Wang <jasowang@redhat.com>
-Cc: Cindy Lu <lulu@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Michael Kelley <mhklinux@outlook.com>, Shradha Gupta
- <shradhagupta@linux.microsoft.com>, Kees Cook <kees@kernel.org>, Stanislav
- Fomichev <sdf@fomichev.me>, Kuniyuki Iwashima <kuniyu@google.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>, Guillaume Nault
- <gnault@redhat.com>, Joe Damato <jdamato@fastly.com>, Ahmed Zaki
- <ahmed.zaki@intel.com>, "open list:Hyper-V/Azure CORE AND DRIVERS"
- <linux-hyperv@vger.kernel.org>, "open list:NETWORKING DRIVERS"
- <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH RESEND] netvsc: transfer lower device max tso size
-Message-ID: <20250721181807.752af6a4@kernel.org>
-In-Reply-To: <CACGkMEtqhjTjdxPc=eqMxPNKFsKKA+5YP+uqWtonm=onm0gCrg@mail.gmail.com>
-References: <20250718061812.238412-1-lulu@redhat.com>
-	<20250721162834.484d352a@kernel.org>
-	<CACGkMEtqhjTjdxPc=eqMxPNKFsKKA+5YP+uqWtonm=onm0gCrg@mail.gmail.com>
+	s=k20201202; t=1753148399;
+	bh=u+Icubsd7Ub1Mh2tVHBNRGVP+xcHzT/4pq4xLIFNuLM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=tmLOp6+vRefi6ZslqER6dWtbYnc57hmzu0Rk0xkcHVb+BPD1s+RWLKs89TvsGxpUP
+	 jjVRTJMFz5eGxhlfeAS66kFeLZO15mQqiCHnHr0QYxIiNTc0eS4yByGimQZR7X4nIF
+	 Dj4mBNPMMSxr/Cl9/k2FMZ+VOcz/ailMjVJFqocdDvCqhP7jIac7FiXSlxgeZm89q6
+	 QgmkJ5phJ/2xcq6VfPQyB4fdzfOi1EOgwaZGTvdmjtNdBgIzONtbSldXfW+ApzHRBF
+	 kUvUCprxE6eWMQioRA8AXKbnSbBsTlkg9hypoDRWVFGRiz1jUJI05cI/IRBwXqRd2v
+	 c1M35XUj0S2JA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD23383B267;
+	Tue, 22 Jul 2025 01:40:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/8] ethtool: rss: support creating and removing
+ contexts via Netlink
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175314841819.257717.8558865688426486771.git-patchwork-notify@kernel.org>
+Date: Tue, 22 Jul 2025 01:40:18 +0000
+References: <20250717234343.2328602-1-kuba@kernel.org>
+In-Reply-To: <20250717234343.2328602-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, andrew@lunn.ch,
+ donald.hunter@gmail.com, shuah@kernel.org, kory.maincent@bootlin.com,
+ gal@nvidia.com, ecree.xilinx@gmail.com
 
-On Tue, 22 Jul 2025 09:04:20 +0800 Jason Wang wrote:
-> On Tue, Jul 22, 2025 at 7:28=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> =
-wrote:
-> > On Fri, 18 Jul 2025 14:17:55 +0800 Cindy Lu wrote: =20
-> > > Subject: [PATCH RESEND] netvsc: transfer lower device max tso size =20
-> >
-> > You say RESEND but I don't see a link to previous posting anywhere.
+Hello:
 
-Someone should respond to this part, please.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> > I'd rather we didn't extend the magic behavior of hyperv/netvsc any
-> > further. =20
->=20
-> Are you referring to the netdev coupling model of the VF acceleration?
+On Thu, 17 Jul 2025 16:43:35 -0700 you wrote:
+> This series completes support of RSS configuration via Netlink.
+> All functionality supported by the IOCTL is now supported by
+> Netlink. Future series (time allowing) will add:
+>  - hashing on the flow label, which started this whole thing;
+>  - pinning the RSS context to a Netlink socket for auto-cleanup.
+> 
+> The first patch is a leftover held back from previous series
+> to avoid conflicting with Gal's fix.
+> 
+> [...]
 
-Yes, it tries to apply whole bunch of policy automatically in=20
-the kernel.
+Here is the summary with links:
+  - [net-next,1/8] ethtool: assert that drivers with sym hash are consistent for RSS contexts
+    https://git.kernel.org/netdev/net-next/c/80e55735d5a5
+  - [net-next,2/8] ethtool: rejig the RSS notification machinery for more types
+    https://git.kernel.org/netdev/net-next/c/5f5c59b78e5a
+  - [net-next,3/8] ethtool: rss: factor out allocating memory for response
+    https://git.kernel.org/netdev/net-next/c/a45f98efa483
+  - [net-next,4/8] ethtool: rss: factor out populating response from context
+    https://git.kernel.org/netdev/net-next/c/5c090d9eae88
+  - [net-next,5/8] ethtool: move ethtool_rxfh_ctx_alloc() to common code
+    https://git.kernel.org/netdev/net-next/c/55ef461ce18f
+  - [net-next,6/8] ethtool: rss: support creating contexts via Netlink
+    https://git.kernel.org/netdev/net-next/c/a166ab7816c5
+  - [net-next,7/8] ethtool: rss: support removing contexts via Netlink
+    https://git.kernel.org/netdev/net-next/c/fbe09277fa63
+  - [net-next,8/8] selftests: drv-net: rss_api: context create and delete tests
+    https://git.kernel.org/netdev/net-next/c/4c86c9fdf6a5
 
-> > We have enough problems with it.
->=20
-> But this fixes a real problem, otherwise nested VM performance will be
-> broken due to the GSO software segmentation.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Perhaps, possibly, a migration plan can be devised, away from the
-netvsc model, so we don't have to deal with nuggets of joy like:
-https://lore.kernel.org/all/1752870014-28909-1-git-send-email-haiyangz@linu=
-x.microsoft.com/
+
