@@ -1,36 +1,36 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DDD2E3AFF
-	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 07:37:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615B228DEE4
+	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 07:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753169825; cv=none; b=hQeAnPw++X6FSZTGbITe8z8MtUuUdpnXIqKYO526WfuwNyPdjSvJWGWmX/evvoK4sC8pqxey9o0Bz1OUpIj8diFIfZNwC5Oqek9WXgzvGuCpXHj4e+lxIPVb6slVJmBgRdCrrKrofUD8y/zfrjU4+oN2iWuwg2lltHjGrh0YH4A=
+	t=1753169841; cv=none; b=jpbXGCog+tVT3NmbJhK+qwdPYnGZe6/CvfjSfU3W9OoiYVvIScxpC1IkbIcTsEho0h6s4PcDlv4Rt4+67LBx+nctIdvlKcUrRpwFZ6yZ9hjT0+P5cqBUDzXypGYR/8FWmpkKo8LnPidoJvCyz6Ndr/PCcXHiWb96/vtJTfDHScc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753169825; c=relaxed/simple;
-	bh=XoTSReRIWl23BljKqA2YUSyIT3NJWPVLgQNbiD9Lm4k=;
+	s=arc-20240116; t=1753169841; c=relaxed/simple;
+	bh=TJadM9LJS2tCelUETqRvuerhKGeMiYlqvJ5GxFuV5tY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WXW7GkfdO+M6E8B8fqlLA7lR4l+TkeQeYcS4tJ8wHLnJ7zk+lqAZfAEASYXfFrdBmcrKtuHqDOu99x73dyV4HMYE2xQJKRrJoiedxd/4vU8EiOMmUGTO+r4Xq8gjB3vz6ZHcPTRUJHJMgIp2AH5XcQkBzf7g5jWbOIKSjTQqkZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=iSi/eWuq; arc=none smtp.client-ip=18.194.254.142
+	 MIME-Version; b=AxogWbwC/6MnRsmNZufBuRaT+T4bVPzimU8GAl3r3AcOhK9E7dvx4n6t+Bw2pa6vF7IhLR8cMiMg/VVF8g+iBRle1Erq/GWwuJhV6kyH1TuC05m4FYpaUxy6eJpkloal9LS/cXVhe3za27Tt0+r3vmKSfFFx7iYHn4ln6LF/F+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=hh9mf8Mc; arc=none smtp.client-ip=52.59.177.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="iSi/eWuq"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="hh9mf8Mc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1753169746;
-	bh=1DFykB4IGMZc95pr0nP6WV8K6S5/SNh6P26mZWnTYNc=;
+	s=onoh2408; t=1753169773;
+	bh=+qa2f3QEhHEuh4QOwcxSpKUWx1Ey8PdHAyuKdLKK9Qg=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=iSi/eWuqri2aE/KeHOMA4MRHdoWkRYYQwalQht4ELhrq3ORP7LSlCPnBsE75bthE8
-	 6mQKY+VT7g4mvlxYm4hhce2FAp01CCqw5r18ibyNvS4w3/Welf2dNvgSgMf8UUmREd
-	 yEyyUmvLnhfSqLwqvoy7rZ5ha/vWIv8R9x34PEWQ=
-X-QQ-mid: zesmtpip2t1753169680t1d8848d9
-X-QQ-Originating-IP: /2Vqiv1DKGDiDTOeHrTcoDDvJdzpiY2SWG31K/OjoKo=
+	b=hh9mf8Mc39i+ypXzkOsf4eXv2b0nYXHjypO6K51HtClWMOgoe8WiUCUOKgNrC7lSO
+	 kswBdHwDqCHODQZxZ6qIfnz8LZ4/eguAmnzJfkAWwhxgggEZRer794/zfwygBOEXsy
+	 Bh700+3qb0A6kf23H6xbSevPD5NtzbaKY2SbGXGs=
+X-QQ-mid: zesmtpip2t1753169713ta05aff85
+X-QQ-Originating-IP: 65xfAki0jxPR9TUF1QvLcfebtVmeg84+TUXILAN6dYc=
 Received: from avenger-e500 ( [localhost])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 22 Jul 2025 15:34:34 +0800 (CST)
+	id ; Tue, 22 Jul 2025 15:35:09 +0800 (CST)
 X-QQ-SSF: 0002000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 12305455310709652104
+X-BIZMAIL-ID: 13454134674662907572
 EX-QQ-RecipientCnt: 64
 From: WangYuli <wangyuli@uniontech.com>
 To: wangyuli@uniontech.com
@@ -97,9 +97,9 @@ Cc: airlied@gmail.com,
 	xen-devel@lists.xenproject.org,
 	yujiaoliang@vivo.com,
 	zhanjun@uniontech.com
-Subject: [PATCH v3 1/8] KVM: x86: Fix typo "notifer"
-Date: Tue, 22 Jul 2025 15:34:24 +0800
-Message-ID: <7F05778C3A1A9F8B+20250722073431.21983-1-wangyuli@uniontech.com>
+Subject: [PATCH v3 5/8] wifi: brcmfmac: Fix typo "notifer"
+Date: Tue, 22 Jul 2025 15:34:28 +0800
+Message-ID: <6CA31F0821E6687F+20250722073431.21983-5-wangyuli@uniontech.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <576F0D85F6853074+20250722072734.19367-1-wangyuli@uniontech.com>
 References: <576F0D85F6853074+20250722072734.19367-1-wangyuli@uniontech.com>
@@ -112,55 +112,48 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: NgaJKxROpQTjpj1dawfBAp5BSKyrzx32+b+lvgiwlIqmeOnmN6gaJuqT
-	kpPq0Tcw7FjvzfD1y4yMicxRTECnWGhe243OBCOx8JWCkHjVmCV0lj2Xz2WhGCyxSL75MqN
-	juLqDstsXTzc33gWmclCnZb/vwt5cxfXDIncp4wEzQ0NDhaCyTxsEsqGWRbWTX2slZ1z2Yy
-	RFOy8avkO3moq6N4JCG7enVElGkKifijhIwEp8EP9n40czRfGtDLVkijXF7pLHhw7daaybO
-	0afXA4YR8+5A8ZSvooyf8jDET6QdgtuUl8cxmKADIkNQbLV0s20ruREzEgTs8+SLFjixcFs
-	xQDw39cadCJQ6k/Gh8uM5ahHYKHmoLPwX9SLZkn5ojEZC6ZVyF6cTBGIiYVe2sSmUtTeQAO
-	nfUfUrrpTtBM9i96G48SJiObIHL6F57CroFxye9WSPXvEkvuF/nG7AAo2Xze+B0zs15UFdD
-	4B501bEOL39ZdD5b2C3JU8Dcm4usU5q/LInKoUfk4x9eSnueX8jrSnhNi4nWLOrIYw/jR/m
-	jY67P/6CkRlYZ0dqzJPWibJKRQ0Y7rh+gGuBVRPAfef7OHAfXYuyKv6acBFbpq18C38U5cn
-	z9Zd5/JFd7hta74MCQrcrLTKiDhouCxVWUN9BHvqyCX4I2bizlLwS94O2tjJYrl1PmmsvgK
-	uxvPWOH7FLeFiVDM7YUZWzIMenAsK21hn644n39QmyQh91BNxBQDsz4UbWK37qoQK3+JT2d
-	MduKFEFT1DDJpNB2HMyMAtNO7UCToLbn/3+T0+mZ84bB0Q405t22J5LmddoskZn/HT2M0Q9
-	EcetZVVDyOOM+3gNrh3TZpXPVrIjZHHX/q+fe1SWLtwlqauJEmSbTZkLHqEPZOooUOgxBUa
-	mdSEyATRlytmE6+ppkWvxz2KZeGHjBCSp7NuP3/0m8fI7AU2f7hnp/mv9NNrzLXRoAzu/SM
-	SyF5icDmtTMGyMcEQqUThYyQspC9RIHWIBmUIo61NAhmXRZqlf/2BKrIKPB4mNOyEFYN68G
-	EyQCIp+FRUY9qAleIOnpCT+0W7BctHf4f5j6fzmgb5uqp5jCMhTTaUbQGfrBltB+wJJgwaO
-	n5De1kXZg+J1GTPt5CtLvs=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+X-QQ-XMAILINFO: M/0PeaSZFgmfDRY2PH2bScTqkyV/iy+V6VADbsPJ8tC2z1DZyfJx9xoL
+	SKRjJk6SU3TQ54qgg6gYDknA43ANygYmoNRRk5wBFTay5Yx5tD7hnzsoocxTpZ6IR4FHeq3
+	fftvaFKMtl2h7opf+ZrA8pnzutlM0AKlTAE3dxbC5UGmTSFz/nCBZU0YyULVFIhlV/hFATJ
+	WBqQen4PKI1sDevqrBn3u4l5p7/D4788THQGfMBkX2B94KXinRQislG19bv7TrlmEXSf4y1
+	Z/mSFbss76cCTnMemB/gqTrgiblOi3sJmnRDElG60w7IXSNVImh5laRiOK3DB929hDDKfiM
+	8Lf8TMW96cj754g8ix0pmBVGI2tJ3BjhuQTrJFvLSPvEedq5fe9qlxvD7xG2TqxCmOtOYnE
+	no3SmYxivhEWCa9D4jSjo4bbbJ2cm3RDHiDG9me7z5My+WF7B9bR48z+k6hqVG5DAlhCZca
+	ogdjPrUSk6FGl3Hc/efIA+Gh0AsSc8vwwukjkW7KTczTJvA0OS76CqImZqwhv+t+5bhKIk0
+	h19+QI26pb2KkxzWsE+tqSkrdameOQoDllGEEhwRUzIJFBh9Q/Ljg0PyCb9lskndmYgMUv0
+	7Qxu7DTmr9zpMAJxGS3RDIuo0E+dN/pLaCXMl5PZUlxzEBzcn7w2+v4GKrXF4SJLPYa0Ge9
+	IWORIABItuyHkqiWR93lfFJQ4WojL+0p0rz6XZgN+1qSnqjUKssIZSnaf8MLD2GEitPyZRq
+	QDJjaMkKPOHcEzt8oOeRb2UnMFqSeawVIEHh+u7A29CJhxSkglfN/CNMPzf0E+WDvTggpQk
+	i0HNvwZkJKExqMUz6ftC71ud6CLY11IQgZ+JFmaJyvtnrHd8SGHp3ZvRMhGWZD6sDAPk+7S
+	qkORI1RshF9/i15fE4uZbEG3f8+iaLEpQJEW8ulk+6d9Z1V/cBgXWRbgb8euZPwYqsyCBKR
+	H7wU/pvi4HQhwWtKRw7zU9pr6wQ+9oH5MB9ZGQAwb19dMTFu/gqTep+cX3FLlMaOYfvJbUI
+	QvcZcrOuAEPCiL0XZjrc0365mD1yaMoOq64op5/y9Zx9Ei5qZN6sjhEshtWy37ij/YZ2Ghr
+	dA02JSpFcPeVQAdOUeAYBS73VLL7EnFpDhyQqsQhpSGQa9ytZU+sDI=
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
 X-QQ-RECHKSPAM: 0
 
-There are some spelling mistakes of 'notifer' which should be 'notifier'.
+There is a spelling mistake of 'notifer' in the comment which
+should be 'notifier'.
 
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 Signed-off-by: WangYuli <wangyuli@uniontech.com>
 ---
- arch/x86/kvm/i8254.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/i8254.c b/arch/x86/kvm/i8254.c
-index 739aa6c0d0c3..9ff55112900a 100644
---- a/arch/x86/kvm/i8254.c
-+++ b/arch/x86/kvm/i8254.c
-@@ -641,7 +641,7 @@ static void kvm_pit_reset(struct kvm_pit *pit)
- 	kvm_pit_reset_reinject(pit);
- }
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index b94c3619526c..bcd56c7c4e42 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -8313,7 +8313,7 @@ struct brcmf_cfg80211_info *brcmf_cfg80211_attach(struct brcmf_pub *drvr,
+ 	cfg->d11inf.io_type = (u8)io_type;
+ 	brcmu_d11_attach(&cfg->d11inf);
  
--static void pit_mask_notifer(struct kvm_irq_mask_notifier *kimn, bool mask)
-+static void pit_mask_notifier(struct kvm_irq_mask_notifier *kimn, bool mask)
- {
- 	struct kvm_pit *pit = container_of(kimn, struct kvm_pit, mask_notifier);
- 
-@@ -694,7 +694,7 @@ struct kvm_pit *kvm_create_pit(struct kvm *kvm, u32 flags)
- 
- 	pit_state->irq_ack_notifier.gsi = 0;
- 	pit_state->irq_ack_notifier.irq_acked = kvm_pit_ack_irq;
--	pit->mask_notifier.func = pit_mask_notifer;
-+	pit->mask_notifier.func = pit_mask_notifier;
- 
- 	kvm_pit_reset(pit);
- 
+-	/* regulatory notifer below needs access to cfg so
++	/* regulatory notifier below needs access to cfg so
+ 	 * assign it now.
+ 	 */
+ 	drvr->config = cfg;
 -- 
 2.50.0
 
