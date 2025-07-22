@@ -1,35 +1,35 @@
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC452E92BB;
-	Tue, 22 Jul 2025 12:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E3B2E9728;
+	Tue, 22 Jul 2025 12:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753186603; cv=none; b=Sem7iSgavSJko4QUumGCw9nV6brxS/dhyEoL0z6euLnRXTcOW2Z2CO1s+QuF1WDGg9h5uCNaNsp+/prv/+Z1RsB6a85cdWPlm/dYFdECXeCS4sFZs0b//3EFeXHcqp5GrIkchilt29S459ZibaNWpGHRkWVM4XxM87KKEPIf/L4=
+	t=1753186604; cv=none; b=cIUQ5mfN/Rc/AEMkuWyWUxVqtTdn/2ENkz0FNP7nSdWhfrftCg/VxsR+BGHuZIj6bvIDquzTaFkTBqjbTVPGakjDpGsxB6wcIaV2I2QKdajJjMqI4Ty6Rw53SCOryLkAVFRlDVuipIjjVvKBtwIz1rVhjJ7y/OGHcW7mtPx8l3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753186603; c=relaxed/simple;
-	bh=8GIISQ747xStpcrAmgsrEm3PUzf7LjS8WrP3DawpFlk=;
+	s=arc-20240116; t=1753186604; c=relaxed/simple;
+	bh=oidHNMEOAeIfvfoKIdZXw6Y11Au5kUOVRrwGO61A/Zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PikY0RtbG9Tkpe0tUcBEjP2Vk+gq4HSINYV38IhKxXyBPIOaY6fJceokKYtpe9OKpzQARutr6lrQk1AwTf6B1ri7H6okFwsvFiU83wkeps05AizM2zVKaVGUdPi+59LGhvv8ultbtcu7jGb68PDpbAbJhGW3U7WErpABSkzUflg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=djkUlB4r; arc=none smtp.client-ip=217.70.183.197
+	 MIME-Version; b=Km0yYEm34FMzMVpP7N9kJUmtitCo6xbpKmI4bzmb2HfhtWkvFL9y0dHqUhFdVD7r2TM4wDrM7mSo//A3c4s7YMrvSXd+SAwy9RA2uQ4iTVSai9qyyaOC4IqwX6joBicMnmaqJ1UWVazDqqE4aYGZiSYzNHVBA6Urv5s31b8fE6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FWoe17c8; arc=none smtp.client-ip=217.70.183.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="djkUlB4r"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6355843A11;
-	Tue, 22 Jul 2025 12:16:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FWoe17c8"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C7AE443A13;
+	Tue, 22 Jul 2025 12:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1753186593;
+	t=1753186600;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=X1SG6EZwUeidKkcS9Cw+ueu25J90gmUPbo4DL8leCwY=;
-	b=djkUlB4r8oYzc3+gPwt074r7dBZuTxvn8Pty5jfnP0Mfm4+oqDfCsgSXhdzF0DW6lf+tKV
-	IpieCItvU+38RELyCI7UIU2qepKToTmMq/NInNGIOBfBFSDZMaTAO+PlVlaSNwnZe8loVp
-	WvDUjtKzK8hPQZtSpfkgzDTxzm2y7Xm5EAMBQtFjjo3SRbkrDqLf6nkCVVw9otJ/A0lOJg
-	Zk9tyI/KmqboPMCuMB7V1yKfoooaIsJcbbQLaZtj8DT61yehl66f5gehiya9xHBEUKafFG
-	HAUBjovFtighWOI+skhK/iBoE6b0LLf6hyjQGtChKfyAEt4+A6SFeDeagh+I6w==
+	bh=it70xGkF4FSBRDmVo+CfekqevES7uQ4LkzhIol2ydGc=;
+	b=FWoe17c8KvbYPP3c+p/CNby+zZinPeoRS9c06+hQXoa+zDhXlPBIKZhk4DSxQL3dgzB06B
+	2Mp5mZjx21nBUE8M22dX6AIunoKmrIto5SSN5xuN44ArzFjWIQgbGF3Eei+P/buItyL2oO
+	2e3EM5GygBH3vIse8jKpIFbKyVzWaRYRNsUW2GOX+Ymq40t5oGn5qZRPWSBdwNA9voX129
+	Z6pwT4h4J2Qk82V8GtBgRJ+f+Vp3Fxm6OvHr0NOJPBXFNt54L0fp2RQE15Ld6yNcI1ol5g
+	wNr8TkvnCOa8wjf+GazUOhvPTtA1bJ72mJqL5RS3lxGA7YaaDeAZU+NtiafOUw==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net
 Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
@@ -62,9 +62,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Romain Gantois <romain.gantois@bootlin.com>,
 	Daniel Golle <daniel@makrotopia.org>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: [PATCH net-next v10 02/15] net: ethtool: common: Indicate that BaseT works on up to 4 lanes
-Date: Tue, 22 Jul 2025 14:16:07 +0200
-Message-ID: <20250722121623.609732-3-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v10 05/15] net: phy: dp83822: Add support for phy_port representation
+Date: Tue, 22 Jul 2025 14:16:10 +0200
+Message-ID: <20250722121623.609732-6-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250722121623.609732-1-maxime.chevallier@bootlin.com>
 References: <20250722121623.609732-1-maxime.chevallier@bootlin.com>
@@ -77,66 +77,138 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdejgeekkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevgedtffelffelveeuleelgfejfeevvdejhfehgeefgfffvdefteegvedutefftdenucfkphepledtrdejiedriedvrddujedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdejiedriedvrddujedupdhhvghlohepfhgvughorhgrrddrpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedupdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhug
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdejgeekkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeevgedtffelffelveeuleelgfejfeevvdejhfehgeefgfffvdefteegvedutefftdenucfkphepledtrdejiedriedvrddujedunecuvehluhhsthgvrhfuihiivgepfeenucfrrghrrghmpehinhgvthepledtrdejiedriedvrddujedupdhhvghlohepfhgvughorhgrrddrpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedupdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhug
  idqrghrmhdqmhhsmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhg
 X-GND-Sasl: maxime.chevallier@bootlin.com
 
-The way BaseT modes (Ethernet over twisted copper pairs) are represented
-in the kernel are through the following modes :
-
-  ETHTOOL_LINK_MODE_10baseT_Half
-  ETHTOOL_LINK_MODE_10baseT_Full
-  ETHTOOL_LINK_MODE_100baseT_Half
-  ETHTOOL_LINK_MODE_100baseT_Full
-  ETHTOOL_LINK_MODE_1000baseT_Half
-  ETHTOOL_LINK_MODE_1000baseT_Full
-  ETHTOOL_LINK_MODE_2500baseT_Full
-  ETHTOOL_LINK_MODE_5000baseT_Full
-  ETHTOOL_LINK_MODE_10000baseT_Full
-  ETHTOOL_LINK_MODE_100baseT1_Full
-  ETHTOOL_LINK_MODE_1000baseT1_Full
-  ETHTOOL_LINK_MODE_10baseT1L_Full
-  ETHTOOL_LINK_MODE_10baseT1S_Full
-  ETHTOOL_LINK_MODE_10baseT1S_Half
-  ETHTOOL_LINK_MODE_10baseT1S_P2MP_Half
-  ETHTOOL_LINK_MODE_10baseT1BRR_Full
-
-The baseT1* modes explicitly specify that they work on a single,
-unshielded twister copper pair.
-
-However, the other modes do not state the number of pairs that are used
-to carry the link. 10 and 100BaseT use 2 twisted copper pairs, while
-1GBaseT and higher use 4 pairs.
-
-although 10 and 100BaseT use 2 pairs, they can work on a Cat3/4/5+
-cables that contain 4 pairs.
-
-Change the number of pairs associated to BaseT modes to indicate the
-allowable number of pairs for BaseT. Further commits will then refine
-the minimum number of pairs required for the linkmode to work.
-
-BaseT1 modes aren't affected by this commit.
+With the phy_port representation introduced, we can use .attach_port to
+populate the port information based on either the straps or the
+ti,fiber-mode property. This allows simplifying the probe function and
+allow users to override the strapping configuration.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- net/ethtool/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/dp83822.c | 71 +++++++++++++++++++++++++--------------
+ 1 file changed, 45 insertions(+), 26 deletions(-)
 
-diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-index 4f58648a27ad..57290fdb7193 100644
---- a/net/ethtool/common.c
-+++ b/net/ethtool/common.c
-@@ -267,7 +267,7 @@ static_assert(ARRAY_SIZE(link_mode_names) == __ETHTOOL_LINK_MODE_MASK_NBITS);
- #define __LINK_MODE_LANES_LR8_ER8_FR8	8
- #define __LINK_MODE_LANES_LRM		1
- #define __LINK_MODE_LANES_MLD2		2
--#define __LINK_MODE_LANES_T		1
-+#define __LINK_MODE_LANES_T		4
- #define __LINK_MODE_LANES_T1		1
- #define __LINK_MODE_LANES_X		1
- #define __LINK_MODE_LANES_FX		1
+diff --git a/drivers/net/phy/dp83822.c b/drivers/net/phy/dp83822.c
+index 33db21251f2e..2657be2e9034 100644
+--- a/drivers/net/phy/dp83822.c
++++ b/drivers/net/phy/dp83822.c
+@@ -11,6 +11,7 @@
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/phy.h>
++#include <linux/phy_port.h>
+ #include <linux/netdevice.h>
+ #include <linux/bitfield.h>
+ 
+@@ -811,17 +812,6 @@ static int dp83822_of_init(struct phy_device *phydev)
+ 	int i, ret;
+ 	u32 val;
+ 
+-	/* Signal detection for the PHY is only enabled if the FX_EN and the
+-	 * SD_EN pins are strapped. Signal detection can only enabled if FX_EN
+-	 * is strapped otherwise signal detection is disabled for the PHY.
+-	 */
+-	if (dp83822->fx_enabled && dp83822->fx_sd_enable)
+-		dp83822->fx_signal_det_low = device_property_present(dev,
+-								     "ti,link-loss-low");
+-	if (!dp83822->fx_enabled)
+-		dp83822->fx_enabled = device_property_present(dev,
+-							      "ti,fiber-mode");
+-
+ 	if (!device_property_read_string(dev, "ti,gpio2-clk-out", &of_val)) {
+ 		if (strcmp(of_val, "mac-if") == 0) {
+ 			dp83822->gpio2_clk_out = DP83822_CLK_SRC_MAC_IF;
+@@ -950,6 +940,48 @@ static int dp83822_read_straps(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++static int dp83822_attach_port(struct phy_device *phydev, struct phy_port *port)
++{
++	struct dp83822_private *dp83822 = phydev->priv;
++	int ret;
++
++	if (port->mediums) {
++		if (phy_port_is_fiber(port))
++			dp83822->fx_enabled = true;
++	} else {
++		ret = dp83822_read_straps(phydev);
++		if (ret)
++			return ret;
++
++#if IS_ENABLED(CONFIG_OF_MDIO)
++		if (dp83822->fx_enabled && dp83822->fx_sd_enable)
++			dp83822->fx_signal_det_low =
++				device_property_present(&phydev->mdio.dev,
++							"ti,link-loss-low");
++
++		/* ti,fiber-mode is still used for backwards compatibility, but
++		 * has been replaced with the mdi node definition, see
++		 * ethernet-port.yaml
++		 */
++		if (!dp83822->fx_enabled)
++			dp83822->fx_enabled =
++				device_property_present(&phydev->mdio.dev,
++							"ti,fiber-mode");
++#endif /* CONFIG_OF_MDIO */
++
++		if (dp83822->fx_enabled) {
++			port->lanes = 1;
++			port->mediums = BIT(ETHTOOL_LINK_MEDIUM_BASEF);
++		} else {
++			/* This PHY can only to 100BaseTX max, so on 2 lanes */
++			port->lanes = 2;
++			port->mediums = BIT(ETHTOOL_LINK_MEDIUM_BASET);
++		}
++	}
++
++	return 0;
++}
++
+ static int dp8382x_probe(struct phy_device *phydev)
+ {
+ 	struct dp83822_private *dp83822;
+@@ -968,27 +1000,13 @@ static int dp8382x_probe(struct phy_device *phydev)
+ 
+ static int dp83822_probe(struct phy_device *phydev)
+ {
+-	struct dp83822_private *dp83822;
+ 	int ret;
+ 
+ 	ret = dp8382x_probe(phydev);
+ 	if (ret)
+ 		return ret;
+ 
+-	dp83822 = phydev->priv;
+-
+-	ret = dp83822_read_straps(phydev);
+-	if (ret)
+-		return ret;
+-
+-	ret = dp83822_of_init(phydev);
+-	if (ret)
+-		return ret;
+-
+-	if (dp83822->fx_enabled)
+-		phydev->port = PORT_FIBRE;
+-
+-	return 0;
++	return dp83822_of_init(phydev);
+ }
+ 
+ static int dp83826_probe(struct phy_device *phydev)
+@@ -1172,6 +1190,7 @@ static int dp83822_led_hw_control_get(struct phy_device *phydev, u8 index,
+ 		.led_hw_is_supported = dp83822_led_hw_is_supported,	\
+ 		.led_hw_control_set = dp83822_led_hw_control_set,	\
+ 		.led_hw_control_get = dp83822_led_hw_control_get,	\
++		.attach_port = dp83822_attach_port		\
+ 	}
+ 
+ #define DP83825_PHY_DRIVER(_id, _name)				\
 -- 
 2.49.0
 
