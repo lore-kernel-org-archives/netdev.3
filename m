@@ -1,1083 +1,181 @@
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E542E9EDD;
-	Tue, 22 Jul 2025 13:28:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A496E2DFA46
+	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 13:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753190904; cv=none; b=RQ7V6GJWYNxrw5kBYZjs9Jf41BNDR+3TgBLpiA/jzGT5KRkQFvU0zb10QsofM4hWS6I8N5+jLVGCFCWR+ykQdW5ikNBVvt4URVGCMTzdFF5fR408JDXOFATslCrTJcLcNjWADkQ2+xN6b1CFY+AUyUvW7r4fskyX1Hm+ozntio0=
+	t=1753191132; cv=none; b=m0PgrznwT9dSdufCXGaUaqPvyNaU56374KfknfPhFYcc6hTzhLoiGptc4nkdN3RYnzY7ZYCb6fL6D1GM0vovN9e7E42UALknMn2MMHHspqBMEOb4E2n5bDABc6lCdfnO0c/JFdnDEdnX3zzsrz+Aur8y33Qh87e6lzlRw1JnS0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753190904; c=relaxed/simple;
-	bh=l9xh5YnbkrWnwzZrE+Qr20dcxCHqzmtYCeWlj4IebT4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TRxZd57iSQd8axnepSr0YLdWpmbxQKDSIqUKZU8FbJxc5M7TDLqwQFEWl0LKQAePjLsflfCSMOjTilmGgoROl/7UuV31RDUI8tH/wbSLqkMhoXI6FDgwnuIrWoCLo7/091EeXIZd8+ggVlZat4BTcOQhECna5S0L0S2V04zY+7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=uIYNqqez; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	s=arc-20240116; t=1753191132; c=relaxed/simple;
+	bh=AwaSntSRv4KKTq/Mc/4XIRkj3yppN4Zuohy3PZwRodY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ueOqyraYUMYJl5xYi1s3VTuXPhLX368tHOhBZU8MLpeBxHdgQmFwzKwIP7PBO3L8ykXGlH7d+WfvNIcEFofOdkg2bdCAIvnj9TLYEU7aj5SHH7Y/0k6IEj7U9tMv/y3K0WtHWXDKlGu1AB5NDdb/Cscd3jaeOj8ZwLHjZqamDZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GqrTpvJk; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="uIYNqqez"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=yfDjBjPIGZXWAh0WgB2S5Rr8Z/FUf/AwxxvUbEeavsY=; b=uIYNqqezBUUHgg93YEBoOK2QOM
-	O0XfMTvPvpgZMRm+ruluQJm81Fg+9dtsFY4Rb0RxKkIlgMvv+ZKSQ+22VPkVEvBQhxyInBfJ+H7UQ
-	MfGXk2IRvVoOjWcWvUuwYwVqrXLE7QjGuoZCnn3UTXLNkJywHEMxe5uBWc6/Qi7vBtlgPbeHNv+G3
-	l8p8+Msh5HXXiP6bS/UtkkGpCK3kww923t3KI/+/2znWwnYz24JEsWeOu9ZV+tI58F52SsQma273d
-	vT7S39vLrHj8Pj1mBgegSY1nCFjgZuZgMXR/jYdjiShdb8OVph4VgNizf2A96xgbULPYfg12BENuI
-	GEVJ4Kjw==;
-Received: from [122.175.9.182] (port=11834 helo=cypher.couthit.local)
-	by server.couthit.com with esmtpa (Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1ueD2V-00000005anL-3eAR;
-	Tue, 22 Jul 2025 09:28:16 -0400
-From: Parvathi Pudi <parvathi@couthit.com>
-To: danishanwar@ti.com,
-	rogerq@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	ssantosh@kernel.org,
-	richardcochran@gmail.com,
-	s.hauer@pengutronix.de,
-	m-karicheri2@ti.com,
-	glaroque@baylibre.com,
-	afd@ti.com,
-	saikrishnag@marvell.com,
-	m-malladi@ti.com,
-	jacob.e.keller@intel.com,
-	kory.maincent@bootlin.com,
-	diogo.ivo@siemens.com,
-	javier.carrasco.cruz@gmail.com,
-	horms@kernel.org,
-	s-anna@ti.com,
-	basharath@couthit.com,
-	parvathi@couthit.com
-Cc: linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	vadim.fedorenko@linux.dev,
-	pratheesh@ti.com,
-	prajith@ti.com,
-	vigneshr@ti.com,
-	praneeth@ti.com,
-	srk@ti.com,
-	rogerq@ti.com,
-	krishna@couthit.com,
-	pmohan@couthit.com,
-	mohan@couthit.com
-Subject: [PATCH net-next v11 3/5] net: ti: prueth: Adds PRUETH HW and SW configuration
-Date: Tue, 22 Jul 2025 18:55:03 +0530
-Message-ID: <20250722132700.2655208-4-parvathi@couthit.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250722132700.2655208-1-parvathi@couthit.com>
-References: <20250722132700.2655208-1-parvathi@couthit.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GqrTpvJk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753191129;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OwS927qXkgcBzQAQ1/jvGsSW5/bTXbavY6/4pe28EKI=;
+	b=GqrTpvJkk7jrHcQuoOYIWcyRtd8EF7Nohchmdrm0wuof1QxSJu3YI5q2zk6U9xCw7Zm7+q
+	JT0q/Jr3VRmp2eINDQ9HI4+eFK9aXwsxdOERwRDPESS2cEA1/FVNIkTJNCfP6QPE0hgxoE
+	1oLY/43Mkhym0ubcX8S9bAUBXGKVuzE=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-441-3KhZRwVIMC2VNsRqy27m4g-1; Tue, 22 Jul 2025 09:32:08 -0400
+X-MC-Unique: 3KhZRwVIMC2VNsRqy27m4g-1
+X-Mimecast-MFC-AGG-ID: 3KhZRwVIMC2VNsRqy27m4g_1753191127
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4561bc2f477so33358455e9.0
+        for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 06:32:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753191127; x=1753795927;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OwS927qXkgcBzQAQ1/jvGsSW5/bTXbavY6/4pe28EKI=;
+        b=G3qVibwJpHqCaCIQlPHlIVKTjNYQcHwp889YmyCMmsjVGDK7Se+tLE9GxJdMs0R0Uv
+         xkE3fH/DacobCUiwcL+xgHm0tgWAPKLb3JZwkYRMBpe5E5ZgIQusibAArTSeAsbBDFeT
+         x0HQ14in4xBNCSRykg3Xo3yImrn33fJSG2sBcp1RJte9qDp/+grlRoSUpTpgOw5bsABr
+         fnZJI439I2DrcRjdTCo1obk+lqPISjyY50wHUdGYxvShEXOcoP4FP7sXEPC5LQ7jg8Rp
+         K3ZSwGK2/cozl+/utddVXszGBEgLp59vTKq+PjdJl2wginf1U4j8B+Sx6pu4ZV+6IqaT
+         TPlw==
+X-Forwarded-Encrypted: i=1; AJvYcCUzCyTBvhzwlkIjIrVxm9OGO+lnlTs3yo3qpL9n3j+gj0HP96Isi+ThDkottMjcjBi1N1/0d7k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPdnoGnoWur5lmleHSh2Z5CR3SB1bB+2yMq2EQF394w/egSnXt
+	4AT8ousqO8+XuEV6ugXBAtbcGkrl8PXQovjcIFL5iDnFoAGiy+hSrlK/0KN+nrKYyyANHFkpgkC
+	WYOYhRnOsqPf5cL680kajH0Zp6CEXtnrTjvBF98J5XHZGmyfemzpoUot9ag==
+X-Gm-Gg: ASbGnctGm2P3JnvCY+C1QkfjhAOTsMnTddW/WOhQk9xCAqijbeZkzRiowcTeqS+MAom
+	GFxD05U0z+oFhz6yOMTftGMIH7MeYevwnFKanfjQ1fKJ4C+5U0jxLSw3+FVnbWUsWbSWQfIXs/I
+	nb1buVh8V3v3LA3RdIAkQsIdqUDXusyECVJlnC7kTfzllpO528q9Vwz0i356Hnd70FHI9/jen+6
+	RWo8ByqOGTK+VJh4arF9XkBJXyKDK89QO3uW6cy4Lf86CfD2+oN0/ZaY9kd/q4ikL79fr3wdOyW
+	FWLl3hT+R4w4Z3bJaNdV4YSp1TYDWRSl+CljaS0ZyaKRQ0V6zraj2z1HpzkOgwe9wZsoQMTX8dM
+	1r4R0bGARe28=
+X-Received: by 2002:a05:600c:1c0b:b0:456:285b:db24 with SMTP id 5b1f17b1804b1-4562e37c48cmr175269885e9.28.1753191126556;
+        Tue, 22 Jul 2025 06:32:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH4VfzrBEkEfeWiufFOLE286BaOO0byr70jCtKKNW8Ur2B5VV4+73d0ww9UyJaZGf2nUbbPww==
+X-Received: by 2002:a05:600c:1c0b:b0:456:285b:db24 with SMTP id 5b1f17b1804b1-4562e37c48cmr175269555e9.28.1753191126026;
+        Tue, 22 Jul 2025 06:32:06 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45863a131aasm16633525e9.2.2025.07.22.06.32.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Jul 2025 06:32:05 -0700 (PDT)
+Message-ID: <96927022-92d9-46be-8af4-225cab01b006@redhat.com>
+Date: Tue, 22 Jul 2025 15:32:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
-X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/2] net/sched: Fix backlog accounting in
+ qdisc_dequeue_internal
+To: William Liu <will@willsroot.io>, netdev@vger.kernel.org
+Cc: jhs@mojatatu.com, xiyou.wangcong@gmail.com, kuba@kernel.org,
+ jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
+ horms@kernel.org, savy@syst3mfailure.io
+References: <20250719180746.189247-1-will@willsroot.io>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250719180746.189247-1-will@willsroot.io>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Roger Quadros <rogerq@ti.com>
+On 7/19/25 8:08 PM, William Liu wrote:
+> This issue applies for the following qdiscs: hhf, fq, fq_codel, and
+> fq_pie, and occurs in their change handlers when adjusting to the new
+> limit. The problems are the following in the values passed to the
+> subsequent qdisc_tree_reduce_backlog call:
+> 
+> 1. When the tbf parent runs out of tokens, skbs of these qdiscs will
+>    be placed in gso_skb. Their peek handlers are qdisc_peek_dequeued,
+>    which accounts for both qlen and backlog. However, in the case of
+>    qdisc_dequeue_internal, ONLY qlen is accounted for when pulling
+>    from gso_skb. This means that these qdiscs are missing a
+>    qdisc_qstats_backlog_dec when dropping packets to satisfy the
+>    new limit in their change handlers.
+> 
+>    One can observe this issue with the following (with tc patched to
+>    support a limit of 0):
+> 
+>    export TARGET=fq
+>    tc qdisc del dev lo root
+>    tc qdisc add dev lo root handle 1: tbf rate 8bit burst 100b latency 1ms
+>    tc qdisc replace dev lo handle 3: parent 1:1 $TARGET limit 1000
+>    echo ''; echo 'add child'; tc -s -d qdisc show dev lo
+>    ping -I lo -f -c2 -s32 -W0.001 127.0.0.1 2>&1 >/dev/null
+>    echo ''; echo 'after ping'; tc -s -d qdisc show dev lo
+>    tc qdisc change dev lo handle 3: parent 1:1 $TARGET limit 0
+>    echo ''; echo 'after limit drop'; tc -s -d qdisc show dev lo
+>    tc qdisc replace dev lo handle 2: parent 1:1 sfq
+>    echo ''; echo 'post graft'; tc -s -d qdisc show dev lo
+> 
+>    The second to last show command shows 0 packets but a positive
+>    number (74) of backlog bytes. The problem becomes clearer in the
+>    last show command, where qdisc_purge_queue triggers
+>    qdisc_tree_reduce_backlog with the positive backlog and causes an
+>    underflow in the tbf parent's backlog (4096 Mb instead of 0).
+> 
+> 2. fq_codel_change is also wrong in the non gso_skb case. It tracks
+>    the amount to drop after the limit adjustment loop through
+>    cstats.drop_count and cstats.drop_len, but these are also updated
+>    in fq_codel_dequeue, and reset everytime if non-zero in that
+>    function after a call to qdisc_tree_reduce_backlog.
+>    If the drop path ever occurs in fq_codel_dequeue and
+>    qdisc_dequeue_internal takes the non gso_skb path, then we would
+>    reduce the backlog by an extra packet.
+> 
+> To fix these issues, the codepath for all clients of
+> qdisc_dequeue_internal has been simplified: codel, pie, hhf, fq,
+> fq_pie, and fq_codel. qdisc_dequeue_internal handles the backlog
+> adjustments for all cases that do not directly use the dequeue
+> handler.
+> 
+> Special care is taken for fq_codel_dequeue to account for the
+> qdisc_tree_reduce_backlog call in its dequeue handler. The
+> cstats reset is moved from the end to the beginning of
+> fq_codel_dequeue, so the change handler can use cstats for
+> proper backlog reduction accounting purposes. The drop_len and
+> drop_count fields are not used elsewhere so this reordering in
+> fq_codel_dequeue is ok.
+> 
+> Fixes: 2d3cbfd6d54a ("net_sched: Flush gso_skb list too during ->change()")
+> Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
+> Fixes: 10239edf86f1 ("net-qdisc-hhf: Heavy-Hitter Filter (HHF) qdisc")
+> 
+> Signed-off-by: William Liu <will@willsroot.io>
+> Reviewed-by: Savino Dicanosa <savy@syst3mfailure.io>
 
-Updates for MII_RT hardware peripheral configuration such as RX and TX
-configuration for PRU0 and PRU1, frame sizes, and MUX config.
+Please avid black lines in the tag area, i.e. between 'Fixes' and the SoB.
 
-Updates for PRU-ICSS firmware register configuration and DRAM, SRAM and
-OCMC memory initialization, which will be used in the runtime for packet
-reception and transmission.
+Also I think this could/should be splitted in several patches, one for
+each affected qdisc.
 
-DUAL-EMAC memory allocation for software queues and its supporting
-components such as the buffer descriptors and queue descriptors. These
-software queues are placed in OCMC memory and are shared with CPU by
-PRU-ICSS for packet receive and transmit.
+> diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+> index 2a0f3a513bfa..f9e6d76a1712 100644
+> --- a/net/sched/sch_fq_codel.c
+> +++ b/net/sched/sch_fq_codel.c
+> @@ -286,6 +286,10 @@ static struct sk_buff *fq_codel_dequeue(struct Qdisc *sch)
+>  	struct fq_codel_flow *flow;
+>  	struct list_head *head;
+>  
+> +	/* reset these here, as change needs them for proper accounting*/
+> +	q->cstats.drop_count = 0;
+> +	q->cstats.drop_len = 0;
+> +
+>  begin:
+>  	head = &q->new_flows;
+>  	if (list_empty(head)) {
+> @@ -319,8 +323,6 @@ static struct sk_buff *fq_codel_dequeue(struct Qdisc *sch)
+>  	if (q->cstats.drop_count) {
 
-All declarations and macros are being used from common header file
-for various protocols.
+Why is this 'if' still needed ? Isn't drop_count always 0 here?
 
-Signed-off-by: Roger Quadros <rogerq@ti.com>
-Signed-off-by: Andrew F. Davis <afd@ti.com>
-Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
-Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
----
- drivers/net/ethernet/ti/icssm/icssm_prueth.c | 422 ++++++++++++++++++-
- drivers/net/ethernet/ti/icssm/icssm_prueth.h | 104 +++++
- drivers/net/ethernet/ti/icssm/icssm_switch.h | 257 +++++++++++
- 3 files changed, 781 insertions(+), 2 deletions(-)
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_switch.h
-
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-index 3ed1bc0d8061..00efb2103034 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-@@ -29,6 +29,314 @@
- #include <net/pkt_cls.h>
- 
- #include "icssm_prueth.h"
-+#include "../icssg/icssg_mii_rt.h"
-+
-+#define OCMC_RAM_SIZE		(SZ_64K)
-+
-+#define TX_START_DELAY		0x40
-+#define TX_CLK_DELAY_100M	0x6
-+
-+/* Below macro is for 1528 Byte Frame support, to Allow even with
-+ * Redundancy tag
-+ */
-+#define PRUSS_MII_RT_RX_FRMS_MAX_SUPPORT_EMAC  (VLAN_ETH_FRAME_LEN + \
-+						ETH_FCS_LEN + \
-+						ICSSM_LRE_TAG_SIZE)
-+
-+/* ensure that order of PRUSS mem regions is same as enum prueth_mem */
-+static enum pruss_mem pruss_mem_ids[] = { PRUSS_MEM_DRAM0, PRUSS_MEM_DRAM1,
-+					  PRUSS_MEM_SHRD_RAM2 };
-+
-+static const struct prueth_queue_info queue_infos[][NUM_QUEUES] = {
-+	[PRUETH_PORT_QUEUE_HOST] = {
-+		[PRUETH_QUEUE1] = {
-+			P0_Q1_BUFFER_OFFSET,
-+			HOST_QUEUE_DESC_OFFSET,
-+			P0_Q1_BD_OFFSET,
-+			P0_Q1_BD_OFFSET + ((HOST_QUEUE_1_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE2] = {
-+			P0_Q2_BUFFER_OFFSET,
-+			HOST_QUEUE_DESC_OFFSET + 8,
-+			P0_Q2_BD_OFFSET,
-+			P0_Q2_BD_OFFSET + ((HOST_QUEUE_2_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE3] = {
-+			P0_Q3_BUFFER_OFFSET,
-+			HOST_QUEUE_DESC_OFFSET + 16,
-+			P0_Q3_BD_OFFSET,
-+			P0_Q3_BD_OFFSET + ((HOST_QUEUE_3_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE4] = {
-+			P0_Q4_BUFFER_OFFSET,
-+			HOST_QUEUE_DESC_OFFSET + 24,
-+			P0_Q4_BD_OFFSET,
-+			P0_Q4_BD_OFFSET + ((HOST_QUEUE_4_SIZE - 1) * BD_SIZE),
-+		},
-+	},
-+	[PRUETH_PORT_QUEUE_MII0] = {
-+		[PRUETH_QUEUE1] = {
-+			P1_Q1_BUFFER_OFFSET,
-+			P1_Q1_BUFFER_OFFSET + ((QUEUE_1_SIZE - 1) *
-+					ICSS_BLOCK_SIZE),
-+			P1_Q1_BD_OFFSET,
-+			P1_Q1_BD_OFFSET + ((QUEUE_1_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE2] = {
-+			P1_Q2_BUFFER_OFFSET,
-+			P1_Q2_BUFFER_OFFSET + ((QUEUE_2_SIZE - 1) *
-+					ICSS_BLOCK_SIZE),
-+			P1_Q2_BD_OFFSET,
-+			P1_Q2_BD_OFFSET + ((QUEUE_2_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE3] = {
-+			P1_Q3_BUFFER_OFFSET,
-+			P1_Q3_BUFFER_OFFSET + ((QUEUE_3_SIZE - 1) *
-+					ICSS_BLOCK_SIZE),
-+			P1_Q3_BD_OFFSET,
-+			P1_Q3_BD_OFFSET + ((QUEUE_3_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE4] = {
-+			P1_Q4_BUFFER_OFFSET,
-+			P1_Q4_BUFFER_OFFSET + ((QUEUE_4_SIZE - 1) *
-+					ICSS_BLOCK_SIZE),
-+			P1_Q4_BD_OFFSET,
-+			P1_Q4_BD_OFFSET + ((QUEUE_4_SIZE - 1) * BD_SIZE),
-+		},
-+	},
-+	[PRUETH_PORT_QUEUE_MII1] = {
-+		[PRUETH_QUEUE1] = {
-+			P2_Q1_BUFFER_OFFSET,
-+			P2_Q1_BUFFER_OFFSET + ((QUEUE_1_SIZE - 1) *
-+					ICSS_BLOCK_SIZE),
-+			P2_Q1_BD_OFFSET,
-+			P2_Q1_BD_OFFSET + ((QUEUE_1_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE2] = {
-+			P2_Q2_BUFFER_OFFSET,
-+			P2_Q2_BUFFER_OFFSET + ((QUEUE_2_SIZE - 1) *
-+					ICSS_BLOCK_SIZE),
-+			P2_Q2_BD_OFFSET,
-+			P2_Q2_BD_OFFSET + ((QUEUE_2_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE3] = {
-+			P2_Q3_BUFFER_OFFSET,
-+			P2_Q3_BUFFER_OFFSET + ((QUEUE_3_SIZE - 1) *
-+					ICSS_BLOCK_SIZE),
-+			P2_Q3_BD_OFFSET,
-+			P2_Q3_BD_OFFSET + ((QUEUE_3_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE4] = {
-+			P2_Q4_BUFFER_OFFSET,
-+			P2_Q4_BUFFER_OFFSET + ((QUEUE_4_SIZE - 1) *
-+					ICSS_BLOCK_SIZE),
-+			P2_Q4_BD_OFFSET,
-+			P2_Q4_BD_OFFSET + ((QUEUE_4_SIZE - 1) * BD_SIZE),
-+		},
-+	},
-+};
-+
-+static const struct prueth_queue_desc queue_descs[][NUM_QUEUES] = {
-+	[PRUETH_PORT_QUEUE_HOST] = {
-+		{ .rd_ptr = P0_Q1_BD_OFFSET, .wr_ptr = P0_Q1_BD_OFFSET, },
-+		{ .rd_ptr = P0_Q2_BD_OFFSET, .wr_ptr = P0_Q2_BD_OFFSET, },
-+		{ .rd_ptr = P0_Q3_BD_OFFSET, .wr_ptr = P0_Q3_BD_OFFSET, },
-+		{ .rd_ptr = P0_Q4_BD_OFFSET, .wr_ptr = P0_Q4_BD_OFFSET, },
-+	},
-+	[PRUETH_PORT_QUEUE_MII0] = {
-+		{ .rd_ptr = P1_Q1_BD_OFFSET, .wr_ptr = P1_Q1_BD_OFFSET, },
-+		{ .rd_ptr = P1_Q2_BD_OFFSET, .wr_ptr = P1_Q2_BD_OFFSET, },
-+		{ .rd_ptr = P1_Q3_BD_OFFSET, .wr_ptr = P1_Q3_BD_OFFSET, },
-+		{ .rd_ptr = P1_Q4_BD_OFFSET, .wr_ptr = P1_Q4_BD_OFFSET, },
-+	},
-+	[PRUETH_PORT_QUEUE_MII1] = {
-+		{ .rd_ptr = P2_Q1_BD_OFFSET, .wr_ptr = P2_Q1_BD_OFFSET, },
-+		{ .rd_ptr = P2_Q2_BD_OFFSET, .wr_ptr = P2_Q2_BD_OFFSET, },
-+		{ .rd_ptr = P2_Q3_BD_OFFSET, .wr_ptr = P2_Q3_BD_OFFSET, },
-+		{ .rd_ptr = P2_Q4_BD_OFFSET, .wr_ptr = P2_Q4_BD_OFFSET, },
-+	}
-+};
-+
-+static void icssm_prueth_hostconfig(struct prueth *prueth)
-+{
-+	void __iomem *sram_base = prueth->mem[PRUETH_MEM_SHARED_RAM].va;
-+	void __iomem *sram;
-+
-+	/* queue size lookup table */
-+	sram = sram_base + HOST_QUEUE_SIZE_ADDR;
-+	writew(HOST_QUEUE_1_SIZE, sram);
-+	writew(HOST_QUEUE_2_SIZE, sram + 2);
-+	writew(HOST_QUEUE_3_SIZE, sram + 4);
-+	writew(HOST_QUEUE_4_SIZE, sram + 6);
-+
-+	/* queue information table */
-+	sram = sram_base + HOST_Q1_RX_CONTEXT_OFFSET;
-+	memcpy_toio(sram, queue_infos[PRUETH_PORT_QUEUE_HOST],
-+		    sizeof(queue_infos[PRUETH_PORT_QUEUE_HOST]));
-+
-+	/* buffer offset table */
-+	sram = sram_base + HOST_QUEUE_OFFSET_ADDR;
-+	writew(P0_Q1_BUFFER_OFFSET, sram);
-+	writew(P0_Q2_BUFFER_OFFSET, sram + 2);
-+	writew(P0_Q3_BUFFER_OFFSET, sram + 4);
-+	writew(P0_Q4_BUFFER_OFFSET, sram + 6);
-+
-+	/* buffer descriptor offset table*/
-+	sram = sram_base + HOST_QUEUE_DESCRIPTOR_OFFSET_ADDR;
-+	writew(P0_Q1_BD_OFFSET, sram);
-+	writew(P0_Q2_BD_OFFSET, sram + 2);
-+	writew(P0_Q3_BD_OFFSET, sram + 4);
-+	writew(P0_Q4_BD_OFFSET, sram + 6);
-+
-+	/* queue table */
-+	sram = sram_base + HOST_QUEUE_DESC_OFFSET;
-+	memcpy_toio(sram, queue_descs[PRUETH_PORT_QUEUE_HOST],
-+		    sizeof(queue_descs[PRUETH_PORT_QUEUE_HOST]));
-+}
-+
-+static void icssm_prueth_mii_init(struct prueth *prueth)
-+{
-+	struct regmap *mii_rt;
-+	u32 rxcfg_reg, rxcfg;
-+	u32 txcfg_reg, txcfg;
-+
-+	mii_rt = prueth->mii_rt;
-+
-+	rxcfg = PRUSS_MII_RT_RXCFG_RX_ENABLE |
-+		PRUSS_MII_RT_RXCFG_RX_DATA_RDY_MODE_DIS |
-+		PRUSS_MII_RT_RXCFG_RX_L2_EN |
-+		PRUSS_MII_RT_RXCFG_RX_CUT_PREAMBLE |
-+		PRUSS_MII_RT_RXCFG_RX_L2_EOF_SCLR_DIS;
-+
-+	/* Configuration of Port 0 Rx */
-+	rxcfg_reg = PRUSS_MII_RT_RXCFG0;
-+
-+	regmap_write(mii_rt, rxcfg_reg, rxcfg);
-+
-+	/* Configuration of Port 1 Rx */
-+	rxcfg_reg = PRUSS_MII_RT_RXCFG1;
-+
-+	rxcfg |= PRUSS_MII_RT_RXCFG_RX_MUX_SEL;
-+
-+	regmap_write(mii_rt, rxcfg_reg, rxcfg);
-+
-+	txcfg = PRUSS_MII_RT_TXCFG_TX_ENABLE |
-+		PRUSS_MII_RT_TXCFG_TX_AUTO_PREAMBLE |
-+		PRUSS_MII_RT_TXCFG_TX_32_MODE_EN |
-+		(TX_START_DELAY << PRUSS_MII_RT_TXCFG_TX_START_DELAY_SHIFT) |
-+		(TX_CLK_DELAY_100M << PRUSS_MII_RT_TXCFG_TX_CLK_DELAY_SHIFT);
-+
-+	/* Configuration of Port 0 Tx */
-+	txcfg_reg = PRUSS_MII_RT_TXCFG0;
-+
-+	regmap_write(mii_rt, txcfg_reg, txcfg);
-+
-+	txcfg |= PRUSS_MII_RT_TXCFG_TX_MUX_SEL;
-+
-+	/* Configuration of Port 1 Tx */
-+	txcfg_reg = PRUSS_MII_RT_TXCFG1;
-+
-+	regmap_write(mii_rt, txcfg_reg, txcfg);
-+
-+	txcfg_reg = PRUSS_MII_RT_RX_FRMS0;
-+
-+	/* Min frame length should be set to 64 to allow receive of standard
-+	 * Ethernet frames such as PTP, LLDP that will not have the tag/rct.
-+	 * Actual size written to register is size - 1 per TRM. This also
-+	 * includes CRC/FCS.
-+	 */
-+	txcfg = FIELD_PREP(PRUSS_MII_RT_RX_FRMS_MIN_FRM_MASK,
-+			   (PRUSS_MII_RT_RX_FRMS_MIN_FRM - 1));
-+
-+	/* For EMAC, set Max frame size to 1528 i.e size with VLAN.
-+	 * Actual size written to register is size - 1 as per TRM.
-+	 * Since driver support run time change of protocol, driver
-+	 * must overwrite the values based on Ethernet type.
-+	 */
-+	txcfg |= FIELD_PREP(PRUSS_MII_RT_RX_FRMS_MAX_FRM_MASK,
-+			    (PRUSS_MII_RT_RX_FRMS_MAX_SUPPORT_EMAC - 1));
-+
-+	regmap_write(mii_rt, txcfg_reg, txcfg);
-+
-+	txcfg_reg = PRUSS_MII_RT_RX_FRMS1;
-+
-+	regmap_write(mii_rt, txcfg_reg, txcfg);
-+}
-+
-+static void icssm_prueth_clearmem(struct prueth *prueth, enum prueth_mem region)
-+{
-+	memset_io(prueth->mem[region].va, 0, prueth->mem[region].size);
-+}
-+
-+static void icssm_prueth_hostinit(struct prueth *prueth)
-+{
-+	/* Clear shared RAM */
-+	icssm_prueth_clearmem(prueth, PRUETH_MEM_SHARED_RAM);
-+
-+	/* Clear OCMC RAM */
-+	icssm_prueth_clearmem(prueth, PRUETH_MEM_OCMC);
-+
-+	/* Clear data RAMs */
-+	if (prueth->eth_node[PRUETH_MAC0])
-+		icssm_prueth_clearmem(prueth, PRUETH_MEM_DRAM0);
-+	if (prueth->eth_node[PRUETH_MAC1])
-+		icssm_prueth_clearmem(prueth, PRUETH_MEM_DRAM1);
-+
-+	/* Initialize host queues in shared RAM */
-+	icssm_prueth_hostconfig(prueth);
-+
-+	/* Configure MII_RT */
-+	icssm_prueth_mii_init(prueth);
-+}
-+
-+/* This function initialize the driver in EMAC or HSR or PRP mode
-+ * based on eth_type
-+ */
-+static void icssm_prueth_init_ethernet_mode(struct prueth *prueth)
-+{
-+	icssm_prueth_hostinit(prueth);
-+}
-+
-+static int icssm_prueth_emac_config(struct prueth_emac *emac)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	u32 sharedramaddr, ocmcaddr;
-+	void __iomem *dram_base;
-+	void __iomem *mac_addr;
-+	void __iomem *dram;
-+
-+	/* PRU needs local shared RAM address for C28 */
-+	sharedramaddr = ICSS_LOCAL_SHARED_RAM;
-+	/* PRU needs real global OCMC address for C30*/
-+	ocmcaddr = (u32)prueth->mem[PRUETH_MEM_OCMC].pa;
-+
-+	/* Clear data RAM */
-+	icssm_prueth_clearmem(prueth, emac->dram);
-+
-+	dram_base = prueth->mem[emac->dram].va;
-+
-+	/* setup mac address */
-+	mac_addr = dram_base + PORT_MAC_ADDR;
-+	memcpy_toio(mac_addr, emac->mac_addr, 6);
-+
-+	/* queue information table */
-+	dram = dram_base + TX_CONTEXT_Q1_OFFSET_ADDR;
-+	memcpy_toio(dram, queue_infos[emac->port_id],
-+		    sizeof(queue_infos[emac->port_id]));
-+
-+	/* queue table */
-+	dram = dram_base + PORT_QUEUE_DESC_OFFSET;
-+	memcpy_toio(dram, queue_descs[emac->port_id],
-+		    sizeof(queue_descs[emac->port_id]));
-+
-+	/* Set in constant table C28 of PRU0 to ICSS Shared memory */
-+	pru_rproc_set_ctable(emac->pru, PRU_C28, sharedramaddr);
-+
-+	/* Set in constant table C30 of PRU0 to OCMC memory */
-+	pru_rproc_set_ctable(emac->pru, PRU_C30, ocmcaddr);
-+
-+	return 0;
-+}
- 
- /* called back by PHY layer if there is change in link state of hw port*/
- static void icssm_emac_adjust_link(struct net_device *ndev)
-@@ -117,15 +425,24 @@ static int icssm_emac_set_boot_pru(struct prueth_emac *emac,
- static int icssm_emac_ndo_open(struct net_device *ndev)
- {
- 	struct prueth_emac *emac = netdev_priv(ndev);
-+	struct prueth *prueth = emac->prueth;
- 	int ret;
- 
-+	/* set h/w MAC as user might have re-configured */
-+	ether_addr_copy(emac->mac_addr, ndev->dev_addr);
-+
-+	if (!prueth->emac_configured)
-+		icssm_prueth_init_ethernet_mode(prueth);
-+
-+	icssm_prueth_emac_config(emac);
-+
- 	ret = icssm_emac_set_boot_pru(emac, ndev);
- 	if (ret)
- 		return ret;
- 
- 	/* start PHY */
- 	phy_start(emac->phydev);
--
-+	prueth->emac_configured |= BIT(emac->port_id);
- 	return 0;
- }
- 
-@@ -221,9 +538,11 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
- 	/* by default eth_type is EMAC */
- 	switch (port) {
- 	case PRUETH_PORT_MII0:
-+		emac->dram = PRUETH_MEM_DRAM0;
- 		emac->pru = prueth->pru0;
- 		break;
- 	case PRUETH_PORT_MII1:
-+		emac->dram = PRUETH_MEM_DRAM1;
- 		emac->pru = prueth->pru1;
- 		break;
- 	default:
-@@ -293,6 +612,7 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np;
- 	struct prueth *prueth;
-+	struct pruss *pruss;
- 	int i, ret;
- 
- 	np = dev->of_node;
-@@ -360,6 +680,12 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 	prueth->eth_node[PRUETH_MAC0] = eth0_node;
- 	prueth->eth_node[PRUETH_MAC1] = eth1_node;
- 
-+	prueth->mii_rt = syscon_regmap_lookup_by_phandle(np, "ti,mii-rt");
-+	if (IS_ERR(prueth->mii_rt)) {
-+		dev_err(dev, "couldn't get mii-rt syscon regmap\n");
-+		return -ENODEV;
-+	}
-+
- 	if (eth0_node) {
- 		prueth->pru0 = pru_rproc_get(np, 0, &pruss_id0);
- 		if (IS_ERR(prueth->pru0)) {
-@@ -378,6 +704,70 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	pruss = pruss_get(prueth->pru0 ? prueth->pru0 : prueth->pru1);
-+	if (IS_ERR(pruss)) {
-+		ret = PTR_ERR(pruss);
-+		dev_err(dev, "unable to get pruss handle\n");
-+		goto put_pru;
-+	}
-+	prueth->pruss = pruss;
-+
-+	/* Configure PRUSS */
-+	if (eth0_node)
-+		pruss_cfg_gpimode(pruss, pruss_id0, PRUSS_GPI_MODE_MII);
-+	if (eth1_node)
-+		pruss_cfg_gpimode(pruss, pruss_id1, PRUSS_GPI_MODE_MII);
-+	pruss_cfg_miirt_enable(pruss, true);
-+	pruss_cfg_xfr_enable(pruss, PRU_TYPE_PRU, true);
-+
-+	/* Get PRUSS mem resources */
-+	/* OCMC is system resource which we get separately */
-+	for (i = 0; i < ARRAY_SIZE(pruss_mem_ids); i++) {
-+		/* skip appropriate DRAM if not required */
-+		if (!eth0_node && i == PRUETH_MEM_DRAM0)
-+			continue;
-+
-+		if (!eth1_node && i == PRUETH_MEM_DRAM1)
-+			continue;
-+
-+		ret = pruss_request_mem_region(pruss, pruss_mem_ids[i],
-+					       &prueth->mem[i]);
-+		if (ret) {
-+			dev_err(dev, "unable to get PRUSS resource %d: %d\n",
-+				i, ret);
-+			goto put_mem;
-+		}
-+	}
-+
-+	prueth->sram_pool = of_gen_pool_get(np, "sram", 0);
-+	if (!prueth->sram_pool) {
-+		dev_err(dev, "unable to get SRAM pool\n");
-+		ret = -ENODEV;
-+		goto put_mem;
-+	}
-+
-+	prueth->ocmc_ram_size = OCMC_RAM_SIZE;
-+	/* Decreased by 8KB to address the reserved region for AM33x */
-+	if (prueth->fw_data->driver_data == PRUSS_AM33XX)
-+		prueth->ocmc_ram_size = (SZ_64K - SZ_8K);
-+
-+	prueth->mem[PRUETH_MEM_OCMC].va =
-+			(void __iomem *)gen_pool_alloc(prueth->sram_pool,
-+						       prueth->ocmc_ram_size);
-+	if (!prueth->mem[PRUETH_MEM_OCMC].va) {
-+		dev_err(dev, "unable to allocate OCMC resource\n");
-+		ret = -ENOMEM;
-+		goto put_mem;
-+	}
-+	prueth->mem[PRUETH_MEM_OCMC].pa = gen_pool_virt_to_phys
-+		(prueth->sram_pool, (unsigned long)
-+		 prueth->mem[PRUETH_MEM_OCMC].va);
-+	prueth->mem[PRUETH_MEM_OCMC].size = prueth->ocmc_ram_size;
-+	dev_dbg(dev, "ocmc: pa %pa va %p size %#zx\n",
-+		&prueth->mem[PRUETH_MEM_OCMC].pa,
-+		prueth->mem[PRUETH_MEM_OCMC].va,
-+		prueth->mem[PRUETH_MEM_OCMC].size);
-+
- 	/* setup netdev interfaces */
- 	if (eth0_node) {
- 		ret = icssm_prueth_netdev_init(prueth, eth0_node);
-@@ -386,7 +776,7 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 				dev_err(dev, "netdev init %s failed: %d\n",
- 					eth0_node->name, ret);
- 			}
--			goto put_pru;
-+			goto free_pool;
- 		}
- 	}
- 
-@@ -424,6 +814,9 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 			prueth->emac[PRUETH_MAC1]->ndev;
- 	}
- 
-+	dev_info(dev, "TI PRU ethernet driver initialized: %s EMAC mode\n",
-+		 (!eth0_node || !eth1_node) ? "single" : "dual");
-+
- 	if (eth1_node)
- 		of_node_put(eth1_node);
- 	if (eth0_node)
-@@ -446,6 +839,18 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 		icssm_prueth_netdev_exit(prueth, eth_node);
- 	}
- 
-+free_pool:
-+	gen_pool_free(prueth->sram_pool,
-+		      (unsigned long)prueth->mem[PRUETH_MEM_OCMC].va,
-+		      prueth->ocmc_ram_size);
-+
-+put_mem:
-+	for (i = PRUETH_MEM_DRAM0; i < PRUETH_MEM_OCMC; i++) {
-+		if (prueth->mem[i].va)
-+			pruss_release_mem_region(pruss, &prueth->mem[i]);
-+	}
-+	pruss_put(prueth->pruss);
-+
- put_pru:
- 	if (eth1_node) {
- 		if (prueth->pru1)
-@@ -483,6 +888,16 @@ static void icssm_prueth_remove(struct platform_device *pdev)
- 		of_node_put(eth_node);
- 	}
- 
-+	gen_pool_free(prueth->sram_pool,
-+		      (unsigned long)prueth->mem[PRUETH_MEM_OCMC].va,
-+		      prueth->ocmc_ram_size);
-+
-+	for (i = PRUETH_MEM_DRAM0; i < PRUETH_MEM_OCMC; i++) {
-+		if (prueth->mem[i].va)
-+			pruss_release_mem_region(prueth->pruss,
-+						 &prueth->mem[i]);
-+	}
-+
- 	pruss_put(prueth->pruss);
- 
- 	if (prueth->eth_node[PRUETH_MAC0])
-@@ -550,6 +965,7 @@ static const struct dev_pm_ops prueth_dev_pm_ops = {
- 
- /* AM335x SoC-specific firmware data */
- static struct prueth_private_data am335x_prueth_pdata = {
-+	.driver_data = PRUSS_AM33XX,
- 	.fw_pru[PRUSS_PRU0] = {
- 		.fw_name[PRUSS_ETHTYPE_EMAC] =
- 			"ti-pruss/am335x-pru0-prueth-fw.elf",
-@@ -562,6 +978,7 @@ static struct prueth_private_data am335x_prueth_pdata = {
- 
- /* AM437x SoC-specific firmware data */
- static struct prueth_private_data am437x_prueth_pdata = {
-+	.driver_data = PRUSS_AM43XX,
- 	.fw_pru[PRUSS_PRU0] = {
- 		.fw_name[PRUSS_ETHTYPE_EMAC] =
- 			"ti-pruss/am437x-pru0-prueth-fw.elf",
-@@ -574,6 +991,7 @@ static struct prueth_private_data am437x_prueth_pdata = {
- 
- /* AM57xx SoC-specific firmware data */
- static struct prueth_private_data am57xx_prueth_pdata = {
-+	.driver_data = PRUSS_AM57XX,
- 	.fw_pru[PRUSS_PRU0] = {
- 		.fw_name[PRUSS_ETHTYPE_EMAC] =
- 			"ti-pruss/am57xx-pru0-prueth-fw.elf",
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.h b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-index b77deb02fc2f..f1d1deef888f 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-@@ -13,6 +13,14 @@
- #include <linux/pruss_driver.h>
- #include <linux/remoteproc/pruss.h>
- 
-+#include "icssm_switch.h"
-+
-+/* ICSSM size of redundancy tag */
-+#define ICSSM_LRE_TAG_SIZE	6
-+
-+/* PRUSS local memory map */
-+#define ICSS_LOCAL_SHARED_RAM	0x00010000
-+
- /* PRU Ethernet Type - Ethernet functionality (protocol
-  * implemented) provided by the PRU firmware being loaded.
-  */
-@@ -24,6 +32,50 @@ enum pruss_ethtype {
- 	PRUSS_ETHTYPE_MAX,
- };
- 
-+#define PRUETH_IS_EMAC(p)	((p)->eth_type == PRUSS_ETHTYPE_EMAC)
-+#define PRUETH_IS_SWITCH(p)	((p)->eth_type == PRUSS_ETHTYPE_SWITCH)
-+
-+/**
-+ * struct prueth_queue_desc - Queue descriptor
-+ * @rd_ptr:	Read pointer, points to a buffer descriptor in Shared PRU RAM.
-+ * @wr_ptr:	Write pointer, points to a buffer descriptor in Shared PRU RAM.
-+ * @busy_s:	Slave queue busy flag, set by slave(us) to request access from
-+ *		master(PRU).
-+ * @status:	Bit field status register, Bits:
-+ *			0: Master queue busy flag.
-+ *			1: Packet has been placed in collision queue.
-+ *			2: Packet has been discarded due to overflow.
-+ * @max_fill_level:	Maximum queue usage seen.
-+ * @overflow_cnt:	Count of queue overflows.
-+ *
-+ * Each port has up to 4 queues with variable length. The queue is processed
-+ * as ring buffer with read and write pointers. Both pointers are address
-+ * pointers and increment by 4 for each buffer descriptor position. Queue has
-+ * a length defined in constants and a status.
-+ */
-+struct prueth_queue_desc {
-+	u16 rd_ptr;
-+	u16 wr_ptr;
-+	u8 busy_s;
-+	u8 status;
-+	u8 max_fill_level;
-+	u8 overflow_cnt;
-+};
-+
-+/**
-+ * struct prueth_queue_info - Information about a queue in memory
-+ * @buffer_offset: buffer offset in OCMC RAM
-+ * @queue_desc_offset: queue descriptor offset in Shared RAM
-+ * @buffer_desc_offset: buffer descriptors offset in Shared RAM
-+ * @buffer_desc_end: end address of buffer descriptors in Shared RAM
-+ */
-+struct prueth_queue_info {
-+	u16 buffer_offset;
-+	u16 queue_desc_offset;
-+	u16 buffer_desc_offset;
-+	u16 buffer_desc_end;
-+};
-+
- /* In switch mode there are 3 real ports i.e. 3 mac addrs.
-  * however Linux sees only the host side port. The other 2 ports
-  * are the switch ports.
-@@ -44,6 +96,34 @@ enum prueth_mac {
- 	PRUETH_MAC_INVALID,
- };
- 
-+/* In both switch & emac modes there are 3 port queues
-+ * EMAC mode:
-+ *     RX packets for both MII0 & MII1 ports come on
-+ *     QUEUE_HOST.
-+ *     TX packets for MII0 go on QUEUE_MII0, TX packets
-+ *     for MII1 go on QUEUE_MII1.
-+ * Switch mode:
-+ *     Host port RX packets come on QUEUE_HOST
-+ *     TX packets might have to go on MII0 or MII1 or both.
-+ *     MII0 TX queue is QUEUE_MII0 and MII1 TX queue is
-+ *     QUEUE_MII1.
-+ */
-+enum prueth_port_queue_id {
-+	PRUETH_PORT_QUEUE_HOST = 0,
-+	PRUETH_PORT_QUEUE_MII0,
-+	PRUETH_PORT_QUEUE_MII1,
-+	PRUETH_PORT_QUEUE_MAX,
-+};
-+
-+/* Each port queue has 4 queues and 1 collision queue */
-+enum prueth_queue_id {
-+	PRUETH_QUEUE1 = 0,
-+	PRUETH_QUEUE2,
-+	PRUETH_QUEUE3,
-+	PRUETH_QUEUE4,
-+	PRUETH_COLQUEUE,        /* collision queue */
-+};
-+
- /**
-  * struct prueth_firmware - PRU Ethernet FW data
-  * @fw_name: firmware names of firmware to run on PRU
-@@ -52,11 +132,29 @@ struct prueth_firmware {
- 	const char *fw_name[PRUSS_ETHTYPE_MAX];
- };
- 
-+/* PRUeth memory range identifiers */
-+enum prueth_mem {
-+	PRUETH_MEM_DRAM0 = 0,
-+	PRUETH_MEM_DRAM1,
-+	PRUETH_MEM_SHARED_RAM,
-+	PRUETH_MEM_OCMC,
-+	PRUETH_MEM_MAX,
-+};
-+
-+enum pruss_device {
-+	PRUSS_AM57XX = 0,
-+	PRUSS_AM43XX,
-+	PRUSS_AM33XX,
-+	PRUSS_K2G
-+};
-+
- /**
-  * struct prueth_private_data - PRU Ethernet private data
-+ * @driver_data: PRU Ethernet device name
-  * @fw_pru: firmware names to be used for PRUSS ethernet usecases
-  */
- struct prueth_private_data {
-+	enum pruss_device driver_data;
- 	const struct prueth_firmware fw_pru[PRUSS_NUM_PRUS];
- };
- 
-@@ -73,6 +171,7 @@ struct prueth_emac {
- 	int duplex;
- 
- 	enum prueth_port port_id;
-+	enum prueth_mem dram;
- 	const char *phy_id;
- 	u8 mac_addr[6];
- 	phy_interface_t phy_if;
-@@ -87,6 +186,9 @@ struct prueth {
- 	struct device *dev;
- 	struct pruss *pruss;
- 	struct rproc *pru0, *pru1;
-+	struct pruss_mem_region mem[PRUETH_MEM_MAX];
-+	struct gen_pool *sram_pool;
-+	struct regmap *mii_rt;
- 
- 	const struct prueth_private_data *fw_data;
- 	struct prueth_fw_offsets *fw_offsets;
-@@ -96,5 +198,7 @@ struct prueth {
- 	struct net_device *registered_netdevs[PRUETH_NUM_MACS];
- 
- 	unsigned int eth_type;
-+	size_t ocmc_ram_size;
-+	u8 emac_configured;
- };
- #endif /* __NET_TI_PRUETH_H */
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_switch.h b/drivers/net/ethernet/ti/icssm/icssm_switch.h
-new file mode 100644
-index 000000000000..b13e0706ccec
---- /dev/null
-+++ b/drivers/net/ethernet/ti/icssm/icssm_switch.h
-@@ -0,0 +1,257 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+/* Copyright (C) 2015-2021 Texas Instruments Incorporated - https://www.ti.com
-+ */
-+
-+#ifndef __ICSS_SWITCH_H
-+#define __ICSS_SWITCH_H
-+
-+/* Basic Switch Parameters
-+ * Used to auto compute offset addresses on L3 OCMC RAM. Do not modify these
-+ * without changing firmware accordingly
-+ */
-+#define SWITCH_BUFFER_SIZE	(64 * 1024)	/* L3 buffer */
-+#define ICSS_BLOCK_SIZE		32		/* data bytes per BD */
-+#define BD_SIZE			4		/* byte buffer descriptor */
-+#define NUM_QUEUES		4		/* Queues on Port 0/1/2 */
-+
-+#define PORT_LINK_MASK		0x1
-+#define PORT_IS_HD_MASK		0x2
-+
-+/* Physical Port queue size (number of BDs). Same for both ports */
-+#define QUEUE_1_SIZE		97	/* Network Management high */
-+#define QUEUE_2_SIZE		97	/* Network Management low */
-+#define QUEUE_3_SIZE		97	/* Protocol specific */
-+#define QUEUE_4_SIZE		97	/* NRT (IP,ARP, ICMP) */
-+
-+/* Host queue size (number of BDs). Each BD points to data buffer of 32 bytes.
-+ * HOST PORT QUEUES can buffer up to 4 full sized frames per queue
-+ */
-+#define	HOST_QUEUE_1_SIZE	194	/* Protocol and VLAN priority 7 & 6 */
-+#define HOST_QUEUE_2_SIZE	194	/* Protocol mid */
-+#define HOST_QUEUE_3_SIZE	194	/* Protocol low */
-+#define HOST_QUEUE_4_SIZE	194	/* NRT (IP, ARP, ICMP) */
-+
-+#define COL_QUEUE_SIZE		0
-+
-+/* NRT Buffer descriptor definition
-+ * Each buffer descriptor points to a max 32 byte block and has 32 bit in size
-+ * to have atomic operation.
-+ * PRU can address bytewise into memory.
-+ * Definition of 32 bit descriptor is as follows
-+ *
-+ * Bits		Name			Meaning
-+ * =============================================================================
-+ * 0..7		Index		points to index in buffer queue, max 256 x 32
-+ *				byte blocks can be addressed
-+ * 6		LookupSuccess	For switch, FDB lookup was successful (source
-+ *				MAC address found in FDB).
-+ *				For RED, NodeTable lookup was successful.
-+ * 7		Flood		Packet should be flooded (destination MAC
-+ *				address found in FDB). For switch only.
-+ * 8..12	Block_length	number of valid bytes in this specific block.
-+ *				Will be <=32 bytes on last block of packet
-+ * 13		More		"More" bit indicating that there are more blocks
-+ * 14		Shadow		indicates that "index" is pointing into shadow
-+ *				buffer
-+ * 15		TimeStamp	indicates that this packet has time stamp in
-+ *				separate buffer - only needed of PTCP runs on
-+ *				host
-+ * 16..17	Port		different meaning for ingress and egress,
-+ *				Ingress: Port = 0 indicates phy port 1 and
-+ *				Port = 1 indicates phy port 2.
-+ *				Egress: 0 sends on phy port 1 and 1 sends on
-+ *				phy port 2. Port = 2 goes over MAC table
-+ *				look-up
-+ * 18..28	Length		11 bit of total packet length which is put into
-+ *				first BD only so that host access only one BD
-+ * 29		VlanTag		indicates that packet has Length/Type field of
-+ *				0x08100 with VLAN tag in following byte
-+ * 30		Broadcast	indicates that packet goes out on both physical
-+ *				ports,	there will be two bd but only one buffer
-+ * 31		Error		indicates there was an error in the packet
-+ */
-+#define PRUETH_BD_START_FLAG_MASK	BIT(0)
-+#define PRUETH_BD_START_FLAG_SHIFT	0
-+
-+#define PRUETH_BD_HSR_FRAME_MASK	BIT(4)
-+#define PRUETH_BD_HSR_FRAME_SHIFT	4
-+
-+#define PRUETH_BD_SUP_HSR_FRAME_MASK	BIT(5)
-+#define PRUETH_BD_SUP_HSR_FRAME_SHIFT	5
-+
-+#define PRUETH_BD_LOOKUP_SUCCESS_MASK	BIT(6)
-+#define PRUETH_BD_LOOKUP_SUCCESS_SHIFT	6
-+
-+#define PRUETH_BD_SW_FLOOD_MASK		BIT(7)
-+#define PRUETH_BD_SW_FLOOD_SHIFT	7
-+
-+#define	PRUETH_BD_SHADOW_MASK		BIT(14)
-+#define	PRUETH_BD_SHADOW_SHIFT		14
-+
-+#define PRUETH_BD_TIMESTAMP_MASK	BIT(15)
-+#define PRUETH_BD_TIMESTAMP_SHIT	15
-+
-+#define PRUETH_BD_PORT_MASK		GENMASK(17, 16)
-+#define PRUETH_BD_PORT_SHIFT		16
-+
-+#define PRUETH_BD_LENGTH_MASK		GENMASK(28, 18)
-+#define PRUETH_BD_LENGTH_SHIFT		18
-+
-+#define PRUETH_BD_BROADCAST_MASK	BIT(30)
-+#define PRUETH_BD_BROADCAST_SHIFT	30
-+
-+#define PRUETH_BD_ERROR_MASK		BIT(31)
-+#define PRUETH_BD_ERROR_SHIFT		31
-+
-+/* The following offsets indicate which sections of the memory are used
-+ * for EMAC internal tasks
-+ */
-+#define DRAM_START_OFFSET		0x1E98
-+#define SRAM_START_OFFSET		0x400
-+
-+/* General Purpose Statistics
-+ * These are present on both PRU0 and PRU1 DRAM
-+ */
-+/* base statistics offset */
-+#define STATISTICS_OFFSET	0x1F00
-+#define STAT_SIZE		0x98
-+
-+/* Offset for storing
-+ * 1. Storm Prevention Params
-+ * 2. PHY Speed Offset
-+ * 3. Port Status Offset
-+ * These are present on both PRU0 and PRU1
-+ */
-+/* 4 bytes */
-+#define STORM_PREVENTION_OFFSET_BC	(STATISTICS_OFFSET + STAT_SIZE)
-+/* 4 bytes */
-+#define PHY_SPEED_OFFSET		(STATISTICS_OFFSET + STAT_SIZE + 4)
-+/* 1 byte */
-+#define PORT_STATUS_OFFSET		(STATISTICS_OFFSET + STAT_SIZE + 8)
-+/* 1 byte */
-+#define COLLISION_COUNTER		(STATISTICS_OFFSET + STAT_SIZE + 9)
-+/* 4 bytes */
-+#define RX_PKT_SIZE_OFFSET		(STATISTICS_OFFSET + STAT_SIZE + 10)
-+/* 4 bytes */
-+#define PORT_CONTROL_ADDR		(STATISTICS_OFFSET + STAT_SIZE + 14)
-+/* 6 bytes */
-+#define PORT_MAC_ADDR			(STATISTICS_OFFSET + STAT_SIZE + 18)
-+/* 1 byte */
-+#define RX_INT_STATUS_OFFSET		(STATISTICS_OFFSET + STAT_SIZE + 24)
-+/* 4 bytes */
-+#define STORM_PREVENTION_OFFSET_MC	(STATISTICS_OFFSET + STAT_SIZE + 25)
-+/* 4 bytes */
-+#define STORM_PREVENTION_OFFSET_UC	(STATISTICS_OFFSET + STAT_SIZE + 29)
-+/* 4 bytes ? */
-+#define STP_INVALID_STATE_OFFSET	(STATISTICS_OFFSET + STAT_SIZE + 33)
-+
-+/* DRAM Offsets for EMAC
-+ * Present on Both DRAM0 and DRAM1
-+ */
-+
-+/* 4 queue descriptors for port tx = 32 bytes */
-+#define TX_CONTEXT_Q1_OFFSET_ADDR	(PORT_QUEUE_DESC_OFFSET + 32)
-+#define PORT_QUEUE_DESC_OFFSET	(ICSS_EMAC_TTS_CYC_TX_SOF + 8)
-+
-+/* EMAC Time Triggered Send Offsets */
-+#define ICSS_EMAC_TTS_CYC_TX_SOF	(ICSS_EMAC_TTS_PREV_TX_SOF + 8)
-+#define ICSS_EMAC_TTS_PREV_TX_SOF	\
-+	(ICSS_EMAC_TTS_MISSED_CYCLE_CNT_OFFSET	+ 4)
-+#define ICSS_EMAC_TTS_MISSED_CYCLE_CNT_OFFSET	(ICSS_EMAC_TTS_STATUS_OFFSET \
-+						 + 4)
-+#define ICSS_EMAC_TTS_STATUS_OFFSET	(ICSS_EMAC_TTS_CFG_TIME_OFFSET + 4)
-+#define ICSS_EMAC_TTS_CFG_TIME_OFFSET	(ICSS_EMAC_TTS_CYCLE_PERIOD_OFFSET + 4)
-+#define ICSS_EMAC_TTS_CYCLE_PERIOD_OFFSET	\
-+	(ICSS_EMAC_TTS_CYCLE_START_OFFSET + 8)
-+#define ICSS_EMAC_TTS_CYCLE_START_OFFSET	ICSS_EMAC_TTS_BASE_OFFSET
-+#define ICSS_EMAC_TTS_BASE_OFFSET	DRAM_START_OFFSET
-+
-+/* Shared RAM offsets for EMAC */
-+
-+/* Queue Descriptors */
-+
-+/* 4 queue descriptors for port 0 (host receive). 32 bytes */
-+#define HOST_QUEUE_DESC_OFFSET		(HOST_QUEUE_SIZE_ADDR + 16)
-+
-+/* table offset for queue size:
-+ * 3 ports * 4 Queues * 1 byte offset = 12 bytes
-+ */
-+#define HOST_QUEUE_SIZE_ADDR		(HOST_QUEUE_OFFSET_ADDR + 8)
-+/* table offset for queue:
-+ * 4 Queues * 2 byte offset = 8 bytes
-+ */
-+#define HOST_QUEUE_OFFSET_ADDR		(HOST_QUEUE_DESCRIPTOR_OFFSET_ADDR + 8)
-+/* table offset for Host queue descriptors:
-+ * 1 ports * 4 Queues * 2 byte offset = 8 bytes
-+ */
-+#define HOST_QUEUE_DESCRIPTOR_OFFSET_ADDR	(HOST_Q4_RX_CONTEXT_OFFSET + 8)
-+
-+/* Host Port Rx Context */
-+#define HOST_Q4_RX_CONTEXT_OFFSET	(HOST_Q3_RX_CONTEXT_OFFSET + 8)
-+#define HOST_Q3_RX_CONTEXT_OFFSET	(HOST_Q2_RX_CONTEXT_OFFSET + 8)
-+#define HOST_Q2_RX_CONTEXT_OFFSET	(HOST_Q1_RX_CONTEXT_OFFSET + 8)
-+#define HOST_Q1_RX_CONTEXT_OFFSET	(EMAC_PROMISCUOUS_MODE_OFFSET + 4)
-+
-+/* Promiscuous mode control */
-+#define EMAC_P1_PROMISCUOUS_BIT		BIT(0)
-+#define EMAC_P2_PROMISCUOUS_BIT		BIT(1)
-+#define EMAC_PROMISCUOUS_MODE_OFFSET	(EMAC_RESERVED + 4)
-+#define EMAC_RESERVED			EOF_48K_BUFFER_BD
-+
-+/* allow for max 48k buffer which spans the descriptors up to 0x1800 6kB */
-+#define EOF_48K_BUFFER_BD	(P0_BUFFER_DESC_OFFSET + HOST_BD_SIZE + \
-+				 PORT_BD_SIZE)
-+
-+#define HOST_BD_SIZE		((HOST_QUEUE_1_SIZE +	\
-+				  HOST_QUEUE_2_SIZE + HOST_QUEUE_3_SIZE + \
-+				  HOST_QUEUE_4_SIZE) * BD_SIZE)
-+#define PORT_BD_SIZE		((QUEUE_1_SIZE + QUEUE_2_SIZE +	\
-+				  QUEUE_3_SIZE + QUEUE_4_SIZE) * 2 * BD_SIZE)
-+
-+#define END_OF_BD_POOL		(P2_Q4_BD_OFFSET + QUEUE_4_SIZE * BD_SIZE)
-+#define P2_Q4_BD_OFFSET		(P2_Q3_BD_OFFSET + QUEUE_3_SIZE * BD_SIZE)
-+#define P2_Q3_BD_OFFSET		(P2_Q2_BD_OFFSET + QUEUE_2_SIZE * BD_SIZE)
-+#define P2_Q2_BD_OFFSET		(P2_Q1_BD_OFFSET + QUEUE_1_SIZE * BD_SIZE)
-+#define P2_Q1_BD_OFFSET		(P1_Q4_BD_OFFSET + QUEUE_4_SIZE * BD_SIZE)
-+#define P1_Q4_BD_OFFSET		(P1_Q3_BD_OFFSET + QUEUE_3_SIZE * BD_SIZE)
-+#define P1_Q3_BD_OFFSET		(P1_Q2_BD_OFFSET + QUEUE_2_SIZE * BD_SIZE)
-+#define P1_Q2_BD_OFFSET		(P1_Q1_BD_OFFSET + QUEUE_1_SIZE * BD_SIZE)
-+#define P1_Q1_BD_OFFSET		(P0_Q4_BD_OFFSET + HOST_QUEUE_4_SIZE * BD_SIZE)
-+#define P0_Q4_BD_OFFSET		(P0_Q3_BD_OFFSET + HOST_QUEUE_3_SIZE * BD_SIZE)
-+#define P0_Q3_BD_OFFSET		(P0_Q2_BD_OFFSET + HOST_QUEUE_2_SIZE * BD_SIZE)
-+#define P0_Q2_BD_OFFSET		(P0_Q1_BD_OFFSET + HOST_QUEUE_1_SIZE * BD_SIZE)
-+#define P0_Q1_BD_OFFSET		P0_BUFFER_DESC_OFFSET
-+#define P0_BUFFER_DESC_OFFSET	SRAM_START_OFFSET
-+
-+/* Memory Usage of L3 OCMC RAM */
-+
-+/* L3 64KB Memory - mainly buffer Pool */
-+#define END_OF_BUFFER_POOL	(P2_Q4_BUFFER_OFFSET + QUEUE_4_SIZE *	\
-+				 ICSS_BLOCK_SIZE)
-+#define P2_Q4_BUFFER_OFFSET	(P2_Q3_BUFFER_OFFSET + QUEUE_3_SIZE *	\
-+				 ICSS_BLOCK_SIZE)
-+#define P2_Q3_BUFFER_OFFSET	(P2_Q2_BUFFER_OFFSET + QUEUE_2_SIZE *	\
-+				 ICSS_BLOCK_SIZE)
-+#define P2_Q2_BUFFER_OFFSET	(P2_Q1_BUFFER_OFFSET + QUEUE_1_SIZE *	\
-+				 ICSS_BLOCK_SIZE)
-+#define P2_Q1_BUFFER_OFFSET	(P1_Q4_BUFFER_OFFSET + QUEUE_4_SIZE *	\
-+				 ICSS_BLOCK_SIZE)
-+#define P1_Q4_BUFFER_OFFSET	(P1_Q3_BUFFER_OFFSET + QUEUE_3_SIZE *	\
-+				 ICSS_BLOCK_SIZE)
-+#define P1_Q3_BUFFER_OFFSET	(P1_Q2_BUFFER_OFFSET + QUEUE_2_SIZE *	\
-+				 ICSS_BLOCK_SIZE)
-+#define P1_Q2_BUFFER_OFFSET	(P1_Q1_BUFFER_OFFSET + QUEUE_1_SIZE *	\
-+				 ICSS_BLOCK_SIZE)
-+#define P1_Q1_BUFFER_OFFSET	(P0_Q4_BUFFER_OFFSET + HOST_QUEUE_4_SIZE * \
-+				 ICSS_BLOCK_SIZE)
-+#define P0_Q4_BUFFER_OFFSET	(P0_Q3_BUFFER_OFFSET + HOST_QUEUE_3_SIZE * \
-+				 ICSS_BLOCK_SIZE)
-+#define P0_Q3_BUFFER_OFFSET	(P0_Q2_BUFFER_OFFSET + HOST_QUEUE_2_SIZE * \
-+				 ICSS_BLOCK_SIZE)
-+#define P0_Q2_BUFFER_OFFSET	(P0_Q1_BUFFER_OFFSET + HOST_QUEUE_1_SIZE * \
-+				 ICSS_BLOCK_SIZE)
-+#define P0_COL_BUFFER_OFFSET	0xEE00
-+#define P0_Q1_BUFFER_OFFSET	0x0000
-+
-+#endif /* __ICSS_SWITCH_H */
--- 
-2.43.0
+/P
 
