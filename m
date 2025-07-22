@@ -1,72 +1,72 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C12E2DFA46
-	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 14:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8A42BF010
+	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 14:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753196294; cv=none; b=Idl3lJ3XuQiNaLaTe0YXYQ6FG800BgUyrer4cPa2lo19xy8fX1nDRGFRqa9XxSLvlmBDfRpPd/itS5Yc2A9YhrbLTQODBjNdmBa0Pnlc4qsRT4MXJQZweCOtbyEGDNCSn5tSmusWXN/pKEAbp8QFirEa3b3upn/eD2Bj36M7w+A=
+	t=1753196341; cv=none; b=F7WkFSh79gkN660/vMPiC/9sKrPL1pEcdZDDq244pJXv28j+W2vciL9EVe8FIkD2kMgIPxLRhFwRXO9ufRuR3GhJPJXIAy3DvnVzvEEcMPEv0fRDOfV676le+y0+CLbkxKD1L5oCXeECdFgqwCudAl+TwM/cjfea3SVhG2MYz3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753196294; c=relaxed/simple;
-	bh=NB1BVYhS+7MybxuCFsZv3QiZHTdAuScy85Aimnn5Du0=;
+	s=arc-20240116; t=1753196341; c=relaxed/simple;
+	bh=CiqwsXqS9XffgcdUNt4OEyIxE8kyMoj+z790mtcu3ik=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gvdrdTd1ainjcAQ96WEWaamn5ScKstpybGfKTH7w+/mO/SXSt/9byo1/k0pFWnEq0dHq2HF9T5hy4MBC+S8efqqlAnGLNbfkyeVoBiLofaiTSpx4uKbbQhapJBt5uw0CqMpTCK2GkUpXhXaP/bHXMEIXcYaId+MfXMoDd4TILfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uapqRshc; arc=none smtp.client-ip=209.85.160.176
+	 To:Cc:Content-Type; b=m/k4BuH7WoPA9ux8GOQbrw1b30NINkk0VUaK07SoHonldWzFeC0+gP5gGVWoPBe7kpow+CZRmKFDGfXPuAZ8n5otgKTCFzD0AT7J9XsjAqD+N4RFAkeiLZW1e0nOXts3aBThfMLOuRiDJ5FXXwHJTvxnkDh0EwYenaX4TdYT+9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3Y0GlSAr; arc=none smtp.client-ip=209.85.160.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uapqRshc"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4abc0a296f5so48951661cf.0
-        for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 07:58:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3Y0GlSAr"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4ab3802455eso72731651cf.2
+        for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 07:58:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753196292; x=1753801092; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1753196338; x=1753801138; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NB1BVYhS+7MybxuCFsZv3QiZHTdAuScy85Aimnn5Du0=;
-        b=uapqRshcyhtRKuXIKnEOy4fZ1kvKq7wWaYlB+W3sszOu1Tj35mf/6ocW2c6eKPC19f
-         MCxHRKUYjjuM9MEc4GyZbpEKKqn+lGKfXwYGvU3gVY+85S8xF6zoa9ay/47EmmBx8fEg
-         jbc4uc523PvnT1jpFmA+Plc46XzbL0JbcD2/KYZvD9FJbZnzvln1LlBnKmiKOG/jI9h3
-         n2ti/O+4Hy3S+x25Bim7DRGE1AnrQBUVaVoyO20VOd176i7Ta3aB9wTLKOn2/zFnmf1w
-         9RC9xocPFUIuFn8ur+3K8OT0IchYSE8gfku1DaS2UxsXz3HV8Nc4fkCC3pqAcSdWyoXo
-         v5yA==
+        bh=CiqwsXqS9XffgcdUNt4OEyIxE8kyMoj+z790mtcu3ik=;
+        b=3Y0GlSAr8a8utCCIcJujOzlyTHCc3LmLw52nYSunHLEXJW3H0KCe6LXQnN18Q2qilM
+         6/tPJA9w2oTay3yufSueM1yH7kPgE0SSuYAUUONwcM9uUNXzoOmo20p7UB/m7F/WqAQc
+         ZNFVAMOCjaXORWHLrrkXe5c7xaSGy2w6VZPn1Nx+s0EweEC6phi1rafoHMz5NqlQ6P1T
+         +snaxOLkCIrsExxcnw37+iH8L4oKDd9e8s9qJ6mGMmqZGDukPrghTzRoMxzyylTwFdB4
+         sN/uj2FW2Pm5B8LXYyshytNAVOZe/IoXBCASeyGh5CCsbnZQnK3Qkvt+hQurZuqC5sKo
+         iBTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753196292; x=1753801092;
+        d=1e100.net; s=20230601; t=1753196338; x=1753801138;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NB1BVYhS+7MybxuCFsZv3QiZHTdAuScy85Aimnn5Du0=;
-        b=xKzlvNvxVtQ6JOuhkUUy4aPmmjLg2c5bcI75TNZvAsW0QrlpyBJMdL47u9Od+Jc2jh
-         Lw+nGQk2WZaQ1nsgKeKNrEwHwCDOx/pDFENJlM4YfUPNuBAUyFCpGU6zHMurwKIM4fIx
-         jaxnvOEpvFQUpPiUjiNjwWVK4JeRS9u4ip5hw+xQbnebQliTbc/5Yo4n35UQ7Bn24oqO
-         KaYAURFtlicl8Zv9YJAm38xkROyG6Dy4YmDmFTeLbNAsodONKr4TQTN2eqTlzch73/tI
-         RzlerKTDUOYQtXWm+P15yO8n96MnM6vl8Eo0eAb0PloQgMQBNoyyOOddMeDG6COjbpHY
-         mJuA==
-X-Forwarded-Encrypted: i=1; AJvYcCUeMzg3yvyzjmJqHdkrqiMM8EcyApGMjJ4wDbBzUFq/TlSQB4y4QnwwOnUzkvyWaYXeSzlxMKg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkgfajhwIF7ex7WLSVJwN10cwAx3VXH6i+CONS57QHAG1RxBNv
-	oVtChpE3nFKFO6MuiaOJVozHzs05Z2m/B/7Vj6c4qUTvBmWJ7mSlLNsEfPDxJ19d3XX/BIZRzKQ
-	pBVQwd1cZCkibhKtNxzd+aSNlRRcsZSabHNJcb+Ft
-X-Gm-Gg: ASbGncvumerAt0+apILmIWDDhzBa9pwGp2tEdm8s47EfuMD06Wc2sQJu0B8by8fsjQX
-	CsHtDOwwetOYNEC/XSGEJ9noXXTWnJ1G1DBPDE8ehRFfGOGB/ID85g5c0AvfRL6uMdRacvbH54K
-	On5KZkJ7mAxfEjk+FeiQ5dexwonC/1zDAThbJlhY+714fZtbNrDbrlQQudQRiAfbvUY8yI1hmqI
-	BBpIw==
-X-Google-Smtp-Source: AGHT+IHbvsTmXoMJ90OlEJkh3KhkwboNSzW3FyySqD4AsNrmtWHLtCL62ueTgeIousB3XPBSsSCTtP6ho6CBB51apSk=
-X-Received: by 2002:a05:622a:1999:b0:4ab:4d30:564f with SMTP id
- d75a77b69052e-4ab93df21dcmr375890231cf.47.1753196291532; Tue, 22 Jul 2025
- 07:58:11 -0700 (PDT)
+        bh=CiqwsXqS9XffgcdUNt4OEyIxE8kyMoj+z790mtcu3ik=;
+        b=YRvELjZQ95JhOj2CBw3YrtJbDL/VMZPdysjAQWFmMYIZ3nfwMQ+/tnm7PRoy5wKSQm
+         +nKa4zqqsDGvv2kduB41FIGwdS6z7ISZbul3Wv17uw9N2r5nHzrYEu5LMWx1Ft8xDeNE
+         ShN2dA1kXH9iEc69jR5odB2ke3oSgL3/AryQXzGy65RFU/MitzkoascIeMEotd2Sg0vZ
+         GOJNgn+9+eHSSd+ezsLO7M6110wiB8JglFOFZyTlUBbNTxqrCBwO4SYgnHGdh8GCfo2y
+         YtsPoj7uGkbxwPoa3hGmBH/eBUVg+idc20tyVI4y0ffHaVvo0IZSoj01wNt+v7h6USpv
+         doQw==
+X-Forwarded-Encrypted: i=1; AJvYcCVMG/MIavyA7dIOqQsYqs0vs9pm3Kq/VCDb4aKruS7v3GP6Pmtkm6EVmdpZesxrKVFm8Lcea4Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwroZMVeCevsKzDgGqJG8RnAmdET95da6ACQQu9/d0ROobqnL4v
+	QbHJUXsWX0LIJ0BkBtHilzWCnjVW+bz8xhmppYvlm2pTUwkqQ31h9TgqUW13kuf+adNy9pAyiqL
+	y2yJB0WTOE+jNixhXE3XXxM9WhcdyD6V0kvqmwr4/
+X-Gm-Gg: ASbGncteOnJT/MnWDgUpsMmd3k2oGB8HvGERI0junNV6wB7QSJLYSXvAJuag18HHOEM
+	MWtbIZgXE3W2wuTk/D6RUxS5yqp2jn3vlPCiEztDwmjiwICYivwagR/3F3lgvnhvehbHwFcHgSL
+	I76LqHeMyHpYIqcaKKIrWECUd8gSRXjTXFMD++XjxSTKV9TpRtaYB6fdG8oFPp1tx6uVk4XAc/M
+	0uqpQ==
+X-Google-Smtp-Source: AGHT+IG2yg147JK4Oinx02ez69SdDMukiZsmWmT/iPx1WpvOc0p35m3lKJjL6O102z1pXoYruFzug+iTBIemqmhssxc=
+X-Received: by 2002:ac8:7d12:0:b0:4ab:7125:99aa with SMTP id
+ d75a77b69052e-4aba3e33f4bmr306580691cf.49.1753196338060; Tue, 22 Jul 2025
+ 07:58:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250721203624.3807041-1-kuniyu@google.com> <20250721203624.3807041-10-kuniyu@google.com>
-In-Reply-To: <20250721203624.3807041-10-kuniyu@google.com>
+References: <20250721203624.3807041-1-kuniyu@google.com> <20250721203624.3807041-11-kuniyu@google.com>
+In-Reply-To: <20250721203624.3807041-11-kuniyu@google.com>
 From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 22 Jul 2025 07:58:00 -0700
-X-Gm-Features: Ac12FXyjA2hCizSwjNeIJfXQ3m0aOkPNJ6whPVh_v503OAB4UKe5n9M4BBBTIQU
-Message-ID: <CANn89iJckRO1b6_pdgq1dY+wE_6M1SBgzenR4wtggiykv9B3FQ@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 09/13] net-memcg: Pass struct sock to mem_cgroup_sk_under_memory_pressure().
+Date: Tue, 22 Jul 2025 07:58:46 -0700
+X-Gm-Features: Ac12FXxT4R5nqDZoq6He5N2XHgjugFXTSeJd14lK7mmXsqA2ix7EK8BukOpBfNg
+Message-ID: <CANn89iKo45xre19BCkTRQSym7WCWxAbXOD77+F35OJ0eubmdew@mail.gmail.com>
+Subject: Re: [PATCH v1 net-next 10/13] net: Define sk_memcg under CONFIG_MEMCG.
 To: Kuniyuki Iwashima <kuniyu@google.com>
 Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
@@ -83,15 +83,10 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Jul 21, 2025 at 1:36=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.co=
 m> wrote:
 >
-> We will store a flag in the lowest bit of sk->sk_memcg.
+> Except for sk_clone_lock(), all accesses to sk->sk_memcg
+> is done under CONFIG_MEMCG.
 >
-> Then, we cannot pass the raw pointer to mem_cgroup_under_socket_pressure(=
-).
->
-> Let's pass struct sock to it and rename the function to match other
-> functions starting with mem_cgroup_sk_.
->
-> Note that the helper is moved to sock.h to use mem_cgroup_from_sk().
+> As a bonus, let's define sk->sk_memcg under CONFIG_MEMCG.
 >
 > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 
