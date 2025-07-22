@@ -1,59 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7954288CA7;
-	Tue, 22 Jul 2025 13:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11522E425C;
+	Tue, 22 Jul 2025 13:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753191421; cv=none; b=DPp8bB18OyzJimP00hnZa7qwydwx257hdZS6NYCMnGLXe31nZMzqbN2NngKbvADEXtyEzS8w3V/2VkjvrrJb/XzpILHE75CPXAqjUEtzG7LbOZfYwLmyROjhAR7iUUMG9EXbeAIXib8WyZ0FlPEctviW2u+5NrfwkwYcfngLFrs=
+	t=1753191599; cv=none; b=n2YOY/VbgbCKdM/e9kAIbb3Kbg6uJyzW3S/dr/jhm34ogK4f/v3iShG802PltPyVkqNZ0+a/SEuK4AH8Rcs0vxlsQ0Bib1XKnkZhlKVGjq8Xsv3+SGf3hAqLu+oVOhbrv7AgSg/DpbWDomdKuLBWWkTkyqEs9vq1rk+7tquUYA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753191421; c=relaxed/simple;
-	bh=OLtsNCN/mVtmIDBr0zUT/Ud+gMxwwxwZFvH9g9qFLc0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o0aV+MXOzdjTTIhyCRaAWgn46ry/BS64hFZZ4mOmN3mn2fiKlPtP3+W8poBSXeQUhhHPE2tkL7exzEYXijzRBjyP9pYL97ymJnCrw9VsJfJWA1fUnhQOYh13WiZrUFf2EEOXLzp7Tpx/E9ebxD2/kdiTVYCaxKaJ10KHAW20R8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QcAs1mxG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753191599; c=relaxed/simple;
+	bh=w82IroZHyxLBPCxDF/tgEYFjWbJRjWoNR2Rm8xKdH/Q=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=nRYWbcUCNuZX80hE7ipv7S2t5yTSud7NKS61y/XaJhjf///wKhKWXR3S6Kjz1VJVfZnbWRhJPQPOFjITkRC7fx/2s+9TjyFFQtLt9xqIF8126hbxJi4Q8pcwPqGcpWesQHTm91wrXSEyP8uObLuT8ilb+ZczzmhIwUwRbxn/uWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZS1EPIcp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QcAs1mxG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC080C4CEEB;
-	Tue, 22 Jul 2025 13:37:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZS1EPIcp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C05C4CEEB;
+	Tue, 22 Jul 2025 13:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753191421;
-	bh=OLtsNCN/mVtmIDBr0zUT/Ud+gMxwwxwZFvH9g9qFLc0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QcAs1mxGN2ObuMekwZxCHspOj0Z5RhcFmPsSVE2wpvwXSSDmrDx47IsQPZ8U8WNkL
-	 wg8S0fsZALh8kNSq1Cy7RRp3CLV+NNIoUT8P/uReK73adR8a1LygqX7GGkdsEz45QX
-	 wqbFZZ1DIN+Wgise7Vk0Nb3OwFqhVCBq4QaqXy3atqSmqHSNxAw5aIQEfg3X6NpjAE
-	 r6twe88SZqPu0nS/87ZspWLi/0VoLzv8QJejSuPcwI1XIg1N6yvVE68uzfEvjSWz/x
-	 Cx8RPX1DiewS3cgXjp/s2zxrZ+ZghvS6ycJyERJZaq/mXDY718aWOpZW9HED0fMtzz
-	 cc7UaNq48E8Lg==
-Date: Tue, 22 Jul 2025 06:36:59 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Suchit Karunakaran <suchitkarunakaran@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, jhs@mojatatu.com, xiyou.wangcong@gmail.com,
- jiri@resnulli.us, sdf@fomichev.me, kuniyu@google.com,
- aleksander.lobakin@intel.com, netdev@vger.kernel.org,
- skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: Revert tx queue length on partial failure in
- dev_qdisc_change_tx_queue_len()
-Message-ID: <20250722063659.3a439879@kernel.org>
-In-Reply-To: <20250722071508.12497-1-suchitkarunakaran@gmail.com>
-References: <20250722071508.12497-1-suchitkarunakaran@gmail.com>
+	s=k20201202; t=1753191599;
+	bh=w82IroZHyxLBPCxDF/tgEYFjWbJRjWoNR2Rm8xKdH/Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=ZS1EPIcpxt85uRO7zcgPNp0wMFWjd9+1zt8+DiZX0VtI6YHPoB9mgh+sL+SidLOJz
+	 et2C9kChLgiX0VBFgf0FA/iL3Sg7IiBtf8VNuZqZPBlD4h1lnPgGJRBpc8ePtbBhPK
+	 7CZBtrC3enfDS1A4hOWs1QdIaKZtknYRTcQN20mCpk4BxD8HOll+tCbKacP+LERv6T
+	 PyGs5tr3uGejY0ql/u/EYCOfiGWEznH7M/9NrJwB19xhvq7U0cLULG1lbGy7YYlIjI
+	 fDqOi4nY2Ix2zyne07QZKNj7sHY9FncCLbtynH6Ag8CAikfYzRIq7azv/4up4ZToYR
+	 qByzAcIawf8Vw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 39752383BF5D;
+	Tue, 22 Jul 2025 13:40:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [net-next PatchV2 0/4] Octeontx2-af: RPM: misc feaures
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175319161800.812441.9425015938720528347.git-patchwork-notify@kernel.org>
+Date: Tue, 22 Jul 2025 13:40:18 +0000
+References: <20250720163638.1560323-1-hkelam@marvell.com>
+In-Reply-To: <20250720163638.1560323-1-hkelam@marvell.com>
+To: Hariprasad Kelam <hkelam@marvell.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org,
+ davem@davemloft.net, sgoutham@marvell.com, gakula@marvell.com,
+ jerinj@marvell.com, lcherian@marvell.com, sbhatta@marvell.com,
+ naveenm@marvell.com, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, bbhushan2@marvell.com
 
-On Tue, 22 Jul 2025 12:45:08 +0530 Suchit Karunakaran wrote:
-> +		while (i >= 0) {
-> +			qdisc_change_tx_queue_len(dev, &dev->_tx[i]);
-> +			i--;
+Hello:
 
-i is unsigned, this loop will never end
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Sun, 20 Jul 2025 22:06:34 +0530 you wrote:
+> This series patches adds different features like debugfs
+> support for shared firmware structure and DMAC filter
+> related enhancements.
+> 
+> Patch1: Saves interface MAC address configured from DMAC filters.
+> 
+> Patch2: Disables the stale DMAC filters in driver initialization
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,PatchV2,1/4] Octeontx2-af: Add programmed macaddr to RVU pfvf
+    https://git.kernel.org/netdev/net-next/c/dd47fc676934
+  - [net-next,PatchV2,2/4] Octeontx2-af: Disable stale DMAC filters
+    https://git.kernel.org/netdev/net-next/c/83d17aba92ca
+  - [net-next,PatchV2,3/4] Octeontx2-af: RPM: Update DMA mask
+    https://git.kernel.org/netdev/net-next/c/f5295b5a5849
+  - [net-next,PatchV2,4/4] Octeontx2-af: Debugfs support for firmware data
+    https://git.kernel.org/netdev/net-next/c/49f02e6877d1
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
