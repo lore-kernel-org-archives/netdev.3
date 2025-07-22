@@ -1,480 +1,251 @@
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DD623B611;
-	Tue, 22 Jul 2025 14:35:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF802E4254
+	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 14:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753194915; cv=none; b=PBS06kN0IzAWLVciTvKkLJ8W3u7h+DXoecaxwMsxm4LlUY+ADZl0xr4jTv1cU8TSwsz6TBH1j9GTu1gQHcSAWOlTZC/CxTyQIomme/+IZVbjIKmbvwh0gAblA7id0gNNt1noktq+ECCjibkaRi9dsdQ1qsIUCxH0n0X9pwdaUDo=
+	t=1753194948; cv=none; b=Ug1pPZmzJY2yvAq1esdDPSxDTcdp3/MgNE0Z5I1prfX43d0bBLoErbtd5bb2Ix222VH3aaVniC7rpTHjggkeCn6QHqAttptJmMS+0yAawIGsExaaS2aH1XQRNtGxtdsda4lr6lG2T5T7m6pghvHKfLn8iwVSPLo9Zo1z0QZ6mpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753194915; c=relaxed/simple;
-	bh=+cE7hQSK1js8u0aBXdvrbfW8+Ks9rEEFb2Pq30EB96c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKZofbbtOU78Rt6f5vn5QUtC4Jrb4piVkgUqrUMuq5/GAjZ9DMBFR6Oyy/B+FIP8FWJAhNSrd0MMXfqG6eJ2UGW/rCsXKyBovUfEDFmgmMj3Kwya8iUAxB+o9FJNZcrQaYJ97W1IwDXPO7T76kH73yQ83ohq5YApUCvLfC/KzzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=xcgtvdir; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	s=arc-20240116; t=1753194948; c=relaxed/simple;
+	bh=FtMcpts9tF0PQFNX2Xy1OLTiS5qBzXfp3waJCk/dUso=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cWJJBnVMbBOd1haL4ehCgdzLOsksUnwWSy8TYOFy4R5/+q2qrGyenfePwzbor9RSbaAyoHJXRbcnmYGirgJa9SryCKtXVomswPQaltb3QCm+v6qjISwTN16TVtDVaOvRzpnIK+zjHcJL/K2OhPodF2956qnqDp8pZmqmyf30rFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OzlmYC83; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="xcgtvdir"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=k+aGwpYiLSLlt4ceOn3qEsT6RLjSBQ3cDnQZdOAkkPA=; b=xcgtvdirUyxDb53wTFdjg5uP67
-	SRPtkxF9tZJFmWkK2ZNCGDXlkSxopd/OQ1DX1cH4yeZqTBn1hiIb6s6ZYeqfn4g74KUrbFDCgU49w
-	0CJJaWBcY843zwtgR98oBqSyMT3t9gW2Gqm7w55pR+keDuW37DjXAGJ6HODl922vGxdtHrwQOjYMn
-	vSNzn0j4IPNQWAdVe6CLOwFi841kgWX6F8FJLRy4Zr2ti/YOuyxci983kyACxCoQXUUthQKoIEe2x
-	Zkpsrnclsck2M+Nxn499YZ1R3UF4N9ND3uDKIMsTfgfvii8ytIRBY8mDwmbUQUwmN3xzm0qYJRs90
-	FbM8Kxgw==;
-Received: from [122.175.9.182] (port=5359 helo=cypher.couthit.local)
-	by server.couthit.com with esmtpa (Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1ueE5D-00000005cE7-0SKS;
-	Tue, 22 Jul 2025 10:35:07 -0400
-From: Parvathi Pudi <parvathi@couthit.com>
-To: danishanwar@ti.com,
-	rogerq@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	ssantosh@kernel.org,
-	richardcochran@gmail.com,
-	s.hauer@pengutronix.de,
-	m-karicheri2@ti.com,
-	glaroque@baylibre.com,
-	afd@ti.com,
-	saikrishnag@marvell.com,
-	m-malladi@ti.com,
-	jacob.e.keller@intel.com,
-	kory.maincent@bootlin.com,
-	diogo.ivo@siemens.com,
-	javier.carrasco.cruz@gmail.com,
-	horms@kernel.org,
-	s-anna@ti.com,
-	basharath@couthit.com,
-	parvathi@couthit.com
-Cc: linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	vadim.fedorenko@linux.dev,
-	pratheesh@ti.com,
-	prajith@ti.com,
-	vigneshr@ti.com,
-	praneeth@ti.com,
-	srk@ti.com,
-	rogerq@ti.com,
-	krishna@couthit.com,
-	pmohan@couthit.com,
-	mohan@couthit.com
-Subject: [PATCH net-next v11 5/5] net: ti: prueth: Adds IEP support for PRUETH on AM33x, AM43x and AM57x SOCs
-Date: Tue, 22 Jul 2025 20:02:31 +0530
-Message-ID: <20250722143421.2656250-6-parvathi@couthit.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250722132700.2655208-1-parvathi@couthit.com>
-References: <20250722132700.2655208-1-parvathi@couthit.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OzlmYC83"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753194945;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fzB7P1BusfnapG0uVAVGElcUdQoH/V3AcX2/zWIOBVg=;
+	b=OzlmYC83I/SGl5fUi+JgMaK569Ve3WoZH/AtZMuneSo6vPFsvQQx/QjDYg3PvX1XGyihh4
+	w83KaBMy1WF+OuE2hL26q02rfVio3Yp0hqjoxeaj7MVLsfuwWm/suimUY8Q05VTnWuDvb2
+	wIFNQTDOvGEGNFgEAM2pkCn8fMDNJYw=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-197-snf0l4-BP_u_WHSsJkljww-1; Tue, 22 Jul 2025 10:35:42 -0400
+X-MC-Unique: snf0l4-BP_u_WHSsJkljww-1
+X-Mimecast-MFC-AGG-ID: snf0l4-BP_u_WHSsJkljww_1753194941
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-ae98864f488so507908666b.0
+        for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 07:35:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753194941; x=1753799741;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fzB7P1BusfnapG0uVAVGElcUdQoH/V3AcX2/zWIOBVg=;
+        b=FRdvuMrtmK9atYZF3owjdPXWkZU+6F6YATRkOaLTUbaRn+UaC/txT1DaCRHMpypnlS
+         y17hq3QDB4b2bjsol4KFJjG8Bu9nyOTEXz9sC/Qy8iM23B3ndQaeonlhfr0I4iz1DC4v
+         tFIHdyXH5DTFfQuGUnC9z9wd1LEwVnH6B59r1mC6MXzzIKo93BwOHJj8dgWyZsHWMXQS
+         rF52VpMglbSolKWAPmQldF8Gxq7oF5U17ctIAbVzhqPbxq5FxnGHNaZkTaOT6cfOjWQ/
+         +6mQV+XpPNp3k3EcAcO33p2ECg1G+ULKxlniCQebARLnwQ2nrFD+A0YP1+mnJ3gMZ1jo
+         +CBg==
+X-Forwarded-Encrypted: i=1; AJvYcCUy2hoFaoOV7kZ5fntd47yBXOnsc4A1MSZ2iIa16cDjVf1sCAAaYbw/9yWzVoqKWJ6YfO3JdEk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRWNCVIIhOBN/dLoW16R7LvmFh7ZQ0kPXkIsRKfhpqNBe9hRdN
+	670DaHy7ookzxcDtp7CuvnV9zwIzCFDLwEdXXiTdDArDrGaGX3u36p7wBEEV5Fmk8Hrr58v7yJk
+	883OrJl5Wb3l/jPXwNAJTqo85KgZqF3u+MYCt34yZk7H3GoPHiExMADA/mg==
+X-Gm-Gg: ASbGncsaop0337BjuF0ESYaaNwg3MdLNa4qoR/NyKvrrMOM5//PATHMwBA6Hvz3N3Ar
+	i574deUFFead+x8Z7LQMwDhKDt2q+ZLh3fBmQN7CwIGXUjnzwXw+vXNsPQYxNWVqrKWdil8LCrM
+	5T1tWBaB9eoJckVrSh+dGTUapNhZuaZLxD+MOmV/yhfv+AxKJwQYuwC2JcxMvlJ2I1NaaEJ3KXk
+	ROK1hwO0x/JGHfeEPKm9SEVsip4ACkngNgbDbgMrBw1tZhPLXspQmp4ozNFVIW/uepUCR0WEIao
+	YZO5IbRCnuvYDFnAKksYh7ofAd5iCn69U9z9gMm7Wg4v1Vwj3JTYXvMls7r5sqK1FY+i/Jm+Z6n
+	S2A93yBfcZysbrZM=
+X-Received: by 2002:a17:906:7946:b0:ae9:8dcb:4dac with SMTP id a640c23a62f3a-ae9c99bac5fmr2438078266b.14.1753194941128;
+        Tue, 22 Jul 2025 07:35:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF/TeWm8DeewR5crPsEXii/8MlhRmlF6n2C6fHO5dz/5iDDWZFbxMXiWYmWah7yJm8iOWS6rw==
+X-Received: by 2002:a17:906:7946:b0:ae9:8dcb:4dac with SMTP id a640c23a62f3a-ae9c99bac5fmr2438071766b.14.1753194940260;
+        Tue, 22 Jul 2025 07:35:40 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-45-205-118.retail.telecomitalia.it. [79.45.205.118])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6c7d9941sm879107266b.56.2025.07.22.07.35.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Jul 2025 07:35:39 -0700 (PDT)
+Date: Tue, 22 Jul 2025 16:35:25 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Amery Hung <ameryhung@gmail.com>
+Cc: stefanha@redhat.com, mst@redhat.com, jasowang@redhat.com, 
+	xuanzhuo@linux.alibaba.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org, 
+	decui@microsoft.com, bryantan@vmware.com, vdasa@vmware.com, pv-drivers@vmware.com, 
+	dan.carpenter@linaro.org, simon.horman@corigine.com, oxffffaa@gmail.com, 
+	kvm@vger.kernel.org, virtualization@lists.linux-foundation.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	bpf@vger.kernel.org, bobby.eshleman@bytedance.com, jiang.wang@bytedance.com, 
+	amery.hung@bytedance.com, xiyou.wangcong@gmail.com
+Subject: Re: [RFC PATCH net-next v6 00/14] virtio/vsock: support datagrams
+Message-ID: <dsamf7k2byoflztkwya3smj7jyczyq7aludvd36lufdrboxdqk@u73iwrcyb5am>
+References: <20240710212555.1617795-1-amery.hung@bytedance.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
-X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20240710212555.1617795-1-amery.hung@bytedance.com>
 
-Added API hooks for IEP module (legacy 32-bit model) to support
-timestamping requests from application.
+Hi Amery,
 
-Signed-off-by: Roger Quadros <rogerq@ti.com>
-Signed-off-by: Andrew F. Davis <afd@ti.com>
-Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
-Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
----
- drivers/net/ethernet/ti/icssg/icss_iep.c      | 103 ++++++++++++++++++
- drivers/net/ethernet/ti/icssm/icssm_prueth.c  |  72 +++++++++++-
- drivers/net/ethernet/ti/icssm/icssm_prueth.h  |   2 +
- .../net/ethernet/ti/icssm/icssm_prueth_ptp.h  |  85 +++++++++++++++
- 4 files changed, 260 insertions(+), 2 deletions(-)
- create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_ptp.h
+On Wed, Jul 10, 2024 at 09:25:41PM +0000, Amery Hung wrote:
+>Hey all!
+>
+>This series introduces support for datagrams to virtio/vsock.
 
-diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-index 2a1c43316f46..59aca63e2fe5 100644
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -968,11 +968,114 @@ static const struct icss_iep_plat_data am654_icss_iep_plat_data = {
- 	.config = &am654_icss_iep_regmap_config,
- };
- 
-+static const struct icss_iep_plat_data am57xx_icss_iep_plat_data = {
-+	.flags = ICSS_IEP_64BIT_COUNTER_SUPPORT |
-+		 ICSS_IEP_SLOW_COMPEN_REG_SUPPORT,
-+	.reg_offs = {
-+		[ICSS_IEP_GLOBAL_CFG_REG] = 0x00,
-+		[ICSS_IEP_COMPEN_REG] = 0x08,
-+		[ICSS_IEP_SLOW_COMPEN_REG] = 0x0C,
-+		[ICSS_IEP_COUNT_REG0] = 0x10,
-+		[ICSS_IEP_COUNT_REG1] = 0x14,
-+		[ICSS_IEP_CAPTURE_CFG_REG] = 0x18,
-+		[ICSS_IEP_CAPTURE_STAT_REG] = 0x1c,
-+
-+		[ICSS_IEP_CAP6_RISE_REG0] = 0x50,
-+		[ICSS_IEP_CAP6_RISE_REG1] = 0x54,
-+
-+		[ICSS_IEP_CAP7_RISE_REG0] = 0x60,
-+		[ICSS_IEP_CAP7_RISE_REG1] = 0x64,
-+
-+		[ICSS_IEP_CMP_CFG_REG] = 0x70,
-+		[ICSS_IEP_CMP_STAT_REG] = 0x74,
-+		[ICSS_IEP_CMP0_REG0] = 0x78,
-+		[ICSS_IEP_CMP0_REG1] = 0x7c,
-+		[ICSS_IEP_CMP1_REG0] = 0x80,
-+		[ICSS_IEP_CMP1_REG1] = 0x84,
-+
-+		[ICSS_IEP_CMP8_REG0] = 0xc0,
-+		[ICSS_IEP_CMP8_REG1] = 0xc4,
-+		[ICSS_IEP_SYNC_CTRL_REG] = 0x180,
-+		[ICSS_IEP_SYNC0_STAT_REG] = 0x188,
-+		[ICSS_IEP_SYNC1_STAT_REG] = 0x18c,
-+		[ICSS_IEP_SYNC_PWIDTH_REG] = 0x190,
-+		[ICSS_IEP_SYNC0_PERIOD_REG] = 0x194,
-+		[ICSS_IEP_SYNC1_DELAY_REG] = 0x198,
-+		[ICSS_IEP_SYNC_START_REG] = 0x19c,
-+	},
-+	.config = &am654_icss_iep_regmap_config,
-+};
-+
-+static bool am335x_icss_iep_valid_reg(struct device *dev, unsigned int reg)
-+{
-+	switch (reg) {
-+	case ICSS_IEP_GLOBAL_CFG_REG ... ICSS_IEP_CAPTURE_STAT_REG:
-+	case ICSS_IEP_CAP6_RISE_REG0:
-+	case ICSS_IEP_CMP_CFG_REG ... ICSS_IEP_CMP0_REG0:
-+	case ICSS_IEP_CMP8_REG0 ... ICSS_IEP_SYNC_START_REG:
-+		return true;
-+	default:
-+		return false;
-+	}
-+
-+	return false;
-+}
-+
-+static const struct regmap_config am335x_icss_iep_regmap_config = {
-+	.name = "icss iep",
-+	.reg_stride = 1,
-+	.reg_write = icss_iep_regmap_write,
-+	.reg_read = icss_iep_regmap_read,
-+	.writeable_reg = am335x_icss_iep_valid_reg,
-+	.readable_reg = am335x_icss_iep_valid_reg,
-+};
-+
-+static const struct icss_iep_plat_data am335x_icss_iep_plat_data = {
-+	.flags = 0,
-+	.reg_offs = {
-+		[ICSS_IEP_GLOBAL_CFG_REG] = 0x00,
-+		[ICSS_IEP_COMPEN_REG] = 0x08,
-+		[ICSS_IEP_COUNT_REG0] = 0x0C,
-+		[ICSS_IEP_CAPTURE_CFG_REG] = 0x10,
-+		[ICSS_IEP_CAPTURE_STAT_REG] = 0x14,
-+
-+		[ICSS_IEP_CAP6_RISE_REG0] = 0x30,
-+
-+		[ICSS_IEP_CAP7_RISE_REG0] = 0x38,
-+
-+		[ICSS_IEP_CMP_CFG_REG] = 0x40,
-+		[ICSS_IEP_CMP_STAT_REG] = 0x44,
-+		[ICSS_IEP_CMP0_REG0] = 0x48,
-+
-+		[ICSS_IEP_CMP8_REG0] = 0x88,
-+		[ICSS_IEP_SYNC_CTRL_REG] = 0x100,
-+		[ICSS_IEP_SYNC0_STAT_REG] = 0x108,
-+		[ICSS_IEP_SYNC1_STAT_REG] = 0x10C,
-+		[ICSS_IEP_SYNC_PWIDTH_REG] = 0x110,
-+		[ICSS_IEP_SYNC0_PERIOD_REG] = 0x114,
-+		[ICSS_IEP_SYNC1_DELAY_REG] = 0x118,
-+		[ICSS_IEP_SYNC_START_REG] = 0x11C,
-+	},
-+	.config = &am335x_icss_iep_regmap_config,
-+};
-+
- static const struct of_device_id icss_iep_of_match[] = {
- 	{
- 		.compatible = "ti,am654-icss-iep",
- 		.data = &am654_icss_iep_plat_data,
- 	},
-+	{
-+		.compatible = "ti,am5728-icss-iep",
-+		.data = &am57xx_icss_iep_plat_data,
-+	},
-+	{
-+		.compatible = "ti,am4376-icss-iep",
-+		.data = &am335x_icss_iep_plat_data,
-+	},
-+	{
-+		.compatible = "ti,am3356-icss-iep",
-+		.data = &am335x_icss_iep_plat_data,
-+	},
- 	{},
- };
- MODULE_DEVICE_TABLE(of, icss_iep_of_match);
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-index 7ee187e1c014..18872bfd9785 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-@@ -30,6 +30,7 @@
- 
- #include "icssm_prueth.h"
- #include "../icssg/icssg_mii_rt.h"
-+#include "../icssg/icss_iep.h"
- 
- #define OCMC_RAM_SIZE		(SZ_64K)
- 
-@@ -894,6 +895,48 @@ static int icssm_emac_request_irqs(struct prueth_emac *emac)
- 	return ret;
- }
- 
-+static void icssm_ptp_dram_init(struct prueth_emac *emac)
-+{
-+	void __iomem *sram = emac->prueth->mem[PRUETH_MEM_SHARED_RAM].va;
-+	u64 temp64;
-+
-+	writew(0, sram + MII_RX_CORRECTION_OFFSET);
-+	writew(0, sram + MII_TX_CORRECTION_OFFSET);
-+
-+	/* Initialize RCF to 1 (Linux N/A) */
-+	writel(1 * 1024, sram + TIMESYNC_TC_RCF_OFFSET);
-+
-+	/* This flag will be set and cleared by firmware */
-+	/* Write Sync0 period for sync signal generation in PTP
-+	 * memory in shared RAM
-+	 */
-+	writel(200000000 / 50, sram + TIMESYNC_SYNC0_WIDTH_OFFSET);
-+
-+	/* Write CMP1 period for sync signal generation in PTP
-+	 * memory in shared RAM
-+	 */
-+	temp64 = 1000000;
-+	memcpy_toio(sram + TIMESYNC_CMP1_CMP_OFFSET, &temp64, sizeof(temp64));
-+
-+	/* Write Sync0 period for sync signal generation in PTP
-+	 * memory in shared RAM
-+	 */
-+	writel(1000000, sram + TIMESYNC_CMP1_PERIOD_OFFSET);
-+
-+	/* Configures domainNumber list. Firmware supports 2 domains */
-+	writeb(0, sram + TIMESYNC_DOMAIN_NUMBER_LIST);
-+	writeb(0, sram + TIMESYNC_DOMAIN_NUMBER_LIST + 1);
-+
-+	/* Configure 1-step/2-step */
-+	writeb(1, sram + DISABLE_SWITCH_SYNC_RELAY_OFFSET);
-+
-+	/* Configures the setting to Link local frame without HSR tag */
-+	writeb(0, sram + LINK_LOCAL_FRAME_HAS_HSR_TAG);
-+
-+	/* Enable E2E/UDP PTP message timestamping */
-+	writeb(1, sram + PTP_IPV4_UDP_E2E_ENABLE);
-+}
-+
- /**
-  * icssm_emac_ndo_open - EMAC device open
-  * @ndev: network adapter device
-@@ -916,9 +959,18 @@ static int icssm_emac_ndo_open(struct net_device *ndev)
- 
- 	icssm_prueth_emac_config(emac);
- 
-+	if (!prueth->emac_configured) {
-+		icssm_ptp_dram_init(emac);
-+		ret = icss_iep_init(prueth->iep, NULL, NULL, 0);
-+		if (ret) {
-+			netdev_err(ndev, "Failed to initialize iep: %d\n", ret);
-+			goto iep_exit;
-+		}
-+	}
-+
- 	ret = icssm_emac_set_boot_pru(emac, ndev);
- 	if (ret)
--		return ret;
-+		goto iep_exit;
- 
- 	ret = icssm_emac_request_irqs(emac);
- 	if (ret)
-@@ -942,6 +994,10 @@ static int icssm_emac_ndo_open(struct net_device *ndev)
- rproc_shutdown:
- 	rproc_shutdown(emac->pru);
- 
-+iep_exit:
-+	if (!prueth->emac_configured)
-+		icss_iep_exit(prueth->iep);
-+
- 	return ret;
- }
- 
-@@ -1433,12 +1489,19 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	prueth->iep = icss_iep_get(np);
-+	if (IS_ERR(prueth->iep)) {
-+		ret = PTR_ERR(prueth->iep);
-+		dev_err(dev, "unable to get IEP\n");
-+		goto netdev_exit;
-+	}
-+
- 	/* register the network devices */
- 	if (eth0_node) {
- 		ret = register_netdev(prueth->emac[PRUETH_MAC0]->ndev);
- 		if (ret) {
- 			dev_err(dev, "can't register netdev for port MII0");
--			goto netdev_exit;
-+			goto iep_put;
- 		}
- 
- 		prueth->registered_netdevs[PRUETH_MAC0] =
-@@ -1472,6 +1535,9 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 		unregister_netdev(prueth->registered_netdevs[i]);
- 	}
- 
-+iep_put:
-+	icss_iep_put(prueth->iep);
-+
- netdev_exit:
- 	for (i = 0; i < PRUETH_NUM_MACS; i++) {
- 		eth_node = prueth->eth_node[i];
-@@ -1540,6 +1606,8 @@ static void icssm_prueth_remove(struct platform_device *pdev)
- 						 &prueth->mem[i]);
- 	}
- 
-+	icss_iep_put(prueth->iep);
-+
- 	pruss_put(prueth->pruss);
- 
- 	if (prueth->eth_node[PRUETH_MAC0])
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.h b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-index 6201276986de..c3f9c59ac6ff 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-@@ -14,6 +14,7 @@
- #include <linux/remoteproc/pruss.h>
- 
- #include "icssm_switch.h"
-+#include "icssm_prueth_ptp.h"
- 
- /* ICSSM size of redundancy tag */
- #define ICSSM_LRE_TAG_SIZE	6
-@@ -231,6 +232,7 @@ struct prueth {
- 	struct pruss_mem_region mem[PRUETH_MEM_MAX];
- 	struct gen_pool *sram_pool;
- 	struct regmap *mii_rt;
-+	struct icss_iep *iep;
- 
- 	const struct prueth_private_data *fw_data;
- 	struct prueth_fw_offsets *fw_offsets;
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth_ptp.h b/drivers/net/ethernet/ti/icssm/icssm_prueth_ptp.h
-new file mode 100644
-index 000000000000..e0bf692beda1
---- /dev/null
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth_ptp.h
-@@ -0,0 +1,85 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (C) 2020-2021 Texas Instruments Incorporated - https://www.ti.com
-+ */
-+#ifndef PRUETH_PTP_H
-+#define PRUETH_PTP_H
-+
-+#define RX_SYNC_TIMESTAMP_OFFSET_P1		0x8    /* 8 bytes */
-+#define RX_PDELAY_REQ_TIMESTAMP_OFFSET_P1	0x14   /* 12 bytes */
-+
-+#define DISABLE_PTP_FRAME_FORWARDING_CTRL_OFFSET 0x14	/* 1 byte */
-+
-+#define RX_PDELAY_RESP_TIMESTAMP_OFFSET_P1	0x20   /* 12 bytes */
-+#define RX_SYNC_TIMESTAMP_OFFSET_P2		0x2c   /* 12 bytes */
-+#define RX_PDELAY_REQ_TIMESTAMP_OFFSET_P2	0x38   /* 12 bytes */
-+#define RX_PDELAY_RESP_TIMESTAMP_OFFSET_P2	0x44   /* 12 bytes */
-+#define TIMESYNC_DOMAIN_NUMBER_LIST		0x50   /* 2 bytes */
-+#define P1_SMA_LINE_DELAY_OFFSET		0x52   /* 4 bytes */
-+#define P2_SMA_LINE_DELAY_OFFSET		0x56   /* 4 bytes */
-+#define TIMESYNC_SECONDS_COUNT_OFFSET		0x5a   /* 6 bytes */
-+#define TIMESYNC_TC_RCF_OFFSET			0x60   /* 4 bytes */
-+#define DUT_IS_MASTER_OFFSET			0x64   /* 1 byte */
-+#define MASTER_PORT_NUM_OFFSET			0x65   /* 1 byte */
-+#define SYNC_MASTER_MAC_OFFSET			0x66   /* 6 bytes */
-+#define TX_TS_NOTIFICATION_OFFSET_SYNC_P1	0x6c   /* 1 byte */
-+#define TX_TS_NOTIFICATION_OFFSET_PDEL_REQ_P1	0x6d   /* 1 byte */
-+#define TX_TS_NOTIFICATION_OFFSET_PDEL_RES_P1	0x6e   /* 1 byte */
-+#define TX_TS_NOTIFICATION_OFFSET_SYNC_P2	0x6f   /* 1 byte */
-+#define TX_TS_NOTIFICATION_OFFSET_PDEL_REQ_P2	0x70   /* 1 byte */
-+#define TX_TS_NOTIFICATION_OFFSET_PDEL_RES_P2	0x71   /* 1 byte */
-+#define TX_SYNC_TIMESTAMP_OFFSET_P1		0x72   /* 12 bytes */
-+#define TX_PDELAY_REQ_TIMESTAMP_OFFSET_P1	0x7e   /* 12 bytes */
-+#define TX_PDELAY_RESP_TIMESTAMP_OFFSET_P1	0x8a   /* 12 bytes */
-+#define TX_SYNC_TIMESTAMP_OFFSET_P2		0x96   /* 12 bytes */
-+#define TX_PDELAY_REQ_TIMESTAMP_OFFSET_P2	0xa2   /* 12 bytes */
-+#define TX_PDELAY_RESP_TIMESTAMP_OFFSET_P2	0xae   /* 12 bytes */
-+#define TIMESYNC_CTRL_VAR_OFFSET		0xba   /* 1 byte */
-+#define DISABLE_SWITCH_SYNC_RELAY_OFFSET	0xbb   /* 1 byte */
-+#define MII_RX_CORRECTION_OFFSET		0xbc   /* 2 bytes */
-+#define MII_TX_CORRECTION_OFFSET		0xbe   /* 2 bytes */
-+#define TIMESYNC_CMP1_CMP_OFFSET		0xc0   /* 8 bytes */
-+#define TIMESYNC_SYNC0_CMP_OFFSET		0xc8   /* 8 bytes */
-+#define TIMESYNC_CMP1_PERIOD_OFFSET		0xd0   /* 4 bytes */
-+#define TIMESYNC_SYNC0_WIDTH_OFFSET		0xd4   /* 4 bytes */
-+#define SINGLE_STEP_IEP_OFFSET_P1		0xd8   /* 8 bytes */
-+#define SINGLE_STEP_SECONDS_OFFSET_P1		0xe0   /* 8 bytes */
-+#define SINGLE_STEP_IEP_OFFSET_P2		0xe8   /* 8 bytes */
-+#define SINGLE_STEP_SECONDS_OFFSET_P2		0xf0   /* 8 bytes */
-+#define LINK_LOCAL_FRAME_HAS_HSR_TAG		0xf8   /* 1 bytes */
-+#define PTP_PREV_TX_TIMESTAMP_P1		0xf9  /* 8 bytes */
-+#define PTP_PREV_TX_TIMESTAMP_P2		0x101  /* 8 bytes */
-+#define PTP_CLK_IDENTITY_OFFSET			0x109  /* 8 bytes */
-+#define PTP_SCRATCH_MEM				0x111  /* 16 byte */
-+#define PTP_IPV4_UDP_E2E_ENABLE			0x121  /* 1 byte */
-+
-+enum {
-+	PRUETH_PTP_SYNC,
-+	PRUETH_PTP_DLY_REQ,
-+	PRUETH_PTP_DLY_RESP,
-+	PRUETH_PTP_TS_EVENTS,
-+};
-+
-+#define PRUETH_PTP_TS_SIZE		12
-+#define PRUETH_PTP_TS_NOTIFY_SIZE	1
-+#define PRUETH_PTP_TS_NOTIFY_MASK	0xff
-+
-+/* Bit definitions for TIMESYNC_CTRL */
-+#define TIMESYNC_CTRL_BG_ENABLE    BIT(0)
-+#define TIMESYNC_CTRL_FORCED_2STEP BIT(1)
-+
-+static inline u32 icssm_prueth_tx_ts_offs_get(u8 port, u8 event)
-+{
-+	return TX_SYNC_TIMESTAMP_OFFSET_P1 + port *
-+		PRUETH_PTP_TS_EVENTS * PRUETH_PTP_TS_SIZE +
-+		event * PRUETH_PTP_TS_SIZE;
-+}
-+
-+static inline u32 icssm_prueth_tx_ts_notify_offs_get(u8 port, u8 event)
-+{
-+	return TX_TS_NOTIFICATION_OFFSET_SYNC_P1 +
-+		PRUETH_PTP_TS_EVENTS * PRUETH_PTP_TS_NOTIFY_SIZE * port +
-+		event * PRUETH_PTP_TS_NOTIFY_SIZE;
-+}
-+
-+#endif /* PRUETH_PTP_H */
--- 
-2.43.0
+any update on v7 of this series?
+
+Thanks,
+Stefano
+
+>
+>It is a spin-off (and smaller version) of this series from the summer:
+>  https://lore.kernel.org/all/cover.1660362668.git.bobby.eshleman@bytedance.com/
+>
+>Please note that this is an RFC and should not be merged until
+>associated changes are made to the virtio specification, which will
+>follow after discussion from this series.
+>
+>Another aside, the v4 of the series has only been mildly tested with a
+>run of tools/testing/vsock/vsock_test. Some code likely needs cleaning
+>up, but I'm hoping to get some of the design choices agreed upon before
+>spending too much time making it pretty.
+>
+>This series first supports datagrams in a basic form for virtio, and
+>then optimizes the sendpath for all datagram transports.
+>
+>The result is a very fast datagram communication protocol that
+>outperforms even UDP on multi-queue virtio-net w/ vhost on a variety
+>of multi-threaded workload samples.
+>
+>For those that are curious, some summary data comparing UDP and VSOCK
+>DGRAM (N=5):
+>
+>	vCPUS: 16
+>	virtio-net queues: 16
+>	payload size: 4KB
+>	Setup: bare metal + vm (non-nested)
+>
+>	UDP: 287.59 MB/s
+>	VSOCK DGRAM: 509.2 MB/s
+>
+>Some notes about the implementation...
+>
+>This datagram implementation forces datagrams to self-throttle according
+>to the threshold set by sk_sndbuf. It behaves similar to the credits
+>used by streams in its effect on throughput and memory consumption, but
+>it is not influenced by the receiving socket as credits are.
+>
+>The device drops packets silently.
+>
+>As discussed previously, this series introduces datagrams and defers
+>fairness to future work. See discussion in v2 for more context around
+>datagrams, fairness, and this implementation.
+>
+>Signed-off-by: Bobby Eshleman <bobby.eshleman@bytedance.com>
+>Signed-off-by: Amery Hung <amery.hung@bytedance.com>
+>---
+>Changes in v6:
+>- allow empty transport in datagram vsock
+>- add empty transport checks in various paths
+>- transport layer now saves source cid and port to control buffer of skb
+>  to remove the dependency of transport in recvmsg()
+>- fix virtio dgram_enqueue() by looking up the transport to be used when
+>  using sendto(2)
+>- fix skb memory leaks in two places
+>- add dgram auto-bind test
+>- Link to v5: https://lore.kernel.org/r/20230413-b4-vsock-dgram-v5-0-581bd37fdb26@bytedance.com
+>
+>Changes in v5:
+>- teach vhost to drop dgram when a datagram exceeds the receive buffer
+>  - now uses MSG_ERRQUEUE and depends on Arseniy's zerocopy patch:
+>	"vsock: read from socket's error queue"
+>- replace multiple ->dgram_* callbacks with single ->dgram_addr_init()
+>  callback
+>- refactor virtio dgram skb allocator to reduce conflicts w/ zerocopy series
+>- add _fallback/_FALLBACK suffix to dgram transport variables/macros
+>- add WARN_ONCE() for table_size / VSOCK_HASH issue
+>- add static to vsock_find_bound_socket_common
+>- dedupe code in vsock_dgram_sendmsg() using module_got var
+>- drop concurrent sendmsg() for dgram and defer to future series
+>- Add more tests
+>  - test EHOSTUNREACH in errqueue
+>  - test stream + dgram address collision
+>- improve clarity of dgram msg bounds test code
+>- Link to v4: https://lore.kernel.org/r/20230413-b4-vsock-dgram-v4-0-0cebbb2ae899@bytedance.com
+>
+>Changes in v4:
+>- style changes
+>  - vsock: use sk_vsock(vsk) in vsock_dgram_recvmsg instead of
+>    &sk->vsk
+>  - vsock: fix xmas tree declaration
+>  - vsock: fix spacing issues
+>  - virtio/vsock: virtio_transport_recv_dgram returns void because err
+>    unused
+>- sparse analysis warnings/errors
+>  - virtio/vsock: fix unitialized skerr on destroy
+>  - virtio/vsock: fix uninitialized err var on goto out
+>  - vsock: fix declarations that need static
+>  - vsock: fix __rcu annotation order
+>- bugs
+>  - vsock: fix null ptr in remote_info code
+>  - vsock/dgram: make transport_dgram a fallback instead of first
+>    priority
+>  - vsock: remove redundant rcu read lock acquire in getname()
+>- tests
+>  - add more tests (message bounds and more)
+>  - add vsock_dgram_bind() helper
+>  - add vsock_dgram_connect() helper
+>
+>Changes in v3:
+>- Support multi-transport dgram, changing logic in connect/bind
+>  to support VMCI case
+>- Support per-pkt transport lookup for sendto() case
+>- Fix dgram_allow() implementation
+>- Fix dgram feature bit number (now it is 3)
+>- Fix binding so dgram and connectible (cid,port) spaces are
+>  non-overlapping
+>- RCU protect transport ptr so connect() calls never leave
+>  a lockless read of the transport and remote_addr are always
+>  in sync
+>- Link to v2: https://lore.kernel.org/r/20230413-b4-vsock-dgram-v2-0-079cc7cee62e@bytedance.com
+>
+>
+>Bobby Eshleman (14):
+>  af_vsock: generalize vsock_dgram_recvmsg() to all transports
+>  af_vsock: refactor transport lookup code
+>  af_vsock: support multi-transport datagrams
+>  af_vsock: generalize bind table functions
+>  af_vsock: use a separate dgram bind table
+>  virtio/vsock: add VIRTIO_VSOCK_TYPE_DGRAM
+>  virtio/vsock: add common datagram send path
+>  af_vsock: add vsock_find_bound_dgram_socket()
+>  virtio/vsock: add common datagram recv path
+>  virtio/vsock: add VIRTIO_VSOCK_F_DGRAM feature bit
+>  vhost/vsock: implement datagram support
+>  vsock/loopback: implement datagram support
+>  virtio/vsock: implement datagram support
+>  test/vsock: add vsock dgram tests
+>
+> drivers/vhost/vsock.c                   |   62 +-
+> include/linux/virtio_vsock.h            |    9 +-
+> include/net/af_vsock.h                  |   24 +-
+> include/uapi/linux/virtio_vsock.h       |    2 +
+> net/vmw_vsock/af_vsock.c                |  343 ++++++--
+> net/vmw_vsock/hyperv_transport.c        |   13 -
+> net/vmw_vsock/virtio_transport.c        |   24 +-
+> net/vmw_vsock/virtio_transport_common.c |  188 ++++-
+> net/vmw_vsock/vmci_transport.c          |   61 +-
+> net/vmw_vsock/vsock_loopback.c          |    9 +-
+> tools/testing/vsock/util.c              |  177 +++-
+> tools/testing/vsock/util.h              |   10 +
+> tools/testing/vsock/vsock_test.c        | 1032 ++++++++++++++++++++---
+> 13 files changed, 1638 insertions(+), 316 deletions(-)
+>
+>-- 
+>2.20.1
+>
 
