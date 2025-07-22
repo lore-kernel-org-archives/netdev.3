@@ -1,94 +1,81 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9547C2EB5D6;
-	Tue, 22 Jul 2025 14:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287D21DA23;
+	Tue, 22 Jul 2025 14:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753195719; cv=none; b=ru49fMn1Qjn0Y0U9USUpVjxt7qmfgLCIOdHBiBC8AMj2apJ+ARcB5YR1vEHmbaY7B4wU58rnj7loBZC/7ko+/Fth+iNHAY5YGmknuTmSSZSfDXpGVsm0gBVKhAZv3kTTnrfHx4xyfFcRobvV7nHN4QM2YqW3sybJ7qbLJKQXSjU=
+	t=1753195789; cv=none; b=EN6T4uIN/BxZRCMTQU+Pp3rV5XkriDq72OzMj86q64vhOpyNZ7DL7dTjpinIzMGsCuOyqqsxyeoumTS4INOorbSY0FNZCW+QMOAahF3yogb7ypBXzG7GiqD0qNYJAjew6VMTYA3Lw3txA5IYV5DknCSYoNb+CUeaDCtLjdRqN0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753195719; c=relaxed/simple;
-	bh=Cy2/dXjBdIcuMWjxMsiv/U4bjPQQLW45rYi0mhhzfzk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=l+XFIEjPN5GHdDgfH3JqtyC8ao2RhVyzpX74u8zPboS6YxzHvj5fMrhZ9GKbO1GFQh0gH5XQxX2REkNB4hqDupcHRfOc3HygcUBhiF5B1Xliw/aSdhrh2Artovh8kK+a2ljs3wmSD3v+EGPUYX/TQBwnPjE2RobeHIM3Ymz6ICA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=k60e6tuK; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1753195789; c=relaxed/simple;
+	bh=9KedupEOeC1GTtcgABYGZjT7vXJB5Z4qbLfJRo2EeH4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=e1hqMk8b4VO1dMUwdhNR+rDJPUqnNb8RWUa5WvV3ZgfysS1D1JbGyeCD1baoapNr31BSUboRK7qAIqz9chWe6lNXhlI2n2joGzqkOmlSPoD5UtluuimL32hYVD9jnG5U5qzFYdToJcwCxRt9gM2KeP1/hX6J/Uo/bpiBfqWBz0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKG6FrnF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="k60e6tuK"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=bnhG1L8sNIVaf/FoCTbqo+iKpFyRChzRQU2I/lhE/Yo=;
-	t=1753195717; x=1754405317; b=k60e6tuKhZcYWtkvwoWLs11LBXcSD8oGpL+GyaVSrrpi3qG
-	/7tfq2jJv5V93BcqU4CKeFoOuqO7z7CctdNmYqEf76UHKbN1wcZbPHBsS3dtcu6Bu1JRED0ijI9jf
-	7tIX1R9hM2J4iTDJ1NgFUK/8okxJI0+tcduWfxd5SgryUFjh2gz8BK+4MO/NJikss1Kd6TmnjWP+8
-	41ZH70OX1fjNSVreMazNmYezznd3QOYXSkNQKkAn/UBCa4jrhiCwhiQLfEQzY9GgYCBgR8VFS7Fhj
-	AXp2Qh2PL5ElJVDQQ3hmrj6pKmdXNrJp7xLQgr4NCKR4jx66Hkf/kenwpJMLGZLg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1ueEI9-00000002FYt-2QVJ;
-	Tue, 22 Jul 2025 16:48:29 +0200
-Message-ID: <c1ba74ad02093b04c87d5f9c931d4e73fa42fac6.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: ath11k_pci: add a soft dependency on qrtr-mhi
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Baochen Qiang	
- <baochen.qiang@oss.qualcomm.com>, Christoph Hellwig <hch@lst.de>, 
-	kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, 	pabeni@redhat.com
-Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org
-Date: Tue, 22 Jul 2025 16:48:28 +0200
-In-Reply-To: <83c62cb2-7d85-4a9e-ba76-63faa27faedf@oss.qualcomm.com>
-References: <20221202130600.883174-1-hch@lst.de>
-	 <0b28bb5f-56b3-4be6-b4f4-89ca546a24d0@oss.qualcomm.com>
-	 <83c62cb2-7d85-4a9e-ba76-63faa27faedf@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKG6FrnF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72BBC4CEEB;
+	Tue, 22 Jul 2025 14:49:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753195787;
+	bh=9KedupEOeC1GTtcgABYGZjT7vXJB5Z4qbLfJRo2EeH4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=gKG6FrnFv/rUuwUjHtYDCBgwjD/3x2Oy73jA9euVK96svtLdxnSkeHHbyLksF35Gk
+	 i8wRhmjVlfrcbmyJQqHza3xohK2J/inQUf7GJWddHZBu2mC99YXAnbXXU0B/2XvoCT
+	 3JYxHQ0H8ipa8LLGwGXJVgbq0mRhWCkll/3JzypW0C7wX3hx+62H8s2QaU64dGOSvm
+	 +5pPQC7bk+ZT1e/FdO4xST++TVDObFvVXcQ9RC3YDvac41oAwpSxukbqWqh+BCUEe+
+	 Y96BuhcN2yOHtokyemY6PtWObC+v++dUTYllHpA0p0ISCOCyIId+dl2z9PBlQR8gsn
+	 VhsqK11okoVVw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D6B383BF5D;
+	Tue, 22 Jul 2025 14:50:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] Bluetooth: Add PA_LINK to distinguish BIG sync and PA
+ sync
+ connections
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <175319580626.844166.13673275741050259648.git-patchwork-notify@kernel.org>
+Date: Tue, 22 Jul 2025 14:50:06 +0000
+References: <20250710-pa_link-v1-1-88cac0c0b776@amlogic.com>
+In-Reply-To: <20250710-pa_link-v1-1-88cac0c0b776@amlogic.com>
+To: Yang Li <yang.li@amlogic.com>
+Cc: marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Tue, 2025-07-22 at 07:37 -0700, Jeff Johnson wrote:
->=20
-> This predates me becoming a maintainer, and I don't see any comment from =
-Kalle
-> to the patch, however he did have the following comment in a separate thr=
-ead
-> where the issue was being discussed:
-> https://lore.kernel.org/all/87cz8v2xb2.fsf@kernel.org/
->=20
-> > Though I am happy to take your MODULE_SOFTDEP() patch, just wondering i=
-f
-> > there is a better way to solve this. For example net/mac80211 (the
-> > 802.11 stack) has a lot of crypto dependencies:
-> >=20
-> > 	select CRYPTO
-> > 	select CRYPTO_LIB_ARC4
-> > 	select CRYPTO_AES
-> > 	select CRYPTO_CCM
-> > 	select CRYPTO_GCM
-> > 	select CRYPTO_CMAC
-> > 	select CRC32
-> >=20
-> > And it's not using MODULE_SOFTDEP() at all.
->=20
-> So I'm guessing he considered this to be an issue that should be solved
-> external to the individual drivers.
+Hello:
 
-I just happened to see this and never saw the other discussion from Dec
-2022, but it's somewhat interesting ... for some of those modules
-mac80211 has a hard dependency (such as lib_arc3, crc32) but for the
-other crypto modules it instantiates the algorithms via the string
-descriptions (such as "gcm(aes)") so it has no hard dependency.
+This patch was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
 
-Maybe crypto modules are treated specially by installers and the like?
+On Thu, 10 Jul 2025 18:52:47 +0800 you wrote:
+> From: Yang Li <yang.li@amlogic.com>
+> 
+> Currently, BIS_LINK is used for both BIG sync and PA sync connections,
+> which makes it impossible to distinguish them when searching for a PA
+> sync connection.
+> 
+> Adding PA_LINK will make the distinction clearer and simplify future
+> extensions for PA-related features.
+> 
+> [...]
 
-johannes
+Here is the summary with links:
+  - Bluetooth: Add PA_LINK to distinguish BIG sync and PA sync connections
+    https://git.kernel.org/bluetooth/bluetooth-next/c/1ffee96604de
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
