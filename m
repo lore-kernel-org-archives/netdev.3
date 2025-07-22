@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27C427AC2A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007CC27AC50
 	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 16:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753201183; cv=none; b=MrkdkXALgPa1bNq1KUC0HRWBew8W6O63l9upWodwY4vrcK5QpGQQKeoxqbV2Jqf4B6Pd1kYHaVFz6bJsIh20sbkxDUycK7jLvtFzEdsvWjYS4szGXx2cm07v/UwzhFon99M/+uvMlIwsoaIr01s2M+CqyqHr0jPRJFa3QoSh9lg=
+	t=1753201184; cv=none; b=OLsM4+oFizAJ7cX8ccgSr+RHKxhI2rqbXrimXtL6I9KTEYSNcjiPwugyswpB7tuvIl/MvDmGhOyXnh+te33dCZybbc9VP4Dc4OW/A+p680hAnd0j9vm8vG0tvOy4d0oununis0eAMok30cgrePZ+STHwCfb2kwnvUcXqng0fi7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753201183; c=relaxed/simple;
-	bh=n3Txx4MwjB9erpsBZOGCfS1YN8GOjkiup7eK6L6koA8=;
+	s=arc-20240116; t=1753201184; c=relaxed/simple;
+	bh=JShZwkwF4MLCb+iEpOuP6r25CzgsCtOhYKnIcOK2lTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CRvnjUvUirxdfuBF4GPdam7iwxy6u45PVIeH0N+z2OP8BHhfZc1dyJ8r/bjiCeEf9MJf3G+mw6ZQh/0Gd5TTOhbdeJ3cXwxQsI1/ZVCO+/oVVLb7ryUTjeKpwWa9A92OBlQ2YWaL0bUD9yXbThyCO4mlOy4kiYnx4RyqgCFqlX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UG7x8cSD; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=RaEf24TPPxliBHGs+VN3dvuFQCxwHL85HbJ5IwgRtQ6CuR3KArsvvAehHi0GJc9fXUgCeyP6gXRV+fxffKZA+dMhufUiRD3qfxU3kNs+3z4d/pmFaw+XEJHgIL94BERTa0WI4ktcLBjxVVcFs76wnP/z8iGyQFNa+J7Q9UYuXjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PyHKwdee; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UG7x8cSD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF616C4AF09;
-	Tue, 22 Jul 2025 16:19:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PyHKwdee"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5524BC4CEF9;
+	Tue, 22 Jul 2025 16:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1753201183;
-	bh=n3Txx4MwjB9erpsBZOGCfS1YN8GOjkiup7eK6L6koA8=;
+	bh=JShZwkwF4MLCb+iEpOuP6r25CzgsCtOhYKnIcOK2lTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UG7x8cSDqkfpYX+LhD2PTuFKAK/bG6ZeglodgZM88YSZ8HlKehGr+9LsHh6p3LfLB
-	 2J2cCwgygxFNAQsl2bN8ZvTZLY7Pi81tyqdyRuZF8ue1JlJ6L25MLWrfa11P9HTnN2
-	 MNWjCAq6KFiSFtXBL5tbHJYZVxZPBgOOnIQW6aGz2J5nbXDC4VjhyhC5Mnmkmnoe+f
-	 E/Yt4uG0RIM7iRfG9UMlAzlSgntm2JeiFgBZSA73cGBy3nK2jnu4ko4hzxMS2uFYjT
-	 2//rluT5wOoZY4TriNIHb7W7pdhfOTAqLokxMl3E2ZsUbgtvkwMdbeVVsWWuxCY5F1
-	 BJxsriwCQLO4g==
+	b=PyHKwdeePdhopR2yPzcgAqwIqCpUg9qzwV/3/VLp/o6zart5V19zmJqViS7A8dyU4
+	 +xHV/HmmRQnhjQQ2PXDOIO5xDwzF+ffp2csa7MfaT0r6ZE+BQOMZEwMfNg2SnIvWqL
+	 kcCXWkhhWLRmUNWxC9j/CvJYqOpXR3NLhhx3VbY33VlLJgMT1EVdf2JeRJxX168TJi
+	 zyTiSMoG4auvnTFDbAiRmhbI8waB/WwrNNPPTA0r0D6+pw/xLaHcj9Y6Z5XEFmV/fU
+	 9LX2+LUGIslsLnDDgcjnki8BN74ygMd4P00ncTaNJxdwoiAXwMh/RJVl0jW/HJJMjp
+	 EhQmOuA5ohEPw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -37,9 +37,9 @@ Cc: netdev@vger.kernel.org,
 	almasrymina@google.com,
 	sdf@fomichev.me,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 2/5] tools: ynl-gen: move free printing to the print_type_full() helper
-Date: Tue, 22 Jul 2025 09:19:24 -0700
-Message-ID: <20250722161927.3489203-3-kuba@kernel.org>
+Subject: [PATCH net-next 3/5] tools: ynl-gen: print alloc helper for multi-val attrs
+Date: Tue, 22 Jul 2025 09:19:25 -0700
+Message-ID: <20250722161927.3489203-4-kuba@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250722161927.3489203-1-kuba@kernel.org>
 References: <20250722161927.3489203-1-kuba@kernel.org>
@@ -51,40 +51,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Just to avoid making the main function even more enormous,
-before adding more things to print move the free printing
-to a helper which already prints the type.
+In general YNL provides allocation and free helpers for types.
+For pure nested structs which are used as multi-attr (and therefore
+have to be allocated dynamically) we already print a free helper
+as it's needed by free of the containing struct.
+
+Add printing of the alloc helper for consistency. The helper
+takes the number of entries to allocate as an argument, e.g.:
+
+  static inline struct netdev_queue_id *netdev_queue_id_alloc(unsigned int n)
+  {
+	return calloc(n, sizeof(struct netdev_queue_id));
+  }
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tools/net/ynl/pyynl/ynl_gen_c.py | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
 diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 1bdcc368e776..dc78542e6c88 100755
+index dc78542e6c88..0394b786aa93 100755
 --- a/tools/net/ynl/pyynl/ynl_gen_c.py
 +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -2546,6 +2546,10 @@ _C_KW = {
- def print_type_full(ri, struct):
+@@ -2472,11 +2472,22 @@ _C_KW = {
+     return 'obj'
+ 
+ 
+-def print_alloc_wrapper(ri, direction):
++def print_alloc_wrapper(ri, direction, struct=None):
+     name = op_prefix(ri, direction)
+-    ri.cw.write_func_prot(f'static inline struct {name} *', f"{name}_alloc", [f"void"])
++    struct_name = name
++    if ri.type_name_conflict:
++        struct_name += '_'
++
++    arg = ["void"]
++    cnt = "1"
++    if struct and struct.in_multi_val:
++        arg = ["unsigned int n"]
++        cnt = "n"
++
++    ri.cw.write_func_prot(f'static inline struct {struct_name} *',
++                          f"{name}_alloc", arg)
+     ri.cw.block_start()
+-    ri.cw.p(f'return calloc(1, sizeof(struct {name}));')
++    ri.cw.p(f'return calloc({cnt}, sizeof(struct {struct_name}));')
+     ri.cw.block_end()
+ 
+ 
+@@ -2547,6 +2558,8 @@ _C_KW = {
      _print_type(ri, "", struct)
  
-+    if struct.request and struct.in_multi_val:
-+        free_rsp_nested_prototype(ri)
+     if struct.request and struct.in_multi_val:
++        print_alloc_wrapper(ri, "", struct)
 +        ri.cw.nl()
-+
+         free_rsp_nested_prototype(ri)
+         ri.cw.nl()
  
- def print_type_helpers(ri, direction, deref=False):
-     print_free_prototype(ri, direction)
-@@ -3517,9 +3521,6 @@ _C_KW = {
-             for attr_set, struct in parsed.pure_nested_structs.items():
-                 ri = RenderInfo(cw, parsed, args.mode, "", "", attr_set)
-                 print_type_full(ri, struct)
--                if struct.request and struct.in_multi_val:
--                    free_rsp_nested_prototype(ri)
--                    cw.nl()
- 
-             for op_name, op in parsed.ops.items():
-                 cw.p(f"/* ============== {op.enum_name} ============== */")
 -- 
 2.50.1
 
