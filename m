@@ -1,73 +1,102 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C56239E9E;
-	Tue, 22 Jul 2025 14:59:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F1C1F153A
+	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 15:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753196360; cv=none; b=Wxv5sQeImTKOJt+Etse2A0eKZ9iNdvG7fez4pV4Tv7tPDjVGh/US4P/y+Ld5X8wxOE2PJeGN0/czdIuAGcP/GjAOpkzZoSlrJLx15DH97NTaY/L0qe48BOal1i2+KGhL18qu9iBJo8TW6BMql414dcXOwfJvmGshygyn3W2wW/0=
+	t=1753196448; cv=none; b=X3y3TCJskhZwkufEVKuaz1N2cQpLoreprJaoczGq7YFL62pCyD9M8z9bwKtL+NdRseJxJwYQgmXYJZ8TTnvtHqBynFqQ8G4dE2M3NXHlXg71cfdnjEg685O5dSLYWlvOuSNrokEYPUTBTE1MnRL9cqGhqtEYWdD6J2dp9USxQFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753196360; c=relaxed/simple;
-	bh=ou7A8dCtajtd2EqlFdUb122ILRZkFdkN1YbKnDqV3tA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W6XQ/7alryNKgmauJB0ixB7cZ+0CWxM0KE2El60rO8K5gFGUTcfkpq0kDQEZEHt+cxLFQYAH/o3MhwPZnaIPRAeAld9Ro+TF5IJvn4j/sJXtD48uyNYZox85pwhK4gP0EDf7w7KtBU5XZGxsFjoFq1t4gMAQgXmgQG6+DPzSPR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=1mRleX5Q; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1753196448; c=relaxed/simple;
+	bh=+nxKNO4a2BCMIJuvj3w0sl1mqftW1a06HRS7ZufxTrM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hiT/Q24MoraWjU5Ay5oJIFLEfskL07b5yJxFW3+JKWuDp/0uzUkfQwPMnmjEDhwfuab2yQkDP3NXNk53VnPg32Yb0Piu6XT5dJPJYSfK2njIpL3N2DCeZxTp35e5KBV8d+2ER5IfyEmNP32T6Ql8OivufVGQZ74vJNkySKzebzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cf9Gx2sd; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="1mRleX5Q"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=qXqgH+7Pf8+YOQt42JO04/xiRlrY25OPKvo6NdI8jhU=; b=1mRleX5QRWQZbkWvtmnIFJ4XZ/
-	gt9P3d9AJKA4hTjBiS+wkEwXnqHsh0AyuXqXN5pxL//H5Kc/lNw4YAwfa9YRZyM/+xdH/LJ7lW6NA
-	1aZd7S4UKw4KmsczXyW6B9tGPHNu22aqewBOoN5Kv3lRdruVtQ5vYa01a2qn6a5mCAB0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1ueERs-002Tkl-HD; Tue, 22 Jul 2025 16:58:32 +0200
-Date: Tue, 22 Jul 2025 16:58:32 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yibo Dong <dong100@mucse.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	corbet@lwn.net, gur.stavi@huawei.com, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, danishanwar@ti.com, lee@trager.us,
-	gongfan1@huawei.com, lorenzo@kernel.org, geert+renesas@glider.be,
-	Parthiban.Veerasooran@microchip.com, lukas.bulwahn@redhat.com,
-	alexanderduyck@fb.com, richardcochran@gmail.com,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 01/15] net: rnpgbe: Add build support for rnpgbe
-Message-ID: <53710a91-a4b1-4ce9-a9f7-b32a74dec3fc@lunn.ch>
-References: <20250721113238.18615-1-dong100@mucse.com>
- <20250721113238.18615-2-dong100@mucse.com>
- <552cb3f0-bf17-449b-b113-02202127e650@lunn.ch>
- <146B634370ED44A0+20250722033841.GB96891@nic-Precision-5820-Tower>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cf9Gx2sd"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4ab92d06ddeso81140031cf.3
+        for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 08:00:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753196445; x=1753801245; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+nxKNO4a2BCMIJuvj3w0sl1mqftW1a06HRS7ZufxTrM=;
+        b=cf9Gx2sdyStJE+YMWgPgdXtf5biIFwX/eV560qhIit0bnkKdh7If9YHYgHTyxkmMTL
+         XWjOIOtnNDAbLIlSLX/cWcd1lsIDOW1akSsS4k35pwSB345qQC0zph1G7QytBnAYON8C
+         nFlrgbP9A2qvmK1y/D2SjJo48Je143WoIKS5e0s6PNXR3ZE7msbikKyAQ0KvWCPmmF4a
+         ggQ+BOn6aPZ9KOXoFnKsZpjYSudHIyNY+owXDyfcGbaOw6mtYwakjmbO9vgrtYYlK1cB
+         509HyQI/TIAv3w2lbJilk6hgd4cgpq0xOdlD2oE2lGAE92V3qbwQDTwzMVumfar+IhXC
+         hChg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753196445; x=1753801245;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+nxKNO4a2BCMIJuvj3w0sl1mqftW1a06HRS7ZufxTrM=;
+        b=AYYME4ozWKPSArE+a9NpdgA4FBz1JIba9hz7tq3NFW85PRvn7Yno9u3z/bO6O7Emfi
+         HioFu2+WFrsCCvHK7PrXPXUJ3Ms7aHdBvJbTdFx1JuS19gf3yxsN4AOPHaokHUFbXB/g
+         AZhL3m2G9h85Za5LAT/cwVE57jDNhDKbqWItJCEE8Uj87a5oPRisTcKLK0R8tG0Icsnf
+         LUL7ZElWmXnFRB1tdb/r3fRm6Kg+/er+I244zD7tx0ygSxnKpGoZ7tNIwGKrrkyaXWbl
+         YXZDtT6Um4CMMXVKfYHXk8DvzlWfeFyT9sSUB5ygn4aioDtOLNgOi08d4EJ6iwbA/t1w
+         x9Zw==
+X-Forwarded-Encrypted: i=1; AJvYcCUO4D9GNVOQPk8suS7N0ZGmHbAxgGv3gU6F/kpqQzgf0rpHoLkhEkmb82Wq9xzK7cB63aNt5X8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFLurhfACeTceLBGpVquoSt2x9MpbDrS04Z0cwmxq6uNoZmHG+
+	W/7dMhbA2wpgNuiksA4OISKClmAjBlUqlaa9F59Dcssume2YNRiKJHQ6U3sbquyrMBsQwi5rspU
+	+aLvrjFIcpPWUGr6iy8f9hgmKFPqgqxTprrVZkIrp
+X-Gm-Gg: ASbGncstQ5i/CyBdjIbeFjFYiHWrhyK0g14qhxi1Ly0uAAKBWHlUlhjllx7oFJCD8d8
+	T30ggZZpHCm6Phwm+izljFw3cjV2IvV99Rktdd7OrtYSGDqBnRF7YPvcAXXGpb5GERVjfVog4fY
+	JGG5LNcL+KBKOZyJ4+19USeA4rQq+7BH+2kCIQq+pN3WCjAtdXHdTj8VKaFPcwukBg5L4HbfUCz
+	4MwuQ==
+X-Google-Smtp-Source: AGHT+IEAwdtOOJZle/vAWN8RPtXy4MisNzaqxiiiStWuk5ZuXoX4lqwhlAmVuPypXJlxrGh34p2aRu8UWxGzVff9IMU=
+X-Received: by 2002:ac8:5d4c:0:b0:49b:eb1d:18ad with SMTP id
+ d75a77b69052e-4ab93dbed7cmr385323141cf.41.1753196444364; Tue, 22 Jul 2025
+ 08:00:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <146B634370ED44A0+20250722033841.GB96891@nic-Precision-5820-Tower>
+References: <20250721203624.3807041-1-kuniyu@google.com> <20250721203624.3807041-12-kuniyu@google.com>
+In-Reply-To: <20250721203624.3807041-12-kuniyu@google.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 22 Jul 2025 08:00:31 -0700
+X-Gm-Features: Ac12FXxzCSficlnnF49FJ-AwqyidP1dhOSx-V9OvnBpoHWZaDg3cQQfRkuFyMag
+Message-ID: <CANn89i+mvoZ4rqtow2SRR0ZRB9gS4an9syCLuXyqcW=4-8Ek4g@mail.gmail.com>
+Subject: Re: [PATCH v1 net-next 11/13] net-memcg: Add memory.socket_isolated knob.
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
+	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > > +#include <linux/types.h>
-> > > +#include <linux/module.h>
-> > > +#include <linux/pci.h>
-> > > +#include <linux/netdevice.h>
-> > > +#include <linux/string.h>
-> > > +#include <linux/etherdevice.h>
-> > 
-> > It is also reasonably normal to sort includes.
-> > 
-> 
-> Got it, I will also check all other files. But what rules should be
-> followed? General to specific?
+On Mon, Jul 21, 2025 at 1:36=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.co=
+m> wrote:
+>
+> Some networking protocols have their own global memory accounting,
+> and such memory is also charged to memcg as sock in memory.stat.
+>
+> Such sockets are subject to the global limit, thus affected by a
+> noisy neighbour outside the cgroup.
+>
+> We will decouple the global memory accounting if configured.
+>
+> Let's add a per-memcg knob to control that.
+>
+> The value will be saved in each socket when created and will
+> persist through the socket's lifetime.
+>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
 
-All global imports first, and then local.
-
-    Andrew
+Reviewed-by: Eric Dumazet <edumazet@google.com>
