@@ -1,121 +1,100 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C132BEFF3
-	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 06:48:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88949289E15
+	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 06:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753166930; cv=none; b=J6V5SqEwqFtYoMuc2+0lPDKeDYZGiCFzKRuZZWtzhqNUzF7poTWy1Y5zIM1OS0ALohuYfkoQI2afdZpYHBdOWsM7RTZ6x4tFCuemajWNcXaxof1Tj9sZxskQCa1+WMO3RoNhsPrZ/08BY8duZtJEVfrn3B2Kr9qlMRXJ5ypWAfg=
+	t=1753167126; cv=none; b=kKDnq/TnTKEZIyFLkYL7EMh0YOvz52ivGQ4surEyO0P0nkjcIkRGUl5IeKPNptKMisVR4kLIE5ihgXIPOTbZcdhK1kUwmIrDMFXGxoHEJkx9j9/JRsaqIfeyx149zvtsuNhPBLiIwr3DQE6Dp4SCy6LTDsEkaYt0cZU/oW2n9BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753166930; c=relaxed/simple;
-	bh=iSbkyPzqN1Hj0CXey8Fx8nw1cT+ihZBX/aPel5YT3EE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lQ/qqNvBWxcEMNV7W7pgsEc9AUVjZs5TgerTU0BfeQplDL3z4pDjVtdf+orto9I3R3zulUaCh0N8Os6vxxm7bzyurV6i2WYn1KreNUc/RirZUef6IcaRDSEUVDSGyacC/Nsy49t+RTqcJCAaGe7ZfKeKXa1OUrV9SwBh53BTaRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=18.194.254.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: esmtpgz10t1753166917tae364b87
-X-QQ-Originating-IP: mKK12zRgZoLI2Gza1yGjMKaEIk8SuogXIs16fAZRlJs=
-Received: from localhost ( [203.174.112.180])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 22 Jul 2025 14:48:35 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 14186350718973111170
-Date: Tue, 22 Jul 2025 14:48:35 +0800
-From: Yibo Dong <dong100@mucse.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	corbet@lwn.net, gur.stavi@huawei.com, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, danishanwar@ti.com, lee@trager.us,
-	gongfan1@huawei.com, lorenzo@kernel.org, geert+renesas@glider.be,
-	Parthiban.Veerasooran@microchip.com, lukas.bulwahn@redhat.com,
-	alexanderduyck@fb.com, richardcochran@gmail.com,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 12/15] net: rnpgbe: Add link up handler
-Message-ID: <689C469EE0E578FA+20250722064835.GD99399@nic-Precision-5820-Tower>
-References: <20250721113238.18615-1-dong100@mucse.com>
- <20250721113238.18615-13-dong100@mucse.com>
- <a77ef7df-537b-49f7-a455-c23295fddbd5@lunn.ch>
+	s=arc-20240116; t=1753167126; c=relaxed/simple;
+	bh=PeWIbC1zji8Rcv82/MombFa1BJRmw7d2fz/ARauiscU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fD1ZxJnQtqMZHIBe+Fj3vXH3H3acJiahLL1M9JAmRVZgjEqoSAujN7NAM6OIsMvZzkt/n92phOc85w48gvSYqduXdYcOHiu6+QMh7VaFtQI4Kk6GkR3z3Stg1xaK1SAmeyug9ykcGK68aOB6kBOAL6tlUOBdoOrZjCkH8BzGJNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=enbUI7IS; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="enbUI7IS"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4ab554fd8fbso49892531cf.1
+        for <netdev@vger.kernel.org>; Mon, 21 Jul 2025 23:52:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753167123; x=1753771923; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PeWIbC1zji8Rcv82/MombFa1BJRmw7d2fz/ARauiscU=;
+        b=enbUI7IS3Pdgii2vPn5xqVAV9iHcIBaXnKm8rDsTZxZmYkOsObKA9Wbx9YgYU5u+uB
+         QHbXRHYM4ZDkl74xsJ/ItRDA8z5Esf8vZvQYgl0hImphZxc8HGnv4dhmXOlgryRfMU8e
+         Vo5xjCKhokd948J5DnZ79YsdH2hueS8+ngC4yjBoMiUQArUWCgFYmQkvHUisJFmdo9UG
+         eb1MdWwcLwblChsl0TTZcC8t4vF0ONHHexnNy/zfLp0+Y5YfroN7AwqJjg2vfs7F7Swb
+         ZJbpfkdk+UBXvW4qT+MIUqt7pY+sqc8tPONwm3fz8+bFrXOXSrCiLxW0BiYu6bMYOtVh
+         ExUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753167123; x=1753771923;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PeWIbC1zji8Rcv82/MombFa1BJRmw7d2fz/ARauiscU=;
+        b=foyILSC5X0gsFE7W30nsC0KU5nQCf98QiGIkJf7JhoElsfCvgpG/Ao/VjYvyGjsdTw
+         hDWrd/GbRq5zYevnh8+kRbyozNHK9KCmUO1QpQC87RbcUiKhLmcfq/EKAc6Y78Acqtjc
+         zStYDnZEha3zaaBlexo3aJVVyvNjT3YD3hxQJAF9yMseuRa6GYFRbQ3XPa1p63CS8D0Q
+         lgyVqUuShroFRPuo3QeoPpYsQOkS5iF7vNmfuyT8Bj1JT+fHiGHKpLbp2y2TjiyhJttk
+         yqBt76fOJpWKWm+TYLA3F/LBTM+qO9rukSG4GK3hx8q5ol/+xqIRFqc4KlkYdEpQgRy/
+         eZPg==
+X-Forwarded-Encrypted: i=1; AJvYcCVlTlKjnc+/1GkZNEBa1XoE4elhC7j19uQos25luMcKdLwP60/yYUatR54zGQO54PPb0PaM7RE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyO5F/qi3YwAp4B6t9bz1A4sBzJX9pgrk1v9MhLD9sXw3URSC2a
+	hgA4XxBX91k+y4me7GT23FvhaM3J5J8jfkr3sF1lrl/dHRgYl0NVpC+yJuXAU6ULH/Bmxiob7Kh
+	ouqm6ruN6LM8qlb91WWipKo7uWLd5sIK3WhNK2xaQ
+X-Gm-Gg: ASbGncs4G07UbXt38aRx/ApbENh3w5s+0W6fwFTkaB8aW5NuA/4/r0A1AMPJL7t8Lv7
+	AFVcgIBrtfOhFYA0Vyourgq+5lTNXRoQ3Llk0mu/0N9UJafetwDdsWY6tzAhdMm+OU8qns4sj6g
+	R8Twt+topKtXbqNqbDpmzRdCuniXkxX7NikHRA6UfPyrZW0eVb+vrGYD2GkfCZ//GHdJsnI7VhS
+	4sRuQ==
+X-Google-Smtp-Source: AGHT+IHQtTROmOPjtYKNp3LrKieED28s9Ihtni6NoFl6cfc5Sc0h1mgzJXsDX15qgWH4HGDMdRBDDSThTKbNVJHA4jg=
+X-Received: by 2002:a05:622a:114f:b0:49a:4fc0:56ff with SMTP id
+ d75a77b69052e-4ae5b7e22bdmr37705791cf.12.1753167123226; Mon, 21 Jul 2025
+ 23:52:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a77ef7df-537b-49f7-a455-c23295fddbd5@lunn.ch>
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:mucse.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: OYMEOeTae7mluXgwomV2Yl++G1nWnUliEF1+H0GZ/UUaCNOTMpLsOAGt
-	qzxLuiZZa9ZfLjX92vJeapkkz2BaghEmRqEq6n7Fr5zm3alZRDanK7j8UT+slD8Y+sa21AZ
-	/PFmarH+jS+hQnWzkX1UJ+Le0MvtO7D5VC/NCuUr9PhvIOu0lJRkVq4a1pOb2wtOz3nXalL
-	LyikSKXzbjDuwo/yLdctiFF13BSuZeunmfKWSMZoMk/r8e6RPesV7OlDYJbb+Dqtlnd0soa
-	Syn4042rAePMA1bHjbQRENAq1WTVA2fBB85KZIlSgVnt7QkgyJnRSVzAsyIz25KsucLMqCG
-	OyeLyiQ8EEZEaWCbsBw7pCi2tMUedF8S529qNBR3+XO7NpW7PpC3X9pbluwcDWVnPD7rQwb
-	J0VGXtwjyh0G1MNgFonI6P/zVfRGAOHLBe/w/EAwK3EA6foGLjMP//iqdX07MGJ/qAnn1W5
-	+0auZyGLDdLxK1XdJqTx7Kk6FRrNJ8Q3ubxbacpnxnnJeSa2qLnoRPsW0MkpiKwTwE0GHM8
-	+E6sSeMe75FImeD/zipVrmjPQw2K8JMQR7AeE3ixJd3vxyvq0oqCYZCb+5KBSo8D6AcDJ5Z
-	W50sbcZR0Gk9EPUMNd9YUK09U8X9A7wOg5H9rc1j8pthfj3nA/gNvSVvBgrkhMk3tJbi/2d
-	EmpVMLjN3moYCCPsmGLcQ3P+8+N1ZBEyG7UeZ0Qqi0W/a5+U8vU571UglRYjSuzFaKkUcxE
-	c4KsBgETQoJeSNAvOUXs5LMvHJH3YoS7Cue9OwWFUZpk7RRaOimFGrAisMExRFE4sYuypGr
-	573fsU2DwGDch2tzkJT8rlFCGM7s7Z6PBuShtUzaXOBVYwGKXZ4Zf5WDckkQ+2RpcVmWmAS
-	2yz6d3aRqfqWTYrQHxPbSvZjUh5vvfiiljpv0+1UShNumeYU4MK/4Tddc5pMzp2ZMDmA+rg
-	hAU761qUD2OuGbWI1AgFP22SGfbIgECsYbU3K67A9XUdeZPTekAkgtvYSh+S6wYb8+9U=
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-X-QQ-RECHKSPAM: 0
+References: <1752870014-28909-1-git-send-email-haiyangz@linux.microsoft.com>
+In-Reply-To: <1752870014-28909-1-git-send-email-haiyangz@linux.microsoft.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 21 Jul 2025 23:51:51 -0700
+X-Gm-Features: Ac12FXz4iUeeGipOp3D_tB6KFKYfqAFLlbaMGXZvPSx57DSINr_rpmIyL81k98Y
+Message-ID: <CANn89iJLnprFvLpRpJ7_br5EiyCF0xqcMM7seUVQNAfroc4Taw@mail.gmail.com>
+Subject: Re: [PATCH net] net: core: Fix the loop in default_device_exit_net()
+To: Haiyang Zhang <haiyangz@linux.microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org, 
+	haiyangz@microsoft.com, kys@microsoft.com, wei.liu@kernel.org, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, davem@davemloft.net, 
+	sdf@fomichev.me, kuniyu@google.com, ahmed.zaki@intel.com, 
+	aleksander.lobakin@intel.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, #@linux.microsoft.com, 5.4+@linux.microsoft.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 21, 2025 at 05:47:09PM +0200, Andrew Lunn wrote:
-> On Mon, Jul 21, 2025 at 07:32:35PM +0800, Dong Yibo wrote:
-> > Initialize link status handler
-> > 
-> > Signed-off-by: Dong Yibo <dong100@mucse.com>
-> > ---
-> >  drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  53 +++++
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_chip.c   |  26 +++
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.c    |   7 +
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   | 139 +++++++++++++
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.h    |   1 +
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c | 187 ++++++++++++++++++
-> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h |   7 +
-> >  7 files changed, 420 insertions(+)
-> > 
-> > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
-> > index 624e0eec562a..b241740d9cc5 100644
-> > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
-> > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
-> > @@ -26,6 +26,15 @@ enum rnpgbe_hw_type {
-> >  	rnpgbe_hw_unknow
-> >  };
-> >  
-> > +enum speed_enum {
-> > +	speed_10,
-> > +	speed_100,
-> > +	speed_1000,
-> > +	speed_10000,
-> > +	speed_25000,
-> > +	speed_40000,
-> 
-> Patch 1/X says:
-> 
-> +config MGBE
-> +       tristate "Mucse(R) 1GbE PCI Express adapters support"
-> +       depends on PCI
-> +       select PAGE_POOL
-> +       help
-> +         This driver supports Mucse(R) 1GbE PCI Express family of
-> +         adapters.
-> 
-> This is a 1G NIC, so you can remove 10G, 25G and 40G from there. They
-> are pointless.
-> 
-> 	Andrew
-> 
+On Fri, Jul 18, 2025 at 1:21=E2=80=AFPM Haiyang Zhang
+<haiyangz@linux.microsoft.com> wrote:
+>
+> From: Haiyang Zhang <haiyangz@microsoft.com>
+>
+> The loop in default_device_exit_net() won't be able to properly detect th=
+e
+> head then stop, and will hit NULL pointer, when a driver, like hv_netvsc,
+> automatically moves the slave device together with the master device.
+>
+> To fix this, add a helper function to return the first migratable netdev
+> correctly, no matter one or two devices were removed from this net's list
+> in the last iteration.
+>
+> Cc: stable@vger.kernel.org # 5.4+
 
-Got it, I will fix this.
-Thanks for your feedback.
+We (network maintainers) prefer a Fixes: tag, so that we can look at
+the blamed patch, rather than trusting your '5.4' hint.
 
-
+Without a Fixes tag, you are forcing each reviewer to do the
+archeology work, and possibly completely miss your point.
