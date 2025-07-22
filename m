@@ -1,82 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C87C27A909
-	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 16:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4284C277814;
+	Tue, 22 Jul 2025 16:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753202433; cv=none; b=ThfoCY84+R3OYfdI4GuWPlBkCqj1lqlKTWdcmO4a6iWc+HJo265nyJJsEygx1Z0BWyw7/7Q1Q8qQkVrTfYEPI6/lRzM2e3KgdFh0cYxkiejtqJZmNYM2svKA96jwxJlkLC5AInMEWIEPOj33S5l6ZME2nnJq162tQYb6Ub/s4SY=
+	t=1753202739; cv=none; b=EdTSaIrQvp1mrzrFLN/9n18MSfUSnv/D+U9fRhBWNv80Cp+RbBmG5dDpeSdzanlxC52xnC5MWSf0GGcvtMF2T5Ds54c+K432FI7ab8jsZ7zHZzfRL3Zv3TpyolJM/VW8+0854NU3GuIrhJaOl8BRuoa8qdtxLfcp7+PrC3grr7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753202433; c=relaxed/simple;
-	bh=qTdNZ00bF/QD6U8ntALkccKt9Ovtrx7ev+aHjkvKWyg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iUpvLgdyUvXBX4rRBrPGNuHWzqGDsm+7svgmzLghdriMsLB/dDqFuPibETq3w8SXWvqplpNsttqU7kySbUyJd13j/zcT216jVMw5w41Ss18IVcEW+x9elej/w/AnPXiwAO9uP6zzipXlRtGalzkeM1lR3PJu/1I3ZT+T8m9MHnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oToRm12z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753202739; c=relaxed/simple;
+	bh=PHTcopnvoUUPICM9yN+/r0sMQFYJuZdnPPfIUrcHjqo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ma8aBE/Xp7IohMOKOZI5QLu5VY2e///76tq4OcwCxbev5XQweqoCXaTAndTJZe9s9EoHrWNixI9eli12bG7CALKzUDkHb9klEfEkoZEEbRoF18Q+ZJg9B20hKNvRqFX+o9x/QgQ/7te9kW7xSWN41qW/WY6Tavd8zo75lF8sMcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nPNXL+dh; arc=none smtp.client-ip=209.85.160.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oToRm12z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA51C4CEEB;
-	Tue, 22 Jul 2025 16:40:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753202432;
-	bh=qTdNZ00bF/QD6U8ntALkccKt9Ovtrx7ev+aHjkvKWyg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oToRm12z5+cU5QxafgEtl0Fg5r2lDOFplGvKXjMbzasF++1qumc77/MKDBg2xYAyS
-	 V8oSvjKBA8inSniDSo6DfUTV7Pg685/cXB1St0yz8aXAVObZj3584ORnfd9XxkPWFI
-	 F3G45X5T+bmSogS8Y26xTi9DAjGhG7cGACRLn7nEYxfB/E6bh90A+W4LLOMRxsj0y5
-	 ZbLZVw08OvWlUA873fhu/78F1QP4YeiX9Qz+T9gfnlWi+ir1fZht6X7JY6aWHW9LqX
-	 lQWlcP6VCxstmkOWqDF0+tGYs/Q8negdPtMa6k0/iesOjg2uP8jdgIxyYoV9qkqZHG
-	 aLbOka7+bVrOw==
-Date: Tue, 22 Jul 2025 17:40:27 +0100
-From: Simon Horman <horms@kernel.org>
-To: Subbaraya Sundeep <sbhatta@marvell.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, gakula@marvell.com,
-	hkelam@marvell.com, bbhushan2@marvell.com, jerinj@marvell.com,
-	lcherian@marvell.com, sgoutham@marvell.com, netdev@vger.kernel.org
-Subject: Re: [net-next PATCH v3 03/11] octeontx2-af: Extend debugfs support
- for cn20k NIX
-Message-ID: <20250722164027.GR2459@horms.kernel.org>
-References: <1752772063-6160-1-git-send-email-sbhatta@marvell.com>
- <1752772063-6160-4-git-send-email-sbhatta@marvell.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nPNXL+dh"
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-2ff94cc4068so1171276fac.3;
+        Tue, 22 Jul 2025 09:45:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753202734; x=1753807534; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jrrhnQ3SPCtHnglawQ3hAL35cOq58qAmmuM+Az+YVko=;
+        b=nPNXL+dh08NofRx5m0Dj5snNvjdBng3FlKZE6xsEdzf2JVu1qRHzhdEr78dCcXgu+1
+         rpm359OUG/uDPyP7Vd/ExPhUtIl62Zujm0dZFh3KOFHt4S7SjWXAw9m8K/kBaDdXSO54
+         hIBjQkkM42FZCHlN2smMnyZ+wr7AznG1h9ThG0O3or2wszTrlhza6D0OPi5hj+cGomIz
+         +ADZhj6HYrRHzXyirL1H1lBzOO6TE533m/WAbc+rixOVIklVdHDOi+lzLqgfqtMTjzpx
+         pp8yHI4xdRm9CjC691qOeuCXQbjE4yEObA/2lnSa1uGOS+SJbtSa1M+XM2k5HhtHAsvq
+         CxEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753202734; x=1753807534;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jrrhnQ3SPCtHnglawQ3hAL35cOq58qAmmuM+Az+YVko=;
+        b=DV1EmTBJISFM9t/E4L1r6OS5QCw/oQw0UiSZ8TK0c9aQcooTcPfUiutzbMVS83kIbx
+         NpdbxbtX1fnfnZvf/twb6wQOe4oCFin1stO+QQArwJi3u172ltn1JX2Au20v4ZsGwpFC
+         TCOGfZhAg8HmljXRLSQKTsPnKhXOHDK3G0iBtPobc9O4hBGfE9CBH3cQBC3MKaqeDN33
+         0Pcil4zrYfZrIIPsK0L2gmJI+FVmDEK2nq0Fkt85lIOjeGbh6JvwXizzvJMEIb0yTPM2
+         S6Ie+wiRxxfWWFEysZBrVttBLtf2HoHn21llmmxvibzxZcwcpbjedUyAYkoCeQ+b3a18
+         kj6A==
+X-Forwarded-Encrypted: i=1; AJvYcCU7Zv2zcdNkrXYYMzFyt8l/Xbjs8cZ9KXdnZbebLkQTuCPR97+qRhRMhA6zuBKR5Om1FvKPm91jUJkj/w8=@vger.kernel.org, AJvYcCWNfwQYUbhhW8cewCHODgdVcOFhgds8ozsgPp0om5wydipeCRnrwUP2vQ0U1fXvTFLs9n9ocPCA@vger.kernel.org
+X-Gm-Message-State: AOJu0Yys2SfvURoiV1MKvaCJ/r52T5Al+/u2glGH7Qjpa2wga/RWP+ev
+	X1oLfCBKux+hqHE+Ek6d3pKPsgh1R/SrnXQGhmNwMTP5Z/PAfAtsUq3e3RTWHMocqimzZbuowX6
+	5RV296JPq3ehOXVWpgmfBvJrIQuHlsd0=
+X-Gm-Gg: ASbGnctidhwWPZYYOqVWCCWZGLEmzk5MWqoqD3adGREpqIEZNJW3Jv2G45xHkRzLeCg
+	LiKR/ujfT9T/H4E8eLS4e91UuZeywc/4f3m2AHF154iYzM8b7ItjkIWHig4fA1BPLapl9S3z3k7
+	J+UHuLHR2EP5HBUOWN+tmHHXXrr+RE0MUlUPnnMi3OFBMI15WdGgKggCpj/x8BIwmmJkoB/5Mt6
+	maSeMZ0
+X-Google-Smtp-Source: AGHT+IGujhh+TbcurHZKA27S4y43iuhUTCYpSn+qbOkt4C52QbJ8LuGP672Oxj7Kn+OQIp+QBBMom2C1Kfhm6mASIxo=
+X-Received: by 2002:a05:6871:3685:b0:2ff:a814:dfdf with SMTP id
+ 586e51a60fabf-300e9dcc04dmr15297143fac.20.1753202734115; Tue, 22 Jul 2025
+ 09:45:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1752772063-6160-4-git-send-email-sbhatta@marvell.com>
+References: <20250722071508.12497-1-suchitkarunakaran@gmail.com>
+ <CANn89iJgG3yRQv+a04wzUtgqorSOM3DOFvGV2mgFV8QTVFjYxg@mail.gmail.com>
+ <CAO9wTFgzNfPKBOY5XanjnUeE9FfAGovg02ZU6Q1TH-EnA52LAA@mail.gmail.com> <CANn89i+dif2qjKM6oO1o=BKutXoO6w9kWnnPfc50BDBJ7VpAeQ@mail.gmail.com>
+In-Reply-To: <CANn89i+dif2qjKM6oO1o=BKutXoO6w9kWnnPfc50BDBJ7VpAeQ@mail.gmail.com>
+From: Suchit K <suchitkarunakaran@gmail.com>
+Date: Tue, 22 Jul 2025 22:15:22 +0530
+X-Gm-Features: Ac12FXxPP_X2GzzSAxaYHWL1BgGFTF8gKQEBJ5k-jWzRXfsqbB-cYKlnKc5mw8o
+Message-ID: <CAO9wTFgYMfDzmL_PfpX4jRKaG2mEZmNq+rLRyprGLN6r23udkQ@mail.gmail.com>
+Subject: Re: [PATCH] net: Revert tx queue length on partial failure in dev_qdisc_change_tx_queue_len()
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us, sdf@fomichev.me, 
+	kuniyu@google.com, aleksander.lobakin@intel.com, netdev@vger.kernel.org, 
+	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 17, 2025 at 10:37:35PM +0530, Subbaraya Sundeep wrote:
-> Extend debugfs to display CN20K NIX send, receive and
-> completion queue contexts.
-> 
-> Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+On Tue, 22 Jul 2025 at 21:58, Eric Dumazet <edumazet@google.com> wrote:
+>
+> On Tue, Jul 22, 2025 at 9:22=E2=80=AFAM Suchit K <suchitkarunakaran@gmail=
+.com> wrote:
+> >
+> > >
+> > > WRITE_ONCE() is missing.
+> >
+> > Oops, I'm sorry about that.
+> >
+> > >
+> > > > +               while (i >=3D 0) {
+> > > > +                       qdisc_change_tx_queue_len(dev, &dev->_tx[i]=
+);
+> > >
+> > > What happens if one of these calls fails ?
+> > >
+> > > I think a fix will be more complicated...
+> >
+> > I did consider that, but since I didn=E2=80=99t have a solution, I assu=
+med it
+> > wouldn=E2=80=99t fail.
+>
+> But this definitely could fail. Exactly the same way than the first time.
+>
 
-...
+Yeah, it makes sense.
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/debugfs.c
+> I also have a question. In the Qdisc_ops structure,
+> > there=E2=80=99s a function pointer for change_tx_queue_len, but I was o=
+nly
+> > able to find a single implementation which is
+> > pfifo_fast_change_tx_queue_len. Is that the only one? Apologies if
+> > this isn=E2=80=99t the right place to ask such questions. I=E2=80=99d r=
+eally
+> > appreciate any feedback. Thank you!
+>
+> I think only pfifo_fast has to re-allocate its data structures.
+>
+> Other qdiscs eventually dynamically read dev->tx_queue_len (thus the
+> WRITE_ONCE() I mentioned to you)
 
-...
-
-> +void print_nix_cn20k_sq_ctx(struct seq_file *m,
-> +			    struct nix_cn20k_sq_ctx_s *sq_ctx)
-> +{
-
-...
-
-> +	seq_printf(m, "W11: octs \t\t\t%llu\n\n", (u64)sq_ctx->octs);
-> +	seq_printf(m, "W12: pkts \t\t\t%llu\n\n", (u64)sq_ctx->pkts);
-> +	seq_printf(m, "W13: aged_drop_octs \t\t\t%llu\n\n", (u64)sq_ctx->aged_drop_octs);
-> +	seq_printf(m, "W13: aged_drop_pkts \t\t\t%llu\n\n", (u64)sq_ctx->aged_drop_pkts);
-
-nit: please line-wrap the above two lines.
-
-> +	seq_printf(m, "W14: dropped_octs \t\t%llu\n\n",
-> +		   (u64)sq_ctx->dropped_octs);
-> +	seq_printf(m, "W15: dropped_pkts \t\t%llu\n\n",
-> +		   (u64)sq_ctx->dropped_pkts);
-> +}
-
-...
+Yup got it. Thank you so much.
