@@ -1,36 +1,36 @@
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1DE2D6630
-	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 07:37:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C302C158F
+	for <netdev@vger.kernel.org>; Tue, 22 Jul 2025 07:38:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753169868; cv=none; b=gbDE5T8i5Jg0UwbwLSuqDxRZDP8JLfa+cBWBFVJENz3akDVTmgxB8DM2PdNf0ElypH2nQo4dd+0DzoCcF11ZcgcJswIn9t8fcuaoZN68faqUffccqK3WMu5vl3T4nnrmsjUYo9SXvXtOEN7P6LXAb6v3WUORQuUI8oDdX7Q2Cag=
+	t=1753169888; cv=none; b=I7UKmHbYOxAqiHLS/aO5FNTrQR3pL3NW8ZHhY6+e8LzyS7tA0pNSQImHfiYO7Z9xk093bJX0eVGCqIwp+61G1ehGysyZffZf6ucKFIrcwsggczgpDxGfAhIdQKnZIhK88haoJY3obxNc7HyurDOefN44Y3Pxuez2md0TNSX/agQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753169868; c=relaxed/simple;
-	bh=pif+UloRwSr0Am2GfxtN6NiAOi/V8GWq84r2WOxYR0I=;
+	s=arc-20240116; t=1753169888; c=relaxed/simple;
+	bh=jgv3Zak4AXMWc1ecsEANjIXTKKgxnGver+QqUpOB+ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbHojvND2GakvqeTjvQJcO0YABoZElmtYX83+3fKh6PeKSIJYXxBgWe2sNk2vtRaAphXxTQCXpHylsvn2t/QOqlO5+sqepz6HbHIAaH8R72hur+8e9Rfda/bABSNwjptV/Ngk0bKg6nSO8vrb0yEzm98nUQaEKh0FPMxzjMayNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=bWMI3G2t; arc=none smtp.client-ip=54.254.200.92
+	 MIME-Version; b=Sbwc183k+VSCXz59x345V0VR59ox7tN+wEcwuho+26Nxpeqp0fwxbFcnMm9N7voxyw4g/p0682kEMltA1PiXBQQT33bGOJSH9VQnTlkgeaClPBa7jrRVOrc3wxmzCtCZMFLLuSPdXJiHMXVIJdTcVIYeELaYI44KWp0pyAtZpAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=CltOyrqt; arc=none smtp.client-ip=54.207.22.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="bWMI3G2t"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="CltOyrqt"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1753169790;
-	bh=vYmY+9tqPioPK6cSdujQjMbixbob4YHFsEPo+u1e8jk=;
+	s=onoh2408; t=1753169762;
+	bh=WQ3Sf4JHhtwa+UH5bDz8kFE4gvdd2eiJ0Z7vB2dcJ7o=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=bWMI3G2tg2sQ9TLlEb/YhuFjuscFDegOce5lLCzYm5nVtlxwel+1d6njCILzlmJ+h
-	 5O1nt+gP9NfvaOse7fagdnf1XvO8MsPnxG3Kx60lKVs39s0nsso3iu+m7wysyb5kQZ
-	 nanlWLFBJsPeTGmJLDzVKPEzoFt9vOI9y0Exqj0s=
-X-QQ-mid: zesmtpip2t1753169729tcf86fa72
-X-QQ-Originating-IP: HNLldTyG1udNmPKueSkK9C3LgPlbsP2VGGl0nQkGM08=
+	b=CltOyrqts1zb0aah7ceq5QYW1xNlJh93QxsV/iWySLvnnFMliqKZ2B2gorWyore9w
+	 I3Dm9OtPsA2647VmK3rmhzsw6YEob4SZY9zQG6JiItWPdJe5OtPyP2GzoQE5nNPCeL
+	 cENGWPQm4hxS9jQgVCyLlkx00q0cWEEacEigvSLY=
+X-QQ-mid: zesmtpip2t1753169697tffff2e54
+X-QQ-Originating-IP: ESW3/iFALqzPeVYmODy1/u+VMOIzJZ60evAbDZBeNu0=
 Received: from avenger-e500 ( [localhost])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 22 Jul 2025 15:35:25 +0800 (CST)
+	id ; Tue, 22 Jul 2025 15:34:52 +0800 (CST)
 X-QQ-SSF: 0002000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 14499228657243384026
+X-BIZMAIL-ID: 11624695961033415566
 EX-QQ-RecipientCnt: 64
 From: WangYuli <wangyuli@uniontech.com>
 To: wangyuli@uniontech.com
@@ -97,9 +97,9 @@ Cc: airlied@gmail.com,
 	xen-devel@lists.xenproject.org,
 	yujiaoliang@vivo.com,
 	zhanjun@uniontech.com
-Subject: [PATCH v3 7/8] xen/xenbus: Fix typo "notifer"
-Date: Tue, 22 Jul 2025 15:34:30 +0800
-Message-ID: <C6633C66376C709A+20250722073431.21983-7-wangyuli@uniontech.com>
+Subject: [PATCH v3 3/8] drm/xe: Fix typo "notifer"
+Date: Tue, 22 Jul 2025 15:34:26 +0800
+Message-ID: <94190C5F54A19F3E+20250722073431.21983-3-wangyuli@uniontech.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <576F0D85F6853074+20250722072734.19367-1-wangyuli@uniontech.com>
 References: <576F0D85F6853074+20250722072734.19367-1-wangyuli@uniontech.com>
@@ -112,48 +112,47 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MiCmIIZEBTbfIA3fVM9nfaZP43qp6oRhRUYQO579CYgUESz+KjMTIhhm
-	QveNyEGs7Gdkl8AzJOWDduvN0x7ArBvgCuA7aPbc/AIZ2gzMhnVclu1eXPIox3S/ie4Y51z
-	oag+eAifkqz3Bpupqb1ISWsc9JBDx/SlpAQ/sl/dTdZM4uz1ICk58Pr+SnaEiVNqxnWpwGC
-	xkCCndJVpb84o/DBjYz1ESZx8CgPmI3O20ApzLpJYJJomlkPQ17bLDoCW07vabLHWJTTN/l
-	p5S+EQRAfR00cxmcRdsyqijMcVLV3l0L0p2tlFSJIfLbHX+0wolh6EXlw+4v4vH/Wn1DyPI
-	4CrkwFR21roElYI7GWrzd/lSD3HCq0HBAQ65sziKInrObryC1j6BeD7rAZAcc0upNPQ5Ff1
-	GWdqevBFBUiPm8D/SuqTAEH0jOKIE5PvBgA6bxEnRnFFInMYnqA9h30l6jAqtF+c8GdwdRM
-	ejE6nkl97Ui9dDyB/mi8ERv5gyGzqaBbaHFL/AYAKgrVLQ7UNuHJHWeKebnHm/gGcTrlfQo
-	fzwH84aIakjVBC9Mt3/705saV8QB+zK5RMGTf3uJJznws7MTg+JuE5PO/VYTJNmEVZXOP0O
-	JK5JiCDmVjUpYXX2PuigHqdkG7DcGLrscRvyFEsj4lIFjfD1ppRJTfXkfpLmWxbYqgwb2WW
-	CjEuW7ceX5ezPAF2kVuhOYdqbMNpNxr2LHDwbtEj3cEJV9oZfJ4Nvq3Aq/aMBf9KdfT+ToS
-	u+c31KvOfMD6Yeu38z3IGR69uznntJQ6/jXNAkUp082BN7ov2Up4Uaxh3YZrmsbgJouh00g
-	PXNt7TIRuac2OwM14s6O0EhilddxH77lm9W93G+DtNqlnLYP2eXxiNGOSw1ZWasImnE437g
-	ZVzbz3V++9XpU9x39WZBkOVCQ3cZLEmfys7LSRsnd++c9v8f+gZl05WXss3sOus2jX4MYO1
-	yZjlU6GFZOhyLcTAmsbuEyGM8cjlzlJLkNC9dulR8O7puxTWzNgzG4ET4bLo5k62coPB5NR
-	JtTovou4sT303tL3BrMMwEOxWVi3ve9206oa7AfpcfmwDpehjrSAxJo82Cspy05pM98aP9p
-	bibQ6cSLjQmYaDuCYqJztUjse+79M7FLNcwnprfnZY2M3DfvZhSQ/MlHYrh04vSBg==
+X-QQ-XMAILINFO: NN5tIm2Cw++mUPQ8bcGmKLa1xMgQYZnczWcMIRHRxzkJYiByPervzJg/
+	nMUSaSdrb05pdhNel+4XNDhgrMObfI/S3OG+9SUAYwzx8E4RbCynSnXkq5mRzr/pSFacKsZ
+	hlOGLNx9OHjvgLyqGOCtokAZeoZQrhGTC16ZbWKFHCw+i/1HcXCOO2C2FNlpU3E0VJ7XNcV
+	Q0CeEotLHEFSSg/eKqN+2D8LrhuhZ5z5WanHV1sVSIWy9U2IZt7LX4Jc9wI6P4s/CPOIp2o
+	Dx9/6SsORILW6EUvQmVUtiKbfn6zIhkpZ1q2tGcOZMMz1OlVh1DbK63QlbONmZE3jdW13xC
+	KpuETBxI1xY56ik1vgFCjrTLRuGFvIS+WYIlRy+v/9aQoBL7sbfV34C3pl6b2lhpJvXY5NV
+	smHsc42utvLjtpL8dJBLyYFIcRG9B0n8XIBj8SSSHvymzQI46Dlspe3w2Ypa2qDckQC2HGV
+	dPPw80HeRywP4VZtNFOMHfgvWC2jT3yIWyhwUyH4KUrxcWCVreb+tTwXrh8hS7VXfKgyQ16
+	gxjogsVWuc2PmLXdc0EX+Dn2hZRv7xlzzlc+KDU46xTEMfkY/zXsfnjg71Hdi3gojs8F/Mr
+	GtLfqTQAk/OMFodRWjFlYW42g2IJDR2viAI72etXwLfe9tvo2u/LcjinIM4sZz+ZUN95U68
+	MwkApt0Wj+JTyQ07HbvV5UIH7VsbMClqUtS35tqCTrKeKiOXb440h3bynhc9eW8bQ8DA5NK
+	X9NvT0whqNa3O2sfoJYHKZWC5Rr5Cy6VInJhEfKInncCMSdYXqCLcLFQPaxiTjATBqUEMaB
+	CqQHzaWTxWV9GkVugdHTZCtCUxd+HIfADQpQsyuXi2nE7fpH2G3n/ytJUpPmzlb4b3082Eu
+	tcDveP2aZTHOG737v52aVMcU/1uayveXeg9704diDrAGBVzBUVh+sLdLfN1VmD5fkB656cr
+	o+wf3dbepDEpequEH1xpVMZca8l+dIwU2l2drNvVMKTqea4CawGOBSpPzL9RgiaBvyo1jOS
+	SqgOXINUn/Fg2oRGC5ticZXrft+vHcnOOJ7swdLwi/KpnN+v01WU/7liMLplpQNQ1W3trCo
+	PFrILXSMnhVuZ3zbamNGsQbZSHAFGBAqc7EhGsg6j10
 X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
 X-QQ-RECHKSPAM: 0
 
 There is a spelling mistake of 'notifer' in the comment which
 should be 'notifier'.
 
-Reviewed-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: WangYuli <wangyuli@uniontech.com>
 ---
- include/xen/xenbus.h | 2 +-
+ drivers/gpu/drm/xe/xe_vm_types.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/xen/xenbus.h b/include/xen/xenbus.h
-index 3f90bdd387b6..00b84f2e402b 100644
---- a/include/xen/xenbus.h
-+++ b/include/xen/xenbus.h
-@@ -180,7 +180,7 @@ int xenbus_printf(struct xenbus_transaction t,
-  * sprintf-style type string, and pointer. Returns 0 or errno.*/
- int xenbus_gather(struct xenbus_transaction t, const char *dir, ...);
- 
--/* notifer routines for when the xenstore comes up */
-+/* notifier routines for when the xenstore comes up */
- extern int xenstored_ready;
- int register_xenstore_notifier(struct notifier_block *nb);
- void unregister_xenstore_notifier(struct notifier_block *nb);
+diff --git a/drivers/gpu/drm/xe/xe_vm_types.h b/drivers/gpu/drm/xe/xe_vm_types.h
+index 1979e9bdbdf3..0ca27579fd1f 100644
+--- a/drivers/gpu/drm/xe/xe_vm_types.h
++++ b/drivers/gpu/drm/xe/xe_vm_types.h
+@@ -259,7 +259,7 @@ struct xe_vm {
+ 		 * up for revalidation. Protected from access with the
+ 		 * @invalidated_lock. Removing items from the list
+ 		 * additionally requires @lock in write mode, and adding
+-		 * items to the list requires either the @userptr.notifer_lock in
++		 * items to the list requires either the @userptr.notifier_lock in
+ 		 * write mode, OR @lock in write mode.
+ 		 */
+ 		struct list_head invalidated;
 -- 
 2.50.0
 
