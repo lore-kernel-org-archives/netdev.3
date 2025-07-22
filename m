@@ -1,53 +1,54 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46B32EBDF6;
-	Tue, 22 Jul 2025 14:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2E62EBBB6;
+	Tue, 22 Jul 2025 14:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753195800; cv=none; b=Aje0gGb1doWjmclncm5J3RkGbxuwoJ+WFt1FCXsutIomHbwtHBvf4zwuK3mWuUZYvH6m2XP43DwFdG1RxDsdsHeJSO52FqowMeqlGnir4BGKwOGjUsWY61EuqjQap6UprEgBD8pyGssEwG3Rqnlrttv1hzNEX/ILRNMNHwaDzZc=
+	t=1753195800; cv=none; b=FjJ6WsVnM4jUwkCrLnLI+CNfgCKkR1uQXbNRaB/RikC3yJK9u9kmzPpbWH+siirZt3AyqcleKjUnkoWX25Ym+on08SA/1S+3vcAY2np5e48XG7S4g5hhA+B9dIhddWfI3FZE/JqSDLdQ9cDdg87Z9JNVE6yygGFeMHLWHrc+5xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753195800; c=relaxed/simple;
-	bh=211uyGxKSx8i9e/JVEAuSRVXP0SH88Ajrq//nX18ZhY=;
+	bh=49no1Pu7NQqv0smAZ4H6knZd1WwunyzzIPELVeaXlPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MidfNWMmfIZm2rJKUe2ar8oH8k9a4X5ycP2R9tz9DwnEzrm6xyLkDsu2Om8xAEdJn0biOh8Z3Y0dORwgicX0eo6QeSQOnrAKGGgp4wu2q9JkpcMO7Gw1rxDl1Jje3+qi7EFdtgyiWu/PNjqho7xmmgH49ozrBZDPMOI1gsZsxQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mq76anGx; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=sko8drRrZGre/dql2tq9UzcOeEpZFRAxuCE2L2qnzQzgzU2YfiXfWdyatYmQEJ75BmfLXO10YI7LKvPMsVIe/bCuPq0uokL0G9QIRQwGQowb3FuNAz2TATVWiBJzKGLmQU6zBIwGX0yzxBv6WDrdq/8D2SC8q9X3zfJLBkHQFpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AAyRo9Lo; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mq76anGx"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56MCrin2018099;
-	Tue, 22 Jul 2025 14:49:52 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AAyRo9Lo"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56M7LToT013263;
+	Tue, 22 Jul 2025 14:49:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=+Rmk5PJtvGL
-	2PtAnwMtP6YM8VGll8/AGwwvaCoApa+4=; b=mq76anGxwXZxzBrXn1qAu/Kv/42
-	bqrQ+ncAIX38f8upFEoyBEXqa8fjAygDO99zshSc44x3zb+AsnejHDiy3sM1hP7R
-	5Cem1m3PDwQTIuoqhH4GCjd1wVTup5wmJnP5nKEygxUd5yMrLZBiYxBFgsiTdiwe
-	BvmMLZPEKe1a8oR+UYwVtC2RQquDB+N4ZSpmsImm1PJVfsGfpltjvx+e5aVINJVk
-	+w3rw2WiKOcNNBXqcSjJWSeJZ3HwQJpLxuookM8lQYmdVVEx5Q0xC+tpsmGkcHcg
-	7xBpgxs+qT+sMuRtShlRFaF80IEVEuvJIhEWC6hKfWq/O/V8jhsvqA9g7og==
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	uRiG2rObt60jYvT8bOGThF8zH7z2AHwZZmCwX9wEgxE=; b=AAyRo9Lo5xNZsSBc
+	SOBXZJ8cbmg/knzR6YfMXAa1Q6z7OELL0pSlnfq/fgg/StefJjIAmw2scCTbOIZd
+	Qh4b2h26oG00bWrQKo7Yqu5hF7KlJArmFLhiQWvcHh5ZjG8yYz+zuD1VoohLTOZk
+	+a1t3sL5XRTwxBlhfchK2rhIawzr2vduUW9wcUCJz77dRYM6hqTLuVGOHNjiaM7F
+	05Ofd4KaoSUYSUuVWymPKDaRBttzJxbXPtuljfdGgLnQLxFjqk2mW2vDSuZPLLTv
+	QRK51WtWUhm0qVBmvxM0rf9x3aGY8WnsDlb/RG3PgI2z3DQk7iOQBA4VrQeCJYpU
+	Vr1/nA==
 Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 482b1u8ckb-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 481g3emmwc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Tue, 22 Jul 2025 14:49:52 +0000 (GMT)
 Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 56MEnlvb023767;
-	Tue, 22 Jul 2025 14:49:47 GMT
+	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 56MEnnYq023832;
+	Tue, 22 Jul 2025 14:49:49 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4804ekgevc-1
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4804ekgew1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Jul 2025 14:49:47 +0000
+	Tue, 22 Jul 2025 14:49:49 +0000
 Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56MEnlqE023735;
-	Tue, 22 Jul 2025 14:49:47 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 56MEnlW9023732;
+	Tue, 22 Jul 2025 14:49:48 GMT
 Received: from hu-devc-hyd-u22-c.qualcomm.com (hu-wasimn-hyd.qualcomm.com [10.147.246.180])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 56MEnkMY023729
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 56MEnmVE023809
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Jul 2025 14:49:47 +0000
+	Tue, 22 Jul 2025 14:49:48 +0000
 Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 3944840)
-	id DADC85E5; Tue, 22 Jul 2025 20:19:45 +0530 (+0530)
+	id ED4825EA; Tue, 22 Jul 2025 20:19:45 +0530 (+0530)
 From: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
 To: Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -57,11 +58,12 @@ To: Bjorn Andersson <andersson@kernel.org>,
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         kernel@oss.qualcomm.com, Wasim Nazir <wasim.nazir@oss.qualcomm.com>,
-        Pratyush Brahma <quic_pbrahma@quicinc.com>,
-        Prakash Gupta <quic_guptap@quicinc.com>
-Subject: [PATCH 2/7] arm64: dts: qcom: Update memory-map for IoT platforms in lemans
-Date: Tue, 22 Jul 2025 20:19:21 +0530
-Message-ID: <20250722144926.995064-3-wasim.nazir@oss.qualcomm.com>
+        Rakesh Kota <quic_kotarake@quicinc.com>,
+        Sayali Lokhande <quic_sayalil@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: [PATCH 7/7] arm64: dts: qcom: Add lemans evaluation kit (EVK) initial board support
+Date: Tue, 22 Jul 2025 20:19:26 +0530
+Message-ID: <20250722144926.995064-8-wasim.nazir@oss.qualcomm.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250722144926.995064-1-wasim.nazir@oss.qualcomm.com>
 References: <20250722144926.995064-1-wasim.nazir@oss.qualcomm.com>
@@ -71,335 +73,374 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-QCInternal: smtphost
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=LdY86ifi c=1 sm=1 tr=0 ts=687fa510 cx=c_pps
+X-Proofpoint-ORIG-GUID: DGpeP0TReHlrLthH1C7cNiOTvUWXcj5N
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDEyMyBTYWx0ZWRfX5t/urR/1AZ/9
+ V+bwTanNp6bvw+9JnkbZMeOggDSIhepDEWTGVYEXx+mJvo59H6vWNZbjFG0V0XUQ8DIIm7bgm/Z
+ 5i0ugdVm8wej6Ds2ts3wHk0T60v8mbEI869Hzr+FKcf16oWLnXk+XufACY3gwSErcGZmHeS1M83
+ rGf47n1fwKwlH2W19C8VAwSsCghv7tgX53BY1s7Fpws8ZQPyoJRDb0ypMdMrplPiEvyanQupMY2
+ CEqodhudeVeqZAWJMCrK0u2LmaqpAD217RYGsqBMJQg0Y5dlm6Ek2J7i12eg7CEpt4fR/k+37Ag
+ UPGofRM6PG+12ZDeRAF4NB189F7B57SjSeSp3ZoPwmtGA/pKYRrNCrre0O23ZyDD9+LNqEx1dkK
+ kcKwdfuXITag2w/4VBaq12mKPWR0TGmmWWHlo92Tp/pdEubiHNh0MFZ/ZwJ/9BBu0dL/qnXT
+X-Authority-Analysis: v=2.4 cv=Q+fS452a c=1 sm=1 tr=0 ts=687fa511 cx=c_pps
  a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=Wb1JkmetP80A:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8 a=gsKajC6rj_jpGAwFQswA:9
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
+ a=SOkdykdnccwuzwQJ1m4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
  a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDEyMyBTYWx0ZWRfXx64vTnh7CsTs
- CM2rrXCGpIrfv7XFPLy1MAZC6/p8arNbmfaLF1Z//S3poQlm2rUQ2JoFg1FRvsIiKGkTetUWHeq
- t6LWtXVd4g3AC3XVoz4FwEjv1HdlnsphQ3HnDMllW/CB9y9ucu4ZyO/DyfTLF2RuBiYsGoQffxZ
- z5dfkNRga6mQBMBVWcEy0rfpF1xSyTkY/e00B5n+WdeejBtC8H1YuhJknBCHkk3Z3PCp49K8m9D
- WH1ghtJxFkVN4MPuJL7Futni8VkLXcXGMn8tdyoN01yPjGcSBfM5jdkRGKn4xa4jZUmgilCvefp
- /3IGhsqABYSQXS0fFBAJ4P05grSj2qi83l7TilWkUEZJCZWmdBQM3FLtr0WymvQpx73scE7kWHa
- 8kj2sqT2fzELJwHc+mImIz8nLgeCYIBv6poXiBwg+3EIl3CqziXeVHrn4o/uHUwod2xfO5bd
-X-Proofpoint-ORIG-GUID: dG-lk2yCjbIjEUDSKBHry80EA4PLinAt
-X-Proofpoint-GUID: dG-lk2yCjbIjEUDSKBHry80EA4PLinAt
+X-Proofpoint-GUID: DGpeP0TReHlrLthH1C7cNiOTvUWXcj5N
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-07-22_02,2025-07-21_02,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0 priorityscore=1501 adultscore=0 phishscore=0
- malwarescore=0 lowpriorityscore=0 mlxlogscore=821 bulkscore=0 spamscore=0
- suspectscore=0 clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
+ clxscore=1015 adultscore=0 phishscore=0 mlxscore=0 lowpriorityscore=0
+ mlxlogscore=999 suspectscore=0 spamscore=0 priorityscore=1501 malwarescore=0
+ bulkscore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2507220123
 
-Stop using the outdated automotive memory map for Lemans; update it to
-meet IoT requirements.
+Lemans EVK is an IoT board without safety monitoring feature of
+Safety Island(SAIL) subsystem.
 
-Since, most platforms are IoT-based, treat IoT as the default variant
-under "lemans" and apply it to all platforms, except those requiring the
-old memory-map (e.g., sa8775p, ride, and ride-r3).
-Introduce "lemans-auto" as a derivative of "lemans" that retains the old
-automotive memory map to support legacy use cases.
+Lemans EVK is single board supporting these peripherals:
+  - Storage: 2 × 128 GB UFS, micro-SD card, EEPROMs for MACs,
+    eMMC on mezzanine card
+  - Audio/Video, Camera & Display ports
+  - Connectivity: RJ45 2.5GbE, WLAN/Bluetooth, CAN/CAN-FD
+  - Sensors: IMU
+  - PCIe ports
+  - USB & UART ports
 
-As part of the IoT memory map updates:
-  - Introduce new carveouts for gunyah_md and pil_dtb. Adjust the size and
-    base address of the PIL carveout to accommodate these changes.
-  - Increase the size of the video/camera PIL carveout without affecting
-    existing functionality.
-  - Reduce the size of the trusted apps carveout to meet IoT-specific
-    requirements.
-  - Remove audio_mdf_mem, tz_ffi_mem, and their corresponding SCM references,
-    as they are not required for IoT platforms.
+On top of lemans EVK board additional mezzanine boards can be stacked
+in future.
 
-Co-developed-by: Pratyush Brahma <quic_pbrahma@quicinc.com>
-Signed-off-by: Pratyush Brahma <quic_pbrahma@quicinc.com>
-Co-developed-by: Prakash Gupta <quic_guptap@quicinc.com>
-Signed-off-by: Prakash Gupta <quic_guptap@quicinc.com>
+Implement basic features like uart/ufs to enable 'boot to shell'.
+
+Co-developed-by: Rakesh Kota <quic_kotarake@quicinc.com>
+Signed-off-by: Rakesh Kota <quic_kotarake@quicinc.com>
+Co-developed-by: Sayali Lokhande <quic_sayalil@quicinc.com>
+Signed-off-by: Sayali Lokhande <quic_sayalil@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Signed-off-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
 ---
- arch/arm64/boot/dts/qcom/lemans-auto.dtsi  | 104 +++++++++++++++++++++
- arch/arm64/boot/dts/qcom/lemans.dtsi       |  75 +++++++++------
- arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi |   2 +-
- 3 files changed, 149 insertions(+), 32 deletions(-)
- create mode 100644 arch/arm64/boot/dts/qcom/lemans-auto.dtsi
+ arch/arm64/boot/dts/qcom/Makefile       |   1 +
+ arch/arm64/boot/dts/qcom/lemans-evk.dts | 291 ++++++++++++++++++++++++
+ 2 files changed, 292 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/lemans-evk.dts
 
-diff --git a/arch/arm64/boot/dts/qcom/lemans-auto.dtsi b/arch/arm64/boot/dts/qcom/lemans-auto.dtsi
+diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+index 2a1941c29537..cbc89c54f92b 100644
+--- a/arch/arm64/boot/dts/qcom/Makefile
++++ b/arch/arm64/boot/dts/qcom/Makefile
+@@ -31,6 +31,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= ipq9574-rdp453.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= ipq9574-rdp454.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= lemans-auto-ride.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= lemans-auto-ride-r3.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= lemans-evk.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= lemans-ride-r3.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8216-samsung-fortuna3g.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-acer-a1-724.dtb
+diff --git a/arch/arm64/boot/dts/qcom/lemans-evk.dts b/arch/arm64/boot/dts/qcom/lemans-evk.dts
 new file mode 100644
-index 000000000000..8db958d60fd1
+index 000000000000..dd357d514587
 --- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/lemans-auto.dtsi
-@@ -0,0 +1,104 @@
++++ b/arch/arm64/boot/dts/qcom/lemans-evk.dts
+@@ -0,0 +1,291 @@
 +// SPDX-License-Identifier: BSD-3-Clause
 +/*
-+ * Copyright (c) 2023, Linaro Limited
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 + */
 +
 +/dts-v1/;
 +
-+#include "lemans.dtsi"
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
 +
-+/delete-node/ &pil_camera_mem;
-+/delete-node/ &pil_adsp_mem;
-+/delete-node/ &q6_adsp_dtb_mem;
-+/delete-node/ &q6_gdsp0_dtb_mem;
-+/delete-node/ &pil_gdsp0_mem;
-+/delete-node/ &pil_gdsp1_mem;
-+/delete-node/ &q6_gdsp1_dtb_mem;
-+/delete-node/ &q6_cdsp0_dtb_mem;
-+/delete-node/ &pil_cdsp0_mem;
-+/delete-node/ &pil_gpu_mem;
-+/delete-node/ &pil_cdsp1_mem;
-+/delete-node/ &q6_cdsp1_dtb_mem;
-+/delete-node/ &pil_cvp_mem;
-+/delete-node/ &pil_video_mem;
-+/delete-node/ &gunyah_md_mem;
++#include "lemans.dtsi"
++#include "lemans-pmics.dtsi"
 +
 +/ {
-+	reserved-memory {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
++	model = "Qualcomm Technologies, Inc. Lemans EVK";
++	compatible = "qcom,lemans-evk", "qcom,sa8775p";
 +
-+		tz_ffi_mem: tz-ffi@91c00000 {
-+			compatible = "shared-dma-pool";
-+			reg = <0x0 0x91c00000 0x0 0x1400000>;
-+			no-map;
++	aliases {
++		serial0 = &uart10;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++};
++
++&apps_rsc {
++	regulators-0 {
++		compatible = "qcom,pmm8654au-rpmh-regulators";
++		qcom,pmic-id = "a";
++
++		vreg_s4a: smps4 {
++			regulator-name = "vreg_s4a";
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1816000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
 +		};
 +
-+		pil_camera_mem: pil-camera@95200000 {
-+			reg = <0x0 0x95200000 0x0 0x500000>;
-+			no-map;
++		vreg_s5a: smps5 {
++			regulator-name = "vreg_s5a";
++			regulator-min-microvolt = <1850000>;
++			regulator-max-microvolt = <1996000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
 +		};
 +
-+		pil_adsp_mem: pil-adsp@95c00000 {
-+			reg = <0x0 0x95c00000 0x0 0x1e00000>;
-+			no-map;
++		vreg_s9a: smps9 {
++			regulator-name = "vreg_s9a";
++			regulator-min-microvolt = <535000>;
++			regulator-max-microvolt = <1120000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
 +		};
 +
-+		pil_gdsp0_mem: pil-gdsp0@97b00000 {
-+			reg = <0x0 0x97b00000 0x0 0x1e00000>;
-+			no-map;
++		vreg_l4a: ldo4 {
++			regulator-name = "vreg_l4a";
++			regulator-min-microvolt = <788000>;
++			regulator-max-microvolt = <1050000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
 +		};
 +
-+		pil_gdsp1_mem: pil-gdsp1@99900000 {
-+			reg = <0x0 0x99900000 0x0 0x1e00000>;
-+			no-map;
++		vreg_l5a: ldo5 {
++			regulator-name = "vreg_l5a";
++			regulator-min-microvolt = <870000>;
++			regulator-max-microvolt = <950000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
 +		};
 +
-+		pil_cdsp0_mem: pil-cdsp0@9b800000 {
-+			reg = <0x0 0x9b800000 0x0 0x1e00000>;
-+			no-map;
++		vreg_l6a: ldo6 {
++			regulator-name = "vreg_l6a";
++			regulator-min-microvolt = <870000>;
++			regulator-max-microvolt = <970000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
 +		};
 +
-+		pil_gpu_mem: pil-gpu@9d600000 {
-+			reg = <0x0 0x9d600000 0x0 0x2000>;
-+			no-map;
++		vreg_l7a: ldo7 {
++			regulator-name = "vreg_l7a";
++			regulator-min-microvolt = <720000>;
++			regulator-max-microvolt = <950000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
 +		};
 +
-+		pil_cdsp1_mem: pil-cdsp1@9d700000 {
-+			reg = <0x0 0x9d700000 0x0 0x1e00000>;
-+			no-map;
++		vreg_l8a: ldo8 {
++			regulator-name = "vreg_l8a";
++			regulator-min-microvolt = <2504000>;
++			regulator-max-microvolt = <3300000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
 +		};
 +
-+		pil_cvp_mem: pil-cvp@9f500000 {
-+			reg = <0x0 0x9f500000 0x0 0x700000>;
-+			no-map;
-+		};
-+
-+		pil_video_mem: pil-video@9fc00000 {
-+			reg = <0x0 0x9fc00000 0x0 0x700000>;
-+			no-map;
-+		};
-+
-+		audio_mdf_mem: audio-mdf-region@ae000000 {
-+			reg = <0x0 0xae000000 0x0 0x1000000>;
-+			no-map;
-+		};
-+
-+		hyptz_reserved_mem: hyptz-reserved@beb00000 {
-+			reg = <0x0 0xbeb00000 0x0 0x11500000>;
-+			no-map;
-+		};
-+
-+		trusted_apps_mem: trusted-apps@d1900000 {
-+			reg = <0x0 0xd1900000 0x0 0x3800000>;
-+			no-map;
++		vreg_l9a: ldo9 {
++			regulator-name = "vreg_l9a";
++			regulator-min-microvolt = <2970000>;
++			regulator-max-microvolt = <3544000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
 +		};
 +	};
 +
-+	firmware {
-+		scm {
-+			memory-region = <&tz_ffi_mem>;
++	regulators-1 {
++		compatible = "qcom,pmm8654au-rpmh-regulators";
++		qcom,pmic-id = "c";
++
++		vreg_l1c: ldo1 {
++			regulator-name = "vreg_l1c";
++			regulator-min-microvolt = <1140000>;
++			regulator-max-microvolt = <1260000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l2c: ldo2 {
++			regulator-name = "vreg_l2c";
++			regulator-min-microvolt = <900000>;
++			regulator-max-microvolt = <1100000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l3c: ldo3 {
++			regulator-name = "vreg_l3c";
++			regulator-min-microvolt = <1100000>;
++			regulator-max-microvolt = <1300000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l4c: ldo4 {
++			regulator-name = "vreg_l4c";
++			regulator-min-microvolt = <1200000>;
++			regulator-max-microvolt = <1200000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l5c: ldo5 {
++			regulator-name = "vreg_l5c";
++			regulator-min-microvolt = <1100000>;
++			regulator-max-microvolt = <1300000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l6c: ldo6 {
++			regulator-name = "vreg_l6c";
++			regulator-min-microvolt = <1620000>;
++			regulator-max-microvolt = <1980000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l7c: ldo7 {
++			regulator-name = "vreg_l7c";
++			regulator-min-microvolt = <1620000>;
++			regulator-max-microvolt = <2000000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l8c: ldo8 {
++			regulator-name = "vreg_l8c";
++			regulator-min-microvolt = <2400000>;
++			regulator-max-microvolt = <3300000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l9c: ldo9 {
++			regulator-name = "vreg_l9c";
++			regulator-min-microvolt = <1650000>;
++			regulator-max-microvolt = <2700000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++	};
++
++	regulators-2 {
++		compatible = "qcom,pmm8654au-rpmh-regulators";
++		qcom,pmic-id = "e";
++
++		vreg_s4e: smps4 {
++			regulator-name = "vreg_s4e";
++			regulator-min-microvolt = <970000>;
++			regulator-max-microvolt = <1520000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_s7e: smps7 {
++			regulator-name = "vreg_s7e";
++			regulator-min-microvolt = <1010000>;
++			regulator-max-microvolt = <1170000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_s9e: smps9 {
++			regulator-name = "vreg_s9e";
++			regulator-min-microvolt = <300000>;
++			regulator-max-microvolt = <570000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l6e: ldo6 {
++			regulator-name = "vreg_l6e";
++			regulator-min-microvolt = <1280000>;
++			regulator-max-microvolt = <1450000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
++		};
++
++		vreg_l8e: ldo8 {
++			regulator-name = "vreg_l8e";
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <1950000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-allow-set-load;
++			regulator-allowed-modes = <RPMH_REGULATOR_MODE_LPM
++						   RPMH_REGULATOR_MODE_HPM>;
 +		};
 +	};
 +};
-diff --git a/arch/arm64/boot/dts/qcom/lemans.dtsi b/arch/arm64/boot/dts/qcom/lemans.dtsi
-index 9997a29901f5..bf273660e0cb 100644
---- a/arch/arm64/boot/dts/qcom/lemans.dtsi
-+++ b/arch/arm64/boot/dts/qcom/lemans.dtsi
-@@ -514,7 +514,6 @@ firmware {
- 		scm {
- 			compatible = "qcom,scm-sa8775p", "qcom,scm";
- 			qcom,dload-mode = <&tcsr 0x13000>;
--			memory-region = <&tz_ffi_mem>;
- 		};
- 	};
-
-@@ -773,6 +772,11 @@ sail_ota_mem: sail-ss@90e00000 {
- 			no-map;
- 		};
-
-+		gunyah_md_mem: gunyah-md@91a80000 {
-+			reg = <0x0 0x91a80000 0x0 0x80000>;
-+			no-map;
-+		};
 +
- 		aoss_backup_mem: aoss-backup@91b00000 {
- 			reg = <0x0 0x91b00000 0x0 0x40000>;
- 			no-map;
-@@ -798,12 +802,6 @@ cdt_data_backup_mem: cdt-data-backup@91ba0000 {
- 			no-map;
- 		};
-
--		tz_ffi_mem: tz-ffi@91c00000 {
--			compatible = "shared-dma-pool";
--			reg = <0x0 0x91c00000 0x0 0x1400000>;
--			no-map;
--		};
--
- 		lpass_machine_learning_mem: lpass-machine-learning@93b00000 {
- 			reg = <0x0 0x93b00000 0x0 0xf00000>;
- 			no-map;
-@@ -815,62 +813,77 @@ adsp_rpc_remote_heap_mem: adsp-rpc-remote-heap@94a00000 {
- 		};
-
- 		pil_camera_mem: pil-camera@95200000 {
--			reg = <0x0 0x95200000 0x0 0x500000>;
-+			reg = <0x0 0x95200000 0x0 0x700000>;
- 			no-map;
- 		};
-
--		pil_adsp_mem: pil-adsp@95c00000 {
--			reg = <0x0 0x95c00000 0x0 0x1e00000>;
-+		pil_adsp_mem: pil-adsp@95900000 {
-+			reg = <0x0 0x95900000 0x0 0x1e00000>;
- 			no-map;
- 		};
-
--		pil_gdsp0_mem: pil-gdsp0@97b00000 {
--			reg = <0x0 0x97b00000 0x0 0x1e00000>;
-+		q6_adsp_dtb_mem: q6-adsp-dtb@97700000 {
-+			reg = <0x0 0x97700000 0x0 0x80000>;
- 			no-map;
- 		};
-
--		pil_gdsp1_mem: pil-gdsp1@99900000 {
--			reg = <0x0 0x99900000 0x0 0x1e00000>;
-+		q6_gdsp0_dtb_mem: q6-gdsp0-dtb@97780000 {
-+			reg = <0x0 0x97780000 0x0 0x80000>;
- 			no-map;
- 		};
-
--		pil_cdsp0_mem: pil-cdsp0@9b800000 {
--			reg = <0x0 0x9b800000 0x0 0x1e00000>;
-+		pil_gdsp0_mem: pil-gdsp0@97800000 {
-+			reg = <0x0 0x97800000 0x0 0x1e00000>;
- 			no-map;
- 		};
-
--		pil_gpu_mem: pil-gpu@9d600000 {
--			reg = <0x0 0x9d600000 0x0 0x2000>;
-+		pil_gdsp1_mem: pil-gdsp1@99600000 {
-+			reg = <0x0 0x99600000 0x0 0x1e00000>;
- 			no-map;
- 		};
-
--		pil_cdsp1_mem: pil-cdsp1@9d700000 {
--			reg = <0x0 0x9d700000 0x0 0x1e00000>;
-+		q6_gdsp1_dtb_mem: q6-gdsp1-dtb@9b400000 {
-+			reg = <0x0 0x9b400000 0x0 0x80000>;
- 			no-map;
- 		};
-
--		pil_cvp_mem: pil-cvp@9f500000 {
--			reg = <0x0 0x9f500000 0x0 0x700000>;
-+		q6_cdsp0_dtb_mem: q6-cdsp0-dtb@9b480000 {
-+			reg = <0x0 0x9b480000 0x0 0x80000>;
- 			no-map;
- 		};
-
--		pil_video_mem: pil-video@9fc00000 {
--			reg = <0x0 0x9fc00000 0x0 0x700000>;
-+		pil_cdsp0_mem: pil-cdsp0@9b500000 {
-+			reg = <0x0 0x9b500000 0x0 0x1e00000>;
- 			no-map;
- 		};
-
--		audio_mdf_mem: audio-mdf-region@ae000000 {
--			reg = <0x0 0xae000000 0x0 0x1000000>;
-+		pil_gpu_mem: pil-gpu@9d300000 {
-+			reg = <0x0 0x9d300000 0x0 0x2000>;
- 			no-map;
- 		};
-
--		firmware_mem: firmware-region@b0000000 {
--			reg = <0x0 0xb0000000 0x0 0x800000>;
-+		q6_cdsp1_dtb_mem: q6-cdsp1-dtb@9d380000 {
-+			reg = <0x0 0x9d380000 0x0 0x80000>;
- 			no-map;
- 		};
-
--		hyptz_reserved_mem: hyptz-reserved@beb00000 {
--			reg = <0x0 0xbeb00000 0x0 0x11500000>;
-+		pil_cdsp1_mem: pil-cdsp1@9d400000 {
-+			reg = <0x0 0x9d400000 0x0 0x1e00000>;
-+			no-map;
-+		};
++&qupv3_id_1 {
++	status = "okay";
++};
 +
-+		pil_cvp_mem: pil-cvp@9f200000 {
-+			reg = <0x0 0x9f200000 0x0 0x700000>;
-+			no-map;
-+		};
++&sleep_clk {
++	clock-frequency = <32768>;
++};
 +
-+		pil_video_mem: pil-video@9f900000 {
-+			reg = <0x0 0x9f900000 0x0 0x1000000>;
-+			no-map;
-+		};
++&uart10 {
++	compatible = "qcom,geni-debug-uart";
++	pinctrl-0 = <&qup_uart10_default>;
++	pinctrl-names = "default";
 +
-+		firmware_mem: firmware-region@b0000000 {
-+			reg = <0x0 0xb0000000 0x0 0x800000>;
- 			no-map;
- 		};
-
-@@ -915,7 +928,7 @@ deepsleep_backup_mem: deepsleep-backup@d1800000 {
- 		};
-
- 		trusted_apps_mem: trusted-apps@d1900000 {
--			reg = <0x0 0xd1900000 0x0 0x3800000>;
-+			reg = <0x0 0xd1900000 0x0 0x1c00000>;
- 			no-map;
- 		};
-
-diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
-index bcd284c0f939..a9ec6ded412e 100644
---- a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
-@@ -8,7 +8,7 @@
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-
--#include "lemans.dtsi"
-+#include "lemans-auto.dtsi"
- #include "sa8775p-pmics.dtsi"
-
- / {
++	status = "okay";
++};
++
++&ufs_mem_hc {
++	reset-gpios = <&tlmm 149 GPIO_ACTIVE_LOW>;
++	vcc-supply = <&vreg_l8a>;
++	vcc-max-microamp = <1100000>;
++	vccq-supply = <&vreg_l4c>;
++	vccq-max-microamp = <1200000>;
++
++	status = "okay";
++};
++
++&ufs_mem_phy {
++	vdda-phy-supply = <&vreg_l4a>;
++	vdda-pll-supply = <&vreg_l1c>;
++
++	status = "okay";
++};
++
++&xo_board_clk {
++	clock-frequency = <38400000>;
++};
 --
 2.49.0
 
