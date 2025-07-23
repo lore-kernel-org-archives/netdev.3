@@ -1,75 +1,88 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail-m15593.qiye.163.com (mail-m15593.qiye.163.com [101.71.155.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A4E2E7BAB;
-	Wed, 23 Jul 2025 13:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB112E7BCA;
+	Wed, 23 Jul 2025 13:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753275935; cv=none; b=eECpLCtsfsQTAFeVulH+vXgkmKo5KtNiQCdkH6M5xkxBN0qfDeu6iZlmoGP5uJ78T2SOb0OX0UxHNNfslAMKgtsvPDU8GhIcKhYE1z0a1T4+mrO/NZ8IZ9rJImCaVPleAfg0Es0D/vlVgRrbtZ7ZpsESKn9az+sfHfYSTKsUdj8=
+	t=1753276508; cv=none; b=VDuF6YsRimf1iNM30i5WWTJXZM6pNIza23diWEESt1D1xOU/Zr0cNA/MPHw3kmv0bMhYS2GDhGSBXgxHqySHsGxXsRgaJYDWOVoztkI/oARq5h+9W6Vo/voslMLvegO9qpCFehkvkmojYMkfSyr7I23n0XixN+yd6sMeelBTHwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753275935; c=relaxed/simple;
-	bh=IdcktKmEjcx6wvZMEdLZX/htZymYVnF2tws+dZFxCFk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pGt8W0U3BZUuE2Ezc2QcBGm23a/TXk7rVoUNR3Orq+PRYiSOml8zEUBQfMtMK1na1mTxFhpDeUTvi2NGX42C6STZq8kv4BJZmdKxKzV6CRkdmLg1u1poNZP8tunqiqf1LKmWdzwuSaAkbvJr9tRvWTbU/VEGUSHZQtkDe3Db1T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Jr7bwJZN; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1753276508; c=relaxed/simple;
+	bh=KpTG27xj119EH8QPiH6w84Q+rjHasCFnEYYnEixwibU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rRLuMBq7mqetYbSao9zZ3rUGohzfdJNcH2Gb8Nx/4+CYBS7LJLrA2ZKIEs1yqtxa7WLGExom2euReYG8sVmHVqw101+L4RdldsOVjq6cYq96lkyerz3dHe8/CCN/ttBK/I1oNQ4l4edYnrwSTtRKKnRR3qMZJIMHGTn61QVqvAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gztozed.com; spf=pass smtp.mailfrom=gztozed.com; dkim=pass (1024-bit key) header.d=gztozed.com header.i=@gztozed.com header.b=AYXMEE22; arc=none smtp.client-ip=101.71.155.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gztozed.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gztozed.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Jr7bwJZN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=UrceJ7ZoyDj1MZAtLYt+fw215tZ59xeFRl70jTAzH2A=; b=Jr7bwJZN7gw2GfWM1YEsOSAQkr
-	vfaLJ1ngI6e0wfJCwqO1bzAIqAlBTWlK3R1a/DjDNje3815nFdqKgArObXbyqP+mkFMfFiSzquPFP
-	OXZc+2hXmE2dXveRnv80Rdq6jtGenm0E8pSCrxKbSZ1tgDBx6LwD+DC4rTSOXjexCUFU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1ueZ9z-002Zeq-Mm; Wed, 23 Jul 2025 15:05:27 +0200
-Date: Wed, 23 Jul 2025 15:05:27 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: yicongsrfy@163.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org, oneukum@suse.com, yicong@kylinos.cn
-Subject: Re: [PATCH] usbnet: Set duplex status to unknown in the absence of
- MII
-Message-ID: <d8852211-e3ba-4c9e-a9ab-798e1b8d802e@lunn.ch>
-References: <1c65c240-514d-461f-b81e-6a799f6ea56f@lunn.ch>
- <20250723012926.1421513-1-yicongsrfy@163.com>
+	dkim=pass (1024-bit key) header.d=gztozed.com header.i=@gztozed.com header.b="AYXMEE22"
+Received: from localhost.localdomain (unknown [IPV6:240e:6b0:200:4::42])
+	by smtp.qiye.163.com (Hmail) with ESMTP id d845d995;
+	Wed, 23 Jul 2025 16:38:55 +0800 (GMT+08:00)
+From: wangyongyong@gztozed.com
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	wangyongyong <wangyongyong@gztozed.com>
+Subject: [PATCH] net: clear offline CPU backlog.state in dev_cpu_dead()
+Date: Wed, 23 Jul 2025 16:38:08 +0800
+Message-Id: <20250723083808.1220363-1-wangyongyong@gztozed.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250723012926.1421513-1-yicongsrfy@163.com>
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVkaQhoYVklCHklMS0tNSB9NS1YVFAkWGhdVGRETFh
+	oSFyQUDg9ZV1kYEgtZQVlJT0seQU0ZS0FJS0tBT0FBT0lZV1kWGg8SFR0UWUFZS1VLVUtVS1kG
+X-HM-Tid: 0a98366f86a30230kunmbbad5f211f61de
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NQg6NAw5CTdILT1WHEs2LEIS
+	MyoaFAhVSlVKTE5ISU5CQkhNQ09JVTMWGhIXVQwaFRwCFBUcAhQVHDscAQ8UAR4fVRgUFkVZV1kS
+	C1lBWUlPSx5BTRlLQUlLS0FPQUFPSVlXWQgBWUFKQ0NDNwY+
+DKIM-Signature:a=rsa-sha256;
+	b=AYXMEE22DZ9ZBdaZAEiAM1TbkVL0cu0sG/qV2u2lK5AETvhLAS6AgcFscu6APxea5fQ8rOQpi3rmxj3DHHJkSAdzjUbyDkGUVGg/bbOglRruv9E1uYIXPAwYG/mKR9qNL4Q0fL5AnZRVuQbhXTfEzs2K2kObwJiOdFMC5uehEFI=; s=default; c=relaxed/relaxed; d=gztozed.com; v=1;
+	bh=0afn1/VAo7T4OfiA7X9buT9b9SNPrb22VYySrI//Ito=;
+	h=date:mime-version:subject:message-id:from;
 
-On Wed, Jul 23, 2025 at 09:29:26AM +0800, yicongsrfy@163.com wrote:
-> On Tue, 22 Jul 2025 15:06:37 +0200	[thread overview] Andrew <andrew@lunn.ch> wrote:
-> >
-> > On Tue, Jul 22, 2025 at 10:09:33AM +0800, yicongsrfy@163.com wrote:
-> > > Thanks for your reply!
-> > >
-> > > According to the "Universal Serial Bus Class Definitions for Communications Devices v1.2":
-> > > In Section 6.3, which describes notifications such as NetworkConnection and ConnectionSpeedChange,
-> > > there is no mention of duplex status.In particular, for ConnectionSpeedChange, its data payload
-> > > only contains two 32-bit unsigned integers, corresponding to the uplink and downlink speeds.
-> >
-> > Thanks for checking this.
-> >
-> > Just one more question. This is kind of flipping the question on its
-> > head. Does the standard say devices are actually allowed to support
-> > 1/2 duplex? Does it say they are not allowed to support 1/2 duplex?
-> >
-> > If duplex is not reported, maybe it is because 1/2 duplex is simply
-> > not allowed, so there is no need to report it.
-> >
-> 
-> No, the standard does not mention anything about duplex at all.
+From: wangyongyong <wangyongyong@gztozed.com>
 
-O.K. So please set duplex to unknown.
+When a packet is enqueued to a remote CPU's backlog queue via enqueue_to_backlog(),
+the following race condition can occur with CPU hotplug:
 
-     Andrew
+1. Source CPU sets NAPI_STATE_SCHED on target CPU's softnet_data->backlog.state
+2. Source CPU raises NET_RX_SOFTIRQ to schedule NAPI polling
+3. Target CPU is taken offline before the IPI arrives
+4. dev_cpu_dead() fails to clear NAPI_STATE_SCHED because backlog isn't in poll_list
+
+This results in:
+- Stale NAPI_STATE_SCHED flag on offline CPU's backlog.state
+- When the target CPU comes back online, the persistent NAPI_STATE_SCHED flag
+  prevents the backlog from being properly added to poll_list, causing packet
+  processing stalls
+Signed-off-by: wangyongyong <wangyongyong@gztozed.com>
+---
+ net/core/dev.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/core/dev.c b/net/core/dev.c
+index be97c440ecd5..fd92ab79c02a 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -12385,6 +12385,7 @@ static int dev_cpu_dead(unsigned int oldcpu)
+ 		else
+ 			____napi_schedule(sd, napi);
+ 	}
++	oldsd->backlog.state &= NAPIF_STATE_THREADED;
+ 
+ 	raise_softirq_irqoff(NET_TX_SOFTIRQ);
+ 	local_irq_enable();
+-- 
+2.25.1
+
