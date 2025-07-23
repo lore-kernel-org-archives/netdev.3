@@ -1,62 +1,62 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD54302069
-	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 15:00:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F2B2FA635
+	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 15:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753282874; cv=none; b=fWi2IiHnXw53SqONdjIVkzK3JKuFjCUicG66a7pBdzF8oA1q/myRIR2Na3/XU7OAqGRuaOHK0JOEC10VRgOJXzcLY6fGvMiyATPMIiKQvi3CyfmO2w2tTs7JdY0JSWSuvM8GC5qR2jkxfzaQfMhEppDc3XnQ0MvMPKoeovKfKFA=
+	t=1753282882; cv=none; b=sG2C0ZxWnoUN1zDZQQ7Xd393F83ID22K3jqqe+0T+Il/XJxrk+gT6uxggrOzriCJ6ZBNormnOzKV+xtoJ9MVbJxdirxIEVNxlam8y3S+SvhdTe+j/eSNy3iZISYeW6CQkz0qdknoLPSDHJPtRndSuUkcCwnp4g2XELmfh6lGNVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753282874; c=relaxed/simple;
-	bh=TGfdalYy4ue50omhezCWB4IDyiNPAoA4lAbjAaGUHKI=;
+	s=arc-20240116; t=1753282882; c=relaxed/simple;
+	bh=ou1cwMnF5ljnXgD+f7pQe1Xkgf1Y/ywSVOXRFZqTsq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuaEYxRI8N9DnV27Z9SrdsEmUl8GjtyTNOAZznNzR9+tZ2wX+gbNXYATrbx1t4UucsTaZeLRi5pbtDtGpxoYvDlSZDK7zjqabsh7kaiacqvDkZibkeZsg7cuqbGQsuBhIORKrsZeyz5gbxWGyISuV0YISp5phLhrfov2FZUDJA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fmY9ziMa; arc=none smtp.client-ip=209.85.221.41
+	 MIME-Version; b=JLca15SXopqKvaWANZrlJ854giV6SsiiBElNrfsKP2RVkAs2chH5pNc0qVQEOIbFx1Eii2FF3EhtUPc6h2NaWV9cPef+XEWviOqitSj9hIMjjV06cjMW+vkwI6H7++Nq8nsbI7dIAyWZQGCUKLargWfEfwWBieX3vpw2gDmj7M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ky3mPsyw; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fmY9ziMa"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3a57c8e247cso6367551f8f.1
-        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 08:00:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ky3mPsyw"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-455b00283a5so42058235e9.0
+        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 08:00:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753282821; x=1753887621; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753282802; x=1753887602; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pqAexkHLEIgB4n4jdSEhslJux4o/XWUggGYOPhpZ/k8=;
-        b=fmY9ziMaGdbqD6z4OsHpQZGM1V0Wdw5Ap0mSxqoeZBgZVid6VbHD9iR3ntdrjEDFJN
-         6MP0GRpJIy1nEO7F+1NwBeh8mTQuSfV1PWc4AMasuhkYL3DKpkqL3Bik6bD7bFv0JQcM
-         S/5E6f5V/vfL7GoR2CLUWacEfLMurukQHkMGHkBGoM/+9uHr1Bs2/E/WhhKilc197S+p
-         LM2KUeBF8yGzrWW+5sSRU2r2HQgZRUcfnGKawnOUJi/KtGx5dbivrFOQ1niuRJbaPTJX
-         kov00d2PyYlKyxVO9HOLaJniDvWY9JgGGGF6/K6gluowLTnQ5qHI58gfE2IfgTmaoRAi
-         rpdw==
+        bh=Bzi2+M6fmvNHsMJcxwiimrWkLl3jTxCOJwh3C2K2gvY=;
+        b=Ky3mPsywSiEmx+6DRl6c0PBkw6TrzB8bAn/G3WLf6wNe58OemsO0nofeIIjaLAWewO
+         pjM8YYbg8rGjih53VbV1l6yT0TXVd/kUJNB8nTOrWaNmEeSY6Eoa9jWrPLO4CE8NV9fT
+         fqvfoDfXmy6F0IQx6r5dYuz+UPhHJJYOum5Gw6iHLImd5szi0EFj5YvNUJhZmaiXL96s
+         3nAiN/Jor/GronbQtRIbx58mqtjLjhsBTpkRMrOxowIPSJO3KTLENaKw/FMAClGYboxM
+         DBwZ/FNRg0erISuWojlC3ZoctigXKoa3XoygoNA25V3hzPLrNP/NoABqncO05OKB96Ak
+         uN3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753282821; x=1753887621;
+        d=1e100.net; s=20230601; t=1753282802; x=1753887602;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pqAexkHLEIgB4n4jdSEhslJux4o/XWUggGYOPhpZ/k8=;
-        b=FGjWiy6Moi4kX9WIIQ0+zBWy+8OmhwQjeNlBJOA6Hyp56ZcvxAK+dB7AoUN6oJo/0j
-         Hwfy2uvP9AH3WX6gJspN+ov+mRUxMu9aIBVeOMUHMyQMVTybwN7tymRI7/0hJasjWQlL
-         a+u9SSZbfyPTil4mgKnhjfhuLl9iHHIu8R7u3HBzVil39kZ5Bk1NN3GcoLv83tayhRaa
-         KIdCgsZbxqNkJ+T91f29mf/lmbYjPNU2TWJiHTboKpN/5+64HM7kIy/ke1u5gSjyzLOh
-         vvLx+cEVSLkKf9oo4mzidJ8zmLQeT9w+3FfTLa+UlMsG3cGQaTflcBMN2iuXl6bQraB+
-         0oBg==
-X-Gm-Message-State: AOJu0YzKRBcNbXptx0jkB7DX0Cf6wgS76JptB+AGeyILcDQnz/ZDubqD
-	UGBbyYIpuFuEO9ld1KWv2NRZMcB5Sw8k3gYvFodfaLQp+7TzTop9EE5bwQtzGNfL
-X-Gm-Gg: ASbGncsgPwEIDniLS5yRueJcwI1utsbSdDCOADzUNODVwqo/zJBsdObkvF6YPDpAIrC
-	6FZKD6dFmqkvaOTnY7a7V1KOZ+yYuWqEPoDTWfE0/Lu4EwhRbOjvfXwQvrjNl45e84Q65LhwtIL
-	0j1FbgN34RgxCD5tV4ubnXP+hVB4ry9/rZy1Z41Acaqv5u4v8j3IW75QUrITq0zAZnDEBcjFjqD
-	23hiGcr7P5EjmOf1e/WP0LAdp0T4Dq25+tmJuu/CqxO1T/yfzZ/Lxka/mAg+C3NYXDFts1e5nhS
-	TXw4SuoVAnlsQ0zSJd8twH2IMRoOxrqLgSOd9OCv10rt0n57genZxm/Wc5oLQc8na5gfT+TWOg7
-	izngcEtvBQojjC+7pyj1X
-X-Google-Smtp-Source: AGHT+IEUjodkpGo1GJeSaMDV7dEpYbdXUaakUkNB7/f1h0ObyPx2lWbbkLZwi1dkdBegHw7LlE2/5w==
-X-Received: by 2002:a05:6000:4304:b0:3b6:a799:4809 with SMTP id ffacd0b85a97d-3b768f1e504mr3211593f8f.31.1753282820912;
-        Wed, 23 Jul 2025 08:00:20 -0700 (PDT)
-Received: from localhost ([2a03:2880:31ff:40::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b76773a29csm3580382f8f.1.2025.07.23.08.00.20
+        bh=Bzi2+M6fmvNHsMJcxwiimrWkLl3jTxCOJwh3C2K2gvY=;
+        b=JJyAZ6Z1WWTMroWKZMIGdfLEcKSpMSrjC9n7sr6KyJ6gUD+oP0W0HsG1f8KzULddxH
+         QB5l3ey19ryU6pLsht0wC1w02s6eFRZN4MSIgkw87DrQkqBMWe4tOaoqXrBlB3huYdQ6
+         mHckQBr740MBRgIWuDXe9mf9KCLIUcojtcdI8XxODZWN6cUwzoeKk3llTTQZGzCLmzWR
+         KwL9Rk4nRGl4SXp9Ylb1vY+NKMSBgB17hDrCDtFO6in12OYwdFeNiFeSyaaR4HPUgGT8
+         NqDolSEIXEgFwwd7dmcP1IpIGiAkljcqrY6tTCt/rw5Yss9t6bhunW6e4F61wmyTIf2j
+         UgtQ==
+X-Gm-Message-State: AOJu0YwBUfshVh/w/5PUtlGASQihCO/HxBpkucozQQjL+dK1iVdYOo6Z
+	8yEW0OPAh9ieb5/7VB0zxEACX+9JG15MjTWV2rqs2oS1A3ALNSTZxLMvbctqibPE
+X-Gm-Gg: ASbGnctixJcdpZ7M8gVFci5+CtqMbvxOMJpjN1pBjnT5u5L16sGhI3Kx1ZCwl4AXNzV
+	DhGOYVavfCqKdHzS1qcM5hAOOQ+vpzLJ/yDNV5Eo0E73Q5NEu7fKvXm2sou3cV4bPCZoUZk6dmS
+	pJ5zCrkn1UBR/kaBsiCM9iY8r/gnjB1gHmmVXKvLgnl8BSADsq4dd483mITSKRbXjM4h4JGkKgl
+	595ZgbNGfwJBB7bPe0mDzzEvh7WzGEwHk9pSFTOzU4CuLK1TQ1ZeGVuBUhZXNh6FgczHkR76yhk
+	catuIrxsHB7f5w202jEbnb1Fk1zqchyu5sthL0Mi83kLIFLEJs2pfFXC9JUojR+wutMyaXfe9TU
+	24ZBTjNmqHwl4TSNS/Ko=
+X-Google-Smtp-Source: AGHT+IFHYrskopu44xl6lOZcp8XJHTMuYSXUF7QBrydD03WSpMUZyJFnUc40/ZmJ8pscSr8C4LAHbQ==
+X-Received: by 2002:a05:600c:6992:b0:43d:46de:b0eb with SMTP id 5b1f17b1804b1-45868c99c85mr29780625e9.12.1753282801663;
+        Wed, 23 Jul 2025 08:00:01 -0700 (PDT)
+Received: from localhost ([2a03:2880:31ff:7::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca319c0sm16613120f8f.40.2025.07.23.08.00.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 08:00:20 -0700 (PDT)
+        Wed, 23 Jul 2025 08:00:01 -0700 (PDT)
 From: Mohsin Bashir <mohsin.bashr@gmail.com>
 To: netdev@vger.kernel.org
 Cc: kuba@kernel.org,
@@ -75,9 +75,9 @@ Cc: kuba@kernel.org,
 	daniel@iogearbox.net,
 	hawk@kernel.org,
 	john.fastabend@gmail.com
-Subject: [PATCH net-next 9/9] eth: fbnic: Report XDP stats via ethtool
-Date: Wed, 23 Jul 2025 07:59:26 -0700
-Message-ID: <20250723145926.4120434-10-mohsin.bashr@gmail.com>
+Subject: [PATCH net-next 1/9] eth: fbnic: Add support for HDS configuration
+Date: Wed, 23 Jul 2025 07:59:18 -0700
+Message-ID: <20250723145926.4120434-2-mohsin.bashr@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250723145926.4120434-1-mohsin.bashr@gmail.com>
 References: <20250723145926.4120434-1-mohsin.bashr@gmail.com>
@@ -89,114 +89,173 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add support to collect XDP stats via ethtool API. We record
-packets and bytes sent, and packets dropped on the XDP_TX path.
+Add support for configuring the header data split threshold.
+For fbnic, the tcp data split support is enabled all the time.
 
-ethtool -S eth0 | grep xdp | grep -v "0"
-     xdp_tx_queue_13_packets: 2
-     xdp_tx_queue_13_bytes: 16126
+Fbnic supports a maximum buffer size of 4KB. However, the reservation
+for the headroom, tailroom, and padding reduce the max header size
+accordingly.
+
+ethtool_hds -g eth0
+Ring parameters for eth0:
+Pre-set maximums:
+...
+HDS thresh:		3584
+Current hardware settings:
+...
+HDS thresh:		1536
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
 ---
- .../net/ethernet/meta/fbnic/fbnic_ethtool.c   | 50 ++++++++++++++++++-
- 1 file changed, 49 insertions(+), 1 deletion(-)
+ .../net/ethernet/meta/fbnic/fbnic_ethtool.c   | 21 ++++++++++++++++---
+ .../net/ethernet/meta/fbnic/fbnic_netdev.c    |  4 ++++
+ .../net/ethernet/meta/fbnic/fbnic_netdev.h    |  2 ++
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c  |  2 +-
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.h  |  6 +++++-
+ 5 files changed, 30 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-index d7b9eb267ead..3744fa173f8b 100644
+index 588da02d6e22..84a0db9f1be0 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-@@ -112,6 +112,20 @@ static const struct fbnic_stat fbnic_gstrings_hw_q_stats[] = {
- 	 FBNIC_HW_RXB_DEQUEUE_STATS_LEN * FBNIC_RXB_DEQUEUE_INDICES + \
- 	 FBNIC_HW_Q_STATS_LEN * FBNIC_MAX_QUEUES)
+@@ -2,6 +2,7 @@
+ /* Copyright (c) Meta Platforms, Inc. and affiliates. */
  
-+#define FBNIC_QUEUE_STAT(name, stat) \
-+	FBNIC_STAT_FIELDS(fbnic_ring, name, stat)
+ #include <linux/ethtool.h>
++#include <linux/ethtool_netlink.h>
+ #include <linux/netdevice.h>
+ #include <linux/pci.h>
+ #include <net/ipv6.h>
+@@ -160,6 +161,7 @@ static void fbnic_clone_swap_cfg(struct fbnic_net *orig,
+ 	swap(clone->num_rx_queues, orig->num_rx_queues);
+ 	swap(clone->num_tx_queues, orig->num_tx_queues);
+ 	swap(clone->num_napi, orig->num_napi);
++	swap(clone->hds_thresh, orig->hds_thresh);
+ }
+ 
+ static void fbnic_aggregate_vector_counters(struct fbnic_net *fbn,
+@@ -277,15 +279,21 @@ fbnic_get_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 	ring->rx_mini_pending = fbn->hpq_size;
+ 	ring->rx_jumbo_pending = fbn->ppq_size;
+ 	ring->tx_pending = fbn->txq_size;
 +
-+static const struct fbnic_stat fbnic_gstrings_xdp_stats[] = {
-+	FBNIC_QUEUE_STAT("xdp_tx_queue_%u_packets", stats.packets),
-+	FBNIC_QUEUE_STAT("xdp_tx_queue_%u_bytes", stats.bytes),
-+	FBNIC_QUEUE_STAT("xdp_tx_queue_%u_dropped", stats.dropped),
-+};
-+
-+#define FBNIC_XDP_STATS_LEN ARRAY_SIZE(fbnic_gstrings_xdp_stats)
-+
-+#define FBNIC_STATS_LEN \
-+	(FBNIC_HW_STATS_LEN + FBNIC_XDP_STATS_LEN * FBNIC_MAX_XDPQS)
-+
- static void
- fbnic_get_drvinfo(struct net_device *netdev, struct ethtool_drvinfo *drvinfo)
++	kernel_ring->tcp_data_split = ETHTOOL_TCP_DATA_SPLIT_ENABLED;
++	kernel_ring->hds_thresh_max = FBNIC_HDS_THRESH_MAX;
++	kernel_ring->hds_thresh = fbn->hds_thresh;
+ }
+ 
+ static void fbnic_set_rings(struct fbnic_net *fbn,
+-			    struct ethtool_ringparam *ring)
++			    struct ethtool_ringparam *ring,
++			    struct kernel_ethtool_ringparam *kernel_ring)
  {
-@@ -422,6 +436,16 @@ static void fbnic_get_rxb_dequeue_strings(u8 **data, unsigned int idx)
- 		ethtool_sprintf(data, stat->string, idx);
+ 	fbn->rcq_size = ring->rx_pending;
+ 	fbn->hpq_size = ring->rx_mini_pending;
+ 	fbn->ppq_size = ring->rx_jumbo_pending;
+ 	fbn->txq_size = ring->tx_pending;
++	fbn->hds_thresh = kernel_ring->hds_thresh;
  }
  
-+static void fbnic_get_xdp_queue_strings(u8 **data, unsigned int idx)
-+{
-+	const struct fbnic_stat *stat;
-+	int i;
-+
-+	stat = fbnic_gstrings_xdp_stats;
-+	for (i = 0; i < FBNIC_XDP_STATS_LEN; i++, stat++)
-+		ethtool_sprintf(data, stat->string, idx);
-+}
-+
- static void fbnic_get_strings(struct net_device *dev, u32 sset, u8 *data)
- {
- 	const struct fbnic_stat *stat;
-@@ -447,6 +471,9 @@ static void fbnic_get_strings(struct net_device *dev, u32 sset, u8 *data)
- 			for (i = 0; i < FBNIC_HW_Q_STATS_LEN; i++, stat++)
- 				ethtool_sprintf(&data, stat->string, idx);
- 		}
-+
-+		for (i = 0; i < FBNIC_MAX_XDPQS; i++)
-+			fbnic_get_xdp_queue_strings(&data, i);
- 		break;
+ static int
+@@ -316,8 +324,13 @@ fbnic_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 		return -EINVAL;
  	}
- }
-@@ -464,6 +491,24 @@ static void fbnic_report_hw_stats(const struct fbnic_stat *stat,
- 	}
- }
  
-+static void fbnic_get_xdp_queue_stats(struct fbnic_ring *ring, u64 **data)
-+{
-+	const struct fbnic_stat *stat;
-+	int i;
-+
-+	if (!ring) {
-+		*data += FBNIC_XDP_STATS_LEN;
-+		return;
++	if (kernel_ring->tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_DISABLED) {
++		NL_SET_ERR_MSG_MOD(extack, "Cannot disable TCP data split");
++		return -EINVAL;
 +	}
 +
-+	stat = fbnic_gstrings_xdp_stats;
-+	for (i = 0; i < FBNIC_XDP_STATS_LEN; i++, stat++, (*data)++) {
-+		u8 *p = (u8 *)ring + stat->offset;
-+
-+		**data = *(u64 *)p;
-+	}
-+}
-+
- static void fbnic_get_ethtool_stats(struct net_device *dev,
- 				    struct ethtool_stats *stats, u64 *data)
- {
-@@ -511,13 +556,16 @@ static void fbnic_get_ethtool_stats(struct net_device *dev,
- 				      FBNIC_HW_Q_STATS_LEN, &data);
+ 	if (!netif_running(netdev)) {
+-		fbnic_set_rings(fbn, ring);
++		fbnic_set_rings(fbn, ring, kernel_ring);
+ 		return 0;
  	}
- 	spin_unlock(&fbd->hw_stats_lock);
-+
-+	for (i = 0; i < FBNIC_MAX_XDPQS; i++)
-+		fbnic_get_xdp_queue_stats(fbn->tx[i + FBNIC_MAX_TXQS], &data);
- }
  
- static int fbnic_get_sset_count(struct net_device *dev, int sset)
- {
- 	switch (sset) {
- 	case ETH_SS_STATS:
--		return FBNIC_HW_STATS_LEN;
-+		return FBNIC_STATS_LEN;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
+@@ -325,7 +338,7 @@ fbnic_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 	if (!clone)
+ 		return -ENOMEM;
+ 
+-	fbnic_set_rings(clone, ring);
++	fbnic_set_rings(clone, ring, kernel_ring);
+ 
+ 	err = fbnic_alloc_napi_vectors(clone);
+ 	if (err)
+@@ -1678,6 +1691,8 @@ fbnic_get_rmon_stats(struct net_device *netdev,
+ static const struct ethtool_ops fbnic_ethtool_ops = {
+ 	.supported_coalesce_params	= ETHTOOL_COALESCE_USECS |
+ 					  ETHTOOL_COALESCE_RX_MAX_FRAMES,
++	.supported_ring_params		= ETHTOOL_RING_USE_TCP_DATA_SPLIT |
++					  ETHTOOL_RING_USE_HDS_THRS,
+ 	.rxfh_max_num_contexts		= FBNIC_RPC_RSS_TBL_COUNT,
+ 	.get_drvinfo			= fbnic_get_drvinfo,
+ 	.get_regs_len			= fbnic_get_regs_len,
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+index 7bd7812d9c06..d039e1c7a0d5 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+@@ -691,6 +691,10 @@ struct net_device *fbnic_netdev_alloc(struct fbnic_dev *fbd)
+ 	fbn->rx_usecs = FBNIC_RX_USECS_DEFAULT;
+ 	fbn->rx_max_frames = FBNIC_RX_FRAMES_DEFAULT;
+ 
++	/* Initialize the hds_thresh */
++	netdev->cfg->hds_thresh = FBNIC_HDS_THRESH_DEFAULT;
++	fbn->hds_thresh = FBNIC_HDS_THRESH_DEFAULT;
++
+ 	default_queues = netif_get_num_default_rss_queues();
+ 	if (default_queues > fbd->max_num_queues)
+ 		default_queues = fbd->max_num_queues;
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
+index 86576ae04262..04c5c7ed6c3a 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
+@@ -31,6 +31,8 @@ struct fbnic_net {
+ 	u32 ppq_size;
+ 	u32 rcq_size;
+ 
++	u32 hds_thresh;
++
+ 	u16 rx_usecs;
+ 	u16 tx_usecs;
+ 
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+index ac11389a764c..1fc7bd19e7a1 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+@@ -2238,7 +2238,7 @@ static void fbnic_enable_rcq(struct fbnic_napi_vector *nv,
+ 
+ 	rcq_ctl = FIELD_PREP(FBNIC_QUEUE_RDE_CTL1_PADLEN_MASK, FBNIC_RX_PAD) |
+ 		   FIELD_PREP(FBNIC_QUEUE_RDE_CTL1_MAX_HDR_MASK,
+-			      FBNIC_RX_MAX_HDR) |
++			      fbn->hds_thresh) |
+ 		   FIELD_PREP(FBNIC_QUEUE_RDE_CTL1_PAYLD_OFF_MASK,
+ 			      FBNIC_RX_PAYLD_OFFSET) |
+ 		   FIELD_PREP(FBNIC_QUEUE_RDE_CTL1_PAYLD_PG_CL_MASK,
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
+index 2e361d6f03ff..4d248f94ec9b 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
+@@ -53,7 +53,6 @@ struct fbnic_net;
+ #define FBNIC_RX_HROOM \
+ 	(ALIGN(FBNIC_RX_TROOM + NET_SKB_PAD, 128) - FBNIC_RX_TROOM)
+ #define FBNIC_RX_PAD			0
+-#define FBNIC_RX_MAX_HDR		(1536 - FBNIC_RX_PAD)
+ #define FBNIC_RX_PAYLD_OFFSET		0
+ #define FBNIC_RX_PAYLD_PG_CL		0
+ 
+@@ -61,6 +60,11 @@ struct fbnic_net;
+ #define FBNIC_RING_F_CTX		BIT(1)
+ #define FBNIC_RING_F_STATS		BIT(2)	/* Ring's stats may be used */
+ 
++#define FBNIC_HDS_THRESH_MAX \
++	(4096 - FBNIC_RX_HROOM - FBNIC_RX_TROOM - FBNIC_RX_PAD)
++#define FBNIC_HDS_THRESH_DEFAULT \
++	(1536 - FBNIC_RX_PAD)
++
+ struct fbnic_pkt_buff {
+ 	struct xdp_buff buff;
+ 	ktime_t hwtstamp;
 -- 
 2.47.1
 
