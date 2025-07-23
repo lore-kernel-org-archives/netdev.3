@@ -1,119 +1,97 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16404191493;
-	Wed, 23 Jul 2025 07:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B6E27815E;
+	Wed, 23 Jul 2025 07:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753257359; cv=none; b=KE8naGccEI0iTCBZTAJ7VFcZhc8e+AKVTBR3tvi2Qig8pIQ7VOOvAfAZ1MkCZgyM+MP2SqvuSZweRLuTdu4huX2mF8Bci3sxJJeTzran4SXbDeqRHFwy/HrMsroYQd3oqqf6G8M1s86MGz+bqcItWv/WZ1wxv80n0KNtADnQ2eM=
+	t=1753257439; cv=none; b=FGjHHaGDVctg79e3Hmzw8fMFI5Epe6xDs1cAJQlSr9VovQhWFIqVI7oq7XSaZ7lOv9oYPPFMY4X/+Z1sGSfolNvPwOEZcP20GABz4k5PaRupfAfmFYce6fcaZCLPHNjI6+AB0+/dFaFVIuk3XVsFRK9KDEx5X+JabjZsQf0SvRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753257359; c=relaxed/simple;
-	bh=ZTN5RivIRx/H0a44pKKMap2YEHiLVsrsyyjMHCenDUk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SrWGp6FRV6OJJwUYFm0KlaCRRANxoRTaijagnqDW4YibHqEw3VjF9OE1Ae5ZD5d9a8nEiknx4F4+cwHdalUDDut67ZXjZ1HlwmK7mL2c7MJQkyKmwCIOHnoPG93SoY+RUPoaRAiRA0IO4uvCgCBStJIrB79dQlhfkITmtgqSWmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4bn5sr3Tcjz14M3V;
-	Wed, 23 Jul 2025 15:50:56 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5FDCB1402CC;
-	Wed, 23 Jul 2025 15:55:46 +0800 (CST)
-Received: from localhost.localdomain (10.90.31.46) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 23 Jul 2025 15:55:45 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
-	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<shaojijie@huawei.com>
-Subject: [PATCH net-next] net: hibmcge: support for statistics of reset failures
-Date: Wed, 23 Jul 2025 15:48:26 +0800
-Message-ID: <20250723074826.2756135-1-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
+	s=arc-20240116; t=1753257439; c=relaxed/simple;
+	bh=tdAL6jB4Ko7Lztc4ajkspFeVq6iUKILRJD4GvTuV/9g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oK4QpDWArluTbbU6O8vp9T1dtiZE3uUT24GNfywW+dcLPE/rA914zui/v8w+oPE0TAoGC9pex4y7jg81W9Z9WRyemgCZVuLdpvzOVB/00UTOdVqIetvmqgzrUleuNCjH0vOsGdtLWF2Pt99DMEboyHiYR3E5tzIqKpUp8MXrAUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=We7v/14B; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="We7v/14B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386F3C4CEF5;
+	Wed, 23 Jul 2025 07:57:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753257439;
+	bh=tdAL6jB4Ko7Lztc4ajkspFeVq6iUKILRJD4GvTuV/9g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=We7v/14BqDrhc9FrahJg4aqfjxDxm23gqFn/2D1/W1r+LRTJ01euREJaJoI5DMiN6
+	 iC6P33QYbZgUY/GaJFmLvrpDQrtyfPK8xZyz5tVdMzGE3ZXhQLuw42vhCeNbODwKia
+	 6w2r8fkHhyObHbIH9uK+3tjMchi+eaaMkVd7/Nmi9JwI28U6t5md2GcqFVBHd+21W8
+	 yGdZIOosQqN5dP59ta0IFNBLoDH/S0bj0q6+QFeTEm3mwVo5fNyFb6Oqy6BX2VKTxe
+	 cSz8e0Qncy40/5bmK43Pt5qbj89NlrE4oGpxuAwrZ9hH0mewFJmkwvaK1a6IdtkZ1e
+	 8+a+ZcKS99mzw==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-60bf5a08729so12238901a12.0;
+        Wed, 23 Jul 2025 00:57:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWsSUKT9pMTFutJGRNORN0zvq8I64y+LoLo4Pe6VffRlOMJ4g5a2fqkGNxgkuMKXCtKUqURTfNa@vger.kernel.org, AJvYcCX2CPaaA2qnpBpro/+ibV3zSzG7CL1kDgzkINJsL5iBxuiEU7ScojKzIFzi1dbuDhbwxuk5H0wFL9hmtXo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaL7ZM+1u8Onh3nDdJVyngb8aGiyaWcvN8xg41tpwv+DOoOQPy
+	ni8FNcU+rYbZRMZPpAZibce6jUbE5z/jRIL3HW4zoTHkPUF8jAW29QKxYJ0uawO6tvjNd66/XUm
+	apcIi+YRehIMxX0K+JrLhCWcQ6X2sXDQ=
+X-Google-Smtp-Source: AGHT+IGIF7AVBA9b0CBAQLpikyzPtrMgp6p7LCmQn3Tsnr/SlGGly8L96wf3Glz5EOjEESdHNbzxzbVV6HAoeupH2hc=
+X-Received: by 2002:a05:6402:42ce:b0:609:aa85:8d78 with SMTP id
+ 4fb4d7f45d1cf-6149b427070mr1740625a12.8.1753257437717; Wed, 23 Jul 2025
+ 00:57:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+References: <20250722062716.29590-1-yangtiezhu@loongson.cn> <20250722062716.29590-3-yangtiezhu@loongson.cn>
+In-Reply-To: <20250722062716.29590-3-yangtiezhu@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 23 Jul 2025 15:57:05 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6seOazKUDwpqEwokv2-dYJX8sa03p=2ye8C-d=Bj8-wA@mail.gmail.com>
+X-Gm-Features: Ac12FXxUAg2s71SmfpE9ISn67doyybcYHPiL-kDLYehl6ymK9jmGn6iRkOyyaVY
+Message-ID: <CAAhV-H6seOazKUDwpqEwokv2-dYJX8sa03p=2ye8C-d=Bj8-wA@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/2] net: stmmac: Check stmmac_hw_setup() in stmmac_resume()
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a statistical item to count the number of reset failures.
-This statistical item can be queried using ethtool -S or
-reported through diagnose information.
-
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
----
- drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h   | 1 +
- drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.c | 1 +
- drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c      | 2 ++
- drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c  | 1 +
- 4 files changed, 5 insertions(+)
-
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-index 7725cb0c5c8a..ea09a09c451b 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
-@@ -258,6 +258,7 @@ struct hbg_stats {
- 	u64 tx_dma_err_cnt;
- 
- 	u64 np_link_fail_cnt;
-+	u64 reset_fail_cnt;
- };
- 
- struct hbg_priv {
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.c
-index f23fb5920c3c..c0ce74cf7382 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_diagnose.c
-@@ -156,6 +156,7 @@ static const struct hbg_push_stats_info hbg_push_stats_list[] = {
- 	HBG_PUSH_STATS_I(tx_drop_cnt, 84),
- 	HBG_PUSH_STATS_I(tx_excessive_length_drop_cnt, 85),
- 	HBG_PUSH_STATS_I(tx_dma_err_cnt, 86),
-+	HBG_PUSH_STATS_I(reset_fail_cnt, 87),
- };
- 
- static int hbg_push_msg_send(struct hbg_priv *priv,
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-index ff3295b60a69..503cfbfb4a8a 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-@@ -68,6 +68,7 @@ static int hbg_reset_prepare(struct hbg_priv *priv, enum hbg_reset_type type)
- 	clear_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
- 	ret = hbg_hw_event_notify(priv, HBG_HW_EVENT_RESET);
- 	if (ret) {
-+		priv->stats.reset_fail_cnt++;
- 		set_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
- 		clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
- 	}
-@@ -88,6 +89,7 @@ static int hbg_reset_done(struct hbg_priv *priv, enum hbg_reset_type type)
- 	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
- 	ret = hbg_rebuild(priv);
- 	if (ret) {
-+		priv->stats.reset_fail_cnt++;
- 		set_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
- 		dev_err(&priv->pdev->dev, "failed to rebuild after reset\n");
- 		return ret;
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-index 55520053270a..1d62ff913737 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_ethtool.c
-@@ -84,6 +84,7 @@ static const struct hbg_ethtool_stats hbg_ethtool_stats_info[] = {
- 			HBG_REG_TX_EXCESSIVE_LENGTH_DROP_ADDR),
- 	HBG_STATS_I(tx_dma_err_cnt),
- 	HBG_STATS_I(tx_timeout_cnt),
-+	HBG_STATS_I(reset_fail_cnt),
- };
- 
- static const struct hbg_ethtool_stats hbg_ethtool_rmon_stats_info[] = {
--- 
-2.33.0
-
+On Tue, Jul 22, 2025 at 2:27=E2=80=AFPM Tiezhu Yang <yangtiezhu@loongson.cn=
+> wrote:
+>
+> stmmac_hw_setup() may return 0 on success and an appropriate negative
+> integer as defined in errno.h file on failure, just check it and then
+> return early if failed in stmmac_resume().
+>
+> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/=
+net/ethernet/stmicro/stmmac/stmmac_main.c
+> index b948df1bff9a..2bfacab71ab9 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -7975,7 +7975,14 @@ int stmmac_resume(struct device *dev)
+>         stmmac_free_tx_skbufs(priv);
+>         stmmac_clear_descriptors(priv, &priv->dma_conf);
+>
+> -       stmmac_hw_setup(ndev, false);
+> +       ret =3D stmmac_hw_setup(ndev, false);
+> +       if (ret < 0) {
+> +               netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
+> +               mutex_unlock(&priv->lock);
+> +               rtnl_unlock();
+> +               return ret;
+> +       }
+> +
+>         stmmac_init_coalesce(priv);
+>         phylink_rx_clk_stop_block(priv->phylink);
+>         stmmac_set_rx_mode(ndev);
+> --
+> 2.42.0
+>
+>
