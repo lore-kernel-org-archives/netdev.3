@@ -1,100 +1,129 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C97244679;
-	Wed, 23 Jul 2025 08:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FFFAD23
+	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 08:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753260509; cv=none; b=EQOmnGjhwIfjfRQA85AhhSwxuF2qxKh75MaYISDgiqZQ1RKh/KrUllo6tqrBAC1l0sWSGM4XTSJ7hH+kyhtX6ca4eROjQKctzUzs2rmbjWQPG7OU886dzFuoB+lBngPJ5VI1Z46+8mTb96FBjr2Kok/8pq7VIJtLicrFo4N0B/k=
+	t=1753260815; cv=none; b=RhenUyz9lUo9iQWZ6BWCKq1Xct37mVBjNpijLptqijKX9dUEtV0PPaTvNd5UrvDWMG9eKQwjovFoZ8bJ719hgqyen3M+tnpMc7+kMH8wcxgC+ffqw6zG7SL4UgGHZiBdtM3+NQ84z9yDOBiWZ3rBFDCcZhPcHPULn8m1TkPZgkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753260509; c=relaxed/simple;
-	bh=jWXaYGxYYLYiCDGN7xik4lrIyUUKLSRMDJE0kXyPZyI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T/cSLa5euicFYrvfk9NQwMg34hV5sXTA8zELJdjDWgHyNgVMAx3tmHeUu31cQrZH+RAU8yB+2eEgSji8KQe5EXsgzExkh2GglAd2C2Rhm6Kiy4A4y/wsGJTRUFyUoyRa4BmGVeUTm99bcddMpCmsDyAN2pVMSSUKi/wPLr2Y0xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DzH9K+OC; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753260815; c=relaxed/simple;
+	bh=0AzoBgOdjVr1dfBQ7ulLOHt6g5o/IV8g+lDS3TVrgYA=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:Content-Type; b=lPAssZCHLT151F50mzMt2RCh/+AuXcYqN13leOaV1V59SUa1xP4/kKbsO+8YQQ4eo1d9mvrumZVukXE1MLdFkv0tZ2+yanF1qnRmhIJb9WJta+V2d2CFnApUyjLttgo7HHcwPPbXX1YO9zMI7ZwCJrYlbzxvSYQkMoiTP1E6nYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jacekk.info; spf=pass smtp.mailfrom=jacekk.info; dkim=pass (2048-bit key) header.d=jacekk.info header.i=@jacekk.info header.b=MDyW6Mpd; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jacekk.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jacekk.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DzH9K+OC"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-ae3ec622d2fso1073862166b.1;
-        Wed, 23 Jul 2025 01:48:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=jacekk.info header.i=@jacekk.info header.b="MDyW6Mpd"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ae3cd8fdd77so1224053666b.1
+        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 01:53:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753260506; x=1753865306; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tQowkAFRLXXjw5lYLGQoSknnad2/JoJTmbOjV7xvS8w=;
-        b=DzH9K+OCRt68XoiOoxnWWfxbw9RDE7bNGCMOo0Pg72043CgWdrXjZ7cmC/DC799mRS
-         /JrmDW9aBiFWoRnR0YVe4Bo2hMlhQJoHIjt0bCeWhtxs+OUeGb7r9L2vQoNNxsxlPRQS
-         iTWvTK4QCBH08it8+KopfDsbYiGVSi0wT4LAW8urvYCYSuI4OHpZ9R//kg2he4lDFraA
-         WTCy4suP4SbHBWIlt44D5/KREoMoZ4ZwX66RqdLUrTyLCjBdwDY153IRmPr6aiMNeoAE
-         qbL9Gz3GJuv0DUfZAi6voVVzwSzFY2i/nN9Pl2kzDAcnI1YEQ7cGqhS4Q+VKiuw9C+AN
-         327A==
+        d=jacekk.info; s=g2024; t=1753260811; x=1753865611; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z65j03WrO/n63aEHTvzMDd01RGJ+Quvw3MkBxukbbRo=;
+        b=MDyW6MpdzVKk1ERubmy5vo1B2IXE206da71GrLaEuHB+Exa9CwAuiKKEIYsPe//3n6
+         dfPDK7x5H9H/f/i1FeaaP5/+EwdJVowF+JZ7IqKxXKN4q8hqYQztHiQevjLQNrUxAMgt
+         FA5NsKvhhQXr1kpWO14nWHqE9UFSFloe4wd0C2yPfldvvw/4KLDlOUhrM/XvDX0vl3Ff
+         PT4nJTAAQTv4eTb8hGCb+eDmr79WgR9oKcEaTY3I4Uyg2UB1NcQU8ECiAAJKvBdsPaFm
+         KTMGGscwfSH5sqs5HCjlWSoGXORrRuFc6YVKZ+TiOBt4DN47VlQ60mgCLiCSMq9j2Yar
+         XSHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753260506; x=1753865306;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tQowkAFRLXXjw5lYLGQoSknnad2/JoJTmbOjV7xvS8w=;
-        b=r0Q8DKtyh6LaWBdilFcLP67s1EBST1XN7XJwyHrB519qjDujUGz5Pm2pKI4M6qvL7X
-         N+p2gk+SqgJ/MP4dUUI8yPHBmpHtF7evCvNTylKxLf+7UEh2Gn2CQJ+EQA+ev4bhNDPz
-         kh/V4WzyWOCN+4lF6kIX3GTvn40FZ0QprmS4PpZJ3oXJbA6TMzcs8U2TwYDLM8diCBij
-         9FQ4QZvjFXS+AYnyxf+TnIQAKjrBxDlCqVb4l9f1nxPzh0SCCmnr8QLiWXCdCdrPmZXb
-         yOT+9awS5pzEgctl0HKCDcDGp8dzw63jFilpMtxRb+hzY4z4+5fGUzdI+nOCZ8HZIVaw
-         efAg==
-X-Forwarded-Encrypted: i=1; AJvYcCX+wPB6OK03xxrwx4IIlnPE/dOBTINNAMAuLmq1vGb8Wj+eSyw4iqCoebsuWas18A8j3LlLth8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyELUCDSLrudbSw+5fA5R7WyxUXjLEA9erolV2xyJXsAFDeEcw7
-	hEijqjjdAeuNLcuj2VwDo83RclYgZ06qFP69xgAup9mGkikAIbf7Tqh9
-X-Gm-Gg: ASbGncvhx3TVnsGEpIgBJZJYgGv5DxflSqpmtENXhTZeicUa8UHGtFkNIQCCdcO1g8+
-	N8gTArxthZHnCxNOUOXfvYv6Qi5Z3N1fGJ+7pfaLLjgucqg3KOHneo8sTRUIKQYvqEn8TB7UHI+
-	qUYHR/l5HaPr0LaCTaQC7EU0dQ+QKnWfBnXHJyxleTYCKoKSij3EngFR0QUenggjeTyR1AYPl0b
-	/kpsOc9CixUVM+Ay5yrI4Gpw3H5hGDb5T6DvyPSgbnSuv4NVO0NccH9vBMe/Jzzi0QqIjyNRcvA
-	973BosTL+CLOJrjmPKRrZyP8ZVjWL1alvpjzt0j+Pvxagp5k7OXarpjvxKiqbK2HW95X67u0wbL
-	iXjVk0i1A3PI7HYQFhPrFrlU/Nao=
-X-Google-Smtp-Source: AGHT+IHBaoZiRrpOQwd8Zc4/QeSjA7UMm8Njh+vBlpKk7GLwIJiObQl2/SIgTheXyVV5ksVEA3zZtw==
-X-Received: by 2002:a17:907:78b:b0:ae0:b49d:9cd with SMTP id a640c23a62f3a-af2f9872929mr186405666b.58.1753260506055;
-        Wed, 23 Jul 2025 01:48:26 -0700 (PDT)
-Received: from Thishost ([2a01:5ec0:9813:28d9:ba3b:baec:155c:3318])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6c7d7b9csm1005778866b.61.2025.07.23.01.48.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 01:48:25 -0700 (PDT)
-From: Ali Ghaffarian <alighaffarian9@gmail.com>
-To: davem@davemloft.net
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Ali Ghaffarian <alighaffarian9@gmail.com>
-Subject: [PATCH] Net: ipv4: fixed a coding style issue
-Date: Wed, 23 Jul 2025 12:17:36 +0330
-Message-ID: <20250723084736.521507-1-alighaffarian9@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        d=1e100.net; s=20230601; t=1753260811; x=1753865611;
+        h=content-transfer-encoding:content-language:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z65j03WrO/n63aEHTvzMDd01RGJ+Quvw3MkBxukbbRo=;
+        b=dstzEjlqdwYAMr9tODVeVSCX7fI2nDyxJe1bfIjDFpGCDGJbG2cDktwS5ZyBoHIaO0
+         rdujWbEDlP7dwXoKsH5iAMaSph8fAwbocIedhZQj4kw1uohU4aSQAXbapPm2kyMgvMMX
+         hDC8T51Bwa/a/M6nFOyWFmD0v5uNFyRqRtbeF+BdEFntA+UIg8AV/EdOvD/VkSSPFJ0q
+         IQ1k26itqCjxN0vDa/ZAVHRHF4TT1u2uueXldQJoyf7OKHBG5LP7Ola3aiQC8aOy4fat
+         Na0j8dPEGKXbHoyx0QM9T1EMOZcgwm4GIpJKj9NL9hNW9j2UTWmvSmvzQLc1uNm6d40a
+         1ALQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXXxaBHGtjdhx49O3JS5ZwISH9nBOypDsmufU7DAK0YMOnB9mgxJt5sxCN/BLWTk0bV3zT2gvQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygbO8N6/wmqa6wQ1Y7ZQTnXofXsd2BGD8OLdYfzeDzajWcpPYN
+	1+1xQyH/FqZ5rfqlbKn6K2SLW79d0BlSkLYjBomfTSI/GuTGAlj6eFTGT+4wKfrQlA==
+X-Gm-Gg: ASbGncspXlio7Ue3quIXG7UCnY+LeLc2mywZGfOX4zkMHobPJ2o4fjKve13OFon/HQe
+	NO4KATIvZTGzcblAUqFZNtX1pKihHU03l4eMj6St3mBkBNS9K6qhKuk31e+WKFAuntiAmCi+mJe
+	W78xmUWNwerOM/LTJb8QdfKchNoMSam9Ac2cRQs85+/RCLH9vSLndgqvInEYh0RKB+ZuHiRtnxb
+	TeAZ0jKFgi1D1TDOFzKl6deOsmpkEKuDGUEU/BwdliBrYtXeRSBQg5KaNxnbdCkwQ3Tav91VOyq
+	jmgS6LQWg9dyiwyFvy2S+cN0B/3xkOmULB5hEOeL86GJJbFqtcoolYCiQExZlBy8iQzBu6ufSoM
+	m3r4HKSLGk0sj+ca2jC2aRqEi
+X-Google-Smtp-Source: AGHT+IEAKKNfk8z8hc+e0fC3ZbDRCqVmoShe8CkCXPCmslS/ifB1iVUmtn6ibbbWnqxC+LicuSBrgw==
+X-Received: by 2002:a17:907:7f0c:b0:ae0:9fdf:25e8 with SMTP id a640c23a62f3a-af2f8d4ecf2mr165925266b.47.1753260810410;
+        Wed, 23 Jul 2025 01:53:30 -0700 (PDT)
+Received: from [192.168.0.114] ([91.196.212.106])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6c79a089sm1007376066b.20.2025.07.23.01.53.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Jul 2025 01:53:30 -0700 (PDT)
+From: Jacek Kowalski <jacek@jacekk.info>
+X-Google-Original-From: Jacek Kowalski <Jacek@jacekk.info>
+Message-ID: <2f87d6e9-9eb6-4532-8a1d-c88e91aac563@jacekk.info>
+Date: Wed, 23 Jul 2025 10:53:28 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH iwl-next v3 0/5] drop unnecessary constant casts to u16
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Fixed a coding style issue.
+As requested by Simon Horman, here's the patch set to drop casts of
+constants to u16 in comparisons and subtractions. Changes are applied
+across all Intel wired drivers.
 
-Signed-off-by: Ali Ghaffarian <alighaffarian9@gmail.com>
----
- net/ipv4/af_inet.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Per C language specification, arithmetic types with rank lower than integer
+are automatically promoted to at least (signed/unsigned) int on comparisons
+and subtractions. There is no point in casting to types smaller than
+integer, i.e. u16, in such code paths.
 
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 76e38092c..e38a977c9 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -445,9 +445,8 @@ int inet_bind_sk(struct sock *sk, struct sockaddr *uaddr, int addr_len)
- 	int err;
- 
- 	/* If the socket has its own bind function then use it. (RAW) */
--	if (sk->sk_prot->bind) {
-+	if (sk->sk_prot->bind)
- 		return sk->sk_prot->bind(sk, uaddr, addr_len);
--	}
- 	if (addr_len < sizeof(struct sockaddr_in))
- 		return -EINVAL;
- 
+Additionally:
+- drop casts in "return (int)checksum;" where checksum is u16,
+- *_MNG_VLAN_NONE constants equal to -1 that are cast to (u16)
+  are now set to 0xFFFF.
+
+v1 -> v2: drop casts in subtractions as well
+v2 -> v3: update descs, rework *_MNG_VLAN_NONE, drop parentheses
+
+Jacek Kowalski (5):
+  e1000: drop unnecessary constant casts to u16
+  e1000e: drop unnecessary constant casts to u16
+  igb: drop unnecessary constant casts to u16
+  igc: drop unnecessary constant casts to u16
+  ixgbe: drop unnecessary casts to u16 / int
+
+ drivers/net/ethernet/intel/e1000/e1000.h         | 2 +-
+ drivers/net/ethernet/intel/e1000/e1000_ethtool.c | 2 +-
+ drivers/net/ethernet/intel/e1000/e1000_hw.c      | 4 ++--
+ drivers/net/ethernet/intel/e1000/e1000_main.c    | 3 +--
+ drivers/net/ethernet/intel/e1000e/e1000.h        | 2 +-
+ drivers/net/ethernet/intel/e1000e/ethtool.c      | 2 +-
+ drivers/net/ethernet/intel/e1000e/netdev.c       | 4 ++--
+ drivers/net/ethernet/intel/e1000e/nvm.c          | 4 ++--
+ drivers/net/ethernet/intel/igb/e1000_82575.c     | 4 ++--
+ drivers/net/ethernet/intel/igb/e1000_i210.c      | 2 +-
+ drivers/net/ethernet/intel/igb/e1000_nvm.c       | 4 ++--
+ drivers/net/ethernet/intel/igb/igb.h             | 2 +-
+ drivers/net/ethernet/intel/igb/igb_main.c        | 3 +--
+ drivers/net/ethernet/intel/igc/igc_i225.c        | 2 +-
+ drivers/net/ethernet/intel/igc/igc_nvm.c         | 4 ++--
+ drivers/net/ethernet/intel/ixgbe/ixgbe_common.c  | 4 ++--
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c    | 4 ++--
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c    | 4 ++--
+ 18 files changed, 27 insertions(+), 29 deletions(-)
+
 -- 
-2.50.1
+2.47.2
 
