@@ -1,67 +1,50 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B8928000C
-	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 08:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA2D1581F8;
+	Wed, 23 Jul 2025 08:57:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753260943; cv=none; b=snGh8qdnn7ps4oL/FD5QVU6hcmI5pMGR58YEcqcax+ln6Yd6K7bCgpIogn89G0LoLAYNDsvb9Md3ft4AzSeXJHFWgs0XSunNSPwHgw/vyVDGh9/gNQA2j+fSIT+XmZQLbVHL/ILVU0hrP6hdXw3oOnm4+qSpN0S9c0pPY9oD/3o=
+	t=1753261029; cv=none; b=ATn4mq9RXV0tg4ETWPQtV4Wg9FUxdRe2FeuwXAKFKk4D/vZnuWgnJywn/HOO6PsuePq+v61ljr+n5HX3cARADTTl7FheFS3iao0101dcAm4KH2IX6ArPjOzhIh/lwuzT2Bn8C8nt9v6WTYkUHHLtLrvNbHXkJtsaSd5y+aXhf9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753260943; c=relaxed/simple;
-	bh=eo4bF0B+j1uSHHh/7KG94zzYJFd6UoheQwNXP9rsFDA=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=TjutZFJQLu2DvhJNRNJX5dK4vfZLBdhFgCCjc1L2DjaVy89WZcV2yvMy7Eti74vQEa9Ggs2xguUiOXSUBATOnLpBOE23qUxtuLiiV/N+AOmYp94Z/Y2lm/Zbv6NKSVv1voe3mrBsEXu48D4FbICVyuDK0FpTyfjpK/5Zyyn8cVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jacekk.info; spf=pass smtp.mailfrom=jacekk.info; dkim=pass (2048-bit key) header.d=jacekk.info header.i=@jacekk.info header.b=Vju/iCGw; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jacekk.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jacekk.info
+	s=arc-20240116; t=1753261029; c=relaxed/simple;
+	bh=Y0TKez6Zs8Dmhd9Gs0F8vfIoDJDRLuLzxDMZTjKyf1k=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=HbCH0AA6HAbgcLLTwnx3AZdQU6MsxD3sOegMywm85U4ta7jzzDv3HgOAUDBLgkazxMtYb+vHWCFF/CeTcfLla6gD9Z0oCo9xi5qaJuRDrWu4cmyebAXe1al5uUsFIT/gq/1KeCpzWQdFyOMASBAJa0haZEu4mLAWfh0D50isgkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=b3dTttzL; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jacekk.info header.i=@jacekk.info header.b="Vju/iCGw"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-60c01b983b6so1500791a12.0
-        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 01:55:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jacekk.info; s=g2024; t=1753260940; x=1753865740; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ugmq4lvRdEc1sG9XRhYE3BwB+7EDXuXGL4BxqjZaIU0=;
-        b=Vju/iCGwg+job6So8mSPmxGMa1VpakTpX9ln+zQhT3NVyZN1XUVwDEoim+Usee/JMw
-         suTTY59ckVNKejV8QShcoLy80fnAUrgvnGu/BcN7hPDPuru3faMO6hV7XNxrMrn+pjZ+
-         dNo51Blkwul33QJpOy2Uok1M5XRGlRXZQnYDwIwps1P0Z5SYpYJiaTR4VJAMwSMS2jST
-         sW+sOr8WEWHIXLcey7YaK8RhzfBpdKLHDpqBYGE5fElxIJb+l2Y7eugyHoE/N5xBLuR3
-         eAIiOijoT8/JYpL0/MT76cu4Aytyw7V1R2gBWgksLdG4PbAphMNtN2MJE7TfWb5gUoUi
-         +1vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753260940; x=1753865740;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ugmq4lvRdEc1sG9XRhYE3BwB+7EDXuXGL4BxqjZaIU0=;
-        b=FNq/NtNcIZ9VY+qNrqzcw98jUxyS9QmNi7NCl7nMQbV+Cb4tQQgofMx5WRpJYK35pB
-         7th7xvMrBJm4gvrBEYmal1DIrgyVVoEge4qZhYMPe9K/ogqd09L/mjCAtWWtPFcCzq6i
-         qU7t4q4SbmqebPFTWuh0nF3MODQMdFUMyMjnOOtlK3KqUL/oWibKHt/AHpLdUhC7s9si
-         Wk4ciWzb0iOpUc2r0dYWD8PwgnNdeMOCwr3hGFZdIOTSL7U78cQlNEg63q0BAwV//FEJ
-         /IY/b2yd7G3AnBDKOIpDSoY96+lQVPZENBkFV/JVqDrNR5IluWowFbMbkVVyUQTzOHRS
-         jWJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWiypvZlwDUdu+bNbeOgJDLj6AWjg+E30TULOuShaiZVRWNiBN3I9pQzhVW8D2cNqMOe3cyqSs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5YTLG++R+cY6d2OL4/0qOnMw9fhhQYoMPvfV1QGIFRWdiXcQa
-	YDUE+cijtS/aCiUc0FlRathz3I1YKpyxxZgdDmobezRDHZLrmQQcYugWzyA91SO/Qw==
-X-Gm-Gg: ASbGncvZ6lScEF+jNjn2Poijkbei0AIny2gilO6DwvRiLaObNyuhwl0mz7scagfDeiH
-	M9l+tsI7hndQBVJpbX8suuAYKUl0euQUejuNjQGedKW7MUUAJlqePVP5Yj4QlVDSREVvcFcv0AZ
-	alG5SFFmR1lKHjsFBWmRnA3hfuvy8Db3k7FQZBfHoqyukgCplsTMziVx2jrLRvdYB4Pu/BHPKqf
-	INwkR/bgFG9lUN41nGbhykYrA3izAMMihTaX7omcef5fwlB6Y6whD5deIt9rDGozXRBtW9GdlLr
-	0/Ef3OzgfI4jJBvENsm0vdtmphAkUdsX6x64+7EM/1j683er6hWpvW76f76oWQAvy9u4cvf8tHg
-	KGXq9infWWN6rd1+5zQet23qm
-X-Google-Smtp-Source: AGHT+IFr//0fitN3glsKj9I2v7mcguCK3I5eSA/Kd/X79BOmkVy8sFxPK0cii8eiTLSIlLO2zEi80g==
-X-Received: by 2002:a05:6402:3482:b0:612:e841:5630 with SMTP id 4fb4d7f45d1cf-61346c8bb0fmr6021277a12.6.1753260939602;
-        Wed, 23 Jul 2025 01:55:39 -0700 (PDT)
-Received: from [192.168.0.114] ([91.196.212.106])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612c90d55cesm8158991a12.72.2025.07.23.01.55.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Jul 2025 01:55:39 -0700 (PDT)
-From: Jacek Kowalski <jacek@jacekk.info>
-X-Google-Original-From: Jacek Kowalski <Jacek@jacekk.info>
-Message-ID: <9e21249d-b5a7-4949-b724-e29d7b7ea417@jacekk.info>
-Date: Wed, 23 Jul 2025 10:55:37 +0200
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="b3dTttzL"
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56N8uM65028510;
+	Wed, 23 Jul 2025 10:56:48 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	phZtJJljKEJOK6MlgZrPZlmrH/bqjB9NJkz8RgXJGMQ=; b=b3dTttzLcyGu3faH
+	8GZs7OjxwijhA4DA3LtAQaSGpnn4V4apeeWcMp9oPqhcdBD0esOHs3d5NQdnvChE
+	Xt5I/sfbV7Cjm2x8iTd6rrGfGpbXqkJne3dZdJocYLmZic5eh5nlrQKjL+rtvsWH
+	b3HIbW/UcIrElRkku/YmkCuu1DEx3Dr8BjLZ+16790OsH9ccM73I5Nm6FP/Xo0hh
+	q3e0kNj88tnViO0DzcuMlWauZUYY7KTZdiAEcUtqc7+uZvcR5T0Qp0OPTQ4nyY7+
+	8Vu5OcxGOp+c8/dFtrDBWaZ8dQDC6meg0yzFA+W0qQGkn2UK7YJunWCPVeIjCBgX
+	X0P60Q==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 48028gae19-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Jul 2025 10:56:48 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 930794005B;
+	Wed, 23 Jul 2025 10:55:15 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 249447530A7;
+	Wed, 23 Jul 2025 10:53:57 +0200 (CEST)
+Received: from [10.48.87.141] (10.48.87.141) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 23 Jul
+ 2025 10:53:56 +0200
+Message-ID: <9c9499e3-10c9-4245-938a-65831fe10c05@foss.st.com>
+Date: Wed, 23 Jul 2025 10:53:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,81 +52,161 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH iwl-next v3 5/5] ixgbe: drop unnecessary casts to u16 / int
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-References: <2f87d6e9-9eb6-4532-8a1d-c88e91aac563@jacekk.info>
+Subject: Re: [PATCH net-next 1/4] dt-bindings: net: document st,phy-wol
+ property
+From: Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        Andrew Lunn
+	<andrew@lunn.ch>
+CC: Krzysztof Kozlowski <krzk@kernel.org>,
+        Andrew Lunn
+	<andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Christophe Roullier <christophe.roullier@foss.st.com>,
+        Heiner Kallweit
+	<hkallweit1@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        Tristram Ha
+	<Tristram.Ha@microchip.com>,
+        Florian Fainelli
+	<florian.fainelli@broadcom.com>,
+        <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+References: <20250721-wol-smsc-phy-v1-0-89d262812dba@foss.st.com>
+ <20250721-wol-smsc-phy-v1-1-89d262812dba@foss.st.com>
+ <faea23d5-9d5d-4fbb-9c6a-a7bc38c04866@kernel.org>
+ <f5c4bb6d-4ff1-4dc1-9d27-3bb1e26437e3@foss.st.com>
+ <e3c99bdb-649a-4652-9f34-19b902ba34c1@lunn.ch>
+ <38278e2a-5a1b-4908-907e-7d45a08ea3b7@foss.st.com>
+ <5b8608cb-1369-4638-9cda-1cf90412fc0f@lunn.ch>
+ <383299bb-883c-43bf-a52a-64d7fda71064@foss.st.com>
+ <2563a389-4e7c-4536-b956-476f98e24b37@lunn.ch>
+ <aH_yiKJURZ80gFEv@shell.armlinux.org.uk>
+ <5a2e0cd8-6d20-4f5a-a3a0-9010305509e3@foss.st.com>
 Content-Language: en-US
-In-Reply-To: <2f87d6e9-9eb6-4532-8a1d-c88e91aac563@jacekk.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <5a2e0cd8-6d20-4f5a-a3a0-9010305509e3@foss.st.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-23_01,2025-07-22_01,2025-03-28_01
 
-Remove unnecessary casts of constant values to u16.
-C's integer promotion rules make them ints no matter what.
 
-Additionally drop cast from u16 to int in return statements.
 
-Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
-Suggested-by: Simon Horman <horms@kernel.org>
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_common.c | 4 ++--
- drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c   | 4 ++--
- drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c   | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+On 7/23/25 10:50, Gatien CHEVALLIER wrote:
+> 
+> 
+> On 7/22/25 22:20, Russell King (Oracle) wrote:
+>> On Tue, Jul 22, 2025 at 03:40:16PM +0200, Andrew Lunn wrote:
+>>> I know Russell has also replied about issues with stmmac. Please
+>>> consider that when reading what i say... It might be not applicable.
+>>>
+>>>> Seems like a fair and logical approach. It seems reasonable that the
+>>>> MAC driver relies on the get_wol() API to know what's supported.
+>>>>
+>>>> The tricky thing for the PHY used in this patchset is to get this
+>>>> information:
+>>>>
+>>>> Extract from the documentation of the LAN8742A PHY:
+>>>> "The WoL detection can be configured to assert the nINT interrupt pin
+>>>> or nPME pin"
+>>>
+>>> https://www.kernel.org/doc/Documentation/devicetree/bindings/power/wakeup-source.txt
+>>>
+>>> It is a bit messy, but in the device tree, you could have:
+>>>
+>>>      interrupts = <&sirq 0 IRQ_TYPE_LEVEL_LOW>
+>>>                   <&pmic 42 IRQ_TYPE_LEVEL_LOW>;
+>>>      interrupt-names = "nINT", "wake";
+>>>      wakeup-source
+>>>
+>>> You could also have:
+>>>
+>>>      interrupts = <&sirq 0 IRQ_TYPE_LEVEL_LOW>;
+>>>      interrupt-names = "wake";
+>>>      wakeup-source
+>>>
+>>> In the first example, since there are two interrupts listed, it must
+>>> be using the nPME. For the second, since there is only one, it must be
+>>> using nINT.
+>>>
+>>> Where this does not work so well is when you have a board which does
+>>> not have nINT wired, but does have nPME. The phylib core will see
+>>> there is an interrupt and request it, and disable polling. And then
+>>> nothing will work. We might be able to delay solving that until such a
+>>> board actually exists?
+>>
+>> (Officially, I'm still on vacation...)
+>>
+>> At this point, I'd like to kick off a discussion about PHY-based
+>> wakeup that is relevant to this thread.
+>>
+>> The kernel has device-based wakeup support. We have:
+>>
+>> - device_set_wakeup_capable(dev, flag) - indicates that the is
+>>    capable of waking the system depending on the flag.
+>>
+>> - device_set_wakeup_enable(dev, flag) - indicates whether "dev"
+>>    has had wake-up enabled or disabled depending on the flag.
+>>
+>> - dev*_pm_set_wake_irq(dev, irq) - indicates to the wake core that
+>>    the indicated IRQ is capable of waking the system, and the core
+>>    will handle enabling/disabling irq wake capabilities on the IRQ
+>>    as appropriate (dependent on device_set_wakeup_enable()). Other
+>>    functions are available for wakeup IRQs that are dedicated to
+>>    only waking up the system (e.g. the WOL_INT pin on AR8031).
+>>
+>> Issue 1. In stmmac_init_phy(), we have this code:
+>>
+>>          if (!priv->plat->pmt) {
+>>                  struct ethtool_wolinfo wol = { .cmd = ETHTOOL_GWOL };
+>>
+>>                  phylink_ethtool_get_wol(priv->phylink, &wol);
+>>                  device_set_wakeup_capable(priv->device, 
+>> !!wol.supported);
+>>                  device_set_wakeup_enable(priv->device, !!wol.wolopts);
+>>          }
+>>
+>> This reads the WoL state from the PHY (a different struct device)
+>> and sets the wakeup capability and enable state for the _stmmac_
+>> device accordingly, but in the case of PHY based WoL, it's the PHY
+>> doing the wakeup, not the MAC. So this seems wrong on the face of
+>> it.
+> 
+> 2 cents: Maybe even remove in stmmac_set_wol() if !priv->plat->pmt.
+> 
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_common.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_common.c
-index 4ff19426ab74..3ea6765f9c5d 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_common.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_common.c
-@@ -1739,9 +1739,9 @@ int ixgbe_calc_eeprom_checksum_generic(struct ixgbe_hw *hw)
- 		}
- 	}
- 
--	checksum = (u16)IXGBE_EEPROM_SUM - checksum;
-+	checksum = IXGBE_EEPROM_SUM - checksum;
- 
--	return (int)checksum;
-+	return checksum;
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
-index c2353aed0120..e67e2feb045b 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x540.c
-@@ -373,9 +373,9 @@ static int ixgbe_calc_eeprom_checksum_X540(struct ixgbe_hw *hw)
- 		}
- 	}
- 
--	checksum = (u16)IXGBE_EEPROM_SUM - checksum;
-+	checksum = IXGBE_EEPROM_SUM - checksum;
- 
--	return (int)checksum;
-+	return checksum;
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-index bfa647086c70..650c3e522c3e 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-@@ -1060,9 +1060,9 @@ static int ixgbe_calc_checksum_X550(struct ixgbe_hw *hw, u16 *buffer,
- 			return status;
- 	}
- 
--	checksum = (u16)IXGBE_EEPROM_SUM - checksum;
-+	checksum = IXGBE_EEPROM_SUM - checksum;
- 
--	return (int)checksum;
-+	return checksum;
- }
- 
- /** ixgbe_calc_eeprom_checksum_X550 - Calculates and returns the checksum
--- 
-2.47.2
+Sorry, that's not very clear. I was thinking of removing:
+device_set_wakeup_enable(priv->device, !!wol->wolopts); in
+stmmac_set_wol()
 
+>>
+>> Issue 2. no driver in phylib, nor the core, ever uses any of the
+>> device_set_wakeup_*() functions. As PHYs on their own are capable
+>> of WoL, isn't this an oversight? Shouldn't phylib be supporting
+>> this rather than leaving it to MAC drivers to figure something out?
+>>
+>> Issue 3. should pins like WOL_INT or nPME be represented as an
+>> interrupt, and dev_pm_set_dedicated_wake_irq() used to manage that
+>> interrupt signal if listed as an IRQ in the PHY's DT description?
+>>
+>> (Side note: I have tried WoL on the Jetson Xavier NX board I have
+>> which uses stmmac-based WoL, but it seems non-functional. I've
+>> dropped a private email to Jon and Thierry to see whether this is
+>> expected or something that needs fixing. I'm intending to convert
+>> stmmac to use core wakeirq support, rather than managing
+>> the enable_irq_wake()/disable_irq_wake() by itself.)
+>>
