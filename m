@@ -1,176 +1,90 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from nyx.n621.de (v4gw.hekate.n621.de [136.243.2.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5919A273D91
-	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 22:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76237273D60;
+	Wed, 23 Jul 2025 22:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.243.2.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753309715; cv=none; b=ZCB5es/mbnwsrNmUNw7jpAJqw78c4DCIcgyaInBDKCEdm1lBTUYPLUMznEWTJ6fp7yPcKrl24LVylGX63fswmSFMOcIHMUWLq2vU/MCWQ9MfQevv89JYXLy+YngIE14RntU/hkiW+NPUiNknw8Mll0k+UgxeRTOw8jfmj8vy8IM=
+	t=1753309949; cv=none; b=Tt+ql2BaAM8XGVP7n7O2s9TheXOyaJWD4kvWdZWpU3tFOcwxRTfSXPkmhO3cuig2ZANRozRaG6sUCTLeZEioUlXcaXt9LC9CsHfuQ5uO72ClfbwkfOIleadeCiXf4H7j4/Okc8p54SC7Y3gG5RrLmhuaVWBTSw7vH3YztGNiIMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753309715; c=relaxed/simple;
-	bh=VvUDt6FWFoyoDIDged2fZ1ZVOvIafQIneLMPsAZxYGs=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=tPTLipAqr9Wi5B8xDlD4Zed+8MSibH4QaP/OfAHzpQqvindNwmce2Y/sQk5beU+Al+oFggDv8/wKG/kTJe06wqTB/Kt3Ejck1VKCz1F41OBBNbrmJCYGQREIj9M+kYjEowl/A3U6TMPmaZaDMtHhbs+G1uZmiZOhCjyew/FAY+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LBrjVNcP; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
+	s=arc-20240116; t=1753309949; c=relaxed/simple;
+	bh=H5dLFQLR80zyzGXaWyzLG3KAZqe+SuFTxe0PJa5w1d8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GKugATd6iYbpaOd1f/olkF2Hz57o9g/7Rr7ojL8o9g2WqcS/yLy4mVG/0+OYUendugh9ZIKzEr7MntudYPu8TeBWsaWp1mVrYBxuAq68RDnLsKcgGyaV8aUGVQbsq3Hsuvl4Ejl7KiApsRVrnTPCXsrBDjPpB4bR7tQX9WY604U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=n621.de; spf=pass smtp.mailfrom=n621.de; dkim=pass (1024-bit key) header.d=n621.de header.i=@n621.de header.b=oWz675rP; arc=none smtp.client-ip=136.243.2.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=n621.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=n621.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LBrjVNcP"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b2c36d3f884so264969a12.2
-        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 15:28:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753309712; x=1753914512; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=maxoCoCzZYBwjX5BKP0pvsUFSndKViTHC8/D3FpCBB0=;
-        b=LBrjVNcPtjzrPzpYwZtLwa3EPmZhQmWWQnPzuLq52zGauBkbW9ShWruo6wy214sxWf
-         bxCb5qavvd9CC7PWSZido5cPPxMIiLGn/tnZICfj6B/xpcMT3wLsV8jEkXflpjAEKRsJ
-         gULignJwl9x+nx6qKaoorm/K0WkU97+Te5LPHjjU8qX1P2/MYrA6/OvasgJWYL8/DTP4
-         Epj6X5uRa9xdnh9eQ2FmH9JkOe2HEPtZ6y5ESg5JEeTW/QbNIRE3Vt1RgzhmS7YpcKd/
-         DJCavZ+NltENwZHjAgDKbIYXxPpOX/snSdnK8sQ5/VVxICNVHSxm2lvojzscto8ZK/xy
-         nEvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753309712; x=1753914512;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=maxoCoCzZYBwjX5BKP0pvsUFSndKViTHC8/D3FpCBB0=;
-        b=Aq4V0Jve4X5mFVproN+VzVz9VdKxvscklJr5Ikh9S1RbgXTxl+ojEY0/0+8/1DSdvi
-         SPJsAZmF11YDyQU4gFvKDKfNq/7COkVVQLmD7jDFJ098kPIAyXZ/g6Zeg0erWe3kQC9g
-         LZxIuIEBKKi62Yf/DtUbta2JuJjN8s7FHC8UVC4h+jJVge/yc3dyJgew7KznLhG2/2cU
-         JlUZunn3hw+DWQngaEbcJASHpw0T0RBDv7CG+3aEyHAOikrmiIl2ld74JrUi1bJh49t7
-         3Ec2XJ9S/g7iq6FmI/rWNkz+opzVZ2sujKcnJLm7lwkdzuKhXhAgPIoZr3/coVAmGFCn
-         dECg==
-X-Gm-Message-State: AOJu0YxVKvE2MYoD2D+khwkYawNdeE2Oroz6kYVHhxRqBGn8CcMsu2gE
-	Gmq0C3E1QigLzjHG6kJN6pCVtjVmeA8MjCc3sMzMv4tKfYNU3r7BHW/RWG9FvyYJaRmDh7pMCOw
-	ue53aJoNHEQxMWVJZsxsLLQQAZVryIhKc2Lp0vXWZCv+WdWmE4N6J0Z5Z1crXmdvPopFPh0mfy/
-	/8MfPO3s33cSwVHRLv6ySndafZWh2PhSalXbWIzFShnVd1xlM6OREdJAj9TX0XaT8=
-X-Google-Smtp-Source: AGHT+IFxGNtqJ26mBeUuULBu7HleUmr3O2AVx8P8w6Q3+FKJVsiAhBbN7BqUKAMBmasnh+F58Ye1cOC9ZU84HvXLrg==
-X-Received: from pjwx11.prod.google.com ([2002:a17:90a:c2cb:b0:312:e266:f849])
- (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90a:e183:b0:313:15fe:4c13 with SMTP id 98e67ed59e1d1-31e507ce7f7mr7052868a91.27.1753309712524;
- Wed, 23 Jul 2025 15:28:32 -0700 (PDT)
-Date: Wed, 23 Jul 2025 22:28:29 +0000
+	dkim=pass (1024-bit key) header.d=n621.de header.i=@n621.de header.b="oWz675rP"
+Received: from eos.home.n621.de (localhost [127.0.0.1])
+	by nyx.n621.de (Postfix) with ESMTP id C3180E002AF;
+	Thu, 24 Jul 2025 00:23:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=n621.de; s=dkim;
+	t=1753309388;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FHC/FhBnpS0kU/U/rZh5/dUh3Fl0ZDAJeeBOGbTp50w=;
+	b=oWz675rPKlbZ8OpIlElDVCiM0hlKbtAlMQXiZgApQrxC60YFH1+4XN+WBCeiRI/tgBvpqx
+	dwKUOxDqmcDxisZNyDbkU5VfumbdCGVasDhAWVbEoBKJoGpTQQswaMppEeyCicAHZ8N+M6
+	F9F/zPRieeit9ayyuNE9vFwu73MBnps=
+From: Florian Larysch <fl@n621.de>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Divya.Koppera@microchip.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Florian Larysch <fl@n621.de>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: phy: micrel: fix KSZ8081/KSZ8091 cable test
+Date: Thu, 24 Jul 2025 00:20:42 +0200
+Message-ID: <20250723222250.13960-1-fl@n621.de>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250723222829.3528565-1-hramamurthy@google.com>
-Subject: [PATCH net-next] gve: support unreadable netmem
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-To: netdev@vger.kernel.org
-Cc: jeroendb@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	willemb@google.com, pkaligineedi@google.com, joshwash@google.com, 
-	linux-kernel@vger.kernel.org, Mina Almasry <almasrymina@google.com>, 
-	Ziwei Xiao <ziweixiao@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Mina Almasry <almasrymina@google.com>
+Commit 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814
+phy") introduced cable_test support for the LAN8814 that reuses parts of
+the KSZ886x logic and introduced the cable_diag_reg and pair_mask
+parameters to account for differences between those chips.
 
-Declare PP_FLAG_ALLOW_UNREADABLE_NETMEM to turn on unreadable netmem
-support in GVE.
+However, it did not update the ksz8081_type struct, so those members are
+now 0, causing no pairs to be tested in ksz886x_cable_test_get_status
+and ksz886x_cable_test_wait_for_completion to poll the wrong register
+for the affected PHYs (Basic Control/Reset, which is 0 in normal
+operation) and exit immediately.
 
-We also drop any net_iov packets where header split is not enabled.
-We're unable to process packets where the header landed in unreadable
-netmem.
+Fix this by setting both struct members accordingly.
 
-Use page_pool_dma_sync_netmem_for_cpu in lieu of
-dma_sync_single_range_for_cpu to correctly handle unreadable netmem
-that should not be dma-sync'd.
-
-Disable rx_copybreak optimization if payload is unreadable netmem as
-that needs access to the payload.
-
-Signed-off-by: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Fixes: 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814 phy")
+Cc: stable@vger.kernel.org
+Signed-off-by: Florian Larysch <fl@n621.de>
 ---
- .../ethernet/google/gve/gve_buffer_mgmt_dqo.c |  5 +++
- drivers/net/ethernet/google/gve/gve_rx_dqo.c  | 36 ++++++++++++++++---
- 2 files changed, 36 insertions(+), 5 deletions(-)
+ drivers/net/phy/micrel.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
-index 8f5021e59e0a..0e2b703c673a 100644
---- a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
-@@ -260,6 +260,11 @@ struct page_pool *gve_rx_create_page_pool(struct gve_priv *priv,
- 		.offset = xdp ? XDP_PACKET_HEADROOM : 0,
- 	};
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 64aa03aed770..50c6a4e8cfa1 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -472,6 +472,8 @@ static const struct kszphy_type ksz8051_type = {
  
-+	if (priv->header_split_enabled) {
-+		pp.flags |= PP_FLAG_ALLOW_UNREADABLE_NETMEM;
-+		pp.queue_idx = rx->q_num;
-+	}
-+
- 	return page_pool_create(&pp);
- }
- 
-diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-index 7380c2b7a2d8..8c75a4d1e3e7 100644
---- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-@@ -718,6 +718,24 @@ static int gve_rx_xsk_dqo(struct napi_struct *napi, struct gve_rx_ring *rx,
- 	return 0;
- }
- 
-+static void gve_dma_sync(struct gve_priv *priv, struct gve_rx_ring *rx,
-+			 struct gve_rx_buf_state_dqo *buf_state, u16 buf_len)
-+{
-+	struct gve_rx_slot_page_info *page_info = &buf_state->page_info;
-+
-+	if (rx->dqo.page_pool) {
-+		page_pool_dma_sync_netmem_for_cpu(rx->dqo.page_pool,
-+						  page_info->netmem,
-+						  page_info->page_offset,
-+						  buf_len);
-+	} else {
-+		dma_sync_single_range_for_cpu(&priv->pdev->dev, buf_state->addr,
-+					      page_info->page_offset +
-+					      page_info->pad,
-+					      buf_len, DMA_FROM_DEVICE);
-+	}
-+}
-+
- /* Returns 0 if descriptor is completed successfully.
-  * Returns -EINVAL if descriptor is invalid.
-  * Returns -ENOMEM if data cannot be copied to skb.
-@@ -793,13 +811,19 @@ static int gve_rx_dqo(struct napi_struct *napi, struct gve_rx_ring *rx,
- 		rx->rx_hsplit_unsplit_pkt += unsplit;
- 		rx->rx_hsplit_bytes += hdr_len;
- 		u64_stats_update_end(&rx->statss);
-+	} else if (!rx->ctx.skb_head && rx->dqo.page_pool &&
-+		   netmem_is_net_iov(buf_state->page_info.netmem)) {
-+		/* when header split is disabled, the header went to the packet
-+		 * buffer. If the packet buffer is a net_iov, those can't be
-+		 * easily mapped into the kernel space to access the header
-+		 * required to process the packet.
-+		 */
-+		gve_free_buffer(rx, buf_state);
-+		return -EFAULT;
- 	}
- 
- 	/* Sync the portion of dma buffer for CPU to read. */
--	dma_sync_single_range_for_cpu(&priv->pdev->dev, buf_state->addr,
--				      buf_state->page_info.page_offset +
--				      buf_state->page_info.pad,
--				      buf_len, DMA_FROM_DEVICE);
-+	gve_dma_sync(priv, rx, buf_state, buf_len);
- 
- 	/* Append to current skb if one exists. */
- 	if (rx->ctx.skb_head) {
-@@ -837,7 +861,9 @@ static int gve_rx_dqo(struct napi_struct *napi, struct gve_rx_ring *rx,
- 		u64_stats_update_end(&rx->statss);
- 	}
- 
--	if (eop && buf_len <= priv->rx_copybreak) {
-+	if (eop && buf_len <= priv->rx_copybreak &&
-+	    !(rx->dqo.page_pool &&
-+	      netmem_is_net_iov(buf_state->page_info.netmem))) {
- 		rx->ctx.skb_head = gve_rx_copy(priv->dev, napi,
- 					       &buf_state->page_info, buf_len);
- 		if (unlikely(!rx->ctx.skb_head))
+ static const struct kszphy_type ksz8081_type = {
+ 	.led_mode_reg		= MII_KSZPHY_CTRL_2,
++	.cable_diag_reg		= KSZ8081_LMD,
++	.pair_mask		= KSZPHY_WIRE_PAIR_MASK,
+ 	.has_broadcast_disable	= true,
+ 	.has_nand_tree_disable	= true,
+ 	.has_rmii_ref_clk_sel	= true,
 -- 
-2.50.0.727.gbf7dc18ff4-goog
+2.50.1
 
