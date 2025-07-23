@@ -1,49 +1,35 @@
-Received: from nyx.n621.de (v4gw.hekate.n621.de [136.243.2.102])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76237273D60;
-	Wed, 23 Jul 2025 22:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.243.2.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CD04A2D;
+	Wed, 23 Jul 2025 22:39:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753309949; cv=none; b=Tt+ql2BaAM8XGVP7n7O2s9TheXOyaJWD4kvWdZWpU3tFOcwxRTfSXPkmhO3cuig2ZANRozRaG6sUCTLeZEioUlXcaXt9LC9CsHfuQ5uO72ClfbwkfOIleadeCiXf4H7j4/Okc8p54SC7Y3gG5RrLmhuaVWBTSw7vH3YztGNiIMQ=
+	t=1753310388; cv=none; b=DXJMFk8MqUknqR5TsbZoMh0Y0M5r404WBkf+g6bgrEyr649zth4dqtsxV/A38CPI0ksz8befyzZQEL/nY6/EGkWdWbSqPdoqcxBWg4fOaHkboBIm96QNmSDdPzYBvsS1KumN8tw9/zmqLwk6e1zsMd4pZ9Ic+v0I3MHijk5ZzIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753309949; c=relaxed/simple;
-	bh=H5dLFQLR80zyzGXaWyzLG3KAZqe+SuFTxe0PJa5w1d8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GKugATd6iYbpaOd1f/olkF2Hz57o9g/7Rr7ojL8o9g2WqcS/yLy4mVG/0+OYUendugh9ZIKzEr7MntudYPu8TeBWsaWp1mVrYBxuAq68RDnLsKcgGyaV8aUGVQbsq3Hsuvl4Ejl7KiApsRVrnTPCXsrBDjPpB4bR7tQX9WY604U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=n621.de; spf=pass smtp.mailfrom=n621.de; dkim=pass (1024-bit key) header.d=n621.de header.i=@n621.de header.b=oWz675rP; arc=none smtp.client-ip=136.243.2.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=n621.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=n621.de
+	s=arc-20240116; t=1753310388; c=relaxed/simple;
+	bh=hgnkJrnN6sK/XOfTEvvAXSxWgRpJ2PYqa06SFODCGfY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=QAMB4K5BSJ7EtvncqBUQvOmumjYOMVysWx9hivqZKINuDj4KFjKoYlyg1XxkaGYGLPBygqcZPSSv+LbyV8o+jCeJc9jdri27Vhw10wi3PSbsiVn/FNXmn57grvaM6wCpVAAZhp8XTNW8VgDFjuxx3UTnPWhyE9k+U/RB/TyO5eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nWYuC6wm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=n621.de header.i=@n621.de header.b="oWz675rP"
-Received: from eos.home.n621.de (localhost [127.0.0.1])
-	by nyx.n621.de (Postfix) with ESMTP id C3180E002AF;
-	Thu, 24 Jul 2025 00:23:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=n621.de; s=dkim;
-	t=1753309388;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=FHC/FhBnpS0kU/U/rZh5/dUh3Fl0ZDAJeeBOGbTp50w=;
-	b=oWz675rPKlbZ8OpIlElDVCiM0hlKbtAlMQXiZgApQrxC60YFH1+4XN+WBCeiRI/tgBvpqx
-	dwKUOxDqmcDxisZNyDbkU5VfumbdCGVasDhAWVbEoBKJoGpTQQswaMppEeyCicAHZ8N+M6
-	F9F/zPRieeit9ayyuNE9vFwu73MBnps=
-From: Florian Larysch <fl@n621.de>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Divya.Koppera@microchip.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Florian Larysch <fl@n621.de>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: phy: micrel: fix KSZ8081/KSZ8091 cable test
-Date: Thu, 24 Jul 2025 00:20:42 +0200
-Message-ID: <20250723222250.13960-1-fl@n621.de>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nWYuC6wm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E19DC4CEE7;
+	Wed, 23 Jul 2025 22:39:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753310388;
+	bh=hgnkJrnN6sK/XOfTEvvAXSxWgRpJ2PYqa06SFODCGfY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=nWYuC6wmZ4JIVrr/lCjOuORXJfHlY5NTb3thJyTOoczlPYQMx/EFTjNOk3YlN1WJw
+	 XHrsoQvL1Zo9HCmjD8Im4XumTAPFTrLX+iFKp8QWuJkh2COJ2pxG1c9pum7py+xKwf
+	 xu9XxLdcB0NLAEkX56Ch8MS0ODYTwITIKRj+SvdWFJJ73mkp8jdktCIpEkcsYfJuu8
+	 0NIEKqy3uzK1rmgwGpvtm4ss2RtXGiSu/GfYt8L1S+tWjlxruA2NcUdGhEXvtLldGd
+	 lUgZDSMXm5JP1RNCK1jNjm6pA44mNiLnXVXXAMn6TpYrpXjWh/oMCGCCm1UVRkSFRB
+	 M42EGWnI/SWKw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C12383BF4E;
+	Wed, 23 Jul 2025 22:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,40 +37,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] MAINTAINERS: Add in6.h to MAINTAINERS
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175331040626.1803663.10946559776281993316.git-patchwork-notify@kernel.org>
+Date: Wed, 23 Jul 2025 22:40:06 +0000
+References: <20250722165645.work.047-kees@kernel.org>
+In-Reply-To: <20250722165645.work.047-kees@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
 
-Commit 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814
-phy") introduced cable_test support for the LAN8814 that reuses parts of
-the KSZ886x logic and introduced the cable_diag_reg and pair_mask
-parameters to account for differences between those chips.
+Hello:
 
-However, it did not update the ksz8081_type struct, so those members are
-now 0, causing no pairs to be tested in ksz886x_cable_test_get_status
-and ksz886x_cable_test_wait_for_completion to poll the wrong register
-for the affected PHYs (Basic Control/Reset, which is 0 in normal
-operation) and exit immediately.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Fix this by setting both struct members accordingly.
+On Tue, 22 Jul 2025 09:56:49 -0700 you wrote:
+> My CC-adding automation returned nothing on a future patch to the
+> include/linux/in6.h file, and I went looking for why. Add the missed
+> in6.h to MAINTAINERS.
+> 
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Simon Horman <horms@kernel.org>
+> Cc: <netdev@vger.kernel.org>
+> 
+> [...]
 
-Fixes: 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814 phy")
-Cc: stable@vger.kernel.org
-Signed-off-by: Florian Larysch <fl@n621.de>
----
- drivers/net/phy/micrel.c | 2 ++
- 1 file changed, 2 insertions(+)
+Here is the summary with links:
+  - [net-next] MAINTAINERS: Add in6.h to MAINTAINERS
+    https://git.kernel.org/netdev/net/c/14822f782700
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 64aa03aed770..50c6a4e8cfa1 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -472,6 +472,8 @@ static const struct kszphy_type ksz8051_type = {
- 
- static const struct kszphy_type ksz8081_type = {
- 	.led_mode_reg		= MII_KSZPHY_CTRL_2,
-+	.cable_diag_reg		= KSZ8081_LMD,
-+	.pair_mask		= KSZPHY_WIRE_PAIR_MASK,
- 	.has_broadcast_disable	= true,
- 	.has_nand_tree_disable	= true,
- 	.has_rmii_ref_clk_sel	= true,
+You are awesome, thank you!
 -- 
-2.50.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
