@@ -1,74 +1,74 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DBB283C9F
-	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 09:16:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48104285C8C
+	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 09:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753262212; cv=none; b=LeYm4VaiBymGMV3FTUvOsB9GI5KrS798o1T1y22/EYzaCOPc4qlF0C+ocClhoRFcogN6zyIcA/mcZPBFT9G2mR1wn62ctUx4xDJJWKDd6yRo0fPDQ91/V7jdFQbYTWL+hUywGsJcexutqrFpk8GJSlyYhsMkEMod/YOPz/pSE84=
+	t=1753262213; cv=none; b=FFE3vmzGJjNE0iNrDvFiMzoV6M9n2nAysQi5qsB9hqRHnON1qvbA9wEwRbJks4TVcmDB0A1QYzJJg3vvLY/7PAp3ENZmxfjaTJt57vUSi1dQcRkEfmY6ikYi8gqAboRI2m+rYvrq7tU6paC2LycNJKypfTVyogmGYsSM6qqEtL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753262212; c=relaxed/simple;
-	bh=2QMmQf65+PWK5gkwv8LjmFzuU2vNhhdLuT3fw+fAxeU=;
+	s=arc-20240116; t=1753262213; c=relaxed/simple;
+	bh=H2BNf5Y5uuCCMCMObzAj3YltF4GdXLPf3RclMeTe/Zk=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=eCh5JOArw05NT2HW+K+bhdFTkgWm7Ha6w0VYhs/zbtr3cP28DqHepnqr/ejemeahi4UOcJiRXfsRQgBohF5xM9Wg9Ldo2PbqQYB4Ezs8do1vHzPPUhffG8GVBkYhByzVpTnLllxBCMe/UzRnQVui9wWeQvGkeIu+8CVjSNurmbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mi1v1D3l; arc=none smtp.client-ip=209.85.128.48
+	 MIME-Version:Content-Type; b=C70/zxVOngK0VuMZrTOMFhXmcgn8ObWo/gUcjDnHcJHg7hlhHN9rCZeG2EBtjupH9Bud+IMMTY83urGWXLhNyJ7DC135SHjcYiZumUUVEDReLCWYuyROgXqNex+sUgeMXaPHWyLQDSzw5k2xdHstVF156i0869fuBjRgd5c1uq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KrPjcOkq; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mi1v1D3l"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-451d41e1ad1so45454985e9.1
-        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 02:16:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KrPjcOkq"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-451d7b50815so48761285e9.2
+        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 02:16:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753262209; x=1753867009; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753262210; x=1753867010; darn=vger.kernel.org;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5efHS5a+/j045tcIeR+kJD8kn2I1ifc4qiuFdPMBKHc=;
-        b=Mi1v1D3lP25WhVaL5koSLCReSL3mhZvWGsyvQ4U60JFZGvq6A8OD/NhHIbtKpjzidI
-         DeWXlb774MFATZB0hFcy5pxG+EAW6UY9cIgVjQhuzX0K/sW3yfqRZ9G9vHS7qdMLTvK/
-         xWiECSNAa2qevOZHM57LdqGn9H6wiFncc+HCUtDxWe+7bZuip4RLp9ok6NBqcUxrongn
-         c/Wv+13JX+Norj48c7Qw7X5uFdlB1WJ+4RK/2E+J95sDVEZNyuEPoxFDLMyqAh3zWeQA
-         cgcGY5ljNnwZn91K5eLW1NPhCGYC8eMA71T4RklRcaiRPGmtrsGGuXRMzt2kN3+iKw66
-         KSDg==
+        bh=/BBaMS1j5ATUviYrmEB8vJyo66orVWQCLaLlvtMv/PE=;
+        b=KrPjcOkqPp2c3la2moGyfUIIj6nwU7sj1wRVBvSe4aicvgLF3kvuZQPMDKhFJS8VGB
+         DT0fMn+3QuV/ircKBIxd0rjt0v1ACuNhrh5YgBQFhdxQNcdXZOGD9KycfP45ZkZFyzal
+         XXyIz/z56bhyu9ZOVOO/VY/erOGhhVnCYWV9J0JUS1ii+B0/C2L8A6W/9XK6pGsTf8dX
+         jFHbApNU2vHo7+JJfZVlyap03xBVfLoXr3lrnO1ryPyb4/vN6ZxMrfATAI2MSbqsDoil
+         1DhTE8TSf/dFeTXDm4GySkUkirAL9mlHwBjXizZ+VeXKUeUi3oT+9Wp33upWvukyEv50
+         sa4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753262209; x=1753867009;
+        d=1e100.net; s=20230601; t=1753262210; x=1753867010;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5efHS5a+/j045tcIeR+kJD8kn2I1ifc4qiuFdPMBKHc=;
-        b=XLMxpUMv2WXyNM2MyoqADTVWrGp0dQxpo8xM5Kt+sucGstt63yk6x8sDRkjx3SMLHo
-         xixxZctCtpm288hqd2HTp7vjIYtCAEfq9WJDDBMYEzspDCPKYD9Vld2yTSnbHDKVXnEk
-         bbhJYeouxv6PZAnDfFjpNYBmHjP0XH0OrAnq9amhl/W3GnFseGLWlBh0fU8r5jdpYoRF
-         Rx9T0XZEZ4Aa+vqvqAK9pxJ5ski26YKmM+xE6oPCmtsyEYuHdpitBMD5PWv6sSMHOVGg
-         FlSYdoATdcdeJj7LHZWnWvOmQ168fOAnekFhItVHyfoUV2e5970oSUxhx1x21YdBAuxu
-         Ky6A==
-X-Forwarded-Encrypted: i=1; AJvYcCXCZdPUr1LbvPLBDNaokFQI0FuwTD1TLcocpfN6iwbXhkNwQby3l8ha7rlE2HiUhJ9ploHHCLY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYRnfYVnbfzQhWtSlUVvkAJLwP0IRkXq6VsslNkjVNp+4MV+el
-	8cEgTuFnWXfFif3gY2wVmsqeBORQ2r9Cn68lXM0PH7uA2nmsaMm8vDvBQBze4A==
-X-Gm-Gg: ASbGncvCQMfa85c9m5BWUi2BbaWyhHL48S9kJwjUE4avYwafEBUnHal/PATC7w4C6+8
-	Q06HqG5IIIW9AuVYFHZSioxSxLngArszulOwfWNFevPoZriAl3RKx6mH4wBmTwPbycmH7AEPlHX
-	LVRuUwpLkKA+g+tT+nfT9UPw7UIedCln3DEes34eJKr9jO7tHwyQurcily+6Tw/vErpbfJLu16A
-	q4E/ZW+AklCmyx9OJItF96suPTYWv2oCbls+iu8dITEIt1jc3X9x7mVFPYLDqqMxHduC7KQNgko
-	BhQlTuXMUGBfDSPefFugn9KSelhvyp7sL3T+1N+qzt086LQuIw61QgFAp7hOxt4Jc9tTojHA+Ma
-	YPhtmdWN/knMXcBHaBFxuRVFZqLUbX9yAvg==
-X-Google-Smtp-Source: AGHT+IFaG+HglliG4VCPIZT8OVwT2HhOcjygmy/kKNfACLlU1kwYZrZlCtPtSOSOnEY/F93Y+u/7Xw==
-X-Received: by 2002:a5d:5887:0:b0:3a5:8cdd:c174 with SMTP id ffacd0b85a97d-3b768e9f1c3mr1906876f8f.26.1753262208910;
-        Wed, 23 Jul 2025 02:16:48 -0700 (PDT)
+        bh=/BBaMS1j5ATUviYrmEB8vJyo66orVWQCLaLlvtMv/PE=;
+        b=TSi1pm9gd+4fP0dsrrUuJGZ3Tjoyzfig+phyAEQp3pTjss1DEoP6xWQkpeonPs8lhb
+         AWfE793XsAEXRpmnZ478gR45WYWsEUXZTbbR1cebDHgM6ARz68hDmv36BM2rRaGbhO+N
+         d8yhhZRA1HjmF8jkKWRFFtmCLmJ9nX8C+fUX0lR3Bh815wlx70XPLf3q1C9A0vC8OGnL
+         DAXO/NgFC7uLvGhWBxGWc7XOejG60QFFsSJQwzL0C6bO28vz8Xb0vCRYo9D1lm/NwBze
+         ESVwG7lGV2W3ugYnBUfwJwd1dSYurfIZa+LjElOrRSbxtQZuu1F6Z+g+BwkLz5UbXO1j
+         b+iw==
+X-Forwarded-Encrypted: i=1; AJvYcCXHW59uNCzRohDA0Sfv5PcH9Bm6lUULtSPpsxlN1DYLAx24V7UXHLnZIv2vfM1YST4nWhTBzaw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqRjtJnAO1B9WJRFX6VPuEc9Ix2cROIV1UE+3g00EHwJMG0UOr
+	IwbdIGxHvY220sPD8Kao6JyT65otdkAZrpdOZ/xRbkXFM3fO3fDcLZcM
+X-Gm-Gg: ASbGncsjQs7fhAEYGFgjol1MpnB0w5fPQUS1ff53V51kb4aNT4JsX5G4uf/LybsqpLi
+	HKSvyTOlTRXAYN/hZu2AgD/nqojf7Ffj4N26BMAFMRijmlBFvFzWgnuWSRBNxkFHF8AIlD9d2+P
+	9708LTq5cve0eaHfIE32iLxRbRQINAYfsSQm6L8ON/Q6WQ6jHCwXm7qFH+9HaL8KjxxlNKPnD5r
+	fmN0vszWTEzsWbp/mhZgFvCJwJUUGjpM682BrSwbiVeiWCusrwtoS1QeoXf4Zf0D9nVwULzEBCF
+	NCpf5fLICG6nEIBzWM8JSVHc8IixZyfhSLo0b5KSgCFFYzb8brZYLx1JtPBa70STtFBOgOSiFQx
+	js8tidq+yPAFl+hR075zN7ZyEMKs+E3XFdYk2SAMxt3pr
+X-Google-Smtp-Source: AGHT+IHgbw+fEb+VtAoYqIxGrVSbC+2a/HD4oq3nmC8izdKmyE4mLfnDCzYCv324Yui+3gHKCGi6lQ==
+X-Received: by 2002:a05:6000:2505:b0:3b5:e2c9:fa05 with SMTP id ffacd0b85a97d-3b768cb1908mr1329691f8f.18.1753262210351;
+        Wed, 23 Jul 2025 02:16:50 -0700 (PDT)
 Received: from imac ([2a02:8010:60a0:0:b8c1:6477:3a30:7fe])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca5c632sm15933250f8f.80.2025.07.23.02.16.48
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca48719sm15929925f8f.47.2025.07.23.02.16.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 02:16:48 -0700 (PDT)
+        Wed, 23 Jul 2025 02:16:49 -0700 (PDT)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
   pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
   almasrymina@google.com,  sdf@fomichev.me
-Subject: Re: [PATCH net-next 3/5] tools: ynl-gen: print alloc helper for
+Subject: Re: [PATCH net-next 4/5] tools: ynl-gen: print setters for
  multi-val attrs
-In-Reply-To: <20250722161927.3489203-4-kuba@kernel.org>
-Date: Wed, 23 Jul 2025 10:07:11 +0100
-Message-ID: <m2ldof9sxs.fsf@gmail.com>
+In-Reply-To: <20250722161927.3489203-5-kuba@kernel.org>
+Date: Wed, 23 Jul 2025 10:15:19 +0100
+Message-ID: <m2h5z39sk8.fsf@gmail.com>
 References: <20250722161927.3489203-1-kuba@kernel.org>
-	<20250722161927.3489203-4-kuba@kernel.org>
+	<20250722161927.3489203-5-kuba@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -80,65 +80,34 @@ Content-Type: text/plain
 
 Jakub Kicinski <kuba@kernel.org> writes:
 
-> In general YNL provides allocation and free helpers for types.
-> For pure nested structs which are used as multi-attr (and therefore
-> have to be allocated dynamically) we already print a free helper
-> as it's needed by free of the containing struct.
+> For basic types we "flatten" setters. If a request "a" has a simple
+> nest "b" with value "val" we print helpers like:
 >
-> Add printing of the alloc helper for consistency. The helper
-> takes the number of entries to allocate as an argument, e.g.:
+>  req_set_a_b(struct a *req, int val)
+>  {
+>    req->_present.a = 1;
+>    req->b._present.val = 1;
+>    req->b.val = ...
+>  }
 >
->   static inline struct netdev_queue_id *netdev_queue_id_alloc(unsigned int n)
->   {
-> 	return calloc(n, sizeof(struct netdev_queue_id));
->   }
+> This is not possible for multi-attr because they have to be allocated
+> dynamically by the user. Print "object level" setters so that user
+> preparing the object doesn't have to futz with the presence bits
+> and other YNL internals.
+>
+> Add the ability to pass in the variable name to generated setters.
+> Using "req" here doesn't feel right, while the attr is part of a request
+> it's not the request itself, so it seems cleaner to call it "obj".
+>
+> Example:
+>
+>  static inline void
+>  netdev_queue_id_set_id(struct netdev_queue_id *obj, __u32 id)
+>  {
+> 	obj->_present.id = 1;
+> 	obj->id = id;
+>  }
 >
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
->  tools/net/ynl/pyynl/ynl_gen_c.py | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
->
-> diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-> index dc78542e6c88..0394b786aa93 100755
-> --- a/tools/net/ynl/pyynl/ynl_gen_c.py
-> +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-> @@ -2472,11 +2472,22 @@ _C_KW = {
->      return 'obj'
->  
->  
-> -def print_alloc_wrapper(ri, direction):
-> +def print_alloc_wrapper(ri, direction, struct=None):
->      name = op_prefix(ri, direction)
-> -    ri.cw.write_func_prot(f'static inline struct {name} *', f"{name}_alloc", [f"void"])
-> +    struct_name = name
-> +    if ri.type_name_conflict:
-> +        struct_name += '_'
-> +
-> +    arg = ["void"]
-
-Minor nit: maybe should be args since it is a list, or change it to
-arg = "void" and listify in the write_func_prot() call.
 
 Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-
-> +    cnt = "1"
-> +    if struct and struct.in_multi_val:
-> +        arg = ["unsigned int n"]
-> +        cnt = "n"
-> +
-> +    ri.cw.write_func_prot(f'static inline struct {struct_name} *',
-> +                          f"{name}_alloc", arg)
->      ri.cw.block_start()
-> -    ri.cw.p(f'return calloc(1, sizeof(struct {name}));')
-> +    ri.cw.p(f'return calloc({cnt}, sizeof(struct {struct_name}));')
->      ri.cw.block_end()
->  
->  
-> @@ -2547,6 +2558,8 @@ _C_KW = {
->      _print_type(ri, "", struct)
->  
->      if struct.request and struct.in_multi_val:
-> +        print_alloc_wrapper(ri, "", struct)
-> +        ri.cw.nl()
->          free_rsp_nested_prototype(ri)
->          ri.cw.nl()
