@@ -1,116 +1,92 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F25F21B9C9
-	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 04:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34342192F8
+	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 04:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753246199; cv=none; b=TVH4Oz8kombsDQlZn9FaK4w6h3RbEoT05QkMDrnVmVm9W1T3f8TQULi6DSAQoXCGnf2zirQ1bFy6IhZdu08l834CZvq2tv+d95EqpGnqfjcVDjcj/JcaPkmvgQplMssHbf+ACRO3nm8c1m4mU4niCmKCAAPdlqY0EwxNcNa8Z7w=
+	t=1753246791; cv=none; b=ElbEkY5Xsof0AHcXW2I/DEB93agEGPqkslF7ga+QpY4XSw7PU9SYKiMFXDTGR+DhKYIsGTlBu0XuwcF4G5DX3lMf1r1CZCRdE4Tek3Xx1A2VLzV10pKwQgND2WDzsaDk8C2MqypmRTEMWloISGhpj0WN+xhn6OQ8pdRq/4tYgwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753246199; c=relaxed/simple;
-	bh=1+i5fwHsssFH8fer9hR+N6BmV3M+1an/8DwXt1LUWZ4=;
+	s=arc-20240116; t=1753246791; c=relaxed/simple;
+	bh=bUWkVDl1xsG0268an9XDncsjM9CP5KQHVRX4OUyWoHo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ooG2N1EjPkyA6CZCx5vNu1nW5imTdz0Ojtr5FIzkR+p4lrwEPe1bEkM4wqyv/jsW29/Yx1IGMT/OiTer6cogu42nUBmZ6JYB2rfHGB6qhI22oIJh2Shppuk9Ravd/NVnbR2ZmzJOxtxWXO7pFqbrU6zGu6MsY7nSmlVCM26zqu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XDwsdq71; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XDwsdq71"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753246198; x=1784782198;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1+i5fwHsssFH8fer9hR+N6BmV3M+1an/8DwXt1LUWZ4=;
-  b=XDwsdq71cLlO2GSU6i6iqbGZZyuyed7zuNaLK6z7hju+zFE93FaguKRK
-   XiFRNXS2OQAcD3oBbYmJrBL5QAcLKNfz45vrgoAUtbafRtEWdFQkNbwJw
-   qSUh5oYUrXEgoUiJF+IBD0ivcHRJI964RmBfTVu8L7251lL6bpt8OEHkR
-   dRivxCnEPka3zkeffzXfUHlvK8+WPDe0V+hWVH2AAaC02uC6UDuDDBQve
-   LmpZD6XNR5sVI6jHAghxEGuaaov7Y2hwjXHwxmksHxbBnqa/ObB0X7ud9
-   PdhSLIiyg18VuZXwuBzSL1t7vBcpppIiB5Z1yZGg1yalTcbEW22gr4A9X
-   w==;
-X-CSE-ConnectionGUID: /QJJ/5W8RWuQhwmD2gNZLg==
-X-CSE-MsgGUID: Cq7ez+MBSr+v3X/Lm4gHqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11500"; a="55455935"
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="55455935"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 21:49:57 -0700
-X-CSE-ConnectionGUID: HYkRLkIRT0ObbXeX4vJvig==
-X-CSE-MsgGUID: XUU0kdGGQd2s737DBzYrvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="163561384"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2025 21:49:56 -0700
-Date: Wed, 23 Jul 2025 06:48:51 +0200
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	"dawid.osuchowski@linux.intel.com" <dawid.osuchowski@linux.intel.com>
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next v1 02/15] ice: move
- get_fwlog_data() to fwlog file
-Message-ID: <aIBps1pWsmrZhoDu@mev-dev.igk.intel.com>
-References: <20250722104600.10141-1-michal.swiatkowski@linux.intel.com>
- <20250722104600.10141-3-michal.swiatkowski@linux.intel.com>
- <IA3PR11MB8986DF9CBA9DD7D092D11D14E55CA@IA3PR11MB8986.namprd11.prod.outlook.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jz1K15te4fBZTNjApHv+Rj8zREryrFcy+wYfAQ7koBgAK9ElPiPgGaFDwg1MOzlj5vhW5OXlMtItMgrzcVXXHBXFjEFa5T0r8Xi6kFq6TraS+xsLluhDcuWwTiR/cRmWBk7X0OOVuxK6roaH8Mgyb/Hdx+CbACgqYTot18e2hUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1ueRZd-0006yY-RI; Wed, 23 Jul 2025 06:59:25 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1ueRZa-009piQ-2a;
+	Wed, 23 Jul 2025 06:59:22 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1ueRZa-0010Bg-2C;
+	Wed, 23 Jul 2025 06:59:22 +0200
+Date: Wed, 23 Jul 2025 06:59:22 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Tristram.Ha@microchip.com
+Cc: Oleksij Rempel <linux@rempel-privat.de>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	UNGLinuxDriver@microchip.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: dsa: microchip: Fix wrong rx drop MIB counter
+ for KSZ8863
+Message-ID: <aIBsKkTtNsA_J7AY@pengutronix.de>
+References: <20250723030403.56878-1-Tristram.Ha@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <IA3PR11MB8986DF9CBA9DD7D092D11D14E55CA@IA3PR11MB8986.namprd11.prod.outlook.com>
+In-Reply-To: <20250723030403.56878-1-Tristram.Ha@microchip.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Tue, Jul 22, 2025 at 12:02:52PM +0000, Loktionov, Aleksandr wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> > Of Michal Swiatkowski
-> > Sent: Tuesday, July 22, 2025 12:46 PM
-> > To: intel-wired-lan@lists.osuosl.org
-> > Cc: netdev@vger.kernel.org; Kitszel, Przemyslaw
-> > <przemyslaw.kitszel@intel.com>; dawid.osuchowski@linux.intel.com;
-> > Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> > Subject: [Intel-wired-lan] [PATCH iwl-next v1 02/15] ice: move
-> > get_fwlog_data() to fwlog file
-> > 
-> > Change the function prototype to receive hw structure instead of pf to
-> > simplify the call. Instead of passing whole event pass only msg_buf
-> > pointer and length.
-> > 
-> > Make ice_fwlog_ring_full() static as it isn't  called from any other
-> > context.
-> > 
-> > Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> > Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> > ---
-> >  drivers/net/ethernet/intel/ice/ice_fwlog.c | 27 +++++++++++++++++++-
-> > drivers/net/ethernet/intel/ice/ice_fwlog.h |  2 +-
-> > drivers/net/ethernet/intel/ice/ice_main.c  | 29 ++--------------------
-> >  3 files changed, 29 insertions(+), 29 deletions(-)
-> > 
-> > diff --git a/drivers/net/ethernet/intel/ice/ice_fwlog.c
-> > b/drivers/net/ethernet/intel/ice/ice_fwlog.c
-> > index e48856206648..ea5d6d2d3f30 100644
-> > --- a/drivers/net/ethernet/intel/ice/ice_fwlog.c
-> > +++ b/drivers/net/ethernet/intel/ice/ice_fwlog.c
-> > @@ -6,7 +6,7 @@
-> >  #include "ice_common.h"
-> >  #include "ice_fwlog.h"
-> > 
-> > -bool ice_fwlog_ring_full(struct ice_fwlog_ring *rings)
-> > +static bool ice_fwlog_ring_full(struct ice_fwlog_ring *rings)
-> >  {
-> >  	u16 head, tail;
-> > 
-> Can you consider adding kernel-doc for ice_fwlog_ring_full()?
-> 
+Hi Tristram,
 
-I will add it.
+On Tue, Jul 22, 2025 at 08:04:03PM -0700, Tristram.Ha@microchip.com wrote:
+> From: Tristram Ha <tristram.ha@microchip.com>
+> 
+> When KSZ8863 support was first added to KSZ driver the RX drop MIB
+> counter was somehow defined as 0x105.  The TX drop MIB counter
+> starts at 0x100 for port 1, 0x101 for port 2, and 0x102 for port 3, so
+> the RX drop MIB counter should start at 0x103 for port 1, 0x104 for
+> port 2, and 0x105 for port 3.
+> 
+> There are 5 ports for KSZ8895, so its RX drop MIB counter starts at
+> 0x105.
+> 
+> Fixes: 4b20a07e103f ("net: dsa: microchip: ksz8795: add support for ksz88xx chips")
+> Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
+
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+
+Thank you for your patch!
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
