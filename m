@@ -1,88 +1,81 @@
-Received: from mail-m15593.qiye.163.com (mail-m15593.qiye.163.com [101.71.155.93])
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB112E7BCA;
-	Wed, 23 Jul 2025 13:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07411474CC;
+	Wed, 23 Jul 2025 13:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753276508; cv=none; b=VDuF6YsRimf1iNM30i5WWTJXZM6pNIza23diWEESt1D1xOU/Zr0cNA/MPHw3kmv0bMhYS2GDhGSBXgxHqySHsGxXsRgaJYDWOVoztkI/oARq5h+9W6Vo/voslMLvegO9qpCFehkvkmojYMkfSyr7I23n0XixN+yd6sMeelBTHwk=
+	t=1753276731; cv=none; b=bzmIgDeSP2M2k6tKDGKap8Ph+3Oz46to1P5TW8Sjs2p3AOe1DWk5ppwRZvWvoiQChI9xiGYkuwJInkN2PorTXNpEmB6Q9GSkxthIz1pSd5NhEPz9wDFv06/zqfSvRUqCCxqvUAiSNY8kFWBxy7nNt77eZxNLHGAVImiPXoSMRro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753276508; c=relaxed/simple;
-	bh=KpTG27xj119EH8QPiH6w84Q+rjHasCFnEYYnEixwibU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rRLuMBq7mqetYbSao9zZ3rUGohzfdJNcH2Gb8Nx/4+CYBS7LJLrA2ZKIEs1yqtxa7WLGExom2euReYG8sVmHVqw101+L4RdldsOVjq6cYq96lkyerz3dHe8/CCN/ttBK/I1oNQ4l4edYnrwSTtRKKnRR3qMZJIMHGTn61QVqvAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gztozed.com; spf=pass smtp.mailfrom=gztozed.com; dkim=pass (1024-bit key) header.d=gztozed.com header.i=@gztozed.com header.b=AYXMEE22; arc=none smtp.client-ip=101.71.155.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gztozed.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gztozed.com
+	s=arc-20240116; t=1753276731; c=relaxed/simple;
+	bh=CGXxYHL7p7FQlIZkP3MXIk7AkiTNhzQW8eA0AkhISK0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m2U8i/KeVFqnT751SZoy5HhaOo6v4ykNbC6FXtLzejRq5HZYyanUR/CRPYgiwD9ZtuB1gZDL33VXas6WUCCoaZuUGSsZmN9CzsSTpFL16NrfE+KiryHyBPIBLg8yZGi2oempV4h6Tu38KSSKfr5JL/TRIZ2JaZVPeJx2A7WdBDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=LPn4V8ME; arc=none smtp.client-ip=115.124.30.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gztozed.com header.i=@gztozed.com header.b="AYXMEE22"
-Received: from localhost.localdomain (unknown [IPV6:240e:6b0:200:4::42])
-	by smtp.qiye.163.com (Hmail) with ESMTP id d845d995;
-	Wed, 23 Jul 2025 16:38:55 +0800 (GMT+08:00)
-From: wangyongyong@gztozed.com
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	wangyongyong <wangyongyong@gztozed.com>
-Subject: [PATCH] net: clear offline CPU backlog.state in dev_cpu_dead()
-Date: Wed, 23 Jul 2025 16:38:08 +0800
-Message-Id: <20250723083808.1220363-1-wangyongyong@gztozed.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="LPn4V8ME"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1753276723; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=L4SalSJjDu44fjPwLSYDuzaOpmD0jMVAwMvkOA162RY=;
+	b=LPn4V8MEDap13hLFIY14gMricbt9eVfWwgp1wfxYrqVUb1F1RqupkkbpCBv3V5lWO/OYB3wxnKU3MYfqeIL/fodaQNm8bsR60sHmXwP1y8BiP6gerMh5oal4JpmpzlPY5D2gnFloXFoI7yIhgFtJPURQzPaXnLYdIqfhz4LPPDo=
+Received: from 30.221.128.98(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0WjdaegZ_1753276722 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 23 Jul 2025 21:18:43 +0800
+Message-ID: <a2078275-641c-41ef-afc1-5e391f4d62f4@linux.alibaba.com>
+Date: Wed, 23 Jul 2025 21:18:42 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVkaQhoYVklCHklMS0tNSB9NS1YVFAkWGhdVGRETFh
-	oSFyQUDg9ZV1kYEgtZQVlJT0seQU0ZS0FJS0tBT0FBT0lZV1kWGg8SFR0UWUFZS1VLVUtVS1kG
-X-HM-Tid: 0a98366f86a30230kunmbbad5f211f61de
-X-HM-MType: 1
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NQg6NAw5CTdILT1WHEs2LEIS
-	MyoaFAhVSlVKTE5ISU5CQkhNQ09JVTMWGhIXVQwaFRwCFBUcAhQVHDscAQ8UAR4fVRgUFkVZV1kS
-	C1lBWUlPSx5BTRlLQUlLS0FPQUFPSVlXWQgBWUFKQ0NDNwY+
-DKIM-Signature:a=rsa-sha256;
-	b=AYXMEE22DZ9ZBdaZAEiAM1TbkVL0cu0sG/qV2u2lK5AETvhLAS6AgcFscu6APxea5fQ8rOQpi3rmxj3DHHJkSAdzjUbyDkGUVGg/bbOglRruv9E1uYIXPAwYG/mKR9qNL4Q0fL5AnZRVuQbhXTfEzs2K2kObwJiOdFMC5uehEFI=; s=default; c=relaxed/relaxed; d=gztozed.com; v=1;
-	bh=0afn1/VAo7T4OfiA7X9buT9b9SNPrb22VYySrI//Ito=;
-	h=date:mime-version:subject:message-id:from;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3] ptp: add Alibaba CIPU PTP clock driver
+To: Paolo Abeni <pabeni@redhat.com>, richardcochran@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org
+Cc: xuanzhuo@linux.alibaba.com, dust.li@linux.alibaba.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250717075734.62296-1-guwen@linux.alibaba.com>
+ <49c4e674-ab1e-4947-9885-5c73810368eb@redhat.com>
+From: Wen Gu <guwen@linux.alibaba.com>
+In-Reply-To: <49c4e674-ab1e-4947-9885-5c73810368eb@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: wangyongyong <wangyongyong@gztozed.com>
 
-When a packet is enqueued to a remote CPU's backlog queue via enqueue_to_backlog(),
-the following race condition can occur with CPU hotplug:
 
-1. Source CPU sets NAPI_STATE_SCHED on target CPU's softnet_data->backlog.state
-2. Source CPU raises NET_RX_SOFTIRQ to schedule NAPI polling
-3. Target CPU is taken offline before the IPI arrives
-4. dev_cpu_dead() fails to clear NAPI_STATE_SCHED because backlog isn't in poll_list
+On 2025/7/22 17:13, Paolo Abeni wrote:
+> On 7/17/25 9:57 AM, Wen Gu wrote:
+>> +#define PTP_CIPU_BAR_0	0
+>> +#define PTP_CIPU_REG(reg) \
+>> +	offsetof(struct ptp_cipu_regs, reg)
+> 
+> Minor nit: no need to use a multiple line macro above
+> 
 
-This results in:
-- Stale NAPI_STATE_SCHED flag on offline CPU's backlog.state
-- When the target CPU comes back online, the persistent NAPI_STATE_SCHED flag
-  prevents the backlog from being properly added to poll_list, causing packet
-  processing stalls
-Signed-off-by: wangyongyong <wangyongyong@gztozed.com>
----
- net/core/dev.c | 1 +
- 1 file changed, 1 insertion(+)
+Ok, will fix it.
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index be97c440ecd5..fd92ab79c02a 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -12385,6 +12385,7 @@ static int dev_cpu_dead(unsigned int oldcpu)
- 		else
- 			____napi_schedule(sd, napi);
- 	}
-+	oldsd->backlog.state &= NAPIF_STATE_THREADED;
- 
- 	raise_softirq_irqoff(NET_TX_SOFTIRQ);
- 	local_irq_enable();
--- 
-2.25.1
+> [...]
+>> +static void ptp_cipu_clear_context(struct ptp_cipu_ctx *ptp_ctx)
+>> +{
+>> +	cancel_delayed_work_sync(&ptp_ctx->gen_timer);
+>> +	cancel_delayed_work_sync(&ptp_ctx->mt_timer);
+>> +	cancel_work_sync(&ptp_ctx->sync_work);
+> 
+> You need to use the 'disable_' variant of the above helper, to avoid the
+> work being rescheduled by the last iteration.
+> 
+
+Ok, will use new helpers.
+
+Thanks!
+Wen Gu
+
+> Other than that LGTM, thanks.
+> 
+> Paolo
 
