@@ -1,96 +1,138 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94A028D85A;
-	Wed, 23 Jul 2025 10:01:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3377272802
+	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 10:03:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753264870; cv=none; b=e8Yr3RwHZdxgBxbn3QmtmRaQJz/OmCda7i7H6+pIrTEeoEYaB9zAZ61FTSt0uXlNy6z0/hYmqw4zjW+FQ06xwcoIhUtCj3psNOVaFQwIewNOGEwwgUQRrqe6GbVWtxbwWZDcYyiSItCbqW7FkMiGUtFTv3gT1DtDPHnCl/Lforw=
+	t=1753264992; cv=none; b=OlkKU6mwbX1/MsmV7dtq/UoX98N9nLBgPMP15E5TThjwibI0+6YuBNL/byz757wxx3RJwup+pnFFroeCZUJMlybi+wH5iGX/kHUML0uFQTclQyXQgJslRDGmiS+YHzItieBNBL+nBX60FQJIHEefYtDCdT+vzzO5bqUsMNogwS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753264870; c=relaxed/simple;
-	bh=LCoGTezkATJcuhjkz16AJ7NbGSK4PxUnZCiHEAS30eY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W0753Q81cvP9J2NIeonLODuUh/mDXYYvoIqF3/uwIAX2ovQtts/35V1BMMp86hIz68S3iONm6X2KIKChQiuiqHEWhZF+hhCtG1yGgJo1pg7wqe8Q7sQTIvz8+8lf+g8yT6xr8GoH9AxU3GX8Aa3oncYL+S4+G1U963GiOhCaGB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [113.200.148.30])
-	by gateway (Coremail) with SMTP id _____8BxlmnesoBoNTkwAQ--.32350S3;
-	Wed, 23 Jul 2025 18:01:02 +0800 (CST)
-Received: from linux.localdomain (unknown [113.200.148.30])
-	by front1 (Coremail) with SMTP id qMiowJBxzsHYsoBo1AUjAA--.24129S4;
-	Wed, 23 Jul 2025 18:00:59 +0800 (CST)
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 2/2] net: stmmac: Check stmmac_hw_setup() in stmmac_resume()
-Date: Wed, 23 Jul 2025 18:00:56 +0800
-Message-ID: <20250723100056.6651-3-yangtiezhu@loongson.cn>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20250723100056.6651-1-yangtiezhu@loongson.cn>
-References: <20250723100056.6651-1-yangtiezhu@loongson.cn>
+	s=arc-20240116; t=1753264992; c=relaxed/simple;
+	bh=FRb1qiH3o0lBrK696PgM2GZRUTuGEcb/TysNiZWRTjs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GhX+phE+Q1BGtVQh7en6T2iptULaI7Ndo1UI5HEUbK+M1H4q0Xc8zQcgQwvVajVs/yttxVCOxWWCUoxjthb/6gHOISIqLlJAPRvdEfpav4n+wdbBjXg2IEIk/S68hivBpc9Bnmy/mYowrYOISqoXpsUhW8sSO38trzPv+fK6+Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=EktbJzhf; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="EktbJzhf"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ae3b336e936so1218801966b.3
+        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 03:03:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1753264988; x=1753869788; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nM1jVIuamez5M+6HVwApfA2A4Uhe2e5VzTRsWi7W/gQ=;
+        b=EktbJzhfucvM0krtabXvgfc80xq9eDf8l/eN3xz/1Nzh0+5Zm+mU+B+oJrqnGPk8b2
+         tum54brUGd+VXs0PnXDQGNrw3mfZNWWmvWCCzSCHN0XJ4dRhy+D3roWwJUoKsuLdassn
+         hfzCtsYyngpOFOZf/6U7Nx0EBWcBBE/SiDX7RwRFzXgMB5RUVy7VZDpJlQTEGL7A2T6j
+         w1rzDYpR0IF9QqzUDkQB891E1giKEfPpw2gQJBCpTON5H5ZBTfW754ExipJo2gPX95Ys
+         T2O79TOC0/Pbci80qb+owp2EWPDj518BDWlndT8p3I0/1fISg7nxu+qRnKVl4CUybM0S
+         WUDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753264988; x=1753869788;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nM1jVIuamez5M+6HVwApfA2A4Uhe2e5VzTRsWi7W/gQ=;
+        b=Z8TbGOz5moxW89WYI6TnmdJtmafPSdwuTcYa744aV/ZPsg3XEU/pulkdjO0e/p6bil
+         vOB4TTBfBKlkrd+kFbH6Mycy8HFe05fGwzPzS2Yk0cI3MbCAkLUwuq5r6XuGYtQAwC7P
+         N1u0KiXU9XyYkrvfgZ8BQrJ0EIT4SMjx1RxOL8St7I7Bf38MZeuq+4/KgD4PicI3s4Z/
+         nsg7QUVBcWGKmHSFXfNLd6GC3n8Ym5RX3xlGw2d99d6iMb2uMd7iGyos7z7iBzEP2DE0
+         IJUPd5JL8foLAobXe9X5nJy6tOi7Q9Rx9zkfdXxhyV2IAKfInvTVlhgUdj0QLpACmoKb
+         74gw==
+X-Forwarded-Encrypted: i=1; AJvYcCUPNCTNa2AHCcdDAFULohg+xlr5g5B2LjPrzjBcoqp68XTN92et1oVFUpQh3z6HfyOLrurxI8M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwvuM5HQ55ORYsK6amJzhAwIAQScr9A0+oh4tlghKaTJC91TgP
+	j2CHz2YwvWFDc3xBmbD+pRnIFTSOru3yQC5H13wD6Tb3Vg9azASzqR/8zF9Yg1vbxPw=
+X-Gm-Gg: ASbGnctJgE+p+Ojh2baEpKtXQvE1dm2cTPiwmZRzi3lP3OeFM3BGYoa2OBMI6F5DBVK
+	Fodg0wh8IFfhxlWq2669/ezjA1AQlt7R+OQB5f7fTNVnh782530Bta8vFkolH2Q420rUghtMDf7
+	gn2VZ1qwoS03V61vZWFEU2SDN61rrZhS1nFaCVrXcnjW0cNKW4NZl4r9DE2/J9RhMJjcmp4q5Sz
+	2WWMfVDXdXGmf6Nz/m9DE6cT65M2L6LDzFNAoNWphgi9Sj4ys/EV1yxx7hTVJgv7Y63uiv161HK
+	c8gK+UqMyI3OTk5P20PsZnFJrOhk6Jcbqcuj6ei6ufJGSTu2RXMEqlpCigOTlWfAMO8z9Q8mvLG
+	b+WKV8r41zWAOKD436b310YeLXJxKCQ3Zw9wemDJtBvWsOnDxG9Is/6DDtETWhAfa
+X-Google-Smtp-Source: AGHT+IHfkzSwbGur1NwDeKeURLOKGW+DVfaaRz59/h5ZYqfN8olyIRuFnqm0vC4m7ZjmRZpOt3tqYA==
+X-Received: by 2002:a17:907:2da8:b0:ae9:b800:2283 with SMTP id a640c23a62f3a-af2f6c0a946mr224628566b.15.1753264988234;
+        Wed, 23 Jul 2025 03:03:08 -0700 (PDT)
+Received: from ?IPV6:2001:a61:1375:cb01:9949:2e73:6e1:36f7? ([2001:a61:1375:cb01:9949:2e73:6e1:36f7])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612c9071069sm8158777a12.50.2025.07.23.03.03.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Jul 2025 03:03:07 -0700 (PDT)
+Message-ID: <77738f53-591f-4cfa-b65b-9789911ca4b3@suse.com>
+Date: Wed, 23 Jul 2025 12:03:06 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usbnet: Set duplex status to unknown in the absence of
+ MII
+To: yicongsrfy@163.com, oneukum@suse.com
+Cc: andrew+netdev@lunn.ch, andrew@lunn.ch, davem@davemloft.net,
+ linux-usb@vger.kernel.org, netdev@vger.kernel.org, yicong@kylinos.cn
+References: <6373678e-d827-4cf7-a98f-e66bda238315@suse.com>
+ <20250723084456.1507563-1-yicongsrfy@163.com>
+Content-Language: en-US
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <20250723084456.1507563-1-yicongsrfy@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxzsHYsoBo1AUjAA--.24129S4
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Kr1kKr15AF4kuF4DWr43CFX_yoW8Jw13pa
-	y7Ca4jgrykJr4xZan8Jw48ZFy5WayxtFZrGayxJrs3uFsFkr9IqryaqrWYvF17WFyYqF13
-	tF4UC34Uu3WkXrcCm3ZEXasCq-sJn29KB7ZKAUJUUUU3529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6F4UJVW0owAaw2AFwI0_JF0_Jw1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
-	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_
-	WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
-	xGrwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
-	JVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
-	x2IY67AKxVW5JVW7JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26c
-	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jz5lbUUUUU=
 
-stmmac_hw_setup() may return 0 on success and an appropriate negative
-integer as defined in errno.h file on failure, just check it and then
-return early if failed in stmmac_resume().
+On 23.07.25 10:44, yicongsrfy@163.com wrote:
+> On Wed, 23 Jul 2025 09:17:02 +0200 Oliver <oneukum@suse.com> wrote:
+>>
+>> On 23.07.25 03:29, yicongsrfy@163.com wrote:
+>>
+>>>   From these two tests, we can conclude that both full-duplex
+>>> and half-duplex modes are supported — the problem is simply
+>>> that the duplex status cannot be retrieved in the absence of
+>>> MII support.
+>>
+>> Sort of. You are asking a generic driver to apply a concept
+>> from ethernet. It cannot. Ethernet even if it is half-duplex
+>> is very much symmetrical in speed. Cable modems do not, just
+>> to give an example.
+>>
+>> I think we need to centralize the reaction to stuff that is not ethernet.
+> 
+> Thanks!
+> 
+> I think I understand what you mean now.
+> You're suggesting to create a unified interface or
+> framework to retrieve the duplex status of all CDC
+> protocol-supported devices?
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Well no. We have to understand that the difference in duplex
+status apply only to a subset of devices. In a way the network
+layer is deficient in only having an unknown status rather than
+an unknown and an inapplicable status.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index b948df1bff9a..2bfacab71ab9 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7975,7 +7975,14 @@ int stmmac_resume(struct device *dev)
- 	stmmac_free_tx_skbufs(priv);
- 	stmmac_clear_descriptors(priv, &priv->dma_conf);
- 
--	stmmac_hw_setup(ndev, false);
-+	ret = stmmac_hw_setup(ndev, false);
-+	if (ret < 0) {
-+		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
-+		mutex_unlock(&priv->lock);
-+		rtnl_unlock();
-+		return ret;
-+	}
-+
- 	stmmac_init_coalesce(priv);
- 	phylink_rx_clk_stop_block(priv->phylink);
- 	stmmac_set_rx_mode(ndev);
--- 
-2.42.0
+If we are to retain a single status for simplicity, then
+I'd say that the default being half duplex rather than
+unknown is wrong.
+
+> This seems like a rather big undertaking, and one of the key
+> reasons is that the CDC protocol itself does not define anything
+> related to duplex status — unlike the 802.3 standard, which
+> clearly defines how to obtain this information via MDIO.
+
+CDC is not a network protocol. CDC is a protocol for talking
+to network devices. CDC can define a way to transmit duplex
+information. If the protocol under CDC does not have the notion,
+this will be of no use.
+
+> Coming back to the issue described in this patch,
+> usbnet_get_link_ksettings_internal is currently only used in
+> cdc_ether.c and cdc_ncm.c as a callback for ethtool.
+> Can we assume that this part only concerns Ethernet devices
+> (and that, at least for now, none of the existing devices can
+> retrieve the duplex status through this interface)?
+
+Yes. It is not really that important. But strictly speaking the
+network layer is using the wrong default.
+
+	Regards
+		Oliver
 
