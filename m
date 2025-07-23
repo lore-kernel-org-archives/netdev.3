@@ -1,62 +1,62 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E712FD89C
-	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 15:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82D92FEE07
+	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 15:00:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753282864; cv=none; b=pGCzHZoIEGYaEqhxgzCeYCRcbtmaFul1QgIMItknXkKrR5XWrhYFvlCKJjhSUWsSCBZLQby8BRLuIej99JoOd4M9Wv7w9s6FrHimX6xsDJG+9XKVyENBubbYRlU8MWmv0tJZWQzcPEU8EiABEQ53sxKJfNDaZRo5jwTVLuIf27k=
+	t=1753282870; cv=none; b=bHCAAxXdgJD6Q6G8+mG06wOn8TGeMEIhtvIfM2cwHt5PzjNvb/BOOc7FwLof4zyQ2VG3GWKdQX5gBc5tH2ISgGbJJXSp+pS+nHBE3BuBWSLAtO+LD2PW8mukZH6w4d3RROPnY06NzlkearQ7vsq5JiopBZscfsqbZuJcAllvwvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753282864; c=relaxed/simple;
-	bh=qFrNRftYYRFSsbjJxx0Z1DarwhlBLVjErZMJy4Vaqpg=;
+	s=arc-20240116; t=1753282870; c=relaxed/simple;
+	bh=mDVZZNUPZ2onKztOB/NI+ORUy1tS/U40UZ61OVQkeZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qjSYgM3ylFgkmZQgicxNzuIGTOEztURCLTKHABKjauMcPzutccUejAfA8ItdY0YbOM/mrQeNdl6W+bOchGfGfVtexO/t7mrwC4NT4MMKj+E2N8EGbUTTraOeIaxNc1VU4zEnHq5GPO+Yuoo5jfsp2bK3QCC/5U7kzmqygeejx7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LIhZnDCP; arc=none smtp.client-ip=209.85.221.41
+	 MIME-Version; b=itJKwsk47DDdYSw9uS5vz+FDLPRvDG7DPbwsDplkmx3ZH4HaViEkJYaQn5CH70zWT2OVuyKcYuBlripSRp5QkRcNTC9Wan7Xum5jkcvh1C/hO7xGLQVLLYKRLBo5v+k6cztKJQ2XCRrGmJSr+8hvR7PUl/qfMMfME4AZ5ornap0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a0o1qluT; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LIhZnDCP"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3b45edf2303so6103661f8f.2
-        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 08:00:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a0o1qluT"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4550709f2c1so52850115e9.3
+        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 08:00:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753282806; x=1753887606; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753282817; x=1753887617; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ym8OS0V8bBUvcl2Zh7CpV4Rstv20WrbCPt8/82MXEpU=;
-        b=LIhZnDCPlj+KSLQPQ/PKg6EVDGWrHxADeqw6oUQ/tt17UIwRcsB6s5VOzRmLKdcrLN
-         cPLmcv7/72WPftLezZ7b7pp25xglqjsU/Uh0AeCHrAKIQlEYHmIOTcwKTMeWsAUL1Kj6
-         Ut6o0TrWi51L2QYX+9dL3ggptUO2kXA/T4fWR+sMAyTatvPiZF1JiybLX9Jix3jFgyBz
-         9tasbpVKp/172c9pKQzJGo9c8tzf0786qYCs237SzF08blEYYFAJl++rt8+vLXwS4kAU
-         i7U4ibzJ9RO5YnY1WuwdTAIyYOL6jnvhYqewd+Z1YFOBXRNC5sBMs/NbEfJ2QT6U5l9L
-         XBxA==
+        bh=hWbmwGQnL2I+3ZuZqxG4DarVc6Rva1TxMgMPKMSMnN8=;
+        b=a0o1qluTYBJdmIYr4Q9tmd1Glz73vjUWoohkXfu8KURbq+InB3dMO01b8TU2Frn+y8
+         ZGUeThyLWpOL6wS3VBGoh6e+g2Td4YoJWkS2Ms9Yi/rKls+m0n+egfkIobeAL0OpJXpQ
+         6IDYDDXcAsBFZ4YSr/GfwxYVijW2au+CslTso4IxDq8inB4z3Thf86WFQsFp60SctEqC
+         5Cu3TxeakPvOQ0FSPQ0zlLDmKSERMGf9epR8ixv8bbVIEc2tx4jCCEMvX97dTJa214e1
+         mVJ3nStIAp8av3hbzWBbkUA3riFM2xIgnQaLFJ7BddkuaJrEBuywmbGQg+Lt+6i5WL5h
+         K7qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753282806; x=1753887606;
+        d=1e100.net; s=20230601; t=1753282817; x=1753887617;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Ym8OS0V8bBUvcl2Zh7CpV4Rstv20WrbCPt8/82MXEpU=;
-        b=MYqTDbxfTPji1OapdMOEH11DkTcKr6pa08kfkMfQRGBnbwUw3mLhn/bMn7tWu/OxrA
-         nVS0yZxxRuLR//SJ68jOWsdQpm/zkK3I+G/LKcm3e3Ltogtb/kYNWEMnEpnoJkfFxyHd
-         hsbTwsxbMlWoCaF9elJ5ZuvWsssbuz6OIFlYcPkFmJPdpQLc+S39Q6pwxYTZxj69hdf1
-         G+Jf0TP0FKhCicuWQdd1GY8xj1jaRwOKMfoCtPs44fMuia3DA+5QZy7tEYEZmavHBdG6
-         8AKLciLTEuM2Q2GekGwgifdF1wcS1a34v4vP+NR+7JmmlWjHulLlWon3q9XQDHJLL6Zs
-         Q5jg==
-X-Gm-Message-State: AOJu0YyDyaif/Bz7LaszC+97vceeAciTM7HS1yMdZgYxy1jIojEYvzEW
-	8W8PgJ8fLzK48NwZNJ/ugZXWNtVc0WP17/+skEuNka2fBSVuWc3HkGTW1BAQQGQJ
-X-Gm-Gg: ASbGncts2liPBsGdfzooES+NuHxv8Wof7iWjuCW2A76uvnq0SeCm5Y3hCo4Gt2kYRov
-	3MFjEF1QlEhDpkZKhKUNuHfO9xiDz3Y6cFSTcYkMHWNjbyKYqWpUWtt4xyIeJaPKzWVigd9I534
-	suxOIzWfiKFQXnRJWZIMzXBgWMn7xz0k58T+ZxnfFUyBt/OVHx2LtXrfJvvxij2CklQTWpM0XAI
-	/jaUQxLYEF7UJn9beu3NDYjYWvAIx0Q/YK6MJnGhBr8x4sb4tExpBBDiokNy+oglDprTUtv6FQ/
-	wVydGjGFhxvts6yqwVpynlloIU+/W/5wcVqa5B319An3edmwPE0b/vnioo1kLRgizccHYTHanJj
-	kUgipxG2ASLtGH2ZHiqc=
-X-Google-Smtp-Source: AGHT+IEH7urWoow9a3Zaa08PimrBgn+ceQYEmTS7zV3/bqvOGoNVtzkobka9B9fDgdSjW4Fow43qfw==
-X-Received: by 2002:a05:6000:2088:b0:3b6:10af:88e6 with SMTP id ffacd0b85a97d-3b768f05626mr2655739f8f.43.1753282806370;
-        Wed, 23 Jul 2025 08:00:06 -0700 (PDT)
-Received: from localhost ([2a03:2880:31ff:6::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca487fdsm16555037f8f.48.2025.07.23.08.00.05
+        bh=hWbmwGQnL2I+3ZuZqxG4DarVc6Rva1TxMgMPKMSMnN8=;
+        b=rsV1OhV8darK8rWl5uR5m4nr3g2I2YJJBRMAQN7hOTkiGRE98a5vOtx8DCNQ31CmrF
+         BHGdWVJPmeXczhHmjOO3y2dq4V4KnoIO7lJEWcfM0eaZNHbODRnDlQLhTMGKRUDmRpo1
+         /ibYpCz9Mm40RHJrdhXP88oyxtHTrMjtteRamsuJGiEHpS8udoyDnIULm8C/ZKIzR4Q6
+         Rw/eKuDn+AJ8od/Yw/Qr/60oxhsgf+j0XekuAdAako0ygW0AuPNO1vlhtX1ibZ+MR05g
+         ZFg16AiMd7JTGNQQ3Ln5Jj+mlWCO3k2JWw7Gevt2VaLmXYgAnzfmiGM3h5IP7pWFYju6
+         Pltg==
+X-Gm-Message-State: AOJu0Yz0zHNHYV3PP+MDCbWnxrb2gZZF7v62vEPoBfuZHhrzSmiOEbG2
+	4BGqKqoV+9uM6T7oUL/U2M+EiMzHLL9Rg1Hf8GK+8qvGZ4GwsVHNBS0ZeGyx9ale
+X-Gm-Gg: ASbGnctKKxHKehUolyfrHjLa8FeJxhfMJf6SjCi8jji6d9W4IqoK+v4CZqRrhj5cbiz
+	fVj1AkKS/y0BVZPwyk5fJg/fZExv5ud/8aUszeSn/+NDqTdcB5xzszYXfwjY7sn9pwsURfVvLCy
+	qsv5g+Pb5YSvs2+BQ6f1h9jtpYqAwINcm8whOOheSNiftEzOgUviBXCk/RPno2U4MG92CO0AbMO
+	3AEcqer66Vg2FHnyOH4fWYUbPQY7g8GygmVvlc6k68qyOgE7bzOExuInwzEhsPhJ4zjkzyJmo5L
+	23by5qF+f340D3EswAWlN6ZPNb0Bw+IFuB8mYEcS4p3qGLE8YU00Q3aMMUxmKY9fhDF7oniyqbi
+	So98Qk8vUda5OSRjF1mPt
+X-Google-Smtp-Source: AGHT+IEhSqTFFmB//lSz5YB7rl8SM25Ob5PE3Iuhq7lRZkbQ1bpwo4mbUj12K1dAD626URxwYeOghw==
+X-Received: by 2002:a05:600c:8b10:b0:456:1121:3ad8 with SMTP id 5b1f17b1804b1-45868c9d357mr38008655e9.10.1753282816489;
+        Wed, 23 Jul 2025 08:00:16 -0700 (PDT)
+Received: from localhost ([2a03:2880:31ff:70::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca487fdsm16555442f8f.48.2025.07.23.08.00.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Jul 2025 08:00:05 -0700 (PDT)
+        Wed, 23 Jul 2025 08:00:16 -0700 (PDT)
 From: Mohsin Bashir <mohsin.bashr@gmail.com>
 To: netdev@vger.kernel.org
 Cc: kuba@kernel.org,
@@ -75,9 +75,9 @@ Cc: kuba@kernel.org,
 	daniel@iogearbox.net,
 	hawk@kernel.org,
 	john.fastabend@gmail.com
-Subject: [PATCH net-next 3/9] eth: fbnic: Use shinfo to track frags state on Rx
-Date: Wed, 23 Jul 2025 07:59:20 -0700
-Message-ID: <20250723145926.4120434-4-mohsin.bashr@gmail.com>
+Subject: [PATCH net-next 7/9] eth: fbnic: Add support for XDP_TX action
+Date: Wed, 23 Jul 2025 07:59:24 -0700
+Message-ID: <20250723145926.4120434-8-mohsin.bashr@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250723145926.4120434-1-mohsin.bashr@gmail.com>
 References: <20250723145926.4120434-1-mohsin.bashr@gmail.com>
@@ -89,169 +89,148 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Remove local fields that track frags state and instead store this
-information directly in the shinfo struct. This change is necessary
-because the current implementation can lead to inaccuracies in certain
-scenarios, such as when using XDP multi-buff support. Specifically, the
-XDP program may update nr_frags without updating the local variables,
-resulting in an inconsistent state.
+Add support for XDP_TX action and cleaning the associated work.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 79 ++++++--------------
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.h |  4 +-
- 2 files changed, 25 insertions(+), 58 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 85 +++++++++++++++++++-
+ 1 file changed, 84 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-index 1fc7bd19e7a1..f5725c0972a5 100644
+index 993c0da42f2f..a1656c66a512 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-@@ -892,9 +892,7 @@ static void fbnic_pkt_prepare(struct fbnic_napi_vector *nv, u64 rcd,
- 	xdp_prepare_buff(&pkt->buff, hdr_start, headroom,
- 			 len - FBNIC_RX_PAD, true);
- 
--	pkt->data_truesize = 0;
--	pkt->data_len = 0;
--	pkt->nr_frags = 0;
-+	pkt->add_frag_failed = false;
- }
- 
- static void fbnic_add_rx_frag(struct fbnic_napi_vector *nv, u64 rcd,
-@@ -905,8 +903,8 @@ static void fbnic_add_rx_frag(struct fbnic_napi_vector *nv, u64 rcd,
- 	unsigned int pg_off = FIELD_GET(FBNIC_RCD_AL_BUFF_OFF_MASK, rcd);
- 	unsigned int len = FIELD_GET(FBNIC_RCD_AL_BUFF_LEN_MASK, rcd);
- 	struct page *page = fbnic_page_pool_get(&qt->sub1, pg_idx);
--	struct skb_shared_info *shinfo;
- 	unsigned int truesize;
-+	bool added;
- 
- 	truesize = FIELD_GET(FBNIC_RCD_AL_PAGE_FIN, rcd) ?
- 		   FBNIC_BD_FRAG_SIZE - pg_off : ALIGN(len, 128);
-@@ -918,34 +916,34 @@ static void fbnic_add_rx_frag(struct fbnic_napi_vector *nv, u64 rcd,
- 	dma_sync_single_range_for_cpu(nv->dev, page_pool_get_dma_addr(page),
- 				      pg_off, truesize, DMA_BIDIRECTIONAL);
- 
--	/* Add page to xdp shared info */
--	shinfo = xdp_get_shared_info_from_buff(&pkt->buff);
--
--	/* We use gso_segs to store truesize */
--	pkt->data_truesize += truesize;
--
--	__skb_fill_page_desc_noacc(shinfo, pkt->nr_frags++, page, pg_off, len);
--
--	/* Store data_len in gso_size */
--	pkt->data_len += len;
-+	added = xdp_buff_add_frag(&pkt->buff, page_to_netmem(page), pg_off, len,
-+				  truesize);
-+	if (unlikely(!added)) {
-+		pkt->add_frag_failed = true;
-+		netdev_err_once(nv->napi.dev,
-+				"Failed to add fragment to xdp_buff\n");
-+	}
- }
- 
- static void fbnic_put_pkt_buff(struct fbnic_napi_vector *nv,
- 			       struct fbnic_pkt_buff *pkt, int budget)
- {
--	struct skb_shared_info *shinfo;
- 	struct page *page;
--	int nr_frags;
- 
- 	if (!pkt->buff.data_hard_start)
- 		return;
- 
--	shinfo = xdp_get_shared_info_from_buff(&pkt->buff);
--	nr_frags = pkt->nr_frags;
-+	if (xdp_buff_has_frags(&pkt->buff)) {
-+		struct skb_shared_info *shinfo;
-+		int nr_frags;
- 
--	while (nr_frags--) {
--		page = skb_frag_page(&shinfo->frags[nr_frags]);
--		page_pool_put_full_page(nv->page_pool, page, !!budget);
-+		shinfo = xdp_get_shared_info_from_buff(&pkt->buff);
-+		nr_frags = shinfo->nr_frags;
-+
-+		while (nr_frags--) {
-+			page = skb_frag_page(&shinfo->frags[nr_frags]);
-+			page_pool_put_full_page(nv->page_pool, page, !!budget);
-+		}
- 	}
- 
- 	page = virt_to_page(pkt->buff.data_hard_start);
-@@ -955,43 +953,12 @@ static void fbnic_put_pkt_buff(struct fbnic_napi_vector *nv,
- static struct sk_buff *fbnic_build_skb(struct fbnic_napi_vector *nv,
- 				       struct fbnic_pkt_buff *pkt)
- {
--	unsigned int nr_frags = pkt->nr_frags;
--	struct skb_shared_info *shinfo;
--	unsigned int truesize;
- 	struct sk_buff *skb;
- 
--	truesize = xdp_data_hard_end(&pkt->buff) + FBNIC_RX_TROOM -
--		   pkt->buff.data_hard_start;
--
--	/* Build frame around buffer */
--	skb = napi_build_skb(pkt->buff.data_hard_start, truesize);
--	if (unlikely(!skb))
-+	skb = xdp_build_skb_from_buff(&pkt->buff);
-+	if (!skb)
- 		return NULL;
- 
--	/* Push data pointer to start of data, put tail to end of data */
--	skb_reserve(skb, pkt->buff.data - pkt->buff.data_hard_start);
--	__skb_put(skb, pkt->buff.data_end - pkt->buff.data);
--
--	/* Add tracking for metadata at the start of the frame */
--	skb_metadata_set(skb, pkt->buff.data - pkt->buff.data_meta);
--
--	/* Add Rx frags */
--	if (nr_frags) {
--		/* Verify that shared info didn't move */
--		shinfo = xdp_get_shared_info_from_buff(&pkt->buff);
--		WARN_ON(skb_shinfo(skb) != shinfo);
--
--		skb->truesize += pkt->data_truesize;
--		skb->data_len += pkt->data_len;
--		shinfo->nr_frags = nr_frags;
--		skb->len += pkt->data_len;
--	}
--
--	skb_mark_for_recycle(skb);
--
--	/* Set MAC header specific fields */
--	skb->protocol = eth_type_trans(skb, nv->napi.dev);
--
- 	/* Add timestamp if present */
- 	if (pkt->hwtstamp)
- 		skb_hwtstamps(skb)->hwtstamp = pkt->hwtstamp;
-@@ -1094,7 +1061,9 @@ static int fbnic_clean_rcq(struct fbnic_napi_vector *nv,
- 			/* We currently ignore the action table index */
- 			break;
- 		case FBNIC_RCD_TYPE_META:
--			if (likely(!fbnic_rcd_metadata_err(rcd)))
-+			if (unlikely(pkt->add_frag_failed))
-+				skb = NULL;
-+			else if (likely(!fbnic_rcd_metadata_err(rcd)))
- 				skb = fbnic_build_skb(nv, pkt);
- 
- 			/* Populate skb and invalidate XDP */
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
-index 398310be592e..be34962c465e 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.h
-@@ -69,9 +69,7 @@ struct fbnic_net;
- struct fbnic_pkt_buff {
- 	struct xdp_buff buff;
- 	ktime_t hwtstamp;
--	u32 data_truesize;
--	u16 data_len;
--	u16 nr_frags;
-+	bool add_frag_failed;
+@@ -19,6 +19,7 @@
+ enum {
+ 	FBNIC_XDP_PASS = 0,
+ 	FBNIC_XDP_CONSUME,
++	FBNIC_XDP_TX,
+ 	FBNIC_XDP_LEN_ERR,
  };
  
- struct fbnic_queue_stats {
+@@ -1024,6 +1025,80 @@ static struct sk_buff *fbnic_build_skb(struct fbnic_napi_vector *nv,
+ 	return skb;
+ }
+ 
++static long fbnic_pkt_tx(struct fbnic_napi_vector *nv,
++			 struct fbnic_pkt_buff *pkt)
++{
++	struct fbnic_ring *ring = &nv->qt[0].sub1;
++	int size, offset, nsegs = 1, data_len = 0;
++	unsigned int tail = ring->tail;
++	struct skb_shared_info *shinfo;
++	skb_frag_t *frag = NULL;
++	struct page *page;
++	dma_addr_t dma;
++	__le64 *twd;
++
++	if (unlikely(xdp_buff_has_frags(&pkt->buff))) {
++		shinfo = xdp_get_shared_info_from_buff(&pkt->buff);
++		nsegs += shinfo->nr_frags;
++		data_len = shinfo->xdp_frags_size;
++		frag = &shinfo->frags[0];
++	}
++
++	if (fbnic_desc_unused(ring) < nsegs)
++		return -FBNIC_XDP_CONSUME;
++
++	page = virt_to_page(pkt->buff.data_hard_start);
++	offset = offset_in_page(pkt->buff.data);
++	dma = page_pool_get_dma_addr(page);
++
++	size = pkt->buff.data_end - pkt->buff.data;
++
++	while (nsegs--) {
++		dma_sync_single_range_for_device(nv->dev, dma, offset, size,
++						 DMA_BIDIRECTIONAL);
++		dma += offset;
++
++		ring->tx_buf[tail] = page;
++
++		twd = &ring->desc[tail];
++		*twd = cpu_to_le64(FIELD_PREP(FBNIC_TWD_ADDR_MASK, dma) |
++				   FIELD_PREP(FBNIC_TWD_LEN_MASK, size) |
++				   FIELD_PREP(FBNIC_TWD_TYPE_MASK,
++					      FBNIC_TWD_TYPE_AL));
++
++		tail++;
++		tail &= ring->size_mask;
++
++		if (!data_len)
++			break;
++
++		offset = skb_frag_off(frag);
++		page = skb_frag_page(frag);
++		dma = page_pool_get_dma_addr(page);
++
++		size = skb_frag_size(frag);
++		data_len -= size;
++		frag++;
++	}
++
++	*twd |= FBNIC_TWD_TYPE(LAST_AL);
++
++	ring->tail = tail;
++
++	return -FBNIC_XDP_TX;
++}
++
++static void fbnic_pkt_commit_tail(struct fbnic_napi_vector *nv,
++				  unsigned int pkt_tail)
++{
++	struct fbnic_ring *ring = &nv->qt[0].sub1;
++
++	/* Force DMA writes to flush before writing to tail */
++	dma_wmb();
++
++	writel(pkt_tail, ring->doorbell);
++}
++
+ static struct sk_buff *fbnic_run_xdp(struct fbnic_napi_vector *nv,
+ 				     struct fbnic_pkt_buff *pkt)
+ {
+@@ -1043,6 +1118,8 @@ static struct sk_buff *fbnic_run_xdp(struct fbnic_napi_vector *nv,
+ 	case XDP_PASS:
+ xdp_pass:
+ 		return fbnic_build_skb(nv, pkt);
++	case XDP_TX:
++		return ERR_PTR(fbnic_pkt_tx(nv, pkt));
+ 	default:
+ 		bpf_warn_invalid_xdp_action(nv->napi.dev, xdp_prog, act);
+ 		fallthrough;
+@@ -1107,10 +1184,10 @@ static int fbnic_clean_rcq(struct fbnic_napi_vector *nv,
+ 			   struct fbnic_q_triad *qt, int budget)
+ {
+ 	unsigned int packets = 0, bytes = 0, dropped = 0, alloc_failed = 0;
++	s32 head0 = -1, head1 = -1, pkt_tail = -1;
+ 	u64 csum_complete = 0, csum_none = 0;
+ 	struct fbnic_ring *rcq = &qt->cmpl;
+ 	struct fbnic_pkt_buff *pkt;
+-	s32 head0 = -1, head1 = -1;
+ 	__le64 *raw_rcd, done;
+ 	u32 head = rcq->head;
+ 
+@@ -1166,6 +1243,9 @@ static int fbnic_clean_rcq(struct fbnic_napi_vector *nv,
+ 				bytes += skb->len;
+ 
+ 				napi_gro_receive(&nv->napi, skb);
++			} else if (PTR_ERR(skb) == -FBNIC_XDP_TX) {
++				pkt_tail = nv->qt[0].sub1.tail;
++				bytes += xdp_get_buff_len(&pkt->buff);
+ 			} else {
+ 				if (!skb) {
+ 					alloc_failed++;
+@@ -1201,6 +1281,9 @@ static int fbnic_clean_rcq(struct fbnic_napi_vector *nv,
+ 	rcq->stats.rx.csum_none += csum_none;
+ 	u64_stats_update_end(&rcq->stats.syncp);
+ 
++	if (pkt_tail >= 0)
++		fbnic_pkt_commit_tail(nv, pkt_tail);
++
+ 	/* Unmap and free processed buffers */
+ 	if (head0 >= 0)
+ 		fbnic_clean_bdq(nv, budget, &qt->sub0, head0);
 -- 
 2.47.1
 
