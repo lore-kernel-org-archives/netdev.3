@@ -1,60 +1,77 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB82278E42
-	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 08:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C55127A131;
+	Wed, 23 Jul 2025 08:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753257850; cv=none; b=jh2C14HKUzzFrRPg2e68wJbpbkTd6gOe9Rjwj43vxYSa8GSIx/aZO4EePfKGDOEtn1cKbvbKY05tDaTDNB67M7Ph8oM1ZHU8rMjMkLUv2tckcc/0DzSIGksxeUxCG2/dZSG/2JIm8Jmx0+E1bE+dI97jbU3PiUxzgaJ0DQFAhmg=
+	t=1753257855; cv=none; b=U/ToqfpqG8FKGMRkz/0Z45mRkBsqhaG0mnHFLOQZHjItqa+QkURWfO8djGOxl2SwmPK4xmWoeU9iWSv4z46G7vP9CqdZhIu9GV3KGYQM6elIBzN7zWHYlvekBUi80EWdhvSTx1UNmFSOeQx1nw9vYv4Jm832WbxNtiRA4Q0WOsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753257850; c=relaxed/simple;
-	bh=NQRTiGIWblFN4lgIuPbDEBRrHkKE0Hpp1A7y6UyqXR0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o7T7Cp0ZaXRsYJofDUBdwQuAZh/HwS8aYbIWashgGSBlB0o/v+pN9CvKXIAzUuiYcDoj4ORwOspEgmEb4iqQlTlJZp77AsQy7rWtHVfTy5n7MJI8gztZTZZiFGPitmnEpO8Cn43BTz5U5zxqdmhz37ccR56WpZJTC6plBGNyo1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=i9wXfU26; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1753257855; c=relaxed/simple;
+	bh=in6aCh8OG+DIgT70sSqbf6rBRdXsO3IskACYFmdI6aY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OgNxXIjGr+BDnkJZeUYqYuV7A5jCkerRsyaRJd2vrPqS1xZGA+kBZKR6qvijlfvbYZTOksDlzaVQGLpbU4s6VGu19SOXr+n6BMXtNQbCOCT+xsfsjtwCpilkFV8cqHXsm7E/1gzuRLVoKKu4VdMsWD1FsULe2oZRAMB/4M5KnlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Dc0yvBqD; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="i9wXfU26"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 0DBB520891;
-	Wed, 23 Jul 2025 10:04:06 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id K3IGyR49QfQc; Wed, 23 Jul 2025 10:04:05 +0200 (CEST)
-Received: from EXCH-01.secunet.de (unknown [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 68A2B20839;
-	Wed, 23 Jul 2025 10:04:05 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 68A2B20839
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1753257845;
-	bh=Z4F3zyoXmGEiDpV6GHtnhKZlPDfWNNfcRY1MUc3lUKA=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=i9wXfU26XAKpdbgnQLvnmZ0RLQh1RW4RNndOlFyRHrSQ8sqfM+8pB3UIoAa7gT0oV
-	 LhLGtLoB5pAFhYh7y7kNVU/KHdxkQyaJlG7GNEvZ2g16Ewju3i1DnTWFCZguqay6ad
-	 4iAo90549vNZlFpU1r/a96vHWQ8rsF74upew0DTLevoWrLjZvDw8iw0rflGZM3kU7t
-	 5UK2ZblbqKHC6k10Np0+6WVZvmIhPFJA6tST0kxw8km/aiRKFEL7OE9YYODkdR5pQG
-	 z3FdZ0GECJYuLyFv3ZCHjJXktnJxgMLpvm/e9Sm2y7jCQmUfDY74AaO6CSd4PxYhLc
-	 qZlsL/vBnIihQ==
-Received: from gauss2.secunet.de (10.182.7.193) by EXCH-01.secunet.de
- (10.32.0.171) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Wed, 23 Jul
- 2025 10:04:04 +0200
-Received: by gauss2.secunet.de (Postfix, from userid 1000)
-	id 98CC5318122E; Wed, 23 Jul 2025 10:04:04 +0200 (CEST)
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
-	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 1/3] xfrm: hold device only for the asynchronous decryption
-Date: Wed, 23 Jul 2025 10:03:48 +0200
-Message-ID: <20250723080402.3439619-2-steffen.klassert@secunet.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250723080402.3439619-1-steffen.klassert@secunet.com>
-References: <20250723080402.3439619-1-steffen.klassert@secunet.com>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Dc0yvBqD"
+Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56N83Sn51223384;
+	Wed, 23 Jul 2025 03:03:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1753257808;
+	bh=0Ybm8y+09b48ASpOGQxtkH7SHUZzEVtplNLuU/J9K3k=;
+	h=From:To:CC:Subject:Date;
+	b=Dc0yvBqDZax9AHS3O15+YBkPMxBeHwqkydQ/ggHCw9a3LYpontOSGFl8Uew1Ginp8
+	 gCBx8uqiYla5rC05/mHXMuzACXeS7JkO+kAHojBShYC9CNiQWNiTnm2wkll2pUExeX
+	 YoWFMvoslaIneEqjAOTB08BF68DTUNSursF0j60o=
+Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
+	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56N83SlJ1619052
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Wed, 23 Jul 2025 03:03:28 -0500
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE104.ent.ti.com
+ (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Wed, 23
+ Jul 2025 03:03:27 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Wed, 23 Jul 2025 03:03:27 -0500
+Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56N83RlH2365773;
+	Wed, 23 Jul 2025 03:03:27 -0500
+Received: from localhost (danish-tpc.dhcp.ti.com [10.24.69.25])
+	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 56N83QkL015933;
+	Wed, 23 Jul 2025 03:03:26 -0500
+From: MD Danish Anwar <danishanwar@ti.com>
+To: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Jonathan Corbet
+	<corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+        Mengyuan Lou
+	<mengyuanlou@net-swift.com>,
+        MD Danish Anwar <danishanwar@ti.com>,
+        Michael
+ Ellerman <mpe@ellerman.id.au>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Fan
+ Gong <gongfan1@huawei.com>, Lee Trager <lee@trager.us>,
+        Lorenzo Bianconi
+	<lorenzo@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Lukas
+ Bulwahn <lukas.bulwahn@redhat.com>,
+        Parthiban Veerasooran
+	<Parthiban.Veerasooran@microchip.com>
+CC: <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next 0/5] Add RPMSG Ethernet Driver
+Date: Wed, 23 Jul 2025 13:33:17 +0530
+Message-ID: <20250723080322.3047826-1-danishanwar@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,69 +80,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
- EXCH-01.secunet.de (10.32.0.171)
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-From: Jianbo Liu <jianbol@nvidia.com>
+This patch series introduces the RPMSG Ethernet driver, which provides a
+virtual Ethernet interface for communication between a host processor and
+a remote processor using the RPMSG framework. The driver enables
+Ethernet-like packet transmission and reception over shared memory,
+facilitating inter-core communication in systems with heterogeneous
+processors.
 
-The dev_hold() on skb->dev during packet reception was originally
-added to prevent the device from being released prematurely during
-asynchronous decryption operations.
+This series is a rework of [1]. There was comment from Andrew Lunn
+<andrew@lunn.ch> to modify this driver and make it generic so that other
+vendors can also use it.
 
-As current hardware can offload decryption, this asynchronous path is
-not always utilized. This often results in a pattern of dev_hold()
-immediately followed by dev_put() for each packet, creating
-unnecessary reference counting overhead detrimental to performance.
+I have tried to generalize the driver. Since there has been lots of changes
+since [1], I am posting this as a new series.
 
-This patch optimizes this by skipping the dev_hold() and subsequent
-dev_put() when asynchronous decryption is not being performed.
+The series includes the following patches:
 
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
----
- net/xfrm/xfrm_input.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+1. Documentation:
+  - Adds comprehensive documentation for the RPMSG Ethernet driver.
+  - Details the shared memory layout, communication protocol, and usage
+    instructions.
+  - Provides a guide for vendors to develop compatible firmware.
 
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index 7e6a71b9d6a3..c9ddef869aa5 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -503,6 +503,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 		/* An encap_type of -1 indicates async resumption. */
- 		if (encap_type == -1) {
- 			async = 1;
-+			dev_put(skb->dev);
- 			seq = XFRM_SKB_CB(skb)->seq.input.low;
- 			goto resume;
- 		}
-@@ -649,18 +650,18 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 		XFRM_SKB_CB(skb)->seq.input.low = seq;
- 		XFRM_SKB_CB(skb)->seq.input.hi = seq_hi;
- 
--		dev_hold(skb->dev);
--
--		if (crypto_done)
-+		if (crypto_done) {
- 			nexthdr = x->type_offload->input_tail(x, skb);
--		else
-+		} else {
-+			dev_hold(skb->dev);
-+
- 			nexthdr = x->type->input(x, skb);
-+			if (nexthdr == -EINPROGRESS)
-+				return 0;
- 
--		if (nexthdr == -EINPROGRESS)
--			return 0;
-+			dev_put(skb->dev);
-+		}
- resume:
--		dev_put(skb->dev);
--
- 		spin_lock(&x->lock);
- 		if (nexthdr < 0) {
- 			if (nexthdr == -EBADMSG) {
+2. Basic RPMSG Skeleton:
+  - Introduces the basic RPMSG Ethernet driver skeleton.
+  - Implements probe, remove, and callback functions.
+  - Sets up the foundation for RPMSG communication.
+
+3. Netdev Registration:
+  - Registers the RPMSG Ethernet device as a netdev.
+  - Enhances the RPMSG callback to handle shared memory for TX and RX
+    buffers.
+  - Introduces shared memory structures and initializes the netdev.
+
+4. Netdev Operations:
+  - Implements netdev operations such as `ndo_open`, `ndo_stop`,
+    `ndo_start_xmit`, and `ndo_set_mac_address`.
+  - Adds support for NAPI-based RX processing and a timer-based RX
+    polling mechanism.
+  - Introduces a state machine to manage the driver's state transitions.
+
+5. Multicast Filtering:
+  - Adds support for multicast address filtering.
+  - Implements the `ndo_set_rx_mode` callback to manage multicast
+    addresses.
+  - Introduces a workqueue-based mechanism for asynchronous RX mode
+    updates.
+
+Key Features:
+- Virtual Ethernet interface using RPMSG.
+- Shared memory-based packet transmission and reception.
+- Support for multicast address management.
+- Dynamic MAC address assignment.
+- Efficient packet processing using NAPI.
+- State machine for managing interface states.
+
+This driver is designed to be generic and vendor-agnostic. Vendors can
+develop firmware for the remote processor to make it compatible with this
+driver by adhering to the shared memory layout and communication protocol
+described in the documentation.
+
+This patch series has been tested on a TI AM64xx platform with a compatible
+remote processor firmware. Feedback and suggestions for improvement are
+welcome.
+
+[1] https://lore.kernel.org/all/20240531064006.1223417-1-y-mallik@ti.com/
+
+MD Danish Anwar (5):
+  net: rpmsg-eth: Add Documentation for RPMSG-ETH Driver
+  net: rpmsg-eth: Add basic rpmsg skeleton
+  net: rpmsg-eth: Register device as netdev
+  net: rpmsg-eth: Add netdev ops
+  net: rpmsg-eth: Add support for multicast filtering
+
+ .../device_drivers/ethernet/index.rst         |   1 +
+ .../device_drivers/ethernet/rpmsg_eth.rst     | 339 ++++++++
+ drivers/net/ethernet/Kconfig                  |  10 +
+ drivers/net/ethernet/Makefile                 |   1 +
+ drivers/net/ethernet/rpmsg_eth.c              | 743 ++++++++++++++++++
+ drivers/net/ethernet/rpmsg_eth.h              | 305 +++++++
+ 6 files changed, 1399 insertions(+)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/rpmsg_eth.rst
+ create mode 100644 drivers/net/ethernet/rpmsg_eth.c
+ create mode 100644 drivers/net/ethernet/rpmsg_eth.h
+
+
+base-commit: 56613001dfc9b2e35e2d6ba857cbc2eb0bac4272
 -- 
-2.43.0
+2.34.1
 
