@@ -1,44 +1,46 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F232FEE3A;
-	Wed, 23 Jul 2025 14:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A202FEE16;
+	Wed, 23 Jul 2025 14:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753282461; cv=none; b=cjzn4OvRjQ124g4JngPO9MZ8L0EAWjU5EVNJH0lfRxt0TE95CRi5GvqOtXIZwd+Xs70d5HsYVVhwH0kCWjYjovtmw46W9P4OfNIfGbjvUxhQShCRTUlnpPhaptWyTwGcsTZ4pUKcURqxD+eJxe5I8fL5JkVGcqe7X4Dv1fnF4Cg=
+	t=1753282456; cv=none; b=r0rh9gxsq98SkRWe62kak4XwIFQBb328EENLBGHb7cP61SA27pi2ympuHokdAeL7kUDyhiUxOcDDAVjeCHx7925x4jzhci7RhY2NWXTfBnRCj6PTdBL7qDaz9XpGqRyHGfLlgSW0gBA4QGOFifA7LZ9NVyJcouwl1a6hnmD4SWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753282461; c=relaxed/simple;
-	bh=TionPmrd2VrfHI4NgYA2/KWHwkD1LEDfhxeY2hPKkrk=;
+	s=arc-20240116; t=1753282456; c=relaxed/simple;
+	bh=BqzWyT6KzHoSXN+hN2edEC1EldzF1+qRFVYHO2Q1FZc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TD8dnvKLd1dGofWBeBNQnyD6Dgc+HlUoVXoXIwGsm6UWhvgUOjyipxaZEAOZzPDriIy+E5Z+kMzswxHOsHx1JzHmYQN8tK5g2n0pN/WxpjH1iT0Osfvfs2qB2fcH/nJR0Nn59ENyg5BOwggwkwO6ZggDLCgkhtyOR68vZTVb3Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IpwOIKvK; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Clduf80lgJWLsK2SKx4KYX48brgcpcgUbgdvIX+cRuDUbbUaFO8pTL51hKY7bsuAldlBiHNlK3ZFvyDAM9nxGyMag72R1NfC6HICg9AZZ3NHOxTGpq4lb0Y+p3pWSjxtzmZxzxKBtRw7lDmMLtIx2052hmAqhUWda5bJ255RE2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GIXssPHq; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IpwOIKvK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED63C4CEFA;
-	Wed, 23 Jul 2025 14:54:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753282455;
-	bh=TionPmrd2VrfHI4NgYA2/KWHwkD1LEDfhxeY2hPKkrk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IpwOIKvK5DliUM7TmPe29jzWYrCqLfIlVEGxdG4XcEJxYPkJb4g/amL26BwbJuF0K
-	 pv08T/OLPVHoE7/RqALutIGWGdMEvRR24bQZGZtmpRTt86F0cVI2TSFkbOnCsqwiiv
-	 mnlqwDk8Pzh1+AABVZNLZoxpEx+EYrNQ5x3aidn7274r+n+OSXEzFv+6BvFzTvXMRC
-	 wE+Vvwcg1YGTbsWtVXQPEPnMx1DrgxCarEaTHV3Q8hLa3Yk7MB4kbPXpgd6Q+zBTuo
-	 yGR8OBMqZGITPugzjNe8J5jCfv1ryJv7w5OVSJMFIipr5eNfur97PpXs1CKBzWLSba
-	 L40o1/LrPRFkw==
-Date: Wed, 23 Jul 2025 15:54:11 +0100
-From: Simon Horman <horms@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GIXssPHq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=n+4LkLar103CDs6a5yhfU4dJomb3vdlJJeBcr3Q+3gc=; b=GIXssPHqvOOquOggC0SzCdc73f
+	oTD5gPw42GhS/90eBEq/TUG8tR7VsfICR/ODcgDDBOU/4rr/SfBMb/X0daGXwFkQS4+Kp4ijrt0SH
+	x7dyAS9m83IScSzkuCuGyBQVJwvKQOi5ejwYbM3emat/Dh9lR0RkNhY9u+uDV7XoJnfY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1ueaqK-002bsu-0e; Wed, 23 Jul 2025 16:53:16 +0200
+Date: Wed, 23 Jul 2025 16:53:16 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH net-next v2 3/5] netconsole: add support for strings with
- new line in netpoll_parse_ip_addr
-Message-ID: <20250723144933.GA1036606@horms.kernel.org>
-References: <20250721-netconsole_ref-v2-0-b42f1833565a@debian.org>
- <20250721-netconsole_ref-v2-3-b42f1833565a@debian.org>
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/2] net: stmmac: Return early if invalid in
+ loongson_dwmac_fix_reset()
+Message-ID: <f65deb0d-29d1-4820-95e9-f1dd94967957@lunn.ch>
+References: <20250723100056.6651-1-yangtiezhu@loongson.cn>
+ <20250723100056.6651-2-yangtiezhu@loongson.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,70 +49,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250721-netconsole_ref-v2-3-b42f1833565a@debian.org>
+In-Reply-To: <20250723100056.6651-2-yangtiezhu@loongson.cn>
 
-On Mon, Jul 21, 2025 at 06:02:03AM -0700, Breno Leitao wrote:
-> The current IP address parsing logic fails when the input string
-> contains a trailing newline character. This can occur when IP
-> addresses are provided through configfs, which contains newlines in
-> a const buffer.
+On Wed, Jul 23, 2025 at 06:00:55PM +0800, Tiezhu Yang wrote:
+> If the MAC controller does not connect to any PHY interface, there is a
+> missing clock, then the DMA reset fails.
 > 
-> Teach netpoll_parse_ip_addr() how to ignore newlines at the end of the
-> IPs. Also, simplify the code by:
+> For this case, the DMA_BUS_MODE_SFT_RESET bit is 1 before software reset,
+> just return -EINVAL immediately to avoid waiting for the timeout when the
+> DMA reset fails in loongson_dwmac_fix_reset().
 > 
->  * No need to check for separators. Try to parse ipv4, if it fails try
->    ipv6 similarly to ceph_pton()
->  * If ipv6 is not supported, don't call in6_pton() at all.
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-
-My suggestion below not withstanding, this looks good to me.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 > ---
->  drivers/net/netconsole.c | 23 ++++++++++++-----------
->  1 file changed, 12 insertions(+), 11 deletions(-)
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-> index 8d1b93264e0fd..f2c2b8852c603 100644
-> --- a/drivers/net/netconsole.c
-> +++ b/drivers/net/netconsole.c
-> @@ -303,20 +303,21 @@ static void netconsole_print_banner(struct netpoll *np)
->  static int netpoll_parse_ip_addr(const char *str, union inet_addr *addr)
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> index e1591e6217d4..6d10077666c7 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> @@ -513,6 +513,9 @@ static int loongson_dwmac_fix_reset(void *priv, void __iomem *ioaddr)
 >  {
->  	const char *end;
-> +	int len;
+>  	u32 value = readl(ioaddr + DMA_BUS_MODE);
 >  
-> -	if (!strchr(str, ':') &&
-> -	    in4_pton(str, -1, (void *)addr, -1, &end) > 0) {
-> -		if (!*end)
-> -			return 0;
-> -	}
-> -	if (in6_pton(str, -1, addr->in6.s6_addr, -1, &end) > 0) {
-> -#if IS_ENABLED(CONFIG_IPV6)
-> -		if (!*end)
-> -			return 1;
-> -#else
-> +	len = strlen(str);
-> +	if (!len)
->  		return -1;
-> +
-> +	if (str[len - 1] == '\n')
-> +		len -= 1;
-> +
-> +	if (in4_pton(str, len, (void *)addr, -1, &end) > 0)
-> +		return 0;
-> +#if IS_ENABLED(CONFIG_IPV6)
-> +	if (in6_pton(str, len, addr->in6.s6_addr, -1, &end) > 0)
-> +		return 1;
->  #endif
+> +	if (value & DMA_BUS_MODE_SFT_RESET)
+> +		return -EINVAL;
 
-I don't think it needs to block progress.
-But FWIIW, I think it would be nice to increase
-build coverage and express this as:
+What happens with this return value? Do you get an error message which
+gives a hint the PHY clock is missing? Would a netdev_err() make sense
+here?
 
-	if (IS_ENABLED(CONFIG_IPV6) &&
-	    in6_pton(str, len, addr->in6.s6_addr, -1, &end) > 0)
-		return 1;
-
+	Andrew
