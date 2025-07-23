@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BC017C91
-	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 17:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC452116F6
+	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 17:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753290660; cv=none; b=lx6pXF/ZpKGW07MH04swNYXBi8m+mIlA3q8eRZOMC9zHMWGRXyMkDpHFw/0OMpMxrmJWgOWsOrrc24lot/BXfHWE++TUqokv0JLD205JRd9qEm/qExsXohuIGFiqP6PvxmBaJz02zGREWLDJw1ellr0saT6dVCxn8Z4tEbThfzc=
+	t=1753290661; cv=none; b=GmaNIrPHeEyaRVlQJHYnQB7Wx4+6CpPDDDA5z+VCoq6ZFHewZbfqVRwOLx8RLOIyC37sogcJ/A2ys80rKtStd8Y2weg3D8D8mZ6zU60F3GMCDC9LAkkVaLkhClYv9dS1EALqR6926C3+HX36JSX8TJ6oWvmbEtb9NeMK4IX219M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753290660; c=relaxed/simple;
-	bh=THXgwxDWVFzkgaiTOINNwvFzom9zp0v2nbXtIXCkGfk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fIiVQs4vNQ90ky3JJT7p6OYtKQPAQ0Ff9IsociAKOloi86iPkaAtG5G5fCP0A9awMdrT8c4rOz//sr49bLXM2iPDloty33CZA12CobbL0spo2K5n3GLYJcdUTsX3oLPcovy5AOiE0aegHAc8gazMw8X7Z+mBJ/vwMujufBD94JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ah0n6GxU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753290661; c=relaxed/simple;
+	bh=HdkizeptFTrYY1FKcCVLjEIf9F228ofAybnyzRfF6rI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=R9hLKrgVj6QGzRXxUUjjdPlcvs6sk9PnMKCoVmNjFwxBqduC9Q8BoM+f02E1wpgQ5ZdWjPoW6ccPxOJXac/hp4UbbrVuhlGiaLLJfgW1p+aG700qhexEjdD5bDR+nAHGOkwkIH69xRWa1hZDlrx9JXAHFS0CXhn+lSGORHyrh2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Va0BPlLO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ah0n6GxU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA84C4CEE7;
-	Wed, 23 Jul 2025 17:10:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Va0BPlLO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B48C4CEF7;
+	Wed, 23 Jul 2025 17:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1753290660;
-	bh=THXgwxDWVFzkgaiTOINNwvFzom9zp0v2nbXtIXCkGfk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ah0n6GxU0IwZKCwN1aHhtmzcUTPLGhJWSkVi/ug9CHEovG7Lbp8MMudV7Sj/BMEJ2
-	 zK8Uibmn9hKce28yK3VVnWKdG+3y4Yvox6ub14NN6fRPyEqqwYA5CGxPTOO2ZhfcaN
-	 xCALi0+vYEpGp93Be5yxQJ+9HREipD5PE/3+0uRi9yCbU5DWcS4VkDViGLntsPG7N7
-	 gtPLaHaIg/IVfdNreSi2cdXoTJ1FZ4nw6+zMyoc2AyjPJ/MaLZQDsV9YWSCs7nHDDZ
-	 y41WMAjiQ5qO9N7bliR3raNXFyqnXP5iEvDwAW1A7FwnrpuPbHnQZ/FbX9XSe8QGNa
-	 9GvxgHvN19piA==
+	bh=HdkizeptFTrYY1FKcCVLjEIf9F228ofAybnyzRfF6rI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Va0BPlLOmqKhTu1jR8hvDDOUiYm8e6jAjGs17pbG6UzYDp4+H8/EJ2squcigjPGSO
+	 7AHAaaE4Duzzs4jUXdsyHB7HIxiTobFNYLounDV19MY9sBsIb+mnj4DJNyuzipXIOy
+	 djVZO+9huk1JEjB4pjX6tieYJ/G18qwxIZdvSwVkVWHmUbvspSJTMdPM+HSChHV3qQ
+	 HAHrAbiaEkGW56avTT8oRtrJguC1c2YwT4G5VC3UM4jT6JRigfIo018motmEUrcDI4
+	 ffq+ggxLgQ1uXn35rSvH/ndc14qRiglTupczgejnm/8oTX9V7PK2fTbuP2Lxi3sJyj
+	 hxsFONJesR3vg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -36,10 +37,12 @@ Cc: netdev@vger.kernel.org,
 	almasrymina@google.com,
 	sdf@fomichev.me,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 0/5] tools: ynl-gen: print setters for multi-val attrs
-Date: Wed, 23 Jul 2025 10:10:41 -0700
-Message-ID: <20250723171046.4027470-1-kuba@kernel.org>
+Subject: [PATCH net-next v2 2/5] tools: ynl-gen: move free printing to the print_type_full() helper
+Date: Wed, 23 Jul 2025 10:10:43 -0700
+Message-ID: <20250723171046.4027470-3-kuba@kernel.org>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250723171046.4027470-1-kuba@kernel.org>
+References: <20250723171046.4027470-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,25 +51,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ncdevmem seems to manually prepare the queue attributes.
-This is not ideal, YNL should be providing helpers for this.
-Make YNL output allocation and setter helpers for multi-val attrs.
+Just to avoid making the main function even more enormous,
+before adding more things to print move the free printing
+to a helper which already prints the type.
 
-v2:
- - rename a variable to args 
-v1: https://lore.kernel.org/20250722161927.3489203-1-kuba@kernel.org
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ tools/net/ynl/pyynl/ynl_gen_c.py | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Jakub Kicinski (5):
-  tools: ynl-gen: don't add suffix for pure types
-  tools: ynl-gen: move free printing to the print_type_full() helper
-  tools: ynl-gen: print alloc helper for multi-val attrs
-  tools: ynl-gen: print setters for multi-val attrs
-  selftests: drv-net: devmem: use new mattr ynl helpers
-
- .../selftests/drivers/net/hw/ncdevmem.c       |  8 ++-
- tools/net/ynl/pyynl/ynl_gen_c.py              | 49 ++++++++++++++-----
- 2 files changed, 39 insertions(+), 18 deletions(-)
-
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+index 1bdcc368e776..dc78542e6c88 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -2546,6 +2546,10 @@ _C_KW = {
+ def print_type_full(ri, struct):
+     _print_type(ri, "", struct)
+ 
++    if struct.request and struct.in_multi_val:
++        free_rsp_nested_prototype(ri)
++        ri.cw.nl()
++
+ 
+ def print_type_helpers(ri, direction, deref=False):
+     print_free_prototype(ri, direction)
+@@ -3517,9 +3521,6 @@ _C_KW = {
+             for attr_set, struct in parsed.pure_nested_structs.items():
+                 ri = RenderInfo(cw, parsed, args.mode, "", "", attr_set)
+                 print_type_full(ri, struct)
+-                if struct.request and struct.in_multi_val:
+-                    free_rsp_nested_prototype(ri)
+-                    cw.nl()
+ 
+             for op_name, op in parsed.ops.items():
+                 cw.p(f"/* ============== {op.enum_name} ============== */")
 -- 
 2.50.1
 
