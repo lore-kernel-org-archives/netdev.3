@@ -1,60 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7A727702B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8190278E42
 	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 08:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753257645; cv=none; b=j3FdvvlhtAvIFa7FcIcJtAS5jRuuFzFUt1zZtOkr1KEy16pIrMAzNDY19HiH2P5DIXZRlloRBJktoGyuPe+h+z0Zk3leKf0NvQUDrgly2Fn7kUbOlxOD9bpXDTRANGPznFl++shNEH+GyPvVmyuYYaldbFthNKor9Nmjc4OOAQg=
+	t=1753257645; cv=none; b=HMt8EBwD9gaZxtx2VQ7E5C7fIyebxSHIQ3yFTNeLkeyENt1jPxXOxailp0u/4NLCbwMd16JoqQS7m+H61s7k/oJUY/0F0kAN3pW1fQ8FxbOGeohSj5FSN7yONSgbbvsyKky1YRJF7/gO7xp1jJVwWHeTLiVU86cSfAHmGk6MsCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753257645; c=relaxed/simple;
-	bh=SsM0Tmc5D3YyHScnpTcxwIKzuA/LkgwYvJ3XmOUbD00=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CdazCzMAi/+bSs99/9ZsNgoo4zgh2QPPGb4/WaRXDuQbpEHJgH/CbvFFmjuQb83cjVF29e60JXUTNnhxs1MJazmMH5m64GcxmVKIedcbn5Ojq8pcrR47D2QokiEWwTXAZH0KxKc7BX1vn0iiVYItUmDek8TGLCcpApKoCkhDYYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Kiz27qWS; arc=none smtp.client-ip=62.96.220.36
+	bh=6h/h4YQGiq+M6As6/riwS99Q2iHppjX728b08ncsJoQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=reXlS6kluxV6N9XZedTOqHvQGYxSHFWWQOw7jklv1CfwELmHsCtUEGUrDE8mPxCNYR/R2jpijraFCeVDNqBxkeSfi2/jg4mqDrZ+4wUpAYDqo9E/tO0z/6FtCABQZIcct6JddyF9PKXLeBmI1QM28a1sWHgb76tGfRwlM4n5FfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Xl8XSJqJ; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Kiz27qWS"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Xl8XSJqJ"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 299542088A;
-	Wed, 23 Jul 2025 09:54:22 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 126C6208A3;
+	Wed, 23 Jul 2025 09:54:21 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id VXvsNQr2gWUg; Wed, 23 Jul 2025 09:54:21 +0200 (CEST)
+ with ESMTP id tb4XDXn8hvou; Wed, 23 Jul 2025 09:54:20 +0200 (CEST)
 Received: from EXCH-01.secunet.de (unknown [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id AFFDF20892;
+	by mx1.secunet.com (Postfix) with ESMTPS id 6C0D420820;
 	Wed, 23 Jul 2025 09:54:20 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com AFFDF20892
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 6C0D420820
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
 	s=202301; t=1753257260;
-	bh=tpmchTW64S8TMwG019sobKSCAtLKi303KwyrjUdV5aM=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=Kiz27qWSeyo4SeuVatIuYcNmanc5VeUry9iMdetexPQl78KQVPrDk/pzut4TDVfD0
-	 aEpdGAq5j8Aq5uE6M/mN1v2M2R2vVuXvz6LLnplFPXrrqgEw5dwEcu6B7o9eUpJfFI
-	 5u9Dx6kNAcR2SNPSbc/aJoevFEcslp4zpD852Dr0Za59U6kWmxCZ1GHZqQgebfq20A
-	 jrP3AMoYDfnI66IuGQQ0n+sYDV3+m/Hg+2vHOAt0Kx78S6sgVZjTwy96k7ICpbVY/n
-	 t0UtVAXfOxnK7UqfL8ZyFWZTh/WfBGOP8CaJl9gU48SJU2zC3S2E98kYc/Sr5ezEO9
-	 vcEu4yzTFyBng==
+	bh=vnVimXrI5F2EVCHG3MPSK6KPupmk4glvfrFAX29cKRY=;
+	h=From:To:CC:Subject:Date:From;
+	b=Xl8XSJqJ3HLmYtfwdkABAI4x4jAs5ZjFU7M9cuF37VPsk9UqhuNfxKjIoBm9uXioc
+	 xwPS8NqMFTCKB8unP5rXOwiHvQ2uhWhETNET9E3vsaFQmcLF8LnzDJ4vuSmy6wpFMG
+	 7NkUnHsyU3JjjoWRojfKIKUkKgQNx0XFMoO9C3hMelsk1260O5g+pjMRBHFj3MwepK
+	 EKCDdpy/gGA6K2Zl7miwGW5y+5g9VCNnYmkVWKEtdyaorBTmEGmxg6c+OWRI3/VskI
+	 7S67H48sXS14VkAM45EHCLWWLufMj7BB0Z2RWSh23hjtwbsJy8J47i9B0h4nmghqdp
+	 vQ82CZCO5Y4tQ==
 Received: from gauss2.secunet.de (10.182.7.193) by EXCH-01.secunet.de
  (10.32.0.171) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Wed, 23 Jul
- 2025 09:54:19 +0200
+ 2025 09:54:20 +0200
 Received: by gauss2.secunet.de (Postfix, from userid 1000)
-	id 9B860318410C; Wed, 23 Jul 2025 09:54:19 +0200 (CEST)
+	id 937323181838; Wed, 23 Jul 2025 09:54:19 +0200 (CEST)
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 2/8] xfrm: state: use a consistent pcpu_id in xfrm_state_find
-Date: Wed, 23 Jul 2025 09:53:54 +0200
-Message-ID: <20250723075417.3432644-3-steffen.klassert@secunet.com>
+Subject: [PATCH 0/8] pull request (net): ipsec 2025-07-23
+Date: Wed, 23 Jul 2025 09:53:52 +0200
+Message-ID: <20250723075417.3432644-1-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250723075417.3432644-1-steffen.klassert@secunet.com>
-References: <20250723075417.3432644-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,108 +63,79 @@ Content-Type: text/plain
 X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
  EXCH-01.secunet.de (10.32.0.171)
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+1) Premption fixes for xfrm_state_find.
+   From Sabrina Dubroca.
 
-If we get preempted during xfrm_state_find, we could run
-xfrm_state_look_at using a different pcpu_id than the one
-xfrm_state_find saw. This could lead to ignoring states that should
-have matched, and triggering acquires on a CPU that already has a pcpu
-state.
+2) Initialize offload path also for SW IPsec GRO. This fixes a
+   performance regression on SW IPsec offload.
+   From Leon Romanovsky.
 
-    xfrm_state_find starts on CPU1
-    pcpu_id = 1
-    lookup starts
-    <preemption, we're now on CPU2>
-    xfrm_state_look_at pcpu_id = 2
-       finds a state
-found:
-    best->pcpu_num != pcpu_id (2 != 1)
-    if (!x && !error && !acquire_in_progress) {
-        ...
-        xfrm_state_alloc
-        xfrm_init_tempstate
-        ...
+3) Fix IPsec UDP GRO for IKE packets.
+   From Tobias Brunner,
 
-This can be avoided by passing the original pcpu_id down to all
-xfrm_state_look_at() calls.
+4) Fix transport header setting for IPcomp after decompressing.
+   From Fernando Fernandez Mancera.
 
-Also switch to raw_smp_processor_id, disabling preempting just to
-re-enable it immediately doesn't really make sense.
+5)  Fix use-after-free when xfrmi_changelink tries to change
+    collect_md for a xfrm interface.
+    From Eyal Birger .
 
-Fixes: 1ddf9916ac09 ("xfrm: Add support for per cpu xfrm state handling.")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
----
- net/xfrm/xfrm_state.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+6) Delete the special IPcomp x->tunnel state along with the state x
+   to avoid refcount problems.
+   From Sabrina Dubroca.
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 2e2e95d2a06f..7e34fc94f668 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1307,14 +1307,8 @@ static void xfrm_hash_grow_check(struct net *net, int have_hash_collision)
- static void xfrm_state_look_at(struct xfrm_policy *pol, struct xfrm_state *x,
- 			       const struct flowi *fl, unsigned short family,
- 			       struct xfrm_state **best, int *acq_in_progress,
--			       int *error)
-+			       int *error, unsigned int pcpu_id)
- {
--	/* We need the cpu id just as a lookup key,
--	 * we don't require it to be stable.
--	 */
--	unsigned int pcpu_id = get_cpu();
--	put_cpu();
--
- 	/* Resolution logic:
- 	 * 1. There is a valid state with matching selector. Done.
- 	 * 2. Valid state with inappropriate selector. Skip.
-@@ -1381,8 +1375,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 	/* We need the cpu id just as a lookup key,
- 	 * we don't require it to be stable.
- 	 */
--	pcpu_id = get_cpu();
--	put_cpu();
-+	pcpu_id = raw_smp_processor_id();
- 
- 	to_put = NULL;
- 
-@@ -1402,7 +1395,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 		    tmpl->id.proto == x->id.proto &&
- 		    (tmpl->id.spi == x->id.spi || !tmpl->id.spi))
- 			xfrm_state_look_at(pol, x, fl, encap_family,
--					   &best, &acquire_in_progress, &error);
-+					   &best, &acquire_in_progress, &error, pcpu_id);
- 	}
- 
- 	if (best)
-@@ -1419,7 +1412,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 		    tmpl->id.proto == x->id.proto &&
- 		    (tmpl->id.spi == x->id.spi || !tmpl->id.spi))
- 			xfrm_state_look_at(pol, x, fl, family,
--					   &best, &acquire_in_progress, &error);
-+					   &best, &acquire_in_progress, &error, pcpu_id);
- 	}
- 
- cached:
-@@ -1460,7 +1453,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 		    tmpl->id.proto == x->id.proto &&
- 		    (tmpl->id.spi == x->id.spi || !tmpl->id.spi))
- 			xfrm_state_look_at(pol, x, fl, family,
--					   &best, &acquire_in_progress, &error);
-+					   &best, &acquire_in_progress, &error, pcpu_id);
- 	}
- 	if (best || acquire_in_progress)
- 		goto found;
-@@ -1495,7 +1488,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 		    tmpl->id.proto == x->id.proto &&
- 		    (tmpl->id.spi == x->id.spi || !tmpl->id.spi))
- 			xfrm_state_look_at(pol, x, fl, family,
--					   &best, &acquire_in_progress, &error);
-+					   &best, &acquire_in_progress, &error, pcpu_id);
- 	}
- 
- found:
--- 
-2.43.0
+Please pull or let me know if there are problems.
 
+Thanks!
+
+The following changes since commit b56bbaf8c9ffe02468f6ba8757668e95dda7e62c:
+
+  Merge branch 'net-airoha-fix-ipv6-hw-acceleration' (2025-06-03 13:04:09 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec.git tags/ipsec-2025-07-23
+
+for you to fetch changes up to 28712d6ed32028b0f2e0defe6681411496971ca3:
+
+  Merge branch 'ipsec: fix splat due to ipcomp fallback tunnel' (2025-07-14 08:59:48 +0200)
+
+----------------------------------------------------------------
+ipsec-2025-07-23
+
+----------------------------------------------------------------
+Eyal Birger (1):
+      xfrm: interface: fix use-after-free after changing collect_md xfrm interface
+
+Fernando Fernandez Mancera (1):
+      xfrm: ipcomp: adjust transport header after decompressing
+
+Leon Romanovsky (1):
+      xfrm: always initialize offload path
+
+Sabrina Dubroca (4):
+      xfrm: state: initialize state_ptrs earlier in xfrm_state_find
+      xfrm: state: use a consistent pcpu_id in xfrm_state_find
+      xfrm: delete x->tunnel as we delete x
+      Revert "xfrm: destroy xfrm_state synchronously on net exit path"
+
+Steffen Klassert (2):
+      Merge branch 'xfrm: fixes for xfrm_state_find under preemption'
+      Merge branch 'ipsec: fix splat due to ipcomp fallback tunnel'
+
+Tobias Brunner (1):
+      xfrm: Set transport header to fix UDP GRO handling
+
+ include/net/xfrm.h             | 15 +++------
+ net/ipv4/ipcomp.c              |  2 ++
+ net/ipv4/xfrm4_input.c         |  3 ++
+ net/ipv6/ipcomp6.c             |  2 ++
+ net/ipv6/xfrm6_input.c         |  3 ++
+ net/ipv6/xfrm6_tunnel.c        |  2 +-
+ net/key/af_key.c               |  2 +-
+ net/xfrm/xfrm_device.c         |  1 -
+ net/xfrm/xfrm_interface_core.c |  7 +----
+ net/xfrm/xfrm_ipcomp.c         |  3 +-
+ net/xfrm/xfrm_state.c          | 69 ++++++++++++++++--------------------------
+ net/xfrm/xfrm_user.c           |  3 +-
+ 12 files changed, 46 insertions(+), 66 deletions(-)
