@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A911A5BAE
-	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 01:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71E814AD2B;
+	Wed, 23 Jul 2025 01:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753234195; cv=none; b=DfTRR3mYHxcVNYzOgWs3VmLGeB5xYI0ZHBSJKc4fy9keK5DBSzbOxIaAn179l+qQBmE1GD9jjijMebLmW0FuyaHXln7hbLMbZwqx0vXhkD6rQWbF7cm+2dp2j5cwKi9X+hQATtRBfhdNmwpmtp16eA+XhVyr7+XlAZ0fKItz9qM=
+	t=1753234217; cv=none; b=u230dnD3FnVAOJJ7Hw2NirkFlh6fZSxO9aqhkn54ux4ZiJ6jQjfE4ZJqbRyLnzdOdleg/k9MNn038D8xH2eKAWa2ufaPNohpp97KxE9i/M48JDxHJGvChob+zzMBgdzpF6jn+1u/xzbVoC9rUh9Se4qxiLmfDmYZe376srJh8jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753234195; c=relaxed/simple;
-	bh=ZJ4o4zOvgVH+xjq304mGOhhr+zGRmm4CPF3hEi+ykYA=;
+	s=arc-20240116; t=1753234217; c=relaxed/simple;
+	bh=4838LBuED1RKEU44f3tZgp9qmR8UcWkI2E2Kz7DrVPI=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NRGJaDFMWupD1LOX8+N/0i7t7tczdRsG8vjbFatnhCQ7BDXpbPVEDm5mKPHRakKQCZ1WL+RPPmOZ4wG4MjHCc+4mhzq6bWHUBLlq7wYV3CnJ3l8EOhLTCe2fbgVtijtJwgpLhpWWuHMIYmxpVNJcMDNTDUxxPmSkUD2vS57+3Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hyDU0mZf; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=UF1LcehOMnqsMKZxp1OM2jJoYcil1FAvUQQCOhc3RcoxcbeuMsWkCrV2UTKloCM88CYeZWi2aR7deGOqKaj/PuQvGQHvYbIRlX3HxoVxGmVqXeNaj9lfjnpNdehlW9ElopD8qMzXdJ4iuy9w1nKLARr1XDiBlOncnEhN8vohZkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/mO1gft; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hyDU0mZf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185B6C4CEF1;
-	Wed, 23 Jul 2025 01:29:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/mO1gft"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF4EC4CEEB;
+	Wed, 23 Jul 2025 01:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753234195;
-	bh=ZJ4o4zOvgVH+xjq304mGOhhr+zGRmm4CPF3hEi+ykYA=;
+	s=k20201202; t=1753234217;
+	bh=4838LBuED1RKEU44f3tZgp9qmR8UcWkI2E2Kz7DrVPI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=hyDU0mZfGs+vR8uVhENQswlVfmiMguryPC0I5jY5q3tCzDG8Geu3DauhqecEv2sms
-	 TUavdgB9ayNRlDpnVoSfGuvJI0dyIZaoO6wrt5/MHmFIaXYb47PD4cccBuhHb78WPe
-	 r+7/itRMnmi5bNwrkVBJOq1ONCuhR9H5SmFc2XBMJwsmjioKpqUesyCDDAPXS1OHy9
-	 bRCNkzK8L3wObfd/2630I74AN9/d5Hbdte4Y125hVyiX7MVoxmCGoajy0kMfKCjqpc
-	 WH6woy6ezxso04TxpptTO8Bu9OAydeenKS2j499JAeXKAyO1gvQ+THnuci2y7hsMF+
-	 /P4lEfwOaqUuw==
+	b=V/mO1gftrXtijsCG7jFJR136aYuVy+tWFMUsvrGkhfZxiQ/VvtC+l/zREkccFLt38
+	 mVTjVaGhtEngjSVgRgUGeMp86FPDYP4n1xzKE5Kda8rIabbBPZpsNw69Qdc+3Jr9K2
+	 5GpTyXFC+3F7xtgoHGosCN722kAMxg/F0ZH0UTvrStZJ3t0jgBm7EpzkhrpabM5EY6
+	 VKCWheLSVA/W6e0TMp5RU6tMzRgHkwNiTjfv9gVg6blQ6bYRk+ZOgJQp7h0rRYLBo+
+	 Eam4gFmW7Rp49T3H8Sj9XJLwykQjaUVx2wPA/As69NF8MMy/GKOixs8UQpDVXo/oOW
+	 HMWCbjLR9j9PQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADC17383BF5D;
-	Wed, 23 Jul 2025 01:30:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD5F383BF5D;
+	Wed, 23 Jul 2025 01:30:36 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,44 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/5][pull request] Intel Wired LAN Driver Updates
- 2025-07-21 (i40e, ice, e1000e)
+Subject: Re: [PATCH net-next V3 0/3] net/mlx5: misc changes 2025-07-21
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <175323421349.1016544.2573519707976944136.git-patchwork-notify@kernel.org>
-Date: Wed, 23 Jul 2025 01:30:13 +0000
-References: <20250721173733.2248057-1-anthony.l.nguyen@intel.com>
-In-Reply-To: <20250721173733.2248057-1-anthony.l.nguyen@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org
+ <175323423556.1016544.17877785294390139794.git-patchwork-notify@kernel.org>
+Date: Wed, 23 Jul 2025 01:30:35 +0000
+References: <1753081999-326247-1-git-send-email-tariqt@nvidia.com>
+In-Reply-To: <1753081999-326247-1-git-send-email-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, saeedm@nvidia.com,
+ leon@kernel.org, mbloch@nvidia.com, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, lkayal@nvidia.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
-by Tony Nguyen <anthony.l.nguyen@intel.com>:
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 21 Jul 2025 10:37:21 -0700 you wrote:
-> For i40e:
-> Dennis Chen adjusts reporting of VF Tx dropped to a more appropriate
-> field.
+On Mon, 21 Jul 2025 10:13:16 +0300 you wrote:
+> Hi,
 > 
-> Jamie Bainbridge fixes a check which can cause a PF set VF MAC address
-> to be lost.
+> This series by Lama contains misc enhancements to the SHAMPO parameters.
+> 
+> Find V2 here:
+> https://lore.kernel.org/all/1752675472-201445-1-git-send-email-tariqt@nvidia.com/
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/5] i40e: report VF tx_dropped with tx_errors instead of tx_discards
-    https://git.kernel.org/netdev/net/c/50b2af451597
-  - [net,2/5] i40e: When removing VF MAC filters, only check PF-set MAC
-    https://git.kernel.org/netdev/net/c/5a0df02999db
-  - [net,3/5] ice: Fix a null pointer dereference in ice_copy_and_init_pkg()
-    https://git.kernel.org/netdev/net/c/4ff12d82dac1
-  - [net,4/5] e1000e: disregard NVM checksum on tgp when valid checksum bit is not set
-    https://git.kernel.org/netdev/net/c/536fd741c7ac
-  - [net,5/5] e1000e: ignore uninitialized checksum word on tgp
-    https://git.kernel.org/netdev/net/c/61114910a5f6
+  - [net-next,V3,1/3] net/mlx5e: SHAMPO, Cleanup reservation size formula
+    https://git.kernel.org/netdev/net-next/c/bc2d44b83f2b
+  - [net-next,V3,2/3] net/mlx5e: SHAMPO, Remove mlx5e_shampo_get_log_hd_entry_size()
+    https://git.kernel.org/netdev/net-next/c/eee529c0044e
+  - [net-next,V3,3/3] net/mlx5e: Remove duplicate mkey from SHAMPO header
+    https://git.kernel.org/netdev/net-next/c/eeaf11464f38
 
 You are awesome, thank you!
 -- 
