@@ -1,155 +1,105 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6021F94A;
-	Wed, 23 Jul 2025 09:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EEEB283137
+	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 09:09:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753261480; cv=none; b=VlN4Q4B94eH/LHR+7KKhBKX1A0UXoMxIujgez2hFvoFwOGHdx0yqhEmw1iFQulUlwxWsa5iTMggxyS9QqFt+dPur+7TM2P9nGGO+4FTSyQzdJeADiPIxNd6/XeWl2HjYb34zE6lXjmvX+Z4MufXJ+qCP+VvUIyg/iyP3C76Klkw=
+	t=1753261770; cv=none; b=Xehq9VsrL2EMfS/o6XEGSchvjSZghMbe3ZaL2Th/knE3iqwTWCAUjA4Xw5jzZmyJfkAfNweBh49oYRNwe1BiMXd+bqX/IKxR27IKHS1yEo8PMFuqyZpOUAdXw3joQ0FKDML4N2GhW0nMPFAI8ZzPd89X8HHboTUVW6VkP660CIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753261480; c=relaxed/simple;
-	bh=uM1yIeNXaAOrUJx+SIA3ksktxtXkBR6/9c40F73MvHk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t9Jg/u4NxSTuArs77Qciwa4SDnZda0KuJSiE+wAkml5pM8YO32NX6dNGzZO1caMS+sZTXvNOYFUzoSoyu47DBXjF6ubMafI1LNcenSaS0DIrDwJM36YK7dIjOISPkWbdbQVKoPcuOXJ6Q1TTdPmdqrHHkAGalH53kdpW8V7lf3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=SehxYpO7; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1753261770; c=relaxed/simple;
+	bh=+ytYnD3luDBYq9P4nCMvymvEEpfDPNQbSLnTtC4hmEw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=OTSDyb2o43wWmR7rliWCBfav++QI3jo8lEFLyqfCqHst8KgqcpdAjZGKXiXykgpKp5dT6R42rXgdUGOJmXcdR7Nwl5DR8CixLUQvDlSH5D6e+sVLyl6Ntlhy44wrPbfU6G/c4iEnxc4L/ek4Kr5azFccu4fHBimqZQHj2pHtMSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Dobyz5Ug; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="SehxYpO7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1753261480; x=1784797480;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uM1yIeNXaAOrUJx+SIA3ksktxtXkBR6/9c40F73MvHk=;
-  b=SehxYpO71RR3UI2vDteDh+uCdSb9RCpqZokZw7dD4VoAbh3PHG3ji8lG
-   EyI6XElA+ziJ4DirMeeWmHSorEl32u/Tom9+FVb8QZJs/C8nkoL5o7e5T
-   XLf3FXdTQRhzBu+j/4dSOg5riYnSFyd6VuQZVfl8wKU/6TJerlacrFpwQ
-   L6IK4yHcSjGC58F5a8jk/Urk0s1foA/VIJQ2zKxzrNAEv8zNAJ2W3geCc
-   9iRGmmmg1try1Ui+sh5q2oX1idEjVXZaXb7smTTEpqr2Mp9IzeGgNplXb
-   9bWQQnU4arSY+1QItNKeRbzVelCQEKPWSkMh/n9CCv33CYiAB4azstprK
-   g==;
-X-CSE-ConnectionGUID: HpDSfaDuQV22XKWexB7eBw==
-X-CSE-MsgGUID: 3sx0FfeUSWCSbAk2P3OhuQ==
-X-IronPort-AV: E=Sophos;i="6.16,333,1744095600"; 
-   d="scan'208";a="44308986"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 23 Jul 2025 02:04:39 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Wed, 23 Jul 2025 02:04:36 -0700
-Received: from localhost (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
- Transport; Wed, 23 Jul 2025 02:04:36 -0700
-Date: Wed, 23 Jul 2025 11:01:45 +0200
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-CC: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next] net: phy: micrel: Add support for lan8842
-Message-ID: <20250723090145.o2kq4vxcjrih54rt@DEN-DL-M31836.microchip.com>
-References: <20250721071405.1859491-1-horatiu.vultur@microchip.com>
- <aIB0VYLqcBKVtAmU@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Dobyz5Ug"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ae0d7b32322so1013271566b.2
+        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 02:09:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1753261767; x=1753866567; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2zcV36T8m2bDfLjZ71K3Nn6DOnILgi1eLJ8ygProCpU=;
+        b=Dobyz5UghswWZ3YrUZhnvIqA0N0jisQ50PXWi4Jd5OHY9bQpcxAeCgs7Les7ttqH05
+         0TkhQKY0fO7fVcMVN98sEvrT+cFUunfm7sVcJD8YeulARXmsl3aaJ9YPl02FoMFAmOH2
+         T3xChhKW7rDypPUM33jhMN7oekKNlIaN0N3OpADSerXdlkTslYt4a53uAi4CewWUNSsJ
+         pwVIgiSJP94FI6TU9Ag4LOHfxCcx5n7k6inxbxZgHF1pA/Nm3nICpL+5rgwRSUq7eqXY
+         NqYSQpXm40SqgWbYP1cejOaAbr9nldxqO0uomtDV/bkM/52xyxFx9aVJjnJdZd9BHMo2
+         sSnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753261767; x=1753866567;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2zcV36T8m2bDfLjZ71K3Nn6DOnILgi1eLJ8ygProCpU=;
+        b=SvLvgXI6KWuUGtXWZH6BTlafaCS7MDtT42Zjzw8sv8hRbvb7k+oO7GxlI49nXlNaVg
+         zh9F3omkvq96YeDLavl2tQGe3JDfKQ1MRsvIzKJJ7cNybEtDQJ88/3/kTGMzWYK+f5hN
+         bPqaYmZLRxkqeQzLJfLTJG0CbvSKaob7vpusBZZcqIMBtluype029kq+GKLHTPxxLE4S
+         PaF7CrAf3IZUUBEQtO36VtXaTVSU3NmT4XUrM8Rj/EvwXSUJkAIxAecKLSiAm26Ty+Bc
+         AiN3DFLkQ+sWgfV7c/b9JJvRSbN5IbHm2TEzVGlepUoSn7cycsHH/erBUuvpsWJTiGt+
+         cQ6g==
+X-Forwarded-Encrypted: i=1; AJvYcCWOc0p9dNKYbsHW4rv2Xkg/VVZbNczHGghS+4ffLykKfr1PQX5kmNaS3wlKVrogXEBhVdqJt0I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxx5CiHQqJZLAZwnvDdUckEUYGbejzBPJjox53eKJR8nS38PWdy
+	P+Ti60YgSqlmZLaMmmjR9TGd1Do9gXlkiXuf2s4zi0fdUP3fP2D0/QwmEa76881cBnM=
+X-Gm-Gg: ASbGncsnkQjAY7h/lMKoWMy9yw3Lj0QRMQ5HcIbawqPmQh/kQJQbGibFnAm5CWIlFlL
+	d7JWYSypGiCyKOCkZoE1r4Wwti481zqyNJju0TSuicN6awoKLpCs1lgjj7x57HhTbwIWqb5kiOK
+	kNOiJyr+fx7OPCvHACqPVg2ccP1IIeKfTju94+w89Ou9iVmyKIeY8wlMsOINX39KYHL1e3CFGQ6
+	XGnMNrYevm1Thyocrw//47EIkFZfIlwcRhutgfwcnmmLD3XLjQW8XZIfuTI8dT8WtGa73/ofGYU
+	GgM/rdfxivLE+BiX94VL+QjARn8I9w5XQNg500tLAmCOFyykSkO1j73iieu8oR5DSLE8wSWgL/h
+	1JYHDJ1ytMHmgu2Q=
+X-Google-Smtp-Source: AGHT+IFppVFkyEpOyB0CPplf4xKmqV75wZQ/fIWHvCo3wyJNQ+QDWQbCFvBJ3QOnmHHOIlenUkvO2w==
+X-Received: by 2002:a17:907:1ca9:b0:ae0:cadc:e745 with SMTP id a640c23a62f3a-af2f8e51179mr201694266b.40.1753261766446;
+        Wed, 23 Jul 2025 02:09:26 -0700 (PDT)
+Received: from cloudflare.com ([2a09:bac5:5063:2432::39b:54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6c7d5255sm1008043966b.40.2025.07.23.02.09.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Jul 2025 02:09:25 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Eduard Zingerman <eddyz87@gmail.com>
+Cc: bpf@vger.kernel.org,  Alexei Starovoitov <ast@kernel.org>,  Andrii
+ Nakryiko <andrii@kernel.org>,  Arthur Fabre <arthur@arthurfabre.com>,
+  Daniel Borkmann <daniel@iogearbox.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Jesper Dangaard
+ Brouer <hawk@kernel.org>,  Jesse Brandeburg <jbrandeburg@cloudflare.com>,
+  Joanne Koong <joannelkoong@gmail.com>,  Lorenzo Bianconi
+ <lorenzo@kernel.org>,  Martin KaFai Lau <martin.lau@linux.dev>,  Toke
+ =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <thoiland@redhat.com>,  Yan Zhai
+ <yan@cloudflare.com>,
+  kernel-team@cloudflare.com,  netdev@vger.kernel.org,  Stanislav Fomichev
+ <sdf@fomichev.me>
+Subject: Re: [PATCH bpf-next v3 10/10] selftests/bpf: Cover read/write to
+ skb metadata at an offset
+In-Reply-To: <addca8ce8c3c51bbd147175406e9da84fbc9c1e7.camel@gmail.com>
+	(Eduard Zingerman's message of "Tue, 22 Jul 2025 13:30:05 -0700")
+References: <20250721-skb-metadata-thru-dynptr-v3-0-e92be5534174@cloudflare.com>
+	<20250721-skb-metadata-thru-dynptr-v3-10-e92be5534174@cloudflare.com>
+	<addca8ce8c3c51bbd147175406e9da84fbc9c1e7.camel@gmail.com>
+Date: Wed, 23 Jul 2025 11:09:24 +0200
+Message-ID: <87a54vxohn.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <aIB0VYLqcBKVtAmU@pengutronix.de>
+Content-Type: text/plain
 
-The 07/23/2025 07:34, Oleksij Rempel wrote:
-> 
-> Hi Horatiu,
+On Tue, Jul 22, 2025 at 01:30 PM -07, Eduard Zingerman wrote:
+> On Mon, 2025-07-21 at 12:52 +0200, Jakub Sitnicki wrote:
+>> Exercise r/w access to skb metadata through an offset-adjusted dynptr,
+>> read/write helper with an offset argument, and a slice starting at an
+>> offset.
+>> 
+>> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+>> ---
+>
+> Maybe also add a test case checking error conditions for out of bounds
+> metadata access?
 
-Hi Olekij,
+Crossed my mind. I was on the fence here, asking myself:
 
-> 
-> On Mon, Jul 21, 2025 at 09:14:05AM +0200, Horatiu Vultur wrote:
-> 
-> > +static int lan8842_config_init(struct phy_device *phydev)
-> > +{
-> > +     int val;
-> > +     int ret;
-> > +
-> > +     /* Reset the PHY */
-> > +     val = lanphy_read_page_reg(phydev, 4, LAN8814_QSGMII_SOFT_RESET);
-> 
-> It would be good to use defines for MMD pages.
+do we need a test for dynptr OOB checks for each dynptr kind?
 
-Those are extended pages and not MMD pages. Currently in the entire
-source code I can see we used hardcoded values, also in the register
-description it looks like all these extended pages do not have really
-meaningfull names: Extended Page 0, Extended Page 4, Extended Page 5...
-
-> 
-> > +     if (val < 0)
-> > +             return val;
-> > +     val |= LAN8814_QSGMII_SOFT_RESET_BIT;
-> > +     lanphy_write_page_reg(phydev, 4, LAN8814_QSGMII_SOFT_RESET, val);
-> 
-> Please, do not ignore return values.
-
-Good catch, I will fix that in the next version.
-There are few others bellow, I will fix those also.
-
-> 
-> > +
-> > +     /* Disable ANEG with QSGMII PCS Host side
-> > +      * It has the same address as lan8814
-> > +      */
-> > +     val = lanphy_read_page_reg(phydev, 5, LAN8814_QSGMII_PCS1G_ANEG_CONFIG);
-> > +     if (val < 0)
-> > +             return val;
-> > +     val &= ~LAN8814_QSGMII_PCS1G_ANEG_CONFIG_ANEG_ENA;
-> > +     ret = lanphy_write_page_reg(phydev, 5, LAN8814_QSGMII_PCS1G_ANEG_CONFIG,
-> > +                                 val);
-> > +     if (ret < 0)
-> > +             return ret;
-> > +
-> > +     /* Disable also the SGMII_AUTO_ANEG_ENA, this will determine what is the
-> > +      * PHY autoneg with the other end and then will update the host side
-> > +      */
-> > +     lanphy_write_page_reg(phydev, 4, LAN8842_SGMII_AUTO_ANEG_ENA, 0);
-> > +
-> > +     /* To allow the PHY to control the LEDs the GPIOs of the PHY should have
-> > +      * a function mode and not the GPIO. Apparently by default the value is
-> > +      * GPIO and not function even though the datasheet it says that it is
-> > +      * function. Therefore set this value.
-> > +      */
-> > +     lanphy_write_page_reg(phydev, 4, LAN8814_GPIO_EN2, 0);
-> > +
-> > +     /* Enable the Fast link failure, at the top level, at the bottom level
-> > +      * it would be set/cleared inside lan8842_config_intr
-> > +      */
-> > +     val = lanphy_read_page_reg(phydev, 0, LAN8842_FLF);
-> > +     if (val < 0)
-> > +             return val;
-> > +     val |= LAN8842_FLF_ENA | LAN8842_FLF_ENA_LINK_DOWN;
-> 
-> If I see it correctly, FLF support will make link fail after ~1ms, while
-> IEEE 802.3 recommends 750ms. Since a link recovery of a PHY with autoneg
-> support usually takes multiple seconds, I see the benefit for FLF
-> support only mostly for SyncE environment at same time it seems to be
-> a disadvantage for other environments.
-
-Why would be a disadvantage?
-> 
-> I would prefer to have IEEE 802.3 recommended link behavior by default
-> and have separate Netlink configuration interface for FLF.
-> 
-> Best Regards,
-> Oleksij
-> --
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
--- 
-/Horatiu
+I decided at that time that we don't, but happy to add it. Doesn't hurt.
