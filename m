@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC452116F6
-	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 17:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DCC721171B
+	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 17:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753290661; cv=none; b=GmaNIrPHeEyaRVlQJHYnQB7Wx4+6CpPDDDA5z+VCoq6ZFHewZbfqVRwOLx8RLOIyC37sogcJ/A2ys80rKtStd8Y2weg3D8D8mZ6zU60F3GMCDC9LAkkVaLkhClYv9dS1EALqR6926C3+HX36JSX8TJ6oWvmbEtb9NeMK4IX219M=
+	t=1753290661; cv=none; b=Uoy691YvnvSPnklf1r6XBiSJ4QuMAyBtUx33tQGRT2ViertWtOGGbQkb0/0k9SiAJtN76L8JjDYJ19s2vfEzJIA5SeJwr07mITiLwmvN+MzFv2UhffzgtFar1MPzcm4qeTbXoCqApPJZCNan6Qt+lCpQf5LhH5yCXXQbZwmOHzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753290661; c=relaxed/simple;
-	bh=HdkizeptFTrYY1FKcCVLjEIf9F228ofAybnyzRfF6rI=;
+	bh=V7lcjYQcg5BbKySzi4OE+Q52nh0eSMiklp4w+Od9ZaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R9hLKrgVj6QGzRXxUUjjdPlcvs6sk9PnMKCoVmNjFwxBqduC9Q8BoM+f02E1wpgQ5ZdWjPoW6ccPxOJXac/hp4UbbrVuhlGiaLLJfgW1p+aG700qhexEjdD5bDR+nAHGOkwkIH69xRWa1hZDlrx9JXAHFS0CXhn+lSGORHyrh2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Va0BPlLO; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=NPzjmAJ4ELgQWiLTKWGMnM3dNWj07n7sMoVnjLlEEBSjk9FpPK6tJ9J3t5tYDEo/FFJhjKhzh5pXGXdsSl+Q5aGCydIS8AkuE+EEcn3h1gXaF0I7B0SFuWK3Gc091WD5P1VEQ8Rzjq8wZg2pcUcn+M1km7iy4sKf8Gr/b1OaTdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ob6dLv1s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Va0BPlLO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B48C4CEF7;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ob6dLv1s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217B7C4CEF6;
 	Wed, 23 Jul 2025 17:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1753290660;
-	bh=HdkizeptFTrYY1FKcCVLjEIf9F228ofAybnyzRfF6rI=;
+	bh=V7lcjYQcg5BbKySzi4OE+Q52nh0eSMiklp4w+Od9ZaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Va0BPlLOmqKhTu1jR8hvDDOUiYm8e6jAjGs17pbG6UzYDp4+H8/EJ2squcigjPGSO
-	 7AHAaaE4Duzzs4jUXdsyHB7HIxiTobFNYLounDV19MY9sBsIb+mnj4DJNyuzipXIOy
-	 djVZO+9huk1JEjB4pjX6tieYJ/G18qwxIZdvSwVkVWHmUbvspSJTMdPM+HSChHV3qQ
-	 HAHrAbiaEkGW56avTT8oRtrJguC1c2YwT4G5VC3UM4jT6JRigfIo018motmEUrcDI4
-	 ffq+ggxLgQ1uXn35rSvH/ndc14qRiglTupczgejnm/8oTX9V7PK2fTbuP2Lxi3sJyj
-	 hxsFONJesR3vg==
+	b=Ob6dLv1s+30GaNK5Gs0Ew8ben0q5nmN3z6J3M2LFgWSvtt3g78CtszqbFFyGcc2+/
+	 bWLUDEW7QVSbX91QOSNZz+8CAWbncEciMTIzPqAPZHEWT/DQ1bPjTzd+fbFnKCx94I
+	 8NeHoro/h5fZLBz7VjX0iUiJ8YUvp7jnxzehUolijfbeN7x5W01yiYU6kiuwBCZUB1
+	 TQu2E8NlRe3UC48BiHG0TFDTIeHAF+wlzBtKSPkMJigL1bi1tD/tcPdtY5rNxqglB8
+	 YJr8P9Xle85zNoEqC6vhhycPjn/P4CLjwhL1XexiWC40Pzl6+2Fuhu8LC7ECfXANts
+	 bruCjCgVvVUKg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -37,9 +37,9 @@ Cc: netdev@vger.kernel.org,
 	almasrymina@google.com,
 	sdf@fomichev.me,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 2/5] tools: ynl-gen: move free printing to the print_type_full() helper
-Date: Wed, 23 Jul 2025 10:10:43 -0700
-Message-ID: <20250723171046.4027470-3-kuba@kernel.org>
+Subject: [PATCH net-next v2 1/5] tools: ynl-gen: don't add suffix for pure types
+Date: Wed, 23 Jul 2025 10:10:42 -0700
+Message-ID: <20250723171046.4027470-2-kuba@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250723171046.4027470-1-kuba@kernel.org>
 References: <20250723171046.4027470-1-kuba@kernel.org>
@@ -51,42 +51,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Just to avoid making the main function even more enormous,
-before adding more things to print move the free printing
-to a helper which already prints the type.
+Don't add _req to helper names for pure types. We don't currently
+print those so it makes no difference to existing codegen.
 
 Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
 Acked-by: Stanislav Fomichev <sdf@fomichev.me>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tools/net/ynl/pyynl/ynl_gen_c.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 1bdcc368e776..dc78542e6c88 100755
+index 76032e01c2e7..1bdcc368e776 100755
 --- a/tools/net/ynl/pyynl/ynl_gen_c.py
 +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -2546,6 +2546,10 @@ _C_KW = {
- def print_type_full(ri, struct):
-     _print_type(ri, "", struct)
+@@ -1879,7 +1879,9 @@ _C_KW = {
+ def op_prefix(ri, direction, deref=False):
+     suffix = f"_{ri.type_name}"
  
-+    if struct.request and struct.in_multi_val:
-+        free_rsp_nested_prototype(ri)
-+        ri.cw.nl()
-+
- 
- def print_type_helpers(ri, direction, deref=False):
-     print_free_prototype(ri, direction)
-@@ -3517,9 +3521,6 @@ _C_KW = {
-             for attr_set, struct in parsed.pure_nested_structs.items():
-                 ri = RenderInfo(cw, parsed, args.mode, "", "", attr_set)
-                 print_type_full(ri, struct)
--                if struct.request and struct.in_multi_val:
--                    free_rsp_nested_prototype(ri)
--                    cw.nl()
- 
-             for op_name, op in parsed.ops.items():
-                 cw.p(f"/* ============== {op.enum_name} ============== */")
+-    if not ri.op_mode or ri.op_mode == 'do':
++    if not ri.op_mode:
++        pass
++    elif ri.op_mode == 'do':
+         suffix += f"{direction_to_suffix[direction]}"
+     else:
+         if direction == 'request':
 -- 
 2.50.1
 
