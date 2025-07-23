@@ -1,130 +1,119 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3335B2F8C24;
-	Wed, 23 Jul 2025 14:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005652F50BD;
+	Wed, 23 Jul 2025 14:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753282169; cv=none; b=B1pQs/xiGpJRrOrWEQ2NunaWyMT4e8eAzsoUC0K6eCC+SGja1KTpnSp6yZ8ean/WtHkjrC740CZkUnvwjRtEmEIa7l3uVNKGWVvn7Ep7erR9KRsHcsSVMydJCHoo6ros2R/85oH+w22x+5z4MNO5QDTyWbwLAwD3j5boi9oiUoI=
+	t=1753282447; cv=none; b=NxhzB0sHVge9hgw9SZitVK/up9GBaPvvt886Sxb0oA55rBwhn/je6gfMyxHcZqA4S6RzeBrjt1KE75BBIONTHvoME54mgQf4pgxpbtm158zDlQkKZjxCuPxqFQl1R0fHqDtE9Xt+OPF/8tMC5yX7g/P4Qm4eefkXbpIvUcnTQn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753282169; c=relaxed/simple;
-	bh=bVEPW8trOPxREgpEULJ+V2nr0MfDXTvoz1xVhduQmv0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qDU4GCtb4FlAAZu7KIDn4FTB0UV7wkVTQWVbeNn3t5vO9BC+vw/zER1L/MsE4fMrRncxrFNwL5r7nFL/JeIClrpNUbOBaLfIu1ie4N49fqUpMrujXU3JTYGt8hCKe88so77zLTpdmeyDWIG6dZivKQIEpeEsPM4bCtwRnqt0AEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ZVAcdzUz; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1753282447; c=relaxed/simple;
+	bh=4U/+U3/SF5geYLW4vyxe77t41Yfr2fQzgQTGw6vbhVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kFcbxBKHK1ej3YOnvnyDOtw9rIpXVMazt4NjuD5nbeX5yDRpL1kuN0R7Ofnm7YjTOJFwJYlNT+jMb5JMLNS4T6VYBXyy6c+cB0QmxbMxPhA2iYdYTQskRDqB0YZNx5zzKmd+7fUdciziXmB80obRuTFUQrP8Pc3izrTRLHgvK5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CiO5J/zV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ZVAcdzUz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=cS
-	wtl9rPdjwJyihwf67rWxSNsxvXiR2nFdG7CrLvMi4=; b=ZVAcdzUzn1xis4xrEL
-	WAy/AgxHwmvKVi2Mbrt8e5my/o6WR/I7V136lwvoN6FZyD/eSsodHSxUuBUIR7VW
-	qahZYD/bmTqsEBhwHfGvOMs5ZBhwD9WUtTxzvW+SDoQSRgbT8FnzotsOtdQgU7KY
-	2hsfHntRNI1bkz05uZwu+6tjk=
-Received: from H00576042-PD8FB.china.huawei.com (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgD3uXom9oBoW0PHBg--.55850S2;
-	Wed, 23 Jul 2025 22:48:08 +0800 (CST)
-From: huyizhen2024@163.com
-To: jhs@mojatatu.com,
-	xiyou.wangcong@gmail.com,
-	jiri@resnulli.us
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	andy@greyhouse.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [Discuss] KASAN: null-ptr-deference in qdisc_tree_reduce_backlog
-Date: Wed, 23 Jul 2025 22:48:27 +0800
-Message-ID: <20250723144828.664-1-huyizhen2024@163.com>
-X-Mailer: git-send-email 2.45.1.windows.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CiO5J/zV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03596C4CEFA;
+	Wed, 23 Jul 2025 14:54:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753282444;
+	bh=4U/+U3/SF5geYLW4vyxe77t41Yfr2fQzgQTGw6vbhVM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CiO5J/zV5S6FbLaWm2MKDwnRTJOHgGUSzY22lvLLoCt1suc5TMFQcPrLA148z896s
+	 e7YStYXLrNYy7qFW72jehY35t1utnJOTYqVX3Y+SwMDv/mD1ogJSe3floTEmSxanOl
+	 MafGxv49RfiE6oHPGql4W8zEnGRW0+3hWeY4So0Li1TCGEJYiBGvNIL8LRNOdSWWz6
+	 z6LskuFZfKh2z7m8XRykksR0EMaLnz1QyD/NuLYnxJsDkRykHS6bzgHDZxKKUGEHh8
+	 DzU8JGewheVY4nRRqbM0UxZpWw7cF3Bjac89rXx9WaCTcgJNBJLUEE/+07BvLp6RBT
+	 b90JExGjbuH3Q==
+Date: Wed, 23 Jul 2025 15:54:00 +0100
+From: Simon Horman <horms@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH net-next v2 4/5] netconsole: use netpoll_parse_ip_addr in
+ local_ip_store
+Message-ID: <20250723145400.GB1036606@horms.kernel.org>
+References: <20250721-netconsole_ref-v2-0-b42f1833565a@debian.org>
+ <20250721-netconsole_ref-v2-4-b42f1833565a@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:PSgvCgD3uXom9oBoW0PHBg--.55850S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWryUZry3uw18Jr4kAw43KFg_yoWrWw17pr
-	y5Xr9rCr40yr17Ary3Zw15J348Kr43Aa18Xr48Jr1rAF17Gr1Yqr17JrWjkrnagr13J3W7
-	tr1Dtw40qryUGaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Um1v-UUUUU=
-X-CM-SenderInfo: pkx1x6hkhqjiisu6il2tof0z/1tbiowGTp2iA6RDv8gAAsa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250721-netconsole_ref-v2-4-b42f1833565a@debian.org>
 
-Hello.=0D
-=0D
-KASAN found a null ptr deference in qdisc_tree_reduce_backlog.=0D
-If cops->find cannot find a qdisc, it returns NULL.=0D
-And if cops->qlen_notify doesn't valid arg, it will deference the NULL ptr,=
- resulting in a kernel crash.=0D
-Should we add a check for the argument in cops->qlen_notify?=0D
-=0D
-Looking forward to your reply, thank you!=0D
-=0D
-net\sched\sch_hfsc.c:1237 hfsc_qlen_notify-null-ptr-deref=0D
-=0D
-other info that might help debug this:=0D
-=0D
-crash> bt=0D
-PID: 2297     TASK: ffff8881666aa540  CPU: 0    COMMAND: "syz-executor.1"=0D
-#0 [ffffc9001597f3b0] machine_kexec at ffffffff81206168=0D
-#1 [ffffc9001597f420] __crash_kexec at ffffffff81492da1=0D
-#2 [ffffc9001597f4e8] panic at ffffffff8131dde6=0D
-#3 [ffffc9001597f570] oops_end at ffffffff8119e82b=0D
-#4 [ffffc9001597f598] page_fault_oops at ffffffff8122786c=0D
-#5 [ffffc9001597f630] kernelmode_fixup_or_oops at ffffffff81228125=0D
-#6 [ffffc9001597f658] __bad_area_nosemaphore at ffffffff8122841f=0D
-#7 [ffffc9001597f6a0] exc_page_fault at ffffffff8683eb70=0D
-#8 [ffffc9001597f730] asm_exc_page_fault at ffffffff86a00c12=0D
-    [exception RIP: hfsc_qlen_notify+17]=0D
-    RIP: ffffffff85e29141  RSP: ffffc9001597f7e0  RFLAGS: 00010216=0D
-    RAX: 0000000000001d66  RBX: 0000000000000000  RCX: 0000000000040000=0D
-    RDX: ffffc90006512000  RSI: ffff8881666aa540  RDI: 0000000000000002=0D
-    RBP: 00000000000affe0   R8: 0000000000000001   R9: 0000000000000000=0D
-    R10: 0000000000000000  R11: 0000000000000000  R12: ffffffff87691f60=0D
-    R13: 0000000000000000  R14: 0000000000000000  R15: 0000000000000000=0D
-    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018=0D
-#9 [ffffc9001597f7f8] qdisc_tree_reduce_backlog at ffffffff85dece27=0D
-#10 [ffffc9001597f830] codel_change at ffffffff85e4fe44=0D
-#11 [ffffc9001597f8a0] codel_init at ffffffff85e50223=0D
-#12 [ffffc9001597f8c0] qdisc_create at ffffffff85deb1d8=0D
-#13 [ffffc9001597f930] tc_modify_qdisc at ffffffff85deb9c9=0D
-#14 [ffffc9001597fa38] rtnetlink_rcv_msg at ffffffff85d43739=0D
-#15 [ffffc9001597fac8] netlink_rcv_skb at ffffffff85e913f5=0D
-#16 [ffffc9001597fbb8] netlink_unicast at ffffffff85e907f1=0D
-#17 [ffffc9001597fc00] netlink_sendmsg at ffffffff85e91973=0D
-#18 [ffffc9001597fc80] __sock_sendmsg at ffffffff85cc765e=0D
-#19 [ffffc9001597fca0] ____sys_sendmsg at ffffffff85cc7de2=0D
-#20 [ffffc9001597fd18] ___sys_sendmsg at ffffffff85ccbc0c=0D
-#21 [ffffc9001597fe70] __sys_sendmsg at ffffffff85ccbd47=0D
-#22 [ffffc9001597ff28] do_syscall_64 at ffffffff8683612c=0D
-#23 [ffffc9001597ff50] entry_SYSCALL_64_after_hwframe at ffffffff86a00130=0D
-    RIP: 00007fc942692bdd  RSP: 00007fc9433bebf8  RFLAGS: 00000246=0D
-    RAX: ffffffffffffffda  RBX: 00007fc9427dbf80  RCX: 00007fc942692bdd=0D
-    RDX: 0000000000004000  RSI: 0000000020000280  RDI: 0000000000000003=0D
-    RBP: 00007fc9426f0499   R8: 0000000000000000   R9: 0000000000000000=0D
-    R10: 0000000000000000  R11: 0000000000000246  R12: 0000000000000000=0D
-    R13: 00007ffcb898b86f  R14: 00007ffcb898ba10  R15: 00007fc9433bed80=0D
-ORIG_RAX: 000000000000002e  CS: 0033  SS: 002b=0D
-=0D
-crash> dis -l hfsc_qlen_notify 10=0D
-/data/nq/kernel/net/sched/sch_hfsc.c: 1231=0D
-0xffffffff85e29130 <hfsc_qlen_notify>:  nopl   0x0(%rax,%rax,1) [FTRACE NOP=
-]=0D
-/data/nq/kernel/net/sched/sch_hfsc.c: 1232=0D
-0xffffffff85e29135 <hfsc_qlen_notify+5>:        push   %r12=0D
-0xffffffff85e29137 <hfsc_qlen_notify+7>:        push   %rbp=0D
-0xffffffff85e29138 <hfsc_qlen_notify+8>:        push   %rbx=0D
-/data/nq/kernel/net/sched/sch_hfsc.c: 1231=0D
-0xffffffff85e29139 <hfsc_qlen_notify+9>:        mov    %rsi,%rbx=0D
-/data/nq/kernel/net/sched/sch_hfsc.c: 1232=0D
-0xffffffff85e2913c <hfsc_qlen_notify+12>:       call   0xffffffff814f06a0 <=
-__sanitizer_cov_trace_pc>=0D
-/data/nq/kernel/net/sched/sch_hfsc.c: 1237=0D
-0xffffffff85e29141 <hfsc_qlen_notify+17>:       mov    0x2ec(%rbx),%ebp=0D
-0xffffffff85e29147 <hfsc_qlen_notify+23>:       xor    %edi,%edi=0D
-0xffffffff85e29149 <hfsc_qlen_notify+25>:       mov    %ebp,%esi=0D
-0xffffffff85e2914b <hfsc_qlen_notify+27>:       call   0xffffffff814f08b0 <=
-__sanitizer_cov_trace_const_cmp4>=
+On Mon, Jul 21, 2025 at 06:02:04AM -0700, Breno Leitao wrote:
+> Replace manual IP address parsing with a call to netpoll_parse_ip_addr
+> in local_ip_store(), simplifying the code and reducing the chance of
+> errors.
+> 
+> Also, remove the pr_err() if the user enters an invalid value in
+> configfs entries. pr_err() is not the best way to alert user that the
+> configuration is invalid.
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
+My suggestion below not withstanding, this looks good to me.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+
+> ---
+>  drivers/net/netconsole.c | 22 +++++-----------------
+>  1 file changed, 5 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+> index f2c2b8852c603..b24e423a60268 100644
+> --- a/drivers/net/netconsole.c
+> +++ b/drivers/net/netconsole.c
+> @@ -751,6 +751,7 @@ static ssize_t local_ip_store(struct config_item *item, const char *buf,
+>  {
+>  	struct netconsole_target *nt = to_target(item);
+>  	ssize_t ret = -EINVAL;
+> +	int ipv6;
+>  
+>  	mutex_lock(&dynamic_netconsole_mutex);
+>  	if (nt->enabled) {
+> @@ -759,23 +760,10 @@ static ssize_t local_ip_store(struct config_item *item, const char *buf,
+>  		goto out_unlock;
+>  	}
+>  
+> -	if (strnchr(buf, count, ':')) {
+> -		const char *end;
+> -
+> -		if (in6_pton(buf, count, nt->np.local_ip.in6.s6_addr, -1, &end) > 0) {
+> -			if (*end && *end != '\n') {
+> -				pr_err("invalid IPv6 address at: <%c>\n", *end);
+> -				goto out_unlock;
+> -			}
+> -			nt->np.ipv6 = true;
+> -		} else
+> -			goto out_unlock;
+> -	} else {
+> -		if (!nt->np.ipv6)
+> -			nt->np.local_ip.ip = in_aton(buf);
+> -		else
+> -			goto out_unlock;
+> -	}
+> +	ipv6 = netpoll_parse_ip_addr(buf, &nt->np.local_ip);
+> +	if (ipv6 == -1)
+> +		goto out_unlock;
+> +	nt->np.ipv6 = ipv6;
+
+I don't think this needs to block progress.
+And if you disagree that is fine too.
+But I would have expressed this as:
+
+	nt->np.ipv6 = !!ipv6;
+
+Because nt->np.ipv6 is a bool and ipv6 is an int.
+
+Likewise for patch 5/5.
+
+...
