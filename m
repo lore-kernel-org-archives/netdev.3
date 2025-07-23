@@ -1,128 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01BE280325;
-	Wed, 23 Jul 2025 09:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3660C28C032;
+	Wed, 23 Jul 2025 10:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753264744; cv=none; b=e8Li3cpxCznEs1TPapWtDvKkz176xCVJfmC34S9NG9+S9X1JS0Hyrr/TYn3qbhPkCfH2m/c7Vhs2HkjIm3lKkPZYf1pKR4qhde5Pjgr71FXLpUNXnulK0/0fPHn4bkZ4kbhaBQbR44jpL8aLbLH4/YdOchpAEWaW9V5hpGLvjho=
+	t=1753264866; cv=none; b=gDuuQBONsHYWV/5Vofk3YWUIj+zX4fcnppA73UZfJ55pRNdOK7VBPc/VLPPGdggvYxAxiEA20XGcsib99Ka4bhk6AtwVZVJep41WeV86AEeLmTBsxaD0MstQVcXy751uMwY/EKno5ZGEcpXWnHthhsmJ2MNrC6FL2P93DNm9MWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753264744; c=relaxed/simple;
-	bh=yzX7va2srxpQsEnQrCqzNSATBc4ZgUiYAKZ5VunBZIw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nA3CmAEuu5Ibf9h1x67b7O/5WiYW7FiDCp9ELXP5Bep3zChqm/UtDJuyxgUTZ3RuGq/InxHo6F8/zEVIlClsn4dmVXExRO8XZBtPge5rjJf3oMA2EMhWoJ8DB1UZ3ApjdF/NAl/Y1aPGP9Asr7dVcAotB60o/hT18yMCxGqeudM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sCsvzskT; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sCsvzskT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0008C4CEE7;
-	Wed, 23 Jul 2025 09:58:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753264743;
-	bh=yzX7va2srxpQsEnQrCqzNSATBc4ZgUiYAKZ5VunBZIw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sCsvzskTIiUISMxcu3iQM4Mfm3ktUPUQqQFseLTYboda08WkEP3zRtfrg7joDVUka
-	 uvkd+F0St/5hNrzlG6oLHsGtTErA1r82vjNuu7cCbCYLabFfJjPJTPZfNijtXL7Y40
-	 9KWR90q5fYU9f6Z0Ajws0gD8n3urDLp4zn/r30AkGidlSE0aMtIdtgWcm7rjRfBGkl
-	 U37hX6bmqcHXcIbFp7lvRSOhPbFKHdQC4mzVsPecdfQer7drjEAEBtnmoV6+dNbuGh
-	 GYC689eGG45h6W8216ZdckWnBSlC0euXCL3NVZGIrqi6fyRHzICQjKp6RJgngvymvC
-	 ZhC3wk7Q5SAwg==
-Date: Wed, 23 Jul 2025 10:58:56 +0100
-From: Lee Jones <lee@kernel.org>
-To: a0282524688@gmail.com
-Cc: tmyu0@nuvoton.com, linus.walleij@linaro.org, brgl@bgdev.pl,
-	andi.shyti@kernel.org, mkl@pengutronix.de,
-	mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net,
-	jdelvare@suse.com, alexandre.belloni@bootlin.com,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org,
-	netdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
-	linux-hwmon@vger.kernel.org, linux-rtc@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH v14 0/7] Add Nuvoton NCT6694 MFD drivers
-Message-ID: <20250723095856.GT11056@google.com>
-References: <20250715025626.968466-1-a0282524688@gmail.com>
+	s=arc-20240116; t=1753264866; c=relaxed/simple;
+	bh=1uPdLiyr/1tZ6U7FvmjwMa/NOrzX1/JOGuP56VkwTiI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AcVztXoFhXSLYTlUcKZma+Yfl7dM48Lw/cfuEvB33TtnkFwNg1tbqaBc3JHKP3xvF+LgL7ggCJt4+rs0zVzhpN+t7TIz7CzbRF3hibRt6JhChxpMj8D980CTy/n0mTd8XKDNsBBq8SvMWxYKvfGW/CRrcPpGQGcMU0KtN03IT80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [113.200.148.30])
+	by gateway (Coremail) with SMTP id _____8DxDePbsoBoJzkwAQ--.62284S3;
+	Wed, 23 Jul 2025 18:00:59 +0800 (CST)
+Received: from linux.localdomain (unknown [113.200.148.30])
+	by front1 (Coremail) with SMTP id qMiowJBxzsHYsoBo1AUjAA--.24129S3;
+	Wed, 23 Jul 2025 18:00:58 +0800 (CST)
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 1/2] net: stmmac: Return early if invalid in loongson_dwmac_fix_reset()
+Date: Wed, 23 Jul 2025 18:00:55 +0800
+Message-ID: <20250723100056.6651-2-yangtiezhu@loongson.cn>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20250723100056.6651-1-yangtiezhu@loongson.cn>
+References: <20250723100056.6651-1-yangtiezhu@loongson.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250715025626.968466-1-a0282524688@gmail.com>
+X-CM-TRANSID:qMiowJBxzsHYsoBo1AUjAA--.24129S3
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj9xXoWrZrWDWF18Ww4ktF4UZrWUGFX_yoWkJwb_WF
+	yavFnYq3Z8Xr4Ut342qw13ZrySvFykWa1ruanrtrWS9ayjvwn8JF9Y9ws5CF17CrWDZF98
+	Wr4xtr4Svw1kKosvyTuYvTs0mTUanT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbfAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_JF0_JFyl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Cr1j6rxdM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
+	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
+	6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AK
+	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8Gii3UUUUU==
 
-On Tue, 15 Jul 2025, a0282524688@gmail.com wrote:
+If the MAC controller does not connect to any PHY interface, there is a
+missing clock, then the DMA reset fails.
 
-> From: Ming Yu <a0282524688@gmail.com>
-> 
-> This patch series introduces support for Nuvoton NCT6694, a peripheral
-> expander based on USB interface. It models the chip as an MFD driver
-> (1/7), GPIO driver(2/7), I2C Adapter driver(3/7), CANfd driver(4/7),
-> WDT driver(5/7), HWMON driver(6/7), and RTC driver(7/7).
-> 
-> The MFD driver implements USB device functionality to issue
-> custom-define USB bulk pipe packets for NCT6694. Each child device can
-> use the USB functions nct6694_read_msg() and nct6694_write_msg() to issue
-> a command. They can also request interrupt that will be called when the
-> USB device receives its interrupt pipe.
-> 
-> The following introduces the custom-define USB transactions:
-> 	nct6694_read_msg - Send bulk-out pipe to write request packet
-> 			   Receive bulk-in pipe to read response packet
-> 			   Receive bulk-in pipe to read data packet
-> 
-> 	nct6694_write_msg - Send bulk-out pipe to write request packet
-> 			    Send bulk-out pipe to write data packet
-> 			    Receive bulk-in pipe to read response packet
+For this case, the DMA_BUS_MODE_SFT_RESET bit is 1 before software reset,
+just return -EINVAL immediately to avoid waiting for the timeout when the
+DMA reset fails in loongson_dwmac_fix_reset().
 
-[...]
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> Ming Yu (7):
->   mfd: Add core driver for Nuvoton NCT6694
->   gpio: Add Nuvoton NCT6694 GPIO support
->   i2c: Add Nuvoton NCT6694 I2C support
->   can: Add Nuvoton NCT6694 CANFD support
->   watchdog: Add Nuvoton NCT6694 WDT support
->   hwmon: Add Nuvoton NCT6694 HWMON support
->   rtc: Add Nuvoton NCT6694 RTC support
-> 
->  MAINTAINERS                         |  12 +
->  drivers/gpio/Kconfig                |  12 +
->  drivers/gpio/Makefile               |   1 +
->  drivers/gpio/gpio-nct6694.c         | 499 +++++++++++++++
->  drivers/hwmon/Kconfig               |  10 +
->  drivers/hwmon/Makefile              |   1 +
->  drivers/hwmon/nct6694-hwmon.c       | 949 ++++++++++++++++++++++++++++
->  drivers/i2c/busses/Kconfig          |  10 +
->  drivers/i2c/busses/Makefile         |   1 +
->  drivers/i2c/busses/i2c-nct6694.c    | 196 ++++++
->  drivers/mfd/Kconfig                 |  15 +
->  drivers/mfd/Makefile                |   2 +
->  drivers/mfd/nct6694.c               | 388 ++++++++++++
->  drivers/net/can/usb/Kconfig         |  11 +
->  drivers/net/can/usb/Makefile        |   1 +
->  drivers/net/can/usb/nct6694_canfd.c | 832 ++++++++++++++++++++++++
->  drivers/rtc/Kconfig                 |  10 +
->  drivers/rtc/Makefile                |   1 +
->  drivers/rtc/rtc-nct6694.c           | 297 +++++++++
->  drivers/watchdog/Kconfig            |  11 +
->  drivers/watchdog/Makefile           |   1 +
->  drivers/watchdog/nct6694_wdt.c      | 307 +++++++++
->  include/linux/mfd/nct6694.h         | 102 +++
->  23 files changed, 3669 insertions(+)
->  create mode 100644 drivers/gpio/gpio-nct6694.c
->  create mode 100644 drivers/hwmon/nct6694-hwmon.c
->  create mode 100644 drivers/i2c/busses/i2c-nct6694.c
->  create mode 100644 drivers/mfd/nct6694.c
->  create mode 100644 drivers/net/can/usb/nct6694_canfd.c
->  create mode 100644 drivers/rtc/rtc-nct6694.c
->  create mode 100644 drivers/watchdog/nct6694_wdt.c
->  create mode 100644 include/linux/mfd/nct6694.h
-
-I will apply this the other side of the pending merge-window.
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index e1591e6217d4..6d10077666c7 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -513,6 +513,9 @@ static int loongson_dwmac_fix_reset(void *priv, void __iomem *ioaddr)
+ {
+ 	u32 value = readl(ioaddr + DMA_BUS_MODE);
+ 
++	if (value & DMA_BUS_MODE_SFT_RESET)
++		return -EINVAL;
++
+ 	value |= DMA_BUS_MODE_SFT_RESET;
+ 	writel(value, ioaddr + DMA_BUS_MODE);
+ 
 -- 
-Lee Jones [李琼斯]
+2.42.0
+
