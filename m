@@ -1,407 +1,151 @@
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D836F2F5301
-	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 14:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D51C2EAD06
+	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 14:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753281923; cv=none; b=gXeBe1mJ7uWZtnUn8detdY/HEYsw408bL+e+gFT9CdWaAR5bEHw78PAH9fbqlPfSxedQIscIMAUUqrexLLwRyaKvhtr8mvZUgEVoBcWGR/Te/cRDQLdAoargljXGDz7dCeghlyRkp0vPcb4uLIE+s/SjG4iaet2v0g0VDnASQr0=
+	t=1753281938; cv=none; b=e1lqEF9VgA17uS5xZPNwPA9yZh6ZFjqyIYadcpGwox98h1PBJ+fafymnjprMx9EpmYFngosifscYIqNNJW13PrHanO85y8JgTnqwITTIQ3njEFqVCG3Cygo+wH7Sw4npJQ9wQeZPjHjYO7jqPOwmv+bZmuhXte7bGp0Ju1KHnpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753281923; c=relaxed/simple;
-	bh=KaqeEl9b5LntEQE7UsVYmlDTeZRAOCuVvkoAMngrfVI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yd+JH1CVkgq/YNcSkFFls+zjuoz8fDhkEvfhds+Ukvth8Cy96c0SsWKepXzmm7dcgafDio9WUDdPgUmcxz9wGHotA2DWrp2OVYuhDSszq6pZzljA3iKVU86RkvsZsfSmq/TapQ37TOV2R+rpVqfK7BVZKhm/Hgd3TKU8U4gW91w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DSouVp+B; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DSouVp+B"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753281908;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=bUa5CYWqKxWBN0mGvyl5+J333f/QeRW3CbgdWRbd6f4=;
-	b=DSouVp+BnVYg+LYWCPmfqXgxYheeKTC9pdTVhemIHYP7h0uZzwD6j/IGF0wCcAHA3r7lsj
-	6t2jxSUMxt+T6R0f/jpwWp/PrDiC9vmyePLejNP8TS+N86YJsXw+4+FmXk6BAXaga5S0zw
-	fJhjF7SSnVBqHjsnXOr/Lw3Q+6IDrrA=
-From: Tao Chen <chen.dylane@linux.dev>
-To: qmo@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	eddyz87@gmail.com,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	john.fastabend@gmail.com,
-	kpsingh@kernel.org,
-	sdf@fomichev.me,
-	haoluo@google.com,
-	jolsa@kernel.org,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	hawk@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Tao Chen <chen.dylane@linux.dev>
-Subject: [PATCH bpf-next v4 1/3] bpftool: Add bpf_token show
-Date: Wed, 23 Jul 2025 22:44:40 +0800
-Message-ID: <20250723144442.1427943-1-chen.dylane@linux.dev>
+	s=arc-20240116; t=1753281938; c=relaxed/simple;
+	bh=ytx5Wx3EuwngFK3Jxlb30QKnQtjx/IQhzvwLdRiJ5ZI=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Fbsi75m8cxCK1+i0cDFCHQ3abhHD/g3icBY5q+OHbN/q+ZdEc2FVOQ0A54iwEqmjxleI1an0rzfxfM0LuNwq8OR1y2l57VUFa5AP4AgmYhR27DnGrV6b8EnYUDhrmBkAzEcK1gp4FEMZ5FjO7lh74xhnNtFfrUOZvlQ7KAaJ9JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-87c30329a56so777448939f.1
+        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 07:45:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753281935; x=1753886735;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6J0xr1uO+ygDWs1lqz1tpCMN0HmdwzS8B6enhcpsCHw=;
+        b=Dg0ntWkZpB6nn8GYqlctT9bE9cULJKVKPt0hnAA8t3MaA0F86FdBviFXvcWo4iBhtR
+         ENWRZYKzBz3peA3hK7C0RobwRi2mY0fd9GJyPl+ILGx0lEGOxuhD/44rog5zzGv4aoUY
+         V6ttFwGTsHhoCk0QsIUqjq/ws1k1ik0R5CVdnoOAK7sBv91IrdYxyDKr1xjwpf1S4gPH
+         hnEKTip7r5WvvJ2eKtwwxXSabNZ5nledmQfFJcZ/bIP+IGiZs2Yn4j8wb6fW7mqkPxvJ
+         /skfof6m9SKMWSBYF+AF4DGsqkqVgV2Enio2dLyKf/7eajBTJjisVsP8fUy1ZbcIciQQ
+         Kedg==
+X-Forwarded-Encrypted: i=1; AJvYcCU2gRgRaWy9pZG0UJyz8CMIAmcNX9xlLTlvioDDCndzoC0h0Mo/rQvep25tUP79JduTiGvpu38=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxN6iThi8+6Kg1eSyAQ/9L7SzHEufABGrEgwmvNw+7RyVbki7W
+	Mgbp0WLCcnbku5o/iH0iE9BXVveqgdE5OzVKoF1KTqjKh4wYctqhK28e7MpBRCsmK4zmDpDFH4u
+	pZX5JRhsKRSGbKyBOTsOr9OsI9VWKPDJtYIRXgr0SobIXCNQDjkoqO6cpLI4=
+X-Google-Smtp-Source: AGHT+IHEO6vxWGYXkHxVFE0xnGLbD9LNiGLAjgXFVnLZRGGBzHfujx3JuOmvoNgTIWxWpn48UMjMmbRlei4fFNbsiiQlSbgVau1H
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Received: by 2002:a05:6602:e55:b0:879:c608:d1d5 with SMTP id
+ ca18e2360f4ac-87c6506e00bmr541701939f.14.1753281935005; Wed, 23 Jul 2025
+ 07:45:35 -0700 (PDT)
+Date: Wed, 23 Jul 2025 07:45:34 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6880f58e.050a0220.248954.0001.GAE@google.com>
+Subject: [syzbot] [tipc?] KMSAN: uninit-value in tipc_rcv (2)
+From: syzbot <syzbot+9a4fbb77c9d4aacd3388@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	jmaloy@redhat.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
+	tipc-discussion@lists.sourceforge.net
+Content-Type: text/plain; charset="UTF-8"
 
-Add `bpftool token show` command to get token info
-from bpffs in /proc/mounts.
+Hello,
 
-Example plain output for `token show`:
-token_info  /sys/fs/bpf/token
-	allowed_cmds:
-	  map_create          prog_load
-	allowed_maps:
-	allowed_progs:
-	  kprobe
-	allowed_attachs:
-	  xdp
-token_info  /sys/fs/bpf/token2
-	allowed_cmds:
-	  map_create          prog_load
-	allowed_maps:
-	allowed_progs:
-	  kprobe
-	allowed_attachs:
-	  xdp
+syzbot found the following issue on:
 
-Example json output for `token show`:
-[{
-	"token_info": "/sys/fs/bpf/token",
-	"allowed_cmds": ["map_create", "prog_load"],
-	"allowed_maps": [],
-	"allowed_progs": ["kprobe"],
-	"allowed_attachs": ["xdp"]
-}, {
-	"token_info": "/sys/fs/bpf/token2",
-	"allowed_cmds": ["map_create", "prog_load"],
-	"allowed_maps": [],
-	"allowed_progs": ["kprobe"],
-	"allowed_attachs": ["xdp"]
-}]
+HEAD commit:    4871b7cb27f4 Merge tag 'v6.16-rc6-smb3-client-fixes' of gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15bbe38c580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5227c65742122bdd
+dashboard link: https://syzkaller.appspot.com/bug?extid=9a4fbb77c9d4aacd3388
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+userspace arch: i386
 
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Signed-off-by: Tao Chen <chen.dylane@linux.dev>
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/e2e34a7999ba/disk-4871b7cb.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/834fdc8dbc07/vmlinux-4871b7cb.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/617fadfb9a8e/bzImage-4871b7cb.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+9a4fbb77c9d4aacd3388@syzkaller.appspotmail.com
+
+=====================================================
+BUG: KMSAN: uninit-value in tipc_rcv+0x17fa/0x1ea0 net/tipc/node.c:2132
+ tipc_rcv+0x17fa/0x1ea0 net/tipc/node.c:2132
+ tipc_l2_rcv_msg+0x213/0x320 net/tipc/bearer.c:668
+ __netif_receive_skb_list_ptype net/core/dev.c:6025 [inline]
+ __netif_receive_skb_list_core+0x133b/0x16b0 net/core/dev.c:6067
+ __netif_receive_skb_list net/core/dev.c:6119 [inline]
+ netif_receive_skb_list_internal+0xee7/0x1530 net/core/dev.c:6210
+ gro_normal_list include/net/gro.h:532 [inline]
+ napi_complete_done+0x3fb/0x7d0 net/core/dev.c:6580
+ napi_complete include/linux/netdevice.h:588 [inline]
+ tun_get_user+0x4ac4/0x6b40 drivers/net/tun.c:1909
+ tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1984
+ do_iter_readv_writev+0x94a/0xba0 fs/read_write.c:-1
+ vfs_writev+0x52a/0x1500 fs/read_write.c:1057
+ do_writev+0x1b5/0x580 fs/read_write.c:1103
+ __do_sys_writev fs/read_write.c:1171 [inline]
+ __se_sys_writev fs/read_write.c:1168 [inline]
+ __ia32_sys_writev+0x9c/0xf0 fs/read_write.c:1168
+ ia32_sys_call+0x3f2a/0x42c0 arch/x86/include/generated/asm/syscalls_32.h:147
+ do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+ __do_fast_syscall_32+0xb0/0x150 arch/x86/entry/syscall_32.c:306
+ do_fast_syscall_32+0x38/0x80 arch/x86/entry/syscall_32.c:331
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/syscall_32.c:369
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:4154 [inline]
+ slab_alloc_node mm/slub.c:4197 [inline]
+ kmem_cache_alloc_node_noprof+0x818/0xf00 mm/slub.c:4249
+ kmalloc_reserve+0x13c/0x4b0 net/core/skbuff.c:579
+ __alloc_skb+0x347/0x7d0 net/core/skbuff.c:670
+ napi_alloc_skb+0xc1/0x740 net/core/skbuff.c:812
+ napi_get_frags+0xab/0x250 net/core/gro.c:673
+ tun_napi_alloc_frags drivers/net/tun.c:1404 [inline]
+ tun_get_user+0x1246/0x6b40 drivers/net/tun.c:1772
+ tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1984
+ do_iter_readv_writev+0x94a/0xba0 fs/read_write.c:-1
+ vfs_writev+0x52a/0x1500 fs/read_write.c:1057
+ do_writev+0x1b5/0x580 fs/read_write.c:1103
+ __do_sys_writev fs/read_write.c:1171 [inline]
+ __se_sys_writev fs/read_write.c:1168 [inline]
+ __ia32_sys_writev+0x9c/0xf0 fs/read_write.c:1168
+ ia32_sys_call+0x3f2a/0x42c0 arch/x86/include/generated/asm/syscalls_32.h:147
+ do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+ __do_fast_syscall_32+0xb0/0x150 arch/x86/entry/syscall_32.c:306
+ do_fast_syscall_32+0x38/0x80 arch/x86/entry/syscall_32.c:331
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/syscall_32.c:369
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+
+CPU: 0 UID: 0 PID: 15202 Comm: syz.3.3410 Not tainted 6.16.0-rc6-syzkaller-00253-g4871b7cb27f4 #0 PREEMPT(none) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+=====================================================
+
+
 ---
- tools/bpf/bpftool/main.c  |   3 +-
- tools/bpf/bpftool/main.h  |   1 +
- tools/bpf/bpftool/token.c | 225 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 228 insertions(+), 1 deletion(-)
- create mode 100644 tools/bpf/bpftool/token.c
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Change list:
- v3 -> v4:
-  - patch1
-   - fix CHECK coding style with 'checkpatch.pl --strict'
-   - repalce [tab] with space when show help information
-  - patchset reviewed-by Quentin
- v3: https://lore.kernel.org/bpf/20250723033107.1411154-1-chen.dylane@linux.dev
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
- v2 -> v3:
-  Quentin suggested:
-  - patch1
-   - remove print when token not found.
-  - patch2
-   - refactor description message.
-  - patch3
-   - update commit message.
- v2: https://lore.kernel.org/bpf/20250722115815.1390761-1-chen.dylane@linux.dev
-     https://lore.kernel.org/bpf/20250722120912.1391604-2-chen.dylane@linux.dev
-  
- v1 -> v2:
-  Quentin suggested:
-  - patch1
-   - remove zclose macro.
-   - rename __json_array_str to split_json_array_str
-   - print empty array when value is null for json format.
-   - show all tokens info and format plain output for readable.
-   - add info when token not found.
-   - add copyright in token.c
-  - patch2
-   - update 'eBPF progs' to 'eBPF tokens'.
-   - update description.
-  - patch3
-   - add bash-completion.
- v1: https://lore.kernel.org/bpf/20250720173310.1334483-1-chen.dylane@linux.dev
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-diff --git a/tools/bpf/bpftool/main.c b/tools/bpf/bpftool/main.c
-index 2b7f2bd3a7d..0f1183b2ed0 100644
---- a/tools/bpf/bpftool/main.c
-+++ b/tools/bpf/bpftool/main.c
-@@ -61,7 +61,7 @@ static int do_help(int argc, char **argv)
- 		"       %s batch file FILE\n"
- 		"       %s version\n"
- 		"\n"
--		"       OBJECT := { prog | map | link | cgroup | perf | net | feature | btf | gen | struct_ops | iter }\n"
-+		"       OBJECT := { prog | map | link | cgroup | perf | net | feature | btf | gen | struct_ops | iter | token }\n"
- 		"       " HELP_SPEC_OPTIONS " |\n"
- 		"                    {-V|--version} }\n"
- 		"",
-@@ -87,6 +87,7 @@ static const struct cmd commands[] = {
- 	{ "gen",	do_gen },
- 	{ "struct_ops",	do_struct_ops },
- 	{ "iter",	do_iter },
-+	{ "token",	do_token },
- 	{ "version",	do_version },
- 	{ 0 }
- };
-diff --git a/tools/bpf/bpftool/main.h b/tools/bpf/bpftool/main.h
-index 6db704fda5c..a2bb0714b3d 100644
---- a/tools/bpf/bpftool/main.h
-+++ b/tools/bpf/bpftool/main.h
-@@ -166,6 +166,7 @@ int do_tracelog(int argc, char **arg) __weak;
- int do_feature(int argc, char **argv) __weak;
- int do_struct_ops(int argc, char **argv) __weak;
- int do_iter(int argc, char **argv) __weak;
-+int do_token(int argc, char **argv) __weak;
- 
- int parse_u32_arg(int *argc, char ***argv, __u32 *val, const char *what);
- int prog_parse_fd(int *argc, char ***argv);
-diff --git a/tools/bpf/bpftool/token.c b/tools/bpf/bpftool/token.c
-new file mode 100644
-index 00000000000..6312e662a12
---- /dev/null
-+++ b/tools/bpf/bpftool/token.c
-@@ -0,0 +1,225 @@
-+// SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+/* Copyright (C) 2025 Didi Technology Co., Tao Chen */
-+
-+#ifndef _GNU_SOURCE
-+#define _GNU_SOURCE
-+#endif
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <mntent.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+
-+#include "json_writer.h"
-+#include "main.h"
-+
-+#define MOUNTS_FILE "/proc/mounts"
-+
-+static bool has_delegate_options(const char *mnt_ops)
-+{
-+	return strstr(mnt_ops, "delegate_cmds") ||
-+	       strstr(mnt_ops, "delegate_maps") ||
-+	       strstr(mnt_ops, "delegate_progs") ||
-+	       strstr(mnt_ops, "delegate_attachs");
-+}
-+
-+static char *get_delegate_value(const char *opts, const char *key)
-+{
-+	char *token, *rest, *ret = NULL;
-+	char *opts_copy = strdup(opts);
-+
-+	if (!opts_copy)
-+		return NULL;
-+
-+	for (token = strtok_r(opts_copy, ",", &rest); token;
-+			token = strtok_r(NULL, ",", &rest)) {
-+		if (strncmp(token, key, strlen(key)) == 0 &&
-+		    token[strlen(key)] == '=') {
-+			ret = token + strlen(key) + 1;
-+			break;
-+		}
-+	}
-+	free(opts_copy);
-+
-+	return ret;
-+}
-+
-+static void print_items_per_line(const char *input, int items_per_line)
-+{
-+	char *str, *rest, *strs;
-+	int cnt = 0;
-+
-+	if (!input)
-+		return;
-+
-+	strs = strdup(input);
-+	if (!strs)
-+		return;
-+
-+	for (str = strtok_r(strs, ":", &rest); str;
-+			str = strtok_r(NULL, ":", &rest)) {
-+		if (cnt % items_per_line == 0)
-+			printf("\n\t  ");
-+
-+		printf("%-20s", str);
-+		cnt++;
-+	}
-+
-+	free(strs);
-+}
-+
-+#define ITEMS_PER_LINE 4
-+static void show_token_info_plain(struct mntent *mntent)
-+{
-+	char *value;
-+
-+	printf("token_info  %s", mntent->mnt_dir);
-+
-+	printf("\n\tallowed_cmds:");
-+	value = get_delegate_value(mntent->mnt_opts, "delegate_cmds");
-+	print_items_per_line(value, ITEMS_PER_LINE);
-+
-+	printf("\n\tallowed_maps:");
-+	value = get_delegate_value(mntent->mnt_opts, "delegate_maps");
-+	print_items_per_line(value, ITEMS_PER_LINE);
-+
-+	printf("\n\tallowed_progs:");
-+	value = get_delegate_value(mntent->mnt_opts, "delegate_progs");
-+	print_items_per_line(value, ITEMS_PER_LINE);
-+
-+	printf("\n\tallowed_attachs:");
-+	value = get_delegate_value(mntent->mnt_opts, "delegate_attachs");
-+	print_items_per_line(value, ITEMS_PER_LINE);
-+	printf("\n");
-+}
-+
-+static void split_json_array_str(const char *input)
-+{
-+	char *str, *rest, *strs;
-+
-+	if (!input) {
-+		jsonw_start_array(json_wtr);
-+		jsonw_end_array(json_wtr);
-+		return;
-+	}
-+
-+	strs = strdup(input);
-+	if (!strs)
-+		return;
-+
-+	jsonw_start_array(json_wtr);
-+	for (str = strtok_r(strs, ":", &rest); str;
-+			str = strtok_r(NULL, ":", &rest)) {
-+		jsonw_string(json_wtr, str);
-+	}
-+	jsonw_end_array(json_wtr);
-+
-+	free(strs);
-+}
-+
-+static void show_token_info_json(struct mntent *mntent)
-+{
-+	char *value;
-+
-+	jsonw_start_object(json_wtr);
-+
-+	jsonw_string_field(json_wtr, "token_info", mntent->mnt_dir);
-+
-+	jsonw_name(json_wtr, "allowed_cmds");
-+	value = get_delegate_value(mntent->mnt_opts, "delegate_cmds");
-+	split_json_array_str(value);
-+
-+	jsonw_name(json_wtr, "allowed_maps");
-+	value = get_delegate_value(mntent->mnt_opts, "delegate_maps");
-+	split_json_array_str(value);
-+
-+	jsonw_name(json_wtr, "allowed_progs");
-+	value = get_delegate_value(mntent->mnt_opts, "delegate_progs");
-+	split_json_array_str(value);
-+
-+	jsonw_name(json_wtr, "allowed_attachs");
-+	value = get_delegate_value(mntent->mnt_opts, "delegate_attachs");
-+	split_json_array_str(value);
-+
-+	jsonw_end_object(json_wtr);
-+}
-+
-+static int __show_token_info(struct mntent *mntent)
-+{
-+	if (json_output)
-+		show_token_info_json(mntent);
-+	else
-+		show_token_info_plain(mntent);
-+
-+	return 0;
-+}
-+
-+static int show_token_info(void)
-+{
-+	FILE *fp;
-+	struct mntent *ent;
-+
-+	fp = setmntent(MOUNTS_FILE, "r");
-+	if (!fp) {
-+		p_err("Failed to open: %s", MOUNTS_FILE);
-+		return -1;
-+	}
-+
-+	if (json_output)
-+		jsonw_start_array(json_wtr);
-+
-+	while ((ent = getmntent(fp)) != NULL) {
-+		if (strncmp(ent->mnt_type, "bpf", 3) == 0) {
-+			if (has_delegate_options(ent->mnt_opts))
-+				__show_token_info(ent);
-+		}
-+	}
-+
-+	if (json_output)
-+		jsonw_end_array(json_wtr);
-+
-+	endmntent(fp);
-+
-+	return 0;
-+}
-+
-+static int do_show(int argc, char **argv)
-+{
-+	if (argc)
-+		return BAD_ARG();
-+
-+	return show_token_info();
-+}
-+
-+static int do_help(int argc, char **argv)
-+{
-+	if (json_output) {
-+		jsonw_null(json_wtr);
-+		return 0;
-+	}
-+
-+	fprintf(stderr,
-+		"Usage: %1$s %2$s { show | list }\n"
-+		"       %1$s %2$s help\n"
-+		"\n"
-+		"",
-+		bin_name, argv[-2]);
-+	return 0;
-+}
-+
-+static const struct cmd cmds[] = {
-+	{ "show",	do_show },
-+	{ "list",	do_show },
-+	{ "help",	do_help },
-+	{ 0 }
-+};
-+
-+int do_token(int argc, char **argv)
-+{
-+	return cmd_select(cmds, argc, argv, do_help);
-+}
--- 
-2.48.1
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
