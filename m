@@ -1,34 +1,35 @@
 Received: from mail.ionic.de (ionic.de [145.239.234.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933CF21ABC1;
-	Wed, 23 Jul 2025 23:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C6B274FC2;
+	Wed, 23 Jul 2025 23:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.234.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753313077; cv=none; b=rzELoMysdlGsnURnL/ZjVb86vPl8QguqeNwhQmmpVuVvKq4SUmMsmTb5A6eUfa3elErVxRahqQZCpyOJonauxnKCuX9tp5d7AHOaJUEr1z3lSJ5EisSnB0R9kN2vOFfg5XXo9xqRIBHTN9NMlFqJh0En4VKn1emELm65cq71sDs=
+	t=1753313079; cv=none; b=BV1A8PgWni53pHe08QnKd9GPMOCJrkmnWNeocOP4G9FdjcKBy6ntDt5rQWjz0d17c2L282aSAdAmAnm7/0UvKdrt0Pfm4J6GyT845jzc6Cm9xOX+uvrxRh9zxCa4MkX8uHBwZbLrfmsEIYL0TTGFNLfi8rij6Fe52PgmzW5X0SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753313077; c=relaxed/simple;
-	bh=5m5Z7rnKJd9uHLf9I9bz0+5lkNs2dSsbxUlOE5rVAfM=;
+	s=arc-20240116; t=1753313079; c=relaxed/simple;
+	bh=dLmLootIwDWz7HMCxoF81qoWZ5lCPPT1GMJxSIlBhUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWuoPt5rkQY887LoAt3uvSkSIcp1aXuEdLDeVcrM1VyaadoYn+UlzPpMXZjA3t1szBxOqut9pwar1JnV7rIQzSbV/AZBVa6xZ2jW7BLh3l6HFI6pPIOcGSC1jnE5kM6AkEyV/K+3AByXnlUCRn/8yMQ5atj9zMGgiHU+B2S+pZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=To/cMw0T; arc=none smtp.client-ip=145.239.234.145
+	 MIME-Version; b=FYkJJwhlBuE+2NhIz2p7vzIrukUYbYXKuftgy7oCpEVnhY/LqQBSw2GUkzd3+7d82hVtUd50Ps0FZY7vekIdrXpyUhxRGuLxnIzQ3Ci3O6g4yTdh1gQHX820UNxSfaZ9CYugIqBg7B8Iy98anBUNd3Rm6uFJ8s/RYIIXNvxlIDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=GHF8wjn8; arc=none smtp.client-ip=145.239.234.145
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionic.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="To/cMw0T"
+	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="GHF8wjn8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ionic.de; s=default;
-	t=1753313065; bh=5m5Z7rnKJd9uHLf9I9bz0+5lkNs2dSsbxUlOE5rVAfM=;
+	t=1753313066; bh=dLmLootIwDWz7HMCxoF81qoWZ5lCPPT1GMJxSIlBhUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=To/cMw0Tp4+lg4kNUW5D03D5h/Tq9c9quCrWg3/Spdj/gjWUEVvBtoYpQlogI917s
-	 92eZ/ZPjo8wz4b0eZj4zqmVqK7SUurZb0xVZKvBNmt3KosJLkyFYMgSg9Ewuo1VpC/
-	 ebYm0brp7rB+jmrt/979Jxf+IGTsKOB/JSgE0Jfk=
+	b=GHF8wjn8FHR9DMM4WaDCGmuLqTKsV/+Usk78KFAUk4k65rADbAxieRqb7iSDRDmJ4
+	 9BhqbmS7jAO6bYtZapgi0k05akWaL5SDBf8QCCjr48j+kKIz2AnyPQpPrEd6UJPNx8
+	 Rk6IY0fi/VzYsvmxRHeONozn3hpokPSmFwAaGoYg=
 Received: from grml.local.home.ionic.de (unknown [IPv6:2a00:11:fb41:7a00:21b:21ff:fe5e:dddc])
-	by mail.ionic.de (Postfix) with ESMTPSA id A3CBC1488DA1;
-	Thu, 24 Jul 2025 01:24:25 +0200 (CEST)
+	by mail.ionic.de (Postfix) with ESMTPSA id 249691488F7C;
+	Thu, 24 Jul 2025 01:24:26 +0200 (CEST)
 From: Mihai Moldovan <ionic@ionic.de>
 To: linux-arm-msm@vger.kernel.org,
 	Manivannan Sadhasivam <mani@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>,
+Cc: Denis Kenzior <denkenz@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Willem de Bruijn <willemb@google.com>,
@@ -37,9 +38,9 @@ Cc: Eric Dumazet <edumazet@google.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH v3 03/11] net: qrtr: fit node ID + port number combination into unsigned long
-Date: Thu, 24 Jul 2025 01:24:00 +0200
-Message-ID: <c60cc5f238873f72ef6f49582fb87ae7122853d5.1753312999.git.ionic@ionic.de>
+Subject: [PATCH v3 05/11] net: qrtr: Report sender endpoint in aux data
+Date: Thu, 24 Jul 2025 01:24:02 +0200
+Message-ID: <30c2c4547108dd0baa638f8ed3cf493a3bc06bc2.1753312999.git.ionic@ionic.de>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <cover.1753312999.git.ionic@ionic.de>
 References: <cover.1753312999.git.ionic@ionic.de>
@@ -51,216 +52,206 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The flow control implementation uses a radix tree to store node ID and
-port number combinations and the key length is hardcoded to unsigned
-long.
+From: Denis Kenzior <denkenz@gmail.com>
 
-The original implementation shifted the node ID up by 32 bits and added
-the port number to the lower 64 bits of the unsigned long value to
-create a key.
+Introduce support for reporting the remote endpoint that generated a
+given QRTR message to clients using AF_QIPCRTR family sockets. This is
+achieved by including QRTR_ENDPOINT auxiliary data, which carries the
+endpoint identifier of the message sender.  To receive this auxiliary
+data, clients must explicitly opt-in by using setsockopt with the
+QRTR_REPORT_ENDPOINT option enabled.
 
-Unfortunately, since both node IDs and port numbers are defined as u32,
-this will overflow on platforms where sizeof(unsigned long) < 8 (which
-are most 32 bit platforms) and essentially just drop the node ID part.
+Implementation of getsockopt and setsockopt is provided.  An additional
+level 'SOL_QRTR' is added to socket.h for use by AF_QIPCRTR family
+sockets.
 
-To fix this, build the key in a generic way, using half of the unsigned
-long space for the node ID and the other half for the port number.
-
-This will be transparent to platforms where sizeof(unsigned long) >= 8
-and fix overflow issues otherwise.
-
-The caveat, of course. is that, for platforms where
-sizeof(unsigned long) < 8, the supported amount of node IDs and port
-numbers will be severely limited - to half of sizeof(unsigned long),
-which typically will be 16 bits. Needless to say, we have to check if
-both values fit into this limit.
-
-This limitation is probably not going to be an issue in real-world
-scenarios, but if it turns out to be one after all, we could switch from
-a radix tree implementation to an XArray implementation.
-
+Signed-off-by: Denis Kenzior <denkenz@gmail.com>
+Reviewed-by: Marcel Holtmann <marcel@holtmann.org>
+Reviewed-by: Andy Gross <agross@kernel.org>
 Signed-off-by: Mihai Moldovan <ionic@ionic.de>
-Fixes: 5fdeb0d372ab ("net: qrtr: Implement outgoing flow control")
 
 ---
 
 v3:
-  - introduce commit
----
- net/qrtr/af_qrtr.c | 76 +++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 65 insertions(+), 11 deletions(-)
+  - rebase against current master
+  - fix checkpatch.pl whitespace warning
+  - Link to v2: https://msgid.link/8dc0c9f99f617db348af5b176bb03b4c11ac9138.1752947108.git.ionic@ionic.de
 
+v2:
+  - rebase against current master
+  - dropped socket locking in qrtr_setsockopt() and qrtr_getsockopt() as
+    per review comment
+  - Link to v1: https://msgid.link/20241018181842.1368394-5-denkenz@gmail.com
+---
+ include/linux/socket.h    |  1 +
+ include/uapi/linux/qrtr.h |  6 +++
+ net/qrtr/af_qrtr.c        | 77 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 84 insertions(+)
+
+diff --git a/include/linux/socket.h b/include/linux/socket.h
+index 3b262487ec06..0698a11bb2e2 100644
+--- a/include/linux/socket.h
++++ b/include/linux/socket.h
+@@ -386,6 +386,7 @@ struct ucred {
+ #define SOL_MCTP	285
+ #define SOL_SMC		286
+ #define SOL_VSOCK	287
++#define SOL_QRTR	288
+ 
+ /* IPX options */
+ #define IPX_TYPE	1
+diff --git a/include/uapi/linux/qrtr.h b/include/uapi/linux/qrtr.h
+index f7e2fb3d752b..6d0911984a05 100644
+--- a/include/uapi/linux/qrtr.h
++++ b/include/uapi/linux/qrtr.h
+@@ -46,4 +46,10 @@ struct qrtr_ctrl_pkt {
+ 	};
+ } __packed;
+ 
++/* setsockopt / getsockopt */
++#define QRTR_REPORT_ENDPOINT 1
++
++/* CMSG */
++#define QRTR_ENDPOINT 1
++
+ #endif /* _LINUX_QRTR_H */
 diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index be275871fb2a..1cb13242e41b 100644
+index d6efd7f2eddf..0d21acb465ee 100644
 --- a/net/qrtr/af_qrtr.c
 +++ b/net/qrtr/af_qrtr.c
-@@ -117,13 +117,33 @@ static u32 next_endpoint_id;
- /* local port allocation management */
- static DEFINE_XARRAY_ALLOC(qrtr_ports);
+@@ -26,6 +26,10 @@
  
-+/* The radix tree API uses fixed unsigned long keys and we will have to make
-+ * do with that.
-+ * These keys are often a combination of node IDs (currently u32) and
-+ * port numbers (also currently u32).
-+ * Using the high 32 bits for the node ID and the low 32 bits for the
-+ * port number will work fine to create keys on platforms where unsigned long
-+ * is 64 bits wide, but obviously is not be possible on platforms where
-+ * unsigned long is smaller.
-+ * Virtually split up unsigned long in half and assign the upper bits to
-+ * node IDs and the lower bits to the port number, however big that may be.
-+ */
-+#define QRTR_INDEX_HALF_BITS (RADIX_TREE_INDEX_BITS >> 1)
-+
-+#define QRTR_INDEX_HALF_UNSIGNED_MAX ((~(unsigned long)(0)) >> QRTR_INDEX_HALF_BITS)
-+#define QRTR_INDEX_HALF_UNSIGNED_MIN ((unsigned long)(0))
-+
-+#define QRTR_INDEX_HALF_SIGNED_MAX ((long)(QRTR_INDEX_HALF_UNSIGNED_MAX) >> 1)
-+#define QRTR_INDEX_HALF_SIGNED_MIN ((long)(-1) - QRTR_INDEX_HALF_SIGNED_MAX)
+ #define QRTR_PORT_CTRL_LEGACY 0xffff
+ 
++enum {
++	QRTR_F_REPORT_ENDPOINT,
++};
 +
  /**
-  * struct qrtr_node - endpoint node
-  * @ep_lock: lock for endpoint management and callbacks
-  * @ep: endpoint
-  * @ref: reference count for node
-  * @nid: node id
-- * @qrtr_tx_flow: tree of qrtr_tx_flow, keyed by node << 32 | port
-+ * @qrtr_tx_flow: tree of qrtr_tx_flow, keyed by
-+ *                node << QRTR_INDEX_HALF_BITS | port
-  * @qrtr_tx_lock: lock for qrtr_tx_flow inserts
-  * @rx_queue: receive queue
-  * @item: list item for broadcast list
-@@ -222,16 +242,23 @@ static void qrtr_node_release(struct qrtr_node *node)
-  * qrtr_tx_resume() - reset flow control counter
-  * @node:	qrtr_node that the QRTR_TYPE_RESUME_TX packet arrived on
-  * @skb:	resume_tx packet
-+ *
-+ * Return: 0 on success; negative error code on failure
-  */
--static void qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
-+static int qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
- {
- 	struct qrtr_ctrl_pkt *pkt = (struct qrtr_ctrl_pkt *)skb->data;
- 	u64 remote_node = le32_to_cpu(pkt->client.node);
- 	u32 remote_port = le32_to_cpu(pkt->client.port);
- 	struct qrtr_tx_flow *flow;
--	unsigned long key;
-+	unsigned long key = 0;
+  * struct qrtr_hdr_v1 - (I|R)PCrouter packet header version 1
+  * @version: protocol version
+@@ -79,6 +83,7 @@ struct qrtr_cb {
+ 	u32 src_port;
+ 	u32 dst_node;
+ 	u32 dst_port;
++	u32 endpoint_id;
  
--	key = remote_node << 32 | remote_port;
-+	if (remote_node > QRTR_INDEX_HALF_UNSIGNED_MAX ||
-+	    remote_port > QRTR_INDEX_HALF_UNSIGNED_MAX)
-+		return -EINVAL;
+ 	u8 type;
+ 	u8 confirm_rx;
+@@ -92,6 +97,7 @@ struct qrtr_sock {
+ 	struct sock sk;
+ 	struct sockaddr_qrtr us;
+ 	struct sockaddr_qrtr peer;
++	unsigned long flags;
+ };
+ 
+ static inline struct qrtr_sock *qrtr_sk(struct sock *sk)
+@@ -575,6 +581,8 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
+ 	if (cb->dst_port == QRTR_PORT_CTRL_LEGACY)
+ 		cb->dst_port = QRTR_PORT_CTRL;
+ 
++	cb->endpoint_id = ep->id;
 +
-+	key = ((unsigned long)(remote_node) << QRTR_INDEX_HALF_BITS) |
-+	      ((unsigned long)(remote_port) & QRTR_INDEX_HALF_UNSIGNED_MAX);
+ 	if (!size || len != ALIGN(size, 4) + hdrlen)
+ 		goto err;
  
- 	rcu_read_lock();
- 	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
-@@ -244,6 +271,8 @@ static void qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
+@@ -1134,6 +1142,7 @@ static int qrtr_recvmsg(struct socket *sock, struct msghdr *msg,
+ 			size_t size, int flags)
+ {
+ 	DECLARE_SOCKADDR(struct sockaddr_qrtr *, addr, msg->msg_name);
++	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
+ 	struct sock *sk = sock->sk;
+ 	struct sk_buff *skb;
+ 	struct qrtr_cb *cb;
+@@ -1159,6 +1168,10 @@ static int qrtr_recvmsg(struct socket *sock, struct msghdr *msg,
+ 		msg->msg_flags |= MSG_TRUNC;
  	}
  
- 	consume_skb(skb);
++	if (cb->endpoint_id && test_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags))
++		put_cmsg(msg, SOL_QRTR, QRTR_ENDPOINT,
++			 sizeof(cb->endpoint_id), &cb->endpoint_id);
 +
-+	return 0;
- }
- 
- /**
-@@ -264,11 +293,20 @@ static void qrtr_tx_resume(struct qrtr_node *node, struct sk_buff *skb)
- static int qrtr_tx_wait(struct qrtr_node *node, int dest_node, int dest_port,
- 			int type)
- {
--	unsigned long key = (u64)dest_node << 32 | dest_port;
-+	unsigned long key = 0;
- 	struct qrtr_tx_flow *flow;
- 	int confirm_rx = 0;
- 	int ret;
- 
-+	if (dest_node < QRTR_INDEX_HALF_SIGNED_MIN ||
-+	    dest_node > QRTR_INDEX_HALF_SIGNED_MAX ||
-+	    dest_port < QRTR_INDEX_HALF_SIGNED_MIN ||
-+	    dest_port > QRTR_INDEX_HALF_SIGNED_MAX)
-+		return -EINVAL;
-+
-+	key = ((unsigned long)(dest_node) << QRTR_INDEX_HALF_BITS) |
-+	      ((unsigned long)(dest_port) & QRTR_INDEX_HALF_UNSIGNED_MAX);
-+
- 	/* Never set confirm_rx on non-data packets */
- 	if (type != QRTR_TYPE_DATA)
- 		return 0;
-@@ -324,13 +362,24 @@ static int qrtr_tx_wait(struct qrtr_node *node, int dest_node, int dest_port,
-  * message associated with the dropped confirm_rx message.
-  * Work around this by marking the flow as having a failed transmission and
-  * cause the next transmission attempt to be sent with the confirm_rx.
-+ *
-+ * Return: 0 on success; negative error code on failure
-  */
--static void qrtr_tx_flow_failed(struct qrtr_node *node, int dest_node,
--				int dest_port)
-+static int qrtr_tx_flow_failed(struct qrtr_node *node, int dest_node,
-+			       int dest_port)
- {
--	unsigned long key = (u64)dest_node << 32 | dest_port;
-+	unsigned long key = 0;
- 	struct qrtr_tx_flow *flow;
- 
-+	if (dest_node < QRTR_INDEX_HALF_SIGNED_MIN ||
-+	    dest_node > QRTR_INDEX_HALF_SIGNED_MAX ||
-+	    dest_port < QRTR_INDEX_HALF_SIGNED_MIN ||
-+	    dest_port > QRTR_INDEX_HALF_SIGNED_MAX)
-+		return -EINVAL;
-+
-+	key = ((unsigned long)(dest_node) << QRTR_INDEX_HALF_BITS) |
-+	      ((unsigned long)(dest_port) & QRTR_INDEX_HALF_UNSIGNED_MAX);
-+
- 	rcu_read_lock();
- 	flow = radix_tree_lookup(&node->qrtr_tx_flow, key);
- 	rcu_read_unlock();
-@@ -339,6 +388,8 @@ static void qrtr_tx_flow_failed(struct qrtr_node *node, int dest_node,
- 		flow->tx_failed = 1;
- 		spin_unlock_irq(&flow->resume_tx.lock);
- 	}
-+
-+	return 0;
- }
- 
- /* Pass an outgoing packet socket buffer to the endpoint driver. */
-@@ -386,7 +437,7 @@ static int qrtr_node_enqueue(struct qrtr_node *node, struct sk_buff *skb,
- 	/* Need to ensure that a subsequent message carries the otherwise lost
- 	 * confirm_rx flag if we dropped this one */
- 	if (rc && confirm_rx)
--		qrtr_tx_flow_failed(node, to->sq_node, to->sq_port);
-+		rc = qrtr_tx_flow_failed(node, to->sq_node, to->sq_port);
- 
+ 	rc = skb_copy_datagram_msg(skb, 0, msg, copied);
+ 	if (rc < 0)
+ 		goto out;
+@@ -1304,6 +1317,68 @@ static int qrtr_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
  	return rc;
  }
-@@ -448,6 +499,7 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
- 	size_t size;
- 	unsigned int ver;
- 	size_t hdrlen;
-+	int ret = -EINVAL;
  
- 	if (len == 0 || len & 3)
- 		return -EINVAL;
-@@ -530,7 +582,9 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
- 	}
++static int qrtr_setsockopt(struct socket *sock, int level, int optname,
++			   sockptr_t optval, unsigned int optlen)
++{
++	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
++	unsigned int val = 0;
++	int rc = 0;
++
++	if (level != SOL_QRTR)
++		return -ENOPROTOOPT;
++
++	if (optlen >= sizeof(val) &&
++	    copy_from_sockptr(&val, optval, sizeof(val)))
++		return -EFAULT;
++
++	switch (optname) {
++	case QRTR_REPORT_ENDPOINT:
++		assign_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags, val);
++		break;
++	default:
++		rc = -ENOPROTOOPT;
++	}
++
++	return rc;
++}
++
++static int qrtr_getsockopt(struct socket *sock, int level, int optname,
++			   char __user *optval, int __user *optlen)
++{
++	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
++	unsigned int val;
++	int len;
++	int rc = 0;
++
++	if (level != SOL_QRTR)
++		return -ENOPROTOOPT;
++
++	if (get_user(len, optlen))
++		return -EFAULT;
++
++	if (len < sizeof(val))
++		return -EINVAL;
++
++	switch (optname) {
++	case QRTR_REPORT_ENDPOINT:
++		val = test_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags);
++		break;
++	default:
++		rc = -ENOPROTOOPT;
++	}
++
++	if (rc)
++		return rc;
++
++	len = sizeof(int);
++
++	if (put_user(len, optlen) ||
++	    copy_to_user(optval, &val, len))
++		rc = -EFAULT;
++
++	return rc;
++}
++
+ static int qrtr_release(struct socket *sock)
+ {
+ 	struct sock *sk = sock->sk;
+@@ -1351,6 +1426,8 @@ static const struct proto_ops qrtr_proto_ops = {
+ 	.shutdown	= sock_no_shutdown,
+ 	.release	= qrtr_release,
+ 	.mmap		= sock_no_mmap,
++	.setsockopt	= qrtr_setsockopt,
++	.getsockopt	= qrtr_getsockopt,
+ };
  
- 	if (cb->type == QRTR_TYPE_RESUME_TX) {
--		qrtr_tx_resume(node, skb);
-+		ret = qrtr_tx_resume(node, skb);
-+		if (ret)
-+			goto err;
- 	} else {
- 		ipc = qrtr_port_lookup(cb->dst_port);
- 		if (!ipc)
-@@ -548,7 +602,7 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
- 
- err:
- 	kfree_skb(skb);
--	return -EINVAL;
-+	return ret;
- 
- }
- EXPORT_SYMBOL_GPL(qrtr_endpoint_post);
+ static struct proto qrtr_proto = {
 -- 
 2.50.0
 
