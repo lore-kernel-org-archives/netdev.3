@@ -1,151 +1,148 @@
-Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D51C2EAD06
-	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 14:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDB6280CE5
+	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 14:45:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753281938; cv=none; b=e1lqEF9VgA17uS5xZPNwPA9yZh6ZFjqyIYadcpGwox98h1PBJ+fafymnjprMx9EpmYFngosifscYIqNNJW13PrHanO85y8JgTnqwITTIQ3njEFqVCG3Cygo+wH7Sw4npJQ9wQeZPjHjYO7jqPOwmv+bZmuhXte7bGp0Ju1KHnpY=
+	t=1753281944; cv=none; b=hOjMV2jLKe5+3vljfR4rZ11vhq96/1hleRtusT6FHTowB0TRpRXpDQqk92gNd39ruV4skcjl9ytl1FqOjLHO6J6LTAtL6jEZSNQx3ZqT05BqZbegwMvUUHKkWtQ8NeuJp4cd0lGx3bHD4LSgmwoF4MD+dN0OPo9aYwwKBmf3VqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753281938; c=relaxed/simple;
-	bh=ytx5Wx3EuwngFK3Jxlb30QKnQtjx/IQhzvwLdRiJ5ZI=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Fbsi75m8cxCK1+i0cDFCHQ3abhHD/g3icBY5q+OHbN/q+ZdEc2FVOQ0A54iwEqmjxleI1an0rzfxfM0LuNwq8OR1y2l57VUFa5AP4AgmYhR27DnGrV6b8EnYUDhrmBkAzEcK1gp4FEMZ5FjO7lh74xhnNtFfrUOZvlQ7KAaJ9JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-87c30329a56so777448939f.1
-        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 07:45:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753281935; x=1753886735;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6J0xr1uO+ygDWs1lqz1tpCMN0HmdwzS8B6enhcpsCHw=;
-        b=Dg0ntWkZpB6nn8GYqlctT9bE9cULJKVKPt0hnAA8t3MaA0F86FdBviFXvcWo4iBhtR
-         ENWRZYKzBz3peA3hK7C0RobwRi2mY0fd9GJyPl+ILGx0lEGOxuhD/44rog5zzGv4aoUY
-         V6ttFwGTsHhoCk0QsIUqjq/ws1k1ik0R5CVdnoOAK7sBv91IrdYxyDKr1xjwpf1S4gPH
-         hnEKTip7r5WvvJ2eKtwwxXSabNZ5nledmQfFJcZ/bIP+IGiZs2Yn4j8wb6fW7mqkPxvJ
-         /skfof6m9SKMWSBYF+AF4DGsqkqVgV2Enio2dLyKf/7eajBTJjisVsP8fUy1ZbcIciQQ
-         Kedg==
-X-Forwarded-Encrypted: i=1; AJvYcCU2gRgRaWy9pZG0UJyz8CMIAmcNX9xlLTlvioDDCndzoC0h0Mo/rQvep25tUP79JduTiGvpu38=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxN6iThi8+6Kg1eSyAQ/9L7SzHEufABGrEgwmvNw+7RyVbki7W
-	Mgbp0WLCcnbku5o/iH0iE9BXVveqgdE5OzVKoF1KTqjKh4wYctqhK28e7MpBRCsmK4zmDpDFH4u
-	pZX5JRhsKRSGbKyBOTsOr9OsI9VWKPDJtYIRXgr0SobIXCNQDjkoqO6cpLI4=
-X-Google-Smtp-Source: AGHT+IHEO6vxWGYXkHxVFE0xnGLbD9LNiGLAjgXFVnLZRGGBzHfujx3JuOmvoNgTIWxWpn48UMjMmbRlei4fFNbsiiQlSbgVau1H
+	s=arc-20240116; t=1753281944; c=relaxed/simple;
+	bh=M3nihTIT40z3oIjYiP0GIe8UPkVySJK1u08zFyLxoWw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=j65XMNkNsAzBQ65Tx7UfWMN4ElMoXIRp1ZehUOJ7zME9IwbiwaMBczPQE9OiNE5OlOvYoT7Vx3dh/iiSXZDRkP9fKbjWUyhrX22fAS0xkucl8D0ixgsOg2BgO3mnswZ4ROfnYv/LJ4LLH7QnvbNyxkklWqef9JRm1EazioU0GfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=c7q3w663; arc=none smtp.client-ip=95.215.58.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="c7q3w663"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753281930;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6d60Wr2Pbx/3WpAhV8k2HNDgAcvgcbADa5+vV1Vw27Q=;
+	b=c7q3w663P6pMqQZQ79RubktjjWMqhUmDZ6+hA1jGsAA5FHsSDDJzShLRUHmvjPkF0SJx90
+	33ECFl8SSakdpF1xxXFWayhKuCAFpwFO2eHh+bhSl4MV2uGZZZZAdRawwaz3pnyqCdXGWN
+	zsPe+G112LECTcE3k6Wbg0zphb7HBYI=
+From: Tao Chen <chen.dylane@linux.dev>
+To: qmo@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	john.fastabend@gmail.com,
+	kpsingh@kernel.org,
+	sdf@fomichev.me,
+	haoluo@google.com,
+	jolsa@kernel.org,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Tao Chen <chen.dylane@linux.dev>
+Subject: [PATCH bpf-next v4 2/3] bpftool: Add bpftool-token manpage
+Date: Wed, 23 Jul 2025 22:44:41 +0800
+Message-ID: <20250723144442.1427943-2-chen.dylane@linux.dev>
+In-Reply-To: <20250723144442.1427943-1-chen.dylane@linux.dev>
+References: <20250723144442.1427943-1-chen.dylane@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:e55:b0:879:c608:d1d5 with SMTP id
- ca18e2360f4ac-87c6506e00bmr541701939f.14.1753281935005; Wed, 23 Jul 2025
- 07:45:35 -0700 (PDT)
-Date: Wed, 23 Jul 2025 07:45:34 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6880f58e.050a0220.248954.0001.GAE@google.com>
-Subject: [syzbot] [tipc?] KMSAN: uninit-value in tipc_rcv (2)
-From: syzbot <syzbot+9a4fbb77c9d4aacd3388@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	jmaloy@redhat.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
-	tipc-discussion@lists.sourceforge.net
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hello,
+Add bpftool-token manpage with information and examples of token-related
+commands.
 
-syzbot found the following issue on:
-
-HEAD commit:    4871b7cb27f4 Merge tag 'v6.16-rc6-smb3-client-fixes' of gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=15bbe38c580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5227c65742122bdd
-dashboard link: https://syzkaller.appspot.com/bug?extid=9a4fbb77c9d4aacd3388
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-userspace arch: i386
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/e2e34a7999ba/disk-4871b7cb.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/834fdc8dbc07/vmlinux-4871b7cb.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/617fadfb9a8e/bzImage-4871b7cb.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+9a4fbb77c9d4aacd3388@syzkaller.appspotmail.com
-
-=====================================================
-BUG: KMSAN: uninit-value in tipc_rcv+0x17fa/0x1ea0 net/tipc/node.c:2132
- tipc_rcv+0x17fa/0x1ea0 net/tipc/node.c:2132
- tipc_l2_rcv_msg+0x213/0x320 net/tipc/bearer.c:668
- __netif_receive_skb_list_ptype net/core/dev.c:6025 [inline]
- __netif_receive_skb_list_core+0x133b/0x16b0 net/core/dev.c:6067
- __netif_receive_skb_list net/core/dev.c:6119 [inline]
- netif_receive_skb_list_internal+0xee7/0x1530 net/core/dev.c:6210
- gro_normal_list include/net/gro.h:532 [inline]
- napi_complete_done+0x3fb/0x7d0 net/core/dev.c:6580
- napi_complete include/linux/netdevice.h:588 [inline]
- tun_get_user+0x4ac4/0x6b40 drivers/net/tun.c:1909
- tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1984
- do_iter_readv_writev+0x94a/0xba0 fs/read_write.c:-1
- vfs_writev+0x52a/0x1500 fs/read_write.c:1057
- do_writev+0x1b5/0x580 fs/read_write.c:1103
- __do_sys_writev fs/read_write.c:1171 [inline]
- __se_sys_writev fs/read_write.c:1168 [inline]
- __ia32_sys_writev+0x9c/0xf0 fs/read_write.c:1168
- ia32_sys_call+0x3f2a/0x42c0 arch/x86/include/generated/asm/syscalls_32.h:147
- do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
- __do_fast_syscall_32+0xb0/0x150 arch/x86/entry/syscall_32.c:306
- do_fast_syscall_32+0x38/0x80 arch/x86/entry/syscall_32.c:331
- do_SYSENTER_32+0x1f/0x30 arch/x86/entry/syscall_32.c:369
- entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:4154 [inline]
- slab_alloc_node mm/slub.c:4197 [inline]
- kmem_cache_alloc_node_noprof+0x818/0xf00 mm/slub.c:4249
- kmalloc_reserve+0x13c/0x4b0 net/core/skbuff.c:579
- __alloc_skb+0x347/0x7d0 net/core/skbuff.c:670
- napi_alloc_skb+0xc1/0x740 net/core/skbuff.c:812
- napi_get_frags+0xab/0x250 net/core/gro.c:673
- tun_napi_alloc_frags drivers/net/tun.c:1404 [inline]
- tun_get_user+0x1246/0x6b40 drivers/net/tun.c:1772
- tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1984
- do_iter_readv_writev+0x94a/0xba0 fs/read_write.c:-1
- vfs_writev+0x52a/0x1500 fs/read_write.c:1057
- do_writev+0x1b5/0x580 fs/read_write.c:1103
- __do_sys_writev fs/read_write.c:1171 [inline]
- __se_sys_writev fs/read_write.c:1168 [inline]
- __ia32_sys_writev+0x9c/0xf0 fs/read_write.c:1168
- ia32_sys_call+0x3f2a/0x42c0 arch/x86/include/generated/asm/syscalls_32.h:147
- do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
- __do_fast_syscall_32+0xb0/0x150 arch/x86/entry/syscall_32.c:306
- do_fast_syscall_32+0x38/0x80 arch/x86/entry/syscall_32.c:331
- do_SYSENTER_32+0x1f/0x30 arch/x86/entry/syscall_32.c:369
- entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-
-CPU: 0 UID: 0 PID: 15202 Comm: syz.3.3410 Not tainted 6.16.0-rc6-syzkaller-00253-g4871b7cb27f4 #0 PREEMPT(none) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-=====================================================
-
-
+Suggested-by: Quentin Monnet <qmo@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Signed-off-by: Tao Chen <chen.dylane@linux.dev>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ .../bpftool/Documentation/bpftool-token.rst   | 64 +++++++++++++++++++
+ 1 file changed, 64 insertions(+)
+ create mode 100644 tools/bpf/bpftool/Documentation/bpftool-token.rst
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/tools/bpf/bpftool/Documentation/bpftool-token.rst b/tools/bpf/bpftool/Documentation/bpftool-token.rst
+new file mode 100644
+index 00000000000..d082c499cfe
+--- /dev/null
++++ b/tools/bpf/bpftool/Documentation/bpftool-token.rst
+@@ -0,0 +1,64 @@
++.. SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++
++================
++bpftool-token
++================
++-------------------------------------------------------------------------------
++tool for inspection and simple manipulation of eBPF tokens
++-------------------------------------------------------------------------------
++
++:Manual section: 8
++
++.. include:: substitutions.rst
++
++SYNOPSIS
++========
++
++**bpftool** [*OPTIONS*] **token** *COMMAND*
++
++*OPTIONS* := { |COMMON_OPTIONS| }
++
++*COMMANDS* := { **show** | **list** | **help** }
++
++TOKEN COMMANDS
++===============
++
++| **bpftool** **token** { **show** | **list** }
++| **bpftool** **token help**
++|
++
++DESCRIPTION
++===========
++bpftool token { show | list }
++    List BPF token information for each *bpffs* mount point containing token
++    information on the system. Information include mount point path, allowed
++    **bpf**\ () system call commands, maps, programs, and attach types for the
++    token.
++
++bpftool prog help
++    Print short help message.
++
++OPTIONS
++========
++.. include:: common_options.rst
++
++EXAMPLES
++========
++|
++| **# mkdir -p /sys/fs/bpf/token**
++| **# mount -t bpf bpffs /sys/fs/bpf/token** \
++|         **-o delegate_cmds=prog_load:map_create** \
++|         **-o delegate_progs=kprobe** \
++|         **-o delegate_attachs=xdp**
++| **# bpftool token list**
++
++::
++
++    token_info  /sys/fs/bpf/token
++            allowed_cmds:
++              map_create          prog_load
++            allowed_maps:
++            allowed_progs:
++              kprobe
++            allowed_attachs:
++              xdp
+-- 
+2.48.1
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
