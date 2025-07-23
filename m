@@ -1,101 +1,159 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022EC284694;
-	Wed, 23 Jul 2025 09:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA69A281351;
+	Wed, 23 Jul 2025 09:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753263775; cv=none; b=A0CkfSRzby1M4e6miQvQLBbTGoN5DShxYZtv4vMAMk/kvChUhRI9UqeM0oxCzed48sAwQfzWIf0Rbx6Exi3b6HaibfNQj6ed0QwL0omdOmBWRCGD7PdHmUEufU4A9KKEUZ0WWMqB6QwrFljdFdr37Pv8C7natP+xr9mkh35K+9Q=
+	t=1753264531; cv=none; b=KuNjCrx4AlB4IbyvwnCLwEd709mVPcnPRqREwnClHIzsKrpkg9VNjKTfOWb+Wzb7XsdZtdE1rGw4IpEi3HIThrZdNJdW9Kf4P4X3WWTjDvo5nTWtm1baAhJm88iwJPNKmdit7k0OYumrwKmEuVj8L94Qj9kTPVJ4FoVoOSQL+Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753263775; c=relaxed/simple;
-	bh=BTH6PslU5u9WuXBq8wCWsWzECi34i72Wj3allMZ5Z3A=;
-	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=JXL5cL7FhxPAvHtleqXhbxB8LGgU48KzuvEYFvPlBQbY4oljkIIfulMTrnxcVpfIuHJWjKfUNP09WnXH3hISTOX9AvLVYbOPV2pZBiuX8JtlH/mniIHsVx5RYMvlou11ePVZslamgokq3SQcbkOC5JLrIAnm0rUid7W9kQUww14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [113.200.148.30])
-	by gateway (Coremail) with SMTP id _____8Axx2mYroBoETcwAQ--.63210S3;
-	Wed, 23 Jul 2025 17:42:48 +0800 (CST)
-Received: from [10.130.10.66] (unknown [113.200.148.30])
-	by front1 (Coremail) with SMTP id qMiowJCxdOSVroBobAEjAA--.50282S3;
-	Wed, 23 Jul 2025 17:42:45 +0800 (CST)
-Subject: Re: [PATCH net-next 1/2] net: stmmac: Return early if invalid in
- loongson_dwmac_fix_reset()
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250722062716.29590-1-yangtiezhu@loongson.cn>
- <20250722062716.29590-2-yangtiezhu@loongson.cn>
- <20250722144802.637bfde0@fedora.home>
- <2fea78e7-9e0a-4c6b-9d86-6433e4c28e5e@loongson.cn>
-Message-ID: <cccf48de-9987-2ea5-bd38-a8e660004039@loongson.cn>
-Date: Wed, 23 Jul 2025 17:42:44 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1753264531; c=relaxed/simple;
+	bh=uMba/ezhAC8r5pyu8vjGDcLH/UWyJZSzahC5FZcfZPY=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=inEgSNQYBUWXnLfOnEVi6EPIqnBpWV2gm+iLcG+xlDJUwHKZO1VS7TkM9Js2PrvMwW3Aq0bO7rTdr055c/jbX1KD+IQVSdMUHVFigy9PFdFgi/Q+Kc6Y1dVXQbeKWiRBA8ElN74rkgYzfHjWTmyBAmSO27dz2U9CrJYFezKSzjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 749D91A1640;
+	Wed, 23 Jul 2025 11:55:22 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 37DB61A05FA;
+	Wed, 23 Jul 2025 11:55:22 +0200 (CEST)
+Received: from mega.am.freescale.net (mega.ap.freescale.net [10.192.208.232])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 1B9AD1800079;
+	Wed, 23 Jul 2025 17:55:20 +0800 (+08)
+From: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
+To: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: kuba@kernel.org,
+	n.zhandarovich@fintech.ru,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	wojciech.drewek@intel.com,
+	Arvid.Brodin@xdin.com,
+	horms@kernel.org,
+	lukma@denx.de,
+	m-karicheri2@ti.com,
+	xiaoliang.yang_1@nxp.com,
+	vladimir.oltean@nxp.com
+Subject: [PATCH net-next] net: hsr: create an API to get hsr port type
+Date: Wed, 23 Jul 2025 18:06:05 +0800
+Message-Id: <20250723100605.23860-1-xiaoliang.yang_1@nxp.com>
+X-Mailer: git-send-email 2.17.1
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <2fea78e7-9e0a-4c6b-9d86-6433e4c28e5e@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxdOSVroBobAEjAA--.50282S3
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7uF1DKr1UXw17KF13Ar4xGrX_yoW8Xr17pr
-	4Sga17JrsrXry8ur4qvw4aqFyayrn8KF95X3WkGryjyws8Xwn8Jr1xKryjgFyxZws7Kw1U
-	tr4vqFW3u3WqkagCm3ZEXasCq-sJn29KB7ZKAUJUUUU3529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUP2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6F4UJVW0owAaw2AFwI0_JF0_Jw1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
-	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_
-	Jw1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrw
-	CYjI0SjxkI62AI1cAE67vIY487MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48J
-	MxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8uc_3UUUU
-	U==
 
-On 2025/7/22 下午9:10, Tiezhu Yang wrote:
-> On 2025/7/22 下午8:48, Maxime Chevallier wrote:
->> On Tue, 22 Jul 2025 14:27:15 +0800
->> Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
->>
->>> If the DMA_BUS_MODE_SFT_RESET bit is 1 before software reset,
->>> there is no need to do anything for this abnormal case, just
->>> return -EINVAL immediately in loongson_dwmac_fix_reset().
->>>
->>> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
->>
->> Do you know when that could ever happen ? I'm asking because this logic
->> for the DMA reset is duplicated in several places in this driver, maybe
->> this could be useful for other users as well. I'm guessing this is to
->> avoid waiting for the timeout when the DMA reset fails, but that is
->> usually when there's a missing clock somewhere (such as the RGMII clock
->> from the PHY), in which case I don't think the RST bit will be set.
-> 
-> To be honest, I am not quite sure the root cause but this actually
-> happened on the test environment, I guess there is a missing clock.
-> 
-> You are right, the initial aim of this patch is to return early for
-> this case to avoid waiting for the timeout when the DMA reset fails.
+If a switch device has HSR hardware ability and HSR configuration
+offload to hardware. The device driver needs to get the HSR port type
+when joining the port to HSR. Different port types require different
+settings for the hardware, like HSR_PT_SLAVE_A, HSR_PT_SLAVE_B, and
+HSR_PT_INTERLINK. Create the API hsr_get_port_type() and export it.
 
-With the help of hardware engineer to analysis the ‌device‌ of mainboard,
-the root cause is that the MAC controller does not connect to any PHY
-interface, there is a missing clock, so the DMA reset fails.
+When the hsr_get_port_type() is called in the device driver, if the port
+can be found in the HSR port list, the HSR port type can be obtained.
+Therefore, before calling the device driver, we need to first add the
+hsr_port to the HSR port list.
 
-I will send v2 later to update the commit message if it makes sense.
+Signed-off-by: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
+---
+ include/linux/if_hsr.h |  8 ++++++++
+ net/hsr/hsr_device.c   | 20 ++++++++++++++++++++
+ net/hsr/hsr_slave.c    |  7 ++++---
+ 3 files changed, 32 insertions(+), 3 deletions(-)
 
-Thanks,
-Tiezhu
+diff --git a/include/linux/if_hsr.h b/include/linux/if_hsr.h
+index d7941fd88032..4d6452ca2ac8 100644
+--- a/include/linux/if_hsr.h
++++ b/include/linux/if_hsr.h
+@@ -43,6 +43,8 @@ extern bool is_hsr_master(struct net_device *dev);
+ extern int hsr_get_version(struct net_device *dev, enum hsr_version *ver);
+ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+ 				     enum hsr_port_type pt);
++extern int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
++			     enum hsr_port_type *type);
+ #else
+ static inline bool is_hsr_master(struct net_device *dev)
+ {
+@@ -59,6 +61,12 @@ static inline struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+ {
+ 	return ERR_PTR(-EINVAL);
+ }
++
++static inline int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
++				    enum hsr_port_type *type)
++{
++	return -EINVAL;
++}
+ #endif /* CONFIG_HSR */
+ 
+ #endif /*_LINUX_IF_HSR_H_*/
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index 88657255fec1..d4bea847527c 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -679,6 +679,26 @@ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+ }
+ EXPORT_SYMBOL(hsr_get_port_ndev);
+ 
++/* Get hsr port type, return -EINVAL if not get.
++ */
++int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev, enum hsr_port_type *type)
++{
++	struct hsr_priv *hsr;
++	struct hsr_port *port;
++
++	hsr = netdev_priv(hsr_dev);
++
++	hsr_for_each_port(hsr, port) {
++		if (port->dev == dev) {
++			*type = port->type;
++			return 0;
++		}
++	}
++
++	return -EINVAL;
++}
++EXPORT_SYMBOL(hsr_get_port_type);
++
+ /* Default multicast address for HSR Supervision frames */
+ static const unsigned char def_multicast_addr[ETH_ALEN] __aligned(2) = {
+ 	0x01, 0x15, 0x4e, 0x00, 0x01, 0x00
+diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
+index b87b6a6fe070..e11ab1ed3320 100644
+--- a/net/hsr/hsr_slave.c
++++ b/net/hsr/hsr_slave.c
+@@ -198,14 +198,14 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
+ 	port->type = type;
+ 	ether_addr_copy(port->original_macaddress, dev->dev_addr);
+ 
++	list_add_tail_rcu(&port->port_list, &hsr->ports);
++
+ 	if (type != HSR_PT_MASTER) {
+ 		res = hsr_portdev_setup(hsr, dev, port, extack);
+ 		if (res)
+ 			goto fail_dev_setup;
+ 	}
+ 
+-	list_add_tail_rcu(&port->port_list, &hsr->ports);
+-
+ 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
+ 	netdev_update_features(master->dev);
+ 	dev_set_mtu(master->dev, hsr_get_max_mtu(hsr));
+@@ -213,7 +213,8 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
+ 	return 0;
+ 
+ fail_dev_setup:
+-	kfree(port);
++	list_del_rcu(&port->port_list);
++	kfree_rcu(port, rcu);
+ 	return res;
+ }
+ 
+-- 
+2.17.1
 
