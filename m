@@ -1,132 +1,88 @@
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BA9283137
-	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 09:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3870E247DEA
+	for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 09:16:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753261777; cv=none; b=qLo5BWQIoTCneEf8oCGYJJo0jHwo4KwVIKW45Y4AFj5lXxJuL4Wt9VuVQllJG8aFMDq5C1f0OKy9JvrvDL7JTc5PnXF9VdNKvBDbM8potIF/6UxL3o1fgNBH2fGUAIfEc4nYaQey5xN1CuPK+u/pHdNHeAF/7tV5D0Eiff+H8OQ=
+	t=1753262209; cv=none; b=KNP0l7h4XNoEFEiEK9RDRONcM+bNFI1yKg+h7/nvrCEDVYcbIosv3Q8Ib52DpKozQKSGt+e72maUxQROcO7CHjllsV6r9EWbSR99MniB1AB+zsUaRTBYxwNKGg9fKv/U9JW1gFYD5vCBfL0JhpHmTjjLAtQyTRJgMuLkZU+V4vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753261777; c=relaxed/simple;
-	bh=/yGUGKAhGBPBrwTTEOjI9B+HkXKztIO+0eBa5uesc3s=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=E2KFoxTxD/CNfwMq3sSSGBvtVLhTQUlU9ivYOWJDc3IubWECfjQmHAbZD13vvHG110F3SjL5FIZ5iFohuFj9IJ6SYTKXassWpoNFLcs5b+M8OcAO6/nX6CgqxNTa4BZeNU8LksqcCKdTHQ8A3JP9oq9HhRVwiZy501ygUeJp4hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-87c1d1356f3so429342539f.0
-        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 02:09:35 -0700 (PDT)
+	s=arc-20240116; t=1753262209; c=relaxed/simple;
+	bh=heIxELqJMvNMFec+/799TQQ6cct4aoBx86NutNIU7YM=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=gbTLay0LZ0Z5jxdquHwukqtfuWbZlbY4Qq+764DfgfYJnyOZ6+iWBBvksSpHpDLS0r/T8fBCIXoV8ZV5Ufrzgrzffg4wED5e8eff7XbBG53KrZRRaH57g8PRWQshCWeo3l4NpmqGzUIV6tU3o900M/wpHtzcjQvLq/PsW2Vfd5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SUIzAFeb; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SUIzAFeb"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-455b00283a5so39388935e9.0
+        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 02:16:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753262206; x=1753867006; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=heIxELqJMvNMFec+/799TQQ6cct4aoBx86NutNIU7YM=;
+        b=SUIzAFebIIcopWi7aS+lyBpxJbjhbXFtO2l7LxjDiVomTcnGbV8kLptkS0xbZ6PGtB
+         ezMSKOX0C3xj8UyxWK8N201jFvcj1m1DliE1tVXeRL4yc5ITcwgUEtW+dUyk7J0slvTh
+         Dh7MP3IWXiQ8oEdIFta8WXKMCDUlSnm2lCkSoN77mhfDkizuPfBYcFJ2m61Vyd96J/Ot
+         MzLClfnuH6HRQDjySZb/gvnCI3ofnAMFePRa6UAeuMK4rfWtWzIo5+nCbULocplydXv0
+         +hF5GRXAscvM6KGZGrD1bESjDOeuA7e+vDD8mCGc+J4mJ2Jjbhd+446XstUtMSl/6/wA
+         qCOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753261775; x=1753866575;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TvFG3sQTKMwo29OtOJz9i/cr+68WnmlBBDZAn9btd1A=;
-        b=wBnrLw1qNfg2vTmZi569hffM15pIg7G1oiyMu9IY0a/l0jMiY4wcdhEPrxpRVuammZ
-         xiaCk1XS3rS2sLmPqc5sySs+oMVCXjibM9YIUyPSJ/7fVAC6NVYpdbEy292Dt4jhV8su
-         z305o+voxBaWupQxwGjbZ/JhaYIL0v98wn6Qd9DOkYuwc7RO3LbXBLND+bSjIviHYeuN
-         RM9bdiy4325yZfnO3RGwSWdlkVnnMlKxVtGm9rc64NeYEwAqsOsYeeK+cwvVkSy4ALHt
-         5SDKskssZq7moxrEWv+lJAksqUD+1kk9DuzywRhV6X2Hlu+qou8WoUENub0uRe1dWQLV
-         +l8w==
-X-Forwarded-Encrypted: i=1; AJvYcCX7HZaZ4+73YI+t3YMUrEDQesIgFhfRQql3jTvuWyJwRrzq2K885DYY1oMtA7tiDEHq5MiLj6o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1pXHk1gG7VVFTYtbpIrMqiR22WnWx/gWnbu3hu2aJ2TgYu0my
-	A+xXY3fhQeSJqqXaLjWI0oXLmwH2h8E0XvPo4b5Cn/Il75dJgbXjbhvq0NHZkA+DWuJZtNlU45r
-	H8v/3dmVMTbVYU5FhT7NBH6i2Zn9PzxEGKcoaLA3DvmpWAzYGnzYp2FilQRo=
-X-Google-Smtp-Source: AGHT+IFAeZxnWZN6oyV6j+V0s/nOmFK6pRexyplCpc2+fX0UQLepZSpXUWTIKp0c4WkSDYL6cj51kYBhiyyzzpLl/WkoydOWc6oG
+        d=1e100.net; s=20230601; t=1753262206; x=1753867006;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=heIxELqJMvNMFec+/799TQQ6cct4aoBx86NutNIU7YM=;
+        b=w6Xy0Jc7QcXB7JpUtXu6W9CLToUwZiPF1H8gb+Ox14lo9CtwAcfisYvIYsyhmSe/tq
+         hVAZg+Aot9gSWxiEHcMKTfQVwVaRaG5Fo5LsH8SFCIz+xRRbDmSPNauocZywM8BgPv3S
+         Jw19rRCeu8C3JV+ww8RAXRIiR+ShOA1PUQg+CuzuzmMmkT2mpf0gRwjCiGy1ZAlbVvIP
+         EydCduUiKioNIYGhE+iU/41weM5fIxkb6Ro9KXA+sq7LY3luFQVaWfQkBwLws1tIBql3
+         MMlBnjuR13LCf8rcWDX4JRUffWlzZ5V8Xgev2KvpVmofal5OyeQg6vK6UZr4z/FjBdRK
+         j19w==
+X-Forwarded-Encrypted: i=1; AJvYcCU82xZu9zBIjHTCRzRXBs0UPpl0X8R69FQpxlUj3Nm6Q93GmNfRhTRCi//A5XeXsPYvVOFfs8A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywd40/I2lKiw9lFUjcQziDWczHpzSWwt92hmwBVmSUqZqc9vFI5
+	FRRciEGI9gXf6AmmmJcgQHvoV3JnZdkSbP7nmilv8mOrgZOGaumwC2tESArVvg==
+X-Gm-Gg: ASbGnct8OFT9VCDF/4/07I5Yywhu/EI/7wuze1T+wCgGUmKEzRRu/hONIZCI/Kc1Yku
+	p30HOwgTUX1SzOffBj2FK/WXsb3GGfRCMVNU1IMFTbECwXVCIWGC1gMX9JLnp86ML/d+o/FO25C
+	2XFU8N6A8kWpfI9bKuciKJrvVysWTS3ogEmaB4KhGu6LISxkIRmfx1x8+r6vcKht6qGbRsq6hA8
+	eSW8SigZ2BcnF6d01BJQDLxn7HSVwXxKtd9OF7DM1SoMN7Tt+6HLnO4Q64On3EwxeU5Ch9yX3le
+	U0Cs5AwUP+g1IVwEs/iyv/XV5NWC7dOGHPtfPqX7IuWNMyBEsEzFjRc+oOp7W7inHTQLBYrGnZQ
+	bJQqBt3BO3lcuBBTFOFx9jnD7lvpw+sEfXg==
+X-Google-Smtp-Source: AGHT+IHrYhf87zOO/F7IgQdIJUkog2pz29/SK96tDKwDvYcSACLzhDpORGEAhkp+mPuxAeN1XyEDCg==
+X-Received: by 2002:a5d:5c84:0:b0:3a5:39d7:3f17 with SMTP id ffacd0b85a97d-3b768f2308dmr1930419f8f.47.1753262205986;
+        Wed, 23 Jul 2025 02:16:45 -0700 (PDT)
+Received: from imac ([2a02:8010:60a0:0:b8c1:6477:3a30:7fe])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca5c8c9sm15938585f8f.85.2025.07.23.02.16.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Jul 2025 02:16:45 -0700 (PDT)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
+  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
+  almasrymina@google.com,  sdf@fomichev.me
+Subject: Re: [PATCH net-next 1/5] tools: ynl-gen: don't add suffix for pure
+ types
+In-Reply-To: <20250722161927.3489203-2-kuba@kernel.org>
+Date: Wed, 23 Jul 2025 09:52:42 +0100
+Message-ID: <m2tt339tlx.fsf@gmail.com>
+References: <20250722161927.3489203-1-kuba@kernel.org>
+	<20250722161927.3489203-2-kuba@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:3a0d:b0:875:ba1e:4d7e with SMTP id
- ca18e2360f4ac-87c64fbb367mr491673439f.6.1753261775276; Wed, 23 Jul 2025
- 02:09:35 -0700 (PDT)
-Date: Wed, 23 Jul 2025 02:09:35 -0700
-In-Reply-To: <20250722210256.143208-1-sdf@fomichev.me>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6880a6cf.050a0220.40ccf.0000.GAE@google.com>
-Subject: [syzbot ci] Re: vrf: Drop existing dst reference in vrf_ip6_input_dst
-From: syzbot ci <syzbot+ci7bed65dd2de1adbd@syzkaller.appspotmail.com>
-To: andrew@lunn.ch, davem@davemloft.net, dsahern@kernel.org, 
-	edumazet@google.com, horms@kernel.org, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	sdf@fomichev.me
-Cc: syzbot@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-syzbot ci has tested the following series
+Jakub Kicinski <kuba@kernel.org> writes:
 
-[v1] vrf: Drop existing dst reference in vrf_ip6_input_dst
-https://lore.kernel.org/all/<20250722210256.143208-1-sdf@fomichev.me>
-* [PATCH net 1/2] vrf: Drop existing dst reference in vrf_ip6_input_dst
-* [PATCH net 2/2] net: Warn when overriding referenced dst entry
+> Don't add _req to helper names for pure types. We don't currently
+> print those so it makes no difference to existing codegen.
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-and found the following issue:
-WARNING in nf_reject_fill_skb_dst
-
-Full report is available here:
-https://ci.syzbot.org/series/c92e1af5-3b8b-4c26-8104-acca93ad8939
-
-***
-
-WARNING in nf_reject_fill_skb_dst
-
-tree:      net
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net.git
-base:      cf074eca0065bc5142e6004ae236bb35a2687fdf
-arch:      amd64
-compiler:  Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-config:    https://ci.syzbot.org/builds/235c4af3-77ea-4670-9c9e-9de1ef0a5aa6/config
-syz repro: https://ci.syzbot.org/findings/1038832f-72d8-4491-9ac9-28339d31f0f7/syz_repro
-
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 12 at ./include/linux/skbuff.h:1165 nf_reject_fill_skb_dst+0x313/0x3b0
-Modules linked in:
-CPU: 1 UID: 0 PID: 12 Comm: kworker/u8:0 Not tainted 6.16.0-rc6-syzkaller-00135-gcf074eca0065-dirty #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Workqueue: ipv6_addrconf addrconf_dad_work
-RIP: 0010:nf_reject_fill_skb_dst+0x313/0x3b0
-Code: 8b 0d f1 35 98 08 48 3b 8c 24 e0 00 00 00 75 6b 48 8d 65 d8 5b 41 5c 41 5d 41 5e 41 5f 5d e9 54 19 69 01 cc e8 9e 7e b8 f7 90 <0f> 0b 90 e9 43 ff ff ff e8 90 7e b8 f7 90 0f 0b 90 e9 e3 fe ff ff
-RSP: 0018:ffffc900001e0360 EFLAGS: 00010246
-RAX: ffffffff8a07aa52 RBX: ffff888110f75500 RCX: ffff88801c2f5640
-RDX: 0000000000000100 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc900001e0490 R08: ffffffff8fa1d6f7 R09: 1ffffffff1f43ade
-R10: dffffc0000000000 R11: fffffbfff1f43adf R12: ffff888110f75501
-R13: dffffc0000000001 R14: 1ffff9200003c070 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff8881a3c22000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00002000000000c0 CR3: 000000001ff6e000 CR4: 00000000000006f0
-Call Trace:
- <IRQ>
- nf_send_unreach+0x17b/0x700
- nft_reject_inet_eval+0x4bc/0x690
- nft_do_chain+0x40c/0x1920
- nft_do_chain_inet+0x25d/0x340
- nf_hook_slow+0xc5/0x220
- NF_HOOK+0x206/0x3a0
- __netif_receive_skb+0x143/0x380
- process_backlog+0x60e/0x14f0
- __napi_poll+0xc7/0x480
- net_rx_action+0x707/0xe30
- handle_softirqs+0x286/0x870
- do_softirq+0xec/0x180
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0x17d/0x1c0
- __dev_queue_xmit+0x1cd7/0x3a70
- ip6_finish_output2+0x11fe/0x16a0
- ndisc_send_skb+0xc77/0x1500
- ndisc_send_ns+0xcb/0x150
- addrconf_dad_work+0xaae/0x14b0
- process_scheduled_works+0xae1/0x17b0
- worker_thread+0x8a0/0xda0
- kthread+0x711/0x8a0
- ret_from_fork+0x3fc/0x770
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
