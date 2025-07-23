@@ -1,159 +1,128 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA69A281351;
-	Wed, 23 Jul 2025 09:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01BE280325;
+	Wed, 23 Jul 2025 09:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753264531; cv=none; b=KuNjCrx4AlB4IbyvwnCLwEd709mVPcnPRqREwnClHIzsKrpkg9VNjKTfOWb+Wzb7XsdZtdE1rGw4IpEi3HIThrZdNJdW9Kf4P4X3WWTjDvo5nTWtm1baAhJm88iwJPNKmdit7k0OYumrwKmEuVj8L94Qj9kTPVJ4FoVoOSQL+Dw=
+	t=1753264744; cv=none; b=e8Li3cpxCznEs1TPapWtDvKkz176xCVJfmC34S9NG9+S9X1JS0Hyrr/TYn3qbhPkCfH2m/c7Vhs2HkjIm3lKkPZYf1pKR4qhde5Pjgr71FXLpUNXnulK0/0fPHn4bkZ4kbhaBQbR44jpL8aLbLH4/YdOchpAEWaW9V5hpGLvjho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753264531; c=relaxed/simple;
-	bh=uMba/ezhAC8r5pyu8vjGDcLH/UWyJZSzahC5FZcfZPY=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=inEgSNQYBUWXnLfOnEVi6EPIqnBpWV2gm+iLcG+xlDJUwHKZO1VS7TkM9Js2PrvMwW3Aq0bO7rTdr055c/jbX1KD+IQVSdMUHVFigy9PFdFgi/Q+Kc6Y1dVXQbeKWiRBA8ElN74rkgYzfHjWTmyBAmSO27dz2U9CrJYFezKSzjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 749D91A1640;
-	Wed, 23 Jul 2025 11:55:22 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 37DB61A05FA;
-	Wed, 23 Jul 2025 11:55:22 +0200 (CEST)
-Received: from mega.am.freescale.net (mega.ap.freescale.net [10.192.208.232])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 1B9AD1800079;
-	Wed, 23 Jul 2025 17:55:20 +0800 (+08)
-From: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
-To: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: kuba@kernel.org,
-	n.zhandarovich@fintech.ru,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	wojciech.drewek@intel.com,
-	Arvid.Brodin@xdin.com,
-	horms@kernel.org,
-	lukma@denx.de,
-	m-karicheri2@ti.com,
-	xiaoliang.yang_1@nxp.com,
-	vladimir.oltean@nxp.com
-Subject: [PATCH net-next] net: hsr: create an API to get hsr port type
-Date: Wed, 23 Jul 2025 18:06:05 +0800
-Message-Id: <20250723100605.23860-1-xiaoliang.yang_1@nxp.com>
-X-Mailer: git-send-email 2.17.1
-X-Virus-Scanned: ClamAV using ClamSMTP
+	s=arc-20240116; t=1753264744; c=relaxed/simple;
+	bh=yzX7va2srxpQsEnQrCqzNSATBc4ZgUiYAKZ5VunBZIw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nA3CmAEuu5Ibf9h1x67b7O/5WiYW7FiDCp9ELXP5Bep3zChqm/UtDJuyxgUTZ3RuGq/InxHo6F8/zEVIlClsn4dmVXExRO8XZBtPge5rjJf3oMA2EMhWoJ8DB1UZ3ApjdF/NAl/Y1aPGP9Asr7dVcAotB60o/hT18yMCxGqeudM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sCsvzskT; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sCsvzskT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0008C4CEE7;
+	Wed, 23 Jul 2025 09:58:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753264743;
+	bh=yzX7va2srxpQsEnQrCqzNSATBc4ZgUiYAKZ5VunBZIw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sCsvzskTIiUISMxcu3iQM4Mfm3ktUPUQqQFseLTYboda08WkEP3zRtfrg7joDVUka
+	 uvkd+F0St/5hNrzlG6oLHsGtTErA1r82vjNuu7cCbCYLabFfJjPJTPZfNijtXL7Y40
+	 9KWR90q5fYU9f6Z0Ajws0gD8n3urDLp4zn/r30AkGidlSE0aMtIdtgWcm7rjRfBGkl
+	 U37hX6bmqcHXcIbFp7lvRSOhPbFKHdQC4mzVsPecdfQer7drjEAEBtnmoV6+dNbuGh
+	 GYC689eGG45h6W8216ZdckWnBSlC0euXCL3NVZGIrqi6fyRHzICQjKp6RJgngvymvC
+	 ZhC3wk7Q5SAwg==
+Date: Wed, 23 Jul 2025 10:58:56 +0100
+From: Lee Jones <lee@kernel.org>
+To: a0282524688@gmail.com
+Cc: tmyu0@nuvoton.com, linus.walleij@linaro.org, brgl@bgdev.pl,
+	andi.shyti@kernel.org, mkl@pengutronix.de,
+	mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net,
+	jdelvare@suse.com, alexandre.belloni@bootlin.com,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org,
+	netdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, linux-rtc@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH v14 0/7] Add Nuvoton NCT6694 MFD drivers
+Message-ID: <20250723095856.GT11056@google.com>
+References: <20250715025626.968466-1-a0282524688@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250715025626.968466-1-a0282524688@gmail.com>
 
-If a switch device has HSR hardware ability and HSR configuration
-offload to hardware. The device driver needs to get the HSR port type
-when joining the port to HSR. Different port types require different
-settings for the hardware, like HSR_PT_SLAVE_A, HSR_PT_SLAVE_B, and
-HSR_PT_INTERLINK. Create the API hsr_get_port_type() and export it.
+On Tue, 15 Jul 2025, a0282524688@gmail.com wrote:
 
-When the hsr_get_port_type() is called in the device driver, if the port
-can be found in the HSR port list, the HSR port type can be obtained.
-Therefore, before calling the device driver, we need to first add the
-hsr_port to the HSR port list.
+> From: Ming Yu <a0282524688@gmail.com>
+> 
+> This patch series introduces support for Nuvoton NCT6694, a peripheral
+> expander based on USB interface. It models the chip as an MFD driver
+> (1/7), GPIO driver(2/7), I2C Adapter driver(3/7), CANfd driver(4/7),
+> WDT driver(5/7), HWMON driver(6/7), and RTC driver(7/7).
+> 
+> The MFD driver implements USB device functionality to issue
+> custom-define USB bulk pipe packets for NCT6694. Each child device can
+> use the USB functions nct6694_read_msg() and nct6694_write_msg() to issue
+> a command. They can also request interrupt that will be called when the
+> USB device receives its interrupt pipe.
+> 
+> The following introduces the custom-define USB transactions:
+> 	nct6694_read_msg - Send bulk-out pipe to write request packet
+> 			   Receive bulk-in pipe to read response packet
+> 			   Receive bulk-in pipe to read data packet
+> 
+> 	nct6694_write_msg - Send bulk-out pipe to write request packet
+> 			    Send bulk-out pipe to write data packet
+> 			    Receive bulk-in pipe to read response packet
 
-Signed-off-by: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
----
- include/linux/if_hsr.h |  8 ++++++++
- net/hsr/hsr_device.c   | 20 ++++++++++++++++++++
- net/hsr/hsr_slave.c    |  7 ++++---
- 3 files changed, 32 insertions(+), 3 deletions(-)
+[...]
 
-diff --git a/include/linux/if_hsr.h b/include/linux/if_hsr.h
-index d7941fd88032..4d6452ca2ac8 100644
---- a/include/linux/if_hsr.h
-+++ b/include/linux/if_hsr.h
-@@ -43,6 +43,8 @@ extern bool is_hsr_master(struct net_device *dev);
- extern int hsr_get_version(struct net_device *dev, enum hsr_version *ver);
- struct net_device *hsr_get_port_ndev(struct net_device *ndev,
- 				     enum hsr_port_type pt);
-+extern int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
-+			     enum hsr_port_type *type);
- #else
- static inline bool is_hsr_master(struct net_device *dev)
- {
-@@ -59,6 +61,12 @@ static inline struct net_device *hsr_get_port_ndev(struct net_device *ndev,
- {
- 	return ERR_PTR(-EINVAL);
- }
-+
-+static inline int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev,
-+				    enum hsr_port_type *type)
-+{
-+	return -EINVAL;
-+}
- #endif /* CONFIG_HSR */
- 
- #endif /*_LINUX_IF_HSR_H_*/
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 88657255fec1..d4bea847527c 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -679,6 +679,26 @@ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
- }
- EXPORT_SYMBOL(hsr_get_port_ndev);
- 
-+/* Get hsr port type, return -EINVAL if not get.
-+ */
-+int hsr_get_port_type(struct net_device *hsr_dev, struct net_device *dev, enum hsr_port_type *type)
-+{
-+	struct hsr_priv *hsr;
-+	struct hsr_port *port;
-+
-+	hsr = netdev_priv(hsr_dev);
-+
-+	hsr_for_each_port(hsr, port) {
-+		if (port->dev == dev) {
-+			*type = port->type;
-+			return 0;
-+		}
-+	}
-+
-+	return -EINVAL;
-+}
-+EXPORT_SYMBOL(hsr_get_port_type);
-+
- /* Default multicast address for HSR Supervision frames */
- static const unsigned char def_multicast_addr[ETH_ALEN] __aligned(2) = {
- 	0x01, 0x15, 0x4e, 0x00, 0x01, 0x00
-diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-index b87b6a6fe070..e11ab1ed3320 100644
---- a/net/hsr/hsr_slave.c
-+++ b/net/hsr/hsr_slave.c
-@@ -198,14 +198,14 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
- 	port->type = type;
- 	ether_addr_copy(port->original_macaddress, dev->dev_addr);
- 
-+	list_add_tail_rcu(&port->port_list, &hsr->ports);
-+
- 	if (type != HSR_PT_MASTER) {
- 		res = hsr_portdev_setup(hsr, dev, port, extack);
- 		if (res)
- 			goto fail_dev_setup;
- 	}
- 
--	list_add_tail_rcu(&port->port_list, &hsr->ports);
--
- 	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
- 	netdev_update_features(master->dev);
- 	dev_set_mtu(master->dev, hsr_get_max_mtu(hsr));
-@@ -213,7 +213,8 @@ int hsr_add_port(struct hsr_priv *hsr, struct net_device *dev,
- 	return 0;
- 
- fail_dev_setup:
--	kfree(port);
-+	list_del_rcu(&port->port_list);
-+	kfree_rcu(port, rcu);
- 	return res;
- }
- 
+> Ming Yu (7):
+>   mfd: Add core driver for Nuvoton NCT6694
+>   gpio: Add Nuvoton NCT6694 GPIO support
+>   i2c: Add Nuvoton NCT6694 I2C support
+>   can: Add Nuvoton NCT6694 CANFD support
+>   watchdog: Add Nuvoton NCT6694 WDT support
+>   hwmon: Add Nuvoton NCT6694 HWMON support
+>   rtc: Add Nuvoton NCT6694 RTC support
+> 
+>  MAINTAINERS                         |  12 +
+>  drivers/gpio/Kconfig                |  12 +
+>  drivers/gpio/Makefile               |   1 +
+>  drivers/gpio/gpio-nct6694.c         | 499 +++++++++++++++
+>  drivers/hwmon/Kconfig               |  10 +
+>  drivers/hwmon/Makefile              |   1 +
+>  drivers/hwmon/nct6694-hwmon.c       | 949 ++++++++++++++++++++++++++++
+>  drivers/i2c/busses/Kconfig          |  10 +
+>  drivers/i2c/busses/Makefile         |   1 +
+>  drivers/i2c/busses/i2c-nct6694.c    | 196 ++++++
+>  drivers/mfd/Kconfig                 |  15 +
+>  drivers/mfd/Makefile                |   2 +
+>  drivers/mfd/nct6694.c               | 388 ++++++++++++
+>  drivers/net/can/usb/Kconfig         |  11 +
+>  drivers/net/can/usb/Makefile        |   1 +
+>  drivers/net/can/usb/nct6694_canfd.c | 832 ++++++++++++++++++++++++
+>  drivers/rtc/Kconfig                 |  10 +
+>  drivers/rtc/Makefile                |   1 +
+>  drivers/rtc/rtc-nct6694.c           | 297 +++++++++
+>  drivers/watchdog/Kconfig            |  11 +
+>  drivers/watchdog/Makefile           |   1 +
+>  drivers/watchdog/nct6694_wdt.c      | 307 +++++++++
+>  include/linux/mfd/nct6694.h         | 102 +++
+>  23 files changed, 3669 insertions(+)
+>  create mode 100644 drivers/gpio/gpio-nct6694.c
+>  create mode 100644 drivers/hwmon/nct6694-hwmon.c
+>  create mode 100644 drivers/i2c/busses/i2c-nct6694.c
+>  create mode 100644 drivers/mfd/nct6694.c
+>  create mode 100644 drivers/net/can/usb/nct6694_canfd.c
+>  create mode 100644 drivers/rtc/rtc-nct6694.c
+>  create mode 100644 drivers/watchdog/nct6694_wdt.c
+>  create mode 100644 include/linux/mfd/nct6694.h
+
+I will apply this the other side of the pending merge-window.
+
 -- 
-2.17.1
-
+Lee Jones [李琼斯]
