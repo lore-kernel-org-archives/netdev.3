@@ -1,67 +1,51 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E9E2ED159
-	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 18:28:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85ABB23ABA6
+	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 18:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753381727; cv=none; b=lH726+2Gzxifxadb4XqTblTPUq7o3DiepXdkujayhyQJyVio5LpWX6+eNFCgb+aZWO3BNMi58Y5ctAWV50VIp5jlEHtTHv5KPlKhXx3XcE0VEFXf9Wc4RCehwT24F+2o1xc5wXNe5HE/X8jtEikjsB8ma1MndQziQMAkyatNaKI=
+	t=1753382482; cv=none; b=PIUMbRkXNIfztbKn2RhoajPNj3OXrvfWK8jYJCHU1NTj/7U6HrZNiKJhPLFQdbPWduxqX7WgyR/W/i54FdpLS4a364N3PJvfIsk5J+SyhLuMKSM9nbjsmjnEi/l7hklmIh/1dzKYUodxPH0zCNktsj/R8+xE89PtWUa9JhIBerc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753381727; c=relaxed/simple;
-	bh=TcA21A1CLs/HFFneFHS/+RE3Iz28pAlRZQ1ZgqRiwy0=;
+	s=arc-20240116; t=1753382482; c=relaxed/simple;
+	bh=OvS+Rq4rjsjZdmidssvVHXumiMgETQPsHLWcYMQx838=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7ppFZw0pQ5MwTZPO+Y38tT4QxfT8Dz5TQG93wgJnoiwlEhd12vf1KbWTWbUhDOAwEqtcxRh7kR5DjOkZKppGNcqxIMDLRVy5HbtY7ufV7pdWnD0O/s66sDuaVujJURDwAyEoet9G4rogl+OcrXah/Ky9x4tdmHB5/6rZb8FACc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iEh2/xGr; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 MIME-Version; b=GpBkqfVJIim1NnFAlX5hFGEUWSzsJQq3bRybstXV6aNa4wImoSWKWhvbiGCNnaVzBoscm5CDuvtYfklGkAQqR/gXM8Z+Ymn4ARYel4GfQUy4FtTC8zzshdbVRrHM7Vr4NtxklIrdk3Lzfu53C7N4saXCjxcvipx9Ny8+PUIr+0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=Bgp6mE20; arc=none smtp.client-ip=171.64.64.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iEh2/xGr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753381726; x=1784917726;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=TcA21A1CLs/HFFneFHS/+RE3Iz28pAlRZQ1ZgqRiwy0=;
-  b=iEh2/xGrqxEyhyjNYv7PeHyVnwqA/JkUdSpjx7ERlh+kvUrf1GUnAaPi
-   bfIkixQqcWagxusoSrpuq5E/5/bu4ip2F+TAti+R1Ft6Hh5c+IAIAW1nB
-   luvZt7CSAggLLbT0O3qYtN4zUUBZcgaXzvAmwZlHi83hQ/ikPa6pzDsEj
-   9xwAxX3X02thaWXIQktPuZE5XKEWO8M+bdsZOJPBZANsH84HqmOKBBNat
-   hOFUE8Nqy2/ZW7lCEEYH2ljOYsyLN6OKJe9MJJ+qtR7mmt/hi2dLees04
-   YfHthrWaLiDBgpkGJFoPuT6k8mubGSKRp++Wc2sfPCNhmcc5NJySe1rj4
-   A==;
-X-CSE-ConnectionGUID: Hu4f9Na3QKC5jW4EPC1aDg==
-X-CSE-MsgGUID: svrOq78BRoqCm28WZi7SEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="55861404"
-X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
-   d="scan'208";a="55861404"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 11:28:39 -0700
-X-CSE-ConnectionGUID: +mF7CUywQAqvPLqbKf6SeA==
-X-CSE-MsgGUID: 6Jxqxv5ISYymGX9nNmW8IQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
-   d="scan'208";a="161096513"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa010.fm.intel.com with ESMTP; 24 Jul 2025 11:28:38 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="Bgp6mE20"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=edvCr+E0LZ752Lc0e8QwHeXjYhcrneO4fW+uOFCqFZg=; t=1753382480; x=1754246480; 
+	b=Bgp6mE20OZ2Wzb3VRhNm4JUMfA/oVQmvQ3lko2KDkC64Rc7/fqz+aK8N5BUJltPLXmRV9LBMxOh
+	M1NY9DT3FMyzdrfw760T6vgKup25M1nfE+cBkA00K0WVP2eSUaWGo80tqxPoOy2O0UULKP6Wl1lQJ
+	tXIiOI0ab65XRoNH/3tOVKh8gZKWbkofiJqMSppaFBbVM/cgXBqXH1PZHDSlUoAAP2Yy4sftB8Aek
+	xicuobVttSfikGO9zI1xGHg9LIZ7iLybRezsumzmoSNNtw5pw9nQQHUbjogd5zR0oUXbR/ZcGHlRB
+	eVXsoUc7U58ZG75Fq6SqsuZLCsQzT132CK1Q==;
+Received: from 70-228-78-207.lightspeed.sntcca.sbcglobal.net ([70.228.78.207]:55641 helo=localhost.localdomain)
+	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ouster@cs.stanford.edu>)
+	id 1uf0sY-0006eP-4W; Thu, 24 Jul 2025 11:41:20 -0700
+From: John Ousterhout <ouster@cs.stanford.edu>
+To: netdev@vger.kernel.org
+Cc: pabeni@redhat.com,
 	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	anthony.l.nguyen@intel.com,
-	wq,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net-next 8/8] i40e: use libie_aq_str
-Date: Thu, 24 Jul 2025 11:28:24 -0700
-Message-ID: <20250724182826.3758850-9-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250724182826.3758850-1-anthony.l.nguyen@intel.com>
-References: <20250724182826.3758850-1-anthony.l.nguyen@intel.com>
+	horms@kernel.org,
+	kuba@kernel.org,
+	John Ousterhout <ouster@cs.stanford.edu>
+Subject: [PATCH net-next v12 03/15] net: homa: create shared Homa header files
+Date: Thu, 24 Jul 2025 11:40:36 -0700
+Message-ID: <20250724184050.3130-4-ouster@cs.stanford.edu>
+X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20250724184050.3130-1-ouster@cs.stanford.edu>
+References: <20250724184050.3130-1-ouster@cs.stanford.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,1110 +53,789 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Score: -1.0
+X-Scan-Signature: d1dbdda2f5a35266e8b92de349fc2a1e
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+homa_impl.h defines "struct homa", which contains overall information
+about the Homa transport, plus various odds and ends that are used
+throughout the Homa implementation.
 
-There is no need to store the err string in hw->err_str. Simplify it and
-use common helper. hw->err_str is still used for other purpouse.
+homa_stub.h is a temporary header file that provides stubs for
+facilities that have omitted for this first patch series. This file
+will go away once Home is fully upstreamed.
 
-It should be marked that previously for unknown error the numeric value
-was passed as a string. Now the "LIBIE_AQ_RC_UNKNOWN" is used for such
-cases.
+Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
 
-Add libie_aminq module in i40e Kconfig.
-
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/Kconfig            |   1 +
- drivers/net/ethernet/intel/i40e/i40e_client.c |   7 +-
- drivers/net/ethernet/intel/i40e/i40e_common.c |  52 -----
- drivers/net/ethernet/intel/i40e/i40e_dcb_nl.c |   8 +-
- .../net/ethernet/intel/i40e/i40e_ethtool.c    |  22 +-
- drivers/net/ethernet/intel/i40e/i40e_main.c   | 209 +++++++-----------
- drivers/net/ethernet/intel/i40e/i40e_nvm.c    |   2 +-
- .../net/ethernet/intel/i40e/i40e_prototype.h  |   1 -
- .../ethernet/intel/i40e/i40e_virtchnl_pf.c    |  27 +--
- 9 files changed, 105 insertions(+), 224 deletions(-)
+Changes for v12:
+* Use tsc_khz instead of cpu_khz
+* Make is_homa_pkt work properly with IPv6 (it only worked for IPv4)
 
-diff --git a/drivers/net/ethernet/intel/Kconfig b/drivers/net/ethernet/intel/Kconfig
-index 29c03a9ce145..b05cc0d7a15d 100644
---- a/drivers/net/ethernet/intel/Kconfig
-+++ b/drivers/net/ethernet/intel/Kconfig
-@@ -231,6 +231,7 @@ config I40E
- 	depends on PCI
- 	select AUXILIARY_BUS
- 	select LIBIE
-+	select LIBIE_ADMINQ
- 	select NET_DEVLINK
- 	help
- 	  This driver supports Intel(R) Ethernet Controller XL710 Family of
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_client.c b/drivers/net/ethernet/intel/i40e/i40e_client.c
-index 59263551c383..5f1a405cbbf8 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_client.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_client.c
-@@ -682,9 +682,7 @@ static int i40e_client_update_vsi_ctxt(struct i40e_info *ldev,
- 	if (err) {
- 		dev_info(&pf->pdev->dev,
- 			 "couldn't get PF vsi config, err %pe aq_err %s\n",
--			 ERR_PTR(err),
--			 i40e_aq_str(&pf->hw,
--				     pf->hw.aq.asq_last_status));
-+			 ERR_PTR(err), libie_aq_str(pf->hw.aq.asq_last_status));
- 		return -ENOENT;
- 	}
- 
-@@ -711,8 +709,7 @@ static int i40e_client_update_vsi_ctxt(struct i40e_info *ldev,
- 			dev_info(&pf->pdev->dev,
- 				 "update VSI ctxt for PE failed, err %pe aq_err %s\n",
- 				 ERR_PTR(err),
--				 i40e_aq_str(&pf->hw,
--					     pf->hw.aq.asq_last_status));
-+				 libie_aq_str(pf->hw.aq.asq_last_status));
- 		}
- 	}
- 	return err;
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
-index 75074611285a..270e7e8cf9cf 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_common.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
-@@ -68,58 +68,6 @@ int i40e_set_mac_type(struct i40e_hw *hw)
- 	return status;
- }
- 
--/**
-- * i40e_aq_str - convert AQ err code to a string
-- * @hw: pointer to the HW structure
-- * @aq_err: the AQ error code to convert
-- **/
--const char *i40e_aq_str(struct i40e_hw *hw, enum libie_aq_err aq_err)
--{
--	switch (aq_err) {
--	case LIBIE_AQ_RC_OK:
--		return "OK";
--	case LIBIE_AQ_RC_EPERM:
--		return "LIBIE_AQ_RC_EPERM";
--	case LIBIE_AQ_RC_ENOENT:
--		return "LIBIE_AQ_RC_ENOENT";
--	case LIBIE_AQ_RC_ESRCH:
--		return "LIBIE_AQ_RC_ESRCH";
--	case LIBIE_AQ_RC_EIO:
--		return "LIBIE_AQ_RC_EIO";
--	case LIBIE_AQ_RC_EAGAIN:
--		return "LIBIE_AQ_RC_EAGAIN";
--	case LIBIE_AQ_RC_ENOMEM:
--		return "LIBIE_AQ_RC_ENOMEM";
--	case LIBIE_AQ_RC_EACCES:
--		return "LIBIE_AQ_RC_EACCES";
--	case LIBIE_AQ_RC_EBUSY:
--		return "LIBIE_AQ_RC_EBUSY";
--	case LIBIE_AQ_RC_EEXIST:
--		return "LIBIE_AQ_RC_EEXIST";
--	case LIBIE_AQ_RC_EINVAL:
--		return "LIBIE_AQ_RC_EINVAL";
--	case LIBIE_AQ_RC_ENOSPC:
--		return "LIBIE_AQ_RC_ENOSPC";
--	case LIBIE_AQ_RC_ENOSYS:
--		return "LIBIE_AQ_RC_ENOSYS";
--	case LIBIE_AQ_RC_EMODE:
--		return "LIBIE_AQ_RC_EMODE";
--	case LIBIE_AQ_RC_ENOSEC:
--		return "LIBIE_AQ_RC_ENOSEC";
--	case LIBIE_AQ_RC_EBADSIG:
--		return "LIBIE_AQ_RC_EBADSIG";
--	case LIBIE_AQ_RC_ESVN:
--		return "LIBIE_AQ_RC_ESVN";
--	case LIBIE_AQ_RC_EBADMAN:
--		return "LIBIE_AQ_RC_EBADMAN";
--	case LIBIE_AQ_RC_EBADBUF:
--		return "LIBIE_AQ_RC_EBADBUF";
--	}
--
--	snprintf(hw->err_str, sizeof(hw->err_str), "%d", aq_err);
--	return hw->err_str;
--}
--
- /**
-  * i40e_debug_aq
-  * @hw: debug mask related to admin queue
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_dcb_nl.c b/drivers/net/ethernet/intel/i40e/i40e_dcb_nl.c
-index 8aa43aefe84c..a2ccf4c5e30b 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_dcb_nl.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_dcb_nl.c
-@@ -136,7 +136,7 @@ static int i40e_dcbnl_ieee_setets(struct net_device *netdev,
- 		dev_info(&pf->pdev->dev,
- 			 "Failed setting DCB ETS configuration err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 libie_aq_str(pf->hw.aq.asq_last_status));
- 		return -EINVAL;
- 	}
- 
-@@ -175,7 +175,7 @@ static int i40e_dcbnl_ieee_setpfc(struct net_device *netdev,
- 		dev_info(&pf->pdev->dev,
- 			 "Failed setting DCB PFC configuration err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 libie_aq_str(pf->hw.aq.asq_last_status));
- 		return -EINVAL;
- 	}
- 
-@@ -226,7 +226,7 @@ static int i40e_dcbnl_ieee_setapp(struct net_device *netdev,
- 		dev_info(&pf->pdev->dev,
- 			 "Failed setting DCB configuration err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 libie_aq_str(pf->hw.aq.asq_last_status));
- 		return -EINVAL;
- 	}
- 
-@@ -291,7 +291,7 @@ static int i40e_dcbnl_ieee_delapp(struct net_device *netdev,
- 		dev_info(&pf->pdev->dev,
- 			 "Failed setting DCB configuration err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 libie_aq_str(pf->hw.aq.asq_last_status));
- 		return -EINVAL;
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-index 2b01eedf3605..86c72596617a 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-@@ -1462,7 +1462,7 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
- 			netdev_info(netdev,
- 				    "Set phy config failed, err %pe aq_err %s\n",
- 				    ERR_PTR(status),
--				    i40e_aq_str(hw, hw->aq.asq_last_status));
-+				    libie_aq_str(hw->aq.asq_last_status));
- 			err = -EAGAIN;
- 			goto done;
- 		}
-@@ -1472,7 +1472,7 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
- 			netdev_dbg(netdev,
- 				   "Updating link info failed with err %pe aq_err %s\n",
- 				   ERR_PTR(status),
--				   i40e_aq_str(hw, hw->aq.asq_last_status));
-+				   libie_aq_str(hw->aq.asq_last_status));
- 
- 	} else {
- 		netdev_info(netdev, "Nothing changed, exiting without setting anything.\n");
-@@ -1520,7 +1520,7 @@ static int i40e_set_fec_cfg(struct net_device *netdev, u8 fec_cfg)
- 			netdev_info(netdev,
- 				    "Set phy config failed, err %pe aq_err %s\n",
- 				    ERR_PTR(status),
--				    i40e_aq_str(hw, hw->aq.asq_last_status));
-+				    libie_aq_str(hw->aq.asq_last_status));
- 			err = -EAGAIN;
- 			goto done;
- 		}
-@@ -1534,7 +1534,7 @@ static int i40e_set_fec_cfg(struct net_device *netdev, u8 fec_cfg)
- 			netdev_dbg(netdev,
- 				   "Updating link info failed with err %pe aq_err %s\n",
- 				   ERR_PTR(status),
--				   i40e_aq_str(hw, hw->aq.asq_last_status));
-+				   libie_aq_str(hw->aq.asq_last_status));
- 	}
- 
- done:
-@@ -1641,7 +1641,7 @@ static int i40e_nway_reset(struct net_device *netdev)
- 	if (ret) {
- 		netdev_info(netdev, "link restart failed, err %pe aq_err %s\n",
- 			    ERR_PTR(ret),
--			    i40e_aq_str(hw, hw->aq.asq_last_status));
-+			    libie_aq_str(hw->aq.asq_last_status));
- 		return -EIO;
- 	}
- 
-@@ -1758,19 +1758,19 @@ static int i40e_set_pauseparam(struct net_device *netdev,
- 	if (aq_failures & I40E_SET_FC_AQ_FAIL_GET) {
- 		netdev_info(netdev, "Set fc failed on the get_phy_capabilities call with err %pe aq_err %s\n",
- 			    ERR_PTR(status),
--			    i40e_aq_str(hw, hw->aq.asq_last_status));
-+			    libie_aq_str(hw->aq.asq_last_status));
- 		err = -EAGAIN;
- 	}
- 	if (aq_failures & I40E_SET_FC_AQ_FAIL_SET) {
- 		netdev_info(netdev, "Set fc failed on the set_phy_config call with err %pe aq_err %s\n",
- 			    ERR_PTR(status),
--			    i40e_aq_str(hw, hw->aq.asq_last_status));
-+			    libie_aq_str(hw->aq.asq_last_status));
- 		err = -EAGAIN;
- 	}
- 	if (aq_failures & I40E_SET_FC_AQ_FAIL_UPDATE) {
- 		netdev_info(netdev, "Set fc failed on the get_link_info call with err %pe aq_err %s\n",
- 			    ERR_PTR(status),
--			    i40e_aq_str(hw, hw->aq.asq_last_status));
-+			    libie_aq_str(hw->aq.asq_last_status));
- 		err = -EAGAIN;
- 	}
- 
-@@ -5375,8 +5375,7 @@ static int i40e_set_priv_flags(struct net_device *dev, u32 flags)
- 			dev_info(&pf->pdev->dev,
- 				 "couldn't set switch config bits, err %pe aq_err %s\n",
- 				 ERR_PTR(ret),
--				 i40e_aq_str(&pf->hw,
--					     pf->hw.aq.asq_last_status));
-+				 libie_aq_str(pf->hw.aq.asq_last_status));
- 			/* not a fatal problem, just keep going */
- 		}
- 	}
-@@ -5455,8 +5454,7 @@ static int i40e_set_priv_flags(struct net_device *dev, u32 flags)
- 					dev_warn(&pf->pdev->dev,
- 						 "Starting FW LLDP agent failed: error: %pe, %s\n",
- 						 ERR_PTR(status),
--						 i40e_aq_str(&pf->hw,
--							     adq_err));
-+						 libie_aq_str(adq_err));
- 					return -EINVAL;
- 				}
- 			}
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index f4d913eeeac6..b83f823e4917 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -101,6 +101,7 @@ MODULE_PARM_DESC(debug, "Debug level (0=none,...,16=all), Debug mask (0x8XXXXXXX
- 
- MODULE_DESCRIPTION("Intel(R) Ethernet Connection XL710 Network Driver");
- MODULE_IMPORT_NS("LIBIE");
-+MODULE_IMPORT_NS("LIBIE_ADMINQ");
- MODULE_LICENSE("GPL v2");
- 
- static struct workqueue_struct *i40e_wq;
-@@ -1814,7 +1815,7 @@ static int i40e_set_mac(struct net_device *netdev, void *p)
- 		if (ret)
- 			netdev_info(netdev, "Ignoring error from firmware on LAA update, status %pe, AQ ret %s\n",
- 				    ERR_PTR(ret),
--				    i40e_aq_str(hw, hw->aq.asq_last_status));
-+				    libie_aq_str(hw->aq.asq_last_status));
- 	}
- 
- 	/* schedule our worker thread which will take care of
-@@ -1846,7 +1847,7 @@ static int i40e_config_rss_aq(struct i40e_vsi *vsi, const u8 *seed,
- 			dev_info(&pf->pdev->dev,
- 				 "Cannot set RSS key, err %pe aq_err %s\n",
- 				 ERR_PTR(ret),
--				 i40e_aq_str(hw, hw->aq.asq_last_status));
-+				 libie_aq_str(hw->aq.asq_last_status));
- 			return ret;
- 		}
- 	}
-@@ -1858,7 +1859,7 @@ static int i40e_config_rss_aq(struct i40e_vsi *vsi, const u8 *seed,
- 			dev_info(&pf->pdev->dev,
- 				 "Cannot set RSS lut, err %pe aq_err %s\n",
- 				 ERR_PTR(ret),
--				 i40e_aq_str(hw, hw->aq.asq_last_status));
-+				 libie_aq_str(hw->aq.asq_last_status));
- 			return ret;
- 		}
- 	}
-@@ -2351,8 +2352,7 @@ void i40e_aqc_del_filters(struct i40e_vsi *vsi, const char *vsi_name,
- 		*retval = -EIO;
- 		dev_info(&vsi->back->pdev->dev,
- 			 "ignoring delete macvlan error on %s, err %pe, aq_err %s\n",
--			 vsi_name, ERR_PTR(aq_ret),
--			 i40e_aq_str(hw, aq_status));
-+			 vsi_name, ERR_PTR(aq_ret), libie_aq_str(aq_status));
- 	}
- }
- 
-@@ -2386,19 +2386,17 @@ void i40e_aqc_add_filters(struct i40e_vsi *vsi, const char *vsi_name,
- 			set_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state);
- 			dev_warn(&vsi->back->pdev->dev,
- 				 "Error %s adding RX filters on %s, promiscuous mode forced on\n",
--				 i40e_aq_str(hw, aq_status), vsi_name);
-+				 libie_aq_str(aq_status), vsi_name);
- 		} else if (vsi->type == I40E_VSI_SRIOV ||
- 			   vsi->type == I40E_VSI_VMDQ1 ||
- 			   vsi->type == I40E_VSI_VMDQ2) {
- 			dev_warn(&vsi->back->pdev->dev,
- 				 "Error %s adding RX filters on %s, please set promiscuous on manually for %s\n",
--				 i40e_aq_str(hw, aq_status), vsi_name,
--					     vsi_name);
-+				 libie_aq_str(aq_status), vsi_name, vsi_name);
- 		} else {
- 			dev_warn(&vsi->back->pdev->dev,
- 				 "Error %s adding RX filters on %s, incorrect VSI type: %i.\n",
--				 i40e_aq_str(hw, aq_status), vsi_name,
--					     vsi->type);
-+				 libie_aq_str(aq_status), vsi_name, vsi->type);
- 		}
- 	}
- }
-@@ -2441,8 +2439,7 @@ i40e_aqc_broadcast_filter(struct i40e_vsi *vsi, const char *vsi_name,
- 		set_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state);
- 		dev_warn(&vsi->back->pdev->dev,
- 			 "Error %s, forcing overflow promiscuous on %s\n",
--			 i40e_aq_str(hw, hw->aq.asq_last_status),
--			 vsi_name);
-+			 libie_aq_str(hw->aq.asq_last_status), vsi_name);
- 	}
- 
- 	return aq_ret;
-@@ -2483,7 +2480,7 @@ static int i40e_set_promiscuous(struct i40e_pf *pf, bool promisc)
- 			dev_info(&pf->pdev->dev,
- 				 "Set default VSI failed, err %pe, aq_err %s\n",
- 				 ERR_PTR(aq_ret),
--				 i40e_aq_str(hw, hw->aq.asq_last_status));
-+				 libie_aq_str(hw->aq.asq_last_status));
- 		}
- 	} else {
- 		aq_ret = i40e_aq_set_vsi_unicast_promiscuous(
-@@ -2495,7 +2492,7 @@ static int i40e_set_promiscuous(struct i40e_pf *pf, bool promisc)
- 			dev_info(&pf->pdev->dev,
- 				 "set unicast promisc failed, err %pe, aq_err %s\n",
- 				 ERR_PTR(aq_ret),
--				 i40e_aq_str(hw, hw->aq.asq_last_status));
-+				 libie_aq_str(hw->aq.asq_last_status));
- 		}
- 		aq_ret = i40e_aq_set_vsi_multicast_promiscuous(
- 						  hw,
-@@ -2505,7 +2502,7 @@ static int i40e_set_promiscuous(struct i40e_pf *pf, bool promisc)
- 			dev_info(&pf->pdev->dev,
- 				 "set multicast promisc failed, err %pe, aq_err %s\n",
- 				 ERR_PTR(aq_ret),
--				 i40e_aq_str(hw, hw->aq.asq_last_status));
-+				 libie_aq_str(hw->aq.asq_last_status));
- 		}
- 	}
- 
-@@ -2813,7 +2810,7 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
- 				 "set multi promisc failed on %s, err %pe aq_err %s\n",
- 				 vsi_name,
- 				 ERR_PTR(aq_ret),
--				 i40e_aq_str(hw, hw->aq.asq_last_status));
-+				 libie_aq_str(hw->aq.asq_last_status));
- 		} else {
- 			dev_info(&pf->pdev->dev, "%s allmulti mode.\n",
- 				 cur_multipromisc ? "entering" : "leaving");
-@@ -2834,7 +2831,7 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
- 				 cur_promisc ? "on" : "off",
- 				 vsi_name,
- 				 ERR_PTR(aq_ret),
--				 i40e_aq_str(hw, hw->aq.asq_last_status));
-+				 libie_aq_str(hw->aq.asq_last_status));
- 		}
- 	}
- out:
-@@ -2983,8 +2980,7 @@ void i40e_vlan_stripping_enable(struct i40e_vsi *vsi)
- 		dev_info(&vsi->back->pdev->dev,
- 			 "update vlan stripping failed, err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(&vsi->back->hw,
--				     vsi->back->hw.aq.asq_last_status));
-+			 libie_aq_str(vsi->back->hw.aq.asq_last_status));
- 	}
- }
- 
-@@ -3018,8 +3014,7 @@ void i40e_vlan_stripping_disable(struct i40e_vsi *vsi)
- 		dev_info(&vsi->back->pdev->dev,
- 			 "update vlan stripping failed, err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(&vsi->back->hw,
--				     vsi->back->hw.aq.asq_last_status));
-+			 libie_aq_str(vsi->back->hw.aq.asq_last_status));
- 	}
- }
- 
-@@ -3263,8 +3258,7 @@ int i40e_vsi_add_pvid(struct i40e_vsi *vsi, u16 vid)
- 		dev_info(&vsi->back->pdev->dev,
- 			 "add pvid failed, err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(&vsi->back->hw,
--				     vsi->back->hw.aq.asq_last_status));
-+			 libie_aq_str(vsi->back->hw.aq.asq_last_status));
- 		return -ENOENT;
- 	}
- 
-@@ -5534,7 +5528,7 @@ static int i40e_vsi_get_bw_info(struct i40e_vsi *vsi)
- 		dev_info(&pf->pdev->dev,
- 			 "couldn't get PF vsi bw config, err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 libie_aq_str(pf->hw.aq.asq_last_status));
- 		return -EINVAL;
- 	}
- 
-@@ -5545,7 +5539,7 @@ static int i40e_vsi_get_bw_info(struct i40e_vsi *vsi)
- 		dev_info(&pf->pdev->dev,
- 			 "couldn't get PF vsi ets bw config, err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 libie_aq_str(pf->hw.aq.asq_last_status));
- 		return -EINVAL;
- 	}
- 
-@@ -5735,7 +5729,7 @@ int i40e_update_adq_vsi_queues(struct i40e_vsi *vsi, int vsi_offset)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev, "Update vsi config failed, err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(hw, hw->aq.asq_last_status));
-+			 libie_aq_str(hw->aq.asq_last_status));
- 		return ret;
- 	}
- 	/* update the local VSI info with updated queue map */
-@@ -5791,7 +5785,7 @@ static int i40e_vsi_config_tc(struct i40e_vsi *vsi, u8 enabled_tc)
- 			dev_info(&pf->pdev->dev,
- 				 "Failed querying vsi bw info, err %pe aq_err %s\n",
- 				 ERR_PTR(ret),
--				 i40e_aq_str(hw, hw->aq.asq_last_status));
-+				 libie_aq_str(hw->aq.asq_last_status));
- 			goto out;
- 		}
- 		if ((bw_config.tc_valid_bits & enabled_tc) != enabled_tc) {
-@@ -5858,7 +5852,7 @@ static int i40e_vsi_config_tc(struct i40e_vsi *vsi, u8 enabled_tc)
- 		dev_info(&pf->pdev->dev,
- 			 "Update vsi tc config failed, err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(hw, hw->aq.asq_last_status));
-+			 libie_aq_str(hw->aq.asq_last_status));
- 		goto out;
- 	}
- 	/* update the local VSI info with updated queue map */
-@@ -5871,7 +5865,7 @@ static int i40e_vsi_config_tc(struct i40e_vsi *vsi, u8 enabled_tc)
- 		dev_info(&pf->pdev->dev,
- 			 "Failed updating vsi bw info, err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(hw, hw->aq.asq_last_status));
-+			 libie_aq_str(hw->aq.asq_last_status));
- 		goto out;
- 	}
- 
-@@ -5985,7 +5979,7 @@ int i40e_set_bw_limit(struct i40e_vsi *vsi, u16 seid, u64 max_tx_rate)
- 		dev_err(&pf->pdev->dev,
- 			"Failed set tx rate (%llu Mbps) for vsi->seid %u, err %pe aq_err %s\n",
- 			max_tx_rate, seid, ERR_PTR(ret),
--			i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			libie_aq_str(pf->hw.aq.asq_last_status));
- 	return ret;
- }
- 
-@@ -6061,7 +6055,7 @@ static void i40e_remove_queue_channels(struct i40e_vsi *vsi)
- 				dev_info(&pf->pdev->dev,
- 					 "Failed to delete cloud filter, err %pe aq_err %s\n",
- 					 ERR_PTR(ret),
--					 i40e_aq_str(&pf->hw, last_aq_status));
-+					 libie_aq_str(last_aq_status));
- 			kfree(cfilter);
- 		}
- 
-@@ -6196,7 +6190,7 @@ static int i40e_vsi_reconfig_rss(struct i40e_vsi *vsi, u16 rss_size)
- 		dev_info(&pf->pdev->dev,
- 			 "Cannot set RSS lut, err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(hw, hw->aq.asq_last_status));
-+			 libie_aq_str(hw->aq.asq_last_status));
- 		kfree(lut);
- 		return ret;
- 	}
-@@ -6295,8 +6289,7 @@ static int i40e_add_channel(struct i40e_pf *pf, u16 uplink_seid,
- 		dev_info(&pf->pdev->dev,
- 			 "add new vsi failed, err %pe aq_err %s\n",
- 			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw,
--				     pf->hw.aq.asq_last_status));
-+			 libie_aq_str(pf->hw.aq.asq_last_status));
- 		return -ENOENT;
- 	}
- 
-@@ -6542,9 +6535,7 @@ static int i40e_validate_and_set_switch_mode(struct i40e_vsi *vsi)
- 	if (ret && hw->aq.asq_last_status != LIBIE_AQ_RC_ESRCH)
- 		dev_err(&pf->pdev->dev,
- 			"couldn't set switch config bits, err %pe aq_err %s\n",
--			ERR_PTR(ret),
--			i40e_aq_str(hw,
--				    hw->aq.asq_last_status));
-+			ERR_PTR(ret), libie_aq_str(hw->aq.asq_last_status));
- 
- 	return ret;
- }
-@@ -6743,8 +6734,7 @@ int i40e_veb_config_tc(struct i40e_veb *veb, u8 enabled_tc)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "VEB bw config failed, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 		goto out;
- 	}
- 
-@@ -6753,8 +6743,7 @@ int i40e_veb_config_tc(struct i40e_veb *veb, u8 enabled_tc)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "Failed getting veb bw config, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 	}
- 
- out:
-@@ -6835,7 +6824,7 @@ static int i40e_resume_port_tx(struct i40e_pf *pf)
- 		dev_info(&pf->pdev->dev,
- 			 "Resume Port Tx failed, err %pe aq_err %s\n",
- 			  ERR_PTR(ret),
--			  i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			  libie_aq_str(pf->hw.aq.asq_last_status));
- 		/* Schedule PF reset to recover */
- 		set_bit(__I40E_PF_RESET_REQUESTED, pf->state);
- 		i40e_service_event_schedule(pf);
-@@ -6859,8 +6848,7 @@ static int i40e_suspend_port_tx(struct i40e_pf *pf)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "Suspend Port Tx failed, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 		/* Schedule PF reset to recover */
- 		set_bit(__I40E_PF_RESET_REQUESTED, pf->state);
- 		i40e_service_event_schedule(pf);
-@@ -6899,8 +6887,7 @@ static int i40e_hw_set_dcb_config(struct i40e_pf *pf,
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "Set DCB Config failed, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 		goto out;
- 	}
- 
-@@ -7016,8 +7003,7 @@ int i40e_hw_dcb_config(struct i40e_pf *pf, struct i40e_dcbx_config *new_cfg)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "Modify Port ETS failed, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 		goto out;
- 	}
- 
-@@ -7056,8 +7042,7 @@ int i40e_hw_dcb_config(struct i40e_pf *pf, struct i40e_dcbx_config *new_cfg)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "DCB Updated failed, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 		goto out;
- 	}
- 
-@@ -7140,8 +7125,7 @@ int i40e_dcb_sw_default_config(struct i40e_pf *pf)
- 	if (err) {
- 		dev_info(&pf->pdev->dev,
- 			 "Enable Port ETS failed, err %pe aq_err %s\n",
--			 ERR_PTR(err),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(err), libie_aq_str(pf->hw.aq.asq_last_status));
- 		err = -ENOENT;
- 		goto out;
- 	}
-@@ -7220,8 +7204,7 @@ static int i40e_init_pf_dcb(struct i40e_pf *pf)
- 	} else {
- 		dev_info(&pf->pdev->dev,
- 			 "Query for DCB configuration failed, err %pe aq_err %s\n",
--			 ERR_PTR(err),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(err), libie_aq_str(pf->hw.aq.asq_last_status));
- 	}
- 
- out:
-@@ -7477,8 +7460,7 @@ static int i40e_force_link_state(struct i40e_pf *pf, bool is_up)
- 	if (err) {
- 		dev_err(&pf->pdev->dev,
- 			"failed to get phy cap., ret =  %pe last_status =  %s\n",
--			ERR_PTR(err),
--			i40e_aq_str(hw, hw->aq.asq_last_status));
-+			ERR_PTR(err), libie_aq_str(hw->aq.asq_last_status));
- 		return err;
- 	}
- 	speed = abilities.link_speed;
-@@ -7489,8 +7471,7 @@ static int i40e_force_link_state(struct i40e_pf *pf, bool is_up)
- 	if (err) {
- 		dev_err(&pf->pdev->dev,
- 			"failed to get phy cap., ret =  %pe last_status =  %s\n",
--			ERR_PTR(err),
--			i40e_aq_str(hw, hw->aq.asq_last_status));
-+			ERR_PTR(err), libie_aq_str(hw->aq.asq_last_status));
- 		return err;
- 	}
- 
-@@ -7534,8 +7515,7 @@ static int i40e_force_link_state(struct i40e_pf *pf, bool is_up)
- 	if (err) {
- 		dev_err(&pf->pdev->dev,
- 			"set phy config ret =  %pe last_status =  %s\n",
--			ERR_PTR(err),
--			i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			ERR_PTR(err), libie_aq_str(pf->hw.aq.asq_last_status));
- 		return err;
- 	}
- 
-@@ -7875,8 +7855,7 @@ static int i40e_fwd_ring_up(struct i40e_vsi *vsi, struct net_device *vdev,
- 		}
- 		dev_info(&pf->pdev->dev,
- 			 "Error adding mac filter on macvlan err %pe, aq_err %s\n",
--			  ERR_PTR(ret),
--			  i40e_aq_str(hw, aq_err));
-+			  ERR_PTR(ret), libie_aq_str(aq_err));
- 		netdev_err(vdev, "L2fwd offload disabled to L2 filter error\n");
- 	}
- 
-@@ -7948,8 +7927,7 @@ static int i40e_setup_macvlans(struct i40e_vsi *vsi, u16 macvlan_cnt, u16 qcnt,
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "Update vsi tc config failed, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(hw, hw->aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(hw->aq.asq_last_status));
- 		return ret;
- 	}
- 	/* update the local VSI info with updated queue map */
-@@ -8164,8 +8142,7 @@ static void i40e_fwd_del(struct net_device *netdev, void *vdev)
- 			} else {
- 				dev_info(&pf->pdev->dev,
- 					 "Error deleting mac filter on macvlan err %pe, aq_err %s\n",
--					  ERR_PTR(ret),
--					  i40e_aq_str(hw, aq_err));
-+					  ERR_PTR(ret), libie_aq_str(aq_err));
- 			}
- 			break;
- 		}
-@@ -9476,8 +9453,7 @@ static int i40e_handle_lldp_event(struct i40e_pf *pf,
- 			dev_info(&pf->pdev->dev,
- 				 "Failed querying DCB configuration data from firmware, err %pe aq_err %s\n",
- 				 ERR_PTR(ret),
--				 i40e_aq_str(&pf->hw,
--					     pf->hw.aq.asq_last_status));
-+				 libie_aq_str(pf->hw.aq.asq_last_status));
- 		}
- 		goto exit;
- 	}
-@@ -10286,8 +10262,7 @@ static void i40e_enable_pf_switch_lb(struct i40e_pf *pf)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "couldn't get PF vsi config, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 		return;
- 	}
- 	ctxt.flags = I40E_AQ_VSI_TYPE_PF;
-@@ -10298,8 +10273,7 @@ static void i40e_enable_pf_switch_lb(struct i40e_pf *pf)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "update vsi switch failed, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 	}
- }
- 
-@@ -10322,8 +10296,7 @@ static void i40e_disable_pf_switch_lb(struct i40e_pf *pf)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "couldn't get PF vsi config, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 		return;
- 	}
- 	ctxt.flags = I40E_AQ_VSI_TYPE_PF;
-@@ -10334,8 +10307,7 @@ static void i40e_disable_pf_switch_lb(struct i40e_pf *pf)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "update vsi switch failed, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 	}
- }
- 
-@@ -10475,8 +10447,7 @@ static int i40e_get_capabilities(struct i40e_pf *pf,
- 			dev_info(&pf->pdev->dev,
- 				 "capability discovery failed, err %pe aq_err %s\n",
- 				 ERR_PTR(err),
--				 i40e_aq_str(&pf->hw,
--					     pf->hw.aq.asq_last_status));
-+				 libie_aq_str(pf->hw.aq.asq_last_status));
- 			return -ENODEV;
- 		}
- 	} while (err);
-@@ -10613,8 +10584,7 @@ static int i40e_rebuild_cloud_filters(struct i40e_vsi *vsi, u16 seid)
- 			dev_dbg(&pf->pdev->dev,
- 				"Failed to rebuild cloud filter, err %pe aq_err %s\n",
- 				ERR_PTR(ret),
--				i40e_aq_str(&pf->hw,
--					    pf->hw.aq.asq_last_status));
-+				libie_aq_str(pf->hw.aq.asq_last_status));
- 			return ret;
- 		}
- 	}
-@@ -10855,8 +10825,7 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
- 	ret = i40e_init_adminq(&pf->hw);
- 	if (ret) {
- 		dev_info(&pf->pdev->dev, "Rebuild AdminQ failed, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 		goto clear_recovery;
- 	}
- 	i40e_get_oem_version(&pf->hw);
-@@ -10967,8 +10936,7 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
- 					 I40E_AQ_EVENT_MODULE_QUAL_FAIL), NULL);
- 	if (ret)
- 		dev_info(&pf->pdev->dev, "set phy mask fail, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 
- 	/* Rebuild the VSIs and VEBs that existed before reset.
- 	 * They are still in our local switch element arrays, so only
-@@ -11066,8 +11034,7 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
- 		if (ret)
- 			dev_info(&pf->pdev->dev, "link restart failed, err %pe aq_err %s\n",
- 				 ERR_PTR(ret),
--				 i40e_aq_str(&pf->hw,
--					     pf->hw.aq.asq_last_status));
-+				 libie_aq_str(pf->hw.aq.asq_last_status));
- 	}
- 	/* reinit the misc interrupt */
- 	if (test_bit(I40E_FLAG_MSIX_ENA, pf->flags)) {
-@@ -11098,8 +11065,7 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
- 		dev_warn(&pf->pdev->dev,
- 			 "Failed to restore promiscuous setting: %s, err %pe aq_err %s\n",
- 			 pf->cur_promisc ? "on" : "off",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 
- 	i40e_reset_all_vfs(pf, true);
- 
-@@ -12305,8 +12271,7 @@ static int i40e_get_rss_aq(struct i40e_vsi *vsi, const u8 *seed,
- 			dev_info(&pf->pdev->dev,
- 				 "Cannot get RSS key, err %pe aq_err %s\n",
- 				 ERR_PTR(ret),
--				 i40e_aq_str(&pf->hw,
--					     pf->hw.aq.asq_last_status));
-+				 libie_aq_str(pf->hw.aq.asq_last_status));
- 			return ret;
- 		}
- 	}
-@@ -12319,8 +12284,7 @@ static int i40e_get_rss_aq(struct i40e_vsi *vsi, const u8 *seed,
- 			dev_info(&pf->pdev->dev,
- 				 "Cannot get RSS lut, err %pe aq_err %s\n",
- 				 ERR_PTR(ret),
--				 i40e_aq_str(&pf->hw,
--					     pf->hw.aq.asq_last_status));
-+				 libie_aq_str(pf->hw.aq.asq_last_status));
- 			return ret;
- 		}
- 	}
-@@ -12981,8 +12945,7 @@ static int i40e_udp_tunnel_set_port(struct net_device *netdev,
- 				     NULL);
- 	if (ret) {
- 		netdev_info(netdev, "add UDP port failed, err %pe aq_err %s\n",
--			    ERR_PTR(ret),
--			    i40e_aq_str(hw, hw->aq.asq_last_status));
-+			    ERR_PTR(ret), libie_aq_str(hw->aq.asq_last_status));
- 		return -EIO;
- 	}
- 
-@@ -13001,8 +12964,7 @@ static int i40e_udp_tunnel_unset_port(struct net_device *netdev,
- 	ret = i40e_aq_del_udp_tunnel(hw, ti->hw_priv, NULL);
- 	if (ret) {
- 		netdev_info(netdev, "delete UDP port failed, err %pe aq_err %s\n",
--			    ERR_PTR(ret),
--			    i40e_aq_str(hw, hw->aq.asq_last_status));
-+			    ERR_PTR(ret), libie_aq_str(hw->aq.asq_last_status));
- 		return -EIO;
- 	}
- 
-@@ -13892,8 +13854,7 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
- 			dev_info(&pf->pdev->dev,
- 				 "couldn't get PF vsi config, err %pe aq_err %s\n",
- 				 ERR_PTR(ret),
--				 i40e_aq_str(&pf->hw,
--					     pf->hw.aq.asq_last_status));
-+				 libie_aq_str(pf->hw.aq.asq_last_status));
- 			return -ENOENT;
- 		}
- 		vsi->info = ctxt.info;
-@@ -13922,8 +13883,7 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
- 				dev_info(&pf->pdev->dev,
- 					 "update vsi failed, err %d aq_err %s\n",
- 					 ret,
--					 i40e_aq_str(&pf->hw,
--						     pf->hw.aq.asq_last_status));
-+					 libie_aq_str(pf->hw.aq.asq_last_status));
- 				ret = -ENOENT;
- 				goto err;
- 			}
-@@ -13942,8 +13902,7 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
- 				dev_info(&pf->pdev->dev,
- 					 "update vsi failed, err %pe aq_err %s\n",
- 					 ERR_PTR(ret),
--					 i40e_aq_str(&pf->hw,
--						    pf->hw.aq.asq_last_status));
-+					 libie_aq_str(pf->hw.aq.asq_last_status));
- 				ret = -ENOENT;
- 				goto err;
- 			}
-@@ -13966,8 +13925,7 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
- 					 "failed to configure TCs for main VSI tc_map 0x%08x, err %pe aq_err %s\n",
- 					 enabled_tc,
- 					 ERR_PTR(ret),
--					 i40e_aq_str(&pf->hw,
--						    pf->hw.aq.asq_last_status));
-+					 libie_aq_str(pf->hw.aq.asq_last_status));
- 			}
- 		}
- 		break;
-@@ -14061,8 +14019,7 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
- 			dev_info(&vsi->back->pdev->dev,
- 				 "add vsi failed, err %pe aq_err %s\n",
- 				 ERR_PTR(ret),
--				 i40e_aq_str(&pf->hw,
--					     pf->hw.aq.asq_last_status));
-+				 libie_aq_str(pf->hw.aq.asq_last_status));
- 			ret = -ENOENT;
- 			goto err;
- 		}
-@@ -14092,8 +14049,7 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "couldn't get vsi bw info, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 		/* VSI is already added so not tearing that up */
- 		ret = 0;
- 	}
-@@ -14541,8 +14497,7 @@ static int i40e_veb_get_bw_info(struct i40e_veb *veb)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "query veb bw config failed, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, hw->aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(hw->aq.asq_last_status));
- 		goto out;
- 	}
- 
-@@ -14551,8 +14506,7 @@ static int i40e_veb_get_bw_info(struct i40e_veb *veb)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "query veb bw ets config failed, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, hw->aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(hw->aq.asq_last_status));
- 		goto out;
- 	}
- 
-@@ -14740,8 +14694,7 @@ static int i40e_add_veb(struct i40e_veb *veb, struct i40e_vsi *vsi)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "couldn't add VEB, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 		return -EPERM;
- 	}
- 
-@@ -14751,16 +14704,14 @@ static int i40e_add_veb(struct i40e_veb *veb, struct i40e_vsi *vsi)
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "couldn't get VEB statistics idx, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 		return -EPERM;
- 	}
- 	ret = i40e_veb_get_bw_info(veb);
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "couldn't get VEB bw info, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 		i40e_aq_delete_element(&pf->hw, veb->seid, NULL);
- 		return -ENOENT;
- 	}
-@@ -14955,9 +14906,7 @@ int i40e_fetch_switch_configuration(struct i40e_pf *pf, bool printconfig)
- 		if (ret) {
- 			dev_info(&pf->pdev->dev,
- 				 "get switch config failed err %d aq_err %s\n",
--				 ret,
--				 i40e_aq_str(&pf->hw,
--					     pf->hw.aq.asq_last_status));
-+				 ret, libie_aq_str(pf->hw.aq.asq_last_status));
- 			kfree(aq_buf);
- 			return -ENOENT;
- 		}
-@@ -15002,8 +14951,7 @@ static int i40e_setup_pf_switch(struct i40e_pf *pf, bool reinit, bool lock_acqui
- 	if (ret) {
- 		dev_info(&pf->pdev->dev,
- 			 "couldn't fetch switch config, err %pe aq_err %s\n",
--			 ERR_PTR(ret),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(ret), libie_aq_str(pf->hw.aq.asq_last_status));
- 		return ret;
- 	}
- 	i40e_pf_reset_stats(pf);
-@@ -15030,8 +14978,7 @@ static int i40e_setup_pf_switch(struct i40e_pf *pf, bool reinit, bool lock_acqui
- 			dev_info(&pf->pdev->dev,
- 				 "couldn't set switch config bits, err %pe aq_err %s\n",
- 				 ERR_PTR(ret),
--				 i40e_aq_str(&pf->hw,
--					     pf->hw.aq.asq_last_status));
-+				 libie_aq_str(pf->hw.aq.asq_last_status));
- 			/* not a fatal problem, just keep going */
- 		}
- 		pf->last_sw_conf_valid_flags = valid_flags;
-@@ -15933,8 +15880,7 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 					 I40E_AQ_EVENT_MODULE_QUAL_FAIL), NULL);
- 	if (err)
- 		dev_info(&pf->pdev->dev, "set phy mask fail, err %pe aq_err %s\n",
--			 ERR_PTR(err),
--			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			 ERR_PTR(err), libie_aq_str(pf->hw.aq.asq_last_status));
- 
- 	/* VF MDD event logs are rate limited to one second intervals */
- 	ratelimit_state_init(&pf->mdd_message_rate_limit, 1 * HZ, 1);
-@@ -15956,8 +15902,7 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		if (err)
- 			dev_info(&pf->pdev->dev, "link restart failed, err %pe aq_err %s\n",
- 				 ERR_PTR(err),
--				 i40e_aq_str(&pf->hw,
--					     pf->hw.aq.asq_last_status));
-+				 libie_aq_str(pf->hw.aq.asq_last_status));
- 	}
- 	/* The main driver is (mostly) up and happy. We need to set this state
- 	 * before setting up the misc vector or we get a race and the vector
-@@ -16088,8 +16033,7 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	err = i40e_aq_get_phy_capabilities(hw, false, false, &abilities, NULL);
- 	if (err)
- 		dev_dbg(&pf->pdev->dev, "get requested speeds ret =  %pe last_status =  %s\n",
--			ERR_PTR(err),
--			i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			ERR_PTR(err), libie_aq_str(pf->hw.aq.asq_last_status));
- 	pf->hw.phy.link_info.requested_speeds = abilities.link_speed;
- 
- 	/* set the FEC config due to the board capabilities */
-@@ -16099,8 +16043,7 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	err = i40e_aq_get_phy_capabilities(hw, false, true, &abilities, NULL);
- 	if (err)
- 		dev_dbg(&pf->pdev->dev, "get supported phy types ret =  %pe last_status =  %s\n",
--			ERR_PTR(err),
--			i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			ERR_PTR(err), libie_aq_str(pf->hw.aq.asq_last_status));
- 
- 	/* make sure the MFS hasn't been set lower than the default */
- #define MAX_FRAME_SIZE_DEFAULT 0x2600
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_nvm.c b/drivers/net/ethernet/intel/i40e/i40e_nvm.c
-index 5dfbe71205e6..ed3c54e36be3 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_nvm.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_nvm.c
-@@ -1053,7 +1053,7 @@ static int i40e_nvmupd_exec_aq(struct i40e_hw *hw,
- 		i40e_debug(hw, I40E_DEBUG_NVM,
- 			   "%s err %pe aq_err %s\n",
- 			   __func__, ERR_PTR(status),
--			   i40e_aq_str(hw, hw->aq.asq_last_status));
-+			   libie_aq_str(hw->aq.asq_last_status));
- 		*perrno = i40e_aq_rc_to_posix(status, hw->aq.asq_last_status);
- 		return status;
- 	}
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_prototype.h b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-index bd54f06b43cd..aef5de53ce3b 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_prototype.h
-@@ -46,7 +46,6 @@ void i40e_debug_aq(struct i40e_hw *hw, enum i40e_debug_mask mask,
- 
- bool i40e_check_asq_alive(struct i40e_hw *hw);
- int i40e_aq_queue_shutdown(struct i40e_hw *hw, bool unloading);
--const char *i40e_aq_str(struct i40e_hw *hw, enum libie_aq_err aq_err);
- 
- int i40e_aq_get_rss_lut(struct i40e_hw *hw, u16 seid,
- 			bool pf_lut, u8 *lut, u16 lut_size);
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index b232edf68ab1..45ce6b0f4501 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -1290,9 +1290,8 @@ i40e_set_vsi_promisc(struct i40e_vf *vf, u16 seid, bool multi_enable,
- 
- 			dev_err(&pf->pdev->dev,
- 				"VF %d failed to set multicast promiscuous mode err %pe aq_err %s\n",
--				vf->vf_id,
--				ERR_PTR(aq_ret),
--				i40e_aq_str(&pf->hw, aq_err));
-+				vf->vf_id, ERR_PTR(aq_ret),
-+				libie_aq_str(aq_err));
- 
- 			return aq_ret;
- 		}
-@@ -1306,9 +1305,8 @@ i40e_set_vsi_promisc(struct i40e_vf *vf, u16 seid, bool multi_enable,
- 
- 			dev_err(&pf->pdev->dev,
- 				"VF %d failed to set unicast promiscuous mode err %pe aq_err %s\n",
--				vf->vf_id,
--				ERR_PTR(aq_ret),
--				i40e_aq_str(&pf->hw, aq_err));
-+				vf->vf_id, ERR_PTR(aq_ret),
-+				libie_aq_str(aq_err));
- 		}
- 
- 		return aq_ret;
-@@ -1323,9 +1321,8 @@ i40e_set_vsi_promisc(struct i40e_vf *vf, u16 seid, bool multi_enable,
- 
- 			dev_err(&pf->pdev->dev,
- 				"VF %d failed to set multicast promiscuous mode err %pe aq_err %s\n",
--				vf->vf_id,
--				ERR_PTR(aq_ret),
--				i40e_aq_str(&pf->hw, aq_err));
-+				vf->vf_id, ERR_PTR(aq_ret),
-+				libie_aq_str(aq_err));
- 
- 			if (!aq_tmp)
- 				aq_tmp = aq_ret;
-@@ -1339,9 +1336,8 @@ i40e_set_vsi_promisc(struct i40e_vf *vf, u16 seid, bool multi_enable,
- 
- 			dev_err(&pf->pdev->dev,
- 				"VF %d failed to set unicast promiscuous mode err %pe aq_err %s\n",
--				vf->vf_id,
--				ERR_PTR(aq_ret),
--				i40e_aq_str(&pf->hw, aq_err));
-+				vf->vf_id, ERR_PTR(aq_ret),
-+				libie_aq_str(aq_err));
- 
- 			if (!aq_tmp)
- 				aq_tmp = aq_ret;
-@@ -3748,8 +3744,7 @@ static void i40e_del_all_cloud_filters(struct i40e_vf *vf)
- 			dev_err(&pf->pdev->dev,
- 				"VF %d: Failed to delete cloud filter, err %pe aq_err %s\n",
- 				vf->vf_id, ERR_PTR(ret),
--				i40e_aq_str(&pf->hw,
--					    pf->hw.aq.asq_last_status));
-+				libie_aq_str(pf->hw.aq.asq_last_status));
- 
- 		hlist_del(&cfilter->cloud_node);
- 		kfree(cfilter);
-@@ -3851,7 +3846,7 @@ static int i40e_vc_del_cloud_filter(struct i40e_vf *vf, u8 *msg)
- 		dev_err(&pf->pdev->dev,
- 			"VF %d: Failed to delete cloud filter, err %pe aq_err %s\n",
- 			vf->vf_id, ERR_PTR(ret),
--			i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			libie_aq_str(pf->hw.aq.asq_last_status));
- 		goto err;
- 	}
- 
-@@ -3987,7 +3982,7 @@ static int i40e_vc_add_cloud_filter(struct i40e_vf *vf, u8 *msg)
- 		dev_err(&pf->pdev->dev,
- 			"VF %d: Failed to add cloud filter, err %pe aq_err %s\n",
- 			vf->vf_id, ERR_PTR(aq_ret),
--			i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
-+			libie_aq_str(pf->hw.aq.asq_last_status));
- 		goto err_free;
- 	}
- 
+Changes for v11:
+* Move link_mbps variable from struct homa_pacer back to struct homa.
+
+Changes for v10:
+* Eliminate __context__ definition
+* Replace __u16 with u16, __u8 with u8, etc.
+* Refactor resend mechanism
+
+Changes for v9:
+* Move information from sync.txt into comments in homa_impl.h
+* Add limits on number of active peer structs
+* Introduce homa_net objects; there is now a single global struct homa
+  shared by all network namespaces, with one homa_net per network namespace
+  with netns-specific information.
+* Introduce homa_clock as an abstraction layer for the fine-grain clock.
+* Various name improvements (e.g. use "alloc" instead of "new" for functions
+  that allocate memory)
+* Eliminate sizeof32 definition
+
+Changes for v8:
+* Pull out pacer-related fields into separate struct homa_pacer in homa_pacer.h
+
+Changes for v7:
+* Make Homa a per-net subsystem
+* Track tx buffer memory usage
+* Refactor waiting mechanism for incoming packets: simplify wait
+  criteria and use standard Linux mechanisms for waiting
+* Remove "lock_slow" functions, which don't add functionality in this
+  patch series
+* Rename homa_rpc_free to homa_rpc_end
+* Add homa_make_header_avl function
+* Use u64 and __u64 properly
+---
+ net/homa/homa_impl.h | 623 +++++++++++++++++++++++++++++++++++++++++++
+ net/homa/homa_stub.h |  91 +++++++
+ 2 files changed, 714 insertions(+)
+ create mode 100644 net/homa/homa_impl.h
+ create mode 100644 net/homa/homa_stub.h
+
+diff --git a/net/homa/homa_impl.h b/net/homa/homa_impl.h
+new file mode 100644
+index 000000000000..178e091745f2
+--- /dev/null
++++ b/net/homa/homa_impl.h
+@@ -0,0 +1,623 @@
++/* SPDX-License-Identifier: BSD-2-Clause */
++
++/* This file contains definitions that are shared across the files
++ * that implement Homa for Linux.
++ */
++
++#ifndef _HOMA_IMPL_H
++#define _HOMA_IMPL_H
++
++#include <linux/bug.h>
++
++#include <linux/audit.h>
++#include <linux/icmp.h>
++#include <linux/init.h>
++#include <linux/list.h>
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/kthread.h>
++#include <linux/completion.h>
++#include <linux/proc_fs.h>
++#include <linux/sched/signal.h>
++#include <linux/skbuff.h>
++#include <linux/socket.h>
++#include <linux/vmalloc.h>
++#include <net/icmp.h>
++#include <net/ip.h>
++#include <net/netns/generic.h>
++#include <net/protocol.h>
++#include <net/inet_common.h>
++#include <net/gro.h>
++#include <net/rps.h>
++
++#include <linux/homa.h>
++#include "homa_wire.h"
++
++/* Forward declarations. */
++struct homa;
++struct homa_peer;
++struct homa_rpc;
++struct homa_sock;
++
++/**
++ * union sockaddr_in_union - Holds either an IPv4 or IPv6 address (smaller
++ * and easier to use than sockaddr_storage).
++ */
++union sockaddr_in_union {
++	/** @sa: Used to access as a generic sockaddr. */
++	struct sockaddr sa;
++
++	/** @in4: Used to access as IPv4 socket. */
++	struct sockaddr_in in4;
++
++	/** @in6: Used to access as IPv6 socket.  */
++	struct sockaddr_in6 in6;
++};
++
++/**
++ * struct homa - Stores overall information about the Homa transport, which
++ * is shared across all Homa sockets and all network namespaces.
++ */
++struct homa {
++	/**
++	 * @next_outgoing_id: Id to use for next outgoing RPC request.
++	 * This is always even: it's used only to generate client-side ids.
++	 * Accessed without locks. Note: RPC ids are unique within a
++	 * single client machine.
++	 */
++	atomic64_t next_outgoing_id;
++
++	/**
++	 * @pacer:  Information related to the pacer; managed by homa_pacer.c.
++	 */
++	struct homa_pacer *pacer;
++
++	/**
++	 * @peertab: Info about all the other hosts we have communicated with;
++	 * includes peers from all network namespaces.
++	 */
++	struct homa_peertab *peertab;
++
++	/**
++	 * @socktab: Information about all open sockets. Dynamically
++	 * allocated; must be kfreed.
++	 */
++	struct homa_socktab *socktab;
++
++	/** @max_numa: Highest NUMA node id in use by any core. */
++	int max_numa;
++
++	/**
++	 * @link_mbps: The raw bandwidth of the network uplink, in
++	 * units of 1e06 bits per second.  Set externally via sysctl.
++	 */
++	int link_mbps;
++
++	/**
++	 * @resend_ticks: When an RPC's @silent_ticks reaches this value,
++	 * start sending RESEND requests.
++	 */
++	int resend_ticks;
++
++	/**
++	 * @resend_interval: minimum number of homa timer ticks between
++	 * RESENDs for the same RPC.
++	 */
++	int resend_interval;
++
++	/**
++	 * @timeout_ticks: abort an RPC if its silent_ticks reaches this value.
++	 */
++	int timeout_ticks;
++
++	/**
++	 * @timeout_resends: Assume that a server is dead if it has not
++	 * responded after this many RESENDs have been sent to it.
++	 */
++	int timeout_resends;
++
++	/**
++	 * @request_ack_ticks: How many timer ticks we'll wait for the
++	 * client to ack an RPC before explicitly requesting an ack.
++	 * Set externally via sysctl.
++	 */
++	int request_ack_ticks;
++
++	/**
++	 * @reap_limit: Maximum number of packet buffers to free in a
++	 * single call to home_rpc_reap.
++	 */
++	int reap_limit;
++
++	/**
++	 * @dead_buffs_limit: If the number of packet buffers in dead but
++	 * not yet reaped RPCs is less than this number, then Homa reaps
++	 * RPCs in a way that minimizes impact on performance but may permit
++	 * dead RPCs to accumulate. If the number of dead packet buffers
++	 * exceeds this value, then Homa switches to a more aggressive approach
++	 * to reaping RPCs. Set externally via sysctl.
++	 */
++	int dead_buffs_limit;
++
++	/**
++	 * @max_dead_buffs: The largest aggregate number of packet buffers
++	 * in dead (but not yet reaped) RPCs that has existed so far in a
++	 * single socket.  Readable via sysctl, and may be reset via sysctl
++	 * to begin recalculating.
++	 */
++	int max_dead_buffs;
++
++	/**
++	 * @max_gso_size: Maximum number of bytes that will be included
++	 * in a single output packet that Homa passes to Linux. Can be set
++	 * externally via sysctl to lower the limit already enforced by Linux.
++	 */
++	int max_gso_size;
++
++	/**
++	 * @gso_force_software: A non-zero value will cause Homa to perform
++	 * segmentation in software using GSO; zero means ask the NIC to
++	 * perform TSO. Set externally via sysctl.
++	 */
++	int gso_force_software;
++
++	/**
++	 * @wmem_max: Limit on the value of sk_sndbuf for any socket. Set
++	 * externally via sysctl.
++	 */
++	int wmem_max;
++
++	/**
++	 * @timer_ticks: number of times that homa_timer has been invoked
++	 * (may wraparound, which is safe).
++	 */
++	u32 timer_ticks;
++
++	/**
++	 * @flags: a collection of bits that can be set using sysctl
++	 * to trigger various behaviors.
++	 */
++	int flags;
++
++	/**
++	 * @bpage_lease_usecs: how long a core can own a bpage (microseconds)
++	 * before its ownership can be revoked to reclaim the page.
++	 */
++	int bpage_lease_usecs;
++
++	/**
++	 * @bpage_lease_cycles: same as bpage_lease_usecs except in
++	 * homa_clock() units.
++	 */
++	int bpage_lease_cycles;
++
++	/**
++	 * @next_id: Set via sysctl; causes next_outgoing_id to be set to
++	 * this value; always reads as zero. Typically used while debugging to
++	 * ensure that different nodes use different ranges of ids.
++	 */
++	int next_id;
++
++	/**
++	 * @destroyed: True means that this structure is being destroyed
++	 * so everyone should clean up.
++	 */
++	bool destroyed;
++
++};
++
++/**
++ * struct homa_net - Contains Homa information that is specific to a
++ * particular network namespace.
++ */
++struct homa_net {
++	/** @net: Network namespace corresponding to this structure. */
++	struct net *net;
++
++	/** @homa: Global Homa information. */
++	struct homa *homa;
++
++	/**
++	 * @prev_default_port: The most recent port number assigned from
++	 * the range of default ports.
++	 */
++	u16 prev_default_port;
++
++	/**
++	 * @num_peers: The total number of struct homa_peers that exist
++	 * for this namespace. Managed by homa_peer.c under the peertab lock.
++	 */
++	int num_peers;
++
++};
++
++/**
++ * struct homa_skb_info - Additional information needed by Homa for each
++ * outbound DATA packet. Space is allocated for this at the very end of the
++ * linear part of the skb.
++ */
++struct homa_skb_info {
++	/**
++	 * @next_skb: used to link together all of the skb's for a Homa
++	 * message (in order of offset).
++	 */
++	struct sk_buff *next_skb;
++
++	/**
++	 * @wire_bytes: total number of bytes of network bandwidth that
++	 * will be consumed by this packet. This includes everything,
++	 * including additional headers added by GSO, IP header, Ethernet
++	 * header, CRC, preamble, and inter-packet gap.
++	 */
++	int wire_bytes;
++
++	/**
++	 * @data_bytes: total bytes of message data across all of the
++	 * segments in this packet.
++	 */
++	int data_bytes;
++
++	/** @seg_length: maximum number of data bytes in each GSO segment. */
++	int seg_length;
++
++	/**
++	 * @offset: offset within the message of the first byte of data in
++	 * this packet.
++	 */
++	int offset;
++
++	/**
++	 * @bytes_left: number of bytes in this packet and all later packets
++	 * in the same message. Used to priroitize packets for SRPT.
++	 */
++	int bytes_left;
++
++	/**
++	 * @rpc: RPC that this packet came from. Used only as a unique
++	 * identifier: it is not safe to dereference this pointer (the RPC
++	 * may no longer exist).
++	 */
++	void *rpc;
++
++	/**
++	 * @next_sibling: next packet in @rpc that has been deferred in
++	 * homa_qdisc because the NIC queue was too long, or NULL if none.
++	 */
++	struct sk_buff *next_sibling;
++
++	/**
++	 * @last_sibling: last packet in @next_sibling list. Only valid
++	 * for the "head" packet (which is in qdev->homa_deferred).
++	 */
++	struct sk_buff *last_sibling;
++};
++
++/**
++ * homa_get_skb_info() - Return the address of Homa's private information
++ * for an sk_buff.
++ * @skb:     Socket buffer whose info is needed.
++ * Return: address of Homa's private information for @skb.
++ */
++static inline struct homa_skb_info *homa_get_skb_info(struct sk_buff *skb)
++{
++	return (struct homa_skb_info *)(skb_end_pointer(skb)) - 1;
++}
++
++/**
++ * homa_set_doff() - Fills in the doff TCP header field for a Homa packet.
++ * @h:     Packet header whose doff field is to be set.
++ * @size:  Size of the "header", bytes (must be a multiple of 4). This
++ *         information is used only for TSO; it's the number of bytes
++ *         that should be replicated in each segment. The bytes after
++ *         this will be distributed among segments.
++ */
++static inline void homa_set_doff(struct homa_data_hdr *h, int size)
++{
++	/* Drop the 2 low-order bits from size and set the 4 high-order
++	 * bits of doff from what's left.
++	 */
++	h->common.doff = size << 2;
++}
++
++/** skb_is_ipv6() - Return true if the packet is encapsulated with IPv6,
++ *  false otherwise (presumably it's IPv4).
++ */
++static inline bool skb_is_ipv6(const struct sk_buff *skb)
++{
++	return ipv6_hdr(skb)->version == 6;
++}
++
++/**
++ * ipv6_to_ipv4() - Given an IPv6 address produced by ipv4_to_ipv6, return
++ * the original IPv4 address (in network byte order).
++ * @ip6:  IPv6 address; assumed to be a mapped IPv4 address.
++ * Return: IPv4 address stored in @ip6.
++ */
++static inline __be32 ipv6_to_ipv4(const struct in6_addr ip6)
++{
++	return ip6.in6_u.u6_addr32[3];
++}
++
++/**
++ * canonical_ipv6_addr() - Convert a socket address to the "standard"
++ * form used in Homa, which is always an IPv6 address; if the original address
++ * was IPv4, convert it to an IPv4-mapped IPv6 address.
++ * @addr:   Address to canonicalize (if NULL, "any" is returned).
++ * Return: IPv6 address corresponding to @addr.
++ */
++static inline struct in6_addr canonical_ipv6_addr(const union sockaddr_in_union
++						  *addr)
++{
++	struct in6_addr mapped;
++
++	if (addr) {
++		if (addr->sa.sa_family == AF_INET6)
++			return addr->in6.sin6_addr;
++		ipv6_addr_set_v4mapped(addr->in4.sin_addr.s_addr, &mapped);
++		return mapped;
++	}
++	return in6addr_any;
++}
++
++/**
++ * skb_canonical_ipv6_saddr() - Given a packet buffer, return its source
++ * address in the "standard" form used in Homa, which is always an IPv6
++ * address; if the original address was IPv4, convert it to an IPv4-mapped
++ * IPv6 address.
++ * @skb:   The source address will be extracted from this packet buffer.
++ * Return: IPv6 address for @skb's source machine.
++ */
++static inline struct in6_addr skb_canonical_ipv6_saddr(struct sk_buff *skb)
++{
++	struct in6_addr mapped;
++
++	if (skb_is_ipv6(skb))
++		return ipv6_hdr(skb)->saddr;
++	ipv6_addr_set_v4mapped(ip_hdr(skb)->saddr, &mapped);
++	return mapped;
++}
++
++/**
++ * is_homa_pkt() - Return true if @skb is a Homa packet, false otherwise.
++ * @skb:    Packet buffer to check.
++ * Return:  see above.
++ */
++static inline bool is_homa_pkt(struct sk_buff *skb)
++{
++	int protocol;
++
++	protocol = (skb_is_ipv6(skb)) ? ipv6_hdr(skb)->nexthdr :
++					ip_hdr(skb)->protocol;
++	return protocol == IPPROTO_HOMA;
++}
++
++/**
++ * homa_make_header_avl() - Invokes pskb_may_pull to make sure that all the
++ * Homa header information for a packet is in the linear part of the skb
++ * where it can be addressed using skb_transport_header.
++ * @skb:     Packet for which header is needed.
++ * Return:   The result of pskb_may_pull (true for success)
++ */
++static inline bool homa_make_header_avl(struct sk_buff *skb)
++{
++	int pull_length;
++
++	pull_length = skb_transport_header(skb) - skb->data + HOMA_MAX_HEADER;
++	if (pull_length > skb->len)
++		pull_length = skb->len;
++	return pskb_may_pull(skb, pull_length);
++}
++
++#define UNIT_LOG(...)
++#define UNIT_HOOK(...)
++
++extern unsigned int homa_net_id;
++
++/**
++ * homa_net_from_net() - Return the struct homa_net associated with a particular
++ * struct net.
++ * @net:     Get the Homa data for this net namespace.
++ * Return:   see above.
++ */
++static inline struct homa_net *homa_net_from_net(struct net *net)
++{
++	return (struct homa_net *)net_generic(net, homa_net_id);
++}
++
++/**
++ * homa_from_skb() - Return the struct homa associated with a particular
++ * sk_buff.
++ * @skb:     Get the struct homa for this packet buffer.
++ * Return:   see above.
++ */
++static inline struct homa *homa_from_skb(struct sk_buff *skb)
++{
++	struct homa_net *hnet;
++
++	hnet = net_generic(dev_net(skb->dev), homa_net_id);
++	return hnet->homa;
++}
++
++/**
++ * homa_net_from_skb() - Return the struct homa_net associated with a particular
++ * sk_buff.
++ * @skb:     Get the struct homa for this packet buffer.
++ * Return:   see above.
++ */
++static inline struct homa_net *homa_net_from_skb(struct sk_buff *skb)
++{
++	struct homa_net *hnet;
++
++	hnet = net_generic(dev_net(skb->dev), homa_net_id);
++	return hnet;
++}
++
++/**
++ * homa_clock() - Return a fine-grain clock value that is monotonic and
++ * consistent across cores.
++ * Return: see above.
++ */
++static inline u64 homa_clock(void)
++{
++	/* As of May 2025 there does not appear to be a portable API that
++	 * meets Homa's needs:
++	 * - The Intel X86 TSC works well but is not portable.
++	 * - sched_clock() does not guarantee monotonicity or consistency.
++	 * - ktime_get_mono_fast_ns and ktime_get_raw_fast_ns are very slow
++	 *   (27 ns to read, vs 8 ns for TSC)
++	 * Thus we use a hybrid approach that uses TSC (via get_cycles) where
++	 * available (which should be just about everywhere Homa runs).
++	 */
++#ifdef CONFIG_X86_TSC
++	return get_cycles();
++#else
++	return ktime_get_mono_fast_ns();
++#endif /* CONFIG_X86_TSC */
++}
++
++/**
++ * homa_clock_khz() - Return the frequency of the values returned by
++ * homa_clock, in units of KHz.
++ * Return: see above.
++ */
++static inline u64 homa_clock_khz(void)
++{
++#ifdef CONFIG_X86_TSC
++	return tsc_khz;
++#else
++	return 1000000;
++#endif /* CONFIG_X86_TSC */
++}
++
++/**
++ * homa_ns_to_cycles() - Convert from units of nanoseconds to units of
++ * homa_clock().
++ * @ns:      A time measurement in nanoseconds
++ * Return:   The time in homa_clock() units corresponding to @ns.
++ */
++static inline u64 homa_ns_to_cycles(u64 ns)
++{
++	u64 tmp;
++
++	tmp = ns * homa_clock_khz();
++	do_div(tmp, 1000000);
++	return tmp;
++}
++
++/**
++ * homa_usecs_to_cycles() - Convert from units of microseconds to units of
++ * homa_clock().
++ * @usecs:   A time measurement in microseconds
++ * Return:   The time in homa_clock() units corresponding to @usecs.
++ */
++static inline u64 homa_usecs_to_cycles(u64 usecs)
++{
++	u64 tmp;
++
++	tmp = usecs * homa_clock_khz();
++	do_div(tmp, 1000);
++	return tmp;
++}
++
++/* Homa Locking Strategy:
++ *
++ * (Note: this documentation is referenced in several other places in the
++ * Homa code)
++ *
++ * In the Linux TCP/IP stack the primary locking mechanism is a sleep-lock
++ * per socket. However, per-socket locks aren't adequate for Homa, because
++ * sockets are "larger" in Homa. In TCP, a socket corresponds to a single
++ * connection between two peers; an application can have hundreds or
++ * thousands of sockets open at once, so per-socket locks leave lots of
++ * opportunities for concurrency. With Homa, a single socket can be used for
++ * communicating with any number of peers, so there will typically be just
++ * one socket per thread. As a result, a single Homa socket must support many
++ * concurrent RPCs efficiently, and a per-socket lock would create a bottleneck
++ * (Homa tried this approach initially).
++ *
++ * Thus, the primary locks used in Homa spinlocks at RPC granularity. This
++ * allows operations on different RPCs for the same socket to proceed
++ * concurrently. Homa also has socket locks (which are spinlocks different
++ * from the official socket sleep-locks) but these are used much less
++ * frequently than RPC locks.
++ *
++ * Lock Ordering:
++ *
++ * There are several other locks in Homa besides RPC locks, all of which
++ * are spinlocks. When multiple locks are held, they must be acquired in a
++ * consistent order in order to prevent deadlock. Here are the rules for Homa:
++ * 1. Except for RPC and socket locks, all locks should be considered
++ *    "leaf" locks: don't acquire other locks while holding them.
++ * 2. The lock order is:
++ *    * RPC lock
++ *    * Socket lock
++ *    * Other lock
++ * 3. It is not safe to wait on an RPC lock while holding any other lock.
++ * 4. It is safe to wait on a socket lock while holding an RPC lock, but
++ *    not while holding any other lock.
++ *
++ * It may seem surprising that RPC locks are acquired *before* socket locks,
++ * but this is essential for high performance. Homa has been designed so that
++ * many common operations (such as processing input packets) can be performed
++ * while holding only an RPC lock; this allows operations on different RPCs
++ * to proceed in parallel. Only a few operations, such as handing off an
++ * incoming message to a waiting thread, require the socket lock. If socket
++ * locks had to be acquired first, any operation that might eventually need
++ * the socket lock would have to acquire it before the RPC lock, which would
++ * severely restrict concurrency.
++ *
++ * Socket Shutdown:
++ *
++ * It is possible for socket shutdown to begin while operations are underway
++ * that hold RPC locks but not the socket lock. For example, a new RPC
++ * creation might be underway when a socket is shut down. The RPC creation
++ * will eventually acquire the socket lock and add the new RPC to those
++ * for the socket; it would be very bad if this were to happen after
++ * homa_sock_shutdown things is has deleted all RPCs for the socket.
++ * In general, any operation that acquires a socket lock must check
++ * hsk->shutdown after acquiring the lock and abort if hsk->shutdown is set.
++ *
++ * Spinlock Implications:
++ *
++ * Homa uses spinlocks exclusively; this is needed because locks typically
++ * need to be acquired at atomic level, such as in SoftIRQ code.
++ *
++ * Operations that can block, such as memory allocation and copying data
++ * to/from user space, are not permitted while holding spinlocks (spinlocks
++ * disable interrupts, so the holder must not block. This results in awkward
++ * code in several places to move restricted operations outside locked
++ * regions. Such code typically looks like this:
++ *   - Acquire a reference on an object such as an RPC, in order to prevent
++ *     the object from being deleted.
++ *   - Release the object's lock.
++ *   - Perform the restricted operation.
++ *   - Re-acquire the lock.
++ *   - Release the reference.
++ * It is possible that the object may have been modified by some other party
++ * while it was unlocked, so additional checks may be needed after reacquiring
++ * the lock. As one example, an RPC may have been terminated, in which case
++ * any operation in progress on that RPC should be aborted after reacquiring
++ * the lock.
++ *
++ * Lists of RPCs:
++ *
++ * There are a few places where Homa needs to process all of the RPCs
++ * associated with a socket, such as the timer. Such code must first lock
++ * the socket (to protect access to the link pointers) then lock
++ * individual RPCs on the list. However, this violates the rules for locking
++ * order. It isn't safe to unlock the socket before locking the individual RPCs,
++ * because RPCs could be deleted and their memory recycled between the unlock
++ * of the socket lock and the lock of the RPC; this could result in corruption.
++ * Homa uses two different approaches to handle this situation:
++ * 1. Use ``homa_protect_rpcs`` to prevent RPC reaping for a socket. RPCs can
++ *    still be terminated, but their memory won't go away until
++ *    homa_unprotect_rpcs is invoked. This allows the socket lock to be
++ *    released before acquiring RPC locks; after acquiring each RPC lock,
++ *    the RPC must be checked to see if it has been terminated; if so, skip it.
++ * 2. Use ``spin_trylock_bh`` to acquire the RPC lock while still holding the
++ *    socket lock. If this fails, then release the socket lock and retry
++ *    both the socket lock and the RPC lock. Of course, the state of both
++ *    socket and RPC could change before the locks are finally acquired.
++ */
++
++#endif /* _HOMA_IMPL_H */
+diff --git a/net/homa/homa_stub.h b/net/homa/homa_stub.h
+new file mode 100644
+index 000000000000..aefe816db1c2
+--- /dev/null
++++ b/net/homa/homa_stub.h
+@@ -0,0 +1,91 @@
++/* SPDX-License-Identifier: BSD-2-Clause */
++
++/* This file contains stripped-down replacements that have been
++ * temporarily removed from Homa during the Linux upstreaming
++ * process. By the time upstreaming is complete this file will
++ * have gone away.
++ */
++
++#ifndef _HOMA_STUB_H
++#define _HOMA_STUB_H
++
++#include "homa_impl.h"
++
++static inline int homa_skb_init(struct homa *homa)
++{
++	return 0;
++}
++
++static inline void homa_skb_cleanup(struct homa *homa)
++{}
++
++static inline void homa_skb_release_pages(struct homa *homa)
++{}
++
++static inline int homa_skb_append_from_iter(struct homa *homa,
++					    struct sk_buff *skb,
++					    struct iov_iter *iter, int length)
++{
++	char *dst = skb_put(skb, length);
++
++	if (copy_from_iter(dst, length, iter) != length)
++		return -EFAULT;
++	return 0;
++}
++
++static inline int homa_skb_append_to_frag(struct homa *homa,
++					  struct sk_buff *skb, void *buf,
++					  int length)
++{
++	char *dst = skb_put(skb, length);
++
++	memcpy(dst, buf, length);
++	return 0;
++}
++
++static inline int  homa_skb_append_from_skb(struct homa *homa,
++					    struct sk_buff *dst_skb,
++					    struct sk_buff *src_skb,
++					    int offset, int length)
++{
++	return homa_skb_append_to_frag(homa, dst_skb,
++			skb_transport_header(src_skb) + offset, length);
++}
++
++static inline void homa_skb_free_tx(struct homa *homa, struct sk_buff *skb)
++{
++	kfree_skb(skb);
++}
++
++static inline void homa_skb_free_many_tx(struct homa *homa,
++					 struct sk_buff **skbs, int count)
++{
++	int i;
++
++	for (i = 0; i < count; i++)
++		kfree_skb(skbs[i]);
++}
++
++static inline void homa_skb_get(struct sk_buff *skb, void *dest, int offset,
++				int length)
++{
++	memcpy(dest, skb_transport_header(skb) + offset, length);
++}
++
++static inline struct sk_buff *homa_skb_alloc_tx(int length)
++{
++	struct sk_buff *skb;
++
++	skb = alloc_skb(HOMA_SKB_EXTRA + sizeof(struct homa_skb_info) + length,
++			GFP_ATOMIC);
++	if (likely(skb)) {
++		skb_reserve(skb, HOMA_SKB_EXTRA);
++		skb_reset_transport_header(skb);
++	}
++	return skb;
++}
++
++static inline void homa_skb_stash_pages(struct homa *homa, int length)
++{}
++
++#endif /* _HOMA_STUB_H */
 -- 
-2.47.1
+2.43.0
 
