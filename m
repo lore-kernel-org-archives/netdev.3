@@ -1,140 +1,133 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A262192F4;
-	Thu, 24 Jul 2025 17:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE3E2D46D4;
+	Thu, 24 Jul 2025 18:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753379817; cv=none; b=LM74xQiuGYMPTcdZvQn2xOGswjnAgvGQvjHV0nC5egKxGl5sXoObY6MT+nKwueXaVCwy4G5BHyQTBE1yY/aGCLDjQzxRGUjMfhqxtdfKxeLI3KbUv4donTyVYTGR+9rhnaX1pPR5Q2pIR8Im00xRDt8Ek9hG3o+9svDUO2h8tvM=
+	t=1753380412; cv=none; b=ogcr2nWroDU+TgXJqDeQGk1j8Dp2SFEjK72mPIfsGJL2lE0bUZjZgyJNYwLffc/2SFxo62dXGJpKzCht+cMumv8w7/uhQgDARx1+oNBKBNdP8YJCA97fPPLo2sl2uiMaY93TRNjHTXLBhUQqtclHCLC2V6vtQfml50Fj2xG/j14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753379817; c=relaxed/simple;
-	bh=1mkblMfBIl1Lwwzh5TiSIwwcOL0XeaJ62oDOZdymnxM=;
+	s=arc-20240116; t=1753380412; c=relaxed/simple;
+	bh=KnoLbqTfuKStF+ahH1hs24dWbm8IIgORL1+MMSISfGk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oOPXhTuYv4hqnLCfEle+jZE5kUoxXvfIuzu4ZZla4tqOS0D58NFTK+X/eUlcuyhyLJLd93fXGYOvzEIlCwYMBHUw4Fmky2YhznmbO3HFTu8A1L2z2cpvjz0EqlRJp25rgkR0UpNVjCozaprZYZtbtevBM5Qr6VEad8IE8JNCG1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G1HgVvJL; arc=none smtp.client-ip=209.85.208.176
+	 Content-Type:Content-Disposition:In-Reply-To; b=GpK+xaCqYWNAc5F/FHcu8y/lnY1ZUDTZPQdaPoTEzziIdn1GdNxgvK6iBgpoV2/rUsaN17oHc1OutLkEPH5qAn1wWwDNyrKvzxiNp5QzaOlahcMjPGZ0JOawTUl/rn6iKArkHJOn3hveEQ3uvDigKt5ZziPaJSyiu0nwZJnf95U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e5NtYKXu; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1HgVvJL"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-32b7113ed6bso13778291fa.1;
-        Thu, 24 Jul 2025 10:56:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e5NtYKXu"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7426c44e014so1179126b3a.3;
+        Thu, 24 Jul 2025 11:06:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753379814; x=1753984614; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753380410; x=1753985210; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7+Hc/EJTpAN/zUBy6dWU21PJ3WMLmwKCsM/9bWx/tE4=;
-        b=G1HgVvJLJgtuU5lvy+qsI+C1J4AroPkn8QcqjCVbR7F6xGSt2M+0St1KN2CHi1TsBI
-         Gzn9dKPSNShUcM/jOfLRsDZq6g+Xqux8Wq6fHeFUCuv6r2j5QzN/ebjGfnm7C3aLY+Cw
-         WcuAUBRDDWebdCzQlTeIcoC/tbm9djtobOOaL02bg1vBhC5GlnPAG7YXzt3ECav2TlUu
-         2kasUlEZHOLLIO/weWlVaqx0WvpDp2MDFmNskYUbygnkNpRRGq7BAIuw2ohcq1qkNVMG
-         9opnW+r3fSETxjP5AKHUF/HA6EGYeUYZYq2GO3lm6tECg3uLsUCtAGnBaO/i0xzhVyb1
-         dXww==
+        bh=q/B3d3EW75kabIduY/zlHbkmuA3wULeBZ2mrkCKlN54=;
+        b=e5NtYKXuWASp4Y3IztNNksDDgYgLSJ1RvrfiY4sbwTiGVQKW6kAgfdDZs/jDr1JZYd
+         XenlMSSbZtqs2+MfmTR6ekCQAD9vd2kXcPyIjE70+3L1CzjsyKq5LfTyCY3AJcJLm7IX
+         oqdljGbw97d9aE+TcrOxEkDbmMHrUKbp2w5SuOaBnS+m46sc2oeZbNz9WG5z3LMtnI15
+         Rw+/Fpg2DDa/EkwmcLatk7hIURU5g+66OT1f5SiT9bjXcAEP7njpCQsYdAEasaae/AEN
+         tNBOnmJA6ci1b4R3u5b8yZX4j8s+N1BzBb/cLyR//0z6RmCTc+NwYYOuMOJ+014roEyY
+         /PSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753379814; x=1753984614;
+        d=1e100.net; s=20230601; t=1753380410; x=1753985210;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7+Hc/EJTpAN/zUBy6dWU21PJ3WMLmwKCsM/9bWx/tE4=;
-        b=I21EVLlmWaXp09TOxDu8m287wOh17oXmiJroA0gp1Ucwm5NNYUam/t2kf4KEyQbK5f
-         QZNPcM6fiaIsklOyQupCqQ++pb27lu5CfXxaChWtT/iMfYkyNvjCzyjVZkKnlAlbb+W0
-         RDfrcmZTZ+/vkylzYoQ+htpj5ZegR2YNSK+4z1MfKOEMULWICghb56Kn/izNmLjoLQ5l
-         n1fd4sXi8uq0KEPa3J4c2P6lCL/Iyp1/c+L23G35G29jl66JUgKgBt+T2Trwm3mSjOr0
-         7QbRgMCuLE/HyJfuzCm5pNVFDI82B9NCxLcqzLKxC+FhGi8O20FclQqLymf2MpEN3O0r
-         0tTw==
-X-Forwarded-Encrypted: i=1; AJvYcCVQkD3IqRQCyyPakEemyRFpceDrvzDnAdH9zX83DSEEXUS7HTtEEb7T79fDm3zMgg/1VJHQwvro@vger.kernel.org, AJvYcCWqpbsG9sfV1Y1Kp6ijJtGzFJ5fwqKk9e01/EE9R0NX1l2HcUM7t/x8whBa2Sp5qcuFDhCSIO8sD+5Gpa0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyX0XLmFywkBlzUV5rcbtOHLgp6SdHaTxygmvThboandYwkh1o0
-	IuK7AHxdCYi9DeBiqklqGpz/dg5OIF5++wBsOzwirLUrEbcKVetXvEYn
-X-Gm-Gg: ASbGncvlg+zK4UEMDwzrgAFjHLwCEjqA376peILhrcMp4MeJPo0OlT+m9kH5j7fTIcV
-	/rEAE3GFe/JzzZyOD9ZeDqSwH7wou/er6hFYbmGJJsIc7SrSOLElClVkwXgvgCjieBLNk3ykDqQ
-	D0i0Fk02WjpncMGo0zF/VkD99Kmu49Ccl8QkECRSx6hTga3Q8KNVnBHyUBt0WMewF6THR6Hs0+x
-	OFNPFcumTKevLNK9BAQaIkxTZjeYZw9I5KdE4Ukvn0C5wv+Q02jBs72b4NnuwkP/ignPVyJxPdw
-	0iB4sc+ObgqYUvcf42MgTlAY3sKsHQIjIfXkn03AO4qakEFXlcw9Gs2vzMXVFWLHwF3ugbb80Pb
-	hTWuv0n/jUXwHsPnLw6EG+MaVU7OAzFNhA57A8kw/
-X-Google-Smtp-Source: AGHT+IFN4Xrrwc5r0VQkcaQC/psZUUhsAWA2bd+XSOCuqzO1usstf65IZl+/xhZAoKMELAzl9zDBaw==
-X-Received: by 2002:a2e:9cc2:0:b0:32b:3104:f89c with SMTP id 38308e7fff4ca-330dfe3cf57mr22675651fa.29.1753379813377;
-        Thu, 24 Jul 2025 10:56:53 -0700 (PDT)
-Received: from mobilestation ([178.176.56.174])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-331e08e98aesm4007631fa.54.2025.07.24.10.56.51
+        bh=q/B3d3EW75kabIduY/zlHbkmuA3wULeBZ2mrkCKlN54=;
+        b=vAamHyq5vHqgnegKveWVaNANy/JpD9utXqwHHTf2NT8xgXq3seRdCdJOupT5r2O1Bp
+         IdznElVOcUW8bNPlNINc5IrHco1GmZ5Lijp68CsGhOs//LdfzliCZkBdtk4g0OCsDvU+
+         DqfXQcHn1fhyWwgvLyQMS2DLLRfiNjqMtdGVwvtbyNLB1G4epHe/5cdBSbQgXrI1VX0n
+         WIVg3wJ8RH2oYeZvhm/kHVr5JFEMvIYdidrjGlHSGX2y1ckm7f4MMuqYZyXV71qAGK0j
+         pEKXUxxyDvcQSoaXe399pdq2bbwCNI86+PagYX6Qi0Tm17s4uenCZKPUJo+4bEF9QDHg
+         NHRA==
+X-Forwarded-Encrypted: i=1; AJvYcCVHGvyBr0XS8We+xXReqCdA1X4gpDSFzelE513UMLnGcDr8oWLLk5tpooJGkEIATXTIYgTQ0rCJw2ynuzw=@vger.kernel.org, AJvYcCXQ+8HLSGSHknMVpPviJEiV5bQFV0ni4Wfd4pdKLZJNz2DeVtPN3I+ByaR8MbCNCJtV59b0//b8@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWmVtHjf9+4iFp4DrxT+9gU95bW60kNnGkVfLnDTZhJWPX5EF2
+	hIOJSFvhJ9mbsGHYBseuxIViNsxr6OfLyTnOnPiFminWAT4xnz8NPk8=
+X-Gm-Gg: ASbGncuOl0vMaRmspTYuVVdgpV/SQigy62nr2Fbn/KtawccsZJwFoMEyIWOqfSFt+g4
+	+a5G/JPgKqCmgyYS+oKAVCpaotNXeB67no7qSauEHynr2PB7C94rw8Bw90siTHP00rWN5Lo3ocP
+	36HzUEw9VMtZ3Z+8bv0tpP0IRRBSSo8EaQLG0XWM5xo1weK2vc+DhNq+1Kx5PBYdXMlw28Fi0p2
+	U6ubITL81B8Xaov07YA25IfF0+jaE0pYP5X7Jl/qRxitFJRSslaBoVMNTuhcKPTZWgiaXa7ESQ0
+	kCiJASXaO5wsXsiZXiz2bnlgI4j6nnCrXaVREAH5HJh+fTg7+k94rPBoL8y5kNw3Hw5h7eJnwOU
+	M0SWVB8s+Q5PArP06cu6QmIc23cApsrV0HPCuwy98pqmaOvC/NdbYZom5rsE=
+X-Google-Smtp-Source: AGHT+IHYnXoYKHT2KuvkONpl696R4MneL5tFcQGYyhP6WUOrJZ/crhnkcWyNOGzkmRu3TQjg/nUAhw==
+X-Received: by 2002:a05:6a00:3cc4:b0:75f:913e:aaf9 with SMTP id d2e1a72fcca58-760357faee4mr10197348b3a.13.1753380409934;
+        Thu, 24 Jul 2025 11:06:49 -0700 (PDT)
+Received: from localhost (c-73-158-218-242.hsd1.ca.comcast.net. [73.158.218.242])
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-b3f6c1162a0sm1799216a12.52.2025.07.24.11.06.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 10:56:52 -0700 (PDT)
-Date: Thu, 24 Jul 2025 20:56:06 +0300
-From: Serge Semin <fancer.lancer@gmail.com>
-To: "G Thomas, Rohan" <rohan.g.thomas@altera.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Romain Gantois <romain.gantois@bootlin.com>, netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Matthew Gerlach <matthew.gerlach@altera.com>
-Subject: Re: [PATCH net-next 2/3] net: stmmac: xgmac: Correct supported speed
- modes
-Message-ID: <tcebsuesjejtk3vmzx77yuo7zil2xciucnnrakubrslwvnndas@utvi4r7ob3xa>
-References: <20250714-xgmac-minor-fixes-v1-0-c34092a88a72@altera.com>
- <20250714-xgmac-minor-fixes-v1-2-c34092a88a72@altera.com>
- <b192c96a-2989-4bdf-ba4f-8b7bcfd09cfa@lunn.ch>
- <e903cb0f-3970-4ad2-a0a2-ee58551779dc@altera.com>
- <6fsqayppkyubkucghk5i6m7jjgytajtzm4wxhtdkh7i2v3znk5@vwqbzz5uffyy>
- <4df7133e-5dcd-4d3d-9a58-d09ad5fd7ec3@altera.com>
+        Thu, 24 Jul 2025 11:06:49 -0700 (PDT)
+Date: Thu, 24 Jul 2025 11:06:48 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Ido Schimmel <idosch@idosch.org>
+Cc: Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, dsahern@kernel.org, andrew+netdev@lunn.ch,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] vrf: Drop existing dst reference in
+ vrf_ip6_input_dst
+Message-ID: <aIJ2OA6fnxrdo2XE@mini-arch>
+References: <20250723224625.1340224-1-sdf@fomichev.me>
+ <aIIXQiu5i_ABjqA9@shredder>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <4df7133e-5dcd-4d3d-9a58-d09ad5fd7ec3@altera.com>
+In-Reply-To: <aIIXQiu5i_ABjqA9@shredder>
 
-Hi Rohan
+On 07/24, Ido Schimmel wrote:
+> On Wed, Jul 23, 2025 at 03:46:25PM -0700, Stanislav Fomichev wrote:
+> > Commit 8fba0fc7b3de ("selftests: tc: Add generic erspan_opts matching support
+> > for tc-flower") started triggering the following kmemleak warning:
+> 
+> Did you mean
+> 
+> ff3fbcdd4724 ("selftests: tc: Add generic erspan_opts matching support for tc-flower")
+> 
+> ?
 
-On Thu, Jul 24, 2025 at 09:48:29PM +0530, G Thomas, Rohan wrote:
-> On 7/17/2025 5:17 PM, Serge Semin wrote:
-> > DW XGMAC IP-core of v2.x and older don't support 10/100Mbps modes
-> > neither in the XGMII nor in the GMII interfaces. That's why I dropped
-> > the 10/100Mbps link capabilities retaining 1G, 2.5G and 10G speeds
-> > only (the only speeds supported for DW XGMAC 1.20a/2.11a Tx in the
-> > MAC_Tx_Configuration.SS register field). Although I should have
-> > dropped the MAC_5000FD too since it has been supported since v3.0
-> > IP-core version. My bad.(
+Both seem to be reachable in my local tree:
+
+$ git log --oneline 8fba0fc7b3dec1abc4dd57449d578d8c2682d60e | head
+8fba0fc7b3de selftests: tc: Add generic erspan_opts matching support for tc-flower
+a6906c86ff9c net: phy: qcom: qca807x: Enable WoL support using shared library
+dea37f39a2ce ptp: prevent possible ABBA deadlock in ptp_clock_freerun()
+545a0b84c678 netfilter: xt_nfacct: don't assume acct name is null-terminated
+f472ea3cce90 netvsc: transfer lower device max tso size
+a9a96c581e88 net: usb: smsc95xx: add support for ethtool pause parameters
+5be49dfee611 selftests: drv-net: rss_api: context create and delete tests
+4ee6aab279d6 ethtool: rss: support removing contexts via Netlink
+8bd3be3a6690 ethtool: rss: support creating contexts via Netlink
+f6a1fa5e4327 ethtool: move ethtool_rxfh_ctx_alloc() to common code
+
+$ git log --oneline ff3fbcdd472453190d4f37fe1d1e69e50cce7612 | head
+ff3fbcdd4724 selftests: tc: Add generic erspan_opts matching support for tc-flower
+dd500e4aecf2 net: usb: Remove duplicate assignments for net->pcpu_stat_type
+4701ee5044fb be2net: Use correct byte order and format string for TCP seq and ack_seq
+190ccb817637 net: bcmasp: Add support for re-starting auto-negotiation
+e07ba344a465 Merge branch 'net-maintain-netif-vs-dev-prefix-semantics'
+88d3cec28274 net: s/dev_close_many/netif_close_many/
+5d4d84618e1a net: s/dev_set_threaded/netif_set_threaded/
+93893a57efd4 net: s/dev_get_flags/netif_get_flags/
+303a8487a657 net: s/__dev_set_mtu/__netif_set_mtu/
+0413a34ef678 net: s/dev_pre_changeaddr_notify/netif_pre_changeaddr_notify/
+
+But yours is indeed the one that is in net-next. Not sure how that
+happened.
+
+> [...]
+> 
+> > vrf_ip6_input_dst unconditionally sets skb dst entry, add a call to
+> > skb_dst_drop to drop any existing entry.
 > > 
-> > Starting from DW XGMAC v3.00a IP-core the list of the supported speeds
-> > has been extended to: 10/100Mbps (MII), 1G/2.5G (GMII), 2.5G/5G/10G
-> > (XGMII). Thus the more appropriate fix here should take into account
-> > the IP-core version. Like this:
-> > 	if (dma_cap->mbps_1000 && MAC_Version.SNPSVER >= 0x30)
-> > 		dma_cap->mbps_10_100 = 1;
-> > 
-> > Then you can use the mbps_1000 and mbps_10_100 flags to set the proper
-> > MAC-capabilities to hw->link.caps in the dwxgmac2_setup() method. I
-> > would have added the XGMII 2.5G/5G MAC-capabilities setting up to the
-> > dwxgmac2_setup() method too for the v3.x IP-cores and newer.
+> > Cc: David Ahern <dsahern@kernel.org>
+> > Fixes: 9ff74384600a ("net: vrf: Handle ipv6 multicast and link-local addresses")
+> > Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 > 
-> Hi Serge,
-> 
-> From the databook, I noticed the condition:
-> (DWCXG_XGMII_GMII == 1) && <DWC-XGMAC-V2_20 feature authorized>
-> which seems to suggest that 10/100 Mbps support was introduced starting
-> from version 2.20.
-> 
-> Am I interpreting this correctly, or is this feature only fully
-> supported from v3.00 onwards.
+> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 
-Hm. Interesting discovery. I've got only DW XGMAC v1.20a, v2.11a,
-v3.01a and v3.20a databooks at hands. So I can't prove for sure your
-inference. But the DW XGMAC v3.01a doc indeed states that
-DWCXG_FDUPLX_ONLY parameter is enabled if:
-(DWCXG_XGMII_GMII == 1) && <DWC-XGMAC-V2_20 feature authorized>
-which implies that the parameter was originally introduced in v2.20a
-IP-core.
-
-So to speak you might be right. Perhaps it will be more correct to set
-dma_cap->mbps_10_100 for v2.20a (SNPSVER = 0x22) IP-cores too
-especially seeing another parameter DWCXG_MII_SUPPORT depends on
-SNPS_RSVDPARAM_16 which also depends on DWC-XGMAC-V2_20.
-
--Serge(y)
-
-> 
-> Best Regards,
-> Rohan
+Thanks!
