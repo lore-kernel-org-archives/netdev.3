@@ -1,29 +1,29 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E434A2DE70E;
-	Thu, 24 Jul 2025 13:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96842DCF6D;
+	Thu, 24 Jul 2025 13:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753363965; cv=none; b=BrQzUJltwT8+d085kVhR86zDWFf7sEvp1yLws7FR4PwvR9j20doiMgxxBX7T6rjr5dJWsB+1665pACSnpHtrInrxXyZvHn5OQ4kTH1n3PzCD4MSjaal+KWkLbD9hwpyVZ+zhxxYXRU6xKZqF/xvT9DDm6qv/QkqTMT/2y82eT48=
+	t=1753363966; cv=none; b=ZZ/GsXj+4OYid4eRHBfqGG29MKUI8hmmi8N0GfT69fH5tbINq0bjYRZCEPpfkMDjrJutjgw5w/FG7weXtWTuWwBK1PJZDrH6IwaAD1JKjVgJZPLHqtpNA6or0T+bBvRre4Rtv4UlWdB0iAz+fgjV4l2/vp8gaxjLNiMY2uQCUm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753363965; c=relaxed/simple;
-	bh=BRdyHpOg12Na5pCEvdBSmOWwrjxyLXfUWtiZuoH6MHE=;
+	s=arc-20240116; t=1753363966; c=relaxed/simple;
+	bh=hNULJ87ZxtX6Iu4BqQ00wfoBZmqcZio6prsPuynj+08=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VGAeDSvqGInAXv+CekJnUt15SOy5EGX6Wfd7kGQHTUds6cjaFGrkITky+zX/PPW2e+7A0AF4VqkWv8oPaMwIQ4NVoNgfWVEWtON4tL02orpZKRwQmjwXThR0gu9PwNjC/w+vHOUvm5fLIrPuTUvBGg+rRs3eQ3ADjO7eciD+SNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+	 MIME-Version:Content-Type; b=cLJqih7xhWvWy+XYpH0c8NSjADusYOOEby3zRGG/+WAseV9CjWEltHwROVAbxTb79GWDEq5shgDSEXK06pD2KjDks5SYXotkyuwb+nGfTqr9csMnKY1LVJpo+pLaDfWyFbdwT72R4MDra4xREH89eCncPAI/UQUbtmU7ILlxzBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4bnsJl21qpzGpx3;
-	Thu, 24 Jul 2025 21:28:23 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bnsM7063Bz2FbQF;
+	Thu, 24 Jul 2025 21:30:27 +0800 (CST)
 Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2F203180468;
-	Thu, 24 Jul 2025 21:32:34 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 558C518001B;
+	Thu, 24 Jul 2025 21:32:41 +0800 (CST)
 Received: from DESKTOP-F6Q6J7K.china.huawei.com (10.174.175.220) by
  kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 24 Jul 2025 21:32:32 +0800
+ 15.2.1544.11; Thu, 24 Jul 2025 21:32:39 +0800
 From: Fan Gong <gongfan1@huawei.com>
 To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "David S.
@@ -40,9 +40,9 @@ CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "David S.
 	<vadim.fedorenko@linux.dev>, Suman Ghosh <sumang@marvell.com>, Przemek
  Kitszel <przemyslaw.kitszel@intel.com>, Joe Damato <jdamato@fastly.com>,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH net-next v11 5/8] hinic3: TX & RX Queue coalesce interfaces
-Date: Thu, 24 Jul 2025 21:32:08 +0800
-Message-ID: <ea27d04a42ef8234d88f2ad4cac5c31017ece452.1753240706.git.zhuyikai1@h-partners.com>
+Subject: [PATCH net-next v11 8/8] hinic3: Interrupt request configuration
+Date: Thu, 24 Jul 2025 21:32:11 +0800
+Message-ID: <70888d73b07c0a2e1d345807d519742ece6ff219.1753240706.git.zhuyikai1@h-partners.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <cover.1753240706.git.zhuyikai1@h-partners.com>
 References: <cover.1753240706.git.zhuyikai1@h-partners.com>
@@ -57,141 +57,259 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
  kwepemf100013.china.huawei.com (7.202.181.12)
 
-Add TX RX queue coalesce interfaces initialization.
-It configures the parameters of tx & tx msix coalesce.
+Configure interrupt request initialization.
+It allows driver to receive packets and management information
+from HW.
 
 Co-developed-by: Xin Guo <guoxin09@huawei.com>
 Signed-off-by: Xin Guo <guoxin09@huawei.com>
 Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
 Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
 Signed-off-by: Fan Gong <gongfan1@huawei.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 ---
- .../net/ethernet/huawei/hinic3/hinic3_main.c  | 61 +++++++++++++++++--
- .../ethernet/huawei/hinic3/hinic3_nic_dev.h   | 10 +++
- 2 files changed, 66 insertions(+), 5 deletions(-)
+ .../ethernet/huawei/hinic3/hinic3_hw_comm.c   |  31 ++++
+ .../ethernet/huawei/hinic3/hinic3_hw_comm.h   |  13 ++
+ .../net/ethernet/huawei/hinic3/hinic3_irq.c   | 136 +++++++++++++++++-
+ .../ethernet/huawei/hinic3/hinic3_nic_dev.h   |   4 -
+ 4 files changed, 178 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
-index 497f2a36f35d..a0b04fb07c76 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
-@@ -17,12 +17,53 @@
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_comm.c b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_comm.c
+index 434696ce7dc2..7adcdd569c7b 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_comm.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_comm.c
+@@ -8,6 +8,37 @@
+ #include "hinic3_hwif.h"
+ #include "hinic3_mbox.h"
  
- #define HINIC3_NIC_DRV_DESC  "Intelligent Network Interface Card Driver"
- 
--#define HINIC3_RX_BUF_LEN            2048
--#define HINIC3_LRO_REPLENISH_THLD    256
--#define HINIC3_NIC_DEV_WQ_NAME       "hinic3_nic_dev_wq"
-+#define HINIC3_RX_BUF_LEN          2048
-+#define HINIC3_LRO_REPLENISH_THLD  256
-+#define HINIC3_NIC_DEV_WQ_NAME     "hinic3_nic_dev_wq"
- 
--#define HINIC3_SQ_DEPTH              1024
--#define HINIC3_RQ_DEPTH              1024
-+#define HINIC3_SQ_DEPTH            1024
-+#define HINIC3_RQ_DEPTH            1024
-+
-+#define HINIC3_DEFAULT_TXRX_MSIX_PENDING_LIMIT      2
-+#define HINIC3_DEFAULT_TXRX_MSIX_COALESC_TIMER_CFG  25
-+#define HINIC3_DEFAULT_TXRX_MSIX_RESEND_TIMER_CFG   7
-+
-+static void init_intr_coal_param(struct net_device *netdev)
++int hinic3_set_interrupt_cfg_direct(struct hinic3_hwdev *hwdev,
++				    const struct hinic3_interrupt_info *info)
 +{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+	struct hinic3_intr_coal_info *info;
-+	u16 i;
++	struct comm_cmd_cfg_msix_ctrl_reg msix_cfg = {};
++	struct mgmt_msg_params msg_params = {};
++	int err;
 +
-+	for (i = 0; i < nic_dev->max_qps; i++) {
-+		info = &nic_dev->intr_coalesce[i];
-+		info->pending_limit = HINIC3_DEFAULT_TXRX_MSIX_PENDING_LIMIT;
-+		info->coalesce_timer_cfg = HINIC3_DEFAULT_TXRX_MSIX_COALESC_TIMER_CFG;
-+		info->resend_timer_cfg = HINIC3_DEFAULT_TXRX_MSIX_RESEND_TIMER_CFG;
++	msix_cfg.func_id = hinic3_global_func_id(hwdev);
++	msix_cfg.msix_index = info->msix_index;
++	msix_cfg.opcode = MGMT_MSG_CMD_OP_SET;
++
++	msix_cfg.lli_credit_cnt = info->lli_credit_limit;
++	msix_cfg.lli_timer_cnt = info->lli_timer_cfg;
++	msix_cfg.pending_cnt = info->pending_limit;
++	msix_cfg.coalesce_timer_cnt = info->coalesc_timer_cfg;
++	msix_cfg.resend_timer_cnt = info->resend_timer_cfg;
++
++	mgmt_msg_params_init_default(&msg_params, &msix_cfg, sizeof(msix_cfg));
++
++	err = hinic3_send_mbox_to_mgmt(hwdev, MGMT_MOD_COMM,
++				       COMM_CMD_CFG_MSIX_CTRL_REG, &msg_params);
++	if (err || msix_cfg.head.status) {
++		dev_err(hwdev->dev,
++			"Failed to set interrupt config, err: %d, status: 0x%x\n",
++			err, msix_cfg.head.status);
++		return -EINVAL;
 +	}
-+}
-+
-+static int hinic3_init_intr_coalesce(struct net_device *netdev)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+
-+	nic_dev->intr_coalesce = kcalloc(nic_dev->max_qps,
-+					 sizeof(*nic_dev->intr_coalesce),
-+					 GFP_KERNEL);
-+
-+	if (!nic_dev->intr_coalesce)
-+		return -ENOMEM;
-+
-+	init_intr_coal_param(netdev);
 +
 +	return 0;
 +}
 +
-+static void hinic3_free_intr_coalesce(struct net_device *netdev)
-+{
-+	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
-+
-+	kfree(nic_dev->intr_coalesce);
-+}
- 
- static int hinic3_alloc_txrxqs(struct net_device *netdev)
+ int hinic3_func_reset(struct hinic3_hwdev *hwdev, u16 func_id, u64 reset_flag)
  {
-@@ -42,8 +83,17 @@ static int hinic3_alloc_txrxqs(struct net_device *netdev)
- 		goto err_free_txqs;
- 	}
+ 	struct comm_cmd_func_reset func_reset = {};
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_comm.h b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_comm.h
+index c33a1c77da9c..2270987b126f 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_comm.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_comm.h
+@@ -8,6 +8,19 @@
  
-+	err = hinic3_init_intr_coalesce(netdev);
-+	if (err) {
-+		dev_err(hwdev->dev, "Failed to init_intr_coalesce\n");
-+		goto err_free_rxqs;
-+	}
-+
- 	return 0;
+ struct hinic3_hwdev;
  
-+err_free_rxqs:
-+	hinic3_free_rxqs(netdev);
-+
- err_free_txqs:
- 	hinic3_free_txqs(netdev);
- 
-@@ -52,6 +102,7 @@ static int hinic3_alloc_txrxqs(struct net_device *netdev)
- 
- static void hinic3_free_txrxqs(struct net_device *netdev)
- {
-+	hinic3_free_intr_coalesce(netdev);
- 	hinic3_free_rxqs(netdev);
- 	hinic3_free_txqs(netdev);
- }
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
-index c994fc9b6ee0..9577cc673257 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
-@@ -51,6 +51,12 @@ struct hinic3_dyna_txrxq_params {
- 	struct hinic3_irq_cfg      *irq_cfg;
- };
- 
-+struct hinic3_intr_coal_info {
-+	u8 pending_limit;
-+	u8 coalesce_timer_cfg;
-+	u8 resend_timer_cfg;
++struct hinic3_interrupt_info {
++	u32 lli_set;
++	u32 interrupt_coalesc_set;
++	u16 msix_index;
++	u8  lli_credit_limit;
++	u8  lli_timer_cfg;
++	u8  pending_limit;
++	u8  coalesc_timer_cfg;
++	u8  resend_timer_cfg;
 +};
 +
- struct hinic3_nic_dev {
- 	struct pci_dev                  *pdev;
- 	struct net_device               *netdev;
-@@ -70,10 +76,14 @@ struct hinic3_nic_dev {
- 	u16                             num_qp_irq;
- 	struct msix_entry               *qps_msix_entries;
++int hinic3_set_interrupt_cfg_direct(struct hinic3_hwdev *hwdev,
++				    const struct hinic3_interrupt_info *info);
+ int hinic3_func_reset(struct hinic3_hwdev *hwdev, u16 func_id, u64 reset_flag);
  
-+	struct hinic3_intr_coal_info    *intr_coalesce;
+ #endif
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
+index 8b92eed25edf..33eb9080739d 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
+@@ -38,7 +38,7 @@ static int hinic3_poll(struct napi_struct *napi, int budget)
+ 	return work_done;
+ }
+ 
+-void qp_add_napi(struct hinic3_irq_cfg *irq_cfg)
++static void qp_add_napi(struct hinic3_irq_cfg *irq_cfg)
+ {
+ 	struct hinic3_nic_dev *nic_dev = netdev_priv(irq_cfg->netdev);
+ 
+@@ -50,7 +50,7 @@ void qp_add_napi(struct hinic3_irq_cfg *irq_cfg)
+ 	napi_enable(&irq_cfg->napi);
+ }
+ 
+-void qp_del_napi(struct hinic3_irq_cfg *irq_cfg)
++static void qp_del_napi(struct hinic3_irq_cfg *irq_cfg)
+ {
+ 	napi_disable(&irq_cfg->napi);
+ 	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
+@@ -60,3 +60,135 @@ void qp_del_napi(struct hinic3_irq_cfg *irq_cfg)
+ 	netif_stop_subqueue(irq_cfg->netdev, irq_cfg->irq_id);
+ 	netif_napi_del(&irq_cfg->napi);
+ }
 +
- 	bool                            link_status_up;
- };
++static irqreturn_t qp_irq(int irq, void *data)
++{
++	struct hinic3_irq_cfg *irq_cfg = data;
++	struct hinic3_nic_dev *nic_dev;
++
++	nic_dev = netdev_priv(irq_cfg->netdev);
++	hinic3_msix_intr_clear_resend_bit(nic_dev->hwdev,
++					  irq_cfg->msix_entry_idx, 1);
++
++	napi_schedule(&irq_cfg->napi);
++
++	return IRQ_HANDLED;
++}
++
++static int hinic3_request_irq(struct hinic3_irq_cfg *irq_cfg, u16 q_id)
++{
++	struct hinic3_interrupt_info info = {};
++	struct hinic3_nic_dev *nic_dev;
++	struct net_device *netdev;
++	int err;
++
++	netdev = irq_cfg->netdev;
++	nic_dev = netdev_priv(netdev);
++	qp_add_napi(irq_cfg);
++
++	info.msix_index = irq_cfg->msix_entry_idx;
++	info.interrupt_coalesc_set = 1;
++	info.pending_limit = nic_dev->intr_coalesce[q_id].pending_limit;
++	info.coalesc_timer_cfg =
++		nic_dev->intr_coalesce[q_id].coalesce_timer_cfg;
++	info.resend_timer_cfg = nic_dev->intr_coalesce[q_id].resend_timer_cfg;
++	err = hinic3_set_interrupt_cfg_direct(nic_dev->hwdev, &info);
++	if (err) {
++		netdev_err(netdev, "Failed to set RX interrupt coalescing attribute.\n");
++		qp_del_napi(irq_cfg);
++		return err;
++	}
++
++	err = request_irq(irq_cfg->irq_id, qp_irq, 0, irq_cfg->irq_name,
++			  irq_cfg);
++	if (err) {
++		qp_del_napi(irq_cfg);
++		return err;
++	}
++
++	irq_set_affinity_hint(irq_cfg->irq_id, &irq_cfg->affinity_mask);
++
++	return 0;
++}
++
++static void hinic3_release_irq(struct hinic3_irq_cfg *irq_cfg)
++{
++	irq_set_affinity_hint(irq_cfg->irq_id, NULL);
++	free_irq(irq_cfg->irq_id, irq_cfg);
++}
++
++int hinic3_qps_irq_init(struct net_device *netdev)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	struct pci_dev *pdev = nic_dev->pdev;
++	struct hinic3_irq_cfg *irq_cfg;
++	struct msix_entry *msix_entry;
++	u32 local_cpu;
++	u16 q_id;
++	int err;
++
++	for (q_id = 0; q_id < nic_dev->q_params.num_qps; q_id++) {
++		msix_entry = &nic_dev->qps_msix_entries[q_id];
++		irq_cfg = &nic_dev->q_params.irq_cfg[q_id];
++
++		irq_cfg->irq_id = msix_entry->vector;
++		irq_cfg->msix_entry_idx = msix_entry->entry;
++		irq_cfg->netdev = netdev;
++		irq_cfg->txq = &nic_dev->txqs[q_id];
++		irq_cfg->rxq = &nic_dev->rxqs[q_id];
++		nic_dev->rxqs[q_id].irq_cfg = irq_cfg;
++
++		local_cpu = cpumask_local_spread(q_id, dev_to_node(&pdev->dev));
++		cpumask_set_cpu(local_cpu, &irq_cfg->affinity_mask);
++
++		snprintf(irq_cfg->irq_name, sizeof(irq_cfg->irq_name),
++			 "%s_qp%u", netdev->name, q_id);
++
++		err = hinic3_request_irq(irq_cfg, q_id);
++		if (err) {
++			netdev_err(netdev, "Failed to request Rx irq\n");
++			goto err_release_irqs;
++		}
++
++		hinic3_set_msix_auto_mask_state(nic_dev->hwdev,
++						irq_cfg->msix_entry_idx,
++						HINIC3_SET_MSIX_AUTO_MASK);
++		hinic3_set_msix_state(nic_dev->hwdev, irq_cfg->msix_entry_idx,
++				      HINIC3_MSIX_ENABLE);
++	}
++
++	return 0;
++
++err_release_irqs:
++	while (q_id > 0) {
++		q_id--;
++		irq_cfg = &nic_dev->q_params.irq_cfg[q_id];
++		qp_del_napi(irq_cfg);
++		hinic3_set_msix_state(nic_dev->hwdev, irq_cfg->msix_entry_idx,
++				      HINIC3_MSIX_DISABLE);
++		hinic3_set_msix_auto_mask_state(nic_dev->hwdev,
++						irq_cfg->msix_entry_idx,
++						HINIC3_CLR_MSIX_AUTO_MASK);
++		hinic3_release_irq(irq_cfg);
++	}
++
++	return err;
++}
++
++void hinic3_qps_irq_uninit(struct net_device *netdev)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	struct hinic3_irq_cfg *irq_cfg;
++	u16 q_id;
++
++	for (q_id = 0; q_id < nic_dev->q_params.num_qps; q_id++) {
++		irq_cfg = &nic_dev->q_params.irq_cfg[q_id];
++		qp_del_napi(irq_cfg);
++		hinic3_set_msix_state(nic_dev->hwdev, irq_cfg->msix_entry_idx,
++				      HINIC3_MSIX_DISABLE);
++		hinic3_set_msix_auto_mask_state(nic_dev->hwdev,
++						irq_cfg->msix_entry_idx,
++						HINIC3_CLR_MSIX_AUTO_MASK);
++		hinic3_release_irq(irq_cfg);
++	}
++}
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
+index 9577cc673257..9fad834f9e92 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
+@@ -85,8 +85,4 @@ void hinic3_set_netdev_ops(struct net_device *netdev);
+ int hinic3_qps_irq_init(struct net_device *netdev);
+ void hinic3_qps_irq_uninit(struct net_device *netdev);
  
- void hinic3_set_netdev_ops(struct net_device *netdev);
-+int hinic3_qps_irq_init(struct net_device *netdev);
-+void hinic3_qps_irq_uninit(struct net_device *netdev);
- 
- /* Temporary prototypes. Functions become static in later submission. */
- void qp_add_napi(struct hinic3_irq_cfg *irq_cfg);
+-/* Temporary prototypes. Functions become static in later submission. */
+-void qp_add_napi(struct hinic3_irq_cfg *irq_cfg);
+-void qp_del_napi(struct hinic3_irq_cfg *irq_cfg);
+-
+ #endif
 -- 
 2.43.0
 
