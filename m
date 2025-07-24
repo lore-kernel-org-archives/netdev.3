@@ -1,229 +1,402 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2070.outbound.protection.outlook.com [40.107.92.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic312-20.consmr.mail.sg3.yahoo.com (sonic312-20.consmr.mail.sg3.yahoo.com [106.10.244.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8C32EE61D;
-	Thu, 24 Jul 2025 20:51:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753390275; cv=fail; b=CBS+UjVW8EpMjATcBClUKRLPZdcwuxQhccdzX5Ziq0abnPTkAbKdjYIqCXVGrnhOovg7SL7E1BEjTo5fhGvpobyJtqgcgRijTI6PIdb89VhXQQFX+himFgGhpseRj2jFhdBZVPM6XGNZcK9rQsPxEYG2XO0qNEUttC/7q9eVqIc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753390275; c=relaxed/simple;
-	bh=oK9huO71GVBFPTzg+7HUwEJ6PSx/zgEhF42TvI/9wHw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GIG3SYTPpg/0/C8POsm3xE58YzJCl1G/93RqqqkMZg946KOrJV6F40THIci0yy9dcPU/8oHF21qtpfigxyekLs1V7tAJWrwlLi1IjbQrnD9fBI4G2/QEYsG3Zn2rJ0R584aZy5Z78tnNGhnXOKjlGxGWPcGwWXIlOmjrvaG3too=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fH3HSOAI; arc=fail smtp.client-ip=40.107.92.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E748D272804
+	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 20:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=106.10.244.210
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753390576; cv=none; b=MqAoPamEZW5MOxjnHwbPPm2o59FE0sGwPd6WEIPjWpkFQY2V++32g8OVxk+AjH8vs5pS8rtZqJPqmkk4yWwzaLpyyaQobz1BWEItUmpTtTgf4Pp3SVp6zzvEWn7hlwdZ1roM2A6lTCCetUU1GG9CmjzKv9I0ZXy4k6Cl7YmEA3I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753390576; c=relaxed/simple;
+	bh=S6ZDYt5O6xm5jRZ8gLx8OKGczxEr7L+6GVvi+61FWA8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Iv1zd2B+GI5JT6W7rJRNlVDeZF2eBBFTTWY1Of/wiCtx+qSrEqTyBwvqRT3ZOBJEgP112G+0bcLWKTeTEfAp9HtmT5wUIFdnFnDSVaerXZhsGHJG+imFE4fCkywOgI5Zb80005L/b3MltZtG9Bt6FCWM2KqkAawBju29dulUMK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=EgP3znk+; arc=none smtp.client-ip=106.10.244.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fH3HSOAI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Jtjiima+MgEyChngK/1U/ZtJn0OMndzIZWvRbsTwvBGFizPq2FcF+Xb4aOyZh7Dhl0qxXZPN9dr1Hs2eqTo1LVF09V5kd0Ox3dbFTiFTulFEFjnNeFIvVDjo5fZBBwEF/8ztcHmcBKP1x+fD/0qJ1b2mR0Ee4KIt3mVTWQf6emgz6RDi6fmuqP1oLRP9yQZdRSTSgbVLqq6niLLU5nhgzI/wVU1M85MYJSF58q+PfDaGwj3IhYaHRdr7HFRw/SaTDPvyOU6erwZAz54e7i+8G6l3c1hL1t/Zl28C7z8312chPI35QL1iSBPV9UC34M4VSxp79l3TWLRuub7CQCimZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xt3kHktPKRSnrcenZBz2XPWcf7NMVPM90QGFthmoE+g=;
- b=omrzr27xRFCBs8q9kIull6JTcNn9HQVfXBf6HMEc/gfYZnWwQYQnI/TvLW/naSQNjAEyULTtagJDk/nP0jO304sDjAMKCq5oLVJ7qTtchssDINtRe/nK3eeeXrI4j536nP5jUyJMMfZkz3+UU+vuUpl4/MixFZvAB5J3XMf+9zO9vzExReY1fGSILq4XtCHepNHS81bQ7cHGmiANzjbAVnaGU6x14Qz9am/WQpPwvf8fEV3lKb5eCUlJhwmRZmzlC0qvikLX7ntwWCMsI0pRCNSKjg+JmH2g11SvIyQbSwe+PfdNCXqAM8oux/KzI7pZfEYvg2qbrG9MbAcROvh/+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xt3kHktPKRSnrcenZBz2XPWcf7NMVPM90QGFthmoE+g=;
- b=fH3HSOAIEdT5W7QG6KnwvgsDDAQo5wW5HUp75UJo0CmOuiFE3Jk8X02lpZo2/uiLcdX7FKYa3F9ZMA/vzSu1NCgWvtnJWKs/dXRpgMGsMxH3FsndNyGXkozwwbQoKAVsxlxXeZCZKDjqij/2rjc+31XSvRh/2/9m9M0V4NyuHujrV+ZTxRnqVE71NK+Z/apoBETZefqSORh6YudyIuEdx4EoiBQHvNnXY9MEd+DsjFW+XpbCV+RVJT6X2xvn4fU5fwTn/fzcc97Bu6kw/zQPvjilfpYkDisRr17nXc82DyfFShc7i4//XUI1X9E2HXhOvi18WLD2w9fXYp6vtt82sw==
-Received: from CH0PR13CA0039.namprd13.prod.outlook.com (2603:10b6:610:b2::14)
- by SA5PPF0EB7D076B.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8c5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.30; Thu, 24 Jul
- 2025 20:51:11 +0000
-Received: from DS3PEPF0000C37A.namprd04.prod.outlook.com
- (2603:10b6:610:b2:cafe::dc) by CH0PR13CA0039.outlook.office365.com
- (2603:10b6:610:b2::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8964.21 via Frontend Transport; Thu,
- 24 Jul 2025 20:51:10 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- DS3PEPF0000C37A.mail.protection.outlook.com (10.167.23.4) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8964.20 via Frontend Transport; Thu, 24 Jul 2025 20:51:10 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 24 Jul
- 2025 13:51:00 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Thu, 24 Jul 2025 13:50:59 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server id 15.2.1544.14 via Frontend
- Transport; Thu, 24 Jul 2025 13:50:52 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Jiri Pirko <jiri@nvidia.com>, Jiri Pirko
-	<jiri@resnulli.us>
-CC: Donald Hunter <donald.hunter@gmail.com>, Jonathan Corbet <corbet@lwn.net>,
-	Brett Creeley <brett.creeley@amd.com>, Michael Chan
-	<michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, "Cai
- Huoqing" <cai.huoqing@linux.dev>, Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Sunil Goutham
-	<sgoutham@marvell.com>, Linu Cherian <lcherian@marvell.com>, Geetha sowjanya
-	<gakula@marvell.com>, Jerin Jacob <jerinj@marvell.com>, hariprasad
-	<hkelam@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>, Saeed Mahameed
-	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
-	<tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Ido Schimmel
-	<idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, Manish Chopra
-	<manishc@marvell.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<intel-wired-lan@lists.osuosl.org>, <linux-rdma@vger.kernel.org>, "Shahar
- Shitrit" <shshitrit@nvidia.com>, Gal Pressman <gal@nvidia.com>
-Subject: [PATCH net-next V2 5/5] net/mlx5e: Set default grace period delay for TX and RX reporters
-Date: Thu, 24 Jul 2025 23:48:54 +0300
-Message-ID: <1753390134-345154-6-git-send-email-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.8.0
-In-Reply-To: <1753390134-345154-1-git-send-email-tariqt@nvidia.com>
-References: <1753390134-345154-1-git-send-email-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="EgP3znk+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1753390572; bh=NGurmw6gZodHcnbTMwXOTOH3ALt8HpOyovrDsN5l9yo=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=EgP3znk+hwZqvXXL1Vowx/pmpGRYsk9UCFkO7hbvUX07HmRRTsxkObLZ/6+K0/G2qcQWrsshQWy1I9wt5RoxuTTxnGkivfhZisAcks8p8STWOXBrp+uRKorQH8U44oq1qNLZ0wrJmJZ15d3cV8QzFu8CZUOwVP0RCZ8g7vU0HnXzq42coAUPM7NJTEELkH6KPw8ai11YntIqxJyncHnuxXHRO9AM9iyZK4IQyniA4ooobWsvVduITjWqHTBQWop+OllAW7XRw6975gLi59o2NGloWR8+cOd0zcYtpUlmm4o6ZBeKbDRlvmynppkG3BUkDz08BYKsGoAM2YQCJ/vx7A==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1753390572; bh=qYO6OdnTzs49QPaG2DTFIrli/IGuFfxvPA3t5zdCEoN=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=h/MNillYvluEB4cQ0FvvG8M+SskDGfblvs8977w4TN/HSYxsuc2IOxzTS63p2TVKxyGi1m9+Ck+eGz+2bB0t/TSYQcgV2FzUhXHyrsubqZZNeUVuVl/54kD3b3zJ0foyhaHqAs6ZQLsq27p2kKrPEsf6lEdpq0U9qePjAvYMXu6S6ymKnpga5e0NZfKywx8BEfgQ2OlkThNBhXzRyMPaaCvVYAyTuynTs/EGMaMsHfLZb10sFlckiAGcM1gr4TpCZcK9jTQSDevnlQiT0ZOtN6zRUxCKe8gx0gihwrY8CnJ39TvUbdC0f+CTax/mxOg3hOhRHuo8mRDcI8v+LA4Nrw==
+X-YMail-OSG: YpIzeaAVM1kIbF2U2g7NWXcgrG1QItkbQ7NbKby3Xl1SNcSjZ4fHa.ybUbCE52X
+ 2GOFg0lW7Jn_yKsyJi.H.GYx5aZ7mjouvtAJqufH1h7iC3_tFdIlikw8bnLiJPHbsuyLybpxB9jv
+ gXKWKFrgQGbtJdA_S2OlPMRIjEIPl6hVDCyu3IYgbhPUrk0BOmBjRuksXwUBr8ogSqOet5LTkH8k
+ EGknVYb2Skd39XujJUn.OHuRvVUYQzecN20haVTU78R.QGxUd6oqLWSEyXRYAQsj874d1Dmcso4G
+ 9qUzpXggKAy4EuQ0wG5GsLFR2gdrigxb8maED8hh.BtSdDZEYLNBZ4B_ELRCm7VaQwakaPWqjqPR
+ Vh4tRz0z6HQGDlX_w084BhrAUPn0.lq2_o3kgE.WpoJgtnTa4QbjSkCPndpfa01UWNahZuUxuzg8
+ xLEl4RxZuV0_yoEhjbWmmrgJCVhNzhV.GzA1MFJV3H201wws1s8oRDQyK1FlcV7eht.YCE.f4KsA
+ UKmH1iFCQXqYWXUgojW9v3ULii7bkEtyNOL0nIu21yEy0sSpM6bpUKbixSabqkIW8enNNSBtSdPI
+ wO.dkBJTcnj02KYacr5XV.tZv0LNynDeHoDjcRVubbEjFFPR4i4b2OZafeV9_eGVT1vd2z1PKBru
+ t6fVnN3g0v_3g2s9a2zHg_0TCTaceI7uVZuSclMQnvxu5cONs4LhosMVxNBv6sbe153CsJ5v0ftI
+ Pvq93rIpn0MTlVOl09.ES4.0MoV5n8dN3NbkemhTM8Pn3beJVPwipmxEweW.YVP_FJzc2XiTiyK3
+ kRZO9YKdUsR90RmCJCFPj_FniYSCJ0PvOg4KmAs_vCRWEwAYxqX46z01mvA_Pm4DxGxWgiTh2dXw
+ u58n3x2kVatfeQWcpUGy6OGCsi3P5Y7ESAvSznevIbLvN7s9kJCYzKQu2vJZ4U2l6wkCAoWVo2rN
+ HkDZdYkuxDRGKnrFcqrhv_c_tHabq0Kz_PeZMstgJnQt_xD80NyAX3uWV8rlZvcKksj1Z7Hbh2T5
+ ljitfTCFhpKib2NVkZwqAoJCHuHsiMlc4AMQo3aLVEmEbA1Rl4L2z1aum03yt4naZLNMQLttKdBm
+ 4tLm5xi25WypVlADPC3P9qaXar9V68MYtR3y_z6Dy1blKWREihRa6.jwdz_o56dOp6J0L7Lh1Ckd
+ oXaD.HYWD7DZzLYnFCekZEO2rpfARs57tp8zELqhs.r3bTqQuDBz2gu23Az.ulIM2sQzJG4FFP0R
+ SWIUum6bXCZo9MkhLMuAPme29TgIj03vzy0Z8XsRRPwnVGKzVX..5WasnQhdZeZyT3winPkWCxIF
+ 69iMUQ4rM4lyyzD481CrtvrFhR9mK5SCjLQh1F66LIy4BOs2ViOpkX8P4QoaDKPcC71UptE6WYkI
+ 6_itXcnjtAPOoHVeXg3T.6How_yKv59jbx_wGta2KN3NSnFNBqKNdC4dBHDFciznjQfC8dXrMF_h
+ MxTFuRoWwI0GGDfdzO2k51Ouf74QxS.hAvbFWaAJLu6CdyZPSisUSzneJRgoPwk6zsDTiX1.XHcQ
+ zN_tLlQ0XxzPnJeUkUXrfOzAIG9MK1FgQhjIhsEU4K7RGM8eyr1VQKcIKxGfUQljGD4jXuCkcECT
+ oHCywpk_uVVzhMfvbFH4.5QE1JYnREGbZaxXfzUgti4N852piGl4RPi1nBfYhZg8St1thK1_7rpn
+ NrYwvnHsB03XPU41EH5bXnwxH3HPeguzgskCn19gKzLNhp.7FCLdv7PJRjoz.ToojZJVpMJz3zb9
+ 7ukX4Kl6LN9_ogLGLM0bicsQiGPT_sM4oE1lKq53qe0nO7mTnLASLs9GI0q5NZqcupyjYNsleGGF
+ 8kFT634oymWFHTqG7SQsz9P_QMOXQEOYZWbFy0cB7Zaw4CMzdPtWV1whEHTr07ybe9wxQi4i.AL4
+ uE8.gyHUYxfgp0kmAThwn2jDpBkF1EmVsfe9U_NxzgaELlwpdU2zgMBDOmE.tmgkETROm9IiB66q
+ BuKzdZHgN3Sj4on_IIs3RjAsPpLclYX09HTmJTnBJ0Xxm86ybEtXQgYbYd6P8uvphNB.lZETM3Yb
+ mkBn5bFZyqaP4Xwl7k8ZgtzneVXAz2n3TvgOo1ykMGNKfdJJw5kju2Hda_Xas9bezOHUJafe1Z6x
+ 7TujpWD8IyFyEHTyjX7yvn2XAFpt1ruarwVa2sfpv7j71BQ.uWrg3KTxzYjLyF1fo94WHfO_0_QT
+ ZM6MVWmZMbcIv3qAMG05sDS8adVIkuI7LADtVeFczNvLVXB4U4XoTBOg9EUTvORJg1C5e3kiNcm1
+ lgHSkgK8Vwsyie8iQ_L31
+X-Sonic-MF: <sumanth.gavini@yahoo.com>
+X-Sonic-ID: d22fbf55-e853-4b46-a9b7-92f47fb303b9
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.sg3.yahoo.com with HTTP; Thu, 24 Jul 2025 20:56:12 +0000
+Received: by hermes--production-ne1-9495dc4d7-vm8nz (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID ba5944df1bf98b049dd2dbc2e489772b;
+          Thu, 24 Jul 2025 20:05:29 +0000 (UTC)
+From: Sumanth Gavini <sumanth.gavini@yahoo.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	yoshfuji@linux-ipv6.org,
+	dsahern@kernel.org,
+	steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sashal@kernel.org,
+	idosch@nvidia.com,
+	razor@blackwall.org,
+	petrm@nvidia.com,
+	kuniyu@amazon.com
+Cc: Sumanth Gavini <sumanth.gavini@yahoo.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	stable@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	syzbot <syzkaller@googlegroups.com>
+Subject: [PATCH v2 6.1] net: add netdev_lockdep_set_classes() to virtual drivers
+Date: Thu, 24 Jul 2025 15:05:22 -0500
+Message-ID: <20250724200524.172820-1-sumanth.gavini@yahoo.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <1753367981-e2a8d101@stable.kernel.org>
+References: <1753367981-e2a8d101@stable.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF0000C37A:EE_|SA5PPF0EB7D076B:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd2d78c7-bf00-476e-3a7e-08ddcaf3d226
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?DUa/9RRbvj4Nolugb0FkEI4xI3YAFHaxq1U4f8fTrcx7wqg5EAsJ+K+Vp6HZ?=
- =?us-ascii?Q?KJeN+DmzglNnU+xFv8Q2kHju2F0meS6JDhvCGmn+iOSW9qlm6TuU7AwehkmP?=
- =?us-ascii?Q?u3hY5ioytz4ilQVcx2c1ONHf0k3Xtan16DCafUSO/xWQk+uTt6rWlk2XcmYa?=
- =?us-ascii?Q?dfoXQJf3Wcyzk0i2x8K7RjH0+vCa9S3ah1mBumPErh9QWYk+vd+Mw4dn429d?=
- =?us-ascii?Q?AuJn4TAA2PjELbUdzYKEnSpt6Yss+bOQIcSEQfGfutq0n75QiscAmGjz2+iu?=
- =?us-ascii?Q?45NnlhK+okIVZ2R6PB1M9AImQYwaq8pIdSApjzG4U9SXiKY1FhWSVxgxVcMj?=
- =?us-ascii?Q?DXKhWOGo7icjhis77EQ7RFey37UfAdmm3q2RrJgUfJiDu5qsXRCQ/lUv/b3k?=
- =?us-ascii?Q?r8LszQhtjAlZVHMTNO7yRcJV0NKY2mZkGw4YWVpKRlU5/2QSC52l748T/l/r?=
- =?us-ascii?Q?xmQcn57G/0Ch9M7hdGiIFq7Q4o8ClzmraybzcQ/5yFRNpyY75okvOfibmwZd?=
- =?us-ascii?Q?2Jyi+o2RxLQTfaZuyNaI1TqaipGDaOfRSJhIQjoXxVykNrzT0wPYgUzBSSHH?=
- =?us-ascii?Q?suxh5NckilDngu01s3ik9aFKw8mzlI4X3JTnfgU16vRn0cnX9hatrBUh3Zum?=
- =?us-ascii?Q?VsVxPdB43RaW2KdqbX58d3213juiCp2pGBEeXqX/q+pdYv+HQhPcpbs3QYTo?=
- =?us-ascii?Q?Efqnkrq+xLIpk/gIjkZsyJjyw3UwFWQe7ssrT9an43kUAoMCBofYvaxdY6ib?=
- =?us-ascii?Q?wHfwAs6xjNM6uR/US0VVb3GhVCJSwG6JguYOmZDer43OYBWmoNteVUm25apf?=
- =?us-ascii?Q?cOr7UCliVO6221UB8Jj6/jOiSRjCVFHKEw4jPuWyUM4qb0jgXfJYFEELv+Qb?=
- =?us-ascii?Q?ypO8J5Z9w2n7U2BRv/tcvTatfleMtlc128icK8yBPS5M7/39TuW5QjqSpvw9?=
- =?us-ascii?Q?SBqPlWszIHPsxuaY7ppBfb7ISoubzIxttng53SrbuqZir8SH7713roB6j0cO?=
- =?us-ascii?Q?7o1SC0EUiO/Vp1ac9xZzO7rS0FAIz1a6ScS6nBdPP/FUMJCEgDr3UnAZC+cA?=
- =?us-ascii?Q?4dTez081dtMaWmt6FtZBzmrFYai7u+Zt1bo/G23apRJIjVW/kGdycKPe2Oie?=
- =?us-ascii?Q?7x1+VLkCGvpN7PZyuqoo458NxwTRgtAib1icj3IvfDBXWIA1Zr0jQT68YrHs?=
- =?us-ascii?Q?XZwlAughDCBxK2iVTON8fY6lsWvqsezdlhB9HRnDNMd7d7Phfuk+4E2iJFDw?=
- =?us-ascii?Q?zx+hEqAGi+CaqGALP/PFK09fhqmj1oDnTRfoHkuRNnkNQLST/W5RddXW8SjM?=
- =?us-ascii?Q?ODYlY83jTwK6bQfo57dOXV/asLeJ2vE0CeIOMW8pXw4Qgpl5X8qfDlWUoD/v?=
- =?us-ascii?Q?9vqsUJQ3TTXOD8Al9ud3A0RAQRVK+nrRNr0p0+N620PtaG6h/njPRAQi0TRM?=
- =?us-ascii?Q?ofU9sO8dXTdpPi++1J/XwrSU0jJpTBxdLpmfcbsc9Y8srqGMdEaOoTv7gbNX?=
- =?us-ascii?Q?+z+mhRUxPNfPDUFvpDPUeGxdl8F4WQM5gE7j?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2025 20:51:10.7477
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd2d78c7-bf00-476e-3a7e-08ddcaf3d226
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS3PEPF0000C37A.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF0EB7D076B
+Content-Transfer-Encoding: 8bit
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+commit 0bef512012b1cd8820f0c9ec80e5f8ceb43fdd59 upstream.
 
-System errors can sometimes cause multiple errors to be reported
-to the TX reporter at the same time. For instance, lost interrupts
-may cause several SQs to time out simultaneously. When dev_watchdog
-notifies the driver for that, it iterates over all SQs to trigger
-recovery for the timed-out ones, via TX health reporter.
-However, grace period allows only one recovery at a time, so only
-the first SQ recovers while others remain blocked. Since no further
-recoveries are allowed during the grace period, subsequent errors
-cause the reporter to enter an ERROR state, requiring manual
-intervention.
+Based on a syzbot report, it appears many virtual
+drivers do not yet use netdev_lockdep_set_classes(),
+triggerring lockdep false positives.
 
-To address this, set the TX reporter's default grace period
-delay to 0.5 second. This allows the reporter to detect and handle
-all timed-out SQs within this delay window before initiating the
-grace period.
+WARNING: possible recursive locking detected
+6.8.0-rc4-next-20240212-syzkaller #0 Not tainted
 
-To account for the possibility of a similar issue in the RX reporter,
-its default grace period delay is also configured.
+syz-executor.0/19016 is trying to acquire lock:
+ ffff8880162cb298 (_xmit_ETHER#2){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
+ ffff8880162cb298 (_xmit_ETHER#2){+.-.}-{2:2}, at: __netif_tx_lock include/linux/netdevice.h:4452 [inline]
+ ffff8880162cb298 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x1c4/0x5f0 net/sched/sch_generic.c:340
 
-Additionally, while here, align the TX definition prefix with the RX,
-as these are used only in EN driver.
+but task is already holding lock:
+ ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
+ ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: __netif_tx_lock include/linux/netdevice.h:4452 [inline]
+ ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x1c4/0x5f0 net/sched/sch_generic.c:340
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+  lock(_xmit_ETHER#2);
+  lock(_xmit_ETHER#2);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+9 locks held by syz-executor.0/19016:
+  #0: ffffffff8f385208 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_lock net/core/rtnetlink.c:79 [inline]
+  #0: ffffffff8f385208 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x82c/0x1040 net/core/rtnetlink.c:6603
+  #1: ffffc90000a08c00 ((&in_dev->mr_ifc_timer)){+.-.}-{0:0}, at: call_timer_fn+0xc0/0x600 kernel/time/timer.c:1697
+  #2: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:298 [inline]
+  #2: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:750 [inline]
+  #2: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x45f/0x1360 net/ipv4/ip_output.c:228
+  #3: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: local_bh_disable include/linux/bottom_half.h:20 [inline]
+  #3: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: rcu_read_lock_bh include/linux/rcupdate.h:802 [inline]
+  #3: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x2c4/0x3b10 net/core/dev.c:4284
+  #4: ffff8880416e3258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: spin_trylock include/linux/spinlock.h:361 [inline]
+  #4: ffff8880416e3258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: qdisc_run_begin include/net/sch_generic.h:195 [inline]
+  #4: ffff8880416e3258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_xmit_skb net/core/dev.c:3771 [inline]
+  #4: ffff8880416e3258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_queue_xmit+0x1262/0x3b10 net/core/dev.c:4325
+  #5: ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: spin_lock include/linux/spinlock.h:351 [inline]
+  #5: ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: __netif_tx_lock include/linux/netdevice.h:4452 [inline]
+  #5: ffff8880223db4d8 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x1c4/0x5f0 net/sched/sch_generic.c:340
+  #6: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:298 [inline]
+  #6: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:750 [inline]
+  #6: ffffffff8e131520 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x45f/0x1360 net/ipv4/ip_output.c:228
+  #7: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: local_bh_disable include/linux/bottom_half.h:20 [inline]
+  #7: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: rcu_read_lock_bh include/linux/rcupdate.h:802 [inline]
+  #7: ffffffff8e131580 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x2c4/0x3b10 net/core/dev.c:4284
+  #8: ffff888014d9d258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: spin_trylock include/linux/spinlock.h:361 [inline]
+  #8: ffff888014d9d258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: qdisc_run_begin include/net/sch_generic.h:195 [inline]
+  #8: ffff888014d9d258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_xmit_skb net/core/dev.c:3771 [inline]
+  #8: ffff888014d9d258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_queue_xmit+0x1262/0x3b10 net/core/dev.c:4325
+
+stack backtrace:
+CPU: 1 PID: 19016 Comm: syz-executor.0 Not tainted 6.8.0-rc4-next-20240212-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
+Call Trace:
+ <IRQ>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+  check_deadlock kernel/locking/lockdep.c:3062 [inline]
+  validate_chain+0x15c1/0x58e0 kernel/locking/lockdep.c:3856
+  __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
+  lock_acquire+0x1e4/0x530 kernel/locking/lockdep.c:5754
+  __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
+  _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
+  spin_lock include/linux/spinlock.h:351 [inline]
+  __netif_tx_lock include/linux/netdevice.h:4452 [inline]
+  sch_direct_xmit+0x1c4/0x5f0 net/sched/sch_generic.c:340
+  __dev_xmit_skb net/core/dev.c:3784 [inline]
+  __dev_queue_xmit+0x1912/0x3b10 net/core/dev.c:4325
+  neigh_output include/net/neighbour.h:542 [inline]
+  ip_finish_output2+0xe66/0x1360 net/ipv4/ip_output.c:235
+  iptunnel_xmit+0x540/0x9b0 net/ipv4/ip_tunnel_core.c:82
+  ip_tunnel_xmit+0x20ee/0x2960 net/ipv4/ip_tunnel.c:831
+  erspan_xmit+0x9de/0x1460 net/ipv4/ip_gre.c:720
+  __netdev_start_xmit include/linux/netdevice.h:4989 [inline]
+  netdev_start_xmit include/linux/netdevice.h:5003 [inline]
+  xmit_one net/core/dev.c:3555 [inline]
+  dev_hard_start_xmit+0x242/0x770 net/core/dev.c:3571
+  sch_direct_xmit+0x2b6/0x5f0 net/sched/sch_generic.c:342
+  __dev_xmit_skb net/core/dev.c:3784 [inline]
+  __dev_queue_xmit+0x1912/0x3b10 net/core/dev.c:4325
+  neigh_output include/net/neighbour.h:542 [inline]
+  ip_finish_output2+0xe66/0x1360 net/ipv4/ip_output.c:235
+  igmpv3_send_cr net/ipv4/igmp.c:723 [inline]
+  igmp_ifc_timer_expire+0xb71/0xd90 net/ipv4/igmp.c:813
+  call_timer_fn+0x17e/0x600 kernel/time/timer.c:1700
+  expire_timers kernel/time/timer.c:1751 [inline]
+  __run_timers+0x621/0x830 kernel/time/timer.c:2038
+  run_timer_softirq+0x67/0xf0 kernel/time/timer.c:2051
+  __do_softirq+0x2bc/0x943 kernel/softirq.c:554
+  invoke_softirq kernel/softirq.c:428 [inline]
+  __irq_exit_rcu+0xf2/0x1c0 kernel/softirq.c:633
+  irq_exit_rcu+0x9/0x30 kernel/softirq.c:645
+  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1076 [inline]
+  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1076
+ </IRQ>
+ <TASK>
+  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+ RIP: 0010:resched_offsets_ok kernel/sched/core.c:10127 [inline]
+ RIP: 0010:__might_resched+0x16f/0x780 kernel/sched/core.c:10142
+Code: 00 4c 89 e8 48 c1 e8 03 48 ba 00 00 00 00 00 fc ff df 48 89 44 24 38 0f b6 04 10 84 c0 0f 85 87 04 00 00 41 8b 45 00 c1 e0 08 <01> d8 44 39 e0 0f 85 d6 00 00 00 44 89 64 24 1c 48 8d bc 24 a0 00
+RSP: 0018:ffffc9000ee069e0 EFLAGS: 00000246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff8880296a9e00
+RDX: dffffc0000000000 RSI: ffff8880296a9e00 RDI: ffffffff8bfe8fa0
+RBP: ffffc9000ee06b00 R08: ffffffff82326877 R09: 1ffff11002b5ad1b
+R10: dffffc0000000000 R11: ffffed1002b5ad1c R12: 0000000000000000
+R13: ffff8880296aa23c R14: 000000000000062a R15: 1ffff92001dc0d44
+  down_write+0x19/0x50 kernel/locking/rwsem.c:1578
+  kernfs_activate fs/kernfs/dir.c:1403 [inline]
+  kernfs_add_one+0x4af/0x8b0 fs/kernfs/dir.c:819
+  __kernfs_create_file+0x22e/0x2e0 fs/kernfs/file.c:1056
+  sysfs_add_file_mode_ns+0x24a/0x310 fs/sysfs/file.c:307
+  create_files fs/sysfs/group.c:64 [inline]
+  internal_create_group+0x4f4/0xf20 fs/sysfs/group.c:152
+  internal_create_groups fs/sysfs/group.c:192 [inline]
+  sysfs_create_groups+0x56/0x120 fs/sysfs/group.c:218
+  create_dir lib/kobject.c:78 [inline]
+  kobject_add_internal+0x472/0x8d0 lib/kobject.c:240
+  kobject_add_varg lib/kobject.c:374 [inline]
+  kobject_init_and_add+0x124/0x190 lib/kobject.c:457
+  netdev_queue_add_kobject net/core/net-sysfs.c:1706 [inline]
+  netdev_queue_update_kobjects+0x1f3/0x480 net/core/net-sysfs.c:1758
+  register_queue_kobjects net/core/net-sysfs.c:1819 [inline]
+  netdev_register_kobject+0x265/0x310 net/core/net-sysfs.c:2059
+  register_netdevice+0x1191/0x19c0 net/core/dev.c:10298
+  bond_newlink+0x3b/0x90 drivers/net/bonding/bond_netlink.c:576
+  rtnl_newlink_create net/core/rtnetlink.c:3506 [inline]
+  __rtnl_newlink net/core/rtnetlink.c:3726 [inline]
+  rtnl_newlink+0x158f/0x20a0 net/core/rtnetlink.c:3739
+  rtnetlink_rcv_msg+0x885/0x1040 net/core/rtnetlink.c:6606
+  netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2543
+  netlink_unicast_kernel net/netlink/af_netlink.c:1341 [inline]
+  netlink_unicast+0x7ea/0x980 net/netlink/af_netlink.c:1367
+  netlink_sendmsg+0xa3c/0xd70 net/netlink/af_netlink.c:1908
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg+0x221/0x270 net/socket.c:745
+  __sys_sendto+0x3a4/0x4f0 net/socket.c:2191
+  __do_sys_sendto net/socket.c:2203 [inline]
+  __se_sys_sendto net/socket.c:2199 [inline]
+  __x64_sys_sendto+0xde/0x100 net/socket.c:2199
+ do_syscall_64+0xfb/0x240
+ entry_SYSCALL_64_after_hwframe+0x6d/0x75
+RIP: 0033:0x7fc3fa87fa9c
+
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240212140700.2795436-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c | 3 +++
- drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c | 7 +++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+Changes in v2:
+- With previous patch, Not able to apply on the 6.1 branch. Updated the
+  code changes in 6.1 branch. 
+- Link to v1:https://lore.kernel.org/all/20250724043010.129297-1-sumanth.gavini@yahoo.com/
+---
+ drivers/net/dummy.c            | 1 +
+ drivers/net/geneve.c           | 1 +
+ drivers/net/loopback.c         | 1 +
+ drivers/net/veth.c             | 1 +
+ drivers/net/vxlan/vxlan_core.c | 1 +
+ net/ipv4/ip_tunnel.c           | 1 +
+ net/ipv6/ip6_gre.c             | 2 ++
+ net/ipv6/ip6_tunnel.c          | 1 +
+ net/ipv6/ip6_vti.c             | 1 +
+ net/ipv6/sit.c                 | 1 +
+ 10 files changed, 11 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
-index e106f0696486..feb3f2bce830 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
-@@ -645,6 +645,7 @@ void mlx5e_reporter_icosq_resume_recovery(struct mlx5e_channel *c)
+diff --git a/drivers/net/dummy.c b/drivers/net/dummy.c
+index aa0fc00faecb..f05d4194eb09 100644
+--- a/drivers/net/dummy.c
++++ b/drivers/net/dummy.c
+@@ -71,6 +71,7 @@ static int dummy_dev_init(struct net_device *dev)
+ 	if (!dev->lstats)
+ 		return -ENOMEM;
+ 
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
  }
  
- #define MLX5E_REPORTER_RX_GRACEFUL_PERIOD 500
-+#define MLX5E_REPORTER_RX_GRACEFUL_PERIOD_DELAY 500
- 
- static const struct devlink_health_reporter_ops mlx5_rx_reporter_ops = {
- 	.name = "rx",
-@@ -652,6 +653,8 @@ static const struct devlink_health_reporter_ops mlx5_rx_reporter_ops = {
- 	.diagnose = mlx5e_rx_reporter_diagnose,
- 	.dump = mlx5e_rx_reporter_dump,
- 	.default_graceful_period = MLX5E_REPORTER_RX_GRACEFUL_PERIOD,
-+	.default_graceful_period_delay =
-+		MLX5E_REPORTER_RX_GRACEFUL_PERIOD_DELAY,
- };
- 
- void mlx5e_reporter_rx_create(struct mlx5e_priv *priv)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-index 6fb0d143ad1b..515b77585926 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-@@ -514,14 +514,17 @@ void mlx5e_reporter_tx_ptpsq_unhealthy(struct mlx5e_ptpsq *ptpsq)
- 	mlx5e_health_report(priv, priv->tx_reporter, err_str, &err_ctx);
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index 3dd5c69b05cb..b31441fc99fc 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -349,6 +349,7 @@ static int geneve_init(struct net_device *dev)
+ 		gro_cells_destroy(&geneve->gro_cells);
+ 		return err;
+ 	}
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
  }
  
--#define MLX5_REPORTER_TX_GRACEFUL_PERIOD 500
-+#define MLX5E_REPORTER_TX_GRACEFUL_PERIOD 500
-+#define MLX5E_REPORTER_TX_GRACEFUL_PERIOD_DELAY 500
+diff --git a/drivers/net/loopback.c b/drivers/net/loopback.c
+index b213397672d2..8dc6a4df93c7 100644
+--- a/drivers/net/loopback.c
++++ b/drivers/net/loopback.c
+@@ -144,6 +144,7 @@ static int loopback_dev_init(struct net_device *dev)
+ 	dev->lstats = netdev_alloc_pcpu_stats(struct pcpu_lstats);
+ 	if (!dev->lstats)
+ 		return -ENOMEM;
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ }
  
- static const struct devlink_health_reporter_ops mlx5_tx_reporter_ops = {
- 		.name = "tx",
- 		.recover = mlx5e_tx_reporter_recover,
- 		.diagnose = mlx5e_tx_reporter_diagnose,
- 		.dump = mlx5e_tx_reporter_dump,
--		.default_graceful_period = MLX5_REPORTER_TX_GRACEFUL_PERIOD,
-+		.default_graceful_period = MLX5E_REPORTER_TX_GRACEFUL_PERIOD,
-+		.default_graceful_period_delay =
-+			MLX5E_REPORTER_TX_GRACEFUL_PERIOD_DELAY,
- };
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index e1e7df00e85c..ce90b093bb45 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -1373,6 +1373,7 @@ static void veth_free_queues(struct net_device *dev)
  
- void mlx5e_reporter_tx_create(struct mlx5e_priv *priv)
+ static int veth_dev_init(struct net_device *dev)
+ {
++	netdev_lockdep_set_classes(dev);
+ 	return veth_alloc_queues(dev);
+ }
+ 
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 747ce00dd321..50dacdc1b6a7 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -2998,6 +2998,7 @@ static int vxlan_init(struct net_device *dev)
+ 	if (err)
+ 		goto err_free_percpu;
+ 
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ 
+ err_free_percpu:
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 73d7372afb43..90e55b9979e6 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -1298,6 +1298,7 @@ int ip_tunnel_init(struct net_device *dev)
+ 
+ 	if (tunnel->collect_md)
+ 		netif_keep_dst(dev);
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(ip_tunnel_init);
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index b3e2d658af80..718fcad69cf1 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -1537,6 +1537,7 @@ static int ip6gre_tunnel_init_common(struct net_device *dev)
+ 	ip6gre_tnl_init_features(dev);
+ 
+ 	netdev_hold(dev, &tunnel->dev_tracker, GFP_KERNEL);
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ 
+ cleanup_dst_cache_init:
+@@ -1929,6 +1930,7 @@ static int ip6erspan_tap_init(struct net_device *dev)
+ 	ip6erspan_tnl_link_config(tunnel, 1);
+ 
+ 	netdev_hold(dev, &tunnel->dev_tracker, GFP_KERNEL);
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ 
+ cleanup_dst_cache_init:
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index a82d382193e4..2a470c0c38ae 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -1902,6 +1902,7 @@ ip6_tnl_dev_init_gen(struct net_device *dev)
+ 	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len - t_hlen;
+ 
+ 	netdev_hold(dev, &t->dev_tracker, GFP_KERNEL);
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ 
+ destroy_dst:
+diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
+index cb71463bbbab..add7276986f1 100644
+--- a/net/ipv6/ip6_vti.c
++++ b/net/ipv6/ip6_vti.c
+@@ -937,6 +937,7 @@ static inline int vti6_dev_init_gen(struct net_device *dev)
+ 	if (!dev->tstats)
+ 		return -ENOMEM;
+ 	netdev_hold(dev, &t->dev_tracker, GFP_KERNEL);
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ }
+ 
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index cc24cefdb85c..eb4c8e2a2b12 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -1460,6 +1460,7 @@ static int ipip6_tunnel_init(struct net_device *dev)
+ 		return err;
+ 	}
+ 	netdev_hold(dev, &tunnel->dev_tracker, GFP_KERNEL);
++	netdev_lockdep_set_classes(dev);
+ 	return 0;
+ }
+ 
 -- 
-2.31.1
+2.43.0
 
