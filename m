@@ -1,63 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B012153F1
-	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 08:07:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240212153F1
+	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 08:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753344431; cv=none; b=YubAZfA2s2wX793W+peUHQwxZvRBw1fFaZsT0pk21H+G9XS2LaoDAOB/RLwe/81Of/4xk1x/3Ci5k7/0ptaLlxUh0Re7oAOhkVJ3dKX9pbIlppYfcONhXJgBJXC8GH5DfZiXaTAEZhzINdHv+pTe9+Wf85q/Hbglu1JF99MTXZ0=
+	t=1753344459; cv=none; b=Lz59V6DHYDHACR9mfa6wWbi6gabbg/7sYyeMoFmZwibq9zEO4zPmJ752dNQj83qDU+jG3AgtiDUwH2JV0P03O2puR1t4rQv5/nmUR9sUmKYYJp9JzQdar7swx4A7xQW/edMOR2SFS9mbqozIRhjQYhA7qpBd8AL16S4HuZysXyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753344431; c=relaxed/simple;
-	bh=3GfbGSqWVEhIf20dNOMc0fp14qcTv6XZ5FmBTnLwA+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BNA1cvj19ZHVVP8QzLDpMse37JiA6E6YnEQJDy79L+4G80dsJ+map30UHCuq+dHWodKy4AVGzl4AEO8t8N3drdCmknSy5iJuSuLInkPOnYq8mXfmXapSijVBCh7un8ad+LYlXJjhlhI4G2ZhQYUBiiZXXAm/9gzrD7t1w+P+bGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YISmjGJx; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YISmjGJx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753344428;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yds5vhOzn4LpdsxnEOz220TpuASpaZwH3IpQhzpEW5I=;
-	b=YISmjGJx7BD0fCd9ZbSb795UkY9r8kJM6Xq5ajdfvtAnz/eyflng9vIEPTgr/LZli7n5kj
-	qqrjemY8w8+IREuDHq7cANNsD75D+Vuw73kuBAqCRvk/SRxfTAZqQbIc9Fz/RgE+j45KFR
-	Z03/l2UudVa+EnON2l/wBb4O4Ex0nLA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-l7vBBadIMIenRZy1RjtSJA-1; Thu,
- 24 Jul 2025 04:07:05 -0400
-X-MC-Unique: l7vBBadIMIenRZy1RjtSJA-1
-X-Mimecast-MFC-AGG-ID: l7vBBadIMIenRZy1RjtSJA_1753344423
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 17E8318002B6;
-	Thu, 24 Jul 2025 08:07:03 +0000 (UTC)
-Received: from yiche-laptop.redhat.com (unknown [10.72.112.178])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E176218002AF;
-	Thu, 24 Jul 2025 08:06:55 +0000 (UTC)
-From: Yi Chen <yiche@redhat.com>
-To: netdev@vger.kernel.org
-Cc: netfilter-devel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	pablo@netfilter.org,
-	kadlec@netfilter.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	horms@kernel.org,
-	coreteam@netfilter.org,
-	fw@strlen.de
-Subject: [PATCH net v2] selftests: netfilter: ipvs.sh: Explicity disable rp_filter on interface tunl0
-Date: Thu, 24 Jul 2025 16:06:53 +0800
-Message-ID: <20250724080653.20723-1-yiche@redhat.com>
+	s=arc-20240116; t=1753344459; c=relaxed/simple;
+	bh=b85+MT0VpueYTU432vWsD0a1Uxz5qdu5A2QqTs4dTDk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=NCqdk9v5G2xlOVFq4zgsGGX6iCFgBPg4XsojbX0lKMoxxNnOtj8qKl+6rFhvqKbiNQUqLYM6fs/Kv+n6aJ1wFeyvONCR5zaRO2aJ4D7xJQQNHRmSlVkNcsYcvYliAQvdju8yfF0tKwLc++TTZ2v5bq9exOWqBj5YHQclXlI9IB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz10t1753344383t48347be6
+X-QQ-Originating-IP: uMWD3Ztj9IRJtnDrrKN8NY1xlg8S2ZSuZTHxcBwHMVg=
+Received: from lap-jiawenwu.trustnetic.com ( [60.186.23.165])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 24 Jul 2025 16:06:22 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 5323068037830587620
+EX-QQ-RecipientCnt: 10
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v3 1/3] net: wangxun: change the default ITR setting
+Date: Thu, 24 Jul 2025 16:05:46 +0800
+Message-Id: <20250724080548.23912-2-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20250724080548.23912-1-jiawenwu@trustnetic.com>
+References: <20250724080548.23912-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,59 +47,112 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: OAOHw7tUGLQOPPB7THTqqAnE2ACL2p3XRfEZ8GpWog4E0EOmko+RjQd9
+	DAypqOSStEEPVMmBJ3NCMinz80dwSDfTWz1wbzolPsuzPOHTwPBiJRHj4i6AIawyrjOLpeo
+	NdHWgxFzIloS4AH1qHRYYbpIv4N6gHv0pMdGLwceeu5/e4XtNOYABaSNQL6rFUv8arXjHN4
+	u4y1xOlzK1ALw6UOsfgy2jUXQx+myDA/KvHfmhVPXvR3UHWZlOiWlCp9mc0VKL9UaBbEKuP
+	5gFl0qyvw9o3BJOegNLWKepfQLdLzV2gT4wo/UB/g+N+eK/9I6yV1U0dSucOTDxfX/k/jA5
+	NWWfadqDyxC2OEQ0jlHjZftAFaVyaNeXQbBjReQTPOzcSDjd5JYmLk9yCcdVLsEEIoJ6wiW
+	YAyXyTIA9sIcqeXWke+h0rwJoqwFbDvdaJxCNId14p30ZC6uryjNspPI0j65B+KmEAEmsl5
+	o/Zd4ChZZZIIWQ0sUhYziAYxHrZBx5V0+YAb7d7Kg3sYS/YIFAd+Bs6QCT5fDp5xDFa0tEc
+	Q2BK6lA4ScA8rOymEc98ibAb1lVfNOLMweHXKDiIHCcp7wv98UKA84bpvoSv8GtCPE1CisN
+	KYC2Oh+K0OxxkpjLNaed7Cv55ffDqPVYdx6P7FuzWLQ2hscOXiE6KYHtTBmjir4L/Qi7the
+	X5pCjt+7dWDBqE/YDYHDbINuMZLV/2WiJorZcqoao22VgdcLUeDQEp7rGUmw497F/D0F4TE
+	NcqD+lhKbS45OrdaihEkcK+xZbKdyM7iLiY0VdMu7i/7/2RKJ5iH5AQYFKLQ7uW0Dv0+g7I
+	MiGT5x+64Sze65VBQXMsvMm5oPBppXhXXgnk3/zDhLlosm57UmPMaMDqB95+9zwsmXnynrK
+	Sn/ajn12lduD+u5jf7VRrX/SYFDD6Q1ny2kZBHa4dl3N1g90OG8y5MLLObDur2RftYHg/ou
+	+pftppjK7xic+tU+JbRuWXidlnmeVCycXuSkO+0jqTz+eLZMLgaD3VF8oP9FznYGY/F0ucz
+	tObeVviezHzkRC1dQRpozypRXNkjpSH/Q1bylNfg==
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-QQ-RECHKSPAM: 0
 
-Although setup_ns() set net.ipv4.conf.default.rp_filter=0,
-loading certain module such as ipip will automatically create a tunl0 interface
-in all netns including new created ones. In the script, this is before than
-default.rp_filter=0 applied, as a result tunl0.rp_filter remains set to 1
-which causes the test report FAIL when ipip module is preloaded.
+Change the default RX/TX ITR for wx_mac_em devices from 20K to 7K, which
+is an experience value from out-of-tree ngbe driver, to get higher
+performance on various platforms.
 
-Before fix:
-Testing DR mode...
-Testing NAT mode...
-Testing Tunnel mode...
-ipvs.sh: FAIL
+And cleanup the code for the next patches.
 
-After fix:
-Testing DR mode...
-Testing NAT mode...
-Testing Tunnel mode...
-ipvs.sh: PASS
-
-Fixes: 7c8b89ec506e ("selftests: netfilter: remove rp_filter configuration")
-
-v2: Fixed the format of Fixes tag.
-Signed-off-by: Yi Chen <yiche@redhat.com>
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- tools/testing/selftests/net/netfilter/ipvs.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 24 +++++++------------
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |  5 ++--
+ 2 files changed, 10 insertions(+), 19 deletions(-)
 
-diff --git a/tools/testing/selftests/net/netfilter/ipvs.sh b/tools/testing/selftests/net/netfilter/ipvs.sh
-index 6af2ea3ad6b8..9c9d5b38ab71 100755
---- a/tools/testing/selftests/net/netfilter/ipvs.sh
-+++ b/tools/testing/selftests/net/netfilter/ipvs.sh
-@@ -151,7 +151,7 @@ test_nat() {
- test_tun() {
- 	ip netns exec "${ns0}" ip route add "${vip_v4}" via "${gip_v4}" dev br0
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index c12a4cb951f6..85fb23b238d1 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -340,13 +340,19 @@ int wx_set_coalesce(struct net_device *netdev,
+ 	switch (wx->mac.type) {
+ 	case wx_mac_sp:
+ 		max_eitr = WX_SP_MAX_EITR;
++		rx_itr_param = WX_20K_ITR;
++		tx_itr_param = WX_12K_ITR;
+ 		break;
+ 	case wx_mac_aml:
+ 	case wx_mac_aml40:
+ 		max_eitr = WX_AML_MAX_EITR;
++		rx_itr_param = WX_20K_ITR;
++		tx_itr_param = WX_12K_ITR;
+ 		break;
+ 	default:
+ 		max_eitr = WX_EM_MAX_EITR;
++		rx_itr_param = WX_7K_ITR;
++		tx_itr_param = WX_7K_ITR;
+ 		break;
+ 	}
  
--	ip netns exec "${ns1}" modprobe -q ipip
-+	modprobe -q ipip
- 	ip netns exec "${ns1}" ip link set tunl0 up
- 	ip netns exec "${ns1}" sysctl -qw net.ipv4.ip_forward=0
- 	ip netns exec "${ns1}" sysctl -qw net.ipv4.conf.all.send_redirects=0
-@@ -160,10 +160,10 @@ test_tun() {
- 	ip netns exec "${ns1}" ipvsadm -a -i -t "${vip_v4}:${port}" -r ${rip_v4}:${port}
- 	ip netns exec "${ns1}" ip addr add ${vip_v4}/32 dev lo:1
+@@ -359,9 +365,7 @@ int wx_set_coalesce(struct net_device *netdev,
+ 	else
+ 		wx->rx_itr_setting = ec->rx_coalesce_usecs;
  
--	ip netns exec "${ns2}" modprobe -q ipip
- 	ip netns exec "${ns2}" ip link set tunl0 up
- 	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.all.arp_ignore=1
- 	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.all.arp_announce=2
-+	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.tunl0.rp_filter=0
- 	ip netns exec "${ns2}" ip addr add "${vip_v4}/32" dev lo:1
+-	if (wx->rx_itr_setting == 1)
+-		rx_itr_param = WX_20K_ITR;
+-	else
++	if (wx->rx_itr_setting != 1)
+ 		rx_itr_param = wx->rx_itr_setting;
  
- 	test_service
+ 	if (ec->tx_coalesce_usecs > 1)
+@@ -369,20 +373,8 @@ int wx_set_coalesce(struct net_device *netdev,
+ 	else
+ 		wx->tx_itr_setting = ec->tx_coalesce_usecs;
+ 
+-	if (wx->tx_itr_setting == 1) {
+-		switch (wx->mac.type) {
+-		case wx_mac_sp:
+-		case wx_mac_aml:
+-		case wx_mac_aml40:
+-			tx_itr_param = WX_12K_ITR;
+-			break;
+-		default:
+-			tx_itr_param = WX_20K_ITR;
+-			break;
+-		}
+-	} else {
++	if (wx->tx_itr_setting != 1)
+ 		tx_itr_param = wx->tx_itr_setting;
+-	}
+ 
+ 	/* mixed Rx/Tx */
+ 	if (wx->q_vector[0]->tx.count && wx->q_vector[0]->rx.count)
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index e0fc897b0a58..3fff73ae44af 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -119,9 +119,8 @@ static int ngbe_sw_init(struct wx *wx)
+ 						   num_online_cpus());
+ 	wx->rss_enabled = true;
+ 
+-	/* enable itr by default in dynamic mode */
+-	wx->rx_itr_setting = 1;
+-	wx->tx_itr_setting = 1;
++	wx->rx_itr_setting = WX_7K_ITR;
++	wx->tx_itr_setting = WX_7K_ITR;
+ 
+ 	/* set default ring sizes */
+ 	wx->tx_ring_count = NGBE_DEFAULT_TXD;
 -- 
-2.50.1
+2.48.1
 
