@@ -1,173 +1,123 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5C219C54B
-	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 02:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4C42E63F;
+	Thu, 24 Jul 2025 02:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753323011; cv=none; b=kqFEEh4NWCigAPsVGAXq/bMYGhVbMlMnAPtaFzp9a3CBzs3bTWmWWsRzxVCtUNnU7RQaoEBpJ0IG97iaMC9WwoBeWao1INltliGDnxLaj5VZWuqa3+D5DknGsdIaYOyDpkpKnxEhERino275m7u+dWxQS45v/+3Uu7AZYtkcyyo=
+	t=1753323969; cv=none; b=cFhu+I7GmSyI6aVcW5VA0eGfG65zK96beVpHYueLxxYIwCiBcwGRnYQOqb3CGe6MzHtcZJhjRq7P1lYYr4I4MLefc+j5mGK+DBst5bcAvHqbTXbXiWuLflJjb2wQ79XEnJrlOdCFsG19ahm4+qcTMCo/cDRoaaBvBymmXEJU7vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753323011; c=relaxed/simple;
-	bh=ffvh4rw69doyRsmJ7u3cRO1OWqVlFCUnRhvVhvHpZTk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iYfW2umYm/4B/G86UfVOmMFCwF2Ei3WnGUFeX4B1k4GLZZmmjTb7y6dGUFXsFZkCRekdqIZKRemAf4hVwW5BNhM6xW10iTZx3FPf7w1XgmFEKkNb0ZE4EOOwbPdrms81aGhItj8LO4ZSpzX/LNLJWGGHfz1KNH4qKyTSvR++9Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=JTcDKuI/; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="JTcDKuI/"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e8bbb02b887so342776276.3
-        for <netdev@vger.kernel.org>; Wed, 23 Jul 2025 19:10:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1753323008; x=1753927808; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ezOsh3Rw02sTHRTVL0D2zAjlIafvsBxPOvx6XqZve/E=;
-        b=JTcDKuI/5CUQCswz04ZlBKuJ9nt1HfEgvhgr0nGsG9qp4BfN+m+hvEEEj2n1KSB5t5
-         Hxia7vyFpvdiDnvE2X9hHOj8zKmSDAdrbDLE8CmWjesvRLDha7n4X9vXlfjpu6i1lIf5
-         s5YmjwyTrKz7KDqG9G6wjRcjlDiB3ySIBdQCj4Hqgp7gwybEXQ+EFIBWRTkS+JUKxC3Z
-         HE3YVrql5NXTPsdBwztgQAj6ZHafhnWx7Y1aZAd8pUBm+jAxolMA9D12Coe2nmSmnqrW
-         a/b1qZmN1v9C/VqBmE7cu88zdzjd2+GScqCoLSusEJMLpxas41Qu/5Vr8kdEsDllqlXI
-         JsBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753323008; x=1753927808;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ezOsh3Rw02sTHRTVL0D2zAjlIafvsBxPOvx6XqZve/E=;
-        b=Z7TJF883tFe8NruBNrADkZ08qCgnq22MVMcd1ufL/Cj1g3vEwIvY0N7ZY8HmKvA1mC
-         ubqVCjXr07Ce+DvbfrIBJtSsJb+QBbsDM6Bs9Zf7ifLbgenaubFHgebJVBhyoQhkI4+m
-         PTEigoAcRTsGYRZ+JZ5/QGM/AQDcrXlognRPcwS2/alvCF/ltaFYWcd8LVF2oSRQ0wky
-         lO9rgobrlouX6z48+yVbtQ+9OfYd5t47R0W1SJSk94svEYpJhqi6GBw19y1/F1sOe5uA
-         +JPpjpPtr4zJBp84pLuBGnaXjC0QtO/C2Qr3LI8XrphwVGE2a2UnbsMO+zIITbE8uxda
-         pI/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWCpY1TOybIKs5nqL1JTP3toxiIpouA4qSGG/jM823AG77uPxZ+GnU68nZBu9o7+poHAQD1UGU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyVpbWCBop+VY4HfZ9X8/JJEr+0nLxQsOwkb8gsXg8Lz1NKmCn
-	nG0DsYvMzal50595p+dDECirEZg9Reu6e5usZr1y0yjpLOOHOW47OTW3S2Z9ZmNV0dDzrW3pYYn
-	rJTKk1aldLMXk+5ko2pFr/VyPpz12YwMqJf6DOSZP
-X-Gm-Gg: ASbGncsb+5DOyeFeGWqvGREel4Vc44foE3XuM+5bNWw2QMn6Z0tNba1t8mvXpueXdt7
-	PEJVNoH/7qliuOpqoALTZ9SijxVsqd3+h7zIAaaD46siLIiMTQy7ucxh94MREwwgloZlWn5UpM+
-	r9E5gZfPz29tYpNRLLGwDJo/AdgsVPiu2Zc6k7hzgIWxDwHATQw5ewXg65A5XxpJn2RLp9rgA2w
-	vJAoC0=
-X-Google-Smtp-Source: AGHT+IEjtM0YH/uIkH5EC6RHdxIYSOEo9s7z9JMeuLNs93fJxU9BkwVAtv1fRHAPFv5MIBRtQfg1omYHVhyQIQh0vnM=
-X-Received: by 2002:a05:6902:1288:b0:e82:17a1:5c15 with SMTP id
- 3f1490d57ef6-e8dc57e75dcmr6464733276.10.1753323006953; Wed, 23 Jul 2025
- 19:10:06 -0700 (PDT)
+	s=arc-20240116; t=1753323969; c=relaxed/simple;
+	bh=p4vGVQbo4qPBddbJJfavou8U0tZPJ07MzYIWo1+iCfQ=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=tUhCUFkVHF4548g/gz4srmQ5F4l/MjChd1KFhAj2O+UUHyIpE5tQKKJZUoF9+OZjViaXmnn3xEjzqC8Yg1sQ1WrlqHbozK+3uyo8Z2hkaEC2meFqu+gS940jWicHaY/D7QwFDlkczOqFvuze5u8i0QiSxoy6i+6+UcaPXn2sldc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [113.200.148.30])
+	by gateway (Coremail) with SMTP id _____8CxG6y7mYFoGdAwAQ--.58115S3;
+	Thu, 24 Jul 2025 10:26:03 +0800 (CST)
+Received: from [10.130.10.66] (unknown [113.200.148.30])
+	by front1 (Coremail) with SMTP id qMiowJDxQ+S4mYFomxIkAA--.55020S3;
+	Thu, 24 Jul 2025 10:26:00 +0800 (CST)
+Subject: Re: [PATCH net-next v2 1/2] net: stmmac: Return early if invalid in
+ loongson_dwmac_fix_reset()
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250723100056.6651-1-yangtiezhu@loongson.cn>
+ <20250723100056.6651-2-yangtiezhu@loongson.cn>
+ <f65deb0d-29d1-4820-95e9-f1dd94967957@lunn.ch>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Message-ID: <b98a5351-f711-ecb1-75fa-68c69263e950@loongson.cn>
+Date: Thu, 24 Jul 2025 10:26:00 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250428195022.24587-2-stephen.smalley.work@gmail.com>
- <CAHC9VhQfrMe7EY3_bvW6PcLdaW7tPMgv6WZuePxd1RrbhyZv-g@mail.gmail.com>
- <CAHC9VhQyDX+NgWipgm5DGMewfVTBe3DkLbe_AANRiuAj40bA1w@mail.gmail.com>
- <6797b694-6c40-4806-9541-05ce6a0b07fc@oracle.com> <CAHC9VhQsK_XpJ-bbt6AXM4fk30huhrPvvMSEuHHTPb=eJZwoUA@mail.gmail.com>
-In-Reply-To: <CAHC9VhQsK_XpJ-bbt6AXM4fk30huhrPvvMSEuHHTPb=eJZwoUA@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Wed, 23 Jul 2025 22:09:56 -0400
-X-Gm-Features: Ac12FXzwcvMXRcY-HOujXriwLTi0J58g3gNTBeLJ4hgKLEq2xrVmA3w4Jght3uY
-Message-ID: <CAHC9VhQnR6TKzzzpE9XQqiFivV0ECbVx7GH+1fQmz917-MAhsw@mail.gmail.com>
-Subject: Re: [PATCH v2] security,fs,nfs,net: update security_inode_listsecurity()
- interface
-To: Anna Schumaker <anna.schumaker@oracle.com>
-Cc: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Casey Schaufler <casey@schaufler-ca.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Simon Horman <horms@kernel.org>, Ondrej Mosnacek <omosnace@redhat.com>, linux-nfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, netdev@vger.kernel.org, 
-	selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <f65deb0d-29d1-4820-95e9-f1dd94967957@lunn.ch>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxQ+S4mYFomxIkAA--.55020S3
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7uF48GFy8Ar4rWr1kuF1rGrX_yoW8trW5pr
+	W3Za4293sFqryxXwn0y3yDXFyru343KrWkWFZ2ywna9an3X34Yqr1jgayjgr12yr4UKF1a
+	vr1Uuw1ruFyDGwbCm3ZEXasCq-sJn29KB7ZKAUJUUUU3529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	AVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j5o7tUUU
+	UU=
 
-On Thu, Jun 19, 2025 at 5:18=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
-ote:
-> On Tue, May 27, 2025 at 5:03=E2=80=AFPM Anna Schumaker
-> <anna.schumaker@oracle.com> wrote:
-> > On 5/20/25 5:31 PM, Paul Moore wrote:
-> > > On Tue, Apr 29, 2025 at 7:34=E2=80=AFPM Paul Moore <paul@paul-moore.c=
-om> wrote:
-> > >> On Mon, Apr 28, 2025 at 4:15=E2=80=AFPM Stephen Smalley
-> > >> <stephen.smalley.work@gmail.com> wrote:
-> > >>>
-> > >>> Update the security_inode_listsecurity() interface to allow
-> > >>> use of the xattr_list_one() helper and update the hook
-> > >>> implementations.
-> > >>>
-> > >>> Link: https://lore.kernel.org/selinux/20250424152822.2719-1-stephen=
-.smalley.work@gmail.com/
-> > >>>
-> > >>> Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> > >>> ---
-> > >>> This patch is relative to the one linked above, which in theory is =
-on
-> > >>> vfs.fixes but doesn't appear to have been pushed when I looked.
-> > >>>
-> > >>>  fs/nfs/nfs4proc.c             | 10 ++++++----
-> > >>>  fs/xattr.c                    | 19 +++++++------------
-> > >>>  include/linux/lsm_hook_defs.h |  4 ++--
-> > >>>  include/linux/security.h      |  5 +++--
-> > >>>  net/socket.c                  | 17 +++++++----------
-> > >>>  security/security.c           | 16 ++++++++--------
-> > >>>  security/selinux/hooks.c      | 10 +++-------
-> > >>>  security/smack/smack_lsm.c    | 13 ++++---------
-> > >>>  8 files changed, 40 insertions(+), 54 deletions(-)
-> > >>
-> > >> Thanks Stephen.  Once we get ACKs from the NFS, netdev, and Smack
-> > >> folks I can pull this into the LSM tree.
-> > >
-> > > Gentle ping for Trond, Anna, Jakub, and Casey ... can I get some ACKs
-> > > on this patch?  It's a little late for the upcoming merge window, but
-> > > I'd like to merge this via the LSM tree after the merge window closes=
-.
-> >
-> > For the NFS change:
-> >     Acked-by: Anna Schumaker <anna.schumaker@oracle.com>
->
-> Hi Anna,
->
-> Thanks for reviewing the patch.  Unfortunately when merging the patch
-> today and fixing up some merge conflicts I bumped into an odd case in
-> the NFS space and I wanted to check with you on how you would like to
-> resolve it.
->
-> Commit 243fea134633 ("NFSv4.2: fix listxattr to return selinux
-> security label")[1] adds a direct call to
-> security_inode_listsecurity() in nfs4_listxattr(), despite the
-> existing nfs4_listxattr_nfs4_label() call which calls into the same
-> LSM hook, although that call is conditional on the server supporting
-> NFS_CAP_SECURITY_LABEL.  Based on a quick search, it appears the only
-> caller for nfs4_listxattr_nfs4_label() is nfs4_listxattr() so I'm
-> wondering if there isn't some room for improvement here.
->
-> I think there are two obvious options, and I'm curious about your
-> thoughts on which of these you would prefer, or if there is another
-> third option that you would like to see merged.
->
-> Option #1:
-> Essentially back out commit 243fea134633, removing the direct LSM call
-> in nfs4_listxattr() and relying on the nfs4_listxattr_nfs4_label() for
-> the LSM/SELinux xattrs.  I think we would want to remove the
-> NFS_CAP_SECURITY_LABEL check and build nfs4_listxattr_nfs4_label()
-> regardless of CONFIG_NFS_V4_SECURITY_LABEL.
->
-> Option #2:
-> Remove nfs4_listxattr_nfs4_label() entirely and keep the direct LSM
-> call in nfs4_listxattr(), with the required changes for this patch.
->
-> Thoughts?
->
-> [1] https://lore.kernel.org/all/20250425180921.86702-1-okorniev@redhat.co=
-m/
+On 2025/7/23 下午10:53, Andrew Lunn wrote:
+> On Wed, Jul 23, 2025 at 06:00:55PM +0800, Tiezhu Yang wrote:
+>> If the MAC controller does not connect to any PHY interface, there is a
+>> missing clock, then the DMA reset fails.
+>>
+>> For this case, the DMA_BUS_MODE_SFT_RESET bit is 1 before software reset,
+>> just return -EINVAL immediately to avoid waiting for the timeout when the
+>> DMA reset fails in loongson_dwmac_fix_reset().
+>>
+>> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+>> ---
+>>   drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+>> index e1591e6217d4..6d10077666c7 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+>> @@ -513,6 +513,9 @@ static int loongson_dwmac_fix_reset(void *priv, void __iomem *ioaddr)
+>>   {
+>>   	u32 value = readl(ioaddr + DMA_BUS_MODE);
+>>   
+>> +	if (value & DMA_BUS_MODE_SFT_RESET)
+>> +		return -EINVAL;
+> 
+> What happens with this return value? Do you get an error message which
+> gives a hint the PHY clock is missing? Would a netdev_err() make sense
+> here?
 
-A gentle ping on the question above for the NFS folks.  If I don't
-hear anything I'll hack up something and send it out for review, but I
-thought it would nice if we could sort out the proper fix first.
+Yes, I will use dev_err() rather than netdev_err() (because there is no
+net_device member here) to do something like this:
 
---=20
-paul-moore.com
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c 
+b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index 6d10077666c7..4a7b2b11ecce 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -513,8 +513,11 @@ static int loongson_dwmac_fix_reset(void *priv, 
+void __iomem *ioaddr)
+  {
+         u32 value = readl(ioaddr + DMA_BUS_MODE);
+
+-       if (value & DMA_BUS_MODE_SFT_RESET)
++       if (value & DMA_BUS_MODE_SFT_RESET) {
++               struct plat_stmmacenet_data *plat = priv;
++               dev_err(&plat->pdev->dev, "the PHY clock is missing\n");
+                 return -EINVAL;
++       }
+
+         value |= DMA_BUS_MODE_SFT_RESET;
+         writel(value, ioaddr + DMA_BUS_MODE);
+
+Thanks,
+Tiezhu
+
