@@ -1,29 +1,29 @@
 Received: from eidolon.nox.tf (eidolon.nox.tf [185.142.180.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EB0279917
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F122BD5BC
 	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 15:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753369283; cv=none; b=b8Q4Y4W3z95jI5WlOiCBAPXrwtitTMTDCxDyFeEP+UmkpG+MMMm3bWDlUtX8nKebx6RCpLb0XiiaSeP0JqRS9C596k1FkVvGbIDevTx0VTsJWGQZI3nNZBygwCACm5ZqpxpfWs99mB6P9JOhotaaeyBpD+McLc68h+99T0i56ws=
+	t=1753369283; cv=none; b=LqQSsiCaY9W22CFV65SyonO4LqaViD7c68vLFIbtFxTKgPyNaND750GsqLg4Dh5Pb0tXqWl/Wk5sptCJz15HDgaO1CK6ai5er39pALaTBeOKhRE0aj7Mg+BEjdP6aIElLMMHJR8EQzRC3F8Oq3unHJ5mfGEEbapSwIPOqJ0rAow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753369283; c=relaxed/simple;
-	bh=pLBf7jzHxJR8GOxUpioz1bhZZpcq4lliscl6sOeSPh4=;
+	bh=XNZJarOy0cuMIh5weizto+eAttpR2o6rhey3JT0PyPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KsbCSD6glK9vE/kRR1PcomTdauMkxp3wbQPzqKXTe5DWyfkBnzwxnx6EClVPe8YCSFHjdY0r8HetGrDar6Hb22sG9jSv0Am5fpYoiQMjASuXbl597rgiCIj0A6ZVUTcliG6xgbXyRGN1zOmdtwq0kcY++g9NilEAD8s4p4risy4=
+	 MIME-Version; b=QzrdkCsIzd1TTLPfn2NqaEiDXZEKsb9qrD/Ry59nEJDmsVQzcaohcnB7I7iEeC6UtQ/7NloAeJuCcp8yn+2F8lL/JJkH9V0M4fkXUu4zpBzY7phedQfJgIaPVgX2lgDZHXCWEKMZ+9Vsgrnl7e02SniHEJbDhQwI8kLLkg14B0Q=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net; spf=pass smtp.mailfrom=diac24.net; arc=none smtp.client-ip=185.142.180.128
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=diac24.net
-Received: from nat64-76.meeting.ietf.org ([31.130.238.118] helo=alea.q.nox.tf)
+Received: from [2001:67c:370:1998:30cb:b625:4f9:61b4] (helo=alea.q.nox.tf)
 	by eidolon.nox.tf with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <equinox@diac24.net>)
-	id 1uexRf-000000030om-3aaM;
-	Thu, 24 Jul 2025 17:01:20 +0200
+	id 1uexRc-000000030oh-1mFJ;
+	Thu, 24 Jul 2025 17:01:19 +0200
 Received: from equinox by alea.q.nox.tf with local (Exim 4.98.2)
 	(envelope-from <equinox@diac24.net>)
-	id 1uexRH-000000001fU-44SP;
-	Thu, 24 Jul 2025 17:00:55 +0200
+	id 1uexRE-000000001fI-0QiA;
+	Thu, 24 Jul 2025 17:00:52 +0200
 From: David Lamparter <equinox@diac24.net>
 To: netdev@vger.kernel.org,
 	David Ahern <dsahern@kernel.org>,
@@ -31,9 +31,9 @@ To: netdev@vger.kernel.org,
 Cc: David Lamparter <equinox@diac24.net>,
 	Lorenzo Colitti <lorenzo@google.com>,
 	Patrick Rohr <prohr@google.com>
-Subject: [PATCH net-next v2 4/4] net/ipv6: drop ip6_route_get_saddr
-Date: Thu, 24 Jul 2025 17:00:41 +0200
-Message-ID: <20250724150042.6361-5-equinox@diac24.net>
+Subject: [PATCH net-next v2 1/4] net/ipv6: flatten ip6_route_get_saddr
+Date: Thu, 24 Jul 2025 17:00:38 +0200
+Message-ID: <20250724150042.6361-2-equinox@diac24.net>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250724150042.6361-1-equinox@diac24.net>
 References: <20250724150042.6361-1-equinox@diac24.net>
@@ -45,50 +45,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-It's no longer used anywhere.
+Inline ip6_route_get_saddr()'s functionality in rt6_fill_node(), to
+prepare for replacing the former with a dst based function.
+
+NB: the l3mdev handling introduced by 252442f2ae31 "ipv6: fix source
+address selection with route leak" is dropped here - the l3mdev ifindex
+was a constant 0 on this call site, so that code was in fact dead.
 
 Signed-off-by: David Lamparter <equinox@diac24.net>
 ---
- include/net/ip6_route.h | 26 --------------------------
- 1 file changed, 26 deletions(-)
+ net/ipv6/route.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
-index 9255f21818ee..6c52cabedbf6 100644
---- a/include/net/ip6_route.h
-+++ b/include/net/ip6_route.h
-@@ -125,32 +125,6 @@ void rt6_flush_exceptions(struct fib6_info *f6i);
- void rt6_age_exceptions(struct fib6_info *f6i, struct fib6_gc_args *gc_args,
- 			unsigned long now);
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 3fbe0885c21c..a2362913ebed 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5821,9 +5821,19 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
+ 			if (nla_put_u32(skb, RTA_IIF, iif))
+ 				goto nla_put_failure;
+ 	} else if (dest) {
+-		struct in6_addr saddr_buf;
+-		if (ip6_route_get_saddr(net, rt, dest, 0, 0, &saddr_buf) == 0 &&
+-		    nla_put_in6_addr(skb, RTA_PREFSRC, &saddr_buf))
++		struct in6_addr saddr_buf, *saddr = NULL;
++
++		if (rt->fib6_prefsrc.plen) {
++			saddr = &rt->fib6_prefsrc.addr;
++		} else {
++			struct net_device *dev = fib6_info_nh_dev(rt);
++
++			if (ipv6_dev_get_saddr(net, dev, dest, 0,
++					       &saddr_buf) == 0)
++				saddr = &saddr_buf;
++		}
++
++		if (saddr && nla_put_in6_addr(skb, RTA_PREFSRC, saddr))
+ 			goto nla_put_failure;
+ 	}
  
--static inline int ip6_route_get_saddr(struct net *net, struct fib6_info *f6i,
--				      const struct in6_addr *daddr,
--				      unsigned int prefs, int l3mdev_index,
--				      struct in6_addr *saddr)
--{
--	struct net_device *l3mdev;
--	struct net_device *dev;
--	bool same_vrf;
--	int err = 0;
--
--	rcu_read_lock();
--
--	l3mdev = dev_get_by_index_rcu(net, l3mdev_index);
--	if (!f6i || !f6i->fib6_prefsrc.plen || l3mdev)
--		dev = f6i ? fib6_info_nh_dev(f6i) : NULL;
--	same_vrf = !l3mdev || l3mdev_master_dev_rcu(dev) == l3mdev;
--	if (f6i && f6i->fib6_prefsrc.plen && same_vrf)
--		*saddr = f6i->fib6_prefsrc.addr;
--	else
--		err = ipv6_dev_get_saddr(net, same_vrf ? dev : l3mdev, daddr, prefs, saddr);
--
--	rcu_read_unlock();
--
--	return err;
--}
--
- struct rt6_info *rt6_lookup(struct net *net, const struct in6_addr *daddr,
- 			    const struct in6_addr *saddr, int oif,
- 			    const struct sk_buff *skb, int flags);
 -- 
 2.47.2
 
