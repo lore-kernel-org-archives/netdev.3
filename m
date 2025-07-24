@@ -1,151 +1,157 @@
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C54C2D12EE;
-	Thu, 24 Jul 2025 12:33:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315FD2E36F2
+	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 12:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753360442; cv=none; b=TJ/Fj+P+HS+ivyaf+7dIy7VEhf5KLOvqmhZitZRLIs0OOZdpi73QG6/S6yAsQ+k69c+H0Xe4DvQj8HU9AoEgFdEObxqsdYAbFmh25cekRiL6vRCrHjCSWH/L888a/ep3HFMx9aWK9adhoS+AfJ+6nIlCgeDWUEZVOisOnrwie8U=
+	t=1753361270; cv=none; b=j+aM0xrTl0cFNlwLwchC9sjZA7A5iDi5FABPIMKMg+gcqD6QPCci+7UwRNW52uowC06AnNqFHDVblNuT2qjyyPZpcH0j967HmYjQ0wcOvP3EX/6yYfnHJ3dC26tr6v4GBZ0gxtiM83w82rzsgCl75GTA2npe5IZxTwaCq5EDgDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753360442; c=relaxed/simple;
-	bh=tQuDVkAEuMKTMvmQ05pcXKXtdKrmxV6LqTedtmsA1wY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=D0Ix0/DlzkCguAlCNqHbRVXreMF077Pr3YoCsWBdcXVzH5M+++Yp43yJOQ+UdO4+18sMo0m9Ow/0k8wFPJ2g6zGWoUrT2qYSPpkI8vEwj67CXwbhe8N9WM0sVS4LiEp7uuRQLZwhnS94SNV1Vtoh9QPiViEeDJG4F6TByCTu91o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Ud4Axkwu; arc=none smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	s=arc-20240116; t=1753361270; c=relaxed/simple;
+	bh=j705TJQJk3x7OHyAVKzeGEgdS46JMPnBxolChxBMvjM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rZCVSoMWd8HNg7iUQx+mOcaGVcoShNM0inAdp6jqCK8XPqnNRd7OsuoheYwlC/bkvS6CODwXcGQCP9RCPgxeXAGkSrS8ZqYQ7hEzuKu+GpVTPynZTT4ad29byxIRzUr+1bHfqcHK5tqS5EyGYftQQ4blan4ZK5SeapLBccKsQMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nh1WWtEz; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Ud4Axkwu"
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56OCPeVY008693;
-	Thu, 24 Jul 2025 14:33:43 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nh1WWtEz"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56O9BI1E005800
+	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 12:47:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	nyU692W3Jvmdf95k36VC5FdgflhzS2ZTohkfeWvfhbM=; b=Ud4Axkwu+0YWcOgi
-	Eh4nl/nesUnrIypOY5G9wZN8EP9LDhwLIIY9TnWKKLLQ/vcEVkws7lhJWQIUyLwa
-	7GKfylwrcls+sXWa8C4jr9h7Zpcs+OGvs+CSofJ2rCOqYCk572r8GE7789/s0frV
-	IcexsHP5kJqUrTH2qTOUTZEktTjThPSMaiUcK4sJidWI9P0STy9awL3WBZ5m8tdU
-	JQgjUfNTJG4crTX2aRcJXTDiDl/2EHCR5QqsSv7h4n858rLnC1epmlNsxxR4bqBk
-	LfodQKN5mnf8KCHj5fzjzN0/Ae4OOy48b0KkfLjzQfToTZEIyVrKAkC0t/VU9EUK
-	PrBpwg==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 4800sma0q2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Jul 2025 14:33:43 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 6E44B40045;
-	Thu, 24 Jul 2025 14:32:25 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id AA13E6CAE48;
-	Thu, 24 Jul 2025 14:31:39 +0200 (CEST)
-Received: from localhost (10.48.87.141) by SHFDAG1NODE1.st.com (10.75.129.69)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 24 Jul
- 2025 14:31:39 +0200
-From: Gatien Chevallier <gatien.chevallier@foss.st.com>
-Date: Thu, 24 Jul 2025 14:31:18 +0200
-Subject: [PATCH net-next 1/2] drivers: net: stmmac: add
- STMMAC_RELATIVE_FLEX_PPS
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	0FM2xPuyNBnGL8vNJqSnDEcqFKlOQpC0+BnPbT25j0M=; b=nh1WWtEzJEJ0nnvL
+	24zfprhbqKdrDt1dh3kTwGPd8nZ53puQpkEUefg9sPjJf0NByZeYo1XmDDBGW1LB
+	ltExW/fI2wfpHJbwQgpyFzTnGvNnM17peT9qtGshqZVlQWwM6ZMUeqIhfAGNUYxO
+	JfYBDZwDHEdCziHV15Wi0SMH0eRdYfw5mtTxBncc+vGCfEBh/4gWs6LWO/g/B+1p
+	VMDoWiTAsw1NyAAi7Dbs92JC/N1lKpQ1VbSZ1G2/sLFWkuoAJGWfNWPybtsnGItl
+	YDNGurBRuQm170vTnnQwWlBaiukNZ1y0L/mQCacJH5ZF5XD08nxHZutQrHziMofR
+	IKwkkQ==
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48047qgrd3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 12:47:47 +0000 (GMT)
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6fabbaa1937so2656256d6.0
+        for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 05:47:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753361267; x=1753966067;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0FM2xPuyNBnGL8vNJqSnDEcqFKlOQpC0+BnPbT25j0M=;
+        b=CNyMZTHDGrh3y+BwJbkFBdjwI7x2sSjRM21+mUrcx7o+H8QTN5Ucztk9fx06YFYwzH
+         spdJda+DnwnjW8Bun6NmLHJJaKoMvMdIYABf+vmAo9pqHwkGw03YRqIRQnQhrSxd1pZp
+         yLTDcgFEUBAY5IX4ldYpjBaYeH3LPqsBCKHHkoev/5wv+Pifnqq8wT4GFFUdsw6+8Zux
+         veqRU5nEDTQIRcW/uHYxfoUYjgdvSV9xuP0jr875hOxa2G/D67fm2hqpoW9TLLw5yOXf
+         OYphLbogdpU+Bc1LwGE8qJxJIkXYgTFl8bV0aZWSA7HoAKQVqHOJMlYKQEYaY9nL+hPb
+         ExHA==
+X-Forwarded-Encrypted: i=1; AJvYcCVPLIoDbY7FK4aS7LyNuji3t366NdrFoLGTHneXuM2S/Z8kj7vUg5jzrwfXZKBWUYURoXyYEgA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5Loh27tLe2puYBat4VlFNwgQGxejML542GMUSnYhySr+IF90Y
+	C8HRjv7jyn43YglD7zxbLyD3a8r9/Q88cpIoAoMWMgtNiSJrvboEcD36IoAmAJncD7nqDDqTQfO
+	MITwsGDradF9iLinIEqUZalesePIJ9ViYibBH8sfsuBO3pQcGELg+KrdfJfQ=
+X-Gm-Gg: ASbGncuJ5RimkX0Eh9ITnmizI5G82hboyE/49jSKfXMZeVGibNguPpePxVCvXwyMvgt
+	ngmYbzrN4diThx8FkknSL7ZlT7ygjTKftltilEkZ4ngY36wajLcvhlfL374vBeD4tXjjEjOzoXu
+	G0lmmyl79ikIC+M38J7RHYAwlgZDrEXcVjW7ItLSTP0TfsQCUSBq5mZciahqfz27/L5f8Fiurpr
+	PUxT8vk6plTZP1gUfP0/3E3bgE4KbM9eayOnxtvj5D90Ev7JED0Dw92VgkXBjzV+hbbBGvm9mbU
+	N/oTQ8ugprm6fxgDeXNXqmrSiHO+qhAULsABWmWESg33j6pNL8buvBKVwzvE9+qZK7++LsVA+Xu
+	Mt1fP7+jFiNIdo7HEgQ==
+X-Received: by 2002:a05:620a:2606:b0:7e3:4410:84a3 with SMTP id af79cd13be357-7e62a03804fmr308919785a.0.1753361267144;
+        Thu, 24 Jul 2025 05:47:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHyI2zhNTupwdsIDnxsXopNUvVOzCpZF9qWtxp5NPNExIrW5W6unnaR6wpmZfExbg7wpVtu9Q==
+X-Received: by 2002:a05:620a:2606:b0:7e3:4410:84a3 with SMTP id af79cd13be357-7e62a03804fmr308917685a.0.1753361266512;
+        Thu, 24 Jul 2025 05:47:46 -0700 (PDT)
+Received: from [192.168.43.16] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af47cd65089sm109986566b.56.2025.07.24.05.47.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Jul 2025 05:47:45 -0700 (PDT)
+Message-ID: <159eb27b-fca8-4f7e-b604-ba19d6f9ada7@oss.qualcomm.com>
+Date: Thu, 24 Jul 2025 14:47:42 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/7] arm64: dts: qcom: Rename sa8775p SoC to "lemans"
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+        Wasim Nazir <wasim.nazir@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Richard Cochran <richardcochran@gmail.com>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        kernel@oss.qualcomm.com
+References: <20250722144926.995064-1-wasim.nazir@oss.qualcomm.com>
+ <20250722144926.995064-2-wasim.nazir@oss.qualcomm.com>
+ <20250723-swinging-chirpy-hornet-eed2f2@kuoka>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250723-swinging-chirpy-hornet-eed2f2@kuoka>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-ID: <20250724-relative_flex_pps-v1-1-37ca65773369@foss.st.com>
-References: <20250724-relative_flex_pps-v1-0-37ca65773369@foss.st.com>
-In-Reply-To: <20250724-relative_flex_pps-v1-0-37ca65773369@foss.st.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Richard Cochran <richardcochran@gmail.com>
-CC: <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        Gatien Chevallier <gatien.chevallier@foss.st.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2314;
- i=gatien.chevallier@foss.st.com; h=from:subject:message-id;
- bh=tQuDVkAEuMKTMvmQ05pcXKXtdKrmxV6LqTedtmsA1wY=;
- b=owEB7QES/pANAwAKAar3Rq6G8cMoAcsmYgBogiepOJj+6zBgJKGR1QWpMHgCj/2KXISS9wYho
- SJvBiIKq8KJAbMEAAEKAB0WIQRuDsu+jpEBc9gaoV2q90auhvHDKAUCaIInqQAKCRCq90auhvHD
- KLaiC/9On+Ebw9p4ibBEYz07w/Jk1lDM7Mn//IQk4k38nWOC9u7CY1Hqa1omnHb3zbYTvmoA0ji
- ddEr4Nobe0F96RX0dMpibENzbvLZaGeTwkCbi220H64/5tgtKPXPrKBR0p4ls1mrUCde/TGNLJ5
- HXtxRZ8CFvMKY2TfCPHHOWGYpCJziiwrxJ/UkFouI6Ml9xI/Ymn7y27V1CPTDa39keLTUnN8SZZ
- 2np9QIYV0xRdry439Ag4h1MZwmFx85ySclx+7zLdezw/Lr4FA+KMBfL3YB96EzNq7X4XZGmaOIi
- OtJBZJhsvLTGNt/zZEY9UHOuf+YcDQOzOwrKtoPwT9yLgRB8NEOxZ3unNDIpLEvc6RvA9xgZu1m
- TVmFisUQlK6A6rcnPX0M/z5Ua6nfymh9TJKWWxwoWKtS2aJFfZXp78yW99tmo/jq3MmviBmK0ZU
- Ep5/4h3JtjcqFt+WIN4iu0SBmx0icv2rNlDeHx2pAzhHUtYxAMLrED2YZt8Jj8ncZ876I=
-X-Developer-Key: i=gatien.chevallier@foss.st.com; a=openpgp;
- fpr=6E0ECBBE8E910173D81AA15DAAF746AE86F1C328
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
- (10.75.129.69)
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDA5NyBTYWx0ZWRfXyfvdlWqvrllf
+ 0xmPAGXtc7yQoxPeyAj3FqF6SGkTxvxcyhD4SrGbbzhPvm930dlF9wtD11+PfQaDYFhra/+1nRP
+ xNFeIRgKHGSsuJCLT9+bpYJxE38Wjd2JXzA2q/nUh3qU0mEdqpbKlsBn5B0JiP7ryAUq7BE/taJ
+ D4QWyLt6pkEAgU321MUdSUlO92mmnVrXiH9QleQPOIU9Xmyq3ouD9jL8c5qjzyUddWxf2E6RegZ
+ bgUZEUhbm99Pt2y8ND1kfoqpy5TD2sUBTI00bE4LBGWv6ZJvdkJBUxgi05iPmfZIpe0zGSmZHii
+ OK3S9VGu/AnputKA8/ufFtsBZZebbOi3bc3iHNN++1ODpcWjNCVBmjgziqgcQafDgG94n5iVrns
+ J39CwSIQk0CdxTRaORC/Apa23tkGo1iKn89ztUU6Nh12JsR6ZVRmfbgmo3tlFYMgIRkEaxWC
+X-Proofpoint-ORIG-GUID: RLHMPLLAZhfx2Fu6CvHMkSGtHEJhnY55
+X-Proofpoint-GUID: RLHMPLLAZhfx2Fu6CvHMkSGtHEJhnY55
+X-Authority-Analysis: v=2.4 cv=IrMecK/g c=1 sm=1 tr=0 ts=68822b73 cx=c_pps
+ a=wEM5vcRIz55oU/E2lInRtA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=yoiuoX9zeVfpJc3uYVUA:9
+ a=QEXdDO2ut3YA:10 a=OIgjcC2v60KrkQgK7BGD:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-07-24_02,2025-07-24_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 clxscore=1015
+ priorityscore=1501 spamscore=0 mlxscore=0 mlxlogscore=870 phishscore=0
+ impostorscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507240097
 
-Add the STMMAC_RELATIVE_FLEX_PPS config switch so that the MAC system
-time is added to the requested start time when configuring the flexible
-PPS signal start time.
+On 7/23/25 10:29 AM, 'Krzysztof Kozlowski' via kernel wrote:
+> On Tue, Jul 22, 2025 at 08:19:20PM +0530, Wasim Nazir wrote:
+>> SA8775P, QCS9100 and QCS9075 are all variants of the same die,
+>> collectively referred to as lemans. Most notably, the last of them
+>> has the SAIL (Safety Island) fused off, but remains identical
+>> otherwise.
+>>
+>> In an effort to streamline the codebase, rename the SoC DTSI, moving
+>> away from less meaningful numerical model identifiers.
+>>
+>> Signed-off-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
+>> ---
+>>  arch/arm64/boot/dts/qcom/{sa8775p.dtsi => lemans.dtsi} | 0
+>>  arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi             | 2 +-
+> 
+> No, stop with this rename.
+> 
+> There is no policy of renaming existing files.
 
-This eases the configuration of the generation of flexible PPS signals.
+There's no policy against renaming existing files either.
 
-Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
----
- drivers/net/ethernet/stmicro/stmmac/Kconfig      |  9 +++++++++
- drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c | 13 +++++++++++++
- 2 files changed, 22 insertions(+)
+> It's ridicilous. Just
+> because you introduced a new naming model for NEW SOC, does not mean you
+> now going to rename all boards which you already upstreamed.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-index 67fa879b1e521ef6d7bd2a8db30d812301eb4cf7..949c744d30f19f5ff480dca4811e678d2b93c450 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-+++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-@@ -357,3 +357,12 @@ config STMMAC_PCI
- 
- 	  If unsure, say N.
- endif
-+
-+config STMMAC_RELATIVE_FLEX_PPS
-+	bool "Support for STMMAC system time relative flexible PPS generation"
-+	default n
-+	help
-+	  Say Y to add the MAC system time to the arguments passed to the
-+	  PTP driver when requesting a flexible PPS generation. This avoids
-+	  the tedious task of passing an absolute time value when using sysfs
-+	  entry.
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-index 3767ba495e78d210b0529ee1754e5331f2dd0a47..cc898eab4df6a3e2530a8b03dfdaa9016d1bb0b9 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-@@ -180,6 +180,19 @@ static int stmmac_enable(struct ptp_clock_info *ptp,
- 
- 		cfg->start.tv_sec = rq->perout.start.sec;
- 		cfg->start.tv_nsec = rq->perout.start.nsec;
-+		if (IS_ENABLED(CONFIG_STMMAC_RELATIVE_FLEX_PPS)) {
-+			struct timespec64 curr_time;
-+			u64 ns = 0;
-+
-+			/* Be aware that an offset too low may not trigger flexible PPS generation
-+			 * if time spent in this configuration makes this relative time already
-+			 * outdated.
-+			 */
-+			stmmac_get_systime(priv, priv->ptpaddr, &ns);
-+			curr_time = ns_to_timespec64(ns);
-+			cfg->start.tv_sec += curr_time.tv_sec;
-+			cfg->start.tv_nsec += curr_time.tv_nsec;
-+		}
- 		cfg->period.tv_sec = rq->perout.period.sec;
- 		cfg->period.tv_nsec = rq->perout.period.nsec;
- 
+This is a genuine improvement, trying to untangle the mess that you
+expressed vast discontent about..
 
--- 
-2.25.1
+There will be new boards based on this family of SoCs submitted either
+way, so I really think it makes sense to solve it once and for all,
+instead of bikeshedding over it again and again each time you get a new
+dt-bindings change in your inbox.
 
+I understand you're unhappy about patch 6, but the others are
+basically code janitoring.
+
+Konrad
