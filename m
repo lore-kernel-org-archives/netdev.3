@@ -1,170 +1,112 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6B525F99F;
-	Thu, 24 Jul 2025 10:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873EE25E828;
+	Thu, 24 Jul 2025 10:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753351898; cv=none; b=ed6IxOp+mREmOXeGmHgEtbM6BnhOlyscxA64A6G9s1e3D7N9mCxbZP2xIlV2BFV1w3rZX6AxNgQDc1DRkN/KJ37C563vp44AOQn3eSQq/EzqkWGCAbuOKIw9nlSjV4fr1G/QsFX/o8K18XCT/yi8bxlAVYycGppRlrARZTEcH0c=
+	t=1753351980; cv=none; b=ENnbvfourRX/QZr9HsQK2a7cwWHfUm8x9I67OOfkwoLLdGG+pAPirXpBdFLEMhZrLXhKpuzHpCh/jJ2HDDFW6DuJQdH5aVpCwYzZQ0JP5VaLj6rAmaaO06TaM4sbCafmyMfTPirawP5SDXcJjVWGgcKaC2G/lzqf9zoN2xKGpHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753351898; c=relaxed/simple;
-	bh=DAQfeQC0jG4xrZVWdpFfPkLxQjD6DzR41cG4qSNbeDw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WJwwHKYN/GG3m9tMKi8HPmI10Lgwe5eRuc6c8THJWw/f2GFwQkHXY9axDw3KUYjoBG+VEWGJLzaZ/M7CFMFbBUO5eh52kFKowGFLn+jcFjGdIeFV+pmZLJBpKY9pg+2FveQIEuzEzML4jonOawBZ0AoThsr3GsXVZ84lsnlr0ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=ijxS9fxT; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1753351980; c=relaxed/simple;
+	bh=MKTJsXoh0ovoIVsPRZJbybf8oVQe3fF6tNG1svHyD9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=e7qPJ65kx14r6AMQoX9FF5LTk+hTpS25/JNOuNOEVUjay85CcjUR8eQmq3sRo8403iK1ZVC6cEw8pwFrXRcJUdrAICZyIWlIyaNb8fkVZuUnRZ6HL0/n3kNeyQaTlu5ZDsl1ye4vfnKU8Qwht2SCRXoAK60+LQk2cKERe8aKLyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+KOmwgg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="ijxS9fxT"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56NNT20X002947;
-	Thu, 24 Jul 2025 03:11:08 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=ip1EblJiKkhZYWLhItDti03
-	7UWJiiJPdv9IzNmLe6cs=; b=ijxS9fxT+WaTxsR1dA7KlbGa/43NO4ujrB3QyY5
-	3hB1NN2fB3Z3lK71r2wJdV6zqbGsiyafIKo8zESz87Omfcb7MM/76yEYdeP/HOxj
-	uwWiR2tcdn/Vwls77F+wN1Fp8cQZBqAM6KY8tNMjB7GgwccZp6VpXUxoFvAJ5wqY
-	lC1kILO5vXUjLy2nlmFlE5e83Jx4J82cczEEoiA+oo4eHxHGBgoTTNc+1gjn+eMJ
-	4Dd+Z9g7PbdHlE5e3eQ+Ew6Em1Vewsj8TDjbSygM8miCHqYRVWAimhrtV+HwIIB/
-	OTNYSWytjFa0mw894pOckM7bg9N2ZXd6Q62v+cv53R+tpAA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4839euh1wm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Jul 2025 03:11:08 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Thu, 24 Jul 2025 03:11:08 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Thu, 24 Jul 2025 03:11:08 -0700
-Received: from test-OptiPlex-Tower-Plus-7010.marvell.com (unknown [10.29.37.157])
-	by maili.marvell.com (Postfix) with ESMTP id 9FDB83F704E;
-	Thu, 24 Jul 2025 03:11:03 -0700 (PDT)
-From: Hariprasad Kelam <hkelam@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Hariprasad Kelam <hkelam@marvell.com>,
-        Sunil Goutham
-	<sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        "Subbaraya
- Sundeep" <sbhatta@marvell.com>,
-        Bharat Bhushan <bbhushan2@marvell.com>,
-        "Andrew Lunn" <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: [net-next PatchV3] Octeontx2-pf: ethtool: Display "Autoneg" and "Port" fields
-Date: Thu, 24 Jul 2025 15:40:57 +0530
-Message-ID: <20250724101057.2419425-1-hkelam@marvell.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+KOmwgg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C04C4CEF4;
+	Thu, 24 Jul 2025 10:12:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753351979;
+	bh=MKTJsXoh0ovoIVsPRZJbybf8oVQe3fF6tNG1svHyD9Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=F+KOmwgg+z7e6KttvqwjToMUUNQKbMcch6Kaqh7mZiJe+e9MtjQqK0QFMCc/r6Sja
+	 p+D1xm97+/1DEirZQdiS8y+/KFaz8D6qlqH/lfgk8mS6gp58TEMqhj6XVq6SYaXY5J
+	 zQuYjzsOKaKulq2ezVsbW2oiw0HNwtpngA5XWMEv7MyE5aSpR/zbmzYjpcXTHEcitb
+	 TfjwB0SaDiSzB8/wFtEMf3vnCWpMBWKbirWtqS8e6MvX9yNTXf0K3in3uJsMhAoGaZ
+	 Tmo1DaoDs2g06Y13IpqoEM1crzlFMx2a8w1h76uWBwcDwvJC1BSwoH7wUiLJemnoiU
+	 GobqWa0flpRbQ==
+Date: Thu, 24 Jul 2025 11:12:47 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Sanjay Suthar <sanjaysuthar661996@gmail.com>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ ribalda@kernel.org, dlechner@baylibre.com, nuno.sa@analog.com,
+ andy@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, neil.armstrong@linaro.org,
+ khilman@baylibre.com, jbrunet@baylibre.com,
+ martin.blumenstingl@googlemail.com
+Subject: Re: [PATCH v3] dt-bindings: cleanup: fix duplicated 'is is' in YAML
+ docs
+Message-ID: <20250724111247.669d6955@jic23-huawei>
+In-Reply-To: <20250722170513.5854-1-sanjaysuthar661996@gmail.com>
+References: <20250722170513.5854-1-sanjaysuthar661996@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: VRx4VX0zEwzvcvOS4CebCj8taCJOZNgc
-X-Authority-Analysis: v=2.4 cv=SK5CVPvH c=1 sm=1 tr=0 ts=688206bc cx=c_pps a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17 a=Wb1JkmetP80A:10 a=M5GUcnROAAAA:8 a=5rgwPVzteBU-ZFRzDRMA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: VRx4VX0zEwzvcvOS4CebCj8taCJOZNgc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI0MDA3NiBTYWx0ZWRfX6Orc3fYY70mx OEVFX7ozJf2o8CASrRAJjPApPiUW1Y04Jc1eWq5k+j46C1gCOyOobh3CgA4UQMAoekIsmEQFBAT EDGlR3T/CweW9TdKrswf16m9+p8PXmjp4/pgQeER3NQ7iOrXDeScy4h3ztEZhr213lhztxrKDdB
- Dm8FQlRNxM8sbSoFdQpDUfXkQPYhhkkpmBy67WOQjDWF6BFRHHVrarI9MaRanDkf1YISBkCZ5pw i5JNEPr46X1nOLpxqoJ7bFd5+AQ8thVVyJm18knmFuX1H9rSAEBLsIEwchAptvgUVgBcAP52uw+ Glr+M1pEOKWaDp4mWvF3NfpvKGjvS7pqYLOF0kLA/h10ygLUrY6Ua0g70gAwIvid2I0SfuBlqW+
- 67vt02f8Eo7lbMmuY55vcqEBOHWiZXXquJ3u6GYMXRvz0hZ1zCzBYYjft2RQ+lQy87yWLUuZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-24_01,2025-07-24_01,2025-03-28_01
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The Octeontx2/CN10k netdev drivers access a shared firmware structure
-to obtain link configuration details, such as supported and advertised
-link modes. This patch adds support to display the same.
+On Tue, 22 Jul 2025 22:35:13 +0530
+Sanjay Suthar <sanjaysuthar661996@gmail.com> wrote:
 
-ethtool eth1
-Settings for eth1:
-    Supported ports: [ ]
-    Supported link modes:  10000baseCR/Full
-	                   10000baseSR/Full
-                           10000baseLR/Full
-    Supported pause frame use: No
-    Supports auto-negotiation: Yes
-    Supported FEC modes: None
-    Advertised link modes: Not reported
-    Advertised pause frame use: No
-    Advertised auto-negotiation: Yes
-    Advertised FEC modes: None
-    Speed: 10000Mb/s
-    Duplex: Full
-    Port: Twisted Pair
-    PHYAD: 0
-    Transceiver: internal
-    Auto-negotiation: on
-    MDI-X: Unknown
-    Current message level: 0x00000000 (0)
-    Link detected: yes
+> Fix minor grammatical issues by removing duplicated "is" in two devicetree
+> binding documents:
+> 
+> - net/amlogic,meson-dwmac.yaml
+> - iio/dac/ti,dac7612.yaml
+> 
+> Signed-off-by: Sanjay Suthar <sanjaysuthar661996@gmail.com>
 
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
----
-V3 * Fix port types in firmware 
+I'd have no problem with the argument that this can go through either
+tree if there was any interaction between the files or the changes, but
+here there isn't. This is just causing potential mess if either tree ends
+up with other changes overlapping this for no benefit.  Please split into
+two patches, one for each subsystem.  You should be fine to keep the
+various tags given here for the new patches.
 
-V2 * Add validation for 'port' parameter
-    include full output of ethtool ethx
+Jonathan
 
- .../marvell/octeontx2/nic/otx2_ethtool.c      | 24 +++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-index 998c734ff839..95a7aa2b6b69 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -1184,11 +1184,13 @@ static void otx2_get_link_mode_info(u64 link_mode_bmap,
- 	}
- 
- 	if (req_mode == OTX2_MODE_ADVERTISED)
--		linkmode_copy(link_ksettings->link_modes.advertising,
--			      otx2_link_modes);
-+		linkmode_or(link_ksettings->link_modes.advertising,
-+			    link_ksettings->link_modes.advertising,
-+			    otx2_link_modes);
- 	else
--		linkmode_copy(link_ksettings->link_modes.supported,
--			      otx2_link_modes);
-+		linkmode_or(link_ksettings->link_modes.supported,
-+			    link_ksettings->link_modes.supported,
-+			    otx2_link_modes);
- }
- 
- static int otx2_get_link_ksettings(struct net_device *netdev,
-@@ -1209,6 +1211,10 @@ static int otx2_get_link_ksettings(struct net_device *netdev,
- 		ethtool_link_ksettings_add_link_mode(cmd,
- 						     supported,
- 						     Autoneg);
-+	if (rsp->fwdata.advertised_an)
-+		ethtool_link_ksettings_add_link_mode(cmd,
-+						     advertising,
-+						     Autoneg);
- 
- 	otx2_get_link_mode_info(rsp->fwdata.advertised_link_modes,
- 				OTX2_MODE_ADVERTISED, cmd);
-@@ -1218,6 +1224,16 @@ static int otx2_get_link_ksettings(struct net_device *netdev,
- 				OTX2_MODE_SUPPORTED, cmd);
- 	otx2_get_fec_info(rsp->fwdata.supported_fec,
- 			  OTX2_MODE_SUPPORTED, cmd);
-+
-+	switch (rsp->fwdata.port) {
-+	case PORT_TP:
-+	case PORT_FIBRE:
-+		cmd->base.port = rsp->fwdata.port;
-+		break;
-+	default:
-+		cmd->base.port = PORT_NONE;
-+	}
-+
- 	return 0;
- }
- 
--- 
-2.34.1
+> ---
+> Changes since V2:
+> - Corrected the subject line
+> - link to v2 : https://lore.kernel.org/linux-iio/20250720182627.39384-1-sanjaysuthar661996@gmail.com/T/#u
+> 
+>  Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml      | 2 +-
+>  Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
+> index 20dd1370660d..624c640be4c8 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
+> +++ b/Documentation/devicetree/bindings/iio/dac/ti,dac7612.yaml
+> @@ -9,7 +9,7 @@ title: Texas Instruments DAC7612 family of DACs
+>  description:
+>    The DAC7612 is a dual, 12-bit digital-to-analog converter (DAC) with
+>    guaranteed 12-bit monotonicity performance over the industrial temperature
+> -  range. Is is programmable through an SPI interface.
+> +  range. It is programmable through an SPI interface.
+>  
+>  maintainers:
+>    - Ricardo Ribalda Delgado <ricardo@ribalda.com>
+> diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+> index 0cd78d71768c..5c91716d1f21 100644
+> --- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+> @@ -149,7 +149,7 @@ properties:
+>        - description:
+>            The first register range should be the one of the DWMAC controller
+>        - description:
+> -          The second range is is for the Amlogic specific configuration
+> +          The second range is for the Amlogic specific configuration
+>            (for example the PRG_ETHERNET register range on Meson8b and newer)
+>  
+>    interrupts:
 
