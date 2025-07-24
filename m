@@ -1,149 +1,178 @@
-Received: from mta-102a.earthlink-vadesecure.net (mta-102a.earthlink-vadesecure.net [51.81.61.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C291A23BB;
-	Thu, 24 Jul 2025 18:14:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.61.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8987054723;
+	Thu, 24 Jul 2025 18:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753380879; cv=none; b=UOuAHTWPeyy8PciXpqc+hPwDTRMvQa3J856b8bZPewbVUbDjV7U951y8AoxK+Zh4J9etcf7PexZIx4LWngR+v+mkclPD4FJNFnEFGx9jDDdfNyvlYES2UQ2SBXAO6HP28N2qotpOHu9JjMgxJQ5cUbMJoxcdTTIeekTBwZWvT7c=
+	t=1753381576; cv=none; b=V6yBWUzHOyWZZHSyrxfk9YqUinjwq44yPGyvn8rjsaGFIBL4DR94fNR4ECiTywHUFs5rPislKPdIzkbGU9vm0y7d8656PvhvzhPNKMiYVfbMAuW8t8k59Gh+86h7DQvP00+vwhTAuMaA8p1qn2430cJtv06WyPjBM3zaVywZx/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753380879; c=relaxed/simple;
-	bh=9NiZupBTb15sSvM2aeLzHRnCVKFKcdvReraW1uYPJXs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=KH7RsGIY09e31AlQgoPTY1QLyVeaYZeJ76+pVzXaHydhhJ98/XF92CB3N8jMioD5/ci7HI7j6DQ42duhHVl0/6ZY1wPubFnKHcxZIQqyKRVjbxV+Y4OhfgGuVqZWwbgLyP9Lbnz0Z5zR6dKXvu53CcD6AbfqQYD3hDJPfnTu79A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=onemain.com; spf=pass smtp.mailfrom=onemain.com; dkim=pass (2048-bit key) header.d=earthlink.net header.i=@earthlink.net header.b=mKe/EQvZ; arc=none smtp.client-ip=51.81.61.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=onemain.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onemain.com
+	s=arc-20240116; t=1753381576; c=relaxed/simple;
+	bh=uZxpqiy9RYnUpyxVCBBeUpjPcCp+DX2Powuds3EtP9k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WezJ4bYndCAzwkWKVAg8EfHLAiLpVqCmKPGPn6Bqwrx6qNPc02/g9gjBmGgu99oz//+XFmJ4lE2Wzb5IoMpFrNYtVcwgql0F8QLqMBaI6Gp66IfOld9Bk/T2kMeZP42drAz/jC/5SWyCc+yiGsU+lnUMINWEe6dT0kdne5Zn/EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bMw0bson; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=earthlink.net header.i=@earthlink.net header.b="mKe/EQvZ"
-Authentication-Results: earthlink-vadesecure.net;
- auth=pass smtp.auth=svnelson@teleport.com smtp.mailfrom=sln@onemain.com;
-DKIM-Signature: v=1; a=rsa-sha256; bh=RITGUDj3cpeoQ2n5C/PGuRMJPLQHXrN/UMr3a3
- flItk=; c=relaxed/relaxed; d=earthlink.net; h=from:reply-to:subject:
- date:to:cc:resent-date:resent-from:resent-to:resent-cc:in-reply-to:
- references:list-id:list-help:list-unsubscribe:list-unsubscribe-post:
- list-subscribe:list-post:list-owner:list-archive; q=dns/txt;
- s=dk12062016; t=1753379929; x=1753984729; b=mKe/EQvZK7jMbOA51co8od4egED
- 7tRrRKTyCB2xi8MkefUkYYmisSrWkwKeEdJ36/85c7/zWnyDq+2J2r4NB3S7XdYEFYgWzl5
- LqR07nY6KLK/+AivXF9tfAfDyriifKy95s19ufUc6l4zGNyoF+fWGKy9+R9nwi/e2cXWvuS
- E8EShBz3vUXeovxV1A09qXTWze5sJ4+YsRwBYdAufcQMubPUf44oQmgs/hW0cDhXSJTzS69
- nozbG6B9us1R3+Q4V4Ou8FIKFNxXuav4IJ57UgNgrDTn05f+YalB9ZOl2VYQfhFIjqi9pun
- eaRONzaKZQ3jmDQAHwlMsHEMmzeAsmg==
-Received: from [192.168.0.23] ([50.47.159.51])
- by vsel1nmtao02p.internal.vadesecure.com with ngmta
- id 7072e953-185541c13ca8e627; Thu, 24 Jul 2025 17:58:49 +0000
-Message-ID: <09d52433-74e9-4f69-9a3d-6e99a65b03b5@onemain.com>
-Date: Thu, 24 Jul 2025 10:58:47 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bMw0bson"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37C0C4CEED;
+	Thu, 24 Jul 2025 18:26:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753381575;
+	bh=uZxpqiy9RYnUpyxVCBBeUpjPcCp+DX2Powuds3EtP9k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bMw0bsonIskMUxMWW1Oh4sXlAZ3xVEn9WH9sgAJKe8Jw7WgH51cgTzhCjNHQup6Z6
+	 1UPyUxOcAIu/K7uAcMaZaWPow7h1fSa6oHd3re9j8ID5gtT9XFHKgRoMSZZzSVAZKs
+	 cksw0LNvSmAENglw89ZOjGlpdpGfYjHy6CIWhJGNzvupZWNy20ANKSHgMDONu5KVcz
+	 NmVpTnuWd2aFzIlXusNOyTPmqJxz0vuYzqnpJSlKFsZmiFgJB+wApkITUgsUlWOI1M
+	 sNlxtgL8IDtUpJdYsGLeScvY3uUuNwJxxxKD0vuYKJGO1++PuX/VrJP5dS3tTgygke
+	 7AiU2h3x0s5xw==
+Date: Thu, 24 Jul 2025 19:26:11 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jimmy Assarsson <extja@kvaser.com>
+Cc: linux-can@vger.kernel.org, Jimmy Assarsson <jimmyassarsson@gmail.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v2 01/11] can: kvaser_usb: Add support to control CAN
+ LEDs on device
+Message-ID: <20250724182611.GC1266901@horms.kernel.org>
+References: <20250724092505.8-1-extja@kvaser.com>
+ <20250724092505.8-2-extja@kvaser.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] selftests: rtnetlink.sh: remove esp4_offload after
- test
-From: Shannon Nelson <sln@onemain.com>
-To: Xiumei Mu <xmu@redhat.com>, Hangbin Liu <liuhangbin@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>,
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- Long Xin <lxin@redhat.com>, Sabrina Dubroca <sd@queasysnail.net>
-References: <238b803af900dfc5f87f6ddc03805cc42da2ca35.1753332902.git.xmu@redhat.com>
- <aIHRwwOl-FS8KOV0@fedora>
- <CADdRzaF5Ck86fyEYaeWjvoVt=8qEhNKJ8J3ye+x0cb9EATqQ7Q@mail.gmail.com>
- <b1943474-c24b-4def-a46b-74a99e92b1d4@onemain.com>
-Content-Language: en-US
-In-Reply-To: <b1943474-c24b-4def-a46b-74a99e92b1d4@onemain.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250724092505.8-2-extja@kvaser.com>
 
-(yeah, I made the same non-ASCII mistake...)
+On Thu, Jul 24, 2025 at 11:24:55AM +0200, Jimmy Assarsson wrote:
+> Add support to turn on/off CAN LEDs on device.
+> 
+> Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
 
-On 7/24/25 10:49 AM, Shannon Nelson wrote:
-> On 7/24/25 1:20 AM, Xiumei Mu wrote:
->> resent the reply again with "plain text mode"
->>
->> On Thu, Jul 24, 2025 at 2:25 PM Hangbin Liu<liuhangbin@gmail.com> wrote:
->>> Hi Xiumei,
->>> On Thu, Jul 24, 2025 at 12:55:02PM +0800, Xiumei Mu wrote:
->>>> The esp4_offload module, loaded during IPsec offload tests, should
->>>> be reset to its default settings after testing.
->>>> Otherwise, leaving it enabled could unintentionally affect subsequence
->>>> test cases by keeping offload active.
->>> Would you please show which subsequence test will be affected?
->> Any general ipsec case, which expects to be tested by default
->> behavior(without offload).
->> esp4_offload will affect the performance.
->>
->>>> Fixes: 2766a11161cc ("selftests: rtnetlink: add ipsec offload API test")
->>> It would be good to Cc the fix commit author. You can use
->>> `./scripts/get_maintainer.pl your_patch_file` to get the contacts you
->>> need to Cc.
->> I used the script to generate the cc list.
->> and I double checked the old email of the author is invalid
->> added his personal email in the cc list:
->>
->> Shannon Nelson<shannon.nelson@oracle.com>. -----> Shannon Nelson
->> <sln@onemain.com>
->>
->>   get the information from here:
->> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=a1113cefd7d6
->
-> Yep, that was me a couple of corporate email addresses ago. Thanks for 
-> digging up the new email address.  Luckily I have a couple of mail 
-> filters watching for old email addresses.
->
->>>> Signed-off-by: Xiumei Mu<xmu@redhat.com>
->>>> ---
->>>>   tools/testing/selftests/net/rtnetlink.sh | 6 ++++++
->>>>   1 file changed, 6 insertions(+)
->>>>
->>>> diff --git a/tools/testing/selftests/net/rtnetlink.sh b/tools/testing/selftests/net/rtnetlink.sh
->>>> index 2e8243a65b50..5cc1b5340a1a 100755
->>>> --- a/tools/testing/selftests/net/rtnetlink.sh
->>>> +++ b/tools/testing/selftests/net/rtnetlink.sh
->>>> @@ -673,6 +673,11 @@ kci_test_ipsec_offload()
->>>>        sysfsf=$sysfsd/ipsec
->>>>        sysfsnet=/sys/bus/netdevsim/devices/netdevsim0/net/
->>>>        probed=false
->>>> +     esp4_offload_probed_default=false
->>>> +
->>>> +     if lsmod | grep -q esp4_offload; then
->>>> +             esp4_offload_probed_default=true
->>>> +     fi
->>> If the mode is loaded by default, how to avoid the subsequence test to be
->>> failed?
->> The module is not loaded by default, but some users or testers may
->> need to load esp4_offload in their own environments.
->> Therefore, resetting it to the default configuration is the best
->> practice to prevent this self-test case from impacting subsequent
->> tests
->
-> Seems reasonable to me.
->
->>>>        if ! mount | grep -q debugfs; then
->>>>                mount -t debugfs none /sys/kernel/debug/ &> /dev/null
->>>> @@ -766,6 +771,7 @@ EOF
->>>>        fi
->>>>
->>>>        # clean up any leftovers
->>>> +     [ $esp4_offload_probed_default == false ] && rmmod esp4_offload
->>> The new patch need to pass shellcheck. We need to double quote the variable.
->> Thanks your comment, I will add double quote in patchv2
->
-> Or you keep with the existing style as done a line or two later:
->     $esp4_offload_probed_default && rmmod esp4_offload Either way, 
-> Reviewed-by: Shannon Nelson <sln@onemain.com> Cheers, sln
->>> Thanks
->>> Hangbin
->>>>        echo 0 > /sys/bus/netdevsim/del_device
->>>>        $probed && rmmod netdevsim
->>>>
->>>> --
->>>> 2.50.1
->>>>
->
+...
 
+> diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
+
+...
+
+> +static int kvaser_usb_hydra_set_led(struct kvaser_usb_net_priv *priv,
+> +				    enum kvaser_usb_led_state state,
+> +				    u16 duration_ms)
+> +{
+> +	struct kvaser_usb *dev = priv->dev;
+> +	struct kvaser_cmd *cmd;
+> +	int ret;
+> +
+> +	cmd = kzalloc(sizeof(*cmd), GFP_KERNEL);
+> +	if (!cmd)
+> +		return -ENOMEM;
+> +
+> +	cmd->header.cmd_no = CMD_LED_ACTION_REQ;
+> +	kvaser_usb_hydra_set_cmd_dest_he(cmd, dev->card_data.hydra.sysdbg_he);
+> +	kvaser_usb_hydra_set_cmd_transid(cmd, kvaser_usb_hydra_get_next_transid(dev));
+> +
+> +	cmd->led_action_req.duration_ms = cpu_to_le16(duration_ms);
+> +	cmd->led_action_req.action = state |
+> +				     FIELD_PREP(KVASER_USB_HYDRA_LED_IDX_MASK,
+> +						KVASER_USB_HYDRA_LED_YELLOW_CH0_IDX +
+> +						KVASER_USB_HYDRA_LEDS_PER_CHANNEL * priv->channel);
+> +
+> +	ret = kvaser_usb_send_cmd(dev, cmd, kvaser_usb_hydra_cmd_size(cmd));
+
+When building this file with GCC 15.1.0 with KCFLAGS=-Warray-bounds
+I see the following:
+
+  In file included from ./include/linux/byteorder/little_endian.h:5,
+                   from ./arch/x86/include/uapi/asm/byteorder.h:5,
+                   from ./include/linux/bitfield.h:12,
+                   from drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c:15:
+  In function 'kvaser_usb_hydra_cmd_size',
+      inlined from 'kvaser_usb_hydra_set_led' at drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c:1993:38:
+  drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c:532:65: warning: array subscript 'struct kvaser_cmd_ext[0]' is partly outside array bounds of 'unsigned char[32]' [-Warray-bounds=]
+    532 |                 ret = le16_to_cpu(((struct kvaser_cmd_ext *)cmd)->len);
+  ./include/uapi/linux/byteorder/little_endian.h:37:51: note: in definition of macro '__le16_to_cpu'
+     37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
+        |                                                   ^
+  drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c:532:23: note: in expansion of macro 'le16_to_cpu'
+    532 |                 ret = le16_to_cpu(((struct kvaser_cmd_ext *)cmd)->len);
+        |                       ^~~~~~~~~~~
+  In file included from ./include/linux/fs.h:46,
+                   from ./include/linux/compat.h:17,
+                   from ./arch/x86/include/asm/ia32.h:7,
+                   from ./arch/x86/include/asm/elf.h:10,
+                   from ./include/linux/elf.h:6,
+                   from ./include/linux/module.h:19,
+                   from ./include/linux/device/driver.h:21,
+                   from ./include/linux/device.h:32,
+                   from drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c:17:
+  In function 'kmalloc_noprof',
+      inlined from 'kzalloc_noprof' at ./include/linux/slab.h:1039:9,
+      inlined from 'kvaser_usb_hydra_set_led' at drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c:1979:8:
+  ./include/linux/slab.h:905:24: note: object of size 32 allocated by '__kmalloc_cache_noprof'
+    905 |                 return __kmalloc_cache_noprof(
+        |                        ^~~~~~~~~~~~~~~~~~~~~~~
+    906 |                                 kmalloc_caches[kmalloc_type(flags, _RET_IP_)][index],
+        |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    907 |                                 flags, size);
+        |                                 ~~~~~~~~~~~~
+
+	if (cmd->header.cmd_no == CMD_EXTENDED)
+		ret = le16_to_cpu(((struct kvaser_cmd_ext *)cmd)->len);
+
+GCC seems to know that:
+* cmd was allocated sizeof(*cmd) = 32 bytes
+* struct kvaser_cmd_ext is larger than this (96 bytes)
+
+And it thinks that cmd->header.cmd_no might be CMD_EXTENDED.
+This is not true, becuae .cmd_no is set to CMD_LED_ACTION_REQ
+earlier in kvaser_usb_hydra_set_led. But still, GCC produces
+a big fat warning.
+
+On the one hand we might say this is a shortcoming in GCC,
+a position I agree with. But on the other hand, we might follow
+the pattern used elsewhere in this file for similar functions,
+which seems to make GCC happy, I guess, and it is strictly a guess,
+because less context is needed for it to analyse things correctly.
+
+That is, do this:
+
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
+index 758fd13f1bf4..a4402b4845c6 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
+@@ -1974,6 +1974,7 @@ static int kvaser_usb_hydra_set_led(struct kvaser_usb_net_priv *priv,
+ {
+ 	struct kvaser_usb *dev = priv->dev;
+ 	struct kvaser_cmd *cmd;
++	size_t cmd_len;
+ 	int ret;
+ 
+ 	cmd = kzalloc(sizeof(*cmd), GFP_KERNEL);
+@@ -1981,6 +1982,7 @@ static int kvaser_usb_hydra_set_led(struct kvaser_usb_net_priv *priv,
+ 		return -ENOMEM;
+ 
+ 	cmd->header.cmd_no = CMD_LED_ACTION_REQ;
++	cmd_len = kvaser_usb_hydra_cmd_size(cmd);
+ 	kvaser_usb_hydra_set_cmd_dest_he(cmd, dev->card_data.hydra.sysdbg_he);
+ 	kvaser_usb_hydra_set_cmd_transid(cmd, kvaser_usb_hydra_get_next_transid(dev));
+ 
+@@ -1990,7 +1992,7 @@ static int kvaser_usb_hydra_set_led(struct kvaser_usb_net_priv *priv,
+ 						KVASER_USB_HYDRA_LED_YELLOW_CH0_IDX +
+ 						KVASER_USB_HYDRA_LEDS_PER_CHANNEL * priv->channel);
+ 
+-	ret = kvaser_usb_send_cmd(dev, cmd, kvaser_usb_hydra_cmd_size(cmd));
++	ret = kvaser_usb_send_cmd(dev, cmd, cmd_len);
+ 	kfree(cmd);
+ 
+ 	return ret;
+
+> +	kfree(cmd);
+> +
+> +	return ret;
+> +}
+
+...
