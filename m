@@ -1,142 +1,330 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E7C274642;
-	Thu, 24 Jul 2025 08:08:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65F027467B
+	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 08:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753344521; cv=none; b=KAbJShkDUUhh9s+53DaQGp601+4gfbZxWp1cFo1CO/Kt2h8j9+ffa2v/I8iZ/4f2gao2TqAeG+7Nq/YFpBcG4fOG0u8dLSxorKDd0Ds25J702gp3SrPCksiMXWHmuw7gsj+sN22YwKTdQU8jHpHU+7NIbm+WZAtar+ctal6x8Pg=
+	t=1753344894; cv=none; b=JacLBW5k45SztwuXpUPAsl2CWjF6sQIqEwlZ+yYPQzocJ4xAJc51nBm+rvb6xmwtO893lZeFG96iO1n+R9GW2gPRyjFE0yX4JtZ8kCgXRBolEiR9+7T+liBBTd6BsSdlnebYRSNl2TRcDOnytEqLv5oJ7kOJoS0jZ/8KJdkoD5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753344521; c=relaxed/simple;
-	bh=32eMAaAFZX0xgC3CVuE+Q+yYsKnapcRGesxxo78CraY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=teA3rPVZPZNp2kJrxB6lVeVViT9j52Lcg8+yamzn+GQK/ACEUUGWKKfjiWynolzXMNS0yYjgzpuGDZYfEjkme4PEOuMpDpIsjnMrS4HyLmHqK4LAeywiX2xZkJ/SGmvFymiZsekrAzReNZ/Te2q/HExVeC/uIeM9CT0oMzAi1Nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4bnk6w5rDkzGq1k;
-	Thu, 24 Jul 2025 16:04:24 +0800 (CST)
-Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9F672180B63;
-	Thu, 24 Jul 2025 16:08:35 +0800 (CST)
-Received: from huawei.com (10.175.124.27) by dggpemf500016.china.huawei.com
- (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 24 Jul
- 2025 16:08:34 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <mst@redhat.com>, <jasowang@redhat.com>, <xuanzhuo@linux.alibaba.com>,
-	<eperezma@redhat.com>, <pabeni@redhat.com>, <davem@davemloft.net>,
-	<willemb@google.com>, <atenart@kernel.org>
-CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
-	<wangliang74@huawei.com>, <netdev@vger.kernel.org>,
-	<virtualization@lists.linux.dev>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net] net: check the minimum value of gso size in virtio_net_hdr_to_skb()
-Date: Thu, 24 Jul 2025 16:30:05 +0800
-Message-ID: <20250724083005.3918375-1-wangliang74@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1753344894; c=relaxed/simple;
+	bh=E4skDka5+jBM109LzqEEgatmXJdZTiQGPzrQBvqeh5U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DVS0bMTF5uZslyfuBZ3W7ANLd1f9mTDwnY853eGR82dcxDSy5SmsL16hqPp3ZAtcc/aZIWRsN/L4OLLTTrlj5Nl7PmV3FY7X+T2rsqqvtEeYmD7MzNbxsRigw+UCs+kujSLh9HVJ+IOij6FhgGoTvluSpU5BB4Tk55586Spt7/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MFBoZyx5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MFBoZyx5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753344891;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cJ02ByKeKesw6MmLXs1z5moyb7EKOu1a28e6JM2JXDQ=;
+	b=MFBoZyx55zB73dR4h68P3eoNjKqeFUH7+smkhlYbSZcHWLhw6lXVuZsRdM/gliqTb82vKw
+	Sv50JZTAQVwikXR7BVd90ltMFrsGWbnID2rv8CTWaETBggJ3r44PlpNkmVvgZf4JTDl5YH
+	ljHkuXoDi6sZImZBj3h8QOq0UdGTz58=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-479--AcXjr7UN62upIQG0G1veQ-1; Thu, 24 Jul 2025 04:14:49 -0400
+X-MC-Unique: -AcXjr7UN62upIQG0G1veQ-1
+X-Mimecast-MFC-AGG-ID: -AcXjr7UN62upIQG0G1veQ_1753344889
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-711136ed77fso10928517b3.0
+        for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 01:14:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753344889; x=1753949689;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cJ02ByKeKesw6MmLXs1z5moyb7EKOu1a28e6JM2JXDQ=;
+        b=Zoa2Ly/6QZ66YxUWMP4rL2Po1n/XRJpS20gvUoh3gGhl/eKJw0GFsaOk6BT0RqB6Hy
+         2Qg0OtpoRQpehhB7P/gzvnd70mt8XNqrTI/b8DzNFcN+zlmEyxKcp/UGovQkW4Qtcrem
+         HCVXJ0IGq2Ix0yN4xB2/S/CAzgFKQjKibi8WbTeMUTkqnyGTUdVDeNuWRuucuq7VPvdG
+         BddqDY7jh4eulxs/fAPhDmyvTuInBC8ewk1hTfGQPV60p4qHbhjdKw9vHir7oWW1oqio
+         +pPDn+UW56wdUH/qKw5r52qA9KRi8sGfl7xRtwQjoJzly6AjqfKbgYoMUh09ysu7l23I
+         Lh/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWIxXV6Jy/CLFbvfQTLmrW426uU4/+M/YvQekLUOViNR0RWoR5ENw3eqgpTZEPcx8fRoy3gjsI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgWX+N/fD5kFRI9Eg8DC7UHOFoRQxaqQNXRcwS/+ake4x9G9dq
+	6LcMu4O34IbbrRAWOu3eDcsrUVtdNjtse1O+iH7yxSHuTnzrUyY4KdwuThU6LNFbn7iNzqDR5AE
+	S5LNIQF8uvU0V+D0D8nsOFyOlT2hg9NsQM+GGtnpImU/s/Qu6eMuPJzD07DQ12lo/TGLUJWwf65
+	vj9am3QavjxjoszbFDStJvQul4FhUVIZJV
+X-Gm-Gg: ASbGnct75pCz6hHApdBH92OJuMh5BsOwTzi0kTmGBWF0dGYgPj7H+6ST5eMQlkYZa/Q
+	hZDch2yKn23LBTAh0NXp0o+8d1zZsH7XAqEUrT9k40t9gX8Cfqh7zhYtwg9dUlYj5afzJdE7Gtj
+	BqUfIV45hxQunF2MHpdIfq
+X-Received: by 2002:a05:690c:314:b0:70d:ed5d:b4b2 with SMTP id 00721157ae682-719b41694d2mr79268467b3.13.1753344888527;
+        Thu, 24 Jul 2025 01:14:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFPvKRyNZLxuZc2LCwPGxrFyYTVxsjT7roo0HAnWfJQl2Ut22h5DTHOWlu7sekIJonGE+l2+DrYFw6tPUZf8IY=
+X-Received: by 2002:a05:690c:314:b0:70d:ed5d:b4b2 with SMTP id
+ 00721157ae682-719b41694d2mr79268197b3.13.1753344887977; Thu, 24 Jul 2025
+ 01:14:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf500016.china.huawei.com (7.185.36.197)
+References: <vosten2rykookljp6u6qc4hqhsqb6uhdy2iuhpl54plbq2tkr4@kphfpgst3e7c> <20250724034659-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20250724034659-mutt-send-email-mst@kernel.org>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Thu, 24 Jul 2025 10:14:36 +0200
+X-Gm-Features: Ac12FXzqfSEj1dVrbaSJdrllq6HfeMDxFTLlI3oLSZh4ILH_YbA_CktsAqGaAiE
+Message-ID: <CAGxU2F76ueKm3H30vXL+jxMVsiQBuRkDN9NRfVU8VeTXzTVAWg@mail.gmail.com>
+Subject: Re: vhost: linux-next: crash at vhost_dev_cleanup()
+To: "Michael S. Tsirkin" <mst@redhat.com>, Will Deacon <will@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>, jasowang@redhat.com, eperezma@redhat.com, 
+	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, 
+	Stefan Hajnoczi <stefanha@redhat.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When sending a packet with virtio_net_hdr to tun device, if the gso_type
-in virtio_net_hdr is SKB_GSO_UDP and the gso_size is less than udphdr
-size, below crash may happen.
+CCing Will
 
-  ------------[ cut here ]------------
-  kernel BUG at net/core/skbuff.c:4572!
-  Oops: invalid opcode: 0000 [#1] SMP NOPTI
-  CPU: 0 UID: 0 PID: 62 Comm: mytest Not tainted 6.16.0-rc7 #203 PREEMPT(voluntary)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-  RIP: 0010:skb_pull_rcsum+0x8e/0xa0
-  Code: 00 00 5b c3 cc cc cc cc 8b 93 88 00 00 00 f7 da e8 37 44 38 00 f7 d8 89 83 88 00 00 00 48 8b 83 c8 00 00 00 5b c3 cc cc cc cc <0f> 0b 0f 0b 66 66 2e 0f 1f 84 00 000
-  RSP: 0018:ffffc900001fba38 EFLAGS: 00000297
-  RAX: 0000000000000004 RBX: ffff8880040c1000 RCX: ffffc900001fb948
-  RDX: ffff888003e6d700 RSI: 0000000000000008 RDI: ffff88800411a062
-  RBP: ffff8880040c1000 R08: 0000000000000000 R09: 0000000000000001
-  R10: ffff888003606c00 R11: 0000000000000001 R12: 0000000000000000
-  R13: ffff888004060900 R14: ffff888004050000 R15: ffff888004060900
-  FS:  000000002406d3c0(0000) GS:ffff888084a19000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000020000040 CR3: 0000000004007000 CR4: 00000000000006f0
-  Call Trace:
-   <TASK>
-   udp_queue_rcv_one_skb+0x176/0x4b0 net/ipv4/udp.c:2445
-   udp_queue_rcv_skb+0x155/0x1f0 net/ipv4/udp.c:2475
-   udp_unicast_rcv_skb+0x71/0x90 net/ipv4/udp.c:2626
-   __udp4_lib_rcv+0x433/0xb00 net/ipv4/udp.c:2690
-   ip_protocol_deliver_rcu+0xa6/0x160 net/ipv4/ip_input.c:205
-   ip_local_deliver_finish+0x72/0x90 net/ipv4/ip_input.c:233
-   ip_sublist_rcv_finish+0x5f/0x70 net/ipv4/ip_input.c:579
-   ip_sublist_rcv+0x122/0x1b0 net/ipv4/ip_input.c:636
-   ip_list_rcv+0xf7/0x130 net/ipv4/ip_input.c:670
-   __netif_receive_skb_list_core+0x21d/0x240 net/core/dev.c:6067
-   netif_receive_skb_list_internal+0x186/0x2b0 net/core/dev.c:6210
-   napi_complete_done+0x78/0x180 net/core/dev.c:6580
-   tun_get_user+0xa63/0x1120 drivers/net/tun.c:1909
-   tun_chr_write_iter+0x65/0xb0 drivers/net/tun.c:1984
-   vfs_write+0x300/0x420 fs/read_write.c:593
-   ksys_write+0x60/0xd0 fs/read_write.c:686
-   do_syscall_64+0x50/0x1c0 arch/x86/entry/syscall_64.c:63
-   </TASK>
+On Thu, 24 Jul 2025 at 09:48, Michael S. Tsirkin <mst@redhat.com> wrote:
+>
+> On Wed, Jul 23, 2025 at 08:04:42AM -0700, Breno Leitao wrote:
+> > Hello,
+> >
+> > I've seen a crash in linux-next for a while on my arm64 server, and
+> > I decided to report.
+> >
+> > While running stress-ng on linux-next, I see the crash below.
+> >
+> > This is happening in a kernel configure with some debug options (KASAN,
+> > LOCKDEP and KMEMLEAK).
+> >
+> > Basically running stress-ng in a loop would crash the host in 15-20
+> > minutes:
+> >       # while (true); do stress-ng -r 10 -t 10; done
+> >
+> > >From the early warning "virt_to_phys used for non-linear address",
 
-To trigger gso segment in udp_queue_rcv_skb(), we should also set option
-UDP_ENCAP_ESPINUDP to enable udp_sk(sk)->encap_rcv. When the encap_rcv
-hook return 1 in udp_queue_rcv_one_skb(), udp_csum_pull_header() will try
-to pull udphdr, but the skb size has been segmented to gso size, which
-leads to this crash.
+mmm, we recently added nonlinear SKBs support in vhost-vsock [1],
+@Will can this issue be related?
 
-Only udp has this probloem. Add check for the minimum value of gso size in
-virtio_net_hdr_to_skb().
+I checked next-20250721 tag and I confirm that contains those changes.
 
-Fixes: cf329aa42b66 ("udp: cope with UDP GRO packet misdirection")
-Fixes: 3d010c8031e3 ("udp: do not accept non-tunnel GSO skbs landing in a tunnel")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
----
- include/linux/virtio_net.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+[1] https://lore.kernel.org/virtualization/20250717090116.11987-1-will@kern=
+el.org/
 
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index 02a9f4dc594d..0533101642bd 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -157,11 +157,13 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
- 		u16 gso_size = __virtio16_to_cpu(little_endian, hdr->gso_size);
- 		unsigned int nh_off = p_off;
- 		struct skb_shared_info *shinfo = skb_shinfo(skb);
-+		u16 min_gso_size = 0;
- 
- 		switch (gso_type & ~SKB_GSO_TCP_ECN) {
- 		case SKB_GSO_UDP:
- 			/* UFO may not include transport header in gso_size. */
- 			nh_off -= thlen;
-+			min_gso_size = sizeof(struct udphdr) + 1;
- 			break;
- 		case SKB_GSO_UDP_L4:
- 			if (!(hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM))
-@@ -172,6 +174,7 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
- 				return -EINVAL;
- 			if (gso_type != SKB_GSO_UDP_L4)
- 				return -EINVAL;
-+			min_gso_size = sizeof(struct udphdr) + 1;
- 			break;
- 		case SKB_GSO_TCPV4:
- 		case SKB_GSO_TCPV6:
-@@ -182,7 +185,7 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
- 		}
- 
- 		/* Kernel has a special handling for GSO_BY_FRAGS. */
--		if (gso_size == GSO_BY_FRAGS)
-+		if ((gso_size == GSO_BY_FRAGS) || (gso_size < min_gso_size))
- 			return -EINVAL;
- 
- 		/* Too small packets are not really GSO ones. */
--- 
-2.34.1
+Thanks,
+Stefano
+
+> > I suppose corrupted data is at vq->nheads.
+> >
+> > Here is the decoded stack against 9798752 ("Add linux-next specific
+> > files for 20250721")
+> >
+> >
+> >       [  620.685144] [ T250731] VFIO - User Level meta-driver version: =
+0.3
+> >       [  622.394448] [ T250254] ------------[ cut here ]------------
+> >       [  622.413492] [ T250254] virt_to_phys used for non-linear addres=
+s: 000000006e69fe64 (0xcfcecdcccbcac9c8)
+> >       [  622.447771] [     T250254] WARNING: arch/arm64/mm/physaddr.c:1=
+5 at __virt_to_phys+0x64/0x90, CPU#57: stress-ng-dev/250254
+> >       [  622.487227] [ T250254] Modules linked in: vhost_vsock(E) vfio_=
+iommu_type1(E) vfio(E) unix_diag(E) sch_fq(E) ghes_edac(E) tls(E) tcp_diag(=
+E) inet_diag(E) act_gact(E) cls_bpf(E) nvidia_cspmu(E) ipmi_ssif(E) coresig=
+ht_trbe(E) arm_cspmu_module(E) arm_smmuv3_pmu(E) ipmi_devintf(E) coresight_=
+stm(E) coresight_funnel(E) coresight_etm4x(E) coresight_tmc(E) stm_core(E) =
+ipmi_msghandler(E) coresight(E) cppc_cpufreq(E) sch_fq_codel(E) drm(E) back=
+light(E) drm_panel_orientation_quirks(E) sm3_ce(E) sha3_ce(E) spi_tegra210_=
+quad(E) vhost_net(E) tap(E) tun(E) vhost(E) vhost_iotlb(E) mpls_gso(E) mpls=
+_iptunnel(E) mpls_router(E) fou(E) acpi_power_meter(E) loop(E) efivarfs(E) =
+autofs4(E) [last unloaded: test_bpf(E)]
+> >       [  622.734524] [ T250254] Tainted: [W]=3DWARN, [E]=3DUNSIGNED_MOD=
+ULE, [N]=3DTEST
+> >       [  622.734525] [ T250254] Hardware name: ...
+> >       [  622.734526] [ T250254] pstate: 63401009 (nZCv daif +PAN -UAO +=
+TCO +DIT +SSBS BTYPE=3D--)
+> >       [  622.734529] [     T250254] pc : __virt_to_phys (/home/user/Dev=
+el/linux-next/arch/arm64/mm/physaddr.c:?)
+> >       [  622.734531] [     T250254] lr : __virt_to_phys (/home/user/Dev=
+el/linux-next/arch/arm64/mm/physaddr.c:?)
+> >       [  622.734533] [ T250254] sp : ffff800158e8fc60
+> >       [  622.734534] [ T250254] x29: ffff800158e8fc60 x28: ffff0034a7cc=
+7900 x27: 0000000000000000
+> >       [  622.734537] [ T250254] x26: 0000000000000000 x25: ffff0034a7cc=
+7900 x24: 00000000040e001f
+> >       [  622.734539] [ T250254] x23: ffff0010858afb00 x22: cfcecdcccbca=
+c9c8 x21: ffff0033526a01e0
+> >       [  622.734541] [ T250254] x20: 0000000000008000 x19: ffcecdcccbca=
+c9c8 x18: ffff80008149c8e4
+> >       [  622.734543] [ T250254] x17: 0000000000000001 x16: 000000000000=
+0000 x15: 0000000000000003
+> >       [  622.734545] [ T250254] x14: ffff800082962e78 x13: 000000000000=
+0003 x12: ffff003bc6231630
+> >       [  622.734546] [ T250254] x11: 0000000000000000 x10: 000000000000=
+0000 x9 : ed44a220ae716b00
+> >       [  622.734548] [ T250254] x8 : 0001000000000000 x7 : 072007200720=
+0720 x6 : ffff80008018710c
+> >       [  622.734550] [ T250254] x5 : 0000000000000001 x4 : 00000090ecc7=
+2ac0 x3 : 0000000000000000
+> >       [  622.734552] [ T250254] x2 : 0000000000000000 x1 : ffff800081a7=
+2bc6 x0 : 000000000000004f
+> >       [  622.734554] [ T250254] Call trace:
+> >       [  622.734555] [     T250254] __virt_to_phys (/home/user/Devel/li=
+nux-next/arch/arm64/mm/physaddr.c:?) (P)
+> >       [  622.734557] [     T250254] kfree (/home/user/Devel/linux-next/=
+./include/linux/mm.h:1180 /home/user/Devel/linux-next/mm/slub.c:4871)
+> >       [  622.734562] [     T250254] vhost_dev_cleanup (/home/user/Devel=
+/linux-next/drivers/vhost/vhost.c:506 /home/user/Devel/linux-next/drivers/v=
+host/vhost.c:542 /home/user/Devel/linux-next/drivers/vhost/vhost.c:1214) vh=
+ost
+> >       [  622.734571] [     T250254] vhost_vsock_dev_release (/home/user=
+/Devel/linux-next/drivers/vhost/vsock.c:756) vhost_vsock
+>
+>
+> Cc more vsock maintainers.
+>
+>
+>
+>
+> >       [  622.734575] [     T250254] __fput (/home/user/Devel/linux-next=
+/fs/file_table.c:469)
+> >       [  622.734578] [     T250254] fput_close_sync (/home/user/Devel/l=
+inux-next/fs/file_table.c:?)
+> >       [  622.734579] [     T250254] __arm64_sys_close (/home/user/Devel=
+/linux-next/fs/open.c:1589 /home/user/Devel/linux-next/fs/open.c:1572 /home=
+/user/Devel/linux-next/fs/open.c:1572)
+> >       [  622.734584] [     T250254] invoke_syscall (/home/user/Devel/li=
+nux-next/arch/arm64/kernel/syscall.c:50)
+> >       [  622.734589] [     T250254] el0_svc_common (/home/user/Devel/li=
+nux-next/./include/linux/thread_info.h:135 /home/user/Devel/linux-next/arch=
+/arm64/kernel/syscall.c:140)
+> >       [  622.734591] [     T250254] do_el0_svc (/home/user/Devel/linux-=
+next/arch/arm64/kernel/syscall.c:152)
+> >       [  622.734594] [     T250254] el0_svc (/home/user/Devel/linux-nex=
+t/arch/arm64/kernel/entry-common.c:169 /home/user/Devel/linux-next/arch/arm=
+64/kernel/entry-common.c:182 /home/user/Devel/linux-next/arch/arm64/kernel/=
+entry-common.c:880)
+> >       [  622.734600] [     T250254] el0t_64_sync_handler (/home/user/De=
+vel/linux-next/arch/arm64/kernel/entry-common.c:958)
+> >       [  622.734603] [     T250254] el0t_64_sync (/home/user/Devel/linu=
+x-next/arch/arm64/kernel/entry.S:596)
+> >       [  622.734605] [ T250254] irq event stamp: 0
+> >       [  622.734606] [     T250254] hardirqs last enabled at (0): 0x0
+> >       [  622.734610] [     T250254] hardirqs last disabled at (0): copy=
+_process (/home/user/Devel/linux-next/kernel/fork.c:?)
+> >       [  622.734614] [     T250254] softirqs last enabled at (0): copy_=
+process (/home/user/Devel/linux-next/kernel/fork.c:?)
+> >       [  622.734616] [     T250254] softirqs last disabled at (0): 0x0
+> >       [  622.734618] [ T250254] ---[ end trace 0000000000000000 ]---
+> >       [  622.734697] [ T250254] Unable to handle kernel paging request =
+at virtual address 003ff3b33312f288
+> >       [  622.734700] [ T250254] Mem abort info:
+> >       [  622.734701] [ T250254]   ESR =3D 0x0000000096000004
+> >       [  622.734702] [ T250254]   EC =3D 0x25: DABT (current EL), IL =
+=3D 32 bits
+> >       [  622.734704] [ T250254]   SET =3D 0, FnV =3D 0
+> >       [  622.734705] [ T250254]   EA =3D 0, S1PTW =3D 0
+> >       [  622.734706] [ T250254]   FSC =3D 0x04: level 0 translation fau=
+lt
+> >       [  622.734708] [ T250254] Data abort info:
+> >       [  622.734709] [ T250254]   ISV =3D 0, ISS =3D 0x00000004, ISS2 =
+=3D 0x00000000
+> >       [  622.734711] [ T250254]   CM =3D 0, WnR =3D 0, TnD =3D 0, TagAc=
+cess =3D 0
+> >       [  622.734712] [ T250254]   GCS =3D 0, Overlay =3D 0, DirtyBit =
+=3D 0, Xs =3D 0
+> >       [  622.734713] [ T250254] [003ff3b33312f288] address between user=
+ and kernel address ranges
+> >       [  622.734715] [ T250254] Internal error: Oops: 0000000096000004 =
+[#1]  SMP
+> >       [  622.734718] [ T250254] Modules linked in: vhost_vsock(E) vfio_=
+iommu_type1(E) vfio(E) unix_diag(E) sch_fq(E) ghes_edac(E) tls(E) tcp_diag(=
+E) inet_diag(E) act_gact(E) cls_bpf(E) nvidia_cspmu(E) ipmi_ssif(E) coresig=
+ht_trbe(E) arm_cspmu_module(E) arm_smmuv3_pmu(E) ipmi_devintf(E) coresight_=
+stm(E) coresight_funnel(E) coresight_etm4x(E) coresight_tmc(E) stm_core(E) =
+ipmi_msghandler(E) coresight(E) cppc_cpufreq(E) sch_fq_codel(E) drm(E) back=
+light(E) drm_panel_orientation_quirks(E) sm3_ce(E) sha3_ce(E) spi_tegra210_=
+quad(E) vhost_net(E) tap(E) tun(E) vhost(E) vhost_iotlb(E) mpls_gso(E) mpls=
+_iptunnel(E) mpls_router(E) fou(E) acpi_power_meter(E) loop(E) efivarfs(E) =
+autofs4(E) [last unloaded: test_bpf(E)]
+> >       [  622.734740] [ T250254] Tainted: [W]=3DWARN, [E]=3DUNSIGNED_MOD=
+ULE, [N]=3DTEST
+> >       [  622.734740] [ T250254] Hardware name: ...
+> >       [  622.734741] [ T250254] pstate: 63401009 (nZCv daif +PAN -UAO +=
+TCO +DIT +SSBS BTYPE=3D--)
+> >       [  622.734742] [     T250254] pc : kfree (/home/user/Devel/linux-=
+next/./include/linux/page-flags.h:284 /home/user/Devel/linux-next/./include=
+/linux/mm.h:1182 /home/user/Devel/linux-next/mm/slub.c:4871)
+> >       [  622.734745] [     T250254] lr : kfree (/home/user/Devel/linux-=
+next/./include/linux/mm.h:1180 /home/user/Devel/linux-next/mm/slub.c:4871)
+> >       [  622.734747] [ T250254] sp : ffff800158e8fc80
+> >       [  622.734748] [ T250254] x29: ffff800158e8fc90 x28: ffff0034a7cc=
+7900 x27: 0000000000000000
+> >       [  622.734749] [ T250254] x26: 0000000000000000 x25: ffff0034a7cc=
+7900 x24: 00000000040e001f
+> >       [  622.734751] [ T250254] x23: ffff0010858afb00 x22: cfcecdcccbca=
+c9c8 x21: ffff0033526a01e0
+> >       [  622.734752] [ T250254] x20: 003ff3b33312f280 x19: ffff80000acd=
+1a20 x18: ffff80008149c8e4
+> >       [  622.734754] [ T250254] x17: 0000000000000001 x16: 000000000000=
+0000 x15: 0000000000000003
+> >       [  622.734755] [ T250254] x14: ffff800082962e78 x13: 000000000000=
+0003 x12: ffff003bc6231630
+> >       [  622.734757] [ T250254] x11: 0000000000000000 x10: 000000000000=
+0000 x9 : ffffffdfc0000000
+> >       [  622.734758] [ T250254] x8 : 003ff3d37312f280 x7 : 072007200720=
+0720 x6 : ffff80008018710c
+> >       [  622.734760] [ T250254] x5 : 0000000000000001 x4 : 00000090ecc7=
+2ac0 x3 : 0000000000000000
+> >       [  622.734761] [ T250254] x2 : 0000000000000000 x1 : ffff800081a7=
+2bc6 x0 : ffcf4dcccbcac9c8
+> >       [  622.734763] [ T250254] Call trace:
+> >       [  622.734763] [     T250254] kfree (/home/user/Devel/linux-next/=
+./include/linux/page-flags.h:284 /home/user/Devel/linux-next/./include/linu=
+x/mm.h:1182 /home/user/Devel/linux-next/mm/slub.c:4871) (P)
+> >       [  622.734766] [     T250254] vhost_dev_cleanup (/home/user/Devel=
+/linux-next/drivers/vhost/vhost.c:506 /home/user/Devel/linux-next/drivers/v=
+host/vhost.c:542 /home/user/Devel/linux-next/drivers/vhost/vhost.c:1214) vh=
+ost
+> >       [  622.734769] [     T250254] vhost_vsock_dev_release (/home/user=
+/Devel/linux-next/drivers/vhost/vsock.c:756) vhost_vsock
+> >       [  622.734771] [     T250254] __fput (/home/user/Devel/linux-next=
+/fs/file_table.c:469)
+> >       [  622.734772] [     T250254] fput_close_sync (/home/user/Devel/l=
+inux-next/fs/file_table.c:?)
+> >       [  622.734773] [     T250254] __arm64_sys_close (/home/user/Devel=
+/linux-next/fs/open.c:1589 /home/user/Devel/linux-next/fs/open.c:1572 /home=
+/user/Devel/linux-next/fs/open.c:1572)
+> >       [  622.734776] [     T250254] invoke_syscall (/home/user/Devel/li=
+nux-next/arch/arm64/kernel/syscall.c:50)
+> >       [  622.734778] [     T250254] el0_svc_common (/home/user/Devel/li=
+nux-next/./include/linux/thread_info.h:135 /home/user/Devel/linux-next/arch=
+/arm64/kernel/syscall.c:140)
+> >       [  622.734781] [     T250254] do_el0_svc (/home/user/Devel/linux-=
+next/arch/arm64/kernel/syscall.c:152)
+> >       [  622.734783] [     T250254] el0_svc (/home/user/Devel/linux-nex=
+t/arch/arm64/kernel/entry-common.c:169 /home/user/Devel/linux-next/arch/arm=
+64/kernel/entry-common.c:182 /home/user/Devel/linux-next/arch/arm64/kernel/=
+entry-common.c:880)
+> >       [  622.734787] [     T250254] el0t_64_sync_handler (/home/user/De=
+vel/linux-next/arch/arm64/kernel/entry-common.c:958)
+> >       [  622.734790] [     T250254] el0t_64_sync (/home/user/Devel/linu=
+x-next/arch/arm64/kernel/entry.S:596)
+> >       [ 622.734792] [ T250254] Code: f2dffbe9 927abd08 cb141908 8b09011=
+4 (f9400688)
+> >       All code
+> >       =3D=3D=3D=3D=3D=3D=3D=3D
+> >       0:*     e9 fb df f2 08          jmp    0x8f2e000                <=
+-- trapping instruction
+> >       5:      bd 7a 92 08 19          mov    $0x1908927a,%ebp
+> >       a:      14 cb                   adc    $0xcb,%al
+> >       c:      14 01                   adc    $0x1,%al
+> >       e:      09 8b 88 06 40 f9       or     %ecx,-0x6bff978(%rbx)
+> >
+> >       Code starting with the faulting instruction
+> >       =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >       0:      88 06                   mov    %al,(%rsi)
+> >       2:      40 f9                   rex stc
+> >       [  622.734795] [ T250254] SMP: stopping secondary CPUs
+> >       [  622.735089] [ T250254] Starting crashdump kernel...
+> >       [  622.735091] [ T250254] Bye!
+>
 
