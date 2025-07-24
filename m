@@ -1,45 +1,39 @@
-Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975CD27147D
-	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 08:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E7C274642;
+	Thu, 24 Jul 2025 08:08:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753344470; cv=none; b=HahSEiBvYnPChXJJapNBNnUakkLN41rYAtjsoXr5ZBxkTOJM/fL6Mp5KYY/mp7PwEw2pXpXR3+llN45gR1wjJF9Ud/VFmW1ze+VI1ptuslu1dHG88ZPyg+joZhOLlWmanJgNKs05/IvVnKJCvpfzNK1aasoav5a/e9hGN+kw5Rs=
+	t=1753344521; cv=none; b=KAbJShkDUUhh9s+53DaQGp601+4gfbZxWp1cFo1CO/Kt2h8j9+ffa2v/I8iZ/4f2gao2TqAeG+7Nq/YFpBcG4fOG0u8dLSxorKDd0Ds25J702gp3SrPCksiMXWHmuw7gsj+sN22YwKTdQU8jHpHU+7NIbm+WZAtar+ctal6x8Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753344470; c=relaxed/simple;
-	bh=l4rVJPyXPjhl9kR709Yv98+UtFAP8HDfjurD0NrKeKk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cddpUOdVYBprAjeN3uy9MRfi9gZilOZxN0qiuZLWvdBxjG/FYzRXEb5cPNGUdOvisBDw1xVaDVYIrmj4+j9KAByRPc3cPM1o3iVuGT22khhCMCoBHqNX+LwH/jpMKqWm0rt4sOLijxquGQWn1p07ZX/RjLhXKLqgb1zxog4iU8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=15.184.224.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz10t1753344388t07e9d039
-X-QQ-Originating-IP: Z93FqpwtELrKytx7e4VX/k4td4axp0c9zsRa6ynSIQ0=
-Received: from lap-jiawenwu.trustnetic.com ( [60.186.23.165])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 24 Jul 2025 16:06:26 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 794691913130010900
-EX-QQ-RecipientCnt: 10
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v3 3/3] net: wangxun: support to use adaptive RX coalescing
-Date: Thu, 24 Jul 2025 16:05:48 +0800
-Message-Id: <20250724080548.23912-4-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20250724080548.23912-1-jiawenwu@trustnetic.com>
-References: <20250724080548.23912-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1753344521; c=relaxed/simple;
+	bh=32eMAaAFZX0xgC3CVuE+Q+yYsKnapcRGesxxo78CraY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=teA3rPVZPZNp2kJrxB6lVeVViT9j52Lcg8+yamzn+GQK/ACEUUGWKKfjiWynolzXMNS0yYjgzpuGDZYfEjkme4PEOuMpDpIsjnMrS4HyLmHqK4LAeywiX2xZkJ/SGmvFymiZsekrAzReNZ/Te2q/HExVeC/uIeM9CT0oMzAi1Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4bnk6w5rDkzGq1k;
+	Thu, 24 Jul 2025 16:04:24 +0800 (CST)
+Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9F672180B63;
+	Thu, 24 Jul 2025 16:08:35 +0800 (CST)
+Received: from huawei.com (10.175.124.27) by dggpemf500016.china.huawei.com
+ (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 24 Jul
+ 2025 16:08:34 +0800
+From: Wang Liang <wangliang74@huawei.com>
+To: <mst@redhat.com>, <jasowang@redhat.com>, <xuanzhuo@linux.alibaba.com>,
+	<eperezma@redhat.com>, <pabeni@redhat.com>, <davem@davemloft.net>,
+	<willemb@google.com>, <atenart@kernel.org>
+CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
+	<wangliang74@huawei.com>, <netdev@vger.kernel.org>,
+	<virtualization@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH net] net: check the minimum value of gso size in virtio_net_hdr_to_skb()
+Date: Thu, 24 Jul 2025 16:30:05 +0800
+Message-ID: <20250724083005.3918375-1-wangliang74@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,322 +41,102 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NamDlXnbz6wM9iJ/GZgk4BYLAw9qX2uuNtKEit4SHfxlDWZ0Bo0Njn6/
-	4i9eHkeY7WSKu8iwal3/hb7x6P00TMKWjEFpT2JRXv01d/N3j0k4MDweuMg3OZySm4eWhgg
-	OhLXGw8S1WvaNznq97ZBWFEMCBU4pYa9LbvXBz/5MqPhJi8jQv22UYthxpfRba3IthWgatE
-	bVYhBeHytdnufzz5+0rrvIvlcW7jR3cKcm2fjYISMXXXRbuUBaqN6BSmeTFfOQqW8Ckq6fz
-	MkoxPk3/IZ9XnxjSPiHngW+HRacQyrxkG6fYbNBu+jhk/Xs4jAFqVDr+Xb3fxjtkra78pzV
-	ZJ7PK5JlBQ1TE4T5n/yNeiPjwHW8UqOhPWS+lEBVyhXlKHd54/GrLvBTN1gEJurLON1eSlh
-	vbZPE7DoyDb9cl0TGEaRPelZdeCAbXOb16wWXHLPlWqJbV070nD/OJaBx3nouCiq7kBYpcZ
-	u7zFf3zYO3XD0UGlQ7cMi+756pUVIeLCNhTMPhMH587GZoKtaCp2+Kd5Onv/6B/GbVxISXC
-	lzHujz1xOhY0liUkf/0H2az/tsgW1LdqZ2GAsK050AXpKKGlIY8hzdF+KpZM1PYBkXaJuT7
-	vzvF4lyUHkJFi3OwppX+8V7y9gUN6rQlvELJ5P0qIwgcATLlbvUPpFD3q03VQPlA6Aif/zk
-	dlGgqncDcxNBt7gsKtC8WgzMhIjAjBI33vq2qktwAMZlPQDlPJvCOFWRLzwUqH2Sv7xXT17
-	KX1nozsLaX1PIYOIMvSLvDyz/r4SmAAbOow/tSYlTHMZIz0o8KSf2os6lMZ/keCU0N1iAmB
-	UJoylTatHQQiolg0lW4F65NdBxtjq+JKx0QFfek0usvVN40/eXhziN0hVqLu2tYyt0pBqfG
-	7Or3fcnPSNbtMl4lvJ8T560EUk5IM75jqJWBBP4W3gQ4UDq5ENbozE0rqP6doXoMD+J6xCA
-	m7XktDZJIefLTH3kNrAyx6CSWIScTad29IJkcWulrsOEOKYv2QKEAiAo/xhCZ/kyVwLgf6j
-	dtoFH2nO6FU/GByexb7PFF82bl9WuIC8xLzKUybALcI8HCGKsHpKVin5w2juz5DNOZ/mQJS
-	w==
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf500016.china.huawei.com (7.185.36.197)
 
-Support to turn on/off adaptive RX coalesce. When adaptive RX coalesce
-is on, use DIM algorithm for a dynamic interrupt moderation.
+When sending a packet with virtio_net_hdr to tun device, if the gso_type
+in virtio_net_hdr is SKB_GSO_UDP and the gso_size is less than udphdr
+size, below crash may happen.
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+  ------------[ cut here ]------------
+  kernel BUG at net/core/skbuff.c:4572!
+  Oops: invalid opcode: 0000 [#1] SMP NOPTI
+  CPU: 0 UID: 0 PID: 62 Comm: mytest Not tainted 6.16.0-rc7 #203 PREEMPT(voluntary)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  RIP: 0010:skb_pull_rcsum+0x8e/0xa0
+  Code: 00 00 5b c3 cc cc cc cc 8b 93 88 00 00 00 f7 da e8 37 44 38 00 f7 d8 89 83 88 00 00 00 48 8b 83 c8 00 00 00 5b c3 cc cc cc cc <0f> 0b 0f 0b 66 66 2e 0f 1f 84 00 000
+  RSP: 0018:ffffc900001fba38 EFLAGS: 00000297
+  RAX: 0000000000000004 RBX: ffff8880040c1000 RCX: ffffc900001fb948
+  RDX: ffff888003e6d700 RSI: 0000000000000008 RDI: ffff88800411a062
+  RBP: ffff8880040c1000 R08: 0000000000000000 R09: 0000000000000001
+  R10: ffff888003606c00 R11: 0000000000000001 R12: 0000000000000000
+  R13: ffff888004060900 R14: ffff888004050000 R15: ffff888004060900
+  FS:  000000002406d3c0(0000) GS:ffff888084a19000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000020000040 CR3: 0000000004007000 CR4: 00000000000006f0
+  Call Trace:
+   <TASK>
+   udp_queue_rcv_one_skb+0x176/0x4b0 net/ipv4/udp.c:2445
+   udp_queue_rcv_skb+0x155/0x1f0 net/ipv4/udp.c:2475
+   udp_unicast_rcv_skb+0x71/0x90 net/ipv4/udp.c:2626
+   __udp4_lib_rcv+0x433/0xb00 net/ipv4/udp.c:2690
+   ip_protocol_deliver_rcu+0xa6/0x160 net/ipv4/ip_input.c:205
+   ip_local_deliver_finish+0x72/0x90 net/ipv4/ip_input.c:233
+   ip_sublist_rcv_finish+0x5f/0x70 net/ipv4/ip_input.c:579
+   ip_sublist_rcv+0x122/0x1b0 net/ipv4/ip_input.c:636
+   ip_list_rcv+0xf7/0x130 net/ipv4/ip_input.c:670
+   __netif_receive_skb_list_core+0x21d/0x240 net/core/dev.c:6067
+   netif_receive_skb_list_internal+0x186/0x2b0 net/core/dev.c:6210
+   napi_complete_done+0x78/0x180 net/core/dev.c:6580
+   tun_get_user+0xa63/0x1120 drivers/net/tun.c:1909
+   tun_chr_write_iter+0x65/0xb0 drivers/net/tun.c:1984
+   vfs_write+0x300/0x420 fs/read_write.c:593
+   ksys_write+0x60/0xd0 fs/read_write.c:686
+   do_syscall_64+0x50/0x1c0 arch/x86/entry/syscall_64.c:63
+   </TASK>
+
+To trigger gso segment in udp_queue_rcv_skb(), we should also set option
+UDP_ENCAP_ESPINUDP to enable udp_sk(sk)->encap_rcv. When the encap_rcv
+hook return 1 in udp_queue_rcv_one_skb(), udp_csum_pull_header() will try
+to pull udphdr, but the skb size has been segmented to gso size, which
+leads to this crash.
+
+Only udp has this probloem. Add check for the minimum value of gso size in
+virtio_net_hdr_to_skb().
+
+Fixes: cf329aa42b66 ("udp: cope with UDP GRO packet misdirection")
+Fixes: 3d010c8031e3 ("udp: do not accept non-tunnel GSO skbs landing in a tunnel")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
 ---
- drivers/net/ethernet/wangxun/Kconfig          |   1 +
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   |  10 +-
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   | 100 +++++++++++++++++-
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |   4 +
- .../net/ethernet/wangxun/libwx/wx_vf_lib.c    |   2 +-
- .../net/ethernet/wangxun/libwx/wx_vf_lib.h    |   1 +
- .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |   3 +-
- .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |   3 +-
- 8 files changed, 119 insertions(+), 5 deletions(-)
+ include/linux/virtio_net.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/wangxun/Kconfig b/drivers/net/ethernet/wangxun/Kconfig
-index 424ec3212128..d138dea7d208 100644
---- a/drivers/net/ethernet/wangxun/Kconfig
-+++ b/drivers/net/ethernet/wangxun/Kconfig
-@@ -20,6 +20,7 @@ config LIBWX
- 	tristate
- 	depends on PTP_1588_CLOCK_OPTIONAL
- 	select PAGE_POOL
-+	select DIMLIB
- 	help
- 	Common library for Wangxun(R) Ethernet drivers.
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index 02a9f4dc594d..0533101642bd 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -157,11 +157,13 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 		u16 gso_size = __virtio16_to_cpu(little_endian, hdr->gso_size);
+ 		unsigned int nh_off = p_off;
+ 		struct skb_shared_info *shinfo = skb_shinfo(skb);
++		u16 min_gso_size = 0;
  
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index ebef99185bca..f2d888825659 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -303,6 +303,9 @@ int wx_get_coalesce(struct net_device *netdev,
- 	else
- 		ec->rx_coalesce_usecs = wx->rx_itr_setting >> 2;
+ 		switch (gso_type & ~SKB_GSO_TCP_ECN) {
+ 		case SKB_GSO_UDP:
+ 			/* UFO may not include transport header in gso_size. */
+ 			nh_off -= thlen;
++			min_gso_size = sizeof(struct udphdr) + 1;
+ 			break;
+ 		case SKB_GSO_UDP_L4:
+ 			if (!(hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM))
+@@ -172,6 +174,7 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 				return -EINVAL;
+ 			if (gso_type != SKB_GSO_UDP_L4)
+ 				return -EINVAL;
++			min_gso_size = sizeof(struct udphdr) + 1;
+ 			break;
+ 		case SKB_GSO_TCPV4:
+ 		case SKB_GSO_TCPV6:
+@@ -182,7 +185,7 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 		}
  
-+	if (wx->rx_itr_setting == 1)
-+		ec->use_adaptive_rx_coalesce = 1;
-+
- 	/* if in mixed tx/rx queues per vector mode, report only rx settings */
- 	if (wx->q_vector[0]->tx.count && wx->q_vector[0]->rx.count)
- 		return 0;
-@@ -363,10 +366,15 @@ int wx_set_coalesce(struct net_device *netdev,
- 	    (ec->tx_coalesce_usecs > (max_eitr >> 2)))
- 		return -EINVAL;
+ 		/* Kernel has a special handling for GSO_BY_FRAGS. */
+-		if (gso_size == GSO_BY_FRAGS)
++		if ((gso_size == GSO_BY_FRAGS) || (gso_size < min_gso_size))
+ 			return -EINVAL;
  
-+	if (ec->use_adaptive_rx_coalesce) {
-+		wx->rx_itr_setting = 1;
-+		return 0;
-+	}
-+
- 	if (ec->rx_coalesce_usecs > 1)
- 		wx->rx_itr_setting = ec->rx_coalesce_usecs << 2;
- 	else
--		wx->rx_itr_setting = ec->rx_coalesce_usecs;
-+		wx->rx_itr_setting = rx_itr_param;
- 
- 	if (wx->rx_itr_setting != 1)
- 		rx_itr_param = wx->rx_itr_setting;
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index 723785ef87bb..8699103b59e5 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -16,6 +16,7 @@
- #include "wx_lib.h"
- #include "wx_ptp.h"
- #include "wx_hw.h"
-+#include "wx_vf_lib.h"
- 
- /* Lookup table mapping the HW PTYPE to the bit field for decoding */
- static struct wx_dec_ptype wx_ptype_lookup[256] = {
-@@ -832,6 +833,36 @@ static bool wx_clean_tx_irq(struct wx_q_vector *q_vector,
- 	return !!budget;
- }
- 
-+static void wx_update_rx_dim_sample(struct wx_q_vector *q_vector)
-+{
-+	struct dim_sample sample = {};
-+
-+	dim_update_sample(q_vector->total_events,
-+			  q_vector->rx.total_packets,
-+			  q_vector->rx.total_bytes,
-+			  &sample);
-+
-+	net_dim(&q_vector->rx.dim, &sample);
-+}
-+
-+static void wx_update_tx_dim_sample(struct wx_q_vector *q_vector)
-+{
-+	struct dim_sample sample = {};
-+
-+	dim_update_sample(q_vector->total_events,
-+			  q_vector->tx.total_packets,
-+			  q_vector->tx.total_bytes,
-+			  &sample);
-+
-+	net_dim(&q_vector->tx.dim, &sample);
-+}
-+
-+static void wx_update_dim_sample(struct wx_q_vector *q_vector)
-+{
-+	wx_update_rx_dim_sample(q_vector);
-+	wx_update_tx_dim_sample(q_vector);
-+}
-+
- /**
-  * wx_poll - NAPI polling RX/TX cleanup routine
-  * @napi: napi struct with our devices info in it
-@@ -878,6 +909,8 @@ static int wx_poll(struct napi_struct *napi, int budget)
- 
- 	/* all work done, exit the polling mode */
- 	if (likely(napi_complete_done(napi, work_done))) {
-+		if (wx->rx_itr_setting == 1)
-+			wx_update_dim_sample(q_vector);
- 		if (netif_running(wx->netdev))
- 			wx_intr_enable(wx, WX_INTR_Q(q_vector->v_idx));
- 	}
-@@ -1591,6 +1624,62 @@ netdev_tx_t wx_xmit_frame(struct sk_buff *skb,
- }
- EXPORT_SYMBOL(wx_xmit_frame);
- 
-+static void wx_set_itr(struct wx_q_vector *q_vector)
-+{
-+	struct wx *wx = q_vector->wx;
-+	u32 new_itr;
-+
-+	/* use the smallest value of new ITR delay calculations */
-+	new_itr = min(q_vector->rx.itr, q_vector->tx.itr);
-+	new_itr <<= 2;
-+
-+	if (new_itr != q_vector->itr) {
-+		/* save the algorithm value here */
-+		q_vector->itr = new_itr;
-+
-+		if (wx->pdev->is_virtfn)
-+			wx_write_eitr_vf(q_vector);
-+		else
-+			wx_write_eitr(q_vector);
-+	}
-+}
-+
-+static void wx_rx_dim_work(struct work_struct *work)
-+{
-+	struct dim *dim = container_of(work, struct dim, work);
-+	struct dim_cq_moder rx_moder;
-+	struct wx_ring_container *rx;
-+	struct wx_q_vector *q_vector;
-+
-+	rx = container_of(dim, struct wx_ring_container, dim);
-+
-+	rx_moder = net_dim_get_rx_moderation(dim->mode, dim->profile_ix);
-+	rx->itr = rx_moder.usec;
-+
-+	q_vector = container_of(rx, struct wx_q_vector, rx);
-+	wx_set_itr(q_vector);
-+
-+	dim->state = DIM_START_MEASURE;
-+}
-+
-+static void wx_tx_dim_work(struct work_struct *work)
-+{
-+	struct dim *dim = container_of(work, struct dim, work);
-+	struct dim_cq_moder tx_moder;
-+	struct wx_ring_container *tx;
-+	struct wx_q_vector *q_vector;
-+
-+	tx = container_of(dim, struct wx_ring_container, dim);
-+
-+	tx_moder = net_dim_get_tx_moderation(dim->mode, dim->profile_ix);
-+	tx->itr = tx_moder.usec;
-+
-+	q_vector = container_of(tx, struct wx_q_vector, tx);
-+	wx_set_itr(q_vector);
-+
-+	dim->state = DIM_START_MEASURE;
-+}
-+
- void wx_napi_enable_all(struct wx *wx)
- {
- 	struct wx_q_vector *q_vector;
-@@ -1598,6 +1687,11 @@ void wx_napi_enable_all(struct wx *wx)
- 
- 	for (q_idx = 0; q_idx < wx->num_q_vectors; q_idx++) {
- 		q_vector = wx->q_vector[q_idx];
-+
-+		INIT_WORK(&q_vector->rx.dim.work, wx_rx_dim_work);
-+		INIT_WORK(&q_vector->tx.dim.work, wx_tx_dim_work);
-+		q_vector->rx.dim.mode = DIM_CQ_PERIOD_MODE_START_FROM_CQE;
-+		q_vector->tx.dim.mode = DIM_CQ_PERIOD_MODE_START_FROM_CQE;
- 		napi_enable(&q_vector->napi);
- 	}
- }
-@@ -1611,6 +1705,8 @@ void wx_napi_disable_all(struct wx *wx)
- 	for (q_idx = 0; q_idx < wx->num_q_vectors; q_idx++) {
- 		q_vector = wx->q_vector[q_idx];
- 		napi_disable(&q_vector->napi);
-+		cancel_work_sync(&q_vector->rx.dim.work);
-+		cancel_work_sync(&q_vector->tx.dim.work);
- 	}
- }
- EXPORT_SYMBOL(wx_napi_disable_all);
-@@ -2197,8 +2293,10 @@ irqreturn_t wx_msix_clean_rings(int __always_unused irq, void *data)
- 	struct wx_q_vector *q_vector = data;
- 
- 	/* EIAM disabled interrupts (on this vector) for us */
--	if (q_vector->rx.ring || q_vector->tx.ring)
-+	if (q_vector->rx.ring || q_vector->tx.ring) {
- 		napi_schedule_irqoff(&q_vector->napi);
-+		q_vector->total_events++;
-+	}
- 
- 	return IRQ_HANDLED;
- }
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 5c52a1db4024..a9572c8028b8 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -10,6 +10,7 @@
- #include <linux/netdevice.h>
- #include <linux/if_vlan.h>
- #include <linux/phylink.h>
-+#include <linux/dim.h>
- #include <net/ip.h>
- 
- #define WX_NCSI_SUP                             0x8000
-@@ -1034,6 +1035,7 @@ struct wx_ring_container {
- 	unsigned int total_packets;     /* total packets processed this int */
- 	u8 count;                       /* total number of rings in vector */
- 	u8 itr;                         /* current ITR setting for ring */
-+	struct dim dim;                 /* data for net_dim algorithm */
- };
- struct wx_ring {
- 	struct wx_ring *next;           /* pointer to next ring in q_vector */
-@@ -1090,6 +1092,8 @@ struct wx_q_vector {
- 	struct napi_struct napi;
- 	struct rcu_head rcu;    /* to avoid race with update stats on free */
- 
-+	u16 total_events;       /* number of interrupts processed */
-+
- 	char name[IFNAMSIZ + 17];
- 
- 	/* for dynamic allocation of rings associated with this q_vector */
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
-index 5d48df7a849f..7bcf7e90883b 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
-@@ -10,7 +10,7 @@
- #include "wx_vf.h"
- #include "wx_vf_lib.h"
- 
--static void wx_write_eitr_vf(struct wx_q_vector *q_vector)
-+void wx_write_eitr_vf(struct wx_q_vector *q_vector)
- {
- 	struct wx *wx = q_vector->wx;
- 	int v_idx = q_vector->v_idx;
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.h b/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.h
-index 43ea126b79eb..a4bd23c92800 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.h
-@@ -4,6 +4,7 @@
- #ifndef _WX_VF_LIB_H_
- #define _WX_VF_LIB_H_
- 
-+void wx_write_eitr_vf(struct wx_q_vector *q_vector);
- void wx_configure_msix_vf(struct wx *wx);
- int wx_write_uc_addr_list_vf(struct net_device *netdev);
- void wx_setup_psrtype_vf(struct wx *wx);
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
-index 7e2d9ec38a30..2ca127a7aa77 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
-@@ -115,7 +115,8 @@ static int ngbe_set_channels(struct net_device *dev,
- 
- static const struct ethtool_ops ngbe_ethtool_ops = {
- 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
--				     ETHTOOL_COALESCE_TX_MAX_FRAMES_IRQ,
-+				     ETHTOOL_COALESCE_TX_MAX_FRAMES_IRQ |
-+				     ETHTOOL_COALESCE_USE_ADAPTIVE_RX,
- 	.get_drvinfo		= wx_get_drvinfo,
- 	.get_link		= ethtool_op_get_link,
- 	.get_link_ksettings	= wx_get_link_ksettings,
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-index a4753402660e..86f3c106f1ed 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-@@ -538,7 +538,8 @@ static int txgbe_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd)
- 
- static const struct ethtool_ops txgbe_ethtool_ops = {
- 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
--				     ETHTOOL_COALESCE_TX_MAX_FRAMES_IRQ,
-+				     ETHTOOL_COALESCE_TX_MAX_FRAMES_IRQ |
-+				     ETHTOOL_COALESCE_USE_ADAPTIVE_RX,
- 	.get_drvinfo		= wx_get_drvinfo,
- 	.nway_reset		= wx_nway_reset,
- 	.get_link		= ethtool_op_get_link,
+ 		/* Too small packets are not really GSO ones. */
 -- 
-2.48.1
+2.34.1
 
