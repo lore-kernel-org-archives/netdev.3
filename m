@@ -1,439 +1,146 @@
-Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734932ECEA4
-	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 18:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4B02116F6
+	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 18:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753382630; cv=none; b=EDaZHaSBXUaZXd0/8yXVHe0pYChmSY9veNCoc92fWUrnRcqcV0z3+lOe8RgFKvRadet6rVVBSFVb/9XzmYyT6S8JpjW3C4MOifiJscYYp+3FHq69bJkRRaFDWxh6jw/pku1uB3V0Wf5w+Spc0x9KfA1nw70RXxJ0l+PTscKVWik=
+	t=1753383495; cv=none; b=hjVYePK/glvdRFkohb4yI/2a6glIYU3XdSIydh4bh++O90jhlXekWnwHjX3NQLGftzP6a7mccr782pAIlyXxVJoLdJtNbuoemGR4S3n7LvU07lvp0ZcIDGHZhWILjKslTua4Qf2s8oooP7kOUHBow3Y80/mZ1C8RSGEGEM+EReQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753382630; c=relaxed/simple;
-	bh=EEX39/j7B6k8W8+hT6an4wCfWfKo029A5abaJnDxx04=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DMcDL4v7KR+eQang/hLEI8wdDdq6xuCjGcvuoarvt+SP4E8E+om5G9pyNXgR3qJpCecNVaaynXcmdOcAXd6A4W0Adazp2638vOEapywG0+UPGkPrpgXIIdQV83y/3mCqf0N1+Ydnmb4r2fhTgVFg/eEfQywpIgYoM/oeBP660dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=poOlmSxX; arc=none smtp.client-ip=171.64.64.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+	s=arc-20240116; t=1753383495; c=relaxed/simple;
+	bh=Y9aWs3V4mdlrimYY7VLG+s6NAwFX8HPz+yeIc6DRkLU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=IjtLGEcXGiHL6YFAEzkUDN7Jz12kwzNlLI85EFWOESa6PZEHsFUb1Tgy4TgMHxIJm6B8Tp0Kwda5pq5bZ9C+dl0VCCF0nqvPYECQlee/+dZcadoQIOPh9yxMRgZ1tdrYPKPtLFw7KancFhd+4arrfdFa9+3WIBwElmIYq4dM/+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fZoC3xJd; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="poOlmSxX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=A0V075tOnL8cRHEjY+iYM84ayx0v1ME6mJYqwGUGNao=; t=1753382628; x=1754246628; 
-	b=poOlmSxX3jq0iJytSuLe7XaQX1sDEaE8knxtxk4W4cKeUkkQJCdKzXqbWmt3BFbW8s+2eJiLYFk
-	BGVMxBoiP6qriYfch5GVhYQNtkMJP7GhX3uRss4ULCUu1kRMaeZuk8x+bMZ/Msvax+PiIJh+/GNPK
-	Ptgc2deyPp47mJ1PpNfBfp3HdghiN7ahnGILyRPnhJfYXW8SIfpjjUUzBDZeGij7Z2kmlChsioc9o
-	xzon+rqez/G/7OOL8BBx2+dBZBV//9BOeNBBqQDclpsj0ekC/rb9qZyJpuOtsD9xQmG1PibYyrq3y
-	0K9pSi3M5xRB3fO9TLFnEnhCXepRTLOADRYg==;
-Received: from 70-228-78-207.lightspeed.sntcca.sbcglobal.net ([70.228.78.207]:55641 helo=localhost.localdomain)
-	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ouster@cs.stanford.edu>)
-	id 1uf0sV-0006eP-Tt; Thu, 24 Jul 2025 11:41:17 -0700
-From: John Ousterhout <ouster@cs.stanford.edu>
-To: netdev@vger.kernel.org
-Cc: pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [PATCH net-next v12 02/15] net: homa: create homa_wire.h
-Date: Thu, 24 Jul 2025 11:40:35 -0700
-Message-ID: <20250724184050.3130-3-ouster@cs.stanford.edu>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20250724184050.3130-1-ouster@cs.stanford.edu>
-References: <20250724184050.3130-1-ouster@cs.stanford.edu>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fZoC3xJd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753383494; x=1784919494;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=Y9aWs3V4mdlrimYY7VLG+s6NAwFX8HPz+yeIc6DRkLU=;
+  b=fZoC3xJdDVMwj+TrdFm7lfhY2xDJbGLu1/wHF0ucpZAUuwyH0FlaSaO1
+   +EtJNGzPJLGIjd4m1HWZrodcLcKLyif8W6mthGW5O9rKe+EP7IoT0sNXv
+   MnRCnoimxMUdut1HhZwit0jyY/eB2eIcsxAbax53Gyp2xgU8rxK2o7lPw
+   /vHyfaX+43DQNY0kqqYrLXF7PEiNiAWmCLUWCIP5HeZ9G5951OyOeq8Qt
+   qN/aogg/TzoKZ7SYADIgSYCKjFhoLugKEgtJcN4uwlIDBOLdVPkYzwIiZ
+   psPVCefohi2psmOlEbGrXpzPZnFv/smGCciF1UieDH02i6SdFeOpENxTj
+   g==;
+X-CSE-ConnectionGUID: c7xlnFYYT9W+EwXvPrxjUw==
+X-CSE-MsgGUID: zcstDoPoTt+/tgMYd+2yGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="67067847"
+X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
+   d="scan'208";a="67067847"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 11:58:13 -0700
+X-CSE-ConnectionGUID: 7YvJ8rIZTDWw0Xg7N4NJZQ==
+X-CSE-MsgGUID: WPk5humMQtic2g9z2JfrzA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,337,1744095600"; 
+   d="scan'208";a="191339298"
+Received: from msatwood-mobl.amr.corp.intel.com (HELO vcostago-mobl3) ([10.124.223.210])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 11:58:12 -0700
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+To: Takamitsu Iwai <takamitz@amazon.co.jp>, Jamal Hadi Salim
+ <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko
+ <jiri@resnulli.us>
+Cc: netdev@vger.kernel.org, Kuniyuki Iwashima <kuniyu@google.com>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
+ takamitz@amazon.com, Takamitsu Iwai <takamitz@amazon.co.jp>,
+ syzbot+398e1ee4ca2cac05fddb@syzkaller.appspotmail.com
+Subject: Re: [PATCH v1 net] net/sched: taprio: enforce minimum value for
+ picos_per_byte
+In-Reply-To: <20250724181345.40961-1-takamitz@amazon.co.jp>
+References: <20250724181345.40961-1-takamitz@amazon.co.jp>
+Date: Thu, 24 Jul 2025 11:58:11 -0700
+Message-ID: <87ecu5e7r0.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0
-X-Scan-Signature: 6a149f75f046657cdb401126c5b86f6d
+Content-Type: text/plain
 
-This file defines the on-the-wire packet formats for Homa.
+Takamitsu Iwai <takamitz@amazon.co.jp> writes:
 
-Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
+> Syzbot reported a WARNING in taprio_get_start_time().
+>
+> When link speed is 470589 or greater, q->picos_per_byte becomes too
+> small, causing length_to_duration(q, ETH_ZLEN) to return zero.
+>
 
----
-Changes for v11:
-* Rework the mechanism for waking up RPCs that stalled waiting for
-  buffer pool space
+When I chose the unit picoseconds, I remember thinking "nobody would
+consider using taprio with over 400Gbs" :-)
 
-Changes for v10:
-* Replace __u16 with u16, __u8 with u8, etc.
-* Refactor resend mechanism
+> This zero value leads to validation failures in fill_sched_entry() and
+> parse_taprio_schedule(), allowing arbitrary values to be assigned to
+> entry->interval and cycle_time. As a result, sched->cycle can become zero.
+>
+> Since SPEED_800000 is the largest defined speed in
+> include/uapi/linux/ethtool.h, this issue can occur in realistic scenarios.
+>
+> To ensure length_to_duration() returns a non-zero value for minimum-sized
+> Ethernet frames (ETH_ZLEN = 60), picos_per_byte must be at least 17
+> (60 * 17 > PSEC_PER_NSEC which is 1000).
+>
+> This patch enforces a minimum value of 17 for picos_per_byte when the
+> calculated value would be lower.
+>
+> Fixes: 68ce6688a5ba ("net: sched: taprio: Fix potential integer overflow in taprio_set_picos_per_byte")
+> Reported-by: syzbot+398e1ee4ca2cac05fddb@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=398e1ee4ca2cac05fddb
+> Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
+> ---
+>  net/sched/sch_taprio.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+> index 2b14c81a87e5..bcfdb9446657 100644
+> --- a/net/sched/sch_taprio.c
+> +++ b/net/sched/sch_taprio.c
+> @@ -43,6 +43,12 @@ static struct static_key_false taprio_have_working_mqprio;
+>  #define TAPRIO_SUPPORTED_FLAGS \
+>  	(TCA_TAPRIO_ATTR_FLAG_TXTIME_ASSIST | TCA_TAPRIO_ATTR_FLAG_FULL_OFFLOAD)
+>  #define TAPRIO_FLAGS_INVALID U32_MAX
+> +/* Minimum value for picos_per_byte to ensure non-zero duration
+> + * for minimum-sized Ethernet frames (ETH_ZLEN = 60).
+> + * 60 * 17 > PSEC_PER_NSEC (1000)
+> + */
+> +#define TAPRIO_PICOS_PER_BYTE_MIN 17
+> +
+>  
+>  struct sched_entry {
+>  	/* Durations between this GCL entry and the GCL entry where the
+> @@ -1299,7 +1305,7 @@ static void taprio_set_picos_per_byte(struct net_device *dev,
+>  		speed = ecmd.base.speed;
+>  
+>  skip:
+> -	picos_per_byte = (USEC_PER_SEC * 8) / speed;
+> +	picos_per_byte = max((USEC_PER_SEC * 8) / speed,
+>  TAPRIO_PICOS_PER_BYTE_MIN);
 
-Changes for v9:
-* Eliminate use of _Static_assert
-* Various name improvements (e.g. use "alloc" instead of "new" for functions
-  that allocate memory, Replace BOGUS in enum homa_packet_type with MAX_OP)
-* Remove HOMA_IPV6_HEADER_LENGTH and similar defs, use sizeof(ipv6hdr) instead
+Thinking if it's worth displaying an error to the user here? something
+like "Linkspeed %d is greater than what can be tracked, schedule may be
+inacurate". I am worried that at this point, taprio won't be able to
+obey the configured schedule and the user should know about that.
 
-Changes for v7:
-* Rename UNKNOWN packet type to RPC_UNKNOWN
-* Use u64 and __u64 properly
----
- net/homa/homa_wire.h | 345 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 345 insertions(+)
- create mode 100644 net/homa/homa_wire.h
+If we see people complaining about it in the real world, we can change
+the units, or do something else.
 
-diff --git a/net/homa/homa_wire.h b/net/homa/homa_wire.h
-new file mode 100644
-index 000000000000..9827d03eca1a
---- /dev/null
-+++ b/net/homa/homa_wire.h
-@@ -0,0 +1,345 @@
-+/* SPDX-License-Identifier: BSD-2-Clause */
-+
-+/* This file defines the on-the-wire format of Homa packets. */
-+
-+#ifndef _HOMA_WIRE_H
-+#define _HOMA_WIRE_H
-+
-+#include <linux/skbuff.h>
-+#include <net/tcp.h>
-+
-+/* Defines the possible types of Homa packets.
-+ *
-+ * See the xxx_header structs below for more information about each type.
-+ */
-+enum homa_packet_type {
-+	DATA               = 0x10,
-+	RESEND             = 0x12,
-+	RPC_UNKNOWN        = 0x13,
-+	BUSY               = 0x14,
-+	NEED_ACK           = 0x17,
-+	ACK                = 0x18,
-+	MAX_OP             = 0x18,
-+	/* If you add a new type here, you must also do the following:
-+	 * 1. Change MAX_OP so it is the highest valid opcode
-+	 * 2. Add support for the new opcode in homa_print_packet,
-+	 *    homa_print_packet_short, homa_symbol_for_type, and mock_skb_alloc.
-+	 * 3. Add the header length to header_lengths in homa_plumbing.c.
-+	 */
-+};
-+
-+/**
-+ * define HOMA_SKB_EXTRA - How many bytes of additional space to allow at the
-+ * beginning of each sk_buff, before the Homa header. This includes room for
-+ * either an IPV4 or IPV6 header, Ethernet header, VLAN header, etc. This is
-+ * a bit of an overestimate, since it also includes space for a TCP header.
-+ */
-+#define HOMA_SKB_EXTRA MAX_TCP_HEADER
-+
-+/**
-+ * define HOMA_ETH_FRAME_OVERHEAD - Additional overhead bytes for each
-+ * Ethernet packet that are not included in the packet header (preamble,
-+ * start frame delimiter, CRC, and inter-packet gap).
-+ */
-+#define HOMA_ETH_FRAME_OVERHEAD 24
-+
-+/**
-+ * define HOMA_ETH_OVERHEAD - Number of bytes per Ethernet packet for Ethernet
-+ * header, CRC, preamble, and inter-packet gap.
-+ */
-+#define HOMA_ETH_OVERHEAD (18 + HOMA_ETH_FRAME_OVERHEAD)
-+
-+/**
-+ * define HOMA_MIN_PKT_LENGTH - Every Homa packet must be padded to at least
-+ * this length to meet Ethernet frame size limitations. This number includes
-+ * Homa headers and data, but not IP or Ethernet headers.
-+ */
-+#define HOMA_MIN_PKT_LENGTH 26
-+
-+/**
-+ * define HOMA_MAX_HEADER - Number of bytes in the largest Homa header.
-+ */
-+#define HOMA_MAX_HEADER 90
-+
-+/**
-+ * struct homa_common_hdr - Wire format for the first bytes in every Homa
-+ * packet. This must (mostly) match the format of a TCP header to enable
-+ * Homa packets to actually be transmitted as TCP packets (and thereby
-+ * take advantage of TSO and other features).
-+ */
-+struct homa_common_hdr {
-+	/**
-+	 * @sport: Port on source machine from which packet was sent.
-+	 * Must be in the same position as in a TCP header.
-+	 */
-+	__be16 sport;
-+
-+	/**
-+	 * @dport: Port on destination that is to receive packet. Must be
-+	 * in the same position as in a TCP header.
-+	 */
-+	__be16 dport;
-+
-+	/**
-+	 * @sequence: corresponds to the sequence number field in TCP headers;
-+	 * used in DATA packets to hold the offset in the message of the first
-+	 * byte of data. However, when TSO is used without TCP hijacking, this
-+	 * value will only be correct in the first segment of a GSO packet.
-+	 */
-+	__be32 sequence;
-+
-+	/**
-+	 * @ack: Corresponds to the high-order bits of the acknowledgment
-+	 * field in TCP headers; not used by Homa.
-+	 */
-+	char ack[3];
-+
-+	/**
-+	 * @type: Homa packet type (one of the values of the homa_packet_type
-+	 * enum). Corresponds to the low-order byte of the ack in TCP.
-+	 */
-+	u8 type;
-+
-+	/**
-+	 * @doff: High order 4 bits holds the number of 4-byte chunks in a
-+	 * homa_data_hdr (low-order bits unused). Used only for DATA packets;
-+	 * must be in the same position as the data offset in a TCP header.
-+	 * Used by TSO to determine where the replicated header portion ends.
-+	 */
-+	u8 doff;
-+
-+	/** @reserved1: Not used (corresponds to TCP flags). */
-+	u8 reserved1;
-+
-+	/**
-+	 * @window: Corresponds to the window field in TCP headers. Not used
-+	 * by HOMA.
-+	 */
-+	__be16 window;
-+
-+	/**
-+	 * @checksum: Not used by Homa, but must occupy the same bytes as
-+	 * the checksum in a TCP header (TSO may modify this?).
-+	 */
-+	__be16 checksum;
-+
-+	/** @reserved2: Not used (corresponds to TCP urgent field). */
-+	__be16 reserved2;
-+
-+	/**
-+	 * @sender_id: the identifier of this RPC as used on the sender (i.e.,
-+	 * if the low-order bit is set, then the sender is the server for
-+	 * this RPC).
-+	 */
-+	__be64 sender_id;
-+} __packed;
-+
-+/**
-+ * struct homa_ack - Identifies an RPC that can be safely deleted by its
-+ * server. After sending the response for an RPC, the server must retain its
-+ * state for the RPC until it knows that the client has successfully
-+ * received the entire response. An ack indicates this. Clients will
-+ * piggyback acks on future data packets, but if a client doesn't send
-+ * any data to the server, the server will eventually request an ack
-+ * explicitly with a NEED_ACK packet, in which case the client will
-+ * return an explicit ACK.
-+ */
-+struct homa_ack {
-+	/**
-+	 * @client_id: The client's identifier for the RPC. 0 means this ack
-+	 * is invalid.
-+	 */
-+	__be64 client_id;
-+
-+	/** @server_port: The server-side port for the RPC. */
-+	__be16 server_port;
-+} __packed;
-+
-+/* struct homa_data_hdr - Contains data for part or all of a Homa message.
-+ * An incoming packet consists of a homa_data_hdr followed by message data.
-+ * An outgoing packet can have this simple format as well, or it can be
-+ * structured as a GSO packet with the following format:
-+ *
-+ *    |-----------------------|
-+ *    |                       |
-+ *    |     data_header       |
-+ *    |                       |
-+ *    |---------------------- |
-+ *    |                       |
-+ *    |                       |
-+ *    |     segment data      |
-+ *    |                       |
-+ *    |                       |
-+ *    |-----------------------|
-+ *    |      seg_header       |
-+ *    |-----------------------|
-+ *    |                       |
-+ *    |                       |
-+ *    |     segment data      |
-+ *    |                       |
-+ *    |                       |
-+ *    |-----------------------|
-+ *    |      seg_header       |
-+ *    |-----------------------|
-+ *    |                       |
-+ *    |                       |
-+ *    |     segment data      |
-+ *    |                       |
-+ *    |                       |
-+ *    |-----------------------|
-+ *
-+ * TSO will not adjust @homa_common_hdr.sequence in the segments, so Homa
-+ * sprinkles correct offsets (in homa_seg_hdrs) throughout the segment data;
-+ * TSO/GSO will include a different homa_seg_hdr in each generated packet.
-+ */
-+
-+struct homa_seg_hdr {
-+	/**
-+	 * @offset: Offset within message of the first byte of data in
-+	 * this segment.
-+	 */
-+	__be32 offset;
-+} __packed;
-+
-+struct homa_data_hdr {
-+	struct homa_common_hdr common;
-+
-+	/** @message_length: Total #bytes in the message. */
-+	__be32 message_length;
-+
-+	__be32 reserved1;
-+
-+	/** @ack: If the @client_id field of this is nonzero, provides info
-+	 * about an RPC that the recipient can now safely free. Note: in
-+	 * TSO packets this will get duplicated in each of the segments;
-+	 * in order to avoid repeated attempts to ack the same RPC,
-+	 * homa_gro_receive will clear this field in all segments but the
-+	 * first.
-+	 */
-+	struct homa_ack ack;
-+
-+	__be16 reserved2;
-+
-+	/**
-+	 * @retransmit: 1 means this packet was sent in response to a RESEND
-+	 * (it has already been sent previously).
-+	 */
-+	u8 retransmit;
-+
-+	char pad[3];
-+
-+	/** @seg: First of possibly many segments. */
-+	struct homa_seg_hdr seg;
-+} __packed;
-+
-+/**
-+ * homa_data_len() - Returns the total number of bytes in a DATA packet
-+ * after the homa_data_hdr. Note: if the packet is a GSO packet, the result
-+ * may include metadata as well as packet data.
-+ * @skb:   Incoming data packet
-+ * Return: see above
-+ */
-+static inline int homa_data_len(struct sk_buff *skb)
-+{
-+	return skb->len - skb_transport_offset(skb) -
-+			sizeof(struct homa_data_hdr);
-+}
-+
-+/**
-+ * struct homa_resend_hdr - Wire format for RESEND packets.
-+ *
-+ * A RESEND is sent by the receiver when it believes that message data may
-+ * have been lost in transmission (or if it is concerned that the sender may
-+ * have crashed). The receiver should resend the specified portion of the
-+ * message, even if it already sent it previously.
-+ */
-+struct homa_resend_hdr {
-+	/** @common: Fields common to all packet types. */
-+	struct homa_common_hdr common;
-+
-+	/**
-+	 * @offset: Offset within the message of the first byte of data that
-+	 * should be retransmitted.
-+	 */
-+	__be32 offset;
-+
-+	/**
-+	 * @length: Number of bytes of data to retransmit. -1 means no data
-+	 * has been received for the message, so everything sent previously
-+	 * should be retransmitted.
-+	 */
-+	__be32 length;
-+
-+} __packed;
-+
-+/**
-+ * struct homa_rpc_unknown_hdr - Wire format for RPC_UNKNOWN packets.
-+ *
-+ * An RPC_UNKNOWN packet is sent by either server or client when it receives a
-+ * packet for an RPC that is unknown to it. When a client receives an
-+ * RPC_UNKNOWN packet it will typically restart the RPC from the beginning;
-+ * when a server receives an RPC_UNKNOWN packet it will typically discard its
-+ * state for the RPC.
-+ */
-+struct homa_rpc_unknown_hdr {
-+	/** @common: Fields common to all packet types. */
-+	struct homa_common_hdr common;
-+} __packed;
-+
-+/**
-+ * struct homa_busy_hdr - Wire format for BUSY packets.
-+ *
-+ * These packets tell the recipient that the sender is still alive (even if
-+ * it isn't sending data expected by the recipient).
-+ */
-+struct homa_busy_hdr {
-+	/** @common: Fields common to all packet types. */
-+	struct homa_common_hdr common;
-+} __packed;
-+
-+/**
-+ * struct homa_need_ack_hdr - Wire format for NEED_ACK packets.
-+ *
-+ * These packets ask the recipient (a client) to return an ACK message if
-+ * the packet's RPC is no longer active.
-+ */
-+struct homa_need_ack_hdr {
-+	/** @common: Fields common to all packet types. */
-+	struct homa_common_hdr common;
-+} __packed;
-+
-+/**
-+ * struct homa_ack_hdr - Wire format for ACK packets.
-+ *
-+ * These packets are sent from a client to a server to indicate that
-+ * a set of RPCs is no longer active on the client, so the server can
-+ * free any state it may have for them.
-+ */
-+struct homa_ack_hdr {
-+	/** @common: Fields common to all packet types. */
-+	struct homa_common_hdr common;
-+
-+	/** @num_acks: Number of (leading) elements in @acks that are valid. */
-+	__be16 num_acks;
-+
-+#define HOMA_MAX_ACKS_PER_PKT 5
-+	/** @acks: Info about RPCs that are no longer active. */
-+	struct homa_ack acks[HOMA_MAX_ACKS_PER_PKT];
-+} __packed;
-+
-+/**
-+ * homa_local_id(): given an RPC identifier from an input packet (which
-+ * is network-encoded), return the decoded id we should use for that
-+ * RPC on this machine.
-+ * @sender_id:  RPC id from an incoming packet, such as h->common.sender_id
-+ * Return: see above
-+ */
-+static inline u64 homa_local_id(__be64 sender_id)
-+{
-+	/* If the client bit was set on the sender side, it needs to be
-+	 * removed here, and conversely.
-+	 */
-+	return be64_to_cpu(sender_id) ^ 1;
-+}
-+
-+#endif /* _HOMA_WIRE_H */
+>  
+>  	atomic64_set(&q->picos_per_byte, picos_per_byte);
+>  	netdev_dbg(dev, "taprio: set %s's picos_per_byte to: %lld, linkspeed: %d\n",
+> -- 
+> 2.39.5 (Apple Git-154)
+>
+
+
+Cheers,
 -- 
-2.43.0
-
+Vinicius
