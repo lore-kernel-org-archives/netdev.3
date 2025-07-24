@@ -1,1302 +1,263 @@
-Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451772ED146
-	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 18:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E63A2ED14B
+	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 18:41:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753382517; cv=none; b=JS2UhrQCO3RZihGPlj3PfYHN7h14xr08cbHSuNtjanOJ9pLRPyaKiGRNpN0hXfT5vHqsHb/CnJhcFVP6AtxoGHZvxhVT+yYLqrTQyQFV3NGc0RX5Vfkjcug5UhKdeGudLae2JBqy0g+4/SUznki4aNzo3oGWIeqzTGJ0FuE1TCs=
+	t=1753382519; cv=none; b=E4BkwL3MnjbNQyAyULhUJBua0PqKit7H6MShyyiCZ7xUKrTcNopnnFrVXAQxz8Hhg7+0vIMh7Q8P2oyEzEIVnAYyBdQLaU1BONZ/k0SB7hGSyMXwp2UiQCvs25YGAjIMNwfn91bSlxtAmpCO3XU37t3/ECKn4Bbyjbhlomc2uLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753382517; c=relaxed/simple;
-	bh=VsQVoWW2A33b2t4StdmBqjcHPKlnsSnNRSvrwyfV1fw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mhdt15/LhV2xGkG9+sE1gdpLKR54wG6mY+BHAnPc2O5MGW6lTFX0YAq0R9MfoIyNpG0cupE3Xl1WRlXVcyFsAXD9icPb7NBJOX5x6Ko+psOWl/kRLnvLc+VRqD6XGXUjLw6R5sgurn1HqIVFwzczCGmYjVfYeDW1GfRIORrvINo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=W5IrXg+T; arc=none smtp.client-ip=171.64.64.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="W5IrXg+T"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=xMRaUfywk63WUAMlgFtabON5xMdAjFkXPsz+76v/mbY=; t=1753382514; x=1754246514; 
-	b=W5IrXg+Th1adOriPpV7b2Q6SmauIALBV36n5W6xIvZtvh4FgEWXIjKHRuqFwIlq9D0OK1DUmbuK
-	V50EXF5WO8TD7HieSWaTOiQkejMlLYGbIGjU3dsRevEsRhUKtd/AupHEZmOSm1rdHXJoT+N+QddCi
-	s0mmAa6FMvH7BdhI+i+vRzRYd49rsDlA+fswWv04SIVShrvFLg+DtFvuJcsjQPlOCC2F7E8P9U5fa
-	M9Ef7QdbD7315gn2PWfC7QKNjxSSBT4WJFvggjWKWRDjt6nSqi7SM1D2rydvisRTZbiGXU1wz34ld
-	NMp23FD4+Ge8/UVRgXXsFQ2KqYo+oukomtqA==;
-Received: from 70-228-78-207.lightspeed.sntcca.sbcglobal.net ([70.228.78.207]:55641 helo=localhost.localdomain)
-	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ouster@cs.stanford.edu>)
-	id 1uf0t5-0006eP-CT; Thu, 24 Jul 2025 11:41:54 -0700
-From: John Ousterhout <ouster@cs.stanford.edu>
-To: netdev@vger.kernel.org
-Cc: pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [PATCH net-next v12 14/15] net: homa: create homa_plumbing.c
-Date: Thu, 24 Jul 2025 11:40:47 -0700
-Message-ID: <20250724184050.3130-15-ouster@cs.stanford.edu>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20250724184050.3130-1-ouster@cs.stanford.edu>
-References: <20250724184050.3130-1-ouster@cs.stanford.edu>
+	s=arc-20240116; t=1753382519; c=relaxed/simple;
+	bh=hERknxBcWWnFQ84J9AwE+rNe3wb+WKuoIV95+X0IlyQ=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=SnQ2sYvynVVBkCa2rZleC6Q+u5xvzTPvL3pJqPuLiwPb/GG0gKRmPb4YIj4xlKAcIhIFb1JYATvAteQms6SqIMaS59n0DLlxZEz7gJwqFM31WCZW7WZNZU0reG//2O9K2xg776qEXHjyIQFFKHbYcIFpSkbR0LTu/U/3m+cibnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-87c18a52977so137498939f.1
+        for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 11:41:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753382517; x=1753987317;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4+hRJWTLYCAZ+QMZ8mq5KYG70/9itScrLW1J8lDBvCc=;
+        b=Zior5ou2AYZ074xzU+9rHy5EUssHDqApWTt8oGjNA0GHNQLPVF0AA9Ns6yd15tvO1g
+         5BQGpzNmtXdZ0EcAqj7wZWCcNM/bigdF2y4OU4SVQocR5wAWqSYVx4M9CCr1AEXoMbF4
+         5V1Egl6T/xWURAugSPs56mhrCZ6QFAPkbJTOQBwOGVPLn+GuVoSIpkgpTCtOaGKKhZV4
+         AoeqHT8zkeXGbB9iu1fX2kRRRxbkW0ZeP5/skUoo7qr4P2GIIrS5RI5JD1E6ZtlsSiEL
+         LseXbXAFlcyaLxtUdtZl8jlLeLGOtVbjXG7y/3IFqhfkk8yacWdRUpinrzekBjOEa/Qx
+         WuAw==
+X-Forwarded-Encrypted: i=1; AJvYcCW24Vfpm5P1UgBw4gmysE9Rhy4/N/G/JE+6pfF2mva3Q6EtknvrOSImnVdTMaYaoIyuEqA681E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxfk00wco19rEz9bau2QlpvxfDlyY5+Cecc5M9whafrGpwl0Wqh
+	iYJ2XJg+thaCsTV9XoQqWvhITvlGapbAKnM/meStFJsISExSgGFaeEzIS0ja4McjCczCbE5+HCn
+	krFhJMXRBF1IVoSbN7xOMJAc3mmd6HS7Vo0lziH7xXWBUvlVhvjIraA0BWls=
+X-Google-Smtp-Source: AGHT+IFGoCskJOkj9sshfOowZLX22We4Sh995cwaGuapXH4kp6i54N6w1ytY6PiMGlz9FRLA/1SLxORue3ppm4YMEMiazvogsxl9
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0
-X-Scan-Signature: 0a21a4825eedc6098ff277c3364e8788
+X-Received: by 2002:a05:6602:490:b0:87c:6d3a:e88a with SMTP id
+ ca18e2360f4ac-87c6d3aea5dmr1177227839f.2.1753382517143; Thu, 24 Jul 2025
+ 11:41:57 -0700 (PDT)
+Date: Thu, 24 Jul 2025 11:41:57 -0700
+In-Reply-To: <20250724131828.32155-1-equinox@diac24.net>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68827e75.a00a0220.2f88df.0030.GAE@google.com>
+Subject: [syzbot ci] Re: net/ipv6: RFC6724 rule 5.5 preparations
+From: syzbot ci <syzbot+ci0c7a166a5e15ed50@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dsahern@kernel.org, equinox@diac24.net, 
+	lorenzo@google.com, netdev@vger.kernel.org, prohr@google.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-homa_plumbing.c contains functions that connect Homa to the rest of
-the Linux kernel, such as dispatch tables used by Linux and the
-top-level functions that Linux invokes from those dispatch tables.
+syzbot ci has tested the following series
 
-Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
+[v1] net/ipv6: RFC6724 rule 5.5 preparations
+https://lore.kernel.org/all/20250724131828.32155-1-equinox@diac24.net
+* [PATCH net-next 1/4] net/ipv6: flatten ip6_route_get_saddr
+* [PATCH net-next 2/4] net/ipv6: create ipv6_fl_get_saddr
+* [PATCH net-next 3/4] net/ipv6: use ipv6_fl_get_saddr in output
+* [PATCH net-next 4/4] net/ipv6: drop ip6_route_get_saddr
+
+and found the following issues:
+* general protection fault in icmpv6_route_lookup
+* general protection fault in xfrm_lookup_with_ifid
+
+Full report is available here:
+https://ci.syzbot.org/series/3acce8b8-a246-47fc-bb73-d961e3946a5c
+
+***
+
+general protection fault in icmpv6_route_lookup
+
+tree:      net-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
+base:      56613001dfc9b2e35e2d6ba857cbc2eb0bac4272
+arch:      amd64
+compiler:  Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+config:    https://ci.syzbot.org/builds/9e473f74-1396-464d-868c-c8273cf3923b/config
+syz repro: https://ci.syzbot.org/findings/2c2d1023-a44b-4226-b918-23466b921da9/syz_repro
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc000000001c: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x00000000000000e0-0x00000000000000e7]
+CPU: 0 UID: 0 PID: 5991 Comm: syz.0.19 Not tainted 6.16.0-rc6-syzkaller-01646-g56613001dfc9-dirty #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:ipv6_anycast_destination include/net/ip6_route.h:234 [inline]
+RIP: 0010:icmpv6_route_lookup+0x1ad/0x590 net/ipv6/icmp.c:374
+Code: a4 01 00 00 49 89 c7 e8 b1 54 94 f7 4c 89 f8 49 89 df e9 3f 02 00 00 4c 8b 74 24 60 4d 8d ae e0 00 00 00 4c 89 e8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 0f 85 41 03 00 00 45 8b 6d 00 44 89 ee 81 e6
+RSP: 0018:ffffc90002b4ec00 EFLAGS: 00010202
+RAX: 000000000000001c RBX: ffffc90002b4eee0 RCX: 0000000000000000
+RDX: ffff8880206c3980 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc90002b4ed70 R08: ffff88802a9ef3c3 R09: 1ffff1100553de78
+R10: dffffc0000000000 R11: ffffed100553de79 R12: ffff88810de0f800
+R13: 00000000000000e0 R14: 0000000000000000 R15: dffffc0000000000
+FS:  00007faf43ec86c0(0000) GS:ffff8880b8615000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000034000 CR3: 0000000028440000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ icmp6_send+0x1001/0x1940 net/ipv6/icmp.c:606
+ icmpv6_param_prob_reason+0x32/0x50 net/ipv6/icmp.c:654
+ ip6_tlvopt_unknown net/ipv6/exthdrs.c:94 [inline]
+ ip6_parse_tlv+0x19fc/0x1e60 net/ipv6/exthdrs.c:-1
+ ipv6_destopt_rcv+0x597/0xbc0 net/ipv6/exthdrs.c:325
+ ip6_protocol_deliver_rcu+0xe0b/0x15c0 net/ipv6/ip6_input.c:438
+ ip6_input_finish+0x191/0x370 net/ipv6/ip6_input.c:489
+ NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:317
+ ip6_input+0x16a/0x270 net/ipv6/ip6_input.c:500
+ ip6_mc_input+0x5c8/0xaf0 net/ipv6/ip6_input.c:590
+ NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:317
+ __netif_receive_skb_one_core net/core/dev.c:5979 [inline]
+ __netif_receive_skb+0xd3/0x380 net/core/dev.c:6092
+ netif_receive_skb_internal net/core/dev.c:6178 [inline]
+ netif_receive_skb+0x1cb/0x790 net/core/dev.c:6237
+ tun_rx_batched+0x1b9/0x730 drivers/net/tun.c:1485
+ tun_get_user+0x2aa2/0x3e20 drivers/net/tun.c:1950
+ tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1996
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x54b/0xa90 fs/read_write.c:686
+ ksys_write+0x145/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7faf42f8e9a9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007faf43ec8038 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007faf431b5fa0 RCX: 00007faf42f8e9a9
+RDX: 0000000000000ffe RSI: 00002000000000c0 RDI: 0000000000000003
+RBP: 00007faf43010d69 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007faf431b5fa0 R15: 00007ffeead38248
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:ipv6_anycast_destination include/net/ip6_route.h:234 [inline]
+RIP: 0010:icmpv6_route_lookup+0x1ad/0x590 net/ipv6/icmp.c:374
+Code: a4 01 00 00 49 89 c7 e8 b1 54 94 f7 4c 89 f8 49 89 df e9 3f 02 00 00 4c 8b 74 24 60 4d 8d ae e0 00 00 00 4c 89 e8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 0f 85 41 03 00 00 45 8b 6d 00 44 89 ee 81 e6
+RSP: 0018:ffffc90002b4ec00 EFLAGS: 00010202
+RAX: 000000000000001c RBX: ffffc90002b4eee0 RCX: 0000000000000000
+RDX: ffff8880206c3980 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc90002b4ed70 R08: ffff88802a9ef3c3 R09: 1ffff1100553de78
+R10: dffffc0000000000 R11: ffffed100553de79 R12: ffff88810de0f800
+R13: 00000000000000e0 R14: 0000000000000000 R15: dffffc0000000000
+FS:  00007faf43ec86c0(0000) GS:ffff8880b8615000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000034000 CR3: 0000000028440000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess), 2 bytes skipped:
+   0:	00 00                	add    %al,(%rax)
+   2:	49 89 c7             	mov    %rax,%r15
+   5:	e8 b1 54 94 f7       	call   0xf79454bb
+   a:	4c 89 f8             	mov    %r15,%rax
+   d:	49 89 df             	mov    %rbx,%r15
+  10:	e9 3f 02 00 00       	jmp    0x254
+  15:	4c 8b 74 24 60       	mov    0x60(%rsp),%r14
+  1a:	4d 8d ae e0 00 00 00 	lea    0xe0(%r14),%r13
+  21:	4c 89 e8             	mov    %r13,%rax
+  24:	48 c1 e8 03          	shr    $0x3,%rax
+* 28:	42 0f b6 04 38       	movzbl (%rax,%r15,1),%eax <-- trapping instruction
+  2d:	84 c0                	test   %al,%al
+  2f:	0f 85 41 03 00 00    	jne    0x376
+  35:	45 8b 6d 00          	mov    0x0(%r13),%r13d
+  39:	44 89 ee             	mov    %r13d,%esi
+  3c:	81                   	.byte 0x81
+  3d:	e6                   	.byte 0xe6
+
+
+***
+
+general protection fault in xfrm_lookup_with_ifid
+
+tree:      net-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
+base:      56613001dfc9b2e35e2d6ba857cbc2eb0bac4272
+arch:      amd64
+compiler:  Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+config:    https://ci.syzbot.org/builds/9e473f74-1396-464d-868c-c8273cf3923b/config
+syz repro: https://ci.syzbot.org/findings/47a724ea-a36c-478d-af91-ca8b35320f01/syz_repro
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 0 UID: 0 PID: 6016 Comm: syz.1.17 Not tainted 6.16.0-rc6-syzkaller-01646-g56613001dfc9-dirty #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:xfrm_lookup_with_ifid+0xb9/0x1a70 net/xfrm/xfrm_policy.c:3181
+Code: c7 44 29 0a f3 f3 e8 f6 b8 ac f7 ba 10 00 00 00 4c 89 f7 31 f6 e8 d7 ca 0e f8 4c 89 64 24 18 49 83 c4 08 4c 89 e0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 e7 e8 e8 c7 0e f8 4d 8b 24 24 4c 89 e0
+RSP: 0018:ffffc90002b77960 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffc90002b77a10
+RBP: ffffc90002b77a78 R08: ffffc90002b77a0f R09: 0000000000000000
+R10: ffffc90002b77a00 R11: fffff5200056ef42 R12: 0000000000000008
+R13: dffffc0000000000 R14: ffffc90002b77a00 R15: ffff888025d85d80
+FS:  00007fa26dbba6c0(0000) GS:ffff8880b8615000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000000 CR3: 0000000026e50000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ xfrm_lookup net/xfrm/xfrm_policy.c:3336 [inline]
+ xfrm_lookup_route+0x3c/0x1c0 net/xfrm/xfrm_policy.c:3347
+ ip6_datagram_dst_update+0x75c/0xcb0 net/ipv6/datagram.c:96
+ __ip6_datagram_connect+0xbd1/0x1150 net/ipv6/datagram.c:255
+ udpv6_connect+0x36/0x240 net/ipv6/udp.c:1310
+ __sys_connect_file net/socket.c:2086 [inline]
+ __sys_connect+0x316/0x440 net/socket.c:2105
+ __do_sys_connect net/socket.c:2111 [inline]
+ __se_sys_connect net/socket.c:2108 [inline]
+ __x64_sys_connect+0x7a/0x90 net/socket.c:2108
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa26cd8e9a9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fa26dbba038 EFLAGS: 00000246 ORIG_RAX: 000000000000002a
+RAX: ffffffffffffffda RBX: 00007fa26cfb5fa0 RCX: 00007fa26cd8e9a9
+RDX: 000000000000001c RSI: 0000200000000000 RDI: 0000000000000003
+RBP: 00007fa26ce10d69 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007fa26cfb5fa0 R15: 00007ffe87554b78
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:xfrm_lookup_with_ifid+0xb9/0x1a70 net/xfrm/xfrm_policy.c:3181
+Code: c7 44 29 0a f3 f3 e8 f6 b8 ac f7 ba 10 00 00 00 4c 89 f7 31 f6 e8 d7 ca 0e f8 4c 89 64 24 18 49 83 c4 08 4c 89 e0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 e7 e8 e8 c7 0e f8 4d 8b 24 24 4c 89 e0
+RSP: 0018:ffffc90002b77960 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffc90002b77a10
+RBP: ffffc90002b77a78 R08: ffffc90002b77a0f R09: 0000000000000000
+R10: ffffc90002b77a00 R11: fffff5200056ef42 R12: 0000000000000008
+R13: dffffc0000000000 R14: ffffc90002b77a00 R15: ffff888025d85d80
+FS:  00007fa26dbba6c0(0000) GS:ffff8880b8615000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000000 CR3: 0000000026e50000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess):
+   0:	c7 44 29 0a f3 f3 e8 	movl   $0xf6e8f3f3,0xa(%rcx,%rbp,1)
+   7:	f6
+   8:	b8 ac f7 ba 10       	mov    $0x10baf7ac,%eax
+   d:	00 00                	add    %al,(%rax)
+   f:	00 4c 89 f7          	add    %cl,-0x9(%rcx,%rcx,4)
+  13:	31 f6                	xor    %esi,%esi
+  15:	e8 d7 ca 0e f8       	call   0xf80ecaf1
+  1a:	4c 89 64 24 18       	mov    %r12,0x18(%rsp)
+  1f:	49 83 c4 08          	add    $0x8,%r12
+  23:	4c 89 e0             	mov    %r12,%rax
+  26:	48 c1 e8 03          	shr    $0x3,%rax
+* 2a:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
+  2f:	74 08                	je     0x39
+  31:	4c 89 e7             	mov    %r12,%rdi
+  34:	e8 e8 c7 0e f8       	call   0xf80ec821
+  39:	4d 8b 24 24          	mov    (%r12),%r12
+  3d:	4c 89 e0             	mov    %r12,%rax
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+Tested-by: syzbot@syzkaller.appspotmail.com
 
 ---
-Changes for v12:
-* Fix deadlock in homa_recvmsg (homa_rpc_reap was invoked while holding
-  an RPC lock).
-
-Changes for v11:
-* Move link_mbps variable from struct homa_pacer back to struct homa.
-* Clean up error handing in homa_load.
-* Cleanup and simplify use of RPC reference counts.
-* Add explicit padding to struct homa_recvmsg_args to fix problems compiling
-  on 32-bit machines.
-
-Changes for v10:
-* Use the destroy function from struct proto properly (fixes bugs in
-  socket cleanup)
-* Fix issues from sparse, xmastree, etc.
-* Replace __u16 with u16, __u8 with u8, etc.
-
-Changes for v9:
-* Add support for homa_net objects
-* Various name improvements (e.g. use "alloc" instead of "new" for functions
-  that allocate memory)
-* Add BUILD_BUG_ON statements to replace _Static_asserts removed from
-  header files
-* Remove unnecessary/unused functions such as homa_get_port, homa_disconnect,
-  and homa_backlog_rcv.
-
-Changes for v8:
-* Accommodate homa_pacer and homa_pool refactorings
-
-Changes for v7:
-* Remove extraneous code
-* Make Homa a pernet subsystem
-* Block Homa senders if insufficient tx buffer memory
-* Check for missing buffer pool in homa_recvmsg
-* Refactor waiting mechanism for incoming packets: simplify wait
-  criteria and use standard Linux mechanisms for waiting
-* Implement SO_HOMA_SERVER option for setsockopt
-* Rename UNKNOWN packet type to RPC_UNKNOWN
-* Remove locker argument from locking functions
-* Use u64 and __u64 properly
-* Use new homa_make_header_avl function
----
- net/homa/homa_impl.h     |   27 +
- net/homa/homa_plumbing.c | 1115 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 1142 insertions(+)
- create mode 100644 net/homa/homa_plumbing.c
-
-diff --git a/net/homa/homa_impl.h b/net/homa/homa_impl.h
-index 1dcc39588a16..a5ac6e687680 100644
---- a/net/homa/homa_impl.h
-+++ b/net/homa/homa_impl.h
-@@ -416,26 +416,51 @@ extern unsigned int homa_net_id;
- void     homa_ack_pkt(struct sk_buff *skb, struct homa_sock *hsk,
- 		      struct homa_rpc *rpc);
- void     homa_add_packet(struct homa_rpc *rpc, struct sk_buff *skb);
-+int      homa_bind(struct socket *sk, struct sockaddr *addr,
-+		   int addr_len);
-+void     homa_close(struct sock *sock, long timeout);
- int      homa_copy_to_user(struct homa_rpc *rpc);
- void     homa_data_pkt(struct sk_buff *skb, struct homa_rpc *rpc);
- void     homa_destroy(struct homa *homa);
- void     homa_dispatch_pkts(struct sk_buff *skb);
-+int      homa_err_handler_v4(struct sk_buff *skb, u32 info);
-+int      homa_err_handler_v6(struct sk_buff *skb,
-+			     struct inet6_skb_parm *opt, u8 type,  u8 code,
-+			     int offset, __be32 info);
- int      homa_fill_data_interleaved(struct homa_rpc *rpc,
- 				    struct sk_buff *skb, struct iov_iter *iter);
- struct homa_gap *homa_gap_alloc(struct list_head *next, int start, int end);
-+int      homa_getsockopt(struct sock *sk, int level, int optname,
-+			 char __user *optval, int __user *optlen);
-+int      homa_hash(struct sock *sk);
-+enum hrtimer_restart homa_hrtimer(struct hrtimer *timer);
- int      homa_init(struct homa *homa);
-+int      homa_ioctl(struct sock *sk, int cmd, int *karg);
-+int      homa_load(void);
- int      homa_message_out_fill(struct homa_rpc *rpc,
- 			       struct iov_iter *iter, int xmit);
- void     homa_message_out_init(struct homa_rpc *rpc, int length);
- void     homa_need_ack_pkt(struct sk_buff *skb, struct homa_sock *hsk,
- 			   struct homa_rpc *rpc);
- void     homa_net_destroy(struct homa_net *hnet);
-+void     homa_net_exit(struct net *net);
- int      homa_net_init(struct homa_net *hnet, struct net *net,
- 		       struct homa *homa);
-+int      homa_net_start(struct net *net);
-+__poll_t homa_poll(struct file *file, struct socket *sock,
-+		   struct poll_table_struct *wait);
-+int      homa_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
-+		      int flags, int *addr_len);
- void     homa_request_retrans(struct homa_rpc *rpc);
- void     homa_resend_pkt(struct sk_buff *skb, struct homa_rpc *rpc,
- 			 struct homa_sock *hsk);
- void     homa_rpc_handoff(struct homa_rpc *rpc);
-+int      homa_sendmsg(struct sock *sk, struct msghdr *msg, size_t len);
-+int      homa_setsockopt(struct sock *sk, int level, int optname,
-+			 sockptr_t optval, unsigned int optlen);
-+int      homa_shutdown(struct socket *sock, int how);
-+int      homa_socket(struct sock *sk);
-+int      homa_softirq(struct sk_buff *skb);
- void     homa_spin(int ns);
- void     homa_timer(struct homa *homa);
- void     homa_timer_check_rpc(struct homa_rpc *rpc);
-@@ -443,7 +468,9 @@ int      homa_timer_main(void *transport);
- struct sk_buff *homa_tx_data_pkt_alloc(struct homa_rpc *rpc,
- 				       struct iov_iter *iter, int offset,
- 				       int length, int max_seg_data);
-+void     homa_unhash(struct sock *sk);
- void     homa_rpc_unknown_pkt(struct sk_buff *skb, struct homa_rpc *rpc);
-+void     homa_unload(void);
- int      homa_wait_private(struct homa_rpc *rpc, int nonblocking);
- struct homa_rpc *homa_wait_shared(struct homa_sock *hsk, int nonblocking);
- int      homa_xmit_control(enum homa_packet_type type, void *contents,
-diff --git a/net/homa/homa_plumbing.c b/net/homa/homa_plumbing.c
-new file mode 100644
-index 000000000000..694eb18cde00
---- /dev/null
-+++ b/net/homa/homa_plumbing.c
-@@ -0,0 +1,1115 @@
-+// SPDX-License-Identifier: BSD-2-Clause
-+
-+/* This file consists mostly of "glue" that hooks Homa into the rest of
-+ * the Linux kernel. The guts of the protocol are in other files.
-+ */
-+
-+#include "homa_impl.h"
-+#include "homa_pacer.h"
-+#include "homa_peer.h"
-+#include "homa_pool.h"
-+
-+/* Identifier for retrieving Homa-specific data for a struct net. */
-+unsigned int homa_net_id;
-+
-+/* This structure defines functions that allow Homa to be used as a
-+ * pernet subsystem.
-+ */
-+static struct pernet_operations homa_net_ops = {
-+	.init = homa_net_start,
-+	.exit = homa_net_exit,
-+	.id = &homa_net_id,
-+	.size = sizeof(struct homa_net)
-+};
-+
-+/* Global data for Homa. Never reference homa_data directly. Always use
-+ * the global_homa variable instead (or, even better, a homa pointer
-+ * stored in a struct or passed via a parameter); this allows overriding
-+ * during unit tests.
-+ */
-+static struct homa homa_data;
-+
-+/* This variable contains the address of the statically-allocated struct homa
-+ * used throughout Homa. This variable should almost never be used directly:
-+ * it should be passed as a parameter to functions that need it. This
-+ * variable is used only by a few functions called from Linux where there
-+ * is no struct homa* available.
-+ */
-+static struct homa *global_homa = &homa_data;
-+
-+/* This structure defines functions that handle various operations on
-+ * Homa sockets. These functions are relatively generic: they are called
-+ * to implement top-level system calls. Many of these operations can
-+ * be implemented by PF_INET6 functions that are independent of the
-+ * Homa protocol.
-+ */
-+static const struct proto_ops homa_proto_ops = {
-+	.family		   = PF_INET,
-+	.owner		   = THIS_MODULE,
-+	.release	   = inet_release,
-+	.bind		   = homa_bind,
-+	.connect	   = inet_dgram_connect,
-+	.socketpair	   = sock_no_socketpair,
-+	.accept		   = sock_no_accept,
-+	.getname	   = inet_getname,
-+	.poll		   = homa_poll,
-+	.ioctl		   = inet_ioctl,
-+	.listen		   = sock_no_listen,
-+	.shutdown	   = homa_shutdown,
-+	.setsockopt	   = sock_common_setsockopt,
-+	.getsockopt	   = sock_common_getsockopt,
-+	.sendmsg	   = inet_sendmsg,
-+	.recvmsg	   = inet_recvmsg,
-+	.mmap		   = sock_no_mmap,
-+	.set_peek_off	   = sk_set_peek_off,
-+};
-+
-+static const struct proto_ops homav6_proto_ops = {
-+	.family		   = PF_INET6,
-+	.owner		   = THIS_MODULE,
-+	.release	   = inet6_release,
-+	.bind		   = homa_bind,
-+	.connect	   = inet_dgram_connect,
-+	.socketpair	   = sock_no_socketpair,
-+	.accept		   = sock_no_accept,
-+	.getname	   = inet6_getname,
-+	.poll		   = homa_poll,
-+	.ioctl		   = inet6_ioctl,
-+	.listen		   = sock_no_listen,
-+	.shutdown	   = homa_shutdown,
-+	.setsockopt	   = sock_common_setsockopt,
-+	.getsockopt	   = sock_common_getsockopt,
-+	.sendmsg	   = inet_sendmsg,
-+	.recvmsg	   = inet_recvmsg,
-+	.mmap		   = sock_no_mmap,
-+	.set_peek_off	   = sk_set_peek_off,
-+};
-+
-+/* This structure also defines functions that handle various operations
-+ * on Homa sockets. However, these functions are lower-level than those
-+ * in homa_proto_ops: they are specific to the PF_INET or PF_INET6
-+ * protocol family, and in many cases they are invoked by functions in
-+ * homa_proto_ops. Most of these functions have Homa-specific implementations.
-+ */
-+static struct proto homa_prot = {
-+	.name		   = "HOMA",
-+	.owner		   = THIS_MODULE,
-+	.close		   = homa_close,
-+	.connect	   = ip4_datagram_connect,
-+	.ioctl		   = homa_ioctl,
-+	.init		   = homa_socket,
-+	.destroy	   = homa_sock_destroy,
-+	.setsockopt	   = homa_setsockopt,
-+	.getsockopt	   = homa_getsockopt,
-+	.sendmsg	   = homa_sendmsg,
-+	.recvmsg	   = homa_recvmsg,
-+	.hash		   = homa_hash,
-+	.unhash		   = homa_unhash,
-+	.obj_size	   = sizeof(struct homa_sock),
-+	.no_autobind       = 1,
-+};
-+
-+static struct proto homav6_prot = {
-+	.name		   = "HOMAv6",
-+	.owner		   = THIS_MODULE,
-+	.close		   = homa_close,
-+	.connect	   = ip6_datagram_connect,
-+	.ioctl		   = homa_ioctl,
-+	.init		   = homa_socket,
-+	.destroy	   = homa_sock_destroy,
-+	.setsockopt	   = homa_setsockopt,
-+	.getsockopt	   = homa_getsockopt,
-+	.sendmsg	   = homa_sendmsg,
-+	.recvmsg	   = homa_recvmsg,
-+	.hash		   = homa_hash,
-+	.unhash		   = homa_unhash,
-+	.obj_size	   = sizeof(struct homa_v6_sock),
-+	.ipv6_pinfo_offset = offsetof(struct homa_v6_sock, inet6),
-+
-+	.no_autobind       = 1,
-+};
-+
-+/* Top-level structure describing the Homa protocol. */
-+static struct inet_protosw homa_protosw = {
-+	.type              = SOCK_DGRAM,
-+	.protocol          = IPPROTO_HOMA,
-+	.prot              = &homa_prot,
-+	.ops               = &homa_proto_ops,
-+	.flags             = INET_PROTOSW_REUSE,
-+};
-+
-+static struct inet_protosw homav6_protosw = {
-+	.type              = SOCK_DGRAM,
-+	.protocol          = IPPROTO_HOMA,
-+	.prot              = &homav6_prot,
-+	.ops               = &homav6_proto_ops,
-+	.flags             = INET_PROTOSW_REUSE,
-+};
-+
-+/* This structure is used by IP to deliver incoming Homa packets to us. */
-+static struct net_protocol homa_protocol = {
-+	.handler =	homa_softirq,
-+	.err_handler =	homa_err_handler_v4,
-+	.no_policy =     1,
-+};
-+
-+static struct inet6_protocol homav6_protocol = {
-+	.handler =	homa_softirq,
-+	.err_handler =	homa_err_handler_v6,
-+	.flags =        INET6_PROTO_NOPOLICY | INET6_PROTO_FINAL,
-+};
-+
-+/* Sizes of the headers for each Homa packet type, in bytes. */
-+static u16 header_lengths[] = {
-+	sizeof(struct homa_data_hdr),
-+	0,
-+	sizeof(struct homa_resend_hdr),
-+	sizeof(struct homa_rpc_unknown_hdr),
-+	sizeof(struct homa_busy_hdr),
-+	0,
-+	0,
-+	sizeof(struct homa_need_ack_hdr),
-+	sizeof(struct homa_ack_hdr)
-+};
-+
-+/* Thread that runs timer code to detect lost packets and crashed peers. */
-+static struct task_struct *timer_kthread;
-+static DECLARE_COMPLETION(timer_thread_done);
-+
-+/* Used to wakeup timer_kthread at regular intervals. */
-+static struct hrtimer hrtimer;
-+
-+/* Nonzero is an indication to the timer thread that it should exit. */
-+static int timer_thread_exit;
-+
-+/**
-+ * homa_load() - invoked when this module is loaded into the Linux kernel
-+ * Return: 0 on success, otherwise a negative errno.
-+ */
-+int __init homa_load(void)
-+{
-+	struct homa *homa = global_homa;
-+	bool init_protocol6 = false;
-+	bool init_protosw6 = false;
-+	bool init_protocol = false;
-+	bool init_protosw = false;
-+	bool init_net_ops = false;
-+	bool init_proto6 = false;
-+	bool init_proto = false;
-+	bool init_homa = false;
-+	int status;
-+
-+	/* Compile-time validations that no packet header is longer
-+	 * than HOMA_MAX_HEADER.
-+	 */
-+	BUILD_BUG_ON(sizeof(struct homa_data_hdr) > HOMA_MAX_HEADER);
-+	BUILD_BUG_ON(sizeof(struct homa_resend_hdr) > HOMA_MAX_HEADER);
-+	BUILD_BUG_ON(sizeof(struct homa_rpc_unknown_hdr) > HOMA_MAX_HEADER);
-+	BUILD_BUG_ON(sizeof(struct homa_busy_hdr) > HOMA_MAX_HEADER);
-+	BUILD_BUG_ON(sizeof(struct homa_need_ack_hdr) > HOMA_MAX_HEADER);
-+	BUILD_BUG_ON(sizeof(struct homa_ack_hdr) > HOMA_MAX_HEADER);
-+
-+	/* Extra constraints on data packets:
-+	 * - Ensure minimum header length so Homa doesn't have to worry about
-+	 *   padding data packets.
-+	 * - Make sure data packet headers are a multiple of 4 bytes (needed
-+	 *   for TCP/TSO compatibility).
-+	 */
-+	BUILD_BUG_ON(sizeof(struct homa_data_hdr) < HOMA_MIN_PKT_LENGTH);
-+	BUILD_BUG_ON((sizeof(struct homa_data_hdr) -
-+		      sizeof(struct homa_seg_hdr)) & 0x3);
-+
-+	/* Detect size changes in uAPI structs. */
-+	BUILD_BUG_ON(sizeof(struct homa_sendmsg_args) != 24);
-+	BUILD_BUG_ON(sizeof(struct homa_recvmsg_args) != 88);
-+
-+	pr_err("Homa module loading\n");
-+	status = proto_register(&homa_prot, 1);
-+	if (status != 0) {
-+		pr_err("proto_register failed for homa_prot: %d\n", status);
-+		goto error;
-+	}
-+	init_proto = true;
-+
-+	status = proto_register(&homav6_prot, 1);
-+	if (status != 0) {
-+		pr_err("proto_register failed for homav6_prot: %d\n", status);
-+		goto error;
-+	}
-+	init_proto6 = true;
-+
-+	inet_register_protosw(&homa_protosw);
-+	init_protosw = true;
-+
-+	status = inet6_register_protosw(&homav6_protosw);
-+	if (status != 0) {
-+		pr_err("inet6_register_protosw failed in %s: %d\n", __func__,
-+		       status);
-+		goto error;
-+	}
-+	init_protosw6 = true;
-+
-+	status = inet_add_protocol(&homa_protocol, IPPROTO_HOMA);
-+	if (status != 0) {
-+		pr_err("inet_add_protocol failed in %s: %d\n", __func__,
-+		       status);
-+		goto error;
-+	}
-+	init_protocol = true;
-+
-+	status = inet6_add_protocol(&homav6_protocol, IPPROTO_HOMA);
-+	if (status != 0) {
-+		pr_err("inet6_add_protocol failed in %s: %d\n",  __func__,
-+		       status);
-+		goto error;
-+	}
-+	init_protocol6 = true;
-+
-+	status = homa_init(homa);
-+	if (status)
-+		goto error;
-+	init_homa = true;
-+
-+	status = register_pernet_subsys(&homa_net_ops);
-+	if (status != 0) {
-+		pr_err("Homa got error from register_pernet_subsys: %d\n",
-+		       status);
-+		goto error;
-+	}
-+	init_net_ops = true;
-+
-+	timer_kthread = kthread_run(homa_timer_main, homa, "homa_timer");
-+	if (IS_ERR(timer_kthread)) {
-+		status = PTR_ERR(timer_kthread);
-+		pr_err("couldn't create Homa timer thread: error %d\n",
-+		       status);
-+		timer_kthread = NULL;
-+		goto error;
-+	}
-+
-+	return 0;
-+
-+error:
-+	if (timer_kthread) {
-+		timer_thread_exit = 1;
-+		wake_up_process(timer_kthread);
-+		wait_for_completion(&timer_thread_done);
-+	}
-+	if (init_net_ops)
-+		unregister_pernet_subsys(&homa_net_ops);
-+	if (init_homa)
-+		homa_destroy(homa);
-+	if (init_protocol)
-+		inet_del_protocol(&homa_protocol, IPPROTO_HOMA);
-+	if (init_protocol6)
-+		inet6_del_protocol(&homav6_protocol, IPPROTO_HOMA);
-+	if (init_protosw)
-+		inet_unregister_protosw(&homa_protosw);
-+	if (init_protosw6)
-+		inet6_unregister_protosw(&homav6_protosw);
-+	if (init_proto)
-+		proto_unregister(&homa_prot);
-+	if (init_proto6)
-+		proto_unregister(&homav6_prot);
-+	return status;
-+}
-+
-+/**
-+ * homa_unload() - invoked when this module is unloaded from the Linux kernel.
-+ */
-+void __exit homa_unload(void)
-+{
-+	struct homa *homa = global_homa;
-+
-+	pr_notice("Homa module unloading\n");
-+
-+	unregister_pernet_subsys(&homa_net_ops);
-+	homa_destroy(homa);
-+	inet_del_protocol(&homa_protocol, IPPROTO_HOMA);
-+	inet_unregister_protosw(&homa_protosw);
-+	inet6_del_protocol(&homav6_protocol, IPPROTO_HOMA);
-+	inet6_unregister_protosw(&homav6_protosw);
-+	proto_unregister(&homa_prot);
-+	proto_unregister(&homav6_prot);
-+}
-+
-+module_init(homa_load);
-+module_exit(homa_unload);
-+
-+/**
-+ * homa_net_start() - Initialize Homa for a new network namespace.
-+ * @net:    The net that Homa will be associated with.
-+ * Return:  0 on success, otherwise a negative errno.
-+ */
-+int homa_net_start(struct net *net)
-+{
-+	pr_notice("Homa attaching to net namespace\n");
-+	return homa_net_init(homa_net_from_net(net), net, global_homa);
-+}
-+
-+/**
-+ * homa_net_exit() - Perform Homa cleanup needed when a network namespace
-+ * is destroyed.
-+ * @net:    The net from which Homa should be removed.
-+ */
-+void homa_net_exit(struct net *net)
-+{
-+	pr_notice("Homa detaching from net namespace\n");
-+	homa_net_destroy(homa_net_from_net(net));
-+}
-+
-+/**
-+ * homa_bind() - Implements the bind system call for Homa sockets: associates
-+ * a well-known service port with a socket. Unlike other AF_INET6 protocols,
-+ * there is no need to invoke this system call for sockets that are only
-+ * used as clients.
-+ * @sock:     Socket on which the system call was invoked.
-+ * @addr:    Contains the desired port number.
-+ * @addr_len: Number of bytes in uaddr.
-+ * Return:    0 on success, otherwise a negative errno.
-+ */
-+int homa_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
-+{
-+	union sockaddr_in_union *addr_in = (union sockaddr_in_union *)addr;
-+	struct homa_sock *hsk = homa_sk(sock->sk);
-+	int port = 0;
-+
-+	if (unlikely(addr->sa_family != sock->sk->sk_family))
-+		return -EAFNOSUPPORT;
-+	if (addr_in->in6.sin6_family == AF_INET6) {
-+		if (addr_len < sizeof(struct sockaddr_in6))
-+			return -EINVAL;
-+		port = ntohs(addr_in->in4.sin_port);
-+	} else if (addr_in->in4.sin_family == AF_INET) {
-+		if (addr_len < sizeof(struct sockaddr_in))
-+			return -EINVAL;
-+		port = ntohs(addr_in->in6.sin6_port);
-+	}
-+	return homa_sock_bind(hsk->hnet, hsk, port);
-+}
-+
-+/**
-+ * homa_close() - Invoked when close system call is invoked on a Homa socket.
-+ * @sk:      Socket being closed
-+ * @timeout: ??
-+ */
-+void homa_close(struct sock *sk, long timeout)
-+{
-+	struct homa_sock *hsk = homa_sk(sk);
-+
-+	homa_sock_shutdown(hsk);
-+	sk_common_release(sk);
-+}
-+
-+/**
-+ * homa_shutdown() - Implements the shutdown system call for Homa sockets.
-+ * @sock:    Socket to shut down.
-+ * @how:     Ignored: for other sockets, can independently shut down
-+ *           sending and receiving, but for Homa any shutdown will
-+ *           shut down everything.
-+ *
-+ * Return: 0 on success, otherwise a negative errno.
-+ */
-+int homa_shutdown(struct socket *sock, int how)
-+{
-+	homa_sock_shutdown(homa_sk(sock->sk));
-+	return 0;
-+}
-+
-+/**
-+ * homa_ioctl() - Implements the ioctl system call for Homa sockets.
-+ * @sk:    Socket on which the system call was invoked.
-+ * @cmd:   Identifier for a particular ioctl operation.
-+ * @karg:  Operation-specific argument; typically the address of a block
-+ *         of data in user address space.
-+ *
-+ * Return: 0 on success, otherwise a negative errno.
-+ */
-+int homa_ioctl(struct sock *sk, int cmd, int *karg)
-+{
-+	return -EINVAL;
-+}
-+
-+/**
-+ * homa_socket() - Implements the socket(2) system call for sockets.
-+ * @sk:    Socket on which the system call was invoked. The non-Homa
-+ *         parts have already been initialized.
-+ *
-+ * Return: always 0 (success).
-+ */
-+int homa_socket(struct sock *sk)
-+{
-+	struct homa_sock *hsk = homa_sk(sk);
-+	int result;
-+
-+	result = homa_sock_init(hsk);
-+	if (result != 0) {
-+		homa_sock_shutdown(hsk);
-+		homa_sock_destroy(&hsk->sock);
-+	}
-+	return result;
-+}
-+
-+/**
-+ * homa_setsockopt() - Implements the getsockopt system call for Homa sockets.
-+ * @sk:      Socket on which the system call was invoked.
-+ * @level:   Level at which the operation should be handled; will always
-+ *           be IPPROTO_HOMA.
-+ * @optname: Identifies a particular setsockopt operation.
-+ * @optval:  Address in user space of information about the option.
-+ * @optlen:  Number of bytes of data at @optval.
-+ * Return:   0 on success, otherwise a negative errno.
-+ */
-+int homa_setsockopt(struct sock *sk, int level, int optname,
-+		    sockptr_t optval, unsigned int optlen)
-+{
-+	struct homa_sock *hsk = homa_sk(sk);
-+	int ret;
-+
-+	if (level != IPPROTO_HOMA)
-+		return -ENOPROTOOPT;
-+
-+	if (optname == SO_HOMA_RCVBUF) {
-+		struct homa_rcvbuf_args args;
-+
-+		if (optlen != sizeof(struct homa_rcvbuf_args))
-+			return -EINVAL;
-+
-+		if (copy_from_sockptr(&args, optval, optlen))
-+			return -EFAULT;
-+
-+		/* Do a trivial test to make sure we can at least write the
-+		 * first page of the region.
-+		 */
-+		if (copy_to_user(u64_to_user_ptr(args.start), &args,
-+				 sizeof(args)))
-+			return -EFAULT;
-+
-+		ret = homa_pool_set_region(hsk, u64_to_user_ptr(args.start),
-+					   args.length);
-+	} else if (optname == SO_HOMA_SERVER) {
-+		int arg;
-+
-+		if (optlen != sizeof(arg))
-+			return -EINVAL;
-+
-+		if (copy_from_sockptr(&arg, optval, optlen))
-+			return -EFAULT;
-+
-+		if (arg)
-+			hsk->is_server = true;
-+		else
-+			hsk->is_server = false;
-+		ret = 0;
-+	} else {
-+		ret = -ENOPROTOOPT;
-+	}
-+	return ret;
-+}
-+
-+/**
-+ * homa_getsockopt() - Implements the getsockopt system call for Homa sockets.
-+ * @sk:      Socket on which the system call was invoked.
-+ * @level:   Selects level in the network stack to handle the request;
-+ *           must be IPPROTO_HOMA.
-+ * @optname: Identifies a particular setsockopt operation.
-+ * @optval:  Address in user space where the option's value should be stored.
-+ * @optlen:  Number of bytes available at optval; will be overwritten with
-+ *           actual number of bytes stored.
-+ * Return:   0 on success, otherwise a negative errno.
-+ */
-+int homa_getsockopt(struct sock *sk, int level, int optname,
-+		    char __user *optval, int __user *optlen)
-+{
-+	struct homa_sock *hsk = homa_sk(sk);
-+	struct homa_rcvbuf_args rcvbuf_args;
-+	int is_server;
-+	void *result;
-+	int len;
-+
-+	if (copy_from_sockptr(&len, USER_SOCKPTR(optlen), sizeof(int)))
-+		return -EFAULT;
-+
-+	if (level != IPPROTO_HOMA)
-+		return -ENOPROTOOPT;
-+	if (optname == SO_HOMA_RCVBUF) {
-+		if (len < sizeof(rcvbuf_args))
-+			return -EINVAL;
-+
-+		homa_sock_lock(hsk);
-+		homa_pool_get_rcvbuf(hsk->buffer_pool, &rcvbuf_args);
-+		homa_sock_unlock(hsk);
-+		len = sizeof(rcvbuf_args);
-+		result = &rcvbuf_args;
-+	} else if (optname == SO_HOMA_SERVER) {
-+		if (len < sizeof(is_server))
-+			return -EINVAL;
-+
-+		is_server = hsk->is_server;
-+		len = sizeof(is_server);
-+		result = &is_server;
-+	} else {
-+		return -ENOPROTOOPT;
-+	}
-+
-+	if (copy_to_sockptr(USER_SOCKPTR(optlen), &len, sizeof(int)))
-+		return -EFAULT;
-+
-+	if (copy_to_sockptr(USER_SOCKPTR(optval), result, len))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+/**
-+ * homa_sendmsg() - Send a request or response message on a Homa socket.
-+ * @sk:     Socket on which the system call was invoked.
-+ * @msg:    Structure describing the message to send; the msg_control
-+ *          field points to additional information.
-+ * @length: Number of bytes of the message.
-+ * Return: 0 on success, otherwise a negative errno.
-+ */
-+int homa_sendmsg(struct sock *sk, struct msghdr *msg, size_t length)
-+{
-+	struct homa_sock *hsk = homa_sk(sk);
-+	struct homa_sendmsg_args args;
-+	union sockaddr_in_union *addr;
-+	struct homa_rpc *rpc = NULL;
-+	int result = 0;
-+
-+	addr = (union sockaddr_in_union *)msg->msg_name;
-+	if (!addr) {
-+		result = -EINVAL;
-+		goto error;
-+	}
-+
-+	if (unlikely(!msg->msg_control_is_user)) {
-+		result = -EINVAL;
-+		goto error;
-+	}
-+	if (unlikely(copy_from_user(&args, (void __user *)msg->msg_control,
-+				    sizeof(args)))) {
-+		result = -EFAULT;
-+		goto error;
-+	}
-+	if (args.flags & ~HOMA_SENDMSG_VALID_FLAGS ||
-+	    args.reserved != 0) {
-+		result = -EINVAL;
-+		goto error;
-+	}
-+
-+	if (!homa_sock_wmem_avl(hsk)) {
-+		result = homa_sock_wait_wmem(hsk,
-+					     msg->msg_flags & MSG_DONTWAIT);
-+		if (result != 0)
-+			goto error;
-+	}
-+
-+	if (addr->sa.sa_family != sk->sk_family) {
-+		result = -EAFNOSUPPORT;
-+		goto error;
-+	}
-+	if (msg->msg_namelen < sizeof(struct sockaddr_in) ||
-+	    (msg->msg_namelen < sizeof(struct sockaddr_in6) &&
-+	     addr->in6.sin6_family == AF_INET6)) {
-+		result = -EINVAL;
-+		goto error;
-+	}
-+
-+	if (!args.id) {
-+		/* This is a request message. */
-+		rpc = homa_rpc_alloc_client(hsk, addr);
-+		if (IS_ERR(rpc)) {
-+			result = PTR_ERR(rpc);
-+			rpc = NULL;
-+			goto error;
-+		}
-+		homa_rpc_hold(rpc);
-+		if (args.flags & HOMA_SENDMSG_PRIVATE)
-+			atomic_or(RPC_PRIVATE, &rpc->flags);
-+		rpc->completion_cookie = args.completion_cookie;
-+		result = homa_message_out_fill(rpc, &msg->msg_iter, 1);
-+		if (result)
-+			goto error;
-+		args.id = rpc->id;
-+		homa_rpc_unlock(rpc); /* Locked by homa_rpc_alloc_client. */
-+
-+		if (unlikely(copy_to_user((void __user *)msg->msg_control,
-+					  &args, sizeof(args)))) {
-+			homa_rpc_lock(rpc);
-+			result = -EFAULT;
-+			goto error;
-+		}
-+		homa_rpc_put(rpc);
-+	} else {
-+		/* This is a response message. */
-+		struct in6_addr canonical_dest;
-+
-+		if (args.completion_cookie != 0) {
-+			result = -EINVAL;
-+			goto error;
-+		}
-+		canonical_dest = canonical_ipv6_addr(addr);
-+
-+		rpc = homa_rpc_find_server(hsk, &canonical_dest, args.id);
-+		if (!rpc)
-+			/* Return without an error if the RPC doesn't exist;
-+			 * this could be totally valid (e.g. client is
-+			 * no longer interested in it).
-+			 */
-+			return 0;
-+		homa_rpc_hold(rpc);
-+		if (rpc->error) {
-+			result = rpc->error;
-+			goto error;
-+		}
-+		if (rpc->state != RPC_IN_SERVICE) {
-+			result = -EINVAL;
-+			goto error_dont_end_rpc;
-+		}
-+		rpc->state = RPC_OUTGOING;
-+
-+		result = homa_message_out_fill(rpc, &msg->msg_iter, 1);
-+		if (result && rpc->state != RPC_DEAD)
-+			goto error;
-+		homa_rpc_put(rpc);
-+		homa_rpc_unlock(rpc); /* Locked by homa_rpc_find_server. */
-+	}
-+	return 0;
-+
-+error:
-+	if (rpc)
-+		homa_rpc_end(rpc);
-+
-+error_dont_end_rpc:
-+	if (rpc) {
-+		homa_rpc_put(rpc);
-+
-+		/* Locked by homa_rpc_find_server or homa_rpc_alloc_client. */
-+		homa_rpc_unlock(rpc);
-+	}
-+	return result;
-+}
-+
-+/**
-+ * homa_recvmsg() - Receive a message from a Homa socket.
-+ * @sk:          Socket on which the system call was invoked.
-+ * @msg:         Controlling information for the receive.
-+ * @len:         Total bytes of space available in msg->msg_iov; not used.
-+ * @flags:       Flags from system call; only MSG_DONTWAIT is used.
-+ * @addr_len:    Store the length of the sender address here
-+ * Return:       The length of the message on success, otherwise a negative
-+ *               errno.
-+ */
-+int homa_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int flags,
-+		 int *addr_len)
-+{
-+	struct homa_sock *hsk = homa_sk(sk);
-+	struct homa_recvmsg_args control;
-+	struct homa_rpc *rpc = NULL;
-+	int nonblocking;
-+	int result;
-+
-+	if (unlikely(!msg->msg_control)) {
-+		/* This test isn't strictly necessary, but it provides a
-+		 * hook for testing kernel call times.
-+		 */
-+		return -EINVAL;
-+	}
-+	if (msg->msg_controllen != sizeof(control))
-+		return -EINVAL;
-+	if (unlikely(copy_from_user(&control, (void __user *)msg->msg_control,
-+				    sizeof(control))))
-+		return -EFAULT;
-+	control.completion_cookie = 0;
-+
-+	if (control.num_bpages > HOMA_MAX_BPAGES || control.reserved != 0) {
-+		result = -EINVAL;
-+		goto done;
-+	}
-+	if (!hsk->buffer_pool) {
-+		result = -EINVAL;
-+		goto done;
-+	}
-+	result = homa_pool_release_buffers(hsk->buffer_pool, control.num_bpages,
-+					   control.bpage_offsets);
-+	control.num_bpages = 0;
-+	if (result != 0)
-+		goto done;
-+
-+	nonblocking = flags & MSG_DONTWAIT;
-+	if (control.id != 0) {
-+		rpc = homa_rpc_find_client(hsk, control.id); /* Locks RPC. */
-+		if (!rpc) {
-+			result = -EINVAL;
-+			goto done;
-+		}
-+		homa_rpc_hold(rpc);
-+		result = homa_wait_private(rpc, nonblocking);
-+		if (result != 0) {
-+			control.id = 0;
-+			goto done;
-+		}
-+	} else {
-+		rpc = homa_wait_shared(hsk, nonblocking);
-+		if (IS_ERR(rpc)) {
-+			/* If we get here, it means there was an error that
-+			 * prevented us from finding an RPC to return. Errors
-+			 * in the RPC itself are handled below.
-+			 */
-+			result = PTR_ERR(rpc);
-+			rpc = NULL;
-+			goto done;
-+		}
-+	}
-+	result = rpc->error ? rpc->error : rpc->msgin.length;
-+
-+	/* Collect result information. */
-+	control.id = rpc->id;
-+	control.completion_cookie = rpc->completion_cookie;
-+	if (likely(rpc->msgin.length >= 0)) {
-+		control.num_bpages = rpc->msgin.num_bpages;
-+		memcpy(control.bpage_offsets, rpc->msgin.bpage_offsets,
-+		       sizeof(rpc->msgin.bpage_offsets));
-+	}
-+	if (sk->sk_family == AF_INET6) {
-+		struct sockaddr_in6 *in6 = msg->msg_name;
-+
-+		in6->sin6_family = AF_INET6;
-+		in6->sin6_port = htons(rpc->dport);
-+		in6->sin6_addr = rpc->peer->addr;
-+		*addr_len = sizeof(*in6);
-+	} else {
-+		struct sockaddr_in *in4 = msg->msg_name;
-+
-+		in4->sin_family = AF_INET;
-+		in4->sin_port = htons(rpc->dport);
-+		in4->sin_addr.s_addr = ipv6_to_ipv4(rpc->peer->addr);
-+		*addr_len = sizeof(*in4);
-+	}
-+
-+	/* This indicates that the application now owns the buffers, so
-+	 * we won't free them in homa_rpc_end.
-+	 */
-+	rpc->msgin.num_bpages = 0;
-+
-+	if (homa_is_client(rpc->id)) {
-+		homa_peer_add_ack(rpc);
-+		homa_rpc_end(rpc);
-+	} else {
-+		if (result < 0)
-+			homa_rpc_end(rpc);
-+		else
-+			rpc->state = RPC_IN_SERVICE;
-+	}
-+
-+done:
-+	/* Note: must release the RPC lock before calling homa_rpc_reap
-+	 * or copying results to user space.
-+	 */
-+	if (rpc) {
-+		homa_rpc_put(rpc);
-+
-+		/* Locked by homa_rpc_find_client or homa_wait_shared. */
-+		homa_rpc_unlock(rpc);
-+	}
-+
-+	if (test_bit(SOCK_NOSPACE, &hsk->sock.sk_socket->flags)) {
-+		/* There are tasks waiting for tx memory, so reap
-+		 * immediately.
-+		 */
-+		homa_rpc_reap(hsk, false);
-+	}
-+
-+	if (unlikely(copy_to_user((__force void __user *)msg->msg_control,
-+				  &control, sizeof(control))))
-+		result = -EFAULT;
-+
-+	return result;
-+}
-+
-+/**
-+ * homa_hash() - Not needed for Homa.
-+ * @sk:    Socket for the operation
-+ * Return: ??
-+ */
-+int homa_hash(struct sock *sk)
-+{
-+	return 0;
-+}
-+
-+/**
-+ * homa_unhash() - Not needed for Homa.
-+ * @sk:    Socket for the operation
-+ */
-+void homa_unhash(struct sock *sk)
-+{
-+}
-+
-+/**
-+ * homa_softirq() - This function is invoked at SoftIRQ level to handle
-+ * incoming packets.
-+ * @skb:   The incoming packet.
-+ * Return: Always 0
-+ */
-+int homa_softirq(struct sk_buff *skb)
-+{
-+	struct sk_buff *packets, *other_pkts, *next;
-+	struct sk_buff **prev_link, **other_link;
-+	struct homa_common_hdr *h;
-+	int header_offset;
-+
-+	/* skb may actually contain many distinct packets, linked through
-+	 * skb_shinfo(skb)->frag_list by the Homa GRO mechanism. Make a
-+	 * pass through the list to process all of the short packets,
-+	 * leaving the longer packets in the list. Also, perform various
-+	 * prep/cleanup/error checking functions.
-+	 */
-+	skb->next = skb_shinfo(skb)->frag_list;
-+	skb_shinfo(skb)->frag_list = NULL;
-+	packets = skb;
-+	prev_link = &packets;
-+	for (skb = packets; skb; skb = next) {
-+		next = skb->next;
-+
-+		/* Make the header available at skb->data, even if the packet
-+		 * is fragmented. One complication: it's possible that the IP
-+		 * header hasn't yet been removed (this happens for GRO packets
-+		 * on the frag_list, since they aren't handled explicitly by IP.
-+		 */
-+		if (!homa_make_header_avl(skb))
-+			goto discard;
-+		header_offset = skb_transport_header(skb) - skb->data;
-+		if (header_offset)
-+			__skb_pull(skb, header_offset);
-+
-+		/* Reject packets that are too short or have bogus types. */
-+		h = (struct homa_common_hdr *)skb->data;
-+		if (unlikely(skb->len < sizeof(struct homa_common_hdr) ||
-+			     h->type < DATA || h->type > MAX_OP ||
-+			     skb->len < header_lengths[h->type - DATA]))
-+			goto discard;
-+
-+		/* Process the packet now if it is a control packet or
-+		 * if it contains an entire short message.
-+		 */
-+		if (h->type != DATA || ntohl(((struct homa_data_hdr *)h)
-+				->message_length) < 1400) {
-+			*prev_link = skb->next;
-+			skb->next = NULL;
-+			homa_dispatch_pkts(skb);
-+		} else {
-+			prev_link = &skb->next;
-+		}
-+		continue;
-+
-+discard:
-+		*prev_link = skb->next;
-+		kfree_skb(skb);
-+	}
-+
-+	/* Now process the longer packets. Each iteration of this loop
-+	 * collects all of the packets for a particular RPC and dispatches
-+	 * them (batching the packets for an RPC allows more efficient
-+	 * generation of grants).
-+	 */
-+	while (packets) {
-+		struct in6_addr saddr, saddr2;
-+		struct homa_common_hdr *h2;
-+		struct sk_buff *skb2;
-+
-+		skb = packets;
-+		prev_link = &skb->next;
-+		saddr = skb_canonical_ipv6_saddr(skb);
-+		other_pkts = NULL;
-+		other_link = &other_pkts;
-+		h = (struct homa_common_hdr *)skb->data;
-+		for (skb2 = skb->next; skb2; skb2 = next) {
-+			next = skb2->next;
-+			h2 = (struct homa_common_hdr *)skb2->data;
-+			if (h2->sender_id == h->sender_id) {
-+				saddr2 = skb_canonical_ipv6_saddr(skb2);
-+				if (ipv6_addr_equal(&saddr, &saddr2)) {
-+					*prev_link = skb2;
-+					prev_link = &skb2->next;
-+					continue;
-+				}
-+			}
-+			*other_link = skb2;
-+			other_link = &skb2->next;
-+		}
-+		*prev_link = NULL;
-+		*other_link = NULL;
-+		homa_dispatch_pkts(packets);
-+		packets = other_pkts;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * homa_err_handler_v4() - Invoked by IP to handle an incoming error
-+ * packet, such as ICMP UNREACHABLE.
-+ * @skb:   The incoming packet.
-+ * @info:  Information about the error that occurred?
-+ *
-+ * Return: zero, or a negative errno if the error couldn't be handled here.
-+ */
-+int homa_err_handler_v4(struct sk_buff *skb, u32 info)
-+{
-+	const struct icmphdr *icmp = icmp_hdr(skb);
-+	struct homa *homa = homa_from_skb(skb);
-+	struct in6_addr daddr;
-+	int type = icmp->type;
-+	int code = icmp->code;
-+	struct iphdr *iph;
-+	int error = 0;
-+	int port = 0;
-+
-+	iph = (struct iphdr *)(skb->data);
-+	ipv6_addr_set_v4mapped(iph->daddr, &daddr);
-+	if (type == ICMP_DEST_UNREACH && code == ICMP_PORT_UNREACH) {
-+		struct homa_common_hdr *h = (struct homa_common_hdr *)(skb->data
-+				+ iph->ihl * 4);
-+
-+		port = ntohs(h->dport);
-+		error = -ENOTCONN;
-+	} else if (type == ICMP_DEST_UNREACH) {
-+		if (code == ICMP_PROT_UNREACH)
-+			error = -EPROTONOSUPPORT;
-+		else
-+			error = -EHOSTUNREACH;
-+	} else {
-+		pr_notice("%s invoked with info %x, ICMP type %d, ICMP code %d\n",
-+			  __func__, info, type, code);
-+	}
-+	if (error != 0)
-+		homa_abort_rpcs(homa, &daddr, port, error);
-+	return 0;
-+}
-+
-+/**
-+ * homa_err_handler_v6() - Invoked by IP to handle an incoming error
-+ * packet, such as ICMP UNREACHABLE.
-+ * @skb:    The incoming packet.
-+ * @opt:    Not used.
-+ * @type:   Type of ICMP packet.
-+ * @code:   Additional information about the error.
-+ * @offset: Not used.
-+ * @info:   Information about the error that occurred?
-+ *
-+ * Return: zero, or a negative errno if the error couldn't be handled here.
-+ */
-+int homa_err_handler_v6(struct sk_buff *skb, struct inet6_skb_parm *opt,
-+			u8 type,  u8 code,  int offset,  __be32 info)
-+{
-+	const struct ipv6hdr *iph = (const struct ipv6hdr *)skb->data;
-+	struct homa *homa = homa_from_skb(skb);
-+	int error = 0;
-+	int port = 0;
-+
-+	if (type == ICMPV6_DEST_UNREACH && code == ICMPV6_PORT_UNREACH) {
-+		const struct homa_common_hdr *h;
-+
-+		h = (struct homa_common_hdr *)(skb->data + sizeof(*iph));
-+		port = ntohs(h->dport);
-+		error = -ENOTCONN;
-+	} else if (type == ICMPV6_DEST_UNREACH && code == ICMPV6_ADDR_UNREACH) {
-+		error = -EHOSTUNREACH;
-+	} else if (type == ICMPV6_PARAMPROB && code == ICMPV6_UNK_NEXTHDR) {
-+		error = -EPROTONOSUPPORT;
-+	}
-+	if (error != 0)
-+		homa_abort_rpcs(homa, &iph->daddr, port, error);
-+	return 0;
-+}
-+
-+/**
-+ * homa_poll() - Invoked by Linux as part of implementing select, poll,
-+ * epoll, etc.
-+ * @file:  Open file that is participating in a poll, select, etc.
-+ * @sock:  A Homa socket, associated with @file.
-+ * @wait:  This table will be registered with the socket, so that it
-+ *         is notified when the socket's ready state changes.
-+ *
-+ * Return: A mask of bits such as EPOLLIN, which indicate the current
-+ *         state of the socket.
-+ */
-+__poll_t homa_poll(struct file *file, struct socket *sock,
-+		   struct poll_table_struct *wait)
-+{
-+	struct homa_sock *hsk = homa_sk(sock->sk);
-+	__poll_t mask;
-+
-+	mask = 0;
-+	sock_poll_wait(file, sock, wait);
-+	if (homa_sock_wmem_avl(hsk))
-+		mask |= EPOLLOUT | EPOLLWRNORM;
-+	else
-+		set_bit(SOCK_NOSPACE, &hsk->sock.sk_socket->flags);
-+
-+	if (hsk->shutdown)
-+		mask |= EPOLLIN;
-+
-+	if (!list_empty(&hsk->ready_rpcs))
-+		mask |= EPOLLIN | EPOLLRDNORM;
-+	return mask;
-+}
-+
-+/**
-+ * homa_hrtimer() - This function is invoked by the hrtimer mechanism to
-+ * wake up the timer thread. Runs at IRQ level.
-+ * @timer:   The timer that triggered; not used.
-+ *
-+ * Return:   Always HRTIMER_RESTART.
-+ */
-+enum hrtimer_restart homa_hrtimer(struct hrtimer *timer)
-+{
-+	wake_up_process(timer_kthread);
-+	return HRTIMER_NORESTART;
-+}
-+
-+/**
-+ * homa_timer_main() - Top-level function for the timer thread.
-+ * @transport:  Pointer to struct homa.
-+ *
-+ * Return:         Always 0.
-+ */
-+int homa_timer_main(void *transport)
-+{
-+	struct homa *homa = (struct homa *)transport;
-+	ktime_t tick_interval;
-+	u64 nsec;
-+
-+	hrtimer_setup(&hrtimer, homa_hrtimer, CLOCK_MONOTONIC,
-+		      HRTIMER_MODE_REL);
-+	nsec = 1000000;                   /* 1 ms */
-+	tick_interval = ns_to_ktime(nsec);
-+	while (1) {
-+		set_current_state(TASK_UNINTERRUPTIBLE);
-+		if (!timer_thread_exit) {
-+			hrtimer_start(&hrtimer, tick_interval,
-+				      HRTIMER_MODE_REL);
-+			schedule();
-+		}
-+		__set_current_state(TASK_RUNNING);
-+		if (timer_thread_exit)
-+			break;
-+		homa_timer(homa);
-+	}
-+	hrtimer_cancel(&hrtimer);
-+	kthread_complete_and_exit(&timer_thread_done, 0);
-+	return 0;
-+}
-+
-+MODULE_LICENSE("Dual BSD/GPL");
-+MODULE_AUTHOR("John Ousterhout <ouster@cs.stanford.edu>");
-+MODULE_DESCRIPTION("Homa transport protocol");
-+MODULE_VERSION("1.0");
-+
-+/* Arrange for this module to be loaded automatically when a Homa socket is
-+ * opened. Apparently symbols don't work in the macros below, so must use
-+ * numeric values for IPPROTO_HOMA (146) and SOCK_DGRAM(2).
-+ */
-+MODULE_ALIAS_NET_PF_PROTO_TYPE(PF_INET, 146, 2);
-+MODULE_ALIAS_NET_PF_PROTO_TYPE(PF_INET6, 146, 2);
--- 
-2.43.0
-
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
