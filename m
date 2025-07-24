@@ -1,150 +1,175 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0390027B51C
-	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 11:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6526A1339A4;
+	Thu, 24 Jul 2025 11:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753356620; cv=none; b=TwkHZIEmGUQhLtytJfLeC8NN0uUwjVhT+bNsL+2mUKPZ/d6YnwRImQTIWoXzmpzjXbmAH/1Lxw3QKT+IuA+N15SWGEtHZAsehfBmaKlBr/qL3L5l50HDYfXF7/jmUriZscVDNKl0H1EU4cH0ESTAAC1FH9Mo1DqGAAwfZNvHQaU=
+	t=1753356910; cv=none; b=Z5W5ZW0/a3OQQQsoHF4cfEGn+4RKpyRH0sKL7xAJk1Fr+Mx76lXTIi7jrJ70wFt9VPlL737aciyFnh8nRR2AoHsDKMxdEMfBiHUw5ERNdjN5coh3dakzbtXk+B4Q2Q0kQMU9A+VTYekhno1x2VEHROz4Ydv0PtcLxVHbqff4ZPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753356620; c=relaxed/simple;
-	bh=o2WahqbeZeycX8fjUrJq0tctPz7i6hdWD/3VYlJEH04=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c/q7xAQMmGbCPN0h3eDgv3VkWbfzbcBkSvqK5Ktl4U2IzKCvb0xQlShrMvHdNuF78u0+iuTZBCGzCRWMLuU3S1PyBRJKQ5R6gMplKY1qAuJpS7Z+IALfGHloqMHrkNt1S1xyx7EvXADB2OIl3Y/hBNUarzOxp7nFhbuEBMCV7BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fb0c2dSU; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fb0c2dSU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753356619; x=1784892619;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=o2WahqbeZeycX8fjUrJq0tctPz7i6hdWD/3VYlJEH04=;
-  b=Fb0c2dSUimwB/+uF+8fzUnFLkcX9+ORmM2U9vx/pIrpOKMGPo94FWPgo
-   Lbpvx7mEK+r+sXrLSm1zc1B2FW20QvMzzUAOx1c8oCFyRpflwEcg7BLTz
-   kOLZziKxaciDqCzyQ1ROKLVRltn1AGeMXgf9F2A9U2F2jz+O7ds2Muh99
-   sSjvaY0EhxWa+uOKHlNA3zaq0hEtb1Rb8jfsl35gttaUms+UglAWu3EK0
-   S7y0nGIxZDcjiZwyj12kJsfBo+oHr3Mb+3WMt3KlAfJtpizrKxk0QRfOm
-   JptdtY0/EBFLU1jhjRB2AyPXy8aS60gKEbxUDhG0O0nLUXSVWJQPJVKa/
-   Q==;
-X-CSE-ConnectionGUID: kPUXYgEQQGKsDrDHlTZ1fQ==
-X-CSE-MsgGUID: TJqnvausQOus0AddusBRTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="54881485"
-X-IronPort-AV: E=Sophos;i="6.16,336,1744095600"; 
-   d="scan'208";a="54881485"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2025 04:30:18 -0700
-X-CSE-ConnectionGUID: 8fICLahTRj6+dim0JNridA==
-X-CSE-MsgGUID: 3ey7wWnfTNCClzSKKptcvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,336,1744095600"; 
-   d="scan'208";a="159446817"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 24 Jul 2025 04:30:16 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ueu9N-000KNf-0z;
-	Thu, 24 Jul 2025 11:30:13 +0000
-Date: Thu, 24 Jul 2025 19:29:15 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kees Cook <kees@kernel.org>, Jakub Kicinski <kuba@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, Kees Cook <kees@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH 3/6 net-next] net: Convert proto_ops bind() callbacks to
- use sockaddr_unspec
-Message-ID: <202507241955.LuEWrXAU-lkp@intel.com>
-References: <20250723231921.2293685-3-kees@kernel.org>
+	s=arc-20240116; t=1753356910; c=relaxed/simple;
+	bh=s9edkJMmo2+O5omNpaFOEJGj0jH3yQhnGKRUh1LPk1Q=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MseOMRi7fvvacbDH2Jho7blT/gnpFF0Wxe/ZIEAixnE8ek2k+c2aOdHAQ1DXB+B6taW2PdXCtvCF4qFKOCVrkFW0PtUqI86IOFlQAfjffdSpwz0eE5lEz4bnvCNbxmWHawxHa60pvzV1JvtLJPFsASvz9bds+JWgGttvVdeVoWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bnpkw4Nvwz1R8lP;
+	Thu, 24 Jul 2025 19:32:24 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 960791A0188;
+	Thu, 24 Jul 2025 19:35:05 +0800 (CST)
+Received: from huawei.com (10.175.124.27) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 24 Jul
+ 2025 19:35:04 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>
+Subject: [PATCH net-next] ipv6: mcast: Add ip6_mc_find_idev() helper
+Date: Thu, 24 Jul 2025 19:56:31 +0800
+Message-ID: <20250724115631.1522458-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250723231921.2293685-3-kees@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-Hi Kees,
+__ipv6_sock_mc_join() has the same code as ip6_mc_find_dev() to find dev,
+extract this into ip6_mc_find_dev() and add ip6_mc_find_idev() to reduce
+code duplication and improve readability.
 
-kernel test robot noticed the following build warnings:
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+ net/ipv6/mcast.c | 76 +++++++++++++++++++++++-------------------------
+ 1 file changed, 36 insertions(+), 40 deletions(-)
 
-[auto build test WARNING on next-20250723]
-[also build test WARNING on v6.16-rc7]
-[cannot apply to net-next/main bluetooth-next/master bluetooth/master brauner-vfs/vfs.all mkl-can-next/testing mptcp/export mptcp/export-net trondmy-nfs/linux-next linus/master v6.16-rc7 v6.16-rc6 v6.16-rc5]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Kees-Cook/net-uapi-Add-__kernel_sockaddr_unspec-for-sockaddr-of-unknown-length/20250724-072218
-base:   next-20250723
-patch link:    https://lore.kernel.org/r/20250723231921.2293685-3-kees%40kernel.org
-patch subject: [PATCH 3/6 net-next] net: Convert proto_ops bind() callbacks to use sockaddr_unspec
-config: x86_64-buildonly-randconfig-003-20250724 (https://download.01.org/0day-ci/archive/20250724/202507241955.LuEWrXAU-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250724/202507241955.LuEWrXAU-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507241955.LuEWrXAU-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   net/packet/af_packet.c: In function 'packet_bind_spkt':
-   net/packet/af_packet.c:3340:33: error: 'struct __kernel_sockaddr_unspec' has no member named 'sa_data_min'; did you mean 'sa_data'?
-    3340 |         char name[sizeof(uaddr->sa_data_min) + 1];
-         |                                 ^~~~~~~~~~~
-         |                                 sa_data
-   net/packet/af_packet.c:3351:52: error: 'struct __kernel_sockaddr_unspec' has no member named 'sa_data_min'; did you mean 'sa_data'?
-    3351 |         memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data_min));
-         |                                                    ^~~~~~~~~~~
-         |                                                    sa_data
-   net/packet/af_packet.c:3352:28: error: 'struct __kernel_sockaddr_unspec' has no member named 'sa_data_min'; did you mean 'sa_data'?
-    3352 |         name[sizeof(uaddr->sa_data_min)] = 0;
-         |                            ^~~~~~~~~~~
-         |                            sa_data
->> net/packet/af_packet.c:3340:14: warning: unused variable 'name' [-Wunused-variable]
-    3340 |         char name[sizeof(uaddr->sa_data_min) + 1];
-         |              ^~~~
->> net/packet/af_packet.c:3355:1: warning: control reaches end of non-void function [-Wreturn-type]
-    3355 | }
-         | ^
-
-
-vim +/name +3340 net/packet/af_packet.c
-
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3331  
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3332  /*
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3333   *	Bind a packet socket to a device
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3334   */
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3335  
-40570133fbb3ba Kees Cook           2025-07-23  3336  static int packet_bind_spkt(struct socket *sock, struct sockaddr_unspec *uaddr,
-40d4e3dfc2f56a Eric Dumazet        2009-07-21  3337  			    int addr_len)
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3338  {
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3339  	struct sock *sk = sock->sk;
-b5f0de6df6dce8 Kees Cook           2022-10-18 @3340  	char name[sizeof(uaddr->sa_data_min) + 1];
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3341  
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3342  	/*
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3343  	 *	Check legality
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3344  	 */
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3345  
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3346  	if (addr_len != sizeof(struct sockaddr))
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3347  		return -EINVAL;
-540e2894f79055 Alexander Potapenko 2017-03-01  3348  	/* uaddr->sa_data comes from the userspace, it's not guaranteed to be
-540e2894f79055 Alexander Potapenko 2017-03-01  3349  	 * zero-terminated.
-540e2894f79055 Alexander Potapenko 2017-03-01  3350  	 */
-b5f0de6df6dce8 Kees Cook           2022-10-18  3351  	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data_min));
-b5f0de6df6dce8 Kees Cook           2022-10-18  3352  	name[sizeof(uaddr->sa_data_min)] = 0;
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3353  
-6ffc57ea004234 Eric Dumazet        2023-05-26  3354  	return packet_do_bind(sk, name, 0, 0);
-^1da177e4c3f41 Linus Torvalds      2005-04-16 @3355  }
-^1da177e4c3f41 Linus Torvalds      2005-04-16  3356  
-
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index 36ca27496b3c..3fdff47c7b84 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -169,6 +169,30 @@ static int unsolicited_report_interval(struct inet6_dev *idev)
+ 	return iv > 0 ? iv : 1;
+ }
+ 
++static struct net_device *ip6_mc_find_dev(struct net *net,
++					  const struct in6_addr *group,
++					  int ifindex)
++{
++	struct net_device *dev = NULL;
++
++	if (ifindex == 0) {
++		struct rt6_info *rt;
++
++		rcu_read_lock();
++		rt = rt6_lookup(net, group, NULL, 0, NULL, 0);
++		if (rt) {
++			dev = dst_dev(&rt->dst);
++			dev_hold(dev);
++			ip6_rt_put(rt);
++		}
++		rcu_read_unlock();
++	} else {
++		dev = dev_get_by_index(net, ifindex);
++	}
++
++	return dev;
++}
++
+ /*
+  *	socket join on multicast group
+  */
+@@ -198,21 +222,7 @@ static int __ipv6_sock_mc_join(struct sock *sk, int ifindex,
+ 	mc_lst->next = NULL;
+ 	mc_lst->addr = *addr;
+ 
+-	if (ifindex == 0) {
+-		struct rt6_info *rt;
+-
+-		rcu_read_lock();
+-		rt = rt6_lookup(net, addr, NULL, 0, NULL, 0);
+-		if (rt) {
+-			dev = dst_dev(&rt->dst);
+-			dev_hold(dev);
+-			ip6_rt_put(rt);
+-		}
+-		rcu_read_unlock();
+-	} else {
+-		dev = dev_get_by_index(net, ifindex);
+-	}
+-
++	dev = ip6_mc_find_dev(net, addr, ifindex);
+ 	if (!dev) {
+ 		sock_kfree_s(sk, mc_lst, sizeof(*mc_lst));
+ 		return -ENODEV;
+@@ -302,32 +312,18 @@ int ipv6_sock_mc_drop(struct sock *sk, int ifindex, const struct in6_addr *addr)
+ }
+ EXPORT_SYMBOL(ipv6_sock_mc_drop);
+ 
+-static struct inet6_dev *ip6_mc_find_dev(struct net *net,
+-					 const struct in6_addr *group,
+-					 int ifindex)
++static struct inet6_dev *ip6_mc_find_idev(struct net *net,
++					  const struct in6_addr *group,
++					  int ifindex)
+ {
+-	struct net_device *dev = NULL;
+-	struct inet6_dev *idev;
+-
+-	if (ifindex == 0) {
+-		struct rt6_info *rt;
++	struct inet6_dev *idev = NULL;
++	struct net_device *dev;
+ 
+-		rcu_read_lock();
+-		rt = rt6_lookup(net, group, NULL, 0, NULL, 0);
+-		if (rt) {
+-			dev = dst_dev(&rt->dst);
+-			dev_hold(dev);
+-			ip6_rt_put(rt);
+-		}
+-		rcu_read_unlock();
+-	} else {
+-		dev = dev_get_by_index(net, ifindex);
++	dev = ip6_mc_find_dev(net, group, ifindex);
++	if (dev) {
++		idev = in6_dev_get(dev);
++		dev_put(dev);
+ 	}
+-	if (!dev)
+-		return NULL;
+-
+-	idev = in6_dev_get(dev);
+-	dev_put(dev);
+ 
+ 	return idev;
+ }
+@@ -374,7 +370,7 @@ int ip6_mc_source(int add, int omode, struct sock *sk,
+ 	if (!ipv6_addr_is_multicast(group))
+ 		return -EINVAL;
+ 
+-	idev = ip6_mc_find_dev(net, group, pgsr->gsr_interface);
++	idev = ip6_mc_find_idev(net, group, pgsr->gsr_interface);
+ 	if (!idev)
+ 		return -ENODEV;
+ 
+@@ -509,7 +505,7 @@ int ip6_mc_msfilter(struct sock *sk, struct group_filter *gsf,
+ 	    gsf->gf_fmode != MCAST_EXCLUDE)
+ 		return -EINVAL;
+ 
+-	idev = ip6_mc_find_dev(net, group, gsf->gf_interface);
++	idev = ip6_mc_find_idev(net, group, gsf->gf_interface);
+ 	if (!idev)
+ 		return -ENODEV;
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
