@@ -1,94 +1,123 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21742153F1
-	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 08:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B012153F1
+	for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 08:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753344205; cv=none; b=V31T/BC8YsW73Pks1SJviA9M9kjYTXygk7cPGjPmzUMb0lGRTbJvX/uI5A2DutM4uwky5lyWLkkfy2foX1rvrPr7t1Z9ozIG/ACJUa3TQSVqQXIeIDTGeHQPDSZ2GiiuuzTpIo07YvQgx0QCPPIucWJI5sKrAes6yZNr9Ac8cMo=
+	t=1753344431; cv=none; b=YubAZfA2s2wX793W+peUHQwxZvRBw1fFaZsT0pk21H+G9XS2LaoDAOB/RLwe/81Of/4xk1x/3Ci5k7/0ptaLlxUh0Re7oAOhkVJ3dKX9pbIlppYfcONhXJgBJXC8GH5DfZiXaTAEZhzINdHv+pTe9+Wf85q/Hbglu1JF99MTXZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753344205; c=relaxed/simple;
-	bh=UJieD3EE3q0kc+37pyAjaBrkau4zswjG7oQNF3HamPs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BVK5Q7x5Xk1sn29/n505PrOVNQxxwbbVysY+w+FKtXb49bEWtSVFRnXXzOMqv+9aM9xoSB7UPL8QiVSJxDF0btjNVEH/4sAsaL9oMZNrxTxXPlt9RA5zwLS0esRlJfAQB8BA9hDhPozHjB0FX/8Ck0PR4tGMqX4vqXRPz1fQ+do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GAERuU3D; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1753344431; c=relaxed/simple;
+	bh=3GfbGSqWVEhIf20dNOMc0fp14qcTv6XZ5FmBTnLwA+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BNA1cvj19ZHVVP8QzLDpMse37JiA6E6YnEQJDy79L+4G80dsJ+map30UHCuq+dHWodKy4AVGzl4AEO8t8N3drdCmknSy5iJuSuLInkPOnYq8mXfmXapSijVBCh7un8ad+LYlXJjhlhI4G2ZhQYUBiiZXXAm/9gzrD7t1w+P+bGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YISmjGJx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GAERuU3D"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ab53fce526so10468081cf.2
-        for <netdev@vger.kernel.org>; Thu, 24 Jul 2025 01:03:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753344203; x=1753949003; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UJieD3EE3q0kc+37pyAjaBrkau4zswjG7oQNF3HamPs=;
-        b=GAERuU3DfDLJjC32xjU6lqLAJNgdwMC+cPnpn5o4YDZ9p6GxRzB2YtYEy2yvI/KL6X
-         sE8qCowiJuKsHCF76YDGzdVznj1uA2RLHiVzJ8T54EXiK5xWvoUm+INsuMUzylMj/6e0
-         VwPGgH0Z1Lb6v1Wm9y/E872MJjItDGuvC29fq2Rf2Vd3+uymEofCjRErxytfSQpFFCMP
-         aMHLRl+51M6XVhewC0DFyngqRsWJ9dg7H3SRwVdWR5Jyo0KJx9w9Jic8T9+e/SrWqxRi
-         904RG67IjURmg6b0CWg+LpkFBShFdCJp8j1ZNPA3mo5GWXm3eVBwXEIAW+SDo/+hkoGD
-         1PbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753344203; x=1753949003;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UJieD3EE3q0kc+37pyAjaBrkau4zswjG7oQNF3HamPs=;
-        b=iLEI6/54w6DnfMGhjqWng6dRAAo0FuUOlFfhqYNHOoi34djEh0YB7bdVZ7QDTqEe/8
-         VT5oRVxsUzGYd+Z1uR0zrdge4glu/afFVa2Erl7wWGqQjRpDkIDw9FduiTjCqEIw3y7P
-         SCvbk8kBm2NGMjGVWByxQeHl3vQ/NWK7xQQUZAfpHVqfpJYbxUuB7GSsPY/1p0U8RkEf
-         i2XbE2BzC7S7Dkgnmr+vRW+xHIsTPHztR2+zEqvfWuCa+hIav5TyfcV6cgE93GixaYI1
-         H1YiFCf3/xkOdn2E8BY28RkYnJ8juNyLQI8lHAWH7Mi0EvZIci7+Ok09CKuY6nRcKSlZ
-         taZg==
-X-Forwarded-Encrypted: i=1; AJvYcCXqVPoZOWO+HqjE2e//eB4m39vI7bCLWHeJSkPn+MuO47iuWZFN9Uv7SmTcjZwlJ1mqvj4f4Jg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoH9rKXclZfvt2Mfq3++tPXYocvDFf7TOihnS8OLBg2IMU+Dhy
-	zbCGsZldkb9fuLT8/MUKzfq0Nv9F4dgzw+Qq3y+VMn99fgrShUijtUQS5C3sf12qWYOoZ8OdbEl
-	j4iBuQMZ+pyiQ6G+5kGrQuKl0XxsBrFDEFERbSIX2
-X-Gm-Gg: ASbGnctXjHHIe5bVo1djAdsxxn3BzGT7IQePRsAUS8S8H3LD5OdrAvF7Y5N6MKKNxWq
-	OUIhIvY48Ub6FQHhMPw0QjZroUVZ5OCSvNCc2aPlNVS0ZQIm0F4M+VkoBbg7UQRMwhwnzwh4IJM
-	rIwXxxJFqc5djSFeejmSIGbSzTiLx10mwHUWNjQvzIXroVvhyCRyOQeDtDecfY2/dinGl6r1eH2
-	Jnv8r64gweUHAbPGw==
-X-Google-Smtp-Source: AGHT+IFl+oT1jF7k/9kW1TUUtdhW5Kibpj0coT3C4jfrr8flV4/eU2Q2qfxVAhDslrYzyWWRcnR4dIMOVpUk7b5NvR8=
-X-Received: by 2002:ac8:5f8e:0:b0:4ae:6b72:2ae9 with SMTP id
- d75a77b69052e-4ae6df8a4d9mr81016401cf.43.1753344202234; Thu, 24 Jul 2025
- 01:03:22 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YISmjGJx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753344428;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=yds5vhOzn4LpdsxnEOz220TpuASpaZwH3IpQhzpEW5I=;
+	b=YISmjGJx7BD0fCd9ZbSb795UkY9r8kJM6Xq5ajdfvtAnz/eyflng9vIEPTgr/LZli7n5kj
+	qqrjemY8w8+IREuDHq7cANNsD75D+Vuw73kuBAqCRvk/SRxfTAZqQbIc9Fz/RgE+j45KFR
+	Z03/l2UudVa+EnON2l/wBb4O4Ex0nLA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-l7vBBadIMIenRZy1RjtSJA-1; Thu,
+ 24 Jul 2025 04:07:05 -0400
+X-MC-Unique: l7vBBadIMIenRZy1RjtSJA-1
+X-Mimecast-MFC-AGG-ID: l7vBBadIMIenRZy1RjtSJA_1753344423
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 17E8318002B6;
+	Thu, 24 Jul 2025 08:07:03 +0000 (UTC)
+Received: from yiche-laptop.redhat.com (unknown [10.72.112.178])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E176218002AF;
+	Thu, 24 Jul 2025 08:06:55 +0000 (UTC)
+From: Yi Chen <yiche@redhat.com>
+To: netdev@vger.kernel.org
+Cc: netfilter-devel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pablo@netfilter.org,
+	kadlec@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	horms@kernel.org,
+	coreteam@netfilter.org,
+	fw@strlen.de
+Subject: [PATCH net v2] selftests: netfilter: ipvs.sh: Explicity disable rp_filter on interface tunl0
+Date: Thu, 24 Jul 2025 16:06:53 +0800
+Message-ID: <20250724080653.20723-1-yiche@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250723082201.GA14090@hu-sharathv-hyd.qualcomm.com>
- <CANn89iLx29ovUNTp9DjzzeeAOZfKvsokztp_rj6qo1+aSjvrgw@mail.gmail.com> <7ffcb4d4-a5b4-4c87-8c92-ef87269bfd07@quicinc.com>
-In-Reply-To: <7ffcb4d4-a5b4-4c87-8c92-ef87269bfd07@quicinc.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 24 Jul 2025 01:03:11 -0700
-X-Gm-Features: Ac12FXyrVFqHSu-_ClF5-JvN6QWWlq8ElHrMSLpKYWIT9YmGy6cJaULEsLkaWhU
-Message-ID: <CANn89iJwM2-rueNzEdOOUuTF7DV=yT+qAFUJsEDqiMJzdjf=-g@mail.gmail.com>
-Subject: Re: [PATCH] net: Add locking to protect skb->dev access in ip_output
-To: Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
-Cc: davem@davemloft.net, dsahern@kernel.org, kuba@kernel.org, 
-	pabeni@redhat.com, netdev@vger.kernel.org, quic_kapandey@quicinc.com, 
-	quic_subashab@quicinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Wed, Jul 23, 2025 at 11:16=E2=80=AFPM Sharath Chandra Vurukala
-<quic_sharathv@quicinc.com> wrote:
->
->
-> Thanks Eric for the review, as this work is already underway on your end,=
- I=E2=80=99ll pause and wait for your changes to become available.
+Although setup_ns() set net.ipv4.conf.default.rp_filter=0,
+loading certain module such as ipip will automatically create a tunl0 interface
+in all netns including new created ones. In the script, this is before than
+default.rp_filter=0 applied, as a result tunl0.rp_filter remains set to 1
+which causes the test report FAIL when ipip module is preloaded.
 
-Hi Sharath
+Before fix:
+Testing DR mode...
+Testing NAT mode...
+Testing Tunnel mode...
+ipvs.sh: FAIL
 
-I think you definitely can send a patch, I was not trying to say you
-could not do it.
+After fix:
+Testing DR mode...
+Testing NAT mode...
+Testing Tunnel mode...
+ipvs.sh: PASS
 
-Just pointing out what the plan was :)
+Fixes: 7c8b89ec506e ("selftests: netfilter: remove rp_filter configuration")
 
-Feel free to use my suggested patch, test it and send a V2
+v2: Fixed the format of Fixes tag.
+Signed-off-by: Yi Chen <yiche@redhat.com>
+---
+ tools/testing/selftests/net/netfilter/ipvs.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks.
+diff --git a/tools/testing/selftests/net/netfilter/ipvs.sh b/tools/testing/selftests/net/netfilter/ipvs.sh
+index 6af2ea3ad6b8..9c9d5b38ab71 100755
+--- a/tools/testing/selftests/net/netfilter/ipvs.sh
++++ b/tools/testing/selftests/net/netfilter/ipvs.sh
+@@ -151,7 +151,7 @@ test_nat() {
+ test_tun() {
+ 	ip netns exec "${ns0}" ip route add "${vip_v4}" via "${gip_v4}" dev br0
+ 
+-	ip netns exec "${ns1}" modprobe -q ipip
++	modprobe -q ipip
+ 	ip netns exec "${ns1}" ip link set tunl0 up
+ 	ip netns exec "${ns1}" sysctl -qw net.ipv4.ip_forward=0
+ 	ip netns exec "${ns1}" sysctl -qw net.ipv4.conf.all.send_redirects=0
+@@ -160,10 +160,10 @@ test_tun() {
+ 	ip netns exec "${ns1}" ipvsadm -a -i -t "${vip_v4}:${port}" -r ${rip_v4}:${port}
+ 	ip netns exec "${ns1}" ip addr add ${vip_v4}/32 dev lo:1
+ 
+-	ip netns exec "${ns2}" modprobe -q ipip
+ 	ip netns exec "${ns2}" ip link set tunl0 up
+ 	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.all.arp_ignore=1
+ 	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.all.arp_announce=2
++	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.tunl0.rp_filter=0
+ 	ip netns exec "${ns2}" ip addr add "${vip_v4}/32" dev lo:1
+ 
+ 	test_service
+-- 
+2.50.1
+
