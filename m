@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A2C2F0040
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D992F0041
 	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753460025; cv=none; b=Wdt6mo7wdGZXZUH4hu9b6Tb6eLMTJVUn6f4btclLZwqf0N4vsCA4Lyj54KpUdrap6HvuxBE+lCm8j7EDJrBAtg795+i2/ij+UG8ZCoAxV/HZwIlt7LMt6gOnYem5DszAowN8/uAQbazx8SmDSxAJkyqXhyQolgT7C7/VjBJbiKg=
+	t=1753460025; cv=none; b=q/t45u/K9JR0YGALibRo/3ehYht86sMgmfz1br8DfO6B2Lhb7ocb6XNtmpIswHx+DCoCMyU20MzxTY1aB68pv0WUGTeMr/Y74opgIknTHdfAruvODywoC8ZDElcbe6sQhmOF9oOHVJ2Oqt6SjuOX0RJd4NKWzLTWJIK0/FSJPEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753460025; c=relaxed/simple;
-	bh=BWTeLR4h2tGsxN5RPznOx7QFkkax8BiXRBL/L9vX+PI=;
+	bh=OrrCkI30+twP7n4wUU21dHYK3HnfXBiCcPQnJJzcQtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zkg60FkJvyo+hFapfOHc+Y03oHtGww6fkf8512rMTzs2tgFcLDCV5HZ4K3hAwWWWh8Z7x1Qq7JwjNPkhNEJxpz8e72c3EUzHk0zPfB+c9/Ra5fQGhHVfFeiyz4hqWHXfS9/oUIJfS2RCWjNa/gw54gPuDRRq/LD+oj5MS6emjXk=
+	 MIME-Version; b=Ie9lItbcvut7B+avcTAXl2W+dIxewoQ3GfHt3lytpCUzXqdpcRwTeXYpvTw0mCxxwPStz1uS41CXSylOeVwD9qZmdxXqaoG2IoI372Og2XipLUprLgKZCryYtIwv8TpUjm4Z6JGcZseg9FP4qAk8XQbGTgy77tPDOaooU1FIQOI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,27 +18,27 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1ufL3E-0006kK-Sa
+	id 1ufL3E-0006iK-Nm
 	for netdev@vger.kernel.org; Fri, 25 Jul 2025 18:13:40 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1ufL3A-00AFch-32
+	id 1ufL3A-00AFbW-0N
 	for netdev@vger.kernel.org;
 	Fri, 25 Jul 2025 18:13:36 +0200
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 611644498E5
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:13:35 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id D7E2E4498CB
+	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:13:34 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 47C6A449839;
-	Fri, 25 Jul 2025 16:13:31 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 6169d074;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id CDE90449827;
 	Fri, 25 Jul 2025 16:13:30 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id f7b0ee66;
+	Fri, 25 Jul 2025 16:13:29 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -48,9 +48,9 @@ Cc: davem@davemloft.net,
 	Jimmy Assarsson <extja@kvaser.com>,
 	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 22/27] can: kvaser_usb: Store the different firmware version components in a struct
-Date: Fri, 25 Jul 2025 18:05:32 +0200
-Message-ID: <20250725161327.4165174-23-mkl@pengutronix.de>
+Subject: [PATCH net-next 15/27] can: kvaser_pciefd: Add devlink port support
+Date: Fri, 25 Jul 2025 18:05:25 +0200
+Message-ID: <20250725161327.4165174-16-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250725161327.4165174-1-mkl@pengutronix.de>
 References: <20250725161327.4165174-1-mkl@pengutronix.de>
@@ -68,141 +68,170 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Jimmy Assarsson <extja@kvaser.com>
 
-Store firmware version in kvaser_usb_fw_version struct, specifying the
-different components of the version number.
-And drop debug prinout of firmware version, since later patches will expose
-it via the devlink interface.
+Register each CAN channel of the device as an devlink physical port.
+This makes it easier to get device information for a given network
+interface (i.e. can2).
+
+Example output:
+  $ devlink dev
+  pci/0000:07:00.0
+  pci/0000:08:00.0
+  pci/0000:09:00.0
+
+  $ devlink port
+  pci/0000:07:00.0/0: type eth netdev can0 flavour physical port 0 splittable false
+  pci/0000:07:00.0/1: type eth netdev can1 flavour physical port 1 splittable false
+  pci/0000:07:00.0/2: type eth netdev can2 flavour physical port 2 splittable false
+  pci/0000:07:00.0/3: type eth netdev can3 flavour physical port 3 splittable false
+  pci/0000:08:00.0/0: type eth netdev can4 flavour physical port 0 splittable false
+  pci/0000:08:00.0/1: type eth netdev can5 flavour physical port 1 splittable false
+  pci/0000:09:00.0/0: type eth netdev can6 flavour physical port 0 splittable false
+  pci/0000:09:00.0/1: type eth netdev can7 flavour physical port 1 splittable false
+  pci/0000:09:00.0/2: type eth netdev can8 flavour physical port 2 splittable false
+  pci/0000:09:00.0/3: type eth netdev can9 flavour physical port 3 splittable false
+
+  $ devlink port show can2
+  pci/0000:07:00.0/2: type eth netdev can2 flavour physical port 2 splittable false
+
+  $ devlink dev info
+  pci/0000:07:00.0:
+    driver kvaser_pciefd
+    versions:
+        running:
+          fw 1.3.75
+  pci/0000:08:00.0:
+    driver kvaser_pciefd
+    versions:
+        running:
+          fw 2.4.29
+  pci/0000:09:00.0:
+    driver kvaser_pciefd
+    versions:
+        running:
+          fw 1.3.72
+
+  $  sudo ethtool -i can2
+  driver: kvaser_pciefd
+  version: 6.8.0-40-generic
+  firmware-version: 1.3.75
+  expansion-rom-version:
+  bus-info: 0000:07:00.0
+  supports-statistics: no
+  supports-test: no
+  supports-eeprom-access: no
+  supports-register-dump: no
+  supports-priv-flags: no
 
 Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20250725123452.41-7-extja@kvaser.com
+Link: https://patch.msgid.link/20250725123230.8-10-extja@kvaser.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb.h       | 12 +++++++++++-
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c  |  5 -----
- drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c |  6 +++++-
- drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c  | 15 +++++++++++++--
- 4 files changed, 29 insertions(+), 9 deletions(-)
+ drivers/net/can/kvaser_pciefd/kvaser_pciefd.h |  4 +++
+ .../can/kvaser_pciefd/kvaser_pciefd_core.c    |  8 ++++++
+ .../can/kvaser_pciefd/kvaser_pciefd_devlink.c | 25 +++++++++++++++++++
+ 3 files changed, 37 insertions(+)
 
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb.h b/drivers/net/can/usb/kvaser_usb/kvaser_usb.h
-index fba972e7220d..a36d86494113 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb.h
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb.h
-@@ -47,6 +47,10 @@
- #define KVASER_USB_CAP_EXT_CAP			0x02
- #define KVASER_USB_HYDRA_CAP_EXT_CMD		0x04
+diff --git a/drivers/net/can/kvaser_pciefd/kvaser_pciefd.h b/drivers/net/can/kvaser_pciefd/kvaser_pciefd.h
+index 34ba393d6093..08c9ddc1ee85 100644
+--- a/drivers/net/can/kvaser_pciefd/kvaser_pciefd.h
++++ b/drivers/net/can/kvaser_pciefd/kvaser_pciefd.h
+@@ -59,6 +59,7 @@ struct kvaser_pciefd_fw_version {
  
-+#define KVASER_USB_SW_VERSION_MAJOR_MASK GENMASK(31, 24)
-+#define KVASER_USB_SW_VERSION_MINOR_MASK GENMASK(23, 16)
-+#define KVASER_USB_SW_VERSION_BUILD_MASK GENMASK(15, 0)
-+
- struct kvaser_usb_dev_cfg;
- 
- enum kvaser_usb_leaf_family {
-@@ -83,6 +87,12 @@ struct kvaser_usb_tx_urb_context {
- 	u32 echo_index;
+ struct kvaser_pciefd_can {
+ 	struct can_priv can;
++	struct devlink_port devlink_port;
+ 	struct kvaser_pciefd *kv_pcie;
+ 	void __iomem *reg_base;
+ 	struct can_berr_counter bec;
+@@ -89,4 +90,7 @@ struct kvaser_pciefd {
  };
  
-+struct kvaser_usb_fw_version {
-+	u8 major;
-+	u8 minor;
-+	u16 build;
-+};
+ extern const struct devlink_ops kvaser_pciefd_devlink_ops;
 +
- struct kvaser_usb_busparams {
- 	__le32 bitrate;
- 	u8 tseg1;
-@@ -101,7 +111,7 @@ struct kvaser_usb {
- 	struct usb_endpoint_descriptor *bulk_in, *bulk_out;
- 	struct usb_anchor rx_submitted;
++int kvaser_pciefd_devlink_port_register(struct kvaser_pciefd_can *can);
++void kvaser_pciefd_devlink_port_unregister(struct kvaser_pciefd_can *can);
+ #endif /* _KVASER_PCIEFD_H */
+diff --git a/drivers/net/can/kvaser_pciefd/kvaser_pciefd_core.c b/drivers/net/can/kvaser_pciefd/kvaser_pciefd_core.c
+index 86509a2d2b90..0880023611be 100644
+--- a/drivers/net/can/kvaser_pciefd/kvaser_pciefd_core.c
++++ b/drivers/net/can/kvaser_pciefd/kvaser_pciefd_core.c
+@@ -943,6 +943,7 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
+ 		struct net_device *netdev;
+ 		struct kvaser_pciefd_can *can;
+ 		u32 status, tx_nr_packets_max;
++		int ret;
  
--	u32 fw_version;
-+	struct kvaser_usb_fw_version fw_version;
- 	unsigned int nchannels;
- 	/* @max_tx_urbs: Firmware-reported maximum number of outstanding,
- 	 * not yet ACKed, transmissions on this device. This value is
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-index 46e6cda0bf8d..2313fbc1a2c3 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -963,11 +963,6 @@ static int kvaser_usb_probe(struct usb_interface *intf,
- 	if (WARN_ON(!dev->cfg))
- 		return -ENODEV;
+ 		netdev = alloc_candev(sizeof(struct kvaser_pciefd_can),
+ 				      roundup_pow_of_two(KVASER_PCIEFD_CAN_TX_MAX_COUNT));
+@@ -1013,6 +1014,11 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
  
--	dev_dbg(&intf->dev, "Firmware version: %d.%d.%d\n",
--		((dev->fw_version >> 24) & 0xff),
--		((dev->fw_version >> 16) & 0xff),
--		(dev->fw_version & 0xffff));
--
- 	dev_dbg(&intf->dev, "Max outstanding tx = %d URBs\n", dev->max_tx_urbs);
+ 		pcie->can[i] = can;
+ 		kvaser_pciefd_pwm_start(can);
++		ret = kvaser_pciefd_devlink_port_register(can);
++		if (ret) {
++			dev_err(&pcie->pci->dev, "Failed to register devlink port\n");
++			return ret;
++		}
+ 	}
  
- 	err = ops->dev_get_card_info(dev);
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
-index a4402b4845c6..388ebf2b1a5b 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
-@@ -1839,6 +1839,7 @@ static int kvaser_usb_hydra_get_software_details(struct kvaser_usb *dev)
- 	size_t cmd_len;
- 	int err;
- 	u32 flags;
-+	u32 fw_version;
- 	struct kvaser_usb_dev_card_data *card_data = &dev->card_data;
+ 	return 0;
+@@ -1732,6 +1738,7 @@ static void kvaser_pciefd_teardown_can_ctrls(struct kvaser_pciefd *pcie)
+ 		if (can) {
+ 			iowrite32(0, can->reg_base + KVASER_PCIEFD_KCAN_IEN_REG);
+ 			kvaser_pciefd_pwm_stop(can);
++			kvaser_pciefd_devlink_port_unregister(can);
+ 			free_candev(can->can.dev);
+ 		}
+ 	}
+@@ -1874,6 +1881,7 @@ static void kvaser_pciefd_remove(struct pci_dev *pdev)
+ 		unregister_candev(can->can.dev);
+ 		timer_delete(&can->bec_poll_timer);
+ 		kvaser_pciefd_pwm_stop(can);
++		kvaser_pciefd_devlink_port_unregister(can);
+ 	}
  
- 	cmd = kzalloc(sizeof(*cmd), GFP_KERNEL);
-@@ -1863,7 +1864,10 @@ static int kvaser_usb_hydra_get_software_details(struct kvaser_usb *dev)
- 	if (err)
- 		goto end;
+ 	kvaser_pciefd_disable_irq_srcs(pcie);
+diff --git a/drivers/net/can/kvaser_pciefd/kvaser_pciefd_devlink.c b/drivers/net/can/kvaser_pciefd/kvaser_pciefd_devlink.c
+index 1fbb40dbbb7a..1d61a8b0eeba 100644
+--- a/drivers/net/can/kvaser_pciefd/kvaser_pciefd_devlink.c
++++ b/drivers/net/can/kvaser_pciefd/kvaser_pciefd_devlink.c
+@@ -5,6 +5,7 @@
+  */
+ #include "kvaser_pciefd.h"
  
--	dev->fw_version = le32_to_cpu(cmd->sw_detail_res.sw_version);
-+	fw_version = le32_to_cpu(cmd->sw_detail_res.sw_version);
-+	dev->fw_version.major = FIELD_GET(KVASER_USB_SW_VERSION_MAJOR_MASK, fw_version);
-+	dev->fw_version.minor = FIELD_GET(KVASER_USB_SW_VERSION_MINOR_MASK, fw_version);
-+	dev->fw_version.build = FIELD_GET(KVASER_USB_SW_VERSION_BUILD_MASK, fw_version);
- 	flags = le32_to_cpu(cmd->sw_detail_res.sw_flags);
++#include <linux/netdevice.h>
+ #include <net/devlink.h>
  
- 	if (flags & KVASER_USB_HYDRA_SW_FLAG_FW_BAD) {
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
-index a67855521ccc..b4f5d4fba630 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
-@@ -741,9 +741,13 @@ static int kvaser_usb_leaf_send_simple_cmd(const struct kvaser_usb *dev,
- static void kvaser_usb_leaf_get_software_info_leaf(struct kvaser_usb *dev,
- 						   const struct leaf_cmd_softinfo *softinfo)
- {
-+	u32 fw_version;
- 	u32 sw_options = le32_to_cpu(softinfo->sw_options);
- 
--	dev->fw_version = le32_to_cpu(softinfo->fw_version);
-+	fw_version = le32_to_cpu(softinfo->fw_version);
-+	dev->fw_version.major = FIELD_GET(KVASER_USB_SW_VERSION_MAJOR_MASK, fw_version);
-+	dev->fw_version.minor = FIELD_GET(KVASER_USB_SW_VERSION_MINOR_MASK, fw_version);
-+	dev->fw_version.build = FIELD_GET(KVASER_USB_SW_VERSION_BUILD_MASK, fw_version);
- 	dev->max_tx_urbs = le16_to_cpu(softinfo->max_outstanding_tx);
- 
- 	if (sw_options & KVASER_USB_LEAF_SWOPTION_EXT_CAP)
-@@ -784,6 +788,7 @@ static int kvaser_usb_leaf_get_software_info_inner(struct kvaser_usb *dev)
- {
- 	struct kvaser_cmd cmd;
- 	int err;
-+	u32 fw_version;
- 
- 	err = kvaser_usb_leaf_send_simple_cmd(dev, CMD_GET_SOFTWARE_INFO, 0);
- 	if (err)
-@@ -798,7 +803,13 @@ static int kvaser_usb_leaf_get_software_info_inner(struct kvaser_usb *dev)
- 		kvaser_usb_leaf_get_software_info_leaf(dev, &cmd.u.leaf.softinfo);
- 		break;
- 	case KVASER_USBCAN:
--		dev->fw_version = le32_to_cpu(cmd.u.usbcan.softinfo.fw_version);
-+		fw_version = le32_to_cpu(cmd.u.usbcan.softinfo.fw_version);
-+		dev->fw_version.major = FIELD_GET(KVASER_USB_SW_VERSION_MAJOR_MASK,
-+						  fw_version);
-+		dev->fw_version.minor = FIELD_GET(KVASER_USB_SW_VERSION_MINOR_MASK,
-+						  fw_version);
-+		dev->fw_version.build = FIELD_GET(KVASER_USB_SW_VERSION_BUILD_MASK,
-+						  fw_version);
- 		dev->max_tx_urbs =
- 			le16_to_cpu(cmd.u.usbcan.softinfo.max_outstanding_tx);
- 		dev->cfg = &kvaser_usb_leaf_usbcan_dev_cfg;
+ static int kvaser_pciefd_devlink_info_get(struct devlink *devlink,
+@@ -33,3 +34,27 @@ static int kvaser_pciefd_devlink_info_get(struct devlink *devlink,
+ const struct devlink_ops kvaser_pciefd_devlink_ops = {
+ 	.info_get = kvaser_pciefd_devlink_info_get,
+ };
++
++int kvaser_pciefd_devlink_port_register(struct kvaser_pciefd_can *can)
++{
++	int ret;
++	struct devlink_port_attrs attrs = {
++		.flavour = DEVLINK_PORT_FLAVOUR_PHYSICAL,
++		.phys.port_number = can->can.dev->dev_port,
++	};
++	devlink_port_attrs_set(&can->devlink_port, &attrs);
++
++	ret = devlink_port_register(priv_to_devlink(can->kv_pcie),
++				    &can->devlink_port, can->can.dev->dev_port);
++	if (ret)
++		return ret;
++
++	SET_NETDEV_DEVLINK_PORT(can->can.dev, &can->devlink_port);
++
++	return 0;
++}
++
++void kvaser_pciefd_devlink_port_unregister(struct kvaser_pciefd_can *can)
++{
++	devlink_port_unregister(&can->devlink_port);
++}
 -- 
 2.47.2
 
