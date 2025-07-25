@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FD62F0042
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB58A2F005C
+	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753460025; cv=none; b=K4oL5fRkko9ut14UN/rS+Kuu0V7S8uMhs4UfgtwnYsWm/5Sj0gs+vXT5XcfisllT/gl/Sh+v9c2xgjz3uSmVlgyv2V3znQTV0EVG6YeMD2xw90/hDYPgfhRIDJ0mSfYDEkG/mw7TSTTRDyrJOUUbDAINqCJDPyFGPS5ON2uq5/Q=
+	t=1753460026; cv=none; b=RMRCxlm4QXADZU9MIJCvVfLL+JuGIpyLw4vIw/d7Cn31ofCfYoQeLReeD5HCkgB2MFJ5C6W5UUTqGpXZlefbxmFPCAXSPpI26mFI+LeK1AfNXpzUErBEohhnrxPJs4HgGuKx0/T31vYdDUe5jPfGBOV+0PPitfbUFiX9YqPGeaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753460025; c=relaxed/simple;
-	bh=7iTuLrU8ZoVy3zqWMY/i818AZPaFYYqdOjWlYCAeTeM=;
+	s=arc-20240116; t=1753460026; c=relaxed/simple;
+	bh=9KnqqFaFwDyZCZMWE+vUJz9uknZmucVEElwrEblaJ7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQnHI/jkIJYjDR+SuQ0b7d9byJfkckyaITWkWNukhY6me1J7MdvTNwHqjjjUxSqv9OqsL9HlVRsOd9VQdfeRwg35vnZpXS+kUpcxsOhT5UR9mQ4ah55gvw+L/2NvwwUNu35EijuT7lVRDkTIONBTFtN6S5BWzolUcPL9Gcui/hE=
+	 MIME-Version; b=tIRr2elfF1YqmPIrQJnxyhTVfvfSOO9zIzlahzDdDPCCo2FYNyMWma47jYCHdydB2EfrXk/z9HwD5vSeX6oLSiAGgifXrEzDE8FhJJ27Ottcr8mnAhQdUxf93VUpTzePYSvrF52SOYLc2/hErGzbu1XsVwv8FjueeC/mdr3fM7A=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1ufL3E-0006jT-OC
-	for netdev@vger.kernel.org; Fri, 25 Jul 2025 18:13:40 +0200
+	id 1ufL3F-0006ll-D6
+	for netdev@vger.kernel.org; Fri, 25 Jul 2025 18:13:41 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1ufL3A-00AFcW-2X
+	id 1ufL3B-00AFeq-2g
 	for netdev@vger.kernel.org;
-	Fri, 25 Jul 2025 18:13:36 +0200
+	Fri, 25 Jul 2025 18:13:37 +0200
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 4FB1B4498E0
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:13:35 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id 80E0F449910
+	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:13:37 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 0B6A444982E;
-	Fri, 25 Jul 2025 16:13:31 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 0BCFE449851;
+	Fri, 25 Jul 2025 16:13:32 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id ae327742;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 5ee017b6;
 	Fri, 25 Jul 2025 16:13:30 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -48,9 +48,9 @@ Cc: davem@davemloft.net,
 	Jimmy Assarsson <extja@kvaser.com>,
 	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 18/27] can: kvaser_usb: Add support for ethtool set_phys_id()
-Date: Fri, 25 Jul 2025 18:05:28 +0200
-Message-ID: <20250725161327.4165174-19-mkl@pengutronix.de>
+Subject: [PATCH net-next 27/27] Documentation: devlink: add devlink documentation for the kvaser_usb driver
+Date: Fri, 25 Jul 2025 18:05:37 +0200
+Message-ID: <20250725161327.4165174-28-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250725161327.4165174-1-mkl@pengutronix.de>
 References: <20250725161327.4165174-1-mkl@pengutronix.de>
@@ -68,61 +68,71 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Jimmy Assarsson <extja@kvaser.com>
 
-Add support for ethtool set_phys_id(), to physically locate devices by
-flashing a LED on the device.
+List the version information reported by the kvaser_usb driver
+through devlink.
 
+Suggested-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20250725123452.41-3-extja@kvaser.com
+Link: https://patch.msgid.link/20250725123452.41-12-extja@kvaser.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- .../net/can/usb/kvaser_usb/kvaser_usb_core.c  | 26 +++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ Documentation/networking/devlink/index.rst    |  1 +
+ .../networking/devlink/kvaser_usb.rst         | 33 +++++++++++++++++++
+ 2 files changed, 34 insertions(+)
+ create mode 100644 Documentation/networking/devlink/kvaser_usb.rst
 
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-index daf42080f942..c74875f978c4 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -753,6 +753,31 @@ static netdev_tx_t kvaser_usb_start_xmit(struct sk_buff *skb,
- 	return ret;
- }
- 
-+static int kvaser_usb_set_phys_id(struct net_device *netdev,
-+				  enum ethtool_phys_id_state state)
-+{
-+	struct kvaser_usb_net_priv *priv = netdev_priv(netdev);
-+	const struct kvaser_usb_dev_ops *ops = priv->dev->driver_info->ops;
+diff --git a/Documentation/networking/devlink/index.rst b/Documentation/networking/devlink/index.rst
+index 053fbafeb491..270a65a01411 100644
+--- a/Documentation/networking/devlink/index.rst
++++ b/Documentation/networking/devlink/index.rst
+@@ -86,6 +86,7 @@ parameters, info versions, and other features it supports.
+    ice
+    ixgbe
+    kvaser_pciefd
++   kvaser_usb
+    mlx4
+    mlx5
+    mlxsw
+diff --git a/Documentation/networking/devlink/kvaser_usb.rst b/Documentation/networking/devlink/kvaser_usb.rst
+new file mode 100644
+index 000000000000..403db3766cb4
+--- /dev/null
++++ b/Documentation/networking/devlink/kvaser_usb.rst
+@@ -0,0 +1,33 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
-+	switch (state) {
-+	case ETHTOOL_ID_ACTIVE:
-+		return 3; /* 3 On/Off cycles per second */
++==========================
++kvaser_usb devlink support
++==========================
 +
-+	case ETHTOOL_ID_ON:
-+		return ops->dev_set_led(priv, KVASER_USB_LED_ON, 1000);
++This document describes the devlink features implemented by the
++``kvaser_usb`` device driver.
 +
-+	case ETHTOOL_ID_OFF:
-+		return ops->dev_set_led(priv, KVASER_USB_LED_OFF, 1000);
++Info versions
++=============
 +
-+	case ETHTOOL_ID_INACTIVE:
-+		/* Turn LED off and restore standard function after 1ms */
-+		return ops->dev_set_led(priv, KVASER_USB_LED_OFF, 1);
++The ``kvaser_usb`` driver reports the following versions
 +
-+	default:
-+		return -EINVAL;
-+	}
-+}
++.. list-table:: devlink info versions implemented
++   :widths: 5 5 90
 +
- static const struct net_device_ops kvaser_usb_netdev_ops = {
- 	.ndo_open = kvaser_usb_open,
- 	.ndo_stop = kvaser_usb_close,
-@@ -763,6 +788,7 @@ static const struct net_device_ops kvaser_usb_netdev_ops = {
- 
- static const struct ethtool_ops kvaser_usb_ethtool_ops = {
- 	.get_ts_info = can_ethtool_op_get_ts_info_hwts,
-+	.set_phys_id = kvaser_usb_set_phys_id,
- };
- 
- static void kvaser_usb_remove_interfaces(struct kvaser_usb *dev)
++   * - Name
++     - Type
++     - Description
++   * - ``fw``
++     - running
++     - Version of the firmware running on the device. Also available
++       through ``ethtool -i`` as ``firmware-version``.
++   * - ``board.rev``
++     - fixed
++     - The device hardware revision.
++   * - ``board.id``
++     - fixed
++     - The device EAN (product number).
++   * - ``serial_number``
++     - fixed
++     - The device serial number.
 -- 
 2.47.2
 
