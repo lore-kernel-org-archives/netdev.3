@@ -1,159 +1,107 @@
-Received: from mail-io1-f77.google.com (mail-io1-f77.google.com [209.85.166.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E7124728F
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 18:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C58F2550AF
+	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 18:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753468117; cv=none; b=PmMPad7SJMq+nq4Rxs+LhC9OUnY2x5mLQyVrgqbNnl/ADOYV+s2MnjFZqvnG87WmnUKtSQg8Ig1gtgyPZ7R/mdwPNSs9lV3avJnFyvPYNgMkPR/lf8PGUv5LJ2aHxj9KEdi0oHV94vNxvR70Jh64it5lWXgL09c+Me6PwXqJwjo=
+	t=1753468492; cv=none; b=tUQmd2igext8rGQta2psdpGv3NVsf53LpO5+SfBomF4gaZIBcz9J8DMnLdWXGsDUC3r2dCPZ84Obi2Puen7nwIO/Xr3h3YOyMnpYkhkv/V6VRYANIFGmvuPiGmg6v+XR6DbrrYyw0mwo4farx+L/d8SLZEyjhuhgS+9ZDqCBKCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753468117; c=relaxed/simple;
-	bh=ouzsgk+19QmaRO9pKjJbgZ+UqbuwEfzKidBzOU/dHWo=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=rrPEnK9tTVbPp3tJNyMCMqQG4cHEVF5Nd0DM1e0fRDZMMmLcLqJclHrcrzM1BY/62sAi+6J6M3sRMvpXz3PhNQvr2PUvr/WLTLUKNKNp2wyjWHyL0yZiIEW3caHhyW9uVmn67AjcI3ATn202B6L5NUPOeX0O+5Ks4Z5iLkJaEWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f77.google.com with SMTP id ca18e2360f4ac-86d1218df67so263892939f.1
-        for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 11:28:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753468114; x=1754072914;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pipXtIEWEhRvtnHJ7xlpV/XMoRV9BNZ+hdAoR8pES7Y=;
-        b=aLfanIhRs7BDmkMP6K11cbj4e8O9gNs+8SQ+i/BBch1T5qBgBIdrDhxJ0RG9Yb5MsM
-         MwL8i2ZDAbTxIhCUu9qNDMm4t8C7LG0Pir6xcRe1CRBun9qPuzX+RfIwpb4bGbGkSrI2
-         aX1c5AGKZxZfnVhrpMmk4fQj8NJzsWaRXCxTnX6RS90DwTxUSHC5r1BFiFqCepRZY4s7
-         SMiN4yN4C9p630Smt5/yG2xos6hORwOKnuo9joUAH0JJQrdOciMrRN517upfZr9/QFPW
-         P3BtKlFek8f08BqipyWSdJQqaEQii3Yv46BOgwCNepWyE8JtvWCii+qsU2O0rw39YU2S
-         Mn/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUG9vl/DouBRRUcP9z7/jYnaVtCrIG+pycfn0rQQLdkK4BHqB1/2rUKvb4fiTnhgRu9GMWj9Gc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/UjSwRqApepzo3AI1BF09UE/c261uyPTt2EJ+bOpQEf0bc0Ep
-	TbVbnrKkNLtdKkk9I6eUdlpFA/OoeRPCf73sYYNc22Df0DZvyC1RZCHMwniOlV5CEtW4OYFlmpy
-	jy5aAAWsL6KLqMakMeKcCzJqXglctOdqog5j9kaHRTCIUHM8kQAbc6dIUxZc=
-X-Google-Smtp-Source: AGHT+IH0x+8018duqbyYiMeiRij8Fur/WaLqmHTXNy2m65q2EWKw8XSHg002KZNgmzWMNe02inHWp8hIfNTBxg3rmRMJeyJQfyKK
+	s=arc-20240116; t=1753468492; c=relaxed/simple;
+	bh=YTbYY2bm7XH8SBLFJ+M84jk1vGPJeS0Rcpzvb0M8XqM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fyZcLAEIAZwcSJLuAT8fV+53iOhd5SKQ5FxScSZ3zK4Ao9EJDsVgt0xjVnac0r3U2xnQLg3mcE4izHiRzUVHKctGJcrXp/vlOVLOVpr4oo3LIui5cCmSWMsW8EftdYjnd0i7hozCgO8o/2bXpvntq0P96X+h6mqqtbJS5s/0wEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I6pu5GV8; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I6pu5GV8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753468490; x=1785004490;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=YTbYY2bm7XH8SBLFJ+M84jk1vGPJeS0Rcpzvb0M8XqM=;
+  b=I6pu5GV8u0nf8pr+Uka9p5VhIIaS+917hgnDt+ra/rUUoO0ft7Crjyqc
+   ilNw8v5jAXSVrw8cuBWTeUYbLeHh8OcxugcvihDiMgRiVfuhMvq2I83Fb
+   EDsxs9tJaF52rfM6HIm7vBWp8z2t2otzuRJtxNRxFHjgiL7jnUROYRE46
+   LVyCS/tUcwXUWhXG/aR2oLMVrbNwNMdxcMwLGcqOXm8OxNUTYcozDeUEO
+   VT8DwWaXuaZc9Om2uzOI8cJaDhccmUiwz0kFnxdh22/YwQzV6LqZQzqAj
+   Pg58sZTdtiwjbrfU+OJmRHb4UmGBEt3PQqg0CV6YG9aq7Gi7ZaVlNYMrC
+   g==;
+X-CSE-ConnectionGUID: uwotw0KMTHOwQGA5koSAmA==
+X-CSE-MsgGUID: Jb6Wsfr+QnKWoFHVQ44hCQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11503"; a="81252334"
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
+   d="scan'208";a="81252334"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2025 11:34:49 -0700
+X-CSE-ConnectionGUID: ylsHY4aGSha1zb4ZC/5cPw==
+X-CSE-MsgGUID: 0eG/o7oHTO+htGAzRgtL3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
+   d="scan'208";a="160803940"
+Received: from dcskidmo-m40.jf.intel.com ([10.166.241.13])
+  by orviesa009.jf.intel.com with ESMTP; 25 Jul 2025 11:34:50 -0700
+From: Joshua Hay <joshua.a.hay@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Joshua Hay <joshua.a.hay@intel.com>
+Subject: [Intel-wired-lan] [PATCH iwl-net v3 0/6] idpf: replace Tx flow scheduling buffer ring with buffer pool
+Date: Fri, 25 Jul 2025 11:42:17 -0700
+Message-Id: <20250725184223.4084821-1-joshua.a.hay@intel.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:1494:b0:87c:538b:2a3c with SMTP id
- ca18e2360f4ac-880229b13d5mr427236839f.14.1753468114452; Fri, 25 Jul 2025
- 11:28:34 -0700 (PDT)
-Date: Fri, 25 Jul 2025 11:28:34 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6883ccd2.a00a0220.2f88df.0056.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in ieee80211_ocb_rx_no_sta
-From: syzbot <syzbot+a06b95a67a174af018cf@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+This series fixes a stability issue in the flow scheduling Tx send/clean
+path that results in a Tx timeout.
 
-syzbot found the following issue on:
+The existing guardrails in the Tx path were not sufficient to prevent
+the driver from reusing completion tags that were still in flight (held
+by the HW).  This collision would cause the driver to erroneously clean
+the wrong packet thus leaving the descriptor ring in a bad state.
 
-HEAD commit:    89be9a83ccf1 Linux 6.16-rc7
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17798fd4580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9f175a9275d2cdd7
-dashboard link: https://syzkaller.appspot.com/bug?extid=a06b95a67a174af018cf
-compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+The main point of this fix is to replace the flow scheduling buffer ring
+with a large pool/array of buffers.  The completion tag then simply is
+the index into this array.  The driver tracks the free tags and pulls
+the next free one from a refillq.  The cleaning routines simply use the
+completion tag from the completion descriptor to index into the array to
+quickly find the buffers to clean.
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/34b3f6e5e365/disk-89be9a83.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/55356b071589/vmlinux-89be9a83.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/5daf2522b291/bzImage-89be9a83.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+a06b95a67a174af018cf@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 9078 at net/mac80211/ocb.c:63 ieee80211_ocb_rx_no_sta+0x583/0x710 net/mac80211/ocb.c:63
-Modules linked in:
-CPU: 0 UID: 0 PID: 9078 Comm: syz.1.959 Not tainted 6.16.0-rc7-syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-RIP: 0010:ieee80211_ocb_rx_no_sta+0x583/0x710 net/mac80211/ocb.c:63
-Code: 48 c7 c2 80 c5 08 8d be 65 03 00 00 48 c7 c7 a0 c4 08 8d c6 05 4b b5 78 05 01 e8 c8 63 7f f6 e9 0b fc ff ff e8 ce 12 a3 f6 90 <0f> 0b 90 e8 25 ac 6d 00 31 ff 89 c3 89 c6 e8 fa 0d a3 f6 85 db 75
-RSP: 0018:ffffc90000007a08 EFLAGS: 00010283
-RAX: 000000000000022a RBX: ffff888056a7cd80 RCX: ffffc90002181000
-RDX: 0000000000040000 RSI: ffffffff8b18d5a2 RDI: 0000000000000005
-RBP: ffff888025e9e40a R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffff888030e40e40
-R13: 0000000000000001 R14: 0000000000000000 R15: ffff888033a44500
-FS:  00007f8e60a7d6c0(0000) GS:ffff888124720000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000110c3a8d5a CR3: 00000000343fa000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- ieee80211_accept_frame net/mac80211/rx.c:4445 [inline]
- ieee80211_prepare_and_rx_handle+0x55a1/0x77a0 net/mac80211/rx.c:4999
- ieee80211_rx_for_interface+0x10a/0x1f0 net/mac80211/rx.c:5129
- __ieee80211_rx_handle_packet net/mac80211/rx.c:5285 [inline]
- ieee80211_rx_list+0x10d7/0x2980 net/mac80211/rx.c:5420
- ieee80211_rx_napi+0xdc/0x410 net/mac80211/rx.c:5443
- ieee80211_rx include/net/mac80211.h:5185 [inline]
- ieee80211_handle_queued_frames+0xd5/0x130 net/mac80211/main.c:441
- tasklet_action_common+0x281/0x400 kernel/softirq.c:829
- handle_softirqs+0x219/0x8e0 kernel/softirq.c:579
- do_softirq kernel/softirq.c:480 [inline]
- do_softirq+0xb2/0xf0 kernel/softirq.c:467
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0x100/0x120 kernel/softirq.c:407
- ieee80211_tx_skb_tid+0x176/0x4f0 net/mac80211/tx.c:6131
- ieee80211_mgmt_tx+0x14d2/0x2310 net/mac80211/offchannel.c:1023
- rdev_mgmt_tx net/wireless/rdev-ops.h:762 [inline]
- cfg80211_mlme_mgmt_tx+0x7d5/0x1660 net/wireless/mlme.c:938
- nl80211_tx_mgmt+0x9f9/0xd60 net/wireless/nl80211.c:12921
- genl_family_rcv_msg_doit+0x206/0x2f0 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x55c/0x800 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x155/0x420 net/netlink/af_netlink.c:2552
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
- netlink_unicast+0x58d/0x850 net/netlink/af_netlink.c:1346
- netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1896
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- ____sys_sendmsg+0xa95/0xc70 net/socket.c:2566
- ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
- __sys_sendmsg+0x16d/0x220 net/socket.c:2652
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f8e5fb8e9a9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f8e60a7d038 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f8e5fdb5fa0 RCX: 00007f8e5fb8e9a9
-RDX: 0000000000000000 RSI: 0000200000000080 RDI: 0000000000000003
-RBP: 00007f8e5fc10d69 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007f8e5fdb5fa0 R15: 00007ffd54948378
- </TASK>
-
+All of the code to support the refactor is added first to ensure traffic
+still passes with each patch.  The final patch then removes all of the
+obsolete stashing code.
 
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+v3:
+- Remove unreachable code in patch 4
+- Update comment format
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+v2:
+https://lore.kernel.org/intel-wired-lan/20250718002150.2724409-1-joshua.a.hay@intel.com/T/#t
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+v1:
+https://lore.kernel.org/intel-wired-lan/c6444d15-bc20-41a8-9230-9bb266cb2ac6@molgen.mpg.de/T/#maf9f464c598951ee860e5dd24ef8a451a488c5a0
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+Joshua Hay (6):
+  idpf: add support for Tx refillqs in flow scheduling mode
+  idpf: improve when to set RE bit logic
+  idpf: simplify and fix splitq Tx packet rollback error path
+  idpf: replace flow scheduling buffer ring with buffer pool
+  idpf: stop Tx if there are insufficient buffer resources
+  idpf: remove obsolete stashing code
 
-If you want to undo deduplication, reply with:
-#syz undup
+ .../ethernet/intel/idpf/idpf_singleq_txrx.c   |  61 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 722 +++++++-----------
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  87 +--
+ 3 files changed, 355 insertions(+), 515 deletions(-)
+
+-- 
+2.39.2
+
