@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214F72EF676
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D232EF9BA
 	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753460020; cv=none; b=l1qAzvIYQlhkmaod7tIEgm0bC/psAXgF0/yD/IrlFsm+2SWFE0YDZJnPTkbr7IXfnhPdRgaJ4k/f46dvRPa2W7Bwg6wzyB9ZcCioWpsm3pkKCgXMznSKO7ZUfSRXv1SWN0OnjLKQngHXYgZ9RE7URxeBN7el4JHr9RRNbGjO7RM=
+	t=1753460021; cv=none; b=ZB1zeiWXs76F89OZPxkvSbd+E7Zx3EY6LLUBzF2Ola/jo2pk++CSVm48VMR26gsLnUGrVX99vcG2tsrXLkwrI/4W7fBjqMLNd95P9KcARQi5H3ynM8mYt+CLOPHIxloJsmENHuj41a5rkiQnIpOax6PvBxyIgP+DLxMQkhyzkqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753460020; c=relaxed/simple;
-	bh=6IcQVZz+Xj0Wb6gJO799mpZCInect74mv1DSKMFXz4s=;
+	s=arc-20240116; t=1753460021; c=relaxed/simple;
+	bh=3PNgz4ikQj8yxEhPlKTE+xK2sRMPODlCS1m/obi2d/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5BhIzu35d+sNV1d8cYhzqVKYMQYC4v5GcUAqqWOi+J4WzfagZG9Z8/X9rZj73R3l36o4bEjvWK84RqoiNElkuOuzJPYg8Ach4ugwgqIJP6fDoJ9ehZRvu+Ng15ubHF0LEGd3BIhvt4Rpov3pddl2vXfl7JJ9969HGW95x1OoWM=
+	 MIME-Version; b=A+Gx7zHDZiSmpZZ8ZlFwdgmFCoUeXZAPaj60kepEqCrIQG7sGP/8rwtNqUqYBNfnTshXyyBk3z5hxMjL+r97gLbaA/eSTkh2Fe1Xiuft8OXkjWOVTK1Y3+HfQyWs21rYvT31uWW8XFsk7EYnKotZpw9yIjw03JsUalYglPbJ4ns=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1ufL3B-0006dz-0w
+	id 1ufL3B-0006eT-AU
 	for netdev@vger.kernel.org; Fri, 25 Jul 2025 18:13:37 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1ufL38-00AFYd-1f
+	id 1ufL38-00AFYc-1g
 	for netdev@vger.kernel.org;
 	Fri, 25 Jul 2025 18:13:34 +0200
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 7279144988A
+	by bjornoya.blackshift.org (Postfix) with SMTP id 8025744988B
 	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:13:33 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 76FD244981B;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 3CAD6449813;
 	Fri, 25 Jul 2025 16:13:30 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id faae75d2;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 2e16aa99;
 	Fri, 25 Jul 2025 16:13:29 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -46,11 +46,12 @@ Cc: davem@davemloft.net,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
 	Jimmy Assarsson <extja@kvaser.com>,
+	Axel Forsman <axfo@kvaser.com>,
 	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 10/27] can: kvaser_pciefd: Store the different firmware version components in a struct
-Date: Fri, 25 Jul 2025 18:05:20 +0200
-Message-ID: <20250725161327.4165174-11-mkl@pengutronix.de>
+Subject: [PATCH net-next 07/27] can: kvaser_pciefd: Add support to control CAN LEDs on device
+Date: Fri, 25 Jul 2025 18:05:17 +0200
+Message-ID: <20250725161327.4165174-8-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250725161327.4165174-1-mkl@pengutronix.de>
 References: <20250725161327.4165174-1-mkl@pengutronix.de>
@@ -68,63 +69,76 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Jimmy Assarsson <extja@kvaser.com>
 
-Store firmware version in kvaser_pciefd_fw_version struct, specifying the
-different components of the version number.
-And drop debug prinout of firmware version, since later patches will expose
-it via the devlink interface.
+Add support to turn on/off CAN LEDs on device.
+Turn off all CAN LEDs in probe, since they are default on after a reset or
+power on.
 
+Reviewed-by: Axel Forsman <axfo@kvaser.com>
 Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20250725123230.8-5-extja@kvaser.com
+Link: https://patch.msgid.link/20250725123230.8-2-extja@kvaser.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/kvaser_pciefd.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/can/kvaser_pciefd.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-index 4bdb1132ecf9..7153b9ea0d3d 100644
+index 09510663988c..c8f530ef416e 100644
 --- a/drivers/net/can/kvaser_pciefd.c
 +++ b/drivers/net/can/kvaser_pciefd.c
-@@ -325,6 +325,12 @@ struct kvaser_pciefd_driver_data {
- 	const struct kvaser_pciefd_dev_ops *ops;
- };
+@@ -66,6 +66,7 @@ MODULE_DESCRIPTION("CAN driver for Kvaser CAN/PCIe devices");
+ #define KVASER_PCIEFD_KCAN_FIFO_LAST_REG 0x180
+ #define KVASER_PCIEFD_KCAN_CTRL_REG 0x2c0
+ #define KVASER_PCIEFD_KCAN_CMD_REG 0x400
++#define KVASER_PCIEFD_KCAN_IOC_REG 0x404
+ #define KVASER_PCIEFD_KCAN_IEN_REG 0x408
+ #define KVASER_PCIEFD_KCAN_IRQ_REG 0x410
+ #define KVASER_PCIEFD_KCAN_TX_NR_PACKETS_REG 0x414
+@@ -136,6 +137,9 @@ MODULE_DESCRIPTION("CAN driver for Kvaser CAN/PCIe devices");
+ /* Request status packet */
+ #define KVASER_PCIEFD_KCAN_CMD_SRQ BIT(0)
  
-+struct kvaser_pciefd_fw_version {
-+	u8 major;
-+	u8 minor;
-+	u16 build;
-+};
++/* Control CAN LED, active low */
++#define KVASER_PCIEFD_KCAN_IOC_LED BIT(0)
 +
- static const struct kvaser_pciefd_address_offset kvaser_pciefd_altera_address_offset = {
- 	.serdes = 0x1000,
- 	.pci_ien = 0x50,
-@@ -437,6 +443,7 @@ struct kvaser_pciefd {
- 	u32 bus_freq;
- 	u32 freq;
- 	u32 freq_to_ticks_div;
-+	struct kvaser_pciefd_fw_version fw_version;
- };
+ /* Transmitter unaligned */
+ #define KVASER_PCIEFD_KCAN_IRQ_TAL BIT(17)
+ /* Tx FIFO empty */
+@@ -410,6 +414,7 @@ struct kvaser_pciefd_can {
+ 	struct kvaser_pciefd *kv_pcie;
+ 	void __iomem *reg_base;
+ 	struct can_berr_counter bec;
++	u32 ioc;
+ 	u8 cmd_seq;
+ 	u8 tx_max_count;
+ 	u8 tx_idx;
+@@ -528,6 +533,16 @@ static inline void kvaser_pciefd_abort_flush_reset(struct kvaser_pciefd_can *can
+ 	kvaser_pciefd_send_kcan_cmd(can, KVASER_PCIEFD_KCAN_CMD_AT);
+ }
  
- struct kvaser_pciefd_rx_packet {
-@@ -1205,14 +1212,12 @@ static int kvaser_pciefd_setup_board(struct kvaser_pciefd *pcie)
- 	u32 version, srb_status, build;
++static inline void kvaser_pciefd_set_led(struct kvaser_pciefd_can *can, bool on)
++{
++	if (on)
++		can->ioc &= ~KVASER_PCIEFD_KCAN_IOC_LED;
++	else
++		can->ioc |= KVASER_PCIEFD_KCAN_IOC_LED;
++
++	iowrite32(can->ioc, can->reg_base + KVASER_PCIEFD_KCAN_IOC_REG);
++}
++
+ static void kvaser_pciefd_enable_err_gen(struct kvaser_pciefd_can *can)
+ {
+ 	u32 mode;
+@@ -990,6 +1005,9 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
+ 		/* Disable Bus load reporting */
+ 		iowrite32(0, can->reg_base + KVASER_PCIEFD_KCAN_BUS_LOAD_REG);
  
- 	version = ioread32(KVASER_PCIEFD_SYSID_ADDR(pcie) + KVASER_PCIEFD_SYSID_VERSION_REG);
-+	build = ioread32(KVASER_PCIEFD_SYSID_ADDR(pcie) + KVASER_PCIEFD_SYSID_BUILD_REG);
- 	pcie->nr_channels = min(KVASER_PCIEFD_MAX_CAN_CHANNELS,
- 				FIELD_GET(KVASER_PCIEFD_SYSID_VERSION_NR_CHAN_MASK, version));
--
--	build = ioread32(KVASER_PCIEFD_SYSID_ADDR(pcie) + KVASER_PCIEFD_SYSID_BUILD_REG);
--	dev_dbg(&pcie->pci->dev, "Version %lu.%lu.%lu\n",
--		FIELD_GET(KVASER_PCIEFD_SYSID_VERSION_MAJOR_MASK, version),
--		FIELD_GET(KVASER_PCIEFD_SYSID_VERSION_MINOR_MASK, version),
--		FIELD_GET(KVASER_PCIEFD_SYSID_BUILD_SEQ_MASK, build));
-+	pcie->fw_version.major = FIELD_GET(KVASER_PCIEFD_SYSID_VERSION_MAJOR_MASK, version);
-+	pcie->fw_version.minor = FIELD_GET(KVASER_PCIEFD_SYSID_VERSION_MINOR_MASK, version);
-+	pcie->fw_version.build = FIELD_GET(KVASER_PCIEFD_SYSID_BUILD_SEQ_MASK, build);
- 
- 	srb_status = ioread32(KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_STAT_REG);
- 	if (!(srb_status & KVASER_PCIEFD_SRB_STAT_DMA)) {
++		can->ioc = ioread32(can->reg_base + KVASER_PCIEFD_KCAN_IOC_REG);
++		kvaser_pciefd_set_led(can, false);
++
+ 		tx_nr_packets_max =
+ 			FIELD_GET(KVASER_PCIEFD_KCAN_TX_NR_PACKETS_MAX_MASK,
+ 				  ioread32(can->reg_base + KVASER_PCIEFD_KCAN_TX_NR_PACKETS_REG));
 -- 
 2.47.2
 
