@@ -1,125 +1,172 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6E31B6D06;
-	Fri, 25 Jul 2025 06:52:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D883626B2D2;
+	Fri, 25 Jul 2025 07:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753426380; cv=none; b=MN2eB6qe+G9O1gvtzp6GY0yDUk1jjSk7NcLcoqlYKn1oQAt4W5rse1H5k3NRO4cap29icXolizVnp2h38nEKlQ65Ty9tAX1tA1MDiuM+BWcs1QKeHNOPj+9L6TTvUt3FI1fijiV7Fwr2GaYQtvFoAufNz8HYtfOkmq9atK1tA9A=
+	t=1753427159; cv=none; b=ThsRR9+hnybr7jAMpxx8JGNVXCn+c3rYqjGM4H8x7f+tB+SNsr9Ou55lyf0/SKPAT5Ha+qN4gNzwxw9LVFzEuv3PF1lZN2hNI6POI00p4BteQbrZWOhq80n/ZhoPNQ7YM0dE8NSi5HQdLtMuxhgQJ6ZzuQ6ijuqb8OoUe8gu/pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753426380; c=relaxed/simple;
-	bh=20nHIXM9x/K8ItS1GIZjz28u6zUrsz6iqx1gk4P+kng=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YKLYZ+7UdCXWh4JnwyO4dq+OZy2uItfLDXQAlypXTbfC/ni471MGwRTlpIJFjm5fPPOKA3/IMOtdOHxCaA6tLCcEnodYzcKCJovNI0v0NabcZDN8YIXeneVHGIbpFq4sYYGEHK4u1ZWE+ezsoOM7ihWkPGcC+q1j+Dr/NMIaKD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=dbsOCjti; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1753427159; c=relaxed/simple;
+	bh=8hIMs3ZEOP3Z6QueK3O5hCjpoXAv8CcTKFQN2eyxiA4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dwqo1DFsBVDnl5FxW8EPns0HTlVliltZclLmMrQIe2+naM49Dh/YjoA1PLZfegJoeeLkSrR2NOG1/4LZn3Q8pU5PBlgb2mOtOiE4FDGID3OewMYIMnA406olcZn0Vi34HkRto7WB/aD5aElAt4ZDYL1S7rkTKjtdV5B1S66lw0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=CtlUW4ab; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="dbsOCjti"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1753426378; x=1784962378;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=20nHIXM9x/K8ItS1GIZjz28u6zUrsz6iqx1gk4P+kng=;
-  b=dbsOCjti5U4iNybn7zHPoY88W7euhV6aUVJlGAVUCTSQLS1JZ1BvrLc5
-   VikyH5fDjTdFk4/jd017MEXsr/29s610bm96JafGgMLZYAHMdGiOUS4Fj
-   8xqd+Yhda4GFif15wqZYbPttfThlydy2RWKuiMXlrxtHGW0v28Aj+nUmQ
-   cBj6qicch2Dz2/KY6noiqnOU9yHxU/0Fxpmc16VuXdcHHzRnjGbXx34Zi
-   3lKziRAkYvAIjy1RsJV2b/4SmsieKOm3lYcE+lp9FQJjQ14mGE4WtFGjN
-   oE+txhsG9c7uUUMVokSOdjPENXmV43RI+Dk0xzah3bWpmuhQBTcSgzOT5
-   A==;
-X-CSE-ConnectionGUID: CniThB0ESIylVa/zs0YtAg==
-X-CSE-MsgGUID: dlpcnZ9sSd6Uz56B2YqMog==
-X-IronPort-AV: E=Sophos;i="6.16,338,1744095600"; 
-   d="scan'208";a="49739607"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 24 Jul 2025 23:52:50 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Thu, 24 Jul 2025 23:51:32 -0700
-Received: from localhost (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
- Transport; Thu, 24 Jul 2025 23:51:32 -0700
-Date: Fri, 25 Jul 2025 08:48:39 +0200
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-CC: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<richardcochran@gmail.com>, <o.rempel@pengutronix.de>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v2 3/4] net: phy: micrel: Replace hardcoded
- pages with defines
-Message-ID: <20250725064839.psuzyuxfmyvudfka@DEN-DL-M31836.microchip.com>
-References: <20250724200826.2662658-1-horatiu.vultur@microchip.com>
- <20250724200826.2662658-4-horatiu.vultur@microchip.com>
- <aIKbaS8ASndR7Xe_@shell.armlinux.org.uk>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="CtlUW4ab"
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56P751ta2148376;
+	Fri, 25 Jul 2025 02:05:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1753427101;
+	bh=5umDMOElVV8cL1bR0QgVIsqKX3kPBo5aB7b5JD6dzss=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=CtlUW4abTvXwyfN9d75WseHjhD57Nq+m3x57auv7IM1Aj9SJHXIaD2nWajLw8Fccs
+	 j8U/T0ohPlrJWUT4XcQ1pY3PsLMqwoJlwNAHIwA/cyfQG8LJECPU2R7KEJZm263Blq
+	 RDJdSB+ujm8/Oko9lDsKQp/B2zOgYqJHiVJWKmH4=
+Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56P750WX3669322
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Fri, 25 Jul 2025 02:05:01 -0500
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 25
+ Jul 2025 02:05:00 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Fri, 25 Jul 2025 02:05:00 -0500
+Received: from [172.24.21.105] (lt5cd151g4ty.dhcp.ti.com [172.24.21.105])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56P74sYO1371214;
+	Fri, 25 Jul 2025 02:04:54 -0500
+Message-ID: <d856807f-dead-4e93-bef6-0d25744cc041@ti.com>
+Date: Fri, 25 Jul 2025 12:34:53 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <aIKbaS8ASndR7Xe_@shell.armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/5] net: rpmsg-eth: Add Documentation for
+ RPMSG-ETH Driver
+To: Andrew Lunn <andrew@lunn.ch>, MD Danish Anwar <danishanwar@ti.com>
+CC: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Jonathan Corbet
+	<corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+        Mengyuan Lou
+	<mengyuanlou@net-swift.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Madhavan
+ Srinivasan <maddy@linux.ibm.com>,
+        Fan Gong <gongfan1@huawei.com>, Lee Trager
+	<lee@trager.us>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Geert Uytterhoeven
+	<geert+renesas@glider.be>,
+        Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+        Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
+        <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20250723080322.3047826-1-danishanwar@ti.com>
+ <20250723080322.3047826-2-danishanwar@ti.com>
+ <81273487-a450-4b28-abcc-c97273ca7b32@lunn.ch>
+ <b61181e5-0872-402c-b91b-3626302deaeb@ti.com>
+ <0a002a5b-9f1a-4972-8e1c-fa9244cec180@lunn.ch>
+Content-Language: en-US
+From: "Anwar, Md Danish" <a0501179@ti.com>
+In-Reply-To: <0a002a5b-9f1a-4972-8e1c-fa9244cec180@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-The 07/24/2025 21:45, Russell King (Oracle) wrote:
-> 
-> On Thu, Jul 24, 2025 at 10:08:25PM +0200, Horatiu Vultur wrote:
-> > diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-> > index b04c471c11a4a..d20f028106b7d 100644
-> > --- a/drivers/net/phy/micrel.c
-> > +++ b/drivers/net/phy/micrel.c
-> > @@ -2788,6 +2788,13 @@ static int ksz886x_cable_test_get_status(struct phy_device *phydev,
-> >       return ret;
-> >  }
-> >
-> > +#define LAN_EXT_PAGE_0                                       0
-> > +#define LAN_EXT_PAGE_1                                       1
-> > +#define LAN_EXT_PAGE_2                                       2
-> > +#define LAN_EXT_PAGE_4                                       4
-> > +#define LAN_EXT_PAGE_5                                       5
-> > +#define LAN_EXT_PAGE_31                                      31
+Hi Andrew,
 
-Hi Russell,
+On 7/24/2025 10:07 PM, Andrew Lunn wrote:
+>> Linux first send a rpmsg request with msg type = RPMSG_ETH_REQ_SHM_INFO
+>> i.e. requesting for the shared memory info.
+>>
+>> Once firmware recieves this request it sends response with below fields,
+>>
+>> 	num_pkt_bufs, buff_slot_size, base_addr, tx_offset, rx_offset
+>>
+>> In the device tree, while reserving the shared memory for rpmsg_eth
+>> driver, the base address and the size of the shared memory block is
+>> mentioned. I have mentioned that in the documentation as well
+> 
+> If it is in device tree, why should Linux ask for the base address and
+> length? That just seems like a source of errors, and added complexity.
+> 
+> In general, we just trust DT. It is a source of truth. So i would
+> delete all this backwards and forwards and just use the values from
+> DT. Just check the magic numbers are in place.
+> 
 
-> 
-> I don't see the point of this change. This is almost as bad as:
-> 
-> #define ZERO 0
-> #define ONE 1
-> #define TWO 2
-> #define THREE 3
-> ...
-> #define ONE_HUNDRED_AND_FIFTY_FIVE 155
-> etc
-> 
-> It doesn't give us any new information, and just adds extra clutter,
-> making the code less readable.
-> 
-> The point of using register definitions is to describe the purpose
-> of the number, giving the number a meaning, not to just hide the
-> number because we don't want to see such things in C code.
-> 
-> I'm sorry if you were asked to do this in v1, but I think if you
-> were asked to do it, it would've been assuming that the definitions
-> could be more meaningful.
+Sure, I will not check the base_addr and trust the info we get from
+device tree. Just check the offsets we are getting from firmware is
+within the shared memory block or not (using base_addr + size)
 
-You are right, I have been ask to change this in version 1:
-https://lkml.org/lkml/2025/7/23/672
-
-I have mentioned it that the extended pages don't have any meaningfull
-names also in the register description document. But Oleksij says he
-will be fine with xxxx_EXT_PAGE_0, so maybe I have missunderstood Oleksij
-in what he proposed.
-
+>> The same `base_addr` is used by firmware for the shared memory. During
+>> the rpmsg callback, firmware shares this `base_addr` and during
+>> rpmsg_eth_validate_handshake() driver checks if the base_addr shared by
+>> firmware is same as the one described in DT or not. Driver only proceeds
+>> if it's same.
 > 
-> --
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+> So there is a big assumption here. That both are sharing the same MMU,
+> or maybe IOMMU. Or both CPUs have configured their MMU/IOMMU so that
+> the pages appear at the same physical address. I think this is a
+> problem, and the design should avoid anything which makes this
+> assumptions. The data structures within the share memory should only
+> refer to offsets from the base of the shared memory, not absolute
+> values. Or an index into the table of buffers, 0..N.
+> 
+
+Sure I will try to do the same.
+
+>>>> +2. **HEAD Pointer**:
+>>>> +
+>>>> +   - Tracks the start of the buffer for packet transmission or reception.
+>>>> +   - Updated by the producer (host or remote processor) after writing a packet.
+>>>
+>>> Is this a pointer, or an offset from the base address? Pointers get
+>>> messy when you have multiple address spaces involved. An offset is
+>>> simpler to work with. Given that the buffers are fixed size, it could
+>>> even be an index.
+>>>
+>>
+>> Below are the structure definitions.
+>>
+>> struct rpmsg_eth_shared_mem {
+>> 	struct rpmsg_eth_shm_index *head;
+>> 	struct rpmsg_eth_shm_buf *buf;
+>> 	struct rpmsg_eth_shm_index *tail;
+>> } __packed;
+>>
+>> struct rpmsg_eth_shm_index {
+>> 	u32 magic_num;
+>> 	u32 index;
+>> }  __packed;
+> 
+> So index is the index into the array of fixed size buffers. That is
+> fine, it is not a pointer, so you don't need to worry about address
+> spaces. However, head and tail are pointers, so for those you do need
+> to worry about address spaces. But why do you even need them? Just put
+> the indexes directly into rpmsg_eth_shared_mem. The four index values
+> can be in the first few words of the shared memory, fixed offset from
+> the beginning, KISS.
+> 
+
+Sure I will try to move everything to offsets and not use pointers.
+
+> 	Andrew
 
 -- 
-/Horatiu
+Thanks and Regards,
+Md Danish Anwar
+
