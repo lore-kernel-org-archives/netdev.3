@@ -1,67 +1,67 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1542A19C54B
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 09:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75E62D46C4;
+	Fri, 25 Jul 2025 10:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753437426; cv=fail; b=YuHm3p2eTHy7sAyA1xkKM89s3j/QGrKzPlWDQd8zdvPhG3/TWBEqCjq4c1XqvvtcsmWJFeEhFqeZ14qDJoZRRCks7akwJdPGUhVzJT7tMc13eXEXZML8FSyZbBb7AeMfuvg4KCnneGlT3SObFk1AA0RxCW4gaHc3vZvAMFl7MvI=
+	t=1753437647; cv=fail; b=YexSKoyVezzadZwzU2PYjaQRLVHjBz0t/Xr7ltrZj1PBK3/I451pDW2YS/hF1CDSLz8s9dqsUgd8zbg4qV7uxOXrpEN5dw7+kwylPakTUCQ81BiBvG8/P9do2PdAWphobRb11rHjQ5/BA6zCE520kPanL36YGIYoAwJSAsnd7Ak=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753437426; c=relaxed/simple;
-	bh=yG1HAvcyar43DZsxeja4zL4ZX97DV7tlIuxjiBGmzdw=;
+	s=arc-20240116; t=1753437647; c=relaxed/simple;
+	bh=ZuQIsONAhno9Z8WVPM+M85CpCG2l+xuobEJ4spXu5kw=;
 	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ZiCPvmT3gwLenffI+Pf91BIgb8LNfnlqDMPfB7m2+b188BsZ2tWRuXGGE71b7/ok8LL41krTpDXWgAFncCxo8B2vt/LcFuLWlw69AKnTRF4ew0bqba5PTs5Oq8Gj07LVYudVgrw3P9BcQMDnRS7kzZmZkGmZ36rsqxvvE0zN1kY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M4olP04b; arc=fail smtp.client-ip=198.175.65.15
+	 Content-Disposition:In-Reply-To:MIME-Version; b=b/104pChOmepuHj1lgl7wTFa/GSBfYRWj74RJs7Fa1Fe2mwfLj/M1GtjM/4TIriS1ymv/j1dwL41LE6xPcJteqp3nyjx8YKIANQmT3Jm0J2nu38D0TZhJsoUh1ytosj129QJrgy9gu591+pGyTS6ErrJoNomVnGCpXU55+67bfE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O0SiqKXB; arc=fail smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M4olP04b"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O0SiqKXB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753437424; x=1784973424;
+  t=1753437646; x=1784973646;
   h=date:from:to:cc:subject:message-id:references:
    in-reply-to:mime-version;
-  bh=yG1HAvcyar43DZsxeja4zL4ZX97DV7tlIuxjiBGmzdw=;
-  b=M4olP04bNiL3xIgrEoNopAlA8BeRcRLhIGb5RNebSjRyHq/L1GOdOO2s
-   ngqsi/8kea18KJOecbOfbB6YMTPKysNMdrw5XOusMyiampn67Alz3aaeR
-   P/BiJJwnmPAad21bGDS4siT82q4XiRY+n1gCPXSzD1GZmWYglV/DeeyR0
-   I8Q1+nlh1K7eoSEhsSG8rvMDV8QWjFuCMrwdQR1UHoI0hZInCq5TlJnmc
-   8xq5Mzx6YCRPVIFPYuRAIVold2zevwlTtt+xmIjkJyyRQ4hfucQH4+apR
-   uyGhKEgLQzImmriA3d7r5SV8851TCPLCrbok/USaXAYqFIz1F8C0p/Hbs
+  bh=ZuQIsONAhno9Z8WVPM+M85CpCG2l+xuobEJ4spXu5kw=;
+  b=O0SiqKXB52x33giBY0eF9KizYapBIVTihr0+PkFcXO7BmwvdIloNbwdR
+   TKzDY8rsNiqbyxW0hvEuq1s6aN0bD0IYbko64Ju+ZcwVgRGMLj3fwGQIc
+   yFY39sq2ldoSZqhu4JRT/tIBNo/YYR7gDT47gVWjvIOH6yGB5zoMTgyKm
+   jmp3XpcnaVzc+CBSqxK+PTwow/hCn9swAn6eRjQob4XOfMgO3xLa7j7u7
+   D2vs3PZQ+M7PlTms+9vGWqiqZwBVMnFrs9QtSh5+vUyQP911xvGwcxw3m
+   ZFD9cL0rWbyLzMY9EgdSanP8+XPEHpE30MgzD5XEQX+S+PD6czmvNardZ
    Q==;
-X-CSE-ConnectionGUID: LO24L4j1R9uOWO57mKmgvg==
-X-CSE-MsgGUID: th12ws/GQVOzMuVAna02Ag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="59423096"
+X-CSE-ConnectionGUID: /sPRThsmTTGybvuVToDWXA==
+X-CSE-MsgGUID: eWLhrnfvRBK2VuAyA3oHug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11501"; a="59423627"
 X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="59423096"
+   d="scan'208";a="59423627"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2025 02:56:58 -0700
-X-CSE-ConnectionGUID: 76acKAOLQPCnnbVt/cVykQ==
-X-CSE-MsgGUID: rejaU6zRTSWASMJDFgxveQ==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2025 03:00:45 -0700
+X-CSE-ConnectionGUID: LJeFUwoeSweEexpVj2GUHg==
+X-CSE-MsgGUID: x7um8n60Q9e/JJvMezcEAQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="197976522"
+   d="scan'208";a="197978224"
 Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2025 02:56:57 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2025 03:00:45 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Fri, 25 Jul 2025 02:56:56 -0700
+ 15.2.1748.26; Fri, 25 Jul 2025 03:00:44 -0700
 Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Fri, 25 Jul 2025 02:56:56 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (40.107.237.51)
+ 15.2.1748.26 via Frontend Transport; Fri, 25 Jul 2025 03:00:44 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.50)
  by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Fri, 25 Jul 2025 02:56:55 -0700
+ 15.2.1748.26; Fri, 25 Jul 2025 03:00:44 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q4I5q27gOqhGCVfQpD+b/qral3eYnYvPgeGUIa7ehd8S/OD3SahN45Zpfmo1NkYxtDJXNgaoXvVvj48QrPk1XZahKuhPfCH1Ibq/Aa+R6GG2lNrVWysGLOebVakrBWbj5Qmn6pudxUhi44sg9X3901vtn5xx/JpWTTwFLwav4nIBjJBWkptTHrKgdzDg0xGL9tYtf4nrktyRStQzfmFyg1YESjRA54+7M6qf/2Uq8hjKaLjL34jMkQ9Rdkc4Hn/gvZb9xXxJ/qotup3ve+TvzKQXXgtQYi1MTaWsmEvI5aFCMpyHY8dnomLX2vkNeSMv1aen1fSQXukJua0ujDiLpg==
+ b=cG8NYkJ0VqdOiTGZIjRRfw4BQBJxzS1ADlBchCL9waVSnqiZmWpL3yktHxLBJaeBWwa8WkPI90lYwafAPeA843P3ERMp0hRTlFSQwHZLhUTdjDvs5azl7yq3n3LT9pYLuVDV7h8Kkrt9M5TF1kZJpw1JBOAo4YAAaaua2oIX1E6t4lo4gWNfIHbgK0qFEnTFLhdc/CwgXhcvxfjJgZ0P2uslHARgCD/aMINLeoyJBXE3ks66DwPyQbdBDnkiEYARK9FVg68Us6Qf9K4YTbjTlQHwcMzC0qy8bkyzzWglWDJ02zVCJT7yMkRpflzaEr+itUgxg/0zVyr7M+v/jkQVfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=umQ2sGhP2P52UKfXyVjaXxRGXUR2L+uVc2yY2DGifjU=;
- b=kEifG9pkLKgmf+7TjdPVq2YLPQjoLAAHEMSfWvXpiMgfkQ4F6+q+FYfCWq6vhZJn81VTZG1BaB4wyvevLhUSxciAn+dMS3CbH+Kej3E5UTVuWE3j/k8M0bz+arly9XkGzxDZfg0sXgptchC22ZtGSY7rh11BTExmB6p3RafxYoTtZV6E039jON4TgDlvFKkUWYPzK+LdmPXp2sJwbxj9FaAZp+AlO2VgHMwUqhaZheW2SpL68pLvylVcJlaQdVxXVcp04UqNP0AH8foGXDzuRMJ5EoquRtrXQV4zWVWSDHhafRHZuL6ZY9ImVKaOznf2CnxhKKqKAjnR5i62T2asjg==
+ bh=OaXGTNeuWAcglbpVKL7QQcyQni5GOO6xIrwd3LtqVls=;
+ b=fCjzaMf7DEcsw0jA5eKV9gxgkPetmHWFzbE1X+gwv/EOXYWJCQa1OQ/Par4MllDnUk27/UMzWbaRQpCyt3/Na809r2tMDbK4Ww0AC+1WjtsfjylbvMhorv2aNsAgc2hAmY6ILx4VXRqXENrwqjgotW8vLAq+bgxw2/FZUAFGHUYd3QWRPHh6Irr/kr0rsIgMQ1dozZ/xgEmDpa8vAIoX87dMzlDfBMAexpVnaBae7RuGaYvdp3uWsznCcpfnC7B4+DpzdMo5uVYRCwbc1g++s1mZ0tYHXa+WmG2Ewu3+T7yFDQxYD8N8lALGBbULKCrt8C2qtsshut5p9mP3CdE8jw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -71,32 +71,31 @@ Received: from DM4PR11MB6117.namprd11.prod.outlook.com (2603:10b6:8:b3::19) by
  PH0PR11MB7712.namprd11.prod.outlook.com (2603:10b6:510:290::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Fri, 25 Jul
- 2025 09:56:38 +0000
+ 2025 10:00:29 +0000
 Received: from DM4PR11MB6117.namprd11.prod.outlook.com
  ([fe80::d19:56fe:5841:77ca]) by DM4PR11MB6117.namprd11.prod.outlook.com
  ([fe80::d19:56fe:5841:77ca%6]) with mapi id 15.20.8964.019; Fri, 25 Jul 2025
- 09:56:38 +0000
-Date: Fri, 25 Jul 2025 11:56:26 +0200
+ 10:00:29 +0000
+Date: Fri, 25 Jul 2025 12:00:12 +0200
 From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: Alexander H Duyck <alexander.duyck@gmail.com>
-CC: Mohsin Bashir <mohsin.bashr@gmail.com>, <netdev@vger.kernel.org>,
-	<kuba@kernel.org>, <alexanderduyck@fb.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
-	<horms@kernel.org>, <vadim.fedorenko@linux.dev>, <jdamato@fastly.com>,
-	<sdf@fomichev.me>, <aleksander.lobakin@intel.com>, <ast@kernel.org>,
-	<daniel@iogearbox.net>, <hawk@kernel.org>, <john.fastabend@gmail.com>
-Subject: Re: [PATCH net-next 5/9] eth: fbnic: Add XDP pass, drop, abort
- support
-Message-ID: <aINUysHmm9157btU@boxer>
-References: <20250723145926.4120434-1-mohsin.bashr@gmail.com>
- <20250723145926.4120434-6-mohsin.bashr@gmail.com>
- <aIEdS6fnblUEuYf5@boxer>
- <d47b541e48002d8edfc8331183c4617fb3d74f8a.camel@gmail.com>
+To: Jason Xing <kerneljasonxing@gmail.com>
+CC: <anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <bjorn@kernel.org>,
+	<magnus.karlsson@intel.com>, <jonathan.lemon@gmail.com>, <sdf@fomichev.me>,
+	<ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
+	<john.fastabend@gmail.com>, <bpf@vger.kernel.org>,
+	<intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>, Jason Xing
+	<kernelxing@tencent.com>
+Subject: Re: [PATCH net-next 5/5] ixgbe: xsk: add TX multi-buffer support
+Message-ID: <aINVrP8vrxIkxhZr@boxer>
+References: <20250720091123.474-1-kerneljasonxing@gmail.com>
+ <20250720091123.474-6-kerneljasonxing@gmail.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <d47b541e48002d8edfc8331183c4617fb3d74f8a.camel@gmail.com>
-X-ClientProxiedBy: DU2PR04CA0007.eurprd04.prod.outlook.com
- (2603:10a6:10:3b::12) To DM4PR11MB6117.namprd11.prod.outlook.com
+In-Reply-To: <20250720091123.474-6-kerneljasonxing@gmail.com>
+X-ClientProxiedBy: DUZPR01CA0112.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4bb::11) To DM4PR11MB6117.namprd11.prod.outlook.com
  (2603:10b6:8:b3::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -106,330 +105,139 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR11MB6117:EE_|PH0PR11MB7712:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1760431a-92cd-4aa8-1a11-08ddcb618c6f
+X-MS-Office365-Filtering-Correlation-Id: 40e27564-20a3-42fa-ec58-08ddcb6215d2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?/mDCkWL0fjGwrObz2Go1YLcKm1Boihntd+nOM5WKN5G9m17OMY/T2hMcVGKe?=
- =?us-ascii?Q?1XjCoTfHx59MBN3h5FLpOj/mGfoDKWKi5SfDQPYXpyUedS8h2E0DczVr2ZK2?=
- =?us-ascii?Q?OvvsZ4/ejPdA5rI1ZzsrKfFNvZIEemzI98f1usVqfWnIhIbrWu4BQ0WwXqiw?=
- =?us-ascii?Q?bq0QU37DWiSYF7liC3nndI4KKNlKZshK8rGLJgpwVqp/vS7YOVfE2bsJMrsW?=
- =?us-ascii?Q?i7rPDRofUqYTJRE53qcf3mk84tGU3wxYwB01wNw9JOLDvhtXDPLbXAvInRqn?=
- =?us-ascii?Q?OVEja7yYMiOgboe2LHW/LHIL47vqAR3cEOGi1j5fxbMsfAkufehEqEadWROq?=
- =?us-ascii?Q?JC/vzBoEFjvf0loHLk1Eivgf7TV48yX8Hi3K/IEAFWne/Y9+2Dz6GaVVcRXu?=
- =?us-ascii?Q?YnaU2NTWwHKla8lDPvmpKFwwCgR0AkxDooOz6X6ldoW0LPun3p7fnPa2iUDC?=
- =?us-ascii?Q?1dyRyBEGWxD+MhIeDdjoie7oy2xOnve0pajWfsCdV3aojMydaBxBevZYDYSI?=
- =?us-ascii?Q?3xCHylTnzHaguAqD6ecxXjrC/ZORxSrxihSEPACwY9SHBj0lfCn9epYU9d9p?=
- =?us-ascii?Q?xgNQ3hW1krOMeY8l2uqELH/WWCqOqXj9hRtLxFgR5L/+isYH5dz81qyruSmM?=
- =?us-ascii?Q?saWvimcCps/H1dNKc58BbfqpANKUOCGFeagRTscRmL7JeKj5gd8QkIrQtYRH?=
- =?us-ascii?Q?vm8Yv0zkombOSQXx850unZ7DyGd9N/xRvzTbsNOov6AIkCPa7GkMLsugnW30?=
- =?us-ascii?Q?MkrjS9GoCZ3Zx0g0haCRS/6GCW+vitNa8ynI6RPJaK8PMgeQ+linWTDZ2nh8?=
- =?us-ascii?Q?wRuDnJSwhCNY/gSjCiq2wQfaG4JnJftmgz5BLeWuuyPjmG/LUeffBCXhQzC7?=
- =?us-ascii?Q?bigCP9LQo1QyIIZzJETwuK67iUzgeF9dya25BhNM/+0Y4fqyAj2Y+PGiaGXH?=
- =?us-ascii?Q?6qf9qU0JnAGU2jzymuA1y3QS2TLE68A+bi6Rvbb7lHzqNpA44YGlAD+k7STS?=
- =?us-ascii?Q?khLwMJzIc31m7EcLNiqrv0kVKo1jgq52U1R5/jphb9/PGA+GH0xGtpdx0Ym4?=
- =?us-ascii?Q?aoSN/4Cyp9ekaaxY6dZJEn8WZ+On+I9Pj0PTFZfbwXSW+fFI3tzyB0j+8hmb?=
- =?us-ascii?Q?ymh9+l7wCWjF0yqETW5kNbsFYc6c1baUk98yoNXDe0Agx2gc7+K5l2QLy90f?=
- =?us-ascii?Q?x25lu6NVvhwLilI2w4nSIL1rAmKsIMGQQ9Xm/pxMua/yNZlB4/cC0+z0mkYa?=
- =?us-ascii?Q?LU4NEHTWndTPfH/22HIMrym1vf4PTyY8aoEkjS0C2BFDzwfsAFi/0CxNx2JS?=
- =?us-ascii?Q?fkPN4vhq3ZPG9vXfanxB/GoJHVZ5NxFpuPZcLFtIBRZ1cJR4Hrl1LTO/Wrf9?=
- =?us-ascii?Q?SQEAFWK1MM0z5wIDxa+mGuoup2EpZWY5+ti85KrKO0RQwX1g9JYaPJ2gwJ1U?=
- =?us-ascii?Q?af7wb8II6ZQ=3D?=
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?xrl5JliDnloKOHRfj3eG2FaZ/0nnOx/pw6e/PIlDq2oOkav+tdNO3QJgl0yW?=
+ =?us-ascii?Q?KDk046wLgwQ08yOgHnqVD59IT8ICj9I8XcrbGCo2dfoRKoQ8JaVnpFBAgdZG?=
+ =?us-ascii?Q?JabkbsVRpHb+DUcmVVmJ9U+aUrf01DjdteMC3ZIdVKUYZFwfIXAp8Itqk96S?=
+ =?us-ascii?Q?WgW2EHnD3nk5cUA4yw+y4n24pyUuKdV/MNRzjwCeF/I3zO/nKf4YvO8gyFl6?=
+ =?us-ascii?Q?ZUBcclysWy3HCkqor+TR2ZOR9Ng0u/aEV0JRwHsMqKfqEg03Jgq0Q/6xsJo2?=
+ =?us-ascii?Q?Dh7FLa2kl3o+ptlsm6q4mVVyRsSbkcgBSXyQX/T/3aDkhAsDWDCcqECevxMJ?=
+ =?us-ascii?Q?ALBCNd4RDkGv0QzovbXoVpkqa4Rte79kzsW/m/uSZDskF4ZqEDf8sbJqLVfo?=
+ =?us-ascii?Q?15KrJdapxxwpC9Q4umKeAB4kNML/d9Ycj9P6mS2mcDQvqWiFljIQFaTwXX1s?=
+ =?us-ascii?Q?jg9SNNrZFAcFDgsVxoGs1rKenc0pxPZlOjJ3Y7cjuuw9I8sPrELvAX7CTWmM?=
+ =?us-ascii?Q?MDhlRjVAs79yFVlC32pCE8GtAB2Hx+uD53PY+ip2JETjHI9N/u8uIo38+XCA?=
+ =?us-ascii?Q?QWM20YElimCrvwnzAhRJvCI2MigNbG/dCcBWGeUSop6akSJgeMmdo185YE/o?=
+ =?us-ascii?Q?JWtnmepsiKjrD7OqdrHNsU7eY2h2ME1H3xlOwLXQnsblwQth+4j3F6R4O3ZE?=
+ =?us-ascii?Q?oPZ2lXG1kmVDAVBhniwBqo4vcRJzVgYWKpRX6CA1nLlwkTC80nZQo5htzwrw?=
+ =?us-ascii?Q?vMauUEyJfLCb3cWxHh7tzZ9Iq7w4BCMF3lEBc73TqQs5uZdvIelbbAsEFxmU?=
+ =?us-ascii?Q?kcmjVjoo7A+O7krtNEZavOlFS8pQWLIaNJ6kxbsCKEa5Hvf55STJAyvY2tJR?=
+ =?us-ascii?Q?Sx5lqaCZ8t3/3usKnIbpxQecXiq4/acxcz4yt+J5/3wqqZ2BCRDcW4rjZwOh?=
+ =?us-ascii?Q?bf2BJDTShCVVbaiqB//PKmYG8j7IkBRaaxPVFf7iKhfrkiGW/SyvrH2SGuFF?=
+ =?us-ascii?Q?gKsyRFtZkiv2HyISrH22rMYZFV22c0+FZxTq+dKNSvLrvEBYB8pmyM7NaYzJ?=
+ =?us-ascii?Q?slVVEf/sAYEpq5X15Cmv2dTI0eTccLouKDiHfegDaalHJKYnnAz06SVyDn56?=
+ =?us-ascii?Q?Kee3TRQ3lHKgtnQdoNx2uVaIauoYQaxoy/6pSt0mVxJNOSUVFUKdgyGSurBw?=
+ =?us-ascii?Q?hNx1K/vaiDky7i9Fm3UvXV8ENbPdMpBnE1abfgoceHsfKRTJGmR0pGbPPfzY?=
+ =?us-ascii?Q?jN/dWX8Z7CbFY8HRlC2TIQ4lfMzBhaS0zUv65ZD17+zUt4L8hOLuND/5j+2a?=
+ =?us-ascii?Q?h/htfGxojALixiCyizDAPb2s0eiHrfw53cL+meYQrL0JV5E3joanWDjvbPq9?=
+ =?us-ascii?Q?lWuLQu5QLCTlngmnGqimmKbi11BbU5jHrej2X+VspVWtxbUpM1+SP8rJXB3/?=
+ =?us-ascii?Q?qJYODjWlIls=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6117.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?RTG4VrRHOfoFsbTMfUduuSHQsq1HvnFrPb8TYZnfo4fUzU7yMAg0aaVBesdj?=
- =?us-ascii?Q?N2lvwWPrgtdNgHRzeN4bYcwJPNu5FhQrb1iOsm49oIFIDeThkuLmfjzbVyFp?=
- =?us-ascii?Q?W/8Tlnm3hcfG/DDYtqDIk4PX43MAzDNUmFdTOE7okaTfgnCAn4PerM9i9ze0?=
- =?us-ascii?Q?6jHBu4rJMTafiPbhdZOaB3XWhtSkYma7cTHjqClG939fESlYsMldwoq0uM4Y?=
- =?us-ascii?Q?/PC999OvS667ofTVgm+v4Wb0U+yEnMXkRV1dhlqapsbqWmUF4ZLLa8CBDewP?=
- =?us-ascii?Q?AE0o+VZtTogUw9UxFCRIiXN9TuRXkAkAGxHZYokfTiivoNKS1Nw5xyB07tGu?=
- =?us-ascii?Q?yW8FsMFMfcJYnTIZRt0902krdTPKALUMxISUXBBrgIlS7wobwqRX7iqzyZqE?=
- =?us-ascii?Q?qqAYwKxMJI1Hbu29tRMphKWcITDoTUBWn/u4NCGrrL+EF6gNVVF3BFED1olX?=
- =?us-ascii?Q?GP3zKM+FCcLFZ0dno6cQDYjz5sgAhNFMeV6mpbxemUpmRsYty9zE0TrAC9/+?=
- =?us-ascii?Q?x37wFd2WU9Tja2Qdw/Lxz9QjDeUOhasFfr4JjMMIi5E5WUNA1NYEcY0ief/r?=
- =?us-ascii?Q?wH9cPKr1Wh1XXdJm/JDHcSMhbWDFfNuW3G34/f30vMbPYPUO6oU+QwMqlcC1?=
- =?us-ascii?Q?QRlV1TyymgbJRgeU6AJzQlu1liGcuAhqGOmDKrClsTKNJt/XHhhJbLmLfliQ?=
- =?us-ascii?Q?kgCRFj0UTFPEHo/tq5OliqegbVwdufx8XEiwQZqdNKJHZEEkOCvKYQS8EFiS?=
- =?us-ascii?Q?Kwz/V85Rf2NOUEZxj1Ng95RjhVtwydE3T7ZZD3f5Kfu37pajqJ9H+N9+sb4U?=
- =?us-ascii?Q?duqxK6LhYu5uSeQ6BXZSOnpa2saWy79j4+WHaNXsBxZBqPxaTBPNtBTstCQl?=
- =?us-ascii?Q?k+74oXyb5AqOKvDLe8R/Qf+dqHFL2rgjfmphzSKEE6GNHKr2XSe/KAlSY/9I?=
- =?us-ascii?Q?m9Cs37F7zYvHLE9BfBJN54rhimCEUAgsuLEe/9oStoYJZ+9RTXqNLQo4qMYM?=
- =?us-ascii?Q?N6dtgUnfv5DchTTd1efsswX+Lv3hW327UBpwYzONQNeTQ7ueRhiN6uvSPoM5?=
- =?us-ascii?Q?DYFyaogLhU5VmP1V1GtheT8+BBa9G6JeW/cRyRgTGAWcj97wO77TqExPWMCF?=
- =?us-ascii?Q?zxhpFekwFTPz7b/zULD/F909H0F0eTRKZoZg12qMTggLY+rZS9OsMcPR44Nd?=
- =?us-ascii?Q?dCq+nP9gCNcMLn9auahpNzh38q0g+24wOVktO3NJyz4493xPg1iqUhFBRynq?=
- =?us-ascii?Q?WwVnmsUa4LQCuRNaKMuQ37eiL0qECnUiAFI/jItcbu7PDQmhgx74tv06C3hh?=
- =?us-ascii?Q?SvJYO6DQvjmNTLcWaZo5vFPw6dSuesl+DTUcI7Wax7G+lhH42Al+Pbj9T/mI?=
- =?us-ascii?Q?K06uV1NKnHcFkV7d5E3bD0M8Pyta9lx4if8SRm+AUeJ5nJMDaJ7djsxnjyic?=
- =?us-ascii?Q?sZ2YIQVmBWNhQIcyGv5EyrY+pOUJIRJSzmGtzrSBx++Ahijh5SLO8cWCM9Oe?=
- =?us-ascii?Q?gWZ9HkgJ04r7XAAdNs2cty6FCSvhAJerJjPsyRgLgs47Vmg2wn+4iPKS3/V5?=
- =?us-ascii?Q?CiPWQugMN/Fpd1rrPoH+Kt4xoZXCHSiVEp9JHIkajS7Eza877wnRmbgKDytX?=
- =?us-ascii?Q?WA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1760431a-92cd-4aa8-1a11-08ddcb618c6f
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?HUZwUXK1Adsqyj2EMAWM+dg3E7p1wftRkojEXFsYBaFjYLhggtEA37vjZsyq?=
+ =?us-ascii?Q?GJk9xKJJJ4w0yxFr4AHYH95HwTayY3DmYAJI6TPi3Mms4nbmCA0p3jUe/mY/?=
+ =?us-ascii?Q?QJiihYKZ1CezsJQELD+vFaet3tbZTy3barlUC2BL8W4P5MJBnamPJWTF0nM+?=
+ =?us-ascii?Q?/eY3mD9rJc9wSYPzkyHVvTvcSiSnOi3H21feTsPfZ6RTY7owQIkBbyjm/Tzm?=
+ =?us-ascii?Q?fgbuKJT4m9IbP43Bn4XSHc+Y0w89v4vNNil6Dt2PCju7akGgBKTHrYp9Pkjq?=
+ =?us-ascii?Q?+vkhYa0ZEAx9ptmM5r17PX3SWA7wfaUsNWxDFFjW4/WATVSdDkNG0HMLph/c?=
+ =?us-ascii?Q?BDztLe9tpEeXZT4TXe6TzGq65y4rStVPtcF9lxTM7odr3iSotdGEF/omK/82?=
+ =?us-ascii?Q?o8t4Ef2b14lkwgg0um87A1CApvQlzmwrclplWMoGYIbarEd7kW/5/AB4MYb9?=
+ =?us-ascii?Q?h513T4AHbWR1WAH/O18jw9AiBgfvTQO5J9woyIjRgJ7on7T1rPUNTk4SKifN?=
+ =?us-ascii?Q?bdtx/6C+WnB/v067a6EifpTs0/6UuJqrBYfhFsmYCd22dOOU2mIL1wSdFdzL?=
+ =?us-ascii?Q?RlUxRtXf+nP5w7Z5vjSuOAjNhuO1kURrjOubb7uMBe281IOarT0QTc1QVJCl?=
+ =?us-ascii?Q?VgX94EqGe7CmqKSPckXnI7trL2U1/npnS1IWaKcjk7rqQ7LX3cyCQBijP09R?=
+ =?us-ascii?Q?VkquPl8gRIzq3nuommlZ7MKRECq22wpeS0ay7MdBnfgwhPEyD3SVpdENEqQZ?=
+ =?us-ascii?Q?n0ZBNrZYmRHeGlJ9hz90sXspgQEWPAr/6KhJq2O/LYhHCk82VhJkQdsBSlK8?=
+ =?us-ascii?Q?0Kx+Onv/1d2k6QX3F6hgdkKlT4Tdp9ocr9l/ozB3gCcfsZi/zbcj+Dh0CiHa?=
+ =?us-ascii?Q?CmbJWThLm4deWXm1P1LpHDbytIhRAI86X7z5VQZI1xCxJeeZ96HWM550ehNd?=
+ =?us-ascii?Q?Viv8Kfo8vUCd1iP5eO6nj5zePrD8FTGN9ZCkcSPYTpS841lSdnv2PjumQlij?=
+ =?us-ascii?Q?a4adq5edcUgmpd90ErDNjhDSBKENAmRQbdW+0tI/EeVq+s99Y0ThXSCnW/G9?=
+ =?us-ascii?Q?DZysT6z84h4AVoQZxjb543Xp6Nu34tPxMXywEtQqYC3Er7tTYFUPZY3a7oUZ?=
+ =?us-ascii?Q?z0d11vu21i5IeIVxQmUid7gkKmB1/JnhuN1E+SxN1JCmaqAWR1nWAR9nsvwY?=
+ =?us-ascii?Q?tftGrlqS9w4Lp4khyzTvUMmvJRHZrZpT5j5UnRmP+eNk7eiAZp5Bthv86iK8?=
+ =?us-ascii?Q?DGmXGvgZf4OWIMAA21pYgMuL4tnSVo1/JH8ibWOnlW/YCa4zzVWNcFcUL+zd?=
+ =?us-ascii?Q?FLHmpDjOuThLXlDueKXVCoY5xxq40Y8LY8CqeSisBnYahVDLg7gGiPO9oi9C?=
+ =?us-ascii?Q?DjzVS38VS89hGClimeTiN344gpiq+2WCgdnbBcKWj9v9vODYINMx2dmgL/fF?=
+ =?us-ascii?Q?KcbECc5w5aKBHajXQfa/8WMNDLsbt0VOl9ww4wt9W9lgvdgLLqTpaDKue186?=
+ =?us-ascii?Q?gqH/Z1PK/v9xFUO+xEWqfF4HOuBlsNBFdtE+SQTznXeFd3qyGNcQYkSunCvc?=
+ =?us-ascii?Q?XD8E+9W+pTt4xbBQHsuetlDwJsA23daPqlT7i9foSCWhIqj75kfF7szsa7gD?=
+ =?us-ascii?Q?Xw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40e27564-20a3-42fa-ec58-08ddcb6215d2
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6117.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2025 09:56:38.6817
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2025 10:00:29.1018
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NlIrogUKybgtHNIxuT/m0rXsSGmC7nlf0PPkdTanCEZKlPUE6zC7Jn6xaRO+rOOGP0Jc8GybDbjNvEMLnztZNoGxSE4Wi5I9xuGWKZnmmQc=
+X-MS-Exchange-CrossTenant-UserPrincipalName: dwkALPZ+koJXPifuu9qJf3luyCLH+vVFPI53DggjjX0DBAYpZkRycTiav0Z7ZG0Vni9LYZfpOucV05911JPaQnLiDcFhkjamKCdw+/bkzcY=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7712
 X-OriginatorOrg: intel.com
 
-On Thu, Jul 24, 2025 at 02:14:11PM -0700, Alexander H Duyck wrote:
-> On Wed, 2025-07-23 at 19:35 +0200, Maciej Fijalkowski wrote:
-> > On Wed, Jul 23, 2025 at 07:59:22AM -0700, Mohsin Bashir wrote:
-> > > Add basic support for attaching an XDP program to the device and support
-> > > for PASS/DROP/ABORT actions.
-> > > In fbnic, buffers are always mapped as DMA_BIDIRECTIONAL.
-> > > 
-> > > Testing:
-> > > 
-> > > Hook a simple XDP program that passes all the packets destined for a
-> > > specific port
-> > > 
-> > > iperf3 -c 192.168.1.10 -P 5 -p 12345
-> > > Connecting to host 192.168.1.10, port 12345
-> > > [  5] local 192.168.1.9 port 46702 connected to 192.168.1.10 port 12345
-> > > [ ID] Interval           Transfer     Bitrate         Retr  Cwnd
-> > > - - - - - - - - - - - - - - - - - - - - - - - - -
-> > > [SUM]   1.00-2.00   sec  3.86 GBytes  33.2 Gbits/sec    0
-> > > 
-> > > XDP_DROP:
-> > > Hook an XDP program that drops packets destined for a specific port
-> > > 
-> > >  iperf3 -c 192.168.1.10 -P 5 -p 12345
-> > > ^C- - - - - - - - - - - - - - - - - - - - - - - - -
-> > > [ ID] Interval           Transfer     Bitrate         Retr
-> > > [SUM]   0.00-0.00   sec  0.00 Bytes  0.00 bits/sec    0       sender
-> > > [SUM]   0.00-0.00   sec  0.00 Bytes  0.00 bits/sec            receiver
-> > > iperf3: interrupt - the client has terminated
-> > > 
-> > > XDP with HDS:
-> > > 
-> > > - Validate XDP attachment failure when HDS is low
-> > >    ~] ethtool -G eth0 hds-thresh 512
-> > >    ~] sudo ip link set eth0 xdpdrv obj xdp_pass_12345.o sec xdp
-> > >    ~] Error: fbnic: MTU too high, or HDS threshold is too low for single
-> > >       buffer XDP.
-> > > 
-> > > - Validate successful XDP attachment when HDS threshold is appropriate
-> > >   ~] ethtool -G eth0 hds-thresh 1536
-> > >   ~] sudo ip link set eth0 xdpdrv obj xdp_pass_12345.o sec xdp
-> > > 
-> > > - Validate when the XDP program is attached, changing HDS thresh to a
-> > >   lower value fails
-> > >   ~] ethtool -G eth0 hds-thresh 512
-> > >   ~] netlink error: fbnic: Use higher HDS threshold or multi-buf capable
-> > >      program
-> > > 
-> > > - Validate HDS thresh does not matter when xdp frags support is
-> > >   available
-> > >   ~] ethtool -G eth0 hds-thresh 512
-> > >   ~] sudo ip link set eth0 xdpdrv obj xdp_pass_mb_12345.o sec xdp.frags
-> > > 
-> > > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> > > Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
-> > > ---
-> > >  .../net/ethernet/meta/fbnic/fbnic_ethtool.c   | 11 +++
-> > >  .../net/ethernet/meta/fbnic/fbnic_netdev.c    | 35 +++++++
-> > >  .../net/ethernet/meta/fbnic/fbnic_netdev.h    |  5 +
-> > >  drivers/net/ethernet/meta/fbnic/fbnic_txrx.c  | 95 +++++++++++++++++--
-> > >  drivers/net/ethernet/meta/fbnic/fbnic_txrx.h  |  1 +
-> > >  5 files changed, 140 insertions(+), 7 deletions(-)
-> > > 
-> > > diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-> > > index 84a0db9f1be0..d7b9eb267ead 100644
-> > > --- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-> > > +++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-> > > @@ -329,6 +329,17 @@ fbnic_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
-> > >  		return -EINVAL;
-> > >  	}
-> > >  
-> > > +	/* If an XDP program is attached, we should check for potential frame
-> > > +	 * splitting. If the new HDS threshold can cause splitting, we should
-> > > +	 * only allow if the attached XDP program can handle frags.
-> > > +	 */
-> > > +	if (fbnic_check_split_frames(fbn->xdp_prog, netdev->mtu,
-> > > +				     kernel_ring->hds_thresh)) {
-> > > +		NL_SET_ERR_MSG_MOD(extack,
-> > > +				   "Use higher HDS threshold or multi-buf capable program");
-> > > +		return -EINVAL;
-> > > +	}
-> > > +
-> > >  	if (!netif_running(netdev)) {
-> > >  		fbnic_set_rings(fbn, ring, kernel_ring);
-> > >  		return 0;
-> > > diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-> > > index d039e1c7a0d5..0621b89cbf3d 100644
-> > > --- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-> > > +++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-> > > @@ -504,6 +504,40 @@ static void fbnic_get_stats64(struct net_device *dev,
-> > >  	}
-> > >  }
-> > >  
-> > > +bool fbnic_check_split_frames(struct bpf_prog *prog, unsigned int mtu,
-> > > +			      u32 hds_thresh)
-> > > +{
-> > > +	if (!prog)
-> > > +		return false;
-> > > +
-> > > +	if (prog->aux->xdp_has_frags)
-> > > +		return false;
-> > > +
-> > > +	return mtu + ETH_HLEN > hds_thresh;
-> > > +}
-> > > +
-> > > +static int fbnic_bpf(struct net_device *netdev, struct netdev_bpf *bpf)
-> > > +{
-> > > +	struct bpf_prog *prog = bpf->prog, *prev_prog;
-> > > +	struct fbnic_net *fbn = netdev_priv(netdev);
-> > > +
-> > > +	if (bpf->command != XDP_SETUP_PROG)
-> > > +		return -EINVAL;
-> > > +
-> > > +	if (fbnic_check_split_frames(prog, netdev->mtu,
-> > > +				     fbn->hds_thresh)) {
-> > > +		NL_SET_ERR_MSG_MOD(bpf->extack,
-> > > +				   "MTU too high, or HDS threshold is too low for single buffer XDP");
-> > > +		return -EOPNOTSUPP;
-> > > +	}
-> > > +
-> > > +	prev_prog = xchg(&fbn->xdp_prog, prog);
-> > > +	if (prev_prog)
-> > > +		bpf_prog_put(prev_prog);
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > >  static const struct net_device_ops fbnic_netdev_ops = {
-> > >  	.ndo_open		= fbnic_open,
-> > >  	.ndo_stop		= fbnic_stop,
-> > > @@ -513,6 +547,7 @@ static const struct net_device_ops fbnic_netdev_ops = {
-> > >  	.ndo_set_mac_address	= fbnic_set_mac,
-> > >  	.ndo_set_rx_mode	= fbnic_set_rx_mode,
-> > >  	.ndo_get_stats64	= fbnic_get_stats64,
-> > > +	.ndo_bpf		= fbnic_bpf,
-> > >  	.ndo_hwtstamp_get	= fbnic_hwtstamp_get,
-> > >  	.ndo_hwtstamp_set	= fbnic_hwtstamp_set,
-> > >  };
-> > > diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
-> > > index 04c5c7ed6c3a..bfa79ea910d8 100644
-> > > --- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
-> > > +++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
-> > > @@ -18,6 +18,8 @@
-> > >  #define FBNIC_TUN_GSO_FEATURES		NETIF_F_GSO_IPXIP6
-> > >  
-> > >  struct fbnic_net {
-> > > +	struct bpf_prog *xdp_prog;
-> > > +
-> > >  	struct fbnic_ring *tx[FBNIC_MAX_TXQS];
-> > >  	struct fbnic_ring *rx[FBNIC_MAX_RXQS];
-> > >  
-> > > @@ -104,4 +106,7 @@ int fbnic_phylink_ethtool_ksettings_get(struct net_device *netdev,
-> > >  int fbnic_phylink_get_fecparam(struct net_device *netdev,
-> > >  			       struct ethtool_fecparam *fecparam);
-> > >  int fbnic_phylink_init(struct net_device *netdev);
-> > > +
-> > > +bool fbnic_check_split_frames(struct bpf_prog *prog,
-> > > +			      unsigned int mtu, u32 hds_threshold);
-> > >  #endif /* _FBNIC_NETDEV_H_ */
-> > > diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-> > > index 71af7b9d5bcd..486c14e83ad5 100644
-> > > --- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-> > > +++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-> > > @@ -2,17 +2,26 @@
-> > >  /* Copyright (c) Meta Platforms, Inc. and affiliates. */
-> > >  
-> > >  #include <linux/bitfield.h>
-> > > +#include <linux/bpf.h>
-> > > +#include <linux/bpf_trace.h>
-> > >  #include <linux/iopoll.h>
-> > >  #include <linux/pci.h>
-> > >  #include <net/netdev_queues.h>
-> > >  #include <net/page_pool/helpers.h>
-> > >  #include <net/tcp.h>
-> > > +#include <net/xdp.h>
-> > >  
-> > >  #include "fbnic.h"
-> > >  #include "fbnic_csr.h"
-> > >  #include "fbnic_netdev.h"
-> > >  #include "fbnic_txrx.h"
-> > >  
-> > > +enum {
-> > > +	FBNIC_XDP_PASS = 0,
-> > > +	FBNIC_XDP_CONSUME,
-> > > +	FBNIC_XDP_LEN_ERR,
-> > > +};
-> > > +
-> > >  enum {
-> > >  	FBNIC_XMIT_CB_TS	= 0x01,
-> > >  };
-> > > @@ -877,7 +886,7 @@ static void fbnic_pkt_prepare(struct fbnic_napi_vector *nv, u64 rcd,
-> > >  
-> > >  	headroom = hdr_pg_off - hdr_pg_start + FBNIC_RX_PAD;
-> > >  	frame_sz = hdr_pg_end - hdr_pg_start;
-> > > -	xdp_init_buff(&pkt->buff, frame_sz, NULL);
-> > > +	xdp_init_buff(&pkt->buff, frame_sz, &qt->xdp_rxq);
-> > >  	hdr_pg_start += (FBNIC_RCD_AL_BUFF_FRAG_MASK & rcd) *
-> > >  			FBNIC_BD_FRAG_SIZE;
-> > >  
-> > > @@ -966,6 +975,38 @@ static struct sk_buff *fbnic_build_skb(struct fbnic_napi_vector *nv,
-> > >  	return skb;
-> > >  }
-> > >  
-> > > +static struct sk_buff *fbnic_run_xdp(struct fbnic_napi_vector *nv,
-> > > +				     struct fbnic_pkt_buff *pkt)
-> > > +{
-> > > +	struct fbnic_net *fbn = netdev_priv(nv->napi.dev);
-> > > +	struct bpf_prog *xdp_prog;
-> > > +	int act;
-> > > +
-> > > +	xdp_prog = READ_ONCE(fbn->xdp_prog);
-> > > +	if (!xdp_prog)
-> > > +		goto xdp_pass;
-> > 
-> > Hi Mohsin,
-> > 
-> > I thought we were past the times when we read prog pointer per each
-> > processed packet and agreed on reading the pointer once per napi loop?
+On Sun, Jul 20, 2025 at 05:11:23PM +0800, Jason Xing wrote:
+> From: Jason Xing <kernelxing@tencent.com>
 > 
-> This is reading the cached pointer from the netdev. Are you saying you
-> would rather have this as a stack pointer instead? I don't really see
-> the advantage to making this a once per napi poll session versus just
-> reading it once per packet.
-
-Hi Alex,
-
-this is your only reason (at least currently in this patch) to load the
-cacheline from netdev struct whereas i was just suggesting to piggyback on
-the fact that bpf prog pointer will not change within single napi loop.
-
-it's up to you of course and should be considered as micro-optimization.
-
+> Use the common interface to see if the desc is the end of packets. If
+> so, set IXGBE_TXD_CMD_EOP bit instead of setting for all preceding
+> descriptors. This is also how i40e driver did in commit a92b96c4ae10
+> ("i40e: xsk: add TX multi-buffer support").
 > 
-> > 
-> > > +
-> > > +	if (xdp_buff_has_frags(&pkt->buff) && !xdp_prog->aux->xdp_has_frags)
-> > > +		return ERR_PTR(-FBNIC_XDP_LEN_ERR);
-> > 
-> > when can this happen and couldn't you catch this within ndo_bpf? i suppose
-> > it's related to hds setup.
+> Signed-off-by: Jason Xing <kernelxing@tencent.com>
+> ---
+>  drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 4 ++++
+>  drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c  | 4 +++-
+>  2 files changed, 7 insertions(+), 1 deletion(-)
 > 
-> I was looking over the code and really the MTU is just a suggestion for
-> what size packets we can expect to receive. The MTU doesn't guarantee
-> the receive size, it is just the maximum transmission unit and
-> represents the minimum frame size we should support.
-> 
-> Much like what I did on the Intel NICs back in the day we can receive
-> up to the maximum frame size in almost all cases regardless of MTU
+> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+> index a59fd8f74b5e..c34737065f9e 100644
+> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+> @@ -52,6 +52,8 @@
+>  #include "ixgbe_txrx_common.h"
+>  #include "devlink/devlink.h"
+>  
+> +#define IXGBE_MAX_BUFFER_TXD 4
+> +
+>  char ixgbe_driver_name[] = "ixgbe";
+>  static const char ixgbe_driver_string[] =
+>  			      "Intel(R) 10 Gigabit PCI Express Network Driver";
+> @@ -11805,6 +11807,8 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  	netdev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
+>  			       NETDEV_XDP_ACT_XSK_ZEROCOPY;
+>  
+> +	netdev->xdp_zc_max_segs = IXGBE_MAX_BUFFER_TXD;
 
-mtu is usually an indicator what actual max frame size you are configuring
-on rx side AFAICT. i asked about xdp_has_frags being looked up in hot path
-as it's not what i usually have seen.
+Hi Jason,
 
-> setting. Otherwise we would have to shut down the NIC and change the
-> buffer allocations much like we used to do on the old drivers every
-> time you changed the MTU.
+nack to this as you would allow fragmented frames on Rx side which is not
+supported even with your patchset.
+
+Generally ixgbe needs some love, i have several patches in my backlog plus
+I think Larysa will be focusing on this driver.
+
+please stick to enabling xsk batching on tx side.
+
+> +
+>  	/* MTU range: 68 - 9710 */
+>  	netdev->min_mtu = ETH_MIN_MTU;
+>  	netdev->max_mtu = IXGBE_MAX_JUMBO_FRAME_SIZE - (ETH_HLEN + ETH_FCS_LEN);
+> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
+> index 9fe2c4bf8bc5..3d9fa4f2403e 100644
+> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
+> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
+> @@ -424,7 +424,9 @@ static void ixgbe_xmit_pkt(struct ixgbe_ring *xdp_ring, struct xdp_desc *desc,
+>  	cmd_type = IXGBE_ADVTXD_DTYP_DATA |
+>  		   IXGBE_ADVTXD_DCMD_DEXT |
+>  		   IXGBE_ADVTXD_DCMD_IFCS;
+> -	cmd_type |= desc[i].len | IXGBE_TXD_CMD_EOP;
+> +	cmd_type |= desc[i].len;
+> +	if (xsk_is_eop_desc(&desc[i]))
+> +		cmd_type |= IXGBE_TXD_CMD_EOP;
+>  	tx_desc->read.cmd_type_len = cpu_to_le32(cmd_type);
+>  	tx_desc->read.olinfo_status =
+>  		cpu_to_le32(desc[i].len << IXGBE_ADVTXD_PAYLEN_SHIFT);
+> -- 
+> 2.41.3
 > 
