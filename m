@@ -1,65 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966C443ABC;
-	Fri, 25 Jul 2025 01:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A294B10FD;
+	Fri, 25 Jul 2025 01:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753406669; cv=none; b=idX0+hwR+691JPOe+JBrwIeIQjjEO9lYetNQQoYK0F1lhmby4D7CHyMVuR7UaC9Mn9lSLgrjqlMTR1TRS2koIEuBsw70Jc/RLFUXlNj7HjREnRSTokFlRg1PgSkPBPWI3k29jAGSdQ2UQJS8MIzXJY7oCSuBWAzcUZwGHLL3Qpk=
+	t=1753407612; cv=none; b=Bp6htYQVVq1/4PZxHBziwli6otPlbb0N5H1ewWNFj6HVTJzNZjGvWSBHQGQN/D40SnraPRG4jE6JMNfRI6Kr2ugh9h3JnLpLvV/F9Gop0jYXE1jG2LufT+YILbqORnvocamtXs/rikfNMrbFlFxuXB6u7v9g7OpchDToj/+NNpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753406669; c=relaxed/simple;
-	bh=T8LNO5AvnTSpaz3oGEJtdNfb4yIxbJpcEuBH2EQ7wjg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qd9mfBBL00eAgQv+ct+727cqvRXbBgNY8J4CbHG3K8JGYHtE+yCcv4QvJZWnrJd7rYDR/sAXGqAvhApRLDaSnogaY7w90d1cDLNl9mgaPpcFXNsCDRaykYogaA3rSuxs9BLsqXCQPC3YP0GHZbK1fwosCHYciPJLxqhz6EuuOdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ij5daOub; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753407612; c=relaxed/simple;
+	bh=f5HZZIcJyY3r2sAv5U8oKwJfCVI8PDB6W3bJrZlCNI0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=jB4nbkVEcFzWpjTEXQVEqhDIsz1dvNDPnXA+tXjdjpJxu7JaD1Y4uh2KXHPbBuc2guRM/zP15ivfXsvek7DpJMsqRGwDRJGe+gEBXGxR1a8ETy+liFsuO4z8ip1atZuyQ8ulv+/7fZ2njaP+kOShnzXSfhRLZofu+JEUDgyaJVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u9V27TIW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ij5daOub"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3CBC4CEED;
-	Fri, 25 Jul 2025 01:24:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u9V27TIW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F0AC4CEED;
+	Fri, 25 Jul 2025 01:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753406669;
-	bh=T8LNO5AvnTSpaz3oGEJtdNfb4yIxbJpcEuBH2EQ7wjg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ij5daOubh+CB/TjrNPq/7PRGY4Nl8LWtEbyQ3Z1yzNT2AtCSdsEt3MzVPDGPCXt9J
-	 OdU0rJygETVxmtyHGLzsJzDsDesUsJT9Kc0fB72JCwmw0W6iqDb6xL+kf2Z2KxmX1P
-	 IFti47mr/7w37CXb241VnmyM0d3ngSSyNbKzr2/hLgDXxaDFesa0SopeDvteCWjIfE
-	 fuIth4ECFuCUcmL7Hzz4ncCt9xxzEA10EUC59mR+y4VCwaBIeCEQFTKLfVbOn0xcwW
-	 O3SoQy1CTrF8KFIuEhUvPpidqA6Oxf/hjH8v9uHN02/bQzYpP/2WwoKHMW8or+ttaP
-	 oH53OsVUL9xVA==
-Date: Thu, 24 Jul 2025 18:24:27 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-team@meta.com
-Subject: Re: [PATCH net-next] selftests: net: Skip test if IPv6 is not
- configured
-Message-ID: <20250724182427.5ece92e8@kernel.org>
-In-Reply-To: <20250723-netcons_test_ipv6-v1-1-41c9092f93f9@debian.org>
-References: <20250723-netcons_test_ipv6-v1-1-41c9092f93f9@debian.org>
+	s=k20201202; t=1753407612;
+	bh=f5HZZIcJyY3r2sAv5U8oKwJfCVI8PDB6W3bJrZlCNI0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=u9V27TIW1Z9wi96FWGQ7U51ijYLS/zke5R3tDo14yf/thcGJxhyRq2H/YOvU2G0um
+	 bcM7ELIQInNBXjOIQNAI5fUylQXE9knn3Kls6QHvk085zF6UykuGJo0LMKkQjM3l5M
+	 Z16ZqVKbLVn1JktoRynrhnp7d6OqlolOZaEshwf+dkF1HT3Yu+uHEGWKVAC967+wFG
+	 CPyFuiibzK6i9MxZFg4bybMCzXt38P16Ts2+Nsfktndm9YfEmBNkn6wxAGZ2D9ddXX
+	 86pXM8oFx0lW4qa8O696iMOKKwAKJ4QZMWh6NplfRlCKTE4FV8eOfEuFMCtE8bdGmi
+	 I+XiXw7ZFFEVQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33B8F383BF4E;
+	Fri, 25 Jul 2025 01:40:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [GIT PULL] bluetooth-next 2025-07-23
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175340763001.2600170.388804154259482388.git-patchwork-notify@kernel.org>
+Date: Fri, 25 Jul 2025 01:40:30 +0000
+References: <20250723190233.166823-1-luiz.dentz@gmail.com>
+In-Reply-To: <20250723190233.166823-1-luiz.dentz@gmail.com>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org
 
-On Wed, 23 Jul 2025 10:35:06 -0700 Breno Leitao wrote:
-> Extend the `check_for_dependencies()` function in `lib_netcons.sh` to check
-> whether IPv6 is enabled by verifying the existence of
-> `/proc/net/if_inet6`. Having IPv6 is a now a dependency of netconsole
-> tests. If the file does not exist, the script will skip the test with an
-> appropriate message suggesting to verify if `CONFIG_IPV6` is enabled.
+Hello:
+
+This pull request was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 23 Jul 2025 15:02:32 -0400 you wrote:
+> The following changes since commit 56613001dfc9b2e35e2d6ba857cbc2eb0bac4272:
 > 
-> This prevents the test to misbehave if IPv6 is not configured.
+>   Merge branch 'mlx5-next' of git://git.kernel.org/pub/scm/linux/kernel/git/mellanox/linux (2025-07-22 18:37:23 -0700)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git tags/for-net-next-2025-07-23
+> 
+> [...]
 
-IDK. I think this is related to some of the recent patches?
-The context would be helpful in the commit message.
-Otherwise, as networking people, I think we are obligated 
-to respond with hostility to "IPv6 may not be enabled"..
+Here is the summary with links:
+  - [GIT,PULL] bluetooth-next 2025-07-23
+    https://git.kernel.org/netdev/net-next/c/d2002ccb47dd
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
