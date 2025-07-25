@@ -1,123 +1,109 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2560E2EAD06
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A792BB17
+	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753459553; cv=none; b=nkbI8rj6176u0upBCL+AeKD+1Hzvb8nC4GB88d9r0KC08YK6vNde2HZegI5jTcCyQw3D9a3WGPOJpHyZIjjkPs9y8Ov4M1hEajPQdZO3DIsQTTw/En5d9WrodgX1i5FUcrraYRrUnuFz1RNbaIIWyiBk8DM3f/ZSHgvpbhwO+EA=
+	t=1753459941; cv=none; b=ZehsP0Kf11t8L4wX8DjG0R7OMf/FjxTdYlV0CvA3jm36Z3B3IY5twguaH03RFwxP6T614vqntqc5MHPP0geRNaIQe5V5osdtn4Pn1JXD79A25etrfTRReY2N6MTEPYDVDSm2v1cgsGRVBw6wfTWE8jHCVYvIMVzz14aDlTOLWQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753459553; c=relaxed/simple;
-	bh=YgPAnx9vFCwOx9iFj2kTW3xM7JALaN+r1UZ4mK4q20g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dXQ0W83gXbesOECOtm6Ms/8aZFJuUNvNjrz2sqHcPb2kttmE09/iqKZTgEEXZGlMiKUNSHNDu1OYmmhU641bpFshlJ9ueQwHT8XYfXMStBNTGIbi3QJnIzEicp1ror68MvIWlg6pgH0y4VQNn5AzSmg4j7uKQ5xI+3bP1A5ITJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MVHx51AG; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1753459941; c=relaxed/simple;
+	bh=9RXaPBzusmc4gEGjKmhFAjScsE/bdLvBPIpYISHdso8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ODWwAkcucMhQ+THCU+oHKhBmJZywXqZFo4y2X0pck2K3DiEHnSDlRs5mKPw34rotxf5SSgrvvzntYWI8heKgtghY5rbohfqgFD7Deh7wmdOlrjwq9vS11fue0asrzuCGwGCsMH1VvUQpo59XhDUdZaL/xdIFE9sDivsnhibUYls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=mmGwHMU5; arc=none smtp.client-ip=171.64.64.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MVHx51AG"
-Message-ID: <c7241cc9-2b20-4f32-8ae2-93f40d12fc85@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753459538;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3g87AqOwyJOiheBSqVuAlI8MtvTXH78Z8e5bHHseWHY=;
-	b=MVHx51AGl+3SbE3RFIiWpv1PxlGsaOafEwYgmp3ig5tdja/tjCdzHveO9mLfKnEH7O/yUy
-	mFgJ1jvmGvH0iQRAKqGYOK/16t3rYgdgVXYqDGF3jo2+UIViufvlLh6mfD0Gk2eEQPF2rJ
-	4RG5WA/L41c8YRSuxajkw/Ui4DEbCQQ=
-Date: Fri, 25 Jul 2025 09:05:31 -0700
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="mmGwHMU5"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
+	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=N/UH60VefhwxeSvSADQXBksC/DoLzJcerAXQ2HN65UE=; t=1753459940; x=1754323940; 
+	b=mmGwHMU5dCVdcDh8MceazdEI5rxEHpJ05I7zOsZRjSE7ptFyODKp9wzLIUGUu+xI/bltO6aUPfU
+	HhWK91JNeEcSh1/x0Wuy/aq1rm46l8LHSKYQXW1DFR9+Otg/Oen+y9kS9aL+BGIy9yHfi1NqJNc1n
+	Hb/NuJgLcV7bwWAagrUombLEKeVd8CLnVcTd30xkfvzZm5IPkrrmL2Q5G7sS9eJI9enSt7jWoT944
+	xIdXkSOwIGQbK1/iMXNoAmCcbbX8Kc1jedVNOBVcWSv8PRfbQ5Maw+Ufa0akfK+j4csYB1pxEI2kY
+	gTvGZqoEJHjI+Y58dcymBcdq32RZFiwsOrrA==;
+Received: from mail-oi1-f181.google.com ([209.85.167.181]:59397)
+	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.94.2)
+	(envelope-from <ouster@cs.stanford.edu>)
+	id 1ufL1v-0004U2-1q
+	for netdev@vger.kernel.org; Fri, 25 Jul 2025 09:12:19 -0700
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-41b357ba04fso1190822b6e.2
+        for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 09:12:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU8hBRNA7fvHul0jwP8gvfdqjvgyDz4LmsfuR32z9EcvPTZXhdz3ytjDjPrYEJmw6fo1m+3yRY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsyzqxtU5JvmeI//gGnMnbyK9gWqxsyI84i0WOdu5AJZQPTUZx
+	4hMXxp8TL+VIYO7xV5dJe5PBh4NIoZ+BjPcuQUwbzw+w8Ium4y4s1ute4fOcni4O6/sWi6Zqry3
+	u19me8agmHN+xNgq7QC6+kNIDkk4LzLM=
+X-Google-Smtp-Source: AGHT+IEk179aXI8m1oiZ1IDVWKK9FV196RLu72Vd6W77tsZkN0AxRDGBICODPViz2u3CkSFxH1sVgqbsxCKQN/DdZaw=
+X-Received: by 2002:a05:6808:1409:b0:401:e721:8b48 with SMTP id
+ 5614622812f47-42bb7eb8adamr1322760b6e.8.1753459938390; Fri, 25 Jul 2025
+ 09:12:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf-next 0/4] Use correct destructor kfunc types
-Content-Language: en-GB
-To: Sami Tolvanen <samitolvanen@google.com>, bpf@vger.kernel.org
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
- KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
- Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
- Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>,
- Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250724223225.1481960-6-samitolvanen@google.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yonghong Song <yonghong.song@linux.dev>
-In-Reply-To: <20250724223225.1481960-6-samitolvanen@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+References: <20250724184050.3130-15-ouster@cs.stanford.edu> <20250724194001.1623075-1-kuniyu@google.com>
+In-Reply-To: <20250724194001.1623075-1-kuniyu@google.com>
+From: John Ousterhout <ouster@cs.stanford.edu>
+Date: Fri, 25 Jul 2025 09:11:42 -0700
+X-Gmail-Original-Message-ID: <CAGXJAmysy06MEwRfdoYHiUO_CDi74TfU81kcmU77HZVy=Gdi+Q@mail.gmail.com>
+X-Gm-Features: Ac12FXwSeRpf8KaQYgY5WcRvYGpGH5zKM8RJAo3Nps1h665C1f-FVgtx7JAkQlo
+Message-ID: <CAGXJAmysy06MEwRfdoYHiUO_CDi74TfU81kcmU77HZVy=Gdi+Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v12 14/15] net: homa: create homa_plumbing.c
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: edumazet@google.com, horms@kernel.org, kuba@kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Score: -1.0
+X-Scan-Signature: dcedbbeaec314583a5a6d4e37e27e533
 
-
-
-On 7/24/25 3:32 PM, Sami Tolvanen wrote:
-> Hi folks,
+On Thu, Jul 24, 2025 at 12:40=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.c=
+om> wrote:
 >
-> While running BPF self-tests with CONFIG_CFI_CLANG (Clang Control
-> Flow Integrity) enabled, I ran into a couple of CFI failures
-> in bpf_obj_free_fields() caused by type mismatches between
-> the btf_dtor_kfunc_t function pointer type and the registered
-> destructor functions.
+> From: John Ousterhout <ouster@cs.stanford.edu>
+> Date: Thu, 24 Jul 2025 11:40:47 -0700
+> > diff --git a/net/homa/homa_plumbing.c b/net/homa/homa_plumbing.c
+> > new file mode 100644
+> > index 000000000000..694eb18cde00
+> > --- /dev/null
+> > +++ b/net/homa/homa_plumbing.c
+> > @@ -0,0 +1,1115 @@
+> > +// SPDX-License-Identifier: BSD-2-Clause
 >
-> It looks like we can't change the argument type for these
-> functions to match btf_dtor_kfunc_t because the verifier doesn't
-> like void pointer arguments for functions used in BPF programs,
-> so this series fixes the issue by adding stubs with correct types
-> to use as destructors for each instance of this I found in the
-> kernel tree.
+> IANAL, but I think this file is also licensed under GPL-2.0 from
+> the doc below (and as you state by MODULE_LICENSE()), so you
+> may want to follow other similar files throughout this series.
 >
-> The last patch changes btf_check_dtor_kfuncs() to enforce the
-> function type when CFI is enabled, so we don't end up registering
-> destructors that panic the kernel. Perhaps this is something we
-> could enforce even without CONFIG_CFI_CLANG?
-
-I tried your patch set on top of latest bpf-next. The problem
-still exists with the following error:
-
-[   71.976265] CFI failure at bpf_obj_free_fields+0x298/0x620 (target: __bpf_crypto_ctx_release+0x0/0x10; expected type: 0xc1113566)
-[   71.980134] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-...
-
-
-The following is the CFI related config items:
-
-$ grep CFI .config
-CONFIG_CFI_AUTO_DEFAULT=y
-CONFIG_FUNCTION_PADDING_CFI=11
-CONFIG_ARCH_SUPPORTS_CFI_CLANG=y
-CONFIG_ARCH_USES_CFI_TRAPS=y
-CONFIG_CFI_CLANG=y
-# CONFIG_CFI_ICALL_NORMALIZE_INTEGERS is not set
-CONFIG_HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG=y
-CONFIG_HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC=y
-# CONFIG_CFI_PERMISSIVE is not set
-
-Did I miss anything?
-
->
-> Sami
->
-> ---
->
-> Sami Tolvanen (4):
->    bpf: crypto: Use the correct destructor kfunc type
->    bpf: net_sched: Use the correct destructor kfunc type
->    selftests/bpf: Use the correct destructor kfunc type
->    bpf, btf: Enforce destructor kfunc type with CFI
->
->   kernel/bpf/btf.c                                     | 7 +++++++
->   kernel/bpf/crypto.c                                  | 7 ++++++-
->   net/sched/bpf_qdisc.c                                | 7 ++++++-
->   tools/testing/selftests/bpf/test_kmods/bpf_testmod.c | 7 ++++++-
->   4 files changed, 25 insertions(+), 3 deletions(-)
+>   $ grep -rnI SPDX net | grep GPL | grep BSD
 >
 >
-> base-commit: 95993dc3039e29dabb9a50d074145d4cb757b08b
+> Documentation/process/license-rules.rst
+> ---8<---
+> The license described in the COPYING file applies to the kernel source
+> as a whole, though individual source files can have a different license
+> which is required to be compatible with the GPL-2.0::
+>
+>     GPL-1.0+  :  GNU General Public License v1.0 or later
+>     GPL-2.0+  :  GNU General Public License v2.0 or later
+>     LGPL-2.0  :  GNU Library General Public License v2 only
+>     LGPL-2.0+ :  GNU Library General Public License v2 or later
+>     LGPL-2.1  :  GNU Lesser General Public License v2.1 only
+>     LGPL-2.1+ :  GNU Lesser General Public License v2.1 or later
+>
+> Aside from that, individual files can be provided under a dual license,
+> e.g. one of the compatible GPL variants and alternatively under a
+> permissive license like BSD, MIT etc
 
+Thanks for pointing this out; I will switch the SPDX notices to dual-licens=
+e.
+
+-John-
