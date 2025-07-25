@@ -1,723 +1,493 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E8025A337
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 18:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6666A2417DE
+	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 18:38:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753468498; cv=none; b=EHg+aX4ExwFdYeuExUZx0tdn7bMnDr++ERBxUBMwdoSa5slrOGyAZkYMVoAUf+ISlqPucnVQfyi8CK1x/H9vwt6T02fH+kcg6QsQdWfRvUxrxh+oGAW3zzzYGdqHU6OohG9Q2cMgeWWZ6iDibaTZggFQba97zdbe5ryKaH2kQ8c=
+	t=1753468725; cv=none; b=EYRLrZHYbVeu2ZG+vLFsnzF3SHqlqqxpoEl67LKm6oZkOkBosL3lC5d1fAHT59LxYYWpryLVT7G0kcn3S/6gc5T2RMYm6GHLBaD9TL6+kNid0OcdgdiYjWTogwEuwQaM/+hLJz8ZDBLFIreHchu86cte2uRZdYh24typTbGzGcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753468498; c=relaxed/simple;
-	bh=xteysUPbzlFA/8vl6v98LQIaERsG9WWgexNKSCtPHbo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VDQVzlOMH/uTcsFePA9Fe4HUX+Llqzz8yRQT/uPSusxk5eYMI6K8xzRlcGP45MiAtYdB7UMaQcv8RbwvkmHBieUBk8rRFIRol4jMtpZQyqhEasWsMl1/BayyHS4hktlSbEPoY6OfbWXWQowkUcw9sK8uGbiQuVr84OjGLD5HC/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FHYEMdeK; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1753468725; c=relaxed/simple;
+	bh=ZeGfMMRhTnAG2ctNVuCX1noxNGJYbnkcz1g3/yd2XdU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=eiQTaYXGnnPBvY5CXnG26YHcwEBhhLaKYVuJwaVUX2QtnjQP+kzpYTrRGuk09U+Gfnry+K3iWnL1Hr57GYWj+de4fX3oyAXxgm3sjBeKZU/TTo3K9IVIa5AJfSRV8l9ygmjaGgTLEl1hwwucPQgQWgMwhW2ytLANItLZLy//CFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zcn4GCaG; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FHYEMdeK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753468496; x=1785004496;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xteysUPbzlFA/8vl6v98LQIaERsG9WWgexNKSCtPHbo=;
-  b=FHYEMdeK9wI28MxkQvG0bQgZyy7K6ApolTS6DVysloncW8oCMVsuWsEu
-   aTr0eEkOHWrmIlvc7ZbJt4Toz1uY3H5XetksfDy5EEG1RgksIH0aiADzX
-   iSp/U4Vlru8nY+t1BZNhU1+SqS0y/fyp4vtcicUS6JMH1iQdm/STVXQcu
-   rMWVkr50TCNlwkLRnvJ5mo5W1qq1aBZi9vV5do1sCcid3FyTHco+5X7PF
-   /eNUtRXUpuT6UWWFGv0ZOOHdIy+Omqh00V7Rzt2m/1CqMCyDYWm83vxzy
-   uIxfxICdnF4b2I7oY9ZhXmX6u4zJEsN0i/3F49SP/negx1NZx/fbxKyGc
-   A==;
-X-CSE-ConnectionGUID: 8IcLX3CTSoyy4sZ7GN5zEg==
-X-CSE-MsgGUID: wFDHKgeiSmqpzXNHaEmcxA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11503"; a="81252350"
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="81252350"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2025 11:34:54 -0700
-X-CSE-ConnectionGUID: DVjVQ4hzT/yy1S7UkakHFg==
-X-CSE-MsgGUID: w+emEDgiQ3aHyvqkJbFuRA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="160803965"
-Received: from dcskidmo-m40.jf.intel.com ([10.166.241.13])
-  by orviesa009.jf.intel.com with ESMTP; 25 Jul 2025 11:34:54 -0700
-From: Joshua Hay <joshua.a.hay@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Joshua Hay <joshua.a.hay@intel.com>,
-	Madhu Chittim <madhu.chittim@intel.com>
-Subject: [Intel-wired-lan] [PATCH iwl-net v3 6/6] idpf: remove obsolete stashing code
-Date: Fri, 25 Jul 2025 11:42:23 -0700
-Message-Id: <20250725184223.4084821-7-joshua.a.hay@intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250725184223.4084821-1-joshua.a.hay@intel.com>
-References: <20250725184223.4084821-1-joshua.a.hay@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zcn4GCaG"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-23fba8fd56bso2665075ad.2
+        for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 11:38:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753468723; x=1754073523; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hERtp2g6Pc7QoTZ98mMyXxU41JG0va0Re9zNA1XThII=;
+        b=zcn4GCaGT2kLhYWeca0zbOccYioV/CxH+cfRs9RPQPvp9jdoNxSQqPsPXp7fFuVunr
+         xfuunE32gq3tTVkc4KhiX2gGoxH6AEAqif0M6yHs4kfdA3SdgZglAxMv0d9gqQKJl0Al
+         pcTKLD0yHHULukaDJpUGII52RFHuE6yQ+cAztXficfHemKlvUoH9Dp9/ny7nXM29Yq27
+         QWBNqJ4+oM1ersI4wf7k0bfbWyaRwHTcfgvO18icxIXYvJXK0r1Orb6oaRAAgHS6De5n
+         zYquv4oQfMfFDvZyhKwvApOKjkKgA/rP0l1tNQsW+iLprzNV39ONK9lJjBJWCvVzyHSg
+         4o5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753468723; x=1754073523;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hERtp2g6Pc7QoTZ98mMyXxU41JG0va0Re9zNA1XThII=;
+        b=wgkDeCzYlo3ZzkAj0Qes4Lqd4Zss9Op1xP5x79SttnZ8mVNqVr+kIK/aJH24oK9SeX
+         N+TUF528v6OAeyrV/BwmmCqJWbj+quOfJL8U2ls/4qNCqTeD0h34oa/F8+YUOhn9ugn+
+         JWNmU3ytSOBtyFH1JGYZ+Zsf5GmDjESmNZcyjAspFQRqIAQhT22lSUJSbrO3boQJ9lT7
+         ZM0E9meGG6xoCRQ2wMwfUzHFTfSpWS111aB0f/z/QJAmHMUQHr6ovNPa033nc27BpGAo
+         QL3tjjw2XXFonK1BvDXULLw+hPBJm5ZRrSw+i+GWNESn870NkY8QQyGreJM7sKaq6Igh
+         TIZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVI8vXsvMAbwEPtcaiafjPM8AFD46N9AalTItNZHFNVqzKQHuM5I/vV85FK0y4QyVZp+B+hDNQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBQCvZSR+/fcfegIz/6rPSq873TqDwRPbpeLdwnP/pGpCPbC0i
+	bk8JYP2CC5FRgtWgoy7jCeFS8WaGOPw5jDyiWEAJ8vQ1OPTSOBjxPDLpN3LOrGjZKLjVqj7amYg
+	VIsAK3QkhwnH71w==
+X-Google-Smtp-Source: AGHT+IElnQ3ltmUEMUOrnqr+/5aFfilQzhfxMYT2GQzuCKhfrb3hO0WPIinsgr69dSU9OKlubrsJp7mniL69pw==
+X-Received: from plht16.prod.google.com ([2002:a17:903:2f10:b0:23e:3914:f342])
+ (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:490b:b0:234:d7c5:a0f6 with SMTP id d9443c01a7336-23fb30aaf67mr34769985ad.31.1753468722686;
+ Fri, 25 Jul 2025 11:38:42 -0700 (PDT)
+Date: Fri, 25 Jul 2025 18:37:46 +0000
+In-Reply-To: <20250725183811.409580-1-cmllamas@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250725183811.409580-1-cmllamas@google.com>
+X-Mailer: git-send-email 2.50.1.470.g6ba607880d-goog
+Message-ID: <20250725183811.409580-4-cmllamas@google.com>
+Subject: [PATCH v19 3/5] binder: introduce transaction reports via netlink
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Donald Hunter <donald.hunter@gmail.com>, Li Li <dualli@google.com>
+Cc: Tiffany Yang <ynaffit@google.com>, John Stultz <jstultz@google.com>, 
+	Shai Barack <shayba@google.com>, "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com>, kernel-team@android.com, 
+	linux-kernel@vger.kernel.org, 
+	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-With the new Tx buffer management scheme, there is no need for all of
-the stashing mechanisms, the hash table, the reserve buffer stack, etc.
-Remove all of that.
+From: Li Li <dualli@google.com>
 
-Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Introduce a generic netlink multicast event to report binder transaction
+failures to userspace. This allows subscribers to monitor these events
+and take appropriate actions, such as stopping a misbehaving application
+that is spamming a service with huge amount of transactions.
+
+The multicast event contains full details of the failed transactions,
+including the sender/target PIDs, payload size and specific error code.
+This interface is defined using a YAML spec, from which the UAPI and
+kernel headers and source are auto-generated.
+
+Signed-off-by: Li Li <dualli@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 ---
-v3: update comment format
----
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 314 ++------------------
- drivers/net/ethernet/intel/idpf/idpf_txrx.h |  47 +--
- 2 files changed, 22 insertions(+), 339 deletions(-)
+ Documentation/netlink/specs/binder.yaml     | 96 +++++++++++++++++++++
+ MAINTAINERS                                 |  1 +
+ drivers/android/Kconfig                     |  1 +
+ drivers/android/Makefile                    |  2 +-
+ drivers/android/binder.c                    | 85 +++++++++++++++++-
+ drivers/android/binder_netlink.c            | 32 +++++++
+ drivers/android/binder_netlink.h            | 21 +++++
+ include/uapi/linux/android/binder_netlink.h | 37 ++++++++
+ 8 files changed, 270 insertions(+), 5 deletions(-)
+ create mode 100644 Documentation/netlink/specs/binder.yaml
+ create mode 100644 drivers/android/binder_netlink.c
+ create mode 100644 drivers/android/binder_netlink.h
+ create mode 100644 include/uapi/linux/android/binder_netlink.h
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 6563d5831a23..a12cfad566a7 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -8,48 +8,12 @@
- #include "idpf_ptp.h"
- #include "idpf_virtchnl.h"
+diff --git a/Documentation/netlink/specs/binder.yaml b/Documentation/netlink/specs/binder.yaml
+new file mode 100644
+index 000000000000..a2e54aa42448
+--- /dev/null
++++ b/Documentation/netlink/specs/binder.yaml
+@@ -0,0 +1,96 @@
++# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
++#
++# Copyright 2025 Google LLC
++#
++---
++name: binder
++protocol: genetlink
++uapi-header: linux/android/binder_netlink.h
++doc: Binder interface over generic netlink
++
++attribute-sets:
++  -
++    name: report
++    doc: |
++      Attributes included within a transaction failure report. The elements
++      correspond directly with the specific transaction that failed, along
++      with the error returned to the sender e.g. BR_DEAD_REPLY.
++
++    attributes:
++      -
++        name: error
++        type: u32
++        doc: The enum binder_driver_return_protocol returned to the sender.
++      -
++        name: context
++        type: string
++        doc: The binder context where the transaction occurred.
++      -
++        name: from_pid
++        type: u32
++        doc: The PID of the sender process.
++      -
++        name: from_tid
++        type: u32
++        doc: The TID of the sender thread.
++      -
++        name: to_pid
++        type: u32
++        doc: |
++          The PID of the recipient process. This attribute may not be present
++          if the target could not be determined.
++      -
++        name: to_tid
++        type: u32
++        doc: |
++          The TID of the recipient thread. This attribute may not be present
++          if the target could not be determined.
++      -
++        name: is_reply
++        type: flag
++        doc: When present, indicates the failed transaction is a reply.
++      -
++        name: flags
++        type: u32
++        doc: The bitmask of enum transaction_flags from the transaction.
++      -
++        name: code
++        type: u32
++        doc: The application-defined code from the transaction.
++      -
++        name: data_size
++        type: u32
++        doc: The transaction payload size in bytes.
++
++operations:
++  list:
++    -
++      name: report
++      doc: |
++        A multicast event sent to userspace subscribers to notify them about
++        binder transaction failures. The generated report provides the full
++        details of the specific transaction that failed. The intention is for
++        programs to monitor these events and react to the failures as needed.
++
++      attribute-set: report
++      mcgrp: report
++      event:
++        attributes:
++          - error
++          - context
++          - from_pid
++          - from_tid
++          - to_pid
++          - to_tid
++          - is_reply
++          - flags
++          - code
++          - data_size
++
++kernel-family:
++  headers: ["binder_internal.h"]
++
++mcast-groups:
++  list:
++    -
++      name: report
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f8c8f682edf6..df8f6b31f2f8 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1769,6 +1769,7 @@ M:	Suren Baghdasaryan <surenb@google.com>
+ L:	linux-kernel@vger.kernel.org
+ S:	Supported
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging.git
++F:	Documentation/netlink/specs/binder.yaml
+ F:	drivers/android/
  
--struct idpf_tx_stash {
--	struct hlist_node hlist;
--	struct libeth_sqe buf;
--};
--
- #define idpf_tx_buf_next(buf)		(*(u32 *)&(buf)->priv)
--#define idpf_tx_buf_compl_tag(buf)	(*(u32 *)&(buf)->priv)
- LIBETH_SQE_CHECK_PRIV(u32);
+ ANDROID GOLDFISH PIC DRIVER
+diff --git a/drivers/android/Kconfig b/drivers/android/Kconfig
+index 5b3b8041f827..75af3cf472c8 100644
+--- a/drivers/android/Kconfig
++++ b/drivers/android/Kconfig
+@@ -4,6 +4,7 @@ menu "Android"
+ config ANDROID_BINDER_IPC
+ 	bool "Android Binder IPC Driver"
+ 	depends on MMU
++	depends on NET
+ 	default n
+ 	help
+ 	  Binder is used in Android for both communication between processes,
+diff --git a/drivers/android/Makefile b/drivers/android/Makefile
+index c5d47be0276c..f422f91e026b 100644
+--- a/drivers/android/Makefile
++++ b/drivers/android/Makefile
+@@ -2,5 +2,5 @@
+ ccflags-y += -I$(src)			# needed for trace events
  
- static bool idpf_chk_linearize(struct sk_buff *skb, unsigned int max_bufs,
- 			       unsigned int count);
+ obj-$(CONFIG_ANDROID_BINDERFS)		+= binderfs.o
+-obj-$(CONFIG_ANDROID_BINDER_IPC)	+= binder.o binder_alloc.o
++obj-$(CONFIG_ANDROID_BINDER_IPC)	+= binder.o binder_alloc.o binder_netlink.o
+ obj-$(CONFIG_ANDROID_BINDER_ALLOC_KUNIT_TEST)	+= tests/
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index 95aa1fae53e2..0d37eca514f9 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -74,6 +74,7 @@
  
--/**
-- * idpf_buf_lifo_push - push a buffer pointer onto stack
-- * @stack: pointer to stack struct
-- * @buf: pointer to buf to push
-- *
-- * Returns 0 on success, negative on failure
-- **/
--static int idpf_buf_lifo_push(struct idpf_buf_lifo *stack,
--			      struct idpf_tx_stash *buf)
--{
--	if (unlikely(stack->top == stack->size))
--		return -ENOSPC;
--
--	stack->bufs[stack->top++] = buf;
--
--	return 0;
--}
--
--/**
-- * idpf_buf_lifo_pop - pop a buffer pointer from stack
-- * @stack: pointer to stack struct
-- **/
--static struct idpf_tx_stash *idpf_buf_lifo_pop(struct idpf_buf_lifo *stack)
--{
--	if (unlikely(!stack->top))
--		return NULL;
--
--	return stack->bufs[--stack->top];
--}
--
- /**
-  * idpf_tx_timeout - Respond to a Tx Hang
-  * @netdev: network interface device structure
-@@ -78,14 +42,11 @@ void idpf_tx_timeout(struct net_device *netdev, unsigned int txqueue)
- static void idpf_tx_buf_rel_all(struct idpf_tx_queue *txq)
- {
- 	struct libeth_sq_napi_stats ss = { };
--	struct idpf_buf_lifo *buf_stack;
--	struct idpf_tx_stash *stash;
- 	struct libeth_cq_pp cp = {
- 		.dev	= txq->dev,
- 		.ss	= &ss,
- 	};
--	struct hlist_node *tmp;
--	u32 i, tag;
-+	u32 i;
+ #include <linux/cacheflush.h>
  
- 	/* Buffers already cleared, nothing to do */
- 	if (!txq->tx_buf)
-@@ -97,33 +58,6 @@ static void idpf_tx_buf_rel_all(struct idpf_tx_queue *txq)
++#include "binder_netlink.h"
+ #include "binder_internal.h"
+ #include "binder_trace.h"
  
- 	kfree(txq->tx_buf);
- 	txq->tx_buf = NULL;
--
--	if (!idpf_queue_has(FLOW_SCH_EN, txq))
--		return;
--
--	buf_stack = &txq->stash->buf_stack;
--	if (!buf_stack->bufs)
--		return;
--
--	/*
--	 * If a Tx timeout occurred, there are potentially still bufs in the
--	 * hash table, free them here.
--	 */
--	hash_for_each_safe(txq->stash->sched_buf_hash, tag, tmp, stash,
--			   hlist) {
--		if (!stash)
--			continue;
--
--		libeth_tx_complete(&stash->buf, &cp);
--		hash_del(&stash->hlist);
--		idpf_buf_lifo_push(buf_stack, stash);
--	}
--
--	for (i = 0; i < buf_stack->size; i++)
--		kfree(buf_stack->bufs[i]);
--
--	kfree(buf_stack->bufs);
--	buf_stack->bufs = NULL;
+@@ -2993,6 +2994,67 @@ static void binder_set_txn_from_error(struct binder_transaction *t, int id,
+ 	binder_thread_dec_tmpref(from);
  }
  
- /**
-@@ -199,9 +133,6 @@ static void idpf_tx_desc_rel_all(struct idpf_vport *vport)
-  */
- static int idpf_tx_buf_alloc_all(struct idpf_tx_queue *tx_q)
- {
--	struct idpf_buf_lifo *buf_stack;
--	int i;
--
- 	/* Allocate book keeping buffers only. Buffers to be supplied to HW
- 	 * are allocated by kernel network stack and received as part of skb
- 	 */
-@@ -213,29 +144,6 @@ static int idpf_tx_buf_alloc_all(struct idpf_tx_queue *tx_q)
- 	if (!tx_q->tx_buf)
- 		return -ENOMEM;
- 
--	if (!idpf_queue_has(FLOW_SCH_EN, tx_q))
--		return 0;
--
--	buf_stack = &tx_q->stash->buf_stack;
--
--	/* Initialize tx buf stack for out-of-order completions if
--	 * flow scheduling offload is enabled
--	 */
--	buf_stack->bufs = kcalloc(tx_q->desc_count, sizeof(*buf_stack->bufs),
--				  GFP_KERNEL);
--	if (!buf_stack->bufs)
--		return -ENOMEM;
--
--	buf_stack->size = tx_q->desc_count;
--	buf_stack->top = tx_q->desc_count;
--
--	for (i = 0; i < tx_q->desc_count; i++) {
--		buf_stack->bufs[i] = kzalloc(sizeof(*buf_stack->bufs[i]),
--					     GFP_KERNEL);
--		if (!buf_stack->bufs[i])
--			return -ENOMEM;
--	}
--
- 	return 0;
- }
- 
-@@ -349,8 +257,6 @@ static int idpf_tx_desc_alloc_all(struct idpf_vport *vport)
- 	for (i = 0; i < vport->num_txq_grp; i++) {
- 		for (j = 0; j < vport->txq_grps[i].num_txq; j++) {
- 			struct idpf_tx_queue *txq = vport->txq_grps[i].txqs[j];
--			u8 gen_bits = 0;
--			u16 bufidx_mask;
- 
- 			err = idpf_tx_desc_alloc(vport, txq);
- 			if (err) {
-@@ -359,34 +265,6 @@ static int idpf_tx_desc_alloc_all(struct idpf_vport *vport)
- 					i);
- 				goto err_out;
- 			}
--
--			if (!idpf_is_queue_model_split(vport->txq_model))
--				continue;
--
--			txq->compl_tag_cur_gen = 0;
--
--			/* Determine the number of bits in the bufid
--			 * mask and add one to get the start of the
--			 * generation bits
--			 */
--			bufidx_mask = txq->desc_count - 1;
--			while (bufidx_mask >> 1) {
--				txq->compl_tag_gen_s++;
--				bufidx_mask = bufidx_mask >> 1;
--			}
--			txq->compl_tag_gen_s++;
--
--			gen_bits = IDPF_TX_SPLITQ_COMPL_TAG_WIDTH -
--							txq->compl_tag_gen_s;
--			txq->compl_tag_gen_max = GETMAXVAL(gen_bits);
--
--			/* Set bufid mask based on location of first
--			 * gen bit; it cannot simply be the descriptor
--			 * ring size-1 since we can have size values
--			 * where not all of those bits are set.
--			 */
--			txq->compl_tag_bufid_m =
--				GETMAXVAL(txq->compl_tag_gen_s);
- 		}
- 
- 		if (!idpf_is_queue_model_split(vport->txq_model))
-@@ -1041,9 +919,6 @@ static void idpf_txq_group_rel(struct idpf_vport *vport)
- 
- 		kfree(txq_grp->complq);
- 		txq_grp->complq = NULL;
--
--		if (flow_sch_en)
--			kfree(txq_grp->stashes);
- 	}
- 	kfree(vport->txq_grps);
- 	vport->txq_grps = NULL;
-@@ -1404,7 +1279,6 @@ static int idpf_txq_group_alloc(struct idpf_vport *vport, u16 num_txq)
- 	for (i = 0; i < vport->num_txq_grp; i++) {
- 		struct idpf_txq_group *tx_qgrp = &vport->txq_grps[i];
- 		struct idpf_adapter *adapter = vport->adapter;
--		struct idpf_txq_stash *stashes;
- 		int j;
- 
- 		tx_qgrp->vport = vport;
-@@ -1417,15 +1291,6 @@ static int idpf_txq_group_alloc(struct idpf_vport *vport, u16 num_txq)
- 				goto err_alloc;
- 		}
- 
--		if (split && flow_sch_en) {
--			stashes = kcalloc(num_txq, sizeof(*stashes),
--					  GFP_KERNEL);
--			if (!stashes)
--				goto err_alloc;
--
--			tx_qgrp->stashes = stashes;
--		}
--
- 		for (j = 0; j < tx_qgrp->num_txq; j++) {
- 			struct idpf_tx_queue *q = tx_qgrp->txqs[j];
- 
-@@ -1445,11 +1310,6 @@ static int idpf_txq_group_alloc(struct idpf_vport *vport, u16 num_txq)
- 			if (!flow_sch_en)
- 				continue;
- 
--			if (split) {
--				q->stash = &stashes[j];
--				hash_init(q->stash->sched_buf_hash);
--			}
--
- 			idpf_queue_set(FLOW_SCH_EN, q);
- 
- 			q->refillq = kzalloc(sizeof(*q->refillq), GFP_KERNEL);
-@@ -1741,87 +1601,6 @@ static void idpf_tx_read_tstamp(struct idpf_tx_queue *txq, struct sk_buff *skb)
- 	spin_unlock_bh(&tx_tstamp_caps->status_lock);
- }
- 
--/**
-- * idpf_tx_clean_stashed_bufs - clean bufs that were stored for
-- * out of order completions
-- * @txq: queue to clean
-- * @compl_tag: completion tag of packet to clean (from completion descriptor)
-- * @cleaned: pointer to stats struct to track cleaned packets/bytes
-- * @budget: Used to determine if we are in netpoll
-- */
--static void idpf_tx_clean_stashed_bufs(struct idpf_tx_queue *txq,
--				       u16 compl_tag,
--				       struct libeth_sq_napi_stats *cleaned,
--				       int budget)
--{
--	struct idpf_tx_stash *stash;
--	struct hlist_node *tmp_buf;
--	struct libeth_cq_pp cp = {
--		.dev	= txq->dev,
--		.ss	= cleaned,
--		.napi	= budget,
--	};
--
--	/* Buffer completion */
--	hash_for_each_possible_safe(txq->stash->sched_buf_hash, stash, tmp_buf,
--				    hlist, compl_tag) {
--		if (unlikely(idpf_tx_buf_compl_tag(&stash->buf) != compl_tag))
--			continue;
--
--		hash_del(&stash->hlist);
--
--		if (stash->buf.type == LIBETH_SQE_SKB &&
--		    (skb_shinfo(stash->buf.skb)->tx_flags & SKBTX_IN_PROGRESS))
--			idpf_tx_read_tstamp(txq, stash->buf.skb);
--
--		libeth_tx_complete(&stash->buf, &cp);
--
--		/* Push shadow buf back onto stack */
--		idpf_buf_lifo_push(&txq->stash->buf_stack, stash);
--	}
--}
--
--/**
-- * idpf_stash_flow_sch_buffers - store buffer parameters info to be freed at a
-- * later time (only relevant for flow scheduling mode)
-- * @txq: Tx queue to clean
-- * @tx_buf: buffer to store
-- */
--static int idpf_stash_flow_sch_buffers(struct idpf_tx_queue *txq,
--				       struct idpf_tx_buf *tx_buf)
--{
--	struct idpf_tx_stash *stash;
--
--	if (unlikely(tx_buf->type <= LIBETH_SQE_CTX))
--		return 0;
--
--	stash = idpf_buf_lifo_pop(&txq->stash->buf_stack);
--	if (unlikely(!stash)) {
--		net_err_ratelimited("%s: No out-of-order TX buffers left!\n",
--				    netdev_name(txq->netdev));
--
--		return -ENOMEM;
--	}
--
--	/* Store buffer params in shadow buffer */
--	stash->buf.skb = tx_buf->skb;
--	stash->buf.bytes = tx_buf->bytes;
--	stash->buf.packets = tx_buf->packets;
--	stash->buf.type = tx_buf->type;
--	stash->buf.nr_frags = tx_buf->nr_frags;
--	dma_unmap_addr_set(&stash->buf, dma, dma_unmap_addr(tx_buf, dma));
--	dma_unmap_len_set(&stash->buf, len, dma_unmap_len(tx_buf, len));
--	idpf_tx_buf_compl_tag(&stash->buf) = idpf_tx_buf_compl_tag(tx_buf);
--
--	/* Add buffer to buf_hash table to be freed later */
--	hash_add(txq->stash->sched_buf_hash, &stash->hlist,
--		 idpf_tx_buf_compl_tag(&stash->buf));
--
--	tx_buf->type = LIBETH_SQE_EMPTY;
--
--	return 0;
--}
--
- #define idpf_tx_splitq_clean_bump_ntc(txq, ntc, desc, buf)	\
- do {								\
- 	if (unlikely(++(ntc) == (txq)->desc_count)) {		\
-@@ -1849,14 +1628,8 @@ do {								\
-  * Separate packet completion events will be reported on the completion queue,
-  * and the buffers will be cleaned separately. The stats are not updated from
-  * this function when using flow-based scheduling.
-- *
-- * Furthermore, in flow scheduling mode, check to make sure there are enough
-- * reserve buffers to stash the packet. If there are not, return early, which
-- * will leave next_to_clean pointing to the packet that failed to be stashed.
-- *
-- * Return: false in the scenario above, true otherwise.
-  */
--static bool idpf_tx_splitq_clean(struct idpf_tx_queue *tx_q, u16 end,
-+static void idpf_tx_splitq_clean(struct idpf_tx_queue *tx_q, u16 end,
- 				 int napi_budget,
- 				 struct libeth_sq_napi_stats *cleaned,
- 				 bool descs_only)
-@@ -1870,12 +1643,11 @@ static bool idpf_tx_splitq_clean(struct idpf_tx_queue *tx_q, u16 end,
- 		.napi	= napi_budget,
- 	};
- 	struct idpf_tx_buf *tx_buf;
--	bool clean_complete = true;
- 
- 	if (descs_only) {
- 		/* Bump ring index to mark as cleaned. */
- 		tx_q->next_to_clean = end;
--		return true;
++/**
++ * binder_netlink_report() - report a transaction failure via netlink
++ * @proc:	the binder proc sending the transaction
++ * @t:		the binder transaction that failed
++ * @data_size:	the user provided data size for the transaction
++ * @error:	enum binder_driver_return_protocol returned to sender
++ */
++static void binder_netlink_report(struct binder_proc *proc,
++				  struct binder_transaction *t,
++				  u32 data_size,
++				  u32 error)
++{
++	const char *context = proc->context->name;
++	struct sk_buff *skb;
++	void *hdr;
++
++	if (!genl_has_listeners(&binder_nl_family, &init_net,
++				BINDER_NLGRP_REPORT))
 +		return;
++
++	skb = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	if (!skb)
++		return;
++
++	hdr = genlmsg_put(skb, 0, 0, &binder_nl_family, 0, BINDER_CMD_REPORT);
++	if (!hdr)
++		goto free_skb;
++
++	if (nla_put_u32(skb, BINDER_A_REPORT_ERROR, error) ||
++	    nla_put_string(skb, BINDER_A_REPORT_CONTEXT, context) ||
++	    nla_put_u32(skb, BINDER_A_REPORT_FROM_PID, t->from_pid) ||
++	    nla_put_u32(skb, BINDER_A_REPORT_FROM_TID, t->from_tid))
++		goto cancel_skb;
++
++	if (t->to_proc &&
++	    nla_put_u32(skb, BINDER_A_REPORT_TO_PID, t->to_proc->pid))
++		goto cancel_skb;
++
++	if (t->to_thread &&
++	    nla_put_u32(skb, BINDER_A_REPORT_TO_TID, t->to_thread->pid))
++		goto cancel_skb;
++
++	if (t->is_reply && nla_put_flag(skb, BINDER_A_REPORT_IS_REPLY))
++		goto cancel_skb;
++
++	if (nla_put_u32(skb, BINDER_A_REPORT_FLAGS, t->flags) ||
++	    nla_put_u32(skb, BINDER_A_REPORT_CODE, t->code) ||
++	    nla_put_u32(skb, BINDER_A_REPORT_DATA_SIZE, data_size))
++		goto cancel_skb;
++
++	genlmsg_end(skb, hdr);
++	genlmsg_multicast(&binder_nl_family, skb, 0, BINDER_NLGRP_REPORT,
++			  GFP_KERNEL);
++	return;
++
++cancel_skb:
++	genlmsg_cancel(skb, hdr);
++free_skb:
++	nlmsg_free(skb);
++}
++
+ static void binder_transaction(struct binder_proc *proc,
+ 			       struct binder_thread *thread,
+ 			       struct binder_transaction_data *tr, int reply,
+@@ -3679,10 +3741,13 @@ static void binder_transaction(struct binder_proc *proc,
+ 		return_error_line = __LINE__;
+ 		goto err_copy_data_failed;
  	}
+-	if (t->buffer->oneway_spam_suspect)
++	if (t->buffer->oneway_spam_suspect) {
+ 		tcomplete->type = BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT;
+-	else
++		binder_netlink_report(proc, t, tr->data_size,
++				      BR_ONEWAY_SPAM_SUSPECT);
++	} else {
+ 		tcomplete->type = BINDER_WORK_TRANSACTION_COMPLETE;
++	}
  
- 	tx_desc = &tx_q->flex_tx[ntc];
-@@ -1896,53 +1668,24 @@ static bool idpf_tx_splitq_clean(struct idpf_tx_queue *tx_q, u16 end,
- 			break;
- 
- 		eop_idx = tx_buf->rs_idx;
-+		libeth_tx_complete(tx_buf, &cp);
- 
--		if (descs_only) {
--			if (IDPF_TX_BUF_RSV_UNUSED(tx_q) < tx_buf->nr_frags) {
--				clean_complete = false;
--				goto tx_splitq_clean_out;
--			}
--
--			idpf_stash_flow_sch_buffers(tx_q, tx_buf);
-+		/* unmap remaining buffers */
-+		while (ntc != eop_idx) {
-+			idpf_tx_splitq_clean_bump_ntc(tx_q, ntc,
-+						      tx_desc, tx_buf);
- 
--			while (ntc != eop_idx) {
--				idpf_tx_splitq_clean_bump_ntc(tx_q, ntc,
--							      tx_desc, tx_buf);
--				idpf_stash_flow_sch_buffers(tx_q, tx_buf);
--			}
--		} else {
-+			/* unmap any remaining paged data */
- 			libeth_tx_complete(tx_buf, &cp);
--
--			/* unmap remaining buffers */
--			while (ntc != eop_idx) {
--				idpf_tx_splitq_clean_bump_ntc(tx_q, ntc,
--							      tx_desc, tx_buf);
--
--				/* unmap any remaining paged data */
--				libeth_tx_complete(tx_buf, &cp);
--			}
- 		}
- 
- fetch_next_txq_desc:
- 		idpf_tx_splitq_clean_bump_ntc(tx_q, ntc, tx_desc, tx_buf);
- 	}
- 
--tx_splitq_clean_out:
- 	tx_q->next_to_clean = ntc;
--
--	return clean_complete;
- }
- 
--#define idpf_tx_clean_buf_ring_bump_ntc(txq, ntc, buf)	\
--do {							\
--	(buf)++;					\
--	(ntc)++;					\
--	if (unlikely((ntc) == (txq)->desc_count)) {	\
--		buf = (txq)->tx_buf;			\
--		ntc = 0;				\
--	}						\
--} while (0)
--
- /**
-  * idpf_tx_clean_bufs - clean flow scheduling TX queue buffers
-  * @txq: queue to clean
-@@ -1953,7 +1696,7 @@ do {							\
-  * Clean all buffers associated with the packet starting at buf_id. Returns the
-  * byte/segment count for the cleaned packet.
-  */
--static bool idpf_tx_clean_bufs(struct idpf_tx_queue *txq, u32 buf_id,
-+static void idpf_tx_clean_bufs(struct idpf_tx_queue *txq, u32 buf_id,
- 			       struct libeth_sq_napi_stats *cleaned,
- 			       int budget)
- {
-@@ -1980,8 +1723,6 @@ static bool idpf_tx_clean_bufs(struct idpf_tx_queue *txq, u32 buf_id,
- 		libeth_tx_complete(tx_buf, &cp);
- 		idpf_post_buf_refill(txq->refillq, buf_id);
- 	}
--
--	return true;
- }
- 
- /**
-@@ -2000,22 +1741,17 @@ static void idpf_tx_handle_rs_completion(struct idpf_tx_queue *txq,
- 					 struct libeth_sq_napi_stats *cleaned,
- 					 int budget)
- {
--	u16 compl_tag;
-+	/* RS completion contains queue head for queue based scheduling or
-+	 * completion tag for flow based scheduling.
-+	 */
-+	u16 rs_compl_val = le16_to_cpu(desc->q_head_compl_tag.q_head);
- 
- 	if (!idpf_queue_has(FLOW_SCH_EN, txq)) {
--		u16 head = le16_to_cpu(desc->q_head_compl_tag.q_head);
--
--		idpf_tx_splitq_clean(txq, head, budget, cleaned, false);
-+		idpf_tx_splitq_clean(txq, rs_compl_val, budget, cleaned, false);
- 		return;
- 	}
- 
--	compl_tag = le16_to_cpu(desc->q_head_compl_tag.compl_tag);
--
--	/* If we didn't clean anything on the ring, this packet must be
--	 * in the hash table. Go clean it there.
--	 */
--	if (!idpf_tx_clean_bufs(txq, compl_tag, cleaned, budget))
--		idpf_tx_clean_stashed_bufs(txq, compl_tag, cleaned, budget);
-+	idpf_tx_clean_bufs(txq, rs_compl_val, cleaned, budget);
- }
- 
- /**
-@@ -2132,8 +1868,7 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
- 		/* Update BQL */
- 		nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
- 
--		dont_wake = !complq_ok || IDPF_TX_BUF_RSV_LOW(tx_q) ||
--			    np->state != __IDPF_VPORT_UP ||
-+		dont_wake = !complq_ok || np->state != __IDPF_VPORT_UP ||
- 			    !netif_carrier_ok(tx_q->netdev);
- 		/* Check if the TXQ needs to and can be restarted */
- 		__netif_txq_completed_wake(nq, tx_q->cleaned_pkts, tx_q->cleaned_bytes,
-@@ -2204,7 +1939,6 @@ static int idpf_txq_has_room(struct idpf_tx_queue *tx_q, u32 descs_needed,
- 	if (IDPF_DESC_UNUSED(tx_q) < descs_needed ||
- 	    IDPF_TX_COMPLQ_PENDING(tx_q->txq_grp) >
- 		IDPF_TX_COMPLQ_OVERFLOW_THRESH(tx_q->txq_grp->complq) ||
--	    IDPF_TX_BUF_RSV_LOW(tx_q) ||
- 	    idpf_tx_splitq_get_free_bufs(tx_q->refillq) < bufs_needed)
- 		return 0;
- 	return 1;
-@@ -2328,10 +2062,8 @@ static unsigned int idpf_tx_splitq_bump_ntu(struct idpf_tx_queue *txq, u16 ntu)
- {
- 	ntu++;
- 
--	if (ntu == txq->desc_count) {
-+	if (ntu == txq->desc_count)
- 		ntu = 0;
--		txq->compl_tag_cur_gen = IDPF_TX_ADJ_COMPL_TAG_GEN(txq);
--	}
- 
- 	return ntu;
- }
-@@ -2513,8 +2245,6 @@ static void idpf_tx_splitq_map(struct idpf_tx_queue *tx_q,
- 			if (unlikely(++i == tx_q->desc_count)) {
- 				tx_desc = &tx_q->flex_tx[0];
- 				i = 0;
--				tx_q->compl_tag_cur_gen =
--					IDPF_TX_ADJ_COMPL_TAG_GEN(tx_q);
- 			} else {
- 				tx_desc++;
- 			}
-@@ -2545,7 +2275,6 @@ static void idpf_tx_splitq_map(struct idpf_tx_queue *tx_q,
- 		if (unlikely(++i == tx_q->desc_count)) {
- 			tx_desc = &tx_q->flex_tx[0];
- 			i = 0;
--			tx_q->compl_tag_cur_gen = IDPF_TX_ADJ_COMPL_TAG_GEN(tx_q);
- 		} else {
- 			tx_desc++;
- 		}
-@@ -2979,10 +2708,9 @@ static netdev_tx_t idpf_tx_splitq_frame(struct sk_buff *skb,
- 
- 		tx_params.dtype = IDPF_TX_DESC_DTYPE_FLEX_FLOW_SCHE;
- 		tx_params.eop_cmd = IDPF_TXD_FLEX_FLOW_CMD_EOP;
--		/* Set the RE bit to catch any packets that may have not been
--		 * stashed during RS completion cleaning. MIN_GAP is set to
--		 * MIN_RING size to ensure it will be set at least once each
--		 * time around the ring.
-+		/* Set the RE bit to periodically "clean" the descriptor ring.
-+		 * MIN_GAP is set to MIN_RING size to ensure it will be set at
-+		 * least once each time around the ring.
+ 	if (reply) {
+ 		binder_enqueue_thread_work(thread, tcomplete);
+@@ -3730,8 +3795,11 @@ static void binder_transaction(struct binder_proc *proc,
+ 		 * process and is put in a pending queue, waiting for the target
+ 		 * process to be unfrozen.
  		 */
- 		if (idpf_tx_splitq_need_re(tx_q)) {
- 			tx_params.eop_cmd |= IDPF_TXD_FLEX_FLOW_CMD_RE;
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 36020db47880..256aa3a10463 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -117,10 +117,6 @@ do {								\
- 	((((txq)->next_to_clean > (txq)->next_to_use) ? 0 : (txq)->desc_count) + \
- 	(txq)->next_to_clean - (txq)->next_to_use - 1)
+-		if (return_error == BR_TRANSACTION_PENDING_FROZEN)
++		if (return_error == BR_TRANSACTION_PENDING_FROZEN) {
+ 			tcomplete->type = BINDER_WORK_TRANSACTION_PENDING;
++			binder_netlink_report(proc, t, tr->data_size,
++					      return_error);
++		}
+ 		binder_enqueue_thread_work(thread, tcomplete);
+ 		if (return_error &&
+ 		    return_error != BR_TRANSACTION_PENDING_FROZEN)
+@@ -3789,6 +3857,8 @@ static void binder_transaction(struct binder_proc *proc,
+ 		binder_dec_node(target_node, 1, 0);
+ 		binder_dec_node_tmpref(target_node);
+ 	}
++
++	binder_netlink_report(proc, t, tr->data_size, return_error);
+ 	kfree(t);
+ 	binder_stats_deleted(BINDER_STAT_TRANSACTION);
+ err_alloc_t_failed:
+@@ -7067,12 +7137,19 @@ static int __init binder_init(void)
+ 		}
+ 	}
  
--#define IDPF_TX_BUF_RSV_UNUSED(txq)	((txq)->stash->buf_stack.top)
--#define IDPF_TX_BUF_RSV_LOW(txq)	(IDPF_TX_BUF_RSV_UNUSED(txq) < \
--					 (txq)->desc_count >> 2)
--
- #define IDPF_TX_COMPLQ_OVERFLOW_THRESH(txcq)	((txcq)->desc_count >> 1)
- /* Determine the absolute number of completions pending, i.e. the number of
-  * completions that are expected to arrive on the TX completion queue.
-@@ -130,12 +126,6 @@ do {								\
- 	0 : U32_MAX) + \
- 	(txq)->num_completions_pending - (txq)->complq->num_completions)
+-	ret = init_binderfs();
++	ret = genl_register_family(&binder_nl_family);
+ 	if (ret)
+ 		goto err_init_binder_device_failed;
  
--#define IDPF_TX_SPLITQ_COMPL_TAG_WIDTH	16
--/* Adjust the generation for the completion tag and wrap if necessary */
--#define IDPF_TX_ADJ_COMPL_TAG_GEN(txq) \
--	((++(txq)->compl_tag_cur_gen) >= (txq)->compl_tag_gen_max ? \
--	0 : (txq)->compl_tag_cur_gen)
--
- #define IDPF_TXBUF_NULL			U32_MAX
++	ret = init_binderfs();
++	if (ret)
++		goto err_init_binderfs_failed;
++
+ 	return ret;
  
- #define IDPF_TXD_LAST_DESC_CMD (IDPF_TX_DESC_CMD_EOP | IDPF_TX_DESC_CMD_RS)
-@@ -153,18 +143,6 @@ union idpf_tx_flex_desc {
- 
- #define idpf_tx_buf libeth_sqe
- 
--/**
-- * struct idpf_buf_lifo - LIFO for managing OOO completions
-- * @top: Used to know how many buffers are left
-- * @size: Total size of LIFO
-- * @bufs: Backing array
-- */
--struct idpf_buf_lifo {
--	u16 top;
--	u16 size;
--	struct idpf_tx_stash **bufs;
--};
--
- /**
-  * struct idpf_tx_offload_params - Offload parameters for a given packet
-  * @tx_flags: Feature flags enabled for this packet
-@@ -475,17 +453,6 @@ struct idpf_tx_queue_stats {
- #define IDPF_ITR_IDX_SPACING(spacing, dflt)	(spacing ? spacing : dflt)
- #define IDPF_DIM_DEFAULT_PROFILE_IX		1
- 
--/**
-- * struct idpf_txq_stash - Tx buffer stash for Flow-based scheduling mode
-- * @buf_stack: Stack of empty buffers to store buffer info for out of order
-- *	       buffer completions. See struct idpf_buf_lifo
-- * @sched_buf_hash: Hash table to store buffers
-- */
--struct idpf_txq_stash {
--	struct idpf_buf_lifo buf_stack;
--	DECLARE_HASHTABLE(sched_buf_hash, 12);
--} ____cacheline_aligned;
--
- /**
-  * struct idpf_rx_queue - software structure representing a receive queue
-  * @rx: universal receive descriptor array
-@@ -630,11 +597,7 @@ libeth_cacheline_set_assert(struct idpf_rx_queue, 64,
-  *		   only once at the end of the cleaning routine.
-  * @clean_budget: singleq only, queue cleaning budget
-  * @cleaned_pkts: Number of packets cleaned for the above said case
-- * @stash: Tx buffer stash for Flow-based scheduling mode
-  * @refillq: Pointer to refill queue
-- * @compl_tag_bufid_m: Completion tag buffer id mask
-- * @compl_tag_cur_gen: Used to keep track of current completion tag generation
-- * @compl_tag_gen_max: To determine when compl_tag_cur_gen should be reset
-  * @cached_tstamp_caps: Tx timestamp capabilities negotiated with the CP
-  * @tstamp_task: Work that handles Tx timestamp read
-  * @stats_sync: See struct u64_stats_sync
-@@ -665,7 +628,6 @@ struct idpf_tx_queue {
- 	u16 desc_count;
- 
- 	u16 tx_min_pkt_len;
--	u16 compl_tag_gen_s;
- 
- 	struct net_device *netdev;
- 	__cacheline_group_end_aligned(read_mostly);
-@@ -682,13 +644,8 @@ struct idpf_tx_queue {
- 	};
- 	u16 cleaned_pkts;
- 
--	struct idpf_txq_stash *stash;
- 	struct idpf_sw_queue *refillq;
- 
--	u16 compl_tag_bufid_m;
--	u16 compl_tag_cur_gen;
--	u16 compl_tag_gen_max;
--
- 	struct idpf_ptp_vport_tx_tstamp_caps *cached_tstamp_caps;
- 	struct work_struct *tstamp_task;
- 
-@@ -706,7 +663,7 @@ struct idpf_tx_queue {
- 	__cacheline_group_end_aligned(cold);
- };
- libeth_cacheline_set_assert(struct idpf_tx_queue, 64,
--			    120 + sizeof(struct u64_stats_sync),
-+			    104 + sizeof(struct u64_stats_sync),
- 			    32);
- 
- /**
-@@ -917,7 +874,6 @@ struct idpf_rxq_group {
-  * @vport: Vport back pointer
-  * @num_txq: Number of TX queues associated
-  * @txqs: Array of TX queue pointers
-- * @stashes: array of OOO stashes for the queues
-  * @complq: Associated completion queue pointer, split queue only
-  * @num_completions_pending: Total number of completions pending for the
-  *			     completion queue, acculumated for all TX queues
-@@ -932,7 +888,6 @@ struct idpf_txq_group {
- 
- 	u16 num_txq;
- 	struct idpf_tx_queue *txqs[IDPF_LARGE_MAX_Q];
--	struct idpf_txq_stash *stashes;
- 
- 	struct idpf_compl_queue *complq;
- 
++err_init_binderfs_failed:
++	genl_unregister_family(&binder_nl_family);
++
+ err_init_binder_device_failed:
+ 	hlist_for_each_entry_safe(device, tmp, &binder_devices, hlist) {
+ 		misc_deregister(&device->miscdev);
+diff --git a/drivers/android/binder_netlink.c b/drivers/android/binder_netlink.c
+new file mode 100644
+index 000000000000..f62fbca3143c
+--- /dev/null
++++ b/drivers/android/binder_netlink.c
+@@ -0,0 +1,32 @@
++// SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
++/* Do not edit directly, auto-generated from: */
++/*	Documentation/netlink/specs/binder.yaml */
++/* YNL-GEN kernel source */
++
++#include <net/netlink.h>
++#include <net/genetlink.h>
++
++#include "binder_netlink.h"
++
++#include <uapi/linux/android/binder_netlink.h>
++#include <binder_internal.h>
++
++/* Ops table for binder */
++static const struct genl_split_ops binder_nl_ops[] = {
++};
++
++static const struct genl_multicast_group binder_nl_mcgrps[] = {
++	[BINDER_NLGRP_REPORT] = { "report", },
++};
++
++struct genl_family binder_nl_family __ro_after_init = {
++	.name		= BINDER_FAMILY_NAME,
++	.version	= BINDER_FAMILY_VERSION,
++	.netnsok	= true,
++	.parallel_ops	= true,
++	.module		= THIS_MODULE,
++	.split_ops	= binder_nl_ops,
++	.n_split_ops	= ARRAY_SIZE(binder_nl_ops),
++	.mcgrps		= binder_nl_mcgrps,
++	.n_mcgrps	= ARRAY_SIZE(binder_nl_mcgrps),
++};
+diff --git a/drivers/android/binder_netlink.h b/drivers/android/binder_netlink.h
+new file mode 100644
+index 000000000000..f78b8ec54c53
+--- /dev/null
++++ b/drivers/android/binder_netlink.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
++/* Do not edit directly, auto-generated from: */
++/*	Documentation/netlink/specs/binder.yaml */
++/* YNL-GEN kernel header */
++
++#ifndef _LINUX_BINDER_GEN_H
++#define _LINUX_BINDER_GEN_H
++
++#include <net/netlink.h>
++#include <net/genetlink.h>
++
++#include <uapi/linux/android/binder_netlink.h>
++#include <binder_internal.h>
++
++enum {
++	BINDER_NLGRP_REPORT,
++};
++
++extern struct genl_family binder_nl_family;
++
++#endif /* _LINUX_BINDER_GEN_H */
+diff --git a/include/uapi/linux/android/binder_netlink.h b/include/uapi/linux/android/binder_netlink.h
+new file mode 100644
+index 000000000000..b218f96d6668
+--- /dev/null
++++ b/include/uapi/linux/android/binder_netlink.h
+@@ -0,0 +1,37 @@
++/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
++/* Do not edit directly, auto-generated from: */
++/*	Documentation/netlink/specs/binder.yaml */
++/* YNL-GEN uapi header */
++
++#ifndef _UAPI_LINUX_ANDROID_BINDER_NETLINK_H
++#define _UAPI_LINUX_ANDROID_BINDER_NETLINK_H
++
++#define BINDER_FAMILY_NAME	"binder"
++#define BINDER_FAMILY_VERSION	1
++
++enum {
++	BINDER_A_REPORT_ERROR = 1,
++	BINDER_A_REPORT_CONTEXT,
++	BINDER_A_REPORT_FROM_PID,
++	BINDER_A_REPORT_FROM_TID,
++	BINDER_A_REPORT_TO_PID,
++	BINDER_A_REPORT_TO_TID,
++	BINDER_A_REPORT_IS_REPLY,
++	BINDER_A_REPORT_FLAGS,
++	BINDER_A_REPORT_CODE,
++	BINDER_A_REPORT_DATA_SIZE,
++
++	__BINDER_A_REPORT_MAX,
++	BINDER_A_REPORT_MAX = (__BINDER_A_REPORT_MAX - 1)
++};
++
++enum {
++	BINDER_CMD_REPORT = 1,
++
++	__BINDER_CMD_MAX,
++	BINDER_CMD_MAX = (__BINDER_CMD_MAX - 1)
++};
++
++#define BINDER_MCGRP_REPORT	"report"
++
++#endif /* _UAPI_LINUX_ANDROID_BINDER_NETLINK_H */
 -- 
-2.39.2
+2.50.1.470.g6ba607880d-goog
 
