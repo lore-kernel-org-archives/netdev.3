@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C25E2EF66C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE852EF9A9;
 	Fri, 25 Jul 2025 17:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753463655; cv=none; b=mFAe55OI+2uPwkYKNctL8def0hM60OIbs+ciPGy58ewj/ixaVA01ljB2mrsfoTukHs2AoA4gwxP3b9nrJgSUgsKEqeaSAT7IftgX2A4yDNJVVDubGKxDOPNgyEhjOus4eXHylSVp9ry2OMPi0X/QKA0kHVdRGkdcK89cXAA/rTk=
+	t=1753463655; cv=none; b=I+kounJ2ruUlIxbQP0C+0yfR4AgSeB9eKfa2ngEUqSjjZuzL8HQoe6acGOyBM2nkjzL5Rrr08HHbF90NiMu/kun2uMWyvL1wrlkY2zxLiddfNpxce38b8WVdlx3LNZVuy9YG8ho4btOEQHL3OJf9FGXVmgkgIRFcz4dBYhFaELY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753463655; c=relaxed/simple;
-	bh=gWZO1ES2r3jh5Yq67JXLsbmiESc165KttdqT3NHuvcw=;
+	bh=cCDHT3cnmuazKqCtjc+IW2jQ2SASLoMsrlCNSn0tgww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MshE3zUfl5wC318sBIjr0da3vmTw3oUh3TxudyY8nRdyOnT6cI9sI1e+ZIDBBRiu0NLLexi56Dg0iq/e9w+/VgZMkkNOGCIDm+BRvJUVBn13DOx/Ow+w8B/S04CWJbRTJuJBApg/yrzH9/M+7VJCjQRSZU2yZZDmuhOmUoQlFFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hl1wDLS4; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=CFUf089swU8E9y/XADVzGdsehAWlFLvRTnddwVN4rvlwcppv27FNNGXG800j7LtC3BqA7/FETvL0NA5DT+xgTSY07CrBjR7Fy8z58FXO8mt61C9kTTJhIj6R7sCN3hyWUWXXmRIr2Rrap2Ls8R6ZzxFmGG7+qul3MYdoCpJpwBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kIrc1znd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hl1wDLS4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3B4C4CEFA;
-	Fri, 25 Jul 2025 17:14:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kIrc1znd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04235C19421;
+	Fri, 25 Jul 2025 17:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753463654;
-	bh=gWZO1ES2r3jh5Yq67JXLsbmiESc165KttdqT3NHuvcw=;
+	s=k20201202; t=1753463655;
+	bh=cCDHT3cnmuazKqCtjc+IW2jQ2SASLoMsrlCNSn0tgww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hl1wDLS4RHtasJPd9cADa4JxDlrhcvWQECdErTzeMhnBp1xwsq+q13wvPJxhoc2kz
-	 FN2URXemjnzNNmSAaGch5rdbzvWVbTuSzwqjge66PPZV4BmN8eYzzfS/+jrN7W1fk/
-	 3K3gME7exeOcgJ9z1cQ259SYUbt+Eu0wV4i1675vo9wUCg9LjgykI0v64PZ9CbY+FQ
-	 uGYhJbAQIksIkkGOArt7BWRWLReAr7W38T8C20KMcN/scav9OXVe7Rw18ItnxykKPV
-	 Aq/usys1+lcgIM1sWxyLazT0OFKkxqrpIS+yVQRQ8zK9t5kW+BVDWQrfEcx9PN793a
-	 2grxKjo+vLG6w==
+	b=kIrc1zndoSUNRw7WQ5z4QlFcTrhfDr6rsT9Gla7l61iov06QI+H/BesipknkgOFmw
+	 3t6wvTmqzgfo2RdUvbKbJfIGXxq/DaCRJL+QAPjkSuHdVXChcY6AkvBIq5CJ2sxPmM
+	 J3qbDPMz8qwSp7NRxZ0gnFCUSZnB2KuJDTywUz9ZNSLmMeZfxL2niG/I5nPQI6pKsG
+	 lTBjMSmBtG20FhhX4/AiPUqD3+TO2BBA+xwBSCk7N+sszjAVlJudcjaobIaHsWvPVY
+	 kzZOD+fRde/w+P5zO7hdqeJSuMiqmDvb4Y06xBoVFZ6GM7xBYCc5bjn9z56AFpgXm8
+	 VpPSGSAmqYWfw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1ufLzn-000000000Gn-2s8N;
+	id 1ufLzn-000000000Gr-3csz;
 	Fri, 25 Jul 2025 19:14:11 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -52,11 +52,10 @@ Cc: Madalin Bucur <madalin.bucur@nxp.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	Yangbo Lu <yangbo.lu@nxp.com>
-Subject: [PATCH 3/5] net: gianfar: fix device leak when querying time stamp info
-Date: Fri, 25 Jul 2025 19:12:11 +0200
-Message-ID: <20250725171213.880-4-johan@kernel.org>
+	stable@vger.kernel.org
+Subject: [PATCH 5/5] net: ti: icss-iep: fix device and OF node leaks at probe
+Date: Fri, 25 Jul 2025 19:12:13 +0200
+Message-ID: <20250725171213.880-6-johan@kernel.org>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250725171213.880-1-johan@kernel.org>
 References: <20250725171213.880-1-johan@kernel.org>
@@ -68,36 +67,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure to drop the reference to the ptp device taken by
-of_find_device_by_node() when querying the time stamping capabilities.
+Make sure to drop the references to the IEP OF node and device taken by
+of_parse_phandle() and of_find_device_by_node() when looking up IEP
+devices during probe.
 
-Note that holding a reference to the ptp device does not prevent its
-driver data from going away.
+Drop the bogus additional reference taken on successful lookup so that
+the device is released correctly by icss_iep_put().
 
-Fixes: 7349a74ea75c ("net: ethernet: gianfar_ethtool: get phc index through drvdata")
-Cc: stable@vger.kernel.org	# 4.18
-Cc: Yangbo Lu <yangbo.lu@nxp.com>
+Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
+Cc: stable@vger.kernel.org	# 6.6
+Cc: Roger Quadros <rogerq@kernel.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/net/ethernet/freescale/gianfar_ethtool.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/icssg/icss_iep.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/gianfar_ethtool.c b/drivers/net/ethernet/freescale/gianfar_ethtool.c
-index 781d92e703cb..c9992ed4e301 100644
---- a/drivers/net/ethernet/freescale/gianfar_ethtool.c
-+++ b/drivers/net/ethernet/freescale/gianfar_ethtool.c
-@@ -1466,8 +1466,10 @@ static int gfar_get_ts_info(struct net_device *dev,
- 	if (ptp_node) {
- 		ptp_dev = of_find_device_by_node(ptp_node);
- 		of_node_put(ptp_node);
--		if (ptp_dev)
-+		if (ptp_dev) {
- 			ptp = platform_get_drvdata(ptp_dev);
-+			put_device(&ptp_dev->dev);
-+		}
- 	}
+diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+index 2a1c43316f46..50bfbc2779e4 100644
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -685,11 +685,17 @@ struct icss_iep *icss_iep_get_idx(struct device_node *np, int idx)
+ 	struct platform_device *pdev;
+ 	struct device_node *iep_np;
+ 	struct icss_iep *iep;
++	int ret;
  
- 	if (ptp)
+ 	iep_np = of_parse_phandle(np, "ti,iep", idx);
+-	if (!iep_np || !of_device_is_available(iep_np))
++	if (!iep_np)
+ 		return ERR_PTR(-ENODEV);
+ 
++	if (!of_device_is_available(iep_np)) {
++		of_node_put(iep_np);
++		return ERR_PTR(-ENODEV);
++	}
++
+ 	pdev = of_find_device_by_node(iep_np);
+ 	of_node_put(iep_np);
+ 
+@@ -698,21 +704,28 @@ struct icss_iep *icss_iep_get_idx(struct device_node *np, int idx)
+ 		return ERR_PTR(-EPROBE_DEFER);
+ 
+ 	iep = platform_get_drvdata(pdev);
+-	if (!iep)
+-		return ERR_PTR(-EPROBE_DEFER);
++	if (!iep) {
++		ret = -EPROBE_DEFER;
++		goto err_put_pdev;
++	}
+ 
+ 	device_lock(iep->dev);
+ 	if (iep->client_np) {
+ 		device_unlock(iep->dev);
+ 		dev_err(iep->dev, "IEP is already acquired by %s",
+ 			iep->client_np->name);
+-		return ERR_PTR(-EBUSY);
++		ret = -EBUSY;
++		goto err_put_pdev;
+ 	}
+ 	iep->client_np = np;
+ 	device_unlock(iep->dev);
+-	get_device(iep->dev);
+ 
+ 	return iep;
++
++err_put_pdev:
++	put_device(&pdev->dev);
++
++	return ERR_PTR(ret);
+ }
+ EXPORT_SYMBOL_GPL(icss_iep_get_idx);
+ 
 -- 
 2.49.1
 
