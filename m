@@ -1,118 +1,116 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F892EBB80;
-	Fri, 25 Jul 2025 12:39:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0842EBB92
+	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 12:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753447183; cv=none; b=di2YbGxGeh3CbCS38grhTN4thdTC2VuKU8wOWrPx6U2hr64a8e8bsK9Ae/PBcI9UXVAI9wiHC3LODx+JCEj46OnXNmkI45Jo6TfPyOP29k9d1SYRnU2RlBRxlRJaRYut6ngCxoj9id3a6RExhy/7qdAk15utU1cAcsKImGntpN0=
+	t=1753447202; cv=none; b=bbkMamCw5tENgdCPP8o1ePzE+VdEuXhdvp/PLIIoTseosOQ9KqbdaU3hFLrNvrPGU+hdVqCxtvgJNY2NmZLWY5oRJrWeoqzJY8berVpnpui5oIz7+i3K7Uf3JdToiTm8GsV5Y7GhjVwHu21aOxXzCRRcwIYf2x6fMrfYFHUlyAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753447183; c=relaxed/simple;
-	bh=PU8jxNdlyHOWPaTq8T0o4bVvfRiJB5fDz6xUvMrVv6A=;
+	s=arc-20240116; t=1753447202; c=relaxed/simple;
+	bh=i/KYaBfaLvEZNkxu3mUqox5mOLv9vYdSv7n5YIOWW18=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MHCumxcWyqjdX7jjOn9hzuUk76VVlRib5bF1WPcx19q9ampbWxqiIJ51UUX5p1cg0PfOUbBMdT/S0yh3OcRxePVuJuNG10VCgFkpwbWTFEm2vi4nLnwVQCa/z+KRA+U3BQ26WuYU84v1YHkR4gfvrQrZsl1NS4uQ4RyVvnk8gAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H5+c4i90; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=tB8coOeUu8LjrbFXdQI7TCiqT70AA0psAtCAuBcV9b6Hh+mAc7z6F8084E9WMlvSrQew9LXtaCW6J8zz5Ghe7US7cMN1Jb/2813Tcfb13BxS3LTyIBHhfPOGJ/LQmvSeKA7yfjG0IE3SHYQU7FBnJ07bCK7gko8RlHAzW6lndIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QdDbm3CW; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H5+c4i90"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-32b2f5d91c8so18142591fa.0;
-        Fri, 25 Jul 2025 05:39:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753447180; x=1754051980; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JN2ivuhljKzLFWe0MvjwcxrDNR4GqFN61OIq2ilMzLw=;
-        b=H5+c4i90uaeAtYl43/C+57k5a+J9r1FmezinhVkU4+a6R0BOUqdJExWx9P8ENzIlUV
-         TBvHQ5CFlMFz+fr4pf63hweSrNEDWOCDs+92TKRZjm2Sd3a9sCyYgAbm6YXZKKENTsTz
-         vqrcPSPoA5Ymd1o9a3ygz98TGNB6Phy2qn9h/icS7bPiBL84LWUddpy1NazitgOAOQBK
-         +IqoHz53AQL9T53NEvjSYBFgCDTePPE+tAHhsam5W2ToeMKO8MUOHZ98BlZPQFyrm+no
-         Gn1m90e550liZuQy3z0U+xTTl8ORQm9fiZz3iJZd7LLc+mPSSWzXcMZriS73XLiWwjIe
-         Gb4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753447180; x=1754051980;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JN2ivuhljKzLFWe0MvjwcxrDNR4GqFN61OIq2ilMzLw=;
-        b=HULdrB3URuoq7nNDJAg9VFubbXzyQfEJDD+CY9SXU+GpdOpHc13E95dS65cTQedT5Z
-         E39X7wKbexpo28GbWNtI6ec4OVU3rKSa9JFuO87/bKQteKrGdjtBYsWRZVRYWWBqO3HU
-         WFI0QS1jk6h9YQGsKvNO/LGH4yIgBx8/ZubJ7Qr2u7QF2Ta2dy8LewIb0jCvU8kl72fv
-         7YjZFzRIR7NQlH3EerCY0TE0ZyJSy0TnWZhfhds31QjSl+x3QbBlGB8iY4VNGeySzGXf
-         L/Sau1/LJ+7160c+ybBif/8BoSGLyVtj3oUnOQjRo5GUoKOl4gD7E0qhGHsaYPdEQn2C
-         zmQw==
-X-Forwarded-Encrypted: i=1; AJvYcCWkwBJjI8SZ4ZidITChhRStbxvv7C0GJ0cmY3x+GtzjjbbJGuA+TPFxmP767Yq6arjLiMSyhLc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6Da68mI1JG/dkx7NpUGctGzEAMMq8AStm5FN/1nzwGsjaeO/C
-	nhxdXmYhfIJJvuX3QGACOs6iAa4VoRXQbnvMPE1YlKhC0MdtSMRumtKE
-X-Gm-Gg: ASbGnct3upPGOLOOACyz7Dv5eDy6HWyUglGodWDpdYqzOfPwOxm9mUGKzAwNQPIvaKv
-	xNQ9TPOzgX/yopqH2Zy2OJrVJE9MzvWVCOo6IrF6hqRTgxt2rGdJ3q8GFCR1su8Tqe6/c25iriN
-	lRpi7waN5/M8cqJd/leE6XESmXLe3A5ZoZ/fLnrRibgf0hxxT+rNyMgVYiq1tmvnQWiM5X2y9Ri
-	D81t2yuV5M65ktTIvFXX7PtHfcVzTZlP485/7C5Gr/aD2luQPsK5VsN/fxXlvLRRkL8OYbTbocn
-	3jD7SlsrcqTYE12LWEcWGlgyjlfWCmQT7LSiLXUI8MagoZwuaN0qkT0VBnTmZkSkOeaRynjVCLt
-	piZ7ExBJLuEfjfJjHdsC3+CWK6XMXD4BbnXNIkBTF40xc8C0OXNiZPUeHzio61mP546ImA1BaTq
-	Ab
-X-Google-Smtp-Source: AGHT+IGPcH999lkOf64IeBZvVPYzxnMdGrpLSM6aThjm2ALpphK9DknXowr8Y55TygUqOJd76KhN+g==
-X-Received: by 2002:a05:651c:889:b0:32a:7d61:ded0 with SMTP id 38308e7fff4ca-331ee7c5762mr5925501fa.19.1753447179864;
-        Fri, 25 Jul 2025 05:39:39 -0700 (PDT)
-Received: from [192.168.66.199] (h-98-128-173-232.A785.priv.bahnhof.se. [98.128.173.232])
-        by smtp.googlemail.com with ESMTPSA id 38308e7fff4ca-331e0912287sm7151741fa.77.2025.07.25.05.39.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Jul 2025 05:39:39 -0700 (PDT)
-Message-ID: <96b9da59-bf24-460a-bccf-5761b8c2e87a@gmail.com>
-Date: Fri, 25 Jul 2025 14:39:38 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QdDbm3CW"
+Message-ID: <8d987133-0e22-4aa8-bf2e-57ef105c8db8@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753447188;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UyXNdV5tH0+VzIEOaMeJdhwhayXenr6RyT1W6ZYXDcU=;
+	b=QdDbm3CWvaF+MYJyZTJq6QOwJhfeSn9b0mfI5aUftha4Niq0kYMXjeQBbfmhGdUpfFKst+
+	VjA/+yb5Rl29xy8Y6psafvceG2efKY51w7qTocs3km7qeXdHOx9JGdMaNLeFwqHoR4Ahie
+	+KZ2i3tzAQTbsqafhMXpUITrgAQlLHo=
+Date: Fri, 25 Jul 2025 20:38:54 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/10] can: kvaser_pciefd: Expose device firmware
- version via devlink info_get()
-To: Simon Horman <horms@kernel.org>, Jimmy Assarsson <extja@kvaser.com>
-Cc: linux-can@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>,
- Vincent Mailhol <mailhol.vincent@wanadoo.fr>, netdev@vger.kernel.org
-References: <20250724073021.8-1-extja@kvaser.com>
- <20250724073021.8-9-extja@kvaser.com>
- <20250724135224.GA1266901@horms.kernel.org>
+Subject: Re: [PATCH] sfc: handle NULL returned by xdp_convert_buff_to_frame()
 Content-Language: en-US
-From: Jimmy Assarsson <jimmyassarsson@gmail.com>
-In-Reply-To: <20250724135224.GA1266901@horms.kernel.org>
+To: Edward Cree <ecree@amd.com>, Paolo Abeni <pabeni@redhat.com>,
+ Chenyuan Yang <chenyuan0y@gmail.com>, ecree.xilinx@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, lorenzo@kernel.org
+Cc: netdev@vger.kernel.org, linux-net-drivers@amd.com, bpf@vger.kernel.org,
+ zzjas98@gmail.com
+References: <20250723003203.1238480-1-chenyuan0y@gmail.com>
+ <045d1ff5-bb20-481d-a067-0a42345ab83d@redhat.com>
+ <de14f60e-b1f0-432c-80b4-a2f0453e0fe2@amd.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kunwu Chan <kunwu.chan@linux.dev>
+In-Reply-To: <de14f60e-b1f0-432c-80b4-a2f0453e0fe2@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 7/24/25 3:52 PM, Simon Horman wrote:
-> On Thu, Jul 24, 2025 at 09:30:19AM +0200, Jimmy Assarsson wrote:
-> 
-> ...
-> 
->> diff --git a/drivers/net/can/kvaser_pciefd/kvaser_pciefd_devlink.c b/drivers/net/can/kvaser_pciefd/kvaser_pciefd_devlink.c
->> index 8145d25943de..4e4550115368 100644
->> --- a/drivers/net/can/kvaser_pciefd/kvaser_pciefd_devlink.c
->> +++ b/drivers/net/can/kvaser_pciefd/kvaser_pciefd_devlink.c
->> @@ -4,7 +4,33 @@
->>    * Copyright (C) 2025 KVASER AB, Sweden. All rights reserved.
->>    */
->>   
->> +#include "kvaser_pciefd.h"
->> +
->>   #include <net/devlink.h>
-> 
-> Hi Jimmy,
-> 
-> Please consider squashing the two-line change above into
-> the previous patch in this series to avoid the following
-> transient Sparse warning.
-> 
->    .../kvaser_pciefd_devlink.c:9:26: warning: symbol 'kvaser_pciefd_devlink_ops' was not declared. Should it be static?
-> 
-> Thanks!
+On 2025/7/25 18:11, Edward Cree wrote:
+> On 7/24/25 10:57, Paolo Abeni wrote:
+>> On 7/23/25 2:32 AM, Chenyuan Yang wrote:
+>>> The xdp_convert_buff_to_frame() function can return NULL when there is
+>>> insufficient headroom in the buffer to store the xdp_frame structure
+>>> or when the driver didn't reserve enough tailroom for skb_shared_info.
+>> AFAIC the sfc driver reserves both enough headroom and tailroom, but
+>> this is after ebpf run, which in turn could consume enough headroom to
+>> cause a failure, so I think this makes sense.
+> Your reasoning seems plausible to me.
+> However, I think the error path ought to more closely follow the existing
+>   error cases in logging a ratelimited message and calling the tracepoint.
+> I think the cleanest way to do this would be:
+> 	if (unlikely(!xdpf))
+> 		err = -ENOBUFS;
+> 	else
+> 		err = efx_xdp_tx_buffers(efx, 1, &xdpf, true);
+>   so that it can make use of the existing failure path.
+> Adding the check to efx_xdp_tx_buffers() is also an option.
+>
+> -ed
+>
+Hi Chenyuan,
 
-Hi Simon!
+THX for addressing this edge case. I concur with Edward's suggestion to 
+integrate this with the existing error handling flow. This will ensure:
+Consistent observability (ratelimited logs + tracepoints)
+Centralized resource cleanup
+Clear error type differentiation via -ENOBUFS
 
-Sure, I'll fix it in v4.
-Thanks for reviewing!
+Proposed refinement:
 
-Best regards,
-jimmy
+diff
+  case XDP_TX:
+      /* Buffer ownership passes to tx on success. */
+      xdpf = xdp_convert_buff_to_frame(&xdp);
++    if (unlikely(!xdpf)) {
++        err = -ENOBUFS;
++    } else {
++        err = efx_siena_xdp_tx_buffers(efx, 1, &xdpf, true);
++    }
+
+-    err = efx_siena_xdp_tx_buffers(efx, 1, &xdpf, true);
+      if (unlikely(err != 1)) {
+          efx_siena_free_rx_buffers(rx_queue, rx_buf, 1);
+          if (net_ratelimit())
+              netif_err(efx, rx_err, efx->net_dev,
+-                  "XDP TX failed (%d)\n", err);
++                  "XDP TX failed (%d)%s\n", err,
++                  err == -ENOBUFS ? " [frame conversion]" : "");
+          channel->n_rx_xdp_bad_drops++;
+-        trace_xdp_exception(efx->net_dev, xdp_prog, xdp_act);
++        if (err != -ENOBUFS)
++            trace_xdp_exception(efx->net_dev, xdp_prog, xdp_act);
+      } else {
+          channel->n_rx_xdp_tx++;
+      }
+      break;
+
+
+-- Thanks, TAO. --- “Life finds a way.”
