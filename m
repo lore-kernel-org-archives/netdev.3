@@ -1,290 +1,45 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6441C2EF290
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052DEAD2C;
+	Fri, 25 Jul 2025 16:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753460480; cv=none; b=QRKerk2qkxBDB26Hjr4U/NhtX7Qp9HfX0ChRPiV7pe2DGZpOuk6CM0qMu6vjOpboY5UPrOw6NZ/wwxvs2JfEZ2ylFmgkuTHehmrGFx0I4bpmTwYyuFmDxNVFT0HK76xKCx65DmVeGoq8/71YU5VQ3+JNKjn5DoALNyLLfjfKt2U=
+	t=1753460534; cv=none; b=RZ6JBSvs6cSbWWH0CCx+EBv1ykdma12DyODbM3NCW5WRq7bjq9UkFO+zrm4ZMinbLjyJLeMAs6Bxl8yCj2RQRHHYz5X6UCQzYXGZuhdUmnGgl5MHdAFi04d3IP5zoetLxgyuyH+Zu/8jZ9EBBH0HH2op8zsFHQAl/dSqx/rdT8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753460480; c=relaxed/simple;
-	bh=/KQX1/AhAsPubYUpPgr9z8RtjuX/g6YVm4qiVW8Drus=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HaCRN2Ot/w1NPwTSobm25u2ad+3AyxlaziY13ogOwO7X70wqFMVPC56clRgHRV1TTCDe9c9r1Te1CvwRLXM+krEQ4mwQ2Xhk3iYGBoJiWCviRnLUG/ANs4zI5m1Ispqd+1IlC04VXJLBesb/UqYQsrQ8WmUEIq1lJJ5r6CBbplo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1ufLAa-0000op-Lb
-	for netdev@vger.kernel.org; Fri, 25 Jul 2025 18:21:16 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1ufLAa-00AFhU-0n
-	for netdev@vger.kernel.org;
-	Fri, 25 Jul 2025 18:21:16 +0200
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 88AFF4498EE
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:13:35 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 98CC5449841;
-	Fri, 25 Jul 2025 16:13:31 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id d544a966;
-	Fri, 25 Jul 2025 16:13:30 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Jimmy Assarsson <extja@kvaser.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 24/27] can: kvaser_usb: Add devlink support
-Date: Fri, 25 Jul 2025 18:05:34 +0200
-Message-ID: <20250725161327.4165174-25-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250725161327.4165174-1-mkl@pengutronix.de>
-References: <20250725161327.4165174-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1753460534; c=relaxed/simple;
+	bh=oDixXTko70cbphK1Bo4NH1oUzIZgfR5Xw/r+uhe+w2k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PXVX/smS+IzvjbGsnKeVzKFgj6POmt/PNgReD8V5HC1HD+80DEL/8MGUc9hNgI8FfQIW5731OoG6p+dkIMkJgo1SZygmsQr7/dGOraHYUZPSxCHkndzl9HYomeOiRPMGxyloMMP7TiyUdzHjclVwJvNZ34rEe/mAHP9CwEoL3Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id C5873602B2; Fri, 25 Jul 2025 18:22:09 +0200 (CEST)
+Date: Fri, 25 Jul 2025 18:22:09 +0200
+From: Florian Westphal <fw@strlen.de>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: syzbot <syzbot+a225fea35d7baf8dbdc3@syzkaller.appspotmail.com>,
+	coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com,
+	horms@kernel.org, kadlec@netfilter.org, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, pabeni@redhat.com,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [netfilter?] WARNING in nft_socket_init (2)
+Message-ID: <aIOugflPgsSYhoIQ@strlen.de>
+References: <68837ca6.a00a0220.2f88df.0053.GAE@google.com>
+ <aIOnfc06qpphQqZs@calendula>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aIOnfc06qpphQqZs@calendula>
 
-From: Jimmy Assarsson <extja@kvaser.com>
+Pablo Neira Ayuso <pablo@netfilter.org> wrote:
+> Attached patch should fix this.
 
-Add devlink support at device level.
-
-Example output:
-  $ devlink dev
-  usb/1-1.3:1.0
-
-  $ devlink dev info
-  usb/1-1.3:1.0:
-    driver kvaser_usb
-
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20250725123452.41-9-extja@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/usb/Kconfig                   |  1 +
- drivers/net/can/usb/kvaser_usb/Makefile       |  2 +-
- drivers/net/can/usb/kvaser_usb/kvaser_usb.h   |  3 +
- .../net/can/usb/kvaser_usb/kvaser_usb_core.c  | 72 ++++++++++++-------
- .../can/usb/kvaser_usb/kvaser_usb_devlink.c   | 11 +++
- 5 files changed, 63 insertions(+), 26 deletions(-)
- create mode 100644 drivers/net/can/usb/kvaser_usb/kvaser_usb_devlink.c
-
-diff --git a/drivers/net/can/usb/Kconfig b/drivers/net/can/usb/Kconfig
-index 9dae0c71a2e1..a7547a83120e 100644
---- a/drivers/net/can/usb/Kconfig
-+++ b/drivers/net/can/usb/Kconfig
-@@ -66,6 +66,7 @@ config CAN_GS_USB
- 
- config CAN_KVASER_USB
- 	tristate "Kvaser CAN/USB interface"
-+	select NET_DEVLINK
- 	help
- 	  This driver adds support for Kvaser CAN/USB devices like Kvaser
- 	  Leaf Light, Kvaser USBcan II and Kvaser Memorator Pro 5xHS.
-diff --git a/drivers/net/can/usb/kvaser_usb/Makefile b/drivers/net/can/usb/kvaser_usb/Makefile
-index cf260044f0b9..41b4a11555aa 100644
---- a/drivers/net/can/usb/kvaser_usb/Makefile
-+++ b/drivers/net/can/usb/kvaser_usb/Makefile
-@@ -1,3 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_CAN_KVASER_USB) += kvaser_usb.o
--kvaser_usb-y = kvaser_usb_core.o kvaser_usb_leaf.o kvaser_usb_hydra.o
-+kvaser_usb-y = kvaser_usb_core.o kvaser_usb_devlink.o kvaser_usb_leaf.o kvaser_usb_hydra.o
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb.h b/drivers/net/can/usb/kvaser_usb/kvaser_usb.h
-index 35c2cf3d4486..d5f913ac9b44 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb.h
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb.h
-@@ -27,6 +27,7 @@
- #include <linux/spinlock.h>
- #include <linux/types.h>
- #include <linux/usb.h>
-+#include <net/devlink.h>
- 
- #include <linux/can.h>
- #include <linux/can/dev.h>
-@@ -226,6 +227,8 @@ struct kvaser_usb_dev_cfg {
- extern const struct kvaser_usb_dev_ops kvaser_usb_hydra_dev_ops;
- extern const struct kvaser_usb_dev_ops kvaser_usb_leaf_dev_ops;
- 
-+extern const struct devlink_ops kvaser_usb_devlink_ops;
-+
- void kvaser_usb_unlink_tx_urbs(struct kvaser_usb_net_priv *priv);
- 
- int kvaser_usb_recv_cmd(const struct kvaser_usb *dev, void *cmd, int len,
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-index 2313fbc1a2c3..b9b2e120a5cd 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -914,6 +914,7 @@ static int kvaser_usb_probe(struct usb_interface *intf,
- 			    const struct usb_device_id *id)
- {
- 	struct kvaser_usb *dev;
-+	struct devlink *devlink;
- 	int err;
- 	int i;
- 	const struct kvaser_usb_driver_info *driver_info;
-@@ -923,17 +924,20 @@ static int kvaser_usb_probe(struct usb_interface *intf,
- 	if (!driver_info)
- 		return -ENODEV;
- 
--	dev = devm_kzalloc(&intf->dev, sizeof(*dev), GFP_KERNEL);
--	if (!dev)
-+	devlink = devlink_alloc(&kvaser_usb_devlink_ops, sizeof(*dev), &intf->dev);
-+	if (!devlink)
- 		return -ENOMEM;
- 
-+	dev = devlink_priv(devlink);
- 	dev->intf = intf;
- 	dev->driver_info = driver_info;
- 	ops = driver_info->ops;
- 
- 	err = ops->dev_setup_endpoints(dev);
--	if (err)
--		return dev_err_probe(&intf->dev, err, "Cannot get usb endpoint(s)");
-+	if (err) {
-+		dev_err_probe(&intf->dev, err, "Cannot get usb endpoint(s)");
-+		goto free_devlink;
-+	}
- 
- 	dev->udev = interface_to_usbdev(intf);
- 
-@@ -944,50 +948,66 @@ static int kvaser_usb_probe(struct usb_interface *intf,
- 	dev->card_data.ctrlmode_supported = 0;
- 	dev->card_data.capabilities = 0;
- 	err = ops->dev_init_card(dev);
--	if (err)
--		return dev_err_probe(&intf->dev, err,
--				     "Failed to initialize card\n");
-+	if (err) {
-+		dev_err_probe(&intf->dev, err,
-+			      "Failed to initialize card\n");
-+		goto free_devlink;
-+	}
- 
- 	err = ops->dev_get_software_info(dev);
--	if (err)
--		return dev_err_probe(&intf->dev, err,
--				     "Cannot get software info\n");
-+	if (err) {
-+		dev_err_probe(&intf->dev, err,
-+			      "Cannot get software info\n");
-+		goto free_devlink;
-+	}
- 
- 	if (ops->dev_get_software_details) {
- 		err = ops->dev_get_software_details(dev);
--		if (err)
--			return dev_err_probe(&intf->dev, err,
--					     "Cannot get software details\n");
-+		if (err) {
-+			dev_err_probe(&intf->dev, err,
-+				      "Cannot get software details\n");
-+			goto free_devlink;
-+		}
- 	}
- 
--	if (WARN_ON(!dev->cfg))
--		return -ENODEV;
-+	if (WARN_ON(!dev->cfg)) {
-+		err = -ENODEV;
-+		goto free_devlink;
-+	}
- 
- 	dev_dbg(&intf->dev, "Max outstanding tx = %d URBs\n", dev->max_tx_urbs);
- 
- 	err = ops->dev_get_card_info(dev);
--	if (err)
--		return dev_err_probe(&intf->dev, err,
--				     "Cannot get card info\n");
-+	if (err) {
-+		dev_err_probe(&intf->dev, err,
-+			      "Cannot get card info\n");
-+		goto free_devlink;
-+	}
- 
- 	if (ops->dev_get_capabilities) {
- 		err = ops->dev_get_capabilities(dev);
- 		if (err) {
--			kvaser_usb_remove_interfaces(dev);
--			return dev_err_probe(&intf->dev, err,
--					     "Cannot get capabilities\n");
-+			dev_err_probe(&intf->dev, err,
-+				      "Cannot get capabilities\n");
-+			goto remove_interfaces;
- 		}
- 	}
- 
- 	for (i = 0; i < dev->nchannels; i++) {
- 		err = kvaser_usb_init_one(dev, i);
--		if (err) {
--			kvaser_usb_remove_interfaces(dev);
--			return err;
--		}
-+		if (err)
-+			goto remove_interfaces;
- 	}
-+	devlink_register(devlink);
- 
- 	return 0;
-+
-+remove_interfaces:
-+	kvaser_usb_remove_interfaces(dev);
-+free_devlink:
-+	devlink_free(devlink);
-+
-+	return err;
- }
- 
- static void kvaser_usb_disconnect(struct usb_interface *intf)
-@@ -1000,6 +1020,8 @@ static void kvaser_usb_disconnect(struct usb_interface *intf)
- 		return;
- 
- 	kvaser_usb_remove_interfaces(dev);
-+	devlink_unregister(priv_to_devlink(dev));
-+	devlink_free(priv_to_devlink(dev));
- }
- 
- static struct usb_driver kvaser_usb_driver = {
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_devlink.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_devlink.c
-new file mode 100644
-index 000000000000..dbe7fa64558a
---- /dev/null
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_devlink.c
-@@ -0,0 +1,11 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* kvaser_usb devlink functions
-+ *
-+ * Copyright (C) 2025 KVASER AB, Sweden. All rights reserved.
-+ */
-+#include "kvaser_usb.h"
-+
-+#include <net/devlink.h>
-+
-+const struct devlink_ops kvaser_usb_devlink_ops = {
-+};
--- 
-2.47.2
-
-
+Yes, jus removing the WARN is the correct way.
