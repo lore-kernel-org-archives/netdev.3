@@ -1,43 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9EB2E975D;
-	Fri, 25 Jul 2025 15:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BA31E766F;
+	Fri, 25 Jul 2025 15:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753456100; cv=none; b=di80xmoV9x9nq6JnQxC7THsVcTRibDODmyvPAkRSoWkh7YOmIETcA3ZWoWFvXVyX//yomB4GK6WJpyq8EVoste+dMd91wvhbPGIvAzAoCcOTw5/3z3VTp84XUXdFDj54xO8av9YvuhdeHkB9DFiWKchi5oBG+2pEt9wO6biLIuU=
+	t=1753456246; cv=none; b=lpV2ybnxk33uLTdqpGbyxCN8uSAao4gtTqjVD6lliowSomu6kxPjC6elKx6LKDeYWnTT5MoYGas5gASz3h54nDpNt8f5E6+/DiskipA40o4dk/39LlxLqju1jsVfh0MeWJOg2x152YLICf9Bd7aPEGO6RjyAX4iIgNn2cCbNCe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753456100; c=relaxed/simple;
-	bh=RgP/I5xzFjHokNJb2q0Vr3LX2nhBVZvuO6jEeTUvmi8=;
+	s=arc-20240116; t=1753456246; c=relaxed/simple;
+	bh=ihW5yS8KFZKrwO0tJX/UuD4EkoLbr7i1SBwQd+lMnXk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ARwSHQVyk3WVUsztSy+Q47cy3CoRf5uURSt+s0zSdj6mCT3i7t5OgwURf7BpBuRlAvUDEvMC8UM8bKCOMldgXw+WFApab71wwtYIGK0b5A5+ZE0V8AKNB23rzNlbrA0za9FeQF1v9dEWtLSvvMWkft8j2d+4H9p5IRBXHCj75Fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t69suO+u; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=gQujzyqgvDhLN4iEJR7oUyNf6dwCS3ZarO2eB6PS8YSpedBhLMl4oHAP+WV8SQ6r/2ms7bgcTceGqDBB6DiMoqJVs/fIq+gr8q2xuvBKrM7Bt9y07Y80zGVyoX5vmPYIeHFfujESA0kxMdYPxQOmE+dqX9qOM/6zyc+WzR+scaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cb8jFiay; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t69suO+u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC46C4CEEB;
-	Fri, 25 Jul 2025 15:08:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cb8jFiay"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24400C4CEE7;
+	Fri, 25 Jul 2025 15:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753456099;
-	bh=RgP/I5xzFjHokNJb2q0Vr3LX2nhBVZvuO6jEeTUvmi8=;
+	s=k20201202; t=1753456246;
+	bh=ihW5yS8KFZKrwO0tJX/UuD4EkoLbr7i1SBwQd+lMnXk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=t69suO+ugCmAN4V0i0ihJYjYA5wxZLSAzzPaPo2FyiW2grf/gfby8L4+y11uf/p30
-	 ceIi/CnOXoJqtd5FULOEVl9VWhKZYZ9L95HhCOyiYEXPVw28cbkGQEBhTEu2/NjQ0Y
-	 P0SibnvlKAL9Adr+e97i7vaa5lCGP6o/s9JYP0ejpvW1HRGo88Zlkbclg2NY6icVYq
-	 URFI8Wz/w5Xu9wneTkDIlhWDiz6HiQssTwB632H7PWjDxnWiJRf3LVQEpUD4zgKTZl
-	 0VLA+Tm6j7HOWDijUae7sTCKd1aVEjNLD9TmSfdVNYH91SMklECQHGicaQ6+zpQEHo
-	 UFI3e492dg6RQ==
-Date: Fri, 25 Jul 2025 08:08:18 -0700
+	b=Cb8jFiayvxhreIH/8+a+QoQbA/x58ZHzXBAAizmQByRgcdrrEF574jeVcuDsiqC8n
+	 KxP0Zr1Jy6ewFMYP7MYNO52Z7Tkl3Fce0K0ZBu8wG2DYnnF6h3InH/TAyjagt22XPH
+	 O2myFrduHE1afqWrBdCJZZIRkMiClL3kY2x2tkR6qOHqsZq62C4liYoWuQI0FxU/FV
+	 Vgz5vUUWW0zzzwpf4+PExo2Yd/3f3RDnAehjrtsgpJNss9YFD9fmfZ6CoSNum5xnEs
+	 +4Pcu5nFkr7daEznYE4AeF/TEDL9AG5nwiV9Mj7bmBbAak2KhKFaFWsX7rQPPmIc+I
+	 4IhvRQYbrOd3g==
+Date: Fri, 25 Jul 2025 08:10:45 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: kernel test robot <oliver.sang@intel.com>
-Cc: Carolina Jubran <cjubran@nvidia.com>, <oe-lkp@lists.linux.dev>,
- <lkp@intel.com>, Cosmin Ratiu <cratiu@nvidia.com>, Tariq Toukan
- <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- <netdev@vger.kernel.org>
-Subject: Re: [linux-next:master] [selftest]  236156d80d:
- kernel-selftests.drivers/net/netdevsim.devlink.sh.rate_test.fail
-Message-ID: <20250725080818.3b1581c5@kernel.org>
-In-Reply-To: <202507251144.b4d9d40b-lkp@intel.com>
-References: <202507251144.b4d9d40b-lkp@intel.com>
+To: Thomas Fourier <fourier.thomas@gmail.com>
+Cc: Eric Dumazet <edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>, Moritz
+ Fischer <mdf@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: ethernet: nixge: Add missing check after DMA
+ map
+Message-ID: <20250725081045.34ac4130@kernel.org>
+In-Reply-To: <CANn89iJW+4xLsTGU6LU4Y=amciL5Kni=wS1uTKy-wC8pCwNDGQ@mail.gmail.com>
+References: <20250725133311.143814-2-fourier.thomas@gmail.com>
+	<CANn89iJW+4xLsTGU6LU4Y=amciL5Kni=wS1uTKy-wC8pCwNDGQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,21 +49,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 25 Jul 2025 20:34:58 +0800 kernel test robot wrote:
-> kernel test robot noticed "kernel-selftests.drivers/net/netdevsim.devlink.sh.rate_test.fail" on:
-> 
-> commit: 236156d80d5efd942fc395a078d6ec6d810c2c40 ("selftest: netdevsim: Add devlink rate tc-bw test")
-> https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
-> 
-> [test failed on linux-next/master 97987520025658f30bb787a99ffbd9bbff9ffc9d]
+On Fri, 25 Jul 2025 06:53:16 -0700 Eric Dumazet wrote:
+> Not sure if this driver is actively used...
 
-This is not helpful, you have old tools in your environment.
+Like most of the drivers that are missing dma_mappnig_error() :(
 
-Ideally you'd report regressions in existing test _cases_ 
-(I mean an individial [ OK ] turning into a [FAIL]).
-
-The bash tests depend on too many CLI tools to be expected
-to pass. Having to detect the tool versions is an unnecessary
-burden on the test author. Tools usually get updated within
-3 months and then all these checks become dead code for the
-rest of time...
+Thomas, would it be possible for you to sort the drivers you have
+reports for in the reverse chronological order (when they were added
+or last time they had significant work done on them)? Start from
+the most recent ones?
