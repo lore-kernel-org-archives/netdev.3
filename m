@@ -1,197 +1,112 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7451329E10C
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 09:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBA02D372F
+	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 09:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753436543; cv=none; b=l3BRW0gcCuVREIyBu0qL3A6PFh5+4fhP0z313xbHD9Y1lwAobg4odVjwaBVc6gPEKp7EbFX42lq/gPfM1sGeOwz3AT7BDYUzjpc2wbgYPpldFgF0AYkLCfpRTQhD78U/d0HeWSAxhhiW0FOoy8Ylv4DLychiltea7nLkosxW/nk=
+	t=1753436604; cv=none; b=ETEqbj95+CJIQYdVn435Xnt2TS/hzltidInIkyaHAD6dO5P5qtH7t+pmDEqSCTbvXNXS3nYJw0+D91Y3xz7qYQK1ypIcL7xf1gUHzqITjdASvdKy0p7V0SkQZWVBcYZWGduWC16fL2U7s1003p7QEzjy3kOMpgKfyF/eph96TxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753436543; c=relaxed/simple;
-	bh=Cw7xQg5oHZkmoVtuqtcalTJ5D4bZo76Bop+lS/l1Y5U=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=iPFUi0hCmJwHBhGnIBGGzVaMpzqLe9tpJz1I33oF6FzZDpS+epokEWWq1wNJArzXR3u7Xfz+NNk0z/nFUortq/ICmpbxVY8u4ei6z0iSjVjhM3dGgfaZagDVpqVyu2WriZfojexNPnk6XIQRfbjA89QUQxvaHZ3tr/N8I1RV1yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=Uj6ivPW0; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1753436604; c=relaxed/simple;
+	bh=xJpDBQAy7HLW5uL3nYN8UbRVhylGAiTIhKGv7shEQ3c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=neoDmaV6PpSw0d36V9jVCkDPinKfmJTpPqYLrE1EE7GZEpSsl+cMndlacPP9j1/JuHUgWYCmh2iTbITFGH9LA7GuXYYDCXN6WWmcp9ruakqCDFDsHhWaV2m6Ah9boEZpyQ3mecX17tO18yn7KrjzMEA5YADV/5IyLiLGveTq0/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=F/9668Vg; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="Uj6ivPW0"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1ufEOS-00CbDJ-Oj; Fri, 25 Jul 2025 11:07:08 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
-	bh=e7kzg3vB/GvFsVkQFUkD3UMXNqsS9iU6/ZF+H0o3//E=; b=Uj6ivPW0CLL8hJI//BGdB/lZcL
-	SUR9oBPb9V3nxdM/prc+cyyaUQDujaxMjVkGZ9eAFcEaHCy9796N0OlwHePeP4l8+caX7om1SnkgJ
-	JsFs7Y/P+20jdb97pzh9eqCxTfHw7Hi15DIzIyMxsMqJjKtBuK2U7wNBWmrdY+PhaaXaMDIpGja17
-	a6MSu6+R2ILjAHBBcbc7PA2fYZ+MqP0WekfIhaEXlGoGVrgf6bIy9oD57/dmPzAotqNXDh2hPQcQu
-	ymOQ3Us/7coAtZzpBtyOQjkYI8uONbQ3XS6xzU5sr1nYH1QYh7i9t+Uo5WD0joFoxVB5+3cd8uhru
-	/XkO+fXw==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1ufEOR-0008LF-SV; Fri, 25 Jul 2025 11:07:08 +0200
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1ufEOD-001SlG-Jp; Fri, 25 Jul 2025 11:06:53 +0200
-Message-ID: <70371863-fa71-48e0-a1e5-fee83e7ca37c@rbox.co>
-Date: Fri, 25 Jul 2025 11:06:52 +0200
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="F/9668Vg"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ae3cd8fdd77so390319566b.1
+        for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 02:43:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1753436601; x=1754041401; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xJpDBQAy7HLW5uL3nYN8UbRVhylGAiTIhKGv7shEQ3c=;
+        b=F/9668VgwO7NfhgDk/rJHwm7jF7bCxga82OA6FdWeZx9yQdD17owqxllEMAqb/0ICO
+         ihAl376vs9BuzfuNY6U4YlO+eLV1mVCH7v7jy71W9/eJIWgssQjRQ7ePvJZTB0UwA/Er
+         FGaCowOLxVFRL95EwS9Sgym1UeszTcpAi8zRVOiiEdM3lQA2YSfRTOC6qRf6SRnkJue5
+         09Z28o0iF72VtRyzHmW6Dj0+UF5Hp1fBCI+34+PRy6LQlFRUyGBFk6zHdw4NOYfhNG9a
+         M6Q2Qd/NO+FKutLawKLBZJ9vR5jZJRCATN/5RzuXBjuKTgGWY0U+T0yGsyKBpwxW1E/L
+         lf1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753436601; x=1754041401;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xJpDBQAy7HLW5uL3nYN8UbRVhylGAiTIhKGv7shEQ3c=;
+        b=Ea1c3jTx1vr9ObxJ8hi78KgMd8q1vFKKHQYEX33bVAOdioOGbiRLQwWzO9nzrRL9I+
+         LLercjkp6SbsSweKolR5VgS6DYaTZrk9Kiv9emGfgajvBxTehxyLqyLIznVit9Kv+3Ob
+         5a2zMjHHEIdsxgSndTVB1HxdaKi7h3in7kO7zLx+OmfOxHkRb0+hKoe8sS9Lan/M3HuI
+         tMun2p1oL7xeOZsR8nTQKTtK2oJiZnoFsNgT7lT05JT/dgzaGmP1uRNJAfPMwFrKE3Sa
+         kSgwXclT0vKBD4e8wsTWDhz0IyRKNU2LCn64T4h4P5jNZ7AdpanSnizWatSfwZlBns0O
+         FVIg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKkSyZ42lvMxAApnLH5Vfv0O5ag8ATr2Um2d2Cbdg7CoB+MuPsqdnMD2YHoOWM4MdaDQY9Z40=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnbNZy7IBkG1PmdgWgArOO0B8fG1Q0HwE3ZKh5+ONlig64PVA1
+	7FEo38MhrSplSiDZdvdNGexgSXZwVsG0qenHc6S/7PrYHSeDsAUH9IM+JmrkxNxwgWM=
+X-Gm-Gg: ASbGnctoCL1KSLSDWwLJpxr+Rk2xYMT3xbeUfDgNnCihetntRjfL5MKB0HN48Jf1iMD
+	RiHYD7EIVwx9hGhgUFjI3XbYq26TRHnysu6h7mayx8XHPadzMsGvHqEzkgNCQD43k6MzDlyGYSa
+	rn5z9vDKsRd6PfmnTZii6mKE9JsDlb/+dV7YkEgWVSwHIPNA7y/Z7vBhBP5VxsxSHd6rPST/MYh
+	ml2QWefGZ32hmc8s1EniaMpP/BWIPb4WTkXNy0pgT+Q//hNw2GbISBZYiPoDSLwmIVZtsiMvljA
+	MdRdhsAJtfjWrmLQxkJ92H++qtT8xugVZV2Din2tqmkdMgBnzOb9fRixGgZpOYvXogtzdTJqIcG
+	3CxWgbMNQaWda
+X-Google-Smtp-Source: AGHT+IGkneH4QIXyNFolLUejPFD134e/mdDVrBvyxRO+sv6a2D5M62LnEE+ZbZl0J6vMwf05VMVaNg==
+X-Received: by 2002:a17:907:8689:b0:ade:44f8:569 with SMTP id a640c23a62f3a-af61e533cdbmr151181866b.42.1753436601419;
+        Fri, 25 Jul 2025 02:43:21 -0700 (PDT)
+Received: from cloudflare.com ([2a09:bac5:5063:2dc::49:fe])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af47ff42a34sm239364066b.136.2025.07.25.02.43.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Jul 2025 02:43:20 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: bpf@vger.kernel.org,  Alexei Starovoitov <ast@kernel.org>,  Andrii
+ Nakryiko <andrii@kernel.org>,  Arthur Fabre <arthur@arthurfabre.com>,
+  Daniel Borkmann <daniel@iogearbox.net>,  Eduard Zingerman
+ <eddyz87@gmail.com>,  Eric Dumazet <edumazet@google.com>,  Jesper Dangaard
+ Brouer <hawk@kernel.org>,  Jesse Brandeburg <jbrandeburg@cloudflare.com>,
+  Joanne Koong <joannelkoong@gmail.com>,  Lorenzo Bianconi
+ <lorenzo@kernel.org>,  Martin KaFai Lau <martin.lau@linux.dev>,  Toke
+ =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <thoiland@redhat.com>,  Yan Zhai
+ <yan@cloudflare.com>,
+  kernel-team@cloudflare.com,  netdev@vger.kernel.org,  Stanislav Fomichev
+ <sdf@fomichev.me>
+Subject: Re: [PATCH bpf-next v4 2/8] bpf: Enable read/write access to skb
+ metadata through a dynptr
+In-Reply-To: <87tt31x0sb.fsf@cloudflare.com> (Jakub Sitnicki's message of
+	"Thu, 24 Jul 2025 13:53:40 +0200")
+References: <20250723-skb-metadata-thru-dynptr-v4-0-a0fed48bcd37@cloudflare.com>
+	<20250723-skb-metadata-thru-dynptr-v4-2-a0fed48bcd37@cloudflare.com>
+	<20250723173038.45cbaf01@kernel.org> <87tt31x0sb.fsf@cloudflare.com>
+Date: Fri, 25 Jul 2025 11:43:19 +0200
+Message-ID: <87frekwqq0.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Michal Luczaj <mhal@rbox.co>
-Subject: Re: vsock broken after connect() returns EINTR (was Re: [PATCH net
- 2/2] vsock/test: Add test for SO_LINGER null ptr deref)
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org
-References: <vsghmgwurw3rxzw32najvwddolmrbroyryquzsoqt5jr3trzif@4rjr7kwlaowa>
- <df2d51fd-03e7-477f-8aea-938446f47864@rbox.co>
- <xafz4xrgpi5m3wedkbhfx6qoqbbpogryxycrvawwzerge3l4t3@d6r6jbnpiyhs>
- <f201fcb6-9db9-4751-b778-50c44c957ef2@rbox.co>
- <hkhwrfz4dzhaco4mb25st5zyfybimchac3zcqsgzmtim53sq5o@o4u6privahp3>
- <aa00af3b-2bb1-4c09-8222-edeec0520ae1@rbox.co>
- <cd7chdxitqx7pvusgt45p7s4s4cddyloqog2koases4ocvpayg@ryndsxdgm5ul>
- <7566fe52-23b7-46cc-95ef-63cbbd3071a1@rbox.co>
- <kiz4tjwsvauyupixpccqug5wt7tq7g3mld5yy5drpg5zxkmiap@3z625aedysx7>
- <d3a0a4e3-57bd-43f2-8907-af60c18d53ec@rbox.co>
- <js3gdbpaupbglmtowcycniidowz46fp23camtvsohac44eybzd@w5w5mfpyjawd>
-Content-Language: pl-PL, en-GB
-In-Reply-To: <js3gdbpaupbglmtowcycniidowz46fp23camtvsohac44eybzd@w5w5mfpyjawd>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 4/15/25 15:07, Stefano Garzarella wrote:
-> On Fri, Apr 11, 2025 at 04:43:35PM +0200, Michal Luczaj wrote:
-...
->> Once connect() fails with EINTR (e.g. due to a signal delivery), retrying
->> connect() (to the same listener) fails. That is what the code below was
->> trying to show.
-> 
-> mmm, something is going wrong in the vsock_connect().
-> 
-> IIUC if we fails with EINTR, we are kind of resetting the socket.
-> Should we do the same we do in vsock_assign_transport() when we found 
-> that we are changing transport?
-> 
-> I mean calling release(), vsock_deassign_transport(). etc.
-> I'm worried about having pending packets in flight.
-> 
-> BTW we need to investigate more, I agree.
+On Thu, Jul 24, 2025 at 01:53 PM +02, Jakub Sitnicki wrote:
+> On Wed, Jul 23, 2025 at 05:30 PM -07, Jakub Kicinski wrote:
+>> On Wed, 23 Jul 2025 19:36:47 +0200 Jakub Sitnicki wrote:
+>>> Now that we can create a dynptr to skb metadata, make reads to the metadata
+>>> area possible with bpf_dynptr_read() or through a bpf_dynptr_slice(), and
+>>> make writes to the metadata area possible with bpf_dynptr_write() or
+>>> through a bpf_dynptr_slice_rdwr().
+>>
+>> What are the expectations around the writes? Presumably we could have
+>> two programs writing into the same metadata if the SKB is a clone, no?
 
-I took a look. Once I've added a condition to break the connect() loop
-(right after schedule_timeout(), on `sk_state == TCP_ESTABLISHED`), things
-got a bit clearer for me.
+[...]
 
-Because listener keeps child socket in the accept_queue _and_
-connected_table, every time we try to re-connect() our
-VIRTIO_VSOCK_OP_REQUEST is answered with VIRTIO_VSOCK_OP_RST, which kills
-the re-connect(). IOW:
+> Taking about the next step, once skb metadata is preserved past the TC
+> hook - here my impression from Netdev was that the least suprising thing
+> to do will be to copy-on-clone or copy-on-write (if we can pull it off).
 
-L = socket()
-listen(L)
-				S = socket()
-				connect(S, L)
-					S.sk_state = TCP_SYN_SENT
-					send VIRTIO_VSOCK_OP_REQUEST
+Now that Martin has enlightened me [1] how things work today for skb
+payload dynptr's, I will first try to follow the same approach, that is:
 
-				connect() is interrupted
-					S.sk_state = TCP_CLOSE
+Make a copy of skb metadata before the BPF program runs, if the program
+may write to the metadata.
 
-L receives REQUEST
-	C = socket()
-	C.sk_state = TCP_ESTABLISHED
-	add C to L.accept_queue
-	add C to connected_table
-	send VIRTIO_VSOCK_OP_RESPONSE
-
-				S receives RESPONSE
-					unexpected state:
-					S.sk_state != TCP_SYN_SENT
-					send VIRTIO_VSOCK_OP_RST
-
-C receives RST
-	virtio_transport_do_close()
-		C.sk_state = TCP_CLOSING
-
-				retry connect(S, L)
-					S.sk_state = TCP_SYN_SENT
-					send VIRTIO_VSOCK_OP_REQUEST
-
-C (not L!) receives REQUEST
-	send VIRTIO_VSOCK_OP_RST
-
-				S receives RST, connect() fails
-					S.sk_state = TCP_CLOSE
-					S.sk_err = ECONNRESET
-
-I was mistaken that flushing the accept queue, i.e. close(accept()), would
-be enough to drop C from connected_table and let the re-connect() succeed.
-In fact, for the removal to actually take place you need to wait a bit
-after the flushing close(). What's more, child's vsock_release() might
-throw a poorly timed OP_RST at a client -- affecting the re-connect().
-
-Now, one thing we can do about this is: nothing. Let the user space handle
-the client- and server-side consequences of client-side's signal delivery
-(or timeout).
-
-Another thing we can do is switch to a 3-way handshake. I think that would
-also eliminate the need for vsock_transport_cancel_pkt(), which was
-introduced in commit 380feae0def7 ("vsock: cancel packets when failing to
-connect").
-
-All the other options I was considering (based on the idea to send client
--> server OP_SHUTDOWN on connect() interrupt) are racy. Even if we make
-server-side drop the half-open-broken child from accept_queue, user might
-race us with accept().
-
-L = socket()
-listen(L)
-				S = socket()
-				connect(S, L)
-					S.sk_state = TCP_SYN_SENT
-					send VIRTIO_VSOCK_OP_REQUEST
-
-				connect() is interrupted
-					S.sk_state = TCP_CLOSE
-					send VIRTIO_VSOCK_OP_SHUTDOWN|CHILD
-
-L receives REQUEST
-	C = socket()
-	C.sk_state = TCP_ESTABLISHED
-	add C to L.accept_queue
-	add C to connected_table
-	send VIRTIO_VSOCK_OP_RESPONSE
-
-				S receives RESPONSE
-					unexpected state:
-					S.sk_state != TCP_SYN_SENT
-					send VIRTIO_VSOCK_OP_RST
-
-C receives SHUTDOWN
-	if !flags.CHILD
-		send VIRTIO_VSOCK_OP_RST
-	virtio_transport_do_close()
-		C.sk_state = TCP_CLOSING
-	del C from connected_table
-	// if flags.CHILD
-	//	(schedule?) del C from L.accept_queue?
-	//	racy anyway
-
-L receives RST
-	nothing (as RST reply to client's RST won't be send)
-
-So that's all I could come up with. Please let me know what you think.
-
-Thanks,
-Michal
-
+[1] https://lore.kernel.org/all/0190e181-c592-454a-a99b-5ec361ce84e9@linux.dev/
