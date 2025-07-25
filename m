@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA9C7080D;
-	Fri, 25 Jul 2025 17:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196A12EE975;
+	Fri, 25 Jul 2025 17:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753463655; cv=none; b=ZiahcCQnVDP1oKwEEgT/e+9nKmEaAAlAOTMpmlwOVYtOURfVVV3q/bXXHtMxSCESC8FbBCk3vpFmY0Gsr+ag2oeI/3QTRCRUFbAAnzDkSJWAMDq0vFoPpFg0jMB3Mdqe9USAL1HT2uA9bYcBVe43FmV/ROJXBsN3oSsVTuGEVHc=
+	t=1753463655; cv=none; b=TiB4axhzzGA4XZkbk1wZ54byCUj4OD9APXQquKzjGWtbz0+CYVSkQev3jUGeApDkSqcC653RROOKHvBqSDIZl2W62CcKYcuoMe25O5HEtiu6M1SzJcOBYBC5Shfx2xGvgktzd914BEWT5P/zLC92BjanohRSLaxZCyR7W7JNhGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753463655; c=relaxed/simple;
-	bh=kqBmJJq9ufFHOESJhsjd3Onyd4cgOnDcJ4k/ti6hGV4=;
+	bh=DPOgPYviBfB+YHd/zP7d5WCcSDdGAgNwqCv1/XcAoio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHwdk6RdMCxncvy1FJtV7X5FDXotioJa9Xnx0XcEodVBNFsnpCxfmDwrhH0NPgQCbTh6xPltZV6H3tAJEbtv/UqjCT0F4YmOw2SvzdbmLxiATDvGbNq4w08t/SmMHYREiXE0Lw0hrX80WoIT43d16/geNkA/n9iVN2B3WYHRoGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mZhoVzmj; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=NigIXZtPGx+CGhrWPS5h6O9VsfcFDoEiUk9TKnI6kpvZJuWifm6pgn5BvVJO7nBokW2ugCetMHpRbS9uduDiKtTvhmwF51/u/a0iVSPeaGGjCNgmDdNimTwVuihwzpMrxjyoJseQEm0ctrfwIpM5vi4LISpMBSTwFUcZdsh7Iao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HbaaHGfw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mZhoVzmj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2B4C4CEFB;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HbaaHGfw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A708EC4CEF4;
 	Fri, 25 Jul 2025 17:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1753463654;
-	bh=kqBmJJq9ufFHOESJhsjd3Onyd4cgOnDcJ4k/ti6hGV4=;
+	bh=DPOgPYviBfB+YHd/zP7d5WCcSDdGAgNwqCv1/XcAoio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZhoVzmjTGSEG/8V6D2+TCofzITuvz4FXYSXvQpgd/INthke20gvu8WcB9wS2Njbq
-	 kYfrrq1G9XI+6f7vtzrfHumnzdCzR6pbNmZsiC5yr+hBKVb01QuqoLCjSwOEKkc5Id
-	 tLFFM9rWCj5WvNG0yELdSU2OLdHskwAYGeHssw2VRJZYum4kWIZgwKatgIhgw8zzqf
-	 /3ozk8CwEF7js2p2JtIaafdrBM9RXNkkMUsOETxXFEcKhfDYBss/1cORcvMfbh5Avj
-	 aGtgFCKJP5DTGGJnWgvmzDJuF+YKFQXZlIeL91qvZrd3GhK9u5w3/wDxpw8BuJm42H
-	 Ii4e3/GOR1u5g==
+	b=HbaaHGfwuUvzJ4UU3mc0H4B8VA77NIWevPWiNxidyDvyB+KE8ttALvA+Xl1nJRy7V
+	 0hsiJAQhF+fKqRLiHP1K73YCiXd8+Od30h1tASREUj0vd50oZIV2be/a/9b0K/DW5M
+	 xm8G5oyTGxM++J8QhdjeSL0X3reRfHM1xEWoKE58ZkGxtbrLDrE05uDI9kpFeTTVYP
+	 0ykmWRoP1yat8vdEBsVy2wXw3qjlRRNBWGF12i5eEK8aMQI642zJs3g+JzzUJ6Xv/i
+	 bkDITaAmmP5gJjs8deYXzhzyy2ljpbR8VA9jncXfZ8kFQpK7VcveWX7/qf/sTpJkKr
+	 xxxKqpwpmxT/A==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1ufLzn-000000000Gp-3CXB;
+	id 1ufLzn-000000000Gl-2XgC;
 	Fri, 25 Jul 2025 19:14:11 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -53,9 +53,9 @@ Cc: Madalin Bucur <madalin.bucur@nxp.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 4/5] net: mtk_eth_soc: fix device leak at probe
-Date: Fri, 25 Jul 2025 19:12:12 +0200
-Message-ID: <20250725171213.880-5-johan@kernel.org>
+Subject: [PATCH 2/5] net: enetc: fix device and OF node leak at probe
+Date: Fri, 25 Jul 2025 19:12:10 +0200
+Message-ID: <20250725171213.880-3-johan@kernel.org>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250725171213.880-1-johan@kernel.org>
 References: <20250725171213.880-1-johan@kernel.org>
@@ -67,30 +67,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The reference count to the WED devices has already been incremented when
-looking them up using of_find_device_by_node() so drop the bogus
-additional reference taken during probe.
+Make sure to drop the references to the IERB OF node and platform device
+taken by of_parse_phandle() and of_find_device_by_node() during probe.
 
-Fixes: 804775dfc288 ("net: ethernet: mtk_eth_soc: add support for Wireless Ethernet Dispatch (WED)")
-Cc: stable@vger.kernel.org	# 5.19
-Cc: Felix Fietkau <nbd@nbd.name>
+Fixes: e7d48e5fbf30 ("net: enetc: add a mini driver for the Integrated Endpoint Register Block")
+Cc: stable@vger.kernel.org	# 5.13
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_wed.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/freescale/enetc/enetc_pf.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
-index 351dd152f4f3..4f3014fc389b 100644
---- a/drivers/net/ethernet/mediatek/mtk_wed.c
-+++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-@@ -2794,7 +2794,6 @@ void mtk_wed_add_hw(struct device_node *np, struct mtk_eth *eth,
- 	if (!pdev)
- 		goto err_of_node_put;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+index f63a29e2e031..de0fb272c847 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+@@ -829,19 +829,29 @@ static int enetc_pf_register_with_ierb(struct pci_dev *pdev)
+ {
+ 	struct platform_device *ierb_pdev;
+ 	struct device_node *ierb_node;
++	int ret;
  
--	get_device(&pdev->dev);
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		goto err_put_device;
+ 	ierb_node = of_find_compatible_node(NULL, NULL,
+ 					    "fsl,ls1028a-enetc-ierb");
+-	if (!ierb_node || !of_device_is_available(ierb_node))
++	if (!ierb_node)
+ 		return -ENODEV;
+ 
++	if (!of_device_is_available(ierb_node)) {
++		of_node_put(ierb_node);
++		return -ENODEV;
++	}
++
+ 	ierb_pdev = of_find_device_by_node(ierb_node);
+ 	of_node_put(ierb_node);
+ 
+ 	if (!ierb_pdev)
+ 		return -EPROBE_DEFER;
+ 
+-	return enetc_ierb_register_pf(ierb_pdev, pdev);
++	ret = enetc_ierb_register_pf(ierb_pdev, pdev);
++
++	put_device(&ierb_pdev->dev);
++
++	return ret;
+ }
+ 
+ static const struct enetc_si_ops enetc_psi_ops = {
 -- 
 2.49.1
 
