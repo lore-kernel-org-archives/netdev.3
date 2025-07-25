@@ -1,113 +1,96 @@
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3132BB17
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A532EF28F
+	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753459994; cv=none; b=NhVr6MhvkFygv9IQbWdH6NPiYzP/BnIJzBHyzr5kOafAxqiN7ZhLC3Rak2L1Z6JHplixTazwdGzZDV3xCewofEj+DYhdpB/NTcoYfu6xQlJekclD0FFOlkjCVpU2DKWGxOS7C1xN4264etWq1OFTdi7qLG9s78mSI2efm5oUjwo=
+	t=1753460015; cv=none; b=mjEfxQbmRnR4SEUEBPInINei9V0noTDq9d8b0I7whxGdWx55BgnNtSl/YncxBB/E7UphROKFAVqI5M3pmeIuXU7BUmziWNcgRv+Iijvaj7X1GslQVMvR4UDoOupiNnNgptmGTAliYrubr1US1b8FxuOj/MjwqqyhNm4cwSQsSII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753459994; c=relaxed/simple;
-	bh=vTpbd0BP2L6tPWRLZ509TtVKssBkd0klbMWWaSLeeWA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F+1jnRTxcCBAs/EZvL0W5pogjUGsu9gq34MR1kvscwnM669ru3K1pijaASjoZELxjqVUjLsLGkny/3uJDKW9o5Xj9Pncb3dwhFhFIRuIDTjvIrd4um0mTzd/ZKW6E/ImKUtBlCAYgdyJEGsquaIzhFOtEEy+YuFXJu1rGedVLPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=a1GdaUB3; arc=none smtp.client-ip=95.215.58.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="a1GdaUB3"
-Message-ID: <6bab8404-f830-4855-be83-df57705491f9@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753459990;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iRWnqQggMPPeHBerbCQybKqJBdoR2jYJWymSZs5VvRM=;
-	b=a1GdaUB3hA1rLLby3rC4NSVZZevqwc72Qcv6T84csnpMi+/OmKarf0ZjOpJrei2Bg02CHk
-	veA4gw3vtyzIzyRVc3uVLDUz409OlegP60NbfknrwMMgrLkmR0W6oLMlkUfjPI6atdX2Q3
-	jgZa/k6tyiy9OUoeuMOVXYL08kAWPuU=
-Date: Fri, 25 Jul 2025 09:13:00 -0700
+	s=arc-20240116; t=1753460015; c=relaxed/simple;
+	bh=lx6/99p8Ni53xtHvEonBKbQIciB3GSTOKDLA2GPPPzE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=entKgPMr3JSU6+cSEkjSmZiQ9JkJXpDFHpfa7TLrii6NQSpC0+ieBbLf7tZiTgL3XBCe2I+FRpmhgQYhhPVyNFVgC4IBPr1J43C1nGckmpruDb8281q/ASb9885f3qhOUs+GmLqsp+XnvQxHrVFOba5g9eNX0h1+NbzboKpqOJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1ufL36-0006V8-2I
+	for netdev@vger.kernel.org; Fri, 25 Jul 2025 18:13:32 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1ufL35-00AFV8-24
+	for netdev@vger.kernel.org;
+	Fri, 25 Jul 2025 18:13:31 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id 46BA9449838
+	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 16:13:31 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id D98FE449809;
+	Fri, 25 Jul 2025 16:13:29 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id aa688c29;
+	Fri, 25 Jul 2025 16:13:29 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net-next 03/27] can: ti_hecc: Kconfig: add COMPILE_TEST
+Date: Fri, 25 Jul 2025 18:05:13 +0200
+Message-ID: <20250725161327.4165174-4-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250725161327.4165174-1-mkl@pengutronix.de>
+References: <20250725161327.4165174-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf-next 1/4] bpf: crypto: Use the correct destructor
- kfunc type
-Content-Language: en-GB
-To: Sami Tolvanen <samitolvanen@google.com>, bpf@vger.kernel.org
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
- KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
- Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
- Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>,
- Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250724223225.1481960-6-samitolvanen@google.com>
- <20250724223225.1481960-7-samitolvanen@google.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yonghong Song <yonghong.song@linux.dev>
-In-Reply-To: <20250724223225.1481960-7-samitolvanen@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
+ti_hecc depends on ARM. Add COMPILE_TEST to the dependency list so
+that this driver can also be built on other platforms.
 
-On 7/24/25 3:32 PM, Sami Tolvanen wrote:
-> With CONFIG_CFI_CLANG enabled, the kernel strictly enforces that
-> indirect function calls use a function pointer type that matches the
-> target function. I ran into the following type mismatch when running
-> BPF self-tests:
->
->    CFI failure at bpf_obj_free_fields+0x190/0x238 (target:
->      bpf_crypto_ctx_release+0x0/0x94; expected type: 0xa488ebfc)
->    Internal error: Oops - CFI: 00000000f2008228 [#1]  SMP
->    ...
->
-> As bpf_crypto_ctx_release() is also used in BPF programs and using
-> a void pointer as the argument would make the verifier unhappy, add
-> a simple stub function with the correct type and register it as the
-> destructor kfunc instead.
->
-> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> ---
->   kernel/bpf/crypto.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/kernel/bpf/crypto.c b/kernel/bpf/crypto.c
-> index 94854cd9c4cc..b703b1d1c282 100644
-> --- a/kernel/bpf/crypto.c
-> +++ b/kernel/bpf/crypto.c
-> @@ -261,6 +261,11 @@ __bpf_kfunc void bpf_crypto_ctx_release(struct bpf_crypto_ctx *ctx)
->   		call_rcu(&ctx->rcu, crypto_free_cb);
->   }
->   
-> +__bpf_kfunc void __bpf_crypto_ctx_release(void *ctx)
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250715-can-compile-test-v2-2-f7fd566db86f@wanadoo.fr
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-We are not really creating a kfunc here. The function is merely
-to be used for destructor. So you can replace '__bpf_kfunc' with
-'__used __retain'.
+diff --git a/drivers/net/can/Kconfig b/drivers/net/can/Kconfig
+index cf989bea9aa3..d58fab0161b3 100644
+--- a/drivers/net/can/Kconfig
++++ b/drivers/net/can/Kconfig
+@@ -201,7 +201,7 @@ config CAN_SUN4I
+ 	  be called sun4i_can.
+ 
+ config CAN_TI_HECC
+-	depends on ARM
++	depends on ARM || COMPILE_TEST
+ 	tristate "TI High End CAN Controller"
+ 	select CAN_RX_OFFLOAD
+ 	help
+-- 
+2.47.2
 
-> +{
-> +	bpf_crypto_ctx_release(ctx);
-> +}
-> +
->   static int bpf_crypto_crypt(const struct bpf_crypto_ctx *ctx,
->   			    const struct bpf_dynptr_kern *src,
->   			    const struct bpf_dynptr_kern *dst,
-> @@ -368,7 +373,7 @@ static const struct btf_kfunc_id_set crypt_kfunc_set = {
->   
->   BTF_ID_LIST(bpf_crypto_dtor_ids)
->   BTF_ID(struct, bpf_crypto_ctx)
-> -BTF_ID(func, bpf_crypto_ctx_release)
-> +BTF_ID(func, __bpf_crypto_ctx_release)
->   
->   static int __init crypto_kfunc_init(void)
->   {
 
