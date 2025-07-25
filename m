@@ -1,104 +1,148 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-io1-f78.google.com (mail-io1-f78.google.com [209.85.166.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D598B2ECD0C;
-	Fri, 25 Jul 2025 12:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867EC2E36E3
+	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 12:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753447505; cv=none; b=kg5blvmyMlkZxS4P98ZMnNkEsFi2Zqkpjph297qFQeG3evfW1g9/hwo0WV2gmhY/NF7ayF9g31Uf6/9EW0EPmhbJle6aE+ZWYUbpthtMT2puGAt1pt+tQ2SKIKzmYBrEVGZ6P4dd385yBCT3wbNv3HAMIrNb1wYCCiQxG+b7CeQ=
+	t=1753447593; cv=none; b=h1pKkefKl/FGbjKAFoJSrf8BN/dQaFVMZeTFVIx+t/x0HP80PTS6yhFLXvLPjdKu7qPwO4HJ1Qg+UL68zdtPY3lBgOXZPLsuISfAYbgy5P0ohyL+1cEyv6gGcwWEj8TC1M6RyArVMb62NDzAMu6rl/oBYPgQdGn0WkGO3g4NjZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753447505; c=relaxed/simple;
-	bh=Ivx+3DpkDEVIWgDPE886sL3hmaIO7VVHI5szFYAJzWg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eeKK49heqvVkTc8GM+ZT6/s8f4Q0kBml5LxF32okC8VnG1oc6or/wWUDHcyYPUxFKqkf0EqoTxBW7jjsKnTxeZrlt0YmWIOP87dtXguy7LrXpMG0MgFlomQW1XWvjftComCp+Szvf5yHe7OhqSPM9j5wJJWgXzGEfGl3vY5sik4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ou6TODdl; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ou6TODdl"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-558f7472d64so2974968e87.0;
-        Fri, 25 Jul 2025 05:45:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753447502; x=1754052302; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=R6TxXc2OJoQQEZeRy0qh5s7Sa5mHuBfc4zIBb0BU55c=;
-        b=Ou6TODdlhtIoYBuWZlheh+UgbR2Hh3ReyAvIPhtdCCPJukFwgvnvB6kZ1JnSJ9PgSp
-         LgVxokRbCrDVYhC9290jPEIc9rk1GbRIGWhbcXzlPbHOSnLXAgdPE/mmwQ1LQuj0xm//
-         4jByisrIf48LrRwme2+6XMWeLirCsqF1h4Mbx5x4WGUkwMp0++7Ty8GXSvosixvRhyQG
-         f5gaTnqy9neKtI6nY5O+QdbpOX9pBxrImoJz/fL6OwXB21ckqclGXTIIB8EY/EttdO8d
-         8adwFn5KSxj/1mUbJNu9ef9PjK3vUUILpXGsdhIplmbOgSvTJfq81JPxkPs453+Rv/7P
-         Dkwg==
+	s=arc-20240116; t=1753447593; c=relaxed/simple;
+	bh=qm7IYgwWsCevniBDmNoxwlw3iwTZXJXBKMafkaJPtwA=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Sbh27yrYP0RCdMl15YkWe9QBoPHlXvIBETSLsvoEd1IXpSat2f6OkALG7gc+humeOrkrHWgMu0hzNcDaKZroeWkTYY4aFjqd5dCGphKfKqwr51IvZK2acR3wmryIpojCULHhvwWCjA0kXPJLot3YArHH6HRuIBSYpHHlPQ+oF8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f78.google.com with SMTP id ca18e2360f4ac-87c29bef96cso372915939f.0
+        for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 05:46:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753447502; x=1754052302;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R6TxXc2OJoQQEZeRy0qh5s7Sa5mHuBfc4zIBb0BU55c=;
-        b=Sq6gSZvN1eMbdBc6evX0j1123hX+gkopG+FsIDLkGeenA9s0TlcWpW3641o+RbX/7j
-         BqJb0gWCfYlJSPEHXDpiAtfh0k2c/w5PDKoXP5+RcOZHadTfoCnvhX2uX+NYVVLPWU5g
-         4K5zywGqX+dQTMhJ2c0LD1qY7vwotormpJCXiRbG5cKafJASl4J4iu5kYD924QD67uwU
-         2pcfDgMclxqJhifii7veqe88Obmf5Qy65Oet1DW+W0aTk0kcmvNJyYzrsTTfPVWuAJmK
-         IAZIVeKIxYmaMHhBm51BfEQGb6ieixE6z4jS3dRxVVeW8e2lPeiMOi15fA/SGnZHGc43
-         pBvw==
-X-Forwarded-Encrypted: i=1; AJvYcCUNUTQ/v0ucwEbksjoRszKxvz4nK4T80+HjttpAfigFVqCUtIBI6es9O7UoISCbPE5U8Z4waCuqTus=@vger.kernel.org, AJvYcCXMUdT4gWb9N5Ho+v/KZuov5KIHBuqUlLeQK2tVuLWiW4gSV4UJtB8tA7LqENtjWICEmGSfY+MQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxBENAh7WKOdiO4dr6KdM4SPjSKH3SL7lEAWphGWV/TTkyL103
-	OUz3CclkPeApi3mO0HmlHkKNicAVzkhUofKW01s+1qznPNRNb2hd309fdktrEQ==
-X-Gm-Gg: ASbGncuz9eYPA5pQ+XyENkea+/tZkMRiPCCHwZETMDhbpLth4qchB1Z4T/j79c4HVze
-	H7CngM2ukRtouXEDj/s0pGfXYIpf0Fz2qc9HOPW5+BlESpd1/7GakSk7gL5AONq1F0VWmn5KrTr
-	k8y91fugHSNiJX17RWTCQi/tLIvwws1cssRLsbOTXHy0w/FrqCAFn7/1OWB6eKbCF7FV7cKpQt0
-	mJhK67vRwBlfAt43RUd6x79ABvmVqz9gfXOjCpkarRLQQG5jo+tl/zeAez4oQsXA+USGIVVzau7
-	1IrW98uyR6TiQKumxu8j0vNJ6VzwseVLueHwoZwjyuF/dW60iSIfYV/pMHz+V2m+dR7elMPX2Nd
-	q3kbpa7TUfdr7F6wNywdlftzkAvjtNhoFCbB8MU8bTbxIbn0tsS4F9IWp8Y9ZZ4vgOA+SjT8Th6
-	iOtSU5pe9LI1g=
-X-Google-Smtp-Source: AGHT+IEybm6khkrXEWXr/3/TGkrlr2zgjTyZeiBtLvPmwfN38fI6k5rWT1d0IbR+P/SqIgokzw5w5w==
-X-Received: by 2002:a05:6512:1396:b0:55a:32ef:6bc2 with SMTP id 2adb3069b0e04-55b5e53d80emr624196e87.25.1753447501725;
-        Fri, 25 Jul 2025 05:45:01 -0700 (PDT)
-Received: from [192.168.66.199] (h-98-128-173-232.A785.priv.bahnhof.se. [98.128.173.232])
-        by smtp.googlemail.com with ESMTPSA id 2adb3069b0e04-55b53b2288csm921792e87.23.2025.07.25.05.45.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Jul 2025 05:45:01 -0700 (PDT)
-Message-ID: <94e5ddd2-3566-496d-a4c9-40f72e649811@gmail.com>
-Date: Fri, 25 Jul 2025 14:45:00 +0200
+        d=1e100.net; s=20230601; t=1753447591; x=1754052391;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RcOwnNkGMbRm/SAGPNDv3FvzOSvBQBAw0vpb+6DYIB4=;
+        b=skCOq/iAR0O5dYIH9h0iHBIbIWSGt1ZNtrujizC+zuKE2DxqjdQbvsMehIdXnrxqvT
+         9jFLMdjV2CHod7gviDrVF6BBqXRZXZRb6l++Fp3BXbMh2nAU1ZkGi7kM2LjNORfzVjoB
+         Ke4e2g885HUQqrUH+kLwpiw3FkgJCgH0dY31u5np2BsnCGsDs8LiiTZDu/hWNymMvf5x
+         Hcsxko5+fcvbwzCXIL1Z8dXQrP8h7C4AgcLTq0BckDVa8foOZBdqVk6OtZORaHdOASkq
+         HDjbLd0C5nIqC/kA/2TSaEYTEx6Kvj/yRH+kevWKZ2IuJYZU5aF63hNfNxq4eUuU5yb1
+         De2g==
+X-Forwarded-Encrypted: i=1; AJvYcCXLMFgMiTOAryNl+Rpjg1vRsRf3vcQGFCNIyz93A6DGuwEFWSzEY3TtalqyUxH9QkxzNj6b0cY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzt/VChswRuzyyh9Rba1RvjQ6hBEQSn33bIg4rFhJ6XUZxo11z9
+	xMtdhCUPmuwQrDwTBhOUTkunXDeLU9+Uii43j8KjV+f96cGrR8Z3OaRdrCGoHo+OKd80aWYyYwH
+	+JddMCXf61FlncEpC3YSXMQECovWtlcxK3HSP3x7eOsBF1L+qjh7Gb1yMENU=
+X-Google-Smtp-Source: AGHT+IGhLJ7WPISWlkBBKk0VG56ANSua07lRzc2p1rbmGsljUveQsfjYLhKQDFiB+gfn/k2x9EC/enz4YR91PiOq4KT2/m3G+lxl
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/11] can: kvaser_usb: Simplify identification of
- physical CAN interfaces
-To: Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
- Jimmy Assarsson <extja@kvaser.com>, linux-can@vger.kernel.org
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, netdev@vger.kernel.org
-References: <20250724092505.8-1-extja@kvaser.com>
- <aa90e02d-25d5-4f76-bd91-26795825c8a6@wanadoo.fr>
-Content-Language: en-US
-From: Jimmy Assarsson <jimmyassarsson@gmail.com>
-In-Reply-To: <aa90e02d-25d5-4f76-bd91-26795825c8a6@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a05:6e02:158b:b0:3df:3110:cc01 with SMTP id
+ e9e14a558f8ab-3e3c531f7aemr25617085ab.19.1753447590693; Fri, 25 Jul 2025
+ 05:46:30 -0700 (PDT)
+Date: Fri, 25 Jul 2025 05:46:30 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68837ca6.a00a0220.2f88df.0053.GAE@google.com>
+Subject: [syzbot] [netfilter?] WARNING in nft_socket_init (2)
+From: syzbot <syzbot+a225fea35d7baf8dbdc3@syzkaller.appspotmail.com>
+To: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
+	horms@kernel.org, kadlec@netfilter.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	netfilter-devel@vger.kernel.org, pabeni@redhat.com, pablo@netfilter.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 7/25/25 5:29 AM, Vincent Mailhol wrote:
-> On 24/07/2025 at 18:24, Jimmy Assarsson wrote:
->> This patch series simplifies the process of identifying which network
->> interface (can0..canX) corresponds to which physical CAN channel on
->> Kvaser USB based CAN interfaces.
-> 
-> 
-> Same as for the kvaser_pciefd, there is a tiny transient issue on a missing
-> header include. The rest is OK, so, for the full series:
-> 
-> Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-> 
-> 
-> Yours sincerely,
-> Vincent Mailhol
+Hello,
 
-Think all issues should be resolved.
-Thanks for reviewing!
+syzbot found the following issue on:
 
-Best regards,
-jimmy
+HEAD commit:    94619ea2d933 Merge tag 'ipsec-next-2025-07-23' of git://gi..
+git tree:       net-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=14bf10a2580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=ceda48240b85ec34
+dashboard link: https://syzkaller.appspot.com/bug?extid=a225fea35d7baf8dbdc3
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12bf10a2580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13d27fd4580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/afd64d9816ee/disk-94619ea2.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/e1755ce1f83b/vmlinux-94619ea2.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/2061dff2fbf4/bzImage-94619ea2.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+a225fea35d7baf8dbdc3@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 5853 at net/netfilter/nft_socket.c:220 nft_socket_init+0x2f4/0x3d0 net/netfilter/nft_socket.c:220
+Modules linked in:
+CPU: 0 UID: 0 PID: 5853 Comm: syz-executor145 Not tainted 6.16.0-rc6-syzkaller-01673-g94619ea2d933 #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+RIP: 0010:nft_socket_init+0x2f4/0x3d0 net/netfilter/nft_socket.c:220
+Code: 84 c0 0f 85 da 00 00 00 41 88 2c 24 bd 08 00 00 00 e9 ad fe ff ff 89 f3 e8 29 86 07 f8 89 d8 e9 57 ff ff ff e8 1d 86 07 f8 90 <0f> 0b 90 e9 44 ff ff ff 89 e9 80 e1 07 38 c1 0f 8c 87 fd ff ff 48
+RSP: 0018:ffffc9000401f178 EFLAGS: 00010293
+RAX: ffffffff89b8a433 RBX: ffff888077f68020 RCX: ffff888030a8da00
+RDX: 0000000000000000 RSI: 0000000000000100 RDI: 00000000000000ff
+RBP: 00000000000000ff R08: 0000000000000000 R09: ffffffff89b8b21c
+R10: dffffc0000000000 R11: ffffed10299a8e5b R12: 0000000000000100
+R13: ffff8880352ec898 R14: dffffc0000000000 R15: 1ffff1100efed004
+FS:  000055555942b380(0000) GS:ffff888125c15000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000000 CR3: 0000000034702000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ nf_tables_newexpr net/netfilter/nf_tables_api.c:3496 [inline]
+ nf_tables_newrule+0x178f/0x2890 net/netfilter/nf_tables_api.c:4327
+ nfnetlink_rcv_batch net/netfilter/nfnetlink.c:524 [inline]
+ nfnetlink_rcv_skb_batch net/netfilter/nfnetlink.c:647 [inline]
+ nfnetlink_rcv+0x112f/0x2520 net/netfilter/nfnetlink.c:665
+ netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
+ netlink_unicast+0x82c/0x9e0 net/netlink/af_netlink.c:1346
+ netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
+ sock_sendmsg_nosec net/socket.c:714 [inline]
+ __sock_sendmsg+0x219/0x270 net/socket.c:729
+ ____sys_sendmsg+0x505/0x830 net/socket.c:2614
+ ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2668
+ __sys_sendmsg net/socket.c:2700 [inline]
+ __do_sys_sendmsg net/socket.c:2705 [inline]
+ __se_sys_sendmsg net/socket.c:2703 [inline]
+ __x64_sys_sendmsg+0x19b/0x260 net/socket.c:2703
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7efdcf55c0e9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 61 18 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff48ea8a28 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007efdcf55c0e9
+RDX: 0000000000000000 RSI: 0000200000000000 RDI: 0000000000000003
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007efdcf5a5036
+R13: 00007fff48ea8a60 R14: 00007fff48ea8aa0 R15: 0000000000000000
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
