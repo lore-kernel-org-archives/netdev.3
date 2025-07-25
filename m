@@ -1,161 +1,176 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B818134BD
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 12:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FA62405F9
+	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 12:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753447676; cv=none; b=hlcAC3jfHfMf3pxgXvQxZLlopMnUQcdL5tETf7alXOVnRipfSzH6zyrDLntW4FNI0Ix6h0E1RxqyCsQby2UNYEtvIO6IdFOB4WU+msGSLV6PH6fz8HGqyL0P4E5LI38LBWkbxzzrrSyKLiKDHLRAQ/ZQdVJ799ew3p1R5YzwXrM=
+	t=1753448053; cv=none; b=GYaQ4/xkMoneK1lxMRZLpVvJOGeKcz8n7rjC++hUamfzOrxrtuBjOLCzrHOO0SC08K3fy07ybMwLWX5eiUMQiQ/FAM52Dn6gzvN01iT8T9zPPsdKibUW2Pqyfv7tWTTTx70pu1F4tpFzZE+KFNvzSNWIhy280eHtsGywUSwoLs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753447676; c=relaxed/simple;
-	bh=HZtWIFNtCJpMK2qxCgsJ8HLcBMXFIsU6z61saV4vKcA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MkhSFhygF5zMag7gJHn+Z1yTr3vSHiCW17IDaPiqhREWAT3gIa5ort3sDVmmUqJn3xX6nQTo8bbyLI5NmP+8bGCEDFxWaQASXrxvWaxpTk3bSvsQndRI0a1An2/dw/dboIeamSjsp7mm5J2/wI9EVPUPcsBroEGws/1r+fynqEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1ufHpz-0000aE-CF; Fri, 25 Jul 2025 14:47:47 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1ufHpy-00ADrz-2y;
-	Fri, 25 Jul 2025 14:47:46 +0200
-Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 97D7044960A;
-	Fri, 25 Jul 2025 12:47:46 +0000 (UTC)
-Date: Fri, 25 Jul 2025 14:47:46 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Jimmy Assarsson <extja@kvaser.com>
-Cc: linux-can@vger.kernel.org, Jimmy Assarsson <jimmyassarsson@gmail.com>, 
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
-Subject: Re: [PATCH v4 07/10] can: kvaser_pciefd: Add devlink support
-Message-ID: <20250725-ingenious-labradoodle-of-action-d4dfb7-mkl@pengutronix.de>
-References: <20250725123230.8-1-extja@kvaser.com>
- <20250725123230.8-8-extja@kvaser.com>
+	s=arc-20240116; t=1753448053; c=relaxed/simple;
+	bh=n6Pv49YI2ixqQxeXeoElRqTOz7LINnIIS8q9IK1ssoM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vx/sL9/LsnwsG46OTUXmRh46De7rE3PAQPUMQICKVAAH3bys9k8HgVG+MQKM4GjXxlsKprjRBdgjzXUz8/0+1Fg87zkCcWBbWWpcrQ9qcf0dVGHnLaOfj2D/0rftVsGe9U1jySzGEVNCIIYJ1B6e0hCBYIxlV8yDzfN4nx7qqt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aWeHC8nj; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aWeHC8nj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753448050;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gnS/9RA0O+Nr1ONscGv61A0UEDWCGQVb3k03oaKVO74=;
+	b=aWeHC8nj6VZbcK9974JxiBBC6l7VDvQx2FWAWPAs+CpzDnYU3KKO9ZyaunVXkFU9uzaM5K
+	IvXmR2BBqjuBjzeB30kFCpHZeXa+dEaC0dmhUKrSmCuoacomIsORO3s9/k0sVuUFhBpEHA
+	k9A6gg7tN2ZTFzGXmhia2fE1me9g+38=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-88-d3T-znw0Nqu22NcrH7KP0g-1; Fri, 25 Jul 2025 08:54:09 -0400
+X-MC-Unique: d3T-znw0Nqu22NcrH7KP0g-1
+X-Mimecast-MFC-AGG-ID: d3T-znw0Nqu22NcrH7KP0g_1753448048
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a4f6ba526eso1552935f8f.1
+        for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 05:54:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753448048; x=1754052848;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gnS/9RA0O+Nr1ONscGv61A0UEDWCGQVb3k03oaKVO74=;
+        b=LovDu4s8p7eQ5JmJC10VoYabTKzOMgDANYBgvvKMTfvTCaXFf4PFYI6vtVQwZl2yzS
+         0MkjnqzcQkjKZ1JB+M4rrQPdkdc2IuKhSyALWkkoO4JrJVfK6m99InyPuEXTzTRv5hhj
+         YAbfMowgEs6iayCalS1J16IGg3X3UzW29GPUttCX3bZmUxv2L7pa+1HNGedXcbiPBLn6
+         0vvpMCD1h+0/Wnh32buU1+yxtqEaMzEOcoqrmsANyf4wT6F2Lk2IHMxxXITBo03ZB3sD
+         BFukz8Q1xLMhbnYPih9tMRpwrflNZGxkwGp9tS5nUh6rBVr3B0WcKRGreUvhznODWMF7
+         hTkA==
+X-Gm-Message-State: AOJu0Yx072fkLg5OBg9M02WVwuySImxCxP313UnAjpTMR+XAfU4oOMBU
+	GVEomsWcW/K9WexKb44pwiaoqqq/PKfzp8pNjkbx1s7zz7AIJtc3FPyd82svveRtLfGLXBD61s8
+	g9YjLJOa4HvyBCjAASrsBpQoO5rR2Lx53GNiI/y8fmgXG60hMULukXzfeDA==
+X-Gm-Gg: ASbGncumQEuE9GUMP1WMoDWFotPF6WQKxlC8GIsiF60NIwgwFv9qm1kjBVIHQZEaaZr
+	mJsNEI7xIijdcXewWGWvIBdT5NzcVwolT5AoZXf3PPXSN3CJp9HbttgNXZ+2e2Q3ZEPMmkyK/LG
+	DxKMCVEvL/w/po85qz/lOy2zV48CLA6lkIJ7dPuB/PwZB6d6xwF8xafI4gbsGT1QZrk1+zMrhTN
+	y989kUUMwl908PF+1I5EpMnmvmp41oltxK9+B6N5Wxk4La8r1uom6w8EDNkHfp+CPUyJWTO6MfP
+	D6WXN4zigB0WITpWFvH2OwgFXMPGfIFUu/GpSXloDHSmL9qI+AV1oi26O28fPeWzH2OvHm/9+n4
+	eo9LypPzeDY8=
+X-Received: by 2002:a5d:584a:0:b0:3b6:463:d886 with SMTP id ffacd0b85a97d-3b77673ccd7mr1532680f8f.20.1753448048280;
+        Fri, 25 Jul 2025 05:54:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGnV/rTUIg6XNZcuQXqD7Mby5vL1dPZ+EQSiUq6okt35LgK8UVlU5ZqK2/bmlNQOz46/9c5Tw==
+X-Received: by 2002:a5d:584a:0:b0:3b6:463:d886 with SMTP id ffacd0b85a97d-3b77673ccd7mr1532648f8f.20.1753448047723;
+        Fri, 25 Jul 2025 05:54:07 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705377dasm53895725e9.4.2025.07.25.05.54.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Jul 2025 05:54:07 -0700 (PDT)
+Message-ID: <5fce419c-622f-4eda-ab92-86deaf0db5ca@redhat.com>
+Date: Fri, 25 Jul 2025 14:54:06 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3mf2wj25wf4cp2ss"
-Content-Disposition: inline
-In-Reply-To: <20250725123230.8-8-extja@kvaser.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] net: pppoe: implement GRO support
+To: Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Felix Fietkau <nbd@nbd.name>
+Cc: netdev@vger.kernel.org, Michal Ostrowski <mostrows@earthlink.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org
+References: <20250716081441.93088-1-nbd@nbd.name>
+ <5f250beb-6a81-42b2-bf6f-da02c04cbf15@redhat.com>
+ <0861d960-d1e7-4b51-b320-c2e033b49f12@nbd.name>
+ <46fd972c-14d9-4876-8df5-1212f6530971@intel.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <46fd972c-14d9-4876-8df5-1212f6530971@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+On 7/25/25 2:42 PM, Alexander Lobakin wrote:
+> From: Felix Fietkau <nbd@nbd.name> Date: Tue, 22 Jul 2025 10:56:10 +0200
+>> On 22.07.25 10:36, Paolo Abeni wrote:
+>>> On 7/16/25 10:14 AM, Felix Fietkau wrote:
+>>>> +static struct sk_buff *pppoe_gro_receive(struct list_head *head,
+>>>> +                     struct sk_buff *skb)
+>>>> +{
+>>>> +    const struct packet_offload *ptype;
+>>>> +    unsigned int hlen, off_pppoe;
+>>>> +    struct sk_buff *pp = NULL;
+>>>> +    struct pppoe_hdr *phdr;
+>>>> +    struct sk_buff *p;
+>>>> +    __be16 type;
+>>>> +    int flush = 1;
+>>>
+>>> Minor nit: please respect the reverse christmas tree order above
+>>
+>> Will do
+>>
+>>>> +    off_pppoe = skb_gro_offset(skb);
+>>>> +    hlen = off_pppoe + sizeof(*phdr) + 2;
+>>>> +    phdr = skb_gro_header(skb, hlen, off_pppoe);
+>>>> +    if (unlikely(!phdr))
+>>>> +        goto out;
+>>>> +
+>>>> +    /* ignore packets with padding or invalid length */
+>>>> +    if (skb_gro_len(skb) != be16_to_cpu(phdr->length) + hlen - 2)
+>>>> +        goto out;
+>>>> +
+>>>> +    NAPI_GRO_CB(skb)->network_offsets[NAPI_GRO_CB(skb)->encap_mark]
+>>>> = hlen;
+>>>> +
+>>>> +    type = pppoe_hdr_proto(phdr);
+>>>> +    if (!type)
+>>>> +        goto out;
+>>>> +
+>>>> +    ptype = gro_find_receive_by_type(type);
+>>>> +    if (!ptype)
+>>>> +        goto out;
+>>>> +
+>>>> +    flush = 0;
+>>>> +
+>>>> +    list_for_each_entry(p, head, list) {
+>>>> +        struct pppoe_hdr *phdr2;
+>>>> +
+>>>> +        if (!NAPI_GRO_CB(p)->same_flow)
+>>>> +            continue;
+>>>> +
+>>>> +        phdr2 = (struct pppoe_hdr *)(p->data + off_pppoe);
+>>>> +        if (compare_pppoe_header(phdr, phdr2))
+>>>> +            NAPI_GRO_CB(p)->same_flow = 0;
+>>>> +    }
+>>>> +
+>>>> +    skb_gro_pull(skb, sizeof(*phdr) + 2);
+>>>> +    skb_gro_postpull_rcsum(skb, phdr, sizeof(*phdr) + 2);
+>>>> +
+>>>> +    pp = ptype->callbacks.gro_receive(head, skb);
+>>>
+>>> Here you can use INDIRECT_CALL_INET()
+>>
+>> I did that in the initial version, but then I got reports of build
+>> failures with the patch:
+>>
+>> ERROR: modpost: "inet_gro_receive" [drivers/net/ppp/pppoe.ko] undefined!
+>> ERROR: modpost: "inet_gro_complete" [drivers/net/ppp/pppoe.ko] undefined!
+>>
+>> Should I leave it out, or export inet_gro_receive/complete?
+> 
+> Could be exported I'd say. This would allows more modules to implement
+> GRO support.
+> INDIRECT_CALL() here gives good boosts here, at least I got some after
+> switching VLAN and TEB code several years ago.
+> 
+> If everyone is fine with exporting, I'd say those need to be exported as
+> GPL-only.
 
---3mf2wj25wf4cp2ss
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v4 07/10] can: kvaser_pciefd: Add devlink support
-MIME-Version: 1.0
+Thanks Olek, I was almost missing this!
 
-On 25.07.2025 14:32:27, Jimmy Assarsson wrote:
-> --- a/drivers/net/can/kvaser_pciefd/kvaser_pciefd_core.c
-> +++ b/drivers/net/can/kvaser_pciefd/kvaser_pciefd_core.c
-> @@ -1751,14 +1751,16 @@ static int kvaser_pciefd_probe(struct pci_dev *pd=
-ev,
->  			       const struct pci_device_id *id)
->  {
->  	int ret;
-> +	struct devlink *devlink;
->  	struct device *dev =3D &pdev->dev;
->  	struct kvaser_pciefd *pcie;
->  	const struct kvaser_pciefd_irq_mask *irq_mask;
-> =20
-> -	pcie =3D devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
-> -	if (!pcie)
-> +	devlink =3D devlink_alloc(&kvaser_pciefd_devlink_ops, sizeof(*pcie), de=
-v);
-> +	if (!devlink)
->  		return -ENOMEM;
-> =20
-> +	pcie =3D devlink_priv(devlink);
->  	pci_set_drvdata(pdev, pcie);
->  	pcie->pci =3D pdev;
->  	pcie->driver_data =3D (const struct kvaser_pciefd_driver_data *)id->dri=
-ver_data;
-> @@ -1766,7 +1768,7 @@ static int kvaser_pciefd_probe(struct pci_dev *pdev,
-> =20
->  	ret =3D pci_enable_device(pdev);
->  	if (ret)
-> -		return ret;
-> +		goto err_free_devlink;
-> =20
->  	ret =3D pci_request_regions(pdev, KVASER_PCIEFD_DRV_NAME);
->  	if (ret)
-> @@ -1830,6 +1832,8 @@ static int kvaser_pciefd_probe(struct pci_dev *pdev,
->  	if (ret)
->  		goto err_free_irq;
-> =20
-> +	devlink_register(devlink);
-> +
->  	return 0;
-> =20
->  err_free_irq:
-> @@ -1853,6 +1857,9 @@ static int kvaser_pciefd_probe(struct pci_dev *pdev,
->  err_disable_pci:
->  	pci_disable_device(pdev);
-> =20
-> +err_free_devlink:
-> +	devlink_free(devlink);
-> +
->  	return ret;
->  }
-> =20
-> @@ -1876,6 +1883,8 @@ static void kvaser_pciefd_remove(struct pci_dev *pd=
-ev)
->  	for (i =3D 0; i < pcie->nr_channels; ++i)
->  		free_candev(pcie->can[i]->can.dev);
-> =20
-> +	devlink_unregister(priv_to_devlink(pcie));
-> +	devlink_free(priv_to_devlink(pcie));
->  	pci_iounmap(pdev, pcie->reg_base);
-                          ^^^^
+I agree with exporting GPL-only the symbols.
 
-This smells like a use after free. Please call the cleanup function in
-reverse order of allocation functions, i.e. move devlink_free() to the
-end of this function.
+Thanks,
 
->  	pci_release_regions(pdev);
->  	pci_disable_device(pdev);
+Paolo
 
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---3mf2wj25wf4cp2ss
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmiDfO8ACgkQDHRl3/mQ
-kZyY2Qf/d8YL1m9zzf0GR8VhMlgXqQMqKI6bgEetN/STYpbPYISZikAXLKH3PMhl
-+KPg4RXEm83uDB0jMEm9EW+wmKp523GQAI+nbFKxuNeRCX/XkopzSMr89DqltU0o
-vH1wV5ARkJW1DtiB4sAJdUWpPk2ry44gecZmujxs2fRM8yhU1HivumKUDauaMpu5
-jiQhjvjWet4hcKagRVHU4yt58PPXSc/gbkVKjEzFxHReVEO831SDPBvsUMVaOHMQ
-rSj7uv5Z6ZwAGDHhMAEWr5TtdGQLv/6+5ZFIZzd7ZqoCOk3MjLdvwUcbvgAnhZUa
-dv3ihtEUDQbMCqIKpnnrigGWuCx/iw==
-=veG8
------END PGP SIGNATURE-----
-
---3mf2wj25wf4cp2ss--
