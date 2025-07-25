@@ -1,63 +1,64 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00982EFD86;
-	Fri, 25 Jul 2025 17:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA9C7080D;
+	Fri, 25 Jul 2025 17:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753463071; cv=none; b=l0pI0wvBce08xlCtcW0SaojIjRJ8UeXbmJr44x1KRDXOtMaHRKIBYXydvFoPkrwShYB3KzU4EIRML3ohVocoYCwCBPb58QRHVGbwHHpZYef7foXPj1X1q6mVnjBKLZX0uMJNJuHL0YdTXUesj7uNeDuTvLQfNCGJncoTTCm9TFg=
+	t=1753463655; cv=none; b=ZiahcCQnVDP1oKwEEgT/e+9nKmEaAAlAOTMpmlwOVYtOURfVVV3q/bXXHtMxSCESC8FbBCk3vpFmY0Gsr+ag2oeI/3QTRCRUFbAAnzDkSJWAMDq0vFoPpFg0jMB3Mdqe9USAL1HT2uA9bYcBVe43FmV/ROJXBsN3oSsVTuGEVHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753463071; c=relaxed/simple;
-	bh=saTvY1xNV9odBTdpzYotFCX6xkjzZJMxHYHlN0zSC0c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pcRTzVaojVgC3Ha3+n0jUEx/J+T5P3c7qQLDcXblDMXMZCOJUs+S+PIWwgf69mhQSxJzC7Ay1IathjDw2P7fNwzjSUqy8+F+OGrPPs1qCjZ/33EeQccVzXo71s9XfpuxP/8psm8hgSRWZFBDlikBsXXSYpAisKrJePd/sbIOU14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=Iz7HYyd5; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=j9Ni0yOj; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1753463655; c=relaxed/simple;
+	bh=kqBmJJq9ufFHOESJhsjd3Onyd4cgOnDcJ4k/ti6hGV4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eHwdk6RdMCxncvy1FJtV7X5FDXotioJa9Xnx0XcEodVBNFsnpCxfmDwrhH0NPgQCbTh6xPltZV6H3tAJEbtv/UqjCT0F4YmOw2SvzdbmLxiATDvGbNq4w08t/SmMHYREiXE0Lw0hrX80WoIT43d16/geNkA/n9iVN2B3WYHRoGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mZhoVzmj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="Iz7HYyd5";
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="j9Ni0yOj"
-Received: by mail.netfilter.org (Postfix, from userid 109)
-	id AB02A60287; Fri, 25 Jul 2025 19:04:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1753463068;
-	bh=2nSk3/XWL9Gu8qwfao7/VodiDG0CLkG0nflCVUDCe8w=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mZhoVzmj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2B4C4CEFB;
+	Fri, 25 Jul 2025 17:14:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753463654;
+	bh=kqBmJJq9ufFHOESJhsjd3Onyd4cgOnDcJ4k/ti6hGV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iz7HYyd5th4k5q8L2d1veF/O1Z+4tsa6+ufkJNsgB98rzATftiavY+0hRkB4zNJKi
-	 tmro32dYiqTJBb3cW8/rEJwLkmJqz0mgjdnCY3zHVyvO+jIVHfNMXE+6S9IU9J0TGk
-	 F7faFeMuG/oBDOR/TnEN9DHWP7PvexhHMhQQBq0qNo1RlOUAe60H4PB7bghg//LX5a
-	 CDA5IPXitviAxKz1huNPMM0BHw1jHvX6aJy3Zjo7ssyjZJ98XBMD5jpXzbQOly2kDN
-	 cmCI8NRktsO/EaJuHPgBQDpcYleeCa6W1sZtDEP98S5GXd00xxwH1A998Pe8uIgii2
-	 Lh//+slZvbs3g==
-X-Spam-Level: 
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 2FD5860273;
-	Fri, 25 Jul 2025 19:04:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1753463063;
-	bh=2nSk3/XWL9Gu8qwfao7/VodiDG0CLkG0nflCVUDCe8w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9Ni0yOjnVYi2l39HeXaD3KOzAYCR8CLFC5FIxsFUG9yW3uUysMMs4NbrEaGuzedO
-	 kd/8i2/03Jw89/TnaVKUOOINYA4hbWnDh+FGiLKk0OpZIud2mYvRyyiCusTgff/mK2
-	 LoJNkGfSlw7e7D4G6Z2nzEoM2/lncitpASjDM2CXRFu+V0pykS97YefWL0agGP8IG4
-	 EcMYl+kSpf8J6TGyCnoYZqGJa68wgPNOCZMAxE/ZIMfLsXyubdlqv+aHeJqxTayrUK
-	 P/I7PULhyWkQVPm7fAhIKNuukYKg7JD9c393ww9V5fXMECiyvqf8+gLfI92hoivhcT
-	 R3ENoArPavZYg==
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
+	b=mZhoVzmjTGSEG/8V6D2+TCofzITuvz4FXYSXvQpgd/INthke20gvu8WcB9wS2Njbq
+	 kYfrrq1G9XI+6f7vtzrfHumnzdCzR6pbNmZsiC5yr+hBKVb01QuqoLCjSwOEKkc5Id
+	 tLFFM9rWCj5WvNG0yELdSU2OLdHskwAYGeHssw2VRJZYum4kWIZgwKatgIhgw8zzqf
+	 /3ozk8CwEF7js2p2JtIaafdrBM9RXNkkMUsOETxXFEcKhfDYBss/1cORcvMfbh5Avj
+	 aGtgFCKJP5DTGGJnWgvmzDJuF+YKFQXZlIeL91qvZrd3GhK9u5w3/wDxpw8BuJm42H
+	 Ii4e3/GOR1u5g==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1ufLzn-000000000Gp-3CXB;
+	Fri, 25 Jul 2025 19:14:11 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Madalin Bucur <madalin.bucur@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
 	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	fw@strlen.de,
-	horms@kernel.org
-Subject: [PATCH net-next 19/19] selftests: netfilter: ipvs.sh: Explicity disable rp_filter on interface tunl0
-Date: Fri, 25 Jul 2025 19:03:40 +0200
-Message-Id: <20250725170340.21327-20-pablo@netfilter.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20250725170340.21327-1-pablo@netfilter.org>
-References: <20250725170340.21327-1-pablo@netfilter.org>
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 4/5] net: mtk_eth_soc: fix device leak at probe
+Date: Fri, 25 Jul 2025 19:12:12 +0200
+Message-ID: <20250725171213.880-5-johan@kernel.org>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20250725171213.880-1-johan@kernel.org>
+References: <20250725171213.880-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,58 +67,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Yi Chen <yiche@redhat.com>
+The reference count to the WED devices has already been incremented when
+looking them up using of_find_device_by_node() so drop the bogus
+additional reference taken during probe.
 
-Although setup_ns() set net.ipv4.conf.default.rp_filter=0,
-loading certain module such as ipip will automatically create a tunl0 interface
-in all netns including new created ones. In the script, this is before than
-default.rp_filter=0 applied, as a result tunl0.rp_filter remains set to 1
-which causes the test report FAIL when ipip module is preloaded.
-
-Before fix:
-Testing DR mode...
-Testing NAT mode...
-Testing Tunnel mode...
-ipvs.sh: FAIL
-
-After fix:
-Testing DR mode...
-Testing NAT mode...
-Testing Tunnel mode...
-ipvs.sh: PASS
-
-Fixes: 7c8b89ec506e ("selftests: netfilter: remove rp_filter configuration")
-Signed-off-by: Yi Chen <yiche@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 804775dfc288 ("net: ethernet: mtk_eth_soc: add support for Wireless Ethernet Dispatch (WED)")
+Cc: stable@vger.kernel.org	# 5.19
+Cc: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- tools/testing/selftests/net/netfilter/ipvs.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_wed.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/netfilter/ipvs.sh b/tools/testing/selftests/net/netfilter/ipvs.sh
-index 6af2ea3ad6b8..9c9d5b38ab71 100755
---- a/tools/testing/selftests/net/netfilter/ipvs.sh
-+++ b/tools/testing/selftests/net/netfilter/ipvs.sh
-@@ -151,7 +151,7 @@ test_nat() {
- test_tun() {
- 	ip netns exec "${ns0}" ip route add "${vip_v4}" via "${gip_v4}" dev br0
+diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
+index 351dd152f4f3..4f3014fc389b 100644
+--- a/drivers/net/ethernet/mediatek/mtk_wed.c
++++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+@@ -2794,7 +2794,6 @@ void mtk_wed_add_hw(struct device_node *np, struct mtk_eth *eth,
+ 	if (!pdev)
+ 		goto err_of_node_put;
  
--	ip netns exec "${ns1}" modprobe -q ipip
-+	modprobe -q ipip
- 	ip netns exec "${ns1}" ip link set tunl0 up
- 	ip netns exec "${ns1}" sysctl -qw net.ipv4.ip_forward=0
- 	ip netns exec "${ns1}" sysctl -qw net.ipv4.conf.all.send_redirects=0
-@@ -160,10 +160,10 @@ test_tun() {
- 	ip netns exec "${ns1}" ipvsadm -a -i -t "${vip_v4}:${port}" -r ${rip_v4}:${port}
- 	ip netns exec "${ns1}" ip addr add ${vip_v4}/32 dev lo:1
- 
--	ip netns exec "${ns2}" modprobe -q ipip
- 	ip netns exec "${ns2}" ip link set tunl0 up
- 	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.all.arp_ignore=1
- 	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.all.arp_announce=2
-+	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.tunl0.rp_filter=0
- 	ip netns exec "${ns2}" ip addr add "${vip_v4}/32" dev lo:1
- 
- 	test_service
+-	get_device(&pdev->dev);
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+ 		goto err_put_device;
 -- 
-2.30.2
+2.49.1
 
