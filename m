@@ -1,95 +1,65 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2132.outbound.protection.outlook.com [40.107.21.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139CA2ECE82
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 12:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E423F2ECD3E;
+	Fri, 25 Jul 2025 12:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.132
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753446913; cv=fail; b=FcC3tX0IOvCgbwDzpZ6DV7h0MxI9EYAx42os9JVLjG0OVEJpeXV2hMVVsyS55y5XkvjUOPVMHViRMqqP5Uvebtz9CJ8pnO2lqo095aKh1AHScUunIibMjwN5+V8vz88atMXQY8mpydFDMgbO9cEXF7uXl8MAHxXwYdgsJda0MCo=
+	t=1753446913; cv=fail; b=n0zNrZqr7mzwZc78y6zsoGuNH6Nv9bAkoyNZjaQOvOG0lXdrbdowvXddyVh5IM53DYwXKZBbCSadRK1ofa9HaLbNCyLCWtXYRsM3Ras2O6l9YGan2A+zEyx64DmvJbsf0Jg9QRfewIPefIhk4Q4/9qAucNOgdW8uVVnQ46sknrg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753446913; c=relaxed/simple;
-	bh=YDIMx4g2ti0PTicLrF6BRtjnskPKjDQZHzPGhPYUwAY=;
-	h=Date:From:To:CC:Subject:Message-ID:Content-Type:
-	 Content-Disposition:MIME-Version; b=XeyLmzQUHDjwSPc1H7yS+xLUQg22M7C+u5yiamYwo/QcGmqO5zJZ9H76OO5FvHwVMRM3lDMxKqf/LnlBcNahRwwZDOih+65otgkYNNK4OL0et9hRN3arhrviEd08XCS4izUHbt+X2O5UoHEiTNIyUV6Y60pxse6LioV0O4oQrvE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KjckvhT8; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	bh=5ojhtOPazZeNTNFXPt/VpoQFgh9xn5a02OfbHBFUdEk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=iGtZj7EDoUB/b7eMLX4RTULSCGvQvoe8LGjwV+MUHZwGexbpNgnYLo16BzOFixxlxU7cc6+HbfZhqDIfmnoe+NQxW9jIqkFbbRRZ4mdjufmLCSjzA0RvTOLg7i0d0RDq52dyxxUHCkMjpgvHnYsyDgrY37XUxUThi5W3lbju7Xg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kvaser.com; spf=pass smtp.mailfrom=kvaser.com; dkim=pass (1024-bit key) header.d=kvaser.com header.i=@kvaser.com header.b=fg/+X8Ik; arc=fail smtp.client-ip=40.107.21.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kvaser.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kvaser.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KjckvhT8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753446912; x=1784982912;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=YDIMx4g2ti0PTicLrF6BRtjnskPKjDQZHzPGhPYUwAY=;
-  b=KjckvhT8wNcMVllLgj8j8lO7KiIZjQXsOJAgLU/XhpAF4B51gHgoFY8E
-   yFHNUh5yzZS5fqnwyw50YqUhGeNjNZl5eEkECVgcHIfKV1vsR7/LndeoR
-   a2TyEtDMDfGomsvCjdxHzfJD3CPohDOPjOeHUkWb1kxQmi8J58E4ytjpJ
-   TJhUn93ubsrxyhqctJGB2pEpG6T6mabh90kSr9aQaxzvUDwJ/pcqvFXOf
-   algdkhYYR1zRH3lQ5Hl7+JbgrpUnW1sM8mrBxIh4u7en7HgTDO4kjVVCv
-   vejJ/lHlk811EGUPiLKklekhmjegDWRoHxcEz6F1oOSWS98mjVl0TlSlU
-   A==;
-X-CSE-ConnectionGUID: m/RQExKfRSOwvVY4+A+rgQ==
-X-CSE-MsgGUID: M5b3qow1SWil0z3lqlJSKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11503"; a="73362551"
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="73362551"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2025 05:35:11 -0700
-X-CSE-ConnectionGUID: Ot50CndiSkeY9i/JrPXa9w==
-X-CSE-MsgGUID: byi1hb1+R0CN3efCqcGSDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
-   d="scan'208";a="165068329"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2025 05:35:11 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Fri, 25 Jul 2025 05:35:10 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Fri, 25 Jul 2025 05:35:10 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (40.107.93.83) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 25 Jul 2025 05:35:10 -0700
+	dkim=pass (1024-bit key) header.d=kvaser.com header.i=@kvaser.com header.b="fg/+X8Ik"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RHdcKuVrSUNhav0xDa69SuIkq0IC/7SlruCmNI3wEx+iVNanF0fBg6pkLYrZ6QWJAo2CmoUcrOq64x4WJr1T9dUyigJhCl6QmXBlcyrETDBB13/fLFY0WyLCzPmBqxIBeUBssDYBXk4twP8pNxSx8iPx37lgwsKbkg4cUdriSuB8Yh2n4U20npYNfk48pDWvW1SDYwFt4DdH+jz12PQqgxdkDp12ZZuAZxINkgNOlrtyVuTA2QVnsoStGxM9c+MlwVzXQyQFhczW3UixPDnLCGoof/9z98tBc0aGw3y+HCgTnc+VS5tWbmTLWCg40JISOinII/AaoyvzElnRRis5UA==
+ b=jDd5CYuxzi9PRBz5C5rcKadhPfqKa6xQi5q/BxRRU7dpKd26c1jhVhU01dP9VKt9oR52ucmm5ZpDKczNKHyiOc1zJTe7ohh9kh09ZLaiZ1NSvGs8AJkVk7LUoRbWvgAiGv5icm/zfgXYsykAUDwlLX1PMXBehyc66QtsqeqZd8duZPEErmBHuRbbS44EEoqp5zSoaH2JmFCeNkTiZngh8WWso1bzfV5cNNqXt5xZrv981h/a82xbdkFnhoKYTrsj5Bo4qsy0bEOWP+qWJJMb3k24ihcJyoI5nWRWHNkJiP5c1jek3L/1BHXPhKsunJcdzocNYRc9HdGP1NA8BQM48g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nlOQIfsdjkYIg3hqXD5bX3Rjsyh6N9zm5qRng2dCxGM=;
- b=Lt/b8cIK5zs8+yRNFvCMSx5dJ9Kx1V9rh9rkZRNdjXMtN1PgG+wfmyJRH91jx54Y6G5t4M20LodoT0wCrSYDLx/3Q9Q8hh70zyp24XhLTYj86hm/GpyCCACb7Fb9Wq7spzgMJNiqHCwJEKijx4/8PFlBqqDV91yhW8I/BqAZejjy7bqAwy2xoHnUs/2lEDgRiM+PVQgOpSbmz/1TPNuQFX4D+oUw/jbykjvIiA4LkLe7tExKvVRpsvbu1eXbkQuIC98RhGwHrW6ic0HXKJqC4dCh6pbKD5ut3B6HjldzJdsq+5XMFpE7mN+S9wOhHuxgosucTBsAbD/ObwjKlKlAUA==
+ bh=T6/V8WJlbfvD7aQv22HnphZcEX17o8x9b81oLhDFpuY=;
+ b=TiWx33l7cWvIt1UNmi2f+KuOrPWZzjuHfsJY7Zy2rt1tu7Qoj56OqjK9a1Y8EG5oVJjYuLN+P4eKSE5JW5ll7n07da+1H84KqD7HrTAr4Wr54vjbOVp7lLASyEDJgMg0FkJdVS0z69Cw04qxUxYu30G+DNh77/tuFW240d66M2A+zU+CXTSP7IA39qerktH7Aq6cmKRoWcgel7/OE1rCWpE6xlA7M7u6ELqO9HwiNcajuvMZTKQlFxNiBKaepX96avcv9RD8qwhfzwS5nxJIhTTL+QMF9HvOWnoRZMWzT79PyjXxcUvYD3yd3YobBlsjk+KA1ajXuHHjCjYBOxUwWA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=kvaser.com; dmarc=pass action=none header.from=kvaser.com;
+ dkim=pass header.d=kvaser.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kvaser.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=T6/V8WJlbfvD7aQv22HnphZcEX17o8x9b81oLhDFpuY=;
+ b=fg/+X8Ikib3vvuA6B/r8rJTu376SDtZXagWJ/jdNDY1SERDHmF4ql/x6EWwvPOLayKtBFK1mYiaEVMKRdh726YNGI2VeQuXNInjGqN/J1Pvl4rtuuLEVmJkx0wZvGB0i3fJRZyaWqLrUtsVJlF5Ng64SZRikvRYnfvy+FOGqRKI=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
- by PH7PR11MB7147.namprd11.prod.outlook.com (2603:10b6:510:1ee::17) with
+ header.d=none;dmarc=none action=none header.from=kvaser.com;
+Received: from AS8P193MB2014.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:40d::20)
+ by AM8P193MB1219.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:36a::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Fri, 25 Jul
- 2025 12:35:07 +0000
-Received: from LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::4622:29cf:32b:7e5c]) by LV3PR11MB8603.namprd11.prod.outlook.com
- ([fe80::4622:29cf:32b:7e5c%3]) with mapi id 15.20.8943.029; Fri, 25 Jul 2025
- 12:35:07 +0000
-Date: Fri, 25 Jul 2025 20:34:58 +0800
-From: kernel test robot <oliver.sang@intel.com>
-To: Carolina Jubran <cjubran@nvidia.com>
-CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, Jakub Kicinski
-	<kuba@kernel.org>, Cosmin Ratiu <cratiu@nvidia.com>, Tariq Toukan
-	<tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	<netdev@vger.kernel.org>, <oliver.sang@intel.com>
-Subject: [linux-next:master] [selftest]  236156d80d:
- kernel-selftests.drivers/net/netdevsim.devlink.sh.rate_test.fail
-Message-ID: <202507251144.b4d9d40b-lkp@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-X-ClientProxiedBy: SG2PR02CA0070.apcprd02.prod.outlook.com
- (2603:1096:4:54::34) To LV3PR11MB8603.namprd11.prod.outlook.com
- (2603:10b6:408:1b6::9)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.24; Fri, 25 Jul
+ 2025 12:35:04 +0000
+Received: from AS8P193MB2014.EURP193.PROD.OUTLOOK.COM
+ ([fe80::7f84:ce8a:8fc2:fdc]) by AS8P193MB2014.EURP193.PROD.OUTLOOK.COM
+ ([fe80::7f84:ce8a:8fc2:fdc%3]) with mapi id 15.20.8964.021; Fri, 25 Jul 2025
+ 12:35:04 +0000
+From: Jimmy Assarsson <extja@kvaser.com>
+To: linux-can@vger.kernel.org
+Cc: Jimmy Assarsson <jimmyassarsson@gmail.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org
+Subject: [PATCH v3 06/11] can: kvaser_usb: Store the different firmware version components in a struct
+Date: Fri, 25 Jul 2025 14:34:47 +0200
+Message-ID: <20250725123452.41-7-extja@kvaser.com>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250725123452.41-1-extja@kvaser.com>
+References: <20250725123452.41-1-extja@kvaser.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MM0P280CA0087.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:190:8::33) To AS8P193MB2014.EURP193.PROD.OUTLOOK.COM
+ (2603:10a6:20b:40d::20)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,169 +67,222 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|PH7PR11MB7147:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9f1de7e4-1646-48d8-1c76-08ddcb77b021
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: AS8P193MB2014:EE_|AM8P193MB1219:EE_
+X-MS-Office365-Filtering-Correlation-Id: 13fe19f3-a945-45bb-b3f7-08ddcb77ae4d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|13003099007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?HO0c/OnMyUthFsmCsBB5OJg6/IQOPWtmO1/RAR+PcBNTPO2HA6I9462y1qEv?=
- =?us-ascii?Q?fW6p+eaDBlbOGbytqpG/j6ORMDxkl59L1gptZOLu0F1948DWP1J2XQ0JI7cm?=
- =?us-ascii?Q?FVAQEH5id5DYBsMsMlyzTwhFSKa+lxCJ7UHkuTn3N5rG5Fsu38aNSJKEVczY?=
- =?us-ascii?Q?5tmz7n6pxBHU3r2X8PkpNbi+yz8wZQViLGjhvAzNcgnOZ1QWKP15xr1CR8H9?=
- =?us-ascii?Q?it2bDUymNO6PCcQOB/gSt12o3GVccATok5oDxer8fSttVDNZg9QCmnVoa+6h?=
- =?us-ascii?Q?RcOTjggnXZh79KkMYKYgS/+tRafDd7GrbLDg9EYSW2Wq4BahbCO2jex+bdOx?=
- =?us-ascii?Q?H1sOWNAJfzONuPLaYtKNscGbKF/QC6sJPDCbuhJ+dOMcSKAImfIwSmCH4jfk?=
- =?us-ascii?Q?d87xBzGRsNNgB06tuySeFRHf7f3+WIejJo7G6cKXczQnnx2EeUxDWQ2PDqUT?=
- =?us-ascii?Q?16iuQrZWDp/OxPgp945uhVzVk2UVaoWG3dl7pJfSJm4bcdbufJa791SEwn00?=
- =?us-ascii?Q?bFc8kfHiXLdRBG6zKYsO9TvxbWz4ElX6U6HZ8AyLRbUYAk87gRnpk0caQr6R?=
- =?us-ascii?Q?du+GU6n/CqmHQ/3bGkUlQt2+eRWB5nLXrC3T2RdEwOi8/8TD3AquTsTmt8aT?=
- =?us-ascii?Q?gAX5cbOI6+WYqwzpA1JuZwDYGbNG7kRn2ad6yWyxC7HwffZTfneHgBjIikTg?=
- =?us-ascii?Q?ccrmeyx/hTgCPWUMm0vlvY7V9BuoTxn9KAkYIK9AgdFSPJlPbQf66L7MCxln?=
- =?us-ascii?Q?M80/bol60QrL+mtslJkaIKTHEy+W1VZ7PWnsWzvK40i7rRBWstFHdYkLJJpk?=
- =?us-ascii?Q?P0U5xqOwMA4LEx4NJc/o++zKMheX33i7miVRW3cguq8MlMYO6mPzR7GwMoOw?=
- =?us-ascii?Q?brA7iw6+gT5bKOT1QOmRRryHP9Lb9ORW5othnaMw8dCox/aJNx+msV27wx6i?=
- =?us-ascii?Q?uk6IZBVSCDL+cjkicUFiH2s4RwPG7DrnE4Aa/OIJ0gSlevGBJo05AsnHPg1S?=
- =?us-ascii?Q?BmldRDJeqJ+sV0cHfWz3y5x3ka//su7bfxc5EwaFGG+oCQeVruzVNeelLc6F?=
- =?us-ascii?Q?1aIByQ+wQEu9znyI69caO7eRIZXaveWXYdnC1Us3HHPnnWWhJOyum7zq5Ysm?=
- =?us-ascii?Q?/FkK47HYG0GS0d2RkNFCM4xCABxN29JMSpS4WAoDmVAB8rGlVWipaX5T3GBm?=
- =?us-ascii?Q?uiW8HA0IC4V5gCirgLNNp4pEsq0e8wcLA8heVci268/fW1ooKMah6Rilyu8U?=
- =?us-ascii?Q?JpRw6wLr+HffcqnxKIYWK7ZJ0uY9saU0tlNI9u3ZA9ImkE9iiUdsZMo9WM+H?=
- =?us-ascii?Q?s7sL4/ePeRgJXQWidcMQYddvDilZnFSt9xE86ZVatZuQZv5ddqY5OdqcRf/i?=
- =?us-ascii?Q?kFNIMYLpy2Y9BWtPegRxKaAhdEor?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(13003099007);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?/e49uQ7q49z/rAyQfKbwpHhc8v0Tq9IrJT7jlJ5501TKHev6d4CdSYsM3s4l?=
+ =?us-ascii?Q?HJX6PYiUNY/MkXHfOG4K5y6OJgAKEXyw9WbOBTiE5YVbuR9KWx1DoMkTjkyn?=
+ =?us-ascii?Q?Xl1JpeV6etdtCciKjf0H1BqJDMX50PfqUgfdK+rKbggpAQ/0fQRSsnOkheQG?=
+ =?us-ascii?Q?J2aOmwHoIR0mMAbE0QMMb5BBgEQUyD2WBPkMHdHFCPx8uFFKW1rZUyR3J/OH?=
+ =?us-ascii?Q?+I1Xfugcs8H08RDljQnvSuOnKOY483OQKW5wX87nTEiWqlgL1OQzP8Gzp4Rq?=
+ =?us-ascii?Q?CZu+ktUvLhAxVecfZbrGm2Dmz3YlCZQjZiwR4IxrbWjrvL2H+mlYJEv8LSbf?=
+ =?us-ascii?Q?/RgggMMgNXcPskWuUfF4txLl7Qk1Y9kVhJj8xRU9g/ctLBad8NbVLDn76WfJ?=
+ =?us-ascii?Q?Omn4yar5eLljvCsXJRJ1kjHyMgwaR95KPOhr0pPbXQscTDVKyTF35B0ws7sa?=
+ =?us-ascii?Q?Vg7ZQoOG0DcEmg+Eu8MoYE1fxMtzgLWkpGvigr2lDEwCaeQMhatfvYa5+F9l?=
+ =?us-ascii?Q?aRF29dkzuP0UBodOLOFjA/xs03l9jT7ipXsnhe4cFMSYzMDiemdQxxgYMj3b?=
+ =?us-ascii?Q?792rHntqaL/eB0V7mMMPuRkER9jIB/jfD5Rks/uS4VQi6OPvLBYFrN16sHq9?=
+ =?us-ascii?Q?7WJWQBYAU/SLRevJTlahv4Nb+9IKWw2RI6SVNf/OGs2W8X8JeHw9+zB4uoFj?=
+ =?us-ascii?Q?1++oel1lRUXQjY0DMlDH5bxP4GeGYEbJlPdr3+3V9gOeEA5WESbUkQIb3Gjw?=
+ =?us-ascii?Q?uMRyBMYgwgy1fjLejPD/FWisqkXtpj3vM3uHBnMA/03HsJVUSzj1t+8GeUuX?=
+ =?us-ascii?Q?gBuIrZvBQMQE4PcbYze8pPFdneFlpeJnBibQLdGP9xiszZCBOGHOGnkDfSfz?=
+ =?us-ascii?Q?j4Ez2ue6jtcb6G505jWCdEAHkPcVrwqWDutDrRYxc4Cash1P1606odvvu2oQ?=
+ =?us-ascii?Q?Xjpq4AAocQpga6GCy44mVYOsst44gTa246ZX2qdKBOjTLrBanACbq1I2e8g8?=
+ =?us-ascii?Q?DjmhyeLb+uaY6qo6xrTxHYWoxuYmaW2m7N5/ei99a8NX2tgHQqp16hLCDAoZ?=
+ =?us-ascii?Q?0c4xBnS0GjQOAtmdZSvNrDVdivVU7WWQcOgfogk+QFDUv/oZ2Pv0luKHlWeI?=
+ =?us-ascii?Q?WjcIsnZwENR2o+WDYRdFrCDq67Ocdu9XbSx7NkvgmOife00hU5ogsQS7VFyZ?=
+ =?us-ascii?Q?JgHrR4SjTnImuPk5qCJ+zqzCp5hZEdxw8jdGNZVzUxsGrTWefCUEwLxoUeml?=
+ =?us-ascii?Q?RsRIT6viBoX3g1qirzrmQ+gFB0KZxQntM74aVniPLANeW8DDgC4IaG90VrKa?=
+ =?us-ascii?Q?+qAyEBC4g8tQ/uVxpt0zNTa1I34DRjGELcRSLiRwdPcSTAOAGHtRcrxLJsSP?=
+ =?us-ascii?Q?hN9ZfgU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8P193MB2014.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?JrFUhTaSoWisnKoUWXYrzYNwvGY5Ed3psNBgmvxbA0xkLtGd8jyQ80CENKcp?=
- =?us-ascii?Q?aRJbxDqyfBPqSS2zr8kzdChSr34W+yLXY6CcO/ChqUf/QJNo8AA1227GradC?=
- =?us-ascii?Q?/HO4yhbOUvCH6H6UnHYHxt334KnKUuxJWCOF6cafPlvl8khsJECmBTVx6QSt?=
- =?us-ascii?Q?1khOLJSwLmHUyD9T2OlEPIT3iIGWbUmUr2tBR1wNg4eKn3A08JFuiUJmEiDG?=
- =?us-ascii?Q?JhPk8ZZAG1bQjoQgH5x/tPW2TmBcOF0bPArXOA1FK0qhEHB+MUL/6wFt4sNI?=
- =?us-ascii?Q?4QXEVzooUmcdqaTlNXv4VbK51v9FzRLuyZGcb84KxXfCEeVxcOFTm+whyVm/?=
- =?us-ascii?Q?dzcqmOYl9EkHibepKrWFXul97ZeKVRFxrHarRPYFSU0dM3BzQWFPZh5V5Zv4?=
- =?us-ascii?Q?zM7oohjVYJsVHxvMO+rRdKfNan8phDtwiTcpvyARFDx+32aWgGwpozZEdecs?=
- =?us-ascii?Q?Vr+1YUWBGT+tcjWAP5aR8QGzPxqUJ6ZV+bC198o900CTyEcENK+2MYdQkZvu?=
- =?us-ascii?Q?QHbFlI3RcxwJ3uGPzFNUP/DmSuVSPrmBAN+PRggw8JLwMflFBr8BosUJusUC?=
- =?us-ascii?Q?RB2B+QGTwMb4kwdks3hHCuoLbWHSm/MwzFTGTfPXBkI+IHS06La1QBvlkBtJ?=
- =?us-ascii?Q?glVYsLVl8AO0oQ+JuICeHr/EvR+Y3pzpYlAl81X2ZXMvC0RcYwOAvuRN5TI4?=
- =?us-ascii?Q?J9+gYcTDcW7jd0cKbAinR8c8XZwm7d5z1/OUJxo11Ib08nrL50fGhEjAzwm3?=
- =?us-ascii?Q?4c37TI6/iW0+qU4RNcKgXd09xlxIgpwLIZIYTYYTBv749HfLNiifsd+0wou+?=
- =?us-ascii?Q?n/8OLIqRCOi55SMaRadOoVtyz3hE8VOT/HfUjbDNCdPBh8BiAqpZ7ba/OyNj?=
- =?us-ascii?Q?/Ep97h9rX30yEz0Ivtdd6i5W/RMCpmwq5VrC+a/RqUn3ugUW7QgY+2WD0iVd?=
- =?us-ascii?Q?/77N6KHihL9UiwaoaR5o1vnUJgywHh4Iw3C/nqqpzkGVIWaWiJpHtYmdaaKi?=
- =?us-ascii?Q?neLqM5WxzfiR2cE9X/VcJqL/xNc4PIJo6HlJopRCHpcluF8EkO24QRLN2lp1?=
- =?us-ascii?Q?DGRFiTUYRnITVTuqYMuSQo97pVZ1tsKoGm6FEtkFqjF04UmOsz0h2B61XxUx?=
- =?us-ascii?Q?EalkQy8r1RIIWLJ5HIyfwQfKoL4pbcOCTFQ8S0BSTIv0wMpXi8fepg+5rInU?=
- =?us-ascii?Q?29V1rkm7t2OTiaOY5pKGHtoueWF+um+vuC/IIO7RYIZrNIBJWEtVbK3rqKGz?=
- =?us-ascii?Q?BwrqQJZ+xZCK8V4CmLIrxwN1Iy25o9zbyGIGP5SSCQ5h7QC8a0KBLzsSvdGq?=
- =?us-ascii?Q?zpOXfzpefNVZxTtdeokePH2zQE9otlQ0OCNmY05V7hmQAh1rGEsc15sJx8YC?=
- =?us-ascii?Q?XyavvzS49rK/ToVci7M7amwy//Oc4yH0zcXdxipk7pCqbtFBXCytyr4zUT77?=
- =?us-ascii?Q?UF0r2UmxnKvzhQ+/2cmYJTS6u8JooqdOeMHM9VxjPXRTcmy/oE+siK3Bttck?=
- =?us-ascii?Q?IM/sR8yf7wJUK3bAy2vWEZ2uafB7H2/82T1HjbWp2V3brR6vBMyZhmKijwiZ?=
- =?us-ascii?Q?v9RCzVROypWEWhng5nUlZcrDtfhFFLdXuyJXKZRxe9g1n48J+21ULYEZpUGD?=
- =?us-ascii?Q?Uw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9f1de7e4-1646-48d8-1c76-08ddcb77b021
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?HNJlE8GN1zm9I62/Aem1w4VtIXhzO7taLZRue121coCrZE5bibhAH086TheE?=
+ =?us-ascii?Q?wzSXQ14Zf8oDMdd/Tvgxag4aVoYXk7Wh9x0D2lqbYD/zH612V8iL44ZTV7h/?=
+ =?us-ascii?Q?o+T57wYGDlVYd+jAXKMrRmSsbaL5dk0m0jI03sAVOWVtY31VKyfgS1TuKd1K?=
+ =?us-ascii?Q?kYtKWyynIiCHHExylgqXINiqKal9Oy7EQCFd+O5XlS1RwkgdMtuvUPsXp/6N?=
+ =?us-ascii?Q?iD7XiGeHtT10E4bjpd3kaDLqK+Omcct1XGtHulITBmOOXDozZUHE7MN1zXiX?=
+ =?us-ascii?Q?KIDWI+9bOVIZqcsOc5ngCzH+guf5ZrDFOkCqDZwbIieCYnZLDzOl0Q+D8kkt?=
+ =?us-ascii?Q?Olq7XIm6L1ehrl4/OmyyQhGC8at8ySba3bUYLAPwwIf9hU5QvFeTNkN5yvsK?=
+ =?us-ascii?Q?9jhJEbm5eh7OF4cHgxGOha5VgF4XafATBhqA95roJ4cai3GASVjm0W6UgaCH?=
+ =?us-ascii?Q?pfrdOcB38vbc/H8DixVIUJafk2jJNz71Nc+YGMkq9bYwZXi33YpsRtFyPPEh?=
+ =?us-ascii?Q?K7of8Dy4eiQ/8HImbPplNRC5yR3KZmPN72iY+ay9LaRou73ek0zd5swQniNm?=
+ =?us-ascii?Q?N8YjW3G2EEprNiviy1agTVkHk0wEu1nymTt1TOJK4W6xcrfBm7d+bfzaiV0n?=
+ =?us-ascii?Q?ryfrNgLSMD4Af/4lT9T2N/wrHQ0pKZ1fyo4Y5bHbrqWsovCUzCM/NOZ5GNns?=
+ =?us-ascii?Q?gv4uX/CGSFONE+AuWuc5xAXgQNbwKx6c0mevv+VO29y4WKF+UOadm7XTYYw4?=
+ =?us-ascii?Q?Z7UDZJSALU4xkxy+4WDOaRzEi2t2vziUv6qMiJJCCuEwymdaoQo81SHMoFt0?=
+ =?us-ascii?Q?2dXpiR9RQhlrFTdNN3CI5lFNyHd4cg1xxzwrUDKACSCD+TOTGN+ePaqLTmx2?=
+ =?us-ascii?Q?K9PZIAe/2JLM/MbvftpBS14hzk6sfbRFKZMQxFNwxTEoUfqIW8mXpQ63v4fG?=
+ =?us-ascii?Q?/AB0RYQxgp7XvosIRGfs3Y3Pu3MEW9kIgz1PTC6sKhBxDWTW6r3X/zDcnOqv?=
+ =?us-ascii?Q?Eo80ywHFYQaBx0N2QRLexjq3kl1Bj33InRKcoYZ2w0cLyt6PQ54kwfsJ/zy6?=
+ =?us-ascii?Q?LFWzhfu5kvjEEYToJIqfFlSOQPX/PO36PyrQTixU/HIPGWPs7hOsHI950Kjl?=
+ =?us-ascii?Q?NBPbrSr2xIWl+GhywZiC6RdkyvnJbnBpBwFVBTp6OwBFKui1FL1lfr38DG+P?=
+ =?us-ascii?Q?K3FF+vWVzqMkjci3rI8pYu9fVyELW/Hf2PbNyOLiew/AGR/UWp9vb/26O1ey?=
+ =?us-ascii?Q?XcRl9mOXqlI98k0dBXxvG/9rrnRa2xWqMF2/UBZelyGSGfrC6q3dA9To+5Mm?=
+ =?us-ascii?Q?JSGH0brYifLXojWmbwo2jtn+TJUZLknDxxJC1YHzCpv4OVp15SVDLvE0Cjit?=
+ =?us-ascii?Q?p9nXUb+fUXsnbTUcWOaKaUdIedB99X5vP5+vOs5fvOs4YOStE4vLrecI8g8h?=
+ =?us-ascii?Q?w1uq++Y8hOVSpocepcxOWx4FtcpML4tqQKb5yvKBgeSN1M+I0Re8FmdRMECN?=
+ =?us-ascii?Q?ICHfmmACsdlyRN9ybN3v8nfezTc9DF4CMihiF8inovTbC7K/UeS1mZA3tADx?=
+ =?us-ascii?Q?4UTTVnfyqi6ac0TjS/UOujC1LosyKUjqYUVeOPjV10IigAbZS97oLKAuTPut?=
+ =?us-ascii?Q?Hw=3D=3D?=
+X-OriginatorOrg: kvaser.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 13fe19f3-a945-45bb-b3f7-08ddcb77ae4d
+X-MS-Exchange-CrossTenant-AuthSource: AS8P193MB2014.EURP193.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2025 12:35:07.4166
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2025 12:35:04.4074
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 73c42141-e364-4232-a80b-d96bd34367f3
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6nnLVQWWh0IdOjaek/LT4V4a3WPywrgdngOmj8uwNYghyNmRkCDGyf+gzu2j9/pCBrlL7LiwMUianZLk1d+cJA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7147
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: 19sFrTPnr52xKzgULCAb6zL/5h5d/EESZis7kYzJbzNhtWe/lZ/C4PFgZ8SscIpJfH+b6bU/cjRM7IVjLQ6qs04QZVcUa6h+ncdIDM8tcnE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8P193MB1219
 
+Store firmware version in kvaser_usb_fw_version struct, specifying the
+different components of the version number.
+And drop debug prinout of firmware version, since later patches will expose
+it via the devlink interface.
 
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+---
+Changes in v3:
+  - Add tag Reviewed-by Vincent Mailhol
 
-Hello,
+Changes in v2:
+  - Drop debug prinout, since it will be exposed via devlink.
+    Suggested by Vincent Mailhol [1]
 
-kernel test robot noticed "kernel-selftests.drivers/net/netdevsim.devlink.sh.rate_test.fail" on:
+[1] https://lore.kernel.org/linux-can/20250723083236.9-1-extja@kvaser.com/T/#m2003548deedfeafee5c57ee2e2f610d364220fae
 
-commit: 236156d80d5efd942fc395a078d6ec6d810c2c40 ("selftest: netdevsim: Add devlink rate tc-bw test")
-https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
+ drivers/net/can/usb/kvaser_usb/kvaser_usb.h       | 12 +++++++++++-
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c  |  5 -----
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c |  6 +++++-
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c  | 15 +++++++++++++--
+ 4 files changed, 29 insertions(+), 9 deletions(-)
 
-[test failed on linux-next/master 97987520025658f30bb787a99ffbd9bbff9ffc9d]
-
-in testcase: kernel-selftests
-version: kernel-selftests-x86_64-7ff71e6d9239-1_20250215
-with following parameters:
-
-	group: drivers
-
-
-config: x86_64-rhel-9.4-kselftests
-compiler: gcc-12
-test machine: 36 threads 1 sockets Intel(R) Core(TM) i9-9980XE CPU @ 3.00GHz (Skylake) with 32G memory
-
-(please refer to attached dmesg/kmsg for entire log/backtrace)
-
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <oliver.sang@intel.com>
-| Closes: https://lore.kernel.org/oe-lkp/202507251144.b4d9d40b-lkp@intel.com
-
-
-# timeout set to 600
-# selftests: drivers/net/netdevsim: devlink.sh
-# Preparing to flash
-# Flashing
-# Flash select
-# Flashing done
-# [fw.mgmt] Preparing to flash
-# [fw.mgmt] Flashing
-# [fw.mgmt] Flash select
-# [fw.mgmt] Flashing done
-# 
-# Preparing to flash
-# Flashing
-# Flash select
-# Flashing done
-# 
-# Preparing to flash
-# Flashing
-# Flash select
-# Flashing done
-# 
-# TEST: fw flash test                                                 [ OK ]
-# TEST: params test                                                   [ OK ]
-# TEST: regions test                                                  [ OK ]
-# Error: netdevsim: User setup the reload to fail for testing purposes.
-# kernel answers: Invalid argument
-# Error: netdevsim: User forbid the reload for testing purposes.
-# kernel answers: Operation not supported
-# TEST: reload test                                                   [ OK ]
-# TEST: netns reload test                                             [ OK ]
-# Error: netdevsim: Exceeded number of supported fib entries.
-# Error: netdevsim: Exceeded number of supported fib entries.
-# kernel answers: Operation not permitted
-# TEST: resource test                                                 [ OK ]
-# TEST: dev_info test                                                 [ OK ]
-# TEST: empty reporter test                                           [ OK ]
-# kernel answers: Success
-# kernel answers: Success
-# ./devlink.sh: line 508: echo: write error: Invalid argument
-# Error: netdevsim: User setup the recover to fail for testing purposes.
-# kernel answers: Invalid argument
-# kernel answers: Success
-# TEST: dummy reporter test                                           [ OK ]
-# Unknown option "tc-bw"
-# Unknown option "tc-bw"
-# Unknown option "tc-bw"
-# Unknown option "tc-bw"
-# Unknown option "tc-bw"
-# TEST: rate test                                                     [FAIL]
-# 	Unexpected tc-bw value for tc6: 0 != 60
-not ok 1 selftests: drivers/net/netdevsim: devlink.sh # exit=1
-
-
-
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20250725/202507251144.b4d9d40b-lkp@intel.com
-
-
-
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb.h b/drivers/net/can/usb/kvaser_usb/kvaser_usb.h
+index fba972e7220d..a36d86494113 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb.h
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb.h
+@@ -47,6 +47,10 @@
+ #define KVASER_USB_CAP_EXT_CAP			0x02
+ #define KVASER_USB_HYDRA_CAP_EXT_CMD		0x04
+ 
++#define KVASER_USB_SW_VERSION_MAJOR_MASK GENMASK(31, 24)
++#define KVASER_USB_SW_VERSION_MINOR_MASK GENMASK(23, 16)
++#define KVASER_USB_SW_VERSION_BUILD_MASK GENMASK(15, 0)
++
+ struct kvaser_usb_dev_cfg;
+ 
+ enum kvaser_usb_leaf_family {
+@@ -83,6 +87,12 @@ struct kvaser_usb_tx_urb_context {
+ 	u32 echo_index;
+ };
+ 
++struct kvaser_usb_fw_version {
++	u8 major;
++	u8 minor;
++	u16 build;
++};
++
+ struct kvaser_usb_busparams {
+ 	__le32 bitrate;
+ 	u8 tseg1;
+@@ -101,7 +111,7 @@ struct kvaser_usb {
+ 	struct usb_endpoint_descriptor *bulk_in, *bulk_out;
+ 	struct usb_anchor rx_submitted;
+ 
+-	u32 fw_version;
++	struct kvaser_usb_fw_version fw_version;
+ 	unsigned int nchannels;
+ 	/* @max_tx_urbs: Firmware-reported maximum number of outstanding,
+ 	 * not yet ACKed, transmissions on this device. This value is
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+index 46e6cda0bf8d..2313fbc1a2c3 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+@@ -963,11 +963,6 @@ static int kvaser_usb_probe(struct usb_interface *intf,
+ 	if (WARN_ON(!dev->cfg))
+ 		return -ENODEV;
+ 
+-	dev_dbg(&intf->dev, "Firmware version: %d.%d.%d\n",
+-		((dev->fw_version >> 24) & 0xff),
+-		((dev->fw_version >> 16) & 0xff),
+-		(dev->fw_version & 0xffff));
+-
+ 	dev_dbg(&intf->dev, "Max outstanding tx = %d URBs\n", dev->max_tx_urbs);
+ 
+ 	err = ops->dev_get_card_info(dev);
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
+index a4402b4845c6..388ebf2b1a5b 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
+@@ -1839,6 +1839,7 @@ static int kvaser_usb_hydra_get_software_details(struct kvaser_usb *dev)
+ 	size_t cmd_len;
+ 	int err;
+ 	u32 flags;
++	u32 fw_version;
+ 	struct kvaser_usb_dev_card_data *card_data = &dev->card_data;
+ 
+ 	cmd = kzalloc(sizeof(*cmd), GFP_KERNEL);
+@@ -1863,7 +1864,10 @@ static int kvaser_usb_hydra_get_software_details(struct kvaser_usb *dev)
+ 	if (err)
+ 		goto end;
+ 
+-	dev->fw_version = le32_to_cpu(cmd->sw_detail_res.sw_version);
++	fw_version = le32_to_cpu(cmd->sw_detail_res.sw_version);
++	dev->fw_version.major = FIELD_GET(KVASER_USB_SW_VERSION_MAJOR_MASK, fw_version);
++	dev->fw_version.minor = FIELD_GET(KVASER_USB_SW_VERSION_MINOR_MASK, fw_version);
++	dev->fw_version.build = FIELD_GET(KVASER_USB_SW_VERSION_BUILD_MASK, fw_version);
+ 	flags = le32_to_cpu(cmd->sw_detail_res.sw_flags);
+ 
+ 	if (flags & KVASER_USB_HYDRA_SW_FLAG_FW_BAD) {
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+index a67855521ccc..b4f5d4fba630 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+@@ -741,9 +741,13 @@ static int kvaser_usb_leaf_send_simple_cmd(const struct kvaser_usb *dev,
+ static void kvaser_usb_leaf_get_software_info_leaf(struct kvaser_usb *dev,
+ 						   const struct leaf_cmd_softinfo *softinfo)
+ {
++	u32 fw_version;
+ 	u32 sw_options = le32_to_cpu(softinfo->sw_options);
+ 
+-	dev->fw_version = le32_to_cpu(softinfo->fw_version);
++	fw_version = le32_to_cpu(softinfo->fw_version);
++	dev->fw_version.major = FIELD_GET(KVASER_USB_SW_VERSION_MAJOR_MASK, fw_version);
++	dev->fw_version.minor = FIELD_GET(KVASER_USB_SW_VERSION_MINOR_MASK, fw_version);
++	dev->fw_version.build = FIELD_GET(KVASER_USB_SW_VERSION_BUILD_MASK, fw_version);
+ 	dev->max_tx_urbs = le16_to_cpu(softinfo->max_outstanding_tx);
+ 
+ 	if (sw_options & KVASER_USB_LEAF_SWOPTION_EXT_CAP)
+@@ -784,6 +788,7 @@ static int kvaser_usb_leaf_get_software_info_inner(struct kvaser_usb *dev)
+ {
+ 	struct kvaser_cmd cmd;
+ 	int err;
++	u32 fw_version;
+ 
+ 	err = kvaser_usb_leaf_send_simple_cmd(dev, CMD_GET_SOFTWARE_INFO, 0);
+ 	if (err)
+@@ -798,7 +803,13 @@ static int kvaser_usb_leaf_get_software_info_inner(struct kvaser_usb *dev)
+ 		kvaser_usb_leaf_get_software_info_leaf(dev, &cmd.u.leaf.softinfo);
+ 		break;
+ 	case KVASER_USBCAN:
+-		dev->fw_version = le32_to_cpu(cmd.u.usbcan.softinfo.fw_version);
++		fw_version = le32_to_cpu(cmd.u.usbcan.softinfo.fw_version);
++		dev->fw_version.major = FIELD_GET(KVASER_USB_SW_VERSION_MAJOR_MASK,
++						  fw_version);
++		dev->fw_version.minor = FIELD_GET(KVASER_USB_SW_VERSION_MINOR_MASK,
++						  fw_version);
++		dev->fw_version.build = FIELD_GET(KVASER_USB_SW_VERSION_BUILD_MASK,
++						  fw_version);
+ 		dev->max_tx_urbs =
+ 			le16_to_cpu(cmd.u.usbcan.softinfo.max_outstanding_tx);
+ 		dev->cfg = &kvaser_usb_leaf_usbcan_dev_cfg;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.49.0
 
