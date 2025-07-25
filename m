@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197CC2EF66B;
-	Fri, 25 Jul 2025 17:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C25E2EF66C;
+	Fri, 25 Jul 2025 17:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753463655; cv=none; b=npZuVUtejpZYPY4S4OE/l3O2qAOl1M5KgcENVSj+CJAlJnB/XzWgRVWy9fKcwYdWTJcD9X3qeYOZrWKv8lNWiq9LQqTyYNfgSuATCluCD8XqqiLVWQe4tzV8UqeobQhREshMOryiC9dVHKPG8VfSvitsOrtEYpFVWrg0OpTDrWY=
+	t=1753463655; cv=none; b=mFAe55OI+2uPwkYKNctL8def0hM60OIbs+ciPGy58ewj/ixaVA01ljB2mrsfoTukHs2AoA4gwxP3b9nrJgSUgsKEqeaSAT7IftgX2A4yDNJVVDubGKxDOPNgyEhjOus4eXHylSVp9ry2OMPi0X/QKA0kHVdRGkdcK89cXAA/rTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753463655; c=relaxed/simple;
-	bh=96RWDqAwsQ+BNNMMv40laI84yj5UkISKimL0LLvCq9U=;
+	bh=gWZO1ES2r3jh5Yq67JXLsbmiESc165KttdqT3NHuvcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXNr84fBEPaxvAVChoYjqMkW+apNHdxkcWeZ1fUYPkVMksYPvntDsW8WMvciq/g2y0sKP7x1HcnnC6+tZaUgDX8OF4qVI8nsThbR/2gHaMdBzrhSLM9DCU7cnJgpEbDJuI2OwwUn62G7+dHAsvmau3S+n5kwYij7T3ATR1EsG90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YIO8TXGe; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=MshE3zUfl5wC318sBIjr0da3vmTw3oUh3TxudyY8nRdyOnT6cI9sI1e+ZIDBBRiu0NLLexi56Dg0iq/e9w+/VgZMkkNOGCIDm+BRvJUVBn13DOx/Ow+w8B/S04CWJbRTJuJBApg/yrzH9/M+7VJCjQRSZU2yZZDmuhOmUoQlFFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hl1wDLS4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YIO8TXGe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B2AC4CEF9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hl1wDLS4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3B4C4CEFA;
 	Fri, 25 Jul 2025 17:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1753463654;
-	bh=96RWDqAwsQ+BNNMMv40laI84yj5UkISKimL0LLvCq9U=;
+	bh=gWZO1ES2r3jh5Yq67JXLsbmiESc165KttdqT3NHuvcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIO8TXGe6al3/A2gMYESXZ67JW/eECXSwJ+fJR1BE6I8/xhxqbJaiwexsEKJvh2wb
-	 YOs4Laf2/rwRTcV8Prp6A24/J5KPrMwrOCH+elBTuwm0EcXrffvHZLZnDrRSgCy9rt
-	 clqLWgyn6Fe91EFC3uOf8p6ge5VbGmivvBqpXWQjJM8fr7wrb7u0lf6U2zvoF3nFjx
-	 B17R4ANRP6qqyrq1OJeua5hpqM8ShV+LtlI4zP8TKetqAf+y7FFgJVlzvCdxkPWDEe
-	 QltpyNhfiGF0gIpSeeWLoEL84HygEaUjwA2duTcc2/5mXmxtQDobdOI1zYFUZLUdo+
-	 jvRYqHKbZsIzg==
+	b=Hl1wDLS4RHtasJPd9cADa4JxDlrhcvWQECdErTzeMhnBp1xwsq+q13wvPJxhoc2kz
+	 FN2URXemjnzNNmSAaGch5rdbzvWVbTuSzwqjge66PPZV4BmN8eYzzfS/+jrN7W1fk/
+	 3K3gME7exeOcgJ9z1cQ259SYUbt+Eu0wV4i1675vo9wUCg9LjgykI0v64PZ9CbY+FQ
+	 uGYhJbAQIksIkkGOArt7BWRWLReAr7W38T8C20KMcN/scav9OXVe7Rw18ItnxykKPV
+	 Aq/usys1+lcgIM1sWxyLazT0OFKkxqrpIS+yVQRQ8zK9t5kW+BVDWQrfEcx9PN793a
+	 2grxKjo+vLG6w==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1ufLzn-000000000Gj-2DbO;
+	id 1ufLzn-000000000Gn-2s8N;
 	Fri, 25 Jul 2025 19:14:11 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -54,9 +54,9 @@ Cc: Madalin Bucur <madalin.bucur@nxp.com>,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
 	Yangbo Lu <yangbo.lu@nxp.com>
-Subject: [PATCH 1/5] net: dpaa: fix device leak when querying time stamp info
-Date: Fri, 25 Jul 2025 19:12:09 +0200
-Message-ID: <20250725171213.880-2-johan@kernel.org>
+Subject: [PATCH 3/5] net: gianfar: fix device leak when querying time stamp info
+Date: Fri, 25 Jul 2025 19:12:11 +0200
+Message-ID: <20250725171213.880-4-johan@kernel.org>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20250725171213.880-1-johan@kernel.org>
 References: <20250725171213.880-1-johan@kernel.org>
@@ -74,30 +74,30 @@ of_find_device_by_node() when querying the time stamping capabilities.
 Note that holding a reference to the ptp device does not prevent its
 driver data from going away.
 
-Fixes: 17ae0b0ee9db ("dpaa_eth: add the get_ts_info interface for ethtool")
-Cc: stable@vger.kernel.org	# 4.19
+Fixes: 7349a74ea75c ("net: ethernet: gianfar_ethtool: get phc index through drvdata")
+Cc: stable@vger.kernel.org	# 4.18
 Cc: Yangbo Lu <yangbo.lu@nxp.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c | 4 +++-
+ drivers/net/ethernet/freescale/gianfar_ethtool.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-index 9986f6e1f587..7fc01baef280 100644
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-@@ -401,8 +401,10 @@ static int dpaa_get_ts_info(struct net_device *net_dev,
+diff --git a/drivers/net/ethernet/freescale/gianfar_ethtool.c b/drivers/net/ethernet/freescale/gianfar_ethtool.c
+index 781d92e703cb..c9992ed4e301 100644
+--- a/drivers/net/ethernet/freescale/gianfar_ethtool.c
++++ b/drivers/net/ethernet/freescale/gianfar_ethtool.c
+@@ -1466,8 +1466,10 @@ static int gfar_get_ts_info(struct net_device *dev,
+ 	if (ptp_node) {
+ 		ptp_dev = of_find_device_by_node(ptp_node);
  		of_node_put(ptp_node);
+-		if (ptp_dev)
++		if (ptp_dev) {
+ 			ptp = platform_get_drvdata(ptp_dev);
++			put_device(&ptp_dev->dev);
++		}
  	}
  
--	if (ptp_dev)
-+	if (ptp_dev) {
- 		ptp = platform_get_drvdata(ptp_dev);
-+		put_device(&ptp_dev->dev);
-+	}
- 
  	if (ptp)
- 		info->phc_index = ptp->phc_index;
 -- 
 2.49.1
 
