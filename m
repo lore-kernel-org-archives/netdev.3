@@ -1,124 +1,213 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7612E36EC
-	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 13:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3F310FD
+	for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 14:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753451610; cv=none; b=JQpfxhgzFIUtiZyG0IXeTBGDvjvG4cR0w79c6e4F16rV9xuVdeJ+6U3dVWPY5Bef9f1dbSa33/R5Oc+3z1LcKGanOKfFsV9NlXsBsLe/GmXIQQbXTXEuGbSdyRS5fEv7gugNLUQ2DrsPTx75Ivj14OGDVLrnaxorj/3sgLPe+5g=
+	t=1753452358; cv=none; b=p5KdTJisL25XQ6PUTPoFo3B4MEoOL1/5M+crG/c8jVqHbiUOBQrHH5aRXNnajW6oPZVOmZ8qxSlwhO+5+BIYhZCeDTF5wi8b9HC1f3X6Eb/0OMj+75znjcV3sJs75RKwxuATcl38iN+Llvtf9uDnUMwQyWXFET8kKbhpKRUoxVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753451610; c=relaxed/simple;
-	bh=mSDg1GQamFsjMossvkdrmxraz/XzbhlY0Z87GkuJcGA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lr4rizM4djPXuMw7vU2DXOjU2FchR0pY5XQckiimIpnmCFX/c4PFJSnA0KSAdDFA7jeboqRObBeg2Zs/p+r5lM+DKSXyJm5qptxth0oXSI0Z59XDedOOJi5pYbDpE2uogIGlJbO/wxkWYJXM4B19cxhuuUY7H3FV1DFWrXhxxJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t/6pi6zo; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1753452358; c=relaxed/simple;
+	bh=aujr9dQmvuOFtLExiD0PSAA22/xtHkKRICtDiJBFziY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rLI2fHNY+JuqOdnuGYH9NZ3LtgEZEztQtNx/nwnzhnIuVL2DvzYT8TNK49ctMCgWNp9lRA5/lb+SXx7v+rdJfiCm6lOD28EEZYHMIQlRdlfU7XJ9hUTZ/T4VHaE6+dKrDBaqyaa6jfkSjYVOwDJtE4dtoZJChzMm2AF21xMDAXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jMvaaTbL; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t/6pi6zo"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4a9bff7fc6dso21309051cf.1
-        for <netdev@vger.kernel.org>; Fri, 25 Jul 2025 06:53:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753451608; x=1754056408; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U1hAqeYCy6aPtsdaD+a95FJh5xJrvRSfxYY035KZ700=;
-        b=t/6pi6zoCsS8h5gpWMkrh+4YjYMsmFXKuyVUf1ekJ5wuV45hwhvcBs075vXjWoF1MA
-         mseRhluBGxaCardzo4XhLcSytjwqzC4ZIL1LIMcg+/2biIHBqC08U5yCWzG634DA7ygL
-         WybuPAY5/8DorpgnpObC0FZCJA2A0dJXtRs5m/kcIrtjMKlm/2UTO0k0aBrpuqldO5DO
-         0U+0nKyn1yVEWOJt/Z1ifDXq9JMjRMzsqYFgkUVkIAhB0SnOXZxUADF5HPlz8Bd0OCc4
-         kZf91b5cs/DGxuXGRHVEB/SPC32yOjoZ2waX8/j4XaA68sM1jUh1ZXPwmc5KoyUSGnnb
-         hN/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753451608; x=1754056408;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=U1hAqeYCy6aPtsdaD+a95FJh5xJrvRSfxYY035KZ700=;
-        b=JbKUwFRJC/b6fbiRakpJcgNbbxOqldFBUs1hkC3JS5yCdp/aXLODIx61PuEIx9y7Sc
-         rzv4Bz+R8LfL6Bdb2I5dvlmhSKLeaNv63nZvLFS1Q4UO7AXFzgCYU+EBPxiC3tvoqY43
-         wmclsOcFnmstdBKjixhev9RMCv8ADDtxb9g3UTzO452U5RMLquyLEhptLX+ETISsavQY
-         SOkfCNrRNAwomRJxT6Y9M1eGles2C4R0YzeSLfegGjN1kIgumi2InAtKYqkDF2nbp1L/
-         clZLN/fA7Hz9tyaZgRDf+c/hAhkVt65s5AdVApF1XsB/yTg7EARX8X6oji3Q1HGmEaSj
-         eDOw==
-X-Forwarded-Encrypted: i=1; AJvYcCWrrGa75uHy/4YQGgcQf7Q+O1JuQ3DUS+hij1pCpygt47GkXOxHusXlWfLtwoIVlIug9ZA0jMg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yza+jQmvxs8t6pO2S1ehk1ijrTehhZ5K2joxOgSfvTgZub/jPsO
-	1eeuWs8Ze2nXj7i1ipLf4v9sPSPLBGHC2xDT7IXM+VwaxyZrltEHJbQxdKhuqX0jMLuk2Rb4ujL
-	TzU39yRG6Y3xhBeLxjoiDyWDAJdKBlU6ZwIYmF5GzIus6i65lroWAh1QMeFM=
-X-Gm-Gg: ASbGncvs2aFJyFBI5pMC9lsJks//L8xpYv+oLS0s9clzjKvyK8MZETthrDUAH1Gk1EK
-	VTU8qOpI0Hu69kyhihUhoWteTy33d+/hq3R2YKVamguLLb+AKnmOopU+x5mkGy+3NiOLWzgXTs8
-	MltY3I/QzHneUDUoW7IdJCZd6PbEqUtFFeAfeA5ntBXzzGzgcMLDVutUhMJ86D9QR9hr6Ptxvaq
-	Dg99B1HBsdAdJ2I/A==
-X-Google-Smtp-Source: AGHT+IHOtPZYCcL27DWaCXqhxuZHZ+IobaaCtR9TWuGSz7vT8EhbM2oy7hS2Ze67n30F2CECD1rIf8wpevlL6Pbpo9o=
-X-Received: by 2002:ac8:5804:0:b0:4ab:5d26:db8a with SMTP id
- d75a77b69052e-4ae8e878ec5mr23365041cf.18.1753451607204; Fri, 25 Jul 2025
- 06:53:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jMvaaTbL"
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 763BE1400548;
+	Fri, 25 Jul 2025 10:05:55 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Fri, 25 Jul 2025 10:05:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1753452355; x=1753538755; bh=N+kHxpipNhjucJJL9Twh493YZMFMau/Si7R
+	ulOH/HL0=; b=jMvaaTbLJMnw3vL6ibfuYQ6IaJJ1wPIoUsokLXahUA8/l7fFdKm
+	3f2X40yrnyeXjfmBmws14bVEXxgydQJt7rM3xzMJpWZDJvYz9F0jNxCfZBfby+V3
+	Toor8BQLVEBpjudYueu6bF90avTJgV6enJbTu4XYA2WcB5+XUFN9UvVPyR+ti5Zg
+	1k4ysobpeLVUTiVBh8bAl/LZf43DxDXZqytpAUoIVVYgUz0RSIQzSrvw19EyP2YM
+	PrbPVb1j5Y7jYykGknBHOh5jIc5dducGQSIzrJ99WaQ3V2Js7Co7G9wR6xcS1cPL
+	6KbHLtm90uMHW5DGjAC/haw2ywzMzW5XWEQ==
+X-ME-Sender: <xms:Q4-DaEaoLKrsnjCV_6L_8XUBw8vhj9WiCvxqgjBSS047jzHLbkBgtQ>
+    <xme:Q4-DaMVHR_y7IjmI5ckOV1NnBB0z3FxfracNluZSC4bIEAb9BHeeX7FrGClrOsd_W
+    h9onUM4kL3rLWI>
+X-ME-Received: <xmr:Q4-DaKmqWekKTiJVZVjEktbmdaIKtnCW1lgSW45Kwv2-iPdEdYmbb51VBfFOf91A_SkvwoAECyKZfdAwCYC370Ac>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdekfeejvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefkughoucfutghh
+    ihhmmhgvlhcuoehiughoshgthhesihguohhstghhrdhorhhgqeenucggtffrrghtthgvrh
+    hnpedvudefveekheeugeeftddvveefgfduieefudeifefgleekheegleegjeejgeeghfen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehiughosh
+    gthhesihguohhstghhrdhorhhgpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopegtphgrrghstghhsehophgvnhgrihdrtghomhdprhgtphhtth
+    hopegushgrhhgvrhhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvghmsegu
+    rghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvg
+    drtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    phgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehhohhrmhhssehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhr
+    gh
+X-ME-Proxy: <xmx:Q4-DaHAOjPSdjrLuMtuNVCEAKVUCtf9RJjzFBH5Y4QES3nILq_uigg>
+    <xmx:Q4-DaJjDkkRpuuvk4_n6o0xG1z8ViF7d4vWW9V1mIqcAYDW8p7FYVA>
+    <xmx:Q4-DaEwoG7G4ptjDtVO8dgMOcsl6NbuNubkcH5of-jAM8BOWOwN1BQ>
+    <xmx:Q4-DaK1QiA_abq2F201aUSHl1wO6EoaEIL8h94WXwncJoIvww90myQ>
+    <xmx:Q4-DaOA04CKDgbQeT4lZzJQHY-OcH1-oIdAi7l1-dcV_0Zyhq-cq1K46>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 25 Jul 2025 10:05:54 -0400 (EDT)
+Date: Fri, 25 Jul 2025 17:05:52 +0300
+From: Ido Schimmel <idosch@idosch.org>
+To: cpaasch@openai.com
+Cc: David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] net: Make nexthop-dumps scale linearly with the
+ number of nexthops
+Message-ID: <aIOPQH-S5LAPCb1u@shredder>
+References: <20250724-nexthop_dump-v1-1-6b43fffd5bac@openai.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250725133311.143814-2-fourier.thomas@gmail.com>
-In-Reply-To: <20250725133311.143814-2-fourier.thomas@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 25 Jul 2025 06:53:16 -0700
-X-Gm-Features: Ac12FXz9f_T46FZr6oWHnYPdE1FCnEu_6iCpQgTJrXvhchKkQWpnlpbZ97hSA3c
-Message-ID: <CANn89iJW+4xLsTGU6LU4Y=amciL5Kni=wS1uTKy-wC8pCwNDGQ@mail.gmail.com>
-Subject: Re: [PATCH net] net: ethernet: nixge: Add missing check after DMA map
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
-	Moritz Fischer <mdf@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250724-nexthop_dump-v1-1-6b43fffd5bac@openai.com>
 
-On Fri, Jul 25, 2025 at 6:34=E2=80=AFAM Thomas Fourier <fourier.thomas@gmai=
-l.com> wrote:
->
-> The DMA map functions can fail and should be tested for errors.
->
-> Fixes: 492caffa8a1a ("net: ethernet: nixge: Add support for National Inst=
-ruments XGE netdev")
-> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+On Thu, Jul 24, 2025 at 05:10:36PM -0700, Christoph Paasch via B4 Relay wrote:
+> From: Christoph Paasch <cpaasch@openai.com>
+> 
+> When we have a (very) large number of nexthops, they do not fit within a
+> single message. rtm_dump_walk_nexthops() thus will be called repeatedly
+> and ctx->idx is used to avoid dumping the same nexthops again.
+> 
+> The approach in which we avoid dumpint the same nexthops is by basically
+
+s/dumpint/dumping/
+
+> walking the entire nexthop rb-tree from the left-most node until we find
+> a node whose id is >= s_idx. That does not scale well.
+> 
+> Instead of this non-efficient  approach, rather go directly through the
+                               ^ double space
+s/non-efficient/inefficient/ ?
+
+> tree to the nexthop that should be dumped (the one whose nh_id >=
+> s_idx). This allows us to find the relevant node in O(log(n)).
+> 
+> We have quite a nice improvement with this:
+> 
+> Before:
+> =======
+> 
+> --> ~1M nexthops:
+> $ time ~/libnl/src/nl-nh-list | wc -l
+> 1050624
+> 
+> real	0m21.080s
+> user	0m0.666s
+> sys	0m20.384s
+> 
+> --> ~2M nexthops:
+> $ time ~/libnl/src/nl-nh-list | wc -l
+> 2101248
+> 
+> real	1m51.649s
+> user	0m1.540s
+> sys	1m49.908s
+> 
+> After:
+> ======
+> 
+> --> ~1M nexthops:
+> $ time ~/libnl/src/nl-nh-list | wc -l
+> 1050624
+> 
+> real	0m1.157s
+> user	0m0.926s
+> sys	0m0.259s
+> 
+> --> ~2M nexthops:
+> $ time ~/libnl/src/nl-nh-list | wc -l
+> 2101248
+> 
+> real	0m2.763s
+> user	0m2.042s
+> sys	0m0.776s
+
+I was able to reproduce these results.
+
+> 
+> Signed-off-by: Christoph Paasch <cpaasch@openai.com>
 > ---
->  drivers/net/ethernet/ni/nixge.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/ethernet/ni/nixge.c b/drivers/net/ethernet/ni/ni=
-xge.c
-> index 230d5ff99dd7..027e53023007 100644
-> --- a/drivers/net/ethernet/ni/nixge.c
-> +++ b/drivers/net/ethernet/ni/nixge.c
-> @@ -334,6 +334,10 @@ static int nixge_hw_dma_bd_init(struct net_device *n=
-dev)
->                 phys =3D dma_map_single(ndev->dev.parent, skb->data,
->                                       NIXGE_MAX_JUMBO_FRAME_SIZE,
->                                       DMA_FROM_DEVICE);
-> +               if (dma_mapping_error(ndev->dev.parent, phys)) {
-> +                       dev_kfree_skb_any(skb);
-> +                       goto out;
-> +               }
->
->                 nixge_hw_dma_bd_set_phys(&priv->rx_bd_v[i], phys);
->
-> @@ -645,8 +649,8 @@ static int nixge_recv(struct net_device *ndev, int bu=
-dget)
->                                           NIXGE_MAX_JUMBO_FRAME_SIZE,
->                                           DMA_FROM_DEVICE);
->                 if (dma_mapping_error(ndev->dev.parent, cur_phys)) {
-> -                       /* FIXME: bail out and clean up */
-> -                       netdev_err(ndev, "Failed to map ...\n");
-> +                       dev_kfree_skb_any(new_skb);
-> +                       return packets;
+>  net/ipv4/nexthop.c | 34 +++++++++++++++++++++++++++++++++-
+>  1 file changed, 33 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+> index 29118c43ebf5f1e91292fe227d4afde313e564bb..226447b1c17d22eab9121bed88c0c2b9148884ac 100644
+> --- a/net/ipv4/nexthop.c
+> +++ b/net/ipv4/nexthop.c
+> @@ -3511,7 +3511,39 @@ static int rtm_dump_walk_nexthops(struct sk_buff *skb,
+>  	int err;
+>  
+>  	s_idx = ctx->idx;
+> -	for (node = rb_first(root); node; node = rb_next(node)) {
+> +
+> +	/*
+> +	 * If this is not the first invocation, ctx->idx will contain the id of
+> +	 * the last nexthop we processed.  Instead of starting from the very first
+> +	 * element of the red/black tree again and linearly skipping the
+> +	 * (potentially large) set of nodes with an id smaller than s_idx, walk the
+> +	 * tree and find the left-most node whose id is >= s_idx.  This provides an
+> +	 * efficient O(log n) starting point for the dump continuation.
+> +	 */
 
-Note that this error (and the possible failed
-netdev_alloc_skb_ip_align() at line 641) can leave the queue in a
-frozen state,
-because of a missing
+Please try to keep lines at 80 characters.
 
-nixge_dma_write_desc_reg(priv, XAXIDMA_RX_TDESC_OFFSET, tail_p);
+> +	if (s_idx != 0) {
+> +		struct rb_node *tmp = root->rb_node;
+> +
+> +		node = NULL;
+> +		while (tmp) {
+> +			struct nexthop *nh;
+> +
+> +			nh = rb_entry(tmp, struct nexthop, rb_node);
+> +			if (nh->id < s_idx) {
+> +				tmp = tmp->rb_right;
+> +			} else {
+> +				/* Track current candidate and keep looking on
+> +				 * the left side to find the left-most
+> +				 * (smallest id) that is still >= s_idx.
+> +				 */
 
-Not sure if this driver is actively used...
+I'm aware that netdev now accepts both comment styles, but it's a bit
+weird to mix both in the same commit and at the same function.
+
+> +				node = tmp;
+> +				tmp = tmp->rb_left;
+> +			}
+> +		}
+> +	} else {
+> +		node = rb_first(root);
+> +	}
+> +
+> +	for (; node; node = rb_next(node)) {
+>  		struct nexthop *nh;
+>  
+>  		nh = rb_entry(node, struct nexthop, rb_node);
+
+The code below is:
+
+if (nh->id < s_idx)
+	continue;
+
+Can't it be removed given the above code means we start at a nexthop
+whose identifier is at least s_idx ?
