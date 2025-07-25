@@ -1,48 +1,35 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2CA1373;
-	Fri, 25 Jul 2025 01:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF32262BE;
+	Fri, 25 Jul 2025 01:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753405293; cv=none; b=t89Fx4e44jsKwNDnjvw16UHQBQpQm8XQkOuS/HXjkbzFlXl5fE2bf8038ob84ZUjKE/H7h6F8t0QCoTi+BcrfkPY0eHsB3O3jF7PC/8RBfBAEgHmqWhdXt7bMq1rfv5Dbx1to9Nrv39T4BweIC+y8pwDZJinsAa1KBlnI0qEXDs=
+	t=1753405791; cv=none; b=uekqMYc/eW7Zn3cR0BHLCDn//DFfMsISVJ6gfb1rVbIadcGr+gLoyb/yWpNnpPcQMwAAw/nNaX/1jSkRiGZqOvXQoZKXnVNDTqhLYnX9tpIsw6F/+oKipFbaxELxnpalqjDCDoBd2NuuHs4eIfzrlltVcnBwPVY7MkKfNFJS1dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753405293; c=relaxed/simple;
-	bh=S68IOHF/e0NaShcmphW9LK69DgrIZLy9G7r8GH8JSf0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fvnptmtn7tgzqtP7z/1SqqEsZPDuVOsmpdqUZauhv4m2y21bJTY+BS4IQsVCmuZuAwWPBcR7j1BV2l0GXLGo/MQ7+UYuaKEEzK8THMk45RnlNzFEf9h1vjrFBvH1jF7VGEwJfGs5nVqt2485yK4dEfyJwTBdj6oxhDNEiWbthas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4bp8bc148hzGq30;
-	Fri, 25 Jul 2025 08:57:16 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4280B180B6A;
-	Fri, 25 Jul 2025 09:01:27 +0800 (CST)
-Received: from DESKTOP-F6Q6J7K.china.huawei.com (10.174.175.220) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 25 Jul 2025 09:01:25 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: <gongfan1@huawei.com>
-CC: <andrew+netdev@lunn.ch>, <christophe.jaillet@wanadoo.fr>,
-	<corbet@lwn.net>, <davem@davemloft.net>, <edumazet@google.com>,
-	<fuguiming@h-partners.com>, <guoxin09@huawei.com>, <gur.stavi@huawei.com>,
-	<helgaas@kernel.org>, <horms@kernel.org>, <jdamato@fastly.com>,
-	<kuba@kernel.org>, <lee@trager.us>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <luosifu@huawei.com>,
-	<meny.yossefi@huawei.com>, <mpe@ellerman.id.au>, <netdev@vger.kernel.org>,
-	<pabeni@redhat.com>, <przemyslaw.kitszel@intel.com>,
-	<shenchenyang1@hisilicon.com>, <shijing34@huawei.com>, <sumang@marvell.com>,
-	<vadim.fedorenko@linux.dev>, <wulike1@huawei.com>, <zhoushuai28@huawei.com>,
-	<zhuyikai1@h-partners.com>
-Subject: [PATCH net-next v11 0/8] net: hinic3: Add a driver for Huawei 3rd gen NIC - management interfaces
-Date: Fri, 25 Jul 2025 09:01:18 +0800
-Message-ID: <20250725010119.4976-1-gongfan1@huawei.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <cover.1753240706.git.zhuyikai1@h-partners.com>
-References: <cover.1753240706.git.zhuyikai1@h-partners.com>
+	s=arc-20240116; t=1753405791; c=relaxed/simple;
+	bh=g1teY3OfGfSd9Dy/LeUyCyWEh6LgRb+x9SVuxEZ3tXg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=We7as/8XjTQeA9T9lAfkS0R1QQMzSMHK6qJwxMgvIOo41qIhYQgmkKS5gGxHckT7tGJfISr7o2pVHDT+9XHjfqcMkX9NYDhv4MWJuOm+rFwc7jbde8J8u842ue1gJZWQHCaP0sFw45aI3gwocGosOQjYcfNf13QamEWHLk53SvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rcjfKcOI; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rcjfKcOI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB31C4CEED;
+	Fri, 25 Jul 2025 01:09:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753405790;
+	bh=g1teY3OfGfSd9Dy/LeUyCyWEh6LgRb+x9SVuxEZ3tXg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=rcjfKcOI0JNQFB3abNouWZSV3Dgyfakwqo7Ys2At9e8q5//KNK8A4irVHQ008iW5a
+	 ubIaRQ34ZgV5i0M13CBnhXoR2qLAUidGg4ejhGp/hur6dvPJVcEMLnrg5wYk42JWIZ
+	 FlxIPOfF5WUD8Fs1zlMjr9If9l3kmeBxBTQc+m/x+OBpKk03r7vbnY/6KdWhN7A72h
+	 Jg27UTyp1ePNWFVwBmxr5+MUyf9q+/SAePUUf2HDGeq34LrwZeznHtkn4Rhd4fs4Fk
+	 1dyQBhM0Q8hTxFEBMV06pCnbMHvxoHcoiFZWkUFZa49puCoITABQprwxe/AZktnHe1
+	 bJdp6mwBiwxdw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70ADA383BF4E;
+	Fri, 25 Jul 2025 01:10:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,16 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemf100013.china.huawei.com (7.202.181.12)
+Subject: Re: pull-request: bpf-next 2025-07-24
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175340580825.2592891.347025051999771271.git-patchwork-notify@kernel.org>
+Date: Fri, 25 Jul 2025 01:10:08 +0000
+References: <20250724173306.3578483-1-martin.lau@linux.dev>
+In-Reply-To: <20250724173306.3578483-1-martin.lau@linux.dev>
+To: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+ pabeni@redhat.com, ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net,
+ martin.lau@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org
 
-> PATCH 02 V10: https://lore.kernel.org/netdev/cover.1753152592.git.zhuyikai1@h-partners.com
-> * Use spin_lock in aeq & ceq events instead of bits ops (Jakub Kicinski)
-> * Modify memory barriers comments to explain more clearly (Jakub Kicinski)
->
-> PATCH 02 V11:
-> * Remove unused cb_state variable (Simon Horman)
+Hello:
 
-Oops. This patch was mistakenly sent and the V10 review comments have not been
-fully revised. We will send a new patch after 24 hours.
+This pull request was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 24 Jul 2025 10:33:06 -0700 you wrote:
+> Hi David, hi Jakub, hi Paolo, hi Eric,
+> 
+> The following pull-request contains BPF updates for your *net-next* tree.
+> 
+> We've added 3 non-merge commits during the last 3 day(s) which contain
+> a total of 4 files changed, 40 insertions(+), 15 deletions(-).
+> 
+> [...]
+
+Here is the summary with links:
+  - pull-request: bpf-next 2025-07-24
+    https://git.kernel.org/netdev/net-next/c/a4f5759b6f0a
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
