@@ -1,137 +1,61 @@
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4634D1459EA
-	for <netdev@vger.kernel.org>; Sat, 26 Jul 2025 01:09:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A9872635;
+	Sat, 26 Jul 2025 01:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753492152; cv=none; b=VwJyI8a2eJbZyP1m0KTqg6UnUDDy2yCVs7rPkhRte8kNCKX4QV5y3He90n666HwTeO5LcgODfhwyaFeiG+Ut1RprdfyhxBUlkg+CD9Mrce2ZCLgLUEoTorS11cOQhS36sIPyI7W8Aob0pz++PDYOHBjOewJjkdhgXYGJmQI+UxE=
+	t=1753493491; cv=none; b=pWoUiZS6uUjmTALPgybKSBnGBeflc+PpL90G3eRiSxTfXZv7S4IIEXzLG+i15x7ur5mDrTnWUYx12SQSFSsj3NJYAXiFYpOCEjoiiA0bzZ3zGKwgICuX80RiZElN/JWuNZtUFS0H1CfDxrnPCdBIqwEjf79c5gjdzOX42Zvjesc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753492152; c=relaxed/simple;
-	bh=KQ3oid4xO3RCd/zxROC4pH/4mRLF7mmmwSdndZh+EH8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CEwD8JPnBlnV4Vc/VNdllOpfPr3IYhhbhn1yFXDpeGhcIlBlKLRzkdj70G/dMJPHrRff8z9l3PIRyfV8AWurtHiqBU3TXQaktsry2FJN90TJ/rn5b/fyZcS+vtGU9/lzktHYvlPRgHdexV0MUwVY3pNaS98Y8kpav0uXawYrd4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.jp; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.co.jp header.i=@amazon.co.jp header.b=q023xOWM; arc=none smtp.client-ip=207.171.184.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.co.jp header.i=@amazon.co.jp header.b="q023xOWM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.jp; i=@amazon.co.jp; q=dns/txt;
-  s=amazoncorp2; t=1753492151; x=1785028151;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=IJ8q0ua2J4KYTFB7/vBSLOOq0tkC07kt9F3YzAHkSXg=;
-  b=q023xOWMvq0tKW+kOZIS98YK/nMbKnnCLd/p0G//DDmWTyjj2x3T9tvr
-   Ihk/kq+5reRyHKKycva+aVz9+itPS2RWJiXmrV6Vgw1fXMLX0jKoVxb/8
-   AevPs6NaI3KRjCcHQuLrZvy1v0Tp1yP4oUPXGOiYrp893fFfsNFEv2I7J
-   0NQSRXa6v32bC/bPP5Vpkv40WKwBZx6dygf40+3AkhW6+hA8hlHP1j6/T
-   j+OAR3oTMKpBOYFOqh7hHfkw+u//29EplAeoaMgLiA14OL8WbFsFIHmg3
-   8IGX1QXrzBI52qcVwWAVGpsE2oxA05bJ4229uvGGb17RDObtYOB9lr38I
-   g==;
-X-IronPort-AV: E=Sophos;i="6.16,339,1744070400"; 
-   d="scan'208";a="541102522"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2025 01:09:10 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:51356]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.57.72:2525] with esmtp (Farcaster)
- id e9743b6a-953d-4139-9606-6d9616bb05d6; Sat, 26 Jul 2025 01:09:10 +0000 (UTC)
-X-Farcaster-Flow-ID: e9743b6a-953d-4139-9606-6d9616bb05d6
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Sat, 26 Jul 2025 01:09:08 +0000
-Received: from 80a9974c3af6.amazon.com (10.37.245.7) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Sat, 26 Jul 2025 01:09:06 +0000
-From: Takamitsu Iwai <takamitz@amazon.co.jp>
-To: Vinicius Costa Gomes <vinicius.gomes@intel.com>, Jamal Hadi Salim
-	<jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko
-	<jiri@resnulli.us>
-CC: <netdev@vger.kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
-	<takamitz@amazon.com>, Takamitsu Iwai <takamitz@amazon.co.jp>,
-	<syzbot+398e1ee4ca2cac05fddb@syzkaller.appspotmail.com>
-Subject: [PATCH v2 net] net/sched: taprio: enforce minimum value for picos_per_byte
-Date: Sat, 26 Jul 2025 10:08:15 +0900
-Message-ID: <20250726010815.20198-1-takamitz@amazon.co.jp>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	s=arc-20240116; t=1753493491; c=relaxed/simple;
+	bh=RQ6ra1R7nNSjq0Z2srYDXojlaDoiAIXrb8y2ulQ9Q58=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=DvqiTtmH7ouSEF8CHgUxDnGgLgVzVb3qCXNqVWINyFhtSdHYHdfM/u1FFzb3R/4JELtCEUJ76Y5Nnq+jMAVku8MqW8uK3cA2pSg3oW5sWzX26lsX+6yobiWL3IwCr7NFcECbR1HwJhFK+wESkVNSmpP2AxxNvtEP0Nu0BumbPn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4bpnKc0mwDz27j2F;
+	Sat, 26 Jul 2025 09:32:20 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 60AF4140118;
+	Sat, 26 Jul 2025 09:31:19 +0800 (CST)
+Received: from [10.174.179.113] (10.174.179.113) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 26 Jul 2025 09:31:18 +0800
+Message-ID: <514b2e53-83fd-43e3-aa1f-21b9ff14b31a@huawei.com>
+Date: Sat, 26 Jul 2025 09:31:17 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWB001.ant.amazon.com (10.13.139.132) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] ipv6: mcast: Add ip6_mc_find_idev() helper
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20250724115631.1522458-1-yuehaibing@huawei.com>
+ <20250725144547.05a48cc1@kernel.org>
+Content-Language: en-US
+From: Yue Haibing <yuehaibing@huawei.com>
+In-Reply-To: <20250725144547.05a48cc1@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-Syzbot reported a WARNING in taprio_get_start_time().
+On 2025/7/26 5:45, Jakub Kicinski wrote:
+> On Thu, 24 Jul 2025 19:56:31 +0800 Yue Haibing wrote:
+>>  net/ipv6/mcast.c | 76 +++++++++++++++++++++++-------------------------
+>>  1 file changed, 36 insertions(+), 40 deletions(-)
+> 
+> Dunno if this is worth the churn to save 4 lines.
+> I was waiting to see if anyone will offer a review tag
+> but it's getting a bit later in the review cycle, 
+> please try again after the merge window.
 
-When link speed is 470,589 or greater, q->picos_per_byte becomes too
-small, causing length_to_duration(q, ETH_ZLEN) to return zero.
-
-This zero value leads to validation failures in fill_sched_entry() and
-parse_taprio_schedule(), allowing arbitrary values to be assigned to
-entry->interval and cycle_time. As a result, sched->cycle can become zero.
-
-Since SPEED_800000 is the largest defined speed in
-include/uapi/linux/ethtool.h, this issue can occur in realistic scenarios.
-
-To ensure length_to_duration() returns a non-zero value for minimum-sized
-Ethernet frames (ETH_ZLEN = 60), picos_per_byte must be at least 17
-(60 * 17 > PSEC_PER_NSEC which is 1000).
-
-This patch enforces a minimum value of 17 for picos_per_byte when the
-calculated value would be lower, and adds a warning message to inform
-users that scheduling accuracy may be affected at very high link speeds.
-
-Fixes: fb66df20a720 ("net/sched: taprio: extend minimum interval restriction to entire cycle too")
-Reported-by: syzbot+398e1ee4ca2cac05fddb@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=398e1ee4ca2cac05fddb
-Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
----
-Changes:
-  v2:
-    - Add warning for users to inform link speed is too high for scheduling.
-    - Correct fixes tag to indicate appropriate commit.
-  v1: https://lore.kernel.org/all/20250724181345.40961-1-takamitz@amazon.co.jp/
-  
- net/sched/sch_taprio.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 2b14c81a87e5..55c8ca4f946d 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -43,6 +43,12 @@ static struct static_key_false taprio_have_working_mqprio;
- #define TAPRIO_SUPPORTED_FLAGS \
- 	(TCA_TAPRIO_ATTR_FLAG_TXTIME_ASSIST | TCA_TAPRIO_ATTR_FLAG_FULL_OFFLOAD)
- #define TAPRIO_FLAGS_INVALID U32_MAX
-+/* Minimum value for picos_per_byte to ensure non-zero duration
-+ * for minimum-sized Ethernet frames (ETH_ZLEN = 60).
-+ * 60 * 17 > PSEC_PER_NSEC (1000)
-+ */
-+#define TAPRIO_PICOS_PER_BYTE_MIN 17
-+
- 
- struct sched_entry {
- 	/* Durations between this GCL entry and the GCL entry where the
-@@ -1300,6 +1306,11 @@ static void taprio_set_picos_per_byte(struct net_device *dev,
- 
- skip:
- 	picos_per_byte = (USEC_PER_SEC * 8) / speed;
-+	if (picos_per_byte < TAPRIO_PICOS_PER_BYTE_MIN) {
-+		pr_warn("Link speed %d is too high. Schedule may be inaccurate.\n",
-+			speed);
-+		picos_per_byte = TAPRIO_PICOS_PER_BYTE_MIN;
-+	}
- 
- 	atomic64_set(&q->picos_per_byte, picos_per_byte);
- 	netdev_dbg(dev, "taprio: set %s's picos_per_byte to: %lld, linkspeed: %d\n",
--- 
-2.39.5 (Apple Git-154)
-
+Ok, thank you for your review.
