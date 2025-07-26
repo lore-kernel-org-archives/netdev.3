@@ -1,87 +1,67 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE241F4CBE
-	for <netdev@vger.kernel.org>; Sat, 26 Jul 2025 18:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E621205E25;
+	Sat, 26 Jul 2025 19:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753555317; cv=none; b=uk2kNVrpOu98hvy0fMziO65CoaqJg+GDLxoM5Ps/YUzGue2PHkLPNVpgO82pRzXDxFfI/HwUDpCWKobbDu+ENd48qZnOn42fymLj6HLkBA/nUFaA1ZxxxlJIQr7jESVpcREERlzpHoYaXn9kCdS+oq2/KCPRPfZQlfDHa4g6BTY=
+	t=1753556701; cv=none; b=WTd1cvBCdI41wqwpiA5ZgozBPa/p7ERA/x34ePo7FCyTfIRveNhVa9aOejx7eZ4SogPi/Z2YzU3CECLVHjJWge1SRJHS7QmH+JitQVbhDrQFqrmmrOOCdwz3LRklo7dBwA/106hxUxUsB796XOKLIttYipBfaNO5yqdHEkpSFfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753555317; c=relaxed/simple;
-	bh=X5SNU6mZpfGJ0uSyCXcVbhVyIzG+8ZB193dZJ72Pxno=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=urlzxeRhgjMTSkc2r/Uv9LkgmbU0wRZGpXOh9CXLQIbEqPDX87JUWTK9jdAD0cyiHLWgKkQV/auRZ/PMEAND9afCwWuWHde/XCAGqqXDhNbBEgefPEC7OahZYXOn8J/XNclKLEmtLp6EDRRQrhp0xPm6VPwpSFt74pCD+NOXoHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZVTcbokK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1753556701; c=relaxed/simple;
+	bh=yy6cnTwBnCXmwWO3MHjMEhHRrAAkWwy77MMk1Vy+NxE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IIdXS2B5+F3ztOUvVa5hD4HlMzW49eaDU46FDjQpq53/dhh1XZBBLHYj/jcbObl63OkioxhZ6/0UMspPRK1w8iTbMx8Z534dPMmMybL6i6uQeqXmwFnt+hGF7ewFCHPPHWzJB4R+ROW/L54GAcQvy4RgzajZQd7ZQ+wHKkDej0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=exYFZq/j; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZVTcbokK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753555313;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=AOhWlntOPTxRL5Vgqd2NjgBziUWiXpKafE0U7ewS1Kc=;
-	b=ZVTcbokKlYAoI8nd26peNLqMuMy7N7jU+ILFDac0ijEsGPQ+vC6KEIA/Qrygcnq15vnd2M
-	r0c6QIKiZqpuXqw8asF9UR6pl5X0VuAYmzyUEuKJ2DHH2nFBn+n9Ud6/2iL3iX3SgAYyql
-	bOVlQ8WS86dwIs+RpTeu3ul7NG3ifyM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-507-OelhwYqoP6KmGmRg8Wqdnw-1; Sat,
- 26 Jul 2025 14:41:50 -0400
-X-MC-Unique: OelhwYqoP6KmGmRg8Wqdnw-1
-X-Mimecast-MFC-AGG-ID: OelhwYqoP6KmGmRg8Wqdnw_1753555309
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F2E971956089;
-	Sat, 26 Jul 2025 18:41:48 +0000 (UTC)
-Received: from p16v.luc.cera.cz (unknown [10.44.32.22])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E798F1800242;
-	Sat, 26 Jul 2025 18:41:46 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	netdev@vger.kernel.org (open list:MICROCHIP ZL3073X DRIVER),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net-next] dpll: zl3073x: Fix build failure
-Date: Sat, 26 Jul 2025 20:41:45 +0200
-Message-ID: <20250726184145.25769-1-ivecera@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="exYFZq/j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E237C4CEED;
+	Sat, 26 Jul 2025 19:04:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753556701;
+	bh=yy6cnTwBnCXmwWO3MHjMEhHRrAAkWwy77MMk1Vy+NxE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=exYFZq/jxGPb59AlOyb8xRihdk/qpCpv8/nIJsn0oHjxk57XSUPYVBtBof395L9jZ
+	 nf4wkJdDAlhXUBzPOat7bgUHOUxHDRr7gDbtSbmeCRQo2g2gb2r9JAtumqriBltlxb
+	 o75lnH0VpC4AUIbedKQqTBhPLE5nw3DXe8GB/1wcYsbHxZm+S3ypib80zQ+xSfBA9g
+	 3yln1rPFtoQ5Dpn0OOXvMKPJXenqfj2zsFyTXsOeLj3dYNNhB0kulEtevXL3RRrU0e
+	 Bvjv48s6ykEt9aPloLNjgK7t3YJqgcxs4td+c/biTlpUUXkCR/xp7cgr0MvYelTzyQ
+	 tdqeUSohvW6hQ==
+Date: Sat, 26 Jul 2025 12:04:58 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Daniel Borkmann <daniel@iogearbox.net>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, ast@kernel.org,
+ andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com,
+ song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com,
+ kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+ mykolal@fb.com, shuah@kernel.org, pablo@netfilter.org,
+ bigeasy@linutronix.de, fw@strlen.de, bpf@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next] selftests: bpf: fix legacy netfilter options
+Message-ID: <20250726120458.4aa17989@kernel.org>
+In-Reply-To: <e691eb39-e13a-4558-8f62-6a1fd98382f1@iogearbox.net>
+References: <20250726155349.1161845-1-kuba@kernel.org>
+	<e691eb39-e13a-4558-8f62-6a1fd98382f1@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-If CONFIG_ZL3073X is enabled but both CONFIG_ZL3073X_I2C and
-CONFIG_ZL3073X_SPI are disabled, the compilation may fail because
-CONFIG_REGMAP is not enabled.
+On Sat, 26 Jul 2025 20:54:33 +0200 Daniel Borkmann wrote:
+> On 7/26/25 5:53 PM, Jakub Kicinski wrote:
+> > Recent commit to add NETFILTER_XTABLES_LEGACY missed setting
+> > a couple of configs to y. They are still enabled but as modules
+> > which appears to have upset BPF CI, e.g.:
+> > 
+> >     test_bpf_nf_ct:FAIL:iptables-legacy -t raw -A PREROUTING -j CONNMARK --set-mark 42/0 unexpected error: 768 (errno 0)
+> > 
+> > Fixes: 3c3ab65f00eb ("selftests: net: Enable legacy netfilter legacy options.")
+> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>  
+> 
+> Acked-by: Daniel Borkmann <daniel@iogearbox.net>
 
-Fix the issue by selecting CONFIG_REGMAP when CONFIG_ZL3073X is enabled.
-
-Fixes: 2df8e64e01c10 ("dpll: Add basic Microchip ZL3073x support")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
----
- drivers/dpll/zl3073x/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/dpll/zl3073x/Kconfig b/drivers/dpll/zl3073x/Kconfig
-index 41fa6a8f96ab9..7db262ab84582 100644
---- a/drivers/dpll/zl3073x/Kconfig
-+++ b/drivers/dpll/zl3073x/Kconfig
-@@ -5,6 +5,7 @@ config ZL3073X
- 	depends on NET
- 	select DPLL
- 	select NET_DEVLINK
-+	select REGMAP
- 	help
- 	  This driver supports Microchip Azurite family DPLL/PTP/SyncE
- 	  devices that support up to 5 independent DPLL channels,
--- 
-2.49.1
-
+Thank you for the quick ack!
