@@ -1,123 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E8272621;
-	Mon, 28 Jul 2025 15:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990461E2823
+	for <netdev@vger.kernel.org>; Mon, 28 Jul 2025 15:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753715871; cv=none; b=HNWVoRY2tg73zW99lcSG2JKWrBxBIlB+zxSm7AhwZXrKU/k6F80vG0mdt7btcHx/YXAMZ420JNjqpsSpwwnjgxe4/wO3xytoE1TkL5rLDrqQb7I2Nu7/wyngOA4pzJ5xayQ6gFmtYaAqdjNwDEOSiOy87mu/Kqnzubvfb6pPfF8=
+	t=1753715885; cv=none; b=ITYae0Vx+GrRxMl6Ce5Ag6FF/HGjS1zIsw4+X1Z9xka+61wgRlwOxSUkjUlfaFSB+SFM+pqNuXJ0HbmYjiz56j+UXGAHpH5U5O/5iICMTZ8f6GkL5AM316p+UH0ZkPcKWWsTR/gZ2OwWEK02muVQZUy4LXag7Nxvip8D1lb7fpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753715871; c=relaxed/simple;
-	bh=jV727T99qgnh1S0rwWU0da1unCUJvT2tB6hFm2F1/Mo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aAC0SN+PEKGMFzq/P5EFjNlxB3opBixPIcA8nx4ac7904EwJz1ESbprGSQSBHAO3t3u3KMYqSjx2awITL7KAPb6cNaR1mYIXALfY/Eo49JAD75YHG2mipjpHpIp0jJXGdMaN3lBNk8PznVVl+OzggJFCcHDx5VfBZtrGwPPY6Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K16BHBpR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753715885; c=relaxed/simple;
+	bh=PtZVe5gBpzQtegvnTWsAD6iD2zw4rsTAT55j4WxM4jw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AIf+/KCtJ1ALMAV2YZc+gAJ2NpGmKspdZe+CQddEsso1J06EeywIc3QMku2xoLhM14ev+0fwUxBGRfYMrn23m7NkBgePAPL1AIODaPOipXghVbIluY8dgoylFuZXIlkltG1MA0psgjSJVW7FVE2R9KpvvccYBt3umKXfpfc06E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=UFFCEJ4o; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IKJGKB1E; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K16BHBpR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE4BC4CEE7;
-	Mon, 28 Jul 2025 15:17:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753715870;
-	bh=jV727T99qgnh1S0rwWU0da1unCUJvT2tB6hFm2F1/Mo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=K16BHBpRBWnNWZUczzVwEQX3lZbsX0KV0ELZ5BY2IxJt2tyDWbAVHAuddklKMUNL/
-	 6rM5XsxGlU5XsvyfafnXLhXviqefHfmIhdkVa4KhSUuVBu5LLvJyWlrmzBbYzTNf7r
-	 XaagVrZ+xz1j5nWqqz0Dq6TMa69amqwuKHy2tBc7XGfjMAtYeDFAjmIWDDjO9mhs8f
-	 emOQG6011CW96Df3b3hpWWoGRNGVqcnLgxD0Zt/1bhC41PEILL3uJxhYqQAlwqsplD
-	 h9vYZa57WBkTku3SZbAIM2C6rGXODXfrcZYVUdsjKWFLj1j2csHBKRuMMWkvR4cgjY
-	 0VQLmrxuroWWQ==
-Date: Mon, 28 Jul 2025 08:17:48 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Tariq Toukan <ttoukan.linux@gmail.com>
-Cc: Tariq Toukan <tariqt@nvidia.com>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Jiri Pirko <jiri@resnulli.us>,
- Jiri Pirko <jiri@nvidia.com>, Saeed Mahameed <saeed@kernel.org>, Gal
- Pressman <gal@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Shahar
- Shitrit <shshitrit@nvidia.com>, Donald Hunter <donald.hunter@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>, Brett Creeley <brett.creeley@amd.com>,
- Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi
- <pavan.chebbi@broadcom.com>, Cai Huoqing <cai.huoqing@linux.dev>, Tony
- Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Sunil Goutham <sgoutham@marvell.com>, Linu
- Cherian <lcherian@marvell.com>, Geetha sowjanya <gakula@marvell.com>, Jerin
- Jacob <jerinj@marvell.com>, hariprasad <hkelam@marvell.com>, Subbaraya
- Sundeep <sbhatta@marvell.com>, Saeed Mahameed <saeedm@nvidia.com>, Mark
- Bloch <mbloch@nvidia.com>, Ido Schimmel <idosch@nvidia.com>, Petr Machata
- <petrm@nvidia.com>, Manish Chopra <manishc@marvell.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
- linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net-next 0/5] Expose grace period delay for devlink
- health reporter
-Message-ID: <20250728081748.700ad46a@kernel.org>
-In-Reply-To: <3bf6714b-46d7-45ad-9d15-f5ce9d4b74e4@gmail.com>
-References: <1752768442-264413-1-git-send-email-tariqt@nvidia.com>
-	<20250718174737.1d1177cd@kernel.org>
-	<6892bb46-e2eb-4373-9ac0-6c43eca78b8e@gmail.com>
-	<20250724171011.2e8ebca4@kernel.org>
-	<3bf6714b-46d7-45ad-9d15-f5ce9d4b74e4@gmail.com>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="UFFCEJ4o";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IKJGKB1E"
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id A1C05140025B;
+	Mon, 28 Jul 2025 11:18:01 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 28 Jul 2025 11:18:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm1; t=1753715881; x=1753802281; bh=2H2tSXWCXw
+	kD9ucxZRzVEoVfm9cjJ0khbhko47wSlRY=; b=UFFCEJ4opKoba3UPYvf3jw/vkM
+	y6g61Tum/8QBeWhWvGVsQA4ZhVUz+yMOxHX041VZ7id6wOLCKceUH1GvB7XwKpX2
+	qNWqACxzcS0kUsDHlJCpjdYoy4Fpsbst0HLoy4OVeNkrn8rZCFd1zgiGTGH2rDqv
+	9Fn9LSGjNlRQ+VgEJOGsCilFiwBslaJTPJMZkZyLR/tWrRwvkBvPmGrrP0AUqOuX
+	2yr5gulCICYpWPXsuFToodnmWva4ASXVPFj/0ip4DgVl4n2lOOOEZuxnR6WgCtB0
+	0mTBRhD2lwLQlKbwXHzap8lkIkbEYmJdSNyOSKEQ3UPwF+H8upKKC49jFvPg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1753715881; x=1753802281; bh=2H2tSXWCXwkD9ucxZRzVEoVfm9cjJ0khbhk
+	o47wSlRY=; b=IKJGKB1EfzD1k13xJfnB/8MMd4YLoFQN8EHMpYXdOv/CMxo77oR
+	zi15NUNJ4PCbgdGScVhgUXDsi9CSMV5MXoNH0I8ma7HH2RlF2CxwDSmB5mbZAowi
+	yN5ssJSg74WTfOnrSklJOT3jNpnRB16ir3tvmh7yT3Fb7tF91Oii5pqyK5IBGK1I
+	C2X1EkOVOE2+OHhsDB4DXziGvaV5ZD/LdncFXDW89kSZFrgwilmNb8d1SYYK+cEj
+	+td6/jeVeru9eZGSAUGc4yjuRPCHuFS3ftSGzewHNHd50bj6I+JPOFELYWFFHuWK
+	RRB24+jLq2IDOaUdhFXj8o84IRxLojxoM2w==
+X-ME-Sender: <xms:qJSHaN7diiNs83RJw7k4eBBSgzMEQx5A0Hdp8_XbK85yjNjIBhX4qA>
+    <xme:qJSHaHzAO3lxCeqXhHxBtBdFvrTFoAFDsmDEsZkKl7-W8mcep2BL_HuQhjj1_IrWj
+    JVNAmKO8arpSGTrLEs>
+X-ME-Received: <xmr:qJSHaEMSPVUNr6J4oT8KgBaLFyphaS17ZHE4g98-ZMTPWSLxeIew_otptFIj>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdelvdehudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpefurggsrhhinhgrucff
+    uhgsrhhotggruceoshgusehquhgvrghshihsnhgrihhlrdhnvghtqeenucggtffrrghtth
+    gvrhhnpeejtdeugfffkeejfeehkeeiiedvjeehvdduffevfeetueffheegteetvdfhffev
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehsug
+    esqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghrtghpthhtohepledpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtohepshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhrtghpthhtohep
+    shhtvghffhgvnhdrkhhlrghsshgvrhhtsehsvggtuhhnvghtrdgtohhmpdhrtghpthhtoh
+    epughsrghhvghrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvgguuhhmrgiivght
+    sehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehhohhr
+    mhhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofh
+    htrdhnvght
+X-ME-Proxy: <xmx:qJSHaFkorZq2spVpiOLaZ2n2aedzQ11ZtQn_AoN6ctEB2chbdxSOrA>
+    <xmx:qJSHaBTap98vXxEeysudqSUIMaV2PBfieIL-H2TaXxjBz8bskwSjuA>
+    <xmx:qJSHaMXO3DMEkHXqnaPi62u0NFj8eFuQmJelth18ByYmYCfvvzscNA>
+    <xmx:qJSHaNLuMGJXS14q6qsj6e2OGYebRfCrFaiWP4zyp7_5MzqXvcNbEA>
+    <xmx:qZSHaBfhkzzKAZL2pCyIuOUKwQrFDRLFFoWhzDOMlKidTjVNgA8Vk6AS>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 28 Jul 2025 11:17:59 -0400 (EDT)
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: netdev@vger.kernel.org
+Cc: Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH ipsec 0/3] xfrm: some fixes for GSO with SW crypto
+Date: Mon, 28 Jul 2025 17:17:17 +0200
+Message-ID: <cover.1753631391.git.sd@queasysnail.net>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sun, 27 Jul 2025 14:00:11 +0300 Tariq Toukan wrote:
-> I get your suggestion. I agree that it's also pretty simple to 
-> implement, and that it tolerates bursts.
-> 
-> However, I think it softens the grace period role too much. It has an 
-> important disadvantage, as it tolerates non-bursts as well. It lacks the 
-> "burstness" distinguishability.
-> 
-> IMO current grace_period has multiple goals, among them:
-> 
-> a. let the auto-recovery mechanism handle errors as long as they are 
-> followed by some long-enough "healthy" intervals.
-> 
-> b. break infinite loop of auto-recoveries, when the "healthy" interval 
-> is not long enough. Raise a flag to mark the need for admin intervention.
-> 
-> In your proposal, the above doesn't hold.
-> It won't prevent the infinite auto-recovery loop for a buggy system that 
-> has a constant rate of up to X failures in N msecs.
-> 
-> One can argue that this can be addressed by increasing the grace_period. 
-> i.e. a current system with grace_period=N is intuitively moved to 
-> burst_size=X and grace_period=X*N.
-> 
-> But increasing the grace_period by such a large factor has 
-> over-enforcement and hurts legitimate auto-recoveries.
-> 
-> Again, the main point is, it lacks the ability to properly distinguish 
-> between 1. a "burst" followed by a healthy interval, and 2. a buggy 
-> system with a rate of repeated errors.
+This series fixes a few issues with GSO. Some recent patches made the
+incorrect assumption that GSO is only used by offload. The first two
+patches in this series restores the old behavior.
 
-I suspect this is catching some very mlx5-specific recovery loop,
-so I defer to your judgment on what's better.
+The final patch is in the UDP GSO code, but fixes an issue with IPsec
+that is currently masked by the lack of GSO for SW crypto. With GSO,
+VXLAN over IPsec doesn't get checksummed.
 
-As a user I do not know how to configure this health recovery stuff.
-My intuition would be that we just needs to lower the recovery rate
-to prevent filling up logs etc. and the action of taking the machine
-out is really the responsibility of some fleet health monitoring daemon.
-I can't think of any other error reporting facility in the kernel where
-we'd shut down the recovery completely if the rate is high..
+Sabrina Dubroca (3):
+  xfrm: restore GSO for SW crypto
+  Revert "xfrm: Remove unneeded device check from validate_xmit_xfrm"
+  udp: also consider secpath when evaluating ipsec use for checksumming
 
-> > Now we add something called "grace period delay" in
-> > some places in the code referred to as "reporter_delay"..
-> > 
-> > It may be more palatable if we named the first period "error burst
-> > period" and, well, the later I suppose it's too late to rename..  
-> It can be named after what it achieves (allows handling of more errors) 
-> or what it is (a shift of the grace_period). I'm fine with both, don't 
-> have strong preference.
+ net/ipv4/udp_offload.c |  2 +-
+ net/xfrm/xfrm_device.c | 16 +++++++++++++---
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-Let's rename to "error burst period", reporter_in_error_burst etc.
+-- 
+2.50.0
 
-> I'd call it grace_period in case we didn't have one already :)
-
-Exactly :)
