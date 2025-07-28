@@ -1,57 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.ionic.de (ionic.de [145.239.234.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F122ABE4E
-	for <netdev@vger.kernel.org>; Mon, 28 Jul 2025 16:35:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0941C5F13;
+	Mon, 28 Jul 2025 16:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.234.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753720506; cv=none; b=pc1/XSOvgnR7wemInnMHz/m1KKCIOnf19k/qbZdWQMEY2pmibaat+74wNVClsi3YMKpAY5zaJ1p7teMrqEgFFPDQk575NTgifr0l7Bln1dwz+eRH1yX8WeMovF424oH9MwgadMgXdIQ8A585SXJ1bj4SD2zNpcp9ertSWYOzp1E=
+	t=1753721148; cv=none; b=u60QjAwHrG3cRxy56SvicE1QrO8UbpKFEfti7mVPbOE+q6CgDp/Va8g7XG8RKTPPIwOiNgB4eZuPFgpqf4qiNZ9xk2hX5V15d4qIftSpMAghsNrxVoqDC0kxwGkJBnnLtflCHtlw6OARaM/EzTWXYQGd6PUgfecbuKyqzqQvBRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753720506; c=relaxed/simple;
-	bh=PxuNXuChBXAEPAEMlrXqIRO3p30mHc0dhyRLDq4K/Oc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=poZw6oPp9N+mSvgGZO08VbLfIVyLSGmN23IzWBuO9JsruswQFgDz+JzTxevycgH6pQL+kCuArh6cyV10wgRMn57qkJE3hhxVGrwY7liCEm7u48ReprvG+Ht20LhaHaaBBbbL2FEQ2Zd/tRDkVI6m1z7sj4+Zig+ojzuraF0MpBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALnxJHcE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753721148; c=relaxed/simple;
+	bh=+2JvhvfPPXwyexOfFnmN12zI5ndOKsvqBC97gE+vWfs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mrv4+ta2Ec7egMPO2vayx2zYxFOzrk2yxVUJCd9gmzekGVrYJKkb5LpnicukLe8jF3dbbAm0BE7Sjanm8gDnqqR9+KRe110PhGO4fmOaURYopy18YdUf7++9RhqjsKRUKgjld+vbeZjxK6oMJ8VVUgSmj1zjFRYmHdE020yu5Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=YQuZsz85; arc=none smtp.client-ip=145.239.234.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionic.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALnxJHcE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BAEC4CEE7;
-	Mon, 28 Jul 2025 16:35:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753720505;
-	bh=PxuNXuChBXAEPAEMlrXqIRO3p30mHc0dhyRLDq4K/Oc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ALnxJHcEUCfS+7OnIjOlEJLmDJfKNDFOjLV7G4vUBwpSJf6Hoj7ku1EY9ojtxUS6D
-	 19AwhXUZtbsfX00t7dVY1TJAPSkwSWe2BXx9PPOxlmN9o5Yb70CSgbq7rW9+h2k+R0
-	 W+ozZCPFYtPWwtN482SmRSmHVhbVLof6+LVcK+0yNzv2ycAqOQxY3HKkeYKQBN5Clu
-	 fWMzAx0o6zWymu1IESr13qywXDuLV9f45BCJ2i2DTPW90PJIVjc/xN0ztXlaSzmH+s
-	 Ow6Q1Lhv4qh7y3hxnm4T9CWId3BvHbetToOsEwB/3gsm4rMoAVQMZiFKsZqeJwDARA
-	 YRbgGttTHlPQQ==
-Date: Mon, 28 Jul 2025 09:35:04 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: <netdev@vger.kernel.org>, <davem@davemloft.net>, <pabeni@redhat.com>,
- <edumazet@google.com>, <horms@kernel.org>, <donald.hunter@gmail.com>,
- <petrm@nvidia.com>, <razor@blackwall.org>, <daniel@iogearbox.net>
-Subject: Re: [PATCH net-next v2 2/2] selftests: net: Add a selftest for
- externally validated neighbor entries
-Message-ID: <20250728093504.4ebbd73c@kernel.org>
-In-Reply-To: <20250626073111.244534-3-idosch@nvidia.com>
-References: <20250626073111.244534-1-idosch@nvidia.com>
-	<20250626073111.244534-3-idosch@nvidia.com>
+	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="YQuZsz85"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ionic.de; s=default;
+	t=1753721137; bh=+2JvhvfPPXwyexOfFnmN12zI5ndOKsvqBC97gE+vWfs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YQuZsz85mls6du6i+1Xuj/XUQkJy7pL61W/LcCjEWnfpiv72A1plafeF3CwWQBH5F
+	 AmsMADFC5/fazcqQPqcrL41h5gDNvBCZlUTQVHvHuCjRD3U+JQx6pRRigXVHkKV2yK
+	 evIah4M+MSK7iA8LPvGq8Po5s5dNn9m9uHsALIzQ=
+Received: from grml.local.home.ionic.de (unknown [IPv6:2a00:11:fb41:7a00:21b:21ff:fe5e:dddc])
+	by mail.ionic.de (Postfix) with ESMTPSA id 4E0E31480984;
+	Mon, 28 Jul 2025 18:45:37 +0200 (CEST)
+From: Mihai Moldovan <ionic@ionic.de>
+To: linux-arm-msm@vger.kernel.org,
+	Manivannan Sadhasivam <mani@kernel.org>
+Cc: Denis Kenzior <denkenz@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH v4 01/11] net: qrtr: ns: validate msglen before ctrl_pkt use
+Date: Mon, 28 Jul 2025 18:45:18 +0200
+Message-ID: <456d8dff226c88657c79f1dbadf0dcaba8b905ae.1753720934.git.ionic@ionic.de>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <cover.1753720934.git.ionic@ionic.de>
+References: <cover.1753720934.git.ionic@ionic.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 26 Jun 2025 10:31:11 +0300 Ido Schimmel wrote:
-> +TEST_PROGS += test_neigh.sh
+From: Denis Kenzior <denkenz@gmail.com>
 
-Hi Ido!
+The qrtr_ctrl_pkt structure is currently accessed without checking
+if the received payload is large enough to hold the structure's fields.
+Add a check to ensure the payload length is sufficient.
 
-This one is a bit flaky running on the normal/"non-debug" kernel:
-https://netdev.bots.linux.dev/contest.html?executor=vmksft-net&test=test-neigh-sh
-Looks like we get a flake for 1 in 10 runs :( Could you TAL?
+Signed-off-by: Denis Kenzior <denkenz@gmail.com>
+Reviewed-by: Marcel Holtmann <marcel@holtmann.org>
+Reviewed-by: Andy Gross <agross@kernel.org>
+Signed-off-by: Mihai Moldovan <ionic@ionic.de>
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+
+---
+
+v4:
+  - no changes
+  - Link to v3: https://msgid.link/a3bc13d1496404e96723a427086271107016bdd6.1753312999.git.ionic@ionic.de
+
+v3:
+  - add Fixes: tag
+  - rebase against current master
+  - Link to v2: https://msgid.link/866f309e9739d770dce7e8c648b562d37db1d8b5.1752947108.git.ionic@ionic.de
+
+v2:
+  - rebase against current master
+  - use correct size of packet structure as per review comment
+  - Link to v1: https://msgid.link/20241018181842.1368394-2-denkenz@gmail.com
+---
+ net/qrtr/ns.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index 3de9350cbf30..2bcfe539dc3e 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -619,6 +619,9 @@ static void qrtr_ns_worker(struct work_struct *work)
+ 			break;
+ 		}
+ 
++		if ((size_t)msglen < sizeof(*pkt))
++			break;
++
+ 		pkt = recv_buf;
+ 		cmd = le32_to_cpu(pkt->cmd);
+ 		if (cmd < ARRAY_SIZE(qrtr_ctrl_pkt_strings) &&
+-- 
+2.50.0
+
