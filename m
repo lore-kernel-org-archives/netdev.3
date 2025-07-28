@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F468273D7E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96ADC273D7F;
 	Mon, 28 Jul 2025 16:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753718542; cv=none; b=pJ/qLwhdA9To5G8zBvj7ULQrY/9ovJoXJBW7gEf5stidoHNiyb8pfkCQPvDn4vPKmb8KjHb85YfTAJNseaUlwEoUKeNUzG17YeCQJ6VDJkJNropfBRsekzjai8Av2uqxpik4m63/2RDPcNcDD7ift/lsm1xoCu00TPrEV0gkO/I=
+	t=1753718542; cv=none; b=nbAXp9MqVZ+pd5Cd3QuFu/FP5flgiO/BmUHEBfgko77DtJYKccEclFoUMr8/j57hGb1pA0WVsLe7b2nszHX5CKz4sDNdv0nSsVP4qMXonad3p3P+bgeoPRGTnRztnsrP46DTJHW2pQXNKeO5VsK79hdW7Iv8wlC4UcIyALX3fSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753718542; c=relaxed/simple;
-	bh=deh3Qwq57w+TnIRPLss0GAT2BTvn4TViPnV+RhZDsuU=;
+	bh=XSw4mQEDkXYg1/MgVR7Ux51WqbxkUyoFtZ5Xkxz6xTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cm0UZe/qCfPVcGagyk56l2bm0BkE+RqofeeVh97orB64IBYGAsHxwU8XIokWy1pHQXHAn7nMG/P0NVvceqbynnP4/fXX3xCxkPoP4Tjgma081CSy739mjve5rkeqxFoolCa8hYufCn0/b6yM1dBcvvHTlEAuTpT/cLf2TMzAOBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Es92puf7; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=FOzy9RdYSV1GXIwE1E6R8s+fqregYOaGOhKmpkR7W8/qm4BDkTnozFbINab6b6cyRs//UZjtYVcPrzPikJYhS9QhWg29vqevcYqGU0oT76BofkHT61V6XMtZ1I2MJlJ0REX3CYMhZVVxxgfb0Sivf2NApseWq3ZmPu2/CskTyq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Drmb86SH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Es92puf7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B0DC4CEFB;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Drmb86SH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA0EC116B1;
 	Mon, 28 Jul 2025 16:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1753718542;
-	bh=deh3Qwq57w+TnIRPLss0GAT2BTvn4TViPnV+RhZDsuU=;
+	bh=XSw4mQEDkXYg1/MgVR7Ux51WqbxkUyoFtZ5Xkxz6xTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Es92puf7cu8sxUCISF1zXpjJyy8zn8IR1uC6kiFV1bINXA27e5DZoH5+50aaPZLAn
-	 qEvh1zNBpYMMrU7VHETV6szwY07NYE9IwSwzitYnRSy6Xo9J+Qk3MVcH6+/9TfebDC
-	 ZqFDmDKhyXE9av0OaxhKSC/RsO1zRVuKD9Uh4IYmPZP1A3fsKbITxdIQT8mq7lyQuw
-	 f6jesAC1O7BmItg46rq30sbcf1KKolCoTLajpjSFjoZPw5pvKmY0BTFMfm1QJuKXtT
-	 BRcp06d0hS66R4BubPEgg/t41ZoTMPQf3sb2lQAp2WF/pubW3HiVLjzQj1R5rxAcbB
-	 AAtIF5Wlh0yBA==
+	b=Drmb86SHisLz6/XaBYSkRUMw4q+Y4sagL2pNyxT88nO4h4j7+QgzO6S98YhmK9loE
+	 Cufy8D077P0hrukVf9IVmcaZN9HSt4yYCEjCLfOOGAmWUzYZ+6h6/g3gZycHmeF4wN
+	 jBltRkOU57pCbwecqTklQt/7Kp+zU83iwsr8n1Q7mWF65J1ejMqEfGZLw7CmDz8H0M
+	 5b65tqSaqgW97oEfyFcyq79VO1Wg3+w1pKJcZ/CNwmze79IdOjeCQ7GR+7RwOfRXc+
+	 Fbqo2xg+hLyeRAjVlfTFhN3DBUwDPSr9N4hlfrFOc0L9Sm1mrR4QbvzEd28RQumLr+
+	 NYuvLEmGzCr3Q==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98.2)
 	(envelope-from <mchehab@kernel.org>)
-	id 1ugQIq-00000000GdB-24S3;
+	id 1ugQIq-00000000Gct-1QFd;
 	Mon, 28 Jul 2025 18:02:16 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: "Message-ID :" <cover.1752076293.git.mchehab+huawei@kernel.org>,
@@ -56,9 +56,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	netdev@vger.kernel.org,
 	peterz@infradead.org,
 	stern@rowland.harvard.edu
-Subject: [PATCH v10 11/14] tools: netlink_yml_parser.py: add line numbers to parsed data
-Date: Mon, 28 Jul 2025 18:02:04 +0200
-Message-ID: <7b358e8c7684f0ac23b65245205d1d3bd776e47d.1753718185.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v10 05/14] docs: sphinx: add a parser for yaml files for Netlink specs
+Date: Mon, 28 Jul 2025 18:01:58 +0200
+Message-ID: <bec1bf1f340ad01694d9eede70b214c1b0f42b5f.1753718185.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1753718185.git.mchehab+huawei@kernel.org>
 References: <cover.1753718185.git.mchehab+huawei@kernel.org>
@@ -71,108 +71,145 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-When something goes wrong, we want Sphinx error to point to the
-right line number from the original source, not from the
-processed ReST data.
+Add a simple sphinx.Parser to handle yaml files and add the
+the code to handle Netlink specs. All other yaml files are
+ignored.
+
+The code was written in a way that parsing yaml for different
+subsystems and even for different parts of Netlink are easy.
+
+All it takes to have a different parser is to add an
+import line similar to:
+
+	from doc_generator import YnlDocGenerator
+
+adding the corresponding parser somewhere at the extension:
+
+	netlink_parser = YnlDocGenerator()
+
+And then add a logic inside parse() to handle different
+doc outputs, depending on the file location, similar to:
+
+        if "/netlink/specs/" in fname:
+            msg = self.netlink_parser.parse_yaml_file(fname)
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
 ---
- tools/net/ynl/pyynl/lib/doc_generator.py | 34 ++++++++++++++++++++++--
- 1 file changed, 32 insertions(+), 2 deletions(-)
+ Documentation/sphinx/parser_yaml.py | 104 ++++++++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
+ create mode 100755 Documentation/sphinx/parser_yaml.py
 
-diff --git a/tools/net/ynl/pyynl/lib/doc_generator.py b/tools/net/ynl/pyynl/lib/doc_generator.py
-index 474b2b78c7bc..658759a527a6 100644
---- a/tools/net/ynl/pyynl/lib/doc_generator.py
-+++ b/tools/net/ynl/pyynl/lib/doc_generator.py
-@@ -20,6 +20,16 @@
- from typing import Any, Dict, List
- import yaml
- 
-+LINE_STR = '__lineno__'
+diff --git a/Documentation/sphinx/parser_yaml.py b/Documentation/sphinx/parser_yaml.py
+new file mode 100755
+index 000000000000..fa2e6da17617
+--- /dev/null
++++ b/Documentation/sphinx/parser_yaml.py
+@@ -0,0 +1,104 @@
++# SPDX-License-Identifier: GPL-2.0
++# Copyright 2025 Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 +
-+class NumberedSafeLoader(yaml.SafeLoader):              # pylint: disable=R0901
-+    """Override the SafeLoader class to add line number to parsed data"""
++"""
++Sphinx extension for processing YAML files
++"""
 +
-+    def construct_mapping(self, node, *args, **kwargs):
-+        mapping = super().construct_mapping(node, *args, **kwargs)
-+        mapping[LINE_STR] = node.start_mark.line
++import os
++import re
++import sys
 +
-+        return mapping
- 
- class RstFormatters:
-     """RST Formatters"""
-@@ -127,6 +137,11 @@ class RstFormatters:
-         """Return a formatted label"""
-         return f".. _{title}:\n\n"
- 
-+    @staticmethod
-+    def rst_lineno(lineno: int) -> str:
-+        """Return a lineno comment"""
-+        return f".. LINENO {lineno}\n"
++from pprint import pformat
 +
- class YnlDocGenerator:
-     """YAML Netlink specs Parser"""
- 
-@@ -144,6 +159,9 @@ class YnlDocGenerator:
-         """Parse 'do' section and return a formatted string"""
-         lines = []
-         for key in do_dict.keys():
-+            if key == LINE_STR:
-+                lines.append(self.fmt.rst_lineno(do_dict[key]))
-+                continue
-             lines.append(self.fmt.rst_paragraph(self.fmt.bold(key), level + 1))
-             if key in ['request', 'reply']:
-                 lines.append(self.parse_do_attributes(do_dict[key], level + 1) + "\n")
-@@ -174,6 +192,10 @@ class YnlDocGenerator:
-             lines.append(self.fmt.rst_paragraph(operation["doc"]) + "\n")
- 
-             for key in operation.keys():
-+                if key == LINE_STR:
-+                    lines.append(self.fmt.rst_lineno(operation[key]))
-+                    continue
++from docutils.parsers.rst import Parser as RSTParser
++from docutils.statemachine import ViewList
 +
-                 if key in preprocessed:
-                     # Skip the special fields
-                     continue
-@@ -233,6 +255,9 @@ class YnlDocGenerator:
-         for definition in defs:
-             lines.append(self.fmt.rst_section(namespace, 'definition', definition["name"]))
-             for k in definition.keys():
-+                if k == LINE_STR:
-+                    lines.append(self.fmt.rst_lineno(definition[k]))
-+                    continue
-                 if k in preprocessed + ignored:
-                     continue
-                 lines.append(self.fmt.rst_fields(k, self.fmt.sanitize(definition[k]), 0))
-@@ -268,6 +293,9 @@ class YnlDocGenerator:
-                 lines.append(self.fmt.rst_subsubsection(attr_line))
- 
-                 for k in attr.keys():
-+                    if k == LINE_STR:
-+                        lines.append(self.fmt.rst_lineno(attr[k]))
-+                        continue
-                     if k in preprocessed + ignored:
-                         continue
-                     if k in linkable:
-@@ -306,6 +334,8 @@ class YnlDocGenerator:
-         lines = []
- 
-         # Main header
-+        lineno = obj.get('__lineno__', 0)
-+        lines.append(self.fmt.rst_lineno(lineno))
- 
-         family = obj['name']
- 
-@@ -354,7 +384,7 @@ class YnlDocGenerator:
-     def parse_yaml_file(self, filename: str) -> str:
-         """Transform the YAML specified by filename into an RST-formatted string"""
-         with open(filename, "r", encoding="utf-8") as spec_file:
--            yaml_data = yaml.safe_load(spec_file)
--            content = self.parse_yaml(yaml_data)
-+            numbered_yaml = yaml.load(spec_file, Loader=NumberedSafeLoader)
-+            content = self.parse_yaml(numbered_yaml)
- 
-         return content
++from sphinx.util import logging
++from sphinx.parsers import Parser
++
++srctree = os.path.abspath(os.environ["srctree"])
++sys.path.insert(0, os.path.join(srctree, "tools/net/ynl/pyynl/lib"))
++
++from doc_generator import YnlDocGenerator        # pylint: disable=C0413
++
++logger = logging.getLogger(__name__)
++
++class YamlParser(Parser):
++    """
++    Kernel parser for YAML files.
++
++    This is a simple sphinx.Parser to handle yaml files inside the
++    Kernel tree that will be part of the built documentation.
++
++    The actual parser function is not contained here: the code was
++    written in a way that parsing yaml for different subsystems
++    can be done from a single dispatcher.
++
++    All it takes to have parse YAML patches is to have an import line:
++
++            from some_parser_code import NewYamlGenerator
++
++    To this module. Then add an instance of the parser with:
++
++            new_parser = NewYamlGenerator()
++
++    and add a logic inside parse() to handle it based on the path,
++    like this:
++
++            if "/foo" in fname:
++                msg = self.new_parser.parse_yaml_file(fname)
++    """
++
++    supported = ('yaml', )
++
++    netlink_parser = YnlDocGenerator()
++
++    def rst_parse(self, inputstring, document, msg):
++        """
++        Receives a ReST content that was previously converted by the
++        YAML parser, adding it to the document tree.
++        """
++
++        self.setup_parse(inputstring, document)
++
++        result = ViewList()
++
++        try:
++            # Parse message with RSTParser
++            for i, line in enumerate(msg.split('\n')):
++                result.append(line, document.current_source, i)
++
++            rst_parser = RSTParser()
++            rst_parser.parse('\n'.join(result), document)
++
++        except Exception as e:
++            document.reporter.error("YAML parsing error: %s" % pformat(e))
++
++        self.finish_parse()
++
++    # Overrides docutils.parsers.Parser. See sphinx.parsers.RSTParser
++    def parse(self, inputstring, document):
++        """Check if a YAML is meant to be parsed."""
++
++        fname = document.current_source
++
++        # Handle netlink yaml specs
++        if "/netlink/specs/" in fname:
++            msg = self.netlink_parser.parse_yaml_file(fname)
++            self.rst_parse(inputstring, document, msg)
++
++        # All other yaml files are ignored
++
++def setup(app):
++    """Setup function for the Sphinx extension."""
++
++    # Add YAML parser
++    app.add_source_parser(YamlParser)
++    app.add_source_suffix('.yaml', 'yaml')
++
++    return {
++        'version': '1.0',
++        'parallel_read_safe': True,
++        'parallel_write_safe': True,
++    }
 -- 
 2.49.0
 
