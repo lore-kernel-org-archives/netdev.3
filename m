@@ -1,90 +1,81 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4691C18A6AB;
-	Mon, 28 Jul 2025 15:38:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FCE145A1F;
+	Mon, 28 Jul 2025 15:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753717116; cv=none; b=pm0BtK6u9mC6D0eF8ox1S+ozmx+XmAtbp3CEiilgSJ2wLaTItS+QFrUqc4+eWTRD/RL/93UyTSHDU5mhgcYIEE5wrveq6wf4D2VGBZckzkKOqaDIswPnwXwCr7kwJvwq174xbPdGpqbqaal8XLseuxGlhXRc8xJnwJhHCpLUYVw=
+	t=1753717225; cv=none; b=su3EACuDlRpdZzhWc6f/ZKX2b9lQmIb/p2tdF0GT7iCfnHvWEvh7QRhyRtxiNRNNEYaUmJYO2ItTRItw8soK9z3z6wXpkYPvUMXx4AzS4WjRwYsqlMsZHjF26guYxu0yLT/giYlpCm0xpQiNdMl6gwCWRN7x6pc6v8uIbErwI9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753717116; c=relaxed/simple;
-	bh=hIf20LhUK1tUQLzGj8ydW/4r2tbZmoAN+UJUY1w+mX0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sJ+3/CNGMW+2wvWWuhX2B0PI31R/IyXSeFPC9j1oarIsiaPml9XKrsCsLMH9Nrb7BWhxqaJwoAY0nQLct+l81H7aqMPGrT/eNOowiR23RsWPHZITpuQ+XADXqW2DKmzwr6glpajzdWFCYlKPpc3CpzxVyl+gv3EtcnPdWb7m6yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=tQZYj3yJ; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1753717225; c=relaxed/simple;
+	bh=WeJb/ApjvcbFncdxETVdczEpNUNn1MkfRDrriLyIUzw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jScSw+ZLaLbmt/bofqgXPpuKtEE4wQ33DAcK/qzggURIR8rpsmnxlUaG28ZqBuokpif3XMrtaOFX2zBU/+6vDrB9p9/QLk7PIaaXUiRarLEL7er+ppT6gd2VVfYvEfMdxrkg1ZvlQu3dEtgzbTlq9PyPU/SaX+YNwO+ls+nxGPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=YFdULwoB; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="tQZYj3yJ"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 3A60EA036C;
-	Mon, 28 Jul 2025 17:30:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=abci0am6LSqs1O5WrmEN62h6sTg5U/wf/gniUsN48as=; b=
-	tQZYj3yJYmJJpzFbkfaY5r3+049jvj3BoWvr/7cdYPPEF0KefVodqmQoiSSy4UtL
-	/SFb8XviXiVgVgDUFsb/XB0IAP8hF7G5rdkYnwXqYsKUOTbgpMSZ7Jrk2UyJe3nT
-	LD0NChh+2jFvjjj2bMgJStyiipVKuSGX+pU5DREJB+eo2b+VUXY4WRbmEMndmvPg
-	NwMPkGHSseolAMglCsOES4210i6Uk4Z9j5t5kW3wLJSo4j26lgdOQRlrDvFrVchx
-	1r+w/tKgQeEpCvHYGVOmvkls2p7quNqW0ap8HJtbd+lzjdsNSIRxbnTEaic6jWRR
-	5i6bj48cE4xHOjYeg8qEfqP3rzsKgsBsNZ4iAAr3sniZ8L/jTmgdR+UsgZSk58Wv
-	A6v4FNbaGM1MmlEMRonUewylkGx5kgkbENUQeyUy1v8FqGU6nzijC6LyNM/6gjcm
-	9Zr9wAwOvhpcwGKdWgtu9lOeOdLTOG2NdlqSvc9b3jHwCFTmTsyWMZ8aD6Jgl0IX
-	R5olLS++l9k5ulAo6dqrdNhWbSZvTg46fotTSOVb0TDVBLSrFzgH5RmzAwaWPpMs
-	061q3EH6KPS6g4aLdP3YMJftlm4xRQ55dMk8z48DYkL3ROcbOvc7llVZEfTDswAS
-	rbhh13HSm3bJRGmW9fFLXnmfN3Cftm9Se2LihZwV7Gc=
-From: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Buday Csaba <buday.csaba@prolan.hu>, =?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?=
-	<csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
-	<hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net resubmit] net: phy: smsc: add proper reset flags for LAN8710A
-Date: Mon, 28 Jul 2025 17:29:16 +0200
-Message-ID: <20250728152916.46249-2-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="YFdULwoB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=q0NF0L3kcXAIrlIUaY/JZCJLHtTs0ZlzHcUdeIHuQes=; b=YFdULwoBKH8lALuAaM6Ubz8QzV
+	wjHrW0iCk5dDulWWurBeJg99G/q/tLpP0xi4V1TdN1kxGQPBiH6PR6QynS+fdE64dxYcbN7TwhsTR
+	4f6sktlQnJnkvbKz846r+1LMZsditTsUH3f7N9H6w1yeviP3WbpZBLT6jX1CZ9c27kSc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1ugPxO-0036Tn-0m; Mon, 28 Jul 2025 17:40:06 +0200
+Date: Mon, 28 Jul 2025 17:40:06 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jonas Karlman <jonas@kwiboo.se>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Alvin =?utf-8?Q?=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Yao Zi <ziyao@disroot.org>, Chukun Pan <amadeus@jmu.edu.cn>,
+	Heiko Stuebner <heiko@sntech.de>, netdev@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 2/3] net: dsa: realtek: Add support for use of
+ an optional mdio node
+Message-ID: <2f942223-8683-4808-8f7a-4f46e18f402d@lunn.ch>
+References: <20250727180305.381483-1-jonas@kwiboo.se>
+ <20250727180305.381483-3-jonas@kwiboo.se>
+ <2504b605-24e7-4573-bec0-78f55688a482@lunn.ch>
+ <badef015-22ff-4232-a4d0-80d2034113ca@kwiboo.se>
+ <9702f3da-f755-4392-bf2b-28814ee0a8c7@lunn.ch>
+ <1c639c62-cc07-4b3d-a18b-77f93668b88f@kwiboo.se>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1753716650;VERSION=7994;MC=255693352;ID=388555;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2998FD515E677063
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1c639c62-cc07-4b3d-a18b-77f93668b88f@kwiboo.se>
 
-From: Buday Csaba <buday.csaba@prolan.hu>
+> When it comes to having the switch being described as an interrupt
+> controller in the DT is also very wrong, the switch only consume a
+> single HW interrupt. The fact that the driver creates virtual irq for
+> each port is purely a software construct and is not something that
+> should be reflected in the DT.
 
-According to the LAN8710A datasheet (Rev. B, section 3.8.5.1), a hardware
-reset is required after power-on, and the reference clock (REF_CLK) must be
-established before asserting reset.
+I think that is not always clear cut. Switches can be considered SoC
+of their own. They have multiple hardware blocks, which can be
+described independent, just like a traditional SoC and its .dtsi
+file. The switch blocks can then be connected together in the same way
+SoCs are.
 
-Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
-Cc: Csókás Bence <csokas.bence@prolan.hu>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
----
- drivers/net/phy/smsc.c | 1 +
- 1 file changed, 1 insertion(+)
+I've not looked at this particular switch driver, but the Marvell
+switches have a similar single interrupt output pin connected to the
+host SoC. Within the switch, there are at least two cascaded interrupt
+controllers. We implement standard Linux interrupt controllers for
+these. That allows us to use standard DT properties to link the
+internal PHY interrupts to these interrupt controllers.
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index b6489da5cfcd..48487149c225 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -785,6 +785,7 @@ static struct phy_driver smsc_phy_driver[] = {
- 
- 	/* PHY_BASIC_FEATURES */
- 
-+	.flags		= PHY_RST_AFTER_CLK_EN,
- 	.probe		= smsc_phy_probe,
- 
- 	/* basic functions */
-
-base-commit: fa582ca7e187a15e772e6a72fe035f649b387a60
--- 
-2.43.0
-
-
+	 Andrew
