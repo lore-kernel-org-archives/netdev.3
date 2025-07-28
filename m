@@ -1,46 +1,47 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04157269D18
-	for <netdev@vger.kernel.org>; Mon, 28 Jul 2025 15:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A582135D7
+	for <netdev@vger.kernel.org>; Mon, 28 Jul 2025 15:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753717572; cv=none; b=P/IuRp67YpBiKA8FSgofXqIlafgFg+U1IeBpwf/+EkCccFb5V09v1feECC5qiK0ApmTAxqkpvY9p1NiAUzW21PoPX7+29RCCacru5o3K/3dERSICAsx/Ulf8zzFnRPU0fCBgHttJsrnR+rP4u7P3NAbVvX9zUQgvpIDxMxOGD9w=
+	t=1753717585; cv=none; b=BXJQXzaO9jQVV2xI/QfQXrWC6Yseco8Z0wUxUMaaw+lkMV05GYjswTldbJ6Ax7DAdilmgKS93lCBhWcBfCQSpB+Xi2ox2BXojdjYVO2bjqbOjDTEZ5Nw/XxzikJlJvfitEQTJvwPmT/T7cKFO1T+UwwQqCeWNttWC8MYhdFOhwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753717572; c=relaxed/simple;
-	bh=lVgiUnf31fNV4/nzvOsIeFL7m9BWu7lhQaB1IbdHDsk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=l9v8Y3nKf9IIEOFC5rXPCMyjmfbDLwwpAzaCdWs+bL132xHjvudf87uqtexQqJ9widVKObrki4E9/PCMuqL+TQMGy4/eAZymaKBtXqXlsJO3ds+KdZ+dnINV0vkcWD4ZhOBGIoD+REztoVCWduppbhO1QKRsPNN398HU/XVF13c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=XQyJE2LK; arc=none smtp.client-ip=78.32.30.218
+	s=arc-20240116; t=1753717585; c=relaxed/simple;
+	bh=A5OoA6BGBcH+nF2i/lSIN0N9ncYvAHBPwwzJkDR+O+w=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=YX5GMQe1WiatgLdtbrcjCgFza2cqEtsXpP78uku7038iaghX6jZzJ11tHoO7ghylaNUgZ3DiSeAA6dIrCssbkImf4mmlcCPa1RDj9NEP/B82PN6M+p3xbI4XJB1bdQDv3lGwe1t+s5tpqYSpzgOJl9aPLLFKB85Hj+gQaCTSKms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=IxkRkgjE; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="XQyJE2LK"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="IxkRkgjE"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=g7Dd/VCgHGXa1ZZy0kScT3IdI9bOz/Ax0ajFta3++S4=; b=XQyJE2LKFjRGg5l5bnJgrSVqLX
-	Bo99l4IkvV3otCd4Jl/PKZPafnFD8qX9Kd4M2Yr3TMQP8BLeRQSoTzCn5joFr61IUQWs4Tl4SIS9c
-	3NC+aWzHM3wRa1WNCeiP1t2QnQTUbhw7VdiizO1ULQJP83lx5kBABvzHWVrdNUyLrYtTimHzp1ZyS
-	02MbuvCyzVa2r554wFRjFr5EZ3pj7lKAUvbfejxSqC1xve3jB7r2Dsi4lMfwR5U6cns7plcLLW7NK
-	8q+MPgdTiCHmQOAQHR1M94RYki4cLzaNqu6wwz7E9hen1xgxITNHr883aiIvpwlZQGp+LnepJr3AU
-	p6wT1ZUg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43158)
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=UHxdT55JRA7x7Guv/dUxLd0lwCXlgL3mLFhEqQaE6hM=; b=IxkRkgjE4yCWF2WhvrKlsr7Y4K
+	T/1fAB26cA63Nn6qw1owOTIc/x+B5EtkroDZIfT9N7xi5eU6vW80B3Nxayzab8OXxHdqBe59Woaf1
+	MbLAEjWggFQxgoeRq+iGvWTEeMpheGRyJC8HCuUVnOcptWQpuGlJoZS06izNRax88aTEoepk16b8o
+	WDeM5HUJ2vfAvC7ZmNYvlpXWh8JFVNKwtL5sEJhNZB6fKlkoFM91L3e1IpCIHnMqOasgcofMk8FLd
+	/ArS1FnuIwJ+nvR22S8++HGcNyTBHJdbNP2n2Gt5c55UZ9hnTjf3/ArdCPXaoF1FfScggY/Hmmu58
+	FMQGXEiA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:55542 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1ugQ32-0000TU-0S;
-	Mon, 28 Jul 2025 16:45:56 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1ugQ2y-0004sJ-1s;
-	Mon, 28 Jul 2025 16:45:52 +0100
-Date: Mon, 28 Jul 2025 16:45:52 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1ugQ3L-0000Tl-2a;
+	Mon, 28 Jul 2025 16:46:15 +0100
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1ugQ2e-006KCw-7V; Mon, 28 Jul 2025 16:45:32 +0100
+In-Reply-To: <aIebMKnQgzQxIY3j@shell.armlinux.org.uk>
+References: <aIebMKnQgzQxIY3j@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
 Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -48,32 +49,61 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH RFC net-next 0/7] net: stmmac: EEE and WoL cleanups
-Message-ID: <aIebMKnQgzQxIY3j@shell.armlinux.org.uk>
+Subject: [PATCH RFC net-next 1/7] net: stmmac: remove unnecessary checks in
+ ethtool eee ops
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1ugQ2e-006KCw-7V@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Mon, 28 Jul 2025 16:45:32 +0100
 
-Hi,
+Phylink will check whether the MAC supports the LPI methods in
+struct phylink_mac_ops, and return -EOPNOTSUPP if the LPI capabilities
+are not provided. stmmac doesn't provide LPI capabilities if
+priv->dma_cap.eee is not set.
 
-This series contains a series of cleanup patches for the EEE and WoL
-code in stmmac, prompted by issues raised during the last three weeks.
+Therefore, checking the state of priv->dma_cap.eee in the ethtool ops
+and returning -EOPNOTSUPP is redundant - let phylink handle this.
 
- drivers/net/ethernet/stmicro/stmmac/common.h       |  1 -
- drivers/net/ethernet/stmicro/stmmac/stmmac.h       | 11 +++++++-
- .../net/ethernet/stmicro/stmmac/stmmac_ethtool.c   | 31 +---------------------
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  | 21 ++++++++-------
- .../net/ethernet/stmicro/stmmac/stmmac_platform.c  |  4 +--
- 5 files changed, 25 insertions(+), 43 deletions(-)
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+index 77758a7299b4..dda7ba1f524d 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+@@ -852,9 +852,6 @@ static int stmmac_ethtool_op_get_eee(struct net_device *dev,
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 
+-	if (!priv->dma_cap.eee)
+-		return -EOPNOTSUPP;
+-
+ 	return phylink_ethtool_get_eee(priv->phylink, edata);
+ }
+ 
+@@ -863,9 +860,6 @@ static int stmmac_ethtool_op_set_eee(struct net_device *dev,
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 
+-	if (!priv->dma_cap.eee)
+-		return -EOPNOTSUPP;
+-
+ 	return phylink_ethtool_set_eee(priv->phylink, edata);
+ }
+ 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.30.2
+
