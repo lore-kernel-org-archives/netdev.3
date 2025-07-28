@@ -1,63 +1,63 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5546A264638;
-	Mon, 28 Jul 2025 11:03:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D197246BA5;
+	Mon, 28 Jul 2025 11:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753700622; cv=none; b=Tvx6sbfV7nIu6QpTE4kNG4+eG35/G5MaxqS4pFO5zoua7OyFdLLnJnW27EM4AwoWFiu9wowM+KHP1Xgtl2AfAlD/wpC36W3XCE4Qmn4S/xxB0zFUcCzPkEgKIqwv9glowVxyEw/8/wMKfrIa8BUAs7LWCYjqYB/Jm8JqbLf6H3E=
+	t=1753700623; cv=none; b=mZzu/yUPE7LHfRPnsCwcnCFc/KiuE/cC1Y9qIn1fs1o2FT+4elUSw8mIQ5Zs6j/cmKHhzmP2m8KuQTKnBtTQH25dDkcvZcd3ZfrO5IIDLMdfJc8YlMxkZYzDX7Yfa9DeLWqnOBTsnStv/lX4v17CUgogFh54cRb+PSvuQif+ljI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753700622; c=relaxed/simple;
-	bh=MOYfhlQUTRo44dhkqbQEalJMeYCf6lWFNyV3noXKqZI=;
+	s=arc-20240116; t=1753700623; c=relaxed/simple;
+	bh=go2uhXh3NAEJPr0eluCoNxgLOMEZjVqmm9+Ys2+zD5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnx2NnaZHfx2DJ7WFQ/RpLY7viT5BIC29rcmmg/RhzwphGVa8ux2p5AMPbzObs22PC5uTjgPUO0Ae196TNg3QbinGpKRpqPqZFEcRy26D3Fm56AfCAo26Z4kV22XNMklLk8BCbYVM4y1y7oJuF+yCTAX5PGfD7rMkUq6TNJKS8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jh/iaVV1; arc=none smtp.client-ip=209.85.128.50
+	 MIME-Version; b=dR3V9Hf8OZqD+EfiWqk/DNE7CucHoBlDivimVhrIiiSAUzRu4R7zMjejhOvMWy+1LQr0T7qAngW6I26v4XZqJOXGpSgSd6r3nKAL0hraAe7WtEcBNz9oZgIGuSyYQVhpaWD1RqhjEE/N8CGmVx/oHIPwTUhqtphxIzwaCyDAJrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WXleyUVS; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jh/iaVV1"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4561a4a8bf2so48251715e9.1;
-        Mon, 28 Jul 2025 04:03:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WXleyUVS"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4561a4a8bf2so48252285e9.1;
+        Mon, 28 Jul 2025 04:03:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753700617; x=1754305417; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753700620; x=1754305420; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3aIHOu0agWerK4KdkqjSh1PwY21jcrIA9F0ZwYm7qyU=;
-        b=jh/iaVV1a7nD9hsyi5LfO61En3qEClREWIwLByPF26y+RDWWgI3d85Wtv7OnZzK/tb
-         9shPLHzRoIjwZ5XXBJtiZRmi/rehAAFAu1FHqNlkbT6jSbdoT07iqAW5iaPmf+9UaxFW
-         NHuSQ5ESIWBJJHLL3CHRr2fCqujsPV6lI5scVMgILDgArVk6dnO2suQkVQjL2lPVG9Aw
-         8NQYtafy0N1GhaRZ33jI80JR91HnWUDYFAJG6vKFUYXLRknWWCQOORJzQsglFjSgyf88
-         jy53vzIW6Af3zmnhzgVmM3/f7cFepcFUnOTUmhiL+zhovkKa1ZUPTygaZ9yrAY/F28NU
-         1kuw==
+        bh=m9KEU6U2/qu7I98PwBqSyjf7JwXgRq3jopn+u9xf2AM=;
+        b=WXleyUVStsCci5z+k9f6lejY2Xi+L6XcRUyOVeXVAWiXvcxmvdNi947bkJYROWz08/
+         +03pu4Omn+WRB0ZANsTYIl8AxLIcFVMlEMK2gl/e46Hd9+OilmXZbclBhsQEXVWXBBM5
+         armV6ea+lSIxyiWIhA8QedJ3KuMc+OgggtjD5EtBiKDWvaGxF9eX1h0yJWF8IhgcGzzW
+         AngrSifJHtxea4IqXauOJmH/6lHdQJOo+hcP6HDMCVqIeoJg0Lb25elMwXJdNZxFCtP2
+         ezL+SsbmdX4l50x6mahaectlFvteHUQ5nasieKQJIf26INPfX4qIcqKw5455q1D0P+NG
+         FfuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753700617; x=1754305417;
+        d=1e100.net; s=20230601; t=1753700620; x=1754305420;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3aIHOu0agWerK4KdkqjSh1PwY21jcrIA9F0ZwYm7qyU=;
-        b=L0sXNdvw4CV2vCYbXXnkmn6Uwd+FY2c3N479DNoTSz/ce2qw2YzmKIEOu35qzglEeI
-         oZ2yPeaNk+iVJjAusJ6l3CSDbSKc3otuHXT1LE0a0Wmr8gV1a6clRPu2Aaugq6Xms4kG
-         kh63MDJNYttiAOw5jnYttOI/SI1TvhRm+YosJsYNvnRhDVIwmq3AN/6dWYXateKTKpzK
-         bUYPmpNUpKB/KozjsrtQWNG9nfpP6aQzOvD4u4BA9iQt5+1yRNWsHtpah83TpAopSfZl
-         Erh6KAqKvn1p6nE5+BSecKyavLR8yKxFXyXZ63a5DHMLUDATrN2Gt2NgRfXBDXVX2b/l
-         De8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUqyaAHL/PQJOryzlHP95FgC1ZSk1vGXQy7rCmzByxvXElAIMUTkR3yjylA6H+V1oB6ezAN9qDuwQ==@vger.kernel.org, AJvYcCVmtXV3xVYUlFbDzPGh/aUYbJpSKjOsaW4Kkt3w8XVGkcm3FsMcgCykX2KUAWsetNvRZy0jaZYm@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHtKTPLE0zt8hWjL/yW8SXLqIZmMcj9hG+E5/E6iOhsegv44Y4
-	r2iMeUJ8iW755VrqKWA1LdiHzricWLbUThe+Sp8aoeGAEFeYs01ZHIhBp32EYg==
-X-Gm-Gg: ASbGncuF8uh9FYYNJGqZ/ZZ8UIQnt9PamefYQUZWtfQ2y6lb6W5ijmYzuYDaaMCJ1Es
-	CjI61qC2ITuy160J8KUaHqDTHr869fy1zwpzwc/BDGvNPRO2/nf6UcyG04ZvYzQ32nrMQ4+EwPI
-	+kefU8vqAgON11DFxRzikUwRWDtVGgHvk9D9p4PFWfaqPzcvV7/PrXdtUG/90bsqCUmcAxlTPN3
-	G66ukSEOJVhgNQq2BKiSb730qrMu9uG6EK6Oz4qnVsuP6tKkQEES5ZtAZjDxOakMmR88S/gh3a3
-	PHhLDK1atjYzxJPKZBgHkn/QJNSq77MTCar8tB+yxfzJwruhbzGD+sw4StDMw4U2ZLADg6bCUDA
-	yLlMnEnlYs8NDrQ==
-X-Google-Smtp-Source: AGHT+IFZuDhA4fhPZjGuhsvIBFn7CWdYfNMMp5KCEThI+vAVxFwGQaOfHiFn/uDKy+PuUHopdhgt/g==
-X-Received: by 2002:a05:600c:c173:b0:456:28d4:ef1 with SMTP id 5b1f17b1804b1-45877c53a3dmr77694155e9.29.1753700617098;
-        Mon, 28 Jul 2025 04:03:37 -0700 (PDT)
+        bh=m9KEU6U2/qu7I98PwBqSyjf7JwXgRq3jopn+u9xf2AM=;
+        b=kc1ywP0yqFhjZZe5AZTWtED5XQCJDTnBCEY2DbfbdCSNGQ5y0nuAFVZkqzQ9Jci4Ae
+         m1yCKn9F6a/yUUI6IAshuYGzueAH8o2uMunEqnjvbnjW8+9ABi/nMBodBosYVNxF+n00
+         9IsTTZDXj4o0ZJmaLu8SPJkxBo99fckwsjFLMITMZ5YYZdimBVwuCFbgJWD6BjqXdNoy
+         2PgbXh4t6q/yUpPWsKCbSZNKL+FZ9ZFAmCwvFxFHH/a2K/F2SpKCoolVRqe7mJ4wan/2
+         hD/UNOhXGHxPrE6HWiEudPVKvkax3qiVEePEF/EYP5hlaGtUuDGWBH1otPpkf6li1x3C
+         dVIA==
+X-Forwarded-Encrypted: i=1; AJvYcCUR77XkkUXnam6/+j4Occv/82QFrJk7ZmFswiNJE60gco6B72KE1M6CorGs6YySOPA61/el4RJw@vger.kernel.org, AJvYcCUmuMtgFM/yaZDFhAQHU4VUQl1d2lUw1zogPbUuRMTk+WoONlvLTeeHRBWltcRZ+nWYeA31yYMIVg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjnHsIjm8b1z83mfh0qNd3KGgIFYvItvTJ6l7l8e6QvaYWbitJ
+	2LBzoue8JqG1xJ9D5s3Z6QndQXLzLdAu4Xji7/zdfWRS3EwYH1LNyafY
+X-Gm-Gg: ASbGncuK4gugWlHOj06dSU77eIiq3wCnIbnk70omDcni873j6dOF0RVX7boLHk9PPWF
+	3uHbHE6kZgANIi5NUaEv7RSFw2HqMw1vVMKoW4RSbdM0IJh5YDo4/W/hwL/7JAEgpPjLnKWm/uo
+	601yoZv2hLvIgFaGlV4WtTOXsk8z+TdOaLSKkbmNxPPGNGvj/wryTgPV2A/TssiDg4GSZzY09b7
+	Q27g7uJ2L8HThompMt3S2+6Hsw8Nahcm2MMjr2JuauBwR8ZQxSwJAQnSD9TGXtcSz79M5kxogVd
+	7MSwShOW+c1gmwSto5Wg9L68K6zEPnxa4x12ySp5TyQTeqdzeYKZ9+v5FYAIdCMoiYxKleaCwMr
+	ysmE=
+X-Google-Smtp-Source: AGHT+IG4ub6F7umSCtD2qsz00KNF8peW0F311GOEAAA2M8xFYYRSN6eicqomTN/skMRdLiUgdqbIKA==
+X-Received: by 2002:a05:600c:1d90:b0:455:f59e:fd79 with SMTP id 5b1f17b1804b1-4587630f8d2mr81176175e9.11.1753700620139;
+        Mon, 28 Jul 2025 04:03:40 -0700 (PDT)
 Received: from 127.com ([2620:10d:c092:600::1:75])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705c4fdasm157410235e9.28.2025.07.28.04.03.35
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705c4fdasm157410235e9.28.2025.07.28.04.03.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jul 2025 04:03:36 -0700 (PDT)
+        Mon, 28 Jul 2025 04:03:39 -0700 (PDT)
 From: Pavel Begunkov <asml.silence@gmail.com>
 To: Jakub Kicinski <kuba@kernel.org>,
 	netdev@vger.kernel.org
@@ -75,9 +75,9 @@ Cc: asml.silence@gmail.com,
 	michael.chan@broadcom.com,
 	dtatulea@nvidia.com,
 	ap420073@gmail.com
-Subject: [RFC v1 17/22] netdev: add support for setting rx-buf-len per queue
-Date: Mon, 28 Jul 2025 12:04:21 +0100
-Message-ID: <4db7b749277d4c0723f448cb143dab66959d618c.1753694914.git.asml.silence@gmail.com>
+Subject: [RFC v1 19/22] eth: bnxt: use queue op config validate
+Date: Mon, 28 Jul 2025 12:04:23 +0100
+Message-ID: <376a52149021bb57bee0cc668582756654022b02.1753694914.git.asml.silence@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1753694913.git.asml.silence@gmail.com>
 References: <cover.1753694913.git.asml.silence@gmail.com>
@@ -91,359 +91,98 @@ Content-Transfer-Encoding: 8bit
 
 From: Jakub Kicinski <kuba@kernel.org>
 
-Zero-copy APIs increase the cost of buffer management. They also extend
-this cost to user space applications which may be used to dealing with
-much larger buffers. Allow setting rx-buf-len per queue, devices with
-HW-GRO support can commonly fill buffers up to 32k (or rather 64k - 1
-but that's not a power of 2..)
-
-The implementation adds a new option to the netdev netlink, rather
-than ethtool. The NIC-wide setting lives in ethtool ringparams so
-one could argue that we should be extending the ethtool API.
-OTOH netdev API is where we already have queue-get, and it's how
-zero-copy applications bind memory providers.
+Move the rx-buf-len config validation to the queue ops.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 ---
- Documentation/netlink/specs/netdev.yaml | 15 ++++
- include/net/netdev_queues.h             |  5 ++
- include/net/netlink.h                   | 19 +++++
- include/uapi/linux/netdev.h             |  2 +
- net/core/netdev-genl-gen.c              | 15 ++++
- net/core/netdev-genl-gen.h              |  1 +
- net/core/netdev-genl.c                  | 92 +++++++++++++++++++++++++
- net/core/netdev_config.c                | 16 +++++
- tools/include/uapi/linux/netdev.h       |  2 +
- 9 files changed, 167 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 40 +++++++++++++++++++
+ .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 12 ------
+ 2 files changed, 40 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
-index c0ef6d0d7786..5dd1eb5909cd 100644
---- a/Documentation/netlink/specs/netdev.yaml
-+++ b/Documentation/netlink/specs/netdev.yaml
-@@ -324,6 +324,10 @@ attribute-sets:
-         doc: XSK information for this queue, if any.
-         type: nest
-         nested-attributes: xsk-info
-+      -
-+        name: rx-buf-len
-+        doc: Per-queue configuration of ETHTOOL_A_RINGS_RX_BUF_LEN.
-+        type: u32
-   -
-     name: qstats
-     doc: |
-@@ -755,6 +759,17 @@ operations:
-         reply:
-           attributes:
-             - id
-+    -
-+      name: queue-set
-+      doc: Set per-queue configurable options.
-+      attribute-set: queue
-+      do:
-+        request:
-+          attributes:
-+            - ifindex
-+            - type
-+            - id
-+            - rx-buf-len
- 
- kernel-family:
-   headers: [ "net/netdev_netlink.h"]
-diff --git a/include/net/netdev_queues.h b/include/net/netdev_queues.h
-index f75313fc78ba..cfd2d59861e1 100644
---- a/include/net/netdev_queues.h
-+++ b/include/net/netdev_queues.h
-@@ -38,6 +38,7 @@ struct netdev_config {
- 
- /* Same semantics as fields in struct netdev_config */
- struct netdev_queue_config {
-+	u32	rx_buf_len;
- };
- 
- /* See the netdev.yaml spec for definition of each statistic */
-@@ -140,6 +141,8 @@ void netdev_stat_queue_sum(struct net_device *netdev,
- /**
-  * struct netdev_queue_mgmt_ops - netdev ops for queue management
-  *
-+ * @supported_ring_params: ring params supported per queue (ETHTOOL_RING_USE_*).
-+ *
-  * @ndo_queue_mem_size: Size of the struct that describes a queue's memory.
-  *
-  * @ndo_queue_cfg_defaults: (Optional) Populate queue config struct with
-@@ -170,6 +173,8 @@ void netdev_stat_queue_sum(struct net_device *netdev,
-  * be called for an interface which is open.
-  */
- struct netdev_queue_mgmt_ops {
-+	u32     supported_ring_params;
-+
- 	size_t	ndo_queue_mem_size;
- 	void	(*ndo_queue_cfg_defaults)(struct net_device *dev,
- 					  int idx,
-diff --git a/include/net/netlink.h b/include/net/netlink.h
-index 90a560dc167a..c892cae8f592 100644
---- a/include/net/netlink.h
-+++ b/include/net/netlink.h
-@@ -2186,6 +2186,25 @@ static inline struct nla_bitfield32 nla_get_bitfield32(const struct nlattr *nla)
- 	return tmp;
- }
- 
-+/**
-+ * nla_update_u32() - update u32 value from NLA_U32 attribute
-+ * @dst:  value to update
-+ * @attr: netlink attribute with new value or null
-+ *
-+ * Copy the u32 value from NLA_U32 netlink attribute @attr into variable
-+ * pointed to by @dst; do nothing if @attr is null.
-+ *
-+ * Return: true if this function changed the value of @dst, otherwise false.
-+ */
-+static inline bool nla_update_u32(u32 *dst, const struct nlattr *attr)
-+{
-+	u32 old_val = *dst;
-+
-+	if (attr)
-+		*dst = nla_get_u32(attr);
-+	return *dst != old_val;
-+}
-+
- /**
-  * nla_memdup - duplicate attribute memory (kmemdup)
-  * @src: netlink attribute to duplicate from
-diff --git a/include/uapi/linux/netdev.h b/include/uapi/linux/netdev.h
-index 7eb9571786b8..98fa988c8db2 100644
---- a/include/uapi/linux/netdev.h
-+++ b/include/uapi/linux/netdev.h
-@@ -152,6 +152,7 @@ enum {
- 	NETDEV_A_QUEUE_DMABUF,
- 	NETDEV_A_QUEUE_IO_URING,
- 	NETDEV_A_QUEUE_XSK,
-+	NETDEV_A_QUEUE_RX_BUF_LEN,
- 
- 	__NETDEV_A_QUEUE_MAX,
- 	NETDEV_A_QUEUE_MAX = (__NETDEV_A_QUEUE_MAX - 1)
-@@ -220,6 +221,7 @@ enum {
- 	NETDEV_CMD_BIND_RX,
- 	NETDEV_CMD_NAPI_SET,
- 	NETDEV_CMD_BIND_TX,
-+	NETDEV_CMD_QUEUE_SET,
- 
- 	__NETDEV_CMD_MAX,
- 	NETDEV_CMD_MAX = (__NETDEV_CMD_MAX - 1)
-diff --git a/net/core/netdev-genl-gen.c b/net/core/netdev-genl-gen.c
-index 4fc44587f493..ac25584a829d 100644
---- a/net/core/netdev-genl-gen.c
-+++ b/net/core/netdev-genl-gen.c
-@@ -105,6 +105,14 @@ static const struct nla_policy netdev_bind_tx_nl_policy[NETDEV_A_DMABUF_FD + 1]
- 	[NETDEV_A_DMABUF_FD] = { .type = NLA_U32, },
- };
- 
-+/* NETDEV_CMD_QUEUE_SET - do */
-+static const struct nla_policy netdev_queue_set_nl_policy[NETDEV_A_QUEUE_RX_BUF_LEN + 1] = {
-+	[NETDEV_A_QUEUE_IFINDEX] = NLA_POLICY_MIN(NLA_U32, 1),
-+	[NETDEV_A_QUEUE_TYPE] = NLA_POLICY_MAX(NLA_U32, 1),
-+	[NETDEV_A_QUEUE_ID] = { .type = NLA_U32, },
-+	[NETDEV_A_QUEUE_RX_BUF_LEN] = { .type = NLA_U32, },
-+};
-+
- /* Ops table for netdev */
- static const struct genl_split_ops netdev_nl_ops[] = {
- 	{
-@@ -203,6 +211,13 @@ static const struct genl_split_ops netdev_nl_ops[] = {
- 		.maxattr	= NETDEV_A_DMABUF_FD,
- 		.flags		= GENL_CMD_CAP_DO,
- 	},
-+	{
-+		.cmd		= NETDEV_CMD_QUEUE_SET,
-+		.doit		= netdev_nl_queue_set_doit,
-+		.policy		= netdev_queue_set_nl_policy,
-+		.maxattr	= NETDEV_A_QUEUE_RX_BUF_LEN,
-+		.flags		= GENL_CMD_CAP_DO,
-+	},
- };
- 
- static const struct genl_multicast_group netdev_nl_mcgrps[] = {
-diff --git a/net/core/netdev-genl-gen.h b/net/core/netdev-genl-gen.h
-index cf3fad74511f..b7f5e5d9fca9 100644
---- a/net/core/netdev-genl-gen.h
-+++ b/net/core/netdev-genl-gen.h
-@@ -35,6 +35,7 @@ int netdev_nl_qstats_get_dumpit(struct sk_buff *skb,
- int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info);
- int netdev_nl_napi_set_doit(struct sk_buff *skb, struct genl_info *info);
- int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info);
-+int netdev_nl_queue_set_doit(struct sk_buff *skb, struct genl_info *info);
- 
- enum {
- 	NETDEV_NLGRP_MGMT,
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 2afa7b2141aa..52ec8287e835 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -372,6 +372,30 @@ static int nla_put_napi_id(struct sk_buff *skb, const struct napi_struct *napi)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 017f08ca8d1d..5788518fe407 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -16139,8 +16139,46 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
  	return 0;
  }
  
 +static int
-+netdev_nl_queue_fill_cfg(struct sk_buff *rsp, struct net_device *netdev,
-+			 u32 q_idx, u32 q_type)
++bnxt_queue_cfg_validate(struct net_device *dev, int idx,
++			struct netdev_queue_config *qcfg,
++			struct netlink_ext_ack *extack)
 +{
-+	struct netdev_queue_config *qcfg;
++	struct bnxt *bp = netdev_priv(dev);
 +
-+	if (!netdev_need_ops_lock(netdev))
-+		return 0;
-+
-+	qcfg = &netdev->cfg->qcfg[q_idx];
-+	switch (q_type) {
-+	case NETDEV_QUEUE_TYPE_RX:
-+		if (qcfg->rx_buf_len &&
-+		    nla_put_u32(rsp, NETDEV_A_QUEUE_RX_BUF_LEN,
-+				qcfg->rx_buf_len))
-+			return -EMSGSIZE;
-+		break;
-+	default:
-+		break;
++	/* Older chips need MSS calc so rx_buf_len is not supported,
++	 * but we don't set queue ops for them so we should never get here.
++	 */
++	if (qcfg->rx_buf_len != bp->rx_page_size &&
++	    !(bp->flags & BNXT_FLAG_CHIP_P5_PLUS)) {
++		NL_SET_ERR_MSG_MOD(extack, "changing rx-buf-len not supported");
++		return -EINVAL;
 +	}
 +
++	if (!is_power_of_2(qcfg->rx_buf_len)) {
++		NL_SET_ERR_MSG_MOD(extack, "rx-buf-len is not power of 2");
++		return -ERANGE;
++	}
++	if (qcfg->rx_buf_len < BNXT_RX_PAGE_SIZE ||
++	    qcfg->rx_buf_len > BNXT_MAX_RX_PAGE_SIZE) {
++		NL_SET_ERR_MSG_MOD(extack, "rx-buf-len out of range");
++		return -ERANGE;
++	}
 +	return 0;
 +}
 +
- static int
- netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
- 			 u32 q_idx, u32 q_type, const struct genl_info *info)
-@@ -419,6 +443,9 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
- 		break;
- 	}
- 
-+	if (netdev_nl_queue_fill_cfg(rsp, netdev, q_idx, q_type))
-+		goto nla_put_failure;
-+
- 	genlmsg_end(rsp, hdr);
- 
- 	return 0;
-@@ -558,6 +585,71 @@ int netdev_nl_queue_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
- 	return err;
- }
- 
-+int netdev_nl_queue_set_doit(struct sk_buff *skb, struct genl_info *info)
++static void
++bnxt_queue_cfg_defaults(struct net_device *dev, int idx,
++			struct netdev_queue_config *qcfg)
 +{
-+	struct nlattr * const *tb = info->attrs;
-+	struct netdev_queue_config *qcfg;
-+	u32 q_id, q_type, ifindex;
-+	struct net_device *netdev;
-+	bool mod;
-+	int ret;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, NETDEV_A_QUEUE_ID) ||
-+	    GENL_REQ_ATTR_CHECK(info, NETDEV_A_QUEUE_TYPE) ||
-+	    GENL_REQ_ATTR_CHECK(info, NETDEV_A_QUEUE_IFINDEX))
-+		return -EINVAL;
-+
-+	q_id = nla_get_u32(tb[NETDEV_A_QUEUE_ID]);
-+	q_type = nla_get_u32(tb[NETDEV_A_QUEUE_TYPE]);
-+	ifindex = nla_get_u32(tb[NETDEV_A_QUEUE_IFINDEX]);
-+
-+	if (q_type != NETDEV_QUEUE_TYPE_RX) {
-+		/* Only Rx params exist right now */
-+		NL_SET_BAD_ATTR(info->extack, tb[NETDEV_A_QUEUE_TYPE]);
-+		return -EINVAL;
-+	}
-+
-+	ret = 0;
-+	netdev = netdev_get_by_index_lock(genl_info_net(info), ifindex);
-+	if (!netdev || !netif_device_present(netdev))
-+		ret = -ENODEV;
-+	else if (!netdev->queue_mgmt_ops)
-+		ret = -EOPNOTSUPP;
-+	if (ret) {
-+		NL_SET_BAD_ATTR(info->extack, tb[NETDEV_A_QUEUE_IFINDEX]);
-+		goto exit_unlock;
-+	}
-+
-+	ret = netdev_nl_queue_validate(netdev, q_id, q_type);
-+	if (ret) {
-+		NL_SET_BAD_ATTR(info->extack, tb[NETDEV_A_QUEUE_ID]);
-+		goto exit_unlock;
-+	}
-+
-+	ret = netdev_reconfig_start(netdev);
-+	if (ret)
-+		goto exit_unlock;
-+
-+	qcfg = &netdev->cfg_pending->qcfg[q_id];
-+	mod = nla_update_u32(&qcfg->rx_buf_len, tb[NETDEV_A_QUEUE_RX_BUF_LEN]);
-+	if (!mod)
-+		goto exit_free_cfg;
-+
-+	ret = netdev_rx_queue_restart(netdev, q_id, info->extack);
-+	if (ret)
-+		goto exit_free_cfg;
-+
-+	swap(netdev->cfg, netdev->cfg_pending);
-+
-+exit_free_cfg:
-+	__netdev_free_config(netdev->cfg_pending);
-+	netdev->cfg_pending = netdev->cfg;
-+exit_unlock:
-+	if (netdev)
-+		netdev_unlock(netdev);
-+	return ret;
++	qcfg->rx_buf_len	= BNXT_RX_PAGE_SIZE;
 +}
 +
- #define NETDEV_STAT_NOT_SET		(~0ULL)
- 
- static void netdev_nl_stats_add(void *_sum, const void *_add, size_t size)
-diff --git a/net/core/netdev_config.c b/net/core/netdev_config.c
-index fc700b77e4eb..ede02b77470e 100644
---- a/net/core/netdev_config.c
-+++ b/net/core/netdev_config.c
-@@ -67,11 +67,27 @@ int netdev_reconfig_start(struct net_device *dev)
- void __netdev_queue_config(struct net_device *dev, int rxq,
- 			   struct netdev_queue_config *qcfg, bool pending)
- {
-+	const struct netdev_config *cfg;
+ static const struct netdev_queue_mgmt_ops bnxt_queue_mgmt_ops = {
+ 	.ndo_queue_mem_size	= sizeof(struct bnxt_rx_ring_info),
 +
-+	cfg = pending ? dev->cfg_pending : dev->cfg;
-+
- 	memset(qcfg, 0, sizeof(*qcfg));
++	.ndo_queue_cfg_defaults	= bnxt_queue_cfg_defaults,
++	.ndo_queue_cfg_validate = bnxt_queue_cfg_validate,
+ 	.ndo_queue_mem_alloc	= bnxt_queue_mem_alloc,
+ 	.ndo_queue_mem_free	= bnxt_queue_mem_free,
+ 	.ndo_queue_start	= bnxt_queue_start,
+@@ -16148,6 +16186,8 @@ static const struct netdev_queue_mgmt_ops bnxt_queue_mgmt_ops = {
+ };
  
- 	/* Get defaults from the driver, in case user config not set */
- 	if (dev->queue_mgmt_ops->ndo_queue_cfg_defaults)
- 		dev->queue_mgmt_ops->ndo_queue_cfg_defaults(dev, rxq, qcfg);
-+
-+	/* Set config based on device-level settings */
-+	if (cfg->rx_buf_len)
-+		qcfg->rx_buf_len = cfg->rx_buf_len;
-+
-+	/* Set config dedicated to this queue */
-+	if (rxq >= 0) {
-+		const struct netdev_queue_config *user_cfg = &cfg->qcfg[rxq];
-+
-+		if (user_cfg->rx_buf_len)
-+			qcfg->rx_buf_len = user_cfg->rx_buf_len;
-+	}
- }
+ static const struct netdev_queue_mgmt_ops bnxt_queue_mgmt_ops_unsupp = {
++	.ndo_queue_cfg_defaults	= bnxt_queue_cfg_defaults,
++	.ndo_queue_cfg_validate = bnxt_queue_cfg_validate,
+ };
  
- /**
-diff --git a/tools/include/uapi/linux/netdev.h b/tools/include/uapi/linux/netdev.h
-index 7eb9571786b8..98fa988c8db2 100644
---- a/tools/include/uapi/linux/netdev.h
-+++ b/tools/include/uapi/linux/netdev.h
-@@ -152,6 +152,7 @@ enum {
- 	NETDEV_A_QUEUE_DMABUF,
- 	NETDEV_A_QUEUE_IO_URING,
- 	NETDEV_A_QUEUE_XSK,
-+	NETDEV_A_QUEUE_RX_BUF_LEN,
+ static void bnxt_remove_one(struct pci_dev *pdev)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+index 0e225414d463..38178051e0d3 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+@@ -867,18 +867,6 @@ static int bnxt_set_ringparam(struct net_device *dev,
+ 	if (!kernel_ering->rx_buf_len)	/* Zero means restore default */
+ 		kernel_ering->rx_buf_len = BNXT_RX_PAGE_SIZE;
  
- 	__NETDEV_A_QUEUE_MAX,
- 	NETDEV_A_QUEUE_MAX = (__NETDEV_A_QUEUE_MAX - 1)
-@@ -220,6 +221,7 @@ enum {
- 	NETDEV_CMD_BIND_RX,
- 	NETDEV_CMD_NAPI_SET,
- 	NETDEV_CMD_BIND_TX,
-+	NETDEV_CMD_QUEUE_SET,
+-	if (kernel_ering->rx_buf_len != bp->rx_page_size &&
+-	    !(bp->flags & BNXT_FLAG_CHIP_P5_PLUS)) {
+-		NL_SET_ERR_MSG_MOD(extack, "changing rx-buf-len not supported");
+-		return -EINVAL;
+-	}
+-	if (!is_power_of_2(kernel_ering->rx_buf_len) ||
+-	    kernel_ering->rx_buf_len < BNXT_RX_PAGE_SIZE ||
+-	    kernel_ering->rx_buf_len > BNXT_MAX_RX_PAGE_SIZE) {
+-		NL_SET_ERR_MSG_MOD(extack, "rx-buf-len out of range, or not power of 2");
+-		return -ERANGE;
+-	}
+-
+ 	if (netif_running(dev))
+ 		bnxt_close_nic(bp, false, false);
  
- 	__NETDEV_CMD_MAX,
- 	NETDEV_CMD_MAX = (__NETDEV_CMD_MAX - 1)
 -- 
 2.49.0
 
