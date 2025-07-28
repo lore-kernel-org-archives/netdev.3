@@ -1,174 +1,135 @@
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2F028DD0;
-	Mon, 28 Jul 2025 08:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB8A28DD0;
+	Mon, 28 Jul 2025 08:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753690327; cv=none; b=ctn5AcN4xR3TOGICa+ffdkwZiI6NOkqxNZJkVJXN01BG6C3gpMu3mFeevNO/HvHjRo+u0pGlhWp9i2q+0wJQTBMGKTgwdue82gPkzHsG5g7b9cXsGoVAsmErkQ7A4CGyXCK2XiKNeamKpEmendBymbq6mwooimfgY7oZx/O/oDU=
+	t=1753690417; cv=none; b=iPb66SEUP1xiP8XVXKynzmOARm1Zsl6JNl/HR3C8h1xSVgqa+2wN3EnKNTPePt1xlvOfHLFlt3lOFysqGherQemkN8z6QI+EfNDTDyv44cNei16RJ5cAu2YOdxbAntVv1SrNLiVNA+Rb/3Ix0Jq5Ktjmwdesg4BLVUzBngesz4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753690327; c=relaxed/simple;
-	bh=BEuewBk1IsEGl3eghjVYYbwM2YS0qLIe5ka6Gd1mDoQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=V1D9avu/6dFuCJxbZYcpbLsH3vrJkJrnMZTrrBKeprp903QV8Q9Tusoy3h2IicKcp3zy75hFWhYph38ylYKeOYcn8Qd4h2J2Tg9bOVhb8qbW3NE6/WxjfazO/JjoadOZxx0tuFHeHREmtuUBxHj52iz93ie8nOGZrA7r6gLbjP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=ouV4AEEf; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1753690417; c=relaxed/simple;
+	bh=bspyMyfXSuZW3FNveNcAHk2ud17hz9PySexk26AC+cs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YN2May3p5eNMrU3z6afXl5UCvstSR83D7NKhrvbhI0d3ttB0n2UmNcthDTqn5xbeMKJdHQ2fRkdDfPNQMBQUOX65pYnMOxI25k8nevhxZGGHteMKAKByUdjyBimWnPKVYH13qtpa6ikiNIMw2vDrfYdQd2BxmCbQ6zUDXoWtLaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=jssV+K4G; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ouV4AEEf"
-Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56S8B7ox2715293;
-	Mon, 28 Jul 2025 03:11:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1753690267;
-	bh=KHcr5mpVfk9mCi5rZVeNOZkpkFw0VJp9vZS5ooiXtHE=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=ouV4AEEfdgbQ17atKqfIxb5OAjmal+19WqsEDUKuH4ZLcK9HQLJ7KQz1UiGBaR7AE
-	 ow4YjJK+Edb2AJx4vXTNwYpPTKV7r1wqpAs33kEkbgoH2jRrbQELcIH8P7sitnfVQC
-	 4YrOGJLZqXFm9TPdj62uYf9S4FnidrC2qo/RPKTw=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56S8B6Af915220
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Mon, 28 Jul 2025 03:11:06 -0500
-Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 28
- Jul 2025 03:11:06 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Mon, 28 Jul 2025 03:11:06 -0500
-Received: from [172.24.231.152] (danish-tpc.dhcp.ti.com [172.24.231.152])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56S8B08W1426296;
-	Mon, 28 Jul 2025 03:11:01 -0500
-Message-ID: <5f4e1f99-ff71-443f-ba34-39396946e5b4@ti.com>
-Date: Mon, 28 Jul 2025 13:40:59 +0530
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="jssV+K4G"
+Received: from fedora.intra.ispras.ru (unknown [10.10.165.5])
+	by mail.ispras.ru (Postfix) with ESMTPSA id F044C552F527;
+	Mon, 28 Jul 2025 08:07:35 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru F044C552F527
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1753690056;
+	bh=/vuzXHoV461VpNRzvkTf8kRcfq0lz2FOYbCpEU5ub5I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jssV+K4GZbG+RkiBKu8vbd7rShwzQ7Gfnt2aiSizA2k1k71I0y3b3fowxzEz7UhvR
+	 Ff5bGkHEO9hk8FLPBDssrWXQlHeHBXt6I9FrcelDhjY91loj9O8eiuBJYCNCwrATDJ
+	 UWVJ1BlxQDJjkUXx026QPeoWH54AMPQ6v9oTEky0=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] netlink: avoid infinite retry looping in netlink_unicast()
+Date: Mon, 28 Jul 2025 11:06:47 +0300
+Message-ID: <20250728080727.255138-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/5] net: rpmsg-eth: Add basic rpmsg skeleton
-To: Krzysztof Kozlowski <krzk@kernel.org>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>, Andrew Lunn
-	<andrew+netdev@lunn.ch>,
-        Mengyuan Lou <mengyuanlou@net-swift.com>,
-        Michael
- Ellerman <mpe@ellerman.id.au>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Fan
- Gong <gongfan1@huawei.com>, Lee Trager <lee@trager.us>,
-        Lorenzo Bianconi
-	<lorenzo@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Lukas
- Bulwahn <lukas.bulwahn@redhat.com>,
-        Parthiban Veerasooran
-	<Parthiban.Veerasooran@microchip.com>
-CC: <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20250723080322.3047826-1-danishanwar@ti.com>
- <20250723080322.3047826-3-danishanwar@ti.com>
- <296d6846-6a28-4e53-9e62-3439ac57d9c1@kernel.org>
-Content-Language: en-US
-From: MD Danish Anwar <danishanwar@ti.com>
-In-Reply-To: <296d6846-6a28-4e53-9e62-3439ac57d9c1@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: 8bit
 
-Hi Krzysztof,
+netlink_attachskb() checks for the socket's read memory allocation
+constraints. Firstly, it has:
 
-On 25/07/25 12:48 am, Krzysztof Kozlowski wrote:
-> On 23/07/2025 10:03, MD Danish Anwar wrote:
->> This patch introduces a basic RPMSG Ethernet driver skeleton. It adds
-> 
-> Please do not use "This commit/patch/change", but imperative mood. See
-> longer explanation here:
-> https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/submitting-patches.rst#L95
-> 
+  rmem < READ_ONCE(sk->sk_rcvbuf)
 
-Sure. I will fix this in v2.
+to check if the just increased rmem value fits into the socket's receive
+buffer. If not, it proceeds and tries to wait for the memory under:
 
->> support for creating virtual Ethernet devices over RPMSG channels,
->> allowing user-space programs to send and receive messages using a
->> standard Ethernet protocol. The driver includes message handling,
->> probe, and remove functions, along with necessary data structures.
->>
-> 
-> 
-> ...
-> 
->> +
->> +/**
->> + * rpmsg_eth_get_shm_info - Get shared memory info from device tree
->> + * @common: Pointer to rpmsg_eth_common structure
->> + *
->> + * Return: 0 on success, negative error code on failure
->> + */
->> +static int rpmsg_eth_get_shm_info(struct rpmsg_eth_common *common)
->> +{
->> +	struct device_node *peer;
->> +	const __be32 *reg;
->> +	u64 start_address;
->> +	int prop_size;
->> +	int reg_len;
->> +	u64 size;
->> +
->> +	peer = of_find_node_by_name(NULL, "virtual-eth-shm");
-> 
-> 
-> This is new ABI and I do not see earlier patch documenting it.
-> 
-> You cannot add undocumented ABI... but even if you documented it, I am
-> sorry, but I am pretty sure it is wrong. Why are you choosing random
-> nodes just because their name by pure coincidence is "virtual-eth-shm"?
-> I cannot name my ethernet like that?
-> 
+  rmem + skb->truesize > READ_ONCE(sk->sk_rcvbuf)
 
-This series adds a new virtual ethernet driver. The tx / rx happens in a
-shared memory block. I need to have a way for the driver to know what is
-the address / size of this block. This driver can be used by any
-vendors. The vendors can create a new node in their dt and specify the
-base address / size of the shared memory block.
+The checks don't cover the case when skb->truesize + sk->sk_rmem_alloc is
+equal to sk->sk_rcvbuf. Thus the function neither successfully accepts
+these conditions, nor manages to reschedule the task - and is called in
+retry loop for indefinite time which is caught as:
 
-I wanted to keep the name of the node constant so that the driver can
-just look for this name and then grab the address and size.
+  rcu: INFO: rcu_sched self-detected stall on CPU
+  rcu:     0-....: (25999 ticks this GP) idle=ef2/1/0x4000000000000000 softirq=262269/262269 fqs=6212
+  (t=26000 jiffies g=230833 q=259957)
+  NMI backtrace for cpu 0
+  CPU: 0 PID: 22 Comm: kauditd Not tainted 5.10.240 #68
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc42 04/01/2014
+  Call Trace:
+  <IRQ>
+  dump_stack lib/dump_stack.c:120
+  nmi_cpu_backtrace.cold lib/nmi_backtrace.c:105
+  nmi_trigger_cpumask_backtrace lib/nmi_backtrace.c:62
+  rcu_dump_cpu_stacks kernel/rcu/tree_stall.h:335
+  rcu_sched_clock_irq.cold kernel/rcu/tree.c:2590
+  update_process_times kernel/time/timer.c:1953
+  tick_sched_handle kernel/time/tick-sched.c:227
+  tick_sched_timer kernel/time/tick-sched.c:1399
+  __hrtimer_run_queues kernel/time/hrtimer.c:1652
+  hrtimer_interrupt kernel/time/hrtimer.c:1717
+  __sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1113
+  asm_call_irq_on_stack arch/x86/entry/entry_64.S:808
+  </IRQ>
 
-I can create a new binding file for this but I didn't create thinking
-it's a virtual device not a physical and I wasn't sure if bindings can
-be created for virtual devices.
+  netlink_attachskb net/netlink/af_netlink.c:1234
+  netlink_unicast net/netlink/af_netlink.c:1349
+  kauditd_send_queue kernel/audit.c:776
+  kauditd_thread kernel/audit.c:897
+  kthread kernel/kthread.c:328
+  ret_from_fork arch/x86/entry/entry_64.S:304
 
-In my use case, I am reserving this shared memory and during reserving I
-named the node "virtual-eth-shm". The memory is reserved by the
-ti_k3_r5_remoteproc.c driver. The DT change is not part of this series
-but can be found
-https://gist.github.com/danish-ti/cdd10525ad834fdb20871ab411ff94fb
+Restore the original behavior of the check which commit in Fixes
+accidentally missed when restructuring the code.
 
-The idea is any vendor who want to use this driver, should name their dt
-node as "virtual-eth-shm" (if they also need to reserve the memory) so
-that the driver can take the address from DT and use it for tx / rx.
+Found by Linux Verification Center (linuxtesting.org).
 
-If this is not the correct way, can you please let me know of some other
-way to handle this.
+Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
 
-One idea I had was to create a new binding for this node, and use
-compatible string to access the node in driver. But the device is
-virtual and not physical so I thought that might not be the way to go so
-I went with the current approach.
+Similar rmem and sk->sk_rcvbuf comparing pattern in
+netlink_broadcast_deliver() accepts these values being equal, while
+the netlink_dump() case does not - but it goes all the way down to
+f9c2288837ba ("netlink: implement memory mapped recvmsg()") and looks
+like an irrelevant issue without any real consequences. Though might be
+cleaned up if needed.
 
-> Best regards,
-> Krzysztof
+Updated sk->sk_rmem_alloc vs sk->sk_rcvbuf checks throughout the kernel
+diverse in treating the corner case of them being equal.
 
+ net/netlink/af_netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 6332a0e06596..0fc3f045fb65 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1218,7 +1218,7 @@ int netlink_attachskb(struct sock *sk, struct sk_buff *skb,
+ 	nlk = nlk_sk(sk);
+ 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
+ 
+-	if ((rmem == skb->truesize || rmem < READ_ONCE(sk->sk_rcvbuf)) &&
++	if ((rmem == skb->truesize || rmem <= READ_ONCE(sk->sk_rcvbuf)) &&
+ 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
+ 		netlink_skb_set_owner_r(skb, sk);
+ 		return 0;
 -- 
-Thanks and Regards,
-Danish
+2.50.1
 
