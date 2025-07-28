@@ -1,127 +1,195 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5EB2E3715
-	for <netdev@vger.kernel.org>; Mon, 28 Jul 2025 08:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64ABC18C928
+	for <netdev@vger.kernel.org>; Mon, 28 Jul 2025 08:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753691737; cv=none; b=OqZNZGUHw4QzIouhqdJMDp24+in6GNWfFGS/AUEDPTrmmyzMqVHixWVfCxGNjFRLCHxEy489JcWvo6KARtYw8DpGzoJ7U3gZvCGNlM0Yr6LG1ureHDa+FNZM2cVRbrmhJPawiL/rMnTXYbQGG9E3llRgvkhH+3NiODaBe2IJ3m0=
+	t=1753692333; cv=none; b=obwy3pKqSaRtR8E61AOmQk7EjZXtUn/JYvgWemu5CygFAvelMD1FKJZ++UIalpd8mzQqXDkYnhQmp9qOtXbNON4WghlJdSJZPD8sSpKbUue7mWXVd0y0MNGK47DaLe1F78IuiYK4I62FUJBQz6pD2VNlmrBYU+C866tNNoFw4PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753691737; c=relaxed/simple;
-	bh=uq+ImxcXIDpT7koBCX+UcC0xIpCmcUr0MukPByOa2Mk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QBBDFI2fgxYivrYzz4N+qBbyw6W/kq05+MUs5Nq+XLlESZcsuuJ2SpwJ6akWvYpoP5WM4t5m8IaSPa46RkgcTDkEPFvd+0hAn+LdMaMhyvTchUuKhRcYZA9jRX63XAjK+QD6XIlYEBiAEK75sBpYcGPCIMhDtIJK1OyZ8yf2XdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=iHO4WXGY; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1753692333; c=relaxed/simple;
+	bh=HJZXsA11lxr8BqYgWr8HoEhcYGee8uuvfqpfw8y1UJo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WtPmflK4i42jmrX1rrMg3NW2eMRSZabTi1Bhiyass6sMDoewaHfoSfGHKVO+VUItMISISwVrNfnEeV741HZMeQCzH2RccY0yzZSBAy7M974xplBxUDyqJNu0V9pkiKVyRU6/hTOikFJtAN/hPtSY6g2UQ3EihToWYff2M3U6Eg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cX9YQp8d; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="iHO4WXGY"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-60c01b983b6so8853357a12.0
-        for <netdev@vger.kernel.org>; Mon, 28 Jul 2025 01:35:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1753691733; x=1754296533; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=O+GMtvbjmv8Vnpzhp5frnyGTe3+Arr4kqBd4arPc9h0=;
-        b=iHO4WXGY17tmTrWpKiCTGLB0bjUBddLJDr0B6lBJppd1FND0bmlXlIFlRHYNPjL63P
-         M4YQ/ceoa2KK6x+u2Nr4KaRCd8ZyDpk/9NRR0l7ysOKUaZBwmVXtt4lzEKmm6ojOTO9n
-         2uk4//BrhSc4jCSA2F5UtreHjuGO76NdbCU2hzAxRO49pHtcljQTc3ss+q4yNYDjwgdf
-         xxiT7bfZD4gmiJ6qglL6OUHql5BUidfOyykhzo1X6ddf1eHJFLAvVVyIxVGwebxAtxFC
-         px/xQ6YNoESAEQ2iq0+H/2C1flqfBRpLSX/ErTewbva/XOueJQIgDIQv21D3667OAEd4
-         FBeA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cX9YQp8d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753692331;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=xOI/nhsp0FQxSML+6RN9rUzsV1D1LgxO16j6gmYC+9k=;
+	b=cX9YQp8d4tDASB7UilIfCtmzCAlddBxCXl7i+PzrwNN4eqZwyKsv1RBtRgrcokecXPrcoX
+	akR2FxFOMEEHOfS3/z8ThBMRV28L2HloZwbOS+TYwa8/v5x2EPUBq2WxFxBVwWskO86F3m
+	glz7EGwqdFscCA5r3NXwfZ2Rb6jNMQQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-646-wUc_-mHMNCiQMrZ2boIEiw-1; Mon, 28 Jul 2025 04:45:28 -0400
+X-MC-Unique: wUc_-mHMNCiQMrZ2boIEiw-1
+X-Mimecast-MFC-AGG-ID: wUc_-mHMNCiQMrZ2boIEiw_1753692327
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45626e0d3e1so26587325e9.1
+        for <netdev@vger.kernel.org>; Mon, 28 Jul 2025 01:45:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753691733; x=1754296533;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=O+GMtvbjmv8Vnpzhp5frnyGTe3+Arr4kqBd4arPc9h0=;
-        b=kevTkerirtzBPgIcyiqW6gL2DK95NBH6tfLmqi2ilbiOWulhtlqb+Mx9k7snm30rLD
-         dyhrlNkHB2qVm/1iUnztZVSKjX9kuGRmJMK5oT2HASTJ+IYR7W6MYuruShlYilib+o/W
-         wh4kG5NWFy64k1nuuw4LLIMyqi6ostfRkffNDcjt0EtpjGle7kDfUP4osJWg2NKz0nc7
-         e7zkO2XmcepyJSskNI4zxeYstyaCtSZGRiJ9PauZZYcdzaHMEYGHcYNCMnorBzXe5CFe
-         euumFycy5qggKhbAdtiWyONDckeCtF0Np6als4b0mfRN5rNSSxxjk6VmhQ7W0WT9hzsK
-         2joQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU9DseucYCKHivrtDMc9yN3Dy7nXiegz32KjEjCAjs2jhpyE+woHWYGvUGNelN3qIxjiMv8hyQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1V4wFBMdxkr+ColWzsvyhlATB914KLc6RYvY29GphOpXrDcZv
-	gqJrtHaHZYv7JT6EZe+2fsXLD3J5Xm4uUPZb92ai1v1+eVIWgD3/5Jrc9k9Ip1O1dK8=
-X-Gm-Gg: ASbGncsjHkdCL1hB8lBU4bcW29ST/sI3GfTuCe5eq2f0oEjefo2UbalF3CeoehAQpph
-	9MLXx7rDaBVLwciesO83E2c0BnZpFlFD/jLEkfKRsovyr6ZGy39dOIMl+0guduu3JLQjmfe1Pf6
-	0PktGVVTn1+Wvwz1EYUykK81NftBDWM5FePAVyGt6GrdQHE8ZmwVnff00tdPnJIal3O/cdZkv0T
-	p3zyKpTFZojuPRxhdrsfudqyDLrL2eCiDi1D7JC9hhsrwXuZvv+vKruoDfdunVdHoJ0JKGRo3sL
-	CXwkmKjRIYiqpXyhi8kE06oKVJ4FuDDHI06pG11bhndXuTXyqcmVHlv2qPuhd4qWTE0N5BkpB1w
-	ibprOZTV6n4A3T4xz8CsNFNolrbNTEDTuO5V6IHkyriBCfqqJSv5zkBRDYVIzQfhszvMT
-X-Google-Smtp-Source: AGHT+IEBOjDm49OG5iajjv5/g2Kv4L9dOcAdyp+LmUUVb1D/Ep2oTi+pZ65JkiAVimwgzoOcYQbOYw==
-X-Received: by 2002:aa7:c6d5:0:b0:615:3a2a:e14e with SMTP id 4fb4d7f45d1cf-6153a2ae3a0mr2467948a12.0.1753691733390;
-        Mon, 28 Jul 2025 01:35:33 -0700 (PDT)
-Received: from otso.local (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61500a5a014sm2968551a12.20.2025.07.28.01.35.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jul 2025 01:35:33 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Mon, 28 Jul 2025 10:35:24 +0200
-Subject: [PATCH] net: ipa: add IPA v5.1 and v5.5 to ipa_version_string()
+        d=1e100.net; s=20230601; t=1753692327; x=1754297127;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xOI/nhsp0FQxSML+6RN9rUzsV1D1LgxO16j6gmYC+9k=;
+        b=FX+B1kGa2JeuAe1Qiq54nfvo+vI0PyXQ6rsXUobQM/KBAe9IIsRyig71/bIjSPkysG
+         kB7wOQ5a2nx6GOq+A5VSy47RAI6CaAHwxJpp9kAow+enGRcBtayT2XlKPG+3yEp4olb1
+         zP7xbNm/ia80FNeyJRPOP+r2D7pqumnFBVR7TAAOTa106MbtzX9qjHPNjYDdyjr1D19O
+         ILzDq87SJHdwDOIkQOOnziMDQDtHaJd0x7xeyvdqP3aOM372L0NAbY4b7WpD68WrzOVM
+         HqxQh1yMGNwafYAfzKeQMGklQwEAww8gl9FcaaPpYm0QDshy5/ncaih/lqujzZHwSCeY
+         f+Pg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZakcJ/iI53d8WW3Us4hJO8ca+5vsmvk4+YmjM/hg1Y8ItYP8pCYJFaUht93YQKuqdBguGjyQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfKexrzJ6YwlkREBimwuhOvzfBcDs8DO8jMMMJ6FTba1AE6WmZ
+	sKs778z5C+ZOVNnMGDJpGeIDOztPH+ZB9AOliWwKXukeEmNmAoCYl6niuZGRynsWrnSwBBqd0v7
+	r34QbtowC+kLmNReYjpe5za6/XzCQ1qAU55jRh+vlqUC+rKt+CKOG9N74Aw==
+X-Gm-Gg: ASbGnculKxChYvf1n3c4iBuYlR3NUHj0UyQfBMH9uOahpqpdswmajfr00wDKQ0FoadY
+	pz1GkpWU1zRGvralmdH1R/nSgv80kXDUeYEqZC29Q2q8b7n13rf1023YCS4sGs3HBm6er0dlDUe
+	exsq1L4Faje/dpzF7SNqxHUDnWZLWLg9CvoE8VKAbdR613doyoLX/ZuboQxLVXaGzH2Pq9rCB9j
+	o/eyjuCvXUav8bWkS9o+lGMLtEdeKCCMZa/NJF0wImP3K2PrgQaFtzGl9jLPPfuL6eZgfUeXncb
+	OkwK45WR7fsws/zm3XPMsvin3zrqOo3D4DFwuqSu4VeC8N72Pkzv+QLBaYmDFMt1JHs164j0jJu
+	8nDfoFyjhx7rI8f2YpqDnswdphtLpyG8Ynb3tUK+EXanzQssjOcSqr9kUVogB2f/StTg=
+X-Received: by 2002:a05:600c:c4a5:b0:456:1006:5418 with SMTP id 5b1f17b1804b1-458763179bcmr74260415e9.13.1753692326828;
+        Mon, 28 Jul 2025 01:45:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH0ytbTFRQr+toJytfGYg9ytmkAf7bGWIT/KNRNPVSHmspPTjkBiFTwTnkeGrsjvDaNVuTIwA==
+X-Received: by 2002:a05:600c:c4a5:b0:456:1006:5418 with SMTP id 5b1f17b1804b1-458763179bcmr74259825e9.13.1753692326327;
+        Mon, 28 Jul 2025 01:45:26 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f47:2b00:c5f3:4053:2918:d17c? (p200300d82f472b00c5f340532918d17c.dip0.t-ipconnect.de. [2003:d8:2f47:2b00:c5f3:4053:2918:d17c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458705c4fa5sm151414405e9.26.2025.07.28.01.45.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Jul 2025 01:45:25 -0700 (PDT)
+Message-ID: <558720e0-f145-469b-89b8-c8d6ec41da0c@redhat.com>
+Date: Mon, 28 Jul 2025 10:45:23 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm, page_pool: introduce a new page type for page pool
+ in page type
+To: Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org,
+ netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+ harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+ davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+ leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+ akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
+ brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
+ usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
+ almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
+ bpf@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20250728052742.81294-1-byungchul@sk.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ g3eXuA==
+Organization: Red Hat
+In-Reply-To: <20250728052742.81294-1-byungchul@sk.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250728-ipa-5-1-5-5-version_string-v1-1-d7a5623d7ece@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAEs2h2gC/x2MSQqAMAwAvyI5G7CF4PIVEak2ai5VUhGh+Herh
- zkMDJMgsgpH6IoEypdE2UMWUxYwby6sjOKzg60sVbVtUA6HhCZDeLF+/RhPlbCiI6r93Ey+NQ7
- y4FBe5P7n/fA8L5RlE0NsAAAA
-X-Change-ID: 20250728-ipa-5-1-5-5-version_string-a557dc8bd91a
-To: Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1753691732; l=1189;
- i=luca.weiss@fairphone.com; s=20250611; h=from:subject:message-id;
- bh=uq+ImxcXIDpT7koBCX+UcC0xIpCmcUr0MukPByOa2Mk=;
- b=G2dTIgCPaZQDwhSQBS8d3RRhaJYTgThtBtF6HvSRKoozUXXxKyIRBsuhIuvD5vSc+6YhRgF8b
- 69DChLOqCBiAHNo5Qr44J9qFsvTOU6dnTVrTZzCAhGRVB9PCbSuTTns
-X-Developer-Key: i=luca.weiss@fairphone.com; a=ed25519;
- pk=O1aw+AAust5lEmgrNJ1Bs7PTY0fEsJm+mdkjExA69q8=
 
-Handle the case for v5.1 and v5.5 instead of returning "0.0".
+On 28.07.25 07:27, Byungchul Park wrote:
+> Changes from v1:
+> 	1. Rebase on linux-next.
+> 	2. Initialize net_iov->pp = NULL when allocating net_iov in
+> 	   net_devmem_bind_dmabuf() and io_zcrx_create_area().
+> 	3. Use ->pp for net_iov to identify if it's pp rather than
+> 	   always consider net_iov as pp.
+> 	4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
+> 
+> ---8<---
+>  From 08b65324282bbe683a2479faef8eb24df249fd18 Mon Sep 17 00:00:00 2001
+> From: Byungchul Park <byungchul@sk.com>
+> Date: Mon, 28 Jul 2025 14:07:17 +0900
+> Subject: [PATCH v2] mm, page_pool: introduce a new page type for page pool in page type
+> 
+> ->pp_magic field in struct page is current used to identify if a page
+> belongs to a page pool.  However, ->pp_magic will be removed and page
+> type bit in struct page e.i. PGTY_netpp can be used for that purpose.
+> 
+> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
+> and __ClearPageNetpp() instead, and remove the existing APIs accessing
+> ->pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
+> netmem_clear_pp_magic().
+> 
+> For net_iov, use ->pp to identify if it's pp, with making sure that ->pp
+> is NULL for non-pp net_iov.
+> 
+> This work was inspired by the following link:
+> 
+> [1] https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+> 
+> While at it, move the sanity check for page pool to on free.
+> 
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> ---
 
-Also reword the comment below since I don't see any evidence of such a
-check happening, and - since 5.5 has been missing - can happen.
+Nothing jumped at me, so
 
-Fixes: 3aac8ec1c028 ("net: ipa: add some new IPA versions")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/net/ipa/ipa_sysfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Acked-by: David Hildenbrand <david@redhat.com>
 
-diff --git a/drivers/net/ipa/ipa_sysfs.c b/drivers/net/ipa/ipa_sysfs.c
-index a59bd215494c9b7cbdd1f000d9f23e100c18ee1e..a53e9e6f6cdf50103e94e496fd06b55636ba02f4 100644
---- a/drivers/net/ipa/ipa_sysfs.c
-+++ b/drivers/net/ipa/ipa_sysfs.c
-@@ -37,8 +37,12 @@ static const char *ipa_version_string(struct ipa *ipa)
- 		return "4.11";
- 	case IPA_VERSION_5_0:
- 		return "5.0";
-+	case IPA_VERSION_5_1:
-+		return "5.1";
-+	case IPA_VERSION_5_5:
-+		return "5.5";
- 	default:
--		return "0.0";	/* Won't happen (checked at probe time) */
-+		return "0.0";	/* Should not happen */
- 	}
- }
- 
+for the MM bits.
 
----
-base-commit: 038d61fd642278bab63ee8ef722c50d10ab01e8f
-change-id: 20250728-ipa-5-1-5-5-version_string-a557dc8bd91a
-
-Best regards,
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+Cheers,
+
+David / dhildenb
 
