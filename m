@@ -1,30 +1,30 @@
 Received: from mail.ionic.de (ionic.de [145.239.234.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A179F277038;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF1A277804;
 	Mon, 28 Jul 2025 16:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.234.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753721151; cv=none; b=lNrmYh5jmZC1r9neVnpVp5QVPtgXQFMwjXljGAbYg3C1s7sVnz6j0ovJFvyfbeFYVOgLofYkyXRs3ABRPwvHFVm0v62bwh3a5Ks8wTt7AnI0A3cE/nN3AD4mTRe83AMzoggQ4ftRBN1gd7fmtzKYe1t6kL2ubIDFq2GQgFvmbb4=
+	t=1753721151; cv=none; b=qma7dkilZgDd3jec38U2iB8VriFJZSd9onj7McOA4X2QrzYaB5mdYAihJhe6nObjTSBFBvagQ5u1i9qmp7ws8gcj/9OnhQ7CvdsphMMPIW0GVo+V2iR/o0BBwKYJxfqpdXw0NnTUTFPGNNVES/eJkr8RRtMgco8nG4AGZLYKgjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753721151; c=relaxed/simple;
-	bh=JPMslWVqDy+ljzsJ3MPzFaKkALDoqTwGQnGVlmfNCXs=;
+	bh=gSHbkvq+YKqvOWWlGSpdOUOKV5DBXM24WmDfhBkcElU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TA4q/DRkCoNA39+Hy4OWqj+5CY3aA2Y3hkZ96LiJ43F9ZPDM8Jqhd1bj6Qo5T6znqk60pCo1W5f69tdAtZ5f9mVfRoUedL75iOftunoCg+FcGkNA9FHlVysygIeVY4Ax1J3pvypILI/eWB87wjC8MzwUXKCDT6IaLzo4s7JCLAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=M5XO60qA; arc=none smtp.client-ip=145.239.234.145
+	 MIME-Version; b=pQ0mttG1u8jW5Np9c1TxOFbWdTtbzwtN9WSqnXW1g5YTQo6u18hn3plgxKQVxKJe4K2HRpRX7o0qVkZ+Kc0ZScl8zyRUrLxYGIiK906u4ddbNIQ2EKiNOej7pgnkdp+AKG9TTFwjQxpo+hbkQ4VN3q2+PRtFdp90w9kOybolwAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=LeaWIHMr; arc=none smtp.client-ip=145.239.234.145
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionic.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="M5XO60qA"
+	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="LeaWIHMr"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ionic.de; s=default;
-	t=1753721139; bh=JPMslWVqDy+ljzsJ3MPzFaKkALDoqTwGQnGVlmfNCXs=;
+	t=1753721138; bh=gSHbkvq+YKqvOWWlGSpdOUOKV5DBXM24WmDfhBkcElU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5XO60qAxVIkW1V48KKd4hCB7DnIhoJ5AH1L+aqoqps0K71kNGSLhwpl8WFebpZd8
-	 jgNfPJSbv9dr9TawKE6/wdgoIO1yRRWMGMphhCYGcUI26P0SPsevBtQ3Mbp4XeTPGw
-	 CI4pVRvGMAWGGA/zx4gE6o2PFINnTRMag68Ak41A=
+	b=LeaWIHMrALFsmkXNuT+SMLEsXZq6pKXo6jdnKHJUWMfBls9mqabR2dbpuC2VUB8gB
+	 m/gKrJKYHhe5LKAshPof8E+pAY216z5HY9V8pHDLIAdH7a4IKJvGIqM4BrVdZwEGug
+	 BKeoj63QCYKlIEj8jORHXnn3q6aAMG7KwmcmeGuk=
 Received: from grml.local.home.ionic.de (unknown [IPv6:2a00:11:fb41:7a00:21b:21ff:fe5e:dddc])
-	by mail.ionic.de (Postfix) with ESMTPSA id 12BBA1488DAD;
-	Mon, 28 Jul 2025 18:45:39 +0200 (CEST)
+	by mail.ionic.de (Postfix) with ESMTPSA id 39AE414884DF;
+	Mon, 28 Jul 2025 18:45:38 +0200 (CEST)
 From: Mihai Moldovan <ionic@ionic.de>
 To: linux-arm-msm@vger.kernel.org,
 	Manivannan Sadhasivam <mani@kernel.org>
@@ -38,9 +38,9 @@ Cc: Denis Kenzior <denkenz@gmail.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH v4 08/11] net: qrtr: allow socket endpoint binding
-Date: Mon, 28 Jul 2025 18:45:25 +0200
-Message-ID: <d8e917f8083f2d6041681f2f6683bc5f53a185e6.1753720935.git.ionic@ionic.de>
+Subject: [PATCH v4 05/11] net: qrtr: Report sender endpoint in aux data
+Date: Mon, 28 Jul 2025 18:45:22 +0200
+Message-ID: <aa1fbb89108cd05874c2de6cbc35ec5dc303cac6.1753720934.git.ionic@ionic.de>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <cover.1753720934.git.ionic@ionic.de>
 References: <cover.1753720934.git.ionic@ionic.de>
@@ -54,19 +54,16 @@ Content-Transfer-Encoding: 8bit
 
 From: Denis Kenzior <denkenz@gmail.com>
 
-Introduce the ability to bind a QIPCRTR family socket to a specific
-endpoint.  When a socket is bound, only messages from the bound
-endpoint can be received, and any messages sent from the socket are
-by default directed to the bound endpoint.  Clients can bind a socket
-by using the setsockopt system call with the QRTR_BIND_ENDPOINT option
-set to the desired endpoint binding.
+Introduce support for reporting the remote endpoint that generated a
+given QRTR message to clients using AF_QIPCRTR family sockets. This is
+achieved by including QRTR_ENDPOINT auxiliary data, which carries the
+endpoint identifier of the message sender.  To receive this auxiliary
+data, clients must explicitly opt-in by using setsockopt with the
+QRTR_REPORT_ENDPOINT option enabled.
 
-A previously set binding can be reset by setting QRTR_BIND_ENDPOINT
-option to zero.  This behavior matches that of SO_BINDTOIFINDEX.
-
-This functionality is useful for clients that need to communicate
-with a specific device (i.e. endpoint), such as a PCIe-based 5G modem,
-and are not interested in messages from other endpoints / nodes.
+Implementation of getsockopt and setsockopt is provided.  An additional
+level 'SOL_QRTR' is added to socket.h for use by AF_QIPCRTR family
+sockets.
 
 Signed-off-by: Denis Kenzior <denkenz@gmail.com>
 Reviewed-by: Marcel Holtmann <marcel@holtmann.org>
@@ -76,149 +73,189 @@ Signed-off-by: Mihai Moldovan <ionic@ionic.de>
 ---
 
 v4:
-  - rebase against earlier changes
-  - Link to v3: https://msgid.link/b523ece3e16dc4c8a9acf740aba5270227a2a2b8.1753313000.git.ionic@ionic.de
+  - no changes
+  - Link to v3: https://msgid.link/30c2c4547108dd0baa638f8ed3cf493a3bc06bc2.1753312999.git.ionic@ionic.de
 
 v3:
   - rebase against current master
-  - Link to v2: https://msgid.link/c914eae5bd8d4a3924cc3c00c1dd5810024678f5.1752947108.git.ionic@ionic.de
+  - fix checkpatch.pl whitespace warning
+  - Link to v2: https://msgid.link/8dc0c9f99f617db348af5b176bb03b4c11ac9138.1752947108.git.ionic@ionic.de
 
 v2:
   - rebase against current master
-  - use WRITE_ONCE() to write value in qrtr_setsockopt() and READ_ONCE()
-    to read it in qrtr_getsockopt() as per review comment
-  - Link to v1: https://msgid.link/20241018181842.1368394-8-denkenz@gmail.com
+  - dropped socket locking in qrtr_setsockopt() and qrtr_getsockopt() as
+    per review comment
+  - Link to v1: https://msgid.link/20241018181842.1368394-5-denkenz@gmail.com
 ---
- include/uapi/linux/qrtr.h |  1 +
- net/qrtr/af_qrtr.c        | 56 ++++++++++++++++++++++++++++-----------
- 2 files changed, 41 insertions(+), 16 deletions(-)
+ include/linux/socket.h    |  1 +
+ include/uapi/linux/qrtr.h |  6 +++
+ net/qrtr/af_qrtr.c        | 77 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 84 insertions(+)
 
+diff --git a/include/linux/socket.h b/include/linux/socket.h
+index 3b262487ec06..0698a11bb2e2 100644
+--- a/include/linux/socket.h
++++ b/include/linux/socket.h
+@@ -386,6 +386,7 @@ struct ucred {
+ #define SOL_MCTP	285
+ #define SOL_SMC		286
+ #define SOL_VSOCK	287
++#define SOL_QRTR	288
+ 
+ /* IPX options */
+ #define IPX_TYPE	1
 diff --git a/include/uapi/linux/qrtr.h b/include/uapi/linux/qrtr.h
-index 6d0911984a05..0a8667b049c3 100644
+index f7e2fb3d752b..6d0911984a05 100644
 --- a/include/uapi/linux/qrtr.h
 +++ b/include/uapi/linux/qrtr.h
-@@ -48,6 +48,7 @@ struct qrtr_ctrl_pkt {
+@@ -46,4 +46,10 @@ struct qrtr_ctrl_pkt {
+ 	};
+ } __packed;
  
- /* setsockopt / getsockopt */
- #define QRTR_REPORT_ENDPOINT 1
-+#define QRTR_BIND_ENDPOINT 2
- 
- /* CMSG */
- #define QRTR_ENDPOINT 1
++/* setsockopt / getsockopt */
++#define QRTR_REPORT_ENDPOINT 1
++
++/* CMSG */
++#define QRTR_ENDPOINT 1
++
+ #endif /* _LINUX_QRTR_H */
 diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index fa88a8ed4d8c..a7ab445416e4 100644
+index fdf05b6509b5..e114489dbd36 100644
 --- a/net/qrtr/af_qrtr.c
 +++ b/net/qrtr/af_qrtr.c
-@@ -98,6 +98,7 @@ struct qrtr_sock {
+@@ -26,6 +26,10 @@
+ 
+ #define QRTR_PORT_CTRL_LEGACY 0xffff
+ 
++enum {
++	QRTR_F_REPORT_ENDPOINT,
++};
++
+ /**
+  * struct qrtr_hdr_v1 - (I|R)PCrouter packet header version 1
+  * @version: protocol version
+@@ -79,6 +83,7 @@ struct qrtr_cb {
+ 	u32 src_port;
+ 	u32 dst_node;
+ 	u32 dst_port;
++	u32 endpoint_id;
+ 
+ 	u8 type;
+ 	u8 confirm_rx;
+@@ -92,6 +97,7 @@ struct qrtr_sock {
+ 	struct sock sk;
  	struct sockaddr_qrtr us;
  	struct sockaddr_qrtr peer;
- 	unsigned long flags;
-+	u32 bound_endpoint;
++	unsigned long flags;
  };
  
  static inline struct qrtr_sock *qrtr_sk(struct sock *sk)
-@@ -664,10 +665,14 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
- 			goto err;
- 		}
+@@ -575,6 +581,8 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
+ 	if (cb->dst_port == QRTR_PORT_CTRL_LEGACY)
+ 		cb->dst_port = QRTR_PORT_CTRL;
  
--		ret = sock_queue_rcv_skb(&ipc->sk, skb);
--		if (ret) {
--			qrtr_port_put(ipc);
--			goto err;
-+		/* Sockets bound to an endpoint only rx from that endpoint */
-+		if (!ipc->bound_endpoint ||
-+		    ipc->bound_endpoint == cb->endpoint_id) {
-+			ret = sock_queue_rcv_skb(&ipc->sk, skb);
-+			if (ret) {
-+				qrtr_port_put(ipc);
-+				goto err;
-+			}
- 		}
++	cb->endpoint_id = ep->id;
++
+ 	if (!size || len != ALIGN(size, 4) + hdrlen)
+ 		goto err;
  
- 		qrtr_port_put(ipc);
-@@ -1008,29 +1013,41 @@ static int qrtr_local_enqueue(struct qrtr_node *node, struct sk_buff *skb,
+@@ -1137,6 +1145,7 @@ static int qrtr_recvmsg(struct socket *sock, struct msghdr *msg,
+ 			size_t size, int flags)
  {
- 	struct qrtr_sock *ipc;
+ 	DECLARE_SOCKADDR(struct sockaddr_qrtr *, addr, msg->msg_name);
++	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
+ 	struct sock *sk = sock->sk;
+ 	struct sk_buff *skb;
  	struct qrtr_cb *cb;
-+	int ret = -ENODEV;
+@@ -1162,6 +1171,10 @@ static int qrtr_recvmsg(struct socket *sock, struct msghdr *msg,
+ 		msg->msg_flags |= MSG_TRUNC;
+ 	}
  
- 	ipc = qrtr_port_lookup(to->sq_port);
--	if (!ipc || &ipc->sk == skb->sk) { /* do not send to self */
--		if (ipc)
--			qrtr_port_put(ipc);
--		kfree_skb(skb);
--		return -ENODEV;
--	}
-+	if (!ipc)
-+		goto done;
++	if (cb->endpoint_id && test_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags))
++		put_cmsg(msg, SOL_QRTR, QRTR_ENDPOINT,
++			 sizeof(cb->endpoint_id), &cb->endpoint_id);
 +
-+	if (&ipc->sk == skb->sk) /* do not send to self */
-+		goto done;
-+
-+	/*
-+	 * Filter out unwanted packets that are not on behalf of the bound
-+	 * endpoint.  Certain special packets (such as an empty NEW_SERVER
-+	 * packet that serves as a sentinel value) always go through.
-+	 */
-+	if (endpoint_id && ipc->bound_endpoint &&
-+	    ipc->bound_endpoint != endpoint_id)
-+		goto done;
- 
- 	cb = (struct qrtr_cb *)skb->cb;
- 	cb->src_node = from->sq_node;
- 	cb->src_port = from->sq_port;
- 	cb->endpoint_id = endpoint_id;
- 
--	if (sock_queue_rcv_skb(&ipc->sk, skb)) {
--		qrtr_port_put(ipc);
--		kfree_skb(skb);
--		return -ENOSPC;
--	}
-+	ret = -ENOSPC;
-+	if (sock_queue_rcv_skb(&ipc->sk, skb))
-+		goto done;
- 
- 	qrtr_port_put(ipc);
- 
- 	return 0;
-+done:
-+	if (ipc)
-+		qrtr_port_put(ipc);
-+	kfree_skb(skb);
-+	return ret;
+ 	rc = skb_copy_datagram_msg(skb, 0, msg, copied);
+ 	if (rc < 0)
+ 		goto out;
+@@ -1307,6 +1320,68 @@ static int qrtr_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 	return rc;
  }
  
- /* Queue packet for broadcast. */
-@@ -1116,7 +1133,8 @@ static int qrtr_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- 	} else if (addr->sq_node == ipc->us.sq_node) {
- 		enqueue_fn = qrtr_local_enqueue;
- 	} else {
--		endpoint_id = msg_endpoint_id;
-+		endpoint_id = msg_endpoint_id ?
-+			      msg_endpoint_id : ipc->bound_endpoint;
++static int qrtr_setsockopt(struct socket *sock, int level, int optname,
++			   sockptr_t optval, unsigned int optlen)
++{
++	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
++	unsigned int val = 0;
++	int rc = 0;
++
++	if (level != SOL_QRTR)
++		return -ENOPROTOOPT;
++
++	if (optlen >= sizeof(val) &&
++	    copy_from_sockptr(&val, optval, sizeof(val)))
++		return -EFAULT;
++
++	switch (optname) {
++	case QRTR_REPORT_ENDPOINT:
++		assign_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags, val);
++		break;
++	default:
++		rc = -ENOPROTOOPT;
++	}
++
++	return rc;
++}
++
++static int qrtr_getsockopt(struct socket *sock, int level, int optname,
++			   char __user *optval, int __user *optlen)
++{
++	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
++	unsigned int val;
++	int len;
++	int rc = 0;
++
++	if (level != SOL_QRTR)
++		return -ENOPROTOOPT;
++
++	if (get_user(len, optlen))
++		return -EFAULT;
++
++	if (len < sizeof(val))
++		return -EINVAL;
++
++	switch (optname) {
++	case QRTR_REPORT_ENDPOINT:
++		val = test_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags);
++		break;
++	default:
++		rc = -ENOPROTOOPT;
++	}
++
++	if (rc)
++		return rc;
++
++	len = sizeof(int);
++
++	if (put_user(len, optlen) ||
++	    copy_to_user(optval, &val, len))
++		rc = -EFAULT;
++
++	return rc;
++}
++
+ static int qrtr_release(struct socket *sock)
+ {
+ 	struct sock *sk = sock->sk;
+@@ -1354,6 +1429,8 @@ static const struct proto_ops qrtr_proto_ops = {
+ 	.shutdown	= sock_no_shutdown,
+ 	.release	= qrtr_release,
+ 	.mmap		= sock_no_mmap,
++	.setsockopt	= qrtr_setsockopt,
++	.getsockopt	= qrtr_getsockopt,
+ };
  
- 		node = qrtr_node_lookup(endpoint_id, addr->sq_node);
- 		if (!node) {
-@@ -1392,6 +1410,9 @@ static int qrtr_setsockopt(struct socket *sock, int level, int optname,
- 	case QRTR_REPORT_ENDPOINT:
- 		assign_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags, val);
- 		break;
-+	case QRTR_BIND_ENDPOINT:
-+		WRITE_ONCE(ipc->bound_endpoint, val);
-+		break;
- 	default:
- 		rc = -ENOPROTOOPT;
- 	}
-@@ -1420,6 +1441,9 @@ static int qrtr_getsockopt(struct socket *sock, int level, int optname,
- 	case QRTR_REPORT_ENDPOINT:
- 		val = test_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags);
- 		break;
-+	case QRTR_BIND_ENDPOINT:
-+		val = READ_ONCE(ipc->bound_endpoint);
-+		break;
- 	default:
- 		rc = -ENOPROTOOPT;
- 	}
+ static struct proto qrtr_proto = {
 -- 
 2.50.0
 
