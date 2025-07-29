@@ -1,229 +1,110 @@
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4DA4C62
-	for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 15:37:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47615293C6C;
+	Tue, 29 Jul 2025 15:39:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753803445; cv=none; b=JWP+7BlP0LsLR/rys2P/wpqccjZda1SD+zBV/qJsCILIlHMvC8mBkWlxWLpDaF+1AMv7pQ6N8jdPpWePsL4K32ZcIUZbbPwMVM+xMVKAKM3YhX1lLyhjq2M6HEeSfjvCdqrsFLis/T/JKASZhqEbVuAfmARJZrHj4NeTcr9OJt0=
+	t=1753803580; cv=none; b=LUX7OrcWkgZD9Ce7y40RQFdc2h1w6QJM/hb3yg32VbqV2Ok1k7/dZ19y9pUQ/HJkk4CBcbIraD5wnjtT2utIb+jXpLySDBYwm6DH7PprR3OLMxiiCBRwJmdYkPMWFMUbxWEpVJtqr64vfnOwI6d9BML1ra+BZ1RWC+CtKLhQCnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753803445; c=relaxed/simple;
-	bh=PEHyEjN0ADaz5kET3fFfZncZHo4XCyw5ZkHyELvU72c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=nChb8YfFdKqh/0TRSpZ3iEWjtLVhEAlXF9z+59bxLtoGnhtWc1oIuM3zY6WN+FdNDVlzYz1QHJ0D+IMPEHk87/CsRYkeEx/KcKtEh/MFpp/i62Vp61UelasZhG+voka0y0NPSLG5HGshx8aJgf3UUe+ed5nFHZGoS2L7EAKlp6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=nbYnA8Xp; arc=none smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	s=arc-20240116; t=1753803580; c=relaxed/simple;
+	bh=mqhvjUwqNOMDT2jOETSF8s/jn8E14XCTSSCmTyrkZpA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=qRkI5qOcwMSHvx1EsHhOhvBM3i6rXxGg0279Ii851j4JbLmsp79EW/A1RSDFqpKqyy3zetz3lhBReILyrSHSCZIdLPcZBrpXA5zJqUVe24ajTHlI+ggUeugjyXQLYEqO4yNTsJidMNXQTU1gCj8wj+pyqm7OrMHWE/v0yDpO4qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PXkHXCZX; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="nbYnA8Xp"
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56TDmAM5017943;
-	Tue, 29 Jul 2025 17:37:03 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	6QqV7V0tO5OxA4sByxR+cgSgc3c8gdKE4nRdb/3tQco=; b=nbYnA8XpRf1fY3nQ
-	BmZSCmVbXeZojxlvIrPSmVWLJM+N/dwW8puHyD5dzhA23IRcFijCyILdmwDQuQmk
-	jgA3M3+ZgluhThgK0mwolAGs/4VoEuE7TQ7VUraLRS1bNdewXYP0j1SUbpBAkMBO
-	OGwLFE4DEDcMb3VydAcNYBT9Uu/pMGtRbpk/KuFf3OvX0wzR0qHcV89M/b1Yb50/
-	VRMCDaA1Fb93dHaUSlq0mrdG5YphzF5vHu+UrrVlzo+AFJMT/ZvYe//8L61V8n8D
-	YtaQb6fdQSS18+TXn6/ApB7b3D4N+dXCnql0457taRapEFXJHOYDAHUNeDIpvQHN
-	wVzaQw==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 484memp190-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Jul 2025 17:37:02 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 620F840049;
-	Tue, 29 Jul 2025 17:35:38 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 327B977F2C9;
-	Tue, 29 Jul 2025 17:34:50 +0200 (CEST)
-Received: from [10.48.87.141] (10.48.87.141) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 29 Jul
- 2025 17:34:49 +0200
-Message-ID: <186a2265-8ca8-4b75-b4a2-a81d21ca42eb@foss.st.com>
-Date: Tue, 29 Jul 2025 17:34:49 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PXkHXCZX"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-31f1da6d294so1403777a91.2;
+        Tue, 29 Jul 2025 08:39:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753803578; x=1754408378; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=j5eeZNFACborqHyowupPEX9r5hX4b4Tlg2rOsEO7qiw=;
+        b=PXkHXCZXUlDGAgQjqs1xj8flM5WGeJtIiT0pez7eXmZ44KaCrcZAdeqOw9fiY8lL1h
+         3pqFpucqPg84Kmx6jCt94EfoMWq048z7nUBcGyrIJRJNDmqBStdV7bQc2lLn9y36km8w
+         XNf0KoDx5p33pVBLUb1sylylIURNml2ITHoi9hBjThlS0Tc3sA2k4OlDJiG8p2IDdjbb
+         wbEdVXD9qagGmNc4JXKy0CtW9oWfEvldaWDDbDTbpKg0vS1OPknnrWf5UZjTYZ61KiKz
+         yHSZ6ijc9f4bqU/HankH2m1cFvEf18quB06ZrSAu0E9um74qUrPZXf+TN0mxNkSPL3hQ
+         xCaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753803578; x=1754408378;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=j5eeZNFACborqHyowupPEX9r5hX4b4Tlg2rOsEO7qiw=;
+        b=ZWX+0uT8hvp4PELVJ7Zl6yLm8/sxxxlZAZcJy9S3wN8BcToUY6BSvzJeasYtEicAkA
+         XyHMoiAeYnw5e88U2zdDhcmmDusrEmkDbHcY/G1VVVRGcn0JXG5muAOPjvqb9/HJWOXQ
+         bcrK8dQVuh1mMjn54Q6pakK0Db2h27PbHC0kFJ5ugo0YNeyjgIWU0moBaDszV4nDbKoi
+         At1Jp0Ydvam8lzwF3pOFEM5Bhd7lp7g3VOzpmnGdSZeo/RPWF6MrACxh3Ig+B8S7Zhb6
+         1vnASVqtanrwu/89waI6/VNkoTKZZ/PP3a7AgiXYh/RIZuYax/dHSE+PmSqQJPNr3dfx
+         0Mww==
+X-Gm-Message-State: AOJu0Yyy7leFKYR1oUl4XXC3O8IIuCtvwB45kgwEAflMTWbDp3IuFpjt
+	JUq498+4Myv3YqwZy2ww+Y4VMSsnb9v0c0BAL96VCKjfLj4TgesKNER7fs3meAPZMCdWa9Aw+Mw
+	gw/XsGzMq2ofL1ecI1R7LW7f9rc2HmRLxCsBeWrM=
+X-Gm-Gg: ASbGncuaQMDTy4O8tyGF6GYtEbjKNBbEjIGfrJ1MwKzNaB2o3G+sygDGc1J8ca71JzS
+	mXtx4TJEIFhpezQiiVa+wfn3BDaaQo0/2es0Z55+jw5gbkaBU60ytmPMVokBxz539GcSlghVRgw
+	LbYvZ6zICKo6e80HllgPQh1IxV+P1/qs1KUToPtKPdzlK9/+EMFqYdJix4dNQau6UNu2cVBNHUp
+	ZEsIOY=
+X-Google-Smtp-Source: AGHT+IE7/AI7o3RdODRZQ6YpuhiMjF4CHrng+aafRNDAsZGiUQFlWhP5P6fIGaxfpf4xLV+F2ySrz4fVbOyiFqyxbhY=
+X-Received: by 2002:a17:90b:1f82:b0:313:d346:f347 with SMTP id
+ 98e67ed59e1d1-31e77a4595fmr21659973a91.35.1753803577963; Tue, 29 Jul 2025
+ 08:39:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Linux-stm32] [PATCH RFC net-next 6/7] net: stmmac: add helpers
- to indicate WoL enable status
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-CC: Andrew Lunn <andrew@lunn.ch>, <netdev@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        Andrew Lunn
-	<andrew+netdev@lunn.ch>,
-        Eric Dumazet <edumazet@google.com>,
-        Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Heiner Kallweit
-	<hkallweit1@gmail.com>
-References: <aIebMKnQgzQxIY3j@shell.armlinux.org.uk>
- <E1ugQ33-006KDR-Nj@rmk-PC.armlinux.org.uk>
- <eaef1b1b-5366-430c-97dd-cf3b40399ac7@lunn.ch>
- <aIe5SqLITb2cfFQw@shell.armlinux.org.uk>
- <77229e46-6466-4cd4-9b3b-d76aadbe167c@foss.st.com>
- <aIiOWh7tBjlsdZgs@shell.armlinux.org.uk>
- <aIjCg_sjTOge9vd4@shell.armlinux.org.uk>
- <d300d546-09fa-4b37-b8e0-349daa0cc108@foss.st.com>
- <aIjePMWG6pEBvna6@shell.armlinux.org.uk>
-Content-Language: en-US
-From: Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
-In-Reply-To: <aIjePMWG6pEBvna6@shell.armlinux.org.uk>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-29_03,2025-07-28_01,2025-03-28_01
+From: maher azz <maherazz04@gmail.com>
+Date: Tue, 29 Jul 2025 16:39:26 +0100
+X-Gm-Features: Ac12FXyKWr8ljBOwNnkzqOEbwJ8JoCibDhAzDz1ZWRT-wzBlIr10NTiA7ekACSo
+Message-ID: <CAFQ-Uc-5ucm+Dyt2s4vV5AyJKjamF=7E_wCWFROYubR5E1PMUg@mail.gmail.com>
+Subject: [PATCH v2 net] net/sched: mqprio: fix stack out-of-bounds write in tc
+ entry parsing
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>, 
+	Cong Wang <xiyou.wangcong@gmail.com>, jiri@resnulli.us, davem@davemloft.net, 
+	Eric Dumazet <edumazet@google.com>, kuba@kernel.org, pabeni@redhat.com, 
+	Simon Horman <horms@kernel.org>, Ferenc Fejes <fejes@inf.elte.hu>, 
+	Vladimir Oltean <vladimir.oltean@nxp.com>, MaherAzzouzi <maherazz04@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+From: Maher Azzouzi <maherazz04@gmail.com>
 
+TCA_MQPRIO_TC_ENTRY_INDEX is validated using
+NLA_POLICY_MAX(NLA_U32, TC_QOPT_MAX_QUEUE), which allows the value
+TC_QOPT_MAX_QUEUE (16). This leads to a 4-byte out-of-bounds stack write in
+the fp[] array, which only has room for 16 elements (0=E2=80=9315).
 
-On 7/29/25 16:44, Russell King (Oracle) wrote:
-> On Tue, Jul 29, 2025 at 03:10:56PM +0200, Gatien CHEVALLIER wrote:
->>
->>
->> On 7/29/25 14:45, Russell King (Oracle) wrote:
->>> On Tue, Jul 29, 2025 at 10:03:22AM +0100, Russell King (Oracle) wrote:
->>>> With Thierry's .dts patch, PHY interrupts completely stop working, so
->>>> we don't get link change notifications anymore - and we still don't
->>>> seem to be capable of waking the system up with the PHY interrupt
->>>> being asserted.
->>>>
->>>> Without Thierry's .dts patch, as I predicted, enabling WoL at the
->>>> PHY results in Bad Stuff happening - the code in the realtek driver
->>>> for WoL is quite simply broken and wrong.
->>>>
->>>> Switching the pin from INTB mode to PMEB mode results in:
->>>> - No link change interrupts once WoL is enabled
->>>> - The interrupt output being stuck at active level, causing an
->>>>     interrupt storm and the interrupt is eventually disabled.
->>>>     The PHY can be configured to pulse the PMEB or hold at an active
->>>>     level until the WoL is cleared - and by default it's the latter.
->>>>
->>>> So, switching the interrupt pin to PMEB mode is simply wrong and
->>>> breaks phylib. I guess the original WoL support was only tested on
->>>> a system which didn't use the PHY interrupt, only using the interrupt
->>>> pin for wake-up purposes.
->>>>
->>>> I was working on the realtek driver to fix this, but it's pointless
->>>> spending time on this until the rest of the system can wake up -
->>>> and thus the changes can be tested. This is where I got to (and
->>>> includes work from both Thierry and myself, so please don't pick
->>>> this up as-is, because I can guarantee that you'll get the sign-offs
->>>> wrong! It's a work-in-progress, and should be a series for submission.)
->>>
->>> Okay, with this patch, wake-up now works on the PHY interrupt line, but
->>> because normal interrupts aren't processed, the interrupt output from
->>> the PHY is stuck at active level, so the system immediately wakes up
->>> from suspend.
->>>
->>
->> If I'm following correctly, you do not use the PMEB mode and share
->> the same pin for WoL and regular interrupts (INTB mode)?
-> 
-> As the driver is currently structured, switching the pin to PMEB mode
-> in .set_wol() breaks phylib, since as soon as one enables WoL at the
-> PHY, link state interrupts are no longer delivered.
-> 
-> It may be appropriate to switch the pin to PMEB mode in the suspend
-> method while waiting for a wakeup but we need code in place to deal
-> with the resulting interrupt storm (by clearing the wakeup) and that
-> code is missing.
-> 
-> The other approach would be to leave the pin in INTB mode, and
-> reconfigure the interrupt enable register (INER) to allow WoL
-> interrupts, maybe disabling link state interrupts (more on that
-> below.) This has the advantage that reading the interrupt status
-> register clears the interrupt - and that code already exists so we
-> avoid the interrupt storm.
-> 
->>> Without the normal interrupt problem solved, there's nothing further
->>> I can do on this.
->>>
->>> Some of the open questions are:
->>> - whether we should configure the WoL interrupt in the suspend/resume
->>>     function
->>
->> For the LAN8742 PHY with which I worked with, the recommendation when
->> using the same pin for WoL and regular interrupt management is to mask
->> regular interrupt and enable the WoL IIRC.
-> 
-> That's only really appropriate if the MAC isn't involved in WoL. Let's
-> say that the PHY can support magic-packet WoL, but the MAC can also
-> support unicast frame WoL, and the user has enabled both.
-> 
+Fix this by changing the policy to allow only up to TC_QOPT_MAX_QUEUE - 1.
 
-Oops, just saw that I mispronounced your name in a previous message,
-sorry for that.
+Fixes: f62af20bed2d ("net/sched: mqprio: allow per-TC user input of FP
+adminStatus")
 
-For STMMAC:
-I'm a bit lost there. I may be missing something. I thought that using
-PHY WoL (therefore having STMMAC_FLAG_USE_PHY_WOL) superseded the MAC
-WoL usage.
+Signed-off-by: Maher Azzouzi <maherazz04@gmail.com>
+---
+ net/sched/sch_mqprio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-In stmmac_hw_init():
-
-if (priv->plat->pmt) {
-         dev_info(priv->device, "Wake-Up On Lan supported\n");
-         device_set_wakeup_capable(priv->device, 1);
-}
-
-but above:
-
-priv->plat->pmt = priv->dma_cap.pmt_remote_wake_up &&
-!(priv->plat->flags & STMMAC_FLAG_USE_PHY_WOL);
-
-Then, in stmmac_set_wol(), it's either set the WoL for the
-PHY or the MAC?
-
-Can you point me to the part I'm missing please?
-
-> The system goes to sleep (e.g. overnight) and during the night, there's
-> a hiccup which causes the link to drop and re-establish at a slower
-> speed.
-> 
-> Since the MAC has not been reconfigured (because the link state
-> interrupt is disabled, and thus won't wake the system) the MAC can now
-> no longer receive unicast frames to check whether they match the
-> despired system wakeup condition.
-> 
-> So, this poses another question: do we really want to support
-> simultaneous PHY and MAC level WoL support, or should we only allow
-> one or other device to support WoL?
-> 
-> If we explicitly deny the WoL at both approach, then we don't have
-> to care about link state interrupts, because the PHY will be able
-> to cope with the different link speed without needing to wake the
-> iystem to reconfigure the network interface for the new link
-> parameters.
-> 
->> This prevents the PHY from waking up from undesired events while still
->> being able use the WoL capability and should be done in suspend() /
->> resume() callbacks. I guess this means also that you share the same
->> interrupt handler that must manage both WoL events and regular events.
->>
->> On the other hand, on the stm32mp135f-dk, the nPME pin (equivalent to
->> PMEB IIUC) is wired and is different from the nINT pin. Therefore, I
->> guess it should not be done during suspend()/resume() and it really
->> depends on how the PHY is wired. Because if a WoL event is received at
->> runtime, then the PHY must clear the flags otherwise the WoL event won't
->> trigger a system wakeup afterwards.
->>
->> I need to look at how the PHYs can handle two different interrupts.
-> 
-> The RTL8211F only has one pin (pin 31) which can be used in INTB mode
-> or PMEB mode. You can't have independent interrupt and wakeup signals
-> with this PHY.
-> 
+diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
+index 51d4013b6121..f3e5ef9a9592 100644
+--- a/net/sched/sch_mqprio.c
++++ b/net/sched/sch_mqprio.c
+@@ -152,7 +152,7 @@ static int mqprio_parse_opt(struct net_device
+*dev, struct tc_mqprio_qopt *qopt,
+ static const struct
+ nla_policy mqprio_tc_entry_policy[TCA_MQPRIO_TC_ENTRY_MAX + 1] =3D {
+        [TCA_MQPRIO_TC_ENTRY_INDEX]     =3D NLA_POLICY_MAX(NLA_U32,
+-                                                        TC_QOPT_MAX_QUEUE)=
+,
++                                                        TC_QOPT_MAX_QUEUE =
+- 1),
+        [TCA_MQPRIO_TC_ENTRY_FP]        =3D NLA_POLICY_RANGE(NLA_U32,
+                                                           TC_FP_EXPRESS,
+                                                           TC_FP_PREEMPTIBL=
+E),
+--
+2.34.1
