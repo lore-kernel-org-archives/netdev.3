@@ -1,146 +1,183 @@
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70755259CBB
-	for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 08:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6811990B7;
+	Tue, 29 Jul 2025 08:07:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753776133; cv=none; b=k4swlu3r1uJvNuP1WHc90fH2hk01B8OMTz3rnirsokFqh3SO8hI6tnTFesiU3bL8jyWnxfKI1WCg9iyoJPT0saYJkWhvAiysaVFcB+bZUPeSGy1+NnzkG7zCMtt5TNEpmwTIsSkTFtl/KKZk5awOrP048FhNjduHntQYEGbQE20=
+	t=1753776480; cv=none; b=FuixOy2sry35RcT+C5mdyJQJa1Fv1o/08GVlV9MXQ2tOnrnx8ezgUJcWxcI7Aj7Xx4a0y33j//cuN5jfZ8GBBNX2EHIxiGvW6DxeXPzp76IyEqQRweEnIZIN/DE8SED1l4LF/9N5Rk9i7/XhRYaO+GUJV1Ec+TIHUT0FE43roQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753776133; c=relaxed/simple;
-	bh=wVwDOl//elXR1DxYqIj4MJKfPX88vPO6LAXuEFbEh98=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=frmyv//EGbQeyh7Vf7cSzHNpqCZBguyc25F4GO0HZPsC0/wRccF6ZLeju2YYSQXQPNdMpZlyng5waHlH068Tjb5pbHDyjsNULfVqJNU59hB4CbKWb11PM00FVdrRCDkr38IKIdcBb+eYZ31a6bwwBK8Sr2b6JLkH6k5i7tbAFqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NZl/kO/L; arc=none smtp.client-ip=209.85.222.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1753776480; c=relaxed/simple;
+	bh=LVJKkN36qjkh4TnMJiHplxyR9I2VwOGyfMGru+KsKTo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m8EMFickttn6o7fM24D/HM/eTk8Ep2CeD6/65mD0AdNp5RiuwhQto7FiF1jVwiXuo4MS2B0gNz14ibanrvKaSVJGHtZst9uBKGuSi6io1DlsmdWxtkvGDHPpYt/a6F7uFAP0isnNaEN5BJFpSJK6nqTc0lMjPt+DtmRfaz9VO3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LooOaRcD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NZl/kO/L"
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-7e03ac1bf79so416021185a.3
-        for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 01:02:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753776130; x=1754380930; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=M7TwkNAk8QHVaE8heo5T8sT+VxS3EibT06hIWnrlp3U=;
-        b=NZl/kO/LknzQ4NUugmk0v4bS3CJTQdoKxA6yUTsTF0OtWXp/iKk4DjU5hMtyQhPoic
-         vjM8VNHsblWDjFO5QbyRE6CcBBuWsTDMP/tUX5sSCalQ1g2buxx1uiHnVvBGXK9kDojh
-         /kQwg53aH2uUGKzTd7ZZCy1ILx0yjeng8u/80thcAZzJYwrLddz/3+eDQ8HEJSfLQycC
-         YWdUVB586saGijWQGmvxtHagqdgUcI9QjM2eZ3JUfulWT4I+wH5Xh2NzU0UIaxRFRqhy
-         z5sZyTTO9UwTL4krZsxwNvT4ZsHLa/Jkp6NLRCSzxM8Av1smrq/HxMqp9fXysXSh63KE
-         rPNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753776130; x=1754380930;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=M7TwkNAk8QHVaE8heo5T8sT+VxS3EibT06hIWnrlp3U=;
-        b=tuVjyziXalLhwQpAZgXYmAgtOL7D7awDIjXAAv3HA4PAwZjSQC7iNGPc1spMTyyRxM
-         ib9jH+1s8xFDxF0I9HirVPMq7xsQIYPp6hoWZBhIcEpdcuUVhm7jeK6Mrtg+FVB1Biok
-         9x36zfiXXsaaIkfc6mGOKMACaaVCyAf6OYaX8h1b1W0ncPilmLZvi+Garc3xYzlrAijv
-         DOqCVAjf7CQVIwwQZntSqMHPOhjiCHiqf4qxURalONcXNJ2RO55EsDs6zEr1S3QSB5Hv
-         frY/BhEdHcrlu/iPF+sI32+VgRB3Dyu1jD96al44diTZMzKCV/GZYuTmBM52Y1YV+Shq
-         zzUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBOaRdoh/GvsrWjqs16A1I2QxhOiOSF7o2KhsMLMvxTY5DZMWV2FExtvbXB13cK26CyKz3Pxo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2pXb1uHcqDSeU0p7sx26o9t6dHmoezfsdSCwciDjq/xmyEsUz
-	n4KHyMYdkOzUEB+u4S2NZvOfyZlKtketa83/b/emvy12vO9e5uU1w8GnjfGd40rkLI7B8+kN8WT
-	u0lR9P9QbMNoTiA==
-X-Google-Smtp-Source: AGHT+IEPFQFtBHGlNqFXJnRWJRHtZgY+nKvoqO+n560zV/8P23fGx8zuiUmrkz80liYGeFLkMbXa9H214uarMg==
-X-Received: from qkox15.prod.google.com ([2002:a05:620a:258f:b0:7e3:2bff:7905])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:a91b:b0:7e6:2114:d577 with SMTP id af79cd13be357-7e63bf6af25mr1764738285a.19.1753776130417;
- Tue, 29 Jul 2025 01:02:10 -0700 (PDT)
-Date: Tue, 29 Jul 2025 08:02:07 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LooOaRcD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61926C4CEEF;
+	Tue, 29 Jul 2025 08:07:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753776479;
+	bh=LVJKkN36qjkh4TnMJiHplxyR9I2VwOGyfMGru+KsKTo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LooOaRcDqVFj6TYPVM4bElH0sal8d+yU3vpj7mh7Po0EyZu3w+oLX5+/zt7nQCzdz
+	 +vAFMS5zL9RlCAWEhdqbuoOM+E5IA5rfCGvgDbvUNJOwIMrsT3cEZGBlnK2qbS4y+7
+	 pA3IYoFMvrwEorSeqRqxmIIDGWzwRDlpEF2aWQGrAe9BDg9PdI3mXGGdTAFlXaWii9
+	 sUzxzVgnR9vETwweQNlTaJk28YK8dGPUWCzcY47eJL3yxe7h5pVNMqHXwH3bhyLSBT
+	 l2JvI4VShASNpPFfvNiAgOg3lfZ8/2jhFBWlA2kuS+yKa4xwC2ZBqGpo3XfIjZPjU3
+	 XXuGk0mW/8JxQ==
+Message-ID: <624296dc-69d6-4bdd-bed1-ffcb747fb96d@kernel.org>
+Date: Tue, 29 Jul 2025 17:07:54 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.1.487.gc89ff58d15-goog
-Message-ID: <20250729080207.1863408-1-edumazet@google.com>
-Subject: [PATCH net] pptp: ensure minimal skb length in pptp_xmit()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+afad90ffc8645324afe5@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 1/4] net/handshake: get negotiated tls record size limit
+To: Wilfred Mallawa <wilfred.opensource@gmail.com>, alistair.francis@wdc.com,
+ chuck.lever@oracle.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ donald.hunter@gmail.com, corbet@lwn.net, kbusch@kernel.org, axboe@kernel.dk,
+ hch@lst.de, sagi@grimberg.me, kch@nvidia.com, borisp@nvidia.com,
+ john.fastabend@gmail.com, jlayton@kernel.org, neil@brown.name,
+ okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+ anna@kernel.org, kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org,
+ Wilfred Mallawa <wilfred.mallawa@wdc.com>
+References: <20250729024150.222513-2-wilfred.opensource@gmail.com>
+ <20250729024150.222513-4-wilfred.opensource@gmail.com>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20250729024150.222513-4-wilfred.opensource@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Commit aabc6596ffb3 ("net: ppp: Add bound checking for skb data
-on ppp_sync_txmung") fixed ppp_sync_txmunge()
+On 7/29/25 11:41, Wilfred Mallawa wrote:
+> From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+> 
+> During a handshake, an endpoint may specify a maximum record size limit.
+> Currently, this limit is not visble to the kernel particularly in the case
+> where userspace handles the handshake (tlshd/gnutls). This patch adds
+> support for retrieving the record size limit.
+> 
+> This is the first step in ensuring that the kernel can respect the record
+> size limit imposed by the endpoint.
+> 
+> Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+> ---
+>  Documentation/netlink/specs/handshake.yaml |  3 +++
+>  Documentation/networking/tls-handshake.rst |  8 +++++++-
+>  drivers/nvme/host/tcp.c                    |  3 ++-
+>  drivers/nvme/target/tcp.c                  |  3 ++-
+>  include/net/handshake.h                    |  4 +++-
+>  include/uapi/linux/handshake.h             |  1 +
+>  net/handshake/genl.c                       |  5 +++--
+>  net/handshake/tlshd.c                      | 15 +++++++++++++--
+>  net/sunrpc/svcsock.c                       |  4 +++-
+>  net/sunrpc/xprtsock.c                      |  4 +++-
+>  10 files changed, 40 insertions(+), 10 deletions(-)
+> 
+> diff --git a/Documentation/netlink/specs/handshake.yaml b/Documentation/netlink/specs/handshake.yaml
+> index b934cc513e3d..35d5eb91a3f9 100644
+> --- a/Documentation/netlink/specs/handshake.yaml
+> +++ b/Documentation/netlink/specs/handshake.yaml
+> @@ -84,6 +84,9 @@ attribute-sets:
+>          name: remote-auth
+>          type: u32
+>          multi-attr: true
+> +      -
+> +        name: record-size-limit
+> +        type: u32
+>  
+>  operations:
+>    list:
+> diff --git a/Documentation/networking/tls-handshake.rst b/Documentation/networking/tls-handshake.rst
+> index 6f5ea1646a47..cd984a137779 100644
+> --- a/Documentation/networking/tls-handshake.rst
+> +++ b/Documentation/networking/tls-handshake.rst
+> @@ -169,7 +169,8 @@ The synopsis of this function is:
+>  .. code-block:: c
+>  
+>    typedef void	(*tls_done_func_t)(void *data, int status,
+> -                                   key_serial_t peerid);
+> +                                   key_serial_t peerid,
+> +                                   size_t tls_record_size_limit);
+>  
+>  The consumer provides a cookie in the @ta_data field of the
+>  tls_handshake_args structure that is returned in the @data parameter of
+> @@ -200,6 +201,11 @@ The @peerid parameter contains the serial number of a key containing the
+>  remote peer's identity or the value TLS_NO_PEERID if the session is not
+>  authenticated.
+>  
+> +The @tls_record_size_limit parameter, if non-zero, exposes the tls max
+> +record size advertised by the endpoint. Record size must not exceed this amount.
+> +A negative value shall indicate that the endpoint did not advertise the
+> +maximum record size limit.
 
-We need a similar fix in pptp_xmit(), otherwise we might
-read uninit data as reported by syzbot.
+size_t cannot be negative... Did you mean:
+"A value of 0 (TLS_NO_RECORD_SIZE_LIMIT)..."
 
-BUG: KMSAN: uninit-value in pptp_xmit+0xc34/0x2720 drivers/net/ppp/pptp.c:193
-  pptp_xmit+0xc34/0x2720 drivers/net/ppp/pptp.c:193
-  ppp_channel_bridge_input drivers/net/ppp/ppp_generic.c:2290 [inline]
-  ppp_input+0x1d6/0xe60 drivers/net/ppp/ppp_generic.c:2314
-  pppoe_rcv_core+0x1e8/0x760 drivers/net/ppp/pppoe.c:379
-  sk_backlog_rcv+0x142/0x420 include/net/sock.h:1148
-  __release_sock+0x1d3/0x330 net/core/sock.c:3213
-  release_sock+0x6b/0x270 net/core/sock.c:3767
-  pppoe_sendmsg+0x15d/0xcb0 drivers/net/ppp/pppoe.c:904
-  sock_sendmsg_nosec net/socket.c:712 [inline]
-  __sock_sendmsg+0x330/0x3d0 net/socket.c:727
-  ____sys_sendmsg+0x893/0xd80 net/socket.c:2566
-  ___sys_sendmsg+0x271/0x3b0 net/socket.c:2620
-  __sys_sendmmsg+0x2d9/0x7c0 net/socket.c:2709
+Also note that even if the endpoint does not advertize a record sie limit, we
+still have one (16K was it ?). So I think that the name TLS_NO_RECORD_SIZE_LIMIT
+is a little misleading.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+afad90ffc8645324afe5@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68887d86.a00a0220.b12ec.00cd.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- drivers/net/ppp/pptp.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+> +
+>  A best practice is to close and destroy the socket immediately if the
+>  handshake failed.
 
-diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
-index 5feaa70b5f47e6cd33fbaff33f6715f42c4d71b5..4cd6f67bd5d3520308ee4f8d68547a1bc8a7bfd3 100644
---- a/drivers/net/ppp/pptp.c
-+++ b/drivers/net/ppp/pptp.c
-@@ -159,9 +159,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 	int len;
- 	unsigned char *data;
- 	__u32 seq_recv;
--
--
--	struct rtable *rt;
-+	struct rtable *rt = NULL;
- 	struct net_device *tdev;
- 	struct iphdr  *iph;
- 	int    max_headroom;
-@@ -179,16 +177,20 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 
- 	if (skb_headroom(skb) < max_headroom || skb_cloned(skb) || skb_shared(skb)) {
- 		struct sk_buff *new_skb = skb_realloc_headroom(skb, max_headroom);
--		if (!new_skb) {
--			ip_rt_put(rt);
-+
-+		if (!new_skb)
- 			goto tx_error;
--		}
-+
- 		if (skb->sk)
- 			skb_set_owner_w(new_skb, skb->sk);
- 		consume_skb(skb);
- 		skb = new_skb;
- 	}
- 
-+	/* Ensure we can safely access protocol field and LCP code */
-+	if (!pskb_may_pull(skb, 3))
-+		goto tx_error;
-+
- 	data = skb->data;
- 	islcp = ((data[0] << 8) + data[1]) == PPP_LCP && 1 <= data[2] && data[2] <= 7;
- 
-@@ -262,6 +264,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 	return 1;
- 
- tx_error:
-+	ip_rt_put(rt);
- 	kfree_skb(skb);
- 	return 1;
- }
+[...]
+
+> diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+> index e1c85123b445..2014d906ff06 100644
+> --- a/net/sunrpc/svcsock.c
+> +++ b/net/sunrpc/svcsock.c
+> @@ -417,13 +417,15 @@ static void svc_tcp_kill_temp_xprt(struct svc_xprt *xprt)
+>   * @data: address of xprt to wake
+>   * @status: status of handshake
+>   * @peerid: serial number of key containing the remote peer's identity
+> + * @tls_record_size_limit: Max tls_record_size_limit of the endpoint
+
+Please make a proper sentence to describe tls_record_size_limit instead of
+repeating that argument name.
+
+>   *
+>   * If a security policy is specified as an export option, we don't
+>   * have a specific export here to check. So we set a "TLS session
+>   * is present" flag on the xprt and let an upper layer enforce local
+>   * security policy.
+>   */
+> -static void svc_tcp_handshake_done(void *data, int status, key_serial_t peerid)
+> +static void svc_tcp_handshake_done(void *data, int status, key_serial_t peerid,
+> +				   size_t tls_record_size_limit)
+>  {
+>  	struct svc_xprt *xprt = data;
+>  	struct svc_sock *svsk = container_of(xprt, struct svc_sock, sk_xprt);
+> diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+> index 04ff66758fc3..509aa6269b0a 100644
+> --- a/net/sunrpc/xprtsock.c
+> +++ b/net/sunrpc/xprtsock.c
+> @@ -2569,9 +2569,11 @@ static int xs_tcp_tls_finish_connecting(struct rpc_xprt *lower_xprt,
+>   * @data: address of xprt to wake
+>   * @status: status of handshake
+>   * @peerid: serial number of key containing the remote's identity
+> + * @tls_record_size_limit: Max tls_record_size_limit of the endpoint
+
+Same here.
+
+>   *
+>   */
+> -static void xs_tls_handshake_done(void *data, int status, key_serial_t peerid)
+> +static void xs_tls_handshake_done(void *data, int status, key_serial_t peerid,
+> +				  size_t tls_record_size_limit)
+>  {
+>  	struct rpc_xprt *lower_xprt = data;
+>  	struct sock_xprt *lower_transport =
+
+
 -- 
-2.50.1.487.gc89ff58d15-goog
-
+Damien Le Moal
+Western Digital Research
