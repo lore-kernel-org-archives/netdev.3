@@ -1,64 +1,110 @@
-Received: from mail.procento.pl (mail.procento.pl [51.254.119.53])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFA9270EA8
-	for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 08:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.254.119.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A546F27603C;
+	Tue, 29 Jul 2025 08:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753776790; cv=none; b=HYOfeHmC6ixgXJo1hNCBEZTTKbm+fBhbbWXsE1dCJPVzePKEfVycFFlIYJ0Bi+bDY1ksjguFg3muGhqjRxuEXpG/UK3iLVFTEazF61PJF6jve3ggAJf7OBAevMcomj/mJTR+BWyxRvKBNshKVNKw77qmU9BT3rwIYObA+FDfVhE=
+	t=1753776793; cv=none; b=J3yZ2TAxX8MtyP8v2SQ7dyb8+hv4xYoQ6xNaynr/hyW/cBwXJCsLsEAL6DX+ysYi94A6XKNmaeSjjYNBXhyxNqxBSNILQtWvEt8twt2KqxvBcbvnm/M+4eN7tvy+lS3GYK8SXiFOr/ZiEBtb9AaCuGoWUWrs/K+9U4EQaFxXwxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753776790; c=relaxed/simple;
-	bh=1LqgaeQowsSJKbhTflijwyTSIB6MHFh4Bku4juBFMJ8=;
-	h=Message-ID:Date:From:To:Subject:MIME-Version:Content-Type; b=ut2HBUbR9+NmmHZODKgK8fh4uAKKqamkdt/dGFWWFZKxN7apBLzTm3dAhc8sz9uEyIH8EJfiXSjz2AV6X+F0za+9fTzbYxIW+UWUuYQ5ia1NqfVyFKJ/CJDkdVqJTGnlYRVvKYrEFxR+NQUl9YbpRhsPRKhv9Y9gZBuHms6XlhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=procento.pl; spf=pass smtp.mailfrom=procento.pl; dkim=pass (2048-bit key) header.d=procento.pl header.i=@procento.pl header.b=apKLXs3u; arc=none smtp.client-ip=51.254.119.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=procento.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=procento.pl
+	s=arc-20240116; t=1753776793; c=relaxed/simple;
+	bh=iau6CFRPvo+1rErnYbUShzPk5E8wZpMfdzXyHGYM0go=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dira94SeUxvbfxW7bfGv2WxDyyX80W+dTbWvwPMWvm4y/9dE8XsfvaKeH0ccCUWMr0ecG2Q5yqy0Z49QF6av+y6E+XCAsG+ARKpOmhNU7sbHPrEakFF7L00bTeDMILipLc4iDoKxH0EKCbUHF6QWqvDuTM8bHp0kiw7CGP+cZmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCUlRsbw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=procento.pl header.i=@procento.pl header.b="apKLXs3u"
-Received: by mail.procento.pl (Postfix, from userid 1002)
-	id 263DE22752; Tue, 29 Jul 2025 10:06:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=procento.pl; s=mail;
-	t=1753776382; bh=1LqgaeQowsSJKbhTflijwyTSIB6MHFh4Bku4juBFMJ8=;
-	h=Date:From:To:Subject:From;
-	b=apKLXs3uzQhR0caKzDh8eT4weJNe3gIBVKSInvFKA7VyAFzIIXJlTBzR7Wk6zd/js
-	 VBR6XtGVhn6c7a253XdDt/Xgo9TlOvghl1wXRz84zn2QM6PgCIUaph/gEmS3SchVOQ
-	 ieXHS9+n0+vhN8CzLApAYHnhBq2IHxf9O8o3kD7OaKx4r87u3AoVH9ejJG7FietnFR
-	 5BOnn2YP/lGH6mzjvJgnWw/QYQ4uYojN1ldf4PmRYDb4NaXBXLADL9WTeDp6DySogD
-	 RDLKUgxCWizyEdCULohaTwUZFqUpZ6efgp9zpdDNefS0kOfQ+CBi+WixHULn13/25F
-	 xWSqzwUO+VbIQ==
-Received: by mail.procento.pl for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 08:06:06 GMT
-Message-ID: <20250729084500-0.1.li.1tycr.0.y1euka53km@procento.pl>
-Date: Tue, 29 Jul 2025 08:06:06 GMT
-From: "Jolanta Borowczyk" <jolanta.borowczyk@procento.pl>
-To: <netdev@vger.kernel.org>
-Subject: Wstrzymanie rat
-X-Mailer: mail.procento.pl
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCUlRsbw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4287C4CEEF;
+	Tue, 29 Jul 2025 08:13:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753776793;
+	bh=iau6CFRPvo+1rErnYbUShzPk5E8wZpMfdzXyHGYM0go=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TCUlRsbw4eKHsMvwqqMw0QZp5VHfQ1kjTeMRX270ZFQs7lZR0DACV5S2YM21RYIw6
+	 D5ZAYt74Qv7QNAHQjNoe8zrC+B1dpE8tzyAbn6hTCnx0TFaJK7FYvrUNhpBrs8RRvU
+	 nsc0c3zSvuS3MANsYjJX2X/QxQwNa5zuqLLs6lIEbFjFHGi6k1h6Cb/W1hH815Fqx4
+	 ZYKfp2VbzN0toadJ7p3gvmOnUpA8orp5eVtqUc3CHyTpX5W/IBimOkLaBSUswjlIER
+	 yPJRM7FY5MxuiKYcdpcwAAG3Bs0UtRij6a4BCXV+6Q+dfS9wmoj63b+JF84L/8Yshk
+	 q7lYQ9pkvbx8g==
+Message-ID: <8ce2c9ce-9636-4888-8d63-2169441addcb@kernel.org>
+Date: Tue, 29 Jul 2025 17:13:07 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 2/4] net/tls/tls_sw: use the record size limit specified
+To: Wilfred Mallawa <wilfred.opensource@gmail.com>, alistair.francis@wdc.com,
+ chuck.lever@oracle.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ donald.hunter@gmail.com, corbet@lwn.net, kbusch@kernel.org, axboe@kernel.dk,
+ hch@lst.de, sagi@grimberg.me, kch@nvidia.com, borisp@nvidia.com,
+ john.fastabend@gmail.com, jlayton@kernel.org, neil@brown.name,
+ okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+ anna@kernel.org, kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org,
+ Wilfred Mallawa <wilfred.mallawa@wdc.com>
+References: <20250729024150.222513-2-wilfred.opensource@gmail.com>
+ <20250729024150.222513-5-wilfred.opensource@gmail.com>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20250729024150.222513-5-wilfred.opensource@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Drodzy Przedsi=C4=99biorcy,
+On 7/29/25 11:41, Wilfred Mallawa wrote:
+> From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+> 
+> Currently, for tls_sw, the kernel uses the default 16K
+> TLS_MAX_PAYLOAD_SIZE for records. However, if an endpoint has specified
+> a record size much lower than that, it is currently not respected.
 
-zwracam si=C4=99 do Pa=C5=84stwa z propozycj=C4=85 wsparcia w zakresie re=
-dukcji obci=C4=85=C5=BCe=C5=84 finansowych.=20
+Remove "much". Lower is lower and we have to respect it, even if it is 1B.
 
-Nasza kancelaria prawna specjalizuje si=C4=99 w skutecznym wstrzymywaniu =
-rat kredytowych i po=C5=BCyczek, umarzaniu nale=C5=BCno=C5=9Bci odsetkowy=
-ch oraz cz=C4=99=C5=9Bci zad=C5=82u=C5=BCenia, a tak=C5=BCe zabezpieczani=
-u przed zaj=C4=99ciem sk=C5=82adnik=C3=B3w maj=C4=85tkowych przedsi=C4=99=
-biorstw.
+> This patch adds support to using the record size limit specified by an
+> endpoint if it has been set.
 
-Wsp=C3=B3=C5=82praca z naszym zespo=C5=82em pozwoli Pa=C5=84stwu zachowa=C4=
-=87 p=C5=82ynno=C5=9B=C4=87 finansow=C4=85 i kontynuowa=C4=87 dzia=C5=82a=
-lno=C5=9B=C4=87 bez zb=C4=99dnych przestoj=C3=B3w.
+s/to using/for using
 
-Czy tego typu wsparcie wzbudza Pa=C5=84stwa zainteresowanie?
+> 
+> Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+
+> @@ -1045,6 +1046,13 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+>  		}
+>  	}
+>  
+> +	if (tls_ctx->tls_record_size_limit > 0) {
+> +		tls_record_size_limit = min(tls_ctx->tls_record_size_limit,
+> +					    TLS_MAX_PAYLOAD_SIZE);
+> +	} else {
+> +		tls_record_size_limit = TLS_MAX_PAYLOAD_SIZE;
+> +	}
+
+You can simplify this with:
+
+	tls_record_size_limit =
+		min_not_zero(tls_ctx->tls_record_size_limit,
+			     TLS_MAX_PAYLOAD_SIZE);
+
+> +
+>  	while (msg_data_left(msg)) {
+>  		if (sk->sk_err) {
+>  			ret = -sk->sk_err;
+> @@ -1066,7 +1074,7 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+>  		orig_size = msg_pl->sg.size;
+>  		full_record = false;
+>  		try_to_copy = msg_data_left(msg);
+> -		record_room = TLS_MAX_PAYLOAD_SIZE - msg_pl->sg.size;
+> +		record_room = tls_record_size_limit - msg_pl->sg.size;
+>  		if (try_to_copy >= record_room) {
+>  			try_to_copy = record_room;
+>  			full_record = true;
 
 
-Pozdrawiam
-Jolanta Borowczyk
+-- 
+Damien Le Moal
+Western Digital Research
