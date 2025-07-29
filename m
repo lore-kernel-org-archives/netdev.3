@@ -1,165 +1,153 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AA68F54
-	for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 01:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1F216A94A
+	for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 01:05:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753750891; cv=none; b=IOaOzDzD0fPWs0P0OQe9ydplJHsj5/TlCq3KLfXSojx6TikhoqSTU9CHAaix0zFLSdGvKI8bP/3XA+CelVa/UVNJYMqtHeBOy9C7QTaiz0n3kbsOQNSbP2HRw2ltsdZwek5WVzucyg/KQ705baH5/BODPwNe39KTNle7egGPAwM=
+	t=1753751147; cv=none; b=d3AxD0pTvjFSdz9FonP//O4CGlBS5Aiuti+N7l1jUiBB+G/J1agSxXBc/e02ZhqkbvQIygtN9cg2Wgjx/at9MlgwcEpUA4Gm8eUE7/YcbpjjdKooDgAbEtKvGwiTpBfv/cgZJZioATQOnzS2TBDTSdcrnOb5Lee/TWNnHWi8v9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753750891; c=relaxed/simple;
-	bh=YmYvO4FWfw/auTRrGHq/3PqRNQTKh1IL/8v263lla2U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S6uR8VoHKVNDI+G7PfJi8oeenaWb2CFM72/fG58B8evOQiQHzlvQyt+9dJ9yAESOzRMGgdaeNz+RTpS0vbTRMVTT7xlEKw/tTBR5DbS3cGvhsEpyP2AkkwqvHEWYcKsmtwapIsmavHx9pQvwgTLSbQTNEkovkLBFt24mYpiNK+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=CpmZcbHf; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+	s=arc-20240116; t=1753751147; c=relaxed/simple;
+	bh=7VKZ22ymvE1qR2Je4hYimjGdZHOaHj6ErYIB16GKhT0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZwEM29G49UbOy7PVQzk8odXRom1Cb6zIK7r2JpEVNGS5nspxv7XR44wH2PJLN6hh5gfqkK2+FHck4RGpsSC+8DhRrFrLToa8gu0NTTx14/e8h5A2p1UX88GQ49qONohonLQu5IX7iHUH4umoh0Bjq2x4MAtw2G5y1g+mY9N1ryI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=C5+sfeZd; arc=none smtp.client-ip=91.218.175.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="CpmZcbHf"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-55a10c74f31so5373617e87.1
-        for <netdev@vger.kernel.org>; Mon, 28 Jul 2025 18:01:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1753750888; x=1754355688; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gDIT0nBpRVtuwBCG7gDLBrg2ssrS3F+2Uf8dT4SCT8w=;
-        b=CpmZcbHfhBWiGfqK70sbqTAJzekMmwHX2nszNIiSzP5I6N/1gZ2FMJYGJnn9SKEztz
-         UXklrTIG+TmpTpp9MBjQb0j74xY8DEpRBVvXB1kFmCnTJzhLrZ4xpbzEPtjvSS+jtcDo
-         uyVVRlfgqwWHVhN21aWuw6CzIsRPGjho94vos=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753750888; x=1754355688;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gDIT0nBpRVtuwBCG7gDLBrg2ssrS3F+2Uf8dT4SCT8w=;
-        b=PkuE3aCtv0v5AzDcO4Y0rdrlPJKSfw3FujNgezZ3EpuUpxXTgNLuYOH+CHNpJlvZTA
-         YZ064yVYkUo0HfIC0IqRbMtbDxTdXu+9CjTHzm4OuwHIu4OUlRx8OFaDMnukamiN6Zko
-         7Ol88qJ/Trx2W9Wlk1J0PRF+8krb/sX4ifi3tJh38Gz9ERwkUAqDyUulvmmHQ3UHkFqK
-         NEsvJuGzQYB/oqVN7I5OFu9OXDdz+YHKtH3DMrtp8MvaANj5AZCgjcXufFXim7mvRD4X
-         99q09e/Ino946/CEsJgotZvZGm2heoSBZHPWSvMRzu+J2DR2XCld4uq+F+R7KhRGJlOC
-         HDPg==
-X-Forwarded-Encrypted: i=1; AJvYcCWURg4fuuEOvgxTKOs7NPr/k/0Rv5zHw4DHW4JennCbb0iEUNnAT/LPqUhVQSBvbPio7VAEok4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw00Qn3ztbi16uM155HrpLlTVqa1TKVT4+HOr6IkbzkTM/3Loy8
-	plwmsOAYnNHCYq13Cvh4oT71ZSuTIBrQqf4dhWH7s3JCmJhYZQkuyP0arfpeIb5aWC4WAyF75Ou
-	AnAD2U7fhO+VvNiEHgID6bKgjlHYlNKc89dC9YXKyFg==
-X-Gm-Gg: ASbGncsPlFmrzENeSzLfBMykoFZQ3U9om1dGy/13IuDuJBjLGwYqnJrSkuzoBMev3V/
-	cqhFcKSOz/u2kUk34HaTggBUsBJkkPvxw2pSFslA7M2C3ZPnC3PDw/h2duVHYVjpaaW88qON+G5
-	D146O/8ETA3P6R0+FUSL/dgsG9E1xCmnTnZoGz3AWALAbrCPoAg0upXHFYMX92xI+dpJBAIiTgI
-	oJ8SykzcgNIXZrobw==
-X-Google-Smtp-Source: AGHT+IHZHYWPwrjCjyN3Pco3uAktH4UaV+w/6J5hon8rvvA1SU2NwaCn7/rkoQQC5Lp4hAo9W4qudp/AWBLzHde2GYo=
-X-Received: by 2002:a05:6512:2213:b0:553:51a2:4405 with SMTP id
- 2adb3069b0e04-55b5f4f0e02mr3346475e87.45.1753750887575; Mon, 28 Jul 2025
- 18:01:27 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="C5+sfeZd"
+Message-ID: <b3f25e61-7b0c-4576-baae-9b498c3b8748@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753751133;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+IYY06TwHJU1yH0y4CfYISRGqhDcJ8AL5MaZbCvCfeA=;
+	b=C5+sfeZdfJYiqsUIVtzNbtOitLfUP0dsF/S2g34I0zqcTQJxNDmTjxNlTwkldEu2DKXz+S
+	FtE4wg+Ldb7KzrvNDfFWfb4g7ki3YCVA44vM/8jGQ5PFEBGrMKI8IPHC5X/gx4jPUxrqJo
+	SVu9k2n8jeVvsmM+3N3KtrueN1SWB1s=
+Date: Mon, 28 Jul 2025 18:05:26 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250715-cpaasch-pf-925-investigate-incorrect-gso_size-on-cx-7-nic-v2-1-e06c3475f3ac@openai.com>
- <6583783f-f0fb-4fb1-a415-feec8155bc69@nvidia.com> <CADg4-L9osR02Aey319fMVAyAYXxOfaKqWcQ2AsfQCrdFKA5vsQ@mail.gmail.com>
-In-Reply-To: <CADg4-L9osR02Aey319fMVAyAYXxOfaKqWcQ2AsfQCrdFKA5vsQ@mail.gmail.com>
-From: Christoph Paasch <cpaasch@openai.com>
-Date: Mon, 28 Jul 2025 18:01:16 -0700
-X-Gm-Features: Ac12FXx34w-5NNkKbSzLrNHUmUDt-mDcYsz7pUlimEBGF8InxuFiNX1qQROyU7Q
-Message-ID: <CADg4-L_SNAKy3mBn7ssq7uw0_+wZ_=zyqrQ23yVTOo5J7z7Q=g@mail.gmail.com>
-Subject: Re: [PATCH net v2] net/mlx5: Correctly set gso_size when LRO is used
-To: Gal Pressman <gal@nvidia.com>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-rdma@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH bpf-next v3 3/4] bpf: add bpf_icmp_send_unreach cgroup_skb
+ kfunc
+To: Mahe Tardy <mahe.tardy@gmail.com>
+Cc: alexei.starovoitov@gmail.com, andrii@kernel.org, ast@kernel.org,
+ bpf@vger.kernel.org, coreteam@netfilter.org, daniel@iogearbox.net,
+ fw@strlen.de, john.fastabend@gmail.com, netdev@vger.kernel.org,
+ netfilter-devel@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
+ pablo@netfilter.org, lkp@intel.com
+References: <202507270940.kXGmRbg5-lkp@intel.com>
+ <20250728094345.46132-1-mahe.tardy@gmail.com>
+ <20250728094345.46132-4-mahe.tardy@gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+In-Reply-To: <20250728094345.46132-4-mahe.tardy@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Jul 28, 2025 at 10:57=E2=80=AFAM Christoph Paasch <cpaasch@openai.c=
-om> wrote:
->
-> Hi!
->
-> On Mon, Jul 28, 2025 at 7:36=E2=80=AFAM Gal Pressman <gal@nvidia.com> wro=
-te:
->>
->> On 15/07/2025 23:20, Christoph Paasch via B4 Relay wrote:
->> > From: Christoph Paasch <cpaasch@openai.com>
->> >
->> > gso_size is expected by the networking stack to be the size of the
->> > payload (thus, not including ethernet/IP/TCP-headers). However, cqe_bc=
-nt
->> > is the full sized frame (including the headers). Dividing cqe_bcnt by
->> > lro_num_seg will then give incorrect results.
->> >
->> > For example, running a bpftrace higher up in the TCP-stack
->> > (tcp_event_data_recv), we commonly have gso_size set to 1450 or 1451 e=
-ven
->> > though in reality the payload was only 1448 bytes.
->> >
->> > This can have unintended consequences:
->> > - In tcp_measure_rcv_mss() len will be for example 1450, but. rcv_mss
->> > will be 1448 (because tp->advmss is 1448). Thus, we will always
->> > recompute scaling_ratio each time an LRO-packet is received.
->> > - In tcp_gro_receive(), it will interfere with the decision whether or
->> > not to flush and thus potentially result in less gro'ed packets.
->> >
->> > So, we need to discount the protocol headers from cqe_bcnt so we can
->> > actually divide the payload by lro_num_seg to get the real gso_size.
->> >
->> > v2:
->> >  - Use "(unsigned char *)tcp + tcp->doff * 4 - skb->data)" to compute =
-header-len
->> >    (Tariq Toukan <tariqt@nvidia.com>)
->> >  - Improve commit-message (Gal Pressman <gal@nvidia.com>)
->> >
->> > Fixes: e586b3b0baee ("net/mlx5: Ethernet Datapath files")
->> > Signed-off-by: Christoph Paasch <cpaasch@openai.com>
->>
->> Hi Christoph,
->>
->> This commit results in hw csum failures [1] when running iperf tcp
->> traffic with LRO enabled for a few seconds.
->>
->> I don't think the patch is wrong, but I suspect it exposes a new flow in
->> GRO which we did not exercise before.
->>
->> I am still debugging this, maybe you have some ideas as well. If the
->> debug takes too long I recommend submitting a revert until the issue is
->> properly resolved.
->
->
-> I'm looking into it. I can reproduce it indeed and when disabling GRO the=
- issue goes away.
+On 7/28/25 2:43 AM, Mahe Tardy wrote:
+> This is needed in the context of Tetragon to provide improved feedback
+> (in contrast to just dropping packets) to east-west traffic when blocked
+> by policies using cgroup_skb programs.
+> 
+> This reuse concepts from netfilter reject target codepath with the
+> differences that:
+> * Packets are cloned since the BPF user can still return SK_PASS from
+>    the cgroup_skb progs and the current skb need to stay untouched
 
-The below fixes it. The problem is that because gso_segs is not set,
-NAPI_GRO_CB()->count is 0 when processing the packets.
-So, if we have a non-LRO'ed packet followed by an LRO'ed packet being
-processed, the first one will have NAPI_GRO_CB()->count set to 1 the
-next one to 0 (in dev_gro_receive()).
+This needs more details. Which field(s) of the skb are changed by the kfunc, the 
+skb_dst_set in ip[6]_route_reply_fetch_dst() and/or the code path in the 
+icmp[v6]_send() ?
 
-This means we end up in gro_complete() with count =3D=3D 1 and thus don't
-call inet_gro_complete().
+>    (cgroup_skb hooks only allow read-only skb payload).
+> * Since cgroup_skb programs are called late in the stack, checksums do
+>    not need to be computed or verified, and IPv4 fragmentation does not
+>    need to be checked (ip_local_deliver should take care of that
+>    earlier).
+> 
+> Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
+> ---
+>   net/core/filter.c | 61 +++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 61 insertions(+)
+> 
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 7a72f766aacf..050872324575 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -85,6 +85,10 @@
+>   #include <linux/un.h>
+>   #include <net/xdp_sock_drv.h>
+>   #include <net/inet_dscp.h>
+> +#include <linux/icmp.h>
+> +#include <net/icmp.h>
+> +#include <net/route.h>
+> +#include <net/ip6_route.h>
+> 
+>   #include "dev.h"
+> 
+> @@ -12148,6 +12152,53 @@ __bpf_kfunc int bpf_sock_ops_enable_tx_tstamp(struct bpf_sock_ops_kern *skops,
+>   	return 0;
+>   }
+> 
+> +__bpf_kfunc int bpf_icmp_send_unreach(struct __sk_buff *__skb, int code)
+> +{
+> +	struct sk_buff *skb = (struct sk_buff *)__skb;
+> +	struct sk_buff *nskb;
+> +
+> +	switch (skb->protocol) {
+> +	case htons(ETH_P_IP):
+> +		if (code < 0 || code > NR_ICMP_UNREACH)
+> +			return -EINVAL;
+> +
+> +		nskb = skb_clone(skb, GFP_ATOMIC);
+> +		if (!nskb)
+> +			return -ENOMEM;
+> +
+> +		if (ip_route_reply_fetch_dst(nskb) < 0) {
+> +			kfree_skb(nskb);
+> +			return -EHOSTUNREACH;
+> +		}
+> +
+> +		icmp_send(nskb, ICMP_DEST_UNREACH, code, 0);
+> +		kfree_skb(nskb);
+> +		break;
+> +#if IS_ENABLED(CONFIG_IPV6)
+> +	case htons(ETH_P_IPV6):
+> +		if (code < 0 || code > ICMPV6_REJECT_ROUTE)
+> +			return -EINVAL;
+> +
+> +		nskb = skb_clone(skb, GFP_ATOMIC);
+> +		if (!nskb)
+> +			return -ENOMEM;
+> +
+> +		if (ip6_route_reply_fetch_dst(nskb) < 0) {
 
-I'm still unclear why this only fails much later then when checking
-the checksum, but I'm sure the below diff fixes it (and also gets rid
-of all packet-loss, so throughput goes up)
+ From a very quick look at icmpv6_send(), it does its own route lookup. I 
+haven't looked at the v4 yet.
 
-Will submit a proper patch tomorrow.
+I am likely missing some details. Can you explain why it needs to do a lookup 
+before calling icmpv6_send()?
 
-
-----
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 7462514c7f3d..da3e340c99b7 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -1567,6 +1567,7 @@ static inline void mlx5e_build_rx_skb(struct
-mlx5_cqe64 *cqe,
-  unsigned int hdrlen =3D mlx5e_lro_update_hdr(skb, cqe, cqe_bcnt);
-
-  skb_shinfo(skb)->gso_size =3D DIV_ROUND_UP(cqe_bcnt - hdrlen, lro_num_seg=
-);
-+ skb_shinfo(skb)->gso_segs =3D lro_num_seg;
-  /* Subtract one since we already counted this as one
-  * "regular" packet in mlx5e_complete_rx_cqe()
-  */
+> +			kfree_skb(nskb);
+> +			return -EHOSTUNREACH;
+> +		}
+> +
+> +		icmpv6_send(nskb, ICMPV6_DEST_UNREACH, code, 0);
+> +		kfree_skb(nskb);
+> +		break;
+> +#endif
+> +	default:
+> +		return -EPROTONOSUPPORT;
+> +	}
+> +
+> +	return SK_DROP;
+> +}
+> +
