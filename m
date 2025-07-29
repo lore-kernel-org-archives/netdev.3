@@ -1,97 +1,110 @@
-Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2012877EF
-	for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 09:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E04C264F8A;
+	Tue, 29 Jul 2025 09:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753782048; cv=none; b=RTANrhfi5PnyO6S1gApc5Z9HHHn1AdeCaNOymyuNmwOOsMPvbVlgkbBpn13720Hum7llladYPk3rGKriwJL7gcYeK3qGT8iXMkrEprJNz+IuLRWlrkV7Ynxc4V8huG6hfChnBQSol9iJeHCu+P7Ygt1L/ltlou5+1MqJ51rrvI4=
+	t=1753782108; cv=none; b=qwkQbnzajtRQvepOkZx2OKXIkWGm4ZZXkWFyIpEAOWyk8V0wpIMuwxp5bSCvxT8bjas//jaMB+ptm1nhUfubnQxrSqLqcvDHnW9Bymz4PWMERoEdkuj8FHf/IB9MQCPrDUO2rQal5UAJaf+UGP3tGTkmbCAY5e517DGBIKqabxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753782048; c=relaxed/simple;
-	bh=au5WEonjqTgr0PvNyzvOD7dGTB47ejJTcJwgOxXaMCA=;
-	h=Date:To:From:Subject:Message-ID:MIME-Version:Content-Type; b=kovWfTHrdNOpyNmT8XsfRTXv8kK0PhEGgjuZkDNzcyUFleFgZ2WHtOuiu/CayhzHpkn85cgAHEd8M1oFIAF+r+EOoY5iYZT56ae5HuZ30SIZY/70R/Mf+dBYmgFppWTxecQeCdRM/oTauFqK98peMjSASM4pABuuRcm/Zn9E03M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=F5c+iDCQ; arc=none smtp.client-ip=85.9.206.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1753782108; c=relaxed/simple;
+	bh=/DRfirf/6tX1d3cecrOUoT/ylGXL16bxkleWN8hcOpM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XnuSnWmi0d0PSbB+WSg/lWgExF8UpsAgDUhe1CWp5RRowomfnlVleaRp1law4YVLGt2WAh6FGhQMBwqYnAVkMvYxWM8g3T55drwd2wn/rsvI2Zvf3fkE7k/swEBuWgkAaNenNnPzWMEz7POJTcPaTRsOZDP6JIcU4R3UkNiPXCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=W/GF8vNk; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="F5c+iDCQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1753782030; x=1754041230;
-	bh=iaJNS9filcErt3DEjzrU11upXuoKLw+pnJcBEW0iONg=;
-	h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=F5c+iDCQOJ7cqJmANB3g7Y+DMhSrzI2Ku6Te48zigw1wyhE+EGkn6wfe/d4WRAaXZ
-	 SAFGQPXCV4IqzgmsQEiWHTE9YrYXofCy2G1ghSKvCRpCgKNFF6Q9KAisU0Z39Y+uzo
-	 nvo5KUvPxD0iAtDhTo7cxMT9fWMe6F9quy1RJ99tcXXH5dPuSko+EcNvEDPUHrA9+Q
-	 DeV6m//YC8KtvenpPJtoa+dNKWkgQdLkWRVl94NuoWSYPGzc0jeLP0MFr/EJ2/R/OZ
-	 r0immciwhbseBGSceO5Myt/dVlBv1yITeFpT0Tf1XAys5PBPojOq2hU7NcgcTMoYte
-	 Etfx5LMPsk/MA==
-Date: Tue, 29 Jul 2025 09:40:24 +0000
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-From: gwoodstccd <gwoodstccd@protonmail.com>
-Subject: xilinx xgmiitorgmii couldn't find phydev
-Message-ID: <i9eEFizCsfRsZPSDz9HqVDN_YZuGmNadYIE44uhLWQJzUDE2qmO5P4Rco5MYwcipDQT-FsEchEvKUZsWIZhk8j9zQFIBri_yxNHFBgoKX2Y=@protonmail.com>
-Feedback-ID: 11860072:user:proton
-X-Pm-Message-ID: a60483628c994340c15e04e2822882d1a53f1a34
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="W/GF8vNk"
+Received: from mail01.disroot.lan (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id 70F4925A96;
+	Tue, 29 Jul 2025 11:41:45 +0200 (CEST)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+ by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id riiRElZg150v; Tue, 29 Jul 2025 11:41:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1753782104; bh=/DRfirf/6tX1d3cecrOUoT/ylGXL16bxkleWN8hcOpM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=W/GF8vNkmIErBK6sNeP1dkzNGNz1GXJ8rYaze11Iva9WDsfxpW0VE+1kVfhtV/od9
+	 bFK4e1+SVowr9gbTsPvOWatMDY2TASbql5gRmaEOj3B3gzLGgMpWgkBxqvu0Uo+Afn
+	 H1PWUWpt3RL//shv3FdAq5J62l4yw4VdJpaPAfBr8VjMu5Y05lxnH+vIFvyRskCgQz
+	 C83oz2ZSB4O6rFJ4lpz4iweHwdjP20efmRXcTj2+XaDBHKqN+UoN/Ti9N/a2B4om3C
+	 M9eAZMyVlvDouPSsMeZZuTRSiL1Z+Yz1wUNZmPe5CYaiB3Nett3VHYdN+ahzJm/fps
+	 gw/td2DGWSM5A==
+From: Yao Zi <ziyao@disroot.org>
+To: Drew Fustini <fustini@kernel.org>,
+	Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Jisheng Zhang <jszhang@kernel.org>
+Cc: linux-riscv@lists.infradead.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yao Zi <ziyao@disroot.org>
+Subject: [PATCH net 3/3] riscv: dts: thead: Add APB clocks for TH1520 GMACs
+Date: Tue, 29 Jul 2025 09:37:34 +0000
+Message-ID: <20250729093734.40132-4-ziyao@disroot.org>
+In-Reply-To: <20250729093734.40132-1-ziyao@disroot.org>
+References: <20250729093734.40132-1-ziyao@disroot.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Describe perisys-apb4-hclk as the APB clock for TH1520 SoC, which is
+essential for accessing GMAC glue registers.
 
-I'm newbie for netdev.
+Fixes: 7e756671a664 ("riscv: dts: thead: Add TH1520 ethernet nodes")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+---
+ arch/riscv/boot/dts/thead/th1520.dtsi | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-Xilinx's ZynqMP GEM2 uses EMIO and gmii2rgmiii converter for PHY connection=
-s. Hardware guys confirmed it can work under bare metal mode.
-But GEM2 is reported 'xgmiitorgmii Couldn't find phydev' error during kerne=
-l boot, and ping command failed.
-
-Could some nice guy help me to fix this issue? Thanks in advance.
-
-the kerner version is 6.12, the kernel is from=20
-https://github.com/Xilinx/linux-xlnx/releases/tag/xilinx-v2025.1
-
-[    7.285666] xgmiitorgmii ff0d0000.ethernet-ffffffff:08: Couldn't find ph=
-ydev
-[    7.292490] macb ff0d0000.ethernet eth2: Cadence GEM rev 0x50070106 at 0=
-xff0d0000 irq 47 (00:0a:35:00:01:22)
-[   33.315143] macb ff0d0000.ethernet eth2: unable to generate target frequ=
-ency: 25000000 Hz
-
-device tree is=20
-
-&gem2 {
-    phy-handle =3D <&extphy0>;
-    xlnx,has-mdio =3D <0x1>;
-    local-mac-address =3D [00 0a 35 00 01 22];
-    status=3D"okay";
-    phy-mode =3D "gmii";
-    fixed-link {
-        speed =3D <100>;
-        full-duplex;
-    };
-    psu_ethernet_0_mdio: mdio {
-        #address-cells =3D <1>;
-        #size-cells =3D <0>;
-        extphy0: phy@3 {
-            device_type =3D "ethernet-phy";
-            reg =3D <3>;
-            phy-mode =3D "rgmii";
-            phy-reset-active-high;
-    =09};
-    =09gmii_to_rgmii_0: gmii_to_rgmii_0@8 {
-    =09=09phy-handle =3D <&extphy0>;
-    =09=09reg =3D <8>;
-    =09=09compatible =3D "xlnx,gmii-to-rgmii-1.0";
-    =09};
-    };
-};
-
-BR,
-Gavin
+diff --git a/arch/riscv/boot/dts/thead/th1520.dtsi b/arch/riscv/boot/dts/thead/th1520.dtsi
+index 42724bf7e90e..03f1d7319049 100644
+--- a/arch/riscv/boot/dts/thead/th1520.dtsi
++++ b/arch/riscv/boot/dts/thead/th1520.dtsi
+@@ -297,8 +297,9 @@ gmac1: ethernet@ffe7060000 {
+ 			reg-names = "dwmac", "apb";
+ 			interrupts = <67 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "macirq";
+-			clocks = <&clk CLK_GMAC_AXI>, <&clk CLK_GMAC1>;
+-			clock-names = "stmmaceth", "pclk";
++			clocks = <&clk CLK_GMAC_AXI>, <&clk CLK_GMAC1>,
++				 <&clk CLK_PERISYS_APB4_HCLK>;
++			clock-names = "stmmaceth", "pclk", "apb";
+ 			snps,pbl = <32>;
+ 			snps,fixed-burst;
+ 			snps,multicast-filter-bins = <64>;
+@@ -319,8 +320,9 @@ gmac0: ethernet@ffe7070000 {
+ 			reg-names = "dwmac", "apb";
+ 			interrupts = <66 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "macirq";
+-			clocks = <&clk CLK_GMAC_AXI>, <&clk CLK_GMAC0>;
+-			clock-names = "stmmaceth", "pclk";
++			clocks = <&clk CLK_GMAC_AXI>, <&clk CLK_GMAC0>,
++				 <&clk CLK_PERISYS_APB4_HCLK>;
++			clock-names = "stmmaceth", "pclk", "apb";
+ 			snps,pbl = <32>;
+ 			snps,fixed-burst;
+ 			snps,multicast-filter-bins = <64>;
+-- 
+2.50.1
 
