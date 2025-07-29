@@ -1,212 +1,64 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.procento.pl (mail.procento.pl [51.254.119.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A60275AE1
-	for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 08:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFA9270EA8
+	for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 08:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.254.119.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753776775; cv=none; b=YMYHfG1C5raH0i7t8goxccMw7BvempvnjTR8ZtW6UG7oboM3usfZH/HIwKmSaQHRx5d872lVp/d6fnBlJhGLleUcAPYTX1cS8I6U0sHfBhaacqhWevlqbtfPSuSLBRIENxracIXzXN2bP4VuW4SJE8YHSklSOF/kYif+MJ7Ef40=
+	t=1753776790; cv=none; b=HYOfeHmC6ixgXJo1hNCBEZTTKbm+fBhbbWXsE1dCJPVzePKEfVycFFlIYJ0Bi+bDY1ksjguFg3muGhqjRxuEXpG/UK3iLVFTEazF61PJF6jve3ggAJf7OBAevMcomj/mJTR+BWyxRvKBNshKVNKw77qmU9BT3rwIYObA+FDfVhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753776775; c=relaxed/simple;
-	bh=rdWdQxRPPebLIFAE61U25B9ANEFUl1JAwqQwG/fL4Gc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dPOfhTsg/3wIq0ZFyXLvDn6jhRCyqTbzLVibmSZ5AfLblMnG643FMxTC3LHZyX9T0IEQewMQ/uqo34bra+u/Xe7Sedk4VgFsLOD/VtHeCRmZOVBLRAUbXdIJraY9gGPh169MDEEeOkBERruIArwxZqAeHXJCoiZLhnq9ezp2QDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=TP0CXxJA; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FWyyTVVL; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e+2sTR3N; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=YHcTOh35; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1753776790; c=relaxed/simple;
+	bh=1LqgaeQowsSJKbhTflijwyTSIB6MHFh4Bku4juBFMJ8=;
+	h=Message-ID:Date:From:To:Subject:MIME-Version:Content-Type; b=ut2HBUbR9+NmmHZODKgK8fh4uAKKqamkdt/dGFWWFZKxN7apBLzTm3dAhc8sz9uEyIH8EJfiXSjz2AV6X+F0za+9fTzbYxIW+UWUuYQ5ia1NqfVyFKJ/CJDkdVqJTGnlYRVvKYrEFxR+NQUl9YbpRhsPRKhv9Y9gZBuHms6XlhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=procento.pl; spf=pass smtp.mailfrom=procento.pl; dkim=pass (2048-bit key) header.d=procento.pl header.i=@procento.pl header.b=apKLXs3u; arc=none smtp.client-ip=51.254.119.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=procento.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=procento.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="TP0CXxJA";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FWyyTVVL";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e+2sTR3N";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="YHcTOh35"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B4CFB21A26;
-	Tue, 29 Jul 2025 08:12:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753776771; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pdtdL83ySdzVcOjcM/If1HVX/MdEz/8nkOEt4H8mAMA=;
-	b=TP0CXxJALp4/Y4BfEbYLZnhuBPV1q0vfL6cnfMVT5gFDJp5sBHHZPXmB+CPJc18adZhuTu
-	ZotniTUatLxSurWVvQnNVq37yFkWIQ797P02DZY3WVaubIevjUabbfBqeHTiZFBTm5aWcN
-	8mKkW+xnSGWRz/qfXkyisLsI55Et3uk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753776771;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pdtdL83ySdzVcOjcM/If1HVX/MdEz/8nkOEt4H8mAMA=;
-	b=FWyyTVVLpIXFQgr/VV2sXnRR0pxWybQ9Np52/d4tpc7JSsggtTic5PqIEvd9+c37xTrqZq
-	qEmmN78CYqrjn2CQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e+2sTR3N;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YHcTOh35
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1753776770; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pdtdL83ySdzVcOjcM/If1HVX/MdEz/8nkOEt4H8mAMA=;
-	b=e+2sTR3NLIPhsudzRRZXAuiZWxvVOSxs3ho549QjdLN756QMDiRVDqPMmyGG7rHzBo/NWb
-	bnp0a68ZsKTKV0pz54tE0xn4W55gxRHcCPvaOKY5/7sFX6pQYRXva56heR0wjBh64OWEd3
-	ACSZav5bNNqrSiBgFEUslS9jvGmgkxY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1753776770;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pdtdL83ySdzVcOjcM/If1HVX/MdEz/8nkOEt4H8mAMA=;
-	b=YHcTOh35iZh/BRTK8lD+n7XiCATU9tLk6XmoENjWc7QDZZVyHPXC4MflA4WTJ7Gh0R48XY
-	vKtZwuDZX8t+nvDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0FEA713876;
-	Tue, 29 Jul 2025 08:12:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id MEp1A4KCiGhZNQAAD6G6ig
-	(envelope-from <hare@suse.de>); Tue, 29 Jul 2025 08:12:50 +0000
-Message-ID: <2a9c71e0-f29d-46b6-823d-a957b10b4858@suse.de>
-Date: Tue, 29 Jul 2025 10:12:49 +0200
+	dkim=pass (2048-bit key) header.d=procento.pl header.i=@procento.pl header.b="apKLXs3u"
+Received: by mail.procento.pl (Postfix, from userid 1002)
+	id 263DE22752; Tue, 29 Jul 2025 10:06:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=procento.pl; s=mail;
+	t=1753776382; bh=1LqgaeQowsSJKbhTflijwyTSIB6MHFh4Bku4juBFMJ8=;
+	h=Date:From:To:Subject:From;
+	b=apKLXs3uzQhR0caKzDh8eT4weJNe3gIBVKSInvFKA7VyAFzIIXJlTBzR7Wk6zd/js
+	 VBR6XtGVhn6c7a253XdDt/Xgo9TlOvghl1wXRz84zn2QM6PgCIUaph/gEmS3SchVOQ
+	 ieXHS9+n0+vhN8CzLApAYHnhBq2IHxf9O8o3kD7OaKx4r87u3AoVH9ejJG7FietnFR
+	 5BOnn2YP/lGH6mzjvJgnWw/QYQ4uYojN1ldf4PmRYDb4NaXBXLADL9WTeDp6DySogD
+	 RDLKUgxCWizyEdCULohaTwUZFqUpZ6efgp9zpdDNefS0kOfQ+CBi+WixHULn13/25F
+	 xWSqzwUO+VbIQ==
+Received: by mail.procento.pl for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 08:06:06 GMT
+Message-ID: <20250729084500-0.1.li.1tycr.0.y1euka53km@procento.pl>
+Date: Tue, 29 Jul 2025 08:06:06 GMT
+From: "Jolanta Borowczyk" <jolanta.borowczyk@procento.pl>
+To: <netdev@vger.kernel.org>
+Subject: Wstrzymanie rat
+X-Mailer: mail.procento.pl
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/4] net/handshake: get negotiated tls record size limit
-To: Wilfred Mallawa <wilfred.opensource@gmail.com>, alistair.francis@wdc.com,
- dlemoal@kernel.org, chuck.lever@oracle.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- donald.hunter@gmail.com, corbet@lwn.net, kbusch@kernel.org, axboe@kernel.dk,
- hch@lst.de, sagi@grimberg.me, kch@nvidia.com, borisp@nvidia.com,
- john.fastabend@gmail.com, jlayton@kernel.org, neil@brown.name,
- okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
- anna@kernel.org, kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org,
- Wilfred Mallawa <wilfred.mallawa@wdc.com>
-References: <20250729024150.222513-2-wilfred.opensource@gmail.com>
- <20250729024150.222513-4-wilfred.opensource@gmail.com>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20250729024150.222513-4-wilfred.opensource@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: B4CFB21A26
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,wdc.com,kernel.org,oracle.com,davemloft.net,google.com,redhat.com,lwn.net,kernel.dk,lst.de,grimberg.me,nvidia.com,brown.name,talpey.com,lists.linux.dev,vger.kernel.org];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[32];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	R_RATELIMIT(0.00)[to_ip_from(RLhu34id7c3duw89qhx7eswje4)];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,wdc.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -3.01
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/29/25 04:41, Wilfred Mallawa wrote:
-> From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-> 
-> During a handshake, an endpoint may specify a maximum record size limit.
-> Currently, this limit is not visble to the kernel particularly in the case
-> where userspace handles the handshake (tlshd/gnutls). This patch adds
-> support for retrieving the record size limit.
-> 
-> This is the first step in ensuring that the kernel can respect the record
-> size limit imposed by the endpoint.
-> 
-> Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-> ---
->   Documentation/netlink/specs/handshake.yaml |  3 +++
->   Documentation/networking/tls-handshake.rst |  8 +++++++-
->   drivers/nvme/host/tcp.c                    |  3 ++-
->   drivers/nvme/target/tcp.c                  |  3 ++-
->   include/net/handshake.h                    |  4 +++-
->   include/uapi/linux/handshake.h             |  1 +
->   net/handshake/genl.c                       |  5 +++--
->   net/handshake/tlshd.c                      | 15 +++++++++++++--
->   net/sunrpc/svcsock.c                       |  4 +++-
->   net/sunrpc/xprtsock.c                      |  4 +++-
->   10 files changed, 40 insertions(+), 10 deletions(-)
-> 
-> diff --git a/Documentation/netlink/specs/handshake.yaml b/Documentation/netlink/specs/handshake.yaml
-> index b934cc513e3d..35d5eb91a3f9 100644
-> --- a/Documentation/netlink/specs/handshake.yaml
-> +++ b/Documentation/netlink/specs/handshake.yaml
-> @@ -84,6 +84,9 @@ attribute-sets:
->           name: remote-auth
->           type: u32
->           multi-attr: true
-> +      -
-> +        name: record-size-limit
-> +        type: u32
->   
->   operations:
->     list:
-> diff --git a/Documentation/networking/tls-handshake.rst b/Documentation/networking/tls-handshake.rst
-> index 6f5ea1646a47..cd984a137779 100644
-> --- a/Documentation/networking/tls-handshake.rst
-> +++ b/Documentation/networking/tls-handshake.rst
-> @@ -169,7 +169,8 @@ The synopsis of this function is:
->   .. code-block:: c
->   
->     typedef void	(*tls_done_func_t)(void *data, int status,
-> -                                   key_serial_t peerid);
-> +                                   key_serial_t peerid,
-> +                                   size_t tls_record_size_limit);
->   
->   The consumer provides a cookie in the @ta_data field of the
->   tls_handshake_args structure that is returned in the @data parameter of
+Drodzy Przedsi=C4=99biorcy,
 
-Why is this exposed to the TLS handshake consumer?
-The TLS record size is surely required for handling and processing TLS
-streams in net/tls, but the consumer of that (eg NVMe-TCP, NFS)
-are blissfully unaware that there _are_ such things like TLS records.
-And they really should keep it that way.
+zwracam si=C4=99 do Pa=C5=84stwa z propozycj=C4=85 wsparcia w zakresie re=
+dukcji obci=C4=85=C5=BCe=C5=84 finansowych.=20
 
-So I'd really _not_ expose that to any ULP and keep it internal to
-the TLS layer.
+Nasza kancelaria prawna specjalizuje si=C4=99 w skutecznym wstrzymywaniu =
+rat kredytowych i po=C5=BCyczek, umarzaniu nale=C5=BCno=C5=9Bci odsetkowy=
+ch oraz cz=C4=99=C5=9Bci zad=C5=82u=C5=BCenia, a tak=C5=BCe zabezpieczani=
+u przed zaj=C4=99ciem sk=C5=82adnik=C3=B3w maj=C4=85tkowych przedsi=C4=99=
+biorstw.
 
-Cheers,
+Wsp=C3=B3=C5=82praca z naszym zespo=C5=82em pozwoli Pa=C5=84stwu zachowa=C4=
+=87 p=C5=82ynno=C5=9B=C4=87 finansow=C4=85 i kontynuowa=C4=87 dzia=C5=82a=
+lno=C5=9B=C4=87 bez zb=C4=99dnych przestoj=C3=B3w.
 
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+Czy tego typu wsparcie wzbudza Pa=C5=84stwa zainteresowanie?
+
+
+Pozdrawiam
+Jolanta Borowczyk
