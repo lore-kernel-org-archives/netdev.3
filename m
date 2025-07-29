@@ -1,43 +1,30 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5061517A2E0;
-	Tue, 29 Jul 2025 01:09:20 +0000 (UTC)
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE4C19DF8B;
+	Tue, 29 Jul 2025 01:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753751368; cv=none; b=dCLPvcKqdc+uFoeQJQHSH399Y8WkTxTfWlmRdCqZPCuNP9Ffx3fR1lBw7GRRdXplPYmc/gFqqI3pMEPuEtpRHx2WOajx9Ep+gT77gRYFVMIIEgElufcLpGegd6ejAzd7XNTLxYlogqJDkjpfmAyF7T/zrYXOomWFqf32JSv5Xuk=
+	t=1753751434; cv=none; b=j0NJdCGJMr7I6IqeRfYNza4hb4HAXHJRBkWox0jr94NmJl/vHOT0kb5GCg74EGs69oZTmnEnLRRzehX3Ko9jVMelfWBgRTq42gzqipxwAsV27O2/Zn4Un6MdtfPHrcYPRrnJaNCM4HsLkXFAGFEBsgFCHDCjP+8VdtRYVpA/n/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753751368; c=relaxed/simple;
-	bh=Qx+SZKAe5e3AuZnFZZmZAutyGTlZrZ+pt380AJBmqMw=;
+	s=arc-20240116; t=1753751434; c=relaxed/simple;
+	bh=rFQHPKdHs7l63lkOcvXWDFEenJTQG4Ry3291fBhwk90=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H6UZKn9OuKUtvzD/CUuRYD6p1nu3yvPIpt7Nd1ewtYzaAIpi/C/NmZVNZ+qhkxxvSBOpzKKcEBEaJ2/0roFRaQfj9jGLWR/T/caZvu6aLRMoOcFpW82q7hjQZU/yJUHWGofzZQCzUg5Eq/RJEUTvXTW7xK/opZBUww9xwaBCO3w=
+	 Content-Type:Content-Disposition:In-Reply-To; b=CjleSFWtvUjIXuRpOcs1S29761f2MNDqEczBRBzjuVTpCnPYPYupP1l2doF71Jc4wRWTsIFoP2Au7pQwLiH5ewG0fcU00I8Xc/1w0cITQCTIbmFnFOMCI0D5o4353jGAesJo1umUwajch1PbS58udeibVM2G0uOabgQ4/8lsEsI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-681ff7000002311f-05-68881e0fb1f4
-Date: Tue, 29 Jul 2025 10:04:10 +0900
+X-AuditID: a67dfc5b-681ff7000002311f-47-68881f858d7e
+Date: Tue, 29 Jul 2025 10:10:24 +0900
 From: Byungchul Park <byungchul@sk.com>
-To: Pavel Begunkov <asml.silence@gmail.com>
-Cc: Mina Almasry <almasrymina@google.com>, linux-mm@kvack.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel_team@skhynix.com, harry.yoo@oracle.com, ast@kernel.org,
-	daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
-	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
-	saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
-	mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
-	pabeni@redhat.com, akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
-	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
-	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
-	toke@redhat.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH v2] mm, page_pool: introduce a new page type for page
- pool in page type
-Message-ID: <20250729010410.GC56089@system.software.com>
-References: <20250728052742.81294-1-byungchul@sk.com>
- <fc1ed731-33f8-4754-949f-2c7e3ed76c7b@gmail.com>
- <CAHS8izO6t0euQcNyhxXKPbrV7BZ1MfuMjrQiqKr-Y68t5XCGaA@mail.gmail.com>
- <da4a9efd-64b3-4dc5-a613-b73e17f160d6@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, hawk@kernel.org,
+	toke@redhat.com, asml.silence@gmail.com, kernel_team@skhynix.com
+Subject: Re: [RFC net-next] netmem: replace __netmem_clear_lsb() with
+ netmem_to_nmdesc()
+Message-ID: <20250729011024.GD56089@system.software.com>
+References: <20250728042050.24228-1-byungchul@sk.com>
+ <CAHS8izPv8zmPaxzCSPAnybiCc0KrqjEZA+x5wpFOE8u=_nM1WA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,95 +34,129 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <da4a9efd-64b3-4dc5-a613-b73e17f160d6@gmail.com>
+In-Reply-To: <CAHS8izPv8zmPaxzCSPAnybiCc0KrqjEZA+x5wpFOE8u=_nM1WA@mail.gmail.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTYRjG+fadnXMcGx2X1ZcGwSoKK7sZvd2FCL7+CKIiKimdeWgjN23L
-	WxCsklzS7E41V6yrt9CYTrdKq2leKszMalnN0gyqaaYmmtJlSuR/D8/7Ps/v/ePlsfKJNJTX
-	6veJBr06QcXKGFmn/MrcqKlmzfzCIh5sxTdZKBxIg9z3LinYCsoQ9A2+4eB3RQ2C3upaFr5W
-	9SC4erkfg+1pBgM/in9i6Khp46DQsR5ab3xi4G5mOYa243UsWDKGMFQMdnFwyJUnAVuJiYPG
-	smwpnPl5HUO56T0Hz2/bWPDd/C2FTx4LA/XWfAa6z1ZjaM2Oghr7ROh/7EdQXVwugf5jF1l4
-	ceG2BE432Vloz2hF0FTVxsDZYTMLOQezEQwN/G3rOtEnhZyHPi4qnFb5v2Famv9aQr2VjyTU
-	bX3HUbsjmZbkhdMsbxOmjoKjLHX0nOLo25d3WVp3foih7g9LqdvVK6GWw10s/d7RwtBvlS/Y
-	DeO3y1bEiwnaFNEwb1WsTHPN1oKTLgenHTRtNaHP8iwUxBMhknR21EuzED+in91RBWxGmEFK
-	T/q4gGaFmcTrHcQBHSLMJl9feUZ8LFzlyCVfaCA6XthBbt1bHrAVAhBnpp/NQjJeKbQh4vxw
-	Do8Ogkn9hY/MaHYmGb7UhANZLISR3F/8qD2VHHbmjKwHCSvJvc6GEdQEYRq5X1YrCXQSwc8T
-	93GXdPT8yeRBnpc5gYKtYxDWMQjrf4R1DMKOmAKk1OpTdGptQmSEJl2vTYvYlahzoL8/duPA
-	cLQL9TRu8iCBRyq5QnM0U6OUqlOM6ToPIjxWhSiSrh/RKBXx6vT9oiExxpCcIBo9KIxnVJMU
-	C/tT45XCbvU+cY8oJomGf1MJHxRqQlfOtXq2RKNVO0tjYsmSrQfOGLTr/C1F5m5z5LLzubO+
-	x22bXueWR5sXJes25y9wr16stMylMX3+qF2xDRsLyn2vS1KNAxGKZiZsXu/CWrtuy9rUVw1r
-	dhO1fm9qtzOZzpHHPdieZAlZMeWx/JY8DoaNXzLtRbi5tn2Ts3FcRruKMWrUC8Kxwaj+A1Z8
-	W4FfAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUhTcRjF++9/d+91trquVRfNglUISpZQ8ITa64f+RUnUhywKveatDafJ
-	pqJBMFOyJM1ezJxTNFPzhazp1JllTFNX0MvEMis1UykyzTTJlKwpkd8O5zzn93w5LFbckbqz
-	mqgYURclaFW0jJIF+SetW7zyvHrDWDIDpsoKGsp/xkNJb50UTGU1CMYn3zIw86AFwVhzKw1f
-	mr4jKCyYwGB6nkzBj8pfGAZa+hgoN++DnuJBChpSajH0XWqjIS15CsODyWEGztbdloCpysBA
-	U65dCi9q0qVw7VcRhlpDLwPt9SYauitmpDBoS6PAbiyl4FtmM4ae9G3Qkr8MJp4OIWiurJXA
-	xMVcGjqy6yVw1ZFPw8fkHgSOpj4KMqfP05CTmI5g6udf2nDGuBRyHncz23xI09AIJtWlbySk
-	8+ETCbEa3zMk3xxLqm57k9ROBybmsgs0MX+/wpB3rxpo0nZjiiLWD5uJtW5MQtKShmkyOtBF
-	kZGHHfR+5RFZQLio1cSJuvVbQmXqW6YuHF3gFp9oCDagzwtTEcvy3Eb+5X1VKnJhKW4tX325
-	m3FqmvPiOzsnsVMrOR/+y2vbrI+5QobP63Z3Vpdwx/i7jf5OW84Bb0kZolORjFVwfYi3fMjC
-	c4Ebb8/up+a6Xvx0ngM7u5jz4Et+s3P2Kj7JkjN77sIF8o1fn82+Wsqt5h/VtEoy0CLjPJJx
-	Hsn4n2ScR8pHVBlSaqLiIgWNdpOvPkKdEKWJ9z1+KtKM/q6o+Mz05To03r7LhjgWqRbK1RdS
-	1AqpEKdPiLQhnsUqpTy66JxaIQ8XEk6LulMhulitqLchD5ZSLZfvOSSGKriTQowYIYrRou5f
-	KmFd3A2o9VOaSnC94Tq5prQ+cve5PR8/b5db7nr6p99bfszuvT/pemDwgsBvJ+lRVOw5EbPC
-	33LaviPFb9eLWFJ4lBv/6jq9M9RSrY0LSvyddbCW9TiwNSbTb2w0I6T95czZfnZksVVpL7L6
-	7pC77T0shJWvXR1wYupefcnNyg4HExaQ7fJYRenVgp831umFP0DnRSdBAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpikeLIzCtJLcpLzFFi42LhesuzSLdVviPD4PwpG4vVPyos5qzaxmgx
+	53wLi8XTY4/YLfa0b2e2eNR/gs3iwrY+VovLu+awWRxbIGbx7fQbRotLhx+xOHB7bFl5k8lj
+	56y77B4LNpV6bFrVyebxft9VNo/Pm+QC2KK4bFJSczLLUov07RK4Mp7s3shSME++4ui8I0wN
+	jJsluhg5OSQETCT2PP/LBmNf7WxjB7FZBFQlOrZ3M4PYbALqEjdu/ASzRQQ0JZbsm8gKYjML
+	fGSUePQntouRg0NYIEpiyxEmkDCvgIXE3j0nGEHCQgI1EpOmp0OEBSVOznzCAtGpLvFn3iVm
+	kBJmAWmJ5f84IMLyEs1bZ4Mt4hQIlDgydRlYuaiAssSBbceBpnMBHXmbTeLppKfMEBdLShxc
+	cYNlAqPgLCQrZiFZMQthxSwkKxYwsqxiFMrMK8tNzMwx0cuozMus0EvOz93ECIyZZbV/oncw
+	froQfIhRgINRiYc3o7M9Q4g1say4MvcQowQHs5IIb8HStgwh3pTEyqrUovz4otKc1OJDjNIc
+	LErivEbfylOEBNITS1KzU1MLUotgskwcnFINjOJXU8u3mbk2SLLlRdWpsy5UKFK7wbNx4etT
+	yZpnCvV1jkh7KT6d+4WLqSMw6eiJFT1LrOK+Bs2ZssR2QUTo3+h5dVY+95J5WucHWp3+pvLm
+	dECXrFj2q6czkuVcF8Wy7Q1kEF59dc635A6Lk44xL0VmN614cSvN9PO8Y0tnLZOdWfbM7ZuG
+	oxJLcUaioRZzUXEiAB6sZxeVAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrJLMWRmVeSWpSXmKPExsXC5WfdrNsq35FhcOCigcXqHxUWc1ZtY7SY
+	c76FxeLpsUfsFnvatzNbPOo/wWZxeO5JVosL2/pYLS7vmsNmcWyBmMW3028YLS4dfsTiwOOx
+	ZeVNJo+ds+6yeyzYVOqxaVUnm8f7fVfZPBa/+MDk8XmTXAB7FJdNSmpOZllqkb5dAlfGk90b
+	WQrmyVccnXeEqYFxs0QXIyeHhICJxNXONnYQm0VAVaJjezcziM0moC5x48ZPMFtEQFNiyb6J
+	rCA2s8BHRolHf2K7GDk4hAWiJLYcYQIJ8wpYSOzdc4IRJCwkUCMxaXo6RFhQ4uTMJywQneoS
+	f+ZdYgYpYRaQllj+jwMiLC/RvHU22CJOgUCJI1OXgZWLCihLHNh2nGkCI98sJJNmIZk0C2HS
+	LCSTFjCyrGIUycwry03MzDHVK87OqMzLrNBLzs/dxAiMgGW1fybuYPxy2f0QowAHoxIPb0Zn
+	e4YQa2JZcWXuIUYJDmYlEd6CpW0ZQrwpiZVVqUX58UWlOanFhxilOViUxHm9wlMThATSE0tS
+	s1NTC1KLYLJMHJxSDYwX5uYYbPm06viWxNrH910cjQSu9yRsrmZjslu6xdB8xsozPQ56blp/
+	ZCJkpjwTCRDNnfMs2cXCotq0uEbrf6FAs9WPmBn7AqYY6sQ9N4u+tljsCvv82EkiE7RsVjku
+	jNllPEVv+Q4+s6qLRs9kXpx4stqjuazIq/TrsaigwtNqdgqvdm67X6XEUpyRaKjFXFScCACK
+	rDNefAIAAA==
 X-CFilter-Loop: Reflected
 
-On Mon, Jul 28, 2025 at 07:49:30PM +0100, Pavel Begunkov wrote:
-> On 7/28/25 19:39, Mina Almasry wrote:
-> > On Mon, Jul 28, 2025 at 11:35 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
-> > > 
-> > > On 7/28/25 06:27, Byungchul Park wrote:
-> > > > Changes from v1:
-> > > >        1. Rebase on linux-next.
-> > > 
-> > > net-next is closed, looks like until August 11.
-> > > 
-> > > >        2. Initialize net_iov->pp = NULL when allocating net_iov in
-> > > >           net_devmem_bind_dmabuf() and io_zcrx_create_area().
-> > > >        3. Use ->pp for net_iov to identify if it's pp rather than
-> > > >           always consider net_iov as pp.
-> > > >        4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
-> > > 
-> > > Oops, looks you killed my suggested-by tag now. Since it's still
-> > > pretty much my diff spliced with David's suggestions, maybe
-> > > Co-developed-by sounds more appropriate. Even more so goes for
-> > > the second patch getting rid of __netmem_clear_lsb().
-> > > 
-> > > Looks fine, just one comment below.
-> > > 
-> > > ...> diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-> > > > index 100b75ab1e64..34634552cf74 100644
-> > > > --- a/io_uring/zcrx.c
-> > > > +++ b/io_uring/zcrx.c
-> > > > @@ -444,6 +444,7 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
-> > > >                area->freelist[i] = i;
-> > > >                atomic_set(&area->user_refs[i], 0);
-> > > >                niov->type = NET_IOV_IOURING;
-> > > > +             niov->pp = NULL;
-> > > 
-> > > It's zero initialised, you don't need it.
-> > > 
-> > 
-> > This may be my bad since I said we should check if it's 0 initialized.
-> > 
-> > It looks like on the devmem side as well we kvmalloc_array the niovs,
-> > and if I'm checking through the helpers right, kvmalloc_array does
-> > 0-initialize indeed.
+On Mon, Jul 28, 2025 at 10:44:31AM -0700, Mina Almasry wrote:
+> On Sun, Jul 27, 2025 at 9:21 PM Byungchul Park <byungchul@sk.com> wrote:
+> >
+> > Now that we have struct netmem_desc, it'd better access the pp fields
+> > via struct netmem_desc rather than struct net_iov.
+> >
+> > Introduce netmem_to_nmdesc() for safely converting netmem_ref to
+> > netmem_desc regardless of the type underneath e.i. netmem_desc, net_iov.
+> >
+> > While at it, remove __netmem_clear_lsb() and make netmem_to_nmdesc()
+> > used instead.
+> >
+> > Signed-off-by: Byungchul Park <byungchul@sk.com>
 > 
-> I wouldn't rely on that, it's just for zcrx I do:
+> Thank you for working on paying this tech debt!
+
+I thought it was appropriate to organize the code I modified to some
+extent.
+
+> > ---
+> >  include/net/netmem.h   | 33 ++++++++++++++++-----------------
+> >  net/core/netmem_priv.h | 16 ++++++++--------
+> >  2 files changed, 24 insertions(+), 25 deletions(-)
+> >
+> > diff --git a/include/net/netmem.h b/include/net/netmem.h
+> > index f7dacc9e75fd..33ae444a9745 100644
+> > --- a/include/net/netmem.h
+> > +++ b/include/net/netmem.h
+> > @@ -265,24 +265,23 @@ static inline struct netmem_desc *__netmem_to_nmdesc(netmem_ref netmem)
+> >         return (__force struct netmem_desc *)netmem;
+> >  }
+> >
+> > -/* __netmem_clear_lsb - convert netmem_ref to struct net_iov * for access to
+> > - * common fields.
+> > - * @netmem: netmem reference to extract as net_iov.
+> > +/* netmem_to_nmdesc - convert netmem_ref to struct netmem_desc * for
+> > + * access to common fields.
+> > + * @netmem: netmem reference to get netmem_desc.
+> >   *
+> > - * All the sub types of netmem_ref (page, net_iov) have the same pp, pp_magic,
+> > - * dma_addr, and pp_ref_count fields at the same offsets. Thus, we can access
+> > - * these fields without a type check to make sure that the underlying mem is
+> > - * net_iov or page.
+> > + * All the sub types of netmem_ref (netmem_desc, net_iov) have the same
+> > + * pp, pp_magic, dma_addr, and pp_ref_count fields via netmem_desc.
+> >   *
+> > - * The resulting value of this function can only be used to access the fields
+> > - * that are NET_IOV_ASSERT_OFFSET'd. Accessing any other fields will result in
+> > - * undefined behavior.
+> > - *
 > 
-> kvmalloc_array(...,  GFP_KERNEL | __GFP_ZERO);
+> I think instead of removing this warning, we want to add an
+> NET_IOV_ASSERT_OFFSET that asserts that net_iov->netmem_desc and
+> page->netmem_desc are in the same offset, and then add a note here
+> that this works because we assert that the netmem_desc offset in both
+> net_iov and page are the same.
 
-For net_devmem_bind_dmabuf(), __GFP_ZERO will add bigger overhead than
-just assignment, 'niov->pp = NULL'.
+It doesn't have to have the same offset.  Why do you want it?  Is it for
+some optimizaiton?  Or I think it's unnecessary constraint.
 
-I'd like to ask you if you are still good with __GFP_ZERO overhead
-before going ahead.
+> > - * Return: the netmem_ref cast to net_iov* regardless of its underlying type.
+> > + * Return: the pointer to struct netmem_desc * regardless of its
+> > + * underlying type.
+> >   */
+> > -static inline struct net_iov *__netmem_clear_lsb(netmem_ref netmem)
+> > +static inline struct netmem_desc *netmem_to_nmdesc(netmem_ref netmem)
+> >  {
+> > -       return (struct net_iov *)((__force unsigned long)netmem & ~NET_IOV);
+> > +       if (netmem_is_net_iov(netmem))
+> > +               return &((struct net_iov *)((__force unsigned long)netmem &
+> > +                                           ~NET_IOV))->desc;
+> > +
+> > +       return __netmem_to_nmdesc(netmem);
+> 
+> The if statement generates overhead. I'd rather avoid it. We can
+> implement netmem_to_nmdesc like this, no?
+> 
+> netmem_to_nmdesc(netmem_ref netmem)
+> {
+>   return (struct netmem_desc)((__force unsigned long)netmem & ~NET_IOV);
+> }
+
+I see.  You want this kind of optimization.  I will do this way if you
+want.
+
+> Because netmem_desc is the first element in both net_iov and page for
+> the moment. (yes I know that will change eventually, but we don't have
+> to incur overhead of an extra if statement until netmem_desc is
+> removed from page, right?)
+
+Okay.
 
 	Byungchul
-
+> 
 > 
 > --
-> Pavel Begunkov
+> Thanks,
+> Mina
