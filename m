@@ -1,163 +1,308 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DAC207A16;
-	Tue, 29 Jul 2025 12:32:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EF22918F1
+	for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 12:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753792327; cv=none; b=AcXB8jmgdRO2Q+q++O82WMnFcZdZuG8K2MOnxnNUYR8BG48Agx3tq1eC2ud46EnMjFKZRKi5cT1DhKO85O9/gGbUveuDSHoWx/PaH0iRwiCu/HNEyQ+2LbfbK/REBEBeQXPl1vLzAYxm3WtcWgZL8vKwW5iNhhmbvOal9jAofRA=
+	t=1753792862; cv=none; b=BVYCexLOzjYmVETdekvAsS/UkdkFsfHnjocngTBvPiguYKN8kkJHfNYTWVI7Fi9wuG9TgCx0quNdc937sbuYm6xPYB//ZoK3YIUEKQnE3hfVJMMH7j5sJRIUlUJp2/3kaDbs95osRY/ixv3nBZXyj/9Kh/hwlfNiof8Ht2sW4/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753792327; c=relaxed/simple;
-	bh=XT9EQ8WXkA4HStsq57Texw6Sd59bD7ohg1N8qtNm2Q0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EY8S6eqjZL3S9sc7mG8O/0P1V5KeDNToEAsvCfBao/SAajTfhk4aOKKJEyfsgH3uL7ot1Y6pq0ZtLNWjElk+AaNV0fCwfDV78N6MV8wSH8nZhXZ8hWMvwIiKLpzau/EAqvvsXqZqp2nODgvXGnIPiq6mGqGhf57Se0KwR06bpsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HzDiaAFL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753792862; c=relaxed/simple;
+	bh=UZDGhd/+rLzayX5aZ+vg8gEPGLMCsevSY+i2MYFbMCQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Qh4M1Mr5yuGeSLpSDLMCHn76ScuofKl1EdygonJXiC0XYQ50fjeXmdI7FzCxUt6G/4Cz8OMV2AEIwu02Zaq+d+Cae0vwENLIaTO5spZqM4Ir1ELkrTizMi3ZChXLTvTpzAUegdlwFcRLX16YxsITiGQyJitSeKG7CHSfyAz7Rk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MXzWKvF6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HzDiaAFL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C45C4CEEF;
-	Tue, 29 Jul 2025 12:32:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753792327;
-	bh=XT9EQ8WXkA4HStsq57Texw6Sd59bD7ohg1N8qtNm2Q0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HzDiaAFLh0oNOXpVZnobJ15SxiXjx9HsFo0cARdmDJn6QyDL11iA/UnD6BSEIoIBu
-	 69ER9RWiO3BE6veK/1IGEruA8VrYPEAF/0GcbYPWXBwveYku2Me6F5hLuyLtAZmMek
-	 OI5P+SyaDNayrOceCjrmGk3jkp6g8eR6ccrVHNq/cm0wxwXq+wrd4zQTJlbQ0Isnok
-	 7RQdjWtOrXr9mQY0NuSFj1sVvt/Y+dkScu1lePEvLnXUDM5QrGAXOOskn+aqEsCOhB
-	 dQLSTarhpye0DtqNDqXIBnNwWg5OgamRWfEVWUaHv0e9u2B3yQoLUAYiQ4idWKVUEH
-	 diMZ5Kua+PMwA==
-Message-ID: <bc30805a-d785-432f-be0f-97cea35abd51@kernel.org>
-Date: Tue, 29 Jul 2025 14:32:00 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MXzWKvF6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753792858;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZV5EUUEtu0wYoF6c14HgKdxGyYYQj0FRgNzMPWXQSQ8=;
+	b=MXzWKvF6KE6l6WFxC8CEMS9sVhfmkCKYpj9eElvAnnyZU2k7NpJLxLcbxY5uX+AdRLxoiF
+	5o7W0fR3NVGxS2mINiLClAwFj21XhlM1L1y/ATn9qxUXtxJmvIGPQwKOyeWymrGW5jM2QT
+	8WRHImFOpDxzGJPRU4MooWLf1+lw92M=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-624-0l9g6QL6OPyn8BxRnhycJg-1; Tue, 29 Jul 2025 08:40:57 -0400
+X-MC-Unique: 0l9g6QL6OPyn8BxRnhycJg-1
+X-Mimecast-MFC-AGG-ID: 0l9g6QL6OPyn8BxRnhycJg_1753792856
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-711136ed77fso73951787b3.0
+        for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 05:40:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753792856; x=1754397656;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZV5EUUEtu0wYoF6c14HgKdxGyYYQj0FRgNzMPWXQSQ8=;
+        b=j/tNomiqikfuEXChkdvxJpDCcBgFsMIr4aTI7mew4H0ZKIQeRApsOVMMWBF6SOmjHc
+         C+3qz92ufGkJyzElA3CYblAXMYe0LSUCXBjQUSLG/018UPySApOumTnmLiQHlKpe7Gec
+         /BeKnf8cAjscFCaTm8PHATV3CSmau6e11hAs14pnI6ldslFCX5fBr7ygS2VbOmz7gyyq
+         imSrn8Ga5nn+sJHOl/C/QhiMHiNPkxJL8zVQwb2aTeIYzD+mP0A/mNcrgQjhss4DZ0C5
+         xKCC5Kckdj3QEo2FBjrF4yQG5th6n/upZTNHMIqw4kqF9z/2s47Bvwhho/sOf0Y4kmA9
+         Payg==
+X-Forwarded-Encrypted: i=1; AJvYcCWnu0jUwyg3ks3/MkHF16ssWKIDhvokvxj3nbVUC4D9loey8VAekfpGAO/s3hO5O3A4NX015MQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGpsDgGH7v+FrvT4MYeNPCPtTE4VnCud1tDsvokZdQWqgqqb0O
+	sIRSP9TVI1jT6M1cglxBTMlKkOANwIUo3vE2jLa0oHiwBCvIDk7HcjI+lcTCbmgSop6oHcukLcW
+	gpvGOdkpR+X5SyPHbtj6mUG6V8lIvt/YP/qOwBVxGW1DnZkynkkdYwQTAfAMIaRxqQJdWPLHuxg
+	TYb/jQRKfvCs2sBF/jwHa2GD+IFNSgaf31
+X-Gm-Gg: ASbGncsibbnVlv85g093pSmb03a26cOXcINqPe9oUgqPirW4mb2UFg+/KU1Z+9/pg3k
+	Ah6dzHGqXg2HhBMILKxrnFO0pL70uu+6m+6B9bhmzgLNeRfOTURh7WnhntWY4XzQGrRxq4vA6XW
+	FSD+damytyKMtJ6egRMvKZ
+X-Received: by 2002:a05:690c:4b0a:b0:71a:41be:133 with SMTP id 00721157ae682-71a41be022dmr9012797b3.14.1753792856399;
+        Tue, 29 Jul 2025 05:40:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExzXD78VZ4NrcWcboXVLgFWfObrbN+8Z2f+u0nM+qzWO61wtyD3iImlO5JbXTPxUvCLloIIb5LOzY9XjoHDwo=
+X-Received: by 2002:a05:690c:4b0a:b0:71a:41be:133 with SMTP id
+ 00721157ae682-71a41be022dmr9012387b3.14.1753792855972; Tue, 29 Jul 2025
+ 05:40:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/5] net: rpmsg-eth: Add basic rpmsg skeleton
-To: MD Danish Anwar <danishanwar@ti.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Mengyuan Lou
- <mengyuanlou@net-swift.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Fan Gong <gongfan1@huawei.com>,
- Lee Trager <lee@trager.us>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Lukas Bulwahn <lukas.bulwahn@redhat.com>,
- Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
-Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250723080322.3047826-1-danishanwar@ti.com>
- <20250723080322.3047826-3-danishanwar@ti.com>
- <296d6846-6a28-4e53-9e62-3439ac57d9c1@kernel.org>
- <5f4e1f99-ff71-443f-ba34-39396946e5b4@ti.com>
- <cabacd59-7cbf-403a-938f-371026980cc7@kernel.org>
- <66377d5d-b967-451f-99d9-8aea5f8875d3@ti.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <66377d5d-b967-451f-99d9-8aea5f8875d3@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240710212555.1617795-1-amery.hung@bytedance.com>
+ <dsamf7k2byoflztkwya3smj7jyczyq7aludvd36lufdrboxdqk@u73iwrcyb5am> <CAMB2axNKxW4gnd6qiSNYdm2zPxJkbbLgZz9P-Kh7SS0Sb1Yw=Q@mail.gmail.com>
+In-Reply-To: <CAMB2axNKxW4gnd6qiSNYdm2zPxJkbbLgZz9P-Kh7SS0Sb1Yw=Q@mail.gmail.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Tue, 29 Jul 2025 14:40:44 +0200
+X-Gm-Features: Ac12FXx0AfUlrxkGal_IZT1J3PL02_FYYzLBRvPuEGsCQYHWQt-envTrILmUXG4
+Message-ID: <CAGxU2F6aObcrixKnbp2PthJDpeQyhzVXwXtfkkQm-8Ni4xenTg@mail.gmail.com>
+Subject: Re: [RFC PATCH net-next v6 00/14] virtio/vsock: support datagrams
+To: Amery Hung <ameryhung@gmail.com>, Sergio Lopez Pascual <slp@redhat.com>, 
+	Tyler Fanelli <tfanelli@redhat.com>
+Cc: stefanha@redhat.com, mst@redhat.com, jasowang@redhat.com, 
+	xuanzhuo@linux.alibaba.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, kys@microsoft.com, haiyangz@microsoft.com, 
+	wei.liu@kernel.org, decui@microsoft.com, bryantan@vmware.com, 
+	vdasa@vmware.com, pv-drivers@vmware.com, dan.carpenter@linaro.org, 
+	simon.horman@corigine.com, oxffffaa@gmail.com, kvm@vger.kernel.org, 
+	virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	bpf@vger.kernel.org, bobby.eshleman@bytedance.com, jiang.wang@bytedance.com, 
+	amery.hung@bytedance.com, xiyou.wangcong@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 29/07/2025 11:46, MD Danish Anwar wrote:
->>>
->>> One idea I had was to create a new binding for this node, and use
->>> compatible string to access the node in driver. But the device is
->>> virtual and not physical so I thought that might not be the way to go so
->>> I went with the current approach.
->>
->> virtual devices do not go to DTS anyway. How do you imagine this works?
->> You add it to DTS but you do not add bindings and you expect checks to
->> succeed?
->>
->> Provide details how you checked your DTS compliance.
->>
->>
-> 
-> This is my device tree patch [1]. I ran these two commands before and
-> after applying the patch and checked the diff.
-> 
-> 	make dt_binding_check
-> 	make dtbs_check
-> 
-> I didn't see any new error / warning getting introduced due to the patch
-> 
-> After applying the patch I also ran,
-> 
-> 	make CHECK_DTBS=y ti/k3-am642-evm.dtb
-> 
-> I still don't see any warnings / error.
-> 
-> 
-> If you look at the DT patch, you'll see I am adding a new node in the
+Hi Amery,
 
-I see. This is so odd syntax... You have the phandle there, so you do
-not need to do any node name checking. I did not really expect you will
-be checking node name for reserved memory!!!
+On Sat, 26 Jul 2025 at 07:53, Amery Hung <ameryhung@gmail.com> wrote:
+>
+> On Tue, Jul 22, 2025 at 7:35=E2=80=AFAM Stefano Garzarella <sgarzare@redh=
+at.com> wrote:
+> >
+> > Hi Amery,
+> >
+> > On Wed, Jul 10, 2024 at 09:25:41PM +0000, Amery Hung wrote:
+> > >Hey all!
+> > >
+> > >This series introduces support for datagrams to virtio/vsock.
+> >
+> > any update on v7 of this series?
+> >
+>
+> Hi Stefano,
+>
+> Sorry that I don't have personal time to work on v7. Since I don't
+> think people involved in this set are still working on it, I am
+> posting my v7 WIP here to see if anyone is interested in finishing it.
+> Would greatly appreciate any help.
+>
+> Link: https://github.com/ameryhung/linux/tree/vsock-dgram-v7
+>
+> Here are the things that I haven't address in the WIP:
+>
+> 01/14
+> - Arseniy suggested doing skb_put(dg->payload_size) and memcpy(dg->payloa=
+d_size)
+>
+> 07/14
+> - Remove the double transport lookup in the send path by passing
+> transport to dgram_enqueue
+> - Address Arseniy's comment about updating vsock_virtio_transport_common.=
+h
+>
+> 14/14
+> - Split test/vsock into smaller patches
+>
+> Finally the spec change discussion also needs to happen.
 
-Obviously this will be fine with dt bindings, because such ABI should
-never be constructed.
+Thanks for the update!
+I CCed Sergio and Tyler that may be interested on completing this for
+libkrun use case.
 
+Thanks,
+Stefano
 
-> `reserved-memory`. I am not creating a completely new undocumented node.
-> Instead I am creating a new node under reserved-memory as the shared
-> memory used by rpmsg-eth driver needs to be reserved first. This memory
-> is reserved by the ti_k3_r5_remoteproc driver by k3_reserved_mem_init().
-> 
-> It's just that I am naming this node as "virtual-eth-shm@a0400000" and
-> then using the same name in driver to get the base_address and size
-> mentioned in this node.
+>
+>
+>
+> > Thanks,
+> > Stefano
+> >
+> > >
+> > >It is a spin-off (and smaller version) of this series from the summer:
+> > >  https://lore.kernel.org/all/cover.1660362668.git.bobby.eshleman@byte=
+dance.com/
+> > >
+> > >Please note that this is an RFC and should not be merged until
+> > >associated changes are made to the virtio specification, which will
+> > >follow after discussion from this series.
+> > >
+> > >Another aside, the v4 of the series has only been mildly tested with a
+> > >run of tools/testing/vsock/vsock_test. Some code likely needs cleaning
+> > >up, but I'm hoping to get some of the design choices agreed upon befor=
+e
+> > >spending too much time making it pretty.
+> > >
+> > >This series first supports datagrams in a basic form for virtio, and
+> > >then optimizes the sendpath for all datagram transports.
+> > >
+> > >The result is a very fast datagram communication protocol that
+> > >outperforms even UDP on multi-queue virtio-net w/ vhost on a variety
+> > >of multi-threaded workload samples.
+> > >
+> > >For those that are curious, some summary data comparing UDP and VSOCK
+> > >DGRAM (N=3D5):
+> > >
+> > >       vCPUS: 16
+> > >       virtio-net queues: 16
+> > >       payload size: 4KB
+> > >       Setup: bare metal + vm (non-nested)
+> > >
+> > >       UDP: 287.59 MB/s
+> > >       VSOCK DGRAM: 509.2 MB/s
+> > >
+> > >Some notes about the implementation...
+> > >
+> > >This datagram implementation forces datagrams to self-throttle accordi=
+ng
+> > >to the threshold set by sk_sndbuf. It behaves similar to the credits
+> > >used by streams in its effect on throughput and memory consumption, bu=
+t
+> > >it is not influenced by the receiving socket as credits are.
+> > >
+> > >The device drops packets silently.
+> > >
+> > >As discussed previously, this series introduces datagrams and defers
+> > >fairness to future work. See discussion in v2 for more context around
+> > >datagrams, fairness, and this implementation.
+> > >
+> > >Signed-off-by: Bobby Eshleman <bobby.eshleman@bytedance.com>
+> > >Signed-off-by: Amery Hung <amery.hung@bytedance.com>
+> > >---
+> > >Changes in v6:
+> > >- allow empty transport in datagram vsock
+> > >- add empty transport checks in various paths
+> > >- transport layer now saves source cid and port to control buffer of s=
+kb
+> > >  to remove the dependency of transport in recvmsg()
+> > >- fix virtio dgram_enqueue() by looking up the transport to be used wh=
+en
+> > >  using sendto(2)
+> > >- fix skb memory leaks in two places
+> > >- add dgram auto-bind test
+> > >- Link to v5: https://lore.kernel.org/r/20230413-b4-vsock-dgram-v5-0-5=
+81bd37fdb26@bytedance.com
+> > >
+> > >Changes in v5:
+> > >- teach vhost to drop dgram when a datagram exceeds the receive buffer
+> > >  - now uses MSG_ERRQUEUE and depends on Arseniy's zerocopy patch:
+> > >       "vsock: read from socket's error queue"
+> > >- replace multiple ->dgram_* callbacks with single ->dgram_addr_init()
+> > >  callback
+> > >- refactor virtio dgram skb allocator to reduce conflicts w/ zerocopy =
+series
+> > >- add _fallback/_FALLBACK suffix to dgram transport variables/macros
+> > >- add WARN_ONCE() for table_size / VSOCK_HASH issue
+> > >- add static to vsock_find_bound_socket_common
+> > >- dedupe code in vsock_dgram_sendmsg() using module_got var
+> > >- drop concurrent sendmsg() for dgram and defer to future series
+> > >- Add more tests
+> > >  - test EHOSTUNREACH in errqueue
+> > >  - test stream + dgram address collision
+> > >- improve clarity of dgram msg bounds test code
+> > >- Link to v4: https://lore.kernel.org/r/20230413-b4-vsock-dgram-v4-0-0=
+cebbb2ae899@bytedance.com
+> > >
+> > >Changes in v4:
+> > >- style changes
+> > >  - vsock: use sk_vsock(vsk) in vsock_dgram_recvmsg instead of
+> > >    &sk->vsk
+> > >  - vsock: fix xmas tree declaration
+> > >  - vsock: fix spacing issues
+> > >  - virtio/vsock: virtio_transport_recv_dgram returns void because err
+> > >    unused
+> > >- sparse analysis warnings/errors
+> > >  - virtio/vsock: fix unitialized skerr on destroy
+> > >  - virtio/vsock: fix uninitialized err var on goto out
+> > >  - vsock: fix declarations that need static
+> > >  - vsock: fix __rcu annotation order
+> > >- bugs
+> > >  - vsock: fix null ptr in remote_info code
+> > >  - vsock/dgram: make transport_dgram a fallback instead of first
+> > >    priority
+> > >  - vsock: remove redundant rcu read lock acquire in getname()
+> > >- tests
+> > >  - add more tests (message bounds and more)
+> > >  - add vsock_dgram_bind() helper
+> > >  - add vsock_dgram_connect() helper
+> > >
+> > >Changes in v3:
+> > >- Support multi-transport dgram, changing logic in connect/bind
+> > >  to support VMCI case
+> > >- Support per-pkt transport lookup for sendto() case
+> > >- Fix dgram_allow() implementation
+> > >- Fix dgram feature bit number (now it is 3)
+> > >- Fix binding so dgram and connectible (cid,port) spaces are
+> > >  non-overlapping
+> > >- RCU protect transport ptr so connect() calls never leave
+> > >  a lockless read of the transport and remote_addr are always
+> > >  in sync
+> > >- Link to v2: https://lore.kernel.org/r/20230413-b4-vsock-dgram-v2-0-0=
+79cc7cee62e@bytedance.com
+> > >
+> > >
+> > >Bobby Eshleman (14):
+> > >  af_vsock: generalize vsock_dgram_recvmsg() to all transports
+> > >  af_vsock: refactor transport lookup code
+> > >  af_vsock: support multi-transport datagrams
+> > >  af_vsock: generalize bind table functions
+> > >  af_vsock: use a separate dgram bind table
+> > >  virtio/vsock: add VIRTIO_VSOCK_TYPE_DGRAM
+> > >  virtio/vsock: add common datagram send path
+> > >  af_vsock: add vsock_find_bound_dgram_socket()
+> > >  virtio/vsock: add common datagram recv path
+> > >  virtio/vsock: add VIRTIO_VSOCK_F_DGRAM feature bit
+> > >  vhost/vsock: implement datagram support
+> > >  vsock/loopback: implement datagram support
+> > >  virtio/vsock: implement datagram support
+> > >  test/vsock: add vsock dgram tests
+> > >
+> > > drivers/vhost/vsock.c                   |   62 +-
+> > > include/linux/virtio_vsock.h            |    9 +-
+> > > include/net/af_vsock.h                  |   24 +-
+> > > include/uapi/linux/virtio_vsock.h       |    2 +
+> > > net/vmw_vsock/af_vsock.c                |  343 ++++++--
+> > > net/vmw_vsock/hyperv_transport.c        |   13 -
+> > > net/vmw_vsock/virtio_transport.c        |   24 +-
+> > > net/vmw_vsock/virtio_transport_common.c |  188 ++++-
+> > > net/vmw_vsock/vmci_transport.c          |   61 +-
+> > > net/vmw_vsock/vsock_loopback.c          |    9 +-
+> > > tools/testing/vsock/util.c              |  177 +++-
+> > > tools/testing/vsock/util.h              |   10 +
+> > > tools/testing/vsock/vsock_test.c        | 1032 ++++++++++++++++++++--=
+-
+> > > 13 files changed, 1638 insertions(+), 316 deletions(-)
+> > >
+> > >--
+> > >2.20.1
+> > >
+> >
+>
 
-And how your driver will work with:
-
-s/virtual-eth-shm@a0400000/whatever@a0400000/
-
-? It will not.
-
-Best regards,
-Krzysztof
