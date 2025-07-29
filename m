@@ -1,129 +1,143 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3C379EA
-	for <netdev@vger.kernel.org>; Tue, 29 Jul 2025 02:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDEB79EA;
+	Tue, 29 Jul 2025 02:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753756940; cv=none; b=ZNlxBeo8hPm3ILTiGmY1OLF17+1xttTSU8or1sl1Sf+w4aIQWaI9wtQeEAVa3XA5/WuNBCBh8sHTBPTz7HmpUufu/O0V0Pch5XdK044hxSX66vBEY79FmVCZZAOtn0ysgLx9l2BnLZsQAuKEgTjQlhLHRuG7Gcq49MPUHeu7fzw=
+	t=1753756982; cv=none; b=Fui0/+6qT/vgN2n/bnxWsiqt/oLCspTQpZzPlexiDuivcWYIVYnRgczbJGnngRcE5KEcL+tjdbHkd8wwD+7ndVViSNu1i4lkeRsWi8qON/ESG2EYIDF7sVcnq0mCPRA9fNBa0jZ31RTc1rSwsHoB7TZWdhDcYL2OpknSCkN9Lco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753756940; c=relaxed/simple;
-	bh=Ww2f2ZpyJcTFXUKhLHEBwckLTS8uuClVa/W/yWcnBdQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JB/WTl4/q3UDZQ/an/b0NRXAdGcr35Mhmn5kJ0XaIhiTXiP4elmVwSNrkb6XCZVR/wxqOB5g6vXxKT5gIrkR4/DCIh72/CErAb1LsCRiMBpQ39t/VRSa/AyKCGsLIfRimsK+9fKphRm7sTKk82CgQzOrnimgOBHGcLbS+WIk6SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AT3A3M0t; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1753756982; c=relaxed/simple;
+	bh=FUBW7btLaXRKRkjIgHELqFpqMhpUxePyi5+xQPOOMu8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iTuLaYB2134o7xsmXZN04e4RaUqHCWJaP96qhNPytRRgPNm5CBn4BLtlwtmKH4+fgBoNkpm4tD2smSKQ2O2Yw/hvZieW6azTmnI2AmSuSbSO2c0xvPEjpkMIYzpAhfINInR0sOEul29rbrJoKWo8/jN0DSvBKhsWesX0QuBkLak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hGiqIgtc; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AT3A3M0t"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753756938;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ww2f2ZpyJcTFXUKhLHEBwckLTS8uuClVa/W/yWcnBdQ=;
-	b=AT3A3M0tNgzOgLC1SIqduDhekisS0X4PeU/9ioY4GxLlPNk5YbrQmv/MHLOXCGD89XtNuA
-	2NJb+iGAPvq4euF8OeMKCk6+ErIz0Js0tDZz4g0Mluex1AW9o3ATAJleTSJkfSrEfvPRg7
-	xYtNDghBVlR6Jlz6ETJ/XgPWrUwlgA8=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-467-g95PPq0dM3y_PnQ3c6KzBQ-1; Mon, 28 Jul 2025 22:42:16 -0400
-X-MC-Unique: g95PPq0dM3y_PnQ3c6KzBQ-1
-X-Mimecast-MFC-AGG-ID: g95PPq0dM3y_PnQ3c6KzBQ_1753756936
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-311ef4fb5fdso5896809a91.1
-        for <netdev@vger.kernel.org>; Mon, 28 Jul 2025 19:42:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hGiqIgtc"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-23ffa7b3b30so20765635ad.1;
+        Mon, 28 Jul 2025 19:43:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753756981; x=1754361781; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ltNpeYsaYiriqRttnjOxFTsDxOzsiWp+Zzreeo3S004=;
+        b=hGiqIgtcmf5H9MaN/GvK4zM4PYulDit+e1/SrigkIT5LkguA1HFLCuFZ6QRgpa+50x
+         VvGfFhfW2bCYqv4EWCX32piu5EpqbmdTNsoc8NddhPsXyUd0IV2/GIvzMDChzf4ReCdW
+         GuFW1Hz69wmGIOQDoJ18BYtp/ctEF300dJoTCuZDxkJmPALOElmEOGE3wcNfUWCt0wG6
+         AxX+gR4nf+eAvLCgb2dBIHBFfMcurkkgXKL5Mkb918SwECVPnBzFgFhcswXuXGnMp4X9
+         8W93mE2n8F1Blrde0HPUkf2TPOMO+23QNqNGglhPqOkSG1UY3QXGhXf6k0a4lQkGdjh7
+         KoOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753756935; x=1754361735;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ww2f2ZpyJcTFXUKhLHEBwckLTS8uuClVa/W/yWcnBdQ=;
-        b=hki7hYHYu+Wj8itSRVkLbUE7imo1kF36qobzobBxFTSJDPCCMNtcKiKCwZx6IGPFk6
-         t8LFILZsnjyWHn4SIbX4Q4nhLWjsmnFGx/9+IfMP+Qe2FTtYW1nitrJVj+YYqtqzDjCY
-         r2cKqFw6EqtYGrG+1N1gsLmRareZnfMpJJNgi75DTJt8yBOmJKIaDT9lM6VT+V9fviDK
-         vY+UwCg+r+8G41HhjSv6FrdeKMXETFUUz5HeKY0TUL51rIGVed5/HQfaYORE0LfmVpaN
-         EFyASmMgGIinNWpCYpbmyh4msk6iA5tp7yCZKClTpn7qM8F8KBklmFsQaJI6PrcseSNd
-         r1jA==
-X-Forwarded-Encrypted: i=1; AJvYcCW2UE5jcdaHilJVo/tker989z8CtjrRV/k1lrN8t92I0o2AKztG2eopxyoCpBur65gqQOYZo9o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzs49KtdU6QoOP7qLWLMaiLcDYbM+iBn44cfRmf2qX8103s6IPX
-	7tJZa4JXWVpoligmBjQPHameERjz9y6PkEv+TrOu3fudvDiQusNOQd//O46LM35pgShAq+eb2ow
-	vIL3Qx7lwS65b0O60c7Cp63CSzh2iu1PtkYdYzQm/r/NkkCW/34EbCCDrUGrMKusrFmzk+maiQv
-	0ie2zn7huINpRPtzFqN7/Ldp/Xb4TAk4C2
-X-Gm-Gg: ASbGnctpQd5CliLP1638UwUvFe7gDxaHIS87ofYV6Lt6Nsej7T8PKlSfSaqSEMzjIvW
-	NesOSLENUO8HMjuFevXgJPT0Oico4i4xJxzGhqGy1XQi6hed1N0JsRArnRG0xaw8WZ7KDJM/HOh
-	v0nDNdN5fptXYXdY4MUCM=
-X-Received: by 2002:a17:90b:280d:b0:311:c5d9:2c70 with SMTP id 98e67ed59e1d1-31e7789934emr19500226a91.15.1753756935540;
-        Mon, 28 Jul 2025 19:42:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHiTrGIt7eoxqCmwJKJyFiSjpEt/y/C2GLW4uxNz1WclVI1OSQpVtk4/Uh3bkfM8enIwqKkmmo/XskQneWdc8g=
-X-Received: by 2002:a17:90b:280d:b0:311:c5d9:2c70 with SMTP id
- 98e67ed59e1d1-31e7789934emr19500181a91.15.1753756935041; Mon, 28 Jul 2025
- 19:42:15 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753756981; x=1754361781;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ltNpeYsaYiriqRttnjOxFTsDxOzsiWp+Zzreeo3S004=;
+        b=Ln1crLz06Dd0SMUx43lXSkf4RZ680Se0m+0vjF6I6gMbDdkn4/lu6HARxUaFqxxpNH
+         lOLBBr64Q7u3zWxUpmxkBPy9RhZglLgxW17/t8KsL7nP/fed8GKvuBFhVdb9lFYdOFO8
+         zib6VTFKKni8xOr47PVPLZ8PDa4UVLpoqfSjCq0mkYxFoTL9f15Kqc85OSwKIasDPxf8
+         XPWhxOfz3WlNNTTLfu7ixX5PzvDgM/KIvGlkjh1Cb3dTtq8ozJ4nhjMzYomNZSwVyN8P
+         t1rEukEP8ZxNZzFMWj0ybVxDTJ+fdbi+URe/W5epuK+8ft8ZhK8hepWuYU2Yd/GCdgnP
+         6SnA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZJUsP8QfuFrWiSjv4jZPJH09SvQnfxU2bvGIC5qwjkiqq9WxXmjSlyXxd3IYXtnTNnIGJLmWZHV2j@vger.kernel.org, AJvYcCVciUi74/Ma25JDdBFfPgoUJIPcMrXFP97/qFJ5QXV5+l9e9L7KQ5HdRbFxZtzUEfSps2ViaqGW@vger.kernel.org, AJvYcCXprEP3Wk5LnaWF1V2+q7jMZ86j1LY12TC8WaK6jxmw+cAl+FP2JBQbdqBX2pSmPlUHEkjqH0vMTe4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7SHQV9JWZ75Cyc2pHcfzYwPA7j4cqNFi0jGH/dyqkSMb1czeH
+	bHA4jBTm1uLhH15uDGWQRILNRqHpTgYnINLZEFREFSncQlMZwCwiK+yy
+X-Gm-Gg: ASbGncsFdT86Eng6D7pr+fPx0OdWWaTpvciKLGh7Y/d4yMRpzVBHXqmgWSihZlROmKK
+	r+ZBKh+jy12l5BIH8U4nwgt/jtAMRUe8dKSPNQczyG/AHpGgO+4rz1V6mGWWspCqAR9H7Z55seg
+	UX7/n5m1bKmQ1UpY+0U9zUWk3joo6CZzVgmKEdyz5FZw0ApuoBnKV0ptGUqvbXveiTgO/XCoCL1
+	Y96aLZk5uL+LfczoW5j/ErlL9UFGAVgaB9rPer+5ZBHO9NKVCFUQsjSEDAKrAQxD+0g8lTVe8hE
+	gVALqheY87VbZA30+tHr+c35/xaKaHfApjhYvsFzFuYmZMU5Z5pSDA7oL9NYMyz6uCvFedGhy/C
+	8IwZqgGAIC1Xz3MeV1iGnUIs+kw==
+X-Google-Smtp-Source: AGHT+IFokfUWEoK1BlXtNlneBLUYXrht2yshaZ90k+I2IvTHjwBEMdVrmYfxeQvJuKnXo6G4WVr5+w==
+X-Received: by 2002:a17:903:234c:b0:234:d399:f948 with SMTP id d9443c01a7336-23fb3126f99mr175232585ad.33.1753756980621;
+        Mon, 28 Jul 2025 19:43:00 -0700 (PDT)
+Received: from fedora ([159.196.5.243])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fecd9ed12sm51327855ad.8.2025.07.28.19.42.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Jul 2025 19:43:00 -0700 (PDT)
+From: Wilfred Mallawa <wilfred.opensource@gmail.com>
+To: alistair.francis@wdc.com,
+	dlemoal@kernel.org,
+	chuck.lever@oracle.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	donald.hunter@gmail.com,
+	corbet@lwn.net,
+	kbusch@kernel.org,
+	axboe@kernel.dk,
+	hch@lst.de,
+	sagi@grimberg.me,
+	kch@nvidia.com,
+	borisp@nvidia.com,
+	john.fastabend@gmail.com,
+	jlayton@kernel.org,
+	neil@brown.name,
+	okorniev@redhat.com,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	kernel-tls-handshake@lists.linux.dev,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-nvme@lists.infradead.org,
+	linux-nfs@vger.kernel.org,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Subject: [RFC 0/4] net/tls: add support for the record size limit extension
+Date: Tue, 29 Jul 2025 12:41:47 +1000
+Message-ID: <20250729024150.222513-2-wilfred.opensource@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250718061812.238412-1-lulu@redhat.com> <20250721162834.484d352a@kernel.org>
- <CACGkMEtqhjTjdxPc=eqMxPNKFsKKA+5YP+uqWtonm=onm0gCrg@mail.gmail.com>
- <20250721181807.752af6a4@kernel.org> <CACGkMEtEvkSaYP1s+jq-3RPrX_GAr1gQ+b=b4oytw9_dGnSc_w@mail.gmail.com>
- <20250723080532.53ecc4f1@kernel.org> <SJ2PR21MB40138F71138A809C3A2D903BCA5FA@SJ2PR21MB4013.namprd21.prod.outlook.com>
- <20250723151622.0606cc99@kernel.org> <20250727200126.2682aa39@hermes.local> <20250728081907.3de03b67@kernel.org>
-In-Reply-To: <20250728081907.3de03b67@kernel.org>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 29 Jul 2025 10:42:02 +0800
-X-Gm-Features: Ac12FXzBxdqLecuJGApu98LjzbNbf9v9AdNqmCM9700YIpdOZpTnf4cOXXGt-No
-Message-ID: <CACGkMEvwAqY2dRYLnUnVvprjoH8uoyeHN9CB9=-xRUE80m6JSg@mail.gmail.com>
-Subject: Re: [PATCH RESEND] netvsc: transfer lower device max tso size
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Stephen Hemminger <stephen@networkplumber.org>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	Cindy Lu <lulu@redhat.com>, KY Srinivasan <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Michael Kelley <mhklinux@outlook.com>, Shradha Gupta <shradhagupta@linux.microsoft.com>, 
-	Kees Cook <kees@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Guillaume Nault <gnault@redhat.com>, 
-	Joe Damato <jdamato@fastly.com>, Ahmed Zaki <ahmed.zaki@intel.com>, 
-	"open list:Hyper-V/Azure CORE AND DRIVERS" <linux-hyperv@vger.kernel.org>, 
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 28, 2025 at 11:19=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> w=
-rote:
->
-> On Sun, 27 Jul 2025 20:01:26 -0700 Stephen Hemminger wrote:
-> > On Wed, 23 Jul 2025 15:16:22 -0700
-> > Jakub Kicinski <kuba@kernel.org> wrote:
-> > >
-> > > > Actually, we had used the common bonding driver 9 years ago. But it=
-'s
-> > > > replaced by this kernel/netvsc based "transparent" bonding mode. Se=
-e
-> > > > the patches listed below.
-> > > >
-> > > > The user mode bonding scripts were unstable, and difficult to deliv=
-er
-> > > > & update for various distros. So Stephen developed the new "transpa=
-rent"
-> > > > bonding mode, which greatly improves the situation.
-> > >
-> > > I specifically highlighted systemd-networkd as the change in the user
-> > > space landscape.
-> >
-> > Haiyang tried valiantly but getting every distro to do the right thing
-> > with VF's bonding and hot plug was impossible to support.
->
-> I understand, but I also don't want it to be an upstream Linux problem.
->
-> Again, no other cloud provider seems to have this issue, AFAIU.
->
+From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 
-There's a failover module which is used by virtio-net now. Maybe
-that's a good way for netvsc as well?
+During a tls handshake, an endpoint may specify a maximum record size limit. As
+specified by [1]. which allows peers to negotiate a maximum plaintext record
+size during the TLS handshake. If a TLS endpoint receives a record larger
+than its advertised limit, it must send a fatal "record_overflow" alert [1].
+Currently, this limit is not visble to the kernel, particularly in the case
+where userspace handles the handshake (tlshd/gnutls).
 
-Thanks
+This series in conjunction with the respective userspace changes for tlshd [2]
+and gnutls [3], adds support for the kernel the receive the negotiated record
+size limit through the existing netlink communication layer, and use this
+value to limit outgoing records to the size specified.
+
+[1] https://www.rfc-editor.org/rfc/rfc8449
+[2] https://github.com/oracle/ktls-utils/pull/112
+[3] https://gitlab.com/gnutls/gnutls/-/merge_requests/1989
+
+Wilfred Mallawa (4):
+  net/handshake: get negotiated tls record size limit
+  net/tls/tls_sw: use the record size limit specified
+  nvme/host/tcp: set max record size in the tls context
+  nvme/target/tcp: set max record size in the tls context
+
+ Documentation/netlink/specs/handshake.yaml |  3 +++
+ Documentation/networking/tls-handshake.rst |  8 +++++++-
+ drivers/nvme/host/tcp.c                    | 18 +++++++++++++++++-
+ drivers/nvme/target/tcp.c                  | 16 +++++++++++++++-
+ include/net/handshake.h                    |  4 +++-
+ include/net/tls.h                          |  1 +
+ include/uapi/linux/handshake.h             |  1 +
+ net/handshake/genl.c                       |  5 +++--
+ net/handshake/tlshd.c                      | 15 +++++++++++++--
+ net/sunrpc/svcsock.c                       |  4 +++-
+ net/sunrpc/xprtsock.c                      |  4 +++-
+ net/tls/tls_sw.c                           | 10 +++++++++-
+ 12 files changed, 78 insertions(+), 11 deletions(-)
+
+-- 
+2.50.1
 
