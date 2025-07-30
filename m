@@ -1,266 +1,188 @@
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2462AE74;
-	Wed, 30 Jul 2025 19:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00CB1F463A
+	for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 20:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753905042; cv=none; b=KryFNEBihJR6AuEqepa21HCUkmubwFDa82mAj+fG8raeQLcMUorf7NcyhrMwGkxmKkKVw6TH3Yo9upc/VUVj8fedUCQ0dFJN0Ticu3gu79rCP+hHe4YXmrWLcwN/U6QccPKZfitcvNEswS+8MJl7daKzWofePM4UGi8AOVWdwps=
+	t=1753906144; cv=none; b=IIoIYwZSgEK1QpYQrIm67sgpo2LMCjlGkXzUtCA08Kb5E1v1CwenrGVsNV/Mq9CX20i8eHT1Ig7JOj+b0wrdZ89Z6Ane7YRtIIOI38lo9PTxVhvND1jMh18X33a5oj942bUlBdmym9alBr/We6XtzehRze11KWLHSDuw8EeMF9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753905042; c=relaxed/simple;
-	bh=khtml9RtnRjSSPRRrCR/+QfYGLYLBLAqmAvwfUCjcVo=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=aPMEWbCfD9RQ+953COUmZuwMQyRFcSJvx3oLLEVZueLtrO1/FTruV8xs5qtqjEZUCP/yrbZstelKXdIPhGebAnqolXeyLvE8OHUro0zkriWdsNMDgxNC7AntSJQKCGeuPZR653J8BBBCLzSAYBjYYyN2GVVWNQb1LusDaY7TgGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=jQg5miRR; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1753906144; c=relaxed/simple;
+	bh=/Hd4R6FSkO6xhm9GGqVVaFKiw77GL8T3XDPl24uotFw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=SfzAU5ivyADSGvErOQi5+P7U4ol8+8iHsVAFvFl0seNZJ16160ejUlxI17wbxXBFTkrtXxWy8l4m0+NX7G71eXLvw3det8kZAa8ReB+srI6smI4WzqZpgM3k3aHWvPsHfaiPKpFbKELxSMcmqPenD20nrMGJ3PoMMVash8GAE+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eeQkkeef; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="jQg5miRR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eeQkkeef"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753906141;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rKMfoBw5WjFUVFeC4YBqI6PXNmxYVkoWOnY4zuBg4iA=;
+	b=eeQkkeefi/AlI/3rVm0ikm/g1NnOdY+yFCHrjfaI3zSLoE/asSBwMGRdiad1HpTOo0H/h9
+	k1LuH0bvtDGUhxnPl5EU4VivBosQMajXB5CRajkVWk2beyTIB61DAvnnlKvbO/b3UFkHJb
+	a2CL3+tYEePQW2xxZhBjOTfm+pB8Bt0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-529-G8TUHdE6PP-grGhuZaY6cg-1; Wed,
+ 30 Jul 2025 16:08:59 -0400
+X-MC-Unique: G8TUHdE6PP-grGhuZaY6cg-1
+X-Mimecast-MFC-AGG-ID: G8TUHdE6PP-grGhuZaY6cg_1753906136
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 37DF219560B0;
+	Wed, 30 Jul 2025 20:08:54 +0000 (UTC)
+Received: from okorniev-mac.redhat.com (unknown [10.22.90.16])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DA45A19560B1;
+	Wed, 30 Jul 2025 20:08:42 +0000 (UTC)
+From: Olga Kornievskaia <okorniev@redhat.com>
+To: chuck.lever@oracle.com,
+	jlayton@kernel.org,
+	trondmy@hammerspace.com,
+	anna.schumaker@oracle.com,
+	hch@lst.de,
+	sagi@grimberg.me,
+	kch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: linux-nfs@vger.kernel.org,
+	linux-nvme@lists.infradead.org,
+	netdev@vger.kernel.org,
+	kernel-tls-handshake@lists.linux.dev,
+	neil@brown.name,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com,
+	hare@suse.de,
+	horms@kernel.org,
+	kbusch@kernel.org
+Subject: [PATCH 1/4] sunrpc: fix handling of server side tls alerts
+Date: Wed, 30 Jul 2025 16:08:32 -0400
+Message-Id: <20250730200835.80605-2-okorniev@redhat.com>
+In-Reply-To: <20250730200835.80605-1-okorniev@redhat.com>
+References: <20250730200835.80605-1-okorniev@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1753905027;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/q1/ijPw1e2Q92rioAtt4ZINjgooInrMuTW/Z/Sz9xE=;
-	b=jQg5miRR+84MPUTRh150aKHGLt4ikOIhQHFH9fpBqN92Q6FOwIUw3Uo0o19lX/IChB8Z6I
-	bmj40z2X4yv5x2/EPMGEtL7ZNuMzB1W3lxHps+kfmN6D/ivH4AIUanLXcFqRNuQj8dyDHw
-	AXK6VtpREotTOM8pqEMRgI0HHwDgvmdUHHOuMoH9WfFfs3jBdnzYnMUDqvix3dBASvJ4lo
-	QL+OtiBvzy4slFX8bG4+Hk/TKaAG5QnNZaoAJJJQvkZkEQ4UrV7Ojb77GCdxKzFT9Hb8LG
-	twq1w8QfXiGt72yotjLeokmNVrDGR7xPczBTKy5w9y4+FQ844zVBCyNXSNWxlA==
-Date: Wed, 30 Jul 2025 21:50:25 +0200
-From: Dragan Simic <dsimic@manjaro.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Diederik de Haas <didi.debian@cknow.org>, Lee Jones <lee@kernel.org>,
- Pavel Machek <pavel@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-leds@vger.kernel.org, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: BUG: Circular locking dependency on netdev led trigger on NanoPi
- R5S
-In-Reply-To: <6817efe1-f2c2-4686-bdf1-fca11f066e3a@arm.com>
-References: <DBLBPIBKFCJV.36AVW8JY88L7H@cknow.org>
- <6817efe1-f2c2-4686-bdf1-fca11f066e3a@arm.com>
-Message-ID: <475ee9ae8cdca5ce86b708fe0ade7c9d@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Hello Robin and Diederik,
+Scott Mayhew discovered a security exploit in NFS over TLS in
+tls_alert_recv() due to its assumption it can read data from
+the msg iterator's kvec..
 
-On 2025-07-25 20:12, Robin Murphy wrote:
-> On 2025-07-25 6:48 pm, Diederik de Haas wrote:
->> I have a FriendlyELEC NanoPi R5S (with rk3568 SoC) and in commit
->> 1631cbdb8089 ("arm64: dts: rockchip: Improve LED config for NanoPi 
->> R5S")
->> 
->> I tried to improve its LED configuration and that included
->> ``linux,default-trigger = "netdev"``
->> 
->> Problem: sometimes I got a 'hung task' error which resulted in the WAN
->> port not to come up (that's the only one I use) and logging in via
->> serial also didn't work, so pulling the plug was the only remedy.
->> 
->> Robin Murphy quickly identified that it likely had to do with led
->> triggers and removing those netdev triggers made the problem go 
->> away[1].
->> To find out what actually caused it, I built a kernel with 
->> PROOF_LOCKING
->> and PRINTK_CALLER enabled, which after adding a patch which fixed an
->> OOPS [2], showed the underlaying problem:
-> 
-> For the record, I think the actual deadlock condition Diederik's
-> system hits in practice is a shorter cycle, wherein immediately after
-> acquiring pernet_ops_rwsem, thread #0 then tries to take rtnl_mutex,
-> which forms a straight inversion against thread #2 (which holds
-> rtnl_mutex from devinet_ioctl()).
+kTLS implementation splits TLS non-data record payload between
+the control message buffer (which includes the type such as TLS
+aler or TLS cipher change) and the rest of the payload (say TLS
+alert's level/description) which goes into the msg payload buffer.
 
-Thanks for the bug report and for the additional insights!
+This patch proposes to rework how control messages are setup and
+used by sock_recvmsg().
 
-I've spent some time digging through the LED subsystem, which I'm
-already somewhat familiar with, and I think I've narrowed down the
-root cause of this deadlock.
+If no control message structure is setup, kTLS layer will read and
+process TLS data record types. As soon as it encounters a TLS control
+message, it would return an error. At that point, NFS can setup a
+kvec backed msg buffer and read in the control message such as a
+TLS alert. Scott found that msg iterator can advance the kvec
+pointer as a part of the copy process thus we need to revert the
+iterator before calling into the tls_alert_recv.
 
-I'll send a preliminary patch soon, after I make sure that the root
-cause is identified correctly, and I hope Diederik will be willing
-to test the patch.  If so, and if the patch checks out to be the
-cure, I'll prepare and submit a proper patch, of course.
+Reported-by: Scott Mayhew <smayhew@redhat.com>
+Fixes: 5e052dda121e ("SUNRPC: Recognize control messages in server-side TCP socket code")
+Suggested-by: Trond Myklebust <trondmy@hammerspace.com>
+Suggested-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+---
+ net/sunrpc/svcsock.c | 43 +++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 35 insertions(+), 8 deletions(-)
 
->>     ======================================================
->>     WARNING: possible circular locking dependency detected
->>     6.16-rc7+unreleased-arm64-cknow #1 Not tainted
->>     ------------------------------------------------------
->>     modprobe/936 is trying to acquire lock:
->>     ffffc943e0edc3b0 (pernet_ops_rwsem){++++}-{4:4}, at: 
->> register_netdevice_notifier+0x38/0x148
->> 
->>     but task is already holding lock:
->>     ffff0001f2762248 (&led_cdev->trigger_lock){+.+.}-{4:4}, at: 
->> led_trigger_register+0x14c/0x1e0
->> 
->>     which lock already depends on the new lock.
->> 
->>     the existing dependency chain (in reverse order) is:
->> 
->>     -> #3 (&led_cdev->trigger_lock){+.+.}-{4:4}:
->>            lock_acquire+0x1cc/0x348
->>            down_write+0x40/0xd8
->>            led_trigger_set_default+0x5c/0x170
->>            led_classdev_register_ext+0x340/0x488
->>            __sdhci_add_host+0x190/0x368 [sdhci]
->>            dwcmshc_probe+0x2b8/0x6b0 [sdhci_of_dwcmshc]
->>            platform_probe+0x70/0xe8
->>            really_probe+0xc8/0x3a0
->>            __driver_probe_device+0x84/0x160
->>            driver_probe_device+0x44/0x128
->>            __device_attach_driver+0xc4/0x170
->>            bus_for_each_drv+0x90/0xf8
->>            __device_attach_async_helper+0xc0/0x120
->>            async_run_entry_fn+0x40/0x180
->>            process_one_work+0x23c/0x640
->>            worker_thread+0x1b4/0x360
->>            kthread+0x150/0x250
->>            ret_from_fork+0x10/0x20
->> 
->>     -> #2 (triggers_list_lock){++++}-{4:4}:
->>            lock_acquire+0x1cc/0x348
->>            down_write+0x40/0xd8
->>            led_trigger_register+0x58/0x1e0
->>            phy_led_triggers_register+0xf4/0x258 [libphy]
->>            phy_attach_direct+0x328/0x3a8 [libphy]
->>            phylink_fwnode_phy_connect+0xb0/0x138 [phylink]
->>            __stmmac_open+0xec/0x520 [stmmac]
->>            stmmac_open+0x4c/0xe8 [stmmac]
->>            __dev_open+0x13c/0x310
->>            __dev_change_flags+0x1d4/0x260
->>            netif_change_flags+0x2c/0x80
->>            dev_change_flags+0x90/0xd0
->>            devinet_ioctl+0x55c/0x730
->>            inet_ioctl+0x1e4/0x200
->>            sock_do_ioctl+0x6c/0x140
->>            sock_ioctl+0x328/0x3c0
->>            __arm64_sys_ioctl+0xb4/0x118
->>            invoke_syscall+0x6c/0x100
->>            el0_svc_common.constprop.0+0x48/0xf0
->>            do_el0_svc+0x24/0x38
->>            el0_svc+0x54/0x1e0
->>            el0t_64_sync_handler+0x10c/0x140
->>            el0t_64_sync+0x198/0x1a0
->> 
->>     -> #1 (rtnl_mutex){+.+.}-{4:4}:
->>            lock_acquire+0x1cc/0x348
->>            __mutex_lock+0xac/0x590
->>            mutex_lock_nested+0x2c/0x40
->>            rtnl_lock+0x24/0x38
->>            register_netdevice_notifier+0x40/0x148
->>            rtnetlink_init+0x40/0x68
->>            netlink_proto_init+0x120/0x158
->>            do_one_initcall+0x88/0x3b8
->>            kernel_init_freeable+0x2d0/0x340
->>            kernel_init+0x28/0x160
->>            ret_from_fork+0x10/0x20
->> 
->>     -> #0 (pernet_ops_rwsem){++++}-{4:4}:
->>            check_prev_add+0x114/0xcb8
->>            __lock_acquire+0x12e8/0x15f0
->>            lock_acquire+0x1cc/0x348
->>            down_write+0x40/0xd8
->>            register_netdevice_notifier+0x38/0x148
->>            netdev_trig_activate+0x18c/0x1e8 [ledtrig_netdev]
->>            led_trigger_set+0x1d4/0x328
->>            led_trigger_register+0x194/0x1e0
->>            netdev_led_trigger_init+0x20/0xff8 [ledtrig_netdev]
->>            do_one_initcall+0x88/0x3b8
->>            do_init_module+0x5c/0x270
->>            load_module+0x1ed8/0x2608
->>            init_module_from_file+0x94/0x100
->>            idempotent_init_module+0x1e8/0x2f0
->>            __arm64_sys_finit_module+0x70/0xe8
->>            invoke_syscall+0x6c/0x100
->>            el0_svc_common.constprop.0+0x48/0xf0
->>            do_el0_svc+0x24/0x38
->>            el0_svc+0x54/0x1e0
->>            el0t_64_sync_handler+0x10c/0x140
->>            el0t_64_sync+0x198/0x1a0
->> 
->>     other info that might help us debug this:
->> 
->>     Chain exists of:
->>       pernet_ops_rwsem --> triggers_list_lock --> 
->> &led_cdev->trigger_lock
->> 
->>      Possible unsafe locking scenario:
->> 
->>            CPU0                    CPU1
->>            ----                    ----
->>       lock(&led_cdev->trigger_lock);
->>                                    lock(triggers_list_lock);
->>                                    lock(&led_cdev->trigger_lock);
->>       lock(pernet_ops_rwsem);
->> 
->>      *** DEADLOCK ***
->> 
->>     2 locks held by modprobe/936:
->>      #0: ffffc943e0d2baa8 (leds_list_lock){++++}-{4:4}, at: 
->> led_trigger_register+0x10c/0x1e0
->>      #1: ffff0001f2762248 (&led_cdev->trigger_lock){+.+.}-{4:4}, at: 
->> led_trigger_register+0x14c/0x1e0
->> 
->>     stack backtrace:
->>     CPU: 0 UID: 0 PID: 936 Comm: modprobe Not tainted 
->> 6.16-rc7+unreleased-arm64-cknow #1 PREEMPTLAZY  Debian 6.16~rc7-2~exp1
->>     Hardware name: FriendlyElec NanoPi R5S (DT)
->>     Call trace:
->>      show_stack+0x34/0xa0 (C)
->>      dump_stack_lvl+0x70/0x98
->>      dump_stack+0x18/0x24
->>      print_circular_bug+0x230/0x280
->>      check_noncircular+0x174/0x188
->>      check_prev_add+0x114/0xcb8
->>      __lock_acquire+0x12e8/0x15f0
->>      lock_acquire+0x1cc/0x348
->>      down_write+0x40/0xd8
->>      register_netdevice_notifier+0x38/0x148
->>      netdev_trig_activate+0x18c/0x1e8 [ledtrig_netdev]
->>      led_trigger_set+0x1d4/0x328
->>      led_trigger_register+0x194/0x1e0
->>      netdev_led_trigger_init+0x20/0xff8 [ledtrig_netdev]
->>      do_one_initcall+0x88/0x3b8
->>      do_init_module+0x5c/0x270
->>      load_module+0x1ed8/0x2608
->>      init_module_from_file+0x94/0x100
->>      idempotent_init_module+0x1e8/0x2f0
->>      __arm64_sys_finit_module+0x70/0xe8
->>      invoke_syscall+0x6c/0x100
->>      el0_svc_common.constprop.0+0x48/0xf0
->>      do_el0_svc+0x24/0x38
->>      el0_svc+0x54/0x1e0
->>      el0t_64_sync_handler+0x10c/0x140
->>      el0t_64_sync+0x198/0x1a0
->>     leds-gpio gpio-leds: bus: 'platform': really_probe: bound device 
->> to driver leds-gpio
->> 
->> Full serial log can be found at [3] which is quite verbose and the 
->> boot
->> took way longer then normal as the following was added to cmdline:
->> ``dyndbg="file dd.c func really_probe +p" maxcpus=1``
->> 
->> Free free to ask for additional info and/or to run tests.
->> 
->> [1] 
->> https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git/commit/?h=arm/fixes&id=912b1f2a796ec73530a709b11821cb0c249fb23e
->> [2] 
->> https://lore.kernel.org/linux-rockchip/f81b88df-9959-4968-a60a-b7efd3d5ea24@arm.com/
->> [3] 
->> https://paste.sr.ht/~diederik/142e92bfb29bbb58bca18a74cdffc5e0ba79081c
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index 46c156b121db..e2c5e0e626f9 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -257,20 +257,47 @@ svc_tcp_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
+ }
+ 
+ static int
+-svc_tcp_sock_recv_cmsg(struct svc_sock *svsk, struct msghdr *msg)
++svc_tcp_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags)
+ {
+ 	union {
+ 		struct cmsghdr	cmsg;
+ 		u8		buf[CMSG_SPACE(sizeof(u8))];
+ 	} u;
+-	struct socket *sock = svsk->sk_sock;
++	u8 alert[2];
++	struct kvec alert_kvec = {
++		.iov_base = alert,
++		.iov_len = sizeof(alert),
++	};
++	struct msghdr msg = {
++		.msg_flags = *msg_flags,
++		.msg_control = &u,
++		.msg_controllen = sizeof(u),
++	};
++	int ret;
++
++	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &alert_kvec, 1,
++		      alert_kvec.iov_len);
++	ret = sock_recvmsg(sock, &msg, MSG_DONTWAIT);
++	if (ret > 0 &&
++	    tls_get_record_type(sock->sk, &u.cmsg) == TLS_RECORD_TYPE_ALERT) {
++		iov_iter_revert(&msg.msg_iter, ret);
++		ret = svc_tcp_sock_process_cmsg(sock, &msg, &u.cmsg, -EAGAIN);
++	}
++	return ret;
++}
++
++static int
++svc_tcp_sock_recvmsg(struct svc_sock *svsk, struct msghdr *msg)
++{
+ 	int ret;
++	struct socket *sock = svsk->sk_sock;
+ 
+-	msg->msg_control = &u;
+-	msg->msg_controllen = sizeof(u);
+ 	ret = sock_recvmsg(sock, msg, MSG_DONTWAIT);
+-	if (unlikely(msg->msg_controllen != sizeof(u)))
+-		ret = svc_tcp_sock_process_cmsg(sock, msg, &u.cmsg, ret);
++	if (msg->msg_flags & MSG_CTRUNC) {
++		msg->msg_flags &= ~(MSG_CTRUNC | MSG_EOR);
++		if (ret == 0 || ret == -EIO)
++			ret = svc_tcp_sock_recv_cmsg(sock, &msg->msg_flags);
++	}
+ 	return ret;
+ }
+ 
+@@ -321,7 +348,7 @@ static ssize_t svc_tcp_read_msg(struct svc_rqst *rqstp, size_t buflen,
+ 		iov_iter_advance(&msg.msg_iter, seek);
+ 		buflen -= seek;
+ 	}
+-	len = svc_tcp_sock_recv_cmsg(svsk, &msg);
++	len = svc_tcp_sock_recvmsg(svsk, &msg);
+ 	if (len > 0)
+ 		svc_flush_bvec(bvec, len, seek);
+ 
+@@ -1018,7 +1045,7 @@ static ssize_t svc_tcp_read_marker(struct svc_sock *svsk,
+ 		iov.iov_base = ((char *)&svsk->sk_marker) + svsk->sk_tcplen;
+ 		iov.iov_len  = want;
+ 		iov_iter_kvec(&msg.msg_iter, ITER_DEST, &iov, 1, want);
+-		len = svc_tcp_sock_recv_cmsg(svsk, &msg);
++		len = svc_tcp_sock_recvmsg(svsk, &msg);
+ 		if (len < 0)
+ 			return len;
+ 		svsk->sk_tcplen += len;
+-- 
+2.47.1
+
