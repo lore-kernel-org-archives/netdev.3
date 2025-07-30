@@ -1,38 +1,38 @@
 Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85212397B0
-	for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 23:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FC623AE60
+	for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 23:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753919188; cv=none; b=noNfcf7ESkT+Ytpolb1vlnJ8mBRxLvWVtE05hiZHaStZ4Keen6PkvQvsAZkr7O8pUxyWbeFQs0Gg/bv1o+DwUfJP65fCZ3ggn6m5bZ65ss1tdeIVPS4sQRX9a3boSQgtNM5zMJdEIR73EEHorpgRbgsf3fxkf6MRlA1REN6U1PE=
+	t=1753919189; cv=none; b=ZdLoOGyo0jUc5lAt4SR/sjkoPN+Ap4AnbumMEaJCWNzjo8vJYFAI5douwdkmLpg1zJ2LY8RXwFL7sZ/hMYHxJrAWdNTW0DXyD+PM/LuC0VRvBtBL/Y8uZFU9IpcPIpLL2ZcuFFv1OcYl2zrH0qxrWRTIqIkLoriQvonF7Q8qa7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753919188; c=relaxed/simple;
-	bh=O7aFful4cIylGE+OUqTeZ2+JY9rZ9IP8FCb9ORWh1Pc=;
+	s=arc-20240116; t=1753919189; c=relaxed/simple;
+	bh=Ty/l4/7bZiKrZwoRQCSujQaNaeY/A/wXhYbZ5QsSHCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T2KBa32XgraOsChgTqyGBXNNaMkPMmbxmexDctQrKH95PQid7LVELTWZVmsDhYZZIZ7RRCe+SnFbOW+q4PpLyWlLjaFve2cpWO5XlMdmU6HNIBGRIXqDVcLggLYj2JEZNQ23nb0hXcTZijTQ1Cv7pdp8gVK82xQRa73Zj/4o/MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=tgvTThOO; arc=none smtp.client-ip=171.64.64.25
+	 MIME-Version; b=orwrivfhs7ubX3+se+Rj1eFKYs4xjWMFuSC/5ZRnB/lpzNMX/e6ORj4Jlny/BYTMRraVanbxO5zOJzHLTHMa+XY65GKy+8P/9ISOU/Tz6Ey9pai2xKAboeK1ABmEzQ4zdGgaKP3Bf0vDqpaS3srdkoKxGPRnecz67lIxavnovTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=cpMdkGpz; arc=none smtp.client-ip=171.64.64.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="tgvTThOO"
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="cpMdkGpz"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=EkgOftkWLhzlEArZc6TUgTXiwgwserunatIRXj9SbLA=; t=1753919186; x=1754783186; 
-	b=tgvTThOO+sXNeErugtT7FGtAzmA+WRrFEoUL7GapGWTF+YrwuqWYRImOiknePHKOQsj+8zyMdaV
-	oMKcrTAku4Uv/LY4GjeXsrfbAZf41lwjwK9GMZskQbo0qvH54492imJdjOiBSg9oqI0lBYxuCIpW3
-	go47iY4bdeyfCb9Xofed/4noQJhhPMfHsWbDMwXFvDtF+cz864zXRmd7+7f5mUhovGRBrA+2DbseT
-	RTw1vwvPHFs+pqdIhL5PptjQHAMd/rBB1uqwj76jK2T8sNDK29giYrdxoVPiyY0zzdr2w7uQ2vgUC
-	HREJ/fRd+/jQm0V9L+4qkYOebAu4g68IVaow==;
+	bh=TI+hnEeTEMjIUWm56exhXXqoYZplU5AeOrXotqVax38=; t=1753919187; x=1754783187; 
+	b=cpMdkGpztW/PRVR8WKWlcaqpDtEyzfeIlTJ7Gw5bGsoKSJOA532TEK/8Ok09/OElNX2j81keOVt
+	v3r++oPrXj1H/cf5/eqwwT+PuZYNoH0PG48CndhKk6RoAPk6Q+6oKpUn3yfrNDJyMVPugOgNWQP4b
+	YRh3/F7BRwze6D65Z23dBWykqf+ZA4pUFoVUvclhSiK4ELPkSjOO0ptoB+Hz0MolNNxpr0MxyoGes
+	km1MB7oIo3gFp062g1Fch3vzuvLh+9vexeYPd+PO1BzTtli1ght75rDKio71iNHCysgzNp0ZlTJCh
+	z6FTZ0ROF7Nyo2WSpoKXg2EUJ9ylyVEH1dAQ==;
 Received: from ouster448.stanford.edu ([172.24.72.71]:58817 helo=localhost.localdomain)
 	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ouster@cs.stanford.edu>)
-	id 1uhGV1-0006n4-01; Wed, 30 Jul 2025 16:46:20 -0700
+	id 1uhGV7-0006n4-Sz; Wed, 30 Jul 2025 16:46:27 -0700
 From: John Ousterhout <ouster@cs.stanford.edu>
 To: netdev@vger.kernel.org
 Cc: pabeni@redhat.com,
@@ -40,9 +40,9 @@ Cc: pabeni@redhat.com,
 	horms@kernel.org,
 	kuba@kernel.org,
 	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [RFC net-next v13 04/15] net: homa: create homa_pool.h and homa_pool.c
-Date: Wed, 30 Jul 2025 16:45:32 -0700
-Message-ID: <20250730234544.4357-5-ouster@cs.stanford.edu>
+Subject: [RFC net-next v13 08/15] net: homa: create homa_pacer.h and homa_pacer.c
+Date: Wed, 30 Jul 2025 16:45:36 -0700
+Message-ID: <20250730234544.4357-9-ouster@cs.stanford.edu>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20250730234544.4357-1-ouster@cs.stanford.edu>
 References: <20250730234544.4357-1-ouster@cs.stanford.edu>
@@ -54,678 +54,554 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -101.0
-X-Scan-Signature: 9eb2310e19c4ce8c205e58ea81a41f0a
+X-Scan-Signature: 8f080d08e63d151887e6ad0c53af18b2
 
-These files implement Homa's mechanism for managing application-level
-buffer space for incoming messages This mechanism is needed to allow
-Homa to copy data out to user space in parallel with receiving packets;
-it was discussed in a talk at NetDev 0x17.
+These files provide facilities to pace packet output in order to prevent
+queue buildup in the NIC. This functionality is needed to implement SRPT
+on output, so short messages don't get stuck in long NIC queues. Note: the
+pacer eventually needs to be replaced with a Homa-specific qdisc, which can
+better manage simultaneous transmissions by Homa and TCP. The current
+implementation can coexist with TCP and doesn't harm TCP, but
+Homa's latency suffers when TCP runs concurrently.
 
 Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
 
 ---
+Changes for v12:
+* Clean up pacer thread exit: use kthread_should_stop instead of custom
+  variables.
+
 Changes for v11:
-* Rework the mechanism for waking up RPCs that stalled waiting for
-  buffer pool space
+* Clean up sparse annotations.
+* Move link_mbps variable from struct homa_pacer back to struct homa.
+* Cleanup and simplify use of RPC reference counts.
 
 Changes for v10:
-* Fix minor syntactic issues such as reverse xmas tree
+* Revise sparse annotations to eliminate __context__ definition
+* Use kzalloc instead of __GFP_ZERO
+* Remove log messages after alloc errors
+* Replace __u64 with u64
+* Fix xmastree violations
 
 Changes for v9:
-* Eliminate use of _Static_assert
-* Use new homa_clock abstraction layer.
-* Allow memory to be allocated without GFP_ATOMIC
+* Add support for homa_net objects
+* Use new homa_clock abstraction layer
 * Various name improvements (e.g. use "alloc" instead of "new" for functions
   that allocate memory)
-* Remove sync.txt, move its contents into comments (mostly in homa_impl.h)
 
 Changes for v8:
-* Refactor homa_pool APIs (move allocation/deallocation into homa_pool.c,
-  move locking responsibility out)
-
-Changes for v7:
-* Use u64 and __u64 properly
-* Eliminate extraneous use of RCU
-* Refactor pool->cores to use percpu variable
-* Use smp_processor_id instead of raw_smp_processor_id
+* This file is new in v8 (functionality extracted from other files)
 ---
- net/homa/homa_pool.c | 483 +++++++++++++++++++++++++++++++++++++++++++
- net/homa/homa_pool.h | 136 ++++++++++++
- 2 files changed, 619 insertions(+)
- create mode 100644 net/homa/homa_pool.c
- create mode 100644 net/homa/homa_pool.h
+ net/homa/homa_impl.h  |   4 +
+ net/homa/homa_pacer.c | 303 ++++++++++++++++++++++++++++++++++++++++++
+ net/homa/homa_pacer.h | 173 ++++++++++++++++++++++++
+ 3 files changed, 480 insertions(+)
+ create mode 100644 net/homa/homa_pacer.c
+ create mode 100644 net/homa/homa_pacer.h
 
-diff --git a/net/homa/homa_pool.c b/net/homa/homa_pool.c
+diff --git a/net/homa/homa_impl.h b/net/homa/homa_impl.h
+index 2ab25eec333c..d17e8e6d61be 100644
+--- a/net/homa/homa_impl.h
++++ b/net/homa/homa_impl.h
+@@ -421,6 +421,10 @@ static inline bool homa_make_header_avl(struct sk_buff *skb)
+ 
+ extern unsigned int homa_net_id;
+ 
++int      homa_xmit_control(enum homa_packet_type type, void *contents,
++			   size_t length, struct homa_rpc *rpc);
++void     homa_xmit_data(struct homa_rpc *rpc, bool force);
++
+ /**
+  * homa_net_from_net() - Return the struct homa_net associated with a particular
+  * struct net.
+diff --git a/net/homa/homa_pacer.c b/net/homa/homa_pacer.c
 new file mode 100644
-index 000000000000..60cd79eef493
+index 000000000000..2450445d48f7
 --- /dev/null
-+++ b/net/homa/homa_pool.c
-@@ -0,0 +1,483 @@
++++ b/net/homa/homa_pacer.c
+@@ -0,0 +1,303 @@
 +// SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+
 +
++/* This file implements the Homa pacer, which implements SRPT for packet
++ * output. In order to do that, it throttles packet transmission to prevent
++ * the buildup of large queues in the NIC.
++ */
++
 +#include "homa_impl.h"
-+#include "homa_pool.h"
-+
-+/* This file contains functions that manage user-space buffer pools. */
-+
-+/* Pools must always have at least this many bpages (no particular
-+ * reasoning behind this value).
-+ */
-+#define MIN_POOL_SIZE 2
-+
-+/* Used when determining how many bpages to consider for allocation. */
-+#define MIN_EXTRA 4
-+
-+/**
-+ * set_bpages_needed() - Set the bpages_needed field of @pool based
-+ * on the length of the first RPC that's waiting for buffer space.
-+ * The caller must own the lock for @pool->hsk.
-+ * @pool: Pool to update.
-+ */
-+static void set_bpages_needed(struct homa_pool *pool)
-+{
-+	struct homa_rpc *rpc = list_first_entry(&pool->hsk->waiting_for_bufs,
-+						struct homa_rpc, buf_links);
-+
-+	pool->bpages_needed = (rpc->msgin.length + HOMA_BPAGE_SIZE - 1) >>
-+			      HOMA_BPAGE_SHIFT;
-+}
-+
-+/**
-+ * homa_pool_alloc() - Allocate and initialize a new homa_pool (it will have
-+ * no region associated with it until homa_pool_set_region is invoked).
-+ * @hsk:          Socket the pool will be associated with.
-+ * Return: A pointer to the new pool or a negative errno.
-+ */
-+struct homa_pool *homa_pool_alloc(struct homa_sock *hsk)
-+{
-+	struct homa_pool *pool;
-+
-+	pool = kzalloc(sizeof(*pool), GFP_KERNEL);
-+	if (!pool)
-+		return ERR_PTR(-ENOMEM);
-+	pool->hsk = hsk;
-+	return pool;
-+}
-+
-+/**
-+ * homa_pool_set_region() - Associate a region of memory with a pool.
-+ * @hsk:          Socket whose pool the region will be associated with.
-+ *                Must not be locked, and the pool must not currently
-+ *                have a region associated with it.
-+ * @region:       First byte of the memory region for the pool, allocated
-+ *                by the application; must be page-aligned.
-+ * @region_size:  Total number of bytes available at @buf_region.
-+ * Return: Either zero (for success) or a negative errno for failure.
-+ */
-+int homa_pool_set_region(struct homa_sock *hsk, void __user *region,
-+			 u64 region_size)
-+{
-+	struct homa_pool_core __percpu *cores;
-+	struct homa_bpage *descriptors;
-+	int i, result, num_bpages;
-+	struct homa_pool *pool;
-+
-+	if (((uintptr_t)region) & ~PAGE_MASK)
-+		return -EINVAL;
-+
-+	/* Allocate memory before locking the socket, so we can allocate
-+	 * without GFP_ATOMIC.
-+	 */
-+	num_bpages = region_size >> HOMA_BPAGE_SHIFT;
-+	if (num_bpages < MIN_POOL_SIZE)
-+		return -EINVAL;
-+	descriptors = kmalloc_array(num_bpages, sizeof(struct homa_bpage),
-+				    GFP_KERNEL | __GFP_ZERO);
-+	if (!descriptors)
-+		return -ENOMEM;
-+	cores = alloc_percpu_gfp(struct homa_pool_core, __GFP_ZERO);
-+	if (!cores) {
-+		result = -ENOMEM;
-+		goto error;
-+	}
-+
-+	homa_sock_lock(hsk);
-+	pool = hsk->buffer_pool;
-+	if (pool->region) {
-+		result = -EINVAL;
-+		homa_sock_unlock(hsk);
-+		goto error;
-+	}
-+
-+	pool->region = (char __user *)region;
-+	pool->num_bpages = num_bpages;
-+	pool->descriptors = descriptors;
-+	atomic_set(&pool->free_bpages, pool->num_bpages);
-+	pool->bpages_needed = INT_MAX;
-+	pool->cores = cores;
-+	pool->check_waiting_invoked = 0;
-+
-+	for (i = 0; i < pool->num_bpages; i++) {
-+		struct homa_bpage *bp = &pool->descriptors[i];
-+
-+		spin_lock_init(&bp->lock);
-+		bp->owner = -1;
-+	}
-+
-+	homa_sock_unlock(hsk);
-+	return 0;
-+
-+error:
-+	kfree(descriptors);
-+	free_percpu(cores);
-+	return result;
-+}
-+
-+/**
-+ * homa_pool_free() - Destructor for homa_pool. After this method
-+ * returns, the object should not be used (it will be freed here).
-+ * @pool: Pool to destroy.
-+ */
-+void homa_pool_free(struct homa_pool *pool)
-+{
-+	if (pool->region) {
-+		kfree(pool->descriptors);
-+		free_percpu(pool->cores);
-+		pool->region = NULL;
-+	}
-+	kfree(pool);
-+}
-+
-+/**
-+ * homa_pool_get_rcvbuf() - Return information needed to handle getsockopt
-+ * for HOMA_SO_RCVBUF.
-+ * @pool:         Pool for which information is needed.
-+ * @args:         Store info here.
-+ */
-+void homa_pool_get_rcvbuf(struct homa_pool *pool,
-+			  struct homa_rcvbuf_args *args)
-+{
-+	args->start = (uintptr_t)pool->region;
-+	args->length = pool->num_bpages << HOMA_BPAGE_SHIFT;
-+}
-+
-+/**
-+ * homa_bpage_available() - Check whether a bpage is available for use.
-+ * @bpage:      Bpage to check
-+ * @now:        Current time (homa_clock() units)
-+ * Return:      True if the bpage is free or if it can be stolen, otherwise
-+ *              false.
-+ */
-+bool homa_bpage_available(struct homa_bpage *bpage, u64 now)
-+{
-+	int ref_count = atomic_read(&bpage->refs);
-+
-+	return ref_count == 0 || (ref_count == 1 && bpage->owner >= 0 &&
-+			bpage->expiration <= now);
-+}
-+
-+/**
-+ * homa_pool_get_pages() - Allocate one or more full pages from the pool.
-+ * @pool:         Pool from which to allocate pages
-+ * @num_pages:    Number of pages needed
-+ * @pages:        The indices of the allocated pages are stored here; caller
-+ *                must ensure this array is big enough. Reference counts have
-+ *                been set to 1 on all of these pages (or 2 if set_owner
-+ *                was specified).
-+ * @set_owner:    If nonzero, the current core is marked as owner of all
-+ *                of the allocated pages (and the expiration time is also
-+ *                set). Otherwise the pages are left unowned.
-+ * Return: 0 for success, -1 if there wasn't enough free space in the pool.
-+ */
-+int homa_pool_get_pages(struct homa_pool *pool, int num_pages, u32 *pages,
-+			int set_owner)
-+{
-+	int core_num = smp_processor_id();
-+	struct homa_pool_core *core;
-+	u64 now = homa_clock();
-+	int alloced = 0;
-+	int limit = 0;
-+
-+	core = this_cpu_ptr(pool->cores);
-+	if (atomic_sub_return(num_pages, &pool->free_bpages) < 0) {
-+		atomic_add(num_pages, &pool->free_bpages);
-+		return -1;
-+	}
-+
-+	/* Once we get to this point we know we will be able to find
-+	 * enough free pages; now we just have to find them.
-+	 */
-+	while (alloced != num_pages) {
-+		struct homa_bpage *bpage;
-+		int cur;
-+
-+		/* If we don't need to use all of the bpages in the pool,
-+		 * then try to use only the ones with low indexes. This
-+		 * will reduce the cache footprint for the pool by reusing
-+		 * a few bpages over and over. Specifically this code will
-+		 * not consider any candidate page whose index is >= limit.
-+		 * Limit is chosen to make sure there are a reasonable
-+		 * number of free pages in the range, so we won't have to
-+		 * check a huge number of pages.
-+		 */
-+		if (limit == 0) {
-+			int extra;
-+
-+			limit = pool->num_bpages -
-+				atomic_read(&pool->free_bpages);
-+			extra = limit >> 2;
-+			limit += (extra < MIN_EXTRA) ? MIN_EXTRA : extra;
-+			if (limit > pool->num_bpages)
-+				limit = pool->num_bpages;
-+		}
-+
-+		cur = core->next_candidate;
-+		core->next_candidate++;
-+		if (cur >= limit) {
-+			core->next_candidate = 0;
-+
-+			/* Must recompute the limit for each new loop through
-+			 * the bpage array: we may need to consider a larger
-+			 * range of pages because of concurrent allocations.
-+			 */
-+			limit = 0;
-+			continue;
-+		}
-+		bpage = &pool->descriptors[cur];
-+
-+		/* Figure out whether this candidate is free (or can be
-+		 * stolen). Do a quick check without locking the page, and
-+		 * if the page looks promising, then lock it and check again
-+		 * (must check again in case someone else snuck in and
-+		 * grabbed the page).
-+		 */
-+		if (!homa_bpage_available(bpage, now))
-+			continue;
-+		if (!spin_trylock_bh(&bpage->lock))
-+			/* Rather than wait for a locked page to become free,
-+			 * just go on to the next page. If the page is locked,
-+			 * it probably won't turn out to be available anyway.
-+			 */
-+			continue;
-+		if (!homa_bpage_available(bpage, now)) {
-+			spin_unlock_bh(&bpage->lock);
-+			continue;
-+		}
-+		if (bpage->owner >= 0)
-+			atomic_inc(&pool->free_bpages);
-+		if (set_owner) {
-+			atomic_set(&bpage->refs, 2);
-+			bpage->owner = core_num;
-+			bpage->expiration = now +
-+					    pool->hsk->homa->bpage_lease_cycles;
-+		} else {
-+			atomic_set(&bpage->refs, 1);
-+			bpage->owner = -1;
-+		}
-+		spin_unlock_bh(&bpage->lock);
-+		pages[alloced] = cur;
-+		alloced++;
-+	}
-+	return 0;
-+}
-+
-+/**
-+ * homa_pool_alloc_msg() - Allocate buffer space for an incoming message.
-+ * @rpc:  RPC that needs space allocated for its incoming message (space must
-+ *        not already have been allocated). The fields @msgin->num_buffers
-+ *        and @msgin->buffers are filled in. Must be locked by caller.
-+ * Return: The return value is normally 0, which means either buffer space
-+ * was allocated or the @rpc was queued on @hsk->waiting. If a fatal error
-+ * occurred, such as no buffer pool present, then a negative errno is
-+ * returned.
-+ */
-+int homa_pool_alloc_msg(struct homa_rpc *rpc)
-+	__must_hold(rpc->bucket->lock)
-+{
-+	struct homa_pool *pool = rpc->hsk->buffer_pool;
-+	int full_pages, partial, i, core_id;
-+	struct homa_pool_core *core;
-+	u32 pages[HOMA_MAX_BPAGES];
-+	struct homa_bpage *bpage;
-+	struct homa_rpc *other;
-+
-+	if (!pool->region)
-+		return -ENOMEM;
-+
-+	/* First allocate any full bpages that are needed. */
-+	full_pages = rpc->msgin.length >> HOMA_BPAGE_SHIFT;
-+	if (unlikely(full_pages)) {
-+		if (homa_pool_get_pages(pool, full_pages, pages, 0) != 0)
-+			goto out_of_space;
-+		for (i = 0; i < full_pages; i++)
-+			rpc->msgin.bpage_offsets[i] = pages[i] <<
-+					HOMA_BPAGE_SHIFT;
-+	}
-+	rpc->msgin.num_bpages = full_pages;
-+
-+	/* The last chunk may be less than a full bpage; for this we use
-+	 * the bpage that we own (and reuse it for multiple messages).
-+	 */
-+	partial = rpc->msgin.length & (HOMA_BPAGE_SIZE - 1);
-+	if (unlikely(partial == 0))
-+		goto success;
-+	core_id = smp_processor_id();
-+	core = this_cpu_ptr(pool->cores);
-+	bpage = &pool->descriptors[core->page_hint];
-+	spin_lock_bh(&bpage->lock);
-+	if (bpage->owner != core_id) {
-+		spin_unlock_bh(&bpage->lock);
-+		goto new_page;
-+	}
-+	if ((core->allocated + partial) > HOMA_BPAGE_SIZE) {
-+		if (atomic_read(&bpage->refs) == 1) {
-+			/* Bpage is totally free, so we can reuse it. */
-+			core->allocated = 0;
-+		} else {
-+			bpage->owner = -1;
-+
-+			/* We know the reference count can't reach zero here
-+			 * because of check above, so we won't have to decrement
-+			 * pool->free_bpages.
-+			 */
-+			atomic_dec_return(&bpage->refs);
-+			spin_unlock_bh(&bpage->lock);
-+			goto new_page;
-+		}
-+	}
-+	bpage->expiration = homa_clock() +
-+			    pool->hsk->homa->bpage_lease_cycles;
-+	atomic_inc(&bpage->refs);
-+	spin_unlock_bh(&bpage->lock);
-+	goto allocate_partial;
-+
-+	/* Can't use the current page; get another one. */
-+new_page:
-+	if (homa_pool_get_pages(pool, 1, pages, 1) != 0) {
-+		homa_pool_release_buffers(pool, rpc->msgin.num_bpages,
-+					  rpc->msgin.bpage_offsets);
-+		rpc->msgin.num_bpages = 0;
-+		goto out_of_space;
-+	}
-+	core->page_hint = pages[0];
-+	core->allocated = 0;
-+
-+allocate_partial:
-+	rpc->msgin.bpage_offsets[rpc->msgin.num_bpages] = core->allocated
-+			+ (core->page_hint << HOMA_BPAGE_SHIFT);
-+	rpc->msgin.num_bpages++;
-+	core->allocated += partial;
-+
-+success:
-+	return 0;
-+
-+	/* We get here if there wasn't enough buffer space for this
-+	 * message; add the RPC to hsk->waiting_for_bufs. The list is sorted
-+	 * by RPC length in order to implement SRPT.
-+	 */
-+out_of_space:
-+	homa_sock_lock(pool->hsk);
-+	list_for_each_entry(other, &pool->hsk->waiting_for_bufs, buf_links) {
-+		if (other->msgin.length > rpc->msgin.length) {
-+			list_add_tail(&rpc->buf_links, &other->buf_links);
-+			goto queued;
-+		}
-+	}
-+	list_add_tail(&rpc->buf_links, &pool->hsk->waiting_for_bufs);
-+
-+queued:
-+	set_bpages_needed(pool);
-+	homa_sock_unlock(pool->hsk);
-+	return 0;
-+}
-+
-+/**
-+ * homa_pool_get_buffer() - Given an RPC, figure out where to store incoming
-+ * message data.
-+ * @rpc:        RPC for which incoming message data is being processed; its
-+ *              msgin must be properly initialized and buffer space must have
-+ *              been allocated for the message.
-+ * @offset:     Offset within @rpc's incoming message.
-+ * @available:  Will be filled in with the number of bytes of space available
-+ *              at the returned address (could be zero if offset is
-+ *              (erroneously) past the end of the message).
-+ * Return:      The application's virtual address for buffer space corresponding
-+ *              to @offset in the incoming message for @rpc.
-+ */
-+void __user *homa_pool_get_buffer(struct homa_rpc *rpc, int offset,
-+				  int *available)
-+{
-+	int bpage_index, bpage_offset;
-+
-+	bpage_index = offset >> HOMA_BPAGE_SHIFT;
-+	if (offset >= rpc->msgin.length) {
-+		WARN_ONCE(true, "%s got offset %d >= message length %d\n",
-+			  __func__, offset, rpc->msgin.length);
-+		*available = 0;
-+		return NULL;
-+	}
-+	bpage_offset = offset & (HOMA_BPAGE_SIZE - 1);
-+	*available = (bpage_index < (rpc->msgin.num_bpages - 1))
-+			? HOMA_BPAGE_SIZE - bpage_offset
-+			: rpc->msgin.length - offset;
-+	return rpc->hsk->buffer_pool->region +
-+			rpc->msgin.bpage_offsets[bpage_index] + bpage_offset;
-+}
-+
-+/**
-+ * homa_pool_release_buffers() - Release buffer space so that it can be
-+ * reused.
-+ * @pool:         Pool that the buffer space belongs to. Doesn't need to
-+ *                be locked.
-+ * @num_buffers:  How many buffers to release.
-+ * @buffers:      Points to @num_buffers values, each of which is an offset
-+ *                from the start of the pool to the buffer to be released.
-+ * Return:        0 for success, otherwise a negative errno.
-+ */
-+int homa_pool_release_buffers(struct homa_pool *pool, int num_buffers,
-+			      u32 *buffers)
-+{
-+	int result = 0;
-+	int i;
-+
-+	if (!pool->region)
-+		return result;
-+	for (i = 0; i < num_buffers; i++) {
-+		u32 bpage_index = buffers[i] >> HOMA_BPAGE_SHIFT;
-+		struct homa_bpage *bpage = &pool->descriptors[bpage_index];
-+
-+		if (bpage_index < pool->num_bpages) {
-+			if (atomic_dec_return(&bpage->refs) == 0)
-+				atomic_inc(&pool->free_bpages);
-+		} else {
-+			result = -EINVAL;
-+		}
-+	}
-+	return result;
-+}
-+
-+/**
-+ * homa_pool_check_waiting() - Checks to see if there are enough free
-+ * bpages to wake up any RPCs that were blocked. Whenever
-+ * homa_pool_release_buffers is invoked, this function must be invoked later,
-+ * at a point when the caller holds no locks (homa_pool_release_buffers may
-+ * be invoked with locks held, so it can't safely invoke this function).
-+ * This is regrettably tricky, but I can't think of a better solution.
-+ * @pool:         Information about the buffer pool.
-+ */
-+void homa_pool_check_waiting(struct homa_pool *pool)
-+{
-+	if (!pool->region)
-+		return;
-+	while (atomic_read(&pool->free_bpages) >= pool->bpages_needed) {
-+		struct homa_rpc *rpc;
-+
-+		homa_sock_lock(pool->hsk);
-+		if (list_empty(&pool->hsk->waiting_for_bufs)) {
-+			pool->bpages_needed = INT_MAX;
-+			homa_sock_unlock(pool->hsk);
-+			break;
-+		}
-+		rpc = list_first_entry(&pool->hsk->waiting_for_bufs,
-+				       struct homa_rpc, buf_links);
-+		if (!homa_rpc_try_lock(rpc)) {
-+			/* Can't just spin on the RPC lock because we're
-+			 * holding the socket lock and the lock order is
-+			 * rpc-then-socket (see "Homa Locking Strategy" in
-+			 * homa_impl.h). Instead, release the socket lock
-+			 * and try the entire operation again.
-+			 */
-+			homa_sock_unlock(pool->hsk);
-+			continue;
-+		}
-+		list_del_init(&rpc->buf_links);
-+		if (list_empty(&pool->hsk->waiting_for_bufs))
-+			pool->bpages_needed = INT_MAX;
-+		else
-+			set_bpages_needed(pool);
-+		homa_sock_unlock(pool->hsk);
-+		homa_pool_alloc_msg(rpc);
-+		homa_rpc_unlock(rpc);
-+	}
-+}
-diff --git a/net/homa/homa_pool.h b/net/homa/homa_pool.h
-new file mode 100644
-index 000000000000..15ba5c5d58b6
---- /dev/null
-+++ b/net/homa/homa_pool.h
-@@ -0,0 +1,136 @@
-+/* SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+ */
-+
-+/* This file contains definitions used to manage user-space buffer pools.
-+ */
-+
-+#ifndef _HOMA_POOL_H
-+#define _HOMA_POOL_H
-+
-+#include <linux/percpu.h>
-+
++#include "homa_pacer.h"
 +#include "homa_rpc.h"
 +
 +/**
-+ * struct homa_bpage - Contains information about a single page in
-+ * a buffer pool.
++ * homa_pacer_alloc() - Allocate and initialize a new pacer object, which
++ * will hold pacer-related information for @homa.
++ * @homa:   Homa transport that the pacer will be associated with.
++ * Return:  A pointer to the new struct pacer, or a negative errno.
 + */
-+struct homa_bpage {
-+	/** @lock: to synchronize shared access. */
-+	spinlock_t lock;
++struct homa_pacer *homa_pacer_alloc(struct homa *homa)
++{
++	struct homa_pacer *pacer;
++	int err;
 +
-+	/**
-+	 * @refs: Counts number of distinct uses of this
-+	 * bpage (1 tick for each message that is using
-+	 * this page, plus an additional tick if the @owner
-+	 * field is set).
-+	 */
-+	atomic_t refs;
++	pacer = kzalloc(sizeof(*pacer), GFP_KERNEL);
++	if (!pacer)
++		return ERR_PTR(-ENOMEM);
++	pacer->homa = homa;
++	spin_lock_init(&pacer->mutex);
++	pacer->fifo_count = 1000;
++	spin_lock_init(&pacer->throttle_lock);
++	INIT_LIST_HEAD_RCU(&pacer->throttled_rpcs);
++	pacer->fifo_fraction = 50;
++	pacer->max_nic_queue_ns = 5000;
++	pacer->throttle_min_bytes = 1000;
++	init_waitqueue_head(&pacer->wait_queue);
++	pacer->kthread = kthread_run(homa_pacer_main, pacer, "homa_pacer");
++	if (IS_ERR(pacer->kthread)) {
++		err = PTR_ERR(pacer->kthread);
++		pr_err("Homa couldn't create pacer thread: error %d\n", err);
++		goto error;
++	}
++	atomic64_set(&pacer->link_idle_time, homa_clock());
 +
-+	/**
-+	 * @owner: kernel core that currently owns this page
-+	 * (< 0 if none).
-+	 */
-+	int owner;
++	homa_pacer_update_sysctl_deps(pacer);
++	return pacer;
 +
-+	/**
-+	 * @expiration: homa_clock() time after which it's OK to steal this
-+	 * page from its current owner (if @refs is 1).
-+	 */
-+	u64 expiration;
-+} ____cacheline_aligned_in_smp;
++error:
++	homa_pacer_free(pacer);
++	return ERR_PTR(err);
++}
 +
 +/**
-+ * struct homa_pool_core - Holds core-specific data for a homa_pool (a bpage
-+ * out of which that core is allocating small chunks).
++ * homa_pacer_free() - Cleanup and free the pacer object for a Homa
++ * transport.
++ * @pacer:    Object to destroy; caller must not reference the object
++ *            again once this function returns.
 + */
-+struct homa_pool_core {
-+	/**
-+	 * @page_hint: Index of bpage in pool->descriptors,
-+	 * which may be owned by this core. If so, we'll use it
-+	 * for allocating partial pages.
-+	 */
-+	int page_hint;
-+
-+	/**
-+	 * @allocated: if the page given by @page_hint is
-+	 * owned by this core, this variable gives the number of
-+	 * (initial) bytes that have already been allocated
-+	 * from the page.
-+	 */
-+	int allocated;
-+
-+	/**
-+	 * @next_candidate: when searching for free bpages,
-+	 * check this index next.
-+	 */
-+	int next_candidate;
-+};
++void homa_pacer_free(struct homa_pacer *pacer)
++{
++	if (pacer->kthread) {
++		kthread_stop(pacer->kthread);
++		pacer->kthread = NULL;
++	}
++	kfree(pacer);
++}
 +
 +/**
-+ * struct homa_pool - Describes a pool of buffer space for incoming
-+ * messages for a particular socket; managed by homa_pool.c. The pool is
-+ * divided up into "bpages", which are a multiple of the hardware page size.
-+ * A bpage may be owned by a particular core so that it can more efficiently
-+ * allocate space for small messages.
++ * homa_pacer_check_nic_q() - This function is invoked before passing a
++ * packet to the NIC for transmission. It serves two purposes. First, it
++ * maintains an estimate of the NIC queue length. Second, it indicates to
++ * the caller whether the NIC queue is so full that no new packets should be
++ * queued (Homa's SRPT depends on keeping the NIC queue short).
++ * @pacer:    Pacer information for a Homa transport.
++ * @skb:      Packet that is about to be transmitted.
++ * @force:    True means this packet is going to be transmitted
++ *            regardless of the queue length.
++ * Return:    Nonzero is returned if either the NIC queue length is
++ *            acceptably short or @force was specified. 0 means that the
++ *            NIC queue is at capacity or beyond, so the caller should delay
++ *            the transmission of @skb. If nonzero is returned, then the
++ *            queue estimate is updated to reflect the transmission of @skb.
 + */
-+struct homa_pool {
-+	/**
-+	 * @hsk: the socket that this pool belongs to.
-+	 */
-+	struct homa_sock *hsk;
++int homa_pacer_check_nic_q(struct homa_pacer *pacer, struct sk_buff *skb,
++			   bool force)
++{
++	u64 idle, new_idle, clock, cycles_for_packet;
++	int bytes;
++
++	bytes = homa_get_skb_info(skb)->wire_bytes;
++	cycles_for_packet = pacer->cycles_per_mbyte;
++	cycles_for_packet *= bytes;
++	do_div(cycles_for_packet, 1000000);
++	while (1) {
++		clock = homa_clock();
++		idle = atomic64_read(&pacer->link_idle_time);
++		if ((clock + pacer->max_nic_queue_cycles) < idle && !force &&
++		    !(pacer->homa->flags & HOMA_FLAG_DONT_THROTTLE))
++			return 0;
++		if (idle < clock)
++			new_idle = clock + cycles_for_packet;
++		else
++			new_idle = idle + cycles_for_packet;
++
++		/* This method must be thread-safe. */
++		if (atomic64_cmpxchg_relaxed(&pacer->link_idle_time, idle,
++					     new_idle) == idle)
++			break;
++	}
++	return 1;
++}
++
++/**
++ * homa_pacer_main() - Top-level function for the pacer thread.
++ * @arg:  Pointer to pacer struct.
++ *
++ * Return:         Always 0.
++ */
++int homa_pacer_main(void *arg)
++{
++	struct homa_pacer *pacer = arg;
++	int status;
++
++	while (1) {
++		if (kthread_should_stop())
++			break;
++		pacer->wake_time = homa_clock();
++		homa_pacer_xmit(pacer);
++		pacer->wake_time = 0;
++		if (!list_empty(&pacer->throttled_rpcs)) {
++			/* NIC queue is full; before calling pacer again,
++			 * give other threads a chance to run (otherwise
++			 * low-level packet processing such as softirq could
++			 * get locked out).
++			 */
++			schedule();
++			continue;
++		}
++
++		status = wait_event_interruptible(pacer->wait_queue,
++				kthread_should_stop() ||
++				!list_empty(&pacer->throttled_rpcs));
++		if (status != 0 && status != -ERESTARTSYS)
++			break;
++	}
++	return 0;
++}
++
++/**
++ * homa_pacer_xmit() - Transmit packets from  the throttled list until
++ * either (a) the throttled list is empty or (b) the NIC queue has
++ * reached maximum allowable length. Note: this function may be invoked
++ * from either process context or softirq (BH) level. This function is
++ * invoked from multiple places, not just in the pacer thread. The reason
++ * for this is that (as of 10/2019) Linux's scheduling of the pacer thread
++ * is unpredictable: the thread may block for long periods of time (e.g.,
++ * because it is assigned to the same CPU as a busy interrupt handler).
++ * This can result in poor utilization of the network link. So, this method
++ * gets invoked from other places as well, to increase the likelihood that we
++ * keep the link busy. Those other invocations are not guaranteed to happen,
++ * so the pacer thread provides a backstop.
++ * @pacer:    Pacer information for a Homa transport.
++ */
++void homa_pacer_xmit(struct homa_pacer *pacer)
++{
++	struct homa_rpc *rpc;
++	s64 queue_cycles;
++
++	/* Make sure only one instance of this function executes at a time. */
++	if (!spin_trylock_bh(&pacer->mutex))
++		return;
++
++	while (1) {
++		queue_cycles = atomic64_read(&pacer->link_idle_time) -
++					     homa_clock();
++		if (queue_cycles >= pacer->max_nic_queue_cycles)
++			break;
++		if (list_empty(&pacer->throttled_rpcs))
++			break;
++
++		/* Select an RPC to transmit (either SRPT or FIFO) and
++		 * take a reference on it. Must do this while holding the
++		 * throttle_lock to prevent the RPC from being reaped. Then
++		 * release the throttle lock and lock the RPC (can't acquire
++		 * the RPC lock while holding the throttle lock; see "Homa
++		 * Locking Strategy" in homa_impl.h).
++		 */
++		homa_pacer_throttle_lock(pacer);
++		pacer->fifo_count -= pacer->fifo_fraction;
++		if (pacer->fifo_count <= 0) {
++			struct homa_rpc *cur;
++			u64 oldest = ~0;
++
++			pacer->fifo_count += 1000;
++			rpc = NULL;
++			list_for_each_entry(cur, &pacer->throttled_rpcs,
++					    throttled_links) {
++				if (cur->msgout.init_time < oldest) {
++					rpc = cur;
++					oldest = cur->msgout.init_time;
++				}
++			}
++		} else {
++			rpc = list_first_entry_or_null(&pacer->throttled_rpcs,
++						       struct homa_rpc,
++						       throttled_links);
++		}
++		if (!rpc) {
++			homa_pacer_throttle_unlock(pacer);
++			break;
++		}
++		homa_rpc_hold(rpc);
++		homa_pacer_throttle_unlock(pacer);
++		homa_rpc_lock(rpc);
++		homa_xmit_data(rpc, true);
++
++		/* Note: rpc->state could be RPC_DEAD here, but the code
++		 * below should work anyway.
++		 */
++		if (!*rpc->msgout.next_xmit)
++			/* No more data can be transmitted from this message
++			 * (right now), so remove it from the throttled list.
++			 */
++			homa_pacer_unmanage_rpc(rpc);
++		homa_rpc_unlock(rpc);
++		homa_rpc_put(rpc);
++	}
++	spin_unlock_bh(&pacer->mutex);
++}
++
++/**
++ * homa_pacer_manage_rpc() - Arrange for the pacer to transmit packets
++ * from this RPC (make sure that an RPC is on the throttled list and wake up
++ * the pacer thread if necessary).
++ * @rpc:     RPC with outbound packets that have been granted but can't be
++ *           sent because of NIC queue restrictions. Must be locked by caller.
++ */
++void homa_pacer_manage_rpc(struct homa_rpc *rpc)
++	__must_hold(rpc->bucket->lock)
++{
++	struct homa_pacer *pacer = rpc->hsk->homa->pacer;
++	struct homa_rpc *candidate;
++	int bytes_left;
++
++	if (!list_empty(&rpc->throttled_links))
++		return;
++	bytes_left = rpc->msgout.length - rpc->msgout.next_xmit_offset;
++	homa_pacer_throttle_lock(pacer);
++	list_for_each_entry(candidate, &pacer->throttled_rpcs,
++			    throttled_links) {
++		int bytes_left_cand;
++
++		/* Watch out: the pacer might have just transmitted the last
++		 * packet from candidate.
++		 */
++		bytes_left_cand = candidate->msgout.length -
++				candidate->msgout.next_xmit_offset;
++		if (bytes_left_cand > bytes_left) {
++			list_add_tail(&rpc->throttled_links,
++				      &candidate->throttled_links);
++			goto done;
++		}
++	}
++	list_add_tail(&rpc->throttled_links, &pacer->throttled_rpcs);
++done:
++	homa_pacer_throttle_unlock(pacer);
++	wake_up(&pacer->wait_queue);
++}
++
++/**
++ * homa_pacer_unmanage_rpc() - Make sure that an RPC is no longer managed
++ * by the pacer.
++ * @rpc:     RPC of interest.
++ */
++void homa_pacer_unmanage_rpc(struct homa_rpc *rpc)
++	__must_hold(rpc->bucket->lock)
++{
++	struct homa_pacer *pacer = rpc->hsk->homa->pacer;
++
++	if (unlikely(!list_empty(&rpc->throttled_links))) {
++		homa_pacer_throttle_lock(pacer);
++		list_del_init(&rpc->throttled_links);
++		homa_pacer_throttle_unlock(pacer);
++	}
++}
++
++/**
++ * homa_pacer_update_sysctl_deps() - Update any pacer fields that depend
++ * on values set by sysctl. This function is invoked anytime a pacer sysctl
++ * value is updated.
++ * @pacer:   Pacer to update.
++ */
++void homa_pacer_update_sysctl_deps(struct homa_pacer *pacer)
++{
++	u64 tmp;
++
++	pacer->max_nic_queue_cycles =
++			homa_ns_to_cycles(pacer->max_nic_queue_ns);
++
++	/* Underestimate link bandwidth (overestimate time) by 1%. */
++	tmp = 101 * 8000 * (u64)homa_clock_khz();
++	do_div(tmp, pacer->homa->link_mbps * 100);
++	pacer->cycles_per_mbyte = tmp;
++}
++
+diff --git a/net/homa/homa_pacer.h b/net/homa/homa_pacer.h
+new file mode 100644
+index 000000000000..a5279f4f576c
+--- /dev/null
++++ b/net/homa/homa_pacer.h
+@@ -0,0 +1,173 @@
++/* SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+ */
++
++/* This file defines structs and functions related to the Homa pacer,
++ * which implements SRPT for packet output. In order to do that, it
++ * throttles packet transmission to prevent the buildup of
++ * large queues in the NIC.
++ */
++
++#ifndef _HOMA_PACER_H
++#define _HOMA_PACER_H
++
++#include "homa_impl.h"
++
++/**
++ * struct homa_pacer - Contains information that the pacer users to
++ * manage packet output. There is one instance of this object stored
++ * in each struct homa.
++ */
++struct homa_pacer {
++	/** @homa: Transport that this pacer is associated with. */
++	struct homa *homa;
 +
 +	/**
-+	 * @region: beginning of the pool's region (in the app's virtual
-+	 * memory). Divided into bpages. 0 means the pool hasn't yet been
-+	 * initialized.
++	 * @mutex: Ensures that only one instance of homa_pacer_xmit
++	 * runs at a time. Only used in "try" mode: never block on this.
 +	 */
-+	char __user *region;
-+
-+	/** @num_bpages: total number of bpages in the pool. */
-+	int num_bpages;
-+
-+	/** @descriptors: kmalloced area containing one entry for each bpage. */
-+	struct homa_bpage *descriptors;
++	spinlock_t mutex;
 +
 +	/**
-+	 * @free_bpages: the number of pages still available for allocation
-+	 * by homa_pool_get pages. This equals the number of pages with zero
-+	 * reference counts, minus the number of pages that have been claimed
-+	 * by homa_get_pool_pages but not yet allocated.
++	 * @fifo_count: When this becomes <= zero, it's time for the
++	 * pacer to allow the oldest RPC to transmit.
 +	 */
-+	atomic_t free_bpages;
++	int fifo_count;
 +
 +	/**
-+	 * @bpages_needed: the number of free bpages required to satisfy the
-+	 * needs of the first RPC on @hsk->waiting_for_bufs, or INT_MAX if
-+	 * that queue is empty.
++	 * @wake_time: homa_clock() time when the pacer woke up (if the pacer
++	 * is running) or 0 if the pacer is sleeping.
 +	 */
-+	int bpages_needed;
-+
-+	/** @cores: core-specific info; dynamically allocated. */
-+	struct homa_pool_core __percpu *cores;
++	u64 wake_time;
 +
 +	/**
-+	 * @check_waiting_invoked: incremented during unit tests when
-+	 * homa_pool_check_waiting is invoked.
++	 * @throttle_lock: Used to synchronize access to @throttled_rpcs. Must
++	 * hold when inserting or removing an RPC from throttled_rpcs.
 +	 */
-+	int check_waiting_invoked;
++	spinlock_t throttle_lock;
++
++	/**
++	 * @throttled_rpcs: Contains all homa_rpcs that have bytes ready
++	 * for transmission, but which couldn't be sent without exceeding
++	 * the NIC queue limit.
++	 */
++	struct list_head throttled_rpcs;
++
++	/**
++	 * @fifo_fraction: Out of every 1000 packets transmitted by the
++	 * pacer, this number will be transmitted from the oldest message
++	 * rather than the highest-priority message. Set externally via
++	 * sysctl.
++	 */
++	int fifo_fraction;
++
++	/**
++	 * @max_nic_queue_ns: Limits the NIC queue length: we won't queue
++	 * up a packet for transmission if link_idle_time is this many
++	 * nanoseconds in the future (or more). Set externally via sysctl.
++	 */
++	int max_nic_queue_ns;
++
++	/**
++	 * @max_nic_queue_cycles: Same as max_nic_queue_ns except in
++	 * homa_clock() units.
++	 */
++	int max_nic_queue_cycles;
++
++	/**
++	 * @cycles_per_mbyte: the number of homa_clock() cycles that it takes to
++	 * transmit 10**6 bytes on our uplink. This is actually a slight
++	 * overestimate of the value, to ensure that we don't underestimate
++	 * NIC queue length and queue too many packets.
++	 */
++	u32 cycles_per_mbyte;
++
++	/**
++	 * @throttle_min_bytes: If a packet has fewer bytes than this, then it
++	 * bypasses the throttle mechanism and is transmitted immediately.
++	 * We have this limit because for very small packets CPU overheads
++	 * make it impossible to keep up with the NIC so (a) the NIC queue
++	 * can't grow and (b) using the pacer would serialize all of these
++	 * packets through a single core, which makes things even worse.
++	 * Set externally via sysctl.
++	 */
++	int throttle_min_bytes;
++
++	/**
++	 * @wait_queue: Used to block the pacer thread when there
++	 * are no throttled RPCs.
++	 */
++	struct wait_queue_head wait_queue;
++
++	/**
++	 * @kthread: Kernel thread that transmits packets from
++	 * throttled_rpcs in a way that limits queue buildup in the
++	 * NIC.
++	 */
++	struct task_struct *kthread;
++
++	/**
++	 * @link_idle_time: The homa_clock() time at which we estimate
++	 * that all of the packets we have passed to the NIC for transmission
++	 * will have been transmitted. May be in the past. This estimate
++	 * assumes that only Homa is transmitting data, so it could be a
++	 * severe underestimate if there is competing traffic from, say, TCP.
++	 */
++	atomic64_t link_idle_time ____cacheline_aligned_in_smp;
 +};
 +
-+bool     homa_bpage_available(struct homa_bpage *bpage, u64 now);
-+struct   homa_pool *homa_pool_alloc(struct homa_sock *hsk);
-+int      homa_pool_alloc_msg(struct homa_rpc *rpc);
-+void     homa_pool_check_waiting(struct homa_pool *pool);
-+void     homa_pool_free(struct homa_pool *pool);
-+void __user *homa_pool_get_buffer(struct homa_rpc *rpc, int offset,
-+				  int *available);
-+int      homa_pool_get_pages(struct homa_pool *pool, int num_pages,
-+			     u32 *pages, int leave_locked);
-+void     homa_pool_get_rcvbuf(struct homa_pool *pool,
-+			      struct homa_rcvbuf_args *args);
-+int      homa_pool_release_buffers(struct homa_pool *pool,
-+				   int num_buffers, u32 *buffers);
-+int      homa_pool_set_region(struct homa_sock *hsk, void __user *region,
-+			      u64 region_size);
++struct homa_pacer *homa_pacer_alloc(struct homa *homa);
++int      homa_pacer_check_nic_q(struct homa_pacer *pacer,
++				struct sk_buff *skb, bool force);
++int      homa_pacer_dointvec(const struct ctl_table *table, int write,
++			     void *buffer, size_t *lenp, loff_t *ppos);
++void     homa_pacer_free(struct homa_pacer *pacer);
++void     homa_pacer_unmanage_rpc(struct homa_rpc *rpc);
++void     homa_pacer_log_throttled(struct homa_pacer *pacer);
++int      homa_pacer_main(void *transport);
++void     homa_pacer_manage_rpc(struct homa_rpc *rpc);
++void     homa_pacer_throttle_lock_slow(struct homa_pacer *pacer);
++void     homa_pacer_update_sysctl_deps(struct homa_pacer *pacer);
++void     homa_pacer_xmit(struct homa_pacer *pacer);
 +
-+#endif /* _HOMA_POOL_H */
++/**
++ * homa_pacer_check() - This method is invoked at various places in Homa to
++ * see if the pacer needs to transmit more packets and, if so, transmit
++ * them. It's needed because the pacer thread may get descheduled by
++ * Linux, result in output stalls.
++ * @pacer:    Pacer information for a Homa transport.
++ */
++static inline void homa_pacer_check(struct homa_pacer *pacer)
++{
++	if (list_empty(&pacer->throttled_rpcs))
++		return;
++
++	/* The ">> 1" in the line below gives homa_pacer_main the first chance
++	 * to queue new packets; if the NIC queue becomes more than half
++	 * empty, then we will help out here.
++	 */
++	if ((homa_clock() + (pacer->max_nic_queue_cycles >> 1)) <
++			atomic64_read(&pacer->link_idle_time))
++		return;
++	homa_pacer_xmit(pacer);
++}
++
++/**
++ * homa_pacer_throttle_lock() - Acquire the throttle lock.
++ * @pacer:    Pacer information for a Homa transport.
++ */
++static inline void homa_pacer_throttle_lock(struct homa_pacer *pacer)
++	__acquires(pacer->throttle_lock)
++{
++	spin_lock_bh(&pacer->throttle_lock);
++}
++
++/**
++ * homa_pacer_throttle_unlock() - Release the throttle lock.
++ * @pacer:    Pacer information for a Homa transport.
++ */
++static inline void homa_pacer_throttle_unlock(struct homa_pacer *pacer)
++	__releases(pacer->throttle_lock)
++{
++	spin_unlock_bh(&pacer->throttle_lock);
++}
++
++#endif /* _HOMA_PACER_H */
 -- 
 2.43.0
 
