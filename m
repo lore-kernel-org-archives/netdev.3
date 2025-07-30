@@ -1,38 +1,38 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65185293C4A;
-	Wed, 30 Jul 2025 10:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A58A296161;
+	Wed, 30 Jul 2025 10:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753873100; cv=none; b=AMzSQt0+a5gun0Ldmtq98sU7Pr+Oj/X9PaCj7zcjcfye2bvlfW9xzhAYMFV/IjbGmYnDYGRQoc9EJERD1CqiTyHM8j6NGOuNR+sv6yR3kcoGUsNmi17l9c2D4F7cJf/UtLdN45nm/chuJ847EYxQknyAfy1RAvuPcXOMUt9aKFI=
+	t=1753873101; cv=none; b=UVcyWp9u/lRWlptGCTsSup/Y8NJCv2V6k7uQmaOQ/4uud3mdW4VQUGLaQ3V5ImUi8/TJlkpMqJdUn/+s8xUowzrmMbQYRplvdq/mwzABxWgOgyYTgCGWl+//681g/KOhVC7aoNiEdSdjTNTwuuTGcM0dg0nAmEJOvSg7uhOlDjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753873100; c=relaxed/simple;
-	bh=QrA/Xokh90+kDFECONsQQVqj9UU/nsY1j4IrUZFY+Jc=;
+	s=arc-20240116; t=1753873101; c=relaxed/simple;
+	bh=f6ZCFYCyhXVE4t1Jq2qeu/UDwYm0M4GvQNSvvsr39lo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OQTKN6mjnhmFokAHsHU2Bb3ZVlPeIGqKW17LBTTglpn316EOKoYXOQD+5j20aZpx1ETL1Tll36ac9UnGRwk7eKnuz/SKCMHYBoEujpvp4Zx4XDgW1ew2/iY6akU/F5/KZ+2/0sMKhAC3xLDzVTV0vxR3gajVx1baMqZiZ3swg50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=isPEdSPl; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version:Content-Type; b=q0KuLcUozdBiPT8pwoMm1mmnDkuXyPPVthKmzI0SD/l79SIda5BaC0N3MKqovTMRspoEaCJkgiNTfuZz7PV4W23SIS0hIRXTVm1PIi3sIQiLba/7Rtr1X7mHnQAdwbdQA013wQ4wbbpC24WlXyCowSm1k2jrQsAhIq3xVadxEgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=aSbSt/eK; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="isPEdSPl"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="aSbSt/eK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1753873091;
-	bh=QrA/Xokh90+kDFECONsQQVqj9UU/nsY1j4IrUZFY+Jc=;
+	s=mail; t=1753873097;
+	bh=f6ZCFYCyhXVE4t1Jq2qeu/UDwYm0M4GvQNSvvsr39lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=isPEdSPlFcssa0k2TBSWztjOALBu6jHmPO1gxYfrE7Wv1fRKwCgQkjtji810XdJ/z
-	 jKi1SFHgIttcotBCJdN/ySEIqTQpdSDTwjurE3tefVBBqJYTvx9HYphqqiNrzlEbTw
-	 S4oQ9xV2iUOqyBOoBs6zS6vCb2R7wqWxXey4H/082G//bwocWnTKukgd+1kYKLfvhL
-	 ZtV6Wh/ujnrCJ5VC9J4YSfFSXaLcttaOWsuV+OWnDU/xzFR9zZdVstw56B/MrVSNT/
-	 bf0tYn8LX9a6XOnFC1AAyyBxlLlei8tEluS+emQnaJhC4bcKY0Z7B8LbxmeHfOWXKG
-	 rIuPltb9lW/ng==
+	b=aSbSt/eKfxF2kiKjvh85D22A4s655uSbLS8qijhkMCDhmE1/d3MwD6nJ/5OORIpPG
+	 caFaAtnVrUHGk9dTm+uLfKI3wnxxyjV4us9MJq+LvjNSLvLG2A06iOGSJ/qj5u7rxi
+	 w2zqlWJ2+YswwVvcTkwosuRcyGuF+6jiV69nldTcfAIkSEB/qGFklbtuX1w8rvJOUc
+	 s47LNOGnsweYyeRSOIb9vZWPQXtDcnZPjl+aBtKDOUXiAMgyhbefivrTRluto/gs5D
+	 mqKIBfIlkhyyn+TmoFim3EVeyTCozAvkKT+a5ny1u6bCNPzTNFNmvbsIHUQfqSUKV+
+	 GvDYaUsV8zScg==
 Received: from laura.lan (unknown [IPv6:2001:b07:646b:e2:4db2:e926:c82d:3276])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4426717E1572;
-	Wed, 30 Jul 2025 12:58:10 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id A705B17E1319;
+	Wed, 30 Jul 2025 12:58:16 +0200 (CEST)
 From: Laura Nao <laura.nao@collabora.com>
 To: mturquette@baylibre.com,
 	sboyd@kernel.org,
@@ -54,9 +54,9 @@ Cc: guangjie.song@mediatek.com,
 	kernel@collabora.com,
 	Laura Nao <laura.nao@collabora.com>,
 	=?UTF-8?q?N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado?= <nfraprado@collabora.com>
-Subject: [PATCH v3 04/27] clk: mediatek: clk-mtk: Introduce mtk_clk_get_hwv_regmap()
-Date: Wed, 30 Jul 2025 12:56:30 +0200
-Message-Id: <20250730105653.64910-5-laura.nao@collabora.com>
+Subject: [PATCH v3 08/27] clk: mediatek: clk-mtk: Add MUX_DIV_GATE macro
+Date: Wed, 30 Jul 2025 12:56:34 +0200
+Message-Id: <20250730105653.64910-9-laura.nao@collabora.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250730105653.64910-1-laura.nao@collabora.com>
 References: <20250730105653.64910-1-laura.nao@collabora.com>
@@ -69,55 +69,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On MT8196, some clock controllers use a separate regmap for hardware
-voting via set/clear/status registers. Add mtk_clk_get_hwv_regmap() to
-retrieve this optional regmap, avoiding duplicated lookup code in 
-mtk_clk_register_muxes() and mtk_clk_register_gate().
+On MT8196, some clocks use one register for parent selection and
+gating, and a separate register for frequency division. Since composite
+clocks can combine a mux, divider, and gate in a single entity, add a
+macro to simplify registration of such clocks by combining parent
+selection, frequency scaling, and enable control into one definition.
 
 Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Laura Nao <laura.nao@collabora.com>
 ---
- drivers/clk/mediatek/clk-mtk.c | 16 ++++++++++++++++
- drivers/clk/mediatek/clk-mtk.h |  1 +
- 2 files changed, 17 insertions(+)
+ drivers/clk/mediatek/clk-mtk.h | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/clk/mediatek/clk-mtk.c b/drivers/clk/mediatek/clk-mtk.c
-index ba1d1c495bc2..19cd27941747 100644
---- a/drivers/clk/mediatek/clk-mtk.c
-+++ b/drivers/clk/mediatek/clk-mtk.c
-@@ -685,4 +685,20 @@ void mtk_clk_simple_remove(struct platform_device *pdev)
- }
- EXPORT_SYMBOL_GPL(mtk_clk_simple_remove);
- 
-+struct regmap *mtk_clk_get_hwv_regmap(struct device_node *node)
-+{
-+	struct device_node *hwv_node;
-+	struct regmap *regmap_hwv;
-+
-+	hwv_node = of_parse_phandle(node, "mediatek,hardware-voter", 0);
-+	if (!hwv_node)
-+		return NULL;
-+
-+	regmap_hwv = device_node_to_regmap(hwv_node);
-+	of_node_put(hwv_node);
-+
-+	return regmap_hwv;
-+}
-+EXPORT_SYMBOL_GPL(mtk_clk_get_hwv_regmap);
-+
- MODULE_LICENSE("GPL");
 diff --git a/drivers/clk/mediatek/clk-mtk.h b/drivers/clk/mediatek/clk-mtk.h
-index 136a4bc6dbe6..8ed2c9208b1f 100644
+index e2cefd9bc5b8..3498505b616e 100644
 --- a/drivers/clk/mediatek/clk-mtk.h
 +++ b/drivers/clk/mediatek/clk-mtk.h
-@@ -247,5 +247,6 @@ int mtk_clk_pdev_probe(struct platform_device *pdev);
- void mtk_clk_pdev_remove(struct platform_device *pdev);
- int mtk_clk_simple_probe(struct platform_device *pdev);
- void mtk_clk_simple_remove(struct platform_device *pdev);
-+struct regmap *mtk_clk_get_hwv_regmap(struct device_node *node);
+@@ -176,6 +176,25 @@ struct mtk_composite {
+ 		.flags = 0,						\
+ 	}
  
- #endif /* __DRV_CLK_MTK_H */
++#define MUX_DIV_GATE(_id, _name, _parents,		\
++		_mux_reg, _mux_shift, _mux_width,	\
++		_div_reg, _div_shift, _div_width,	\
++		_gate_reg, _gate_shift) {		\
++		.id            = _id,			\
++		.name          = _name,			\
++		.parent_names  = _parents,		\
++		.num_parents   = ARRAY_SIZE(_parents),	\
++		.mux_reg       = _mux_reg,		\
++		.mux_shift     = _mux_shift,		\
++		.mux_width     = _mux_width,		\
++		.divider_reg   = _div_reg,		\
++		.divider_shift = _div_shift,		\
++		.divider_width = _div_width,		\
++		.gate_reg      = _gate_reg,		\
++		.gate_shift    = _gate_shift,		\
++		.flags         = CLK_SET_RATE_PARENT,	\
++	}
++
+ int mtk_clk_register_composites(struct device *dev,
+ 				const struct mtk_composite *mcs, int num,
+ 				void __iomem *base, spinlock_t *lock,
 -- 
 2.39.5
 
