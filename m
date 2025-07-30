@@ -1,133 +1,152 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF08420298D
-	for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 13:06:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CA586338
+	for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 13:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753880818; cv=none; b=geB/uxcPnGOjBrI8O5u3pd4k/jmfWJ7l/AAxTCFIcYHj5FFgTarzK9jNnFHIKiYjUc+K/UHFNaE0uQmjOrWJe96n844ZlZ/dq+rrzJeSnEdGjL0f6CspbQbXqLVgNZgDsAQcDUZmvoGSAU8UJ4nVGQ+tbIlyg/J1ZcBDFx14J7g=
+	t=1753881095; cv=none; b=bloaf9uRw1ByPmu2jwzgZ9f+NDLhA+GILYimB59Hkl0aVcjfGYGcrLFXFOGHgRyX892hTCgh/MmtujTPBN8ytVg9MF5AmTYcFfQKsO491HEBuHqvunXhKLJUZmoebO2CAzi5aALzxGDVVsazwGOi6c08I7w7jJOFNoomR0bBqQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753880818; c=relaxed/simple;
-	bh=H6HrHP9Z6j7fVd9VELJ9mCga3Ltp+SqW2gCi4mxumR8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eKsNYHGhMIyHqTqcV6dXndjwmXMd8gQEwBSnAGY8cC2zVyb4Z47F1KjLbxO79ffP3o7ebGXY8oXi0BFeEIlHcDeyEMHbxBzavQcVo5zCOWrLMLXU9NYPlo2AftGEBQJAlOoZ3rEygx6JhxfB9xxBsWUiV0hPDLN0p6LIs2wv9vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IkyQETrw; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IkyQETrw"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4aba1bc7f44so7960651cf.0
-        for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 06:06:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753880815; x=1754485615; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8Gd4gZDAU/H/TP06oCUARLggQtU0wLz7dj+H+6HJ5Gc=;
-        b=IkyQETrwmWMYv7+TSX8vjoOrAIcdSkxfzzwou9nGigr41SbcIzP1pmV3RpI7NbI73O
-         vVTSS/n7fdmJQdtYsiqmdrS1J69xtihlyjvhJruSuQAlYYMOWEJ9LnjRS0QaNVI0C+SZ
-         jtT6ZiH1i87h+JNaeojnA8JSiPXFJvlQiVgcplTMw2e3EoLQucElC9V9bVLaAQNk5zio
-         vlP06b3gkPAaRINeVAebDw2A9KJ2P13FRWb8S/vF6QPVEEmHg5Qyr2pitnzovEv7BQPJ
-         q7wYdw0r/JL4zm1iHqIN8v7e3ITPr23PaRJoSc6eirejXxCc5jaccBl2fuVfudw+SUEr
-         GGug==
+	s=arc-20240116; t=1753881095; c=relaxed/simple;
+	bh=KG7fc77M01owqZUjVFGZdn6vql/jSvmuV/IfwiUPv28=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=sKIB1ImjU3xFXeOq/i1dUJOS4X1zhjpclLt0uu96v+VKr1JlbQcCmCEGBXCK899StDv3SaZ3iH8vUNThCMto4Hh0g9+28ymI6Yxf1XmTAUjAQVIxWLE3hHpVdFkKIih95FwY4FKg3VrqDF5qOXZDJ3TvUOiN/hfbMfqcXYmfNoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3e3f0a3f62aso32934275ab.2
+        for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 06:11:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753880815; x=1754485615;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8Gd4gZDAU/H/TP06oCUARLggQtU0wLz7dj+H+6HJ5Gc=;
-        b=LQwkGyStECrQq2iIxi/eGA1JZxNBKYqNF6KTv+uR0tcLYC5z85j3EyF5gD2+r9kwMY
-         VyHOGJZfRGOTOa35cH9Un6JTOI72vIuDxyDIbpH0tnXpzg1dfFSyjdKD9IPbXoF8zV3N
-         gFWjBJbd3wREc0D5HE0d4Y6cFyvOqaw33zPQyyBAtENcatriaugZRYi9GNjx6H+g4vfM
-         0Fv+BzlydNNCotAd7R6YV21aMoDuqCAwuBj53L8KLBYjWNdTcjoJfBfXRPs1A+vdiVgE
-         FqM8Shxjd5lb0ZSPV+qiCJfQycC0XW4Y3Kz36WoJsCH9AdonxTthTMi0h6qg9Mrx3alA
-         i95A==
-X-Forwarded-Encrypted: i=1; AJvYcCWe7Gq2YXIpax3c+1tRK2BIthFS+9VFmAxYfO7019Ry7dPJRsFSn7SD6U/zd24reyhug2aEGHg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXGX4C4fLekiPVdFprruAIfOYfuVr35YHSSwXVw6VK2fVHys25
-	W3IWcnofHEIzhNwW1oRbQYIEOpR9oFFUWVxw/WrnTieWJDQ+NcciugltpIG8CwPtR+we2CjxpCa
-	kvld/V3B5X4/iKZWz3JivygN9FIfMcTOMJB3cU2kt
-X-Gm-Gg: ASbGncsEJF1j9YAl+eRuEpGzK1bvGM8TAOW7veWXwsUX5rMywoROWkVnBSA1HFSYt0o
-	cSL+LkfkLJWMvBYjt9PsDiDTm+NJwG+TOk9HiqipLJfiyCvYYzrh8+A7ufkP6Y/f9wl/AcMgNTX
-	EywjmJAJdd3AvfJunQ6MpDJq5cZ6vQ3gROaE9i5zO43804SfkPTjysU0DYRRRGCsNHtwK3t01W8
-	1refQn0
-X-Google-Smtp-Source: AGHT+IG4JZQFw0UFe1lylbd1YIKZPZNSrOXSl2m9Q7QGXSNaa3P4gY/WPiHjXgJtrlRpmoVZbvK7lwSU+dk6o5qf8Lg=
-X-Received: by 2002:a05:622a:15cf:b0:494:9d34:fca5 with SMTP id
- d75a77b69052e-4aedc4578fdmr56402831cf.13.1753880814865; Wed, 30 Jul 2025
- 06:06:54 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753881093; x=1754485893;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NJmB3YmXk9guqFYOXDB/HPecSW6ZbcNiYqBhlwZDyNA=;
+        b=pzBi+NYg9sh7OxHCSMLfo2o74VqeLYozfK7Znv0uLMz/le58+V+HbOJ9J+EPQpiUEi
+         SeZYhGv1800skl4r7JuZNrsPvDCPCTWvS2aNUNfX8mlanh2aj3dsBo+U41zt+Gcek06k
+         frg73d1UKn741p4J7sz/7FpCOxtov6kMXQ80Q/+zb0Tm3WMD07ei2TwQiZTw+VVtFurJ
+         FSEJa10aVuEzYX0iMtcqvHB9mPiRBY2FZyAX5RWEuXVcoFSC97jL4ZQXaH/rQ6ecviTD
+         2mp+LV6KwFk5Xr03to6u765xGISvU7LP21yICgTj6DA1PZf6Gy0rQcKKD3dHcBj4HKzQ
+         /Xtg==
+X-Forwarded-Encrypted: i=1; AJvYcCWvRV9yOx36IJDnYUc/b7JSQHN0yRf8o8icJoR4kzsnZFIotOEVWsDG4BwRSm078/vVU8jEfSk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJ/pY1sM1soOG+mKQgPWcNko496bysufN9U70wsTQS+SI6SVfv
+	O/zTjN/ymHRF0TqxJR5E/vVAc4fQul/lvLA4ahLlF0eZ/ZclhvYO26zN90wHw71QccVxMCEByMo
+	zVEsdyGG9DEVidh5XuEG/+pii10pD2VOvi6T3EJZm9+uLF3UFGby+cWFHSKE=
+X-Google-Smtp-Source: AGHT+IGJwAdTFGg3Rdi9jBmlpL/2xSJuY7eJEzfxnTLlkQxPj47h2YY6tNCTixDNuZcPqnEZAYUmlr4YyfnDppwIQ9XgBrKTc6Wq
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250730105118.GA26100@hu-sharathv-hyd.qualcomm.com> <CANn89i+24eme6OE-Q2TVQfyDqHTtMqatwyimxt_nX15OMKincg@mail.gmail.com>
-In-Reply-To: <CANn89i+24eme6OE-Q2TVQfyDqHTtMqatwyimxt_nX15OMKincg@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 30 Jul 2025 06:06:43 -0700
-X-Gm-Features: Ac12FXwD9r-w5iForxhB3h6UaSiRTkR2bWdNG3qeF8RNRgYiyeNdz8CFFFxTTmk
-Message-ID: <CANn89i+srU_hJcfRbxcNg0cg02VkGmcPWCUV2k9vgh2+rzhU7A@mail.gmail.com>
-Subject: Re: [PATCH v3] net: Add locking to protect skb->dev access in ip_output
-To: Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
-Cc: davem@davemloft.net, dsahern@kernel.org, kuba@kernel.org, 
-	pabeni@redhat.com, netdev@vger.kernel.org, quic_kapandey@quicinc.com, 
-	quic_subashab@quicinc.com
+X-Received: by 2002:a05:6e02:3288:b0:3e2:8ddd:b406 with SMTP id
+ e9e14a558f8ab-3e3f624f316mr51134025ab.17.1753881093463; Wed, 30 Jul 2025
+ 06:11:33 -0700 (PDT)
+Date: Wed, 30 Jul 2025 06:11:33 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <688a1a05.050a0220.5d226.0008.GAE@google.com>
+Subject: [syzbot] [net?] WARNING in ipv6_gso_segment
+From: syzbot <syzbot+af43e647fd835acc02df@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 30, 2025 at 6:01=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Wed, Jul 30, 2025 at 3:51=E2=80=AFAM Sharath Chandra Vurukala
-> <quic_sharathv@quicinc.com> wrote:
-> >
-> > In ip_output() skb->dev is updated from the skb_dst(skb)->dev
-> > this can become invalid when the interface is unregistered and freed,
-> >
-> > Introduced new skb_dst_dev_rcu() function to be used instead of
-> > skb_dst_dev() within rcu_locks in ip_output.This will ensure that
-> > all the skb's associated with the dev being deregistered will
-> > be transnmitted out first, before freeing the dev.
-> >
-> > Given that ip_output() is called within an rcu_read_lock()
-> > critical section or from a bottom-half context, it is safe to introduce
-> > an RCU read-side critical section within it.
-> >
-> > Multiple panic call stacks were observed when UL traffic was run
-> > in concurrency with device deregistration from different functions,
-> > pasting one sample for reference.
-> >
-> > [496733.627565][T13385] Call trace:
-> > [496733.627570][T13385] bpf_prog_ce7c9180c3b128ea_cgroupskb_egres+0x24c=
-/0x7f0
-> > [496733.627581][T13385] __cgroup_bpf_run_filter_skb+0x128/0x498
-> > [496733.627595][T13385] ip_finish_output+0xa4/0xf4
-> > [496733.627605][T13385] ip_output+0x100/0x1a0
-> > [496733.627613][T13385] ip_send_skb+0x68/0x100
-> > [496733.627618][T13385] udp_send_skb+0x1c4/0x384
-> > [496733.627625][T13385] udp_sendmsg+0x7b0/0x898
-> > [496733.627631][T13385] inet_sendmsg+0x5c/0x7c
-> > [496733.627639][T13385] __sys_sendto+0x174/0x1e4
-> > [496733.627647][T13385] __arm64_sys_sendto+0x28/0x3c
-> > [496733.627653][T13385] invoke_syscall+0x58/0x11c
-> > [496733.627662][T13385] el0_svc_common+0x88/0xf4
-> > [496733.627669][T13385] do_el0_svc+0x2c/0xb0
-> > [496733.627676][T13385] el0_svc+0x2c/0xa4
-> > [496733.627683][T13385] el0t_64_sync_handler+0x68/0xb4
-> > [496733.627689][T13385] el0t_64_sync+0x1a4/0x1a8
-> >
-> > Changes in v3:
-> > - Replaced WARN_ON() with  WARN_ON_ONCE(), as suggested by Willem de Br=
-uijn.
-> > - Dropped legacy lines mistakenly pulled in from an outdated branch.
-> >
-> > Changes in v2:
-> > - Addressed review comments from Eric Dumazet
-> > - Used READ_ONCE() to prevent potential load/store tearing
-> > - Added skb_dst_dev_rcu() and used along with rcu_read_lock() in ip_out=
-put
-> >
-> > Signed-off-by: Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
->
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
+Hello,
 
-Note: I have more patches coming, fixing IPv6 of course.
+syzbot found the following issue on:
+
+HEAD commit:    7abc678e3084 Merge tag 'pmdomain-v6.16-rc2' of git://git.k..
+git tree:       bpf
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=11cc0ca2580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=12b5044868deb866
+dashboard link: https://syzkaller.appspot.com/bug?extid=af43e647fd835acc02df
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10480f82580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14248834580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/8a9fc2a6bfdf/disk-7abc678e.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/29375cef95f6/vmlinux-7abc678e.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/8148ffc5b47b/bzImage-7abc678e.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+af43e647fd835acc02df@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 5874 at ./include/linux/skbuff.h:3032 skb_reset_transport_header include/linux/skbuff.h:3032 [inline]
+WARNING: CPU: 1 PID: 5874 at ./include/linux/skbuff.h:3032 ipv6_gso_segment+0x15e2/0x21e0 net/ipv6/ip6_offload.c:151
+Modules linked in:
+CPU: 1 UID: 0 PID: 5874 Comm: syz-executor410 Not tainted 6.16.0-rc6-syzkaller-g7abc678e3084 #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+RIP: 0010:skb_reset_transport_header include/linux/skbuff.h:3032 [inline]
+RIP: 0010:ipv6_gso_segment+0x15e2/0x21e0 net/ipv6/ip6_offload.c:151
+Code: ff ff e8 f1 db 80 f7 49 c7 c5 a3 ff ff ff e9 27 fe ff ff e8 e0 db 80 f7 49 c7 c5 a3 ff ff ff e9 16 fe ff ff e8 cf db 80 f7 90 <0f> 0b 90 e9 71 f5 ff ff e8 c1 db 80 f7 e9 d3 00 00 00 e8 b7 db 80
+RSP: 0018:ffffc90003faed00 EFLAGS: 00010293
+RAX: ffffffff8a3f4d21 RBX: ffffffff8de66da0 RCX: ffff888030385a00
+RDX: 0000000000000000 RSI: 00000000000100f4 RDI: 0000000000010000
+RBP: ffffc90003faee30 R08: ffffea0001ff8240 R09: 0000013a000001a7
+R10: ffffea0001ff8240 R11: 0000013a000001a7 R12: 1ffffffff1bccdb4
+R13: ffff8880334eb280 R14: 00000000000100f4 R15: ffff8880334eb350
+FS:  000055555a160380(0000) GS:ffff888125d23000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000010000 CR3: 000000007fe76000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ skb_mac_gso_segment+0x31c/0x640 net/core/gso.c:53
+ nsh_gso_segment+0x54a/0xe10 net/nsh/nsh.c:110
+ skb_mac_gso_segment+0x31c/0x640 net/core/gso.c:53
+ __skb_gso_segment+0x342/0x510 net/core/gso.c:124
+ skb_gso_segment include/net/gso.h:83 [inline]
+ validate_xmit_skb+0x857/0x11b0 net/core/dev.c:3950
+ validate_xmit_skb_list+0x84/0x120 net/core/dev.c:4000
+ sch_direct_xmit+0xd3/0x4b0 net/sched/sch_generic.c:329
+ __dev_xmit_skb net/core/dev.c:4102 [inline]
+ __dev_queue_xmit+0x17b6/0x3a70 net/core/dev.c:4679
+ packet_snd net/packet/af_packet.c:3130 [inline]
+ packet_sendmsg+0x3e16/0x5060 net/packet/af_packet.c:3162
+ sock_sendmsg_nosec net/socket.c:712 [inline]
+ __sock_sendmsg+0x21c/0x270 net/socket.c:727
+ ____sys_sendmsg+0x505/0x830 net/socket.c:2566
+ ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2620
+ __sys_sendmsg net/socket.c:2652 [inline]
+ __do_sys_sendmsg net/socket.c:2657 [inline]
+ __se_sys_sendmsg net/socket.c:2655 [inline]
+ __x64_sys_sendmsg+0x19b/0x260 net/socket.c:2655
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ffb36bb8ea9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 01 1a 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff4bae10a8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007ffb36bb8ea9
+RDX: 00000000200400c4 RSI: 0000200000000180 RDI: 0000000000000003
+RBP: 00000000000f4240 R08: 0000000000000001 R09: 0000000000000001
+R10: 0000200000000180 R11: 0000000000000246 R12: 00007fff4bae1100
+R13: 00007ffb36c063fe R14: 0000000000000003 R15: 00007fff4bae10e0
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
