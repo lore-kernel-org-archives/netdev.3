@@ -1,380 +1,120 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56E42E2F1F;
-	Wed, 30 Jul 2025 18:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854CD1624C5
+	for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 19:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753901951; cv=none; b=lFLyCfp2KruJ4/Bl5EczI2ionEAO2oC27mpnZPROQ99JjjSrqVQhpWkx9wDp1JSJRxqySA2b8fm88jH7wBsZqylfvQSWARl1EM7idfl4wtr7FbF8RhxH60+kFOXjso2XDo79+ykgpBuRJ9Ifjfv+r8q6GgxYNROjo1XafQh2YKM=
+	t=1753903035; cv=none; b=J2Fkpitom9DNvH3Z0Qk9QAXqugJ2j+Em1boPrxJ1vS4lBvUKwB6Vmj5/1tzQ7+WNDCr0grsFOKVnR5dAPCxLtGafg3IF1B3fESJ4ylCwWNARX2d8HhWY/KT4IFL/eTfZ950qK2Iqgs0KcXYzE2aLb49Vju28ToKo8q1BzvffABQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753901951; c=relaxed/simple;
-	bh=5gyh9zJYLUsjxLjKeucQeZqy1TvhSuu/jJ+ZSIAore0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZhgfZAzmeVPUG/oNZlPk9F5iTNh0Un2mWpKrmwdMcz4nFDFXkSoWyrskesPt4BRDabaUr3wH5kxdah70ghdV93N2uF+TwFGkwH4nKoqgbxkrbUUUAtdflco3T7UhCxic0j8bQ7fgaOxKIXYVX6P0tY155org+pfnZSMQRNsaU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BjjukA+T; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1753903035; c=relaxed/simple;
+	bh=A/I47xL7vY/wIbA0xrAznejeBW1HRXjqz1c98hyof/A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tk0sMU8NpmmHlLywEHiS3QrMg+perZBJgV7180F5LDwMM0iAmmAhY2jlZ2WjVtT6lwxjomk6Zu6UPIXt5tGKD9N22Rf4plDLv1TfBGoP6B23hAcSDHfO1h1fwFMRdgANLw47WiKmAeLWKS8a60XAbtOy4ydZDxDokiURwIHR5qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eRNcOLu0; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BjjukA+T"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-23ffdea3575so1490775ad.2;
-        Wed, 30 Jul 2025 11:59:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eRNcOLu0"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-73c17c770a7so177345b3a.2
+        for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 12:17:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753901948; x=1754506748; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F65HxIstaWwrs7zVvIf1P3cX1istjVMzDxwPl7tdrzQ=;
-        b=BjjukA+TpwjDF6aBhLokOnILB3SxVZIFSuT/696LFBZN2PNXcPhHNLPDxGCRAT9l37
-         zBZN7GQkFmDtTBRVhWrHUE2/u/7yhYcVegonQ57Y5x4aDngcSHRkgUl/xq6Y2YK84Od+
-         3fKFPdNNh2yNsxK/hB0Y+uaqiR8mdupyYMaddV52/OeiezYYXB/fLWfWzm/t2HcKlzbE
-         +Ka/yhFsr6mkSJlHSa8Hhi9Cp5ecI4BwvrFwTSPG3BYlZHUS93yh7dsAQrL55788F7N0
-         s6ZGU9k6ECoMQPgAcvB/W0pL8Bb4xkMOFSlCDOvkIB27DYqpa19/AvTrLtFz9lXrD9eO
-         1QMg==
+        d=gmail.com; s=20230601; t=1753903034; x=1754507834; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ZQIfhLfTS82wPqaIFJrl1+RkallhR2HEu/Xsc2jgeE4=;
+        b=eRNcOLu0WxXpPcr41hKkbs7MulmM/E9OvGZ3XscCXoKNvWv10UH4UAbZRhktX8rW8G
+         41aFUQCTnMrEgSU3binSL1ScSa4uktu78uVD5QK+shgd/yAU699N/5NPRy3E7ttg50wR
+         Xng4vBfrm8LD8jUELGYHPj0FM0HuzabTTfj2J6jI8XHZ5XbeULkg4v3CRAmPVv7xLMfE
+         N8h9epzB/6SxP0S4m5DxhZoDT7Aer5xlVcn0hWKZLg/TwrbL2gDuhtzYJ0wieGA6pwAP
+         ZxxTqOlrbLewnBO7rjpM8+4aT3ub/j3+3i8vE9YxmGeyiw8vJKteiom9d9MhjGKBeMux
+         AWKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753901948; x=1754506748;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F65HxIstaWwrs7zVvIf1P3cX1istjVMzDxwPl7tdrzQ=;
-        b=eumpE412IjdahcZaOHTKRrrnGUvTdVou+d4ViAy4cKukOH8qXWeGwmEaOlD9FNuhyi
-         XvUUa+25NobyVzPNYO7+syjBfsbOUP06p/Opil5TiT4waWdn5QBTlDjD1E4wbdYWhiKK
-         RRyQkG7y7SQ6sBKVnqrkTFVMd2MYDbuTvAOM3IzQIqT1aq7ocRP/bP4ZxoNQuSQ119sB
-         byCPEcyXcU32VMcr9o3oQEfEkIy4wC5XaRtOdZs1XtCNK0lnzNeT7/KzFMs+ID+6BqP9
-         cq5odA4Hn9IrVTPDeBeD2IH284D9qTH0bLHFgzo5WuzPYpWrd29ZGCg9h/9T10G2LG76
-         f4Dw==
-X-Gm-Message-State: AOJu0Yy2HUVPaWoq8SFJLVn6GxhIrJJn+aiVifpTOHltkzQGR+Glh9rP
-	ZooOr4q76JdOHyc09T/fivgtCBhlfG16uWdA0yYvdKElzTkaYP7LARr4o/N03w==
-X-Gm-Gg: ASbGncuJMJwzFI8CjCYQ5KU0Fr44ImsxO2pXPfiFpj/F0vTHZdTworoStwSXp/+CZo3
-	+R3HgC6yrWl2Br/+pOOU4riAL5bDu4RN4bI6i1r/X7/DezN8557Pll5L9ZGwM3mBPwNuASHhAnH
-	o2Tmmq4ko8t9Na2SDQhgLmgtwyFDt3z+CBQ87ytAJNJk+LSezwDyGZjfTBg1cVcIz2ibVDDOvxi
-	QPKjfivmP/ISjQF/9pDaXDpDfP+QLH48+Jxazxu0Ms9gGGzg9eYrmYAFOBcEzuknCrfqUeeQPpW
-	TrGJ8RILoBBI3h22RnVP5JQvhIkZCr/3hbsrmxaVhByltN2KY5bytIVK1E0Mdt5vWGZptYGbS55
-	7K1A73ZWO/cO7
-X-Google-Smtp-Source: AGHT+IEh0oMKwntL2fz2sR+gTycIorb87OmZ9qbHlFhaWCcdMYfR8ExryN5msJn+d3tfORKgRvdpdA==
-X-Received: by 2002:a17:903:32d0:b0:240:3ed3:13f6 with SMTP id d9443c01a7336-24096a87440mr62456465ad.18.1753901947763;
-        Wed, 30 Jul 2025 11:59:07 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:8::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2408fe58baasm29925255ad.189.2025.07.30.11.59.07
+        d=1e100.net; s=20230601; t=1753903034; x=1754507834;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZQIfhLfTS82wPqaIFJrl1+RkallhR2HEu/Xsc2jgeE4=;
+        b=S+r8iQ3nVIzvzb+tj3y2xuy0WPH3q89+Jy98DEISdQbb3rF3Pp6+2VZ2ikKpLzygph
+         Lo0uYQY+VzqY/L6XVLRDTIgvWffdWabM5V+wHsc7RqoJ/JAjmLXn7f8HTybf7tSnGcGq
+         qzHc/2Xnvgyb+Zd1n0poXzm3dEu6bMdKDplfAHqfRrrmPPimblHMrME4cWTbcZowXsqD
+         mnta8KDmSuQHKa3KS0KOxmlDLk6liwurjbHCkgnGRo1pHQ7UAoa/xiw0/fPJcZEmiz0W
+         b5tiy8SbC9zJL/XpvBaXDUKfdyPtpY+z+yd7peE4Asc5md8ph/BCgmFVMePIBcUbQcix
+         vjcQ==
+X-Gm-Message-State: AOJu0YzZh+gGdbZbncSnFsioGpH1quo57iRzZafoVgbZMpqi3FAhgrs5
+	yG9I440HQ9SnOUbI0Sty/Vsp8p8Mbf46FyK8FebryV3fFgl1MnDRTgBXkMjf0g==
+X-Gm-Gg: ASbGncv5TvVf0m4NWogiZiOk6uwRjfC0v91s3HWHv47JoOTs8hNf4Md8I1234n0VOIs
+	C5Ih2Yq15miYqAUh8HDBW6OvSmwQBlPsZVOUQg9lxHjFEnC6EtQdy3HOjdeZeXH3eXcw6CHqikP
+	DOVQpBQS9EQZASiKwS4Vjael+z/J4ppxcEVQ+XAndjrkZKpGvxTvWrtFsR1CUtR6XGS7fYlfXY2
+	rOx1nuYbYrRbRIAdMDk3a3+ijaDE+2xGnu2tYke5+JYiRA2YEf8XpzbIlR0Z0CgfMA9X9SpE/0B
+	nyHW1+wYZWFbV3t690dOEHiMskPohL4TNYbNdEZa2F+tgiT+6ry/JQ1FupZO3Bm7/qEFdNARId5
+	oOZElf/Js7Ez5YSIt7dQgOzfD3Q==
+X-Google-Smtp-Source: AGHT+IEtFaA1/OrN6I1VVRddZpnGPVBbcbvDLW179Qd9QG5+8UtJgFkCUJXhfcMSYt3Gi2V7fjCEoA==
+X-Received: by 2002:a05:6a21:33a2:b0:235:2cd8:6cb6 with SMTP id adf61e73a8af0-23dc0e7c59cmr7131452637.34.1753903033663;
+        Wed, 30 Jul 2025 12:17:13 -0700 (PDT)
+Received: from localhost ([129.210.115.104])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76b210e4f94sm2324724b3a.36.2025.07.30.12.17.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Jul 2025 11:59:07 -0700 (PDT)
-From: Amery Hung <ameryhung@gmail.com>
-To: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	alexei.starovoitov@gmail.com,
-	andrii@kernel.org,
-	daniel@iogearbox.net,
-	tj@kernel.org,
-	memxor@gmail.com,
-	martin.lau@kernel.org,
-	linux-lists@etsalapatis.com,
-	ameryhung@gmail.com,
-	kernel-team@meta.com
-Subject: [PATCH bpf-next v7 3/4] selftests/bpf: Test basic task local data operations
-Date: Wed, 30 Jul 2025 11:58:54 -0700
-Message-ID: <20250730185903.3574598-4-ameryhung@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250730185903.3574598-1-ameryhung@gmail.com>
-References: <20250730185903.3574598-1-ameryhung@gmail.com>
+        Wed, 30 Jul 2025 12:17:13 -0700 (PDT)
+Date: Wed, 30 Jul 2025 12:17:12 -0700
+From: Cong Wang <xiyou.wangcong@gmail.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, will@willsroot.io, stephen@networkplumber.org
+Subject: Re: [Patch v4 net 0/6] netem: Fix skb duplication logic and prevent
+ infinite loops
+Message-ID: <aIpvuNyyvud0sJOl@pop-os.localdomain>
+References: <20250719220341.1615951-1-xiyou.wangcong@gmail.com>
+ <CAM0EoMmTZon=nFmLsDPKhDEzHruw701iV9=mq92At9oKo0LGpA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAM0EoMmTZon=nFmLsDPKhDEzHruw701iV9=mq92At9oKo0LGpA@mail.gmail.com>
 
-Test basic operations of task local data with valid and invalid
-tld_create_key().
+On Mon, Jul 21, 2025 at 10:00:30AM -0400, Jamal Hadi Salim wrote:
+> On Sat, Jul 19, 2025 at 6:04 PM Cong Wang <xiyou.wangcong@gmail.com> wrote:
+> >
+> > This patchset fixes the infinite loops due to duplication in netem, the
+> > real root cause of this problem is enqueuing to the root qdisc, which is
+> > now changed to enqueuing to the same qdisc. This is more reasonable,
+> > more predictable from users' perspective, less error-proone and more elegant.
+> >
+> > Please see more details in patch 1/6 which contains two pages of detailed
+> > explanation including why it is safe and better.
+> >
+> > This replaces the patches from William, with much less code and without
+> > any workaround. More importantly, this does not break any use case.
+> >
+> 
+> Cong, you are changing user expected behavior.
+> So instead of sending to the root qdisc, you are looping on the same
+> qdisc. I dont recall what the history is for the decision to go back
+> to the root qdisc - but one reason that sounds sensible is we want to
+> iterate through the tree hierarchy again. Stephen may remember.
+> The fact that the qfq issue is hit indicates the change has
+> consequences - and given the check a few lines above, more than likely
+> you are affecting the qlen by what you did.
 
-For invalid calls, make sure they return the right error code and check
-that the TLDs are not inserted by running tld_get_data("
-value_not_exists") on the bpf side. The call should a null pointer.
+Please refer the changelog of patch 1/6, let me quote it here for you:
 
-For valid calls, first make sure the TLDs are created by calling
-tld_get_data() on the bpf side. The call should return a valid pointer.
+    The new netem duplication behavior does not break the documented
+    semantics of "creates a copy of the packet before queuing." The man page
+    description remains true since duplication occurs before the queuing
+    process, creating both original and duplicate packets that are then
+    enqueued. The documentation does not specify which qdisc should receive
+    the duplicates, only that copying happens before queuing. The implementation
+    choice to enqueue duplicates to the same qdisc (rather than root) is an
+    internal detail that maintains the documented behavior while preventing
+    infinite loops in hierarchical configurations.
 
-Finally, verify that the TLDs are indeed task-specific (i.e., their
-addresses do not overlap) with multiple user threads. This done by
-writing values unique to each thread, reading them from both user space
-and bpf, and checking if the value read back matches the value written.
+I think it is reasonable to use man page as our agreement with users. I
+am open to other alternative agreements, if you have one. I hope using
+man page is not of my own preference here.
 
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
----
- .../bpf/prog_tests/test_task_local_data.c     | 192 ++++++++++++++++++
- .../bpf/progs/test_task_local_data.c          |  65 ++++++
- 2 files changed, 257 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/test_task_local_data.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_task_local_data.c
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/test_task_local_data.c b/tools/testing/selftests/bpf/prog_tests/test_task_local_data.c
-new file mode 100644
-index 000000000000..2e77d3fa2534
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/test_task_local_data.c
-@@ -0,0 +1,192 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <pthread.h>
-+#include <bpf/btf.h>
-+#include <test_progs.h>
-+
-+#define TLD_FREE_DATA_ON_THREAD_EXIT
-+#define TLD_DYN_DATA_SIZE 4096
-+#include "task_local_data.h"
-+
-+struct test_tld_struct {
-+	__u64 a;
-+	__u64 b;
-+	__u64 c;
-+	__u64 d;
-+};
-+
-+#include "test_task_local_data.skel.h"
-+
-+TLD_DEFINE_KEY(value0_key, "value0", sizeof(int));
-+
-+/*
-+ * Reset task local data between subtests by clearing metadata other
-+ * than the statically defined value0. This is safe as subtests run
-+ * sequentially. Users of task local data library should not touch
-+ * library internal.
-+ */
-+static void reset_tld(void)
-+{
-+	if (TLD_READ_ONCE(tld_meta_p)) {
-+		/* Remove TLDs created by tld_create_key() */
-+		tld_meta_p->cnt = 1;
-+		tld_meta_p->size = TLD_DYN_DATA_SIZE;
-+		memset(&tld_meta_p->metadata[1], 0,
-+		       (TLD_MAX_DATA_CNT - 1) * sizeof(struct tld_metadata));
-+	}
-+}
-+
-+/* Serialize access to bpf program's global variables */
-+static pthread_mutex_t global_mutex;
-+
-+static tld_key_t *tld_keys;
-+
-+#define TEST_BASIC_THREAD_NUM 32
-+
-+void *test_task_local_data_basic_thread(void *arg)
-+{
-+	LIBBPF_OPTS(bpf_test_run_opts, opts);
-+	struct test_task_local_data *skel = (struct test_task_local_data *)arg;
-+	int fd, err, tid, *value0, *value1;
-+	struct test_tld_struct *value2;
-+
-+	fd = bpf_map__fd(skel->maps.tld_data_map);
-+
-+	value0 = tld_get_data(fd, value0_key);
-+	if (!ASSERT_OK_PTR(value0, "tld_get_data"))
-+		goto out;
-+
-+	value1 = tld_get_data(fd, tld_keys[1]);
-+	if (!ASSERT_OK_PTR(value1, "tld_get_data"))
-+		goto out;
-+
-+	value2 = tld_get_data(fd, tld_keys[2]);
-+	if (!ASSERT_OK_PTR(value2, "tld_get_data"))
-+		goto out;
-+
-+	tid = gettid();
-+
-+	*value0 = tid + 0;
-+	*value1 = tid + 1;
-+	value2->a = tid + 2;
-+	value2->b = tid + 3;
-+	value2->c = tid + 4;
-+	value2->d = tid + 5;
-+
-+	pthread_mutex_lock(&global_mutex);
-+	/* Run task_main that read task local data and save to global variables */
-+	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.task_main), &opts);
-+	ASSERT_OK(err, "run task_main");
-+	ASSERT_OK(opts.retval, "task_main retval");
-+
-+	ASSERT_EQ(skel->bss->test_value0, tid + 0, "tld_get_data value0");
-+	ASSERT_EQ(skel->bss->test_value1, tid + 1, "tld_get_data value1");
-+	ASSERT_EQ(skel->bss->test_value2.a, tid + 2, "tld_get_data value2.a");
-+	ASSERT_EQ(skel->bss->test_value2.b, tid + 3, "tld_get_data value2.b");
-+	ASSERT_EQ(skel->bss->test_value2.c, tid + 4, "tld_get_data value2.c");
-+	ASSERT_EQ(skel->bss->test_value2.d, tid + 5, "tld_get_data value2.d");
-+	pthread_mutex_unlock(&global_mutex);
-+
-+	/* Make sure valueX are indeed local to threads */
-+	ASSERT_EQ(*value0, tid + 0, "value0");
-+	ASSERT_EQ(*value1, tid + 1, "value1");
-+	ASSERT_EQ(value2->a, tid + 2, "value2.a");
-+	ASSERT_EQ(value2->b, tid + 3, "value2.b");
-+	ASSERT_EQ(value2->c, tid + 4, "value2.c");
-+	ASSERT_EQ(value2->d, tid + 5, "value2.d");
-+
-+	*value0 = tid + 5;
-+	*value1 = tid + 4;
-+	value2->a = tid + 3;
-+	value2->b = tid + 2;
-+	value2->c = tid + 1;
-+	value2->d = tid + 0;
-+
-+	/* Run task_main again */
-+	pthread_mutex_lock(&global_mutex);
-+	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.task_main), &opts);
-+	ASSERT_OK(err, "run task_main");
-+	ASSERT_OK(opts.retval, "task_main retval");
-+
-+	ASSERT_EQ(skel->bss->test_value0, tid + 5, "tld_get_data value0");
-+	ASSERT_EQ(skel->bss->test_value1, tid + 4, "tld_get_data value1");
-+	ASSERT_EQ(skel->bss->test_value2.a, tid + 3, "tld_get_data value2.a");
-+	ASSERT_EQ(skel->bss->test_value2.b, tid + 2, "tld_get_data value2.b");
-+	ASSERT_EQ(skel->bss->test_value2.c, tid + 1, "tld_get_data value2.c");
-+	ASSERT_EQ(skel->bss->test_value2.d, tid + 0, "tld_get_data value2.d");
-+	pthread_mutex_unlock(&global_mutex);
-+
-+out:
-+	pthread_exit(NULL);
-+}
-+
-+static void test_task_local_data_basic(void)
-+{
-+	struct test_task_local_data *skel;
-+	pthread_t thread[TEST_BASIC_THREAD_NUM];
-+	char dummy_key_name[TLD_NAME_LEN];
-+	tld_key_t key;
-+	int i, err;
-+
-+	reset_tld();
-+
-+	ASSERT_OK(pthread_mutex_init(&global_mutex, NULL), "pthread_mutex_init");
-+
-+	skel = test_task_local_data__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "skel_open_and_load"))
-+		return;
-+
-+	tld_keys = calloc(TLD_MAX_DATA_CNT, sizeof(tld_key_t));
-+	if (!ASSERT_OK_PTR(tld_keys, "calloc tld_keys"))
-+		goto out;
-+
-+	ASSERT_FALSE(tld_key_is_err(value0_key), "TLD_DEFINE_KEY");
-+	tld_keys[1] = tld_create_key("value1", sizeof(int));
-+	ASSERT_FALSE(tld_key_is_err(tld_keys[1]), "tld_create_key");
-+	tld_keys[2] = tld_create_key("value2", sizeof(struct test_tld_struct));
-+	ASSERT_FALSE(tld_key_is_err(tld_keys[2]), "tld_create_key");
-+
-+	/*
-+	 * Shouldn't be able to store data exceed a page. Create a TLD just big
-+	 * enough to exceed a page. TLDs already created are int value0, int
-+	 * value1, and struct test_tld_struct value2.
-+	 */
-+	key = tld_create_key("value_not_exist",
-+			     TLD_PAGE_SIZE - 2 * sizeof(int) - sizeof(struct test_tld_struct) + 1);
-+	ASSERT_EQ(tld_key_err_or_zero(key), -E2BIG, "tld_create_key");
-+
-+	key = tld_create_key("value2", sizeof(struct test_tld_struct));
-+	ASSERT_EQ(tld_key_err_or_zero(key), -EEXIST, "tld_create_key");
-+
-+	/* Shouldn't be able to create the (TLD_MAX_DATA_CNT+1)-th TLD */
-+	for (i = 3; i < TLD_MAX_DATA_CNT; i++) {
-+		snprintf(dummy_key_name, TLD_NAME_LEN, "dummy_value%d", i);
-+		tld_keys[i] = tld_create_key(dummy_key_name, sizeof(int));
-+		ASSERT_FALSE(tld_key_is_err(tld_keys[i]), "tld_create_key");
-+	}
-+	key = tld_create_key("value_not_exist", sizeof(struct test_tld_struct));
-+	ASSERT_EQ(tld_key_err_or_zero(key), -ENOSPC, "tld_create_key");
-+
-+	/* Access TLDs from multiple threads and check if they are thread-specific */
-+	for (i = 0; i < TEST_BASIC_THREAD_NUM; i++) {
-+		err = pthread_create(&thread[i], NULL, test_task_local_data_basic_thread, skel);
-+		if (!ASSERT_OK(err, "pthread_create"))
-+			goto out;
-+	}
-+
-+out:
-+	for (i = 0; i < TEST_BASIC_THREAD_NUM; i++)
-+		pthread_join(thread[i], NULL);
-+
-+	if (tld_keys) {
-+		free(tld_keys);
-+		tld_keys = NULL;
-+	}
-+	tld_free();
-+	test_task_local_data__destroy(skel);
-+}
-+
-+void test_task_local_data(void)
-+{
-+	if (test__start_subtest("task_local_data_basic"))
-+		test_task_local_data_basic();
-+}
-diff --git a/tools/testing/selftests/bpf/progs/test_task_local_data.c b/tools/testing/selftests/bpf/progs/test_task_local_data.c
-new file mode 100644
-index 000000000000..fffafc013044
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_task_local_data.c
-@@ -0,0 +1,65 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <vmlinux.h>
-+#include <errno.h>
-+#include <bpf/bpf_helpers.h>
-+
-+#include "task_local_data.bpf.h"
-+
-+struct tld_keys {
-+	tld_key_t value0;
-+	tld_key_t value1;
-+	tld_key_t value2;
-+	tld_key_t value_not_exist;
-+};
-+
-+struct test_tld_struct {
-+	__u64 a;
-+	__u64 b;
-+	__u64 c;
-+	__u64 d;
-+};
-+
-+int test_value0;
-+int test_value1;
-+struct test_tld_struct test_value2;
-+
-+SEC("syscall")
-+int task_main(void *ctx)
-+{
-+	struct tld_object tld_obj;
-+	struct test_tld_struct *struct_p;
-+	struct task_struct *task;
-+	int err, *int_p;
-+
-+	task = bpf_get_current_task_btf();
-+	err = tld_object_init(task, &tld_obj);
-+	if (err)
-+		return 1;
-+
-+	int_p = tld_get_data(&tld_obj, value0, "value0", sizeof(int));
-+	if (int_p)
-+		test_value0 = *int_p;
-+	else
-+		return 2;
-+
-+	int_p = tld_get_data(&tld_obj, value1, "value1", sizeof(int));
-+	if (int_p)
-+		test_value1 = *int_p;
-+	else
-+		return 3;
-+
-+	struct_p = tld_get_data(&tld_obj, value2, "value2", sizeof(struct test_tld_struct));
-+	if (struct_p)
-+		test_value2 = *struct_p;
-+	else
-+		return 4;
-+
-+	int_p = tld_get_data(&tld_obj, value_not_exist, "value_not_exist", sizeof(int));
-+	if (int_p)
-+		return 5;
-+
-+	return 0;
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.47.3
-
+Thanks.
