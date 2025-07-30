@@ -1,38 +1,38 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41F4293C51;
-	Wed, 30 Jul 2025 10:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80A42951BD;
+	Wed, 30 Jul 2025 10:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753873098; cv=none; b=MdPEHYpti2EnJD8xOEupVZhsVfccIuU0cs+XeLrvxEVAIOZjd3HTgtd8E4zhsuDAftncK3uq2ksiXXQzfYvQjV0r2dacM1EOvp4vHMLv/In2NEhCyP6Hg9TzkU+UIgfgZfElFabh4YkwlOxhdx4b5NfgnuGa9D5u+3IcVwMTLkk=
+	t=1753873099; cv=none; b=W9bM0LbXiE8UcRlPiPE8ODpfRKUAWsTcAwrX6vHybYupML0x+HL1rZngldtOGhamVQs8xU4lW1ZzwdpnkAM285sMIZf+ryS6S61qXlRxUwslV6DT59HK7xEZCMlRTZYpAsVWNcT8GK3bQ5VLeUXk0E3D2bgBKd18Oofy4xCzGCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753873098; c=relaxed/simple;
-	bh=mhngvqxBFWjQWNd4R+EQgNXJx3VmY436N85vD+P8Rm4=;
+	s=arc-20240116; t=1753873099; c=relaxed/simple;
+	bh=Gb7IZwUlriHpo5vbmDTNk57nLTln98iuALB5y5tpq5c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H14n2DSviqug/dNsyNYw3DsVCNLzizSYjfwJ3UVoukbYMWw4HCwVdateVK36UdkqRqjgl8YrsxG+cAVIbv1bHvwqwsEz+S16XZjhYteHiWXsH8fcOpNk5fYHtYUJ31SJJ1e4RybmAqQajjIDn1EHv9F9ChA8iD+5OkiO5//xZuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=YWowdU5w; arc=none smtp.client-ip=148.251.105.195
+	 MIME-Version:Content-Type; b=iRPhS2tvawwx/rlgWtCGoY6sj1cWGSxfKyEKEHAp87RFzS3CJyu+fsAJfK8SA0fG0yyN+qu1CfH2VEa23DcxnKd3MvzJRIOq+sygw3S8Ow2EWGGrKbtEGmXtcU4cFxoaWn2gB7HaHOcY1boFHfGyFkA+xqy/EfbW/hb/JU1c9yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=oaE+5Hee; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="YWowdU5w"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="oaE+5Hee"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1753873088;
-	bh=mhngvqxBFWjQWNd4R+EQgNXJx3VmY436N85vD+P8Rm4=;
+	s=mail; t=1753873095;
+	bh=Gb7IZwUlriHpo5vbmDTNk57nLTln98iuALB5y5tpq5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YWowdU5wTyxYft0gBIbrUbj5lWtJPM2PU2Uv6lQ1gqxOhsvcvf7uC+9iSoA7tugRU
-	 2MFcHFJJkN6bnclMDLyLdfSDvQOqtFFenV/4tbAo+mjyN/WE1Q5kg4xhzdZVNEkrqw
-	 Ptd/a2392YjuUrgNTdps5eyqY+4aJJMIKoyPNsm3Iu5cbSEbSM8uTNkd9pJT+T62Nb
-	 6gBn0ZwuMIRcQw+Ely1qOwTgNkrDvafKcxxepvbYzzCYVo5F9hD/njdTyceA+IaPJr
-	 EWB4BuqG0UoDSPBr44IAcXmF4ybegoXdoJZuWlJ9Xue7uLYHCwNW/RThSNX/YKyf/D
-	 i4Nu7xOyq1EmA==
+	b=oaE+5HeehbZPse4DdKtVVwL597hkExSABPuT0iHyr3wVpSZcy+FPUnHVXSLNwm4Nr
+	 VTagTeUfnr8NHbogeeWhVv/pMDjUb5KS33v6UxwrV0EmgGRndEBO0JuiwTkfZdnN63
+	 HFummwPM/l5lvD9hGT8KGUvj2W8u2OHmkVfWjoFh9yRQnxRziFTZ67vEGrcsiD60iV
+	 In3T25rj93l5s6F2itXWBEl9Sygq3z+SCwSTbKNcWI0uAxjfndBZG341nyqK6BeGj2
+	 pd3kSobjpjN09JrAsxvnxyVixrMPh/QX1ayhvukJB5HxkBtAhtZauCLcLaXlbZGFFd
+	 bdO50fZjTnqpQ==
 Received: from laura.lan (unknown [IPv6:2001:b07:646b:e2:4db2:e926:c82d:3276])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 929D117E1439;
-	Wed, 30 Jul 2025 12:58:07 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 7183017E15D4;
+	Wed, 30 Jul 2025 12:58:13 +0200 (CEST)
 From: Laura Nao <laura.nao@collabora.com>
 To: mturquette@baylibre.com,
 	sboyd@kernel.org,
@@ -54,9 +54,9 @@ Cc: guangjie.song@mediatek.com,
 	kernel@collabora.com,
 	Laura Nao <laura.nao@collabora.com>,
 	=?UTF-8?q?N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado?= <nfraprado@collabora.com>
-Subject: [PATCH v3 02/27] clk: mediatek: clk-pll: Add ops for PLLs using set/clr regs and FENC
-Date: Wed, 30 Jul 2025 12:56:28 +0200
-Message-Id: <20250730105653.64910-3-laura.nao@collabora.com>
+Subject: [PATCH v3 06/27] clk: mediatek: clk-gate: Refactor mtk_clk_register_gate to use mtk_gate struct
+Date: Wed, 30 Jul 2025 12:56:32 +0200
+Message-Id: <20250730105653.64910-7-laura.nao@collabora.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250730105653.64910-1-laura.nao@collabora.com>
 References: <20250730105653.64910-1-laura.nao@collabora.com>
@@ -69,142 +69,81 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-MT8196 uses a combination of set/clr registers to control the PLL
-enable state, along with a FENC bit to check the preparation status.
-Add new set of PLL clock operations with support for set/clr enable and
-FENC status logic.
+MT8196 uses a HW voter for gate enable/disable control, with
+set/clr/sta registers located in a separate regmap. Refactor
+mtk_clk_register_gate() to take a struct mtk_gate instead of individual
+parameters, avoiding the need to add three extra arguments to support
+HW voter register offsets.
 
 Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Laura Nao <laura.nao@collabora.com>
 ---
- drivers/clk/mediatek/clk-pll.c | 42 +++++++++++++++++++++++++++++++++-
- drivers/clk/mediatek/clk-pll.h |  5 ++++
- 2 files changed, 46 insertions(+), 1 deletion(-)
+ drivers/clk/mediatek/clk-gate.c | 35 ++++++++++++---------------------
+ 1 file changed, 13 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-pll.c b/drivers/clk/mediatek/clk-pll.c
-index 49ca25dd5418..8f46de77f42d 100644
---- a/drivers/clk/mediatek/clk-pll.c
-+++ b/drivers/clk/mediatek/clk-pll.c
-@@ -37,6 +37,13 @@ int mtk_pll_is_prepared(struct clk_hw *hw)
- 	return (readl(pll->en_addr) & BIT(pll->data->pll_en_bit)) != 0;
- }
- 
-+static int mtk_pll_fenc_is_prepared(struct clk_hw *hw)
-+{
-+	struct mtk_clk_pll *pll = to_mtk_clk_pll(hw);
-+
-+	return readl(pll->fenc_addr) & pll->fenc_mask;
-+}
-+
- static unsigned long __mtk_pll_recalc_rate(struct mtk_clk_pll *pll, u32 fin,
- 		u32 pcw, int postdiv)
- {
-@@ -274,6 +281,25 @@ void mtk_pll_unprepare(struct clk_hw *hw)
- 	writel(r, pll->pwr_addr);
- }
- 
-+static int mtk_pll_prepare_setclr(struct clk_hw *hw)
-+{
-+	struct mtk_clk_pll *pll = to_mtk_clk_pll(hw);
-+
-+	writel(BIT(pll->data->pll_en_bit), pll->en_set_addr);
-+
-+	/* Wait 20us after enable for the PLL to stabilize */
-+	udelay(20);
-+
-+	return 0;
-+}
-+
-+static void mtk_pll_unprepare_setclr(struct clk_hw *hw)
-+{
-+	struct mtk_clk_pll *pll = to_mtk_clk_pll(hw);
-+
-+	writel(BIT(pll->data->pll_en_bit), pll->en_clr_addr);
-+}
-+
- const struct clk_ops mtk_pll_ops = {
- 	.is_prepared	= mtk_pll_is_prepared,
- 	.prepare	= mtk_pll_prepare,
-@@ -283,6 +309,16 @@ const struct clk_ops mtk_pll_ops = {
- 	.set_rate	= mtk_pll_set_rate,
+diff --git a/drivers/clk/mediatek/clk-gate.c b/drivers/clk/mediatek/clk-gate.c
+index 67d9e741c5e7..0375ccad4be3 100644
+--- a/drivers/clk/mediatek/clk-gate.c
++++ b/drivers/clk/mediatek/clk-gate.c
+@@ -152,12 +152,9 @@ const struct clk_ops mtk_clk_gate_ops_no_setclr_inv = {
  };
+ EXPORT_SYMBOL_GPL(mtk_clk_gate_ops_no_setclr_inv);
  
-+const struct clk_ops mtk_pll_fenc_clr_set_ops = {
-+	.is_prepared	= mtk_pll_fenc_is_prepared,
-+	.prepare	= mtk_pll_prepare_setclr,
-+	.unprepare	= mtk_pll_unprepare_setclr,
-+	.recalc_rate	= mtk_pll_recalc_rate,
-+	.round_rate	= mtk_pll_round_rate,
-+	.set_rate	= mtk_pll_set_rate,
-+};
-+EXPORT_SYMBOL_GPL(mtk_pll_fenc_clr_set_ops);
-+
- struct clk_hw *mtk_clk_register_pll_ops(struct mtk_clk_pll *pll,
- 					const struct mtk_pll_data *data,
- 					void __iomem *base,
-@@ -315,6 +351,9 @@ struct clk_hw *mtk_clk_register_pll_ops(struct mtk_clk_pll *pll,
- 	pll->hw.init = &init;
- 	pll->data = data;
- 
-+	pll->fenc_addr = base + data->fenc_sta_ofs;
-+	pll->fenc_mask = BIT(data->fenc_sta_bit);
-+
- 	init.name = data->name;
- 	init.flags = (data->flags & PLL_AO) ? CLK_IS_CRITICAL : 0;
- 	init.ops = pll_ops;
-@@ -337,12 +376,13 @@ struct clk_hw *mtk_clk_register_pll(const struct mtk_pll_data *data,
+-static struct clk_hw *mtk_clk_register_gate(struct device *dev, const char *name,
+-					 const char *parent_name,
+-					 struct regmap *regmap, int set_ofs,
+-					 int clr_ofs, int sta_ofs, u8 bit,
+-					 const struct clk_ops *ops,
+-					 unsigned long flags)
++static struct clk_hw *mtk_clk_register_gate(struct device *dev,
++						const struct mtk_gate *gate,
++						struct regmap *regmap)
  {
- 	struct mtk_clk_pll *pll;
- 	struct clk_hw *hw;
-+	const struct clk_ops *pll_ops = data->ops ? data->ops : &mtk_pll_ops;
- 
- 	pll = kzalloc(sizeof(*pll), GFP_KERNEL);
- 	if (!pll)
+ 	struct mtk_clk_gate *cg;
+ 	int ret;
+@@ -167,17 +164,17 @@ static struct clk_hw *mtk_clk_register_gate(struct device *dev, const char *name
+ 	if (!cg)
  		return ERR_PTR(-ENOMEM);
  
--	hw = mtk_clk_register_pll_ops(pll, data, base, &mtk_pll_ops);
-+	hw = mtk_clk_register_pll_ops(pll, data, base, pll_ops);
- 	if (IS_ERR(hw))
- 		kfree(pll);
+-	init.name = name;
+-	init.flags = flags | CLK_SET_RATE_PARENT;
+-	init.parent_names = parent_name ? &parent_name : NULL;
+-	init.num_parents = parent_name ? 1 : 0;
+-	init.ops = ops;
++	init.name = gate->name;
++	init.flags = gate->flags | CLK_SET_RATE_PARENT;
++	init.parent_names = gate->parent_name ? &gate->parent_name : NULL;
++	init.num_parents = gate->parent_name ? 1 : 0;
++	init.ops = gate->ops;
  
-diff --git a/drivers/clk/mediatek/clk-pll.h b/drivers/clk/mediatek/clk-pll.h
-index c4d06bb11516..7fdc5267a2b5 100644
---- a/drivers/clk/mediatek/clk-pll.h
-+++ b/drivers/clk/mediatek/clk-pll.h
-@@ -29,6 +29,7 @@ struct mtk_pll_data {
- 	u32 reg;
- 	u32 pwr_reg;
- 	u32 en_mask;
-+	u32 fenc_sta_ofs;
- 	u32 pd_reg;
- 	u32 tuner_reg;
- 	u32 tuner_en_reg;
-@@ -51,6 +52,7 @@ struct mtk_pll_data {
- 	u32 en_clr_reg;
- 	u8 pll_en_bit; /* Assume 0, indicates BIT(0) by default */
- 	u8 pcw_chg_bit;
-+	u8 fenc_sta_bit;
- };
+ 	cg->regmap = regmap;
+-	cg->set_ofs = set_ofs;
+-	cg->clr_ofs = clr_ofs;
+-	cg->sta_ofs = sta_ofs;
+-	cg->bit = bit;
++	cg->set_ofs = gate->regs->set_ofs;
++	cg->clr_ofs = gate->regs->clr_ofs;
++	cg->sta_ofs = gate->regs->sta_ofs;
++	cg->bit = gate->shift;
  
- /*
-@@ -72,6 +74,8 @@ struct mtk_clk_pll {
- 	void __iomem	*en_addr;
- 	void __iomem	*en_set_addr;
- 	void __iomem	*en_clr_addr;
-+	void __iomem	*fenc_addr;
-+	u32		fenc_mask;
- 	const struct mtk_pll_data *data;
- };
+ 	cg->hw.init = &init;
  
-@@ -82,6 +86,7 @@ void mtk_clk_unregister_plls(const struct mtk_pll_data *plls, int num_plls,
- 			     struct clk_hw_onecell_data *clk_data);
+@@ -228,13 +225,7 @@ int mtk_clk_register_gates(struct device *dev, struct device_node *node,
+ 			continue;
+ 		}
  
- extern const struct clk_ops mtk_pll_ops;
-+extern const struct clk_ops mtk_pll_fenc_clr_set_ops;
+-		hw = mtk_clk_register_gate(dev, gate->name, gate->parent_name,
+-					    regmap,
+-					    gate->regs->set_ofs,
+-					    gate->regs->clr_ofs,
+-					    gate->regs->sta_ofs,
+-					    gate->shift, gate->ops,
+-					    gate->flags);
++		hw = mtk_clk_register_gate(dev, gate, regmap);
  
- static inline struct mtk_clk_pll *to_mtk_clk_pll(struct clk_hw *hw)
- {
+ 		if (IS_ERR(hw)) {
+ 			pr_err("Failed to register clk %s: %pe\n", gate->name,
 -- 
 2.39.5
 
