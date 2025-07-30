@@ -1,212 +1,195 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A035C8F0;
-	Wed, 30 Jul 2025 14:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753884703; cv=fail; b=XbIeqmqWgd3Yxl4EzXRpIoqF/R+oTFwz3tM30hy0aGkrO+jqQhIgdMQknIwBsVPhqX+n5DMAPJCu3KKMGZdvAxpdO+UsHd7QnrYaDdbYJ3RjCOl6jFGtIOvHIHpeQtzQ93FtpwvG5mz/Z0SvOa1HasB2Aygp4bLOj+bswAJTpq4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753884703; c=relaxed/simple;
-	bh=y6WlKEMdfUwBQwG8m5nZ3yrQGf7nqO54oZr+GFnNEaE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ckUJ0FFzg4UBUtK6k8UyQciBqTsdccvF19+PqiKx3iYR5HCvKMhFU4jrGaUTFf1mTChqNd30EgAxLecflq1SWleh666Jhj7ao0czFReJzjJkqs1Vwd43GctkuFRQ7rQoS4tlJdnTvtbG01UiTPZu40mcOh9lb8OKSkZPiZ0rNyM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y6t2H6kx; arc=fail smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419A02C3264;
+	Wed, 30 Jul 2025 14:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753884916; cv=none; b=aCviZFddU1vJCDGLZdU0S/dxHY52E7jEUV/GxUgVhD88S5gjk92M06XFIIv2l6osaQmT8xDlSlzsi3bBaxWaEUO7Hmvsi+/BQdyz4cslcNYHsjsTdhYCpXh3toPAE3iv4U09285xvY5wa8tKxhZToh4GG2o/1Frrl4lBLPObfzI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753884916; c=relaxed/simple;
+	bh=Z8WKZF1qAcB2oc/3RY6CB39RFCZu1U0ELTHjaUz8veg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hJhIB/8Mf7mSfF/qxxz1o6axubeVrYxpY90oRp58fiQsd7Rcqb3ZaTueTWG9soCPz9Plcu4Vj4Usg4ZWXixIO7d0/x4KrCWfUBiexsb+BjGEO+YvlQFgCIdVKNd/ikVofj38YNuzpLaAXD+nvq87go/7HAVT7ZRkCriMU8L+V8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YNdGN6DD; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y6t2H6kx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753884702; x=1785420702;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=y6WlKEMdfUwBQwG8m5nZ3yrQGf7nqO54oZr+GFnNEaE=;
-  b=Y6t2H6kxDQpxXucirVHmGSPhEPxXcWRXdjiZKbEE4LWVTU6XlChhSFHf
-   o8h5z6JMv6fycaxPoQ4uaylD2sBIk9yivEObePpyxYX6jKkhh9zxjIR1A
-   j1eZcDhzRipRcW4Ercw7dh8eETW2ogJH4Mn4j6zMvPuvjKgxOrvLb4MD7
-   v80mK6nLrmvtTI4A/TevaTgF0pOC1GmAdqmZIZXTj3uNq0FvxfK7RIuY5
-   201FjsBB2X4EUI7IS5PrtP6sRWFVhfYjnykjx7ON81frZjjYt4GU7WqY+
-   n4IT+ME9f3wwy3ymCSaAjGF+nR9SgwA8/DLx/SsT61A0r2Wu2n8XnsdEU
-   g==;
-X-CSE-ConnectionGUID: Ki9tMLWySG6n0junDcg6vQ==
-X-CSE-MsgGUID: bAOGaoStQCGeQtZdP2V/JA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11507"; a="60002527"
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
-   d="scan'208";a="60002527"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2025 07:09:35 -0700
-X-CSE-ConnectionGUID: YkofWyvIR1mYCo7Vu8SPgQ==
-X-CSE-MsgGUID: OmjDOrXsRW6wdFk0WgXrGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
-   d="scan'208";a="163781911"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2025 07:09:34 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Wed, 30 Jul 2025 07:09:34 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Wed, 30 Jul 2025 07:09:34 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (40.107.92.82) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Wed, 30 Jul 2025 07:09:32 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I2c90r7HEvHVoWoEuuIB+x/iGwYx0yTQj+KPRw+LAxFKY6520UACa0igjjGc5U7gNFqXB0wzZifa5tGFROWBaT70i627ARmLxGB/iuYgtVh+vscJzqykYipGEOde/pecAjRHjSE+2VaaavhazqRzWTROzdjO8T5dsAiwOXdoLFrmZ/1GmOsdpAZwFqZWQFqab8yzljiL4IezzSlgqlENqaziJ2+ex+n/2uzeFQ3KcKuwgJdMIv1CYR2krlS1fnv7FKQPWz61wHedyQUwjIaByeleI+eK14YArClE6XJLCJE816W7uxG6I+fNX57rCeKWAGZE8G9Ht9Gl+xoSSlyFQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y6WlKEMdfUwBQwG8m5nZ3yrQGf7nqO54oZr+GFnNEaE=;
- b=Dwym1uQIDh6ka8mAxLrGlx2xpGeesG24oCFWROJMVcH+sVz8LfYmuyuHp/Op5Nrfpa35L0YVD4F0qmCBJ+T+siKT/E3xe1I8FZ8fgrkZTmFvLl7bXQcTSV6EeqCsTurnVzBqLLUTUlgdKt6KXrXaTyJAhcGedG5tCxI+iOfuz6HaOoXA2u1FifHpvGXqFxareAgusuMF2MXhjwCrM96sjUpeY51t29qNfftrDi0gvX171mhgKyh6q7UtSvB1Ci3Wag45HPyvnLuD7uUMkXw5mtUzktlLlw68DueYr09ETLSPcbfIqHpwBRWJ0ZDX+AtwxUJUhxcKAsJAHW58ftFsLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ2PR11MB8452.namprd11.prod.outlook.com (2603:10b6:a03:574::22)
- by DS0PR11MB8181.namprd11.prod.outlook.com (2603:10b6:8:159::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.11; Wed, 30 Jul
- 2025 14:09:03 +0000
-Received: from SJ2PR11MB8452.namprd11.prod.outlook.com
- ([fe80::d200:bfac:918a:1a38]) by SJ2PR11MB8452.namprd11.prod.outlook.com
- ([fe80::d200:bfac:918a:1a38%4]) with mapi id 15.20.8964.026; Wed, 30 Jul 2025
- 14:09:03 +0000
-From: "Kubalewski, Arkadiusz" <arkadiusz.kubalewski@intel.com>
-To: Jiri Pirko <jiri@resnulli.us>
-CC: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
-	"almasrymina@google.com" <almasrymina@google.com>, "asml.silence@gmail.com"
-	<asml.silence@gmail.com>, "leitao@debian.org" <leitao@debian.org>,
-	"kuniyu@google.com" <kuniyu@google.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "intel-wired-lan@lists.osuosl.org"
-	<intel-wired-lan@lists.osuosl.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-Subject: RE: [RFC PATCH] net: add net-device TX clock source selection
- framework
-Thread-Topic: [RFC PATCH] net: add net-device TX clock source selection
- framework
-Thread-Index: AQHcAHbJgJtB/8Zrb0SVd65H8jea6bRKmVcAgAAYP0A=
-Date: Wed, 30 Jul 2025 14:09:03 +0000
-Message-ID: <SJ2PR11MB8452713FE8051A2B18E742DE9B24A@SJ2PR11MB8452.namprd11.prod.outlook.com>
-References: <20250729104528.1984928-1-arkadiusz.kubalewski@intel.com>
- <p4tnkuf3zh7ja45d4y2pas6fj6epbqdqdqtfai2vmyul3n43lf@v3e5dvvbphiv>
-In-Reply-To: <p4tnkuf3zh7ja45d4y2pas6fj6epbqdqdqtfai2vmyul3n43lf@v3e5dvvbphiv>
-Accept-Language: pl-PL, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ2PR11MB8452:EE_|DS0PR11MB8181:EE_
-x-ms-office365-filtering-correlation-id: ebdd6f84-99de-454d-0a86-08ddcf72a363
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?R1d0nlOf5QfEvb3pJxHLjAbk0UaPspxFFvHW/ZOS7Ktx6EmMKx0uxpCljKE6?=
- =?us-ascii?Q?ntiHnMdkf2He6z34oV7WarnHWmLLCtWCFGKBngVNkvhwhaS+nHAH2Si2X6zL?=
- =?us-ascii?Q?IPBtaYdymqMdKwPtzVbjsyxT9jCgVqvhP/BVCwoygfA2Iw2tgeVED66DJgMf?=
- =?us-ascii?Q?TOKiEv37PW121WgSa4WPrBQj9ykyFZQGs9ys0rov5UwtaY8ikJ3vwOvrEMWY?=
- =?us-ascii?Q?5rHSi5TblIL2+Uba950Hc3jgZr701qWzD7L9JFR1LKlapDXCohUZvnWXdNcB?=
- =?us-ascii?Q?mWZ1V2Lsd7lv41akhH36PuOVyZ2uB+2m1md+rPrN+X27hL8BFq0Brke6BINn?=
- =?us-ascii?Q?XLvSbfP8Z2WoLecN5HDqBwtYH2PBAVd91pjP9Mf8MnQqcp75dHZgu1KVD2+f?=
- =?us-ascii?Q?eVHWogv8JiayioobwNJIj5iXSfrf5naVkq89Wh7r7YuH3Kn8wsOMICzlq3VO?=
- =?us-ascii?Q?IBLp6DnxbrGtYAt85LHvMxrcwvrwiN6ELthfdebZ4F3BLle2wDv4qKbXUir+?=
- =?us-ascii?Q?lfs6iGmdiNzT5xnVXnJ7koIhODjkF7F96/mifqexNqPK7vGGQ/j4Il0+TKqi?=
- =?us-ascii?Q?2/Pysp5ZW5cNO4ug3P+vXUyi5D0m8J6eRaW/sNT1FEY+xiMT56KG0cCbOo4e?=
- =?us-ascii?Q?jKBG9usWYfGcQTmqo8tThk3/eXL+Cjvj8HCsRV+0PU7CxFFYuAJaWn8fr6V1?=
- =?us-ascii?Q?VwCeBDv8uwB/3X1Zz9MmhoySB3Gp07oMbG84giw57zGNVqZC+l85OIMtI4/v?=
- =?us-ascii?Q?2b9yhgDn1oBgIHaF1PcuTWr6taqkhjscftQSnkyI5bXyJv/LNrauqCYWTD57?=
- =?us-ascii?Q?hNoYfDBqKw1fH7PARBOKc57TqxsCvZS1YFAoDDC1ZmppFMfglgkTpjW8o1VE?=
- =?us-ascii?Q?9VwVG0hGCl2DAraaVsiDr/dNNpkzt1G08DFefrNWpkV5UXKp5p7jbZr0ub13?=
- =?us-ascii?Q?oCgpopxN+MIgB8y8AnphEDUx2rbTbKXlCTSGtv47hD2rMyPxEk2c5UB4UhkX?=
- =?us-ascii?Q?k5tSFRwXOe10VE7wtNnPMjROLisjJA1YnaJDdqiYS6ej1Ad09pzAKE8EZBmx?=
- =?us-ascii?Q?eDpFfwe3s5lBa+MCb4nGIybg+MdtMq6/Uf8yWEZRgtog5Tpp2k1V1GS+AvlL?=
- =?us-ascii?Q?Sj2POXivaUHIODH7jfWzYHvV/fkGk8CLF1Vvwp9pnCGYcc0dOwn9mvJnoIBL?=
- =?us-ascii?Q?DASOmSMSPG9G8M5lOVvfL0rl9YD3WSkX+cW6znXNbUmmgowmMyEXdUeadrBb?=
- =?us-ascii?Q?Mu2STk2jfZvWVow6KtrF3iYRtPQGaT86CWtClwrrwM5t+ZLMe7a3TvIiEFAA?=
- =?us-ascii?Q?IeQm4yX2ovEiTl3h2kM7XOB1DnL79Pt6oC8h0DCPM4WZotxXNa3ElMRz5O+4?=
- =?us-ascii?Q?QlF763XUGCpNz7K+OvmbK5WeL8pr7X+wRRSFq/FrbANefPEr3BhqK9JobDn9?=
- =?us-ascii?Q?4lEUQVrtMy1TOsV4YFwfXVMGKF6Y6H4G65xZfFckWa3YTbQ0d8NogQ=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8452.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?JDKf1NKDTIBMILcleNF6Ymyd6epfv2KnO88kEtLqZ6tVTNN6rSEHJ/L0ewG2?=
- =?us-ascii?Q?vkbpuEgHN+wfE4eLXhX/uq48eE/ggRaQGagPXT2SpPcYa5kn7I6e8vPVujAc?=
- =?us-ascii?Q?mFHyEOS0hLj6Gs7tl9KS6Cp7V93W+MkRXZPOBL4CYtsickdJSqPTXyKdKilz?=
- =?us-ascii?Q?29jnk5L2Jw1XqGIq02CewRj75qSakQAVK8DIJCGtHg84n04whlgbOaMJpt5Y?=
- =?us-ascii?Q?j3rKbaHzg36dDDvGGey13/+3WjtH3RpfC223E14p3b2RoLUV1edwXbTB0BUU?=
- =?us-ascii?Q?ZEFeR8cKq+jxZMyf3PTU7dBLi7P9ZpsLbnRFCr0Ojj4H387T8zB0i7B5ab+c?=
- =?us-ascii?Q?8n4k/e5o/Hx3bVBVumMwFZy4YXgH4Fdpx1u4MGlNE9E8couP09Gn+JzNyuaT?=
- =?us-ascii?Q?QzQZ0Ei0s8y+4LLRYskUjOBOv2quv7oKEcqfof492bdPETg3/sJFI5TjhkzC?=
- =?us-ascii?Q?0j49v/wGeoYaS5I7D9y1Pog/VTfXZ2KM+sS1YhVcbZimYHkj9dWp66Z/DKuY?=
- =?us-ascii?Q?azkbNkqJDV+PBb/UudD6qU8Cx3BBnNheefQ/K+OEFdCN6ENFupwLgZanI6Ey?=
- =?us-ascii?Q?5KMRRfajbdMyp6ZfH+lHDtlUrbkO9CtK2+W1vDEF+gakg9cq90jfNlprhViA?=
- =?us-ascii?Q?LbxmU4hTect9wfB03vFc4QRDhS1dzQWXk2GuNM9RDYRZtlnMm8/3hNzFpWFH?=
- =?us-ascii?Q?pqLaxCyLQtObS7UAm4wAm0nbd/TS19Gsil2S4H6g4aDV34HdnyODVaTTUD7R?=
- =?us-ascii?Q?ZVbp9zscOn4RlBMlKDwwhYD/aogWmDJEoEOCh8EBU9GCxzfRCCmyhksC1+N1?=
- =?us-ascii?Q?fKEOf1Lvj2wqlRd7mcLGoDtoMK4vRpZ7J086AJN0MEZhJ62eORtU0JO0Bz4r?=
- =?us-ascii?Q?RjWODeUlgiU4+ILVNRwPVSww7RZEEyL3xf/0e1eVhlYKm02CignMRVAXY2ly?=
- =?us-ascii?Q?n+nKS0AxwM6e40q/Vf+/g/hdQL3nDFIdQ4FwhpRxT+vKkQSIy8uCoChaRDQx?=
- =?us-ascii?Q?JIpyto7HdTu3GvKcmiz7CkHJjws41zzn8r/yM8x/S2TBrp+Rz2mBo/8L10uT?=
- =?us-ascii?Q?+HL8KR2/5sZ0BzwKllLV9aYF3bi2oJnBEwChQBCBgprzqcLUkb8TGqOHqsbF?=
- =?us-ascii?Q?rsVhMbyHuGcyiRLycOJtx4O9svRk+lWl3Cm08JqujWkhJxjXRNeWSa91BkOC?=
- =?us-ascii?Q?iKf4vxMYmMcN/rFpmX37XVbbb57eYHz4A03wy7da1qRiZYci9dyZOjk4GbgN?=
- =?us-ascii?Q?qoO2AgNSGyTdwmvnI3ZMVhW/ebqxgM681Ss2WgtBCVariEmbtamsiA73a936?=
- =?us-ascii?Q?5bowYasoFdElSeReNd8ogfDKn6cjT1p32sIRZ2vw7RfYBgbpkVV1kiCANXlX?=
- =?us-ascii?Q?KfZo/Q+R3YHsIJnV/5wjcsjlJ8UcFGSQGkM+zT3SBtifvmF+8E45R8dHCBqT?=
- =?us-ascii?Q?RDGjuvY+BV0JGcxNj7Dfk3MHgpAAHXHpxu97/4Ln+1DfrtUGO0zvidSNDzvs?=
- =?us-ascii?Q?XVB1LtLFC91ACG+N+ygM6W21WnAHjoZwTc2Wo0UMqY6Wz6C4PMKWbzcb3gkY?=
- =?us-ascii?Q?KbDgvyH8yM2pn5Vjp6IgJSLTHBQXbW4KTvhebrZa1MCD4NtMLX8bD0+LSKxR?=
- =?us-ascii?Q?TQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YNdGN6DD"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4561607166aso6846285e9.2;
+        Wed, 30 Jul 2025 07:15:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753884912; x=1754489712; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Cj7xuCDwSSUyk/P3n0X0MKFMXCloTe+RUvJmTVUwO7w=;
+        b=YNdGN6DDPu7y+agngfA7hbjbvGxhlXghjczBTAbeI5oG2bAhdgc3p2kOU0fLE1WNfT
+         Pq9WlBe2v8BPCKSSKpykHG5VXFOmPztK+dm7Wvbm4aGXo5N2+lQ4bY5v8ic6j2cwZdpg
+         uD7mQGRNX16jD52sG58myjLBdMU/PWlnkbiUHHBXsHTPp62SDW9UFwqIBL8W5GLyl+Gf
+         8qb6JiuH2tTEX6mt1weyKMsLpcau3Dox6zyC6Yl/xXZKWh0URaoQMO1tXlZU9s0q9qH4
+         UZGLpyr4bb6iXqsfe/v1OAWVflqkOtVD6XpPt/TO2mKDHMC8ya28VF+2zmH4jMroDeg/
+         wXyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753884912; x=1754489712;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Cj7xuCDwSSUyk/P3n0X0MKFMXCloTe+RUvJmTVUwO7w=;
+        b=pnxG+STro2Ymtvj4TYkKoJkJdazvO0VPyPYwqhbSErz4pSbApWLzFOFEovbhtOQoz3
+         4RuWiJwUfinu86i7C03Zgm+5K6BBcSw3aGohN73hvV95APp/xlXJaJ7UQybizspG8mj+
+         gEomZepvkyDaFj/WvWHxSm9glBgbcrfgBOis/tk8kEQAMpqSqt6AXu/Bo4NbmlIHWshF
+         tuXquQbkTvY+LuNN042VLDmcIHIU8Q+9NlQtxYiAko1ZoUJ25JKxKcWLllMXjz7H6rHJ
+         zu7nwUsN0ukCwdSwkwVFlBTHksJQ7OfWZJia5E9rb0Tp6zPBJeE0GkQfSAyThV5O0avX
+         2xcA==
+X-Forwarded-Encrypted: i=1; AJvYcCWKgNrFu7ia8Hz21YOFTJWdRwbtoDZ1bZgNA1QBIPFTCqaB8+Afj9ED1fAQpDge5KWlGuHGWRHijg==@vger.kernel.org, AJvYcCWoMEqyY78ioTu1ImlUgw5Tge0qeRMmFXwIlP/N8DhV+28x+WAsEzR27HVWiTUQwQ+JOX8YYj6M@vger.kernel.org
+X-Gm-Message-State: AOJu0YwE5d/YAOG0M2y5Z6rwKMrztetyKpp7OB92O3Z5VNuS10pgxMR1
+	gTgGWBIlQteXDdPvKs5mqmF6gcWAO05u+blB4EvLBPraNuka7ezfZ+Hi
+X-Gm-Gg: ASbGncsjHSKV08/TsmLO4zn0W3TxTcVcZf3yiKo3ypTiOypoc3BQm26JlR3FK4wq1cE
+	vAABcMEwz2iqBOO138N3t7Hxvm9LGvpSij9i8M/Fmg3mX3FC2V4w0OcxKpnR6Wlf4iOg3SWZ58h
+	3qgxhavdKd4T3kH0OnoKiOn3atQzuGrx8chmwneKbrcvBfRTcKpkuNRFA8bJ0QzwRHO49+9lUIR
+	+2/PC99ZcFyKYpNGj2t0iFCsrxWKNuWbJTSRqOA+QdPHLdoDemf5GU3dU6gvtIV33I231dvvbwe
+	h2YNAFhQeFdCH9eNIa9SQusBJwSkQbZhPi5sq3YWPTf91J13f/yo4Wt6UVNdOpfzJhEHzJ243sW
+	VuUyed38BjjNRUEHzPkAGQYuRHGb36uE=
+X-Google-Smtp-Source: AGHT+IFx7mPxi3CjVwR8c+QyP8py8CNpyrqCbScdwGU3T/I1wbdAvN7Yc1/oaXIxtCZEEJKP6CE9yA==
+X-Received: by 2002:a05:600c:1da2:b0:43c:ec4c:25b4 with SMTP id 5b1f17b1804b1-45892b9dfc9mr45740355e9.10.1753884912086;
+        Wed, 30 Jul 2025 07:15:12 -0700 (PDT)
+Received: from [192.168.8.100] ([185.69.144.165])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4589536bc42sm28991685e9.7.2025.07.30.07.15.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Jul 2025 07:15:11 -0700 (PDT)
+Message-ID: <46fabfb5-ee39-43a2-986e-30df2e4d13ab@gmail.com>
+Date: Wed, 30 Jul 2025 15:16:30 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8452.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ebdd6f84-99de-454d-0a86-08ddcf72a363
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2025 14:09:03.0780
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PdWAU4U8R+8X0uVIguBYxddcCmP4Olyh7LmeTGTqJRRuGPvLlQgj4MQbnavKYejgt/Lq/+3ga++E3dli5dA6S+OYSSn+ccMFnWYZdrturok=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8181
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v1 00/22] Large rx buffer support for zcrx
+To: Stanislav Fomichev <stfomichev@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ io-uring@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Willem de Bruijn <willemb@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ andrew+netdev@lunn.ch, horms@kernel.org, davem@davemloft.net,
+ sdf@fomichev.me, almasrymina@google.com, dw@davidwei.uk,
+ michael.chan@broadcom.com, dtatulea@nvidia.com, ap420073@gmail.com
+References: <cover.1753694913.git.asml.silence@gmail.com>
+ <aIevvoYj7BcURD3F@mini-arch> <df74d6e8-41cc-4840-8aca-ad7e57d387ce@gmail.com>
+ <aIfb1Zd3CSAM14nX@mini-arch> <0dbb74c0-fcd6-498f-8e1e-3a222985d443@gmail.com>
+ <aIf0bXkt4bvA-0lC@mini-arch> <52597d29-6de4-4292-b3f0-743266a8dcff@gmail.com>
+ <aIj3wEHU251DXu18@mini-arch>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <aIj3wEHU251DXu18@mini-arch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
->From: Jiri Pirko <jiri@resnulli.us>
->Sent: Wednesday, July 30, 2025 2:26 PM
->
->Tue, Jul 29, 2025 at 12:45:28PM +0200, arkadiusz.kubalewski@intel.com
->wrote:
->
->[...]
->
->>User interface:
->>- Read /sys/class/net/<device>/tx_clk/<clock_name> to get status (0/1)
->>- Write "1" to switch to that clock source
->
->I wonder, if someone invented a time machine and sent me back to 2005...
->
+On 7/29/25 17:33, Stanislav Fomichev wrote:
+> On 07/28, Pavel Begunkov wrote:
+>> On 7/28/25 23:06, Stanislav Fomichev wrote:
+>>> On 07/28, Pavel Begunkov wrote:
+>>>> On 7/28/25 21:21, Stanislav Fomichev wrote:
+>>>>> On 07/28, Pavel Begunkov wrote:
+>>>>>> On 7/28/25 18:13, Stanislav Fomichev wrote:
+>>>> ...>>> Supporting big buffers is the right direction, but I have the same
+>>>>>>> feedback:
+>>>>>>
+>>>>>> Let me actually check the feedback for the queue config RFC...
+>>>>>>
+>>>>>> it would be nice to fit a cohesive story for the devmem as well.
+>>>>>>
+>>>>>> Only the last patch is zcrx specific, the rest is agnostic,
+>>>>>> devmem can absolutely reuse that. I don't think there are any
+>>>>>> issues wiring up devmem?
+>>>>>
+>>>>> Right, but the patch number 2 exposes per-queue rx-buf-len which
+>>>>> I'm not sure is the right fit for devmem, see below. If all you
+>>>>
+>>>> I guess you're talking about uapi setting it, because as an
+>>>> internal per queue parameter IMHO it does make sense for devmem.
+>>>>
+>>>>> care is exposing it via io_uring, maybe don't expose it from netlink for
+>>>>
+>>>> Sure, I can remove the set operation.
+>>>>
+>>>>> now? Although I'm not sure I understand why you're also passing
+>>>>> this per-queue value via io_uring. Can you not inherit it from the
+>>>>> queue config?
+>>>>
+>>>> It's not a great option. It complicates user space with netlink.
+>>>> And there are convenience configuration features in the future
+>>>> that requires io_uring to parse memory first. E.g. instead of
+>>>> user specifying a particular size, it can say "choose the largest
+>>>> length under 32K that the backing memory allows".
+>>>
+>>> Don't you already need a bunch of netlink to setup rss and flow
+>>
+>> Could be needed, but there are cases where configuration and
+>> virtual queue selection is done outside the program. I'll need
+>> to ask which option we currently use.
+> 
+> If the setup is done outside, you can also setup rx-buf-len outside, no?
 
-Probably temporarily, but this was quickest to invent :S
+You can't do it without assuming the memory layout, and that's
+the application's role to allocate buffers. Not to mention that
+often the app won't know about all specifics either and it'd be
+resolved on zcrx registration.
 
-Creating a single DPLL device for each PF/port seems overshot,
-Could go with extending netdev-genl
-Any other ideas?
+>>> steering? And if we end up adding queue api, you'll have to call that
+>>> one over netlink also.
+>>
+>> There is already a queue api, even though it's cropped IIUC.
+>> What kind of extra setup you have in mind?
+> 
+> I'm talking about allocating the queues. Currently the zc/devmem setup is
+> a bit complicated, we need to partition the queues and rss+flow
+> steer into a subset of zerocopy ones. In the future we might add some apis
+> to request a new dedicated queue for the specific flow(s). That should
+> hopefully simplify the design (and make the cleanup of the queues more
+> robust if the application dies).
 
-Thank you!
-Arkadiusz
+I see, would be useful indeed, but let's not over complicate things
+until we have to, especially since there are reasons not to. For
+the configuration, I was arguing for a while that it'd be great to
+have an allocated queue wrapped into an fd, so that all
+containerisation / queue passing / security / etc. questions just
+solved in a generic and ubiquitous way.
 
->[...]
+>>>>> If we assume that at some point niov can be backed up by chunks larger
+>>>>> than PAGE_SIZE, the assumed workflow for devemem is:
+>>>>> 1. change rx-buf-len to 32K
+>>>>>      - this is needed only for devmem, but not for CPU RAM, but we'll have
+>>>>>        to refill the queues from the main memory anyway
+>>>>
+>>>> Urgh, that's another reason why I prefer to just pass it through
+>>>> zcrx and not netlink. So maybe you can just pass the len to devmem
+>>>> on creation, and internally it sets up its queues with it.
+>>>
+>>> But you still need to solve MAX_PAGE_ORDER/PAGE_ALLOC_COSTLY_ORDER I
+>>> think? We don't want the drivers to do PAGE_ALLOC_COSTLY_ORDER costly
+>>> allocation presumably?
+>>
+>> #define PAGE_ALLOC_COSTLY_ORDER 3
+>>
+>> It's "costly" for the page allocator and not a custom specially
+>> cooked memory providers. Nobody should care as long as the length
+>> applies to the given provider only. MAX_PAGE_ORDER also seems to
+>> be a page allocator thing.
+> 
+> By custom memory providers you mean page pool? Thinking about it more,
+
+zcrx / devmem. I'm just saying that in situations where zcrx sets
+the size for its queues and that only affects zcrx allocations and
+not normal page pools, PAGE_ALLOC_COSTLY_ORDER is irrelevant.
+
+I agreed on dropping the netlink queue size set, which leaves the
+global size set, but that's a separate topic.
+
+> maybe it's fine as is as long as we have ndo_queue_cfg_validate that
+> enforces sensible ranges..
+
+-- 
+Pavel Begunkov
+
