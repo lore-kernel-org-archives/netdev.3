@@ -1,50 +1,59 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4010F19DF9A
-	for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 14:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1309D2D9ECD
+	for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 14:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753884967; cv=none; b=W2RiSJKzTfm7eHi0fDgl/3pmQuL27qRv4gIxrpYuqGgUnQ6g0cA5zMBIc+YWBZmD9C1eZvmetbDb6z27Gq5HVExJ4u3uNrNDtFHvDX/NTf0Ge+FLjxUfAO0SIBPfl51nfTwi0Hk10AxcpZQx3DTmXljgh9y8f/D8EzzTQihVknk=
+	t=1753885396; cv=none; b=lyfe0CloRDphYm0f0rOcng0Eq0X9RgsnSGl/UAqGi5Sz4xPwtFiXCln8OXaXON3W9awyXnSl6SS68d8DFQeWYgXK8Bi3+Zdrs5J+U1PLS4Z2944K4KHBLldd6tz2/z1l4aWHJ5jghmpOEVfTzN2uUTfuuMJduzvG3TWmAvQ7qpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753884967; c=relaxed/simple;
-	bh=JFVv0it87plyeiU2GHHI7nsNr1aTK9aCD6k5C50iFgE=;
+	s=arc-20240116; t=1753885396; c=relaxed/simple;
+	bh=JDG6xp9TUSJxGOg4WSyioaRBxUHGXguYSSOTuA67VNw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i2SeP0Wn2MfGNEwVCN2PhRkNpy+8gurSDhndggnAUAOXWuW6TE8NrxvfY+axP9W2cIrPCmsYS5VIa/dZEmYhny6EoQywJ9u27brZZnhb+x/uzNo1ZvTHXRSa73D6rpX/WQgRrO5ZDc8F7hxnhBEXPVohY0uU/cp4Q7nQErIXGBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Pw9pGtHb; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=W3eeGfriP8kwrjTvlKqmpe0iwm6A3QT7dZS/c+rnqpnlZgU69B8e/On/PxQrTwfnixFV6lxlVmxvHtAgeANAG6tVJ7H7lnfQW1PHwn/EZ1gxPDYqPBR9GMeyi+S5sHRz5zReHPxN9eivWfrCpXGM6EUTKu7wmJpT+qP4BcNR5m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=eE4jNhLU; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Pw9pGtHb"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=E9hDhVgXJHwfV9NmtWD61ZbLsyi76zmAdJnE8IHVA3E=; b=Pw9pGtHb8aTDSTeOr3ahT8l9Xl
-	6fO1fTx2y3ciw5ThZ9asqm/d/v3oH86rIZZAs2zata90mpPzAVoi1VZy+PfNW0mXVti2+VFdYGbmu
-	36K01u/msab3sxHAAKRT+Ap9vgyHEDZCPJanveGzrNFhSBQkoxUnYz3OJLYXB5KWPwjc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uh7au-003HjN-0j; Wed, 30 Jul 2025 16:15:48 +0200
-Date: Wed, 30 Jul 2025 16:15:47 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Gal Pressman <gal@nvidia.com>
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Tariq Toukan <tariqt@nvidia.com>, intel-wired-lan@lists.osuosl.org,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
-Subject: Re: [RFC PATCH] ethtool: add FEC bins histogramm report
-Message-ID: <9703dd41-e1e6-42d8-a43b-01db7b38d11c@lunn.ch>
-References: <20250729102354.771859-1-vadfed@meta.com>
- <041f79a2-5f96-4427-b0e2-6a159fbec84a@nvidia.com>
- <1129bf26-273e-4685-a0b8-ed8b0e4050f3@linux.dev>
- <3e84a20e-87ea-413c-9e9d-950605a55bf6@nvidia.com>
- <8b22e9d3-e4d2-4726-9622-28881b2cd406@linux.dev>
- <2dc1fc35-a906-461b-b8c1-857c240604a3@nvidia.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="eE4jNhLU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=qFnJTBNOnfCyWGVeulsQ9imeMiSLi8CQ7pnaMQeRwmE=; b=eE4jNhLUzcD4MhHcFEYEDAzpnQ
+	sZiaW5tq8tuCIfaR/KBlD4pqn/1nzSM2GBnDYrhIDw+y8CecCVGI1vdue4r8sbV/vL+QefGicRN9U
+	LbrZFkrcsC8sG4zgLbnt9pdVXuHGslO4K95fnvs01y1p7jH64dBe6vqTH+zcwdgKBhQAkPhbV+gHQ
+	tW6zFg8FhhyjhwB4rxo/TapmheNvUB0pzcKPuvahFgx6VGkS0wGDBtV8ZjK+6QAMSVGE7UphOwROc
+	5y8rhKXeDWZVsrhVFV6jGhPydry/KBDgne5IZm930olrmwoWueRxmRbZVY33yQdGcv8FoBFqqIUvl
+	zjiTYo6w==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33826)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uh7hp-0003ax-2i;
+	Wed, 30 Jul 2025 15:22:57 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uh7hl-0008VF-2P;
+	Wed, 30 Jul 2025 15:22:53 +0100
+Date: Wed, 30 Jul 2025 15:22:53 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Daniel Braunwarth <daniel.braunwarth@kuka.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Gatien CHEVALLIER <gatien.chevallier@foss.st.com>,
+	Jakub Kicinski <kuba@kernel.org>, Jon Hunter <jonathanh@nvidia.com>,
+	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: Re: [PATCH RFC ???net???] net: phy: realtek: fix wake-on-lan support
+Message-ID: <aIoqvaRk3lL1Zeig@shell.armlinux.org.uk>
+References: <E1uh2Hm-006lvG-PK@rmk-PC.armlinux.org.uk>
+ <a14075fe-a0fc-4c59-b4d3-1060f6fd2676@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,29 +62,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2dc1fc35-a906-461b-b8c1-857c240604a3@nvidia.com>
+In-Reply-To: <a14075fe-a0fc-4c59-b4d3-1060f6fd2676@lunn.ch>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-> Or just let the driver fill the netlink attributes directly? Not sure if
-> we have precedent for that.
+On Wed, Jul 30, 2025 at 03:59:32PM +0200, Andrew Lunn wrote:
+> > 2. detect whether we can support wake-up by having a valid interrupt,
+> >    and the "wakeup-source" property in DT. If we can, then we mark
+> >    the MDIO device as wakeup capable, and associate the interrupt
+> >    with the wakeup source.
+> 
+> We should document "wakeup-source" in ethernet-phy.yaml.
+> 
+> What are the different hardware architectures?
+> 
+> 1) A single interrupt line from the PHY to the SoC, which does both
+> link status and WoL.
+> 
+> 2) The PHY has a dedicated WoL output pin, which is connected to an
+> interrupt.
+> 
+> 3) The PHY has a dedicated WoL output pin, which is connected directly
+> to a PMIC. No software involved, the pin toggling turns the power back
+> on.
+> 
+> For 1), i don't think 'wakeup-source' tells us anything useful. The
+> driver just needs to check that interrupts are in use.
 
-A variant on that exists, for cable testing. For BaseT, you can have
-1, 2 or 4 pairs. Hence you need 1, 2 or 4 test results. There are
-helpers which a driver can use to add test results. You can call them
-as many times as you want.
+Not all interrupts are capable of waking the system up, and there is
+no way for a PHY to know whether it's connected to an interrupt that
+has that ability.
 
-The thing about cable testing is that it is not standardised in any
-way, so vendors get to use there imagination. However, there are only
-a limited number of ways a cable can be broken, and you can measure
-the distance to the break, but not too much more. So i provided a set
-of helpers to add well defined nested attributes, and it is up to user
-space to handle whatever it receives, which might or might not include
-all pairs, might have the length attribute or not, etc.
+As things currently stand with how Jetson Xavier NX DT describes the
+PHY's connection, it falls into this "it has an interrupt which can't
+wake the system" - so these cases really do exist in the real world.
 
-However, it seems like this is well defined in the standard, so i
-don't think you need such flexibility. A single helper is all that
-should be needed to add a bin.
+So, we _need_ to have some way to differentiate these two cases, and
+I put the question to you - if not by "wakeup-source" then how do we
+determine whether a PHY, which itself is capable of signalling wakeup
+through its interrupt pin, can actually wake the system, and thus
+should expose WoL functionality?
 
-So it does exist, but this does go against the general pattern.
-
-	Andrew
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
