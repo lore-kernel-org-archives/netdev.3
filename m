@@ -1,92 +1,149 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A981AF0A7
-	for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 15:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026AD481A3;
+	Wed, 30 Jul 2025 15:12:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753888119; cv=none; b=jwmiiDxxd0CbBbovsg40ov4RnriJgMEDXFOnsnnFyJxrCxPH2dbhklMn9GCHkOFmuGOP20aZ+8jhDg/mthX3nc5rGlPN01VXxEnHs9WglJ6unN308YMdqPXcAkIsPnxef3Oi0avkRsgrxYakNW7cAQx67mcOHfNkYTZSlK48SCw=
+	t=1753888339; cv=none; b=XGjAodczvuRcb325A8RrLclQDrtZYE1zQe3vTu4EkNrRWBZLZHGnzje5uy7lZ9ZBnkGzDjXlr+oV9MPhcJsbCwHId1TvQlbfy+nAganGcygLHRq5DPk58PMl/bAx9dktqpKNAkotcUHbZkYJPCsNWNPO6rRONPlD8BJcyLf4NPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753888119; c=relaxed/simple;
-	bh=RJ3rDAj4sWeP/zmJ+H5foZYfyHgKgRPaIkyolVDqA2o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fpM823OBBTgHv+/WchzBxLG9cs8VYrCGNegROTKKsn/LAz/34HEClXUZpyLCQ7VTe0RtmGdXOOyyPROI7zUSe7qUwLWBB3bu0Pwl9r6XA6sLhWZqjNJ/76HOOxbTJLf1NELjL8h3EqPNwuYd2MfXfIEhXaZgyXZXRCTU+9lwu6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UZ5+2XMV; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1753888339; c=relaxed/simple;
+	bh=GJragZO3FFVRHX0BsPd+cF+6aOPRGgevDm/AbN61+I4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Dsk6ybuKram1dPOdMKqJJZJpJYPkiQ/dwsbzWyBVqKwAZhPRG7akdG6Nul6G0MNHONt6wVUgbuuJj/UsrWfazX5g38wrGSrCJ/QYW2nxfDdMYmgTUUhSwdlgodUN2aHXNa5TtMyHnE7sDjQGd7ebqGQ0riSZERvNVke4plqxrwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=bJljP8gm; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UZ5+2XMV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753888117; x=1785424117;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=RJ3rDAj4sWeP/zmJ+H5foZYfyHgKgRPaIkyolVDqA2o=;
-  b=UZ5+2XMVcuMLu0R2fXV+M2bCvayNArcotdcXhAywS1g2ldD498Vd7+jl
-   rL+JqVsTpkj1vCEjMbFpkoFZSvndrvuC+/Pi5jDzA1Y0zEj1jnxVRrRW3
-   dROKwGTwWF2Ho5WSjPvjy1+J4K0Vbu4MN4JjzhiZ2CtBN5C9e46fDsBlk
-   Yz76mp44JcMEEaptHuNL215H0txFf/+uOMThxOBymP0Uu4U5nVDR42boT
-   va6jknIp8W/Eat7dE0VNMk+WMbmBttAc2UJ2b3wXlqC4HHe+lTU9kA4iI
-   0M+CyRxCGGpw698EjQRV8us4kglbxjEOICrkn5PCkNl/P2m0JxgI8G50U
-   A==;
-X-CSE-ConnectionGUID: vN1OkWhEQ/C8FhoC9L3Y3Q==
-X-CSE-MsgGUID: BuUypf6bQ9qLSjYTtYaXXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11507"; a="56079838"
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
-   d="scan'208";a="56079838"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2025 08:08:37 -0700
-X-CSE-ConnectionGUID: DllWJNIeRI63WFtRgOKtow==
-X-CSE-MsgGUID: h5LE7lPiRDaTG4t3oXaJ1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
-   d="scan'208";a="200184582"
-Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by orviesa001.jf.intel.com with ESMTP; 30 Jul 2025 08:08:36 -0700
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-net v1] ixgbe: fix ixgbe_orom_civd_info struct layout
-Date: Wed, 30 Jul 2025 16:52:09 +0200
-Message-Id: <20250730145209.1670909-1-jedrzej.jagielski@intel.com>
-X-Mailer: git-send-email 2.31.1
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="bJljP8gm"
+Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56UFBM8J2817587;
+	Wed, 30 Jul 2025 10:11:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1753888282;
+	bh=E9tbG6pOqeu0Zfy681IAds4vdtxY0AX3TN2Fl6VFJfE=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=bJljP8gmVKHFqh/q7AXs0DrgXCd6yNPfVmHNgZI+aVTGZ/U6s0Wiok98qytEsaUAE
+	 42V2Gz2qPrxt8jF3TW+JleGRlKrM2NeuXNSHf+MPMvs7KVQ/gl5jxUn+aUOsKUtJXt
+	 3KA2ShAgj5TAa+v6CXPV7OJVJoTE4xUJZzwM9rQY=
+Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56UFBMuI2004946
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Wed, 30 Jul 2025 10:11:22 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Wed, 30
+ Jul 2025 10:11:21 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Wed, 30 Jul 2025 10:11:21 -0500
+Received: from [10.249.130.61] ([10.249.130.61])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56UFBEbb1131008;
+	Wed, 30 Jul 2025 10:11:14 -0500
+Message-ID: <fab2a856-e3b0-4d25-9ce4-72f1f57e3115@ti.com>
+Date: Wed, 30 Jul 2025 20:41:13 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 2/5] net: rpmsg-eth: Add basic rpmsg skeleton
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+        MD Danish Anwar
+	<danishanwar@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Jonathan Corbet
+	<corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+        Mengyuan Lou
+	<mengyuanlou@net-swift.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Madhavan
+ Srinivasan <maddy@linux.ibm.com>,
+        Fan Gong <gongfan1@huawei.com>, Lee Trager
+	<lee@trager.us>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Geert Uytterhoeven
+	<geert+renesas@glider.be>,
+        Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+        Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
+CC: <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20250723080322.3047826-1-danishanwar@ti.com>
+ <20250723080322.3047826-3-danishanwar@ti.com>
+ <296d6846-6a28-4e53-9e62-3439ac57d9c1@kernel.org>
+ <5f4e1f99-ff71-443f-ba34-39396946e5b4@ti.com>
+ <cabacd59-7cbf-403a-938f-371026980cc7@kernel.org>
+ <66377d5d-b967-451f-99d9-8aea5f8875d3@ti.com>
+ <bc30805a-d785-432f-be0f-97cea35abd51@kernel.org>
+ <4bb1339a-ead6-4a33-b2bf-c55874bab352@ti.com>
+ <0e85bda4-9ac2-4587-b8bb-550bea1728dc@kernel.org>
+Content-Language: en-US
+From: "Anwar, Md Danish" <a0501179@ti.com>
+In-Reply-To: <0e85bda4-9ac2-4587-b8bb-550bea1728dc@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-The current layout of struct ixgbe_orom_civd_info causes incorrect data
-storage due to compiler-inserted padding. This results in issues when
-writing OROM data into the structure.
 
-Add the __packed attribute to ensure the structure layout matches the
-expected binary format without padding.
 
-Fixes: 70db0788a262 ("ixgbe: read the OROM version information")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 7/30/2025 11:43 AM, Krzysztof Kozlowski wrote:
+> On 30/07/2025 08:01, MD Danish Anwar wrote:
+>>>
+>>>> `reserved-memory`. I am not creating a completely new undocumented node.
+>>>> Instead I am creating a new node under reserved-memory as the shared
+>>>> memory used by rpmsg-eth driver needs to be reserved first. This memory
+>>>> is reserved by the ti_k3_r5_remoteproc driver by k3_reserved_mem_init().
+>>>>
+>>>> It's just that I am naming this node as "virtual-eth-shm@a0400000" and
+>>>> then using the same name in driver to get the base_address and size
+>>>> mentioned in this node.
+>>>
+>>> And how your driver will work with:
+>>>
+>>> s/virtual-eth-shm@a0400000/whatever@a0400000/
+>>>
+>>
+>>
+>> It won't. The driver imposes a restriction with the node name. The node
+>> name should always be "virtual-eth-shm"
+> 
+> Drivers cannot impose the restriction. I don't think you understand the
+> problem. What stops me from renaming the node? Nothing.
+> 
+> You keep explaining this broken code, but sorry, this is a no-go. Shall
+> I NAK it to make it obvious?
+> 
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-index 09df67f03cf4..38a41d81de0f 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-@@ -1150,7 +1150,7 @@ struct ixgbe_orom_civd_info {
- 	__le32 combo_ver;	/* Combo Image Version number */
- 	u8 combo_name_len;	/* Length of the unicode combo image version string, max of 32 */
- 	__le16 combo_name[32];	/* Unicode string representing the Combo Image version */
--};
-+} __packed;
- 
- /* Function specific capabilities */
- struct ixgbe_hw_func_caps {
+Krzysztof, I understand this can't be accepted. This wasn't my first
+approach. The first approach was that the firmware running on the
+remotecore will share the base-address using rpmsg. But that was
+discouraged by Andrew.
+
+So I came up with this DT approach to read the base-address from linux only.
+
+Andrew, Since rpmsg-eth is a virtual device and we can't have DT node
+for it. Using the reserved memory node and then search the same using
+node name in the driver is also not acceptable as per Krzysztof. What do
+you suggest should be done here?
+
+Can we revisit the first approach (firmware sharing the address)? Can we
+use module params to pass the base-address? or Do you have any other
+ideas on how to handle this?
+
+Please let me know.
+
+> 
+> Best regards,
+> Krzysztof
+
 -- 
-2.31.1
+Thanks and Regards,
+Md Danish Anwar
 
