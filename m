@@ -1,38 +1,38 @@
 Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D9023643E
-	for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 23:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9189242907
+	for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 23:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753919194; cv=none; b=mWNt/SvOUswkvXHhqvrNmeXqM2cyxLrTKP8sL8TzGmAaBSNDPOY7SsVEwqXNh/Q3atqI7rT8PydB5QgbXSnUAr4cwcK8un4vRsEUusfGxdbqcDYr1j9/Dh9ishw0jYcpdf1E71FToeD5vmZTDfkRIH6N6xVCLlL9hFvDzA9oeeM=
+	t=1753919197; cv=none; b=tsVGyiBAyL5V7tWcHQf9pMcRdJjUnyT78T0hTrR3Dq+HnVcmjovN9VUyRpM9SN92TSltdpGjt4E6ajip2AAUB7J6yZ9ejTixSPNeInFyFkW8lakBy4jw6f7llav/jyYh9izR7Ppt49+jHuL+5zHcdujVexA2aeJG+fkPsjTWfiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753919194; c=relaxed/simple;
-	bh=Unn2tiYqRPTzROqqasnAZlDxCPd4ekmOyCR0Iq2aAAM=;
+	s=arc-20240116; t=1753919197; c=relaxed/simple;
+	bh=HfpV82BhfiLe1j7CyltrptS5I00II1ab96c0Nj+0D10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MR9rxnP6vtyIe++Z3y6M4tG07B3L2w5AUTBRoUdOgZ0mhjQNTkIPcpSZo5mHfFhVw+TJJTHSIoUbumRd7hl0NF3FM3Lt2TCUg97NvtgpLWrNac9/7wt8qZwsdlzHPAWgKR1q8riqQG/V4twkBgRZrwOoNxYw2SLMDGGonFViGRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=ehPrv8MQ; arc=none smtp.client-ip=171.64.64.25
+	 MIME-Version; b=ljRptLyn6myUtB+9G6yIVzZZZi2agB8w6/nnPLff+5ZjxG+kWfaJOrnRZ21UpPvDJG7tAb6tcamEppTLo0M2BlMkJo8yE/37Rh1DkwuBLnUFNTTd2i49rl+AeqE3bDBpKA2J+f5sNgRSqWpiLBAm7HT/r8IBjcBCRjCILcFSlfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=DgXnd7bK; arc=none smtp.client-ip=171.64.64.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="ehPrv8MQ"
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="DgXnd7bK"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=isWNCpTlNHVy59i20rsmu33/0rdFmmgKS1d/WIyki30=; t=1753919192; x=1754783192; 
-	b=ehPrv8MQ47Gs3cLjchDEaSQRaeHZrtvt7Av5XB9KgCXSJYQIgp+UnIbux2xjT542u+s+JnhFFTU
-	a8ykvNza0t3HBzxZc/MesPIT2suYWTjwfsPiDg3sgxIbfB1lQV/4/ovrpCz+oKgh90OJcd6eoos77
-	14UhIjq5rKhDt2JM2ZkVmDb94rbPaM6s98OAfj0ByN2yOldVKK2hq3oHztUQyVb/qIeFgV6WFd5Jm
-	8/TY2bjDcdh0xJ08q6X9IgoXFdeBsvyhwvVqBzWBh1T5i6TQ9QnVWdT/urYzW/QAu1+TsfVcohs7G
-	DnH6Azpie7cAnAO1bqyQVOd6zURsV6/HjBww==;
+	bh=5wNum9SLoNn7kxWxE7Sjze89y6ugw3SV/o3BOzePdEY=; t=1753919194; x=1754783194; 
+	b=DgXnd7bKj9KhhNEAoAXuVr12crPb57E87bPAZ7w8fOso7whZd47jKyWG2RJgD2TRuwvpNJphPMA
+	W2aWsP/Rne8ornD2TzMPI1dqEgWKbRT41Bwxm0H30zRVE8c9Qk3lVqvH/7rnykoKJsUZEa/pvcZru
+	SPhig1SkAolUWjTytZ6CHEVnQiFm7/gY21D+V4sVypmuw1ljNWhTpY0bGvyZFy/aPACGzvF+uS3qO
+	4ktccqpU/e4uA719FnFBT3W6KfxqGC3OjoWGjgGnylf3padeoWCI+92+k88Xet895EwVctVGusKgV
+	OhUC95//YQTv4egyYnvyaDdJbzzJFyVtMr+Q==;
 Received: from ouster448.stanford.edu ([172.24.72.71]:58817 helo=localhost.localdomain)
 	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ouster@cs.stanford.edu>)
-	id 1uhGVC-0006n4-4q; Wed, 30 Jul 2025 16:46:31 -0700
+	id 1uhGVE-0006n4-LI; Wed, 30 Jul 2025 16:46:34 -0700
 From: John Ousterhout <ouster@cs.stanford.edu>
 To: netdev@vger.kernel.org
 Cc: pabeni@redhat.com,
@@ -40,9 +40,9 @@ Cc: pabeni@redhat.com,
 	horms@kernel.org,
 	kuba@kernel.org,
 	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [RFC net-next v13 10/15] net: homa: create homa_outgoing.c
-Date: Wed, 30 Jul 2025 16:45:38 -0700
-Message-ID: <20250730234544.4357-11-ouster@cs.stanford.edu>
+Subject: [RFC net-next v13 12/15] net: homa: create homa_incoming.c
+Date: Wed, 30 Jul 2025 16:45:40 -0700
+Message-ID: <20250730234544.4357-13-ouster@cs.stanford.edu>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20250730234544.4357-1-ouster@cs.stanford.edu>
 References: <20250730234544.4357-1-ouster@cs.stanford.edu>
@@ -54,650 +54,961 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -101.0
-X-Scan-Signature: 1b1b356fbe0c8616b83b7a3cb5aee169
+X-Scan-Signature: 49c929fcfde82ba71a4afdbb4c0ad636
 
-This file does most of the work of transmitting outgoing messages.
-It is also responsible for copying data from user space into skbs.
+This file contains most of the code for handling incoming packets,
+including top-level dispatching code plus specific handlers for each
+pack type. It also contains code for dispatching fully-received
+messages to waiting application threads.
 
 Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
 
 ---
-Changes for v13:
-* Fix bug in homa_resend_data: wasn't fully initializing new skb.
-* Fix bug in homa_tx_data_pkt_alloc: wasn't allocating enough space
-  in the new skb.
-
-Changes for v12:
-* Move RPC_DEAD check in homa_xmit_data to eliminate window for
-  more complete coverage.
-
 Changes for v11:
 * Cleanup and simplify use of RPC reference counts.
+* Cleanup sparse annotations.
+* Rework the mechanism for waking up RPCs that stalled waiting for
+  buffer pool space.
 
 Changes for v10:
 * Revise sparse annotations to eliminate __context__ definition
+* Refactor resend mechanism (new function homa_request_retrans replaces
+  homa_gap_retry)
 * Remove log messages after alloc errors
+* Fix socket cleanup race
 
 Changes for v9:
+* Add support for homa_net objects
 * Use new homa_clock abstraction layer
 * Various name improvements (e.g. use "alloc" instead of "new" for functions
   that allocate memory)
-* Eliminate sizeof32 define: use sizeof instead
 
 Changes for v7:
-* Implement accounting for bytes in tx skbs
-* Rename UNKNOWN packet type to RPC_UNKNOWN
-* Use new RPC reference counts; eliminates need for RCU
+* API change for homa_rpc_handoff
+* Refactor waiting mechanism for incoming packets: simplify wait
+  criteria and use standard Linux mechanisms for waiting, use
+  new homa_interest struct
+* Reject unauthorized incoming request messages
+* Improve documentation for code that spins (and reduce spin length)
+* Use RPC reference counts, eliminate RPC_HANDING_OFF flag
+* Replace erroneous use of "safe" list iteration with "rcu" version
 * Remove locker argument from locking functions
+* Check incoming messages against HOMA_MAX_MESSAGE_LENGTH
 * Use u64 and __u64 properly
-* Fix incorrect skb check in homa_message_out_fill
 ---
- net/homa/homa_impl.h     |  13 +
- net/homa/homa_outgoing.c | 565 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 578 insertions(+)
- create mode 100644 net/homa/homa_outgoing.c
+ net/homa/homa_impl.h     |  15 +
+ net/homa/homa_incoming.c | 861 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 876 insertions(+)
+ create mode 100644 net/homa/homa_incoming.c
 
 diff --git a/net/homa/homa_impl.h b/net/homa/homa_impl.h
-index 6376e03055c2..d70e9df0800f 100644
+index 153d1da72d11..2969c78863a4 100644
 --- a/net/homa/homa_impl.h
 +++ b/net/homa/homa_impl.h
-@@ -421,12 +421,25 @@ static inline bool homa_make_header_avl(struct sk_buff *skb)
+@@ -421,21 +421,36 @@ static inline bool homa_make_header_avl(struct sk_buff *skb)
  
  extern unsigned int homa_net_id;
  
-+int      homa_fill_data_interleaved(struct homa_rpc *rpc,
-+				    struct sk_buff *skb, struct iov_iter *iter);
-+int      homa_message_out_fill(struct homa_rpc *rpc,
-+			       struct iov_iter *iter, int xmit);
-+void     homa_message_out_init(struct homa_rpc *rpc, int length);
++void     homa_ack_pkt(struct sk_buff *skb, struct homa_sock *hsk,
++		      struct homa_rpc *rpc);
++void     homa_add_packet(struct homa_rpc *rpc, struct sk_buff *skb);
++int      homa_copy_to_user(struct homa_rpc *rpc);
++void     homa_data_pkt(struct sk_buff *skb, struct homa_rpc *rpc);
+ void     homa_destroy(struct homa *homa);
++void     homa_dispatch_pkts(struct sk_buff *skb);
+ int      homa_fill_data_interleaved(struct homa_rpc *rpc,
+ 				    struct sk_buff *skb, struct iov_iter *iter);
++struct homa_gap *homa_gap_alloc(struct list_head *next, int start, int end);
+ int      homa_init(struct homa *homa);
+ int      homa_message_out_fill(struct homa_rpc *rpc,
+ 			       struct iov_iter *iter, int xmit);
+ void     homa_message_out_init(struct homa_rpc *rpc, int length);
++void     homa_need_ack_pkt(struct sk_buff *skb, struct homa_sock *hsk,
++			   struct homa_rpc *rpc);
+ void     homa_net_destroy(struct homa_net *hnet);
+ int      homa_net_init(struct homa_net *hnet, struct net *net,
+ 		       struct homa *homa);
++void     homa_request_retrans(struct homa_rpc *rpc);
++void     homa_resend_pkt(struct sk_buff *skb, struct homa_rpc *rpc,
++			 struct homa_sock *hsk);
  void     homa_rpc_handoff(struct homa_rpc *rpc);
-+struct sk_buff *homa_tx_data_pkt_alloc(struct homa_rpc *rpc,
-+				       struct iov_iter *iter, int offset,
-+				       int length, int max_seg_data);
+ void     homa_spin(int ns);
+ struct sk_buff *homa_tx_data_pkt_alloc(struct homa_rpc *rpc,
+ 				       struct iov_iter *iter, int offset,
+ 				       int length, int max_seg_data);
++void     homa_rpc_unknown_pkt(struct sk_buff *skb, struct homa_rpc *rpc);
++int      homa_wait_private(struct homa_rpc *rpc, int nonblocking);
++struct homa_rpc *homa_wait_shared(struct homa_sock *hsk, int nonblocking);
  int      homa_xmit_control(enum homa_packet_type type, void *contents,
  			   size_t length, struct homa_rpc *rpc);
-+int      __homa_xmit_control(void *contents, size_t length,
-+			     struct homa_peer *peer, struct homa_sock *hsk);
- void     homa_xmit_data(struct homa_rpc *rpc, bool force);
-+void     homa_xmit_unknown(struct sk_buff *skb, struct homa_sock *hsk);
- 
- int      homa_message_in_init(struct homa_rpc *rpc, int unsched);
-+void     homa_resend_data(struct homa_rpc *rpc, int start, int end);
-+void     __homa_xmit_data(struct sk_buff *skb, struct homa_rpc *rpc);
- 
- /**
-  * homa_net_from_net() - Return the struct homa_net associated with a particular
-diff --git a/net/homa/homa_outgoing.c b/net/homa/homa_outgoing.c
+ int      __homa_xmit_control(void *contents, size_t length,
+diff --git a/net/homa/homa_incoming.c b/net/homa/homa_incoming.c
 new file mode 100644
-index 000000000000..f2e0a7109d71
+index 000000000000..9d8964f4d661
 --- /dev/null
-+++ b/net/homa/homa_outgoing.c
-@@ -0,0 +1,565 @@
++++ b/net/homa/homa_incoming.c
+@@ -0,0 +1,861 @@
 +// SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+
 +
-+/* This file contains functions related to the sender side of message
-+ * transmission. It also contains utility functions for sending packets.
-+ */
++/* This file contains functions that handle incoming Homa messages. */
 +
 +#include "homa_impl.h"
-+#include "homa_pacer.h"
++#include "homa_interest.h"
 +#include "homa_peer.h"
-+#include "homa_rpc.h"
-+#include "homa_wire.h"
-+#include "homa_stub.h"
++#include "homa_pool.h"
 +
 +/**
-+ * homa_message_out_init() - Initialize rpc->msgout.
-+ * @rpc:       RPC whose output message should be initialized. Must be
-+ *             locked by caller.
-+ * @length:    Number of bytes that will eventually be in rpc->msgout.
++ * homa_message_in_init() - Constructor for homa_message_in.
++ * @rpc:          RPC whose msgin structure should be initialized. The
++ *                msgin struct is assumed to be zeroes.
++ * @length:       Total number of bytes in message.
++ * Return:        Zero for successful initialization, or a negative errno
++ *                if rpc->msgin could not be initialized.
 + */
-+void homa_message_out_init(struct homa_rpc *rpc, int length)
++int homa_message_in_init(struct homa_rpc *rpc, int length)
 +	__must_hold(rpc->bucket->lock)
 +{
-+	memset(&rpc->msgout, 0, sizeof(rpc->msgout));
-+	rpc->msgout.length = length;
-+	rpc->msgout.next_xmit = &rpc->msgout.packets;
-+	rpc->msgout.init_time = homa_clock();
-+}
-+
-+/**
-+ * homa_fill_data_interleaved() - This function is invoked to fill in the
-+ * part of a data packet after the initial header, when GSO is being used.
-+ * homa_seg_hdrs must be interleaved with the data to provide the correct
-+ * offset for each segment.
-+ * @rpc:            RPC whose output message is being created. Must be
-+ *                  locked by caller.
-+ * @skb:            The packet being filled. The initial homa_data_hdr was
-+ *                  created and initialized by the caller and the
-+ *                  homa_skb_info has been filled in with the packet geometry.
-+ * @iter:           Describes location(s) of (remaining) message data in user
-+ *                  space.
-+ * Return:          Either a negative errno or 0 (for success).
-+ */
-+int homa_fill_data_interleaved(struct homa_rpc *rpc, struct sk_buff *skb,
-+			       struct iov_iter *iter)
-+	__must_hold(rpc->bucket->lock)
-+{
-+	struct homa_skb_info *homa_info = homa_get_skb_info(skb);
-+	int seg_length = homa_info->seg_length;
-+	int bytes_left = homa_info->data_bytes;
-+	int offset = homa_info->offset;
 +	int err;
 +
-+	/* Each iteration of the following loop adds info for one packet,
-+	 * which includes a homa_seg_hdr followed by the data for that
-+	 * segment. The first homa_seg_hdr was already added by the caller.
-+	 */
-+	while (1) {
-+		struct homa_seg_hdr seg;
++	if (length > HOMA_MAX_MESSAGE_LENGTH)
++		return -EINVAL;
 +
-+		if (bytes_left < seg_length)
-+			seg_length = bytes_left;
-+		err = homa_skb_append_from_iter(rpc->hsk->homa, skb, iter,
-+						seg_length);
-+		if (err != 0)
-+			return err;
-+		bytes_left -= seg_length;
-+		offset += seg_length;
-+
-+		if (bytes_left == 0)
-+			break;
-+
-+		seg.offset = htonl(offset);
-+		err = homa_skb_append_to_frag(rpc->hsk->homa, skb, &seg,
-+					      sizeof(seg));
-+		if (err != 0)
-+			return err;
++	rpc->msgin.length = length;
++	skb_queue_head_init(&rpc->msgin.packets);
++	INIT_LIST_HEAD(&rpc->msgin.gaps);
++	rpc->msgin.bytes_remaining = length;
++	err = homa_pool_alloc_msg(rpc);
++	if (err != 0) {
++		rpc->msgin.length = -1;
++		return err;
 +	}
 +	return 0;
 +}
 +
 +/**
-+ * homa_tx_data_pkt_alloc() - Allocate a new sk_buff and fill it with an
-+ * outgoing Homa data packet. The resulting packet will be a GSO packet
-+ * that will eventually be segmented by the NIC.
-+ * @rpc:          RPC that packet will belong to (msgout must have been
-+ *                initialized). Must be locked by caller.
-+ * @iter:         Describes location(s) of (remaining) message data in user
-+ *                space.
-+ * @offset:       Offset in the message of the first byte of data in this
-+ *                packet.
-+ * @length:       How many bytes of data to include in the skb. Caller must
-+ *                ensure that this amount of data isn't too much for a
-+ *                well-formed GSO packet, and that iter has at least this
-+ *                much data.
-+ * @max_seg_data: Maximum number of bytes of message data that can go in
-+ *                a single segment of the GSO packet.
-+ * Return: A pointer to the new packet, or a negative errno.
++ * homa_gap_alloc() - Allocate a new gap and add it to a gap list.
++ * @next:   Add the new gap just before this list element.
++ * @start:  Offset of first byte covered by the gap.
++ * @end:    Offset of byte just after the last one covered by the gap.
++ * Return:  Pointer to the new gap, or NULL if memory couldn't be allocated
++ *          for the gap object.
 + */
-+struct sk_buff *homa_tx_data_pkt_alloc(struct homa_rpc *rpc,
-+				       struct iov_iter *iter, int offset,
-+				       int length, int max_seg_data)
-+	__must_hold(rpc->bucket->lock)
++struct homa_gap *homa_gap_alloc(struct list_head *next, int start, int end)
 +{
-+	struct homa_skb_info *homa_info;
-+	struct homa_data_hdr *h;
-+	struct sk_buff *skb;
-+	int err, gso_size;
-+	u64 segs;
++	struct homa_gap *gap;
 +
-+	segs = length + max_seg_data - 1;
-+	do_div(segs, max_seg_data);
-+
-+	/* Initialize the overall skb. */
-+	skb = homa_skb_alloc_tx(sizeof(struct homa_data_hdr) + length +
-+			      (segs - 1) * sizeof(struct homa_seg_hdr));
-+	if (!skb)
-+		return ERR_PTR(-ENOMEM);
-+
-+	/* Fill in the Homa header (which will be replicated in every
-+	 * network packet by GSO).
-+	 */
-+	h = (struct homa_data_hdr *)skb_put(skb, sizeof(struct homa_data_hdr));
-+	h->common.sport = htons(rpc->hsk->port);
-+	h->common.dport = htons(rpc->dport);
-+	h->common.sequence = htonl(offset);
-+	h->common.type = DATA;
-+	homa_set_doff(h, sizeof(struct homa_data_hdr));
-+	h->common.checksum = 0;
-+	h->common.sender_id = cpu_to_be64(rpc->id);
-+	h->message_length = htonl(rpc->msgout.length);
-+	h->ack.client_id = 0;
-+	homa_peer_get_acks(rpc->peer, 1, &h->ack);
-+	h->retransmit = 0;
-+	h->seg.offset = htonl(offset);
-+
-+	homa_info = homa_get_skb_info(skb);
-+	homa_info->next_skb = NULL;
-+	homa_info->wire_bytes = length + segs * (sizeof(struct homa_data_hdr)
-+			+  rpc->hsk->ip_header_length + HOMA_ETH_OVERHEAD);
-+	homa_info->data_bytes = length;
-+	homa_info->seg_length = max_seg_data;
-+	homa_info->offset = offset;
-+	homa_info->bytes_left = rpc->msgout.length - offset;
-+	homa_info->rpc = rpc;
-+
-+	if (segs > 1) {
-+		homa_set_doff(h, sizeof(struct homa_data_hdr)  -
-+				sizeof(struct homa_seg_hdr));
-+		gso_size = max_seg_data + sizeof(struct homa_seg_hdr);
-+		err = homa_fill_data_interleaved(rpc, skb, iter);
-+	} else {
-+		gso_size = max_seg_data;
-+		err = homa_skb_append_from_iter(rpc->hsk->homa, skb, iter,
-+						length);
-+	}
-+	if (err)
-+		goto error;
-+
-+	if (segs > 1) {
-+		skb_shinfo(skb)->gso_segs = segs;
-+		skb_shinfo(skb)->gso_size = gso_size;
-+
-+		/* It's unclear what gso_type should be used to force software
-+		 * GSO; the value below seems to work...
-+		 */
-+		skb_shinfo(skb)->gso_type =
-+		    rpc->hsk->homa->gso_force_software ? 0xd : SKB_GSO_TCPV6;
-+	}
-+	return skb;
-+
-+error:
-+	homa_skb_free_tx(rpc->hsk->homa, skb);
-+	return ERR_PTR(err);
++	gap = kmalloc(sizeof(*gap), GFP_ATOMIC);
++	if (!gap)
++		return NULL;
++	gap->start = start;
++	gap->end = end;
++	gap->time = homa_clock();
++	list_add_tail(&gap->links, next);
++	return gap;
 +}
 +
 +/**
-+ * homa_message_out_fill() - Initializes information for sending a message
-+ * for an RPC (either request or response); copies the message data from
-+ * user space and (possibly) begins transmitting the message.
-+ * @rpc:     RPC for which to send message; this function must not
-+ *           previously have been called for the RPC. Must be locked. The RPC
-+ *           will be unlocked while copying data, but will be locked again
-+ *           before returning.
-+ * @iter:    Describes location(s) of message data in user space.
-+ * @xmit:    Nonzero means this method should start transmitting packets;
-+ *           transmission will be overlapped with copying from user space.
-+ *           Zero means the caller will initiate transmission after this
-+ *           function returns.
-+ *
-+ * Return:   0 for success, or a negative errno for failure. It is possible
-+ *           for the RPC to be freed while this function is active. If that
-+ *           happens, copying will cease, -EINVAL will be returned, and
-+ *           rpc->state will be RPC_DEAD.
++ * homa_request_retrans() - The function is invoked when it appears that
++ * data packets for a message have been lost. It issues RESEND requests
++ * as appropriate and may modify the state of the RPC.
++ * @rpc:     RPC for which incoming data is delinquent; must be locked by
++ *           caller.
 + */
-+int homa_message_out_fill(struct homa_rpc *rpc, struct iov_iter *iter, int xmit)
++void homa_request_retrans(struct homa_rpc *rpc)
 +	__must_hold(rpc->bucket->lock)
 +{
-+	/* Geometry information for packets:
-+	 * mtu:              largest size for an on-the-wire packet (including
-+	 *                   all headers through IP header, but not Ethernet
-+	 *                   header).
-+	 * max_seg_data:     largest amount of Homa message data that fits
-+	 *                   in an on-the-wire packet (after segmentation).
-+	 * max_gso_data:     largest amount of Homa message data that fits
-+	 *                   in a GSO packet (before segmentation).
-+	 */
-+	int mtu, max_seg_data, max_gso_data;
++	struct homa_resend_hdr resend;
++	struct homa_gap *gap;
++	int offset, length;
 +
-+	struct sk_buff **last_link;
-+	struct dst_entry *dst;
-+	u64 segs_per_gso;
-+	int overlap_xmit;
++	if (rpc->msgin.length >= 0) {
++		/* Issue RESENDS for any gaps in incoming data. */
++		list_for_each_entry(gap, &rpc->msgin.gaps, links) {
++			resend.offset = htonl(gap->start);
++			resend.length = htonl(gap->end - gap->start);
++			homa_xmit_control(RESEND, &resend, sizeof(resend), rpc);
++		}
 +
-+	/* Bytes of the message that haven't yet been copied into skbs. */
-+	int bytes_left;
-+
-+	int gso_size;
-+	int err;
-+
-+	if (unlikely(iter->count > HOMA_MAX_MESSAGE_LENGTH ||
-+		     iter->count == 0)) {
-+		err = -EINVAL;
-+		goto error;
++		/* Issue a RESEND for any granted data after the last gap. */
++		offset = rpc->msgin.recv_end;
++		length = rpc->msgin.length - rpc->msgin.recv_end;
++		if (length <= 0)
++			return;
++	} else {
++		/* No data has been received for the RPC. Ask the sender to
++		 * resend everything it has sent so far.
++		 */
++		offset = 0;
++		length = -1;
 +	}
-+	homa_message_out_init(rpc, iter->count);
 +
-+	/* Compute the geometry of packets. */
-+	dst = homa_get_dst(rpc->peer, rpc->hsk);
-+	mtu = dst_mtu(dst);
-+	max_seg_data = mtu - rpc->hsk->ip_header_length
-+			- sizeof(struct homa_data_hdr);
-+	gso_size = dst->dev->gso_max_size;
-+	if (gso_size > rpc->hsk->homa->max_gso_size)
-+		gso_size = rpc->hsk->homa->max_gso_size;
-+	dst_release(dst);
++	resend.offset = htonl(offset);
++	resend.length = htonl(length);
++	homa_xmit_control(RESEND, &resend, sizeof(resend), rpc);
++}
 +
-+	/* Round gso_size down to an even # of mtus. */
-+	segs_per_gso = gso_size - rpc->hsk->ip_header_length -
-+			sizeof(struct homa_data_hdr) +
-+			sizeof(struct homa_seg_hdr);
-+	do_div(segs_per_gso, max_seg_data +
-+			sizeof(struct homa_seg_hdr));
-+	if (segs_per_gso == 0)
-+		segs_per_gso = 1;
-+	max_gso_data = segs_per_gso * max_seg_data;
++/**
++ * homa_add_packet() - Add an incoming packet to the contents of a
++ * partially received message.
++ * @rpc:   Add the packet to the msgin for this RPC.
++ * @skb:   The new packet. This function takes ownership of the packet
++ *         (the packet will either be freed or added to rpc->msgin.packets).
++ */
++void homa_add_packet(struct homa_rpc *rpc, struct sk_buff *skb)
++	__must_hold(rpc->bucket->lock)
++{
++	struct homa_data_hdr *h = (struct homa_data_hdr *)skb->data;
++	struct homa_gap *gap, *dummy, *gap2;
++	int start = ntohl(h->seg.offset);
++	int length = homa_data_len(skb);
++	int end = start + length;
 +
-+	overlap_xmit = rpc->msgout.length > 2 * max_gso_data;
-+	homa_skb_stash_pages(rpc->hsk->homa, rpc->msgout.length);
++	if ((start + length) > rpc->msgin.length)
++		goto discard;
 +
-+	/* Each iteration of the loop below creates one GSO packet. */
-+	last_link = &rpc->msgout.packets;
-+	for (bytes_left = rpc->msgout.length; bytes_left > 0; ) {
-+		int skb_data_bytes, offset;
++	if (start == rpc->msgin.recv_end) {
++		/* Common case: packet is sequential. */
++		rpc->msgin.recv_end += length;
++		goto keep;
++	}
++
++	if (start > rpc->msgin.recv_end) {
++		/* Packet creates a new gap. */
++		if (!homa_gap_alloc(&rpc->msgin.gaps,
++				    rpc->msgin.recv_end, start))
++			goto discard;
++		rpc->msgin.recv_end = end;
++		goto keep;
++	}
++
++	/* Must now check to see if the packet fills in part or all of
++	 * an existing gap.
++	 */
++	list_for_each_entry_safe(gap, dummy, &rpc->msgin.gaps, links) {
++		/* Is packet at the start of this gap? */
++		if (start <= gap->start) {
++			if (end <= gap->start)
++				continue;
++			if (start < gap->start)
++				goto discard;
++			if (end > gap->end)
++				goto discard;
++			gap->start = end;
++			if (gap->start >= gap->end) {
++				list_del(&gap->links);
++				kfree(gap);
++			}
++			goto keep;
++		}
++
++		/* Is packet at the end of this gap? BTW, at this point we know
++		 * the packet can't cover the entire gap.
++		 */
++		if (end >= gap->end) {
++			if (start >= gap->end)
++				continue;
++			if (end > gap->end)
++				goto discard;
++			gap->end = start;
++			goto keep;
++		}
++
++		/* Packet is in the middle of the gap; must split the gap. */
++		gap2 = homa_gap_alloc(&gap->links, gap->start, start);
++		if (!gap2)
++			goto discard;
++		gap2->time = gap->time;
++		gap->start = end;
++		goto keep;
++	}
++
++discard:
++	kfree_skb(skb);
++	return;
++
++keep:
++	__skb_queue_tail(&rpc->msgin.packets, skb);
++	rpc->msgin.bytes_remaining -= length;
++}
++
++/**
++ * homa_copy_to_user() - Copy as much data as possible from incoming
++ * packet buffers to buffers in user space.
++ * @rpc:     RPC for which data should be copied. Must be locked by caller.
++ * Return:   Zero for success or a negative errno if there is an error.
++ *           It is possible for the RPC to be freed while this function
++ *           executes (it releases and reacquires the RPC lock). If that
++ *           happens, -EINVAL will be returned and the state of @rpc
++ *           will be RPC_DEAD. Clears the RPC_PKTS_READY bit in @rpc->flags
++ *           if all available packets have been copied out.
++ */
++int homa_copy_to_user(struct homa_rpc *rpc)
++	__must_hold(rpc->bucket->lock)
++{
++#define MAX_SKBS 20
++	struct sk_buff *skbs[MAX_SKBS];
++	int error = 0;
++	int n = 0;             /* Number of filled entries in skbs. */
++	int i;
++
++	/* Tricky note: we can't hold the RPC lock while we're actually
++	 * copying to user space, because (a) it's illegal to hold a spinlock
++	 * while copying to user space and (b) we'd like for homa_softirq
++	 * to add more packets to the RPC while we're copying these out.
++	 * So, collect a bunch of packets to copy, then release the lock,
++	 * copy them, and reacquire the lock.
++	 */
++	while (true) {
 +		struct sk_buff *skb;
 +
-+		homa_rpc_unlock(rpc);
-+		skb_data_bytes = max_gso_data;
-+		offset = rpc->msgout.length - bytes_left;
-+		if (skb_data_bytes > bytes_left)
-+			skb_data_bytes = bytes_left;
-+		skb = homa_tx_data_pkt_alloc(rpc, iter, offset, skb_data_bytes,
-+					     max_seg_data);
-+		if (IS_ERR(skb)) {
-+			err = PTR_ERR(skb);
-+			homa_rpc_lock(rpc);
-+			goto error;
-+		}
-+		bytes_left -= skb_data_bytes;
-+
-+		homa_rpc_lock(rpc);
 +		if (rpc->state == RPC_DEAD) {
-+			/* RPC was freed while we were copying. */
-+			err = -EINVAL;
-+			homa_skb_free_tx(rpc->hsk->homa, skb);
-+			goto error;
++			error = -EINVAL;
++			break;
 +		}
-+		*last_link = skb;
-+		last_link = &(homa_get_skb_info(skb)->next_skb);
-+		*last_link = NULL;
-+		rpc->msgout.num_skbs++;
-+		rpc->msgout.skb_memory += skb->truesize;
-+		rpc->msgout.copied_from_user = rpc->msgout.length - bytes_left;
-+		if (overlap_xmit && list_empty(&rpc->throttled_links) &&
-+		    xmit)
-+			homa_pacer_manage_rpc(rpc);
-+	}
-+	refcount_add(rpc->msgout.skb_memory, &rpc->hsk->sock.sk_wmem_alloc);
-+	if (!overlap_xmit && xmit)
-+		homa_xmit_data(rpc, false);
-+	return 0;
 +
-+error:
-+	refcount_add(rpc->msgout.skb_memory, &rpc->hsk->sock.sk_wmem_alloc);
-+	return err;
-+}
++		skb = __skb_dequeue(&rpc->msgin.packets);
++		if (skb) {
++			skbs[n] = skb;
++			n++;
++			if (n < MAX_SKBS)
++				continue;
++		}
++		if (n == 0) {
++			atomic_andnot(RPC_PKTS_READY, &rpc->flags);
++			break;
++		}
 +
-+/**
-+ * homa_xmit_control() - Send a control packet to the other end of an RPC.
-+ * @type:      Packet type, such as DATA.
-+ * @contents:  Address of buffer containing the contents of the packet.
-+ *             Only information after the common header must be valid;
-+ *             the common header will be filled in by this function.
-+ * @length:    Length of @contents (including the common header).
-+ * @rpc:       The packet will go to the socket that handles the other end
-+ *             of this RPC. Addressing info for the packet, including all of
-+ *             the fields of homa_common_hdr except type, will be set from this.
-+ *             Caller must hold either the lock or a reference.
-+ *
-+ * Return:     Either zero (for success), or a negative errno value if there
-+ *             was a problem.
-+ */
-+int homa_xmit_control(enum homa_packet_type type, void *contents,
-+		      size_t length, struct homa_rpc *rpc)
-+{
-+	struct homa_common_hdr *h = contents;
-+
-+	h->type = type;
-+	h->sport = htons(rpc->hsk->port);
-+	h->dport = htons(rpc->dport);
-+	h->sender_id = cpu_to_be64(rpc->id);
-+	return __homa_xmit_control(contents, length, rpc->peer, rpc->hsk);
-+}
-+
-+/**
-+ * __homa_xmit_control() - Lower-level version of homa_xmit_control: sends
-+ * a control packet.
-+ * @contents:  Address of buffer containing the contents of the packet.
-+ *             The caller must have filled in all of the information,
-+ *             including the common header.
-+ * @length:    Length of @contents.
-+ * @peer:      Destination to which the packet will be sent.
-+ * @hsk:       Socket via which the packet will be sent.
-+ *
-+ * Return:     Either zero (for success), or a negative errno value if there
-+ *             was a problem.
-+ */
-+int __homa_xmit_control(void *contents, size_t length, struct homa_peer *peer,
-+			struct homa_sock *hsk)
-+{
-+	struct homa_common_hdr *h;
-+	struct sk_buff *skb;
-+	int extra_bytes;
-+	int result;
-+
-+	skb = homa_skb_alloc_tx(HOMA_MAX_HEADER);
-+	if (unlikely(!skb))
-+		return -ENOBUFS;
-+	skb_dst_set(skb, homa_get_dst(peer, hsk));
-+
-+	h = skb_put(skb, length);
-+	memcpy(h, contents, length);
-+	extra_bytes = HOMA_MIN_PKT_LENGTH - length;
-+	if (extra_bytes > 0)
-+		memset(skb_put(skb, extra_bytes), 0, extra_bytes);
-+	skb->ooo_okay = 1;
-+	skb_get(skb);
-+	if (hsk->inet.sk.sk_family == AF_INET6)
-+		result = ip6_xmit(&hsk->inet.sk, skb, &peer->flow.u.ip6, 0,
-+				  NULL, 0, 0);
-+	else
-+		result = ip_queue_xmit(&hsk->inet.sk, skb, &peer->flow);
-+	if (unlikely(result != 0)) {
-+		/* It appears that ip*_xmit frees skbuffs after
-+		 * errors; the following code is to raise an alert if
-+		 * this isn't actually the case. The extra skb_get above
-+		 * and kfree_skb call below are needed to do the check
-+		 * accurately (otherwise the buffer could be freed and
-+		 * its memory used for some other purpose, resulting in
-+		 * a bogus "reference count").
++		/* At this point we've collected a batch of packets (or
++		 * run out of packets); copy any available packets out to
++		 * user space.
 +		 */
-+		if (refcount_read(&skb->users) > 1) {
-+			if (hsk->inet.sk.sk_family == AF_INET6)
-+				pr_notice("ip6_xmit didn't free Homa control packet (type %d) after error %d\n",
-+					  h->type, result);
-+			else
-+				pr_notice("ip_queue_xmit didn't free Homa control packet (type %d) after error %d\n",
-+					  h->type, result);
++		homa_rpc_unlock(rpc);
++
++		/* Each iteration of this loop copies out one skb. */
++		for (i = 0; i < n; i++) {
++			struct homa_data_hdr *h = (struct homa_data_hdr *)
++					skbs[i]->data;
++			int pkt_length = homa_data_len(skbs[i]);
++			int offset = ntohl(h->seg.offset);
++			int buf_bytes, chunk_size;
++			struct iov_iter iter;
++			int copied = 0;
++			char __user *dst;
++
++			/* Each iteration of this loop copies to one
++			 * user buffer.
++			 */
++			while (copied < pkt_length) {
++				chunk_size = pkt_length - copied;
++				dst = homa_pool_get_buffer(rpc, offset + copied,
++							   &buf_bytes);
++				if (buf_bytes < chunk_size) {
++					if (buf_bytes == 0) {
++						/* skb has data beyond message
++						 * end?
++						 */
++						break;
++					}
++					chunk_size = buf_bytes;
++				}
++				error = import_ubuf(READ, dst, chunk_size,
++						    &iter);
++				if (error)
++					goto free_skbs;
++				error = skb_copy_datagram_iter(skbs[i],
++							       sizeof(*h) +
++							       copied,  &iter,
++							       chunk_size);
++				if (error)
++					goto free_skbs;
++				copied += chunk_size;
++			}
++		}
++
++free_skbs:
++		for (i = 0; i < n; i++)
++			kfree_skb(skbs[i]);
++		n = 0;
++		atomic_or(APP_NEEDS_LOCK, &rpc->flags);
++		homa_rpc_lock(rpc);
++		atomic_andnot(APP_NEEDS_LOCK, &rpc->flags);
++		if (error)
++			break;
++	}
++	return error;
++}
++
++/**
++ * homa_dispatch_pkts() - Top-level function that processes a batch of packets,
++ * all related to the same RPC.
++ * @skb:       First packet in the batch, linked through skb->next.
++ */
++void homa_dispatch_pkts(struct sk_buff *skb)
++{
++#define MAX_ACKS 10
++	const struct in6_addr saddr = skb_canonical_ipv6_saddr(skb);
++	struct homa_data_hdr *h = (struct homa_data_hdr *)skb->data;
++	u64 id = homa_local_id(h->common.sender_id);
++	int dport = ntohs(h->common.dport);
++
++	/* Used to collect acks from data packets so we can process them
++	 * all at the end (can't process them inline because that may
++	 * require locking conflicting RPCs). If we run out of space just
++	 * ignore the extra acks; they'll be regenerated later through the
++	 * explicit mechanism.
++	 */
++	struct homa_ack acks[MAX_ACKS];
++	struct homa_rpc *rpc = NULL;
++	struct homa_sock *hsk;
++	struct homa_net *hnet;
++	struct sk_buff *next;
++	int num_acks = 0;
++
++	/* Find the appropriate socket.*/
++	hnet = homa_net_from_skb(skb);
++	hsk = homa_sock_find(hnet, dport);
++	if (!hsk || (!homa_is_client(id) && !hsk->is_server)) {
++		if (skb_is_ipv6(skb))
++			icmp6_send(skb, ICMPV6_DEST_UNREACH,
++				   ICMPV6_PORT_UNREACH, 0, NULL, IP6CB(skb));
++		else
++			icmp_send(skb, ICMP_DEST_UNREACH,
++				  ICMP_PORT_UNREACH, 0);
++		while (skb) {
++			next = skb->next;
++			kfree_skb(skb);
++			skb = next;
++		}
++		if (hsk)
++			sock_put(&hsk->sock);
++		return;
++	}
++
++	/* Each iteration through the following loop processes one packet. */
++	for (; skb; skb = next) {
++		h = (struct homa_data_hdr *)skb->data;
++		next = skb->next;
++
++		/* Relinquish the RPC lock temporarily if it's needed
++		 * elsewhere.
++		 */
++		if (rpc) {
++			int flags = atomic_read(&rpc->flags);
++
++			if (flags & APP_NEEDS_LOCK) {
++				homa_rpc_unlock(rpc);
++
++				/* This short spin is needed to ensure that the
++				 * other thread gets the lock before this thread
++				 * grabs it again below (the need for this
++				 * was confirmed experimentally in 2/2025;
++				 * without it, the handoff fails 20-25% of the
++				 * time). Furthermore, the call to homa_spin
++				 * seems to allow the other thread to acquire
++				 * the lock more quickly.
++				 */
++				homa_spin(100);
++				homa_rpc_lock(rpc);
++			}
++		}
++
++		/* If we don't already have an RPC, find it, lock it,
++		 * and create a reference on it.
++		 */
++		if (!rpc) {
++			if (!homa_is_client(id)) {
++				/* We are the server for this RPC. */
++				if (h->common.type == DATA) {
++					int created;
++
++					/* Create a new RPC if one doesn't
++					 * already exist.
++					 */
++					rpc = homa_rpc_alloc_server(hsk, &saddr,
++								    h,
++								    &created);
++					if (IS_ERR(rpc)) {
++						rpc = NULL;
++						goto discard;
++					}
++				} else {
++					rpc = homa_rpc_find_server(hsk, &saddr,
++								   id);
++				}
++			} else {
++				rpc = homa_rpc_find_client(hsk, id);
++			}
++			if (rpc)
++				homa_rpc_hold(rpc);
++		}
++		if (unlikely(!rpc)) {
++			if (h->common.type != NEED_ACK &&
++			    h->common.type != ACK &&
++			    h->common.type != RESEND)
++				goto discard;
++		} else {
++			if (h->common.type == DATA ||
++			    h->common.type == BUSY)
++				rpc->silent_ticks = 0;
++			rpc->peer->outstanding_resends = 0;
++		}
++
++		switch (h->common.type) {
++		case DATA:
++			if (h->ack.client_id) {
++				/* Save the ack for processing later, when we
++				 * have released the RPC lock.
++				 */
++				if (num_acks < MAX_ACKS) {
++					acks[num_acks] = h->ack;
++					num_acks++;
++				}
++			}
++			homa_data_pkt(skb, rpc);
++			break;
++		case RESEND:
++			homa_resend_pkt(skb, rpc, hsk);
++			break;
++		case RPC_UNKNOWN:
++			homa_rpc_unknown_pkt(skb, rpc);
++			break;
++		case BUSY:
++			/* Nothing to do for these packets except reset
++			 * silent_ticks, which happened above.
++			 */
++			goto discard;
++		case NEED_ACK:
++			homa_need_ack_pkt(skb, hsk, rpc);
++			break;
++		case ACK:
++			homa_ack_pkt(skb, hsk, rpc);
++			break;
++			goto discard;
++		}
++		continue;
++
++discard:
++		kfree_skb(skb);
++	}
++	if (rpc) {
++		homa_rpc_put(rpc);
++		homa_rpc_unlock(rpc);
++	}
++
++	while (num_acks > 0) {
++		num_acks--;
++		homa_rpc_acked(hsk, &saddr, &acks[num_acks]);
++	}
++
++	if (hsk->dead_skbs >= 2 * hsk->homa->dead_buffs_limit)
++		/* We get here if other approaches are not keeping up with
++		 * reaping dead RPCs. See "RPC Reaping Strategy" in
++		 * homa_rpc_reap code for details.
++		 */
++		homa_rpc_reap(hsk, false);
++	sock_put(&hsk->sock);
++}
++
++/**
++ * homa_data_pkt() - Handler for incoming DATA packets
++ * @skb:     Incoming packet; size known to be large enough for the header.
++ *           This function now owns the packet.
++ * @rpc:     Information about the RPC corresponding to this packet.
++ *           Must be locked by the caller.
++ */
++void homa_data_pkt(struct sk_buff *skb, struct homa_rpc *rpc)
++	__must_hold(rpc->bucket->lock)
++{
++	struct homa_data_hdr *h = (struct homa_data_hdr *)skb->data;
++
++	if (rpc->state != RPC_INCOMING && homa_is_client(rpc->id)) {
++		if (unlikely(rpc->state != RPC_OUTGOING))
++			goto discard;
++		rpc->state = RPC_INCOMING;
++		if (homa_message_in_init(rpc, ntohl(h->message_length)) != 0)
++			goto discard;
++	} else if (rpc->state != RPC_INCOMING) {
++		/* Must be server; note that homa_rpc_alloc_server already
++		 * initialized msgin and allocated buffers.
++		 */
++		if (unlikely(rpc->msgin.length >= 0))
++			goto discard;
++	}
++
++	if (rpc->msgin.num_bpages == 0)
++		/* Drop packets that arrive when we can't allocate buffer
++		 * space. If we keep them around, packet buffer usage can
++		 * exceed available cache space, resulting in poor
++		 * performance.
++		 */
++		goto discard;
++
++	homa_add_packet(rpc, skb);
++
++	if (skb_queue_len(&rpc->msgin.packets) != 0 &&
++	    !(atomic_read(&rpc->flags) & RPC_PKTS_READY)) {
++		atomic_or(RPC_PKTS_READY, &rpc->flags);
++		homa_rpc_handoff(rpc);
++	}
++
++	return;
++
++discard:
++	kfree_skb(skb);
++}
++
++/**
++ * homa_resend_pkt() - Handler for incoming RESEND packets
++ * @skb:     Incoming packet; size already verified large enough for header.
++ *           This function now owns the packet.
++ * @rpc:     Information about the RPC corresponding to this packet; must
++ *           be locked by caller, but may be NULL if there is no RPC matching
++ *           this packet
++ * @hsk:     Socket on which the packet was received.
++ */
++void homa_resend_pkt(struct sk_buff *skb, struct homa_rpc *rpc,
++		     struct homa_sock *hsk)
++	__must_hold(rpc->bucket->lock)
++{
++	struct homa_resend_hdr *h = (struct homa_resend_hdr *)skb->data;
++	int offset = ntohl(h->offset);
++	int length = ntohl(h->length);
++	int end = offset + length;
++	struct homa_busy_hdr busy;
++
++	if (!rpc) {
++		homa_xmit_unknown(skb, hsk);
++		goto done;
++	}
++
++	if (!homa_is_client(rpc->id) && rpc->state != RPC_OUTGOING) {
++		/* We are the server for this RPC and don't yet have a
++		 * response message, so send BUSY to keep the client
++		 * waiting.
++		 */
++		homa_xmit_control(BUSY, &busy, sizeof(busy), rpc);
++		goto done;
++	}
++
++	/* First, retransmit bytes that were already sent once. */
++	if (length == -1)
++		end = rpc->msgout.next_xmit_offset;
++
++	if (end > rpc->msgout.next_xmit_offset)
++		homa_resend_data(rpc, offset, rpc->msgout.next_xmit_offset);
++	else
++		homa_resend_data(rpc, offset, end);
++
++	if (offset >= rpc->msgout.next_xmit_offset)  {
++		/* We have chosen not to transmit any of the requested data;
++		 * send BUSY so the receiver knows we are alive.
++		 */
++		homa_xmit_control(BUSY, &busy, sizeof(busy), rpc);
++		goto done;
++	}
++
++done:
++	kfree_skb(skb);
++}
++
++/**
++ * homa_rpc_unknown_pkt() - Handler for incoming RPC_UNKNOWN packets.
++ * @skb:     Incoming packet; size known to be large enough for the header.
++ *           This function now owns the packet.
++ * @rpc:     Information about the RPC corresponding to this packet. Must
++ *           be locked by caller.
++ */
++void homa_rpc_unknown_pkt(struct sk_buff *skb, struct homa_rpc *rpc)
++	__must_hold(rpc->bucket->lock)
++{
++	if (homa_is_client(rpc->id)) {
++		if (rpc->state == RPC_OUTGOING) {
++			/* It appears that everything we've already transmitted
++			 * has been lost; retransmit it.
++			 */
++			homa_resend_data(rpc, 0, rpc->msgout.next_xmit_offset);
++			goto done;
++		}
++	} else {
++		homa_rpc_end(rpc);
++	}
++done:
++	kfree_skb(skb);
++}
++
++/**
++ * homa_need_ack_pkt() - Handler for incoming NEED_ACK packets
++ * @skb:     Incoming packet; size already verified large enough for header.
++ *           This function now owns the packet.
++ * @hsk:     Socket on which the packet was received.
++ * @rpc:     The RPC named in the packet header, or NULL if no such
++ *           RPC exists. The RPC has been locked by the caller.
++ */
++void homa_need_ack_pkt(struct sk_buff *skb, struct homa_sock *hsk,
++		       struct homa_rpc *rpc)
++	__must_hold(rpc->bucket->lock)
++{
++	struct homa_common_hdr *h = (struct homa_common_hdr *)skb->data;
++	const struct in6_addr saddr = skb_canonical_ipv6_saddr(skb);
++	u64 id = homa_local_id(h->sender_id);
++	struct homa_ack_hdr ack;
++	struct homa_peer *peer;
++
++	/* Don't ack if it's not safe for the peer to purge its state
++	 * for this RPC (the RPC still exists and we haven't received
++	 * the entire response), or if we can't find peer info.
++	 */
++	if (rpc && (rpc->state != RPC_INCOMING ||
++		    rpc->msgin.bytes_remaining)) {
++		homa_request_retrans(rpc);
++		goto done;
++	} else {
++		peer = homa_peer_get(hsk, &saddr);
++		if (IS_ERR(peer))
++			goto done;
++	}
++
++	/* Send an ACK for this RPC. At the same time, include all of the
++	 * other acks available for the peer. Note: can't use rpc below,
++	 * since it may be NULL.
++	 */
++	ack.common.type = ACK;
++	ack.common.sport = h->dport;
++	ack.common.dport = h->sport;
++	ack.common.sender_id = cpu_to_be64(id);
++	ack.num_acks = htons(homa_peer_get_acks(peer,
++						HOMA_MAX_ACKS_PER_PKT,
++						ack.acks));
++	__homa_xmit_control(&ack, sizeof(ack), peer, hsk);
++	homa_peer_release(peer);
++
++done:
++	kfree_skb(skb);
++}
++
++/**
++ * homa_ack_pkt() - Handler for incoming ACK packets
++ * @skb:     Incoming packet; size already verified large enough for header.
++ *           This function now owns the packet.
++ * @hsk:     Socket on which the packet was received.
++ * @rpc:     The RPC named in the packet header, or NULL if no such
++ *           RPC exists. The RPC lock will be dead on return.
++ */
++void homa_ack_pkt(struct sk_buff *skb, struct homa_sock *hsk,
++		  struct homa_rpc *rpc)
++	__must_hold(rpc->bucket->lock)
++{
++	const struct in6_addr saddr = skb_canonical_ipv6_saddr(skb);
++	struct homa_ack_hdr *h = (struct homa_ack_hdr *)skb->data;
++	int i, count;
++
++	if (rpc)
++		homa_rpc_end(rpc);
++
++	count = ntohs(h->num_acks);
++	if (count > 0) {
++		if (rpc) {
++			/* Must temporarily release rpc's lock because
++			 * homa_rpc_acked needs to acquire RPC locks.
++			 */
++			homa_rpc_unlock(rpc);
++			for (i = 0; i < count; i++)
++				homa_rpc_acked(hsk, &saddr, &h->acks[i]);
++			homa_rpc_lock(rpc);
++		} else {
++			for (i = 0; i < count; i++)
++				homa_rpc_acked(hsk, &saddr, &h->acks[i]);
 +		}
 +	}
 +	kfree_skb(skb);
++}
++
++/**
++ * homa_wait_private() - Waits until the response has been received for
++ * a specific RPC or the RPC has failed with an error.
++ * @rpc:          RPC to wait for; an error will be returned if the RPC is
++ *                not a client RPC or not private. Must be locked by caller.
++ * @nonblocking:  Nonzero means return immediately if @rpc not ready.
++ * Return:  0 if the response has been successfully received, otherwise
++ *          a negative errno.
++ */
++int homa_wait_private(struct homa_rpc *rpc, int nonblocking)
++	__must_hold(rpc->bucket->lock)
++{
++	struct homa_interest interest;
++	int result = 0;
++
++	if (!(atomic_read(&rpc->flags) & RPC_PRIVATE))
++		return -EINVAL;
++
++	/* Each iteration through this loop waits until rpc needs attention
++	 * in some way (e.g. packets have arrived), then deals with that need
++	 * (e.g. copy to user space). It may take many iterations until the
++	 * RPC is ready for the application.
++	 */
++	while (1) {
++		if (!rpc->error)
++			rpc->error = homa_copy_to_user(rpc);
++		if (rpc->error) {
++			result = rpc->error;
++			break;
++		}
++		if (rpc->msgin.length >= 0 &&
++		    rpc->msgin.bytes_remaining == 0 &&
++		    skb_queue_len(&rpc->msgin.packets) == 0)
++			break;
++
++		result = homa_interest_init_private(&interest, rpc);
++		if (result != 0)
++			break;
++
++		homa_rpc_unlock(rpc);
++		result = homa_interest_wait(&interest, nonblocking);
++
++		atomic_or(APP_NEEDS_LOCK, &rpc->flags);
++		homa_rpc_lock(rpc);
++		atomic_andnot(APP_NEEDS_LOCK, &rpc->flags);
++		homa_interest_unlink_private(&interest);
++
++		/* If homa_interest_wait returned an error but the interest
++		 * actually got ready, then ignore the error.
++		 */
++		if (result != 0 && atomic_read(&interest.ready) == 0)
++			break;
++	}
++
 +	return result;
 +}
 +
 +/**
-+ * homa_xmit_unknown() - Send an RPC_UNKNOWN packet to a peer.
-+ * @skb:         Buffer containing an incoming packet; identifies the peer to
-+ *               which the RPC_UNKNOWN packet should be sent.
-+ * @hsk:         Socket that should be used to send the RPC_UNKNOWN packet.
++ * homa_wait_shared() - Wait for the completion of any non-private
++ * incoming message on a socket.
++ * @hsk:          Socket on which to wait. Must not be locked.
++ * @nonblocking:  Nonzero means return immediately if no RPC is ready.
++ *
++ * Return:    Pointer to an RPC with a complete incoming message or nonzero
++ *            error field, or a negative errno (usually -EINTR). If an RPC
++ *            is returned it will be locked and referenced; the caller
++ *            must release the lock and the reference.
 + */
-+void homa_xmit_unknown(struct sk_buff *skb, struct homa_sock *hsk)
++struct homa_rpc *homa_wait_shared(struct homa_sock *hsk, int nonblocking)
++	__cond_acquires(rpc->bucket->lock)
 +{
-+	struct homa_common_hdr *h = (struct homa_common_hdr *)skb->data;
-+	struct in6_addr saddr = skb_canonical_ipv6_saddr(skb);
-+	struct homa_rpc_unknown_hdr unknown;
-+	struct homa_peer *peer;
++	struct homa_interest interest;
++	struct homa_rpc *rpc;
++	int result;
 +
-+	unknown.common.sport = h->dport;
-+	unknown.common.dport = h->sport;
-+	unknown.common.type = RPC_UNKNOWN;
-+	unknown.common.sender_id = cpu_to_be64(homa_local_id(h->sender_id));
-+	peer = homa_peer_get(hsk, &saddr);
-+	if (!IS_ERR(peer))
-+		__homa_xmit_control(&unknown, sizeof(unknown), peer, hsk);
-+	homa_peer_release(peer);
-+}
-+
-+/**
-+ * homa_xmit_data() - If an RPC has outbound data packets that are permitted
-+ * to be transmitted according to the scheduling mechanism, arrange for
-+ * them to be sent (some may be sent immediately; others may be sent
-+ * later by the pacer thread).
-+ * @rpc:       RPC to check for transmittable packets. Must be locked by
-+ *             caller. Note: this function will release the RPC lock while
-+ *             passing packets through the RPC stack, then reacquire it
-+ *             before returning. It is possible that the RPC gets freed
-+ *             when the lock isn't held, in which case the state will
-+ *             be RPC_DEAD on return.
-+ * @force:     True means send at least one packet, even if the NIC queue
-+ *             is too long. False means that zero packets may be sent, if
-+ *             the NIC queue is sufficiently long.
-+ */
-+void homa_xmit_data(struct homa_rpc *rpc, bool force)
-+	__must_hold(rpc->bucket->lock)
-+{
-+	struct homa *homa = rpc->hsk->homa;
-+	int length;
-+
-+	while (*rpc->msgout.next_xmit && rpc->state != RPC_DEAD) {
-+		struct sk_buff *skb = *rpc->msgout.next_xmit;
-+
-+		if (rpc->msgout.length - rpc->msgout.next_xmit_offset >
-+		    homa->pacer->throttle_min_bytes) {
-+			if (!homa_pacer_check_nic_q(homa->pacer, skb, force)) {
-+				homa_pacer_manage_rpc(rpc);
-+				break;
-+			}
-+		}
-+
-+		rpc->msgout.next_xmit = &(homa_get_skb_info(skb)->next_skb);
-+		length = homa_get_skb_info(skb)->data_bytes;
-+		rpc->msgout.next_xmit_offset += length;
-+
-+		homa_rpc_unlock(rpc);
-+		skb_get(skb);
-+		__homa_xmit_data(skb, rpc);
-+		force = false;
-+		homa_rpc_lock(rpc);
-+	}
-+}
-+
-+/**
-+ * __homa_xmit_data() - Handles packet transmission stuff that is common
-+ * to homa_xmit_data and homa_resend_data.
-+ * @skb:      Packet to be sent. The packet will be freed after transmission
-+ *            (and also if errors prevented transmission).
-+ * @rpc:      Information about the RPC that the packet belongs to.
-+ */
-+void __homa_xmit_data(struct sk_buff *skb, struct homa_rpc *rpc)
-+{
-+	skb_dst_set(skb, homa_get_dst(rpc->peer, rpc->hsk));
-+
-+	skb->ooo_okay = 1;
-+	skb->ip_summed = CHECKSUM_PARTIAL;
-+	skb->csum_start = skb_transport_header(skb) - skb->head;
-+	skb->csum_offset = offsetof(struct homa_common_hdr, checksum);
-+	if (rpc->hsk->inet.sk.sk_family == AF_INET6)
-+		ip6_xmit(&rpc->hsk->inet.sk, skb, &rpc->peer->flow.u.ip6,
-+			 0, NULL, 0, 0);
-+	else
-+		ip_queue_xmit(&rpc->hsk->inet.sk, skb, &rpc->peer->flow);
-+}
-+
-+/**
-+ * homa_resend_data() - This function is invoked as part of handling RESEND
-+ * requests. It retransmits the packet(s) containing a given range of bytes
-+ * from a message.
-+ * @rpc:      RPC for which data should be resent.
-+ * @start:    Offset within @rpc->msgout of the first byte to retransmit.
-+ * @end:      Offset within @rpc->msgout of the byte just after the last one
-+ *            to retransmit.
-+ */
-+void homa_resend_data(struct homa_rpc *rpc, int start, int end)
-+	__must_hold(rpc->bucket->lock)
-+{
-+	struct homa_skb_info *homa_info;
-+	struct sk_buff *skb;
-+
-+	if (end <= start)
-+		return;
-+
-+	/* Each iteration of this loop checks one packet in the message
-+	 * to see if it contains segments that need to be retransmitted.
++	INIT_LIST_HEAD(&interest.links);
++	init_waitqueue_head(&interest.wait_queue);
++	/* Each iteration through this loop waits until an RPC needs attention
++	 * in some way (e.g. packets have arrived), then deals with that need
++	 * (e.g. copy to user space). It may take many iterations until an
++	 * RPC is ready for the application.
 +	 */
-+	for (skb = rpc->msgout.packets; skb; skb = homa_info->next_skb) {
-+		int seg_offset, offset, seg_length, data_left;
-+		struct homa_data_hdr *h;
-+
-+		homa_info = homa_get_skb_info(skb);
-+		offset = homa_info->offset;
-+		if (offset >= end)
-+			break;
-+		if (start >= (offset + homa_info->data_bytes))
-+			continue;
-+
-+		offset = homa_info->offset;
-+		seg_offset = sizeof(struct homa_data_hdr);
-+		data_left = homa_info->data_bytes;
-+		if (skb_shinfo(skb)->gso_segs <= 1) {
-+			seg_length = data_left;
-+		} else {
-+			seg_length = homa_info->seg_length;
-+			h = (struct homa_data_hdr *)skb_transport_header(skb);
++	while (1) {
++		homa_sock_lock(hsk);
++		if (hsk->shutdown) {
++			rpc = ERR_PTR(-ESHUTDOWN);
++			homa_sock_unlock(hsk);
++			goto done;
 +		}
-+		for ( ; data_left > 0; data_left -= seg_length,
-+		     offset += seg_length,
-+		     seg_offset += skb_shinfo(skb)->gso_size) {
-+			struct homa_skb_info *new_homa_info;
-+			struct sk_buff *new_skb;
-+			int err;
++		if (!list_empty(&hsk->ready_rpcs)) {
++			rpc = list_first_entry(&hsk->ready_rpcs,
++					       struct homa_rpc,
++					       ready_links);
++			homa_rpc_hold(rpc);
++			list_del_init(&rpc->ready_links);
++			if (!list_empty(&hsk->ready_rpcs)) {
++				/* There are still more RPCs available, so
++				 * let Linux know.
++				 */
++				hsk->sock.sk_data_ready(&hsk->sock);
++			}
++			homa_sock_unlock(hsk);
++		} else {
++			homa_interest_init_shared(&interest, hsk);
++			homa_sock_unlock(hsk);
++			result = homa_interest_wait(&interest, nonblocking);
++			homa_interest_unlink_shared(&interest);
 +
-+			if (seg_length > data_left)
-+				seg_length = data_left;
-+
-+			if (end <= offset)
-+				goto resend_done;
-+			if ((offset + seg_length) <= start)
-+				continue;
-+
-+			/* This segment must be retransmitted. */
-+			new_skb = homa_skb_alloc_tx(sizeof(struct homa_data_hdr)
-+					+ seg_length);
-+			if (unlikely(!new_skb))
-+				goto resend_done;
-+			h = __skb_put_data(new_skb, skb_transport_header(skb),
-+					   sizeof(struct homa_data_hdr));
-+			h->common.sequence = htonl(offset);
-+			h->seg.offset = htonl(offset);
-+			h->retransmit = 1;
-+			err = homa_skb_append_from_skb(rpc->hsk->homa, new_skb,
-+						       skb, seg_offset,
-+						       seg_length);
-+			if (err != 0) {
-+				pr_err("%s got error %d from homa_skb_append_from_skb\n",
-+				       __func__, err);
-+				kfree_skb(new_skb);
-+				goto resend_done;
++			if (result != 0) {
++				/* If homa_interest_wait returned an error
++				 * (e.g. -EAGAIN) but in the meantime the
++				 * interest received a handoff, ignore the
++				 * error.
++				 */
++				if (atomic_read(&interest.ready) == 0) {
++					rpc = ERR_PTR(result);
++					goto done;
++				}
 +			}
 +
-+			new_homa_info = homa_get_skb_info(new_skb);
-+			new_homa_info->next_skb = NULL;
-+			new_homa_info->wire_bytes = rpc->hsk->ip_header_length
-+					+ sizeof(struct homa_data_hdr)
-+					+ seg_length + HOMA_ETH_OVERHEAD;
-+			new_homa_info->data_bytes = seg_length;
-+			new_homa_info->seg_length = seg_length;
-+			new_homa_info->offset = offset;
-+			homa_pacer_check_nic_q(rpc->hsk->homa->pacer, new_skb,
-+					       true);
-+			__homa_xmit_data(new_skb, rpc);
++			rpc = interest.rpc;
++			if (!rpc) {
++				rpc = ERR_PTR(-ESHUTDOWN);
++				goto done;
++			}
 +		}
++
++		atomic_or(APP_NEEDS_LOCK, &rpc->flags);
++		homa_rpc_lock(rpc);
++		atomic_andnot(APP_NEEDS_LOCK, &rpc->flags);
++		if (!rpc->error)
++			rpc->error = homa_copy_to_user(rpc);
++		if (rpc->error) {
++			if (rpc->state != RPC_DEAD)
++				break;
++		} else if (rpc->msgin.bytes_remaining == 0 &&
++		    skb_queue_len(&rpc->msgin.packets) == 0)
++			break;
++		homa_rpc_put(rpc);
++		homa_rpc_unlock(rpc);
 +	}
 +
-+resend_done:
-+	return;
++done:
++	return rpc;
 +}
++
++/**
++ * homa_rpc_handoff() - This function is called when the input message for
++ * an RPC is ready for attention from a user thread. It notifies a waiting
++ * reader and/or queues the RPC, as appropriate.
++ * @rpc:                RPC to handoff; must be locked.
++ */
++void homa_rpc_handoff(struct homa_rpc *rpc)
++	__must_hold(rpc->bucket->lock)
++{
++	struct homa_sock *hsk = rpc->hsk;
++	struct homa_interest *interest;
++
++	if (atomic_read(&rpc->flags) & RPC_PRIVATE) {
++		homa_interest_notify_private(rpc);
++		return;
++	}
++
++	/* Shared RPC; if there is a waiting thread, hand off the RPC;
++	 * otherwise enqueue it.
++	 */
++	homa_sock_lock(hsk);
++	if (hsk->shutdown) {
++		homa_sock_unlock(hsk);
++		return;
++	}
++	if (!list_empty(&hsk->interests)) {
++		interest = list_first_entry(&hsk->interests,
++					    struct homa_interest, links);
++		list_del_init(&interest->links);
++		interest->rpc = rpc;
++		homa_rpc_hold(rpc);
++		atomic_set_release(&interest->ready, 1);
++		wake_up(&interest->wait_queue);
++	} else if (list_empty(&rpc->ready_links)) {
++		list_add_tail(&rpc->ready_links, &hsk->ready_rpcs);
++		hsk->sock.sk_data_ready(&hsk->sock);
++	}
++	homa_sock_unlock(hsk);
++}
++
 -- 
 2.43.0
 
