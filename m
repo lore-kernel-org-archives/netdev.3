@@ -1,97 +1,268 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04997376;
-	Wed, 30 Jul 2025 23:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1AE21323C
+	for <netdev@vger.kernel.org>; Wed, 30 Jul 2025 23:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753916880; cv=none; b=sLn3fY4ngXKb8QFNaLi0Jrk6tIZ8zCFUETEfDSYM9xPrptYvxblenT6i992VydVfiHbHoPDKbAbrMOFq3PSQTj5qjuNTJLAkRMsEZOnyzKjA0keP/Zj0GMB8rUSF0CjADllbo147N7AbQ1Xoth89Ily83IMDrmx1DzKH7b4WxjU=
+	t=1753919183; cv=none; b=bRvlRYUHAwTrbR7IKrJd7A5tsWN3jdXx0uAJesNG9GjM5SQbpau2lDh0xvCwDfmonEpr//QjWLAncLl9zhXmqFV92Yhoq9VL61U60b0/cWDtnnzsUN8AZfiGBKrGWRu6Oq/js3vfP8AYtBaGhew5GgNhz/3HWJmarrIcKMql4BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753916880; c=relaxed/simple;
-	bh=zzjnzxC1bl9JFaBe32DCTnSQkUzSkshMzgbbgw6ZEMs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qQIlnp3VK6F3NpaSglEiYu9iRwQaZeWSonrlM7ZVccZ4C0ZTmJQNzBMzhGIEazWdCNLKr9ShMPc8P74zFIHEpfPn4+q2skU3jjohEHLlljer4A2FrwmhZiFjSyEJhHXhmpUPY3T+oN/rnAtcURfj5r+qb2CUnUFWQ+zx1qfiQrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mN9MfhjT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753919183; c=relaxed/simple;
+	bh=5nSrk3AUl8N7uUEVqFWs+FsXcxf1g65z5BpAV2wBdVE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UDZ6rjfoAei4S/zilBvNvSOjkGbb64Y6joU+YY0g2eFuY6y7EC58rgvpwEs/4jlYVQCvhUq+kpQ2YyD1QKrjniDM+WyjEdFllzE3obU1vvQXcKzwS1tJGwz48/wnM8dZw7vX13rQoDIrGJztcP4ryES3+UzVFCHB4n9KWgI+Y9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=M/aBrUMM; arc=none smtp.client-ip=171.64.64.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mN9MfhjT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CFABC4CEE3;
-	Wed, 30 Jul 2025 23:07:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753916879;
-	bh=zzjnzxC1bl9JFaBe32DCTnSQkUzSkshMzgbbgw6ZEMs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mN9MfhjT+/YVyTMyWJLvfNo0eu+njIpdeOca+ciB1jMjxGPPBjFdK1mkMyxSmSAYp
-	 Cj73hk3g3w81+yK0sinTnoDYcsitkpw9BUTGBJF7Wrq/8hJIqSmJlqIFmQijX82occ
-	 nERVS98Xurmxr2m4x1gka7Zgf7hh2SB8CTiLLNlmh0EUKHIHBl+QD533eSgMiMHqch
-	 HsD6aNHrWPUP5ufPnToBhwJHpMHHiKxaKy4v7c8Wr+rF/5Z8fqej+a73kGQr26N7zq
-	 gwbqTceMDvY3glLoJ0Tc5/vxm6TKhyQNur0Nb9ou35jrmzy11QU8kaI3tFd6C+Rfji
-	 cl9TgwKzCSxdw==
-Date: Wed, 30 Jul 2025 16:07:59 -0700
-From: Kees Cook <kees@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Nathan Chancellor <nathan@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-Subject: Re: [PATCH v15 6/9] ref_tracker: automatically register a file in
- debugfs for a ref_tracker_dir
-Message-ID: <202507301603.62E553F93@keescook>
-References: <20250618-reftrack-dbgfs-v15-0-24fc37ead144@kernel.org>
- <20250618-reftrack-dbgfs-v15-6-24fc37ead144@kernel.org>
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="M/aBrUMM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=kPyMxUgEWtoodTCaVGVttCGs+YnCbHXc+nfIU35tdaI=; t=1753919181; x=1754783181; 
+	b=M/aBrUMM9AX8FJabEZlzD5f/dIZ5rFDOhvO6atIDpDSc5B/mvcjxBdLM5/XVhCHQSOzFq9/2mL4
+	6B8g0UhMgrlsL/GwIjvvJQBH6YN/r8KgVjAN00/vFRNg3qkiF75oNl0LEsqdmDgCrkF4dvNMn8VFZ
+	yvOSqdbgNGcf++mhwck6XCWP0wOkciIFfzjyU1f+vuE91zwhyWrx2Ik/0IGw8IpVfAnLyhWDavdrB
+	YnNhRA3iX3Ze1NugrrRZ0qbX+H047ETUdUYL5k6fNx56ETwQvHJ7njosUdLOBPZMfc2oO3easU3xY
+	oieqh/K2Wi/42sfK9wgZ+DFBuSrFWU/zErug==;
+Received: from ouster448.stanford.edu ([172.24.72.71]:58817 helo=localhost.localdomain)
+	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ouster@cs.stanford.edu>)
+	id 1uhGUw-0006n4-TF; Wed, 30 Jul 2025 16:46:15 -0700
+From: John Ousterhout <ouster@cs.stanford.edu>
+To: netdev@vger.kernel.org
+Cc: pabeni@redhat.com,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	John Ousterhout <ouster@cs.stanford.edu>
+Subject: [RFC net-next v13 01/15] net: homa: define user-visible API for Homa
+Date: Wed, 30 Jul 2025 16:45:29 -0700
+Message-ID: <20250730234544.4357-2-ouster@cs.stanford.edu>
+X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20250730234544.4357-1-ouster@cs.stanford.edu>
+References: <20250730234544.4357-1-ouster@cs.stanford.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250618-reftrack-dbgfs-v15-6-24fc37ead144@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -101.0
+X-Scan-Signature: 6b558d507b279d87cf03e63f8dc9a39b
 
-On Wed, Jun 18, 2025 at 10:24:19AM -0400, Jeff Layton wrote:
-> [...]
-> The file is given the name "class@%px", as having the unmodified address
-> is helpful for debugging. This should be safe since this directory is only
-> accessible by root
-> [...]
-> +void ref_tracker_dir_debugfs(struct ref_tracker_dir *dir)
-> +{
-> +	char name[NAME_MAX + 1];
-> +	struct dentry *dentry;
-> +	int ret;
-> +
-> +	/* No-op if already created */
-> +	dentry = xa_load(&debugfs_dentries, (unsigned long)dir);
-> +	if (dentry && !xa_is_err(dentry))
-> +		return;
-> +
-> +	ret = snprintf(name, sizeof(name), "%s@%px", dir->class, dir);
-> +	name[sizeof(name) - 1] = '\0';
+Note: for man pages, see the Homa Wiki at:
+https://homa-transport.atlassian.net/wiki/spaces/HOMA/overview
 
-Yikes! Never use %px, and especially don't use it for a stable
-identifier nor expose it to userspace like this. If you absolutely must,
-use %p, but never %px. This is a kernel address leak:
-https://docs.kernel.org/process/deprecated.html#p-format-specifier
+Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
 
-"helpful for debugging" is not a sufficiently good reason; and "only
-accessible by root" has nothing to do with kernel address integrity.
-Those kinds of things are (roughly) managed by various capabilities,
-not DAC uid==0.
+---
+Changes for v11:
+* Add explicit padding to struct homa_recvmsg_args to fix problems compiling
+  on 32-bit machines.
 
+Changes for v9:
+* Eliminate use of _Static_assert
+* Remove declarations related to now-defunct homa_api.c
+
+Changes for v7:
+* Add HOMA_SENDMSG_NONBLOCKING flag for sendmsg
+* API changes for new mechanism for waiting for incoming messages
+* Add setsockopt SO_HOMA_SERVER (enable incoming requests)
+* Use u64 and __u64 properly
+---
+ MAINTAINERS               |   7 ++
+ include/uapi/linux/homa.h | 158 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 165 insertions(+)
+ create mode 100644 include/uapi/linux/homa.h
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c0b444e5fd5a..f2546e1c4b49 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -11019,6 +11019,13 @@ F:	lib/test_hmm*
+ F:	mm/hmm*
+ F:	tools/testing/selftests/mm/*hmm*
+ 
++HOMA PROTOCOL
++M:	John Ousterhout <ouster@cs.stanford.edu>
++S:	Maintained
++B:	mailto:ouster@cs.stanford.edu
++F:	include/uapi/linux/homa.h
++F:	net/homa/
++
+ HONEYWELL HSC030PA PRESSURE SENSOR SERIES IIO DRIVER
+ M:	Petre Rodan <petre.rodan@subdimension.ro>
+ L:	linux-iio@vger.kernel.org
+diff --git a/include/uapi/linux/homa.h b/include/uapi/linux/homa.h
+new file mode 100644
+index 000000000000..d7022fcede77
+--- /dev/null
++++ b/include/uapi/linux/homa.h
+@@ -0,0 +1,158 @@
++/* SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+ */
++
++/* This file defines the kernel call interface for the Homa
++ * transport protocol.
++ */
++
++#ifndef _UAPI_LINUX_HOMA_H
++#define _UAPI_LINUX_HOMA_H
++
++#include <linux/types.h>
++#ifndef __KERNEL__
++#include <netinet/in.h>
++#include <sys/socket.h>
++#endif
++
++/* IANA-assigned Internet Protocol number for Homa. */
++#define IPPROTO_HOMA 146
++
++/**
++ * define HOMA_MAX_MESSAGE_LENGTH - Maximum bytes of payload in a Homa
++ * request or response message.
++ */
++#define HOMA_MAX_MESSAGE_LENGTH 1000000
++
++/**
++ * define HOMA_BPAGE_SIZE - Number of bytes in pages used for receive
++ * buffers. Must be power of two.
++ */
++#define HOMA_BPAGE_SIZE (1 << HOMA_BPAGE_SHIFT)
++#define HOMA_BPAGE_SHIFT 16
++
++/**
++ * define HOMA_MAX_BPAGES - The largest number of bpages that will be required
++ * to store an incoming message.
++ */
++#define HOMA_MAX_BPAGES ((HOMA_MAX_MESSAGE_LENGTH + HOMA_BPAGE_SIZE - 1) >> \
++		HOMA_BPAGE_SHIFT)
++
++/**
++ * define HOMA_MIN_DEFAULT_PORT - The 16 bit port space is divided into
++ * two nonoverlapping regions. Ports 1-32767 are reserved exclusively
++ * for well-defined server ports. The remaining ports are used for client
++ * ports; these are allocated automatically by Homa. Port 0 is reserved.
++ */
++#define HOMA_MIN_DEFAULT_PORT 0x8000
++
++/**
++ * struct homa_sendmsg_args - Provides information needed by Homa's
++ * sendmsg; passed to sendmsg using the msg_control field.
++ */
++struct homa_sendmsg_args {
++	/**
++	 * @id: (in/out) An initial value of 0 means a new request is
++	 * being sent; nonzero means the message is a reply to the given
++	 * id. If the message is a request, then the value is modified to
++	 * hold the id of the new RPC.
++	 */
++	__u64 id;
++
++	/**
++	 * @completion_cookie: (in) Used only for request messages; will be
++	 * returned by recvmsg when the RPC completes. Typically used to
++	 * locate app-specific info about the RPC.
++	 */
++	__u64 completion_cookie;
++
++	/**
++	 * @flags: (in) OR-ed combination of bits that control the operation.
++	 * See below for values.
++	 */
++	__u32 flags;
++
++	/** @reserved: Not currently used, must be 0. */
++	__u32 reserved;
++};
++
++/* Flag bits for homa_sendmsg_args.flags (see man page for documentation):
++ */
++#define HOMA_SENDMSG_PRIVATE       0x01
++#define HOMA_SENDMSG_VALID_FLAGS   0x01
++
++/**
++ * struct homa_recvmsg_args - Provides information needed by Homa's
++ * recvmsg; passed to recvmsg using the msg_control field.
++ */
++struct homa_recvmsg_args {
++	/**
++	 * @id: (in/out) Initial value is 0 to wait for any shared RPC;
++	 * nonzero means wait for that specific (private) RPC. Returns
++	 * the id of the RPC received.
++	 */
++	__u64 id;
++
++	/**
++	 * @completion_cookie: (out) If the incoming message is a response,
++	 * this will return the completion cookie specified when the
++	 * request was sent. For requests this will always be zero.
++	 */
++	__u64 completion_cookie;
++
++	/**
++	 * @num_bpages: (in/out) Number of valid entries in @bpage_offsets.
++	 * Passes in bpages from previous messages that can now be
++	 * recycled; returns bpages from the new message.
++	 */
++	__u32 num_bpages;
++
++	/** @reserved: Not currently used, must be 0. */
++	__u32 reserved;
++
++	/**
++	 * @bpage_offsets: (in/out) Each entry is an offset into the buffer
++	 * region for the socket pool. When returned from recvmsg, the
++	 * offsets indicate where fragments of the new message are stored. All
++	 * entries but the last refer to full buffer pages (HOMA_BPAGE_SIZE
++	 * bytes) and are bpage-aligned. The last entry may refer to a bpage
++	 * fragment and is not necessarily aligned. The application now owns
++	 * these bpages and must eventually return them to Homa, using
++	 * bpage_offsets in a future recvmsg invocation.
++	 */
++	__u32 bpage_offsets[HOMA_MAX_BPAGES];
++};
++
++/** define SO_HOMA_RCVBUF: setsockopt option for specifying buffer region. */
++#define SO_HOMA_RCVBUF 10
++
++/**
++ * define SO_HOMA_SERVER: setsockopt option for specifying whether a
++ * socket will act as server.
++ */
++#define SO_HOMA_SERVER 11
++
++/** struct homa_rcvbuf_args - setsockopt argument for SO_HOMA_RCVBUF. */
++struct homa_rcvbuf_args {
++	/** @start: Address of first byte of buffer region in user space. */
++	__u64 start;
++
++	/** @length: Total number of bytes available at @start. */
++	size_t length;
++};
++
++/* Meanings of the bits in Homa's flag word, which can be set using
++ * "sysctl /net/homa/flags".
++ */
++
++/**
++ * define HOMA_FLAG_DONT_THROTTLE - disable the output throttling mechanism
++ * (always send all packets immediately).
++ */
++#define HOMA_FLAG_DONT_THROTTLE   2
++
++/* I/O control calls on Homa sockets. These are mapped into the
++ * SIOCPROTOPRIVATE range of 0x89e0 through 0x89ef.
++ */
++
++#define HOMAIOCFREEZE _IO(0x89, 0xef)
++
++#endif /* _UAPI_LINUX_HOMA_H */
 -- 
-Kees Cook
+2.43.0
+
