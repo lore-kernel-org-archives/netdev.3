@@ -1,94 +1,67 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406EA2D12E6
-	for <netdev@vger.kernel.org>; Thu, 31 Jul 2025 13:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228F32D0C82;
+	Thu, 31 Jul 2025 13:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753969853; cv=none; b=NiLkUJCtxk3lDCipVw8n+f8DYwaLoUb5IXhM1wM11advMZn95RCvg6QzX/bqDw3d8CAWYHrpEAwTviBDiAtoA6Mgs4NrJ2nx/hDjr672Ikh/u9zsTgunug54sGx1SnIWoll31IEi0F4W7zzy2gCFfbzfNRiowKqvxPJyCwY7xs0=
+	t=1753970122; cv=none; b=Zv91zt+jLosXdRYN5Tq3bgu0G+I2BOABFuI7NzAldHp/W1lricVDWNb+FEdKy6L7W8QAqEO4QLnE5BBqW5UCgY0H82NAdgcBjUp48Q1HZaBFGm54lYvVr0Ron6/43GgkoYlS4ALlQ4M8pGlzpOP37gyAlD28jH7MKBHQ8SM59Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753969853; c=relaxed/simple;
-	bh=Jhq8GsvwJo/ERxKvbfFY89YtsVFcEGBSAGYKAWGdGT4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RyJf73GzSdal/if8tTHWip/M1vUXWr8I3UGf37kEoCUq6ECJ9dt5cVGSyKBe7wEVsRn+4YgleC8+hp3gUsU3tvV1TKYfU2VXKctJcmQqEkT3bBu50OUjRvesfejcW4ORcssINa7Wi7otqb1oGS/YUDKSReo4qQCZiwXhV8/Jt9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=KgOSHaLN; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="KgOSHaLN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=EtHOdkUrI/LHJoo4aSLNhIy4O7aRVecAaUYHo14dmpc=; b=KgOSHaLNsVdy7XfCvbv3wXO557
-	L3vUq4w++REDwwo4SAhhto0BthFCgATo2oujmRhvlanB8QEkF3lYc0wZ8cWCvm/K+oJWnwSQQyYhV
-	1QGGHzMDyXyL7qKQsbkXcbCGkCCajn3zWzM0FlmMZjrPHiVDGMHlazUJs5Opa95Tdsbg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uhTg6-003NE1-Ib; Thu, 31 Jul 2025 15:50:38 +0200
-Date: Thu, 31 Jul 2025 15:50:38 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: markus.stockhausen@gmx.de
-Cc: 'Heiner Kallweit' <hkallweit1@gmail.com>, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, michael@fossekall.de, daniel@makrotopia.org,
-	netdev@vger.kernel.org, jan@3e8.eu
-Subject: Re: [PATCH v2] net: phy: realtek: convert RTL8226-CG to c45 only
-Message-ID: <82e6a2d7-f341-468b-b7f6-e3c6768ba474@lunn.ch>
-References: <20250731054445.580474-1-markus.stockhausen@gmx.de>
- <d0e1c087-f701-402e-b842-3444fbce7f27@gmail.com>
- <059901dc0209$a817de50$f8479af0$@gmx.de>
+	s=arc-20240116; t=1753970122; c=relaxed/simple;
+	bh=xFJC9FfhPYR+V/mzUi/sw+Ke0NvLlb+afnYUIfS0k1g=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UQSjOcQ6LhAIQaLByWzoaSr/5UsYtSAmsshrz8EOoHCX1LLH9xP573AOtEFmFnLsDB34c9TdKJ7mu/fBhJHJuF9sWksrPeqD+cALClbHy8njem0hpzAv7RSZTBP4KPca7hVW3jbie8FwrmvvCPYH3xmC3R/4wSLKoU4z7u9kJIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4bt9St5hwbz14M7j;
+	Thu, 31 Jul 2025 21:50:22 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 68123180B51;
+	Thu, 31 Jul 2025 21:55:16 +0800 (CST)
+Received: from localhost.localdomain (10.90.31.46) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 31 Jul 2025 21:55:15 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
+	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<shaojijie@huawei.com>
+Subject: [PATCH net 0/3] There are some bugfix for hibmcge ethernet driver
+Date: Thu, 31 Jul 2025 21:47:46 +0800
+Message-ID: <20250731134749.4090041-1-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <059901dc0209$a817de50$f8479af0$@gmx.de>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-> > For my understanding: Which hardware disables c22 MMD access on RTL8226 how?
-> > RTL930x configures RTL8226 in a way that is doesn't accept c45 over c22 any longer?
-> 
-> sorry to be not clear about this. We have rtl9300 mdio driver
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree
-> /drivers/net/mdio/mdio-realtek-rtl9300.c?h=v6.16
-> 
-> This must decide how its four smi busses are configured. Either c22 
-> or c45. https://svanheule.net/realtek/longan/register/smi_glb_ctrl 
-> So it does.
-> 
-> 	/* Put the interfaces into C45 mode if required */
-> 	glb_ctrl_mask = GENMASK(19, 16);
-> 	for (i = 0; i < MAX_SMI_BUSSES; i++)
-> 		if (priv->smi_bus_is_c45[i])
-> 			glb_ctrl_val |= GLB_CTRL_INTF_SEL(i);
-> 	...
-> 	err = regmap_update_bits(regmap, SMI_GLB_CTRL,
-> 				 glb_ctrl_mask, glb_ctrl_val);
-> 
-> As soon as this bit is set to one mode the bus will block most
-> accesses with the other mode. E.g. In c22 mode registers 13/14
-> are a dead end. So the only option for the bus is to limit access
-> like this.
-> 
-> 	bus->name = "Realtek Switch MDIO Bus";
-> 	if (priv->smi_bus_is_c45[mdio_bus]) {
-> 		bus->read_c45 = rtl9300_mdio_read_c45;
-> 		bus->write_c45 =  rtl9300_mdio_write_c45;
-> 	} else {
-> 		bus->read = rtl9300_mdio_read_c22;
-> 		bus->write = rtl9300_mdio_write_c22;
-> 	}
+This patch set is intended to fix several issues for hibmcge driver:
+1. Holding the rtnl_lock in pci_error_handlers->reset_prepare()
+   may lead to a deadlock issue.
+2. A division by zero issue caused by debugfs when the port is down.
+3. A probabilistic false positive issue with np_link_fail. 
 
-Please summaries this for in the commit message. Not using C22 in the
-driver is only part of the overall picture. In phylib, there are a
-number of places in core where if an op is not provided by the driver,
-it will fall back to a genphy_ helper which will do a C22 access. It
-would be good if the commit message made is clear this has been
-considered, and that such operations will fail because the MDIO driver
-itself does not support C22.
+Jijie Shao (3):
+  net: hibmcge: fix rtnl deadlock issue
+  net: hibmcge: fix the division by zero issue
+  net: hibmcge: fix the np_link_fai error reporting issue
 
-	Andrew
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c  | 13 ++++---------
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c   | 15 +++++++++++++--
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h |  3 +++
+ 3 files changed, 20 insertions(+), 11 deletions(-)
+
+-- 
+2.33.0
+
