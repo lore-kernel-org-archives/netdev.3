@@ -1,223 +1,193 @@
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F74285C9C
-	for <netdev@vger.kernel.org>; Thu, 31 Jul 2025 18:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232FE15383A
+	for <netdev@vger.kernel.org>; Thu, 31 Jul 2025 18:45:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753986475; cv=none; b=bEKwZad2RKHIi8/NVl1TQOGMpWMfiZW6gdm+RVEt0MaJawVHtvMXuS5ujghRazaV+g3MsMBQbituHepJEvsxH+kBa8C2Zv3nfZ+y1U0Zg3ctjHXeki9dMuypcTGt+hXq2/MgMndKO0SgXHGYdYFA2K8HQKb3LnpjKfNy4jVw/w8=
+	t=1753987532; cv=none; b=XehJ2Yi0Wf0u/WVI/0/46UiNcume9jeC1RC/2q3R8ME8tYti8iar7unp07zO5OGI3n2wBHN0nESmk9LsUX1qnyqWU0Xa6WAzCFBH8Ef5nUfZUBcvGnvIsHlIAZ8SCQZxo05QyNG2Z0bQaghJspZIPTcuojkUZKGIHJM7NSE7yqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753986475; c=relaxed/simple;
-	bh=mkul41ig5MZ/oO1QqF4ezjSqut/qfYnZNsFzskZW5Wk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YkIyx/r7UQL0RRKVWkUzGhFZ7f6gQZEXJ7k0xc1D2iutP/R6q/EMqOum3VQQ/eCJRICNsjpi9984fkptXS43GZXl52WQPYSEI5pOEaTo4dC1LhlvTNwEbUKpFzynNQnxGVU2HJRN/dJDynr7f9rSQUrm/JHi2cE+hB7CnZ9gFeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20230601.gappssmtp.com header.i=@etsalapatis-com.20230601.gappssmtp.com header.b=aQcOYSSU; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20230601.gappssmtp.com header.i=@etsalapatis-com.20230601.gappssmtp.com header.b="aQcOYSSU"
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e8e0d209623so1252618276.0
-        for <netdev@vger.kernel.org>; Thu, 31 Jul 2025 11:27:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20230601.gappssmtp.com; s=20230601; t=1753986472; x=1754591272; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JOejpcVoAEyaqEbZ37G6mLmP8K1nuiYpF+txrVxaF+c=;
-        b=aQcOYSSUgqIbdi/eppUqL/U/mB2sJbkCy4fJGJn2pC3J3vWT9WMTzYLP3Mz6jBMxUc
-         exPSX4RWRvlKhgEI2qzvLSVHBeduD7M3FJM7Jp2KpB5+2/iGHQ93FeJCp+ZTxgXfzTdE
-         oW5jnf9cuOp08kfzMlf/c4YMEAUO/S1c03uqvvUpUp0WtNI+N/LQyUuvWTNp1PwoqAoh
-         nXE83MCy68jwpAGF21hxzY9iY592W6xHtY2jK9EQJyr9f95DweYBPg/Z7CvNqtW+lBxV
-         C+S9V348ihLWP3uWFvmz+KBr/iqLL+tPb3r3xU2ZFWwMZMko277Wevzo0gyC1QH++7bc
-         Bfnw==
+	s=arc-20240116; t=1753987532; c=relaxed/simple;
+	bh=WybObofEF6nvFywm2tz4HM5DS96jOaiXrn8n6S/LZZw=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=pC88Cy2yH50TQw0foF2PrVc9XO5eAVDrivwkaNZVhbEzNffmxs0tLzuEFQxZ+iTeiip+F5WC5TIcTkY4uXb7Ov+UhRcwqESE4BNq6shaxww10jZp+Jxq8vLAQdEi51Qg7Ff2h1sHTY5WP75PLeNMd5cEGfBD3kAgsJFQkfuq/IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-8814b2524c6so8745539f.1
+        for <netdev@vger.kernel.org>; Thu, 31 Jul 2025 11:45:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753986472; x=1754591272;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JOejpcVoAEyaqEbZ37G6mLmP8K1nuiYpF+txrVxaF+c=;
-        b=hcnOMqkRS+dyaE3UEGj9hchg0FvVIQ7La+/rLbCOmSHISy6SDuqGL93qqvw/NYE//d
-         jIvUd6ff52kCMGW4R6H/FpspJ0dBIkKd/h/mMBnjpM9edLVKPgFmfYcEK3NmqFdeUwsl
-         oS0OeKbEGIzWcfVkDUjFRxk/FuZCX3d+KSDnBNndRov6CStGM4KBOz0m7Gh/4ZF1pR9v
-         jh0CMwllawWhaY6eUw7JSa4UFV6j/uzDq0Yyl2z8iL+TvhbpReHv2bQaGoCA7+sCsxr4
-         godS3Do0476pWxYK79cQ9NWpOXR8Ae9f8bU4c9j4xekLptPFSGfrNEyq0HUfivpQVME7
-         gPeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX/GCxHo0P1/5l7M7vXeH6vh8H72vGauUfehXKlrFpc9WuSRE61sWQhGj7rfIIY6lscEEBibzk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwI/JU2lOBs4DpFXC8y/EHo6TGDllLF1c5y0hoHNyYeaS0Ck03D
-	eWivb8nQTKYQaL019ydESEhCBir5i5+RdOFHMlK3c9jkGKxBm8twZsOFtp2KWRRwmuGcb/o8lgI
-	PIezvgASp/0HPqZF4UtokHpIgcSM08rPGoDTiFdrQQA==
-X-Gm-Gg: ASbGncuHCPDp2M/xf2B3FKs7kjWGH9yl3TGfxaXe35KKKabd08ysoi/8DpoUZKcxfqt
-	bIc/62EyBnUbZRFhOQrbm0NKsgvvcy59X1+KpdM2GlXik8d68Z70SS6r/RPBDQs0i4FnCHnWyQJ
-	+zrGNQ8IA4orjFsxXjENh88XwD4UqGWuKAmxPLyTssxCSWTC42TC5zhPf+Xv69afuixY5uBVmX5
-	MuDpQt/
-X-Google-Smtp-Source: AGHT+IHS7Ge0ZKzHwi0IjgT3RBWaUFXtT4trLOqBEHWG7mq96jLInsZOWuST9tHzqvvn4HhKMbEMVCLZoIQBtVOTq0c=
-X-Received: by 2002:a05:690c:4d89:b0:71a:34bb:4277 with SMTP id
- 00721157ae682-71a4659a89cmr107529047b3.18.1753986472359; Thu, 31 Jul 2025
- 11:27:52 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753987530; x=1754592330;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jnMBY5RRXxi/8Sj7uoCzysAg7Y+uKqRraxHA6vwK1s0=;
+        b=FRycYIddDCHzLkhbo3v150HhmR50kYs9frABmlZC37dhyeWS+5aB9BY5553DOGLDV1
+         yw/BVyFuThV1Et6ERgUCktfVNOBRW28ZFknQN2109QUXSIWvNsSQSCE7vBTNWMY8HdnI
+         sMokXfguwm1fo0HvbxOaIqxFmkJg0iEIwnUl7/m20IZb9m9nPWJYDJ3cbSkfEPG5aLC5
+         hfz2+SnB58YRjjPHjIgkVmi4+eLDT1rEW10cDMf6C/amjGjG8JC6Y0STBrI33/BxHxXW
+         u2U3Hd69Qmsu3ntySsPI3joJ4JX3+99fUIh/utwvVVybdv+xs+Exn4BMu64CjUTC9gfL
+         XZTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVtiH27aB+kmJDZY3pbeHwJzCTJh88eVf+nMDokJDWz2rFTzQDRk/0Zl4n4KvO6U9I+WYGczfU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpO+p/6BxDOkDdIWxo9g6bgI5MY2c5h7mjgOVVNBfJMA2zHEAg
+	5PPRzBf8/JCXTuQCOE9VNuCqXJrX9wm6LMOyRVO3wUZ/mADVOzD8glGF4tdDEKLs8vU2c2DK1Z1
+	bowBrbzjJKgHDObfYPu+DssZdQfFQyvircljLdT88G3KTqKeiDuHhdDUCsQg=
+X-Google-Smtp-Source: AGHT+IGLcMun3G9jTmEapcqDIt8ajWP0D/9/CUplr4C2dNL9i7tLTD9mx1FjQhoNydTZ47Ibb+lGZ0ez2iP+gbpo6cVrjZnxO2KX
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250730185903.3574598-1-ameryhung@gmail.com> <20250730185903.3574598-5-ameryhung@gmail.com>
-In-Reply-To: <20250730185903.3574598-5-ameryhung@gmail.com>
-From: Emil Tsalapatis <linux-lists@etsalapatis.com>
-Date: Thu, 31 Jul 2025 14:27:41 -0400
-X-Gm-Features: Ac12FXzXnFl7ODSKMd0hZhDMevfFixQMXjNimv-fJJm5Jw0hr3MvluHBtDoDM3Q
-Message-ID: <CABFh=a4LqeMTfcT2+K_aHBUEfL=rHLrhn3hnDoror_pZVBhhDQ@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v7 4/4] selftests/bpf: Test concurrent task local
- data key creation
-To: Amery Hung <ameryhung@gmail.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
-	andrii@kernel.org, daniel@iogearbox.net, tj@kernel.org, memxor@gmail.com, 
-	martin.lau@kernel.org, kernel-team@meta.com
+X-Received: by 2002:a05:6e02:440c:20b0:3e3:d5f1:9019 with SMTP id
+ e9e14a558f8ab-3e3f62a7e18mr96486075ab.16.1753987530301; Thu, 31 Jul 2025
+ 11:45:30 -0700 (PDT)
+Date: Thu, 31 Jul 2025 11:45:30 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <688bb9ca.a00a0220.26d0e1.0050.GAE@google.com>
+Subject: [syzbot] [net?] BUG: unable to handle kernel paging request in nsim_queue_free
+From: syzbot <syzbot+8aa80c6232008f7b957d@syzkaller.appspotmail.com>
+To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 30, 2025 at 2:59=E2=80=AFPM Amery Hung <ameryhung@gmail.com> wr=
-ote:
->
-> Test thread-safety of tld_create_key(). Since tld_create_key() does
-> not rely on locks but memory barriers and atomic operations to protect
-> the shared metadata, the thread-safety of the function is non-trivial.
-> Make sure concurrent tld_key_create(), both valid and invalid, can not
-> race and corrupt metatada, which may leads to TLDs not being thread-
-> specific or duplicate TLDs with the same name.
->
-> Signed-off-by: Amery Hung <ameryhung@gmail.com>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    e8d780dcd957 Merge tag 'slab-for-6.17' of git://git.kernel..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=14382cf0580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c99a414773e8e8dd
+dashboard link: https://syzkaller.appspot.com/bug?extid=8aa80c6232008f7b957d
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: i386
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-e8d780dc.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/9d67cb9a6476/vmlinux-e8d780dc.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/5b160fb5034b/bzImage-e8d780dc.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+8aa80c6232008f7b957d@syzkaller.appspotmail.com
+
+netdevsim netdevsim1 netdevsim2 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
+netdevsim netdevsim1 netdevsim1 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
+netdevsim netdevsim1 netdevsim0 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
+BUG: unable to handle page fault for address: ffff88809782c020
+#PF: supervisor write access in kernel mode
+#PF: error_code(0x0002) - not-present page
+PGD 1b401067 P4D 1b401067 PUD 0 
+Oops: Oops: 0002 [#1] SMP KASAN NOPTI
+CPU: 3 UID: 0 PID: 8476 Comm: syz.1.251 Not tainted 6.16.0-syzkaller-06699-ge8d780dcd957 #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:local_add arch/x86/include/asm/local.h:33 [inline]
+RIP: 0010:u64_stats_add include/linux/u64_stats_sync.h:89 [inline]
+RIP: 0010:dev_dstats_rx_dropped_add include/linux/netdevice.h:3027 [inline]
+RIP: 0010:nsim_queue_free+0xba/0x120 drivers/net/netdevsim/netdev.c:714
+Code: 07 77 6c 4a 8d 3c ed 20 7e f1 8d 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 46 4a 03 1c ed 20 7e f1 8d <4c> 01 63 20 be 00 02 00 00 48 8d 3d 00 00 00 00 e8 61 2f 58 fa 48
+RSP: 0018:ffffc900044af150 EFLAGS: 00010286
+RAX: dffffc0000000000 RBX: ffff88809782c000 RCX: 00000000000079c3
+RDX: 1ffffffff1be2fc7 RSI: ffffffff8c15f380 RDI: ffffffff8df17e38
+RBP: ffff88805f59d000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: 0000000000000000
+R13: 0000000000000003 R14: ffff88806ceb3d00 R15: ffffed100dfd308e
+FS:  0000000000000000(0000) GS:ffff88809782c000(0063) knlGS:00000000f505db40
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: ffff88809782c020 CR3: 000000006fc6a000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ nsim_queue_uninit drivers/net/netdevsim/netdev.c:993 [inline]
+ nsim_init_netdevsim drivers/net/netdevsim/netdev.c:1049 [inline]
+ nsim_create+0xd0a/0x1260 drivers/net/netdevsim/netdev.c:1101
+ __nsim_dev_port_add+0x435/0x7d0 drivers/net/netdevsim/dev.c:1438
+ nsim_dev_port_add_all drivers/net/netdevsim/dev.c:1494 [inline]
+ nsim_dev_reload_create drivers/net/netdevsim/dev.c:1546 [inline]
+ nsim_dev_reload_up+0x5b8/0x860 drivers/net/netdevsim/dev.c:1003
+ devlink_reload+0x322/0x7c0 net/devlink/dev.c:474
+ devlink_nl_reload_doit+0xe31/0x1410 net/devlink/dev.c:584
+ genl_family_rcv_msg_doit+0x206/0x2f0 net/netlink/genetlink.c:1115
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0x55c/0x800 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x155/0x420 net/netlink/af_netlink.c:2552
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
+ netlink_unicast+0x5aa/0x870 net/netlink/af_netlink.c:1346
+ netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1896
+ sock_sendmsg_nosec net/socket.c:714 [inline]
+ __sock_sendmsg net/socket.c:729 [inline]
+ ____sys_sendmsg+0xa95/0xc70 net/socket.c:2614
+ ___sys_sendmsg+0x134/0x1d0 net/socket.c:2668
+ __sys_sendmsg+0x16d/0x220 net/socket.c:2700
+ do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+ __do_fast_syscall_32+0x7c/0x3a0 arch/x86/entry/syscall_32.c:306
+ do_fast_syscall_32+0x32/0x80 arch/x86/entry/syscall_32.c:331
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+RIP: 0023:0xf708e579
+Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
+RSP: 002b:00000000f505d55c EFLAGS: 00000296 ORIG_RAX: 0000000000000172
+RAX: ffffffffffffffda RBX: 0000000000000007 RCX: 0000000080000080
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000296 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+Modules linked in:
+CR2: ffff88809782c020
+---[ end trace 0000000000000000 ]---
+RIP: 0010:local_add arch/x86/include/asm/local.h:33 [inline]
+RIP: 0010:u64_stats_add include/linux/u64_stats_sync.h:89 [inline]
+RIP: 0010:dev_dstats_rx_dropped_add include/linux/netdevice.h:3027 [inline]
+RIP: 0010:nsim_queue_free+0xba/0x120 drivers/net/netdevsim/netdev.c:714
+Code: 07 77 6c 4a 8d 3c ed 20 7e f1 8d 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 46 4a 03 1c ed 20 7e f1 8d <4c> 01 63 20 be 00 02 00 00 48 8d 3d 00 00 00 00 e8 61 2f 58 fa 48
+RSP: 0018:ffffc900044af150 EFLAGS: 00010286
+RAX: dffffc0000000000 RBX: ffff88809782c000 RCX: 00000000000079c3
+RDX: 1ffffffff1be2fc7 RSI: ffffffff8c15f380 RDI: ffffffff8df17e38
+RBP: ffff88805f59d000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: 0000000000000000
+R13: 0000000000000003 R14: ffff88806ceb3d00 R15: ffffed100dfd308e
+FS:  0000000000000000(0000) GS:ffff88809782c000(0063) knlGS:00000000f505db40
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: ffff88809782c020 CR3: 000000006fc6a000 CR4: 0000000000352ef0
+----------------
+Code disassembly (best guess), 1 bytes skipped:
+   0:	77 6c                	ja     0x6e
+   2:	4a 8d 3c ed 20 7e f1 	lea    -0x720e81e0(,%r13,8),%rdi
+   9:	8d
+   a:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  11:	fc ff df
+  14:	48 89 fa             	mov    %rdi,%rdx
+  17:	48 c1 ea 03          	shr    $0x3,%rdx
+  1b:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
+  1f:	75 46                	jne    0x67
+  21:	4a 03 1c ed 20 7e f1 	add    -0x720e81e0(,%r13,8),%rbx
+  28:	8d
+* 29:	4c 01 63 20          	add    %r12,0x20(%rbx) <-- trapping instruction
+  2d:	be 00 02 00 00       	mov    $0x200,%esi
+  32:	48 8d 3d 00 00 00 00 	lea    0x0(%rip),%rdi        # 0x39
+  39:	e8 61 2f 58 fa       	call   0xfa582f9f
+  3e:	48                   	rex.W
 
 
-> ---
->  .../bpf/prog_tests/test_task_local_data.c     | 105 ++++++++++++++++++
->  1 file changed, 105 insertions(+)
->
-> diff --git a/tools/testing/selftests/bpf/prog_tests/test_task_local_data.=
-c b/tools/testing/selftests/bpf/prog_tests/test_task_local_data.c
-> index 2e77d3fa2534..3b5cd2cd89c7 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/test_task_local_data.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/test_task_local_data.c
-> @@ -185,8 +185,113 @@ static void test_task_local_data_basic(void)
->         test_task_local_data__destroy(skel);
->  }
->
-> +#define TEST_RACE_THREAD_NUM (TLD_MAX_DATA_CNT - 3)
-> +
-> +void *test_task_local_data_race_thread(void *arg)
-> +{
-> +       int err =3D 0, id =3D (intptr_t)arg;
-> +       char key_name[32];
-> +       tld_key_t key;
-> +
-> +       key =3D tld_create_key("value_not_exist", TLD_PAGE_SIZE + 1);
-> +       if (tld_key_err_or_zero(key) !=3D -E2BIG) {
-> +               err =3D 1;
-> +               goto out;
-> +       }
-> +
-> +       /* Only one thread will succeed in creating value1 */
-> +       key =3D tld_create_key("value1", sizeof(int));
-> +       if (!tld_key_is_err(key))
-> +               tld_keys[1] =3D key;
-> +
-> +       /* Only one thread will succeed in creating value2 */
-> +       key =3D tld_create_key("value2", sizeof(struct test_tld_struct));
-> +       if (!tld_key_is_err(key))
-> +               tld_keys[2] =3D key;
-> +
-> +       snprintf(key_name, 32, "thread_%d", id);
-> +       tld_keys[id] =3D tld_create_key(key_name, sizeof(int));
-> +       if (tld_key_is_err(tld_keys[id]))
-> +               err =3D 2;
-> +out:
-> +       return (void *)(intptr_t)err;
-> +}
-> +
-> +static void test_task_local_data_race(void)
-> +{
-> +       LIBBPF_OPTS(bpf_test_run_opts, opts);
-> +       pthread_t thread[TEST_RACE_THREAD_NUM];
-> +       struct test_task_local_data *skel;
-> +       int fd, i, j, err, *data;
-> +       void *ret =3D NULL;
-> +
-> +       skel =3D test_task_local_data__open_and_load();
-> +       if (!ASSERT_OK_PTR(skel, "skel_open_and_load"))
-> +               return;
-> +
-> +       tld_keys =3D calloc(TLD_MAX_DATA_CNT, sizeof(tld_key_t));
-> +       if (!ASSERT_OK_PTR(tld_keys, "calloc tld_keys"))
-> +               goto out;
-> +
-> +       fd =3D bpf_map__fd(skel->maps.tld_data_map);
-> +
-> +       ASSERT_FALSE(tld_key_is_err(value0_key), "TLD_DEFINE_KEY");
-> +       tld_keys[0] =3D value0_key;
-> +
-> +       for (j =3D 0; j < 100; j++) {
-> +               reset_tld();
-> +
-> +               for (i =3D 0; i < TEST_RACE_THREAD_NUM; i++) {
-> +                       /*
-> +                        * Try to make tld_create_key() race with each ot=
-her. Call
-> +                        * tld_create_key(), both valid and invalid, from=
- different threads.
-> +                        */
-> +                       err =3D pthread_create(&thread[i], NULL, test_tas=
-k_local_data_race_thread,
-> +                                            (void *)(intptr_t)(i + 3));
-> +                       if (CHECK_FAIL(err))
-> +                               break;
-> +               }
-> +
-> +               /* Wait for all tld_create_key() to return */
-> +               for (i =3D 0; i < TEST_RACE_THREAD_NUM; i++) {
-> +                       pthread_join(thread[i], &ret);
-> +                       if (CHECK_FAIL(ret))
-> +                               break;
-> +               }
-> +
-> +               /* Write a unique number to each TLD */
-> +               for (i =3D 0; i < TLD_MAX_DATA_CNT; i++) {
-> +                       data =3D tld_get_data(fd, tld_keys[i]);
-> +                       if (CHECK_FAIL(!data))
-> +                               break;
-> +                       *data =3D i;
-> +               }
-> +
-> +               /* Read TLDs and check the value to see if any address co=
-llides with another */
-> +               for (i =3D 0; i < TLD_MAX_DATA_CNT; i++) {
-> +                       data =3D tld_get_data(fd, tld_keys[i]);
-> +                       if (CHECK_FAIL(*data !=3D i))
-> +                               break;
-> +               }
-> +
-> +               /* Run task_main to make sure no invalid TLDs are added *=
-/
-> +               err =3D bpf_prog_test_run_opts(bpf_program__fd(skel->prog=
-s.task_main), &opts);
-> +               ASSERT_OK(err, "run task_main");
-> +               ASSERT_OK(opts.retval, "task_main retval");
-> +       }
-> +out:
-> +       if (tld_keys) {
-> +               free(tld_keys);
-> +               tld_keys =3D NULL;
-> +       }
-> +       tld_free();
-> +       test_task_local_data__destroy(skel);
-> +}
-> +
->  void test_task_local_data(void)
->  {
->         if (test__start_subtest("task_local_data_basic"))
->                 test_task_local_data_basic();
-> +       if (test__start_subtest("task_local_data_race"))
-> +               test_task_local_data_race();
->  }
-> --
-> 2.47.3
->
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
