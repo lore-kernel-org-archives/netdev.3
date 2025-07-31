@@ -1,122 +1,130 @@
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f194.google.com (mail-yb1-f194.google.com [209.85.219.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34DC233158;
-	Thu, 31 Jul 2025 12:08:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C2721FF4E;
+	Thu, 31 Jul 2025 12:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753963715; cv=none; b=qOGsYUKEmr0mTXszxneFUMzYWt36LkaupLh/mYpQG1upzyJzC7h0palxZuaWRDg2oqFf76HRNcG2G83TAI1R+euX4FG27T5C/ZwgFTnd5tWLzyfCvydCczcAAzHS8tA8phgMql5c3YmhDboMAYfST+EF4ztjAEFJYpzk1CrXXTs=
+	t=1753964403; cv=none; b=Pwyznncd6MeavI9Q7bGKPKHzS0i2NRbvSWmAJc6TQXh0sEtR6hWWJsrou6ubqCsvsmmsGkd6Q3MpnZ18hlsf0IEjDt5g5kpkKUUmRBors0OSiejq0PxNultCv+clntQWJaPWU4RsH5MkV3a4V83NS8Kc4Y1wjYqt2hyynWtoWlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753963715; c=relaxed/simple;
-	bh=CnrG0NW6RrCrnMU3nt86I14SqWszkJRx0k1q2LjVyqY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DOi1XKuOyUtfJOegC1utwfnM/PodtO852cSFol4hb3YeaWLS/1n6d2AKYConA6Ul+/KS3SgUtEoB/gzmb8E8R5q/47imPd03LgT+1AWFxD1cBNvnOrfSLeLKdUK9JO3sRJ7r4GtedjBac03R1/hl+XE9mgy78MxWSngM8hgNA2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=S+ASQAb8; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1753964403; c=relaxed/simple;
+	bh=r5dU5y2fVJrNCYluR5ZgBxW0PgLEek1d93tlxQSsntg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TKq2CClABlXJyTTSTFLxoP5GV+iNnFNcgPwRhzZb1RvIPVwYqtGyRokMHeGyIAmI1EN4WCC8rzrIdyne84TZQZjnFvit7OmpuD/klP0zRz6DHDkCJ3GTFw6r9EpJVbEKCkGn+Cipv2avkADlGPowYdaS62RxhDPq8oIhJoeXl+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T21xAIUN; arc=none smtp.client-ip=209.85.219.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="S+ASQAb8"
-Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56VC8FOJ3025590;
-	Thu, 31 Jul 2025 07:08:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1753963695;
-	bh=+WVY+FchNflwyhjUu1n/fND1UpVRfjWqymxZncmzm3A=;
-	h=From:To:CC:Subject:Date;
-	b=S+ASQAb8SHTApNSeI96umGhd0hiBOwGZH/GANo5fM89vk/mCjw8Xl/6h34M4RJgaV
-	 xx8D//ni7/ThL/y/i0qnfjnxVFDQzHXtJ3ZcVRzTEpn6VxGoFk4KeNxkOmo//HxsrV
-	 XknKui3i3S1DWFVO+TzeZyzHvbvM+j4CtxRFYoi8=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56VC8FXl014082
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Thu, 31 Jul 2025 07:08:15 -0500
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 31
- Jul 2025 07:08:15 -0500
-Received: from fllvem-mr08.itg.ti.com (10.64.41.88) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Thu, 31 Jul 2025 07:08:15 -0500
-Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
-	by fllvem-mr08.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56VC8Fqh3405092;
-	Thu, 31 Jul 2025 07:08:15 -0500
-Received: from localhost (danish-tpc.dhcp.ti.com [172.24.231.152])
-	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 56VC8E1t016802;
-	Thu, 31 Jul 2025 07:08:14 -0500
-From: MD Danish Anwar <danishanwar@ti.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Meghana Malladi
-	<m-malladi@ti.com>,
-        Himanshu Mittal <h-mittal1@ti.com>,
-        Ravi Gunasekaran
-	<r-gunasekaran@ti.com>
-CC: <linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <srk@ti.com>,
-        Vignesh Raghavendra
-	<vigneshr@ti.com>,
-        Roger Quadros <rogerq@kernel.org>, <danishanwar@ti.com>
-Subject: [PATCH net] net: ti: icssg-prueth: Fix emac link speed handling
-Date: Thu, 31 Jul 2025 17:38:12 +0530
-Message-ID: <20250731120812.1606839-1-danishanwar@ti.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T21xAIUN"
+Received: by mail-yb1-f194.google.com with SMTP id 3f1490d57ef6-e8da9b7386dso858262276.1;
+        Thu, 31 Jul 2025 05:20:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753964400; x=1754569200; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r5dU5y2fVJrNCYluR5ZgBxW0PgLEek1d93tlxQSsntg=;
+        b=T21xAIUN786o1jj9FmDE5qVmVlVogI+yjTBXVUPqpSJNQDG8863KHMC6DvZHImJ2za
+         vj0D7MUNUI8Oj/oECpI66a+DCcNYvMXc4zjRA3NDdgH5nlifosA+OVYCGr1xDT9CBGW1
+         /tZFC4gsIdXFnBFVfuxJe2ra+ahwe4vs0EXNRMp2b/vnjPSpjff5y2PAJsHk625nWZPB
+         zQAXaAZgWcsP+GuJcWeq3x7CxbAzjJDvMVfjauhlmbN20Wcs088hFssH7ArKZmT2KXU1
+         crNw+EQ62c1smnURsIuLdpKU4C1D78sCaT102rlMi3m+nv+NUfcy59Hh8/zYa2FAoBOV
+         Au9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753964400; x=1754569200;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=r5dU5y2fVJrNCYluR5ZgBxW0PgLEek1d93tlxQSsntg=;
+        b=P/glcNpc/oOStxkKtAqrfPCePBGTA8XBe7c9Mkfr4mHh7Wbh+LMhc9CreJZPeEapJ0
+         yuKjnE2QGTC0+pxXWb+k/pUDcAwTN9BkdpZ/zcnxakDr8nxrDZG4kpmzZyAW/ARDzVX3
+         jS6Q8ieQQmWC6CaHJfOesiYBUcdcbPHB2xgs1qE74wTt+oW0umX3SONGMbbTZ/5QOvCs
+         b1ySUGZFaoz9tXs2fWfLxt5sjCKque5FpaIo1EEdjS18zRe++tG+j2Ey551j5iAircFW
+         a0UJWa1l6brzCEYjcudjHHep4JYT/yAT8l9PVtCkzq02xaNFeoPRBtys6bMpLnOYaZ5S
+         7UgA==
+X-Forwarded-Encrypted: i=1; AJvYcCURYhK1ziXd45UeR2lUzXOAhgnSfZIiR9VQhMy5bMNRFOVCV3oDw23rXuaH0FLLUES116YC2WBf@vger.kernel.org, AJvYcCUlHx8CTbpZwyyMz4J3ycuMVk0Q6wpFi8qfxlumRAaqzQ4iHJbVcMdS90o28Tx7MmpM7YyJUgQiwYRRv6Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywv7SbE5xZBxItPyjK7wTKnamukPtfWh6Bgf4m7i4hK1T0WJVTp
+	ggn46V0wrg2DC3yIkddsy2/N1iZJnqzV1aI3FLW98gGQ6+7TrFt/nNp+iz25cTu6O3JIuguX2CU
+	dd95yRVgGNrw4z1UskT0TGOBl+kQB+j8=
+X-Gm-Gg: ASbGncvXULVYi4+DJ3Im/Iqzy/BZnwUxC0D3O8hBkcqNwDY8KUYTVNm72Bb2U+kbOwd
+	imdPhrhqYW0WwHgU/0jyzXlWoW7W2WKS8tqMFwoG1AxP/mx4j14aUpwUhsSBCJyPcRqC18Q5vnL
+	NTy6O6FvDWYWnUmbvyIQaHSJ/7cWB1NsKpCV/Y3bsP4ggWz6ib+xOWIYjnBptMM/YRyyMuuNvpu
+	c6pdfw=
+X-Google-Smtp-Source: AGHT+IGEdgU1M3wi9PcdX0mmZ1lYvQoPdWNmcYCoBoBu2HMFkSJxOp2Ct3UaNiySZv6edloK1Luqh+WLXIx8KoKKbuM=
+X-Received: by 2002:a25:2b4a:0:b0:e84:3b85:2e0d with SMTP id
+ 3f1490d57ef6-e8fd5360ce5mr1454841276.9.1753964400496; Thu, 31 Jul 2025
+ 05:20:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+References: <20250731112219.121778-1-dongml2@chinatelecom.cn> <aItcuFGx1S7ySE3y@shredder>
+In-Reply-To: <aItcuFGx1S7ySE3y@shredder>
+From: Menglong Dong <menglong8.dong@gmail.com>
+Date: Thu, 31 Jul 2025 20:19:49 +0800
+X-Gm-Features: Ac12FXzaZMSpzi1Brb5xPSnswfFUu6mzf6kLD_J-GOE5lN1tiB2f8PT11t83Zss
+Message-ID: <CADxym3YzJPRDPCz5rN7uQC6MNSo+FnGPB5sg2hVv+WOZj18PKg@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: vrf: don't down netif when add slave
+To: Ido Schimmel <idosch@idosch.org>
+Cc: dsahern@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When link settings are changed emac->speed is populated by
-emac_adjust_link(). The link speed and other settings are then written into
-the DRAM. However if both ports are brought down after this and brought up
-again or if the operating mode is changed and a firmware reload is needed,
-the DRAM is cleared by icssg_config(). As a result the link settings are
-lost.
+On Thu, Jul 31, 2025 at 8:08=E2=80=AFPM Ido Schimmel <idosch@idosch.org> wr=
+ote:
+>
+> On Thu, Jul 31, 2025 at 07:22:19PM +0800, Menglong Dong wrote:
+> > For now, cycle_netdev() will be called to flush the neighbor cache when
+> > add slave by downing and upping the slave netdev. When the slave has
+> > vlan devices, the data transmission can interrupted.
+> >
+> > Optimize it by notifying the NETDEV_CHANGEADDR instead, which will also
+> > flush the neighbor cache. It's a little ugly, and maybe we can introduc=
+e
+> > a new event to do such flush :/
+>
+> Cycling the netdev is not only about neighbors, but also about moving
+> routes to the correct table (see the comment above the function):
+>
+> ip link add name dummy1 up type dummy
+> sysctl -wq net.ipv6.conf.dummy1.keep_addr_on_down=3D1
+> ip address add 192.0.2.1/24 dev dummy1
+> ip address add 2001:db8:1::1/64 dev dummy1
+> ip link add name vrf1 up type vrf table 100
+> ip link set dev dummy1 master vrf1
+> ip -4 route show table 100
+> 192.0.2.0/24 dev dummy1 proto kernel scope link src 192.0.2.1
+> local 192.0.2.1 dev dummy1 proto kernel scope host src 192.0.2.1
+> broadcast 192.0.2.255 dev dummy1 proto kernel scope link src 192.0.2.1
+> ip -6 route show table 100
+> local 2001:db8:1::1 dev dummy1 proto kernel metric 0 pref medium
+> 2001:db8:1::/64 dev dummy1 proto kernel metric 256 pref medium
+> local fe80::f877:f7ff:fecb:bfb dev dummy1 proto kernel metric 0 pref medi=
+um
+> fe80::/64 dev dummy1 proto kernel metric 256 pref medium
+> multicast ff00::/8 dev dummy1 proto kernel metric 256 pref medium
+>
+> And it doesn't happen with your patch:
+>
+> ip link add name dummy1 up type dummy
+> sysctl -wq net.ipv6.conf.dummy1.keep_addr_on_down=3D1
+> ip address add 192.0.2.1/24 dev dummy1
+> ip address add 2001:db8:1::1/64 dev dummy1
+> ip link add name vrf1 up type vrf table 100
+> ip link set dev dummy1 master vrf1
+> ip -4 route show table 100
+> ip -6 route show table 100
 
-Fix this by calling emac_adjust_link() after icssg_config(). This re
-populates the settings in the DRAM after a new firmware load.
+You are right, something is missing in this patch :/
 
-Fixes: 9facce84f406 ("net: ti: icssg-prueth: Fix firmware load sequence.")
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
----
-NOTE: emac_adjust_link() is defined after prueth_emac_common_start() as a
-result to call this from prueth_emac_common_start() I am using forward
-declaration of the function. The other alternate is to move the definition
-of emac_adjust_link() before prueth_emac_common_start().
+>
+> You can try configuring the VLAN devices with "loose_binding on".
 
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 3 +++
- 1 file changed, 3 insertions(+)
+Great! I'll have a try on this param.
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index 2b973d6e2341..8ca0ea768e16 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -50,6 +50,8 @@
- /* CTRLMMR_ICSSG_RGMII_CTRL register bits */
- #define ICSSG_CTRL_RGMII_ID_MODE                BIT(24)
- 
-+static void emac_adjust_link(struct net_device *ndev);
-+
- static int emac_get_tx_ts(struct prueth_emac *emac,
- 			  struct emac_tx_ts_response *rsp)
- {
-@@ -229,6 +231,7 @@ static int prueth_emac_common_start(struct prueth *prueth)
- 		ret = icssg_config(prueth, emac, slice);
- 		if (ret)
- 			goto disable_class;
-+		emac_adjust_link(emac->ndev);
- 	}
- 
- 	ret = prueth_emac_start(prueth);
-
-base-commit: 759dfc7d04bab1b0b86113f1164dc1fec192b859
--- 
-2.34.1
-
+Thanks!
+Menglong Dong
