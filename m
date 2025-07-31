@@ -1,28 +1,29 @@
 Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228F32D0C82;
-	Thu, 31 Jul 2025 13:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D3C2D0C89;
+	Thu, 31 Jul 2025 13:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753970122; cv=none; b=Zv91zt+jLosXdRYN5Tq3bgu0G+I2BOABFuI7NzAldHp/W1lricVDWNb+FEdKy6L7W8QAqEO4QLnE5BBqW5UCgY0H82NAdgcBjUp48Q1HZaBFGm54lYvVr0Ron6/43GgkoYlS4ALlQ4M8pGlzpOP37gyAlD28jH7MKBHQ8SM59Ik=
+	t=1753970122; cv=none; b=XOzzHJsBtjkfQJxkKWiKWqiyniNi3D00oW6v9YzMjoim5w+Cfzuw3QYuo39L7n7rjv3E1DJwA6+1Bc6ESy9rNxnSywHJhTSbcWrOrmfVkzOTTyIxUMlviypM2vtIylm6Y0XAbkN+ZJpFry8NzfPtwpxkFq4lwmaTNXxadkIIB4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753970122; c=relaxed/simple;
-	bh=xFJC9FfhPYR+V/mzUi/sw+Ke0NvLlb+afnYUIfS0k1g=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UQSjOcQ6LhAIQaLByWzoaSr/5UsYtSAmsshrz8EOoHCX1LLH9xP573AOtEFmFnLsDB34c9TdKJ7mu/fBhJHJuF9sWksrPeqD+cALClbHy8njem0hpzAv7RSZTBP4KPca7hVW3jbie8FwrmvvCPYH3xmC3R/4wSLKoU4z7u9kJIA=
+	bh=IGzAvOKK4u8cz5H/9E4wl6j/drqE0AIDZkGzbOGHgnw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=J8XTKTRe7cFDv676jWY6c/TMjpQoGhWP6F9fBl3dMjQElfUgefgZfhLeP6nfPRuDeDrqpWvAIjdnY0O2Gtkx4DM5O3OFHZ08jZQ8eajrFBkNHbsFJckoKiGNCWEqu61N8b1N6TmyINmRwYzyar4w435B3oypE7CEEoBkR6HSIaQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4bt9St5hwbz14M7j;
-	Thu, 31 Jul 2025 21:50:22 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4bt9Sv70zxz14M8W;
+	Thu, 31 Jul 2025 21:50:23 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 68123180B51;
-	Thu, 31 Jul 2025 21:55:16 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 92D22180486;
+	Thu, 31 Jul 2025 21:55:17 +0800 (CST)
 Received: from localhost.localdomain (10.90.31.46) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 31 Jul 2025 21:55:15 +0800
+ 15.2.1544.11; Thu, 31 Jul 2025 21:55:16 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -31,10 +32,12 @@ CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
 	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
 	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<shaojijie@huawei.com>
-Subject: [PATCH net 0/3] There are some bugfix for hibmcge ethernet driver
-Date: Thu, 31 Jul 2025 21:47:46 +0800
-Message-ID: <20250731134749.4090041-1-shaojijie@huawei.com>
+Subject: [PATCH net 2/3] net: hibmcge: fix the division by zero issue
+Date: Thu, 31 Jul 2025 21:47:48 +0800
+Message-ID: <20250731134749.4090041-3-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20250731134749.4090041-1-shaojijie@huawei.com>
+References: <20250731134749.4090041-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,22 +49,33 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
  kwepemk100013.china.huawei.com (7.202.194.61)
 
-This patch set is intended to fix several issues for hibmcge driver:
-1. Holding the rtnl_lock in pci_error_handlers->reset_prepare()
-   may lead to a deadlock issue.
-2. A division by zero issue caused by debugfs when the port is down.
-3. A probabilistic false positive issue with np_link_fail. 
+When the network port is down, the queue is released, and ring->len is 0.
+In debugfs, hbg_get_queue_used_num() will be called,
+which may lead to a division by zero issue.
 
-Jijie Shao (3):
-  net: hibmcge: fix rtnl deadlock issue
-  net: hibmcge: fix the division by zero issue
-  net: hibmcge: fix the np_link_fai error reporting issue
+This patch adds a check, if ring->len is 0,
+hbg_get_queue_used_num() directly returns 0.
 
- drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c  | 13 ++++---------
- drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c   | 15 +++++++++++++--
- drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h |  3 +++
- 3 files changed, 20 insertions(+), 11 deletions(-)
+Fixes: 40735e7543f9 ("net: hibmcge: Implement .ndo_start_xmit function")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
+index 2883a5899ae2..2aecc73f3d49 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
+@@ -29,6 +29,9 @@ static inline bool hbg_fifo_is_full(struct hbg_priv *priv, enum hbg_dir dir)
+ 
+ static inline u32 hbg_get_queue_used_num(struct hbg_ring *ring)
+ {
++	if (!ring->len)
++		return 0;
++
+ 	return (ring->ntu + ring->len - ring->ntc) % ring->len;
+ }
+ 
 -- 
 2.33.0
 
