@@ -1,69 +1,63 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31AF223ABB4;
-	Thu, 31 Jul 2025 19:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD80223ABB4;
+	Thu, 31 Jul 2025 19:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753991796; cv=none; b=boIE8EW06PcHzzaojYEFA7tVqTR9ndhPxufqpT7eXGugFsVOd3NCmndpClvqVllDwdArxIcqOKKJFqXTieXXpB/yHzyJdDpsRsgCy5+EkxtgZyp6c8p3k/7+QeilGXLZipOt5ZXWLNJwGkI6ymz+Lb53fZ5AvV3yAoQTLwnLjgM=
+	t=1753991920; cv=none; b=Gl92X94qxWUmTBjvU8gPaqzWgGpuADD/KSg6J7DkzF5/qX2kzWLy3LN82ceIs+H65ti7UVe0ACEN098tZdy90e3syfw9zebwwWAr5m8IcUTIN5tp0zBm9Wk7WCVrefp08ewUb9QPVIqsedtP71oaMsC1pfqo3kGoM4hHoMs9rJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753991796; c=relaxed/simple;
-	bh=vErjyams3kwQ75voWQ/4xnzX0MZwKXtaLAcuOY/iq2s=;
+	s=arc-20240116; t=1753991920; c=relaxed/simple;
+	bh=VE3joiXSw99qAb6jVz6lsKUWuKipwIyRAFo8ArBr8qk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZV+mZ8muTHNYH6WB2Jb99PobAkwwciLSkX93EycI22DuB/ECPuB25DaqWzstIfWsBziWZcFNRIDcNVkRBys9bAQjMxK0uTk4jT/8C46G+caJT6VX26Xyy+cp05Rjv5FRbY3FEGWxvJEhVPgo74WRznBaljHZaY8QURkgwND03UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ff7fQ4/D; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ff7fQ4/D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753991795; x=1785527795;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vErjyams3kwQ75voWQ/4xnzX0MZwKXtaLAcuOY/iq2s=;
-  b=ff7fQ4/DZqU22WdqicQhVJV4f1ccTqflpR4M/fvkasZby8ELYu5hKdem
-   f+1ZFdFAeiTgw6umRsrqcB+dy895E7jQhkBUv4a1fB235Kof1G4bpkBvh
-   l4P5Dpd7MirPLBQngGXE1EJv2qdYae8Sr33A/0Aah4YKivOfxi1qnSpnV
-   h8EwspKaxdyLEf8nvHJ4ZOs8nrnVzKcXprJsOfKNiY7bNoXmSwP+WohPE
-   K95ub2jVan64nHzVT2BBI3YNOfCnA9dOlxxB/c/mELyFxyLkr45PYh83O
-   AvdYbBbLJcxchXHe9nGRokLGs25vZibpVh3BfSLDXfvjPG1/V4kgjQ3Sc
-   Q==;
-X-CSE-ConnectionGUID: NjLuLkBSREyn18RTbcZ0ig==
-X-CSE-MsgGUID: MGXQxY3zT1G1bBFMPHe+Tg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="56476765"
-X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
-   d="scan'208";a="56476765"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2025 12:56:34 -0700
-X-CSE-ConnectionGUID: N9A53Q1iTQe4KTcJiiBjuQ==
-X-CSE-MsgGUID: 5xHMQwDNQJOY8k0kjKQhNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
-   d="scan'208";a="162627827"
-Received: from lkp-server01.sh.intel.com (HELO 160750d4a34c) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 31 Jul 2025 12:56:25 -0700
-Received: from kbuild by 160750d4a34c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uhZO2-000436-2T;
-	Thu, 31 Jul 2025 19:56:22 +0000
-Date: Fri, 1 Aug 2025 03:55:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: "D. Wythe" <alibuda@linux.alibaba.com>, ast@kernel.org,
-	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
-	pabeni@redhat.com, song@kernel.org, sdf@google.com,
-	haoluo@google.com, yhs@fb.com, edumazet@google.com,
-	john.fastabend@gmail.com, kpsingh@kernel.org, jolsa@kernel.org,
-	Mahanta.Jambigi@ibm.com, Sidraya.Jayagond@ibm.com,
-	wenjia@linux.ibm.com, wintera@linux.ibm.com,
-	dust.li@linux.alibaba.com, tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com
-Cc: oe-kbuild-all@lists.linux.dev, bpf@vger.kernel.org, davem@davemloft.net,
-	kuba@kernel.org, netdev@vger.kernel.org, jaka@linux.ibm.com
-Subject: Re: [PATCH bpf-next 3/5] net/smc: bpf: Introduce generic hook for
- handshake flow
-Message-ID: <202508010316.wuSPjSOr-lkp@intel.com>
-References: <20250731084240.86550-4-alibuda@linux.alibaba.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=TCVuHpGptRsaWeeYP+4OM/8tFr24R/36QWFcqi9sLO94X65ZSrdWGRkjOLMbyl9dprueX55rJ8Sjzd/7bSCoE467bxBTHyoWd+9LYNYGA9guRn383nMoJMzkuyNnqnim4vD6etL0kVd17JtlPex+vwW+V5M7+h8+OhyeCebX930=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ae3b336e936so29529066b.3;
+        Thu, 31 Jul 2025 12:58:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753991915; x=1754596715;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JOub6JEULz4NRTq/hirUiArEKHDk37KcHlXQ+q2/ZHc=;
+        b=J2h8BPUK2FUW5YvrpFJh53oPvkp2dkZbyie3/A5wdffgrUY9865IfeosOdmnVM6FtV
+         z4l8NX3k/FIcjEZo6x4KOnS4GnE1RwzkWIzqUGB0HTW3CTT9rOfiKcDo8QisAiIp4e9U
+         eJKkc59oonEFrDaQZNFBIQDWkscFtxLAVCalK188B1V5zAMLk8frGJB0dGLQOxiQjZ9J
+         5miKzQdMuW6He/oyanxFwI39nN4ANgeI0l7U1sIqju0BH9ptmC5k80MpL/Sz5F8Dy6UZ
+         HzFzQ65hljHgk1TyTVb+wh/CquOw2QRRcm8u/bYIWuK4eCePpNowQRhb4JyV+HYzlb4q
+         Ru4w==
+X-Forwarded-Encrypted: i=1; AJvYcCVrFztzi62TagY8FEACwosLNbReDY6sCB6EW/JY5qRLUJufmhuVOCm0JlYGWH3FOmO97tdKEheUNlTILVE=@vger.kernel.org, AJvYcCX2Nk0xmrsa6O1ZFH489aeK4SFSOEiMD6c5ErT8IJ1KrwgJTTL2+BgX++qKXXTOeLbzIAkCGTN8@vger.kernel.org, AJvYcCXTUA8Gld0LCDbw2QoNNoxEj3f5xNTnrV3aNF2S8g8lKi6r5r+D4XpS9JE8/DpCXEpouGiPP3WpmFgxdbB58kYZ@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywbyf2vrxXL+FROB2V3Llw3ApMxHytwUv/U2OyWOgFP0LdddDnI
+	qkc1TJfN/vMj8PRTPGWCWOhKJyLIecDrUQXlTOdffwD3vgY/MbvjEJQy
+X-Gm-Gg: ASbGncuTrj0zlSMOw9A2vewaL2UynD0XaHVTbJhbYaIxleyz9W2ATjgrFO4pT+f4c57
+	s+rzsqRsr7QWLM167rfYydi7HYnCpVEBfFUHP22D3kbYkNVeNVPYE6dLvBJkQplx0zUVmZClQZX
+	0ddQP9wq6n8FfSgpTzYxers0MImeleNXJp8UYgSoGCDDP/13qn5+hSt2zKRUZOoe82YzAP90w6R
+	dEHElsxa8jKx4hSaj5FK3ta1IFsz1Wm5AcFi6QMsZaW5hyd5CSNzAh3au7ZVOOXSc+xlaCMqqzd
+	5BsElLmAm0UqXgSKXfeBBCH40nchjQfjFUr/5GjUPGKkQnCZXke7TuT74RLi/guS49gq8jeoIkM
+	UnTUt11j3nxXpmOvgHzFj
+X-Google-Smtp-Source: AGHT+IHi5E7zdxk5Xx1zNsFA7iW/9W+ly6JoYYOQpr1wOvbx3PwGi79d4r5orR4ephm9fAhIPcGSfQ==
+X-Received: by 2002:a17:906:7951:b0:ae0:c355:2140 with SMTP id a640c23a62f3a-af8fd9f7520mr1057608066b.45.1753991914859;
+        Thu, 31 Jul 2025 12:58:34 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0766f9sm163674566b.24.2025.07.31.12.58.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Jul 2025 12:58:34 -0700 (PDT)
+Date: Thu, 31 Jul 2025 12:58:31 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, 
+	Jozsef Kadlecsik <kadlec@netfilter.org>, Nikolay Aleksandrov <razor@blackwall.org>, 
+	Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Arnd Bergmann <arnd@arndb.de>, Simon Horman <horms@kernel.org>, 
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, bridge@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] netfilter: add back NETFILTER_XTABLES dependencies
+Message-ID: <uadem53d2ymvjweqjdvilrpr2vwsfxu2gbwyaopacyl3x2zmhl@raeakspbvdiw>
+References: <20250730214538.466973-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,63 +66,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250731084240.86550-4-alibuda@linux.alibaba.com>
+In-Reply-To: <20250730214538.466973-1-arnd@kernel.org>
 
-Hi Wythe,
+On Wed, Jul 30, 2025 at 11:45:32PM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> Some Kconfig symbols were changed to depend on the 'bool' symbol
+> NETFILTER_XTABLES_LEGACY, which means they can now be set to built-in
+> when the xtables code itself is in a loadable module:
+> 
+> x86_64-linux-ld: vmlinux.o: in function `arpt_unregister_table_pre_exit':
+> (.text+0x1831987): undefined reference to `xt_find_table'
+> x86_64-linux-ld: vmlinux.o: in function `get_info.constprop.0':
+> arp_tables.c:(.text+0x1831aab): undefined reference to `xt_request_find_table_lock'
+> x86_64-linux-ld: arp_tables.c:(.text+0x1831bea): undefined reference to `xt_table_unlock'
+> x86_64-linux-ld: vmlinux.o: in function `do_arpt_get_ctl':
+> arp_tables.c:(.text+0x183205d): undefined reference to `xt_find_table_lock'
+> x86_64-linux-ld: arp_tables.c:(.text+0x18320c1): undefined reference to `xt_table_unlock'
+> x86_64-linux-ld: arp_tables.c:(.text+0x183219a): undefined reference to `xt_recseq'
+> 
+> Change these to depend on both NETFILTER_XTABLES and
+> NETFILTER_XTABLES_LEGACY.
+> 
+> Fixes: 9fce66583f06 ("netfilter: Exclude LEGACY TABLES on PREEMPT_RT.")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on bpf-next/master]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/D-Wythe/bpf-export-necessary-sympols-for-modules-with-struct_ops/20250731-164431
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git master
-patch link:    https://lore.kernel.org/r/20250731084240.86550-4-alibuda%40linux.alibaba.com
-patch subject: [PATCH bpf-next 3/5] net/smc: bpf: Introduce generic hook for handshake flow
-config: arm-randconfig-003-20250801 (https://download.01.org/0day-ci/archive/20250801/202508010316.wuSPjSOr-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 10.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250801/202508010316.wuSPjSOr-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508010316.wuSPjSOr-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   net/ipv4/tcp_output.c: In function 'smc_set_option':
->> net/ipv4/tcp_output.c:773:15: warning: unused variable 'sk' [-Wunused-variable]
-     773 |  struct sock *sk = &tp->inet_conn.icsk_inet.sk;
-         |               ^~
-   net/ipv4/tcp_output.c: In function 'smc_set_option_cond':
-   net/ipv4/tcp_output.c:794:21: warning: unused variable 'sk' [-Wunused-variable]
-     794 |  const struct sock *sk = &tp->inet_conn.icsk_inet.sk;
-         |                     ^~
-
-
-vim +/sk +773 net/ipv4/tcp_output.c
-
-   767	
-   768	static void smc_set_option(struct tcp_sock *tp,
-   769				   struct tcp_out_options *opts,
-   770				   unsigned int *remaining)
-   771	{
-   772	#if IS_ENABLED(CONFIG_SMC)
- > 773		struct sock *sk = &tp->inet_conn.icsk_inet.sk;
-   774		if (static_branch_unlikely(&tcp_have_smc)) {
-   775			if (tp->syn_smc) {
-   776				tp->syn_smc = !!smc_call_hsbpf(1, sk, syn_option, tp);
-   777				/* re-check syn_smc */
-   778				if (tp->syn_smc &&
-   779				    *remaining >= TCPOLEN_EXP_SMC_BASE_ALIGNED) {
-   780					opts->options |= OPTION_SMC;
-   781					*remaining -= TCPOLEN_EXP_SMC_BASE_ALIGNED;
-   782				}
-   783			}
-   784		}
-   785	#endif
-   786	}
-   787	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Tested-by: Breno Leitao <leitao@debian.org>
