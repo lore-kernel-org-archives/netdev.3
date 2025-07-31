@@ -1,111 +1,108 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF872BFC8F
-	for <netdev@vger.kernel.org>; Thu, 31 Jul 2025 13:01:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BEC2C326B
+	for <netdev@vger.kernel.org>; Thu, 31 Jul 2025 13:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753966920; cv=none; b=RTbIka+Wl1ZO8N9yF+IxEMYYi1ZAc+6Xb2rxa1F2L+Ml4gzDy7bkTf3SqweP2ghhA1IKXLSFBQrJdsTyiyuSbNBxCseX7zfT8xpYKfcEUmE+jNg0/JKQjoJ5WsUveIT3dOm+vCdebHg7P5WrK1IxH/3oRM36icQ6gWtguCGD+6Q=
+	t=1753966925; cv=none; b=PvuV1v9z5giTBaDNVEO83YO6evt9oJa8kdtqFpwjtfBsEIuRFbs7LXe5/C4QTofvZavaca0XvDZNpM/NYwzajSgoLoO+bpWzwVGRBraudzgvi3mz3fSMiiX4PnlUpXB1kbmEtyNRsoZ6Ryuk/TW+Dnw+7sRVissy7oGkUKqo9gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753966920; c=relaxed/simple;
-	bh=wbrWiEhfPScCVolNfyyjt22cIB4PfoD6ZusxuW+Alzw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lLetwRE2Kj+eu1KuIYezcx/hWbYfMyyLhQOQeXUf6PZTF282XTSsJIFTFVRSk+5olVmkIfYcIDGI2htExCrO3A0kRQXnppblnQojQUth1nuJHlG1h2yAyN8Ik4dxBN1wYGBChQ+NKdD9begVT4Obc/7mVyuSajjHnovYG4wBbaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NLcpojFu; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1753966925; c=relaxed/simple;
+	bh=LU7OIycQkBXRbFm7D7D3e62DNysA0g86zCh78MKoh6o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lqG5TZQnZm03unJF9J/9iCV/Wu4muGKZeoOHCNPuuhhh5GYpAe8k6D7apHQBsmErMPnfOxEBgkh1XVRFMV2H8pxcpU07m3H2vDvsAvWEmAooT9Hn3VGGCjfIUJHgPBNoAHAXPYQLs5A5/O4d3IzG6lmEmv3lYKAIyL0H9f6HDj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BsuPH4fW; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NLcpojFu"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-71b4b36cf83so9576057b3.0
-        for <netdev@vger.kernel.org>; Thu, 31 Jul 2025 06:01:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753966918; x=1754571718; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=76yABaBlU6UDoYWb5i2vJYe7/HG6gZqjh5DtuXEh0wE=;
-        b=NLcpojFuFw8S/OG/15nv1iVIWYN3JlD4dc2+ppR+dH4lnbLWw5yfvKUijDlN8mdWKB
-         KPCwc1xlgalprjWM8coJuan/v0vb5lkh2gTv6gYaGnxOGozx2PWRYe91F5nXR+D/nOQF
-         V90dUnvsJB3FvYjDKgdmSbnSlllK6h02hNJ1jpooHyQ7nSVbSwl+xv2Nu/T6BOAXILSo
-         suatKbnIWwW+P8dHIvtEpMzj3Me57fFqxWckLgbqpXEhle47zBcqvFQkIlnx3f6sLX4Q
-         h8F7YhJvFhDy7SgDgZqV2lS/KnM/oA26J4gUk6pi9tn8N6+Vxtg6l7nNIqk7u1Q+QPta
-         /u4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753966918; x=1754571718;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=76yABaBlU6UDoYWb5i2vJYe7/HG6gZqjh5DtuXEh0wE=;
-        b=PDCsMrwX//UJzMJlIYtxll2oFX3DYDDK0IkV2gRkifx2Dl6J24Thi5ZtzRStXz0LWJ
-         oKoavMFjJR1rr4C2Pw4ztCrb0tJk8pMejwM+hFvMjUKQhEx0g5Dng3nGgS+l/d/rZVsy
-         5LIJZz6jkuwRehZVBwmxp1zvagft3C+II9oZO5J5SBC3kFbeWAxz229UtnFHl1e9MGUP
-         doHMehCE4jY6LLtkszhVXIWS7P4WYAK9gGs/KSOGC6KX/MODjtrAhQv6wRQz72ITXLTe
-         9OJ3C+oaYRtFMoDRVYC/idJsNJuezcElbgrKo3zwQoHBcbfJpFuZR23orEd3Ppd6INL/
-         i/HA==
-X-Forwarded-Encrypted: i=1; AJvYcCWP8UsJIZt3ZEmn2y0mERL+rakADamJVPewzeE0zX7OStw6XpkqmncUQIjNXpmOxxqAe6MvKqs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyp9uUNSnf0Wqu/MyXmQHP5Z8DIZ/r29NOGZB4ODsJTgt2JXGBx
-	8RKigB/RKZmkHxATrQCP5yn+EqX4jBscRUKxUbFu2114+jpONGdeltLIzFbYX/L/3ORxzedfftB
-	aiaXOpumNp332+0FJ5v3x913kJJ91+8K0MDXGC6Tx
-X-Gm-Gg: ASbGnctuMN4QWyqzgWHa8tkILLl4IXbTlspvbBa4KomKLGxn2bW0Wkl8QNduAxzNsny
-	3P+x94kkHVpon8kWfmtoF3iVKFaGJyKPzpr/L2bUwENMxJ7wt4avRcunwY6hewTn8o7fzvB0CDz
-	k0Qh9tsCzwml/1ajlmSfdW5L/Y4poQ8UibEQ0rrCmV4fP5LYhDiDimETjTL0YHnMUQTvo48NRLD
-	Qt6Rg==
-X-Google-Smtp-Source: AGHT+IFHsQKKy19b+mkI6T4bmaLpNZ271aXwL3PfIOVfg50ihjyeftIyzuwnKyjumfnAE6VOghd4+JlOFr33u9sCgpQ=
-X-Received: by 2002:a05:690c:a84:b0:71a:3484:abfe with SMTP id
- 00721157ae682-71a466ea559mr100356227b3.38.1753966917367; Thu, 31 Jul 2025
- 06:01:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BsuPH4fW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753966923; x=1785502923;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LU7OIycQkBXRbFm7D7D3e62DNysA0g86zCh78MKoh6o=;
+  b=BsuPH4fW9OsxjsnySHB4NGtyAAnE9avhDcwW8P/I/4Pk53Bj+jS6ENvO
+   cYUX5pUzUQlY5XqsQhhwXoQO4uP5wuglJG448SDKh1Bq8ajHwV0osNLTf
+   NT6jPMfKGtqFalpLhD9rrytNlre49My+Qo9yfs8BQDZG+Sht8TgOSYvr4
+   Ef3OdBZ8ft/k7iwR72yRiEY64nynYPMiSj9m+isqwzHlFP2y/H49e8uG8
+   VjYlXZ73uXYT3G4Ei8HcUQtT4tIo2Bt331L/vRzV/8jgqiqlUt4M+XcLQ
+   qQmS60lISpCNtwnfjs1TNnDww/3aPiHkWgkwjyda/Qec6/SgUyMqe83lO
+   A==;
+X-CSE-ConnectionGUID: 4W+N7zAPQTuSDTD4fOrlXw==
+X-CSE-MsgGUID: xLo4pYxCSOiZcow3fnc/Rg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="73747653"
+X-IronPort-AV: E=Sophos;i="6.17,353,1747724400"; 
+   d="scan'208";a="73747653"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2025 06:02:03 -0700
+X-CSE-ConnectionGUID: I62m967pRCmlj9rLsCYUFQ==
+X-CSE-MsgGUID: ZHsetmaXTeq2oIeEZdLEmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,353,1747724400"; 
+   d="scan'208";a="186940781"
+Received: from os-delivery.igk.intel.com ([10.102.18.218])
+  by fmviesa002.fm.intel.com with ESMTP; 31 Jul 2025 06:02:00 -0700
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: anthony.l.nguyen@intel.com,
+	netdev@vger.kernel.org,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [PATCH iwl-net v2] ixgbe: fix ixgbe_orom_civd_info struct layout
+Date: Thu, 31 Jul 2025 14:45:33 +0200
+Message-Id: <20250731124533.1683307-1-jedrzej.jagielski@intel.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250731123309.184496-1-dongml2@chinatelecom.cn>
-In-Reply-To: <20250731123309.184496-1-dongml2@chinatelecom.cn>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 31 Jul 2025 06:01:46 -0700
-X-Gm-Features: Ac12FXxSBgXO3zoKmReetkU124ejSczJm6Q2NNCXYd_q6u_vkqdJE5hWUIcIcf4
-Message-ID: <CANn89iKRkHyg4nZFwiSWPXsVEyVTSouDcfvULbge4BvOGPEPog@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: ip: lookup the best matched listen socket
-To: Menglong Dong <menglong8.dong@gmail.com>
-Cc: ncardwell@google.com, kuniyu@google.com, davem@davemloft.net, 
-	dsahern@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Martin KaFai Lau <kafai@fb.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 31, 2025 at 5:33=E2=80=AFAM Menglong Dong <menglong8.dong@gmail=
-.com> wrote:
->
-> For now, the socket lookup will terminate if the socket is reuse port in
-> inet_lhash2_lookup(), which makes the socket is not the best match.
->
-> For example, we have socket1 and socket2 both listen on "0.0.0.0:1234",
-> but socket1 bind on "eth0". We create socket1 first, and then socket2.
-> Then, all connections will goto socket2, which is not expected, as socket=
-1
-> has higher priority.
->
-> This can cause unexpected behavior if TCP MD5 keys is used, as described
-> in Documentation/networking/vrf.rst -> Applications.
->
-> Therefor, we lookup the best matched socket first, and then do the reuse
-> port logic. This can increase some overhead if there are many reuse port
-> socket :/
->
-> Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+The current layout of struct ixgbe_orom_civd_info causes incorrect data
+storage due to compiler-inserted padding. This results in issues when
+writing OROM data into the structure.
 
-I do not think net-next is open yet ?
+Add the __packed attribute to ensure the structure layout matches the
+expected binary format without padding.
 
-It seems this would be net material.
+Fixes: 70db0788a262 ("ixgbe: read the OROM version information")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+---
+v2: use get_unaligned_le32() per Simon's suggestion
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c      | 2 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Any way you could provide a test ?
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+index 71ea25de1bac..754c176fd4a7 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+@@ -3123,7 +3123,7 @@ static int ixgbe_get_orom_ver_info(struct ixgbe_hw *hw,
+ 	if (err)
+ 		return err;
+ 
+-	combo_ver = le32_to_cpu(civd.combo_ver);
++	combo_ver = get_unaligned_le32(&civd.combo_ver);
+ 
+ 	orom->major = (u8)FIELD_GET(IXGBE_OROM_VER_MASK, combo_ver);
+ 	orom->patch = (u8)FIELD_GET(IXGBE_OROM_VER_PATCH_MASK, combo_ver);
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+index 09df67f03cf4..38a41d81de0f 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
+@@ -1150,7 +1150,7 @@ struct ixgbe_orom_civd_info {
+ 	__le32 combo_ver;	/* Combo Image Version number */
+ 	u8 combo_name_len;	/* Length of the unicode combo image version string, max of 32 */
+ 	__le16 combo_name[32];	/* Unicode string representing the Combo Image version */
+-};
++} __packed;
+ 
+ /* Function specific capabilities */
+ struct ixgbe_hw_func_caps {
+-- 
+2.31.1
 
-Please CC Martin KaFai Lau <kafai@fb.com>, as this was added in :
-
-commit 61b7c691c7317529375f90f0a81a331990b1ec1b
-Author: Martin KaFai Lau <kafai@fb.com>
-Date:   Fri Dec 1 12:52:31 2017 -0800
-
-    inet: Add a 2nd listener hashtable (port+addr)
