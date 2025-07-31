@@ -1,172 +1,70 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2081322F765
-	for <netdev@vger.kernel.org>; Thu, 31 Jul 2025 13:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8082C1591
+	for <netdev@vger.kernel.org>; Thu, 31 Jul 2025 13:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753967224; cv=none; b=GSZoinzbb2ktDc+3zr0gK5k1+5x7Gtoo81b0li1a/ryWt0PRQyunHA1MkMRdWJDLLsOZO7HKdE/F/y5/UD62H5huNg0rXzt+ZHJVkLtNzlAaml1a2pFrkgE3MvfeBtqha+gs/M1GCF3HA0o4l1RfdbXmOqeJl4Anzh/KuatxtuY=
+	t=1753967228; cv=none; b=Iu4jGME+9jwFTtQV37VRR6CfQQeJLfqqT6GTqkgJ1mSF+af/GpL/0uF9BzicmUVQPaQ7kg8ugPf7SvYMROS3MlU9JNMfMwLuW9yHanh8nsnHaTRmno9LbLCFd08bw7qMeaNrPWo+aRLP8lKJvyoeosD9jRNs4UPt/u2aUkZymV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753967224; c=relaxed/simple;
-	bh=l0vq5qn3at3NW29rFgCNYsWN3p9fceKGmmZzgwuLhdc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R+MCYCF2mZuF7GjAVbR4MeVP7zLEQgBhLX3jlfHbuc85mjhHIwrYmK6n2LvjG3yKsnF9MBVvhX+5Mea96Mn+MH+IozhjFwDiB6x18Qfvse/ETlsf2wZiGcO26YdoketQmLYKD3U2ft/ealNwH/8a0lk1L5QNUy7iFh3x8diskRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EBEoJWTy; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1753967228; c=relaxed/simple;
+	bh=b7asKDyEFfe5FrErmZgsuqPSXjANIdaq8x+7guAJ5c8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=foF67OvIpNw/igkivZtKIgZmR0ySYDpI4Wv7NIwD13sNPItLwuYofX2VI4BlKnxkNniGCrm4S4h/4gi4Q9rd1oaFIzbOlfq8b1iOFJnyIIf9glCJGko2F/7Vz/BRcwhYf68JkNJ8o7lIWKFrfvGaYB34nJiy+EeQMaVjs+xxHwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=oA78FtAY; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EBEoJWTy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753967223; x=1785503223;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=l0vq5qn3at3NW29rFgCNYsWN3p9fceKGmmZzgwuLhdc=;
-  b=EBEoJWTyQdqBscC/79P0tX4XSCE+bIsD3JRoIs0tpWK6JUjzzeHzMmKk
-   dZQV8SRuz+BVoNgIyIefpA4O1fkxv9cumzMHCDf1B78bRpmz8fP3qFAaM
-   bon8C8jcQGSx+KZwbrE9sPBz695Vob6A/X9wkgmJydK+zrH+3k+YHr+4W
-   FQ4fSXK025sLCANs++a/Ld/g1CEuw9s6LbPxeQY4QXpZYxEO67l8gNelg
-   9g6HCUwi41joReyQeWjYihGip7V2SwqH0XqVaH8tfE1DVPLl++bWh54Hg
-   q9mkejWA5QItVPcGPOjFbicGklDS5qcmRvDS1MOYrk3dv8CUm4L1/WGXt
-   g==;
-X-CSE-ConnectionGUID: aVEeQ1SARvuw79cGzoRzYg==
-X-CSE-MsgGUID: T1E/GNqzRd6Cf+gcfLd+KQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="56369459"
-X-IronPort-AV: E=Sophos;i="6.17,353,1747724400"; 
-   d="scan'208";a="56369459"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2025 06:07:02 -0700
-X-CSE-ConnectionGUID: 4a3x4C4QTHSFoiHq+4lgTw==
-X-CSE-MsgGUID: 5RfmKOz4TMyEtqun6eJwCQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,353,1747724400"; 
-   d="scan'208";a="163704405"
-Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by fmviesa008.fm.intel.com with ESMTP; 31 Jul 2025 06:07:01 -0700
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-next v1] ixgbe: reduce number of reads when getting OROM data
-Date: Thu, 31 Jul 2025 14:50:25 +0200
-Message-Id: <20250731125025.1683557-1-jedrzej.jagielski@intel.com>
-X-Mailer: git-send-email 2.31.1
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="oA78FtAY"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=MNAj5RtY39As7wJ+cKGkqEsAnMAgMJ26Ed685zyoy6s=; b=oA78FtAYLtcaX4HUqByf7dcv/l
+	7ude7HaZ9ur6HGyXslPUNjl0cYCrajaTQ9mvcLq54BFrig/DgljG6N0+wkaeMjuGExsLhL3wwpMkr
+	4MYZY0Fp9RV4y2QtL3nMSbEoHJ4dc32qcULQJrmfzz2BherGB8/6He0iKu3hydxCQBnA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uhSzu-003N1q-8r; Thu, 31 Jul 2025 15:07:02 +0200
+Date: Thu, 31 Jul 2025 15:07:02 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Luke Howard <lukeh@padl.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	Ryan Wilkins <Ryan.Wilkins@telosalliance.com>
+Subject: Re: [PATCH v2 net-next] net: dsa: validate source trunk against
+ lags_len
+Message-ID: <ffba7b2f-ad0d-4855-83ae-a3e4f0de766f@lunn.ch>
+References: <DEC3889D-5C54-4648-B09F-44C7C69A1F91@padl.com>
+ <5E37B372-015B-4B19-92E9-7212C33D59C5@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5E37B372-015B-4B19-92E9-7212C33D59C5@padl.com>
 
-Currently, during locating the CIVD section, the ixgbe driver loops
-over the OROM area and at each iteration reads only OROM-datastruct-size
-amount of data. This results in many small reads and is inefficient.
+On Thu, Jul 31, 2025 at 07:56:37PM +1000, Luke Howard wrote:
+> A DSA frame with an invalid source trunk ID could cause an out-of-bounds
+> read access of dst->lags.
+> 
+> Add a check to dsa_lag_by_id() to validate the LAG ID is not zero, and is
+> less than or equal to dst->lags_len. (The LAG ID is derived by adding one
+> to the source trunk ID.)
+> 
+> Note: this is in the fast path for any frames within a trunk.
+> 
+> Fixes: 5b60dadb71db ("net: dsa: tag_dsa: Support reception of packets from LAG devices")
+> Signed-off-by: Luke Howard <lukeh@padl.com>
 
-Optimize this by reading the entire OROM bank into memory once before
-entering the loop. This significantly reduces the probing time.
+Adding to what Vladimir said, please also have each patchset in its
+own thread. There is a CI system which takes patches from the list and
+tests them. It does not always understand multiple patchsets in one
+thread. If the CI misses a patch, it pretty much means an automatic
+rejection of the patch and you will need to resubmit.
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 58 +++++++++++++------
- 1 file changed, 39 insertions(+), 19 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index 87b03c1992a8..048b2aae155a 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -3006,50 +3006,70 @@ static int ixgbe_get_nvm_srev(struct ixgbe_hw *hw,
-  * Searches through the Option ROM flash contents to locate the CIVD data for
-  * the image.
-  *
-- * Return: the exit code of the operation.
-+ * Return: -ENOMEM when cannot allocate memory, -EDOM for checksum violation,
-+ *	   -ENODATA when cannot find proper data, -EIO for faulty read or
-+ *	   0 on success.
-+ *
-+ *	   On success @civd stores collected data.
-  */
- static int
- ixgbe_get_orom_civd_data(struct ixgbe_hw *hw, enum ixgbe_bank_select bank,
- 			 struct ixgbe_orom_civd_info *civd)
- {
--	struct ixgbe_orom_civd_info tmp;
-+	u32 orom_size = hw->flash.banks.orom_size;
-+	u8 *orom_data;
- 	u32 offset;
- 	int err;
- 
-+	orom_data = kzalloc(orom_size, GFP_KERNEL);
-+	if (!orom_data)
-+		return -ENOMEM;
-+
-+	err = ixgbe_read_flash_module(hw, bank,
-+				      IXGBE_E610_SR_1ST_OROM_BANK_PTR, 0,
-+				      orom_data, orom_size);
-+	if (err) {
-+		err = -EIO;
-+		goto cleanup;
-+	}
-+
- 	/* The CIVD section is located in the Option ROM aligned to 512 bytes.
- 	 * The first 4 bytes must contain the ASCII characters "$CIV".
- 	 * A simple modulo 256 sum of all of the bytes of the structure must
- 	 * equal 0.
- 	 */
--	for (offset = 0; (offset + SZ_512) <= hw->flash.banks.orom_size;
--	     offset += SZ_512) {
-+	for (offset = 0; (offset + SZ_512) <= orom_size; offset += SZ_512) {
-+		struct ixgbe_orom_civd_info *tmp;
- 		u8 sum = 0;
- 		u32 i;
- 
--		err = ixgbe_read_flash_module(hw, bank,
--					      IXGBE_E610_SR_1ST_OROM_BANK_PTR,
--					      offset,
--					      (u8 *)&tmp, sizeof(tmp));
--		if (err)
--			return err;
-+		BUILD_BUG_ON(sizeof(*tmp) > SZ_512);
-+
-+		tmp = (struct ixgbe_orom_civd_info *)&orom_data[offset];
- 
- 		/* Skip forward until we find a matching signature */
--		if (memcmp(IXGBE_OROM_CIV_SIGNATURE, tmp.signature,
--			   sizeof(tmp.signature)))
-+		if (memcmp(IXGBE_OROM_CIV_SIGNATURE, tmp->signature,
-+			   sizeof(tmp->signature)))
- 			continue;
- 
- 		/* Verify that the simple checksum is zero */
--		for (i = 0; i < sizeof(tmp); i++)
--			sum += ((u8 *)&tmp)[i];
-+		for (i = 0; i < sizeof(*tmp); i++)
-+			sum += ((u8 *)tmp)[i];
- 
--		if (sum)
--			return -EDOM;
-+		if (sum) {
-+			err = -EDOM;
-+			goto cleanup;
-+		}
- 
--		*civd = tmp;
--		return 0;
-+		*civd = *tmp;
-+		err = 0;
-+		goto cleanup;
- 	}
- 
--	return -ENODATA;
-+	err = -ENODATA;
-+cleanup:
-+	kfree(orom_data);
-+	return err;
- }
- 
- /**
--- 
-2.31.1
+	Andrew
 
