@@ -1,74 +1,48 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327F2262FD0
-	for <netdev@vger.kernel.org>; Thu, 31 Jul 2025 18:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829251E0DB0;
+	Thu, 31 Jul 2025 18:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753984893; cv=none; b=ksxggilYMP0PwSOWm9Kmh3P+kGPoCa3Ur/v3rKaHtJ7+/EM/fdvuUvh/37WLEMMA9yX82u8jBorD34xQ4GUif8urbFkMd2N+0lc8u8/wQJqDFwFDcU0vcrC2xSl7dfM5ABYCOvJuDj8bP4o0cX29iLHCT7xRlE1DbHMk/BYqqNw=
+	t=1753985815; cv=none; b=ngnUc7uQfizxorl9AxM89AlgJ4JXWqUFz59x8qlXfl6N6bwwh8GCxeSGJRQUVIAbsQ4SVQ/5894R+RuLDnd5m6cP9LBeaH9/GIim8pHtTMP+C9bDcKdTV2D9SYCImmmUVYd/6cKkpjGD00B7kkidy0WzrmMK2A1syT79LccqVw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753984893; c=relaxed/simple;
-	bh=/KispqlKo73jWzramJvYJxq85vJEf3KlhcWCFmPKtmA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=S9QKO4/LQVJmEUQclXzUayAXMcTv3tfumEDFoF/x1d/PReAbW8gXGTL2pZLtmrBjX307TWsCsVnu3MMKWUuHaBr7jdOabScu6lJGQQXaDGBTQGrcE8ogwLJnDHT4T2Z7f0LGaL4qNWVm4zGoXTImmAojclaosQ3iNOy5R/pxXLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jVc7OiYx; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jVc7OiYx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753984891;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j3IMlRLwAFtF12zLNMWvpT+3MnfpTZ0F/2N2UD+Uq8g=;
-	b=jVc7OiYxW5TMjHIbrS3LVG/1wCcTZYvPUkd8VxW8e/neAWqFI41/LSddeJpCcTto+KCQ9r
-	RlORC0dEnpb3uloaDW7Lnwr+VWgZFhfyCIDG+lUVcD02v1gxmPJC1dWHc0ULuoArxqKBzs
-	ZPkPgwQx/nt3pvufJzP3pYTquuNJYIw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-zFPmQR8OP6uYCq6jTQV7MA-1; Thu,
- 31 Jul 2025 14:01:26 -0400
-X-MC-Unique: zFPmQR8OP6uYCq6jTQV7MA-1
-X-Mimecast-MFC-AGG-ID: zFPmQR8OP6uYCq6jTQV7MA_1753984883
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 547FD1954B18;
-	Thu, 31 Jul 2025 18:01:23 +0000 (UTC)
-Received: from okorniev-mac.redhat.com (unknown [10.22.82.42])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 648143000199;
-	Thu, 31 Jul 2025 18:01:19 +0000 (UTC)
-From: Olga Kornievskaia <okorniev@redhat.com>
-To: chuck.lever@oracle.com,
-	jlayton@kernel.org,
-	trondmy@hammerspace.com,
-	anna.schumaker@oracle.com,
-	hch@lst.de,
-	sagi@grimberg.me,
-	kch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: linux-nfs@vger.kernel.org,
-	linux-nvme@lists.infradead.org,
-	netdev@vger.kernel.org,
-	kernel-tls-handshake@lists.linux.dev,
-	neil@brown.name,
-	Dai.Ngo@oracle.com,
-	tom@talpey.com,
-	hare@suse.de,
-	horms@kernel.org,
-	kbusch@kernel.org
-Subject: [PATCH v2 4/4] net/handshake: change tls_alert_recv to receive a kvec
-Date: Thu, 31 Jul 2025 14:00:58 -0400
-Message-Id: <20250731180058.4669-5-okorniev@redhat.com>
-In-Reply-To: <20250731180058.4669-1-okorniev@redhat.com>
-References: <20250731180058.4669-1-okorniev@redhat.com>
+	s=arc-20240116; t=1753985815; c=relaxed/simple;
+	bh=S+eAHkUQmIxOmh9BhUcuLHRn/WSy/97Ut9MbCGS8kfs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=amFc/s9TrMc1A8YU7LmA9Pd5EeBEEiVyNx67KT0ILsS+expiJkK77oPqtMoBoWJlZ/fsWP7fBHQwMGseVC9AmnbzOIquPOv9u+SoMnk1Q9l0rlYZReKL/mkfngss5XT7Cs0Y+2fcEA/pUbb5RymcULDGle1IDWKMu7Mw3UThnHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4btHHN2xzjz6L4t7;
+	Fri,  1 Aug 2025 02:12:32 +0800 (CST)
+Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
+	by mail.maildlp.com (Postfix) with ESMTPS id CB0D51404C6;
+	Fri,  1 Aug 2025 02:16:48 +0800 (CST)
+Received: from china (10.220.118.114) by frapeml500005.china.huawei.com
+ (7.182.85.13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 31 Jul
+ 2025 20:16:34 +0200
+From: Gur Stavi <gur.stavi@huawei.com>
+To: <horms@kernel.org>
+CC: <andrew+netdev@lunn.ch>, <christophe.jaillet@wanadoo.fr>,
+	<corbet@lwn.net>, <davem@davemloft.net>, <edumazet@google.com>,
+	<fuguiming@h-partners.com>, <gongfan1@huawei.com>, <guoxin09@huawei.com>,
+	<gur.stavi@huawei.com>, <helgaas@kernel.org>, <jdamato@fastly.com>,
+	<kuba@kernel.org>, <lee@trager.us>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <luosifu@huawei.com>,
+	<meny.yossefi@huawei.com>, <mpe@ellerman.id.au>, <netdev@vger.kernel.org>,
+	<pabeni@redhat.com>, <przemyslaw.kitszel@intel.com>,
+	<shenchenyang1@hisilicon.com>, <shijing34@huawei.com>, <sumang@marvell.com>,
+	<vadim.fedorenko@linux.dev>, <wulike1@huawei.com>, <zhoushuai28@huawei.com>,
+	<zhuyikai1@h-partners.com>
+Subject: Re: [PATCH net-next v10 1/8] hinic3: Async Event Queue interfaces
+Date: Thu, 31 Jul 2025 21:34:20 +0300
+Message-ID: <20250731183420.1138336-1-gur.stavi@huawei.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20250731140404.GD8494@horms.kernel.org>
+References: <20250731140404.GD8494@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -76,210 +50,95 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ frapeml500005.china.huawei.com (7.182.85.13)
 
-Instead of trying to read the data from the msg iterator,
-callers to tls_alert_recv() need to pass in a kvec directly.
+> On Thu, Jul 31, 2025 at 03:58:39PM +0300, Gur Stavi wrote:
+> >
+> > Lets define a "coherent struct" as a structure made of fields that makes sense
+> > to human beings. Every field endianity is defined and fields are arranged in
+> > order that "makes sense". Fields can be of any integer size 8,16,32,64 and not
+> > necessarily naturally aligned.
+> >
+> > swab32_array transforms a coherent struct into "byte jumble". Small fields are
+> > reordered and larger (misaligned) fields may be split into 2 (or even 3) parts.
+> > swab32_array is reversible so a 2nd call with byte jumble as input will produce
+> > the original coherent struct.
+> >
+> > hinic3 dma has "swab32_array" built in.
+> > On send-to-device it expects a byte jubmle so the DMA engine will transform it
+> > into a coherent struct.
+> > On receive-from-device it provides a byte jumble so the driver needs
+> > to call swab32_array to transform it into a coherent struct.
+> >
+> > The hinic3_cmdq_buf_swab32 function will work correctly, producing byte jumble,
+> > on little endian and big endian hosts.
+> >
+> > The code that runs prior to hinic3_cmdq_buf_swab32 that initializes a coherent
+> > struct is endianity sensitive. It needs to initialize fields based on their
+> > coherent endianity with or without byte swap. Practically use cpu_to_le or
+> > cpu_to_be based on the coherent definition.
+> >
+> > Specifically, cmdq "coherent structs" in hinic3 use little endian and since
+> > Kconfig currently declares that big endian hosts are not supported then
+> > coherent structs are initialized without explicit cpu_to_le macros.
+> >
+> > And this is what the comment says:
+> >
+> > /* Data provided to/by cmdq is arranged in structs with little endian fields but
+> >  * every dword (32bits) should be swapped since HW swaps it again when it
+> >  * copies it from/to host memory.
+> >  */
+> >
+>
+> Thanks, I think I am closer to understanding things now.
+>
+> Let me try and express things in my own words:
+>
+> 1. On the hardware side, things are stored in a way that may be represented
+>    as structures with little-endian values. The members of the structures may
+>    have different sizes: 8-bit, 16-bit, 32-bit, ...
+>
+> 2. The hardware runs the equivalent of swab32_array() over this data
+>    when writing it to (or reading it from) the host. So we get a
+>    "byte jumble".
+>
+> 3. In this patch, the hinic3_cmdq_buf_swab32 reverses this jumbling
+>    by running he equivalent of swab32_array() over this data again.
+>
+>    As 3 exactly reverses 2, what is left are structures exactly as in 1.
+>
 
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
----
- drivers/nvme/target/tcp.c | 13 +++++--------
- include/net/handshake.h   |  2 +-
- net/handshake/alert.c     |  6 +++---
- net/sunrpc/svcsock.c      | 17 ++++++++---------
- net/sunrpc/xprtsock.c     | 19 +++++++++----------
- 5 files changed, 26 insertions(+), 31 deletions(-)
+Yes. Your understanding matches mine.
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 98cee10de713..7ea8644de622 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -1106,7 +1106,7 @@ static inline bool nvmet_tcp_pdu_valid(u8 type)
- }
- 
- static int nvmet_tcp_tls_record_ok(struct nvmet_tcp_queue *queue,
--		struct msghdr *msg, char *cbuf)
-+		struct kvec *iov, char *cbuf)
- {
- 	struct cmsghdr *cmsg = (struct cmsghdr *)cbuf;
- 	u8 ctype, level, description;
-@@ -1119,7 +1119,7 @@ static int nvmet_tcp_tls_record_ok(struct nvmet_tcp_queue *queue,
- 	case TLS_RECORD_TYPE_DATA:
- 		break;
- 	case TLS_RECORD_TYPE_ALERT:
--		tls_alert_recv(queue->sock->sk, msg, &level, &description);
-+		tls_alert_recv(queue->sock->sk, iov, &level, &description);
- 		if (level == TLS_ALERT_LEVEL_FATAL) {
- 			pr_err("queue %d: TLS Alert desc %u\n",
- 			       queue->idx, description);
-@@ -1160,8 +1160,7 @@ static int nvmet_tcp_try_recv_pdu(struct nvmet_tcp_queue *queue)
- 	if (unlikely(len < 0))
- 		return len;
- 	if (queue->tls_pskid) {
--		iov_iter_revert(&msg.msg_iter, len);
--		ret = nvmet_tcp_tls_record_ok(queue, &msg, cbuf);
-+		ret = nvmet_tcp_tls_record_ok(queue, &iov, cbuf);
- 		if (ret < 0)
- 			return ret;
- 	}
-@@ -1276,8 +1275,7 @@ static int nvmet_tcp_try_recv_ddgst(struct nvmet_tcp_queue *queue)
- 	if (unlikely(len < 0))
- 		return len;
- 	if (queue->tls_pskid) {
--		iov_iter_revert(&msg.msg_iter, len);
--		ret = nvmet_tcp_tls_record_ok(queue, &msg, cbuf);
-+		ret = nvmet_tcp_tls_record_ok(queue, &iov, cbuf);
- 		if (ret < 0)
- 			return ret;
- 	}
-@@ -1742,8 +1740,7 @@ static int nvmet_tcp_try_peek_pdu(struct nvmet_tcp_queue *queue)
- 		return len;
- 	}
- 
--	iov_iter_revert(&msg.msg_iter, len);
--	ret = nvmet_tcp_tls_record_ok(queue, &msg, cbuf);
-+	ret = nvmet_tcp_tls_record_ok(queue, &iov, cbuf);
- 	if (ret < 0)
- 		return ret;
- 
-diff --git a/include/net/handshake.h b/include/net/handshake.h
-index 8ebd4f9ed26e..33ffc8e88923 100644
---- a/include/net/handshake.h
-+++ b/include/net/handshake.h
-@@ -43,7 +43,7 @@ bool tls_handshake_cancel(struct sock *sk);
- void tls_handshake_close(struct socket *sock);
- 
- u8 tls_get_record_type(const struct sock *sk, const struct cmsghdr *msg);
--void tls_alert_recv(const struct sock *sk, const struct msghdr *msg,
-+void tls_alert_recv(const struct sock *sk, const struct kvec *iov,
- 		    u8 *level, u8 *description);
- 
- #endif /* _NET_HANDSHAKE_H */
-diff --git a/net/handshake/alert.c b/net/handshake/alert.c
-index 329d91984683..4662a406b64a 100644
---- a/net/handshake/alert.c
-+++ b/net/handshake/alert.c
-@@ -94,13 +94,13 @@ EXPORT_SYMBOL(tls_get_record_type);
-  * @description: OUT - TLS AlertDescription value
-  *
-  */
--void tls_alert_recv(const struct sock *sk, const struct msghdr *msg,
-+void tls_alert_recv(const struct sock *sk, const struct kvec *iov,
- 		    u8 *level, u8 *description)
- {
--	const struct kvec *iov;
- 	u8 *data;
- 
--	iov = msg->msg_iter.kvec;
-+	if (!iov)
-+		return;
- 	data = iov->iov_base;
- 	*level = data[0];
- 	*description = data[1];
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index e2c5e0e626f9..8701abd7fff2 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -228,7 +228,7 @@ static int svc_one_sock_name(struct svc_sock *svsk, char *buf, int remaining)
- }
- 
- static int
--svc_tcp_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
-+svc_tcp_sock_process_cmsg(struct socket *sock, struct kvec *iov,
- 			  struct cmsghdr *cmsg, int ret)
- {
- 	u8 content_type = tls_get_record_type(sock->sk, cmsg);
-@@ -238,14 +238,10 @@ svc_tcp_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
- 	case 0:
- 		break;
- 	case TLS_RECORD_TYPE_DATA:
--		/* TLS sets EOR at the end of each application data
--		 * record, even though there might be more frames
--		 * waiting to be decrypted.
--		 */
--		msg->msg_flags &= ~MSG_EOR;
-+		pr_warn("received TLS DATA; expected TLS control message\n");
- 		break;
- 	case TLS_RECORD_TYPE_ALERT:
--		tls_alert_recv(sock->sk, msg, &level, &description);
-+		tls_alert_recv(sock->sk, iov, &level, &description);
- 		ret = (level == TLS_ALERT_LEVEL_FATAL) ?
- 			-ENOTCONN : -EAGAIN;
- 		break;
-@@ -280,8 +276,7 @@ svc_tcp_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags)
- 	ret = sock_recvmsg(sock, &msg, MSG_DONTWAIT);
- 	if (ret > 0 &&
- 	    tls_get_record_type(sock->sk, &u.cmsg) == TLS_RECORD_TYPE_ALERT) {
--		iov_iter_revert(&msg.msg_iter, ret);
--		ret = svc_tcp_sock_process_cmsg(sock, &msg, &u.cmsg, -EAGAIN);
-+		ret = svc_tcp_sock_process_cmsg(sock, &alert_kvec, &u.cmsg, -EAGAIN);
- 	}
- 	return ret;
- }
-@@ -294,6 +289,10 @@ svc_tcp_sock_recvmsg(struct svc_sock *svsk, struct msghdr *msg)
- 
- 	ret = sock_recvmsg(sock, msg, MSG_DONTWAIT);
- 	if (msg->msg_flags & MSG_CTRUNC) {
-+		/* TLS sets EOR at the end of each application data
-+		 * record, even though there might be more frames
-+		 * waiting to be decrypted.
-+		 */
- 		msg->msg_flags &= ~(MSG_CTRUNC | MSG_EOR);
- 		if (ret == 0 || ret == -EIO)
- 			ret = svc_tcp_sock_recv_cmsg(sock, &msg->msg_flags);
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index c5f7bbf5775f..005021773da1 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -357,7 +357,7 @@ xs_alloc_sparse_pages(struct xdr_buf *buf, size_t want, gfp_t gfp)
- }
- 
- static int
--xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
-+xs_sock_process_cmsg(struct socket *sock, struct kvec *iov,
- 		     unsigned int *msg_flags, struct cmsghdr *cmsg, int ret)
- {
- 	u8 content_type = tls_get_record_type(sock->sk, cmsg);
-@@ -367,14 +367,10 @@ xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
- 	case 0:
- 		break;
- 	case TLS_RECORD_TYPE_DATA:
--		/* TLS sets EOR at the end of each application data
--		 * record, even though there might be more frames
--		 * waiting to be decrypted.
--		 */
--		*msg_flags &= ~MSG_EOR;
-+		pr_warn("received TLS DATA; expected TLS control message\n");
- 		break;
- 	case TLS_RECORD_TYPE_ALERT:
--		tls_alert_recv(sock->sk, msg, &level, &description);
-+		tls_alert_recv(sock->sk, iov, &level, &description);
- 		ret = (level == TLS_ALERT_LEVEL_FATAL) ?
- 			-EACCES : -EAGAIN;
- 		break;
-@@ -409,9 +405,8 @@ xs_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags, int flags)
- 	ret = sock_recvmsg(sock, &msg, flags);
- 	if (ret > 0 &&
- 	    tls_get_record_type(sock->sk, &u.cmsg) == TLS_RECORD_TYPE_ALERT) {
--		iov_iter_revert(&msg.msg_iter, ret);
--		ret = xs_sock_process_cmsg(sock, &msg, msg_flags, &u.cmsg,
--					   -EAGAIN);
-+		ret = xs_sock_process_cmsg(sock, &alert_kvec, msg_flags,
-+					   &u.cmsg, -EAGAIN);
- 	}
- 	return ret;
- }
-@@ -425,6 +420,10 @@ xs_sock_recvmsg(struct socket *sock, struct msghdr *msg, int flags, size_t seek)
- 	ret = sock_recvmsg(sock, msg, flags);
- 	/* Handle TLS inband control message lazily */
- 	if (msg->msg_flags & MSG_CTRUNC) {
-+		/* TLS sets EOR at the end of each application data
-+		 * ecord, even though there might be more frames
-+		 * waiting to be decrypted.
-+		 */
- 		msg->msg_flags &= ~(MSG_CTRUNC | MSG_EOR);
- 		if (ret == 0 || ret == -EIO)
- 			ret = xs_sock_recv_cmsg(sock, &msg->msg_flags, flags);
--- 
-2.47.1
+> If so, I agree this makes sense and I am sorry for missing this before.
+>
+> And if so, is the intention for the cmdq "coherent structs" in the driver
+> to look something like this.
+>
+>    struct {
+> 	u8 a;
+> 	u8 b;
+> 	__le16 c;
+> 	__le32 d;
+>    };
+>
+> If so, this seems sensible to me.
+>
+> But I think it would be best so include some code in this patchset
+> that makes use of such structures - sorry if it is there, I couldn't find
+> it just now.
+>
+> And, although there is no intention for the driver to run on big endian
+> systems, the __le* fields should be accessed using cpu_to_le*/le*_to_cpu
+> helpers.
 
+There was a long and somewhat heated debate about this issue.
+https://lore.kernel.org/netdev/20241230192326.384fd21d@kernel.org/
+I agree that having __le in the code is better coding practice.
+But flooding the code with cpu_to_le and le_to_cpu does hurt readability.
+And there are precedences of drivers that avoid it.
+
+However, our dev team (I am mostly an advisor) decided to give it a try anyway.
+I hope they manage to survive it.
