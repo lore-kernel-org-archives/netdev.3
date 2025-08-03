@@ -1,52 +1,53 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC971EDA3C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABFF1E8836;
 	Sun,  3 Aug 2025 11:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754218896; cv=none; b=dF6yd6iiH31bB81dBQ7ppyoSm4VwuD1vwqOZatcfvISmtH18CSCo7NDVtirehL6CtVEjfWnpJyHEQ/0B2kFTL3EMY+p2zi5Kxp943S8aSEVlChsOC9TZH4eidIMQHoQSbW7L3Onb946xQh+WB0RS//+WO5xeJbtLZLQK3iBDysI=
+	t=1754218896; cv=none; b=qXCBu2wmuMiF7/k50iFuF4dgPwHsRqq9ivzaufpIHzEInqQFPR+4IVv3k/OGEoPmwXoEBmKAyxF9uZLS52i9wGhBgJcY7KZlT6HcnPE89+XCveov/Mwczjs/a+2oj+2vcr6LD7yhPhn2skGcjGuqnrlxbpFzCDVO2BxSSOy7uHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1754218896; c=relaxed/simple;
-	bh=BdVTBhN250wTa71M7/gUoWp7//5kAG9/3AKLXJNIMB0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=szNvg82fKaa84vLQTQpoChID06nVmktXizZkblNUckWfAxHNl3WJJYbSm2xZiT7pHQjRzNDW5fFtPI8iEVhFhpv+6ZN4wjUiRg20JV7nh6K6kGTX+9MkNn7rl6hj0mEVwxymENh10m/PaKVCOwRnRtZYQTsxA7voIYfDlCnScbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=McnLcJt8; arc=none smtp.client-ip=205.220.180.131
+	bh=CYgP8Ll5SvplyiTQ3OAauJhL1o8r03BtZtIGWIpG9Ck=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GQg0X0Kjm4x9siJ8ZNRwgJ95jm4gfM7t4b0YqJgv8OQsQDa955PJnCINxIN2x4MwBYKcp8kHrk89S1DjX0pPXuin7GCv3kudEJ4wG6/GF7I5KZS6K6r2Cu7gpSZzKblKS0IkSMDHvLFp9iNPxhDpFf83PXlwNvVEDZMoxRrH/Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WcY2/U+u; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="McnLcJt8"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5738qlNi013051;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WcY2/U+u"
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 573ADZDi025786;
 	Sun, 3 Aug 2025 11:01:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=WO7SkMKcc1s18E6/eOurgl
-	qFs8lDS/zAgVaiETXpg2Y=; b=McnLcJt8JH+6PGH23LNJZNlVVGdUGPkczNgTc4
-	8JlA46hoAdi8/ik6nzYNzj+ZCWQWcIEk8JZ65wwg4aV0NzA77zqpte9FoPCItC2D
-	zQcXcfM9qMUoRLxZodcuqB1Fs93aiFZA6QDB/pt54YUQ9Efn/EqVCEPU9udeL9Qf
-	nCYLaEBOKVQ0B5iwRL1UDqMIGAuiUOVTyNQzVTbB7SmbHnVmAudsyjg8CJ0tfch0
-	txjQYiDnKpPncwlCuvbdibOdfhgaYukq0izwpTYCtMCBHr01VpH4nfIj6q/Gs0wk
-	Nu58aO7ys6dCcVVUpWccv9wSjZmQGKZJAb08pDW80x0izsqA==
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=3+2Kx+29CuM
+	Isypee0x+FRiHwk11e6XrHMzIjqMG7O8=; b=WcY2/U+uyY68YiZBBdHsvetKUoL
+	GTrQrL3CmETUOlAfehNo2gLt2H70/3e33w5UTpKMWHs1ypnNjrTPuZ5cFqBKd8be
+	9hEmvnBBCXVIl5eHbliXJEJEzLngorv3pvkv/dz71y7NEpHMOCrSrx8cv+DZLvJB
+	FHESQNX14K5j5I2AUya9688fSEpvx7Dh6YVyBu91mAvUjnnpeaQEZyzKk/j1ixKG
+	Vr4s2yFWR1zbfi/KpIsrm/PsU+3R39WyoyJG96cCyfHvokjMLHdicgtMRstN3Hlx
+	04cjDliKEsOfM3aEXp54raBPCQmPX//YDxQggpgxnmPKvlnXrmK/3x50+/A==
 Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 489a91t7rs-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4899paa8pf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Sun, 03 Aug 2025 11:01:23 +0000 (GMT)
 Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 573B1Jhg015300;
+	by APBLRPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 573B1Jv8015301;
 	Sun, 3 Aug 2025 11:01:20 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 489brke03q-1
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 489brke03t-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Sun, 03 Aug 2025 11:01:19 +0000
 Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 573B1JS2015273;
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 573B1Jdb015277;
 	Sun, 3 Aug 2025 11:01:19 GMT
 Received: from hu-devc-hyd-u22-c.qualcomm.com (hu-wasimn-hyd.qualcomm.com [10.147.246.180])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 573B1JSc015269
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 573B1JAA015268
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Sun, 03 Aug 2025 11:01:19 +0000
 Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 3944840)
-	id 727FE5C1; Sun,  3 Aug 2025 16:31:18 +0530 (+0530)
+	id 75E79509; Sun,  3 Aug 2025 16:31:18 +0530 (+0530)
 From: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
 To: Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -55,149 +56,350 @@ To: Bjorn Andersson <andersson@kernel.org>,
         Richard Cochran <richardcochran@gmail.com>
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        kernel@oss.qualcomm.com, Wasim Nazir <wasim.nazir@oss.qualcomm.com>
-Subject: [PATCH v2 0/8] arm64: dts: qcom: Lemans platform refactor and EVK support
-Date: Sun,  3 Aug 2025 16:31:04 +0530
-Message-ID: <20250803110113.401927-1-wasim.nazir@oss.qualcomm.com>
+        kernel@oss.qualcomm.com, Wasim Nazir <wasim.nazir@oss.qualcomm.com>,
+        Pratyush Brahma <quic_pbrahma@quicinc.com>,
+        Prakash Gupta <quic_guptap@quicinc.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v2 2/8] arm64: dts: qcom: lemans: Update memory-map for IoT platforms
+Date: Sun,  3 Aug 2025 16:31:06 +0530
+Message-ID: <20250803110113.401927-3-wasim.nazir@oss.qualcomm.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250803110113.401927-1-wasim.nazir@oss.qualcomm.com>
+References: <20250803110113.401927-1-wasim.nazir@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-QCInternal: smtphost
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: hteD-uGUueQJ3sEEvvH0aI_K92W6W2-m
-X-Proofpoint-GUID: hteD-uGUueQJ3sEEvvH0aI_K92W6W2-m
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAzMDA3MyBTYWx0ZWRfXzTOgNGwNu8Kp
- GlKT5tP5vfvAzybzVPTFG2XUzPkGBEX5bSKz/sI0xIo9IDH8BrksB+Q23S5UBfgXTvuNLL8odYQ
- 6JWOn7okrd1fuXocawG9JT0kXKZ8f0hLQ800v00PO1tlfAlPvjgkAHzn/jmL+arj1yP6RNUBOUh
- 4V53qhZSCeiLXRU3FJ3RGN7rUfIyrNKJCAM73J6I0gJXnfGHRV5p0oyjQ0zA+0IuSL3f98YPj1w
- 9E5atmOirg1fEJ1dwfShNvKOxLmn1MuAzX3jsQw5dMGtsMEZynel8/W9TEWSqXbwqDwROCJP3MP
- S1EH6XuXSJN6PWx+A3YmUMZoIk9O/TzI0ntVMnLpZ8ICsnflIj5ZTq4fD6qYEOO3TtizPX37WzH
- EGsWlNq8MEpGoikSjHLmxTODnZwPSSgAmafJVW6+dYMtxbtLISBvRWAKhbk8Bm3pvTnaVtMT
-X-Authority-Analysis: v=2.4 cv=UdpRSLSN c=1 sm=1 tr=0 ts=688f4183 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAzMDA3MyBTYWx0ZWRfX+AuA9f3qzTCa
+ kT+rb/meXeWXUtgdmz8ysZdb/pTalxxwrw5QHS8TilJeHNgn+9cSKGxuAWrojensOpz/21L4bXj
+ MjXB9m3W0Vz6nwWGo+C40A7VZG5QCdErrCW9rbYm5/KntG4WAu8F08jo1Ljsu+924eLUrZoFMJT
+ mXjjfixa8IGX7vNzWDHqzqiGl6tGIlBCsPZkDBIa/e/Hz8PMttEcV5SMKPJwBONAyjien2XIutr
+ FB1wrly/ioXv2QOrkTIn/AvJC8H259QI1McBsXyA9wJ+bNVyrq1U263vdt1PoIK1RBusUYQ1Vd/
+ 7LkUcSjFj1A5u2aONVJx/vDztz2uEPi+l6FgpDdzGoAhbE0VLXinlsZWvWxl6qAqEtpvu8ugeX4
+ TDBRqv8di0kPNWRw7gLNOyMCmVR5oaNaU8v1nb6gklXuvkqJ3RcUl6Fly6/UlXYBevwPIF2D
+X-Proofpoint-GUID: W7NSuLlYzXCC_zemiiuMSFkbOGm3fjHZ
+X-Authority-Analysis: v=2.4 cv=N88pF39B c=1 sm=1 tr=0 ts=688f4183 cx=c_pps
  a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
- a=EUspDBNiAAAA:8 a=9VDwho1jAwe4TvJw1f4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
+ a=2OwXVqhp2XgA:10 a=COk6AnOGAAAA:8 a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8
+ a=ikluo-ACZQ6V8kX-x88A:9 a=TjNXssC_j7lpFel5tvFf:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: W7NSuLlYzXCC_zemiiuMSFkbOGm3fjHZ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-03_03,2025-08-01_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 adultscore=0 spamscore=0 mlxlogscore=999
- priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
- lowpriorityscore=0 malwarescore=0 mlxscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ clxscore=1011 malwarescore=0 mlxlogscore=856 spamscore=0 phishscore=0
+ bulkscore=0 adultscore=0 suspectscore=0 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
  engine=8.19.0-2505280000 definitions=main-2508030073
 
-This patch series introduces a comprehensive refactor and enhancement of
-the Qualcomm Lemans platform device tree files, aiming to improve
-clarity, modularity, and support for emerging IoT use cases. The
-motivation behind this work stems from the need to unify DTS naming
-conventions, streamline board support across multiple variants, and
-to detach from different product names for similar variants.
+The "automotive" memory map is the special case for the Lemans
+configuration described by this dtsi, move it aside and use the IoT
+memory map as the baseline.
 
-For example, qcs9100 and qcs9075 differ only in safety features provided by
-the Safety-Island (SAIL) subsystem but safety features are currently
-unsupported, so both can be categorized as the same chip today.
+Introduce "lemans-auto" as a derivative of "lemans" that retains the
+old automotive memory map to support legacy use cases.
 
-To better support IoT platforms, the memory map has been restructured.
-Previously, the automotive memory layout was applied universally, which
-introduced unnecessary carveouts and misaligned memory regions for IoT
-boards. By establishing the IoT memory map i.e lemans.dtsi as the baseline
-and introducing lemans-auto.dtsi for legacy automotive configurations, the
-series ensures that each platform inherits only what it needs.
-Accordingly:
-  - IoT platforms, qcs9100/qcs9075 are categorized as "lemans" with latest
-    memory-map as per IOT requirements.
-  - Automotive platform, sa8775p is categorized as "lemans-auto", that retains
-    the old automotive memory map to support legacy use cases.
-  - Both lemans & lemans-auto are serving as non-safe chip and if needed
-    additional dtsi can be appended in the future to enable safety features.
+As part of the IoT memory map updates:
+  - Introduce new carveouts for gunyah_md and pil_dtb. Adjust the size and
+    base address of the PIL carveout to accommodate these changes.
+  - Increase the size of the video/camera PIL carveout without affecting
+    existing functionality.
+  - Reduce the size of the trusted apps carveout to meet IoT-specific
+    requirements.
+  - Remove audio_mdf_mem, tz_ffi_mem, and their corresponding SCM references,
+    as they are not required for IoT platforms.
 
-Additionally:
-  - Refactor common daughter cards used in Ride/Ride-R3 boards into a
-    common configuration. Also, introduce new files for different ethernet
-    capabilities in Ride/Ride-r3. Since Ethernet functionality in Ride/Ride-r3
-    is currently broken upstream, this patch focuses only on refactoring.
-  - Include support for qcs9075 EVK [1] board as lemans-evk. Currently,
-    basic features are enabled supporting 'boot to shell'.
-
-Funtional impact to current boards with refactoring:
-  - No functional change on automotive boards (i.e sa8775p ride/ride-r3)
-    and it is verified by comparing decompiled DTB (dtx_diff).
-  - qcs9100 ride/ride-r3 are having a new memory-map and rest other
-    functionalities are still same.
-
-
+Co-developed-by: Pratyush Brahma <quic_pbrahma@quicinc.com>
+Signed-off-by: Pratyush Brahma <quic_pbrahma@quicinc.com>
+Co-developed-by: Prakash Gupta <quic_guptap@quicinc.com>
+Signed-off-by: Prakash Gupta <quic_guptap@quicinc.com>
+Nacked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
 ---
-Changelog
-
-v2:
-  - Update the subject of the series [2] to reflect both the Lemans EVK
-    addition and the broader Lemans refactoring. Also, revise the subject
-    format to align with Qualcomm’s convention for DTS submissions
-    (arm64: dts: qcom:).
-  - Refine the cover letter to emphasize how detaching from product-specific
-    names addresses previous limitations in supporting emerging IoT use cases.
-  - Improve the commit message for patch 2/8 based on Bjorn’s feedback.
-  - Remove board-renaming change to keep backward compatibility intact.
-  - Include separate patch to fix DTS inclusion for IoT boards.
-  - Change copyright format for patch 8/8 as per Krzysztof's feedback.
-  - Carrying Krzysztof's NAK from v1 to only those patches which were preset,
-    though tried to address the concern by retaining the DTB compatibility.
-  - v1-link: [2].
-
-[1] https://lore.kernel.org/all/20250612155437.146925-1-quic_wasimn@quicinc.com/
-[2] https://lore.kernel.org/all/20250722144926.995064-1-wasim.nazir@oss.qualcomm.com/
-
----
-Wasim Nazir (8):
-  arm64: dts: qcom: Rename sa8775p SoC to "lemans"
-  arm64: dts: qcom: lemans: Update memory-map for IoT platforms
-  arm64: dts: qcom: lemans: Separate out ethernet card for ride &
-    ride-r3
-  arm64: dts: qcom: lemans: Refactor ride/ride-r3 boards based on
-    daughter cards
-  arm64: dts: qcom: lemans: Rename sa8775p-pmics.dtsi to
-    lemans-pmics.dtsi
-  arm64: dts: qcom: lemans: Fix dts inclusion for IoT boards and update
-    memory map
-  dt-bindings: arm: qcom: lemans: Add bindings for Lemans Evaluation Kit
-    (EVK)
-  arm64: dts: qcom: Add lemans evaluation kit (EVK) initial board
-    support
-
- .../devicetree/bindings/arm/qcom.yaml         |   1 +
- arch/arm64/boot/dts/qcom/Makefile             |   1 +
- arch/arm64/boot/dts/qcom/lemans-auto.dtsi     | 104 +++++++
- arch/arm64/boot/dts/qcom/lemans-evk.dts       | 291 ++++++++++++++++++
- .../{sa8775p-pmics.dtsi => lemans-pmics.dtsi} |   0
- ...775p-ride.dtsi => lemans-ride-common.dtsi} | 168 ----------
- .../qcom/lemans-ride-ethernet-88ea1512.dtsi   | 205 ++++++++++++
- .../qcom/lemans-ride-ethernet-aqr115c.dtsi    | 205 ++++++++++++
- .../dts/qcom/{sa8775p.dtsi => lemans.dtsi}    |  75 +++--
- arch/arm64/boot/dts/qcom/qcs9100-ride-r3.dts  |   9 +-
- arch/arm64/boot/dts/qcom/qcs9100-ride.dts     |   9 +-
- arch/arm64/boot/dts/qcom/sa8775p-ride-r3.dts  |  40 +--
- arch/arm64/boot/dts/qcom/sa8775p-ride.dts     |  40 +--
- 13 files changed, 875 insertions(+), 273 deletions(-)
+ arch/arm64/boot/dts/qcom/lemans-auto.dtsi  | 104 +++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/lemans.dtsi       |  75 +++++++++------
+ arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi |   2 +-
+ 3 files changed, 149 insertions(+), 32 deletions(-)
  create mode 100644 arch/arm64/boot/dts/qcom/lemans-auto.dtsi
- create mode 100644 arch/arm64/boot/dts/qcom/lemans-evk.dts
- rename arch/arm64/boot/dts/qcom/{sa8775p-pmics.dtsi => lemans-pmics.dtsi} (100%)
- rename arch/arm64/boot/dts/qcom/{sa8775p-ride.dtsi => lemans-ride-common.dtsi} (87%)
- create mode 100644 arch/arm64/boot/dts/qcom/lemans-ride-ethernet-88ea1512.dtsi
- create mode 100644 arch/arm64/boot/dts/qcom/lemans-ride-ethernet-aqr115c.dtsi
- rename arch/arm64/boot/dts/qcom/{sa8775p.dtsi => lemans.dtsi} (99%)
 
+diff --git a/arch/arm64/boot/dts/qcom/lemans-auto.dtsi b/arch/arm64/boot/dts/qcom/lemans-auto.dtsi
+new file mode 100644
+index 000000000000..8db958d60fd1
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/lemans-auto.dtsi
+@@ -0,0 +1,104 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) 2023, Linaro Limited
++ */
++
++/dts-v1/;
++
++#include "lemans.dtsi"
++
++/delete-node/ &pil_camera_mem;
++/delete-node/ &pil_adsp_mem;
++/delete-node/ &q6_adsp_dtb_mem;
++/delete-node/ &q6_gdsp0_dtb_mem;
++/delete-node/ &pil_gdsp0_mem;
++/delete-node/ &pil_gdsp1_mem;
++/delete-node/ &q6_gdsp1_dtb_mem;
++/delete-node/ &q6_cdsp0_dtb_mem;
++/delete-node/ &pil_cdsp0_mem;
++/delete-node/ &pil_gpu_mem;
++/delete-node/ &pil_cdsp1_mem;
++/delete-node/ &q6_cdsp1_dtb_mem;
++/delete-node/ &pil_cvp_mem;
++/delete-node/ &pil_video_mem;
++/delete-node/ &gunyah_md_mem;
++
++/ {
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++
++		tz_ffi_mem: tz-ffi@91c00000 {
++			compatible = "shared-dma-pool";
++			reg = <0x0 0x91c00000 0x0 0x1400000>;
++			no-map;
++		};
++
++		pil_camera_mem: pil-camera@95200000 {
++			reg = <0x0 0x95200000 0x0 0x500000>;
++			no-map;
++		};
++
++		pil_adsp_mem: pil-adsp@95c00000 {
++			reg = <0x0 0x95c00000 0x0 0x1e00000>;
++			no-map;
++		};
++
++		pil_gdsp0_mem: pil-gdsp0@97b00000 {
++			reg = <0x0 0x97b00000 0x0 0x1e00000>;
++			no-map;
++		};
++
++		pil_gdsp1_mem: pil-gdsp1@99900000 {
++			reg = <0x0 0x99900000 0x0 0x1e00000>;
++			no-map;
++		};
++
++		pil_cdsp0_mem: pil-cdsp0@9b800000 {
++			reg = <0x0 0x9b800000 0x0 0x1e00000>;
++			no-map;
++		};
++
++		pil_gpu_mem: pil-gpu@9d600000 {
++			reg = <0x0 0x9d600000 0x0 0x2000>;
++			no-map;
++		};
++
++		pil_cdsp1_mem: pil-cdsp1@9d700000 {
++			reg = <0x0 0x9d700000 0x0 0x1e00000>;
++			no-map;
++		};
++
++		pil_cvp_mem: pil-cvp@9f500000 {
++			reg = <0x0 0x9f500000 0x0 0x700000>;
++			no-map;
++		};
++
++		pil_video_mem: pil-video@9fc00000 {
++			reg = <0x0 0x9fc00000 0x0 0x700000>;
++			no-map;
++		};
++
++		audio_mdf_mem: audio-mdf-region@ae000000 {
++			reg = <0x0 0xae000000 0x0 0x1000000>;
++			no-map;
++		};
++
++		hyptz_reserved_mem: hyptz-reserved@beb00000 {
++			reg = <0x0 0xbeb00000 0x0 0x11500000>;
++			no-map;
++		};
++
++		trusted_apps_mem: trusted-apps@d1900000 {
++			reg = <0x0 0xd1900000 0x0 0x3800000>;
++			no-map;
++		};
++	};
++
++	firmware {
++		scm {
++			memory-region = <&tz_ffi_mem>;
++		};
++	};
++};
+diff --git a/arch/arm64/boot/dts/qcom/lemans.dtsi b/arch/arm64/boot/dts/qcom/lemans.dtsi
+index 9997a29901f5..bf273660e0cb 100644
+--- a/arch/arm64/boot/dts/qcom/lemans.dtsi
++++ b/arch/arm64/boot/dts/qcom/lemans.dtsi
+@@ -514,7 +514,6 @@ firmware {
+ 		scm {
+ 			compatible = "qcom,scm-sa8775p", "qcom,scm";
+ 			qcom,dload-mode = <&tcsr 0x13000>;
+-			memory-region = <&tz_ffi_mem>;
+ 		};
+ 	};
 
-base-commit: 05adbee3ad528100ab0285c15c91100e19e10138
+@@ -773,6 +772,11 @@ sail_ota_mem: sail-ss@90e00000 {
+ 			no-map;
+ 		};
+
++		gunyah_md_mem: gunyah-md@91a80000 {
++			reg = <0x0 0x91a80000 0x0 0x80000>;
++			no-map;
++		};
++
+ 		aoss_backup_mem: aoss-backup@91b00000 {
+ 			reg = <0x0 0x91b00000 0x0 0x40000>;
+ 			no-map;
+@@ -798,12 +802,6 @@ cdt_data_backup_mem: cdt-data-backup@91ba0000 {
+ 			no-map;
+ 		};
+
+-		tz_ffi_mem: tz-ffi@91c00000 {
+-			compatible = "shared-dma-pool";
+-			reg = <0x0 0x91c00000 0x0 0x1400000>;
+-			no-map;
+-		};
+-
+ 		lpass_machine_learning_mem: lpass-machine-learning@93b00000 {
+ 			reg = <0x0 0x93b00000 0x0 0xf00000>;
+ 			no-map;
+@@ -815,62 +813,77 @@ adsp_rpc_remote_heap_mem: adsp-rpc-remote-heap@94a00000 {
+ 		};
+
+ 		pil_camera_mem: pil-camera@95200000 {
+-			reg = <0x0 0x95200000 0x0 0x500000>;
++			reg = <0x0 0x95200000 0x0 0x700000>;
+ 			no-map;
+ 		};
+
+-		pil_adsp_mem: pil-adsp@95c00000 {
+-			reg = <0x0 0x95c00000 0x0 0x1e00000>;
++		pil_adsp_mem: pil-adsp@95900000 {
++			reg = <0x0 0x95900000 0x0 0x1e00000>;
+ 			no-map;
+ 		};
+
+-		pil_gdsp0_mem: pil-gdsp0@97b00000 {
+-			reg = <0x0 0x97b00000 0x0 0x1e00000>;
++		q6_adsp_dtb_mem: q6-adsp-dtb@97700000 {
++			reg = <0x0 0x97700000 0x0 0x80000>;
+ 			no-map;
+ 		};
+
+-		pil_gdsp1_mem: pil-gdsp1@99900000 {
+-			reg = <0x0 0x99900000 0x0 0x1e00000>;
++		q6_gdsp0_dtb_mem: q6-gdsp0-dtb@97780000 {
++			reg = <0x0 0x97780000 0x0 0x80000>;
+ 			no-map;
+ 		};
+
+-		pil_cdsp0_mem: pil-cdsp0@9b800000 {
+-			reg = <0x0 0x9b800000 0x0 0x1e00000>;
++		pil_gdsp0_mem: pil-gdsp0@97800000 {
++			reg = <0x0 0x97800000 0x0 0x1e00000>;
+ 			no-map;
+ 		};
+
+-		pil_gpu_mem: pil-gpu@9d600000 {
+-			reg = <0x0 0x9d600000 0x0 0x2000>;
++		pil_gdsp1_mem: pil-gdsp1@99600000 {
++			reg = <0x0 0x99600000 0x0 0x1e00000>;
+ 			no-map;
+ 		};
+
+-		pil_cdsp1_mem: pil-cdsp1@9d700000 {
+-			reg = <0x0 0x9d700000 0x0 0x1e00000>;
++		q6_gdsp1_dtb_mem: q6-gdsp1-dtb@9b400000 {
++			reg = <0x0 0x9b400000 0x0 0x80000>;
+ 			no-map;
+ 		};
+
+-		pil_cvp_mem: pil-cvp@9f500000 {
+-			reg = <0x0 0x9f500000 0x0 0x700000>;
++		q6_cdsp0_dtb_mem: q6-cdsp0-dtb@9b480000 {
++			reg = <0x0 0x9b480000 0x0 0x80000>;
+ 			no-map;
+ 		};
+
+-		pil_video_mem: pil-video@9fc00000 {
+-			reg = <0x0 0x9fc00000 0x0 0x700000>;
++		pil_cdsp0_mem: pil-cdsp0@9b500000 {
++			reg = <0x0 0x9b500000 0x0 0x1e00000>;
+ 			no-map;
+ 		};
+
+-		audio_mdf_mem: audio-mdf-region@ae000000 {
+-			reg = <0x0 0xae000000 0x0 0x1000000>;
++		pil_gpu_mem: pil-gpu@9d300000 {
++			reg = <0x0 0x9d300000 0x0 0x2000>;
+ 			no-map;
+ 		};
+
+-		firmware_mem: firmware-region@b0000000 {
+-			reg = <0x0 0xb0000000 0x0 0x800000>;
++		q6_cdsp1_dtb_mem: q6-cdsp1-dtb@9d380000 {
++			reg = <0x0 0x9d380000 0x0 0x80000>;
+ 			no-map;
+ 		};
+
+-		hyptz_reserved_mem: hyptz-reserved@beb00000 {
+-			reg = <0x0 0xbeb00000 0x0 0x11500000>;
++		pil_cdsp1_mem: pil-cdsp1@9d400000 {
++			reg = <0x0 0x9d400000 0x0 0x1e00000>;
++			no-map;
++		};
++
++		pil_cvp_mem: pil-cvp@9f200000 {
++			reg = <0x0 0x9f200000 0x0 0x700000>;
++			no-map;
++		};
++
++		pil_video_mem: pil-video@9f900000 {
++			reg = <0x0 0x9f900000 0x0 0x1000000>;
++			no-map;
++		};
++
++		firmware_mem: firmware-region@b0000000 {
++			reg = <0x0 0xb0000000 0x0 0x800000>;
+ 			no-map;
+ 		};
+
+@@ -915,7 +928,7 @@ deepsleep_backup_mem: deepsleep-backup@d1800000 {
+ 		};
+
+ 		trusted_apps_mem: trusted-apps@d1900000 {
+-			reg = <0x0 0xd1900000 0x0 0x3800000>;
++			reg = <0x0 0xd1900000 0x0 0x1c00000>;
+ 			no-map;
+ 		};
+
+diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
+index bcd284c0f939..a9ec6ded412e 100644
+--- a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
++++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
+@@ -8,7 +8,7 @@
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+
+-#include "lemans.dtsi"
++#include "lemans-auto.dtsi"
+ #include "sa8775p-pmics.dtsi"
+
+ / {
 --
 2.50.1
 
