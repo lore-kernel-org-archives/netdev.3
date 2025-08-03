@@ -1,33 +1,44 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BFF25DCE0;
-	Sun,  3 Aug 2025 11:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93631EDA3C;
+	Sun,  3 Aug 2025 11:10:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754218970; cv=none; b=EnTDHs8W8OqhLZSWBdval2sZzlvl1Nj1vl0beJJDli4C01WpdQYDgX8CWHPo/IZvY6LcifFeTvqvlQ4Z9931zcZ6SONNxEzOQIc5Puf7UOyr/glH0b24rwONWwk/EuFg/YpOfS29hMXjePTVy5ygHf+Jttg4qNmN6GPvFIAMlLo=
+	t=1754219464; cv=none; b=BTU27KMxYc9m4T6bK8dViqVTujeHB6BDYJmXxD+qL1WDVAK8VXUFf/1OoK9tEYitfD/kqYBgJ3MDeeVBV5ldPU5VcxdZp5DyN+bU8KPpABXxhTXk5o3xckVNUxB8jJZ6dYM48vE1M2g/8oNT7K6xrYMNxFQN92ZVFL7kfWLQFyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754218970; c=relaxed/simple;
-	bh=1+ySFnvEiEj10KiNv6U4p85DKQjzXaK9j7ctTFGfI8c=;
+	s=arc-20240116; t=1754219464; c=relaxed/simple;
+	bh=mH95pA4cftJ6NN9CFstldZceXxZhqt1S9l4BVHuUz3Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HDVX8oyal3N7MZtPW/ETKOtBInTidQshrcF3XZ+4lsq/mR8jMVCkme2IH+cf6t0dkNkrZsHKfdRjapFCYdv4AYRtcEBzrsrU2JyD2igemfbKUqzbJfCW8jUSqO5NVQshipexnHGqS3qpdCcYkbKQLRPY2JYcPGxkuAg4EpcaqoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WskNmZiN; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=TtzTECtDAm54PHPSemKxXB7t5k3oESL177XDFMxb089+QEM71c+YwMl7WOZhGwf7/+fDTAbQEoaRPYPlTcKgepbJqGcKUcEM8QzFf3KcPTtR4Ax10hoS2eWjqem5v6Wn1gi2qBL+OWHkpxsOWllfismBwhz417qFG7fOTYApxaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=pCHdnDKS; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WskNmZiN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F06C4CEEB;
-	Sun,  3 Aug 2025 11:02:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754218970;
-	bh=1+ySFnvEiEj10KiNv6U4p85DKQjzXaK9j7ctTFGfI8c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WskNmZiNWg2H0K2iaVH9y6OTv6cCowVHkz22V700zSwApyAcxIZbblveBC31L+KTp
-	 y3PSjjrc0vuC7gflpfOOIv8gWegg1rsUX9apkFrB/J18NebwfFjjdcFe6/Mgmi1aY9
-	 b1PCH+5qJfGrTUkO0U2xZeurShMsXGMmxjQlppa5fycSbzMvUEmb9KR+UoucfqWKs/
-	 Bw3FHgwHT44HXVEQol01+mDipQ9koEPpjGGgLW7o1U0gNBJNZYbqwZ7T4bYRgdxfWm
-	 6yTdDDDFwrMDNtl7jYO+S+InRwGhi29U2obHhaNPVTIkXKUHBioj1jh7Sb4TJy1bKx
-	 56JMdAim3/pdQ==
-Message-ID: <4df2a4c8-38be-402b-aa73-f72064e1d8ec@kernel.org>
-Date: Sun, 3 Aug 2025 13:02:44 +0200
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="pCHdnDKS"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1uiVWX-003vz3-8i; Sun, 03 Aug 2025 12:01:01 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
+	bh=EL2StWgKuIJqWqQKx+j/2xqZwCUiP1U+Ud26xxbj8xY=; b=pCHdnDKSQFO018x3pvWq6uST1m
+	zncPtEk6In+1fV6Fjc35EpfscsPPoMNvCXCU40E2qTqGzbg1XCtZhn+uxu6Ygx8P3kbIYeNUHWqly
+	hVCj1LxCgumxoXux0XHJ27BOFRFiMjnZqY+e9eX7as8IcEVaE4SJvYTL7TFCgubWvEnN/aR/EXVyJ
+	TVJ+yWjk5BJIUiFqGaII2YMfaEghgqi3uYg0CKpHhZk5Kfbvco0aXkMrYH8Bqw+DmZMnY2RDK7H4L
+	qRErh/h9O9riaJI82HUGl35NrbY8R9GbdrZ746REt9EBpHbScDXwqW/SsFk2CBzFmH1e2MvRPLvDo
+	4O4w/0mA==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1uiVWW-000606-7S; Sun, 03 Aug 2025 12:01:00 +0200
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1uiVWB-002JcU-1D; Sun, 03 Aug 2025 12:00:39 +0200
+Message-ID: <b6a2219b-32dd-4bb6-b848-45325e4e4ab9@rbox.co>
+Date: Sun, 3 Aug 2025 12:00:38 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,96 +46,52 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 8/8] arm64: dts: qcom: Add lemans evaluation kit (EVK)
- initial board support
-To: Wasim Nazir <wasim.nazir@oss.qualcomm.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- kernel@oss.qualcomm.com, Rakesh Kota <quic_kotarake@quicinc.com>,
- Sayali Lokhande <quic_sayalil@quicinc.com>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <20250803110113.401927-1-wasim.nazir@oss.qualcomm.com>
- <20250803110113.401927-9-wasim.nazir@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250803110113.401927-9-wasim.nazir@oss.qualcomm.com>
+Subject: Re: [PATCH net] kcm: Fix splice support
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Cong Wang <cong.wang@bytedance.com>,
+ Tom Herbert <tom@herbertland.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250725-kcm-splice-v1-1-9a725ad2ee71@rbox.co>
+ <20250730180215.2ad7df72@kernel.org>
+Content-Language: pl-PL, en-GB
+From: Michal Luczaj <mhal@rbox.co>
+In-Reply-To: <20250730180215.2ad7df72@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 03/08/2025 13:01, Wasim Nazir wrote:
-> Lemans EVK is an IoT board without safety monitoring feature of
-> Safety Island(SAIL) subsystem.
+On 7/31/25 03:02, Jakub Kicinski wrote:
+> On Fri, 25 Jul 2025 12:33:04 +0200 Michal Luczaj wrote:
+>> Flags passed in for splice() syscall should not end up in
+>> skb_recv_datagram(). As SPLICE_F_NONBLOCK == MSG_PEEK, kernel gets
+>> confused: skb isn't unlinked from a receive queue, while strp_msg::offset
+>> and strp_msg::full_len are updated.
+>>
+>> Unbreak the logic a bit more by mapping both O_NONBLOCK and
+>> SPLICE_F_NONBLOCK to MSG_DONTWAIT. This way we align with man splice(2) in
+>> regard to errno EAGAIN:
+>>
+>>    SPLICE_F_NONBLOCK was specified in flags or one of the file descriptors
+>>    had been marked as nonblocking (O_NONBLOCK), and the operation would
+>>    block.
 > 
-> Lemans EVK is single board supporting these peripherals:
->   - Storage: 2 × 128 GB UFS, micro-SD card, EEPROMs for MACs,
->     eMMC on mezzanine card
->   - Audio/Video, Camera & Display ports
->   - Connectivity: RJ45 2.5GbE, WLAN/Bluetooth, CAN/CAN-FD
->   - Sensors: IMU
->   - PCIe ports
->   - USB & UART ports
+> Coincidentally looks like we're not honoring
 > 
-> On top of lemans EVK board additional mezzanine boards can be stacked
-> in future.
+> 	sock->file->f_flags & O_NONBLOCK 
 > 
-> Implement basic features like uart/ufs to enable 'boot to shell'.
-> 
-> Co-developed-by: Rakesh Kota <quic_kotarake@quicinc.com>
-> Signed-off-by: Rakesh Kota <quic_kotarake@quicinc.com>
-> Co-developed-by: Sayali Lokhande <quic_sayalil@quicinc.com>
-> Signed-off-by: Sayali Lokhande <quic_sayalil@quicinc.com>
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Nacked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> in TLS..
 
-This patch is fine, so let's drop my tag.
+I'm a bit confused.
 
-Best regards,
-Krzysztof
+Comparing AF_UNIX and pure (non-TLS) TCP, I see two non-blocking-splice
+interpretations. Unix socket doesn't block on `f_flags & O_NONBLOCK ||
+flags & SPLICE_F_NONBLOCK` (which this patch follows), while TCP, after
+commit 42324c627043 ("net: splice() from tcp to pipe should take into
+account O_NONBLOCK"), honours O_NONBLOCK and ignores SPLICE_F_NONBLOCK.
+
+Should KCM (and TLS) follow TCP behaviour instead?
+
+Thanks,
+Michal
+
