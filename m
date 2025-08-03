@@ -1,134 +1,138 @@
-Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AC780C02
-	for <netdev@vger.kernel.org>; Sun,  3 Aug 2025 09:39:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CD71A23A0;
+	Sun,  3 Aug 2025 11:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754213971; cv=none; b=o1hUzmfst5YiV4d1ZRAO4KBcJHi0E8lSUxYm4D0IRkPwdDRW9Q30Whj2/+M8fsQsAO99T6Ge0olRVnCTlnN1Mml1bPln5H50ysOt0TK0+FiB/arcENzA6lNIN1xxiuL5wAlgA9XbOE/z6+QFUYnq+Xn7lwOmhihpQMDeD2Lin+E=
+	t=1754218895; cv=none; b=H3pYJa4OtofJkbpcRjG9DgaX1OQ9NysS+KnSNxQi0nfKio2A+bzygvPZs7jyh29WbhOoS/imcXijOAJKKAgCqa+Ew45QFgbrVr4n01MYF1+Lw+D4lu6LAArwZHS+KOmfgOk/6NoxxSN3RNyovPMri/pHwnltVhqTLCSyAv3r2qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754213971; c=relaxed/simple;
-	bh=me+MDMUhWRUOn6twry0ANbpGXGMjQncaO7/NSz6OS9k=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=jmKlPrCWquDayHWsUex3UdjApW89pF7EQyA1eA+lZNh0pF67L/vbulm9tee/rEL02CL6ueh+Gib+80zwtuGpyVMXfnT+1S9f04gQJlawSBWD1Li+ANQcz8emuh7COxVnvvYgY67heHarQNuYYHjyjBw8UsjrP28aKgCfF1YfCL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-88177d99827so36973039f.3
-        for <netdev@vger.kernel.org>; Sun, 03 Aug 2025 02:39:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754213969; x=1754818769;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U0LWSoiEUjnDRuPcXhZsxJI/YVjUTAHuiFyMIyM36SQ=;
-        b=Zrhq9L59iZFuYZy+Qu5upogKA2p+KpRiwrYQprQokwobb6uLzpYOKvN+qHDDD5hHDB
-         KimR5h1NYTFK06wm8D5UIV5dEC1iKAbsemkR2ux1nVUmsdq2m3mRLQD+6my7LVem0qm5
-         06b8ZBbqPFg92Rvo1RVOudL4SBd7Osd19wQ/bCqnAO39lHgbgqXVbwEMHD4U+h9LhuaR
-         h7lkw37OuHh/bkzLY89RPhbTNOrnnxHKrEiKss9ihP2y2t09JYUOFSyWOxPG+4ipegB3
-         a6kd+7mnr1Olvf+aFrfBzWAHcr4CzCQ8ACnxA7KcocxGK+IjDhSDU0Io67v7QEah9r7M
-         kkNw==
-X-Forwarded-Encrypted: i=1; AJvYcCXoQ7s94ZyISNf1j96uiJ9wFmrMvl1flspPM3rLbUw8y0QSuj+WokL7eVASXp6IW0AL9LgdrrU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxk1xjr7Uyd/WsjjsZjNIY518+8q7p1ZuWREYnMNnSDyY8UTQP1
-	IZV8uckllQaPYCFvnrD8u4O41uLf5neeUpdJ7VATRSgUTk+NPFHiWQOISL9bGuwdNnjoA1k7R0e
-	ZCHKqt8L2VqTu/Vr15jnpR9FOPuQ4RxLhBMbmjYpCMNalCtDnefZSYarKoxk=
-X-Google-Smtp-Source: AGHT+IFlNsObHPzdzv2suMhd+3PPDPLZO8uF5MVEeqlO7lgZa0M6JGbqSTtaoNkHax1Z8ldtkc+MQUSdBwQDdEgHF+wtCm1FAJux
+	s=arc-20240116; t=1754218895; c=relaxed/simple;
+	bh=9goie4QyYD18nkFJX9+MZcf29IRPC7X5jhHQ2SBUXEE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OqeE2Dby2ZQDodQODHU28B8yvRQsN8oC4FuxJv8vLbTQPlrYnXJbxdYvOTxLVDetMOQOvnpApAQbgEcjGv6tDM2RUgiPJgCDD+bmj4lMmpAtDTM2mfMJiQyTJASOTNyv1ogu/QUkmItbYWkjQHqed/aPnyV0qqPFiWbY4UEPdQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=A1ffEkyk; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="A1ffEkyk"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 573AtQp9002870;
+	Sun, 3 Aug 2025 11:01:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=1LNv8sdwg04
+	CjjNcXC1Hqet9wOlaCl6upGSEGzms50Y=; b=A1ffEkykmg2jYhoCQq9C9KmiFY1
+	ArPhXMmlyu4+L/cd7jrcso3DDpC7LclwCvGbnNV9tzGTZPnFbTgOCoJusSDXaQUc
+	FS59cA3HDPztd3KbehyeF+D6V7NCjm/q9OSeeiOdK8InTUmy/A6oPm6f+BN0+Pa3
+	rc+dQhWChV1+ekT4yqff3EMjBtFjf5t186mlutIRjHWxmjh+PA2l42DrGoCS9eRq
+	Zfu/rSzPISY58dG2m5LN0WA3XJfx/PHq7EOM20ph1b6uPdceorjSDHvc+mTt9+KX
+	+x8lA/EFW5bt3Ufi50+JrS0K+/tFpN2yVYcv8cI9MzC4NKQX46DsTDws5/A==
+Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 489a0m27r7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 03 Aug 2025 11:01:23 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 573B1Jwq015299;
+	Sun, 3 Aug 2025 11:01:20 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 489brke03s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 03 Aug 2025 11:01:19 +0000
+Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 573B1Jpf015274;
+	Sun, 3 Aug 2025 11:01:19 GMT
+Received: from hu-devc-hyd-u22-c.qualcomm.com (hu-wasimn-hyd.qualcomm.com [10.147.246.180])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 573B1JJK015271
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 03 Aug 2025 11:01:19 +0000
+Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 3944840)
+	id 772D05D7; Sun,  3 Aug 2025 16:31:18 +0530 (+0530)
+From: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Richard Cochran <richardcochran@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        kernel@oss.qualcomm.com, Wasim Nazir <wasim.nazir@oss.qualcomm.com>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v2 1/8] arm64: dts: qcom: Rename sa8775p SoC to "lemans"
+Date: Sun,  3 Aug 2025 16:31:05 +0530
+Message-ID: <20250803110113.401927-2-wasim.nazir@oss.qualcomm.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250803110113.401927-1-wasim.nazir@oss.qualcomm.com>
+References: <20250803110113.401927-1-wasim.nazir@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:26ca:b0:87c:1d65:3aeb with SMTP id
- ca18e2360f4ac-88168318805mr1125317139f.2.1754213969260; Sun, 03 Aug 2025
- 02:39:29 -0700 (PDT)
-Date: Sun, 03 Aug 2025 02:39:29 -0700
-In-Reply-To: <6880f58e.050a0220.248954.0001.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <688f2e51.050a0220.1fc43d.0002.GAE@google.com>
-Subject: Re: [syzbot] [tipc?] KMSAN: uninit-value in tipc_rcv (2)
-From: syzbot <syzbot+9a4fbb77c9d4aacd3388@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	jmaloy@redhat.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
-	tipc-discussion@lists.sourceforge.net
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=JOM7s9Kb c=1 sm=1 tr=0 ts=688f4183 cx=c_pps
+ a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=2OwXVqhp2XgA:10 a=EUspDBNiAAAA:8 a=KKAkSRfTAAAA:8 a=jOAJb6FKr1HTawZlcaoA:9
+ a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: WjC5o65nsfkIYL9sN29S8mK05440cLRc
+X-Proofpoint-ORIG-GUID: WjC5o65nsfkIYL9sN29S8mK05440cLRc
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAzMDA3MyBTYWx0ZWRfX5IFqfkOEbhYI
+ UTaK1Yd2MYaSiYOzPQ1e5fOvgwwFoIgT/1rD3g78HkDzZbEGvHFStj9xOlEZ+SQqI29XNKZLYNQ
+ s2kUKUkJF+LwQSdP/YgXBYM7FhXXrBxO6iftmxeLv7bT7CwACIzWUvu4g8zlbYHJGrLAoHi0ysx
+ LkMIGG7Wsut87a2MS7fkSRvy7tu4PXJX7n6DnCZld0Qji6zTwIzAF7HfmfeXOMi4PjKD0IRH3Pk
+ ZVZnMoNN2m05Q7XCaLOYrdLNUEysDMPPMG2cuwRTp7eijJNPt+OVxSIAFH2LoowK8EPpRMZHIkQ
+ PRKZKk5oWa2eb5wIlXnbkju89QQaFg0LpVG57BvRXvZzN+PB23HKOS9u0bWOnswE9xzHDpRhfhO
+ Mvz46651nGXd1E4xGWb15+OzzuxNLpV8VyteQlrOpd28fiFGMHptIdb0wFoerhfQhzcDNaZO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-03_03,2025-08-01_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0 suspectscore=0 mlxlogscore=999 spamscore=0
+ clxscore=1011 priorityscore=1501 malwarescore=0 lowpriorityscore=0 mlxscore=0
+ impostorscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2508030073
 
-syzbot has found a reproducer for the following issue on:
+SA8775P, QCS9100 and QCS9075 are all variants of the same die,
+collectively referred to as lemans. Most notably, the last of them
+has the SAIL (Safety Island) fused off, but remains identical
+otherwise.
 
-HEAD commit:    89748acdf226 Merge tag 'drm-next-2025-08-01' of https://gi..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=1395bcf0580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=7ff65239b4835001
-dashboard link: https://syzkaller.appspot.com/bug?extid=9a4fbb77c9d4aacd3388
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1625ff82580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=131bb834580000
+In an effort to streamline the codebase, rename the SoC DTSI, moving
+away from less meaningful numerical model identifiers.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/ce090dd92dc2/disk-89748acd.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/32b5903a7759/vmlinux-89748acd.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/dc68a867773d/bzImage-89748acd.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+9a4fbb77c9d4aacd3388@syzkaller.appspotmail.com
-
-tipc: Started in network mode
-tipc: Node identity 4689370d27fe, cluster identity 4711
-tipc: Enabled bearer <eth:syzkaller0>, priority 0
-=====================================================
-BUG: KMSAN: uninit-value in tipc_rcv+0x17fa/0x1ea0 net/tipc/node.c:2132
- tipc_rcv+0x17fa/0x1ea0 net/tipc/node.c:2132
- tipc_l2_rcv_msg+0x213/0x320 net/tipc/bearer.c:668
- __netif_receive_skb_list_ptype net/core/dev.c:6027 [inline]
- __netif_receive_skb_list_core+0x133b/0x16b0 net/core/dev.c:6069
- __netif_receive_skb_list net/core/dev.c:6121 [inline]
- netif_receive_skb_list_internal+0xee7/0x1530 net/core/dev.c:6212
- gro_normal_list include/net/gro.h:532 [inline]
- gro_flush_normal include/net/gro.h:540 [inline]
- napi_complete_done+0x3fb/0x7d0 net/core/dev.c:6581
- napi_complete include/linux/netdevice.h:589 [inline]
- tun_get_user+0x4c0d/0x6ca0 drivers/net/tun.c:1921
- tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1996
- do_iter_readv_writev+0x947/0xba0 fs/read_write.c:-1
- vfs_writev+0x52a/0x1500 fs/read_write.c:1057
- do_writev+0x1b5/0x580 fs/read_write.c:1103
- __do_sys_writev fs/read_write.c:1171 [inline]
- __se_sys_writev fs/read_write.c:1168 [inline]
- __x64_sys_writev+0x99/0xf0 fs/read_write.c:1168
- x64_sys_call+0x24b1/0x3e20 arch/x86/include/generated/asm/syscalls_64.h:21
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:4186 [inline]
- slab_alloc_node mm/slub.c:4229 [inline]
- kmem_cache_alloc_node_noprof+0x818/0xf00 mm/slub.c:4281
- kmalloc_reserve+0x13c/0x4b0 net/core/skbuff.c:578
- __alloc_skb+0x347/0x7d0 net/core/skbuff.c:669
- napi_alloc_skb+0xc1/0x740 net/core/skbuff.c:811
- napi_get_frags+0xab/0x250 net/core/gro.c:673
- tun_napi_alloc_frags drivers/net/tun.c:1404 [inline]
- tun_get_user+0x134f/0x6ca0 drivers/net/tun.c:1784
- tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1996
- do_iter_readv_writev+0x947/0xba0 fs/read_write.c:-1
- vfs_writev+0x52a/0x1500 fs/read_write.c:1057
- do_writev+0x1b5/0x580 fs/read_write.c:1103
- __do_sys_writev fs/read_write.c:1171 [inline]
- __se_sys_writev fs/read_write.c:1168 [inline]
- __x64_sys_writev+0x99/0xf0 fs/read_write.c:1168
- x64_sys_call+0x24b1/0x3e20 arch/x86/include/generated/asm/syscalls_64.h:21
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-CPU: 1 UID: 0 PID: 5808 Comm: syz-executor123 Not tainted 6.16.0-syzkaller-10499-g89748acdf226 #0 PREEMPT(none) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-=====================================================
-
-
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Nacked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+ arch/arm64/boot/dts/qcom/{sa8775p.dtsi => lemans.dtsi} | 0
+ arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi             | 2 +-
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ rename arch/arm64/boot/dts/qcom/{sa8775p.dtsi => lemans.dtsi} (100%)
+
+diff --git a/arch/arm64/boot/dts/qcom/sa8775p.dtsi b/arch/arm64/boot/dts/qcom/lemans.dtsi
+similarity index 100%
+rename from arch/arm64/boot/dts/qcom/sa8775p.dtsi
+rename to arch/arm64/boot/dts/qcom/lemans.dtsi
+diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
+index 63b3031cfcc1..bcd284c0f939 100644
+--- a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
++++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
+@@ -8,7 +8,7 @@
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+
+-#include "sa8775p.dtsi"
++#include "lemans.dtsi"
+ #include "sa8775p-pmics.dtsi"
+
+ / {
+--
+2.50.1
+
