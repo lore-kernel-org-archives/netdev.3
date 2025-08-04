@@ -1,202 +1,137 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747161DE2DE
-	for <netdev@vger.kernel.org>; Mon,  4 Aug 2025 09:58:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB16C1DE2DE;
+	Mon,  4 Aug 2025 09:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754301517; cv=none; b=V5kdhbtT0HHplyunHSPMNptJit5nJ6TAMCuDmnuIOYuvqf0AUVtmXij59wTe9o6OZzXJfYtYMXWnz17EOMAxnOaba9009laoaAB4jPRnYjdmF+y4yUj8Io1IpBP8IMZ0x4MvOIBm1ZfZUtzl5bj9cJPT7ob5xxHdpUSWpfQTI7Y=
+	t=1754301542; cv=none; b=gRv/KlqZpsr7J4Y+XbK/FbdhGM3rNI86MrcZBIwPGaflBZ/PfEjxdOortv8AH6TxOCH/SZw27oOlCmFAzLB6QM4A3P9gFVKIO3OTzBwPCaC5eJZHflP67GtIc1D3VoSiBZlFOAMnVT8RRFAMO6zcMgvy/+3LbeptsgulRt0cNUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754301517; c=relaxed/simple;
-	bh=2pgtrcDSEmLRsepPdNJTXis26cRpz8jrYFm437WcEOw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OvBsF/SDwPJseNGxc8O4qDupLr1oWmAlXJn8f80a7oXytO3kCLL2zGaVeyt7/TP5l6sW8/snuXGV0wey0x9l77Ba5hS0M3D41rvEgahLWrtvh6/FXcOe+mdKX01kjAGp8wWub4LbRDAcf6QKmnj+Pr00pSZr2GY3HZbddCbzs3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z8j2gtI5; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1754301542; c=relaxed/simple;
+	bh=PfXG0y/uT6Sh3+8w9sEkgBSv0GsvkI9O3hS4R2wxk5c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mZWtnGlxlHgv7GPZlsp4g5gRVDQ0Zq9sGvV9m9dvO0GJHx/mwXtukzs9VAYdHnQnb1EdDd4/bFPyB3v2idp9cHSCVyRMcgekQMURZ5nW5SRhatVc8L87JD+lvviF0puWifWLP1tZoRMiZxCHZelEkAyVjR3XJ+a7WWE+1C91F9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s6SrOArQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z8j2gtI5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754301515; x=1785837515;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=2pgtrcDSEmLRsepPdNJTXis26cRpz8jrYFm437WcEOw=;
-  b=Z8j2gtI5kXfNLSwgUhPsCTsKIMduL8rFnlLNp5hOYOiHJSxO21dIjIaS
-   uRLOxJaR5Y6Z6ESAj/zOzBfgoxMH/KccPQDVY3l1c2AK85pgDQ+CjzvUn
-   uvleqEsTet1f3yJX0uut4d1RfOnMH87vTUBADGqIppIoFUm5WHLs4XKH6
-   jgPSawSekp57O+2D9AIYcmmd0sFvbBJeaVJ5DosJzPQ4C7VCqpas/sBz+
-   J2GZ6L3nfjQaMQt7SYr0sBc/KueNrioIr/UrvwydXfSYEF50zdXkXvs3C
-   SM3LSfMMK/Gr1cbSl52MD2R5LTmM13F6DM9S90INTgt6JKPJNC89nfzmL
-   A==;
-X-CSE-ConnectionGUID: CVrYg8VESSuYMTctstcxkQ==
-X-CSE-MsgGUID: +hwHnlcnThWtqbXZ2bdNSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11511"; a="79114157"
-X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
-   d="scan'208";a="79114157"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2025 02:58:35 -0700
-X-CSE-ConnectionGUID: 87q1Cmi0SSKdY643tgYUsQ==
-X-CSE-MsgGUID: E2tetukrRWCq1CzHSeDnMA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
-   d="scan'208";a="168304594"
-Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by fmviesa003.fm.intel.com with ESMTP; 04 Aug 2025 02:58:32 -0700
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: [PATCH iwl-next v2] ixgbe: reduce number of reads when getting OROM data
-Date: Mon,  4 Aug 2025 11:41:56 +0200
-Message-Id: <20250804094156.1690216-1-jedrzej.jagielski@intel.com>
-X-Mailer: git-send-email 2.31.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s6SrOArQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FEBC4CEE7;
+	Mon,  4 Aug 2025 09:58:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754301541;
+	bh=PfXG0y/uT6Sh3+8w9sEkgBSv0GsvkI9O3hS4R2wxk5c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=s6SrOArQ0CHnr6400POZE1gBYZasggm0ND1DooTqCNLVBptAixZYR0OvwoDc2f2GX
+	 1kAZOip4FQj7Qw3UwtihwAbTeIkx+SPKSsNOU/POTWUepXrErmXlTWBZiINznFOqfM
+	 j2JlXzPWEtjCJ6iP0Pkw1144/3lb7Q8ky1WU8dh1TvKaangib30XIykl5kA2S0A7HC
+	 F9aMxWck1Q+ytjovgVjnAr/EdbofLjOUSvf0tyqsD5TWAT7Fa3kkVuXPK074z6YGxL
+	 UmCoAdx/JoyLQ6tPedqoQuE7Qptc0QsT8qKZ6XNA+EjewErauMrOAs+MB8vNy6uFr3
+	 BvUMt/VcwYFjA==
+Message-ID: <88a51699-e913-4dba-992d-e923509ec754@kernel.org>
+Date: Mon, 4 Aug 2025 11:58:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net] selftests: net: packetdrill: xfail all problems on
+ slow machines
+Content-Language: en-GB, fr-BE
+To: Jakub Kicinski <kuba@kernel.org>, willemb@google.com
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, davem@davemloft.net
+References: <20250801181638.2483531-1-kuba@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20250801181638.2483531-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Currently, during locating the CIVD section, the ixgbe driver loops
-over the OROM area and at each iteration reads only OROM-datastruct-size
-amount of data. This results in many small reads and is inefficient.
+Hi Jakub, Willem,
 
-Optimize this by reading the entire OROM bank into memory once before
-entering the loop. This significantly reduces the probing time.
+On 01/08/2025 20:16, Jakub Kicinski wrote:
+> We keep seeing flakes on packetdrill on debug kernels, while
+> non-debug kernels are stable, not a single flake in 200 runs.
+> Time to give up, debug kernels appear to suffer from 10msec
+> latency spikes and any timing-sensitive test is bound to flake.
 
-Without this patch probing time may exceed over 25s, whereas with this
-patch applied avrege time of probe is not greter than 5s.
+Thank you for the patch!
 
-without the patch:
-[14:12:22] ixgbe: Copyright (c) 1999-2016 Intel Corporation.
-[14:12:25] ixgbe 0000:21:00.0: Multiqueue Enabled: Rx Queue count = 63, Tx Queue count = 63 XDP Queue count = 0
-[14:12:25] ixgbe 0000:21:00.0: 63.012 Gb/s available PCIe bandwidth (16.0 GT/s PCIe x4 link)
-[14:12:26] ixgbe 0000:21:00.0: MAC: 7, PHY: 27, PBA No: N55484-001
-[14:12:26] ixgbe 0000:21:00.0: 20:3a:43:09:3a:12
-[14:12:26] ixgbe 0000:21:00.0: Intel(R) 10 Gigabit Network Connection
-[14:12:50] ixgbe 0000:21:00.0 ens2f0np0: renamed from eth0
+Another solution might be to increase the tolerance, but I don't think
+it will fix all issues. I quickly looked at the last 100 runs, and I
+think most failures might be fixed by a higher tolerance, e.g.
 
-with the patch:
-[14:18:18] ixgbe: Copyright (c) 1999-2016 Intel Corporation.
-[14:18:19] ixgbe 0000:21:00.0: Multiqueue Enabled: Rx Queue count = 63, Tx Queue count = 63 XDP Queue count = 0
-[14:18:19] ixgbe 0000:21:00.0: 63.012 Gb/s available PCIe bandwidth (16.0 GT/s PCIe x4 link)
-[14:18:19] ixgbe 0000:21:00.0: MAC: 7, PHY: 27, PBA No: N55484-001
-[14:18:19] ixgbe 0000:21:00.0: 20:3a:43:09:3a:12
-[14:18:19] ixgbe 0000:21:00.0: Intel(R) 10 Gigabit Network Connection
-[14:18:22] ixgbe 0000:21:00.0 ens2f0np0: renamed from eth0
+> # tcp_ooo-before-and-after-accept.pkt:19: timing error: expected inbound packet at 0.101619 sec but happened at 0.115894 sec; tolerance 0.014000 sec
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
----
-v2: extend the commit msg; minor code tweaks
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 59 +++++++++++++------
- 1 file changed, 40 insertions(+), 19 deletions(-)
+(0.275ms above the limit!)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index 87b03c1992a8..db01b088e4a1 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -3006,50 +3006,71 @@ static int ixgbe_get_nvm_srev(struct ixgbe_hw *hw,
-  * Searches through the Option ROM flash contents to locate the CIVD data for
-  * the image.
-  *
-- * Return: the exit code of the operation.
-+ * Return: -ENOMEM when cannot allocate memory, -EDOM for checksum violation,
-+ *	   -ENODATA when cannot find proper data, -EIO for faulty read or
-+ *	   0 on success.
-+ *
-+ *	   On success @civd stores collected data.
-  */
- static int
- ixgbe_get_orom_civd_data(struct ixgbe_hw *hw, enum ixgbe_bank_select bank,
- 			 struct ixgbe_orom_civd_info *civd)
- {
--	struct ixgbe_orom_civd_info tmp;
-+	u32 orom_size = hw->flash.banks.orom_size;
-+	u8 *orom_data;
- 	u32 offset;
- 	int err;
- 
-+	orom_data = kzalloc(orom_size, GFP_KERNEL);
-+	if (!orom_data)
-+		return -ENOMEM;
-+
-+	err = ixgbe_read_flash_module(hw, bank,
-+				      IXGBE_E610_SR_1ST_OROM_BANK_PTR, 0,
-+				      orom_data, orom_size);
-+	if (err) {
-+		err = -EIO;
-+		goto cleanup;
-+	}
-+
- 	/* The CIVD section is located in the Option ROM aligned to 512 bytes.
- 	 * The first 4 bytes must contain the ASCII characters "$CIV".
- 	 * A simple modulo 256 sum of all of the bytes of the structure must
- 	 * equal 0.
- 	 */
--	for (offset = 0; (offset + SZ_512) <= hw->flash.banks.orom_size;
--	     offset += SZ_512) {
-+	for (offset = 0; offset + SZ_512 <= orom_size; offset += SZ_512) {
-+		struct ixgbe_orom_civd_info *tmp;
- 		u8 sum = 0;
- 		u32 i;
- 
--		err = ixgbe_read_flash_module(hw, bank,
--					      IXGBE_E610_SR_1ST_OROM_BANK_PTR,
--					      offset,
--					      (u8 *)&tmp, sizeof(tmp));
--		if (err)
--			return err;
-+		BUILD_BUG_ON(sizeof(*tmp) > SZ_512);
-+
-+		tmp = (struct ixgbe_orom_civd_info *)&orom_data[offset];
- 
- 		/* Skip forward until we find a matching signature */
--		if (memcmp(IXGBE_OROM_CIV_SIGNATURE, tmp.signature,
--			   sizeof(tmp.signature)))
-+		if (memcmp(IXGBE_OROM_CIV_SIGNATURE, tmp->signature,
-+			   sizeof(tmp->signature)))
- 			continue;
- 
- 		/* Verify that the simple checksum is zero */
--		for (i = 0; i < sizeof(tmp); i++)
--			sum += ((u8 *)&tmp)[i];
-+		for (i = 0; i < sizeof(*tmp); i++)
-+			sum += ((u8 *)tmp)[i];
-+
-+		if (sum) {
-+			err = -EDOM;
-+			goto cleanup;
-+		}
- 
--		if (sum)
--			return -EDOM;
-+		*civd = *tmp;
-+		err = 0;
- 
--		*civd = tmp;
--		return 0;
-+		goto cleanup;
- 	}
- 
--	return -ENODATA;
-+	err = -ENODATA;
-+cleanup:
-+	kfree(orom_data);
-+	return err;
- }
- 
- /**
+On MPTCP, we used to have a very high tolerance with debug kernels
+(>0.5s) when public CIs were very limited in terms of CPU resources. I
+guess having a tolerance of 0.1s would be enough, but for these MPTCP
+packetdrill tests, I put 0.2s for the tolerance with a debug kernel,
+just to be on the safe side.
+
+Still, I think increasing the tolerance would not fix all issues. On
+MPTCP side, the latency introduced by debug kernel caused unexpected
+retransmissions due to too low RTO. I took the time to make sure
+injected packets were always done with enough delay, but with the TCP
+packetdrill tests here, it is possibly not enough to do that when I look
+at some recent errors, e.g.
+
+> tcp_zerocopy_batch.pkt:26: error handling packet: live packet payload: expected 4000 bytes vs actual 5000 bytes
+At the end, and as previously mentioned, these adaptations for debug
+kernel are perhaps not worth it: in this environment, it is probably
+enough to ignore packetdrill results and focus on kernel warnings.
+
+Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
+Cheers,
+Matt
 -- 
-2.31.1
+Sponsored by the NGI0 Core fund.
 
