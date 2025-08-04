@@ -1,149 +1,272 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9AC24337D;
-	Mon,  4 Aug 2025 09:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754299682; cv=none; b=hJV7IpZIDf2rdeTJ9+3Dgw7p8alAL60OTR3Sg+heaQ+QCtoDz+Gb7+kxzag8UheIkquqeMcnd9MAQP3OTVRz8z9bYcb1qNa1Vuir0j+iQDNeSSXKeLImKSoNjXm/QpiR0OyeNkMSF/mjW9fIdkKFKHM/ZUYyxiIADhVd94Lwcjk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754299682; c=relaxed/simple;
-	bh=LH7EqOf3AoVilTrkyp113dp+uJr0ORzeMHBnEtkb4Fw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o8e0j/Yws2brEOme4N7KiMdMYSFUoCFwvJiA/SDWu0Qg8eB1tNp3P18o+2TvmjbkXJST++1AB+9D+ZrzRSMb2pM9cDak5rsDSf/QyNbEEESR4r3cH273K++vH9KAOElbgNdgxIDPr18Abtgv4hQ0PnX/kwvUkjjh66BFZAyTZng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=SL5z7Hhr; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2038822DF95
+	for <netdev@vger.kernel.org>; Mon,  4 Aug 2025 09:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754299785; cv=fail; b=LBzrrhiknQaEJkB8r/mhOlUzzf0zLF0fGgWfEhiFxiIH9UpYo/X4Dnxxf5CJMqRVpiuAxI5+vHqOjeI+fAy0uVHhX2oAoz/I5AUzaRnYjqS/i3MAxO+fW/9wbHBwBYVA5zVWvtQYmYYPpd7Qk98jDWf+GV20BBhRceiIBv6THv4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754299785; c=relaxed/simple;
+	bh=PiKr6ODUIshh5maj28mgm39z5AIuTDJP7XiAYKBS8uk=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hQWmsjGf40VsnBjXe/cPaPnUc6wpJc1/37g5pSyMsmmOcBXXIv67BeUwa4jCH3Boeex3SXn+PdfXIEwj1BEZiSfkJ/s7cYgQ47Z2jgauJS1z+fZqpt1Xi1l1fLxlPIxFDm4LoWG6CMtfY6vMrN6ZdgrWzmYOBFCdDatbh4Q4phQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FjWR89q4; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="SL5z7Hhr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1754299678;
-	bh=LH7EqOf3AoVilTrkyp113dp+uJr0ORzeMHBnEtkb4Fw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SL5z7HhrZCD+bHt6ys6TBTbVFUWFxEV5hkIFT1afE5vLWkcsGZfrwaSoNKmeP/Z0s
-	 WVxm0wU/qm+3r1lr/SF9I5k9ZCsNBI9vnsICfAPNHjiJbLR19PHgzbe786qzU+y1Fq
-	 yZ3fE6eQbBCOyNbJROfvLyTk6VNzvPuaiNaTX7K2MAYBx83M4qkipSvBwniPwV1zYI
-	 a2PlrbQVA1TryfGxwW6edcgmnsYBwsX6Um2fSk4SQ3YK0PZWkbKigly99uIlu3x/w+
-	 yd0KXLZlT29zX74Xzm3t4dyEWRx8fU7+eU/Uy7GTN17BxJrePPiwVoRA4SqGdgJjcV
-	 8Ho6rf6+rUSaw==
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 18F9617E0B8C;
-	Mon,  4 Aug 2025 11:27:57 +0200 (CEST)
-Message-ID: <1db77784-a59a-49bd-89b5-9e81e6d3bafc@collabora.com>
-Date: Mon, 4 Aug 2025 11:27:56 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FjWR89q4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754299784; x=1785835784;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=PiKr6ODUIshh5maj28mgm39z5AIuTDJP7XiAYKBS8uk=;
+  b=FjWR89q4XmWgk2vhA364eNT4SFVlGf043PgWQTE8q4HuvXkRVZsJuv1Q
+   WV+prPAw6o7HhjdoTj1Xofd1FEksrRl/MF3ikCJnIO465J83AaqMybWYk
+   GgsU43GZ7liq5YM+PxrxZCYk4vOWp03m5cK/r6RvqP5+tkssDxys7ahBq
+   ZWG5ozwvs+2f5IPW5SAIsCk+Q8/mPHQwUG8GYGFeiSxSs11/7Ta8iSzO7
+   DBOxbJiXh/wotGnYuyXK2R1VHazBAyDzgGagaUKrdzoGhTk2BTdeQiY1x
+   qDB1mH4G4VHGJqrGX6NX7OvZD4MTucYkd0NU0yvqAOh0gxQoszvfPxQyj
+   A==;
+X-CSE-ConnectionGUID: LMjHZ9sOT8CgGxn5Of4b7A==
+X-CSE-MsgGUID: 8B5EEYAtTOyq0+cm6uXddA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11511"; a="60371889"
+X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
+   d="scan'208";a="60371889"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2025 02:29:43 -0700
+X-CSE-ConnectionGUID: KPilSJwuT2mkFlfYRRMSDQ==
+X-CSE-MsgGUID: lLqTcuQxT8C4rLixKO3p6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
+   d="scan'208";a="164440799"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2025 02:29:43 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Mon, 4 Aug 2025 02:29:42 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Mon, 4 Aug 2025 02:29:42 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.58)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 4 Aug 2025 02:29:42 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BhPqOb9R3QZm2CEBPzcYmwHAbcajUikPlvkrsfdHEW2DE4kzw9CmThb3N8s8zZiNddLMX9s8h5o/cNVgM11r4crGaWqkdTyDtl3HHF1fhqg9LafdIkgUIcQmaX8HXH1VCdAwV4Gmej1jsAfOOb0a88+af/teasY7GX+ejSz0lBeZzBqPYRFpOgZc34WUD2OuHdjgyYYPZfWiYDT900fFImRD0vkOpa+yCLhxNRQY8SfIP+EMFPaD2WgvxyOE4BOjQeLzwujvQ74r3qmWscr3kpKdpLwh0UeK2opSnow/W3dJoWJjFRZ1yKi1q1VkXszlOEdFyHpm0DJ1o6CRDJ4dsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ktYOkgBP+qVk+BFu14IlmXnFMFfHJY1BohTw09WR1W8=;
+ b=yQz1NgOi1exc3vil5baAuhW6C8zUspvNST9nNtS08idPMtclekDQemwxTEDCQbdKIYiqhBZ+pXvZfh7SNdRuPBI1BGpF8/+W+UPERF90Q/gDnDWg2Q3hA2MpDClfPxZ0qQgcjPAqDJb4w7JrAoMnFxZQx9TgHjLHK5Sn3mQbMNdvPNIaG4gPmYnioE+qPEnjJROAqwJdrnh0pdzS4HQyatpQ+Xz/yvZKRlUmObblbSFDQHO/phYG8c+rMpKw00loutTK72n9rokAzmSAEh8pg7lMxOpoTe4WBOjwnsRIRCdpMRJs++wY6r9d+XdL+9viaGTDKWOfYmOdD/R0Hvb9Bw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com (2603:10b6:208:46d::9)
+ by DM3PR11MB8669.namprd11.prod.outlook.com (2603:10b6:0:14::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8989.20; Mon, 4 Aug 2025 09:29:41 +0000
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::15b2:ee05:2ae7:cfd6]) by MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::15b2:ee05:2ae7:cfd6%6]) with mapi id 15.20.8989.017; Mon, 4 Aug 2025
+ 09:29:41 +0000
+Message-ID: <cba05d39-7660-4b46-9e16-6e78a5bd68e9@intel.com>
+Date: Mon, 4 Aug 2025 11:29:36 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-net] ice: use fixed adapter index for E825C embedded
+ devices
+To: Jacob Keller <jacob.e.keller@intel.com>, Grzegorz Nitka
+	<grzegorz.nitka@intel.com>, Anthony Nguyen <anthony.l.nguyen@intel.com>
+CC: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>, Sergey Temerkhanov
+	<sergey.temerkhanov@intel.com>, <netdev@vger.kernel.org>, Aleksandr Loktionov
+	<aleksandr.loktionov@intel.com>
+References: <20250801-jk-fix-e825c-ice-adapter-v1-1-f8d4a579e992@intel.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Content-Language: en-US
+In-Reply-To: <20250801-jk-fix-e825c-ice-adapter-v1-1-f8d4a579e992@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DUZPR01CA0006.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:3c3::13) To MN6PR11MB8102.namprd11.prod.outlook.com
+ (2603:10b6:208:46d::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/27] dt-bindings: clock: mediatek: Describe MT8196
- clock controllers
-To: Krzysztof Kozlowski <krzk@kernel.org>, Laura Nao
- <laura.nao@collabora.com>, wenst@chromium.org
-Cc: conor+dt@kernel.org, devicetree@vger.kernel.org,
- guangjie.song@mediatek.com, kernel@collabora.com, krzk+dt@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
- matthias.bgg@gmail.com, mturquette@baylibre.com, netdev@vger.kernel.org,
- nfraprado@collabora.com, p.zabel@pengutronix.de, richardcochran@gmail.com,
- robh@kernel.org, sboyd@kernel.org
-References: <fbe7b083-bc3f-4156-8056-e45c9adcb607@kernel.org>
- <20250804083540.19099-1-laura.nao@collabora.com>
- <373f44c3-8a6a-4d52-ba6b-4c9484e2eac1@kernel.org>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <373f44c3-8a6a-4d52-ba6b-4c9484e2eac1@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN6PR11MB8102:EE_|DM3PR11MB8669:EE_
+X-MS-Office365-Filtering-Correlation-Id: a9a9531b-c39e-4993-5a4d-08ddd339705b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?b0prdktTLzBtenp2UFdqN0FQWVRrMnlJVkc4MnZrSE1wNHgrc3AvaXptOWp0?=
+ =?utf-8?B?cXRmZUxsbVJXZ2NBMDdzZUtUYVo2Y29iOEc3RzlpWGdFUVpkUUF5cUxabFdx?=
+ =?utf-8?B?TU9HRjFtbWVQdjV5V0VyT3Fpc3Jpc3dIcEs0MGlCeExTTlZmdUF5WlFQWGcz?=
+ =?utf-8?B?bGlWb1ppUHRuOHlYcTJKaDRMcGUyZGQ5QnJ5QWkvaFMxcGdicEpaTml0SHZD?=
+ =?utf-8?B?c3lVS2xlU0ZCdUdRS28rQktOTUhhdmlvZ0c3MXNwLzh1WGtxcWdyOEJnVVQ0?=
+ =?utf-8?B?U242bHlJTDd1ZjhwaUFxd3NMMHJ2S0lXU2pYNDAxKzJjby9FdHNFbVByNlBG?=
+ =?utf-8?B?TTlveEhVVVRHTFFQdk5nMVV2d213ZlVMdmJ5Q29TNFFTMk9pd3cyZDdBRmgv?=
+ =?utf-8?B?OWNkZ3dNWi9rVkdFVWNIbXJoSGNMZTVXT3Q1Q1cybmZxdXl5QzROV2NpbERF?=
+ =?utf-8?B?c3p0dSs1aXlpQ2I5TWdtNXo5bzRzMWFIS21Gc0NDdnhQYzczbklLKzZkRjRh?=
+ =?utf-8?B?aFc5QS9rTHhLZG5PT1BVeFRXY2dIVzYwQmI3Nmh3RXFVQ1BHelByOC9oNEJZ?=
+ =?utf-8?B?NXZrZzh0SkFEL0kvUFpUR3Fsc2Ricm9RclVBQ1VQNEZSajQzalhqWng5QSt1?=
+ =?utf-8?B?Y0tuQ1VqSzliMWN6ajNmNS9RMy9yYzZka3R0UTNZQ0Uyc0ZKd2VHSkdJVTND?=
+ =?utf-8?B?SXQ2UGNQbEdvekRMTVhQRXkvcFlEU2lJY2lMREhoMGZoMWoxUVNRY2I4ellz?=
+ =?utf-8?B?OEYxSUF2ZmlHdTF0cFM5SCtGNW9ZR0ZwbC9oaGgxc0krY2drcnROeGpRa01r?=
+ =?utf-8?B?YXNJRHkzdW14dkZXZkEzTjd4T282S1VJcHNielkyTm5lQW82OHE4V2Z1WnpY?=
+ =?utf-8?B?S3hiUDlUMjR6eldrRGo3anM3bDVUZ0c1eFV2bHhJQVEwaGwzaFNPOUU0ckpM?=
+ =?utf-8?B?TXg2eVJwU1BMZVJEVytERUFhVFdtK01URjZIYWt2YnYzcDdJNmc0N21BQ2pN?=
+ =?utf-8?B?aUJTNnkwMjAyMERuOE1PQmFlaFpNNDJhYXFBLzc4eWc5ZEdEOHVYaXJFVm5n?=
+ =?utf-8?B?RGxjR2wvL09hNmVTYnZxM3U1M2U2TjBzUDY1RkZwK1ZSamt0NVdXbEFNK0xF?=
+ =?utf-8?B?SlNUb3grY21uSnc0Sm9HVUNEbmg1NHErb2FRN0pYN3pQWGY4WkUzVjk4a3pk?=
+ =?utf-8?B?Rndadm5yZTZ2TVV3bC9sVldzT0lrdmtOQWp6eERXdnJlY2J2SEl0Q2d1Y1dL?=
+ =?utf-8?B?WENpbnZVazJSWSsxdkJUOFc0SVJSMEw0WE51bzdYV3puWG00R21mUi93aHYr?=
+ =?utf-8?B?YnJUeUVjeVc4bFNmQTZncVZlNXUxNkEvSUFOdXdKWTZZR29NZ0NSRnNpeEtJ?=
+ =?utf-8?B?SGx4dDFINDlzZnAwN3loYVNrZjFDSkFFc1JMbDA3ZUhRZkhKdlFmaFRqZjFy?=
+ =?utf-8?B?K3VsZ2tUNHpDZDh5V3Q3RVJudDZKYzQ4MDZ3b0o5V3dnb3Y4aFBDQTNybDVC?=
+ =?utf-8?B?emRPSlFyZ0RsamFXYVRMQVladTl1VHBTT2ZJWWdYc3hnV3ovOW1LTUtJM2RL?=
+ =?utf-8?B?OXFEUkV2L2JBeGVxVGh5ZEZ3U1hqcWxMSVVnYkVYTndZUTdlV1JTZElVUW9u?=
+ =?utf-8?B?TVRzelVFNWtkQXZ5dWFuL0pWdmg3TldQSWhTS0hjWU1ZNWNZUkpoNTNWY3gz?=
+ =?utf-8?B?QmlXNDBRMjV6VXVFakVEVFV0eGlDeHppVHB0WGxMMytneXkrSTN6QXI4RGxt?=
+ =?utf-8?B?dTRDSktvVnRwcnlNVXJxNm9KcDdoZlB5dWpocU9VZm9ZS092cFlDOVpzb1gv?=
+ =?utf-8?B?MUxCYmNWeUpqbnJiYURCV1NTWFRscDlCNzBWQWNRUXNSb2k5RWRvQ2EwTjJT?=
+ =?utf-8?B?TDVFRE9uZXBRTWtIeUg5MDBubGJNN1IxUEJXMXh6ZzJEN1I3amsrYUxFOTZT?=
+ =?utf-8?Q?Rj/I8j3ulGc=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8102.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b0hRRWFha2RCck82U3JEYkFYdTMzdit3a3k3Nml0Y2JTTWhyZUZoRnRrVk40?=
+ =?utf-8?B?TjZOeVllWTR2QXJ5anFweEdQWE1KdzF3N0ZXb2pBbC9JOW1vNktNUG5HbnVW?=
+ =?utf-8?B?UkZYdEgyU3hLOHdPMllqT2NkM2tkVit1M3FpcTJCTHRBUnhzbFQwTUpqY2hY?=
+ =?utf-8?B?MEhwQ1Y4d3Zxb21JOFFYOXZQd1R2YW5uRU1IT2dmZmZNUWY2b044aVpaVW9s?=
+ =?utf-8?B?Vzdmaml4ZnFZNXdhSWVqbGU3ZGxpbjJtVzFWVDdaaWE3a1JPUjNldldSNCtj?=
+ =?utf-8?B?YTYzc1pkQkhnc2V5R0VFQnRpQXhjNWFjY085cEpJU2ZIa0d6OExIa01GRHRq?=
+ =?utf-8?B?aVpvcCtQaThLTXJZSjV6bCtRVW5jdWs5ajlGdmNJenRqRXJYa2RCQkZEdWJP?=
+ =?utf-8?B?dC9VY3g2ZXJUYldZNFNNRU5xZTVuVCtFMlRJcTYxMUk5RzNpVFVvZDhwOEo4?=
+ =?utf-8?B?bW9NcmY0cmhJZ2I1bkwxTE0wVmJta1dEY3dJdUVac1lqQS9PVDRkWTBKa1My?=
+ =?utf-8?B?UHFvZThxSEhNVCtPT256T3FFd1N3alByUUY0RkY1bkRjd1V6SE5naVV5Z0FJ?=
+ =?utf-8?B?SmlodUdNdlZIN2FEd0o4UnA5OW0xK2lvUUxwNC9EeERUY2hhMzVmaks5Vm52?=
+ =?utf-8?B?S3BHVWd2M0RVeDlIZGNtb0ZsaXBjQ2QzZDJ5ZW9LZGlIUGp2RC9iaG5BUGFS?=
+ =?utf-8?B?bkxBNWVPQ3VCWXJmS3htbUZwdEk2YlgzelRsdzRnSVhpdllGSEJQL2hnb2dQ?=
+ =?utf-8?B?MXQrZ0lUb0YvcCtxTmFLNnkwQVhCTkpoZklIbEZKYkF0TjVGSWxnRTlrYy9Q?=
+ =?utf-8?B?N2IrV1JTMHRrbDY4SHkwdWJVQWFvaTNQa3puanJZclM2WDZjNnRjRWN4NEU5?=
+ =?utf-8?B?U1pybm1sZ2lIWlFpZ1BOZ2dhdmVKSEFWZ2FRQ05sTlhRb2xtN2daQm5HVGlh?=
+ =?utf-8?B?OVlmSkhGK01DQTcxN0RjV05sNTFjRGtGZ0Jqd2JMZlJoSlZzWnowM1dtV095?=
+ =?utf-8?B?RXdIZmZ2NEF3YS8rZ3RWL2x5SFVGdVoycXZ6YUNkc3ZCYkpacGVnZzFOci95?=
+ =?utf-8?B?OTBRRTl4T3pscXdWMGxncjY2TmJsU1dMcU5HRnBCcnhYWUkvc3V3aU9mUUpD?=
+ =?utf-8?B?RDJPNXl5MHZiVUdYY3BjQ3RxazltZllidkY2NVprK0lQZCtOT0xNaU9sWENv?=
+ =?utf-8?B?azZQZ09sa2NiQ0o5Y3VvU2UzcmFBdmlWRWN0dGczN01wVmQvdmJteldWcTF5?=
+ =?utf-8?B?RG1uemRrQkM4TlFuSU5Ja2VPbk5SWm5wZ2huVE5kQithL3dIa0I0OFoydDNw?=
+ =?utf-8?B?ajA2UVdNSEhuM1pjZ25DaXN1VWNTcFUxVjdIMVVJaHM0aTRCa3NFei93Y3Nn?=
+ =?utf-8?B?dXBCeHJlN1hjelR1K2poSVR4TW8xRERGTUdERUdHWGVRNWs5azRRVkYyQU1P?=
+ =?utf-8?B?WHQvNUtVaGNtb1pxT3ZWU2lqL2RKdy95TnpJQ0dOV3h3dUMzbUlWZW9MZGlR?=
+ =?utf-8?B?SlYyeC9Wdlpkekhud3FWVlkxSjN2MjA0Q2pWTmtyY2RlVGlCcmZmSHI1cGtQ?=
+ =?utf-8?B?eUtSeE9sNlZpZHM2WlBmeUlsQU5ULzdOL2VZTGxiNWxDbmJJeEdGdkVkTzBG?=
+ =?utf-8?B?WFA1cjBFVlIzRTFmaEtEdnJteGNZSkVnUERBQm1CMGxNa05RYXBEU1dSUEVK?=
+ =?utf-8?B?bjI3U2ZRcnhZK0tieEhIM0IybXUxMG5ZeVh0a3FaQk10UlpnbHNqNGg4dnFE?=
+ =?utf-8?B?VkQ4SzNIelp4T2FoZGlvanhDVFoweWVETUhoT0NFUVBncit3cDdHRFlnRVRG?=
+ =?utf-8?B?OTVjTTYwa3pDRWJmbUo4VCsyQUhUT2gxNEVkM0pOS2JZRWg2Z3JzWkY4OTgx?=
+ =?utf-8?B?eDIvUlQ0Rktyd2J1aXovR1Q2cHJML1pFenhGcGdHR0hldGFrQmZYZFE2ZmZp?=
+ =?utf-8?B?M1oyYlJxVkdEUk9rY2s3TUh4RkdsOUpCL1IrV0srTnVtMEJOODBZcUlHc2xh?=
+ =?utf-8?B?NUx1UWhNVnBZeXRTdHArVDgwN0ZXeE9Yc1RpSHgrUkRyZ21RU0FOUEhCY25w?=
+ =?utf-8?B?SFdVc2duQ29TdEd3RTk1RUhZZHZ2bXZnRXpJQTI5RnhWNUR0RkZkWTVIOGYv?=
+ =?utf-8?B?T1U4MVJ0akVubFJDdTQ5TE03VzMvYk9yRHhxcUpodnh5bi9zbTZ6NWh5akx3?=
+ =?utf-8?B?VXc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9a9531b-c39e-4993-5a4d-08ddd339705b
+X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8102.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2025 09:29:40.9389
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zUzsIfD1Qz67ZjPz/Oy6N2vNvaYEO/bgTu0GnIrbUrBnrSZ22FFag5pWSRtuWTYwUbPuZ7z9Y8OqOejitGAGam0J6IOh/vNZnk9ZQuv4Z+4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR11MB8669
+X-OriginatorOrg: intel.com
 
-Il 04/08/25 11:16, Krzysztof Kozlowski ha scritto:
-> On 04/08/2025 10:35, Laura Nao wrote:
->> Hi,
->>
->> On 8/3/25 10:17, Krzysztof Kozlowski wrote:
->>> On 01/08/2025 15:57, Rob Herring wrote:
->>>>> +  reg:
->>>>> +    maxItems: 1
->>>>> +
->>>>> +  '#clock-cells':
->>>>> +    const: 1
->>>>> +
->>>>> +  '#reset-cells':
->>>>> +    const: 1
->>>>> +    description:
->>>>> +      Reset lines for PEXTP0/1 and UFS blocks.
->>>>> +
->>>>> +  mediatek,hardware-voter:
->>>>> +    $ref: /schemas/types.yaml#/definitions/phandle
->>>>> +    description:
->>>>> +      On the MT8196 SoC, a Hardware Voter (HWV) backed by a fixed-function
->>>>> +      MCU manages clock and power domain control across the AP and other
->>>>> +      remote processors. By aggregating their votes, it ensures clocks are
->>>>> +      safely enabled/disabled and power domains are active before register
->>>>> +      access.
->>>>
->>>> I thought this was going away based on v2 discussion?
->>>
->>> Yes, I asked to drop it and do not include it in v3. There was also
->>> discussion clarifying review.
->>>
->>> I am really surprised that review meant nothing and code is still the same.
->>>
->>
->> This has been re-submitted as-is, following the outcome of the discussion
->> here: https://lore.kernel.org/all/242bf682-cf8f-4469-8a0b-9ec982095f04@collabora.com/
->>
->> We haven't found a viable alternative to the current approach so far, and
->> the thread outlines why other options don’t apply. I'm happy to continue
->> the discussion there if anyone has further suggestions or ideas on how
->> to address this.
->>
+On 8/2/25 00:27, Jacob Keller wrote:
+> The ice_adapter structure is used by the ice driver to connect multiple
+> physical functions of a device in software. It was introduced by
+> commit 0e2bddf9e5f9 ("ice: add ice_adapter for shared data across PFs on
+> the same NIC") and is primarily used for PTP support, as well as for
+> handling certain cross-PF synchronization.
 > 
-> And where is any of that resolution/new facts in the commit msg? You
-> must clearly reflect long discussions like that in the commit msg.
+> The original design of ice_adapter used PCI address information to
+> determine which devices should be connected. This was extended to support
+> E825C devices by commit fdb7f54700b1 ("ice: Initial support for E825C
+> hardware in ice_adapter"), which used the device ID for E825C devices
+> instead of the PCI address.
+> 
+> Later, commit 0093cb194a75 ("ice: use DSN instead of PCI BDF for
+> ice_adapter index") replaced the use of Bus/Device/Function addressing with
+> use of the device serial number.
+> 
+> E825C devices may appear in "Dual NAC" configuration which has multiple
+> physical devices tied to the same clock source and which need to use the
+> same ice_adapter. Unfortunately, each "NAC" has its own NVM which has its
+> own unique Device Serial Number. Thus, use of the DSN for connecting
+> ice_adapter does not work properly. It "worked" in the pre-production
+> systems because the DSN was not initialized on the test NVMs and all the
+> NACs had the same zero'd serial number.
+> 
+> Since we cannot rely on the DSN, lets fall back to the logic in the
+> original E825C support which used the device ID. This is safe for E825C
+> only because of the embedded nature of the device. It isn't a discreet
+> adapter that can be plugged into an arbitrary system. All E825C devices on
+> a given system are connected to the same clock source and need to be
+> configured through the same PTP clock.
+> 
+> To make this separation clear, reserve bit 63 of the 64-bit index values as
+> a "fixed index" indicator. Always clear this bit when using the device
+> serial number as an index.
+> 
+> For E825C, use a fixed value defined as the 0x579C E825C backplane device
+> ID bitwise ORed with the fixed index indicator. This is slightly different
+> than the original logic of just using the device ID directly. Doing so
+> prevents a potential issue with systems where only one of the NACs is
+> connected with an external PHY over SGMII. In that case, one NAC would
+> have the E825C_SGMII device ID, but the other would not.
+> 
+> Separate the determination of the full 64-bit index from the 32-bit
+> reduction logic. Provide both ice_adapter_index() and a wrapping
+> ice_adapter_xa_index() which handles reducing the index to a long on 32-bit
+> systems. As before, cache the full index value in the adapter structure to
+> warn about collisions.
 
-On that, I agree. That's a miss.
+thank you for the fix, I believe it is a very good solution with NVM
+not open for change
+
+It's nice that reserving one bit for special handling works also for
+32bit case (despite being xored with lower part of DSN), :)
+
+given BIT_ULL() fixed as you mentioned,
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
 > 
-> There was no objection from Chen to use clocks or power domains as I
-> requested.
-
-Sorry Krzysztof, but now I really think that you don't understand the basics of
-MediaTek SoCs and how they're split in hardware - and I'm sorry again, but to me
-it really looks like that you're not even trying to understand it.
-
-> The objection was about DUPLICATING interfaces or nodes.
-
-I don't see that duplication. The interface to each clock controller for each
-of the hardware subdomains of each controller is scattered all around the (broken
-by hardware and by concept, if you missed that in the discussion) HW Voter MMIO.
-
-There are multiple clock controllers in the hardware.
-Each of those has its own interface to the HWV.
-
-And there are some that require you to write to both its HWV interface and to the
-clock controller specific MMIO at the same time for the same operation. I explained
-that in the big discussion that Laura linked.
-
+> This fixes issues with E825C not initializing PTP on both NACs, due to
+> failure to connect the appropriate devices to the same ice_adapter.
 > 
-> And what was the resolution:
+> Fixes: 0093cb194a75 ("ice: use DSN instead of PCI BDF for ice_adapter index")
+> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+> Reviewed-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> ---
+> It turns out that using the device serial number does not work for E825C
+> boards. I spoke with the team involved in the NVM image generation, and its
+> not feasible at this point to change the process for generating the NVMs
+> for E825C. We're stuck with the case that E825C Dual-NAC boards will have
+> independent DSN for each NAC.
 > 
-> "Regarding that to be a single clock controller,"
-> 
-> So where is the clock controller? I still see HW voter!
-
-"especially the mux-gate clocks can't really be put in one single clock controller
-because to manage those we have to write to the HWV *and* to the clock controller
-MMIO"
-
-Clarifying that, "the clock controller" -> "each clock controller of each hardware
-subdomain" (not a single clock controller, excuse my bad wording).
-
-Regards,
-Angelo
+> As far as I can tell, the only suitable fallback is to rely on the embedded
+> nature of the E825C device. We know that all current systems with E825C
+> need to have their ice_adapter connected. There are no plans to build
+> platforms with multiple E825C devices. The E825C variant is not a discreet
+> board, so customers can't simply plug an extra in. Thus, this change
+> reverts back to using the device ID for E825C systems, instead of the
+> serial number.
