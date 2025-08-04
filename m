@@ -1,39 +1,36 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B349719D092;
-	Mon,  4 Aug 2025 13:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDCE2561B6;
+	Mon,  4 Aug 2025 13:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754315494; cv=none; b=S9EGmfaJSvMkjw1h1pmtprITL/cpgY2Fe7xh3XYR2A0ai+uDpdfFPvVoTTzYs1Zp/p6I0aY+IYoJMRdp/LfVqec3daPbYXdqmyfbtNu7SP0yJ41ePh1GLL2oDobWQVl9ixPW0WCDtjQbkrt372KWLH0jx3XOfBRZ0h1vSI+pPvM=
+	t=1754315541; cv=none; b=ad/L5FOGmD/QvbUMTH1RqpDSVxwGvEmA005Sxpo7aFZNUee2d2MMlAVbpPKiufqp8j2WhWpeKZVhXglu8w/lflPuuqcHU5Rt0+1gBtScQ09E3SWoHp4+6BgBA1/0vVgvoISDYGMXu3eK3XZOMTXRuctmmgdt5zkr7slztWkOh1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754315494; c=relaxed/simple;
-	bh=jIdmE7ufYQKltTHYqWAtzcP3HrpJ35HLEKyjmyXFQpI=;
+	s=arc-20240116; t=1754315541; c=relaxed/simple;
+	bh=LSlk7yWinC09D+iL0EDUON0SdTkkB1NWkqmmMCPn2qI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R149gKYsLsLNGRdPIlO0aD3tW/vF0xcieoFlCOE/plz/+vU2kOuRl6+/J3oHxkdaFE6gz2595G8RSLerQbAFd4RPKtyu+AcasfgXmvajYAcpcnq/5CAr24cSdDpWka+Llsbrh9d6iUWM2KOMknLs5VVXrnSmxjoLF79DF/lORQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cn1iVYZF; arc=none smtp.client-ip=217.70.178.249
+	 MIME-Version:Content-Type; b=WbDR1aeG5Z1jiwmG6dpDjdKIy8QdzGAD9bc56wqlvPTKP/CQcaNglHbj1EZsDdfxAAjM3OIRT8GplERPz0uhpbK0NVZWxgYLZm68FzjWN3FLAPDNEmes+PggGcZjzy/l3OUqja9FmLsg9QTqmtIA0LNW5YCcOkpr3rcHw/SJHmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NNvi50cl; arc=none smtp.client-ip=217.70.183.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cn1iVYZF"
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id B394658235D;
-	Mon,  4 Aug 2025 13:44:42 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E20CC205A4;
-	Mon,  4 Aug 2025 13:44:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NNvi50cl"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 98BA34433D;
+	Mon,  4 Aug 2025 13:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1754315075;
+	t=1754315536;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kgwV+fOXVrQs+Zt5dFjBh21EJNlqb8OXXzjZNjPngpM=;
-	b=cn1iVYZFX0jUTmSyC5w/5e6EI47N+q6Fu9FjRlF81cT9C1t3/qclIKDqXQuit6thzC2Dwm
-	/7Xjmv0Njv76DbeYwvS/4nUaWU2Hy7rai1AuKmW8DULAVF4f3XxHoKjgSTlYvT9DN7yDox
-	b8EVmhe2KkkAhZ43Sp1d2P5UndZa8g9iHRHIWspq8oi7Th+2FUmpRDvfMnq8G/ei4Z1VdU
-	jPAExvJF0VxlEE3ddGK4GfAZw6mkS6y0YRPkP27B96Y+00GWCOLFAiXvLILrFIGwFAc1cr
-	c5mTYnbNf7YL2B4aFohic47T3qfrgcWHmPm2BrPuRZxbvch9hDjSnAR9m9H8XA==
-Date: Mon, 4 Aug 2025 15:44:30 +0200
+	bh=7DQmSdmS10ku3Mj8ZiIsEojJy5LLBLfwoLeqcne2X2E=;
+	b=NNvi50cleUbVOezTY22Oc0ulUhDv6+C4iJsJgpAtogeSW9Y7PjeGSC2iQeoyQzGbOrEyeX
+	pO0Gcez42Ohh5eCd3eUBeT9gFDaO6psSUP0ozalh+MAKN4fm2KrtgjD/FUD8mfba+H09ae
+	1+xJjRCpOpDevJnU+rVf/UjRVsqEcKeC4ho7PzPVr82NHpDWD0EeGiEgHGpp1oVH4pXyBm
+	caaJ9SK4JeJfojBIrnwUM0SsrkOXbAnZKzBUt43pAGNFwoj8yZjaS0r9kAfIcRpB6boEXK
+	3lr5PksBGTklxXjt2b7darzuArzhI8PY+HsWCy/dLN5SXRADX8PmoGAmPyESOg==
+Date: Mon, 4 Aug 2025 15:52:13 +0200
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>
 Cc: davem@davemloft.net, netdev@vger.kernel.org,
@@ -53,13 +50,13 @@ Cc: davem@davemloft.net, netdev@vger.kernel.org,
  Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>, Romain
  Gantois <romain.gantois@bootlin.com>, Daniel Golle <daniel@makrotopia.org>,
  Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: Re: [PATCH net-next v10 05/15] net: phy: dp83822: Add support for
- phy_port representation
-Message-ID: <20250804154430.3896b385@fedora.home>
-In-Reply-To: <6721b691-bae8-4a91-b14b-276b14b89244@lunn.ch>
+Subject: Re: [PATCH net-next v10 09/15] net: phy: marvell: Support SFP
+ through phy_port interface
+Message-ID: <20250804155213.6bf01bb1@fedora.home>
+In-Reply-To: <4be84db1-7999-46a2-8157-68b8039a31cd@lunn.ch>
 References: <20250722121623.609732-1-maxime.chevallier@bootlin.com>
-	<20250722121623.609732-6-maxime.chevallier@bootlin.com>
-	<6721b691-bae8-4a91-b14b-276b14b89244@lunn.ch>
+	<20250722121623.609732-10-maxime.chevallier@bootlin.com>
+	<4be84db1-7999-46a2-8157-68b8039a31cd@lunn.ch>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -72,45 +69,20 @@ Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduuddvgeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeevledtvdevueehhfevhfelhfekveeftdfgiedufeffieeltddtgfefuefhueeknecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjedphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedtpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtp
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduuddvgeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeevledtvdevueehhfevhfelhfekveeftdfgiedufeffieeltddtgfefuefhueeknecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjedphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedtpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtp
  hhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhmshhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhm
 X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On Sat, 26 Jul 2025 22:50:08 +0200
+On Sat, 26 Jul 2025 23:13:02 +0200
 Andrew Lunn <andrew@lunn.ch> wrote:
 
-> > +#if IS_ENABLED(CONFIG_OF_MDIO)
-> > +		if (dp83822->fx_enabled && dp83822->fx_sd_enable)
-> > +			dp83822->fx_signal_det_low =
-> > +				device_property_present(&phydev->mdio.dev,
-> > +							"ti,link-loss-low");
-> > +
-> > +		/* ti,fiber-mode is still used for backwards compatibility, but
-> > +		 * has been replaced with the mdi node definition, see
-> > +		 * ethernet-port.yaml
-> > +		 */
-> > +		if (!dp83822->fx_enabled)
-> > +			dp83822->fx_enabled =
-> > +				device_property_present(&phydev->mdio.dev,
-> > +							"ti,fiber-mode");  
+> > -static int m88e1510_sfp_insert(void *upstream, const struct sfp_eeprom_id *id)
+> > +static int mv88e1510_port_configure_serdes(struct phy_port *port, bool enable,  
 > 
-> Could be my grep fu is broken but:
-> 
-> ~/linux$ grep -r fiber-mode arch/*
-> ~/linux$ 
-> 
-> So it does not even appear to be used. If it is not used, do we have
-> to consider backwards compatibility?
-> 
-> Maybe consider marking the property deprecated and point to the new
-> binding?
+> The naming convention in this driver is to use m88, not mv88.
 
-I'd love that :)
+Ah yes true... I'm used to Marvell code having mv_ prefixes everywhere.
 
-Let's mark it as deprecated then, I'll do that for the next iteration.
+Thanks,
 
 Maxime
-
-> 
-> 	Andrew
-
