@@ -1,36 +1,36 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF7926058D;
-	Mon,  4 Aug 2025 13:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BAC26A1D9;
+	Mon,  4 Aug 2025 13:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754314446; cv=none; b=mcCsm5hne73ncQEV/yKFSq/spzyN9iT90fBh6B+1cBhRAYxcnNfRfgXCMOhxlBYOWoTb33IfrMwQEqAH/5bdgtTitmP3yDqXHdJvo25CaCJB9SUXpS8YjQOZBqtTzRTvzlgFLuKel9yEGJ+CLRZVsAfU/MJVvB7+1ADaZ0YuVsc=
+	t=1754314928; cv=none; b=F7wq0vrDLhBkEg/qxUTDJb+X+3pG2XsNmTaNxnh4FIqt0H6kgeMaNkjVTLHO5FtiSL9Lj4otTFzw7DMQt3QFkijxWsctc4aydlEtb1/OBFY8Fd6tLQkwMrxm72XTR1z1Vk9Tind1CUHJP4/s6Br0s7zuVaLzFEfV7wD6WVMyqOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754314446; c=relaxed/simple;
-	bh=11wdTRrZtYzeH6eb9PhpkmebUR1B+lmtQaeXm6DqDbA=;
+	s=arc-20240116; t=1754314928; c=relaxed/simple;
+	bh=YXhfRhvXtFxI01iM0EMERkjNZ9aZv9R0KMlEu97i4Ik=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UaJYGn9PJkpmNzTSWOzAklbbVsodSsPRp28WKtbyobF9+bL5kNAF+60RQSzAFNl7gR5sz9k+nda/dPpu60ldKyMLlf4pLbVUalWox+QfFFuRMSZoGYpjjqgyqrzehooul9befIQ/I93SmgQSLYodJWYQ2XaXXnRwMa8ZPCzZsYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JAUh1LIj; arc=none smtp.client-ip=217.70.183.198
+	 MIME-Version:Content-Type; b=UThEotTaSFv7mTvJD6YfZbyezWR7bENueGyw59kQ1b/8xcKQop6L9/AKcmSESdRbtVVVEJaPO0480o8kJ4PcQJnwmhOA1g/emUG4I+E/vaA61KuTb+fYxQOUs09/9qMnz/AE2oHXA+ccWyMpxuD+vnUAk67VY7FZiZ790JqizCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jHS+AlRT; arc=none smtp.client-ip=217.70.183.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JAUh1LIj"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 23EB744278;
-	Mon,  4 Aug 2025 13:33:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jHS+AlRT"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D956D438D4;
+	Mon,  4 Aug 2025 13:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1754314440;
+	t=1754314923;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L3F19ni0D0rMQE6sBKRDx0Kq08dUhlD3d42RuDyW7RI=;
-	b=JAUh1LIjf6sGsOeF1M+6HCgaexWuinu/lk6NSlxbE3jGH4S88jLQU9gZfO1w8D7RWs93fj
-	jzkTPbtsGSWQFf+egVqwudIj/F6hANfSBIkTqtPA2GOgPtmgUI0veeF4GKl46le5yeQ5Do
-	9AI4hsZQ32HS/pnkncf9m5AVEUsbCgMDN5GONSwawocMO/mzk6MN9NoZ7nniKjF79jJr2n
-	OJru1HkcpnIeQKmRk5MEfzHpHUhuYJB7vP5sGLTMyY88+gyMibvYYhNjfEf1eQlGc9n/d8
-	C+xRQDPkZS34u4RTd1cvKmmRPIZ/lr+FvXzFH56cE/NT4824/vShpuFXkyWD+A==
-Date: Mon, 4 Aug 2025 15:33:53 +0200
+	bh=iTIRINgYoitHnaoAkXeOGbYRP3hdr9fcn0B1qbh2HyA=;
+	b=jHS+AlRT/xivxi8w6KVC4d7BOyw0a0dgZsgX3ZEe5gw7MPT2JoePgpFlx0mGhXRGGYjeJD
+	4V4WLk5m72CK5Cv96Bptp7YlKCve5UXkU/rF2uGZDPK3iOssi05yeSQClcUf9bT4SOF5I5
+	XhXXCTyjjM+NmxiEO/lFFQAmSousbTuoSTdq180BpubARulbWw3Tdd3jECazDhwhPuYxnH
+	C9OKxqDYfvwYOXdwxPl581LpcZuiW3U0RMabjsT8rNoB5IGHmisAxjZGfKcgGvj3DpCE2Y
+	g0uy/fOhfgVu5uirI/IQu6XMZoiTRzIXvmYwIzYx6i1ED/gltjuDRUja3ftPGA==
+Date: Mon, 4 Aug 2025 15:41:57 +0200
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>
 Cc: davem@davemloft.net, netdev@vger.kernel.org,
@@ -52,11 +52,11 @@ Cc: davem@davemloft.net, netdev@vger.kernel.org,
  Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 Subject: Re: [PATCH net-next v10 04/15] net: phy: Introduce PHY ports
  representation
-Message-ID: <20250804153353.1d83f8ab@fedora.home>
-In-Reply-To: <a915e167-1490-4a20-98a8-35b4e5c6c23c@lunn.ch>
+Message-ID: <20250804154157.4c507cf9@fedora.home>
+In-Reply-To: <bec1b52f-d33d-4088-9d88-3345ecd0fa69@lunn.ch>
 References: <20250722121623.609732-1-maxime.chevallier@bootlin.com>
 	<20250722121623.609732-5-maxime.chevallier@bootlin.com>
-	<a915e167-1490-4a20-98a8-35b4e5c6c23c@lunn.ch>
+	<bec1b52f-d33d-4088-9d88-3345ecd0fa69@lunn.ch>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
@@ -69,72 +69,42 @@ Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduuddvgeduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeevledtvdevueehhfevhfelhfekveeftdfgiedufeffieeltddtgfefuefhueeknecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjedphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedtpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtp
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduuddvgeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeevledtvdevueehhfevhfelhfekveeftdfgiedufeffieeltddtgfefuefhueeknecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjedphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedtpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtp
  hhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhmshhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhm
 X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On Sat, 26 Jul 2025 22:33:33 +0200
+On Sat, 26 Jul 2025 22:38:32 +0200
 Andrew Lunn <andrew@lunn.ch> wrote:
 
-> > +
-> > +/**
-> > + * phy_caps_medium_get_supported() - Returns linkmodes supported on a given medium
-> > + * @supported: After this call, contains all possible linkmodes on a given medium,
-> > + *	       and with the given number of lanes.  
-> 
-> Maybe nit picking, but maybe append:
-> 
-> , or less.
-> 
-> > +		/* For most cases, min_lanes == lanes, except for 10/100BaseT that work
-> > +		 * on 2 lanes but are compatible with 4 lanes mediums
-> > +		 */
-> > +		if (link_mode_params[i].mediums & BIT(medium) &&
-> > +		    link_mode_params[i].lanes >= lanes &&
-> > +		    link_mode_params[i].min_lanes <= lanes) {  
-> 
-> We should only care about min_lanes here. I don't think the
-> link_mode_params[i].lanes >= lanes is needed.
-> 
-> Maybe you can add a BUILD_BUG_ON() into the macro to ensure
-> min_lanes <= lanes?
-> 
-> > +struct phy_port *phy_of_parse_port(struct device_node *dn)
+> > +static int phy_default_setup_single_port(struct phy_device *phydev)
 > > +{
-> > +	struct fwnode_handle *fwnode = of_fwnode_handle(dn);
-> > +	enum ethtool_link_medium medium;
-> > +	struct phy_port *port;
-> > +	const char *med_str;
-> > +	u32 lanes, mediums = 0;
-> > +	int ret;
+> > +	struct phy_port *port = phy_port_alloc();
 > > +
-> > +	ret = fwnode_property_read_u32(fwnode, "lanes", &lanes);
-> > +	if (ret)
-> > +		lanes = 0;  
+> > +	if (!port)
+> > +		return -ENOMEM;
+> > +
+> > +	port->parent_type = PHY_PORT_PHY;
+> > +	port->phy = phydev;
+> > +
+> > +	/* Let the PHY driver know that this port was never described anywhere.
+> > +	 * This is the usual case, where we assume single-port PHY devices with
+> > +	 * no SFP. In that case, the port supports exactly the same thing as
+> > +	 * the PHY itself.  
 > 
-> The DT binding says that both properties are required. So i think this
-> should be:
-> 
-> 		return ret;
+> I wounder if you should hook into __set_phy_supported() so that DT
+> max-speed, and the MAC driver calling phy_set_max_speed() are covered?
 
-Ah true indeed, let me fix that then :)
+This code runs after of_set_phy_supported(), so any speed limitation
+enforced through the max-speed DT property will also apply to the
+ports's supported field. Hopefully, now that we have a port
+representation in DT we can get rid of some of the max-speed use-cases,
+such as a 1G PHY connected to a Fast Ethernet port :)
 
-> 
-> > + * phy_port_get_type() - get the PORT_* attribut for that port.  
-> 
-> attribut_e_
-> 
-> > +	 * If the port isn't initialized, the port->mediums and port->lanes
-> > +	 * fields must be set, possibly according to stapping information.  
-> 
-> st_r_apping
-> 
-> 	Andrew
+For phy_set_max_speed(), the phy device's supported field will be
+update, but not the port's. So indeed, I think we should update the
+port's supported upon calling phy_set_max_speed(), I'll add and test
+that for the next iteration.
 
-Sorry for all the typos, it's a weak excuse but lately my laptop's
-keayboard has been acting up, and it either misses strokes or gets the
-letters stuck in repeat-mode. Russell has similar issues, so I'm still
-unsure if this is a hardware or software thing... I'll install and pass
-spellcheck for the next iteration to avoid that :)
+Thanks,
 
 Maxime
