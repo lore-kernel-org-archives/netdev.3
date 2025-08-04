@@ -1,188 +1,147 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023132.outbound.protection.outlook.com [52.101.83.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3038D24E4C3
-	for <netdev@vger.kernel.org>; Mon,  4 Aug 2025 12:32:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.132
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754310741; cv=fail; b=N3Ixo6kX8Q+GEzaHHHI0UCEshDSZdjrqZJcbJREj106TFlGLfgG7yIab5/nw4FYrtMRn89v3SFRydexD+3pt/kmvHr8yHh8rrq/ze2XIxtLhilZU3EylTffLUqYjv8SXp2yRlU2MUE2wsfay+W44/332RZNNTuJ5G8sPRu4sGpU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754310741; c=relaxed/simple;
-	bh=bml6b3fBzkkNVDodDwZlDbLN9rTCOLN0yIL0cypTg1c=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EVByYIEC/8fxXIPZtQrrlzF/AyrGaLxHRMM0q0zkKA+gA6EXchFP8/VZx2gQq2ZMfNr/mkNw284+sBHlBtZuQRDJ9ufLJOoPbPV/Z6SdGV0qkuQ5wzsTyVv3iU/ePsG7p443qa8tB+7rUV8NEKtNUgkcxWivYoFlf8/D40TjY8U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=inf.elte.hu; spf=pass smtp.mailfrom=inf.elte.hu; dkim=pass (2048-bit key) header.d=inf.elte.hu header.i=@inf.elte.hu header.b=vn9h8cfL; arc=fail smtp.client-ip=52.101.83.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=inf.elte.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inf.elte.hu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8306D26E17D;
+	Mon,  4 Aug 2025 12:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754311733; cv=none; b=B0wa0JfTbOrXWPBylvSzB9lZeDrm60R/a1N8JfnJNBYpVuOFEUKyxZExBriyya5W8JTIRF1e4bDfG1q+41YfbBmYwGRr3ll+iy1cUWpFn2rCod7Qu/poSvMNx2avJ34/OJlZwhXLhT/uP81W/OExI1SkGTClGOoO5Tn87Z4/SVU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754311733; c=relaxed/simple;
+	bh=59H73LX8PBLGOnWexguPOFUUCzKaRLA64e2x5v9d50Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lZe7EUfMLumiu0A+0j3rDAMFKURV0eDJNR5+eyvuYAPGHgzkieIRz9MDH1IZ4caoU7ij578MWS3Px4hme3QaMEhz97dwf29sjg3uoYGHj+N424u0k1o963HBNGCCTFRDkxV/PhceYzJ9qUbP4nWHT5SULbxgTaS0fq5tB4P9Njo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fkHZ1CuX; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=inf.elte.hu header.i=@inf.elte.hu header.b="vn9h8cfL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LEYZJkBXOZEl3+/mI5io1C9quSnQmt+L5NaQXTbB7/cEtFXO44BerHsCvPtFyIl0twtQfs82tGrh3u9ji+i9R4/Lt5YJSB7LyOdhtZEefuX+0nSTCE6AahWHofTT1zhCEEhnuSc30OFw/dlpkAUzYE3S56QH6N2hhPD5ilLO3vNGgpP4J8YqstWrDimbDXSmXTBx5MXlXND6ZwSt0CMddJZfGY6KVNL2mDUmEjZV9oKfHfUvfkoDh2LshDJUNlWtf1JFN4H6f+sDmpPFDf338dEl8fb4mWEztOL1mMz5yUJN1Ct2GcreQHPicbuCrWZ3JIc40M1DDTUIBhFVMaZj4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bml6b3fBzkkNVDodDwZlDbLN9rTCOLN0yIL0cypTg1c=;
- b=cZEoesRf2FJsxJsTeS1QCq+JnR7luPhqGxyxqURySOGNd4S78RySHQRojIq2hWG0ayJX6i3D/F32zAyk/At7OMSu6oFBUn6nepCynIbzQrWTpEo+otjwWH3ajj5ogP71/TO6aqulRXNtDHl4V6OlhlnoaVF3NXQ/iFSmpE4NhjCr/rmz+7qE8mTOR8Z1E2IWfP/soJuyKmeBDg2Wm6zMHMLFfE9uqnd+3UU7H33pEg3jQL+DI/3pb7OPGJLmis5pVfwGB8K4FQNUUcRU3fE9JN6soFFJiByE1OwH7QZgal+Pj+4gfr0rOr3iNCCzg3IkAqgMgg/MRfbUt7oGudCmoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=inf.elte.hu; dmarc=pass action=none header.from=inf.elte.hu;
- dkim=pass header.d=inf.elte.hu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=inf.elte.hu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bml6b3fBzkkNVDodDwZlDbLN9rTCOLN0yIL0cypTg1c=;
- b=vn9h8cfLEx/Eq9JkTn6DAN1g+tMTCuNlb4wyHWsECCVHWyxHAvpaEzzbRQqqi3wakY7nncodBMUXGnRz0rzIi7v5DTIlmDKY2Fg4LoLmyEUOG87jezbs6o7iyhNP4M3M9l0s+vuCFBOE36irOmIfI9UlUFSt7wOZwaRC1xxAF24ZB8QAS5jQCufQuiwqKb5Vrdr8cRO8UGmExkVkUuB55L9eBYYkY6EnzwLOmxamcvUbUw7c2sG6Nrt0LcbBjqeA1CuBbMl2ERSvno8V37/JK4PEUOlGdIQcNyYeo76fxgU3ELuUSz53bGrNPok82Gk2JyfAbxHPU+N0p21PeJFhUw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=inf.elte.hu;
-Received: from DB9PR10MB6740.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:3d0::10)
- by VI1PR10MB3167.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:803:12d::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.20; Mon, 4 Aug
- 2025 12:32:10 +0000
-Received: from DB9PR10MB6740.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::5125:d772:4906:ba16]) by DB9PR10MB6740.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::5125:d772:4906:ba16%5]) with mapi id 15.20.8989.018; Mon, 4 Aug 2025
- 12:32:10 +0000
-Message-ID: <0e09d1c68582806f5dd693b0c23a4725835e900b.camel@inf.elte.hu>
-Subject: Re: [PATCH net v3] net/sched: mqprio: fix stack out-of-bounds write
- in tc entry parsing
-From: Fejes Ferenc <fejes@inf.elte.hu>
-To: Jakub Kicinski <kuba@kernel.org>, "davem@davemloft.net"
-	 <davem@davemloft.net>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "edumazet@google.com"
-	 <edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>, 
- "andrew+netdev@lunn.ch"	 <andrew+netdev@lunn.ch>, "horms@kernel.org"
- <horms@kernel.org>, Maher Azzouzi	 <maherazz04@gmail.com>,
- "jhs@mojatatu.com" <jhs@mojatatu.com>,  "xiyou.wangcong@gmail.com"	
- <xiyou.wangcong@gmail.com>, "jiri@resnulli.us" <jiri@resnulli.us>, 
- "vladimir.oltean@nxp.com"	 <vladimir.oltean@nxp.com>
-Date: Mon, 04 Aug 2025 14:32:07 +0200
-In-Reply-To: <4a000ef11bb148fa8955385155714056@DB9PR10MB6740.EURPRD10.PROD.OUTLOOK.COM>
-References:
- <4a000ef11bb148fa8955385155714056@DB9PR10MB6740.EURPRD10.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1-1 
-X-ClientProxiedBy: FR4P281CA0111.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:bb::12) To DB9PR10MB6740.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:10:3d0::10)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fkHZ1CuX"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-454f428038eso37154885e9.2;
+        Mon, 04 Aug 2025 05:48:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754311730; x=1754916530; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uFjq/ccIa6phfVTzlseeDSMDj8VXW6rCCDNMSZoFxcM=;
+        b=fkHZ1CuXY3SFEJNRWcZFtmpgSfrItJjSQKEfDPkofi06uHwP8uidx4pkSo1ECT6EC8
+         gKBeQfHRXbW3S3rNGVTBQOcEfksyqJ7DiVPZuYmE0ple5dN8ID4Tn//t+ZQ7huMF+77Z
+         5afxDtZj4H+r8Q6kFaPr6H+mxRPBhBt4lBvEhPvZ1Pom7LIQ0IKkxW9cMaqGX4d5WMb1
+         0unDpboffPkihxCzuQpPQ0IO9feVViZaG7MoUPmJE+FwEldL0s+25EUbzrAucswA6hx0
+         tdI/yqRLY8ZVcMJDU0JEXxL64IfdcxM10pNYCxgExTyKtV0IwJbVjnMyxky1jsc9Ojrq
+         Qn/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754311730; x=1754916530;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uFjq/ccIa6phfVTzlseeDSMDj8VXW6rCCDNMSZoFxcM=;
+        b=Aov+ju07wyDAoYMwOTBJ9epCA9TWkkGNJD1aOam2if+/WlPaKgWOwmtxITc5qNK4aj
+         WV3hJ94qkQC2ANgEjWX7X+Dmci1UPtfXWoz/35fEdrMXR+Vb2LL6bC8Ou7vul7WbL2L1
+         L2iWNFMzmmY3ZSZ7ALOJ7+qHpf2LMdPAsrPeiTKHCVDCv/yvyFNl3k42acQWqAR62gPp
+         odJVV3TKTD1Xkjss9mjyWK6mPpxA+28l2UQfxdxhPhQ0YlFFQZPfhzgfv6MIfxJQavfU
+         24hSNWJrDfAjzLYDnt6X5NtsoJ4Bzdu/xU33cI4BoRqlPuNMvPWKuxX51+We/sJ3cY9+
+         yfcg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZO4gMusz1GgONW+m/1KFnaUQe1Aj7ukIJ4hFFqYvpAbPPbJe+DnpmBrsAPaX+Y4KvFCegtAT6iw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPhuXu/6ozNjX/pIMlRuVAGtb0o5hxE7bt2PY8LrUJn1TS4vDo
+	zdL3I2+Mkue443EZqrhlLdpzYbqBmC4yFxwFSMs/zBQjcmsXqGa2ZJyj
+X-Gm-Gg: ASbGnctpQ95vmXEu9YDHx/K2P6a006XKOYZOwbd3/Iy9FfHaeAI2Vb8XpuNNSqM3nLE
+	1aCklUAvopYzJ8/7CQPvloIJOrpCE+RjmSoNz0yQMKtLAY2J7dfaVrxo9ULiEDRXQeiqdAkstiS
+	tSa3bs48ZubX7AX/kmnDE/TM5oIOnu7crFG8sv2c5AayFrlvFvdatYY75b/bRe4dztWDimOYR+N
+	e9qR9imLBh/xazlZJKO0+nrxVaig132l0qQ3VGc0Rq5rjIJf4lUKs6E/NPVzgghfA2uHkpKm87Y
+	camMpynNWc+JoumqCYAIdUntIhQW7d1/NZlg11Si3fZ8jtvdSXOrwL2mZ51j11zJYrapt6/Lz44
+	K0RIIQBiVakUQjpg2sB1CcTom4W0+K66CR+Y=
+X-Google-Smtp-Source: AGHT+IHl9k3pYdNBy32uOQnp3EIaG9vjJhDfzKHZqRs9VQBLELW6xAGD9WNiayU/YNBMqhL+RtEDag==
+X-Received: by 2002:a05:600c:6d7:b0:456:1c4a:82ca with SMTP id 5b1f17b1804b1-458b9359829mr43650345e9.32.1754311729396;
+        Mon, 04 Aug 2025 05:48:49 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::26f? ([2620:10d:c092:600::1:c055])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c4530a8sm15438378f8f.38.2025.08.04.05.48.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Aug 2025 05:48:48 -0700 (PDT)
+Message-ID: <11caecf8-5b81-49c7-8b73-847033151d51@gmail.com>
+Date: Mon, 4 Aug 2025 13:50:08 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR10MB6740:EE_|VI1PR10MB3167:EE_
-X-MS-Office365-Filtering-Correlation-Id: e92f4876-70c1-45af-4830-08ddd352eeb4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|41320700013|1800799024|366016|376014|7416014|52116014|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MWpLek5meGFacmNGUnlMTnZDZVY0RFhRUmNPeGI4OEJUaUdaVmVZVXU2cy8w?=
- =?utf-8?B?WVpuM3ViQllkRnRWcm5uQzU1SWtPak8zVUlWQUtGZGx2SktyWW5zSFJzMnF6?=
- =?utf-8?B?TTViSWw0RTJJMnhyVytXMWwvNDMvc3FEZGxkbnhvWm9IN0RuSHVDck9YMmR4?=
- =?utf-8?B?VjlXK1liQWtTWVNYWkFrRFdvU0hiRktQYnNtaGtheWxPNEcyM2Z2SThPZU5p?=
- =?utf-8?B?NEM4ejF1OUFiUndUR1VoVnZPYzNLaFdtMll4eVlxSC9lZC9LdWtTSzBHSVpS?=
- =?utf-8?B?NGFHbTBYeHFZNXJyWHVXVG50bzZyUHdydWFtR2grVGxvWUMvOTR4elhoeCsw?=
- =?utf-8?B?NnJFb0EyaVNJWDVkaTg5UkFqajZaMkJraUExYWpSMFF6aGplZ3lGbzczVTJv?=
- =?utf-8?B?MG4yNWYrbkI2OSsvSVh3U3VacitxV3dJL3BwZWlra0dwdzd4Vm01cVNVeUgw?=
- =?utf-8?B?U0NnT3Bra3E1cjQxWE9yb1NuY3ZqMGg5cVo4WFRJRElSRzhTZWFhc21sR3N0?=
- =?utf-8?B?MEZvMEJuMDh2WHNpNFI1QVdvMDZlTGxwcmxQbmdmYTBVSk15TFZEdGRlZEh6?=
- =?utf-8?B?eHR2T1B4REtQOUVqQmJFVW52WCtQMlNuQlVSWm5CTi9lMmo2V1M3UW9ia215?=
- =?utf-8?B?Zk1XZjRKdGJCeGpCWG03T2hJb0FYOGtuaGI5bkJvNjh6Mk1GQzJrUm5scFJR?=
- =?utf-8?B?eDE3WGxpUEVSSFhUZisxSlpLWUFTaWFqdldXbXFRd0tkbXRXLzBlVzA1VXJU?=
- =?utf-8?B?cW5tMzNPQXZUSnIzNFZ0Zm1odnN3ZGdLVzU1a1QrWUhRNjl6N21mNkZ4SnNi?=
- =?utf-8?B?dU5lZzFxYVVoZmlhbG5scjlJT1VxNnoxVFNRNzFDRzNVaVB1UFkyTTF4M2hL?=
- =?utf-8?B?ak1CeitDblJUTi9lMy9scXNTUlZVWHA0OGFZTklnbUx3dk9Ya0E5LzNqRGsy?=
- =?utf-8?B?clRpR2d5UU5YUXVCTFRuK1cyTkg3TU5DUDFhRmllQVVyV0NoVnZ0UWNIWjVi?=
- =?utf-8?B?VDNFcGhGa3orK0hrSjRHWHFPa3BOODJqMUgwZngxNDVkRlhWNnpzeTgvQmI2?=
- =?utf-8?B?WnlQOFJFT0FYQ2NGOUI4YmMrYzRQZHlMeEhWL2xROUc5ZGZPVVRINzlBS3Q1?=
- =?utf-8?B?bUFtRzhqdC9qNGErMlUxUS9VeFVTT1NiWGN4OHdqOGpvZC9pY2ZQK2RNcjVv?=
- =?utf-8?B?RjN3cjhnSnFsbHdkQU5sM1VaZnNxM0VaRnNKazJkOHI4emFKYmh3THhta3Ns?=
- =?utf-8?B?eEZZSFNnTHJmNkM4WFcrUDBnTTc1U2xmZUFGaGVKSFplSHc1QnNRZnVia29E?=
- =?utf-8?B?SlNhSSs2a1dhWDFET0pmbXVza0lRaUh4U3VYZ2t6anRERjJyY1B1U3V2c0Zi?=
- =?utf-8?B?Njg5MG9QVHFjVnZtd3Z3UzNrd1prZlVwdUNQMlEwUzU2RXNEUUNsZ3BBNnRY?=
- =?utf-8?B?bDdEa3ltK3RLeFA3ODFPa2dKSVBtcDdySENiNGJTTGFZR2VVMDI0eHFPNnJn?=
- =?utf-8?B?ekxNOFVjOS9Mbk01Tm5Nd05JdEorNG4yenRJVzBQL04wZHE4R1ExdWxLWmpy?=
- =?utf-8?B?QmhjUzc3emlLUWU2V042ajN5UXA1K25lYlcvYmRoUHJCTkU2M24xd0VYbjd2?=
- =?utf-8?B?NDBod2Q2MGVhaHRhRHJOUTZ1MmhuMDNsSCtFZE14MXdkZ2ROeElaQkMweTVP?=
- =?utf-8?B?RGowNkJLSUhTbXF0UEFTVlQwekh3VlhFZTBtcGdpMG95aTV0OW5tK3JtbTJE?=
- =?utf-8?B?MmlrSERzM0NLb28xY2FpN0lXS3kvZHR3NDkzNHFsV0ZqUWkrWnEwTXJ4VGQ5?=
- =?utf-8?B?UGRTcnRyWHlDYTFtUzJDZCtsNGVxc2Y1WnFGMWttTnA2OEExOWw3a0Y2bEJy?=
- =?utf-8?B?UENteUZMeVNTa0t6UUt3N0c5Q0VKS2ZlOTJ2UHJyb1VPN3p2aHFhb0s3THNw?=
- =?utf-8?B?WllXMWhUS0tMYUdFamEwRkVpVmYydis2ek5sWnRzVlRnYnFtSmVScTJnNDc2?=
- =?utf-8?B?aGE5OVVvOHhBPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR10MB6740.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(41320700013)(1800799024)(366016)(376014)(7416014)(52116014)(7053199007)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bUp3UHY5SEMrN1hhQ1JmcmJER2ZGWGZzOEdKYjNac3pQRDBrOElldWhUdTU1?=
- =?utf-8?B?UHJQRFNBNmpyK29xdjNGMU1VTk9zd2V6Z2h1QWhEQ2RNbkVHeHErd3pKU0Q5?=
- =?utf-8?B?M2ZaMXdqanJDemo0ZGFJMSszNG1zaldRQzEzczNhdnE3MXZVQ0lwbDU4UFFV?=
- =?utf-8?B?ZFNDclhGTklMT1NCRzhvOUJra2MxVlFabjBRNmxvblNEaklXNXRNYndrbk5M?=
- =?utf-8?B?QzJ0ZmtFeWF0Sm4rUnRNQ0p3TGFzQmlPYlVHZGdUZUw1SnVIT3FUUDRVKzd1?=
- =?utf-8?B?S1VjcWcrWUd3Y2RzL29FdWtLVXZvYXVQbTFIZkJxbXNwbmdvQkpRZzR4MGNk?=
- =?utf-8?B?WVQzaUhMQW5DQ3VsdE1qZU1RZGFCbFRKV3ROZTNGWGdOZGxKL0dQZjFRV3Nq?=
- =?utf-8?B?NHd6N283QjlOci9IbU12R1E3NUQ0U2JqMkdtKytYSFVVNENNVHN3a1pSM0dK?=
- =?utf-8?B?SE9pcGlxMTY2VmFUTFRuaVRLeU1yZkVsSFk2NDFPeUNwWlp4UW95ZmVMcnpI?=
- =?utf-8?B?akYzYjUxK1M4aDZMV3VMNGxjWm1ETHk4UzlGTXVxeW44VDVuLzM3VWVDMTNw?=
- =?utf-8?B?UXVLcjJqNGVCaHV4dzVYMk80RFZTQ0RxZzdFNHU2NHVnV3prQW5pNzR1cjBr?=
- =?utf-8?B?TWl1RnJJUDJwZ1l4V1g3bWFodkNON2NIK3ZLUHpZc09ncFdYU0RNbUd3UzBQ?=
- =?utf-8?B?QjJUb0VkYVBzS052RTNJOFA0MDZ5VlJsVk5ObGpyYUI4UU1LamxxMTBUOHB3?=
- =?utf-8?B?SHExQ1hYRUtqa3NjZG53SHdtQTZIZCtxTDNFYVIzbnhRbXRVWmVUc0dVR09G?=
- =?utf-8?B?Qmo2YVBSQkVybGllekZwMm12UWxFR0FjRlk2OFdjQUR2Q1dSQW43WmpHV29S?=
- =?utf-8?B?SEpmWGt4c1pDMHQ3NXNwTU5zbXljSTd1UGRIdkszdjlXSlMxUURXVGhzRWE5?=
- =?utf-8?B?YjlPME9zTXVXa0JicXF0cU9FTjlQSkZqUDVzUk5BbEt4WldxV2djVmRxRXdy?=
- =?utf-8?B?NVE1N3RoQTRGSjJJK09ZMG9yd2VveWZDeFMwa2ZtNWo2Q0FTcHhxS0R3NUJH?=
- =?utf-8?B?d3lRVWhvNHFuL0lWL0U0UzcvQjhDQUhCWk9zRDljRGdGZHpJUGpGcjhNc0tC?=
- =?utf-8?B?aFhGT0dEdGw4THNpYkgyVHdnUHR4QTlWb0szVjA3M0lyeDc3SlUwUzhGbTdz?=
- =?utf-8?B?WXB6emNQYXFILzloV0gxajl4cnRWVHBEZmFVRE1WMVNqSE5oZURZY2dkemRZ?=
- =?utf-8?B?eDY2UVRzdExMZlNiK1huZW1qelZQc2d2SlJwRXFsOVdyUnA2YWJMSCtYWmNy?=
- =?utf-8?B?TnVhV0lYNW9SakxIcWJWS2VvajN2Zmw5SkNLbjJvN09OejZLSjlwbVpmSTFR?=
- =?utf-8?B?VjdhTCtWZFRFeVg0bUorZk5HVXg5R250ekI0Y1lLcnlRalFDMnpNUmRxTXJC?=
- =?utf-8?B?RG5PZDZuZ2tzdFQ3L0FKWEY2bjR6ZHY2cVE1c1I1TGM3eDZYMjBZZTZaZUFY?=
- =?utf-8?B?Tm85YWEzNmJXMFRyOEVOU3N4aWlFTFdrbi93cllRMStzUldXR2FIUURWVGxn?=
- =?utf-8?B?WWJIcE9TUHlTWjloYTRhWmNMOUhFdStFUWdLZ0xzNVNrYTBwR3NwY1RIRlJT?=
- =?utf-8?B?QzNkeGRtL2h0NXhyc0x0RC8zQW02Wkh2Rm1taFluQXdVN09jRU1MdjlQSlJJ?=
- =?utf-8?B?Q2tRTjRtRkZnWW5qaWR2WmFPTHZqTWxvZUV0QVpQQUNRZ1lNcG1EdnFCTS9M?=
- =?utf-8?B?MlV6ZTRmbS9tTmJLa3ExY2MvYXVidS9sMDZKOTVNSkdrYndROUo3NGNSdE4v?=
- =?utf-8?B?clh1amhJb1B2d3NWb1B1Yk9PVWxYTGxSTlBGK09WU0lkTHA1TVBQOWYwMVRG?=
- =?utf-8?B?OGZWWmYvM3lwNmNlRllRRDkwem9XWFVjcTVmdmpBdDF6eVpGT3ZjM1dDeDNx?=
- =?utf-8?B?U3hkKzRyTGxjTmJLaHF4N2hqNWRDSUN1bGI1TG5TK1p1N20vRm9nbkZaU2hO?=
- =?utf-8?B?aGlvcjNwdWFwZGJOemp6aHVrNkRQNkswRW5DU3VTcDNtcXV3KzNTK3RoOVU4?=
- =?utf-8?B?TkRoTXhpOW4zcEsyWCs4Zk1waEFxaEJ2aExWSnVBSGNsQlN3NkU0L1BKaXFM?=
- =?utf-8?Q?m4riY18tpRQEeruFjBnDA61I/?=
-X-OriginatorOrg: inf.elte.hu
-X-MS-Exchange-CrossTenant-Network-Message-Id: e92f4876-70c1-45af-4830-08ddd352eeb4
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR10MB6740.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2025 12:32:10.4330
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0133bb48-f790-4560-a64d-ac46a472fbbc
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fsHqwDYqcz3zs+hGLwmCe9zHvZHur8VDkVc0RKX5V9daT5DFt7D0PcCx7bFyTxvh+mtXxFCLAe0C2F6+VEGqMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR10MB3167
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v1 21/22] net: parametrise mp open with a queue config
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, io-uring@vger.kernel.org,
+ Eric Dumazet <edumazet@google.com>, Willem de Bruijn <willemb@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, andrew+netdev@lunn.ch, horms@kernel.org,
+ davem@davemloft.net, sdf@fomichev.me, almasrymina@google.com,
+ dw@davidwei.uk, michael.chan@broadcom.com, dtatulea@nvidia.com,
+ ap420073@gmail.com
+References: <cover.1753694913.git.asml.silence@gmail.com>
+ <ca874424e226417fa174ac015ee62cc0e3092400.1753694914.git.asml.silence@gmail.com>
+ <20250801171009.6789bf74@kernel.org>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250801171009.6789bf74@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sat, 2025-08-02 at 00:18 +0000, Jakub Kicinski wrote:
-> From: Maher Azzouzi <maherazz04@gmail.com>
->=20
-> TCA_MQPRIO_TC_ENTRY_INDEX is validated using
-> NLA_POLICY_MAX(NLA_U32, TC_QOPT_MAX_QUEUE), which allows the value
-> TC_QOPT_MAX_QUEUE (16). This leads to a 4-byte out-of-bounds stack
-> write in the fp[] array, which only has room for 16 elements (0=E2=80=931=
-5).
->=20
-> Fix this by changing the policy to allow only up to TC_QOPT_MAX_QUEUE - 1=
-.
->=20
-> Fixes: f62af20bed2d ("net/sched: mqprio: allow per-TC user input of FP
-> adminStatus")
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
-> Signed-off-by: Maher Azzouzi <maherazz04@gmail.com>
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+On 8/2/25 01:10, Jakub Kicinski wrote:
+> On Mon, 28 Jul 2025 12:04:25 +0100 Pavel Begunkov wrote:
+>> This patch allows memory providers to pass a queue config when opening a
+>> queue. It'll be used in the next patch to pass a custom rx buffer length
+>> from zcrx. As there are many users of netdev_rx_queue_restart(), it's
+>> allowed to pass a NULL qcfg, in which case the function will use the
+>> default configuration.
+> 
+> This is not exactly what I anticipated, TBH, I was thinking of
+> extending the config stuff with another layer.. Drivers will
+> restart their queues for most random reasons, so we need to be able
+> to reconstitute this config easily and serve it up via
 
-LGTM!
+Yeah, also noticed the gap that while replying to Stan.
 
-Reviewed-by: Ferenc Fejes <fejes@inf.elte.hu>
+> netdev_queue_config(). This was, IIUC, also Mina's first concern.
+> 
+> My thinking was that the config would be constructed like this:
+> 
+>    qcfg = init_to_defaults()
+>    drv_def = get_driver_defaults()
+>    for each setting:
+>      if drv_def.X.set:
+>         qcfg.X = drv_def.X.value
+>      if dev.config.X.set:
+>         qcfg.X = dev.config.X.value
+>      if dev.config.qcfg[qid].X.set:
+>         qcfg.X = dev.config.qcfg[qid].X.value
+>      if dev.config.mp[qid].X.set:               << this was not in my
+>         qcfg.X = dev.config.mp[qid].X.value     << RFC series
+> 
+> Since we don't allow MP to be replaced atomically today, we don't
+> actually have to place the mp overrides in the config struct and
+> involve the whole netdev_reconfig_start() _swap() _free() machinery.
+> We can just stash the config in the queue state, and "logically"
+> do what I described above.
+
+I was thinking stashing it in struct pp_memory_provider_params and
+applying in netdev_rx_queue_restart(). Let me try to move it
+into __netdev_queue_config. Any preference between keeping just
+the size vs a qcfg pointer in pp_memory_provider_params?
+
+struct struct pp_memory_provider_params {
+	const struct memory_provider_ops *mp_ops;
+	u32 rx_buf_len;
+};
+
+vs
+
+struct struct pp_memory_provider_params {
+	const struct memory_provider_ops *mp_ops;
+	// providers will need to allocate and keep the qcfg
+	// until it's completely detached from the queues.
+	struct netdev_queue_config *qcfg;
+};
+
+The former one would be simpler for now.
+
+-- 
+Pavel Begunkov
+
