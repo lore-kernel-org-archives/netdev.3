@@ -1,127 +1,76 @@
-Received: from mta-102a.earthlink-vadesecure.net (mta-102b.earthlink-vadesecure.net [51.81.61.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD0824679B
-	for <netdev@vger.kernel.org>; Tue,  5 Aug 2025 22:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.61.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C802E36F0;
+	Tue,  5 Aug 2025 22:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754433865; cv=none; b=JgVRaBGDGlw0WO8zGgsfhjUxWI29Ri9ZZXZERxzR5jUU9Cq0gGp0GK8ZL3rrMjf36PQcQkAppx/gPYzcw9dpI5BqZ2LqZuQj0F5UR73ClMrqpfOE+QF3yiQfzna6XMAzuPxul92mLek5u8Dij59DHLa6f7Ee3tMQrybAN2DL62s=
+	t=1754433966; cv=none; b=clZ0n77B5gmiWRNUYYo4UcB0y8yA0XG0MsSCebSOK1RHCLCPqKoVnfLJXtxSs4KIvF77bvUDNFZXlNPZTK7t+jIf5VXbpnjFT86vI27q6MemDdzXUWF3q0g6T+pw425fZ2q02K4AOsncWoG/AyQ8/niT0s/TuPDLfD7ExLYyHNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754433865; c=relaxed/simple;
-	bh=fvYs4C6jGElZomsNh0d99vp+BM++9pKt+YX/5uexv1A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BFKlGP87wmtB/U5VMbOUQTqgv5ywBI3VH/7WeYWC5tBPaZNmIcgzAk99JWVqiBYDQK2R914U9I8+DV+1lDEnfX/hrLsUiwiNweNi3an1EbuGWAvWO2F3VFvNnsX7KYutx6XYOO0+tKcA/R4OqdUonEaSBbY3n2E750bGz966jA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=onemain.com; spf=pass smtp.mailfrom=onemain.com; dkim=pass (2048-bit key) header.d=earthlink.net header.i=@earthlink.net header.b=p3KwjVJL; arc=none smtp.client-ip=51.81.61.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=onemain.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onemain.com
+	s=arc-20240116; t=1754433966; c=relaxed/simple;
+	bh=NqAn7xkr0Rfx37RWYqFvxyrYUe9MsAbnMN8SOZ0XZ8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gvtko5+WrWzti0BGVQu3wa4iAiacnckZKay7wtbjVzm9pk/mfvGH54egdtoweGAuXqfJ6Oatczm210JKd9V8Upum527H+LTCsY62UGU3BS16p8RPVABWbxfr0yDxG3bcxb13zpFM0MXGJaS65OkvP0G7POU/6uWMBm/imJW5oLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f3ciXNWT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=earthlink.net header.i=@earthlink.net header.b="p3KwjVJL"
-Authentication-Results: earthlink-vadesecure.net;
- auth=pass smtp.auth=svnelson@teleport.com smtp.mailfrom=sln@onemain.com;
-DKIM-Signature: v=1; a=rsa-sha256; bh=FNaGHqdAYm0tWOTnL+0gPswJwqmMDAhWr7+DMl
- fyfWA=; c=relaxed/relaxed; d=earthlink.net; h=from:reply-to:subject:
- date:to:cc:resent-date:resent-from:resent-to:resent-cc:in-reply-to:
- references:list-id:list-help:list-unsubscribe:list-unsubscribe-post:
- list-subscribe:list-post:list-owner:list-archive; q=dns/txt;
- s=dk12062016; t=1754432924; x=1755037724; b=p3KwjVJLmQWB/ElEsmXPTBE60kh
- 0cCXXBwBDutoP/UJ0V0NR4wMphC6PbcbEY89jZvIdjJj1LHUGhhZ4k5EZKvQrM5FujSZVik
- QGdV5jR+uiQkFkToZd6b4GHMKq5K543P6oH5CbyvTxVbdo4gTLc1KYiUSFhKlTM1zDFkand
- +/jcLNe3Cop6Gbq7ELWH22yn0wuVVCfRzzsBndvwAv5xRool9NpR53VpklFiuaweSs0Cuyc
- Zx1i3JvTjZEEO7dK1MNjZW9oU2fiZrM79sDKfuMYFuxRaOjJMOjGhX7oHtAk8k13XL1ypVx
- WLXuHBfmR5mA1sz0E6UMkt8U/yeb4ZA==
-Received: from [192.168.0.23] ([50.47.159.51])
- by vsel1nmtao02p.internal.vadesecure.com with ngmta
- id 47e7f90e-1858ff72800b37ab; Tue, 05 Aug 2025 22:28:44 +0000
-Message-ID: <3cdbb79a-7c98-4172-9c74-4ae968054fda@onemain.com>
-Date: Tue, 5 Aug 2025 15:28:40 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f3ciXNWT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4400C4CEF0;
+	Tue,  5 Aug 2025 22:46:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754433966;
+	bh=NqAn7xkr0Rfx37RWYqFvxyrYUe9MsAbnMN8SOZ0XZ8A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=f3ciXNWTApQibSjgZTVBIQ1cfxquSZMI/00XCX77N9oGij/RpxiPKAUV4q3Brivk3
+	 VahaglYpe02/YuF/x1S9+U9CKzsJKDnd0e099GnXRys/MKRtq5QwNcGJrQ+OGkqS3Q
+	 nwSxEwzT4mkMC9oahFyy8cmWtOY+QeZQtuaOohxHzwLjMFMHMbMR4fNKthJ+UAyC8F
+	 70uPWfb/uaah7OOzIMUSOP8Fgyzzb0QM06zlJppwgB7IZco4rh5pX/lsJxWCVO32F0
+	 5TvqJ+3oajZpY1dPkAJNfduWnl4Z/Qp0S9S2WYuZPzoQE5IcujFxxhf1FBoGN+syrX
+	 4N/DDJOwAvRbQ==
+Date: Tue, 5 Aug 2025 15:46:04 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: <intel-wired-lan@lists.osuosl.org>, Michal Kubiak
+ <michal.kubiak@intel.com>, Maciej Fijalkowski
+ <maciej.fijalkowski@intel.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>, Alexei
+ Starovoitov <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>,
+ Simon Horman <horms@kernel.org>,
+ <nxne.cnse.osdt.itp.upstreaming@intel.com>, <bpf@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH iwl-next v3 16/18] idpf: add support for XDP on Rx
+Message-ID: <20250805154604.680bde07@kernel.org>
+In-Reply-To: <a151336a-eda4-4f44-9ab5-da79e7712838@intel.com>
+References: <20250730160717.28976-1-aleksander.lobakin@intel.com>
+	<20250730160717.28976-17-aleksander.lobakin@intel.com>
+	<20250801153343.74e0884b@kernel.org>
+	<a151336a-eda4-4f44-9ab5-da79e7712838@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/3] pds_core: add simple AER handler
-To: Brett Creeley <bcreeley@amd.com>, Lukas Wunner <lukas@wunner.de>,
- Shannon Nelson <shannon.nelson@amd.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, brett.creeley@amd.com,
- drivers@pensando.io
-References: <20240216222952.72400-1-shannon.nelson@amd.com>
- <20240216222952.72400-2-shannon.nelson@amd.com> <aJIcyjyGxlKm382t@wunner.de>
- <48ffde5c-084f-4ad6-8be7-314afb14b2ac@amd.com>
-Content-Language: en-US
-From: Shannon Nelson <sln@onemain.com>
-In-Reply-To: <48ffde5c-084f-4ad6-8be7-314afb14b2ac@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 8/5/25 3:10 PM, Brett Creeley wrote:
-> On 8/5/2025 8:01 AM, Lukas Wunner wrote:
->> Caution: This message originated from an External Source. Use proper 
->> caution when opening attachments, clicking links, or responding.
->>
->>
->> On Fri, Feb 16, 2024 at 02:29:50PM -0800, Shannon Nelson wrote:
->>> Set up the pci_error_handlers error_detected and resume to be
->>> useful in handling AER events.
->>
->> The above was committed as d740f4be7cf0 ("pds_core: add simple
->> AER handler").
->>
->> Just noticed the following while inspecting the pci_error_handlers
->> of this driver:
->>
->>> +static pci_ers_result_t pdsc_pci_error_detected(struct pci_dev *pdev,
->>> + pci_channel_state_t error)
->>> +{
->>> +     if (error == pci_channel_io_frozen) {
->>> +             pdsc_reset_prepare(pdev);
->>> +             return PCI_ERS_RESULT_NEED_RESET;
->>> +     }
->>> +
->>> +     return PCI_ERS_RESULT_NONE;
->>> +}
->>
->> The ->error_detected() callback of this driver invokes
->> pdsc_reset_prepare(), which unmaps BARs and calls pci_disable_device(),
->> but there is no corresponding ->slot_reset() callback which would invoke
->> pdsc_reset_done() to re-enable the device after reset recovery.
->>
->> I don't have this hardware available for testing, hence do not feel
->> comfortable submitting a fix.  But this definitely looks broken.
->
-> Hi Lukas,
->
-> Thanks for the note. It's been a bit since I have looked at this, but 
-> I believe that it's working in the following way:
->
-> 1. pds_core's pci_error_handlers.error_detected callback returns 
-> PCI_ERS_RESULT_NEED_RESET
-> 2. status is initialized to PCI_ERS_RESULT_RECOVERED in the pci core 
-> and since pds_core doesn't have a slot_reset callback then status 
-> remains PCI_ERS_RESULT_RECOVERED
-> 3. pds_core's pci_error_handlers.resume callback is called, which will 
-> attempt reset/recover the device to a functional state
+On Tue, 5 Aug 2025 18:09:40 +0200 Alexander Lobakin wrote:
+> From: Jakub Kicinski <kuba@kernel.org>
+> Date: Fri, 1 Aug 2025 15:33:43 -0700
+> 
+> > On Wed, 30 Jul 2025 18:07:15 +0200 Alexander Lobakin wrote:  
+> >> Use __LIBETH_WORD_ACCESS to parse descriptors more efficiently when
+> >> applicable. It really gives some good boosts and code size reduction
+> >> on x86_64.  
+> > 
+> > Could you perhaps quantify the goodness of the boost with a number? :)  
+> 
+> Sure, only a matter of switching this definition and running the tests
+> (and bloat-o-meter).
+> Intel doesn't allow us to publish raw numbers (Gbps/Mpps), I hope the
+> diff in percents (+ bloat-o-meter output) would be enough?
 
-Thanks, Brett - yes this sounds about right by my memory.  The resume 
-callback takes care of getting the device reset and re -enabled.
-
->
-> I also know that, at the very least, Shannon tested this when adding 
-> it to the driver.
-
-Yep, several cycles, several scenarios.
-
-Cheers,
-sln
-
->
-> Let me know if you still think otherwise.
->
-> Thanks again for the feedback,
->
-> Brett
->
->
-
+Yes, delta is perfect. Absolute numbers aren't very meaningful if you
+don't specify all HW components and FW versions, and direction of wind
+on the day, anyway :$
