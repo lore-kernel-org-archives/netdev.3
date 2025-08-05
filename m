@@ -1,132 +1,220 @@
-Received: from dediextern.your-server.de (dediextern.your-server.de [85.10.215.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5A1188580
-	for <netdev@vger.kernel.org>; Tue,  5 Aug 2025 13:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.215.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5543E25A341;
+	Tue,  5 Aug 2025 13:37:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754400906; cv=none; b=c9X3TU/Ik4taKVaT8XOAqsicbFxynNZDjCks45W6vb5sfoUYU0oeZWRJxZxYKoMLBZ7DqyuBobKheyijGw50vbUkzwpkFOpw+j4c+CNkKLVfJJfFm76cu2RTtjLUoB+NfOtzM6nlJPc3nSYAaNYMn58tmTa/B30zFD+Jgy6l3bk=
+	t=1754401062; cv=none; b=YUmBfzlXjCtATmRxKnUSDaNO8H4i2ToNCbGmtnNdvL2c7U8wY0hmPzkvcN/wyvbZCNiPI8yXf9yVi6uIYVD5eikUIZiRYUXrdAwwDCWxxSWmO6cKRMFZfpLSZFcq0HSpby/H6RoDG4JVhpR9k5BhGXgGooutIcBYIoXszl7/nrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754400906; c=relaxed/simple;
-	bh=nsRNsb2g5SGVU6h6+ygbPpW/SiKre2z/Wh9Uupa/1PQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dKOqKL6AeFlQAgbzW6fGazlDzNMNBvvLGli2+VM0zEcxxtqfQOGaUqI7TwbqilqGB8ngI/7x/XRyviIS0CPTngTMHj/JVjNwwl+ABDqHQWACh+D0TEZ1pnRVPlO+tMJ9Dp9UUWXsmACf/M03JnWWLTJ4O7cICbX6bsaGtlCvUCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de; spf=pass smtp.mailfrom=hetzner-cloud.de; arc=none smtp.client-ip=85.10.215.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hetzner-cloud.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hetzner-cloud.de
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-	by dediextern.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
-	id 1ujHNB-000Ho5-6v; Tue, 05 Aug 2025 15:06:33 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <marcus.wichelmann@hetzner-cloud.de>)
-	id 1ujHNA-0000hq-38;
-	Tue, 05 Aug 2025 15:06:33 +0200
-Message-ID: <bb545742-8878-4780-932e-4261ae226aac@hetzner-cloud.de>
-Date: Tue, 5 Aug 2025 15:06:29 +0200
+	s=arc-20240116; t=1754401062; c=relaxed/simple;
+	bh=mPSsj2ncxMMlcv0RsZ6mN78BHOw/uNMUAcUoAvbjIOo=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=NS4GhWLaPE/54GbohF5lWS7Xb7+sNJzPv1XxhxUBpo+EVWGZOmlLo7keGQ/iAPtBXlkD4CmeKkMfnRMrFMWJ4/VQ6YRgfPcP9E3E5eecPNTHZpEe+LuA2V2DbhyM/Ag3FFHGvlNbNpS734L3PpeAHPalT5W8WniJd8O3e66xlBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dQYqvUHn; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dQYqvUHn"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-24009eeb2a7so44151785ad.0;
+        Tue, 05 Aug 2025 06:37:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754401060; x=1755005860; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LiS8BhJ936jcB2tyM9Y30V/6/vFqlgQAd81Grs50doc=;
+        b=dQYqvUHnYCoVqk+MhDVjiC2MjuDVYXBoRGC+fp/b3FqmMJ+utT6C6bV/OrAuAtBTGx
+         QUQFTlbSc3JT5FpGjQE2PggM8c1xu4whBCVbJxJy+9HDHOrD7ik6fU+cCiQEicPStzsM
+         4XF84RU/oTu3gLvcYZ+yPQw/PsAddX/BoyBET752uYtDgOWC3JjRPFcDrj6yL80L4uBE
+         6fyicwavWnnCNZ+iODU5nIWlYnIoB11UV/YHv5WjCSm9MaEsdZq+Z93bSUmmeeg9QqU+
+         ed6THOuTlUaXDdYk5gI1vYfPHPsADXw5V4awwQHQTr0EbMN7oRHM6F5AVbmy6D6UZyoh
+         engA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754401060; x=1755005860;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LiS8BhJ936jcB2tyM9Y30V/6/vFqlgQAd81Grs50doc=;
+        b=Bw59JqcQZWyND2zQpncSM3i1kae6VqjgO/cBmi/XMf1tQeJIpUCayPFxKIHwzTop8v
+         2mvoIvbYVs4/6YqxM1uAL6bg8dyXFz9guwtCM5tYcj+PsizaxMLhDNADI6n5v2vyzUh8
+         L3FIArF/Yw9ErqMrHXpRxYXun29JKXwGvqyvq7V//PB7iaRNqgFDYyrusj2TXrhis8QS
+         Qpmnu3kpZBYebOL/XK84v6XjBS6sSrp3oG4nlPyR7LOlb7TgvHGJxVL1ro2atPYO4N0o
+         LDHwPEfvxtSsqOW691mKefzoT6Gk1RCAL8381U+uDolU5WQwvKM8cj0WJppYlVi0tDCN
+         lc7A==
+X-Forwarded-Encrypted: i=1; AJvYcCUdK9Gh1UcPleoWMGQjEs/MIhZ+dBj1ucWbqYHk0B4FO3GKUF5WqNP089UYdY8wpN77sBO+oe5bAWLkxiQ=@vger.kernel.org, AJvYcCUelTaumoIsFDozRholcy3LgDU25mMg8JXqakRXHn33ajNBRbs7JMWuCj60uatw1tUvLB5egVKM@vger.kernel.org, AJvYcCXtHt1di7UDeohKltaO+TCQJrPyTODRP6162CcKwAFl+D5vrOtf0LoVFIvQcjbVZoaXnWd/MS8hv4snsgoQMjk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxzBiweb1ieFZd7N3brfmL19va5ski7FYGWezO351QFHZ8ev0q
+	mP3mo6OX28RPO4UOEx5wmRvFI3XBXncrm/edloR8wC/IlXVukDRlmmbS
+X-Gm-Gg: ASbGncsn4npUdxETlDYU2JbkyUaG6AnryVkwx892z63FPtYLZ533MNTAisGHbPILwHd
+	RU3hKYaldZZrqF0fugV8fzXVIBB/+n3aDtVzOdDdTf7NT281/EytsynNJE21HAIey0UeloZD+yF
+	r2DORzrza/mLS3W8PtVKoREE90PgZN9/TkSA0JTQ7LkmDjp66VYAAIswKzBDJuYn9qFKLPM7JIz
+	nv5p1wzgNqKXY9gODOk0MaoPDbHJ4iUyw/aRemMTsi/R+mJkB8bXkgxgwOo/hxnM80KsGftuAHK
+	Rz/v3UWGpe4W3aVCxIGhgZPS6EIshvQKZI+p0gtteuCldHn4vnjYSpu17wQ1qrSARMCPWewjg93
+	/W+AV1B/QwneII/mWZDd02dyGqzSRN1K/VON+9xnCct5GcO16rbNeRTnAQ9yNAJsn4QmYdYlGkY
+	t8
+X-Google-Smtp-Source: AGHT+IGrXZA4Ihax4H+y51EM2ka6Nzm9Z3DpiVncTVWgN9IOSBjGcWevdKSSHxn3+TReo3p380OpXA==
+X-Received: by 2002:a17:903:2f87:b0:23f:cf96:3071 with SMTP id d9443c01a7336-24247033f3dmr211033265ad.49.1754401059445;
+        Tue, 05 Aug 2025 06:37:39 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e8976cb1sm134913705ad.89.2025.08.05.06.37.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Aug 2025 06:37:38 -0700 (PDT)
+Date: Tue, 05 Aug 2025 22:37:21 +0900 (JST)
+Message-Id: <20250805.223721.524503114987740782.fujita.tomonori@gmail.com>
+To: dakr@kernel.org
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+ jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev,
+ david.laight.linux@gmail.com
+Subject: Re: [PATCH v11 7/8] rust: Add read_poll_timeout functions
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <DBRW63AMB4D8.2HXGYM6FZRX3Z@kernel.org>
+References: <DBNPR4KQZXY5.279JBMO315A12@kernel.org>
+	<20250802.104249.1482605492526656971.fujita.tomonori@gmail.com>
+	<DBRW63AMB4D8.2HXGYM6FZRX3Z@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net] ixgbe: fix ndo_xdp_xmit() workloads
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org, anthony.l.nguyen@intel.com,
- magnus.karlsson@intel.com, michal.kubiak@intel.com, sdn@hetzner-cloud.de
-References: <20250429155205.1444438-1-maciej.fijalkowski@intel.com>
-Content-Language: en-US
-From: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Autocrypt: addr=marcus.wichelmann@hetzner-cloud.de; keydata=
- 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
- wySmewx3h/yfMh0aFxHhvLPxrO2IEQ==
-In-Reply-To: <20250429155205.1444438-1-maciej.fijalkowski@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27723/Tue Aug  5 10:36:10 2025)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Am 29.04.25 um 17:52 schrieb Maciej Fijalkowski:
-> Currently ixgbe driver checks periodically in its watchdog subtask if
-> there is anything to be transmitted (consdidering both Tx and XDP rings)
-> under state of carrier not being 'ok'. Such event is interpreted as Tx
-> hang and therefore results in interface reset.
+On Sat, 02 Aug 2025 13:06:04 +0200
+"Danilo Krummrich" <dakr@kernel.org> wrote:
+
+> On Sat Aug 2, 2025 at 3:42 AM CEST, FUJITA Tomonori wrote:
+>> On Mon, 28 Jul 2025 15:13:45 +0200
+>> "Danilo Krummrich" <dakr@kernel.org> wrote:
+>>> On Thu Feb 20, 2025 at 8:06 AM CET, FUJITA Tomonori wrote:
+>>>> +/// This process continues until either `cond` returns `true` or the timeout,
+>>>> +/// specified by `timeout_delta`, is reached. If `timeout_delta` is `None`,
+>>>> +/// polling continues indefinitely until `cond` evaluates to `true` or an error occurs.
+>>>> +///
+>>>> +/// # Examples
+>>>> +///
+>>>> +/// ```rust,ignore
+>>> 
+>>> Why ignore? This should be possible to compile test.
+>>
+>> https://lore.kernel.org/rust-for-linux/CEF87294-8580-4C84-BEA3-EB72E63ED7DF@collabora.com/
 > 
-> This is currently problematic for ndo_xdp_xmit() as it is allowed to
-> produce descriptors when interface is going through reset or its carrier
-> is turned off.
+> I disagree with that. 'ignore' should only be used if we can't make it compile.
 > 
-> Furthermore, XDP rings should not really be objects of Tx hang
-> detection. This mechanism is rather a matter of ndo_tx_timeout() being
-> called from dev_watchdog against Tx rings exposed to networking stack.
+> In this case we can make it compile, we just can't run it, since there's no real
+> HW underneath that we can read registers from.
 > 
-> Taking into account issues described above, let us have a two fold fix -
-> do not respect XDP rings in local ixgbe watchdog and do not produce Tx
-> descriptors in ndo_xdp_xmit callback when there is some problem with
-> carrier currently. For now, keep the Tx hang checks in clean Tx irq
-> routine, but adjust it to not execute it for XDP rings.
+> An example that isn't compiled will eventually be forgotten to be updated when
+> things are changed.
+
+I also prefer the example that can be compiled however I can't think
+of a compilable example that is similar to actual use cases (for
+example, waiting for some hardware condition). Do you have any ideas?
+
+>>>> +/// fn wait_for_hardware(dev: &mut Device) -> Result<()> {
+>>> 
+>>> I think the parameter here can just be `&Io<SIZE>`.
+>>> 
+>>>> +///     // The `op` closure reads the value of a specific status register.
+>>>> +///     let op = || -> Result<u16> { dev.read_ready_register() };
+>>>> +///
+>>>> +///     // The `cond` closure takes a reference to the value returned by `op`
+>>>> +///     // and checks whether the hardware is ready.
+>>>> +///     let cond = |val: &u16| *val == HW_READY;
+>>>> +///
+>>>> +///     match read_poll_timeout(op, cond, Delta::from_millis(50), Some(Delta::from_secs(3))) {
+>>>> +///         Ok(_) => {
+>>>> +///             // The hardware is ready. The returned value of the `op`` closure isn't used.
+>>>> +///             Ok(())
+>>>> +///         }
+>>>> +///         Err(e) => Err(e),
+>>>> +///     }
+>>>> +/// }
+>>>> +/// ```
+>>>> +///
+>>>> +/// ```rust
+>>>> +/// use kernel::io::poll::read_poll_timeout;
+>>>> +/// use kernel::time::Delta;
+>>>> +/// use kernel::sync::{SpinLock, new_spinlock};
+>>>> +///
+>>>> +/// let lock = KBox::pin_init(new_spinlock!(()), kernel::alloc::flags::GFP_KERNEL)?;
+>>>> +/// let g = lock.lock();
+>>>> +/// read_poll_timeout(|| Ok(()), |()| true, Delta::from_micros(42), Some(Delta::from_micros(42)));
+>>>> +/// drop(g);
+>>>> +///
+>>>> +/// # Ok::<(), Error>(())
+>>>> +/// ```
+>>>> +#[track_caller]
+>>>> +pub fn read_poll_timeout<Op, Cond, T>(
+>>>> +    mut op: Op,
+>>>> +    mut cond: Cond,
+>>>> +    sleep_delta: Delta,
+>>>> +    timeout_delta: Option<Delta>,
+>>>> +) -> Result<T>
+>>>> +where
+>>>> +    Op: FnMut() -> Result<T>,
+>>>> +    Cond: FnMut(&T) -> bool,
+>>>> +{
+>>>> +    let start = Instant::now();
+>>>> +    let sleep = !sleep_delta.is_zero();
+>>>> +
+>>>> +    if sleep {
+>>>> +        might_sleep();
+>>>> +    }
+>>> 
+>>> I think a conditional might_sleep() is not great.
+>>> 
+>>> I also think we can catch this at compile time, if we add two different variants
+>>> of read_poll_timeout() instead and be explicit about it. We could get Klint to
+>>> catch such issues for us at compile time.
+>>
+>> Your point is that functions which cannot be used in atomic context
+>> should be clearly separated into different ones. Then Klint might be
+>> able to detect such usage at compile time, right?
+>>
+>> How about dropping the conditional might_sleep() and making
+>> read_poll_timeout return an error with zero sleep_delta?
 > 
-> Cc: Tobias Böhm <tobias.boehm@hetzner-cloud.de>
-> Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-> Closes: https://lore.kernel.org/netdev/eca1880f-253a-4955-afe6-732d7c6926ee@hetzner-cloud.de/
-> Fixes: 6453073987ba ("ixgbe: add initial support for xdp redirect")
-> Fixes: 33fdc82f0883 ("ixgbe: add support for XDP_TX action")
-> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> [...]
+> Yes, let's always call might_sleep(), the conditional is very error prone. We
+> want to see the warning splat whenever someone calls read_poll_timeout() from
+> atomic context.
+> 
+> Yes, with zero sleep_delta it could be called from atomic context technically,
+> but if drivers rely on this and wrap this into higher level helpers it's very
+> easy to miss a subtle case and end up with non-zero sleep_delta within an atomic
+> context for some rare condition that then is hard to debug.
+> 
+> As for making read_poll_timeout() return a error with zero sleep_delta, I don't
+> see a reason to do that. If a driver wraps read_poll_timeout() in its own
+> function that sometimes sleeps and sometimes does not, based on some condition,
+> but is never called from atomic context, that's fine.
 
-Hi,
+Ok, let's always call might_sleep, even when there's no possibility of
+sleeping.
 
-could you please consider submitting this patch (or a newer version)
-for being merged into mainline?
+>> Drivers which need busy-loop (without even udelay) can
+>> call read_poll_timeout_atomic() with zero delay.
+> 
+> It's not the zero delay or zero sleep_delta that makes the difference  it's
+> really the fact the one can be called from atomic context and one can't be.
 
-This would help us not having to build our own kernels with this patch
-for forever.
+That's what I meant.
 
-Thanks!
+Since calling read_poll_timeout_atomic() with zero delay can achieve
+the same thing as calling read_poll_timeout with zero sleep delta, I
+thought the zero sleep delta in read_poll_timeout is unncessary.
 
-Marcus
+But as in the use case you mentioned above, a driver could use the
+sleep delta that is not const and calls the function with both
+non-zero and zero delta values so let's keep zero sleep delta support.
+
+
