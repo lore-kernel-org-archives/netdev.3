@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2850C155326
-	for <netdev@vger.kernel.org>; Tue,  5 Aug 2025 00:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A98F189919;
+	Tue,  5 Aug 2025 00:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754353804; cv=none; b=NgPQoRGVvathHyVSGzZ39fMzan1ZCEqTGFWYnHKAuezhD6BEJxlDB4LE3d9IH/1Gz70K948Ka47O6d3BYolZWenHnjZz2ZLzFbU1KLHkXNbqoHcBspGZ4qK1kAKyjijQYO/RbS2aJevWoPUokFPcddyQuxfejubAvC2P1/HFug4=
+	t=1754353805; cv=none; b=IApPdUBdv73ENXQllRF7Vt/mwK0rjT4H0M5gu86r/CzR51hu4PecJsJgCG3qvBpxY7thI9RU74e4K/dH4ZjWrErphN05eoNF5DqISODyO6bhwnWPogXsdgXNp0LItHk0gGicg6XOZRzXqd+2iKNyhFolAOAG8rO0reFUldhXJ84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754353804; c=relaxed/simple;
-	bh=KOez3NXL+uNqf1znoJqoOIy++cZkegqkXXuvT86mFgw=;
+	s=arc-20240116; t=1754353805; c=relaxed/simple;
+	bh=qfv9KBlrUKsIIJmH9elqLzkRDhOrTL/TkPiwCHb9ohg=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=u+qilEuTSHzesB4wmIF2t/E8bgMYa3ldB/RIJ9YVGC/6KT+egU4lBqtKm4so5QtXMpqoz1nzT4sOPxxUoRfNmHXag8b9W9IwLlJjscNJatEOzwqdqis8u4M1F5+NMFug3qfhKhZS+F9e04eFBkXCSU2ykN2IpLFQXX4LGuIL6GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Frd1RzSY; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=JBX0CmtHcqSC8MXJTRfpfxaZkh6aRngrqYIbSp8fw12RZwVJcQuoiiu/Y5AOSztQe8Srr4ui68X0dL4Rof7s856zeYHNA+hWvSZfXacRqGT95CSrSUipAOiI1PAApUggFF2pgaQO31nZDiWrRmhcCvjKTev9wBtU6JJ+qiX1tc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PM6Qb+Vf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Frd1RzSY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AEBC4CEE7;
-	Tue,  5 Aug 2025 00:30:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PM6Qb+Vf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2920AC4CEF8;
+	Tue,  5 Aug 2025 00:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754353803;
-	bh=KOez3NXL+uNqf1znoJqoOIy++cZkegqkXXuvT86mFgw=;
+	s=k20201202; t=1754353805;
+	bh=qfv9KBlrUKsIIJmH9elqLzkRDhOrTL/TkPiwCHb9ohg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Frd1RzSYJgpD54VrK3h9w+rgnmyxLTJqfcpG0ywzFNozthUp91zLriJe3CEfjRDcO
-	 0ps5x9xy840beRt6ZmPXHF2GkumPA99fGXfuteGQqO5CnPx1vzeZbwMHYWR127OmTg
-	 B+SMbFmRkxi+JirC2lzhvy3HCmAtm4VnT73U3D3WmZ0sqMLCaYiFfOd3Fa3Qbr1cf5
-	 zv6IoqUOl3EFRRhOsAG2azI8XBg1xIiY5Q1CrDZSCS2yCBg2AUUS45xoZ3QVZMz0rD
-	 l3YYUcGAyBmtoA4eX3rfNFa5vZINPygbB/MzrwDTidv+LuSmvIzQTlF75o+R63CfvP
-	 dEjgo86S/jpKg==
+	b=PM6Qb+Vf592INsci5/xIN7v4VN6XFo4qGD7JMCwZXRL/g4qcbu6p6kExESQpVLAgT
+	 /fWslB85tRZIJRxKnxdWDYaIUoKqFVK7b0XyhwgHhQb4aVnImJSRH8YDZgmITYbRGN
+	 WJwhewiYGn2ViAHXmvDM/0EgO4mCiEa070qgXbEoryqI427udvatjG+0Seq8/ccC69
+	 un4LBzbJJJ0ZFHJIoSDKeBydqs2cuA0eKqG1mhv6IPzzSvr1h9ABQADDYV4yAVBM/0
+	 Oo+0D1ywOAWPLoezYugizInh4RzKUM9dua1475izasMpnvX5+k7azwS9J8/K6XpSUm
+	 NiAp2BjIBhlhQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33BD6383BF62;
-	Tue,  5 Aug 2025 00:30:18 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD59383BF62;
+	Tue,  5 Aug 2025 00:30:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: devmem: fix DMA direction on unmapping
+Subject: Re: [PATCH] ipa: fix compile-testing with qcom-mdt=m
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <175435381700.1400451.11085719618072517804.git-patchwork-notify@kernel.org>
-Date: Tue, 05 Aug 2025 00:30:17 +0000
-References: <20250801011335.2267515-1-kuba@kernel.org>
-In-Reply-To: <20250801011335.2267515-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- almasrymina@google.com, asml.silence@gmail.com, sdf@fomichev.me,
- dw@davidwei.uk, kaiyuanz@google.com
+ <175435381949.1400451.11221507514670781827.git-patchwork-notify@kernel.org>
+Date: Tue, 05 Aug 2025 00:30:19 +0000
+References: <20250731080024.2054904-1-arnd@kernel.org>
+In-Reply-To: <20250731080024.2054904-1-arnd@kernel.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: elder@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ andersson@kernel.org, quic_ppranees@quicinc.com,
+ vasanthakumar.thiagarajan@oss.qualcomm.com, quic_rajkbhag@quicinc.com,
+ quic_bselvara@quicinc.com, jeff.johnson@oss.qualcomm.com, arnd@arndb.de,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 31 Jul 2025 18:13:35 -0700 you wrote:
-> Looks like we always unmap the DMA_BUF with DMA_FROM_DEVICE direction.
-> While at it unexport __net_devmem_dmabuf_binding_free(), it's internal.
+On Thu, 31 Jul 2025 10:00:20 +0200 you wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> Found by code inspection.
+> There are multiple drivers that use the qualcomm mdt loader, but they
+> have conflicting ideas of how to deal with that dependency when compile-testing
+> for non-qualcomm targets:
 > 
-> Fixes: bd61848900bf ("net: devmem: Implement TX path")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> IPA only enables the MDT loader when the kernel config includes ARCH_QCOM,
+> but the newly added ath12k support always enables it, which leads to a
+> link failure with the combination of IPA=y and ATH12K=m:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: devmem: fix DMA direction on unmapping
-    https://git.kernel.org/netdev/net/c/fa516c0d8bf9
+  - ipa: fix compile-testing with qcom-mdt=m
+    https://git.kernel.org/netdev/net/c/2df158047d53
 
 You are awesome, thank you!
 -- 
