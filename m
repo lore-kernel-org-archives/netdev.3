@@ -1,82 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta-102a.earthlink-vadesecure.net (mta-102b.earthlink-vadesecure.net [51.81.61.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70618173;
-	Tue,  5 Aug 2025 22:43:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD0824679B
+	for <netdev@vger.kernel.org>; Tue,  5 Aug 2025 22:44:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.61.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754433837; cv=none; b=DNn9J3/JGZCTEXP/Cf2BFEBtVa8OWSMZCRPfNqVuZtc5uwOPlTVnkj4IOXUfWR+WwrCHymA+DWhabcFGNB9iVcuRqzedT77SrMoSmV5ttgZro6BWGkj54MTkCBagHtKz7+q2o1/rKDzP9HoqTQuDLIbMq2gz7/hggoor8HK7+ms=
+	t=1754433865; cv=none; b=JgVRaBGDGlw0WO8zGgsfhjUxWI29Ri9ZZXZERxzR5jUU9Cq0gGp0GK8ZL3rrMjf36PQcQkAppx/gPYzcw9dpI5BqZ2LqZuQj0F5UR73ClMrqpfOE+QF3yiQfzna6XMAzuPxul92mLek5u8Dij59DHLa6f7Ee3tMQrybAN2DL62s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754433837; c=relaxed/simple;
-	bh=zp9mF9AxbmQANyGSCRsB0NBkIIX7UT18b/iQ51kQp9U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aCPqqqVcbH2pCzERwNu2oFCaUucwYPdxGZtSf/xNhOhKQRGuqfYlBWP4tMey5OecYyESjzVh6u5c2QISRMoUGLChkr1f9lf6oZOw8X7FoB8O9/z8gG/8nj8VDQaVd9rxFATG+b5SDyn4DSWtm5Vu2XQn821TlGTO07WhFpo+3eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSsfpxLx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754433865; c=relaxed/simple;
+	bh=fvYs4C6jGElZomsNh0d99vp+BM++9pKt+YX/5uexv1A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BFKlGP87wmtB/U5VMbOUQTqgv5ywBI3VH/7WeYWC5tBPaZNmIcgzAk99JWVqiBYDQK2R914U9I8+DV+1lDEnfX/hrLsUiwiNweNi3an1EbuGWAvWO2F3VFvNnsX7KYutx6XYOO0+tKcA/R4OqdUonEaSBbY3n2E750bGz966jA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=onemain.com; spf=pass smtp.mailfrom=onemain.com; dkim=pass (2048-bit key) header.d=earthlink.net header.i=@earthlink.net header.b=p3KwjVJL; arc=none smtp.client-ip=51.81.61.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=onemain.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onemain.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSsfpxLx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB35C4CEF0;
-	Tue,  5 Aug 2025 22:43:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754433837;
-	bh=zp9mF9AxbmQANyGSCRsB0NBkIIX7UT18b/iQ51kQp9U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YSsfpxLxNs4nnQfy21Om9Ai9bSC+GAWaCowC9vlJhg/mdlyEhn8NE9KOXA+U3jcUD
-	 bmEwver1g7MoD13qC+0B0bN3SoUE4W9moSFbtHyyg0nPfg/69r4PG03za2IKnje5ZJ
-	 tO9y1qdK+kQxlRfFeobwjBxsqbiTvKUlyN0Gn2wdyu8GJaoeBiYCmq2RN3mJNq0iH2
-	 VZ58jBswDOjvyNLdnY61Blo1dh4L3beTMicMof3CwmJGj+7dG8IZ4Z9pPK5/ZEuSsR
-	 xfsL2qK0emixyBXQmNL0WvSrtUcV0L2M4faA7xQRY8XEVYj9Xi9PBnfKGdtJTFlkAh
-	 k1Di2z0LS3VNQ==
-Date: Tue, 5 Aug 2025 15:43:55 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Pavel Begunkov <asml.silence@gmail.com>
-Cc: netdev@vger.kernel.org, io-uring@vger.kernel.org, Eric Dumazet
- <edumazet@google.com>, Willem de Bruijn <willemb@google.com>, Paolo Abeni
- <pabeni@redhat.com>, andrew+netdev@lunn.ch, horms@kernel.org,
- davem@davemloft.net, sdf@fomichev.me, almasrymina@google.com,
- dw@davidwei.uk, michael.chan@broadcom.com, dtatulea@nvidia.com,
- ap420073@gmail.com
-Subject: Re: [RFC v1 21/22] net: parametrise mp open with a queue config
-Message-ID: <20250805154355.3fc1b57a@kernel.org>
-In-Reply-To: <11caecf8-5b81-49c7-8b73-847033151d51@gmail.com>
-References: <cover.1753694913.git.asml.silence@gmail.com>
-	<ca874424e226417fa174ac015ee62cc0e3092400.1753694914.git.asml.silence@gmail.com>
-	<20250801171009.6789bf74@kernel.org>
-	<11caecf8-5b81-49c7-8b73-847033151d51@gmail.com>
+	dkim=pass (2048-bit key) header.d=earthlink.net header.i=@earthlink.net header.b="p3KwjVJL"
+Authentication-Results: earthlink-vadesecure.net;
+ auth=pass smtp.auth=svnelson@teleport.com smtp.mailfrom=sln@onemain.com;
+DKIM-Signature: v=1; a=rsa-sha256; bh=FNaGHqdAYm0tWOTnL+0gPswJwqmMDAhWr7+DMl
+ fyfWA=; c=relaxed/relaxed; d=earthlink.net; h=from:reply-to:subject:
+ date:to:cc:resent-date:resent-from:resent-to:resent-cc:in-reply-to:
+ references:list-id:list-help:list-unsubscribe:list-unsubscribe-post:
+ list-subscribe:list-post:list-owner:list-archive; q=dns/txt;
+ s=dk12062016; t=1754432924; x=1755037724; b=p3KwjVJLmQWB/ElEsmXPTBE60kh
+ 0cCXXBwBDutoP/UJ0V0NR4wMphC6PbcbEY89jZvIdjJj1LHUGhhZ4k5EZKvQrM5FujSZVik
+ QGdV5jR+uiQkFkToZd6b4GHMKq5K543P6oH5CbyvTxVbdo4gTLc1KYiUSFhKlTM1zDFkand
+ +/jcLNe3Cop6Gbq7ELWH22yn0wuVVCfRzzsBndvwAv5xRool9NpR53VpklFiuaweSs0Cuyc
+ Zx1i3JvTjZEEO7dK1MNjZW9oU2fiZrM79sDKfuMYFuxRaOjJMOjGhX7oHtAk8k13XL1ypVx
+ WLXuHBfmR5mA1sz0E6UMkt8U/yeb4ZA==
+Received: from [192.168.0.23] ([50.47.159.51])
+ by vsel1nmtao02p.internal.vadesecure.com with ngmta
+ id 47e7f90e-1858ff72800b37ab; Tue, 05 Aug 2025 22:28:44 +0000
+Message-ID: <3cdbb79a-7c98-4172-9c74-4ae968054fda@onemain.com>
+Date: Tue, 5 Aug 2025 15:28:40 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/3] pds_core: add simple AER handler
+To: Brett Creeley <bcreeley@amd.com>, Lukas Wunner <lukas@wunner.de>,
+ Shannon Nelson <shannon.nelson@amd.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, brett.creeley@amd.com,
+ drivers@pensando.io
+References: <20240216222952.72400-1-shannon.nelson@amd.com>
+ <20240216222952.72400-2-shannon.nelson@amd.com> <aJIcyjyGxlKm382t@wunner.de>
+ <48ffde5c-084f-4ad6-8be7-314afb14b2ac@amd.com>
+Content-Language: en-US
+From: Shannon Nelson <sln@onemain.com>
+In-Reply-To: <48ffde5c-084f-4ad6-8be7-314afb14b2ac@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, 4 Aug 2025 13:50:08 +0100 Pavel Begunkov wrote:
-> > Since we don't allow MP to be replaced atomically today, we don't
-> > actually have to place the mp overrides in the config struct and
-> > involve the whole netdev_reconfig_start() _swap() _free() machinery.
-> > We can just stash the config in the queue state, and "logically"
-> > do what I described above.  
-> 
-> I was thinking stashing it in struct pp_memory_provider_params and
-> applying in netdev_rx_queue_restart(). Let me try to move it
-> into __netdev_queue_config. Any preference between keeping just
-> the size vs a qcfg pointer in pp_memory_provider_params?
-> 
-> struct struct pp_memory_provider_params {
-> 	const struct memory_provider_ops *mp_ops;
-> 	u32 rx_buf_len;
-> };
-> 
-> vs
-> 
-> struct struct pp_memory_provider_params {
-> 	const struct memory_provider_ops *mp_ops;
-> 	// providers will need to allocate and keep the qcfg
-> 	// until it's completely detached from the queues.
-> 	struct netdev_queue_config *qcfg;
-> };
-> 
-> The former one would be simpler for now.
+On 8/5/25 3:10 PM, Brett Creeley wrote:
+> On 8/5/2025 8:01 AM, Lukas Wunner wrote:
+>> Caution: This message originated from an External Source. Use proper 
+>> caution when opening attachments, clicking links, or responding.
+>>
+>>
+>> On Fri, Feb 16, 2024 at 02:29:50PM -0800, Shannon Nelson wrote:
+>>> Set up the pci_error_handlers error_detected and resume to be
+>>> useful in handling AER events.
+>>
+>> The above was committed as d740f4be7cf0 ("pds_core: add simple
+>> AER handler").
+>>
+>> Just noticed the following while inspecting the pci_error_handlers
+>> of this driver:
+>>
+>>> +static pci_ers_result_t pdsc_pci_error_detected(struct pci_dev *pdev,
+>>> + pci_channel_state_t error)
+>>> +{
+>>> +     if (error == pci_channel_io_frozen) {
+>>> +             pdsc_reset_prepare(pdev);
+>>> +             return PCI_ERS_RESULT_NEED_RESET;
+>>> +     }
+>>> +
+>>> +     return PCI_ERS_RESULT_NONE;
+>>> +}
+>>
+>> The ->error_detected() callback of this driver invokes
+>> pdsc_reset_prepare(), which unmaps BARs and calls pci_disable_device(),
+>> but there is no corresponding ->slot_reset() callback which would invoke
+>> pdsc_reset_done() to re-enable the device after reset recovery.
+>>
+>> I don't have this hardware available for testing, hence do not feel
+>> comfortable submitting a fix.  But this definitely looks broken.
+>
+> Hi Lukas,
+>
+> Thanks for the note. It's been a bit since I have looked at this, but 
+> I believe that it's working in the following way:
+>
+> 1. pds_core's pci_error_handlers.error_detected callback returns 
+> PCI_ERS_RESULT_NEED_RESET
+> 2. status is initialized to PCI_ERS_RESULT_RECOVERED in the pci core 
+> and since pds_core doesn't have a slot_reset callback then status 
+> remains PCI_ERS_RESULT_RECOVERED
+> 3. pds_core's pci_error_handlers.resume callback is called, which will 
+> attempt reset/recover the device to a functional state
 
-+1, I'd stick to the former. We can adjust later if need be.
+Thanks, Brett - yes this sounds about right by my memory.  The resume 
+callback takes care of getting the device reset and re -enabled.
+
+>
+> I also know that, at the very least, Shannon tested this when adding 
+> it to the driver.
+
+Yep, several cycles, several scenarios.
+
+Cheers,
+sln
+
+>
+> Let me know if you still think otherwise.
+>
+> Thanks again for the feedback,
+>
+> Brett
+>
+>
+
