@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A96278143;
-	Tue,  5 Aug 2025 14:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB261922F5;
+	Tue,  5 Aug 2025 14:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754402638; cv=none; b=AVzedSzvW0eSJF+cCfAC5ZcSMmaaHobREsadIi/oNQ8Mm3OePo3cE6m1hCrxMvqnbOhiVyEVqXR+O60MACzxdBW9yq6lImrsBfVEf7nfhUW9WZqGJunOG13SBkBSrQjQ3VEcEW3Xbasa2vv8zBbX+oWCxJmMoBoxaINJGJxq44s=
+	t=1754403588; cv=none; b=JEIFRyHNUDvFopWk23Jg0l+yAsDlClGPan13ptLyGjHmEMDtTfVLlxJO23H6AhCqDgw8IO3jPMWz3wTPTMex2flf0/+dnST2XQe285QvAd5sw0DFC8Y2oJagSioGx4Nrqo/7eSjMRDJhi3939MBjWnrKYgX0h+BauesnmbI+mEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754402638; c=relaxed/simple;
-	bh=a//RMkT7QxB02c4HlMWI/+kv14S5DssakZHwqBJWWZk=;
+	s=arc-20240116; t=1754403588; c=relaxed/simple;
+	bh=qTEZUer1H4ZcprZzz70kBbVa9sj/l90KNdD+ATD283U=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=AHcwZV5h4DthSqC/UObUYX8BgoJsryHH4uxwAmUqubQplj+bsWEqZ/hClflQ3qBUT9Hs8OJbLuC4SUFhC/xrt6IHpYA646zIp3s2LMQJWOKqqadbukvZUplxmJzJAtY4hYo/8VnDnvnTxeA7JswR/Nnng/MwnP63VKFn+nalUFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1NE9DSs; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=gAoHfyEgYvre4CnTSvT1Tn8Z7qJwDcqojsuQ4J0Eh1SlmTW2T1ilibuonRn8eqQEwzPmv3YFG+18kLbjNx6KGGGajpqMoJ1Aij/nRJ9/ncDPi3uihy1awOY78Eh+qpk8+ZGxlA1Jk1DOGzlqUTm0EcA1Ji5ymxHQmuyKQhElDus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eevpzFOU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1NE9DSs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09E6C4CEF0;
-	Tue,  5 Aug 2025 14:03:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eevpzFOU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF2EC4CEF0;
+	Tue,  5 Aug 2025 14:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754402638;
-	bh=a//RMkT7QxB02c4HlMWI/+kv14S5DssakZHwqBJWWZk=;
+	s=k20201202; t=1754403588;
+	bh=qTEZUer1H4ZcprZzz70kBbVa9sj/l90KNdD+ATD283U=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=d1NE9DSshfhbYDTNXm+5NbN6aUpYBAQdm3bKJU0MD+xVAEWDbmfPaJJzGOhYIZvI0
-	 wpa6r765xkC3RhDGnM0uLB+tu/uok6Z+TlAlEdF+swOx3nhITBA4oxUxXxoTGjet/G
-	 TypCJ7y+mnQTcCVLLE48pXOId3Nml8P/j/bBBqLLTjUiEpNqHYy3aw5At6yRdKhJDB
-	 s16joxFp5GulzVFOi6h0eCbUk0hID0a8SyXb6PMWdQAbnJNBOLGjDT0604BuzPQUHC
-	 7fcyJsbe2PtQhQ1/GOZEc0N8EQrDUeDFWmPS1fFoz0rtkz2lfW7/ZT2JvuclP9EISG
-	 I/+LfEn80FqTQ==
+	b=eevpzFOU5YTn+zpYFCLQEjUpyujZJSUGwCRRgqeVciUuMoqskMySCUzXbHR68zIRY
+	 pRVUBpL/GUTfxhY0o3p6+cN6cTdjCc30nl9fBqm/9qOAL7QQrO6p0dYFnDVSIUkn0r
+	 0DwByh6tXYVlm6Ii7SNC3jznakiiQ1KMvRTX7MvaahvBw/EJlmkFsGiGivntk6odRQ
+	 Ili0RviuBrwJFGZMZiQX8bJq/9sjo1KR2kDzzFi3i5wMf/2fDrTem6fGjIVtw/t5Da
+	 63fKpgk4gygpKDNRU/o2L4sL3xzJRsYKozTBV7LIQGZdYSaqQKpq0U1CBUZEXJMOpb
+	 2r+kAqMM8a7Pw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -34,15 +34,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 05 Aug 2025 16:03:50 +0200
-Message-Id: <DBUJTTW31QCI.9EJMRC5RPYLK@kernel.org>
+Date: Tue, 05 Aug 2025 16:19:40 +0200
+Message-Id: <DBUK5YDTU8BH.3676DH8N0WQ6Y@kernel.org>
 Subject: Re: [PATCH v11 7/8] rust: Add read_poll_timeout functions
 Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
- <linux-kernel@vger.kernel.org>, <daniel.almeida@collabora.com>,
- <rust-for-linux@vger.kernel.org>, <netdev@vger.kernel.org>,
- <hkallweit1@gmail.com>, <tmgross@umich.edu>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <benno.lossin@proton.me>, <a.hindborg@samsung.com>, <aliceryhl@google.com>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <andrew@lunn.ch>, <hkallweit1@gmail.com>,
+ <tmgross@umich.edu>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+ <a.hindborg@samsung.com>, <aliceryhl@google.com>,
  <anna-maria@linutronix.de>, <frederic@kernel.org>, <tglx@linutronix.de>,
  <arnd@arndb.de>, <jstultz@google.com>, <sboyd@kernel.org>,
  <mingo@redhat.com>, <peterz@infradead.org>, <juri.lelli@redhat.com>,
@@ -50,30 +50,27 @@ Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
  <rostedt@goodmis.org>, <bsegall@google.com>, <mgorman@suse.de>,
  <vschneid@redhat.com>, <tgunders@redhat.com>, <me@kloenk.dev>,
  <david.laight.linux@gmail.com>
-To: "Andrew Lunn" <andrew@lunn.ch>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <DBNPR4KQZXY5.279JBMO315A12@kernel.org>
+References: <20250220070611.214262-1-fujita.tomonori@gmail.com>
+ <20250220070611.214262-8-fujita.tomonori@gmail.com>
+ <DBNPR4KQZXY5.279JBMO315A12@kernel.org>
  <20250802.104249.1482605492526656971.fujita.tomonori@gmail.com>
  <DBRW63AMB4D8.2HXGYM6FZRX3Z@kernel.org>
- <20250805.223721.524503114987740782.fujita.tomonori@gmail.com>
- <a843788e-80f4-49d3-96f1-1da092ee318c@lunn.ch>
-In-Reply-To: <a843788e-80f4-49d3-96f1-1da092ee318c@lunn.ch>
+ <DCB831D1-8786-41BC-A95B-44F0BEE71990@collabora.com>
+In-Reply-To: <DCB831D1-8786-41BC-A95B-44F0BEE71990@collabora.com>
 
-On Tue Aug 5, 2025 at 3:53 PM CEST, Andrew Lunn wrote:
->> I also prefer the example that can be compiled however I can't think
->> of a compilable example that is similar to actual use cases (for
->> example, waiting for some hardware condition). Do you have any ideas?
->
-> Does it have to be successfully runnable? Just read from address
-> 0x42. If it actually gets run, it will trigger an Opps, but it should
-> be obvious why.
+On Tue Aug 5, 2025 at 4:01 PM CEST, Daniel Almeida wrote:
+> Perhaps it=E2=80=99s worth it to clarify that in the docs for the future =
+versions?
 
-No, we have all three options.
+If you mean the documentation that is given out to users of the API I disag=
+ree.
 
-  (1) Don't do anything with the code.
-  (2) Compile it, but don't run it.
-  (3) Compile it and run it as kunit test.
+We should not explain the implmentation details or the reasons for them to
+users. Instead we should explain the constraints and what users can expect =
+from
+the API and what's the best practice to use it.
 
-In this case we want to compile it, but not actually run it.
-
-- Danilo
+If you meant to add a comment to the implementation itself, that's fine of
+course.
