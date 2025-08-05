@@ -1,49 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5783987D
-	for <netdev@vger.kernel.org>; Tue,  5 Aug 2025 00:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC3A1F948;
+	Tue,  5 Aug 2025 02:51:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754354220; cv=none; b=rxBU9EeL8KbdEN47HoRdB21PiiRzStBEnKGuXgpafHk7VTvlPv9YNQm3Cm5QGoGbrNIjDev+740XvmXR9j+SL0kn/AkRAlnxAxuOMPT6ZRN8+2LAaWVfpiPg+E1h5IgmT7wj+rNMnxiY2X8MfzHoV3Hs839+zrKhkovDCyL6xt0=
+	t=1754362271; cv=none; b=CW84Jhj2dokb9BV0q8V0Mk9VeXoKneH9B4xyWqmMjXrkgQSzCea0O2aa4bNQa5AMPiTazHqmfw1znl1GfkpjWRQBEUulCGxpQVJj/z4+sqB8gJpXe6Ebo9NEB8V2yDjc2tKd4SzPxeC/w0tttjcATGXGaNvoZg2MJzXNf4wSAg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754354220; c=relaxed/simple;
-	bh=ApVxGSYPbbgnFCTj2Tv2dD4Wn2PEuQ2gXxkiayosYhw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GrVX9q4GY3FtahuiCwyXxzEcyWYQQNYZsKmWgLP3cpvui9CxHxsj02auXpppx6PHdDXsu/B28VXXrQbXOa9K6cPOo68knKo7EWIfVBkXK3qyQ1i0AiAH2W5J1ufkyunkbyJjk2OSxU4r2P0ztVqiGiO3YqD6koAVJF9ecr1kxyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fWERTjCZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754362271; c=relaxed/simple;
+	bh=uM2eVyipiju3kW/MbQVtysbJWhwxTWJEIHrHstjdqZY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D2slHsI6WjJaVLYhpFtVPJBnnbe13HqCYzXQuGeVuPA8bzyDm6sP2XS+8UckHW0U7ZDG+GeWgAHFhMsWsRxhSFceWAlwqAYNjXcT0861lyEThDUFJKDcxc2d7fKR2QkrzUoo/vD0EGg8t0o8KhJdbgLuhpjq3AHxAaKmXWLULgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qs0nX/Nl; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fWERTjCZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5468AC4CEE7;
-	Tue,  5 Aug 2025 00:36:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754354218;
-	bh=ApVxGSYPbbgnFCTj2Tv2dD4Wn2PEuQ2gXxkiayosYhw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fWERTjCZZAjrP7Bs3YwRMYU7+UfTB89x7APO374IjtiOYDRlRkyV1RTERHTLu6KaP
-	 bgA1I+Yi1y2Rq2wxcSn1WQKIl4+oc3mfdBkumgngDH0lJi1MuPpdSOvlw47wVxO871
-	 l8YnqDqnu9aKJ3P1o6F8pPpTKORHgPranj/yxE3PmK3nArefbRKa+YplBLGaVgbTDv
-	 8SYBQ0FF8Y7ZVWWyp2RTMG4qyzNF/PCcSbhyzYHNp3NDyfpaYzjpDiaJE06MA1P96C
-	 wYNV117kVoehq5aPZhnWNV6n6kl9Cx8sm0zF+J0cKgywzngf00ujUiBGTb9OSpIq7f
-	 wsns5onbFClsw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qs0nX/Nl"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b423036a317so2718228a12.3;
+        Mon, 04 Aug 2025 19:51:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754362269; x=1754967069; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eqeaa8uY9Za+zVsiXl9Xc9xX5x9azHIxirf0ihgztdg=;
+        b=Qs0nX/NlPDJxdkPdVP/IfDAawOzfG6UWzolAptu6vQ4XO30Vu0G1t5B4vJ0ZuI6k5w
+         zZetzIWjOrZKnJrNLxVEfr1r20tvhZaQYF3eJv+Tn3Q39MG+DbUd/wVn/C7LKNQpB7YY
+         dcxXEZJonb/boRy9n9p7aV7WC/yuGkKVKxLV0JnFMreRpI2A0VEZ4rsKM9H0OBDmL8bQ
+         81r5X9cfFMc8THxuRyHta8Mrr6/dqSxfrI5CGsIk1AqQ1jxDkAPexjLl6Kuue3MGF6Ka
+         SnWUr0nryWaqAVtlR/guQtmHOa3OAjpNu0URpi+C69L/2eVVl4DqqgFgGpVmd6IWAb1J
+         lV7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754362269; x=1754967069;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eqeaa8uY9Za+zVsiXl9Xc9xX5x9azHIxirf0ihgztdg=;
+        b=aWPlvLd24x6HiqIGLVaRzGKX5Lnd9RTQeHQoSHvmlB4teoA/BChvLlQuId5j9f8Oom
+         IVVlQU+bGmx0+SGO8xcnxeOmv6HVtTe+8h7n4Wdny4PF45NXmo6/XFbgW6T+m35N89xi
+         Ml5eKc+C1EzC/OyJ5HfiaTWQfi1QFlww13OGEDjyNDdfa+k0S/b7BHdsPY/FKQotxSvK
+         SHWyhuT3eQ3g6uA/py4Eartrp/n03djGuF/lrW2V4cRj6oANga8L1FLKYBaEb9tf+9s4
+         DkTxVEH6ZeAsN7i7VVxeD24imlKABn41gfgOOJo6yTycgWJRh3pZcIeJEQgyM7ExoyLr
+         5dzw==
+X-Forwarded-Encrypted: i=1; AJvYcCVn6/f0f47mE7yjFfcykDG96wjuG52Y2R/3znM2oIy867BHfufOJfak7uz9njXqVVjzWoo22IVUJE7Ttg==@vger.kernel.org, AJvYcCW9YbU8sE6o8hUiN+e9N+8GvvrTWUFLzqfcNwICleuh18tQWMKocRgeNdOlwuB7+5pi27O73Hyu6miGXlo=@vger.kernel.org, AJvYcCWWXNiQ0tgVo71g4Cx79Qk1JY8XW1qP4KbSFehJ7GGnpUmBuKgV+hwN0EahlRyfX2FgYVRj90Rb@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKB1x1/c1QOnfxm3vzk/Au5vF0yPgh8lreLoVJ9m2nOeYRMQS4
+	R+LP++5tET9eGfL7ITxDJYb+ZLMUN3d4qPEiHDMAmUzb913RaWhq/k7w
+X-Gm-Gg: ASbGncuSqTUkllmIaFH+x3KjUvjKxBme8dh2pPkjT00spOEdEt9oxYUxPxYvaqliRYQ
+	AhMqiBkAlfA7HDBrx9JP5KxORJeprHhzE1EHhJ9WfztsG+YZiKPduVMCZfGNXV5NfmU/qThN8NP
+	nsZHBIkIOS/7Vg018apBRsVVqPSkAV8swCH2ZNc2kqIRd6yQxBHlpEqrRckI3AlhErJIHPEGxe/
+	0HDwpESxSvQoDbrSBq8zTp56jS1h4m7dPAbpmhnUtrMWJBUDQEUci+sHeXALnaG+dF9MtXpXL1R
+	/92FIRquLY27glgXHN8uuX3EFS93brePli4sPWZiUP/ZIqWMiinY7TGocmPgcglPalIN2rM2NU4
+	lzq0q+P8Ggz62AMyoD0s0RPeD
+X-Google-Smtp-Source: AGHT+IEd/SBEMENFpG10Loncgc4YWgnJMjb2xdueteZUnYjU3CqX1v6XdICnKEMweKWdnQJXQ41P8w==
+X-Received: by 2002:a17:903:1247:b0:234:f4da:7eed with SMTP id d9443c01a7336-24247014978mr159776595ad.44.1754362269204;
+        Mon, 04 Aug 2025 19:51:09 -0700 (PDT)
+Received: from c45b92c47440.. ([202.120.234.58])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-241d1f21b69sm122354335ad.71.2025.08.04.19.51.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Aug 2025 19:51:08 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Tariq Toukan <tariqt@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	David Wei <dw@davidwei.uk>,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
-	hawk@kernel.org,
-	ilias.apalodimas@linaro.org,
-	almasrymina@google.com,
-	sdf@fomichev.me
-Subject: [PATCH net v2] net: page_pool: allow enabling recycling late, fix false positive warning
-Date: Mon,  4 Aug 2025 17:36:54 -0700
-Message-ID: <20250805003654.2944974-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.50.1
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com
+Subject: [PATCH] eth: mlx4: Fix IS_ERR() vs NULL check bug in mlx4_en_create_rx_ring
+Date: Tue,  5 Aug 2025 06:50:57 +0400
+Message-Id: <20250805025057.3659898-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,184 +79,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Page pool can have pages "directly" (locklessly) recycled to it,
-if the NAPI that owns the page pool is scheduled to run on the same CPU.
-To make this safe we check that the NAPI is disabled while we destroy
-the page pool. In most cases NAPI and page pool lifetimes are tied
-together so this happens naturally.
+Replace NULL check with IS_ERR() check after calling page_pool_create()
+since this function returns error pointers (ERR_PTR).
+Using NULL check could lead to invalid pointer dereference.
 
-The queue API expects the following order of calls:
- -> mem_alloc
-    alloc new pp
- -> stop
-    napi_disable
- -> start
-    napi_enable
- -> mem_free
-    free old pp
-
-Here we allocate the page pool in ->mem_alloc and free in ->mem_free.
-But the NAPIs are only stopped between ->stop and ->start. We created
-page_pool_disable_direct_recycling() to safely shut down the recycling
-in ->stop. This way the page_pool_destroy() call in ->mem_free doesn't
-have to worry about recycling any more.
-
-Unfortunately, the page_pool_disable_direct_recycling() is not enough
-to deal with failures which necessitate freeing the _new_ page pool.
-If we hit a failure in ->mem_alloc or ->stop the new page pool has
-to be freed while the NAPI is active (assuming driver attaches the
-page pool to an existing NAPI instance and doesn't reallocate NAPIs).
-
-Freeing the new page pool is technically safe because it hasn't been
-used for any packets, yet, so there can be no recycling. But the check
-in napi_assert_will_not_race() has no way of knowing that. We could
-check if page pool is empty but that'd make the check much less likely
-to trigger during development.
-
-Add page_pool_enable_direct_recycling(), pairing with
-page_pool_disable_direct_recycling(). It will allow us to create the new
-page pools in "disabled" state and only enable recycling when we know
-the reconfig operation will not fail.
-
-Coincidentally it will also let us re-enable the recycling for the old
-pool, if the reconfig failed:
-
- -> mem_alloc (new)
- -> stop (old)
-    # disables direct recycling for old
- -> start (new)
-    # fail!!
- -> start (old)
-    # go back to old pp but direct recycling is lost :(
- -> mem_free (new)
-
-The new helper is idempotent to make the life easier for drivers,
-which can operate in HDS mode and support zero-copy Rx.
-The driver can call the helper twice whether there are two pools
-or it has multiple references to a single pool.
-
-Fixes: 40eca00ae605 ("bnxt_en: unlink page pool when stopping Rx queue")
-Tested-by: David Wei <dw@davidwei.uk>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8533b14b3d65 ("eth: mlx4: create a page pool for Rx")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 ---
-v2:
- - add kdoc
- - WARN_ON_ONCE -> WARN_ON
-v1: https://lore.kernel.org/20250801173011.2454447-1-kuba@kernel.org
+ drivers/net/ethernet/mellanox/mlx4/en_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks to David Wei for confirming the problem on bnxt and testing
-the fix. I hit this writing the fbnic support for ZC, TBH.
-Any driver where NAPI instance gets reused and not reallocated on each
-queue restart may have this problem. netdevsim doesn't 'cause the
-callbacks can't fail in funny ways there.
-
-CC: michael.chan@broadcom.com
-CC: pavan.chebbi@broadcom.com
-CC: hawk@kernel.org
-CC: ilias.apalodimas@linaro.org
-CC: dw@davidwei.uk
-CC: almasrymina@google.com
-CC: sdf@fomichev.me
----
- include/net/page_pool/types.h             |  2 ++
- drivers/net/ethernet/broadcom/bnxt/bnxt.c |  9 ++++++-
- net/core/page_pool.c                      | 29 +++++++++++++++++++++++
- 3 files changed, 39 insertions(+), 1 deletion(-)
-
-diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
-index 431b593de709..1509a536cb85 100644
---- a/include/net/page_pool/types.h
-+++ b/include/net/page_pool/types.h
-@@ -265,6 +265,8 @@ struct page_pool *page_pool_create_percpu(const struct page_pool_params *params,
- struct xdp_mem_info;
+diff --git a/drivers/net/ethernet/mellanox/mlx4/en_rx.c b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
+index 92a16ddb7d86..b60f3d5fbd16 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
+@@ -267,7 +267,7 @@ int mlx4_en_create_rx_ring(struct mlx4_en_priv *priv,
+ 	pp.dma_dir = priv->dma_dir;
  
- #ifdef CONFIG_PAGE_POOL
-+void page_pool_enable_direct_recycling(struct page_pool *pool,
-+				       struct napi_struct *napi);
- void page_pool_disable_direct_recycling(struct page_pool *pool);
- void page_pool_destroy(struct page_pool *pool);
- void page_pool_use_xdp_mem(struct page_pool *pool, void (*disconnect)(void *),
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 5578ddcb465d..76a4c5ae8000 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -3819,7 +3819,6 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
- 	if (BNXT_RX_PAGE_MODE(bp))
- 		pp.pool_size += bp->rx_ring_size / rx_size_fac;
- 	pp.nid = numa_node;
--	pp.napi = &rxr->bnapi->napi;
- 	pp.netdev = bp->dev;
- 	pp.dev = &bp->pdev->dev;
- 	pp.dma_dir = bp->rx_dir;
-@@ -3851,6 +3850,12 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
- 	return PTR_ERR(pool);
- }
+ 	ring->pp = page_pool_create(&pp);
+-	if (!ring->pp)
++	if (IS_ERR(ring->pp))
+ 		goto err_ring;
  
-+static void bnxt_enable_rx_page_pool(struct bnxt_rx_ring_info *rxr)
-+{
-+	page_pool_enable_direct_recycling(rxr->head_pool, &rxr->bnapi->napi);
-+	page_pool_enable_direct_recycling(rxr->page_pool, &rxr->bnapi->napi);
-+}
-+
- static int bnxt_alloc_rx_agg_bmap(struct bnxt *bp, struct bnxt_rx_ring_info *rxr)
- {
- 	u16 mem_size;
-@@ -3889,6 +3894,7 @@ static int bnxt_alloc_rx_rings(struct bnxt *bp)
- 		rc = bnxt_alloc_rx_page_pool(bp, rxr, cpu_node);
- 		if (rc)
- 			return rc;
-+		bnxt_enable_rx_page_pool(rxr);
- 
- 		rc = xdp_rxq_info_reg(&rxr->xdp_rxq, bp->dev, i, 0);
- 		if (rc < 0)
-@@ -16031,6 +16037,7 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
- 			goto err_reset;
- 	}
- 
-+	bnxt_enable_rx_page_pool(rxr);
- 	napi_enable_locked(&bnapi->napi);
- 	bnxt_db_nq_arm(bp, &cpr->cp_db, cpr->cp_raw_cons);
- 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 05e2e22a8f7c..343a6cac21e3 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -1201,6 +1201,35 @@ void page_pool_use_xdp_mem(struct page_pool *pool, void (*disconnect)(void *),
- 	pool->xdp_mem_id = mem->id;
- }
- 
-+/**
-+ * page_pool_enable_direct_recycling() - mark page pool as owned by NAPI
-+ * @pool: page pool to modify
-+ * @napi: NAPI instance to associate the page pool with
-+ *
-+ * Associate a page pool with a NAPI instance for lockless page recycling.
-+ * This is useful when a new page pool has to be added to a NAPI instance
-+ * without disabling that NAPI instance, to mark the point at which control
-+ * path "hands over" the page pool to the NAPI instance. In most cases driver
-+ * can simply set the @napi field in struct page_pool_params, and does not
-+ * have to call this helper.
-+ *
-+ * The function is idempotent, but does not implement any refcounting.
-+ * Single page_pool_disable_direct_recycling() will disable recycling,
-+ * no matter how many times enable was called.
-+ */
-+void page_pool_enable_direct_recycling(struct page_pool *pool,
-+				       struct napi_struct *napi)
-+{
-+	if (READ_ONCE(pool->p.napi) == napi)
-+		return;
-+	WARN_ON(!napi || pool->p.napi);
-+
-+	mutex_lock(&page_pools_lock);
-+	WRITE_ONCE(pool->p.napi, napi);
-+	mutex_unlock(&page_pools_lock);
-+}
-+EXPORT_SYMBOL(page_pool_enable_direct_recycling);
-+
- void page_pool_disable_direct_recycling(struct page_pool *pool)
- {
- 	/* Disable direct recycling based on pool->cpuid.
+ 	if (xdp_rxq_info_reg(&ring->xdp_rxq, priv->dev, queue_index, 0) < 0)
 -- 
-2.50.1
+2.25.1
 
