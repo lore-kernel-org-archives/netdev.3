@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6581C8633;
-	Tue,  5 Aug 2025 21:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D846722D4C0;
+	Tue,  5 Aug 2025 21:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754429542; cv=none; b=mbvTCzzqOzqtH8cmFa2aN7+duFu1GmC6oj+wY76hoKk3Wc9thCYnQ1CRMJwU8OTaAQ/kLJSnrVfWUaINGikMnus3clWyMsiAvlK4YPW4pwptJNXdGK5ZvM691j1GYQHeoZubaIRj3Lh/xiax6u8tAVpi8bDWHr0AR2GeNf9F2WE=
+	t=1754430066; cv=none; b=MbFQF4Nes3NTn42HJaiYKu//NZKeh4cTF7sjY55hzxw1cCWzjOMnMIL/PQ3aoAlPFLmbHMq1nSccL0Z8Uy7ZB2RuRtESVJjZIa56FJeZ887Blh/E6/6iJ1F555P9AW6GVqjwawm1MphMIQ3NNfzIfb1tmOaFTseMLnTBg0nCE38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754429542; c=relaxed/simple;
-	bh=FKMtt4C7SiHLDtPX/p8cSSP5Ihvqa+3tSZWKlaBZpqQ=;
+	s=arc-20240116; t=1754430066; c=relaxed/simple;
+	bh=8dUpQn9CcS3sXe/4L+ubz1sM5F88oFVde65by5GHwaM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WCeIWPW0xHyr7m+bPKKugNfAXZJfguogyuUO6Xx3k60LjnFvFTjy1WrnYWzaDAhzAH8lx+/8ykJLykfkbcm4fankMUsAXsXHad8pIeVCQFAq8Lqzc+5wVb3n0zI53kAWTTHx0ETOZAsyXZWD39T2fhLDL4EBmV0QhDffGb0EHgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=UmmtEqGo; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=esAIdF+wXFUEJQ0LBcZMRI9wMYRu6Dna1nerUnSbYKWvgmOX/iv3IyaVxH2vM0Owf/capXxlUgf85FyBYnKKHVgcM5Bb/BvFDsWalH7EcsXEufLIbWdMjYwQSQh1O2ynfyWODSmHJOLoSlBpasbPtz8acRZjcYhsE717dXbRV1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eXFzQppg; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="UmmtEqGo"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eXFzQppg"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Ehg7mtVEZG5GkLeNFV5NybHMZ76+3RE7nNoKJBi39vM=; b=UmmtEqGoQCHJCUJD2FPuSpUcxJ
-	kEDJzF3QrGcSGTcRZP4Tm21LpfrkrbMshAqMWfQWUDCS3NDRs9oYEDR7cw+uHekZQ/MiQHVsF8B4i
-	01H8w1v0bMNseWAHoGcrzkEP7+9yNXGgHyAuJsL8MefLvCR0a0gVr/v8RGNVSOjI77v8=;
+	bh=/T32B0iDAc73yD8QSjnheCBq97UTHskJn2BHI0l6/+A=; b=eXFzQppguDZBk4N1x1nydTBhMH
+	4k9rwb2TiweuCZcxlpYtGI6DEj2Tw/lyKgp3Wi7rrb83QJ9iPS+U+bhWb/8x7LK1M3p1KnxwCOnDL
+	YVoF2hVg8//OrxT6UTIN2sNpQ9i68CW9KZ5Pv5f2Fpw/eOarCGp8snbFj1855WW5trIU=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1ujPGX-003pQr-Ib; Tue, 05 Aug 2025 23:32:13 +0200
-Date: Tue, 5 Aug 2025 23:32:13 +0200
+	id 1ujPOz-003pTN-UN; Tue, 05 Aug 2025 23:40:57 +0200
+Date: Tue, 5 Aug 2025 23:40:57 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Sean Anderson <sean.anderson@linux.dev>
 Cc: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
@@ -40,11 +40,11 @@ Cc: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Michal Simek <michal.simek@amd.com>,
 	Leon Romanovsky <leon@kernel.org>
-Subject: Re: [PATCH net-next v4 6/7] net: axienet: Rearrange lifetime
- functions
-Message-ID: <69b08e90-ae99-43fd-9779-dd5497a26e1f@lunn.ch>
+Subject: Re: [PATCH net-next v4 7/7] net: axienet: Split into MAC and MDIO
+ drivers
+Message-ID: <c320da3b-6e55-474a-93d6-666092b70774@lunn.ch>
 References: <20250805153456.1313661-1-sean.anderson@linux.dev>
- <20250805153456.1313661-7-sean.anderson@linux.dev>
+ <20250805153456.1313661-8-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,58 +53,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250805153456.1313661-7-sean.anderson@linux.dev>
+In-Reply-To: <20250805153456.1313661-8-sean.anderson@linux.dev>
 
-On Tue, Aug 05, 2025 at 11:34:55AM -0400, Sean Anderson wrote:
-> Rearrange the lifetime functions (probe, remove, etc.) in preparation
-> for the next commit. No functional change intended.
+> Fixes: 1a02556086fc ("net: axienet: Properly handle PCS/PMA PHY for 1000BaseX mode")
 
-There is a lot going on in this patch. Can it be broken up a bit more?
+If this is for net-next, please don't have a Fixes: tag.
 
-The phase "No functional change intended" generally means, its the
-same code, just in a different place in the files. This is not true of
-this patch.
+>  struct axienet_common {
+>  	struct platform_device *pdev;
+> +	struct auxiliary_device mac;
+>  
+>  	struct clk *axi_clk;
+>  
+>  	struct mutex reset_lock;
+> -	struct mii_bus *mii_bus;
+> +	struct auxiliary_device mii_bus;
 
-> +struct axienet_common {
-> +	struct platform_device *pdev;
-> +
-> +	struct clk *axi_clk;
-> +
-> +	struct mutex reset_lock;
+Keeping the name mii_bus for something which is not an struct mii_bus
+is going to cause confusion. Please give it a different name.
 
->  static inline void axienet_lock_mii(struct axienet_local *lp)
->  {
-> -	if (lp->mii_bus)
-> -		mutex_lock(&lp->mii_bus->mdio_lock);
-> +	mutex_lock(&lp->cp->reset_lock);
+This is another patch which needs splitting up.
 
-This lock is different to the bus lock. This is definitely not a "no
-functional change".
-
-Please make this lock change a patch of its own, with a good commit
-message which considers the consequences of this change of lock.
-
->  		if (!np) {
-> -			dev_err(dev, "pcs-handle (preferred) or phy-handle required for 1000BaseX/SGMII\n");
-> -			ret = -EINVAL;
-> -			goto cleanup_mdio;
-> +			dev_err(dev,
-> +				"pcs-handle (preferred) or phy-handle required for 1000BaseX/SGMII\n");
-> +			return -EINVAL;
-
-That looks like a whitespace change. This is a "No functional change
-intended" sort of patch. You can collect all such whitespace changes
-into one patch.
-
->  		}
->  		lp->pcs_phy = of_mdio_find_device(np);
-> -		np1 = of_find_node_by_name(NULL, "lpu");
-> +		np1 = of_find_node_by_name(NULL, "cpu");
-
-Interesting. Maybe you should review your own patches.
-
-
-    Andrew
-
----
-pw-bot: cr
+   Andrew
