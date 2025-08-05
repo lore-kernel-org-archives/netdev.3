@@ -1,78 +1,73 @@
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5901F199252
-	for <netdev@vger.kernel.org>; Tue,  5 Aug 2025 11:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C3A1D7E5B
+	for <netdev@vger.kernel.org>; Tue,  5 Aug 2025 11:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754393644; cv=none; b=Cx63f0EwOMAQsj4brPGuS8u6jgyrScl/FmOO0Qe9ccmxVGIu1CK5F8SqvTH/T/RRE+XYwHIsmZvtgT4szVCwmpJHpK2nW2Bpau43rLr1eBmknjxk6jn2gy2Sx1tXHeOrxaQ6AyLU4GPeRq8qS8eB39d9vNdnMFjFsEDEOiAYIv8=
+	t=1754394780; cv=none; b=EkGeEvBrAIakZBQYqG8vmkgBcRnd3yxyFOjTLK+T646PCpLj7/v2QbKxNZftdpBvN3z53wxDpXkjgg9NoIi6vEnGs7TXDM0BFj/uyjcj7YUGF3U7QcYT52tMzkBm23GLbatgXHWBgIVsb4JmrI+AtoxTJYqUB1aaeZ2LCxxc1eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754393644; c=relaxed/simple;
-	bh=Sflcpsg0PD5XG5dljOG1ybZHenmBO0Bu1t55tSERMg8=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=NbmeowSJqZ+dJup2fttQ7XRZPZ7x87uCB9M1yIc6RsbrC6/ALH4nMj7MHsrWqNYdOVjmHmy5jFe0Nv3ZBh6GP5lLFmLlnRSwbz1heWIktDJgiGU4VAmMRw9SqPwxm1jW/oLH414GTdxYxhW/iBfj/3cIdWVaWApDpB40d2IMt6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-8760733a107so551928039f.3
-        for <netdev@vger.kernel.org>; Tue, 05 Aug 2025 04:34:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754393642; x=1754998442;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=95FWEmXIfrIEO/zYb45Z4W0pP1aqivE7KsjXCppK0uA=;
-        b=VssjNnTxk+3UZIAnzl2bShepc4FqGPs/9OuSsKWTaMoAc0TBCKxZ2176GUCqiClqJu
-         Mm4cr68gCUVEmO2TINDAXFtq+PIkFqDdnTt/ufZ0zME3oK5Y1UnNhn9x0WBUd3rIIQhr
-         C2UK2Wcl9ZZCm+7rQIAuXTt85mPN6QHXmuZnp9HbGUwm3OHcM1W7OEaArhDkuE33jZe5
-         l1kyT1RFWZtBf/t9yozkmIY2S7ffn/ELM4f/CQ3BRD7tyWjDWDqYx4d1mmNAmP8aHsBB
-         GhhU+PJ9gopGCguh90QKcXcRXWJLMD3nUBGoUiWzvSQ6OAXXupskcxjBSAKNMB4IF3Il
-         5XOg==
-X-Forwarded-Encrypted: i=1; AJvYcCXvFKHZuBwChQsynOhkzjNqgtut7bnUaUnx0EOnCJEgBd4liQb9htrEX16eN5016LfgrO9osUw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJxg8Hlpsd34InYtyxL54RHYAviroDBMXIgvqD3waiGk8M6XsR
-	ko4dtGrVF8ncR3iJf2k/UxfhGGUmfwjh1CnjZ83GKar3ghQT6wBTZx9f1fczuqo3GtNOEo4D4QU
-	gzs7lD7B8+ZLnSKMjsgC/aF24kcbWrMp2LeVumKajvh5Rb+byj8qkJubuE+o=
-X-Google-Smtp-Source: AGHT+IFMu0t0Nn/b9qQTRS7KeyLXQj5B5JqMmtkPaTMaH+YrEoz27P7XhK1L1Ba/Tj2GJG85jei9IWOi9alFMFHti0KIahs+RlUF
+	s=arc-20240116; t=1754394780; c=relaxed/simple;
+	bh=snY9YU6jUmqW1iFzVyfIX13IajAVN5ROvSqYfrNKE8I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TyPSww6oEOktSTiKs7DUVcxtXtxBYSDJ5dub8fwhoHKZHYa4L3/MEj2Q7W/MMFcOiJ1veXHDOnt29rubvZB45ys/jZ+Ze7ig3xpSFkY/Wm85Pv1yhNVlis1udzm6SdqHe0D1PHDJdYscfM5UmfaLa66kzdbugtMSYZZpfxlh1GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=JeYcP4IP; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="JeYcP4IP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=G60OpUeSCFQwT+Ftz64XID9t72JvPaKedHIGpha/zhQ=; b=Je
+	YcP4IPBEn+d7gb4beu0bDLM6jN/ZFVZ52Vbq9kQ3wTUBqkCEa4G/vLoh0rbFl/9eAhtkEM69kr49a
+	aXalYx+Jw+fd9x6dsGdZI/isZjegH6e+k8mwElMhuBO76bRErB8IrQOI+4eHPZS+h6KoZJjyej3KJ
+	32oebedxBuxiyzw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1ujGDr-003moh-6R; Tue, 05 Aug 2025 13:52:51 +0200
+Date: Tue, 5 Aug 2025 13:52:51 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: Ryan Wilkins <Ryan.Wilkins@telosalliance.com>,
+	Luke Howard <lukeh@padl.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH net] net: dsa: validate source trunk against lags_len
+Message-ID: <42a1926a-6e1a-4b0e-92e1-2647d7c75993@lunn.ch>
+References: <DEC3889D-5C54-4648-B09F-44C7C69A1F91@padl.com>
+ <20250731090753.tr3d37mg4wsumdli@skbuf>
+ <42BC8652-49EC-4BB6-8077-DC77BCA2A884@padl.com>
+ <20250731113751.7s7u4zjt6isjnlng@skbuf>
+ <C867697B-7F5B-4500-8098-9C44630D7930@padl.com>
+ <CAD3ieB36VnKAQPXUGbnRdWYFThf-VfLkhZTRfb9=ddndZEW3=A@mail.gmail.com>
+ <20250805074226.agdnmeaip5wxzgkz@skbuf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:2507:b0:3e3:c918:e3b6 with SMTP id
- e9e14a558f8ab-3e41607aa64mr220823675ab.0.1754393642206; Tue, 05 Aug 2025
- 04:34:02 -0700 (PDT)
-Date: Tue, 05 Aug 2025 04:34:02 -0700
-In-Reply-To: <67f66c9c.050a0220.25d1c8.0003.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6891ec2a.050a0220.7f033.0021.GAE@google.com>
-Subject: Re: [syzbot] [net?] KASAN: null-ptr-deref Write in rcuref_put (4)
-From: syzbot <syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com>
-To: atenart@kernel.org, davem@davemloft.net, dawid.osuchowski@linux.intel.com, 
-	edumazet@google.com, gal@nvidia.com, horms@kernel.org, kuba@kernel.org, 
-	kuniyu@google.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250805074226.agdnmeaip5wxzgkz@skbuf>
 
-syzbot has bisected this issue to:
+On Tue, Aug 05, 2025 at 10:42:26AM +0300, Vladimir Oltean wrote:
+> Hello Ryan,
+> 
+> On Tue, Aug 05, 2025 at 12:06:32AM -0400, Ryan Wilkins wrote:
+> > I cannot confirm if the problem reproduces without the in-band management
+> > patches applied as I’m testing with a Raspberry Pi that has no current
+> > ability to connect to the switch chip via MDIO.
+> 
+> Last I checked, the RMU patches did not offer the possibility to control
+> the switch exclusively over Ethernet; an MDIO connection was still
+> necessary, mainly as a fallback to mv88e6xxx_rmu_available(). Has any of
+> that changed? Who enables RMU management in the first place?
 
-commit de9c4861fb42f0cd72da844c3c34f692d5895b7b
-Author: Eric Dumazet <edumazet@google.com>
-Date:   Tue Jul 29 08:02:07 2025 +0000
+Luke has extended my patches to add pure RMU support. It does require
+the EEPROM has the needed contents to get the switch into RMU mode,
+but with that, no MDIO is required.
 
-    pptp: ensure minimal skb length in pptp_xmit()
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=17cb2042580000
-start commit:   5c5a10f0be96 Add linux-next specific files for 20250804
-git tree:       linux-next
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=142b2042580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=102b2042580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f4ccbd076877954b
-dashboard link: https://syzkaller.appspot.com/bug?extid=27d7cfbc93457e472e00
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1628faa2580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12490434580000
-
-Reported-by: syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com
-Fixes: de9c4861fb42 ("pptp: ensure minimal skb length in pptp_xmit()")
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+	Andrew
