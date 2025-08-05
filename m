@@ -1,254 +1,300 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx08-0057a101.pphosted.com (mx08-0057a101.pphosted.com [185.183.31.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C139B23C50A
-	for <netdev@vger.kernel.org>; Tue,  5 Aug 2025 12:16:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754396205; cv=none; b=cuWStl2BB7VVu0mwVVMZWJNwGbmNEeLvkKdASx0KPHcQgqWxosaIDZSpkLAEw+kb9oVDUi2Opf8MwTMvwyRA8YmxMo63NHr36A0EoS7thKRYRTaaDovdgtkBxFbxtBPocNKkMaK2VU9lKMa8XMIvjlXPrveXEe+UAxO8d4T+o7w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754396205; c=relaxed/simple;
-	bh=CmBCmABcCLnjEROKfmOKByGevm1swRuwvHWiVA31uL0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RWaI+j30RqnOBt0sdLNvXrSyLUgSIifS1MjDSVQM04X+BLdZMh5Bimjki/aFhAD+JzUArvMg3IN95Ova7nqMAZgWcVYzdzRsOGsBKzs8YtOJlUIcO0RP3stp4UOcS2Oxldhy7MLbAGuwtGofH9+Aw71+rQaz4I9PG9C6DGq3Jgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R7iLrCA6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D1B1A0BFD;
+	Tue,  5 Aug 2025 12:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.183.31.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754397900; cv=fail; b=miBhmwEj3D6sCu3Fgd2m89uSJPfQzhLkouGAvpYwN0YsfJGEI4mR9ELTYXW93PlVI6VuHQo3ngPMFJhwOyyEbM2T0si9gE+SUevNXp4k8tUnjKJjzkeFJ37kEcnE6Vei6VF93ia//+m9pXpCo4pQT8o94YN7ytEuXD3UgMWBM6I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754397900; c=relaxed/simple;
+	bh=QQXp1jYKCLG1KDTI2f32YQ0JfyXLcZaLZTt8I7vQCA4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=gD88Yt2n9aK463KwR2L32XBlRnoCKWp5QIvit9764lQ53QVmRkO+v+TYTP4gtkEn6iRg4zbSYLqc6LzVjae9ZOvNMgHomhkIZ9uuWM57Pd5OeJbJ3byAi4cGjb5jJP8iD0pHdAT+trrBOuFr+ikqsIe5Tr3U5esOzbZjntQ11dU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=UFaKZ+6h; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=fpdI8SlY; arc=fail smtp.client-ip=185.183.31.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=westermo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R7iLrCA6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754396202;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=k44PWZB+SstYXZf2Wo78t/ngrbX6A8TaWIyHMZPnUhA=;
-	b=R7iLrCA6l/UwuqyKucc9JmtVvtKFQt4gjlmkyrkufF5rG87opt77v7Wv6UcZqsNbix9V6n
-	pF7LD7rLGF/PUE3aeVUp2DRGOctn3afR4cKwwIVpnSoMQ1ThaLdkzrlTVhvEsYfHFCvyRe
-	I8OErBQ/D/FaJj04WIV6OY7zkrSVxhY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-6SSmc80lNe6HPJU4U0leBw-1; Tue,
- 05 Aug 2025 08:16:39 -0400
-X-MC-Unique: 6SSmc80lNe6HPJU4U0leBw-1
-X-Mimecast-MFC-AGG-ID: 6SSmc80lNe6HPJU4U0leBw_1754396198
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 855F21955D90;
-	Tue,  5 Aug 2025 12:16:38 +0000 (UTC)
-Received: from jramaseu-thinkpadt14gen5.tpbc.com (unknown [10.67.32.24])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B0B391954B08;
-	Tue,  5 Aug 2025 12:16:33 +0000 (UTC)
-From: Jakub Ramaseuski <jramaseu@redhat.com>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	Jakub Ramaseuski <jramaseu@redhat.com>,
-	Tianhao Zhao <tizhao@redhat.com>,
-	Michal Schmidt <mschmidt@redhat.com>
-Subject: [PATCH net] net: mask NETIF_F_IPV6_CSUM flag on irregular packet header size
-Date: Tue,  5 Aug 2025 14:16:27 +0200
-Message-ID: <20250805121627.311053-1-jramaseu@redhat.com>
+	dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b="UFaKZ+6h";
+	dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b="fpdI8SlY"
+Received: from pps.filterd (m0214196.ppops.net [127.0.0.1])
+	by mx07-0057a101.pphosted.com (8.18.1.8/8.18.1.8) with ESMTP id 5755qA7A3492870;
+	Tue, 5 Aug 2025 14:44:25 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=westermo.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=270620241; bh=2uQa1DB7EC4JsfvOHgHjqq84
+	tUM57mC8PWCb1Hvc6Fs=; b=UFaKZ+6h8SK7tHFdQMIgOsPqC9Ci/2y5n+9U+w+p
+	Ft7G+6bYkCuvfx0nBWGUY+T2Fv+jNGLZUFVrymcBVt99UNy4RVcNXp6yYSwEeBKM
+	Z0D7/615I9WShdE5Nz2iWDg+dZlwksQm1VqGAUYhvMTNKxj5rzoPcZSMh9jEPMmW
+	3fY7GGS/NgzKfZuSSKMbtngqvWktghJU/X72sP6Q8P2TxhhGBNbASb/YTttLyPYW
+	ucDqS1GgzYoC+VtYoa45vPVPI19/iRGIzPBtG95tfBE37ASRPDx+OiQxuNQuptD7
+	CMs66x+Sd10Uz6OMzuQiC8aC9b7FovLiZaCNE3P7PUz4bQ==
+Received: from eur05-am6-obe.outbound.protection.outlook.com (mail-am6eur05on2136.outbound.protection.outlook.com [40.107.22.136])
+	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 4896p1thpq-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 05 Aug 2025 14:44:24 +0200 (MEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=C9uH9Og/JfsqCO9WbybybX1koMW8ILSr/DXJRvcXqAVVrVGC2KsLRZjfqosH/wSuY96gbiAL+pRhl4bvVM9FLBGchdJ+gqiIZbhFBRtpbLLZ4fTAI1CuwkgAPXFBFlaQLFKNqTA8oMrwejeLZBN2lSeOQ7RlTv2gfJ+VPG9cVwJYsIQiJgksGXtjwWmzTHfAWCiFyhIXzeCgiwnXDGk4Hvjg4HTkGRtjtro01KuNfs3Cdtfp2HDO6TldvxBMW4Y+iQFxXvScUxXKZs+oHx4gZ/WMLJ4+kMGh6zFo6arPEjZPep9n6MzLANvTZuxUVj0rOgFPzTjY1qWykdTts/kuRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2uQa1DB7EC4JsfvOHgHjqq84tUM57mC8PWCb1Hvc6Fs=;
+ b=k1sJkF8Lg77b3Kf1m1lnpAbdBdNSZgr4NSjfHbzASU/BFUYAohew3Bt9fG2wyU6RW8XdYC0K1tO1vSsNGIimOJf/nr84DvHUuXh8ZEs8AYnFYcf6Egq1LLmj6cK1n0ve4+fq1VsdLF9tqVfagnW+JaSo/70lvF8+rLljACsOvGQF2xXDl4pufcyjphMw1o0rffWclDOXsHbIfT+5rSMi+iU52Pb91HnDwNLCDq3UZQe964QBrPZ/4Qv5es5B778yh4T6B7UOGBIXWlb9x7xMJv4EACerBA898SBUj7V7dSGZDPFKMdVvjC5bkagcLPuY1ASOn7knycN6o8ioliHUfw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
+ dkim=pass header.d=westermo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=beijerelectronicsab.onmicrosoft.com;
+ s=selector1-beijerelectronicsab-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2uQa1DB7EC4JsfvOHgHjqq84tUM57mC8PWCb1Hvc6Fs=;
+ b=fpdI8SlYqUlaPRc58WtNfKVuE5aFjOeNNcEHmBpKXy/tNFsV9Mc5E0mBrqtgtWEy7hswTWXDVcSFXH5FwOh/banSjq1brwEymtUMaISaVQoZQN7+U/+ifXtlqRo3++S1OtHBcfupo/7rFnqvT7Mde8hGSbnQ/ZU1JG98nD8Hf0s=
+Received: from FRWP192MB2997.EURP192.PROD.OUTLOOK.COM (2603:10a6:d10:17c::10)
+ by DB9P192MB1963.EURP192.PROD.OUTLOOK.COM (2603:10a6:10:3c5::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.12; Tue, 5 Aug
+ 2025 12:44:23 +0000
+Received: from FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
+ ([fe80::8e66:c97e:57a6:c2b0]) by FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
+ ([fe80::8e66:c97e:57a6:c2b0%5]) with mapi id 15.20.9009.011; Tue, 5 Aug 2025
+ 12:44:22 +0000
+Date: Tue, 5 Aug 2025 14:44:15 +0200
+From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: Aquantia PHY in OCSGMII mode?
+Message-ID: <aJH8n0zheqB8tWzb@FUE-ALEWI-WINX>
+References: <aJBQiyubjwFe1h27@FUE-ALEWI-WINX>
+ <20250804100139.7frwykbaue7cckfk@skbuf>
+ <aJCvOHDUv8iVNXkb@FUE-ALEWI-WINX>
+ <20250804134115.cf4vzzopf5yvglxk@skbuf>
+ <aJDH56uXX9UVMZOf@FUE-ALEWI-WINX>
+ <20250804160037.bqfb2cmwfay42zka@skbuf>
+ <20250804160234.dp3mgvtigo3txxvc@skbuf>
+ <aJG5/d8OgVPsXmvx@FUE-ALEWI-WINX>
+ <20250805102056.qg3rbgr7gxjsl3jd@skbuf>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250805102056.qg3rbgr7gxjsl3jd@skbuf>
+User-Agent: Mutt/2.1.4 (2021-12-11)
+X-ClientProxiedBy: HE1PR05CA0336.eurprd05.prod.outlook.com
+ (2603:10a6:7:92::31) To FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:d10:17c::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: FRWP192MB2997:EE_|DB9P192MB1963:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76057776-0f31-49a9-f5b9-08ddd41dcdb4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?AU4/7tkNauP10f2bnEXoy7jnGSSgc3AQlNWRCbywYsMPRI6U/qU5aJMCDdKf?=
+ =?us-ascii?Q?sn/vU4y6+roxCsVntyaTpSwguuN9KIndCrBKirhmEOnHA3Ye5o2Ha8f6qCDB?=
+ =?us-ascii?Q?m4lwY5iUwZUH71FC6KkZiOWjg/eil4trQLfixF8h5U3vVodbFqSdDthoWKaF?=
+ =?us-ascii?Q?dhk65ruSBS9XV+oi8Bo7chY0I8fPUQk/iafHa0D9kBZYT06REqeAySBCw4qo?=
+ =?us-ascii?Q?bo6iYsqtq0YRQDsB+sj1Hx/vt6mqAM5R/1XdxEtzjOTkpQKE2n/6JZfm7gun?=
+ =?us-ascii?Q?BEuHH0uwG9JoOOLvNz5t7yhTvMSEd0g+32kZEEJUX/TrtsiWOGvYP1XRACUM?=
+ =?us-ascii?Q?Qkb4YWAtmJsYExEIEmuNXJqOVpyvGmxfwKVm0JtaWiIoDIDE7MprZ2cMlNM2?=
+ =?us-ascii?Q?/GNXJVO2XL6CiOgLZacM8o5yq//cWXKRW6lUF+mjg6AwZPutD0dGJM7spZWN?=
+ =?us-ascii?Q?rrV7A6/3bwVpziI+mvxwX/6vPiiy689JPpB7e5i3JvmldC+iTGR88+LRJzi/?=
+ =?us-ascii?Q?4+tepNVqTi2jED5c9PrTBMzhSfXi0itbnAMOyAumcbQCugQ8nS1kJK6/+wNT?=
+ =?us-ascii?Q?EIzPClzQ3YQQLmXHCk5oTaMMqItbrRoiMubcnzQoU9UxJuuCH5jHRRVvidWD?=
+ =?us-ascii?Q?R/+GQK4p+iCGGcfHiB9d48w+cp6ymhRpWaU3zzjdI/EjR9dbyymIiC2tv9Fe?=
+ =?us-ascii?Q?G1aY7oGlY9kOv/q6r6b1YwhCsoH1NyfzCueTDocTyz/XsA9HCmzLNh1nQ1ej?=
+ =?us-ascii?Q?AQzIFzEnQcFIsGt46WH7Rezxbx+xhdwdXqqtZyWBqiivEdhgASJMLv9vYbqd?=
+ =?us-ascii?Q?CXOvs912oJBR2NUGiXxIxtO6ZjpC08crEyyAyfOZXaAi3qxa6KPT17RIj6rg?=
+ =?us-ascii?Q?yg7ZGvBlex/vGYXgpkD2NJIivov/2PSjB5LkrMEyQ09dbJtR2v8Tnivt1qWT?=
+ =?us-ascii?Q?YLO0s9viwls23kcaYt3pR0WAzqG+07ytgtVdywgGL05cLixwsgURvxt1GBDF?=
+ =?us-ascii?Q?IqDun7cQbM8WDalEfrgw0BRbgeYpoXnEqv7sfWvu1piES9qtVbR1bXmWv1sa?=
+ =?us-ascii?Q?smoOERAOFvHcBGO2iNRtdbiwLx5zx/PgWQEFJhcv5j+fBLCq5aAsIQvNVdXT?=
+ =?us-ascii?Q?GiEyUaw/1FhGK/GA9WAWCDnPRBt/bpT/9WHU1M4IezeSzijxzBnXWb+MeuCk?=
+ =?us-ascii?Q?yLBgEpsGYeZjkcwhoYFqD60kigPDgQzN40RREn0wpfcXBbZBy3k9jdkaLI3O?=
+ =?us-ascii?Q?/eZjZ4Qqp6pnP2qm9WcCn7JZknzVIUE8VSRqBghujUaktVuujbm3QN2IUG8I?=
+ =?us-ascii?Q?XTtylVJwh1Zvn91S/lZCJqMB0M2KwuDBNdg3ufOe0pzbJMJUhXUbNNPNRu9X?=
+ =?us-ascii?Q?UvGlmFiij+VnQhCmX6A/Ee1PUidZyhllh2K8RukpaxI6izqaYW+vSE2tPvHS?=
+ =?us-ascii?Q?yvA8JjVTUDA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FRWP192MB2997.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JbHBgz4gjiaMxVK8O8W80irfO2uHXidkyUfbX1t+ErKmYS7o24NezlGLOCSu?=
+ =?us-ascii?Q?9Nmh7iPsJWbbn/gOZlSOiaoi+Yuqg+1uEKYIwuIFYu8M4jhN92tHYdfD3+HJ?=
+ =?us-ascii?Q?gilguNtbB3ZNEBwd7NU1+LMTQ3gyNP4aHZFEXIad7bi6Alozr5+EbzOYZXg6?=
+ =?us-ascii?Q?1ALcZDOLgGbQgFOhCgNpGavFmAeMDZ5DazN09LjTrLGb+CxLflrg72vZaVXX?=
+ =?us-ascii?Q?r3TlvX8OQceDCx/iiIaMGzdFFaQ3LLBG89KicZ7u/jtRBq7u0fuvdvtDP3zO?=
+ =?us-ascii?Q?Ab9SM5CCpFcQSTmdZAtJYGaFrfTSLLzN9AQhQ+9KvOZj3e8uXW8r7tVjJ74Y?=
+ =?us-ascii?Q?yz7Pbi8dsp2hiQHihEQzaMM6TP4LoDmfl1u7akHJdZN29YgL93Q6dXlmGphy?=
+ =?us-ascii?Q?2W5Kg/WuD6LHbu7oVIv47S/NY+dLLkfqJYLzqWCAqZCpbC+ySgVRzN4wgrTu?=
+ =?us-ascii?Q?BwBJOJe77fK8fY/HnUcQ+aqN4+ccdFYo2axQFiXHiDvIS1+NrmcAHRN1Cfdl?=
+ =?us-ascii?Q?ACdfzqJy3tD+HEOQI2xtWC5KacGv5Mpa/8jdUGrSi0kEcLFdmluB6b78gv8U?=
+ =?us-ascii?Q?i8Ujmekqi6ly+thkz3NKdW3PKiqXHatukuHzsYTXXGiixCUHfsUHJiY1URGP?=
+ =?us-ascii?Q?yJEC+z90jESnc4vCPot77G7ixvCNwiEDgjbwr3+JENqdjNkfByIHC+7alkhZ?=
+ =?us-ascii?Q?ywpBTnfSt1HuqPOgPTAlXdP8BkVWTPdhuT7msVPeDn7wymy0U45bwQhnkONw?=
+ =?us-ascii?Q?8YsnxC64aVbAveUMCya+VUeavfQhTyFHFwh99ZzRQSCsdXEFA7hIIET3zxS3?=
+ =?us-ascii?Q?8udvxsyi0ADKsuCM1kcXI20IhlKQCB70sMqEOXwe5ZQ0Tg8rCL7fKTt73o3M?=
+ =?us-ascii?Q?nbPwpLMguVtbGzKZZGvA6RuOfYy8b3B9Wr5DMO0RBo/R/vQoxZSJOpc5gFHJ?=
+ =?us-ascii?Q?hmXzbLY2fl9LHiNzQfdQg3SveoudWvpEnZ3isbz4ZA1PDk1y2LuvhpnRnF4Z?=
+ =?us-ascii?Q?pulVGseuBg6b4Md44mp7wi/zzyrdyeIMnzgIfRWRJRRUTG59cKW7mgEADdUG?=
+ =?us-ascii?Q?RsMaZOFWbTM4klVXBmE2fM3pea7VA9d8Dgu5x6USxz6yY7eR4cEIkYUaBlbc?=
+ =?us-ascii?Q?vfW953Qpor0nsH07/gFp4gaY6/mrha+P4EwS5bC93mqD+c2KAmcTtkTPYnK6?=
+ =?us-ascii?Q?LOGVv1ohpNKsxv76DWYoM1ymyt8O27NNTRS4Xae8XM78Ofszv79uP2jIYsea?=
+ =?us-ascii?Q?h60vc6RaPmhwT74Fj1SyVIrZpBt3tw2kobSKuOREo8+SKR3MNrNY16l73t0U?=
+ =?us-ascii?Q?DquEmwta05jW7nef8u0nwq/xpnz4/fE9KIyDSDEj+hnfIjTKuP6zXmTqGQO6?=
+ =?us-ascii?Q?1sM79TkrTsFCUMtvQQrZ/Zvbt3r3fkc4GyrikJg1gIrA5vxz1xK2pzFCWPxH?=
+ =?us-ascii?Q?9sxu1gQ98Uy9fUADBfkOmiSdvLnBP+JytynX6+agEsAdgvdHQcR3+4mvCVLq?=
+ =?us-ascii?Q?F/mfCnGG+Y1S+F4LNJNo6SRLe7C8FcZWH4YJ8QXM3I+ANGPawHyk9Di19AjF?=
+ =?us-ascii?Q?DmeMaKEtUeIYN9ej1Sg7NU3rg4I2jE1+3YXUMj8A?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	fQUhKYVXT3p7taNCe3sZrHxSqiSWK1XJV7lIOXKDWobyfIztul36evQynn16OCvc2hHqUbS9tbJwQlmSq4d2LqPVdMOGxE7cCDdKfS7jGSL16pe8sOh+b1AIFtLr4h5/KuV5cEQ2jQErQsJDcMFshpgcrW8VXimlG8iPS9dcRbeMw6ER8iHvkocyRUXYXMbsKlr0ZSlLJpMTNMmrSeWYOgoG86ada/iKHTj+pVGJKBbW9yBtJqfqlTiP7nuREbp3dUM66RMJM3/t1G9q+7VOkoq/l8vMooHACnxAxyd8fniqmJbYwZgDXtpyvJT63EQFJ6IxuD+MqOoXWXuAOmWVYDKT8xOY7GPJ4CsQPhwTTViLeQExAUyqoO2Nsyc6pKu3QxIAzsZoCXH1kDQM8J61yvFbLzRtx0wlFN+IQuwiH8ZD3mQDFwozCSZMYcC+NltDBCDIlVcOVWt87S8XTkDYn1F1T0esmY5gTd4CmFB2HDjeFGujlpEjVWNOB54gBX4BkrxdaIFJqeNTHdX1VoW1qJcoDdrDBsbPU2VDOqQtScOtlSmlE4opcP7Smca3GOBsEkvqMhbJPait6eUXJLDQJZdcuq1CwBhkssEtJaXychMn3K0u0NqfCAxErFn9+KWS
+X-OriginatorOrg: westermo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76057776-0f31-49a9-f5b9-08ddd41dcdb4
+X-MS-Exchange-CrossTenant-AuthSource: FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2025 12:44:22.7459
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TQMreQVQ5E1LCTHXpNITSKXCa859mgikbooumeH7jph+4kMhJNX5Hic1Y+qq/jebmM8YLZiZLyN5z298+TYRcQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9P192MB1963
+X-MS-Exchange-CrossPremises-AuthSource: FRWP192MB2997.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossPremises-AuthAs: Internal
+X-MS-Exchange-CrossPremises-AuthMechanism: 14
+X-MS-Exchange-CrossPremises-Mapi-Admin-Submission:
+X-MS-Exchange-CrossPremises-MessageSource: StoreDriver
+X-MS-Exchange-CrossPremises-BCC:
+X-MS-Exchange-CrossPremises-OriginalClientIPAddress: 104.151.95.196
+X-MS-Exchange-CrossPremises-TransportTrafficType: Email
+X-MS-Exchange-CrossPremises-Antispam-ScanContext:
+	DIR:Originating;SFV:NSPM;SKIP:0;
+X-MS-Exchange-CrossPremises-SCL: 1
+X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
+X-OrganizationHeadersPreserved: DB9P192MB1963.EURP192.PROD.OUTLOOK.COM
+X-Proofpoint-GUID: NkAg_t8r9ZYBnB-222TIU7iuV4WQMT9k
+X-Authority-Analysis: v=2.4 cv=O+I5vA9W c=1 sm=1 tr=0 ts=6891fca8 cx=c_pps
+ a=aWW8uTPRsEyXF+XoJW2mgw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
+ a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=2OwXVqhp2XgA:10 a=8gLI3H-aZtYA:10
+ a=a4Qfyb6v1e0rI2Eer9MA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA1MDA5MyBTYWx0ZWRfXzN/9hpl2RzLe
+ dqB0NBVGPgupmqvaHKqQAXVQQqBgbgzyl4GFpa3F6HXw2dWBamuU6Y1iuV9af2Zy0mrYTMabXMx
+ uTAJ3UexcsIWJ/BWcz4MxsSASRx2nFgApMUgvbeEGlbcybb10zfBEomYpP/bxbPpCJ0KN3rqgI5
+ iEsEfv428qzLXjEcY/2ndAcjGX7eKr/dPagUDdm+NLgUSVm5UNgKru+VoGj3R29J5xW5Nf1c529
+ D3c5K9FbbKmKCEwQjWX6qF7N/kE1+t3+8c7sBJMFkbAurZwrdD2mXJo/sxmy5Hoj0c1dPA2UH+z
+ ePHlmc4HzL4xVitZE7Dkn5QSgR/JKe6Jsjz6XR1phKlrziBe0XeqAuWQCUdEgM=
+X-Proofpoint-ORIG-GUID: NkAg_t8r9ZYBnB-222TIU7iuV4WQMT9k
 
-Throughput with GRE on IPv6 drops to 0 on NICs that use ice/bnxt_en
-or any driver with NETIF_F_IP_CSUM and NETIF_F_IPV6_CSUM set and with
-NETIF_F_HW_CSUM unset, see following dmesg output for more info.
+Am Tue, Aug 05, 2025 at 01:20:56PM +0300 schrieb Vladimir Oltean:
+> On Tue, Aug 05, 2025 at 09:59:57AM +0200, Alexander Wilhelm wrote:
+> > I have a ping running in the background and can observe that MAC frames and
+> > TX-RMON packets are continuously increasing. However, the PHY statistics remain
+> > unchanged. I suspect the current SGMII frames originate from U-Boot, as I load
+> > the firmware image via `netboot`. These statistics were recorded at 2.5G speed,
+> > but the same behavior is also visible at 1G.
+> > 
+> > Do you think the issue still lies within the MAC driver, or could it be related
+> > to the Aquantia driver or firmware?
+> 
+> So the claim is that in U-Boot, the exact same link with the exact same
+> PHY firmware works, right? Yet in Linux, MAC transmit counters increase,
+> but nothing comes across on the PHY side of the MII link? What about
+> packets sent from the link partner (the remote board connected to the PHY)?
+> Do packets sent from that board result in an increase of PHY counters,
+> and MAC RX counters?
+> 
+> For sure this is the correct port ("ffe4e6000.ethernet" corresponds to fm1-mac4,
+> port name in U-Boot would be "FM1@DTSEC4")? What SoC is this on? T1 something?
+> What SRDS_PRTCL_S1 value is in the RCW? I'd like to trace back the steps
+> in order to establish that the link works at 2.5G with autoneg disabled
+> on both ends. It seems to me there is either a lack of connectivity
+> between the MAC used in Linux and the PHY, or a protocol mismatch.
 
-bnxt_en: caps=(0x009201c01dd14833, 0x0000000e401d4869)
-WARNING: CPU: 1 PID: 5273 at net/core/dev.c:3535 skb_warn_bad_offload+0x81/0x140
-Modules linked in: ip6_gre gre ip6_tunnel tunnel6 mlx5_ib mlx5_fwctl macsec fwctl rfkill irdma ib_uverbs ib_core amd_atl intel_rapl_msr intel_rapl_common amd64_edac edac_mce_amd kvm_amd ipmi_ssif mlx5_core kvm mlxfw psample acpi_ipmi ice tls ast irqbypass i40e tg3 bnxt_en rapl wmi_bmof i2c_algo_bit pcspkr acpi_cpufreq pci_hyperv_intf ipmi_si i2c_piix4 gnss k10temp i2c_smbus libie ptdma ipmi_devintf ipmi_msghandler joydev sg loop fuse nfnetlink xfs sd_mod ahci libahci libata ghash_clmulni_intel ccp sp5100_tco wmi dm_mirror dm_region_hash dm_log dm_mod
-CPU: 1 UID: 0 PID: 5273 Comm: iperf3 Kdump: loaded Not tainted 6.16.0-0.rc7.60.eln150.x86_64 #1 PREEMPT(lazy)
-Hardware name: Abacus electric, s.r.o. - servis@abacus.cz Super Server/H12SSW-iN, BIOS 2.7 10/25/2023
-RIP: 0010:skb_warn_bad_offload+0x81/0x140
-Code: 8d 88 18 02 00 00 48 85 c0 48 c7 c0 28 43 41 9e 48 0f 44 c8 48 8d 93 b8 00 00 00 4c 89 c6 48 c7 c7 b3 92 a3 9e e8 cf 0e 4e ff <0f> 0b 48 83 c4 08 5b 5d e9 6d b5 2a ff 80 bb 20 01 00 00 00 74 1d
-RSP: 0018:ffffcfed417aef70 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff8ec94e59c000 RCX: 0000000000000000
-RDX: ffff8ed84e66a500 RSI: 0000000000000001 RDI: ffff8ed84e65c200
-RBP: ffff8ecb1716e0e8 R08: 0000000000000000 R09: 00000000ffff7fff
-R10: ffffffff9f265700 R11: ffffcfed417aee08 R12: ffff8ec94e59c000
-R13: ffffcfed417af023 R14: ffff8ec94e59c000 R15: ffffcfed417af023
-FS:  00007f7ee69516c0(0000) GS:ffff8ed8ae504000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7ee6950f78 CR3: 000000011436c006 CR4: 0000000000f70ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- skb_checksum_help+0x12a/0x1f0
- ? netif_skb_features+0xc1/0x2e0
- validate_xmit_skb+0x1a3/0x2d0
- validate_xmit_skb_list+0x4f/0x80
- sch_direct_xmit+0x1a2/0x380
- __dev_xmit_skb+0x242/0x670
- __dev_queue_xmit+0x3fc/0x7f0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? ip6_rt_copy_init+0xf0/0x290
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? selinux_ip_postroute+0x1c5/0x420
- ? srso_alias_return_thunk+0x5/0xfbef5
- ip6_finish_output2+0x25e/0x5d0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? nf_hook_slow+0x47/0xf0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ip6_finish_output+0x1fc/0x3f0
- ip6_tnl_xmit+0x608/0xc00 [ip6_tunnel]
- ? srso_alias_return_thunk+0x5/0xfbef5
- ip6gre_tunnel_xmit+0x1c0/0x390 [ip6_gre]
- dev_hard_start_xmit+0x63/0x1c0
- __dev_queue_xmit+0x6d0/0x7f0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? chacha_block_generic+0x72/0xd0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? selinux_ip_postroute+0x1c5/0x420
- ip6_finish_output2+0x214/0x5d0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? nf_hook_slow+0x47/0xf0
- ip6_finish_output+0x1fc/0x3f0
- ip6_xmit+0x2ca/0x6f0
- ? __pfx_dst_output+0x10/0x10
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? __sk_dst_check+0x41/0xc0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? inet6_csk_route_socket+0x12e/0x200
- inet6_csk_xmit+0xeb/0x150
- __tcp_transmit_skb+0x555/0xa80
- tcp_write_xmit+0x32a/0xe90
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? skb_do_copy_data_nocache+0xc9/0x150
- tcp_sendmsg_locked+0x437/0x1110
- ? srso_alias_return_thunk+0x5/0xfbef5
- tcp_sendmsg+0x2f/0x50
- sock_write_iter+0x126/0x1a0
- vfs_write+0x3c8/0x480
- ksys_write+0xbf/0xf0
- do_syscall_64+0x7c/0x970
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? syscall_exit_work+0x143/0x1b0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? do_syscall_64+0xaf/0x970
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? __rseq_handle_notify_resume+0x39/0x60
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? exit_to_user_mode_loop+0xbf/0x120
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? do_syscall_64+0xaf/0x970
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? drain_stock+0x79/0xa0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? __mem_cgroup_threshold+0x18/0xf0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? memcg1_check_events+0x60/0x1b0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? memcg1_commit_charge+0x6f/0x90
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? mod_memcg_lruvec_state+0x1a4/0x200
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? __lruvec_stat_mod_folio+0x85/0xd0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? __folio_mod_stat+0x2d/0x90
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? folio_add_new_anon_rmap+0x72/0x1b0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? do_anonymous_page+0x49c/0x710
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? syscall_exit_work+0x143/0x1b0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? do_syscall_64+0xaf/0x970
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? count_memcg_events+0x14d/0x1a0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? handle_mm_fault+0x247/0x360
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? do_user_addr_fault+0x20f/0x6a0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? irqentry_exit_to_user_mode+0x2c/0x180
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7f7ee713098f
-Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 39 7a f9 ff 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 8c 7a f9 ff 48
-RSP: 002b:00007f7ee6950e00 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007f7ee713098f
-RDX: 0000000000020000 RSI: 00007f7ee6f11000 RDI: 0000000000000005
-RBP: 00007f7ee6f11000 R08: 0000000000000002 R09: 00007f7ee69516c0
-R10: 0000000000000008 R11: 0000000000000246 R12: 0000000000000005
-R13: 0000000000020000 R14: 00007ffea6ee3400 R15: 00007ffea6ee3507
- </TASK>
----[ end trace 0000000000000000 ]---
-skb len=7018 headroom=182 headlen=138 tailroom=0
-mac=(182,14) mac_len=0 net=(196,48) trans=244
-shinfo(txflags=0 nr_frags=1 gso(size=1376 type=80 segs=5))
-csum(0x100120 start=288 offset=16 ip_summed=3 complete_sw=0 valid=0 level=0)
-hash(0x7ec90a00 sw=0 l4=1) proto=0x86dd pkttype=0 iif=0
-priority=0x0 mark=0x0 alloc_cpu=1 vlan_all=0x0
-encapsulation=1 inner(proto=0xdd86, mac=248, net=248, trans=288)
-dev name=enp1s0f0np0 feat=0x009201c01dd14833
-sk family=10 type=1 proto=6
-skb linear:   00000000: e4 3d 1a 7d ec 30 e4 3d 1a 7e 5d 90 86 dd 60 0e
-skb linear:   00000010: 00 0a 1b 34 3c 40 20 11 00 00 00 00 00 00 00 00
-skb linear:   00000020: 00 00 00 00 00 12 20 11 00 00 00 00 00 00 00 00
-skb linear:   00000030: 00 00 00 00 00 11 2f 00 04 01 04 01 01 00 00 00
-skb linear:   00000040: 86 dd 60 0e 00 0a 1b 00 06 40 20 23 00 00 00 00
-skb linear:   00000050: 00 00 00 00 00 00 00 00 00 12 20 23 00 00 00 00
-skb linear:   00000060: 00 00 00 00 00 00 00 00 00 11 bf 96 14 51 13 f9
-skb linear:   00000070: ae 27 a0 a8 2b e3 80 18 00 40 5b 6f 00 00 01 01
-skb linear:   00000080: 08 0a 42 d4 50 d5 4b 70 f8 1a
-skb frag:     00000000: 80 de bb bd 51 f8 32 e7 5d f5 65 65 a1 22 76 05
-skb frag:     00000010: 02 f8 60 25 e6 37 0b b3 90 05 8e 7f f4 c2 5d 9c
-skb frag:     00000020: e3 24 84 ac 0e 03 9d 14 ac 1e e2 18 4c 45 ef 5f
-skb frag:     00000030: db 95 db ab 1f c9 7f 6d 19 70 1f 0c e7 6e fd 6e
-skb frag:     00000040: f4 ff 73 1e 06 8d a8 06 53 ba bf 58 12 cb b9 59
-skb frag:     00000050: f0 71 7e c3 69 0a f5 19 8b b3 eb b1 fa e5 9c 59
-skb frag:     00000060: 40 bb 1d 11 88 f4 c1 cc 77 91 41 2c bb 7e 9d b7
-skb frag:     00000070: ac 50 1a e3 d1 ce f7 f9 58 e4 d5 5c 62 f4 eb 39
-skb frag:     00000080: 0d 13 2a 31 2c ec
-------------[ cut here ]------------
+Hi Vladimir,
 
-Mask NETIF_F_IPV6_CSUM in gso_features_check if the IPv6 header contains
-extension headers. This flag indicates that the network interface
-is capable of computing the checksum only for plain IPv6 headers
-without any extension headers.
+thank you, you just solved my problem. I indeed have made an error in the DTS
+file by setting the wrong MAC.
 
-The exception is a BIG TCP extension, which, as stated in 68e068cabd2c6c53:
-"The feature is only enabled on devices that support BIG TCP TSO.
-The header is only present for PF_PACKET taps like tcpdump,
-and not transmitted by physical devices."
+I'm using the T1023E CPU with e5500 core. For the SRDS_PRTCL_S1 value I set
+0x135. That corresponds to the following:
 
-Fixes: 04c20a9356f283da ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
-Reported-by: Tianhao Zhao <tizhao@redhat.com>
-Suggested-by: Michal Schmidt <mschmidt@redhat.com>
-Signed-off-by: Jakub Ramaseuski <jramaseu@redhat.com>
----
----
- net/core/dev.c | 4 ++++
- 1 file changed, 4 insertions(+)
+* A: Aurora (5G/2.5G)
+* B: sg.m3 (2.5G)
+* C: PCIe2 (5G/2.5G)
+* D: PCIe1 (5G/2.5G)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index b28ce68830b2b..118c433c2cb9b 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3778,6 +3778,10 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 		if (!(iph->frag_off & htons(IP_DF)))
- 			features &= ~NETIF_F_TSO_MANGLEID;
- 	}
-+	if (vlan_get_protocol(skb) == htons(ETH_P_IPV6) &&
-+		skb_network_header_len(skb) != sizeof(struct ipv6hdr) &&
-+		!ipv6_has_hopopt_jumbo(skb))
-+		features &= ~NETIF_F_IPV6_CSUM;
- 
- 	return features;
- }
--- 
-2.50.1
+My PHY is directed to the `FM1@DTSEC3`, MAC3 instead of previously configured
+MAC4. I fixed it by using ethernet `eth@ffe4e4000`. Now I have ping in both
+directions with 2.5G and 1G speed settings. I cannot test 10M, because my host
+does not support it. And 100M still does not work, as it does not work in U-Boot
+as well.
 
+> Could you please also apply this PHY debugging patch and let us know
+> what the Global System Configuration registers contain after the
+> firmware applies the provisioning?
+
+Patch is applied. Here are the registers log:
+
+    user@host:~# logread | grep AQR115
+    Aquantia AQR115 0x0000000ffe4fd000:07: Speed 10 SerDes mode 4 autoneg 0 training 0 reset on transition 0 silence 0 rate adapt 2 macsec 0
+    Aquantia AQR115 0x0000000ffe4fd000:07: Speed 100 SerDes mode 4 autoneg 0 training 1 reset on transition 0 silence 1 rate adapt 2 macsec 0
+    Aquantia AQR115 0x0000000ffe4fd000:07: Speed 1000 SerDes mode 4 autoneg 0 training 1 reset on transition 0 silence 1 rate adapt 2 macsec 0
+    Aquantia AQR115 0x0000000ffe4fd000:07: Speed 2500 SerDes mode 4 autoneg 1 training 1 reset on transition 0 silence 1 rate adapt 0 macsec 0
+    Aquantia AQR115 0x0000000ffe4fd000:07: Speed 5000 SerDes mode 0 autoneg 0 training 0 reset on transition 0 silence 0 rate adapt 2 macsec 0
+    Aquantia AQR115 0x0000000ffe4fd000:07: Speed 10000 SerDes mode 0 autoneg 0 training 0 reset on transition 0 silence 0 rate adapt 0 macsec 0
+    fsl_dpaa_mac ffe4e4000.ethernet eth0: PHY [0x0000000ffe4fd000:07] driver [Aquantia AQR115] (irq=POLL)
+
+While 100M transfer, I see the MAC TX frame increasing and SGMII TX good frames
+increasing. But the receiving frames are counted as SGMII RX bad frames and MAC
+RX frames counter does not increase. The TX/RX pause frames always stay at 0,
+independently whether ping is working with 1G/2.5G or not with 100M. Do you have
+any idea here?
+
+    user@host:~# ethtool -S eth0 --groups eth-mac eth-phy eth-ctrl rmon | grep -v ': 0' && ethtool --phy-statistics eth0 | grep -v ': 0' && ethtool -I --show-pause eth0
+    Standard stats for eth0:
+    eth-mac-FramesTransmittedOK: 529
+    eth-mac-FramesReceivedOK: 67
+    eth-mac-OctetsTransmittedOK: 79287
+    eth-mac-OctetsReceivedOK: 9787
+    eth-mac-MulticastFramesXmittedOK: 43
+    eth-mac-BroadcastFramesXmittedOK: 451
+    eth-mac-MulticastFramesReceivedOK: 32
+    eth-mac-BroadcastFramesReceivedOK: 1
+    rx-rmon-etherStatsPkts64to64Octets: 3
+    rx-rmon-etherStatsPkts65to127Octets: 42
+    rx-rmon-etherStatsPkts128to255Octets: 18
+    rx-rmon-etherStatsPkts256to511Octets: 4
+    tx-rmon-etherStatsPkts64to64Octets: 5
+    tx-rmon-etherStatsPkts65to127Octets: 385
+    tx-rmon-etherStatsPkts128to255Octets: 26
+    tx-rmon-etherStatsPkts256to511Octets: 113
+    PHY statistics:
+         sgmii_rx_good_frames: 21149
+         sgmii_rx_bad_frames: 176
+         sgmii_rx_false_carrier_events: 1
+         sgmii_tx_good_frames: 21041
+         sgmii_tx_line_collisions: 1
+    Pause parameters for eth0:
+    Autonegotiate:	on
+    RX:		off
+    TX:		off
+    RX negotiated: on
+    TX negotiated: on
+    Statistics:
+      tx_pause_frames: 0
+      rx_pause_frames: 0
+
+
+Best regards
+Alexander Wilhelm
