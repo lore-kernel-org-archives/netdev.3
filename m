@@ -1,159 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A4A1F0E26;
-	Wed,  6 Aug 2025 18:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0881110E4;
+	Wed,  6 Aug 2025 18:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754503522; cv=none; b=BMAJdB8z/m1deBSt267eVxr3JLi0S6ra4lctSyWVGs0V5NeqJI+lAER6t1OOCJE5lS7qpzIV5ui299+mb69QcgzjpsQ3rzFEAXxX5+6ac3OI3BEHnguVqh563lzDVH9QVgMLVkkc1U4OpE5eZtwigJ+yzyHZHerDd8lyIld6G9U=
+	t=1754503870; cv=none; b=dCIL56pZURYGAsX9/z5vMzeDYmu0qUIiTCq/EpF8I6cQVE5qpG4pP45+lF2/JmfqMeClsmM61UPyZL+5cedrss5xJWYSMjVceapRsjkAx/FQlsGZtYSocpqG1Mubyt/r6sNnkfLx6bRe4LEaGknTFlo3zMdLAAg/iVSZzHRRysU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754503522; c=relaxed/simple;
-	bh=4IfnMOyTeOfVPPAE9IFm78vwRCPtzhBc0cuIDUEVNeo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UCrWP1KlFuqZNYfaYm1iwCN9xkYEUbUdBvhXw46feO7cvM8UnHgiGze4U+OPXYJVYkpOKCF4KSATI++++hTwhp3cjAgxaTPYNmbgVLWIKC+GoogImaNNi+3Pae44EDNwFq9wtU6XNAYlm71bWhcCGcwGddSZmRcLKQqwd1U+6RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=frUhvRzo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754503870; c=relaxed/simple;
+	bh=zfOTfbqzLxQrzqYlCJpxFjKQoFwZjiEZuM/1/1OHL1w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sKKA6aGtYwjle7wK/P0MChbtRpovfWGJ2FyIlY+RzIAb0ZYWT0l7hi/0RSNWjilAV1sGBr712eKpOgs07P+thpiA5N837GG9d3FJMwf2Mskz+MItm+caNgaMhujsaaA9pHVjj1hGcmENcCC7AHlpZe2+wkV6L1fnZEy38SE97RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P47mGj2I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="frUhvRzo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064E8C4CEE7;
-	Wed,  6 Aug 2025 18:05:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P47mGj2I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAC3C4CEE7;
+	Wed,  6 Aug 2025 18:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754503521;
-	bh=4IfnMOyTeOfVPPAE9IFm78vwRCPtzhBc0cuIDUEVNeo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=frUhvRzotcVwIu2NCDKRHt8tE3eN5sUV2qZI7YDZ0HQCTI4/WL2RqAWTBHXieoWY8
-	 lSUNl5/+HH1UKLmjLpbS9nXeZvgGLIukQnWeumDcvj8nCLiX9qw4b2jM+prVRpzZ7I
-	 u24tUOwP5cj1HR6znL9Q5ZNWRw54b4D/5TTomM7iyRSxDSN7nZzK1B4NedCcEsehki
-	 V1eWEPA2PmrvJUhbrTSJidfP1h3Tpt8k5v0F6st3Y+hbKjmNn3Rx4bR81Qq5rEbcyx
-	 K+P6RECOx4PUsfz0tETL3ev41vWrBDEd3XUoLi0gMXgUJ4A1pu+Hfib9rTvlTJaLzn
-	 MtXMMVAevkQoQ==
+	s=k20201202; t=1754503869;
+	bh=zfOTfbqzLxQrzqYlCJpxFjKQoFwZjiEZuM/1/1OHL1w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=P47mGj2IRg0wNUvhSIIFMhZFHoN/SrWyiguX797+0R4OCqBdz0cSm3cJgX0ULqCkD
+	 9rmBRhsRC4sA9jYrpXAp28gsCLya5cVNZ30tNvNGn4PfXXgWaqZbBZzQAy2/gOp26T
+	 /SQrmaFU1ebwDNJPqCuXXiUCN6Co1jXyTrH7gqoaeSATv81R0hErmhnmpbUHkxjfwT
+	 ES7+k5LPFnSSOZ29ZSOexnM1nrUvV7F+aZ+HzsrbdozSw1Wwfapmegsbr15Ja1g9ua
+	 Iv47hFlVCK+K10nvtYJq+0wMe6Z82cHbUBSOd/fd8mJL99iYGd6OvOT82iK5SNFLcv
+	 S98GpZvA0D1GQ==
+Date: Wed, 6 Aug 2025 11:11:08 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	borisp@nvidia.com,
-	john.fastabend@gmail.com,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	sd@queasysnail.net,
-	will@willsroot.io,
-	savy@syst3mfailure.io,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net 1/2] tls: handle data disappearing from under the TLS ULP
-Date: Wed,  6 Aug 2025 11:05:09 -0700
-Message-ID: <20250806180510.3656677-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.50.1
+To: Mina Almasry <almasrymina@google.com>
+Cc: Pavel Begunkov <asml.silence@gmail.com>, netdev@vger.kernel.org,
+ io-uring@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Willem de
+ Bruijn <willemb@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ andrew+netdev@lunn.ch, horms@kernel.org, davem@davemloft.net,
+ sdf@fomichev.me, dw@davidwei.uk, michael.chan@broadcom.com,
+ dtatulea@nvidia.com, ap420073@gmail.com
+Subject: Re: [RFC v1 21/22] net: parametrise mp open with a queue config
+Message-ID: <20250806111108.33125aa2@kernel.org>
+In-Reply-To: <CAHS8izNc4oAX2n3Uj=rMu_=c2DZNY6L_YNWk24uOp2OgvDom_Q@mail.gmail.com>
+References: <cover.1753694913.git.asml.silence@gmail.com>
+	<ca874424e226417fa174ac015ee62cc0e3092400.1753694914.git.asml.silence@gmail.com>
+	<20250801171009.6789bf74@kernel.org>
+	<11caecf8-5b81-49c7-8b73-847033151d51@gmail.com>
+	<CAHS8izNc4oAX2n3Uj=rMu_=c2DZNY6L_YNWk24uOp2OgvDom_Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-TLS expects that it owns the receive queue of the TCP socket.
-This cannot be guaranteed in case the reader of the TCP socket
-entered before the TLS ULP was installed, or uses some non-standard
-read API (eg. zerocopy ones). Make sure that the TCP sequence
-numbers match between ->data_ready and ->recvmsg, otherwise
-don't trust the work that ->data_ready has done.
+On Wed, 6 Aug 2025 09:48:56 -0700 Mina Almasry wrote:
+> iouring zcrx and devmem can configure netdev_rx_queue->rx_buf_len in
+> addition to netdev_rx_queue->mp_params in this scenario.
 
-Signed-off-by: William Liu <will@willsroot.io>
-Signed-off-by: Savino Dicanosa <savy@syst3mfailure.io>
-Link: https://lore.kernel.org/tFjq_kf7sWIG3A7CrCg_egb8CVsT_gsmHAK0_wxDPJXfIzxFAMxqmLwp3MlU5EHiet0AwwJldaaFdgyHpeIUCS-3m3llsmRzp9xIOBR4lAI=@syst3mfailure.io
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- include/net/tls.h  |  1 +
- net/tls/tls.h      |  2 +-
- net/tls/tls_strp.c | 17 ++++++++++++++---
- net/tls/tls_sw.c   |  3 ++-
- 4 files changed, 18 insertions(+), 5 deletions(-)
-
-diff --git a/include/net/tls.h b/include/net/tls.h
-index 857340338b69..37344a39e4c9 100644
---- a/include/net/tls.h
-+++ b/include/net/tls.h
-@@ -117,6 +117,7 @@ struct tls_strparser {
- 	bool msg_ready;
- 
- 	struct strp_msg stm;
-+	u32 copied_seq;
- 
- 	struct sk_buff *anchor;
- 	struct work_struct work;
-diff --git a/net/tls/tls.h b/net/tls/tls.h
-index 774859b63f0d..4e077068e6d9 100644
---- a/net/tls/tls.h
-+++ b/net/tls/tls.h
-@@ -196,7 +196,7 @@ void tls_strp_msg_done(struct tls_strparser *strp);
- int tls_rx_msg_size(struct tls_strparser *strp, struct sk_buff *skb);
- void tls_rx_msg_ready(struct tls_strparser *strp);
- 
--void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh);
-+bool tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh);
- int tls_strp_msg_cow(struct tls_sw_context_rx *ctx);
- struct sk_buff *tls_strp_msg_detach(struct tls_sw_context_rx *ctx);
- int tls_strp_msg_hold(struct tls_strparser *strp, struct sk_buff_head *dst);
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 095cf31bae0b..4bac58174cc3 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -473,9 +473,11 @@ static void tls_strp_load_anchor_with_queue(struct tls_strparser *strp, int len)
- 	strp->anchor->destructor = NULL;
- 
- 	strp->stm.offset = offset;
-+
-+	strp->copied_seq = tp->copied_seq;
- }
- 
--void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
-+bool tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
- {
- 	struct strp_msg *rxm;
- 	struct tls_msg *tlm;
-@@ -484,8 +486,15 @@ void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
- 	DEBUG_NET_WARN_ON_ONCE(!strp->stm.full_len);
- 
- 	if (!strp->copy_mode && force_refresh) {
--		if (WARN_ON(tcp_inq(strp->sk) < strp->stm.full_len))
--			return;
-+		struct tcp_sock *tp = tcp_sk(strp->sk);
-+
-+		if (unlikely(strp->copied_seq != tp->copied_seq ||
-+			     WARN_ON(tcp_inq(strp->sk) < strp->stm.full_len))) {
-+
-+			WRITE_ONCE(strp->msg_ready, 0);
-+			memset(&strp->stm, 0, sizeof(strp->stm));
-+			return false;
-+		}
- 
- 		tls_strp_load_anchor_with_queue(strp, strp->stm.full_len);
- 	}
-@@ -495,6 +504,8 @@ void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
- 	rxm->offset	= strp->stm.offset;
- 	tlm = tls_msg(strp->anchor);
- 	tlm->control	= strp->mark;
-+
-+	return true;
- }
- 
- /* Called with lock held on lower socket */
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 549d1ea01a72..51c98a007dda 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1384,7 +1384,8 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
- 			return sock_intr_errno(timeo);
- 	}
- 
--	tls_strp_msg_load(&ctx->strp, released);
-+	if (unlikely(!tls_strp_msg_load(&ctx->strp, released)))
-+		return tls_rx_rec_wait(sk, psock, nonblock, false);
- 
- 	return 1;
- }
--- 
-2.50.1
-
+Did you not read my message or are you disagreeing that the setting
+should be separate and form a hierarchy?
