@@ -1,29 +1,29 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7842571AA;
-	Wed,  6 Aug 2025 10:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F610A41;
+	Wed,  6 Aug 2025 10:35:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754476518; cv=none; b=kVQR6O1IXNxTnCBGK8cClKKdeGOpdt8elyjzugC12n/ZEUSdN+54avxxjS1Zo8UK8r0CW8E6MYgPjPfERqiE1FxeHqZu1vVNWUrK1rApV6+SYCt7Zxl2xKgzmXQfK2IiBROMGkSV6jIRgnEcVht16hdasiEyAfitzxgbP7YzSTs=
+	t=1754476520; cv=none; b=iokL3NKVar0YVNM/ueg3R0R9WooqSCdmJ/U518bSGNUZyGHYvy/CxDgIJ4Xu8UpFR5GS/sqIc0dHVtGnyOqfJzW75jHt4ycEL9dpgltJLDYMMvK5h26mziXt+da+NWL4olb/5KfhUvB8wIdZ8xS5Fo3MliZ50VjttyDM5qlY8Mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754476518; c=relaxed/simple;
-	bh=aBRqLh7e6J8eZ6mrUnRKX3siBTezwokCwCBIJemL6Dw=;
+	s=arc-20240116; t=1754476520; c=relaxed/simple;
+	bh=rjny7gErLFEdkyoVCzj4TvXLwbf6D+3TUyA/WEluhsA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DCOTdF7fer9Xz6pkSEQ7ijk5XET6ANKD6YND3NIkFj/SmA3/11oP6nVWG+5Pa8hYhmzAWnWcYHxfWMlYBMmt99QlW30XcduQz8D1HdzOMQgyIplr6UhBnxZwBdgOk5jJdisMGfTGTJCc1BQK6sGES2QO2IHgkwU08KpcJfgvty4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+	 MIME-Version:Content-Type; b=KXNQ7n6fhZI8jxSh6riWmBB551aSPCMnFEL6Nb4IyhfjRHFEbN7D0k1C0wZWvqfUPIzl5BGFV3uwHrboIH21zB50qz6xtEsZMaUUF4hQeaJEhPNsjk4NCQRMYQEDklLFdfN4LUsZcNI1Jlpottz9V/65dL/SkTDC3BNctADi1fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4bxmlF548lz14MCN;
-	Wed,  6 Aug 2025 18:30:17 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4bxmql2YVsztT1y;
+	Wed,  6 Aug 2025 18:34:11 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id EFC59140155;
-	Wed,  6 Aug 2025 18:35:13 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id C56EE180486;
+	Wed,  6 Aug 2025 18:35:12 +0800 (CST)
 Received: from localhost.localdomain (10.90.31.46) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 6 Aug 2025 18:35:13 +0800
+ 15.2.1544.11; Wed, 6 Aug 2025 18:35:12 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -32,9 +32,9 @@ CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
 	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
 	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<shaojijie@huawei.com>
-Subject: [PATCH V3 net 3/3] net: hibmcge: fix the np_link_fail error reporting issue
-Date: Wed, 6 Aug 2025 18:27:58 +0800
-Message-ID: <20250806102758.3632674-4-shaojijie@huawei.com>
+Subject: [PATCH V3 net 1/3] net: hibmcge: fix rtnl deadlock issue
+Date: Wed, 6 Aug 2025 18:27:56 +0800
+Message-ID: <20250806102758.3632674-2-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20250806102758.3632674-1-shaojijie@huawei.com>
 References: <20250806102758.3632674-1-shaojijie@huawei.com>
@@ -49,60 +49,120 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  kwepemk100013.china.huawei.com (7.202.194.61)
 
-Currently, after modifying device port mode, the np_link_ok state
-is immediately checked. At this point, the device may not yet ready,
-leading to the querying of an intermediate state.
+Currently, the hibmcge netdev acquires the rtnl_lock in
+pci_error_handlers.reset_prepare() and releases it in
+pci_error_handlers.reset_done().
 
-This patch will poll to check if np_link is ok after
-modifying device port mode, and only report np_link_fail upon timeout.
+However, in the PCI framework:
+pci_reset_bus - __pci_reset_slot - pci_slot_save_and_disable_locked -
+ pci_dev_save_and_disable - err_handler->reset_prepare(dev);
 
-Fixes: e0306637e85d ("net: hibmcge: Add support for mac link exception handling feature")
+In pci_slot_save_and_disable_locked():
+	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
+		if (!dev->slot || dev->slot!= slot)
+			continue;
+		pci_dev_save_and_disable(dev);
+		if (dev->subordinate)
+			pci_bus_save_and_disable_locked(dev->subordinate);
+	}
+
+This will iterate through all devices under the current bus and execute
+err_handler->reset_prepare(), causing two devices of the hibmcge driver
+to sequentially request the rtnl_lock, leading to a deadlock.
+
+Since the driver now executes netif_device_detach()
+before the reset process, it will not concurrently with
+other netdev APIs, so there is no need to hold the rtnl_lock now.
+
+Therefore, this patch removes the rtnl_lock during the reset process and
+adjusts the position of HBG_NIC_STATE_RESETTING to ensure
+that multiple resets are not executed concurrently.
+
+Fixes: 3f5a61f6d504f ("net: hibmcge: Add reset supported in this module")
 Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ChangeLog:
+v1 -> v2:
+  - Fix a concurrency issue, suggested by Simon Horman
+  v1: https://lore.kernel.org/all/20250731134749.4090041-1-shaojijie@huawei.com/
+---
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-index 8cca8316ba40..d0aa0661ecd4 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-@@ -12,6 +12,8 @@
- 
- #define HBG_HW_EVENT_WAIT_TIMEOUT_US	(2 * 1000 * 1000)
- #define HBG_HW_EVENT_WAIT_INTERVAL_US	(10 * 1000)
-+#define HBG_MAC_LINK_WAIT_TIMEOUT_US	(500 * 1000)
-+#define HBG_MAC_LINK_WAIT_INTERVAL_US	(5 * 1000)
- /* little endian or big endian.
-  * ctrl means packet description, data means skb packet data
-  */
-@@ -228,6 +230,9 @@ void hbg_hw_fill_buffer(struct hbg_priv *priv, u32 buffer_dma_addr)
- 
- void hbg_hw_adjust_link(struct hbg_priv *priv, u32 speed, u32 duplex)
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
+index 503cfbfb4a8a..83cf75bf7a17 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
+@@ -53,9 +53,11 @@ static int hbg_reset_prepare(struct hbg_priv *priv, enum hbg_reset_type type)
  {
-+	u32 link_status;
-+	int ret;
-+
- 	hbg_hw_mac_enable(priv, HBG_STATUS_DISABLE);
+ 	int ret;
  
- 	hbg_reg_write_field(priv, HBG_REG_PORT_MODE_ADDR,
-@@ -239,8 +244,14 @@ void hbg_hw_adjust_link(struct hbg_priv *priv, u32 speed, u32 duplex)
+-	ASSERT_RTNL();
++	if (test_and_set_bit(HBG_NIC_STATE_RESETTING, &priv->state))
++		return -EBUSY;
  
- 	hbg_hw_mac_enable(priv, HBG_STATUS_ENABLE);
+ 	if (netif_running(priv->netdev)) {
++		clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 		dev_warn(&priv->pdev->dev,
+ 			 "failed to reset because port is up\n");
+ 		return -EBUSY;
+@@ -64,7 +66,6 @@ static int hbg_reset_prepare(struct hbg_priv *priv, enum hbg_reset_type type)
+ 	netif_device_detach(priv->netdev);
  
--	if (!hbg_reg_read_field(priv, HBG_REG_AN_NEG_STATE_ADDR,
--				HBG_REG_AN_NEG_STATE_NP_LINK_OK_B))
-+	/* wait MAC link up */
-+	ret = readl_poll_timeout(priv->io_base + HBG_REG_AN_NEG_STATE_ADDR,
-+				 link_status,
-+				 FIELD_GET(HBG_REG_AN_NEG_STATE_NP_LINK_OK_B,
-+					   link_status),
-+				 HBG_MAC_LINK_WAIT_INTERVAL_US,
-+				 HBG_MAC_LINK_WAIT_TIMEOUT_US);
-+	if (ret)
- 		hbg_np_link_fail_task_schedule(priv);
+ 	priv->reset_type = type;
+-	set_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 	clear_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
+ 	ret = hbg_hw_event_notify(priv, HBG_HW_EVENT_RESET);
+ 	if (ret) {
+@@ -84,29 +85,26 @@ static int hbg_reset_done(struct hbg_priv *priv, enum hbg_reset_type type)
+ 	    type != priv->reset_type)
+ 		return 0;
+ 
+-	ASSERT_RTNL();
+-
+-	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 	ret = hbg_rebuild(priv);
+ 	if (ret) {
+ 		priv->stats.reset_fail_cnt++;
+ 		set_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
++		clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 		dev_err(&priv->pdev->dev, "failed to rebuild after reset\n");
+ 		return ret;
+ 	}
+ 
+ 	netif_device_attach(priv->netdev);
++	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 
+ 	dev_info(&priv->pdev->dev, "reset done\n");
+ 	return ret;
  }
  
+-/* must be protected by rtnl lock */
+ int hbg_reset(struct hbg_priv *priv)
+ {
+ 	int ret;
+ 
+-	ASSERT_RTNL();
+ 	ret = hbg_reset_prepare(priv, HBG_RESET_TYPE_FUNCTION);
+ 	if (ret)
+ 		return ret;
+@@ -171,7 +169,6 @@ static void hbg_pci_err_reset_prepare(struct pci_dev *pdev)
+ 	struct net_device *netdev = pci_get_drvdata(pdev);
+ 	struct hbg_priv *priv = netdev_priv(netdev);
+ 
+-	rtnl_lock();
+ 	hbg_reset_prepare(priv, HBG_RESET_TYPE_FLR);
+ }
+ 
+@@ -181,7 +178,6 @@ static void hbg_pci_err_reset_done(struct pci_dev *pdev)
+ 	struct hbg_priv *priv = netdev_priv(netdev);
+ 
+ 	hbg_reset_done(priv, HBG_RESET_TYPE_FLR);
+-	rtnl_unlock();
+ }
+ 
+ static const struct pci_error_handlers hbg_pci_err_handler = {
 -- 
 2.33.0
 
