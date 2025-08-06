@@ -1,94 +1,146 @@
-Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5DC2E36E7;
-	Wed,  6 Aug 2025 18:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFE13C01;
+	Wed,  6 Aug 2025 19:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754505959; cv=none; b=CqPiZ+4mwyqxQAIlORgt8J1CK6rf6USmRxLM9aPFa3i1V/1biFQjZvJwT6Gb3wd/wHeFrkKFczOon5QU5yc+27+iWqJp5Fjve3xLxpusm3sjrsOJziGYn6fS72fX/Pqm2mMHcjvf8x9Quqgmqm1WSXMVLEapxELszw2rtGcXHLU=
+	t=1754507568; cv=none; b=kZBxGPj3TCGXw4mCHd2DYWU1oSXSYyGIBmHHrYBuvcjgdXQ2a6Jxjxu1wxGWh7tmKSYe8QL33mM/LjgfX1hpKn5y9B6RoL4AU7W5oQvm4H/tmK2rHNOmV1O2AnUZF5PoswbhyZqN7d4IvMAia3xvk3gAMrjNrsFUF5lnsoyLk/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754505959; c=relaxed/simple;
-	bh=sgX957es7+GVKONZFlhAEg1uefyAvzCkSJvyoqskeAQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=BauA/w3DZ9uTNOoIC0+8RfkGFPJfaOootJuiGMY9XJ8XHjHmVYfTh1WFo0mjZoxPG0a2ZbuOBel3ztsLpmrf/LbyFYO+Ai6CoyuSYbIHHMK4XqPT4FYtkTbGhLf5mGiyNbTAmJoSLI4/0q5qc6jhfBbODV/pT0yEhADPEAp8NIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=h+EGrClJ; arc=none smtp.client-ip=65.108.154.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
+	s=arc-20240116; t=1754507568; c=relaxed/simple;
+	bh=63oiH47TpNrKg8vSfBfA+XroUg56FkruM6tDGJa3KA0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jLeiyRdACzJQVEAwQWLPbDaNJ8g2ZJ29FYdiYZ3+Vqle9Yg9DIWUKijo/mCEhjNIMrm1RYHDj3DFAInyxErmf0Mk2IKfWgAZ/n/r1u++mvLwA+Z6eApgTE+9L9kewli93C6G2HX0kowCdZDyuFXS6k6vkuSeW76ZHzTRnsoU5Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJObUTcV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="h+EGrClJ"
-Authentication-Results: dilbert.mork.no;
-	dkim=pass (1024-bit key; secure) header.d=mork.no header.i=@mork.no header.a=rsa-sha256 header.s=b header.b=h+EGrClJ;
-	dkim-atps=neutral
-Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10de:2e00:0:0:0:1])
-	(authenticated bits=0)
-	by dilbert.mork.no (8.18.1/8.18.1) with ESMTPSA id 576IXWRG3356275
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Wed, 6 Aug 2025 19:33:34 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-	t=1754505212; bh=x5ZJSZGGUboOavAQ6X5at8DOZHYlPYdsBqMz8Z9etXE=;
-	h=From:To:Cc:Subject:References:Date:Message-ID:From;
-	b=h+EGrClJu4U/9bJcFT7RoC2qz+6bJRHrROy6N6qGil7JWVW6GQdGwDcj4mDBcF3FG
-	 IsxvPGbRGnlpEb/6qi8JmplXbrnM0zN6kLxOXLMiW5TgXoTIqnLaAtOwDkyVH5cH7j
-	 jkPeR/3NdMdEICWlM3NhiGN6jIpZ54oINGsbiaLI=
-Received: from miraculix.mork.no ([IPv6:2a01:799:10de:2e0a:149a:2079:3a3a:3457])
-	(authenticated bits=0)
-	by canardo.dyn.mork.no (8.18.1/8.18.1) with ESMTPSA id 576IXWCY960034
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Wed, 6 Aug 2025 20:33:32 +0200
-Received: (nullmailer pid 612794 invoked by uid 1000);
-	Wed, 06 Aug 2025 18:33:32 -0000
-From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, Daniele Palmas <dnlplm@gmail.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] net: usb: qmi_wwan: add Telit Cinterion FN990A w/audio
- composition
-Organization: m
-References: <20250806121445.179532-1-fabio.porcedda@gmail.com>
-Date: Wed, 06 Aug 2025 20:33:32 +0200
-In-Reply-To: <20250806121445.179532-1-fabio.porcedda@gmail.com> (Fabio
-	Porcedda's message of "Wed, 6 Aug 2025 14:14:45 +0200")
-Message-ID: <875xf0i9kz.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EJObUTcV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5A1C4CEE7;
+	Wed,  6 Aug 2025 19:12:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754507567;
+	bh=63oiH47TpNrKg8vSfBfA+XroUg56FkruM6tDGJa3KA0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EJObUTcVdLBwCfMCLh2osZjFACQQgVCUtz8cfWIdVaclvA1ChLJlI9I8vLt7nk+92
+	 +WnsMFK5jMNiaUR8sOLGK2iCANup7cRV2gNXt1l9xCJK6Z4eBGmLzgViZG+kKpo9DE
+	 +qtgcGKOs2+HY+OFmuRdJlhFLw3bFAwnKQJDpFREvCy3afbps3P758/e2njEwy9T+t
+	 aIWldOBR/yr52doaCpEpmrBI73snnic5aE/MjnhDCoRZsUL7BMw0Vqn20e/ogLmWIt
+	 E6PDxPBGCqt665IGD99LE5MhtXkuLMk5dMA4Ohxcv8ArnvMTs3uY9+gJgnrq6Fveny
+	 bD9Gv+dSD6h/g==
+Date: Wed, 6 Aug 2025 20:12:39 +0100
+From: Simon Horman <horms@kernel.org>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Bryan Tan <bryan-bt.tan@broadcom.com>,
+	Vishnu Dasa <vishnu.dasa@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	berrange@redhat.com, Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH RFC net-next v4 09/12] vsock/loopback: add netns support
+Message-ID: <20250806191239.GF61519@horms.kernel.org>
+References: <20250805-vsock-vmtest-v4-0-059ec51ab111@meta.com>
+ <20250805-vsock-vmtest-v4-9-059ec51ab111@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 1.0.7 at canardo.mork.no
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250805-vsock-vmtest-v4-9-059ec51ab111@meta.com>
 
-Fabio Porcedda <fabio.porcedda@gmail.com> writes:
+On Tue, Aug 05, 2025 at 02:49:17PM -0700, Bobby Eshleman wrote:
+> From: Bobby Eshleman <bobbyeshleman@meta.com>
+> 
+> Add NS support to vsock loopback. Sockets in a global mode netns
+> communicate with each other, regardless of namespace. Sockets in a local
+> mode netns may only communicate with other sockets within the same
+> namespace.
+> 
+> Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 
-> diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-> index f5647ee0adde..e56901bb6ebc 100644
-> --- a/drivers/net/usb/qmi_wwan.c
-> +++ b/drivers/net/usb/qmi_wwan.c
-> @@ -1361,6 +1361,7 @@ static const struct usb_device_id products[] =3D {
->  	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1057, 2)},	/* Telit FN980 */
->  	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1060, 2)},	/* Telit LN920 */
->  	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1070, 2)},	/* Telit FN990A */
-> +	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1077, 2)},	/* Telit FN990A w/audio */
->  	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1080, 2)}, /* Telit FE990A */
->  	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
->  	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
+...
 
-Looks good to me.
+> diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopback.c
 
-A note for the stable backport: You might want to cherry-pick these two
-commits changing only the comment text of the two adjacent lines to
-avoid unnecessary conflicts:
+...
+
+> @@ -46,7 +57,7 @@ static int vsock_loopback_cancel_pkt(struct vsock_sock *vsk)
+>  	return 0;
+>  }
+>  
+> -static bool vsock_loopback_seqpacket_allow(u32 remote_cid);
+> +static bool vsock_loopback_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid);
+
+This change needs to be squashed into
+PATCH 3/12 vsock: add netns to af_vsock core
+
+To avoid build breakage.
+
+Likewise with the other change to vsock_loopback_seqpacket_allow below.
+And I think also for a number of other changes made by PATCH 3/12.
+
+Please make sure that patches don't introduce transient build failures.
+It breaks bisection.
 
 
- ad1664fb6990 ("net: usb: qmi_wwan: fix Telit Cinterion FN990A name")
- 5728b289abbb ("net: usb: qmi_wwan: fix Telit Cinterion FE990A name")
+On the topic of vsock_loopback_seqpacket_allow, also:
 
+* Please line wrap this so that the code is 80 columns wide or less,
+  as is still preferred for Networking code.
 
-Acked-by: Bj=C3=B8rn Mork <bjorn@mork.no>
+  Flagged by checkpatch.pl --max-line-length=80
+
+* Can we move the definition of vsock_loopback_seqpacket_allow() here?
+  The function itself is is trivial. And doing so would avoid a forward
+  declaration.
+
+>  static bool vsock_loopback_msgzerocopy_allow(void)
+>  {
+>  	return true;
+
+...
+
+> +int vsock_loopback_init_net(struct net *net)
+> +{
+> +	net->vsock.loopback = kmalloc(GFP_KERNEL, sizeof(struct vsock_loopback));
+> +	if (!net->vsock.loopback)
+> +		return -ENOMEM;
+> +
+> +	return vsock_loopback_init_vsock(net->vsock.loopback);
+> +}
+> +
+> +void vsock_loopback_exit_net(struct net *net)
+> +{
+> +	vsock_loopback_deinit_vsock(net->vsock.loopback);
+> +	kfree(net->vsock.loopback);
+> +}
+
+I think EXPORT_SYMBOL_GPL is needed for both vsock_loopback_exit_net and
+vsock_loopback_init_net for the case where CONFIG_VSOCKETS=m
+
+Also, in Kconfig VSOCKETS_LOOPBACK depends on VSOCKETS. But this code adds
+a reverse dependency. As it stands it's possible to configure VSOCKETS
+without VSOCKETS_LOOPBACK, which will not compile.
+
+Perhaps stub implementations of vsock_loopback_init_net and
+vsock_loopback_exit_net should be implemented in af_vsock.h if
+VSOCKETS_LOOPBACK is not enabled?
+
+...
+
+-- 
+pw-bot: changes-requested
