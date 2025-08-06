@@ -1,128 +1,107 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C64C21FF51;
-	Wed,  6 Aug 2025 21:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5671721ABC8
+	for <netdev@vger.kernel.org>; Wed,  6 Aug 2025 21:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754516250; cv=none; b=Wd6Ud9JmTdYRkAmI2JbdHPwu9Plyf53e7bdd0nCbrMgvq+m7jGlkRB8d3kXSYQIaGGMoEiVy0CYWDdFw03PP9QPIpiC6fGWid2sCOlfhN5KcPbaOqBTyiJvwpcNbDx+QYqHjvHGew0S07VwwRH4huWQKlWoriJu3LJgcwELutg8=
+	t=1754517103; cv=none; b=bgFjjDIPMbX7QejMkNNXBGiuSZUhyiYyHMFPe/xXpp+n1wM26MNwpKCerVPsUKIwiSemQPXm8d2+tKrg+uPWmKzx9KaqdyWaqsNFBjDQlNJ+YLtVrtxuHPms36oSLIKVzrLzvFBiE1gdGBhtD145jT3nNCbh6eK/bAuaLXI2WjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754516250; c=relaxed/simple;
-	bh=l68yX9XCt9xjplg3S6TYYqYUUcYJiocfrGN5djxO4Sc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YwYfcrXBn2wiGpg3OvuePO8py/seHBsZXwJboBGDIr3MxadVWH+Z46A356nWi8cBGUh1ryrsqDtn1FH1b7wkqljhayVcm0U2GhlksuSnBmfyCt2OMnvFcqvvfO045oo41Jkwtiwpjnt5VdEefP9rC0nxXlgmOc5nAcCqL8rZhQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-23dc5bcf49eso3396945ad.2;
-        Wed, 06 Aug 2025 14:37:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754516248; x=1755121048;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uHAk47okoxBth3gGPZaSdIJjGXtD5du61Fs+eKgB9kY=;
-        b=P8iOGW+Cr4U9+yeXPQ2mZ4GMuXxuZzZ8AqlpSbrXZUwCuzGz7NKCTk4yq5JwxuIHux
-         ruHdXXfVHYulEDEmIQnlFTOpKUKlZ5aXTnsBkKzF2LQ0uNNFnyvrcW00UP0SmxjBQkog
-         EH7UYQpzFYJr5fXUOZJTiObHnnr7wA7M0zEzTrmorzrJTdY7ITN7kw25PXgKIwivUnGM
-         z7FeV94Uc4JkaAag8b1VnF5MGskhA8h2z6iYCYwq1++WRRf9JsqCLe8rtnztZ+oKRGLi
-         Og9BPSKOgLmgvpLMzemMk0GJ9mk+r0k3m15tgs7ahXp4uxW3bXmU/RiZ2YczziJAez7T
-         gxKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCULPB99k3xE07d3KiRid8++FfrB17myC/K60AXEbyuuSKtHjYNa8xJ+zKoarTlKL1/yyVY=@vger.kernel.org, AJvYcCVevN4M3zSMO4YCS0U0lz6wh9fCup2KxaYWkm9G8hHmlm+jrlAFfoWq/lHQ9B3FpAjb1lKZ83kKWZBvilvV@vger.kernel.org, AJvYcCW6hzIfsP3swrznPD26u+XcK5UVCSPzeOdxdmYrS73oG8gN+bH4iYd6VtK9m1JTsWyxoc4k7HqBUXyE@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdFZbJdeg27WOSOuOS/2ZPs45ugs6Gs/mpchy/n4fAC2zlWvmW
-	bs9KNXjcVCF+IxOVbrIZESMFY00Xfo2Sgmi9gS+SvYB43Z8iT30LCcE5VSbr
-X-Gm-Gg: ASbGncu1aV3W3riYRv23esUFxM7vTFLw5BgMtPwJvIN4uGWvtO1NDKhLC7EQc/bsSYa
-	pgtNdyY7UThRjdqui2b4bRHoHDaLPDvAEZwHmT70c1VgRdlXqM+ipWpWeZduVZgbo87zfMR1tC+
-	Rfqda1yymcRa8A/X4otzmCqFm2CvUezYWaVN3V03NqQW41xm/5Lotj0CztpkIX3K1Gv8u9wO1gR
-	bzo3O9TnQjVao5MlR09cNajTF8SUoeawmXIaHMaxDjQBLb9UZvnS4ubjySaU75KuLQeglzl1gX7
-	9mX9IM5BP/JTy05PnGnQTmwjFlV2iX0YlYtfGy7peDVXVTE+Vz8NSu16F2JE4gJOe5F5PLao/Il
-	uCo9ueqx6haHaia7Gxj3jt4Ni9T4fc3GGPP56OSvQm+xvoGm9YF24IhgGTl6So2xcKI/Ffg==
-X-Google-Smtp-Source: AGHT+IFL+0woOMjMEF8qQN0+gX0EkdLMDv79kTC4v0Jsuu5q3EIeBo/u+nVFxb8gPQ0yY5YIzwDwbw==
-X-Received: by 2002:a17:902:fc8f:b0:240:6d9b:59ff with SMTP id d9443c01a7336-2429f5339b5mr60521305ad.33.1754516248349;
-        Wed, 06 Aug 2025 14:37:28 -0700 (PDT)
-Received: from localhost (c-73-158-218-242.hsd1.ca.comcast.net. [73.158.218.242])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-241e899a48esm168509125ad.114.2025.08.06.14.37.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Aug 2025 14:37:27 -0700 (PDT)
-From: Stanislav Fomichev <sdf@fomichev.me>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	ms@dev.tdt.de,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	aleksander.lobakin@intel.com,
-	linux-kernel@vger.kernel.org,
-	linux-x25@vger.kernel.org,
-	bpf@vger.kernel.org,
-	syzbot+e6300f66a999a6612477@syzkaller.appspotmail.com
-Subject: [PATCH net 2/2] hamradio: ignore ops-locked netdevs
-Date: Wed,  6 Aug 2025 14:37:26 -0700
-Message-ID: <20250806213726.1383379-2-sdf@fomichev.me>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250806213726.1383379-1-sdf@fomichev.me>
-References: <20250806213726.1383379-1-sdf@fomichev.me>
+	s=arc-20240116; t=1754517103; c=relaxed/simple;
+	bh=XG2iaiadFFnq9XwRGdlA5z9IM93Tsw6Fk02sG4YudNo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p0/6HikyD/BdPY/IhtoO+cu2pzRZpfgeHXPJLW5ugs5uyOP1g88QsQ9ICdYat7fS0v7ZOKra9TH7bV7sYU1eUKzblU6fSuDuZQvYcd7kGWgxbrygwy6reXlG/pwfiIoLQtyGAQd9CrAX9wy00E3MPhzWAQA1blf7FWslR/lnCJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=TR2mvOlj; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="TR2mvOlj"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1ujlTy-00EXbe-Nw; Wed, 06 Aug 2025 23:15:34 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
+	bh=JEAvvLpXo03U5nTOjudQP/w82ZK7J9xTsTdVQJuUPT4=; b=TR2mvOlj/ssM041N+Pq0I/2VhP
+	ZYKARAxo1LGGfMByB7Xg5O/GSN6ltAq2BPKvnxsFNp9DUuSV9TVlK+Dank/E/2ZY+cBgG47o4KdUF
+	tEnMOueLFj2AXzcjMQUHyYHYDhJ386E37KECg3w91t5YP8McSQi+LXzH/tAJvH9kGNstTpScwigzX
+	rkP6pkmG+IcqQFRdGi7JpGFtvoyQdMj3xUHjXFT1cC0zEltgcKQZ8HZXgkndNXoOAU583mqNNAn47
+	/K99dHNuyrUSpZzMU0pzEkA6fjuiEbjmNic7KNFqloTwQ4LIFpzL3Umz69HYaSl4x4DePmsoaX3pO
+	Nx4ZbeDw==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1ujlTx-0000al-Fo; Wed, 06 Aug 2025 23:15:33 +0200
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1ujlTn-00BdRi-Ua; Wed, 06 Aug 2025 23:15:24 +0200
+Message-ID: <54f5b076-4648-4d2b-b50b-e775c4ddb4bf@rbox.co>
+Date: Wed, 6 Aug 2025 23:15:22 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] kcm: Fix splice support
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Cong Wang <cong.wang@bytedance.com>,
+ Tom Herbert <tom@herbertland.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250725-kcm-splice-v1-1-9a725ad2ee71@rbox.co>
+ <20250730180215.2ad7df72@kernel.org>
+ <b6a2219b-32dd-4bb6-b848-45325e4e4ab9@rbox.co>
+ <20250804165155.44a32242@kernel.org>
+Content-Language: pl-PL, en-GB
+From: Michal Luczaj <mhal@rbox.co>
+In-Reply-To: <20250804165155.44a32242@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Syzkaller managed to trigger lock dependency in xsk_notify via
-register_netdevice. As discussed in [0], using register_netdevice
-in the notifiers is problematic so skip adding hamradio for ops-locked
-devices.
+On 8/5/25 01:51, Jakub Kicinski wrote:
+> On Sun, 3 Aug 2025 12:00:38 +0200 Michal Luczaj wrote:
+>> On 7/31/25 03:02, Jakub Kicinski wrote:
+>>> On Fri, 25 Jul 2025 12:33:04 +0200 Michal Luczaj wrote:  
+>>>> Flags passed in for splice() syscall should not end up in
+>>>> skb_recv_datagram(). As SPLICE_F_NONBLOCK == MSG_PEEK, kernel gets
+>>>> confused: skb isn't unlinked from a receive queue, while strp_msg::offset
+>>>> and strp_msg::full_len are updated.
+>>>>
+>>>> Unbreak the logic a bit more by mapping both O_NONBLOCK and
+>>>> SPLICE_F_NONBLOCK to MSG_DONTWAIT. This way we align with man splice(2) in
+>>>> regard to errno EAGAIN:
+>>>>
+>>>>    SPLICE_F_NONBLOCK was specified in flags or one of the file descriptors
+>>>>    had been marked as nonblocking (O_NONBLOCK), and the operation would
+>>>>    block.  
+>>>
+>>> Coincidentally looks like we're not honoring
+>>>
+>>> 	sock->file->f_flags & O_NONBLOCK 
+>>>
+>>> in TLS..  
+>>
+>> I'm a bit confused.
+>>
+>> Comparing AF_UNIX and pure (non-TLS) TCP, I see two non-blocking-splice
+>> interpretations. Unix socket doesn't block on `f_flags & O_NONBLOCK ||
+>> flags & SPLICE_F_NONBLOCK` (which this patch follows), while TCP, after
+>> commit 42324c627043 ("net: splice() from tcp to pipe should take into
+>> account O_NONBLOCK"), honours O_NONBLOCK and ignores SPLICE_F_NONBLOCK.
+>>
+>> Should KCM (and TLS) follow TCP behaviour instead?
+> 
+> I didn't look closely, but FWIW - yes, in principle KCM and TLS should
+> copy TCP.
 
-       xsk_notifier+0x89/0x230 net/xdp/xsk.c:1664
-       notifier_call_chain+0x1b6/0x3e0 kernel/notifier.c:85
-       call_netdevice_notifiers_extack net/core/dev.c:2267 [inline]
-       call_netdevice_notifiers net/core/dev.c:2281 [inline]
-       unregister_netdevice_many_notify+0x14d7/0x1ff0 net/core/dev.c:12156
-       unregister_netdevice_many net/core/dev.c:12219 [inline]
-       unregister_netdevice_queue+0x33c/0x380 net/core/dev.c:12063
-       register_netdevice+0x1689/0x1ae0 net/core/dev.c:11241
-       bpq_new_device drivers/net/hamradio/bpqether.c:481 [inline]
-       bpq_device_event+0x491/0x600 drivers/net/hamradio/bpqether.c:523
-       notifier_call_chain+0x1b6/0x3e0 kernel/notifier.c:85
-       call_netdevice_notifiers_extack net/core/dev.c:2267 [inline]
-       call_netdevice_notifiers net/core/dev.c:2281 [inline]
-       __dev_notify_flags+0x18d/0x2e0 net/core/dev.c:-1
-       netif_change_flags+0xe8/0x1a0 net/core/dev.c:9608
-       dev_change_flags+0x130/0x260 net/core/dev_api.c:68
-       devinet_ioctl+0xbb4/0x1b50 net/ipv4/devinet.c:1200
-       inet_ioctl+0x3c0/0x4c0 net/ipv4/af_inet.c:1001
+Ugh, so this KCM patch is incorrect. Sorry, I'll submit a follow up
+tweaking KCM and TLS, as suggested.
 
-0: https://lore.kernel.org/netdev/20250625140357.6203d0af@kernel.org/
-Fixes: 4c975fd70002 ("net: hold instance lock during NETDEV_REGISTER/UP")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reported-by: syzbot+e6300f66a999a6612477@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e6300f66a999a6612477
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
----
- drivers/net/hamradio/bpqether.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/hamradio/bpqether.c b/drivers/net/hamradio/bpqether.c
-index 0e0fe32d2da4..045c5177262e 100644
---- a/drivers/net/hamradio/bpqether.c
-+++ b/drivers/net/hamradio/bpqether.c
-@@ -138,7 +138,7 @@ static inline struct net_device *bpq_get_ax25_dev(struct net_device *dev)
- 
- static inline int dev_is_ethdev(struct net_device *dev)
- {
--	return dev->type == ARPHRD_ETHER && strncmp(dev->name, "dummy", 5);
-+	return dev->type == ARPHRD_ETHER && !netdev_need_ops_lock(dev);
- }
- 
- /* ------------------------------------------------------------------------ */
--- 
-2.50.1
+Note about SPLICE_F_NONBLOCK: besides AF_UNIX, it is also honoured in
+AF_SMC and tracefs.
 
