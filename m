@@ -1,43 +1,89 @@
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6C92749E8;
-	Wed,  6 Aug 2025 10:35:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1396920F067;
+	Wed,  6 Aug 2025 11:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754476524; cv=none; b=IqPCvfFuKQNelMq3i+yTu90N6gWN8rKkypShasfTvdJ8UIV3cNgULgezJUWPuPckhxtYlwJIxwSrq7g54i0x8H6TsaE7aauDRZE39uAP2UjflFzqV2dkEINivcs86Q5dgj/cyr0jGgEG3hEhersBobkRzFKhrHx3LOhkv/r4MGI=
+	t=1754478165; cv=none; b=oefTkx52x15YBEdp04xrT/jyQR2KJyZjbiRTWkKILB2vYZ3J1Nm8hut0FhCslOeSVhRs5M4aarfx9GDi4wxwlqka8cfU1G+Ac+tCbHqRwOZs7SQhyGWFwUyEMpaMZ7zw7FKgUMGe+kt5pQeVHxoLcwqv9dxTT9Uvk8Am+6xvcvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754476524; c=relaxed/simple;
-	bh=iTn9Wk1HODQ6O9GS9CwEXWPXuYzARim6MtqLSkmQmWg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WNPkIN5Htw3qL4ozJ4NEWMGiBFWH4Nb224BMiM6Snyw7IrYspHnX68wOWaH1Rb2eLJp/ZOYa+7X/z4dfKwaUxgRozRJAw80Y6N06Cppqi1I7JgOQPiM0zEDdZWgdCIveuUr6LSoH2g3kMIKJxWEE7I+/LVNIePU7xMnC/I858jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bxmp23vHHz23jgk;
-	Wed,  6 Aug 2025 18:32:42 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5DB1F14011B;
-	Wed,  6 Aug 2025 18:35:13 +0800 (CST)
-Received: from localhost.localdomain (10.90.31.46) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 6 Aug 2025 18:35:12 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
-	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<shaojijie@huawei.com>
-Subject: [PATCH V3 net 2/3] net: hibmcge: fix the division by zero issue
-Date: Wed, 6 Aug 2025 18:27:57 +0800
-Message-ID: <20250806102758.3632674-3-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20250806102758.3632674-1-shaojijie@huawei.com>
-References: <20250806102758.3632674-1-shaojijie@huawei.com>
+	s=arc-20240116; t=1754478165; c=relaxed/simple;
+	bh=fGwQvuZekVYWNVp+xHF2By/+OhCeDXLdr6UFjCBMrmU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tl9xh8+4IAabuAyuimm/B8qyenuV+41KEgEeScupcGc3FPnj+B7K0Z/+KSSmAQhEP3P7otfmFTnUlpJS96z+MmjRnsjHTF9/HnTQRoT//uk8omVOVXr1wvsWg8P2dbMVkLN572g+LkCekXEkzDzryVBuwU2tsQhi+y7FAQ66VcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lNJk+oys; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lNJk+oys"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7426c44e014so5901751b3a.3;
+        Wed, 06 Aug 2025 04:02:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754478163; x=1755082963; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rnS6VYdGfdFt/krsus/FgbrkiOQovzavFwfxL0kycI4=;
+        b=lNJk+oysPEIxA2BkMzFeaDgFAnNLy1VegqLvjQLQUv4ML6OCkKxR6Z0tE0WYxH9teh
+         awzT/PVAdhbcYmzhhcMA9sqn49bnnDRSJqO2IPEnFm8yhfb21Woc7mDGiNyhyIVeiOG2
+         1lsQUFUM+B/VZrr+KptSJFOoAD+tMFrxhEZJ/0/hMqfUAfj5LKq7qNTIFQqjv5ox8dbT
+         IFkrNzaCfWAcDx7BoGQUmkLF7yn4YXaIJ/Rhj7PkrUjfap6yrsAeaZ0sSfBSn5+dBL7a
+         lyTvL+GKoEn71az9Ypx1JceA3h6Z9SdQpz6T06B/k2vXwo3PkPWiUcXW+KhonjdBX5q3
+         x6Bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754478163; x=1755082963;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rnS6VYdGfdFt/krsus/FgbrkiOQovzavFwfxL0kycI4=;
+        b=cQ/EzbnW8yb9NIB6rsNikuzqmsXS98m0WLl4l9iac8f4IaE7rg4hHFHrE0CG7YcZ1W
+         WfJV94zhb0ctiShxaRNiSCjr/Kwo5bIdtY9sLBW7RMnxR6WB3tgEJjDUvVgz0lblEPj3
+         aaou0JDk2DwR9jHzxwWESnPPbPudtvpoxMVPnOPetuNKM7vDQYZL6c8Z/bTjwxiAlwXI
+         K5E6MWBWVEkaICBhj7nJCqUIY2uKdbhXFZMp+NrojSIUloWEOSl8bv327Y0dVS+YTu/Z
+         tIUKrDnLQ9UQZi6cJxF2dmDntojbSBvadTWxlVSVyFkLBUaftsT4+WPKnj8V3vUh6is4
+         SKFA==
+X-Forwarded-Encrypted: i=1; AJvYcCUvs13vFN0mswKy7LTkRToB7o4XxsqQ0LTUR2iUCrqT7jXU9+R7TzlmfUIhEPY1G8ggBZXqKMeFjVrpn9Va73VI@vger.kernel.org, AJvYcCWsrQ2QLJlQgtDvQgTlc/hZIegceYCCvgMrPVWqhxSktFIaqE4ar53ke0CKKIAVlNX9chHhkSty@vger.kernel.org, AJvYcCXZ1kjUXjXXIqQooEBCMFksND6oPm3UHXL6zDBtR+wDy8H6SB4L3JZr0Ed948hdZaQ7avU8TQ5JrMpwDGH8@vger.kernel.org, AJvYcCXgCuAwuTDiuNllIY72F1It56AYXwyDT5S3SAqy9zdwNmpUHFW1dXc0U6AhU1Zm9oo8Jcc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0lI/HWcLmPJZKejlsEIjvKvxiVmOJnEYLMYMEyMcI0qO8ttDl
+	aRxYtR+UBpvr25XLe/S01THwW7735yoQdVH4xCxL3DIy5RlF06gojdEw
+X-Gm-Gg: ASbGncs55/BlIDlCD0m/iT1y2aVC0LCJHYHehAkxBNoUmidLhj9lrTuE+QuQLxY6Smd
+	jfoglMYiSUXyLACDJM4fCLUudYYCvJhOgtMNHemcKJf+Eo33e+BJB+2uxH2YjnEyMTzJekCAhOg
+	v5roVJ/mp+LweQOtkWBtud8xmC+RfzhgpLISj3MZ4zeZkDFqp1WNjd8FPvaw//mPBQHWGcqUQbp
+	V1jFXiEZqa9aPUt4xCenyAvDpNG5p6CRThUSqFNxkRDQGXISWRmvjvxkmnnVtpDkLJsBoe9VAOS
+	XjaMhGO/zAWhpFgqS29jFAY/bQxhP9XwmVrXGRSDSjPvAsixIN02lCpuZgnJ+1B0mHJ8jKPS+CL
+	dI/YJxC9RN8dSUpwbfyGxrKpiZ1yDPt7t8yfZqNYhE0M=
+X-Google-Smtp-Source: AGHT+IFjR517vCAUNyZmP/NtQ6JbvJmH4KhkzCA3/4f876CAu+LnOExtfNWpNrpMCkeAqIM3e2h6Sw==
+X-Received: by 2002:a05:6a20:7487:b0:240:30c:276a with SMTP id adf61e73a8af0-24031463e79mr4059373637.39.1754478163258;
+        Wed, 06 Aug 2025 04:02:43 -0700 (PDT)
+Received: from manjaro.domain.name ([2401:4900:1c30:7b0d:6527:282d:9edd:5f40])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bcce8de28sm15074948b3a.39.2025.08.06.04.02.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Aug 2025 04:02:42 -0700 (PDT)
+From: Pranav Tyagi <pranav.tyagi03@gmail.com>
+To: ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	shuah@kernel.org
+Cc: sdf@fomichev.me,
+	mykolal@fb.com,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	kpsingh@kernel.org,
+	haoluo@google.com,
+	jolsa@kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	Pranav Tyagi <pranav.tyagi03@gmail.com>
+Subject: [PATCH] selftests/bpf/progs: use __auto_type in swap() macro
+Date: Wed,  6 Aug 2025 16:32:30 +0530
+Message-ID: <20250806110230.23949-1-pranav.tyagi03@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,47 +91,29 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemk100013.china.huawei.com (7.202.194.61)
 
-When the network port is down, the queue is released, and ring->len is 0.
-In debugfs, hbg_get_queue_used_num() will be called,
-which may lead to a division by zero issue.
+Replace typeof() with __auto_type in xdp_synproxy_kern.c.
+__auto_type was introduced in GCC 4.9 and reduces the compile time for
+all compilers. No functional changes intended.
 
-This patch adds a check, if ring->len is 0,
-hbg_get_queue_used_num() directly returns 0.
-
-Fixes: 40735e7543f9 ("net: hibmcge: Implement .ndo_start_xmit function")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pranav Tyagi <pranav.tyagi03@gmail.com>
 ---
-ChangeLog:
-v2 -> v3:
-  - Use READ_ONCE() to read temporary variable, suggested by Jakub Kicinski
-  v2: https://lore.kernel.org/all/20250805181446.3deaceb9@kernel.org/
----
- drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
-index 2883a5899ae2..8b6110599e10 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
-@@ -29,7 +29,12 @@ static inline bool hbg_fifo_is_full(struct hbg_priv *priv, enum hbg_dir dir)
+diff --git a/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c b/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
+index 62b8e29ced9f..b08738f9a0e6 100644
+--- a/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
++++ b/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
+@@ -58,7 +58,7 @@
+ #define MAX_PACKET_OFF 0xffff
  
- static inline u32 hbg_get_queue_used_num(struct hbg_ring *ring)
- {
--	return (ring->ntu + ring->len - ring->ntc) % ring->len;
-+	u32 len = READ_ONCE(ring->len);
-+
-+	if (!len)
-+		return 0;
-+
-+	return (READ_ONCE(ring->ntu) + len - READ_ONCE(ring->ntc)) % len;
- }
+ #define swap(a, b) \
+-	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
++	do { __auto_type __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
  
- netdev_tx_t hbg_net_start_xmit(struct sk_buff *skb, struct net_device *netdev);
+ #define __get_unaligned_t(type, ptr) ({						\
+ 	const struct { type x; } __attribute__((__packed__)) *__pptr = (typeof(__pptr))(ptr); \
 -- 
-2.33.0
+2.49.0
 
