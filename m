@@ -1,120 +1,115 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093812E36E7
-	for <netdev@vger.kernel.org>; Wed,  6 Aug 2025 18:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3C31C7017
+	for <netdev@vger.kernel.org>; Wed,  6 Aug 2025 18:35:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754505053; cv=none; b=YdhijVEyNougV/DttSXLf/NF9oc34hn+M6R3iJPuzv8d9g2QuyMUeuI+vHarm1fj+j/3hoUOHcxy1MAkrNAbTmwZGUdXpl6m8rp/w7ypgpZ68XkRd5MDIn/BQECA/rnNfWnfnpkZWEiiJEloKh1uL5ok4AICMorKwsL8kmJNTbo=
+	t=1754505343; cv=none; b=kVtBq5dD8ZLGAFKwxiouFnE8yBMd4aGlgieTo+klqLcrF69zxd4nx27i/vkdQ+RMmLTrxDJWCOUz07cKuFTON7+L3LyJuROlAQjeh1umKCeQ1RiFV/dKA0F7o8c6Hz96gTL9zcQTEaHRL6ENUwHsRcMHig/86qSQh0n3QcAZh10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754505053; c=relaxed/simple;
-	bh=vLj+fdJb2Vks5utREQNrEigpGF6KFgjJSUgqIR6F6UY=;
+	s=arc-20240116; t=1754505343; c=relaxed/simple;
+	bh=TgrtNHfEKGWMcivC2vYOauoxX+koVK4dQWOwxLY3/AU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FbbDET5vH2UdbG0IxQruMGAwGg3BcgQ+s2Nib4NMX+DfgtWHnJ4u47jL6r4f8LSMt40Fl3IgesJQW8hvSq+WboVGnHYawz3AD7xkEm9Cq6TJrgqUBNgVFZD0VaglgfaD0N4mPmIQ2hmcwUDN8W348AbogEVLnTi27uoAA74OUZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bLuBDr8R; arc=none smtp.client-ip=209.85.167.54
+	 To:Cc:Content-Type; b=laGxdpu8bgf1tNWcN56E10tRH5nlHg09D7Eepbh0zpauYegZtMr3JwzP+qAUu012T1YsSFZsDXhxv+bCWX5o7XaBGOErKtMdyWA8c69x04S9OfBjpGq19OAsexgXw4BBSWgTho+hC1aR8mW0U/yffSkK7Ndyw/zSj7L+56d4+28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rdurdvBJ; arc=none smtp.client-ip=209.85.160.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bLuBDr8R"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-55b7bf0a8d5so922e87.0
-        for <netdev@vger.kernel.org>; Wed, 06 Aug 2025 11:30:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rdurdvBJ"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4b08a0b63c6so2618541cf.1
+        for <netdev@vger.kernel.org>; Wed, 06 Aug 2025 11:35:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754505050; x=1755109850; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1754505339; x=1755110139; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3TDOublo3Q2tG40X6vbYcBf3dOqybzUDofJqFWP7aQk=;
-        b=bLuBDr8R3DPgp9/CRCw6rrvYVEgbPFVcuniJBKND9WjsSe1zGB5Qr2mHPBfRI0Nunp
-         Sb4/FzlMyFzB/8PfUAiIot5J7QxNgVCIbgDEOFK/0O4FrXHq9Vve6oR0riPJlP9HK6Nd
-         N8URHZYkn3Z+1lF4JjmXOOU5gQg4EQO4kcutvKigOzIzx08di4hHXC663pP84hWhmUip
-         BKktcRQmulS1pjpSJW3AvkU2XIgKnAUrNas4UgCwyzAEayP2MOrnLAHDANfTwdgc9bX+
-         5ZQ1fXlJlfPiyolSUjnM2cBCLtz9RyI9i2U0tkYyDS5fpvakwxusKGrywlBsMOdj9Efj
-         lSUA==
+        bh=PLVfa7g9qj0LATfRre2vi5YmjjptK2nX35WVxF2JaUc=;
+        b=rdurdvBJrNZ1aiLIokcUX9afav76fttZnMCBUj0LUYNu6u/JLevvfrVKIY/vQnjOuN
+         nCvsMmtwIl47cK/04VWFdJbKFApzNz3O6CHmjGoyxn7WTDPyPxVq16aWqM3igyGT0HU8
+         VDbcWNXWqJQbwSVHSwsFnlkDhD2PLmxfzcXZMfclyk6wkJT/JjAbD8KJBAUfT+7KLut3
+         fZTNAfQlOyA3f9I5qcgYV2ERWR+CHndsaEk2TzldhR0nzEAlutowMIrEAf0naJBtzX9h
+         msrBqcPUnvbLTW4ETnYS4HnpSMgVNKK0kfHdrWihwZ3Nr1sulHd36ip/RcYyIrIJcb8g
+         z5jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754505050; x=1755109850;
+        d=1e100.net; s=20230601; t=1754505339; x=1755110139;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3TDOublo3Q2tG40X6vbYcBf3dOqybzUDofJqFWP7aQk=;
-        b=cPcFW5T0R4GatvBbfTvAI/lFbibX62DJnh1hHtaD89o7ADq+mqUOZI3424WqBaL427
-         zM7Dw6PXuB69G5lh6Gtrj/Suk5b3pJUfapAljeyvYoWJGPCdfzEMJw1kjEG8IFrSXBed
-         xCotZAZ8UhkppigPH2M8V+6AzMm445WQoWqz2EQVHCfJkFsINUpuOhVKNQWdpXg/RXpf
-         FoAT+Y3E5V3ITBNW9l0fCxFyPwvPEEq5HBIn/JUrepUdy3qT80d88Gxr5ejE2b9iVvz0
-         raVnCk9XK7wOSDDmuD3GxwdM0zSQAFpyMhXyhOCyKR+oi3oDstDwKuEI4LCedZDX/T86
-         NCSg==
-X-Forwarded-Encrypted: i=1; AJvYcCWMCyTaxW+Mm2leIc66fs1+5Wig8X/wrxcZT4nx3iFpqRPJ87s+iQ7tA+5gt3kP2JAfJMNs3bs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNBX8ukJHAsU49loWD8fU914fPzZrAftLJUaWHxuhH+PNN+gZs
-	CeW7XA9kwzXx8oDtxm8p85EpHywM/EO6q3/k0b7AJt8K8o2+U7sEBTUazqM9Nx16W2rsrrd2OTi
-	C7N1zuOFY1xZrMKXnN0o2QhNcAfz20iMu9a6EZDkZ
-X-Gm-Gg: ASbGncuEb75ReMydfap3jTvlvs96zF9gR6sLbHQqCjdC0LeXwF7Qt3IpHlBk+Enlcu1
-	/gw/JuoWntDc3Zw8qt4DqaPLgy7gz/KCVFEh+5z1Objaw8+Q9cBidbJZTjIxXvNDXjQCAFvA2xM
-	F6NXrhR+VMyc//rZdbL34iG5MxZGTPWqGTGfq33haQQxXxGbbziekkoHpQzOICyGPiAsP9WBaX2
-	g95uqHnUS/l+cHkvty0oE8Du5GMGALevlLUYBrQKhp7nvH6
-X-Google-Smtp-Source: AGHT+IGt/wOJpNx7GnnwYBOLWPcP3IZ20CYAR4HnNGLoquJY9uECaHULv4YoLWdZT3k/01JfdD6rDnK0mvdb6p8RQV0=
-X-Received: by 2002:a05:6512:6406:b0:55a:2d72:de56 with SMTP id
- 2adb3069b0e04-55cb6ee8ebamr13453e87.5.1754505049986; Wed, 06 Aug 2025
- 11:30:49 -0700 (PDT)
+        bh=PLVfa7g9qj0LATfRre2vi5YmjjptK2nX35WVxF2JaUc=;
+        b=CKpL6c28yP0a03TjMSFlm51FYApI/dAYKMdImREKOjFajxfCzOTpgPzWZ47bwFBLyy
+         wVXsZHN7fejsJmFnpIHPID1CTah+OvYpwPxVWMyvvd62RzPQraTkQ/U4szdIt6bkYL7h
+         mhS8tKAo0FHMSuIIpRB+Yj1cao0x2CD4dm5zROIMl7eyjOZuBGVd0M7GQFgGuVUdhbJB
+         R+mjv9ZYyUCn75nLWfd4QOx/z3hWLnFMxcsqHpt3Lf0wYLeYRVbUe7wW9LjEzK9syrSG
+         Gh0GFQOli20yLyCWAHOzzj7nipfrf/de3BOrWHpgcduWNZcZR5wXfAtH6MVkFT+D6+vi
+         pTgw==
+X-Forwarded-Encrypted: i=1; AJvYcCW/Mca0gKBiurv3T2LsNBZVZ/45dNKLmmXv+rpzS7iRViLabWM1LOt2EUrYffeQH69PnrePnFo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvNqNjaUfgku8S3ikrj/bWvzFsVx9I/3nDy4ocKv4/TxY5nUwa
+	yKzF5x3rFBIaQ4C0J7AfpMchR8Bb76JdO0K9FrznsREBZk0vzwNdwMyXB0p9fLK6AYxY1112Wch
+	JISWNSrDbvpEvU06vowAAVcdD2Te2g4UUfIGRIE7AjtxxREYHSrF052mz
+X-Gm-Gg: ASbGnct2g4zoSihAs+LWxh/FKSPWAM4zaDYYzHhdkq+1H4KdcOOuJy2+hYN2/CF0Byp
+	OP2pyg1MERoogGNvgjyomM+IXzj9AEjR30ISnCGJsiP1gO4yDcxaS75onZq8ivB0VJOYm7vfZvc
+	RlH9MqtfdlXWB3hK0P3YC2hUMCo7EUfLTjUFil6euKFcvVAQ1EZ1WoHo5nIiMgSit4VrXund3a4
+	An0ceLzBCccWwowXIU=
+X-Google-Smtp-Source: AGHT+IHG/34/fTyIPQKhgcLoz15W/sNxgHYlRwI6JCsBvkZ3p61Hn2tzr3UNF8Rq6YtI+vlJXPKClu4DHzWKlFqJzeQ=
+X-Received: by 2002:a05:622a:1f0c:b0:4af:890f:ff8f with SMTP id
+ d75a77b69052e-4b0912c42a5mr55715411cf.6.1754505339222; Wed, 06 Aug 2025
+ 11:35:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1753694913.git.asml.silence@gmail.com> <ca874424e226417fa174ac015ee62cc0e3092400.1753694914.git.asml.silence@gmail.com>
- <20250801171009.6789bf74@kernel.org> <11caecf8-5b81-49c7-8b73-847033151d51@gmail.com>
- <CAHS8izNc4oAX2n3Uj=rMu_=c2DZNY6L_YNWk24uOp2OgvDom_Q@mail.gmail.com> <20250806111108.33125aa2@kernel.org>
-In-Reply-To: <20250806111108.33125aa2@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 6 Aug 2025 11:30:38 -0700
-X-Gm-Features: Ac12FXxs3PsW0TDpaFvxbsuRlfuu8IOZMcSAN6tdJGrWWtI1P2KBlk8RG97WhOk
-Message-ID: <CAHS8izM-JrPV7R4wk7WnO-Zskb=7gj+HtewoW91cEtsQP1E5rw@mail.gmail.com>
-Subject: Re: [RFC v1 21/22] net: parametrise mp open with a queue config
+References: <20250806180510.3656677-1-kuba@kernel.org>
+In-Reply-To: <20250806180510.3656677-1-kuba@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 6 Aug 2025 11:35:28 -0700
+X-Gm-Features: Ac12FXxwAXt8ppz1WbG4syp66E9ompnViGt1pcP_8fwDRQaf3WP7T-rL0g2vo7I
+Message-ID: <CANn89iKvW8jSrktWVd6g4m8qycp32-M=gFxwZRJ3LZi1h2Q80Q@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] tls: handle data disappearing from under the TLS ULP
 To: Jakub Kicinski <kuba@kernel.org>
-Cc: Pavel Begunkov <asml.silence@gmail.com>, netdev@vger.kernel.org, 
-	io-uring@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
-	Willem de Bruijn <willemb@google.com>, Paolo Abeni <pabeni@redhat.com>, andrew+netdev@lunn.ch, 
-	horms@kernel.org, davem@davemloft.net, sdf@fomichev.me, dw@davidwei.uk, 
-	michael.chan@broadcom.com, dtatulea@nvidia.com, ap420073@gmail.com
+Cc: davem@davemloft.net, netdev@vger.kernel.org, pabeni@redhat.com, 
+	andrew+netdev@lunn.ch, horms@kernel.org, borisp@nvidia.com, 
+	john.fastabend@gmail.com, shuah@kernel.org, linux-kselftest@vger.kernel.org, 
+	sd@queasysnail.net, will@willsroot.io, savy@syst3mfailure.io
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 6, 2025 at 11:11=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
+On Wed, Aug 6, 2025 at 11:05=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
 ote:
 >
-> On Wed, 6 Aug 2025 09:48:56 -0700 Mina Almasry wrote:
-> > iouring zcrx and devmem can configure netdev_rx_queue->rx_buf_len in
-> > addition to netdev_rx_queue->mp_params in this scenario.
+> TLS expects that it owns the receive queue of the TCP socket.
+> This cannot be guaranteed in case the reader of the TCP socket
+> entered before the TLS ULP was installed, or uses some non-standard
+> read API (eg. zerocopy ones). Make sure that the TCP sequence
+> numbers match between ->data_ready and ->recvmsg, otherwise
+> don't trust the work that ->data_ready has done.
 >
-> Did you not read my message or are you disagreeing that the setting
-> should be separate and form a hierarchy?
+> Signed-off-by: William Liu <will@willsroot.io>
+> Signed-off-by: Savino Dicanosa <savy@syst3mfailure.io>
 
-Sorry, I was disagreeing. The flow above seems complicated. I'm
-probably missing something that requires this complication. I was
-suggesting an approach I find more straightforward. Something like:
+I presume you meant Reported-by tags ?
 
-```
-  nedev_config =3D get_driver_defaults()
-  qcfg =3D get_driver_defaults()
+> Link: https://lore.kernel.org/tFjq_kf7sWIG3A7CrCg_egb8CVsT_gsmHAK0_wxDPJX=
+fIzxFAMxqmLwp3MlU5EHiet0AwwJldaaFdgyHpeIUCS-3m3llsmRzp9xIOBR4lAI=3D@syst3mf=
+ailure.io
+> Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  include/net/tls.h  |  1 +
+>  net/tls/tls.h      |  2 +-
+>  net/tls/tls_strp.c | 17 ++++++++++++++---
+>  net/tls/tls_sw.c   |  3 ++-
+>  4 files changed, 18 insertions(+), 5 deletions(-)
+>
+> diff --git a/include/net/tls.h b/include/net/tls.h
+> index 857340338b69..37344a39e4c9 100644
+> --- a/include/net/tls.h
+> +++ b/include/net/tls.h
+> @@ -117,6 +117,7 @@ struct tls_strparser {
+>         bool msg_ready;
+>
+>         struct strp_msg stm;
+> +       u32 copied_seq;
 
-  for each setting:
-    if qcfg[i].X is set:
-       use qcfg[i].X
-    else
-      use netdev_config.X
-```
-
-APIs that set netdev-global attributes could set netdev_config.X. APIs
-that set per-queue attributes would set qcfg[i].X (after validating
-that the driver supports setting this param on a queue granularity).
-
-With this flow we don't need to duplicate each attribute like
-rx-buf-len in 3 different places and have a delicate hierarchy of
-serving the config. And we treat mp like any other 'X'. It's just a
-setting that exists per-queue but not per netdev.
-
-Although I don't feel strongly here. If you feel the duplication is
-warranted please do go ahead1 :-D
-
---=20
-Thanks,
-Mina
+Can a 2^32 wrap occur eventually ?
