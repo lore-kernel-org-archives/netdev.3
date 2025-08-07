@@ -1,180 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F815191F84
-	for <netdev@vger.kernel.org>; Thu,  7 Aug 2025 13:42:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE34238D49
+	for <netdev@vger.kernel.org>; Thu,  7 Aug 2025 14:02:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754574154; cv=none; b=AoRuD/pbSIeED5fgy+L+r6QxvpoaZRi4Whvx1f6HVBcXtzz9dGdkK9dN+/ax6MpZ+fB6QmFWLUQEKo69+x93GFoDVwt9CFsJ4qITeIC4o7O6wmVbKYECsuxaRE/OT6fkx4YPC+/gOFyWgaB1YAonCdODDwz4jZ3Ie5e9mEH9bMA=
+	t=1754575363; cv=none; b=nUFqAQ+wjIa7lOi4i8I9aUzFotrkyTg7+OWI0TUpRcc+oY0lyOHUtFp1SPcwHTWgXXuVwDwOwX4GMPuIG8ZtD5ZtdQVEZgzuBSwxvTwiVEoMYttcoWQ21jWuSJwdQnmT9uKg3xMOShVYVCbzz0ST6BpuXKf6pPq7Zy76xcPVnCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754574154; c=relaxed/simple;
-	bh=GvJfhzlulC+BDBGj8y0s9+f+ajpo1xlnxsxPSHrv2vY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vlbj3a5vvaC2skVeTKv5JyT1+DRiHiJbCbcGxGpFLrn5rxTGS1wOO3z0oROpIMoR296o5dTsCg4Qa6CMo9TZA2Fwj/6ddc8xmnbZnHE1MUC61M7ExhqjZU9C6CjIWGvIlcjyzf/ruDMhCkDBm2tHexfmiJDBz9oGLLakTSq1Sus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CzHm3B9K; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CzHm3B9K"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754574151;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ritNS/LACz5zZTDC9OonsqyxQ/9g3SvnETW1YwGikxE=;
-	b=CzHm3B9KzctQpriV/pO5zXrO2Xda+UTu1TAFZO7xX80E6H/te1SrsuPF46J99ck8pBKsHg
-	/FCDSj3oIN+t6eDKa9b4QUVnculZJiH5CBydmDEoUYBHFDgTd1jGSRheQ8oW/WLUCv8rmF
-	VVz3TRrMXMFwiD2vOV0dRQj2sWh9ztY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-34-KwNfLP1TMgSPsJW3m9-2OA-1; Thu,
- 07 Aug 2025 09:42:28 -0400
-X-MC-Unique: KwNfLP1TMgSPsJW3m9-2OA-1
-X-Mimecast-MFC-AGG-ID: KwNfLP1TMgSPsJW3m9-2OA_1754574147
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C1B4318004D4;
-	Thu,  7 Aug 2025 13:42:27 +0000 (UTC)
-Received: from jramaseu-thinkpadt14gen5.tpbc.com (unknown [10.44.32.77])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E95B119560AD;
-	Thu,  7 Aug 2025 13:42:24 +0000 (UTC)
-From: Jakub Ramaseuski <jramaseu@redhat.com>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	Jakub Ramaseuski <jramaseu@redhat.com>,
-	Tianhao Zhao <tizhao@redhat.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Subject: [PATCH net v2] net: mask NETIF_F_IPV6_CSUM flag on irregular packet header size
-Date: Thu,  7 Aug 2025 15:41:50 +0200
-Message-ID: <20250807134150.497553-1-jramaseu@redhat.com>
+	s=arc-20240116; t=1754575363; c=relaxed/simple;
+	bh=dUAlM7f0/ek29519zm6XLoUu3GZyva65NIoAYroTzTw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IaK8xk2saSfY/Ws04VeZujqqfueYNovbLJk7xMocoUAmqaKCdKglalzuy55s02pdrrUN3hIVaV0EpShKsyHLhqv/ewFsCR1dqnxMTPZLJ75k+Y2eZQkPWGl5S6/ivtFglduhbksow1Xc6f4p2cFw9fBHpfBwnZVyO7SSZwPuiqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uk1CS-0003WQ-0k; Thu, 07 Aug 2025 16:02:32 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uk1CR-00CNyt-1P;
+	Thu, 07 Aug 2025 16:02:31 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uk1CR-00EK29-10;
+	Thu, 07 Aug 2025 16:02:31 +0200
+Date: Thu, 7 Aug 2025 16:02:31 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Xu Yang <xu.yang_2@nxp.com>, hkallweit1@gmail.com,
+	pabeni@redhat.com, netdev@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RESEND] net: phy: fix NULL pointer dereference in
+ phy_polling_mode()
+Message-ID: <aJSx9xTrFfFm0dcx@pengutronix.de>
+References: <ywr5p6ccsbvoxronpzpbtxjqyjlwp5g6ksazbeyh47vmhta6sb@xxl6dzd2hsgg>
+ <aJNSDeyJn5aZG7xs@shell.armlinux.org.uk>
+ <unh332ly5fvcrjgur4y3lgn4m4zlzi7vym4hyd7yek44xvfrh5@fmavbivvjfjn>
+ <b9140415-2478-4264-a674-c158ca14eb07@lunn.ch>
+ <aJOHObGgfzxIDzHW@shell.armlinux.org.uk>
+ <2b3fvsi7c47oit4p6drgjqeaxgwyzyopt7czfv3g2a74j2ay5j@qu22cohdcrjs>
+ <3mkwdhodm4zl3t6zsavcrrkuawvd3qjxtdvhxwi6gwe42ic7rs@tevlpedpwlag>
+ <aJSSNg4aZNfoqqZh@shell.armlinux.org.uk>
+ <aJSf0JaBl4cKphFi@pengutronix.de>
+ <d137518b-604b-4be3-9eb1-96d49123a251@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <d137518b-604b-4be3-9eb1-96d49123a251@lunn.ch>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On any driver that advertises NETIF_F_IP_CSUM and NETIF_F_IPV6_CSUM but
-not the superseding NETIF_F_HW_CSUM (e.g., ice/bnxt_en), the kernel
-incorrectly attempts GSO on IPv6 packets with extension headers.
-Because the NETIF_F_IPV6_CSUM feature is incompatible with these
-headers, the failure results in a `skb_warn_bad_offload` warning and
-a collapse of throughput, as observed with GREoIPv6 traffic.
+On Thu, Aug 07, 2025 at 02:58:05PM +0200, Andrew Lunn wrote:
+> > Hm, I guess, with this change there will be a subtile regression.
+> > In case of an external PHYs the ax88772_init_phy() is using PHYlib to
+> > suspend the internal PHY.
+> > 
+> > May be:
+> >   priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
+> 
+> I looked at that:
 
-Mask NETIF_F_IPV6_CSUM, NETIF_F_TSO6 and NETIF_F_GSO_UDP_L4
-in gso_features_check if the IPv6 header contains extension headers.
+Here we read the primary PHY address from the EEPROM. This offset may
+contain either the internal or external PHY address. See commit
+d0ffff8fddd5 ("USB: asix: Detect internal PHY and enable/use
+accordingly")
 
-The exception is a BIG TCP extension, which, as stated in commit
-68e068cabd2c6c53 (net: reenable NETIF_F_IPV6_CSUM offload for BIG TCP packets):
-"The feature is only enabled on devices that support BIG TCP TSO.
-The header is only present for PF_PACKET taps like tcpdump,
-and not transmitted by physical devices."
+I need to admit, asix_read_phy_addr(..., bool internal) was originally
+designed to distinguish between internal and external PHYs by setting
+internal = false.  But in practice, most vendors seem to follow the
+existing driver behavior as reference, and only modify the primary PHY
+address in the EEPROM.
 
-kernel log output (truncated):
-WARNING: CPU: 1 PID: 5273 at net/core/dev.c:3535 skb_warn_bad_offload+0x81/0x140
-...
-Call Trace:
- <TASK>
- skb_checksum_help+0x12a/0x1f0
- ? netif_skb_features+0xc1/0x2e0
- validate_xmit_skb+0x1a3/0x2d0
- validate_xmit_skb_list+0x4f/0x80
- sch_direct_xmit+0x1a2/0x380
- __dev_xmit_skb+0x242/0x670
- __dev_queue_xmit+0x3fc/0x7f0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? ip6_rt_copy_init+0xf0/0x290
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? selinux_ip_postroute+0x1c5/0x420
- ? srso_alias_return_thunk+0x5/0xfbef5
- ip6_finish_output2+0x25e/0x5d0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? nf_hook_slow+0x47/0xf0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ip6_finish_output+0x1fc/0x3f0
- ip6_tnl_xmit+0x608/0xc00 [ip6_tunnel]
- ? srso_alias_return_thunk+0x5/0xfbef5
- ip6gre_tunnel_xmit+0x1c0/0x390 [ip6_gre]
- dev_hard_start_xmit+0x63/0x1c0
- __dev_queue_xmit+0x6d0/0x7f0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? chacha_block_generic+0x72/0xd0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? selinux_ip_postroute+0x1c5/0x420
- ip6_finish_output2+0x214/0x5d0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? nf_hook_slow+0x47/0xf0
- ip6_finish_output+0x1fc/0x3f0
- ip6_xmit+0x2ca/0x6f0
- ? __pfx_dst_output+0x10/0x10
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? nf_hook_slow+0x47/0xf0
- ip6_finish_output+0x1fc/0x3f0
- ip6_xmit+0x2ca/0x6f0
- ? __pfx_dst_output+0x10/0x10
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? __sk_dst_check+0x41/0xc0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? inet6_csk_route_socket+0x12e/0x200
- inet6_csk_xmit+0xeb/0x150
- __tcp_transmit_skb+0x555/0xa80
- tcp_write_xmit+0x32a/0xe90
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? skb_do_copy_data_nocache+0xc9/0x150
- tcp_sendmsg_locked+0x437/0x1110
- ? srso_alias_return_thunk+0x5/0xfbef5
- tcp_sendmsg+0x2f/0x50
-...
-skb linear:   00000000: e4 3d 1a 7d ec 30 e4 3d 1a 7e 5d 90 86 dd 60 0e
-skb linear:   00000010: 00 0a 1b 34 3c 40 20 11 00 00 00 00 00 00 00 00
-skb linear:   00000020: 00 00 00 00 00 12 20 11 00 00 00 00 00 00 00 00
-skb linear:   00000030: 00 00 00 00 00 11 2f 00 04 01 04 01 01 00 00 00
-skb linear:   00000040: 86 dd 60 0e 00 0a 1b 00 06 40 20 23 00 00 00 00
-skb linear:   00000050: 00 00 00 00 00 00 00 00 00 12 20 23 00 00 00 00
-skb linear:   00000060: 00 00 00 00 00 00 00 00 00 11 bf 96 14 51 13 f9
-skb linear:   00000070: ae 27 a0 a8 2b e3 80 18 00 40 5b 6f 00 00 01 01
-skb linear:   00000080: 08 0a 42 d4 50 d5 4b 70 f8 1a
+> 	ret = asix_read_phy_addr(dev, true);
+> 	if (ret < 0)
+> 		return ret;
+> 
 
-Fixes: 04c20a9356f283da ("net: skip offload for NETIF_F_IPV6_CSUM if ipv6 header contains extension")
-Reported-by: Tianhao Zhao <tizhao@redhat.com>
-Suggested-by: Michal Schmidt <mschmidt@redhat.com>
-Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Signed-off-by: Jakub Ramaseuski <jramaseu@redhat.com>
----
----
- net/core/dev.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+At this point, we store the address of the internal or external PHY:
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index b28ce68830b2b..1d8a4d1da911e 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3778,6 +3778,18 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 		if (!(iph->frag_off & htons(IP_DF)))
- 			features &= ~NETIF_F_TSO_MANGLEID;
- 	}
-+		
-+	/* NETIF_F_IPV6_CSUM does not support IPv6 extension headers,
-+	 * so neither does TSO that depends on it.
-+	 */
-+	if (features & NETIF_F_IPV6_CSUM &&
-+		(skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-+		(skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+		vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
-+		skb_transport_header_was_set(skb) &&
-+		skb_network_header_len(skb) != sizeof(struct ipv6hdr) &&
-+		!ipv6_has_hopopt_jumbo(skb))
-+			features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
- 
- 	return features;
- }
+> 	priv->phy_addr = ret;
+
+If the PHY address matches the address of the internal PHY, then
+embd_phy is set to true:
+
+> 	priv->embd_phy = ((priv->phy_addr & 0x1f) == AX_EMBD_PHY_ADDR);
+> 
+> So priv->phy_addr has to be the address of the internal PHY, so this
+> should just work without anything special for the embedded PHY.
+
+For most AX88772-based devices, priv->phy_addr is indeed the internal
+PHY. However, on devices with an external PHY - like the "Linux
+Automation GmbH USB 10Base-T1L" - both internal and external PHYs are
+accessible over the MDIO bus.
+
 -- 
-2.50.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
