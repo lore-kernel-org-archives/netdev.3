@@ -1,127 +1,139 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE9725D536;
-	Thu,  7 Aug 2025 14:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEF02B2DA
+	for <netdev@vger.kernel.org>; Thu,  7 Aug 2025 14:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754575397; cv=none; b=FS3CLPm5nYpuCxKGQ7uDxLH4xQlWJmy3W13C5oB90M6HndxjTdKbSmriOdXXeFyG8FXJCL5Da7CDxENEgRIz84WUPACA/5NmR3JlhMDhgLotLfnNjgt094FvoQuI4RExInp5lvuIt2vnVwca3RPqn5a3/JKNujcCykQFqoKlLeg=
+	t=1754576510; cv=none; b=A5q6Lrh+5JIJDi/VtkxVd/nG+rlOR602E95OqQ56k0M3R14prrGvhAc5S+MfYw8u7twhKneHNoxJDJZoeXR2AmRWsJ4HQAgTXll6YIPpkDzcAjvvnT9QiRAxIV/o1c7sI3lAwo5LMnVstPhN4wNFo080GsDYMSkbW+B8uwDDeI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754575397; c=relaxed/simple;
-	bh=bjEiiI161dYTrY0Cw3+ZZGVoX2NnHUSvIH1QPcitc9w=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=N6Lm6nmTyJXwz9u5uuemdRKmtcReykE0s//C2TeM1IS+9KnY55c22tOLpFqUgaSOKoeGb916uT/gtDGlvTPOBJ2pCwFgn8v5cL4kL+7bdOh/q+h6gRmosi1fp2faVVqH6l3ThCi49eSJi0oeDdnLHCi2GxK6hwWutoSucUWakcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=sTDPq+Ke; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1754576510; c=relaxed/simple;
+	bh=Xa9tcoIjNBJAIAojX3oKOnB0qv9qi9XLbZ+LIxuOkO8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cMqBjdsW6JPesi7hIiK0WNRmvklqAoE6GJbK1yI8cNYpP57mFnVT9gWrJKH4nHmoDUwHhiESWsZYv+Yn6VJBq3qPW252Z5L9t+GmMqE9NPe9fNKjvpYr33jiaTTLMXMFDQFdY6B+JjBbuqa468Mr+zQVpEAH/0Bd2d7wcpO1tEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vdEFAP8j; arc=none smtp.client-ip=209.85.222.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="sTDPq+Ke"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 59F64A037B;
-	Thu,  7 Aug 2025 16:03:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=H0mVJmCWOicg9EcBRx/NfEzNMf28ZNNzr0DbLGreYW8=; b=
-	sTDPq+KeRzVhg8O8HZh3s+/CBi+XOgzUpJh3dvxLrDj+Zepd0UBhtKG5UhaE5gEq
-	EGTNtMdmWUeCbvzjfmJaM7s6vru4SeO24VeAncROkyH0f2ashTFdZMmUGY1ybR1a
-	3dmA1Cw4q3hyrNnR9yJSAV+N7TYlh+6tnYM7G1bHa7skl0l081x223l5HcMtS9Sc
-	YYqLeyzCsaqFOpJj8s8VKFm7acYeArpWdh5CuNCh+I2IJJwmU9cjpZkNLlx8C+Kf
-	trjs0kEyUBWstsRT47V4N2pOuE1j4rBpFcMcE1V9nr3lFg8+0NwyNZJipQ/WCV6I
-	ZzTLfnXIW/cyK4AcAxKETlnlM13q4/0IHrQspKYfDvQ6RG9yKp25c1yDUodv1duP
-	Eib+g65a9x/wP+xSS4rcTMwiEsaupZNkyfHxwiWAw1tJg1cJHjLu23uLs7/ArPPl
-	vPxe+3+AJfkUHylTxZG9hN2fvacPXWJlbx0GBdHEd2Ld2elQ9mmZ2bt4UhDHNSLE
-	O1nx6rr05auXZyAPSyqYUyLIAl+JplGAbXf//RGyBwOoNKLhWi/8HyaKE+FoyW0Q
-	D/G3FIfOMiHVsBtizDiQ8pFtC8fr4otul9ve1tL8ZKr7kOkxStMf9gUzmrZ3BEuJ
-	PTPWW4g9GzzMx/eOJDt2M/6QQcmb58BEWcIWxsvr+sQ=
-From: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-To: Rob Herring <robh@kernel.org>, Geert Uytterhoeven
-	<geert+renesas@glider.be>, "David S. Miller" <davem@davemloft.net>, "Sergei
- Shtylyov" <sergei.shtylyov@cogentembedded.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: Buday Csaba <buday.csaba@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>, "Heiner
- Kallweit" <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-Subject: [PATCH net v2] net: mdiobus: release reset_gpio in mdiobus_unregister_device()
-Date: Thu, 7 Aug 2025 15:54:49 +0200
-Message-ID: <20250807135449.254254-2-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vdEFAP8j"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-7c5bb68b386so347134385a.3
+        for <netdev@vger.kernel.org>; Thu, 07 Aug 2025 07:21:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754576508; x=1755181308; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Ck6zTqEdLVdiJxGUO3eHXHa5pK+btU2040a8FA38EZI=;
+        b=vdEFAP8jPIxRvsQEtmpqeQ/PE0g3OqCJEAM9ddOnWsbL60xB62nGbgFWysXBRY5Cpj
+         c1iPDCmJXTLjD11MnI2SB41peuV3hP2drF73rEcc0bLnOGEIHAUYtZzZBdQ9D6SPMur9
+         q73SzGQj0/2Ubp3ZNEwZpRzkZKayTsnjDwKKwqRyc41qcuOeuhFg8V0aP05a2bAjhap2
+         Grg4ayHqAz5/49ZAHX7gkEe36UotLOX2GIzEX2rfdubbuOsz18VamhNQU0IcnyPi2wvA
+         30oeFT+hn0PD1qRUaJ3n031xx/rpE/+3YQJgc31fQ7DCMTvi1t9WqnrwBbt8vaNJFCEU
+         Aaqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754576508; x=1755181308;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ck6zTqEdLVdiJxGUO3eHXHa5pK+btU2040a8FA38EZI=;
+        b=Df+Y8ZRWgD0E6idmZohPcqGojpYWL6dJlIvNv+h/m+Ee6sJJ0OqWDdlkpH0XIymwHM
+         8PaRbmWOHBRwDFedM1As5Rigg0pJCZiJX6W5fr1wrkeH2+h0z2q2LiZTfD46Mvk1rWnh
+         1RjnSArIJ9er3SEy0ptE1ak8K2QFWdE+NPBV9MKmSdycxwhTP4IipGkCbaVYgz7j0rO2
+         x7zbtMglzvKEN/bw1pr6BWnVY3c8xYjjY0AISOcEqq7OKRsQ99ZUYjqJ3DY6CSu5bHsq
+         xxoG1hmes0JqiRAVoKT4InSB3sqLNo1EyizGl5OBRty5b7TTUttc7hHwRvBpXE5AVEMl
+         EtBw==
+X-Forwarded-Encrypted: i=1; AJvYcCWKwYPLkwAj/hS6f6sQ0K9Xx1MvkW6EqeVxMebkw1SZVPclywauC/m7bjaVRysgGfaz4bSqSuc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCeleWgaRmYmKQtdy7LMJb71s5lUi4yCgy5fy/R+6iTU+Q7+Cn
+	gSdWAXhEV7qBQroFi4UXOSigYwYMWi1oZd0Fq5Il5jPuNxEYas4W8WDkJNoPKf8h08XaVnyC+1N
+	2vh0LJtbUmqkBcQ==
+X-Google-Smtp-Source: AGHT+IGIxBwOHj/UFZCaqIPI64RwRyYMsf0sYQIHRnpSSs0VN6xcZ/0ZXyQBZh6smpUIRmdKg1r7mKYSdjr5MQ==
+X-Received: from qkkb17.prod.google.com ([2002:a05:620a:1191:b0:7e8:1203:3ab3])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:394e:b0:7e6:20a9:1855 with SMTP id af79cd13be357-7e814e9c360mr973980685a.44.1754576507639;
+ Thu, 07 Aug 2025 07:21:47 -0700 (PDT)
+Date: Thu,  7 Aug 2025 14:21:46 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.1.565.gc32cd1483b-goog
+Message-ID: <20250807142146.2877060-1-edumazet@google.com>
+Subject: [PATCH net] pptp: fix pptp_xmit() error path
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1754575389;VERSION=7995;MC=2460790112;ID=765739;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2998FD515E667361
 
-From: Buday Csaba <buday.csaba@prolan.hu>
+I accidentally added a bug in pptp_xmit() that syzbot caught for us.
 
-reset_gpio is claimed in mdiobus_register_device(), but it is not
-released in mdiobus_unregister_device(). It is instead only
-released when the whole MDIO bus is unregistered.
-When a device uses the reset_gpio property, it becomes impossible
-to unregister it and register it again, because the GPIO remains
-claimed.
-This patch resolves that issue.
+Only call ip_rt_put() if a route has been allocated.
 
-Fixes: bafbdd527d56 ("phylib: Add device reset GPIO support") # see notes
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Cc: Csókás Bence <csokas.bence@prolan.hu>
-[ csokas.bence: Resolve rebase conflict and clarify msg ]
-Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+BUG: unable to handle page fault for address: ffffffffffffffdb
+PGD df3b067 P4D df3b067 PUD df3d067 PMD 0
+Oops: Oops: 0002 [#1] SMP KASAN PTI
+CPU: 1 UID: 0 PID: 6346 Comm: syz.0.336 Not tainted 6.16.0-next-20250804-syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+RIP: 0010:arch_atomic_add_return arch/x86/include/asm/atomic.h:85 [inline]
+RIP: 0010:raw_atomic_sub_return_release include/linux/atomic/atomic-arch-fallback.h:846 [inline]
+RIP: 0010:atomic_sub_return_release include/linux/atomic/atomic-instrumented.h:327 [inline]
+RIP: 0010:__rcuref_put include/linux/rcuref.h:109 [inline]
+RIP: 0010:rcuref_put+0x172/0x210 include/linux/rcuref.h:173
+Call Trace:
+ <TASK>
+ dst_release+0x24/0x1b0 net/core/dst.c:167
+ ip_rt_put include/net/route.h:285 [inline]
+ pptp_xmit+0x14b/0x1a90 drivers/net/ppp/pptp.c:267
+ __ppp_channel_push+0xf2/0x1c0 drivers/net/ppp/ppp_generic.c:2166
+ ppp_channel_push+0x123/0x660 drivers/net/ppp/ppp_generic.c:2198
+ ppp_write+0x2b0/0x400 drivers/net/ppp/ppp_generic.c:544
+ vfs_write+0x27b/0xb30 fs/read_write.c:684
+ ksys_write+0x145/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: de9c4861fb42 ("pptp: ensure minimal skb length in pptp_xmit()")
+Reported-by: syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/689095a5.050a0220.1fc43d.0009.GAE@google.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
+ drivers/net/ppp/pptp.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Notes:
-    Changes in v2:
-    * Rebase onto net-next (from 6.12)
-    * Clarify msg after talking with Csaba in person
-    * Collect Andrew's tag
-    
-    Link to v1:
-    https://lore.kernel.org/all/20250709133222.48802-3-buday.csaba@prolan.hu/
-    
-    Note to stable@:
-    * for 6.12 and before, the above v1 patch can be used.
-
- drivers/net/phy/mdio_bus.c          | 1 +
- drivers/net/phy/mdio_bus_provider.c | 3 ---
- 2 files changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index fda2e27c1810..cad6ed3aa10b 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -91,6 +91,7 @@ int mdiobus_unregister_device(struct mdio_device *mdiodev)
- 	if (mdiodev->bus->mdio_map[mdiodev->addr] != mdiodev)
- 		return -EINVAL;
+diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+index 4cd6f67bd5d3520308ee4f8d68547a1bc8a7bfd3..90737cb718928a2dddacdc098f1d48d4430d6ddd 100644
+--- a/drivers/net/ppp/pptp.c
++++ b/drivers/net/ppp/pptp.c
+@@ -159,17 +159,17 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 	int len;
+ 	unsigned char *data;
+ 	__u32 seq_recv;
+-	struct rtable *rt = NULL;
++	struct rtable *rt;
+ 	struct net_device *tdev;
+ 	struct iphdr  *iph;
+ 	int    max_headroom;
  
-+	gpiod_put(mdiodev->reset_gpio);
- 	reset_control_put(mdiodev->reset_ctrl);
+ 	if (sk_pppox(po)->sk_state & PPPOX_DEAD)
+-		goto tx_error;
++		goto tx_drop;
  
- 	mdiodev->bus->mdio_map[mdiodev->addr] = NULL;
-diff --git a/drivers/net/phy/mdio_bus_provider.c b/drivers/net/phy/mdio_bus_provider.c
-index 48dc4bf85125..f43973e73ea3 100644
---- a/drivers/net/phy/mdio_bus_provider.c
-+++ b/drivers/net/phy/mdio_bus_provider.c
-@@ -443,9 +443,6 @@ void mdiobus_unregister(struct mii_bus *bus)
- 		if (!mdiodev)
- 			continue;
+ 	rt = pptp_route_output(po, &fl4);
+ 	if (IS_ERR(rt))
+-		goto tx_error;
++		goto tx_drop;
  
--		if (mdiodev->reset_gpio)
--			gpiod_put(mdiodev->reset_gpio);
--
- 		mdiodev->device_remove(mdiodev);
- 		mdiodev->device_free(mdiodev);
- 	}
-
-base-commit: d9104cec3e8fe4b458b74709853231385779001f
+ 	tdev = rt->dst.dev;
+ 
+@@ -265,6 +265,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
+ 
+ tx_error:
+ 	ip_rt_put(rt);
++tx_drop:
+ 	kfree_skb(skb);
+ 	return 1;
+ }
 -- 
-2.43.0
-
+2.50.1.565.gc32cd1483b-goog
 
