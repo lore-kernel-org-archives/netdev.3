@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F31273D76
-	for <netdev@vger.kernel.org>; Fri,  8 Aug 2025 13:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34BA27C842
+	for <netdev@vger.kernel.org>; Fri,  8 Aug 2025 13:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754660662; cv=none; b=YcItgIIMgjMLtp7V2ZrqMnyFeSh+mXiTlkf1xPIghWOqxOxDA6q2/72Ku8GdmasFXRDDbF+cO448Vej7XSV/YFhrZ4DXrhqE3ZBlImgiZRjhqIOoOeGrrJ2BOZq8gRjoeWSgqUgqDJOo4mQbQQm2hERYfDdidJ1sPyi5Fy1L9/w=
+	t=1754660675; cv=none; b=T4LpGgYgd/uiG18o/2V5BmP8rK7D0uMfDiZpV692EnGhEuSqq5Yms745ob375X7MPGMqcIveiA3AGYajBl+HIQ4G932AoZJ8SRj6+xqcMwBtoCekgDaiKYw6gXqoMifZFYlEqPPFXxZ41EYs4Oeb1F9anJICjh496LiKe2jRtuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754660662; c=relaxed/simple;
-	bh=UE+WfyQP8dXhzeE53Lj+W1t+g6MjoTdQM6znfZUVi9s=;
+	s=arc-20240116; t=1754660675; c=relaxed/simple;
+	bh=L+KQYCSs9EfjIlqJ6ZcI+ycl9sHpBOuiNmn0PhnTgRc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hV5drqn0xLSrT6dQ8rTYOYZ4PpmPKLgQ5T94aJIA9aE8IwJwpgi9IhzjhhG7iazLui8+DPOJnvMcWbSAx+hHhcqPYOZs+Ncl6MURt8Y1ZJzbVVOxRtsiZtTOD8qZiiGyK5uLprryWH+TvZ/hQjF2KlTGEYeqeN0ckad1n0fT3Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jSCxEr+t; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=um+KDnAD1syUBzd1poR5yQZ7bnEEAbq0tihhhYZhN4GrfOJKfqsmrdg/bhJp03mnrXHWdRkAg51YlgLDl6dtrJaNcvuWtWE5FitNv3IeWf37PJzyjCk8rwzroeCaovgwdWBzE/MD7lr4tZ0jctRiWyrnyAX5BD9fxZPsW2COOoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJqODS9h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jSCxEr+t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C90C4CEED;
-	Fri,  8 Aug 2025 13:44:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJqODS9h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9442AC4CEED;
+	Fri,  8 Aug 2025 13:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754660660;
-	bh=UE+WfyQP8dXhzeE53Lj+W1t+g6MjoTdQM6znfZUVi9s=;
+	s=k20201202; t=1754660674;
+	bh=L+KQYCSs9EfjIlqJ6ZcI+ycl9sHpBOuiNmn0PhnTgRc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jSCxEr+t6VsjFiCREmn1P7Lz9745oS6kEpPEeelTsuwoeMzuACA0IfPkH6YplZxZ4
-	 JaEdvPoeui1rdllGx0ETBjC7iwu5GbE/mnD9kOeY+JzYt9zTIonX4dKgHuX/8cT9of
-	 I+zttJz+3/UHMXZ62lVxEc9wq3e7bK7gc8ymTOYROsjBwG0R+ud9r7qstMUL0lf35N
-	 Xoy4hVb2aVdC5yplPgkRkoJpMZaggPACRgegVoD8A3GD/cVkUYKx2P96QMZCnYccgF
-	 MPMtK9HyjY1RIDIfK8ZHNi2qZxtHuX2SJIhqCHkNJNeQQcvpjtashRD/yFW4nqrNJG
-	 KvqT/tERqxQwA==
-Date: Fri, 8 Aug 2025 14:44:16 +0100
+	b=jJqODS9h4AtBE8Cg+jvdW0f5GK9qLNnCgm5CzF8wrLPr/9X1Qk1YvrzVuOPU/YSRQ
+	 LnejtFyIPxGWuGjg+0XpWRXaDkxVXeWw06AWwsiPZDCJV8bNxXprnP2M7qUpJwWKS+
+	 iSpjClqfwT0eG3uK5sPdgqrHFexMd/aKBAuwrCgpphvqPE+B0MCWzu/F7C7bPJsl6j
+	 l+7CE0avhSAFtkDojqzXFXBskKC0Wpjgl1Ki3hpdgIzoJSww85qMB703qogY4SXmYG
+	 SPkeWuYjQ1OqKcGx4As4YxGPGg6al50dMkSRo2eQQacrTdgU1IX5e7sMqtCPTiyMbP
+	 K7uOXk+2xps7A==
+Date: Fri, 8 Aug 2025 14:44:30 +0100
 From: Simon Horman <horms@kernel.org>
 To: Jacek Kowalski <jacek@jacekk.info>
 Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
@@ -36,11 +36,11 @@ Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-Subject: Re: [PATCH iwl-next v3 2/5] e1000e: drop unnecessary constant casts
- to u16
-Message-ID: <20250808134416.GB4654@horms.kernel.org>
+Subject: Re: [PATCH iwl-next v3 3/5] igb: drop unnecessary constant casts to
+ u16
+Message-ID: <20250808134430.GC4654@horms.kernel.org>
 References: <2f87d6e9-9eb6-4532-8a1d-c88e91aac563@jacekk.info>
- <6d05300d-e5d7-409e-8b78-a7c3da21ed32@jacekk.info>
+ <e16d5318-3e5c-4a4a-a629-ba221a5f04c5@jacekk.info>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,13 +49,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6d05300d-e5d7-409e-8b78-a7c3da21ed32@jacekk.info>
+In-Reply-To: <e16d5318-3e5c-4a4a-a629-ba221a5f04c5@jacekk.info>
 
-On Wed, Jul 23, 2025 at 10:54:35AM +0200, Jacek Kowalski wrote:
+On Wed, Jul 23, 2025 at 10:55:03AM +0200, Jacek Kowalski wrote:
 > Remove unnecessary casts of constant values to u16.
 > C's integer promotion rules make them ints no matter what.
 > 
-> Additionally replace E1000_MNG_VLAN_NONE with resulting value
+> Additionally replace IGB_MNG_VLAN_NONE with resulting value
 > rather than casting -1 to u16.
 > 
 > Signed-off-by: Jacek Kowalski <jacek@jacekk.info>
