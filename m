@@ -1,38 +1,39 @@
 Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B21286412;
-	Fri,  8 Aug 2025 16:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0172877E8;
+	Fri,  8 Aug 2025 16:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754671970; cv=none; b=XbwhMWYLsXVQYpC7+XWf9nuKPDJ7cPuRZNEbPM+yWqFUOzdHY7yLtBz8JgPzRXmRx2Z6PLKrMWGaw50ht0gBQ1R4vVePPuqNnXGR8eo7A3V+JOerzvHdp009lHDNsnLKZupt1R3mKa6tBDlUyvdL+92lyqLy2e0Z2erXd4c0788=
+	t=1754671971; cv=none; b=sFKSlAehM0G5OCeq9k7c/MXPXNwLF4w8Rn3wrSgfu51qVTyzwQ9dflofv45nhT9kczphRebu2Xoqf00FIhEQuDsq23yzevTNYcTHYLmTUA8oFP6az/OqPOEuK9+WXV6+P0Fqi8UTvHNo5ZwZ2r6wKNq0+0P63MNGtyzgYU+2/e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754671970; c=relaxed/simple;
-	bh=n/GewMioDQ4ipBD/SytX9/X63slAi3JDM0dK1ndCHd8=;
+	s=arc-20240116; t=1754671971; c=relaxed/simple;
+	bh=xDcxWylJRkcm0YsLE3XBOxhqYTGScmVu1/MUzZmL1GE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uuGGkidgyZI8kbs/4tnc/mo0/oGoqDCFH003/pyypl0j6oWkraNg24wiKA2szmFBn8BnPKpjnBiFTDPY6HZ5OPJ/NzDY7sMOt3uSqUAfHQZ9IvYPIvwj5z8i3ob0Zb4hhQVscrIdPN4yEvRflA3oneUJBGoqysMNNtmmVBbjNKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ip39DrYn; arc=none smtp.client-ip=217.70.183.198
+	 In-Reply-To:To:Cc; b=C3L1WQGyY74+xlQSpcXBysH0t/aKi5COLlscG7wIwf9/OiUDbbXEpg2w947xGKsNzXO53AbM9kPXX0E22xQJJPtwpuzWPFr9uCvXgvKWng83cNRYFLs0FG2Jdhr/+g/C8k4YRjrdhmNXzCvceBLCxQeq1q3oPiS1I9avqs67b78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VchaB76h; arc=none smtp.client-ip=217.70.183.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ip39DrYn"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A30B1442DE;
-	Fri,  8 Aug 2025 16:52:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VchaB76h"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8A0B3442D9;
+	Fri,  8 Aug 2025 16:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1754671960;
+	t=1754671962;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PefWoP6TiGv686A1HXjhQU5Qqkp7zhcSH4Yu0r2+y9A=;
-	b=Ip39DrYnLwIAVqjBrRAhvRHA9giGN04QKRza3soU4u3YST8fwP34CkIfDyJaGN5RrhvjRr
-	/GgPTesla+JvR2nku+gD1HCP+yATsddybCNiFt7/Qzbz/uXrtOZmp6e52t27GsRNGJgvvx
-	nXC79b/axwGupeti7IViF32+rKtqOCWWfrDZQFXDfA2LfHOEyw9FczG7BRVkhz3QHbNcY2
-	dw289v2U4yH8hYD4/jtXtt6+CRaqyHKbBdtMCgWiezMtc/I5Bk7sUhKIfTGx6PNyKRMJsi
-	Tjb599NIrAqWkyxIiQcxLWg+zH4yrEuVMCWSB95t4xdrG7ddYRXNGIFpCXtUbg==
+	bh=Wo8sDljY3k/QE7m8TVN+Fv9DmxDKMiGVABfo0F0bmpc=;
+	b=VchaB76hFte9jbBt7Y5wfAMalpc/hTgFXGkxJiR5SYQdiDCABEqSZ4VNklRs7J8ifExwIE
+	3WgpR5oh/9O+QKQ9gN97LNRfMCdjFxStUnlUq2ESCPljaCRrcuiWDgerDQjy4UUGQ0Zh12
+	9Ub5Dzoa74hLkTY4/Lou1ija0YW3CWTSuargYcwQQD0tCipI/LiYqUgnMsJ8XRhbnKxyIc
+	D/OrH1Tzyvg+EmE5O03aRrJ1XcsuHORqo8PjxJw3w4w4CpOibj7qiU6SKvonVh94DyRL90
+	BYtuS9ZwiaxyqIz6xaYhim0Ota/glY9z7n5oywC7G/7hP5tbS1yMU46k/qYptg==
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Fri, 08 Aug 2025 18:52:34 +0200
-Subject: [PATCH net v3 02/16] dt-bindings: net: cdns,macb: sort compatibles
+Date: Fri, 08 Aug 2025 18:52:36 +0200
+Subject: [PATCH net v3 04/16] net: macb: move ring size computation to
+ functions
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +42,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250808-macb-fixes-v3-2-08f1fcb5179f@bootlin.com>
+Message-Id: <20250808-macb-fixes-v3-4-08f1fcb5179f@bootlin.com>
 References: <20250808-macb-fixes-v3-0-08f1fcb5179f@bootlin.com>
 In-Reply-To: <20250808-macb-fixes-v3-0-08f1fcb5179f@bootlin.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -59,49 +60,108 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, 
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
 X-Mailer: b4 0.14.2
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduvdegfeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthekredtredtjeenucfhrhhomhepvfhhrohoucfnvggsrhhunhcuoehthhgvohdrlhgvsghruhhnsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeelvefhkeeufedvkefghefhgfdukeejlefgtdehtdeivddtteetgedvieelieeuhfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeiieegsgemfhdtfhhfmehfvgdutdemlegvfhgunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeiieegsgemfhdtfhhfmehfvgdutdemlegvfhgupdhhvghloheplgduledvrdduieekrddutddrvddvudgnpdhmrghilhhfrhhomhepthhhvghordhlvggsrhhunhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddupdhrtghpthhtohepghgvvghrtheslhhinhhugidqmheikehkrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhhitgholhgrshdrfhgvrhhrvgesmhhitghrohgthhhiphdrtghom
- hdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiihihsiihtohhfrdhkohiilhhofihskhhisehlihhnrghrohdrohhrghdprhgtphhtthhopegtlhgruhguihhurdgsvgiinhgvrgesthhugihonhdruggvvh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduvdegfeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthekredtredtjeenucfhrhhomhepvfhhrohoucfnvggsrhhunhcuoehthhgvohdrlhgvsghruhhnsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeelvefhkeeufedvkefghefhgfdukeejlefgtdehtdeivddtteetgedvieelieeuhfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeiieegsgemfhdtfhhfmehfvgdutdemlegvfhgunecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeiieegsgemfhdtfhhfmehfvgdutdemlegvfhgupdhhvghloheplgduledvrdduieekrddutddrvddvudgnpdhmrghilhhfrhhomhepthhhvghordhlvggsrhhunhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddtpdhrtghpthhtohepghgvvghrtheslhhinhhugidqmheikehkrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhhitgholhgrshdrfhgvrhhrvgesmhhitghrohgthhhiphdrtghom
+ hdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegtlhgruhguihhurdgsvgiinhgvrgesthhugihonhdruggvvhdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhg
 X-GND-Sasl: theo.lebrun@bootlin.com
 
-Compatibles inside this enum are sorted-ish. Make it sorted.
+The tx/rx ring size calculation is somewhat complex and partially hidden
+behind a macro. Move that out of the {RX,TX}_RING_BYTES() macros and
+macb_{alloc,free}_consistent() functions into neat separate functions.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In macb_free_consistent(), we drop the size variable and directly call
+the size helpers in the arguments list. In macb_alloc_consistent(), we
+keep the size variable that is used by netdev_dbg() calls.
+
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
- Documentation/devicetree/bindings/net/cdns,macb.yaml | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/cdns,macb.yaml b/Documentation/devicetree/bindings/net/cdns,macb.yaml
-index 6e20d67e7628cd9dcef6e430b2a49eeedd0991a7..b3bb08a41ef8f867fd4f6813f965bbd12df042dc 100644
---- a/Documentation/devicetree/bindings/net/cdns,macb.yaml
-+++ b/Documentation/devicetree/bindings/net/cdns,macb.yaml
-@@ -47,17 +47,17 @@ properties:
-           - const: cdns,macb          # Generic
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index aeb5a93108e8c28f1dfe3d91ab98daf99db30699..1ba26f8ad600936070f57ff0762c03719921dd48 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -51,14 +51,10 @@ struct sifive_fu540_macb_mgmt {
+ #define DEFAULT_RX_RING_SIZE	512 /* must be power of 2 */
+ #define MIN_RX_RING_SIZE	64
+ #define MAX_RX_RING_SIZE	8192
+-#define RX_RING_BYTES(bp)	(macb_dma_desc_get_size(bp)	\
+-				 * (bp)->rx_ring_size)
  
-       - enum:
--          - atmel,sama5d29-gem        # GEM XL IP (10/100) on Atmel sama5d29 SoCs
-           - atmel,sama5d2-gem         # GEM IP (10/100) on Atmel sama5d2 SoCs
-+          - atmel,sama5d29-gem        # GEM XL IP (10/100) on Atmel sama5d29 SoCs
-           - atmel,sama5d3-gem         # Gigabit IP on Atmel sama5d3 SoCs
-           - atmel,sama5d4-gem         # GEM IP (10/100) on Atmel sama5d4 SoCs
-+          - cdns,emac                 # Generic
-+          - cdns,gem                  # Generic
-+          - cdns,macb                 # Generic
-           - cdns,np4-macb             # NP4 SoC devices
-           - microchip,sama7g5-emac    # Microchip SAMA7G5 ethernet interface
-           - microchip,sama7g5-gem     # Microchip SAMA7G5 gigabit ethernet interface
-           - sifive,fu540-c000-gem     # SiFive FU540-C000 SoC
--          - cdns,emac                 # Generic
--          - cdns,gem                  # Generic
--          - cdns,macb                 # Generic
+ #define DEFAULT_TX_RING_SIZE	512 /* must be power of 2 */
+ #define MIN_TX_RING_SIZE	64
+ #define MAX_TX_RING_SIZE	4096
+-#define TX_RING_BYTES(bp)	(macb_dma_desc_get_size(bp)	\
+-				 * (bp)->tx_ring_size)
  
-       - items:
-           - enum:
+ /* level of occupied TX descriptors under which we wake up TX process */
+ #define MACB_TX_WAKEUP_THRESH(bp)	(3 * (bp)->tx_ring_size / 4)
+@@ -2464,11 +2460,20 @@ static void macb_free_rx_buffers(struct macb *bp)
+ 	}
+ }
+ 
++static unsigned int macb_tx_ring_size_per_queue(struct macb *bp)
++{
++	return macb_dma_desc_get_size(bp) * bp->tx_ring_size + bp->tx_bd_rd_prefetch;
++}
++
++static unsigned int macb_rx_ring_size_per_queue(struct macb *bp)
++{
++	return macb_dma_desc_get_size(bp) * bp->rx_ring_size + bp->rx_bd_rd_prefetch;
++}
++
+ static void macb_free_consistent(struct macb *bp)
+ {
+ 	struct macb_queue *queue;
+ 	unsigned int q;
+-	int size;
+ 
+ 	if (bp->rx_ring_tieoff) {
+ 		dma_free_coherent(&bp->pdev->dev, macb_dma_desc_get_size(bp),
+@@ -2482,14 +2487,14 @@ static void macb_free_consistent(struct macb *bp)
+ 		kfree(queue->tx_skb);
+ 		queue->tx_skb = NULL;
+ 		if (queue->tx_ring) {
+-			size = TX_RING_BYTES(bp) + bp->tx_bd_rd_prefetch;
+-			dma_free_coherent(&bp->pdev->dev, size,
++			dma_free_coherent(&bp->pdev->dev,
++					  macb_tx_ring_size_per_queue(bp),
+ 					  queue->tx_ring, queue->tx_ring_dma);
+ 			queue->tx_ring = NULL;
+ 		}
+ 		if (queue->rx_ring) {
+-			size = RX_RING_BYTES(bp) + bp->rx_bd_rd_prefetch;
+-			dma_free_coherent(&bp->pdev->dev, size,
++			dma_free_coherent(&bp->pdev->dev,
++					  macb_rx_ring_size_per_queue(bp),
+ 					  queue->rx_ring, queue->rx_ring_dma);
+ 			queue->rx_ring = NULL;
+ 		}
+@@ -2539,7 +2544,7 @@ static int macb_alloc_consistent(struct macb *bp)
+ 	int size;
+ 
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+-		size = TX_RING_BYTES(bp) + bp->tx_bd_rd_prefetch;
++		size = macb_tx_ring_size_per_queue(bp);
+ 		queue->tx_ring = dma_alloc_coherent(&bp->pdev->dev, size,
+ 						    &queue->tx_ring_dma,
+ 						    GFP_KERNEL);
+@@ -2556,9 +2561,9 @@ static int macb_alloc_consistent(struct macb *bp)
+ 		if (!queue->tx_skb)
+ 			goto out_err;
+ 
+-		size = RX_RING_BYTES(bp) + bp->rx_bd_rd_prefetch;
++		size = macb_rx_ring_size_per_queue(bp);
+ 		queue->rx_ring = dma_alloc_coherent(&bp->pdev->dev, size,
+-						 &queue->rx_ring_dma, GFP_KERNEL);
++						    &queue->rx_ring_dma, GFP_KERNEL);
+ 		if (!queue->rx_ring ||
+ 		    upper_32_bits(queue->rx_ring_dma) != upper_32_bits(bp->queues[0].rx_ring_dma))
+ 			goto out_err;
 
 -- 
 2.50.1
