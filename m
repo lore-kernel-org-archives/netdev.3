@@ -1,37 +1,38 @@
 Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C97186E2D;
-	Fri,  8 Aug 2025 16:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE34287261;
+	Fri,  8 Aug 2025 16:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754671969; cv=none; b=V4YxNd68Cl+pDTXILpN2igSLdaSrScu0t+3sqVqMcHWtfUGNO0hFZsQVPRXepoQcGyGnfw6D+FMWSlDzeBd3jUAYEalhL/z79twGzjFOOchrAXwI221a6NLAQ+DffcfAz2z7wL5jPWXtCGyXilmyOAioJf3doFG6AEQ1/aODGFQ=
+	t=1754671970; cv=none; b=k5tr4icQ9YRdMXDLhCR+VkEkFZSdPDiL4hN+AcdySarA81lGr7QNPk/5NkwWvzmOByzRvkrbgCA4yN/CfeehD5ea0wmmWKNu2xJbHlE3qbTX1yPECWyBHxjyJHK66PpnIU6l86pZhBW5InQN8l6f05DZ3MifxJrpQItgKKxbw8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754671969; c=relaxed/simple;
-	bh=BOTS+Lke2sbFxgmXDJJFMru6cbhm5/8d0mZnWPAAqpw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LfjUlEWgyeV9QyQeGzGspqyADy2qne4c+hDPY9EDVD0EbKds6GqKJjYIp4SZxo23GtLNwKAf32P17xxFddRjEfYyZy+uaJvd2sU/xeNWgHRTEBpNilFaVDSTRr2vwHsqiHvZevT2FUDGxHlLvllfeVkuGO2Ift8URD46jjQo89s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ocfN7Liq; arc=none smtp.client-ip=217.70.183.198
+	s=arc-20240116; t=1754671970; c=relaxed/simple;
+	bh=rMsoi5mfktawmpI2lbQpgzcCmgRk/g03ItpHigR35UI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=bLcFyRCBsHMndYif/b5Wzfu8gGvJFPOpdp1s5JTLNrPhJ6PCMz/uamlq88BDoX5uByuRawUPI2KpkFGf+0ogWalaNP1f4JvJ0IzAjp3BdrqQ/hZOiGEzdT5jO4ncHBnWdtc+dlk9zktMNL4LGBIxQ89PW3c4UnxjYH8wqbWp18Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OtkOfjxM; arc=none smtp.client-ip=217.70.183.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ocfN7Liq"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 62A03442D1;
-	Fri,  8 Aug 2025 16:52:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OtkOfjxM"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 20071442E6;
+	Fri,  8 Aug 2025 16:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1754671958;
+	t=1754671966;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Wx0vM9bvExmbOh7SawY7AU8GQ9du5el6HIq4+h5fLtU=;
-	b=ocfN7LiqVi6LRkGyP8+O7u1eKTyUcvPVji78k6lSYYlxpAV2ORpAeibIgyN7JD/zMU+btP
-	MSSHW2pBYJ5/N+KH3xac/9P1K4VREsEjP1HGT6Zf2uWoHduaGPAS7+fsy9/XB+8vYMaigK
-	EHETtRBSEG53F5V1v5vTC8zbIy71dtVxpQLFi9TJolXd2ubj3X1khTaHQlxCtu4xOHKNOz
-	HoEcGoKVFBIRQZNjnLTIrghIzEbjFXl4lQE673C+biiwvJDIQIIQIoB3lAjY44cNKlF+EH
-	6tfWIhjv3WF1jAskubvWcrxZaGMqLTqGM1cIhrbBttJW1FZ3810PmdEL5dTLIw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OreZDvz6ibiPbiu0BQwWWeRO7Y+zotRHbq2CtSZ8DRk=;
+	b=OtkOfjxMDg+9KQVXzDhSH03Wk/ZxogyIsDUgmoZLylnpaJn4I/272EmDVEmDPRJlhlDpts
+	gi/kao33ZtdABaKElHA2EGB0G0xu7EI4C8DZpHcMKkvwa9QYhpeA0veQBHSVZgwRjcCm4B
+	WJ2Tv1xOrG7OtkYgJjSmo4izp7wdVxdJD1qOkAphHgfVJFTyBHQgbVO7x7BxIlaEciZTkD
+	tCBQu/rIIN0RQUnHXX8ZoXiNninpcnZmklxZDhmU2WZItqhbABV757kyeYCaBSX6qi7ZAE
+	NKrXQocchSGMYEA8le+lBYee20RkCwprsWRsbZ3nwwft2a9AlRYXzghnhYxd2g==
 From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: [PATCH net v3 00/16] net: macb: various fixes & cleanup
-Date: Fri, 08 Aug 2025 18:52:32 +0200
-Message-Id: <20250808-macb-fixes-v3-0-08f1fcb5179f@bootlin.com>
+Date: Fri, 08 Aug 2025 18:52:41 +0200
+Subject: [PATCH net v3 09/16] net: macb: remove gap in MACB_CAPS_* flags
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,10 +41,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAFArlmgC/x2LQQqAIBQFryJ/naC/ougq0cLsVX+RhUYE0d2Tl
- sPMPJQQBYk69VDEJUn2kKEsFPnVhQVapszEhmvTmlZvzo96lhtJg+e6MbCWK0t5OCJ+kfueAk4
- a3vcD354mPWEAAAA=
-X-Change-ID: 20250808-macb-fixes-e2f570e11241
+Message-Id: <20250808-macb-fixes-v3-9-08f1fcb5179f@bootlin.com>
+References: <20250808-macb-fixes-v3-0-08f1fcb5179f@bootlin.com>
+In-Reply-To: <20250808-macb-fixes-v3-0-08f1fcb5179f@bootlin.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -59,82 +59,61 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, 
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Sean Anderson <sean.anderson@linux.dev>, Andrew Lunn <andrew@lunn.ch>
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
 X-Mailer: b4 0.14.2
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduvdegfeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthekredtredtjeenucfhrhhomhepvfhhrohoucfnvggsrhhunhcuoehthhgvohdrlhgvsghruhhnsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehffejfedttdelteffudetkedvueeitdfhhefgffduhedufeehffehheegueejveenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemieeigegsmehftdhffhemfhgvuddtmeelvghfugenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemieeigegsmehftdhffhemfhgvuddtmeelvghfugdphhgvlhhopegludelvddrudeikedruddtrddvvddungdpmhgrihhlfhhrohhmpehthhgvohdrlhgvsghruhhnsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvfedprhgtphhtthhopehgvggvrhhtsehlihhnuhigqdhmieekkhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehnihgtohhlrghsrdhfv
- ghrrhgvsehmihgtrhhotghhihhprdgtohhmpdhrtghpthhtoheprghnughrvgifodhnvghtuggvvheslhhunhhnrdgthhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriiihshiithhofhdrkhhoiihlohifshhkiheslhhinhgrrhhordhorhhgpdhrtghpthhtoheptghlrghuughiuhdrsggviihnvggrsehtuhigohhnrdguvghv
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduvdegfeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthekredtredtjeenucfhrhhomhepvfhhrohoucfnvggsrhhunhcuoehthhgvohdrlhgvsghruhhnsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeelvefhkeeufedvkefghefhgfdukeejlefgtdehtdeivddtteetgedvieelieeuhfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeiieegsgemfhdtfhhfmehfvgdutdemlegvfhgunecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeiieegsgemfhdtfhhfmehfvgdutdemlegvfhgupdhhvghloheplgduledvrdduieekrddutddrvddvudgnpdhmrghilhhfrhhomhepthhhvghordhlvggsrhhunhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddtpdhrtghpthhtohepghgvvghrtheslhhinhhugidqmheikehkrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhhitgholhgrshdrfhgvrhhrvgesmhhitghrohgthhhiphdrtghom
+ hdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegtlhgruhguihhurdgsvgiinhgvrgesthhugihonhdruggvvhdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhg
 X-GND-Sasl: theo.lebrun@bootlin.com
 
-This is a split off my previous series on MACB [0]. The main goal is to
-add EyeQ5 support, but there was a lot of independent fixes/cleanup.
+MACB_CAPS_* are bit constants that get used in bp->caps. They occupy
+bits 0..12 + 24..31. Remove 13..23 gap by moving bits 24..31 to 13..19.
 
-Overall, it is fixes first so they can be applied swiftly, followed by a
-series of cleanup patches. To clarify, nothing critical. It mostly puts
-the driver in a better shape and prepares it for EyeQ5 patches.
+Occupation bitfields:
 
-Thanks,
-Have a nice day,
-Théo
-
-[0]: https://lore.kernel.org/lkml/20250627-macb-v2-0-ff8207d0bb77@bootlin.com/
+   31  29  27  25  23  21  19  17  15  13  11  09  07  05  03  01
+     30  28  26  24  22  20  18  16  14  12  10  08  06  04  02  00
+   -- Before ------------------------------------------------------
+    1 1 1 1 1 1 1 1                       1 1 1 1 1 1 1 1 1 1 1 1 1
+                    0 0 0 0 0 0 0 0 0 0 0
+   -- After -------------------------------------------------------
+                          1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+    0 0 0 0 0 0 0 0 0 0 0
 
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
-Changes in v3:
-- Cover letter: drop addresses that reject emails:
-  cyrille.pitchen@atmel.com
-  hskinnemoen@atmel.com
-  jeff@garzik.org
-  rafalo@cadence.com
-- dt-bindings: Take 2x Reviewed-by Krzysztof.
-- dt-bindings: add Fixes trailer to "allow tsu_clk without tx_clk"
-  patch, to highlight we are not introducing new behavior.
-- Reorder commits; move fixes first followed by cleanup patches.
-- Drop all EyeQ5 related commits.
-- New commit: "remove gap in MACB_CAPS_* flags".
-- New commit: "move ring size computation to functions".
-- New commit: "move bp->hw_dma_cap flags to bp->caps".
-- Rename introduced helpers macb_dma_is_64b() to macb_dma64() and,
-  macb_dma_is_ptp() to macb_dma_ptp().
-- Rename MACB_CAPS_RSC_CAPABLE -> MACB_CAPS_RSC.
-- Fix commit message typos: "maxime" -> "maximise", etc.
-- Take 7x Reviewed-by: Sean Anderson.
-- Add details to some commit messages.
-- Link to v2: https://lore.kernel.org/r/20250627-macb-v2-0-ff8207d0bb77@bootlin.com
+ drivers/net/ethernet/cadence/macb.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
----
-Théo Lebrun (16):
-      dt-bindings: net: cdns,macb: allow tsu_clk without tx_clk
-      dt-bindings: net: cdns,macb: sort compatibles
-      net: macb: remove illusion about TBQPH/RBQPH being per-queue
-      net: macb: move ring size computation to functions
-      net: macb: single dma_alloc_coherent() for DMA descriptors
-      net: macb: match skb_reserve(skb, NET_IP_ALIGN) with HW alignment
-      net: macb: avoid double endianness swap in macb_set_hwaddr()
-      net: macb: use BIT() macro for capability definitions
-      net: macb: remove gap in MACB_CAPS_* flags
-      net: macb: Remove local variables clk_init and init in macb_probe()
-      net: macb: drop macb_config NULL checking
-      net: macb: simplify macb_dma_desc_get_size()
-      net: macb: simplify macb_adj_dma_desc_idx()
-      net: macb: move bp->hw_dma_cap flags to bp->caps
-      net: macb: introduce DMA descriptor helpers (is 64bit? is PTP?)
-      net: macb: sort #includes
+diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+index 082b7df54cc1075d89293f390184e77bee65db61..c5ab35f4ab493196b5fa9a8046a6c8edf7c82727 100644
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -740,14 +740,14 @@
+ #define MACB_CAPS_NEED_TSUCLK			BIT(10)
+ #define MACB_CAPS_QUEUE_DISABLE			BIT(11)
+ #define MACB_CAPS_RSC				BIT(12)
+-#define MACB_CAPS_PCS				BIT(24)
+-#define MACB_CAPS_HIGH_SPEED			BIT(25)
+-#define MACB_CAPS_CLK_HW_CHG			BIT(26)
+-#define MACB_CAPS_MACB_IS_EMAC			BIT(27)
+-#define MACB_CAPS_FIFO_MODE			BIT(28)
+-#define MACB_CAPS_GIGABIT_MODE_AVAILABLE	BIT(29)
+-#define MACB_CAPS_SG_DISABLED			BIT(30)
+-#define MACB_CAPS_MACB_IS_GEM			BIT(31)
++#define MACB_CAPS_PCS				BIT(13)
++#define MACB_CAPS_HIGH_SPEED			BIT(14)
++#define MACB_CAPS_CLK_HW_CHG			BIT(15)
++#define MACB_CAPS_MACB_IS_EMAC			BIT(16)
++#define MACB_CAPS_FIFO_MODE			BIT(17)
++#define MACB_CAPS_GIGABIT_MODE_AVAILABLE	BIT(18)
++#define MACB_CAPS_SG_DISABLED			BIT(19)
++#define MACB_CAPS_MACB_IS_GEM			BIT(20)
+ 
+ /* LSO settings */
+ #define MACB_LSO_UFO_ENABLE			0x01
 
- .../devicetree/bindings/net/cdns,macb.yaml         |  10 +-
- drivers/net/ethernet/cadence/macb.h                |  75 +++---
- drivers/net/ethernet/cadence/macb_main.c           | 288 +++++++++------------
- drivers/net/ethernet/cadence/macb_ptp.c            |  16 +-
- 4 files changed, 174 insertions(+), 215 deletions(-)
----
-base-commit: 37816488247ddddbc3de113c78c83572274b1e2e
-change-id: 20250808-macb-fixes-e2f570e11241
-
-Best regards,
 -- 
-Théo Lebrun <theo.lebrun@bootlin.com>
+2.50.1
 
