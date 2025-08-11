@@ -1,73 +1,35 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45602E62C3;
-	Mon, 11 Aug 2025 16:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898F029BDA5;
+	Mon, 11 Aug 2025 16:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754928823; cv=none; b=ZEhLf5XllMU6PztpFVs1UxrZnKIkTYASvJTSx/So6oWp/snmOYzWl2l1fH34Dol6BAkiDzpcEfoHungsuGO29NodS2KpPUemLs4M+cVy0zATaTYp8KcKjMMsACfhnvvT1t5QAmik2nv02czt+J10cBu/kn4J2CjEwRbMPec5258=
+	t=1754928959; cv=none; b=VhBMGCOUU/8JagB84LmQK1m2PiMEM+cVUgKyZELSwvHZe3k8HDYgaEjcRb57wQJoqam5hpbpFCmzWzbYu4BAP8aei1iARIreLVklWCZ87/fF00zQnqxtgNyAURXNsAFSOOPx9OGLB+PlQflnTy1Yb8af2l5GNfaNjOIwfmDGN6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754928823; c=relaxed/simple;
-	bh=CjvGV5hPrqqR5jpzUsV/mVpTr+53npZ/zD34Fh+5nM0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lPhRpixG/RZemMxelYXlpqa+zCj5pfOsS19pqtBl83w13DIDdi+wSKa2sI+RX3xHHK8oVgq218siMNR4TdO+wcI7aUpJG2HXDtjbR3olhhfbVlqlgSHT5lnsndlGkRDiFY2m+TJzxJ6rMvXwh31/UWDt5r+HiCA/5Lxkuz93yx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HuEhd+hF; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1754928959; c=relaxed/simple;
+	bh=1vEfyoyVXrCAidAKaIIQbVmNtX0PWFu3hsUQxAbmAsw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ShCRMNs6V6VU6OZvGEZoM+D2SebD1AhwPW2jVQPLB51f0dwnAfC/klOVGOiS5gesK5t0rYu6ESXWzu3DOBy5PrkIb43MzjwlKW0VveB9yzeXBrqE0Ue9VL19kjGi+SaCLdtGTEwE6l1R7/y+Q277ZB/st9BPMC0DiRCpAcwyvw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OEPARwde; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HuEhd+hF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754928822; x=1786464822;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=CjvGV5hPrqqR5jpzUsV/mVpTr+53npZ/zD34Fh+5nM0=;
-  b=HuEhd+hFhe9kVFmmUMNtbBPXcnmn+Cri8yG9QBRcXwxjK0hb17F+WwKp
-   HPxx/MCPAdihzWPIZU/ZvjWEtUPfAdEIvnSp0ZPOEsKeROe13QcbCKO/D
-   6DYhGmGd09kZde4aLCWq/5fLXZ4ik/2YBgY3C3wQRqL+wXWSUjTkiVKjW
-   Itxk5JJbR2BoFRd8gZH3iMBJ0d6Uak/5wmA4fseJD1WY3h11wRUg8v7MH
-   i/DXBh5C7nYFzbvv3UGx2GiURkP1mINQ6xQ1DV5qvNgYtzP9Mq0qCA/mA
-   0WVUWRcLw2ruq6uH3LjXiZojI0poRZu5ARij2yUfuH+he+WhUStqdkOIs
-   Q==;
-X-CSE-ConnectionGUID: diny5ZeNRkWCqTE+0FKUUw==
-X-CSE-MsgGUID: P6FJWFLnTmuwftP52kF2tw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="56899737"
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
-   d="scan'208";a="56899737"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 09:13:41 -0700
-X-CSE-ConnectionGUID: MwvZxrYnQ+eXfLz7etPE7g==
-X-CSE-MsgGUID: lYtQkMqMQ+yHvXWeVGkifA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
-   d="scan'208";a="165163259"
-Received: from newjersey.igk.intel.com ([10.102.20.203])
-  by orviesa006.jf.intel.com with ESMTP; 11 Aug 2025 09:13:37 -0700
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Simon Horman <horms@kernel.org>,
-	nxne.cnse.osdt.itp.upstreaming@intel.com,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH iwl-next v4 13/13] idpf: add XDP RSS hash hint
-Date: Mon, 11 Aug 2025 18:10:44 +0200
-Message-ID: <20250811161044.32329-14-aleksander.lobakin@intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250811161044.32329-1-aleksander.lobakin@intel.com>
-References: <20250811161044.32329-1-aleksander.lobakin@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OEPARwde"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58DF4C4CEED;
+	Mon, 11 Aug 2025 16:15:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754928959;
+	bh=1vEfyoyVXrCAidAKaIIQbVmNtX0PWFu3hsUQxAbmAsw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=OEPARwdeIRZguQ2AQc/RNl528mBLHTynfGfxvGEuf9AxIhEhEFZj1WUyL/h6Oz2rJ
+	 XNYQvRov1OIXiG/C0QTlJw8IamKbzo9Su5CYvs3z7h2SN1Wd3fyzbW9rH6GpVxo3xW
+	 0ajoPuGZ8C/LVe2u94dU2SNLZ5tywAqm2icO5IeP1RZTTIznPUl3HYQ8eX4J6Os25d
+	 +dTYGSCoq57tuvaohuWn6WEYFoVfpJ3UZB1Luhn12qxaChbzj12wQgxfIzKEFdklQ9
+	 juovPSA1asxz0CyGbLmIk0B2neriDrHnhVJFBd3FjIem2UapmLb4jwogp8Hziavq/z
+	 WZGQxoFliDVXA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB03E383BF51;
+	Mon, 11 Aug 2025 16:16:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,136 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] Bluetooth: Annotate struct hci_drv_rp_read_info with
+ __counted_by_le()
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <175492897149.1716045.2789511846520664235.git-patchwork-notify@kernel.org>
+Date: Mon, 11 Aug 2025 16:16:11 +0000
+References: <20250810215319.2629-2-thorsten.blum@linux.dev>
+In-Reply-To: <20250810215319.2629-2-thorsten.blum@linux.dev>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, kees@kernel.org, gustavoars@kernel.org,
+ linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
 
-Add &xdp_metadata_ops with a callback to get RSS hash hint from the
-descriptor. Declare the splitq 32-byte descriptor as 4 u64s to parse
-them more efficiently when possible.
+Hello:
 
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
----
- drivers/net/ethernet/intel/idpf/xdp.h | 64 +++++++++++++++++++++++++++
- drivers/net/ethernet/intel/idpf/xdp.c | 28 +++++++++++-
- 2 files changed, 91 insertions(+), 1 deletion(-)
+This patch was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
 
-diff --git a/drivers/net/ethernet/intel/idpf/xdp.h b/drivers/net/ethernet/intel/idpf/xdp.h
-index db8ecc1843fe..66ad83a0e85e 100644
---- a/drivers/net/ethernet/intel/idpf/xdp.h
-+++ b/drivers/net/ethernet/intel/idpf/xdp.h
-@@ -99,6 +99,70 @@ static inline void idpf_xdp_tx_finalize(void *_xdpsq, bool sent, bool flush)
- 	libeth_xdpsq_unlock(&xdpsq->xdp_lock);
- }
- 
-+struct idpf_xdp_rx_desc {
-+	aligned_u64		qw0;
-+#define IDPF_XDP_RX_BUFQ	BIT_ULL(47)
-+#define IDPF_XDP_RX_GEN		BIT_ULL(46)
-+#define IDPF_XDP_RX_LEN		GENMASK_ULL(45, 32)
-+#define IDPF_XDP_RX_PT		GENMASK_ULL(25, 16)
-+
-+	aligned_u64		qw1;
-+#define IDPF_XDP_RX_BUF		GENMASK_ULL(47, 32)
-+#define IDPF_XDP_RX_EOP		BIT_ULL(1)
-+
-+	aligned_u64		qw2;
-+#define IDPF_XDP_RX_HASH	GENMASK_ULL(31, 0)
-+
-+	aligned_u64		qw3;
-+} __aligned(4 * sizeof(u64));
-+static_assert(sizeof(struct idpf_xdp_rx_desc) ==
-+	      sizeof(struct virtchnl2_rx_flex_desc_adv_nic_3));
-+
-+#define idpf_xdp_rx_bufq(desc)	!!((desc)->qw0 & IDPF_XDP_RX_BUFQ)
-+#define idpf_xdp_rx_gen(desc)	!!((desc)->qw0 & IDPF_XDP_RX_GEN)
-+#define idpf_xdp_rx_len(desc)	FIELD_GET(IDPF_XDP_RX_LEN, (desc)->qw0)
-+#define idpf_xdp_rx_pt(desc)	FIELD_GET(IDPF_XDP_RX_PT, (desc)->qw0)
-+#define idpf_xdp_rx_buf(desc)	FIELD_GET(IDPF_XDP_RX_BUF, (desc)->qw1)
-+#define idpf_xdp_rx_eop(desc)	!!((desc)->qw1 & IDPF_XDP_RX_EOP)
-+#define idpf_xdp_rx_hash(desc)	FIELD_GET(IDPF_XDP_RX_HASH, (desc)->qw2)
-+
-+static inline void
-+idpf_xdp_get_qw0(struct idpf_xdp_rx_desc *desc,
-+		 const struct virtchnl2_rx_flex_desc_adv_nic_3 *rxd)
-+{
-+#ifdef __LIBETH_WORD_ACCESS
-+	desc->qw0 = ((const typeof(desc))rxd)->qw0;
-+#else
-+	desc->qw0 = ((u64)le16_to_cpu(rxd->pktlen_gen_bufq_id) << 32) |
-+		    ((u64)le16_to_cpu(rxd->ptype_err_fflags0) << 16);
-+#endif
-+}
-+
-+static inline void
-+idpf_xdp_get_qw1(struct idpf_xdp_rx_desc *desc,
-+		 const struct virtchnl2_rx_flex_desc_adv_nic_3 *rxd)
-+{
-+#ifdef __LIBETH_WORD_ACCESS
-+	desc->qw1 = ((const typeof(desc))rxd)->qw1;
-+#else
-+	desc->qw1 = ((u64)le16_to_cpu(rxd->buf_id) << 32) |
-+		    rxd->status_err0_qw1;
-+#endif
-+}
-+
-+static inline void
-+idpf_xdp_get_qw2(struct idpf_xdp_rx_desc *desc,
-+		 const struct virtchnl2_rx_flex_desc_adv_nic_3 *rxd)
-+{
-+#ifdef __LIBETH_WORD_ACCESS
-+	desc->qw2 = ((const typeof(desc))rxd)->qw2;
-+#else
-+	desc->qw2 = ((u64)rxd->hash3 << 24) |
-+		    ((u64)rxd->ff2_mirrid_hash2.hash2 << 16) |
-+		    le16_to_cpu(rxd->hash1);
-+#endif
-+}
-+
- void idpf_xdp_set_features(const struct idpf_vport *vport);
- 
- int idpf_xdp(struct net_device *dev, struct netdev_bpf *xdp);
-diff --git a/drivers/net/ethernet/intel/idpf/xdp.c b/drivers/net/ethernet/intel/idpf/xdp.c
-index d2549f8b8e24..c143b5dc9e2b 100644
---- a/drivers/net/ethernet/intel/idpf/xdp.c
-+++ b/drivers/net/ethernet/intel/idpf/xdp.c
-@@ -340,12 +340,38 @@ int idpf_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
- 				       idpf_xdp_tx_finalize);
- }
- 
-+static int idpf_xdpmo_rx_hash(const struct xdp_md *ctx, u32 *hash,
-+			      enum xdp_rss_hash_type *rss_type)
-+{
-+	const struct libeth_xdp_buff *xdp = (typeof(xdp))ctx;
-+	struct idpf_xdp_rx_desc desc __uninitialized;
-+	const struct idpf_rx_queue *rxq;
-+	struct libeth_rx_pt pt;
-+
-+	rxq = libeth_xdp_buff_to_rq(xdp, typeof(*rxq), xdp_rxq);
-+
-+	idpf_xdp_get_qw0(&desc, xdp->desc);
-+
-+	pt = rxq->rx_ptype_lkup[idpf_xdp_rx_pt(&desc)];
-+	if (!libeth_rx_pt_has_hash(rxq->xdp_rxq.dev, pt))
-+		return -ENODATA;
-+
-+	idpf_xdp_get_qw2(&desc, xdp->desc);
-+
-+	return libeth_xdpmo_rx_hash(hash, rss_type, idpf_xdp_rx_hash(&desc),
-+				    pt);
-+}
-+
-+static const struct xdp_metadata_ops idpf_xdpmo = {
-+	.xmo_rx_hash		= idpf_xdpmo_rx_hash,
-+};
-+
- void idpf_xdp_set_features(const struct idpf_vport *vport)
- {
- 	if (!idpf_is_queue_model_split(vport->rxq_model))
- 		return;
- 
--	libeth_xdp_set_features_noredir(vport->netdev);
-+	libeth_xdp_set_features_noredir(vport->netdev, &idpf_xdpmo);
- }
- 
- static int idpf_xdp_setup_prog(struct idpf_vport *vport,
+On Sun, 10 Aug 2025 23:53:20 +0200 you wrote:
+> Add the __counted_by_le() compiler attribute to the flexible array
+> member 'supported_commands' to improve access bounds-checking via
+> CONFIG_UBSAN_BOUNDS and CONFIG_FORTIFY_SOURCE.
+> 
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+>  include/net/bluetooth/hci_drv.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Here is the summary with links:
+  - Bluetooth: Annotate struct hci_drv_rp_read_info with __counted_by_le()
+    https://git.kernel.org/bluetooth/bluetooth-next/c/af4ae40b525d
+
+You are awesome, thank you!
 -- 
-2.50.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
