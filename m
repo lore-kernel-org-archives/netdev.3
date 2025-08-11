@@ -1,182 +1,352 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2067.outbound.protection.outlook.com [40.107.236.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E271624C0;
-	Mon, 11 Aug 2025 12:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754913849; cv=none; b=lpA9IMCbNoPpXou/FZcpyoJs3yj2epveGRsL3yJqAM5wc3owjFxkJXL+TGcJA6ribyMf5fHeN7vanY6kUyq7jUX5PFHRwHyrAWATgLOF74ELyuazBgybDo/tMyhpo8JAj1HNFOGHzsCH3R6iX1QUTZ8D8sOlSGdTxFhPbN0uVEM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754913849; c=relaxed/simple;
-	bh=lm+ouShfqBZyDuwu2KdrlGuXVTVGvV9mQhjXOtv8dK8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Dn96ghIJuKCmXnC6h9e5Vj8rhqOtIk3fR5Ww048cvXV/7bpZRn9hhGW2AJTRBQPSpcs2j4e61uO7f96j8YjVSaFcXWj7np1n3mkylOaqNFQigOxePZrEmAXJdeo09jM17GE9KSGDDDhLIN50dCF4r8MjlhdQ/547rtJZv4qzDdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PoqalxfZ; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC2120D50C;
+	Mon, 11 Aug 2025 12:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754913889; cv=fail; b=cJOwgMV9FEhHmcRWY8kEMCMpW/aNGY/pBMVLXPZAFsyziScdJkZWJolP+cglrFEi7hxuqidfMOMMfx0/iLjwECkQ7LlhsqmPwmkGxInFbO/0ts6KmzCfRmB1p2ia02M20FWRFgsEytH4OZelB3qzgiBQW6ME/x8GeHKEiiWvDbA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754913889; c=relaxed/simple;
+	bh=C5jb3mn1a+SCwHebUqhpa2F46aBTi7r1xBIGx8VCyHw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=q87tSE4WWxxQ6pIwHQWQEv40TLPvuqgPfZjnuZTb/h2VE+WJU07NmtqmH9zE1Uxc0WxrR9rhmmH8hCFg9XAUqO9y4HX9uaLGrskzca1Yo106DbqAzk0MfroA9YEznct/B8K2DOIkqsUwEViYWGs2RZUtKyUHEpqCmDxRf9n2TBE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=uyGIc+Bj; arc=fail smtp.client-ip=40.107.236.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PoqalxfZ"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57B0FB4t022505;
-	Mon, 11 Aug 2025 12:04:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Wy4XGq
-	VU9285DpdABIdNH1KfETiuPuhyzLvlJu9ehiw=; b=PoqalxfZuBICw9OH4zSchZ
-	nXibV4c0PVzn96nOazUhsYZAf7oydgCTqnt0w3NBc+1l1ktnckm4x/wkdFoD1aSJ
-	Pk4FBntFWmBjQnSciWqN1lF8BDp41cnse686yF0AIhuzwXHE3NfYUgc2GkHQ+zvM
-	65yTN1Cyjwoc7hJ7O2jOjOTolG4nPdZ77s7bIqIM3iMSiv1gO9VkuttT14HjBtSr
-	CoOnts80ICHsbMihtpTUbJXoakwp8kdCq0NEyfhMm6iIf9MM0k/fbfDUXY9IWcSB
-	YGtzHdZ9xAVZpkpQo63HOOSWL09AzdDlZIJMRLnmotCJY3Dr13cw9yzGwRiMcz/w
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48duru14uj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Aug 2025 12:03:59 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57BC3xIl012736;
-	Mon, 11 Aug 2025 12:03:59 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48duru14ud-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Aug 2025 12:03:59 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57BC0M7o017617;
-	Mon, 11 Aug 2025 12:03:58 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48ekc3dcbw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Aug 2025 12:03:58 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57BC3sbs53412312
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 Aug 2025 12:03:54 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7D2F92004B;
-	Mon, 11 Aug 2025 12:03:54 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 29FB420043;
-	Mon, 11 Aug 2025 12:03:54 +0000 (GMT)
-Received: from [9.152.224.240] (unknown [9.152.224.240])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 11 Aug 2025 12:03:54 +0000 (GMT)
-Message-ID: <96d21746-e374-4235-a567-2a7343060fe4@linux.ibm.com>
-Date: Mon, 11 Aug 2025 14:03:53 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="uyGIc+Bj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mmLz+RJhKXt/aRm+CiSJcCyPiFXqdobLQwS/AHaegjUAXk+WDA/V1JcngzhSdaIhtav0jsJPEMW66e0k/xnutNa4579U1vRq1NQTmbRnOroeGDAM9lxZfswNlICieCvQ4Mo0A0gejIi0WoI0hMIZ9U9prmgWjjhf5CB2pCyYv3PUgGpO0N9DbKwywe/tceK74RIYUwimO1D5190NDCl4MKr236dH3+QX3224xLnRJo66SNtCL6Yrq1BOWMMSRKZQ+leBfyZLo56cMK9+4kIXpdZUAFL/4IHDUsYQzYNZHq6M2vzGi3V14WolowawiCK/i8hLDvZKtWGmpMQ+CtUTxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KkL7rLbzx79ihECib9Bp87E7Rqmh3Q6OJ9bEBR4qE4M=;
+ b=G+mqAxcbteFq9n+eONbJVwi0yUc9IBE/yoMVC24nZk7HGpU/Flss8NM4x0Ox7XiNAhcxrLSVZ7WD6GCDjsH2VF8McSk9VEvsTeJ+tS05qA5fkaihZMzk6q8z0AeO1QlIUcWd+ZBiVF5Vph+69T4MwXQ+aSCeIdaJRUzjCeiJ49xp0sqiOqs8a7BxlVVyZz42HsBm8FRg0LDuI0ATwoXTRnH2h+IE/3gcaNrzrsPrQyrcbIKwo1HkJqHf/USmmuWMEbEUAPgEEhRvSMOEbppy2aMWzIbp3VtRrprr+6A3fHcfqgw37IsYC8+88uXPdhtIxKyTgnypKvXWzfcJnlBD1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KkL7rLbzx79ihECib9Bp87E7Rqmh3Q6OJ9bEBR4qE4M=;
+ b=uyGIc+Bj5KlOjH5uVXxlngxqQBnumpWuNUH6/o951rXey1snmfcd/54ArZlOob4+pBBWIs3VaFAq0i29amnAivGAdm8Wn04par5QNc7xSRKr9iXVV2AWBnCnF6JgXB6hYmhktWGcafjQBG9kKjroiJJVgvb72CBG6pPSqTe89EE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB4202.namprd12.prod.outlook.com (2603:10b6:5:219::22)
+ by BL1PR12MB5924.namprd12.prod.outlook.com (2603:10b6:208:39b::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.21; Mon, 11 Aug
+ 2025 12:04:43 +0000
+Received: from DM6PR12MB4202.namprd12.prod.outlook.com
+ ([fe80::f943:600c:2558:af79]) by DM6PR12MB4202.namprd12.prod.outlook.com
+ ([fe80::f943:600c:2558:af79%6]) with mapi id 15.20.9009.018; Mon, 11 Aug 2025
+ 12:04:43 +0000
+Message-ID: <38a14584-0638-417c-b9e6-ecc6b711b25b@amd.com>
+Date: Mon, 11 Aug 2025 13:04:38 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v17 11/22] cxl: Define a driver interface for HPA free
+ space enumeration
+Content-Language: en-US
+To: dan.j.williams@intel.com, alejandro.lucero-palau@amd.com,
+ linux-cxl@vger.kernel.org, netdev@vger.kernel.org, edward.cree@amd.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, dave.jiang@intel.com
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250624141355.269056-1-alejandro.lucero-palau@amd.com>
+ <20250624141355.269056-12-alejandro.lucero-palau@amd.com>
+ <68922e004131f_cff991001e@dwillia2-xfh.jf.intel.com.notmuch>
+From: Alejandro Lucero Palau <alucerop@amd.com>
+In-Reply-To: <68922e004131f_cff991001e@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PA7P264CA0326.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:39a::8) To DM6PR12MB4202.namprd12.prod.outlook.com
+ (2603:10b6:5:219::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC net-next 04/17] net/smc: Decouple sf and attached send_buf
- in smc_loopback
-From: Alexandra Winter <wintera@linux.ibm.com>
-To: dust.li@linux.alibaba.com, David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "D. Wythe" <alibuda@linux.alibaba.com>,
-        Sidraya Jayagond <sidraya@linux.ibm.com>,
-        Wenjia Zhang
- <wenjia@linux.ibm.com>,
-        Julian Ruess <julianr@linux.ibm.com>
-Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thorsten Winkler <twinkler@linux.ibm.com>,
-        Simon Horman <horms@kernel.org>,
-        Mahanta Jambigi <mjambigi@linux.ibm.com>,
-        Tony Lu
- <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-        Halil Pasic <pasic@linux.ibm.com>, linux-rdma@vger.kernel.org
-References: <20250806154122.3413330-1-wintera@linux.ibm.com>
- <20250806154122.3413330-5-wintera@linux.ibm.com>
- <aJimDiQupacKNR8M@linux.alibaba.com>
- <c0802092-ee94-471d-8f9c-9a0fa5f95476@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <c0802092-ee94-471d-8f9c-9a0fa5f95476@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 1ONICqvB-BcwSD_v3iRgCBQgiyTgN2Rc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDA3OCBTYWx0ZWRfX9bnT183iKMb3
- dH+h6CxY5HczfzidZ6y0wR2CaUqQU+iwvhJk67HgmBUR5efp6Xz7ZKNwDmSDIcBTYJ/8F7AfH6j
- TXwMVtkNZhH1CdSRHvX+iDSYn6Aaom0em/DQiJJfKElibwIL5HYRlO5DoIKNfAzvNoe9b9522Kk
- 5gViLKcNwUrbzK9Iic4tS8/4GhVUb0obutYltdZmnQWYrBW1BpxfY7xAqC3/suJrfxR+MCxlriW
- MCqatPfNmsIohpJOfTEDp574vOUiTOBVA53jtGOLBLzTFnJ9beqZ6mU8Czohm5SOJbTdBPoSJ3Q
- Hz2r9mTPIq/HvkBAI6AGe4Zy0cXLzK8ajjTICo6k+7SPobL8Qy8ID+3LmCx7WnZ7wulr+XSaPd1
- HDOSNuvpsF6IlStUH+g3sNUXheBnkH62G1neIBzv9RDCXGMOIGR1C/UBq189FZxM35lmmOgO
-X-Authority-Analysis: v=2.4 cv=QtNe3Uyd c=1 sm=1 tr=0 ts=6899dc2f cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=SRrdq9N9AAAA:8 a=SBu4e9Kr8Di_8VYdYKsA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: qF9wf0q5uyYcXbOG4Ygh5FRzpIo9twit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-11_02,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
- mlxlogscore=747 impostorscore=0 suspectscore=0 bulkscore=0 mlxscore=0
- phishscore=0 malwarescore=0 spamscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508110078
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4202:EE_|BL1PR12MB5924:EE_
+X-MS-Office365-Filtering-Correlation-Id: 08022d0a-6559-4190-9f22-08ddd8cf4201
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|921020|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?S1BuWmhhUUVXYnIyQVNXSU96cVRzK0prbzEvbmc1bjBsck5EWXB2Y2dOaHI0?=
+ =?utf-8?B?MkhLWXBpZWJ2N282a3gyODNreUgwYWtDc2hyTk9XVnRkMWV0Um1BZHdjRmV4?=
+ =?utf-8?B?N2IrdVo2d3BUdGo3RXBmL3FkbG9udTkyZUdZbFpkL0FoY2FqMFBUMXBXZ1R1?=
+ =?utf-8?B?RnRpMGtvNGpjZStVVEJiVkVkYnFiaVRyY01zdm1PdVZ2WkJhUVBMSEs1SlJ0?=
+ =?utf-8?B?SnRiRHEzMTVNOW4wc1hKY0w5SkRGdGFHbE5xSWRHWGZHa1k4YlF6cmwyYm1O?=
+ =?utf-8?B?QlVmVXVrSXJRS0Z5T2VCZ2l3eDlCWTQwMkV1YUpuU0h4ejZCbXRhdHlWalZX?=
+ =?utf-8?B?cXBZbk9nTkM3MTBjdk93bURzZlNyWDlOeDNDUHVpK21FUUo0N1RXY25PMEtP?=
+ =?utf-8?B?d3RIb2NlSHBocTNkMmVVUEhoR2M4dUZmdFY5MS9Na2o1NlRTU2JKckpCaXAz?=
+ =?utf-8?B?N2NidGJWVHZSeVZKc2ZMaXArOVNteDZuZUNLY3BVMk91Mys3OERiZDdSKzJ0?=
+ =?utf-8?B?ZmtQZENEZVZJTjVUeFdJM1JZTEl3NkJERHd4MjMwaUJ2ell1RFkvUFVzY1Vn?=
+ =?utf-8?B?SHhoWStOT0FIT2NueTE4UWVpWmdMRHhyV3FxbDBML09JZGJjemtEVktwamFU?=
+ =?utf-8?B?d3VkcGg2aXFNaXJUY3RLanM2M3J6dldBekprbnJpTTk2dTU5dkhNN1BoSHRl?=
+ =?utf-8?B?WW1kaHE0T1RHTFRzM21ORGRYWCswQ2FqRi92d0NHNlJsZDVGZzRUVWp3T2RQ?=
+ =?utf-8?B?VFUrRlNSZXYxYmNoMU5aWjJWYkRJb2pibElJU05LaHVxRnhkNjN1WlFWM1Z4?=
+ =?utf-8?B?RkwzQlNOODNLTWhiNlk3MzZiYmZyTmIwZEtYekhHNmVxaHZGcURnalMzUUhC?=
+ =?utf-8?B?aTkrMGlGeFRPTTdGRTYrYm1JMWQvcm9aRDY4U2FkWjk0cU1EbXVFK1p1Q1pM?=
+ =?utf-8?B?OWhSR1pOV1l1UENBTnMzM2M2YmxGdVdheFlVRG15d1FzLy9FVVppU1FqQWdT?=
+ =?utf-8?B?aFhDTEgwZGRmZGl0MnhKS1pkZTlXOTRsZ1d3dk54TlFmb0pXMm9UZHNGOTd4?=
+ =?utf-8?B?cFRoK1VqUHF4REt3ZmZZbllpWmZrTzB6SkZzaFZBZFJEQUZGbnZ4aGd1dzg2?=
+ =?utf-8?B?eit0UE5SYk04dHp6VjZ5VThLM21KZG1hL2ROSnZCYkJreERZQUtBYjNNVE5x?=
+ =?utf-8?B?enFGcTdsOHY1T1NBRHpTTS9PMkJ4K0JPNHp2NUhPS3FwdnFSNTFKQlpWUzBM?=
+ =?utf-8?B?d0FyQ3V0UWMyMHI2NVNWVnhocjhiS0ljZWdkNkQ0d0pSc0ZCSFhGYVBEZzNR?=
+ =?utf-8?B?QllLM0N6R3ltd0dhdHZrOVJPYW1FaDdhMEdpVEZkNlFYM25FZW41c2pZOFlF?=
+ =?utf-8?B?ZHM2VVJsVjFwWUVzVjlOYXZNcEJTY0hMbStseXExUjJsZkNXcDM4Vm5MMUhj?=
+ =?utf-8?B?VmFIQ0ZvVjY2MmM2TmdGYmhieGd6VjZkcnlhTDlGdlB5YlJLdFpVTTgyWmN2?=
+ =?utf-8?B?SGhFOUJLcGYydW1zcmdXeE85ZWhiWkZFSnh1ZjhscVZYK1dnWjBsSTFrZklE?=
+ =?utf-8?B?aGh6YTh4NTJ2VmxJcUhyZlQvNHQ1ZWo5U3Nkb3IzQVJmbDFwWUNjQmpPNE9u?=
+ =?utf-8?B?NEFCeGVkSU9aT0crQmozM0U5dDFydEcraVhHdEhkOVJpWEJSOFRySE4rbkdz?=
+ =?utf-8?B?cm5HZEtnOUl2bnhXWmhnOWNLYjkvcTJRaHc1Sld0aUZXSVZPK1p1NXEvd2Rp?=
+ =?utf-8?B?Z3RHYXN0QUQ1eTdxQnN6ZERqSWxLYmlqdWFHZ2ZEUDhVemI3MVo5T0UwdnZ5?=
+ =?utf-8?B?TllvRUtFY0tnclg1alFud2JON005bTcwN2pXNEZkY1ErbWRLWlFjdGJFK01z?=
+ =?utf-8?B?SXBHcmtoTE9XMllEUUdCTkwvUk9FaTQ2TXFObWtzaTdxN2k4ZExPYVVnNHZu?=
+ =?utf-8?B?a3YrSDZPdG5MMy9CNUVPWm9pMFRuMVJ3dzNxUmlPNjVEKzljcGVIYTlNd09Y?=
+ =?utf-8?B?ZUZGeFMxc2V3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4202.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(921020)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WmhEOER0V0tUaVZodGVOcHlMZlh4ZDFyY0duTUJUQWdZVWxDSitJNXZWR29B?=
+ =?utf-8?B?REp4SEg3Znl4cGdIeVV5dHhwbSs5QzhZS0NoaGlzU1ZxbWNzOFRjQ2dHeVcv?=
+ =?utf-8?B?SUxzY3ZsY0FONGlxOXJrM0h2YWJZcHBtNEYySS9lVDIvZXJqZVhUMnJCU3RK?=
+ =?utf-8?B?SkdQdlF3c2lsS2trTEZ6a3ZyUkFHNzFjZGgxOTk2Y2hQUkdBb1R0VjdxNnBO?=
+ =?utf-8?B?ZTJ1TXZxbFFIenRYbENKYkRMNDdrOStoSXY5M3h3dVM0dzdKZ2VramZUeVJV?=
+ =?utf-8?B?Rk1aNGpRU1RkR3VsazhXZmpJRFdhb0pwUnJjbU8ySXBla3J3ai9aSjcxSGpB?=
+ =?utf-8?B?NzdiQXRubFdYMEI4a2Rsa2dWcmp1c1hRZ0JRWWZEY1dvSjRha01YSVlxbTM1?=
+ =?utf-8?B?ZWR0OEROSjNQV0RhWWhkMDJRMGpVVngzdk1DQ3RrOHFheHM0U0Z3TGovMjQr?=
+ =?utf-8?B?azlkbVdyZFpUbnI1NHQ1RThZSzVsOHBGMkhQQldLSHV6S0RIUm1YMHRxcWFy?=
+ =?utf-8?B?SGgwTy9qVElkZXpKL2h3WWltbjRaMlVkWXFISUpZdXlITDJoQ2xlZWJxT0Vn?=
+ =?utf-8?B?dkg1b3J2eE1LSHoyUUZVMXhaK2pLSi8xdXV3QnFQY1ZqQXhHNG9NcnppVG1a?=
+ =?utf-8?B?QUhhMjVXMWl5TW8vZTQrck9vZ2V3TWlVWEFJQkY4VXFBZWxsTERNSVJNb21m?=
+ =?utf-8?B?RUIyOVRCdDZoQ1ltREZKREZJN3dXL1YvM2NXU2xFS0ExVmNoVVV3MTA0QWlK?=
+ =?utf-8?B?TEVkM3lLWkIyaWkyUGprMVhnK3NzQlNyd0pMa2hlUWpybzRQMkZvQlZDNXNk?=
+ =?utf-8?B?MDJSa3kzNzYxeXJYa2F2cjRkckZKamVmQW1sbjNKUm5KT2VJVk5nMnBtSDIr?=
+ =?utf-8?B?YlNYbDlCd0FPUU5kbUFia1pJOWx2TkNaRXpLME5sTG1GWWtQWVpuR2Nlai9U?=
+ =?utf-8?B?aTZ2aGxvZDJMdXFJQ01vQ21wUDdTRU5RNXAyUllMallnVHJua1BtM3lWOUVx?=
+ =?utf-8?B?cUsxeTRCVmFLckQzSmsxQmx3Wnc0RWFiL296UnUvUzBNN3VYbUpiRTUvdXpt?=
+ =?utf-8?B?dFdPa2RPUmR0QTdZM2tFTEF4enZ6MUZNK0FLVHZmdS9DNzdLeEZnSHhOMmJs?=
+ =?utf-8?B?M2JIVng2ekh4QTRHSXV5V2ZBakwxaWd4bTJmUDBDZysyUEJQSTN5S2lPME5y?=
+ =?utf-8?B?WjAwVEFzYXo0cXp6dW9LZUtqMnFjNnlFNnBoRUsxYWVnZWJ0b2QwVkRUUVIx?=
+ =?utf-8?B?TEVkczh1bE9kekRzYklacyszM0V4ZUdmcFZzbjJxVFFzeFpVVTFKRjBMUWdC?=
+ =?utf-8?B?NHRoMVFYdGFmdzRqS08wZXR3dzJPMTJmQmN6NHdudXUvZzVPT2NkY2dFTjdV?=
+ =?utf-8?B?Z1JnbGNjVHVCaER2bW1IVkx3eXJRWjZhN2xac1RUejNNM3BmQlhTdGVzRnFN?=
+ =?utf-8?B?WmJpUmMxcEhYWVE3MXE1U2tPL01TZnI4MGErTWxIYnRETHFHbGs1c25DZkJ2?=
+ =?utf-8?B?YlBQT01wbHRSaGV6NUN2UTdPRnI0UGNDeHI2T1lnVU1OQ0Ird0FBVHpJbWtC?=
+ =?utf-8?B?ZUVLM0tUOFZCUWRDWFZPRno4TWY0cjV3K09TaEcrLy84OTFwTWNsSm9aSkdS?=
+ =?utf-8?B?cy9nbExpTzVMdktxcnBhSmZZZ0ZLSXE2Z1FQamxZZlVod0VYbjY5R1dHMXMw?=
+ =?utf-8?B?b2xsN1RqZ0tHL0JKN1V0OG52WUxBQzBPWkVjd2JaYUVOL2h4UFNleDJia01w?=
+ =?utf-8?B?WDM5aXNCZWdjdVgxa3oyL3BJZmVMQndhUjJQaGdIN3drb1hFU3lHQmt2Q3NJ?=
+ =?utf-8?B?TnhTTmNVZWVod0RJOEVoNEVOTWtKM3NRNDg0ME42c2JXSml6czZBV1lZU1NC?=
+ =?utf-8?B?SW1jem5CemV6OGNkWlFqd3RZNnhBRlJuczBRU1B1bkR2WVpnay9vMkRoRHpv?=
+ =?utf-8?B?TDBNSHZXeXc1dWxYSGhMS2hPU0VWMmhGVFNCUjJrSno0bnBwcjRHLzladVRk?=
+ =?utf-8?B?UjhlR09RdzVJZjBmd01sdzZIZGwrQ1NZKzJrS1E1Z0RZYlJmV2gzZEw1QWRI?=
+ =?utf-8?B?dGJJY1dMY1d1aXY2bXhEMmRHZFBCTXNwZ0xIZWpKdGJYOXJoREIxRFo4K3E0?=
+ =?utf-8?Q?wx/X63lCu65/ySI1bNSUkr1Em?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08022d0a-6559-4190-9f22-08ddd8cf4201
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4202.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 12:04:43.7408
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FCZPT3zxnlWLkRdlO2yY/lkxImsJf/nR7JXAaBDrkLZJYytNZ6A8HvnBTqp/oW9D5O7AA8iHG8W0Hs3Wr7w8DQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5924
 
 
-
-On 11.08.25 13:35, Alexandra Winter wrote:
-> 
-> 
-> On 10.08.25 16:00, Dust Li wrote:
->> On 2025-08-06 17:41:09, Alexandra Winter wrote:
-> [...]
->>>
->>> diff --git a/net/smc/smc_core.h b/net/smc/smc_core.h
->>> index 48a1b1dcb576..fe5f48d14323 100644
->>> --- a/net/smc/smc_core.h
->>> +++ b/net/smc/smc_core.h
->>> @@ -13,6 +13,7 @@
->>> #define _SMC_CORE_H
->>>
->>> #include <linux/atomic.h>
->>> +#include <linux/types.h>
->>> #include <linux/smc.h>
->>> #include <linux/pci.h>
->>> #include <rdma/ib_verbs.h>
->>> @@ -221,12 +222,16 @@ struct smc_buf_desc {
->>> 					/* virtually contiguous */
->>> 		};
->>> 		struct { /* SMC-D */
->>> +			 /* SMC-D rx buffer: */
->>> 			unsigned short	sba_idx;
->>> 					/* SBA index number */
->>> 			u64		token;
->>> 					/* DMB token number */
->>> 			dma_addr_t	dma_addr;
->>> 					/* DMA address */
->>> +			/* SMC-D tx buffer */
->>> +			bool		is_attached;
->>> +					/* no need for explicit writes */
+On 8/5/25 17:14, dan.j.williams@intel.com wrote:
+> alejandro.lucero-palau@ wrote:
+>> From: Alejandro Lucero <alucerop@amd.com>
 >>
->> Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+>> CXL region creation involves allocating capacity from device DPA
+>> (device-physical-address space) and assigning it to decode a given HPA
+>> (host-physical-address space). Before determining how much DPA to
+>> allocate the amount of available HPA must be determined. Also, not all
+>> HPA is created equal, some specifically targets RAM, some target PMEM,
+>> some is prepared for device-memory flows like HDM-D and HDM-DB, and some
+>> is host-only (HDM-H).
 >>
->> A small sugguestion: there is a hole between sba_idx and token, we can
->> put is_attached in that hole.
->> Not a big deal because this is a union and SMC-R use a much large space.
+>> In order to support Type2 CXL devices, wrap all of those concerns into
+>> an API that retrieves a root decoder (platform CXL window) that fits the
+>> specified constraints and the capacity available for a new region.
 >>
->> Best regards,
->> Dust
+>> Add a complementary function for releasing the reference to such root
+>> decoder.
 >>
-> 
-> Thank you very much for your throrough reviews of this series, Dust.
-> 
-> I put 'bool is_attached' in this place, so I could add the comments about which members
-> are used for rx-buffers and which for tx-buffers.
-> I find the struct smc_buf_desc a bit confusing and thought these comments would be helpful.
-> Is it ok for you to leave it that way?
+>> Based on https://lore.kernel.org/linux-cxl/168592159290.1948938.13522227102445462976.stgit@dwillia2-xfh.jf.intel.com/
+>>
+>> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> ---
+>>   drivers/cxl/core/region.c | 169 ++++++++++++++++++++++++++++++++++++++
+>>   drivers/cxl/cxl.h         |   3 +
+>>   include/cxl/cxl.h         |  11 +++
+>>   3 files changed, 183 insertions(+)
+>>
+>> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+>> index c3f4dc244df7..03e058ab697e 100644
+>> --- a/drivers/cxl/core/region.c
+>> +++ b/drivers/cxl/core/region.c
+>> @@ -695,6 +695,175 @@ static int free_hpa(struct cxl_region *cxlr)
+>>   	return 0;
+>>   }
+>>   
+>> +struct cxlrd_max_context {
+>> +	struct device * const *host_bridges;
+>> +	int interleave_ways;
+>> +	unsigned long flags;
+>> +	resource_size_t max_hpa;
+>> +	struct cxl_root_decoder *cxlrd;
+>> +};
+>> +
+>> +static int find_max_hpa(struct device *dev, void *data)
+>> +{
+>> +	struct cxlrd_max_context *ctx = data;
+>> +	struct cxl_switch_decoder *cxlsd;
+>> +	struct cxl_root_decoder *cxlrd;
+>> +	struct resource *res, *prev;
+>> +	struct cxl_decoder *cxld;
+>> +	resource_size_t max;
+>> +	int found = 0;
+>> +
+>> +	if (!is_root_decoder(dev))
+>> +		return 0;
+>> +
+>> +	cxlrd = to_cxl_root_decoder(dev);
+>> +	cxlsd = &cxlrd->cxlsd;
+>> +	cxld = &cxlsd->cxld;
+>> +
+>> +	/*
+>> +	 * Flags are single unsigned longs. As CXL_DECODER_F_MAX is less than
+>> +	 * 32 bits, the bitmap functions can be used.
+>> +	 */
+> Comments are supposed to explain the code, not repeat the code in
+> natural language.
+>
+>> +	if (!bitmap_subset(&ctx->flags, &cxld->flags, CXL_DECODER_F_MAX)) {
+>> +		dev_dbg(dev, "flags not matching: %08lx vs %08lx\n",
+>> +			cxld->flags, ctx->flags);
+>> +		return 0;
+>> +	}
+> How is this easier to read than:
+>
+> 	if ((cxld->flags & ctx->flags) != ctx->flags)
+> 		return 0;
+>
+> ?
 
 
-I hit send too fast. Obviously I can put it above sba_idx. That will reduce the hole  by 1 byte.
-Changed for next version.
+I think it is not!
+
+
+I'll simplify the code with your suggestion.
+
+
+Thanks!
+
+
+(more comments below)
+
+
+>
+>> +
+>> +	for (int i = 0; i < ctx->interleave_ways; i++) {
+>> +		for (int j = 0; j < ctx->interleave_ways; j++) {
+>> +			if (ctx->host_bridges[i] == cxlsd->target[j]->dport_dev) {
+>> +				found++;
+>> +				break;
+>> +			}
+>> +		}
+>> +	}
+>> +
+>> +	if (found != ctx->interleave_ways) {
+>> +		dev_dbg(dev,
+>> +			"Not enough host bridges. Found %d for %d interleave ways requested\n",
+>> +			found, ctx->interleave_ways);
+>> +		return 0;
+>> +	}
+>> +
+>> +	/*
+>> +	 * Walk the root decoder resource range relying on cxl_region_rwsem to
+>> +	 * preclude sibling arrival/departure and find the largest free space
+>> +	 * gap.
+>> +	 */
+>> +	lockdep_assert_held_read(&cxl_region_rwsem);
+>> +	res = cxlrd->res->child;
+>> +
+>> +	/* With no resource child the whole parent resource is available */
+>> +	if (!res)
+>> +		max = resource_size(cxlrd->res);
+>> +	else
+>> +		max = 0;
+>> +
+>> +	for (prev = NULL; res; prev = res, res = res->sibling) {
+>> +		struct resource *next = res->sibling;
+>> +		resource_size_t free = 0;
+>> +
+>> +		/*
+>> +		 * Sanity check for preventing arithmetic problems below as a
+>> +		 * resource with size 0 could imply using the end field below
+>> +		 * when set to unsigned zero - 1 or all f in hex.
+>> +		 */
+>> +		if (prev && !resource_size(prev))
+>> +			continue;
+>> +
+>> +		if (!prev && res->start > cxlrd->res->start) {
+>> +			free = res->start - cxlrd->res->start;
+>> +			max = max(free, max);
+>> +		}
+>> +		if (prev && res->start > prev->end + 1) {
+>> +			free = res->start - prev->end + 1;
+>> +			max = max(free, max);
+>> +		}
+>> +		if (next && res->end + 1 < next->start) {
+>> +			free = next->start - res->end + 1;
+>> +			max = max(free, max);
+>> +		}
+>> +		if (!next && res->end + 1 < cxlrd->res->end + 1) {
+>> +			free = cxlrd->res->end + 1 - res->end + 1;
+>> +			max = max(free, max);
+>> +		}
+>> +	}
+> With the benefit of time to reflect, and looking at this again after all
+> this time it strikes me that it is simply duplicating
+> get_free_mem_region() and in a way that can still fail later.
+>
+> Does it simplify the implementation if this just attempts to
+> allocate the capacity in each window that might support the mapping
+> constraints and then pass that allocation to the region construction
+> routine?
+>
+> Otherwise, this completes a survey of the capacity that is not
+> guaranteed to be present when the region finally gets allocated.
+
+
+If we use alloc_free_mem_region the resource is reserved so it will not 
+fail later.
+
+
+But this requires a major change in the current approach since if we 
+keep trying to get a suitable root decoder, the one with larger 
+available hpa, we need to release the previous allocation once we obtain 
+a new one. Then, because allocated DPA will likely be smaller, another 
+release will be needed later on. I would say it is not going to simplify 
+things.
+
+
+IMO, although such change makes sense and it will be needed when CXL is 
+hopefully massively deployed, the risk of the HPA allocation hint not 
+being there is quite low at this moment. The function is explaining the 
+potential problem as well, so I would prefer to not try to get the 
+perfect implementation at this point, and to leave such a improvement 
+for a follow-up work which I will be happy to work on.
+
