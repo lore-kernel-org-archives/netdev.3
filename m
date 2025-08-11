@@ -1,253 +1,172 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13474221F24
-	for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 21:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754948305; cv=fail; b=up8N53OOJKJfBIQSm1rx0vQ+lFbpGNGPW4OIRHsgtBE/TMH/tD3Z+9XFpaVDoEDIBB8bArjFDkDfcVukwIV9QBCF4gtk1c0E/KPllohc1ctkvymGMeD4L2bVcobgpIIBrkfQe5tpq6zBNqWhxZqNXH3QbkY0YklutSBJTtNLWUk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754948305; c=relaxed/simple;
-	bh=U5mhgaGDtqU0vtBX0tq5L8sxxyWXz3OgmsJ5glfRKsM=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=TS+qXfpbVkDvNad31zpl6AUZdMVQ5dKki7iwVtKOYbLDvqR7YqbJEKKPvyDk3jj7UevboNfaIHGwJVxZe8fayr9qR97HWSxi07tK+XWYdoaPPZfmPMJ8TaLmX+kzdfaGtZo5CW+Zu4zFROw/O89+NRzwxsHoJGQFU3B5t5IvkJg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Act4bI1o; arc=fail smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A61628505F;
+	Mon, 11 Aug 2025 21:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754948636; cv=none; b=Lyxg1dd22X7zNFfq9lglpGoeDqaUh+NVGpbDLtuRzS8ea1n1D1vYuxHoeFGEAsg5jaB78Zx01g9a4zUyb1mGVD8xyI9saMTWJa/7DJokIAq9VTVFpoXTZyLJRd6a7UZZakpBb57gDx+AXHnWzgdcSEoB/TbouZiBgv31xFuMVEI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754948636; c=relaxed/simple;
+	bh=7OGQk8bopsot7CutcJAcqxqmBdgPuJE0EaLcO0LDgxU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BqTEHVk8TP08+bMO3i+8xewnFnBUSMIeSclaNa0APl1FVQGrJq+A+aFs7WoK0UtLuwgp433ky0o1ST2/NQy3WmDP2P9LIYKXsEw5ppQHo4SHZed8kJOKDFB95V5LM/RydOsXIVcBtUSavaB1pf0BeO9VSK3F8LTXBgphwK0jP7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M8ROvVv3; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Act4bI1o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754948305; x=1786484305;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=U5mhgaGDtqU0vtBX0tq5L8sxxyWXz3OgmsJ5glfRKsM=;
-  b=Act4bI1oUgvgYyBZenQ1LKoNYH+Crij4pVHsjpmf0Bpt57WvQ+DRbuEu
-   O05OjwmIUY03vZ2uIHFILtD0AG8/ZvxyrFOQlrldLd3ypG2gZwX9gKwtL
-   LOvGSm6aKCfWKUaLqgvfcZZs8gBp+5mGZw2UyljuYPHousqOEtoqmxjos
-   8AVTa6Og4PU0Bq2cVBR5rsWqTQRMBVTuXQWQ08koaq+56CRX1/tVosyeL
-   5tLw6RBMlbSJ6EU7ijMADM7MC04kSGOj0lgGKqZcrgtmE59TYyqhyWge6
-   vCJf0AD3hLCA6ROeCZKFAOWoXfi5U+xHTmwqEyN8jbJlePL6rC/WQne56
-   Q==;
-X-CSE-ConnectionGUID: OsGOObMnSO2x5BhXV7jJLg==
-X-CSE-MsgGUID: 0EiGL9PpQk6iU6eC6T65qg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="79782857"
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="79782857"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 14:36:39 -0700
-X-CSE-ConnectionGUID: CUdv0vo9QVm92pXmBi5mrg==
-X-CSE-MsgGUID: J3VxiQ17T1+DSoHVy7LAiQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="170464669"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 14:36:39 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Mon, 11 Aug 2025 14:36:38 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26 via Frontend Transport; Mon, 11 Aug 2025 14:36:38 -0700
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (40.107.100.69)
- by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Mon, 11 Aug 2025 14:36:38 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F30vtaGn55LpZ/LdGz8sL0RDuXTyZn14fJpGyh7Au424wCWYRrv9gqErScPJvSr7IUbWcEYJDvJR6oF8so97oaRbIAVMmSKp/cs6/TlKjnQGrEJe1wMSfEJPRbMQvxQRJi8IIsYZYxqf8cRGSems8vnYMa5jx6FB/si7IaI/lr8i9+EnRrDoktENGi/FJhEiCrM4oCSFwT1uSsooQlUneykcDvsQ1dm8g990FPIOxX65ZFjmqkSkILpQIVv0g06OBc2yRnyNPUgwC6sEMsdnzoiK/XvW4Hrg90YwhiCghVEB4AsNZZDxyq4SoDCr5hp/HybH0LB9N9aOPHsW4IGU/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QaazqUfZylzgQNvWg7ep5Q1niulFo6T4Zh8j0aeo9n8=;
- b=kCtAUo2ZibD5sInk3XKd5O1n7kTkPKoiuvzv8uaElPhDHFbx3fdvq6lxA1l1jNpiqy93N+XL8qfQN9I9G0GZz7yCXimq2EWmTCz59NX0zJSFaWVLMtG9eb7/JvC6QV9LUNYrx+5ipfYZEu4/G3QIBXaam6tHOlCOaXYYLBmakdN44V8m2BECZjRxlO+TTxqKgCM2JTr4YToNVYMRjuZGLgqEPhedmHV/7LWuPoffeV6F1z2D+lt9tf4VD3v6r5vM5XWsGegs1hB3MgYQQGxx4FI2TSB9ikslyn1UedtbTxTNGNnoOW6iR4BhfkfDNSWDI7LX0qYnVRj21PhcXi8Oew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL3PR11MB6435.namprd11.prod.outlook.com (2603:10b6:208:3bb::9)
- by SN7PR11MB6678.namprd11.prod.outlook.com (2603:10b6:806:26a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.21; Mon, 11 Aug
- 2025 21:36:31 +0000
-Received: from BL3PR11MB6435.namprd11.prod.outlook.com
- ([fe80::24ab:bc69:995b:e21]) by BL3PR11MB6435.namprd11.prod.outlook.com
- ([fe80::24ab:bc69:995b:e21%5]) with mapi id 15.20.9009.013; Mon, 11 Aug 2025
- 21:36:30 +0000
-Message-ID: <14d36e48-251d-4dbf-aafe-57259003e064@intel.com>
-Date: Mon, 11 Aug 2025 14:36:25 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH v2 iwl-net] ixgbe: xsk: resolve the
- negative overflow of budget in ixgbe_xmit_zc
-To: Jason Xing <kerneljasonxing@gmail.com>, <przemyslaw.kitszel@intel.com>,
-	<larysa.zaremba@intel.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<bjorn@kernel.org>, <maciej.fijalkowski@intel.com>
-CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>, Jason Xing
-	<kernelxing@tencent.com>
-References: <20250726070356.58183-1-kerneljasonxing@gmail.com>
- <CAL+tcoAAq9ccjUybzxoYbVG6i3Ev1C098aGKWvAvKMUeFyG3Tw@mail.gmail.com>
-Content-Language: en-US
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-In-Reply-To: <CAL+tcoAAq9ccjUybzxoYbVG6i3Ev1C098aGKWvAvKMUeFyG3Tw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR04CA0049.namprd04.prod.outlook.com
- (2603:10b6:303:6a::24) To BL3PR11MB6435.namprd11.prod.outlook.com
- (2603:10b6:208:3bb::9)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M8ROvVv3"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-31f255eb191so5003819a91.0;
+        Mon, 11 Aug 2025 14:43:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754948634; x=1755553434; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=V6rK+nf0PE/yzZMOCn9QAPItrRWLBQkSNHhJvIS5DoM=;
+        b=M8ROvVv3V1ge8lyv4/8erKw1qjhL1eHf/cjCsnMmA8kdS/z8tjhxLVC4cIXjOOpVCH
+         yBwm4F/pAN5+9FSG2SsmfzVuIn/T4pafUM5jgfl/Ob+Rs0anh7GJZ5p1+qrar5LgWNgp
+         kBlyuLr5wyntsLIvQiH7P5LxU2sUPFzA+lj8FplAVw3lieDnRAFPuJHByzvZ9l97y1OL
+         QDydYwlttIb7e1xQHjw7H2Wf40ZxZH4ut3UVbFzZTIQqmvobWImd5XNk3D3r1QU5UPFj
+         85JljJ96gnCogY6Q4Np5FtNFBTcQkpIgP27Cdb53v67m7ucAGdQTiWPN3glVcbOVO+T3
+         rzOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754948634; x=1755553434;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V6rK+nf0PE/yzZMOCn9QAPItrRWLBQkSNHhJvIS5DoM=;
+        b=j/BbkjfZlzyQXgbWcdFhTGdXmRleupS6ogkX0ajkZRSPdp3fXgRd8J09v/RyEfdXUT
+         AS+h81clun85MhwbUMpr6KCpIW6iQC/9FYuWU+Y3/gECPrWVDYjQK3Yr81qao62jujKv
+         7qB3PLfpd8rfYZDXDtzpM+YanO4Sh9xE88ktnSswbDwJqkbFLGhWJdw80dZuyL9Smh65
+         hxjDc0QWLZaPBlffMP2mErIiIl/riJhU2oXymRWpDAzLgUmXtWdeLS356sITEyRY9yf0
+         KdUDG6jrHplXVRLRZ1tST0k1+L0fPVUUG1yNOEswSnYQ6ti2x6ROFoV2osOf43Hiz6Us
+         dcDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUrqEiU0HfXMFlmQMM67awwpK6Acu3MPKLTTFu10b6tpQhdwQtzA+5cjzQvs/JwCIX6xIKYhqwsSS24@vger.kernel.org, AJvYcCVSs839xSisPcVVnA7HUDR5xnUh2S3+vPjzS0PA0wNU2Up9u4YyaShPI2Wp1Ng+Tnyn1V5x/5UEEmxhEdkH@vger.kernel.org, AJvYcCVyDXTvy37zVcxsdcmvEof2nKpefJMasONY16O7IKEsrfbDSvqHXXgYzCsfGeW8m/aLncns+CGr@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9m1W7PoT6OoLU6QAufEP2nRi8I4GP4s7rUjZZo3FQvcrJakmD
+	CiMraSaUUTK3hMCNLp2AebEt0Eo5SqmfoXRSzi7aRBWpJH3ggkJFQyAl
+X-Gm-Gg: ASbGncuyrmYPjmnzSa5Z2qraWG2TmZqCtl4tfNKe3/NkNayDqK43ygJzxbLLvT6l1DQ
+	ws4iROro6h2ys5uQz4QSHVuCXm+wGvCsQxU75kaFWKuA+w8yxnLYzyCSnBoPGXmBqohJtoFsUiy
+	4gJ5PZn2s3aA1lE6KmM0qXvMX58IyT7hRl2EINbYb8a12tKN7wuFIvwCotOjRl7uuyBVqHd6xWL
+	6weecq7AeT4MkVpD454+3r3+9sYRonyxMwAH3kgcrBsrepgSN8MkedliE4aWVZR/O28swdkMN3r
+	eWhUxLGIFqy91kowbvcOj/BYohhytHbaeILcSZ8nH73xe/LxUbFDFGzsvTzBry+/h+tE++HdyIP
+	FVFRd1ivfz0AIQuebP0bQXCg8yD+MK1B7eQ==
+X-Google-Smtp-Source: AGHT+IFsi78NN+fBY0LS4y+P8YMijCEFQnCo74evdIk8ObOIJFSgyoxfkygQTtZGUK1jp2bVcfARVQ==
+X-Received: by 2002:a17:90b:3842:b0:311:9c1f:8522 with SMTP id 98e67ed59e1d1-321c09fc527mr1556132a91.10.1754948634369;
+        Mon, 11 Aug 2025 14:43:54 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:69d7:30de:b05e:915b])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3218c3c2d58sm8359383a91.16.2025.08.11.14.43.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Aug 2025 14:43:54 -0700 (PDT)
+Date: Mon, 11 Aug 2025 14:43:51 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Arnd Bergmann <arnd@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Jakub Kicinski <kuba@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 17/21] nfc: marvell: convert to gpio descriptors
+Message-ID: <yf5coptfembueds4ozpsphdv7vggyzfezdxv66uuqzjv3gpw62@x4s6iylxahrv>
+References: <20250808151822.536879-1-arnd@kernel.org>
+ <20250808151822.536879-18-arnd@kernel.org>
+ <aJcea90siAod5Apw@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR11MB6435:EE_|SN7PR11MB6678:EE_
-X-MS-Office365-Filtering-Correlation-Id: bc8a8e31-13af-43c2-6ac3-08ddd91f2247
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007|921020;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Q2pvK2FMdWNXMkkyQ1NNaUZwSlRFZS9GbHgrQVlTdmw1VkpiVU5qZzBQS2V2?=
- =?utf-8?B?Q2ZzRlh1aVU3RFJlREd4VkJ5REJHK0ZkbHV6U3FTODZNWHlGRUJzWnBvQ1Ra?=
- =?utf-8?B?V0tEV3AveWs5bXY0SzlpWnd1cjhMeXBFMUhyS3FxT21pSGx1T01jNEd3bnZP?=
- =?utf-8?B?cld3emdHMm5ib1JSMFliWnJYenVjWEZYUDVFUWl1cWlhb01VWlFaMUFFS3Fo?=
- =?utf-8?B?aGZ4NDh0OWJ6WnAxbkV4blpzSUhBV2JpemlDUUd4U2N1VEk0VzA2VENZSXJy?=
- =?utf-8?B?VWxqN0Z2RDk5enNjZW1SY2dMYTBrVFNBUVhOU2R5bVZKMkkvWHI4QmZmZmtZ?=
- =?utf-8?B?NWl2M3IvNitYaHp1eGNXLzlKWktnanhnUjBTWnZnbC9tLzdFQmcxU0N2VkVO?=
- =?utf-8?B?L0pJVkFhNHdVbTRGUEo0dHJ1NTVHYjdzaW5JOXFRR0I1Z3dCS0JzUFZsbXpE?=
- =?utf-8?B?VDNFRlZvSTRCMyt0QXpzZkJyZ2FPN284dDBaVVRLSkpvMCtsVlQzZUgwNzRE?=
- =?utf-8?B?enduMFVjY1lGNUhhYkJVZ00vc0xZUVArWXRsM1JMWVJuZU45bmpHZmZIS25r?=
- =?utf-8?B?RjV5bG9XK0xWdXcwNnJIQkxnWFEyb2t4NlpzK2JOeWV3eVBxYXlvNktINlJU?=
- =?utf-8?B?NnNGeXY3WEdaN2RzVDA4ZWtoQjRWendxTTNDOEI2NFlpUklYTmc2WGlidk5T?=
- =?utf-8?B?OTJOMVN3LzNBc2wyeW5oSWpvaU1Jc0lXRXZ5ZGNpZE5ZbndJTExLZWRkNXdK?=
- =?utf-8?B?WVdnUndzc0lIWGxocjIxZXg0TUozaTZqQmk0TXVHYmxqbCtZYUdTeFp5UUpp?=
- =?utf-8?B?TzFZS2h5UTkzNkQ4NjJ2VUgyNHdaZDRYY2gvM052UDA5c04zM3BoV3hiUzdu?=
- =?utf-8?B?dDZCU0JiMi9sS2NRV0NRR0RLamwrWTc1TDR6M2tKdkF2SW5qMWV6WmowRWpv?=
- =?utf-8?B?VGRrM2NsWHVZaDE1ekVSMDEvYWUwV0NmY2FjdHBPTkVIZXpjK3crZGRza0xW?=
- =?utf-8?B?MlZrTWVUOGxQZFUvMjU1RFFDTit1T2FkUldjU0N4WkVUd0FqdmNUeWtPTzFj?=
- =?utf-8?B?RHVxdzJqR056ZSs1Mko5UnlqN3B2OXlEWHlubGZrOGRoUGJ6UHdyYlBKRTAw?=
- =?utf-8?B?a1FLRXQ5cW5kN2FZNW8vYzhPVmtuZ3UrUzZtNmpxL3hDUkdFaElrM01GcUVV?=
- =?utf-8?B?VW82T3ZvUzVwMkZRQ0VwUmNkS0dxK2xJenhSOTFZNUErL0FnbW1oNWtZQlFN?=
- =?utf-8?B?NGh5UHp6QzlpaUYxenMxY1krMFBGdjBHQkhhbHZZdlhUS2ZTMllrVTRGSERs?=
- =?utf-8?B?VHpCbEFkSlYxeXZqNTVyUDNid1RqQlNEOTF3M21nTWRoeTF6WTd1QVBTbysr?=
- =?utf-8?B?bTBuYno1RlF3Ukw5eFp5K2ZXZ1cyMTZMb0dnVGlZTzBoYnZuQjg4WFlKdlp4?=
- =?utf-8?B?S3ZwMWFONURuUVp4OXpGcHd4RGpPQkx5VE1zbEk2cU9melNDdGZvY3QrKzdT?=
- =?utf-8?B?bWN1MWF2VjUrSjlESEx2NDRJeE5lRW5manFVbGt4eEt2WmRWMERzTUFiM2VD?=
- =?utf-8?B?UHduaXRzbUtMTXVSWlFOeitFQ2ZPMTJMQXpLd2ZyVmFTZExleU1TRlh0dHh5?=
- =?utf-8?B?Wm5IODBQTEtFa05VK05MTWoyU2pmalBsOVhlTDFCUUg1c3BoTlNqT3UyUDNE?=
- =?utf-8?B?d0VZOFJiZ2N0VlJ1dzl6M1I2aFNMYjlGYjZja0pjeHdkODFxOUxWSDNOWHNG?=
- =?utf-8?B?N1QzQzhRV1FsWFN2bU9ua3l0U0tFdTM5ejgyYTF6d1g0SEtzT2l4b2tpSS9O?=
- =?utf-8?B?Q05rOUlDZFdDcnoxZHZoL3VoWS9iMUdUQmlHYk9ZMWF0UGJReE9tZW8zQ1h4?=
- =?utf-8?B?bHlySjcrY0RrWTFlT1QwdVp1d2JNUitiUUVUTGZIUkxkZWM5UmlZT05Ycys4?=
- =?utf-8?B?aEU4TVlCc0d1ZUpMZUVBMHRkRDVtc3BLZ3dLL2N3NWpXWXlQczV0SGdON05y?=
- =?utf-8?B?NVVEd3RNVnVnPT0=?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR11MB6435.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NDFpQisra3Bnbm5sL3FHYUtSYkE0THNtb1k1a0I1Uk1GVmM5SXFUcTllRFNH?=
- =?utf-8?B?b08rdnBTNXJwRTk1UTNBNTNId2pjRjJMamtIQjBTY1U4QllGYlRoUU9YRXVi?=
- =?utf-8?B?U0lnU0k5a0xSMVVGSEd3UmpBMTdUaVRtdnNPR2FDZFNpZ0Y5OVMyUkVOMW0v?=
- =?utf-8?B?MFRpRmZiNXBsTkZWT3RYN21Rb1lDOU1iT3NKSDBzam5vZHV4d2h5RDNmMVBz?=
- =?utf-8?B?MVFvbHdORTE5WlhxL1BHUkpkMm4rVWh4c3BYUm0vQjlYMThFVStLQTRCV2RD?=
- =?utf-8?B?VFE4VmNvZmJxY2xZMXFCRTJEdm9HMkpFUFBqbHpab1YyTXg2dHE4c3R4TzFo?=
- =?utf-8?B?TC9oKzZ3WjNkcGQ4YmtrMW8xc0NYMnd6bDFMaWdxNGRQRW16ckJvRklZOU9Z?=
- =?utf-8?B?bVYwak9ZQ2UyK2xadFNQWDVINkJVL3hkWUl2b3NPVkVudXB1L2JoTnJLc1Zi?=
- =?utf-8?B?dXk1b2NkMDNqeG1PY1dmR3lKbC9CaVB6REJwV2MxdFJhMGE1ZW5QSXFVd3hk?=
- =?utf-8?B?bGduUzBHUFluUFFkSEI2WllnUEZ3SjhYUGp1YzloU2RDR3RzL1o3a2hwVDFS?=
- =?utf-8?B?d2V4emRjbUJGVzlQSWM0VEdXREV1Z2J6S1BhazRHVE0xbEdKZkhXL2RJaFpN?=
- =?utf-8?B?clRGamJ3TS9Ndk9ONFlmTjU4MXd2dWJWWCtqdlVsY3JLUTRXdVJVZFFSNE9G?=
- =?utf-8?B?aElLb1EycGszdkx5TXh0R2poQUlGWEZ3MVFzMXJzaXVyR1kvc2p2MVNBU3k3?=
- =?utf-8?B?VTBwU255VjRKZURVekw4QWlMS2RBMkhNTVMxZXhUR21GYzVhTjdxRFdKUU1X?=
- =?utf-8?B?SGZ2bHVING1nTGgxV0xSL2lXN2JISDRJY3ZqWERBamkzb3VYT05IVVdCbTdi?=
- =?utf-8?B?d3BHUkpJOCtpUzBiS3p5QW5tL0NGVUV1aXlxbHViR3pTMXQ0WjhIbDBpbWhH?=
- =?utf-8?B?MkFzakJwMHlrenYwbGdzTCsydWNRWmVVK2Z0QzZmY2NHUC9IcXRIdnR1ZVd2?=
- =?utf-8?B?SEJiVmowelFRSzNkL1ZhUDh3TXhUVzJlMWFGdDZsNjBJRmp5NFdVcTVTU05T?=
- =?utf-8?B?cUhxL0tRZW1Yb1VSYTZuTnlBb0Izc0I1NU1UeHh2eVQvWkZMSlNOL0tGT1E2?=
- =?utf-8?B?QnluSXM2dDJ6VlpWYmYrclZEZldPVUJoZFNQaDQrTDVnMjhhbVhhTVpEc3hE?=
- =?utf-8?B?UU5CWnFvM2t5L1RqbkM5VkkvTEkxUjVoZnhOWTVZOUVkSnVaZUlTVnpWZFkx?=
- =?utf-8?B?QVM1eVFJTkpxY2RieGY0R3ZtaE44cktsb3hRVk9hYVRrQ1hFZXFwMTlpQXNK?=
- =?utf-8?B?Q09BaG4xcm5QTFNwb0s3Y3U1T01SN0xZUVRrMVNUenF6N2wwQXlQY1dLaGNP?=
- =?utf-8?B?ZExid3ZpbGpiaHdTaWZaby9MU091b3Fwd0thbzZweGJzd2hlcGlwOHI1Q3RV?=
- =?utf-8?B?V0tpejZkMFJ4dU9nTnRVVDRWNzlaQU8rTkVlTm11T3RuNGw1Qk96MmpGTGNM?=
- =?utf-8?B?VEtUdkVCYUFsQ0JhblJ1T2ZuK3cwTmFGSXR2QzJ2T0VtTEREcGNURXBHMFMx?=
- =?utf-8?B?eEJIT3NDQUtBbzFxRkJXc2NpZ0hOUTZVeXlaMDJ0SDBKWkhWUVpMRG16V0tE?=
- =?utf-8?B?UVVTaW1HcXRIakxRdVpKUHFTaEFnelBuSlgycndsdTRVK05rSFRWcXNGZE4y?=
- =?utf-8?B?Z1ByYTREdUhNbHFlL3lJTk5ZYVZvWkF4VEdQbE9KMU04aVhvQkszM1NXOW04?=
- =?utf-8?B?NVkvUC9vMENkNC83M0swelltc3FvRThvVG00UTUvUE1SVThXZU1Ocno0bm5G?=
- =?utf-8?B?RXhjTzdaL2twbm9BUjBNZG90b0FNdFAyVFB0TzdVdkFBdWhFWTJQdW5hQnhJ?=
- =?utf-8?B?U09qRTVIK3l4QVhSTnQ5akFsUDZuRnlac1dVMU1udjJ2dDhsTC9qcjkySFY3?=
- =?utf-8?B?d3lxOFgzQ3VtUnVLaE1BUjFFWXJ1QTBFa09iYTlpZ1QydnNmRGpER3p0b3VU?=
- =?utf-8?B?cHl5T0lqbDBKZW5idjJ0dFZmRVMxMjNzRXRNVXFsbFFpUWIxVFpoYy9KQWhu?=
- =?utf-8?B?WnphcFduQjA4TlplQ3ZJMGdrMFVDSkNjKzBnWHlSbjU3TWRhOTBoQ2RSbU5l?=
- =?utf-8?B?VW5yem8veEJYUDNVMVBOdW1NZGZzUWFsUTIzeDU4b0h3UFBVTlBiZDBJR2ZY?=
- =?utf-8?B?REE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: bc8a8e31-13af-43c2-6ac3-08ddd91f2247
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6435.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 21:36:30.4063
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: orwoKat2q8lIYkOK6zSwhk71kl2YmwKSI7ZHxzOEqmGQucH03eSEWR9Nzzea7ZK0yibAVhy4xn4VI2xwazakG0ASucUHY+isfyBsd4Yik+U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6678
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJcea90siAod5Apw@smile.fi.intel.com>
 
-
-
-On 8/10/2025 5:22 AM, Jason Xing wrote:
-> On Sat, Jul 26, 2025 at 3:04 PM Jason Xing <kerneljasonxing@gmail.com> wrote:
->>
->> From: Jason Xing <kernelxing@tencent.com>
->>
->> Resolve the budget negative overflow which leads to returning true in
->> ixgbe_xmit_zc even when the budget of descs are thoroughly consumed.
->>
->> Before this patch, when the budget is decreased to zero and finishes
->> sending the last allowed desc in ixgbe_xmit_zc, it will always turn back
->> and enter into the while() statement to see if it should keep processing
->> packets, but in the meantime it unexpectedly decreases the value again to
->> 'unsigned int (0--)', namely, UINT_MAX. Finally, the ixgbe_xmit_zc returns
->> true, showing 'we complete cleaning the budget'. That also means
->> 'clean_complete = true' in ixgbe_poll.
->>
->> The true theory behind this is if that budget number of descs are consumed,
->> it implies that we might have more descs to be done. So we should return
->> false in ixgbe_xmit_zc to tell napi poll to find another chance to start
->> polling to handle the rest of descs. On the contrary, returning true here
->> means job done and we know we finish all the possible descs this time and
->> we don't intend to start a new napi poll.
->>
->> It is apparently against our expectations. Please also see how
->> ixgbe_clean_tx_irq() handles the problem: it uses do..while() statement
->> to make sure the budget can be decreased to zero at most and the negative
->> overflow never happens.
->>
->> The patch adds 'likely' because we rarely would not hit the loop codition
->> since the standard budget is 256.
->>
->> Fixes: 8221c5eba8c1 ("ixgbe: add AF_XDP zero-copy Tx support")
->> Signed-off-by: Jason Xing <kernelxing@tencent.com>
->> Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+On Sat, Aug 09, 2025 at 01:09:47PM +0300, Andy Shevchenko wrote:
+> On Fri, Aug 08, 2025 at 05:18:01PM +0200, Arnd Bergmann wrote:
+> > From: Arnd Bergmann <arnd@arndb.de>
+> > 
+> > The only reason this driver seems to still use the legacy gpio
+> > numbers is for the module parameter that lets users pass a different
+> > reset gpio.
+> > 
+> > Since the fixed numbers are on their way out, and none of the platforms
+> > this driver is used on would have them any more, remove the module
+> > parameter and instead just use the reset information from firmware.
 > 
-> Hi Tony,
+> This patch is my love in the series, thanks for doing it!
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > 
-> Any update here? Thanks! I'm asking because I'm ready to send an afxdp
-> patch series based on the patch :)
+> But note some comments below.
+> 
+> ...
+> 
+> > -	if (gpio_is_valid(priv->config.reset_n_io)) {
+> > -		rc = gpio_request_one(priv->config.reset_n_io,
+> > -				      GPIOF_OUT_INIT_LOW,
+> > -				      "nfcmrvl_reset_n");
+> > -		if (rc < 0) {
+> > -			priv->config.reset_n_io = -EINVAL;
+> > -			nfc_err(dev, "failed to request reset_n io\n");
+> > -		}
+> > +	priv->reset_n_io = gpiod_get_optional(dev, "reset-n-io", GPIOD_OUT_LOW);
 
-Hi Jason,
+No, this should be "reset". gpiolib-of.c has a quirk to resolve to naked
+"reset-n-io", otherwise this will resolve to "reset-n-io-gpios" in the
+bowels of gpiolib.
 
-I have this slated to be part of my next net series. I do already have 
-this patch applied/staged on the Intel tree [1] (dev-queue branch). You 
-can base it on that and send the changes now; I'll ensure that this 
-patch is merged before sending the other series.
+> > +	if (IS_ERR(priv->reset_n_io)) {
+> > +		nfc_err(dev, "failed to get reset_n gpio\n");
+> > +		return ERR_CAST(priv->reset_n_io);
+> >  	}
+> 
+> This also needs a call to gpiod_set_consumer_name(), IIRC the API name.
 
-Thanks,
-Tony
+It does not have to... I am not sure who pays attention to names.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue.git/
+> 
+> ...
+> 
+> > -	if (gpio_is_valid(priv->config.reset_n_io)) {
+> > -		nfc_info(priv->dev, "reset the chip\n");
+> > -		gpio_set_value(priv->config.reset_n_io, 0);
+> > -		usleep_range(5000, 10000);
+> > -		gpio_set_value(priv->config.reset_n_io, 1);
+> > -	} else
+> > -		nfc_info(priv->dev, "no reset available on this interface\n");
+> > +	nfc_info(priv->dev, "reset the chip\n");
+> > +	gpiod_set_value(priv->reset_n_io, 0);
+> > +	usleep_range(5000, 10000);
+> 
+> Side note, this would be nice to use fsleep(), but I see that's just a
+> copy'n'paste of the original piece.
+> 
+> > +	gpiod_set_value(priv->reset_n_io, 1);
 
-> Thanks,
-> jason
+Nope, this is not going to work. See
+Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml, this GPIO is
+active low. We do not have any "live" DTS examples so I am not sure what
+polarity is used in the wild. So either use logical level (my
+preference) or switch to "_raw()" variant.
 
+> 
+> ...
+> 
+> >  void nfcmrvl_chip_halt(struct nfcmrvl_private *priv)
+> >  {
+> > -	if (gpio_is_valid(priv->config.reset_n_io))
+> > -		gpio_set_value(priv->config.reset_n_io, 0);
+> > +	if (priv->reset_n_io)
+> 
+> Not sure why we need this dup check.
+
+I personally feel very uneasy when dealing with optional GPIO and not
+checking if it exists or not, even though gpiod_set_value() handles
+this. I think check makes logic clearer.
+
+> 
+> > +		gpiod_set_value(priv->reset_n_io, 0);
+> >  }
+> 
+
+Thanks.
+
+-- 
+Dmitry
