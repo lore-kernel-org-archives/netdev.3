@@ -1,81 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30F9296BAD;
-	Mon, 11 Aug 2025 16:11:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DE3311C09;
+	Mon, 11 Aug 2025 16:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754928674; cv=none; b=EyT/l/XkWcIOMZ5j6ghhzdWOYOQiW/b7uqpck2UHiLhpZKEdcfIrELO8f5MzPU80ySzdoQLYK3lSPiTTsuy1c3U583wAIyi5rkbscyYWcxcvTmSATQA0p3gH96wcvkd1F/WVZWopWDdGbt4w16wM0aQu+tJiRmUHXaHzlW/PXqg=
+	t=1754928767; cv=none; b=Rgc/0tOnZcSFvA4xQ/XglmxsIP9Gu6KWgRWjGlsq+pIMhGGWK3vrIarODV2x4Wnf5pTRIT7FG1szkobHPFfCOZOxcph47x+SWMieMbTJm1p6H7/kzNpfXZf9uBc/p9N6CQZEpegaDjQTN+hvfQN0M/86DqpSHmNkAtj6dd98sko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754928674; c=relaxed/simple;
-	bh=xIJ28HxQuqHrb5Mjj7mj7vyWykbmZ8e2tbB/UXJvPZI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bSzeXI8z/O2jXgvN4GeP3/muQejK1kROrxAfTeB8+Ck1LfEJ0cxrLyX9ugYwrdVlSIrR8kQpytnphPyZwmczQ2xiGx53wCFFK4QobDPr9HYfI5V09Ha5d1+Ggs+LWZqmat/s+VE4issrvgWWKE9Zld9gDi3zdT1IlPxfaHr3lM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KiS1+1t9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754928767; c=relaxed/simple;
+	bh=1kBF0SkAlWYVhyXZxR5AAJSOsBPSHIY90lP+qNoJXIQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CwZoFqyWV26G5sUyHVy9QscGrkq/R5SfFaiQyMaWhGMXlCqJfKLNplJ4RI/rTTIGLCeRbKj4pAQRahcpxHDntZf32TUjsSKrB4VCTdrQAJUpWE4KoRDl0eBR02ProRXqyv8X3pYAOkk1NOD/X0kX8H5foGA6t1ihQ/iZCefsv+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M9WxfqMK; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KiS1+1t9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C13FC4CEED;
-	Mon, 11 Aug 2025 16:11:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754928674;
-	bh=xIJ28HxQuqHrb5Mjj7mj7vyWykbmZ8e2tbB/UXJvPZI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KiS1+1t9E8yBQzr/SqB3J6BKht75cAEdwd2rlX32JoEJ5M6W6dLLYKXv8WGcgsBMY
-	 PBcyJ0Ve1Jg45AfSNHYtFg8tvewX/MJ6gRSKkrggTMkJjarHRnPkjL9JsVmTghsegK
-	 1mBOoK8q35cyk9Gg2JZFCze8fE8wkTM5j3/ZOiq0aXQ80fbHgge++0+atC+/zKfTIH
-	 ri64wPqlDGnC97fWghAd+xe2nXy3KIASaXltcT1zY9sHcmt/ehsNf6C0InpxBUolnu
-	 LW2K7NATrhmaDAv4wLQCNtHZqFGyJiQppQ0ZQFx256Y/l5mzc0N++GBR7CURm2ka7o
-	 nftdqSPzhvK1g==
-Date: Mon, 11 Aug 2025 17:11:09 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Mark Greer <mgreer@animalcreek.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M9WxfqMK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754928766; x=1786464766;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1kBF0SkAlWYVhyXZxR5AAJSOsBPSHIY90lP+qNoJXIQ=;
+  b=M9WxfqMKyrx2ViMz/inyAGqEdUVdZAP8I9XmMbjrbOn3MqHt7Pc/YL3r
+   rZvGUcSJsYMOwJabYTi4B/QrIYMAPoYcdVE/rwBgE2a1RVeYRv0Mg/3RP
+   yM7lGlk3erhd/9NVC5dru6CFhKZvmHB7WYrcO3laGyDnhIfh3Gjj/UNbg
+   V1hBNvnXyxEh2savThFAiFAavUT0BaXWY6a2d1om33lFDbKE/umlmQwFk
+   kPn7ABijGjYuASRXcsYdA8GjN3RBYUScY7z9hXssf0NRveFnkJ7/NN2YF
+   +sPBHSDZONQOGFMS1v8yQPMxcYqWnVp/fXYOxkuwrBu7Km+YyQz4hw5q/
+   Q==;
+X-CSE-ConnectionGUID: ktSLrRXtSnO+zqackZ7/Vw==
+X-CSE-MsgGUID: 5ArsZwJrQrK1h8RYZUOGVQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="56899505"
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
+   d="scan'208";a="56899505"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 09:12:45 -0700
+X-CSE-ConnectionGUID: XE7CloaAShiWJb3WPSBtpQ==
+X-CSE-MsgGUID: YMmMJaHLQeWMyUsSuwofFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,278,1747724400"; 
+   d="scan'208";a="165163136"
+Received: from newjersey.igk.intel.com ([10.102.20.203])
+  by orviesa006.jf.intel.com with ESMTP; 11 Aug 2025 09:12:41 -0700
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] dt-bindings: nfc: ti,trf7970a: Drop 'db' suffix
- duplicating dtschema
-Message-ID: <20250811-carnivore-snagged-faac10d63881@spud>
-References: <20250811142235.170407-2-krzysztof.kozlowski@linaro.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Simon Horman <horms@kernel.org>,
+	nxne.cnse.osdt.itp.upstreaming@intel.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH iwl-next v4 00/13] idpf: add XDP support
+Date: Mon, 11 Aug 2025 18:10:31 +0200
+Message-ID: <20250811161044.32329-1-aleksander.lobakin@intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="YKE6XInXu+TRmTNK"
-Content-Disposition: inline
-In-Reply-To: <20250811142235.170407-2-krzysztof.kozlowski@linaro.org>
+Content-Transfer-Encoding: 8bit
 
+Add XDP support (w/o XSk for now) to the idpf driver using the libeth_xdp
+sublib. All possible verdicts, .ndo_xdp_xmit(), multi-buffer etc. are here.
+In general, nothing outstanding comparing to ice, except performance --
+let's say, up to 2x for .ndo_xdp_xmit() on certain platforms and
+scenarios.
+idpf doesn't support VLAN Rx offload, so only the hash hint is
+available for now.
 
---YKE6XInXu+TRmTNK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Patches 1-7 are prereqs, without which XDP would either not work at all or
+work slower/worse/...
 
-On Mon, Aug 11, 2025 at 04:22:36PM +0200, Krzysztof Kozlowski wrote:
-> A common property unit suffix '-db' was added to dtschema, thus
-> in-kernel bindings should not reference the type.
->=20
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Alexander Lobakin (9):
+  xdp, libeth: make the xdp_init_buff() micro-optimization generic
+  idpf: fix Rx descriptor ready check barrier in splitq
+  idpf: use a saner limit for default number of queues to allocate
+  idpf: link NAPIs to queues
+  idpf: add support for nointerrupt queues
+  idpf: use generic functions to build xdp_buff and skb
+  idpf: add support for XDP on Rx
+  idpf: add support for .ndo_xdp_xmit()
+  idpf: add XDP RSS hash hint
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Michal Kubiak (4):
+  idpf: add 4-byte completion descriptor definition
+  idpf: remove SW marker handling from NAPI
+  idpf: prepare structures to support XDP
+  idpf: implement XDP_SETUP_PROG in ndo_bpf for splitq
 
---YKE6XInXu+TRmTNK
-Content-Type: application/pgp-signature; name="signature.asc"
+ drivers/net/ethernet/intel/idpf/Kconfig       |   2 +-
+ drivers/net/ethernet/intel/idpf/Makefile      |   2 +
+ drivers/net/ethernet/intel/idpf/idpf.h        |  31 +-
+ .../net/ethernet/intel/idpf/idpf_lan_txrx.h   |   6 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   | 140 ++++--
+ .../net/ethernet/intel/idpf/idpf_virtchnl.h   |   1 -
+ drivers/net/ethernet/intel/idpf/xdp.h         | 172 +++++++
+ include/net/libeth/xdp.h                      |  11 +-
+ include/net/xdp.h                             |  28 +-
+ drivers/net/ethernet/intel/idpf/idpf_dev.c    |  11 +-
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    |  67 ++-
+ drivers/net/ethernet/intel/idpf/idpf_main.c   |   1 +
+ .../ethernet/intel/idpf/idpf_singleq_txrx.c   | 110 ++---
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 422 ++++++++--------
+ drivers/net/ethernet/intel/idpf/idpf_vf_dev.c |  11 +-
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 173 ++++---
+ drivers/net/ethernet/intel/idpf/xdp.c         | 452 ++++++++++++++++++
+ 17 files changed, 1214 insertions(+), 426 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/idpf/xdp.h
+ create mode 100644 drivers/net/ethernet/intel/idpf/xdp.c
 
------BEGIN PGP SIGNATURE-----
+---
+From v3[0]:
+* 01/13: make the xdp_init_buff() micro-opt generic, include some
+         bloat-o-meter and perf diffs (Simon, Kees);
+* 08/13: don't include XDPSQs in Ethtool's 'other_count' (Ethtool
+         channels are interrupts!) (Jakub);
+* 11/13:
+  * finalize XDPSQs a bit earlier on Rx;
+  * show some bloat-o-meter and performance diffs for
+    __LIBETH_WORD_ACCESS (Jakub).
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaJoWHQAKCRB4tDGHoIJi
-0o90AP9WzTCj8A3vSjlX1/lwKdCwRPrg2mEWXuz9zrnf0olGoQEA9M50nRmCovm2
-qx6tok0s1wbGj2Erz+w9YleIzpSQ2As=
-=SD2R
------END PGP SIGNATURE-----
+From v2[1]:
+* rebase on top of [2] to resolve conflicts in Tony's tree;
+* 02:
+  * harmonize maximum number of queues to not create more Tx queues than
+    completion queues or more Rx queues than buffer queues / 2;
+  * fix VC timeouts on certain steppings as there processing a lot of queues
+    can take more time than the minimum timeout of 2 seconds;
+* 03: fix RTNL assertion fail on PCI reset.
 
---YKE6XInXu+TRmTNK--
+From v1[3]:
+* drop the libeth_xdp part (submitted separately and accepted);
+* fix some typos and kdocs (Jakub, Maciej);
+* pick a couple RBs (Maciej);
+* 03: create a convenience helper (Maciej), fix rtnl assertion fail;
+* 04: since XDP uses its own queue cleaning routines, don't add 4-byte
+      completion support to the skb code;
+* 05: don't use old weird logic with negative descriptor index (Maciej);
+* 06: fix invalid interrupt vector counting in certain cases;
+* 07: fix cleanup timer is fired after the queue buffers are already freed;
+* 08: fix XDP program removal in corner cases such as PCI reset or
+      remove request when there's no active prog (from netdev_unregister());
+* 10: fix rare queue stuck -- HW requires to always have at least one free Tx
+      descriptor on the queue, otherwise it thinks the queue is empty and
+      there's nothing to send (true Intel HW veteran bug).
+
+Testing hints: basic Rx and Tx (TCP, UDP, VLAN, HW GRO on/off, trafficgen
+stress tests, performance comparison); xdp-tools with all possible actions
+(xdp-bench for PASS, DROP, TX, REDIRECT to cpumap, devmap (inc self-redirect);
+xdp-trafficgen to double-check XDP xmit). Would be nice to see a perf
+comparison against ice (in percent) (idpf must be plugged into a PCIe 4+).
+
+[0] https://lore.kernel.org/intel-wired-lan/20250730160717.28976-1-aleksander.lobakin@intel.com
+[1] https://lore.kernel.org/intel-wired-lan/20250624164515.2663137-1-aleksander.lobakin@intel.com
+[2] https://lore.kernel.org/intel-wired-lan/20250725184223.4084821-1-joshua.a.hay@intel.com
+[3] https://lore.kernel.org/intel-wired-lan/20250305162132.1106080-1-aleksander.lobakin@intel.com
+-- 
+2.50.1
+
