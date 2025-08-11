@@ -1,178 +1,118 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1375813AD1C
-	for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 09:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66ACA2DCF65
+	for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 09:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754903970; cv=none; b=X97QbTJyCdyftisj1Ec6YjldOM92EP+72SbNOa67kRqv5uL+872V3aBG+NdPMM5ZHSXf1tTX2haLyUT4Pk+deV3uCNtNuApZBiDIyasEB1hnNr38Wus6jwOFLL2P+Abu9rD/wUwIIbSUKxtdL6xkdocdodYnGxYo13/DMx32vD8=
+	t=1754904031; cv=none; b=ThuSWMe5FmpRXjZKhBH3p8+Owmjummt8UWhesPLQNms56H+quIjIvipGE90Xg1sYyhUKl15sfD+TWpxjcatUqmNZaODTEftJz84LIu3ZW6sqnEVLkV8EfQVgQAv3mhxTc9DZVingdt1AJn9oCUWfxcgCIuvPZ6379hqG7cU86zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754903970; c=relaxed/simple;
-	bh=eOcXVHRq7KcT5QV7lddFhfB5s66umFv3YrBqQ/TX/uc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TKZiQbUS4+EivuUXPWV4E3aFKRtUvvrKuZGeFTNZ+lmkYVdcKqZlNca/Aw3VYkayinSU9S+f/l7ZcIkjXnVKm4tI1I0UD/yx9g9lK0MAs1hGHHFfmeYTWFDiJ4KczvQlzlPgFBkJg9GD0T9yQ+57QVHc58GBBZ4ZmKiRxtrV3Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IC1/WLPH; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1754904031; c=relaxed/simple;
+	bh=oqhhLnQFcOm4lTP+wkeuZAvD+Ol0JWLnCmXLdUalUVU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ogeeA4DWPpglwFeINDFOIUomnTI2O3C8iC2wB+1HgmN5eG9tgGO7b5g4i4PS02qfJsg9MXOX+RF67rpMp+JBNMlaNROPwL3fLY4gM17sN2WvRCSerE2OOm5E5jeN9vbzF+8t1Pz5/jXl/39KOckhXqt6KFkdM/yG5BUkoJc0Q1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=evaArqwR; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IC1/WLPH"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b07d777d5bso47638661cf.2
-        for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 02:19:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754903966; x=1755508766; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9X3+VyeiU1OgsV7atWhvLrxkvJsIXxj9Qgw0FX6QMEE=;
-        b=IC1/WLPHof7gy7NDluHwPQCGGRp2bnxoJO4nLyeMuVaA16aD3gkdia/0IJYpGsPeOA
-         fDEUWTLRFEY4x/jukbffuRlMkGPhe8jUSuvZ1yPPjOW/OD4TF5PTjoohB8ffB9FP6O3D
-         /CJUO7Uqpl2ON+hNvU+owkyFKmK3aoCnsikY4BjlivzSsdtfdFu0w9uROLcP0c3SYJc2
-         YJRBkBMz0vykid9wn4+q8Aolv31wwmF694SG9VkAzsE+kqHtqPApSPD5fh2XufQv0oah
-         yuXzHBZNPPoD/rayCyX35a5NhVRLO5IKBfSWfiuprwJQLon+moeaW7p496duSTFbMbN6
-         qQvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754903966; x=1755508766;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9X3+VyeiU1OgsV7atWhvLrxkvJsIXxj9Qgw0FX6QMEE=;
-        b=K7fYy3kxEO19jEwChanBO9EHrYeWVrIHYm6aVHSOX9P3TuBYR5CstuzvoHb1jWBUbS
-         qiAsQm11o8NvTWI0IUwrrGxV9sY+oW5n1VJ4zKuzxvJhnK4mQoyOCymvzJ45s+oIsvD3
-         daeaBsPq667w05qzoC9oX2erhO4WFFLAmVES9fxb+vZmWoR1b2BQA5IujsXsgbI7LSAM
-         JtQ2GwJQDgokoww1P5IbyXhkEb0Tf2v6D7MSxcnOLbmN3w0kJhQsFkbLsh/W1qT9NNol
-         BCM36nPOoWzXjiOEgCEHhsyP8MqB6KqZjeQ4tVQg8rrAitxzkctKmhPJd3pLYMQ3LAvU
-         3w4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX8+0G0PcjzMGHvny8DMvJOTprrJM19W21fj4Cm+oDvpyuqfp1eRv/V2LCbpM1NOscqroo2fJk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyK5xoXky1oCViJ33v0AaqOgvurok08IQHJauVoM8WZaEZPXrQB
-	+JH1FKj91C98XUATCFlwTXpy/LE8J/ii+m2TDc/hP4zU2bydKSWS/BwQ0FKUdXXc7cKEtl7gbEW
-	5fA/SOz58HnEEppyLjur7KLEYDT8OSUi10fqXW4A9
-X-Gm-Gg: ASbGncsqXaDkZv1wCo/Ay5pQwsT5kwK/B7gh63K4QA4gMH/zUyXdOBA6NmsFDtvig3T
-	dekyw7Ay/FRET9TU8VWImEAOYO0piOaYL4hN3IkWeQdwC0AvVRsJqqtc0XCAb9aG+pkef4MDsIP
-	YLMsbPRRBRon8Wc99zgd5yoAextCKQsg3fD+U7qKqn25G9W28dhZ5ulPe+GariQBCilRSXEA/3m
-	71bffo=
-X-Google-Smtp-Source: AGHT+IGsGqL0Tet528TAr+FeI8cqB44Iw1Yw7vkXFDKW2y66uKrMwpszv3VtSYrNMrGppCnsouzQ6A2JECoC7Hzay+s=
-X-Received: by 2002:a05:622a:548:b0:4af:203f:73e9 with SMTP id
- d75a77b69052e-4b0aecff0afmr124996791cf.3.1754903965426; Mon, 11 Aug 2025
- 02:19:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="evaArqwR"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 48972207C1;
+	Mon, 11 Aug 2025 11:20:22 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id dfgskGqa94vr; Mon, 11 Aug 2025 11:20:21 +0200 (CEST)
+Received: from EXCH-01.secunet.de (unknown [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 22143207D8;
+	Mon, 11 Aug 2025 11:20:21 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 22143207D8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1754904021;
+	bh=6oxpdCI+s++SIkZs3xMLgGxLCkeF3U6N9ycyA3XGEKU=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=evaArqwRFNqOCTUlnIYOlpERPf6ZIgcJAFmgFa885alV5NUkVlo8IztywaDjaC8QT
+	 YA/6Go9OpMGTqeN7IyP6waKq8YtEPvEHQ2jY957mSyjl2b4Lv2UjpIa0nJpcnCpNLv
+	 fRmBM9d4h6bu7pLl0X/kF11THfVaxy0kCpFWMqpCWqn6qEO/jbhwAdaSuFZFW09gOt
+	 BvZWelN7vijCVHX+Xk7/mDNk3FqQMQVadpsW0CegJJUuvPUcTQLv3DCBHBzbaIXax8
+	 87oZjW5wsc5gZGZRWID4wyfbQC3gSk4bv29cm1PAzxsEzmMOi56ZkdYQvS6GetUo0Z
+	 G9RB+O9aQ1WBg==
+Received: from gauss2.secunet.de (10.182.7.193) by EXCH-01.secunet.de
+ (10.32.0.171) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Mon, 11 Aug
+ 2025 11:20:20 +0200
+Received: by gauss2.secunet.de (Postfix, from userid 1000)
+	id 0D2BD3183FF9; Mon, 11 Aug 2025 11:20:20 +0200 (CEST)
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
+	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
+Subject: [PATCH 2/4] xfrm: restore GSO for SW crypto
+Date: Mon, 11 Aug 2025 11:19:30 +0200
+Message-ID: <20250811092008.731573-3-steffen.klassert@secunet.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250811092008.731573-1-steffen.klassert@secunet.com>
+References: <20250811092008.731573-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250811084427.178739-1-dqfext@gmail.com>
-In-Reply-To: <20250811084427.178739-1-dqfext@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 11 Aug 2025 02:19:14 -0700
-X-Gm-Features: Ac12FXyDAHXwINvs0_c2V2RB4ZbG2aFo4c_KD22t99jVdd62EqxWa-M4aOJp_VE
-Message-ID: <CANn89iLEMss3VGiJCo=XGVFBSA12bz0y01vVdmBN7WysBLtoUA@mail.gmail.com>
-Subject: Re: [PATCH net] ppp: fix race conditions in ppp_fill_forward_path
-To: Qingfang Deng <dqfext@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Pablo Neira Ayuso <pablo@netfilter.org>, Felix Fietkau <nbd@nbd.name>, linux-ppp@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
+ EXCH-01.secunet.de (10.32.0.171)
 
-On Mon, Aug 11, 2025 at 1:44=E2=80=AFAM Qingfang Deng <dqfext@gmail.com> wr=
-ote:
->
-> ppp_fill_forward_path() has two race conditions:
->
-> 1. The ppp->channels list can change between list_empty() and
->    list_first_entry(), as ppp_lock() is not held. If the only channel
->    is deleted in ppp_disconnect_channel(), list_first_entry() may
->    access an empty head or a freed entry, and trigger a panic.
->
-> 2. pch->chan can be NULL. When ppp_unregister_channel() is called,
->    pch->chan is set to NULL before pch is removed from ppp->channels.
->
-> Fix these by using a lockless RCU approach:
-> - Use list_first_or_null_rcu() to safely test and access the first list
->   entry.
-> - Convert list modifications on ppp->channels to their RCU variants and
->   add synchronize_rcu() after removal.
-> - Check for a NULL pch->chan before dereferencing it.
->
-> Fixes: f6efc675c9dd ("net: ppp: resolve forwarding path for bridge pppoe =
-devices")
-> Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-> ---
->  drivers/net/ppp/ppp_generic.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.=
-c
-> index 8c98cbd4b06d..fd3ac75a56e3 100644
-> --- a/drivers/net/ppp/ppp_generic.c
-> +++ b/drivers/net/ppp/ppp_generic.c
-> @@ -33,6 +33,7 @@
->  #include <linux/ppp_channel.h>
->  #include <linux/ppp-comp.h>
->  #include <linux/skbuff.h>
-> +#include <linux/rculist.h>
->  #include <linux/rtnetlink.h>
->  #include <linux/if_arp.h>
->  #include <linux/ip.h>
-> @@ -1598,11 +1599,14 @@ static int ppp_fill_forward_path(struct net_devic=
-e_path_ctx *ctx,
->         if (ppp->flags & SC_MULTILINK)
->                 return -EOPNOTSUPP;
->
-> -       if (list_empty(&ppp->channels))
-> +       pch =3D list_first_or_null_rcu(&ppp->channels, struct channel, cl=
-ist);
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-It is unclear if rcu_read_lock() is held at this point.
+Commit 49431af6c4ef incorrectly assumes that the GSO path is only used
+by HW offload, but it's also useful for SW crypto.
 
-list_first_or_null_rcu() does not have a builtin __list_check_rcu()
+This patch re-enables GSO for SW crypto. It's not an exact revert to
+preserve the other changes made to xfrm_dev_offload_ok afterwards, but
+it reverts all of its effects.
 
+Fixes: 49431af6c4ef ("xfrm: rely on XFRM offload")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+---
+ net/xfrm/xfrm_device.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index d2819baea414..1f88472aaac0 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -415,10 +415,12 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
+ 	struct net_device *dev = x->xso.dev;
+ 	bool check_tunnel_size;
+ 
+-	if (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED)
++	if (!x->type_offload ||
++	    (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED && x->encap))
+ 		return false;
+ 
+-	if ((dev == xfrm_dst_path(dst)->dev) && !xdst->child->xfrm) {
++	if ((!dev || dev == xfrm_dst_path(dst)->dev) &&
++	    !xdst->child->xfrm) {
+ 		mtu = xfrm_state_mtu(x, xdst->child_mtu_cached);
+ 		if (skb->len <= mtu)
+ 			goto ok;
+@@ -430,6 +432,9 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
+ 	return false;
+ 
+ ok:
++	if (!dev)
++		return true;
++
+ 	check_tunnel_size = x->xso.type == XFRM_DEV_OFFLOAD_PACKET &&
+ 			    x->props.mode == XFRM_MODE_TUNNEL;
+ 	switch (x->props.family) {
+-- 
+2.43.0
 
-> +       if (!pch)
->                 return -ENODEV;
->
-> -       pch =3D list_first_entry(&ppp->channels, struct channel, clist);
->         chan =3D pch->chan;
-
-chan =3D READ_ONCE(pch->chan);
-
-And add a WRITE_ONCE(pch->chan, NULL) in ppp_unregister_channel()
-
-And/or add __rcu to pch->chan
-
-> +       if (!chan)
-> +               return -ENODEV;
-> +
->         if (!chan->ops->fill_forward_path)
->                 return -EOPNOTSUPP;
->
-> @@ -3515,7 +3519,7 @@ ppp_connect_channel(struct channel *pch, int unit)
->         hdrlen =3D pch->file.hdrlen + 2;  /* for protocol bytes */
->         if (hdrlen > ppp->dev->hard_header_len)
->                 ppp->dev->hard_header_len =3D hdrlen;
-> -       list_add_tail(&pch->clist, &ppp->channels);
-> +       list_add_tail_rcu(&pch->clist, &ppp->channels);
->         ++ppp->n_channels;
->         pch->ppp =3D ppp;
->         refcount_inc(&ppp->file.refcnt);
-> @@ -3545,10 +3549,11 @@ ppp_disconnect_channel(struct channel *pch)
->         if (ppp) {
->                 /* remove it from the ppp unit's list */
->                 ppp_lock(ppp);
-> -               list_del(&pch->clist);
-> +               list_del_rcu(&pch->clist);
->                 if (--ppp->n_channels =3D=3D 0)
->                         wake_up_interruptible(&ppp->file.rwait);
->                 ppp_unlock(ppp);
-> +               synchronize_rcu();
-
-synchronize_net() is preferred.
-
->                 if (refcount_dec_and_test(&ppp->file.refcnt))
->                         ppp_destroy_interface(ppp);
->                 err =3D 0;
-> --
-> 2.43.0
->
