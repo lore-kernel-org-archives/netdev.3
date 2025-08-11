@@ -1,23 +1,22 @@
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EA920B812;
-	Mon, 11 Aug 2025 07:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D42B23B613;
+	Mon, 11 Aug 2025 07:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754897733; cv=none; b=aa1SAyDGpwBRvEwBotD0KHwEPRsM6NdTT+TXOp9Q6W12Avhss6GRxomKroQFM4Xfv+v/e++t8xuppGMtWYFcrgABGEhTE15NDQrYhOlTpKUIV3ghhMKM6ufsoSGZYRH61Mt5GrZvAz4Jaw/Qd+mkFCdSAg+rRRAV9Y8ufRlFGcs=
+	t=1754897733; cv=none; b=OX51DPEjNTQNFLtxWuIP/OxFlsmVlv+EgsKs6j7QGtHMeF3E4h2rN+3luuB2kJO2DcO0WdJMpG6NadLPUkZ+byk5fZh4ddO9U8PgFFc/r1nT0lOTf1MFeCL3+dwb1fvHV9ePxU5pjiyHRPQ55cIUozqnb3nsKcnUQM7ylFoS9pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1754897733; c=relaxed/simple;
-	bh=Ge4FRghdRnHIXHEBbI+ihsb97tZrdg8eh1P/Q4/FG8c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rrPqIZsMuZ8PzWP5smKVn3E0Lex9HipNl1E1O1UZ8XXzuHwOM8MG7PlUZQ9akKc+qR7eQTRC2oKJ1RExdVWdkUADMtpOMo0CGN04ReUD/cO0VgaHeIcRXUASQFW6MZYOfAAP+J8xo75kJrEcFcWmBCRUDWE/t/1IfiaAHc+3wus=
+	bh=2Q9ZsC1HlA/lA6njVvReFZ0atkiHkIj+V8qk1kbzK/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uol5mFLgWUGzyehopdxuR5MOXE3BDl8/P5G05Ud1SyA5+4AhFf021uFcS5t2yDnjUvZ/WPMecxp981dejQMifWWdMtDSIItIlq5p0YM4v8ynWl/tS7QiWrKhJK9+1wRLm9LYvIWQbGHb8aGaIugUotwpCSetFEGPkl01wDNbbPc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [113.200.148.30])
-	by gateway (Coremail) with SMTP id _____8AxnOJBnZloL1Q+AQ--.17294S3;
-	Mon, 11 Aug 2025 15:35:29 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8CxPuM6nZloHFQ+AQ--.17397S3;
+	Mon, 11 Aug 2025 15:35:22 +0800 (CST)
 Received: from linux.localdomain (unknown [113.200.148.30])
-	by front1 (Coremail) with SMTP id qMiowJCxdOQqnZloCJ9CAA--.53284S5;
-	Mon, 11 Aug 2025 15:35:24 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJCxdOQqnZloCJ9CAA--.53284S2;
+	Mon, 11 Aug 2025 15:35:07 +0800 (CST)
 From: Tiezhu Yang <yangtiezhu@loongson.cn>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
@@ -27,12 +26,10 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 3/3] net: stmmac: Return early if invalid in loongson_dwmac_fix_reset()
-Date: Mon, 11 Aug 2025 15:35:06 +0800
-Message-ID: <20250811073506.27513-4-yangtiezhu@loongson.cn>
+Subject: [PATCH net-next v3 0/3] Refine stmmac code
+Date: Mon, 11 Aug 2025 15:35:03 +0800
+Message-ID: <20250811073506.27513-1-yangtiezhu@loongson.cn>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20250811073506.27513-1-yangtiezhu@loongson.cn>
-References: <20250811073506.27513-1-yangtiezhu@loongson.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,58 +37,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxdOQqnZloCJ9CAA--.53284S5
+X-CM-TRANSID:qMiowJCxdOQqnZloCJ9CAA--.53284S2
 X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ur15WF47Zr1fCF1Duw4xKrX_yoW8GF1xpr
-	W3Za429r9Fqr1fJa1qy34DXFy5u34rKrZ7WFZ7Awn3uan5Ja4qqr1agay0grW7Ar4rtFy3
-	XrW8uw1rua4DKwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU3529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1a6r1DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6F4UJVW0owAaw2AFwI0_JF0_Jw1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
-	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_
-	WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
-	xGrwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
-	JVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
-	x2IY67AKxVW5JVW7JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26c
-	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UAKsUUUUUU=
+X-Coremail-Antispam: 1Uk129KBj9xXoWruF4UCw4kKF1fuFyxZFyruFX_yoWfKFg_WF
+	W2vr98Xa1UXF4jkFW2grsxu34a9Fs8uw1FgFsrtayF93yrZr98XFn5ury8ZF1rWa4YyFn8
+	JF1xtr1xAw17KosvyTuYvTs0mTUanT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbfAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_JF0_JFyl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Cr1j6rxdM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
+	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
+	6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AK
+	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8Gii3UUUUU==
 
-If the MAC controller does not connect to any PHY interface, there is a
-missing clock, then the DMA reset fails.
+Here are three small patches to refine stmmac code when debugging and
+testing the problem "Failed to reset the dma".
 
-For this case, the DMA_BUS_MODE_SFT_RESET bit is 1 before software reset,
-just print an error message which gives a hint the PHY clock is missing,
-and then return -EINVAL immediately to avoid waiting for the timeout when
-the DMA reset fails in loongson_dwmac_fix_reset().
+v3:
+  -- Add a new patch to change the first parameter of fix_soc_reset().
+  -- Print an error message which gives a hint the PHY clock is missing.
 
-With this patch, for the normal end user, the computer start faster with
-reducing boot time for 2 seconds on the specified mainboard.
+v2:
+  -- Update the commit message of patch #1 to explain the background.
+  -- Add Reviewed-by tag for patch #2, no code changes.
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Tiezhu Yang (3):
+  net: stmmac: Check stmmac_hw_setup() in stmmac_resume()
+  net: stmmac: Change first parameter of fix_soc_reset()
+  net: stmmac: Return early if invalid in loongson_dwmac_fix_reset()
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-index bb376c69016d..05f195a18548 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-@@ -513,6 +513,11 @@ static int loongson_dwmac_fix_reset(struct stmmac_priv *priv, void __iomem *ioad
- {
- 	u32 value = readl(ioaddr + DMA_BUS_MODE);
- 
-+	if (value & DMA_BUS_MODE_SFT_RESET) {
-+		netdev_err(priv->dev, "the PHY clock is missing\n");
-+		return -EINVAL;
-+	}
-+
- 	value |= DMA_BUS_MODE_SFT_RESET;
- 	writel(value, ioaddr + DMA_BUS_MODE);
- 
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c      | 6 +++---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 7 ++++++-
+ drivers/net/ethernet/stmicro/stmmac/hwif.c           | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c    | 9 ++++++++-
+ include/linux/stmmac.h                               | 2 +-
+ 5 files changed, 19 insertions(+), 7 deletions(-)
+
 -- 
 2.42.0
 
