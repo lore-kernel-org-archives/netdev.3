@@ -1,221 +1,187 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023078.outbound.protection.outlook.com [52.101.72.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926252E3373;
-	Mon, 11 Aug 2025 21:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.78
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754946381; cv=fail; b=NV85a706lJv4abbuY22JDNs/DKhZ1lPQL4+Y9JCuCYq8rO8fh2tXKqhwi3T5Yk3SGdmzwSEyd0Sy0y+X9Nhf5PZviqiwjzk8b+9NxB/wsngV81VX2zIFt3KTdxZpU+6fRikHr0ivCJdKe9G8mioe8Y0htI3GZXHeJD8qCJOd6Z8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754946381; c=relaxed/simple;
-	bh=wUlW2Rne+GSQ4vAwlRCI04fhUZBB+7OWApVNmifxJP0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WG8LSZKeBIpYoyBbmS8ZBlTz/2gRhEo5nAYXTgi3E2WTxPqxoJ0KVYfOHMmWTLeO1BnGUfyoYWM1tqBXQ0Z7wg3UjPyI4vrq7wdSkQAW6sH7HI2dohoTBZDDfME96+msMjgjQOmXS1bk9+Deg9vLSdF55G1pHhb1aVls/HmT38Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=esd.eu; spf=pass smtp.mailfrom=esd.eu; dkim=pass (1024-bit key) header.d=esdhannover.onmicrosoft.com header.i=@esdhannover.onmicrosoft.com header.b=uSbGyE9E; arc=fail smtp.client-ip=52.101.72.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=esd.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=esd.eu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F582E2EE4
+	for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 21:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754946488; cv=none; b=bkp6lypeH/FT3HPe+Amz5gS+jhWoBlbH5BzVLtmoHxspZL0Xc8dgR+8mEd6Cr31Ax9VphUp9fHmWsdPJZiFjMDOOWm4vRx2anvqQLgmzxZC/H4E01gkyxlrvOVjsh0HWsXcfnZ4chewRfrzOP45ikG8b6ONwNZOjfjuehfIesE4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754946488; c=relaxed/simple;
+	bh=HA5GVypJ4ScykSXNFFxS5BkGihwWrZk/jfU+oeSmaIo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=vDJPXXt2w5zecNF5z6EyUNoFOygzX0t2d8IdPRLvJseF7D52Ij5gzrRdKXTOz5rLdJTK6QC0O4mANqHBo2epkW+Z/iiGf6dVNJPovpZO7HtSUvz2fPhNXVw9DIqMIbtRC3tYGb92XCU9y2my8ws7xl3pgu7VjMNiTWFTsTIKm0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZqyuVnWE; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=esdhannover.onmicrosoft.com header.i=@esdhannover.onmicrosoft.com header.b="uSbGyE9E"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ac32AU59aZTONp5qSXT815HaKKB0UdWl9+nFMFbNa+46XTPpooKU6jcwx7iDQLhGwE4BE2NbMSPiY2iILmxCL88h1gfgH1v/0KSVBBBISti/xss94vZrwA3NGshOfU+13XlWGimjErPbiMVPauA+Vy/Z8Gr43JuFDM2y7guBCliten0a9mY+uENZo5uuLnrZLpFgF99qxy7P5mtdAoe8siogPM+2c0C7bNntLLaAx74AeMvK3HSWgqEnn6oLxcKBOVu2/n7o11funQnzv1hMM5km0pTA0BH1Sjp/UyC7VI/kc5/+AWCNBFYPpEhN/LjW+KeMO5mP7dddjtA6vEgFPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y/b5qKRyhJdxMBfd0NIfsEnPJqi8/JHVaZ0uUnM0dAA=;
- b=PGICMqoRYRwxT+VwwDUjM6MDH5QSlAI9mO48FXtvqNkaYp3CN4GiwWCl7NC5U6pg9B7zekCsR3osx2XFL2Ey+FfebmPSgrCEzXeKm/V9Ssrdb3MhrcuaushHqe/3D9jPK52c61L8VhCD4QxBkhLKau/JTN6Hih5r/LP0QIsIOjzkYj3bkC+QbpOXbQltzRZ6vXFJhtuvFOLC07hIpjBncKsSK3Mf4BQv9BF+pPp8yq3Utk9itSLRqhLTtrM0MU5qA1ygHxj8POQkCW2RfMpIiWanHbRkjOgp5SgBZL4Q6NDKDTzQifhYlpit/kZRyCUfns9oD6b+4L9zqudU7L2PXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
- is 80.151.164.27) smtp.rcpttodomain=esd.eu smtp.mailfrom=esd.eu; dmarc=fail
- (p=none sp=none pct=100) action=none header.from=esd.eu; dkim=none (message
- not signed); arc=none (0)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZqyuVnWE"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6155e75a9acso7568142a12.0
+        for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 14:08:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=esdhannover.onmicrosoft.com; s=selector1-esdhannover-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=y/b5qKRyhJdxMBfd0NIfsEnPJqi8/JHVaZ0uUnM0dAA=;
- b=uSbGyE9E9fh3S6KyzcoZIv0hOVOZCidDTdACk5MkiO2xDlLIjw3h93aOQ/RtDNbzSBELUEshl+w8FX6cz9NMdKob9rjuMLiAFos1+RrHlM0MZKp9p7q+DxMnBDxTAw0JN/XBJ75LBRT2Rk/8s5Aa1jyE4Z0DyTnVP2UF+iakPRQ=
-Received: from PR1P264CA0199.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:34d::18)
- by AS8PR03MB6838.eurprd03.prod.outlook.com (2603:10a6:20b:29b::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Mon, 11 Aug
- 2025 21:06:12 +0000
-Received: from AM3PEPF0000A791.eurprd04.prod.outlook.com
- (2603:10a6:102:34d:cafe::6d) by PR1P264CA0199.outlook.office365.com
- (2603:10a6:102:34d::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9009.22 via Frontend Transport; Mon,
- 11 Aug 2025 21:06:12 +0000
-X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is
- 80.151.164.27) smtp.mailfrom=esd.eu; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=esd.eu;
-Received-SPF: SoftFail (protection.outlook.com: domain of transitioning esd.eu
- discourages use of 80.151.164.27 as permitted sender)
-Received: from esd-s7.esd (80.151.164.27) by
- AM3PEPF0000A791.mail.protection.outlook.com (10.167.16.120) with Microsoft
- SMTP Server id 15.20.9031.11 via Frontend Transport; Mon, 11 Aug 2025
- 21:06:12 +0000
-Received: from debby.esd.local (jenkins.esd.local [10.0.0.190])
-	by esd-s7.esd (Postfix) with ESMTPS id F2E977C16CC;
-	Mon, 11 Aug 2025 23:06:11 +0200 (CEST)
-Received: by debby.esd.local (Postfix, from userid 2044)
-	id EB24F2EC3E3; Mon, 11 Aug 2025 23:06:11 +0200 (CEST)
-From: =?UTF-8?q?Stefan=20M=C3=A4tje?= <stefan.maetje@esd.eu>
-To: Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Frank Jungclaus <frank.jungclaus@esd.eu>,
-	linux-can@vger.kernel.org,
-	socketcan@esd.eu
-Cc: Simon Horman <horms@kernel.org>,
-	Olivier Sobrie <olivier@sobrie.be>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	netdev@vger.kernel.org
-Subject: [PATCH 3/6] can: esd_usb: Fix handling of TX context objects
-Date: Mon, 11 Aug 2025 23:06:08 +0200
-Message-Id: <20250811210611.3233202-4-stefan.maetje@esd.eu>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250811210611.3233202-1-stefan.maetje@esd.eu>
-References: <20250811210611.3233202-1-stefan.maetje@esd.eu>
+        d=broadcom.com; s=google; t=1754946485; x=1755551285; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=vIWcwn97b7lWHcLZyXbCllvFOaOg7s4x3kZrm6zU4Ic=;
+        b=ZqyuVnWEeflknBwnZMzfUYaHb/YOwJPFJ0TYc4ssEsIaF4dH/2oG99QXAVGmn1Z4qF
+         iaTRgRMT7GP+ayjV0hxNe9c4my8i1tQ2rgHApbzQ4Yc3Hkaq/yXEBNZH6ft3TPg9piD6
+         Brf5g8Fx0WT7mXceYzjLaFg3ChgqKwYShqwzc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754946485; x=1755551285;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vIWcwn97b7lWHcLZyXbCllvFOaOg7s4x3kZrm6zU4Ic=;
+        b=UWaZmfgVwKx9cjg4iE79bMi3hB5SiwxAbGQg2a379u1D3gkPKIC/ajhFdoetEtWW1f
+         kUV/nGhT9/zhrIn0ZAdng8uve5Z8h68a2t//NEoUJouPRX4y38OwhnsN5wbvKI/wPoU0
+         8fqi9hm0QJQmkB10/vm5GSwf/QH+XFEFt0P8Z/dZe5emVsRUpqTxuAfBD95QstBJDcxt
+         IJyjG18Luktzk76CjheaOKeJKNR6xba4pLoU1+kImt4AF4w7SLliSJIXBDxn5Jfk2sdO
+         nWVae5anllGtdJr0/T8HxASSnCfqylIG2e8ibmiz1Av3jF87u+aN2ej9HbN908ha5/Uj
+         27Rw==
+X-Gm-Message-State: AOJu0YxAOWuRIlpsMtqOxA35x6zLcE0f0tblHhrx/NrWYcrahg99Cbsw
+	nyTnAb64FccMb2YT6rJTnK/Hhbb1Hh+4PtJ/Ig6+ebDHdHaPmaD9TlkATcdUC1S7G1J8kPvA42b
+	oJrFUFjstrPO4zBMB3ehevT4bsza8sskBT+CbI6Hx
+X-Gm-Gg: ASbGncuh4FyGGCpvWdOJfDT5AeM5wA25sNTeh185hcIcy3aRmKylHCWig0xl7KeswDa
+	LrSO3KiBTl0DVY5dvag2m7NrcehAweZ8HyY7UovL+be5IxY40etLpRZJqquICplf0Zk9b8BstcS
+	5OT1Un1oeqExfXcsdAextgcFlWFYioxK3ow6JsdTmw9r3jp0tMSqLxy3cGoC+sP06BFeBhZTy9h
+	a4C5/T+
+X-Google-Smtp-Source: AGHT+IGSizuJi11OTIFONuEgTUoI2/ERWdyjOb+VX6Gu2IEPYn3wuetVFveR+45ThkyXTpkQe31EcV1eLfr0Dd6O3Qg=
+X-Received: by 2002:a17:907:944d:b0:af9:4282:d38a with SMTP id
+ a640c23a62f3a-afa1dfecbc5mr84865666b.21.1754946485426; Mon, 11 Aug 2025
+ 14:08:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM3PEPF0000A791:EE_|AS8PR03MB6838:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1dac729b-a266-4493-cb11-08ddd91ae6e0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|82310400026|376014|1800799024|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?L1hJeFF6NEFLTWVsT1RXZ3JWVXdPREc1VStzbU1yV0t0MGVEaG5nNkVnNCs4?=
- =?utf-8?B?cTN4dVpxZUVuM1pJOERuTUo3Tzlpem5QWDY4Umd4UXlaSXZ1M1NKZDlFQW00?=
- =?utf-8?B?U2dINXp6Z3d0NmxyUEpOY3lzamVDdnU3cW1xNVFUOWVrd0s0OHhRNC9PTUxI?=
- =?utf-8?B?UHVmYnVET3dYNUo4cFBZeUhNNnBVUkNtTGw1Z2xkSEE1WFptcUNzZjJOSlhE?=
- =?utf-8?B?UFFQMWZtcWFWelRWVXpVTWNKR2h5dzhSd29YdlZWMGowZlh2VzNpUHFRbWJa?=
- =?utf-8?B?cXBkSFcrVytYVW94ZHg2aVEweWpsSS9qQno2TmsySjhneGlrZTJqNU1rVk1J?=
- =?utf-8?B?UWtyS0ZyQ0lRa3FTNTZEY2FRc3FIZlAxT1FIQ0VpcVZJaUx4Q1RHR0JTN3pq?=
- =?utf-8?B?QzgrMlRHbEFxNUg5K1YwVittcll3OUsxMFBVa25kWFVVN0EySWFyWVpyMEhh?=
- =?utf-8?B?elUzV1NvL1RLWVVDb3VLZ1MvZllWM1poYTM0c2lORnMxODJFenN3bnBkbXdJ?=
- =?utf-8?B?NkVhVnBWY0NrYnN3UGVEVldZRTZmV1pnVStYRUpmOXRPYk1lVnNneWpHL05N?=
- =?utf-8?B?WDRydG1DYU9OSEU1WFpjSHRPMDNISWpSdDgrV2hnSXVuK1BJU1Zvd3FTQ2pO?=
- =?utf-8?B?dVZJcjBWVWFGVWprYkp4MitsNWZwMzRjTUlYVmFvZWhKWjBzaEpWRGJwdVg1?=
- =?utf-8?B?MzFEK2hiK3hXSlBtcjVKSzlkdG9TeTdrWjYvWjVwM0JoRlpTbmR2S1dtR3lh?=
- =?utf-8?B?eW5kUEZQOS9lVDRuK0x3U1RYN1RPQ1pxelg3YXY2dDlhUXlWbXpTOFBIallS?=
- =?utf-8?B?REk3YWNvQmt5aHlwUXV1TFN5WlBJZ0M1QkpWT2kzV1NKSVcxcVp2MDNsb3A2?=
- =?utf-8?B?R3h6VUNybFJmQ2hVVTlmR3VaaG9tWEY2NklZWkd2MXRWVzBHTkhOQUpMaCtL?=
- =?utf-8?B?dnFGVHQ5SDVvd2lPRDhxUkV1YXVjZU5zTEJVQTVjTXdLQUhwRE1TOG1BbTVn?=
- =?utf-8?B?Zm8yMHB5cUZMb3pQMzFYb2dOVFAyN1JMWVdOSm9tU2EyQTBtdFF0cmdMWDE5?=
- =?utf-8?B?ZjJCMFh4bDNweU4zV0E1WTVTeWtVR1lYVGlVZXZvalZyS1lpMndsWXliN1Zu?=
- =?utf-8?B?eGxWVkVPK3hxV0llMm9EaU43eTBJNVJvVVZvbjlQbDlycUdla2M1SVR1LzZt?=
- =?utf-8?B?WjRuQWFaOG8wTXNXdG4xei9MNmFWSnNGTHhHSDdWajc0M09BVDFNUVd2Wm1p?=
- =?utf-8?B?UDczb0NlOWNHeG40cVlNTVlPd2N3TUZmK0lRdEc4OVNYbk9vODIraDFIVzFv?=
- =?utf-8?B?SEtOb0NpN09WeFZCVXhIV2ZyR2FwempiaUcrZFZndnRsenk3VFNDSy9aOVBs?=
- =?utf-8?B?Ym9nR2Q4ZzNhcUpMUThjcmQ5dE5lN21CZXQ5Y2Jkcnc3ODVYL0tLOFV6byth?=
- =?utf-8?B?cnFPUlpucDk5NkhkOVBGSmpCRlhqR2lyZmUwMHhzUkNGb2Z4OTkvSkt4QVJK?=
- =?utf-8?B?bFFOT3J4RkpUWkgvNFpXSVRVN0ZNMDQ1ZjJYanllTzQySGJ6U2hodktzamxt?=
- =?utf-8?B?RTFhUGJMRGxTalNoZS9JY2pJdEY0amllOU9tTGp5TWlGMEI1T2huM3RxNlRM?=
- =?utf-8?B?cG1qdFJGdDJwVDc5aTVVaU9LSUZHSGowWGdNVUdTZHZHNXBHcUhBQWQ5ZERM?=
- =?utf-8?B?V2ZZemw2cDVLMHIyakw3T0JOYXdiTld4RzBFdmd2ejNYdmE4T3NNMUdaY1h2?=
- =?utf-8?B?WUpOdlV5RnMzUDZMaFlwUUExWFNyNmh4NDJ4TEdVZi9tODFSK1VLSy9kU0Vs?=
- =?utf-8?B?bEpaZGQ2OWRGMkl5YnRFZjBvOFJNRlpDUHVSZHdQamlmS3VBdDR5WWdkK21i?=
- =?utf-8?B?WXFtTUxVRnY0UmVPQTVGNVZaWko5QUZRMGZBOUFqZER4eHQrY1RmQUtDTXJT?=
- =?utf-8?B?aDJSRngxNXpRcW9PWEI0Tk5va1Z0NkwrVEVPTUl2NWV6UThlampFVEo3VHFB?=
- =?utf-8?B?M3IyU3EyT0RrRmRmQjRENGtzME1GT3JmcFJhOEgvdFFEVG9xV1lUQjgxWGZl?=
- =?utf-8?Q?/qYdSF?=
-X-Forefront-Antispam-Report:
-	CIP:80.151.164.27;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:esd-s7.esd;PTR:p5097a41b.dip0.t-ipconnect.de;CAT:NONE;SFS:(13230040)(19092799006)(82310400026)(376014)(1800799024)(36860700013);DIR:OUT;SFP:1102;
-X-OriginatorOrg: esd.eu
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 21:06:12.1472
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1dac729b-a266-4493-cb11-08ddd91ae6e0
-X-MS-Exchange-CrossTenant-Id: 5a9c3a1d-52db-4235-b74c-9fd851db2e6b
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5a9c3a1d-52db-4235-b74c-9fd851db2e6b;Ip=[80.151.164.27];Helo=[esd-s7.esd]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM3PEPF0000A791.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR03MB6838
+References: <20250811174346.1989199-1-dw@davidwei.uk> <CACKFLimKpAtt8GDGT7k5zagQfzmPc_ggt9c0pu427=+T_FST1g@mail.gmail.com>
+ <521bf1f1-4a22-4afc-b101-ac960781b911@davidwei.uk>
+In-Reply-To: <521bf1f1-4a22-4afc-b101-ac960781b911@davidwei.uk>
+From: Michael Chan <michael.chan@broadcom.com>
+Date: Mon, 11 Aug 2025 14:07:52 -0700
+X-Gm-Features: Ac12FXzmIFGfTULPIPZfXPgHji2JylJrF3CxJvktWr9Xt5_svgWYYcgNSMpiqQg
+Message-ID: <CACKFLimab-kzux20TU4GD72GCa7PSe=JTxaeErDRe+zHke7TGQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] bnxt: fill data page pool with frags if
+ PAGE_SIZE > BNXT_RX_PAGE_SIZE
+To: David Wei <dw@davidwei.uk>
+Cc: netdev@vger.kernel.org, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000e25844063c1d5138"
 
-For each TX CAN frame submitted to the USB device the driver saves the
-echo skb index in struct esd_tx_urb_context context objects. If the
-driver runs out of free context objects CAN transmission stops.
+--000000000000e25844063c1d5138
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This patch fixes some spots where such context objects are not freed
-correctly.
+On Mon, Aug 11, 2025 at 1:19=E2=80=AFPM David Wei <dw@davidwei.uk> wrote:
+>
+> On 2025-08-11 11:08, Michael Chan wrote:
+> > On Mon, Aug 11, 2025 at 10:43=E2=80=AFAM David Wei <dw@davidwei.uk> wro=
+te:
+> >>
+> >> The data page pool always fills the HW rx ring with pages. On arm64 wi=
+th
+> >> 64K pages, this will waste _at least_ 32K of memory per entry in the r=
+x
+> >> ring.
+> >>
+> >> Fix by fragmenting the pages if PAGE_SIZE > BNXT_RX_PAGE_SIZE. This
+> >> makes the data page pool the same as the header pool.
+> >>
+> >> Tested with iperf3 with a small (64 entries) rx ring to encourage buff=
+er
+> >> circulation.
+> >
+> > This was a regression when adding devmem support.  Prior to that,
+> > __bnxt_alloc_rx_page() would handle this properly.  Should we add a
+> > Fixes tag?
+>
+> Sounds good, how about this?
+>
+> Fixes: cd1fafe7da1f ("eth: bnxt: add support rx side device memory TCP")
 
-In esd_usb_tx_done_msg() the check for netif_device_present() is moved
-after the identification and release of TX context and the release of
-the echo skb. This is allowed even if netif_device_present() would
-return false because the mentioned operations don't touch the device
-itself but only free local acquired resources. This keeps the context
-handling with the acknowledged TX jobs in sync.
+The tag is correct.  Thanks.
 
-In esd_usb_start_xmit() a check is performed to see whether a context
-object could be allocated. Added a netif_stop_queue() there before the
-function is aborted. This makes sure the network queue is stopped and
-avoids getting tons of log messages in a situation without free TX
-objects. The adjacent log message now also prints the active jobs
-counter making a cross check between active jobs and "no free context"
-condition possible.
+--000000000000e25844063c1d5138
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-In esd_usb_start_xmit() the error handling of usb_submit_urb() missed to
-free the context object together with the echo skb and decreasing the
-job count.
-
-Signed-off-by: Stefan Mätje <stefan.maetje@esd.eu>
----
- drivers/net/can/usb/esd_usb.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/can/usb/esd_usb.c b/drivers/net/can/usb/esd_usb.c
-index dbdfffe3a4a0..fc28fb52564c 100644
---- a/drivers/net/can/usb/esd_usb.c
-+++ b/drivers/net/can/usb/esd_usb.c
-@@ -460,9 +460,6 @@ static void esd_usb_tx_done_msg(struct esd_usb_net_priv *priv,
- 	struct net_device *netdev = priv->netdev;
- 	struct esd_tx_urb_context *context;
- 
--	if (!netif_device_present(netdev))
--		return;
--
- 	context = &priv->tx_contexts[msg->txdone.hnd & (ESD_USB_MAX_TX_URBS - 1)];
- 
- 	if (!msg->txdone.status) {
-@@ -478,6 +475,9 @@ static void esd_usb_tx_done_msg(struct esd_usb_net_priv *priv,
- 	context->echo_index = ESD_USB_MAX_TX_URBS;
- 	atomic_dec(&priv->active_tx_jobs);
- 
-+	if (!netif_device_present(netdev))
-+		return;
-+
- 	netif_wake_queue(netdev);
- }
- 
-@@ -961,9 +961,11 @@ static netdev_tx_t esd_usb_start_xmit(struct sk_buff *skb,
- 		}
- 	}
- 
--	/* This may never happen */
-+	/* This should never happen */
- 	if (!context) {
--		netdev_warn(netdev, "couldn't find free context\n");
-+		netdev_warn(netdev, "No free context. Jobs: %d\n",
-+			    atomic_read(&priv->active_tx_jobs));
-+		netif_stop_queue(netdev);
- 		ret = NETDEV_TX_BUSY;
- 		goto releasebuf;
- 	}
-@@ -994,6 +996,8 @@ static netdev_tx_t esd_usb_start_xmit(struct sk_buff *skb,
- 	if (err) {
- 		can_free_echo_skb(netdev, context->echo_index, NULL);
- 
-+		/* Release used context on error */
-+		context->echo_index = ESD_USB_MAX_TX_URBS;
- 		atomic_dec(&priv->active_tx_jobs);
- 		usb_unanchor_urb(urb);
- 
--- 
-2.34.1
-
+MIIQYAYJKoZIhvcNAQcCoIIQUTCCEE0CAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+gg3EMIIFDTCCA/WgAwIBAgIQeEqpED+lv77edQixNJMdADANBgkqhkiG9w0BAQsFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMDA5MTYwMDAwMDBaFw0yODA5MTYwMDAwMDBaMFsxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBS
+MyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA
+vbCmXCcsbZ/a0fRIQMBxp4gJnnyeneFYpEtNydrZZ+GeKSMdHiDgXD1UnRSIudKo+moQ6YlCOu4t
+rVWO/EiXfYnK7zeop26ry1RpKtogB7/O115zultAz64ydQYLe+a1e/czkALg3sgTcOOcFZTXk38e
+aqsXsipoX1vsNurqPtnC27TWsA7pk4uKXscFjkeUE8JZu9BDKaswZygxBOPBQBwrA5+20Wxlk6k1
+e6EKaaNaNZUy30q3ArEf30ZDpXyfCtiXnupjSK8WU2cK4qsEtj09JS4+mhi0CTCrCnXAzum3tgcH
+cHRg0prcSzzEUDQWoFxyuqwiwhHu3sPQNmFOMwIDAQABo4IB2jCCAdYwDgYDVR0PAQH/BAQDAgGG
+MGAGA1UdJQRZMFcGCCsGAQUFBwMCBggrBgEFBQcDBAYKKwYBBAGCNxQCAgYKKwYBBAGCNwoDBAYJ
+KwYBBAGCNxUGBgorBgEEAYI3CgMMBggrBgEFBQcDBwYIKwYBBQUHAxEwEgYDVR0TAQH/BAgwBgEB
+/wIBADAdBgNVHQ4EFgQUljPR5lgXWzR1ioFWZNW+SN6hj88wHwYDVR0jBBgwFoAUj/BLf6guRSSu
+TVD6Y5qL3uLdG7wwegYIKwYBBQUHAQEEbjBsMC0GCCsGAQUFBzABhiFodHRwOi8vb2NzcC5nbG9i
+YWxzaWduLmNvbS9yb290cjMwOwYIKwYBBQUHMAKGL2h0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5j
+b20vY2FjZXJ0L3Jvb3QtcjMuY3J0MDYGA1UdHwQvMC0wK6ApoCeGJWh0dHA6Ly9jcmwuZ2xvYmFs
+c2lnbi5jb20vcm9vdC1yMy5jcmwwWgYDVR0gBFMwUTALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgEo
+CjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAN
+BgkqhkiG9w0BAQsFAAOCAQEAdAXk/XCnDeAOd9nNEUvWPxblOQ/5o/q6OIeTYvoEvUUi2qHUOtbf
+jBGdTptFsXXe4RgjVF9b6DuizgYfy+cILmvi5hfk3Iq8MAZsgtW+A/otQsJvK2wRatLE61RbzkX8
+9/OXEZ1zT7t/q2RiJqzpvV8NChxIj+P7WTtepPm9AIj0Keue+gS2qvzAZAY34ZZeRHgA7g5O4TPJ
+/oTd+4rgiU++wLDlcZYd/slFkaT3xg4qWDepEMjT4T1qFOQIL+ijUArYS4owpPg9NISTKa1qqKWJ
+jFoyms0d0GwOniIIbBvhI2MJ7BSY9MYtWVT5jJO3tsVHwj4cp92CSFuGwunFMzCCA18wggJHoAMC
+AQICCwQAAAAAASFYUwiiMA0GCSqGSIb3DQEBCwUAMEwxIDAeBgNVBAsTF0dsb2JhbFNpZ24gUm9v
+dCBDQSAtIFIzMRMwEQYDVQQKEwpHbG9iYWxTaWduMRMwEQYDVQQDEwpHbG9iYWxTaWduMB4XDTA5
+MDMxODEwMDAwMFoXDTI5MDMxODEwMDAwMFowTDEgMB4GA1UECxMXR2xvYmFsU2lnbiBSb290IENB
+IC0gUjMxEzARBgNVBAoTCkdsb2JhbFNpZ24xEzARBgNVBAMTCkdsb2JhbFNpZ24wggEiMA0GCSqG
+SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDMJXaQeQZ4Ihb1wIO2hMoonv0FdhHFrYhy/EYCQ8eyip0E
+XyTLLkvhYIJG4VKrDIFHcGzdZNHr9SyjD4I9DCuul9e2FIYQebs7E4B3jAjhSdJqYi8fXvqWaN+J
+J5U4nwbXPsnLJlkNc96wyOkmDoMVxu9bi9IEYMpJpij2aTv2y8gokeWdimFXN6x0FNx04Druci8u
+nPvQu7/1PQDhBjPogiuuU6Y6FnOM3UEOIDrAtKeh6bJPkC4yYOlXy7kEkmho5TgmYHWyn3f/kRTv
+riBJ/K1AFUjRAjFhGV64l++td7dkmnq/X8ET75ti+w1s4FRpFqkD2m7pg5NxdsZphYIXAgMBAAGj
+QjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSP8Et/qC5FJK5N
+UPpjmove4t0bvDANBgkqhkiG9w0BAQsFAAOCAQEAS0DbwFCq/sgM7/eWVEVJu5YACUGssxOGhigH
+M8pr5nS5ugAtrqQK0/Xx8Q+Kv3NnSoPHRHt44K9ubG8DKY4zOUXDjuS5V2yq/BKW7FPGLeQkbLmU
+Y/vcU2hnVj6DuM81IcPJaP7O2sJTqsyQiunwXUaMld16WCgaLx3ezQA3QY/tRG3XUyiXfvNnBB4V
+14qWtNPeTCekTBtzc3b0F5nCH3oO4y0IrQocLP88q1UOD5F+NuvDV0m+4S4tfGCLw0FREyOdzvcy
+a5QBqJnnLDMfOjsl0oZAzjsshnjJYS8Uuu7bVW/fhO4FCU29KNhyztNiUGUe65KXgzHZs7XKR1g/
+XzCCBUwwggQ0oAMCAQICDF5AaMOe0cZvaJpCQjANBgkqhkiG9w0BAQsFADBbMQswCQYDVQQGEwJC
+RTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMg
+UGVyc29uYWxTaWduIDIgQ0EgMjAyMDAeFw0yMjA5MTAwODIxMzhaFw0yNTA5MTAwODIxMzhaMIGO
+MQswCQYDVQQGEwJJTjESMBAGA1UECBMJS2FybmF0YWthMRIwEAYDVQQHEwlCYW5nYWxvcmUxFjAU
+BgNVBAoTDUJyb2FkY29tIEluYy4xFTATBgNVBAMTDE1pY2hhZWwgQ2hhbjEoMCYGCSqGSIb3DQEJ
+ARYZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC
+ggEBALhEmG7egFWvPKcrDxuNhNcn2oHauIHc8AzGhPyJxU4S6ZUjHM/psoNo5XxlMSRpYE7g7vLx
+J4NBefU36XTEWVzbEkAuOSuJTuJkm98JE3+wjeO+aQTbNF3mG2iAe0AZbAWyqFxZulWitE8U2tIC
+9mttDjSN/wbltcwuti7P57RuR+WyZstDlPJqUMm1rJTbgDqkF2pnvufc4US2iexnfjGopunLvioc
+OnaLEot1MoQO7BIe5S9H4AcCEXXcrJJiAtMCl47ARpyHmvQFQFFTrHgUYEd9V+9bOzY7MBIGSV1N
+/JfsT1sZw6HT0lJkSQefhPGpBniAob62DJP3qr11tu8CAwEAAaOCAdowggHWMA4GA1UdDwEB/wQE
+AwIFoDCBowYIKwYBBQUHAQEEgZYwgZMwTgYIKwYBBQUHMAKGQmh0dHA6Ly9zZWN1cmUuZ2xvYmFs
+c2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNydDBBBggrBgEFBQcw
+AYY1aHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAw
+TQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYBBQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2Jh
+bHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwSQYDVR0fBEIwQDA+oDygOoY4aHR0cDov
+L2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcmwwJAYDVR0R
+BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQU31rAyTdZweIF0tJTFYwfOv2w
+L4QwDQYJKoZIhvcNAQELBQADggEBACcuyaGmk0NSZ7Kio7O7WSZ0j0f9xXcBnLbJvQXFYM7JI5uS
+kw5ozATEN5gfmNIe0AHzqwoYjAf3x8Dv2w7HgyrxWdpjTKQFv5jojxa3A5LVuM8mhPGZfR/L5jSk
+5xc3llsKqrWI4ov4JyW79p0E99gfPA6Waixoavxvv1CZBQ4Stu7N660kTu9sJrACf20E+hdKLoiU
+hd5wiQXo9B2ncm5P3jFLYLBmPltIn/uzdiYpFj+E9kS9XYDd+boBZhN1Vh0296zLQZobLfKFzClo
+E6IFyTTANonrXvCRgodKS+QJEH8Syu2jSKe023aVemkuZjzvPK7o9iU7BKkPG2pzLPgxggJgMIIC
+XAIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQD
+EyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxeQGjDntHGb2iaQkIw
+DQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEICQF2UAb03RM+rmjKH0VJao5SutFTEwN
+8NgYjUn4yKUCMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDgx
+MTIxMDgwNVowXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCG
+SAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEB
+AQUABIIBABGz87lO7L/AbPDfjyYW+MYjip6Bica65VC/7X6VJamecU3q0spRHliKiUh8bk4A84R8
+PfMnPhSHjrS36gAU9v7yGka0ukXz0gUMzhrnhU9Bg8vMRS+YjrmK25XKF1R49MJt4TaYUrzt2BMB
+YMK4ixUSWU703QZSSqvXqE6XLwLsvZwhDW9fuCxDRgGUSRQeTj3wTU6nrCoWs1XEutJjgaNAMaTx
+J3tMkQkbSlwo0a79wZpp5RQBF4mATiliyVkQZ/nnBzfY/ZzYbYiW8kwEY98hPmhzL8QYRcSoL3m7
+9NdKjkajl8hoB5GeawppKHVjMJRoN1jCQeCSf+o1mxlW6oA=
+--000000000000e25844063c1d5138--
