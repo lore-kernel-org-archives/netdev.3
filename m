@@ -1,99 +1,231 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 5.mo560.mail-out.ovh.net (5.mo560.mail-out.ovh.net [87.98.181.248])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377702690D1
-	for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 17:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1790E2690D1
+	for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 17:25:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=87.98.181.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754933091; cv=none; b=CwN0RsPe90so1LzuZX7eWq6a/xk5ku4XEQ+dK7HOAFN5NCH4jmdSVKLqOHVF9j/veTmfhXXJcJkZRUdcaPDzNTQx7JuItxqyRGHQR/8+uh6d4pBBGRWjLVG24xZuCyAErJsu9v5Fwqfkrc+KLh91A30ULOqxrx0MUJrUr68WCaY=
+	t=1754933116; cv=none; b=RekNedhk25JtZv100dSIfCd4TswYO9vBQYhrOpGvklj0YbYrvp41F0yuAuxbKn4O/1XLpmHHJUW984OoGAX8r3YrOJFie3EvpEwFuAT9DoJKveMjymKXQVzyVBeLz2vmh6kC+p0uWCfArK83s8kajTt4Koh8BKWr7GmGqWEbjKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754933091; c=relaxed/simple;
-	bh=dEeQo7VUqFuiey9ka40670HdBJK1WVPh0QbAB5Rknec=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L9QhQllDd/iAJ5EUCYfs/LJz7/iv/Dq7ydZoiDcGntZNrdK/lHM17530DWFmEtyJUnTllIdAp2DcztLjye2/0MYfVMAMzITvrBXmJpwtiaB7BvgqYu2FTEiP74Q2IYwLBYVQiQNp+kQAMY/aCb7FmA7Rm+kOhez8Iy7MCNvMXpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=at+27e7j; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="at+27e7j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E85C4CEF5;
-	Mon, 11 Aug 2025 17:24:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754933090;
-	bh=dEeQo7VUqFuiey9ka40670HdBJK1WVPh0QbAB5Rknec=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=at+27e7jDB76eJ7205QrZu/hoLxvmSqSnKZlAbA5eBcPJ5TAMh9hg+ebF2wXuDAyz
-	 7FtreHSALMahB3sW8PJ1E6H4SOQItFjzVu8AaUIAbSaYRUsx3cHjb9kDZavu1Gnk9F
-	 YcTY+nXffbAtOYMvGS0e7CJYwm7OhaXgLEYBt65hSqBGaqYDwtlFiSVttdY0BMaAhN
-	 BtcHUXmx/g3NjiJ2cjqcqvYCqLujckE6y0X6OWOMA8GwZ+AQHLW/N5ukFivon7dwAQ
-	 4NoqHujLd19YaR+30P+gDv2ffzLFCTi7pzkrSD1k+khq0YFedXKwpgAwl4nwLlJO8G
-	 vyz52dH1Ufi7g==
-Date: Mon, 11 Aug 2025 10:24:49 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: William Liu <will@willsroot.io>
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, xiyou.wangcong@gmail.com,
- pabeni@redhat.com, jiri@resnulli.us, davem@davemloft.net,
- edumazet@google.com, horms@kernel.org, savy@syst3mfailure.io,
- victor@mojatatu.com
-Subject: Re: [PATCH net v4 1/2] net/sched: Fix backlog accounting in
- qdisc_dequeue_internal
-Message-ID: <20250811102449.50e5f416@kernel.org>
-In-Reply-To: <-8f3jdd-5pxHr0GW-uu8VtTzqDKDOyJohJ-soIwzRyqJUub186VYIxqNoGOTh8Oxtu1U0CEDl5h3N1c1D1jbn7nIlXUrNo55CHK5KcT23c4=@willsroot.io>
-References: <20250727235602.216450-1-will@willsroot.io>
-	<20250808142746.6b76eae1@kernel.org>
-	<n-GjVW0_1R1-ujkLgZIEgnaQKSsNtQ9-7UZiTmDCJsy1EutoUtiGOSahNSxpz2yANsp5olbxItT2X9apTC9btIRepMGAZZVBqWx6ueYE5O4=@willsroot.io>
-	<20250811082958.489df3fa@kernel.org>
-	<-8f3jdd-5pxHr0GW-uu8VtTzqDKDOyJohJ-soIwzRyqJUub186VYIxqNoGOTh8Oxtu1U0CEDl5h3N1c1D1jbn7nIlXUrNo55CHK5KcT23c4=@willsroot.io>
+	s=arc-20240116; t=1754933116; c=relaxed/simple;
+	bh=/OgP2fWVJyslPL/uNxCOeQEOl/jSz8lUlRBr9hgwdtU=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=Ca2SStaQJcAYuQYA+RyYndxoiomVcw67ilZcz2WyLrAX0+lAUvBQeA7KzjtfoaK4iAD72hbSEMaIiGCCvVubAYUb9/wxBee5qvtep+awGFO9CwepQWmfsBbHuH6J2DwVrU//GePD8d+Xwie34QwHm8l1rvrhfHj0l5iHMwfdi/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=remlab.net; spf=pass smtp.mailfrom=remlab.net; arc=none smtp.client-ip=87.98.181.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=remlab.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=remlab.net
+Received: from director10.ghost.mail-out.ovh.net (unknown [10.110.54.193])
+	by mo560.mail-out.ovh.net (Postfix) with ESMTP id 4c0yRt4MKyzB7vT
+	for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 14:58:02 +0000 (UTC)
+Received: from ghost-submission-5b5ff79f4f-rtb4t (unknown [10.110.188.214])
+	by director10.ghost.mail-out.ovh.net (Postfix) with ESMTPS id C537DC154D;
+	Mon, 11 Aug 2025 14:57:48 +0000 (UTC)
+Received: from courmont.net ([37.59.142.106])
+	by ghost-submission-5b5ff79f4f-rtb4t with ESMTPSA
+	id 4gMzMusEmmhy1QEAI4oDMA
+	(envelope-from <remi@remlab.net>); Mon, 11 Aug 2025 14:57:48 +0000
+Authentication-Results:garm.ovh; auth=pass (GARM-106R006240cf1e2-728d-4c8f-95da-6579b7a637e6,
+                    0AE6E86C62881299141D84328603455735AF50AA) smtp.auth=postmaster@courmont.net
+X-OVh-ClientIp:205.220.129.228
+Date: Mon, 11 Aug 2025 23:57:35 +0900
+From: =?ISO-8859-1?Q?R=E9mi_Denis-Courmont?= <remi@remlab.net>
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com, Remi Denis-Courmont <courmisch@gmail.com>
+Subject: Re: [PATCH net-next] phonet: add __rcu annotations
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20250811145252.1007242-1-edumazet@google.com>
+References: <20250811145252.1007242-1-edumazet@google.com>
+Message-ID: <CF7BAFD9-D698-4639-8AA0-EDF88166794F@remlab.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Ovh-Tracer-Id: 358599122912352542
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufedvjeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevufgfjghfkfggtgfgsehtqhhmtddtreejnecuhfhrohhmpeftrohmihcuffgvnhhishdqvehouhhrmhhonhhtuceorhgvmhhisehrvghmlhgrsgdrnhgvtheqnecuggftrfgrthhtvghrnheptdehtedtheegfeejfeetheetgedvveekkeejhffggefgieevveffffelgfehueejnecukfhppeduvdejrddtrddtrddupddvtdehrddvvddtrdduvdelrddvvdekpdefjedrheelrddugedvrddutdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpehrvghmihesrhgvmhhlrggsrdhnvghtpdhnsggprhgtphhtthhopedupdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehiedtmgdpmhhouggvpehsmhhtphhouhht
 
-On Mon, 11 Aug 2025 16:52:51 +0000 William Liu wrote:
-> > > Can you elaborate on this?
-> > > 
-> > > I just moved the reset of two cstats fields from the dequeue handler
-> > > epilogue to the prologue. Those specific cstats fields are not used
-> > > elsewhere so they should be fine,  
-> > 
-> > 
-> > That's the disconnect. AFAICT they are passed to codel_dequeue(),
-> > and will be used during normal dequeue, as part of normal active
-> > queue management under traffic..
-> >   
-> 
-> Yes, that is the only place those values are used. From my
-> understanding, codel_dequeue is only called in fq_codel_dequeue. So
-> moving the reset from the dequeue epilogue to the dequeue prologue
-> should be fine as the same behavior is kept - the same values should
-> always be used by codel_dequeue.
-> 
-> Is there a case I am not seeing? If so, I can just add additional
-> fields to the fq_codel_sched_data, but wanted to avoid doing that for
-> this one edge case.
 
-This sort of separation of logic is very error prone in general.
-If you're asking for a specific bug that would exist with your 
-patch - I believe that two subsequent fq_codel_change() calls,
-first one reducing the limit, the other one _not_ reducing (and
-therefore never invoking dequeue) will adjust the backlog twice.
 
-As I commented in the previous message - wouldn't counting the
-packets we actually dequeue not solve this problem? smth like:
+Le 11 ao=C3=BBt 2025 23:52:52 GMT+09:00, Eric Dumazet <edumazet@google=2Ec=
+om> a =C3=A9crit=C2=A0:
+>Removes following sparse errors=2E
+>
+>make C=3D2 net/phonet/socket=2Eo net/phonet/af_phonet=2Eo
+>  CHECK   net/phonet/socket=2Ec
+>net/phonet/socket=2Ec:619:14: error: incompatible types in comparison exp=
+ression (different address spaces):
+>net/phonet/socket=2Ec:619:14:    struct sock [noderef] __rcu *
+>net/phonet/socket=2Ec:619:14:    struct sock *
+>net/phonet/socket=2Ec:642:17: error: incompatible types in comparison exp=
+ression (different address spaces):
+>net/phonet/socket=2Ec:642:17:    struct sock [noderef] __rcu *
+>net/phonet/socket=2Ec:642:17:    struct sock *
+>net/phonet/socket=2Ec:658:17: error: incompatible types in comparison exp=
+ression (different address spaces):
+>net/phonet/socket=2Ec:658:17:    struct sock [noderef] __rcu *
+>net/phonet/socket=2Ec:658:17:    struct sock *
+>net/phonet/socket=2Ec:677:25: error: incompatible types in comparison exp=
+ression (different address spaces):
+>net/phonet/socket=2Ec:677:25:    struct sock [noderef] __rcu *
+>net/phonet/socket=2Ec:677:25:    struct sock *
+>net/phonet/socket=2Ec:726:21: warning: context imbalance in 'pn_res_seq_s=
+tart' - wrong count at exit
+>net/phonet/socket=2Ec:741:13: warning: context imbalance in 'pn_res_seq_s=
+top' - wrong count at exit
+>  CHECK   net/phonet/af_phonet=2Ec
+>net/phonet/af_phonet=2Ec:35:14: error: incompatible types in comparison e=
+xpression (different address spaces):
+>net/phonet/af_phonet=2Ec:35:14:    struct phonet_protocol const [noderef]=
+ __rcu *
+>net/phonet/af_phonet=2Ec:35:14:    struct phonet_protocol const *
+>net/phonet/af_phonet=2Ec:474:17: error: incompatible types in comparison =
+expression (different address spaces):
+>net/phonet/af_phonet=2Ec:474:17:    struct phonet_protocol const [noderef=
+] __rcu *
+>net/phonet/af_phonet=2Ec:474:17:    struct phonet_protocol const *
+>net/phonet/af_phonet=2Ec:486:9: error: incompatible types in comparison e=
+xpression (different address spaces):
+>net/phonet/af_phonet=2Ec:486:9:    struct phonet_protocol const [noderef]=
+ __rcu *
+>net/phonet/af_phonet=2Ec:486:9:    struct phonet_protocol const *
+>
+>Signed-off-by: Eric Dumazet <edumazet@google=2Ecom>
+>Cc: Remi Denis-Courmont <courmisch@gmail=2Ecom>
 
-	pkts = 0;
-	bytes = 0;
- 	while (sch->q.qlen > sch->limit ||
- 	       q->memory_usage > q->memory_limit) {
- 		struct sk_buff *skb = qdisc_dequeue_internal(sch, false);
- 
-		pkts++;
-		bytes += qdisc_pkt_len(skb);
- 		rtnl_kfree_skbs(skb, skb);
- 	}
-	qdisc_tree_reduce_backlog(sch, pkts, bytes);
 
-? "Conceptually" we are only responsible for adjusting the backlog
-for skbs we actually gave to kfree_skb(). 
+Acked-by: R=C3=A9mi Denis-Courmont <courmisch@gmail=2Ecom>
+
+(We should probably replace that BUG_ON with a WARN_ON but that's a separa=
+te issue=2E)
+
+>---
+> net/phonet/af_phonet=2Ec |  4 ++--
+> net/phonet/socket=2Ec    | 23 ++++++++++++-----------
+> 2 files changed, 14 insertions(+), 13 deletions(-)
+>
+>diff --git a/net/phonet/af_phonet=2Ec b/net/phonet/af_phonet=2Ec
+>index a27efa4faa4ef46e64efe6744790c47ec34147ac=2E=2E238a9638d2b0f6a23070b=
+0871515302d8cba864f 100644
+>--- a/net/phonet/af_phonet=2Ec
+>+++ b/net/phonet/af_phonet=2Ec
+>@@ -22,7 +22,7 @@
+> #include <net/phonet/pn_dev=2Eh>
+>=20
+> /* Transport protocol registration */
+>-static const struct phonet_protocol *proto_tab[PHONET_NPROTO] __read_mos=
+tly;
+>+static const struct phonet_protocol __rcu *proto_tab[PHONET_NPROTO] __re=
+ad_mostly;
+>=20
+> static const struct phonet_protocol *phonet_proto_get(unsigned int proto=
+col)
+> {
+>@@ -482,7 +482,7 @@ void phonet_proto_unregister(unsigned int protocol,
+> 			const struct phonet_protocol *pp)
+> {
+> 	mutex_lock(&proto_tab_lock);
+>-	BUG_ON(proto_tab[protocol] !=3D pp);
+>+	BUG_ON(rcu_access_pointer(proto_tab[protocol]) !=3D pp);
+> 	RCU_INIT_POINTER(proto_tab[protocol], NULL);
+> 	mutex_unlock(&proto_tab_lock);
+> 	synchronize_rcu();
+>diff --git a/net/phonet/socket=2Ec b/net/phonet/socket=2Ec
+>index ea4d5e6533dba737f77bedbba1b1ef2ec3c17568=2E=2E2b61a40b568e91e340130=
+a9b589e2b7a9346643f 100644
+>--- a/net/phonet/socket=2Ec
+>+++ b/net/phonet/socket=2Ec
+>@@ -602,7 +602,7 @@ const struct seq_operations pn_sock_seq_ops =3D {
+> #endif
+>=20
+> static struct  {
+>-	struct sock *sk[256];
+>+	struct sock __rcu *sk[256];
+> } pnres;
+>=20
+> /*
+>@@ -654,7 +654,7 @@ int pn_sock_unbind_res(struct sock *sk, u8 res)
+> 		return -EPERM;
+>=20
+> 	mutex_lock(&resource_mutex);
+>-	if (pnres=2Esk[res] =3D=3D sk) {
+>+	if (rcu_access_pointer(pnres=2Esk[res]) =3D=3D sk) {
+> 		RCU_INIT_POINTER(pnres=2Esk[res], NULL);
+> 		ret =3D 0;
+> 	}
+>@@ -673,7 +673,7 @@ void pn_sock_unbind_all_res(struct sock *sk)
+>=20
+> 	mutex_lock(&resource_mutex);
+> 	for (res =3D 0; res < 256; res++) {
+>-		if (pnres=2Esk[res] =3D=3D sk) {
+>+		if (rcu_access_pointer(pnres=2Esk[res]) =3D=3D sk) {
+> 			RCU_INIT_POINTER(pnres=2Esk[res], NULL);
+> 			match++;
+> 		}
+>@@ -688,7 +688,7 @@ void pn_sock_unbind_all_res(struct sock *sk)
+> }
+>=20
+> #ifdef CONFIG_PROC_FS
+>-static struct sock **pn_res_get_idx(struct seq_file *seq, loff_t pos)
+>+static struct sock __rcu **pn_res_get_idx(struct seq_file *seq, loff_t p=
+os)
+> {
+> 	struct net *net =3D seq_file_net(seq);
+> 	unsigned int i;
+>@@ -697,7 +697,7 @@ static struct sock **pn_res_get_idx(struct seq_file *=
+seq, loff_t pos)
+> 		return NULL;
+>=20
+> 	for (i =3D 0; i < 256; i++) {
+>-		if (pnres=2Esk[i] =3D=3D NULL)
+>+		if (rcu_access_pointer(pnres=2Esk[i]) =3D=3D NULL)
+> 			continue;
+> 		if (!pos)
+> 			return pnres=2Esk + i;
+>@@ -706,7 +706,7 @@ static struct sock **pn_res_get_idx(struct seq_file *=
+seq, loff_t pos)
+> 	return NULL;
+> }
+>=20
+>-static struct sock **pn_res_get_next(struct seq_file *seq, struct sock *=
+*sk)
+>+static struct sock __rcu **pn_res_get_next(struct seq_file *seq, struct =
+sock __rcu **sk)
+> {
+> 	struct net *net =3D seq_file_net(seq);
+> 	unsigned int i;
+>@@ -728,7 +728,7 @@ static void *pn_res_seq_start(struct seq_file *seq, l=
+off_t *pos)
+>=20
+> static void *pn_res_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+> {
+>-	struct sock **sk;
+>+	struct sock __rcu **sk;
+>=20
+> 	if (v =3D=3D SEQ_START_TOKEN)
+> 		sk =3D pn_res_get_idx(seq, 0);
+>@@ -747,11 +747,12 @@ static void pn_res_seq_stop(struct seq_file *seq, v=
+oid *v)
+> static int pn_res_seq_show(struct seq_file *seq, void *v)
+> {
+> 	seq_setwidth(seq, 63);
+>-	if (v =3D=3D SEQ_START_TOKEN)
+>+	if (v =3D=3D SEQ_START_TOKEN) {
+> 		seq_puts(seq, "rs   uid inode");
+>-	else {
+>-		struct sock **psk =3D v;
+>-		struct sock *sk =3D *psk;
+>+	} else {
+>+		struct sock __rcu **psk =3D v;
+>+		struct sock *sk =3D rcu_dereference_protected(*psk,
+>+					lockdep_is_held(&resource_mutex));
+>=20
+> 		seq_printf(seq, "%02X %5u %lu",
+> 			   (int) (psk - pnres=2Esk),
