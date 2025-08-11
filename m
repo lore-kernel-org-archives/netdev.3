@@ -1,22 +1,23 @@
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D42B23B613;
-	Mon, 11 Aug 2025 07:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04BC2D9EC7;
+	Mon, 11 Aug 2025 07:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754897733; cv=none; b=OX51DPEjNTQNFLtxWuIP/OxFlsmVlv+EgsKs6j7QGtHMeF3E4h2rN+3luuB2kJO2DcO0WdJMpG6NadLPUkZ+byk5fZh4ddO9U8PgFFc/r1nT0lOTf1MFeCL3+dwb1fvHV9ePxU5pjiyHRPQ55cIUozqnb3nsKcnUQM7ylFoS9pc=
+	t=1754897734; cv=none; b=iN2YrYsLdec7/VmKrIuScVo/EWBzbkuvOZbtij7BQTkKNNm9F0gOXVo6fSpwzR/sww6klkspGQ0sDOq3KbBF+qa52/wF5TZw2sce3TIDPloUzmYRTlBS6LleAwYnSGbO1/KdA0RHQSUOsgYMU8du3QaqRPGXLoHbnlwMuyCKwKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754897733; c=relaxed/simple;
-	bh=2Q9ZsC1HlA/lA6njVvReFZ0atkiHkIj+V8qk1kbzK/8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uol5mFLgWUGzyehopdxuR5MOXE3BDl8/P5G05Ud1SyA5+4AhFf021uFcS5t2yDnjUvZ/WPMecxp981dejQMifWWdMtDSIItIlq5p0YM4v8ynWl/tS7QiWrKhJK9+1wRLm9LYvIWQbGHb8aGaIugUotwpCSetFEGPkl01wDNbbPc=
+	s=arc-20240116; t=1754897734; c=relaxed/simple;
+	bh=9acX92L9C+8DrWyx0+RWywSPvOducwWYPw9SAAVNwos=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=n8d8SYzkajM8gOn+iY1mo6tPKlNLgQ8l4jFJ1D3dM/4e+Jk+QQpeA2EsqMS+ymxPMqWgMZc96M6m76fQzAMtyWNjMHhhw0Ti6BQ/vuzpN+wz2oQs/rvlDYf3yM6L/gkw6Bq45FD9Dd/L9gS0sJNx7+VitIkkUHDbFiH30hZTdtM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [113.200.148.30])
-	by gateway (Coremail) with SMTP id _____8CxPuM6nZloHFQ+AQ--.17397S3;
-	Mon, 11 Aug 2025 15:35:22 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8AxlnA9nZloJ1Q+AQ--.51947S3;
+	Mon, 11 Aug 2025 15:35:25 +0800 (CST)
 Received: from linux.localdomain (unknown [113.200.148.30])
-	by front1 (Coremail) with SMTP id qMiowJCxdOQqnZloCJ9CAA--.53284S2;
-	Mon, 11 Aug 2025 15:35:07 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJCxdOQqnZloCJ9CAA--.53284S4;
+	Mon, 11 Aug 2025 15:35:19 +0800 (CST)
 From: Tiezhu Yang <yangtiezhu@loongson.cn>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
@@ -26,10 +27,12 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 0/3] Refine stmmac code
-Date: Mon, 11 Aug 2025 15:35:03 +0800
-Message-ID: <20250811073506.27513-1-yangtiezhu@loongson.cn>
+Subject: [PATCH net-next v3 2/3] net: stmmac: Change first parameter of fix_soc_reset()
+Date: Mon, 11 Aug 2025 15:35:05 +0800
+Message-ID: <20250811073506.27513-3-yangtiezhu@loongson.cn>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20250811073506.27513-1-yangtiezhu@loongson.cn>
+References: <20250811073506.27513-1-yangtiezhu@loongson.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,49 +40,105 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxdOQqnZloCJ9CAA--.53284S2
+X-CM-TRANSID:qMiowJCxdOQqnZloCJ9CAA--.53284S4
 X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj9xXoWruF4UCw4kKF1fuFyxZFyruFX_yoWfKFg_WF
-	W2vr98Xa1UXF4jkFW2grsxu34a9Fs8uw1FgFsrtayF93yrZr98XFn5ury8ZF1rWa4YyFn8
-	JF1xtr1xAw17KosvyTuYvTs0mTUanT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
-	cSsGvfJTRUUUbfAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
-	vaj40_Wr0E3s1l1IIY67AEw4v_JF0_JFyl8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Cr1j6rxdM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
-	6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AK
-	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8Gii3UUUUU==
+X-Coremail-Antispam: 1Uk129KBj93XoWxAw4DJFy8Cr1DKrW3tw17XFc_yoWrGF15pF
+	WUZa429r97trySqan5Jr4UZFyYva4fKFW0gF4xJwsa9a1akr90qrn0gFWYyr12kF45WF1a
+	yr4UCw1UuF1qyrcCm3ZEXasCq-sJn29KB7ZKAUJUUUU3529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r126r13M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6F4UJVW0owAaw2AFwI0_JF0_Jw1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
+	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_
+	WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+	xGrwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
+	JVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
+	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
+	x2IY67AKxVW5JVW7JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26c
+	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAF
+	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jr6p9UUUUU=
 
-Here are three small patches to refine stmmac code when debugging and
-testing the problem "Failed to reset the dma".
+In order to use netdev_err() to print message in the callback function of
+fix_soc_reset(), change fix_soc_reset() to have "struct stmmac_priv *" as
+its first parameter.
 
-v3:
-  -- Add a new patch to change the first parameter of fix_soc_reset().
-  -- Print an error message which gives a hint the PHY clock is missing.
+This is preparation for later patch, no functionality change.
 
-v2:
-  -- Update the commit message of patch #1 to explain the background.
-  -- Add Reviewed-by tag for patch #2, no code changes.
-
-Tiezhu Yang (3):
-  net: stmmac: Check stmmac_hw_setup() in stmmac_resume()
-  net: stmmac: Change first parameter of fix_soc_reset()
-  net: stmmac: Return early if invalid in loongson_dwmac_fix_reset()
-
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+---
  drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c      | 6 +++---
- drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 7 ++++++-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 2 +-
  drivers/net/ethernet/stmicro/stmmac/hwif.c           | 2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c    | 9 ++++++++-
  include/linux/stmmac.h                               | 2 +-
- 5 files changed, 19 insertions(+), 7 deletions(-)
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+index 889e2bb6f7f5..c2d9e89f0063 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+@@ -49,7 +49,7 @@ struct imx_dwmac_ops {
+ 	u32 flags;
+ 	bool mac_rgmii_txclk_auto_adj;
+ 
+-	int (*fix_soc_reset)(void *priv, void __iomem *ioaddr);
++	int (*fix_soc_reset)(struct stmmac_priv *priv, void __iomem *ioaddr);
+ 	int (*set_intf_mode)(struct plat_stmmacenet_data *plat_dat);
+ 	void (*fix_mac_speed)(void *priv, int speed, unsigned int mode);
+ };
+@@ -265,9 +265,9 @@ static void imx93_dwmac_fix_speed(void *priv, int speed, unsigned int mode)
+ 	writel(old_ctrl, dwmac->base_addr + MAC_CTRL_REG);
+ }
+ 
+-static int imx_dwmac_mx93_reset(void *priv, void __iomem *ioaddr)
++static int imx_dwmac_mx93_reset(struct stmmac_priv *priv, void __iomem *ioaddr)
+ {
+-	struct plat_stmmacenet_data *plat_dat = priv;
++	struct plat_stmmacenet_data *plat_dat = priv->plat;
+ 	u32 value = readl(ioaddr + DMA_BUS_MODE);
+ 
+ 	/* DMA SW reset */
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index e1591e6217d4..bb376c69016d 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -509,7 +509,7 @@ static int loongson_dwmac_acpi_config(struct pci_dev *pdev,
+ }
+ 
+ /* Loongson's DWMAC device may take nearly two seconds to complete DMA reset */
+-static int loongson_dwmac_fix_reset(void *priv, void __iomem *ioaddr)
++static int loongson_dwmac_fix_reset(struct stmmac_priv *priv, void __iomem *ioaddr)
+ {
+ 	u32 value = readl(ioaddr + DMA_BUS_MODE);
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.c b/drivers/net/ethernet/stmicro/stmmac/hwif.c
+index 99635b37044a..3f7c765dcb79 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/hwif.c
++++ b/drivers/net/ethernet/stmicro/stmmac/hwif.c
+@@ -100,7 +100,7 @@ int stmmac_reset(struct stmmac_priv *priv, void __iomem *ioaddr)
+ 		return -EINVAL;
+ 
+ 	if (plat && plat->fix_soc_reset)
+-		return plat->fix_soc_reset(plat, ioaddr);
++		return plat->fix_soc_reset(priv, ioaddr);
+ 
+ 	return stmmac_do_callback(priv, dma, reset, ioaddr);
+ }
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index 26ddf95d23f9..330694641a95 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -238,7 +238,7 @@ struct plat_stmmacenet_data {
+ 	int (*set_clk_tx_rate)(void *priv, struct clk *clk_tx_i,
+ 			       phy_interface_t interface, int speed);
+ 	void (*fix_mac_speed)(void *priv, int speed, unsigned int mode);
+-	int (*fix_soc_reset)(void *priv, void __iomem *ioaddr);
++	int (*fix_soc_reset)(struct stmmac_priv *priv, void __iomem *ioaddr);
+ 	int (*serdes_powerup)(struct net_device *ndev, void *priv);
+ 	void (*serdes_powerdown)(struct net_device *ndev, void *priv);
+ 	int (*mac_finish)(struct net_device *ndev,
 -- 
 2.42.0
 
