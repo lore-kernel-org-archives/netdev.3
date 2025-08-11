@@ -1,88 +1,99 @@
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.205])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663B029BDAA;
-	Mon, 11 Aug 2025 17:09:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377702690D1
+	for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 17:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754932148; cv=none; b=BD5qoz9s44xSrY1GPtxRltmNyXe4i22fbCTRZQS0PPMTiNVwRYkMNNuSqhPPbV7NwEUapcn5Zs7gUNedUACC+B2qNGU3maD9Vuu5PY5HnT6342GLssU+Qjs1a3C5W4iht7Di+oxyB+h8Iq+mfdtwqLyW9qBYZITmy1umEUA7hL8=
+	t=1754933091; cv=none; b=CwN0RsPe90so1LzuZX7eWq6a/xk5ku4XEQ+dK7HOAFN5NCH4jmdSVKLqOHVF9j/veTmfhXXJcJkZRUdcaPDzNTQx7JuItxqyRGHQR/8+uh6d4pBBGRWjLVG24xZuCyAErJsu9v5Fwqfkrc+KLh91A30ULOqxrx0MUJrUr68WCaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754932148; c=relaxed/simple;
-	bh=xYofdvRO7j1Ase2qXJ0tdVFtD+PZbY32/7zmF+57inc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J+jnb2HdtPDQ4+qFXmZtxJlwZwQj2zaq1PmabngTVv2chYn6XRdkaIskJrTsbTXrFW/I6w301yhCXUSR7csfq43NKiX9ETJ0MnciDZCn2RXflOc7GKdr68BGw/cApe1Fgo/XqWcXB2mKhbii7pu5wRihGcNm6gsdZw3s3m5GWIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=T87r1Esh; arc=none smtp.client-ip=192.19.144.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1754933091; c=relaxed/simple;
+	bh=dEeQo7VUqFuiey9ka40670HdBJK1WVPh0QbAB5Rknec=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L9QhQllDd/iAJ5EUCYfs/LJz7/iv/Dq7ydZoiDcGntZNrdK/lHM17530DWFmEtyJUnTllIdAp2DcztLjye2/0MYfVMAMzITvrBXmJpwtiaB7BvgqYu2FTEiP74Q2IYwLBYVQiQNp+kQAMY/aCb7FmA7Rm+kOhez8Iy7MCNvMXpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=at+27e7j; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="T87r1Esh"
-Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 37CAAC0005CB;
-	Mon, 11 Aug 2025 09:59:54 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 37CAAC0005CB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1754931594;
-	bh=xYofdvRO7j1Ase2qXJ0tdVFtD+PZbY32/7zmF+57inc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=T87r1Eshs7/fCvDSzxx3dSIQSKQ2JWNa63ipEz1BPorQTizrxV0T+b7QhWF4sukHx
-	 oYOf4PIoe6GCI6tqLfZ3YzD9bwdbu9rzh7sFOkMJyJrl9Pd8kLgDdBuWN3CXkj5qIr
-	 FC2t66abBZGHgQyY6p+ElOf0LPuJ24jimlufjLls=
-Received: from fainelli-desktop.igp.broadcom.net (fainelli-desktop.dhcp.broadcom.net [10.67.48.245])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id C1BBD18000A5F;
-	Mon, 11 Aug 2025 09:59:23 -0700 (PDT)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net-next] net: mdio: mdio-bcm-unimac: Refine incorrect clock message
-Date: Mon, 11 Aug 2025 09:59:21 -0700
-Message-ID: <20250811165921.392030-1-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="at+27e7j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E85C4CEF5;
+	Mon, 11 Aug 2025 17:24:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754933090;
+	bh=dEeQo7VUqFuiey9ka40670HdBJK1WVPh0QbAB5Rknec=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=at+27e7jDB76eJ7205QrZu/hoLxvmSqSnKZlAbA5eBcPJ5TAMh9hg+ebF2wXuDAyz
+	 7FtreHSALMahB3sW8PJ1E6H4SOQItFjzVu8AaUIAbSaYRUsx3cHjb9kDZavu1Gnk9F
+	 YcTY+nXffbAtOYMvGS0e7CJYwm7OhaXgLEYBt65hSqBGaqYDwtlFiSVttdY0BMaAhN
+	 BtcHUXmx/g3NjiJ2cjqcqvYCqLujckE6y0X6OWOMA8GwZ+AQHLW/N5ukFivon7dwAQ
+	 4NoqHujLd19YaR+30P+gDv2ffzLFCTi7pzkrSD1k+khq0YFedXKwpgAwl4nwLlJO8G
+	 vyz52dH1Ufi7g==
+Date: Mon, 11 Aug 2025 10:24:49 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: William Liu <will@willsroot.io>
+Cc: netdev@vger.kernel.org, jhs@mojatatu.com, xiyou.wangcong@gmail.com,
+ pabeni@redhat.com, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@google.com, horms@kernel.org, savy@syst3mfailure.io,
+ victor@mojatatu.com
+Subject: Re: [PATCH net v4 1/2] net/sched: Fix backlog accounting in
+ qdisc_dequeue_internal
+Message-ID: <20250811102449.50e5f416@kernel.org>
+In-Reply-To: <-8f3jdd-5pxHr0GW-uu8VtTzqDKDOyJohJ-soIwzRyqJUub186VYIxqNoGOTh8Oxtu1U0CEDl5h3N1c1D1jbn7nIlXUrNo55CHK5KcT23c4=@willsroot.io>
+References: <20250727235602.216450-1-will@willsroot.io>
+	<20250808142746.6b76eae1@kernel.org>
+	<n-GjVW0_1R1-ujkLgZIEgnaQKSsNtQ9-7UZiTmDCJsy1EutoUtiGOSahNSxpz2yANsp5olbxItT2X9apTC9btIRepMGAZZVBqWx6ueYE5O4=@willsroot.io>
+	<20250811082958.489df3fa@kernel.org>
+	<-8f3jdd-5pxHr0GW-uu8VtTzqDKDOyJohJ-soIwzRyqJUub186VYIxqNoGOTh8Oxtu1U0CEDl5h3N1c1D1jbn7nIlXUrNo55CHK5KcT23c4=@willsroot.io>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-In light of a81649a4efd3 ("net: mdio: mdio-bcm-unimac: Correct rate
-fallback logic"), it became clear that the warning should be specific to
-the MDIO controller instance, and there should be further information
-provided to indicate what is wrong, whether the requested clock
-frequency or the rate calculation. Clarify the message accordingly.
+On Mon, 11 Aug 2025 16:52:51 +0000 William Liu wrote:
+> > > Can you elaborate on this?
+> > > 
+> > > I just moved the reset of two cstats fields from the dequeue handler
+> > > epilogue to the prologue. Those specific cstats fields are not used
+> > > elsewhere so they should be fine,  
+> > 
+> > 
+> > That's the disconnect. AFAICT they are passed to codel_dequeue(),
+> > and will be used during normal dequeue, as part of normal active
+> > queue management under traffic..
+> >   
+> 
+> Yes, that is the only place those values are used. From my
+> understanding, codel_dequeue is only called in fq_codel_dequeue. So
+> moving the reset from the dequeue epilogue to the dequeue prologue
+> should be fine as the same behavior is kept - the same values should
+> always be used by codel_dequeue.
+> 
+> Is there a case I am not seeing? If so, I can just add additional
+> fields to the fq_codel_sched_data, but wanted to avoid doing that for
+> this one edge case.
 
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
- drivers/net/mdio/mdio-bcm-unimac.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+This sort of separation of logic is very error prone in general.
+If you're asking for a specific bug that would exist with your 
+patch - I believe that two subsequent fq_codel_change() calls,
+first one reducing the limit, the other one _not_ reducing (and
+therefore never invoking dequeue) will adjust the backlog twice.
 
-diff --git a/drivers/net/mdio/mdio-bcm-unimac.c b/drivers/net/mdio/mdio-bcm-unimac.c
-index 7baab230008a..37e35f282d9a 100644
---- a/drivers/net/mdio/mdio-bcm-unimac.c
-+++ b/drivers/net/mdio/mdio-bcm-unimac.c
-@@ -215,7 +215,9 @@ static int unimac_mdio_clk_set(struct unimac_mdio_priv *priv)
+As I commented in the previous message - wouldn't counting the
+packets we actually dequeue not solve this problem? smth like:
+
+	pkts = 0;
+	bytes = 0;
+ 	while (sch->q.qlen > sch->limit ||
+ 	       q->memory_usage > q->memory_limit) {
+ 		struct sk_buff *skb = qdisc_dequeue_internal(sch, false);
  
- 	div = (rate / (2 * priv->clk_freq)) - 1;
- 	if (div & ~MDIO_CLK_DIV_MASK) {
--		pr_warn("Incorrect MDIO clock frequency, ignoring\n");
-+		dev_warn(priv->mii_bus->parent,
-+			 "Ignoring MDIO clock frequency request: %d vs. rate: %ld\n",
-+			 priv->clk_freq, rate);
- 		ret = 0;
- 		goto out;
+		pkts++;
+		bytes += qdisc_pkt_len(skb);
+ 		rtnl_kfree_skbs(skb, skb);
  	}
--- 
-2.43.0
+	qdisc_tree_reduce_backlog(sch, pkts, bytes);
 
+? "Conceptually" we are only responsible for adjusting the backlog
+for skbs we actually gave to kfree_skb(). 
