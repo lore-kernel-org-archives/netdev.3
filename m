@@ -1,77 +1,110 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4017219A9B
-	for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 09:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64719219A9B;
+	Mon, 11 Aug 2025 09:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754904934; cv=none; b=Gn+0AkD2FOavkJopHu93hTK4eu1qmfJ47mp9Gk8fiObv00uvcrKdEor7pixVjNsF+k6nByjSmi84KNKGjR9DvmZP2v3XwisYIkQwE0cDQPFgB6ri81A38WdFxiL+OS1NropbpQl4YZO/s5kyeZod7tuOiYrRSGDIwDPASKhl/uk=
+	t=1754904955; cv=none; b=t/1vJ+LJApK1sYPINoxZu17BHGzFLZ+2wkCFlTLBujO3tjTEWS/ZLhGR1EUPJYHCtBqYfAOAhbnFE/lqZvy3VO6piAC/WfuQgfKD7Hcq5Eh50w5JkJ9oyyJEdFqYty5faavqM0hAofNPThF1P1l/g1VCMeLyN7HnN3Dw5QgqVvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754904934; c=relaxed/simple;
-	bh=N5OBK83I6BMc5+G4FWzZ69mcWguLo+tCMMtgMyyBQuw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rzWmxF77BTGZDLwJYHkQBdibpVoRK983aggCqSCDwGA2nWvNC2z7+v5wY9IWHTRlzlx+UzLG1DRxv2vc2LOBeHR8QR4GMbwhLMoWJbiYfGKJ2j4eWzaca04yBPdQR6b4lHXtkjpA42F0Z7psTiWSZP+iBRXN+YUmANp0QwqgYcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QmOrpa72; arc=none smtp.client-ip=91.218.175.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1754904955; c=relaxed/simple;
+	bh=huCMHIOn/M8ds1Qx9wLzhAyBHeP/mVcrI5EZ4zAW0Uw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nBOUFGKolgtpZsWwwq4VhY7dk813sq16koLT0/cTQkmh87LgA12qLqR0FBhHENqdMPtQ2Saeh3RXoFM94Y2PvKF/CkuCWhbP9WNVYFIX7u5j/P0GAwKMIfxXnqgFtWt5mk4lnwrEqtpH15vcJImEM4HOuLkKCMVzNm2BNcHOVCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KJ/mrs4I; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QmOrpa72"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1754904918;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yTqGLRCADO0VrcQ5UXFXw61pDkrPUQFqQTnjcLtaKTE=;
-	b=QmOrpa72t06MF56gnq/SF/qj5ZPu0xxy2ibfwIXBtV3lc2LuNj3MsUciBkfDZJBwoCxflZ
-	ch78fpo8G8pQAk9EorPnsPH+rEWj77qQAcgET+/KHmErmKVtBq6Ik3VFQNCGG70ep7fDq4
-	rJ8WWWVoLe0iz2uvmnPJHAN56LwrxAk=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] caif: Replace memset(0) + strscpy() with strscpy_pad()
-Date: Mon, 11 Aug 2025 11:34:40 +0200
-Message-ID: <20250811093442.5075-2-thorsten.blum@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KJ/mrs4I"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-71c0ba0bea4so11748127b3.0;
+        Mon, 11 Aug 2025 02:35:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754904953; x=1755509753; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AcUbaj5Xh5Mro6ZUAFV3vQZF2eNOuhYUNOO/PJ+eOAY=;
+        b=KJ/mrs4ImbrSCMWDpJjNJcYES5zYkt0PUNxpTqZHZDUn5LvR6d4ky3gbarpZy8TyRs
+         kpfzb1mMJTaFJlDSMm/iaVZFGLB7Pr87PPgaKWSKSwnQIKgDYZZ2Ii/Zbmk77w7/wpJM
+         2yyBPeG7dLW7vZQhTmrdp8WTajSeBoPd0Sv8GZSMQZU8B2Aja1zK0lPk+kDHNrp9nuvp
+         QhaScGFmNVOr03r7ixRfZ/kOPqZDNK+olcLbQdeO1UR10hs3l/EiTUwdPCqr0AnvIkDJ
+         5kqrCoxbWbmBwD/drbTD0F1E+755VyUfzVFBQpVJdOEpaylqaoVvol7gzyMmAES7+BB1
+         I1kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754904953; x=1755509753;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AcUbaj5Xh5Mro6ZUAFV3vQZF2eNOuhYUNOO/PJ+eOAY=;
+        b=lp7P31/ICcQQdKfmCNLMVxazJjJYSVnOLyoO3la63R98PMwPYBH6ZBN5wrWJIQMudV
+         R1civP6EtWjRRfg5T6avsWB/EswHQY7RwUJ0ityKfy8xImpwGnCPBWi8HNjTjFLsTRgH
+         cGdVK1BzOiWhtovcgUWnIALz8R/5JBH6TLLT3I26eAMH06tPeB6zba9fOnTIYDXX44OQ
+         mda6/sC4YxLtfujPNWLyTWYdd0bXXCA+qwZMeV6E9tSxP+hmSSpEq+LlOW4eupamC5pO
+         VRhSfbGN8Xe+c0EuyFen0Y3OKWaWR9u8QbQS2WuCAzhviyIPYME37Z5nr80us4ileOpa
+         DujA==
+X-Forwarded-Encrypted: i=1; AJvYcCUOo491VMHbFY2qQXET/KnAaY7dkjmoNGgoiWP005i4Wuf51D4CuFXeF7ObGPJyJ7RMnx31gdsHGu+39vk=@vger.kernel.org, AJvYcCWkHQyWPD0L3TIf63f1RFGkYgvmEmOW0f437IudxHZremJizpmg7eHrL9bPNiKqgQfBBfczZqMh@vger.kernel.org, AJvYcCXr8zqhtGsYJ7HxMQH/8UAC8sOgn9GflZA/JIYiE/vqDyEmYjS46/YIU9bynHk7w0uPqeqyCIoYRglb@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmGyzvwWcbzJrywpYlCD1rNbizphe5hnGUO4LUnp51SWd0nFCB
+	L3McD+RJ2gIhH5E58neDBYo2SGluJ7JsIGAQWwjTbfrf/E3cstMu9vrd8YFdWk+0uLmFhY8kkrG
+	WG33+3cYx34OTi0+69Kzc2MsHddKSanQ=
+X-Gm-Gg: ASbGnctkg2jZoNPZcperh4ygfzQGll04JclxdZNeOux4dNtwwRLWQ42micastJE6eWI
+	l/KYeeg3PY+GF+xKw/X9Nme0uRimKmkH3AmxOtHk+e2n8DWnOrfs9hp71AXx9Q9lyGPlvli73Jf
+	j57FY3E26HuGaDsO9O3Wo4i3sxHuoOPXwZVSDuWzO2O8zkdw4nuzJR554aaImieW5mdSgKPDc3B
+	e4iJOLvoHifg2W1qKbjhNg=
+X-Google-Smtp-Source: AGHT+IHcU9CbsS7KpoOZsMnZH/SewN4yccvQVB45rejWKX3sHFuPcavri8YzwSNjVlWayffwB8TTghNdf3bG8CWyTi0=
+X-Received: by 2002:a05:690c:9691:b0:71a:41be:133 with SMTP id
+ 00721157ae682-71bf0d3d579mr151142237b3.14.1754904953147; Mon, 11 Aug 2025
+ 02:35:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20250811084427.178739-1-dqfext@gmail.com> <CANn89iLEMss3VGiJCo=XGVFBSA12bz0y01vVdmBN7WysBLtoUA@mail.gmail.com>
+In-Reply-To: <CANn89iLEMss3VGiJCo=XGVFBSA12bz0y01vVdmBN7WysBLtoUA@mail.gmail.com>
+From: Qingfang Deng <dqfext@gmail.com>
+Date: Mon, 11 Aug 2025 17:35:32 +0800
+X-Gm-Features: Ac12FXyXHPt3KWJVCq5JB8s-eJ6YpQlmaT2LGNV2OsLn2GATDz-fTxsoK-fo3Qw
+Message-ID: <CALW65jZ-uBWOkxPVMQc3Yg-KEoVRdPQYVC3+q5MiQbvpDZBKTQ@mail.gmail.com>
+Subject: Re: [PATCH net] ppp: fix race conditions in ppp_fill_forward_path
+To: Eric Dumazet <edumazet@google.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Pablo Neira Ayuso <pablo@netfilter.org>, Felix Fietkau <nbd@nbd.name>, linux-ppp@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Replace memset(0) followed by strscpy() with strscpy_pad() to improve
-cfctrl_linkup_request(). This avoids zeroing the memory before copying
-the string and ensures the destination buffer is only written to once,
-simplifying the code and improving efficiency.
+On Mon, Aug 11, 2025 at 5:19=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> On Mon, Aug 11, 2025 at 1:44=E2=80=AFAM Qingfang Deng <dqfext@gmail.com> =
+wrote:
+> It is unclear if rcu_read_lock() is held at this point.
+>
+> list_first_or_null_rcu() does not have a builtin __list_check_rcu()
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- net/caif/cfctrl.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ndo_fill_forward_path() is called by nf_tables chains, which is inside
+an RCU critical section.
 
-diff --git a/net/caif/cfctrl.c b/net/caif/cfctrl.c
-index 06b604cf9d58..2aa1e7d46eb2 100644
---- a/net/caif/cfctrl.c
-+++ b/net/caif/cfctrl.c
-@@ -257,9 +257,7 @@ int cfctrl_linkup_request(struct cflayer *layer,
- 		cfpkt_add_body(pkt, &tmp16, 2);
- 		tmp16 = cpu_to_le16(param->u.utility.fifosize_bufs);
- 		cfpkt_add_body(pkt, &tmp16, 2);
--		memset(utility_name, 0, sizeof(utility_name));
--		strscpy(utility_name, param->u.utility.name,
--			UTILITY_NAME_LENGTH);
-+		strscpy_pad(utility_name, param->u.utility.name);
- 		cfpkt_add_body(pkt, utility_name, UTILITY_NAME_LENGTH);
- 		tmp8 = param->u.utility.paramlen;
- 		cfpkt_add_body(pkt, &tmp8, 1);
--- 
-2.50.1
+> >         chan =3D pch->chan;
+>
+> chan =3D READ_ONCE(pch->chan);
+>
+> And add a WRITE_ONCE(pch->chan, NULL) in ppp_unregister_channel()
+>
+> And/or add __rcu to pch->chan
 
+Should I add {READ,WRITE}_ONCE to all occurrences of pch->chan or only
+to ppp_unregister_channel?
+
+>
+
+> > +               synchronize_rcu();
+>
+> synchronize_net() is preferred.
+>
+
+Noted.
+
+Thanks!
