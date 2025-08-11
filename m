@@ -1,31 +1,65 @@
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00F314658D;
-	Mon, 11 Aug 2025 13:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8357221504E
+	for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 13:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754919306; cv=none; b=WHI+fbm/NUTrL7jF+ENodKkx+yJb6Lpys2wD6EGgl9aUGfyRmz88azqWU+e3YNhbfgWjzlCi2P+aOwyVpAG13DOwD/nHuOJ7mF6pYgYwsnL8W36yUED9TvCFPMw6L09oH3C862jU4PQUY3bT7UpCi2ATkl56JaLb8sJIRUaLgg8=
+	t=1754920336; cv=none; b=GO5s1Q2mEWoT06h7D8YTpu13pCQr4lG5OYR8QI8Pp6RPCAU60tQe7Vl7673bf6m7e6n7Kolyb31yI3TKyHlZJIOaqUXpBnlMxwyiyZa/X0OMQbpnbsP4Gh564C1iH1pXxoDUy09agjYz34rMGqnV5/GFOTfuETxQUMA0ZmNRKT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754919306; c=relaxed/simple;
-	bh=P/6clgUfwuZRazSUQ4qaigehTvJmYc83jk/AMjBeDOo=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=j+CdqrQBcDnruBCYHZDyvYFNV7wycriW/sLHtDaJQSCPF8pqMvp/Y/Kf5skNTVAvx/sD2H0Ndjv8pvwhJZDTu/4SoX1xKV69POb5bEkNEtJkbmFHRoA6paIIoUlfnIMsyZso+txgNwWOmko97IzjN6JjpOyawgkAdbqY+3MtRHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c0w7s1X92z1R8xV;
-	Mon, 11 Aug 2025 21:14:01 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4F9641A0188;
-	Mon, 11 Aug 2025 21:16:50 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 11 Aug 2025 21:16:49 +0800
-Message-ID: <a5876695-4c10-4789-8dda-8591d71e882d@huawei.com>
-Date: Mon, 11 Aug 2025 21:16:48 +0800
+	s=arc-20240116; t=1754920336; c=relaxed/simple;
+	bh=5c0WB1RzFFmzbOp/NABg1wswKvFL35sxwt9YjE4qHNU=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=eRFwt2yZOuaoH49TZXlaqqhTNGNVnaBfTfFq59iv6TafjGF217BNIiiGs2rGbfZAYKindTG4ByntKlmixV4d08zvMJ/eaX7OjhiTRqeeDBhzkI5eIzhFEBpyTedRG+iPy9UytDyglbcCvv9mjv79pUtpz5YWC9A+Oz42ROE/2qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=Y8DKXBJL; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="Y8DKXBJL"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-24041a39005so27573395ad.2
+        for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 06:52:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1754920334; x=1755525134; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ZN2vVD8bu9LjGGLEp4YnRLfmphfRufPa600jGJm/zQo=;
+        b=Y8DKXBJLC6nPQCd2JbM9VNL5Z7LQD96+PUoox1A5T0Gspe9veOCR7SJ2aC655FSk2B
+         O+I9Ivt4NnIjlPfkpCP2yf4i2pS8/WcO0RmovGucOxfcC+jU4QKnuyfpEEhcOSJoVwrE
+         yh7uG/+5/Ish/HfHzyGjGU+BKdhUeW5u9mBdKHrYHIWSwgN1eBbFCEnq6j7U3oF37AQn
+         njcj3gk2nrZMigO3pp9MsAsMvqA0c5i4EN9x/VJhITTTbp9yVklgsIkRuungfQPtJ7N/
+         aUK2byfTWkNfBs64LZ28gBrr5Vi16NrSwNoNOo+lGdBat+4h+J8s8dUwaDgr4RngYSZO
+         ebkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754920334; x=1755525134;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZN2vVD8bu9LjGGLEp4YnRLfmphfRufPa600jGJm/zQo=;
+        b=CC63oH9/zQ5XrWQy4ZFoY9EYN8jBgB2V3al92suYJB0JY4pdwjB2LIiMYZ8lUJq/eX
+         A5DdtWAvjePyjUe34z1xUYaDjEtEJloNiTR9nM3IxZQQaHFqiB9jdV7cZfNeQ5KHSfCb
+         XpXVms9M83n40fLfOG/Q52u7R7X8hcW+YlwV1xjOHVMYts3Tjir5p9ne5yG/ho9rsCri
+         0mtfm0EwdUcHLAuohjFLbkb79gkgWi1dNDBHst/Pz5XIvxr12oJ0/wUy+jo8b/Khva+c
+         /aE3jFBZ+NOARkPyv2f0/GEEhu2OOMlhvIKNTRLeo3dY7rc7MG/pFWGZAUrTBj/pUApc
+         MaXw==
+X-Forwarded-Encrypted: i=1; AJvYcCUa+ULUpZDO94K5Vbmj5vFQhrmYwjAgHor4QGsMqCGF0vVs3i5K9sCmE2aujjX7fa8a7KFDqkg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcUfvdanAv9/LjrVHlQikMzdM8cp7etOtt2rhLcqza4V7w4D2m
+	Mjpk0ZyFzl5B4JB+d/yBGGjczwX94AbqrM4F/4PjBcm0OjIpyW6XajAhSAf2iO0kSQ==
+X-Gm-Gg: ASbGncsRo10qX/teKIWlVhXqhX+cvF3IQwrT/xMOX4femIeeBs1tQKZP4n2fDK9qOz3
+	7rMtx/735/1An09sYKwx3evhfkuL3jwkw8eVbeQ6qfqgqs6/WPARfmFbnk1ZizkXDJ+hqmDAEZ4
+	s0EbIh7D2GKbZ/3CevwEFFd2CkqiMyTgUNd8CmRoF9rQNSdznyccxRVO6tfzMjQ2z4vvPRNaQzm
+	8xYhju521MuuBfEJ2WgEV4Kz8zN4aHhYIcuBACDtbz6qKYolBEKu6gFzJbOZhK2+QvWHHa3YN2Z
+	BPH/n8XDjFOl9tJ9qT2O6OeerpcDAXmAO/elwG8zIjP5nS0QqIvVUWpTTb95erzMBPv2y4y0mJ2
+	n1yvIYl9UnZw2Vj79FikV2q3ygumjojTbxfhz0/SQoWa6tWTb+AhJ3+MdGXt/hm9wcGS5
+X-Google-Smtp-Source: AGHT+IHaYMtibJuemzdjomSN0kWU+dOFQ3GsA9o3OEpvWT5jx6bZkj94PR0Evh72tx4vQEmQjFstKQ==
+X-Received: by 2002:a17:902:ce83:b0:240:887c:7b95 with SMTP id d9443c01a7336-242c1ecb835mr166135365ad.5.1754920333623;
+        Mon, 11 Aug 2025 06:52:13 -0700 (PDT)
+Received: from ?IPV6:2804:7f1:e2c3:a11c:ddd8:43e3:ca5c:f6ea? ([2804:7f1:e2c3:a11c:ddd8:43e3:ca5c:f6ea])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e8aa404dsm274378565ad.148.2025.08.11.06.52.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Aug 2025 06:52:13 -0700 (PDT)
+Message-ID: <c3ffa213-ba09-47ce-9b9b-5d8a4bac9d71@mojatatu.com>
+Date: Mon, 11 Aug 2025 10:52:08 -0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -33,198 +67,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
-	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next 1/2] net: phy: motorcomm: Add support for PHY
- LEDs on YT8521
-To: =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<andrew+netdev@lunn.ch>, <horms@kernel.org>, <Frank.Sae@motor-comm.com>,
-	<hkallweit1@gmail.com>, <linux@armlinux.org.uk>
-References: <20250716100041.2833168-1-shaojijie@huawei.com>
- <20250716100041.2833168-2-shaojijie@huawei.com> <7978337.lvqk35OSZv@diego>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <7978337.lvqk35OSZv@diego>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+Subject: Re: [PATCH net] net/sched: ets: use old 'nbands' while purging unused
+ classes
+From: Victor Nogueira <victor@mojatatu.com>
+To: Davide Caratti <dcaratti@redhat.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang
+ <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Lion Ackermann <nnamrec@gmail.com>,
+ Petr Machata <petrm@mellanox.com>, netdev@vger.kernel.org,
+ Ivan Vecera <ivecera@redhat.com>, Li Shuang <shuali@redhat.com>
+References: <f3b9bacc73145f265c19ab80785933da5b7cbdec.1754581577.git.dcaratti@redhat.com>
+ <8d76538b-678f-4a98-9308-d7209b5ebee9@mojatatu.com>
+ <aJmge28EVB0jKOLF@dcaratti.users.ipa.redhat.com>
+ <81bd4809-b268-42a2-af34-03087f7ff329@mojatatu.com>
+Content-Language: en-US
+In-Reply-To: <81bd4809-b268-42a2-af34-03087f7ff329@mojatatu.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
-on 2025/8/7 17:50, Heiko Stübner wrote:
-> Am Mittwoch, 16. Juli 2025, 12:00:40 Mitteleuropäische Sommerzeit schrieb Jijie Shao:
->> Add minimal LED controller driver supporting
->> the most common uses with the 'netdev' trigger.
+On 8/11/25 06:53, Victor Nogueira wrote:
+> On 8/11/25 04:49, Davide Caratti wrote:
+>> Maybe it's better to extend sch_ets.sh from net/forwarding instead?
+>> If so, I can follow-up on net-next with a patch that adds a new
+>> test-case that includes the 3-lines in [1] - while this patch can go
+>> as-is in 'net' (and eventually in stable). In alternative, I can
+>> investigate on TDC adding "sch_plug" to the qdisc tree in a way
+>> that DWRR never deplete, and the crash would then happen with 
+>> "verifyCmd".
 >>
->> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-> On a Qnap TS233 NAS using this phy, I get the expected device LEDs
-> to light up (with appropriate config via sysfs), so
->
-> Tested-by: Heiko Stuebner <heiko@sntech.de>
->
-> (haven't found a v2 yet yesterday, so hopefully still the right thread
-> to reply to ;-) )
->
-> Thanks
-> Heiko
+>> WDYT?
+> 
+> That works for me as well.
 
-Thank you for testing; I will resend this patch shortly.
+Sorry, should've been more specific.
+I meant that the net/forwarding approach you suggested
+seems ok. The tdc approach would be a lot of work and
+I don't believe it's worth it.
 
->
->
->> ---
->>   drivers/net/phy/motorcomm.c | 120 ++++++++++++++++++++++++++++++++++++
->>   1 file changed, 120 insertions(+)
->>
->> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
->> index 0e91f5d1a4fd..e1a1c3a1c9d0 100644
->> --- a/drivers/net/phy/motorcomm.c
->> +++ b/drivers/net/phy/motorcomm.c
->> @@ -213,6 +213,23 @@
->>   #define YT8521_RC1R_RGMII_2_100_NS		14
->>   #define YT8521_RC1R_RGMII_2_250_NS		15
->>   
->> +/* LED CONFIG */
->> +#define YT8521_MAX_LEDS				3
->> +#define YT8521_LED0_CFG_REG			0xA00C
->> +#define YT8521_LED1_CFG_REG			0xA00D
->> +#define YT8521_LED2_CFG_REG			0xA00E
->> +#define YT8521_LED_ACT_BLK_IND			BIT(13)
->> +#define YT8521_LED_FDX_ON_EN			BIT(12)
->> +#define YT8521_LED_HDX_ON_EN			BIT(11)
->> +#define YT8521_LED_TXACT_BLK_EN			BIT(10)
->> +#define YT8521_LED_RXACT_BLK_EN			BIT(9)
->> +/* 1000Mbps */
->> +#define YT8521_LED_GT_ON_EN			BIT(6)
->> +/* 100Mbps */
->> +#define YT8521_LED_HT_ON_EN			BIT(5)
->> +/* 10Mbps */
->> +#define YT8521_LED_BT_ON_EN			BIT(4)
->> +
->>   #define YTPHY_MISC_CONFIG_REG			0xA006
->>   #define YTPHY_MCR_FIBER_SPEED_MASK		BIT(0)
->>   #define YTPHY_MCR_FIBER_1000BX			(0x1 << 0)
->> @@ -1681,6 +1698,106 @@ static int yt8521_config_init(struct phy_device *phydev)
->>   	return phy_restore_page(phydev, old_page, ret);
->>   }
->>   
->> +static const unsigned long supported_trgs = (BIT(TRIGGER_NETDEV_FULL_DUPLEX) |
->> +					     BIT(TRIGGER_NETDEV_HALF_DUPLEX) |
->> +					     BIT(TRIGGER_NETDEV_LINK)        |
->> +					     BIT(TRIGGER_NETDEV_LINK_10)     |
->> +					     BIT(TRIGGER_NETDEV_LINK_100)    |
->> +					     BIT(TRIGGER_NETDEV_LINK_1000)   |
->> +					     BIT(TRIGGER_NETDEV_RX)          |
->> +					     BIT(TRIGGER_NETDEV_TX));
->> +
->> +static int yt8521_led_hw_is_supported(struct phy_device *phydev, u8 index,
->> +				      unsigned long rules)
->> +{
->> +	if (index >= YT8521_MAX_LEDS)
->> +		return -EINVAL;
->> +
->> +	/* All combinations of the supported triggers are allowed */
->> +	if (rules & ~supported_trgs)
->> +		return -EOPNOTSUPP;
->> +
->> +	return 0;
->> +}
->> +
->> +static int yt8521_led_hw_control_set(struct phy_device *phydev, u8 index,
->> +				     unsigned long rules)
->> +{
->> +	u16 val = 0;
->> +
->> +	if (index >= YT8521_MAX_LEDS)
->> +		return -EINVAL;
->> +
->> +	if (test_bit(TRIGGER_NETDEV_LINK, &rules)) {
->> +		val |= YT8521_LED_BT_ON_EN;
->> +		val |= YT8521_LED_HT_ON_EN;
->> +		val |= YT8521_LED_GT_ON_EN;
->> +	}
->> +
->> +	if (test_bit(TRIGGER_NETDEV_LINK_10, &rules))
->> +		val |= YT8521_LED_BT_ON_EN;
->> +
->> +	if (test_bit(TRIGGER_NETDEV_LINK_100, &rules))
->> +		val |= YT8521_LED_HT_ON_EN;
->> +
->> +	if (test_bit(TRIGGER_NETDEV_LINK_1000, &rules))
->> +		val |= YT8521_LED_GT_ON_EN;
->> +
->> +	if (test_bit(TRIGGER_NETDEV_FULL_DUPLEX, &rules))
->> +		val |= YT8521_LED_HDX_ON_EN;
->> +
->> +	if (test_bit(TRIGGER_NETDEV_HALF_DUPLEX, &rules))
->> +		val |= YT8521_LED_FDX_ON_EN;
->> +
->> +	if (test_bit(TRIGGER_NETDEV_TX, &rules) ||
->> +	    test_bit(TRIGGER_NETDEV_RX, &rules))
->> +		val |= YT8521_LED_ACT_BLK_IND;
->> +
->> +	if (test_bit(TRIGGER_NETDEV_TX, &rules))
->> +		val |= YT8521_LED_TXACT_BLK_EN;
->> +
->> +	if (test_bit(TRIGGER_NETDEV_RX, &rules))
->> +		val |= YT8521_LED_RXACT_BLK_EN;
->> +
->> +	return ytphy_write_ext(phydev, YT8521_LED0_CFG_REG + index, val);
->> +}
->> +
->> +static int yt8521_led_hw_control_get(struct phy_device *phydev, u8 index,
->> +				     unsigned long *rules)
->> +{
->> +	int val;
->> +
->> +	if (index >= YT8521_MAX_LEDS)
->> +		return -EINVAL;
->> +
->> +	val = ytphy_read_ext(phydev, YT8521_LED0_CFG_REG + index);
->> +	if (val < 0)
->> +		return val;
->> +
->> +	if (val & YT8521_LED_TXACT_BLK_EN)
->> +		set_bit(TRIGGER_NETDEV_TX, rules);
->> +
->> +	if (val & YT8521_LED_RXACT_BLK_EN)
->> +		set_bit(TRIGGER_NETDEV_RX, rules);
->> +
->> +	if (val & YT8521_LED_FDX_ON_EN)
->> +		set_bit(TRIGGER_NETDEV_FULL_DUPLEX, rules);
->> +
->> +	if (val & YT8521_LED_HDX_ON_EN)
->> +		set_bit(TRIGGER_NETDEV_HALF_DUPLEX, rules);
->> +
->> +	if (val & YT8521_LED_GT_ON_EN)
->> +		set_bit(TRIGGER_NETDEV_LINK_1000, rules);
->> +
->> +	if (val & YT8521_LED_HT_ON_EN)
->> +		set_bit(TRIGGER_NETDEV_LINK_100, rules);
->> +
->> +	if (val & YT8521_LED_BT_ON_EN)
->> +		set_bit(TRIGGER_NETDEV_LINK_10, rules);
->> +
->> +	return 0;
->> +}
->> +
->>   static int yt8531_config_init(struct phy_device *phydev)
->>   {
->>   	struct device_node *node = phydev->mdio.dev.of_node;
->> @@ -2920,6 +3037,9 @@ static struct phy_driver motorcomm_phy_drvs[] = {
->>   		.soft_reset	= yt8521_soft_reset,
->>   		.suspend	= yt8521_suspend,
->>   		.resume		= yt8521_resume,
->> +		.led_hw_is_supported = yt8521_led_hw_is_supported,
->> +		.led_hw_control_set = yt8521_led_hw_control_set,
->> +		.led_hw_control_get = yt8521_led_hw_control_get,
->>   	},
->>   	{
->>   		PHY_ID_MATCH_EXACT(PHY_ID_YT8531),
->>
->
->
->
->
+cheers,
+Victor
