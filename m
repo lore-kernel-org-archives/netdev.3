@@ -1,84 +1,81 @@
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E192E7655;
-	Tue, 12 Aug 2025 10:20:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDF72EBDC8;
+	Tue, 12 Aug 2025 10:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754994039; cv=none; b=b9rjLwF9OZT/x2UaiRpQRJvCzXhu80y6SKQYV6AHfhvfcWmcoLsCbpNXvV4J8lMed51VEIict0NADJRuHNe2CtAYCHf2gEomZ0RNSMRx4csP8KqBqYaQkpBzza9VhnguP0kghOvKE/0L8zXb/vbpAgQhnEZP3rgnbqgUmc6YI9k=
+	t=1754995195; cv=none; b=qOTpnPHLWFF20X+6mM3wZ011JBao9I3tst9qU8hrCFxsZuoeKW1fRFtzPUpmyz2iao8Dbytxo4QpquURY/jxdXqgXlyVCGK7zTgXkRgfODh6+CkIOm+ra4Gi6F+0rkf7E7Nk3R8z2SLGyFjZ9ZmePGSh972VDJgA81XO3VtK5qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754994039; c=relaxed/simple;
-	bh=fnjkTMpHaMrjN4OxTc0IQuRSEUImxanXcaUE83Nr2sM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P5Z2Zhtu2ui5N91cAI6D4FJe018vtJad/k5ZAsbaR5vUtonPDHH/Ius3ONUFuglNYmTq3HyGxa/vOs7R6SdaRIH5cPsTEWbMyb4dF//qA7fAJ4ufX/wdJHZ0BvP68NPtBaBxRqG6z32FxgZ+9W/EHZYSqFDSQQHjCCsL86839oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c1Rmc0VDzz9sSv;
-	Tue, 12 Aug 2025 11:59:12 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id uCvqS6JyTlcz; Tue, 12 Aug 2025 11:59:11 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c1Rmb6nyZz9sSt;
-	Tue, 12 Aug 2025 11:59:11 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id D261F8B764;
-	Tue, 12 Aug 2025 11:59:11 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id oAUcpft48cYK; Tue, 12 Aug 2025 11:59:11 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3C8508B763;
-	Tue, 12 Aug 2025 11:59:11 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] netfilter: nft_payload: Use csum_replace4() instead of opencoding
-Date: Tue, 12 Aug 2025 11:58:43 +0200
-Message-ID: <e98467a942d65d2dc45dcf8ff809b43d4a3769eb.1754992552.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1754995195; c=relaxed/simple;
+	bh=yVZkwPxYgjMUDfH1WgTDq1x+4n/M2A7TWVb2Pp9NP24=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=tqvcFRII8fjjpQ0G4ZbyfqD6/rhehBDSLuYYLCEIVnV6GSpDBJUHt2SnuQhBVU2DHeaBlPaTZ3wzksKxYCpro0XoxRoIQNyDlIV9KopfhcgYJrUmYGsQlwzTrizHuRgkUME12TcBO4r6B2b2y1mvdVuoF8eG7Iwb8JkWdYf1FhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QifySFFX; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QifySFFX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AC7C16AAE;
+	Tue, 12 Aug 2025 10:39:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754995195;
+	bh=yVZkwPxYgjMUDfH1WgTDq1x+4n/M2A7TWVb2Pp9NP24=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=QifySFFXit5WSKnF6brW6NTFQZ3uJIr3H7toaIkCO06fNnWdx6/u0zy6J0JNngYFj
+	 YBRjCKs/Qux+HMbI1itKDCCsmmOd6QIFlXo+65kOZTJn8Z2n3QWxv7eBz07ZpbI3fZ
+	 yVJt4nnNdkj7sxyoD0ZEjDu+hq2LJ6PolVUKEgcCgoL90WyxOF4cAMm3Ay3dOGTh81
+	 Y0vgNPVbxa/JebPWV01CUvNRGrSMkNRl2/u0WF0V/YOKbObfSiqdZhBezwrNethrYO
+	 pY+MVK78v10QcaweYI0PISi7VqTFrXqDOJHb+AXsuZvRTlJ6eAVJWdU7Voo/wrj5lQ
+	 MoUANsS8WPZ8Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADEC5383BF51;
+	Tue, 12 Aug 2025 10:40:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1754992724; l=787; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=fnjkTMpHaMrjN4OxTc0IQuRSEUImxanXcaUE83Nr2sM=; b=65Dcm5lghOX/0eg2EkZqziHU3u86WpdytVlO74lR4bnX8+rMJzqv8sQwdWxk96qp76uPwnPWf /ze/vZFHNzxCDPfEWcbEqJwYux904Vr/Ui0bD376y7eFPTZybNVMbld
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: phy: nxp-c45-tja11xx: fix the PHY ID mismatch
+ issue
+ when using C45
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175499520750.2526251.1270077410677904489.git-patchwork-notify@kernel.org>
+Date: Tue, 12 Aug 2025 10:40:07 +0000
+References: <20250807040832.2455306-1-xiaoning.wang@nxp.com>
+In-Reply-To: <20250807040832.2455306-1-xiaoning.wang@nxp.com>
+To: Clark Wang <xiaoning.wang@nxp.com>
+Cc: andrei.botila@oss.nxp.com, andrew@lunn.ch, ansuelsmth@gmail.com,
+ davem@davemloft.net, edumazet@google.com, hkallweit1@gmail.com,
+ kuba@kernel.org, pabeni@redhat.com, rmk+kernel@armlinux.org.uk,
+ sd@queasysnail.net, linux@armlinux.org.uk, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, imx@lists.linux.dev
 
-Open coded calculation can be avoided and replaced by the
-equivalent csum_replace4() in nft_csum_replace().
+Hello:
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- net/netfilter/nft_payload.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index 7dfc5343dae46..e279b54ed7116 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -684,7 +684,7 @@ static const struct nft_expr_ops nft_payload_inner_ops = {
- 
- static inline void nft_csum_replace(__sum16 *sum, __wsum fsum, __wsum tsum)
- {
--	*sum = csum_fold(csum_add(csum_sub(~csum_unfold(*sum), fsum), tsum));
-+	csum_replace4(sum, fsum, tsum);
- 	if (*sum == 0)
- 		*sum = CSUM_MANGLED_0;
- }
+On Thu,  7 Aug 2025 12:08:32 +0800 you wrote:
+> TJA1103/04/20/21 support both C22 and C45 accessing methods.
+> 
+> The TJA11xx driver has implemented the match_phy_device() API.
+> However, it does not handle the C45 ID. If C45 was used to access
+> TJA11xx, match_phy_device() would always return false due to
+> phydev->phy_id only used by C22 being empty, resulting in the
+> generic phy driver being used for TJA11xx PHYs.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net: phy: nxp-c45-tja11xx: fix the PHY ID mismatch issue when using C45
+    https://git.kernel.org/netdev/net/c/8ee90742cf29
+
+You are awesome, thank you!
 -- 
-2.49.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
