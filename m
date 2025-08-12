@@ -1,113 +1,75 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE57A2E7BBE
-	for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 09:14:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F87E2DECD8;
+	Tue, 12 Aug 2025 09:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754990086; cv=none; b=CcH8uY181d+2/8UvVVUB7wqYk2fkLHMf1snlS1JTXTXIbczaf8fTOP/WX6l3U1eY817TATARzs1q5j/BaSrd6EP5NuXm2MzdC4xP610kkVsYNiYiazo4HdXaa1Voc3Sx7hsfa8oyJE5e+ImU5CtiXOgRkmS+KXZlzCNO9UB9oyc=
+	t=1754990570; cv=none; b=anN6lQ5l2uFMFgycCsgc1z+sQgrXexMyw/z1hiow5yeeHvTm+3c8GIU800g8EHf381CNW2oDXa2Ktg865KrQfhIF12re1IZiCSeCWPfZ6C03XGoixt8UU6sg8PnjejvuB416Gbxff/P+H1KrvzsQpB/HxqFJJ9L6qFnCw0ol8ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754990086; c=relaxed/simple;
-	bh=fbkvdHbzO5iMyqUyNMSQ2ifyYq35TUmApmNBn7z38C8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n0mF25a3xHqB0ieGOahdMGBRaf5qa9RC83pQ71qIYvUPTkHVtOAkCbrdSM24vXBpHFmOPDCdl3g4C4iwijuk7fo3x85CPfp2gw3KmHDRw4b6Rgh48Ix3Wp9YzkzP4vKriedEsIoGaIQ+eqeuZRhEQy1A4fDVX5bGKkw52j5iHJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U05wqZda; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U05wqZda"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754990083;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GfnH6UdWPTLsT4NE037V+5yMnBpvuJn2hgsl4bTLdLY=;
-	b=U05wqZdaaFrxmbAMhoc4EWztNWUjs59w/KZ+Ku6rUz8TIh5pPHsW44pwu/vnCKScBJ4qko
-	uFXj7TOAsDh9Bf9iGnv91up8j/p0yTejY3r2hQlBF8SGy1CXKBTKGt6pDhqa1Y8D/2HuNE
-	+O7jG919gHynclc1RR9YD3banrM+B44=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-554-JbVaS0flOniJcKFoSy051Q-1; Tue, 12 Aug 2025 05:14:42 -0400
-X-MC-Unique: JbVaS0flOniJcKFoSy051Q-1
-X-Mimecast-MFC-AGG-ID: JbVaS0flOniJcKFoSy051Q_1754990081
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-459f53d29d2so22305055e9.1
-        for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 02:14:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754990080; x=1755594880;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GfnH6UdWPTLsT4NE037V+5yMnBpvuJn2hgsl4bTLdLY=;
-        b=ewaoIsmT3E3oa7775xWdGiMf/XcHu7ofhF++RZnOwysms5254NqC9SPyOVvt1TRFVU
-         tTu7smbFlYjROU22x/EbNhJ85Itn8NIs6hccH4dSYeoG5YPC1TVT1U4RM38TNJi1yGEk
-         at5qvJIKXRzOw+bXkcvggoN9Ksk67qvDBakNQ3VifOQ6LZCmEhYEGuhU1gV1yPFCITef
-         QCaK06S5sYQ5BZzdJUitx9S+1CdqYIiLHK7OYHbR0A3mCNCKOh+1rq+c6vg4vMwdDRnY
-         lwlueb0arf4Og4cWqHkm6SeXd2AKIcpFqSSvGU/nDFHPEI14y8JffwGkMCGoxEmtVwnC
-         e5eg==
-X-Forwarded-Encrypted: i=1; AJvYcCUhnmTlVaRug4qAZd/nSk4pmqXSreVjid6t/M3fInEmhzqSIUPEvCOcgWhFcjJTJUakaHcwVsY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqqTxmpPpAgOQRPeZvhtiHUDHzqfrENFKrOZzlruNSQ8M9nCaJ
-	Fzk7q3fiUL7HzXZ/Ot41X2kZA3+d9JXdhnXfCzKrB2rA6ruD1g7G/c3PitZG2+VckWb09GQwo3e
-	znhj14SEf3j91YbDpWtifpfhZ9KZ5nHxMuszjZ28tbx7XNcDGf9xx9Mdlmpxon8k33w==
-X-Gm-Gg: ASbGncuvD2KS41GEhFtTUG/zDELURa30gGGk/8SLOdsV5qsQdWcEMo2rHPpnRrs1Eyw
-	Gkrc7xorMX9qKrdqX3vJem+LkXG6frZFuYSehSOxaxtfDfsMc4J7oSG/Mk/Ci7pBQDddp4dcMwo
-	48mcdNGSfjTP1eictLlNMfTPjxupxKXNnRJKldm5A/3czf2r8FR6oMWm7eXRIOdCSGvYj+uAdTy
-	Vb5iFdcevEF8UKy5oDOlJ2t06HJBQ4rwBDGLQkv4ESA7ByB05xYoS0q+2RZ6s4If5NTDWlZTez7
-	ykFy+4hl8Ln2nWiFm9/837FQOC2Qede9r4upofSbpH4=
-X-Received: by 2002:a05:600c:a46:b0:453:5a04:b60e with SMTP id 5b1f17b1804b1-45a10c0020amr20225215e9.26.1754990080407;
-        Tue, 12 Aug 2025 02:14:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF6aoDZQH3cS2UCnVzBBG1Izm2yKQoFjrOrA+8ZiuIJILKKDdscGnHzDMcfx14lN7+SN/qnwA==
-X-Received: by 2002:a05:600c:a46:b0:453:5a04:b60e with SMTP id 5b1f17b1804b1-45a10c0020amr20224905e9.26.1754990080025;
-        Tue, 12 Aug 2025 02:14:40 -0700 (PDT)
-Received: from [192.168.0.115] ([212.105.149.252])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3ac093sm45795951f8f.9.2025.08.12.02.14.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Aug 2025 02:14:39 -0700 (PDT)
-Message-ID: <fb08ab9f-4d15-48c4-bd2e-52077dce0b82@redhat.com>
-Date: Tue, 12 Aug 2025 11:14:38 +0200
+	s=arc-20240116; t=1754990570; c=relaxed/simple;
+	bh=Bn0nLJ0eSfQmwvtXaMVruZB+z6pgSxe46LyjEl2CuZo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q1dKK/JKotyRUcokPfBI9gTEAKTjj+gpCd2IcmLjoFaV7HM0ProdP8AJn8UFUsIaWnNs9pc+pIzue2q51lTorKvP0Sbdv21vGpWxaQ+YtwaSkpcaXslgE3BUbosm67Tg0OpHD3z4YM1P1WZnes0k/iV6JPlFCReoZE6/fhV5tTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 067F060172; Tue, 12 Aug 2025 11:22:45 +0200 (CEST)
+Date: Tue, 12 Aug 2025 11:22:44 +0200
+From: Florian Westphal <fw@strlen.de>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	netfilter-devel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
+Subject: Re: nft_flowtable.sh selftest failures
+Message-ID: <aJsH3c2LcMCJoSeB@strlen.de>
+References: <766e4508-aaba-4cdc-92b4-e116e52ae13b@redhat.com>
+ <78f95723-0c65-4060-b9d6-7e69d24da2da@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2 net 2/3] bonding: send LACPDUs periodically in passive
- mode after receiving partner's LACPDU
-To: Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org
-Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>,
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250805094634.40173-1-liuhangbin@gmail.com>
- <20250805094634.40173-3-liuhangbin@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250805094634.40173-3-liuhangbin@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <78f95723-0c65-4060-b9d6-7e69d24da2da@redhat.com>
 
-On 8/5/25 11:46 AM, Hangbin Liu wrote:
-> @@ -95,13 +95,13 @@ static int ad_marker_send(struct port *port, struct bond_marker *marker);
->  static void ad_mux_machine(struct port *port, bool *update_slave_arr);
->  static void ad_rx_machine(struct lacpdu *lacpdu, struct port *port);
->  static void ad_tx_machine(struct port *port);
-> -static void ad_periodic_machine(struct port *port, struct bond_params *bond_params);
-> +static void ad_periodic_machine(struct port *port);
->  static void ad_port_selection_logic(struct port *port, bool *update_slave_arr);
->  static void ad_agg_selection_logic(struct aggregator *aggregator,
->  				   bool *update_slave_arr);
->  static void ad_clear_agg(struct aggregator *aggregator);
->  static void ad_initialize_agg(struct aggregator *aggregator);
-> -static void ad_initialize_port(struct port *port, int lacp_fast);
-> +static void ad_initialize_port(struct port *port, struct bond_params *bond_params);
+Paolo Abeni <pabeni@redhat.com> wrote:
+> > I don't see relevant patches landing in the relevant builds, I suspect
+> > the relevant kernel config knob (CONFIG_CRYPTO_SHA1 ?) was always
+> > missing in the ST config, pulled in by NIPA due to some CI setup tweak
+> > possibly changed recently (Jakub could possibly have a better idea/view
+> > about the latter). Could you please have a look?
 
-The `bond_params` argument should be constified.
+Can't reproduce this here.
 
-Thanks,
+Latest net tree:
+vng --build  --config tools/testing/selftests/net/netfilter/config
+grep SHA1 .config
+# CONFIG_SCTP_DEFAULT_COOKIE_HMAC_SHA1 is not set
+# CONFIG_SCTP_COOKIE_HMAC_SHA1 is not set
+CONFIG_CRYPTO_SHA1=m
+make -C tools/testing/selftests/ TARGETS=net/netfilter
+vng -v --run . --user root --cpus 4 -- \
+   make -C tools/testing/selftests TARGETS=net/netfilter run_tests TEST_PROGS=nft_flowtable.sh
+[..]
+# PASS: ipsec tunnel mode for ns1/ns2
+ok 1 selftests: net/netfilter: nft_flowtable.sh
 
-Paolo
+> > NIPA generates the kernel config and the kernel build itself with
+> > something alike:
+> > 
+> > rm -f .config
+> > vng --build  --config tools/testing/selftests/net/forwarding/config
+> 
+> Addendum: others (not nft-related) tests (vrf-xfrm-tests.sh,
+> xfrm_policy.sh) are failing apparently due to the same root cause
+> (missing sha1 knob), so I guess it's really a NIPA issue.
 
+Looks like it, I mean, I can't repro it here.
 
+Let me know if I missed anything or if there is something I can
+do to help debugging this.
