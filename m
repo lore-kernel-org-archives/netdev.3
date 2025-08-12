@@ -1,29 +1,29 @@
 Received: from mail.ionic.de (ionic.de [145.239.234.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE712D3A9D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD982D3A66;
 	Tue, 12 Aug 2025 01:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.234.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754962561; cv=none; b=h+BVb7cuG3jcajmNE9yDpTyGHkHHl2+mvL1llKXtRMuat2np2qwuanHrnMpQ1t0CNv/urvQiQzDQv+Ok+bp2Ig2ebm2B/anoGDlvpf87EwYCY8S/Rmx/G5XWyIob1HMTjPu0bMktGr4BsWufqfhm+zM0hFn1o6WabMEGGl3CzaM=
+	t=1754962561; cv=none; b=meg8Y9NiDyj2Tc1d34XneBZTHp6EDTZU0+XtxN3An6QeS0Jolw/l3ngccYjiKImFhEqS8sC5yfmaTHexgO/D+jOweQb2G0RH5jVgBPY+bWsGML2ti7na9sNoLOZNBoGqwZpfRqpV9pbsaVQgiRKVGtlTA7KSZ5dk9cOL4houfx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1754962561; c=relaxed/simple;
-	bh=R4rZ9IwHHzujKIn9QSktfl7cNffUyJFFl6AbWpnyo7E=;
+	bh=+27GkfYyVEkq3Awzc3j7QyAtaRQjn4gyZlZret25di4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqIm3p0Zcpzn+Q2yJ9cQD/uEfVd717c74i94bRJ6O9uYKrDk8lt5eDx2pXJp445ouVEj53infqOGIQ5bVweWNzVjy5mtYAUo7AUu2FinH7K91RC9Z1+k5DD+Wb33nZsgRJGBT9XmgaZjo+OFCvQqawWeomVqrS2JpBTL5EWNCXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=IlHoSL4v; arc=none smtp.client-ip=145.239.234.145
+	 MIME-Version; b=WD0EfTqn3YZkKSWalaQ8Ca8LCfiAk5aU4qO9p+iLhxnesbsZob65PNMKQcSK4yS6IRRLrv9Nr237LydRHfyiqbEoSziNY5YQ+IqVcDaIheXQihQJh2CxK48+Ehx4gCilWQ3+6MSqmkSMX89qj/kPkYj4YDuEUa4NkAp+8aJIiWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=jLz5upYe; arc=none smtp.client-ip=145.239.234.145
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionic.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="IlHoSL4v"
+	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="jLz5upYe"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ionic.de; s=default;
-	t=1754962550; bh=R4rZ9IwHHzujKIn9QSktfl7cNffUyJFFl6AbWpnyo7E=;
+	t=1754962551; bh=+27GkfYyVEkq3Awzc3j7QyAtaRQjn4gyZlZret25di4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IlHoSL4vcy+4W2uVC2fhuFGDNssPjOkwLBx6jmkAN//bu4B3JNuTdCFBjW6BivKgc
-	 GZsY+4pXIIONayl8RFe6tWq2lg6eFWyD7zKM3yim0tRABcGRp/JnPDzLfkko4TkxlF
-	 MWnKWyD6rq8nVDCOrZTgoC2l8U/jQLvnFyMnIFJE=
+	b=jLz5upYeKcxTKvdO9qRSe3opwVkMnqJ7Too7nUK44ONVsT0jGLCockWgAfR2I3VUp
+	 /yHMHsjuC6PcZ8V2gnEVK0yd/9vhar5FmJxRpXqEPNzhZ1QeDOifEwbLzTJN941ewy
+	 4h+hO45vxde76IkkSWW+TsAleHVmRuAkOJ1RQ6Jw=
 Received: from grml.local.home.ionic.de (unknown [IPv6:2a00:11:fb41:7a00:21b:21ff:fe5e:dddc])
-	by mail.ionic.de (Postfix) with ESMTPSA id 4A346148A06B;
+	by mail.ionic.de (Postfix) with ESMTPSA id D1341148A06D;
 	Tue, 12 Aug 2025 03:35:50 +0200 (CEST)
 From: Mihai Moldovan <ionic@ionic.de>
 To: linux-arm-msm@vger.kernel.org,
@@ -38,9 +38,9 @@ Cc: Denis Kenzior <denkenz@gmail.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH v5 09/11] net: qrtr: Drop remote {NEW|DEL}_LOOKUP messages
-Date: Tue, 12 Aug 2025 03:35:35 +0200
-Message-ID: <f8e92081131ced8c963979e441ea5a99e262673c.1754962437.git.ionic@ionic.de>
+Subject: [PATCH v5 11/11] net: qrtr: mhi: Report endpoint id in sysfs
+Date: Tue, 12 Aug 2025 03:35:37 +0200
+Message-ID: <7521f1c059bfc778614d5f5f748a776db5cc498c.1754962437.git.ionic@ionic.de>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <cover.1754962436.git.ionic@ionic.de>
 References: <cover.1754962436.git.ionic@ionic.de>
@@ -54,8 +54,9 @@ Content-Transfer-Encoding: 8bit
 
 From: Denis Kenzior <denkenz@gmail.com>
 
-These messages are explicitly filtered out by the in-kernel name
-service (ns.c).  Filter them out even earlier to save some CPU cycles.
+Add a read-only 'endpoint' sysfs entry that contains the qrtr endpoint
+identifier assigned to this mhi device.  Can be used to direct / receive
+qrtr traffic only from a particular MHI device.
 
 Signed-off-by: Denis Kenzior <denkenz@gmail.com>
 Reviewed-by: Marcel Holtmann <marcel@holtmann.org>
@@ -65,39 +66,64 @@ Signed-off-by: Mihai Moldovan <ionic@ionic.de>
 ---
 v5:
   - no changes
-  - Link to v4: https://msgid.link/1ebb6174fcc0e7068f7f695470dc1d380f540377.1753720935.git.ionic@ionic.de
+  - Link to v4: https://msgid.link/462b6599fc713e8ee0950f08a5a176f12eb74555.1753720935.git.ionic@ionic.de
 
 v4:
   - no changes
-  - Link to v3: https://msgid.link/05625051f520eb1aa091f422a745d048d5c8112e.1753313000.git.ionic@ionic.de
+  - Link to v3: https://msgid.link/e1f5b82cd25b2ac433b1bd7e83e22604e6b24f03.1753313000.git.ionic@ionic.de
 
 v3:
   - rebase against current master
-  - Link to v2: https://msgid.link/ad089e97706b095063777f1eefe04d75cbb917f1.1752947108.git.ionic@ionic.de
+  - Link to v2: https://msgid.link/1a49dec96d5c2c5258c9df935d8c9381793d4ddd.1752947108.git.ionic@ionic.de
 
 v2:
   - rebase against current master
-  - Link to v1: https://msgid.link/20241018181842.1368394-9-denkenz@gmail.com
+  - use %u formatter instead of %d when printing endpoint id (u32) as
+    per review comment
+  - Link to v1: https://msgid.link/20241018181842.1368394-11-denkenz@gmail.com
 ---
- net/qrtr/af_qrtr.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/qrtr/mhi.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index a7ab445416e4..fb89ef14cecc 100644
---- a/net/qrtr/af_qrtr.c
-+++ b/net/qrtr/af_qrtr.c
-@@ -629,6 +629,11 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
- 	if (!size || len != ALIGN(size, 4) + hdrlen)
- 		goto err;
+diff --git a/net/qrtr/mhi.c b/net/qrtr/mhi.c
+index 69f53625a049..9a23c888e234 100644
+--- a/net/qrtr/mhi.c
++++ b/net/qrtr/mhi.c
+@@ -72,6 +72,16 @@ static int qcom_mhi_qrtr_send(struct qrtr_endpoint *ep, struct sk_buff *skb)
+ 	return rc;
+ }
  
-+	/* Don't allow remote lookups */
-+	if (cb->type == QRTR_TYPE_NEW_LOOKUP ||
-+	    cb->type == QRTR_TYPE_DEL_LOOKUP)
-+		goto err;
++static ssize_t endpoint_show(struct device *dev,
++			     struct device_attribute *attr, char *buf)
++{
++	struct qrtr_mhi_dev *qdev = dev_get_drvdata(dev);
 +
- 	if ((cb->type == QRTR_TYPE_NEW_SERVER ||
- 	     cb->type == QRTR_TYPE_RESUME_TX) &&
- 	    size < sizeof(struct qrtr_ctrl_pkt))
++	return sprintf(buf, "%u\n", qdev->ep.id);
++}
++
++static DEVICE_ATTR_RO(endpoint);
++
+ static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
+ 			       const struct mhi_device_id *id)
+ {
+@@ -91,6 +101,9 @@ static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
+ 	if (rc)
+ 		return rc;
+ 
++	if (device_create_file(&mhi_dev->dev, &dev_attr_endpoint) < 0)
++		dev_err(qdev->dev, "Failed to create endpoint attribute\n");
++
+ 	/* start channels */
+ 	rc = mhi_prepare_for_transfer_autoqueue(mhi_dev);
+ 	if (rc) {
+@@ -107,6 +120,7 @@ static void qcom_mhi_qrtr_remove(struct mhi_device *mhi_dev)
+ {
+ 	struct qrtr_mhi_dev *qdev = dev_get_drvdata(&mhi_dev->dev);
+ 
++	device_remove_file(&mhi_dev->dev, &dev_attr_endpoint);
+ 	qrtr_endpoint_unregister(&qdev->ep);
+ 	mhi_unprepare_from_transfer(mhi_dev);
+ 	dev_set_drvdata(&mhi_dev->dev, NULL);
 -- 
 2.50.0
 
