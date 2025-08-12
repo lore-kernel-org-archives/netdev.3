@@ -1,35 +1,33 @@
 Received: from mail.ionic.de (ionic.de [145.239.234.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED60D1E32D3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493762D9EDD;
 	Tue, 12 Aug 2025 01:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.234.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754963151; cv=none; b=W9hsvSl12aRRON8rW9NfktakMZAm3uf63LAL6Xm2iKhNqMQeX23j42YgS0wQziaCUCBBQ0jkSLiZNYFPmIu5b5Xm6bwYd6+cnwEIlOBRECTtSHlmMifARI8BrCahcJWMwSi6/6fTX0X90ilKUZ0Vz2aIuFuPnk1CBbHw0na//OM=
+	t=1754963151; cv=none; b=g8usoxPmSKdqyHdGGG8SK6Fchtm1gjar5G1qTEuLFbFVt2YvRGM5jNGprEJ4IQhQuHf1QRFk2eLJG2YaDDuIUyhb1Bl3bCLy2H3Ob3BQ2L8feNebElSrv4ijxXxNQG9FsXV8sx8aoIuhYPPiCd7hWQIiOLyhiwF2l70whh+d87o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1754963151; c=relaxed/simple;
-	bh=y6J/eDvrMmt7VpRpsulUe5X0l/UfINhqx9llkLg++M0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LBES6oDthJFQQcjcfe2s21BHS+WHgWuFvEhiNrJkuA3MBV0CFwXzgKCPEV1nTLtTUQ4fFJXxWrqXz3H5iLzKj3/zlwa5TGuRniZmldlHFpaKvaY9ighAdVKURFY4iuihTxjnYiEvUV9FrnIUDPY9BUsQQ1U6ayXE5lvv+5IejLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=DWX6eAGd; arc=none smtp.client-ip=145.239.234.145
+	bh=FyHwd+MV76b8WmKZ0YSS5V0JlgFRToL1PV/16FUsh8g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=paW6S9cuSNihzd25msQ+PgrGPf7B1/npAVzexyMmlApjMqq1IQe/PkU3fm6HzqRqm1JR1EQFiSIxtibt+EHWajG/yRZJo/Ql0u1H/Hidj4ygOK+FwXJH7C2EQHZJYDaTdyZC519924v+KvJRX1VItSkhtgmt+Xbwa5rUHXxqr2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=pVOrVCSV; arc=none smtp.client-ip=145.239.234.145
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionic.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="DWX6eAGd"
+	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="pVOrVCSV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ionic.de; s=default;
-	t=1754962549; bh=y6J/eDvrMmt7VpRpsulUe5X0l/UfINhqx9llkLg++M0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DWX6eAGd3NzjHYvLIoFXmdQKrVUbXKCVxym15m0bK4Izr5//hGQX1ukczfBRbi+gF
-	 myT53IlEq/TkCTPzMoK9ptqhdx0aNrsUt9Uu6JLRafBI1YccNXfOj6XBY01lCNcVGV
-	 a7Q5DSldXBq6U28+6vz+9EPiOW60FFjemeHCS/oo=
+	t=1754962548; bh=FyHwd+MV76b8WmKZ0YSS5V0JlgFRToL1PV/16FUsh8g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pVOrVCSVzVTrwJIvyvfaY7IhIzJwDunYmMYDZVjxIk8sbV9Ef/lLlM8TZZMkZKI0a
+	 tlk0W8lulOrrOxNG7pzjTdjdPWt8HZEHwx1klGFx7IXNAPvqPpshYbRn2BTUKP58My
+	 mmgDczeBdgN43NbdAdZzbZrxlqsS1LH3iUXrcSRU=
 Received: from grml.local.home.ionic.de (unknown [IPv6:2a00:11:fb41:7a00:21b:21ff:fe5e:dddc])
-	by mail.ionic.de (Postfix) with ESMTPSA id 171971488DA4;
-	Tue, 12 Aug 2025 03:35:49 +0200 (CEST)
+	by mail.ionic.de (Postfix) with ESMTPSA id 1B4D614884FD;
+	Tue, 12 Aug 2025 03:35:48 +0200 (CEST)
 From: Mihai Moldovan <ionic@ionic.de>
 To: linux-arm-msm@vger.kernel.org,
 	Manivannan Sadhasivam <mani@kernel.org>
-Cc: Denis Kenzior <denkenz@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
+Cc: Eric Dumazet <edumazet@google.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Willem de Bruijn <willemb@google.com>,
@@ -38,12 +36,10 @@ Cc: Denis Kenzior <denkenz@gmail.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH v5 04/11] net: qrtr: support identical node ids
-Date: Tue, 12 Aug 2025 03:35:30 +0200
-Message-ID: <2bb732f6d8663279c7e509ca21ccba49149fda20.1754962437.git.ionic@ionic.de>
+Subject: [PATCH v5 00/11] QRTR Multi-endpoint support
+Date: Tue, 12 Aug 2025 03:35:26 +0200
+Message-ID: <cover.1754962436.git.ionic@ionic.de>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <cover.1754962436.git.ionic@ionic.de>
-References: <cover.1754962436.git.ionic@ionic.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,164 +48,100 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Denis Kenzior <denkenz@gmail.com>
+I am incredibly thankful for Denis's work on this. To get this back on
+track and to eventually get it merged, with his permission, I'm
+resubmitting his patch set with issues in the previous review rounds
+resolved. This feature is a prerequisite for my work on ath1{1,2}k to
+allow using multiple devices in one computer.
 
-Add support for tracking multiple endpoints that may have conflicting
-node identifiers. This is achieved by using both the node and endpoint
-identifiers as the key inside the radix_tree data structure.
+The original description follows:
 
-For backward compatibility with existing clients, the previous key
-schema (node identifier only) is preserved. However, this schema will
-only support the first endpoint/node combination.  This is acceptable
-for legacy clients as support for multiple endpoints with conflicting
-node identifiers was not previously possible.
+The current implementation of QRTR assumes that each entity on the QRTR
+IPC bus is uniquely identifiable by its node/port combination, with
+node/port combinations being used to route messages between entities.
 
-Signed-off-by: Denis Kenzior <denkenz@gmail.com>
-Reviewed-by: Marcel Holtmann <marcel@holtmann.org>
-Reviewed-by: Andy Gross <agross@kernel.org>
-Signed-off-by: Mihai Moldovan <ionic@ionic.de>
+However, this assumption of uniqueness is problematic in scenarios
+where multiple devices with the same node/port combinations are
+connected to the system.  A practical example is a typical consumer PC
+with multiple PCIe-based devices, such as WiFi cards or 5G modems, where
+each device could potentially have the same node identifier set.  In
+such cases, the current QRTR protocol implementation does not provide a
+mechanism to differentiate between these devices, making it impossible
+to support communication with multiple identical devices.
 
----
-v5:
-  - no changes
-  - Link to v4: https://msgid.link/7a8e0d05e5c1dbff891e7e734ed42d2313275f96.1753720934.git.ionic@ionic.de
+This patch series addresses this limitation by introducing support for
+a concept of an 'endpoint.' Multiple devices with conflicting node/port
+combinations can be supported by assigning a unique endpoint identifier
+to each one.  Such endpoint identifiers can then be used to distinguish
+between devices while sending and receiving messages over QRTR sockets.
+
+The patch series maintains backward compatibility with existing clients:
+the endpoint concept is added using auxiliary data that can be added to
+recvmsg and sendmsg system calls.  The QRTR socket interface is extended
+as follows:
+
+- Adds QRTR_ENDPOINT auxiliary data element that reports which endpoint
+  generated a particular message.  This auxiliary data is only reported
+  if the socket was explicitly opted in using setsockopt, enabling the
+  QRTR_REPORT_ENDPOINT socket option.  SOL_QRTR socket level was added
+  to facilitate this.  This requires QRTR clients to be updated to use
+  recvmsg instead of the more typical recvfrom() or recv() use.
+
+- Similarly, QRTR_ENDPOINT auxiliary data element can be included in
+  sendmsg() requests.  This will allow clients to route QRTR messages
+  to the desired endpoint, even in cases of node/port conflict between
+  multiple endpoints.
+
+- Finally, QRTR_BIND_ENDPOINT socket option is introduced.  This allows
+  clients to bind to a particular endpoint (such as a 5G PCIe modem) if
+  they're only interested in receiving or sending messages to this
+  device.
 
 v4:
-  - fix lock without unlock in error case in qrtr_node_assign()
-  - fix wrong value for ret in some error cases in
-    qrtr_endpoint_post()
-  - Link to v3: https://msgid.link/8fc53fad3065a9860e3f44cf8853494dd6eb6b47.1753312999.git.ionic@ionic.de
+  - fixed issues found in previous review round:
+    o lock without unlock
+    o wrong return value
+  - Link to v3: https://msgid.link/cover.1753312999.git.ionic@ionic.de
 
 v3:
-  - rebase against current master
-  - port usage of [endpoint ID|node ID] key usage to the generic
-    solution already established for the [node ID|port number] usage
-  - Link to v2: https://msgid.link/4d0fe1eab4b38fb85e2ec53c07289bc0843611a2.1752947108.git.ionic@ionic.de
+  - rebased against current master
+  - fix checkpatch.pl warnings
+  - fix overflow issues with unsigned long radix tree keys by using the
+    upper half of the storage space for one element and the lower half
+    of storage for the other element, making sure that the elements fit
+    into their respective storage space
+  - Link to v2: https://msgid.link/cover.1752947108.git.ionic@ionic.de
 
 v2:
-  - rebase against current master
-  - no action on review comment regarding integer overflow on 32 bit
-    long platforms (thus far)
-  - Link to v1: https://msgid.link/20241018181842.1368394-4-denkenz@gmail.com
----
- net/qrtr/af_qrtr.c | 57 ++++++++++++++++++++++++++++++++++------------
- 1 file changed, 42 insertions(+), 15 deletions(-)
+  - rebased against current master
+  - fixed most issues found in first review round (see individual
+    commits), minus the 32-bit long
+    unsafe use
+  - Link to v1: https://msgid.link/20241018181842.1368394-1-denkenz@gmail.com
 
-diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index 1cb13242e41b..fdf05b6509b5 100644
---- a/net/qrtr/af_qrtr.c
-+++ b/net/qrtr/af_qrtr.c
-@@ -119,14 +119,15 @@ static DEFINE_XARRAY_ALLOC(qrtr_ports);
- 
- /* The radix tree API uses fixed unsigned long keys and we will have to make
-  * do with that.
-- * These keys are often a combination of node IDs (currently u32) and
-- * port numbers (also currently u32).
-- * Using the high 32 bits for the node ID and the low 32 bits for the
-- * port number will work fine to create keys on platforms where unsigned long
-- * is 64 bits wide, but obviously is not be possible on platforms where
-- * unsigned long is smaller.
-+ * These keys are often a combination of node IDs and port numbers or
-+ * endpoint IDs and node IDs (all currently u32).
-+ * Using the high 32 bits for the node/endpoint ID and the low 32 bits for the
-+ * port number/node ID will work fine to create keys on platforms where
-+ * unsigned long is 64 bits wide, but obviously is not be possible on
-+ * platforms where unsigned long is smaller.
-  * Virtually split up unsigned long in half and assign the upper bits to
-- * node IDs and the lower bits to the port number, however big that may be.
-+ * node/endpoint IDs and the lower bits to the port number/node ID, however
-+ * big that may be.
-  */
- #define QRTR_INDEX_HALF_BITS (RADIX_TREE_INDEX_BITS >> 1)
- 
-@@ -465,19 +466,36 @@ static struct qrtr_node *qrtr_node_lookup(unsigned int nid)
-  *
-  * This is mostly useful for automatic node id assignment, based on
-  * the source id in the incoming packet.
-+ *
-+ * Return: 0 on success; negative error code on failure
-  */
--static void qrtr_node_assign(struct qrtr_node *node, unsigned int nid)
-+static int qrtr_node_assign(struct qrtr_node *node, unsigned int nid)
- {
- 	unsigned long flags;
-+	unsigned long key;
- 
- 	if (nid == QRTR_EP_NID_AUTO)
--		return;
-+		return 0;
-+
-+	if (node->ep->id > QRTR_INDEX_HALF_UNSIGNED_MAX ||
-+	    nid > QRTR_INDEX_HALF_UNSIGNED_MAX)
-+		return -EINVAL;
- 
- 	spin_lock_irqsave(&qrtr_nodes_lock, flags);
--	radix_tree_insert(&qrtr_nodes, nid, node);
-+
-+	/* Always insert with the endpoint_id + node_id */
-+	key = ((unsigned long)(node->ep->id) << QRTR_INDEX_HALF_BITS) |
-+	      ((unsigned long)(nid) & QRTR_INDEX_HALF_UNSIGNED_MAX);
-+	radix_tree_insert(&qrtr_nodes, key, node);
-+
-+	if (!radix_tree_lookup(&qrtr_nodes, nid))
-+		radix_tree_insert(&qrtr_nodes, nid, node);
-+
- 	if (node->nid == QRTR_EP_NID_AUTO)
- 		node->nid = nid;
- 	spin_unlock_irqrestore(&qrtr_nodes_lock, flags);
-+
-+	return 0;
- }
- 
- /**
-@@ -571,14 +589,18 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
- 
- 	skb_put_data(skb, data + hdrlen, size);
- 
--	qrtr_node_assign(node, cb->src_node);
-+	ret = qrtr_node_assign(node, cb->src_node);
-+	if (ret)
-+		goto err;
- 
- 	if (cb->type == QRTR_TYPE_NEW_SERVER) {
- 		/* Remote node endpoint can bridge other distant nodes */
- 		const struct qrtr_ctrl_pkt *pkt;
- 
- 		pkt = data + hdrlen;
--		qrtr_node_assign(node, le32_to_cpu(pkt->server.node));
-+		ret = qrtr_node_assign(node, le32_to_cpu(pkt->server.node));
-+		if (ret)
-+			goto err;
- 	}
- 
- 	if (cb->type == QRTR_TYPE_RESUME_TX) {
-@@ -587,10 +609,13 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
- 			goto err;
- 	} else {
- 		ipc = qrtr_port_lookup(cb->dst_port);
--		if (!ipc)
-+		if (!ipc) {
-+			ret = -EINVAL;
- 			goto err;
-+		}
- 
--		if (sock_queue_rcv_skb(&ipc->sk, skb)) {
-+		ret = sock_queue_rcv_skb(&ipc->sk, skb);
-+		if (ret) {
- 			qrtr_port_put(ipc);
- 			goto err;
- 		}
-@@ -670,7 +695,9 @@ int qrtr_endpoint_register(struct qrtr_endpoint *ep, unsigned int nid)
- 	INIT_RADIX_TREE(&node->qrtr_tx_flow, GFP_KERNEL);
- 	mutex_init(&node->qrtr_tx_lock);
- 
--	qrtr_node_assign(node, nid);
-+	rc = qrtr_node_assign(node, nid);
-+	if (rc < 0)
-+		goto free_node;
- 
- 	mutex_lock(&qrtr_node_lock);
- 	list_add(&node->item, &qrtr_all_nodes);
+Denis Kenzior (10):
+  net: qrtr: ns: validate msglen before ctrl_pkt use
+  net: qrtr: allocate and track endpoint ids
+  net: qrtr: support identical node ids
+  net: qrtr: Report sender endpoint in aux data
+  net: qrtr: Report endpoint for locally generated messages
+  net: qrtr: Allow sendmsg to target an endpoint
+  net: qrtr: allow socket endpoint binding
+  net: qrtr: Drop remote {NEW|DEL}_LOOKUP messages
+  net: qrtr: ns: support multiple endpoints
+  net: qrtr: mhi: Report endpoint id in sysfs
+
+Mihai Moldovan (1):
+  net: qrtr: fit node ID + port number combination into unsigned long
+
+ include/linux/socket.h    |   1 +
+ include/uapi/linux/qrtr.h |   7 +
+ net/qrtr/af_qrtr.c        | 405 ++++++++++++++++++++++++++++++++------
+ net/qrtr/mhi.c            |  14 ++
+ net/qrtr/ns.c             | 299 +++++++++++++++++-----------
+ net/qrtr/qrtr.h           |   4 +
+ 6 files changed, 548 insertions(+), 182 deletions(-)
+
 -- 
 2.50.0
 
