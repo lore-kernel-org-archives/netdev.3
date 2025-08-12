@@ -1,207 +1,178 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB21280308;
-	Tue, 12 Aug 2025 22:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2831BD9C9;
+	Tue, 12 Aug 2025 22:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755037465; cv=none; b=FafWQNMUOkHNwyBeXjLd8tOUr8mbvTSAHi1xhr+bQkVmqAI3EhOc+7SIp+fzYm0A2CcvuTONwK0yK4nobXUTb1t7isctUlmOjJPZ+ysV7GtirP/9VDF/9DZzOdzt9sexOQNlsXyF8HMQpjw6tzcQbVZDAd/HQTs0yNEe99C5HQc=
+	t=1755039201; cv=none; b=LdzNpSxvSYZ+rXbD96nvADpFkn59Uca0s4lVMmk9JpzoD8NTygrdsMr0FPJX+YjRcjobHEQNtqF7WmfRuW70f9bf2xfktXhhXtLSmgCBRknY+wLatbAFGOL+WW4TzF841Suk9x+8UEMv6/gZm5qIykOY902Uaz821E6PId2W7HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755037465; c=relaxed/simple;
-	bh=VTu1YlP6cbBxPd8KlY7/RgMoLKQvCZlYMTO6Lr73lws=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kJ/8AtMQ1kRi/7mVZBGK3giJque5zDKQdno4k0N21paFr0WTaXk4yLMSlP1szm2li/NweLdK3UcPAp6f5fDr8kiLhKiJVCRfvdEyatFLmc98qHxXCTWB92KEweCzWnY4ErSvtYj8MxpfCINtdcCKOZIv2WvOHJlxfX1LkZ6+cq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UsgG2lN0; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755039201; c=relaxed/simple;
+	bh=rl3gq3jrO2l70o6HquUXwI2KyziEeemAsmrPeWEMjKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RdWMsfYX31CmRH2tlwezMJfHOy6K2+iH1S9kYWaQxBp8H0IinA9wwunf0DjtOHGZw6uVRoa8EZKixugqaSDNgRd9xaQVmejBNNALzZT3+rme2C/vv1WQqOC7DKXwaH/+J0EKPNsPgo8fDYSJwrTbxgIgvFqIIxLcy0aT5qWB/sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ysy0M/nG; arc=none smtp.client-ip=115.124.30.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UsgG2lN0"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3b783ea502eso203346f8f.1;
-        Tue, 12 Aug 2025 15:24:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755037462; x=1755642262; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rtjUK0AZOjm4eF0vnry/hWr4fc/ZinEdNV9kmjIXNAY=;
-        b=UsgG2lN0/dfvuiGD/r5glWiHVrG4l89saV+mlnzWnKFzmWWfFufR+ttIQPnxpwoTuK
-         Xz4/VHGXDCCFZyoxXOcsYB36Wck3M0v2TzVxKzI87M58bJOrsPvDXPyeOWtigvfp6TPC
-         k/i5ilA+ePGDSKJBp5IlTI+TBe7n7OwSdW43/bhUaxk65sB35FhSxL5R64J0myrBFMdp
-         /ODx6S+LIoVfKqg+CuMxydF+3BvqxaxvF/Rh6oO8FuF8uMsGZqat9TbZXUciQZ+2aO5r
-         6blGBtVOavLwBOkRZhfE5gQ+4/exWFbt8EHIpPZ6VgTWGkPy0yks4wtnvR4RryW0PCxh
-         XVtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755037462; x=1755642262;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rtjUK0AZOjm4eF0vnry/hWr4fc/ZinEdNV9kmjIXNAY=;
-        b=Jy0kVZOLv6cZgF/rd+Xje4arfcQAK1N3xFlktuQBFrlHo+khivCawW9kSMisB+eZKe
-         sGReooHIRzrftzvEsl5pJHPeijr1ZnKvEqGm7/gq1nFpAqwKmx1C5lMW+cDBvM5XSutR
-         w/UTeqs19NoSdvNhdIjnA6eGeSSL1kpYy3m6+jhXv3SceJxsEeI2SZmg8ub5AiuBeaJD
-         z/MdcSbZDmmiQLwAhia2RUQcumLXzMWvZV0mVBrGw9pAU+C/lRphYwnm+ZHDICHh6iqe
-         uR1LG/x6qwsfp807Q834F+nZ+tiaCBrvAiBLOtHqGT3VECYye3UnXsXLTe+REImts6MY
-         evwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU26KLfefZxtdrid992cL40r7mUKF/drLukWXnbj4vXvSNeqql/R0l7VnecEZjwUGC5KWw=@vger.kernel.org, AJvYcCVBTCaX7FMNyorDmaboS17h084f8ea8YKVqjlnJJZRVYZQ7GvAtA6nz1oSgFdLCash3GiDHLQuyPf/m@vger.kernel.org, AJvYcCWI3mGJrhAHMFlAZlaS29x5jOfEMts4K+loweGnVBW9gZn5cJwfPp37Oo25gsud7CRu4biFZd315jMkkvog@vger.kernel.org
-X-Gm-Message-State: AOJu0YxE8e5Zu+HfDuK5YSHgaEhirWFNHt+39FGQjR9tuXmjPFU3gBp8
-	yX2XTnstzG3jetGIt6MUHCCDdCluiYQVVNI1tYH7jw3h6qR8WJHWm9YdKBIZM3LB
-X-Gm-Gg: ASbGncsu4O/9fpdBv2cLXQ4wM4DcddjS01qpGSD6eLEVhmVPoGfF1Kwzw3M0x6onJrL
-	ZscYl2Ej+VSA2P3CLZ+McaG4tP5eQoykP9xgKTeAsGkgmQvavgoD//V2sZ1CBoWBL8ngYWBgErn
-	6ex2HsjtwTmdzuiQ1fKAGKk4D9wYk3t1cB5U0cdzEGuup/lcM7x3A+LzdGhMKdEUn/4wdb9pnPg
-	ipk+EC0D7gQYy/EvCH8IhsCWKu0FzmC8NobtWo+BUalXaSQH/FYomO55FEeaOOIVlHReVz6EsTA
-	aMN+VcQvvYaeIu7SPQ1qtyM/L9Rsk4kqKsX+53FXC+8zkdFwEILYZxzaBdFLmaIrCgWgeuWzIv5
-	KfSCjIa6SD12uZ31sDUfKHH45jKRwv80Vf88=
-X-Google-Smtp-Source: AGHT+IHJr9x4tPHQB488BcmKjtF7JFP/uv+eKfUyu+Ss45vTGSVkFV0Ahpktarr49m9/oxGrmVivog==
-X-Received: by 2002:a05:6000:3107:b0:3b9:16e5:bd38 with SMTP id ffacd0b85a97d-3b918c4cebcmr138431f8f.4.1755037461620;
-        Tue, 12 Aug 2025 15:24:21 -0700 (PDT)
-Received: from localhost ([2a03:2880:31ff:2::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3abedesm46018339f8f.3.2025.08.12.15.24.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Aug 2025 15:24:19 -0700 (PDT)
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-To: netdev@vger.kernel.org
-Cc: aleksander.lobakin@intel.com,
-	alexanderduyck@fb.com,
-	andrew+netdev@lunn.ch,
-	ast@kernel.org,
-	bpf@vger.kernel.org,
-	corbet@lwn.net,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	hawk@kernel.org,
-	horms@kernel.org,
-	john.fastabend@gmail.com,
-	kernel-team@meta.com,
-	kuba@kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mohsin.bashr@gmail.com,
-	pabeni@redhat.com,
-	sdf@fomichev.me,
-	vadim.fedorenko@linux.dev
-Subject: [PATCH net-next V3 9/9] eth: fbnic: Report XDP stats via ethtool
-Date: Tue, 12 Aug 2025 15:24:17 -0700
-Message-ID: <20250812222417.268420-1-mohsin.bashr@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250812220150.161848-1-mohsin.bashr@gmail.com>
-References: <20250812220150.161848-1-mohsin.bashr@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ysy0M/nG"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1755039190; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=LTKh61sGMqGDY8iSCdSNPHCu9OosnTv64aq7GuRg+OM=;
+	b=ysy0M/nGVom6zEy0pQraS2VSGJQX8IGe3cx1VCTJnhCAKQeELoC+ouq6DTzrLZSJv7fVk29OyZBx5zX2udfSHKAXmyb4U9X58lXrHFstss3aRjXz5D1jTQVbPeDEPRtVLuruyHlb+d+tSwqAscgRMpWRxf9muM/NbdzbYuWRnDc=
+Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0WlcqLaa_1755039188 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 13 Aug 2025 06:53:09 +0800
+Date: Wed, 13 Aug 2025 06:53:08 +0800
+From: Dust Li <dust.li@linux.alibaba.com>
+To: Alexandra Winter <wintera@linux.ibm.com>,
+	David Miller <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Julian Ruess <julianr@linux.ibm.com>
+Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thorsten Winkler <twinkler@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>, Halil Pasic <pasic@linux.ibm.com>,
+	linux-rdma@vger.kernel.org
+Subject: Re: [RFC net-next 03/17] net/smc: Remove error handling of
+ unregister_dmb()
+Message-ID: <aJvF1PQ6zx53WDBi@linux.alibaba.com>
+Reply-To: dust.li@linux.alibaba.com
+References: <20250806154122.3413330-1-wintera@linux.ibm.com>
+ <20250806154122.3413330-4-wintera@linux.ibm.com>
+ <aJh8d2G9-veAynO1@linux.alibaba.com>
+ <a92a4e51-5560-48ec-93f2-6d434b1abbb9@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a92a4e51-5560-48ec-93f2-6d434b1abbb9@linux.ibm.com>
 
-Add support to collect XDP stats via ethtool API. We record
-packets and bytes sent, and packets dropped on the XDP_TX path.
+On 2025-08-11 13:28:39, Alexandra Winter wrote:
+>
+>
+>On 10.08.25 13:03, Dust Li wrote:
+>> On 2025-08-06 17:41:08, Alexandra Winter wrote:
+>>> smcd_buf_free() calls smc_ism_unregister_dmb(lgr->smcd, buf_desc) and
+>>> then unconditionally frees buf_desc.
+>>>
+>>> Remove the cleaning up of fields of buf_desc in
+>>> smc_ism_unregister_dmb(), because it is not helpful.
+>>>
+>>> This removes the only usage of ISM_ERROR from the smc module. So move it
+>>> to drivers/s390/net/ism.h.
+>>>
+>>> Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+>>> Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+>>> ---
+>>> drivers/s390/net/ism.h |  1 +
+>>> include/net/smc.h      |  2 --
+>>> net/smc/smc_ism.c      | 14 +++++---------
+>>> net/smc/smc_ism.h      |  3 ++-
+>>> 4 files changed, 8 insertions(+), 12 deletions(-)
+>>>
+>>> diff --git a/drivers/s390/net/ism.h b/drivers/s390/net/ism.h
+>>> index 047fa6101555..b5b03db52fce 100644
+>>> --- a/drivers/s390/net/ism.h
+>>> +++ b/drivers/s390/net/ism.h
+>>> @@ -10,6 +10,7 @@
+>>> #include <asm/pci_insn.h>
+>>>
+>>> #define UTIL_STR_LEN	16
+>>> +#define ISM_ERROR	0xFFFF
+>>>
+>>> /*
+>>>  * Do not use the first word of the DMB bits to ensure 8 byte aligned access.
+>>> diff --git a/include/net/smc.h b/include/net/smc.h
+>>> index db84e4e35080..a9c023dd1380 100644
+>>> --- a/include/net/smc.h
+>>> +++ b/include/net/smc.h
+>>> @@ -44,8 +44,6 @@ struct smcd_dmb {
+>>>
+>>> #define ISM_RESERVED_VLANID	0x1FFF
+>>>
+>>> -#define ISM_ERROR	0xFFFF
+>>> -
+>>> struct smcd_dev;
+>>>
+>>> struct smcd_gid {
+>>> diff --git a/net/smc/smc_ism.c b/net/smc/smc_ism.c
+>>> index 84f98e18c7db..a94e1450d095 100644
+>>> --- a/net/smc/smc_ism.c
+>>> +++ b/net/smc/smc_ism.c
+>>> @@ -205,13 +205,13 @@ int smc_ism_put_vlan(struct smcd_dev *smcd, unsigned short vlanid)
+>>> 	return rc;
+>>> }
+>>>
+>>> -int smc_ism_unregister_dmb(struct smcd_dev *smcd, struct smc_buf_desc *dmb_desc)
+>>> +void smc_ism_unregister_dmb(struct smcd_dev *smcd,
+>>> +			    struct smc_buf_desc *dmb_desc)
+>>> {
+>>> 	struct smcd_dmb dmb;
+>>> -	int rc = 0;
+>>>
+>>> 	if (!dmb_desc->dma_addr)
+>>> -		return rc;
+>>> +		return;
+>>>
+>>> 	memset(&dmb, 0, sizeof(dmb));
+>>> 	dmb.dmb_tok = dmb_desc->token;
+>>> @@ -219,13 +219,9 @@ int smc_ism_unregister_dmb(struct smcd_dev *smcd, struct smc_buf_desc *dmb_desc)
+>>> 	dmb.cpu_addr = dmb_desc->cpu_addr;
+>>> 	dmb.dma_addr = dmb_desc->dma_addr;
+>>> 	dmb.dmb_len = dmb_desc->len;
+>>> -	rc = smcd->ops->unregister_dmb(smcd, &dmb);
+>>> -	if (!rc || rc == ISM_ERROR) {
+>>> -		dmb_desc->cpu_addr = NULL;
+>>> -		dmb_desc->dma_addr = 0;
+>>> -	}
+>>> +	smcd->ops->unregister_dmb(smcd, &dmb);
+>> 
+>> Hmm, I think the old way of handling error here is certainly not good.
+>> But completely ignoring error handling here would make bugs harder
+>> to detect.
+>> 
+>> What about adding a WARN_ON_ONCE(rc) ?
+>> 
+>> Also, I think we can just remove the rc == ISM_ERROR to remove
+>> the dependency of ISM_ERROR in smc.
+>> 
+>> Best regards,
+>> Dust
+>> 
+>
+>As I wrote in the commit message, I removed rc, because it is ignored by the caller anyhow today.
+>If you want to I can add it back into this function and then you can think about how SMC should
+>handle such an error.
+>
+>My thoughts on this are:
+>There is not really much smc can do about a problem in unregister_dmb.
+>
+>I think it is Linux strategy to report and handle errors at the lowest level possible. I have some
+>patches on my harddisk to improve error handling and error reporting of the ism device diver. And
+>we are already discussing internally which errors should do a WARN_ON_ONCE in the ism device driver.
+>
+>So I don't think there is much to do in the smc layer at the moment.
+>How does that sound to you?
 
-ethtool -S eth0 | grep xdp | grep -v "0"
-     xdp_tx_queue_13_packets: 2
-     xdp_tx_queue_13_bytes: 16126
+LGTM.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
----
- .../net/ethernet/meta/fbnic/fbnic_ethtool.c   | 50 ++++++++++++++++++-
- 1 file changed, 49 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-index 742b557d0e56..ceb8f88ae41c 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-@@ -112,6 +112,20 @@ static const struct fbnic_stat fbnic_gstrings_hw_q_stats[] = {
- 	 FBNIC_HW_RXB_DEQUEUE_STATS_LEN * FBNIC_RXB_DEQUEUE_INDICES + \
- 	 FBNIC_HW_Q_STATS_LEN * FBNIC_MAX_QUEUES)
- 
-+#define FBNIC_QUEUE_STAT(name, stat) \
-+	FBNIC_STAT_FIELDS(fbnic_ring, name, stat)
-+
-+static const struct fbnic_stat fbnic_gstrings_xdp_stats[] = {
-+	FBNIC_QUEUE_STAT("xdp_tx_queue_%u_packets", stats.packets),
-+	FBNIC_QUEUE_STAT("xdp_tx_queue_%u_bytes", stats.bytes),
-+	FBNIC_QUEUE_STAT("xdp_tx_queue_%u_dropped", stats.dropped),
-+};
-+
-+#define FBNIC_XDP_STATS_LEN ARRAY_SIZE(fbnic_gstrings_xdp_stats)
-+
-+#define FBNIC_STATS_LEN \
-+	(FBNIC_HW_STATS_LEN + FBNIC_XDP_STATS_LEN * FBNIC_MAX_XDPQS)
-+
- static void
- fbnic_get_drvinfo(struct net_device *netdev, struct ethtool_drvinfo *drvinfo)
- {
-@@ -422,6 +436,16 @@ static void fbnic_get_rxb_dequeue_strings(u8 **data, unsigned int idx)
- 		ethtool_sprintf(data, stat->string, idx);
- }
- 
-+static void fbnic_get_xdp_queue_strings(u8 **data, unsigned int idx)
-+{
-+	const struct fbnic_stat *stat;
-+	int i;
-+
-+	stat = fbnic_gstrings_xdp_stats;
-+	for (i = 0; i < FBNIC_XDP_STATS_LEN; i++, stat++)
-+		ethtool_sprintf(data, stat->string, idx);
-+}
-+
- static void fbnic_get_strings(struct net_device *dev, u32 sset, u8 *data)
- {
- 	const struct fbnic_stat *stat;
-@@ -447,6 +471,9 @@ static void fbnic_get_strings(struct net_device *dev, u32 sset, u8 *data)
- 			for (i = 0; i < FBNIC_HW_Q_STATS_LEN; i++, stat++)
- 				ethtool_sprintf(&data, stat->string, idx);
- 		}
-+
-+		for (i = 0; i < FBNIC_MAX_XDPQS; i++)
-+			fbnic_get_xdp_queue_strings(&data, i);
- 		break;
- 	}
- }
-@@ -464,6 +491,24 @@ static void fbnic_report_hw_stats(const struct fbnic_stat *stat,
- 	}
- }
- 
-+static void fbnic_get_xdp_queue_stats(struct fbnic_ring *ring, u64 **data)
-+{
-+	const struct fbnic_stat *stat;
-+	int i;
-+
-+	if (!ring) {
-+		*data += FBNIC_XDP_STATS_LEN;
-+		return;
-+	}
-+
-+	stat = fbnic_gstrings_xdp_stats;
-+	for (i = 0; i < FBNIC_XDP_STATS_LEN; i++, stat++, (*data)++) {
-+		u8 *p = (u8 *)ring + stat->offset;
-+
-+		**data = *(u64 *)p;
-+	}
-+}
-+
- static void fbnic_get_ethtool_stats(struct net_device *dev,
- 				    struct ethtool_stats *stats, u64 *data)
- {
-@@ -511,13 +556,16 @@ static void fbnic_get_ethtool_stats(struct net_device *dev,
- 				      FBNIC_HW_Q_STATS_LEN, &data);
- 	}
- 	spin_unlock(&fbd->hw_stats_lock);
-+
-+	for (i = 0; i < FBNIC_MAX_XDPQS; i++)
-+		fbnic_get_xdp_queue_stats(fbn->tx[i + FBNIC_MAX_TXQS], &data);
- }
- 
- static int fbnic_get_sset_count(struct net_device *dev, int sset)
- {
- 	switch (sset) {
- 	case ETH_SS_STATS:
--		return FBNIC_HW_STATS_LEN;
-+		return FBNIC_STATS_LEN;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
--- 
-2.47.3
-
+Best regards,
+Dust
