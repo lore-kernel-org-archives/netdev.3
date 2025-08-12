@@ -1,208 +1,175 @@
-Received: from mail-pg1-f225.google.com (mail-pg1-f225.google.com [209.85.215.225])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1B32D47F6
-	for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 06:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CC024DD13
+	for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 06:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754979959; cv=none; b=SWLkc253Oka/ITqLpS5oxCPeqlsIYMG30bZ5juEX4ZzHvDbyT0gR35bS8giyJOHCQ/k92ur2d2E/GwJFAwPGzR6R+mDIDsXSXwlVV0wo+kfG4HIFEkX7VTjisvKOPxRK7uJPhwmaH6nIQE7jPPJK7vP6p9rafXOKhviErz2Ugik=
+	t=1754981114; cv=none; b=EYHv22sqAhm6f0LPQd7QbGi7Y1tlCmwgiSSI2tCtmIavykPnEOor0IJC/LDrjUTkuWEMd2Lq4w7dEsK9VkDYh9D8uLv61Cc7uCZVoadn7vmJv6p4hZ1I3zR51bkbd3TfkTJ7GlS9wMAkZGJwPHsxJD5mx9vts7Exs5KtMTVtstI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754979959; c=relaxed/simple;
-	bh=JwoVUph7JdF+eUAGcD2R4C4BHZniihsGUMw3tU+0Hjk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Acm4l6MNaeKymSwBEQ20Za5D75O0kQTbR6hsT5N99NiJQZYSqJ/nOi43ImpscfzOMn64ebBjCVoA0NDT86XTKPLWExfyfba5HY+QhIYJ6Z/5Y8iiLcckL80jUu1hC4bvP207jLW61KcSq1B2FzpIt1gRzpNLAb8TsEhM1Y5iDmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=QJsSR8+m; arc=none smtp.client-ip=209.85.215.225
+	s=arc-20240116; t=1754981114; c=relaxed/simple;
+	bh=Av5NxEc9BvJEaUJ3mWr7GpR8ztoTaIdetTxHV6O4e7s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a0gT/AMINSRMHvJbs+WUkFJjOjFaW3i+PMgxzvGZIi7w6nPqsgBavkALsq1Kc1MzQpWJbmUORqxqKZ4pgcqEewnIq6nHTuazBrHsyezjkmpXDRUYBAGz6movtXnoUb2hk61JewGCOho9WGwfvtNaBChAyo+OmRWKII9k760IlAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=hR9tfIiO; arc=none smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="QJsSR8+m"
-Received: by mail-pg1-f225.google.com with SMTP id 41be03b00d2f7-b2c4331c50eso3703756a12.3
-        for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 23:25:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754979957; x=1755584757;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=efQ/Khh+wi0B0rIIu872y8FB8xkosRs89Ye5o6WmuwM=;
-        b=WBc4BlHfwwkRKcds6dJwCbaBk8Q5vgyJuBN6zWJB8UQjGJ+fDPRzxd7pvQX/bMHuS/
-         XbYALxSo4Hls1V+FH7sKLEXrCKCuo2v2K0nbfdL/QC6Wj4/K3hlnbrSrFCK6WNMrB3gv
-         rhSmRPoxzdVAc35Kwny4x6jweUsfFy4yEKzvjA8BiHiWU5r4CyBCp7a6O4zBCarS33bO
-         oUZ6+ck3Qw7CtX33DbFvblWLPkxePf5nBcoL9epNAQd7z49HtOKIUU6oq+0Z+4QylNQ/
-         4UIRfw6dilo/TgdlId5SAcOxdViNSEFmHp/vwbObgcrlUQStS4FatwygRftt6DeXH75d
-         hRyw==
-X-Forwarded-Encrypted: i=1; AJvYcCUFhc2gxlk0FQvGnAw3tiFMJLmXQhRG4FgdEVH53RyMC4S5jjV1bwdcR+toXpkWoTm207CXwG4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4PJo5iiA/7X37QP2aDN1eFX5PxedIpVN5KCWzywbpC1yMXkPh
-	g8J0KgMIMDK19sPs6S8PAZtfnXQW1nk4BKA+NOmoFlZ+SftrfuXGXZ/py9vLIGccJ6J0/3gA2SP
-	y4WKZnuA1hIuhDNDXvxK4pU83M0529lCIDiHCoqDPU/DDRb1B+VSZF+nKHnrhdFPZCeDaOrKgm0
-	s0jS8/kAtsudFkWfyk2ztABCJOIWOhq3hcAVx+e12YYC7Shr+6oNoA7HMUDZa+92RwpBvBUJd1q
-	FLOKUtHefc9B0GBmA==
-X-Gm-Gg: ASbGncu24AsH5kbz2vCYpo24/r9C+IHM1CWpjTdSIQ2RAaqOmcQuBo2h79AdZS5LzJ7
-	mi0WssIh9+YYH0w1GCBlAs4zw7m8DMmb/512DBXQK8ASRmhowvZVKRhgMWeuzuYlzRuPUPiLqRM
-	yJJkXIcvGIxd7mK++tq1ubcRI7/5lIRJYGF/pBWE7zu649UebUQOGUQHW6ihq1bTKZZp2CfZqIU
-	QBL4T1Ab+W79wXgEYYZhqCOlH9oEj+e/NXukBXhkVbs/afjpp3wZUx7zoqxBEGafgEE5Y3HTN05
-	QvUAnjp+TOxQ4b3mgK1NsnCYoA0wNmOWNWovAfnsvo4DjISVKO9l2HLPIjwHnOo+5HnXf6mzVo5
-	PMNlRqeRJ3wFKh//WRGq2AFPR8+6KjStWUyq7mqy7OIiTjviwlMiOmKxspaJsLx+wnjGDFClgCP
-	R4
-X-Google-Smtp-Source: AGHT+IHzhyxFOm1JGWfSqCRnAQLxijz76Swwx4W4WYwfprei0NjstbnIfVND8szpG5wjkAJursYjxDg9KQmr
-X-Received: by 2002:a17:903:247:b0:23f:f065:f2be with SMTP id d9443c01a7336-242fc317779mr30255895ad.26.1754979957438;
-        Mon, 11 Aug 2025 23:25:57 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-0.dlp.protect.broadcom.com. [144.49.247.0])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2429ce702casm9338155ad.35.2025.08.11.23.25.56
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 11 Aug 2025 23:25:57 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-242fe34add1so5125565ad.3
-        for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 23:25:56 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="hR9tfIiO"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-61557997574so7305873a12.3
+        for <netdev@vger.kernel.org>; Mon, 11 Aug 2025 23:45:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1754979956; x=1755584756; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=efQ/Khh+wi0B0rIIu872y8FB8xkosRs89Ye5o6WmuwM=;
-        b=QJsSR8+mK50HbIV2kqKWlPi/pEbTvhnCU0996GgI+pgIm/tBeZkQYG2Mp6Uf1cbOin
-         BlO5CpvOX9G/fakcXK2TwqxocxNcSrboUIWj4gV/lsSCALYzXTc15jOERQ9iS8rLvxwq
-         QL9YU5CxQVihWU2NH1p983cdnt3pQo8oO1qlo=
-X-Forwarded-Encrypted: i=1; AJvYcCXPmUA+WarctnV50hmW0k2seTrnfGmdHoJlvi8wDkKBgZannuHXMogY9DawHQ9NqUd/ahSgBVE=@vger.kernel.org
-X-Received: by 2002:a17:902:f70c:b0:240:3f39:2c73 with SMTP id d9443c01a7336-242fc0eeffamr33535245ad.0.1754979955626;
-        Mon, 11 Aug 2025 23:25:55 -0700 (PDT)
-X-Received: by 2002:a17:902:f70c:b0:240:3f39:2c73 with SMTP id d9443c01a7336-242fc0eeffamr33534825ad.0.1754979955053;
-        Mon, 11 Aug 2025 23:25:55 -0700 (PDT)
-Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e8aa9257sm291805895ad.153.2025.08.11.23.25.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Aug 2025 23:25:54 -0700 (PDT)
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	tapas.kundu@broadcom.com,
-	zyjzyj2000@gmail.com,
-	jgg@ziepe.ca,
-	leon@kernel.org,
-	richardcochran@gmail.com,
-	monis@mellanox.com,
-	kamalh@mellanox.com,
-	haggaie@mellanox.com,
-	amirv@mellanox.com,
-	dledford@redhat.com,
-	linux-rdma@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH v5.10] RDMA/rxe: Return CQE error if invalid lkey was supplied
-Date: Mon, 11 Aug 2025 23:12:31 -0700
-Message-Id: <20250812061231.149309-1-shivani.agarwal@broadcom.com>
-X-Mailer: git-send-email 2.25.1
+        d=broadcom.com; s=google; t=1754981111; x=1755585911; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=6ns5b76c85N+gLhJ2fhsnYeUTbecR9eL02FgSlY1JNA=;
+        b=hR9tfIiOIlCm4lMmHYU9StdxwCJRY0HiRPdszozr/rP7myXTyxUVyAbSS9usNuqdr6
+         OT7C+TApabh0wHhYwZCUumQ7o8iadfwiYxzBMLqUOvOnW1+H1DvkVvCV6RB5ugT940TP
+         nB7K1P5bPb+StL7KMh7cQjdLg6cPO8So/kGBo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754981111; x=1755585911;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6ns5b76c85N+gLhJ2fhsnYeUTbecR9eL02FgSlY1JNA=;
+        b=FyUUjPGnXG81J52Ob2g88UJKVSk9bXeA0ulgSs+Vxme3wAw6gzXlePiERJtDYxLX8n
+         8Rx+IFMMYv8D8IVMa0j1rGZZB8s9j9jOGym9ibr6Le5n7vH1km+DR1aN/Es9x+dx2VmQ
+         OXokBVbXnjVECKlEOa9+EXuEskSuGqpBZOFLpxucg9PQcD5kwDYknRjK/7jGk4nvwDih
+         NKdNCTWa245YM/LO/ob2sHBY3QVLKIedFsB2izfMAlZ0Yrf+TA3cVZrosW0mMM+iw9Rg
+         MXzx3sFjIAJ3Yzajs1JZrLah5LY/NEXhtfctslKR7KfORIZsWOTBSb3jqOUcdMJ+jx3T
+         FY3g==
+X-Forwarded-Encrypted: i=1; AJvYcCWik6Vd95yKWnAYeffnx5EHhyuL519uD6gam2ImzjZTMR89gEDsolxRZ6yOFN+y8R5xaBEn/SM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzT7ZruIMH1n6UytyzgrLaYDkWkIaoCcmq8/cYkuabYyEqgv+c
+	+Z7/z2HmWbHVB3ePGWRL5DGK7+o+x8zTihbVS4Ud2mcmlW60hzt65hqTll1C998lZwjr4Je/fDh
+	/qR8JIMGjeKmf3fUoFwRhBRMRZajmq48ZJ6qZ2aCb
+X-Gm-Gg: ASbGncsWs8aSdkr7zOns2P9IMkaJHm5/BgPyCPhZmKCr2iwhcpD1RhL1U/UA2H8iIjA
+	w0rPMXMcUm8axWt02LiWQzQCD/11FCr+qPg9qy9Ptz4TpYVfnzYpMnk6bNQHdOqbvx3IneFF9mu
+	xCd0i9/GcpAGfyqdRwlAaaISLkfqFOkILgtIZzCdb5nvB1MUvnRRSIsOfL1Wl8hDHqW9fW6IYvP
+	O6T4pI=
+X-Google-Smtp-Source: AGHT+IHonJEVBsPV+4+jXXD2VbVo41hlz+Lv6c+85fJ5fJdEqPPYyeWRx9UimLcvWqyu+1Zhed1j+D8+LDabDVbEBhg=
+X-Received: by 2002:a17:907:3c91:b0:ade:9b52:4cc0 with SMTP id
+ a640c23a62f3a-afa1e065d5bmr193678166b.26.1754981110871; Mon, 11 Aug 2025
+ 23:45:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+References: <20250811234212.580748-1-kuba@kernel.org> <20250811234212.580748-4-kuba@kernel.org>
+In-Reply-To: <20250811234212.580748-4-kuba@kernel.org>
+From: Michael Chan <michael.chan@broadcom.com>
+Date: Mon, 11 Aug 2025 23:44:58 -0700
+X-Gm-Features: Ac12FXwaCN4WOcHoVrWjUW0kQ2RIxY2vZgudf9Ck_X6vJiyoro3Nh48KDgGK2M4
+Message-ID: <CACKFLin8juG1-e+XF8y5qveS4yC9jbau7-5+BV_bpFHaHjAPCg@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 3/4] eth: bnxt: support RSS on IPv6 Flow Label
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
+	donald.hunter@gmail.com, pavan.chebbi@broadcom.com, 
+	willemdebruijn.kernel@gmail.com, ecree.xilinx@gmail.com
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000b97ebf063c2561a5"
 
-From: Leon Romanovsky <leonro@nvidia.com>
+--000000000000b97ebf063c2561a5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[ Upstream commit dc07628bd2bbc1da768e265192c28ebd301f509d ]
+On Mon, Aug 11, 2025 at 4:42=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> It appears that the bnxt FW API has the relevant bit for Flow Label
+> hashing. Plumb in the support. Obey the capability bit.
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> v4:
+>  - only set IP if tuple=3D2
+> v2: https://lore.kernel.org/20250724015101.186608-4-kuba@kernel.org
+>  - update the logic to pick the 2 tuple *OR* the FL bit
+> v1: https://lore.kernel.org/20250722014915.3365370-4-kuba@kernel.org
 
-RXE is missing update of WQE status in LOCAL_WRITE failures.  This caused
-the following kernel panic if someone sent an atomic operation with an
-explicitly wrong lkey.
+Thanks.
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
 
-[leonro@vm ~]$ mkt test
-test_atomic_invalid_lkey (tests.test_atomic.AtomicTest) ...
- WARNING: CPU: 5 PID: 263 at drivers/infiniband/sw/rxe/rxe_comp.c:740 rxe_completer+0x1a6d/0x2e30 [rdma_rxe]
- Modules linked in: crc32_generic rdma_rxe ip6_udp_tunnel udp_tunnel rdma_ucm rdma_cm ib_umad ib_ipoib iw_cm ib_cm mlx5_ib ib_uverbs ib_core mlx5_core ptp pps_core
- CPU: 5 PID: 263 Comm: python3 Not tainted 5.13.0-rc1+ #2936
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
- RIP: 0010:rxe_completer+0x1a6d/0x2e30 [rdma_rxe]
- Code: 03 0f 8e 65 0e 00 00 3b 93 10 06 00 00 0f 84 82 0a 00 00 4c 89 ff 4c 89 44 24 38 e8 2d 74 a9 e1 4c 8b 44 24 38 e9 1c f5 ff ff <0f> 0b e9 0c e8 ff ff b8 05 00 00 00 41 bf 05 00 00 00 e9 ab e7 ff
- RSP: 0018:ffff8880158af090 EFLAGS: 00010246
- RAX: 0000000000000000 RBX: ffff888016a78000 RCX: ffffffffa0cf1652
- RDX: 1ffff9200004b442 RSI: 0000000000000004 RDI: ffffc9000025a210
- RBP: dffffc0000000000 R08: 00000000ffffffea R09: ffff88801617740b
- R10: ffffed1002c2ee81 R11: 0000000000000007 R12: ffff88800f3b63e8
- R13: ffff888016a78008 R14: ffffc9000025a180 R15: 000000000000000c
- FS:  00007f88b622a740(0000) GS:ffff88806d540000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007f88b5a1fa10 CR3: 000000000d848004 CR4: 0000000000370ea0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- Call Trace:
-  rxe_do_task+0x130/0x230 [rdma_rxe]
-  rxe_rcv+0xb11/0x1df0 [rdma_rxe]
-  rxe_loopback+0x157/0x1e0 [rdma_rxe]
-  rxe_responder+0x5532/0x7620 [rdma_rxe]
-  rxe_do_task+0x130/0x230 [rdma_rxe]
-  rxe_rcv+0x9c8/0x1df0 [rdma_rxe]
-  rxe_loopback+0x157/0x1e0 [rdma_rxe]
-  rxe_requester+0x1efd/0x58c0 [rdma_rxe]
-  rxe_do_task+0x130/0x230 [rdma_rxe]
-  rxe_post_send+0x998/0x1860 [rdma_rxe]
-  ib_uverbs_post_send+0xd5f/0x1220 [ib_uverbs]
-  ib_uverbs_write+0x847/0xc80 [ib_uverbs]
-  vfs_write+0x1c5/0x840
-  ksys_write+0x176/0x1d0
-  do_syscall_64+0x3f/0x80
-  entry_SYSCALL_64_after_hwframe+0x44/0xae
+--000000000000b97ebf063c2561a5
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Link: https://lore.kernel.org/r/11e7b553f3a6f5371c6bb3f57c494bb52b88af99.1620711734.git.leonro@nvidia.com
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Acked-by: Zhu Yanjun <zyjzyj2000@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[Shivani: Modified to apply on 5.10.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
----
- drivers/infiniband/sw/rxe/rxe_comp.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/infiniband/sw/rxe/rxe_comp.c b/drivers/infiniband/sw/rxe/rxe_comp.c
-index a54d80004342..b7645de067f3 100644
---- a/drivers/infiniband/sw/rxe/rxe_comp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_comp.c
-@@ -346,13 +346,15 @@ static inline enum comp_state do_read(struct rxe_qp *qp,
- 	ret = copy_data(qp->pd, IB_ACCESS_LOCAL_WRITE,
- 			&wqe->dma, payload_addr(pkt),
- 			payload_size(pkt), to_mem_obj, NULL);
--	if (ret)
-+	if (ret) {
-+		wqe->status = IB_WC_LOC_PROT_ERR;
- 		return COMPST_ERROR;
-+	}
- 
- 	if (wqe->dma.resid == 0 && (pkt->mask & RXE_END_MASK))
- 		return COMPST_COMP_ACK;
--	else
--		return COMPST_UPDATE_COMP;
-+
-+	return COMPST_UPDATE_COMP;
- }
- 
- static inline enum comp_state do_atomic(struct rxe_qp *qp,
-@@ -366,10 +368,12 @@ static inline enum comp_state do_atomic(struct rxe_qp *qp,
- 	ret = copy_data(qp->pd, IB_ACCESS_LOCAL_WRITE,
- 			&wqe->dma, &atomic_orig,
- 			sizeof(u64), to_mem_obj, NULL);
--	if (ret)
-+	if (ret) {
-+		wqe->status = IB_WC_LOC_PROT_ERR;
- 		return COMPST_ERROR;
--	else
--		return COMPST_COMP_ACK;
-+	}
-+
-+	return COMPST_COMP_ACK;
- }
- 
- static void make_send_cqe(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
--- 
-2.40.4
-
+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
+OnaLEot1MoQO7BIe5S9H4AcCEXXcrJJiAtMCl47ARpyHmvQFQFFTrHgUYEd9V+9bOzY7MBIGSV1N
+/JfsT1sZw6HT0lJkSQefhPGpBniAob62DJP3qr11tu8CAwEAAaOCAdowggHWMA4GA1UdDwEB/wQE
+AwIFoDCBowYIKwYBBQUHAQEEgZYwgZMwTgYIKwYBBQUHMAKGQmh0dHA6Ly9zZWN1cmUuZ2xvYmFs
+c2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNydDBBBggrBgEFBQcw
+AYY1aHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAw
+TQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYBBQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2Jh
+bHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwSQYDVR0fBEIwQDA+oDygOoY4aHR0cDov
+L2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcmwwJAYDVR0R
+BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQU31rAyTdZweIF0tJTFYwfOv2w
+L4QwDQYJKoZIhvcNAQELBQADggEBACcuyaGmk0NSZ7Kio7O7WSZ0j0f9xXcBnLbJvQXFYM7JI5uS
+kw5ozATEN5gfmNIe0AHzqwoYjAf3x8Dv2w7HgyrxWdpjTKQFv5jojxa3A5LVuM8mhPGZfR/L5jSk
+5xc3llsKqrWI4ov4JyW79p0E99gfPA6Waixoavxvv1CZBQ4Stu7N660kTu9sJrACf20E+hdKLoiU
+hd5wiQXo9B2ncm5P3jFLYLBmPltIn/uzdiYpFj+E9kS9XYDd+boBZhN1Vh0296zLQZobLfKFzClo
+E6IFyTTANonrXvCRgodKS+QJEH8Syu2jSKe023aVemkuZjzvPK7o9iU7BKkPG2pzLPgxggJgMIIC
+XAIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQD
+EyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxeQGjDntHGb2iaQkIw
+DQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEILEPEuAh8QWyTiFovmCY43cuTlG18J3R
+CKM/dJXYNmTKMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDgx
+MjA2NDUxMVowXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCG
+SAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEB
+AQUABIIBAC35ybyuav4nLFLz2oQX98nceZoRAjsAOLQJtwqqD858HaIKXSrTc1Gu3ieuwRqcR7h4
+ZnikxNBiGGkUdjC2/4Hyau5XDLcxmXbVOpQUAM4lOGJ966B3IBAJMjdn0o3QJKaGVah8z8aZlWyj
+rTu5BWwV2PWq/03M8C+gszqAwkTzyXo6Cv3ix/Vb2gBaLQTvdZyhgck0CoNTdgca0pr9IfuTVLgv
+6GoIjqtY8p129LvC3Bb0YR65HelkGt3NeS6VZHa81PNYG61rBUMng9oIyye5317q2DBd9ZM1a/Im
+qPlMQAcxt7xcIvXI/mq4qnNBLihljJNBB/QK3Y85NvX8CbI=
+--000000000000b97ebf063c2561a5--
