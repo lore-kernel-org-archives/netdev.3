@@ -1,191 +1,175 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010022.outbound.protection.outlook.com [52.101.84.22])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB422EF67D;
-	Tue, 12 Aug 2025 10:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754993325; cv=fail; b=hqI2/qOIt17JZk+Jb54Rm4HtHX8W/PMDlxIVQG6htWB30PySATwFNmrp9Egh+/acDrz6I3qMb6EOgD0CWvnpsLYFf1M4vFolgU1EFYzFUQWspuDN+OGCPjJ44bEt1V90v1K8nR98PbS6IcKf66Rv7PMR7098rm1lcgFDYOqr7Hg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754993325; c=relaxed/simple;
-	bh=kG7yXUTz+Q92op4trNC+7350u9SXRuYLIaG7fyW9uf0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AS9d/0/sVSixknfBPyUWDTfgWcQ86/FX+fFfLgMYcCRCbF4dQ1k5DuImDqUnB/BkHdjbBnwykI9lv7OZDPBqc/TOLYWNHdO5ViuMBli1RvVbswbCYfpssX8Q+OmdlH/rLfrY22wy7dQhnQdSqikmONsvbqnBppSGrPtegv3uJBw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mvmkkYVa; arc=fail smtp.client-ip=52.101.84.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C0A2E401
+	for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 10:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754993756; cv=none; b=daSHXDlANB/+hJkRCULM6FCV8OaCu2KK2e8uWnlWqyBN0PQ0iOHyTm3dR0bMkLtR2AmjnnZAyF2Eaff1QsFbUzKhYCLUzs7YpHZ1q9goF8t2v20Wuk5PR6Q1Nxb+DMw/APCNoBvraQYoKhuIeCfFTOLjTPDgVMbMKXPZr2yJnrY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754993756; c=relaxed/simple;
+	bh=upr5gTPfA5jEvog5a5LIT8yWlQej74MFP6ZeE5bVIUg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rqiccesBLAFHM8Ll0IRlm2fUaBCi5IHTanGvkVnDeTSJLsTOa/nnY1MUbcn5wrw+dnPK9mfQQHkavSVHJ4WgV5F8Si0KEU2U91hOUiL7/c++ZIv077E26E5Sdh9sY6piENhqHkplMgPSsJnuCiC6Ab0eftLXAMpjeEb+6DXGptI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U4V/qELg; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mvmkkYVa"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rhMPdacs2nBGRhw8WciwJvRnaCI7xbpycP3y+UoiP9p0h7cRXqJzPlgw5qQUSCErx4mKc+l3zwGjNMLZUpUG8ByEOKr0K3oCAlcy0IzUFV82LJdNIWbgLIYehpX+JeBBMpe8XbFJ6sezqLkdTtSE0ClVZ7G5/5sqpJF5l/GXh1QarxsippF1vpcdd9DZn5UTDsrVL/bU3e2VotY8bW0cRL2KlC+0NreOlr4Fac2TZ/pO1/JUqIGO3OKLRwLYDEYoJ4cdLTu/fgebQtegncPk7HZV22lUgXXu46HoBJ5T39QAFTCboL6LFEQpRUob6aP2MTwCtanBgw5Z3UXPC9k9ZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1YHvY2nwH7r3JHSNqfjCQyRf+qOExakXuQNsF+yP0wo=;
- b=keRGcmJgsEiakGcIG2PLDMieLmp9pK4F5TddOSCOVPlw7kw+8DG2/VNYXI7LTiWITt8bTw8Gv8Cs/q1iCStpdH+HFQQKWX5/SUGslPDiHAEdWq5fnllNtpofdcGvNnLXzndOe4dMiArE7CvwioSqLSCgajXd4yy3mqzx1QkVLTNO3zQ1x5OEMemfT6OEd/es56rUtVAA1cyojyMGy6npadsDKM7+dRs15sfHkT/yd+D0NsiNhua3Xw0uqmigydgIUSc8i0oMdX90e56fct+dyglATJDTraBCTjzX3LwCvXQkkiZvioNlPp3XsZLPMDf4YfniR2/n6lHSRiKUXnRLvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1YHvY2nwH7r3JHSNqfjCQyRf+qOExakXuQNsF+yP0wo=;
- b=mvmkkYVaf1dJRrse41gCtfEa+ZmVxS2INIpd/gtjEjKavgusg7USPWoSAh2e4BmZ+NEGIwI9RAwmmIPOyRf6++vE5ggQRVXAX2hSynT8rdVTFgn0N9jAfcaql3nKWBbnWX/70ZpoGZAMT6XfcwSPeozoZb2BtVIaqsCvjzRPH2oIIOiKRLZBVlJfXbbe4SR4tt5MXZZTSDMAfHDrwbm6oY+DomdZDmvXVBb5PlKLbDjb8M5ybSMlnYZNNCmJerL4PuISQTdQzaGx6cN5JJiLgBJYSVADmP+FZ6o/XrnaWQAeT8E/e4FjQoNM4QLNdDznEPl6aEq3xbZUl//6YQs0+Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PA4PR04MB7933.eurprd04.prod.outlook.com (2603:10a6:102:b9::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.13; Tue, 12 Aug
- 2025 10:08:41 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.9031.012; Tue, 12 Aug 2025
- 10:08:41 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	richardcochran@gmail.com,
-	claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	vadim.fedorenko@linux.dev,
-	Frank.Li@nxp.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com
-Cc: fushi.peng@nxp.com,
-	devicetree@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	kernel@pengutronix.de
-Subject: [PATCH v3 15/15] arm64: dts: imx95: add standard PCI device compatible string to NETC Timer
-Date: Tue, 12 Aug 2025 17:46:34 +0800
-Message-Id: <20250812094634.489901-16-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250812094634.489901-1-wei.fang@nxp.com>
-References: <20250812094634.489901-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SGXP274CA0014.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::26)
- To PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U4V/qELg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754993754;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I6rPgfUZWncjHqWz3Gs2f0Po8oy+srlfPWRWaLP7/JA=;
+	b=U4V/qELg2a7ZZn4uxmSG51dSdl3uAKKMA5UhkAXhLp55gpRcf/kIX0aQeC2R7Ae61twe+v
+	kedf3dsNZhmWOUxFqn7id+WgomMPp53xsK4IBDTZpvDhqhOy5NzDn9WC83bhp8Pf0ZJ5c1
+	dyzVbnzO88zGzhR+iaKC5SQaeyIGxDs=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-342-zu492xC7OG247k2FB3jTpA-1; Tue, 12 Aug 2025 06:15:52 -0400
+X-MC-Unique: zu492xC7OG247k2FB3jTpA-1
+X-Mimecast-MFC-AGG-ID: zu492xC7OG247k2FB3jTpA_1754993751
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-458bb0e68c6so32337115e9.1
+        for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 03:15:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754993750; x=1755598550;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I6rPgfUZWncjHqWz3Gs2f0Po8oy+srlfPWRWaLP7/JA=;
+        b=EMqlJRDqyw3WjhNy3yPcPdhc7Qv1QU/m/s6b05F7/Qr0jqI+Li9ibW7XGsl4uG+ZTA
+         RMvNlBK7IxOlg3mrmBX2SyxGgaBbikolouSvrfC0d6/GFk9uJ6BkB5kN8dDqIystuBkt
+         Z974gefgOEyURgODJQDIq6bxO6aRJ3RMr8dLnwbRH0gUVzQZ4vPZjhiwZGTETSVT+MVr
+         Vxo8aBYeDN6oB35LaoOgtMDnrLSiI0LD1kITSa6VsTvjgLewlVEmeg34yuL8INix6OBu
+         lBAyfRha/ihj1ld7msgaLt195yKfLwM3pQe/+6IXyOOaqrZoD6znpXjl8Kc8rX75Jhl2
+         MWAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWiViTREsDvLyPdFqRjiV24c2lwt75iQ7keR4ErX+3ujZs7NlVebQ4INhoSvzig/Vq+IGm+Sfk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwU1Qaxkx69CGDf8KOphFLbZODGmOGQeU4JC/L4tWVRFTCxMziV
+	aPMTE/JNbsbi02P9qqp1zVf5hixFNIriNXlDWfLlJN6UDWjhybv5Fq96ci4L9JPOEvu2mmi7VPB
+	i/8zj+3B6S6P5lirOIx+E8xGJ14N6+2+/qNP/5ZtJor3P7V1mbcj/TAd8pA==
+X-Gm-Gg: ASbGnct6RcaMhjFPWerFcJlcDr+zqM/zsYU8RBlRs4l2S9EYHQME3wzbpmY/eEMoKdV
+	8G6zmjl39mLxFmXr9q4y9465eU0CRnnPDaXCuvqeHfRJ9QFZNj2uJYnZlQ2ZIukLoROKPEPVHjT
+	phJW27N3jgWFB6XKbZafgoLic3guhCqKVr6dEWACumwcGAohz+1tuq0M8DR4RrMWixvxgnVq93x
+	uNlcJIa2tzyNK+VuRJyRIfn2n4TNGzNZlG1W9N8RBWeE/Y4TJl9MWy8U9Q99YxKl5NXKOWQjvWT
+	1c3rvDLUfhgHAzxqHyr41xe0/YRzLNok
+X-Received: by 2002:a05:600c:4f86:b0:456:3b21:ad1e with SMTP id 5b1f17b1804b1-459f4f1278dmr156943605e9.17.1754993750424;
+        Tue, 12 Aug 2025 03:15:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF4hpwCPxI92uHx8TgM/s0ZsgXXko7udMPgKR65VR2LmUddnVMaoV0RM5rKfkQhEswaG8878g==
+X-Received: by 2002:a05:600c:4f86:b0:456:3b21:ad1e with SMTP id 5b1f17b1804b1-459f4f1278dmr156943275e9.17.1754993749988;
+        Tue, 12 Aug 2025 03:15:49 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459db3048bdsm393003455e9.29.2025.08.12.03.15.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Aug 2025 03:15:49 -0700 (PDT)
+Date: Tue, 12 Aug 2025 06:15:46 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: syzbot <syzbot+b4d960daf7a3c7c2b7b1@syzkaller.appspotmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, eperezma@redhat.com,
+	horms@kernel.org, jasowang@redhat.com, kuba@kernel.org,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com, sgarzare@redhat.com,
+	stefanha@redhat.com, syzkaller-bugs@googlegroups.com,
+	virtualization@lists.linux.dev, xuanzhuo@linux.alibaba.com,
+	Will Deacon <will@kernel.org>
+Subject: Re: [syzbot] [kvm?] [net?] [virt?] WARNING in
+ virtio_transport_send_pkt_info
+Message-ID: <20250812061425-mutt-send-email-mst@kernel.org>
+References: <20250812052645-mutt-send-email-mst@kernel.org>
+ <689b1156.050a0220.7f033.011c.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PA4PR04MB7933:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4c18e8f3-8fe8-4bf0-57f4-08ddd98836ab
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|366016|19092799006|1800799024|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?z7wEEuV5LpGYoj159gXHYzvQAKpGqS7IP2mvLLXCGbzohYeh8GVJ+ocAAA8h?=
- =?us-ascii?Q?YCKQ6UW6SJh0KgI02/xMnHrXjnDP+aK7pEgF/jOr7bMNwhFPXsjXWQSY7uVj?=
- =?us-ascii?Q?T1NmAl74SolTJ8hSQRd8p4qvUl+EDZbwyzwzSKPKvCprDvcqKMUWBlpzzFYs?=
- =?us-ascii?Q?mWfGBC7cn3SiXFdif45PNRjK79Vnw+lWMTG6q2KSvu8IWS2kZSDncGdDsJ8Q?=
- =?us-ascii?Q?x0Nj74/86n/Gkd8NHfq19btnyTOKfuVBiOQtnF1N4tc7WQXzCgrmYsgouS32?=
- =?us-ascii?Q?KYtFTBKRaCjWYpjxduCOEcDAOpQJy8dm/xM5ZWboEmjrHB+yJgKJME89ORXL?=
- =?us-ascii?Q?g61KYJyb9HPgasujpR6N7b9eiTb9V4BjK40zPU1nl3xQhrsevGikOxhlKtQi?=
- =?us-ascii?Q?uAHNPUPNvEp/nVCUoFUNbZr2ilKYC2MkqySoGd1zqlRMwJ2vqniA20THF4jr?=
- =?us-ascii?Q?nbkjcYO2atDgdFXGrkkGVvcmOC3rnSo4BVRvc1Y1s3wNYImB09hZqGbbzARl?=
- =?us-ascii?Q?RyYnAOflQDpytnDP+2zEwyNBlTpEKPWbHZspn9e6dopNkdEDj55olN+oOiLS?=
- =?us-ascii?Q?nJ3XYe5V7zV5xrDc5TdSKWwWxf2N+LUEVvlUbVoKohkYdSMT4v+EuUHZ5m6J?=
- =?us-ascii?Q?whLenbJRoa8ITleYfWOjZqasNhRVd9CLF+CW+8FW1cc25TxJoolw/j/hWar2?=
- =?us-ascii?Q?YDMmA+vjFsh5CQOXSauyaYp9IabmXzfNn0sEBNHUwtOtrPFuQu2ek+8hj2pF?=
- =?us-ascii?Q?Xzmq7bjv4WUWDp/qpX/MIRGrJ0luW8yOQl5+iqABNXMYqqYtA7FeDlVtHNI0?=
- =?us-ascii?Q?HeB9eZe1yZeYQhbvD9CoHl01wkNXBw4KEYcGE3VhccnJAEUem4BurEN+c/Gd?=
- =?us-ascii?Q?8gN4d6F0hwqPM/7prVuMO1SY95yXpsNKZUc3qF9Hy2Llzj0iF7RHdB4o8xF3?=
- =?us-ascii?Q?TBDAT+T/85Gz+mu/ja0F/8URUNcj020P0Gzk3eg4FkZiR5ZgJcAhbgUJoycS?=
- =?us-ascii?Q?43dr3wFtHvJJYymfVyAQLfrSdFp0o0cK7FOrn2AVHSOvWPfqS5Ovec+Y2lEY?=
- =?us-ascii?Q?c7+K/5YiuJMNaOcSJIoMA3Lhme7v77GA8IHbFVrZt8R3jfPn1K7IFr/4encX?=
- =?us-ascii?Q?yQS/C8mOQItu07lgb093Ma6AhOZgWl3NPzzIS4+ZbN8cZejsVRJ3UnfeffBI?=
- =?us-ascii?Q?oGJcDh+Um5b0EIWsvV2nJ5VIyHLnUvpqaDP/hUcQcLyMcfqvS4A3gs9Ii7PZ?=
- =?us-ascii?Q?c1Jt1cSAQIhlzWhqPeTQnQTMWPSOnOx/+6delHBRMILczJuc3mOArbQPWsjb?=
- =?us-ascii?Q?SBl+iHoptXgM4cUN9MvFlr/8hl4Ap10yJKYb8+5rZpB5959+OFg1kfrgIVPd?=
- =?us-ascii?Q?Ndy77eFXKcW8sZgc0EcT62BQ6h1oav0M8p1X86+6bG5C7gE6dcvnD+RYnlWF?=
- =?us-ascii?Q?VddX8jCbYfpndRdXYwrn05x/fRtDqeFBfpagj6QpQLEHPwrPhquq73pQ5jQq?=
- =?us-ascii?Q?KqqJ4gDdFTIPG/g=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(366016)(19092799006)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5Inwgs3FoqjAMDBNEffJIjatoXx11SkAjCkd+3k4WMfqnvPUtIQAv1Ua7Q1I?=
- =?us-ascii?Q?D8VYUxYsfF6DBhgXRd3z4eHrr9nBWUuFihyugllm20mEkcOTY5JgYR9iIvDc?=
- =?us-ascii?Q?i4/rM/NQJyIot3KgK6I2y4zar6Ae4tHgZH56/UFT2V9i75iP4O3EaiMoA8ue?=
- =?us-ascii?Q?/R4xpOpiZvisoD8vxntPPuHjEXd0npyvqbxFeA8HYt5L5mAxWil8kN+YptJY?=
- =?us-ascii?Q?PvOdcQQX7zdABlKUmhCuc4trux0I6z2hM2KWoV9PckypHYqFyN9pJl4FBpEr?=
- =?us-ascii?Q?R/s7l1lcwvq1zBVqvuRVHGFUqu7B97MZ6VNXWvKTEY3iPbKCEzBYU+WCGfwD?=
- =?us-ascii?Q?83d++cyb6JuTU6NEOWzEE0DXD3q/v+heFtsjurIIYr6+zh/GRGNPzBQJB4fW?=
- =?us-ascii?Q?qjWO7h/E+lISC+kF+MP7DNHRa2WNSponhSuWnXxytaPj48seA+rXUbsTTJov?=
- =?us-ascii?Q?iET7cohOvbBFdetWYG/dEJqKS9S2n64mzIxkWW8XVkkw0bTUlPtD41UoUe3J?=
- =?us-ascii?Q?0qVSXfUaXIAEgKo5QRTkoztwBJjc8/NfR5IR8BHQAnsB56Fw0xgHNFYdXPiu?=
- =?us-ascii?Q?jnPwL6DXKw5Oano5wkcvoOuRW4+9IC9XZM+GeZgbX59xrVBgSsxngp7qmQIA?=
- =?us-ascii?Q?KCt2VeClawlThe4BtuZo65LK+avZvfhgRUTOaRzEcmo7zjASQLK5zX5BhjsK?=
- =?us-ascii?Q?vF1jUNLXg6OyDrSi5XpLOvDT44v9SqnpnQRoYOITWKtygrq8ahsW7MmnO6tg?=
- =?us-ascii?Q?n2iwltcw6vEepUTsyrHWnPMKoHacn5VmQRIS1SCYs+Drofh7YDVEHbyYFLwj?=
- =?us-ascii?Q?+OFxu0IqrsldZ0i9Y9/omJDhSs+Z3GVjH7zNN4QfTx5WvdwTTPEIBIzGBFmt?=
- =?us-ascii?Q?CPlmca9Y5KGuNTYiPCcuFLbnmgeXHflxnCyWgARdYuzOoKLuvkyQwSlf4kKT?=
- =?us-ascii?Q?+GQcNHRfnlM09kq0b1fsL21h9Up21tDPAvjTD9guYC5vuLcONUUhTPntNBdK?=
- =?us-ascii?Q?5S7AchWToQ7TI3r46zzv6oKo62ygck1uEx+yC6LnBsA+8ZQ7NC/UwuERuZaT?=
- =?us-ascii?Q?jPy83vRi73kM/DYnvI+1sa/+SbzQJF+x8zwekgIgpCiB2167/Wq5f3Kj4ylQ?=
- =?us-ascii?Q?GYZ7eYfXhrT8py1URqt7VkHIqzagvTQ0RH4k0FoNMQFqWjdb6wkuUl1dGwdZ?=
- =?us-ascii?Q?Tib2S6JmVA98E5n5U3M/HnN5Oktk6+cHgOMpHjUwvV3VufXeJU9sA5rYaRUK?=
- =?us-ascii?Q?PE5OhtqdJcITyhvoI1xtsPPtMmoB3wwvWZ5JkspeBFkXnm4T5sjOHyu0+6nO?=
- =?us-ascii?Q?TdgqFWJeDPKM+fzXtRxg4ItBoFovf3j5FVxqoLW5c6gSoxzzsqgnY/5ZWDKl?=
- =?us-ascii?Q?Ja5tGsV85zqbqM/ipODDbeBznog5FWvPRnspYhrzzmzWyjei7qYTQlQK6iSj?=
- =?us-ascii?Q?60mt1jXjyb5uLJAnFfMvk5d2y3PJIEU0TIaTVSQO4T8teLKXkdCO4yKv7Cge?=
- =?us-ascii?Q?kXhFB/Fqmlzs2K9uSi4qVNLckoMnv1Vd1nuzRrd2cvZdwTpdMTLUmuF3L/Yw?=
- =?us-ascii?Q?E4kHUJe1EB5Y0o6EgVCYeGgULPhSf09u9y3Rj4dX?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c18e8f3-8fe8-4bf0-57f4-08ddd98836ab
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2025 10:08:41.5852
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zQFmEm/0qmhZwIHruAWQjfu9EnTt66t5UzOckqBCYoaEUDMpzEH1H19Pk8ZxtS5d/1EK/5cFQU2DY8dFkt03hw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7933
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <689b1156.050a0220.7f033.011c.GAE@google.com>
 
-PCI devices should have a compatible string based on the vendor and
-device IDs. So add this compatible string to NETC Timer.
+On Tue, Aug 12, 2025 at 03:03:02AM -0700, syzbot wrote:
+> Hello,
+> 
+> syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+> WARNING in virtio_transport_send_pkt_info
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+OK so the issue triggers on
+commit 6693731487a8145a9b039bc983d77edc47693855
+Author: Will Deacon <will@kernel.org>
+Date:   Thu Jul 17 10:01:16 2025 +0100
 
----
-v2 changes:
-new patch
-v3 changes:
-Since the commit 02b7adb791e1 ("arm64: dts: imx95-19x19-evk: add adc0
-flexcan[1,2] i2c[2,3] uart5 spi3 and tpm3") has enabled NETC Timer, so
-rebase this patch and change the title and commit message.
----
- arch/arm64/boot/dts/freescale/imx95.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+    vsock/virtio: Allocate nonlinear SKBs for handling large transmit buffers
+    
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-index 4ca6a7ea586e..605f14d8fa25 100644
---- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-@@ -1948,6 +1948,7 @@ enetc_port2: ethernet@10,0 {
- 				};
- 
- 				netc_timer: ethernet@18,0 {
-+					compatible = "pci1131,ee02";
- 					reg = <0x00c000 0 0 0 0>;
- 					status = "disabled";
- 				};
--- 
-2.34.1
+but does not trigger on:
+
+commit 8ca76151d2c8219edea82f1925a2a25907ff6a9d
+Author: Will Deacon <will@kernel.org>
+Date:   Thu Jul 17 10:01:15 2025 +0100
+
+    vsock/virtio: Rename virtio_vsock_skb_rx_put()
+    
+
+
+Will, I suspect your patch merely uncovers a latent bug
+in zero copy handling elsewhere.
+Want to take a look?
+
+
+
+> ------------[ cut here ]------------
+> 'send_pkt()' returns 0, but 65536 expected
+> WARNING: CPU: 0 PID: 5936 at net/vmw_vsock/virtio_transport_common.c:428 virtio_transport_send_pkt_info+0xd11/0xf00 net/vmw_vsock/virtio_transport_common.c:426
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 5936 Comm: syz.0.17 Not tainted 6.16.0-rc6-syzkaller-00030-g6693731487a8 #0 PREEMPT(full) 
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+> RIP: 0010:virtio_transport_send_pkt_info+0xd11/0xf00 net/vmw_vsock/virtio_transport_common.c:426
+> Code: 0f 0b 90 bd f2 ff ff ff eb bc e8 2a 15 74 f6 c6 05 17 6f 40 04 01 90 48 c7 c7 00 4b b7 8c 44 89 f6 4c 89 ea e8 e0 f7 37 f6 90 <0f> 0b 90 90 e9 e1 fe ff ff e8 01 15 74 f6 90 0f 0b 90 e9 c5 f7 ff
+> RSP: 0018:ffffc9000cc2f530 EFLAGS: 00010246
+> RAX: 72837a5a4342cf00 RBX: 0000000000010000 RCX: ffff888033218000
+> RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000002
+> RBP: ffffffff8f8592b0 R08: 0000000000000003 R09: 0000000000000004
+> R10: dffffc0000000000 R11: fffffbfff1bfa6ec R12: dffffc0000000000
+> R13: 0000000000010000 R14: 0000000000000000 R15: ffff8880406730e4
+> FS:  00007fc0bd7eb6c0(0000) GS:ffff88808d230000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007fd5857ec368 CR3: 00000000517cf000 CR4: 0000000000352ef0
+> Call Trace:
+>  <TASK>
+>  virtio_transport_stream_enqueue net/vmw_vsock/virtio_transport_common.c:1111 [inline]
+>  virtio_transport_seqpacket_enqueue+0x143/0x1c0 net/vmw_vsock/virtio_transport_common.c:839
+>  vsock_connectible_sendmsg+0xac4/0x1050 net/vmw_vsock/af_vsock.c:2123
+>  sock_sendmsg_nosec net/socket.c:712 [inline]
+>  __sock_sendmsg+0x219/0x270 net/socket.c:727
+>  ____sys_sendmsg+0x52d/0x830 net/socket.c:2566
+>  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2620
+>  __sys_sendmmsg+0x227/0x430 net/socket.c:2709
+>  __do_sys_sendmmsg net/socket.c:2736 [inline]
+>  __se_sys_sendmmsg net/socket.c:2733 [inline]
+>  __x64_sys_sendmmsg+0xa0/0xc0 net/socket.c:2733
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7fc0bc98ebe9
+> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007fc0bd7eb038 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
+> RAX: ffffffffffffffda RBX: 00007fc0bcbb5fa0 RCX: 00007fc0bc98ebe9
+> RDX: 0000000000000001 RSI: 0000200000000100 RDI: 0000000000000004
+> RBP: 00007fc0bca11e19 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000024008094 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007fc0bcbb6038 R14: 00007fc0bcbb5fa0 R15: 00007ffdb7bf09f8
+>  </TASK>
+> 
+> 
+> Tested on:
+> 
+> commit:         66937314 vsock/virtio: Allocate nonlinear SKBs for han..
+> git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+> console output: https://syzkaller.appspot.com/x/log.txt?x=159d75bc580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=84141250092a114f
+> dashboard link: https://syzkaller.appspot.com/bug?extid=b4d960daf7a3c7c2b7b1
+> compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+> 
+> Note: no patches were applied.
 
