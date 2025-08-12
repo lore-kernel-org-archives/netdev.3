@@ -1,28 +1,48 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D849E2F90DF;
-	Tue, 12 Aug 2025 16:35:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EE32F5490;
+	Tue, 12 Aug 2025 16:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755016517; cv=none; b=YTv4Ty0ui4V736W7koc/kepVNARN8s5EG/MoxGhQxV5p4ij6EBM/YS95po+zOwsD6zkzAjqmjdDaaf2VPRFQJoyGZWZ0sei5RRkenbeN923EqW0EkD2iXmt6skYgMQQ8Tmn9mVnz0iwg4nH+dd97TlCcyECKkIOfatf5oMs3uqU=
+	t=1755016652; cv=none; b=Uf0rkRy+PnWBCBHuM9HQ1m/kCUYckTBTiTw+gL7IuiNKHJy6zabImxcjMbZi8xmmQZmRjGT+8KIGhibxhZhr2bfiThIYZAXSqpvFPMjJK9NioA2Y/Ijh0dzpQ5FxtcbY+fgntielSM+0XUZjJy/4MHOQW6ViFa23IzKCG8x4WZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755016517; c=relaxed/simple;
-	bh=ZFn1gZ3CVw3oY+MqSfy6Kd4p12BsQLuqaFj6iP/PP6g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=NFEjp+m8l2TUAv8SudXpHHDYVAuo/bKymaAspY6Shj6ZC+3iyM0Wb5dOaK11jIrG+NiujbxcMn562xNk17Qhv/ey6Y3JDeXI2XkLOdGwyF14ifV9vREpv95z2zxzrncXkD55KW97cOQpEp0CzTFk7MQVbIsLkSGUmdv7tmxZg2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.42] (g42.guest.molgen.mpg.de [141.14.220.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 2CEA761E647BA;
-	Tue, 12 Aug 2025 18:34:13 +0200 (CEST)
-Message-ID: <af057e48-f428-4c34-8991-99959edbabd2@molgen.mpg.de>
-Date: Tue, 12 Aug 2025 18:34:12 +0200
+	s=arc-20240116; t=1755016652; c=relaxed/simple;
+	bh=KCKNEl62rjrtMG8u1hgKULtjfvWRT+ksDKwDjpV2ePE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=S4ovOM7NCVL67UTOIK/oGAYDRWOacCLVdMkEb57mCSAr7q91NQbvc6Vq1eWEks3xQT/GxtEJeyCbAJzrkpweAP7fh7whQihPeiJs0prPps3wzDubuvoQK/eXp4doPgMpaRRPEbwh5/YRGSXm83Yx35uyiifCDUm5XZRLT/hggQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=PDDayXFJ; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="PDDayXFJ"
+Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57CGVEpi1447545;
+	Tue, 12 Aug 2025 11:31:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1755016274;
+	bh=YFLM9pfLOusy2YVMdLzf9ptsSRr3pdKzRMQf7aNOi3M=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=PDDayXFJeFvugwsuu8W3/SXdqBGeOvAgqbJl/IOnBJcnLKq8bMOp574l4TIH8rRHi
+	 TPnzd0FP2DnLEM8AP6y+oaiEzvRVl6AmeFUswvqFmNvqEFaZzKZS5xlwMv0fslKAmz
+	 A8MvM9Dy77mB89zmD/claPP7wZP79g9A962sjOzA=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57CGVEBg3598831
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Tue, 12 Aug 2025 11:31:14 -0500
+Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 12
+ Aug 2025 11:31:13 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Tue, 12 Aug 2025 11:31:13 -0500
+Received: from [10.249.130.61] ([10.249.130.61])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57CGUw4i639914;
+	Tue, 12 Aug 2025 11:30:59 -0500
+Message-ID: <4f8d678a-8b72-449e-9809-bed912f26e59@ti.com>
+Date: Tue, 12 Aug 2025 22:00:57 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -30,137 +50,268 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH 1/5] ethtool: use vmalloc_array() to
- simplify code
-To: Qianfeng Rong <rongqianfeng@vivo.com>
-References: <20250812133226.258318-1-rongqianfeng@vivo.com>
- <20250812133226.258318-2-rongqianfeng@vivo.com>
+Subject: Re: [PATCH v3 3/5] net: rnpgbe: Add basic mbx ops support
+To: Dong Yibo <dong100@mucse.com>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <horms@kernel.org>, <corbet@lwn.net>,
+        <gur.stavi@huawei.com>, <maddy@linux.ibm.com>, <mpe@ellerman.id.au>,
+        <danishanwar@ti.com>, <lee@trager.us>, <gongfan1@huawei.com>,
+        <lorenzo@kernel.org>, <geert+renesas@glider.be>,
+        <Parthiban.Veerasooran@microchip.com>, <lukas.bulwahn@redhat.com>,
+        <alexanderduyck@fb.com>, <richardcochran@gmail.com>
+CC: <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20250812093937.882045-1-dong100@mucse.com>
+ <20250812093937.882045-4-dong100@mucse.com>
 Content-Language: en-US
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- bpf@vger.kernel.org
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20250812133226.258318-2-rongqianfeng@vivo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: "Anwar, Md Danish" <a0501179@ti.com>
+In-Reply-To: <20250812093937.882045-4-dong100@mucse.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Dear Qianfeng,
 
 
-Thank you for your patch.
-
-Am 12.08.25 um 15:32 schrieb Qianfeng Rong:
-> Remove array_size() calls and replace vmalloc() with vmalloc_array() to
-> simplify the code and maintain consistency with existing kmalloc_array()
-> usage.
-
-You could build it without and with your patch and look if the assembler 
-code changes.
-
-> Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-> ---
->   drivers/net/ethernet/intel/fm10k/fm10k_ethtool.c | 2 +-
->   drivers/net/ethernet/intel/igb/igb_ethtool.c     | 8 ++++----
->   drivers/net/ethernet/intel/igc/igc_ethtool.c     | 8 ++++----
->   drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c | 2 +-
->   drivers/net/ethernet/intel/ixgbevf/ethtool.c     | 6 +++---
->   5 files changed, 13 insertions(+), 13 deletions(-)
+On 8/12/2025 3:09 PM, Dong Yibo wrote:
+> Initialize basic mbx function.
 > 
-> diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_ethtool.c b/drivers/net/ethernet/intel/fm10k/fm10k_ethtool.c
-> index 1954a04460d1..bf2029144c1d 100644
-> --- a/drivers/net/ethernet/intel/fm10k/fm10k_ethtool.c
-> +++ b/drivers/net/ethernet/intel/fm10k/fm10k_ethtool.c
-> @@ -560,7 +560,7 @@ static int fm10k_set_ringparam(struct net_device *netdev,
->   
->   	/* allocate temporary buffer to store rings in */
->   	i = max_t(int, interface->num_tx_queues, interface->num_rx_queues);
-> -	temp_ring = vmalloc(array_size(i, sizeof(struct fm10k_ring)));
-> +	temp_ring = vmalloc_array(i, sizeof(struct fm10k_ring));
->   
->   	if (!temp_ring) {
->   		err = -ENOMEM;
-> diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-> index 92ef33459aec..51d5cb6599ed 100644
-> --- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
-> +++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-> @@ -920,11 +920,11 @@ static int igb_set_ringparam(struct net_device *netdev,
->   	}
->   
->   	if (adapter->num_tx_queues > adapter->num_rx_queues)
-> -		temp_ring = vmalloc(array_size(sizeof(struct igb_ring),
-> -					       adapter->num_tx_queues));
-> +		temp_ring = vmalloc_array(adapter->num_tx_queues,
-> +					  sizeof(struct igb_ring));
->   	else
-> -		temp_ring = vmalloc(array_size(sizeof(struct igb_ring),
-> -					       adapter->num_rx_queues));
-> +		temp_ring = vmalloc_array(adapter->num_rx_queues,
-> +					  sizeof(struct igb_ring));
->   
->   	if (!temp_ring) {
->   		err = -ENOMEM;
-> diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-> index ecb35b693ce5..f3e7218ba6f3 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-> @@ -627,11 +627,11 @@ igc_ethtool_set_ringparam(struct net_device *netdev,
->   	}
->   
->   	if (adapter->num_tx_queues > adapter->num_rx_queues)
-> -		temp_ring = vmalloc(array_size(sizeof(struct igc_ring),
-> -					       adapter->num_tx_queues));
-> +		temp_ring = vmalloc_array(adapter->num_tx_queues,
-> +					  sizeof(struct igc_ring));
->   	else
-> -		temp_ring = vmalloc(array_size(sizeof(struct igc_ring),
-> -					       adapter->num_rx_queues));
-> +		temp_ring = vmalloc_array(adapter->num_rx_queues,
-> +					  sizeof(struct igc_ring));
->   
->   	if (!temp_ring) {
->   		err = -ENOMEM;
-> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-> index 25c3a09ad7f1..2c5d774f1ec1 100644
-> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-> @@ -1278,7 +1278,7 @@ static int ixgbe_set_ringparam(struct net_device *netdev,
->   	/* allocate temporary buffer to store rings in */
->   	i = max_t(int, adapter->num_tx_queues + adapter->num_xdp_queues,
->   		  adapter->num_rx_queues);
-> -	temp_ring = vmalloc(array_size(i, sizeof(struct ixgbe_ring)));
-> +	temp_ring = vmalloc_array(i, sizeof(struct ixgbe_ring));
->   
->   	if (!temp_ring) {
->   		err = -ENOMEM;
-> diff --git a/drivers/net/ethernet/intel/ixgbevf/ethtool.c b/drivers/net/ethernet/intel/ixgbevf/ethtool.c
-> index 7ac53171b041..bebad564188e 100644
-> --- a/drivers/net/ethernet/intel/ixgbevf/ethtool.c
-> +++ b/drivers/net/ethernet/intel/ixgbevf/ethtool.c
-> @@ -276,9 +276,9 @@ static int ixgbevf_set_ringparam(struct net_device *netdev,
->   	}
->   
->   	if (new_tx_count != adapter->tx_ring_count) {
-> -		tx_ring = vmalloc(array_size(sizeof(*tx_ring),
-> -					     adapter->num_tx_queues +
-> -						adapter->num_xdp_queues));
-> +		tx_ring = vmalloc_array(adapter->num_tx_queues +
-> +					adapter->num_xdp_queues,
-> +					sizeof(*tx_ring));
->   		if (!tx_ring) {
->   			err = -ENOMEM;
->   			goto clear_reset;
+> Signed-off-by: Dong Yibo <dong100@mucse.com>
+> ---
+>  drivers/net/ethernet/mucse/rnpgbe/Makefile    |   3 +-
+>  drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  37 ++
+>  .../net/ethernet/mucse/rnpgbe/rnpgbe_chip.c   |   5 +
+>  drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h |   2 +
+>  .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c    | 443 ++++++++++++++++++
+>  .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.h    |  31 ++
+>  6 files changed, 520 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
+>  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.h
+> 
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/Makefile b/drivers/net/ethernet/mucse/rnpgbe/Makefile
+> index 42c359f459d9..5fc878ada4b1 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/Makefile
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/Makefile
+> @@ -6,4 +6,5 @@
+>  
+>  obj-$(CONFIG_MGBE) += rnpgbe.o
+>  rnpgbe-objs := rnpgbe_main.o\
+> -	       rnpgbe_chip.o
+> +	       rnpgbe_chip.o\
+> +	       rnpgbe_mbx.o
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+> index 0dd3d3cb2a4d..05830bb73d3e 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+> @@ -5,6 +5,7 @@
+>  #define _RNPGBE_H
+>  
+>  #include <linux/types.h>
+> +#include <linux/mutex.h>
+>  
+>  extern const struct rnpgbe_info rnpgbe_n500_info;
+>  extern const struct rnpgbe_info rnpgbe_n210_info;
+> @@ -40,7 +41,43 @@ struct mucse_mac_info {
+>  	void *back;
+>  };
+>  
+> +struct mucse_hw;
+> +
+> +struct mucse_mbx_operations {
+> +	void (*init_params)(struct mucse_hw *hw);
+> +	int (*read)(struct mucse_hw *hw, u32 *msg,
+> +		    u16 size);
+> +	int (*write)(struct mucse_hw *hw, u32 *msg,
+> +		     u16 size);
+> +	int (*read_posted)(struct mucse_hw *hw, u32 *msg,
+> +			   u16 size);
+> +	int (*write_posted)(struct mucse_hw *hw, u32 *msg,
+> +			    u16 size);
+> +	int (*check_for_msg)(struct mucse_hw *hw);
+> +	int (*check_for_ack)(struct mucse_hw *hw);
+> +	void (*configure)(struct mucse_hw *hw, int num_vec,
+> +			  bool enable);
+> +};
+> +
+> +struct mucse_mbx_stats {
+> +	u32 msgs_tx;
+> +	u32 msgs_rx;
+> +	u32 acks;
+> +	u32 reqs;
+> +	u32 rsts;
+> +};
+> +
+>  struct mucse_mbx_info {
+> +	const struct mucse_mbx_operations *ops;
+> +	struct mucse_mbx_stats stats;
+> +	u32 timeout;
+> +	u32 usec_delay;
+> +	u16 size;
+> +	u16 fw_req;
+> +	u16 fw_ack;
+> +	/* lock for only one use mbx */
+> +	struct mutex lock;
+> +	bool irq_enabled;
+>  	/* fw <--> pf mbx */
+>  	u32 fw_pf_shm_base;
+>  	u32 pf2fw_mbox_ctrl;
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> index 20ec67c9391e..16d0a76114b5 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> @@ -1,8 +1,11 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  /* Copyright(c) 2020 - 2025 Mucse Corporation. */
+>  
+> +#include <linux/string.h>
+> +
+>  #include "rnpgbe.h"
+>  #include "rnpgbe_hw.h"
+> +#include "rnpgbe_mbx.h"
+>  
+>  /**
+>   * rnpgbe_init_common - Setup common attribute
+> @@ -23,6 +26,8 @@ static void rnpgbe_init_common(struct mucse_hw *hw)
+>  
+>  	mac->mac_addr = hw->hw_addr + RNPGBE_MAC_BASE;
+>  	mac->back = hw;
+> +
+> +	hw->mbx.ops = &mucse_mbx_ops_generic;
+>  }
+>  
+>  /**
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> index fc57258537cf..aee037e3219d 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> @@ -7,6 +7,8 @@
+>  #define RNPGBE_RING_BASE 0x1000
+>  #define RNPGBE_MAC_BASE 0x20000
+>  #define RNPGBE_ETH_BASE 0x10000
+> +/**************** DMA Registers ****************************/
+> +#define RNPGBE_DMA_DUMY 0x000c
+>  /**************** CHIP Resource ****************************/
+>  #define RNPGBE_MAX_QUEUES 8
+>  #endif /* _RNPGBE_HW_H */
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
+> new file mode 100644
+> index 000000000000..1195cf945ad1
+> --- /dev/null
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
+> @@ -0,0 +1,443 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/* Copyright(c) 2022 - 2025 Mucse Corporation. */
+> +
+> +#include <linux/pci.h>
+> +#include <linux/errno.h>
+> +#include <linux/delay.h>
+> +#include <linux/iopoll.h>
+> +
+> +#include "rnpgbe.h"
+> +#include "rnpgbe_mbx.h"
+> +#include "rnpgbe_hw.h"
+> +
+> +/**
+> + * mucse_read_mbx - Reads a message from the mailbox
+> + * @hw: pointer to the HW structure
+> + * @msg: the message buffer
+> + * @size: length of buffer
+> + *
+> + * @return: 0 on success, negative on failure
+> + **/
+> +int mucse_read_mbx(struct mucse_hw *hw, u32 *msg, u16 size)
+> +{
+> +	struct mucse_mbx_info *mbx = &hw->mbx;
+> +
+> +	/* limit read size */
+> +	min(size, mbx->size);
+> +	return mbx->ops->read(hw, msg, size);
+> +}
 
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+What's the purpose of min() here if you are anyways passing size to read()?
+
+The min() call needs to be assigned to size, e.g.: size = min(size,
+mbx->size);
+
+> +
+> +/**
+> + * mucse_write_mbx - Write a message to the mailbox
+> + * @hw: pointer to the HW structure
+> + * @msg: the message buffer
+> + * @size: length of buffer
+> + *
+> + * @return: 0 on success, negative on failure
+> + **/
+
+> +
+> +/**
+> + * mucse_mbx_reset - Reset mbx info, sync info from regs
+> + * @hw: pointer to the HW structure
+> + *
+> + * This function reset all mbx variables to default.
+> + **/
+> +static void mucse_mbx_reset(struct mucse_hw *hw)
+> +{
+> +	struct mucse_mbx_info *mbx = &hw->mbx;
+> +	int v;
+> +
+
+Variable 'v' should be declared as u32 to match the register read.
+
+> +	v = mbx_rd32(hw, FW2PF_COUNTER(mbx));
+> +	hw->mbx.fw_req = v & GENMASK(15, 0);
+> +	hw->mbx.fw_ack = (v >> 16) & GENMASK(15, 0);
+> +	mbx_wr32(hw, PF2FW_MBOX_CTRL(mbx), 0);
+> +	mbx_wr32(hw, FW_PF_MBOX_MASK(mbx), GENMASK(31, 16));
+> +}
+> +
+> +/**
+> + * mucse_mbx_configure_pf - Configure mbx to use nr_vec interrupt
+> + * @hw: pointer to the HW structure
+> + * @nr_vec: vector number for mbx
+> + * @enable: TRUE for enable, FALSE for disable
+> + *
+> + * This function configure mbx to use interrupt nr_vec.
+> + **/
+> +static void mucse_mbx_configure_pf(struct mucse_hw *hw, int nr_vec,
+> +				   bool enable)
+> +{
+> +	struct mucse_mbx_info *mbx = &hw->mbx;
+> +	u32 v;
+> +
+> +	if (enable) {
+> +		v = mbx_rd32(hw, FW2PF_COUNTER(mbx));
+> +		hw->mbx.fw_req = v & GENMASK(15, 0);
+> +		hw->mbx.fw_ack = (v >> 16) & GENMASK(15, 0);
+> +		mbx_wr32(hw, PF2FW_MBOX_CTRL(mbx), 0);
+> +		mbx_wr32(hw, FW2PF_MBOX_VEC(mbx), nr_vec);
+> +		mbx_wr32(hw, FW_PF_MBOX_MASK(mbx), GENMASK(31, 16));
+> +	} else {
+> +		mbx_wr32(hw, FW_PF_MBOX_MASK(mbx), 0xfffffffe);
+> +		mbx_wr32(hw, PF2FW_MBOX_CTRL(mbx), 0);
+> +		mbx_wr32(hw, RNPGBE_DMA_DUMY, 0);
+> +	}
+> +}
+> +
+> +/**
+> + * mucse_init_mbx_params_pf - Set initial values for pf mailbox
+> + * @hw: pointer to the HW structure
+> + *
+> + * Initializes the hw->mbx struct to correct values for pf mailbox
+> + */
+> +static void mucse_init_mbx_params_pf(struct mucse_hw *hw)
+> +{
+> +	struct mucse_mbx_info *mbx = &hw->mbx;
+> +
+> +	mbx->usec_delay = 100;
+> +	mbx->timeout = (4 * 1000 * 1000) / mbx->usec_delay;
+
+Use appropriate constants like USEC_PER_SEC instead of hardcoded values.
+
+> +	mbx->stats.msgs_tx = 0;
+> +	mbx->stats.msgs_rx = 0;
 
 
-Kind regards,
+-- 
+Thanks and Regards,
+Md Danish Anwar
 
-Paul
