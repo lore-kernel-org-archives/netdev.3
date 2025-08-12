@@ -1,26 +1,27 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D652D6E5D
-	for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 01:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3FF212B05
+	for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 01:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754963518; cv=none; b=QyfPduhW00AZ+oDIzJULjxEXKHPUEPa79k8F5ny+q70USSRRdbNfS6j0IofMh0NSJYnxXVqXOI/p+78Vfd2bv7kYuY97835FlooC18AXAAURfe8LQXE8f2LMm2AI9XnEhCXAQpkFL/nbROTAPY81XEu5KYj2NglYffD61bt+sc8=
+	t=1754963520; cv=none; b=LSfUPc5NXsmHg33mK0E4QRq7jPH6qImm1zpxH58RyLsEX95deHrFpZ+jYMLzRkjfRZBrFk+k3hFHLRgfWbGe492pais1SjbHtkGib6xGMyFsaDMSagcdAcP0ScIdo2KDx8t1gpS9msA5azOvtCfL54/Jg9evujI4gBqumN0HIcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754963518; c=relaxed/simple;
-	bh=L6C/Hc2C1BDV26pT8Sewq/+Am4O4fiGScZLw7oqDbHM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AXGovmf9We3MFBbLaQ/SaF3nwtblFmZKPQVOJrtxmv1EQmvUM0cnTJKSzqnoXFNwbK25ePF+soEOsLmwZ4uWHM4Op0YFGFX3LpZJJYzKXVdC/NZuPvA4hXJaROToMCDKhuL4XDP2Atdxo86NEmKvUErZuskWQBsf/hRfoUPnshg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.194.254.142
+	s=arc-20240116; t=1754963520; c=relaxed/simple;
+	bh=jnUdPUIMFKVF7SxzQjmOnhFbiuf424/+sxKqR81qgYA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nRJ/rrVOH2sza6fannBvJ1GrKtRj49hsfdj1efTv4gPVLXw4J8DBDpzVl9UE383A7+rMfxizFgaollzHY0BG9rV89CUF9fVnmFUl0zSDaspXwIMTHAf7qgr1DdosUFJCB/FS5CpQAIvxjhFwz2fEIPtYK/FI10fVZ2CPtIfuvvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz18t1754963438td8593ed3
-X-QQ-Originating-IP: VBg3+tJ/6xBqaiigvzY2gJx3Bs9roQsxVGGOBckkLSY=
+X-QQ-mid: esmtpsz18t1754963443tf857f099
+X-QQ-Originating-IP: KHfAFLT8LDXLCOvR52wiwIj+XHkX63B+IKfFBWVmktw=
 Received: from lap-jiawenwu.trustnetic.com ( [125.120.182.53])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 12 Aug 2025 09:50:35 +0800 (CST)
-X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 7462837097837684663
+	id ; Tue, 12 Aug 2025 09:50:42 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 14266096083781844644
 EX-QQ-RecipientCnt: 10
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org,
@@ -33,10 +34,12 @@ To: netdev@vger.kernel.org,
 	Jacob Keller <jacob.e.keller@intel.com>
 Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v4 0/4] net: wangxun: complete ethtool coalesce options
-Date: Tue, 12 Aug 2025 09:50:19 +0800
-Message-Id: <20250812015023.12876-1-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v4 2/4] net: wangxun: limit tx_max_coalesced_frames_irq
+Date: Tue, 12 Aug 2025 09:50:21 +0800
+Message-Id: <20250812015023.12876-3-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20250812015023.12876-1-jiawenwu@trustnetic.com>
+References: <20250812015023.12876-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,70 +49,52 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NIdseMQqGGu7c3dQwlg/JhelSAOkO5BveGW7L+kcESYnAxNNDVHNaq3v
-	TWIVClLEMXgwmOCWC1U+9cCryOMlsP4JavohaKWG7rzQZMY2G0eTaAEONYgL0rRoEbs9Fv8
-	zwLs6sQKRmS4f/7iUOotl+JT1MsnlI+f7ZIzJWKaZdfx1Yq6yWYuIiJvvbv1rrpazlsOs+3
-	2C3GVEogD5bkRZr9XINFGmwTjUzoVZa1z3AMVNUDSEfsoQJF87O+CX32rbsNi5e9hX+8V9X
-	lcTl+5jfFxXOYswisgw+WO+aZmVME7oyqkHz8XWHiszMz/pOVhhv406vzaj567Sdl8bDHGW
-	eJV6cTCpeJetyVbayR7ioGXk5H3XN6rQkRnSTUGu+ili6u/L5W4QDceF6Tkz9gQTlMwHasm
-	O0ScB6YsJ8BTMEuH4HZRXZfb5MnXacDvlaeo0LD6Z3OnmeUCIrrJvKAyX/HNVpE3eWb4PDM
-	BkMRQ6iqUswt1QbyzKECRcwcO0zAuQTiinlFvkzuQR7WO6Ts4bsRJ9WUfGDA4RMUdXl7yXO
-	DMjM35iSN+8acDG1u06epWcWVpxhGeM6jdetRV5q9QiwjDiyYk4ALp5tgz9cfdxalAEHtPf
-	6RUoDPP6vgbI8ECWI+IBrcP17ENYpRrOVzeXQ+GByOALVikm9t97gyGjXtlaCB9int78VhA
-	0yNHEH6E93QD9DCnzueJ66aYbG2pL8i89I2mCBXuK8ZS+Xcm0xOD0EjlpUoOm2PiSKGXSuT
-	Ws54RZTR9qHMUoWho13rYpzDqagyHG/icJywsp7QB7rwe3v3GnECkUkM6XqTdOPkzJfeW5w
-	5ggRb0RMxbqIpAXNi9RAuZq69sCf0gCvlPx7C39e94bAuxRkRnZ72WpQK90fNC7oDJBANkG
-	4AYmjD/JQzdviz3HpFjrwlxWUWl8nPG5rBC9XAhPy68xwUBAshS1wR4E72c6Pk0kmEPd5DN
-	z5Ph5W7QqkP2HQvdIp4e8eaCWE/ueMmwUJEMLpAeIVJ7fAb5p8nDZ3Hfz65s/rjMBlsjk+C
-	YRUDbZI9v5YHFGLTHeAbiCWLLH9GncHpsJ0A0s056Zy28pQe02iWQIhoyfXDOc8fMcK4C3H
-	txAMs0q2UtG
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-XMAILINFO: NSQm2ODd9qLZ1jrEdsF6Wspm6h6dJTQ5B310sqTQvpGODhx0nAqMuCth
+	rs45cq/4zpKcO9fQaifDWkBdK4vheovhQgMR77fbAcwF8FB0iFX0Kz79mI1MQtT18ri+Zez
+	9GUw4DsLW7GRghdGFrYz8DVHWoMuHBVUb82ai/joBISSJZz0zNA1CsPz4hAPVPguqhODO5J
+	C4V7uBy6MPl6Q8yt2e2Y7vblgCjVpYCx0PGxrEVdQi7KxTb9N3jRdRT2eAkq8nOOFfusSvM
+	JB+dh/FriJKyceUdwn4SqC0Df8Mnnw+LF8xxS5VCnOJ/sh0BuKCNUpoUOjsJLWzZQviqJqj
+	bxhpW+3AR7aJa6IdGJrjxCv4R5xaf+zlWnbyI90dXwPfelOEYIEVJ/PyBC86M+lP/8H8TZ9
+	crGHs8hyOZYK2gPmakNxSQW6VI2OuTpzaZBjrRao769e3jnUCdZl6Eoq1pvnceNtA7D7TjR
+	vIlihbX70CeJiz2ECO0adGFJ/VbiSAhfnEN+XyfuOuEFvr85UkCJP5t9VeUFdmzYnZKJaTM
+	P/TFT5NR+FvOhhqcycrMU1bvQ5amVltivcP/eXdczMkNN1wSk9R5Pow/B8sKoeiobyq/8pC
+	FJsPKe4YXSVqdkMYOTjoAgce98ZLZ3hRYmpzuzXezM3HETKcTd8qGCn4LNKQ6+RQ8wAqkQ1
+	JY8EeNdxx5onXsDv0o3FfG20qJ1YadXZZwBgyid7XldLvGFZayO66X/XZTNZL+YiVUZz1m5
+	Yht1FR2oPLWOEK/Hn3d6ob7LoHpdXEDPd4f9Xo3j7rrAEkML7qRM4oYPGiSdDhQxu0OVdG+
+	VKWCMPOFyqbvVNIcG0NL4cEcCzRj7T3oMOmqOjE1Mgc5S1LRXG4wiZABPq02++L5I8q6KF0
+	n2XEP/7NCAHHBksD5+7qeQxU9j1fKFVAq+ESiOTeuOC83M4J0RI2qAAXls0H/QmkpQrpjeP
+	sIMT+fuGAczsnsidIVcccB5DLZtyiUktJdPg+zyQE9zy7IJlLJe+i+9heFsSrDvhju3wtR3
+	DtA3909h/hM5p0y7J6ZQF3dI2zWgnNXiLEuvtp6Y/aHyr1RGQG
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
 X-QQ-RECHKSPAM: 0
 
-Support to use adaptive RX coalescing. Change the default RX coalesce
-usecs and limit the range of parameters for various types of devices,
-according to their hardware design.
+Add limitation on tx_max_coalesced_frames_irq as 0 ~ 65535, because
+'wx->tx_work_limit' is declared as a member of type u16.
 
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
-v4:
-- split into 4 patches
-- add performance test result for NGBE changes
-- use U16_MAX instead of self-defined macro
-- add adaptive-tx coalesce for DIM tx work
-- avoid setting itr in DIM work when adaptive coalesce is off
+ drivers/net/ethernet/wangxun/libwx/wx_ethtool.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-v3: https://lore.kernel.org/all/20250724080548.23912-1-jiawenwu@trustnetic.com/
-- detail the commits messages
-- support DIM algorithm
-
-v2: https://lore.kernel.org/all/20250721080103.30964-1-jiawenwu@trustnetic.com/
-- split into 3 patches
-- add missing functions
-- adjust the weird codes and comments
-
-v1: https://lore.kernel.org/all/3D9FB44035A7556E+20250714092811.51244-1-jiawenwu@trustnetic.com/ 
----
-
-Jiawen Wu (4):
-  net: ngbe: change the default ITR setting
-  net: wangxun: limit tx_max_coalesced_frames_irq
-  net: wangxun: cleanup the code in wx_set_coalesce()
-  net: wangxun: support to use adaptive RX/TX coalescing
-
- drivers/net/ethernet/wangxun/Kconfig          |   1 +
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   |  55 ++++++----
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   | 103 +++++++++++++++++-
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |   5 +
- .../net/ethernet/wangxun/libwx/wx_vf_lib.c    |   2 +-
- .../net/ethernet/wangxun/libwx/wx_vf_lib.h    |   1 +
- .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |   3 +-
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c |   6 +-
- .../net/ethernet/wangxun/ngbevf/ngbevf_main.c |   1 +
- .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |   3 +-
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   |   1 +
- .../ethernet/wangxun/txgbevf/txgbevf_main.c   |   1 +
- 12 files changed, 155 insertions(+), 27 deletions(-)
-
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index d9412e55b5b2..590a5901cf77 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -334,8 +334,11 @@ int wx_set_coalesce(struct net_device *netdev,
+ 			return -EOPNOTSUPP;
+ 	}
+ 
+-	if (ec->tx_max_coalesced_frames_irq)
+-		wx->tx_work_limit = ec->tx_max_coalesced_frames_irq;
++	if (ec->tx_max_coalesced_frames_irq > U16_MAX  ||
++	    !ec->tx_max_coalesced_frames_irq)
++		return -EINVAL;
++
++	wx->tx_work_limit = ec->tx_max_coalesced_frames_irq;
+ 
+ 	switch (wx->mac.type) {
+ 	case wx_mac_sp:
 -- 
 2.48.1
 
