@@ -1,141 +1,112 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDB02ED14C
-	for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 11:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2D02ECE9C
+	for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 11:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754997152; cv=none; b=XJGBEgiYXx4L/K57hiWX60Rg9TsX3w6IxHHuVGxFl0qGTwoA7d+yVlWZqglV/5/XskEaKc4YgRje1XEwIFy09Vi2bJZVdE5VYdJAzibbeFyWN1i2H8Cg7CXPPBykEpzHsK2k29m8JYo6T5ZKkL8Sc6a+9301SP2JQFlnN3JefX8=
+	t=1754997176; cv=none; b=GTGOHQoGHdnS9ES2csSAcrBs/u2CGVOHoK9BjSry+RL3szcVwVyz2DjJlULVChMFoWuQ4V7q7NqeoTcip4pKPq4ZX7qMpGvu4Hj42th0nsSoAobi4OUtevz7YFcRvabKIwuGLpCpOrMAv+tId3HU5zhJxEu0tbx4nnYC1peTesM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754997152; c=relaxed/simple;
-	bh=CsyIz9FBfMl64+vhq/zb6Wr2znPOgRbayHIf5gsfNCE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GzSqlQGhi0zle7dFnS2txlXcl6QZe2NRfGteYfq3+ojm9lKlYY5AMD7sIa1fTe4PvkHGZzBllk7UY8vZJQU57noF7zG6hSyi+0KuHqkitwVPfpvOhXRHMD5Lx71bx6uJd713PFUFvhTMhdLUTDdqdlujSlVnKWnI/ELhAFEzwbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N/OIa0Mq; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1754997176; c=relaxed/simple;
+	bh=mAvVdXFly3RzYhUX9cv/kny4RZRWhC1AvwC2a27uNmQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lqXf2IyOVVhp32wUL32BQCMRvlpkDoNery2NnhJcfA4XZPcti9AfE6XCAEWFpMPlW17HNOc4fiIWF8XdQ2rty/1ltbKJl9PhiMBvrg/aIRRVIUov0pR4v08f3rU+hErK79BrbA4hBG0xcS5tyukiVUa5hsvqCVymLeMvU2DpQ/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SyqkqVXD; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N/OIa0Mq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754997151; x=1786533151;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CsyIz9FBfMl64+vhq/zb6Wr2znPOgRbayHIf5gsfNCE=;
-  b=N/OIa0Mqn9PfA6aBm8apz90W1LNjg73+R3yGWI3hD83Lw+pmKf0fk8u2
-   ApUjywTAw8m7/uczQmiihd8hGH1dhms+cI1Kw7pKYl4DFLD29G+CmF7tm
-   M5copbbInohsB48zog1bptZKImoHrA+TEdFsLOl1pIh7K3sKFE5hPwsBk
-   X4YIA5hz6QWqTwWDCw7vam/zL3SNdLb1+Sd5jwpDKX7HL2SrL2ShCb9/5
-   mETb3XarVm3iIw0HA5enl/b4mi7p+H6JzKk51oJsFKeXpX8PGkVbPS82X
-   XWKaotHWN8VGM7u37/fRKIC8MruQ3h4EcJHM4jY0TrdsMlSgr1NbaXADI
-   g==;
-X-CSE-ConnectionGUID: eMSe6UBxRCynq16JOtIruA==
-X-CSE-MsgGUID: 8WvrwgfeQSilmH33B+lPnw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="68722955"
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="68722955"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 04:12:30 -0700
-X-CSE-ConnectionGUID: Z8Jso3cmTKG5exWKwyUevA==
-X-CSE-MsgGUID: EZl5uBfuQ8y89MUz70xdKA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
-   d="scan'208";a="166059984"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2025 04:12:27 -0700
-Date: Tue, 12 Aug 2025 13:11:06 +0200
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: Re: [PATCH net-next v4 1/4] net: ngbe: change the default ITR setting
-Message-ID: <aJshSlT+YuSjlz0n@mev-dev.igk.intel.com>
-References: <20250812015023.12876-1-jiawenwu@trustnetic.com>
- <20250812015023.12876-2-jiawenwu@trustnetic.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SyqkqVXD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754997173;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=//obXwMFuZhQYhGTHbbzXxbGp1uJw0doBZ0Gzmkr8to=;
+	b=SyqkqVXD2Whn/B5uuwSyAEXc2GW7WJKxP1noZNuXqZ03ZlVdIvrE4286j4ctpI02+UgNbs
+	LxVJbj029KpbsQoLY4y8635MavYiMYeVOkXXagNCO0YJp8prsTGZXyyVS2geyk36uPTcdq
+	rN7TK6IJVDArQ6eUUeN7rzsLqIo/+BQ=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-693-VSdSqKK3MhGyVJunLp9v7Q-1; Tue, 12 Aug 2025 07:12:52 -0400
+X-MC-Unique: VSdSqKK3MhGyVJunLp9v7Q-1
+X-Mimecast-MFC-AGG-ID: VSdSqKK3MhGyVJunLp9v7Q_1754997171
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4af210c5cf3so213089641cf.1
+        for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 04:12:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754997171; x=1755601971;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=//obXwMFuZhQYhGTHbbzXxbGp1uJw0doBZ0Gzmkr8to=;
+        b=wAvj7y47Huqo2PMHOyXFc8q8LyoevV50j5vl/UOq8AlylsKtqTz4guADq/TkKllUU3
+         cMe3TXMvFSVkRRJelMnsCZmWziFlZK/eklkYx9L+gTLlowli+7+EGua3D80wampcifS8
+         X2i2l704xkqNJhynhgaC68gLK/Ave8YRTbMYfxfRbQlcE7vkA2DuVSXcNBLpKCLUlEcu
+         ECHe1bCzzrFhbTJcyeCMUVDQETYTkPiZ+mEZS4VRHZiRBtZp8MfPcptWs4hfjXQKfsbh
+         AQzkNi/R9wBe3EIhOL53TycjjViuDRYRCDCtLNnc2UKvQJHQ41dtoRtn0Tmt4X/rbSJb
+         wgyg==
+X-Gm-Message-State: AOJu0Yy81+pDG8qKR9MN/EgRP3xSCcWSMRYUblk+ABMkJoWYFkP/V5bF
+	ZhNApqaZVQqNrtVkRFHG8JR3+U4snpW7afMYC2U3kvV9nEl/wffwCP6Nbf/IJuVv9mDJ6SDSBBU
+	DNh41NYVbJaJzVploZY8SR0S7jN6WxqVCrqWD5HH6J2Tb889awZQE8BNlaA==
+X-Gm-Gg: ASbGncvF5OF5filGumXeYx/1tYEim/0amvwrXS0QdGXPS9DyxWedlnqpQBvXvSoh2Ay
+	OJ6Aqt2HNa+O2GJA1kKwNmQOK+xkcl2rPWv6W6dzRRehhd+ggRjGmkGaqlZGkYsfcAEwfaaVtkk
+	1OdXVZBFfpn+pZtOfCRB6+pLsbGEnr2vOOqN/up/PYa8Vny8D6w5av0+Ff6r+zMyf8t15ENkrG6
+	nT2ZmbYHFwUjSbr0bW/uKUaC/DPxhtDNI2bei8byp7zTvdPoTzvN1VPheScnpYAzgf6hfuVDj8s
+	D3pJ87chL3jScQQdTNBDIslMSiSuaUe1TL7+UFwsl+Q=
+X-Received: by 2002:a05:622a:1355:b0:4b0:6e11:c38d with SMTP id d75a77b69052e-4b0ecbe7076mr31187821cf.26.1754997171409;
+        Tue, 12 Aug 2025 04:12:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGb+GnezAp313Oe/VC6buWBT5Gei+SEerxd7EbVFtjv+1zgncHD2Qh7dygE7luAX2P9hrw08w==
+X-Received: by 2002:a05:622a:1355:b0:4b0:6e11:c38d with SMTP id d75a77b69052e-4b0ecbe7076mr31187401cf.26.1754997170894;
+        Tue, 12 Aug 2025 04:12:50 -0700 (PDT)
+Received: from [192.168.0.115] ([212.105.149.252])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b06a86735asm120286161cf.31.2025.08.12.04.12.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Aug 2025 04:12:49 -0700 (PDT)
+Message-ID: <7c011a2f-cdd8-4aed-95b9-d8edb31478a7@redhat.com>
+Date: Tue, 12 Aug 2025 13:12:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250812015023.12876-2-jiawenwu@trustnetic.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] selftests: drv-net: wait for carrier
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
+ horms@kernel.org, shuah@kernel.org, willemb@google.com, petrm@nvidia.com,
+ linux-kselftest@vger.kernel.org
+References: <20250808225741.1095702-1-kuba@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250808225741.1095702-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 12, 2025 at 09:50:20AM +0800, Jiawen Wu wrote:
-> Change the default RX/TX ITR for wx_mac_em devices from 20K to 7K, which
-> is an experience value from out-of-tree ngbe driver, to get higher
-> performance on some platforms with weak single-core performance.
-> 
-> TCP_SRTEAM test on Phytium 2000+ shows that the throughput of 64-Byte
-> packets is increased from 350.53Mbits/s to 395.92Mbits/s.
-> 
-> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> ---
->  drivers/net/ethernet/wangxun/libwx/wx_ethtool.c | 12 ++++++++----
->  drivers/net/ethernet/wangxun/ngbe/ngbe_main.c   |  5 ++---
->  2 files changed, 10 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-> index c12a4cb951f6..d9412e55b5b2 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-> @@ -359,10 +359,14 @@ int wx_set_coalesce(struct net_device *netdev,
->  	else
->  		wx->rx_itr_setting = ec->rx_coalesce_usecs;
+On 8/9/25 12:57 AM, Jakub Kicinski wrote:
+> @@ -48,6 +51,19 @@ from .remote import Remote
+>                  env[pair[0]] = pair[1]
+>          return ksft_setup(env)
 >  
-> -	if (wx->rx_itr_setting == 1)
-> -		rx_itr_param = WX_20K_ITR;
-> -	else
-> +	if (wx->rx_itr_setting == 1) {
-> +		if (wx->mac.type == wx_mac_em)
-> +			rx_itr_param = WX_7K_ITR;
-> +		else
-> +			rx_itr_param = WX_20K_ITR;
-> +	} else {
->  		rx_itr_param = wx->rx_itr_setting;
-> +	}
->  
->  	if (ec->tx_coalesce_usecs > 1)
->  		wx->tx_itr_setting = ec->tx_coalesce_usecs << 2;
-> @@ -377,7 +381,7 @@ int wx_set_coalesce(struct net_device *netdev,
->  			tx_itr_param = WX_12K_ITR;
->  			break;
->  		default:
-> -			tx_itr_param = WX_20K_ITR;
-> +			tx_itr_param = WX_7K_ITR;
->  			break;
+> +    def __enter__(self):
+> +        ip(f"link set dev {self.dev['ifname']} up")
+> +        wait_file(f"/sys/class/net/{self.dev['ifname']}/carrier",
+> +                  lambda x: x.strip() == "1")
+> +
+> +        return self
+> +
+> +    def __exit__(self, ex_type, ex_value, ex_tb):
+> +        """
+> +        __exit__ gets called at the end of a "with" block.
+> +        """
+> +        self.__del__()
+> +
 
-You are removing these code in patch 3, maybe just move the patch after
-it.
+pylint is doing what looks like a reasonable complain to me:
 
->  		}
->  	} else {
-> diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> index e0fc897b0a58..3fff73ae44af 100644
-> --- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> +++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-> @@ -119,9 +119,8 @@ static int ngbe_sw_init(struct wx *wx)
->  						   num_online_cpus());
->  	wx->rss_enabled = true;
->  
-> -	/* enable itr by default in dynamic mode */
-> -	wx->rx_itr_setting = 1;
-> -	wx->tx_itr_setting = 1;
-> +	wx->rx_itr_setting = WX_7K_ITR;
-> +	wx->tx_itr_setting = WX_7K_ITR;
+tools/testing/selftests/drivers/net/lib/py/env.py:65:8: E1101: Instance
+of 'NetDrvEnvBase' has no '__del__' member (no-member)
 
-Seems fine,
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+/P
 
->  
->  	/* set default ring sizes */
->  	wx->tx_ring_count = NGBE_DEFAULT_TXD;
-> -- 
-> 2.48.1
-> 
