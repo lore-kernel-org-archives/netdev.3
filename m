@@ -1,125 +1,122 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24E91FF7C5;
-	Tue, 12 Aug 2025 04:36:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF6F1AF0AF
+	for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 04:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754973366; cv=none; b=oUV17oDg/eLzLIsYYxWIScuLSiOyZgmotEyJjdxZVUli0fmNS2cBVjsfEQCTp1SYmxnEZU8XKFiLNWG20QmuZgGCrbjC+PQDJ1FLsIFHGtW1Q3PUPZ+0mFaV2767knpOfJhtHJeJKTduZnkDrmy9uyr1HBdcyW4tSKVVhplV3fc=
+	t=1754974014; cv=none; b=XWEi1gog8ecnD31sqQg9ZoWjUmBYZFgfnzKP8nQ1o/CviwqF1NG7QhJAOwtxYWa3wVO+7UDZEAibsYw122C9VyrD7TToCyx1T1np8uL5XjQ4us0dkZwYfHKqyPQPT/PWWwF3Lej0ET3VzY9JVLj2a637J7EAinzExW5Y60bBHDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754973366; c=relaxed/simple;
-	bh=a2fFT0SML1HIj0HNz8Dgc6iVsf23KZ0DRHF/eW1eDYk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OECEAxDPWER3AY77inGuZ9dcdNFE4PS7mMTU+aE0eCaqXZpvoxJ0CNKvwM5ZwaXKsxG0zYUPpjVUF0sxHbemQd3k2k83WC14mx39I7sKErsiQqhy0c8W2pAUe+3rhitmSW+zj3eXdh68mwc8N8yH+Sump3H1dt2g7z8TSwC5R9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=qIpGpOwL; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
+	s=arc-20240116; t=1754974014; c=relaxed/simple;
+	bh=B8ZQ+c6Xz2QVuq7k1UdVtgB4vbdN/oyyIKz6dW1BFBw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ss4wKBiYPnsoyVVbWfGEoCHo5CgkNVqSL+k+LakTPmETmXmkAaJkF3IPUCG1CmgV4tarc7pDSmPyHiZono9kk2rkNK6Er7zH31l4p3YCJiB6hoBfQk0aBXa5PFj34ZWiTtemgNxJY53TZ7lJ77r8jw5Xqum6yNrZK5aNeMtE9jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QyTLJtb8; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="qIpGpOwL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=202503; t=1754973361;
-	bh=yB5Ml8I8HYKSrQ/QSf1O5ePzfSDfVmXd+Ij2rdSEMXA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qIpGpOwLcmJwom5dsH5tSdIA6MtAxg7UYjSZ2kH44CqnV/MZ4FqGf0Coh6jHl06qF
-	 RC3Ye0yOZKbEBGDDDrU4QNC8uU+5HS4oVs+ocX38PNh+AiBu+eoQF0X/RaV9Z+/Fov
-	 xXSn8RbDmtw0blohrJcRK1LLqprGesijuJd9AM2jNbH3NkKLSx5AvrMcRs9iG+yW3R
-	 SDzpwxvQq01AJXGQ80FAWA34Q9oYXyePi/leBSCbVNKwQCJKNGAamcZMDcNdtIcn1F
-	 cZBRe0ACTeBryMNbjdIWukRdS/YU0qIMW1c1InyuEvcFl7ee3Oy3L3noC7T/q+1Zgw
-	 CXW0rXAB/62MA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4c1Jbh5K5Wz4wbc;
-	Tue, 12 Aug 2025 14:36:00 +1000 (AEST)
-Date: Tue, 12 Aug 2025 14:36:00 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Networking <netdev@vger.kernel.org>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, Linux Next Mailing List
- <linux-next@vger.kernel.org>
-Subject: Re: linux-next: build warnings after merge of the net-next tree
-Message-ID: <20250812143600.387da02c@canb.auug.org.au>
-In-Reply-To: <beada520-564a-481e-9f9d-91cd106aaee3@redhat.com>
-References: <20250711183129.2cf66d32@canb.auug.org.au>
-	<20250801144222.719c6568@canb.auug.org.au>
-	<beada520-564a-481e-9f9d-91cd106aaee3@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QyTLJtb8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754974013; x=1786510013;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=B8ZQ+c6Xz2QVuq7k1UdVtgB4vbdN/oyyIKz6dW1BFBw=;
+  b=QyTLJtb8+hhPJTqrckx/LRdlU+sxzz1tt9lQl0yZh/aamXP7Rq6AxzXQ
+   A1CEv15FGBmyZnvo6Y68vnELzlYaNQGuYiENWGptv7vR3uAQlJJPJVYaK
+   oFd8Wttgvlnishk2v7FfvpOciL6j51C6JFoULaX+LevknPGavmb9PQI2S
+   jSm2r4ii26/JsveeTD9AeYyrRDpiiPeiXr/Hs7G+AQmRwk0SVwtq8a462
+   IXXmOyyeuhNkPOOR05Rip0+lFMT1Lvq4j9+txzO+O841DzzcNr+uXJz48
+   bkDcjexc0L4FV9VDmOV+X4qFlwm6QThAd2WqBWOWSXDRenD8RZududwdC
+   g==;
+X-CSE-ConnectionGUID: 39T+tnneTMKxpkquU+4SKQ==
+X-CSE-MsgGUID: 10mIlomnREe5BIZY9YthEQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11518"; a="68612719"
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="68612719"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2025 21:46:52 -0700
+X-CSE-ConnectionGUID: 0RxjY4VsRZiA8ZGguK8XdQ==
+X-CSE-MsgGUID: +lYVi0w4R4mGY3gJ+WtzMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,284,1747724400"; 
+   d="scan'208";a="165327864"
+Received: from unknown (HELO os-delivery.igk.intel.com) ([10.102.21.165])
+  by orviesa010.jf.intel.com with ESMTP; 11 Aug 2025 21:46:51 -0700
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	przemyslaw.kitszel@intel.com,
+	dawid.osuchowski@linux.intel.com,
+	horms@kernel.org,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Subject: [PATCH iwl-next v2 00/15] Fwlog support in ixgbe
+Date: Tue, 12 Aug 2025 06:23:21 +0200
+Message-ID: <20250812042337.1356907-1-michal.swiatkowski@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/F.92=Yo_jE0NJfV0MmXWkBz";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
 
---Sig_/F.92=Yo_jE0NJfV0MmXWkBz
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-Hi Paolo,
+Firmware logging is a feature that allow user to dump firmware log using
+debugfs interface. It is supported on device that can handle specific
+firmware ops. It is true for ice and ixgbe driver.
 
-On Mon, 11 Aug 2025 11:53:38 +0200 Paolo Abeni <pabeni@redhat.com> wrote:
->
-> On 8/1/25 6:42 AM, Stephen Rothwell wrote:
-> > On Fri, 11 Jul 2025 18:31:29 +1000 Stephen Rothwell <sfr@canb.auug.org.=
-au> wrote: =20
-> >>
-> >> After merging the net-next tree, today's linux-next build (htmldocs)
-> >> produced these warnings:
-> >>
-> >> include/linux/virtio.h:172: warning: Excess struct member 'features' d=
-escription in 'virtio_device'
-> >> include/linux/virtio.h:172: warning: Excess struct member 'features_ar=
-ray' description in 'virtio_device'
-> >>
-> >> Introduced by commit
-> >>
-> >>   e7d4c1c5a546 ("virtio: introduce extended features") =20
-> >=20
-> > I am still seeing those warnings.  That commit is now in Linus' tree. =
-=20
->=20
-> I'm sorry for the latency, I was off-the-grid in the past weeks.
->=20
-> I observed that warnings in an earlier revision of the relevant patch,
-> but I thought the previous commit:
->=20
-> eade9f57ca72 ("scripts/kernel_doc.py: properly handle
-> VIRTIO_DECLARE_FEATURES")
->=20
-> addressed it. At least I can't see the warnings locally while running:
->=20
-> make V=3D1 C=3D1 htmldocs
->=20
-> Perhaps it's sphinx version dependent? I'm using sphinx-build 7.3.7
-> Could you please share the exact command line and tools version used?
+Prepare code from ice driver to be moved to the library code and reuse
+it in ixgbe driver.
 
-I have been using the (older) perl version because it coped with files
-being missing.  The (newer) python version (which you run) now seems
-to cope to have been enhanced, so I sill start using it instead.  It
-(as you say) does not report the above warnings, so I will ignore them
-as well.
+v1 --> v2: [1]
+ * fix building issue in patch 9
 
---=20
-Cheers,
-Stephen Rothwell
+[1] https://lore.kernel.org/netdev/20250722104600.10141-1-michal.swiatkowski@linux.intel.com/
 
---Sig_/F.92=Yo_jE0NJfV0MmXWkBz
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Michal Swiatkowski (15):
+  ice: make fwlog functions static
+  ice: move get_fwlog_data() to fwlog file
+  ice: drop ice_pf_fwlog_update_module()
+  ice: introduce ice_fwlog structure
+  ice: add pdev into fwlog structure and use it for logging
+  ice: allow calling custom send function in fwlog
+  ice: move out debugfs init from fwlog
+  ice: check for PF number outside the fwlog code
+  ice: drop driver specific structure from fwlog code
+  libie, ice: move fwlog admin queue to libie
+  ice: move debugfs code to fwlog
+  ice: prepare for moving file to libie
+  ice: reregister fwlog after driver reinit
+  ice, libie: move fwlog code to libie
+  ixgbe: fwlog support for e610
 
------BEGIN PGP SIGNATURE-----
+ drivers/net/ethernet/intel/Kconfig            |    2 +
+ drivers/net/ethernet/intel/ice/Makefile       |    1 -
+ drivers/net/ethernet/intel/ice/ice.h          |    6 +-
+ .../net/ethernet/intel/ice/ice_adminq_cmd.h   |   78 --
+ drivers/net/ethernet/intel/ice/ice_common.c   |   46 +-
+ drivers/net/ethernet/intel/ice/ice_debugfs.c  |  633 +---------
+ drivers/net/ethernet/intel/ice/ice_fwlog.c    |  474 -------
+ drivers/net/ethernet/intel/ice/ice_fwlog.h    |   79 --
+ drivers/net/ethernet/intel/ice/ice_main.c     |   43 +-
+ drivers/net/ethernet/intel/ice/ice_type.h     |    6 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c |   32 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h |    2 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |   10 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type.h |    2 +
+ drivers/net/ethernet/intel/libie/Kconfig      |    9 +
+ drivers/net/ethernet/intel/libie/Makefile     |    4 +
+ drivers/net/ethernet/intel/libie/fwlog.c      | 1116 +++++++++++++++++
+ include/linux/net/intel/libie/adminq.h        |   90 ++
+ include/linux/net/intel/libie/fwlog.h         |   85 ++
+ 19 files changed, 1406 insertions(+), 1312 deletions(-)
+ delete mode 100644 drivers/net/ethernet/intel/ice/ice_fwlog.c
+ delete mode 100644 drivers/net/ethernet/intel/ice/ice_fwlog.h
+ create mode 100644 drivers/net/ethernet/intel/libie/fwlog.c
+ create mode 100644 include/linux/net/intel/libie/fwlog.h
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmiaxLAACgkQAVBC80lX
-0GzPqgf7BH7uMXzImVE97hEtvZmDN1J2SwH1Y0jgUwelXX6jEkeqi6oGP/hHhJfW
-Is6ue1TyvneG+OGvqzYIGE6ozHIgW81jg6qSo2nBQ4yS7kypWXkZ9Jk4xm12lfnd
-AUrDIWV2/aw+0NiTrLZJ5RwJpz6bCj7Ogu+xpjfwfu23c9o6nxrxBtKqlY/PKHcD
-rq/ENX8HHSSCbdPg0iHDwnuga5M7oSoJUWGbCcfCxG60/xkiwPQEpe0yyKlSZJK1
-f8tp72+7kdwKCTiM4Ay4yWHfE+cBUBpTUPVcsw9lsfLP5nUiZ+AmFrShuUKE0AzW
-WKtCmTcMZOxRb1IXZqjScRn1teZSiQ==
-=I2E1
------END PGP SIGNATURE-----
+-- 
+2.49.0
 
---Sig_/F.92=Yo_jE0NJfV0MmXWkBz--
