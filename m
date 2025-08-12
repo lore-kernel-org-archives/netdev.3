@@ -1,141 +1,102 @@
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384902D7819
-	for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 01:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F339C155A4E;
+	Tue, 12 Aug 2025 01:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754963546; cv=none; b=Kc1xUnJCyI33HMXLZPzZ4DbH+Vu7rybXBtB6o2BnzeaFOGl6I7va/gajW3H9ZjdXtMX7KygxiZQEt04N9dFpH/T7HggToyJre8fVOBCX2MUFZTUGNZQkh4Rtz4EZfjjXQHAGymJouSmZ58htg1owQUzywgIC7+RkKXpVJIDaqvk=
+	t=1754963632; cv=none; b=Mj0BOSZF3vyazlQO3JhuW0cYRSGErl67g2OaNkAZpN0lkDOl+UT18/TgoODb8Cq2zVVpbC2usf1wmrS6zAGGEfEBOO8SC+U7fx+RHAzhuNTevmdbVOrhecwupKCnEp0t2aMRCubNcAXCPrAnXk1gu6Z/QRIMxRT4d0ThjyN7B5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754963546; c=relaxed/simple;
-	bh=kRBSFbB5Ur9//a+gzkVQ3lI3sk0J+wu1c6RJUor9YZs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HOH/cVzY+9DzWs4PsqHtc/86lkE8Xjgr9rWl6n5ODZGzxi4/wtpU/Jqh1Ee9sE0wSun3m+ks3Md3Mm6u+DvL6oNWgvz+Ifmlyfb+OvHQnRSWQETZky1JUIxiJLaMeNayNEBB7ILGNb/Brd+DAPcsO/qD3e3d9htaD2gbgHG/bo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz18t1754963445t4523b932
-X-QQ-Originating-IP: EX2TzBN9xUoFV0POxVfh1whKJTdh/TohhxEb0FdNRfY=
-Received: from lap-jiawenwu.trustnetic.com ( [125.120.182.53])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 12 Aug 2025 09:50:44 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 7817656972516925361
-EX-QQ-RecipientCnt: 10
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org,
+	s=arc-20240116; t=1754963632; c=relaxed/simple;
+	bh=kbjk1NE25U+D+cdIZ8WClPsz5FPrJ9ZGpFCxJb02zSI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OPfrBWGaejlx1R6hsXsTZBSkiV8bfntPsy1aigPEvGiQO9dmYAZPj1UjxmpM2IcNLxbeKPDovdpy/2UyU+fkqsYQQAf5vMzDpkcGKvoPIDe+1vJedZNy2RtqeQyPa0kBx5s0eEqMVbJZNzmMXi2yro0mhBqjyz2BKFVm80ph7kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ItOeHoro; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ItOeHoro"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-af51596da56so3806879a12.0;
+        Mon, 11 Aug 2025 18:53:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754963630; x=1755568430; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2TM2/7lE7zgF0cwNVS0H6okln7+yKWK+fmjDA20yXco=;
+        b=ItOeHorotzqoOfAi62HfYv00md6rQrsFSw7ydKqW3eOV4izfTjoR3URgivJKPQejQP
+         cONURLG3UNURFScWKfLWycrfvhlJZU7jaXlv9Tc2jrB4bajZAucSkJUILk1RSM8m2fI4
+         iIJglDSm9knb8KkG5AxgBs632JEsqVIRKm54E4XceKxKp9Vbs5V4RtT3wjdGEWVBOlh1
+         5TCqePp4/I0M2CbdiSlk3Xky+AIRfGqCLzda3d1C4iKS6QfT0tJsLAiqUFFK6PLSWhg3
+         wMVqufIWJT+wNx7zSaNDEmJNLjD34syzct98h1TtANn0H5aaZ1zj8duKs7IRd2/HntV4
+         E1pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754963630; x=1755568430;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2TM2/7lE7zgF0cwNVS0H6okln7+yKWK+fmjDA20yXco=;
+        b=QoGH55t1luK0C1Pm1cDaBPLoI6rnQcQHS3ZQI0ESSdu3EQuxCKcNjfXhgDbnF8CGl7
+         R2SefPmkdxs1u3O326rH5jySvwKywJgxdNObaXwtFhdtBPk7iu7zX7V7Iwr/fNmL//s7
+         ioJqtp67XjaaPNSlUEBFangN6Age8bRBohTiukO5NN+bFtsAz8kCaOR8skoC3xML/fj6
+         dS391m16gW2d98jTwyyWfQZ/O/HCC62+Ez6XVbs59sU2Os0h1nwHuKS/CynTm6NFTd5U
+         dBPwaixA6oSZ/+8WRy26ao5h0GWZEgIXq4J5tKVEnpBlzs5NZJD5vad9O8/jaDMSTYn8
+         VDDg==
+X-Forwarded-Encrypted: i=1; AJvYcCVQz8Vf7SdmyzgkkIH/DksJLdM4TMkfxWE8G96CkZFWMIefJ51w+W15yBYMkLCC21fSNzSkiXQx@vger.kernel.org, AJvYcCX2UTZnafs/zXHJtLme2HMknVTqQ3iM3JZrM4evpU+gG8qAVljD7oC3CXxr4qE8yxN0cNC9Rh2ipsPSUGo=@vger.kernel.org, AJvYcCXMycmrDx4mLBrSL+wXcmeF0HHlzuUCOeMf3s9Yet1qZ2/HEn6gXoe5+kKcJvk0fxVU/CWIf6+R08/UFPM+7EHN@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYk84mUV6GBoVClH5GnMGBtJ5X6b46iomQY+km+1ojvM9m1lgB
+	R/td72hrM/TV7FHgLjI0c2VBmOf9KVfbvxTbeqFtJuoC1CPWZPdsdql+
+X-Gm-Gg: ASbGncvYoL5NpR9UjGzndL1Ncq6gVyHhDTTzyZwHVj8Y08uJqhZjJgcLiV/znOxUV2k
+	oAS9QVZ7V8WVKo44G8uPoIqNLK2tnROcqkN073S48+k1490Jk+5X0hSD1xuNXWK13yiWs4v9qKi
+	DSKbMYxCNYFMIZMsGYQ1Wyn6dvYCDMehF7Yl9q3P+HPEJ5sq50R4qoNMu9+Ucfj8cYnyCZGCRkB
+	28EfBwSsZ4WF81dv95aJCA1Uqx9xYd0EPKjXPSvsoz6CDf1tDiav/RSOwNHE7xuD/hNkz5cq7yL
+	7yrDHyaQ3V+xo3gzN3ea1loiknhP0sqZVgR+OCjDVBmrLkF5uzPfG9NikK76bCPz2tKrr2FoCby
+	PNi7GPJfGjGk6dj9bxCPyb3yhSSk=
+X-Google-Smtp-Source: AGHT+IEu6V5UHqfMhjN/LVoyKCA0Ke5eBONL1yJNKfnYSGTC0pmHyZAZe/NtCLnUSOsVGOs4pRo9ZA==
+X-Received: by 2002:a17:902:d603:b0:240:25f3:211b with SMTP id d9443c01a7336-242c225644amr212881815ad.51.1754963630158;
+        Mon, 11 Aug 2025 18:53:50 -0700 (PDT)
+Received: from fedora ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1f0f603sm285233875ad.48.2025.08.11.18.53.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Aug 2025 18:53:49 -0700 (PDT)
+Date: Tue, 12 Aug 2025 01:53:40 +0000
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, netdev@vger.kernel.org,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v4 3/4] net: wangxun: cleanup the code in wx_set_coalesce()
-Date: Tue, 12 Aug 2025 09:50:22 +0800
-Message-Id: <20250812015023.12876-4-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20250812015023.12876-1-jiawenwu@trustnetic.com>
-References: <20250812015023.12876-1-jiawenwu@trustnetic.com>
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	David Wilder <wilder@us.ibm.com>
+Subject: Re: [PATCH net] bonding: don't set oif to bond dev when getting NS
+ target destination
+Message-ID: <aJqepGpobcDGak_C@fedora>
+References: <20250811140358.2024-1-liuhangbin@gmail.com>
+ <783435.1754922439@famine>
+ <20250811093328.70343754@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: Nmk4/QZkZ7Qich1GC55x3W+kyDmzZCCNgC0UfXtvCcf0hROM7yQfv1pl
-	/GJWOMt6oTdE5VwwPgtLTL/OdM7v+a6FB72zL4/TVwpBcN3ZtWBEveu+PBzS3gM4T2dS8il
-	bfVb+UmTHDTwMWJc0ty7oiOTzrxhGHSXtUTzklWoPbhf5/GoRlaLRiAyTKSLdPVFd2GR4FI
-	IgLOL8XiVFtjGr81XGDMVi3oLySAA+PAe/ZvOvB+xoCcMqEQeYFlwnoao0fpIIW3zWGMqPp
-	+3lK1nBhYf8ond8YMLb1rwzRbSs9XgHy4yg8akgkhg4h93B9eMNnaG96hO9R6peplUv8A3q
-	yCR5RJLWDbTsxLz3ElBuC9NqTQFxGjjlAWSdqOF/TmxGDFY6+Amjn2D9X9EmYf8sF7/U894
-	Rrh3EOOyqDbg34ZlFfodI9b9eoQuRqzed4+kNk6XRZR1DvoG6LLpsDEnfGluW45gHYkG5MC
-	0njifz56zDbAmoJP5Q1r1OZf5bl6W35sIUSSyRaRzwS4esXDnR3VaHkHm4CLNkwU4Dtepwz
-	wksTeeuSHEyWPQtMK1KX3CaibqfJY/XyNfQ0GA0sqFjGECbsE1f7gZapgG7vdU2T76QvuNS
-	g60PYLbR+BqTUyvM8227wwb5SLQddrirFiS6GwM3pVA4xtoQDccm7KQXwBnCz3XbsiVsTHW
-	wZWJ0ZKNS0aetpvP49P3T2DR9b/OX7Yxk7YyIapp8ofX/Iztr6SREg529N+9xoPM/6FAGRZ
-	TLVSj/NzDKl9tI3cQyeSumZhhyheKMAU9yN/Rg4kiLd8ioNeLkDmKE3NnbqRRlpF2fG0jJX
-	YuFMEReiFgtqUtiltpzHQNL/ZmKazHpfBqImg2Ja4eT1utRhVqWNaqSCYBFsjOOIW0uL7Qt
-	k6wrxIVCoXv8x2LpYTQueIbtgn7pRKtluFKI+uU1pPYtcPM0SbiBnkhhuID3JXUv/cN+/0U
-	UqrWE0Pf31i3l++Us15Hc6Z56IOOP1LrHpLcWh8VnavN7Xd1nRn2BFoxG6+7gVHHeJleNHi
-	gQCSbxKBeuXjpbC2mciDuwgSyuqyyBudvI1C8elZm/iclGBnr16mjdTptCZso=
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250811093328.70343754@kernel.org>
 
-Cleanup the code for the next patch to add adaptive coalesce.
+On Mon, Aug 11, 2025 at 09:33:28AM -0700, Jakub Kicinski wrote:
+> On Mon, 11 Aug 2025 07:27:19 -0700 Jay Vosburgh wrote:
+> > 	Generically, I'm wondering if test updates should be separate
+> > patches from the functional changes as a general policy.
+> 
+> Yes, not sure if we made it a hard requirement, but I think it's our
+> preference. It is the reason why we don't require cover letters for
+> submissions with 2 patches.
+> 
+> Hangbin, please update config for bonding tests, looks like vlans 
+> are not enabled there today.
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 28 ++++++-------------
- 1 file changed, 8 insertions(+), 20 deletions(-)
+Ah, yes, I forgot to update this part.
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index 590a5901cf77..c7b3f5087b66 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -343,13 +343,19 @@ int wx_set_coalesce(struct net_device *netdev,
- 	switch (wx->mac.type) {
- 	case wx_mac_sp:
- 		max_eitr = WX_SP_MAX_EITR;
-+		rx_itr_param = WX_20K_ITR;
-+		tx_itr_param = WX_12K_ITR;
- 		break;
- 	case wx_mac_aml:
- 	case wx_mac_aml40:
- 		max_eitr = WX_AML_MAX_EITR;
-+		rx_itr_param = WX_20K_ITR;
-+		tx_itr_param = WX_12K_ITR;
- 		break;
- 	default:
- 		max_eitr = WX_EM_MAX_EITR;
-+		rx_itr_param = WX_7K_ITR;
-+		tx_itr_param = WX_7K_ITR;
- 		break;
- 	}
- 
-@@ -362,34 +368,16 @@ int wx_set_coalesce(struct net_device *netdev,
- 	else
- 		wx->rx_itr_setting = ec->rx_coalesce_usecs;
- 
--	if (wx->rx_itr_setting == 1) {
--		if (wx->mac.type == wx_mac_em)
--			rx_itr_param = WX_7K_ITR;
--		else
--			rx_itr_param = WX_20K_ITR;
--	} else {
-+	if (wx->rx_itr_setting != 1)
- 		rx_itr_param = wx->rx_itr_setting;
--	}
- 
- 	if (ec->tx_coalesce_usecs > 1)
- 		wx->tx_itr_setting = ec->tx_coalesce_usecs << 2;
- 	else
- 		wx->tx_itr_setting = ec->tx_coalesce_usecs;
- 
--	if (wx->tx_itr_setting == 1) {
--		switch (wx->mac.type) {
--		case wx_mac_sp:
--		case wx_mac_aml:
--		case wx_mac_aml40:
--			tx_itr_param = WX_12K_ITR;
--			break;
--		default:
--			tx_itr_param = WX_7K_ITR;
--			break;
--		}
--	} else {
-+	if (wx->tx_itr_setting != 1)
- 		tx_itr_param = wx->tx_itr_setting;
--	}
- 
- 	/* mixed Rx/Tx */
- 	if (wx->q_vector[0]->tx.count && wx->q_vector[0]->rx.count)
--- 
-2.48.1
-
+Thanks
+Hangbin
