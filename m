@@ -1,30 +1,30 @@
 Received: from mail.ionic.de (ionic.de [145.239.234.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD982D3A66;
-	Tue, 12 Aug 2025 01:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B77D1C7005;
+	Tue, 12 Aug 2025 01:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.234.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754962561; cv=none; b=meg8Y9NiDyj2Tc1d34XneBZTHp6EDTZU0+XtxN3An6QeS0Jolw/l3ngccYjiKImFhEqS8sC5yfmaTHexgO/D+jOweQb2G0RH5jVgBPY+bWsGML2ti7na9sNoLOZNBoGqwZpfRqpV9pbsaVQgiRKVGtlTA7KSZ5dk9cOL4houfx8=
+	t=1754962561; cv=none; b=WPgsebn6EvrxN3NslTZMNJFhOVbrs/McHgI3XXRMMQHM2bU2xS2HNJzS9BGS2BCtrnOCqY/zoz5JLUMvw/wj28bYeD8y4C/Akrd1vQ3Vqu/T+3mEiKs+Kn6EFT3I5dQ4K7BQCEMIh6Miqe4xO1oqIIaQMmUIjOdvkPWTdlSwfcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1754962561; c=relaxed/simple;
-	bh=+27GkfYyVEkq3Awzc3j7QyAtaRQjn4gyZlZret25di4=;
+	bh=KaZ9wvJ2/J2yLTczJ7/mHJuawhEIvHX83gedA3DHxZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WD0EfTqn3YZkKSWalaQ8Ca8LCfiAk5aU4qO9p+iLhxnesbsZob65PNMKQcSK4yS6IRRLrv9Nr237LydRHfyiqbEoSziNY5YQ+IqVcDaIheXQihQJh2CxK48+Ehx4gCilWQ3+6MSqmkSMX89qj/kPkYj4YDuEUa4NkAp+8aJIiWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=jLz5upYe; arc=none smtp.client-ip=145.239.234.145
+	 MIME-Version; b=LVkYLeyXuioEVSMTnzP9t9vcGxwV01rvl4clAOZbF3r4VjqpkvPP820bhaYndNiUO9iqoRBgnWFSPO2lyU0ytADYHFlXlUIacxQ0yIaVZden6ddElhttgvCh1kuZ+d56xDDNmOv9uSBAO4UY2J0r65q4LOR0ASqp0Lt8pObWle0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=hi4mNLC4; arc=none smtp.client-ip=145.239.234.145
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionic.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="jLz5upYe"
+	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="hi4mNLC4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ionic.de; s=default;
-	t=1754962551; bh=+27GkfYyVEkq3Awzc3j7QyAtaRQjn4gyZlZret25di4=;
+	t=1754962549; bh=KaZ9wvJ2/J2yLTczJ7/mHJuawhEIvHX83gedA3DHxZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLz5upYeKcxTKvdO9qRSe3opwVkMnqJ7Too7nUK44ONVsT0jGLCockWgAfR2I3VUp
-	 /yHMHsjuC6PcZ8V2gnEVK0yd/9vhar5FmJxRpXqEPNzhZ1QeDOifEwbLzTJN941ewy
-	 4h+hO45vxde76IkkSWW+TsAleHVmRuAkOJ1RQ6Jw=
+	b=hi4mNLC4han/uC3sng8LAebF/KruPaYaSB/3iwRw8qDnNOablviU/rKRgjno+1mnj
+	 UonbGUs+7XWQMqI8sDpaInyd/S4AutnGjWfWnCBjrOH7EdejXxcXYpOYDrJ1BsluZe
+	 fy6mo/GesXecVv15UrKKpMs5+IyZ7Ds0nmKrbKuM=
 Received: from grml.local.home.ionic.de (unknown [IPv6:2a00:11:fb41:7a00:21b:21ff:fe5e:dddc])
-	by mail.ionic.de (Postfix) with ESMTPSA id D1341148A06D;
-	Tue, 12 Aug 2025 03:35:50 +0200 (CEST)
+	by mail.ionic.de (Postfix) with ESMTPSA id 51D491488DB7;
+	Tue, 12 Aug 2025 03:35:49 +0200 (CEST)
 From: Mihai Moldovan <ionic@ionic.de>
 To: linux-arm-msm@vger.kernel.org,
 	Manivannan Sadhasivam <mani@kernel.org>
@@ -38,9 +38,9 @@ Cc: Denis Kenzior <denkenz@gmail.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH v5 11/11] net: qrtr: mhi: Report endpoint id in sysfs
-Date: Tue, 12 Aug 2025 03:35:37 +0200
-Message-ID: <7521f1c059bfc778614d5f5f748a776db5cc498c.1754962437.git.ionic@ionic.de>
+Subject: [PATCH v5 05/11] net: qrtr: Report sender endpoint in aux data
+Date: Tue, 12 Aug 2025 03:35:31 +0200
+Message-ID: <4492b2ea7f2db4d704c2ec3a63e106bf57816074.1754962437.git.ionic@ionic.de>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <cover.1754962436.git.ionic@ionic.de>
 References: <cover.1754962436.git.ionic@ionic.de>
@@ -54,9 +54,16 @@ Content-Transfer-Encoding: 8bit
 
 From: Denis Kenzior <denkenz@gmail.com>
 
-Add a read-only 'endpoint' sysfs entry that contains the qrtr endpoint
-identifier assigned to this mhi device.  Can be used to direct / receive
-qrtr traffic only from a particular MHI device.
+Introduce support for reporting the remote endpoint that generated a
+given QRTR message to clients using AF_QIPCRTR family sockets. This is
+achieved by including QRTR_ENDPOINT auxiliary data, which carries the
+endpoint identifier of the message sender.  To receive this auxiliary
+data, clients must explicitly opt-in by using setsockopt with the
+QRTR_REPORT_ENDPOINT option enabled.
+
+Implementation of getsockopt and setsockopt is provided.  An additional
+level 'SOL_QRTR' is added to socket.h for use by AF_QIPCRTR family
+sockets.
 
 Signed-off-by: Denis Kenzior <denkenz@gmail.com>
 Reviewed-by: Marcel Holtmann <marcel@holtmann.org>
@@ -66,64 +73,192 @@ Signed-off-by: Mihai Moldovan <ionic@ionic.de>
 ---
 v5:
   - no changes
-  - Link to v4: https://msgid.link/462b6599fc713e8ee0950f08a5a176f12eb74555.1753720935.git.ionic@ionic.de
+  - Link to v4: https://msgid.link/aa1fbb89108cd05874c2de6cbc35ec5dc303cac6.1753720934.git.ionic@ionic.de
 
 v4:
   - no changes
-  - Link to v3: https://msgid.link/e1f5b82cd25b2ac433b1bd7e83e22604e6b24f03.1753313000.git.ionic@ionic.de
+  - Link to v3: https://msgid.link/30c2c4547108dd0baa638f8ed3cf493a3bc06bc2.1753312999.git.ionic@ionic.de
 
 v3:
   - rebase against current master
-  - Link to v2: https://msgid.link/1a49dec96d5c2c5258c9df935d8c9381793d4ddd.1752947108.git.ionic@ionic.de
+  - fix checkpatch.pl whitespace warning
+  - Link to v2: https://msgid.link/8dc0c9f99f617db348af5b176bb03b4c11ac9138.1752947108.git.ionic@ionic.de
 
 v2:
   - rebase against current master
-  - use %u formatter instead of %d when printing endpoint id (u32) as
+  - dropped socket locking in qrtr_setsockopt() and qrtr_getsockopt() as
     per review comment
-  - Link to v1: https://msgid.link/20241018181842.1368394-11-denkenz@gmail.com
+  - Link to v1: https://msgid.link/20241018181842.1368394-5-denkenz@gmail.com
 ---
- net/qrtr/mhi.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ include/linux/socket.h    |  1 +
+ include/uapi/linux/qrtr.h |  6 +++
+ net/qrtr/af_qrtr.c        | 77 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 84 insertions(+)
 
-diff --git a/net/qrtr/mhi.c b/net/qrtr/mhi.c
-index 69f53625a049..9a23c888e234 100644
---- a/net/qrtr/mhi.c
-+++ b/net/qrtr/mhi.c
-@@ -72,6 +72,16 @@ static int qcom_mhi_qrtr_send(struct qrtr_endpoint *ep, struct sk_buff *skb)
+diff --git a/include/linux/socket.h b/include/linux/socket.h
+index 3b262487ec06..0698a11bb2e2 100644
+--- a/include/linux/socket.h
++++ b/include/linux/socket.h
+@@ -386,6 +386,7 @@ struct ucred {
+ #define SOL_MCTP	285
+ #define SOL_SMC		286
+ #define SOL_VSOCK	287
++#define SOL_QRTR	288
+ 
+ /* IPX options */
+ #define IPX_TYPE	1
+diff --git a/include/uapi/linux/qrtr.h b/include/uapi/linux/qrtr.h
+index f7e2fb3d752b..6d0911984a05 100644
+--- a/include/uapi/linux/qrtr.h
++++ b/include/uapi/linux/qrtr.h
+@@ -46,4 +46,10 @@ struct qrtr_ctrl_pkt {
+ 	};
+ } __packed;
+ 
++/* setsockopt / getsockopt */
++#define QRTR_REPORT_ENDPOINT 1
++
++/* CMSG */
++#define QRTR_ENDPOINT 1
++
+ #endif /* _LINUX_QRTR_H */
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index fdf05b6509b5..e114489dbd36 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -26,6 +26,10 @@
+ 
+ #define QRTR_PORT_CTRL_LEGACY 0xffff
+ 
++enum {
++	QRTR_F_REPORT_ENDPOINT,
++};
++
+ /**
+  * struct qrtr_hdr_v1 - (I|R)PCrouter packet header version 1
+  * @version: protocol version
+@@ -79,6 +83,7 @@ struct qrtr_cb {
+ 	u32 src_port;
+ 	u32 dst_node;
+ 	u32 dst_port;
++	u32 endpoint_id;
+ 
+ 	u8 type;
+ 	u8 confirm_rx;
+@@ -92,6 +97,7 @@ struct qrtr_sock {
+ 	struct sock sk;
+ 	struct sockaddr_qrtr us;
+ 	struct sockaddr_qrtr peer;
++	unsigned long flags;
+ };
+ 
+ static inline struct qrtr_sock *qrtr_sk(struct sock *sk)
+@@ -575,6 +581,8 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
+ 	if (cb->dst_port == QRTR_PORT_CTRL_LEGACY)
+ 		cb->dst_port = QRTR_PORT_CTRL;
+ 
++	cb->endpoint_id = ep->id;
++
+ 	if (!size || len != ALIGN(size, 4) + hdrlen)
+ 		goto err;
+ 
+@@ -1137,6 +1145,7 @@ static int qrtr_recvmsg(struct socket *sock, struct msghdr *msg,
+ 			size_t size, int flags)
+ {
+ 	DECLARE_SOCKADDR(struct sockaddr_qrtr *, addr, msg->msg_name);
++	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
+ 	struct sock *sk = sock->sk;
+ 	struct sk_buff *skb;
+ 	struct qrtr_cb *cb;
+@@ -1162,6 +1171,10 @@ static int qrtr_recvmsg(struct socket *sock, struct msghdr *msg,
+ 		msg->msg_flags |= MSG_TRUNC;
+ 	}
+ 
++	if (cb->endpoint_id && test_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags))
++		put_cmsg(msg, SOL_QRTR, QRTR_ENDPOINT,
++			 sizeof(cb->endpoint_id), &cb->endpoint_id);
++
+ 	rc = skb_copy_datagram_msg(skb, 0, msg, copied);
+ 	if (rc < 0)
+ 		goto out;
+@@ -1307,6 +1320,68 @@ static int qrtr_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
  	return rc;
  }
  
-+static ssize_t endpoint_show(struct device *dev,
-+			     struct device_attribute *attr, char *buf)
++static int qrtr_setsockopt(struct socket *sock, int level, int optname,
++			   sockptr_t optval, unsigned int optlen)
 +{
-+	struct qrtr_mhi_dev *qdev = dev_get_drvdata(dev);
++	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
++	unsigned int val = 0;
++	int rc = 0;
 +
-+	return sprintf(buf, "%u\n", qdev->ep.id);
++	if (level != SOL_QRTR)
++		return -ENOPROTOOPT;
++
++	if (optlen >= sizeof(val) &&
++	    copy_from_sockptr(&val, optval, sizeof(val)))
++		return -EFAULT;
++
++	switch (optname) {
++	case QRTR_REPORT_ENDPOINT:
++		assign_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags, val);
++		break;
++	default:
++		rc = -ENOPROTOOPT;
++	}
++
++	return rc;
 +}
 +
-+static DEVICE_ATTR_RO(endpoint);
++static int qrtr_getsockopt(struct socket *sock, int level, int optname,
++			   char __user *optval, int __user *optlen)
++{
++	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
++	unsigned int val;
++	int len;
++	int rc = 0;
 +
- static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
- 			       const struct mhi_device_id *id)
- {
-@@ -91,6 +101,9 @@ static int qcom_mhi_qrtr_probe(struct mhi_device *mhi_dev,
- 	if (rc)
- 		return rc;
- 
-+	if (device_create_file(&mhi_dev->dev, &dev_attr_endpoint) < 0)
-+		dev_err(qdev->dev, "Failed to create endpoint attribute\n");
++	if (level != SOL_QRTR)
++		return -ENOPROTOOPT;
 +
- 	/* start channels */
- 	rc = mhi_prepare_for_transfer_autoqueue(mhi_dev);
- 	if (rc) {
-@@ -107,6 +120,7 @@ static void qcom_mhi_qrtr_remove(struct mhi_device *mhi_dev)
++	if (get_user(len, optlen))
++		return -EFAULT;
++
++	if (len < sizeof(val))
++		return -EINVAL;
++
++	switch (optname) {
++	case QRTR_REPORT_ENDPOINT:
++		val = test_bit(QRTR_F_REPORT_ENDPOINT, &ipc->flags);
++		break;
++	default:
++		rc = -ENOPROTOOPT;
++	}
++
++	if (rc)
++		return rc;
++
++	len = sizeof(int);
++
++	if (put_user(len, optlen) ||
++	    copy_to_user(optval, &val, len))
++		rc = -EFAULT;
++
++	return rc;
++}
++
+ static int qrtr_release(struct socket *sock)
  {
- 	struct qrtr_mhi_dev *qdev = dev_get_drvdata(&mhi_dev->dev);
+ 	struct sock *sk = sock->sk;
+@@ -1354,6 +1429,8 @@ static const struct proto_ops qrtr_proto_ops = {
+ 	.shutdown	= sock_no_shutdown,
+ 	.release	= qrtr_release,
+ 	.mmap		= sock_no_mmap,
++	.setsockopt	= qrtr_setsockopt,
++	.getsockopt	= qrtr_getsockopt,
+ };
  
-+	device_remove_file(&mhi_dev->dev, &dev_attr_endpoint);
- 	qrtr_endpoint_unregister(&qdev->ep);
- 	mhi_unprepare_from_transfer(mhi_dev);
- 	dev_set_drvdata(&mhi_dev->dev, NULL);
+ static struct proto qrtr_proto = {
 -- 
 2.50.0
 
