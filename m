@@ -1,197 +1,128 @@
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97ABE27E05E;
-	Wed, 13 Aug 2025 07:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F1D2E9EAB;
+	Wed, 13 Aug 2025 07:52:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755071560; cv=none; b=Vd5kQjthUJyfrhbLGHW3mCXps/OtqnHj3Y8+bgGF+cXJzUgwCdbQcdVODSVwsh3o4DnONNO+G3VeiNRba7RAvgRN2x7NCYsQCKxWUQiC5Oyz9LpXToZq7kB8/2fAUayNnHYosngQVXHxJNLEx13CC/XehH5E3P6Ey+ABt5MO2/Q=
+	t=1755071565; cv=none; b=gxmH06rKZ7pvZt3T8IjyU/2lwJEnDMd2P0XvBkit6qpUCJuIS95Myc22kq4PCVhSwJ2AmclWUR+l8o1+wzwebFlrtroCZjiJddqaYntEUYlrt1tWaOtEWfUAQB7n9mrerxM0n0ijUSeDiO9x5cWwleCWhNNEz/JyR3KcKJauCqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755071560; c=relaxed/simple;
-	bh=XlFq4Sgus3oQVPGHzXvXgTDE9t8jmHYL6F+kNSEKiPQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Mj253TP4du5Az44TCiqpcIV+fcTgUj53lgzRtDTZ5l7WgyzqW5EaTWkDSSV2z3whOMmp6DITp0Wzmuh0D3e9IyMII19dHG6pWilYdMG6tlxslZ65k4xXyCBghyqgfv+oNQGmaFLwMYDMGsVAsaE1Iluof5qYEaKe4or4tuh9YoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=IPi8sKZV; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1755071565; c=relaxed/simple;
+	bh=KFmtBpqIS/gas15j2ubFbyJ7spXHzf2NK9I0R5ErOjY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Nid/HFMBSPJ3ufprDfwSwO3cBBq2w7mEWt3c7nVWfttx3HRyJNkgCXndXE6YydjrOq6x5hhPXBtJ+sDzjvfxqSEIxRp5yAHKRH0x3uFNlYgq18tRh2KxnEbMz5A/EUMSzYFSDeFiw0y3OS4JU0DyA2B9rEdZMbw1glmRUL5K0rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=qBWbyimW; arc=none smtp.client-ip=99.78.197.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="IPi8sKZV"
-Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57D7pYMT1600946;
-	Wed, 13 Aug 2025 02:51:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1755071494;
-	bh=rJa4YbPLmwHtQ5vYaRplxOBKhYAcebYKOd1/PHvF9Rw=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=IPi8sKZVyBFUyA1jBcIN7qegHeqU4NgvB0m7TW8js9bv4wlWetdgTtpDMzvTU7G+X
-	 Rvv4dHysOQwh2JPhPemQJtnCFFJHqbU7z6KnB7mISjp1dc5jZcUx8CxxVck+7sKizM
-	 mi/T+sC/kQs0SKyCJlqPjaI6SuxhxrUgbH8h+oR4=
-Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
-	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57D7pYZK4090251
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Wed, 13 Aug 2025 02:51:34 -0500
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Wed, 13
- Aug 2025 02:51:33 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Wed, 13 Aug 2025 02:51:33 -0500
-Received: from [172.24.231.152] (danish-tpc.dhcp.ti.com [172.24.231.152])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57D7pRPs1978735;
-	Wed, 13 Aug 2025 02:51:27 -0500
-Message-ID: <d0c2fcb1-578d-443c-949f-860c94824ac9@ti.com>
-Date: Wed, 13 Aug 2025 13:21:26 +0530
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="qBWbyimW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1755071564; x=1786607564;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0tluNgAk0CYLsM7ZvS5LjeDUB61MgUfMGZZtsKFZxYc=;
+  b=qBWbyimWn3JE5LYVgkN5JfXtcmzN3IF+SVypsFSXaGLhquWWJGxvVNAt
+   OiM9tEDzweOXB3wddUg+sCRSoC6kZJGvZagfvY1jEnY6eSuvnUae1jkkh
+   dTdVRni/MjQMPaaBZo4h9XDP2pI2yfi5VxHLBgU9lltJAmGLe/mQof/bI
+   iARca+GtWkv3FGPxm8tmzZPj2lC2M5592RrC+ABVvjstY1YwOhnLCqXI6
+   zyKBKPWlxD51sudxi5n4uPsK+C+BVk3KmIt7p9jf5YmxYvB0B3QE54shs
+   mM8ygagXa3WErgvCyn/h6WJ+2d+yLJ85ByzP7Dc8VmgpaxWMOKKwB1bEs
+   Q==;
+X-IronPort-AV: E=Sophos;i="6.17,285,1747699200"; 
+   d="scan'208";a="224790435"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 07:52:42 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.7.35:13498]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.38.54:2525] with esmtp (Farcaster)
+ id 28d6fb3a-6f70-44b1-adb1-5c55fb937a18; Wed, 13 Aug 2025 07:52:42 +0000 (UTC)
+X-Farcaster-Flow-ID: 28d6fb3a-6f70-44b1-adb1-5c55fb937a18
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Wed, 13 Aug 2025 07:52:41 +0000
+Received: from b0be8375a521.amazon.com (10.37.244.11) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
+ Wed, 13 Aug 2025 07:52:39 +0000
+From: Kohei Enju <enjuk@amazon.com>
+To: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	<kohei.enju@gmail.com>, Kohei Enju <enjuk@amazon.com>
+Subject: [PATCH v1 iwl-next 1/2] igbvf: add lbtx_packets and lbtx_bytes to ethtool statistics
+Date: Wed, 13 Aug 2025 16:50:50 +0900
+Message-ID: <20250813075206.70114-2-enjuk@amazon.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250813075206.70114-1-enjuk@amazon.com>
+References: <20250813075206.70114-1-enjuk@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/5] net: rnpgbe: Add build support for rnpgbe
-To: Yibo Dong <dong100@mucse.com>, "Anwar, Md Danish" <a0501179@ti.com>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
-        <corbet@lwn.net>, <gur.stavi@huawei.com>, <maddy@linux.ibm.com>,
-        <mpe@ellerman.id.au>, <lee@trager.us>, <gongfan1@huawei.com>,
-        <lorenzo@kernel.org>, <geert+renesas@glider.be>,
-        <Parthiban.Veerasooran@microchip.com>, <lukas.bulwahn@redhat.com>,
-        <alexanderduyck@fb.com>, <richardcochran@gmail.com>,
-        <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20250812093937.882045-1-dong100@mucse.com>
- <20250812093937.882045-2-dong100@mucse.com>
- <5528c38b-0405-4d3b-924a-2bed769f314d@ti.com>
- <F9D5358C994A229C+20250813064441.GB944516@nic-Precision-5820-Tower>
-Content-Language: en-US
-From: MD Danish Anwar <danishanwar@ti.com>
-In-Reply-To: <F9D5358C994A229C+20250813064441.GB944516@nic-Precision-5820-Tower>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
+Currently ethtool shows lbrx_packets and lbrx_bytes (Good RX
+Packets/Octets loopback Count), but doesn't show the TX-side equivalents
+(lbtx_packets and lbtx_bytes). Add visibility of those missing
+statistics by adding them to ethtool statistics.
 
+In addition, the order of lbrx_bytes and lbrx_packets is not consistent
+with non-loopback statistics (rx_packets, rx_bytes). Therefore, align
+the order by swapping positions of lbrx_bytes and lbrx_packets.
 
-On 13/08/25 12:14 pm, Yibo Dong wrote:
-> On Tue, Aug 12, 2025 at 09:48:07PM +0530, Anwar, Md Danish wrote:
->> On 8/12/2025 3:09 PM, Dong Yibo wrote:
->>> Add build options and doc for mucse.
->>> Initialize pci device access for MUCSE devices.
->>>
->>> Signed-off-by: Dong Yibo <dong100@mucse.com>
->>> ---
->>>  .../device_drivers/ethernet/index.rst         |   1 +
->>>  .../device_drivers/ethernet/mucse/rnpgbe.rst  |  21 +++
->>>  MAINTAINERS                                   |   8 +
->>>  drivers/net/ethernet/Kconfig                  |   1 +
->>>  drivers/net/ethernet/Makefile                 |   1 +
->>>  drivers/net/ethernet/mucse/Kconfig            |  34 ++++
->>>  drivers/net/ethernet/mucse/Makefile           |   7 +
->>>  drivers/net/ethernet/mucse/rnpgbe/Makefile    |   8 +
->>>  drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  25 +++
->>>  .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   | 161 ++++++++++++++++++
->>>  10 files changed, 267 insertions(+)
->>>  create mode 100644 Documentation/networking/device_drivers/ethernet/mucse/rnpgbe.rst
->>>  create mode 100644 drivers/net/ethernet/mucse/Kconfig
->>>  create mode 100644 drivers/net/ethernet/mucse/Makefile
->>>  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/Makefile
->>>  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
->>>  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
->>
->> [ ... ]
->>
->>> + **/
->>> +static int __init rnpgbe_init_module(void)
->>> +{
->>> +	int ret;
->>> +
->>> +	ret = pci_register_driver(&rnpgbe_driver);
->>> +	if (ret)
->>> +		return ret;
->>> +
->>> +	return 0;
->>> +}
->>
->> Unnecessary code - can be simplified to just `return
->> pci_register_driver(&rnpgbe_driver);`
->>
-> 
-> Yes, but if I add some new codes which need some free after
-> pci_register_driver failed, the new patch will be like this:
-> 
-> -return pci_register_driver(&rnpgbe_driver);
-> +int ret:
-> +wq = create_singlethread_workqueue(rnpgbe_driver_name);
-> +ret = pci_register_driver(&rnpgbe_driver);
-> +if (ret) {
-> +	destroy_workqueue(wq);
-> +	return ret;
-> +}
-> +return 0;
-> 
-> Is this ok? Maybe not good to delete code for adding new feature?
-> This is what Andrew suggested not to do.
-> 
+Tested on Intel Corporation I350 Gigabit Network Connection.
 
-In this patch series you are not modifying rnpgbe_init_module() again.
-If you define a function as something in one patch and in later patches
-you change it to something else - That is not encouraged, you should not
-remove the code that you added in previous patches.
+Before:
+  # ethtool -S ens5 | grep -E "x_(bytes|packets)"
+       rx_packets: 135
+       tx_packets: 106
+       rx_bytes: 16010
+       tx_bytes: 12451
+       lbrx_bytes: 1148
+       lbrx_packets: 12
 
-However here throughout your series you are not modifying this function.
-Now the diff that you are showing, I don't know when you plan to post
-that but as far as this series is concerned this diff is not part of the
-series.
+After:
+  # ethtool -S ens5 | grep -E "x_(bytes|packets)"
+       rx_packets: 748
+       tx_packets: 304
+       rx_bytes: 81513
+       tx_bytes: 33698
+       lbrx_packets: 97
+       lbtx_packets: 109
+       lbrx_bytes: 12090
+       lbtx_bytes: 12401
 
-static int __init rnpgbe_init_module(void)
-{
-	int ret;
+Tested-by: Kohei Enju <enjuk@amazon.com>
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+---
+ drivers/net/ethernet/intel/igbvf/ethtool.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-	ret = pci_register_driver(&rnpgbe_driver);
-	if (ret)
-		return ret;
-
-	return 0;
-}
-
-This to me just seems unnecessary. You can just return
-pci_register_driver() now and in future whenever you add other code you
-can modify the function.
-
-It would have  made sense for you to keep it as it is if some later
-patch in your series would have modified it.
-
->>> +
->>> +module_init(rnpgbe_init_module);
->>> +
->>> +/**
->>> + * rnpgbe_exit_module - Driver remove routine
->>> + *
->>> + * rnpgbe_exit_module is called when driver is removed
->>> + **/
->>> +static void __exit rnpgbe_exit_module(void)
->>> +{
->>> +	pci_unregister_driver(&rnpgbe_driver);
->>> +}
->>> +
->>> +module_exit(rnpgbe_exit_module);
->>> +
->>> +MODULE_DEVICE_TABLE(pci, rnpgbe_pci_tbl);
->>> +MODULE_AUTHOR("Mucse Corporation, <techsupport@mucse.com>");
->>> +MODULE_DESCRIPTION("Mucse(R) 1 Gigabit PCI Express Network Driver");
->>> +MODULE_LICENSE("GPL");
->>
->> -- 
->> Thanks and Regards,
->> Md Danish Anwar
->>
->>
-> 
-> Thanks for your feedback.
-
+diff --git a/drivers/net/ethernet/intel/igbvf/ethtool.c b/drivers/net/ethernet/intel/igbvf/ethtool.c
+index 773895c663fd..c6defc495f13 100644
+--- a/drivers/net/ethernet/intel/igbvf/ethtool.c
++++ b/drivers/net/ethernet/intel/igbvf/ethtool.c
+@@ -30,8 +30,10 @@ static const struct igbvf_stats igbvf_gstrings_stats[] = {
+ 	{ "rx_bytes", IGBVF_STAT(stats.gorc, stats.base_gorc) },
+ 	{ "tx_bytes", IGBVF_STAT(stats.gotc, stats.base_gotc) },
+ 	{ "multicast", IGBVF_STAT(stats.mprc, stats.base_mprc) },
+-	{ "lbrx_bytes", IGBVF_STAT(stats.gorlbc, stats.base_gorlbc) },
+ 	{ "lbrx_packets", IGBVF_STAT(stats.gprlbc, stats.base_gprlbc) },
++	{ "lbtx_packets", IGBVF_STAT(stats.gptlbc, stats.base_gptlbc) },
++	{ "lbrx_bytes", IGBVF_STAT(stats.gorlbc, stats.base_gorlbc) },
++	{ "lbtx_bytes", IGBVF_STAT(stats.gotlbc, stats.base_gotlbc) },
+ 	{ "tx_restart_queue", IGBVF_STAT(restart_queue, zero_base) },
+ 	{ "tx_timeout_count", IGBVF_STAT(tx_timeout_count, zero_base) },
+ 	{ "rx_long_byte_count", IGBVF_STAT(stats.gorc, stats.base_gorc) },
 -- 
-Thanks and Regards,
-Danish
+2.48.1
 
