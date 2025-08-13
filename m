@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7672FF16D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8A22FFDCC;
 	Wed, 13 Aug 2025 14:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755096950; cv=none; b=niYfJK2EiOAYbF2s5vccN48lpEP28DfLWCEya+rLBsrcmy6SV7BIfEUAf/STJJDXnBUG6LAooKHshF35kTRq9twk3mNPvApr7fxQ2G2ppsMg1NjgLsK/c6UOvuDbY8fRXTNZmUX2gLXa0LHP8jR35faAonNR0M7buTfRYrM8ac8=
+	t=1755096950; cv=none; b=FWrg7ez/Ea187q8MkHcQUFhe3la3GhoFV2p6Vw1ACfE30Ph9YqtbxQ9GWAfTEUTJoUF0JFqFuGkViwSqji7rRVPKAEstnbgLRPn7BRO/qDKchfXAfu0mFdvJQfh9YqjQn6uwnq+2sRZdVk+lazD/tafEY06Vi4J7nv7rwYd20zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1755096950; c=relaxed/simple;
-	bh=RVal9HTE3KtH+mFNbn3brWgtrY/W+HjmgbacLzq8U5E=;
+	bh=W5wn3NeKGRyaF5afVGlpCWkJIlaztzO4EVZV0lTaqQg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=V7VSiVug8Esy1N/Ds8H6ESgliakMjj+KoIITP7KfiBm/bKBDhjxwyp98lcph1DL5aDtsESGj8OItzXql3yUUKsCS/M0MPZpjwtUA6NPA2/bkGjkXu6BerEOkplCZksq1vvjRh2yoC9GhbsmguyZAbjUWmbhYa81CmyWSMBScupc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S33giej8; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=bS/z5mYbZ3bhR9h+3qj3dq3oNvkxy2Bjmpp2/mqF+3hT3SZ4V9j08kcR8DsSvJn+Y0/R7z7JXRh/zIQ0Crlz0w6ZPsZhxfp4lL72lAVe3wItJZLda6l5rtzFRKW2y7skMlvTUdmogNUXTJ1SinPQZoxPvmA/9K6BBCb674ozXeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKjmu7gD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S33giej8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA19DC4CEFA;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKjmu7gD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CE7C116B1;
 	Wed, 13 Aug 2025 14:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1755096950;
-	bh=RVal9HTE3KtH+mFNbn3brWgtrY/W+HjmgbacLzq8U5E=;
+	bh=W5wn3NeKGRyaF5afVGlpCWkJIlaztzO4EVZV0lTaqQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S33giej8gHnlgi+xgSwr0e1NDi6b4ipyxr/RH4dmTP6GI2PtXGbI3UUfcPozZdXpe
-	 AUdAlv7mLk4VzoqPs+eeM1oNQpV4K4+Z9aZyZaIFHvYv3ffQG0otokJQsBzr/GKPH+
-	 pWibPmGhQEafDsimQfSldAMA7ojQee4ioiiUyvbq+C4TC6c//9wLyyaB9o+cIFgo4p
-	 S+2xtgW/cLcf8OpFVU/P02sVhDjW9bUEb2IgIYgH7Bf4qRTrJxvdH+T7nL9UinTQSW
-	 HwTHNKFKAZC4YU4JIWJvS99+gzCS780gxur6pNFTfhhkrXczynhxGISzpaWapUM1Li
-	 A+bHLu56J9Geg==
+	b=gKjmu7gDM/sY1ung+b2oB69H9t9KqVNJfZZG37yj0ObpM930lYQpvllOBqy57EVBb
+	 BYqjyn77jC9dpRjHpPpBFufMN/jl3clDlr5WPou97L63ucspEq6u7JFy0XYc4X0PXX
+	 SdyDkwbhXhpagqemeI2U66L1rSFi++CLCfbjmXNcTaAahu1KUqq8Lzuj23I9fw3xgR
+	 wAIXot0CwvTBXFjN29c36eSgEoFcyIIWdS3fsX/uiK+jOb4kw+0zLbtfq/NYDklvhq
+	 YvH6l6B1Q3zb0qe7/veWRGMicVkemt+H1NaNIoOZ6Dmx4zNkTT3wXZGTU41C5zm9P+
+	 YrWKodIMh+YSw==
 Received: by wens.tw (Postfix, from userid 1000)
-	id 4A4C85FF90; Wed, 13 Aug 2025 22:55:45 +0800 (CST)
+	id 341B15FF5B; Wed, 13 Aug 2025 22:55:45 +0800 (CST)
 From: Chen-Yu Tsai <wens@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -46,9 +46,9 @@ Cc: netdev@vger.kernel.org,
 	linux-sunxi@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Andre Przywara <andre.przywara@arm.com>
-Subject: [PATCH net-next v2 07/10] arm64: dts: allwinner: a527: cubie-a5e: Enable second Ethernet port
-Date: Wed, 13 Aug 2025 22:55:37 +0800
-Message-Id: <20250813145540.2577789-8-wens@kernel.org>
+Subject: [PATCH net-next v2 04/10] soc: sunxi: sram: register regmap as syscon
+Date: Wed, 13 Aug 2025 22:55:34 +0800
+Message-Id: <20250813145540.2577789-5-wens@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250813145540.2577789-1-wens@kernel.org>
 References: <20250813145540.2577789-1-wens@kernel.org>
@@ -62,99 +62,61 @@ Content-Transfer-Encoding: 8bit
 
 From: Chen-Yu Tsai <wens@csie.org>
 
-On the Radxa Cubie A5E board, the second Ethernet controller, aka the
-GMAC200, is connected to a second external Maxio MAE0621A PHY. The PHY
-uses an external 25MHz crystal, and has the SoC's PJ16 pin connected to
-its reset pin.
+If the system controller had a ethernet controller glue layer control
+register, a limited access regmap would be registered and tied to the
+system controller struct device for the ethernet driver to use.
 
-Enable the second Ethernet port. Also fix up the label for the existing
-external PHY connected to the first Ethernet port. An enable delay for the
-PHY supply regulator is added to make sure the PHY's internal regulators
-are fully powered and the PHY is operational.
+Until now, for the ethernet driver to acquire this regmap, it had to
+do a of_parse_phandle() + find device + dev_get_regmap() sequence.
+Since the syscon framework allows a provider to register a custom
+regmap for its device node, and the ethernet driver already uses
+syscon for one platform, this provides a much more easier way to
+pass the regmap.
+
+Use of_syscon_register_regmap() to register our regmap with the
+syscon framework so that consumers can retrieve it that way.
 
 Signed-off-by: Chen-Yu Tsai <wens@csie.org>
----
 
+---
 Changes since v1:
-- Switch to generic (tx|rx)-internal-delay-ps properties
-- Add PHY regulator delay
+- Fix check on return value
+- Expand commit message
 ---
- .../dts/allwinner/sun55i-a527-cubie-a5e.dts   | 28 +++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ drivers/soc/sunxi/sunxi_sram.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
-index d4cee2222104..e96a419faf21 100644
---- a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
-@@ -14,6 +14,7 @@ / {
+diff --git a/drivers/soc/sunxi/sunxi_sram.c b/drivers/soc/sunxi/sunxi_sram.c
+index 4f8d510b7e1e..1837e1b5dce8 100644
+--- a/drivers/soc/sunxi/sunxi_sram.c
++++ b/drivers/soc/sunxi/sunxi_sram.c
+@@ -12,6 +12,7 @@
  
- 	aliases {
- 		ethernet0 = &gmac0;
-+		ethernet1 = &gmac1;
- 		serial0 = &uart0;
- 	};
+ #include <linux/debugfs.h>
+ #include <linux/io.h>
++#include <linux/mfd/syscon.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+@@ -377,6 +378,7 @@ static int __init sunxi_sram_probe(struct platform_device *pdev)
+ 	const struct sunxi_sramc_variant *variant;
+ 	struct device *dev = &pdev->dev;
+ 	struct regmap *regmap;
++	int ret;
  
-@@ -76,7 +77,7 @@ &ehci1 {
+ 	sram_dev = &pdev->dev;
  
- &gmac0 {
- 	phy-mode = "rgmii-id";
--	phy-handle = <&ext_rgmii_phy>;
-+	phy-handle = <&ext_rgmii0_phy>;
- 	phy-supply = <&reg_cldo3>;
- 
- 	allwinner,tx-delay-ps = <300>;
-@@ -85,13 +86,24 @@ &gmac0 {
- 	status = "okay";
- };
- 
-+&gmac1 {
-+	phy-mode = "rgmii-id";
-+	phy-handle = <&ext_rgmii1_phy>;
-+	phy-supply = <&reg_cldo4>;
+@@ -394,6 +396,10 @@ static int __init sunxi_sram_probe(struct platform_device *pdev)
+ 		regmap = devm_regmap_init_mmio(dev, base, &sunxi_sram_regmap_config);
+ 		if (IS_ERR(regmap))
+ 			return PTR_ERR(regmap);
 +
-+	tx-internal-delay-ps = <300>;
-+	rx-internal-delay-ps = <400>;
-+
-+	status = "okay";
-+};
-+
- &gpu {
- 	mali-supply = <&reg_dcdc2>;
- 	status = "okay";
- };
++		ret = of_syscon_register_regmap(dev->of_node, regmap);
++		if (ret)
++			return ret;
+ 	}
  
- &mdio0 {
--	ext_rgmii_phy: ethernet-phy@1 {
-+	ext_rgmii0_phy: ethernet-phy@1 {
- 		compatible = "ethernet-phy-ieee802.3-c22";
- 		reg = <1>;
- 		reset-gpios = <&pio 7 8 GPIO_ACTIVE_LOW>; /* PH8 */
-@@ -100,6 +112,16 @@ ext_rgmii_phy: ethernet-phy@1 {
- 	};
- };
- 
-+&mdio1 {
-+	ext_rgmii1_phy: ethernet-phy@1 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <1>;
-+		reset-gpios = <&pio 9 16 GPIO_ACTIVE_LOW>; /* PJ16 */
-+		reset-assert-us = <10000>;
-+		reset-deassert-us = <150000>;
-+	};
-+};
-+
- &mmc0 {
- 	vmmc-supply = <&reg_cldo3>;
- 	cd-gpios = <&pio 5 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* PF6 */
-@@ -240,6 +262,8 @@ reg_cldo4: cldo4 {
- 				regulator-min-microvolt = <3300000>;
- 				regulator-max-microvolt = <3300000>;
- 				regulator-name = "vcc-pj-phy";
-+				/* enough time for the PHY to fully power on */
-+				regulator-enable-ramp-delay = <150000>;
- 			};
- 
- 			reg_cpusldo: cpusldo {
+ 	of_platform_populate(dev->of_node, NULL, NULL, dev);
 -- 
 2.39.5
 
