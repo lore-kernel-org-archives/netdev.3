@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A66B2FFDCB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3702FFDCD;
 	Wed, 13 Aug 2025 14:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755096950; cv=none; b=DxNoJ2/nClzT36pNQ8wKGVLTlr+ky+jJSCKaJcAgf6Y1u+FuVL0dNK3sR23Yq/etDWDXOfrrcpdwU7pSjsr4s04enaoh7uY10cQfaE3kPWcZzg9GGmg4QHgqiCXCymtKFLxxLobfogHscn61zt81/tz5qVFQtcjJ4jwKnYFGFlw=
+	t=1755096950; cv=none; b=I387pioNFmqovzBOhyKOoGi7C5qkt7aU6vhSGirNmRh6GFM2gyq5iC0SxE7dWZIB8rUbcf/gUS7oHwxJbSKfLAfztLDuaiglAOKR6T8vigUIRfj8T1ZYed81+IXDzyWTfUiC9evySV/MmeqdQiVopCfKy1iIkwmAKXPG5hMPJBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1755096950; c=relaxed/simple;
-	bh=efhUDQe2jwo6mMDNsNwWZlvEPFGFYGTDZhRv4W8Y2gI=;
+	bh=/usWm/vrAulCsp4Fo0dvH/GWf7HQ6Sc8o/o3f/vf8hE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Mln58W9kXyLwKsuMoRQPHnXxivtxmkEAVTbCokEH4yGF8mRSwIPzE4oPWFMx8XIU9G4tjJFhS/OvAwt45LdF6dX3B4R53L8vYFzjjKliQK/ZweZAs7QQmDN4/a+5/nvKDJnthm2f8mXUhLXNVBHPh/XR3HK0CM5MsWeh/NPfDko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dZ9gTHp8; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=LD9AqTHnjoFbDi4LUjJhLAoJgvWX+xTLOLk5r+29+Z3aDilwOCNL4E0nt9NJ2M49hLl6X1lWq734ydkpJfjNnYxCNbwJaOUj73vf1LRCqOuWqawIyccfNqFSKPJi7vAEMiPl2XwXGIT1dYpbkfyBNUatDEcPN0zl4ZwdNZZg9PY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F78sv2/7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dZ9gTHp8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E748AC4CEF8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F78sv2/7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BC3C4CEF1;
 	Wed, 13 Aug 2025 14:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1755096950;
-	bh=efhUDQe2jwo6mMDNsNwWZlvEPFGFYGTDZhRv4W8Y2gI=;
+	bh=/usWm/vrAulCsp4Fo0dvH/GWf7HQ6Sc8o/o3f/vf8hE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZ9gTHp8VjxKV0gtmhGBRwHECZQqSCBqWMAw6/AUvhnNoZjT2Dg6zwNsjY80VZ4j3
-	 Ys99ZxZJJXj3mRgxEXZuU7A1ChzYtOV96zIqt4enqaN4iS3Wv8dFziiqu1jafO59OG
-	 skRZNZTXsZnmPm01UO3NYJ4MhJqxlyN3DOlWxG3cQn22EfHXAUTXxvFbdGo5PMSuXa
-	 8uO8Ct2Ap8oGfVw7EbuPn4KK/3A7gLBouRYeFXEIwVYRFqh5DxMvLivhmx1dyV8n8U
-	 OVlCQf8Xl+NM3hYe7jLpx9Z/kSZ6iUtKIjg4LqF9wTJot801a4aKcQVqNnFWKwLkHf
-	 2HXvv9XHT7a3w==
+	b=F78sv2/7X2r8RCxweQ91Vm2r+O/C8tEOxDFBrupkW8VJNsfb9n9TDBF7i0rmY/fvb
+	 tH3pvYlakWjVDCdjH/1LMnpZcreHnm0smJuVA2tFwp8sycBBDKg91IPV8gM4TuSlmJ
+	 1nmafLuTvPmvzDlfs71e2XeRHbe91fDeb9L9HXtNjcd7oyEuHctzCeZ4DyFlTBfPKs
+	 MOLJry39YvbVDDxNKoYt4VGNZu4n4+MBDAlbes5cXHmMEAoq1sXHOimGhjkhKLDTXg
+	 5EzukLsGzN8tfgBXrMmJfPaqk2m5UVEyz+0PCOlFZTaouEn7oKHZ7KzVW0J9yoxC9d
+	 O0tFX1ePl/ixw==
 Received: by wens.tw (Postfix, from userid 1000)
-	id 551005FF75; Wed, 13 Aug 2025 22:55:45 +0800 (CST)
+	id 42B565FF03; Wed, 13 Aug 2025 22:55:45 +0800 (CST)
 From: Chen-Yu Tsai <wens@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -46,9 +46,9 @@ Cc: netdev@vger.kernel.org,
 	linux-sunxi@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Andre Przywara <andre.przywara@arm.com>
-Subject: [PATCH net-next v2 09/10] arm64: dts: allwinner: t527: avaota-a1: enable second Ethernet port
-Date: Wed, 13 Aug 2025 22:55:39 +0800
-Message-Id: <20250813145540.2577789-10-wens@kernel.org>
+Subject: [PATCH net-next v2 08/10] arm64: dts: allwinner: t527: avaota-a1: Add ethernet PHY reset setting
+Date: Wed, 13 Aug 2025 22:55:38 +0800
+Message-Id: <20250813145540.2577789-9-wens@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250813145540.2577789-1-wens@kernel.org>
 References: <20250813145540.2577789-1-wens@kernel.org>
@@ -62,87 +62,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Chen-Yu Tsai <wens@csie.org>
 
-On the Avaota A1 board, the second Ethernet controller, aka the GMAC200,
-is connected to a second external RTL8211F-CG PHY. The PHY uses an
-external 25MHz crystal, and has the SoC's PJ16 pin connected to its
-reset pin.
+The external Ethernet PHY has a reset pin that is connected to the SoC.
+It is missing from the original submission.
 
-Enable the second Ethernet port. Also fix up the label for the existing
-external PHY connected to the first Ethernet port.
+Add it to complete the description.
 
+Fixes: c6800f15998b ("arm64: dts: allwinner: t527: add EMAC0 to Avaota-A1 board")
 Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 ---
-
-Changes since v1:
-- Switch to generic (tx|rx)-internal-delay-ps properties
----
- .../dts/allwinner/sun55i-t527-avaota-a1.dts   | 26 +++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts b/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
-index e7713678208d..f540965ffaa4 100644
+index b9eeb6753e9e..e7713678208d 100644
 --- a/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
-@@ -13,6 +13,7 @@ / {
- 
- 	aliases {
- 		ethernet0 = &gmac0;
-+		ethernet1 = &gmac1;
- 		serial0 = &uart0;
- 	};
- 
-@@ -67,7 +68,7 @@ &ehci1 {
- 
- &gmac0 {
- 	phy-mode = "rgmii-id";
--	phy-handle = <&ext_rgmii_phy>;
-+	phy-handle = <&ext_rgmii0_phy>;
- 	phy-supply = <&reg_dcdc4>;
- 
- 	allwinner,tx-delay-ps = <100>;
-@@ -76,13 +77,24 @@ &gmac0 {
- 	status = "okay";
- };
- 
-+&gmac1 {
-+	phy-mode = "rgmii-id";
-+	phy-handle = <&ext_rgmii1_phy>;
-+	phy-supply = <&reg_dcdc4>;
-+
-+	tx-internal-delay-ps = <100>;
-+	rx-internal-delay-ps = <100>;
-+
-+	status = "okay";
-+};
-+
- &gpu {
- 	mali-supply = <&reg_dcdc2>;
- 	status = "okay";
- };
- 
- &mdio0 {
--	ext_rgmii_phy: ethernet-phy@1 {
-+	ext_rgmii0_phy: ethernet-phy@1 {
+@@ -85,6 +85,9 @@ &mdio0 {
+ 	ext_rgmii_phy: ethernet-phy@1 {
  		compatible = "ethernet-phy-ieee802.3-c22";
  		reg = <1>;
- 		reset-gpios = <&pio 7 8 GPIO_ACTIVE_LOW>; /* PH8 */
-@@ -91,6 +103,16 @@ ext_rgmii_phy: ethernet-phy@1 {
++		reset-gpios = <&pio 7 8 GPIO_ACTIVE_LOW>; /* PH8 */
++		reset-assert-us = <10000>;
++		reset-deassert-us = <150000>;
  	};
  };
  
-+&mdio1 {
-+	ext_rgmii1_phy: ethernet-phy@1 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <1>;
-+		reset-gpios = <&pio 9 16 GPIO_ACTIVE_LOW>; /* PJ16 */
-+		reset-assert-us = <10000>;
-+		reset-deassert-us = <150000>;
-+	};
-+};
-+
- &mmc0 {
- 	vmmc-supply = <&reg_cldo3>;
- 	cd-gpios = <&pio 5 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* PF6 */
 -- 
 2.39.5
 
