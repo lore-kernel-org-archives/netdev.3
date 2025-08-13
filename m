@@ -1,277 +1,235 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A843594E;
-	Wed, 13 Aug 2025 07:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755070480; cv=none; b=WwWSR+gycSPaQzu+EMLoqP5deE6M0tKG6g5G4YnoXPyjRGVUS/qNjhBjSqLgkURU97PNr5dGNOPHg6fDywm+LNNwNQzyzpGm4mCTapD2dJvkdJNPh8wAISFhyFpqzxgP446wNjn82431wNlwBYrldoVX8eE4NKMjSxpH4DSx1vA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755070480; c=relaxed/simple;
-	bh=OJY6+omY4Q8gESjD0ydATDvH4uxYZHL/sj/tsQIBBvE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cHUH93gFvRBAMqdcvhkV7oHeW2y3NB9BU5hfOn/V408kocr8fd94XcbqWKjF5mjghLaMSmSyNsCW+YZcnV7cD4pYBBqFzGu05bcKbJsuRq31Nl7h/SNkbElfrgrm9Djbd+0G3Mnu1hzWO9kFjZQ4o5OTqhQR4ejxlCmX7a5XXsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=HMh3LFOs; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A6723D7CF
+	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 07:38:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755070741; cv=fail; b=Q6xykgHfZzxdi6NL1GHj2xEc+xaR4iEM84rbDBOlpLLHjNXDUIXRqVo3bV6ClJKnXEgypYCW8YdJ4zSDCTzvkpMR9Htq8aoicuFOd+aXLYny/Rtgzb67MyO86/1qU4/WkPE+W/IuESpfiLJHcIa6AFS7lvDcnZI+5fGieIq6sTU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755070741; c=relaxed/simple;
+	bh=SsHc19oCXceMWdm4ldpyQP7PT5bXf6A3gGSXVl1Qyg8=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=eZn5TxCv46u/5tkHohfFuyQsACo/inuFKw8YeSA4r5mj7lMi2pH4oiktqJyALURD265l/LnQP2Qp5Xmu2zSWWLn+gDEndOzUn3Xno+tY73wgsmnSuuoCmmh0mVHlVeR6TQiMW9vSOJYVHUWEuE+niVO3HEt+WFhwM0DqLcu3LeU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A+pfhwVq; arc=fail smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="HMh3LFOs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A+pfhwVq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1755070478; x=1786606478;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=OJY6+omY4Q8gESjD0ydATDvH4uxYZHL/sj/tsQIBBvE=;
-  b=HMh3LFOsqJMZDz47/L1tz7swWlVaKwwo1mtiNH89LgryNLJGGPSHI0Fy
-   9FuYqf4KbNYlp5Cc5olpy5wumYEO1ponhH5YUoO1KCZFzUhR0IPlasJRl
-   MBCGHRdjjMwiZzFcpBuwlH2iVlMRI3fnTXWc8aO1jIX363wO0KJbtA/zZ
-   T+wMChHF/GMFfIZg7+1dVrPR/Bz96eanThOcDDB2N1fp8Twy8a97ASywK
-   0Yg+3jh1ouJJXSzLpZ4eeqOaiJ0lOoJ5RtUqioyPFYN40DHyE3paXoaYb
-   wCVgfnVoa5kpVr2h7lXNEzqrzTGOmKYacuPI3YDBk0F38YgBKYIrGWliP
-   w==;
-X-CSE-ConnectionGUID: 92Z56r3TT7eJeErfxZPskw==
-X-CSE-MsgGUID: Mt4NHuIFSZezsYLzxguyMQ==
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755070739; x=1786606739;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=SsHc19oCXceMWdm4ldpyQP7PT5bXf6A3gGSXVl1Qyg8=;
+  b=A+pfhwVq8htf8L+801mISav8cMycW/A0kOHXC/9tCiLzqSN/vaNa8Y/Y
+   WcrUw1kNVVDY03jm57vQNHonUbRol4VMM8G/3Xv9BRaSjaWhGPav+IUui
+   bW6gv5xIlGRWcGkTyNQf4fptc+0psthtU/xtCejCixqyAr9LmhHq0RqaY
+   In7qZRqtBMSjRC2chYzOUU0dYnXyGgxOwRaJWS8iGp7rjKofOWe8IzMRu
+   XLYWf+cgbVCSt1zGHeAFs9Sw0sd/eJ2hAs6SH/BLZz9lSVOMiACoiviT4
+   soAB+wIWpUGBQKh+JaCnuEvYq1M0FNpro8i/CK5ZOoVsNqj8O4SZnIiz1
+   A==;
+X-CSE-ConnectionGUID: KshH1cAMQ5WLZbc4qajzeA==
+X-CSE-MsgGUID: ODos7PzLRvqeuLaGJQz7tg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="67961922"
 X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
-   d="scan'208";a="44597533"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 Aug 2025 00:34:28 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Wed, 13 Aug 2025 00:34:22 -0700
-Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.44 via Frontend Transport; Wed, 13 Aug 2025 00:34:18 -0700
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <richardcochran@gmail.com>, <jacob.e.keller@intel.com>,
-	<rmk+kernel@armlinux.org.uk>, <christophe.jaillet@wanadoo.fr>,
-	<rosenp@gmail.com>, <viro@zeniv.linux.org.uk>, <atenart@kernel.org>,
-	<quentin.schulz@bootlin.com>, <olteanv@gmail.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>
-Subject: [PATCH net v3] phy: mscc: Fix timestamping for vsc8584
-Date: Wed, 13 Aug 2025 09:26:05 +0200
-Message-ID: <20250813072605.444794-1-horatiu.vultur@microchip.com>
-X-Mailer: git-send-email 2.34.1
+   d="scan'208";a="67961922"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 00:38:59 -0700
+X-CSE-ConnectionGUID: Vpb2tT4uRF+fNLTY2rE20Q==
+X-CSE-MsgGUID: tziTdb5VR6Sap5uIueyJGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="166284236"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 00:38:59 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Wed, 13 Aug 2025 00:38:53 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Wed, 13 Aug 2025 00:38:53 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (40.107.92.86) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Wed, 13 Aug 2025 00:38:52 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h2zdJcUN1rIXP+NNk89U0z9cRye7PdTbT7b+Jua5vBwhG9Yg7aNRb02AKMaaLNliGPumLKtRL/PTLg1OShWWMN0t4TC+oM48M/OK5oX+kwxN0gDe8KfiuOcAgaseiFGKUOAUsb8NFRSFDfEJE0IxmpQfCZdE7WzlLrt4zvSJSGrdYJ78r8Bj5fOlTE1GAaunC4Wx05w7sd5PFNbIS2LdVILxfxDnNhggzr0LU5pUh+SOANGdDtcraHEZeBMN+Ylq/jKbwhiyYCGTEtKcRGPqzGMqCt3y2vEVhCBVBdN1TIXv/kBvcvIYuIBsKwFgSQKWYo+NYzPNpJdYOziMIxHLzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TuWjs7VWpRQAfzs5ZalCNs+oxHeLPOFNmIyh/l5FBhs=;
+ b=idGOGISojEMHaiH74udLjT1jsuTo4qv3to245yRjWThx1alaO7DBRkl9bXBMXdx5erdiHeWZ/1eV9vudJQsO+IgNl1enHYK5cMXlT9LttzYHYnBQCg8PgYYX5yidP6+M4PN9tikG3L24//Bm53qStuHnrk/23ZkN1yJksbcSBE7pVqTCH3V+hKm/FAjUWZjik1YKE5Se6w6/fseejdCPWyYhdemWAdkvxfX/BFQRDCHafkH7g0fpz/WIAorlnolEXpBzw786lg0KyDRMfR8bXiLOVjFX8a1B0CcTq4l1p2pp7HVr2LvIMMqcDZimw3sntIHIPvO4bP4/aEcoVLyS1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com (2603:10b6:208:46d::9)
+ by SA1PR11MB8320.namprd11.prod.outlook.com (2603:10b6:806:37c::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.14; Wed, 13 Aug
+ 2025 07:38:50 +0000
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::15b2:ee05:2ae7:cfd6]) by MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::15b2:ee05:2ae7:cfd6%6]) with mapi id 15.20.9031.012; Wed, 13 Aug 2025
+ 07:38:50 +0000
+Message-ID: <a551d1c2-1714-4168-b647-b55a9ec8bac9@intel.com>
+Date: Wed, 13 Aug 2025 09:38:46 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH 02/12] ice: split queue stuff out of
+ ice_virtchnl.c - p2
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+CC: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	<intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>
+References: <20250812132910.99626-1-przemyslaw.kitszel@intel.com>
+ <20250812132910.99626-3-przemyslaw.kitszel@intel.com>
+ <edbc1372-b063-4294-b045-72752adf37b3@molgen.mpg.de>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Content-Language: en-US
+In-Reply-To: <edbc1372-b063-4294-b045-72752adf37b3@molgen.mpg.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DUZP191CA0017.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:10:4f9::28) To MN6PR11MB8102.namprd11.prod.outlook.com
+ (2603:10b6:208:46d::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN6PR11MB8102:EE_|SA1PR11MB8320:EE_
+X-MS-Office365-Filtering-Correlation-Id: 458eed7a-a1fc-491e-7987-08ddda3c7238
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Q0VFTHhKVjU2Mk1oelV0M29BZGZpMGhEYmdWSElBZEdFWTF4Zm9TdHJVZDdB?=
+ =?utf-8?B?ZE5oMi8wa214RkVrMXY1d3ZvZkc2MTRaMCsrZUV6K2p2TjBFZWF2RVdEK01q?=
+ =?utf-8?B?Q2FBcDNDSEtxUTE4Mk53aTZPYnlHL0lZZVpFSG85WCtVYnRqV2RQdE9lOE9P?=
+ =?utf-8?B?U0hRYlRMVzZYU1FYTVRScGRHRm9rYVRyZ3VZcDlwUHJON2ExcDVFYVN4TTMw?=
+ =?utf-8?B?am9hd1Z0czVVbjZiOXhGV0o5WDVudjMvZkphRmV2TVE1YndISnA5ZzY5VytT?=
+ =?utf-8?B?d2tJcVhkRFIzYUhxeHkyY25nSE53RHl4Zy94ZWd4ZUlha0xnTHpaazRiMDBF?=
+ =?utf-8?B?TDlEY0JQeWpXZjIrSEJGOFpBZkVGU1VzdVp4NzRtMlpQNlZUTDdycEpUMlBM?=
+ =?utf-8?B?cUlCOWpIQXN1TUVrL0NLWkU0RktYU1NjWnhBbnRXV2JtcnEya0crWWpvdTB2?=
+ =?utf-8?B?bDNoekNmTmhyb21aelFVbU5La0o0Z0wrZnQzMmRZYUNVYVpuRW9oU0ZEeHpZ?=
+ =?utf-8?B?YTc5U0JwbWhaZjdnV04rTGdPTDBEWHVlekQycjE3dWR5UWNUZ3NjNTAzWHVG?=
+ =?utf-8?B?dkZMWDQ1RkxGSURIbXh5VHZ1NWdhZFNuZUFDcUw3T3B2OWZXOXpjOFg4Q3Rp?=
+ =?utf-8?B?WlBhQlN3UjQ4aFU1RHVham5ybE5hbUJzWkQzUGpSSVBkblR0RGZRNk5MTTJu?=
+ =?utf-8?B?cUxwTHRnK0luakY1U3dvdnArNnJ5b2llSk1tS1N3WG5aSlhSVXhoYXdzdFdE?=
+ =?utf-8?B?a3dKNnRsLy9RbENNeUxXSkdza0RQSTd3a0NEcmYwTHVDck5hanVVY0drSGNM?=
+ =?utf-8?B?NE51dVVFTkl0UmU1K3V4K2lydWlKVjdNcFVpdmZvS3k2QXFGVnRWVkhCWit5?=
+ =?utf-8?B?cGJ1Wm43QnhVUDV2Zm5lQ0NYY3pXU2FReVhKLzNtMzlHLzFjZWRVV0M5Mzl6?=
+ =?utf-8?B?T2ZVbDZpUENWTDVuWmNsUm1ta3pQNndnYzZlcCtHdkxLZUpzSkY5VTJZVFBm?=
+ =?utf-8?B?dk93UDlETHpVMTBZdEx1cFBxN0pJU1pXUkZTT0hBSUJSMjdSL0MyWXVlcDRp?=
+ =?utf-8?B?QzE2eCtuQ000VEFCZ2R1UFZRdVEzUU5CNk1ST3k1ai8vNnM1SE04Z1k4aUFy?=
+ =?utf-8?B?eldFaVhRR1pWZElxVlMySG1KNG91bEZqQ3M2TnBxNjdJTGJoVGM1SVNKZVlp?=
+ =?utf-8?B?ZVVoSTJBNjdnTzdUNlFNM3Nudkc5dXlSNE0veFFOVEtCckJZUWQxRjlEZEds?=
+ =?utf-8?B?aW1KU29rekJZVzZjajZiSDlrdUtmUEhJR2x5SjZMUmJuR2JyeDVpUmo2TWlU?=
+ =?utf-8?B?Q1J6cDRORENna1M2akFPa04zRStkS3BuVnVpeks3YU9aOEwrU1lrWEN6M2Fn?=
+ =?utf-8?B?ZGRhMTlDQVNKTTdVaWVIL3VrbGNoVzE5a0pJSmJMNVNnUDRMMHBCSTVxTDFE?=
+ =?utf-8?B?QXRRZ3I4OUVBL1BrMjRjdGFvK1oyMTlMZFNKWlA4UWJjUm80TjF4cTVCNEIx?=
+ =?utf-8?B?aGp6My9saUdHL0Z0bEFWRjNGdzZEcWoweHBHSHJMY0lPYmpHOUg2Z0lpZ25a?=
+ =?utf-8?B?NjFtRTVrVnJDemZuaG10UUJVbDF0Nmx6Tlp4L2VYbFdoLzJzWjZlMWtJWW1N?=
+ =?utf-8?B?dnRSalR1TVVCN1FVUHpmM2p1eWtVME1yUm10MzY1ZldianpWOFNxRWVqVldJ?=
+ =?utf-8?B?WmRFQmI1S1F6R0F3L25qMmdpTW53VTg4Y3Q1VWxsZG9KUEVURDJCelc4aFdT?=
+ =?utf-8?B?eUNDK3dSdDZsMUdJTkpJR0l1V1phK0VheHNVd2NIci83YnV2bUVqaUprajB0?=
+ =?utf-8?B?WmVnRThXdHJEMDdNWVlIR083N0VIVTVLd3hKMlZDSTdFVytZNUo2bjg0d0Y5?=
+ =?utf-8?B?WEdtWnZQelFHTWd1OW5FeE9HNk5Pc0lyb3JZZkEvL2RmODl0bER0SS9vYkxo?=
+ =?utf-8?Q?wTmhHLU9JZg=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8102.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WEoxRDU4UkkxMFNVT0YyOU9mZVl0VFdOWjlGRlZzTHlzZWNLTE94NUlqaGJM?=
+ =?utf-8?B?aXlXVURjbCtLVVdyTXgxQlAxTHpDaUhwS09yUHBCbUVmMWJlbmFNUm5QUU1w?=
+ =?utf-8?B?TERSL1J3dmZ6clp1bzc3dUFoL01ZVG9CUFRTSWx5TzF0aU82Mk51SGcwMmlV?=
+ =?utf-8?B?bDRoRmxjSGdqa2Z6VGxPRWtpcmh4UFZVWXc3NTd6UnUxZFNWbnJYaEQ4NU9H?=
+ =?utf-8?B?NjlCNkRxYzNuODFjNC93V3VXNnlDZWFoeDVaeHRWWFJmVXBGSWxXZU1PTWVp?=
+ =?utf-8?B?OXh0ZU40NW45T1VmNFgwMFVyMklxQWJuUWxhR04vUnY4cUdCVCt3QlEwRkQv?=
+ =?utf-8?B?UnkzWEROS0hoLzZGSlJ5aXZnOWVqaU1QTzNKeUJKTW1aRWxVTThiOTRiSmg4?=
+ =?utf-8?B?cys4YVdUcEF1TUVyK0gyZktlTTdXa2ZBRFB1U2RHa0ljNjRwVG4yWGxybTFQ?=
+ =?utf-8?B?aUlZZUE4a2VpNWNnQXEvN0Y4eHdiLzNzNE11MmlUOVdKUmpZaGgwMHdFZUtC?=
+ =?utf-8?B?V1dLVHJTOG1ONXR3L0tCQUN0NCs5SnBoeDFDUlY0YU4wcFl0eEkvYU0vUExn?=
+ =?utf-8?B?KytFcWxieWQ2OXRTWkhJSmM1UGVRbEE3OHhlWGpqTFRzVGFxMmxwcUs5ek13?=
+ =?utf-8?B?T3MwOGtwUHlSZDlMWUFnaXkvM0g5aGxwcnFSeDV6TnpXOENteUJoTWQ1WjZP?=
+ =?utf-8?B?YkNCakVjMnRxUkcvemtZeFdJN2lVV0hDM0lMMzR2VUYwVjlCM2lub0V6YWta?=
+ =?utf-8?B?dXo2SWN6RHRGc0lOUEk2Q3U4U3NYdDZKdVpFTWl0Njd2RFI5VG5mQjZ0aUEr?=
+ =?utf-8?B?YVE5ZC8yN0Y0YkprekdWNjc2d2tIOFhCQlFKblh6YThiSVNZRkZDdkJ2UDF4?=
+ =?utf-8?B?QnJXKzhsMlgxMkI4eTdEQVYrY0FnbVZSSHl0b09tQXM4V3RxSi9MT0Q2Y1ZC?=
+ =?utf-8?B?ZWNKUm9mdi9XRmZLbkpQRTdWNnliUHR5WlpObGNvWUNyYlhSM0xTZjhLdTBW?=
+ =?utf-8?B?Nlh2WXdCMlV2NmtuYy93dDN2eXZLLzlMZ0hwMFNZN016K25IdUZiYitjSHUy?=
+ =?utf-8?B?aEQ3V0VtTXZKRlpPZmgwSVFGbmJaYkdLRUVnZWlhZ0YrbTk0VEJRTEE5aWFo?=
+ =?utf-8?B?djlTZUxJbjhSeXU2UkpMNXZMcHVmZTRNbE1CdWVuSGpMWlNrOXZFaE9OWlBY?=
+ =?utf-8?B?bExNRDc2V1V4NlhBaW5UbnhmVjltV2ErenIxY1prWjRtQjZxcGxHMUN6eWVq?=
+ =?utf-8?B?L1B5MktOSzdNTUhVRk5HVEoweW1KdUMzbnhqSE5BYVdwZnpPVkY1d05mRFVx?=
+ =?utf-8?B?TXQ2a2c1dVErN0hKcWZjcEYxNGJyTmpWMVphQ2oyRUVSS04rbDVZTUwyVEZr?=
+ =?utf-8?B?OG0zNnVCekJTSGVFV1ZzNnVqV2lSSHd6dmxQdGxlOXlZTG1mbEFTZUMvRjZr?=
+ =?utf-8?B?aTlzUzl1S2FzeWtwYy9SRzBQR0RsdVl5L2ZQUENpVUdjN2wvcUM4dEJWSXdj?=
+ =?utf-8?B?N0pxcE1memJTWkFNZGpVNFdsS3U4dlVKN1JSK3pIK1pWQVd6Nlo4MXhIYzZ2?=
+ =?utf-8?B?Mmh5bGJLMUFXanFXSHhla01VNno1S1dOanFSdWxsY1RJK2RtdjZJdkhWQWI2?=
+ =?utf-8?B?MElKZzhCUEhVR3RUT01mRWNLQzJqd2FNK1JoL251bWNuUW9PTTMxNkJuWTQ0?=
+ =?utf-8?B?QUV2VVl4QmtzcTBkUTFzNHFBdVJFSzRNekZaQ2htdVhNUUN3NmlZUUExNVoy?=
+ =?utf-8?B?L0tzNVBSTjRJOUhMYktCbHZWMXRjNm4rWlhaK090c0lUemhzZ1lGQy9OTi9N?=
+ =?utf-8?B?Q2l6dGdjM3p3YzlDaHNSclFReFNBY244K3JTemxYVjRoWUFKdHRScjI3enFU?=
+ =?utf-8?B?TUFaME5RNnNON2t5Sm1rM2U4aDBrVm9UNVo3eVBJZTFKU3VnTnJSSGdSQm5L?=
+ =?utf-8?B?YlhVN3BoWkFHaytBa3pNRnpUK0NVUW1Mc0V6eDBtazlOUStxQWRqY0kxUDhz?=
+ =?utf-8?B?VGpBclpSVGFmY0RsbnI0K0dKZVlBTThZWlBMWlpBNlhtVGFxRFpIblRka2VL?=
+ =?utf-8?B?UXFSbGdNYlJOOEhTbUFZaG80WmtQdUJjbUs0c3NHb05jOFNzVmJDUUUzd0tj?=
+ =?utf-8?B?NlVRWFFET3BkUUQrZ2F4ZVMxbWcrOG1FYjYxZTQzYk1UT29XSUZUdTN5WHhz?=
+ =?utf-8?B?ZEE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 458eed7a-a1fc-491e-7987-08ddda3c7238
+X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8102.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 07:38:50.7787
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +BIpxFc2Mup36CVe+ml1T4sVVm6/UDujgV+zRqdyVU9VKBSi8JAH6QaQBHVAXhwonG8JM5z3GAkzw/sl9lG3v/Etc10P3x3rqyebwWsReuE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8320
+X-OriginatorOrg: intel.com
 
-There was a problem when we received frames and the frames were
-timestamped. The driver is configured to store the nanosecond part of
-the timestmap in the ptp reserved bits and it would take the second part
-by reading the LTC. The problem is that when reading the LTC we are in
-atomic context and to read the second part will go over mdio bus which
-might sleep, so we get an error.
-The fix consists in actually put all the frames in a queue and start the
-aux work and in that work to read the LTC and then calculate the full
-received time.
+On 8/12/25 22:07, Paul Menzel wrote:
+> Dear Przemek,
+> 
+> 
+> Thank you for your patch.
+> 
+> Am 12.08.25 um 15:29 schrieb Przemek Kitszel:
+>> Add copy of ice_virtchnl.c under the original name/location.
+> 
+> Why not mention the rename in the summary/title instead of p2?
 
-Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+that was "technical git detail", that is gone after the full series is
+applied, anyway, I could apply:
+	s/p1/tmp rename/;s/p2/copy back/
+(but would rather avoid sending whole series again on IWL just for that)
 
----
-v2->v3:
-- make sure to flush the rx_skbs_list when the driver is removed
+for "cleanup - pX" commits I would keep title as-is, as those were split
+only to avoid git creativity in minimizing the diff
 
-v1->v2:
-- use sk_buff_head instead of a list_head and spinlock_t
-- stop allocating vsc8431_skb but put the timestamp in skb->cb
----
- drivers/net/phy/mscc/mscc.h      | 12 ++++++++
- drivers/net/phy/mscc/mscc_main.c | 12 ++++++++
- drivers/net/phy/mscc/mscc_ptp.c  | 50 ++++++++++++++++++++++++--------
- 3 files changed, 62 insertions(+), 12 deletions(-)
+> 
+>> Now both ice_virtchnl.c and ice_virtchnl_queues.c have the same content,
+>> and only the former of the two in use.
+>>
+>> Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+>> ---
+>>   drivers/net/ethernet/intel/ice/Makefile       |    2 +-
+>>   drivers/net/ethernet/intel/ice/ice_virtchnl.c | 4611 +++++++++++++++++
+>>   2 files changed, 4612 insertions(+), 1 deletion(-)
+>>   create mode 100644 drivers/net/ethernet/intel/ice/ice_virtchnl.c
+> 
+> […]
+> 
+> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 
-diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
-index 6a3d8a754eb8d..58c6d47fbe046 100644
---- a/drivers/net/phy/mscc/mscc.h
-+++ b/drivers/net/phy/mscc/mscc.h
-@@ -362,6 +362,13 @@ struct vsc85xx_hw_stat {
- 	u16 mask;
- };
- 
-+struct vsc8531_skb_cb {
-+	u32 ns;
-+};
-+
-+#define VSC8531_SKB_CB(skb) \
-+	((struct vsc8531_skb_cb *)((skb)->cb))
-+
- struct vsc8531_private {
- 	int rate_magic;
- 	u16 supp_led_modes;
-@@ -410,6 +417,11 @@ struct vsc8531_private {
- 	 */
- 	struct mutex ts_lock;
- 	struct mutex phc_lock;
-+
-+	/* list of skbs that were received and need timestamp information but it
-+	 * didn't received it yet
-+	 */
-+	struct sk_buff_head rx_skbs_list;
- };
- 
- /* Shared structure between the PHYs of the same package.
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index eff53e09335d4..6c8611e77a61f 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -2346,6 +2346,13 @@ static int vsc85xx_probe(struct phy_device *phydev)
- 	return vsc85xx_dt_led_modes_get(phydev, default_mode);
- }
- 
-+static void vsc85xx_remove(struct phy_device *phydev)
-+{
-+	struct vsc8531_private *priv = phydev->priv;
-+
-+	skb_queue_purge(&priv->rx_skbs_list);
-+}
-+
- /* Microsemi VSC85xx PHYs */
- static struct phy_driver vsc85xx_driver[] = {
- {
-@@ -2600,6 +2607,7 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_intr    = &vsc85xx_config_intr,
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
-+	.remove		= &vsc85xx_remove,
- 	.probe		= &vsc8574_probe,
- 	.set_wol	= &vsc85xx_wol_set,
- 	.get_wol	= &vsc85xx_wol_get,
-@@ -2625,6 +2633,7 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_intr    = &vsc85xx_config_intr,
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
-+	.remove		= &vsc85xx_remove,
- 	.probe		= &vsc8574_probe,
- 	.set_wol	= &vsc85xx_wol_set,
- 	.get_wol	= &vsc85xx_wol_get,
-@@ -2650,6 +2659,7 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_intr    = &vsc85xx_config_intr,
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
-+	.remove		= &vsc85xx_remove,
- 	.probe		= &vsc8584_probe,
- 	.get_tunable	= &vsc85xx_get_tunable,
- 	.set_tunable	= &vsc85xx_set_tunable,
-@@ -2673,6 +2683,7 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_intr    = &vsc85xx_config_intr,
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
-+	.remove		= &vsc85xx_remove,
- 	.probe		= &vsc8584_probe,
- 	.get_tunable	= &vsc85xx_get_tunable,
- 	.set_tunable	= &vsc85xx_set_tunable,
-@@ -2696,6 +2707,7 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_intr    = &vsc85xx_config_intr,
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
-+	.remove		= &vsc85xx_remove,
- 	.probe		= &vsc8584_probe,
- 	.get_tunable	= &vsc85xx_get_tunable,
- 	.set_tunable	= &vsc85xx_set_tunable,
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index 275706de5847c..d368d4fd82e17 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -1194,9 +1194,8 @@ static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
- {
- 	struct vsc8531_private *vsc8531 =
- 		container_of(mii_ts, struct vsc8531_private, mii_ts);
--	struct skb_shared_hwtstamps *shhwtstamps = NULL;
-+
- 	struct vsc85xx_ptphdr *ptphdr;
--	struct timespec64 ts;
- 	unsigned long ns;
- 
- 	if (!vsc8531->ptp->configured)
-@@ -1206,27 +1205,52 @@ static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
- 	    type == PTP_CLASS_NONE)
- 		return false;
- 
--	vsc85xx_gettime(&vsc8531->ptp->caps, &ts);
--
- 	ptphdr = get_ptp_header_rx(skb, vsc8531->ptp->rx_filter);
- 	if (!ptphdr)
- 		return false;
- 
--	shhwtstamps = skb_hwtstamps(skb);
--	memset(shhwtstamps, 0, sizeof(struct skb_shared_hwtstamps));
--
- 	ns = ntohl(ptphdr->rsrvd2);
- 
--	/* nsec is in reserved field */
--	if (ts.tv_nsec < ns)
--		ts.tv_sec--;
-+	VSC8531_SKB_CB(skb)->ns = ns;
-+	skb_queue_tail(&vsc8531->rx_skbs_list, skb);
- 
--	shhwtstamps->hwtstamp = ktime_set(ts.tv_sec, ns);
--	netif_rx(skb);
-+	ptp_schedule_worker(vsc8531->ptp->ptp_clock, 0);
- 
- 	return true;
- }
- 
-+static long vsc85xx_do_aux_work(struct ptp_clock_info *info)
-+{
-+	struct vsc85xx_ptp *ptp = container_of(info, struct vsc85xx_ptp, caps);
-+	struct skb_shared_hwtstamps *shhwtstamps = NULL;
-+	struct phy_device *phydev = ptp->phydev;
-+	struct vsc8531_private *priv = phydev->priv;
-+	struct sk_buff_head received;
-+	struct sk_buff *rx_skb;
-+	struct timespec64 ts;
-+	unsigned long flags;
-+
-+	__skb_queue_head_init(&received);
-+	spin_lock_irqsave(&priv->rx_skbs_list.lock, flags);
-+	skb_queue_splice_tail_init(&priv->rx_skbs_list, &received);
-+	spin_unlock_irqrestore(&priv->rx_skbs_list.lock, flags);
-+
-+	vsc85xx_gettime(info, &ts);
-+	while ((rx_skb = __skb_dequeue(&received)) != NULL) {
-+		shhwtstamps = skb_hwtstamps(rx_skb);
-+		memset(shhwtstamps, 0, sizeof(struct skb_shared_hwtstamps));
-+
-+		if (ts.tv_nsec < VSC8531_SKB_CB(rx_skb)->ns)
-+			ts.tv_sec--;
-+
-+		shhwtstamps->hwtstamp = ktime_set(ts.tv_sec,
-+						  VSC8531_SKB_CB(rx_skb)->ns);
-+		netif_rx(rx_skb);
-+	}
-+
-+	return -1;
-+}
-+
- static const struct ptp_clock_info vsc85xx_clk_caps = {
- 	.owner		= THIS_MODULE,
- 	.name		= "VSC85xx timer",
-@@ -1240,6 +1264,7 @@ static const struct ptp_clock_info vsc85xx_clk_caps = {
- 	.adjfine	= &vsc85xx_adjfine,
- 	.gettime64	= &vsc85xx_gettime,
- 	.settime64	= &vsc85xx_settime,
-+	.do_aux_work	= &vsc85xx_do_aux_work,
- };
- 
- static struct vsc8531_private *vsc8584_base_priv(struct phy_device *phydev)
-@@ -1567,6 +1592,7 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
- 
- 	mutex_init(&vsc8531->phc_lock);
- 	mutex_init(&vsc8531->ts_lock);
-+	skb_queue_head_init(&vsc8531->rx_skbs_list);
- 
- 	/* Retrieve the shared load/save GPIO. Request it as non exclusive as
- 	 * the same GPIO can be requested by all the PHYs of the same package.
--- 
-2.34.1
+thank you!
+
+> 
+> 
+> Kind regards,
+> 
+> Paul
 
