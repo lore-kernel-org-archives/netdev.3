@@ -1,132 +1,101 @@
-Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
+Received: from relay16.mail.gandi.net (relay16.mail.gandi.net [217.70.178.236])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E662D63FA;
-	Wed, 13 Aug 2025 08:54:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794742D061E;
+	Wed, 13 Aug 2025 08:58:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755075281; cv=none; b=qImM/Pjg7wgmqTp/V6PT1QlM2/vG5qS2YxBn0FBcZxgvJ06TgRauDOhMWJxX5qkdlwPKh0HMDssUR1l5Uej+mbhLVPtilpAZioxxTqRb56O1NfzZ45AlzFXy1a29k1B64kwPahadQ9GiT4F11CJ/LSaJwFw4mxlv+AhySchGeJE=
+	t=1755075502; cv=none; b=FupDyBuPfnHr9aqrsHNlQ/8kwrMHJO4A6+Fhmu9hHu/dhc7qPhtrECnvQNZui42nF8MdW9wYzZyiDsomhfsphhCuDROPErk7cqHNX/vcJPE9vjRSlpff6RAjcpV1CDLpvLzm3rwxOb9c+R3ELA6K4NBVhssveEU54kvKHQzYkZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755075281; c=relaxed/simple;
-	bh=OX5cAn7DTkokSDT2GLwOZld9Ar0WmN22E6lBIalVeYk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s23BOZZDDGWlMHhTQNzd8/D4ixx/KugWJ1UTW5RhNEmnMjWqNoyUJfCSET/QaTqg9EbJ7WSpobOWWBsZNxg+ifgmh8PN/DYvDU4848L3KzgKd+fQf4cKdr/Yw3og/0qz+zdVpOPdE0r9JkWDl4ItAAmtaGbF+UMAysk6Rc8YdbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=lRmybN0Z; arc=none smtp.client-ip=52.34.181.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1755075502; c=relaxed/simple;
+	bh=o9sBv3uWVhgNJc2jzb/XTDzr77JaC5G3nW4je6txHZM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HT5+28L6dG4jtl6th+bO9ahxpgoBEpAQrW/e7G6dWtu2DXPC2xzI58mVLOYs970UhcGNJgUL8yiY9lptC1toJ/q+WnQzIAri0yKuGEUZCrw/BrYdElkrkotmERPxjAwxWIBtIs65oDYGS28Ih9fI0DFQTG+p7L2H77GCoKRF1Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Oc5+H8V1; arc=none smtp.client-ip=217.70.178.236
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="lRmybN0Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1755075279; x=1786611279;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=a3jaNKEVUZhYIrIsCy05Hngz/5E6Uji9DlFliACU1Mo=;
-  b=lRmybN0Z4jbdzxHPQCAmFE7a+E/PcjKwuKF1GIzXD/qdE42TPZFq+utn
-   PAxM3ivkiNvrUrCqcnP2BEzoF2UWdGskdO5IHKzRfd5y2K0p54f/5Wro7
-   iYILiIC4wMOXh7nmAFDEeDYX/kVYL73ST00rshvjz/X+QLgLBZLkmkcSu
-   AKjN+Thq0s9cF2JbIv3PK9P5np57L5FWu1jZIZeMv/HZnyWOUkbQUUesZ
-   hpKlgtK3/hE5u0/CuxPF6yT5VyiehOn1Fp+Wmyls/Yp4KwFy73cHSL5Ek
-   7Zle1Ujf8oOFnbPghfzHJZH3UYbRj+2cgkOPnWgDVV75aJx1cAtwDfYWT
-   g==;
-X-CSE-ConnectionGUID: niM61iOuSkO3prjmHbakQA==
-X-CSE-MsgGUID: if+xEH1jQ/qY/p/uaH7NAw==
-X-IronPort-AV: E=Sophos;i="6.17,285,1747699200"; 
-   d="scan'208";a="1106306"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 08:54:38 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.21.151:40173]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.39.4:2525] with esmtp (Farcaster)
- id 1a967b2c-6129-4dea-8193-31851424e75a; Wed, 13 Aug 2025 08:54:38 +0000 (UTC)
-X-Farcaster-Flow-ID: 1a967b2c-6129-4dea-8193-31851424e75a
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 13 Aug 2025 08:54:37 +0000
-Received: from b0be8375a521.amazon.com (10.37.245.11) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Wed, 13 Aug 2025 08:54:35 +0000
-From: Kohei Enju <enjuk@amazon.com>
-To: <pmenzel@molgen.mpg.de>
-CC: <andrew+netdev@lunn.ch>, <anthony.l.nguyen@intel.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <enjuk@amazon.com>,
-	<intel-wired-lan@lists.osuosl.org>, <kohei.enju@gmail.com>,
-	<kuba@kernel.org>, <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<pabeni@redhat.com>, <przemyslaw.kitszel@intel.com>
-Subject: Re: [Intel-wired-lan] [PATCH v1 iwl-next 2/2] igbvf: remove
- duplicated counter rx_long_byte_count from ethtool statistics
-Date: Wed, 13 Aug 2025 17:54:23 +0900
-Message-ID: <20250813085428.89006-1-enjuk@amazon.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <785b380c-d4ba-423c-93ed-059d0aebc6be@molgen.mpg.de>
-References: <785b380c-d4ba-423c-93ed-059d0aebc6be@molgen.mpg.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Oc5+H8V1"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E271843888;
+	Wed, 13 Aug 2025 08:58:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1755075498;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bcnlfncs0tTOrnBAv8lWMTl1GGwu4KPhepL66SNxFiA=;
+	b=Oc5+H8V1glgn99KdP55+X/h8lTK8eD59sr/Zl8z8FdrwbYIH5oi3wvjfPdyOTBjMJzFJBC
+	6B+v7BtcZRyEtSwOqEgmNicTMr6FbsDKXEdIYD8Af8FihkUw9m8hoa1ttu4nwqz6R+Yoik
+	EepwsnlEAXxBS6L2EjO/oSLIngoVuujo7EEqpNYOXJhOj6zbwmz6McNINan7G1mkV1zSv3
+	9vDOekvx4URCcJo4s4VC5IUy9Lp+mMmM3939cEtka5Ez3/OT3Bg4Umj0TT938IIDLrHHjQ
+	/WqBX8/vfZAIUpOv+MBx7Wwu+/Wyt/4iiqg7OaapicKMBsuPLO9Mn6reNQfwdg==
+From: Kory Maincent <kory.maincent@bootlin.com>
+Subject: [PATCH ethtool v2 0/3] Add support for PSE priority feature and
+ PSE event monitoring
+Date: Wed, 13 Aug 2025 10:57:49 +0200
+Message-Id: <20250813-b4-feature_poe_pw_budget-v2-0-0bef6bfcc708@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D042UWB004.ant.amazon.com (10.13.139.150) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAI1TnGgC/3WNwQqDMBBEf6XsuSlriNb21P8oIibZaMC6kkTbI
+ v57g/ce5vAY5s0GkYKnCPfTBoFWHz1PGeT5BGbopp6Et5lBolSFRCW0Eo66tARqZ855t3qxPSW
+ BHVFdSeVMWUKez4Gc/xzqJ1AaEvMITS4GHxOH73G5Fked7SVWEv/b10KgQG311Up9M7V7aOY0+
+ uli+AXNvu8/lJRMn8sAAAA=
+To: Oleksij Rempel <o.rempel@pengutronix.de>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Andrew Lunn <andrew@lunn.ch>, Michal Kubecek <mkubecek@suse.cz>
+Cc: Dent Project <dentproject@linuxfoundation.org>, 
+ Kyle Swenson <kyle.swenson@est.tech>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Kory Maincent <kory.maincent@bootlin.com>
+X-Mailer: b4 0.15-dev-8cb71
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufeejjeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthekredtredtjeenucfhrhhomhepmfhorhihucforghinhgtvghnthcuoehkohhrhidrmhgrihhntggvnhhtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeduhfevudetfffgkedvhfevheeghedtleeghfffudeiffefvdehfeegieeivdekteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomhepkhhorhihrdhmrghinhgtvghnthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepudefpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmkhhusggvtggvkhesshhushgvrdgtiidprhgtphhtthhopehordhrvghmphgvlhesphgvn
+ hhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhihlhgvrdhsfigvnhhsohhnsegvshhtrdhtvggthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepuggvnhhtphhrohhjvggttheslhhinhhugihfohhunhgurghtihhonhdrohhrgh
 
-On Wed, 13 Aug 2025 10:20:33 +0200, Paul Menzel wrote:=0D
-=0D
-> Dear Kohei,=0D
-> =0D
-> =0D
-> Thank you for your patch.=0D
-> =0D
-> Am 13.08.25 um 09:50 schrieb Kohei Enju:=0D
-> > rx_long_byte_count shows the value of the GORC (Good Octets Received=0D
-> > Count) register. However, the register value is already shown as=0D
-> > rx_bytes and they always show the same value.=0D
-> > =0D
-> > Remove rx_long_byte_count as the Intel ethernet driver e1000e did in=0D
-> > commit 0a939912cf9c ("e1000e: cleanup redundant statistics counter").=0D
-> > =0D
-> > Tested on Intel Corporation I350 Gigabit Network Connection.=0D
-> > =0D
-> > Tested-by: Kohei Enju <enjuk@amazon.com>=0D
-> > Signed-off-by: Kohei Enju <enjuk@amazon.com>=0D
-> > ---=0D
-> >   drivers/net/ethernet/intel/igbvf/ethtool.c | 1 -=0D
-> >   1 file changed, 1 deletion(-)=0D
-> > =0D
-> > diff --git a/drivers/net/ethernet/intel/igbvf/ethtool.c b/drivers/net/e=
-thernet/intel/igbvf/ethtool.c=0D
-> > index c6defc495f13..9c08ebfad804 100644=0D
-> > --- a/drivers/net/ethernet/intel/igbvf/ethtool.c=0D
-> > +++ b/drivers/net/ethernet/intel/igbvf/ethtool.c=0D
-> > @@ -36,7 +36,6 @@ static const struct igbvf_stats igbvf_gstrings_stats[=
-] =3D {=0D
-> >   	{ "lbtx_bytes", IGBVF_STAT(stats.gotlbc, stats.base_gotlbc) },=0D
-> >   	{ "tx_restart_queue", IGBVF_STAT(restart_queue, zero_base) },=0D
-> >   	{ "tx_timeout_count", IGBVF_STAT(tx_timeout_count, zero_base) },=0D
-> > -	{ "rx_long_byte_count", IGBVF_STAT(stats.gorc, stats.base_gorc) },=0D
-> >   	{ "rx_csum_offload_good", IGBVF_STAT(hw_csum_good, zero_base) },=0D
-> >   	{ "rx_csum_offload_errors", IGBVF_STAT(hw_csum_err, zero_base) },=0D
-> >   	{ "rx_header_split", IGBVF_STAT(rx_hdr_split, zero_base) },=0D
-> =0D
-> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>=0D
-=0D
-Thank you for reviewing!=0D
-=0D
-> =0D
-> Kind regards,=0D
-> =0D
-> Paul=0D
-> =0D
-> =0D
-> PS: Should you resend, *redundant* instead of *duplicated* might better =
-=0D
-> describe the removed counter.=0D
-=0D
-Sure, I resend this patch as v2 with the changes:=0D
-  - s/duplicated/redundant/=0D
-  - Remove Tested-by: tag=0D
-  - Add Reviewed-by: tag=0D
-=0D
-Thanks for the feedback.=0D
+From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
+
+Add support for PSE (Power Sourcing Equipment) priority management and
+event monitoring capabilities.
+
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+---
+Changes in v2:
+- Split the second patch in two to separate the PSE priority feature and
+  the PSE event feature support.
+- Regenerate the "update UAPI header copies" patch.
+- Link to v1: https://lore.kernel.org/r/20250620-b4-feature_poe_pw_budget-v1-0-0bdb7d2b9c8f@bootlin.com
+
+---
+Kory Maincent (3):
+      update UAPI header copies
+      ethtool: pse-pd: Add PSE priority support
+      ethtool: pse-pd: Add PSE event monitoring support
+
+ ethtool.8.in                           | 13 +++++
+ ethtool.c                              |  1 +
+ netlink/monitor.c                      |  9 +++-
+ netlink/netlink.h                      |  1 +
+ netlink/pse-pd.c                       | 87 ++++++++++++++++++++++++++++++++++
+ uapi/linux/ethtool.h                   |  4 +-
+ uapi/linux/ethtool_netlink.h           |  2 -
+ uapi/linux/ethtool_netlink_generated.h | 83 ++++++++++++++++++++++++++++++++
+ uapi/linux/if_link.h                   |  2 +
+ uapi/linux/neighbour.h                 |  5 ++
+ 10 files changed, 202 insertions(+), 5 deletions(-)
+---
+base-commit: 755f5d758e7a365d13140a130a748283b67f756e
+change-id: 20241204-b4-feature_poe_pw_budget-0aee8624fc55
+
+Best regards,
+-- 
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
+
