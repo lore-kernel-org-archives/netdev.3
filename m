@@ -1,80 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3187E17D346;
-	Wed, 13 Aug 2025 00:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7854C2C0F92;
+	Wed, 13 Aug 2025 00:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755045594; cv=none; b=PgscFJSJk3kpNKIrj+ZdSlj8bDFYFabSL5oIzCHYwUKuD/3kBX2wVRH4sHFBKsyCdPAT5Sf1zL/qTBNtFJ0BHh1/sOgoPV8KuGcao8hJ/Efj6gtOIdMLrlvJ2BCdL/Vwn1vdFOCQ6sMfFK38xuZRlTX+XqVUGFsQOo6tUJPJaVo=
+	t=1755046138; cv=none; b=UsM766XxPWR2eN1fsHO3aTwaHEFe6fYA/6ZWkQM6habpv70Ymzmjqzv+rEGpWN/02qxSnR671xNwKS8nsfahys3Q6rUPxtCPrH+3EZXN8pPXoRFl+Xax9RiIEVc78uQGnJll1SDebbX/7Ocl0j/iJyeGH/AGtmjk9pih9ywfQIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755045594; c=relaxed/simple;
-	bh=4rjXDG1A468YyGqDi4pOOufXNkfZJ6qYx01fkJAN8MI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=glbSfpvHvBk8+/V2PcD50YgiUNdAC639LtWcxARSHfhUmJqOVnhhKQGfAEfQfZGquJpP43RLThdFUyDl1DI6IOBThrtnmaPmhGuyL+ZnaFg20RIYTVx4N/Wr2JLbIBz1b3nOIkJ/toCL4bfMQ7j7kydH0bCzXyYrJf3w2IRVbis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iUD5o/jF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755046138; c=relaxed/simple;
+	bh=5ySabijytcLvAH8ERVSO35jFHmP0C94vF4wVqdhfde8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XK9LBaHy/YZCiZqlEzwao0gEbp6QEhMD4IzQ0GvweqJrEsFJQglMP4AFi6c+Nx7I279tQZZQ7acyPHd4aA1tdC9f6YXfIzZ0Snz0h1UQEpUep1FwEUxzmzoODIFyKBkoP9Yfq/b/RFBQxBf5xkZFdNOoYYM5sDXdfk/Meousj00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UEXwTYsM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iUD5o/jF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0F2C4CEF0;
-	Wed, 13 Aug 2025 00:39:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UEXwTYsM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D3BC4CEF0;
+	Wed, 13 Aug 2025 00:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755045593;
-	bh=4rjXDG1A468YyGqDi4pOOufXNkfZJ6qYx01fkJAN8MI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=iUD5o/jF/14RjWfBtG0tG//upEq8U9JMNDh7b5xogZVYC0avZwOgs6GhLqQotL/pN
-	 10z6/lTcWuVY3aDoq1f3XmJYMMsMvgG/0zTxWvhcZfi072QrKmEjfa64Hz9KfzpaNl
-	 ZD6fwHPJekEJJCUBlqW85gw0tCrvIuTFRtDIKt6scjJoGSZw7GLHCkJ9tk0Qax291L
-	 a5kVvZu0XaG6sR3btZNz969zFpoXcaQSt2CDBROL7NfaA64IEmVqYUbI1clDj4FWZ4
-	 tHGt1olE2ByfZWpielT4Hx5HDdStMgW9euqDI1sUqEKiMgjwkXA8lTT/eUE1ra3Vvi
-	 Z+9WBv8U7YxJg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EADFF39D0C2E;
-	Wed, 13 Aug 2025 00:40:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1755046138;
+	bh=5ySabijytcLvAH8ERVSO35jFHmP0C94vF4wVqdhfde8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UEXwTYsMAAkO3PtYUlygaAHXIwGrutask0lqWR7MuSyf8nfPCpKjV6TAub/3pgpQk
+	 tj47k2Y8AWXh4Gg8JU9eHWlrxsuz2hoR6DnWoraFfn14KhbrMKTgb5DfQtTepV7aUE
+	 XysxZ5P4XATsGzSuwCxYVj/PyCNlcejBiSBDl4jq0da59p0o6RIQlhTjh24vGQTsJS
+	 pldCOHEm3JyivFCdXMhUSU8kktR1HaFKKFuG33riYsirB5wsKbFhTBTrxo/AsItHY8
+	 /zBQB3FDznxfysRfFkvl0o9aRRHCNdNBkua/mWSzOV6XWJdAFhyP331R9GLMaTv3iK
+	 6GHI/3t8CAqzw==
+Date: Wed, 13 Aug 2025 08:31:45 +0800
+From: Jisheng Zhang <jszhang@kernel.org>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] net: stmmac: add support for dwmac 5.20
+Message-ID: <aJvc8S5CUfWH4MfO@xhacker>
+References: <20250705090931.14358-1-jszhang@kernel.org>
+ <b4091f34-8901-4a30-937a-a9aac35310b7@lunn.ch>
+ <aGl3jiAjCiXMF_FK@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: mdio: mdio-bcm-unimac: Refine incorrect
- clock
- message
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175504560575.2903381.16940639109125791687.git-patchwork-notify@kernel.org>
-Date: Wed, 13 Aug 2025 00:40:05 +0000
-References: <20250811165921.392030-1-florian.fainelli@broadcom.com>
-In-Reply-To: <20250811165921.392030-1-florian.fainelli@broadcom.com>
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: netdev@vger.kernel.org, opendmb@gmail.com,
- bcm-kernel-feedback-list@broadcom.com, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aGl3jiAjCiXMF_FK@shell.armlinux.org.uk>
 
-Hello:
+On Sat, Jul 05, 2025 at 08:05:50PM +0100, Russell King (Oracle) wrote:
+> On Sat, Jul 05, 2025 at 05:51:11PM +0200, Andrew Lunn wrote:
+> > On Sat, Jul 05, 2025 at 05:09:30PM +0800, Jisheng Zhang wrote:
+> > > The dwmac 5.20 IP can be found on some synaptics SoCs. Add a
+> > > compatibility flag for it.
+> > 
+> > Is a compatible flag enough to make it actually work?
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Yep, it's enough, we are using dwmac-generic.c for DT based platforms
 
-On Mon, 11 Aug 2025 09:59:21 -0700 you wrote:
-> In light of a81649a4efd3 ("net: mdio: mdio-bcm-unimac: Correct rate
-> fallback logic"), it became clear that the warning should be specific to
-> the MDIO controller instance, and there should be further information
-> provided to indicate what is wrong, whether the requested clock
-> frequency or the rate calculation. Clarify the message accordingly.
 > 
-> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> 
-> [...]
+> Also, shouldn't there be a binding doc update?
 
-Here is the summary with links:
-  - [net-next] net: mdio: mdio-bcm-unimac: Refine incorrect clock message
-    https://git.kernel.org/netdev/net-next/c/75f262576675
+The binding doc is already upstreamed by the following commit:
+13f9351180aa ("dt-bindings: net: snps,dwmac: Add dwmac-5.20 version")
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Hi Russell, Andrew,
 
+Kindly let me know if I still need to do more to let this CL merged.
 
+Thanks in advance
+
+> -- 
+> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
