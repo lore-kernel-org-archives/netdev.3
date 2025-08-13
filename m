@@ -1,104 +1,134 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f80.google.com (mail-io1-f80.google.com [209.85.166.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949623009CB;
-	Wed, 13 Aug 2025 21:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348362BDC2B
+	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 21:57:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755121888; cv=none; b=tBh40erLEnh+Ce+aPoaFRWPXSswDegTDmjRbtD1jm5ElWmqXQSTwuGv+YS3bRRSg8usn8txiE9dErmB09ABkGqOwrI0/0C16PAuTULvgiV/0dToB3B5SbzWwMVI+6WHptDIidyiyhyxq9XhQPgPR+oGKMFgIB9pyp0ZTBOZoC0k=
+	t=1755122252; cv=none; b=K6uSU8DwF0Z83XTbRCDs3UNk3rgs/LgN3TvfORikgYr0pKLf48sJ2nCGssArySz724FkU9bL0gOJGww7SoW+raWcItHkgNonVmH0YO9BXFhYPunjenc8UWPnTwm+SEVAj+j9KqVBVW4/H1Z+e1dMfy7HZizT1of6F0iTqKvQC+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755121888; c=relaxed/simple;
-	bh=5F8EEBGF7NpuTGwYMI/wUerdlii1addjaF7AtasrlmU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gNkRXM+R1zBszaIA5hX6VWjnBuHu3b6ctXxza+rOq6FAM32j2ilEEcnx7f/viLg4vu6lVh3/jab49OCRPsWjujNNxyHZmHdUKAsxeyV8jlK4BtQuomzCRmpGDEwlIgww83hIV5oWdU6D72bWyZYVcCTEaKhqj4nCNfpMEGoKt0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jTog7zuQ; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jTog7zuQ"
-Message-ID: <b25635ec-0ab3-4c90-9fb9-b9c5c1748590@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755121883;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5X2T2a5oAnnfM7V6t2lvvrUsAnEiflVCEAk8ZEzo21I=;
-	b=jTog7zuQpeAsBN+gkS45v6q/fnhpuX1etNGl0fb0VzrQQvw3dsyrsEje1rKHM1dITrHFMb
-	MSPEB50SRgAmtVMUd2+gicAEvgCIZqkiVm6xtDA3SW0gIDFxj/PZMiaGk5x9ZObV2JrzLq
-	wSR6d/7ZiV4NyhIgAYj+VC/Di+ZaAGQ=
-Date: Wed, 13 Aug 2025 22:51:18 +0100
+	s=arc-20240116; t=1755122252; c=relaxed/simple;
+	bh=g8SKf55UHpC1R9HhoeTRN613o7RFLiqJrejbFk7ELlQ=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=mB78zQh58KJLWw+N/dmT8Nm936jni07rs+xhwauuXV1kp654hrgN4UHJYNh0z2uh5WSCwku27YoVduwwITT9IRIlRFLsP2EsHQcRqK0LVcwuqouCUMYY6/GwE9EAMaycTsBh4bWTOSdRMDtxKoBYnuJZcqmtK459/uov3d13hjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f80.google.com with SMTP id ca18e2360f4ac-88432d9d5c1so35368939f.1
+        for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 14:57:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755122250; x=1755727050;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OhNAJmyrCIRYIf0n2hFZpSocShW2AymOERvtSBi8Sfw=;
+        b=GD1BIK3uN/u7JT1+7Teivnc/I54TFZPEevkkQKySrMN4JnRiYw6vDPojDJDpUwXUKC
+         tSdOSgclDoQUE8M76pnULNqNFlgPhZ7R8IBag5Z454T0A5cINirHbh2/WGt16qzxuvbE
+         +L0BJBn3h3J4LQhYw0UOBpMGI2r2OXCWZJhnugibJYdeegqQKYclWeyuzV/fnAZprou+
+         vDiubL9/tv0t5b7v8NPTbGzeiKY/0XWayArpNkO7QY2qzGwY9Nzz3f1UeSsUcvn/z5+l
+         x0mgnkvTwTw4ca8Yb0jPQipM39HoE4zQ67N1uXULfEO+lUzjlVm/6zOwwwLLbxL12UjU
+         S2Ew==
+X-Forwarded-Encrypted: i=1; AJvYcCXHooTdEU0gnYerM5jSBVX7MM58NrL4IawmwSjjkr8tBnIpUxtejJiJWUgwaE4cCOZQn0oq/R4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyen9Nkfbqgn8zhdV45RHGoy2mQPen86YTnFBtanucMBJmou/y7
+	4hep70wZTmeX9/Z4LuMVqikYLEBW2xO/2nsZxUCTI7v0XboXJ3ThhFo/iYCXal0z8TRgjvb+wqb
+	PNdMYbRWZdqXG0naJo2QKppYiNzrjqBfWk3AZGxVHqdgcrmpU7ckEtXKTGoo=
+X-Google-Smtp-Source: AGHT+IGQlqjVyflUIdFKlRCnjODApJd2sLp7ynJgYNwUL12oDSSaRuzlGLb/bZG7d8ECjVV6FONTFvLSc9yzghnoA6pwCTIzDPQz
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net v2] phy: mscc: Fix timestamping for vsc8584
-To: Horatiu Vultur <horatiu.vultur@microchip.com>, andrew@lunn.ch,
- hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, viro@zeniv.linux.org.uk, atenart@kernel.org,
- quentin.schulz@bootlin.com, olteanv@gmail.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250806054605.3230782-1-horatiu.vultur@microchip.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20250806054605.3230782-1-horatiu.vultur@microchip.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-Received: by 2002:a05:6602:830a:b0:87c:72f3:d5d7 with SMTP id
+ ca18e2360f4ac-88433986e1dmr97246739f.13.1755122250140; Wed, 13 Aug 2025
+ 14:57:30 -0700 (PDT)
+Date: Wed, 13 Aug 2025 14:57:30 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <689d0a4a.050a0220.7f033.0164.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in cfg80211_rehash_bss
+From: syzbot <syzbot+dc6f4dce0d707900cdea@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 06/08/2025 06:46, Horatiu Vultur wrote:
-> There was a problem when we received frames and the frames were
-> timestamped. The driver is configured to store the nanosecond part of
-> the timestmap in the ptp reserved bits and it would take the second part
-> by reading the LTC. The problem is that when reading the LTC we are in
-> atomic context and to read the second part will go over mdio bus which
-> might sleep, so we get an error.
-> The fix consists in actually put all the frames in a queue and start the
-> aux work and in that work to read the LTC and then calculate the full
-> received time.
+Hello,
 
-The expectation here is that aux worker will kick in immediately and the
-processing will happen within 1 second of the first stamped skb in the
-list. Why cannot you keep cached value of PHC, which is updated roughly 
-every 500ms and use it to extend timestamp? Your aux worker will be much 
-simpler, and packet processing will be faster...
+syzbot found the following issue on:
 
-> 
-> Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-> Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-> 
-> ---
-> v1->v2:
-> - use sk_buff_head instead of a list_head and spinlock_t
-> - stop allocating vsc8431_skb but put the timestamp in skb->cb
-> ---
->   drivers/net/phy/mscc/mscc.h     | 12 ++++++++
->   drivers/net/phy/mscc/mscc_ptp.c | 50 +++++++++++++++++++++++++--------
->   2 files changed, 50 insertions(+), 12 deletions(-)
-> 
+HEAD commit:    c30a13538d9f Merge tag 'bpf-fixes' of git://git.kernel.org..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1345d434580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e143c1cd9dadd720
+dashboard link: https://syzkaller.appspot.com/bug?extid=dc6f4dce0d707900cdea
+compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-c30a1353.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/8cefa7e1536e/vmlinux-c30a1353.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/68b8ee3da77f/bzImage-c30a1353.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+dc6f4dce0d707900cdea@syzkaller.appspotmail.com
+
+wlan1: authenticated
+wlan1: associate with 08:02:11:00:00:00 (try 1/3)
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 54 at net/wireless/scan.c:1666 rb_insert_bss net/wireless/scan.c:1666 [inline]
+WARNING: CPU: 0 PID: 54 at net/wireless/scan.c:1666 cfg80211_rehash_bss+0x1e6/0x540 net/wireless/scan.c:1723
+Modules linked in:
+CPU: 0 UID: 0 PID: 54 Comm: kworker/u4:4 Not tainted 6.16.0-syzkaller-12250-gc30a13538d9f #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: events_unbound cfg80211_wiphy_work
+RIP: 0010:rb_insert_bss net/wireless/scan.c:1666 [inline]
+RIP: 0010:cfg80211_rehash_bss+0x1e6/0x540 net/wireless/scan.c:1723
+Code: e8 48 c1 e8 03 42 0f b6 04 30 84 c0 0f 85 33 03 00 00 ff 45 00 48 83 c4 18 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc 90 <0f> 0b 90 4c 8b 2c 24 4c 89 ef e8 bb cf 02 fa 84 c0 74 78 e8 92 07
+RSP: 0018:ffffc9000100ef20 EFLAGS: 00010246
+RAX: ffffffff8aceb2b5 RBX: 0000000000000000 RCX: 0000000000000002
+RDX: ffff88801f35c880 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffff88803fe97068 R08: 0000000000000000 R09: 0000000000000002
+R10: 0000000000000002 R11: 0000000000000002 R12: ffff88803ea081a0
+R13: ffff88803fea9c30 R14: dffffc0000000000 R15: ffff88803feaa020
+FS:  0000000000000000(0000) GS:ffff88808d211000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f02a5ad3f70 CR3: 0000000043d13000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ cfg80211_update_assoc_bss_entry+0x3f6/0x6a0 net/wireless/scan.c:3470
+ cfg80211_ch_switch_notify+0x3c1/0x780 net/wireless/nl80211.c:20398
+ ieee80211_sta_process_chanswitch+0xad4/0x2870 net/mac80211/mlme.c:-1
+ ieee80211_rx_mgmt_beacon+0x19c7/0x2cd0 net/mac80211/mlme.c:7515
+ ieee80211_sta_rx_queued_mgmt+0x4ed/0x4470 net/mac80211/mlme.c:8085
+ ieee80211_iface_process_skb net/mac80211/iface.c:1696 [inline]
+ ieee80211_iface_work+0x652/0x12d0 net/mac80211/iface.c:1753
+ cfg80211_wiphy_work+0x2b8/0x470 net/wireless/core.c:435
+ process_one_work kernel/workqueue.c:3236 [inline]
+ process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
+ kthread+0x70e/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
 
-[...]
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
->   /* Shared structure between the PHYs of the same package.
-> diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-> index 275706de5847c..d368d4fd82e17 100644
-> --- a/drivers/net/phy/mscc/mscc_ptp.c
-> +++ b/drivers/net/phy/mscc/mscc_ptp.c
-> @@ -1194,9 +1194,8 @@ static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
->   {
->   	struct vsc8531_private *vsc8531 =
->   		container_of(mii_ts, struct vsc8531_private, mii_ts);
-> -	struct skb_shared_hwtstamps *shhwtstamps = NULL;
-> +
->   	struct vsc85xx_ptphdr *ptphdr;
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-No empty line needed.
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-> -	struct timespec64 ts;
->   	unsigned long ns;
->   
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
