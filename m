@@ -1,168 +1,258 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EF1238C1F;
-	Wed, 13 Aug 2025 15:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2739923E34C;
+	Wed, 13 Aug 2025 15:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755098900; cv=none; b=ZRkAI9XT+/sUZt3iKwfeMKtpN/nBhvatWOL5qBNam/SMGGrKkRFvguH0rdag7yFOiG6CFB/wVksjzsHbNWLhehzvk0xxYsVg6bRffOVgAdAtgbiH9ooSaCdK8HsUJ4v5e6AHLQo5aliVlQwBfKZ6NVseZAvqBq2tVeSFjS/7bYg=
+	t=1755098980; cv=none; b=RgHthG5BgFaQjQgUN1eAefIl2QuEGRj7nhf+t728W/7XQfQ3MrzdjvUO168LGus9nQX8RrDPxxY+GRysuvaqw3jqSjnQpg+m09hDqt7Y0HPYGnuhglnrNweUr2qbLjTWSUY9IIZMK1B7dgphbeMWCukRi9Dv3q5Dcmn81djtlcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755098900; c=relaxed/simple;
-	bh=bjUfZArd1dIc7xzYB2XLMMwVGzBdfmOFwXw1/SOljyM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NS49Bz0rAXZJysZjvQOvW7NHnunXRQ/Mj7Drs+CeaJI5vm15S/ZQZP7z+mbzxpiIo+gHCPKUhUfsfJtf6jeNYhhCAOeyTLT/VSQ26IAUGKOrpdY/ENEotG/ujtfye2G+CxQWt7K1gjRf3Y5oz9dIQgbJGDv+jAU7TH5HV+ai6vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RkUziWdk; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755098980; c=relaxed/simple;
+	bh=vVOCJgaHKyUCzgdtn29YJraw+cF8Ru8lcOrX2Ex+Zgs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rEuHrmX4rtCwKfTZj6k/fK5EDe2a1G9mtvP8YApfLluoDHJQVl95bmk79B3LXGoNyb6UZLSO4jM3ckkybMsCKhhppEEnj02X+vlRL5PixAABu69GQxHlpcqB3DRaAC+b2Vi45ARjvkGOCGLTMB4kxZEJYtaadU6QqipYC9MxWGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JEQXGTFa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RkUziWdk"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3b7920354f9so5521019f8f.2;
-        Wed, 13 Aug 2025 08:28:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755098896; x=1755703696; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KR4hoVadqu8aUTOVreHxSaRU8mKdTHXFpDokGXEFHMw=;
-        b=RkUziWdkcobc1+VLt8dmdysE1gqk4uco0MtHAGr5y3islQOQaHk3W2H+d/pGNyl1hO
-         USFBdoRQkKGT8YNBZWRX/eCJ/kHqlqCcJ9+aGAQXgOI3TPDL7Kepjc0tCrqj+8k97I0Y
-         Tx9bhsgZVht67IVMGYcAvzh82EsSn9coAnkelNaLfkCu9Zo2mFW8qeXNUWHIq+EKdScy
-         NS/vrWD8s5cSxUO51ElUWyg/J2YLYOwAsRs34/u3+YS67YOf4jh4QCYQvK8TnLeEowX/
-         LPodmHeMXCQb+dJ1iURKgqo8iyfSUN3xnTuWvpV+xZoSf89DKHlbjHy0oTgURRFVEzWI
-         PZqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755098896; x=1755703696;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KR4hoVadqu8aUTOVreHxSaRU8mKdTHXFpDokGXEFHMw=;
-        b=BTJlyxDnz6+tao0YWH6hCMPpULx/448mmmHN7RK+SH75GenMEhMQOsqxDONgrt206y
-         oS1I0ClQNMR1iqinF+xbYfoEhFtOCahQXd7WspvEG/uy5ccwsZfcgedqETfye8LRzXHz
-         zJSEfqGr75hwfqt6hW+XFLFIgopflkgF0GeaOD1ewZKBXziVxLeXLaNlaRkNeoUGYP5Z
-         vvkFzdDcKiqwuRozBGDLra91mkGkJYbZcKODlOWd94OcbZnkIYpsNZFvgpc+5KiGkarC
-         0PS2Tfg8aTYpzzDu1FFSLFErFc0LtUmW3205AmVpKrhQIOatEhO3+Wb/DahFuHzGViw+
-         a7PQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5emU64FHKZ+uGhIpKd2zxUx6ovoyYIt3CRuT9LsVb9MHRd8IkZwHiU6iuNU5x9FH4cN+0UClatXuMnVGS@vger.kernel.org, AJvYcCWXV0CKgXb1U3fCXWsTMt7nspJa/thQ1V9lF5wHmqa/Z/AwO/anMU1z4c3hXGMjKc8YQVvWC1TUp8WW@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrmUKumarZdBwvdJktQSN/EMS+p2UA6dnipz4cI5hLaqlahk+/
-	sEzEfXKERnRSY16FJararOGZseEcbmoOA07GVxq3wk8djhi+GHI6EbHY
-X-Gm-Gg: ASbGnctu8dJa75jwLUOeFAfy40jxXfvqNGHj7wJx2dpkXqewaMer4YBrw1pkHN+y3DV
-	sT3baK5QXm4NdnIYId51pVLondRFW1k3zY94yD93l43qlUl8D/67+eNe2zhZBXh1mzTTGZNj5n5
-	p2awjW+NI0U71uYJ1INYGirrD1PLruCORtExuOs+2IMM7y9V+B8P0VNW6e4iEu1Eu6HlWI9leP+
-	ZeGwFTMcyDETbtO6f+KxwBNIEebIfz3Pei4DFhM//AKwmeImeOFJxQf8ewC/UCeH2WCMyi1rvU7
-	9Vid3cVnXL4HcEZNaMOPZWiN0uUPYlgznWgsv+775OgvTHjIa08RX9Wo2eBWVPv5HkIXhxrF+Yw
-	Kda0QTa+lpufpcguMfh29maNVJb9F9W/ur0jmMN3YjMbQ8Rz6eW/PxW124pylH1U0cEFciNkebW
-	jWnULLX7o=
-X-Google-Smtp-Source: AGHT+IHE0fucbXsrHkFdPEfs8yK736j25+deb3oJqHtDVR3z1PaujgH3AAxRRrD0UXP0szDCxxOwTw==
-X-Received: by 2002:a05:6000:22ca:b0:3b8:893f:a184 with SMTP id ffacd0b85a97d-3b917ecd302mr2496485f8f.52.1755098895560;
-        Wed, 13 Aug 2025 08:28:15 -0700 (PDT)
-Received: from jernej-laptop.localnet (86-58-6-171.dynamic.telemach.net. [86.58.6.171])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c466838sm50661600f8f.49.2025.08.13.08.28.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 08:28:15 -0700 (PDT)
-From: Jernej =?UTF-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej@kernel.org>, Samuel Holland <samuel@sholland.org>,
- Chen-Yu Tsai <wens@kernel.org>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- linux-kernel@vger.kernel.org, Andre Przywara <andre.przywara@arm.com>
-Subject:
- Re: [PATCH net-next v2 10/10] arm64: dts: allwinner: t527: orangepi-4a:
- Enable Ethernet port
-Date: Wed, 13 Aug 2025 17:28:13 +0200
-Message-ID: <3363827.aeNJFYEL58@jernej-laptop>
-In-Reply-To: <20250813145540.2577789-11-wens@kernel.org>
-References:
- <20250813145540.2577789-1-wens@kernel.org>
- <20250813145540.2577789-11-wens@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JEQXGTFa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D86C4CEEB;
+	Wed, 13 Aug 2025 15:29:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755098979;
+	bh=vVOCJgaHKyUCzgdtn29YJraw+cF8Ru8lcOrX2Ex+Zgs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=JEQXGTFa2FvdpbYW2QuoWYMksA4fkGWQc/m8FiodcYA4RCw9pQCTxxf/C17bWVoIY
+	 jZByEPYcPtdzHINsJloatWhUY1tS5yoarTIOliGmAHFNkYctkxC8Rq0TSUWrFauhEf
+	 /fXDz0HhiiPhmiEtDqDfB78E0nkLLzsBwU8+wPcu0A7gRGvEAokUTVca8/lnD9V1Oh
+	 7MN4M94qRYGpHC9HzfnRS7IsiJvSVtfB7TVlEzBQsc22Yx//bj1K4o2r7ggh4EXuNY
+	 pu7+GLEoZ6Bwx6V47ueevGCHkyKMR8q3aFgr2HQL9K6zjq5NntWI+SOrVpi9chsxAA
+	 szC1nJ7qgnCUg==
+Subject: [PATCH RFC bpf-next] selftests/bpf: Extend bench for LPM trie with
+ noop and baseline
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+To: matt@readmodwrite.com, bpf@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>, mfleming@cloudflare.com,
+ Daniel Borkmann <borkmann@iogearbox.net>, netdev@vger.kernel.org,
+ kernel-team@cloudflare.com
+Date: Wed, 13 Aug 2025 17:29:35 +0200
+Message-ID: <175509897596.2755384.18413775753563966331.stgit@firesoul>
+In-Reply-To: <20250722150152.1158205-1-matt@readmodwrite.com>
+References: <20250722150152.1158205-1-matt@readmodwrite.com>
+User-Agent: StGit/1.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Dne sreda, 13. avgust 2025 ob 16:55:40 Srednjeevropski poletni =C4=8Das je =
-Chen-Yu Tsai napisal(a):
-> From: Chen-Yu Tsai <wens@csie.org>
->=20
-> On the Orangepi 4A board, the second Ethernet controller, aka the GMAC200,
-> is connected to an external Motorcomm YT8531 PHY. The PHY uses an external
-> 25MHz crystal, has the SoC's PI15 pin connected to its reset pin, and
-> the PI16 pin for its interrupt pin.
->=20
-> Enable it.
->=20
-> Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+This patch is extending[0] with some adjustments[1].
+ [0] https://lore.kernel.org/all/20250722150152.1158205-1-matt@readmodwrite.com/
+ [1] https://github.com/xdp-project/xdp-project/blob/main/areas/bench/patches/bench-lpm-trie-V3-adjusted.patch
 
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+The 'noop' bench measures the overhead of the harness.
+Meaning the bpf_prog_test_run that calls bpf_loop with 10000
+(NR_LOOPS) iterations in the lpm_producer loop.
 
-Best regards,
-Jernej
+CPU: AMD EPYC 9684X
+sudo ./bench lpm-trie-noop  --nr_entries=1 --producers=1 --affinity
+Setting up benchmark 'lpm-trie-noop'...
+Benchmark 'lpm-trie-noop' started.
+Iter   0 ( 42.501us): hits   74.567M/s ( 74.567M/prod)
+Iter   1 ( -5.155us): hits   74.630M/s ( 74.630M/prod)
+Iter   2 (  0.123us): hits   74.620M/s ( 74.620M/prod)
+Iter   3 ( -7.127us): hits   74.611M/s ( 74.611M/prod)
+Iter   4 (  7.334us): hits   74.609M/s ( 74.609M/prod)
+Iter   5 (  0.163us): hits   74.620M/s ( 74.620M/prod)
+Iter   6 (  0.213us): hits   74.610M/s ( 74.610M/prod)
+Summary: throughput   74.617 ± 0.008 M ops/s ( 74.617M ops/prod), latency   13.402 ns/op
 
-> ---
->=20
-> Changes since v1:
-> - Switch to generic (tx|rx)-internal-delay-ps properties
-> ---
->  .../dts/allwinner/sun55i-t527-orangepi-4a.dts | 23 +++++++++++++++++++
->  1 file changed, 23 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/allwinner/sun55i-t527-orangepi-4a.dts b/=
-arch/arm64/boot/dts/allwinner/sun55i-t527-orangepi-4a.dts
-> index d07bb9193b43..b604d961c4fd 100644
-> --- a/arch/arm64/boot/dts/allwinner/sun55i-t527-orangepi-4a.dts
-> +++ b/arch/arm64/boot/dts/allwinner/sun55i-t527-orangepi-4a.dts
-> @@ -15,6 +15,7 @@ / {
->  	compatible =3D "xunlong,orangepi-4a", "allwinner,sun55i-t527";
-> =20
->  	aliases {
-> +		ethernet0 =3D &gmac1;
->  		serial0 =3D &uart0;
->  	};
-> =20
-> @@ -95,11 +96,33 @@ &ehci1 {
->  	status =3D "okay";
->  };
-> =20
-> +&gmac1 {
-> +	phy-mode =3D "rgmii-id";
-> +	phy-handle =3D <&ext_rgmii_phy>;
-> +	phy-supply =3D <&reg_cldo4>;
-> +
-> +	tx-internal-delay-ps =3D <0>;
-> +	rx-internal-delay-ps =3D <300>;
-> +
-> +	status =3D "okay";
-> +};
-> +
->  &gpu {
->  	mali-supply =3D <&reg_dcdc2>;
->  	status =3D "okay";
->  };
-> =20
-> +&mdio1 {
-> +	ext_rgmii_phy: ethernet-phy@1 {
-> +		compatible =3D "ethernet-phy-ieee802.3-c22";
-> +		reg =3D <1>;
-> +		interrupts-extended =3D <&pio 8 16 IRQ_TYPE_LEVEL_LOW>; /* PI16 */
-> +		reset-gpios =3D <&pio 8 15 GPIO_ACTIVE_LOW>; /* PI15 */
-> +		reset-assert-us =3D <10000>;
-> +		reset-deassert-us =3D <150000>;
-> +	};
-> +};
-> +
->  &mmc0 {
->  	vmmc-supply =3D <&reg_cldo3>;
->  	cd-gpios =3D <&pio 5 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* PF6 */
->=20
+The baseline measures overhead of getting a random number
+and modulo, which can be used as a baseline comparsion
+against lpm-trie-lookup and lpm-trie-update.
 
+sudo ./bench lpm-trie-baseline  --nr_entries=1 --producers=1 --affinity
+Setting up benchmark 'lpm-trie-baseline'...
+Benchmark 'lpm-trie-baseline' started.
+Iter   0 ( 44.996us): hits   36.308M/s ( 36.308M/prod)
+Iter   1 ( -1.535us): hits   36.330M/s ( 36.330M/prod)
+Iter   2 ( -3.919us): hits   36.310M/s ( 36.310M/prod)
+Iter   3 ( -1.004us): hits   36.330M/s ( 36.330M/prod)
+Iter   4 ( -1.476us): hits   36.320M/s ( 36.320M/prod)
+Iter   5 (  0.468us): hits   36.330M/s ( 36.330M/prod)
+Iter   6 ( -0.304us): hits   36.330M/s ( 36.330M/prod)
+Summary: throughput   36.325 ± 0.008 M ops/s ( 36.325M ops/prod), latency   27.529 ns/op
 
+Thus, the overhead of bpf_get_prandom_u32() is 14.1 nanosec.
+
+Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+---
+ tools/testing/selftests/bpf/bench.c                |    4 ++
+ .../selftests/bpf/benchs/bench_lpm_trie_map.c      |   40 +++++++++++++++++++-
+ tools/testing/selftests/bpf/progs/lpm_trie_bench.c |   31 ++++++++++++++--
+ 3 files changed, 70 insertions(+), 5 deletions(-)
+
+diff --git a/tools/testing/selftests/bpf/bench.c b/tools/testing/selftests/bpf/bench.c
+index fd15f60fd5a8..8a41aec89479 100644
+--- a/tools/testing/selftests/bpf/bench.c
++++ b/tools/testing/selftests/bpf/bench.c
+@@ -560,6 +560,8 @@ extern const struct bench bench_htab_mem;
+ extern const struct bench bench_crypto_encrypt;
+ extern const struct bench bench_crypto_decrypt;
+ extern const struct bench bench_sockmap;
++extern const struct bench bench_lpm_trie_noop;
++extern const struct bench bench_lpm_trie_baseline;
+ extern const struct bench bench_lpm_trie_lookup;
+ extern const struct bench bench_lpm_trie_update;
+ extern const struct bench bench_lpm_trie_delete;
+@@ -631,6 +633,8 @@ static const struct bench *benchs[] = {
+ 	&bench_crypto_encrypt,
+ 	&bench_crypto_decrypt,
+ 	&bench_sockmap,
++	&bench_lpm_trie_noop,
++	&bench_lpm_trie_baseline,
+ 	&bench_lpm_trie_lookup,
+ 	&bench_lpm_trie_update,
+ 	&bench_lpm_trie_delete,
+diff --git a/tools/testing/selftests/bpf/benchs/bench_lpm_trie_map.c b/tools/testing/selftests/bpf/benchs/bench_lpm_trie_map.c
+index 32a46c2402ea..4e0f12e359ba 100644
+--- a/tools/testing/selftests/bpf/benchs/bench_lpm_trie_map.c
++++ b/tools/testing/selftests/bpf/benchs/bench_lpm_trie_map.c
+@@ -87,7 +87,7 @@ static void __lpm_validate(void)
+ 	};
+ }
+ 
+-enum { OP_LOOKUP = 1, OP_UPDATE, OP_DELETE, OP_FREE };
++enum { OP_NOOP=0, OP_BASELINE, OP_LOOKUP, OP_UPDATE, OP_DELETE, OP_FREE };
+ 
+ static void lpm_delete_validate(void)
+ {
+@@ -175,6 +175,18 @@ static void lpm_setup(void)
+ 	fill_map(fd);
+ }
+ 
++static void lpm_noop_setup(void)
++{
++	__lpm_setup();
++	ctx.bench->bss->op = OP_NOOP;
++}
++
++static void lpm_baseline_setup(void)
++{
++	__lpm_setup();
++	ctx.bench->bss->op = OP_BASELINE;
++}
++
+ static void lpm_lookup_setup(void)
+ {
+ 	lpm_setup();
+@@ -208,7 +220,7 @@ static void lpm_measure(struct bench_res *res)
+ 	res->duration_ns = atomic_swap(&ctx.bench->bss->duration_ns, 0);
+ }
+ 
+-/* For LOOKUP, UPDATE, and DELETE */
++/* For NOOP, BASELINE, LOOKUP, UPDATE, and DELETE */
+ static void *lpm_producer(void *unused __always_unused)
+ {
+ 	int err;
+@@ -310,6 +322,30 @@ static void free_ops_report_final(struct bench_res res[], int res_cnt)
+ 	       latency / lat_divisor / env.producer_cnt, unit);
+ }
+ 
++/* noop bench measures harness-overhead */
++const struct bench bench_lpm_trie_noop = {
++	.name = "lpm-trie-noop",
++	.argp = &bench_lpm_trie_map_argp,
++	.validate = __lpm_validate,
++	.setup = lpm_noop_setup,
++	.producer_thread = lpm_producer,
++	.measure = lpm_measure,
++	.report_progress = ops_report_progress,
++	.report_final = ops_report_final,
++};
++
++/* baseline overhead for lookup and update */
++const struct bench bench_lpm_trie_baseline = {
++	.name = "lpm-trie-baseline",
++	.argp = &bench_lpm_trie_map_argp,
++	.validate = __lpm_validate,
++	.setup = lpm_baseline_setup,
++	.producer_thread = lpm_producer,
++	.measure = lpm_measure,
++	.report_progress = ops_report_progress,
++	.report_final = ops_report_final,
++};
++
+ const struct bench bench_lpm_trie_lookup = {
+ 	.name = "lpm-trie-lookup",
+ 	.argp = &bench_lpm_trie_map_argp,
+diff --git a/tools/testing/selftests/bpf/progs/lpm_trie_bench.c b/tools/testing/selftests/bpf/progs/lpm_trie_bench.c
+index 522e1cbef490..e4a5cecd6560 100644
+--- a/tools/testing/selftests/bpf/progs/lpm_trie_bench.c
++++ b/tools/testing/selftests/bpf/progs/lpm_trie_bench.c
+@@ -6,6 +6,7 @@
+ #include <bpf/bpf_helpers.h>
+ #include <bpf/bpf_core_read.h>
+ #include "bpf_misc.h"
++#include "bpf_atomic.h"
+ 
+ #define BPF_OBJ_NAME_LEN 16U
+ #define MAX_ENTRIES 100000000
+@@ -84,12 +85,30 @@ int BPF_PROG(trie_free_exit, struct work_struct *work)
+ 	return 0;
+ }
+ 
+-static void gen_random_key(struct trie_key *key)
++static __always_inline void gen_random_key(struct trie_key *key)
+ {
+ 	key->prefixlen = prefixlen;
+ 	key->data = bpf_get_prandom_u32() % nr_entries;
+ }
+ 
++static int noop(__u32 index, __u32 *unused)
++{
++	return 0;
++}
++
++static int baseline(__u32 index, __u32 *unused)
++{
++	struct trie_key key;
++	__s64 blackbox;
++
++	gen_random_key(&key);
++	/* Avoid compiler optimizing out the modulo */
++	barrier_var(blackbox);
++	blackbox = READ_ONCE(key.data);
++
++	return 0;
++}
++
+ static int lookup(__u32 index, __u32 *unused)
+ {
+ 	struct trie_key key;
+@@ -148,13 +167,19 @@ int BPF_PROG(run_bench)
+ 	start = bpf_ktime_get_ns();
+ 
+ 	switch (op) {
++	case 0:
++		loops = bpf_loop(NR_LOOPS, noop, NULL, 0);
++		break;
+ 	case 1:
+-		loops = bpf_loop(NR_LOOPS, lookup, NULL, 0);
++		loops = bpf_loop(NR_LOOPS, baseline, NULL, 0);
+ 		break;
+ 	case 2:
+-		loops = bpf_loop(NR_LOOPS, update, NULL, 0);
++		loops = bpf_loop(NR_LOOPS, lookup, NULL, 0);
+ 		break;
+ 	case 3:
++		loops = bpf_loop(NR_LOOPS, update, NULL, 0);
++		break;
++	case 4:
+ 		loops = bpf_loop(NR_LOOPS, delete, &need_refill, 0);
+ 		break;
+ 	default:
 
 
