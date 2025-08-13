@@ -1,124 +1,123 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [176.9.242.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C4E2BE7BA
-	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 05:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FCF288C25;
+	Wed, 13 Aug 2025 05:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755064290; cv=none; b=g15pr+rfin1Uaobt4gfGubJHuvwSHM/HKfawA3eIp3wZ6IBS2DJLJV4xXoixRTwqrCftaUpihXRP8eCc65HDgEFPkD41sRTUkIxDaP6ZjLQCy65ejccErEnoxBsIai485bGbUkY4HYJEOKLAmNJrvF+T/SRmjtTlvMHcVskSteI=
+	t=1755064309; cv=none; b=EvIrfCT/ZRoK2HORZER/owV/RLOUKbg7LsIteOeyIfGO0h/00YI5IwrY86Uc1del/ipB3uikwbhxamDrjxtzlXvxDXslveeQP7AOILU3Txs4++FBavMvP8Hy4da7krCks+Huv8wTa4pieoj2kKk3SFjBJsAj6HB0UMWEb9uzm8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755064290; c=relaxed/simple;
-	bh=lRxuv0qt4ISYZ4d5L7KaHZ2U9/6/GI12h89YfeucWLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=urHh4ZHs4avAN7SYl4L7UqY22ec4/IUorVOo7PhyZD2foKwu2RavSzjTCzSThx3iQnj1cxadwboNJN0hTi1SeaNnQooCV8gpH2scBZS0wWAdAyJ3OQyjfMU+qE6VVMRDdEH0ryd4sOcwDHm/9IPQ4E/miK90Wxnf91U26ZG+orw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GiDz8xCV; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GiDz8xCV"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3b79bd3b1f7so2952010f8f.1
-        for <netdev@vger.kernel.org>; Tue, 12 Aug 2025 22:51:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755064286; x=1755669086; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DrOyWBFP21dohGWxqS5PR6ISwURTsFLfxT85phMfX+M=;
-        b=GiDz8xCVMi8EzbvXUojwrgp6kG6UCDdTvwMHFpQSsLJz/56aL0JGV0SVL5+89HndKb
-         Z+TISc/MK81S0vzzd23LBvIvnvss5KtFOb5CrG/C2KvfRQn7vHDXScw9SItB5n009SEI
-         s7/8hTNvvjhu59BM1+U8d2YbxJDIai6fPcReKFBtLeSR0Lt3sHrffDciq2PeMlqDXLIO
-         kKW4stgiBU1YO2jxAs3EzXmHj9kO381dJotJOMz7zwYlyrYbTFlbS+W/n/B8dVUWhlRI
-         iZZC/BFtGtEe+gpdLF7/+b34NaQK+2U5/YmzF0wSFYMNF/E51YsnrKiPOxIg7G/tOsld
-         fmjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755064286; x=1755669086;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DrOyWBFP21dohGWxqS5PR6ISwURTsFLfxT85phMfX+M=;
-        b=qqBAZuKnNLlWOwZiVIIlv7ZKh6yXco+3hycRPHXe+TJQGnANNZxXsfQi67Be/oHrTv
-         tvHayPofLAK8IX3FfMEIP54CVlXODHtBL8IgjZVG+MGJGwmgzCF0ug6/OkILJmpZ1TLc
-         hB0gi8Qo91j8SPwVQ9Yj2LkG+rTFObk73PwfQn/FQq7rw30miSMR9XX8TF4ltnvwXXKl
-         5ucz+7rqtU5YI4LoOH1uzryHUL2lbPJmxHLzUo+TchkvZVKjbgMfKrIZOhu4NLqcwC1E
-         3uYd2nHI5p6XfZjiV8XGtDMUs82CheQL+CISSXdLH8QvhqnBcDhVllNXQ32yJ0b/GhXH
-         tbBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVGDioDzeYt8k7o5gYnRRnA+Qh0WWfwUBTQ7o8nrNavoV151KefTSP8edg4SSoH6YCnjWtebE8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmJC6GEb7t4IBz0M13p8hK3cU13TqrfTg+OyTex6Ugd0CsSPJb
-	KKaUm4qqke7X+dpcN2JCceoTuVgeK5f6OUZENmo5hIMZAM9b64Zd+mtfIUJKCv2726U=
-X-Gm-Gg: ASbGnct4I9oBZ/OcIKReTLV4tRYTMhATEkLGsPTdXAKRx0Lq5RDeS+mg2+CGW0BapFG
-	o73ZWLl6ZgtQtMZb9gxMxA/rnVkG3zVRDvEKXdTBC5C4eJcqUuZspcdcyroRY/zSpRZa7elR9kq
-	wvEcqPG2YoAbUCrqHAKNIA18bfH1JgtW8kz/iUmtSe9/dmx1Gtoa7gfyEiAU13pTprZL/+eUC23
-	GvgNF4fJ1n1OInYUl3Ep02XD3eW4i0F4fzTbIhcEYDmDE+uj8BPwY5F6OYU2a9qb7kzSZIXP6y1
-	RP0prCSgdSooQj79xqOdX+39msYBDc24QGYPJBH/Kl4Ur67eHt2fcD0iilgEvbq6zaz9xIyZGG6
-	UPt+fO4yhPLYCsjTPveome5yyywU=
-X-Google-Smtp-Source: AGHT+IFcKTFkpLXaLpQ8IyxiEG4h8H2fKINbMz/aPudLtlvebYChChfIWNlq56NuIvASiyNpkDoFVA==
-X-Received: by 2002:a05:6000:4282:b0:3b9:15d7:8fd3 with SMTP id ffacd0b85a97d-3b917e37cf7mr963552f8f.16.1755064286473;
-        Tue, 12 Aug 2025 22:51:26 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b8e0bfc79fsm35965508f8f.56.2025.08.12.22.51.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Aug 2025 22:51:26 -0700 (PDT)
-Date: Wed, 13 Aug 2025 08:51:22 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Lars Poeschel <poeschel@lemonage.de>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, Aleksandr Mishin <amishin@t-argos.ru>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH net-next] nfc: pn533: Delete an unnecessary check
-Message-ID: <aJwn2ox5g9WsD2Vx@stanley.mountain>
+	s=arc-20240116; t=1755064309; c=relaxed/simple;
+	bh=nWnp3IXM1iz81ZjutHNbtjNYh3k8Iu/UHIL/Nxw90fg=;
+	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=nxW88KsiH3Uq5cdGmF4bCQ2nNgyATJaJ9Ud5CGQTKshqJpwKwTUyuScYj79a9ygWe7ICRHSjkjmEf3sJxDHCLIJysHrfXHywlrOVB8wR8DE3kDy7xcMjDqvS1SnL8sZkUL4gIRfWuQDPHp5ri78qDJAuxC+O+KmWZXxRtCLsU4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=176.9.242.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by mailout3.hostsharing.net (Postfix) with UTF8SMTPS id 624AE3006AC8;
+	Wed, 13 Aug 2025 07:44:37 +0200 (CEST)
+Received: from localhost (unknown [89.246.108.87])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by h08.hostsharing.net (Postfix) with UTF8SMTPSA id 0DAAF6031F22;
+	Wed, 13 Aug 2025 07:44:37 +0200 (CEST)
+X-Mailbox-Line: From 1d72a891a7f57115e78a73046e776f7e0c8cd68f Mon Sep 17 00:00:00 2001
+Message-ID: <1d72a891a7f57115e78a73046e776f7e0c8cd68f.1755008151.git.lukas@wunner.de>
+In-Reply-To: <cover.1755008151.git.lukas@wunner.de>
+References: <cover.1755008151.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Wed, 13 Aug 2025 07:11:05 +0200
+Subject: [PATCH 5/5] PCI/ERR: Remove remnants of .link_reset() callback
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Riana Tauro <riana.tauro@intel.com>, Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>, "Sean C. Dardis" <sean.c.dardis@intel.com>, Terry Bowman <terry.bowman@amd.com>, Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Linas Vepstas <linasvepstas@gmail.com>, "Mahesh J Salgaonkar" <mahesh@linux.ibm.com>, "Oliver OHalloran" <oohall@gmail.com>, Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, Edward Cree <ecree.xilinx@gmail.com>, linux-net-drivers@amd.com, James Smart <james.smart@broadcom.com>, Dick Kennedy <dick.kennedy@broadcom.com>, "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni
+ @redhat.com>, netdev@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
 
-The "rc" variable is set like this:
+Back in 2017, commit 2fd260f03b6a ("PCI/AER: Remove unused .link_reset()
+callback") removed .link_reset() from struct pci_error_handlers, but left
+a few code comments behind which still mention it.  Remove them.
 
-	if (IS_ERR(resp)) {
-		rc = PTR_ERR(resp);
+The code comments in the SolarFlare Ethernet drivers point out that no
+.mmio_enabled() callback is needed because the driver's .error_detected()
+callback always returns PCI_ERS_RESULT_NEED_RESET, which causes
+pcie_do_recovery() to skip .mmio_enabled().  That's not quite correct
+because efx_io_error_detected() does return PCI_ERS_RESULT_RECOVERED under
+certain conditions and then .mmio_enabled() would indeed be called if it
+were implemented.  Remove this misleading portion of the code comment as
+well.
 
-We know that "rc" is negative so there is no need to check.
-
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
 ---
- drivers/nfc/pn533/pn533.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/sfc/efx_common.c       | 3 ---
+ drivers/net/ethernet/sfc/falcon/efx.c       | 3 ---
+ drivers/net/ethernet/sfc/siena/efx_common.c | 3 ---
+ drivers/scsi/lpfc/lpfc_init.c               | 2 +-
+ 4 files changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
-index 14661249c690..2b043a9f9533 100644
---- a/drivers/nfc/pn533/pn533.c
-+++ b/drivers/nfc/pn533/pn533.c
-@@ -1412,11 +1412,9 @@ static int pn533_autopoll_complete(struct pn533 *dev, void *arg,
- 			if (dev->poll_mod_count != 0)
- 				return rc;
- 			goto stop_poll;
--		} else if (rc < 0) {
--			nfc_err(dev->dev,
--				"Error %d when running autopoll\n", rc);
--			goto stop_poll;
- 		}
-+		nfc_err(dev->dev, "Error %d when running autopoll\n", rc);
-+		goto stop_poll;
- 	}
+diff --git a/drivers/net/ethernet/sfc/efx_common.c b/drivers/net/ethernet/sfc/efx_common.c
+index 5a14d94163b1..e8fdbb62d872 100644
+--- a/drivers/net/ethernet/sfc/efx_common.c
++++ b/drivers/net/ethernet/sfc/efx_common.c
+@@ -1258,9 +1258,6 @@ static void efx_io_resume(struct pci_dev *pdev)
  
- 	nbtg = resp->data[0];
-@@ -1505,11 +1503,9 @@ static int pn533_poll_complete(struct pn533 *dev, void *arg,
- 			if (dev->poll_mod_count != 0)
- 				return rc;
- 			goto stop_poll;
--		} else if (rc < 0) {
--			nfc_err(dev->dev,
--				"Error %d when running poll\n", rc);
--			goto stop_poll;
- 		}
-+		nfc_err(dev->dev, "Error %d when running poll\n", rc);
-+		goto stop_poll;
- 	}
+ /* For simplicity and reliability, we always require a slot reset and try to
+  * reset the hardware when a pci error affecting the device is detected.
+- * We leave both the link_reset and mmio_enabled callback unimplemented:
+- * with our request for slot reset the mmio_enabled callback will never be
+- * called, and the link_reset callback is not used by AER or EEH mechanisms.
+  */
+ const struct pci_error_handlers efx_err_handlers = {
+ 	.error_detected = efx_io_error_detected,
+diff --git a/drivers/net/ethernet/sfc/falcon/efx.c b/drivers/net/ethernet/sfc/falcon/efx.c
+index b07f7e4e2877..0c784656fde9 100644
+--- a/drivers/net/ethernet/sfc/falcon/efx.c
++++ b/drivers/net/ethernet/sfc/falcon/efx.c
+@@ -3128,9 +3128,6 @@ static void ef4_io_resume(struct pci_dev *pdev)
  
- 	cur_mod = dev->poll_mod_active[dev->poll_mod_curr];
+ /* For simplicity and reliability, we always require a slot reset and try to
+  * reset the hardware when a pci error affecting the device is detected.
+- * We leave both the link_reset and mmio_enabled callback unimplemented:
+- * with our request for slot reset the mmio_enabled callback will never be
+- * called, and the link_reset callback is not used by AER or EEH mechanisms.
+  */
+ static const struct pci_error_handlers ef4_err_handlers = {
+ 	.error_detected = ef4_io_error_detected,
+diff --git a/drivers/net/ethernet/sfc/siena/efx_common.c b/drivers/net/ethernet/sfc/siena/efx_common.c
+index a0966f879664..35036cc902fe 100644
+--- a/drivers/net/ethernet/sfc/siena/efx_common.c
++++ b/drivers/net/ethernet/sfc/siena/efx_common.c
+@@ -1285,9 +1285,6 @@ static void efx_io_resume(struct pci_dev *pdev)
+ 
+ /* For simplicity and reliability, we always require a slot reset and try to
+  * reset the hardware when a pci error affecting the device is detected.
+- * We leave both the link_reset and mmio_enabled callback unimplemented:
+- * with our request for slot reset the mmio_enabled callback will never be
+- * called, and the link_reset callback is not used by AER or EEH mechanisms.
+  */
+ const struct pci_error_handlers efx_siena_err_handlers = {
+ 	.error_detected = efx_io_error_detected,
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index 4081d2a358ee..cf08bb5b37c3 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -14377,7 +14377,7 @@ lpfc_sli_prep_dev_for_perm_failure(struct lpfc_hba *phba)
+  * as desired.
+  *
+  * Return codes
+- * 	PCI_ERS_RESULT_CAN_RECOVER - can be recovered with reset_link
++ *	PCI_ERS_RESULT_CAN_RECOVER - can be recovered without reset
+  * 	PCI_ERS_RESULT_NEED_RESET - need to reset before recovery
+  * 	PCI_ERS_RESULT_DISCONNECT - device could not be recovered
+  **/
 -- 
 2.47.2
 
