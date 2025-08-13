@@ -1,84 +1,57 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853F92AD0C;
-	Wed, 13 Aug 2025 00:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AD92C0F87
+	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 01:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755046799; cv=none; b=idsTA2WmHlK+y973Zz3G6trYFcV4ukFtglKfKLCE+GtUifE4+0OkbDr6YY0OnT8JfolzteNlX4We9vAIDu7RBUod6xBqY3bLHC45+FM+SE/ud8sjKRUL5EfioosLVLxLK5JryybNsLvA5FaLKiyAEmn1Fsmg1DAKeiBVd4SZfpI=
+	t=1755046977; cv=none; b=NkILIcSaQiqs1KscNkbSbDeglSf+iTK6ObpLJx4zzT5imKTbR99Pb1JbYyofGZhSSOAy+uxmku8NVKFM+0OXH7UCcDQGBDfZ+Jx/8b7WvuJCQC4/rEdMPLyBJ8gYip/mPyuGQVTsBw4QQbceiVwVhhzzraG9uJw30IkRKmRBNzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755046799; c=relaxed/simple;
-	bh=fSetQkEYt/FHJZ9y5Bd1h7hrstkaVMuQlUr6iAEhyP4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ry3ic174M1kBiGr8UXHyz1zXMBLDqvfq17CBdjerTepQd24hsOdoSjOsWZKQdmtHMO3GBr0swtUf9ihYv+L5s3OfuKKS0LdpLMCNvGC5+rSxmfdgT1GH5puW8aDKi0DxbTA3lmc9lV1a072G18LwtvYrrn9EY0hDIQVzELyJKDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YmtwHUx1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755046977; c=relaxed/simple;
+	bh=DsxZ6UWm+jDFLWQ0jYAOmouMrSk5jUvEHCGgvHwGTnA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QIFMLaQ1h2RpdEbi45D4zdkDrNwYoUUjac/jp3JpLYHxlCLfHprZ2+iAHNnG+bWwgMzn6STufIpX/dcPphmsaXHFm0Bv/ducI0ggJjSwV931rpcYiTeoZcxTxD7STMR0gldggVuJ6AHU6m8SAq3H1Ap5Y0ki5TsZhYp3sfPw3Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bXQ7wQDw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YmtwHUx1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10082C4CEF0;
-	Wed, 13 Aug 2025 00:59:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bXQ7wQDw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B53C4CEF1;
+	Wed, 13 Aug 2025 01:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755046799;
-	bh=fSetQkEYt/FHJZ9y5Bd1h7hrstkaVMuQlUr6iAEhyP4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=YmtwHUx10X9ehOsipUQtw1WgoMtHuvcVUjp/36nB4OgnvKD/c8gxLO8brcCUT+BHy
-	 sCwgSP33dxRuZb8NmcWkawY+L7t0pL9b6iBAWXEXFfwkfTZVZmdEdUNKFLCRd5wl2q
-	 1lMMKoDWXdpWI8dGkbuNfYqYQgoEJR1xat68y4QKaCG2Xlsxg+gVQUrO+uSjPtf6ax
-	 iG5tdCk61EKiYXkVU4yIs5tHSE+zYzM7QktDkI9TiJOYswJpuHCRKlrF8mSEF/FzZY
-	 bkFsL/sp/kSPDmGk+6dYHURWmkqXlloBwBIKUj7VXog+pgzjeIgvE96b2GX+0PmFDy
-	 H23nXMhX/Qt7Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33B8039D0C2E;
-	Wed, 13 Aug 2025 01:00:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1755046977;
+	bh=DsxZ6UWm+jDFLWQ0jYAOmouMrSk5jUvEHCGgvHwGTnA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bXQ7wQDw6CWKRhdzixjwoWRx6MMb+9kSnkvmJla6XhDG39VZ95RAUqc7giWUgBWsU
+	 8rzk+z326d4UxDUB5mFFMBJ3IIyE6m8vtwRcbGAsgyH0gA1ju4JVyzZxKY9jClVtWL
+	 XxoLrTHCJgzRpf35Es6zVlz3YKBtJp2pkyZCZMJ/Mdp1tzvcx5XJYL+Oz5CHvIKcPU
+	 BnStcRsSJ9I31h0I5oj7XhnzpSPZWUvU49k+sY56ahO2/FPQEWt5iMSMEMoyq+oK0h
+	 +rar3CVizqPevNZziommxvWRBKXpsKc2LdWV08dt0daepOWJkan6ER1RAaOKO2y/ZO
+	 gF1/Qe5ZDGfiA==
+Date: Tue, 12 Aug 2025 18:02:56 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH v1 net-next 1/4] selftest: af_unix: Add -Wall and
+ -Wflex-array-member-not-at-end to CFLAGS.
+Message-ID: <20250812180256.712d316b@kernel.org>
+In-Reply-To: <20250811215432.3379570-2-kuniyu@google.com>
+References: <20250811215432.3379570-1-kuniyu@google.com>
+	<20250811215432.3379570-2-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v4 0/4] netconsole: reuse netpoll_parse_ip_addr
- in
- configfs helpers
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175504681100.2908717.15523966877694857156.git-patchwork-notify@kernel.org>
-Date: Wed, 13 Aug 2025 01:00:11 +0000
-References: <20250811-netconsole_ref-v4-0-9c510d8713a2@debian.org>
-In-Reply-To: <20250811-netconsole_ref-v4-0-9c510d8713a2@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Mon, 11 Aug 2025 21:53:04 +0000 Kuniyuki Iwashima wrote:
+> -Wall and -Wflex-array-member-not-at-end caught some warnings that
+> will be fixed in later patches.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 11 Aug 2025 11:13:24 -0700 you wrote:
-> This patchset refactors the IP address parsing logic in the netconsole
-> driver to eliminate code duplication and improve maintainability. The
-> changes centralize IPv4 and IPv6 address parsing into a single function
-> (netpoll_parse_ip_addr). For that, it needs to teach
-> netpoll_parse_ip_addr() to handle strings with newlines, which is the
-> type of string coming from configfs.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v4,1/4] netconsole: move netpoll_parse_ip_addr() earlier for reuse
-    https://git.kernel.org/netdev/net-next/c/fa38524ca5a7
-  - [net-next,v4,2/4] netconsole: add support for strings with new line in netpoll_parse_ip_addr
-    https://git.kernel.org/netdev/net-next/c/364213b736e3
-  - [net-next,v4,3/4] netconsole: use netpoll_parse_ip_addr in local_ip_store
-    https://git.kernel.org/netdev/net-next/c/60cb69214148
-  - [net-next,v4,4/4] netconsole: use netpoll_parse_ip_addr in local_ip_store
-    https://git.kernel.org/netdev/net-next/c/4aeb452c237a
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Makes sense to enable the warnings first when writing the patches,
+but I think we should commit in the opposite order. Fixes fix then
+arm the warnings. I'll reorder when applying.
