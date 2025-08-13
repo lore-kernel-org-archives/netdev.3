@@ -1,159 +1,350 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5510C303C86;
-	Wed, 13 Aug 2025 17:24:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DA0303C85
+	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 17:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755105852; cv=none; b=BJZ8hyNO3pnGS87P/OPtaItXf4ZufrQZZYpICHz2BEGYcmcYxf1oUgwpQ3gsku+ZEYB15vmUkmNbdOEPZzkRX9gm+xmGNU18P9I7hHS6GnYQWb8747CuqQ7/Z/w1W806whGMZ3ZyCWm/3nPcBvO4OC8ZDMgafebkF10zcnaEyN0=
+	t=1755107070; cv=none; b=AdQaO8D4Mg54HnuGnDgsNs08gKNAJ61e7IlenUr8m8sg/m52YO1q+ius9NDE0IXAalWpLyqhXHDvb+bp3PvWVM2hnqT9R7eAqCFhQYYFtRGqIN0P86jg1NOPEj2kaIhwTdXAe4K8xTLP6nUeomqE+GZnoGuZxStXPjbAADvpMIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755105852; c=relaxed/simple;
-	bh=kInu3WpIUa5ivvSUVJDySAyzqDy8m7u4hXMISKjVg1o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mVElJYdwHoKYeMMSm9iGJbDzsS/TkT7TxxZ8cN/qzspiqRqSzU6zC2/cTBJPQgI/+yFka4vr8HcUUzTVPdNZ7IEtkjpGsPGZfuj/1doU+h+YV0reoIUHCqsG+CnWoi/lYVpW8Wp3CbZ6yfkRhmVhiRN0EKFwQ7imm3Qj4QvCDJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=krZ4uNQH; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755107070; c=relaxed/simple;
+	bh=b82ajDop05IdDbcUMKm9fN2TJvEEDM0ySOGZFWzB/4E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RoFU7tzQ9E6mCD2QSxK4UJDgUn7E0BJmhFa07E+P8vYMebNN0QA6H+qGMqzxn667zWe517F94TUmK7fnetbQCAwFFLEbX04QG6emc+JlXyPF7K0YfOBfUjMbxvuCyLA31JF+0I+4yTEDchVIdqmAit4FwMUsKkFcEFe3eSKTT7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JKeJgyRV; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="krZ4uNQH"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b34a6d0c9a3so8012377a12.3;
-        Wed, 13 Aug 2025 10:24:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755105850; x=1755710650; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=g6QEvKbWqHKl56z7lqO1CQDa/mVnlY0njSFi7H7FEMM=;
-        b=krZ4uNQHILzrTkEyymDA/5z1xRtpRr+mrFnNkdxxhCFkJV+rVFNFZg6htlfQAbeQxr
-         zJdN7D9lXqye9TJZYpbKWpJZIv3m/XgnWsYIhH9dwVyWXDbiGaee+FkSS7xm2kDjnerh
-         ulQ+DBvdOpn/2WEd8rBeMPxqxmvTqcS5tkhT7ZQq9TLqiY30abCIHy57TpoOJsHFWm6J
-         wcBwaw4gA3VdiNIBoQ5J9VjRd9IDNevA7T7PpZ5pt1x/g637r+PBVO1Hx+Uo1WIHc3qk
-         efSh2BZlLuTuqQUyj+LN19SwhFa5qib24B8esII1MjBeF+HP+zDkVliIFot3WC7z6drC
-         xZUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755105850; x=1755710650;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g6QEvKbWqHKl56z7lqO1CQDa/mVnlY0njSFi7H7FEMM=;
-        b=uuA2MHpm+V1Fvyr9vs4rFwhSUI8z6uN2/fudypyH0xpzAWd5R5P8539vGy8pfR070q
-         JEi/A/JZMEht7dVz7HvagX/PJNUKlhj48SzVHuBqFGweHewRmXYr7frXa/VthNCHUJQD
-         j1ji1VXCEwOZRQIQGEHTKMxxM/VWwedAnQAiX348dP68NqTLzk5o9YHGRBKPifyOGAXz
-         pab0lkAiu0pDUPm1IgTI3SrULdwhrseKhhOxotrzq+7eHDgMuzPv6pdyufQLI8Qgy6Iv
-         XIhXA+JeuRNnzq3U4aM4PrBSC4CJ3oNNE+JvS5TGVMLuVBO5O1ZEaGlJ90EGDC5leFty
-         mPMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUGx4CuQ8E6Cd/R31I9VGL4BQAYSoky1iqTW1anzmris+61P43n7JsHf0FqlUFFsH6K9EuIEMsG@vger.kernel.org, AJvYcCUX7uxE68SFsntCFuK6NBigBco4T1DvjASViZw+1Cb2xsmkGOlQ4KiKkIr3UCtqbiy6BJetSDFgxiAz@vger.kernel.org, AJvYcCUe6LAzHD8MeMUR2cLQa1D/KyyD//JgABTB6dUIqOpqjR67LCGJOJAD9bOdC5u8pyDaPRIoGq6Cg18IZ5RpCzYg@vger.kernel.org, AJvYcCUvOyjUC51dx8v4NeijKGqcjsSWtSq03dHKP6rxynXa1DWtN4OeItfehow8oS1re15L+UKSAjsnzPk9V8u5@vger.kernel.org, AJvYcCV1ycBlkBT6dlsnUgeXEqS3UmafCIv/OHj1Q/mQLxVXCuggT1rTEH16a33awlfILW9AQjIWHKUZqT5f@vger.kernel.org, AJvYcCVjvCcnMbCd/hpxCCCBX45IwAy7/hiHLWrbVl02ssKfeJEjaUEV2JtCsIbLKyfmKIIVyyjiuH3rPEY71Q==@vger.kernel.org, AJvYcCVtWiOWaAMqXXOJW3grvSwYWOwccvHpCwUI25XcQb9YSS9e21lX3GxZa0Qgn+zIOyumReuxVOdmHtYx25QUHnU=@vger.kernel.org, AJvYcCVtyt+SmFd1d6S7ERR3SN/Bh5PdIqNjY4iwSG41cBy0r/YX1Iy2qK82+IhxScEuoq9btRopKmyeYkCyWL6N3w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQ9UXxh9bLjp8+8q7B37QZUX1id+b1PLGz/LrBujn/DVV/lWRp
-	UZkSoh8ZVuxzEZH0F3ulhEqZvpZMBJcmy/VVsAwQQK8ZcLB6Dg3fqx+DnPbf4vhp
-X-Gm-Gg: ASbGncu0Ml6aL2dGHRLmURoLrfQT5e3asWAcCCVdYjjNE8HdOtG5v4rxHSTLUtKE/nV
-	L2u42Ju/mGMOs9bKJzGpQ1hSZjwBubyBnEXd0aho7YN6eHIdbCCF6V3ZtE2Ur5YrkOZtDtCwDux
-	RC4HRtJjfQNyxQXr0G91yviZLIZHF7k0QdQX8fBNyETpeyexiSMc4GHttbVNPr+Jl5IJpDwfaW5
-	M/0/vy6s2WJrG6n5RoGUMoFWMDOtfjx/p7oO2trGbGUy73ocFaFTrG/I7nbxR8t48Ye94moJWnK
-	03tePGvd7u40BHTnwTz6H1fKrA1f84X939ZveLsH31MGsRThUgmiMLLAoJOo2EDnfwnZnGEPc/U
-	TtArgI3kYlsY/aM8jXPlK806xVbdWWcFLMZ8GRZDPFKivLkgB6zDcF1J52a12+Zp1SqJTPVoDrB
-	wL+NgtR2NEue1UJWdS1CrxH7d3KTQr32ki1CyV/X0=
-X-Google-Smtp-Source: AGHT+IHzxOT0e51q9GMbCoQJQmA1iOf0AGvoQCtni9f1rWQqIeUQheFiN4hAfvpXA6DN5Xlkg8xgDQ==
-X-Received: by 2002:a05:622a:1f96:b0:4b0:e6d1:ef60 with SMTP id d75a77b69052e-4b0fc88d5e7mr42154561cf.59.1755100798179;
-        Wed, 13 Aug 2025 08:59:58 -0700 (PDT)
-Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2600:4808:6353:5c00:d445:7694:2051:518c])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b085ad7d08sm124482211cf.53.2025.08.13.08.59.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 08:59:57 -0700 (PDT)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 13 Aug 2025 11:59:21 -0400
-Subject: [PATCH v2 11/19] rust: miscdevice: replace `kernel::c_str!` with
- C-Strings
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JKeJgyRV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755107067;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eKXuxoWe3GrTooKshAErrnfULyFsxqRpLqh5wpT+IGQ=;
+	b=JKeJgyRV2PW8l6ORjFf1fcdFF+V2Foy7cV5kMcq0BC+YriVUmwgbRfurerUJRz1Cw9K78J
+	rrf7f3MsVOnhzjLJgobiwZ9TdxjfXnwoqDatp6TdBrvWalD27NtWz/GIKEzugkrChgzmZK
+	msEn9RnphkP03mlVaL5MekJPrTIBFRw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-457-klX5rQUHNiCuVNVR-Kv0EQ-1; Wed,
+ 13 Aug 2025 13:44:22 -0400
+X-MC-Unique: klX5rQUHNiCuVNVR-Kv0EQ-1
+X-Mimecast-MFC-AGG-ID: klX5rQUHNiCuVNVR-Kv0EQ_1755107060
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 489231800451;
+	Wed, 13 Aug 2025 17:44:20 +0000 (UTC)
+Received: from p16v.luc.cera.cz (unknown [10.45.224.146])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B46F91800280;
+	Wed, 13 Aug 2025 17:44:15 +0000 (UTC)
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Prathosh Satish <Prathosh.Satish@microchip.com>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Petr Oros <poros@redhat.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH net-next v3 1/5] dpll: zl3073x: Add functions to access hardware registers
+Date: Wed, 13 Aug 2025 19:44:04 +0200
+Message-ID: <20250813174408.1146717-2-ivecera@redhat.com>
+In-Reply-To: <20250813174408.1146717-1-ivecera@redhat.com>
+References: <20250813174408.1146717-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250813-core-cstr-cstrings-v2-11-00be80fc541b@gmail.com>
-References: <20250813-core-cstr-cstrings-v2-0-00be80fc541b@gmail.com>
-In-Reply-To: <20250813-core-cstr-cstrings-v2-0-00be80fc541b@gmail.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, 
- Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Breno Leitao <leitao@debian.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
- Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
- Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Arnd Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>, 
- David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
- Jens Axboe <axboe@kernel.dk>, Alexandre Courbot <acourbot@nvidia.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
-Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org, 
- dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
- linux-clk@vger.kernel.org, linux-pci@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
- linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1755100760; l=1136;
- i=tamird@gmail.com; h=from:subject:message-id;
- bh=kInu3WpIUa5ivvSUVJDySAyzqDy8m7u4hXMISKjVg1o=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
- MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QLPeBqFF3G2/b3iHg82noX65chkInTWyugikz/odK+rtAeYGjZ0XZ8DXrV1KFAOJaqwd30EdnIK
- Svg+beZiy3Ak=
-X-Developer-Key: i=tamird@gmail.com; a=openssh;
- fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-C-String literals were added in Rust 1.77. Replace instances of
-`kernel::c_str!` with C-String literals where possible.
+Besides the device host registers that are directly accessible, there
+are also hardware registers that can be accessed indirectly via specific
+host registers.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Add register definitions for accessing hardware registers and provide
+helper functions for working with them. Additionally, extend the number
+of pages in the regmap configuration to 256, as the host registers used
+for accessing hardware registers are located on page 255.
+
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 ---
- samples/rust/rust_misc_device.rs | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/dpll/zl3073x/core.c | 155 +++++++++++++++++++++++++++++++++++-
+ drivers/dpll/zl3073x/core.h |  30 +++++++
+ drivers/dpll/zl3073x/regs.h |  12 +++
+ 3 files changed, 193 insertions(+), 4 deletions(-)
 
-diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-index e7ab77448f75..60ab10b02574 100644
---- a/samples/rust/rust_misc_device.rs
-+++ b/samples/rust/rust_misc_device.rs
-@@ -98,7 +98,6 @@
- use core::pin::Pin;
+diff --git a/drivers/dpll/zl3073x/core.c b/drivers/dpll/zl3073x/core.c
+index 7ebcfc5ec1f09..86c26edc90462 100644
+--- a/drivers/dpll/zl3073x/core.c
++++ b/drivers/dpll/zl3073x/core.c
+@@ -95,9 +95,9 @@ EXPORT_SYMBOL_NS_GPL(zl30735_chip_info, "ZL3073X");
  
- use kernel::{
--    c_str,
-     device::Device,
-     fs::File,
-     ioctl::{_IO, _IOC_SIZE, _IOR, _IOW},
-@@ -133,7 +132,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-         pr_info!("Initialising Rust Misc Device Sample\n");
+ #define ZL_RANGE_OFFSET		0x80
+ #define ZL_PAGE_SIZE		0x80
+-#define ZL_NUM_PAGES		15
++#define ZL_NUM_PAGES		256
+ #define ZL_PAGE_SEL		0x7F
+-#define ZL_PAGE_SEL_MASK	GENMASK(3, 0)
++#define ZL_PAGE_SEL_MASK	GENMASK(7, 0)
+ #define ZL_NUM_REGS		(ZL_NUM_PAGES * ZL_PAGE_SIZE)
  
-         let options = MiscDeviceOptions {
--            name: c_str!("rust-misc-device"),
-+            name: c"rust-misc-device",
-         };
+ /* Regmap range configuration */
+@@ -174,9 +174,10 @@ static bool
+ zl3073x_check_reg(struct zl3073x_dev *zldev, unsigned int reg, size_t size)
+ {
+ 	/* Check that multiop lock is held when accessing registers
+-	 * from page 10 and above.
++	 * from page 10 and above except the page 255 that does not
++	 * need this protection.
+ 	 */
+-	if (ZL_REG_PAGE(reg) >= 10)
++	if (ZL_REG_PAGE(reg) >= 10 && ZL_REG_PAGE(reg) < 255)
+ 		lockdep_assert_held(&zldev->multiop_lock);
  
-         try_pin_init!(Self {
-
+ 	/* Check the index is in valid range for indexed register */
+@@ -446,6 +447,152 @@ int zl3073x_mb_op(struct zl3073x_dev *zldev, unsigned int op_reg, u8 op_val,
+ 	return zl3073x_poll_zero_u8(zldev, op_reg, op_val);
+ }
+ 
++/**
++ * zl3073x_do_hwreg_op - Perform HW register read/write operation
++ * @zldev: zl3073x device pointer
++ * @op: operation to perform
++ *
++ * Performs requested operation and waits for its completion.
++ *
++ * Return: 0 on success, <0 on error
++ */
++static int
++zl3073x_do_hwreg_op(struct zl3073x_dev *zldev, u8 op)
++{
++	int rc;
++
++	/* Set requested operation and set pending bit */
++	rc = zl3073x_write_u8(zldev, ZL_REG_HWREG_OP, op | ZL_HWREG_OP_PENDING);
++	if (rc)
++		return rc;
++
++	/* Poll for completion - pending bit cleared */
++	return zl3073x_poll_zero_u8(zldev, ZL_REG_HWREG_OP,
++				    ZL_HWREG_OP_PENDING);
++}
++
++/**
++ * zl3073x_read_hwreg - Read HW register
++ * @zldev: zl3073x device pointer
++ * @addr: HW register address
++ * @value: Value of the HW register
++ *
++ * Reads HW register value and stores it into @value.
++ *
++ * Return: 0 on success, <0 on error
++ */
++int zl3073x_read_hwreg(struct zl3073x_dev *zldev, u32 addr, u32 *value)
++{
++	int rc;
++
++	/* Set address to read data from */
++	rc = zl3073x_write_u32(zldev, ZL_REG_HWREG_ADDR, addr);
++	if (rc)
++		return rc;
++
++	/* Perform the read operation */
++	rc = zl3073x_do_hwreg_op(zldev, ZL_HWREG_OP_READ);
++	if (rc)
++		return rc;
++
++	/* Read the received data */
++	return zl3073x_read_u32(zldev, ZL_REG_HWREG_READ_DATA, value);
++}
++
++/**
++ * zl3073x_write_hwreg - Write value to HW register
++ * @zldev: zl3073x device pointer
++ * @addr: HW registers address
++ * @value: Value to be written to HW register
++ *
++ * Stores the requested value into HW register.
++ *
++ * Return: 0 on success, <0 on error
++ */
++int zl3073x_write_hwreg(struct zl3073x_dev *zldev, u32 addr, u32 value)
++{
++	int rc;
++
++	/* Set address to write data to */
++	rc = zl3073x_write_u32(zldev, ZL_REG_HWREG_ADDR, addr);
++	if (rc)
++		return rc;
++
++	/* Set data to be written */
++	rc = zl3073x_write_u32(zldev, ZL_REG_HWREG_WRITE_DATA, value);
++	if (rc)
++		return rc;
++
++	/* Perform the write operation */
++	return zl3073x_do_hwreg_op(zldev, ZL_HWREG_OP_WRITE);
++}
++
++/**
++ * zl3073x_update_hwreg - Update certain bits in HW register
++ * @zldev: zl3073x device pointer
++ * @addr: HW register address
++ * @value: Value to be written into HW register
++ * @mask: Bitmask indicating bits to be updated
++ *
++ * Reads given HW register, updates requested bits specified by value and
++ * mask and writes result back to HW register.
++ *
++ * Return: 0 on success, <0 on error
++ */
++int zl3073x_update_hwreg(struct zl3073x_dev *zldev, u32 addr, u32 value,
++			 u32 mask)
++{
++	u32 tmp;
++	int rc;
++
++	rc = zl3073x_read_hwreg(zldev, addr, &tmp);
++	if (rc)
++		return rc;
++
++	tmp &= ~mask;
++	tmp |= value & mask;
++
++	return zl3073x_write_hwreg(zldev, addr, tmp);
++}
++
++/**
++ * zl3073x_write_hwreg_seq - Write HW registers sequence
++ * @zldev: pointer to device structure
++ * @seq: pointer to first sequence item
++ * @num_items: number of items in sequence
++ *
++ * Writes given HW registers sequence.
++ *
++ * Return: 0 on success, <0 on error
++ */
++int zl3073x_write_hwreg_seq(struct zl3073x_dev *zldev,
++			    const struct zl3073x_hwreg_seq_item *seq,
++			    size_t num_items)
++{
++	int i, rc = 0;
++
++	for (i = 0; i < num_items; i++) {
++		dev_dbg(zldev->dev, "Write 0x%0x [0x%0x] to 0x%0x",
++			seq[i].value, seq[i].mask, seq[i].addr);
++
++		if (seq[i].mask == U32_MAX)
++			/* Write value directly */
++			rc = zl3073x_write_hwreg(zldev, seq[i].addr,
++						 seq[i].value);
++		else
++			/* Update only bits specified by the mask */
++			rc = zl3073x_update_hwreg(zldev, seq[i].addr,
++						  seq[i].value, seq[i].mask);
++		if (rc)
++			return rc;
++
++		if (seq->wait)
++			msleep(seq->wait);
++	}
++
++	return rc;
++}
++
+ /**
+  * zl3073x_ref_state_fetch - get input reference state
+  * @zldev: pointer to zl3073x_dev structure
+diff --git a/drivers/dpll/zl3073x/core.h b/drivers/dpll/zl3073x/core.h
+index 71af2c8001109..16e750d77e1dd 100644
+--- a/drivers/dpll/zl3073x/core.h
++++ b/drivers/dpll/zl3073x/core.h
+@@ -3,6 +3,7 @@
+ #ifndef _ZL3073X_CORE_H
+ #define _ZL3073X_CORE_H
+ 
++#include <linux/bitfield.h>
+ #include <linux/kthread.h>
+ #include <linux/list.h>
+ #include <linux/mutex.h>
+@@ -115,6 +116,28 @@ int zl3073x_dev_probe(struct zl3073x_dev *zldev,
+  * Registers operations
+  **********************/
+ 
++/**
++ * struct zl3073x_hwreg_seq_item - HW register write sequence item
++ * @addr: HW register to be written
++ * @value: value to be written to HW register
++ * @mask: bitmask indicating bits to be updated
++ * @wait: number of ms to wait after register write
++ */
++struct zl3073x_hwreg_seq_item {
++	u32	addr;
++	u32	value;
++	u32	mask;
++	u32	wait;
++};
++
++#define HWREG_SEQ_ITEM(_addr, _value, _mask, _wait)	\
++{							\
++	.addr	= _addr,				\
++	.value	= FIELD_PREP_CONST(_mask, _value),	\
++	.mask	= _mask,				\
++	.wait	= _wait,				\
++}
++
+ int zl3073x_mb_op(struct zl3073x_dev *zldev, unsigned int op_reg, u8 op_val,
+ 		  unsigned int mask_reg, u16 mask_val);
+ int zl3073x_poll_zero_u8(struct zl3073x_dev *zldev, unsigned int reg, u8 mask);
+@@ -126,6 +149,13 @@ int zl3073x_write_u8(struct zl3073x_dev *zldev, unsigned int reg, u8 val);
+ int zl3073x_write_u16(struct zl3073x_dev *zldev, unsigned int reg, u16 val);
+ int zl3073x_write_u32(struct zl3073x_dev *zldev, unsigned int reg, u32 val);
+ int zl3073x_write_u48(struct zl3073x_dev *zldev, unsigned int reg, u64 val);
++int zl3073x_read_hwreg(struct zl3073x_dev *zldev, u32 addr, u32 *value);
++int zl3073x_write_hwreg(struct zl3073x_dev *zldev, u32 addr, u32 value);
++int zl3073x_update_hwreg(struct zl3073x_dev *zldev, u32 addr, u32 value,
++			 u32 mask);
++int zl3073x_write_hwreg_seq(struct zl3073x_dev *zldev,
++			    const struct zl3073x_hwreg_seq_item *seq,
++			    size_t num_items);
+ 
+ /*****************
+  * Misc operations
+diff --git a/drivers/dpll/zl3073x/regs.h b/drivers/dpll/zl3073x/regs.h
+index 614e33128a5c9..80922987add34 100644
+--- a/drivers/dpll/zl3073x/regs.h
++++ b/drivers/dpll/zl3073x/regs.h
+@@ -260,4 +260,16 @@
+ #define ZL_REG_OUTPUT_ESYNC_WIDTH		ZL_REG(14, 0x18, 4)
+ #define ZL_REG_OUTPUT_PHASE_COMP		ZL_REG(14, 0x20, 4)
+ 
++/*
++ * Register Page 255 - HW registers access
++ */
++#define ZL_REG_HWREG_OP				ZL_REG(0xff, 0x00, 1)
++#define ZL_HWREG_OP_WRITE			0x28
++#define ZL_HWREG_OP_READ			0x29
++#define ZL_HWREG_OP_PENDING			BIT(1)
++
++#define ZL_REG_HWREG_ADDR			ZL_REG(0xff, 0x04, 4)
++#define ZL_REG_HWREG_WRITE_DATA			ZL_REG(0xff, 0x08, 4)
++#define ZL_REG_HWREG_READ_DATA			ZL_REG(0xff, 0x0c, 4)
++
+ #endif /* _ZL3073X_REGS_H */
 -- 
-2.50.1
+2.49.1
 
