@@ -1,101 +1,96 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09B523D7D3;
-	Wed, 13 Aug 2025 10:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB6574420;
+	Wed, 13 Aug 2025 10:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755080238; cv=none; b=QwHEuRm+eDFFhOGH4t1GaLoqyMob63cxg2oMtf7DFHpLFQPWRvM2jqxpE2F9sE7P063+kuxSCKy9aH8V+of3nmSHZjoBvtAk15aFX/S+cwQQYJvx7tqCDTXFDwWyi0DHSxe78PylWmviVxQbx0FZYl4VBoLy8DVGc99c9Q561Ic=
+	t=1755081255; cv=none; b=UBF+WdUV/aCPLpb4ZVthzW6vIYojVr+J15ZgIKVUhsBkQ/h2LdnLyiGaAiUr64ut5iF5euYDg/wkXuwchWCE1g76IZgM7iNSUXBinqaF0hDwKthA5wY8KZKv+Mr3NmG35tZNLZRs8/YdDTqYu7a7kgb9MowGaZv654Oqt4D4KsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755080238; c=relaxed/simple;
-	bh=lrNpZlB9umeXwTmjGE2GqJw5dnth5DCUMuZn4g5clAo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H2M6ArfXughSIg8EjLQTS1QAmCbr9fZ93pLei3OHiao+BJiaU2k1hwpj5wcMTpazUJ7tJa95rFmLYdjPyT6Rjb1WB4Mz7PadipfrKkI2N0/2Mc0OdFIBWvbUI/PLDls/adAN7WVKZeOFJ742LOx3QfxxYqgQToWK/YDq87GducQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=2ca1AB1f; arc=none smtp.client-ip=68.232.153.233
+	s=arc-20240116; t=1755081255; c=relaxed/simple;
+	bh=RdQTeqQB8uoTlU13DhVu51bey3H2cntBXfP/WY0N2a4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=G2cEs+OqnYZ9/ymk3CgEkfOqlxTEQ6QB+DCshqiQshgCeYb7PpAbBst2Kym5BOSLT5R6cd3gHY74BNeVi9NNWk1iumxDg4rd/Uaenfail667PMNqHNWGo5szuay2aaF0/w9HvWslhipi4PHXvpKaLo8PjVK0nOOVXSaG/fEFnN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=cgT8KXDs; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="2ca1AB1f"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="cgT8KXDs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1755080236; x=1786616236;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lrNpZlB9umeXwTmjGE2GqJw5dnth5DCUMuZn4g5clAo=;
-  b=2ca1AB1fMtm4lyLXtMdTgobyZfhbZGoFIvcOdws8xcBrGz4k69RXVEuW
-   lVqz18yAMH6ATq5P6ZAVGPE7zY6hqK12USKBgeJ/UX6qtBNzuEFRMGwpe
-   aTiqqUCS9EMoWWzqVaLltBp6gkU/jKdpAmwoW8fmZiVWuye9y1tAWopVd
-   gre21shE2sUORIyQEE9fdQ7KndVY/LANHDqlidcmICvyLsx9tFKr29kIh
-   dv0mP/vdq+YSkQaYINyfPQPhCRMuC0K4kx3702U8lROqkfe8Beg30kmzy
-   PUocPBhv5ApZ0sDEXpbDBfNs3gwGsriJam+QgpK+PVEshCZJuf2xEGN3S
-   g==;
-X-CSE-ConnectionGUID: 1xXjHcfyR+iACABg/xuIgQ==
-X-CSE-MsgGUID: Z/+MFsDASBqEvft3BQqCHw==
+  t=1755081253; x=1786617253;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=RdQTeqQB8uoTlU13DhVu51bey3H2cntBXfP/WY0N2a4=;
+  b=cgT8KXDsZdgp7Qk6jRieyswytv+ZJpt9uCc7qm4Rctsff5ENT4T3wj3n
+   N/lHw5tsympIfWG6GgMc7vV+fLOtZbWA0GH4s8dBmZLc2U2G9GUWHt0zI
+   fLZoOb6k7QKGIf8A4ybovEPjuSUlCWsXDW9F95FD1zI3Gd6mnRU9kd9qr
+   vmMNK77ap4PuDbYWeKhtFxSMyD9K5FLFyPVyQpvdKMZCazMHleX2TZfUc
+   Gsr9rZgrm9t/WA8UPA1EwH8NSgbo+t1beo1G8YlCSIJVqAMp7AFUo1vjU
+   tJnf7jpumkcLguUxwawRsl6fS3GvN1qR/2a3lAWkMhTMf7BHTeLRHiyE8
+   w==;
+X-CSE-ConnectionGUID: 7pl1KfoDRtWRHbFbwqg1xg==
+X-CSE-MsgGUID: 02vxkrFKRsK/KyyW/r515w==
 X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
-   d="scan'208";a="276534688"
+   d="scan'208";a="276535068"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 Aug 2025 03:17:14 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 Aug 2025 03:34:13 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
  chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Wed, 13 Aug 2025 03:16:44 -0700
-Received: from localhost (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
- Transport; Wed, 13 Aug 2025 03:16:43 -0700
-Date: Wed, 13 Aug 2025 12:13:28 +0200
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <richardcochran@gmail.com>, <o.rempel@pengutronix.de>,
-	<alok.a.tiwari@oracle.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v3 0/3] net: phy: micrel: Add support for lan8842
-Message-ID: <20250813101328.7jpaqnxyf6ku7fht@DEN-DL-M31836.microchip.com>
-References: <20250813063044.421661-1-horatiu.vultur@microchip.com>
+ 15.1.2507.44; Wed, 13 Aug 2025 03:34:07 -0700
+Received: from che-ll-i17164.microchip.com (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.44 via Frontend Transport; Wed, 13 Aug 2025 03:34:04 -0700
+From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Parthiban
+ Veerasooran" <parthiban.veerasooran@microchip.com>
+Subject: [PATCH net 1/2] microchip: lan865x: fix missing netif_start_queue() call on device open
+Date: Wed, 13 Aug 2025 16:03:54 +0530
+Message-ID: <20250813103355.70838-2-parthiban.veerasooran@microchip.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250813103355.70838-1-parthiban.veerasooran@microchip.com>
+References: <20250813103355.70838-1-parthiban.veerasooran@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20250813063044.421661-1-horatiu.vultur@microchip.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-The 08/13/2025 08:30, Horatiu Vultur wrote:
-> Add support for LAN8842 which supports industry-standard SGMII.
-> While add this the first 3 patches in the series cleans more the
-> driver, they should not introduce any functional changes.
-> 
-> v2->v3:
-> - add better defines for page numbers
-> - fix the statis->tx_errors, it was reading the rx_errors by mistake
-> - update lanphy_modify_page_reg to keep lock over all transactions
-> 
-> v1->v2:
-> - add the first 3 patches to clean the driver
-> - drop fast link failure support
-> - implement reading the statistics in the new way
-> 
-> Horatiu Vultur (3):
->   net: phy: micrel: Introduce lanphy_modify_page_reg
->   net: phy: micrel: Replace hardcoded pages with defines
->   net: phy: micrel: Add support for lan8842
+This fixes an issue where the transmit queue is started implicitly only
+the very first time the device is registered. When the device is taken
+down and brought back up again (using `ip` or `ifconfig`), the transmit
+queue is not restarted, causing packet transmission to hang.
 
-Argh... by mistake I drop one of the patches. I will need to send a new
-version.
+Adding an explicit call to netif_start_queue() in lan865x_net_open()
+ensures the transmit queue is properly started every time the device
+is reopened.
 
-> 
->  drivers/net/phy/micrel.c   | 714 +++++++++++++++++++++++++++----------
->  include/linux/micrel_phy.h |   1 +
->  2 files changed, 522 insertions(+), 193 deletions(-)
-> 
-> -- 
-> 2.34.1
-> 
+Fixes: 5cd2340cb6a3 ("microchip: lan865x: add driver support for Microchip's LAN865X MAC-PHY")
+Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+---
+ drivers/net/ethernet/microchip/lan865x/lan865x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-pw-bot: cr
-
+diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+index dd436bdff0f8..d03f5a8de58d 100644
+--- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
++++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+@@ -311,6 +311,8 @@ static int lan865x_net_open(struct net_device *netdev)
+ 
+ 	phy_start(netdev->phydev);
+ 
++	netif_start_queue(netdev);
++
+ 	return 0;
+ }
+ 
 -- 
-/Horatiu
+2.34.1
+
