@@ -1,97 +1,171 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B162E5B0F;
-	Wed, 13 Aug 2025 13:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898422EAB90
+	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 14:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755093532; cv=none; b=lDIw9DSQSASCSNaPu3JGpV3GpG739mP19Nusl1f+g6LA5zPfXLcTg2hLGr0j/Q8QgSMTk5PSen8VdIww1clKRCLeK1WsU4X8a6rxN9o9hNY/nwafS7WBYoynTyPE0/riTdoQthbANTlfanMvnXKzybB9V6SZ4CQTh/2Hr1lp058=
+	t=1755093899; cv=none; b=InCpvKnQA8plXctB/hbAnF2Q7twbj0RKn31rLJwvqZi1ERmv5BZxSXGy+K/4WBFZ8vWWOWSfWp74d8GdVay9CoqnZlJUW/Bi5fjtOdIMba6dHjPD70bgCa9P544ZI061kJzVCv79ikRfzS4Br9FhwJ9f31DkbypYXVwGyO3vDSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755093532; c=relaxed/simple;
-	bh=6HwYduJ8jkvem48IK0jCYkDJgXCH1sFEnwdoeiblt8w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GC9GBtPfQQCfkz9/+sBxM0zW+i+jSAu4YCFWBj0mPcBvUnbAp0rPuh2cPcedX8GoSsoBgxeSW2YyL5juija7wD2eYBjh6yog8+HFJ4tlxCW2JdXVtMqhDZOlnuzvAeXTsuQ1w0YBTIEL9orZeOltZQ5C4FfaUfE7f69PJEKpLCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZtFnrVty; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755093899; c=relaxed/simple;
+	bh=ACUeZO4hEXy/Xvi2AUY0W66hUYnhOTLSnsztMV25Z64=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=S945kzqvwuESVfZuDsLEf++ZStK+eM+Oor7c+mQ7yOMQZM7GnYyc594PcNp4A9AozFP2i7YsH0QK3T4/ZZXYv1HJONoXD2BFYgXXL1rFol4e62OyUnrcPHjFbWDhdwQ+0L2p1QaNxnuxq7/r3Phzv7Yv7mKUQlq8NUr67J2g0J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=NCJWPtz3; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZtFnrVty"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-709e1928984so3978596d6.0;
-        Wed, 13 Aug 2025 06:58:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755093530; x=1755698330; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CqcR6+EwpJ88rH6lLh9pAzX0q5RJ3i3M/OlyWm0ZwJ8=;
-        b=ZtFnrVtyO5w3qzpTeaJhNjIizoV/NT00eopptxCB21s010MV3+DLP9+YfVYhgX2M5a
-         ikbZAjw4/Wcng6y4vJvsOSskWUqcmaihJd+gwXmObGeCbut2TzF/3iuemcembZ1G2V16
-         kq1n5F2+aK9ujwNFwwA3VhEWHsOpW56oRSWD/39x838O55Z/be4nYzAl9zCfnP6LhmGM
-         P3MQw4G6v9zG+mzoI0Zov5YrODfBu8f7kuGYN0dEjaN3M2ZY94Av4B6/hlZxmChWv/ec
-         WRC5rsMiiLS+xOCe9+DyVPuwKnbbAAjaaI///9L/lK8sEnA3DSf/Dyg/QPPCsL68sONh
-         yFtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755093530; x=1755698330;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CqcR6+EwpJ88rH6lLh9pAzX0q5RJ3i3M/OlyWm0ZwJ8=;
-        b=stZNLCBRrj04atDDSl+Qn6RVwoTY4wrtTt6XwtAddyEis1ip5FQhoovIRAhIMYHXaL
-         fcZwzvQFnReYB8kP1KsEVh3g3y0H5iC5j2FOm0+7Iz2k1eVjlldWKUbBoXPrDqVG1rEx
-         hWfRoZorBLTXlxvFTwDp+5aYKDPYwYmzYm7wSO3S43rOadwtEW4juBObRUJ4iH28NpwX
-         lns8jBTmh0j35DTh4fM0a2N5ZlyKmFrpSCsOmRWmrvBITpDAA37MaV2sSj1L77PpORaz
-         8sAo/GoQGTugYeYAwHwuj3SNCRnZBLPx+ArDLnjJw+G0fRC5uSJJtLF8o57xzFP69i4v
-         PEng==
-X-Forwarded-Encrypted: i=1; AJvYcCUJf+jP1h98QoAA+0wq7T1glWbP6j03ne2fBDF3QnjWLr7/s5X1TP/pA3SSh2I7IGAFEzSYpB9ooGCyX8A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzw+6CXnj+cXqKI9cUpnv5ZJbwBXKSvagMPrP3E0mbmfyxxKG89
-	Ve2vGf1PHZtB/Nx7REiEJg/Y13ZzjKzF+6wM7tgJLLVWUD7iYedE8uQxmOrDMNbqZrJAu/Vg0cF
-	bEXdtVTnoujlpJAyNy/dZZCFdSHjMqnk=
-X-Gm-Gg: ASbGncvODM2dzQHJcs15XTyyECMAC4ZSThQqqAy4Luo5ZP5u8Z7O4eeysw8pXl0lKQt
-	/XRAB4q07e9AH+GmZ/3MS2BhZ3eXapCA9ATirlvmkgIxHZL62vuRmEYwf+HOJxaSHC/xLZ6ITlP
-	APpnJ45yoLD60IS7kFUD58M+PzYGZ2uG0YuSkdMOsUdtA9SYkG1JerODg5Z3eISWsFZUic9QHPl
-	z6l2g==
-X-Google-Smtp-Source: AGHT+IHG5sDXQgMBj7dETvf6wkB+/V7vKTv9zqIB2Y4Plwsxg1ztdHBJ0vtGqi9B6FT+Cg4Ti7iuWLYCtM9FJwyuMLY=
-X-Received: by 2002:a05:622a:304:b0:4b0:b11b:ae8b with SMTP id
- d75a77b69052e-4b0fc892e81mr17156011cf.12.1755093529933; Wed, 13 Aug 2025
- 06:58:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="NCJWPtz3"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8ED68FFF6C;
+	Wed, 13 Aug 2025 15:54:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1755093295;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=CY7Vfcwf0rZ/DD4O47SSJWAgt1gNE4pz0JCn/z2z9QQ=;
+	b=NCJWPtz3uMVxxA9+Fho8TjHdbSzduxktnAk8EoyRijfrdXLbRV9NmjnM0ZGmQUXzwLE5yY
+	uXt7+kl+18MpFovZrLU2FAvJh97MYGinaKqAZWh0zqU3R6HR4Z6rrFCl1fArHMqHMzLL/K
+	2Wa0PKgLNpCoOMD9OVq3VaKgVyPY94AVyiuGlyRUeyV6HxFeelXcXxHVbqH/QfqcgL/9Qi
+	G4TMeBt5tI325QmqcDeTdOQKZb16f9c6FxCYs5X0Nwb0f5V08WtREr3EHPeog7trooqzur
+	R7is5U/pO+X2ejFI+vDiKdkvdBgVgD8km4veJt88nVdx/ESoNwBs5YGkhxQSQw==
+Date: Wed, 13 Aug 2025 15:54:52 +0200
+From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukma@nabladev.com>
+To: Frieder Schrempf <frieder.schrempf@kontron.de>
+Cc: Woojung.Huh@microchip.com, kuba@kernel.org, andrew@lunn.ch,
+ netdev@vger.kernel.org, Tristram.Ha@microchip.com
+Subject: Re: KSZ9477 HSR Offloading
+Message-ID: <20250813155452.55c4eb81@wsk>
+In-Reply-To: <8e761c31-728c-4ff7-925a-5e16a9ef1310@kontron.de>
+References: <05a6e63e-96c1-4d78-91b9-b00deed044b5@kontron.de>
+	<6d0e1f47-874e-42bf-9bc7-34856c1168d1@lunn.ch>
+	<1c140c92-3be6-4917-b600-fa5d1ef96404@kontron.de>
+	<6400e73a-b165-41a8-9fc9-e2226060a68c@kontron.de>
+	<20250129121733.1e99f29c@wsk>
+	<0383e3d9-b229-4218-a931-73185d393177@kontron.de>
+	<20250129145845.3988cf04@wsk>
+	<42a2f96f-34cd-4d95-99d5-3b4c4af226af@kontron.de>
+	<BL0PR11MB2913C7E1AE86A3A0EB12D0D7E7EE2@BL0PR11MB2913.namprd11.prod.outlook.com>
+	<1400a748-0de7-4093-a549-f07617e6ac51@kontron.de>
+	<BL0PR11MB29130BB177996C437F792106E7E92@BL0PR11MB2913.namprd11.prod.outlook.com>
+	<20250203103113.27e3060a@wsk>
+	<1edbe1e4-9491-4344-828d-4c3b73954e8a@kontron.de>
+	<BL0PR11MB2913B949D05B9BB73108A5FFE7F52@BL0PR11MB2913.namprd11.prod.outlook.com>
+	<20250203150418.7f244827@kernel.org>
+	<BL0PR11MB2913ECAA6F0C97E342F7DE22E7F42@BL0PR11MB2913.namprd11.prod.outlook.com>
+	<8e761c31-728c-4ff7-925a-5e16a9ef1310@kontron.de>
+Organization: Nabla
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250812082244.60240-1-miguelgarciaroman8@gmail.com> <689c8dbe91cf3_125e46294ae@willemb.c.googlers.com.notmuch>
-In-Reply-To: <689c8dbe91cf3_125e46294ae@willemb.c.googlers.com.notmuch>
-From: =?UTF-8?B?TWlndWVsIEdhcmPDrWEgUm9tw6Fu?= <miguelgarciaroman8@gmail.com>
-Date: Wed, 13 Aug 2025 15:58:38 +0200
-X-Gm-Features: Ac12FXxShR1-e_ZrrPYb5HQgreJRC5P7lo6y5R54QnH-y7CYFqm7-u87cQaRMkQ
-Message-ID: <CABKbRoJFtNFic6REpme2MgS-c4SPOXZ-oJF-TAFKK3ihAiRQjA@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] tun: replace strcpy with strscpy for ifr_name
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, jasowang@redhat.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, skhan@linuxfoundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thanks Willem. Should I resend with your Reviewed-by tag or will it be
-picked up when applied?
+Hi Frieder,
 
-El mi=C3=A9, 13 ago 2025 a las 15:06, Willem de Bruijn
-(<willemdebruijn.kernel@gmail.com>) escribi=C3=B3:
->
-> Miguel Garc=C3=ADa wrote:
-> > Replace the strcpy() calls that copy the device name into ifr->ifr_name
-> > with strscpy() to avoid potential overflows and guarantee NULL terminat=
-ion.
-> >
-> > Destination is ifr->ifr_name (size IFNAMSIZ).
-> >
-> > Tested in QEMU (BusyBox rootfs):
-> >  - Created TUN devices via TUNSETIFF helper
-> >  - Set addresses and brought links up
-> >  - Verified long interface names are safely truncated (IFNAMSIZ-1)
-> >
-> > Signed-off-by: Miguel Garc=C3=ADa <miguelgarciaroman8@gmail.com>
->
-> Reviewed-by: Willem de Bruijn <willemb@google.com>
+> Am 04.02.25 um 15:55 schrieb Woojung.Huh@microchip.com:
+> > Hi Jakub,
+> >   
+> >> -----Original Message-----
+> >> From: Jakub Kicinski <kuba@kernel.org>
+> >> Sent: Monday, February 3, 2025 6:04 PM
+> >> To: Woojung Huh - C21699 <Woojung.Huh@microchip.com>
+> >> Cc: frieder.schrempf@kontron.de; lukma@denx.de; andrew@lunn.ch;
+> >> netdev@vger.kernel.org; Tristram Ha - C24268
+> >> <Tristram.Ha@microchip.com> Subject: Re: KSZ9477 HSR Offloading
+> >>
+> >> EXTERNAL EMAIL: Do not click links or open attachments unless you
+> >> know the content is safe
+> >>
+> >> On Mon, 3 Feb 2025 14:58:12 +0000 Woojung.Huh@microchip.com wrote:
+> >>  
+> >>> Hi Lukasz & Frieder,
+> >>>
+> >>> Oops! My bad. I confused that Lukasz was filed a case originally.
+> >>> Monday  
+> >> brain-freeze. :(  
+> >>>
+> >>> Yes, it is not a public link and per-user case. So, only Frieder
+> >>> can see  
+> >> it.  
+> >>> It may be able for you when Frieder adds you as a team. (Not
+> >>> tested  
+> >> personally though)
+> >>
+> >> Woojung Huh, please make sure the mailing list is informed about
+> >> the outcomes. Taking discussion off list to a closed ticketing
+> >> system is against community rules. See below, thanks.
+> >>
+> >> Quoting documentation:
+> >>
+> >>   Open development
+> >>   ----------------
+> >>
+> >>   Discussions about user reported issues, and development of new
+> >> code should be conducted in a manner typical for the larger
+> >> subsystem. It is common for development within a single company to
+> >> be conducted behind closed doors. However, development and
+> >> discussions initiated by community members must not be redirected
+> >> from public to closed forums or to private email conversations.
+> >> Reasonable exceptions to this guidance include discussions about
+> >> security related issues.
+> >>
+> >> See:
+> >> https://www.kernel.org/doc/html/next/maintainer/feature-and-driver-maintainers.html#open-development
+> >>  
+> > 
+> > Learn new thing today. Didn't know this. Definitely I will share it
+> > when this work is done. My intention was for easier work for
+> > request than having me as an middleman for the issue.  
+> 
+> Here is a follow-up for this thread. I was busy elsewhere, didn't have
+> access to the hardware and failed to respond to the comments from
+> Microchip support team provided in their internal ticket system.
+> 
+> As a summary, the Microchip support couldn't reproduce my issue on
+> their side and asked for further information.
+> 
+> With the hardware now back on my table I was able to do some further
+> investigations and found out that this is caused by a misconfiguration
+> on my side, that doesn't get handled/prevented by the kernel.
+
+If I remember correctly from the ticket - there was also an issue with
+the size of MTU for HSR packets.
+
+Am I correct?
+
+> 
+> The HW forwarding between HSR ports is configured in
+> ksz9477_hsr_join() at the time of creating the HSR interface by
+> calling ksz9477_cfg_port_member().
+> 
+> In my case I enabled the ports **after** that which caused the
+> forwarding to be disabled again as ksz9477_cfg_port_member() gets
+> called with the default configuration.
+> 
+> If I reorder my commands everything seems to work fine even with
+> NETIF_F_HW_HSR_FWD enabled.
+> 
+> I wonder if the kernel should handle this case and prevent the
+> forwarding configuration to be disabled if HSR is configured? I'll
+> have a look if I can come up with a patch for this.
+> 
+
+Thanks  for looking for this issue. I'm looking forward for your
+patches.
+
+-- 
+Best regards,
+
+Lukasz Majewski
+
+--
+Nabla Software Engineering GmbH
+HRB 40522 Augsburg
+Phone: +49 821 45592596
+E-Mail: office@nabladev.com
+Geschftsfhrer : Stefano Babic
