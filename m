@@ -1,64 +1,64 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B8F231839;
-	Wed, 13 Aug 2025 15:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0EF235341;
+	Wed, 13 Aug 2025 15:26:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755098712; cv=none; b=AdAw9V7kLg26BAf50DAoDSN1VH4PoaWzpIwL84PBON1j81s0/TQl4Y34JvUK/5mtfwAdpUOXeRQVZH9Eo4VE8qLkN7mcl9ZVI+8KlGNyToxxLwy9K9Q8sTcGvtLZi3L9mi6SaX5cL7jTvuV9wB/g/mLPfqYskn0zgkSIZXN9pHg=
+	t=1755098782; cv=none; b=NDGn5JUXkMjNOQObxr+4U/ghBCFOVIoUPTztMxU4hZUZ8GxMxLKdPyRgj5F5Xp5NOdESRz7ta/q68Hjp0eHfezx/GxvsgFYxsAMdpGBn+UeX3gC6OiQki8BzwDMzBt+aki5OiY9E/g5ZVzfP1un4qzZ/wUkMZ3+55yxCJgJh1kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755098712; c=relaxed/simple;
-	bh=aSZYpogVJcVF1l/xXID+mUfdRe8mg1bAaCN9UZNml/I=;
+	s=arc-20240116; t=1755098782; c=relaxed/simple;
+	bh=T9ew6vV7It536VuL2qh0FYOmync27BJ+NqE+bgI6NO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qISBmQLT/HIdTnW1AkZNOagVAHUWJ8w3R30LuZPqVlV4fDkxySaRRPcaDenx2KMOB9fnqFyGghzk2PSsKEJ1KGj6rf4uzL+M7mFzXQxv/A1dqmljl/0blQY0+l+j5gYOrltn5tdiYU7+fNTxfiaBw4A4y9PPVVBhhsBB2O2OmZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WDNMMUqI; arc=none smtp.client-ip=209.85.221.43
+	 MIME-Version:Content-Type; b=bxeJDHNU9yO85QB5yrw9AHUVqQehKCsG6Eoiynr1mS6or0wlI83KpvmwZDcRVekB/E2r9/UVRHwRm1dbuQh2yS6OnkG7O7I7n2+orVSCvl5+8CigYl0ZEB+Cl5uIRzDxacVJ98fYeVycFOTzYYqeAdGO3svWbY0RGeFgGADtJCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OvGJYVng; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WDNMMUqI"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3b792b0b829so6753904f8f.3;
-        Wed, 13 Aug 2025 08:25:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OvGJYVng"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-45a12b3f4b3so15303765e9.3;
+        Wed, 13 Aug 2025 08:26:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755098708; x=1755703508; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755098778; x=1755703578; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vIKzP+v10goqJv8MZ6hUQxh9iZh9GLNgEJG//KT6geg=;
-        b=WDNMMUqIj72UOuM/KvB5/7uOlhvQKYtUnSqlCukpkEhGKf9f+91kA9xoTXXupsEOLq
-         iDP79d4Cj+O283jO0BGWW7IkCzEmQ4TsbNldWIlZopnHaPLBxoht0z83N4kLO23LT3BJ
-         jfpMgbqeE/5PxvKrGip8a5/3E3l+fwLMBCG/H1vrRWELh8+taSivtHABKi1XRqHBHTxL
-         wc8ZdU4Rw7P6f78aWRdIes5uP8T2ZdDV28ZYSvDSxd10vsTTqhPCOTxtO5qdmkSXVth8
-         Sz8Ao6RgEqWN28azI3TqzYUSVSdp/FgTnmK8axzttq8r5+kfrIb5RUvo49V1yDv1AGNX
-         4+TQ==
+        bh=bHmzj/owjBnWQXccQqjtqoeZzUsvFVlqZRdyc+4n9B0=;
+        b=OvGJYVnghhi28Z/vyIwXXaJ73/C4tzPL3ty8ZRy8I5HKQGSj4wys9rDngh+dL5bmb+
+         g76nsoHo+QLfxxWTfJcYOTCJ9rJ//ykmd1fqY76iFaf4dQwumDdXoaao3fIld6vaWx5Q
+         W1o+3lH2+n0mo0TWVFK3ImOml9WWaoAsHn2lHFWcQwk89sGbnXCHvo3bmvcj5PkUhsHC
+         3aeTXTxnyTPkCbIXaxHQEJ93vQGEF/0uIqCvhK/8ajawy+9WxU1I+H7Mf9rLPAIroBhB
+         hRQ7ZSP80TxDUPp3BGDL8/aFZ44FaoulcdmzYa9tBu3mI7Ma9JrEFf/T5eKVFQ9psRga
+         EZWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755098708; x=1755703508;
+        d=1e100.net; s=20230601; t=1755098778; x=1755703578;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vIKzP+v10goqJv8MZ6hUQxh9iZh9GLNgEJG//KT6geg=;
-        b=Ajd4D6h0+xG7syHitV8rcNOQLLtEC7VUb8CRbu04In4pdZZsHd8lMKHoAWyZv+lhCa
-         6iWMOPDJE6Hw0sHdpGq2gyiaJu+NQkMhGauJK/nU6Pz9J3KbtIg9HAHeRgp11GVt//9u
-         4R+FGZJAmRLlkA/ZL2OKPGrFY+GcvUzeFHSGy5cT61cncaUDe7B3eDSKhkp4mn1FRXE/
-         7QtnktQSD0oo5leumkNI8XYJ/k4flalEAqUEwoj3T0iVZGJhk2YpENeF1+K9+smc5hjO
-         C9z/QQOI9x1eMbXGJ6LRGWyFNtdi6et+D5w1BQyc3DbtGjAviTjkdAzMcXzS47b1Qeug
-         r4gg==
-X-Forwarded-Encrypted: i=1; AJvYcCUqSTyvW1XvGQ2x4G8qXXbCO0pW6i2NUX6Uze0UHTuJNYcmTDdk/kGV+h6tzDjCDuFAyAUNBo+hvgtKCAif@vger.kernel.org, AJvYcCXzcr6tYoIenwtFZcbo+R1cY84YO0FgvWVAlpu4B3ZqJ9hnXGeaHIGshTW+qUSZMG9bJSuPTfpsrzhe@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlUeBR7A15HZaB5gGMqtbE1MJiK9OkI4CnwtvewLfLBU6nAoTQ
-	/lyTE64UABsNRIG/m2fuRN/b0YUis/yPZPBhgRKre6LOMKKj0ZjFGHkErnxHwA==
-X-Gm-Gg: ASbGnctquke610gGNK9wLqJCBJTpZHGMfq2Io0U3uRLNKT8NfV4Ly0TodgmHb4NGcNw
-	DwoZMCkwlm3UcBkfwPrLTblYfc4doDJgU7sfxN0EPbYcEBBAQ4LF2cKrUYxpRMHp5nCPFI2pSSk
-	tvWLYP9hKbT6PXOUsLFWsWB2YW38aXkGpnHgbfmEXNbOFsp2EmQiBQYrP0w/kIkgjb2n9MpFz35
-	/FRKvoQ09n3JWvSzeVCf8jAQuG1af0Sb9SuYnApnAoYSaB/BFzNVJtBmTtSgPKILjHr2f4vwQfU
-	C8z8YF/QE9mMFh5mQyDRpEjULf9+9zU/9JIHBC2jSZKE0Hb15HnBSrY3ZLnZW/3lhaj+nyMNltS
-	Lt/yrGt8xYxVc1irlENc2vxuikbrCnpqG09MB9lWkocXI+XAX3x3B9vp3oPEl+QFGRBEeMySIhg
-	==
-X-Google-Smtp-Source: AGHT+IFDK6njZdaYiIYPO/ZMO6ujPoE/G41Mb7N255M2MT+1frSU31mMtoR+dOSJ53Ri0BsuUYgPGg==
-X-Received: by 2002:a05:6000:2c01:b0:3b8:d4ad:6af0 with SMTP id ffacd0b85a97d-3b917f14e1amr2572720f8f.40.1755098708425;
-        Wed, 13 Aug 2025 08:25:08 -0700 (PDT)
+        bh=bHmzj/owjBnWQXccQqjtqoeZzUsvFVlqZRdyc+4n9B0=;
+        b=KWB3pQ3/DEgSyZ+VqaMI6JWhOju4EVqab4Wo4FXM4x2bOQ7Q7fl/8rTjcevAcZZjXQ
+         zlJtyNR3Ly6pUuN6jdPfva4I3k+3cyuXdR8YYPDlpuyX4Oej/1NGKhiID2rPCAszcxhL
+         8ElZBZ3lv1M3Jxv8zqID/9MDnbGCBaL9zX2Enmzy6PTrF++cZxDUWtrqx9yTnsXs11o9
+         Ti/prwd89SNOvJFccf9fpTtQdiMfUZD2ZzK+c14x8vXPODH4WsjZK05+8sruCHGV48ms
+         1kJBP43TbvEc17sBQlEd75zSyGFmR1P1qlO4woHxL5vESL0fCkuqSbloa3xiOvDi8Uzl
+         OH2A==
+X-Forwarded-Encrypted: i=1; AJvYcCWsXAJwWP2omI2ZTg9QguGh5YJv2CIklclVRNmkIm9zMkLBxqVoyrTZmrgq72qVL5xBoyzqoGD08R/+@vger.kernel.org, AJvYcCXwMmSXgEmPz8DA0W6GtnM2k1T7TY0CKT4sD88c1sZUcr6NIqUCVyGM7ZoNAxRyCF9Wv7XHi+DNMK4J9TYP@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP39d1jCVIL/hsKWM0rIsiNcvefMuB+nrMIvhCCAeQAen3iMfd
+	brFtvSELpXfFATjSaohSDZpuxZ4HgPfUA310WEPQAHBafjdDMz9x1TPR
+X-Gm-Gg: ASbGncu3KYuU+b+FVlN3yxyMexRi3CcoR6AdV+mDBxeLRyiPnvcJyt3NevvIxVBgiIH
+	stSZVb/PhKw5U1JsxzWHiZOkasZ3+q57f1oYmQjm0xqghNg6nIbNXoSmSGuzqHE9kI2pp+n1Opl
+	4LMRfcOL+AMJsdMK+SAcLgSvdm/RwMvGasVtvf0WwsrdrRK/A2tZfLDhRpx5jU0setQ+noEl0mh
+	Ru8JSphEeXKMykio5sAIQpSzfektcy1FCcxTsx2tzSpQqbUdYszIYzqofFNTYfAP3m7HCTzyBjD
+	Uzoi18k8tfTB4WcJ0TiFWd/Mat1Pb+PUyFLBIhq+h9Qx4oQz0gxpL1+zqodcc2WoSK2vsvHIO+X
+	BpzP9e5ShGJjwfRzZoX8BrKj67BgDqzhnjhWJo07QGCQfYeyoBzdXIUUiTxzGHgYFby/urUuqN2
+	tKEbzkN1TV
+X-Google-Smtp-Source: AGHT+IHUC2ftwzSvSylSdT06ajBela8u5SU+ijYkDLGHo9/q750n74l021ps+CiYV2OdEDDglYn8Pw==
+X-Received: by 2002:a05:600c:19cf:b0:458:bfe1:4a91 with SMTP id 5b1f17b1804b1-45a166350a2mr28993085e9.20.1755098778076;
+        Wed, 13 Aug 2025 08:26:18 -0700 (PDT)
 Received: from jernej-laptop.localnet (86-58-6-171.dynamic.telemach.net. [86.58.6.171])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1abcd59bsm465535e9.3.2025.08.13.08.25.07
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1a50b99bsm6611325e9.5.2025.08.13.08.26.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 08:25:08 -0700 (PDT)
+        Wed, 13 Aug 2025 08:26:17 -0700 (PDT)
 From: Jernej =?UTF-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -71,13 +71,14 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
  linux-kernel@vger.kernel.org, Andre Przywara <andre.przywara@arm.com>
 Subject:
- Re: [PATCH net-next v2 04/10] soc: sunxi: sram: register regmap as syscon
-Date: Wed, 13 Aug 2025 17:25:05 +0200
-Message-ID: <5910992.DvuYhMxLoT@jernej-laptop>
-In-Reply-To: <20250813145540.2577789-5-wens@kernel.org>
+ Re: [PATCH net-next v2 05/10] arm64: dts: allwinner: a523: Add GMAC200
+ ethernet controller
+Date: Wed, 13 Aug 2025 17:26:15 +0200
+Message-ID: <5030505.31r3eYUQgx@jernej-laptop>
+In-Reply-To: <20250813145540.2577789-6-wens@kernel.org>
 References:
  <20250813145540.2577789-1-wens@kernel.org>
- <20250813145540.2577789-5-wens@kernel.org>
+ <20250813145540.2577789-6-wens@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,23 +88,15 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
 
-Dne sreda, 13. avgust 2025 ob 16:55:34 Srednjeevropski poletni =C4=8Das je =
+Dne sreda, 13. avgust 2025 ob 16:55:35 Srednjeevropski poletni =C4=8Das je =
 Chen-Yu Tsai napisal(a):
 > From: Chen-Yu Tsai <wens@csie.org>
 >=20
-> If the system controller had a ethernet controller glue layer control
-> register, a limited access regmap would be registered and tied to the
-> system controller struct device for the ethernet driver to use.
+> The A523 SoC family has a second ethernet controller, called the
+> GMAC200. It is not exposed on all the SoCs in the family.
 >=20
-> Until now, for the ethernet driver to acquire this regmap, it had to
-> do a of_parse_phandle() + find device + dev_get_regmap() sequence.
-> Since the syscon framework allows a provider to register a custom
-> regmap for its device node, and the ethernet driver already uses
-> syscon for one platform, this provides a much more easier way to
-> pass the regmap.
->=20
-> Use of_syscon_register_regmap() to register our regmap with the
-> syscon framework so that consumers can retrieve it that way.
+> Add a device node for it. All the hardware specific settings are from
+> the vendor BSP.
 >=20
 > Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 
@@ -112,49 +105,88 @@ Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 Best regards,
 Jernej
 
->=20
 > ---
+>=20
 > Changes since v1:
-> - Fix check on return value
-> - Expand commit message
+> - Fixed typo in tx-queues-config
 > ---
->  drivers/soc/sunxi/sunxi_sram.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  .../arm64/boot/dts/allwinner/sun55i-a523.dtsi | 55 +++++++++++++++++++
+>  1 file changed, 55 insertions(+)
 >=20
-> diff --git a/drivers/soc/sunxi/sunxi_sram.c b/drivers/soc/sunxi/sunxi_sra=
-m.c
-> index 4f8d510b7e1e..1837e1b5dce8 100644
-> --- a/drivers/soc/sunxi/sunxi_sram.c
-> +++ b/drivers/soc/sunxi/sunxi_sram.c
-> @@ -12,6 +12,7 @@
+> diff --git a/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi b/arch/arm64/=
+boot/dts/allwinner/sun55i-a523.dtsi
+> index 6b6f2296bdff..449bcafbddcd 100644
+> --- a/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
+> +++ b/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
+> @@ -180,6 +180,16 @@ rgmii0_pins: rgmii0-pins {
+>  				bias-disable;
+>  			};
 > =20
->  #include <linux/debugfs.h>
->  #include <linux/io.h>
-> +#include <linux/mfd/syscon.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
->  #include <linux/of_address.h>
-> @@ -377,6 +378,7 @@ static int __init sunxi_sram_probe(struct platform_de=
-vice *pdev)
->  	const struct sunxi_sramc_variant *variant;
->  	struct device *dev =3D &pdev->dev;
->  	struct regmap *regmap;
-> +	int ret;
-> =20
->  	sram_dev =3D &pdev->dev;
-> =20
-> @@ -394,6 +396,10 @@ static int __init sunxi_sram_probe(struct platform_d=
-evice *pdev)
->  		regmap =3D devm_regmap_init_mmio(dev, base, &sunxi_sram_regmap_config);
->  		if (IS_ERR(regmap))
->  			return PTR_ERR(regmap);
+> +			rgmii1_pins: rgmii1-pins {
+> +				pins =3D "PJ0", "PJ1", "PJ2", "PJ3", "PJ4",
+> +				       "PJ5", "PJ6", "PJ7", "PJ8", "PJ9",
+> +				       "PJ11", "PJ12", "PJ13", "PJ14", "PJ15";
+> +				allwinner,pinmux =3D <5>;
+> +				function =3D "gmac1";
+> +				drive-strength =3D <40>;
+> +				bias-disable;
+> +			};
 > +
-> +		ret =3D of_syscon_register_regmap(dev->of_node, regmap);
-> +		if (ret)
-> +			return ret;
->  	}
+>  			uart0_pb_pins: uart0-pb-pins {
+>  				pins =3D "PB9", "PB10";
+>  				allwinner,pinmux =3D <2>;
+> @@ -601,6 +611,51 @@ mdio0: mdio {
+>  			};
+>  		};
 > =20
->  	of_platform_populate(dev->of_node, NULL, NULL, dev);
+> +		gmac1: ethernet@4510000 {
+> +			compatible =3D "allwinner,sun55i-a523-gmac200",
+> +				     "snps,dwmac-4.20a";
+> +			reg =3D <0x04510000 0x10000>;
+> +			clocks =3D <&ccu CLK_BUS_EMAC1>, <&ccu CLK_MBUS_EMAC1>;
+> +			clock-names =3D "stmmaceth", "mbus";
+> +			resets =3D <&ccu RST_BUS_EMAC1>;
+> +			reset-names =3D "stmmaceth";
+> +			interrupts =3D <GIC_SPI 47 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names =3D "macirq";
+> +			pinctrl-names =3D "default";
+> +			pinctrl-0 =3D <&rgmii1_pins>;
+> +			power-domains =3D <&pck600 PD_VO1>;
+> +			syscon =3D <&syscon>;
+> +			snps,fixed-burst;
+> +			snps,axi-config =3D <&gmac1_stmmac_axi_setup>;
+> +			snps,mtl-rx-config =3D <&gmac1_mtl_rx_setup>;
+> +			snps,mtl-tx-config =3D <&gmac1_mtl_tx_setup>;
+> +			status =3D "disabled";
+> +
+> +			mdio1: mdio {
+> +				compatible =3D "snps,dwmac-mdio";
+> +				#address-cells =3D <1>;
+> +				#size-cells =3D <0>;
+> +			};
+> +
+> +			gmac1_mtl_rx_setup: rx-queues-config {
+> +				snps,rx-queues-to-use =3D <1>;
+> +
+> +				queue0 {};
+> +			};
+> +
+> +			gmac1_stmmac_axi_setup: stmmac-axi-config {
+> +				snps,wr_osr_lmt =3D <0xf>;
+> +				snps,rd_osr_lmt =3D <0xf>;
+> +				snps,blen =3D <256 128 64 32 16 8 4>;
+> +			};
+> +
+> +			gmac1_mtl_tx_setup: tx-queues-config {
+> +				snps,tx-queues-to-use =3D <1>;
+> +
+> +				queue0 {};
+> +			};
+> +		};
+> +
+>  		ppu: power-controller@7001400 {
+>  			compatible =3D "allwinner,sun55i-a523-ppu";
+>  			reg =3D <0x07001400 0x400>;
 >=20
 
 
