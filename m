@@ -1,97 +1,107 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1C7F50F;
-	Wed, 13 Aug 2025 13:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A012E6136;
+	Wed, 13 Aug 2025 13:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755090029; cv=none; b=CmDJ3To1AXfr8i+11aOKkf8araqNC/0jo8V0K5B5YuzvrcIBl3fBZoYKOPucgHmbVKEvjmWNdvifEighb0IOjYgV2nVU9a0iLid88Su4DjKIIgOAi0zsK/RRDpIqvyKTtMD0R3iMr3CyQZVUofjAxyJl2u2OZAwiyguEiAF7vD4=
+	t=1755090371; cv=none; b=H4YFzUH20p9TwxHMFEydMeDz9p4e5QZuWZ0VT4k1xvOisD/QhFyRg2ZNXea9YcSMAHlmCL7onjUfrAsB+PGeh5xNC31rhISEnJfdeYZEQ9Gp1rv1C+78sYDiROHyl2+4rO764PLcLLflfpTulUgUHdt5nbNsC0eSGh3cNcyfOlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755090029; c=relaxed/simple;
-	bh=bSv9TzrCqcZ+O1xArhQCVlN66kWeUdaHS+HKQRHitV8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S4cd3UYp5TtVd7J/1YHdZj4/OOL6HjKFVJs/5uKCKK5FTWzUU6NF6w7RmsacwiiR3sOpkrLkXQPH+POsSbLByIC57vSrHHVzvNDyKh0R14rJFPF/nvv0OzF5GPlOPUrHIWRtsU08x1rjcfYocEU4wldLQ4BzXt/QP7iiqGOeXBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4c27h71c10z2TT7y;
-	Wed, 13 Aug 2025 20:57:43 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 943611401F2;
-	Wed, 13 Aug 2025 21:00:23 +0800 (CST)
-Received: from huawei.com (10.175.104.170) by dggpemf500002.china.huawei.com
- (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 13 Aug
- 2025 21:00:22 +0800
-From: Yue Haibing <yuehaibing@huawei.com>
-To: <jhs@mojatatu.com>, <xiyou.wangcong@gmail.com>, <jiri@resnulli.us>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <vladimir.oltean@nxp.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next] net/sched: act_api: Remove unnecessary nlmsg_trim()
-Date: Wed, 13 Aug 2025 20:59:15 +0800
-Message-ID: <20250813125915.854233-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.33.0
+	s=arc-20240116; t=1755090371; c=relaxed/simple;
+	bh=r+IGYqrvJJjZmyKpusqgdcFNQmtdoepMkDAxfPj8LiE=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=su+zGcNEbsWvRE269gZvHdrWAB5C/qaDEAy8M5aA5VUQTUEy1I5j79SOzHNamqqbIfy0d6Ld9mwwaDcJZJUJdaoKXQIA9vmXj5M71o1QfLfAnbbmD9SjL9kyfB5SUySt0mM8UjInQNAUUsDFryGvcPvnehRU3rcf0i2pi45EHx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jbaSs9qy; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jbaSs9qy"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4af027d966eso77952321cf.3;
+        Wed, 13 Aug 2025 06:06:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755090368; x=1755695168; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9kOBiwAHY8I7CRdoG3Ej9jT6nAiy55atfze8yFZhgSw=;
+        b=jbaSs9qycy8i3UqY9We/jBMh8FOGp0b+pRd5re8JEv8Aok/oW+iaH+hgyP5/zd0bjJ
+         pgdonDeGn9XR+7mYALs8G3gKX3LDUOZbgjZe8Pxs3IbE/XdyCBmGfhkwF/tudKD0IreJ
+         GhP+4708/8DWuA+681JdPYF7hgEXfnQXGiUNDutBUJ5+gBcOCUfHtTK7QDSbHKqwpz+h
+         eZ69JtAvtZ1pmaoZeROAOX+Yw/HEHSH6J1xG4nFWNCZwzsruGwbwScgRIaEcVqRi4P8O
+         w3dYgEIVwQnpFcnp7LlOhanX0Gk5wqZApRqiqDV/Coz0nEzfFZIClAB2IDK+AQLepD/2
+         FWRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755090368; x=1755695168;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=9kOBiwAHY8I7CRdoG3Ej9jT6nAiy55atfze8yFZhgSw=;
+        b=mwJvO+bNgeOA8jGwdoVxCN6LGNpTSqO4Gt8hrOBnhGxpbeEL5rN933sfNU3Ox3YFoV
+         7KLSLsLGTGvdH2LxFvKlPzNWJEjMh0FHUaMvYIbgSlnBrEDKwmpIxUnTbfqehLC0NCpk
+         Tyt2lOF9FfB/EPl/vJyawPVTfq7FCu2EHMoIKil1lQn9mB4D8d5ZeDmDWHnJIw4Vtc3Y
+         t6lpUayTcPfRUmvDvgK1FHeA8WbRO9TTdIbVEYYqZKuFocTCAFy66NPnL6YvkymiHJYg
+         7RYI5Nlq2QgqPsqLNigdHsxfFO2qRUgmVhPn5gSMie9tsQVQvgxMWHbF9gjGgyudXeqD
+         IT1w==
+X-Forwarded-Encrypted: i=1; AJvYcCVYVoWC0Kb8UF+zbGc+6SAPfLNpEgnBgcLH+qvGH4Itqk/XT5qKcbK1d9oWppL1q4m1rIqF5TU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwROKIQhChScF+wWOlVp8+ozB49oWafpIDuORx+2K/5Cfgf5nog
+	RfOAnFwE3gVTO5D1UZ6keaPxoQ9hFmh892dDpHcSZJxdVARHzcUb1mOnB5opOi/t
+X-Gm-Gg: ASbGnctob5AhXVu8X7EBxjKF+VC6YkqNXdSxTP3vQKatWdLxP1NZKVVmKxl7Hr7V0Q3
+	ToWj+G6QOIaYGFAkUgKDI1CyiyHf16DMdvt7igSfFjc0THi8ea+WnLdadnlJgbAOVono0BHFeSA
+	0e9bEGsSuE5ys50B40eZFhxT6aA6FTB5FCjCb3bxCGKjvxaijcS+pUP53pLceXtOmkRdcVZC4zF
+	ZFaGqH61/AqXYzx1bmErY3jI/SpvGiM47s3R73MLwDV1PhxVAEnUz4iO6KPJfjT2f7G+ZWuCv0z
+	NlVTLGXaPuPp0uKbq0khp9hnwiQd4xN0sBAC6BDWwvdofYDkpLMXaX7fasy2iKzLjUClZa7zoHc
+	NbNKqNqEDOFJuRB37r0rGOtaNUHLUrrj3bW+Eed1KG8NTCb0QbV1xp7wkM6nalF8TvfyzpQ==
+X-Google-Smtp-Source: AGHT+IFlCSL9NVKYRT9MMUQ7J4HVQO1dCBWU1ZOM7+9VzfwOV4/qNiB8HhpnJYW31G3/H/rP16/cKA==
+X-Received: by 2002:a05:622a:cb:b0:4b0:b5ba:bb9 with SMTP id d75a77b69052e-4b0fc8924aamr38950371cf.56.1755090367779;
+        Wed, 13 Aug 2025 06:06:07 -0700 (PDT)
+Received: from localhost (128.5.86.34.bc.googleusercontent.com. [34.86.5.128])
+        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4b0f28b7422sm26605721cf.59.2025.08.13.06.06.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 06:06:07 -0700 (PDT)
+Date: Wed, 13 Aug 2025 09:06:06 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: =?UTF-8?B?TWlndWVsIEdhcmPDrWE=?= <miguelgarciaroman8@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, 
+ willemdebruijn.kernel@gmail.com, 
+ jasowang@redhat.com, 
+ andrew+netdev@lunn.ch, 
+ davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ skhan@linuxfoundation.org, 
+ =?UTF-8?B?TWlndWVsIEdhcmPDrWE=?= <miguelgarciaroman8@gmail.com>
+Message-ID: <689c8dbe91cf3_125e46294ae@willemb.c.googlers.com.notmuch>
+In-Reply-To: <20250812082244.60240-1-miguelgarciaroman8@gmail.com>
+References: <20250812082244.60240-1-miguelgarciaroman8@gmail.com>
+Subject: Re: [PATCH net-next v2] tun: replace strcpy with strscpy for ifr_name
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-If tca_get_fill() fails, all callers free the skb immediately, no need to
-trim it back to the previous size.
+Miguel Garc=C3=ADa wrote:
+> Replace the strcpy() calls that copy the device name into ifr->ifr_name=
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
- net/sched/act_api.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+> with strscpy() to avoid potential overflows and guarantee NULL terminat=
+ion.
+> =
 
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index 9e468e463467..54c92d0755c9 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -1649,7 +1649,7 @@ static int tca_get_fill(struct sk_buff *skb, struct tc_action *actions[],
- 
- 	nlh = nlmsg_put(skb, portid, seq, event, sizeof(*t), flags);
- 	if (!nlh)
--		goto out_nlmsg_trim;
-+		goto out;
- 	t = nlmsg_data(nlh);
- 	t->tca_family = AF_UNSPEC;
- 	t->tca__pad1 = 0;
-@@ -1657,14 +1657,14 @@ static int tca_get_fill(struct sk_buff *skb, struct tc_action *actions[],
- 
- 	if (extack && extack->_msg &&
- 	    nla_put_string(skb, TCA_ROOT_EXT_WARN_MSG, extack->_msg))
--		goto out_nlmsg_trim;
-+		goto out;
- 
- 	nest = nla_nest_start_noflag(skb, TCA_ACT_TAB);
- 	if (!nest)
--		goto out_nlmsg_trim;
-+		goto out;
- 
- 	if (tcf_action_dump(skb, actions, bind, ref, false) < 0)
--		goto out_nlmsg_trim;
-+		goto out;
- 
- 	nla_nest_end(skb, nest);
- 
-@@ -1672,8 +1672,7 @@ static int tca_get_fill(struct sk_buff *skb, struct tc_action *actions[],
- 
- 	return skb->len;
- 
--out_nlmsg_trim:
--	nlmsg_trim(skb, b);
-+out:
- 	return -1;
- }
- 
--- 
-2.33.0
+> Destination is ifr->ifr_name (size IFNAMSIZ).
+> =
 
+> Tested in QEMU (BusyBox rootfs):
+>  - Created TUN devices via TUNSETIFF helper
+>  - Set addresses and brought links up
+>  - Verified long interface names are safely truncated (IFNAMSIZ-1)
+> =
+
+> Signed-off-by: Miguel Garc=C3=ADa <miguelgarciaroman8@gmail.com>
+
+Reviewed-by: Willem de Bruijn <willemb@google.com>
