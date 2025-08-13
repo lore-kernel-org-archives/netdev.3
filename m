@@ -1,212 +1,132 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f196.google.com (mail-yw1-f196.google.com [209.85.128.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C2D15A87C;
-	Wed, 13 Aug 2025 12:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62162E54D8;
+	Wed, 13 Aug 2025 12:54:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755089613; cv=none; b=IAHYgel35HdlEF7OlDXF4rG9rpd2TuO1qxZq7+voMYCN3J+z/DhiVVhmZLLyj7huGSpSF7eTVZX6EIX0ytuxPlPpz5ZNJLk1Fys0EwNG9eTmsaaxb6LE73egpv4PjaXp2kRXMgrKHi8Tv5Iq1DD3oMWmO7tKElqZW9D8pgr6FwY=
+	t=1755089701; cv=none; b=kHoyWAItZe141bN79V0tcEsDYkfeKB/w1X2+r6AjsPLf4+YNGDMTe3HLC5Qy7K2B7T7VJxbqt8JqKdk/YGfNRv9PS25QAoYj0QAcPTWTRn0MScz6L8+ccIUPs1MpgsEblXOCKYsC44zu9hJ2JCXwmO2qqiXIHEktt19n9C0eetE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755089613; c=relaxed/simple;
-	bh=c32hhm+mjVpbtNTBFx+pPb1nLihcGoV5AI5Jxjd4TAA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MxN9a47idXFt8IZnPAJ3CA02imVyBgO+E9q5qvTC30Bz6N4i/KQEiuw4YX3y4UYiFaHMmJZ84227YDezZn//HrLbvBYvaMG3TyrRVVgASOsUqXnmSsCHkVxWGIOZtc567MXh5LGCEHgQDLjtyK+NEwbIS/DsWBlJ0ubxI6giXX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4c27V61k8dzdc5d;
-	Wed, 13 Aug 2025 20:49:02 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2566A1401F1;
-	Wed, 13 Aug 2025 20:53:22 +0800 (CST)
-Received: from localhost.localdomain (10.90.31.46) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 13 Aug 2025 20:53:21 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
-	<Frank.Sae@motor-comm.com>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>
-CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <jonathan.cameron@huawei.com>,
-	<shameerali.kolothum.thodi@huawei.com>, <salil.mehta@huawei.com>,
-	<heiko@sntech.de>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<shaojijie@huawei.com>
-Subject: [PATCH V2 net-next] net: phy: motorcomm: Add support for PHY LEDs on YT8521
-Date: Wed, 13 Aug 2025 20:45:42 +0800
-Message-ID: <20250813124542.3450447-1-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
+	s=arc-20240116; t=1755089701; c=relaxed/simple;
+	bh=UtbKvHUL/lh+x3YjI5uRS1BmHx10K5hZERwtwnnXLqA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i+8p8gMtKuG24aZeHrL9ZhtWO8yoG7LgeB/NEBh9MJSYNwjwfoYIbZtHm2f4yE9fa3Teu5gLxGjs5WehSOYWpquEsdQU7rVQcmn9Svp92Tk38MbY4Tc8Zi6LDZRoOe0uV7Fa+DD30gzkuZ8f0mM6K0gO0yE2knOtmk1+FIQb35g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eVEU1jYa; arc=none smtp.client-ip=209.85.128.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eVEU1jYa"
+Received: by mail-yw1-f196.google.com with SMTP id 00721157ae682-71d3b3606d0so16896237b3.1;
+        Wed, 13 Aug 2025 05:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755089699; x=1755694499; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UtbKvHUL/lh+x3YjI5uRS1BmHx10K5hZERwtwnnXLqA=;
+        b=eVEU1jYat5CgCYxwt3hSyg8R2RfDwpXE3j+3aTYmJMZgOEspUs2vy7yK5Eb/mb5NQV
+         wbuVCI14SXJWZCxHkfl1qWqsmvDQuSMRBxxuY3Wg0xZPnhOIyn8rbYzqMoJrTjjFiHZ2
+         YvNtYNufIblRw7M4GrEUv+91puxoUXHgvtxsDH6pAHC/J+G33+qpMJIhMK5MFlDdRULW
+         mfs9F2EOyDoREVbBjLeXQf+FDbyy4ldl5nXhv46PHUVU5AxShjLCW/nWzdfWDZxl0rfS
+         ZDQp3teMsYq/DDLVaLGxmtppFhwkYF3hm7+pENzyqXkosJIx9/HRBHoMfxMhzPbWp1AA
+         xMHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755089699; x=1755694499;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UtbKvHUL/lh+x3YjI5uRS1BmHx10K5hZERwtwnnXLqA=;
+        b=Bvz38bKBDtrGu5hNCmc/j1yhMstTcZDnIxoDZQz+nZcdz9OfAXBc503oE1tLGiKd73
+         sFA4Gu0kLG1FHe9auXWplTmi/xKLIc0jsaSv9P2mEgK1yjd2uePjrV3tZaBQP3DFSj9r
+         LIUaJTKksyZ4+chAYrqSXeRMy+a6C400w12i7zCzgAj9yqlk2Jv2Looo3adEB8WJ1Hag
+         Cdme5pAkL3lnq6FMM3KDChakDx/o5EA8nXGE4s6gMYS1gYmz/Qbj9pVBUW376bcgiP19
+         m+TJ5kUG8mSeIx4fLltFCdotosrBSAL6jPh6SknGtgJSZhdJvXsBOlcCiZwhzPN/bYI/
+         OeOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVD4iSCiE6zsJU/di42PdZJbNgpQJVh9rUO7n8tkJJkUnEMSuObvaUzD6Uwdg/O/dumpLSXtLv/gsEguxCfCP5c@vger.kernel.org, AJvYcCVHEwpJheuTs/TXXrpiWWvZkE9E5pLrYcMJHoAPzIeHQGv2uZBBc075zIthmZU/IswjAx4if8Mx@vger.kernel.org, AJvYcCXbGWtizqfK4U8/J4vnRGcPIqbZVqmzXRfIy+2Yi42kzW3QpmA9TsqUBqR66sGTaWiRTsh6jBBI+jNVCCw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuYOZBf/3gwomwJiTBrsN3dfpkDSSBsr0m8oMithTsd4PWc0qd
+	2iiOP1bVZGX3QHbRsSfIhfqsAJbR/xNLQ6ROn0M1TIOlRIC36fte2ahg+BpX0L9kfQTWd22hn/7
+	wbgj+MEQ8n6FRWpxbjd19OdXVJsKsb58=
+X-Gm-Gg: ASbGncsUAg5TvdMJd09AZo9DD04oWzgg63EFiWmTpA+QIV4rOIpdqc2pUGY2EDQeIeG
+	tSUWG7Y1kKHgL4uQew5Pbg8N30Pvo8W1ICHqGdI+siLn32RGF0F026Q2sQsv4zrD7j6jTY6tQtC
+	PqZtggLqxWaBl3ZRqxOdz7wf3+kGgPj2F0ZJKq+3acs3r0XjKTg0Z7dyCAuYpw9ZFFxxSQyqp8J
+	5BNDoc=
+X-Google-Smtp-Source: AGHT+IEj4c/eRF5bgP80NzKx8WLV6vRnZFyhb68/3YLBJKOdVzSXdaAlXeCcwAYa+QSYnZzydcnhgLjDYVha3frkjfk=
+X-Received: by 2002:a05:690c:4b8c:b0:70e:2d17:84b5 with SMTP id
+ 00721157ae682-71d4e2491dfmr38757477b3.0.1755089698869; Wed, 13 Aug 2025
+ 05:54:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+References: <20250802092435.288714-1-dongml2@chinatelecom.cn>
+ <20250802092435.288714-2-dongml2@chinatelecom.cn> <CAL+tcoA9Lvc4Cj9zjWVx1FzEQA=d=OnvZRDWA4nE_1GNbEDaRw@mail.gmail.com>
+ <CADxym3bD17eL0U0sQkuSZZgNtg7gmvzt0YAA+CiHf9Lw5-+awA@mail.gmail.com>
+ <CAL+tcoD80feEhPA_1L7D55UqkRuLSnZ-Kmmdab5J2v9K6uCzTA@mail.gmail.com>
+ <CADxym3Zv9+6D0hCEx1KzvW+oAQW5oEDgSHBQPyRjHodezH9O1g@mail.gmail.com> <CAL+tcoCCq8Hc3R0_75wZxHUiZrjhfS-q65XFWM69F8pcoJPdyw@mail.gmail.com>
+In-Reply-To: <CAL+tcoCCq8Hc3R0_75wZxHUiZrjhfS-q65XFWM69F8pcoJPdyw@mail.gmail.com>
+From: Menglong Dong <menglong8.dong@gmail.com>
+Date: Wed, 13 Aug 2025 20:54:48 +0800
+X-Gm-Features: Ac12FXzTK5seVQHGDbrcMI1iRSeJ-Q4x1Wbny7vI56994fdby3CWV9gaOwgaCHs
+Message-ID: <CADxym3bBVEKRNa790CchSyH-WPeXmv9tjTxtmYyJamQv357zKg@mail.gmail.com>
+Subject: Re: [PATCH net v3 1/2] net: tcp: lookup the best matched listen socket
+To: Jason Xing <kerneljasonxing@gmail.com>, kuniyu@google.com
+Cc: edumazet@google.com, ncardwell@google.com, davem@davemloft.net, 
+	dsahern@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	shuah@kernel.org, kraig@google.com, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add minimal LED controller driver supporting
-the most common uses with the 'netdev' trigger.
+On Sun, Aug 3, 2025 at 4:32=E2=80=AFPM Jason Xing <kerneljasonxing@gmail.co=
+m> wrote:
+>
+> On Sun, Aug 3, 2025 at 12:00=E2=80=AFPM Menglong Dong <menglong8.dong@gma=
+il.com> wrote:
+> >
+> > On Sun, Aug 3, 2025 at 10:54=E2=80=AFAM Jason Xing <kerneljasonxing@gma=
+il.com> wrote:
+> > >
+> > > On Sun, Aug 3, 2025 at 9:59=E2=80=AFAM Menglong Dong <menglong8.dong@=
+gmail.com> wrote:
+> > > >
+> > > > On Sat, Aug 2, 2025 at 9:06=E2=80=AFPM Jason Xing <kerneljasonxing@=
+gmail.com> wrote:
+> > > > >
+[......]
+> > >
+> > > I'm trying to picture what the usage can be in the userland as you
+> > > pointed out in the MD5 case. As to the client side, it seems weird
+> > > since it cannot detect and know the priority of the other side where =
+a
+> > > few sockets listen on the same address and port.
+> >
+> > For the server side, it needs to add all the clients information
+> > with the TCP_MD5SIG option. For socket1 that binded on the
+> > eth0, it will add all the client addresses that come from eth0 to the
+> > socket1 with TCP_MD5SIG. So the server knows the clients.
+>
+> Right, but I meant the _client_ side doesn't know the details of the
+> other side, that is to say, the server side needs to keep sure the
+> client server easily connects to your preferred listener regardless of
+> what the selection algorithm looks like. In terms of what you
+> depicted, I see your point. One question is if the kernel or API
+> provides any rules and instructions to the users that on the server
+> side the sk1 must be selected in your case? Is it possible for other
+> cases where the sk2 is the preferable/ideal one? I'm not sure if it's
+> worth 'fixing' it in the kernel.
 
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Tested-by: Heiko Stuebner <heiko@sntech.de>
----
-ChangeLog:
-V1 -> V2:
-  - Replace set_bit() with __set_bit(), suggested by Russell.
-  - Optimize the names of some macro definitions, suggested by Andrew.
-  V1: https://lore.kernel.org/all/20250716100041.2833168-2-shaojijie@huawei.com/
-  
-  note: support for ACPI will be sent separately.
-  Link: https://lore.kernel.org/all/aHeEwZaqUd0kNdUQ@shell.armlinux.org.uk/
----
- drivers/net/phy/motorcomm.c | 117 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 117 insertions(+)
+What does sk2 represent here? I don't think that the sk2 should
+be preferable. For now, it is selected by the creating order, and
+there should not be a case that relies on the socket creation
+order......would it?
 
-diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-index 0e91f5d1a4fd..a3593e663059 100644
---- a/drivers/net/phy/motorcomm.c
-+++ b/drivers/net/phy/motorcomm.c
-@@ -213,6 +213,20 @@
- #define YT8521_RC1R_RGMII_2_100_NS		14
- #define YT8521_RC1R_RGMII_2_250_NS		15
- 
-+/* LED CONFIG */
-+#define YT8521_MAX_LEDS				3
-+#define YT8521_LED0_CFG_REG			0xA00C
-+#define YT8521_LED1_CFG_REG			0xA00D
-+#define YT8521_LED2_CFG_REG			0xA00E
-+#define YT8521_LED_ACT_BLK_IND			BIT(13)
-+#define YT8521_LED_FDX_ON_EN			BIT(12)
-+#define YT8521_LED_HDX_ON_EN			BIT(11)
-+#define YT8521_LED_TXACT_BLK_EN			BIT(10)
-+#define YT8521_LED_RXACT_BLK_EN			BIT(9)
-+#define YT8521_LED_1000_ON_EN			BIT(6)
-+#define YT8521_LED_100_ON_EN			BIT(5)
-+#define YT8521_LED_10_ON_EN			BIT(4)
-+
- #define YTPHY_MISC_CONFIG_REG			0xA006
- #define YTPHY_MCR_FIBER_SPEED_MASK		BIT(0)
- #define YTPHY_MCR_FIBER_1000BX			(0x1 << 0)
-@@ -1681,6 +1695,106 @@ static int yt8521_config_init(struct phy_device *phydev)
- 	return phy_restore_page(phydev, old_page, ret);
- }
- 
-+static const unsigned long supported_trgs = (BIT(TRIGGER_NETDEV_FULL_DUPLEX) |
-+					     BIT(TRIGGER_NETDEV_HALF_DUPLEX) |
-+					     BIT(TRIGGER_NETDEV_LINK)        |
-+					     BIT(TRIGGER_NETDEV_LINK_10)     |
-+					     BIT(TRIGGER_NETDEV_LINK_100)    |
-+					     BIT(TRIGGER_NETDEV_LINK_1000)   |
-+					     BIT(TRIGGER_NETDEV_RX)          |
-+					     BIT(TRIGGER_NETDEV_TX));
-+
-+static int yt8521_led_hw_is_supported(struct phy_device *phydev, u8 index,
-+				      unsigned long rules)
-+{
-+	if (index >= YT8521_MAX_LEDS)
-+		return -EINVAL;
-+
-+	/* All combinations of the supported triggers are allowed */
-+	if (rules & ~supported_trgs)
-+		return -EOPNOTSUPP;
-+
-+	return 0;
-+}
-+
-+static int yt8521_led_hw_control_set(struct phy_device *phydev, u8 index,
-+				     unsigned long rules)
-+{
-+	u16 val = 0;
-+
-+	if (index >= YT8521_MAX_LEDS)
-+		return -EINVAL;
-+
-+	if (test_bit(TRIGGER_NETDEV_LINK, &rules)) {
-+		val |= YT8521_LED_10_ON_EN;
-+		val |= YT8521_LED_100_ON_EN;
-+		val |= YT8521_LED_1000_ON_EN;
-+	}
-+
-+	if (test_bit(TRIGGER_NETDEV_LINK_10, &rules))
-+		val |= YT8521_LED_10_ON_EN;
-+
-+	if (test_bit(TRIGGER_NETDEV_LINK_100, &rules))
-+		val |= YT8521_LED_100_ON_EN;
-+
-+	if (test_bit(TRIGGER_NETDEV_LINK_1000, &rules))
-+		val |= YT8521_LED_1000_ON_EN;
-+
-+	if (test_bit(TRIGGER_NETDEV_FULL_DUPLEX, &rules))
-+		val |= YT8521_LED_HDX_ON_EN;
-+
-+	if (test_bit(TRIGGER_NETDEV_HALF_DUPLEX, &rules))
-+		val |= YT8521_LED_FDX_ON_EN;
-+
-+	if (test_bit(TRIGGER_NETDEV_TX, &rules) ||
-+	    test_bit(TRIGGER_NETDEV_RX, &rules))
-+		val |= YT8521_LED_ACT_BLK_IND;
-+
-+	if (test_bit(TRIGGER_NETDEV_TX, &rules))
-+		val |= YT8521_LED_TXACT_BLK_EN;
-+
-+	if (test_bit(TRIGGER_NETDEV_RX, &rules))
-+		val |= YT8521_LED_RXACT_BLK_EN;
-+
-+	return ytphy_write_ext(phydev, YT8521_LED0_CFG_REG + index, val);
-+}
-+
-+static int yt8521_led_hw_control_get(struct phy_device *phydev, u8 index,
-+				     unsigned long *rules)
-+{
-+	int val;
-+
-+	if (index >= YT8521_MAX_LEDS)
-+		return -EINVAL;
-+
-+	val = ytphy_read_ext(phydev, YT8521_LED0_CFG_REG + index);
-+	if (val < 0)
-+		return val;
-+
-+	if (val & YT8521_LED_TXACT_BLK_EN || val & YT8521_LED_ACT_BLK_IND)
-+		__set_bit(TRIGGER_NETDEV_TX, rules);
-+
-+	if (val & YT8521_LED_RXACT_BLK_EN || val & YT8521_LED_ACT_BLK_IND)
-+		__set_bit(TRIGGER_NETDEV_RX, rules);
-+
-+	if (val & YT8521_LED_FDX_ON_EN)
-+		__set_bit(TRIGGER_NETDEV_FULL_DUPLEX, rules);
-+
-+	if (val & YT8521_LED_HDX_ON_EN)
-+		__set_bit(TRIGGER_NETDEV_HALF_DUPLEX, rules);
-+
-+	if (val & YT8521_LED_1000_ON_EN)
-+		__set_bit(TRIGGER_NETDEV_LINK_1000, rules);
-+
-+	if (val & YT8521_LED_100_ON_EN)
-+		__set_bit(TRIGGER_NETDEV_LINK_100, rules);
-+
-+	if (val & YT8521_LED_10_ON_EN)
-+		__set_bit(TRIGGER_NETDEV_LINK_10, rules);
-+
-+	return 0;
-+}
-+
- static int yt8531_config_init(struct phy_device *phydev)
- {
- 	struct device_node *node = phydev->mdio.dev.of_node;
-@@ -2920,6 +3034,9 @@ static struct phy_driver motorcomm_phy_drvs[] = {
- 		.soft_reset	= yt8521_soft_reset,
- 		.suspend	= yt8521_suspend,
- 		.resume		= yt8521_resume,
-+		.led_hw_is_supported = yt8521_led_hw_is_supported,
-+		.led_hw_control_set = yt8521_led_hw_control_set,
-+		.led_hw_control_get = yt8521_led_hw_control_get,
- 	},
- 	{
- 		PHY_ID_MATCH_EXACT(PHY_ID_YT8531),
--- 
-2.33.0
+So the socket should be selected by priority, and sk1, which is binded
+on eth0, has higher priority, which is awarded by the users.
 
+I noticed that the net-next is open, so we can use Kuniyuki's
+solution instead, which is better for the performance ;)
+
+Thanks!
+Menglong Dong
