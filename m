@@ -1,104 +1,161 @@
-Received: from pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.83.148.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034552D663D;
-	Wed, 13 Aug 2025 07:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.83.148.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EF62E36F2
+	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 07:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755071590; cv=none; b=oKY31aiAjydu//Lnu2i2VpwlFmNI9TYZFL4HDSMFR7EojvUWbfCq0apQE3p6vmih42xr6pMrwgvbY6LXV0JVK7Iyu6dUDs1G7mXAc2FmslH/1Q60YaUWzQ6Vf+GQyka+pos43o0uihvyKre2c7zPr0Dwa5CPStBFgA4YVqfWz7I=
+	t=1755071870; cv=none; b=muCCSerBXDpZ4daJ3QY7/+zS0O8s96arfQc1/CnXvVq5aXcSR0UcPM/ftYTvKGNwGCVL16xAazvTrRcGf/C822U7V1irvqcySdz2fcK3SwJ1Ja8k2IV8TegPa6rtzmAgCUrOJP5gpr12llHNRbHSTERrHtE1trSemhx/gekRXPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755071590; c=relaxed/simple;
-	bh=mC7+1scHvVN01Ratoae6Ma3WssKjLZeML0ZDX5QH/Jk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gKvv5t7xDQ1tsRCS6pFtjizQdjZ/8fwPi741GpvwrTXytmnc8SpxJMt+Yzlqs6iLJv1MwB5PRAd1fwBvUPt7TWQ/na31WE+e2aKjZVvhCo3PZrqjU0o3CL8QYPBDmxYhK8Dsszf0YGJGShnwsesDepoItyUIj5mTQkprlXNfWoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=XFSwHDlx; arc=none smtp.client-ip=35.83.148.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="XFSwHDlx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1755071589; x=1786607589;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xsW2gkaKHutRZdC4N3bM+pd59a4BhzwYQTJta5k2tx4=;
-  b=XFSwHDlxb0UGZybxC+1zdkgwXRoKI0EwQObSElHzVN0hL2LRx0h/f+sw
-   3IWrk0QT05gMpj6cMtX8RCT4EMHoEqP/VlwMmPeiBtBj7hDXWy11No6/J
-   FDKBGgnrJFyH1ZWLUIWhoTpIF89E6nuxuHqabyzJHFIsxrC4onxvrqY5f
-   W+eduOUCc8p6a0Yl8O9f3oKUG3Jw1sdlI22RtPkD5q3O3xq9DX9PNBkCy
-   9qsvpjIgUpdvf30g4KUDdW67f+3y2zJuyCtgPtLrKI3HBBCA4D1pY2o4d
-   +DGY8L8e4KYzlU0HMItmBH1EK0M2Zxlzo0VTLaoCJpG6ItpHzv9tNCu6m
-   Q==;
-X-CSE-ConnectionGUID: OkofuCaJTiCtcTq87+dEAQ==
-X-CSE-MsgGUID: ouDRRQDdTFayBMqx/djIMw==
-X-IronPort-AV: E=Sophos;i="6.16,315,1744070400"; 
-   d="scan'208";a="988935"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 07:53:06 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:65328]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.22.75:2525] with esmtp (Farcaster)
- id 8e9ae4e8-78a5-4d0e-a086-e6ffcd9c0947; Wed, 13 Aug 2025 07:53:06 +0000 (UTC)
-X-Farcaster-Flow-ID: 8e9ae4e8-78a5-4d0e-a086-e6ffcd9c0947
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 13 Aug 2025 07:53:05 +0000
-Received: from b0be8375a521.amazon.com (10.37.244.11) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Wed, 13 Aug 2025 07:53:03 +0000
-From: Kohei Enju <enjuk@amazon.com>
-To: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
-	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	<kohei.enju@gmail.com>, Kohei Enju <enjuk@amazon.com>
-Subject: [PATCH v1 iwl-next 2/2] igbvf: remove duplicated counter rx_long_byte_count from ethtool statistics
-Date: Wed, 13 Aug 2025 16:50:51 +0900
-Message-ID: <20250813075206.70114-3-enjuk@amazon.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250813075206.70114-1-enjuk@amazon.com>
-References: <20250813075206.70114-1-enjuk@amazon.com>
+	s=arc-20240116; t=1755071870; c=relaxed/simple;
+	bh=JP3JU9DeiGsROJxfLJcR/pj+/8+ah7HYe4Sxa3Bz/AI=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=cElmRSVdyv+wUx+1ZQeBap7Kt1nGysH8xfL1zZq2ioRjCme2P1It2byRHVYv3gzAyyGvGA/3x3VFs8hfH2l8Za/7EjpAM4wBEuTtWaRFGE0XGGVE9YJUdm+DFJKQReZWCgIkVaOY6HbOtEZ93Dv6yRiS1BwXm1ELrftQRIRp7fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-881878af906so1252111139f.0
+        for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 00:57:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755071868; x=1755676668;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=j8kNKWjQfVGgObiakLKUOpl9vALlhUvsvnWSAVGV+hA=;
+        b=vay3rKRfFcL3hGV5nTmYd7omLnRIERwlEkLVeOlOzZal1cBrvmOXgrC6/97ba8BARy
+         YeukAvgKMJyCof03wAxKyKXuWV8cv47ElISmoD7tCvS8bSAMn/C8ZLdVSpKmNTlORIhu
+         JMpVtDdt91C1KCNheTfgboL3r4RmAkCWhecZ9utcx+b9/LXV60xs5MCzCeg4eltdZNUb
+         qx8Jya4zmnZKGdB5rK8XKTSkDMW5ZLOp2cqdfaNf/Ev0aD5KTekWf3mQHkQUGZEBN+h0
+         Pvyb2PYw94fBkRx86i2nCwP3zyTYNgefJkQturxb2XkwwhAC4hKTdajTGBlllSPi1pmL
+         1Gkg==
+X-Forwarded-Encrypted: i=1; AJvYcCXbb2m5pHemOHxnAMFN1xQJZJS0JTjymm7dmJ1BAMVB3ib39/Fhxgj3VpJG7pi1kng+tL7PaFs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwASqYiDgTv3PafJ/XGSQuEpOQDGtN1a96wDsTJGLqMGAxHjcwt
+	EjxBzbHpKZUWcNYqasT8upiHh+kjP4m9HpYdGxP1YzAl+9+oYx6NZAZOetrPi//oHqa+ack1Z9/
+	cXVuP/mS5LJjcDfp7gkggzHnYbYXRbzUWODEnweWaISEALl9bhGI+mgyLIk8=
+X-Google-Smtp-Source: AGHT+IEz0TPsz1KmcJLOVcoGmgl6ivHtpmt3ABdiAZsXXtlUPUoPi0TiH/VXcplKlEfNOByudgT+xTYQ7LySxAvl4q0nNONtBLXh
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D036UWC001.ant.amazon.com (10.13.139.233) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Received: by 2002:a05:6602:6c05:b0:881:82bb:94b2 with SMTP id
+ ca18e2360f4ac-884296a2e80mr445984139f.13.1755071867828; Wed, 13 Aug 2025
+ 00:57:47 -0700 (PDT)
+Date: Wed, 13 Aug 2025 00:57:47 -0700
+In-Reply-To: <20250812155245.507012-1-sdf@fomichev.me>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <689c457b.a70a0220.7865.0049.GAE@google.com>
+Subject: [syzbot ci] Re: net: Convert to skb_dst_reset and skb_dst_restore
+From: syzbot ci <syzbot+ci1b726090b21fedf1@syzkaller.appspotmail.com>
+To: abhishektamboli9@gmail.com, andrew@lunn.ch, ayush.sawal@chelsio.com, 
+	coreteam@netfilter.org, davem@davemloft.net, dsahern@kernel.org, 
+	edumazet@google.com, gregkh@linuxfoundation.org, herbert@gondor.apana.org.au, 
+	horms@kernel.org, kadlec@netfilter.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev, mhal@rbox.co, 
+	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, pabeni@redhat.com, 
+	pablo@netfilter.org, sdf@fomichev.me, steffen.klassert@secunet.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-rx_long_byte_count shows the value of the GORC (Good Octets Received
-Count) register. However, the register value is already shown as
-rx_bytes and they always show the same value.
+syzbot ci has tested the following series
 
-Remove rx_long_byte_count as the Intel ethernet driver e1000e did in
-commit 0a939912cf9c ("e1000e: cleanup redundant statistics counter").
+[v1] net: Convert to skb_dst_reset and skb_dst_restore
+https://lore.kernel.org/all/20250812155245.507012-1-sdf@fomichev.me
+* [PATCH net-next 1/7] net: Add skb_dst_reset and skb_dst_restore
+* [PATCH net-next 2/7] xfrm: Switch to skb_dst_reset to clear dst_entry
+* [PATCH net-next 3/7] netfilter: Switch to skb_dst_reset to clear dst_entry
+* [PATCH net-next 4/7] net: Switch to skb_dst_reset/skb_dst_restore for ip_route_input callers
+* [PATCH net-next 5/7] staging: octeon: Convert to skb_dst_drop
+* [PATCH net-next 6/7] chtls: Convert to skb_dst_reset
+* [PATCH net-next 7/7] net: Add skb_dst_check_unset
 
-Tested on Intel Corporation I350 Gigabit Network Connection.
+and found the following issue:
+WARNING in nf_reject_fill_skb_dst
 
-Tested-by: Kohei Enju <enjuk@amazon.com>
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Full report is available here:
+https://ci.syzbot.org/series/dcc132bc-db4e-4a0b-a95c-9960b8a48d10
+
+***
+
+WARNING in nf_reject_fill_skb_dst
+
+tree:      net-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
+base:      37816488247ddddbc3de113c78c83572274b1e2e
+arch:      amd64
+compiler:  Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+config:    https://ci.syzbot.org/builds/2aac43d4-6d95-49c6-8e28-28941fdb3117/config
+C repro:   https://ci.syzbot.org/findings/0af27fa7-d0b6-43d6-8965-58fbc54ca186/c_repro
+syz repro: https://ci.syzbot.org/findings/0af27fa7-d0b6-43d6-8965-58fbc54ca186/syz_repro
+
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 5901 at ./include/linux/skbuff.h:1165 skb_dst_check_unset include/linux/skbuff.h:1164 [inline]
+WARNING: CPU: 1 PID: 5901 at ./include/linux/skbuff.h:1165 skb_dst_set include/linux/skbuff.h:1210 [inline]
+WARNING: CPU: 1 PID: 5901 at ./include/linux/skbuff.h:1165 nf_reject_fill_skb_dst+0x2a4/0x330 net/ipv4/netfilter/nf_reject_ipv4.c:234
+Modules linked in:
+CPU: 1 UID: 0 PID: 5901 Comm: kworker/u8:3 Not tainted 6.16.0-syzkaller-12063-g37816488247d-dirty #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Workqueue: ipv6_addrconf addrconf_dad_work
+RIP: 0010:skb_dst_check_unset include/linux/skbuff.h:1164 [inline]
+RIP: 0010:skb_dst_set include/linux/skbuff.h:1210 [inline]
+RIP: 0010:nf_reject_fill_skb_dst+0x2a4/0x330 net/ipv4/netfilter/nf_reject_ipv4.c:234
+Code: 8b 0d 60 b1 8b 08 48 3b 8c 24 e0 00 00 00 75 5d 48 8d 65 d8 5b 41 5c 41 5d 41 5e 41 5f 5d e9 03 8d 67 01 cc e8 cd 6c ab f7 90 <0f> 0b 90 e9 38 ff ff ff 44 89 f9 80 e1 07 fe c1 38 c1 0f 8c 2b fe
+RSP: 0018:ffffc900001e0360 EFLAGS: 00010246
+RAX: ffffffff8a143ee3 RBX: ffff888110b91200 RCX: ffff88810a3d8000
+RDX: 0000000000000100 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc900001e0490 R08: ffffffff8fa34737 R09: 1ffffffff1f468e6
+R10: dffffc0000000000 R11: fffffbfff1f468e7 R12: ffff888011c5c101
+R13: dffffc0000000001 R14: 1ffff9200003c070 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff8881a3c21000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000c003cc5000 CR3: 000000010fc16000 CR4: 00000000000006f0
+Call Trace:
+ <IRQ>
+ nf_send_unreach+0x17b/0x6e0 net/ipv4/netfilter/nf_reject_ipv4.c:325
+ nft_reject_inet_eval+0x4bc/0x690 net/netfilter/nft_reject_inet.c:27
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:237 [inline]
+ nft_do_chain+0x40c/0x1920 net/netfilter/nf_tables_core.c:285
+ nft_do_chain_inet+0x25d/0x340 net/netfilter/nft_chain_filter.c:161
+ nf_hook_entry_hookfn include/linux/netfilter.h:158 [inline]
+ nf_hook_slow+0xc5/0x220 net/netfilter/core.c:623
+ nf_hook include/linux/netfilter.h:273 [inline]
+ NF_HOOK+0x206/0x3a0 include/linux/netfilter.h:316
+ __netif_receive_skb_one_core net/core/dev.c:5979 [inline]
+ __netif_receive_skb+0x143/0x380 net/core/dev.c:6092
+ process_backlog+0x60e/0x14f0 net/core/dev.c:6444
+ __napi_poll+0xc7/0x360 net/core/dev.c:7489
+ napi_poll net/core/dev.c:7552 [inline]
+ net_rx_action+0x707/0xe30 net/core/dev.c:7679
+ handle_softirqs+0x286/0x870 kernel/softirq.c:579
+ do_softirq+0xec/0x180 kernel/softirq.c:480
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0x17d/0x1c0 kernel/softirq.c:407
+ local_bh_enable include/linux/bottom_half.h:33 [inline]
+ rcu_read_unlock_bh include/linux/rcupdate.h:910 [inline]
+ __dev_queue_xmit+0x1d79/0x3b50 net/core/dev.c:4740
+ neigh_output include/net/neighbour.h:547 [inline]
+ ip6_finish_output2+0x11fe/0x16a0 net/ipv6/ip6_output.c:141
+ NF_HOOK include/linux/netfilter.h:318 [inline]
+ ndisc_send_skb+0xb96/0x1470 net/ipv6/ndisc.c:512
+ ndisc_send_ns+0xcb/0x150 net/ipv6/ndisc.c:670
+ addrconf_dad_work+0xaae/0x14b0 net/ipv6/addrconf.c:4282
+ process_one_work kernel/workqueue.c:3236 [inline]
+ process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3319
+ worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
+ kthread+0x711/0x8a0 kernel/kthread.c:463
+ ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+Tested-by: syzbot@syzkaller.appspotmail.com
+
 ---
- drivers/net/ethernet/intel/igbvf/ethtool.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/igbvf/ethtool.c b/drivers/net/ethernet/intel/igbvf/ethtool.c
-index c6defc495f13..9c08ebfad804 100644
---- a/drivers/net/ethernet/intel/igbvf/ethtool.c
-+++ b/drivers/net/ethernet/intel/igbvf/ethtool.c
-@@ -36,7 +36,6 @@ static const struct igbvf_stats igbvf_gstrings_stats[] = {
- 	{ "lbtx_bytes", IGBVF_STAT(stats.gotlbc, stats.base_gotlbc) },
- 	{ "tx_restart_queue", IGBVF_STAT(restart_queue, zero_base) },
- 	{ "tx_timeout_count", IGBVF_STAT(tx_timeout_count, zero_base) },
--	{ "rx_long_byte_count", IGBVF_STAT(stats.gorc, stats.base_gorc) },
- 	{ "rx_csum_offload_good", IGBVF_STAT(hw_csum_good, zero_base) },
- 	{ "rx_csum_offload_errors", IGBVF_STAT(hw_csum_err, zero_base) },
- 	{ "rx_header_split", IGBVF_STAT(rx_hdr_split, zero_base) },
--- 
-2.48.1
-
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
