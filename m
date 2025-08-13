@@ -1,123 +1,161 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFB32C3770
-	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 08:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912952ED84A
+	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 08:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755072878; cv=none; b=eZi/Yc2X7FlsNGum2WtMoKH96XoxQsxw68yySvvPyxarw6FcY0o18jtHxgsO24Vir/ZMbL/UP2EHXiA2BcWnDHbzqsUhnKU2HDEIEi06Ls4kCREQrFWsH2p7/3xKToMGf04jnrtJFvBl8DwmtZ3u4kAD6TUJ7rKoSZeuSrQ4cpk=
+	t=1755072918; cv=none; b=p//yRnxc6Q1P+CeDp0tqp+FWWFNFiIH8WvEreF7LMsiVTBySWqD1rExU2sAiAoJY+WP/jeD1+ngFOGF1LQ782wa+oK7FPYvMCkpkFk/71Z0ktxebzn+bLE+rLAhARcZl1Oy9Vdq3/L3OVoPpV7za8sPXRBaD4lSJ80GIZt4FeLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755072878; c=relaxed/simple;
-	bh=ei/eQ26fEjzT+NtMiND/jOXKZ7w2D1SFMnkuZfYcbl4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mz2IbGOeDHY0TKklE8fbX2l77sTFxsAPd3wWkKyk8H8D99LX5Bq20ttdKPOrsttE9k44VyvIWwrpPXWhG5ME7TFmRLkrpiKTJEtTg1J7dWSpb1hsHfdwNzwmJ7Cbg5Ka3s7HhVZF9rauEMD+1dvZukajI8rlUGMMTZwON6NwGA8=
+	s=arc-20240116; t=1755072918; c=relaxed/simple;
+	bh=34LTcszKLeYDmHdbnh9rrfPNBpaMAPrseZ4WCws0Ieg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=OSsRb/REiqc21BAsXvuxBmg/0HWsK8VxGOIfYNaZW7vQX/V4cxeUiAdBZjydftVjJD5GYQaaCBOVI63COPOTM4P6Y5Ly4ghTSHgxSnPfN6XcQxq6EMufMqvH83QjyooIvujNDhEaz7sMfs8Sf3QtXwXmTJ0MMdnTL2mKL/PP5OY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1um6cv-0002FN-A2; Wed, 13 Aug 2025 10:14:29 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	(envelope-from <ore@pengutronix.de>)
+	id 1um6dO-0002Kb-FF; Wed, 13 Aug 2025 10:14:58 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1um6cv-0003lf-06;
-	Wed, 13 Aug 2025 10:14:29 +0200
-Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id BD60845687D;
-	Wed, 13 Aug 2025 08:14:28 +0000 (UTC)
-Date: Wed, 13 Aug 2025 10:14:28 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Stefan =?utf-8?B?TcOkdGpl?= <stefan.maetje@esd.eu>
-Cc: Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
-	Frank Jungclaus <frank.jungclaus@esd.eu>, linux-can@vger.kernel.org, socketcan@esd.eu, 
-	Simon Horman <horms@kernel.org>, Olivier Sobrie <olivier@sobrie.be>, 
-	Oliver Hartkopp <socketcan@hartkopp.net>, netdev@vger.kernel.org
-Subject: Re: [PATCH 3/6] can: esd_usb: Fix handling of TX context objects
-Message-ID: <20250813-translucent-turkey-of-force-96bb34-mkl@pengutronix.de>
-References: <20250811210611.3233202-1-stefan.maetje@esd.eu>
- <20250811210611.3233202-4-stefan.maetje@esd.eu>
+	(envelope-from <ore@pengutronix.de>)
+	id 1um6dK-0003m5-1p;
+	Wed, 13 Aug 2025 10:14:54 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1um6dK-00Ey7H-1R;
+	Wed, 13 Aug 2025 10:14:54 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Nishanth Menon <nm@ti.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	UNGLinuxDriver@microchip.com,
+	linux-doc@vger.kernel.org,
+	Michal Kubecek <mkubecek@suse.cz>,
+	Roan van Dijk <roan@protonic.nl>
+Subject: [PATCH net-next v1 5/5] net: phy: dp83td510: add MSE interface support for 10BASE-T1L
+Date: Wed, 13 Aug 2025 10:14:53 +0200
+Message-Id: <20250813081453.3567604-6-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250813081453.3567604-1-o.rempel@pengutronix.de>
+References: <20250813081453.3567604-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rxn6fchz6q4l23vs"
-Content-Disposition: inline
-In-Reply-To: <20250811210611.3233202-4-stefan.maetje@esd.eu>
+Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
+Implement get_mse_config() and get_mse_snapshot() for the DP83TD510E
+to expose its Mean Square Error (MSE) register via the new PHY MSE
+UAPI.
 
---rxn6fchz6q4l23vs
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 3/6] can: esd_usb: Fix handling of TX context objects
-MIME-Version: 1.0
+The DP83TD510E does not document any peak MSE values; it only exposes
+a single average MSE register used internally to derive SQI. This
+implementation therefore advertises only PHY_MSE_CAP_AVG, along with
+LINK and channel-A selectors. Scaling is fixed to 0xFFFF, and the
+refresh interval/number of symbols are estimated from 10BASE-T1L
+symbol rate (7.5 MBd) and typical diagnostic intervals (~1 ms).
 
-On 11.08.2025 23:06:08, Stefan M=C3=A4tje wrote:
-> For each TX CAN frame submitted to the USB device the driver saves the
-> echo skb index in struct esd_tx_urb_context context objects. If the
-> driver runs out of free context objects CAN transmission stops.
->=20
-> This patch fixes some spots where such context objects are not freed
-> correctly.
->=20
-> In esd_usb_tx_done_msg() the check for netif_device_present() is moved
-> after the identification and release of TX context and the release of
-> the echo skb. This is allowed even if netif_device_present() would
-> return false because the mentioned operations don't touch the device
-> itself but only free local acquired resources. This keeps the context
-> handling with the acknowledged TX jobs in sync.
->=20
-> In esd_usb_start_xmit() a check is performed to see whether a context
-> object could be allocated. Added a netif_stop_queue() there before the
-> function is aborted. This makes sure the network queue is stopped and
-> avoids getting tons of log messages in a situation without free TX
-> objects. The adjacent log message now also prints the active jobs
-> counter making a cross check between active jobs and "no free context"
-> condition possible.
->=20
-> In esd_usb_start_xmit() the error handling of usb_submit_urb() missed to
-> free the context object together with the echo skb and decreasing the
-> job count.
->=20
-> Signed-off-by: Stefan M=C3=A4tje <stefan.maetje@esd.eu>
+For 10BASE-T1L deployments, SQI is a reliable indicator of link
+modulation quality once the link is established, but it does not
+indicate whether autonegotiation pulses will be correctly received
+in marginal conditions. MSE provides a direct measurement of slicer
+error rate that can be used to evaluate if autonegotiation is likely
+to succeed under a given cable length and condition. In practice,
+testing such scenarios often requires forcing a fixed-link setup to
+isolate MSE behaviour from the autonegotiation process.
 
-Please add a Fixes tag.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/net/phy/dp83td510.c | 44 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-Marc
+diff --git a/drivers/net/phy/dp83td510.c b/drivers/net/phy/dp83td510.c
+index 23af1ac194fa..094c070f3f96 100644
+--- a/drivers/net/phy/dp83td510.c
++++ b/drivers/net/phy/dp83td510.c
+@@ -249,6 +249,47 @@ struct dp83td510_priv {
+ #define DP83TD510E_ALCD_COMPLETE			BIT(15)
+ #define DP83TD510E_ALCD_CABLE_LENGTH			GENMASK(10, 0)
+ 
++static int dp83td510_get_mse_config(struct phy_device *phydev,
++				    struct phy_mse_config *config)
++{
++	/* The DP83TD510E datasheet does not specify peak MSE values.
++	 * It only provides a single MSE value which is used to derive SQI.
++	 * Therefore, we only support the average MSE capability.
++	 */
++	config->supported_caps = PHY_MSE_CAP_AVG | PHY_MSE_CAP_LINK |
++		PHY_MSE_CAP_CHANNEL_A;
++	config->max_average_mse = 0xFFFF;
++
++	/* The datasheet does not specify the refresh rate or symbol count,
++	 * but based on similar PHYs and standards, we can assume a common
++	 * value. For 10BaseT1L, the symbol rate is 7.5 MBd. A common
++	 * diagnostic interval is around 1ms.
++	 * 7.5e6 symbols/sec * 0.001 sec = 7500 symbols.
++	 */
++	config->refresh_rate_ps = 1000000000; /* 1 ms */
++	config->num_symbols = 7500;
++
++	return 0;
++}
++
++static int dp83td510_get_mse_snapshot(struct phy_device *phydev, u32 channel,
++				      struct phy_mse_snapshot *snapshot)
++{
++	int ret;
++
++	if (channel != PHY_MSE_CHANNEL_LINK &&
++	    channel != PHY_MSE_CHANNEL_A)
++		return -EOPNOTSUPP;
++
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_MSE_DETECT);
++	if (ret < 0)
++		return ret;
++
++	snapshot->average_mse = ret;
++
++	return 0;
++}
++
+ static int dp83td510_led_brightness_set(struct phy_device *phydev, u8 index,
+ 					enum led_brightness brightness)
+ {
+@@ -893,6 +934,9 @@ static struct phy_driver dp83td510_driver[] = {
+ 	.get_phy_stats	= dp83td510_get_phy_stats,
+ 	.update_stats	= dp83td510_update_stats,
+ 
++	.get_mse_config	= dp83td510_get_mse_config,
++	.get_mse_snapshot = dp83td510_get_mse_snapshot,
++
+ 	.led_brightness_set = dp83td510_led_brightness_set,
+ 	.led_hw_is_supported = dp83td510_led_hw_is_supported,
+ 	.led_hw_control_set = dp83td510_led_hw_control_set,
+-- 
+2.39.5
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---rxn6fchz6q4l23vs
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmicSWIACgkQDHRl3/mQ
-kZxdyAf9FoePofooqOk+YI2l2Ih86wPeHW6geUxn3cLrjGYQkQhYG6X3WZUfgkVL
-lVyYvUGxto7vHQzanLzmmYtjCruyhJcFNqpzQqdtnnFb1g3GUw26dBUTEp7S4EWU
-+sWlNP0BjNNA0E9wDiDmOXDTDZ4q4jWf+iutcSXwpbCMu4hcVKyPVJ22YQeeLwN3
-STaF+VrADo39Nc1vAYRW8fgvO+vnxUXakeVxPGdyBfH4KrGFBoYVthToAaNLKVMi
-DcRkUJwIe2KRSO4tQF9nbor1GWeA3LBAALXXB+x/klym0ZTfrLOaKaJgY19utEDS
-NuyQY9hY3IBFZJ5VnVGB/BqNDPI30A==
-=82/A
------END PGP SIGNATURE-----
-
---rxn6fchz6q4l23vs--
