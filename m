@@ -1,182 +1,118 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2069.outbound.protection.outlook.com [40.107.220.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6DD246796;
-	Wed, 13 Aug 2025 16:04:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755101091; cv=fail; b=hgMF58SQGVHGKMDSGQbR9EYhLSIazWQFoKZ3FlPWBH6DqAgrQpoAIo7unaV9Qtvoz9AL3C+VUykXzkoxg6AQbDcx6eRUjKEyLYxyeAG6V3nPqOtwxUFuKOYh3IS1WWYRZ7WVVfBiY/dZt2X8JIrtXFkBHNPavSIkiUdCD/ifz+o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755101091; c=relaxed/simple;
-	bh=+pwhOBeL2/vs1j/TzU0LmvQrI3rJSihsuonYx7Ovtdo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=KJMgd5Icf1heslPUHIR3FexlRB8Zcr3XJSWJarRwDavHn+a/APnzVC4pQ1K8fC03LZULFnv1ZIfUuay+vAFdaY+Z3BxbrAJcIPdlo/R9gru0rZb/R6OidVLDLXldLMqQkbVJGTqOeTT/9xmVpsrzc6wn+8903ZiEa31/ZMdC7cY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HV41icqb; arc=fail smtp.client-ip=40.107.220.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AA0286D62
+	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 16:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755102565; cv=none; b=cgbzuGDiiP+gTYZ+3shpzGuKLJll3PiarENXB9mr4W3I0NFC7JRfjBoEa02e8riGh2URm75gIO7R2xoNVDLRMACIDcPUSkH7YuJgWgTmmFqaB3u03ZpOqNUExR6lr6CN7A8j7WT464GMXUkNROr+yMEZRR6SlMK8njtXCkywjc4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755102565; c=relaxed/simple;
+	bh=bYaQ7xlrKxCuwQtNn2omZ7BjgvDcPYjR2TMWck0VGQM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fk6QukbjkaIXTZJ+RmH+5mfoT3x6A2Dk0KYPoPMil8l3gVplI46WnkcPPjJDFFFIzyrUvrH0PjU6O2JlEja3zAobLhnaHl/S8Rj42che3vubBj8B9MCRyiSfyEqqN20iObDQ2ptN7ajTTYthUI6T6ekKW2adf0rggAHqDRLA7u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=CQO1HDkB; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HV41icqb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vqnerqkNCL9Aaj131WMe2O4rs2/LG9SkQ5ZNSa8ZFw+am8Yxt6eiSCL1mOfmBD2VYBYQLJeIPgjR1I+R7wHVyk9qAg4Db3ZaFV2wkaqTqyysgZG7aLkQ2iUKcj4fSiDxDnD7f9oTZ+VbVfN8N5SfunuxxD2K6wULTiMuvZrrDW0pfYLazIwfmYWWiLv2QW8sP1biribs4eQp2J+x1rfYGhNscEg3RDbMRsGkGhgo8HCt3Uprk27Ido/8FhojP0+Fa5sneG6AZQ8U8JxdqxBu5AeV+JaMj6XqcZa/cFeBqxR+Zl3elfBzViwz2W3K+r7M7jEXFJh7gRqOgUHKbadeAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4vddVk6HLGh2Q4zrqCU62VHqRLCrQo6Su+LQJ0aKjVs=;
- b=qQTEMEx0Dar1QSDdJW9ZVkcPsvA9QjKw5ZRSWiD3D6hOBlEVhpNlFeWpixaPPEvmCigd+BY86g+8BKPHz1DaPrpfni3OgaYu5KpAtExvl/Rc++fhrVQwME6RRC2X7tQzrH3XeYDqCHnb8a3CJLTt6G38ZxJcD344WKkwtZaxnmwGrF5hgRZNBwB2kGVb4x0FpjFUZsvRhfbn7yU8QJVT7GS2QhlFjLTXjjU2tuOnOUzbM1DPtDCEVgl93lp8qDaoNADXplYQjF2SYh7k/B43W0k5FOHX0JVAWLRLhXJn+E5DU3MlSlDxI8hGj0o3Cf6qHZvn8ycqsaCRoQOidqtUCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4vddVk6HLGh2Q4zrqCU62VHqRLCrQo6Su+LQJ0aKjVs=;
- b=HV41icqbJCXeK4gWmFLFPUsbQH4M1srvfhaCdrjYJM6HZMfuxIt2G3GDJtlpO3FdpUZijG06M5H6MAJv1MG0W6NKfqj9162VJCiQdMfWBEfeGIpuNVWXuctwbr4Va/4WzostWAKAeb/AhU1A8GTAWL5hvCFU2Ye0I5DvYXkkTMeZ6V+aj6HIDtt5sVelSzV/ZBNuGM3JREOz3TFEPfKylHHU2xIG35YfWnQGBOp2tI0oBwVODEur70N5WmavGKkzjF7fts96X9k8eonpE+tucd1t/hQLoDvxoW60iZKrZhncO12Ds7vDZBZ+lVGLbp5Ei/LrcHYwu2jhOWHyfai+8w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by CH3PR12MB9395.namprd12.prod.outlook.com (2603:10b6:610:1ce::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.13; Wed, 13 Aug
- 2025 16:04:46 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::66fc:f8a2:1bfb:6de8]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::66fc:f8a2:1bfb:6de8%6]) with mapi id 15.20.9031.014; Wed, 13 Aug 2025
- 16:04:46 +0000
-Date: Wed, 13 Aug 2025 19:04:37 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Richard Gobert <richardbgobert@gmail.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, andrew+netdev@lunn.ch,
-	daniel@iogearbox.net, davem@davemloft.net, donald.hunter@gmail.com,
-	dsahern@kernel.org, edumazet@google.com, horms@kernel.org,
-	jacob.e.keller@intel.com, kuba@kernel.org,
-	linux-kernel@vger.kernel.org, martin.lau@kernel.org,
-	menglong8.dong@gmail.com, netdev@vger.kernel.org, pabeni@redhat.com,
-	petrm@nvidia.com, razor@blackwall.org, shuah@kernel.org
-Subject: Re: [PATCH net-next v5 2/5] net: vxlan: add netlink option to bind
- vxlan sockets to local addresses
-Message-ID: <aJy3la53tn3mS3Jc@shredder>
-References: <20250812125155.3808-3-richardbgobert@gmail.com>
- <20250813062904.109300-1-kuniyu@google.com>
- <799c2171-7b41-4202-9ea4-e28952f81a65@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <799c2171-7b41-4202-9ea4-e28952f81a65@gmail.com>
-X-ClientProxiedBy: TLZP290CA0012.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:9::10) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="CQO1HDkB"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b1fd59851baso4674543a12.0
+        for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 09:29:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1755102563; x=1755707363; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LhDh0bK+gQwaFqeot2nkbIRJyYLX52+XKHM1mxR51Ak=;
+        b=CQO1HDkBKZSsuTtj99voFysofUPnuHmD2TgOKkdW++4ySpL8r940YD2/Ryqi9HhTrU
+         rqP6svTg2EWjK4gOnYtb6STrxP60RO+GMsRmuZzLFrPrQHvePSfShOSyEtvhFwfRqclW
+         0Kq1oOjzgu4DI5b63cyHmHOd5Vg6gZSDwIWaI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755102563; x=1755707363;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LhDh0bK+gQwaFqeot2nkbIRJyYLX52+XKHM1mxR51Ak=;
+        b=ENtUjIThKQCRz2GDbkkjAz68b5/OjHB8NpWYdHIxum+7uY2rIhtfziwWjW9SP/gJAU
+         kS7hBvRBYke0OPJqdxWBFqNb4r+IQTnnPBX0WxcRzUWzMT5k+SeECfWZy4ewsUcyPpU2
+         QdTUjIKymOxTq9oj9+gcyrCjvB4ifueS9YAVo1ECaYwtcYbISI3/WNSg2UkalTYDssC8
+         O+ojYKlXbfQ92vHaMx0w74kPUJT/ipNcT2h0ugDx4V/pDLdvRq6o9MV8/UCwkAydpIHG
+         bjsSKkaa2VHQI2KR+oW4DngWaCjViUOe+TCMktaHw8Blkx2wGumLSc8hfc0v6nvDL0kS
+         h/Dw==
+X-Gm-Message-State: AOJu0Yy14Djz0WGdyHWceVip9/HrhKhl3jgcESfZn7+BQqmlo7koZRLf
+	349WsGNs2u/82nWvTEc+DcYwHHGsPNflARYwl5M1IISIxBlmqQGjdqsmRoKBKPEHgA==
+X-Gm-Gg: ASbGnct2aMdS6swZZpAO9Knj77djFvRPIaNVkTVbgMQVifW65CQTLpxq/i1r1NCZGH/
+	eM0E0JA7oK31/l7B723EUPp59tsvl+aEGraybn881UFROK15IHz9bO4iAJfj77NPebVwLA3c+ZK
+	jMJXa8gE9Sj0TjZhtUHwAcBwmiZ7QCH4Ba9c5b7g68utqsf6Mr0GH5Gdo9gXiDqmsUYu+5M5kNX
+	BJV2uGayo88eDcfBefaS5C+hS5kW1Q/vvacW3F9PYTmnQdXJlrN8HdCP2vGZLMqZCiVoEJsJmwA
+	2TPG+/qRZE6r9zj5MKAg+EXIOqKyg3Y7AMhXvS7GQu4H/8tEoARVpb9Hdc2EFsIDWk6xBE7mmq/
+	/NegZa9nJ+uIPAzWFzwi+MH+KCq2yeZgnSxVznOmxcCz5sg2L0OM/hkRu3/T4viWiGzjqeDxoUf
+	xLJnGzYsD9CgN+2yZlBEukdEe56g==
+X-Google-Smtp-Source: AGHT+IHaS6kzgD2z3CPm/bEpl6Q8l6D7g2epnpf64XF+XoK4p8+KLJvuUjbFUmkBdlSH0iEurBAjzQ==
+X-Received: by 2002:a17:903:2f85:b0:240:4d5b:29b4 with SMTP id d9443c01a7336-2430cf2af9fmr57123965ad.0.1755102563267;
+        Wed, 13 Aug 2025 09:29:23 -0700 (PDT)
+Received: from hyd-csg-thor2-h1-server2.dhcp.broadcom.net ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241d1f0f7bfsm329311915ad.41.2025.08.13.09.29.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 09:29:22 -0700 (PDT)
+From: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+Subject: [net-next 0/9] Add more functionality to BNGE
+Date: Wed, 13 Aug 2025 21:55:54 +0000
+Message-ID: <20250813215603.76526-1-bhargava.marreddy@broadcom.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CH3PR12MB9395:EE_
-X-MS-Office365-Filtering-Correlation-Id: 633af1e3-2ecd-4d1f-340e-08ddda831f61
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qAFC0JUpjZ1hu+eqV1BvaJvYdcU97zd3o6xIElAo809xfoeEtZJ8SrwRgX7V?=
- =?us-ascii?Q?t2FXG0JtIzDrFTu9sErrAv0edKFMt2gc00Vca5GtF8aHdxerXjUJTPeDqV3T?=
- =?us-ascii?Q?PIr2wOat/amRHxKVWtdDunaEdZx4Z+8BFx03YCV7TusaBVqnK1jHjz1/bmw5?=
- =?us-ascii?Q?WDp+Wk5D32RdugD45ZE4iwcTxHmZik93xp1iDwUMIxL/10lbY86UvZ/RXXyB?=
- =?us-ascii?Q?fvrh9JyXp93DnhnRnZgulFNpORgMEWCZpaYZ80Su6FX0drbAsw/s0PPmM95k?=
- =?us-ascii?Q?6vQJL88Pqhn0SJoPqT9tVFcbZgiMWUE60RvzRzarrkXDMuaO+tOYa0J1nBry?=
- =?us-ascii?Q?DJJ0zyrhIF0TXs8qGUmcJHD8iytnNFHhcwKmJUnv6mCYN7QwLkHfQyfSw5z4?=
- =?us-ascii?Q?+lBxUhQ9MxDaiT891Ct0IZ/HsgxlAgjxe0O/vro/K1eDv3omOaY1la59HPus?=
- =?us-ascii?Q?VJ8rbtAozXI1KoQhWiTKixc3bn8kimXSJ325HOE9ya//M2xwZ6CVfABfGyNJ?=
- =?us-ascii?Q?PXBMqL2S9nWNxMHbgMkvZdwUXZuB18YjCl1mVsfYwTyKQjHjfW9oeD4Pz3Mo?=
- =?us-ascii?Q?5DBdwKcrDHmnrqYF8mkINrQT0u8D4rh5mzBDsjDdfeG5dEG46s33nGYfKuvl?=
- =?us-ascii?Q?qJA+jfDIOT+GQXOO1srvVk3FgGr8WB2FN2Pgz4Odap3yiwldjXwJicoOlhmJ?=
- =?us-ascii?Q?XnrA8FOr+UhXTUR3EexZzZPQcX1jndSt9NcovZpebjCjweW2KiSk5OPsIhEe?=
- =?us-ascii?Q?l1c/dudp5o9NhsLXwMvZxijrMOfug+DutmzCRb2JbdVFN6bWB1fwuZZltVJM?=
- =?us-ascii?Q?z6K3KXK54c4ZrzCGvDLUSEY4EFFiHMIpzFMXaTqNv/kku301d1FrDzW0nl0Q?=
- =?us-ascii?Q?PTlzUWV6rQkW4d+l/UiVo1DuXLid3OgqjJZmwk5jAXdMjCyBuSyy3sN5juOs?=
- =?us-ascii?Q?1Wpd/+cm9gLh7+OTtctw5E34F7gUhdVDYc64yMfkId6Qkmccd6KbpAWvtioS?=
- =?us-ascii?Q?Gy++0b9I9pdZUMQ5YaaHdiwczcgLeOl8pXMPrgCzMsd5U2YHQXV87gaZj+N4?=
- =?us-ascii?Q?YkmfmcdIZXgpXeeEweEBD3ui0guQcillVszaToVTB8zHJLshU5yHnnkc1Goq?=
- =?us-ascii?Q?yCCp+KgpSUUrtvoVBnMEv9b9HHtK+yDd9B8As91AAqaswLVt0A6xHwzwHoVc?=
- =?us-ascii?Q?UYvaudgpITfMr8xCerNSx+aAzsgqEMfysq3WZ5mqCcJEnlHf78xYMCHPqQOU?=
- =?us-ascii?Q?IUpbe2OPk8FB/AgrtxF1pfBcl8O4VByMn1oIFOAO/WXjL/WPkGSlDFvnxFRx?=
- =?us-ascii?Q?RQfJ9+/Ub8SKHJ1JVwWVLZgivfqzAojLh7Wt7nS4PxnAJuZjp3OG2Ft4moDV?=
- =?us-ascii?Q?W0N0OVN3ZNrUjAJygB6Wfom709k0SXbhZxV4m2pLI04DLwCMvrPiqBF6rANs?=
- =?us-ascii?Q?ho2TlwioV0U=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?QIrHQdzL2RYcvd4iPEnReL0Lh/s2kPQhOj0n9TPna68+kwwH2P73FqSBINmx?=
- =?us-ascii?Q?+Cr35lpAQu1A6SnS9lZWSEIYkBVLq6CUl/3VzMslc16NOiAhrSOJ43+BYEHm?=
- =?us-ascii?Q?hmNHoGQv8qDLbOJ+9H9JDyloLSXI3+bDElQsgr+HSb6DrLYkCig2YDwHAwrd?=
- =?us-ascii?Q?lXqD2QkBABLp0aj+EsDN/8/RzyzEj0ovm9JLFAArCoinBtMPv7WRECStzmoC?=
- =?us-ascii?Q?ckuKyRy8nINyqWz1hNKEwb+jpP2dV84NoR88uEwabUuWi5KMp/UmmFJwcL8w?=
- =?us-ascii?Q?tZdnLZwkS7lbSwh1HvYzSEd2RcOaKWWn3gUgE76Sk/x/ierS7JzYtv7gvwMB?=
- =?us-ascii?Q?ThvdIRMVNhB5y+nZVqyzp3+JLAG0AlFkL/Jq3RHLSHptBtVxYPQ1OK4nDcqw?=
- =?us-ascii?Q?QsYvyBtr5GlI+0Il/prBad7heGBZHN+NBocX4G+o7oAcdl6CiOS7QpRkpMbk?=
- =?us-ascii?Q?iz+4rjiA6OUpa/6koTHhtS+XJYUfrZNRenXrKBiVQfaZTLePFbJCyPIBYtzt?=
- =?us-ascii?Q?pmL06wffiyWCIT80lHe4pAlWz0Ck7pAps4qUDX3BIXODBY6+ChvlzB5EihZ7?=
- =?us-ascii?Q?H3Rj/wo7dR7tELohAMnzM7R4f/5E8A0++CLWOCzJ88+4V1MoCIPrH+y/IZan?=
- =?us-ascii?Q?FQ8yA+HTwfr8S8Kka0QNzD5G6PUEwEJDks/PRfk5xulmhHcxFE4IJtxwkuxA?=
- =?us-ascii?Q?wZq5RVT+Gcs/1in4CReR7jq/nNpqLsouZHYxOSHpWr7K6PJTrVvpFPTmLzq1?=
- =?us-ascii?Q?wXzRzNZ/qLJtS/+KEedARPNsXj/tsbQrsoJCSIZrcSX2ys8DjIdl9SjOuwxV?=
- =?us-ascii?Q?1kkcm+d9k4JFY6Dl3pAeYUtWt0EOc/ybRBw8Dq+pKeSuKCNVox8Tk7amy/rI?=
- =?us-ascii?Q?9OE4/47pDKh1wOssUis/F12dDk5LzDhKTyGJN203aMiK+1GqbbXc/VJWy00v?=
- =?us-ascii?Q?UzzcOi/G3YbVsHi71RKlLxW0jIaONPqR+PaxM/MP3pE09354dIeeJZbG9z28?=
- =?us-ascii?Q?lJaW8l1vvzJy2aknIudNudGtzGUvrUqrxROq3so0SiVKUwfw1L/O2hDGhBE6?=
- =?us-ascii?Q?jg6UonaRWE6fSseRGVpZOPi9pi7R3+0Bb80o1aNVPPpErdUTehRAhoU2l8w6?=
- =?us-ascii?Q?haoHb0iQpc7rKA8Ak+irl/7GENGmOhr6/pBu/CDx21ZBARYTlQEgomLTf7Xr?=
- =?us-ascii?Q?T0yIW/tmJMINMmt+LaO4RkT6vAYXi9roGYM1DBvVQQK15cwJpUjDH766syx6?=
- =?us-ascii?Q?MiQxB3OrK+k6crcOIvFH6EdLPcS+t3vxnjxvQmjAUIXLkeC50cn5MPdDEjlI?=
- =?us-ascii?Q?At9AU3JJP8ga8yyzWDAOb1UcKqrgJZ07iUNUA7Wm2ArPnaFx+9UmyZuNsQ5K?=
- =?us-ascii?Q?Gzm7MuwNf9+8THgamGnpbLFN8b9Guq400+ArysBNC1z1AfP48Tby5GrD2ey+?=
- =?us-ascii?Q?VFDS3BIPgafv24BoyE84c0CV0K9KR8NYlGioKaErWJSt6HSEsX9IC6rRYsSE?=
- =?us-ascii?Q?Z993dpuklKwmKNqk7vPzO4X5CyhmNw7uO1F7KsJeNd3ndsZKl06NqYyg/wiD?=
- =?us-ascii?Q?/kvMGDuolj6lGVDbbkkwhIfitqBzHaAoE+6bT9Nv?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 633af1e3-2ecd-4d1f-340e-08ddda831f61
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 16:04:46.0080
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qq199D9dfjPNilsTXNRKrVN0dfxKmhAGG1OYoerSNZSBD29LDCztBXAyR/5xOnrQCzr3WrhkSVW80DDBKlvAKg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9395
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 13, 2025 at 05:46:44PM +0200, Richard Gobert wrote:
-> Kuniyuki Iwashima wrote:
-> > From: Richard Gobert <richardbgobert@gmail.com>
-> >> @@ -4044,15 +4045,37 @@ static int vxlan_nl2conf(struct nlattr *tb[], struct nlattr *data[],
-> >>  		conf->vni = vni;
-> >>  	}
-> >>  
-> >> +	if (data[IFLA_VXLAN_LOCALBIND]) {
-> >> +		if (changelink) {
-> >> +			NL_SET_ERR_MSG_ATTR(extack, tb[IFLA_VXLAN_LOCALBIND], "Cannot rebind locally");
-> >> +			return -EOPNOTSUPP;
-> >> +		}
-> > 
-> > Are these two "if" necessary ?
-> 
-> Creating a vxlan interface without localbind then adding localbind won't
-> result in the socket being rebound. I might implement this in the future,
-> but for simplicity, I didn't implement this yet.
+Hi,
 
-I think Kuniyuki meant that you can just call vxlan_nl2flag() without
-those two "if"s because the function is a NO-OP when the attribute is
-not present and it will also fail the changelink operation.
+This patch series adds the infrastructure to make the netdevice
+functional. It allocates data structures for core resources,
+followed by their initialisation and registration with the firmware.
+The core resources include the RX, TX, AGG, CMPL, and NQ rings,
+as well as the VNIC. RX/TX functionality will be introduced in the
+next patch series to keep this one at a reviewable size.
 
-> 
-> > 
-> > 
-> >> +
-> >> +		err = vxlan_nl2flag(conf, data, IFLA_VXLAN_LOCALBIND,
-> >> +				    VXLAN_F_LOCALBIND, changelink,
-> >> +				    false, extack);
-> >> +		if (err)
-> >> +			return err;
-> >> +	}
-> >> +
+Thanks,
+
+Bhargava Marreddy (9):
+  bng_en: Add initial support for RX and TX rings
+  bng_en: Add initial support for CP and NQ rings
+  bng_en: Introduce VNIC
+  bng_en: Initialise core resources
+  bng_en: Allocate packet buffers
+  bng_en: Allocate stat contexts
+  bng_en: Register rings with the firmware
+  bng_en: Register default VNIC
+  bng_en: Configure default VNIC
+
+ drivers/net/ethernet/broadcom/Kconfig         |    1 +
+ drivers/net/ethernet/broadcom/bnge/bnge.h     |    7 +
+ .../net/ethernet/broadcom/bnge/bnge_core.c    |   16 +
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.c    |  483 ++++
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.h    |   23 +
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 2175 +++++++++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  |  290 ++-
+ .../net/ethernet/broadcom/bnge/bnge_resc.c    |    4 +-
+ .../net/ethernet/broadcom/bnge/bnge_resc.h    |    1 +
+ .../net/ethernet/broadcom/bnge/bnge_rmem.c    |   58 +
+ .../net/ethernet/broadcom/bnge/bnge_rmem.h    |   22 +
+ 11 files changed, 3076 insertions(+), 4 deletions(-)
+
+-- 
+2.47.3
+
