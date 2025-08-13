@@ -1,148 +1,110 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8262E2E9EDF
-	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 08:12:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CA02D0C6E;
+	Wed, 13 Aug 2025 08:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755072739; cv=none; b=a445nCsPw70ElKm0VhW9VNNNKuJv/hRtyjzi9HuG5Wibi4Sw8PIBeVxGt7gkmNdtYqAjGrleDX8yhQFFafIfchd0H4j5cVD8GjdmkcTiBb3r+mvzCMCR18g3I/khFntsb7l8iJ7i4ES7I5/GaIPf3UZBQGCejmsF9HR986LEqdA=
+	t=1755072808; cv=none; b=OZPFytRDt/B17O4VEw3Y60AaPltHJcjREFKtx+pKHnyXKwgHN+HCxYZm05xI5yuv1xyJ9GPWlopTlgxUuGSlFfEs7Bb8dmsLl08j94QWHXTf7/nvyK+k4Uo1jOeWGIJJfI/rZqNyxmRHFgAgzTLi9qmkP+1YX1W47o2hC3STRdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755072739; c=relaxed/simple;
-	bh=6+7jJZ3HhTmLYJo9sruLtdjHZVI54SZ6HNZmAF5DWM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CcL+7FRbsV/F4prLjUZqSETp/Fwq8iK6/Lc+GK8lyeQtoAOp0cFdDJkKdYd2pdhCbkDPfSVS52S2iYvSnwMF3rIXb/7+Mf99Jqbte+N6cIII6JP17ru8MklZxxXGELa8VGin4xcc7mKLnI1sr0g8v5XFL4MO6tnBg9ohCZRW7Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: zesmtpgz4t1755072724t6817de95
-X-QQ-Originating-IP: +icP6DoFFNymN8R74c7afLzyc/7lvOHbSeRS8oPVEgw=
-Received: from localhost ( [203.174.112.180])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 13 Aug 2025 16:12:02 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 1664480856713457679
-Date: Wed, 13 Aug 2025 16:12:02 +0800
-From: Yibo Dong <dong100@mucse.com>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	corbet@lwn.net, gur.stavi@huawei.com, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, danishanwar@ti.com, lee@trager.us,
-	gongfan1@huawei.com, lorenzo@kernel.org, geert+renesas@glider.be,
-	Parthiban.Veerasooran@microchip.com, lukas.bulwahn@redhat.com,
-	alexanderduyck@fb.com, richardcochran@gmail.com,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/5] net: rnpgbe: Add basic mbx_fw support
-Message-ID: <211A876E5960B039+20250813081202.GB965498@nic-Precision-5820-Tower>
-References: <20250812093937.882045-1-dong100@mucse.com>
- <20250812093937.882045-5-dong100@mucse.com>
- <eafb8874-a7a3-4028-a4ad-d71fc5689813@linux.dev>
+	s=arc-20240116; t=1755072808; c=relaxed/simple;
+	bh=olWYvgazVDAIX1fRFJ++BCO7OtcRhXqwRR+tHgLVmDU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LnOIVcbonaOQ/VUwr+q6hSU6KdYcbfU1sEg74BV6Lcriaa9pcjOzPnxzFPLFSUy6vU7Il+ErBobYRlzTXQSII37FYILr7onyn5tQnUaisJRajjPbs0+uSrlLKnMNPTGUUVqqst5w17Q4ti9qXx02l4APObpYJPuacoonUcp7IMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iw2A4LiP; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iw2A4LiP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079DAC4CEF1;
+	Wed, 13 Aug 2025 08:13:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755072807;
+	bh=olWYvgazVDAIX1fRFJ++BCO7OtcRhXqwRR+tHgLVmDU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iw2A4LiPDel9uEeKtd+y/AL9cPq6Yl2Qc8WRMZrDmmmloTA8qX04WqoFNv/WxVciV
+	 VC0EZQ4k9Qq4MMHh83vdAriDFEBHdcWw1HzhD9KHs8VIaTRL0PtBE7ZGs5FmGsWReo
+	 Mw7eKIx46YPjdfHp0K0vi/LjWrMKXTPnlpVo5GldJG1FrFTRd1j5wuTFaKksk8M1KH
+	 0yegJZPqozep47Ijt+Bsw8zBwtaiuZtKqAY3/NCJ9XPIRPypBflVRb4UG59hlm1ITZ
+	 RohzTkQCfHW0JpmPmghAxfN22OlTkolziyFoY6+FPyhBjec6IOLamZczUlqlG76Y+H
+	 BdcXcwLInFJRw==
+Message-ID: <87d7c789-0872-4d6b-9ef2-db3543f1d295@kernel.org>
+Date: Wed, 13 Aug 2025 10:13:24 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eafb8874-a7a3-4028-a4ad-d71fc5689813@linux.dev>
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:mucse.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: OZsapEVPoiO6ZsKYGvtf16jwxA8tVhOn/XupV1AfyJGYveGNw+gA9jTT
-	nCGLk8TwfQjAXFFasTsgs4hC0nbOAtHjQB9BreHQW+ptVTH6hfz0M1jbYx19UbIp7UmCYe9
-	u83TJEECD6zYycFfKzpNVu2nM5C6ROf3nrmnP/pvkeDlkUuBvqUf7KTL9z6lvbxsoXBwCOS
-	f2/4Xnwh6JslFWL/SXu35O7192wqJTmNe2mVkWE9isba5OYF/fSHah5NLsmonpEXYUt6CSs
-	tMa2N6dPCo0y7Y35l5C+EO2rlOF+8+le0t+DeB37uptt5nMtdIox/5FmZvWIENA+fHdE+o/
-	WxvTUt8JYb30L9X68EAaekXLoK0C4RGGOeb5cd6ZUNuzMHZgMddtZCLuSe6ejSMVwHl8LPx
-	rEhtSY2t5SxGLWfvDiDvDiph2PomfeTQbNcONDZNIbWC1tWM8mRFONJA3vHkCm+q2fzWaf1
-	jB4tMexFZ6dZQ4pGKSt/SQVMcNtGaATRb75c3XyzpbKfdbFSspyvEtDPQ2zv56HfwpdiYPA
-	kfbvI/GqIgrbwAJIQJ5H8NyjCPsO/Wm/tQwJPFO5O58cc1YUx4UJh4IfkHxxzNZKRI7GWoH
-	CcbgwmsBnjuoTl19uboVMPN+6RsvztQwiPnvPQi8HUXfJkcZxuWoMCnN4JUc8JPWbyIt0FE
-	23AMEziftTmX5UQPvw5T1aa5bMSqHJ9oaMY8BuA1QUNC6UQiWn4VCPqOQPSlhRZokhe8D5H
-	N4YqlGkT7+xfoYD5JfO7U8K1iQ1EoEem9Lg5qVu51oivO60E18q2eqqhY5DdveVFZsqp2Hr
-	EBzxISrrcW79bx/xeVHxROjSjNTfwl25Nq/7LD8arhcexpD4VjQFdIKBN82WYfPO3ms5Irv
-	M76DHoBZAmNcdmDC6cxs2uxZ3y6JXgqSG8WCVkm2DR/DG+QizodvSgKzGoZknTsr5pLiASR
-	beQoqtBcKPQU23pytCCgmgLPW8w1ep8hOOCf4nvdAQnU8mW5LFTIXGpstGxW+SF4EGSTMwG
-	WWweqktEj/iQDsB1N7mIwzEbqMapYP4cTDMCuXaA==
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] nfc: pn533: Delete an unnecessary check
+To: Dan Carpenter <dan.carpenter@linaro.org>,
+ Lars Poeschel <poeschel@lemonage.de>
+Cc: Paolo Abeni <pabeni@redhat.com>, Aleksandr Mishin <amishin@t-argos.ru>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+References: <aJwn2ox5g9WsD2Vx@stanley.mountain>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <aJwn2ox5g9WsD2Vx@stanley.mountain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 12, 2025 at 05:14:15PM +0100, Vadim Fedorenko wrote:
-> On 12/08/2025 10:39, Dong Yibo wrote:
-> > Initialize basic mbx_fw ops, such as get_capability, reset phy
-> > and so on.
-> > 
-> > Signed-off-by: Dong Yibo <dong100@mucse.com>
-> > +static int mucse_fw_send_cmd_wait(struct mucse_hw *hw,
-> > +				  struct mbx_fw_cmd_req *req,
-> > +				  struct mbx_fw_cmd_reply *reply)
-> > +{
-> > +	int len = le16_to_cpu(req->datalen) + MBX_REQ_HDR_LEN;
-> > +	int retry_cnt = 3;
-> > +	int err;
-> > +
-> > +	err = mutex_lock_interruptible(&hw->mbx.lock);
-> > +	if (err)
-> > +		return err;
-> > +	err = hw->mbx.ops->write_posted(hw, (u32 *)req,
-> > +					L_WD(len));
-> > +	if (err) {> +		mutex_unlock(&hw->mbx.lock);
-> > +		return err;
-> > +	}
+On 13/08/2025 07:51, Dan Carpenter wrote:
+> The "rc" variable is set like this:
 > 
-> it might look a bit cleaner if you add error label and have unlock code
-> once in the end of the function...
+> 	if (IS_ERR(resp)) {
+> 		rc = PTR_ERR(resp);
 > 
+> We know that "rc" is negative so there is no need to check.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
+>  drivers/nfc/pn533/pn533.c | 12 ++++--------
+>  1 file changed, 4 insertions(+), 8 deletions(-)
 
-Ok, I will try to update this.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-> > +	do {
-> > +		err = hw->mbx.ops->read_posted(hw, (u32 *)reply,
-> > +					       L_WD(sizeof(*reply)));
-> > +		if (err) {
-> > +			mutex_unlock(&hw->mbx.lock);
-> > +			return err;
-> > +		}
-> > +	} while (--retry_cnt >= 0 && reply->opcode != req->opcode);
-> > +	mutex_unlock(&hw->mbx.lock);
-> > +	if (retry_cnt < 0 || reply->error_code)
-> > +		return -EIO;
-> > +	return 0;
-> > +}
-> > +
-> > +/**
-> > + * mucse_fw_get_capability - Get hw abilities from fw
-> > + * @hw: pointer to the HW structure
-> > + * @abil: pointer to the hw_abilities structure
-> > + *
-> > + * mucse_fw_get_capability tries to get hw abilities from
-> > + * hw.
-> > + *
-> > + * @return: 0 on success, negative on failure
-> > + **/
-> > +static int mucse_fw_get_capability(struct mucse_hw *hw,
-> > +				   struct hw_abilities *abil)
-> > +{
-> > +	struct mbx_fw_cmd_reply reply;
-> > +	struct mbx_fw_cmd_req req;
-> > +	int err;
-> > +
-> > +	memset(&req, 0, sizeof(req));
-> > +	memset(&reply, 0, sizeof(reply));
-> 
-> probably
-> 
-> 	struct mbx_fw_cmd_reply reply = {};
-> 	struct mbx_fw_cmd_req req = {};
-> 
-> will look better. in the other functions as well..
-> 
-> 
-> 
-
-Got it, I will update it.
-
-Thanks for your feedback.
-
+Best regards,
+Krzysztof
