@@ -1,79 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAB835959;
-	Wed, 13 Aug 2025 14:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5055A79B;
+	Wed, 13 Aug 2025 14:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755094811; cv=none; b=uZInzPOq4R3ahR37hvRFcdaZYtfzhIWGsKxO7nZihs5merRh0MQ++DGi4M9QcCrnM7fD7LGE+K4lyq3750x2p5PD+7q6l+yswV3ipIxm6zEbnhG/9DvLsquN3/VUFe4ou65t2YCqtUrP4ckSD6yrFUUUqvAP6EOLHXyupL6hSsY=
+	t=1755095479; cv=none; b=W+n5I8Y+Bi/33tozas26uQ9BhxNy7O+oEr4Rg9kJe7AxVQFrwmow+Eze5OEArZTOzr4bPdlCZNKl95Cji0NGnmnN67xUchwyqN/wb7v58TXLQ9AhfhFRtPWUqcEy72MZ0DAtDhShJ1tw+yYx6Z+xPIVzShsB6lsgetVYpqC7DkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755094811; c=relaxed/simple;
-	bh=Bj74TrIW+856jOK8G8uA9CvCCtJEp2XspJ6ZD/sgPvc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JAzWsmZoC6rXPWzztHEbXXhG+pQbX7nL4mW4Jp7S9KRxLyQaTz+dB5YmxlZlIAuDHGGLgr8fE2lauLUUEh9yKQs8FXQbZlsjt5nZ/E7qb2Z3f93mgXoblV0F2UPKN4dbym83RV873/uj0cWZUB75q0nZPd7ZbN6OL4fTYRF/CfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gB1eYKf6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755095479; c=relaxed/simple;
+	bh=lCnHQFYDwV26ux3XAOHXzq0Y05YyeD3LTvZGTN484T8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=o+BQPZKV0ZentoXZK1/0QMNaZ5Lxls3kckzhot9s4zYGZFrQeDsv/9Ibu6l5HrQh8OdK+p5oI6P6y/U0V1kGgO2HNn979wuOK5TcYmm+wP8thvM4KOdwHkd65kUMdHppjiPcS3CZplOsXJUI3uy0YCvJYCQton2Fk/h7kaHeIMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qh8YPewe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gB1eYKf6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D58DC4CEEB;
-	Wed, 13 Aug 2025 14:20:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755094810;
-	bh=Bj74TrIW+856jOK8G8uA9CvCCtJEp2XspJ6ZD/sgPvc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gB1eYKf6CCouEX8OaBb6lmAPpW+FR4kzdgLKTzlV8nDU4bCLntSxyzxY5KfM+vRG1
-	 ILaj39gXwjibv37VjI4cAWx1AQb4tACP3y1tfrOZb4nBKVicXg3bsCLHAIx9MuUPFc
-	 hWNtpqVml16eLwj+gkN/HU9vqgsXvaEF/Wvu2J7A=
-Date: Wed, 13 Aug 2025 16:20:07 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Stanislav Fomichev <sdf@fomichev.me>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, ayush.sawal@chelsio.com,
-	andrew+netdev@lunn.ch, horms@kernel.org, dsahern@kernel.org,
-	pablo@netfilter.org, kadlec@netfilter.org,
-	steffen.klassert@secunet.com, mhal@rbox.co,
-	abhishektamboli9@gmail.com, linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, herbert@gondor.apana.org.au
-Subject: Re: [PATCH net-next 5/7] staging: octeon: Convert to skb_dst_drop
-Message-ID: <2025081301-thirsty-battalion-8b01@gregkh>
-References: <20250812155245.507012-1-sdf@fomichev.me>
- <20250812155245.507012-6-sdf@fomichev.me>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qh8YPewe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28FEC4CEEB;
+	Wed, 13 Aug 2025 14:31:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755095478;
+	bh=lCnHQFYDwV26ux3XAOHXzq0Y05YyeD3LTvZGTN484T8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Qh8YPeweVmCaLwlaoK61rvcUIEcpwetldWQ0ZXblbPFcXt6FtWFoda2FTBQvpa5hO
+	 XPPjsBS09YVDDi9JJTMaAJmcWL2LtR9rh5gNa1ZOpPjALfywdxaF8rNhFpUdcAofe/
+	 2GJQKuR/q4OlR06uojNuL56k39M5gkAE7HEWi6PInnVQ0pfa7eUD9SVRu0MkSdhCPa
+	 or96RLbIoie7tvyIbY3O+IQ9l0L21Rppk4TPikEq9MsXjcOr6ya6ddgQ7QkY2kOYpm
+	 kjPaXFwnMZGxKGbqRi9mQeHuFgrvkR+sRe4pLslCqIiTrSmbbVV40IJ0k2oGZhTwvE
+	 0DuYC5XUzhZXA==
+Date: Wed, 13 Aug 2025 07:31:17 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Mohsin Bashir <mohsin.bashr@gmail.com>
+Cc: netdev@vger.kernel.org, aleksander.lobakin@intel.com,
+ alexanderduyck@fb.com, andrew+netdev@lunn.ch, ast@kernel.org,
+ bpf@vger.kernel.org, corbet@lwn.net, daniel@iogearbox.net,
+ davem@davemloft.net, edumazet@google.com, hawk@kernel.org,
+ horms@kernel.org, john.fastabend@gmail.com, kernel-team@meta.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, pabeni@redhat.com,
+ sdf@fomichev.me, vadim.fedorenko@linux.dev
+Subject: Re: [PATCH net-next V3 8/9] eth: fbnic: Collect packet statistics
+ for XDP
+Message-ID: <20250813073117.1bca3a97@kernel.org>
+In-Reply-To: <20250812222252.261779-1-mohsin.bashr@gmail.com>
+References: <20250812220150.161848-1-mohsin.bashr@gmail.com>
+	<20250812222252.261779-1-mohsin.bashr@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250812155245.507012-6-sdf@fomichev.me>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 12, 2025 at 08:52:43AM -0700, Stanislav Fomichev wrote:
-> Instead of doing dst_release and skb_dst_set, do skb_dst_drop which
-> should do the right thing.
-> 
-> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-> ---
->  drivers/staging/octeon/ethernet-tx.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/staging/octeon/ethernet-tx.c b/drivers/staging/octeon/ethernet-tx.c
-> index 261f8dbdc382..0ba240e634a1 100644
-> --- a/drivers/staging/octeon/ethernet-tx.c
-> +++ b/drivers/staging/octeon/ethernet-tx.c
-> @@ -346,8 +346,7 @@ netdev_tx_t cvm_oct_xmit(struct sk_buff *skb, struct net_device *dev)
->  	 * The skbuff will be reused without ever being freed. We must
->  	 * cleanup a bunch of core things.
->  	 */
-> -	dst_release(skb_dst(skb));
-> -	skb_dst_set(skb, NULL);
-> +	skb_dst_drop(skb);
->  	skb_ext_reset(skb);
->  	nf_reset_ct(skb);
->  	skb_reset_redirect(skb);
-> -- 
-> 2.50.1
-> 
-> 
+On Tue, 12 Aug 2025 15:22:52 -0700 Mohsin Bashir wrote:
+> +				} else if (PTR_ERR(skb) == -FBNIC_XDP_LEN_ERR) {
+> +					length_errors++;
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+cocci is complaining about this:
+
+...fbnic_txrx.c:1264:14-21: ERROR: PTR_ERR applied after initialization to constant on line 1250
+
+I think applying PTR_ERR/ERR_PTR to the constant may clean this up.
+-- 
+pw-bot: cr
