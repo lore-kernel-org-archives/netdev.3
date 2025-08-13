@@ -1,454 +1,159 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C98303C89;
-	Wed, 13 Aug 2025 17:13:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5510C303C86;
+	Wed, 13 Aug 2025 17:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755105200; cv=none; b=GkJ7TxvQvo9T6VMPyy6mE9Whxp1hQ6eigTEtFf5bM8UEvMjgBciwXuPxra5JPHUme+FiUap3SArOL9h669l6cLVhV564HoeBhrftbOFsYro/l71xRlgc+bAUIOkwrVhYK6W0XAcPlpOwqs1PIwQ0/ylkux9iC9CJAf4PBEJN0p8=
+	t=1755105852; cv=none; b=BJZ8hyNO3pnGS87P/OPtaItXf4ZufrQZZYpICHz2BEGYcmcYxf1oUgwpQ3gsku+ZEYB15vmUkmNbdOEPZzkRX9gm+xmGNU18P9I7hHS6GnYQWb8747CuqQ7/Z/w1W806whGMZ3ZyCWm/3nPcBvO4OC8ZDMgafebkF10zcnaEyN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755105200; c=relaxed/simple;
-	bh=nI2JFqURfWVLDvax3sxLHJHu84H6Oka27pOCgRf7x2k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lcBwusFNAp635jXiDS+fQFYeJLhiki2sYh6dIEk8ei4FTq5+q5C6BZ/DFzRGFrHl8MLkut1h08Oq7bL0Sqiz8dxRm63Qu+FXHQ9ugxKTScE7UhCas65Zwz1fJ4bYgdKNMBIymNddDryVfFtyAGYuBw4IIbIZIoqx14WgBiMD0d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iGIRrd0U; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1755105852; c=relaxed/simple;
+	bh=kInu3WpIUa5ivvSUVJDySAyzqDy8m7u4hXMISKjVg1o=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=mVElJYdwHoKYeMMSm9iGJbDzsS/TkT7TxxZ8cN/qzspiqRqSzU6zC2/cTBJPQgI/+yFka4vr8HcUUzTVPdNZ7IEtkjpGsPGZfuj/1doU+h+YV0reoIUHCqsG+CnWoi/lYVpW8Wp3CbZ6yfkRhmVhiRN0EKFwQ7imm3Qj4QvCDJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=krZ4uNQH; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iGIRrd0U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755105198; x=1786641198;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=nI2JFqURfWVLDvax3sxLHJHu84H6Oka27pOCgRf7x2k=;
-  b=iGIRrd0UMGzzeBaSDoxOUcDuIsUCgtIPX7IxZsgN9/SUY8vAYGi5PdNR
-   uix6Gft1Alg/CD9xn9HJ31FGRPkvk/6FY9WbmTenJVHVVOALk3bQq5N7m
-   2cb5jYLYrDAcGx897qlHDJ9OgnVwGUvxD8TLH4Qmn8ZfavlVWIHZG05ix
-   w5bg/2ajbJKoHW3v+s6ZrbGs4T/lOLEoeuzNQuF1lEOZHlO9g2HR0jWeV
-   YaveESWazLh7s0DYeY0b0vw0kKU8QM0NsZVX+7cBgWatXIOo26q80Fwts
-   g+Mct4loBpQepjiNscYPm9Yxz2keow1/BK3rUHCeK67xHXTxEsrbRcNY5
-   g==;
-X-CSE-ConnectionGUID: +YZoLk7PTGewgUn3nuSMtg==
-X-CSE-MsgGUID: 5flbjvf/SWu0m5QPqkt9mw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="79982567"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="79982567"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 10:13:16 -0700
-X-CSE-ConnectionGUID: 0vjPpSAZRN+5iaPB/fdJww==
-X-CSE-MsgGUID: ujHtSRV/Qh+XtPlqCwcgYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="170981417"
-Received: from boxer.igk.intel.com ([10.102.20.173])
-  by orviesa004.jf.intel.com with ESMTP; 13 Aug 2025 10:13:13 -0700
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: bpf@vger.kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org
-Cc: netdev@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	stfomichev@gmail.com,
-	aleksander.lobakin@intel.com,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Eryk Kubanski <e.kubanski@partner.samsung.com>
-Subject: [PATCH v4 bpf] xsk: fix immature cq descriptor production
-Date: Wed, 13 Aug 2025 19:12:11 +0200
-Message-Id: <20250813171210.2205259-1-maciej.fijalkowski@intel.com>
-X-Mailer: git-send-email 2.38.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="krZ4uNQH"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b34a6d0c9a3so8012377a12.3;
+        Wed, 13 Aug 2025 10:24:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755105850; x=1755710650; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=g6QEvKbWqHKl56z7lqO1CQDa/mVnlY0njSFi7H7FEMM=;
+        b=krZ4uNQHILzrTkEyymDA/5z1xRtpRr+mrFnNkdxxhCFkJV+rVFNFZg6htlfQAbeQxr
+         zJdN7D9lXqye9TJZYpbKWpJZIv3m/XgnWsYIhH9dwVyWXDbiGaee+FkSS7xm2kDjnerh
+         ulQ+DBvdOpn/2WEd8rBeMPxqxmvTqcS5tkhT7ZQq9TLqiY30abCIHy57TpoOJsHFWm6J
+         wcBwaw4gA3VdiNIBoQ5J9VjRd9IDNevA7T7PpZ5pt1x/g637r+PBVO1Hx+Uo1WIHc3qk
+         efSh2BZlLuTuqQUyj+LN19SwhFa5qib24B8esII1MjBeF+HP+zDkVliIFot3WC7z6drC
+         xZUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755105850; x=1755710650;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g6QEvKbWqHKl56z7lqO1CQDa/mVnlY0njSFi7H7FEMM=;
+        b=uuA2MHpm+V1Fvyr9vs4rFwhSUI8z6uN2/fudypyH0xpzAWd5R5P8539vGy8pfR070q
+         JEi/A/JZMEht7dVz7HvagX/PJNUKlhj48SzVHuBqFGweHewRmXYr7frXa/VthNCHUJQD
+         j1ji1VXCEwOZRQIQGEHTKMxxM/VWwedAnQAiX348dP68NqTLzk5o9YHGRBKPifyOGAXz
+         pab0lkAiu0pDUPm1IgTI3SrULdwhrseKhhOxotrzq+7eHDgMuzPv6pdyufQLI8Qgy6Iv
+         XIhXA+JeuRNnzq3U4aM4PrBSC4CJ3oNNE+JvS5TGVMLuVBO5O1ZEaGlJ90EGDC5leFty
+         mPMA==
+X-Forwarded-Encrypted: i=1; AJvYcCUGx4CuQ8E6Cd/R31I9VGL4BQAYSoky1iqTW1anzmris+61P43n7JsHf0FqlUFFsH6K9EuIEMsG@vger.kernel.org, AJvYcCUX7uxE68SFsntCFuK6NBigBco4T1DvjASViZw+1Cb2xsmkGOlQ4KiKkIr3UCtqbiy6BJetSDFgxiAz@vger.kernel.org, AJvYcCUe6LAzHD8MeMUR2cLQa1D/KyyD//JgABTB6dUIqOpqjR67LCGJOJAD9bOdC5u8pyDaPRIoGq6Cg18IZ5RpCzYg@vger.kernel.org, AJvYcCUvOyjUC51dx8v4NeijKGqcjsSWtSq03dHKP6rxynXa1DWtN4OeItfehow8oS1re15L+UKSAjsnzPk9V8u5@vger.kernel.org, AJvYcCV1ycBlkBT6dlsnUgeXEqS3UmafCIv/OHj1Q/mQLxVXCuggT1rTEH16a33awlfILW9AQjIWHKUZqT5f@vger.kernel.org, AJvYcCVjvCcnMbCd/hpxCCCBX45IwAy7/hiHLWrbVl02ssKfeJEjaUEV2JtCsIbLKyfmKIIVyyjiuH3rPEY71Q==@vger.kernel.org, AJvYcCVtWiOWaAMqXXOJW3grvSwYWOwccvHpCwUI25XcQb9YSS9e21lX3GxZa0Qgn+zIOyumReuxVOdmHtYx25QUHnU=@vger.kernel.org, AJvYcCVtyt+SmFd1d6S7ERR3SN/Bh5PdIqNjY4iwSG41cBy0r/YX1Iy2qK82+IhxScEuoq9btRopKmyeYkCyWL6N3w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQ9UXxh9bLjp8+8q7B37QZUX1id+b1PLGz/LrBujn/DVV/lWRp
+	UZkSoh8ZVuxzEZH0F3ulhEqZvpZMBJcmy/VVsAwQQK8ZcLB6Dg3fqx+DnPbf4vhp
+X-Gm-Gg: ASbGncu0Ml6aL2dGHRLmURoLrfQT5e3asWAcCCVdYjjNE8HdOtG5v4rxHSTLUtKE/nV
+	L2u42Ju/mGMOs9bKJzGpQ1hSZjwBubyBnEXd0aho7YN6eHIdbCCF6V3ZtE2Ur5YrkOZtDtCwDux
+	RC4HRtJjfQNyxQXr0G91yviZLIZHF7k0QdQX8fBNyETpeyexiSMc4GHttbVNPr+Jl5IJpDwfaW5
+	M/0/vy6s2WJrG6n5RoGUMoFWMDOtfjx/p7oO2trGbGUy73ocFaFTrG/I7nbxR8t48Ye94moJWnK
+	03tePGvd7u40BHTnwTz6H1fKrA1f84X939ZveLsH31MGsRThUgmiMLLAoJOo2EDnfwnZnGEPc/U
+	TtArgI3kYlsY/aM8jXPlK806xVbdWWcFLMZ8GRZDPFKivLkgB6zDcF1J52a12+Zp1SqJTPVoDrB
+	wL+NgtR2NEue1UJWdS1CrxH7d3KTQr32ki1CyV/X0=
+X-Google-Smtp-Source: AGHT+IHzxOT0e51q9GMbCoQJQmA1iOf0AGvoQCtni9f1rWQqIeUQheFiN4hAfvpXA6DN5Xlkg8xgDQ==
+X-Received: by 2002:a05:622a:1f96:b0:4b0:e6d1:ef60 with SMTP id d75a77b69052e-4b0fc88d5e7mr42154561cf.59.1755100798179;
+        Wed, 13 Aug 2025 08:59:58 -0700 (PDT)
+Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2600:4808:6353:5c00:d445:7694:2051:518c])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b085ad7d08sm124482211cf.53.2025.08.13.08.59.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 08:59:57 -0700 (PDT)
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 13 Aug 2025 11:59:21 -0400
+Subject: [PATCH v2 11/19] rust: miscdevice: replace `kernel::c_str!` with
+ C-Strings
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250813-core-cstr-cstrings-v2-11-00be80fc541b@gmail.com>
+References: <20250813-core-cstr-cstrings-v2-0-00be80fc541b@gmail.com>
+In-Reply-To: <20250813-core-cstr-cstrings-v2-0-00be80fc541b@gmail.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Breno Leitao <leitao@debian.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Arnd Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>, 
+ David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+ Jens Axboe <axboe@kernel.dk>, Alexandre Courbot <acourbot@nvidia.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org, 
+ dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
+ linux-clk@vger.kernel.org, linux-pci@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openssh-sha256; t=1755100760; l=1136;
+ i=tamird@gmail.com; h=from:subject:message-id;
+ bh=kInu3WpIUa5ivvSUVJDySAyzqDy8m7u4hXMISKjVg1o=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
+ MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QLPeBqFF3G2/b3iHg82noX65chkInTWyugikz/odK+rtAeYGjZ0XZ8DXrV1KFAOJaqwd30EdnIK
+ Svg+beZiy3Ak=
+X-Developer-Key: i=tamird@gmail.com; a=openssh;
+ fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
-Eryk reported an issue that I have put under Closes: tag, related to
-umem addrs being prematurely produced onto pool's completion queue.
-Let us make the skb's destructor responsible for producing all addrs
-that given skb used.
+C-String literals were added in Rust 1.77. Replace instances of
+`kernel::c_str!` with C-String literals where possible.
 
-Introduce struct xsk_addrs which will carry descriptor count with array
-of addresses taken from processed descriptors that will be carried via
-skb_shared_info::destructor_arg. This way we can refer to it within
-xsk_destruct_skb(). In order to mitigate the overhead that will be
-coming from memory allocations, let us introduce kmem_cache of
-xsk_addrs, but be smart about scalability, as assigning unique cache per
-each socket might be expensive.
-
-Store kmem_cache as percpu variables with embedded refcounting and let
-the xsk code index it by queue id. In case when a NIC#0 already runs
-copy mode xsk socket on queue #10 and user starts a socket on
-<NIC#1,qid#10> tuple, the kmem_cache is reused. Keep the pointer to
-kmem_cache in xdp_sock to avoid accessing bss in data path.
-
-Commit from fixes tag introduced the buggy behavior, it was not broken
-from day 1, but rather when xsk multi-buffer got introduced.
-
-Fixes: b7f72a30e9ac ("xsk: introduce wrappers and helpers for supporting multi-buffer in Tx path")
-Reported-by: Eryk Kubanski <e.kubanski@partner.samsung.com>
-Closes: https://lore.kernel.org/netdev/20250530103456.53564-1-e.kubanski@partner.samsung.com/
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
+ samples/rust/rust_misc_device.rs | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-v1:
-https://lore.kernel.org/bpf/20250702101648.1942562-1-maciej.fijalkowski@intel.com/
-v2:
-https://lore.kernel.org/bpf/20250705135512.1963216-1-maciej.fijalkowski@intel.com/
-v3:
-https://lore.kernel.org/bpf/20250806154127.2161434-1-maciej.fijalkowski@intel.com/
+diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
+index e7ab77448f75..60ab10b02574 100644
+--- a/samples/rust/rust_misc_device.rs
++++ b/samples/rust/rust_misc_device.rs
+@@ -98,7 +98,6 @@
+ use core::pin::Pin;
+ 
+ use kernel::{
+-    c_str,
+     device::Device,
+     fs::File,
+     ioctl::{_IO, _IOC_SIZE, _IOR, _IOW},
+@@ -133,7 +132,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+         pr_info!("Initialising Rust Misc Device Sample\n");
+ 
+         let options = MiscDeviceOptions {
+-            name: c_str!("rust-misc-device"),
++            name: c"rust-misc-device",
+         };
+ 
+         try_pin_init!(Self {
 
-v1->v2:
-* store addrs in array carried via destructor_arg instead having them
-  stored in skb headroom; cleaner and less hacky approach;
-v2->v3:
-* use kmem_cache for xsk_addrs allocation (Stan/Olek)
-* set err when xsk_addrs allocation fails (Dan)
-* change xsk_addrs layout to avoid holes
-* free xsk_addrs on error path
-* rebase
-v3->v4:
-* have kmem_cache as percpu vars
-* don't drop unnecessary braces (unrelated) (Stan)
-* use idx + i in xskq_prod_write_addr (Stan)
-* alloc kmem_cache on bind (Stan)
-* keep num_descs as first member in xsk_addrs (Magnus)
-* add ack from Magnus
-
----
- include/net/xdp_sock.h |   1 +
- net/xdp/xsk.c          | 140 +++++++++++++++++++++++++++++++++++------
- net/xdp/xsk_queue.h    |  12 ++++
- 3 files changed, 135 insertions(+), 18 deletions(-)
-
-diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
-index ce587a225661..4701e7f41bee 100644
---- a/include/net/xdp_sock.h
-+++ b/include/net/xdp_sock.h
-@@ -61,6 +61,7 @@ struct xdp_sock {
- 		XSK_BOUND,
- 		XSK_UNBOUND,
- 	} state;
-+	struct kmem_cache *generic_cache;
- 
- 	struct xsk_queue *tx ____cacheline_aligned_in_smp;
- 	struct list_head tx_list;
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 9c3acecc14b1..d245784163ec 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -36,6 +36,18 @@
- #define TX_BATCH_SIZE 32
- #define MAX_PER_SOCKET_BUDGET 32
- 
-+struct xsk_addrs {
-+	u32 num_descs;
-+	u64 addrs[MAX_SKB_FRAGS + 1];
-+};
-+
-+struct xsk_generic_cache {
-+	struct kmem_cache *cache;
-+	refcount_t users;
-+};
-+
-+DEFINE_PER_CPU(struct xsk_generic_cache, system_xsk_generic_cache);
-+
- void xsk_set_rx_need_wakeup(struct xsk_buff_pool *pool)
- {
- 	if (pool->cached_need_wakeup & XDP_WAKEUP_RX)
-@@ -532,25 +544,39 @@ static int xsk_wakeup(struct xdp_sock *xs, u8 flags)
- 	return dev->netdev_ops->ndo_xsk_wakeup(dev, xs->queue_id, flags);
- }
- 
--static int xsk_cq_reserve_addr_locked(struct xsk_buff_pool *pool, u64 addr)
-+static int xsk_cq_reserve_locked(struct xsk_buff_pool *pool)
- {
- 	unsigned long flags;
- 	int ret;
- 
- 	spin_lock_irqsave(&pool->cq_lock, flags);
--	ret = xskq_prod_reserve_addr(pool->cq, addr);
-+	ret = xskq_prod_reserve(pool->cq);
- 	spin_unlock_irqrestore(&pool->cq_lock, flags);
- 
- 	return ret;
- }
- 
--static void xsk_cq_submit_locked(struct xsk_buff_pool *pool, u32 n)
-+static void xsk_cq_submit_addr_locked(struct xdp_sock *xs,
-+				      struct sk_buff *skb)
- {
-+	struct xsk_buff_pool *pool = xs->pool;
-+	struct xsk_addrs *xsk_addrs;
- 	unsigned long flags;
-+	u32 num_desc, i;
-+	u32 idx;
-+
-+	xsk_addrs = (struct xsk_addrs *)skb_shinfo(skb)->destructor_arg;
-+	num_desc = xsk_addrs->num_descs;
- 
- 	spin_lock_irqsave(&pool->cq_lock, flags);
--	xskq_prod_submit_n(pool->cq, n);
-+	idx = xskq_get_prod(pool->cq);
-+
-+	for (i = 0; i < num_desc; i++)
-+		xskq_prod_write_addr(pool->cq, idx + i, xsk_addrs->addrs[i]);
-+	xskq_prod_submit_n(pool->cq, num_desc);
-+
- 	spin_unlock_irqrestore(&pool->cq_lock, flags);
-+	kmem_cache_free(xs->generic_cache, xsk_addrs);
- }
- 
- static void xsk_cq_cancel_locked(struct xsk_buff_pool *pool, u32 n)
-@@ -562,11 +588,6 @@ static void xsk_cq_cancel_locked(struct xsk_buff_pool *pool, u32 n)
- 	spin_unlock_irqrestore(&pool->cq_lock, flags);
- }
- 
--static u32 xsk_get_num_desc(struct sk_buff *skb)
--{
--	return skb ? (long)skb_shinfo(skb)->destructor_arg : 0;
--}
--
- static void xsk_destruct_skb(struct sk_buff *skb)
- {
- 	struct xsk_tx_metadata_compl *compl = &skb_shinfo(skb)->xsk_meta;
-@@ -576,21 +597,37 @@ static void xsk_destruct_skb(struct sk_buff *skb)
- 		*compl->tx_timestamp = ktime_get_tai_fast_ns();
- 	}
- 
--	xsk_cq_submit_locked(xdp_sk(skb->sk)->pool, xsk_get_num_desc(skb));
-+	xsk_cq_submit_addr_locked(xdp_sk(skb->sk), skb);
- 	sock_wfree(skb);
- }
- 
--static void xsk_set_destructor_arg(struct sk_buff *skb)
-+static u32 xsk_get_num_desc(struct sk_buff *skb)
- {
--	long num = xsk_get_num_desc(xdp_sk(skb->sk)->skb) + 1;
-+	struct xsk_addrs *addrs;
-+
-+	addrs = (struct xsk_addrs *)skb_shinfo(skb)->destructor_arg;
-+	return addrs->num_descs;
-+}
- 
--	skb_shinfo(skb)->destructor_arg = (void *)num;
-+static void xsk_set_destructor_arg(struct sk_buff *skb, struct xsk_addrs *addrs)
-+{
-+	skb_shinfo(skb)->destructor_arg = (void *)addrs;
-+}
-+
-+static void xsk_inc_skb_descs(struct sk_buff *skb)
-+{
-+	struct xsk_addrs *addrs;
-+
-+	addrs = (struct xsk_addrs *)skb_shinfo(skb)->destructor_arg;
-+	addrs->num_descs++;
- }
- 
- static void xsk_consume_skb(struct sk_buff *skb)
- {
- 	struct xdp_sock *xs = xdp_sk(skb->sk);
- 
-+	kmem_cache_free(xs->generic_cache,
-+			(struct xsk_addrs *)skb_shinfo(skb)->destructor_arg);
- 	skb->destructor = sock_wfree;
- 	xsk_cq_cancel_locked(xs->pool, xsk_get_num_desc(skb));
- 	/* Free skb without triggering the perf drop trace */
-@@ -605,10 +642,12 @@ static void xsk_drop_skb(struct sk_buff *skb)
- }
- 
- static struct sk_buff *xsk_build_skb_zerocopy(struct xdp_sock *xs,
--					      struct xdp_desc *desc)
-+					      struct xdp_desc *desc,
-+					      struct kmem_cache *cache)
- {
- 	struct xsk_buff_pool *pool = xs->pool;
- 	u32 hr, len, ts, offset, copy, copied;
-+	struct xsk_addrs *addrs = NULL;
- 	struct sk_buff *skb = xs->skb;
- 	struct page *page;
- 	void *buffer;
-@@ -623,6 +662,12 @@ static struct sk_buff *xsk_build_skb_zerocopy(struct xdp_sock *xs,
- 			return ERR_PTR(err);
- 
- 		skb_reserve(skb, hr);
-+
-+		addrs = kmem_cache_zalloc(cache, GFP_KERNEL);
-+		if (!addrs)
-+			return ERR_PTR(-ENOMEM);
-+
-+		xsk_set_destructor_arg(skb, addrs);
- 	}
- 
- 	addr = desc->addr;
-@@ -662,12 +707,13 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
- {
- 	struct xsk_tx_metadata *meta = NULL;
- 	struct net_device *dev = xs->dev;
-+	struct xsk_addrs *addrs = NULL;
- 	struct sk_buff *skb = xs->skb;
- 	bool first_frag = false;
- 	int err;
- 
- 	if (dev->priv_flags & IFF_TX_SKB_NO_LINEAR) {
--		skb = xsk_build_skb_zerocopy(xs, desc);
-+		skb = xsk_build_skb_zerocopy(xs, desc, xs->generic_cache);
- 		if (IS_ERR(skb)) {
- 			err = PTR_ERR(skb);
- 			goto free_err;
-@@ -694,6 +740,15 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
- 			err = skb_store_bits(skb, 0, buffer, len);
- 			if (unlikely(err))
- 				goto free_err;
-+
-+			addrs = kmem_cache_zalloc(xs->generic_cache, GFP_KERNEL);
-+			if (!addrs) {
-+				err = -ENOMEM;
-+				goto free_err;
-+			}
-+
-+			xsk_set_destructor_arg(skb, addrs);
-+
- 		} else {
- 			int nr_frags = skb_shinfo(skb)->nr_frags;
- 			struct page *page;
-@@ -759,7 +814,9 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
- 	skb->mark = READ_ONCE(xs->sk.sk_mark);
- 	skb->destructor = xsk_destruct_skb;
- 	xsk_tx_metadata_to_compl(meta, &skb_shinfo(skb)->xsk_meta);
--	xsk_set_destructor_arg(skb);
-+
-+	addrs = (struct xsk_addrs *)skb_shinfo(skb)->destructor_arg;
-+	addrs->addrs[addrs->num_descs++] = desc->addr;
- 
- 	return skb;
- 
-@@ -769,7 +826,7 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
- 
- 	if (err == -EOVERFLOW) {
- 		/* Drop the packet */
--		xsk_set_destructor_arg(xs->skb);
-+		xsk_inc_skb_descs(xs->skb);
- 		xsk_drop_skb(xs->skb);
- 		xskq_cons_release(xs->tx);
- 	} else {
-@@ -812,7 +869,7 @@ static int __xsk_generic_xmit(struct sock *sk)
- 		 * if there is space in it. This avoids having to implement
- 		 * any buffering in the Tx path.
- 		 */
--		err = xsk_cq_reserve_addr_locked(xs->pool, desc.addr);
-+		err = xsk_cq_reserve_locked(xs->pool);
- 		if (err) {
- 			err = -EAGAIN;
- 			goto out;
-@@ -1095,6 +1152,7 @@ static void xsk_delete_from_maps(struct xdp_sock *xs)
- 
- static int xsk_release(struct socket *sock)
- {
-+	struct xsk_generic_cache *pcpu_cache;
- 	struct sock *sk = sock->sk;
- 	struct xdp_sock *xs = xdp_sk(sk);
- 	struct net *net;
-@@ -1123,6 +1181,15 @@ static int xsk_release(struct socket *sock)
- 	xskq_destroy(xs->fq_tmp);
- 	xskq_destroy(xs->cq_tmp);
- 
-+	pcpu_cache = per_cpu_ptr(&system_xsk_generic_cache, xs->queue_id);
-+	if (pcpu_cache->cache) {
-+		if (refcount_dec_and_test(&pcpu_cache->users)) {
-+			kmem_cache_destroy(pcpu_cache->cache);
-+			pcpu_cache->cache = NULL;
-+			xs->generic_cache = NULL;
-+		}
-+	}
-+
- 	sock_orphan(sk);
- 	sock->sk = NULL;
- 
-@@ -1153,6 +1220,33 @@ static bool xsk_validate_queues(struct xdp_sock *xs)
- 	return xs->fq_tmp && xs->cq_tmp;
- }
- 
-+static int xsk_alloc_generic_xmit_cache(struct xdp_sock *xs, u16 qid)
-+{
-+	struct xsk_generic_cache *pcpu_cache =
-+		per_cpu_ptr(&system_xsk_generic_cache, qid);
-+	struct kmem_cache *cache;
-+	char cache_name[32];
-+
-+	if (refcount_read(&pcpu_cache->users) > 0) {
-+		refcount_inc(&pcpu_cache->users);
-+		xs->generic_cache = pcpu_cache->cache;
-+		return 0;
-+	}
-+
-+	snprintf(cache_name, sizeof(cache_name),
-+		 "xsk_generic_xmit_cache%d", qid);
-+	cache = kmem_cache_create(cache_name, sizeof(struct xsk_addrs), 0,
-+				  SLAB_HWCACHE_ALIGN, NULL);
-+	if (!cache)
-+		return -ENOMEM;
-+
-+	refcount_set(&pcpu_cache->users, 1);
-+	pcpu_cache->cache = cache;
-+	xs->generic_cache = pcpu_cache->cache;
-+
-+	return 0;
-+}
-+
- static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
- {
- 	struct sockaddr_xdp *sxdp = (struct sockaddr_xdp *)addr;
-@@ -1306,6 +1400,16 @@ static int xsk_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
- 	xs->zc = xs->umem->zc;
- 	xs->sg = !!(xs->umem->flags & XDP_UMEM_SG_FLAG);
- 	xs->queue_id = qid;
-+
-+	if (!xs->zc) {
-+		err = xsk_alloc_generic_xmit_cache(xs, qid);
-+		if (err) {
-+			xp_destroy(xs->pool);
-+			xs->pool = NULL;
-+			goto out_unlock;
-+		}
-+	}
-+
- 	xp_add_xsk(xs->pool, xs);
- 
- 	if (qid < dev->real_num_rx_queues) {
-diff --git a/net/xdp/xsk_queue.h b/net/xdp/xsk_queue.h
-index 46d87e961ad6..f16f390370dc 100644
---- a/net/xdp/xsk_queue.h
-+++ b/net/xdp/xsk_queue.h
-@@ -344,6 +344,11 @@ static inline u32 xskq_cons_present_entries(struct xsk_queue *q)
- 
- /* Functions for producers */
- 
-+static inline u32 xskq_get_prod(struct xsk_queue *q)
-+{
-+	return READ_ONCE(q->ring->producer);
-+}
-+
- static inline u32 xskq_prod_nb_free(struct xsk_queue *q, u32 max)
- {
- 	u32 free_entries = q->nentries - (q->cached_prod - q->cached_cons);
-@@ -390,6 +395,13 @@ static inline int xskq_prod_reserve_addr(struct xsk_queue *q, u64 addr)
- 	return 0;
- }
- 
-+static inline void xskq_prod_write_addr(struct xsk_queue *q, u32 idx, u64 addr)
-+{
-+	struct xdp_umem_ring *ring = (struct xdp_umem_ring *)q->ring;
-+
-+	ring->desc[idx & q->ring_mask] = addr;
-+}
-+
- static inline void xskq_prod_write_addr_batch(struct xsk_queue *q, struct xdp_desc *descs,
- 					      u32 nb_entries)
- {
 -- 
-2.34.1
+2.50.1
 
