@@ -1,98 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5A928C87C;
-	Wed, 13 Aug 2025 05:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208EA2BF3F4;
+	Wed, 13 Aug 2025 05:38:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755063299; cv=none; b=WLY0JuXFHZ5MIoK6vxXaiKICLHPCotWeg9EnHx22+c4jpOP8HuFUGaW+ImnZSK9yerFVHvlxXzVdMkpplC2ecZJtISBo359zdGBxb7/VBi9DlDy/AXPHf2xTn9dt9jQOiw7xHa8VhX5TO7P2B1P88yt9ryuqPVCsIuwi/iBNC/4=
+	t=1755063539; cv=none; b=qeyDwsSW/2+BzuOg+rTmKZw7o1rzpS8fIjaxuKs8ujh1bNvsjqIMJOk8vuKK0bFQBFpjK+uDQ54DnXNu44hkY2yOwuh1Ew8casB9GEwcO/EFoj/SKqLqk9t76YlTb0v95irRxJcRKUvFyyye7vcV3/Jl4XWZfeEEg2PpC9vd/N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755063299; c=relaxed/simple;
-	bh=y2cn1F377n62GhXtZy13sRaL2HV14HmDYX5otP9AhZo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j0sRwq+xhpnDxRQEDOvtL0zJKJe71hp9ie2HWW+ug7y/j7sjDpyF2MsuNfXPriXyuEBqHvS2K++io4TsD6HGA/sUGVTA6LvlP9OCQjiEp9hawLDQF/tAytF+ZRtGj17oQHFL8sU4L2nZxJ0yOBJI1yDw7ICQ2Mr/qYKfp+/ia5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVQNBEl4; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVQNBEl4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF0CC4CEEB;
-	Wed, 13 Aug 2025 05:34:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755063299;
-	bh=y2cn1F377n62GhXtZy13sRaL2HV14HmDYX5otP9AhZo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UVQNBEl4Mnahh/6yIBSJHL8GXVmvkVjvNEn6JoiqWownwKkR5H46Zh5/mlZsGh15Z
-	 usdr427yGZpl577ep4e1H4VltQu32GO9fB2DhfhKGdMQkpBwugAbrMu8kElmHG/fBq
-	 Ip6ZkOyTs21Iv8C4HbN+lg6jRK21Nd3bFgAhJ3eE=
-Date: Wed, 13 Aug 2025 07:34:54 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Sasha Levin <sashal@kernel.org>, intel-wired-lan@lists.osuosl.org,
-	Tony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org,
-	Kuniyuki Iwashima <kuniyu@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 00/12] ice: split ice_virtchnl.c git-blame friendly way
-Message-ID: <2025081319-carried-liberty-dc3e@gregkh>
-References: <20250812132910.99626-1-przemyslaw.kitszel@intel.com>
- <20250812135714.0e1a7ee0@kernel.org>
+	s=arc-20240116; t=1755063539; c=relaxed/simple;
+	bh=DnHe/8uhrTSolwGbLrqRvX8yq71GzArGeEqXIun4kOI=;
+	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=AN10cT6lITsWABmvIZ3U6TxQbb4bD98xTZCrwzRPm1D9kIsBhajOdJgIMZu1OPoOuU3GkEwA4IRSo8HMcbeLyo4rI2xx8jVuB/M5Q/pio87JKwva0Kib5kHva7af2+/xwjE1CQ57u1EN7mjnPhM7Mrj2WaRJn2sIGir2Im0adxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by mailout1.hostsharing.net (Postfix) with UTF8SMTPS id C5F3A18C4C;
+	Wed, 13 Aug 2025 07:38:54 +0200 (CEST)
+Received: from localhost (unknown [89.246.108.87])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by h08.hostsharing.net (Postfix) with UTF8SMTPSA id 8F1496031AA6;
+	Wed, 13 Aug 2025 07:38:54 +0200 (CEST)
+X-Mailbox-Line: From 4517af6359ffb9d66152b827a5d2833459144e3f Mon Sep 17 00:00:00 2001
+Message-ID: <4517af6359ffb9d66152b827a5d2833459144e3f.1755008151.git.lukas@wunner.de>
+In-Reply-To: <cover.1755008151.git.lukas@wunner.de>
+References: <cover.1755008151.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Wed, 13 Aug 2025 07:11:04 +0200
+Subject: [PATCH 4/5] PCI/ERR: Update device error_state already after reset
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Riana Tauro <riana.tauro@intel.com>, Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>, "Sean C. Dardis" <sean.c.dardis@intel.com>, Terry Bowman <terry.bowman@amd.com>, Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Linas Vepstas <linasvepstas@gmail.com>, "Mahesh J Salgaonkar" <mahesh@linux.ibm.com>, "Oliver OHalloran" <oohall@gmail.com>, Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, Shahed Shaikh <shshaikh@marvell.com>, Manish Chopra <manishc@marvell.com>, GR-Linux-NIC-Dev@marvell.com, Nilesh Javali <njavali@marvell.com>, GR-QLogic-Storage-Upstream@marvell.com, "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <ku
+ ba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250812135714.0e1a7ee0@kernel.org>
 
-On Tue, Aug 12, 2025 at 01:57:14PM -0700, Jakub Kicinski wrote:
-> On Tue, 12 Aug 2025 15:28:58 +0200 Przemek Kitszel wrote:
-> > Summary:
-> > Split ice_virtchnl.c into two more files (+headers), in a way
-> > that git-blame works better.
-> > Then move virtchnl files into a new subdir.
-> > No logic changes.
-> > 
-> > I have developed (or discovered ;)) how to split a file in a way that
-> > both old and new are nice in terms of git-blame
-> > There were no much disscussion on [RFC], so I would like to propose
-> > to go forward with this approach.
-> > 
-> > There is more commits needed to have it nice, so it forms a git-log vs
-> > git-blame tradeoff, but (after the brief moment that this is on the top)
-> > we spend orders of magnitude more time looking at the blame output (and
-> > commit messages linked from that) - so I find it much better to see
-> > actual logic changes instead of "move xx to yy" stuff (typical for
-> > "squashed/single-commit splits").
-> > 
-> > Cherry-picks/rebases work the same with this method as with simple
-> > "squashed/single-commit" approach (literally all commits squashed into
-> > one (to have better git-log, but shitty git-blame output).
-> > 
-> > Rationale for the split itself is, as usual, "file is big and we want to
-> > extend it".
-> > 
-> > This series is available on my github (just rebased from any
-> > earlier mentions):
-> > https://github.com/pkitszel/linux/tree/virtchnl-split-Aug12
-> > (the simple git-email view flattens this series, removing two
-> > merges from the view).
-> > 
-> > 
-> > [RFC]:
-> > https://lore.kernel.org/netdev/5b94d14e-a0e7-47bd-82fc-c85171cbf26e@intel.com/T/#u
-> > 
-> > (I would really look at my fork via your preferred git interaction tool
-> > instead of looking at the patches below).
-> 
-> UI tools aside I wish you didn't cut off the diffstat from the cover
-> letter :/ It'd make it much easier to understand what you're splitting.
-> 
-> Greg, Sasha, I suspect stable will suffer the most from any file split /
-> movement. Do you have any recommendation on what should be allowed?
+After a Fatal Error has been reported by a device and has been recovered
+through a Secondary Bus Reset, AER updates the device's error_state to
+pci_channel_io_normal before invoking its driver's ->resume() callback.
 
-We don't care, do whatever you need to for Linus's tree, and the
-backports can work themselves out as needed.
+By contrast, EEH updates the error_state earlier, namely after resetting
+the device and before invoking its driver's ->slot_reset() callback.
+Commit c58dc575f3c8 ("powerpc/pseries: Set error_state to
+pci_channel_io_normal in eeh_report_reset()") explains in great detail
+that the earlier invocation is necessitated by various drivers checking
+accessibility of the device with pci_channel_offline() and avoiding
+accesses if it returns true.  It returns true for any other error_state
+than pci_channel_io_normal.
 
-thanks,
+The device should be accessible already after reset, hence the reasoning
+is that it's safe to update the error_state immediately afterwards.
 
-greg k-h
+This deviation between AER and EEH seems problematic because drivers
+behave differently depending on which error recovery mechanism the
+platform uses.  Three drivers have gone so far as to update the
+error_state themselves, presumably to work around AER's behavior.
+
+For consistency, amend AER to update the error_state at the same recovery
+steps as EEH.  Drop the now unnecessary workaround from the three drivers.
+
+Keep updating the error_state before ->resume() in case ->error_detected()
+or ->mmio_enabled() return PCI_ERS_RESULT_RECOVERED, which causes
+->slot_reset() to be skipped.  There are drivers doing this even for Fatal
+Errors, e.g. mhi_pci_error_detected().
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+---
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c | 1 -
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c    | 2 --
+ drivers/pci/pcie/err.c                              | 3 ++-
+ drivers/scsi/qla2xxx/qla_os.c                       | 5 -----
+ 4 files changed, 2 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c
+index d7cdea8f604d..91e7b38143ea 100644
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c
+@@ -4215,7 +4215,6 @@ static pci_ers_result_t qlcnic_83xx_io_slot_reset(struct pci_dev *pdev)
+ 	struct qlcnic_adapter *adapter = pci_get_drvdata(pdev);
+ 	int err = 0;
+ 
+-	pdev->error_state = pci_channel_io_normal;
+ 	err = pci_enable_device(pdev);
+ 	if (err)
+ 		goto disconnect;
+diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
+index 53cdd36c4123..e051d8c7a28d 100644
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_main.c
+@@ -3766,8 +3766,6 @@ static int qlcnic_attach_func(struct pci_dev *pdev)
+ 	struct qlcnic_adapter *adapter = pci_get_drvdata(pdev);
+ 	struct net_device *netdev = adapter->netdev;
+ 
+-	pdev->error_state = pci_channel_io_normal;
+-
+ 	err = pci_enable_device(pdev);
+ 	if (err)
+ 		return err;
+diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+index 930bb60fb761..bebe4bc111d7 100644
+--- a/drivers/pci/pcie/err.c
++++ b/drivers/pci/pcie/err.c
+@@ -153,7 +153,8 @@ static int report_slot_reset(struct pci_dev *dev, void *data)
+ 
+ 	device_lock(&dev->dev);
+ 	pdrv = dev->driver;
+-	if (!pdrv || !pdrv->err_handler || !pdrv->err_handler->slot_reset)
++	if (!pci_dev_set_io_state(dev, pci_channel_io_normal) ||
++	    !pdrv || !pdrv->err_handler || !pdrv->err_handler->slot_reset)
+ 		goto out;
+ 
+ 	err_handler = pdrv->err_handler;
+diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
+index d4b484c0fd9d..4460421834cb 100644
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -7883,11 +7883,6 @@ qla2xxx_pci_slot_reset(struct pci_dev *pdev)
+ 	       "Slot Reset.\n");
+ 
+ 	ha->pci_error_state = QLA_PCI_SLOT_RESET;
+-	/* Workaround: qla2xxx driver which access hardware earlier
+-	 * needs error state to be pci_channel_io_online.
+-	 * Otherwise mailbox command timesout.
+-	 */
+-	pdev->error_state = pci_channel_io_normal;
+ 
+ 	pci_restore_state(pdev);
+ 
+-- 
+2.47.2
+
