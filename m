@@ -1,83 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258A1DF71;
-	Wed, 13 Aug 2025 14:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AB82EFDA5;
+	Wed, 13 Aug 2025 14:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755096735; cv=none; b=kZMywdWU1sg7YfXuHAH1DeQ2jsQD6+Wgr3MJcettk1vhr0Sl+YDU3yM/50mUWlWkzQsJrrCOG6foLE9k94NMEOWrviIvyz1Bp06faBJi5Ufw38gVq51VKvnZFhtrPzQBOuipKN0vZZLUQXT/dDuTyMp4+nH+NKJDJaESzXSrgkE=
+	t=1755096948; cv=none; b=I2BWTDyZt4DOClRfTEheRXELFOYmJYy80qSsF2oN6c84Q9ioIvPAjolBhx0SVIxoXMWq2m2u1V/AtxNm+BRNJi2VQv1M0clZ104fwe3prwO/+fsEavZ50sjFQ/DIrfsRWBFy4pT0uX5AoN9QSBZwJOFSd/Ghxd682Er6RY8ZGdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755096735; c=relaxed/simple;
-	bh=yF8iCt4IcxBj81Mp1kvQhhC5dKj1tFO3WDbfBuoASjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XGnKdr8JCQpA8tRwqqVKdSbZRQdYZB2tEoRgE7e3pVIjjOyaEqSKhHi4smbMl4ISh+cdj7TlYo3m3wePb+I6HxR7sAynUM2/xV8jP6CVU1IPNLP07T6flnomYzy4mnNQEed6/n9dZ0QU0+3jhg4JZmN7EKreyyxprULuteFwwI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HXSRoY4F; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755096948; c=relaxed/simple;
+	bh=tDfUpZExKmJMXStQh2fTARqlHOrlMBEVmIQj8qTNpp8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=JORQtQRv7n6RAbqZblovdZzQ2bmPegp3dpyaIBlryM55gZFr+qD9t5TpldmRn29BuP3pTOfmJ/7zFoDbKaBTL5nuM8pLi/529NiG2ZZ7A8Ne+htT4KEkAjHWecaiVl7CZZEilQjUJmaVIkunUYzuyXWe9ngvoaUbXO8tjZ3phbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U6YkdF24; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HXSRoY4F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4F7C4CEF1;
-	Wed, 13 Aug 2025 14:52:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U6YkdF24"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A210BC4AF09;
+	Wed, 13 Aug 2025 14:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755096734;
-	bh=yF8iCt4IcxBj81Mp1kvQhhC5dKj1tFO3WDbfBuoASjQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HXSRoY4FX97/bGSoskS9rX3kbLNHbhMECHrpExOw3SjAhO+sutt0wNIt+hXguYqFz
-	 acOrnwIq662t2uH/Pkk+7zDE8qZpdbkHmHHAOfqQwBcKJJyCXYPBsuQso8zFZkC8wc
-	 erGdkydwLPI2kjby/RJhn2Ues8nq7SX9WGDBoI3FpERRf1p1vq/7Gg6L9vYkY8r3yv
-	 /UTzDE2v+NTni4xTqnaSIoDLmtE+MWUd4MJgORxpfzwpU05jPd/97lVDP2xRhtyicu
-	 kd6cGBBqNP8JClWYuCW6Zn6N1Kg15PCa2VQb8UCi/ux4QHe6NCO7XLvlVcwo0EiNp3
-	 Pe3CylL1s7ueg==
-Date: Wed, 13 Aug 2025 07:52:12 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Pavel Begunkov <asml.silence@gmail.com>
-Cc: Byungchul Park <byungchul@sk.com>, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
- harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
- davem@davemloft.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
- mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
- pabeni@redhat.com, david@redhat.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, horms@kernel.org, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, ilias.apalodimas@linaro.org,
- willy@infradead.org, brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
- usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
- almasrymina@google.com, toke@redhat.com, bpf@vger.kernel.org,
- linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, linux-mm@kvack.org,
- netdev@vger.kernel.org
-Subject: Re: [PATCH linux-next v3] mm, page_pool: introduce a new page type
- for page pool in page type
-Message-ID: <20250813075212.051b5178@kernel.org>
-In-Reply-To: <6bbf6ca2-0c46-43b7-82d8-b990f01ae5dd@gmail.com>
-References: <20250729110210.48313-1-byungchul@sk.com>
-	<20250813060901.GA9086@system.software.com>
-	<6bbf6ca2-0c46-43b7-82d8-b990f01ae5dd@gmail.com>
+	s=k20201202; t=1755096947;
+	bh=tDfUpZExKmJMXStQh2fTARqlHOrlMBEVmIQj8qTNpp8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=U6YkdF24uls3iDY1HAv8Weghhp2cN67nZBA70lqLv1r2uhk3tRVBWlfJ/B3gQ9i/p
+	 +YwcjV5ob/61OwEq9MLS2tjY1Q1VRbmBrWQ7pKE2NCusSJMxni3Q6SRI8fhy9QbIew
+	 18J96Kf4ueIjFH4GHiaJM71wSeXxvezTPTnrVFElmQq0a5G4AsAltbN11F2+vaOffz
+	 oNUG3Lv3JeLFpkcC2NjBtJKBCOb35MHNIhARhHYG0daIFjCZNhCkF+4OsC1K4xup+A
+	 Bd9qI2lZozR+KsuX9TIeFqb65lzs/ZHIeAhxYL63irKbFbvJ8OWVtxTx83EE0rWvIV
+	 5TctEyHhXm86Q==
+Received: by wens.tw (Postfix, from userid 1000)
+	id 27E2B5FEBD; Wed, 13 Aug 2025 22:55:45 +0800 (CST)
+From: Chen-Yu Tsai <wens@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej@kernel.org>,
+	Samuel Holland <samuel@sholland.org>
+Cc: netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Andre Przywara <andre.przywara@arm.com>
+Subject: [PATCH net-next v2 06/10] arm64: dts: allwinner: a527: cubie-a5e: Add ethernet PHY reset setting
+Date: Wed, 13 Aug 2025 22:55:36 +0800
+Message-Id: <20250813145540.2577789-7-wens@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250813145540.2577789-1-wens@kernel.org>
+References: <20250813145540.2577789-1-wens@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 13 Aug 2025 12:18:56 +0100 Pavel Begunkov wrote:
-> It should go to net, there will be enough of conflicts otherwise.
-> mm maintainers, do you like it as a shared branch or can it just
-> go through the net tree?
+From: Chen-Yu Tsai <wens@csie.org>
 
-Looks like this is 100% in mm, and the work is not urgent at all.
-So I'm happy for Andrew to take this, and dependent patches (if any)
-can come in the next cycle.
+The external Ethernet PHY has a reset pin that is connected to the SoC.
+It is missing from the original submission.
 
-> @@ -1379,9 +1376,11 @@ __always_inline bool free_pages_prepare(struct page *page,
->   		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
->   		folio->mapping = NULL;
->   	}
-> -	if (unlikely(page_has_type(page)))
-> +	if (unlikely(page_has_type(page))) {
-> +		WARN_ON_ONCE(PageNet_pp(page));
+Add it to complete the description.
 
-I guess my ask to add a comment here got ignored?
+Fixes: acca163f3f51 ("arm64: dts: allwinner: a527: add EMAC0 to Radxa A5E board")
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+---
+ arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts | 3 +++
+ 1 file changed, 3 insertions(+)
 
->   		/* Reset the page_type (which overlays _mapcount) */
->   		page->page_type = UINT_MAX;
+diff --git a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
+index 70d439bc845c..d4cee2222104 100644
+--- a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
++++ b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
+@@ -94,6 +94,9 @@ &mdio0 {
+ 	ext_rgmii_phy: ethernet-phy@1 {
+ 		compatible = "ethernet-phy-ieee802.3-c22";
+ 		reg = <1>;
++		reset-gpios = <&pio 7 8 GPIO_ACTIVE_LOW>; /* PH8 */
++		reset-assert-us = <10000>;
++		reset-deassert-us = <150000>;
+ 	};
+ };
+ 
+-- 
+2.39.5
+
