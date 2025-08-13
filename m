@@ -1,48 +1,33 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040FF74420;
-	Wed, 13 Aug 2025 11:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E832F83D9;
+	Wed, 13 Aug 2025 11:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755085189; cv=none; b=kpdjPlv5B/ZjBuer1aFv/aaInQQy6wWGJMHLzupCZzNFWn5plVdZJqAtCBEnVffyLAgmpbjthnpTyUnFUEVyiiS1tMDWSt3qiP4+sybzk5ZjatPUX7oBtrmJzFYmclh59bQX2wIXWNzVC7icXojI5z0keeJUfM5wm5lrhy3ZES8=
+	t=1755085489; cv=none; b=tE2fX+lTdf3WI3D95yi/wJI0hh0jMmEyWwLC1JLkBp1NZCm6I2AbFwxeR2GbvM5UO8kdPEi8inWGMzFDbViffyakQ1L5mnnspfkMs/zBvPKzZDuN08n6uFED0BwcHqfL1LiouBzQApwUfJBGqh89ixpXDTMl6Q/R2li1wKxH8kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755085189; c=relaxed/simple;
-	bh=Zi6Z75oIMtn8beKtFputqAn8NKkyXzfJHRrfLH3JN/w=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
-	 In-Reply-To:Content-Type; b=FVtjUWZ9+WGlPEHEBahvRrsW2pivIK59IMwHqbKr8eKUd3ez8uaQCrfuBWZJkhIBzlgS/PiwDp5BM2GcjPFnRYbqIjVXAEVgc9TPRP4PhI+VgF5fjh3QrRffwifZXQBVEO44vZcZKY/0mjqIg8YBakGgup29/pD5wXCZ+FIwMQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=lTiqdsfR; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1755085489; c=relaxed/simple;
+	bh=w9T+UZHUVhxj9lkLnAyKjBTph+QMXw2J4VUWkLRMIjM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=idRvogN4kEAnFHPUxdRK5G6Rjs4dDptvtvDwq0DNUH1dugTSmkdLhIxlqM0O6S9bvuaNOVdb6qwwqtWHBBUtJyHBGzRpat7nfaVKgxLQNRzqnwF+SXdli2swa4aPaVM3872I6ZR6G7r+r7/ieAzxJVFhSy7jOS7gPN5Je21VJzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ft9PAAUo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="lTiqdsfR"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57DBLbgk002778;
-	Wed, 13 Aug 2025 11:39:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	UJq5xl9wnlbTfrwZF8n2U+4EQciaitdnUfm2jP4aBNY=; b=lTiqdsfRl1pFVuwm
-	yg/nPzzH+T/3ZpVcXGcBcKvj6W4CUgQt3GrsWAXt0o25/nzrEC/gWww87fvRxrjy
-	wkykHSme6IyOui/BEd2p6kDz3FySkuGb2mUcmj/Fl7V+mSa7i+btrZKEL8gE9oTq
-	TUJP3Jt68qZ11KxOjR52tATYHhFCBVlcTtWyqMBGnipDC+5ETpUwEcfWNFrHf8kJ
-	y1DJJi/0cSD122xtpTMXWa7jMqgN9NaHxV2vicnfJhiqDBN7vsWYBbxnZf1yHRG1
-	l9SKICOO5cULnBCgKkljTu7u22HJka8Edre01kUYg1lbSxyfo+IEDwRFyMHRE/rG
-	+JA73Q==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48dxdv3kk5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Aug 2025 11:39:31 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57DBdUQo008472
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Aug 2025 11:39:30 GMT
-Received: from [10.235.9.75] (10.80.80.8) by nasanex01b.na.qualcomm.com
- (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Wed, 13 Aug
- 2025 04:39:25 -0700
-Message-ID: <ccb022ab-45a8-4e97-8b63-4d2921ebfadc@quicinc.com>
-Date: Wed, 13 Aug 2025 19:39:23 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ft9PAAUo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A3EC4CEF5;
+	Wed, 13 Aug 2025 11:44:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755085489;
+	bh=w9T+UZHUVhxj9lkLnAyKjBTph+QMXw2J4VUWkLRMIjM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Ft9PAAUoxK4VcZeJyGaHT5X1lT8Te+B6lztfMNEwDmBJI6JKSl0Q10FoMeaF7uiMt
+	 79D5mPMGVASxbVTUxiJ8kcODym6ZQwHcjBXZ4WpBmR/qDBOQ1sBAn9j5y22TwgkEcR
+	 S9gYr4v5hUCln5KKPA8EI28pOGUVFRX1CzD9iDzaSDPQJibc2G85MyA7JMGtr/mewf
+	 klCreOjaZAT1PrKlLv31kFqSGz1XPVf/Bn1wzMJq+k7x84IyQc2qrS5+7vuwYD8kLX
+	 RCio4Vqcsfv/SPdQ4SwhIU9FtH2vTLIF2DXFoS7erTq92JUYJG0w0tUz2BmN9Z+NMw
+	 r7NyHkAENe9Kg==
+Message-ID: <bc15e28a-95e9-449f-aba2-d14aa599a125@kernel.org>
+Date: Wed, 13 Aug 2025 20:44:43 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,96 +35,305 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Luo Jie <quic_luoj@quicinc.com>
-Subject: Re: [PATCH net-next v7 03/14] net: ethernet: qualcomm: Add PPE driver
- for IPQ9574 SoC
-To: Randy Dunlap <rdunlap@infradead.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, "Rob
- Herring" <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        "Conor
- Dooley" <conor+dt@kernel.org>,
-        Lei Wei <quic_leiwei@quicinc.com>,
-        "Suruchi
- Agarwal" <quic_suruchia@quicinc.com>,
-        Pavithra R <quic_pavir@quicinc.com>, Simon Horman <horms@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>, Kees Cook
-	<kees@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        "Philipp
- Zabel" <p.zabel@pengutronix.de>
-CC: <linux-arm-msm@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
-        <quic_kkumarcs@quicinc.com>, <quic_linchen@quicinc.com>
-References: <20250812-qcom_ipq_ppe-v7-0-789404bdbc9a@quicinc.com>
- <20250812-qcom_ipq_ppe-v7-3-789404bdbc9a@quicinc.com>
- <5ee33ac3-c23e-4da7-87bc-2a5ea6e93afe@infradead.org>
+Subject: Re: [PATCH 2/6] can: esd_usb: Fix not detecting version reply in
+ probe routine
+To: =?UTF-8?Q?Stefan_M=C3=A4tje?= <stefan.maetje@esd.eu>
+Cc: Frank Jungclaus <frank.jungclaus@esd.eu>, linux-can@vger.kernel.org,
+ socketcan@esd.eu, Simon Horman <horms@kernel.org>,
+ Olivier Sobrie <olivier@sobrie.be>, Oliver Hartkopp
+ <socketcan@hartkopp.net>, netdev@vger.kernel.org,
+ Marc Kleine-Budde <mkl@pengutronix.de>
+References: <20250811210611.3233202-1-stefan.maetje@esd.eu>
+ <20250811210611.3233202-3-stefan.maetje@esd.eu>
+ <20250813-just-independent-angelfish-909305-mkl@pengutronix.de>
 Content-Language: en-US
-In-Reply-To: <5ee33ac3-c23e-4da7-87bc-2a5ea6e93afe@infradead.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=IuYecK/g c=1 sm=1 tr=0 ts=689c7973 cx=c_pps
- a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10
- a=yauDWUx4ckUadswYq4AA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: HPXd7wzleDymh-hJW_R1aw-SCfLCbgzB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA5MDAyNSBTYWx0ZWRfX5i13+qW4nDqh
- usNlwPqDoA5CNuTNowKAdonAV7zadljzx9q3fqcxT+1U2TJ07AUN/7VCjWN15jv3mbCvze9A2Uz
- QI4CwGUmrc62E2ULgQkvAOJuGB9UCEj7XUtOTo8ReP8uZjXUj7Bgn5qTfTCa+dbzSNWi5iCzo2a
- z6VUSqtH1stODts+15mlPPTJ4kD9k1TJh9yonz9Uqhceyx9MaoD5cbPclc6gAq9ArsbZJp44udY
- OjHGH8SMve90uCrZo52J30m8Rj3hHkOaiwQUYbLe94ZZ3e9vZS/j/J1JnOpnzk9gCVhyXBwKNmS
- GkodGwC94senKvc1Sy2Cv6boQGsLhbMsz2WwD0EI//G8DsPU1vRzGiR8Ws+yPTJxzv2/JQWBGrm
- nwqGpvKy
-X-Proofpoint-GUID: HPXd7wzleDymh-hJW_R1aw-SCfLCbgzB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-13_01,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 spamscore=0 priorityscore=1501 adultscore=0
- clxscore=1011 phishscore=0 suspectscore=0 bulkscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508090025
+From: Vincent Mailhol <mailhol@kernel.org>
+Autocrypt: addr=mailhol@kernel.org; keydata=
+ xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
+ JFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbEBrZXJuZWwub3JnPsKZBBMWCgBBFiEE7Y9wBXTm
+ fyDldOjiq1/riG27mcIFAmdfB/kCGwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcC
+ F4AACgkQq1/riG27mcKBHgEAygbvORJOfMHGlq5lQhZkDnaUXbpZhxirxkAHwTypHr4A/joI
+ 2wLjgTCm5I2Z3zB8hqJu+OeFPXZFWGTuk0e2wT4JzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrb
+ YZzu0JG5w8gxE6EtQe6LmxKMqP6EyR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDl
+ dOjiq1/riG27mcIFAmceMvMCGwwFCQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8V
+ zsZwr/S44HCzcz5+jkxnVVQ5LZ4BANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
+In-Reply-To: <20250813-just-independent-angelfish-909305-mkl@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+Hi Stefan,
 
+On 8/13/25 5:26 PM, Marc Kleine-Budde wrote:
+> On 11.08.2025 23:06:07, Stefan Mätje wrote:
+>> This patch fixes some problems in the esd_usb_probe routine that render
+>> the CAN interface unusable.
+>>
+>> The probe routine sends a version request message to the USB device to
+>> receive a version reply with the number of CAN ports and the hard-
+>> & firmware versions. Then for each CAN port a CAN netdev is registered.
+>>
+>> The previous code assumed that the version reply would be received
+>> immediately. But if the driver was reloaded without power cycling the
+>> USB device (i. e. on a reboot) there could already be other incoming
+>> messages in the USB buffers. These would be in front of the version
+>> reply and need to be skipped.
 
-On 8/13/2025 12:54 AM, Randy Dunlap wrote:
-> 
-> 
-> On 8/12/25 7:10 AM, Luo Jie wrote:
->> diff --git a/drivers/net/ethernet/qualcomm/Kconfig b/drivers/net/ethernet/qualcomm/Kconfig
->> index a4434eb38950..6e56b022fc2d 100644
->> --- a/drivers/net/ethernet/qualcomm/Kconfig
->> +++ b/drivers/net/ethernet/qualcomm/Kconfig
->> @@ -60,6 +60,21 @@ config QCOM_EMAC
->>   	  low power, Receive-Side Scaling (RSS), and IEEE 1588-2008
->>   	  Precision Clock Synchronization Protocol.
->>   
->> +config QCOM_PPE
->> +	tristate "Qualcomm Technologies, Inc. PPE Ethernet support"
->> +	depends on HAS_IOMEM && OF
->> +	depends on COMMON_CLK
->> +	select REGMAP_MMIO
->> +	help
->> +	  This driver supports the Qualcomm Technologies, Inc. packet
->> +	  process engine (PPE) available with IPQ SoC. The PPE includes
->> +	  the ethernet MACs, Ethernet DMA (EDMA) and switch core that
-> 
-> Please use ethernet or Ethernet consistently.
+Wouldn't it be easier to:
 
-OK, I will update to use "Ethernet" consistently throughout the code.
+  - First empty the incoming USB message queue
+  - Then request the version
+  - Finally parse the version reply
 
-> 
->> +	  supports L3 flow offload, L2 switch function, RSS and tunnel
->> +	  offload.
+?
+
+This way, you wouldn't have to do the complex parsing anymore in
+esd_usb_recv_version().
+
+>> In the previous code these problems were present:
+>> - Only one usb_bulk_msg() read was done into a buffer of
+>>   sizeof(union esd_usb_msg) which is smaller than ESD_USB_RX_BUFFER_SIZE
+>>   which could lead to an overflow error from the USB stack.
+>> - The first bytes of the received data were taken without checking for
+>>   the message type. This could lead to zero detected CAN interfaces.
+>>
+>> To mitigate these problems:
+>> - Use a transfer buffer "buf" with ESD_USB_RX_BUFFER_SIZE.
+>> - Added a function esd_usb_recv_version() that reads and skips incoming
+>>   "esd_usb_msg" messages until a version reply message is found. This
+>>   is evaluated to return the count of CAN ports and version information.
+>> - The data drain loop is limited by a maximum # of bytes to read from
+>>   the device based on its internal buffer sizes and a timeout
+>>   ESD_USB_DRAIN_TIMEOUT_MS.
+>>
+>> This version of the patch incorporates changes recommended on the
+>> linux-can list for a first version.
+>>
+>> References:
+>> https://lore.kernel.org/linux-can/d7fd564775351ea8a60a6ada83a0368a99ea6b19.camel@esd.eu/#r
+>>
+>> Fixes: 80662d943075 ("can: esd_usb: Add support for esd CAN-USB/3")
+>> Signed-off-by: Stefan Mätje <stefan.maetje@esd.eu>
+>> ---
+>>  drivers/net/can/usb/esd_usb.c | 125 ++++++++++++++++++++++++++--------
+>>  1 file changed, 97 insertions(+), 28 deletions(-)
+>>
+>> diff --git a/drivers/net/can/usb/esd_usb.c b/drivers/net/can/usb/esd_usb.c
+>> index 05ed664cf59d..dbdfffe3a4a0 100644
+>> --- a/drivers/net/can/usb/esd_usb.c
+>> +++ b/drivers/net/can/usb/esd_usb.c
+>> @@ -44,6 +44,9 @@ MODULE_LICENSE("GPL v2");
+>>  #define ESD_USB_CMD_TS			5 /* also used for TS_REPLY */
+>>  #define ESD_USB_CMD_IDADD		6 /* also used for IDADD_REPLY */
+>>  
+>> +/* esd version message name size */
+>> +#define ESD_USB_FW_NAME_SZ 16
 >> +
->> +	  To compile this driver as a module, choose M here. The module
->> +	  will be called qcom-ppe.
+>>  /* esd CAN message flags - dlc field */
+>>  #define ESD_USB_RTR	BIT(4)
+>>  #define ESD_USB_NO_BRS	BIT(4)
+>> @@ -95,6 +98,7 @@ MODULE_LICENSE("GPL v2");
+>>  #define ESD_USB_RX_BUFFER_SIZE		1024
+>>  #define ESD_USB_MAX_RX_URBS		4
+>>  #define ESD_USB_MAX_TX_URBS		16 /* must be power of 2 */
+>> +#define ESD_USB_DRAIN_TIMEOUT_MS	100
+>>  
+>>  /* Modes for CAN-USB/3, to be used for esd_usb_3_set_baudrate_msg_x.mode */
+>>  #define ESD_USB_3_BAUDRATE_MODE_DISABLE		0 /* remove from bus */
+>> @@ -131,7 +135,7 @@ struct esd_usb_version_reply_msg {
+>>  	u8 nets;
+>>  	u8 features;
+>>  	__le32 version;
+>> -	u8 name[16];
+>> +	u8 name[ESD_USB_FW_NAME_SZ];
+>>  	__le32 rsvd;
+>>  	__le32 ts;
+>>  };
+>> @@ -625,17 +629,91 @@ static int esd_usb_send_msg(struct esd_usb *dev, union esd_usb_msg *msg)
+>>  			    1000);
+>>  }
+>>  
+>> -static int esd_usb_wait_msg(struct esd_usb *dev,
+>> -			    union esd_usb_msg *msg)
+>> +static int esd_usb_req_version(struct esd_usb *dev, void *buf)
+>>  {
+>> -	int actual_length;
+>> +	union esd_usb_msg *msg = buf;
+>>  
+>> -	return usb_bulk_msg(dev->udev,
+>> -			    usb_rcvbulkpipe(dev->udev, 1),
+>> -			    msg,
+>> -			    sizeof(*msg),
+>> -			    &actual_length,
+>> -			    1000);
+>> +	msg->hdr.cmd = ESD_USB_CMD_VERSION;
+>> +	msg->hdr.len = sizeof(struct esd_usb_version_msg) / sizeof(u32); /* # of 32bit words */
+>> +	msg->version.rsvd = 0;
+>> +	msg->version.flags = 0;
+>> +	msg->version.drv_version = 0;
 >> +
+>> +	return esd_usb_send_msg(dev, msg);
+>> +}
+>> +
+>> +static int esd_usb_recv_version(struct esd_usb *dev, void *rx_buf)
+>> +{
+>> +	/* Device hardware has 2 RX buffers with ESD_USB_RX_BUFFER_SIZE, * 4 to give some slack. */
+>> +	const int max_drain_bytes = (4 * ESD_USB_RX_BUFFER_SIZE);
+>> +	unsigned long end_jiffies;
+>> +	int cnt_other = 0;
+>> +	int cnt_ts = 0;
+>> +	int cnt_vs = 0;
+>> +	int len_sum = 0;
+>> +	int attempt = 0;
+>> +	int err;
+>> +
+>> +	end_jiffies = jiffies + msecs_to_jiffies(ESD_USB_DRAIN_TIMEOUT_MS);
+>> +	do {
+>> +		int actual_length;
+>> +		int pos;
+>> +
+>> +		err = usb_bulk_msg(dev->udev,
+>> +				   usb_rcvbulkpipe(dev->udev, 1),
+>> +				   rx_buf,
+>> +				   ESD_USB_RX_BUFFER_SIZE,
+>> +				   &actual_length,
+>> +				   ESD_USB_DRAIN_TIMEOUT_MS);
+>> +		dev_dbg(&dev->udev->dev, "AT %d, LEN %d, ERR %d\n", attempt, actual_length, err);
+>> +		if (err)
+>> +			goto bail;
+>> +
+>> +		err = -ENOENT;
+>> +		len_sum += actual_length;
+>> +		pos = 0;
+>> +		while (pos < actual_length) {
+> 
+> You have to check that the actual offset you will access later is within
+> actual_length.
+> 
+>> +			union esd_usb_msg *p_msg;
+>> +
+>> +			p_msg = (union esd_usb_msg *)(rx_buf + pos);
+>> +
+>> +			switch (p_msg->hdr.cmd) {
+>> +			case ESD_USB_CMD_VERSION:
+>> +				++cnt_vs;
+>> +				dev->net_count = min(p_msg->version_reply.nets, ESD_USB_MAX_NETS);
+>> +				dev->version = le32_to_cpu(p_msg->version_reply.version);
+>> +				err = 0;
+>> +				dev_dbg(&dev->udev->dev, "TS 0x%08x, V 0x%08x, N %u, F 0x%02x, %.*s\n",
+>> +					le32_to_cpu(p_msg->version_reply.ts),
+>> +					le32_to_cpu(p_msg->version_reply.version),
+>> +					p_msg->version_reply.nets,
+>> +					p_msg->version_reply.features,
+>> +					ESD_USB_FW_NAME_SZ, p_msg->version_reply.name);
+>> +				break;
+>> +			case ESD_USB_CMD_TS:
+>> +				++cnt_ts;
+>> +				dev_dbg(&dev->udev->dev, "TS 0x%08x\n",
+>> +					le32_to_cpu(p_msg->rx.ts));
+>> +				break;
+>> +			default:
+>> +				++cnt_other;
+>> +				dev_dbg(&dev->udev->dev, "HDR %d\n", p_msg->hdr.cmd);
+>> +				break;
+>> +			}
+>> +			pos += p_msg->hdr.len * sizeof(u32); /* convert to # of bytes */
+> 
+> Can pos overflow? hdr.len is a u8, so probably not.
+> 
+>> +			if (pos > actual_length) {
+>> +				dev_err(&dev->udev->dev, "format error\n");
+>> +				err = -EPROTO;
+>> +				goto bail;
+>> +			}
+>> +		}
+>> +		++attempt;
+>> +	} while (cnt_vs == 0 && len_sum < max_drain_bytes && time_before(jiffies, end_jiffies));
+>> +bail:
+>> +	dev_dbg(&dev->udev->dev, "RC=%d; ATT=%d, TS=%d, VS=%d, O=%d, B=%d\n",
+>> +		err, attempt, cnt_ts, cnt_vs, cnt_other, len_sum);
+>> +	return err;
+>>  }
+>>  
+>>  static int esd_usb_setup_rx_urbs(struct esd_usb *dev)
+>> @@ -1274,7 +1352,7 @@ static int esd_usb_probe(struct usb_interface *intf,
+>>  			 const struct usb_device_id *id)
+>>  {
+>>  	struct esd_usb *dev;
+>> -	union esd_usb_msg *msg;
+>> +	void *buf;
+>>  	int i, err;
+>>  
+>>  	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+>> @@ -1289,34 +1367,25 @@ static int esd_usb_probe(struct usb_interface *intf,
+>>  
+>>  	usb_set_intfdata(intf, dev);
+>>  
+>> -	msg = kmalloc(sizeof(*msg), GFP_KERNEL);
+>> -	if (!msg) {
+>> +	buf = kmalloc(ESD_USB_RX_BUFFER_SIZE, GFP_KERNEL);
+>> +	if (!buf) {
+>>  		err = -ENOMEM;
+>>  		goto free_dev;
+>>  	}
+>>  
+>>  	/* query number of CAN interfaces (nets) */
+>> -	msg->hdr.cmd = ESD_USB_CMD_VERSION;
+>> -	msg->hdr.len = sizeof(struct esd_usb_version_msg) / sizeof(u32); /* # of 32bit words */
+>> -	msg->version.rsvd = 0;
+>> -	msg->version.flags = 0;
+>> -	msg->version.drv_version = 0;
+>> -
+>> -	err = esd_usb_send_msg(dev, msg);
+>> +	err = esd_usb_req_version(dev, buf);
+> 
+> I'm a bit uneasy with the passing of the buffer as an argument, but not
+> its size.
+
++1
+
+What I also do not like is that buffer of type void *. If I understand
+correctly, you are using this buffer for both the request and the reply, thus
+the void* type. But is this really a winning trade?
+
+Here we are in the probe function, not something speed critical. So, I would
+rather have the esd_usb_req_version() and the esd_usb_recv_version() allocate
+their own buffer with the correct size.
+
+Yes, you would be doing two kalloc() instead of one, but you will gain in
+readability and the esd_usb_probe() also becomes simpler.
+
+>>  	if (err < 0) {
+>>  		dev_err(&intf->dev, "sending version message failed\n");
+>> -		goto free_msg;
+>> +		goto free_buf;
+>>  	}
+>>  
+>> -	err = esd_usb_wait_msg(dev, msg);
+>> +	err = esd_usb_recv_version(dev, buf);
+>>  	if (err < 0) {
+>>  		dev_err(&intf->dev, "no version message answer\n");
+>> -		goto free_msg;
+>> +		goto free_buf;
+>>  	}
+>>  
+>> -	dev->net_count = (int)msg->version_reply.nets;
+>> -	dev->version = le32_to_cpu(msg->version_reply.version);
+>> -
+>>  	if (device_create_file(&intf->dev, &dev_attr_firmware))
+>>  		dev_err(&intf->dev,
+>>  			"Couldn't create device file for firmware\n");
+>> @@ -1333,8 +1402,8 @@ static int esd_usb_probe(struct usb_interface *intf,
+>>  	for (i = 0; i < dev->net_count; i++)
+>>  		esd_usb_probe_one_net(intf, i);
+>>  
+>> -free_msg:
+>> -	kfree(msg);
+>> +free_buf:
+>> +	kfree(buf);
+>>  free_dev:
+>>  	if (err)
+>>  		kfree(dev);
+-- 
+Yours sincerely,
+Vincent Mailhol
 
