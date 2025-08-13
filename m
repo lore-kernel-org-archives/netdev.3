@@ -1,88 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEAF2C0F87
-	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 01:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62562A1AA
+	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 01:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755047399; cv=none; b=gAESG8IjSWSD47f+PIEQaqx3ZOfyxCznVxsv+e+LQysIpightsLZSVz4pcxjFS7L1eKrf45v+dAGlT7eMxnWgIxg+IUOiQnHh/vxLFnQNqkgAiaiCJtSwZCo7jVt9KaSHXKVRDKpwkpxGfgA2f+WtZ2ygtjEtwoGRtkkkl9VRNc=
+	t=1755047716; cv=none; b=rLdbVc7V+VYWpanSFNzn+IrgwiiQCg1BcJOwvz2Vd98dTnIeIRGyBLxM1TcLcjBo2upMEWe1gyQ9/hUf5dDXXQwc8R5hbjdPUHqNVL3aHc7gh3DR4kwY8nhlTwHjyIj5ifzT5ly145ywbOxGADiy8Xc+w2XLtb4yaKAPleRkohU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755047399; c=relaxed/simple;
-	bh=z3Hly6wGwWLBc9E+tqRclXqYvOGN9kEqvEAWNamcDZ8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=HFgtdfrJFGDAKNtNoXOFO1bDTIpXz880ouamgs1WxTUC0alToXN8JKM3VhILRpVdWBQKOstJf+LSYrgoaDMCo5iaR0t4I9rclKACxMrbpdTJzFsEVwGH2PF/XkDaISnk08E/PQac+bDzbE8YbYAj5/g3+453FkOQV54YYVJuGMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BaQGoUoV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755047716; c=relaxed/simple;
+	bh=MJ9VWpz1qUr5xoTXEcGHgxXNuvgQFJoO8s2+y+R7Rm0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Ybiu7qk7Cwz1a4V0oyYfQawzw5rmsjDwA37jVi7MQMFuqw4oUcYWukl6prpTYYNEvOnwY4lN8+tRx4nSpiK0jjF4pjnBQhJLG1OtigVO4byRqDFZ+ltqa3+JkHSnJbGdKN3RP08fTEt+4A3q2/SpDoix5shmmNl8iT6atlD6u1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9EW8JTP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BaQGoUoV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B92C4CEF0;
-	Wed, 13 Aug 2025 01:09:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9EW8JTP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07AAC4CEF0;
+	Wed, 13 Aug 2025 01:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755047398;
-	bh=z3Hly6wGwWLBc9E+tqRclXqYvOGN9kEqvEAWNamcDZ8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BaQGoUoV10wNWfiWmQt6WDIZIwq7pB5rPqjIv29URPW6hBzN6uxCV76yr99r8QjEV
-	 JIZiu7FeptUFvCswYDpUlDbvnB68eShYJgzJn6mkn51AnTV+hW32aXLK+3EKD7g+Cu
-	 pNv+WL8Y+52A6m6tiQ1JkCi0rBimk/A5WmNfKx8Z0m/lhtRWtF7gJNpCLeTSlfyzWA
-	 lAQYLBCysvYp4b2uxNvyC/XP9nAK+Wr2+bhd6CNkelKoRjv1uL6v9bIgc54CR3q/Pq
-	 u4mYU4xJ2QM0lENmoacgzVZH6HnXqJqNBzlA7mklcJHcYqkkDriYx/4PiwDKI29aPm
-	 evf6gRpiPo/0w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EADC239D0C2E;
-	Wed, 13 Aug 2025 01:10:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1755047716;
+	bh=MJ9VWpz1qUr5xoTXEcGHgxXNuvgQFJoO8s2+y+R7Rm0=;
+	h=Date:From:To:Cc:Subject:From;
+	b=t9EW8JTPYcjKb7bjHaV/vAtwr+R+9ZghuNXt0lnTFplKrHLt5iVRMRqqOP4uqeTFz
+	 pBFBBwoniAwU+oDAbZAVdakPYMplKMmlyFpTR7HnvPAuiZYdUn1DSwiCYbH4FIlfCr
+	 K11/rC+1Q1qOymVmOZ5AX5Hn3gO90aMvma1Hu3p6fdBCKR5K9OYPx7yONON9F2V1Hs
+	 D/8iW2grCKUfzq85BGcMm/jp0zRsOF4uInsdVxD97eXsId2CWAqRCI6dIcMfQXhyGS
+	 r7m3zvGM4IIxHNLns8SoriYJaN/ET55AGgOkMl38aWrVuPfP0f2/P550JYL7JoQtMo
+	 BArt1S9qerr/w==
+Date: Wed, 13 Aug 2025 08:58:06 +0800
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Andrew Lunn <andrew@lunn.ch>, Russell King <linux@armlinux.org.uk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Cc: netdev@vger.kernel.org
+Subject: [RFC] mdio demux multiplexer driver
+Message-ID: <aJvjHrDM1U5_r1gq@xhacker>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1 net-next 0/4] selftest: af_unix: Enable -Wall and
- -Wflex-array-member-not-at-end.
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175504741075.2910902.4573020164380006687.git-patchwork-notify@kernel.org>
-Date: Wed, 13 Aug 2025 01:10:10 +0000
-References: <20250811215432.3379570-1-kuniyu@google.com>
-In-Reply-To: <20250811215432.3379570-1-kuniyu@google.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, kuni1840@gmail.com,
- netdev@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Hello:
+Hi,
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Assume we have the following implementation:
+          ----------
+          |mmio reg|
+	  ----------
+             |
+ --------    |      -------
+ | MAC0 |--MDIO-----| PHY |
+ -------- |     |   -------
+          |     |
+ -------- |     |   -------
+ | MAC1 |--     ----| PHY |
+ --------           -------
 
-On Mon, 11 Aug 2025 21:53:03 +0000 you wrote:
-> This series fix 4 warnings caught by -Wall and
-> -Wflex-array-member-not-at-end.
-> 
-> 
-> Kuniyuki Iwashima (4):
->   selftest: af_unix: Add -Wall and -Wflex-array-member-not-at-end.
->   selftest: af_unix: Silence -Wflex-array-member-not-at-end warning for
->     scm_inq.c.
->   selftest: af_unix: Silence -Wflex-array-member-not-at-end warning for
->     scm_rights.c.
->   selftest: af_unix: Silence -Wall warning for scm_pid.c.
-> 
-> [...]
+Both MAC0 and MAC1 have MDIO bus masters, and tie together to
+a single set of clock and data lines, which go to some PHYs. While
+there's a mmio reg to control which MAC mdio master can operate
+the single mdio clock and data lines, so only one MAC can operate
+the mdio clock and data lines.
 
-Here is the summary with links:
-  - [v1,net-next,1/4] selftest: af_unix: Add -Wall and -Wflex-array-member-not-at-end to CFLAGS.
-    https://git.kernel.org/netdev/net-next/c/1838731f1072
-  - [v1,net-next,2/4] selftest: af_unix: Silence -Wflex-array-member-not-at-end warning for scm_inq.c.
-    https://git.kernel.org/netdev/net-next/c/942224e6baca
-  - [v1,net-next,3/4] selftest: af_unix: Silence -Wflex-array-member-not-at-end warning for scm_rights.c.
-    https://git.kernel.org/netdev/net-next/c/9a58d8e68252
-  - [v1,net-next,4/4] selftest: af_unix: Silence -Wall warning for scm_pid.c.
-    https://git.kernel.org/netdev/net-next/c/fd9faac372cc
+We also need to fully support three use cases: only MAC0 + PHY is used
+on board; only MAC1 + PHY is used on board; MAC0 + MAC1 + PHYs are
+all used.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+How can this be modeled in current mdio? It looks like a kind of demux,
+so my initial plan is implement a mdio-demux driver, which firstly
+switch mdio master then call the master's corresponding ops such as
+read, write, read_c45, write_c45 and so on. What do you think about
+this RFC? Any comment/suggestion is appreciated!
 
-
+thanks
