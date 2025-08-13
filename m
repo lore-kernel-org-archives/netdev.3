@@ -1,195 +1,160 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2068.outbound.protection.outlook.com [40.107.237.68])
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4712F747F
-	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 11:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755085761; cv=fail; b=DYnmHcDrmOh7cR5kuDSMK3YdbGRUOjczHpWjup5JClMoZY5Y72IrM2oyWlOXO6v7I51RO2rdDfO9tQnNkWKyiPNoJ/eNRblh09itT/8QsADwpKFN6OS9RYvIjEk7sPlcCVrzS8XSfyi/hNxTJEdYxB9hXigJhn5p1eyOBNSEFO0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755085761; c=relaxed/simple;
-	bh=cWmE4ik2t33vHqD9S4WvQKASAqoRb9G/Ki3Iz4qW7dI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pSpKr49JxrwzJTQJBQtfESk+GFwS8EL+Pqy1FJ0KiKYDBdTDCwRskhkHSDkZUE7TQvUzJvIP7an3m1BVXe/ST6NrAg6cRq65Gm4KthdTp2etKg98dtpZXs7VEsWuYLkI8iYzU3in3Okrhm9SZUOUxdvY1FEHE/lnjVHq6QTA7JQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Hwk+6iKa; arc=fail smtp.client-ip=40.107.237.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD642580FF
+	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 11:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755086099; cv=none; b=aLzO3hR6jmiIpDJr3oCTfj6lnWMNa7WFaUuJW9qKc8B2A8nZMWkJEenFav+OCWX5mnJGzQeWPj1WDcE563w4K0e1qhdtDsX78yQDPTiwqRlJTWKLx7AGCg+T1DgGahL3EEzhTtSH23HGOXRbni88pKI7IBH7ANP79NbIfG9Rf+0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755086099; c=relaxed/simple;
+	bh=if0Dt2vZT6bwHuja9mlMfqU0jQnUlY7EXGCTaR0pcDA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JLAasIiZ9CWO9w7z/ATM7+fN6Xdwur2lac6O2DJ2B5kFbOMRORNsWvVFggrWfLfm23nkl7tgUPD75nW/Jbl+A8dKx1HrS7tpFuUpDkh3vWrTyr9etxiINYQlBPkQGqOfIyl33qS4uMe+p5gf/GeENKLuyeNSRdzy5nwpsPhppTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=O+oR9Eov; arc=none smtp.client-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Hwk+6iKa"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r5Y7NuwrMFZ+C0fyol9ydCaSpmK2jwtw5F7Ir44HhE07+CJ6wmYPYMp0jnxpE4RM8b8HJ+kJbu7djcDxbFC7nqHGpRxXQ8/xa7x78ZxyM0rt5tNBi5TMzUqI/C2X7IvAt96bc1+vETSASenoeo0GguTFgNMW7yUQN0iLAYag5Pd1IhEt/4HCCDRNdc8VS+VrV/asPQdLLASJNccuVqyPrDv8lQLjsBXAeM5UwHq1u8MiEu8DZLMBi7kgvYPDC7+XR3VOBcGDdr/yhnNI1kSf2jYmxZUi9DvyXdEWe2/vg3A0kLLnllfhP/iUP51w15NAXh+1QeenoxlH7t1yaPwIQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Lc6cz6m1rQzZDLXVkH16DvFQ6ppiJv9A5Qke9khXO60=;
- b=e7BxFSgOg5GoYVgHKzx4JdVFC3sIuve/Gbdd5FQv15rtE+6Y5sW18lTMzpijpW8mtp/Dljqmjoi+bY82eMe2ux53RoyA8CupHkkjxfQ3TlglnCuY54I06+Lzhl+ae/0TdN4cUwKUkZqSVgQIx+iGL8EkClRR2LQSd1px4DjpOC4LnfKU1ib1cRUMt2U6bVaKxc2m2F1ez+McWOVKCRnO1icJ9DxJGHzyCU5nA+WBNc9w9BjiP9j8mfVv0DEzvA24jcpEGkyEWLQSXn7w3LdFml1caCRGiZuGtiDu/zxYXvChWU2TY0pwcTS52NEsXpFvqDEtJUzISuTiDCmps7zj1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lc6cz6m1rQzZDLXVkH16DvFQ6ppiJv9A5Qke9khXO60=;
- b=Hwk+6iKaoBOspbrGI+c1cd0VjEBQ74MmBhOhXJ16p8+pYplNRtrYRiKVcPKZDARlHrgoTdpdkDylIZyL8SdkRQklLQSV+rhArZEu+ERvtvxikAu660Rco0XcbbehcxaBhmvuLItUXk9iph+JJc2p4d0GuamE1S5d5+7ZTzrWknFMUUuWs3arU9acDHgvtWHXeAsrQWXIxbraVsBuvZiQDBPLy3o2nxajn/svaX5h+w/gO+kmzBI1a6LLqnbGix+J13in5cX1KIMiB06N9sZbzD//JD1o2LHhW28HwgzPw7zxKylYYD0BNrDzpD8SQYHYYPuPu9OwsI5A2Q023hC1fA==
-Received: from BLAP220CA0028.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:32c::33)
- by SJ0PR12MB8091.namprd12.prod.outlook.com (2603:10b6:a03:4d5::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Wed, 13 Aug
- 2025 11:49:12 +0000
-Received: from BN2PEPF0000449D.namprd02.prod.outlook.com
- (2603:10b6:208:32c:cafe::57) by BLAP220CA0028.outlook.office365.com
- (2603:10b6:208:32c::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9009.22 via Frontend Transport; Wed,
- 13 Aug 2025 11:49:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BN2PEPF0000449D.mail.protection.outlook.com (10.167.243.148) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9031.11 via Frontend Transport; Wed, 13 Aug 2025 11:49:12 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 13 Aug
- 2025 04:48:56 -0700
-Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 13 Aug
- 2025 04:48:50 -0700
-From: Petr Machata <petrm@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	<netdev@vger.kernel.org>
-CC: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, "Petr
- Machata" <petrm@nvidia.com>, Jiri Pirko <jiri@resnulli.us>,
-	<mlxsw@nvidia.com>
-Subject: [PATCH net 2/2] selftest: forwarding: router: Add a test case for IPv4 link-local source IP
-Date: Wed, 13 Aug 2025 13:47:09 +0200
-Message-ID: <78e652584c82d5faaa27984a9afef2d6066a7227.1755085477.git.petrm@nvidia.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1755085477.git.petrm@nvidia.com>
-References: <cover.1755085477.git.petrm@nvidia.com>
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="O+oR9Eov"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id BDF877A006F;
+	Wed, 13 Aug 2025 07:54:56 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Wed, 13 Aug 2025 07:54:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1755086096; x=1755172496; bh=+KPfS/q5tSRY/lEboNb8TzBgbAOaeJPEI1+
+	ld4w+yQc=; b=O+oR9Eovf0FPTW4O05tgDDlipywZ0yrSuS7BcGL9W6c1k9j3ou0
+	UWIrWLX5IQ+9gE0GeTX0atwziWiVocjSMkPTm8U18eDBfyMr/NEH33oKEx29CEYd
+	xQvxJ51rDYm5U9Qu63fbEkBkwFVDO9+opfGkphmiF6goejKFJdOVXXQ1lisAvjd/
+	FXAEBW+LgeSOHBrbNj0yydXSA/qBFX9Hj7HzzhEkcKfUVQm+OKfrjlxT5Dc+RCB2
+	1UsZYVmiK0UJJJE7eyiW4cmkUDlOgw31l9MKt7bEVoNoJBFU89biHkzqM2CZytBX
+	aPo8SYJXcCpYESD2S+wDI2Fpb0hEPR3zugw==
+X-ME-Sender: <xms:D32caBRFQnagUtJJHK5iOpzI9qNXs6Ykv8hlxV161fc3gigQHym5uQ>
+    <xme:D32caIU9-9XeLdtwx97MHC1bxsQXem2eIZERGfhxbs5wujV6ExWuE4pls91jv8vQQ
+    kv2ZO35Z2T5nZo>
+X-ME-Received: <xmr:D32caNQdinCo79j6h-RYcSrrLupyCEBJ7On-yqBfo9tX9zhef8TlDxLtIJuHmfow5WNeoacY3mfBfDFOmnUUsd72r1I9dg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufeekudegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertd
+    dttddvnecuhfhrohhmpefkughoucfutghhihhmmhgvlhcuoehiughoshgthhesihguohhs
+    tghhrdhorhhgqeenucggtffrrghtthgvrhhnpedvudefveekheeugeeftddvveefgfduie
+    efudeifefgleekheegleegjeejgeeghfenucevlhhushhtvghrufhiiigvpedtnecurfgr
+    rhgrmhepmhgrihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhgpdhnsggprh
+    gtphhtthhopeejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehhvghmihhnhhho
+    nhhgsehkhihlihhnohhsrdgtnhdprhgtphhtthhopegushgrhhgvrhhnsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghp
+    thhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhhnihihuhesgh
+    hoohhglhgvrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomh
+X-ME-Proxy: <xmx:D32caKn_v6BxpL9Zztoq_ZP2gNb0wJQsklYTuSyobGxvJmdl9aU4RA>
+    <xmx:D32caL4Qi4H4mZudUOVqvyy4uY3HTHXAX7TcgegaWAZEYf8zrBK8NQ>
+    <xmx:D32caIgwQ8BcfG19vgKCAwivYBFW3_NsMoRVZgDP5OF1_lJwaQOn8g>
+    <xmx:D32caAHV_nWAmmS5Tf3_4ioy6fA0_DJW5cZdOeoEOXsNCZilgotfgA>
+    <xmx:EH2caMhCibVmbYq-1uBJpWOBI2tRcOM_iEa_SS7F0ywkmIgbdIruQcpx>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 13 Aug 2025 07:54:55 -0400 (EDT)
+Date: Wed, 13 Aug 2025 14:54:52 +0300
+From: Ido Schimmel <idosch@idosch.org>
+To: heminhong <heminhong@kylinos.cn>
+Cc: dsahern@kernel.org, edumazet@google.com, kuba@kernel.org,
+	kuniyu@google.com, netdev@vger.kernel.org, pabeni@redhat.com
+Subject: Re: [PATCH net-next v2] ipv6: sr: validate HMAC algorithm ID in
+ seg6_genl_sethmac
+Message-ID: <aJx9DPI8dbRUtfGA@shredder>
+References: <aJtHOuAc3BM3Aa9l@shredder>
+ <20250813065737.112274-1-heminhong@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF0000449D:EE_|SJ0PR12MB8091:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3b938098-f8de-47e2-a9a3-08ddda5f6be4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FpXcIucVvD3Ch7P31OkqF7XbFugephXu3FwkR0++3eSNtNHU0NJvqS3KtjAS?=
- =?us-ascii?Q?oy8YcqcZg+LRyiMDdG86ylLiFxK2zLStRteqSHI3duFu6IzXFhhvQ6WOw/wv?=
- =?us-ascii?Q?SqgAfAqIFnN59Oh8/N2viFCKLOS3nJNvfOmpO+dUHguMWjCN2La2BTaxTf7r?=
- =?us-ascii?Q?V56Ci7Xrp73ZIYwEbpDFDN3GBfGU/X066aPovwa32mp+E7j0Db0JVo9LAA5r?=
- =?us-ascii?Q?8k6pWPmSXpMC2aTGnOmt2LCZh7HNUeISWB4UTTUChPd8ejZsiK/MPwL04xuw?=
- =?us-ascii?Q?EM4tmb7fgzA1joPY3qtWldkch2/WQasaxAqhdBKDZdhXHHOdbdpPpMvGHY1v?=
- =?us-ascii?Q?bot5y33Pfd9l9YNjmrDxFe8RCVyqq+rOPWPVg3X2ZS1gbBXK6zBoiw2ittcT?=
- =?us-ascii?Q?yilck+C8fgQYheKUApzOrhTDXCpIxqMc9Y4cbdLjleRPjByq3UJbPcYhkv0K?=
- =?us-ascii?Q?NWv9a6w6MmJBDDJK/6k5TdUAJT7zv9ChG49dWBYN8S4DPyF/5uzeRQMHz/qc?=
- =?us-ascii?Q?DOUNCrYvhBBHZXLr/l8HtRel/qDoiH22l6LxGY+8YW81cX4UJLlhdvZ5Dv+4?=
- =?us-ascii?Q?9umgkue6sI06oA7ykJnvHnVABl9isxMWBu+Na3IZ9zHBoOREdM0f9FYS2FJp?=
- =?us-ascii?Q?xfMi+TplEu8dHMGlZLoGPjnCl2UwdIliJJC3v9KpqmO5RIDGS1na6sC6fYXY?=
- =?us-ascii?Q?MIq48dJreMePoM2oOz9dntcaUuLhpqHBuhT4GQg5L7kqVdhKIHd5BS7yXcyZ?=
- =?us-ascii?Q?c/E6O5B3AHQOzvnU6M2yu5oRQiWK8K65A+9s0G8CCDA6kWxQfShpVzRdhBW0?=
- =?us-ascii?Q?Z60loeGgYKqZpRYhclqhEDU6bElaO5aA81iypblLiA0xvHzha1VyvSCmyZU/?=
- =?us-ascii?Q?BVa11SwhEm5fc+12lvJoR/6EbkKd+3ekd12HT6FAnEh5KEISEzLuV/D/1bdg?=
- =?us-ascii?Q?EpqPoQdiyDBhqZSKN1gtRFjbThCPqjysLU4U6lOaVW13Fv0QxZKzlHgSND85?=
- =?us-ascii?Q?f3VyCJueCCfugPGDnYbnR20ehPbYr/PBlb0Yfdb7/5vwvJI/Sy5QwHBjL5wK?=
- =?us-ascii?Q?Rpcr0c+9yj5e/BhyHQmIbWIqKytSe0SzYAVhIH/RDYuj7QvbgCgLpPAwiFzE?=
- =?us-ascii?Q?+dBkgaJjHzy153yIkIXqCWw2o36RW5RX74o5HE4mk9a4dCEy4S0Y1HoNZ7E4?=
- =?us-ascii?Q?304A7lnFw59IhdS99IvwrMjXioDHmPlEWk/kvVpHCTmmget57CNgIyr7t1YC?=
- =?us-ascii?Q?y/iCX/lrIfndNBtNEPc/pEL1wj3btJ84qXnVdFpvVA1axwTy5/PH6u0osE74?=
- =?us-ascii?Q?zYFf31LskGOJTeFrlvXSYEPkxEXboED6noXs6WUu2oDww2Y5gmpMsrkM6aSo?=
- =?us-ascii?Q?2WtBHtQ2YCqNs6FkjNtL9d8H7cKP?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 11:49:12.1029
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b938098-f8de-47e2-a9a3-08ddda5f6be4
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF0000449D.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8091
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250813065737.112274-1-heminhong@kylinos.cn>
 
-From: Ido Schimmel <idosch@nvidia.com>
+Given the Fixes tag, patch should be targeted at "net" and not
+"net-next".
 
-Add a test case which checks that packets with an IPv4 link-local source
-IP are forwarded and not dropped.
+On Wed, Aug 13, 2025 at 02:57:37PM +0800, heminhong wrote:
+> From: Minhong He <heminhong@kylinos.cn>
+> 
+> The seg6_genl_sethmac() directly uses the algorithm ID provided by the
+> userspace without verifying whether it is an HMAC algorithm supported
+> by the system.
+> If an unsupported HMAC algorithm ID is configured, packets using SRv6 HMAC
+> will be dropped during encapsulation or decapsulation.
+> 
+> Fixes: 4f4853dc1c9c ("ipv6: sr: implement API to control SR HMAC structure")
+> 
+> Signed-off-by: Minhong He <heminhong@kylinos.cn>
+> ---
+>  include/net/seg6_hmac.h | 1 +
+>  net/ipv6/seg6.c         | 5 +++++
+>  net/ipv6/seg6_hmac.c    | 2 +-
+>  3 files changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/net/seg6_hmac.h b/include/net/seg6_hmac.h
+> index 24f733b3e3fe..c34e86c99de3 100644
+> --- a/include/net/seg6_hmac.h
+> +++ b/include/net/seg6_hmac.h
+> @@ -49,6 +49,7 @@ extern int seg6_hmac_info_del(struct net *net, u32 key);
+>  extern int seg6_push_hmac(struct net *net, struct in6_addr *saddr,
+>  			  struct ipv6_sr_hdr *srh);
+>  extern bool seg6_hmac_validate_skb(struct sk_buff *skb);
+> +extern struct seg6_hmac_algo *__hmac_get_algo(u8 alg_id);
 
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
----
- .../selftests/net/forwarding/router.sh        | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
+Did you see my comment on v1 about fixing it entirely in seg6_hmac.c ?
 
-diff --git a/tools/testing/selftests/net/forwarding/router.sh b/tools/testing/selftests/net/forwarding/router.sh
-index b98ea9449b8b..95ded264328f 100755
---- a/tools/testing/selftests/net/forwarding/router.sh
-+++ b/tools/testing/selftests/net/forwarding/router.sh
-@@ -18,6 +18,8 @@
- # | 2001:db8:1::1/64                             2001:db8:2::1/64   |
- # |                                                                 |
- # +-----------------------------------------------------------------+
-+#
-+#shellcheck disable=SC2034 # SC doesn't see our uses of global variables
- 
- ALL_TESTS="
- 	ping_ipv4
-@@ -27,6 +29,7 @@ ALL_TESTS="
- 	ipv4_sip_equal_dip
- 	ipv6_sip_equal_dip
- 	ipv4_dip_link_local
-+	ipv4_sip_link_local
- "
- 
- NUM_NETIFS=4
-@@ -330,6 +333,26 @@ ipv4_dip_link_local()
- 	tc filter del dev $rp2 egress protocol ip pref 1 handle 101 flower
- }
- 
-+ipv4_sip_link_local()
-+{
-+	local sip=169.254.1.1
-+
-+	RET=0
-+
-+	tc filter add dev "$rp2" egress protocol ip pref 1 handle 101 \
-+		flower src_ip "$sip" action pass
-+
-+	$MZ "$h1" -t udp "sp=54321,dp=12345" -c 5 -d 1msec -b "$rp1mac" \
-+		-A "$sip" -B 198.51.100.2 -q
-+
-+	tc_check_packets "dev $rp2 egress" 101 5
-+	check_err $? "Packets were dropped"
-+
-+	log_test "IPv4 source IP is link-local"
-+
-+	tc filter del dev "$rp2" egress protocol ip pref 1 handle 101 flower
-+}
-+
- trap cleanup EXIT
- 
- setup_prepare
--- 
-2.49.0
+If you want to perform the check in seg6_genl_sethmac(), then I would
+instead expose a function like 'bool seg6_hmac_algo_is_valid(u8 alg_id)'
+which internally calls __hmac_get_algo() rather than exposing
+__hmac_get_algo().
 
+>  #ifdef CONFIG_IPV6_SEG6_HMAC
+>  extern int seg6_hmac_init(void);
+>  extern void seg6_hmac_exit(void);
+> diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+> index 180da19c148c..33c1481ca50a 100644
+> --- a/net/ipv6/seg6.c
+> +++ b/net/ipv6/seg6.c
+> @@ -152,6 +152,7 @@ static int seg6_genl_sethmac(struct sk_buff *skb, struct genl_info *info)
+>  	struct net *net = genl_info_net(info);
+>  	struct seg6_pernet_data *sdata;
+>  	struct seg6_hmac_info *hinfo;
+> +	struct seg6_hmac_algo *algo;
+>  	u32 hmackeyid;
+>  	char *secret;
+>  	int err = 0;
+> @@ -175,6 +176,10 @@ static int seg6_genl_sethmac(struct sk_buff *skb, struct genl_info *info)
+>  	if (slen > SEG6_HMAC_SECRET_LEN)
+>  		return -EINVAL;
+>  
+> +	algo = __hmac_get_algo(algid);
+> +	if (!algo)
+> +		return -EINVAL;
+> +
+>  	mutex_lock(&sdata->lock);
+>  	hinfo = seg6_hmac_info_lookup(net, hmackeyid);
+>  
+> diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+> index f78ecb6ad838..1c4858195613 100644
+> --- a/net/ipv6/seg6_hmac.c
+> +++ b/net/ipv6/seg6_hmac.c
+> @@ -107,7 +107,7 @@ static struct sr6_tlv_hmac *seg6_get_tlv_hmac(struct ipv6_sr_hdr *srh)
+>  	return tlv;
+>  }
+>  
+> -static struct seg6_hmac_algo *__hmac_get_algo(u8 alg_id)
+> +struct seg6_hmac_algo *__hmac_get_algo(u8 alg_id)
+>  {
+>  	struct seg6_hmac_algo *algo;
+>  	int i, alg_count;
+> -- 
+> 2.25.1
+> 
