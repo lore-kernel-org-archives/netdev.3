@@ -1,99 +1,157 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85012D3A71;
-	Wed, 13 Aug 2025 06:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325B32D373E
+	for <netdev@vger.kernel.org>; Wed, 13 Aug 2025 06:44:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755067493; cv=none; b=AaDw2ujB1wXb+rgu/ujxw+O2IKaVtDd9qxRRWM7cUhHCK+2Wd6JYHWekIA09OUGw7lx7JPOHvuz8+jUoqsT1uGOz7A74HSioFWwtCukkKV0Xjf4IyTbGJG59d3ESc4omTT5AZ/NTgEy5lefnXhnPMFnzIgVp3jMrL1xLOdxwoOE=
+	t=1755067509; cv=none; b=bMRjmc6++TJ6S8IufK/Vv+gf+/8Lj+nA3tYtUoee+QCgQcR2xU60fvn7ziV/rN1BDp3qGJCWSO3WuL3CeKpKR7HhI32PZ4YXqJ7m7YlwGoDFnifDMwGxoZqnhlRngtt0YTHb6kMs8dDFmtSEXIBBoAd7cu9fFzUTu7KEB89fu9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755067493; c=relaxed/simple;
-	bh=khe1kyOLTLqHanURZ0QPZ85ApkOL61hXCPyL1DcZ5Nk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oE+DsdCcVGd88NesBOHZFANkanHpf9obnprazNCs+3Uey8Uw41BbHFWkFxAQHKvlng8SN80+3Y1NPPR++SlgA+DBeZfewdPcpJcAeJbhBPW33Zn1fUw8Pc+QhlBrL4N8Z9xy/8xHW1OSLi24coHbF/tb7DHMVC/q9P9Hf/FEcy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=jVr1FhIL; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="jVr1FhIL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1755067492; x=1786603492;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=khe1kyOLTLqHanURZ0QPZ85ApkOL61hXCPyL1DcZ5Nk=;
-  b=jVr1FhILeM9urw3iyglXq+4oMLAWKpo6keYnPfDgakUUYfUVFgcze2tF
-   7fTtL75aeDxhBJ13KD36CG5g10SOWp+evWkJ0eVQVCYZP1kb6AotJrLdu
-   qi1Cbz3XMoosRV7+KTwtmDoBK/Kw6sq88VyeGq9yzuzypaVkzlLfQkYTg
-   NaCneeB/c/dFLEzz/2olvwL4Qms8B2Cqqjji7exGohziMKgffRi1Jf6iH
-   Sb34bOpKVPJv+d9yq9uDELcIgRmxgLhdBtNbMdCCPiCweuTRzz6+WiiDL
-   Wr6v8cdVUR4lzhu0was1YJFUkHEsdYnN7KggsekON8jgHVI141tyvGydG
-   Q==;
-X-CSE-ConnectionGUID: 6UynvdLWQb6DdTNChSAD/g==
-X-CSE-MsgGUID: OhtCcq2dR9Gm78YuH+qd7Q==
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
-   d="scan'208";a="276526833"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 12 Aug 2025 23:44:51 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Tue, 12 Aug 2025 23:44:49 -0700
-Received: from localhost (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
- Transport; Tue, 12 Aug 2025 23:44:49 -0700
-Date: Wed, 13 Aug 2025 08:41:33 +0200
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: Paolo Abeni <pabeni@redhat.com>
-CC: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<richardcochran@gmail.com>, <viro@zeniv.linux.org.uk>, <atenart@kernel.org>,
-	<quentin.schulz@bootlin.com>, <olteanv@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v2] phy: mscc: Fix timestamping for vsc8584
-Message-ID: <20250813064133.ms6juf27oc7ykvpk@DEN-DL-M31836.microchip.com>
-References: <20250806054605.3230782-1-horatiu.vultur@microchip.com>
- <a45afc9e-f508-4f87-9462-112f3439f110@redhat.com>
+	s=arc-20240116; t=1755067509; c=relaxed/simple;
+	bh=X1iAxCzkC0UTn04Af07aTWJbu6jdxrV+7YWDNaiy9Eo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y/WiMWtLGEdq4bm22Vk1DynOyhLGkDzGpDd2w/Z20WkGQbQ59/RzNsQZUDJiL6vtt25PPg1c1rgBDCvArixINlcIFIOuEmofx6fstKdE0fI7bGecLsTIl/kgEU+lAiMgN9QRGxEiKXSRCrRV0pTKU7z57pgvPuJ1QMMuKbKzoTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=54.207.19.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
+X-QQ-mid: esmtpsz11t1755067483t4b22c6e6
+X-QQ-Originating-IP: atNYv484Sc0LnNQn6B0BdZHBN2Wh7P8+LL0ZD0kuURs=
+Received: from localhost ( [203.174.112.180])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 13 Aug 2025 14:44:41 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 1883357001402126137
+Date: Wed, 13 Aug 2025 14:44:41 +0800
+From: Yibo Dong <dong100@mucse.com>
+To: "Anwar, Md Danish" <a0501179@ti.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	corbet@lwn.net, gur.stavi@huawei.com, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, danishanwar@ti.com, lee@trager.us,
+	gongfan1@huawei.com, lorenzo@kernel.org, geert+renesas@glider.be,
+	Parthiban.Veerasooran@microchip.com, lukas.bulwahn@redhat.com,
+	alexanderduyck@fb.com, richardcochran@gmail.com,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] net: rnpgbe: Add build support for rnpgbe
+Message-ID: <F9D5358C994A229C+20250813064441.GB944516@nic-Precision-5820-Tower>
+References: <20250812093937.882045-1-dong100@mucse.com>
+ <20250812093937.882045-2-dong100@mucse.com>
+ <5528c38b-0405-4d3b-924a-2bed769f314d@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a45afc9e-f508-4f87-9462-112f3439f110@redhat.com>
+In-Reply-To: <5528c38b-0405-4d3b-924a-2bed769f314d@ti.com>
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:mucse.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: MRRqyjT9q6wlvkHMKsiMxZRv0YHt52pAGrSwSDAGIHLrfud88iPSvX3a
+	3D+mg3WjQv7mowEVOPw0iRQjumY+l3CJnrVZAQ/yCKt8ZFhgjJ1SnX7klga6sk6fi1S7ofn
+	5QnDVjB6dMayCmxYBHuUYKggrr7Lez6H4a+bA3oxBMMuW/BGJ2lbP9oTTXQ4B3V/uCo0f3C
+	ZQNvgHwOWGst8uBqrhaJVfFeHYk9gHMKF8s/n0M5nHcLBcR7d1DxW15oSqVzpGIMmwlvVH/
+	EFt3aFADlBRTstTcggJoDgCNqErg0LCQMc+t2iOV2DjtylleZa3HcK544m4IzIXuWdvSmqn
+	H3RFB3vynuN2uHCKPfrSly90yRQpLFbFVsfpmWtt3fGbsPTe0iTb6IkRe2nJsghtvaWMYem
+	1Mk+S2GJZvzkURUkm17UK+b5/mGRNaeTFEAxyj37Z3lCQpRaKNRDUCmmKomFai3on8TNt8I
+	/G9/PlkrX1utUZ2O6syKMCakNyq6MMgNvveVKEJcyCu4Xqxsf1J364en16TcjMuwZxNQo27
+	BqJw1x+rZeRQaJ5uVHLf+qQDnuXzV9k4D5su39qx+qFRHWqrE8ehUFSWY8KMD8/w0dEkUOS
+	4a4SCQOyzeN9bD04X2dFPAkLHazVOX4GASLcjK3GtjtZ1ASQ5TrHG5iGtP3KeW8txxhsgAC
+	eo0eaZ4vh2ysJoE/++ZhjtPq9FjG3TdE681ZxJ8EMXvQ6ldUX7mbYBH3DvPObL4B/nAYaqt
+	HlQzcQ8uZbWD+64msR8q0di5v04w8rEPZgk8G5GUWvGMDFWMjDbDi2TT3UtIXm3bMw9pAMG
+	oCymKqsVKeMd/VdhJGMYqS2xd2xCIx/ENvLsM84Ud1Rynn4/3uSDpIMaBTCWmmAIxUw4VOS
+	mfYR+uOIHWxnPs9bhv7kKAIV5+nYvJUoCA9b57eEGL0PnzZG1tzA1cKnUhP8UZ7WwYdBdTi
+	epTEVtuwVy3svuu3RZ9dnCpIo7bYy4MfhyAtrWr1+qcQgMQUp6/Aj+ZWIPHo/FbV0bcqMpV
+	SLaG9maw==
+X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
+X-QQ-RECHKSPAM: 0
 
-The 08/12/2025 11:55, Paolo Abeni wrote:
+On Tue, Aug 12, 2025 at 09:48:07PM +0530, Anwar, Md Danish wrote:
+> On 8/12/2025 3:09 PM, Dong Yibo wrote:
+> > Add build options and doc for mucse.
+> > Initialize pci device access for MUCSE devices.
+> > 
+> > Signed-off-by: Dong Yibo <dong100@mucse.com>
+> > ---
+> >  .../device_drivers/ethernet/index.rst         |   1 +
+> >  .../device_drivers/ethernet/mucse/rnpgbe.rst  |  21 +++
+> >  MAINTAINERS                                   |   8 +
+> >  drivers/net/ethernet/Kconfig                  |   1 +
+> >  drivers/net/ethernet/Makefile                 |   1 +
+> >  drivers/net/ethernet/mucse/Kconfig            |  34 ++++
+> >  drivers/net/ethernet/mucse/Makefile           |   7 +
+> >  drivers/net/ethernet/mucse/rnpgbe/Makefile    |   8 +
+> >  drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  25 +++
+> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   | 161 ++++++++++++++++++
+> >  10 files changed, 267 insertions(+)
+> >  create mode 100644 Documentation/networking/device_drivers/ethernet/mucse/rnpgbe.rst
+> >  create mode 100644 drivers/net/ethernet/mucse/Kconfig
+> >  create mode 100644 drivers/net/ethernet/mucse/Makefile
+> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/Makefile
+> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> 
+> [ ... ]
+> 
+> > + **/
+> > +static int __init rnpgbe_init_module(void)
+> > +{
+> > +	int ret;
+> > +
+> > +	ret = pci_register_driver(&rnpgbe_driver);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	return 0;
+> > +}
+> 
+> Unnecessary code - can be simplified to just `return
+> pci_register_driver(&rnpgbe_driver);`
+> 
 
-Hi Paolo,
+Yes, but if I add some new codes which need some free after
+pci_register_driver failed, the new patch will be like this:
 
-> 
-> On 8/6/25 7:46 AM, Horatiu Vultur wrote:
-> > @@ -1567,6 +1592,7 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
-> >
-> >       mutex_init(&vsc8531->phc_lock);
-> >       mutex_init(&vsc8531->ts_lock);
-> > +     skb_queue_head_init(&vsc8531->rx_skbs_list);
-> 
-> The aux work is cancelled by ptp_clock_unregister(), meaning the
-> `rx_skbs_list` could be left untouched if the unreg happens while the
-> work is scheduled but not running yet, casing memory leaks.
-> 
-> It's not obvious to me where/how ptp_clock_unregister() is called, as
-> AFAICS the vsc85xxx phy driver lacks the 'remove' op. In any case I
-> think you need to explicitly flushing the rx_skbs_list list on removal.
+-return pci_register_driver(&rnpgbe_driver);
++int ret:
++wq = create_singlethread_workqueue(rnpgbe_driver_name);
++ret = pci_register_driver(&rnpgbe_driver);
++if (ret) {
++	destroy_workqueue(wq);
++	return ret;
++}
++return 0;
 
-Yes, I will flush the rx_skbs_list on removal.
-I will look also to see where/how ptp_clock_unregister() is called, but
-this will be in a different patch if it is an issue.
+Is this ok? Maybe not good to delete code for adding new feature?
+This is what Andrew suggested not to do.
 
+> > +
+> > +module_init(rnpgbe_init_module);
+> > +
+> > +/**
+> > + * rnpgbe_exit_module - Driver remove routine
+> > + *
+> > + * rnpgbe_exit_module is called when driver is removed
+> > + **/
+> > +static void __exit rnpgbe_exit_module(void)
+> > +{
+> > +	pci_unregister_driver(&rnpgbe_driver);
+> > +}
+> > +
+> > +module_exit(rnpgbe_exit_module);
+> > +
+> > +MODULE_DEVICE_TABLE(pci, rnpgbe_pci_tbl);
+> > +MODULE_AUTHOR("Mucse Corporation, <techsupport@mucse.com>");
+> > +MODULE_DESCRIPTION("Mucse(R) 1 Gigabit PCI Express Network Driver");
+> > +MODULE_LICENSE("GPL");
 > 
-> Thanks,
+> -- 
+> Thanks and Regards,
+> Md Danish Anwar
 > 
-> Paolo
 > 
 
--- 
-/Horatiu
+Thanks for your feedback.
