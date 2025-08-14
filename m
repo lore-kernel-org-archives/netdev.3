@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005E51459EA;
-	Thu, 14 Aug 2025 00:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF02019CCFC
+	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 00:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755132005; cv=none; b=Fg2t5V9HuSKZno5dKOvihlqg/KTn44Zh7y9ln0hVzLoL21cuNwpzGLU/rs0AcFu0pRTHolceYJBDC4hU5Jf7d2jk5cnClP5ENljpvjIQytNWhaI3hKZf/m6q7SkzbbNDd7JKrPMHIWpWjL3Tfnd5+DKRrPwg3b2lQeCIntN875w=
+	t=1755132007; cv=none; b=f6me+J+/8SNXGIcoiSF/w7bu3OAw6mnfvzWiBSRd+J075zKn3Q/9BclRoMI478OPYv6bqhPoaGSr1Y+OhG0VhNX3hZE70GySnjjl+gJlt0cLKz3nRU2yH9hNw57u2Uscxsed1S9080BF8nGzOSwk/YSJB/d8siZ8H2bNM1dW5V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755132005; c=relaxed/simple;
-	bh=nLMkPPo4ZFDBU7rUwHDIQlXdUyxgc9cY3+lk5Y8ZfB8=;
+	s=arc-20240116; t=1755132007; c=relaxed/simple;
+	bh=qM0n+N8jEXc+nQ1WygjzVeXp/eNRoN+6kzLRrOF6qDw=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Pd5Zdk/cKyyxTlpxeFzTJ2v3M0o6+hK5vd/d1NMpNxkW56cfPsxKsBng/UAlpQ+sLs6SmE9zxUKq3saENwgB1zoz8ImKoi9zz9Pcov8TY4A+BNRSWC6KwO9EBvbl0OYcPZjc9JL0E3V1NA5BKGWOPQm0L+QqlrGtmne4eCyzihY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FBYScG0I; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=HDgOXqnWWlWuGrD3f5zKbAoinjj/WJIXRwuzAT0nFpsVouSGQykSRUNpiYntdmWfziVNYyxRhCaPCc4kh3qMdCTU6BkrZa5WnOnNgUKV51aVhJI1cV1hYwBPprBbpl7shO4Ec3wxb9gLCmtJVkZmRsza11Dq7k+eiMhMoextCr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b6TGb96n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FBYScG0I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4920C4CEF6;
-	Thu, 14 Aug 2025 00:40:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b6TGb96n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D39C4CEF6;
+	Thu, 14 Aug 2025 00:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755132004;
-	bh=nLMkPPo4ZFDBU7rUwHDIQlXdUyxgc9cY3+lk5Y8ZfB8=;
+	s=k20201202; t=1755132006;
+	bh=qM0n+N8jEXc+nQ1WygjzVeXp/eNRoN+6kzLRrOF6qDw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=FBYScG0IxxdO6hUZj8JoJ9bh1ykysA4pn8hk7W/wU8YLeIfDeMwZOrD7m+GEU1VWe
-	 Gr7YAx0NroRWBmdurGEmFmpI7CzzbSR/mhoOJhq57/9EIl+OT0b7ZqKQF10Sm9BgDK
-	 Qo6bthnlkIMWXl+gk+aR1vmQqhDnC9yy+ixkk8Sn1EHPNMfIu7aJy99VogIt6sQ+AI
-	 7zTextaqih+gwSVT7pLGgzWtceKJvkPeHPoflV70AuM8007eGgsUTk3/1+B9PlnWCP
-	 pdQR4YAOgnBUmLCPwbLJ3fEPcggKyt7UfI4GwLureHW3gAYxiczytc3TOf55KIARre
-	 YKpFdslPnsCgQ==
+	b=b6TGb96nukoJCw6UqbmYniSLM+WcYPd4ucMJY8ET0Aywc+1wb+qN8esFINCwwkAJp
+	 dZrTzx/AySgX5tHUp9sReMYkP9oymL4mc3A2xG6Hhic0yNzwl9dpV9pM16wx2dlg4K
+	 4m7Fj/y+xtwivwEdTMhGCmIRMKMYnyrhD/+sgZYxINO0IBuYSwa9sF1osIezcoZJ9k
+	 mtNHHk0Q4Aj03AM8zyDKKt/c41NW777E/p6sSZGBQriZ8V/NT0knIymETV4SJcQPDK
+	 zn9ubig9bQz5o6RYSi2J0JyrOgaqg5xWUSqNZWoaeO2tbJAYayAbK6BQFYYiKmzdLS
+	 fFyuSgi4/RXVw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD8C39D0C37;
-	Thu, 14 Aug 2025 00:40:17 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33AD739D0C37;
+	Thu, 14 Aug 2025 00:40:19 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,34 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH RESEND net-next v2] net: enetc: Remove error print for
- devm_add_action_or_reset()
+Subject: Re: [PATCH] net: libwx: cleanup VF register macros
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <175513201624.3832372.12289248453495855139.git-patchwork-notify@kernel.org>
-Date: Thu, 14 Aug 2025 00:40:16 +0000
-References: <pnd1ppghh4p.a.out@axis.com>
-In-Reply-To: <pnd1ppghh4p.a.out@axis.com>
-To: Waqar Hameed <waqar.hameed@axis.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
- xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, kernel@axis.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <175513201774.3832372.10244056805436030828.git-patchwork-notify@kernel.org>
+Date: Thu, 14 Aug 2025 00:40:17 +0000
+References: <778899EE1D862EC2+20250812093725.58821-1-jiawenwu@trustnetic.com>
+In-Reply-To: <778899EE1D862EC2+20250812093725.58821-1-jiawenwu@trustnetic.com>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mengyuanlou@net-swift.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 12 Aug 2025 14:13:58 +0200 you wrote:
-> When `devm_add_action_or_reset()` fails, it is due to a failed memory
-> allocation and will thus return `-ENOMEM`. `dev_err_probe()` doesn't do
-> anything when error is `-ENOMEM`. Therefore, remove the useless call to
-> `dev_err_probe()` when `devm_add_action_or_reset()` fails, and just
-> return the value instead.
+On Tue, 12 Aug 2025 17:37:25 +0800 you wrote:
+> Adjust the order of VF regitser macros, make it elegant.
 > 
-> Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-> 
-> [...]
+> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> ---
+>  drivers/net/ethernet/wangxun/libwx/wx_vf.h | 72 +++++++++++-----------
+>  1 file changed, 35 insertions(+), 37 deletions(-)
 
 Here is the summary with links:
-  - [RESEND,net-next,v2] net: enetc: Remove error print for devm_add_action_or_reset()
-    https://git.kernel.org/netdev/net-next/c/3051f49b0e03
+  - net: libwx: cleanup VF register macros
+    https://git.kernel.org/netdev/net-next/c/30f7d4099fb6
 
 You are awesome, thank you!
 -- 
