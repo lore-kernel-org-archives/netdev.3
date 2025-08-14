@@ -1,265 +1,116 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEC22F83BE
-	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 10:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176B1303CBF;
+	Thu, 14 Aug 2025 10:16:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755165608; cv=none; b=cWrq4z1WDkBwCvRuFFGI250pc/HwDI5HM7pHVaW8r0u875cteL7PEzLgBXVOdjxKcARwvSMZDzjm65uhC4PWzW4x2VAYxllQefAemONW+DSg9xq7+qanzHtXt7PIFt/wcpnDTuDIB4EXFZ9kvwKY6cEeZolt+2j78dzBiRPub5I=
+	t=1755166577; cv=none; b=ezxRGcEXZWL0IXknnanky8Jxb6HJTYH2LRPnn2SAU0NVCE3ZzD9EreQopGXfN2pkunK1WiUoVLt+lTOsXase1JxGYhp7Pp3BKm9H2/cnS4zWHjDjwEWqJ8eAnq/6UgdnbyeJzhw8wmA3Fli/E62qKS6hCmiAVA+VxypDRw2iL10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755165608; c=relaxed/simple;
-	bh=6Q0K1QIZOOFau5ZctzVpe7zO1m+/DOuCPLw8+uCeHKs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=A6zZ0OmaH8/gOZLzVKwl7wjTrk+JK4KHq+x02XeNyuU73gU7BV9XD1iPdf585MjoTr7b1ThcvUVfyWIbjEmsyIhQBOh+EQ7ofPkpJ2Uk4PlAkSOG6N14feAgyr/iR0qpjqpfnvAv8LoYyScyYLJ+5cQomfEhjvGGHfiOz4x99s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Rfofjw1H; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Rfofjw1H"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-afcb731ca8eso123186766b.0
-        for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 03:00:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1755165605; x=1755770405; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xZ04Y6i2iJ0+tBid0GHRu2U+46Amz8TcC4hTojaCtjc=;
-        b=Rfofjw1H/YIPvjYZj7lT4C3FQ7VTOHKyGoxwQ5e1akdHz1iYLELQ1AF5jY++TO8rEy
-         x2m5tSFuzdapQW9yDlUvMl92GjNgkitgmLTFWSZ5K7/muDg+LdTlKbg7+X02twKAuXtE
-         TIGCpq+DfluUfQz2ZcQugy0RgwYQdLE0Lcnrk2R3BIKvbcKE+AR0jWhyiVxitZapap19
-         /Vi1ToFlPFNjQZq3FwPrG68kD3PEKLkyWXWgTHiRJzYGi/Jl3oFrtRf5tbFljgQ3HvGx
-         pWF3ZUCADFFicF8UPa+1+1MmNGL2g3CX1OuuglSoS/eGJGn+kr7j7q8Q4pLX2mBfE+ry
-         YsZw==
+	s=arc-20240116; t=1755166577; c=relaxed/simple;
+	bh=42FK0BY+1s6jcXyb8t3Udhj7/VLzDaliWnV2XjeBMgw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RILP3V0eJebCQjr1uO3ymgND9ubFgXhouY1gIapOU6avp2F0K4vx8ttY/P2mUvM/8XI3nCgfsAYTsDrXZevhrUKeOtm38Mre84aL7CHxB42/uskSi+czKb2V0KYQEtpcyQQy6ZcBbkhuCR9zaugfUSGHoeJyU9SVVOuoZGWAIsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-afcb79db329so101127666b.2;
+        Thu, 14 Aug 2025 03:16:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755165605; x=1755770405;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xZ04Y6i2iJ0+tBid0GHRu2U+46Amz8TcC4hTojaCtjc=;
-        b=ak3KyPbEyCrEtNDBuHnmmthxuS6H8zvNb+6cYtkVUlkMwV20vsotA9iic72bOibVg9
-         /TjI3m3jVC17T8zroCvA1JWia4/CmPS2oWdcY9FgwxeFsXZIOoUebo7CUv7zXp13oXg8
-         DQRVU97Rs5+/bpucmJi62w/z1y11U62GmATyctwY/1hKvumsEn0aLFC+smQwBGjIqeag
-         nTi8F2GHIiL3Et+OV2iJ/7iZAHVJfjfHsfexL949Gtp015gPojLpRXRJzl5FKH5SXJvh
-         un2t3phttPMbrBx09VFU7LQcnpr6VeASgmNOHXBmkOQKYJTQFwJFDJjXvjizDfuhafdb
-         Leig==
-X-Forwarded-Encrypted: i=1; AJvYcCWaw2BkV8GotFrhYuCXgmdP43ssm/GjBFjc0RornKDdfpUOHqGVNjCKuNN219dXXG+2fwuO1a4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YylYBBr3xEahgKeDd+T28wMiv1P1c4voXQJQZbzWUuTavdLATj9
-	TeCsj8z7waI8xwqA1/KUdT+FFczNXSAlFbbOz8TmzdWJYicHzZ9P12rUTy95Qc3xJK4=
-X-Gm-Gg: ASbGncs+LgY/bBMb7mczrDSrNU2tx13aYB9xvNZv1WagbiUprHTTsBamnYXeOcACJYb
-	pREWZjJpSYym9+9raCd1EqrOCbKfmSyci4QI1vckRfDepaLCbKxxc3rPxRN3oxgYXnYgzj7n+up
-	ch5PLsXGWKbvjO/OR2K++wTwX/v5BSr2qIv/BK/6ROjVIrnQc/twctVtxf0qjgUFGUsK1aRJfIL
-	6WXRjvX/rHolqAFYrcU5W/OSQrBzCYZ+pVNQHOMsgpPZrfEFAfE6sQzLFHibn/10wFJW1ErUjB3
-	fkCGW3SZ5rWyR/5Ln18v3O4BS34PZtLuLul3t6iCqjGmfTQFahBbtxoZs74TwiopxaeT84UwZGa
-	bVHFg992kJM+pYRY=
-X-Google-Smtp-Source: AGHT+IGJYs39Lx1DfMVweyVUICM0ojnvYxtOHEqMlMDosKbzmlDjObPVtDfYY/qwD/iPLbdOZZHBWQ==
-X-Received: by 2002:a17:907:3f25:b0:ae3:7022:b210 with SMTP id a640c23a62f3a-afcbe02bd50mr200184666b.12.1755165601075;
-        Thu, 14 Aug 2025 03:00:01 -0700 (PDT)
-Received: from cloudflare.com ([2a09:bac5:5063:2432::39b:f6])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a21c0f4sm2545627866b.106.2025.08.14.03.00.00
+        d=1e100.net; s=20230601; t=1755166574; x=1755771374;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k6Z5ubfLyVZZXTdXNGBFqlTLAPufFl9Lto7OQhyz+W4=;
+        b=w9tsV2esDNAugSy5bmkQeJWLG5nFVUhmU2jxnIQ1eL2orrPf6St4l1Tm0ew36BDVa2
+         UTvOxx39k8fWFWkJCSAfwW/amrrByPV2dxofBvvLLv6aFIRHelvkY5jqI5nkQ0tWTnbf
+         LN7NHMHoJCKsi+rx3Cry2euT2vFEylMyQfWf7R9SV6Ph1pORnXdwFmRNmAMl2atElh7p
+         jwTyEvwTWXboF8VaM7qv4w0u4ANS6uuzC9o2KcA2D4VGoSfwyYAh6YJDZhOHENBN/oop
+         yNivDNyjHO4Ft4ajuH2FO6KY+NbFsnZbWxaF0X9vl8J21rM/tuAyRPAZ+mAuKo7Cqytt
+         4+/A==
+X-Forwarded-Encrypted: i=1; AJvYcCU3Yh5sUGYzC5L8qJjNY+YwezlLnxWXPGhFMi8EfLPTbjF1wZLjw6hlS1iD5R2G0DaWyNzeKp4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLEOOrnyf7vi2UGBzxurd4nov2oek2mw1sclxkSA0+cDkuwHvU
+	r/L5sYoqvAAJyZXmAnkb0xVsoMcGDxAlX0RG3mOapN1WVTYoEGX0LBLv
+X-Gm-Gg: ASbGnctUTAZp70lIaPFNm49VJH2pdFL6k7r3gTC7Tw8VNECWDUE2epB/VI12t5HdJMm
+	U+NL3W73sqlI4MYFEfbvAufsckoBjXKTy/R4tAW2mF5Do0NCkBorxTTsQz4+o917gAKPZMepAJd
+	JYbgOoDyHKvbD8w5tVj2ETWswxnruTB19z8dSPsJlje+HHBOczUsj9FQODlgb1y9+1aN9o4YGBg
+	7TnTdMTuC6rC3ZRhYKWeNZSoqnuMJvZyYyQEtQ9/OUwQFToVRemdWxvMMnT/+p3BDiu1EeIfW3N
+	yIMaNUCshJ0hZwhuBXYuOyiV2+2uvAngJGzYkdjaaXgG9pjMbU0YiFLKvypYStMoutrYXMsx4rD
+	oYmH/+N14FGomufRg4dH1GUg6
+X-Google-Smtp-Source: AGHT+IEFBcNgo2o77arxWHp0s1z24PzlB6hstzNDpW+7TPhuotEJLBhfxSzPkd2T1TWQqZpWMWEYuQ==
+X-Received: by 2002:a17:906:115a:b0:af9:bdfd:c60c with SMTP id a640c23a62f3a-afcb996b21dmr182569966b.47.1755166574042;
+        Thu, 14 Aug 2025 03:16:14 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:74::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a23fec4sm2562607566b.121.2025.08.14.03.16.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 03:00:00 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Thu, 14 Aug 2025 11:59:34 +0200
-Subject: [PATCH bpf-next v7 8/9] selftests/bpf: Cover read/write to skb
- metadata at an offset
+        Thu, 14 Aug 2025 03:16:13 -0700 (PDT)
+Date: Thu, 14 Aug 2025 03:16:11 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Mike Galbraith <efault@gmx.de>, paulmck@kernel.org, 
+	asml.silence@gmail.com, kuba@kernel.org
+Cc: LKML <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org, 
+	boqun.feng@gmail.com
+Subject: Re: netconsole:  HARDIRQ-safe -> HARDIRQ-unsafe lock order warning
+Message-ID: <oth5t27z6acp7qxut7u45ekyil7djirg2ny3bnsvnzeqasavxb@nhwdxahvcosh>
+References: <fb38cfe5153fd67f540e6e8aff814c60b7129480.camel@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250814-skb-metadata-thru-dynptr-v7-8-8a39e636e0fb@cloudflare.com>
-References: <20250814-skb-metadata-thru-dynptr-v7-0-8a39e636e0fb@cloudflare.com>
-In-Reply-To: <20250814-skb-metadata-thru-dynptr-v7-0-8a39e636e0fb@cloudflare.com>
-To: bpf@vger.kernel.org
-Cc: Alexei Starovoitov <ast@kernel.org>, 
- Andrii Nakryiko <andrii@kernel.org>, Arthur Fabre <arthur@arthurfabre.com>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Eduard Zingerman <eddyz87@gmail.com>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
- Jesse Brandeburg <jbrandeburg@cloudflare.com>, 
- Joanne Koong <joannelkoong@gmail.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>, 
- Martin KaFai Lau <martin.lau@linux.dev>, 
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <thoiland@redhat.com>, 
- Yan Zhai <yan@cloudflare.com>, kernel-team@cloudflare.com, 
- netdev@vger.kernel.org, Stanislav Fomichev <sdf@fomichev.me>
-X-Mailer: b4 0.15-dev-07fe9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fb38cfe5153fd67f540e6e8aff814c60b7129480.camel@gmx.de>
 
-Exercise r/w access to skb metadata through an offset-adjusted dynptr,
-read/write helper with an offset argument, and a slice starting at an
-offset.
+Hello Mike,
 
-Also check for the expected errors when the offset is out of bounds.
+On Wed, Aug 13, 2025 at 06:14:36AM +0200, Mike Galbraith wrote:
+> [  107.984942] Chain exists of:
+>                  console_owner --> target_list_lock --> &fq->lock
+> 
+> [  107.984947]  Possible interrupt unsafe locking scenario:
+> 
+> [  107.984948]        CPU0                    CPU1
+> [  107.984949]        ----                    ----
+> [  107.984950]   lock(&fq->lock);
+> [  107.984952]                                local_irq_disable();
+> [  107.984952]                                lock(console_owner);
+> [  107.984954]                                lock(target_list_lock);
 
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Reviewed-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
----
- .../bpf/prog_tests/xdp_context_test_run.c          |  10 ++
- tools/testing/selftests/bpf/progs/test_xdp_meta.c  | 119 +++++++++++++++++++++
- 2 files changed, 129 insertions(+)
+Thanks for the report. I _think_ I understand the problem, it should be
+easier to see it while thinking about a single CPU:
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-index 79c4c58276e6..24a7b4b7fdb6 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-@@ -375,6 +375,16 @@ void test_xdp_context_tuntap(void)
- 			    skel->progs.ing_cls_dynptr_slice_rdwr,
- 			    skel->progs.ing_cls_dynptr_slice,
- 			    skel->maps.test_result);
-+	if (test__start_subtest("dynptr_offset"))
-+		test_tuntap(skel->progs.ing_xdp_zalloc_meta,
-+			    skel->progs.ing_cls_dynptr_offset_wr,
-+			    skel->progs.ing_cls_dynptr_offset_rd,
-+			    skel->maps.test_result);
-+	if (test__start_subtest("dynptr_offset_oob"))
-+		test_tuntap(skel->progs.ing_xdp,
-+			    skel->progs.ing_cls_dynptr_offset_oob,
-+			    skel->progs.ing_cls,
-+			    skel->maps.test_result);
- 
- 	test_xdp_meta__destroy(skel);
- }
-diff --git a/tools/testing/selftests/bpf/progs/test_xdp_meta.c b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-index e7879860f403..ee3d8adf5e9c 100644
---- a/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-+++ b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-@@ -1,5 +1,6 @@
- #include <stdbool.h>
- #include <linux/bpf.h>
-+#include <linux/errno.h>
- #include <linux/if_ether.h>
- #include <linux/pkt_cls.h>
- 
-@@ -122,6 +123,124 @@ int ing_cls_dynptr_slice_rdwr(struct __sk_buff *ctx)
- 	return TC_ACT_UNSPEC; /* pass */
- }
- 
-+/* Read skb metadata in chunks from various offsets in different ways. */
-+SEC("tc")
-+int ing_cls_dynptr_offset_rd(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr meta;
-+	const __u32 chunk_len = META_SIZE / 4;
-+	const __u32 zero = 0;
-+	__u8 *dst, *src;
-+
-+	dst = bpf_map_lookup_elem(&test_result, &zero);
-+	if (!dst)
-+		return TC_ACT_SHOT;
-+
-+	/* 1. Regular read */
-+	bpf_dynptr_from_skb_meta(ctx, 0, &meta);
-+	bpf_dynptr_read(dst, chunk_len, &meta, 0, 0);
-+	dst += chunk_len;
-+
-+	/* 2. Read from an offset-adjusted dynptr */
-+	bpf_dynptr_adjust(&meta, chunk_len, bpf_dynptr_size(&meta));
-+	bpf_dynptr_read(dst, chunk_len, &meta, 0, 0);
-+	dst += chunk_len;
-+
-+	/* 3. Read at an offset */
-+	bpf_dynptr_read(dst, chunk_len, &meta, chunk_len, 0);
-+	dst += chunk_len;
-+
-+	/* 4. Read from a slice starting at an offset */
-+	src = bpf_dynptr_slice(&meta, 2 * chunk_len, NULL, chunk_len);
-+	if (!src)
-+		return TC_ACT_SHOT;
-+	__builtin_memcpy(dst, src, chunk_len);
-+
-+	return TC_ACT_SHOT;
-+}
-+
-+/* Write skb metadata in chunks at various offsets in different ways. */
-+SEC("tc")
-+int ing_cls_dynptr_offset_wr(struct __sk_buff *ctx)
-+{
-+	const __u32 chunk_len = META_SIZE / 4;
-+	__u8 payload[META_SIZE];
-+	struct bpf_dynptr meta;
-+	__u8 *dst, *src;
-+
-+	bpf_skb_load_bytes(ctx, sizeof(struct ethhdr), payload, sizeof(payload));
-+	src = payload;
-+
-+	/* 1. Regular write */
-+	bpf_dynptr_from_skb_meta(ctx, 0, &meta);
-+	bpf_dynptr_write(&meta, 0, src, chunk_len, 0);
-+	src += chunk_len;
-+
-+	/* 2. Write to an offset-adjusted dynptr */
-+	bpf_dynptr_adjust(&meta, chunk_len, bpf_dynptr_size(&meta));
-+	bpf_dynptr_write(&meta, 0, src, chunk_len, 0);
-+	src += chunk_len;
-+
-+	/* 3. Write at an offset */
-+	bpf_dynptr_write(&meta, chunk_len, src, chunk_len, 0);
-+	src += chunk_len;
-+
-+	/* 4. Write to a slice starting at an offset */
-+	dst = bpf_dynptr_slice_rdwr(&meta, 2 * chunk_len, NULL, chunk_len);
-+	if (!dst)
-+		return TC_ACT_SHOT;
-+	__builtin_memcpy(dst, src, chunk_len);
-+
-+	return TC_ACT_UNSPEC; /* pass */
-+}
-+
-+/* Pass an OOB offset to dynptr read, write, adjust, slice. */
-+SEC("tc")
-+int ing_cls_dynptr_offset_oob(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr meta;
-+	__u8 md, *p;
-+	int err;
-+
-+	err = bpf_dynptr_from_skb_meta(ctx, 0, &meta);
-+	if (err)
-+		goto fail;
-+
-+	/* read offset OOB */
-+	err = bpf_dynptr_read(&md, sizeof(md), &meta, META_SIZE, 0);
-+	if (err != -E2BIG)
-+		goto fail;
-+
-+	/* write offset OOB */
-+	err = bpf_dynptr_write(&meta, META_SIZE, &md, sizeof(md), 0);
-+	if (err != -E2BIG)
-+		goto fail;
-+
-+	/* adjust end offset OOB */
-+	err = bpf_dynptr_adjust(&meta, 0, META_SIZE + 1);
-+	if (err != -ERANGE)
-+		goto fail;
-+
-+	/* adjust start offset OOB */
-+	err = bpf_dynptr_adjust(&meta, META_SIZE + 1, META_SIZE + 1);
-+	if (err != -ERANGE)
-+		goto fail;
-+
-+	/* slice offset OOB */
-+	p = bpf_dynptr_slice(&meta, META_SIZE, NULL, sizeof(*p));
-+	if (p)
-+		goto fail;
-+
-+	/* slice rdwr offset OOB */
-+	p = bpf_dynptr_slice_rdwr(&meta, META_SIZE, NULL, sizeof(*p));
-+	if (p)
-+		goto fail;
-+
-+	return TC_ACT_UNSPEC;
-+fail:
-+	return TC_ACT_SHOT;
-+}
-+
- /* Reserve and clear space for metadata but don't populate it */
- SEC("xdp")
- int ing_xdp_zalloc_meta(struct xdp_md *ctx)
+ 1) lock(&fq->lock); 			// This is not hard irq safe log
+ 2) IRQ					// IRQ hits the while the lock is held
+ 2.1) printk() 				// WARNs and printk can in fact happen during IRQs
+ 2.2) netconsole subsystem 		/// target_list_lock is not important and can be ignored
+ 2.2) netpoll 				// net poll will call the network subsystem to send the packet
+ 2.3) lock(&fq->lock);			// Try to get the lock while the lock was already held
+ 3) Dead lock!
 
--- 
-2.43.0
+Given fq->lock is not IRQ safe, then this is a possible deadlock.
 
+In fact, I would say that FQ is not the only lock that might get into
+this deadlock.
+
+Possible solutions that come to my mind:
+
+1) make those lock (fq->lock and TX locks) IRQ safe
+ * cons: This has network performance penalties, and very intrusive.
+
+2) Making printk from IRQs deferred. Calling `printk_deferred_enter` at
+   IRQs handlers ?!
+ * Cons: This will add latency to printk() inside IRQs.
+
+3) Create a deferred mechanism inside netconsole, that would buffer and
+   defer the TX of the packet to outside of the IRQs.
+   a) Basically on netconsole, check if it is being invoke inside an
+   IRQ, then buffer the message and it it at Softirq/task context.
+ * Cons: this would use extra memory for printks() inside IRQs and also
+   latency (netconsole only).
+
+Let me add some other developers who might have other opinions and help
+to decide what is the best approach.
+
+--breno
