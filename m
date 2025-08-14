@@ -1,107 +1,121 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933521F9F7A;
-	Thu, 14 Aug 2025 14:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0041F8AC8
+	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 14:50:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755183004; cv=none; b=LiiPeIMZNYBC3a29okjXc4L2NoSOUugVJK26R1UJUjQCkIpOHWtHDd8MSbudBGG4JDr7AZlPuGDSJpTwTwXPvg4Dz7mu4ZHf1C1PErDD4wzNYW0vq3Mq2o3atqrMH6A1WtkRH8Ii6D3sxNakWN+70gEyNgsoZEeywmAWCS3sMqU=
+	t=1755183026; cv=none; b=Ubw1hHC3APJb4xKD5TJh1//npnJGWuzPim8+bXa/KfD19yMikPl7bTloPzVR3WJciJMU1jGUbd4Uyy3mjSnkJ9S8rzpV/oprNowRqS2UyXvTCCGL4JvwzXyyHT7af7avuWQQgiuQFYsoSeX8XiYI8CG9ZZgCklyOEaogmKeEE0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755183004; c=relaxed/simple;
-	bh=/axWMk9uhm1ZdfUfbj/8KGnGVoYfA5qdAmKGDGQr6gM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YvyqTB3de4a7/uZkBNQ5tvVX4UHqE+IMYro6HX0bU3mo9CWiU7k2fCeFzUZSXMGmxh2v2QizDD68lFB5mjxTdwEp9DBMKGmt802ewS85gfGOb5s+WeZA26v6njXtyEmheZ0yU3PJ8CF7DG2PZiYUG/I7vsBB9gmEH0aQ+CJi0+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C7VBe2Eu; arc=none smtp.client-ip=209.85.210.171
+	s=arc-20240116; t=1755183026; c=relaxed/simple;
+	bh=eVQgdWittB1A1eRdvrgYGjzFM/V7ftpJLsC2BFnyyTE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZrCdsYbvt1BwGu1UL+kQbw8HEG+gMiV++L/ptlozldWPvIYlT3kAo/HovvvA+L8BaeNjBTQFsvysgGo/AHug1j6eT12e/JvmreqxWNcPJW0tuZWGRav3e0IqXZjgjEf8l9JeLUl6npUweYsH/bjmPhY4xbZ6fkbo+oAQULzjbdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uw5i2eLp; arc=none smtp.client-ip=209.85.160.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C7VBe2Eu"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-76e2eb6d07bso1097074b3a.3;
-        Thu, 14 Aug 2025 07:50:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uw5i2eLp"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4b109bcceb9so10346311cf.2
+        for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 07:50:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755183003; x=1755787803; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=EiGNQqMO9h967QGrm5aTrwhMppzluhyJ6Y8QYxAY+/s=;
-        b=C7VBe2EuoJmTIdhOsBmHiNhh8NnofuJujfHOjakCeY+k4WrdkEPA/0GQ4a3UlBSeg6
-         dgUVzSyjMVmW2nCUDCHcVrf+N6UV4ENVCX/uLvkJK009zIMShNrpwz4C1CJn1oaivRkV
-         GET+I7iDquQUE30U6quNEJ68zXHpSFyx/ZZYrDYqWpzx/9V78kusBiXFzuIHGdY5P8Ok
-         V1dSh5oJ//9oyvDQKCvuv/G3fPHa0mrhKS/OQiwe8P6P6azAWwxkhQMlWgZR6qZmGgHp
-         wpeCU5hYvn26rAmrtGJQWJg8+eWOheTb2ujQjaQSa1CeGD+iqLxo9bZSsc7Qqu7pGh0D
-         99pw==
+        d=gmail.com; s=20230601; t=1755183024; x=1755787824; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CEPflc75uW9weWnSJOxL+wqyI+gsL7Ya3HCYLtQBm2M=;
+        b=Uw5i2eLpAdnL1ahYKaayq5joL3kPVCvBMYYGA8Wh2wGqgweKllXBZVJJEkvftIGBCU
+         ObSUhcpXzDEr6USCKd8eD13gp1RTGxt9ZRrJ6POujguFz2x9hev81wDpHleUAQuLwUnf
+         EuTAzIPvxV0i6nQmcmt4Zp87pSKxgF1jwywXHtSVTJ+u2ez/waDK8f7QI6jwDZ78qr1C
+         TKQyWtfkAiZLdCTiIviEeFwHopyTO1NpTr3TH441s8OrMYBRDCwyMEnoYiQDsBYzqZT8
+         JJncIhpWru5VVLaGXX245H20MybfaqZzXLP4VG78TZ++B4Et75NznUe0VTwA5bMqd210
+         nDtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755183003; x=1755787803;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EiGNQqMO9h967QGrm5aTrwhMppzluhyJ6Y8QYxAY+/s=;
-        b=jIQq2bBnNhkY6JNe5tgY9vzcum2VhAdOJNxsd77xfO9jHV7KukBh1EaG1tgbrkh3px
-         DMRIKs+WeHcr2bHqOGcwwwtAHHwX24qMMihMj0pVH9CbnVR4aXe1/lfm3eINLzlR7spm
-         kDGoSNZjKqR3xW15/m5r6T3YewSwsmjN9bue+s1aB+uC4U0b56ztwt5sfrV5MlD2EUAl
-         katt0OpdzyMtPtYXCPT+pJQbcRrVXThfVv3EQZEg5hSroZ71L4UHbfbQ1q+8MdxlxVVe
-         GMtbmrsj7D/DkD7uGI5fg6H020QgeV6NIwJElNHOwPtGsP+3Gpd0p1Q0n7STRFmj/tBj
-         8LPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVNRFkPTpjJVukXAdF1dzzzHaKU0d9xsOqu4i82zT+qQxOLMjMcxK/H4Dfp2nugdiR+5dQrt9PG@vger.kernel.org, AJvYcCWfj3ljTLjIxlWgMnpOfTX/e7fhbQrMysGllrz0qTsC3dWc9mjF45Qbl8AIj8mQlx6Sf/UzDcEgoe85MlU=@vger.kernel.org, AJvYcCWuPNHu4kyTOas1O0UJFVWq2MOwuME/kDtZIJi7DoCoCv59LVOXgZXddRgtm1TV2YhNwpclKuBZv+4yh9lyOMVC@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTVABbu1moI42eKaz3FyUcaYw3vcGXkVlQC+oa/DL/RQyFdY/b
-	TvedrSK01VZPDNXiTVsQlwyAiPIhirrX6fRuDIYkWg7vea0cHKYNjBDk
-X-Gm-Gg: ASbGnctb4Vd4Ic56Go0z3q8QT9iEQLqeyaJgDcoWWLMlNLIRo1LtrHitl4GQsPtFQaw
-	m+PoXQrYRGNinj1DQkT4trVYOlEFuTW8vt7M/tlyK6NAMAOi4xsTd6Wdicz1Iz9gGnB1zAhmow/
-	4Je9e1gCI+TYeUzU3I04SEJdfmODEOFuVP6sOZyBvmN8/KsIAc3lIqFbuiEKZUKyoeWVOtr4SOu
-	Y0GBo17+D4YxxA1MCvuxQ7cpV9Xiy+E+YJPq+t9g7vY9dP+D48KHW9Xk4UrlhMlG4un6Yoopt60
-	n7+Mk7pSj8Osf7TMMDYd896dxS9q3MwEayau9qFCQ70KmOtfmfo0epYJiwwIjyjCVDkIMEDV1HI
-	/s3UvDtp9gTcdgcOXfKCPoLn8xy26pvdtAA==
-X-Google-Smtp-Source: AGHT+IEdzkV+CLZH6cOjPdRoNZpBVJROikuNEjsteCsJY+iEdrQMZCNWUmg6yND82tvTwvCnt7A8Yw==
-X-Received: by 2002:a05:6a00:6f03:b0:76e:3a11:d24f with SMTP id d2e1a72fcca58-76e3a11d959mr1757940b3a.15.1755183002365;
-        Thu, 14 Aug 2025 07:50:02 -0700 (PDT)
-Received: from archlinux ([36.255.84.59])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bcce8fa33sm35117359b3a.43.2025.08.14.07.49.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 07:50:01 -0700 (PDT)
-From: Madhur Kumar <madhurkumar004@gmail.com>
-To: aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	shuah@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	dev@openvswitch.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	Madhur Kumar <madhurkumar004@gmail.com>
-Subject: [PATCH] print: fix spelling error in message
-Date: Thu, 14 Aug 2025 20:19:16 +0530
-Message-ID: <20250814144916.338054-1-madhurkumar004@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        d=1e100.net; s=20230601; t=1755183024; x=1755787824;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CEPflc75uW9weWnSJOxL+wqyI+gsL7Ya3HCYLtQBm2M=;
+        b=X0LqBQOAKgZe0q0hJDC8Lho8eqhYG1GcThywGUlm/6G4l8x3fyC4MhEWLUnwMSKrvh
+         3BRYT09Sz7aj2qfuOC2jFuv2TkndpLqMeexRgA5SB0jLCpDFtX1kvd2zuiZa8mseq+J2
+         h4MT2jUzi+plJEs3WMmR5wUVylLe32AZxFkrUctcqU2f+vFSjVLLxmHs/VJ5nktENrlQ
+         eP3O6BkK/EEBvAdVPk09zTPn5ChLwRKzLAGLLrSC+6saGQ9kfWKENh66EENTnJ4iQ+VH
+         3CDVM+AJjoULBprTmmmIKu1Q/vk1KlPYuqWBf5wcneTpY62R5xEecP6YkyWd11IVy4+Z
+         fchw==
+X-Forwarded-Encrypted: i=1; AJvYcCWHWJ8xAiyBhMefBXY4abF0AMF/oeD52xqFrHRe1w3NOmF8gsI690fDQgelhu86kjHnmUUyhBg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBQ63/iTCEra0UFB3I5Lu3v9xUoZnjOiqEnRhO7exCu+ZB7lj8
+	Z8qmJRRSFJNrLRk+CwqC9vTByal1lDbMbKm3DNmLS7oISpUtM7egvKqF
+X-Gm-Gg: ASbGncuEa3zH5H/T4lh/BqqCvhd/L8U/yw1Xa1My3hwlEoctr+l9FOUcaZBi4dEwsa9
+	m6PVXmmbDQ5h8rzSHaYVof+4aFxY8vgDrZz3Mi3EWx2l9J23ZjxZaR8+2+zlV2QoAnR64rXdPJF
+	KrpMVXwC7Mm3P88O//A52cu9sOvnuBTCQB2kMvGwfGhIKxX2/oilpmqXbRTk7hqwxebuFd4CL3E
+	/F88X+NrwXKYsUGy2dLOp89dunR3eUtSLoD7aHBdukwX32SOrMQdMEKV22tq7EQITdXqARI4ixg
+	X7eg1ws0RKm5cCrRC3KB0tcvZ1EyAv8efFTw/hE1oy5S9cr2sMlvtuMYqHVBJBsWkwV/mpmlHS3
+	NQ1zDP/LDK84vi1cOTzwWKnshgQ1mUWAbqRzH1nv5T2hoJOU8hO8t51tkjhPjcatjTxBJu8G64b
+	1x
+X-Google-Smtp-Source: AGHT+IFRgsrLloXlVJhDbtD5vBQiv1HIZsinKsr1dLeyeKpzbfv/re44ywiAuviqkQV+7Tt9aEn5qA==
+X-Received: by 2002:ac8:7c56:0:b0:4b0:6a0d:bbdc with SMTP id d75a77b69052e-4b10aabcb1amr37173851cf.15.1755183023553;
+        Thu, 14 Aug 2025 07:50:23 -0700 (PDT)
+Received: from ?IPV6:2600:4040:95d2:7b00:8471:c736:47af:a8b7? ([2600:4040:95d2:7b00:8471:c736:47af:a8b7])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b067e71186sm162116021cf.17.2025.08.14.07.50.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Aug 2025 07:50:22 -0700 (PDT)
+Message-ID: <d78db534-b472-47c4-829d-83384b537ea2@gmail.com>
+Date: Thu, 14 Aug 2025 10:50:21 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 09/19] net: psp: update the TCP MSS to reflect
+ PSP packet overhead
+To: Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Tariq Toukan <tariqt@nvidia.com>, Boris Pismenny <borisp@nvidia.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn
+ <willemb@google.com>, David Ahern <dsahern@kernel.org>,
+ Neal Cardwell <ncardwell@google.com>, Patrisious Haddad
+ <phaddad@nvidia.com>, Raed Salem <raeds@nvidia.com>,
+ Jianbo Liu <jianbol@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+ Stanislav Fomichev <sdf@fomichev.me>,
+ =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Kiran Kella <kiran.kella@broadcom.com>,
+ Jacob Keller <jacob.e.keller@intel.com>, netdev@vger.kernel.org
+References: <20250812003009.2455540-1-daniel.zahka@gmail.com>
+ <20250812003009.2455540-10-daniel.zahka@gmail.com>
+ <a6635ce0-a27f-4a3b-845a-7c25f8b58452@redhat.com>
+Content-Language: en-US
+From: Daniel Zahka <daniel.zahka@gmail.com>
+In-Reply-To: <a6635ce0-a27f-4a3b-845a-7c25f8b58452@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Signed-off-by: Madhur Kumar <madhurkumar004@gmail.com>
----
- tools/testing/selftests/net/openvswitch/ovs-dpctl.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-index 8a0396bfa..b521e0dea 100644
---- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-+++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-@@ -1877,7 +1877,7 @@ class OvsPacket(GenericNetlinkSocket):
-                     elif msg["cmd"] == OvsPacket.OVS_PACKET_CMD_EXECUTE:
-                         up.execute(msg)
-                     else:
--                        print("Unkonwn cmd: %d" % msg["cmd"])
-+                        print("Unknown cmd: %d" % msg["cmd"])
-             except NetlinkError as ne:
-                 raise ne
- 
--- 
-2.50.1
 
+On 8/14/25 9:58 AM, Paolo Abeni wrote:
+> On 8/12/25 2:29 AM, Daniel Zahka wrote:
+>> @@ -236,6 +237,10 @@ int psp_sock_assoc_set_tx(struct sock *sk, struct psp_dev *psd,
+>>   	tcp_write_collapse_fence(sk);
+>>   	pas->upgrade_seq = tcp_sk(sk)->rcv_nxt;
+>>   
+>> +	icsk = inet_csk(sk);
+>> +	icsk->icsk_ext_hdr_len += psp_sk_overhead(sk);
+> I'm likely lost, but AFAICS the user-space can successfully call
+> multiple times psp_sock_assoc_set_tx() on the same socket, increasing
+> icsk->icsk_ext_hdr_len in an unbounded way.
+
+If it were possible to execute the code you have highlighted more than 
+once per socket, that would be a bug. This should not be possible 
+because of the preceding checks in the function i.e.
+
+     if (pas->tx.spi) {
+         NL_SET_ERR_MSG(extack, "Tx key already set");
+         err = -EBUSY;
+         goto exit_unlock;
+     }
