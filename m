@@ -1,75 +1,115 @@
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4289063B9
-	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 18:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C59319855;
+	Thu, 14 Aug 2025 18:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755195368; cv=none; b=Uj5SGdGso7dEymTU2X2xsLWjTa5Dzjl1Zrns8UZG+vmipemy1/m0sd4u1LwUHj31n9MUNnOZIj2U2rMm0RTHrItkuLKkOiVsC7aHobDr0UNcCitTejEEVRM/PlP854jhnsWEf0VKtptOwSJXPtfamA4tQU3VMKX5gk6nlwA4oSo=
+	t=1755195884; cv=none; b=fmUmH+/1z7G6cCb40952VAym3rXR5jhxbjeRqJO1KXKNMdrggr9JP5LXvv16e/+7MBXDGdKo8C1qJPLkMGweF3tfDTRCXnHnp5kFmw315K3Yjb8aoGo/937e1N0OcrHqg9svh31MMgoOlTdrpC4nyCzA9dlAd17XwpjYG+4w3hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755195368; c=relaxed/simple;
-	bh=d2Ulm/XIjGVlbLGsYARxfo4PVZkxzdBk4wMZupOCeLs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aEVLSBBueyzn7Eg6j67dT6TVFQLCR8cSsqPwVdqn7xHrioF3Fc+rl8Iv/qK8AIc/p20AeoyPMpnmjL+jdLDSyxAithLdXlDfzt+6XYM4nPTYk3qxKGuBZuTaJDtPGgy8CUG2qaWJs5x1O5XsvTBNKa2drxLkFR/RKnUbkPnujEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rSvnquOy; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1755195884; c=relaxed/simple;
+	bh=cmrj8KeLzigsMCLdXBz/YsgLbulEKsMvd1PG5n4Iz1g=;
+	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=d6nOThGB7RhXpKnC3HLpNj0NL2uvwxW5BaY4J5BW3xpn4YJHRLrYiefe8J3Q0vRms2ASVDbDedozuVwqVzQzWYWVuvkEABsmyBeI+4YQMrrycriIULjRQtV2Mi4nnBcTOwKvF99i/XYj234CPa/VsSbTlUbwwIeI2ekaHCIVXXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OAcms378; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rSvnquOy"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755195360;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=gBXi1Jms/31Rd25COKA1CAhr6nVAQI7I8OoejczvZE8=;
-	b=rSvnquOyMSeHgEKHNzEYWTfxgYcT51QQM3kzCYSgwsxajFdThWV4oee6hlq96w+H0MvkGn
-	vCXKweFJKqYiRdWUHK1UunoU72lbtYv+u5sRHbGQJfO8bCyl6fC2NQ1ScYj69vLr55bmsn
-	hdQYD+r0zo5m7OsZa7FcrKSwGIJEzN4=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: Space: Replace memset(0) + strscpy() with strscpy_pad()
-Date: Thu, 14 Aug 2025 20:05:14 +0200
-Message-ID: <20250814180514.251000-2-thorsten.blum@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OAcms378"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0141CC4CEED;
+	Thu, 14 Aug 2025 18:24:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755195883;
+	bh=cmrj8KeLzigsMCLdXBz/YsgLbulEKsMvd1PG5n4Iz1g=;
+	h=Subject:From:To:Cc:Date:From;
+	b=OAcms378TgtnSyNlFAHryczzmx+PD71h7QQOG8aH5f2p7zLJfPszR5/qfdIG9Kd/4
+	 byN1VYjCAU0QchJ9lo1ruW05fGNKCa8+Y4Oh/wjxBjJ9rrhWDBWX5GWr30huwNSx7R
+	 GWk9RhacLnQ9TDv7D25r0VvCf0iRzZ368E7SsxRGIpZurv3swtq8+tMoUP4C/qcxtc
+	 mX+0Az9zc+6PMCVhYVEH7qZBQn+Gs+XznXEYyyN/rcbO0P5XLjh6nvuUx0VYe3wXNp
+	 HG7Z6CB6SSK8J5t9m1/jSTMPc3FFwG4jks0Caxlj338EBXMCZf8FpytDxCsAnCjYoj
+	 KcXxmz36eyPvg==
+Subject: [PATCH bpf] cpumap: disable page_pool direct xdp_return need larger
+ scope
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+To: bpf@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, dtatulea@nvidia.com
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <borkmann@iogearbox.net>, netdev@vger.kernel.org,
+ Eric Dumazet <eric.dumazet@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ tariqt@nvidia.com, tariqt@nvidia.com, memxor@gmail.com,
+ john.fastabend@gmail.com, kernel-team@cloudflare.com, yan@cloudflare.com,
+ jbrandeburg@cloudflare.com, carges@cloudflare.com, arzeznik@cloudflare.com
+Date: Thu, 14 Aug 2025 20:24:37 +0200
+Message-ID: <175519587755.3008742.1088294435150406835.stgit@firesoul>
+User-Agent: StGit/1.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Replace memset(0) followed by strscpy() with strscpy_pad() to improve
-netdev_boot_setup_add(). This avoids zeroing the memory before copying
-the string and ensures the destination buffer is only written to once,
-simplifying the code and improving efficiency.
+When running an XDP bpf_prog on the remote CPU in cpumap code
+then we must disable the direct return optimization that
+xdp_return can perform for mem_type page_pool.  This optimization
+assumes code is still executing under RX-NAPI of the original
+receiving CPU, which isn't true on this remote CPU.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+The cpumap code already disabled this via helpers
+xdp_set_return_frame_no_direct() and xdp_clear_return_frame_no_direct(),
+but the scope didn't include xdp_do_flush().
+
+When doing XDP_REDIRECT towards e.g devmap this causes the
+function bq_xmit_all() to run with direct return optimization
+enabled. This can lead to hard to find bugs.  The issue
+only happens when bq_xmit_all() cannot ndo_xdp_xmit all
+frames and them frees them via xdp_return_frame_rx_napi().
+
+Fix by expanding scope to include xdp_do_flush().
+
+Fixes: 11941f8a8536 ("bpf: cpumap: Implement generic cpumap")
+Found-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reported-by: Chris Arges <carges@cloudflare.com>
+Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
 ---
- drivers/net/Space.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/bpf/cpumap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/Space.c b/drivers/net/Space.c
-index dc50797a2ed0..c01e2c2f7d6c 100644
---- a/drivers/net/Space.c
-+++ b/drivers/net/Space.c
-@@ -67,8 +67,7 @@ static int netdev_boot_setup_add(char *name, struct ifmap *map)
- 	s = dev_boot_setup;
- 	for (i = 0; i < NETDEV_BOOT_SETUP_MAX; i++) {
- 		if (s[i].name[0] == '\0' || s[i].name[0] == ' ') {
--			memset(s[i].name, 0, sizeof(s[i].name));
--			strscpy(s[i].name, name, IFNAMSIZ);
-+			strscpy_pad(s[i].name, name);
- 			memcpy(&s[i].map, map, sizeof(s[i].map));
- 			break;
+diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
+index b2b7b8ec2c2a..c46360b27871 100644
+--- a/kernel/bpf/cpumap.c
++++ b/kernel/bpf/cpumap.c
+@@ -186,7 +186,6 @@ static int cpu_map_bpf_prog_run_xdp(struct bpf_cpu_map_entry *rcpu,
+ 	struct xdp_buff xdp;
+ 	int i, nframes = 0;
+ 
+-	xdp_set_return_frame_no_direct();
+ 	xdp.rxq = &rxq;
+ 
+ 	for (i = 0; i < n; i++) {
+@@ -231,7 +230,6 @@ static int cpu_map_bpf_prog_run_xdp(struct bpf_cpu_map_entry *rcpu,
  		}
--- 
-2.50.1
+ 	}
+ 
+-	xdp_clear_return_frame_no_direct();
+ 	stats->pass += nframes;
+ 
+ 	return nframes;
+@@ -255,6 +253,7 @@ static void cpu_map_bpf_prog_run(struct bpf_cpu_map_entry *rcpu, void **frames,
+ 
+ 	rcu_read_lock();
+ 	bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
++	xdp_set_return_frame_no_direct();
+ 
+ 	ret->xdp_n = cpu_map_bpf_prog_run_xdp(rcpu, frames, ret->xdp_n, stats);
+ 	if (unlikely(ret->skb_n))
+@@ -264,6 +263,7 @@ static void cpu_map_bpf_prog_run(struct bpf_cpu_map_entry *rcpu, void **frames,
+ 	if (stats->redirect)
+ 		xdp_do_flush();
+ 
++	xdp_clear_return_frame_no_direct();
+ 	bpf_net_ctx_clear(bpf_net_ctx);
+ 	rcu_read_unlock();
+ 
+
 
