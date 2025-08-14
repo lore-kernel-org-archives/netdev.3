@@ -1,109 +1,128 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7479308F12;
-	Thu, 14 Aug 2025 18:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B0F8834;
+	Thu, 14 Aug 2025 18:16:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755194429; cv=none; b=VsR00klQjHU98/ltcix3PKcFhVInSmdtTkGgOrAAZBS8vqia5B2U8OhMK9E7H9onl05p75q/f+3i2nu5GaQBamHC8Iq3mIqLSAVRJGWJHPkoi7LQV3xMWthuu/9kkOv1vvmzHRSJaqv8VxMCTojbEiULQ1wh13e1z/AUGEvpjuo=
+	t=1755195365; cv=none; b=cm9SxSzeUvsaciamhLweAInBg0fnSZqIl8EJHALhxMKHHAkaKFJxr9S96eVeAnjki8CWn11FoR00Lx1FKelw3Av1dK9b445FMWyagsULNBXTrR3LMa3+nPZHKrLjCLcJufjpC4vTNWFtR5jqrctokTzPYK/XeOKpUZ3gigeKpfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755194429; c=relaxed/simple;
-	bh=8xziYD/6Re3uOfO3J5H//8CNXiAG+S16/QJbdP5WkHw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P3faHpEjn2soCdo0qNNNZmPtlETT9LbZ0ns7caFEi0gLYAMGODvbU7u1r29h+/sFn+d798uLhvyY+Cmub/dnWtYV6/YG8YVjZ6EKNKI4qwg152KsfXqKUwEB7IKcuJruMS1K3tqWweUZ7N0XbJ599EdGmiaJkpbXpg9Yjgzk/Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lqNXdfBf; arc=none smtp.client-ip=209.85.210.174
+	s=arc-20240116; t=1755195365; c=relaxed/simple;
+	bh=lfR5m4C6qpeGF7BqklRhmXMKFJ//+lAnAnq/PFTEm3A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gAMmOXjVL3AR/ZtjFcaWEA/iahQgS0rNFVS6jB5MeVWIWIbvjdEvkj+GR9Pmogi0khzL7lc7Xp9Qxonye7QK/XXJhdtuhOVFJ/IITFSXR6h7qIg/TGXi6prDTLsqMdtPd6QzjcY46I5hdDJCNAnwCwKZQk8KV1ayaM7cyuP4uag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PXRMjfUx; arc=none smtp.client-ip=209.85.128.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lqNXdfBf"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-76e2e6038cfso1817765b3a.0;
-        Thu, 14 Aug 2025 11:00:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PXRMjfUx"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-71d6059f490so11387687b3.3;
+        Thu, 14 Aug 2025 11:16:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755194427; x=1755799227; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WaZHVwhwECYaxOvWDR1JC9N7A4JpiSLI6sXG2h9sB0Q=;
-        b=lqNXdfBfey759CkpxQ1jzjs35Qpt6EonCsO6oEQGz+BN/FNSoYZazgkfsZ7w0OFKfc
-         71gQDaoEEAH85mh6gWQGYrz84ql0NRgLo3vcWeX0PfwlVb9KzrdIZZRv+lVG5A2awZFv
-         mr46+GyNH0p2h33o36q+QuDVbh+kFs3nh/y7LKsU/5fPOvOJ2BZxOXUluxaH2eBkWsHC
-         AiC5SyGRKiAy6NYfO+ULH2/mN7ggci6bkbYE93Zd/O9zGuParr0aMvidDM5LpyR9ELxt
-         E4P4I9+OkIQUnPmg8KoaSmCoJvtsnDza8ZvdX+YtbE1w2eUITudH7dlSjXfJBKss77Bd
-         NykQ==
+        d=gmail.com; s=20230601; t=1755195362; x=1755800162; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G+n4/FeNOVvGWacFWXQIqguWy7zGbFv1DUiyZxjURns=;
+        b=PXRMjfUxyW1eH5BBggU5NkT+3a06M3vzq4Y4kYYPIO/vm8+5zNxn5DajbE68leq9PE
+         XuM6k0cbqxE81MFFKPoRiAdX6b8f24dgh9bEUsYHMn4Cv82zFQEmqqag/HUCx7v3/zrw
+         IQlIUuHbPElK4CNxR1A8l0VfNB93a9+f9i9+miQ6z61jfMyvBMVTzqdAgyCSpUTmoX6z
+         DkP80oPSOgFle4/GppWtJc0uEdATSLZgQf2IX0V3nXmqUisTVHiJd4IFqd6oVW56guM9
+         4FHBTErUiG+EF3z5cOSeXMnSmMLtK42i5NYRZEBt6yaGo61ag4Cu8Ua4Vqjm0U68rnUJ
+         uq6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755194427; x=1755799227;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WaZHVwhwECYaxOvWDR1JC9N7A4JpiSLI6sXG2h9sB0Q=;
-        b=HYf0YjtnBjeObVROHG/e1VIqyY9aGASgEBxYH9h9ejDF/cD5pUjh+twXfmaEk7Ag+t
-         bwg0aD3NKM54I6VhRGQfYSG9dEdWjv+63bgcSqyrjd5q7Hh3hK8cgconyVuicXyfc4vh
-         Fi+Zlj0KpENiBmYuJsGRlPytUvPOiIYI2qdW4KmMqDSyI/FYnWhPIKNp3PrrTjQUWMBQ
-         ++1dZJEy6VKaNvV6WpNH7gLnV7k48bn5UtZlXjB5pCqFzXCzvLCBeD0OHRqeHH/S7wXh
-         GCfqqlcUYIWKjlj5ixvewzTOjzYvcAobTOLB03EsiXqX+ckp9Ww7+NlhQ1OSf2r1+HxK
-         mC2A==
-X-Forwarded-Encrypted: i=1; AJvYcCUFopPWVtymnYU8LKhVXV0x4SQ2/fDVBW6Zh80kQs9p6MwNLtiXgCVuyFPyyEJR52IgcapOKBiIIXdvlOg=@vger.kernel.org, AJvYcCXfkz2J2aSciBTi0DFwKrAJPdh1stZPSPHLkA19KBuB+993rn9AfxvGUXVYJHOO5oITkHfDhUZD@vger.kernel.org, AJvYcCXkKrwwZhdT+9H2gaGVo/9nGv1VN1XljWvzVKPpwiva1HPi1d/+ozTvyEkHRvgheYJppZBs+tLW+SIIVJnSaXoK@vger.kernel.org
-X-Gm-Message-State: AOJu0YyM0vCP/JKfLYbrjB+0Q++DTb5FpeUYCnM0QyjyozRJdtWVUx9h
-	KcD1iWkMpUBPMy/0iuGWj4KmM3/981bEzUf9RbROosbMbKTQOMrS2/YJ
-X-Gm-Gg: ASbGnctKDbZGoiyL+mLrmFpgfXMjkoiSV9LCqx+JCIwU/pFCeTLli4gWqdsRSX1Akej
-	h0nMnQfvggOnj3k5P3NaE3RiegaBclY/E8EgMUW6YeChDBsAULbspcChK2czooyLE2fJ+jQRlGs
-	6s5L6KmNhnnpyUKsbfQP+suy3ZkqL38ah8kJpN1LNkb0YbM3u6JNHC7q9DcQ2Pyg+TeSe63LZ43
-	CBsWnVVCjqhC30K6bUQbBe0RxtLhXJsmtXDGjUGaGaI2yomMJ9xhnfF5YkQhFwE97vS8KrjzYHZ
-	rL/iknZ0hqkhurSbUNDoB60MZDfTE8bY8DjCJz+v/W15A+B2704EuXQ6q6gU4CWbC5IU2P06Xzg
-	DgUPEih7nVa4gEWnyYxXkK80=
-X-Google-Smtp-Source: AGHT+IEtyF89hTr62fWacEmH0JGmSbFqOLigcH+An4mi7ad2LA3sdsN4XmcI5yoFqNu2a11dsNryQA==
-X-Received: by 2002:a05:6a21:998c:b0:240:211e:8e0 with SMTP id adf61e73a8af0-240bd286e8bmr6477838637.35.1755194426840;
-        Thu, 14 Aug 2025 11:00:26 -0700 (PDT)
-Received: from archlinux ([36.255.84.56])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bccfe74bfsm35147143b3a.121.2025.08.14.11.00.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 11:00:26 -0700 (PDT)
-From: Madhur Kumar <madhurkumar004@gmail.com>
-To: aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org
-Cc: horms@kernel.org,
-	netdev@vger.kernel.org,
-	dev@openvswitch.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Madhur Kumar <madhurkumar004@gmail.com>
-Subject: [PATCH] selftests/net: openvswitch: Fix spelling error in print message
-Date: Thu, 14 Aug 2025 23:30:01 +0530
-Message-ID: <20250814180007.406941-1-madhurkumar004@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        d=1e100.net; s=20230601; t=1755195362; x=1755800162;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=G+n4/FeNOVvGWacFWXQIqguWy7zGbFv1DUiyZxjURns=;
+        b=RwBD2QSgmot99pibcIlIz02m3BgCj7I4awjLjaxgbXYh7GdRVq7HtNytBtY8sPi4vD
+         s9amiGGflDuhf5UO/etkM6UhJK7AlKidzJsNqdKBgnmy5q0AEIIbwgpaM8GOSvq8sqpR
+         gYUsWmGb9sI3zjC65ux6YFFWHH96HxKoTyV2G627VRoPV8Po33uhjNQcNCvdXHMMwqFT
+         nZn6QnzLhob9+liKxoHWKQi7NnfNCUEp4/BjOUGsh9A3UtFdH0NbVl18X+FbLobL28Cv
+         xFDm7CNrCt6FpM6ACOAC1r2KZ9rKl12aGCewqbFM9Kx3iJlPVBoyvF0mxqR/1YURa6+j
+         L7YA==
+X-Forwarded-Encrypted: i=1; AJvYcCU1i4jH6Cw4SlLSWcKjOWy09aQYf4NdNB99rujy7AQegYUtNQJ0SjqcHSY+rQanMfElIFnTVvuJ@vger.kernel.org, AJvYcCVskjFs6Oy5v2Ia+dceKpcNaWy7ekJVvI/hbdPjGHZ/aDHhMiWrm1YuxtL2qTnWYU4LFWrZREWJ0Hdh2PQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5Kj8xNht6fbbgKgfG+j+MVdMN3bfnoj8JrCVgeEHUSoIQYV2z
+	2P1Syy+5Kt1BqwrokkKLwkJOLPRmO5u3o+K0dCXlF2CqfQRqZP2gw3+FnPdumJfETu7P050ew99
+	ieEjwd8IfqzqMqUnK0o2DnHob37EOpaw=
+X-Gm-Gg: ASbGncszDTJxmQed7zBhMhM8AZ3hz6NjiPS0+gmJbzHSchAJIkBl6oSMRzqYf3j/sZA
+	kqRpJMQVBceJWl9apjTbJypDREuy3q7O1tOQ85WWwDV5Am+orDWQX+QYEdPl8fBzF6F97OxElU3
+	NrEDjZlK2EyBZtekDZwKLhIpalQeCATH9AIk8lmDvsx867QJI8JBEWo7RxnZIy3nmazPQtQS37y
+	wV0pDh912h7ZlWf33GLZV7eg9d/wEJ4GKE=
+X-Google-Smtp-Source: AGHT+IGfpA6WLqLoMafirvagHvFBKAIxZpGtck1OYWE5+xJQUQ5A40uzUgqaBVYQ02HSxIUhyuJwK/zBp85IPpmZZE4=
+X-Received: by 2002:a05:690c:6103:b0:70c:c013:f26 with SMTP id
+ 00721157ae682-71d635b3ab1mr53754757b3.33.1755195362372; Thu, 14 Aug 2025
+ 11:16:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250814172300.57458-1-zhtfdev@gmail.com>
+In-Reply-To: <20250814172300.57458-1-zhtfdev@gmail.com>
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date: Thu, 14 Aug 2025 20:15:25 +0200
+X-Gm-Features: Ac12FXx_XcXnWKz9GdNfc372MhOuX6-i0nxWtxdWnyxqLeh1JDk-xBvVwPU7e-Y
+Message-ID: <CAF=yD-KTwwWMwTMtLBkwWORB26Ty64o8pw1QxBefDmkHi6rL0g@mail.gmail.com>
+Subject: Re: [PATCH] net: tun: fix strscpy call with missing size argument
+To: Zhang Tengfei <zhtfdev@gmail.com>
+Cc: =?UTF-8?Q?Miguel_Garc=C3=ADa?= <miguelgarciaroman8@gmail.com>, 
+	ason Wang <jasowang@redhat.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	linux-kernel@vger.kernel.org, Network Development <netdev@vger.kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fix a typo in a print statement in ovs-dpctl.py:
-"Unkonwn" → "Unknown".
- 
----
- tools/testing/selftests/net/openvswitch/ovs-dpctl.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Thu, Aug 14, 2025 at 7:23=E2=80=AFPM Zhang Tengfei <zhtfdev@gmail.com> w=
+rote:
+>
+> The tun_set_iff() and tun_get_iff() functions call strscpy()
+> with only two arguments, omitting the destination buffer size.
+>
+> This patch corrects these calls by providing the required size
+> argument using the IFNAMSIZ macro. This ensures the code adheres
+> to the function's documented contract and improves its overall
+> robustness and clarity.
+>
+> Fixes: a57384110dc6 ("tun: replace strcpy with strscpy for ifr_name")
+> Signed-off-by: Zhang Tengfei <zhtfdev@gmail.com>
 
-diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-index 8a0396bfaf99..b521e0dea506 100644
---- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-+++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-@@ -1877,7 +1877,7 @@ class OvsPacket(GenericNetlinkSocket):
-                     elif msg["cmd"] == OvsPacket.OVS_PACKET_CMD_EXECUTE:
-                         up.execute(msg)
-                     else:
--                        print("Unkonwn cmd: %d" % msg["cmd"])
-+                        print("Unknown cmd: %d" % msg["cmd"])
-             except NetlinkError as ne:
-                 raise ne
- 
--- 
-2.50.1
+The two argument choice is intentional. In that case the length is
+taken from the struct field sizes, which is more robust than an
+explicit argument.
 
+https://lore.kernel.org/netdev/6899fde3dbfd6_532b129461@willemb.c.googlers.=
+com.notmuch/
+
+
+> ---
+>  drivers/net/tun.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index 86a9e927d0ff..88c440c99542 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -2823,13 +2823,13 @@ static int tun_set_iff(struct net *net, struct fi=
+le *file, struct ifreq *ifr)
+>         if (netif_running(tun->dev))
+>                 netif_tx_wake_all_queues(tun->dev);
+>
+> -       strscpy(ifr->ifr_name, tun->dev->name);
+> +       strscpy(ifr->ifr_name, tun->dev->name, IFNAMSIZ);
+>         return 0;
+>  }
+>
+>  static void tun_get_iff(struct tun_struct *tun, struct ifreq *ifr)
+>  {
+> -       strscpy(ifr->ifr_name, tun->dev->name);
+> +       strscpy(ifr->ifr_name, tun->dev->name, IFNAMSIZ);
+>
+>         ifr->ifr_flags =3D tun_flags(tun);
+>
+> --
+> 2.47.3
+>
