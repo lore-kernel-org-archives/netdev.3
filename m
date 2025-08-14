@@ -1,62 +1,65 @@
-Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4EA223DF6
-	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 15:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B4415E8B;
+	Thu, 14 Aug 2025 15:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755185465; cv=none; b=AUT/x2iuecTqCLM9k5dxgzVFz1buYk+HuIu/juc6uROC0RVVCdj+hyJVbXSD7ApiePkCl/pWfJHR9fU5v9Yz6RCFuVz7Z6Q7hkOSIPMP2MNrMT6EqkQdFVY3HP6wdFXQxKG+9vEczpUbxytBN5D69tcWbxUbTvVpRwv5o3dFdIA=
+	t=1755186245; cv=none; b=pd/ab2sWsDzXP6oUi4PD5yh8zzbQkdCd7e4FwhfokD8cnpE1DFHhoXuc92PGeRgWSQrmlq5Em2AUhJvZza4yUUDZK1hY3iqH9N7InECjnXHLwEw/iIWyNGjxhTE2givOuDY/F0syPAGkx8etaQM9ffBJmLH6U50ocfaZpN8M5w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755185465; c=relaxed/simple;
-	bh=6pEXfEutJZNFRvI9iOQTeyeyiNCFfdCXQmwpC/lAWTs=;
+	s=arc-20240116; t=1755186245; c=relaxed/simple;
+	bh=t3MqfObdMhB/eNrcducvkgj1vjIjX96P5SMnnDq3ogc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X8QExL0b4IIVyVIy7F7YRZI0fzLvMoRLKt7rkPMXSiz7SBu2fjY0rXxZNLVF65ro2JNjJ9qQcsraaV9MNy+CSDkVC+LZ8F8Sut4ehJOfpOaHY7hmH4fbku7ogYfiY9Sou0ACrUTryWM8VIb0M2YqVOD7EJ2Arus+LIGf6NuLKNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EP0Zh5mv; arc=none smtp.client-ip=209.85.166.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	 In-Reply-To:Content-Type; b=fprnJQTFqbPne0mRiq8Gsio/Jnb88DiS9h1Cr/8mFibIBtGFQkUrdiLtNYp0ViHq0qmY/smmynwRavJ8HmPSvSNHDDMRSmFqVVBOyaqfI2C+/BXBRmJdrT53EbRdDEr+6GV6XCUxF1h8zlF2Tch0SFX5W0gpdxCrfqPoCQ5XJso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kjttK/Rm; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EP0Zh5mv"
-Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-88432dc61d8so85899139f.1
-        for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 08:31:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kjttK/Rm"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3b9df0bffc3so640669f8f.1;
+        Thu, 14 Aug 2025 08:44:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1755185463; x=1755790263; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755186242; x=1755791042; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=P81sLlQTBntaiAmYzutesJIvj0Q6YtF/nY9RwqB2OPg=;
-        b=EP0Zh5mvgRkeSespWlx8Bxo1bZi+JsDUlMxfzcjBx7PvtHBc0cZtFRz6kpVWSRATGZ
-         zhxIA9Ef/z6NwcRL9JWdei1bNjySEyR/oDVYv24Xp1BPHJd9p0YTxmR5qZF7SVrGBmFn
-         qPf4waKU4d8FWl+vY+VWHT876/DLdAQ27xonc=
+        bh=/eT6EXaXfAgPUtCDoo+js557olCIIOh9kVJvS1JST3g=;
+        b=kjttK/Rm+M4al45/rjFmEl/wS7VkhKUlnYJug9F6xG72uvXrbHl6MfmeekRg+W5X+3
+         V2I2izBwE9TAWrvoNJ4zYSNDGye/sqG/o0C5sMx5jajz6a7nVaRPxe8ur2JG4ZNZOF9G
+         AFZDacG6evB3SPa54aeOQC8zR4nhqeh2ZrcwsKiY8Q+8wt8kVoo/t5y1371NRBo1xt9v
+         Wy+yAgTszrgF1oX6k322YBOPiSlH4r25/z0jOWlMvNy3Q4Pty9TMPY5dhEp3DEBX6moM
+         50oRG4y09oUyi7ErO8NzO9OC/+50yOr1J3V+oT+BEj2YkkFmfD2le1iRSx7RHzrGyUhj
+         MRHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755185463; x=1755790263;
+        d=1e100.net; s=20230601; t=1755186242; x=1755791042;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P81sLlQTBntaiAmYzutesJIvj0Q6YtF/nY9RwqB2OPg=;
-        b=c7otjEUuChTBFIX2Ze9rhHCN+fCB/7s07c2FDdi2ktD3J/eALUW/IRtE5ibaxMKEBx
-         0zPzxD3yz5NLsSEZVSID5LKAmKsqqmyQ/2LrTl355l5/Kei6rwpuRdtVmUlr0JF5mpAX
-         QB0oCDV4A8j25bD3XiWXN8KctRVqelQAQhW3rYAvnwZdFMjPyBf9SENBBEZQ2Bvjsu7B
-         ykUEIKlibwf+TJEca39yHKU3RwgclmAUG5R58P//6s/KN8cLrFBcFVJK++diQ9WG1qKU
-         D8sNlM77U/F43Wq9RW6MTzMtqXgwc7hO+mrL8cd+4uScRj79EKyc35IyIotyYhlnnA+m
-         9S+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVBxNo/vhDLpNrvfwBFyoTU7QwcxQjWfz2iOj4zEKXPEEk08jgNt3x5NjLVkMmDDT6fxKkBs6M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpXS9EBukgkDjkAVzYPU4aby87GeoC5kRAub/n5xBEB4OYu+4W
-	WmNN4sP0I+k29+Fg3sQdmEnEvyBLVg/h5/AO9S32bZ4Py96ISzaNCUre4VqQ5lfeZj0=
-X-Gm-Gg: ASbGncuYLkFgV51cDOn0Fd3ehWO8dQVfCdSFZ68SFRPpj+wBxEoWNcSR0twEez3gcRs
-	l1u7Qo8C5veVQ5MysASS/wakEMnCNdmamWypwKXzhNQnx/JoEuSmC3Wm0Dfgz8zuihqEVkuDaCR
-	r6bEeFRSbo9Z8+Uvz+AkWwqB5e8m0AordJ70ijYMEYCziK3a0l9bzR2QiW6L+IZcTgFxs95S558
-	1fHi0Brh6be5ETVRGcB6B03DAJTSyFnnyo8fbM4t9FlfBGChI9bjpxjNGhx8mK8AoXSxPOJnwm0
-	pUzjw00VO9NOlUGhnCGM8Y5xH1ykiuHAAujanHBbbI5eP+b6/X/P+IymBSj7ruuia/A62j1muPO
-	Cky8fjqk/Zq3hoIKx6diNO1fwbC88Pj0iCkiJMvajR8E7JA==
-X-Google-Smtp-Source: AGHT+IHqEzRf3rffyzPsHD2EKsF4U453EP+95KNO41JbKJnPnjn6DHb2sPXPvKuMmoj+GWLiCfXedQ==
-X-Received: by 2002:a05:6602:148a:b0:87c:38f7:556a with SMTP id ca18e2360f4ac-88433c9b735mr588192239f.8.1755185438769;
-        Thu, 14 Aug 2025 08:30:38 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-883f18d5d77sm535160439f.14.2025.08.14.08.30.37
+        bh=/eT6EXaXfAgPUtCDoo+js557olCIIOh9kVJvS1JST3g=;
+        b=wHIJj4MIUc4LOIeVf338zsl9a/B72G356RIkn/ANM9OnBe8BIOHFH6HV3ne1LRlsGA
+         6hJV0Kf/zs10Nb7NG6bGkKZ+IDneITtBZv/x/PZmUEMSq3W+VJrLVKorYG7kHy/piTF2
+         ub8pHj1Zcr3MI1EsENr0+ULatZWlc2nBn6Za1SFFiIVCMBGwmiAVvMKiJcuHZnhLmrv2
+         Azxb1N+0umZ+VJnBoOvVWDEj9lkgltVEPgYyOmwPMreXtl+yQIu75LSlHrqKJ0m+RGlO
+         Kf7YtAh/e4GmN0d39kv6cXH740Rjw/xJlCSyVGqOpEj0d0wy4OhUWgeqjYeKHhRR+ViU
+         20bw==
+X-Forwarded-Encrypted: i=1; AJvYcCUzF4fC4jKMDePp6ibyUC2PP/faLK8lSbLLi4cA6WfsJAZHcl9ua5HirOGkjqyV5hg0rxZDjBs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYyA25/D5aN7RmnugMJthfvLAcW82A4tH195rAmG+j5hT/FE4d
+	i0ioatQH8ZLUzo8ncSSYLSWhXl/aN0bzYn1NAbAk7Q/tnTcLcA32E5ag
+X-Gm-Gg: ASbGncs8Ko4uIdlPF1OYQeWdrFYBdW7XvqaK8X7L9M0QOXAiIpizpanRLulPJMpNli/
+	NMoiTskre04p+rcFrP5Sn/VzAOL9R0Qofn9fYM4AN3qGQCZXTd88OmpdWaTXZFxOSa8XRHIqUtL
+	8CuYNAC+JXcjs+oIKEtuxBXdZsABEpF0Vd63IIAj9UeMTSBf+pPFiODXpWi+A7biIwPzGrfYjFh
+	EII8+4nTmcjM0VcJHiXihWzfYLqdg2Dh4t7tLZhtLRRm+hj1Y2Cp3+X1niRHgRzusoOC/46SNG2
+	w01AMoPexjejPH+aQ0QQSFg9tErT4IDOtwsmKYhY+SViyOfqux12aXnlaigaHc647NH5E5KPQuE
+	2zo8j2usT9lniwvYATU+bnPseFKg1Y2miFLcu3h5aybf7VQ==
+X-Google-Smtp-Source: AGHT+IEUyPPY/ilyCvI0pwfT8QaROBfvAnjlt5odJQI/7Ysk04frv8GmG9vqxGJ2NZBMPkYNXsa7Qw==
+X-Received: by 2002:a05:6000:1445:b0:3b8:d0bb:7554 with SMTP id ffacd0b85a97d-3b9e4158a5bmr3254886f8f.7.1755186242191;
+        Thu, 14 Aug 2025 08:44:02 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325::26f? ([2620:10d:c092:600::1:64dc])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ba50f369ecsm2612704f8f.48.2025.08.14.08.44.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Aug 2025 08:30:38 -0700 (PDT)
-Message-ID: <08a4b41b-fdcc-4104-b02c-ec28078ae80a@linuxfoundation.org>
-Date: Thu, 14 Aug 2025 09:30:36 -0600
+        Thu, 14 Aug 2025 08:44:01 -0700 (PDT)
+Message-ID: <001d822f-2f78-4ba5-b29f-23ec1813d3d4@gmail.com>
+Date: Thu, 14 Aug 2025 16:45:19 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,46 +67,78 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] print: fix spelling error in message
-To: Madhur Kumar <madhurkumar004@gmail.com>, aconole@redhat.com,
- echaudro@redhat.com, i.maximets@ovn.org, shuah@kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- dev@openvswitch.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20250814144916.338054-1-madhurkumar004@gmail.com>
+Subject: Re: netconsole: HARDIRQ-safe -> HARDIRQ-unsafe lock order warning
+To: Breno Leitao <leitao@debian.org>, Mike Galbraith <efault@gmx.de>,
+ paulmck@kernel.org, kuba@kernel.org
+Cc: LKML <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
+ boqun.feng@gmail.com
+References: <fb38cfe5153fd67f540e6e8aff814c60b7129480.camel@gmx.de>
+ <oth5t27z6acp7qxut7u45ekyil7djirg2ny3bnsvnzeqasavxb@nhwdxahvcosh>
 Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250814144916.338054-1-madhurkumar004@gmail.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <oth5t27z6acp7qxut7u45ekyil7djirg2ny3bnsvnzeqasavxb@nhwdxahvcosh>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 8/14/25 08:49, Madhur Kumar wrote:
-
-Missing changelog - commit summary log is missing the subsystem
-details - selftests/net: ------
-
-> Signed-off-by: Madhur Kumar <madhurkumar004@gmail.com>
-> ---
->   tools/testing/selftests/net/openvswitch/ovs-dpctl.py | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+On 8/14/25 11:16, Breno Leitao wrote:
+> Hello Mike,
 > 
-> diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-> index 8a0396bfa..b521e0dea 100644
-> --- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-> +++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-> @@ -1877,7 +1877,7 @@ class OvsPacket(GenericNetlinkSocket):
->                       elif msg["cmd"] == OvsPacket.OVS_PACKET_CMD_EXECUTE:
->                           up.execute(msg)
->                       else:
-> -                        print("Unkonwn cmd: %d" % msg["cmd"])
-> +                        print("Unknown cmd: %d" % msg["cmd"])
->               except NetlinkError as ne:
->                   raise ne
->   
+> On Wed, Aug 13, 2025 at 06:14:36AM +0200, Mike Galbraith wrote:
+>> [  107.984942] Chain exists of:
+>>                   console_owner --> target_list_lock --> &fq->lock
+>>
+>> [  107.984947]  Possible interrupt unsafe locking scenario:
+>>
+>> [  107.984948]        CPU0                    CPU1
+>> [  107.984949]        ----                    ----
+>> [  107.984950]   lock(&fq->lock);
+>> [  107.984952]                                local_irq_disable();
+>> [  107.984952]                                lock(console_owner);
+>> [  107.984954]                                lock(target_list_lock);
+> 
+> Thanks for the report. I _think_ I understand the problem, it should be
+> easier to see it while thinking about a single CPU:
+> 
+>   1) lock(&fq->lock); 			// This is not hard irq safe log
+>   2) IRQ					// IRQ hits the while the lock is held
+>   2.1) printk() 				// WARNs and printk can in fact happen during IRQs
+>   2.2) netconsole subsystem 		/// target_list_lock is not important and can be ignored
+>   2.2) netpoll 				// net poll will call the network subsystem to send the packet
+>   2.3) lock(&fq->lock);			// Try to get the lock while the lock was already held
+>   3) Dead lock!
+> 
+> Given fq->lock is not IRQ safe, then this is a possible deadlock.
+> 
+> In fact, I would say that FQ is not the only lock that might get into
+> this deadlock.
+> 
+> Possible solutions that come to my mind:
+> 
+> 1) make those lock (fq->lock and TX locks) IRQ safe
 
-Look at the submitting patches documentation to learn how to write
-commit summary, logs, and how to submit patches in general.
+And I'm pretty sure the list is not exhaustive.
 
-thanks,
--- Shuah
+>   * cons: This has network performance penalties, and very intrusive.
+> 2) Making printk from IRQs deferred. Calling `printk_deferred_enter` at
+>     IRQs handlers ?!
+
+It'd only help if the deferred printk doesn't need the
+console_lock / doesn't disable irqs.
+
+>   * Cons: This will add latency to printk() inside IRQs.
+> 3) Create a deferred mechanism inside netconsole, that would buffer and
+>     defer the TX of the packet to outside of the IRQs.
+>     a) Basically on netconsole, check if it is being invoke inside an
+>     IRQ, then buffer the message and it it at Softirq/task context.
+>   * Cons: this would use extra memory for printks() inside IRQs and also
+>     latency (netconsole only).
+
+That should work, we basically need to pull xmit out of the
+console_lock protected section, and deferring is not a bad option
+
+> Let me add some other developers who might have other opinions and help
+> to decide what is the best approach.
+
+-- 
+Pavel Begunkov
+
