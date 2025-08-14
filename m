@@ -1,83 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DE22580D7;
-	Thu, 14 Aug 2025 08:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E8B1FDE01;
+	Thu, 14 Aug 2025 08:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755160188; cv=none; b=DY+hqeAJkVysTlSwNe3oO0fxf9B6kVQ4bGdRUJq7tjMfLn5TrXiMa7TLwGY1sNZjjZaBYoObHIkpduIV6hGVr/zzI/KuJporV8+ufcDIMLnimeYCb+ktpkf4R755bnGb2pWgeYwLANGr9nyqhUeuAQA76BAK8it6fMyt2iy+8UM=
+	t=1755160294; cv=none; b=BqvyKK2nh9ld846AEuvj6ozK1lq+f971JYOpXVLHRGYX9GbeKLt+3wwiJSx02H+IqyJntSTD3elMoor/tKa5jLo/V8p/ALM5G3lARrJlw/a96eCrOgVBkb45iDlxKdJ7P7FSf/6Jc9n/4NikORti2ua4KLtECMew+nTnYb0mOJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755160188; c=relaxed/simple;
-	bh=czB9BQFUSwV/+y45czm/RfvfKjNZIL9R6PoXdqY73Hc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kjwt9uFCFU8QGShMEBsMdxCZROlp6msNJxZdQBtlQXOjxOrKKi+MpCLOAaYoCjHUbyEv05EVB1gni1mNv8lCB4XGWOHgARZ0gKsNj7mD8yVcwk7NL7Rd78iw821jdNwaZS4OxsBLZfUJX4Qx1Q9Dk8/itn8oKFc4VakFTeol2a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gpKKgtsd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755160294; c=relaxed/simple;
+	bh=JetMEFAfY4oO5jtm61uNtrm/1VUC8x8YVTQesqMMMEw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rk89r02L0igw8I1Zv1zelRasl5ttV9WL/xN8W6dO5QECRY3he2uEB0Uwp7u++CjsVNloDHRNB9Z5mi6a0k53tr8TFqeqV63OwGjoJAmszKQvw1ypEEc3BST+pmBzQ+96ndbJeDqB2mQc1R5iHui/lfs1Gr0wvXIffo8WLL6mQw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=cywjB4fp; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gpKKgtsd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67BBC4CEF7;
-	Thu, 14 Aug 2025 08:29:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755160188;
-	bh=czB9BQFUSwV/+y45czm/RfvfKjNZIL9R6PoXdqY73Hc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gpKKgtsd6bZYAKDZj6uqmdK41sXqXoT81mI+N6HfapbmEVGrDCYGUa2AQ1wiK5bwO
-	 QLnzgxc4sotDIP5DfgrRGM0w2xY7sEpjzrBHuOQCWKKDq/MgeBxRDEjVMtnc+jZDsf
-	 LIB7FQlpoxqZJbqVQiQJKzGAmfK8r/ub+hbFrgd62AnaFiXT+c2gV5XqEBbT6FzZrJ
-	 5dPy6pz+A62BmxEjYaQrREJm4IrP2NA6D/7Y1li6F5eIT31f6m7LWyocSac6qJ1INl
-	 ZBbozPIuwwMsLt5efmD7GwAvEnr+wheIvobMwpCCl+WF9icX/ZRTjtDt3e3U6b8pQZ
-	 7UQUEitABmgmQ==
-Date: Thu, 14 Aug 2025 10:29:45 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Wei Fang <wei.fang@nxp.com>, "robh@kernel.org" <robh@kernel.org>, 
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
-	"richardcochran@gmail.com" <richardcochran@gmail.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, 
-	Vladimir Oltean <vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>, 
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>, 
-	"pabeni@redhat.com" <pabeni@redhat.com>, "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>, 
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"festevam@gmail.com" <festevam@gmail.com>, "F.S. Peng" <fushi.peng@nxp.com>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: [PATCH v3 net-next 03/15] dt-bindings: net: add an example for
- ENETC v4
-Message-ID: <20250814-finicky-tall-wolverine-6a5b90@kuoka>
-References: <20250812094634.489901-1-wei.fang@nxp.com>
- <20250812094634.489901-4-wei.fang@nxp.com>
- <aJtR4j9+w5fVsJL4@lizhi-Precision-Tower-5810>
- <PAXPR04MB8510925387F9F72A8E99AB82882AA@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <aJyq2h+y+KBjqmsr@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="cywjB4fp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1755160292; x=1786696292;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=JetMEFAfY4oO5jtm61uNtrm/1VUC8x8YVTQesqMMMEw=;
+  b=cywjB4fp+qz+jM5yYiUk+euoIENxJ23AuXYi0CCgXl44XFydU1scbQRN
+   s5vRoUaCkQbvXheZNrndpNZpvnt3YuPZoiudqbrXPFqDrWD/7auQ7a4KK
+   tK+FdzKx4UdC9Agsz5nHBs9JgP6bXMW86/oEvZpn9dWQRBvbCbhYw8oNZ
+   jmSADVzY2idyqBpy3+ptMKxxwC7iDaoe9VocnswhJJa0yd8VeQwDsUHTv
+   q//Uk7qUmUiRtcQ6+DCCoW8onqoUDP7whpS6BFtTbf06og24k0yN3OlfK
+   AalrV8RiGWsTt+HfBH+MVC1Pojrwab5eHHkktvw/aq8xq+PtMC2x1i5xG
+   Q==;
+X-CSE-ConnectionGUID: sG1idv10QAqjPnfZxhk11w==
+X-CSE-MsgGUID: wHpDMKkgSOOE+JSOIkqK5Q==
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
+   d="scan'208";a="45178587"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 14 Aug 2025 01:31:31 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Thu, 14 Aug 2025 01:31:09 -0700
+Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.44 via Frontend Transport; Thu, 14 Aug 2025 01:31:07 -0700
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <richardcochran@gmail.com>, <o.rempel@pengutronix.de>,
+	<alok.a.tiwari@oracle.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>
+Subject: [PATCH net-next v4 0/4] net: phy: micrel: Add support for lan8842
+Date: Thu, 14 Aug 2025 10:26:20 +0200
+Message-ID: <20250814082624.696952-1-horatiu.vultur@microchip.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aJyq2h+y+KBjqmsr@lizhi-Precision-Tower-5810>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Wed, Aug 13, 2025 at 11:10:18AM -0400, Frank Li wrote:
-> On Wed, Aug 13, 2025 at 01:38:55AM +0000, Wei Fang wrote:
-> > > On Tue, Aug 12, 2025 at 05:46:22PM +0800, Wei Fang wrote:
-> > > > Add a DT node example for ENETC v4 device.
-> > >
-> > > Not sure why need add examples here? Any big difference with existed
-> > > example?
-> > >
-> >
-> > For enetc v4, we have added clocks, and it also supports ptp-timer
-> > property, these are different from enetc v1, so I think it is better to
-> > add an example for v4.
-> 
-> If there are not big change, needn't duplicate one example at yaml file,
-> the content should be in dts file already. Pass DTB_CHECK should be okay.
+Add support for LAN8842 which supports industry-standard SGMII.
+While add this the first 3 patches in the series cleans more the
+driver, they should not introduce any functional changes.
 
-Two new properties is on the edge of justification of new example. I am
-fine with both - having this patch and dropping it.
+v3->v4:
+- add missing patch, the first patch was drop by mistake in previous
+  version
+- update lanphy_modify_page_reg to print err in readable form and outside
+  of lock
 
-Best regards,
-Krzysztof
+v2->v3:
+- add better defines for page numbers
+- fix the statis->tx_errors, it was reading the rx_errors by mistake
+- update lanphy_modify_page_reg to keep lock over all transactions
+
+v1->v2:
+- add the first 3 patches to clean the driver
+- drop fast link failure support
+- implement reading the statistics in the new way
+
+Horatiu Vultur (4):
+  net: phy: micrel: Start using PHY_ID_MATCH_MODEL
+  net: phy: micrel: Introduce lanphy_modify_page_reg
+  net: phy: micrel: Replace hardcoded pages with defines
+  net: phy: micrel: Add support for lan8842
+
+ drivers/net/phy/micrel.c   | 780 ++++++++++++++++++++++++++-----------
+ include/linux/micrel_phy.h |   1 +
+ 2 files changed, 549 insertions(+), 232 deletions(-)
+
+-- 
+2.34.1
 
