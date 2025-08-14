@@ -1,171 +1,90 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8670D1CFBA;
-	Thu, 14 Aug 2025 00:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A52F2FF671
+	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 00:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755132028; cv=none; b=W6bkMtY6pzR0URPxBj2Wpa8PKISTffWLseMhAGQgH0o0U4kL8NegBDXZgImdF78d2dOKrVz+tl1yHkPCJDLEVIIkA7pnb1l4hD3f0NJSKdDPmS8Eaq9c80ULSLXYMWo6Eet6Qk2b5Ps2pbZ5FBs4jOK6qaEgvxZpdwExsx8q7OM=
+	t=1755132897; cv=none; b=tGYIkNFmfwhUG+2v6OzWoojzKMKaC8IDg+eeXwyag9Wqi0wvD/RPPcWUWqPOrR8SDx02HkkLQMjqa2J4eFDVIoJTbHXXvCHakbYFpWAmGDc+2JSxxlvoGUP2xI7CxYcWZyhyqF4ZO1Ic8ygs2Sh7HQxlZRjAzZIH8W835Iud1v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755132028; c=relaxed/simple;
-	bh=TN6yIRy/n3GAXu3+Cz6SHsLoEcKFJfcymnW3CHC41C4=;
+	s=arc-20240116; t=1755132897; c=relaxed/simple;
+	bh=JydQgnfv1smbfa7kiZsNg0dRzfJLvvk2h3GZdX1R0Ow=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cSjQvQCA8T827mMVXHAxfS9w2Pio/rosbeQAJ0GyeQ2flouhrRksI3tm8rVNNF+4PEXPgvHMxZAkfZRomT62uwyRqNB316MYRVui0y1cZvciSr3scZk3ymmAWRjWvC0RjNqCWagayFCNnm0DyBq5pI/mlrOZzNdfaiL4cNaDClE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FfrfAHCs; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=XUQK4zXk+FJTjtQR48lPHKK5+wyO7kE6oRMyA3Et/B4JJRG8g4EGSMCJ9CP4zzgYeTIeNLeI8x4kZnmzUQ5F5RWM+np74EH18sg6wjapIwR9+kF6cGy/OuKRDZcXyDdQs4SqY2HmOXP/tnV4VuPjHnzQ++Vs0V/IkW4x79aM5aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=j6HQjTqi; arc=none smtp.client-ip=91.218.175.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FfrfAHCs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755132026; x=1786668026;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=TN6yIRy/n3GAXu3+Cz6SHsLoEcKFJfcymnW3CHC41C4=;
-  b=FfrfAHCsmTz1bXgAU6DRqc2T2Rbq7h4HlQKFl1gJAfIPZNKjYwlEew9y
-   2AjWGWSzn0S4EEkdPn+Qbv5tAvm6F4SuZ1qvtJBo7LFuhZwQWp4QIzklY
-   0DZ6n97T1SJviVZTNxp2ihhmBjETNUo0Zr79wBa7XZ90TeJiyc4sVuYrl
-   trnBTAs8hq4TrnimdzMxPxtnEPwVEkzynZSene0SeavaqpxU89FrQplMg
-   S4HR76hCyF/1Uxn1Uh42i2mXzKDu8dMhY15qKTt6RO8nNADj5T/a5wie5
-   WU1gmLWbAOBHUT5+KQz4qQqMVwZ/I72nmQqHKu/lIvBXZ1ovu6LbZLYtn
-   g==;
-X-CSE-ConnectionGUID: ARk6lH2QTW+e7DCLS4fZjA==
-X-CSE-MsgGUID: Ww4LaJb9Sy2cjXqBTbYhjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="68521636"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="68521636"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 17:40:25 -0700
-X-CSE-ConnectionGUID: 3UkUsY5oR+mykk3Pf1Th3Q==
-X-CSE-MsgGUID: ba5Gof1LSTa66Z6VAA22jg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="203795622"
-Received: from linux.intel.com ([10.54.29.200])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 17:40:25 -0700
-Received: from [10.124.222.231] (unknown [10.124.222.231])
-	by linux.intel.com (Postfix) with ESMTP id 82EC720B571C;
-	Wed, 13 Aug 2025 17:40:23 -0700 (PDT)
-Message-ID: <59308229-24ed-4b8a-b398-cc47c61dfc47@linux.intel.com>
-Date: Wed, 13 Aug 2025 17:40:17 -0700
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="j6HQjTqi"
+Message-ID: <e6c8fa06-c76c-49e7-a027-0a7b610f1e9c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1755132890;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WdHhV4i8i+lWGHS2gl9FLlu2TgUgJbbs4bD/Zxld7c4=;
+	b=j6HQjTqifsSO2Uppl1+E8juWlz85WB6Puvvo38zR0af1UA37Dw9SimZLmZuB9dm1eOcmBg
+	ClajNZt92ETnf/J4hcXbQq43iGyGJsz35Oj+8z3oHgpyWVoPyIp+xlvpV5UK78DWgLMmi1
+	7Au6epSZeq1y5zb1TVkFgVNw6Q6r0ZU=
+Date: Wed, 13 Aug 2025 17:54:43 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] PCI/ERR: Remove remnants of .link_reset() callback
-To: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>
-Cc: Riana Tauro <riana.tauro@intel.com>,
- Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>,
- "Sean C. Dardis" <sean.c.dardis@intel.com>,
- Terry Bowman <terry.bowman@amd.com>, Niklas Schnelle
- <schnelle@linux.ibm.com>, Linas Vepstas <linasvepstas@gmail.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver OHalloran <oohall@gmail.com>,
- Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- Edward Cree <ecree.xilinx@gmail.com>, linux-net-drivers@amd.com,
- James Smart <james.smart@broadcom.com>,
- Dick Kennedy <dick.kennedy@broadcom.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- linux-scsi@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org
-References: <cover.1755008151.git.lukas@wunner.de>
- <1d72a891a7f57115e78a73046e776f7e0c8cd68f.1755008151.git.lukas@wunner.de>
+Subject: Re: [PATCH v3 net-next 12/12] net-memcg: Decouple controlled memcg
+ from global protocol memory accounting.
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>,
+ Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Tejun Heo <tj@kernel.org>,
+ Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Mina Almasry <almasrymina@google.com>,
+ Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+ mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ bpf@vger.kernel.org
+References: <20250812175848.512446-1-kuniyu@google.com>
+ <20250812175848.512446-13-kuniyu@google.com>
+ <w6klr435a4rygmnifuujg6x4k77ch7cwoq6dspmyknqt24cpjz@bbz4wzmxjsfk>
+ <CAAVpQUCU=VJxA6NKx+O1_zwzzZOxUEsG9mY+SNK+bzb=dj9s5w@mail.gmail.com>
+ <oafk5om7v5vtxjmo5rtwy6ullprfaf6mk2lh4km7alj3dtainn@jql2rih5es4n>
 Content-Language: en-US
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <1d72a891a7f57115e78a73046e776f7e0c8cd68f.1755008151.git.lukas@wunner.de>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+In-Reply-To: <oafk5om7v5vtxjmo5rtwy6ullprfaf6mk2lh4km7alj3dtainn@jql2rih5es4n>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
+On 8/13/25 1:53 PM, Shakeel Butt wrote:
+> What I think is the right approach is to have BPF struct ops based
+> approach with possible callback 'is this socket under pressure' or maybe
+> 'is this socket isolated' and then you can do whatever you want in those
+> callbacks. In this way your can follow the same approach of caching the
+> result in kernel (lower bits of sk->sk_memcg).
+> 
+> I am CCing bpf list to get some suggestions or concerns on this
+> approach.
 
-On 8/12/25 10:11 PM, Lukas Wunner wrote:
-> Back in 2017, commit 2fd260f03b6a ("PCI/AER: Remove unused .link_reset()
-> callback") removed .link_reset() from struct pci_error_handlers, but left
-> a few code comments behind which still mention it.  Remove them.
->
-> The code comments in the SolarFlare Ethernet drivers point out that no
-> .mmio_enabled() callback is needed because the driver's .error_detected()
-> callback always returns PCI_ERS_RESULT_NEED_RESET, which causes
-> pcie_do_recovery() to skip .mmio_enabled().  That's not quite correct
-> because efx_io_error_detected() does return PCI_ERS_RESULT_RECOVERED under
-> certain conditions and then .mmio_enabled() would indeed be called if it
-> were implemented.  Remove this misleading portion of the code comment as
-> well.
->
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> ---
+I have quickly looked at the set. In patch 11, it sets a bit in sk->sk_memcg.
 
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+On the bpf side, there are already cgroup bpf progs that can do bpf_setsockopt 
+on a sk, so the same can be done here. The bpf_setsockopt does not have to set 
+option/knob that is only available in the uapi in case we don't want to expose 
+this to the user space.
 
->   drivers/net/ethernet/sfc/efx_common.c       | 3 ---
->   drivers/net/ethernet/sfc/falcon/efx.c       | 3 ---
->   drivers/net/ethernet/sfc/siena/efx_common.c | 3 ---
->   drivers/scsi/lpfc/lpfc_init.c               | 2 +-
->   4 files changed, 1 insertion(+), 10 deletions(-)
->
-> diff --git a/drivers/net/ethernet/sfc/efx_common.c b/drivers/net/ethernet/sfc/efx_common.c
-> index 5a14d94163b1..e8fdbb62d872 100644
-> --- a/drivers/net/ethernet/sfc/efx_common.c
-> +++ b/drivers/net/ethernet/sfc/efx_common.c
-> @@ -1258,9 +1258,6 @@ static void efx_io_resume(struct pci_dev *pdev)
->   
->   /* For simplicity and reliability, we always require a slot reset and try to
->    * reset the hardware when a pci error affecting the device is detected.
-> - * We leave both the link_reset and mmio_enabled callback unimplemented:
-> - * with our request for slot reset the mmio_enabled callback will never be
-> - * called, and the link_reset callback is not used by AER or EEH mechanisms.
->    */
->   const struct pci_error_handlers efx_err_handlers = {
->   	.error_detected = efx_io_error_detected,
-> diff --git a/drivers/net/ethernet/sfc/falcon/efx.c b/drivers/net/ethernet/sfc/falcon/efx.c
-> index b07f7e4e2877..0c784656fde9 100644
-> --- a/drivers/net/ethernet/sfc/falcon/efx.c
-> +++ b/drivers/net/ethernet/sfc/falcon/efx.c
-> @@ -3128,9 +3128,6 @@ static void ef4_io_resume(struct pci_dev *pdev)
->   
->   /* For simplicity and reliability, we always require a slot reset and try to
->    * reset the hardware when a pci error affecting the device is detected.
-> - * We leave both the link_reset and mmio_enabled callback unimplemented:
-> - * with our request for slot reset the mmio_enabled callback will never be
-> - * called, and the link_reset callback is not used by AER or EEH mechanisms.
->    */
->   static const struct pci_error_handlers ef4_err_handlers = {
->   	.error_detected = ef4_io_error_detected,
-> diff --git a/drivers/net/ethernet/sfc/siena/efx_common.c b/drivers/net/ethernet/sfc/siena/efx_common.c
-> index a0966f879664..35036cc902fe 100644
-> --- a/drivers/net/ethernet/sfc/siena/efx_common.c
-> +++ b/drivers/net/ethernet/sfc/siena/efx_common.c
-> @@ -1285,9 +1285,6 @@ static void efx_io_resume(struct pci_dev *pdev)
->   
->   /* For simplicity and reliability, we always require a slot reset and try to
->    * reset the hardware when a pci error affecting the device is detected.
-> - * We leave both the link_reset and mmio_enabled callback unimplemented:
-> - * with our request for slot reset the mmio_enabled callback will never be
-> - * called, and the link_reset callback is not used by AER or EEH mechanisms.
->    */
->   const struct pci_error_handlers efx_siena_err_handlers = {
->   	.error_detected = efx_io_error_detected,
-> diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-> index 4081d2a358ee..cf08bb5b37c3 100644
-> --- a/drivers/scsi/lpfc/lpfc_init.c
-> +++ b/drivers/scsi/lpfc/lpfc_init.c
-> @@ -14377,7 +14377,7 @@ lpfc_sli_prep_dev_for_perm_failure(struct lpfc_hba *phba)
->    * as desired.
->    *
->    * Return codes
-> - * 	PCI_ERS_RESULT_CAN_RECOVER - can be recovered with reset_link
-> + *	PCI_ERS_RESULT_CAN_RECOVER - can be recovered without reset
->    * 	PCI_ERS_RESULT_NEED_RESET - need to reset before recovery
->    * 	PCI_ERS_RESULT_DISCONNECT - device could not be recovered
->    **/
+The cgroup bpf prog (BPF_CGROUP_INET_SOCK_CREATE) can already be run when a 
+"inet" sock is created. This hook (i.e. attach_type) does not have access to 
+bpf_setsockopt but should be easy to add.
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+For more comprehensive mem charge policy that needs new bpf hook, that probably 
+will need struct_ops instead of another cgroup attach_type but that will be 
+implementation details.
