@@ -1,243 +1,112 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7262E718B;
-	Thu, 14 Aug 2025 16:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7F6266574;
+	Thu, 14 Aug 2025 16:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755188646; cv=none; b=sxO4FpFbov69eEAZd6Na8loJn59fo7TSHh9yif6t73hjYk9boABTjoc3QuiROBpUNAwkENjw8nfvxfohti75ffDf/3DsEVv/Rlp0b3VzNcmsDmm/Xg/qyDqBC51ey/wEmVcOyQBUAO+t5PsK6duFK78nUeAZIUOmm118EBceVo4=
+	t=1755189028; cv=none; b=eigLwzCDn+WiMvXmhaOujm0lZsvpAPvnwljj9tDtN5n1ApOE3m5u9VaNLScLAnhF6x2xsEGNfoCvRLQVDLzXxE8IKgtur38+Uw7++LMBfEgUc+p3icdA/+Tw9+y325KOXY5tCkvwKAWFpSRour7GwdKOqi5ShADBE83lQA2XyLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755188646; c=relaxed/simple;
-	bh=fX1ATbxdejOvQXo0hSRFuVGoykiEUL0jPzLZyhO30go=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Q7Z5Ai05P+1E+8oMGUgFsgyfD/T1ApbtfqwV/U4FCgrVRCrUmJk3Fu6rSlYbrUuEkygCyDefU1t8xi6Ts7iRn5OMjn9Znn4qDtjTaQsS9VETA1nqFmllyCvRJwBhyXj90wzT5eZqUB9AmZwe9mubxHyvdylCJg2Eg+g7dDtdrXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (2048-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=mnS/ZOOr; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	s=arc-20240116; t=1755189028; c=relaxed/simple;
+	bh=8eTEDvbS27yrss3ut74R9MdQYKV6UwvenQ7s+8Lw6ic=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LDBnNfBrEzLROGegFrCXbmux+QxyrkD5KZr26OM516GDEk+PPRqmpJdJhal2EwiqjDeRTkSyHlSQmduDyq72drquz/3/THLoNDML9FfxxGL+WAC1LODLIvWpck82Re8GCowg1gcbZbrzvmTDpcJLHhdPm6zbTBsRqw2bw9ARyOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cAiQmYbD; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="mnS/ZOOr"
-Received: from tu-ex02.tu-dortmund.de (tu-ex02.tu-dortmund.de [129.217.131.228])
-	by unimail.uni-dortmund.de (8.18.1.10/8.18.1.10) with ESMTPS id 57EGNwsi025442
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Aug 2025 18:23:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; d=tu-dortmund.de; s=1; c=relaxed/relaxed;
-	t=1755188638; h=from:subject:to:date:message-id;
-	bh=fX1ATbxdejOvQXo0hSRFuVGoykiEUL0jPzLZyhO30go=;
-	b=mnS/ZOOrdy/OJHmDcy5OsHzn07eXqh6cAgYpMoMX1GXpSKGdLg43lRb5LU/no6aFTiwun9jegyr
-	QiRcrcLl26D6hl4VX5B6B9NZDtJlEGk2y7ykS3oGv9mVaZgJr1WVqmWRND6GK5M5v3xsKt5k8STcN
-	buVFslzaVDz/Nf+ZP7hL7dC4tU/5pMrj8vtFLVDpViV9rz+uyzQvJ5iTRxdQU64/hppDmkBy/plCX
-	WTc2iv25JTKq0NYSqrGbNzmByyi1vBbZVwhFjwv3RofBLl4zlBLefyxLpv73kCJhminuURZ7TKCMK
-	5EY3jaNAcf8VXPtBVb/D0LklPSBjbNnWQLUA==
-Received: from [IPV6:2a01:599:428:1102:83fd:984f:a177:2788] (129.217.131.221)
- by tu-ex02.tu-dortmund.de (2001:638:50d:2000::228) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.58; Thu, 14 Aug 2025 18:23:57 +0200
-Message-ID: <f16b67e6-8279-4e52-82ca-f2ea68753f70@tu-dortmund.de>
-Date: Thu, 14 Aug 2025 18:23:56 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cAiQmYbD"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b471740e488so1125790a12.1;
+        Thu, 14 Aug 2025 09:30:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755189026; x=1755793826; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XJUpVtdQJ13ix1MWZWj9H2jS6xpOO2nJmtE7Ac5hyE0=;
+        b=cAiQmYbDf4MYnJqGg5XDEhNO08KwwGDix7UpLmcPuwc6Y0Ca6qEOf9qXPZ5cU0lCIY
+         B8dV+ZaIuFw/gZr+Lz4GsCjgPB4kI0JTX76QfqpNYdsXmAzRBicFkFui0yO3l6LHunKA
+         llZ0SIrUT4buE4K37SSpZRo6kHQAf8/7OQEiFJnLz8GCv8mw7mQKmhKg6G2RcKrHJ7yn
+         22MJFJHDMyqXNr+EPqNfaKXrN+YaK/Sj9Zh4nGVMyC9IllEgIUkCWx/ehypKgp0AzQVk
+         VMtF61Pl/Y3Subf7iXt2C2jZ8Lurcbm94Arx44O4bpXCnTSuq8kF6IZXlPJfgMjx05dh
+         ZtzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755189026; x=1755793826;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XJUpVtdQJ13ix1MWZWj9H2jS6xpOO2nJmtE7Ac5hyE0=;
+        b=F0qDSbpHBJ0n1pXau7dw7RcLbJbIFJk47PZeoj7wtHFtYZE5GBaUyUX/YZ/SSjOsLY
+         aNpos8+WZsD7cKEEsVu2GNVb0pQjlx7Snup+clm3y8Adu2qf9xQ2+nXq7d+1/BlvytNc
+         2WBUP2PFfAWwxnthRyLQx7ZuQsGSb0/n6jtZO/RXWwMBqlddTyDKkDW7Jrj9BxX2UwFz
+         3myDX0ipMcNbKkpWbitYq+COU/5MjdYBA4RX1khfzis3bHYAiaaHntGx/GSMQASX5aiR
+         KWFAfjCWia9Ti0WiKQ6NgTGjUOBNe3N/lW3tAD3AGPk3mjAJrMKm5xS8jLJkcu/AgJ1N
+         dqmg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0BX6Dfh8vJTzxfhhpSHnXNVvNwsZhQxeHOT8qskkWAyEEr/xWw7HHZB2zIBpHOYv1lySnXNnv@vger.kernel.org, AJvYcCXq56mAb5CWHXaMKqRg6aYLgznKoBwjR0pivVZmGUj3+n6YGQ6tKM/NbnaNEstbH2mfEQzA1N1t6c/KJbY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQxhKaVwoVxIyI9Kl5A04U61YX8oZCGj3Elb+v/h2hOEzqBOM4
+	jIH27MTyoeYur512zunCtpZWgWVPwI8DR8ay5G/b+HMDxb/Z+66q1pWiwcilbw==
+X-Gm-Gg: ASbGnculPiQdu5hHOxd0PgdGJOtEpYbC2WszIqVI9Mb+OJ1BmL2JZx5r08ogIje3nJa
+	+rx7O3dLfk9Cy74czdtQLobPMG2svW36iPyN7CQFbED7xwiXYUvH9PHYyRptc2qTM5uoRZFqSu+
+	FoGqrdTsm4/xDMcGYMucCJxPkC08oXNeeEsaAbywuCMnmRk/2biBcaz09KUWtRJyfer8qLTeoJX
+	qlgEGJCFmQYnvi1CpJcoa87duskTA2tdZgIcuFl5H+w2AQC8QnrkyEciceVv1i4/KvBHHRBdJsK
+	q0O1ah6nUtAawhIJhHtgBQ9wt9zP4dEUjkGIabEkwQVnpzI/tGBJyicyWEFgogoKooYdm7UnvSC
+	TseQuybUooowfPk6NCNW+nQqEPv+8877ziFj7GppZ0jKKC34gTPO1SbclSOLtgNK56dgMYJ6bsk
+	4gvB5gWgNTxg==
+X-Google-Smtp-Source: AGHT+IFNM6MvQxFQMmvHfm8EWRclofWRxVkoIbeED3WGrsSMg5Q4XsYpxHjt33kdE4mVFnfSiZXBUg==
+X-Received: by 2002:a17:902:ea0e:b0:240:3ed3:13e7 with SMTP id d9443c01a7336-244586daab4mr58933455ad.42.1755189026182;
+        Thu, 14 Aug 2025 09:30:26 -0700 (PDT)
+Received: from chandra-mohan-sundar.aristanetworks.com ([2401:4900:1cb8:7b85:37eb:c20:7321:181])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e899adc3sm356194365ad.118.2025.08.14.09.30.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Aug 2025 09:30:25 -0700 (PDT)
+From: Chandra Mohan Sundar <chandramohan.explore@gmail.com>
+To: jiawenwu@trustnetic.com,
+	mengyuanlou@net-swift.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Chandra Mohan Sundar <chandramohan.explore@gmail.com>,
+	linux-kernel-mentees@lists.linux.dev
+Subject: [PATCH net] net: libwx: Fix the size in RSS hash key population
+Date: Thu, 14 Aug 2025 22:00:10 +0530
+Message-ID: <20250814163014.613004-1-chandramohan.explore@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH net v2] TUN/TAP: Improving throughput and latency by avoiding
- SKB drops
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        Stephen Hemminger
-	<stephen@networkplumber.org>
-CC: <jasowang@redhat.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Tim Gebauer <tim.gebauer@tu-dortmund.de>
-References: <20250811220430.14063-1-simon.schippers@tu-dortmund.de>
- <20250813080128.5c024489@hermes.local>
- <4fca87fe-f56a-419d-84ba-6897ee9f48f5@tu-dortmund.de>
- <689dfc02cf665_18aa6c29427@willemb.c.googlers.com.notmuch>
-Content-Language: en-US
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-In-Reply-To: <689dfc02cf665_18aa6c29427@willemb.c.googlers.com.notmuch>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: tu-ex06.tu-dortmund.de (2001:638:50d:2000::232) To
- tu-ex02.tu-dortmund.de (2001:638:50d:2000::228)
+Content-Transfer-Encoding: 8bit
 
-Willem de Bruijn wrote:
-> Simon Schippers wrote:
->> Stephen Hemminger wrote:
->>> On Tue, 12 Aug 2025 00:03:48 +0200
->>> Simon Schippers <simon.schippers@tu-dortmund.de> wrote:
->>>
->>>> This patch is the result of our paper with the title "The NODROP Patch=
-:
->>>> Hardening Secure Networking for Real-time Teleoperation by Preventing
->>>> Packet Drops in the Linux TUN Driver" [1].
->>>> It deals with the tun_net_xmit function which drops SKB's with the rea=
-son
->>>> SKB_DROP_REASON_FULL_RING whenever the tx_ring (TUN queue) is full,
->>>> resulting in reduced TCP performance and packet loss for bursty video
->>>> streams when used over VPN's.
->>>>
->>>> The abstract reads as follows:
->>>> "Throughput-critical teleoperation requires robust and low-latency
->>>> communication to ensure safety and performance. Often, these kinds of
->>>> applications are implemented in Linux-based operating systems and tran=
-smit
->>>> over virtual private networks, which ensure encryption and ease of use=
- by
->>>> providing a dedicated tunneling interface (TUN) to user space
->>>> applications. In this work, we identified a specific behavior in the L=
-inux
->>>> TUN driver, which results in significant performance degradation due t=
-o
->>>> the sender stack silently dropping packets. This design issue drastica=
-lly
->>>> impacts real-time video streaming, inducing up to 29 % packet loss wit=
-h
->>>> noticeable video artifacts when the internal queue of the TUN driver i=
-s
->>>> reduced to 25 packets to minimize latency. Furthermore, a small queue
->>>> length also drastically reduces the throughput of TCP traffic due to m=
-any
->>>> retransmissions. Instead, with our open-source NODROP Patch, we propos=
-e
->>>> generating backpressure in case of burst traffic or network congestion=
-.
->>>> The patch effectively addresses the packet-dropping behavior, hardenin=
-g
->>>> real-time video streaming and improving TCP throughput by 36 % in high
->>>> latency scenarios."
->>>>
->>>> In addition to the mentioned performance and latency improvements for =
-VPN
->>>> applications, this patch also allows the proper usage of qdisc's. For
->>>> example a fq_codel can not control the queuing delay when packets are
->>>> already dropped in the TUN driver. This issue is also described in [2]=
-.
->>>>
->>>> The performance evaluation of the paper (see Fig. 4) showed a 4%
->>>> performance hit for a single queue TUN with the default TUN queue size=
- of
->>>> 500 packets. However it is important to notice that with the proposed
->>>> patch no packet drop ever occurred even with a TUN queue size of 1 pac=
-ket.
->>>> The utilized validation pipeline is available under [3].
->>>>
->>>> As the reduction of the TUN queue to a size of down to 5 packets showe=
-d no
->>>> further performance hit in the paper, a reduction of the default TUN q=
-ueue
->>>> size might be desirable accompanying this patch. A reduction would
->>>> obviously reduce buffer bloat and memory requirements.
->>>>
->>>> Implementation details:
->>>> - The netdev queue start/stop flow control is utilized.
->>>> - Compatible with multi-queue by only stopping/waking the specific
->>>> netdevice subqueue.
->>>> - No additional locking is used.
->>>>
->>>> In the tun_net_xmit function:
->>>> - Stopping the subqueue is done when the tx_ring gets full after inser=
-ting
->>>> the SKB into the tx_ring.
->>>> - In the unlikely case when the insertion with ptr_ring_produce fails,=
- the
->>>> old dropping behavior is used for this SKB.
->>>>
->>>> In the tun_ring_recv function:
->>>> - Waking the subqueue is done after consuming a SKB from the tx_ring w=
-hen
->>>> the tx_ring is empty. Waking the subqueue when the tx_ring has any
->>>> available space, so when it is not full, showed crashes in our testing=
-. We
->>>> are open to suggestions.
->>>> - When the tx_ring is configured to be small (for example to hold 1 SK=
-B),
->>>> queuing might be stopped in the tun_net_xmit function while at the sam=
-e
->>>> time, ptr_ring_consume is not able to grab a SKB. This prevents
->>>> tun_net_xmit from being called again and causes tun_ring_recv to wait
->>>> indefinitely for a SKB in the blocking wait queue. Therefore, the netd=
-ev
->>>> queue is woken in the wait queue if it has stopped.
->>>> - Because the tun_struct is required to get the tx_queue into the new =
-txq
->>>> pointer, the tun_struct is passed in tun_do_read aswell. This is likel=
-y
->>>> faster then trying to get it via the tun_file tfile because it utilize=
-s a
->>>> rcu lock.
->>>>
->>>> We are open to suggestions regarding the implementation :)
->>>> Thank you for your work!
->>>>
->>>> [1] Link:
->>>> https://cni.etit.tu-dortmund.de/storages/cni-etit/r/Research/Publicati=
-ons/2025/Gebauer_2025_VTCFall/Gebauer_VTCFall2025_AuthorsVersion.pdf
->>>> [2] Link:
->>>> https://unix.stackexchange.com/questions/762935/traffic-shaping-ineffe=
-ctive-on-tun-device
->>>> [3] Link: https://github.com/tudo-cni/nodrop
->>>>
->>>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
->>>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
->>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
->>>
->>> I wonder if it would be possible to implement BQL in TUN/TAP?
->>>
->>> https://lwn.net/Articles/454390/
->>>
->>> BQL provides a feedback mechanism to application when queue fills.
->>
->> Thank you very much for your reply,
->> I also thought about BQL before and like the idea!
->
-> I would start with this patch series to convert TUN to a driver that
-> pauses the stack rather than drops.
->
-> Please reword the commit to describe the functional change concisely.
-> In general the effect of drops on TCP are well understood. You can
-> link to your paper for specific details.
->
+While trying to fill a random RSS key, the size of the pointer
+is being used rather than the actual size of the RSS key.
 
-I will remove the paper abstract for the v3 to have a more concise
-description.
-Also I will clarify why no packets are dropped anymore.
+Fix by passing an appropriate value of the RSS key.
+This issue was reported by static coverity analyser.
 
-> I still suggest stopping the ring before a packet has to be dropped.
-> Note also that there is a mechanism to requeue an skb rather than
-> drop, see dev_requeue_skb and NETDEV_TX_BUSY. But simply pausing
-> before empty likely suffices.
->
+Fixes: eb4898fde1de8 ("net: libwx: add wangxun vf common api")
+Signed-off-by: Chandra Mohan Sundar <chandramohan.explore@gmail.com>
+---
+ drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-As explained before in my reply to Jason, this patch does stop the netdev
-queue before a packet has to be dropped. It uses a very similar approach
-to the suggested virtio_net.
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
+index 5d48df7a849f..3023ea2732ef 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
+@@ -192,7 +192,7 @@ void wx_setup_vfmrqc_vf(struct wx *wx)
+ 	u8 i, j;
+ 
+ 	/* Fill out hash function seeds */
+-	netdev_rss_key_fill(wx->rss_key, sizeof(wx->rss_key));
++	netdev_rss_key_fill(wx->rss_key, WX_RSS_KEY_SIZE);
+ 	for (i = 0; i < WX_RSS_KEY_SIZE / 4; i++)
+ 		wr32(wx, WX_VXRSSRK(i), wx->rss_key[i]);
+ 
+-- 
+2.43.0
 
-> Relevant to BQL: did your workload include particularly large packets,
-> e.g., TSO? Only then does byte limits vs packet limits matter.
->
-
-No, in my workload I did not use TSO/GSO. However I think the most
-important aspect is that the BQL algorithm utilizes a dynamic queue limit.
-This will in most cases reduce the TUN queue size and reduce buffer bloat.
-
-I now have a idea how to include BQL, but first I will add TAP support in
-a v3. BQL could then be added in a v4.
-
-Thank you :)
-
-Wichtiger Hinweis: Die Information in dieser E-Mail ist vertraulich. Sie is=
-t ausschlie=C3=9Flich f=C3=BCr den Adressaten bestimmt. Sollten Sie nicht d=
-er f=C3=BCr diese E-Mail bestimmte Adressat sein, unterrichten Sie bitte de=
-n Absender und vernichten Sie diese Mail. Vielen Dank.
-Unbeschadet der Korrespondenz per E-Mail, sind unsere Erkl=C3=A4rungen auss=
-chlie=C3=9Flich final rechtsverbindlich, wenn sie in herk=C3=B6mmlicher Sch=
-riftform (mit eigenh=C3=A4ndiger Unterschrift) oder durch =C3=9Cbermittlung=
- eines solchen Schriftst=C3=BCcks per Telefax erfolgen.
-
-Important note: The information included in this e-mail is confidential. It=
- is solely intended for the recipient. If you are not the intended recipien=
-t of this e-mail please contact the sender and delete this message. Thank y=
-ou. Without prejudice of e-mail correspondence, our statements are only leg=
-ally binding when they are made in the conventional written form (with pers=
-onal signature) or when such documents are sent by fax.
