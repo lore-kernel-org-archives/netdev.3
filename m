@@ -1,54 +1,43 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEE828136F;
-	Thu, 14 Aug 2025 22:40:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14916281357
+	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 22:41:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755211256; cv=none; b=idxuMeiIT3PvQJPXfmEaWBkH+WYEKKTomTqtEdAithcVQ7JySodXYGYA6ASM0lfVSBKGnU+pF/Dp2XTGKavqFUhnULmOQtDXT+z0yywmNrp5mXacKiXQwdgmuuu/UVXs14VDKBXjsMIP8QA3VJQEt72Rgcf8uRVMWkp7dTH7xvU=
+	t=1755211320; cv=none; b=RrlozEIWO+8uZK3rUXecgWrGl7/6FcDUmGC1dGr65g1fQr15EsxcMmhRezr9i1in/h+fqPZpHfJh7/tffGJiDMUOgvZp0fxcGUDC7cdueB/wmGRsa5PyBMwm9O24q+wlf+Q1TJeMCj+nAjwiAlemiiSVTO8bMf/pDdn1kVtQYKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755211256; c=relaxed/simple;
-	bh=8G9CxDqP1jybeUHRO2NOjhgGn1Kh5z/Nj845EVD600s=;
+	s=arc-20240116; t=1755211320; c=relaxed/simple;
+	bh=3+CO5GSNK05sFZm/hXSx1v7BZfTCSFMOevY9LLg3a5A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SyvNcZ0qrHPKso7ASh7ZsxPofjOLhEELuYF9CXOLcU1KHJjZnY/5bqncQUq7P5tTihPeuCID1wrxWkqnqI498UUozu1ZUxZVFEeZj+q9BJrioUoVDy+uRW5AwmLk68bf2tGsbd/DLyF5dBuqs1B8HCTRjLtYDIRb1Ylx4KiX7A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kfgMWQ2E; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oezu8brDr1Ys+uH0H1CAORNiTXSBhTzrbPnegLW84kYdV5WOouZ0R0AsxdgEP4xm3zBgoLWcA3EqA0rZa6TZRFa9715oT0r7Il/me17YH5cG+opjaSiDfX/6sjxCmpScp3o5NPfkbK271TDanQF3HCAJtSzOBgqwUjGZDZ7XI80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eh4laDJH; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kfgMWQ2E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92AEAC4CEED;
-	Thu, 14 Aug 2025 22:40:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755211255;
-	bh=8G9CxDqP1jybeUHRO2NOjhgGn1Kh5z/Nj845EVD600s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kfgMWQ2EU4SUB4CFGqVaqHLutotWkmyR/hY/lxAoi1q1I4JYIiR4vGGKpV7Ycbb/U
-	 UU9tWmKc13L0/JNm8aMl6S6pNAcOTYyP8nNSaJzwmu0EqKRtdUTG6NZzF2AbKT48V/
-	 kHdrzy1sKYAKAmiAnn97R/fiogAM2P11An+NfxfVkrPlxw42pwgcrvE/RTT6zMfUkh
-	 ZtNc0snNGTztGfC+EvC3ZF4sy96Ig04+AmMjdef2GHAz97gD89caRB5MU7VRwPrmwJ
-	 4I7BdX8OA2imiriWQ+YviVhYxHlDMUaWKbPC2VS/xx68rfo6RRKWTesCXiTXdlz/x/
-	 QKTn+aWvXIuAQ==
-Date: Thu, 14 Aug 2025 17:40:54 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Luo Jie <quic_luoj@quicinc.com>
-Cc: linux-doc@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	linux-arm-msm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Pavithra R <quic_pavir@quicinc.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Kees Cook <kees@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	Lei Wei <quic_leiwei@quicinc.com>, Paolo Abeni <pabeni@redhat.com>,
-	Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	Suruchi Agarwal <quic_suruchia@quicinc.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, quic_kkumarcs@quicinc.com,
-	quic_linchen@quicinc.com, Philipp Zabel <p.zabel@pengutronix.de>,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v7 01/14] dt-bindings: net: Add PPE for Qualcomm
- IPQ9574 SoC
-Message-ID: <175521125408.4049104.2810229443778226424.robh@kernel.org>
-References: <20250812-qcom_ipq_ppe-v7-0-789404bdbc9a@quicinc.com>
- <20250812-qcom_ipq_ppe-v7-1-789404bdbc9a@quicinc.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eh4laDJH"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=YTVI1No4QA16QX1BBc+djTOsMW+Qo6gmJTgqHgYGrxU=; b=eh4laDJHDm2+JKMN9pu1ATYtJJ
+	gvuKarJNouVbDvbblZUb5HlOYaeVAnkqvVg2z1n/uwQ9vmc7qpQd7X9ObU3FWEvPVpJSrlrrT7piT
+	bzRc03Nu/K+7DwC7bl4UpCvUC7Ky9XNwS6wELKkV0QnpktZzY7SWeRIElAGvdIISdwMo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1umgGs-004km3-QA; Fri, 15 Aug 2025 00:18:06 +0200
+Date: Fri, 15 Aug 2025 00:18:06 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Markus Stockhausen <markus.stockhausen@gmx.de>, hkallweit1@gmail.com,
+	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, michael@fossekall.de, daniel@makrotopia.org,
+	netdev@vger.kernel.org, jan@3e8.eu
+Subject: Re: [PATCH v3] net: phy: realtek: convert RTL8226-CG to c45 only
+Message-ID: <98215f6b-9e44-466b-a671-15966ad96a6b@lunn.ch>
+References: <20250804105037.2609906-1-markus.stockhausen@gmx.de>
+ <20250812143112.2d912cc4@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,32 +46,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250812-qcom_ipq_ppe-v7-1-789404bdbc9a@quicinc.com>
+In-Reply-To: <20250812143112.2d912cc4@kernel.org>
 
+On Tue, Aug 12, 2025 at 02:31:12PM -0700, Jakub Kicinski wrote:
+> On Mon,  4 Aug 2025 06:50:37 -0400 Markus Stockhausen wrote:
+> > Short: Convert the RTL8226-CG to c45 so it can be used in its
+> > Realtek based ecosystems.
+> 
+> Sorry for the delay, looks like nobody who participated in v2
+> discussion is willing to venture a review tag.. :(
+> 
+> > Mainline already gained support with the rtl9300 mdio driver
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree
+> > /drivers/net/mdio/mdio-realtek-rtl9300.c?h=v6.16
+> 
+> Could you replace this reference with 
+> 
+>  Mainline already gained support for the rtl9300 mdio driver
+>  in commit 24e31e474769 ("net: mdio: Add RTL9300 MDIO driver").
+> 
+> Are you okay with this change going to the -next branch?
 
-On Tue, 12 Aug 2025 22:10:25 +0800, Luo Jie wrote:
-> The PPE (packet process engine) hardware block is available in Qualcomm
-> IPQ chipsets that support PPE architecture, such as IPQ9574. The PPE in
-> the IPQ9574 SoC includes six ethernet ports (6 GMAC and 6 XGMAC), which
-> are used to connect with external PHY devices by PCS. It includes an L2
-> switch function for bridging packets among the 6 ethernet ports and the
-> CPU port. The CPU port enables packet transfer between the ethernet ports
-> and the ARM cores in the SoC, using the ethernet DMA.
-> 
-> The PPE also includes packet processing offload capabilities for various
-> networking functions such as route and bridge flows, VLANs, different
-> tunnel protocols and VPN.
-> 
-> The PPE switch is modeled according to the ethernet switch schema, with
-> additional properties defined for the switch node for interrupts, clocks,
-> resets, interconnects and Ethernet DMA. The switch port node is extended
-> with additional properties for clocks and resets.
-> 
-> Signed-off-by: Luo Jie <quic_luoj@quicinc.com>
-> ---
->  .../devicetree/bindings/net/qcom,ipq9574-ppe.yaml  | 533 +++++++++++++++++++++
->  1 file changed, 533 insertions(+)
-> 
+I would say this goes via net-next. If it worked before, it was by
+chance. I also agree there is a small danger of regressions, so
+net-next would allow more testing before it affects too many people.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-
+	Andrew
