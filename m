@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6622877EF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7C42882A1
 	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 23:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755212949; cv=none; b=kx7X6M4zzL12uS7yXHj8SnkuYOtWOurwvQkavHXhFNnts5kdODipFVmW5VfQ/tYOTRZ5Tx3dhYr21JwzPFHJJJbCjCa2p9ofYdjcHu2mjrfqGHgvzgRMC07j5xjOrqnR1/Bm0jPgvRr4wgN32AWctvmaHZWmNs/wH2tuZtP7VK8=
+	t=1755212950; cv=none; b=F0kAOUqRF1QXKO2euY3Q+/E4/Dt7VnUd1NdNblHoaXrgSUIFoSbkHPTMoNpKnmQGTyhnbxhHiF3i3RoDo2dusKb6Ps244glYzfEBLS4Z0ukmG3aCThhseFFye6v+deKmYaoB3TJ1Qec0ClIONQ67ggFEcPSpa1S0ZMUaPXRw06g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755212949; c=relaxed/simple;
-	bh=+yLoGT1nsPsmfL+sXTZRTS94jgn19XOsp5oEv+Vdn0E=;
+	s=arc-20240116; t=1755212950; c=relaxed/simple;
+	bh=ksyfNLWv3cIMMHxd26+g8lm2njtrNuLd2dClA6OoKZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L9aQ1tr6kg3LAI+y5PkA/6TQ9fWGjwFQupFlKMJAewx6rHePAAkkss4m3+GwK72xp1Ux4ukYQcq+bEMM6Ue0DkQs/wQdqVydXhshs+uAZ+ZY6Cspmvsbpecq9XqkYxYq/zDwdgfSl+UpCLWvzyEHhNVLW8b1NqoylAMw5lOzgds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D1XWpq6l; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version; b=PDSGgUe++CSRts/DnVEMvdGgGvBNXd4y2eE4l+rOwjDG0/XPGAsGy0cLUR//dT1t9OzkV0V/bwYatNTlcZVCGVEM8xbI0i9i3TkYpq+2+P4c7OSwVLGkRMX+ONfw5wQumuYF0DHM8WZ85yxWbcdBFr0nd/rjsZrQNbtp4nWWQso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KMXU4Wau; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D1XWpq6l"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KMXU4Wau"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1755212948; x=1786748948;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+yLoGT1nsPsmfL+sXTZRTS94jgn19XOsp5oEv+Vdn0E=;
-  b=D1XWpq6llp235/QWhu1Yw8EAEV50TcrT58mgB6Lvzx1SnT41MLf07x7C
-   F87PmbRx+2QV5CYyEa/BhZ1nXMgk2TxcV3HuPaQ764H8iITB7aV9Y2UDi
-   bfu5z50JP4Fkw0514lUfTtuUdrp6RNFM5lyU7gm5LhnxnJ1aTZcsolcC5
-   Jqsw8vE5n8Z2lkiw1R5wC0OahC+aeRoTXOCSKYhIA2cyWLC3TQCJlHJO3
-   Npn1p1jezl01qFLr4mwSG0PhsCMBJWa89wKwelXiWS22GBPBugIDqMjM5
-   PELzkkNX4BrH8tQ5wFqRgsZlWmQr+dZx82UEvZG3N8zNog3OxK0MRnPe5
+  bh=ksyfNLWv3cIMMHxd26+g8lm2njtrNuLd2dClA6OoKZU=;
+  b=KMXU4Wauk0j+9jej1nFnUPeXGyPHmvv3+SYdNmsC4DiaseP8LgHzQ51V
+   RievCB+ndviRdBqj15t2s8DnoNxSBQ0OAmrhHHHw6BbbYAXN6f+O3CC3q
+   l5BOTTo0jkf4vzAX0xBCJypcoL9i+/9sEebOozFrpOu5br7EskfuazjBu
+   +643L+QJzM/iSd8xJ/r/RGOmSoxMsFdNTIby/4HUi+OwEyG+k7E/ph3U5
+   4mcg0pUb+Z1e4CzBCCV+ru0E4skdRg2jBCv4wt5uyZTx9m0Oax5XktnM8
+   +NalCJRY2nuI4xjQto4BNEhg7zTB3rt/d66dba+WT9rBUluSr2WQKxrrW
    A==;
-X-CSE-ConnectionGUID: /0sReaiUQlCtuJGgi8OVmQ==
-X-CSE-MsgGUID: I0t97w60QQ6WhbuiGjqDBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="45117973"
+X-CSE-ConnectionGUID: 4PtuhSKuQPWl4dmsBDOPNg==
+X-CSE-MsgGUID: 9PoSftDhTzu8IWcTkjv9pg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="45117985"
 X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; 
-   d="scan'208";a="45117973"
+   d="scan'208";a="45117985"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
   by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2025 16:09:04 -0700
-X-CSE-ConnectionGUID: cGd8mLuiRkG3+QpSJkAO5w==
-X-CSE-MsgGUID: /wyeqQ6HQl+RqcXADZM/Yg==
+X-CSE-ConnectionGUID: RB6QOHFEQIibARfh2lT1LA==
+X-CSE-MsgGUID: tK9vC6e2SiqEopN03aT6YQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; 
-   d="scan'208";a="166848132"
+   d="scan'208";a="166848139"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa007.jf.intel.com with ESMTP; 14 Aug 2025 16:09:04 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -54,9 +54,9 @@ Cc: Dave Ertman <david.m.ertman@intel.com>,
 	anthony.l.nguyen@intel.com,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Subject: [PATCH net-next 3/7] ice: Add driver specific prefix to LAG defines
-Date: Thu, 14 Aug 2025 16:08:50 -0700
-Message-ID: <20250814230855.128068-4-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next 5/7] ice: Cleanup variable initialization in LAG code
+Date: Thu, 14 Aug 2025 16:08:52 -0700
+Message-ID: <20250814230855.128068-6-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250814230855.128068-1-anthony.l.nguyen@intel.com>
 References: <20250814230855.128068-1-anthony.l.nguyen@intel.com>
@@ -70,73 +70,192 @@ Content-Transfer-Encoding: 8bit
 
 From: Dave Ertman <david.m.ertman@intel.com>
 
-A define in the LAG code is missing a driver specific prefix.
-Add a prefix to the define.
+In preparation for implementing SRIOV Active-Active LAG support,
+cleanup several unneeded variable initializations in declaration
+blocks.
 
-Also shorten a defines name and move to a more logical place.
+Also move a couple of variable initializations into declaration
+block that should be there.
 
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
 Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_lag.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_lag.c | 54 ++++++++----------------
+ 1 file changed, 17 insertions(+), 37 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
-index 96b11d8f1422..48efd8d27296 100644
+index 1f76536e6176..72284555b98a 100644
 --- a/drivers/net/ethernet/intel/ice/ice_lag.c
 +++ b/drivers/net/ethernet/intel/ice/ice_lag.c
-@@ -10,12 +10,14 @@
- #define ICE_LAG_RES_SHARED	BIT(14)
- #define ICE_LAG_RES_VALID	BIT(15)
+@@ -234,13 +234,12 @@ ice_lag_cfg_fltr(struct ice_lag *lag, u32 act, u16 recipe_id, u16 *rule_idx,
+ 		 u8 direction, bool add)
+ {
+ 	struct ice_sw_rule_lkup_rx_tx *s_rule;
++	struct ice_hw *hw = &lag->pf->hw;
+ 	u16 s_rule_sz, vsi_num;
+-	struct ice_hw *hw;
+ 	u8 *eth_hdr;
+ 	u32 opc;
+ 	int err;
  
--#define LACP_TRAIN_PKT_LEN		16
--static const u8 lacp_train_pkt[LACP_TRAIN_PKT_LEN] = { 0, 0, 0, 0, 0, 0,
--						       0, 0, 0, 0, 0, 0,
--						       0x88, 0x09, 0, 0 };
-+#define ICE_TRAIN_PKT_LEN		16
-+static const u8 lacp_train_pkt[ICE_TRAIN_PKT_LEN] = { 0, 0, 0, 0, 0, 0,
-+						      0, 0, 0, 0, 0, 0,
-+						      0x88, 0x09, 0, 0 };
+-	hw = &lag->pf->hw;
+ 	vsi_num = ice_get_hw_vsi_num(hw, 0);
  
- #define ICE_RECIPE_LEN			64
-+#define ICE_LAG_SRIOV_CP_RECIPE		10
-+
- static const u8 ice_dflt_vsi_rcp[ICE_RECIPE_LEN] = {
- 	0x05, 0, 0, 0, 0x20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
- 	0x85, 0, 0x01, 0, 0, 0, 0xff, 0xff, 0x08, 0, 0, 0, 0, 0, 0, 0,
-@@ -766,9 +768,6 @@ void ice_lag_move_vf_nodes_cfg(struct ice_lag *lag, u8 src_prt, u8 dst_prt)
- 	ice_lag_destroy_netdev_list(lag, &ndlist);
- }
+ 	s_rule_sz = ICE_SW_RULE_RX_TX_ETH_HDR_SIZE(s_rule);
+@@ -384,12 +383,10 @@ ice_lag_cfg_pf_fltrs(struct ice_lag *lag, void *ptr)
+ static void
+ ice_lag_cfg_cp_fltr(struct ice_lag *lag, bool add)
+ {
+-	struct ice_sw_rule_lkup_rx_tx *s_rule = NULL;
+-	struct ice_vsi *vsi;
++	struct ice_sw_rule_lkup_rx_tx *s_rule;
++	struct ice_vsi *vsi = lag->pf->vsi[0];
+ 	u16 buf_len, opc;
  
--#define ICE_LAG_SRIOV_CP_RECIPE		10
--#define ICE_LAG_SRIOV_TRAIN_PKT_LEN	16
+-	vsi = lag->pf->vsi[0];
 -
- /**
-  * ice_lag_cfg_cp_fltr - configure filter for control packets
-  * @lag: local interface's lag struct
-@@ -783,8 +782,7 @@ ice_lag_cfg_cp_fltr(struct ice_lag *lag, bool add)
- 
- 	vsi = lag->pf->vsi[0];
- 
--	buf_len = ICE_SW_RULE_RX_TX_HDR_SIZE(s_rule,
--					     ICE_LAG_SRIOV_TRAIN_PKT_LEN);
-+	buf_len = ICE_SW_RULE_RX_TX_HDR_SIZE(s_rule, ICE_TRAIN_PKT_LEN);
+ 	buf_len = ICE_SW_RULE_RX_TX_HDR_SIZE(s_rule, ICE_TRAIN_PKT_LEN);
  	s_rule = kzalloc(buf_len, GFP_KERNEL);
  	if (!s_rule) {
- 		netdev_warn(lag->netdev, "-ENOMEM error configuring CP filter\n");
-@@ -799,8 +797,8 @@ ice_lag_cfg_cp_fltr(struct ice_lag *lag, bool add)
- 					  ICE_SINGLE_ACT_LAN_ENABLE |
- 					  ICE_SINGLE_ACT_VALID_BIT |
- 					  FIELD_PREP(ICE_SINGLE_ACT_VSI_ID_M, vsi->vsi_num));
--		s_rule->hdr_len = cpu_to_le16(ICE_LAG_SRIOV_TRAIN_PKT_LEN);
--		memcpy(s_rule->hdr_data, lacp_train_pkt, LACP_TRAIN_PKT_LEN);
-+		s_rule->hdr_len = cpu_to_le16(ICE_TRAIN_PKT_LEN);
-+		memcpy(s_rule->hdr_data, lacp_train_pkt, ICE_TRAIN_PKT_LEN);
- 		opc = ice_aqc_opc_add_sw_rules;
- 	} else {
- 		opc = ice_aqc_opc_remove_sw_rules;
+@@ -477,12 +474,11 @@ static u16
+ ice_lag_qbuf_recfg(struct ice_hw *hw, struct ice_aqc_cfg_txqs_buf *qbuf,
+ 		   u16 vsi_num, u16 numq, u8 tc)
+ {
++	struct ice_pf *pf = hw->back;
+ 	struct ice_q_ctx *q_ctx;
+ 	u16 qid, count = 0;
+-	struct ice_pf *pf;
+ 	int i;
+ 
+-	pf = hw->back;
+ 	for (i = 0; i < numq; i++) {
+ 		q_ctx = ice_get_lan_q_ctx(hw, vsi_num, tc, i);
+ 		if (!q_ctx) {
+@@ -940,13 +936,12 @@ ice_lag_reclaim_vf_tc(struct ice_lag *lag, struct ice_hw *src_hw, u16 vsi_num,
+ 	u16 numq, valq, num_moved, qbuf_size;
+ 	u16 buf_size = __struct_size(buf);
+ 	struct ice_aqc_cfg_txqs_buf *qbuf;
++	struct ice_hw *hw = &lag->pf->hw;
+ 	struct ice_sched_node *n_prt;
+ 	__le32 teid, parent_teid;
+ 	struct ice_vsi_ctx *ctx;
+-	struct ice_hw *hw;
+ 	u32 tmp_teid;
+ 
+-	hw = &lag->pf->hw;
+ 	ctx = ice_get_vsi_ctx(hw, vsi_num);
+ 	if (!ctx) {
+ 		dev_warn(dev, "Unable to locate VSI context for LAG reclaim\n");
+@@ -1221,11 +1216,8 @@ ice_lag_set_swid(u16 primary_swid, struct ice_lag *local_lag,
+  */
+ static void ice_lag_primary_swid(struct ice_lag *lag, bool link)
+ {
+-	struct ice_hw *hw;
+-	u16 swid;
+-
+-	hw = &lag->pf->hw;
+-	swid = hw->port_info->sw_id;
++	struct ice_hw *hw = &lag->pf->hw;
++	u16 swid = hw->port_info->sw_id;
+ 
+ 	if (ice_share_res(hw, ICE_AQC_RES_TYPE_SWID, link, swid))
+ 		dev_warn(ice_pf_to_dev(lag->pf), "Failure to set primary interface shared status\n");
+@@ -1238,12 +1230,10 @@ static void ice_lag_primary_swid(struct ice_lag *lag, bool link)
+  */
+ static void ice_lag_add_prune_list(struct ice_lag *lag, struct ice_pf *event_pf)
+ {
+-	u16 num_vsi, rule_buf_sz, vsi_list_id, event_vsi_num, prim_vsi_idx;
+-	struct ice_sw_rule_vsi_list *s_rule = NULL;
++	u16 rule_buf_sz, vsi_list_id, event_vsi_num, prim_vsi_idx, num_vsi = 1;
++	struct ice_sw_rule_vsi_list *s_rule;
+ 	struct device *dev;
+ 
+-	num_vsi = 1;
+-
+ 	dev = ice_pf_to_dev(lag->pf);
+ 	event_vsi_num = event_pf->vsi[0]->vsi_num;
+ 	prim_vsi_idx = lag->pf->vsi[0]->idx;
+@@ -1279,12 +1269,10 @@ static void ice_lag_add_prune_list(struct ice_lag *lag, struct ice_pf *event_pf)
+  */
+ static void ice_lag_del_prune_list(struct ice_lag *lag, struct ice_pf *event_pf)
+ {
+-	u16 num_vsi, vsi_num, vsi_idx, rule_buf_sz, vsi_list_id;
+-	struct ice_sw_rule_vsi_list *s_rule = NULL;
++	u16 vsi_num, vsi_idx, rule_buf_sz, vsi_list_id, num_vsi = 1;
++	struct ice_sw_rule_vsi_list *s_rule;
+ 	struct device *dev;
+ 
+-	num_vsi = 1;
+-
+ 	dev = ice_pf_to_dev(lag->pf);
+ 	vsi_num = event_pf->vsi[0]->vsi_num;
+ 	vsi_idx = lag->pf->vsi[0]->idx;
+@@ -1707,11 +1695,9 @@ static void ice_lag_chk_disabled_bond(struct ice_lag *lag, void *ptr)
+  */
+ static void ice_lag_disable_sriov_bond(struct ice_lag *lag)
+ {
+-	struct ice_netdev_priv *np;
+-	struct ice_pf *pf;
++	struct ice_netdev_priv *np = netdev_priv(lag->netdev);
++	struct ice_pf *pf = np->vsi->back;
+ 
+-	np = netdev_priv(lag->netdev);
+-	pf = np->vsi->back;
+ 	ice_clear_feature_support(pf, ICE_F_SRIOV_LAG);
+ }
+ 
+@@ -1880,10 +1866,8 @@ ice_lag_event_handler(struct notifier_block *notif_blk, unsigned long event,
+  */
+ static int ice_register_lag_handler(struct ice_lag *lag)
+ {
++	struct notifier_block *notif_blk = &lag->notif_block;
+ 	struct device *dev = ice_pf_to_dev(lag->pf);
+-	struct notifier_block *notif_blk;
+-
+-	notif_blk = &lag->notif_block;
+ 
+ 	if (!notif_blk->notifier_call) {
+ 		notif_blk->notifier_call = ice_lag_event_handler;
+@@ -1903,10 +1887,9 @@ static int ice_register_lag_handler(struct ice_lag *lag)
+  */
+ static void ice_unregister_lag_handler(struct ice_lag *lag)
+ {
++	struct notifier_block *notif_blk = &lag->notif_block;
+ 	struct device *dev = ice_pf_to_dev(lag->pf);
+-	struct notifier_block *notif_blk;
+ 
+-	notif_blk = &lag->notif_block;
+ 	if (notif_blk->notifier_call) {
+ 		unregister_netdevice_notifier(notif_blk);
+ 		dev_dbg(dev, "LAG event handler unregistered\n");
+@@ -1968,13 +1951,12 @@ ice_lag_move_vf_nodes_tc_sync(struct ice_lag *lag, struct ice_hw *dest_hw,
+ 	u16 numq, valq, num_moved, qbuf_size;
+ 	u16 buf_size = __struct_size(buf);
+ 	struct ice_aqc_cfg_txqs_buf *qbuf;
++	struct ice_hw *hw = &lag->pf->hw;
+ 	struct ice_sched_node *n_prt;
+ 	__le32 teid, parent_teid;
+ 	struct ice_vsi_ctx *ctx;
+-	struct ice_hw *hw;
+ 	u32 tmp_teid;
+ 
+-	hw = &lag->pf->hw;
+ 	ctx = ice_get_vsi_ctx(hw, vsi_num);
+ 	if (!ctx) {
+ 		dev_warn(dev, "LAG rebuild failed after reset due to VSI Context failure\n");
+@@ -2165,9 +2147,7 @@ int ice_init_lag(struct ice_pf *pf)
+  */
+ void ice_deinit_lag(struct ice_pf *pf)
+ {
+-	struct ice_lag *lag;
+-
+-	lag = pf->lag;
++	struct ice_lag *lag = pf->lag;
+ 
+ 	if (!lag)
+ 		return;
 -- 
 2.47.1
 
