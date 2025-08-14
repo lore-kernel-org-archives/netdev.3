@@ -1,43 +1,49 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14916281357
-	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 22:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7201327A906
+	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 22:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755211320; cv=none; b=RrlozEIWO+8uZK3rUXecgWrGl7/6FcDUmGC1dGr65g1fQr15EsxcMmhRezr9i1in/h+fqPZpHfJh7/tffGJiDMUOgvZp0fxcGUDC7cdueB/wmGRsa5PyBMwm9O24q+wlf+Q1TJeMCj+nAjwiAlemiiSVTO8bMf/pDdn1kVtQYKU=
+	t=1755212125; cv=none; b=qX9U8aYStOfRG1qpl8OrLFkMcRH9QyN9imcIuqFhlxj3ErBZV+i/nrXkogADDvtwsLy/dgBj0wXgrtn5K02Upl21S1VCy7+W9mjXaFGtwANAkChnk2etdhHl91Bz4yVf/867V9zqFx14Bou5vdNogIWMmVk+yt5aAPEL8++ubyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755211320; c=relaxed/simple;
-	bh=3+CO5GSNK05sFZm/hXSx1v7BZfTCSFMOevY9LLg3a5A=;
+	s=arc-20240116; t=1755212125; c=relaxed/simple;
+	bh=GisTV7ehkAa9jgteQLA7zEpNHE68tAPBqqW6bx7ZhZM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oezu8brDr1Ys+uH0H1CAORNiTXSBhTzrbPnegLW84kYdV5WOouZ0R0AsxdgEP4xm3zBgoLWcA3EqA0rZa6TZRFa9715oT0r7Il/me17YH5cG+opjaSiDfX/6sjxCmpScp3o5NPfkbK271TDanQF3HCAJtSzOBgqwUjGZDZ7XI80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eh4laDJH; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=SebxaXJmjirZqv6r3JYF1D2awAvxAX4iWz9L8vhF/NOkWfyW5mUW9IovE/0VOdVxoSmfF62BImuS97KUF/0EabpSmISbsZ/eiGFwgGcYFhuidlbDzwgGPb4l/yC29Ujp39vs6dIfXaBrhD2+BhEv7GPMTJlK//zl5q3HdsM7eU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2Rmmwu7X; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eh4laDJH"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2Rmmwu7X"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=YTVI1No4QA16QX1BBc+djTOsMW+Qo6gmJTgqHgYGrxU=; b=eh4laDJHDm2+JKMN9pu1ATYtJJ
-	gvuKarJNouVbDvbblZUb5HlOYaeVAnkqvVg2z1n/uwQ9vmc7qpQd7X9ObU3FWEvPVpJSrlrrT7piT
-	bzRc03Nu/K+7DwC7bl4UpCvUC7Ky9XNwS6wELKkV0QnpktZzY7SWeRIElAGvdIISdwMo=;
+	bh=WC5NbM10I9h+hCAYNWMRushta1NSR5tCIeyjdNAIyGU=; b=2Rmmwu7XflouKZToA6cATzWyQn
+	DPdMME9yMaTiC0LP3GLCEbTCOEHGuYGyQiGI7TyhTBiNRIOyGjbzOtsOUpPmYYXqqqBDUyo+Mdmds
+	26UuM5aeKZDw3qmqJ4u9/D3MVWwgEBtEbfmkpX0VI4AwkUW1na0HfH8RuBqBOluiAVNY=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1umgGs-004km3-QA; Fri, 15 Aug 2025 00:18:06 +0200
-Date: Fri, 15 Aug 2025 00:18:06 +0200
+	id 1umgqq-004kwQ-Qf; Fri, 15 Aug 2025 00:55:16 +0200
+Date: Fri, 15 Aug 2025 00:55:16 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Markus Stockhausen <markus.stockhausen@gmx.de>, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
-	pabeni@redhat.com, michael@fossekall.de, daniel@makrotopia.org,
-	netdev@vger.kernel.org, jan@3e8.eu
-Subject: Re: [PATCH v3] net: phy: realtek: convert RTL8226-CG to c45 only
-Message-ID: <98215f6b-9e44-466b-a671-15966ad96a6b@lunn.ch>
-References: <20250804105037.2609906-1-markus.stockhausen@gmx.de>
- <20250812143112.2d912cc4@kernel.org>
+To: Frieder Schrempf <frieder.schrempf@kontron.de>
+Cc: Woojung.Huh@microchip.com, kuba@kernel.org, lukma@denx.de,
+	netdev@vger.kernel.org, Tristram.Ha@microchip.com
+Subject: Re: KSZ9477 HSR Offloading
+Message-ID: <0501b135-8a25-4461-ad3c-9f322cdccb38@lunn.ch>
+References: <42a2f96f-34cd-4d95-99d5-3b4c4af226af@kontron.de>
+ <BL0PR11MB2913C7E1AE86A3A0EB12D0D7E7EE2@BL0PR11MB2913.namprd11.prod.outlook.com>
+ <1400a748-0de7-4093-a549-f07617e6ac51@kontron.de>
+ <BL0PR11MB29130BB177996C437F792106E7E92@BL0PR11MB2913.namprd11.prod.outlook.com>
+ <20250203103113.27e3060a@wsk>
+ <1edbe1e4-9491-4344-828d-4c3b73954e8a@kontron.de>
+ <BL0PR11MB2913B949D05B9BB73108A5FFE7F52@BL0PR11MB2913.namprd11.prod.outlook.com>
+ <20250203150418.7f244827@kernel.org>
+ <BL0PR11MB2913ECAA6F0C97E342F7DE22E7F42@BL0PR11MB2913.namprd11.prod.outlook.com>
+ <8e761c31-728c-4ff7-925a-5e16a9ef1310@kontron.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,29 +52,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250812143112.2d912cc4@kernel.org>
+In-Reply-To: <8e761c31-728c-4ff7-925a-5e16a9ef1310@kontron.de>
 
-On Tue, Aug 12, 2025 at 02:31:12PM -0700, Jakub Kicinski wrote:
-> On Mon,  4 Aug 2025 06:50:37 -0400 Markus Stockhausen wrote:
-> > Short: Convert the RTL8226-CG to c45 so it can be used in its
-> > Realtek based ecosystems.
+On Wed, Aug 13, 2025 at 03:43:14PM +0200, Frieder Schrempf wrote:
+> Am 04.02.25 um 15:55 schrieb Woojung.Huh@microchip.com:
+> > Hi Jakub,
+> > 
+> >> -----Original Message-----
+> >> From: Jakub Kicinski <kuba@kernel.org>
+> >> Sent: Monday, February 3, 2025 6:04 PM
+> >> To: Woojung Huh - C21699 <Woojung.Huh@microchip.com>
+> >> Cc: frieder.schrempf@kontron.de; lukma@denx.de; andrew@lunn.ch;
+> >> netdev@vger.kernel.org; Tristram Ha - C24268 <Tristram.Ha@microchip.com>
+> >> Subject: Re: KSZ9477 HSR Offloading
+> >>
+> >> EXTERNAL EMAIL: Do not click links or open attachments unless you know the
+> >> content is safe
+> >>
+> >> On Mon, 3 Feb 2025 14:58:12 +0000 Woojung.Huh@microchip.com wrote:
+> >>> Hi Lukasz & Frieder,
+> >>>
+> >>> Oops! My bad. I confused that Lukasz was filed a case originally. Monday
+> >> brain-freeze. :(
+> >>>
+> >>> Yes, it is not a public link and per-user case. So, only Frieder can see
+> >> it.
+> >>> It may be able for you when Frieder adds you as a team. (Not tested
+> >> personally though)
+> >>
+> >> Woojung Huh, please make sure the mailing list is informed about
+> >> the outcomes. Taking discussion off list to a closed ticketing
+> >> system is against community rules. See below, thanks.
+> >>
+> >> Quoting documentation:
+> >>
+> >>   Open development
+> >>   ----------------
+> >>
+> >>   Discussions about user reported issues, and development of new code
+> >>   should be conducted in a manner typical for the larger subsystem.
+> >>   It is common for development within a single company to be conducted
+> >>   behind closed doors. However, development and discussions initiated
+> >>   by community members must not be redirected from public to closed forums
+> >>   or to private email conversations. Reasonable exceptions to this guidance
+> >>   include discussions about security related issues.
+> >>
+> >> See: https://www.kernel.org/doc/html/next/maintainer/feature-and-driver-maintainers.html#open-development
+> > 
+> > Learn new thing today. Didn't know this. Definitely I will share it
+> > when this work is done. My intention was for easier work for request than
+> The HW forwarding between HSR ports is configured in ksz9477_hsr_join()
+> at the time of creating the HSR interface by calling
+> ksz9477_cfg_port_member().
 > 
-> Sorry for the delay, looks like nobody who participated in v2
-> discussion is willing to venture a review tag.. :(
+> In my case I enabled the ports **after** that which caused the
+> forwarding to be disabled again as ksz9477_cfg_port_member() gets called
+> with the default configuration.
 > 
-> > Mainline already gained support with the rtl9300 mdio driver
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree
-> > /drivers/net/mdio/mdio-realtek-rtl9300.c?h=v6.16
+> If I reorder my commands everything seems to work fine even with
+> NETIF_F_HW_HSR_FWD enabled.
 > 
-> Could you replace this reference with 
-> 
->  Mainline already gained support for the rtl9300 mdio driver
->  in commit 24e31e474769 ("net: mdio: Add RTL9300 MDIO driver").
-> 
-> Are you okay with this change going to the -next branch?
+> I wonder if the kernel should handle this case and prevent the
+> forwarding configuration to be disabled if HSR is configured? I'll have
+> a look if I can come up with a patch for this.
 
-I would say this goes via net-next. If it worked before, it was by
-chance. I also agree there is a small danger of regressions, so
-net-next would allow more testing before it affects too many people.
+If you don't offload it, but do it in software, does the order matter?
+
+As a user, i should not need to care if offload is used or not. It
+should be transparent. Which means any order that works with pure
+software should also work with offloading. At least, it should not
+break. If it fails to offload, and uses software, that is fine. Not
+optimal, but O.K.
 
 	Andrew
+
