@@ -1,101 +1,135 @@
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5C8255E40
-	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 06:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B8A253B47;
+	Thu, 14 Aug 2025 06:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755153870; cv=none; b=i06Ykc0BSAYT2s9OJEr/blm00+GUFEC3QEa91S2GmN2ek9uFVsz4ZYWmVBKvLiGdCLg1tEOv/oYpstlLnZA7StozXaWtL9uvEltlgs4da6C/KYxiJs1LpmZR5VH6t0UpitDS87cc5635lRiv3cwjVO1jDAsiK8nWfYAxaZcajs0=
+	t=1755154055; cv=none; b=SYGlLT/HRIWC0JBjOQMneZhF8OAx2Q8svZN3EP+7nPGH0JIv/k3cnw8D415CAPmXAK7VN5dswri55vd7FiZ9FARxxiktcPKiG3lX0vzz41jeuOlqyk3uyz8++zBhE61H4nY3IVqZAXJxnxXoi2zzXWzgNLRsw8Fas89shae1YlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755153870; c=relaxed/simple;
-	bh=59laSJQXWlSlK+B9v18tia5SiJt6XeLEoP4+l1sdaAY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
-	 Content-Type:References; b=EtGd7VnVF1IEXGZ9AUIXEUe5sGP42BA3XrezPjXFWKAK+a8e1AVWU9pRvibxl3iS9fXdh9naxbpyDx0wVgLa2JPlI5VRqVeD++2B/1gL/yNxsJ9KnPUjnn0xsIGRPOB5DuJfbzn7WkSYiYkp2va57gMS6UP/iQHStvapJZJL0bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=oTNIqIKK; arc=none smtp.client-ip=203.254.224.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1755154055; c=relaxed/simple;
+	bh=XvPc8HzjswWuTYiAMjYzuffOvKnIpKNewoQ0Hd37OCs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qY0C6hgglWBrVKzwhOcPXQH2JpcBEL8roNX1amqCH4Ueeh0iD8uieh4TUSDlrquiK3VmMO4mQD++iOQIG6I2cvIsbCeKDK/lwvCzMCmetxI2xfmEB1kPeP0uFKhRhl+CRdl11lircFSijuCRT20KdPs4RtOCQjF4Jdm5zgGDTXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RhV213J4; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="oTNIqIKK"
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20250814064421epoutp023aec0774892ae0ba254956d0aa512995~bjyNDr2lG0206902069epoutp02W
-	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 06:44:21 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20250814064421epoutp023aec0774892ae0ba254956d0aa512995~bjyNDr2lG0206902069epoutp02W
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1755153861;
-	bh=9mu3Kr43gODSkwREa2kQCSQaS5/A6ZAwGOOHIA57X8E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oTNIqIKKSOtkgJ6jJF7hTbctRaDfTayLvBBoyt8hmSJG2B06QJZogL2BU/0adWrBK
-	 c49TFT0qJP5BAXGLjwPi3HES7ktqPgODYYRl3Ed9WUaRTtjBwuyAhSC5Qrcy3Vp448
-	 hsSMKkaMDb7OX0mXQquopA6WBKYaj0lGwAWbPDc4=
-Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
-	20250814064420epcas5p4613140cca937d212d6247e63ece17107~bjyMCR9ZD0489104891epcas5p4x;
-	Thu, 14 Aug 2025 06:44:20 +0000 (GMT)
-Received: from epcas5p2.samsung.com (unknown [182.195.38.92]) by
-	epsnrtp02.localdomain (Postfix) with ESMTP id 4c2bLq0FjHz2SSKh; Thu, 14 Aug
-	2025 06:44:19 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250814054321epcas5p1dd83614241a15c78645e7f08d5e959c3~bi88aUFnB0059300593epcas5p1-;
-	Thu, 14 Aug 2025 05:43:21 +0000 (GMT)
-Received: from asg29.. (unknown [109.105.129.29]) by epsmtip1.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20250814054318epsmtip150bf90dc5ddaa45d1c93f3e7189cc7e2~bi86DY1py0648906489epsmtip1E;
-	Thu, 14 Aug 2025 05:43:18 +0000 (GMT)
-From: Junnan Wu <junnan01.wu@samsung.com>
-To: jasowang@redhat.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	eperezma@redhat.com, junnan01.wu@samsung.com, kuba@kernel.org,
-	lei19.wang@samsung.com, linux-kernel@vger.kernel.org, mst@redhat.com,
-	netdev@vger.kernel.org, pabeni@redhat.com, q1.huang@samsung.com,
-	virtualization@lists.linux.dev, xuanzhuo@linux.alibaba.com,
-	ying123.xu@samsung.com
-Subject: Re: [PATCH net] virtio_net: adjust the execution order of function
- `virtnet_close` during freeze
-Date: Thu, 14 Aug 2025 13:43:33 +0800
-Message-Id: <20250814054333.1313117-1-junnan01.wu@samsung.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CACGkMEs+RCx=9kun2KwMutmN4oEkxzW4KDNW=gwXNZD=gpetrg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RhV213J4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755154054; x=1786690054;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XvPc8HzjswWuTYiAMjYzuffOvKnIpKNewoQ0Hd37OCs=;
+  b=RhV213J4v/TEtAsd0KYTUFLx9ZvBaQIjzy1SAElEHm3bGQKDBJHadwmZ
+   jDoOURWssOoY4EcDjAJVJPgdEsxEE/TH9kKwlPThVALWaiPzFm66DrxTs
+   Zr6K6JXOc3+SjoMQlaL8Q2PMbjYxV8L940Twt+e4XGw+w4FbhfSlA3+Qg
+   0HpkX9GMr5VRWEpkCojDj1QSNRyFrVgkmyk1S/jDlNg6i+5ubK0ZVsRHo
+   oHSjoplAaslTnplhLkGSpeCI9ehnOQjcIsVvhDJtD/Uym8wNYVc+QotjQ
+   GgYtTaeC/TkMrJy34vw3DV79Ek8FYtx/EsPNltMR4hvrR7zxqvMU/H4p8
+   w==;
+X-CSE-ConnectionGUID: K6w0fXObQMyB1nTPLjCyNQ==
+X-CSE-MsgGUID: FhufOdhJR1WJINuZRa1v1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57330007"
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
+   d="scan'208";a="57330007"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 23:47:33 -0700
+X-CSE-ConnectionGUID: JeJVqeKeSaKpD0s+Gaz0qg==
+X-CSE-MsgGUID: kVEGrLsDRaK7PJjZKb9Veg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
+   d="scan'208";a="197539847"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 13 Aug 2025 23:47:28 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1umRkE-000AfM-0t;
+	Thu, 14 Aug 2025 06:47:26 +0000
+Date: Thu, 14 Aug 2025 14:47:16 +0800
+From: kernel test robot <lkp@intel.com>
+To: Bhargava Marreddy <bhargava.marreddy@broadcom.com>, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, horms@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com, vsrama-krishna.nemani@broadcom.com,
+	Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
+	Vikas Gupta <vikas.gupta@broadcom.com>,
+	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
+Subject: Re: [net-next 7/9] bng_en: Register rings with the firmware
+Message-ID: <202508141404.DrfpnTy0-lkp@intel.com>
+References: <20250813215603.76526-8-bhargava.marreddy@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250814054321epcas5p1dd83614241a15c78645e7f08d5e959c3
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-505,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250814054321epcas5p1dd83614241a15c78645e7f08d5e959c3
-References: <CACGkMEs+RCx=9kun2KwMutmN4oEkxzW4KDNW=gwXNZD=gpetrg@mail.gmail.com>
-	<CGME20250814054321epcas5p1dd83614241a15c78645e7f08d5e959c3@epcas5p1.samsung.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250813215603.76526-8-bhargava.marreddy@broadcom.com>
 
-On Thu, 14 Aug 2025 12:01:18 +0800 Jason Wang wrote:
-> On Thu, Aug 14, 2025 at 10:36 AM Junnan Wu <junnan01.wu@samsung.com> wrote:
-> >
-> > On Wed, 13 Aug 2025 17:23:07 -0700 Jakub Kicinski wrote:
-> > > Sounds like a fix people may want to backport. Could you repost with
-> > > an appropriate Fixes tag added, pointing to the earliest commit where
-> > > the problem can be observed?
-> >
-> > This issue is caused by commit "7b0411ef4aa69c9256d6a2c289d0a2b320414633"
-> > After this patch, during `virtnet_poll`, function `virtnet_poll_cleantx`
-> > will be invoked, which will wakeup tx queue and clear queue state.
-> > If you agree with it, I will repost with this Fixes tag later.
-> >
-> > Fixes: 7b0411ef4aa6 ("virtio-net: clean tx descriptors from rx napi")
-> 
-> Could you please explain why it is specific to RX NAPI but not TX?
-> 
-> Thanks
+Hi Bhargava,
 
-This issue appears in suspend flow, if a TCP connection in host VM is still
-sending packet before driver suspend is completed, it will tigger RX napi schedule,
-Finally "use after free" happens when tcp ack timer is up.
+kernel test robot noticed the following build warnings:
 
-And in suspend flow, the action to send packet is already stopped in guest VM,
-therefore TX napi will not be scheduled.
+[auto build test WARNING on net-next/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Bhargava-Marreddy/bng_en-Add-initial-support-for-RX-and-TX-rings/20250814-004339
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20250813215603.76526-8-bhargava.marreddy%40broadcom.com
+patch subject: [net-next 7/9] bng_en: Register rings with the firmware
+config: loongarch-randconfig-r073-20250814 (https://download.01.org/0day-ci/archive/20250814/202508141404.DrfpnTy0-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 3769ce013be2879bf0b329c14a16f5cb766f26ce)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250814/202508141404.DrfpnTy0-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202508141404.DrfpnTy0-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c:768:32: warning: variable 'resp' set but not used [-Wunused-but-set-variable]
+     768 |         struct hwrm_ring_free_output *resp;
+         |                                       ^
+   1 warning generated.
+
+
+vim +/resp +768 drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
+
+   763	
+   764	int hwrm_ring_free_send_msg(struct bnge_net *bn,
+   765				    struct bnge_ring_struct *ring,
+   766				    u32 ring_type, int cmpl_ring_id)
+   767	{
+ > 768		struct hwrm_ring_free_output *resp;
+   769		struct hwrm_ring_free_input *req;
+   770		struct bnge_dev *bd = bn->bd;
+   771		int rc;
+   772	
+   773		rc = bnge_hwrm_req_init(bd, req, HWRM_RING_FREE);
+   774		if (rc)
+   775			goto exit;
+   776	
+   777		req->cmpl_ring = cpu_to_le16(cmpl_ring_id);
+   778		req->ring_type = ring_type;
+   779		req->ring_id = cpu_to_le16(ring->fw_ring_id);
+   780	
+   781		resp = bnge_hwrm_req_hold(bd, req);
+   782		rc = bnge_hwrm_req_send(bd, req);
+   783		bnge_hwrm_req_drop(bd, req);
+   784	exit:
+   785		if (rc) {
+   786			netdev_err(bd->netdev, "hwrm_ring_free type %d failed. rc:%d\n", ring_type, rc);
+   787			return -EIO;
+   788		}
+   789		return 0;
+   790	}
+   791	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
