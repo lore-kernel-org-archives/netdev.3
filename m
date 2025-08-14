@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923692882A8
-	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 23:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD44288516
+	for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 23:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755212950; cv=none; b=eeJU84GvU6Suu8kgfZdlcFbYSkiZY/NCQJbzg8+SaL58jha7qzLxNy+V5mx7n6bKpYcZNLgveZ/KWpQ6vAlhsEEr6JDpkQFAyLoebVaP9xPYrt3rdEB4Lk8Y7d/TBeGSzoF8OC5oilbUW9Epd/ZJoJHc5TivJWEGdrOiLFRewcc=
+	t=1755212951; cv=none; b=qGkjia4AMrz0zDTJmRU2UJ1vbRUvaax0RZTeeEHO6qpk37wOX4FwrnumfbMUTfWrXnEQx4ErUTXJQntqJLoLvAMo/0HIqSG5Lk7hu4SHENywZJSad/nsiWSk1v50rg2Fk23OEsJOSS6qw3vQ1fdcx0GaO+/xxx4PBONra94BLts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755212950; c=relaxed/simple;
-	bh=M4Q8UvbOFiM1m8LQJGkBNmBQScV8Ya4y2H2CPu1SKNk=;
+	s=arc-20240116; t=1755212951; c=relaxed/simple;
+	bh=+CqEdr2iI/CVEq7RxBFQzbpqTRiVaDAPqW4L37QoofE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dbe7czylsXpOjIAclVX5qJrloFVEuA2lmQ0a0kiqjK5tBUhxgHnfl0DiftfI6B3eP1eWpONt5R4xtyDAjFeBHsR9NmbEkhEXdavluAilmd5lyYbequSytyqTHD6Ln4j9h/0+40YkV8xWJW3ea7J9Bf4t0I1Mnl9HfN7+D1yedUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UN+x7ki6; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version; b=h3jrVSTM7TCaG9wsZBzZC0Yd1hDbY6ynfnfX3qaxtuTMKRhHBiUdYfdrt+xv+LpxPvB8r69Oiotv8sZpK3Nfv+yus5kI1+aDznrX7HJFaMnqA/CIKhOYpqpO2HFj036yRfzj8MPmqfyiEZPQzYuiRpCr17DMoRBBRQMb+LWhxpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JFwx++N8; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UN+x7ki6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JFwx++N8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755212948; x=1786748948;
+  t=1755212950; x=1786748950;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=M4Q8UvbOFiM1m8LQJGkBNmBQScV8Ya4y2H2CPu1SKNk=;
-  b=UN+x7ki6nPTpCKsu/uTIOupg2unFkxIasjCqKPZs7PVKNAFNhNZRN1jk
-   uLzEjGoWOQsuONlKyFxzvSXxSgX4zT/wUkExhz5jBD17CEMy450Ey7Ygx
-   SptOVhh100Q57rK58xWscHoS6xUxI8ImHxgusbhaYLGeFgaOfr7PaP2Ay
-   5JV7d/vtrukIzr2sTOv4oQ1sBzPMUbNyqpP+0aF0nwNKJxeWfqc2I4MYf
-   hdhhjpkoSipTearQl+jLWWxWv31Q6c8wEgP+J0qfXDEW7i9IUUDbZOvsy
-   Z3NATyR8SiC7dikRcnaBmQV30VbTaSsQAeYHn3xZlqkweuRg2bmaCs6RK
-   Q==;
-X-CSE-ConnectionGUID: 9uYYbJK2RxG2st+ULjjrbw==
-X-CSE-MsgGUID: MzvEsPBHRJaL7htZxGVqSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="45117979"
+  bh=+CqEdr2iI/CVEq7RxBFQzbpqTRiVaDAPqW4L37QoofE=;
+  b=JFwx++N8OF1beJF5GI2YG0K7lT2hhyEmA4GiAgsEDLoMy4hW1SCuOyI0
+   ZuygI1Kd0KhQ1ChiCS8H5z4qzL6U3bv9pGbI0lDon06jzc9GN8DbZkmmf
+   scxPWtBwbEoGAenfItwsP2UYh0RJx6QIcnW5FwDcSJ0zBdWS4y2pozjei
+   J4zBUwQIZ7Seo6FDVTDjHnJJBCIn24rTdJaUOt6xEf/RiCIf0YLkwxURu
+   MT9c2nfb2ick56vhHAB5zAgZz4xogn8/rRoOH+h14L/La2Fk2dtTtMac4
+   Te9obfm1d7HzAQl3xkQUcAfupmv9hc/7urLElFfPW5IKrINintsTF61oQ
+   g==;
+X-CSE-ConnectionGUID: 9JGZOTwBSuilvkhCf2RWjg==
+X-CSE-MsgGUID: HBglD6XdQ1qEOlTWRQuNBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="45117991"
 X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; 
-   d="scan'208";a="45117979"
+   d="scan'208";a="45117991"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
   by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2025 16:09:04 -0700
-X-CSE-ConnectionGUID: AA3haOiMRFO9Ptq/1glK/A==
-X-CSE-MsgGUID: MTmwsSdNTtiuDu9/twxa4g==
+X-CSE-ConnectionGUID: aj9Zv2UWRWS9rtAdBCJCug==
+X-CSE-MsgGUID: I2Fa6lSsR32rZteXRMslfg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; 
-   d="scan'208";a="166848135"
+   d="scan'208";a="166848143"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa007.jf.intel.com with ESMTP; 14 Aug 2025 16:09:04 -0700
+  by orviesa007.jf.intel.com with ESMTP; 14 Aug 2025 16:09:05 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -53,10 +53,12 @@ To: davem@davemloft.net,
 Cc: Dave Ertman <david.m.ertman@intel.com>,
 	anthony.l.nguyen@intel.com,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
 	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Subject: [PATCH net-next 4/7] ice: move LAG function in code to prepare for Active-Active
-Date: Thu, 14 Aug 2025 16:08:51 -0700
-Message-ID: <20250814230855.128068-5-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next 6/7] ice: cleanup capabilities evaluation
+Date: Thu, 14 Aug 2025 16:08:53 -0700
+Message-ID: <20250814230855.128068-7-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250814230855.128068-1-anthony.l.nguyen@intel.com>
 References: <20250814230855.128068-1-anthony.l.nguyen@intel.com>
@@ -70,202 +72,39 @@ Content-Transfer-Encoding: 8bit
 
 From: Dave Ertman <david.m.ertman@intel.com>
 
-In the SRIOV LAG Active-Active, the functions ice_lag_cfg_pf_fltr's
-and ice_lag_config_eswitch's content are moved to earlier locations
-in the source file.  Also, ice_lag_cfg_pf_fltr is renamed, and its
-flow is changed.
+When evaluating the capabilities field, the ICE_AQC_BIT_ROCEV2_LAG and
+ICE_AQC_BIT_SRIOV_LAG defines were both not using the BIT operator,
+instead simply setting a hex value that set the correct bits.  While
+not inaccurate, this method is misleading, and when it is expanded in
+the following implementation it becomes even more confusing.
 
-To reduce the delta in the larger patch, move the original functions
-to their new location so that only functional changes are needed in
-the larger patch.
+Switch to using the BIT() operator to clarify what is being checked.
 
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
 Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
 Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_lag.c | 147 ++++++++++++-----------
- 1 file changed, 74 insertions(+), 73 deletions(-)
+ include/linux/net/intel/libie/adminq.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
-index 48efd8d27296..1f76536e6176 100644
---- a/drivers/net/ethernet/intel/ice/ice_lag.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lag.c
-@@ -100,6 +100,28 @@ static bool netif_is_same_ice(struct ice_pf *pf, struct net_device *netdev)
- 	return true;
- }
+diff --git a/include/linux/net/intel/libie/adminq.h b/include/linux/net/intel/libie/adminq.h
+index 012b5d499c1a..dbe93f940ef0 100644
+--- a/include/linux/net/intel/libie/adminq.h
++++ b/include/linux/net/intel/libie/adminq.h
+@@ -192,8 +192,8 @@ LIBIE_CHECK_STRUCT_LEN(16, libie_aqc_list_caps);
+ #define LIBIE_AQC_CAPS_TX_SCHED_TOPO_COMP_MODE		0x0085
+ #define LIBIE_AQC_CAPS_NAC_TOPOLOGY			0x0087
+ #define LIBIE_AQC_CAPS_FW_LAG_SUPPORT			0x0092
+-#define LIBIE_AQC_BIT_ROCEV2_LAG			0x01
+-#define LIBIE_AQC_BIT_SRIOV_LAG				0x02
++#define LIBIE_AQC_BIT_ROCEV2_LAG			BIT(0)
++#define LIBIE_AQC_BIT_SRIOV_LAG				BIT(1)
+ #define LIBIE_AQC_CAPS_FLEX10				0x00F1
+ #define LIBIE_AQC_CAPS_CEM				0x00F2
  
-+/**
-+ * ice_lag_config_eswitch - configure eswitch to work with LAG
-+ * @lag: lag info struct
-+ * @netdev: active network interface device struct
-+ *
-+ * Updates all port representors in eswitch to use @netdev for Tx.
-+ *
-+ * Configures the netdev to keep dst metadata (also used in representor Tx).
-+ * This is required for an uplink without switchdev mode configured.
-+ */
-+static void ice_lag_config_eswitch(struct ice_lag *lag,
-+				   struct net_device *netdev)
-+{
-+	struct ice_repr *repr;
-+	unsigned long id;
-+
-+	xa_for_each(&lag->pf->eswitch.reprs, id, repr)
-+		repr->dst->u.port_info.lower_dev = netdev;
-+
-+	netif_keep_dst(netdev);
-+}
-+
- /**
-  * ice_netdev_to_lag - return pointer to associated lag struct from netdev
-  * @netdev: pointer to net_device struct to query
-@@ -354,6 +376,58 @@ ice_lag_cfg_pf_fltrs(struct ice_lag *lag, void *ptr)
- 	}
- }
- 
-+/**
-+ * ice_lag_cfg_cp_fltr - configure filter for control packets
-+ * @lag: local interface's lag struct
-+ * @add: add or remove rule
-+ */
-+static void
-+ice_lag_cfg_cp_fltr(struct ice_lag *lag, bool add)
-+{
-+	struct ice_sw_rule_lkup_rx_tx *s_rule = NULL;
-+	struct ice_vsi *vsi;
-+	u16 buf_len, opc;
-+
-+	vsi = lag->pf->vsi[0];
-+
-+	buf_len = ICE_SW_RULE_RX_TX_HDR_SIZE(s_rule, ICE_TRAIN_PKT_LEN);
-+	s_rule = kzalloc(buf_len, GFP_KERNEL);
-+	if (!s_rule) {
-+		netdev_warn(lag->netdev, "-ENOMEM error configuring CP filter\n");
-+		return;
-+	}
-+
-+	if (add) {
-+		s_rule->hdr.type = cpu_to_le16(ICE_AQC_SW_RULES_T_LKUP_RX);
-+		s_rule->recipe_id = cpu_to_le16(ICE_LAG_SRIOV_CP_RECIPE);
-+		s_rule->src = cpu_to_le16(vsi->port_info->lport);
-+		s_rule->act = cpu_to_le32(ICE_FWD_TO_VSI |
-+					  ICE_SINGLE_ACT_LAN_ENABLE |
-+					  ICE_SINGLE_ACT_VALID_BIT |
-+					  FIELD_PREP(ICE_SINGLE_ACT_VSI_ID_M,
-+						     vsi->vsi_num));
-+		s_rule->hdr_len = cpu_to_le16(ICE_TRAIN_PKT_LEN);
-+		memcpy(s_rule->hdr_data, lacp_train_pkt, ICE_TRAIN_PKT_LEN);
-+		opc = ice_aqc_opc_add_sw_rules;
-+	} else {
-+		opc = ice_aqc_opc_remove_sw_rules;
-+		s_rule->index = cpu_to_le16(lag->cp_rule_idx);
-+	}
-+	if (ice_aq_sw_rules(&lag->pf->hw, s_rule, buf_len, 1, opc, NULL)) {
-+		netdev_warn(lag->netdev, "Error %s CP rule for fail-over\n",
-+			    add ? "ADDING" : "REMOVING");
-+		goto err_cp_free;
-+	}
-+
-+	if (add)
-+		lag->cp_rule_idx = le16_to_cpu(s_rule->index);
-+	else
-+		lag->cp_rule_idx = 0;
-+
-+err_cp_free:
-+	kfree(s_rule);
-+}
-+
- /**
-  * ice_display_lag_info - print LAG info
-  * @lag: LAG info struct
-@@ -768,57 +842,6 @@ void ice_lag_move_vf_nodes_cfg(struct ice_lag *lag, u8 src_prt, u8 dst_prt)
- 	ice_lag_destroy_netdev_list(lag, &ndlist);
- }
- 
--/**
-- * ice_lag_cfg_cp_fltr - configure filter for control packets
-- * @lag: local interface's lag struct
-- * @add: add or remove rule
-- */
--static void
--ice_lag_cfg_cp_fltr(struct ice_lag *lag, bool add)
--{
--	struct ice_sw_rule_lkup_rx_tx *s_rule = NULL;
--	struct ice_vsi *vsi;
--	u16 buf_len, opc;
--
--	vsi = lag->pf->vsi[0];
--
--	buf_len = ICE_SW_RULE_RX_TX_HDR_SIZE(s_rule, ICE_TRAIN_PKT_LEN);
--	s_rule = kzalloc(buf_len, GFP_KERNEL);
--	if (!s_rule) {
--		netdev_warn(lag->netdev, "-ENOMEM error configuring CP filter\n");
--		return;
--	}
--
--	if (add) {
--		s_rule->hdr.type = cpu_to_le16(ICE_AQC_SW_RULES_T_LKUP_RX);
--		s_rule->recipe_id = cpu_to_le16(ICE_LAG_SRIOV_CP_RECIPE);
--		s_rule->src = cpu_to_le16(vsi->port_info->lport);
--		s_rule->act = cpu_to_le32(ICE_FWD_TO_VSI |
--					  ICE_SINGLE_ACT_LAN_ENABLE |
--					  ICE_SINGLE_ACT_VALID_BIT |
--					  FIELD_PREP(ICE_SINGLE_ACT_VSI_ID_M, vsi->vsi_num));
--		s_rule->hdr_len = cpu_to_le16(ICE_TRAIN_PKT_LEN);
--		memcpy(s_rule->hdr_data, lacp_train_pkt, ICE_TRAIN_PKT_LEN);
--		opc = ice_aqc_opc_add_sw_rules;
--	} else {
--		opc = ice_aqc_opc_remove_sw_rules;
--		s_rule->index = cpu_to_le16(lag->cp_rule_idx);
--	}
--	if (ice_aq_sw_rules(&lag->pf->hw, s_rule, buf_len, 1, opc, NULL)) {
--		netdev_warn(lag->netdev, "Error %s CP rule for fail-over\n",
--			    add ? "ADDING" : "REMOVING");
--		goto cp_free;
--	}
--
--	if (add)
--		lag->cp_rule_idx = le16_to_cpu(s_rule->index);
--	else
--		lag->cp_rule_idx = 0;
--
--cp_free:
--	kfree(s_rule);
--}
--
- /**
-  * ice_lag_prepare_vf_reset - helper to adjust vf lag for reset
-  * @lag: lag struct for interface that owns VF
-@@ -1038,28 +1061,6 @@ static void ice_lag_link(struct ice_lag *lag)
- 	netdev_info(lag->netdev, "Shared SR-IOV resources in bond are active\n");
- }
- 
--/**
-- * ice_lag_config_eswitch - configure eswitch to work with LAG
-- * @lag: lag info struct
-- * @netdev: active network interface device struct
-- *
-- * Updates all port representors in eswitch to use @netdev for Tx.
-- *
-- * Configures the netdev to keep dst metadata (also used in representor Tx).
-- * This is required for an uplink without switchdev mode configured.
-- */
--static void ice_lag_config_eswitch(struct ice_lag *lag,
--				   struct net_device *netdev)
--{
--	struct ice_repr *repr;
--	unsigned long id;
--
--	xa_for_each(&lag->pf->eswitch.reprs, id, repr)
--		repr->dst->u.port_info.lower_dev = netdev;
--
--	netif_keep_dst(netdev);
--}
--
- /**
-  * ice_lag_unlink - handle unlink event
-  * @lag: LAG info struct
 -- 
 2.47.1
 
