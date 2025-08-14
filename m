@@ -1,82 +1,86 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7CF2EA739;
-	Thu, 14 Aug 2025 09:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE0C2FABFB;
+	Thu, 14 Aug 2025 09:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755163690; cv=none; b=VksjBgzbso1XVrLeKZm5WOzf40UKyJGYfvQLEqPPo6x+ozaGRP3BoUTHSI8U+7BigK1jJmLOcxqvNYf9yFOXBX4lsZFqPj2K3tq7OzvZ/wK/RcALQIfekcuCYHNM/+s+ZLS4rbUtZTjW8DZP+yvfkhABP2XFrlUA8mOiqwI5C7I=
+	t=1755163879; cv=none; b=Is0ZfdNM4DgIWfdzkmUs5Mzwsam3u4BhBUhaLP/V1Jjl8jVYrIyPn11GTg+k7AeiXvN9DNCFSWTl8bBYWCLKfBVK6IyPYprLW+1MEenG2Q8r3cT4iYSOimMTjsx9fOsRNNI0KQkihULojHEMkNHaNQiYcgYKN+kQzPJDzmSMI4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755163690; c=relaxed/simple;
-	bh=lVD/y/Z423YcD8a+5lf5IjwNcXkcGmTOuO3ONKwdhAM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cmtqWib1a4Fj60KTHoO0+bo1vYvAxAmxPL5soV9V1HkywlCovysy1c3BYnw7/yEVia4a4pgN9T8gqmLYIMd3wW6oHSWeGmfNsnrKTO748BuILEV7LC6bRR4+bZoZSmTLsirwN+OgChd7X9QadU6hO+egyG2j3dtkdue+9GkytB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=mFD1kJHr; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1755163879; c=relaxed/simple;
+	bh=gVyxB1Di/2E8IPGLNeHV1iWeZXC/jQa+aBKyc3yL/O4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sywOjobQRKqBADCuDzMwHdrTb+G6zZaFfILVcI8XXEkIFCREJ4acrIFSkSfvybhXBW4jiI1FhFA1KSFcGEJsQjF1JuLMHmNqdpBEQBowMDmHjOHLj0zlWolVm3xQztDguKuG9vMdswkQkeFX2Ya3LxokvhPXO8bhegcd8tZ5chs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nWXt7W3y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="mFD1kJHr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=nwemvRAez+XUSopejbooESoxF8Q8BlEs0fKrXkbagT0=; b=mFD1kJHrR6IiqAvaDlQ8H7FVmq
-	O0OO6WGDSuBfGZnXI1H4a6G3QinL5lX+P3Xr3CJTBVR+dNGwfT6BmhRIXUQATzy583CB7Tld73bZh
-	Ko3hl1DCmYPLHJOf7ZHy0QoOpT3TubhaLKeKC0pl72xqJkeNPmzBMclPcEgV3Gph17WhEPZauHbJG
-	4qL/CWmykBcurEcXH3ev6E3IifRbRfpY6NMZnthPObKOEkafNQA4SDAIoGief8KsxRFntQAu8y/oq
-	mYv8l1PsvkHl8ullIse7l9lgSKVx6l35mIPCN8bGWwWWxLDnJJJP+FUEjvF80AAZuG7/fqSqX8NhP
-	r3DuU2Ww==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:49222)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1umUFa-000848-2z;
-	Thu, 14 Aug 2025 10:27:58 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1umUFY-0006hN-1n;
-	Thu, 14 Aug 2025 10:27:56 +0100
-Date: Thu, 14 Aug 2025 10:27:56 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Horatiu Vultur <horatiu.vultur@microchip.com>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	richardcochran@gmail.com, o.rempel@pengutronix.de,
-	alok.a.tiwari@oracle.com, netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nWXt7W3y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BE7C4CEEF;
+	Thu, 14 Aug 2025 09:31:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755163879;
+	bh=gVyxB1Di/2E8IPGLNeHV1iWeZXC/jQa+aBKyc3yL/O4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nWXt7W3ykBE+CGCc/BwgDp+tcMOXo40jPetIeBoIf5YzrKWYXdLnCe1I91e1u9VXL
+	 TA/6rB9PHeO/C0GvHUTDWIAA3PqQ7YhdkLpXw1GAsBNj/B40CwPT+QjyoUH5A9ZQH6
+	 iAiW0gR/B54UDhbJT6LMhI8wLXC4m6awY8iVNqEoB3V7GvWLYWXFTP4ndLnHJib1oY
+	 YgloZiQaG/WXFl+Opc02Moi9Kd9G7LMYyR2vEYtIGYnXOK5W4MMfsrHF6DXV3VKGRC
+	 MTCzmSLiq0HmnMbgpcD7ak6Rc/bCBx3+FjGCqAdGVKTS5ddwqMsaEwBlrSVhHRzjb2
+	 ivFOpBJJsIIbg==
+From: Benno Lossin <lossin@kernel.org>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 1/4] net: phy: micrel: Start using
- PHY_ID_MATCH_MODEL
-Message-ID: <aJ2sHPDAkaQq5jjC@shell.armlinux.org.uk>
-References: <20250814082624.696952-1-horatiu.vultur@microchip.com>
- <20250814082624.696952-2-horatiu.vultur@microchip.com>
+Subject: [PATCH v3 04/11] rust: phy: replace `MaybeUninit::zeroed().assume_init()` with `pin_init::zeroed()`
+Date: Thu, 14 Aug 2025 11:30:31 +0200
+Message-ID: <20250814093046.2071971-5-lossin@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250814093046.2071971-1-lossin@kernel.org>
+References: <20250814093046.2071971-1-lossin@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250814082624.696952-2-horatiu.vultur@microchip.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 14, 2025 at 10:26:21AM +0200, Horatiu Vultur wrote:
-> Start using PHY_ID_MATCH_MODEL for all the drivers.
-> While at this add also PHY_ID_KSZ8041RNLI to micrel_tbl.
-> 
-> Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+All types in `bindings` implement `Zeroable` if they can, so use
+`pin_init::zeroed` instead of relying on `unsafe` code.
 
-I'm not sure about this patch. You're subsituting a match that uses
-the desired ID with a mask of 0x00fffff0 with PHY_ID_MATCH_MODEL(id)
-which uses a mask of 0xfffffff0.
+If this ends up not compiling in the future, something in bindgen or on
+the C side changed and is most likely incorrect.
 
-The commit description ought to explain why it is safe to match using
-bits 31:24, whereas the old code was ignoring these bits.
+Signed-off-by: Benno Lossin <lossin@kernel.org>
+---
+ rust/kernel/net/phy.rs | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Thanks.
-
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index 7de5cc7a0eee..3e5565a6a130 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -556,9 +556,7 @@ pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
+         } else {
+             None
+         },
+-        // SAFETY: The rest is zeroed out to initialize `struct phy_driver`,
+-        // sets `Option<&F>` to be `None`.
+-        ..unsafe { core::mem::MaybeUninit::<bindings::phy_driver>::zeroed().assume_init() }
++        ..pin_init::zeroed()
+     }))
+ }
+ 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.50.1
+
