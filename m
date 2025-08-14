@@ -1,251 +1,89 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72DC254873;
-	Thu, 14 Aug 2025 08:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B691FDE01;
+	Thu, 14 Aug 2025 08:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755160321; cv=none; b=Ic+ynC4boVHYHJsdGczwWA9RMVdlI3J7j6G+8L5+T0tWjLO75wWU7sMFwHgA4W69W0QwLQSm/8KpLXCPaxjB55CdsNsOt8VYBYjaTAvgJi87nNNw9cGrCtkmGLcc6TF7pa5aYYEr7zCvem8xmqhIa40SzpxRUCcsDSN3bl+gbWU=
+	t=1755160619; cv=none; b=IEFgyNE1I6iefUpUrtijR2GV5Ym8HhUSafOM/vSdvFzmvhJfiFocvE7EnNHfVwS8sT7oHWbZUiYjth/unIZcf4gCgK4TE9rZDFvBC2vkM3YPpjsoMJfJ3T6iBoEaU2jPx+DXsALtSE+2EEfns5v1SGP/5Z9R8e3ehtCFWttWNGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755160321; c=relaxed/simple;
-	bh=Y9RtB1WT5YHRuTvWwKAbMQj7Mad3XJvZ1fC0rWPGG+8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gcbAUAEgCW7Exc81cOAVCLbYk9MMhLrlfXnvR3tjHCx401SHn3ueeEteBR9Pyu0Qw/Svjv5eb+EPFkEg0WpWLRoD84TnyzSmHR5bV8FUf71iPKCe61Y86xqJVKfNhcQRCzcs41DyOKHt5xOKW22UJY7g3bp8al9j2I2agRCoVrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=BpGsJdbl; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1755160619; c=relaxed/simple;
+	bh=tU5iipaDEUy6NFDdG2V1HfYPchwAoL9oGgj2hDb7VKU=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=lGy8lUNYDmRHX+X9dZs7lMjVvu16SoDONUMs57vech8R87Qv2gK9e/SejATK1dVI51C0j+Wuqp5+IO6OWaXtuqiCBhfZKJ9Nk036fa3BNrieoUVguYGJKJhs8u2reRZ58hfvP9in9L6QzvXPEgseHXntT37agMEv5C5QJXCWcEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pZu4Se1s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="BpGsJdbl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1755160319; x=1786696319;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Y9RtB1WT5YHRuTvWwKAbMQj7Mad3XJvZ1fC0rWPGG+8=;
-  b=BpGsJdblBGjMpv3Q3Cj5Dhd4fIZRFo4nTus3d94qEAFJCSz9p6jhKZXU
-   J7PyQJy4Rrz8l4Mtmlq7Kz82Nmu1RACeb+uEx141t/CRmvLIcqbwlo8FE
-   AizaZNadp9qIBpNjmfEYTLR2LRmaxoGyGQTw7V6A2f0XisghqOMub8XcH
-   xYZBvNo1SjfWX3/rAh8SD5dSCUDhjrJ7QofnTRB8cuPCsvOOiygdqIXV1
-   5hfXuC5vS/sfTFbhmYR8XHz/8yR0gzZNEn3Ta4QXL0FQv+sN8KSwme+Q7
-   i+rXfoUOI8G9qMjykbAhOVUWlvbl0cATCwFFtqUXLUeBNSVeQ6x0KgH/K
-   Q==;
-X-CSE-ConnectionGUID: wuoU55bETYSCuuuNK8jgcQ==
-X-CSE-MsgGUID: 8XkOyyBiTgKWnjchjYUxEA==
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="44643954"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 14 Aug 2025 01:31:52 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Thu, 14 Aug 2025 01:31:12 -0700
-Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.44 via Frontend Transport; Thu, 14 Aug 2025 01:31:10 -0700
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <richardcochran@gmail.com>, <o.rempel@pengutronix.de>,
-	<alok.a.tiwari@oracle.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>
-Subject: [PATCH net-next v4 1/4] net: phy: micrel: Start using PHY_ID_MATCH_MODEL
-Date: Thu, 14 Aug 2025 10:26:21 +0200
-Message-ID: <20250814082624.696952-2-horatiu.vultur@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250814082624.696952-1-horatiu.vultur@microchip.com>
-References: <20250814082624.696952-1-horatiu.vultur@microchip.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pZu4Se1s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BBFFC4CEEF;
+	Thu, 14 Aug 2025 08:36:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755160618;
+	bh=tU5iipaDEUy6NFDdG2V1HfYPchwAoL9oGgj2hDb7VKU=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=pZu4Se1sZSkaFhuobBWv5m5jYhXyjrZqrSLVIZlP/GORW8EWSCa99FpaW2FWGtfkt
+	 xu1InKq/CuaJWBLvZ7pJQGoNuBe2sPScF66BCDX+pNwdmvvNKhSjF/toNx3/QnXF0I
+	 xdhYkFS5wTLQBJQGeEhsZuH4hWzKKcxgtu5j8eAvecGIlDcnQTO5OUODPVKkJNkChr
+	 Jx46Q0YsHVAICsW4cQpYhsfSkFwL1tGfclIe7JEJo+885OM/yAATBU2wvNVJCGKhel
+	 x9wkBhXYljY9TUKieG2RGzAa3Whl+anh+Is6jA2of4EAO0NmeR/BsjASqGZxEo32Me
+	 Txwbl8N0bO5aA==
+Date: Thu, 14 Aug 2025 03:36:57 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+ Andrew Lunn <andrew@lunn.ch>, Conor Dooley <conor+dt@kernel.org>, 
+ linux-kernel@vger.kernel.org, Simon Horman <horms@kernel.org>, 
+ netdev@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ devicetree@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>
+To: David Yang <mmyangfl@gmail.com>
+In-Reply-To: <20250814065032.3766988-2-mmyangfl@gmail.com>
+References: <20250814065032.3766988-1-mmyangfl@gmail.com>
+ <20250814065032.3766988-2-mmyangfl@gmail.com>
+Message-Id: <175516061769.1975599.3085098117739247200.robh@kernel.org>
+Subject: Re: [RFC net-next 1/3] dt-bindings: net: dsa: yt921x: Add
+ Motorcomm YT921x switch support
 
-Start using PHY_ID_MATCH_MODEL for all the drivers.
-While at this add also PHY_ID_KSZ8041RNLI to micrel_tbl.
 
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
----
- drivers/net/phy/micrel.c | 66 ++++++++++++++++------------------------
- 1 file changed, 27 insertions(+), 39 deletions(-)
+On Thu, 14 Aug 2025 14:50:20 +0800, David Yang wrote:
+> The Motorcomm YT921x series is a family of Ethernet switches with up to
+> 8 internal GbE PHYs and up to 2 GMACs.
+> 
+> Signed-off-by: David Yang <mmyangfl@gmail.com>
+> ---
+>  .../bindings/net/dsa/motorcomm,yt921x.yaml    | 121 ++++++++++++++++++
+>  1 file changed, 121 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml
+> 
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 605b0315b4cb0..e138f208c0e49 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -5645,8 +5645,7 @@ static int ksz9131_resume(struct phy_device *phydev)
- 
- static struct phy_driver ksphy_driver[] = {
- {
--	.phy_id		= PHY_ID_KS8737,
--	.phy_id_mask	= MICREL_PHY_ID_MASK,
-+	PHY_ID_MATCH_MODEL(PHY_ID_KS8737),
- 	.name		= "Micrel KS8737",
- 	/* PHY_BASIC_FEATURES */
- 	.driver_data	= &ks8737_type,
-@@ -5687,8 +5686,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.suspend	= kszphy_suspend,
- 	.resume		= kszphy_resume,
- }, {
--	.phy_id		= PHY_ID_KSZ8041,
--	.phy_id_mask	= MICREL_PHY_ID_MASK,
-+	PHY_ID_MATCH_MODEL(PHY_ID_KSZ8041),
- 	.name		= "Micrel KSZ8041",
- 	/* PHY_BASIC_FEATURES */
- 	.driver_data	= &ksz8041_type,
-@@ -5703,8 +5701,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.suspend	= ksz8041_suspend,
- 	.resume		= ksz8041_resume,
- }, {
--	.phy_id		= PHY_ID_KSZ8041RNLI,
--	.phy_id_mask	= MICREL_PHY_ID_MASK,
-+	PHY_ID_MATCH_MODEL(PHY_ID_KSZ8041RNLI),
- 	.name		= "Micrel KSZ8041RNLI",
- 	/* PHY_BASIC_FEATURES */
- 	.driver_data	= &ksz8041_type,
-@@ -5747,9 +5744,8 @@ static struct phy_driver ksphy_driver[] = {
- 	.suspend	= kszphy_suspend,
- 	.resume		= kszphy_resume,
- }, {
--	.phy_id		= PHY_ID_KSZ8081,
-+	PHY_ID_MATCH_MODEL(PHY_ID_KSZ8081),
- 	.name		= "Micrel KSZ8081 or KSZ8091",
--	.phy_id_mask	= MICREL_PHY_ID_MASK,
- 	.flags		= PHY_POLL_CABLE_TEST,
- 	/* PHY_BASIC_FEATURES */
- 	.driver_data	= &ksz8081_type,
-@@ -5768,9 +5764,8 @@ static struct phy_driver ksphy_driver[] = {
- 	.cable_test_start	= ksz886x_cable_test_start,
- 	.cable_test_get_status	= ksz886x_cable_test_get_status,
- }, {
--	.phy_id		= PHY_ID_KSZ8061,
-+	PHY_ID_MATCH_MODEL(PHY_ID_KSZ8061),
- 	.name		= "Micrel KSZ8061",
--	.phy_id_mask	= MICREL_PHY_ID_MASK,
- 	/* PHY_BASIC_FEATURES */
- 	.probe		= kszphy_probe,
- 	.config_init	= ksz8061_config_init,
-@@ -5798,8 +5793,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.read_mmd	= genphy_read_mmd_unsupported,
- 	.write_mmd	= genphy_write_mmd_unsupported,
- }, {
--	.phy_id		= PHY_ID_KSZ9031,
--	.phy_id_mask	= MICREL_PHY_ID_MASK,
-+	PHY_ID_MATCH_MODEL(PHY_ID_KSZ9031),
- 	.name		= "Micrel KSZ9031 Gigabit PHY",
- 	.flags		= PHY_POLL_CABLE_TEST,
- 	.driver_data	= &ksz9021_type,
-@@ -5819,8 +5813,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
- 	.set_loopback	= ksz9031_set_loopback,
- }, {
--	.phy_id		= PHY_ID_LAN8814,
--	.phy_id_mask	= MICREL_PHY_ID_MASK,
-+	PHY_ID_MATCH_MODEL(PHY_ID_LAN8814),
- 	.name		= "Microchip INDY Gigabit Quad PHY",
- 	.flags          = PHY_POLL_CABLE_TEST,
- 	.config_init	= lan8814_config_init,
-@@ -5838,8 +5831,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.cable_test_start	= lan8814_cable_test_start,
- 	.cable_test_get_status	= ksz886x_cable_test_get_status,
- }, {
--	.phy_id		= PHY_ID_LAN8804,
--	.phy_id_mask	= MICREL_PHY_ID_MASK,
-+	PHY_ID_MATCH_MODEL(PHY_ID_LAN8804),
- 	.name		= "Microchip LAN966X Gigabit PHY",
- 	.config_init	= lan8804_config_init,
- 	.driver_data	= &ksz9021_type,
-@@ -5854,8 +5846,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.config_intr	= lan8804_config_intr,
- 	.handle_interrupt = lan8804_handle_interrupt,
- }, {
--	.phy_id		= PHY_ID_LAN8841,
--	.phy_id_mask	= MICREL_PHY_ID_MASK,
-+	PHY_ID_MATCH_MODEL(PHY_ID_LAN8841),
- 	.name		= "Microchip LAN8841 Gigabit PHY",
- 	.flags		= PHY_POLL_CABLE_TEST,
- 	.driver_data	= &lan8841_type,
-@@ -5872,8 +5863,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.cable_test_start	= lan8814_cable_test_start,
- 	.cable_test_get_status	= ksz886x_cable_test_get_status,
- }, {
--	.phy_id		= PHY_ID_KSZ9131,
--	.phy_id_mask	= MICREL_PHY_ID_MASK,
-+	PHY_ID_MATCH_MODEL(PHY_ID_KSZ9131),
- 	.name		= "Microchip KSZ9131 Gigabit PHY",
- 	/* PHY_GBIT_FEATURES */
- 	.flags		= PHY_POLL_CABLE_TEST,
-@@ -5894,8 +5884,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
- 	.get_features	= ksz9477_get_features,
- }, {
--	.phy_id		= PHY_ID_KSZ8873MLL,
--	.phy_id_mask	= MICREL_PHY_ID_MASK,
-+	PHY_ID_MATCH_MODEL(PHY_ID_KSZ8873MLL),
- 	.name		= "Micrel KSZ8873MLL Switch",
- 	/* PHY_BASIC_FEATURES */
- 	.config_init	= kszphy_config_init,
-@@ -5904,8 +5893,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.suspend	= genphy_suspend,
- 	.resume		= genphy_resume,
- }, {
--	.phy_id		= PHY_ID_KSZ886X,
--	.phy_id_mask	= MICREL_PHY_ID_MASK,
-+	PHY_ID_MATCH_MODEL(PHY_ID_KSZ886X),
- 	.name		= "Micrel KSZ8851 Ethernet MAC or KSZ886X Switch",
- 	.driver_data	= &ksz886x_type,
- 	/* PHY_BASIC_FEATURES */
-@@ -5925,8 +5913,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.suspend	= genphy_suspend,
- 	.resume		= genphy_resume,
- }, {
--	.phy_id		= PHY_ID_KSZ9477,
--	.phy_id_mask	= MICREL_PHY_ID_MASK,
-+	PHY_ID_MATCH_MODEL(PHY_ID_KSZ9477),
- 	.name		= "Microchip KSZ9477",
- 	.probe		= kszphy_probe,
- 	/* PHY_GBIT_FEATURES */
-@@ -5953,22 +5940,23 @@ MODULE_LICENSE("GPL");
- 
- static const struct mdio_device_id __maybe_unused micrel_tbl[] = {
- 	{ PHY_ID_KSZ9021, 0x000ffffe },
--	{ PHY_ID_KSZ9031, MICREL_PHY_ID_MASK },
--	{ PHY_ID_KSZ9131, MICREL_PHY_ID_MASK },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_KSZ9031) },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_KSZ9131) },
- 	{ PHY_ID_KSZ8001, 0x00fffffc },
--	{ PHY_ID_KS8737, MICREL_PHY_ID_MASK },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_KS8737) },
- 	{ PHY_ID_KSZ8021, 0x00ffffff },
- 	{ PHY_ID_KSZ8031, 0x00ffffff },
--	{ PHY_ID_KSZ8041, MICREL_PHY_ID_MASK },
--	{ PHY_ID_KSZ8051, MICREL_PHY_ID_MASK },
--	{ PHY_ID_KSZ8061, MICREL_PHY_ID_MASK },
--	{ PHY_ID_KSZ8081, MICREL_PHY_ID_MASK },
--	{ PHY_ID_KSZ8873MLL, MICREL_PHY_ID_MASK },
--	{ PHY_ID_KSZ886X, MICREL_PHY_ID_MASK },
--	{ PHY_ID_KSZ9477, MICREL_PHY_ID_MASK },
--	{ PHY_ID_LAN8814, MICREL_PHY_ID_MASK },
--	{ PHY_ID_LAN8804, MICREL_PHY_ID_MASK },
--	{ PHY_ID_LAN8841, MICREL_PHY_ID_MASK },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_KSZ8041) },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_KSZ8041RNLI) },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_KSZ8051) },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_KSZ8061) },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_KSZ8081) },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_KSZ8873MLL) },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_KSZ886X) },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_KSZ9477) },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN8814) },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN8804) },
-+	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN8841) },
- 	{ }
- };
- 
--- 
-2.34.1
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml: motorcomm,switch-id: missing type definition
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250814065032.3766988-2-mmyangfl@gmail.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
