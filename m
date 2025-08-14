@@ -1,35 +1,35 @@
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F58301019;
-	Thu, 14 Aug 2025 13:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCB3301030;
+	Thu, 14 Aug 2025 13:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755179933; cv=none; b=hG7zEr5zOryU+VcQSpnBMvCncux7eEBx8TpH9v7SpR8QTHV56Ew58SuTTNoK0teuhtXIUlpbYfzbwgXJM7cNMK+JW1EK+wifcfmnSTaeVzQ6xEmmLZsLiHXPkQHz1xBZvfJijhQlBzSvft8AL1N2hzqfsnglisuXAYuAlxsRNmI=
+	t=1755179935; cv=none; b=Ou45ycmqckGpahxYstvceZ/c5FPtck6jYoR1H11vNKnZ+1lyEeEOPe0Jr5UoD/cm+YTFPVH38gTIU5TmDZJ4YdcCrpXqh6umztOTHm+d36n/mU2v1Epv0W5MPC1hawijsnFPn9kCjmzqilu+WEiAPA7w9eqKIRzb5ROmc6YcTQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755179933; c=relaxed/simple;
-	bh=8GIISQ747xStpcrAmgsrEm3PUzf7LjS8WrP3DawpFlk=;
+	s=arc-20240116; t=1755179935; c=relaxed/simple;
+	bh=1j7JjIZvwYMMzL/KP7iLokaQoRMfuba0Yhl56VRtoIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6Ddt6IQPkxMZeIDRA4vhI01CLYBbXkCuZ3Y3iXPTTRtr2xEpym0L+ONJIrqLeJjffFWXraPdxiUuY3Rx+oB+XTqDyaE18zpII6BELwRFll3hERUq9oW0xxUQRMNOdutipfx8ce/Kptke6t+BCygT/ydq4Z0Q3cV5DRiJtfrwH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OLf2130p; arc=none smtp.client-ip=217.70.183.201
+	 MIME-Version; b=mDorYvJ6eFHQHUKq1G4sfgDXWwUToToWT2+54/DCiyrVvCJGI2UwqsoRP7xDjtb7FTZdi5E0lL3pVIGCDrAz7w7/dqtSUPxiyFrcdmvFgw6oPO4TAKKmTCtohE2WCoBz+AdxKLPLN+KiVKKfvlAHhkkxrUIYDEFpil2D1l/feAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pT6xMV1L; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OLf2130p"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 871164441B;
-	Thu, 14 Aug 2025 13:58:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pT6xMV1L"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id DFCB144423;
+	Thu, 14 Aug 2025 13:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1755179923;
+	t=1755179930;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=X1SG6EZwUeidKkcS9Cw+ueu25J90gmUPbo4DL8leCwY=;
-	b=OLf2130pQP1SY5zA1WAMH3htAjHK2qwhk1DZnnXn6GEY+4/nYrMkBUaBT7/En7/CQOhxGK
-	1IBNLpBmO/lyBxmpvm0F+WUP1GQJ0jdkh3tZKWvJ9e0z4Y8wo8w6YQzkGPpaHhBCqXZeWO
-	g2RgH59+EtAm3BBOf6B6l48WrrEt6pEAj1jEvmKn5puyayZQ9P6i2QcD4ksMzxUep9UbPf
-	lYdxIwOUmE/HZmgnJEdlXMIjQBu7UtbXEiSVQAdEKHYY2XLakbC+xr4XzyUVTmqAN+xtXF
-	d0kqH4ZWtpIPQT6I9k1ul8Cmf0al6BHRo/Xh3Pp+eYEP+2U812wm7wRz5rD9hQ==
+	bh=1STP/Iqy+r3rkmsyBFvDgXmWIXeJHIF2iGeE/f30ZK0=;
+	b=pT6xMV1LrUFu+PuLnknFL48yHZ9DEi1K+Ff5pH+L76VyN2YiPNmVBL8CgypoD3vF4mdHI8
+	G+1Jogfc5MLhJV4SUfyzk4WVp8V5t+7ivUrg370KAWeEL/NQ0pYFNMgBgk8g/JjS5Ue+b7
+	VdTtfZcwqigVjTExOvlwsUxOY/zKEkw/3v+Vw8vfZNeCS0AlfVpItQCEENbTkmt2KDzSWB
+	zJhRUdkaq+cKjhWZdsWO+HCuHcQA60WXbNI7DAEK7te5XzNNn15U8HpC8XFld34M+dlL7w
+	lxlzOoEqmRQe2m4LTzE1dw2tRSLdsDGvpVuJunav/q9t5CSoFFfq7UPbpKtr9A==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net
 Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
@@ -62,9 +62,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Romain Gantois <romain.gantois@bootlin.com>,
 	Daniel Golle <daniel@makrotopia.org>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: [PATCH net-next v11 02/16] net: ethtool: common: Indicate that BaseT works on up to 4 lanes
-Date: Thu, 14 Aug 2025 15:58:17 +0200
-Message-ID: <20250814135832.174911-3-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v11 06/16] dt-bindings: net: dp83822: Deprecate ti,fiber-mode
+Date: Thu, 14 Aug 2025 15:58:21 +0200
+Message-ID: <20250814135832.174911-7-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250814135832.174911-1-maxime.chevallier@bootlin.com>
 References: <20250814135832.174911-1-maxime.chevallier@bootlin.com>
@@ -77,66 +77,54 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddugeduvdeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveegtdffleffleevueellefgjeefvedvjefhheegfefgffdvfeetgeevudetffdtnecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjedphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedupdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrk
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddugeduvdeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeforgigihhmvgcuvehhvghvrghllhhivghruceomhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveegtdffleffleevueellefgjeefvedvjefhheegfefgffdvfeetgeevudetffdtnecukfhppedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejnecuvehluhhsthgvrhfuihiivgepgeenucfrrghrrghmpehinhgvthepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjedphhgvlhhopehfvgguohhrrgdrhhhomhgvpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedupdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrk
  hgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqmhhsmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhg
 X-GND-Sasl: maxime.chevallier@bootlin.com
 
-The way BaseT modes (Ethernet over twisted copper pairs) are represented
-in the kernel are through the following modes :
+The newly added ethernet-connector binding allows describing an Ethernet
+connector with greater precision, and in a more generic manner, than
+ti,fiber-mode. Deprecate this property.
 
-  ETHTOOL_LINK_MODE_10baseT_Half
-  ETHTOOL_LINK_MODE_10baseT_Full
-  ETHTOOL_LINK_MODE_100baseT_Half
-  ETHTOOL_LINK_MODE_100baseT_Full
-  ETHTOOL_LINK_MODE_1000baseT_Half
-  ETHTOOL_LINK_MODE_1000baseT_Full
-  ETHTOOL_LINK_MODE_2500baseT_Full
-  ETHTOOL_LINK_MODE_5000baseT_Full
-  ETHTOOL_LINK_MODE_10000baseT_Full
-  ETHTOOL_LINK_MODE_100baseT1_Full
-  ETHTOOL_LINK_MODE_1000baseT1_Full
-  ETHTOOL_LINK_MODE_10baseT1L_Full
-  ETHTOOL_LINK_MODE_10baseT1S_Full
-  ETHTOOL_LINK_MODE_10baseT1S_Half
-  ETHTOOL_LINK_MODE_10baseT1S_P2MP_Half
-  ETHTOOL_LINK_MODE_10baseT1BRR_Full
-
-The baseT1* modes explicitly specify that they work on a single,
-unshielded twister copper pair.
-
-However, the other modes do not state the number of pairs that are used
-to carry the link. 10 and 100BaseT use 2 twisted copper pairs, while
-1GBaseT and higher use 4 pairs.
-
-although 10 and 100BaseT use 2 pairs, they can work on a Cat3/4/5+
-cables that contain 4 pairs.
-
-Change the number of pairs associated to BaseT modes to indicate the
-allowable number of pairs for BaseT. Further commits will then refine
-the minimum number of pairs required for the linkmode to work.
-
-BaseT1 modes aren't affected by this commit.
-
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- net/ethtool/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../devicetree/bindings/net/ti,dp83822.yaml    | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-index 4f58648a27ad..57290fdb7193 100644
---- a/net/ethtool/common.c
-+++ b/net/ethtool/common.c
-@@ -267,7 +267,7 @@ static_assert(ARRAY_SIZE(link_mode_names) == __ETHTOOL_LINK_MODE_MASK_NBITS);
- #define __LINK_MODE_LANES_LR8_ER8_FR8	8
- #define __LINK_MODE_LANES_LRM		1
- #define __LINK_MODE_LANES_MLD2		2
--#define __LINK_MODE_LANES_T		1
-+#define __LINK_MODE_LANES_T		4
- #define __LINK_MODE_LANES_T1		1
- #define __LINK_MODE_LANES_X		1
- #define __LINK_MODE_LANES_FX		1
+diff --git a/Documentation/devicetree/bindings/net/ti,dp83822.yaml b/Documentation/devicetree/bindings/net/ti,dp83822.yaml
+index 28a0bddb9af9..c1fd6f0a8ce5 100644
+--- a/Documentation/devicetree/bindings/net/ti,dp83822.yaml
++++ b/Documentation/devicetree/bindings/net/ti,dp83822.yaml
+@@ -47,6 +47,9 @@ properties:
+        is disabled.
+        In fiber mode, auto-negotiation is disabled and the PHY can only work in
+        100base-fx (full and half duplex) modes.
++       This property is deprecated, for details please refer to
++       Documentation/devicetree/bindings/net/ethernet-connector.yaml
++    deprecated: true
+ 
+   rx-internal-delay-ps:
+     description: |
+@@ -143,5 +146,20 @@ examples:
+         mac-termination-ohms = <43>;
+       };
+     };
++  - |
++    mdio1 {
++      #address-cells = <1>;
++      #size-cells = <0>;
++      fiberphy0: ethernet-phy@0 {
++        reg = <0>;
++        mdi {
++          connector-0 {
++            lanes = <1>;
++            media = "BaseF";
++          };
++        };
++      };
++    };
++
+ 
+ ...
 -- 
 2.49.0
 
