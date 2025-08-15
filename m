@@ -1,29 +1,29 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7271184E;
-	Fri, 15 Aug 2025 01:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC2A273FE;
+	Fri, 15 Aug 2025 01:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755219740; cv=none; b=CzcOlQbCSArxneBeqkkhgvCIJg/2kUpqdCmjOCgpzOlznSIiBtEvpJmgYflZTHb/DqSsVFBm/fxsdz1kDSei4kNVWp2UYUpcJeMR/i8S3sRU6reLz8myfWc3wBgeQSHcDYQsZnrtHov7N6Z7BNi1n5E3tzgfMUNnSIU5zaB2gZI=
+	t=1755219743; cv=none; b=Wh4F6xfAagdIb9y6kZ4FNPRDN56MVLmdPdpB6oockz8PGq22flkBhn6UecqVksIkvI9C0yMMw+jEMd3ApfUY9G38utwyK61/22TQKT7p1ywbPUmtIEU0OovGdLKz4w3A+/5pI8CnlQ9nJI2GwJcVfO50oWJylShM5XAyNlSxpBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755219740; c=relaxed/simple;
-	bh=VcfxNxwVIno+FO1U624b4izDze1EHG0lcS7UUwDwTvQ=;
+	s=arc-20240116; t=1755219743; c=relaxed/simple;
+	bh=tkBtCY3bwPzViuCgciPixpqKujuWz5IUzYSiKF0sbI0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FbyC6i494P25Uy/ZzOeJk0aXOo8nocVW4U/2WWQ+ZwzEalK4TLo7S+kMN8BNmI4Y6stzbJQ5SYAmxe3GGoLnu+pNMpXxIbC2HzYk/Tbyt9x7oXYCPSLbcy39Prn0Rl7MygfQhjpXemCPuxuK3308M2n5feO8GpYIPWpGC/2G944=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+	 MIME-Version:Content-Type; b=Bd3uj9129R0mPa14jw+GsLoGPdDNsWBMPZCALmmzAeemZXloZEG+zaF1riE4oBtjLxJrM0bY7NvFIUC/jgHGP2Qoc9Ji2vrFhs0jJ7Q6FcPt7xyXGdFAk42wrGb0AIUbLaaWzLreapY6Cp6tXg2ASUngXW32iDfywJDIdvDmwlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4c33df53yrz13KbW;
-	Fri, 15 Aug 2025 08:58:46 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4c33ky148zz2dMMP;
+	Fri, 15 Aug 2025 09:03:22 +0800 (CST)
 Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 01F5A1400DC;
-	Fri, 15 Aug 2025 09:02:13 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id BBB00140123;
+	Fri, 15 Aug 2025 09:02:17 +0800 (CST)
 Received: from DESKTOP-F6Q6J7K.china.huawei.com (10.174.175.220) by
  kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 15 Aug 2025 09:02:11 +0800
+ 15.2.1544.11; Fri, 15 Aug 2025 09:02:16 +0800
 From: Fan Gong <gongfan1@huawei.com>
 To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "David S.
@@ -40,9 +40,9 @@ CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "David S.
 	<vadim.fedorenko@linux.dev>, Suman Ghosh <sumang@marvell.com>, Przemek
  Kitszel <przemyslaw.kitszel@intel.com>, Joe Damato <jdamato@fastly.com>,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH net-next v13 1/8] hinic3: Async Event Queue interfaces
-Date: Fri, 15 Aug 2025 09:01:57 +0800
-Message-ID: <4a3fbb9455305898257760e2a13cc072b475489b.1755176101.git.zhuyikai1@h-partners.com>
+Subject: [PATCH net-next v13 3/8] hinic3: Command Queue framework
+Date: Fri, 15 Aug 2025 09:01:59 +0800
+Message-ID: <9fe52f8285614364916b17b9709c562dba4cc803.1755176101.git.zhuyikai1@h-partners.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <cover.1755176101.git.zhuyikai1@h-partners.com>
 References: <cover.1755176101.git.zhuyikai1@h-partners.com>
@@ -57,8 +57,9 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  kwepemf100013.china.huawei.com (7.202.181.12)
 
-Add async event queue interfaces initialization.
-It allows driver to handle async events reported by HW.
+Add Command Queue framework initialization.
+It is used to set the related table items of the driver and obtain the
+HW configuration.
 
 Co-developed-by: Xin Guo <guoxin09@huawei.com>
 Signed-off-by: Xin Guo <guoxin09@huawei.com>
@@ -66,847 +67,806 @@ Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
 Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
 Signed-off-by: Fan Gong <gongfan1@huawei.com>
 ---
- drivers/net/ethernet/huawei/hinic3/Makefile   |   1 +
- .../ethernet/huawei/hinic3/hinic3_common.c    |   9 +
- .../ethernet/huawei/hinic3/hinic3_common.h    |   2 +
- .../net/ethernet/huawei/hinic3/hinic3_csr.h   |  65 +++
- .../net/ethernet/huawei/hinic3/hinic3_eqs.c   | 497 ++++++++++++++++++
- .../net/ethernet/huawei/hinic3/hinic3_eqs.h   |  90 ++++
- .../ethernet/huawei/hinic3/hinic3_hw_cfg.c    |  43 ++
- .../net/ethernet/huawei/hinic3/hinic3_hwif.c  |  28 +
- .../net/ethernet/huawei/hinic3/hinic3_hwif.h  |   5 +
- 9 files changed, 740 insertions(+)
+ drivers/net/ethernet/huawei/hinic3/Makefile   |   3 +-
+ .../net/ethernet/huawei/hinic3/hinic3_cmdq.c  | 407 ++++++++++++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_cmdq.h  | 151 +++++++
+ .../ethernet/huawei/hinic3/hinic3_common.h    |   7 +
+ .../net/ethernet/huawei/hinic3/hinic3_tx.c    |   6 +-
+ .../net/ethernet/huawei/hinic3/hinic3_wq.c    | 109 +++++
+ .../net/ethernet/huawei/hinic3/hinic3_wq.h    |  19 +-
+ 7 files changed, 694 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/ethernet/huawei/hinic3/Makefile b/drivers/net/ethernet/huawei/hinic3/Makefile
-index 509dfbfb0e96..5fb4d1370049 100644
+index 5fb4d1370049..2a0ed8e2c63e 100644
 --- a/drivers/net/ethernet/huawei/hinic3/Makefile
 +++ b/drivers/net/ethernet/huawei/hinic3/Makefile
-@@ -4,6 +4,7 @@
+@@ -3,7 +3,8 @@
+ 
  obj-$(CONFIG_HINIC3) += hinic3.o
  
- hinic3-objs := hinic3_common.o \
-+	       hinic3_eqs.o \
+-hinic3-objs := hinic3_common.o \
++hinic3-objs := hinic3_cmdq.o \
++	       hinic3_common.o \
+ 	       hinic3_eqs.o \
  	       hinic3_hw_cfg.o \
  	       hinic3_hw_comm.o \
- 	       hinic3_hwdev.o \
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_common.c b/drivers/net/ethernet/huawei/hinic3/hinic3_common.c
-index 0aa42068728c..b8d29e26e2da 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_common.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_common.c
-@@ -51,3 +51,12 @@ void hinic3_dma_free_coherent_align(struct device *dev,
- 	dma_free_coherent(dev, mem_align->real_size,
- 			  mem_align->ori_vaddr, mem_align->ori_paddr);
- }
-+
-+/* Data provided to/by cmdq is arranged in structs with little endian fields but
-+ * every dword (32bits) should be swapped since HW swaps it again when it
-+ * copies it from/to host memory.
-+ */
-+void hinic3_cmdq_buf_swab32(void *data, int len)
-+{
-+	swab32_array(data, len / sizeof(u32));
-+}
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_common.h b/drivers/net/ethernet/huawei/hinic3/hinic3_common.h
-index bb795dace04c..c8e8a491adbf 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_common.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_common.h
-@@ -24,4 +24,6 @@ int hinic3_dma_zalloc_coherent_align(struct device *dev, u32 size, u32 align,
- void hinic3_dma_free_coherent_align(struct device *dev,
- 				    struct hinic3_dma_addr_align *mem_align);
- 
-+void hinic3_cmdq_buf_swab32(void *data, int len);
-+
- #endif
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_csr.h b/drivers/net/ethernet/huawei/hinic3/hinic3_csr.h
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.c
 new file mode 100644
-index 000000000000..39e15fbf0ed7
+index 000000000000..f1e61a212f2a
 --- /dev/null
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_csr.h
-@@ -0,0 +1,65 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (c) Huawei Technologies Co., Ltd. 2025. All rights reserved. */
-+
-+#ifndef _HINIC3_CSR_H_
-+#define _HINIC3_CSR_H_
-+
-+#define HINIC3_CFG_REGS_FLAG                  0x40000000
-+#define HINIC3_REGS_FLAG_MASK                 0x3FFFFFFF
-+
-+#define HINIC3_VF_CFG_REG_OFFSET              0x2000
-+
-+/* HW interface registers */
-+#define HINIC3_CSR_FUNC_ATTR0_ADDR            (HINIC3_CFG_REGS_FLAG + 0x0)
-+#define HINIC3_CSR_FUNC_ATTR1_ADDR            (HINIC3_CFG_REGS_FLAG + 0x4)
-+#define HINIC3_CSR_FUNC_ATTR2_ADDR            (HINIC3_CFG_REGS_FLAG + 0x8)
-+#define HINIC3_CSR_FUNC_ATTR3_ADDR            (HINIC3_CFG_REGS_FLAG + 0xC)
-+#define HINIC3_CSR_FUNC_ATTR4_ADDR            (HINIC3_CFG_REGS_FLAG + 0x10)
-+#define HINIC3_CSR_FUNC_ATTR5_ADDR            (HINIC3_CFG_REGS_FLAG + 0x14)
-+#define HINIC3_CSR_FUNC_ATTR6_ADDR            (HINIC3_CFG_REGS_FLAG + 0x18)
-+
-+#define HINIC3_FUNC_CSR_MAILBOX_DATA_OFF      0x80
-+#define HINIC3_FUNC_CSR_MAILBOX_CONTROL_OFF   (HINIC3_CFG_REGS_FLAG + 0x0100)
-+#define HINIC3_FUNC_CSR_MAILBOX_INT_OFF       (HINIC3_CFG_REGS_FLAG + 0x0104)
-+#define HINIC3_FUNC_CSR_MAILBOX_RESULT_H_OFF  (HINIC3_CFG_REGS_FLAG + 0x0108)
-+#define HINIC3_FUNC_CSR_MAILBOX_RESULT_L_OFF  (HINIC3_CFG_REGS_FLAG + 0x010C)
-+
-+#define HINIC3_CSR_DMA_ATTR_TBL_ADDR          (HINIC3_CFG_REGS_FLAG + 0x380)
-+#define HINIC3_CSR_DMA_ATTR_INDIR_IDX_ADDR    (HINIC3_CFG_REGS_FLAG + 0x390)
-+
-+/* MSI-X registers */
-+#define HINIC3_CSR_FUNC_MSI_CLR_WR_ADDR       (HINIC3_CFG_REGS_FLAG + 0x58)
-+
-+#define HINIC3_MSI_CLR_INDIR_RESEND_TIMER_CLR_MASK  BIT(0)
-+#define HINIC3_MSI_CLR_INDIR_INT_MSK_SET_MASK       BIT(1)
-+#define HINIC3_MSI_CLR_INDIR_INT_MSK_CLR_MASK       BIT(2)
-+#define HINIC3_MSI_CLR_INDIR_AUTO_MSK_SET_MASK      BIT(3)
-+#define HINIC3_MSI_CLR_INDIR_AUTO_MSK_CLR_MASK      BIT(4)
-+#define HINIC3_MSI_CLR_INDIR_SIMPLE_INDIR_IDX_MASK  GENMASK(31, 22)
-+#define HINIC3_MSI_CLR_INDIR_SET(val, member)  \
-+	FIELD_PREP(HINIC3_MSI_CLR_INDIR_##member##_MASK, val)
-+
-+/* EQ registers */
-+#define HINIC3_AEQ_INDIR_IDX_ADDR      (HINIC3_CFG_REGS_FLAG + 0x210)
-+
-+#define HINIC3_EQ_INDIR_IDX_ADDR(type)  \
-+	HINIC3_AEQ_INDIR_IDX_ADDR
-+
-+#define HINIC3_AEQ_MTT_OFF_BASE_ADDR   (HINIC3_CFG_REGS_FLAG + 0x240)
-+
-+#define HINIC3_CSR_EQ_PAGE_OFF_STRIDE  8
-+
-+#define HINIC3_AEQ_HI_PHYS_ADDR_REG(pg_num)  \
-+	(HINIC3_AEQ_MTT_OFF_BASE_ADDR + (pg_num) *  \
-+	 HINIC3_CSR_EQ_PAGE_OFF_STRIDE)
-+
-+#define HINIC3_AEQ_LO_PHYS_ADDR_REG(pg_num)  \
-+	(HINIC3_AEQ_MTT_OFF_BASE_ADDR + (pg_num) *  \
-+	 HINIC3_CSR_EQ_PAGE_OFF_STRIDE + 4)
-+
-+#define HINIC3_CSR_AEQ_CTRL_0_ADDR           (HINIC3_CFG_REGS_FLAG + 0x200)
-+#define HINIC3_CSR_AEQ_CTRL_1_ADDR           (HINIC3_CFG_REGS_FLAG + 0x204)
-+#define HINIC3_CSR_AEQ_PROD_IDX_ADDR         (HINIC3_CFG_REGS_FLAG + 0x20C)
-+#define HINIC3_CSR_AEQ_CI_SIMPLE_INDIR_ADDR  (HINIC3_CFG_REGS_FLAG + 0x50)
-+
-+#endif
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_eqs.c b/drivers/net/ethernet/huawei/hinic3/hinic3_eqs.c
-new file mode 100644
-index 000000000000..567db1091cfb
---- /dev/null
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_eqs.c
-@@ -0,0 +1,497 @@
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.c
+@@ -0,0 +1,407 @@
 +// SPDX-License-Identifier: GPL-2.0
 +// Copyright (c) Huawei Technologies Co., Ltd. 2025. All rights reserved.
 +
-+#include <linux/delay.h>
++#include <linux/bitfield.h>
++#include <linux/dma-mapping.h>
 +
-+#include "hinic3_csr.h"
-+#include "hinic3_eqs.h"
++#include "hinic3_cmdq.h"
 +#include "hinic3_hwdev.h"
 +#include "hinic3_hwif.h"
 +#include "hinic3_mbox.h"
 +
-+#define AEQ_CTRL_0_INTR_IDX_MASK      GENMASK(9, 0)
-+#define AEQ_CTRL_0_DMA_ATTR_MASK      GENMASK(17, 12)
-+#define AEQ_CTRL_0_PCI_INTF_IDX_MASK  GENMASK(22, 20)
-+#define AEQ_CTRL_0_INTR_MODE_MASK     BIT(31)
-+#define AEQ_CTRL_0_SET(val, member)  \
-+	FIELD_PREP(AEQ_CTRL_0_##member##_MASK, val)
++#define CMDQ_BUF_SIZE             2048
++#define CMDQ_WQEBB_SIZE           64
 +
-+#define AEQ_CTRL_1_LEN_MASK           GENMASK(20, 0)
-+#define AEQ_CTRL_1_ELEM_SIZE_MASK     GENMASK(25, 24)
-+#define AEQ_CTRL_1_PAGE_SIZE_MASK     GENMASK(31, 28)
-+#define AEQ_CTRL_1_SET(val, member)  \
-+	FIELD_PREP(AEQ_CTRL_1_##member##_MASK, val)
++#define CMDQ_CTXT_CURR_WQE_PAGE_PFN_MASK  GENMASK_ULL(51, 0)
++#define CMDQ_CTXT_EQ_ID_MASK              GENMASK_ULL(60, 53)
++#define CMDQ_CTXT_CEQ_ARM_MASK            BIT_ULL(61)
++#define CMDQ_CTXT_CEQ_EN_MASK             BIT_ULL(62)
++#define CMDQ_CTXT_HW_BUSY_BIT_MASK        BIT_ULL(63)
 +
-+#define EQ_ELEM_DESC_TYPE_MASK        GENMASK(6, 0)
-+#define EQ_ELEM_DESC_SRC_MASK         BIT(7)
-+#define EQ_ELEM_DESC_SIZE_MASK        GENMASK(15, 8)
-+#define EQ_ELEM_DESC_WRAPPED_MASK     BIT(31)
-+#define EQ_ELEM_DESC_GET(val, member)  \
-+	FIELD_GET(EQ_ELEM_DESC_##member##_MASK, le32_to_cpu(val))
++#define CMDQ_CTXT_WQ_BLOCK_PFN_MASK       GENMASK_ULL(51, 0)
++#define CMDQ_CTXT_CI_MASK                 GENMASK_ULL(63, 52)
++#define CMDQ_CTXT_SET(val, member)  \
++	FIELD_PREP(CMDQ_CTXT_##member##_MASK, val)
 +
-+#define EQ_CI_SIMPLE_INDIR_CI_MASK       GENMASK(20, 0)
-+#define EQ_CI_SIMPLE_INDIR_ARMED_MASK    BIT(21)
-+#define EQ_CI_SIMPLE_INDIR_AEQ_IDX_MASK  GENMASK(31, 30)
-+#define EQ_CI_SIMPLE_INDIR_SET(val, member)  \
-+	FIELD_PREP(EQ_CI_SIMPLE_INDIR_##member##_MASK, val)
++#define CMDQ_PFN(addr)  ((addr) >> 12)
 +
-+#define EQ_CI_SIMPLE_INDIR_REG_ADDR  \
-+	HINIC3_CSR_AEQ_CI_SIMPLE_INDIR_ADDR
++/* cmdq work queue's chip logical address table is up to 512B */
++#define CMDQ_WQ_CLA_SIZE  512
 +
-+#define EQ_PROD_IDX_REG_ADDR  \
-+	HINIC3_CSR_AEQ_PROD_IDX_ADDR
++/* Completion codes: send, direct sync, force stop */
++#define CMDQ_SEND_CMPT_CODE         10
++#define CMDQ_DIRECT_SYNC_CMPT_CODE  11
++#define CMDQ_FORCE_STOP_CMPT_CODE   12
 +
-+#define EQ_HI_PHYS_ADDR_REG(type, pg_num)  \
-+	HINIC3_AEQ_HI_PHYS_ADDR_REG(pg_num)
++#define CMDQ_WQE_NUM_WQEBBS  1
 +
-+#define EQ_LO_PHYS_ADDR_REG(type, pg_num)  \
-+	HINIC3_AEQ_LO_PHYS_ADDR_REG(pg_num)
-+
-+#define EQ_MSIX_RESEND_TIMER_CLEAR  1
-+
-+#define HINIC3_EQ_MAX_PAGES  \
-+	HINIC3_AEQ_MAX_PAGES
-+
-+#define HINIC3_TASK_PROCESS_EQE_LIMIT  1024
-+#define HINIC3_EQ_UPDATE_CI_STEP       64
-+#define HINIC3_EQS_WQ_NAME             "hinic3_eqs"
-+
-+#define HINIC3_EQ_VALID_SHIFT          31
-+#define HINIC3_EQ_WRAPPED(eq)  \
-+	((eq)->wrapped << HINIC3_EQ_VALID_SHIFT)
-+
-+#define HINIC3_EQ_WRAPPED_SHIFT        20
-+#define HINIC3_EQ_CONS_IDX(eq)  \
-+	((eq)->cons_idx | ((eq)->wrapped << HINIC3_EQ_WRAPPED_SHIFT))
-+
-+static const struct hinic3_aeq_elem *get_curr_aeq_elem(const struct hinic3_eq *eq)
++static struct cmdq_wqe *cmdq_read_wqe(struct hinic3_wq *wq, u16 *ci)
 +{
-+	return get_q_element(&eq->qpages, eq->cons_idx, NULL);
++	if (hinic3_wq_get_used(wq) == 0)
++		return NULL;
++
++	*ci = wq->cons_idx & wq->idx_mask;
++
++	return get_q_element(&wq->qpages, wq->cons_idx, NULL);
 +}
 +
-+int hinic3_aeq_register_cb(struct hinic3_hwdev *hwdev,
-+			   enum hinic3_aeq_type event,
-+			   hinic3_aeq_event_cb hwe_cb)
++void hinic3_free_cmd_buf(struct hinic3_hwdev *hwdev,
++			 struct hinic3_cmd_buf *cmd_buf)
 +{
-+	struct hinic3_aeqs *aeqs;
++	struct hinic3_cmdqs *cmdqs;
 +
-+	aeqs = hwdev->aeqs;
-+	aeqs->aeq_cb[event] = hwe_cb;
-+	spin_lock_init(&aeqs->aeq_lock);
-+
-+	return 0;
-+}
-+
-+void hinic3_aeq_unregister_cb(struct hinic3_hwdev *hwdev,
-+			      enum hinic3_aeq_type event)
-+{
-+	struct hinic3_aeqs *aeqs;
-+
-+	aeqs = hwdev->aeqs;
-+
-+	spin_lock_bh(&aeqs->aeq_lock);
-+	aeqs->aeq_cb[event] = NULL;
-+	spin_unlock_bh(&aeqs->aeq_lock);
-+}
-+
-+/* Set consumer index in the hw. */
-+static void set_eq_cons_idx(struct hinic3_eq *eq, u32 arm_state)
-+{
-+	u32 addr = EQ_CI_SIMPLE_INDIR_REG_ADDR;
-+	u32 eq_wrap_ci, val;
-+
-+	eq_wrap_ci = HINIC3_EQ_CONS_IDX(eq);
-+	val = EQ_CI_SIMPLE_INDIR_SET(arm_state, ARMED) |
-+		EQ_CI_SIMPLE_INDIR_SET(eq_wrap_ci, CI) |
-+		EQ_CI_SIMPLE_INDIR_SET(eq->q_id, AEQ_IDX);
-+
-+	hinic3_hwif_write_reg(eq->hwdev->hwif, addr, val);
-+}
-+
-+static struct hinic3_aeqs *aeq_to_aeqs(const struct hinic3_eq *eq)
-+{
-+	return container_of(eq, struct hinic3_aeqs, aeq[eq->q_id]);
-+}
-+
-+static void aeq_event_handler(struct hinic3_aeqs *aeqs, __le32 aeqe,
-+			      const struct hinic3_aeq_elem *aeqe_pos)
-+{
-+	struct hinic3_hwdev *hwdev = aeqs->hwdev;
-+	u8 data[HINIC3_AEQE_DATA_SIZE], size;
-+	enum hinic3_aeq_type event;
-+	hinic3_aeq_event_cb hwe_cb;
-+
-+	if (EQ_ELEM_DESC_GET(aeqe, SRC))
++	if (!refcount_dec_and_test(&cmd_buf->ref_cnt))
 +		return;
 +
-+	event = EQ_ELEM_DESC_GET(aeqe, TYPE);
-+	if (event >= HINIC3_MAX_AEQ_EVENTS) {
-+		dev_warn(hwdev->dev, "Aeq unknown event:%d\n", event);
-+		return;
++	cmdqs = hwdev->cmdqs;
++
++	dma_pool_free(cmdqs->cmd_buf_pool, cmd_buf->buf, cmd_buf->dma_addr);
++	kfree(cmd_buf);
++}
++
++static void cmdq_clear_cmd_buf(struct hinic3_cmdq_cmd_info *cmd_info,
++			       struct hinic3_hwdev *hwdev)
++{
++	if (cmd_info->buf_in) {
++		hinic3_free_cmd_buf(hwdev, cmd_info->buf_in);
++		cmd_info->buf_in = NULL;
++	}
++}
++
++static void cmdq_init_queue_ctxt(struct hinic3_hwdev *hwdev, u8 cmdq_id,
++				 struct comm_cmdq_ctxt_info *ctxt_info)
++{
++	const struct hinic3_cmdqs *cmdqs;
++	u64 cmdq_first_block_paddr, pfn;
++	const struct hinic3_wq *wq;
++
++	cmdqs = hwdev->cmdqs;
++	wq = &cmdqs->cmdq[cmdq_id].wq;
++	pfn = CMDQ_PFN(hinic3_wq_get_first_wqe_page_addr(wq));
++
++	ctxt_info->curr_wqe_page_pfn =
++		cpu_to_le64(CMDQ_CTXT_SET(1, HW_BUSY_BIT) |
++			    CMDQ_CTXT_SET(1, CEQ_EN)	|
++			    CMDQ_CTXT_SET(1, CEQ_ARM)	|
++			    CMDQ_CTXT_SET(0, EQ_ID) |
++			    CMDQ_CTXT_SET(pfn, CURR_WQE_PAGE_PFN));
++
++	if (!hinic3_wq_is_0_level_cla(wq)) {
++		cmdq_first_block_paddr = cmdqs->wq_block_paddr;
++		pfn = CMDQ_PFN(cmdq_first_block_paddr);
 +	}
 +
-+	memcpy(data, aeqe_pos->aeqe_data, HINIC3_AEQE_DATA_SIZE);
-+	swab32_array((u32 *)data, HINIC3_AEQE_DATA_SIZE / sizeof(u32));
-+	size = EQ_ELEM_DESC_GET(aeqe, SIZE);
-+
-+	spin_lock_bh(&aeqs->aeq_lock);
-+	hwe_cb = aeqs->aeq_cb[event];
-+	if (hwe_cb)
-+		hwe_cb(aeqs->hwdev, data, size);
-+	spin_unlock_bh(&aeqs->aeq_lock);
++	ctxt_info->wq_block_pfn = cpu_to_le64(CMDQ_CTXT_SET(wq->cons_idx, CI) |
++					      CMDQ_CTXT_SET(pfn, WQ_BLOCK_PFN));
 +}
 +
-+static int aeq_irq_handler(struct hinic3_eq *eq)
-+{
-+	const struct hinic3_aeq_elem *aeqe_pos;
-+	struct hinic3_aeqs *aeqs;
-+	u32 i, eqe_cnt = 0;
-+	__le32 aeqe;
-+
-+	aeqs = aeq_to_aeqs(eq);
-+	for (i = 0; i < HINIC3_TASK_PROCESS_EQE_LIMIT; i++) {
-+		aeqe_pos = get_curr_aeq_elem(eq);
-+		aeqe = (__force __le32)swab32((__force __u32)aeqe_pos->desc);
-+		/* HW updates wrapped bit, when it adds eq element event */
-+		if (EQ_ELEM_DESC_GET(aeqe, WRAPPED) == eq->wrapped)
-+			return 0;
-+
-+		/* Prevent speculative reads from element */
-+		dma_rmb();
-+		aeq_event_handler(aeqs, aeqe, aeqe_pos);
-+		eq->cons_idx++;
-+		if (eq->cons_idx == eq->eq_len) {
-+			eq->cons_idx = 0;
-+			eq->wrapped = !eq->wrapped;
-+		}
-+
-+		if (++eqe_cnt >= HINIC3_EQ_UPDATE_CI_STEP) {
-+			eqe_cnt = 0;
-+			set_eq_cons_idx(eq, HINIC3_EQ_NOT_ARMED);
-+		}
-+	}
-+
-+	return -EAGAIN;
-+}
-+
-+static void reschedule_eq_handler(struct hinic3_eq *eq)
-+{
-+	struct hinic3_aeqs *aeqs = aeq_to_aeqs(eq);
-+
-+	queue_work(aeqs->workq, &eq->aeq_work);
-+}
-+
-+static int eq_irq_handler(struct hinic3_eq *eq)
++static int init_cmdq(struct hinic3_cmdq *cmdq, struct hinic3_hwdev *hwdev,
++		     enum hinic3_cmdq_type q_type)
 +{
 +	int err;
 +
-+	err = aeq_irq_handler(eq);
++	cmdq->cmdq_type = q_type;
++	cmdq->wrapped = 1;
++	cmdq->hwdev = hwdev;
 +
-+	set_eq_cons_idx(eq, err ? HINIC3_EQ_NOT_ARMED :
-+			HINIC3_EQ_ARMED);
++	spin_lock_init(&cmdq->cmdq_lock);
 +
-+	return err;
-+}
-+
-+static void eq_irq_work(struct work_struct *work)
-+{
-+	struct hinic3_eq *eq = container_of(work, struct hinic3_eq, aeq_work);
-+	int err;
-+
-+	err = eq_irq_handler(eq);
-+	if (err)
-+		reschedule_eq_handler(eq);
-+}
-+
-+static irqreturn_t aeq_interrupt(int irq, void *data)
-+{
-+	struct workqueue_struct *workq;
-+	struct hinic3_eq *aeq = data;
-+	struct hinic3_hwdev *hwdev;
-+	struct hinic3_aeqs *aeqs;
-+
-+	aeqs = aeq_to_aeqs(aeq);
-+	hwdev = aeq->hwdev;
-+
-+	/* clear resend timer cnt register */
-+	workq = aeqs->workq;
-+	hinic3_msix_intr_clear_resend_bit(hwdev, aeq->msix_entry_idx,
-+					  EQ_MSIX_RESEND_TIMER_CLEAR);
-+	queue_work(workq, &aeq->aeq_work);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int set_eq_ctrls(struct hinic3_eq *eq)
-+{
-+	struct hinic3_hwif *hwif = eq->hwdev->hwif;
-+	struct hinic3_queue_pages *qpages;
-+	u8 pci_intf_idx, elem_size;
-+	u32 mask, ctrl0, ctrl1;
-+	u32 page_size_val;
-+
-+	qpages = &eq->qpages;
-+	page_size_val = ilog2(qpages->page_size / HINIC3_MIN_PAGE_SIZE);
-+	pci_intf_idx = hwif->attr.pci_intf_idx;
-+
-+	/* set ctrl0 using read-modify-write */
-+	mask = AEQ_CTRL_0_INTR_IDX_MASK |
-+	       AEQ_CTRL_0_DMA_ATTR_MASK |
-+	       AEQ_CTRL_0_PCI_INTF_IDX_MASK |
-+	       AEQ_CTRL_0_INTR_MODE_MASK;
-+	ctrl0 = hinic3_hwif_read_reg(hwif, HINIC3_CSR_AEQ_CTRL_0_ADDR);
-+	ctrl0 = (ctrl0 & ~mask) |
-+		AEQ_CTRL_0_SET(eq->msix_entry_idx, INTR_IDX) |
-+		AEQ_CTRL_0_SET(0, DMA_ATTR) |
-+		AEQ_CTRL_0_SET(pci_intf_idx, PCI_INTF_IDX) |
-+		AEQ_CTRL_0_SET(HINIC3_INTR_MODE_ARMED, INTR_MODE);
-+	hinic3_hwif_write_reg(hwif, HINIC3_CSR_AEQ_CTRL_0_ADDR, ctrl0);
-+
-+	/* HW expects log2(number of 32 byte units). */
-+	elem_size = qpages->elem_size_shift - 5;
-+	ctrl1 = AEQ_CTRL_1_SET(eq->eq_len, LEN) |
-+		AEQ_CTRL_1_SET(elem_size, ELEM_SIZE) |
-+		AEQ_CTRL_1_SET(page_size_val, PAGE_SIZE);
-+	hinic3_hwif_write_reg(hwif, HINIC3_CSR_AEQ_CTRL_1_ADDR, ctrl1);
-+
-+	return 0;
-+}
-+
-+static void aeq_elements_init(struct hinic3_eq *eq, u32 init_val)
-+{
-+	struct hinic3_aeq_elem *aeqe;
-+	u32 i;
-+
-+	for (i = 0; i < eq->eq_len; i++) {
-+		aeqe = get_q_element(&eq->qpages, i, NULL);
-+		aeqe->desc = cpu_to_be32(init_val);
-+	}
-+
-+	wmb();    /* Clear aeq elements bit */
-+}
-+
-+static void eq_elements_init(struct hinic3_eq *eq, u32 init_val)
-+{
-+	aeq_elements_init(eq, init_val);
-+}
-+
-+static int alloc_eq_pages(struct hinic3_eq *eq)
-+{
-+	struct hinic3_hwif *hwif = eq->hwdev->hwif;
-+	struct hinic3_queue_pages *qpages;
-+	dma_addr_t page_paddr;
-+	u32 reg, init_val;
-+	u16 pg_idx;
-+	int err;
-+
-+	qpages = &eq->qpages;
-+	err = hinic3_queue_pages_alloc(eq->hwdev, qpages, HINIC3_MIN_PAGE_SIZE);
-+	if (err)
++	cmdq->cmd_infos = kcalloc(cmdq->wq.q_depth, sizeof(*cmdq->cmd_infos),
++				  GFP_KERNEL);
++	if (!cmdq->cmd_infos) {
++		err = -ENOMEM;
 +		return err;
-+
-+	for (pg_idx = 0; pg_idx < qpages->num_pages; pg_idx++) {
-+		page_paddr = qpages->pages[pg_idx].align_paddr;
-+		reg = EQ_HI_PHYS_ADDR_REG(eq->type, pg_idx);
-+		hinic3_hwif_write_reg(hwif, reg, upper_32_bits(page_paddr));
-+		reg = EQ_LO_PHYS_ADDR_REG(eq->type, pg_idx);
-+		hinic3_hwif_write_reg(hwif, reg, lower_32_bits(page_paddr));
 +	}
-+
-+	init_val = HINIC3_EQ_WRAPPED(eq);
-+	eq_elements_init(eq, init_val);
 +
 +	return 0;
 +}
 +
-+static void eq_calc_page_size_and_num(struct hinic3_eq *eq, u32 elem_size)
++static int hinic3_set_cmdq_ctxt(struct hinic3_hwdev *hwdev, u8 cmdq_id)
 +{
-+	u32 max_pages, min_page_size, page_size, total_size;
++	struct comm_cmd_set_cmdq_ctxt cmdq_ctxt = {};
++	struct mgmt_msg_params msg_params = {};
++	int err;
 +
-+	/* No need for complicated arithmetic. All values must be power of 2.
-+	 * Multiplications give power of 2 and divisions give power of 2 without
-+	 * remainder.
++	cmdq_init_queue_ctxt(hwdev, cmdq_id, &cmdq_ctxt.ctxt);
++	cmdq_ctxt.func_id = hinic3_global_func_id(hwdev);
++	cmdq_ctxt.cmdq_id = cmdq_id;
++
++	mgmt_msg_params_init_default(&msg_params, &cmdq_ctxt,
++				     sizeof(cmdq_ctxt));
++
++	err = hinic3_send_mbox_to_mgmt(hwdev, MGMT_MOD_COMM,
++				       COMM_CMD_SET_CMDQ_CTXT, &msg_params);
++	if (err || cmdq_ctxt.head.status) {
++		dev_err(hwdev->dev, "Failed to set cmdq ctxt, err: %d, status: 0x%x\n",
++			err, cmdq_ctxt.head.status);
++		return -EFAULT;
++	}
++
++	return 0;
++}
++
++static int hinic3_set_cmdq_ctxts(struct hinic3_hwdev *hwdev)
++{
++	struct hinic3_cmdqs *cmdqs = hwdev->cmdqs;
++	u8 cmdq_type;
++	int err;
++
++	for (cmdq_type = 0; cmdq_type < cmdqs->cmdq_num; cmdq_type++) {
++		err = hinic3_set_cmdq_ctxt(hwdev, cmdq_type);
++		if (err)
++			return err;
++	}
++
++	cmdqs->status |= HINIC3_CMDQ_ENABLE;
++	cmdqs->disable_flag = 0;
++
++	return 0;
++}
++
++static int create_cmdq_wq(struct hinic3_hwdev *hwdev,
++			  struct hinic3_cmdqs *cmdqs)
++{
++	u8 cmdq_type;
++	int err;
++
++	for (cmdq_type = 0; cmdq_type < cmdqs->cmdq_num; cmdq_type++) {
++		err = hinic3_wq_create(hwdev, &cmdqs->cmdq[cmdq_type].wq,
++				       CMDQ_DEPTH, CMDQ_WQEBB_SIZE);
++		if (err) {
++			dev_err(hwdev->dev, "Failed to create cmdq wq\n");
++			goto err_destroy_wq;
++		}
++	}
++
++	/* 1-level Chip Logical Address (CLA) must put all
++	 * cmdq's wq page addr in one wq block
 +	 */
-+	max_pages = HINIC3_EQ_MAX_PAGES;
-+	min_page_size = HINIC3_MIN_PAGE_SIZE;
-+	total_size = eq->eq_len * elem_size;
++	if (!hinic3_wq_is_0_level_cla(&cmdqs->cmdq[HINIC3_CMDQ_SYNC].wq)) {
++		if (cmdqs->cmdq[HINIC3_CMDQ_SYNC].wq.qpages.num_pages >
++		    CMDQ_WQ_CLA_SIZE / sizeof(u64)) {
++			err = -EINVAL;
++			dev_err(hwdev->dev,
++				"Cmdq number of wq pages exceeds limit: %lu\n",
++				CMDQ_WQ_CLA_SIZE / sizeof(u64));
++			goto err_destroy_wq;
++		}
 +
-+	if (total_size <= max_pages * min_page_size)
-+		page_size = min_page_size;
-+	else
-+		page_size = total_size / max_pages;
++		cmdqs->wq_block_vaddr =
++			dma_alloc_coherent(hwdev->dev, HINIC3_MIN_PAGE_SIZE,
++					   &cmdqs->wq_block_paddr, GFP_KERNEL);
++		if (!cmdqs->wq_block_vaddr) {
++			err = -ENOMEM;
++			goto err_destroy_wq;
++		}
 +
-+	hinic3_queue_pages_init(&eq->qpages, eq->eq_len, page_size, elem_size);
-+}
-+
-+static int request_eq_irq(struct hinic3_eq *eq)
-+{
-+	INIT_WORK(&eq->aeq_work, eq_irq_work);
-+	snprintf(eq->irq_name, sizeof(eq->irq_name),
-+		 "hinic3_aeq%u@pci:%s", eq->q_id,
-+		 pci_name(eq->hwdev->pdev));
-+
-+	return request_irq(eq->irq_id, aeq_interrupt, 0,
-+			  eq->irq_name, eq);
-+}
-+
-+static void reset_eq(struct hinic3_eq *eq)
-+{
-+	/* clear eq_len to force eqe drop in hardware */
-+	hinic3_hwif_write_reg(eq->hwdev->hwif,
-+			      HINIC3_CSR_AEQ_CTRL_1_ADDR, 0);
-+
-+	hinic3_hwif_write_reg(eq->hwdev->hwif, EQ_PROD_IDX_REG_ADDR, 0);
-+}
-+
-+static int init_eq(struct hinic3_eq *eq, struct hinic3_hwdev *hwdev, u16 q_id,
-+		   u32 q_len, enum hinic3_eq_type type,
-+		   struct msix_entry *msix_entry)
-+{
-+	u32 elem_size;
-+	int err;
-+
-+	eq->hwdev = hwdev;
-+	eq->q_id = q_id;
-+	eq->type = type;
-+	eq->eq_len = q_len;
-+
-+	/* Indirect access should set q_id first */
-+	hinic3_hwif_write_reg(hwdev->hwif, HINIC3_EQ_INDIR_IDX_ADDR(eq->type),
-+			      eq->q_id);
-+
-+	reset_eq(eq);
-+
-+	eq->cons_idx = 0;
-+	eq->wrapped = 0;
-+
-+	elem_size = HINIC3_AEQE_SIZE;
-+	eq_calc_page_size_and_num(eq, elem_size);
-+
-+	err = alloc_eq_pages(eq);
-+	if (err) {
-+		dev_err(hwdev->dev, "Failed to allocate pages for eq\n");
-+		return err;
++		for (cmdq_type = 0; cmdq_type < cmdqs->cmdq_num; cmdq_type++)
++			memcpy((u8 *)cmdqs->wq_block_vaddr +
++			       CMDQ_WQ_CLA_SIZE * cmdq_type,
++			       cmdqs->cmdq[cmdq_type].wq.wq_block_vaddr,
++			       cmdqs->cmdq[cmdq_type].wq.qpages.num_pages *
++			       sizeof(__be64));
 +	}
-+
-+	eq->msix_entry_idx = msix_entry->entry;
-+	eq->irq_id = msix_entry->vector;
-+
-+	err = set_eq_ctrls(eq);
-+	if (err) {
-+		dev_err(hwdev->dev, "Failed to set ctrls for eq\n");
-+		goto err_free_queue_pages;
-+	}
-+
-+	set_eq_cons_idx(eq, HINIC3_EQ_ARMED);
-+
-+	err = request_eq_irq(eq);
-+	if (err) {
-+		dev_err(hwdev->dev,
-+			"Failed to request irq for the eq, err: %d\n", err);
-+		goto err_free_queue_pages;
-+	}
-+
-+	hinic3_set_msix_state(hwdev, eq->msix_entry_idx, HINIC3_MSIX_DISABLE);
 +
 +	return 0;
 +
-+err_free_queue_pages:
-+	hinic3_queue_pages_free(hwdev, &eq->qpages);
++err_destroy_wq:
++	while (cmdq_type > 0) {
++		cmdq_type--;
++		hinic3_wq_destroy(hwdev, &cmdqs->cmdq[cmdq_type].wq);
++	}
 +
 +	return err;
 +}
 +
-+static void remove_eq(struct hinic3_eq *eq)
++static void destroy_cmdq_wq(struct hinic3_hwdev *hwdev,
++			    struct hinic3_cmdqs *cmdqs)
 +{
-+	hinic3_set_msix_state(eq->hwdev, eq->msix_entry_idx,
-+			      HINIC3_MSIX_DISABLE);
-+	free_irq(eq->irq_id, eq);
-+	/* Indirect access should set q_id first */
-+	hinic3_hwif_write_reg(eq->hwdev->hwif,
-+			      HINIC3_EQ_INDIR_IDX_ADDR(eq->type),
-+			      eq->q_id);
++	u8 cmdq_type;
 +
-+	cancel_work_sync(&eq->aeq_work);
-+	/* clear eq_len to avoid hw access host memory */
-+	hinic3_hwif_write_reg(eq->hwdev->hwif,
-+			      HINIC3_CSR_AEQ_CTRL_1_ADDR, 0);
++	if (cmdqs->wq_block_vaddr)
++		dma_free_coherent(hwdev->dev, HINIC3_MIN_PAGE_SIZE,
++				  cmdqs->wq_block_vaddr, cmdqs->wq_block_paddr);
 +
-+	/* update consumer index to avoid invalid interrupt */
-+	eq->cons_idx = hinic3_hwif_read_reg(eq->hwdev->hwif,
-+					    EQ_PROD_IDX_REG_ADDR);
-+	set_eq_cons_idx(eq, HINIC3_EQ_NOT_ARMED);
-+	hinic3_queue_pages_free(eq->hwdev, &eq->qpages);
++	for (cmdq_type = 0; cmdq_type < cmdqs->cmdq_num; cmdq_type++)
++		hinic3_wq_destroy(hwdev, &cmdqs->cmdq[cmdq_type].wq);
 +}
 +
-+int hinic3_aeqs_init(struct hinic3_hwdev *hwdev, u16 num_aeqs,
-+		     struct msix_entry *msix_entries)
++static int init_cmdqs(struct hinic3_hwdev *hwdev)
 +{
-+	struct hinic3_aeqs *aeqs;
-+	u16 q_id;
-+	int err;
++	struct hinic3_cmdqs *cmdqs;
 +
-+	aeqs = kzalloc(sizeof(*aeqs), GFP_KERNEL);
-+	if (!aeqs)
++	cmdqs = kzalloc(sizeof(*cmdqs), GFP_KERNEL);
++	if (!cmdqs)
 +		return -ENOMEM;
 +
-+	hwdev->aeqs = aeqs;
-+	aeqs->hwdev = hwdev;
-+	aeqs->num_aeqs = num_aeqs;
-+	aeqs->workq = alloc_workqueue(HINIC3_EQS_WQ_NAME, WQ_MEM_RECLAIM,
-+				      HINIC3_MAX_AEQS);
-+	if (!aeqs->workq) {
-+		dev_err(hwdev->dev, "Failed to initialize aeq workqueue\n");
-+		err = -ENOMEM;
-+		goto err_free_aeqs;
++	hwdev->cmdqs = cmdqs;
++	cmdqs->hwdev = hwdev;
++	cmdqs->cmdq_num = hwdev->max_cmdq;
++
++	cmdqs->cmd_buf_pool = dma_pool_create("hinic3_cmdq", hwdev->dev,
++					      CMDQ_BUF_SIZE, CMDQ_BUF_SIZE, 0);
++	if (!cmdqs->cmd_buf_pool) {
++		dev_err(hwdev->dev, "Failed to create cmdq buffer pool\n");
++		kfree(cmdqs);
++		return -ENOMEM;
 +	}
 +
-+	for (q_id = 0; q_id < num_aeqs; q_id++) {
-+		err = init_eq(&aeqs->aeq[q_id], hwdev, q_id,
-+			      HINIC3_DEFAULT_AEQ_LEN, HINIC3_AEQ,
-+			      &msix_entries[q_id]);
++	return 0;
++}
++
++static void cmdq_flush_sync_cmd(struct hinic3_cmdq_cmd_info *cmd_info)
++{
++	if (cmd_info->cmd_type != HINIC3_CMD_TYPE_DIRECT_RESP)
++		return;
++
++	cmd_info->cmd_type = HINIC3_CMD_TYPE_FORCE_STOP;
++
++	if (cmd_info->cmpt_code &&
++	    *cmd_info->cmpt_code == CMDQ_SEND_CMPT_CODE)
++		*cmd_info->cmpt_code = CMDQ_FORCE_STOP_CMPT_CODE;
++
++	if (cmd_info->done) {
++		complete(cmd_info->done);
++		cmd_info->done = NULL;
++		cmd_info->cmpt_code = NULL;
++		cmd_info->direct_resp = NULL;
++		cmd_info->errcode = NULL;
++	}
++}
++
++static void hinic3_cmdq_flush_cmd(struct hinic3_cmdq *cmdq)
++{
++	struct hinic3_cmdq_cmd_info *cmd_info;
++	u16 ci;
++
++	spin_lock_bh(&cmdq->cmdq_lock);
++	while (cmdq_read_wqe(&cmdq->wq, &ci)) {
++		hinic3_wq_put_wqebbs(&cmdq->wq, CMDQ_WQE_NUM_WQEBBS);
++		cmd_info = &cmdq->cmd_infos[ci];
++		if (cmd_info->cmd_type == HINIC3_CMD_TYPE_DIRECT_RESP)
++			cmdq_flush_sync_cmd(cmd_info);
++	}
++	spin_unlock_bh(&cmdq->cmdq_lock);
++}
++
++void hinic3_cmdq_flush_sync_cmd(struct hinic3_hwdev *hwdev)
++{
++	struct hinic3_cmdq *cmdq;
++	u16 wqe_cnt, wqe_idx, i;
++	struct hinic3_wq *wq;
++
++	cmdq = &hwdev->cmdqs->cmdq[HINIC3_CMDQ_SYNC];
++	spin_lock_bh(&cmdq->cmdq_lock);
++	wq = &cmdq->wq;
++	wqe_cnt = hinic3_wq_get_used(wq);
++	for (i = 0; i < wqe_cnt; i++) {
++		wqe_idx = (wq->cons_idx + i) & wq->idx_mask;
++		cmdq_flush_sync_cmd(cmdq->cmd_infos + wqe_idx);
++	}
++	spin_unlock_bh(&cmdq->cmdq_lock);
++}
++
++static void hinic3_cmdq_reset_all_cmd_buf(struct hinic3_cmdq *cmdq)
++{
++	u16 i;
++
++	for (i = 0; i < cmdq->wq.q_depth; i++)
++		cmdq_clear_cmd_buf(&cmdq->cmd_infos[i], cmdq->hwdev);
++}
++
++int hinic3_reinit_cmdq_ctxts(struct hinic3_hwdev *hwdev)
++{
++	struct hinic3_cmdqs *cmdqs = hwdev->cmdqs;
++	u8 cmdq_type;
++
++	for (cmdq_type = 0; cmdq_type < cmdqs->cmdq_num; cmdq_type++) {
++		hinic3_cmdq_flush_cmd(&cmdqs->cmdq[cmdq_type]);
++		hinic3_cmdq_reset_all_cmd_buf(&cmdqs->cmdq[cmdq_type]);
++		cmdqs->cmdq[cmdq_type].wrapped = 1;
++		hinic3_wq_reset(&cmdqs->cmdq[cmdq_type].wq);
++	}
++
++	return hinic3_set_cmdq_ctxts(hwdev);
++}
++
++int hinic3_cmdqs_init(struct hinic3_hwdev *hwdev)
++{
++	struct hinic3_cmdqs *cmdqs;
++	void __iomem *db_base;
++	u8 cmdq_type;
++	int err;
++
++	err = init_cmdqs(hwdev);
++	if (err)
++		goto err_out;
++
++	cmdqs = hwdev->cmdqs;
++	err = create_cmdq_wq(hwdev, cmdqs);
++	if (err)
++		goto err_free_cmdqs;
++
++	err = hinic3_alloc_db_addr(hwdev, &db_base, NULL);
++	if (err) {
++		dev_err(hwdev->dev, "Failed to allocate doorbell address\n");
++		goto err_destroy_cmdq_wq;
++	}
++	cmdqs->cmdqs_db_base = db_base;
++
++	for (cmdq_type = 0; cmdq_type < cmdqs->cmdq_num; cmdq_type++) {
++		err = init_cmdq(&cmdqs->cmdq[cmdq_type], hwdev, cmdq_type);
 +		if (err) {
-+			dev_err(hwdev->dev, "Failed to init aeq %u\n",
-+				q_id);
-+			goto err_remove_eqs;
++			dev_err(hwdev->dev,
++				"Failed to initialize cmdq type : %d\n",
++				cmdq_type);
++			goto err_free_cmd_infos;
 +		}
 +	}
-+	for (q_id = 0; q_id < num_aeqs; q_id++)
-+		hinic3_set_msix_state(hwdev, aeqs->aeq[q_id].msix_entry_idx,
-+				      HINIC3_MSIX_ENABLE);
++
++	err = hinic3_set_cmdq_ctxts(hwdev);
++	if (err)
++		goto err_free_cmd_infos;
 +
 +	return 0;
 +
-+err_remove_eqs:
-+	while (q_id > 0) {
-+		q_id--;
-+		remove_eq(&aeqs->aeq[q_id]);
++err_free_cmd_infos:
++	while (cmdq_type > 0) {
++		cmdq_type--;
++		kfree(cmdqs->cmdq[cmdq_type].cmd_infos);
 +	}
 +
-+	destroy_workqueue(aeqs->workq);
++	hinic3_free_db_addr(hwdev, cmdqs->cmdqs_db_base);
 +
-+err_free_aeqs:
-+	kfree(aeqs);
++err_destroy_cmdq_wq:
++	destroy_cmdq_wq(hwdev, cmdqs);
 +
++err_free_cmdqs:
++	dma_pool_destroy(cmdqs->cmd_buf_pool);
++	kfree(cmdqs);
++
++err_out:
 +	return err;
 +}
 +
-+void hinic3_aeqs_free(struct hinic3_hwdev *hwdev)
++void hinic3_cmdqs_free(struct hinic3_hwdev *hwdev)
 +{
-+	struct hinic3_aeqs *aeqs = hwdev->aeqs;
-+	enum hinic3_aeq_type aeq_event;
-+	struct hinic3_eq *eq;
-+	u16 q_id;
++	struct hinic3_cmdqs *cmdqs = hwdev->cmdqs;
++	u8 cmdq_type;
 +
-+	for (q_id = 0; q_id < aeqs->num_aeqs; q_id++) {
-+		eq = aeqs->aeq + q_id;
-+		remove_eq(eq);
-+		hinic3_free_irq(hwdev, eq->irq_id);
++	cmdqs->status &= ~HINIC3_CMDQ_ENABLE;
++
++	for (cmdq_type = 0; cmdq_type < cmdqs->cmdq_num; cmdq_type++) {
++		hinic3_cmdq_flush_cmd(&cmdqs->cmdq[cmdq_type]);
++		hinic3_cmdq_reset_all_cmd_buf(&cmdqs->cmdq[cmdq_type]);
++		kfree(cmdqs->cmdq[cmdq_type].cmd_infos);
 +	}
 +
-+	for (aeq_event = 0; aeq_event < HINIC3_MAX_AEQ_EVENTS; aeq_event++)
-+		hinic3_aeq_unregister_cb(hwdev, aeq_event);
-+
-+	destroy_workqueue(aeqs->workq);
-+
-+	kfree(aeqs);
++	hinic3_free_db_addr(hwdev, cmdqs->cmdqs_db_base);
++	destroy_cmdq_wq(hwdev, cmdqs);
++	dma_pool_destroy(cmdqs->cmd_buf_pool);
++	kfree(cmdqs);
 +}
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_eqs.h b/drivers/net/ethernet/huawei/hinic3/hinic3_eqs.h
++
++bool hinic3_cmdq_idle(struct hinic3_cmdq *cmdq)
++{
++	return hinic3_wq_get_used(&cmdq->wq) == 0;
++}
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.h b/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.h
 new file mode 100644
-index 000000000000..74f40dac474a
+index 000000000000..1c4630eb3ec4
 --- /dev/null
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_eqs.h
-@@ -0,0 +1,90 @@
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.h
+@@ -0,0 +1,151 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/* Copyright (c) Huawei Technologies Co., Ltd. 2025. All rights reserved. */
 +
-+#ifndef _HINIC3_EQS_H_
-+#define _HINIC3_EQS_H_
++#ifndef _HINIC3_CMDQ_H_
++#define _HINIC3_CMDQ_H_
 +
-+#include <linux/interrupt.h>
++#include <linux/dmapool.h>
 +
-+#include "hinic3_hw_cfg.h"
-+#include "hinic3_queue_common.h"
++#include "hinic3_hw_intf.h"
++#include "hinic3_wq.h"
 +
-+#define HINIC3_MAX_AEQS              4
++#define CMDQ_DEPTH  4096
 +
-+#define HINIC3_AEQ_MAX_PAGES         4
-+
-+#define HINIC3_AEQE_SIZE             64
-+
-+#define HINIC3_AEQE_DESC_SIZE        4
-+#define HINIC3_AEQE_DATA_SIZE        (HINIC3_AEQE_SIZE - HINIC3_AEQE_DESC_SIZE)
-+
-+#define HINIC3_DEFAULT_AEQ_LEN       0x10000
-+
-+#define HINIC3_EQ_IRQ_NAME_LEN       64
-+
-+#define HINIC3_EQ_USLEEP_LOW_BOUND   900
-+#define HINIC3_EQ_USLEEP_HIGH_BOUND  1000
-+
-+enum hinic3_eq_type {
-+	HINIC3_AEQ = 0,
++struct cmdq_db {
++	__le32 db_head;
++	__le32 db_info;
 +};
 +
-+enum hinic3_eq_intr_mode {
-+	HINIC3_INTR_MODE_ARMED  = 0,
-+	HINIC3_INTR_MODE_ALWAYS = 1,
++/* hw defined cmdq wqe header */
++struct cmdq_header {
++	__le32 header_info;
++	__le32 saved_data;
 +};
 +
-+enum hinic3_eq_ci_arm_state {
-+	HINIC3_EQ_NOT_ARMED = 0,
-+	HINIC3_EQ_ARMED     = 1,
++struct cmdq_lcmd_bufdesc {
++	struct hinic3_sge sge;
++	__le64            rsvd2;
++	__le64            rsvd3;
 +};
 +
-+struct hinic3_eq {
-+	struct hinic3_hwdev       *hwdev;
-+	struct hinic3_queue_pages qpages;
-+	u16                       q_id;
-+	enum hinic3_eq_type       type;
-+	u32                       eq_len;
-+	u32                       cons_idx;
-+	u8                        wrapped;
-+	u32                       irq_id;
-+	u16                       msix_entry_idx;
-+	char                      irq_name[HINIC3_EQ_IRQ_NAME_LEN];
-+	struct work_struct        aeq_work;
++struct cmdq_status {
++	__le32 status_info;
 +};
 +
-+struct hinic3_aeq_elem {
-+	u8     aeqe_data[HINIC3_AEQE_DATA_SIZE];
-+	__be32 desc;
++struct cmdq_ctrl {
++	__le32 ctrl_info;
 +};
 +
-+enum hinic3_aeq_type {
-+	HINIC3_HW_INTER_INT   = 0,
-+	HINIC3_MBX_FROM_FUNC  = 1,
-+	HINIC3_MSG_FROM_FW    = 2,
-+	HINIC3_MAX_AEQ_EVENTS = 6,
++struct cmdq_direct_resp {
++	__le64 val;
++	__le64 rsvd;
 +};
 +
-+typedef void (*hinic3_aeq_event_cb)(struct hinic3_hwdev *hwdev, u8 *data,
-+				    u8 size);
-+
-+struct hinic3_aeqs {
-+	struct hinic3_hwdev     *hwdev;
-+	hinic3_aeq_event_cb     aeq_cb[HINIC3_MAX_AEQ_EVENTS];
-+	struct hinic3_eq        aeq[HINIC3_MAX_AEQS];
-+	u16                     num_aeqs;
-+	struct workqueue_struct *workq;
-+	/* lock for aeq event flag */
-+	spinlock_t              aeq_lock;
++struct cmdq_completion {
++	union {
++		struct hinic3_sge       sge;
++		struct cmdq_direct_resp direct;
++	} resp;
 +};
 +
-+int hinic3_aeqs_init(struct hinic3_hwdev *hwdev, u16 num_aeqs,
-+		     struct msix_entry *msix_entries);
-+void hinic3_aeqs_free(struct hinic3_hwdev *hwdev);
-+int hinic3_aeq_register_cb(struct hinic3_hwdev *hwdev,
-+			   enum hinic3_aeq_type event,
-+			   hinic3_aeq_event_cb hwe_cb);
-+void hinic3_aeq_unregister_cb(struct hinic3_hwdev *hwdev,
-+			      enum hinic3_aeq_type event);
++struct cmdq_wqe_scmd {
++	struct cmdq_header     header;
++	__le64                 rsvd3;
++	struct cmdq_status     status;
++	struct cmdq_ctrl       ctrl;
++	struct cmdq_completion completion;
++	__le32                 rsvd10[6];
++};
++
++struct cmdq_wqe_lcmd {
++	struct cmdq_header       header;
++	struct cmdq_status       status;
++	struct cmdq_ctrl         ctrl;
++	struct cmdq_completion   completion;
++	struct cmdq_lcmd_bufdesc buf_desc;
++};
++
++struct cmdq_wqe {
++	union {
++		struct cmdq_wqe_scmd wqe_scmd;
++		struct cmdq_wqe_lcmd wqe_lcmd;
++	};
++};
++
++static_assert(sizeof(struct cmdq_wqe) == 64);
++
++enum hinic3_cmdq_type {
++	HINIC3_CMDQ_SYNC      = 0,
++	HINIC3_MAX_CMDQ_TYPES = 4
++};
++
++enum hinic3_cmdq_status {
++	HINIC3_CMDQ_ENABLE = BIT(0),
++};
++
++enum hinic3_cmdq_cmd_type {
++	HINIC3_CMD_TYPE_NONE,
++	HINIC3_CMD_TYPE_DIRECT_RESP,
++	HINIC3_CMD_TYPE_FAKE_TIMEOUT,
++	HINIC3_CMD_TYPE_TIMEOUT,
++	HINIC3_CMD_TYPE_FORCE_STOP,
++};
++
++struct hinic3_cmd_buf {
++	void       *buf;
++	dma_addr_t dma_addr;
++	__le16     size;
++	refcount_t ref_cnt;
++};
++
++struct hinic3_cmdq_cmd_info {
++	enum hinic3_cmdq_cmd_type cmd_type;
++	struct completion         *done;
++	int                       *errcode;
++	/* completion code */
++	int                       *cmpt_code;
++	__le64                    *direct_resp;
++	u64                       cmdq_msg_id;
++	struct hinic3_cmd_buf     *buf_in;
++};
++
++struct hinic3_cmdq {
++	struct hinic3_wq            wq;
++	enum hinic3_cmdq_type       cmdq_type;
++	u8                          wrapped;
++	/* synchronize command submission with completions via event queue */
++	spinlock_t                  cmdq_lock;
++	struct hinic3_cmdq_cmd_info *cmd_infos;
++	struct hinic3_hwdev         *hwdev;
++};
++
++struct hinic3_cmdqs {
++	struct hinic3_hwdev *hwdev;
++	struct hinic3_cmdq  cmdq[HINIC3_MAX_CMDQ_TYPES];
++	struct dma_pool     *cmd_buf_pool;
++	/* doorbell area */
++	u8 __iomem          *cmdqs_db_base;
++
++	/* When command queue uses multiple memory pages (1-level CLA), this
++	 * block will hold aggregated indirection table for all command queues
++	 * of cmdqs. Not used for small cmdq (0-level CLA).
++	 */
++	dma_addr_t          wq_block_paddr;
++	void                *wq_block_vaddr;
++
++	u32                 status;
++	u32                 disable_flag;
++	u8                  cmdq_num;
++};
++
++int hinic3_cmdqs_init(struct hinic3_hwdev *hwdev);
++void hinic3_cmdqs_free(struct hinic3_hwdev *hwdev);
++
++void hinic3_free_cmd_buf(struct hinic3_hwdev *hwdev,
++			 struct hinic3_cmd_buf *cmd_buf);
++
++void hinic3_cmdq_flush_sync_cmd(struct hinic3_hwdev *hwdev);
++int hinic3_reinit_cmdq_ctxts(struct hinic3_hwdev *hwdev);
++bool hinic3_cmdq_idle(struct hinic3_cmdq *cmdq);
 +
 +#endif
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c
-index 87d9450c30ca..0599fc4f3fb0 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c
-@@ -8,6 +8,49 @@
- #include "hinic3_hwif.h"
- #include "hinic3_mbox.h"
- 
-+int hinic3_alloc_irqs(struct hinic3_hwdev *hwdev, u16 num,
-+		      struct msix_entry *alloc_arr, u16 *act_num)
-+{
-+	struct hinic3_irq_info *irq_info;
-+	struct hinic3_irq *curr;
-+	u16 i, found = 0;
-+
-+	irq_info = &hwdev->cfg_mgmt->irq_info;
-+	mutex_lock(&irq_info->irq_mutex);
-+	for (i = 0; i < irq_info->num_irq && found < num; i++) {
-+		curr = irq_info->irq + i;
-+		if (curr->allocated)
-+			continue;
-+		curr->allocated = true;
-+		alloc_arr[found].vector = curr->irq_id;
-+		alloc_arr[found].entry = curr->msix_entry_idx;
-+		found++;
-+	}
-+	mutex_unlock(&irq_info->irq_mutex);
-+
-+	*act_num = found;
-+
-+	return found == 0 ? -ENOMEM : 0;
-+}
-+
-+void hinic3_free_irq(struct hinic3_hwdev *hwdev, u32 irq_id)
-+{
-+	struct hinic3_irq_info *irq_info;
-+	struct hinic3_irq *curr;
-+	u16 i;
-+
-+	irq_info = &hwdev->cfg_mgmt->irq_info;
-+	mutex_lock(&irq_info->irq_mutex);
-+	for (i = 0; i < irq_info->num_irq; i++) {
-+		curr = irq_info->irq + i;
-+		if (curr->irq_id == irq_id) {
-+			curr->allocated = false;
-+			break;
-+		}
-+	}
-+	mutex_unlock(&irq_info->irq_mutex);
-+}
-+
- bool hinic3_support_nic(struct hinic3_hwdev *hwdev)
- {
- 	return hwdev->cfg_mgmt->cap.supp_svcs_bitmap &
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hwif.c b/drivers/net/ethernet/huawei/hinic3/hinic3_hwif.c
-index 0865453bf0e7..27baa9693d20 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_hwif.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hwif.c
-@@ -6,15 +6,43 @@
- #include <linux/io.h>
- 
- #include "hinic3_common.h"
-+#include "hinic3_csr.h"
- #include "hinic3_hwdev.h"
- #include "hinic3_hwif.h"
- 
-+#define HINIC3_GET_REG_ADDR(reg)  ((reg) & (HINIC3_REGS_FLAG_MASK))
-+
-+static void __iomem *hinic3_reg_addr(struct hinic3_hwif *hwif, u32 reg)
-+{
-+	return hwif->cfg_regs_base + HINIC3_GET_REG_ADDR(reg);
-+}
-+
-+u32 hinic3_hwif_read_reg(struct hinic3_hwif *hwif, u32 reg)
-+{
-+	void __iomem *addr = hinic3_reg_addr(hwif, reg);
-+
-+	return ioread32be(addr);
-+}
-+
-+void hinic3_hwif_write_reg(struct hinic3_hwif *hwif, u32 reg, u32 val)
-+{
-+	void __iomem *addr = hinic3_reg_addr(hwif, reg);
-+
-+	iowrite32be(val, addr);
-+}
-+
- void hinic3_set_msix_state(struct hinic3_hwdev *hwdev, u16 msix_idx,
- 			   enum hinic3_msix_state flag)
- {
- 	/* Completed by later submission due to LoC limit. */
- }
- 
-+void hinic3_msix_intr_clear_resend_bit(struct hinic3_hwdev *hwdev, u16 msix_idx,
-+				       u8 clear_resend_en)
-+{
-+	/* Completed by later submission due to LoC limit. */
-+}
-+
- u16 hinic3_global_func_id(struct hinic3_hwdev *hwdev)
- {
- 	return hwdev->hwif->attr.func_global_idx;
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hwif.h b/drivers/net/ethernet/huawei/hinic3/hinic3_hwif.h
-index 513c9680e6b6..2e300fb0ba25 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_hwif.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hwif.h
-@@ -50,8 +50,13 @@ enum hinic3_msix_state {
- 	HINIC3_MSIX_DISABLE,
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_common.h b/drivers/net/ethernet/huawei/hinic3/hinic3_common.h
+index c8e8a491adbf..168b080599ef 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_common.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_common.h
+@@ -18,6 +18,13 @@ struct hinic3_dma_addr_align {
+ 	dma_addr_t align_paddr;
  };
  
-+u32 hinic3_hwif_read_reg(struct hinic3_hwif *hwif, u32 reg);
-+void hinic3_hwif_write_reg(struct hinic3_hwif *hwif, u32 reg, u32 val);
++struct hinic3_sge {
++	__le32 hi_addr;
++	__le32 lo_addr;
++	__le32 len;
++	__le32 rsvd;
++};
 +
- void hinic3_set_msix_state(struct hinic3_hwdev *hwdev, u16 msix_idx,
- 			   enum hinic3_msix_state flag);
-+void hinic3_msix_intr_clear_resend_bit(struct hinic3_hwdev *hwdev, u16 msix_idx,
-+				       u8 clear_resend_en);
+ int hinic3_dma_zalloc_coherent_align(struct device *dev, u32 size, u32 align,
+ 				     gfp_t flag,
+ 				     struct hinic3_dma_addr_align *mem_align);
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+index 3f7f73430be4..f1c745ee3087 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
+@@ -55,9 +55,9 @@ void hinic3_free_txqs(struct net_device *netdev)
+ static void hinic3_set_buf_desc(struct hinic3_sq_bufdesc *buf_descs,
+ 				dma_addr_t addr, u32 len)
+ {
+-	buf_descs->hi_addr = upper_32_bits(addr);
+-	buf_descs->lo_addr = lower_32_bits(addr);
+-	buf_descs->len  = len;
++	buf_descs->hi_addr = cpu_to_le32(upper_32_bits(addr));
++	buf_descs->lo_addr = cpu_to_le32(lower_32_bits(addr));
++	buf_descs->len = cpu_to_le32(len);
+ }
  
- u16 hinic3_global_func_id(struct hinic3_hwdev *hwdev);
+ static int hinic3_tx_map_skb(struct net_device *netdev, struct sk_buff *skb,
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_wq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_wq.c
+index 2ac7efcd1365..bc3ffdc25cf6 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_wq.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_wq.c
+@@ -6,6 +6,110 @@
+ #include "hinic3_hwdev.h"
+ #include "hinic3_wq.h"
  
++#define WQ_MIN_DEPTH            64
++#define WQ_MAX_DEPTH            65536
++#define WQ_PAGE_ADDR_SIZE       sizeof(u64)
++#define WQ_MAX_NUM_PAGES        (HINIC3_MIN_PAGE_SIZE / WQ_PAGE_ADDR_SIZE)
++
++static int wq_init_wq_block(struct hinic3_hwdev *hwdev, struct hinic3_wq *wq)
++{
++	struct hinic3_queue_pages *qpages = &wq->qpages;
++	int i;
++
++	if (hinic3_wq_is_0_level_cla(wq)) {
++		wq->wq_block_paddr = qpages->pages[0].align_paddr;
++		wq->wq_block_vaddr = qpages->pages[0].align_vaddr;
++
++		return 0;
++	}
++
++	if (wq->qpages.num_pages > WQ_MAX_NUM_PAGES) {
++		dev_err(hwdev->dev, "wq num_pages exceed limit: %lu\n",
++			WQ_MAX_NUM_PAGES);
++		return -EFAULT;
++	}
++
++	wq->wq_block_vaddr = dma_alloc_coherent(hwdev->dev,
++						HINIC3_MIN_PAGE_SIZE,
++						&wq->wq_block_paddr,
++						GFP_KERNEL);
++	if (!wq->wq_block_vaddr)
++		return -ENOMEM;
++
++	for (i = 0; i < qpages->num_pages; i++)
++		wq->wq_block_vaddr[i] = cpu_to_be64(qpages->pages[i].align_paddr);
++
++	return 0;
++}
++
++static int wq_alloc_pages(struct hinic3_hwdev *hwdev, struct hinic3_wq *wq)
++{
++	int err;
++
++	err = hinic3_queue_pages_alloc(hwdev, &wq->qpages, 0);
++	if (err)
++		return err;
++
++	err = wq_init_wq_block(hwdev, wq);
++	if (err) {
++		hinic3_queue_pages_free(hwdev, &wq->qpages);
++		return err;
++	}
++
++	return 0;
++}
++
++static void wq_free_pages(struct hinic3_hwdev *hwdev, struct hinic3_wq *wq)
++{
++	if (!hinic3_wq_is_0_level_cla(wq))
++		dma_free_coherent(hwdev->dev,
++				  HINIC3_MIN_PAGE_SIZE,
++				  wq->wq_block_vaddr,
++				  wq->wq_block_paddr);
++
++	hinic3_queue_pages_free(hwdev, &wq->qpages);
++}
++
++int hinic3_wq_create(struct hinic3_hwdev *hwdev, struct hinic3_wq *wq,
++		     u32 q_depth, u16 wqebb_size)
++{
++	u32 wq_page_size;
++
++	if (q_depth < WQ_MIN_DEPTH || q_depth > WQ_MAX_DEPTH ||
++	    !is_power_of_2(q_depth) || !is_power_of_2(wqebb_size)) {
++		dev_err(hwdev->dev, "Invalid WQ: q_depth %u, wqebb_size %u\n",
++			q_depth, wqebb_size);
++		return -EINVAL;
++	}
++
++	wq_page_size = ALIGN(hwdev->wq_page_size, HINIC3_MIN_PAGE_SIZE);
++
++	memset(wq, 0, sizeof(*wq));
++	wq->q_depth = q_depth;
++	wq->idx_mask = q_depth - 1;
++
++	hinic3_queue_pages_init(&wq->qpages, q_depth, wq_page_size, wqebb_size);
++
++	return wq_alloc_pages(hwdev, wq);
++}
++
++void hinic3_wq_destroy(struct hinic3_hwdev *hwdev, struct hinic3_wq *wq)
++{
++	wq_free_pages(hwdev, wq);
++}
++
++void hinic3_wq_reset(struct hinic3_wq *wq)
++{
++	struct hinic3_queue_pages *qpages = &wq->qpages;
++	u16 pg_idx;
++
++	wq->cons_idx = 0;
++	wq->prod_idx = 0;
++
++	for (pg_idx = 0; pg_idx < qpages->num_pages; pg_idx++)
++		memset(qpages->pages[pg_idx].align_vaddr, 0, qpages->page_size);
++}
++
+ void hinic3_wq_get_multi_wqebbs(struct hinic3_wq *wq,
+ 				u16 num_wqebbs, u16 *prod_idx,
+ 				struct hinic3_sq_bufdesc **first_part_wqebbs,
+@@ -27,3 +131,8 @@ void hinic3_wq_get_multi_wqebbs(struct hinic3_wq *wq,
+ 		*second_part_wqebbs = get_q_element(&wq->qpages, idx, NULL);
+ 	}
+ }
++
++bool hinic3_wq_is_0_level_cla(const struct hinic3_wq *wq)
++{
++	return wq->qpages.num_pages == 1;
++}
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_wq.h b/drivers/net/ethernet/huawei/hinic3/hinic3_wq.h
+index ab37893efd7e..9b3f012bec80 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_wq.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_wq.h
+@@ -10,10 +10,10 @@
+ 
+ struct hinic3_sq_bufdesc {
+ 	/* 31-bits Length, L2NIC only uses length[17:0] */
+-	u32 len;
+-	u32 rsvd;
+-	u32 hi_addr;
+-	u32 lo_addr;
++	__le32 len;
++	__le32 rsvd;
++	__le32 hi_addr;
++	__le32 lo_addr;
+ };
+ 
+ /* Work queue is used to submit elements (tx, rx, cmd) to hw.
+@@ -59,6 +59,7 @@ static inline void *hinic3_wq_get_one_wqebb(struct hinic3_wq *wq, u16 *pi)
+ {
+ 	*pi = wq->prod_idx & wq->idx_mask;
+ 	wq->prod_idx++;
++
+ 	return get_q_element(&wq->qpages, *pi, NULL);
+ }
+ 
+@@ -67,10 +68,20 @@ static inline void hinic3_wq_put_wqebbs(struct hinic3_wq *wq, u16 num_wqebbs)
+ 	wq->cons_idx += num_wqebbs;
+ }
+ 
++static inline u64 hinic3_wq_get_first_wqe_page_addr(const struct hinic3_wq *wq)
++{
++	return wq->qpages.pages[0].align_paddr;
++}
++
++int hinic3_wq_create(struct hinic3_hwdev *hwdev, struct hinic3_wq *wq,
++		     u32 q_depth, u16 wqebb_size);
++void hinic3_wq_destroy(struct hinic3_hwdev *hwdev, struct hinic3_wq *wq);
++void hinic3_wq_reset(struct hinic3_wq *wq);
+ void hinic3_wq_get_multi_wqebbs(struct hinic3_wq *wq,
+ 				u16 num_wqebbs, u16 *prod_idx,
+ 				struct hinic3_sq_bufdesc **first_part_wqebbs,
+ 				struct hinic3_sq_bufdesc **second_part_wqebbs,
+ 				u16 *first_part_wqebbs_num);
++bool hinic3_wq_is_0_level_cla(const struct hinic3_wq *wq);
+ 
+ #endif
 -- 
 2.43.0
 
