@@ -1,78 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11267309DAB;
-	Fri, 15 Aug 2025 18:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D74930DEDB;
+	Fri, 15 Aug 2025 18:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755281342; cv=none; b=B1yvu7EO9Chq/OpGDNQKj1WrovSDwCtgCkaNaPS6KbrfyPmALVqBSTO7CYxsOCgUOG9RQneyVkc+tjyQ16rUsOivWO5aCUQ0IARAtlhkzGErqwD8E+ZWfZeCI/A54zLTD2vcu1XB4axHAlOEpkxuCCz3WmZKTFSYIVASvvEP6uM=
+	t=1755281344; cv=none; b=B7t7g9ylwAWOtvWXbDyYeULzMQcmJYxzDG87I9RHXzhGSQwhMv+clJpd1wrWFPFdpUDM3UnLNUkccWUYkoEL3S/xz/cPdPmbQ6nnYO67WDa0gCTJBqpxqKl0n1KVVBMzwWozgrb+2Ax4QlF8rSh4qY6hYJpAair3hjrhEXs1zG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755281342; c=relaxed/simple;
-	bh=19brnsyyIp2ph9JbH6r7iqDFUZXwBNSUtnngklw5n6g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sDYH0XmS6dwn3sSF+4dYXYy1nf7yTOPSTYjFMHP3jM8JSJeilMj6X2zV3REtTXDh8XoU/3a/Grv31A0DCaZ/qb1jkpnnYTArsI/mOPGqUIsbDW6Ya1hbsc8pNAhp7th4iVTuZzK1/JP0uJdlXf8EIrqJNMcoWcAtptxEbpHxXaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S60jODD6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755281344; c=relaxed/simple;
+	bh=bS90Ms9nCJY917WmfgiYxyBT6gp36bc88U6J5dUd+98=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ZzOtkexQdGTfA1xD/eIiQ1fNmmDqm3RO/mQuQ5Tz7Un8xchUJKq5Y9moYumJsnZOdig7y+oRu0WQGsdNxiLpN4McX4ZWpqbZlP/H2aRPkcBBPa3uKl6GpZ8FGwQ+tBcOKYd+ra8lxeFOcbzJlkIISMgeGpJyzYzze1RuwSptInA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fJbEfqmz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S60jODD6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E79AC4CEF5;
-	Fri, 15 Aug 2025 18:09:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fJbEfqmz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65874C4CEF5;
+	Fri, 15 Aug 2025 18:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755281341;
-	bh=19brnsyyIp2ph9JbH6r7iqDFUZXwBNSUtnngklw5n6g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=S60jODD61ed3m6ByVsl+MR8QbRZKIVfOeqq8DilJzWDV6I3KqSnlntv4IIbsnqGXz
-	 tHVlV2ynSErS2aY1pbiKCwOELGvq461gdtnLaDJiBAWGHNZRgP896oJ3AwLlmMZFAv
-	 ob4bojVv05YsoyaE+VqiqLLB5n1hH3pAfCUrvNAJghu2QKBfdcmRTupW+6LGeefGap
-	 +IONgtaP5WX3+nTXXsT+KvvRXVloVLZKOQx00dTmxsICH6/cj3poHsWehbK9IU94hZ
-	 FCUcYmkLeT+qe5GKZrFYvAdiia/GfPC/IV/4mbBLAkcEGFIuKObc08DGCy6y6P3LVc
-	 mEuRjdnlaHqXA==
-Date: Fri, 15 Aug 2025 11:09:00 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Mihai Moldovan <ionic@ionic.de>
-Cc: linux-arm-msm@vger.kernel.org, Manivannan Sadhasivam <mani@kernel.org>,
- Denis Kenzior <denkenz@gmail.com>, Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, "David S . Miller"
- <davem@davemloft.net>, Simon Horman <horms@kernel.org>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v5 01/11] net: qrtr: ns: validate msglen before ctrl_pkt
- use
-Message-ID: <20250815110900.2da8f3c5@kernel.org>
-In-Reply-To: <161d8d203f17fde87ac7dd2c9c24be6d1f35a3c1.1754962436.git.ionic@ionic.de>
-References: <cover.1754962436.git.ionic@ionic.de>
-	<161d8d203f17fde87ac7dd2c9c24be6d1f35a3c1.1754962436.git.ionic@ionic.de>
+	s=k20201202; t=1755281344;
+	bh=bS90Ms9nCJY917WmfgiYxyBT6gp36bc88U6J5dUd+98=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=fJbEfqmzNiwI6Bu6bc2AxMjw33RDfTPMix+D+w/MW0F5Edn1OphyzNo1UvD1UYOUV
+	 Yfiq2dlZsrhJ6We5i7ajr0G/FQBNnhNlnWpNTMfhQ2GXIYVUT74Pga1eKVURrGHUNH
+	 7EUACAHw+X3zE+Iow5x9tGxhvXTxQqkmWBtK6SsG8HoZ11dirGRKvSV8PJj/vD41hK
+	 79gGNW9l/GnW3EVnwf8T/emt7r/0e4XTkl5K1awtSti0en2wE3J6PndwVcfZbpmPeg
+	 UumM6RIjdaIaclwVhEcSQJq9BGk/5C1oIeTmO+Ygo6YRWt2POCKmnWWFhswD+tEcKS
+	 5pbjNRGeeA64g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADDD039D0C3D;
+	Fri, 15 Aug 2025 18:09:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: bridge: remove unused argument of
+ br_multicast_query_expired()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175528135524.1165776.13820515858631559907.git-patchwork-notify@kernel.org>
+Date: Fri, 15 Aug 2025 18:09:15 +0000
+References: <20250814042355.1720755-1-wangliang74@huawei.com>
+In-Reply-To: <20250814042355.1720755-1-wangliang74@huawei.com>
+To: Wang Liang <wangliang74@huawei.com>
+Cc: razor@blackwall.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ bridge@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ yuehaibing@huawei.com, zhangchangzhong@huawei.com
 
-On Tue, 12 Aug 2025 03:35:27 +0200 Mihai Moldovan wrote:
-> The qrtr_ctrl_pkt structure is currently accessed without checking
-> if the received payload is large enough to hold the structure's fields.
-> Add a check to ensure the payload length is sufficient.
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 14 Aug 2025 12:23:55 +0800 you wrote:
+> Since commit 67b746f94ff3 ("net: bridge: mcast: make sure querier
+> port/address updates are consistent"), the argument 'querier' is unused,
+> just get rid of it.
 > 
-> Signed-off-by: Denis Kenzior <denkenz@gmail.com>
-> Reviewed-by: Marcel Holtmann <marcel@holtmann.org>
-> Reviewed-by: Andy Gross <agross@kernel.org>
-> Signed-off-by: Mihai Moldovan <ionic@ionic.de>
-> Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+> Signed-off-by: Wang Liang <wangliang74@huawei.com>
+> ---
+>  net/bridge/br_multicast.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
 
-If this is a fix it has to go to net, then once it reaches Linus's tree
-the dependent patches should be reposted for net-next.
+Here is the summary with links:
+  - [net-next] net: bridge: remove unused argument of br_multicast_query_expired()
+    https://git.kernel.org/netdev/net-next/c/7de0eebbb4c3
 
-> diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-> index 3de9350cbf30..2bcfe539dc3e 100644
-> --- a/net/qrtr/ns.c
-> +++ b/net/qrtr/ns.c
-> @@ -619,6 +619,9 @@ static void qrtr_ns_worker(struct work_struct *work)
->  			break;
->  		}
->  
-> +		if ((size_t)msglen < sizeof(*pkt))
-> +			break;
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-why not continue?
+
