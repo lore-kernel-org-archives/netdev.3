@@ -1,141 +1,126 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D7D1F4165
-	for <netdev@vger.kernel.org>; Fri, 15 Aug 2025 17:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4089A3176F0
+	for <netdev@vger.kernel.org>; Fri, 15 Aug 2025 17:39:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755279451; cv=none; b=Vu92bmCVN5aGh4FzmwCf35cB1FD0gSyGYpFk8j70asKe/srX/nPwTKIt/QpEUCMy7ut1Ysz1W82LseVFu1f5DRjjjNfKaibSTXyqFt29RNYw5Z+afoPJVULEiGlqLRO3Sn8Od2oclAujbe52pO3tJqTcW2ZdPf3ju9y7lMKCq9g=
+	t=1755279569; cv=none; b=Hvp0TzL7CavHwarBHBlEAhGH/SisebMMm2YbpgSTtNu5Ef33Zih3WzQKlUBV9WcS8e9rikd5To7ukWBflZv1RRExMXBK4wfjJzoJr8v3c7KIyK09cNMa5FtRlyF7/ILGNuMjkda+3FZYjV6P0tWl3CAyigfYnuh4OOFQaRYlSvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755279451; c=relaxed/simple;
-	bh=KIXaRrabWkI94cBABbOOQhZm5gakqOBxiKGhfpvK4bU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W0W+7jjmiDb0TCG08ZKny+nX3xKiTYbNlnsTnXSomo6jm2uSq0tI3Q3c/jjfmg8pGjXDZc6JYfXYFWf0NE90Q0pgKgNafweXmhzdOLsshPb8YhbGinAkvqmYozJtDDG7RrlQv7yVQtama4dSCkblZAUvBcckUcOrEfebW8a1ZUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wkb0R+eh; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1755279569; c=relaxed/simple;
+	bh=DzG0LZlHGH3bOOtZ8yuLvRlkiHDfO2BsTKY54JW4yq4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LL6MmEGPKz/VErEWyZ8i9BWZ6fPhVMvkBVQWyh2ZbvHTj41dWuVT+JCP4zGBG0c7mbv3c+HfjyahVIhk6s1QjqaaJYBSSWpZmri81iuDc4VnQS2yE2qZKiEmhAP6WDyxhqeDO9B8aGlqkugIJ2meO9rcwuCdBZ//WKQnLzMBC3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=T6FTfDSl; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wkb0R+eh"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-55cef2f624fso428e87.1
-        for <netdev@vger.kernel.org>; Fri, 15 Aug 2025 10:37:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="T6FTfDSl"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3bb2fb3a436so641069f8f.1
+        for <netdev@vger.kernel.org>; Fri, 15 Aug 2025 10:39:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755279448; x=1755884248; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UVkGL7jBRLKf6+d6hhcuO3q92nCLqGME9TaVEfeECYI=;
-        b=wkb0R+ehUO23VlC7TenvD+t2JKaQJteL++RmRCRofUjTsmunzO7PL4GNwuVi7lPcIt
-         JIAF2unaTtJKmB5RxkCoOnFq19ybhgRKBvpdHTfnu1ISZYtGrEKOosBVme+wkyZuuPMg
-         Ewz6RQCYyRRveKTq5taNZKJXJ0f34vdqAtR8Xah5xasOZC1DDC48g/EV8t4a992TELnd
-         pX4gtUkWLLSVpE3G1F0XdqTeVmznbJl+KWWYbK6+Xkrz5V87mpWi3vC1ftbsPUzaZf8b
-         O9+QeBllX7yzHgj/cD3AuJnNKOX9ECt8nPUL5YGrfrFnPzQJTIOuVZo//9BT5VobYsBU
-         wWNw==
+        d=suse.com; s=google; t=1755279565; x=1755884365; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DzG0LZlHGH3bOOtZ8yuLvRlkiHDfO2BsTKY54JW4yq4=;
+        b=T6FTfDSlR+sOXdWAS645UsXPOrH9Kpi1Ozs/WLNPLV4/6iYaZ6WL3/CjGFOBOQjjLo
+         YNEY5iwfh80Ns8f3wIZZjQwL0TnXmxGBQdiXekq2YhQDMtJAcARHmiqm/eKZVX2wxTdY
+         SmO/ZJkM9euA77qjd2c+VFcI0B4xOf2dH1gi2apbrRC809pFWzuDyNQuep29mTPFezNQ
+         sGeScg8eKYVoVU9MrvN5VjMrPJK8OT3rEMX+Vcj9ECWqqSOjwhFAn2L+29ydbRMcNhw0
+         J7t1dNEYpwQ5etQZUhpr0vob46x+s639ixmrQZNKNWHL9Cd6w9rXVIMaSeHE4AU/79DY
+         NshQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755279448; x=1755884248;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UVkGL7jBRLKf6+d6hhcuO3q92nCLqGME9TaVEfeECYI=;
-        b=FceupJts65tC3MZQtTCLLPx8uWE3Tw0Oo+fru6OJsB546zl8uqmMb3z6js0iKJGLW1
-         RhTKIRBDypI2sH3Bvk0Q15zvm+9bEIMqr4ae/sKKcOf1YhFlli6SFr9tca3w8Zx+tQfK
-         rDXfLPlDXE+FC7HyoCnDcUoPZr1Z90TZHxNd7n4V8vSFXo/nZwH/EAm+XjMc0/faos7l
-         2yzDgqiBwYAZ15I6C29bNOiIkJrGs6ZP40sMgMP6EhaKSusxDUHfWJHdeOusRt1ugkuZ
-         G7A88WxxG8dxybLdrCvV6/TOktybdUwRgT2Gm/iE+Ov3omit1Gmdh8GwM3dyiBu/ZriL
-         Jxeg==
-X-Forwarded-Encrypted: i=1; AJvYcCVordtWZEpVTGB7aaKxTmdWN7GInCE/76OXPrusid3Po6GGE/XPiRHgCNHvsLGTQNkcZVZKMjM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZ5I07JT1SXXEq3teYnUXneXZMBi7fVqAz/uqhphiK66MsLaqL
-	MVSEKDQp9zrjbIddyKjwYimtLyPzaNuUKXkBWGPCo8oHYPHfNp153lV14qOe7dXLx4RfIrp9Z+y
-	zOJ/wLrkUt1VsFHcEzXTv2MCvRArd7rprtR38205n
-X-Gm-Gg: ASbGncsTHenN2TTDhe6GhpVUU/i+LdVC7dvIZPYb5u4rITW9IzYY099VYSX/oTKB253
-	Y+WLKFih2RubP0bTy60532u1/rf6luBxmaV8VdI8z7whTaws8+D571QMFL6TMbrltjLe+CTUPnA
-	0oIUmXCJW9xlSlCHN6HJx5r6qfAtASphwNNboTSdxo1t4s7qd82fpac60kehBBNOfreIAaTq8ZP
-	B96ayFWjnP8VmG7TrMwGn5Ss2bqK26/d4lddf6qTsRt
-X-Google-Smtp-Source: AGHT+IF815aVMWdvRLDwiej+y4Cx3WJIQ4E2duZu4/2qWl0QtPxHw64kH4aIcMw784zTTXX6YinwEhcRSU5ux9YqIKo=
-X-Received: by 2002:a05:6512:1291:b0:55c:f06b:e042 with SMTP id
- 2adb3069b0e04-55cf06be062mr142027e87.1.1755279447479; Fri, 15 Aug 2025
- 10:37:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755279565; x=1755884365;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DzG0LZlHGH3bOOtZ8yuLvRlkiHDfO2BsTKY54JW4yq4=;
+        b=mobAenQUePJbhl5Y8tfBw23mRa8pDoTLanBi6BRJxdJbj3IWGojRETXbpCJfWCcBvQ
+         1aXYknM8nEqCElEvnv33LO4IzyFBshoPRHAs10MUP0y4ra/q5X2UyWnXW4u0Rc/EIsdG
+         sXfMEMZxiYBEd93bph1yoFrmThJImTOj9Jyl9+yoeV3bOMminUHUaiO7NAfI7vq9SUQd
+         +OmYI1v4rc2aOSai8bOCZ2+QAC8vIDMix/32/1BwT47CDwvFuuE8aQdVcGZwf8pPWw/e
+         D1y6ttBWoh8Kt0IsIIRbIdQPs/qrNXZoYjCGngYyIPofbfK5wTlfRc7JyBMbrMaMn6Yo
+         bnKA==
+X-Forwarded-Encrypted: i=1; AJvYcCWQ0Q83kfJ/xCYdAhRfuve47K3Him7DO0RAZ1Gy8ylf6DIDye9XYDKtfFYZZgaVq5gotYbl7mg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZmNeMFhTBq4yJiXLAZfjSyJ3cRgYfaO+1EPhBv2W1keoXS21V
+	sNL1SM14vf7CNjGaq+Am52oUb+Bs8H1/Nx2zzklJ6I4O2qj+3F6bXN67Sj+TRIIpMvk=
+X-Gm-Gg: ASbGnctsKbWXQh5ktxvub8yYDexfVLSq/YFt8sy3sYl1bhDhiRvnK7am6ztqN3vaK69
+	OTP6K3ffzcOXOyPzUOX5X6bINjlLROhGkSUz9p+SqW19fkpRtM8sy4gnW4Vmv/n4fN2AYBuJyXs
+	zcae2v8fPn+VYU6+YFdL89nTY5KLUMI6GgugdAqEoGUfTJRULdqGW9iuUU62bsxM5KLz0VAtPPw
+	/m+oZnDa+T1K98Z0xGgxCdc+gXcXuMTq9T5FP2bS4EtIXW6i+YTDyiPsZEBn7qEp9IKJ8tc/OT4
+	NMjag4Q40hy6YHfEfUASy/hOGukm75oiUrai51oTPjlYfiFOcWNwSadpwLcwEKXcmsKDu6vn17s
+	lgDFs4RsxtDSCJ2lp4ev6H7wD2gDL09JI+P3bQdWR7A==
+X-Google-Smtp-Source: AGHT+IEQtqoj7OJMpPUFnt1ji9bSa+u38yG5PGpHc7mF3c26ryzthKx7wFt40yjy8HfsIxTJ4Rr5hA==
+X-Received: by 2002:a05:6000:2289:b0:3b8:d0bb:7541 with SMTP id ffacd0b85a97d-3bb68fdd5efmr2396919f8f.40.1755279565547;
+        Fri, 15 Aug 2025 10:39:25 -0700 (PDT)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-323311233cdsm4872522a91.21.2025.08.15.10.39.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Aug 2025 10:39:24 -0700 (PDT)
+Date: Fri, 15 Aug 2025 19:39:06 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
+	Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Tejun Heo <tj@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Mina Almasry <almasrymina@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 net-next 01/10] mptcp: Fix up subflow's memcg when
+ CONFIG_SOCK_CGROUP_DATA=n.
+Message-ID: <gmiwpzpgcnnzg2jjhonfcchkbv7zrzgbawvgfgfwrjmvvihqdc@gaq7bbe4ktwc>
+References: <20250814200912.1040628-1-kuniyu@google.com>
+ <20250814200912.1040628-2-kuniyu@google.com>
+ <cs5uvm72eyzqljcxtmienkmmth54pqqjmlyya5vf3twncbp7u5@jfnktl43r5se>
+ <CAAVpQUDyy9f7=LNZc2ka2RiOhR3_eOhEb+Nih37HnF0_cdrJqA@mail.gmail.com>
+ <r3czpatkdegf7aoo3ezvrvzuqkixsb557okybueig4fcuknku3@jkgzexpt7dnq>
+ <CAAVpQUAx9SyA96b_UYofbhM2TPgAGSqq_=-g6ERqmbCZP04-PA@mail.gmail.com>
+ <kr6cv3njfdjzc2wcrixudszd2szzcso7ikpm6d5xsxe7rfppjs@5bvfwpelgj6f>
+ <CAAVpQUCMcm8sKbNqW9o6Ov1MtC67Z--NTv9me1xcYgCkbJxK5g@mail.gmail.com>
+ <CAAVpQUBO8TXjjtt++kF0R-qs-Utn-eY5o321NyAALEYTfq0xGw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250815110401.2254214-2-dtatulea@nvidia.com> <20250815110401.2254214-6-dtatulea@nvidia.com>
-In-Reply-To: <20250815110401.2254214-6-dtatulea@nvidia.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 15 Aug 2025 10:37:15 -0700
-X-Gm-Features: Ac12FXz0bX47lSXrHztHZ5UkfOYR_EvbTsCS-UKorkPh-bL-sJzn-Nb-eZJOYk0
-Message-ID: <CAHS8izO327v1ZXnpqiyBRyO1ntgycVBG9ZLGMdCv4tg_5wBWng@mail.gmail.com>
-Subject: Re: [RFC net-next v3 4/7] net/mlx5e: add op for getting netdev DMA device
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: asml.silence@gmail.com, Saeed Mahameed <saeedm@nvidia.com>, 
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	cratiu@nvidia.com, parav@nvidia.com, Christoph Hellwig <hch@infradead.org>, 
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Aug 15, 2025 at 4:07=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia.com=
-> wrote:
->
-> For zero-copy (devmem, io_uring), the netdev DMA device used
-> is the parent device of the net device. However that is not
-> always accurate for mlx5 devices:
-> - SFs: The parent device is an auxdev.
-> - Multi-PF netdevs: The DMA device should be determined by
->   the queue.
->
-> This change implements the DMA device queue API that returns the DMA
-> device appropriately for all cases.
->
-> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-> ---
->  .../net/ethernet/mellanox/mlx5/core/en_main.c | 24 +++++++++++++++++++
->  1 file changed, 24 insertions(+)
->
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/=
-net/ethernet/mellanox/mlx5/core/en_main.c
-> index 21bb88c5d3dc..0e48065a46eb 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-> @@ -5625,12 +5625,36 @@ static int mlx5e_queue_start(struct net_device *d=
-ev, void *newq,
->         return 0;
->  }
->
-> +static struct device *mlx5e_queue_get_dma_dev(struct net_device *dev,
-> +                                             int queue_index)
-> +{
-> +       struct mlx5e_priv *priv =3D netdev_priv(dev);
-> +       struct mlx5e_channels *channels;
-> +       struct device *pdev =3D NULL;
-> +       struct mlx5e_channel *ch;
-> +
-> +       channels =3D &priv->channels;
-> +
-> +       mutex_lock(&priv->state_lock);
-> +
-> +       if (queue_index >=3D channels->num)
-> +               goto out;
-> +
-> +       ch =3D channels->c[queue_index];
-> +       pdev =3D ch->pdev;
-
-This code assumes priv is initialized, and probably that the device is
-up/running/registered. At first I thought that was fine, but now that
-I look at the code more closely, netdev_nl_bind_rx_doit checks if the
-device is present but doesn't seem to check that the device is
-registered.
-
-I wonder if we should have a generic check in netdev_nl_bind_rx_doit
-for NETDEV_REGISTERED, and if not, does this code handle unregistered
-netdev correctly (like netdev_priv and priv->channels are valid even
-for unregistered mlx5 devices)?
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="y4wp3wkqhrel3mvn"
+Content-Disposition: inline
+In-Reply-To: <CAAVpQUBO8TXjjtt++kF0R-qs-Utn-eY5o321NyAALEYTfq0xGw@mail.gmail.com>
 
 
---=20
-Thanks,
-Mina
+--y4wp3wkqhrel3mvn
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [PATCH v4 net-next 01/10] mptcp: Fix up subflow's memcg when
+ CONFIG_SOCK_CGROUP_DATA=n.
+MIME-Version: 1.0
+
+On Fri, Aug 15, 2025 at 10:24:12AM -0700, Kuniyuki Iwashima <kuniyu@google.com> wrote:
+> and we need to manually copy the memcg anyway..
+
+(Is that in a later patch?)
+
+But fair enough :-/
+
+
+Michal
+
+--y4wp3wkqhrel3mvn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaJ9wuAAKCRB+PQLnlNv4
+CH4YAQC8zojrNNQgYpmFJQUBnZHfg4T+IF01Rw6OCepycZuaVgD8Cfgdr1bVXJly
+2vehjqtlGG8wN1oo3l6EVENniEd0yAo=
+=/lQI
+-----END PGP SIGNATURE-----
+
+--y4wp3wkqhrel3mvn--
