@@ -1,97 +1,144 @@
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194EA306D51
-	for <netdev@vger.kernel.org>; Fri, 15 Aug 2025 15:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3118F23ABA7;
+	Fri, 15 Aug 2025 15:48:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755272511; cv=none; b=o3BEzpR7fEd6Kc+W5BaKi/wIlfPH3WdumNdeayY7Ff+EwUdpv7YHf8I+TQumnjByxoHyK1yQTVuJg2FM9Ej8QY7TmZ5QRcmBcK2FjOtiKjoNtliuH72C8+Vscv6f5hVLJt8UfB8tdAnti48EIs0yY9Yd4UiSlk9+E4RyqSdbfhU=
+	t=1755272887; cv=none; b=XYffcL1rhAIGE05IcyM81LxVjxt7+cnECN4qs0wXjl0TZmRq4mbuzN/ajUbopUSbbAHoGnTwTz3JPog46gxy4NlGJCHz9uFieSMB8RIfVonfXDMILybfhYyaU5zntCY8HU5IftMbP47s2G8psG5JAaIuLoW5oiAnq4c6TVonKlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755272511; c=relaxed/simple;
-	bh=kWIeKW/3+LZqeCGlBxC1tJztJxOj/OGJgM+qI//Vx9I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c3jLHdimmnSlz6p/1OL1M15xfRS6W0BlBUeOyiFnYWS1h4+LS4GavGqPyWegZ8mha+G3oU4f/yvBXRh2pFuyTfzdoDd5pp/5zV4/9gHxRh2RhcvciUJHUyaJSgVp+aj5sV4zh/jPp01P9jz4qhk3To3yPuKiEykz7UixSbQ8TqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=uIPcYaWT; arc=none smtp.client-ip=95.215.58.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1755272887; c=relaxed/simple;
+	bh=7J7O8B58402DZIOvOG4YVrzlmAE/IexxgXMdQIJautM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UPS8ZiFookzKzMP7UMKf+h+IqwlmTKRyuzBY+rknODtYGdCRRgU6/skgzgVLYQ44JR6kHhCfAiDlVRGEzNqJJu54tpOWfs6JJxrrC5AlKrw+5RWyaW/auZJSAYu7P/V7A/cS3ZXHY37DfTCcuiNkpKPoWJN3taDuXYBv5v2uyW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SgIX7RTv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="uIPcYaWT"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755272498;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=XoTQC/MqUTM2TQEXO9Dy4N6Bkcqbv/50Gl4TO7GZo+k=;
-	b=uIPcYaWTHp3Ue8B4JNxoYifSJQXbTMFYo9VBbbhuUTSstk5ZvuJdzCAtUuFfOurlsrUn3c
-	+K51SfEV+p6egayGXTyYZc6XuCNDDCg7z2eA4M3TrXfYExajEDUOl/nPNByW2irNW20+Ks
-	+xwwM/CUWKRjRbiQ5cAqOTW74MUjhDc=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Peter Seiderer <ps.report@gmx.net>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2] net: pktgen: Use min()/min_t() to improve pktgen_finalize_skb()
-Date: Fri, 15 Aug 2025 17:33:33 +0200
-Message-ID: <20250815153334.295431-3-thorsten.blum@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SgIX7RTv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20D3C4CEEB;
+	Fri, 15 Aug 2025 15:48:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755272886;
+	bh=7J7O8B58402DZIOvOG4YVrzlmAE/IexxgXMdQIJautM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SgIX7RTvZhmiYGgeJf8Xyi9SvoEvPcefxLNIy9s4Z9gG3L5ZWH79RGsHSGb+rp2PV
+	 tLBsXdREfvDfAYCiu+Tp40vAum4zf3YARXmA/6zN2iuCkaRLoOI08otWwe97Pz9f1O
+	 1Wfml97ZFvrRUUKHcRvecmvwjGF0Vu2toJionb24DxUCcxKAatt3wSPkTlmv8p4FmU
+	 SzhdChi6CfdVphvLbOETvRsHKhWDfhBLwmvO4PsnwHFWm5srZiYTh/P/6OyuF1Vgfn
+	 vxESvslwC+72+Vsa/ReF8Rjun4p9kuGhEDDlLZcFqHTK9Rh8K5kYSWz21e9OnkWBNz
+	 u1mbsVQqwUwLA==
+Date: Fri, 15 Aug 2025 16:48:00 +0100
+From: Will Deacon <will@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: syzbot <syzbot+b4d960daf7a3c7c2b7b1@syzkaller.appspotmail.com>,
+	davem@davemloft.net, edumazet@google.com, eperezma@redhat.com,
+	horms@kernel.org, jasowang@redhat.com, kuba@kernel.org,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com, sgarzare@redhat.com,
+	stefanha@redhat.com, syzkaller-bugs@googlegroups.com,
+	virtualization@lists.linux.dev, xuanzhuo@linux.alibaba.com
+Subject: Re: [syzbot] [kvm?] [net?] [virt?] WARNING in
+ virtio_transport_send_pkt_info
+Message-ID: <aJ9WsFovkgZM3z09@willie-the-truck>
+References: <20250812052645-mutt-send-email-mst@kernel.org>
+ <689b1156.050a0220.7f033.011c.GAE@google.com>
+ <20250812061425-mutt-send-email-mst@kernel.org>
+ <aJ8HVCbE-fIoS1U4@willie-the-truck>
+ <20250815063140-mutt-send-email-mst@kernel.org>
+ <aJ8heyq4-RtJAPyI@willie-the-truck>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJ8heyq4-RtJAPyI@willie-the-truck>
 
-Use min() and min_t() to improve pktgen_finalize_skb() and avoid
-calculating 'datalen / frags' twice.
+On Fri, Aug 15, 2025 at 01:00:59PM +0100, Will Deacon wrote:
+> On Fri, Aug 15, 2025 at 06:44:47AM -0400, Michael S. Tsirkin wrote:
+> > On Fri, Aug 15, 2025 at 11:09:24AM +0100, Will Deacon wrote:
+> > > On Tue, Aug 12, 2025 at 06:15:46AM -0400, Michael S. Tsirkin wrote:
+> > > > On Tue, Aug 12, 2025 at 03:03:02AM -0700, syzbot wrote:
+> > > > > Hello,
+> > > > > 
+> > > > > syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+> > > > > WARNING in virtio_transport_send_pkt_info
+> > > > 
+> > > > OK so the issue triggers on
+> > > > commit 6693731487a8145a9b039bc983d77edc47693855
+> > > > Author: Will Deacon <will@kernel.org>
+> > > > Date:   Thu Jul 17 10:01:16 2025 +0100
+> > > > 
+> > > >     vsock/virtio: Allocate nonlinear SKBs for handling large transmit buffers
+> > > >     
+> > > > 
+> > > > but does not trigger on:
+> > > > 
+> > > > commit 8ca76151d2c8219edea82f1925a2a25907ff6a9d
+> > > > Author: Will Deacon <will@kernel.org>
+> > > > Date:   Thu Jul 17 10:01:15 2025 +0100
+> > > > 
+> > > >     vsock/virtio: Rename virtio_vsock_skb_rx_put()
+> > > >     
+> > > > 
+> > > > 
+> > > > Will, I suspect your patch merely uncovers a latent bug
+> > > > in zero copy handling elsewhere.
+> 
+> I'm still looking at this, but I'm not sure zero-copy is the right place
+> to focus on.
+> 
+> The bisected patch 6693731487a8 ("vsock/virtio: Allocate nonlinear SKBs
+> for handling large transmit buffers") only has two hunks. The first is
+> for the non-zcopy case and the latter is a no-op for zcopy, as
+> skb_len == VIRTIO_VSOCK_SKB_HEADROOM and so we end up with a linear SKB
+> regardless.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
-Changes in v2:
-- Use min_t(int,,) to prevent a signedness error
-- Link to v1: https://lore.kernel.org/lkml/20250814172242.231633-2-thorsten.blum@linux.dev/
----
- net/core/pktgen.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+It's looking like this is caused by moving from memcpy_from_msg() to
+skb_copy_datagram_from_iter(), which is necessary to handle non-linear
+SKBs correctly.
 
-diff --git a/net/core/pktgen.c b/net/core/pktgen.c
-index 0ebe5461d4d9..d41b03fd1f63 100644
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -114,6 +114,7 @@
+In the case of failure (i.e. faulting on the source and returning
+-EFAULT), memcpy_from_msg() rewinds the message iterator whereas
+skb_copy_datagram_from_iter() does not. If we have previously managed to
+transmit some of the packet, then I think
+virtio_transport_send_pkt_info() can end up returning a positive "bytes
+written" error code and the caller will call it again. If we've advanced
+the message iterator, then this can end up with the reported warning if
+we run out of input data.
+
+As a hack (see below), I tried rewinding the iterator in the error path
+of skb_copy_datagram_from_iter() but I'm not sure whether other callers
+would be happy with that. If not, then we could save/restore the
+iterator state in virtio_transport_fill_skb() if the copy fails. Or we
+could add a variant of skb_copy_datagram_from_iter(), say
+skb_copy_datagram_from_iter_full(), which has the rewind behaviour.
+
+What do you think?
+
+Will
+
+--->8
+
+diff --git a/net/core/datagram.c b/net/core/datagram.c
+index 94cc4705e91d..62e44ab136b7 100644
+--- a/net/core/datagram.c
++++ b/net/core/datagram.c
+@@ -551,7 +551,7 @@ int skb_copy_datagram_from_iter(struct sk_buff *skb, int offset,
+ 				 int len)
+ {
+ 	int start = skb_headlen(skb);
+-	int i, copy = start - offset;
++	int i, copy = start - offset, start_off = offset;
+ 	struct sk_buff *frag_iter;
  
- #include <linux/sys.h>
- #include <linux/types.h>
-+#include <linux/minmax.h>
- #include <linux/module.h>
- #include <linux/moduleparam.h>
- #include <linux/kernel.h>
-@@ -2841,8 +2842,7 @@ static void pktgen_finalize_skb(struct pktgen_dev *pkt_dev, struct sk_buff *skb,
- 		}
+ 	/* Copy header. */
+@@ -614,6 +614,7 @@ int skb_copy_datagram_from_iter(struct sk_buff *skb, int offset,
+ 		return 0;
  
- 		i = 0;
--		frag_len = (datalen/frags) < PAGE_SIZE ?
--			   (datalen/frags) : PAGE_SIZE;
-+		frag_len = min_t(int, datalen / frags, PAGE_SIZE);
- 		while (datalen > 0) {
- 			if (unlikely(!pkt_dev->page)) {
- 				int node = numa_node_id();
-@@ -2859,8 +2859,7 @@ static void pktgen_finalize_skb(struct pktgen_dev *pkt_dev, struct sk_buff *skb,
- 			if (i == (frags - 1))
- 				skb_frag_fill_page_desc(&skb_shinfo(skb)->frags[i],
- 							pkt_dev->page, 0,
--							(datalen < PAGE_SIZE ?
--							 datalen : PAGE_SIZE));
-+							min(datalen, PAGE_SIZE));
- 			else
- 				skb_frag_fill_page_desc(&skb_shinfo(skb)->frags[i],
- 							pkt_dev->page, 0, frag_len);
--- 
-2.50.1
-
+ fault:
++	iov_iter_revert(from, offset - start_off);
+ 	return -EFAULT;
+ }
+ EXPORT_SYMBOL(skb_copy_datagram_from_iter);
