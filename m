@@ -1,76 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB088304984;
-	Fri, 15 Aug 2025 18:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11267309DAB;
+	Fri, 15 Aug 2025 18:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755281340; cv=none; b=URXCiBy0SqS4qfdfwgSr88PCgHUb8h32kt93//vR0V6qOdFHvk3aa8FdyfUMBHhsHidY0h1mppY2r6ejsnnxOQNvm42j5y8caSqpoz8PbfXeQgXnDE/wh4iRHpY3BMEXMhvbj3T8SRF0Jyqmmu075JjfJq63Im4EkWo7F6H+aQY=
+	t=1755281342; cv=none; b=B1yvu7EO9Chq/OpGDNQKj1WrovSDwCtgCkaNaPS6KbrfyPmALVqBSTO7CYxsOCgUOG9RQneyVkc+tjyQ16rUsOivWO5aCUQ0IARAtlhkzGErqwD8E+ZWfZeCI/A54zLTD2vcu1XB4axHAlOEpkxuCCz3WmZKTFSYIVASvvEP6uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755281340; c=relaxed/simple;
-	bh=48uoOdANQeZGLqjpGNW8+lagWQ5FOKsTITA3Xpi113I=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=iZE1yW0s6s9eAzU7cbaWYz/ccWGqKw13IXgXTrrUzNJlJy8xXtJ9POpDb1ztbHuFX15mqmg6la6lgtQhXLb5VxGTBkATag2mpFwAYhl7MQBgLafEQVOgFFb0oLM2F6Q6fqmtGy4wGZGDBc3YREAQoUnhmsQT36n4/2P+d0C224U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HpzCQqI+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755281342; c=relaxed/simple;
+	bh=19brnsyyIp2ph9JbH6r7iqDFUZXwBNSUtnngklw5n6g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sDYH0XmS6dwn3sSF+4dYXYy1nf7yTOPSTYjFMHP3jM8JSJeilMj6X2zV3REtTXDh8XoU/3a/Grv31A0DCaZ/qb1jkpnnYTArsI/mOPGqUIsbDW6Ya1hbsc8pNAhp7th4iVTuZzK1/JP0uJdlXf8EIrqJNMcoWcAtptxEbpHxXaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S60jODD6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HpzCQqI+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602A6C4CEEB;
-	Fri, 15 Aug 2025 18:09:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S60jODD6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E79AC4CEF5;
+	Fri, 15 Aug 2025 18:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755281340;
-	bh=48uoOdANQeZGLqjpGNW8+lagWQ5FOKsTITA3Xpi113I=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=HpzCQqI+vjSXm9/5UhWaBJIZDNAZlzlVmxCiJ7n5yLX9k0qJyeaydUJNoqQOVdQli
-	 6dZk2X9z862t9qYy6uX7Myfj94UdsmX5ctBz4820B/bNTWCf1lF3migfbMTbw8v1W+
-	 mjhIVHF7PC8Ilw4C23/7Uy0BRJME2M5gMQVKMla0sB02Yb+W9otwWX2P08Jj0yvnl5
-	 G1qyujFbCVbzLPTDrLenRsY3nq4ryFHM3nCyndKjU76G1CT9GRIM9GtHoT4mLUMM/5
-	 9Fda8te4k9aPc1EY39NOlZdGZc9b3WYfLL3bh6+VFOR0XT2jfkgpaGq0X9lqY3trkB
-	 o2M/y8mhj1nKA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADC4F39D0C3D;
-	Fri, 15 Aug 2025 18:09:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1755281341;
+	bh=19brnsyyIp2ph9JbH6r7iqDFUZXwBNSUtnngklw5n6g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=S60jODD61ed3m6ByVsl+MR8QbRZKIVfOeqq8DilJzWDV6I3KqSnlntv4IIbsnqGXz
+	 tHVlV2ynSErS2aY1pbiKCwOELGvq461gdtnLaDJiBAWGHNZRgP896oJ3AwLlmMZFAv
+	 ob4bojVv05YsoyaE+VqiqLLB5n1hH3pAfCUrvNAJghu2QKBfdcmRTupW+6LGeefGap
+	 +IONgtaP5WX3+nTXXsT+KvvRXVloVLZKOQx00dTmxsICH6/cj3poHsWehbK9IU94hZ
+	 FCUcYmkLeT+qe5GKZrFYvAdiia/GfPC/IV/4mbBLAkcEGFIuKObc08DGCy6y6P3LVc
+	 mEuRjdnlaHqXA==
+Date: Fri, 15 Aug 2025 11:09:00 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Mihai Moldovan <ionic@ionic.de>
+Cc: linux-arm-msm@vger.kernel.org, Manivannan Sadhasivam <mani@kernel.org>,
+ Denis Kenzior <denkenz@gmail.com>, Eric Dumazet <edumazet@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Willem de Bruijn <willemb@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v5 01/11] net: qrtr: ns: validate msglen before ctrl_pkt
+ use
+Message-ID: <20250815110900.2da8f3c5@kernel.org>
+In-Reply-To: <161d8d203f17fde87ac7dd2c9c24be6d1f35a3c1.1754962436.git.ionic@ionic.de>
+References: <cover.1754962436.git.ionic@ionic.de>
+	<161d8d203f17fde87ac7dd2c9c24be6d1f35a3c1.1754962436.git.ionic@ionic.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] bluetooth 2025-08-15
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175528135149.1165776.14097753317071823549.git-patchwork-notify@kernel.org>
-Date: Fri, 15 Aug 2025 18:09:11 +0000
-References: <20250815142229.253052-1-luiz.dentz@gmail.com>
-In-Reply-To: <20250815142229.253052-1-luiz.dentz@gmail.com>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This pull request was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 15 Aug 2025 10:22:29 -0400 you wrote:
-> The following changes since commit 065c31f2c6915b38f45b1c817b31f41f62eaa774:
+On Tue, 12 Aug 2025 03:35:27 +0200 Mihai Moldovan wrote:
+> The qrtr_ctrl_pkt structure is currently accessed without checking
+> if the received payload is large enough to hold the structure's fields.
+> Add a check to ensure the payload length is sufficient.
 > 
->   rtase: Fix Rx descriptor CRC error bit definition (2025-08-14 17:53:12 -0700)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2025-08-15
-> 
-> [...]
+> Signed-off-by: Denis Kenzior <denkenz@gmail.com>
+> Reviewed-by: Marcel Holtmann <marcel@holtmann.org>
+> Reviewed-by: Andy Gross <agross@kernel.org>
+> Signed-off-by: Mihai Moldovan <ionic@ionic.de>
+> Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
 
-Here is the summary with links:
-  - [GIT,PULL] bluetooth 2025-08-15
-    https://git.kernel.org/netdev/net/c/79116acb75e1
+If this is a fix it has to go to net, then once it reaches Linus's tree
+the dependent patches should be reposted for net-next.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+> index 3de9350cbf30..2bcfe539dc3e 100644
+> --- a/net/qrtr/ns.c
+> +++ b/net/qrtr/ns.c
+> @@ -619,6 +619,9 @@ static void qrtr_ns_worker(struct work_struct *work)
+>  			break;
+>  		}
+>  
+> +		if ((size_t)msglen < sizeof(*pkt))
+> +			break;
 
-
+why not continue?
