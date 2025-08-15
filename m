@@ -1,120 +1,93 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8332BE64F;
-	Fri, 15 Aug 2025 03:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409E21E7C34
+	for <netdev@vger.kernel.org>; Fri, 15 Aug 2025 03:43:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755229362; cv=none; b=qt8FXAyw6SogmAl8uGaKcFWHnhzlx9UU0Ac4Ly/ss5McT41Q+vRwY0X+A8VD4m+iXMoO6qR/Q4lWrN9kwJ07NLscwRM3EatddvuZqCDaELp1NW0/qUmeltFZNTG8V4uO36ardcGMaroRgXDNfWBxvORqzJkYDVewFSUf2P6AOrs=
+	t=1755229404; cv=none; b=BabGjlDKCx339/f04dpYb5tMmUA3uHYFrYUxEZ2Or1+KZbRMcrqE0hSeI97Jef05T7JUiaEhB0tDIDRfyTf9Ujfpk1g7pIfIyLqeqlfjm7BwMLglxPKZSXTdNyuTNSZqD2RTbjLTZqrRWKD+qHZ83c3FU58yLUGqNrQKdAyMVbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755229362; c=relaxed/simple;
-	bh=aMG5MR/kQYbZlG+R41I+TyUtSopot5UaB9vuS57geCE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fITd8lJYaEleNuCOLLxLXlGxhSCUsh9AcilIGcJy4BqBeI6kt4vmRlrLhKPHZv4x2/NxldawUNbk8dzN299ndgR0G8jE/u35r6xUXD9XPglNXJ6aYe/umVYOrQ5dOzCczGrD3RsVLUb75P7j4IfWpcXsbCFERhFGISNsf9W4OBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=TEv8ySd3; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1755229404; c=relaxed/simple;
+	bh=b1bVscfxC4uFT/CEoA/bhRidOult40TJcVZcOy00MCI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nd19yGwi9Ez5kmO7aJ0WBfAm1dNkUtVTpk8Ej6w0iDYHD+AYxlDBlFkiEkgSfL7MDUEUV95+EKXmhjBVdQ1QeH0E5PD9cpr3l62CNulIXIRA+1DWfx6UWgts54uhThXmEVlpoArc8k5JzKLK7uzTwZrgxLes81Ov2BMWhdyJPxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=kwvNuP2C; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="TEv8ySd3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=UxqLZiyOaKpTCfZHAkjWJO2mNSyIpBiF2SW7fqA3g6A=; b=TEv8ySd3nZP5F6ZZMmUW3h52BT
-	pnCXRyrqJfTlGSHFeyp+w3x69iMAv4c/u5UAz65KL6gaB0qgg9JTuJnUpNHCDQyoy8pIuWgNXa16A
-	MdIELcWGHAMUrHekzNSuZGxIudJaqO1vxWg9sRJ0WBpuEU5jAV33E3yodWQfXg1eBDEk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1umlKP-004mYa-7S; Fri, 15 Aug 2025 05:42:05 +0200
-Date: Fri, 15 Aug 2025 05:42:05 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Dong Yibo <dong100@mucse.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	corbet@lwn.net, gur.stavi@huawei.com, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, danishanwar@ti.com, lee@trager.us,
-	gongfan1@huawei.com, lorenzo@kernel.org, geert+renesas@glider.be,
-	Parthiban.Veerasooran@microchip.com, lukas.bulwahn@redhat.com,
-	alexanderduyck@fb.com, richardcochran@gmail.com,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] net: rnpgbe: Add register_netdev
-Message-ID: <099a6006-02e4-44f0-ae47-7de14cc58a12@lunn.ch>
-References: <20250814073855.1060601-1-dong100@mucse.com>
- <20250814073855.1060601-6-dong100@mucse.com>
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="kwvNuP2C"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-55ce52658a7so1486832e87.2
+        for <netdev@vger.kernel.org>; Thu, 14 Aug 2025 20:43:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1755229401; x=1755834201; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b1bVscfxC4uFT/CEoA/bhRidOult40TJcVZcOy00MCI=;
+        b=kwvNuP2CIZOJMuv6JQVxGZF7wCgfvL/cCINTMjR+jI/e/I80srcqTzD2IdB5OTKOMh
+         EjKdYYT91g00ngvRlnd9VdncuLw6ZyCiOPuAYcgMit/ol2jw6VcOU90uXEEYkqmcO70+
+         g1GFtDCE8xJdE7Nmm3IKuPmbxweVaak5KzfD8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755229401; x=1755834201;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=b1bVscfxC4uFT/CEoA/bhRidOult40TJcVZcOy00MCI=;
+        b=A4d1oO4LH9IwSRr15+8SymUBBWF0rMMWjj7BCrF63aEhI7Vf61so9pOMO8yqPybSCh
+         msnLLcEd1rtnsbN6dwkUJBfQdDf7M8SskBFn9iVMstDhBjcKaTHi+wup20oCehswan0X
+         j4QvDLDKXa+aHczxfKR3mvvHQgyKDTkCOI3ZgaR5i1tEyAteaXqDd51+mpQLFppPA+qc
+         KzbOJESmMPwr+8FuJ/+1os6+uIh4pvTxpqMvjGGmXA1n1SIkQVCjXm21p3krbtY3j6c0
+         kJYjOWn+zuojqoN3UgqWr91j8EXRE3AlhicoErKNOK+SVloNTwX6YvnBELdKOH0lL5tI
+         v2yA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8KAcOH0jkB2ahEKhlM81NQQR210b1T9sGOKWkA4VnO+QNTK7J70JwddiyXNTTPGsawPHl6Gw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMXb7zJOffuVAvEwWKEKmp6mjOcvQ/yLRJ45elHWIeNKePWcC8
+	VD0neUc+R/CeGLvC8J+OFsto0WyLQhAGz8GrGZsQohABsPmH3mal0hj3DJ6VB9Ze5yuC9CLnfiZ
+	RlMl0Af3S7t7MgVSY8xbPjBQmXe7DIyROr69xAdIm
+X-Gm-Gg: ASbGnctO6d/83r3S98hKXBJ7iHS0l2QtRQUAkGSKnlo+iZ+QPOWniYtTDmnOgCTiStc
+	XyHcXIUMakAekS3hLZ6lmTG6aztHMfGgxNYJ9PFOFKvxbMIiJh54oGYK31KDZTYa0g0c4WWUUxP
+	XFQmyC3FYTYSx1DZtaXwsmsQZN97I9YTsuGPKK0YJQAInaesi3JGYy1pn+VTodQyhYFur/a/Cp1
+	5qBoIEPs6ZBqPurljxM7HE/M+jFIu5wBX+uSQ==
+X-Google-Smtp-Source: AGHT+IEqCwdjtNotzKv7k6sNon11epPQ9Q7yaZt1pImrKpO8J5PSviVGiMjVATClFXgSR2SA/yoBT6p78Ov7Q+2gotM=
+X-Received: by 2002:a05:6512:3e0d:b0:55b:84e7:e14a with SMTP id
+ 2adb3069b0e04-55ceeb42b0fmr131122e87.25.1755229401420; Thu, 14 Aug 2025
+ 20:43:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250814073855.1060601-6-dong100@mucse.com>
+References: <20250805135447.149231-1-laura.nao@collabora.com> <20250805135447.149231-9-laura.nao@collabora.com>
+In-Reply-To: <20250805135447.149231-9-laura.nao@collabora.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
+Date: Fri, 15 Aug 2025 12:43:10 +0900
+X-Gm-Features: Ac12FXzyZO_yczjiRVwJ_XiOUJ7K7LAiS8kN-QE11MKfkqUjTCK5j2sczcKt2tQ
+Message-ID: <CAGXv+5FwV1YuBoefMAX1UvOd1=cg9Ld1ZawyNts1BR8YMezhKQ@mail.gmail.com>
+Subject: Re: [PATCH v4 08/27] clk: mediatek: clk-mtk: Add MUX_DIV_GATE macro
+To: Laura Nao <laura.nao@collabora.com>
+Cc: mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, matthias.bgg@gmail.com, 
+	angelogioacchino.delregno@collabora.com, p.zabel@pengutronix.de, 
+	richardcochran@gmail.com, guangjie.song@mediatek.com, 
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
+	kernel@collabora.com, =?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> +struct mucse_hw_operations {
-> +	int (*reset_hw)(struct mucse_hw *hw);
-> +	void (*driver_status)(struct mucse_hw *hw, bool enable, int mode);
-> +};
+On Tue, Aug 5, 2025 at 10:55=E2=80=AFPM Laura Nao <laura.nao@collabora.com>=
+ wrote:
+>
+> On MT8196, some clocks use one register for parent selection and
+> gating, and a separate register for frequency division. Since composite
+> clocks can combine a mux, divider, and gate in a single entity, add a
+> macro to simplify registration of such clocks by combining parent
+> selection, frequency scaling, and enable control into one definition.
+>
+> Reviewed-by: N=C3=ADcolas F. R. A. Prado <nfraprado@collabora.com>
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collab=
+ora.com>
+> Signed-off-by: Laura Nao <laura.nao@collabora.com>
 
-Again, there is only one instance of this. Will there be more?
-
-> + * rnpgbe_get_permanent_mac - Get permanent mac
-> + * @hw: hw information structure
-> + * @mac_addr: pointer to store mac
-> + *
-> + * rnpgbe_get_permanent_mac tries to get mac from hw.
-> + * It use eth_random_addr if failed.
-> + **/
-> +static void rnpgbe_get_permanent_mac(struct mucse_hw *hw,
-> +				     u8 *mac_addr)
-> +{
-> +	struct device *dev = &hw->pdev->dev;
-> +
-> +	if (mucse_fw_get_macaddr(hw, hw->pfvfnum, mac_addr, hw->lane) ||
-> +	    !is_valid_ether_addr(mac_addr)) {
-> +		dev_warn(dev, "Failed to get valid MAC from FW, using random\n");
-> +		eth_random_addr(mac_addr);
-> +	}
-
-With a function named rnpgbe_get_permanent_mac(), i would not expect
-it to return a random MAC address. If there is no permanent MAC
-address, return -EINVAL, and let the caller does with the error.
-
-> +static int rnpgbe_reset_hw_ops(struct mucse_hw *hw)
-> +{
-> +	struct mucse_dma_info *dma = &hw->dma;
-> +	int err;
-> +
-> +	dma_wr32(dma, RNPGBE_DMA_AXI_EN, 0);
-> +	err = mucse_mbx_fw_reset_phy(hw);
-> +	if (err)
-> +		return err;
-> +	/* Store the permanent mac address */
-> +	if (!(hw->flags & M_FLAGS_INIT_MAC_ADDRESS))
-
-What do this hw->flags add to the driver? Why is it here?
-
->  static void rnpgbe_rm_adapter(struct pci_dev *pdev)
->  {
->  	struct mucse *mucse = pci_get_drvdata(pdev);
-> +	struct mucse_hw *hw = &mucse->hw;
->  	struct net_device *netdev;
->  
->  	if (!mucse)
->  		return;
->  	netdev = mucse->netdev;
-> +	if (netdev->reg_state == NETREG_REGISTERED)
-> +		unregister_netdev(netdev);
-
-Is that possible?
-
->  	mucse->netdev = NULL;
-> +	hw->ops->driver_status(hw, false, mucse_driver_insmod);
->  	free_netdev(netdev);
->  }
->  
-> -- 
-> 2.25.1
-> 
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
