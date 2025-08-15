@@ -1,182 +1,190 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFAA306D3B
-	for <netdev@vger.kernel.org>; Fri, 15 Aug 2025 13:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FF630496F
+	for <netdev@vger.kernel.org>; Fri, 15 Aug 2025 13:59:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755266378; cv=none; b=V1kNNS+Wej9n8YnBm/bziX1lXHdBes3FgtMTxK9Hq3t7jaV4O9j65PWUo/4Ns4s3/enPp6zS3G6VLTnU7prySA4HHcNyYfqDxJKHimWqNeYIXpVEGcbLrGJYRji2EMvZ13EF2mBgqmHfD3M0/RoEitUwXM/j9LwmMawPiUGRw8A=
+	t=1755266382; cv=none; b=CmAQFMHJe5rrZyjlbXH904FvOaph8t1usMSZt9SJ2Whh/S/aRXB7QlNF9SWvRYfYLgB22brEy8aKxlN5ypDBujNEwmXRrIKPqvj4L7d28B/vV/Lkf32vPB+GcYu+rzyha90zBSy0UzyOrMuSvxrUN2hvo/J5KWl7F8MGDGI1HNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755266378; c=relaxed/simple;
-	bh=MduS4WKlbRddR6xvbQZMDoRIfVyDq5mNOMTYklXGekU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kuB/YwQbdlOtJslAQiWQs+At0n1OKNV9q8vsqsRc47bPK/USwWO0xZIhtxw5FFnk7IQljqdBh5OUu2n2vKyC6C9F77jtadZAIwgviXcBIa5fZihtUY1E5uMUN/VYZhPrge/wW7/EKB4yWGRGcZRRrN8YRSIWw9XbALrwApT6h+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lJhH/Sfj; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DFc8jzon; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lJhH/Sfj; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DFc8jzon; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1755266382; c=relaxed/simple;
+	bh=a+kQP3pEKAkgnvLZTKFH52r3n+V8AB9bx8hpTkyNKcs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dyGOupPLQhv6XOtXMFrmkHAvMKJslLF3iksb8nrTeF+9VSGN/aQDtItZMReInHzK7T0ehznQaF8q1DnQUDzX3Mal34H3Azql14rP/seL2dkhaq50KTqnFZXOHJun20D/OJANnlG/eETwq7sveOcM/4FQJPq6wLmZFrnWrycWDlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hfPi/nBD; arc=none smtp.client-ip=95.215.58.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lJhH/Sfj";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DFc8jzon";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lJhH/Sfj";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DFc8jzon"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 862312195F;
-	Fri, 15 Aug 2025 13:59:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1755266364; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hfPi/nBD"
+Message-ID: <1f42eff0-b6a5-44cb-996e-655c325591be@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1755266378;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0EXvIJELtPeWWNHTJ0QhhxSzR5D/kAxg31WwqT6sMgg=;
-	b=lJhH/Sfjf+B2RjMmx7YRB/6p6bztKPzerfdHEZlqhTn5OFasRGhF5HxIdH+XI9aG3xjxZz
-	VM8s4V7xhDwy4hxpRbiYTF1ojaycV7pww7wAsL7aSGXURYn2CkTjwZ3Xuev5DjDjtUsTFA
-	cHOWciLzo2+zGYKrL/BPCBRN8yMZ5UU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1755266364;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0EXvIJELtPeWWNHTJ0QhhxSzR5D/kAxg31WwqT6sMgg=;
-	b=DFc8jzonk6YYNNXaOgo4mJKXV1hT8vcx5dMZzHf6hBodNHaixr53R3ViWJWqe6kz2/JTTU
-	Ix3KkK8BkuzxIYAQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="lJhH/Sfj";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DFc8jzon
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1755266364; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0EXvIJELtPeWWNHTJ0QhhxSzR5D/kAxg31WwqT6sMgg=;
-	b=lJhH/Sfjf+B2RjMmx7YRB/6p6bztKPzerfdHEZlqhTn5OFasRGhF5HxIdH+XI9aG3xjxZz
-	VM8s4V7xhDwy4hxpRbiYTF1ojaycV7pww7wAsL7aSGXURYn2CkTjwZ3Xuev5DjDjtUsTFA
-	cHOWciLzo2+zGYKrL/BPCBRN8yMZ5UU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1755266364;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0EXvIJELtPeWWNHTJ0QhhxSzR5D/kAxg31WwqT6sMgg=;
-	b=DFc8jzonk6YYNNXaOgo4mJKXV1hT8vcx5dMZzHf6hBodNHaixr53R3ViWJWqe6kz2/JTTU
-	Ix3KkK8BkuzxIYAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8809313876;
-	Fri, 15 Aug 2025 13:59:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id IPPmHjs9n2jMfAAAD6G6ig
-	(envelope-from <svarbanov@suse.de>); Fri, 15 Aug 2025 13:59:23 +0000
-From: Stanimir Varbanov <svarbanov@suse.de>
-To: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rpi-kernel@lists.infradead.org,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Andrea della Porta <andrea.porta@suse.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Phil Elwell <phil@raspberrypi.com>,
-	Jonathan Bell <jonathan@raspberrypi.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Stanimir Varbanov <svarbanov@suse.de>
-Subject: [PATCH 4/5] arm64: dts: rp1: Add ethernet DT node
-Date: Fri, 15 Aug 2025 16:59:10 +0300
-Message-ID: <20250815135911.1383385-5-svarbanov@suse.de>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250815135911.1383385-1-svarbanov@suse.de>
-References: <20250815135911.1383385-1-svarbanov@suse.de>
+	bh=owh7uROtBqekotid6ZUgQbtfPgrnFxu2U41jXlRbzu8=;
+	b=hfPi/nBDLh9vngYCGgcaxDVMq5jnF2q/689J94opN9seY/ibtL+b3G7VBzhp7f2iZCTbZG
+	dyecbfPjUIlbO9BownA/r0Cplk+Y7xsG6/W76kiPpvfRSuuoE8a2S9/iuh8jbUuod6rx6h
+	4XMEOr1I02/wuKKYSaxL1E7OMWI1u3M=
+Date: Fri, 15 Aug 2025 14:58:52 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 862312195F
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-1.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[dt,netdev];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_COUNT_TWO(0.00)[2];
-	R_RATELIMIT(0.00)[to_ip_from(RLw7mkaud87zuqqztkur5718rm)];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email]
-X-Spam-Score: -1.51
+Subject: Re: [Intel-wired-lan] [PATCH iwl-next] igb: Retrieve Tx timestamp
+ directly from interrupt
+To: Kurt Kanzenbach <kurt@linutronix.de>, Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
+References: <20250815-igb_irq_ts-v1-1-8c6fc0353422@linutronix.de>
+ <a1e9e37e-63da-4f1c-8ac3-36e1fde2ec0a@molgen.mpg.de>
+ <87y0rlm22a.fsf@jax.kurt.home>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <87y0rlm22a.fsf@jax.kurt.home>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Add macb GEM ethernet DT node.
+On 15/08/2025 09:17, Kurt Kanzenbach wrote:
+> Hi Paul,
+> 
+> On Fri Aug 15 2025, Paul Menzel wrote:
+>> Dear Kurt,
+>>
+>>
+>> Thank you for your patch.
+>>
+>> Am 15.08.25 um 08:50 schrieb Kurt Kanzenbach:
+>>> Retrieve Tx timestamp directly from interrupt handler.
+>>>
+>>> The current implementation uses schedule_work() which is executed by the
+>>> system work queue to retrieve Tx timestamps. This increases latency and can
+>>> lead to timeouts in case of heavy system load.
+>>>
+>>> Therefore, fetch the timestamp directly from the interrupt handler.
+>>>
+>>> The work queue code stays for the Intel 82576. Tested on Intel i210.
+>>
+>> Excuse my ignorance, I do not understand the first sentence in the last
+>> line. Is it because the driver support different models? Why not change
+>> it for Intel 82576 too?
+> 
+> Yes, the driver supports lots of different NIC(s). AFAICS Intel 82576 is
+> the only one which does not use time sync interrupts. Probably it does
+> not have this feature. Therefore, the 82576 needs to schedule a work
+> queue item.
+> 
+>>
+>> Do you have a reproducer for the issue, so others can test.
+> 
+> Yeah, I do have a reproducer:
+> 
+>   - Run ptp4l with 40ms tx timeout (--tx_timestamp_timeout)
+>   - Run periodic RT tasks (e.g. with SCHED_FIFO 1) with run time of
+>     50-100ms per CPU core
+> 
+> This leads to sporadic error messages from ptp4l such as "increasing
+> tx_timestamp_timeout or increasing kworker priority may correct this
+> issue, but a driver bug likely causes it"
+> 
+> However, increasing the kworker priority is not an option, simply
+> because this kworker is doing non-related PTP work items as well.
 
-Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
----
- arch/arm64/boot/dts/broadcom/rp1-common.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+Well, in this case, as it pointed out for other drivers, the best
+practice would be to use a dedicated PTP worker which does only PTP
+related tasks and can have higher priority.
 
-diff --git a/arch/arm64/boot/dts/broadcom/rp1-common.dtsi b/arch/arm64/boot/dts/broadcom/rp1-common.dtsi
-index 5002a375eb0b..6bdc304c5f24 100644
---- a/arch/arm64/boot/dts/broadcom/rp1-common.dtsi
-+++ b/arch/arm64/boot/dts/broadcom/rp1-common.dtsi
-@@ -39,4 +39,20 @@ rp1_gpio: pinctrl@400d0000 {
- 			     <1 IRQ_TYPE_LEVEL_HIGH>,
- 			     <2 IRQ_TYPE_LEVEL_HIGH>;
- 	};
-+
-+	rp1_eth: ethernet@40100000 {
-+		compatible = "raspberrypi,rp1-gem";
-+		reg = <0x00 0x40100000  0x0 0x4000>;
-+		interrupts = <6 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&rp1_clocks RP1_CLK_SYS>,
-+			 <&rp1_clocks RP1_CLK_SYS>,
-+			 <&rp1_clocks RP1_CLK_ETH>,
-+			 <&rp1_clocks RP1_CLK_ETH_TSU>;
-+		clock-names = "pclk", "hclk", "tx_clk", "tsu_clk";
-+		local-mac-address = [00 00 00 00 00 00];
-+		status = "disabled";
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
- };
--- 
-2.47.0
+The inline retrieving of timestamp, of course, the best option, but for
+82576 could you please consider using @do_aux_work in ptp_caps and do
+proper ptp_schedule_worker()?
 
+> 
+> As the time sync interrupt already signals that the Tx timestamp is
+> available, there's no need to schedule a work item in this case. I might
+> have missed something though. But my testing looked good. The warn_on
+> never triggered.
+> 
+>>
+>>> Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+>>> ---
+>>>    drivers/net/ethernet/intel/igb/igb.h      |  1 +
+>>>    drivers/net/ethernet/intel/igb/igb_main.c |  2 +-
+>>>    drivers/net/ethernet/intel/igb/igb_ptp.c  | 22 ++++++++++++++++++++++
+>>>    3 files changed, 24 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/net/ethernet/intel/igb/igb.h b/drivers/net/ethernet/intel/igb/igb.h
+>>> index c3f4f7cd264e9b2ff70f03b580f95b15b528028c..102ca32e8979fa3203fc2ea36eac456f1943cfca 100644
+>>> --- a/drivers/net/ethernet/intel/igb/igb.h
+>>> +++ b/drivers/net/ethernet/intel/igb/igb.h
+>>> @@ -776,6 +776,7 @@ int igb_ptp_hwtstamp_get(struct net_device *netdev,
+>>>    int igb_ptp_hwtstamp_set(struct net_device *netdev,
+>>>    			 struct kernel_hwtstamp_config *config,
+>>>    			 struct netlink_ext_ack *extack);
+>>> +void igb_ptp_tx_tstamp_event(struct igb_adapter *adapter);
+>>>    void igb_set_flag_queue_pairs(struct igb_adapter *, const u32);
+>>>    unsigned int igb_get_max_rss_queues(struct igb_adapter *);
+>>>    #ifdef CONFIG_IGB_HWMON
+>>> diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+>>> index a9a7a94ae61e93aa737b0103e00580e73601d62b..8ab6e52cb839bbb698007a74462798faaaab0071 100644
+>>> --- a/drivers/net/ethernet/intel/igb/igb_main.c
+>>> +++ b/drivers/net/ethernet/intel/igb/igb_main.c
+>>> @@ -7080,7 +7080,7 @@ static void igb_tsync_interrupt(struct igb_adapter *adapter)
+>>>    
+>>>    	if (tsicr & E1000_TSICR_TXTS) {
+>>>    		/* retrieve hardware timestamp */
+>>> -		schedule_work(&adapter->ptp_tx_work);
+>>> +		igb_ptp_tx_tstamp_event(adapter);
+>>>    	}
+>>>    
+>>>    	if (tsicr & TSINTR_TT0)
+>>> diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
+>>> index a7876882aeaf2b2a7fb9ec6ff5c83d8a1b06008a..20ecafecc60557353f8cc5ab505030246687c8e4 100644
+>>> --- a/drivers/net/ethernet/intel/igb/igb_ptp.c
+>>> +++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
+>>> @@ -796,6 +796,28 @@ static int igb_ptp_verify_pin(struct ptp_clock_info *ptp, unsigned int pin,
+>>>    	return 0;
+>>>    }
+>>>    
+>>> +/**
+>>> + * igb_ptp_tx_tstamp_event
+>>> + * @adapter: pointer to igb adapter
+>>> + *
+>>> + * This function checks the TSYNCTXCTL valid bit and stores the Tx hardware
+>>> + * timestamp at the current skb.
+>>> + **/
+>>> +void igb_ptp_tx_tstamp_event(struct igb_adapter *adapter)
+>>> +{
+>>> +	struct e1000_hw *hw = &adapter->hw;
+>>> +	u32 tsynctxctl;
+>>> +
+>>> +	if (!adapter->ptp_tx_skb)
+>>> +		return;
+>>> +
+>>> +	tsynctxctl = rd32(E1000_TSYNCTXCTL);
+>>> +	if (WARN_ON_ONCE(!(tsynctxctl & E1000_TSYNCTXCTL_VALID)))
+>>> +		return;
+>>> +
+>>> +	igb_ptp_tx_hwtstamp(adapter);
+>>> +}
+>>> +
+>>>    /**
+>>>     * igb_ptp_tx_work
+>>>     * @work: pointer to work struct
+>>
+>> The diff looks fine.
+>>
+>> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
