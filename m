@@ -1,133 +1,152 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8FD30DEA5
-	for <netdev@vger.kernel.org>; Fri, 15 Aug 2025 20:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3DB242D69;
+	Fri, 15 Aug 2025 20:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755289071; cv=none; b=seVZEnm5e+Umsf5d4jNdol+64FNN2ZU2202nIiYBSDX7slcfoOEKNOZpbF2V2nadP3T9XG4efHJNSi08gnHCg9jPOM0cb6nIv34oQNZ42b0xiH6vFYic2eDvEiXLJCMRYeQzVFIwAJMWgW9mIuWrFkSb6/V4Wtfa0IvLyEJKsF8=
+	t=1755289102; cv=none; b=uXjszETW43Nxqy48NUue3opEO7PP2oLFkDS6iuv1B5NEczBLHY4XS0UdAd4fJLuGyL5vcbJP22D9TmCAy86eEcadMD8RvIOfvdIxQf2QYuii5Vb4+eJVnmI1Wh9UOZRXYhvg5ZmXnoow2fa4HQO2sgZco4Lqv6JrkI2pC3SQ/HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755289071; c=relaxed/simple;
-	bh=MRR/+pSEWAeLMgDmwMpMUrOeg1/9Qpf6YfZ+Z/dvLPg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GAasNPEl38+IBzlQoVLxit84rTE48XkaJNPDG+KtKYwlHHr1+4du/+D96xiaF5qlGah+IV66xPART9m1fSTC3OxmlXR5wjdO4t1e25HjKqT9tfyBVEdKfbs/wPubZ5J6c4u3YRaCpieTGhnIsnEWRLrG+xqCOxTqbhKuKcz2NNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IGMTvg1z; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1755289102; c=relaxed/simple;
+	bh=tgoezjGAf0KZKsRwrMyeRLHrhVcj3sGuLIfQb+BbpGE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s3ocrpr4+YlZUKiswL0kdG7laSmX+s6MNqW8vjrmZYSn4jZsR3144c4Dw9JIza5X4rAWhn5UxOhAHuowH50BMIMAb5UINVJmF48DGxvbTkVlZLKC/BpGDs6RwCw+0CdFcSTQ/sl7r0katlxX0mNGnZuTvFJvCCYjsfs7ZqaLMXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VaJwiLeK; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IGMTvg1z"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32326789e09so4205354a91.1
-        for <netdev@vger.kernel.org>; Fri, 15 Aug 2025 13:17:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VaJwiLeK"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-afcb78e70c5so375323866b.1;
+        Fri, 15 Aug 2025 13:18:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755289069; x=1755893869; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kf92k/WXre/NA9XVBZNM2RHpUQnxne1oa7jt/AbjtmQ=;
-        b=IGMTvg1zm7xKmKjxBCufmnZSRZJiG8jEBmPEFHT2t9m2YfPdze5xdbLOMDqwOODNYl
-         9oHnpSw3nSc8rrZUDDghidSBjJH9yhRj2xegkKW8p73zglEeprQmhPux+tuFLWC+5/KE
-         AWae3MMocRKmGYy5i1V3n0MLzTMq8FirzI/TK09+1AdOXU9arrmmxKH54QjDfqtRcG6A
-         MWEBYr54fWgJ57NPrGZon6SdCukkp4cYxnlZ2dzUCVp2rDnbpj8NhZQruaSC3QJLWLwI
-         4kDWSxpptGdAQdDDfjeIToMVT37VyNyaNFARKcwhqu15RhcgGo/c4Cn40T4lBlme7Vb+
-         9BMQ==
+        d=gmail.com; s=20230601; t=1755289099; x=1755893899; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hKGGbUWZPDeDZmUppFCrYR0EPPBsR1LFkPo87D006Pg=;
+        b=VaJwiLeK/e2lCNT1fIKtVIzGgYRlQOWA8iDr3KtY/tuf1fwwFLgkMMGVmeYfsG8Sl0
+         /gEzGIIndk2EdtJDbBDm1QrlXXkClt5HBmA7coy4a8XmyFDz14QcXJzDCmXL+qJKhMpD
+         yo0EUbjrT0/6eIvgAGiw7q+o+OOjqxMw7DiIIrVAht3M0qdvYGJy3HIYS55MjJHPvwwH
+         mg0pequjj717trH4YArhE1qHiu721gewBxhVuxShMNk/GwfcietOBzFL71UpY8Ooccmr
+         rSx+60ovTPfbvIgYugp2hxHq6dp261BPHC1Lgd6umYtyHlyZJZw/Z4OJ5Ks1Rc6BSBlY
+         ioQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755289069; x=1755893869;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kf92k/WXre/NA9XVBZNM2RHpUQnxne1oa7jt/AbjtmQ=;
-        b=ct88PfQVmfCRz/HK6XkfcAc6UmCDB30OqNNBRtJ+7oS4IlwtvTPRcLJDdG71kVAb7u
-         PsRFwVMWnWM14qVRu0iRFUC+fvi5D/po/mMI6qF4X7SLOTfPWi81fVDAgMbaBqDF+TrW
-         ZQubCP1QlVZy7VwShrr2cWhmbAWpXI5/AOHbdBBW+v6AgD4f4bEqfhL158TrFZ4/pdJ9
-         ASLQpX50oeE+1XeqlnN+ev8taw0mXUFvjVHeofUQ0/BqstrVeBpejcpaa5jd9Cqq79vp
-         OxRCo9zrb0oDJ6v9i3Cetc5cyZuPtNSuRpmgJl88HUMs2IzyyMWjE63CxhblF+lrroAi
-         mH/A==
-X-Forwarded-Encrypted: i=1; AJvYcCXSSEfdc/f7ggmEqrELWESVpwWE1L7JrIA+QOR3Cx2HBhekJvGVGnbHC5M3E7b6r6iXc6bVpj4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygTEHQEOmdAYxK5wGi0w+LLRm0yyPb0Y1o6WAYzka6n0BKFU3x
-	DMrZ4+mZWIp11kIWWx5cQw9OUSrpi7TceRI2m3frpzUUV9at66OLg7Gjh6hy7G8ArSZTHQiAVif
-	KOFG27g==
-X-Google-Smtp-Source: AGHT+IHqEnxA1uJzc0XPdj9fJKBo3wWRxP+lR/iywZBaE8USdSC80qtRAT2PdogMo7IxQ/C4U5ZzQhy0h2k=
-X-Received: from pjbli13.prod.google.com ([2002:a17:90b:48cd:b0:31e:d9dc:605f])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1c06:b0:321:cfbf:cbd6
- with SMTP id 98e67ed59e1d1-32341e9b0abmr4796319a91.6.1755289069062; Fri, 15
- Aug 2025 13:17:49 -0700 (PDT)
-Date: Fri, 15 Aug 2025 20:16:18 +0000
-In-Reply-To: <20250815201712.1745332-1-kuniyu@google.com>
+        d=1e100.net; s=20230601; t=1755289099; x=1755893899;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hKGGbUWZPDeDZmUppFCrYR0EPPBsR1LFkPo87D006Pg=;
+        b=shDBrduM583bpMISSbJ/nrLRoVcS6PXdAMsAyGNVk7cxanrWmCXWrH6ZtWiCVj4hhN
+         kNvdHyaw7CMl5KSlrLwU/+IRS5+NW5V9zbk9oIne1RhipJMjKeqnqnf8tQId5LtL4exc
+         sEv1V3GjtnBGSnfrhUNRW9k715HUGQxh7UsDVyxKK1YjhVIhEDooe538VX36Q0WamnWX
+         5wj8/fY7hsivcVy+W+DqCMma9xMNWSHazoOmDIySdL6Q5Pgsxe1RUzWgLXBGF3RPYaYo
+         VO3dscp344XKNvOmAijiHLNZyo3xyL+HZpo/KHuzeYYW2fhqNpgIzO269c7P+B01rP43
+         2xCg==
+X-Forwarded-Encrypted: i=1; AJvYcCUirRCW709e7Ldp6FbB3iCxrd32fM0T6PpkVlrxm2GMXXkEFRFC4N6S81wZuZf+UXXu0Kesvzgb@vger.kernel.org, AJvYcCUsq4FXTR1Ou2D5YPrOVxqlqihGIu5NUQAgJ9q10LKjQioYNZcQvtABeYcKoHAQBzkH8xvth1xvrJMjOAo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYlYTujoWkKIU4FhlH6llC+caECGmbHRsk1t4ZrK2Eg8g51Pic
+	WCino6o441p+99t7APFlcWnWbY9noLhawzIPKsFP9y83ZAIINKWOKqLW
+X-Gm-Gg: ASbGnctcuAAh6H+9Q+A3jdFfY6WSe4qqSnXjNh8si/ELBAeRxs/1FPwPbuAVBCfPEtw
+	6QfcVWxy5uuTbSrCQobF32FMNzq2W3VcIXW2exyr+SWQoLCzAnEUxW1IcKF0CeyBVgEWtbCB+VJ
+	BI2iP0w7QhRnfKxmtGhGdY5DoZ/DcNFj7idbyZtPYguSTdGdheOfkpMcxiRC3PK0lm9SD16PT/2
+	zzLVOEBdTmRtmedP6YOTJahTRSdHCFnvQtqVyJw8QpkoCRrHVyzDL9HT1b7X3AC5E7JZshoiEho
+	S9e8MbUaUSMnGR7v79AgC1Qe/YpDYxjObp9VT0ub9FGHsCqGpduj6UbqbWM31YrpgidUVjR8s5l
+	ipl+EJIUvQaXvWS6ng9FeHh/Zi7MEKXlvTrZjVRUBMXxxIKYjIpflPG3Nj/l5wl38vaYNr56HOC
+	7TnQ==
+X-Google-Smtp-Source: AGHT+IFQhhGaiqpe3/JclgwEIpYgWq9j7cjfNKlyBQwKqEWW0ouy2g/89dPHO7o523yxF6WPyOWmhg==
+X-Received: by 2002:a17:906:a0c:b0:af9:237c:bb1c with SMTP id a640c23a62f3a-afceae15b27mr15675866b.43.1755289098723;
+        Fri, 15 Aug 2025 13:18:18 -0700 (PDT)
+Received: from localhost (dslb-002-205-018-108.002.205.pools.vodafone-ip.de. [2.205.18.108])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdcfce4e3sm217608266b.69.2025.08.15.13.18.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Aug 2025 13:18:18 -0700 (PDT)
+From: Jonas Gorski <jonas.gorski@gmail.com>
+To: Florian Fainelli <florian.fainelli@broadcom.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: dsa: b53: fix reserved register access in b53_fdb_dump()
+Date: Fri, 15 Aug 2025 22:18:09 +0200
+Message-ID: <20250815201809.549195-1-jonas.gorski@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250815201712.1745332-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.51.0.rc1.163.g2494970778-goog
-Message-ID: <20250815201712.1745332-11-kuniyu@google.com>
-Subject: [PATCH v5 net-next 10/10] net: Define sk_memcg under CONFIG_MEMCG.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Neal Cardwell <ncardwell@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Matthieu Baerts <matttbe@kernel.org>, 
-	Mat Martineau <martineau@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	"=?UTF-8?q?Michal=20Koutn=C3=BD?=" <mkoutny@suse.com>, Tejun Heo <tj@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, Geliang Tang <geliang@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Mina Almasry <almasrymina@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	mptcp@lists.linux.dev, cgroups@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Except for sk_clone_lock(), all accesses to sk->sk_memcg
-is done under CONFIG_MEMCG.
+When BCM5325 support was added in c45655386e53 ("net: dsa: b53: add
+support for FDB operations on 5325/5365"), the register used for ARL access
+was made conditional on the chip.
 
-As a bonus, let's define sk->sk_memcg under CONFIG_MEMCG.
+But in b53_fdb_dump(), instead of the register argument the page
+argument was replaced, causing it to write to a reserved page 0x50 on
+!BCM5325*. Writing to this page seems to completely lock the switch up:
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+[   89.680000] b53-switch spi0.1 lan2: Link is Down
+[   89.680000] WARNING: CPU: 1 PID: 26 at drivers/net/phy/phy.c:1350 _phy_state_machine+0x1bc/0x454
+[   89.720000] phy_check_link_status+0x0/0x114: returned: -5
+[   89.730000] Modules linked in: nft_fib_inet nf_flow_table_inet nft_reject_ipv6 nft_reject_ipv4 nft_reject_inet nft_reject nft_redir nft_quota nft_numgen nft_nat nft_masq nft_log nft_limit nft_hash nft_flow_offload nft_fib_ipv6 nft_fib_ipv4 nft_fib nft_ct nft_chain_nat nf_tables nf_nat nf_flow_table nf_conntrack nfnetlink nf_reject_ipv6 nf_reject_ipv4 nf_log_syslog nf_defrag_ipv6 nf_defrag_ipv4 cls_flower sch_tbf sch_ingress sch_htb sch_hfsc em_u32 cls_u32 cls_route cls_matchall cls_fw cls_flow cls_basic act_skbedit act_mirred act_gact vrf md5 crc32c_cryptoapi
+[   89.780000] CPU: 1 UID: 0 PID: 26 Comm: kworker/u10:0 Tainted: G        W           6.16.0-rc1+ #0 NONE
+[   89.780000] Tainted: [W]=WARN
+[   89.780000] Hardware name: Netgear DGND3700 v1
+[   89.780000] Workqueue: events_power_efficient phy_state_machine
+[   89.780000] Stack : 809c762c 8006b050 00000001 820a9ce3 0000114c 000affff 805d22d0 8200ba00
+[   89.780000]         82005000 6576656e 74735f70 6f776572 5f656666 10008b00 820a9cb8 82088700
+[   89.780000]         00000000 00000000 809c762c 820a9a98 00000000 00000000 ffffefff 80a7a76c
+[   89.780000]         80a70000 820a9af8 80a70000 80a70000 80a70000 00000000 809c762c 820a9dd4
+[   89.780000]         00000000 805d1494 80a029e4 80a70000 00000003 00000000 00000004 81a60004
+[   89.780000]         ...
+[   89.780000] Call Trace:
+[   89.780000] [<800228b8>] show_stack+0x38/0x118
+[   89.780000] [<8001afc4>] dump_stack_lvl+0x6c/0xac
+[   89.780000] [<80046b90>] __warn+0x9c/0x114
+[   89.780000] [<80046da8>] warn_slowpath_fmt+0x1a0/0x1b0
+[   89.780000] [<805d1494>] _phy_state_machine+0x1bc/0x454
+[   89.780000] [<805d22fc>] phy_state_machine+0x2c/0x70
+[   89.780000] [<80066b08>] process_one_work+0x1e8/0x3e0
+[   89.780000] [<80067a1c>] worker_thread+0x354/0x4e4
+[   89.780000] [<800706cc>] kthread+0x130/0x274
+[   89.780000] [<8001d808>] ret_from_kernel_thread+0x14/0x1c
+
+And any further accesses fail:
+
+[  120.790000] b53-switch spi0.1: timeout waiting for ARL to finish: 0x81
+[  120.800000] b53-switch spi0.1: port 2 failed to add 2c:b0:5d:27:9a:bd vid 3 to fdb: -145
+[  121.010000] b53-switch spi0.1: timeout waiting for ARL to finish: 0xbf
+[  121.020000] b53-switch spi0.1: port 3 failed to add 2c:b0:5d:27:9a:bd vid 3 to fdb: -145
+
+Restore the correct page B53_ARLIO_PAGE again, and move the offset
+argument to the correct place.
+
+*On BCM5325, this became a write to the MIB page of Port 1. Still
+a reserved offset, but likely less brokenness from that write.
+
+Fixes: c45655386e53 ("net: dsa: b53: add support for FDB operations on 5325/5365")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 ---
- include/net/sock.h | 2 ++
- net/core/sock.c    | 4 ++++
- 2 files changed, 6 insertions(+)
+ drivers/net/dsa/b53/b53_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 3bc4d566f7d0..1c49ea13af4a 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -443,7 +443,9 @@ struct sock {
- 	__cacheline_group_begin(sock_read_rxtx);
- 	int			sk_err;
- 	struct socket		*sk_socket;
-+#ifdef CONFIG_MEMCG
- 	struct mem_cgroup	*sk_memcg;
-+#endif
- #ifdef CONFIG_XFRM
- 	struct xfrm_policy __rcu *sk_policy[2];
- #endif
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 5537ca263858..ab6953d295df 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2512,8 +2512,10 @@ struct sock *sk_clone_lock(const struct sock *sk, const gfp_t priority)
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 9942fb6f7f4b..829b1f087e9e 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2078,7 +2078,7 @@ int b53_fdb_dump(struct dsa_switch *ds, int port,
  
- 	sock_reset_flag(newsk, SOCK_DONE);
+ 	/* Start search operation */
+ 	reg = ARL_SRCH_STDN;
+-	b53_write8(priv, offset, B53_ARL_SRCH_CTL, reg);
++	b53_write8(priv, B53_ARLIO_PAGE, offset, reg);
  
-+#ifdef CONFIG_MEMCG
- 	/* sk->sk_memcg will be populated at accept() time */
- 	newsk->sk_memcg = NULL;
-+#endif
- 
- 	cgroup_sk_clone(&newsk->sk_cgrp_data);
- 
-@@ -4452,7 +4454,9 @@ static int __init sock_struct_check(void)
- 
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_rxtx, sk_err);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_rxtx, sk_socket);
-+#ifdef CONFIG_MEMCG
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_read_rxtx, sk_memcg);
-+#endif
- 
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_write_rxtx, sk_lock);
- 	CACHELINE_ASSERT_GROUP_MEMBER(struct sock, sock_write_rxtx, sk_reserved_mem);
+ 	do {
+ 		ret = b53_arl_search_wait(priv);
 -- 
-2.51.0.rc1.163.g2494970778-goog
+2.43.0
 
