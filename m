@@ -1,182 +1,215 @@
-Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
+Received: from alln-iport-2.cisco.com (alln-iport-2.cisco.com [173.37.142.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4434A33
-	for <netdev@vger.kernel.org>; Sat, 16 Aug 2025 04:16:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.1.125
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFAF1C7015
+	for <netdev@vger.kernel.org>; Sat, 16 Aug 2025 04:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.142.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755317774; cv=none; b=gZG6R/IBg2aHrYSmUYYcMw7eKBgujG+Of0aCrcnMCjFN0Uf4vt+QblGNl4YMhNatC6IXPLlWHW5KGF1P6Sn4bQUM7TVbOJVdDGs7HykmvCaH7Ny6s+30ggaQic3Tp+Rjko5czKVfLOnNAyhkdwwDekBloA2xS2fj/auJoqUuewk=
+	t=1755319302; cv=none; b=kWriAs3Hfc1bplvBq9oCyCzgpqRdoBi+10VCytdC1aq6HdvkedSK3jyTE1JFLTqQnIZFeoKyEr1leq5eT7GM+lfUQOyMpy0Wm4sple5Ehqfu0Q5+2wYh8CnYXjsvZzsuH/sXYYRQ2vdQXLZUT6X9Tlvqcutdk4zoat1lFbJkOCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755317774; c=relaxed/simple;
-	bh=4pl7HhioxdvaFIegkDUeOmLYPbeUzrx5Kk8on7OU6Go=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K7/gFusnCqTK2tOvUIi8y2HpPcP6gr4M7oXIYe2pRuHTbZ3zfBwz5XpYrPGGq6Bt5fy1j045ksiY/22qOQG7QpCWDNuEEU2Et8mmfe8dR5dQdp2xDhYQ0mXzcNBRxl7qc61SUw1jYfThfHbl92Fjd4B2z0s/93XR0YdTnktT9XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=UUh3rOWL; arc=none smtp.client-ip=44.246.1.125
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1755319302; c=relaxed/simple;
+	bh=nak1WHXiv2dKHTKcqggVW6w5Guq4Ovxh/4C3oHCqbyM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l5TZoIGAaF2KU2f9vxfBZVqgR+3wHtX9RPjYfUeCDMCdHd1+CiVYlMaFmzJo1PbTPbKAddyvGs9ao3lVAPcec9ZdVZJ9u8L8gbPF+eWtv9ahvPZXR85KWMhgWL9GgDxVn2QytZrir2v1tc/V0nz3y/MoMBBtef4rFS1/Ax+pNtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=jnGuCZvU; arc=none smtp.client-ip=173.37.142.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="UUh3rOWL"
+	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="jnGuCZvU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1755317772; x=1786853772;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=grQ8MznX0ax9VmAPZJL5cknDcX/BG/AnrXvD+2GWl80=;
-  b=UUh3rOWLB+yE8f9EpogEoqmUQrnAk/BtcrRo0LYtnQwqyO8YLdq5hjG2
-   JUAgYo+QLp+FEMIP1hD0H11EXj70msSgJ+lazCK7oIUDgMipR7qfmAdHc
-   yHn6u2W2ekbwsxbQEMvzuIty+F0am5/wPSYcoUJO1vOZYOW6BH5CJgHMJ
-   j+tyGve1jq8mrz5aqvutKk3ewzkqlq8SZe8aZ1TZlxrf+ZtvHokaMTyML
-   5qdAICLStw2jU4RTMCl+waZD8To8tWoGZCN19VYdyB2/x8Jh8zVyVTRpM
-   ZxmGkKFFvUvDntJvyjy/EhSL5akfm+w23VrtL2fChxiTBIXpNlFuVNZMS
-   A==;
-X-CSE-ConnectionGUID: zVwOjIXKRri8HnBOwpJqWQ==
-X-CSE-MsgGUID: 8XG63X9vSWOTCSVAYklqYA==
-X-IronPort-AV: E=Sophos;i="6.16,202,1744070400"; 
-   d="scan'208";a="1244802"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2025 04:16:09 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.21.151:6564]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.45.64:2525] with esmtp (Farcaster)
- id 33b31170-08d4-4ec5-90ee-1f3758c28f5d; Sat, 16 Aug 2025 04:16:09 +0000 (UTC)
-X-Farcaster-Flow-ID: 33b31170-08d4-4ec5-90ee-1f3758c28f5d
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Sat, 16 Aug 2025 04:16:09 +0000
-Received: from b0be8375a521.amazon.com (10.37.244.14) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Sat, 16 Aug 2025 04:16:06 +0000
-From: Kohei Enju <enjuk@amazon.com>
-To: <pmenzel@molgen.mpg.de>
-CC: <alexanderduyck@fb.com>, <andrew+netdev@lunn.ch>,
-	<anthony.l.nguyen@intel.com>, <davem@davemloft.net>, <edumazet@google.com>,
-	<enjuk@amazon.com>, <intel-wired-lan@lists.osuosl.org>,
-	<kohei.enju@gmail.com>, <kuba@kernel.org>, <netdev@vger.kernel.org>,
-	<pabeni@redhat.com>, <przemyslaw.kitszel@intel.com>
-Subject: Re: [Intel-wired-lan] [PATCH v1 iwl-net] igb: fix link test skipping
- when interface is admin down
-Date: Sat, 16 Aug 2025 13:15:28 +0900
-Message-ID: <20250816041557.71794-2-enjuk@amazon.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <01054bc5-74b6-4472-b7b6-78febaaf575f@molgen.mpg.de>
-References: <01054bc5-74b6-4472-b7b6-78febaaf575f@molgen.mpg.de>
+  d=cisco.com; i=@cisco.com; l=5358; q=dns/txt;
+  s=iport01; t=1755319300; x=1756528900;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=rZ45E8uRt6lN/hvDsnSCm2r8Z/0epp+vTKFKDlCTErA=;
+  b=jnGuCZvU2W/rDetSOpqt0AQ250b2iJVxd97rEuNA1JxSvLGvUjjDDoDl
+   rJqVdnD4QFHvTkepsgub3IXCOleTkqWA2Xe601fPC9yn7uGN4TQ3JjfIJ
+   hbSRQTGmuRN6tR62Yrfp7oi9rUE9ktMrMoHeke1KF2wvaGPdLBet2L48b
+   y846bfQoATdAQzEQzmaqO+x75IEcE440WrYwr8hmFM51yrhySrmu+r/W1
+   +2qKMudbqcrDZtTmyIaPexFL+5EY6YK9u7VpIpXpMrJjmK5Ydx8gIjuUq
+   3l6YL5/YCv0DiTBT8o1BLvRmUhE+ZtBLak406HkOvl3bvp17ZXeOURVBl
+   w==;
+X-CSE-ConnectionGUID: A9EckXdmTJWW5lD2X+6vTg==
+X-CSE-MsgGUID: mOrbGNqcTK6ukx8BYXglHg==
+X-IronPort-AV: E=Sophos;i="6.17,293,1747699200"; 
+   d="scan'208";a="530114137"
+Received: from rcdn-l-core-02.cisco.com ([173.37.255.139])
+  by alln-iport-2.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 16 Aug 2025 03:11:53 +0000
+Received: from mrghosh-ub.cisco.com (unknown [10.160.1.156])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: mrghosh@cisco.com)
+	by rcdn-l-core-02.cisco.com (Postfix) with ESMTPSA id C806C18000237;
+	Sat, 16 Aug 2025 03:11:52 +0000 (GMT)
+From: Mrinmoy Ghosh <mrghosh@cisco.com>
+To: netdev@vger.kernel.org
+Cc: bridge@lists.linux-foundation.org,
+	mrghosh@cisco.com,
+	mrinmoy_g@hotmail.com,
+	Mike Mallin <mmallin@cisco.com>,
+	Patrice Brissette <pbrisset@cisco.com>
+Subject: [PATCH iproute2] bridge:fdb: Protocol field in bridge fdb
+Date: Sat, 16 Aug 2025 03:11:45 +0000
+Message-ID: <20250816031145.1153429-1-mrghosh@cisco.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D037UWB003.ant.amazon.com (10.13.138.115) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Transfer-Encoding: 8bit
+X-Authenticated-User: mrghosh@cisco.com
+X-Outbound-SMTP-Client: 10.160.1.156, [10.160.1.156]
+X-Outbound-Node: rcdn-l-core-02.cisco.com
 
-On Fri, 15 Aug 2025 09:41:28 +0200, Paul Menzel wrote:=0D
-=0D
->[Correct Alexander=E2=80=99s email address]=0D
-=0D
-Thank you for the correction.=0D
-I'll use the correct address going forward.=0D
-=0D
->=0D
->Am 15.08.25 um 09:38 schrieb Paul Menzel:=0D
->> Dear Kohei,=0D
->> =0D
->> =0D
->> Thank you very much for your patch.=0D
->> =0D
->> Am 15.08.25 um 08:26 schrieb Kohei Enju:=0D
->>> The igb driver incorrectly skips the link test when the network=0D
->>> interface is admin down (if_running =3D=3D false), causing the test to=
-=0D
->>> always report PASS regardless of the actual physical link state.=0D
->>>=0D
->>> This behavior is inconsistent with other drivers (e.g. i40e, ice, ixgbe=
-,=0D
->>> etc.) which correctly test the physical link state regardless of admin=
-=0D
->>> state.=0D
->> =0D
->> I=E2=80=99d collapse the above two sentences into one paragraph and add =
-an empty =0D
->> line here to visually separate the paragraph below.=0D
-=0D
-Yes, that makes sense. I'll do that.=0D
-=0D
->> =0D
->>> Remove the if_running check to ensure link test always reflects the=0D
->>> physical link state.=0D
->> =0D
->> Please add how to verify your change, that means the command to run.=0D
-=0D
-Sure, I tested the change using the ip and ethtool commands, with the=0D
-physical link down. =0D
-Should I include the following test steps in the commit message?=0D
-=0D
-Before:=0D
-  $ sudo ip link set dev enp7s0f0 down=0D
-  =0D
-  $ ip --json link show enp7s0f0 | jq -c ".[].flags"=0D
-  ["BROADCAST","MULTICAST"]=0D
-  =0D
-  $ sudo ethtool --test enp7s0f0 online=0D
-  The test result is PASS=0D
-  The test extra info:=0D
-  Register test  (offline)         0=0D
-  Eeprom test    (offline)         0=0D
-  Interrupt test (offline)         0=0D
-  Loopback test  (offline)         0=0D
-  Link test   (on/offline)         0 # <- Not expected=0D
-=0D
-After:=0D
-  $ sudo ip link set dev enp7s0f0 down=0D
-  =0D
-  $ ip --json link show enp7s0f0 | jq -c ".[].flags"=0D
-  ["BROADCAST","MULTICAST"]=0D
-  =0D
-  $ sudo ethtool --test enp7s0f0 online=0D
-  The test result is FAIL=0D
-  The test extra info:=0D
-  Register test  (offline)         0=0D
-  Eeprom test    (offline)         0=0D
-  Interrupt test (offline)         0=0D
-  Loopback test  (offline)         0=0D
-  Link test   (on/offline)         1 # <- Expected=0D
-=0D
->> =0D
->>> Fixes: 8d420a1b3ea6 ("igb: correct link test not being run when link is=
- down")=0D
->>> Signed-off-by: Kohei Enju <enjuk@amazon.com>=0D
->>> ---=0D
->>>   drivers/net/ethernet/intel/igb/igb_ethtool.c | 5 +----=0D
->>>   1 file changed, 1 insertion(+), 4 deletions(-)=0D
->>>=0D
->>> diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/ =0D
->>> net/ethernet/intel/igb/igb_ethtool.c=0D
->>> index ca6ccbc13954..6412c84e2d17 100644=0D
->>> --- a/drivers/net/ethernet/intel/igb/igb_ethtool.c=0D
->>> +++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c=0D
->>> @@ -2081,11 +2081,8 @@ static void igb_diag_test(struct net_device =0D
->>> *netdev,=0D
->>>       } else {=0D
->>>           dev_info(&adapter->pdev->dev, "online testing starting\n");=0D
->>> -        /* PHY is powered down when interface is down */=0D
->>> -        if (if_running && igb_link_test(adapter, &data[TEST_LINK]))=0D
->>> +        if (igb_link_test(adapter, &data[TEST_LINK]))=0D
->>>               eth_test->flags |=3D ETH_TEST_FL_FAILED;=0D
->>> -        else=0D
->>> -            data[TEST_LINK] =3D 0;=0D
->>>           /* Online tests aren't run; pass by default */=0D
->>>           data[TEST_REG] =3D 0;=0D
->> =0D
->> Regardless of my style comments above:=0D
->> =0D
->> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>=0D
->> =0D
->> =0D
->> Kind regards,=0D
->> =0D
->> Paul=0D
-=0D
-Thank you for the review, Paul.=0D
+From: Mrinmoy Ghosh <mrinmoy_g@hotmail.com>
+
+This is to add optional "protocol" field for bridge fdb entries.
+The introduction of the 'protocol' field in the bridge FDB for EVPN Multihome, addresses the need to distinguish between MAC addresses learned via the control plane and those learned via the data plane with data plane aging. Specifically:
+* A MAC address in an EVPN Multihome environment can be learned either through the control plane (static MAC) or the data plane (dynamic MAC with aging).
+* The 'protocol' field uses values such as 'HW' for data plane dynamic MACs and 'ZEBRA' for control plane static MACs.
+* This distinction allows the application to manage the MAC address state machine effectively during transitions, which can occur due to traffic hashing between EVPN Multihome peers or mobility of MAC addresses across EVPN peers.
+* By identifying the source of the MAC learning (control plane vs. data plane), the system can handle MAC aging and mobility more accurately, ensuring synchronization between control and data planes and improving stability and reliability in MAC route handling.
+
+This mechanism supports the complex state transitions and synchronization required in EVPN Multihome scenarios, where MAC addresses may move or be learned differently depending on network events and traffic patterns.
+
+This change:
+fdb.c: Allows 'bridge fdb [add | replace]' with optional protocol field.
+
+e.g:
+
+$ bridge -d fdb show dev hostbond2 | grep 00:00:00:00:00:88
+00:00:00:00:00:88 vlan 1000 extern_learn master br1000 proto hw
+
+$ bridge -d -j -p fdb show dev hostbond2
+
+...
+
+[ {
+        "mac": "00:00:00:00:00:88",
+        "vlan": 1000,
+        "flags": [ "extern_learn" ],
+        "master": "br1000",
+        "flags_ext": [ ],
+        "protocol": "hw",
+        "state": ""
+    },{
+...
+
+Transition to Zebra:
+
+$ bridge -d fdb show dev hostbond2 | grep 00:00:00:00:00:88
+00:00:00:00:00:88 vlan 1000 extern_learn master br1000 proto zebra
+
+$ bridge -d -j -p fdb show dev hostbond2
+...
+[ {
+        "mac": "00:00:00:00:00:88",
+        "vlan": 1000,
+        "flags": [ "extern_learn" ],
+        "master": "br1000",
+        "flags_ext": [ ],
+        "protocol": "zebra",
+        "state": ""
+    },
+...
+
+Signed-off-by: Mrinmoy Ghosh <mrghosh@cisco.com>
+Co-authored-by: Mrinmoy Ghosh <mrinmoy_g@hotmail.com>
+Co-authored-by: Mike Mallin <mmallin@cisco.com>
+Co-authored-by: Patrice Brissette <pbrisset@cisco.com>
+---
+ bridge/fdb.c                   | 20 +++++++++++++++++++-
+ include/uapi/linux/rtnetlink.h |  1 +
+ lib/rt_names.c                 |  1 +
+ 3 files changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/bridge/fdb.c b/bridge/fdb.c
+index d57b5750..9c5dd763 100644
+--- a/bridge/fdb.c
++++ b/bridge/fdb.c
+@@ -41,7 +41,7 @@ static void usage(void)
+ 		"              [ sticky ] [ local | static | dynamic ] [ vlan VID ]\n"
+ 		"              { [ dst IPADDR ] [ port PORT] [ vni VNI ] | [ nhid NHID ] }\n"
+ 		"	       [ via DEV ] [ src_vni VNI ] [ activity_notify ]\n"
+-		"	       [ inactive ] [ norefresh ]\n"
++		"	       [ inactive ] [ norefresh ] [ protocol PROTO ]\n"
+ 		"       bridge fdb [ show [ br BRDEV ] [ brport DEV ] [ vlan VID ]\n"
+ 		"              [ state STATE ] [ dynamic ] ]\n"
+ 		"       bridge fdb get [ to ] LLADDR [ br BRDEV ] { brport | dev } DEV\n"
+@@ -306,8 +306,18 @@ int print_fdb(struct nlmsghdr *n, void *arg)
+ 		print_string(PRINT_ANY, "master", "master %s ",
+ 			     ll_index_to_name(rta_getattr_u32(tb[NDA_MASTER])));
+ 
++	if (tb[NDA_PROTOCOL]) {
++		__u8 proto = rta_getattr_u8(tb[NDA_PROTOCOL]);
++		if (proto != RTPROT_UNSPEC) {
++			SPRINT_BUF(b1);
++			print_string(PRINT_ANY, "protocol", "proto %s ",
++					 rtnl_rtprot_n2a(proto, b1, sizeof(b1)));
++		}
++	}
+ 	print_string(PRINT_ANY, "state", "%s\n",
+ 			   state_n2a(r->ndm_state));
++
++
+ 	close_json_object();
+ 	fflush(fp);
+ 	return 0;
+@@ -478,6 +488,7 @@ static int fdb_modify(int cmd, int flags, int argc, char **argv)
+ 	char *endptr;
+ 	short vid = -1;
+ 	__u32 nhid = 0;
++	__u32 proto = RTPROT_UNSPEC;
+ 
+ 	while (argc > 0) {
+ 		if (strcmp(*argv, "dev") == 0) {
+@@ -555,6 +566,10 @@ static int fdb_modify(int cmd, int flags, int argc, char **argv)
+ 			inactive = true;
+ 		} else if (strcmp(*argv, "norefresh") == 0) {
+ 			norefresh = true;
++		} else if (matches(*argv, "protocol") == 0) {
++			NEXT_ARG();
++			if (rtnl_rtprot_a2n(&proto, *argv))
++				invarg("\"protocol\" value is invalid\n", *argv);
+ 		} else {
+ 			if (strcmp(*argv, "to") == 0)
+ 				NEXT_ARG();
+@@ -615,6 +630,9 @@ static int fdb_modify(int cmd, int flags, int argc, char **argv)
+ 	if (via)
+ 		addattr32(&req.n, sizeof(req), NDA_IFINDEX, via);
+ 
++	if (proto != RTPROT_UNSPEC)
++		addattr8(&req.n, sizeof(req), NDA_PROTOCOL, proto);
++
+ 	req.ndm.ndm_ifindex = ll_name_to_index(d);
+ 	if (!req.ndm.ndm_ifindex)
+ 		return nodev(d);
+diff --git a/include/uapi/linux/rtnetlink.h b/include/uapi/linux/rtnetlink.h
+index 085bb139..1ff9dbee 100644
+--- a/include/uapi/linux/rtnetlink.h
++++ b/include/uapi/linux/rtnetlink.h
+@@ -314,6 +314,7 @@ enum {
+ #define RTPROT_OSPF		188	/* OSPF Routes */
+ #define RTPROT_RIP		189	/* RIP Routes */
+ #define RTPROT_EIGRP		192	/* EIGRP Routes */
++#define RTPROT_HW		193	/* HW Generated Routes */
+ 
+ /* rtm_scope
+ 
+diff --git a/lib/rt_names.c b/lib/rt_names.c
+index 7dc194b1..b9bc1b50 100644
+--- a/lib/rt_names.c
++++ b/lib/rt_names.c
+@@ -148,6 +148,7 @@ static char *rtnl_rtprot_tab[256] = {
+ 	[RTPROT_OSPF]	    = "ospf",
+ 	[RTPROT_RIP]	    = "rip",
+ 	[RTPROT_EIGRP]	    = "eigrp",
++	[RTPROT_HW]	    = "hw",
+ };
+ 
+ struct tabhash {
+-- 
+2.43.0
+
