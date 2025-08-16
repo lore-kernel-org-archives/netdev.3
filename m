@@ -1,57 +1,81 @@
-Received: from alln-iport-2.cisco.com (alln-iport-2.cisco.com [173.37.142.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFAF1C7015
-	for <netdev@vger.kernel.org>; Sat, 16 Aug 2025 04:41:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.142.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314DF1862A;
+	Sat, 16 Aug 2025 05:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755319302; cv=none; b=kWriAs3Hfc1bplvBq9oCyCzgpqRdoBi+10VCytdC1aq6HdvkedSK3jyTE1JFLTqQnIZFeoKyEr1leq5eT7GM+lfUQOyMpy0Wm4sple5Ehqfu0Q5+2wYh8CnYXjsvZzsuH/sXYYRQ2vdQXLZUT6X9Tlvqcutdk4zoat1lFbJkOCQ=
+	t=1755321988; cv=none; b=og3pq9Ax6uX+I9+4KYqnaaMrJd93ziBFXzoAwM3KSXJIUiBCekWZbL1CFu3qQqd3G/uSSrSYzEpRFydPduYBI6/XQYknB3Aytmo/wy4pdlMRoqns7zQ5/emL5b0d+IN/xeW9FJH9Gwqbh8WaLqfJ05ylppDLd1HIAwSeYBoTdWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755319302; c=relaxed/simple;
-	bh=nak1WHXiv2dKHTKcqggVW6w5Guq4Ovxh/4C3oHCqbyM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l5TZoIGAaF2KU2f9vxfBZVqgR+3wHtX9RPjYfUeCDMCdHd1+CiVYlMaFmzJo1PbTPbKAddyvGs9ao3lVAPcec9ZdVZJ9u8L8gbPF+eWtv9ahvPZXR85KWMhgWL9GgDxVn2QytZrir2v1tc/V0nz3y/MoMBBtef4rFS1/Ax+pNtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=jnGuCZvU; arc=none smtp.client-ip=173.37.142.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	s=arc-20240116; t=1755321988; c=relaxed/simple;
+	bh=nVjqhG9sbPi0wuuSS6+4rvv16FUq7s90IVK1VJVy9Wc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oi3oBi1yRWj98ND4L27oDJp3Zjwijz4JVu0xkcbuygvm9MO1vkUyfSOorLzNlL8QszmdavaNqr5TyI+MU4sHJF14MBQGtGuWhEOOzMvEMQ23hLOzlbKXOltpxI75QNIJyLj4YW/usoMvbbmKR7/k1pJgwQLnzmqijXhG8IntE+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IL3XInNl; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="jnGuCZvU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IL3XInNl"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b47174c3817so1910269a12.2;
+        Fri, 15 Aug 2025 22:26:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=5358; q=dns/txt;
-  s=iport01; t=1755319300; x=1756528900;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rZ45E8uRt6lN/hvDsnSCm2r8Z/0epp+vTKFKDlCTErA=;
-  b=jnGuCZvU2W/rDetSOpqt0AQ250b2iJVxd97rEuNA1JxSvLGvUjjDDoDl
-   rJqVdnD4QFHvTkepsgub3IXCOleTkqWA2Xe601fPC9yn7uGN4TQ3JjfIJ
-   hbSRQTGmuRN6tR62Yrfp7oi9rUE9ktMrMoHeke1KF2wvaGPdLBet2L48b
-   y846bfQoATdAQzEQzmaqO+x75IEcE440WrYwr8hmFM51yrhySrmu+r/W1
-   +2qKMudbqcrDZtTmyIaPexFL+5EY6YK9u7VpIpXpMrJjmK5Ydx8gIjuUq
-   3l6YL5/YCv0DiTBT8o1BLvRmUhE+ZtBLak406HkOvl3bvp17ZXeOURVBl
-   w==;
-X-CSE-ConnectionGUID: A9EckXdmTJWW5lD2X+6vTg==
-X-CSE-MsgGUID: mOrbGNqcTK6ukx8BYXglHg==
-X-IronPort-AV: E=Sophos;i="6.17,293,1747699200"; 
-   d="scan'208";a="530114137"
-Received: from rcdn-l-core-02.cisco.com ([173.37.255.139])
-  by alln-iport-2.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 16 Aug 2025 03:11:53 +0000
-Received: from mrghosh-ub.cisco.com (unknown [10.160.1.156])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: mrghosh@cisco.com)
-	by rcdn-l-core-02.cisco.com (Postfix) with ESMTPSA id C806C18000237;
-	Sat, 16 Aug 2025 03:11:52 +0000 (GMT)
-From: Mrinmoy Ghosh <mrghosh@cisco.com>
+        d=gmail.com; s=20230601; t=1755321986; x=1755926786; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rfYWh65R6C5URO0NO9DTk8nFnnyazeHWWO/jHTbMAPo=;
+        b=IL3XInNl8wepyuIQaawz7FIQn29IrodX3/X6UVP6R/80pcJcBWBHFV8enB7FwY17j2
+         wdtEtgyjasTMQTOiuVHo5F6rW5edTe7zYHK+FyVoIWXhqJDg7F2teyrcqO55BBfY5IFO
+         RG6FD6bHz8MRcm6DsPfWp47y9pl3qcn+1C6E/4eqIQ0zZ/KD1pXQbrgRsJcoAKBo5wTk
+         RgpIcHvZiU1LXteoVMR5VY4BkwXC2uGVq8SxsmgspfgFaBkgm+pKmZ8ERZENFQ7ALYum
+         m9TVzrGR1iGnvivASN9t9lGNpQQFg9sJgwIY6wZ3i4z1xJGjfoTq48Z4OuNT/sUAnXNS
+         jOpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755321986; x=1755926786;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rfYWh65R6C5URO0NO9DTk8nFnnyazeHWWO/jHTbMAPo=;
+        b=o14T3HLLvIk2gKNy9uANFGYsfM6aVnm6kOQ76Kl4MxT+qqCHpGVJk5sge6y81GOcPI
+         5zXDExMX0uq3wb+pKVHsPNkNnDwXswO+8Gj8nLczAEhsVCyRNPe9M7OA0tCV0IwIfIBy
+         X/R2wjwn49t0cXHjsjab7oIczoWVjlHoEd8G/vKMBFfiwiQZaj2qxg9nrOQuDRI55nv2
+         mtbPMP/rgNPzidgNsVEoPgFZGxMNvtynw6k0XMCLlOoNIuXtNZPqn5iOLKX5CW2126B3
+         t1b46h3RPCMvx+gGGRBzHtZ3JgUbp9uTUVpx6/pRTeRa06U4XbPnivt7/4J/8mZL7EiU
+         I3Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCVAMn+CfXbimu+QrdSEXrO2zx/5/Igil367hzpOsgzJrbY4qZAvbFBNEulW2Wm4ClirYbQa08W4vk1u@vger.kernel.org, AJvYcCXD3Yd39T8Pcr18snEDwWW5jgHa6mkGZJd6VdvuqriOBanaHvPsZLWjLDGP5tDeQIPPqBNoYyb5j6xk1EwC@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy05APa2MCluLGAQm8hy+x+VXaj4B3hBa4/R3GFCkVaCe4Zb2Oe
+	KgWb2KAUcOgZp8pbmtHIczZkXbazCN1XiA8imbhocdnKvUOTX3AzrtESjvqEsfR1kZBU2g==
+X-Gm-Gg: ASbGnctWlZ3li0HBklAHDB6Kg6eioWfJngo7DKkgGtoXTtssrlYyBlWNVJWwjPC5p8T
+	HtmCIajXeKs/OjKcEJYJWBhHLwN2LANnU0BLfFo6IZZEovi93NUO2VCxWp+0N1dhXXqkGmwR6Ot
+	Q6bSVXgoiaL1vuOAbw6GpFjz7eH2WhPxaYqoJga/meV1SW0bENJAZWheqfMecSSsnsPCPnZBlIx
+	GhK/DeUQmgR1AlzwV6kYL6Gw89pLdWd+6Nm9uGE/AGO6lli+JJfw0XwsobmxvMHYA6ZZA+6pcsv
+	8r4Uy9fgX4O9Pm9irkdvAufXpH4oqHBfoguhp8R+ALHoLhuuhFbQNEeUntBn1FYSwfJcHtsmADz
+	xi8xdGJhTy477Pqwan4Bae0S47DnUiQ==
+X-Google-Smtp-Source: AGHT+IGeDOSO0voCJeRuqzmLYix6G+3EdF64VR5GERchsW16sjMcRRjfTUF7mFkmG9sK9raG14dzBQ==
+X-Received: by 2002:a17:903:b07:b0:23d:fa76:5c3b with SMTP id d9443c01a7336-2446d745130mr71210345ad.22.1755321986160;
+        Fri, 15 Aug 2025 22:26:26 -0700 (PDT)
+Received: from d.home.yangfl.dn42 ([89.208.250.155])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446ca9d016sm27225805ad.35.2025.08.15.22.26.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Aug 2025 22:26:25 -0700 (PDT)
+From: David Yang <mmyangfl@gmail.com>
 To: netdev@vger.kernel.org
-Cc: bridge@lists.linux-foundation.org,
-	mrghosh@cisco.com,
-	mrinmoy_g@hotmail.com,
-	Mike Mallin <mmallin@cisco.com>,
-	Patrice Brissette <pbrisset@cisco.com>
-Subject: [PATCH iproute2] bridge:fdb: Protocol field in bridge fdb
-Date: Sat, 16 Aug 2025 03:11:45 +0000
-Message-ID: <20250816031145.1153429-1-mrghosh@cisco.com>
-X-Mailer: git-send-email 2.43.0
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [net-next v3 0/3] net: dsa: yt921x: Add support for Motorcomm YT921x
+Date: Sat, 16 Aug 2025 13:23:18 +0800
+Message-ID: <20250816052323.360788-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,157 +83,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authenticated-User: mrghosh@cisco.com
-X-Outbound-SMTP-Client: 10.160.1.156, [10.160.1.156]
-X-Outbound-Node: rcdn-l-core-02.cisco.com
 
-From: Mrinmoy Ghosh <mrinmoy_g@hotmail.com>
+Motorcomm YT921x is a series of ethernet switches developed by Shanghai
+Motorcomm Electronic Technology, including:
 
-This is to add optional "protocol" field for bridge fdb entries.
-The introduction of the 'protocol' field in the bridge FDB for EVPN Multihome, addresses the need to distinguish between MAC addresses learned via the control plane and those learned via the data plane with data plane aging. Specifically:
-* A MAC address in an EVPN Multihome environment can be learned either through the control plane (static MAC) or the data plane (dynamic MAC with aging).
-* The 'protocol' field uses values such as 'HW' for data plane dynamic MACs and 'ZEBRA' for control plane static MACs.
-* This distinction allows the application to manage the MAC address state machine effectively during transitions, which can occur due to traffic hashing between EVPN Multihome peers or mobility of MAC addresses across EVPN peers.
-* By identifying the source of the MAC learning (control plane vs. data plane), the system can handle MAC aging and mobility more accurately, ensuring synchronization between control and data planes and improving stability and reliability in MAC route handling.
+  - YT9215S / YT9215RB / YT9215SC: 5 GbE phys
+  - YT9213NB / YT9214NB: 2 GbE phys
+  - YT9218N / YT9218MB: 8 GbE phys
 
-This mechanism supports the complex state transitions and synchronization required in EVPN Multihome scenarios, where MAC addresses may move or be learned differently depending on network events and traffic patterns.
+and up to 2 serdes interfaces.
 
-This change:
-fdb.c: Allows 'bridge fdb [add | replace]' with optional protocol field.
+This patch adds basic support for a working DSA switch.
 
-e.g:
+v2: https://lore.kernel.org/r/20250814065032.3766988-1-mmyangfl@gmail.com
+  - fix words in dt binding
+  - add support for lag and mst
+v1: https://lore.kernel.org/r/20250808173808.273774-1-mmyangfl@gmail.com
+  - fix coding style
+  - add dt binding
+  - add support for fdb, vlan and bridge
 
-$ bridge -d fdb show dev hostbond2 | grep 00:00:00:00:00:88
-00:00:00:00:00:88 vlan 1000 extern_learn master br1000 proto hw
+David Yang (3):
+  dt-bindings: net: dsa: yt921x: Add Motorcomm YT921x switch support
+  net: dsa: tag_yt921x: add support for Motorcomm YT921x tags
+  net: dsa: yt921x: Add support for Motorcomm YT921x
 
-$ bridge -d -j -p fdb show dev hostbond2
+ .../bindings/net/dsa/motorcomm,yt921x.yaml    |  166 +
+ drivers/net/dsa/Kconfig                       |    7 +
+ drivers/net/dsa/Makefile                      |    1 +
+ drivers/net/dsa/yt921x.c                      | 3960 +++++++++++++++++
+ include/net/dsa.h                             |    2 +
+ net/dsa/Kconfig                               |    6 +
+ net/dsa/Makefile                              |    1 +
+ net/dsa/tag_yt921x.c                          |  126 +
+ 8 files changed, 4269 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml
+ create mode 100644 drivers/net/dsa/yt921x.c
+ create mode 100644 net/dsa/tag_yt921x.c
 
-...
-
-[ {
-        "mac": "00:00:00:00:00:88",
-        "vlan": 1000,
-        "flags": [ "extern_learn" ],
-        "master": "br1000",
-        "flags_ext": [ ],
-        "protocol": "hw",
-        "state": ""
-    },{
-...
-
-Transition to Zebra:
-
-$ bridge -d fdb show dev hostbond2 | grep 00:00:00:00:00:88
-00:00:00:00:00:88 vlan 1000 extern_learn master br1000 proto zebra
-
-$ bridge -d -j -p fdb show dev hostbond2
-...
-[ {
-        "mac": "00:00:00:00:00:88",
-        "vlan": 1000,
-        "flags": [ "extern_learn" ],
-        "master": "br1000",
-        "flags_ext": [ ],
-        "protocol": "zebra",
-        "state": ""
-    },
-...
-
-Signed-off-by: Mrinmoy Ghosh <mrghosh@cisco.com>
-Co-authored-by: Mrinmoy Ghosh <mrinmoy_g@hotmail.com>
-Co-authored-by: Mike Mallin <mmallin@cisco.com>
-Co-authored-by: Patrice Brissette <pbrisset@cisco.com>
----
- bridge/fdb.c                   | 20 +++++++++++++++++++-
- include/uapi/linux/rtnetlink.h |  1 +
- lib/rt_names.c                 |  1 +
- 3 files changed, 21 insertions(+), 1 deletion(-)
-
-diff --git a/bridge/fdb.c b/bridge/fdb.c
-index d57b5750..9c5dd763 100644
---- a/bridge/fdb.c
-+++ b/bridge/fdb.c
-@@ -41,7 +41,7 @@ static void usage(void)
- 		"              [ sticky ] [ local | static | dynamic ] [ vlan VID ]\n"
- 		"              { [ dst IPADDR ] [ port PORT] [ vni VNI ] | [ nhid NHID ] }\n"
- 		"	       [ via DEV ] [ src_vni VNI ] [ activity_notify ]\n"
--		"	       [ inactive ] [ norefresh ]\n"
-+		"	       [ inactive ] [ norefresh ] [ protocol PROTO ]\n"
- 		"       bridge fdb [ show [ br BRDEV ] [ brport DEV ] [ vlan VID ]\n"
- 		"              [ state STATE ] [ dynamic ] ]\n"
- 		"       bridge fdb get [ to ] LLADDR [ br BRDEV ] { brport | dev } DEV\n"
-@@ -306,8 +306,18 @@ int print_fdb(struct nlmsghdr *n, void *arg)
- 		print_string(PRINT_ANY, "master", "master %s ",
- 			     ll_index_to_name(rta_getattr_u32(tb[NDA_MASTER])));
- 
-+	if (tb[NDA_PROTOCOL]) {
-+		__u8 proto = rta_getattr_u8(tb[NDA_PROTOCOL]);
-+		if (proto != RTPROT_UNSPEC) {
-+			SPRINT_BUF(b1);
-+			print_string(PRINT_ANY, "protocol", "proto %s ",
-+					 rtnl_rtprot_n2a(proto, b1, sizeof(b1)));
-+		}
-+	}
- 	print_string(PRINT_ANY, "state", "%s\n",
- 			   state_n2a(r->ndm_state));
-+
-+
- 	close_json_object();
- 	fflush(fp);
- 	return 0;
-@@ -478,6 +488,7 @@ static int fdb_modify(int cmd, int flags, int argc, char **argv)
- 	char *endptr;
- 	short vid = -1;
- 	__u32 nhid = 0;
-+	__u32 proto = RTPROT_UNSPEC;
- 
- 	while (argc > 0) {
- 		if (strcmp(*argv, "dev") == 0) {
-@@ -555,6 +566,10 @@ static int fdb_modify(int cmd, int flags, int argc, char **argv)
- 			inactive = true;
- 		} else if (strcmp(*argv, "norefresh") == 0) {
- 			norefresh = true;
-+		} else if (matches(*argv, "protocol") == 0) {
-+			NEXT_ARG();
-+			if (rtnl_rtprot_a2n(&proto, *argv))
-+				invarg("\"protocol\" value is invalid\n", *argv);
- 		} else {
- 			if (strcmp(*argv, "to") == 0)
- 				NEXT_ARG();
-@@ -615,6 +630,9 @@ static int fdb_modify(int cmd, int flags, int argc, char **argv)
- 	if (via)
- 		addattr32(&req.n, sizeof(req), NDA_IFINDEX, via);
- 
-+	if (proto != RTPROT_UNSPEC)
-+		addattr8(&req.n, sizeof(req), NDA_PROTOCOL, proto);
-+
- 	req.ndm.ndm_ifindex = ll_name_to_index(d);
- 	if (!req.ndm.ndm_ifindex)
- 		return nodev(d);
-diff --git a/include/uapi/linux/rtnetlink.h b/include/uapi/linux/rtnetlink.h
-index 085bb139..1ff9dbee 100644
---- a/include/uapi/linux/rtnetlink.h
-+++ b/include/uapi/linux/rtnetlink.h
-@@ -314,6 +314,7 @@ enum {
- #define RTPROT_OSPF		188	/* OSPF Routes */
- #define RTPROT_RIP		189	/* RIP Routes */
- #define RTPROT_EIGRP		192	/* EIGRP Routes */
-+#define RTPROT_HW		193	/* HW Generated Routes */
- 
- /* rtm_scope
- 
-diff --git a/lib/rt_names.c b/lib/rt_names.c
-index 7dc194b1..b9bc1b50 100644
---- a/lib/rt_names.c
-+++ b/lib/rt_names.c
-@@ -148,6 +148,7 @@ static char *rtnl_rtprot_tab[256] = {
- 	[RTPROT_OSPF]	    = "ospf",
- 	[RTPROT_RIP]	    = "rip",
- 	[RTPROT_EIGRP]	    = "eigrp",
-+	[RTPROT_HW]	    = "hw",
- };
- 
- struct tabhash {
 -- 
-2.43.0
+2.47.2
 
