@@ -1,119 +1,179 @@
-Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D6F1FDA92
-	for <netdev@vger.kernel.org>; Sat, 16 Aug 2025 07:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1127521E098
+	for <netdev@vger.kernel.org>; Sat, 16 Aug 2025 07:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755328493; cv=none; b=DPmv+6+k6eMgVkURN89YspgYrlpmm/Ft77D4gJTRYjdo7pK/Ua4TW1z5gG7S1dymDVL+HTKsOZKGfT9jmi9LDp+HJjNrvkEN0HK7j/6c0mttgnB+QeUQddwSJKycw+xkOnXbIES99HdHVJHsSgnkOaAFtqfwmDxnTE82tG2nOVY=
+	t=1755329241; cv=none; b=J448va+Bdtu8axnGlD0Rx+PwhU64X4mxe93FHPTISGUzx2bcSxc3xNwtjtiDNjHk/GUIXc1qjWxpn+sqhMO+rHf22DBX3ybPx9WWqIxPlJBlaFrbDrcONMoviAri7FPMAJgBOVngDWKDSZjsnASe32t4Eq9goddYvu0NCgJnaV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755328493; c=relaxed/simple;
-	bh=oeQ2OTjlrtVj/v9a3psGJMI/IhXiWsjVQTr6UMcOYzY=;
-	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=V3wkvHnCIWaRuVvTM59964hRG5u8jVN/FzK03XTECOAAPVAFXrIFlT1UXrE8j/XPHOnEr5YvG1/8YwDtZLhNEpLaZxcrlHW5dAb+sO+HGS1UB5/FvgcpY487ucBCDzeLmp9v8YCIogGwNwY5b93kPn0CmdGBnXWeEnL59ODgqTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by mailout2.hostsharing.net (Postfix) with UTF8SMTPS id D075C2C25B80;
-	Sat, 16 Aug 2025 09:14:41 +0200 (CEST)
-Received: from localhost (unknown [89.246.108.87])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by h08.hostsharing.net (Postfix) with UTF8SMTPSA id 9D91F600D2F4;
-	Sat, 16 Aug 2025 09:14:41 +0200 (CEST)
-X-Mailbox-Line: From 22e7b32bfe524219eb7ff1e5c6b4d91763b79eef Mon Sep 17 00:00:00 2001
-Message-ID: <22e7b32bfe524219eb7ff1e5c6b4d91763b79eef.1755327132.git.lukas@wunner.de>
-In-Reply-To: <cover.1755327132.git.lukas@wunner.de>
-References: <cover.1755327132.git.lukas@wunner.de>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Sat, 16 Aug 2025 09:10:03 +0200
-Subject: [PATCH 3/3] i40e: Fix enable_cnt imbalance on PCIe error recovery
-To: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
+	s=arc-20240116; t=1755329241; c=relaxed/simple;
+	bh=6t+pWXtNvn3PngcOHMQ0az8IKzQqpXpauzoUr3nAI3k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EB4pzdo/ArQFA3SYCrgP4SWhaZXHgXeedZG3uGzYE3XjZdKmhq4siMuXRO0hHmgb87flmbHi04UcUVUKKd4vZNxr/TDVmyJd5gVrrPiLV6JAqr5E8vsyA6S61M8HIQ4nu0Ojby5R/GR2+nkaXMeCjP71pvFUwbjqGXoQ1VjeVn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=fQ0sK/hx; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="fQ0sK/hx"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-afcb73621fcso317832966b.0
+        for <netdev@vger.kernel.org>; Sat, 16 Aug 2025 00:27:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1755329236; x=1755934036; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=FpiVReBk4pxi7WdSyaid9+sMC8akMMwfHAVHbbVirOA=;
+        b=fQ0sK/hxNVwmGst+oxWhkC/dXmt6K/rFa859hVG8g47Zycx0qEC1R8nZoswGF1Hwz/
+         jn8e1pBPnzIWD16izOjpOy8eDVvdmvgiqgdD6zO66cEEQXLIOB+dzgCHJqI77/x/V75D
+         WKqU6wqV+lQyzGbECZ8Uhg/vnz9NrKkaewXIqO+tBpW8ZZGoEsCv0iPO3T/8pEQV232M
+         heAao2AHf4HeKbyIX2OkWQu68voSvoA+7BIi32p6WS4MPJN9EbyIif7ki0VS44SWf7aN
+         f1KLlGL3dXdVrT4eeuz3VdyY5ilo9N+DxPHx6Z1hB0Id6BRM5inOTUKXh3A3RaUFpcOy
+         lPJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755329236; x=1755934036;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FpiVReBk4pxi7WdSyaid9+sMC8akMMwfHAVHbbVirOA=;
+        b=rO9XzX/lwvC7EdAEdYBiU7IZXMQksmMeiSoKNVQpFwoJomIzZNpQekJtvvqRkxu90y
+         774uSywUZoUXQZib6hWylYRjKPgwaaJZKGsSblDqAiDQ//4TCUNHAJeMUTOlrh9hHxLm
+         BwgaQH4ae99lvZhb5St6JYcKqDLu2rRz58GGaQXp7be6m3GZaNbSw8WVQXIhWtk8AubS
+         50vbm39xPym0tPY5WhR79bZmaXI68BFRCvLJAGlJKaX/MdhIHfana7SMSGUaBim5NmkA
+         TytECqvbtEn2O9LruYOggprJ+wcKY8zWZDBeF3d92rTES7ta6/aGlQcD5qszyPi/bTGT
+         yCpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHFJJs1jg6s+grR9XoT/6mnNJpzlF4whYVOw8dNuK6mBaQ2Q/bB5FvmF+frlgdW6Kpd7ljflA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0vsDDLrJNbytDfiLOB8N/OCmwrUJ/okkSSfM0PWnAyY9Sj8NF
+	0Xu0ylE3a6GCvW9YpSGp7u+g2qURggxbxebdIsPCEjMG26vBvyOcUw0HtQwfag0iww==
+X-Gm-Gg: ASbGncuo5U0qU2fHvhM5E7P1/gaNz2bw6x+y+OTAeO6bGZQKk1ah8IbmW6Z4ouTt9+4
+	INFeY/quVG79E81je0oIzmnfjohYnbOQX2Yl7+OgBP2Yt8AtUZTQiUra4/MCMt0nUtAsgTW/60I
+	HnWx6/bDXcK/acz/fsvC1wYM9dOE96RmLzr04ZPHJrMXbjdqOhZzsR4qz+jt6c4lFn411BONelQ
+	d5yFZJ0hgjg2K/u9JnfLvNKkfhOmcqQllWMyiGFBugJ0ZeN7MAVdeCHt+vwB+dgzQHPnMBCJWiu
+	S6yhJ3Y4CzcS7WwVl1JYqBO+XYfq4HFy5HfI4DkHArS4ScMrBwYhz8d53VbKL57heCH70iM78bU
+	yNktzxuULW0U=
+X-Google-Smtp-Source: AGHT+IFg7imxaFEagNP0U5Ayia7U3tygLpXsVf6xKmyOpZitxVfNDophojGzUA2/MzddJEvPpEzhfA==
+X-Received: by 2002:a17:906:6a0f:b0:ae8:4776:fbb1 with SMTP id a640c23a62f3a-afcdc03d360mr411785966b.11.1755329236202;
+        Sat, 16 Aug 2025 00:27:16 -0700 (PDT)
+Received: from localhost ([2a07:de40:b240:0:2ad6:ed42:2ad6:ed42])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdcea179esm312796166b.57.2025.08.16.00.27.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Aug 2025 00:27:15 -0700 (PDT)
+Date: Sat, 16 Aug 2025 07:27:14 +0000
+From: Wei Gao <wegao@suse.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: kernel test robot <oliver.sang@intel.com>,
+	Menglong Dong <menglong8.dong@gmail.com>, kraig@google.com,
+	lkp@intel.com, netdev@vger.kernel.org, dsahern@kernel.org,
+	linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+	edumazet@google.com, horms@kernel.org, oe-lkp@lists.linux.dev,
+	kuba@kernel.org, pabeni@redhat.com, ncardwell@google.com,
+	davem@davemloft.net, ltp@lists.linux.it,
+	Menglong Dong <dongml2@chinatelecom.cn>
+Subject: Re: [LTP] [PATCH net v2] net: ip: order the reuseport socket in
+ __inet_hash
+Message-ID: <aKAy0nu2p6X9sKUw@localhost>
+References: <20250801090949.129941-1-dongml2@chinatelecom.cn>
+ <202508110750.a66a4225-lkp@intel.com>
+ <aJ_qbZDvDJwVoZGA@localhost>
+ <CAAVpQUCEGiRjoobf69Jd5M9vnZyi0N6crNUgSBpDTGNfrap1cA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAVpQUCEGiRjoobf69Jd5M9vnZyi0N6crNUgSBpDTGNfrap1cA@mail.gmail.com>
 
-After a PCIe Uncorrectable Error has been reported by an i40e adapter
-and has been recovered through a Secondary Bus Reset, its driver calls
-pci_enable_device() without having called pci_disable_device().
-
-This leads to an imbalance of the enable_cnt tracked by the PCI core:
-Every time error recovery occurs, the enable_cnt keeps growing.  If it
-occurs at least once and the driver is then unbound, the device isn't
-disabled since the enable_cnt hasn't reached zero (and never again will).
-
-The call to pci_enable_device() has almost no effect because the
-enable_cnt was already incremented in i40e_probe() through the call to
-pci_enable_device_mem().  The subsequent pci_enable_device() thus bails
-out after invoking pci_update_current_state().
-
-Remove pci_enable_device().  In lieu of pci_update_current_state(), set
-the power state to D0 because that's the power state after a Secondary
-Bus Reset (PCIe r7.0 sec 5.3.1.1).
-
-The intended purpose of pci_enable_device() may have been to set the
-Memory Space Enable bit in the Command register again after reset, but
-that is already achieved by the subsequent call to pci_restore_state().
-
-Fixes: 41c445ff0f48 ("i40e: main driver core")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org  # v3.12+
----
- drivers/net/ethernet/intel/i40e/i40e_main.c | 29 +++++++--------------
- 1 file changed, 10 insertions(+), 19 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 9d6d892602fa..7e87234fde67 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -16439,29 +16439,20 @@ static pci_ers_result_t i40e_pci_error_detected(struct pci_dev *pdev,
- static pci_ers_result_t i40e_pci_error_slot_reset(struct pci_dev *pdev)
- {
- 	struct i40e_pf *pf = pci_get_drvdata(pdev);
--	pci_ers_result_t result;
- 	u32 reg;
- 
- 	dev_dbg(&pdev->dev, "%s\n", __func__);
--	/* enable I/O and memory of the device  */
--	if (pci_enable_device(pdev)) {
--		dev_info(&pdev->dev,
--			 "Cannot re-enable PCI device after reset.\n");
--		result = PCI_ERS_RESULT_DISCONNECT;
--	} else {
--		pci_set_master(pdev);
--		pci_restore_state(pdev);
--		pci_save_state(pdev);
--		pci_wake_from_d3(pdev, false);
--
--		reg = rd32(&pf->hw, I40E_GLGEN_RTRIG);
--		if (reg == 0)
--			result = PCI_ERS_RESULT_RECOVERED;
--		else
--			result = PCI_ERS_RESULT_DISCONNECT;
--	}
-+	pdev->current_state = PCI_D0;
-+	pci_set_master(pdev);
-+	pci_restore_state(pdev);
-+	pci_save_state(pdev);
-+	pci_wake_from_d3(pdev, false);
- 
--	return result;
-+	reg = rd32(&pf->hw, I40E_GLGEN_RTRIG);
-+	if (reg == 0)
-+		return PCI_ERS_RESULT_RECOVERED;
-+	else
-+		return PCI_ERS_RESULT_DISCONNECT;
- }
- 
- /**
--- 
-2.47.2
-
+On Fri, Aug 15, 2025 at 07:35:10PM -0700, Kuniyuki Iwashima wrote:
+> On Fri, Aug 15, 2025 at 7:18 PM Wei Gao <wegao@suse.com> wrote:
+> >
+> > On Mon, Aug 11, 2025 at 01:27:12PM +0800, kernel test robot wrote:
+> > >
+> > >
+> > > Hello,
+> > >
+> > > kernel test robot noticed "BUG:KASAN:slab-use-after-free_in__inet_hash" on:
+> > >
+> > > commit: 859ca60b71ef223e210d3d003a225d9ca70879fd ("[PATCH net v2] net: ip: order the reuseport socket in __inet_hash")
+> > > url: https://github.com/intel-lab-lkp/linux/commits/Menglong-Dong/net-ip-order-the-reuseport-socket-in-__inet_hash/20250801-171131
+> > > base: https://git.kernel.org/cgit/linux/kernel/git/davem/net.git 01051012887329ea78eaca19b1d2eac4c9f601b5
+> > > patch link: https://lore.kernel.org/all/20250801090949.129941-1-dongml2@chinatelecom.cn/
+> > > patch subject: [PATCH net v2] net: ip: order the reuseport socket in __inet_hash
+> > >
+> > > in testcase: ltp
+> > > version: ltp-x86_64-6505f9e29-1_20250802
+> > > with following parameters:
+> > >
+> > >       disk: 1HDD
+> > >       fs: ext4
+> > >       test: fs_perms_simple
+> > >
+> > >
+> > >
+> > > config: x86_64-rhel-9.4-ltp
+> > > compiler: gcc-12
+> > > test machine: 4 threads 1 sockets Intel(R) Core(TM) i3-3220 CPU @ 3.30GHz (Ivy Bridge) with 8G memory
+> > >
+> > > (please refer to attached dmesg/kmsg for entire log/backtrace)
+> > >
+> > >
+> > >
+> > > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > > the same patch/commit), kindly add following tags
+> > > | Reported-by: kernel test robot <oliver.sang@intel.com>
+> > > | Closes: https://lore.kernel.org/oe-lkp/202508110750.a66a4225-lkp@intel.com
+> > >
+> > >
+> > > kern :err : [  128.186735] BUG: KASAN: slab-use-after-free in __inet_hash (net/ipv4/inet_hashtables.c:749 net/ipv4/inet_hashtables.c:800)
+> >
+> > This kasan error not related with LTP case, i guess it triggered by network
+> > related process such as bind etc. I try to give following patch to fix
+> > kasan error, correct me if any mistake, thanks.
+> 
+> Note that the report was for the patch in the mailing list
+> and the patch was not applied to net-next.git nor net.git.
+Thanks for note. 
+Since this email sent to LTP group so i got this. Since
+i'm interested in this 'kasan' problem, so trying to fix it.
+> 
+> 
+> >
+> > From: Wei Gao <wegao@suse.com>
+> > Date: Sat, 16 Aug 2025 09:32:56 +0800
+> > Subject: [PATCH v1] net: Fix BUG:KASAN:slab-use-after-free_in__inet_hash
+> >
+> > Reported-by: kernel test robot <oliver.sang@intel.com>
+> > Closes: https://lore.kernel.org/oe-lkp/202508110750.a66a4225-lkp@intel.com
+> > Signed-off-by: Wei Gao <wegao@suse.com>
+> > ---
+> >  include/linux/rculist_nulls.h | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/include/linux/rculist_nulls.h b/include/linux/rculist_nulls.h
+> > index da500f4ae142..5def9009c507 100644
+> > --- a/include/linux/rculist_nulls.h
+> > +++ b/include/linux/rculist_nulls.h
+> > @@ -57,7 +57,7 @@ static inline void hlist_nulls_del_init_rcu(struct hlist_nulls_node *n)
+> >   * @node: element of the list.
+> >   */
+> >  #define hlist_nulls_pprev_rcu(node) \
+> > -       (*((struct hlist_nulls_node __rcu __force **)&(node)->pprev))
+> > +       (*((struct hlist_nulls_node __rcu __force **)(node)->pprev))
+> >
+> >  /**
+> >   * hlist_nulls_del_rcu - deletes entry from hash list without re-initialization
+> > @@ -175,7 +175,7 @@ static inline void hlist_nulls_add_before_rcu(struct hlist_nulls_node *n,
+> >  {
+> >         WRITE_ONCE(n->pprev, next->pprev);
+> >         n->next = next;
+> > -       rcu_assign_pointer(hlist_nulls_pprev_rcu(n), n);
+> > +       rcu_assign_pointer(hlist_nulls_pprev_rcu(next), n);
+> >         WRITE_ONCE(next->pprev, &n->next);
+> >  }
+> >
+> > --
+> > 2.43.0
+> >
