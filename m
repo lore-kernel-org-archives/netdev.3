@@ -1,115 +1,97 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697AB3176F0
-	for <netdev@vger.kernel.org>; Sat, 16 Aug 2025 06:55:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EE345009
+	for <netdev@vger.kernel.org>; Sat, 16 Aug 2025 07:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755327306; cv=none; b=Bg8fASCAZ1VSNtCCuqUDiwArTj1R4STBZHL+eWsMVBTf7gQ68Bp0uJrezSi3znw3TzvNcadgNumHNYkA2Y0znNoR815+RE+YgTmuRfOiabhMnVUvxkiMLZ5j1PnFM++2LHG9pZSu2XWOJosq8SxAinJiezwJO8cYlfuAxZwymP4=
+	t=1755327751; cv=none; b=Y46ZYBlVB9ReY62ZajvvMJuSbi/3PqtGXEPJi5qbHkjvn/OxQkrDw3Hbmq1r/hoyhQA0sV6XIufg3EmVwVa3h6Qb8HrQN6xSjKhc2+qYQuAUHljGVLWF5EKuAMO0/1Oe84634k0O/OBDjI2ghXXNUcjTd9BMJsgSB/mGCY2Y4Fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755327306; c=relaxed/simple;
-	bh=/F+VLR4k/VQa/W7G7e4mK7Tt/KybN6dnMhzKfl7uavc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HUb1IdGXCxkW1o1lcdEfGKpPAyWuiNPADBbnF9XhFOpKHSa0W+esFe63pkE8Po6MkS46GpX0eE60xV9hqWiZDrGcASkdzBcb98fjGNN2eo8wnhiKqBx5tSlV+5GMzUPZhhA4H3uKtjUC096V2hWl9UfbFfTRoCoBJOuhBv0cWuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nQ4i5lbX; arc=none smtp.client-ip=209.85.215.169
+	s=arc-20240116; t=1755327751; c=relaxed/simple;
+	bh=9zr4cVGmfq2TFRGx9uS4sZPGfY9cmGBmyoCZkN8MSKM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SAuWHFtYiqsewU+oJMEUFWwH7xiJpz4+ZZh+R4TABGaHrM0U3VoLxcgMeL1TpYNFAOvBhz/HbrvUQjCG5ivQAHxMZm1+OLNKFtBlyFZMLfRVgAtbdRqr22fJDFVoutkkR9+uUdEXHMSvMtx++ULK6IsyR0xqcsE7I1YB0PlKc50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jDkukHFD; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nQ4i5lbX"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b472f0106feso868756a12.2
-        for <netdev@vger.kernel.org>; Fri, 15 Aug 2025 23:55:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jDkukHFD"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-76e2e9a98b4so2342841b3a.1
+        for <netdev@vger.kernel.org>; Sat, 16 Aug 2025 00:02:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755327303; x=1755932103; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+roC/3kZ2N7w+PMio3Mw9lCc2kYfnFQheZWp08VP6Fo=;
-        b=nQ4i5lbXMmRhAE/G2LrZfqn0rWfNWFQbVj30LZGZYq+XfEL4HzK7vv1OIsg/3a+5AX
-         XfGCoZZoEdQlM4tc60K7RcZuH/Fmun2ZM+CCJ2ivk74Dz3qj9ObtborntzZFT95EWFPj
-         XGTv5VPc9jO1uY7pVu87TsNX+kclGPCPM2IIPslZzr6YaCr4yuDCsU4iL0hf0o1GOk83
-         pNoSlD4ozfdxVPf+JJ50bwiW9UY7ZNlLsKdGFoMDuylVDq621BRiP1GVePnGmESwVNFU
-         ruqVwQV18XhJ/RelzoMzEiZj67Y+wCnLB1gz5g4CAQ8xyFSDglAxEhYIMLzNhF72ZH/k
-         f5GQ==
+        d=google.com; s=20230601; t=1755327749; x=1755932549; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OZ4KPO3OTfBU5odD4L+dZ2HyAYRZd4rJ9ysQS4sj4H0=;
+        b=jDkukHFDOIwJ877g6da4GwZQ8GxSWq0SKLw6nOajk+DR1B5PMawh5TSIznyn7nBzEp
+         /V3vEZs8vw5BXtk16ICd84hT2C+mb26sa/43jiWtFqsrP4Wb7M4RqCd0bOx2zwPdgqyh
+         eGDqjXt38g0NpJqQiXs8wbcNbrW6gYZcM5DnixnAV5wv+2SN71LDrUfVI0czOxBWDVh6
+         93BHmtCyvdQseUt5At9BHEPH83q0552Gz8y/+zahFjbSe5kO4vIJgEkPLv+ZG40Ep5BD
+         7dnKjzq/sU7nr9i93SzDH6CK46IbRyoZmuf/KODmH19YH2fEGV2L59DtbO3j3NUbVddS
+         61EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755327303; x=1755932103;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+roC/3kZ2N7w+PMio3Mw9lCc2kYfnFQheZWp08VP6Fo=;
-        b=UKdhUce3E2eC4JjXAbZRJuhl2Qw6tPjMWxj2PZ9pQmtmsVj1GG6Ja4g0mvp5x+aNsK
-         KwaO1zPdGVXpIYsctYbLMA0UnR10Zbf2DoUpzIjnvFtsEkpgsHR3J5PTFm5Csdnmchrl
-         pYVf2GR/+MiUn+NtURzRbQ/XjUyAenXdE7LkmVrrujHKMCTxKFdrcYi8J0rO6q0VS3gZ
-         gkAP3uKd0WbzsFAsh3A/o8Z8gjlrGuvkPEl+eX56r5LYwAKuPbz2+rzDcrJEd6/OOHjL
-         lf5SY5JaZVLIeiUiTRnqHO2eeLNe7vBEseTKuxMXjmpVcpYD4FCiRJdbWQuzqqALmV92
-         fEPg==
-X-Forwarded-Encrypted: i=1; AJvYcCWavRtqRYCtvi4M7idZr/5WlDdfrhg7tL+3Fe7XgcepJH36ChA0yoWa9G+GcVoql95JWDEfmTo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAIm/Yq7lEsrjDzJ7Z4yud9gaNiikGUP+b2YYjSLuNd2wa1kdM
-	97uyc4FBhxbksm3EunwYh7AoNW7SdsLldj1BkaicvRuAB14DENEvfrR69X+qrhjZgkr9dvKVlX6
-	S4wEONWSo3b0mcm+ZsPuKAapOBBvn2pQ1n84CP/12
-X-Gm-Gg: ASbGnct/dyUQ/zjU7gdZVokczvU6X365ySGeF+r6b0F0pw8zagKgKA3MM11pc0drpRU
-	LY84PBprzz0VLcVhoPRESdJAB3iZewPOFX+v0W9ZPStJSV6BagTOpxbZb60cq3oQr10hiTAJnfi
-	CjkxBYwv6AIbat5XCrPvC2HFVZoKIJ3jTj0SOWSjYEselIbUdeZreRppX8GTJAng9ZNU/kyxOwP
-	w7r1VgEy1BorkQSf+ItRIHQIyRNG/PvcmtA4cCpotavqkammaEWXR6RyQ==
-X-Google-Smtp-Source: AGHT+IEMSA24bd0diS0sQYr20cbIkI0J4iGYKyH2mU0FJoJ7HQA4OvKP0Qg3cveqUerOQhUmDDsmSsfyd608LPwwrjg=
-X-Received: by 2002:a17:902:f54f:b0:23f:cd6e:8d0f with SMTP id
- d9443c01a7336-2446d71ab4bmr70555295ad.13.1755327302534; Fri, 15 Aug 2025
- 23:55:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755327749; x=1755932549;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OZ4KPO3OTfBU5odD4L+dZ2HyAYRZd4rJ9ysQS4sj4H0=;
+        b=JUqz09kFqYP9CxDPMNiEy/t0zy78AWb2ORwprerAe+g59MxnXaTwPjkcHZeHJJHID+
+         pTovCKoROCGguaCiMy5AXw2Y4rJNU7Cj4DS1MAs/yzvfcnoCW9IwMTxzjQKIEu9ZKCNl
+         ukMDXNuqIvzexTrBV6HfQOPz/pfEVPjKhzznDeoN8cc/1DvEpVld+SQn4zXsmbpPOqVA
+         cPySAzNhdZHbCNGtsGrzuvtvaQByADrFfEjOuWColVEKgjXaze6uB1SEI2yBAONBGNgB
+         ZDBT5EUODKECUnKyhycv3vKAhn2o2gugeJaYHH8kjVMvxnxm2fITnXetPUzauHz0bGIc
+         Y74Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUyc5sDZlatFGhVONjjjVdNJPm9BohNKHvo4jRYQO2ArjXGoc5rtM3q6iPCSx1lnmbIOrWJ6bM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVHCJwdi7fBnvwfwlszV94K7wSp/ZYuh7RDSDnbCVWHeoDIcBi
+	21vtHc/vUx/57sK9AIpVbrpU6HN8GqjZcMqKbpZKV7jwNn/Pvdtbkedxt/airWTnzTl48JtcwZT
+	dkwJqNA==
+X-Google-Smtp-Source: AGHT+IFVet8FRBdtWSJfveWRjqspytrXfyjOqMTPNLkn9G8QEMfVM2GfQ61byXK0lJ4a2jF4jPoWDawuGBY=
+X-Received: from pfiv6.prod.google.com ([2002:aa7:99c6:0:b0:769:dd99:e6e4])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:8e8e:0:b0:76b:f7da:2704
+ with SMTP id d2e1a72fcca58-76e324c93c4mr9566064b3a.11.1755327749346; Sat, 16
+ Aug 2025 00:02:29 -0700 (PDT)
+Date: Sat, 16 Aug 2025 07:01:28 +0000
+In-Reply-To: <20250816031136.482400-3-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <aJ4FUauS-3Ymarop@shredder> <20250815063845.85426-1-heminhong@kylinos.cn>
-In-Reply-To: <20250815063845.85426-1-heminhong@kylinos.cn>
+Mime-Version: 1.0
+References: <20250816031136.482400-3-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.51.0.rc1.163.g2494970778-goog
+Message-ID: <20250816070227.1904762-1-kuniyu@google.com>
+Subject: Re: [PATCH net-next 2/3] ipv6: sr: Use HMAC-SHA1 and HMAC-SHA256
+ library functions
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Fri, 15 Aug 2025 23:54:50 -0700
-X-Gm-Features: Ac12FXwZyGYXEIwMUpsUzF4a8Iww5pU6O2PEKL5Oev7G9TdqLt1QMJCq7MTRFsg
-Message-ID: <CAAVpQUACaRY3gW1W1rBEFkYJxeJfVpL=BfuSv_99D7cqr-G6nQ@mail.gmail.com>
-Subject: Re: [PATCH net v4] ipv6: sr: validate HMAC algorithm ID in seg6_hmac_info_add
-To: Minhong He <heminhong@kylinos.cn>
-Cc: idosch@idosch.org, dsahern@kernel.org, edumazet@google.com, 
-	kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com
+To: ebiggers@kernel.org
+Cc: andrea.mayer@uniroma2.it, dlebrun@google.com, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 14, 2025 at 11:39=E2=80=AFPM Minhong He <heminhong@kylinos.cn> =
-wrote:
->
-> The seg6_genl_sethmac() directly uses the algorithm ID provided by the
-> userspace without verifying whether it is an HMAC algorithm supported
-> by the system.
-> If an unsupported HMAC algorithm ID is configured, packets using SRv6 HMA=
-C
-> will be dropped during encapsulation or decapsulation.
->
-> Fixes: 4f4853dc1c9c ("ipv6: sr: implement API to control SR HMAC structur=
-e")
-> Signed-off-by: Minhong He <heminhong@kylinos.cn>
+From: Eric Biggers <ebiggers@kernel.org>
+Date: Fri, 15 Aug 2025 20:11:35 -0700
+> @@ -106,79 +95,17 @@ static struct sr6_tlv_hmac *seg6_get_tlv_hmac(struct ipv6_sr_hdr *srh)
+>  		return NULL;
+>  
+>  	return tlv;
+>  }
+>  
+> -static struct seg6_hmac_algo *__hmac_get_algo(u8 alg_id)
+> -{
+> -	struct seg6_hmac_algo *algo;
+> -	int i, alg_count;
+> -
+> -	alg_count = ARRAY_SIZE(hmac_algos);
+> -	for (i = 0; i < alg_count; i++) {
+> -		algo = &hmac_algos[i];
+> -		if (algo->alg_id == alg_id)
+> -			return algo;
+> -	}
+> -
+> -	return NULL;
+> -}
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+This chunk will cause build failure when net.git is merged
+to net-next due to the patch below.  You may want to respin
+the series after this lands to net-next.
 
-
-> ---
->  net/ipv6/seg6_hmac.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-> index f78ecb6ad838..d77b52523b6a 100644
-> --- a/net/ipv6/seg6_hmac.c
-> +++ b/net/ipv6/seg6_hmac.c
-> @@ -304,6 +304,9 @@ int seg6_hmac_info_add(struct net *net, u32 key, stru=
-ct seg6_hmac_info *hinfo)
->         struct seg6_pernet_data *sdata =3D seg6_pernet(net);
->         int err;
->
-> +       if (!__hmac_get_algo(hinfo->alg_id))
-> +               return -EINVAL;
-> +
->         err =3D rhashtable_lookup_insert_fast(&sdata->hmac_infos, &hinfo-=
->node,
->                                             rht_params);
->
-> --
-> 2.25.1
->
+https://lore.kernel.org/netdev/20250815063845.85426-1-heminhong@kylinos.cn/
