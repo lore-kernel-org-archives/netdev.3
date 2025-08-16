@@ -1,180 +1,245 @@
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11013011.outbound.protection.outlook.com [52.101.127.11])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B880C23D7E9;
-	Sat, 16 Aug 2025 09:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.127.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755335271; cv=fail; b=d+9f61GKjSadXjPHE7iXQSbCtsETnqGAs/4TbGpGvNhFHgqnXKxIe7wH0dhZ2q/900+x8Ad0WVbIPVg7VwJOlyk91sn4mcOFowDdGOEHSELtUN3aOY15j2Bx5uKjVA6cq1zJXRxin+x2sMzdJ+5PJqC2e8+zupWnWPKXgxmpBbQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755335271; c=relaxed/simple;
-	bh=RONMa2ikn2wsB/Ey7wpwT7gSToCq7xrR/pCzIBwe1wM=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=E0pA/LOMjwVSSECQksJL6Kb0Mrm5nxN2f7rZAfSggJ6yfpn0pff+BHQ/ycUxX34kWNrqTEgBQ+yZotmmJKkhO2Wp3YeSGqtbOsn/zpRyHCPnuy0Ckk9S2il2qZ31iAz1HdruAZKWZZSMRjFCN10fff6LsJkOzOS/oMwa8b97vPU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=FQPrAghr; arc=fail smtp.client-ip=52.101.127.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7150242058
+	for <netdev@vger.kernel.org>; Sat, 16 Aug 2025 09:15:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755335748; cv=none; b=Hvy7lrAYZTX87zvQtWoxOKD2MTJZp6jMHtrL2rj5vntlXw4ruQY6wkq5ddOGySiPBTsxAiw5g8Pk0VTXgug1yw3g8025pF0zyRAfB+qoTLfWapaopN0S0GXbwqQuZ8jaPFcND9x3iGoNtySaxbFu1MN16H4vsLSmdW0H+Zg4VLo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755335748; c=relaxed/simple;
+	bh=WB86T57mNPxYebdb9k7A3Fmn2lok2/L5wiLVZWeTfBU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=TohoPunupiDoQjLe1vPJD0GAiw1UX/E6wPGVk1gscK91hcMJ95dKn31BNnSL+OCIOSwicMtgQEhyaRZ3LZeq9Etyh9jR5bGa42iCEDm/60IKXPXgeERXPayHcIQJmcubMMnTfzPdVNjP04equ3lCQDesJHLM2LysEW6iUN9Rdi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hcJ+AWgX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=G5pkbQQx; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="FQPrAghr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u6o+IMwWYAxff4P7u54nw/K7bVrwrqq6mXaQtLOWpf96CmsXvBNfq6xb1fOqClN3WSLloNSvkr2NspNonQzOGeKXRSdau5pZtbULbMLcyYyGTxTuyGGgL/fbK+8uTl2EHLz8I9E8rkVu7AKcKatvgErqHEChMqROLtC9nbJDp3zG2HRIMU2rbO1ac99NHjSHPQTvLsZ/O0MzFHPHQ+s+/+mPwyRSX3M+9dyZOXaMpdauBmJjkeCIyoOyToblX5hoDHYpxQ4XyDqfPBsowDjCUkwcGROu2flSiu5ZvkKONFdvuu6qAbjgx43A7hatMJkR8eBkxWhZy27rfMFf1OwbZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AtBoFe1vdZ9oleHWyUJUi+QZsigTWaqMmO/4a1oBhSY=;
- b=mgQyzftohliyAJ2mmeBMOFawjbzjxvh6eUE1H0JL78txpaW718i1FIrCiR2QcWjR1pWnGAe6nsuwI03SoIZQLT7p4x5r5JRBbk6rNGzA4NHOw0NsjIMBB1Fpm6q2C+kc0sHypY9ZFhq4shFcqArQTcV0ko4eZWdcM+3cHtS8M/gC6IiFgJjXj4FiGxxmlLbciR01NiGM2cwf5lo9JELbkQf9pKuyBdMGAGgYKfYDZKSBbQufCQQX89qtSU4JZWrPgCJFAmch9hds+pm+18xTMUBiBvvSBGCUAmIR6faawTAHR8QLy8UC841TiYBqyJp+pgDIki6LRlWi4WRCUJsFyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AtBoFe1vdZ9oleHWyUJUi+QZsigTWaqMmO/4a1oBhSY=;
- b=FQPrAghr/hgfG2LLeFDPjdfIzkZdB2VcV/MS+aBJtomIF7iPYO77OfBZb6QjZZA/H9TxNLImWSDYNBuqVLFOEHDKHKrwUQ13+zM+2Ri8CyV142V8rhhohW+rD9gQjilsWE8khZmXkAlHbyD0yHZKvcBB+bmB974BJBeSXNjGsEW44IRuRpSLiG2EdwHE879g1m0S8FTU5Y2unR4ICXyh3Tv0rrwDW8/wkZxBbEJeTC+3NTL77/01GPYYFTK8ws9dc4Cf6M0c9q3XxCgyXh7LvkMD/5VBHF8RHBfV9L0kzgRx1o4jcIi/Yc3Z8BqRAapUUzMIeOxtGh7C02gQNADgzw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SI2PR06MB5140.apcprd06.prod.outlook.com (2603:1096:4:1af::9) by
- SEYPR06MB5962.apcprd06.prod.outlook.com (2603:1096:101:d7::16) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9031.19; Sat, 16 Aug 2025 09:07:46 +0000
-Received: from SI2PR06MB5140.apcprd06.prod.outlook.com
- ([fe80::468a:88be:bec:666]) by SI2PR06MB5140.apcprd06.prod.outlook.com
- ([fe80::468a:88be:bec:666%5]) with mapi id 15.20.9031.018; Sat, 16 Aug 2025
- 09:07:46 +0000
-From: Qianfeng Rong <rongqianfeng@vivo.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v3 3/3] ppp: use vmalloc_array() to simplify code
-Date: Sat, 16 Aug 2025 17:06:54 +0800
-Message-Id: <20250816090659.117699-4-rongqianfeng@vivo.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250816090659.117699-1-rongqianfeng@vivo.com>
-References: <20250816090659.117699-1-rongqianfeng@vivo.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYAPR01CA0106.jpnprd01.prod.outlook.com
- (2603:1096:404:2a::22) To SI2PR06MB5140.apcprd06.prod.outlook.com
- (2603:1096:4:1af::9)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hcJ+AWgX";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="G5pkbQQx"
+From: Kurt Kanzenbach <kurt@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1755335211;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kMHrh6mAPmSb1QDQuu4HaGSvTsFmDjKNWVPs+LpPVeE=;
+	b=hcJ+AWgXVXrtPN3wy4nCta2qvgdQBnAgH9ffph98nZoYmFvjgnrzqta2d9OTse51djQy7Q
+	adtwmnRpILXogilclHkwI3wUcuzHsnA9H4p322OAv2caDmcWVaLZ2YkyqdeJnemD9rLvTs
+	D3QpcqT6ZhhPBDch5PjY+GIpjUI/IbPH8LS6l0ZWAJ/Hf539rngngcEtOhZCtpLpm7soep
+	siQqO3vvOFBGQ1FmYweBm1+ZosGxUowv9EsHgP31uLFavOXbBvTgvIGlklxN3nMd9XgRQm
+	UNXm6oAvri3inEkaR8QpND97CH+ZhE7nsocDPRCQjNRzvrNunxFQa4adP5Ty0w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1755335211;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kMHrh6mAPmSb1QDQuu4HaGSvTsFmDjKNWVPs+LpPVeE=;
+	b=G5pkbQQx0dWM3bVUVFgYTen9C36xDp2+1QtbR6NZkIGSR4N3HSWzk94Qq7gyHov1u4Vf+V
+	CFCgnfviQ5Sv97Bg==
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>, Paul Menzel
+ <pmenzel@molgen.mpg.de>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, Vinicius
+ Costa Gomes <vinicius.gomes@intel.com>, Sebastian Andrzej Siewior
+ <bigeasy@linutronix.de>, intel-wired-lan@lists.osuosl.org,
+ netdev@vger.kernel.org
+Subject: Re: [Intel-wired-lan] [PATCH iwl-next] igb: Retrieve Tx timestamp
+ directly from interrupt
+In-Reply-To: <1f42eff0-b6a5-44cb-996e-655c325591be@linux.dev>
+References: <20250815-igb_irq_ts-v1-1-8c6fc0353422@linutronix.de>
+ <a1e9e37e-63da-4f1c-8ac3-36e1fde2ec0a@molgen.mpg.de>
+ <87y0rlm22a.fsf@jax.kurt.home>
+ <1f42eff0-b6a5-44cb-996e-655c325591be@linux.dev>
+Date: Sat, 16 Aug 2025 11:06:49 +0200
+Message-ID: <87bjofoct2.fsf@jax.kurt.home>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SI2PR06MB5140:EE_|SEYPR06MB5962:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ffc51d6-9a50-4c94-d40e-08dddca45d9e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?KHI/AealHabMSQEELXu1oSEoCbE+yzbCOGwo+MVRkbRn4tEf53004E1BpeX3?=
- =?us-ascii?Q?UxAQAhkUNq45BwIejmu+ZQSlfPCLIiC7FGNoL7c+2X/kzTMm5jU5J32BMQ36?=
- =?us-ascii?Q?Pp9Pcm0ZXHOieqPp9IFRI/7wfXbcERDtth14yxiWFILthf0vdxVK2pguAm/T?=
- =?us-ascii?Q?J8X/afhtkPaC+drT9Iwe0C2uBiYlbeB0AsWj6m3PJ0xyF2dDtbaW1OGKFHAv?=
- =?us-ascii?Q?JpvS4a8Vx2Ai5nHPRWTmERS4yDWDMwsJ0rYGKW9oM52dYOwt9IdV/oxsoZRa?=
- =?us-ascii?Q?hWt1r506+tCiF8hZLvJgFZKzDilc+cX9b2he96ovCLxC8GB7rZ++EoDBWC1p?=
- =?us-ascii?Q?hwTOR+RtxlihWYWPIkDkeZPvwYCw9FxxDqFGULAv3+v0prRGh+Lf1zCvz9U6?=
- =?us-ascii?Q?OnoTFlGlyuHi+FYQS16hj7vmnat+yPjyi+Q7lPnn32g7FrNOsTT/Q96J1ymI?=
- =?us-ascii?Q?KNdT7SzatoOjTr8nBU9Dza59uh1FHTr82kWIzqbLkDWUjDoQXoiv2+LlF7Pz?=
- =?us-ascii?Q?eZGgYsnkKRFhGPIreBUjK2vBnhmEPU1pwlEvhqienP5El5uR0ep7Z1taL2rq?=
- =?us-ascii?Q?FN5QssMK6w3q1UL6nktomcf80EobeMuQ7d/9zwr5xbwx9rZsC2M8YwSR+LT9?=
- =?us-ascii?Q?eUE31Jdp1f9FDFeeQkGqHY4CRfhHK/OtGGa9pFqslE/sLBVKjjN+1wutfc9W?=
- =?us-ascii?Q?piOH/XTOrn3yKjxBdx4w0zxFKlOSZB8KCwGYkYTFkAqjBGBeS5U4yasVhNlH?=
- =?us-ascii?Q?BfpdpwVYByN6nLLOs7/9lPBsgYMGG0X/3U5AryZq4o5aEZjCExfyx8e1t/z7?=
- =?us-ascii?Q?cgqnsKdrys9aRhh6ILtCfHMlqUY50Yd49Qd8xysVP9zPoA6wM4yRSkAH0NYI?=
- =?us-ascii?Q?15Ml+EHSGghRefv7Qiu1SpEhbnGgdf0C81OzcN3gymAmCeqbkC/bmUfRuWXp?=
- =?us-ascii?Q?Khxk68hDEc9GRc2kI0gmn3zljUekdCT4DpVfIVJy0hjZFEbQBiLNgDIzy8PO?=
- =?us-ascii?Q?P7MLkH4mdQWYYs9pp8+3LtK3RfyD0cNYHZ5cfeMt3wnP3BGc9mGtkCvNgpag?=
- =?us-ascii?Q?y1pyE8Kin0p7JhUYbYxMj8bN+4/bK/NRS7gFX69RGRORJgcWF2v2wi6fhY4L?=
- =?us-ascii?Q?GezvyECdPzPO5CL9tmR6KyQFfKjrYyQayzVUziDF4xd11AYIZjREEeOQnOwh?=
- =?us-ascii?Q?F7iJfsiA266sAF9mLilW6ceEayV1+mTuUg5ywugsu01u1T/oDzk30GX5CkPf?=
- =?us-ascii?Q?ekt1sAQKxCcDeftTV6EPY/93fdJRxJFgpUY3RICV1GAHpUSOfJwXuT1N38+A?=
- =?us-ascii?Q?a9IwL/p2JMPiUMggRK7TvUGelsVDN3m+90kwHpdY72y8Zvza7dcckNOc/A2l?=
- =?us-ascii?Q?X3AYiRwDUh7BLIQ37YeS0RIp1btOue0tZZtZ/gKLUom++yTepjgtJi0ySsBd?=
- =?us-ascii?Q?sqVvjINSUjGauTlOkp72dD0ZleShIbEypWFQBpzfIMOxvJ12HsT+wA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR06MB5140.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nKC9haejncXgQ86O8/ZrYHlcB0bSS1rtC6bKu5Iou+849FO7WbXN/ZnF5T3g?=
- =?us-ascii?Q?E4i5TSdLUtYA8njJX/H9iRPxsi8zHid+KJNvV0ggE+WG7iqS3VcpCXcPxGOT?=
- =?us-ascii?Q?aHMUHh5KKbVJj/oz0JOzBYFIB5Zu2VcxkSZqp+t1Fg8adTIKAl0A9xNpj7yv?=
- =?us-ascii?Q?sQzUTKrl2rReTc1X/dI0f+U/B1cw5ofWX7x1xJz34XHk1mM7du2D8wP7xmKl?=
- =?us-ascii?Q?tAcGBxtDlzTHRAWx1iZkzelYI+P4iJR0SAia+hxIYRxBTDwXBe5Te5WGSHpX?=
- =?us-ascii?Q?UNjnZ0T/WL3puAKWBGHN7gMLoxGrcaJ3oLcVbjZXJg8RIdF2VoPqRqFPig+5?=
- =?us-ascii?Q?octGifZLovUoftgsmbKSU0DotJt+9BzSP3DT5hCV8z2Wl/+7s0CeGgKgGvdJ?=
- =?us-ascii?Q?vxOZOTn4R9+Ctor4FdRRsDRVNGWEUsdZBEjZTgIErJK29mDJKs9JHsXz0SIL?=
- =?us-ascii?Q?Ccm4kpb/ZJoUgkLRBGhNSXCLpNZz8FcMWVaP79vcSHQeH7yDumOHAoFv16WO?=
- =?us-ascii?Q?/cTMuj2NQItcfvWjoX1HIjs/tLEsRNjQPO0Wj0ggaXJRBW485PfcetSFIW/1?=
- =?us-ascii?Q?ABrtGbib8En2Wy0KHAjxrgNYiJ/TnYsa9kiofzYZ4BmfdbkPZ7i1BWHBUVkq?=
- =?us-ascii?Q?Ftg+5Xc1agHQxTc1vyrK03/DXbqQs9LDvAEHqCRCzk7WejF34CDcjdSuH+ff?=
- =?us-ascii?Q?/+S1U1LgEc/MueEUz11Hm1W/XTMcwwNlk7EAWnlyjy9E5p7hQ4sXQAENr/GT?=
- =?us-ascii?Q?DQVARMJfbaULunZfmgXxvpdBQKpbMNMjpJlvYcuLyC8Ept6RlNbCfZwbvMmL?=
- =?us-ascii?Q?V8sWMXFCh7U+ddIuXnEqzhc7WRMwimhqgMqHmLM7vy05nrW9aVDf+hqmtdtc?=
- =?us-ascii?Q?ENW6JX2Gm1FiA9O02n7Dp266qtIBIWO1OKZC6ojMMNAVYFQN2nExbs+ZwICY?=
- =?us-ascii?Q?BI6HKXR3m8TMX9UxZSJqXDBVuoSgyBhvk03ymekvRdFBLoGCxIOMIF7jG0U3?=
- =?us-ascii?Q?g45c1CDFc9Xo3mY2BB7kUVnvY0o/G5RtWo4TbnPJKnYJZAs8qe5tRWX0W/7f?=
- =?us-ascii?Q?8juJZiIIbC9j5svXuTKjH7BHOSvA2F9ZK74F0/Q+Elyjzs1vUYLGBd1yAqOw?=
- =?us-ascii?Q?iyjb9EdhGyktxzqHIzXQdRnhquUFF4pH65bh8fQunZdxhPhMPsm6Asy+kVqo?=
- =?us-ascii?Q?4jC1x5xMUK8ii2uZF4uOluBaJgHIQlhLIygHFEwO2tMW5yWNNIRgdz87sfoq?=
- =?us-ascii?Q?o6+jT5dYTyBvGZkUPLQVa93VMGUdCOiMY3hUMMGTrUILecg0jkzCf25QsI14?=
- =?us-ascii?Q?RBLAf0WUA5eIF3LrNTcii+jjxHhfJ2WUiG6ABAnyntpSMUnAMJMA8CxukcCk?=
- =?us-ascii?Q?I1q/zmqQA5yjObdhq5UKidQmV7gwIjz5fStA5wgs8ruxeMMYRxCG6WtD5kpm?=
- =?us-ascii?Q?3El3h4GZpAsW5ncks8Z8zNmm67GrvicymW9bDVVgN3thwm0wNtPCX1kIFnPf?=
- =?us-ascii?Q?j6exw3nnoBItVm2QZ84NtKttFtAsNqZ4BV0bHnTrH0gIfEfwcrVJGEXiOSAU?=
- =?us-ascii?Q?rbgyZjcskse3DA6x5ax26s02we6VrCBthVMiD1va?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ffc51d6-9a50-4c94-d40e-08dddca45d9e
-X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5140.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2025 09:07:46.2293
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PR24wj8m8QVhHWkfL3wr2EpoJ/Mlp1FqIF57QOJKgEuM5uS5eqb4rRlwHYhqEb2VVfFHnfBFA8Cf7kafT5uZTg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR06MB5962
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 
-Remove array_size() calls and replace vmalloc() with vmalloc_array() in
-bsd_alloc().
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-vmalloc_array() is also optimized better, resulting in less instructions
-being used.
+On Fri Aug 15 2025, Vadim Fedorenko wrote:
+> On 15/08/2025 09:17, Kurt Kanzenbach wrote:
+>> Hi Paul,
+>>=20
+>> On Fri Aug 15 2025, Paul Menzel wrote:
+>>> Dear Kurt,
+>>>
+>>>
+>>> Thank you for your patch.
+>>>
+>>> Am 15.08.25 um 08:50 schrieb Kurt Kanzenbach:
+>>>> Retrieve Tx timestamp directly from interrupt handler.
+>>>>
+>>>> The current implementation uses schedule_work() which is executed by t=
+he
+>>>> system work queue to retrieve Tx timestamps. This increases latency an=
+d can
+>>>> lead to timeouts in case of heavy system load.
+>>>>
+>>>> Therefore, fetch the timestamp directly from the interrupt handler.
+>>>>
+>>>> The work queue code stays for the Intel 82576. Tested on Intel i210.
+>>>
+>>> Excuse my ignorance, I do not understand the first sentence in the last
+>>> line. Is it because the driver support different models? Why not change
+>>> it for Intel 82576 too?
+>>=20
+>> Yes, the driver supports lots of different NIC(s). AFAICS Intel 82576 is
+>> the only one which does not use time sync interrupts. Probably it does
+>> not have this feature. Therefore, the 82576 needs to schedule a work
+>> queue item.
+>>=20
+>>>
+>>> Do you have a reproducer for the issue, so others can test.
+>>=20
+>> Yeah, I do have a reproducer:
+>>=20
+>>   - Run ptp4l with 40ms tx timeout (--tx_timestamp_timeout)
+>>   - Run periodic RT tasks (e.g. with SCHED_FIFO 1) with run time of
+>>     50-100ms per CPU core
+>>=20
+>> This leads to sporadic error messages from ptp4l such as "increasing
+>> tx_timestamp_timeout or increasing kworker priority may correct this
+>> issue, but a driver bug likely causes it"
+>>=20
+>> However, increasing the kworker priority is not an option, simply
+>> because this kworker is doing non-related PTP work items as well.
+>
+> Well, in this case, as it pointed out for other drivers, the best
+> practice would be to use a dedicated PTP worker which does only PTP
+> related tasks and can have higher priority.
+>
+> The inline retrieving of timestamp, of course, the best option, but for
+> 82576 could you please consider using @do_aux_work in ptp_caps and do
+> proper ptp_schedule_worker()?
 
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
----
- drivers/net/ppp/bsd_comp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Sure, using the PTP aux worker is always the better than using the
+system work queue. I ordered a 82576 for testing. But, that conversion
+will be another patch.
 
-diff --git a/drivers/net/ppp/bsd_comp.c b/drivers/net/ppp/bsd_comp.c
-index 55954594e157..f385b759d5cf 100644
---- a/drivers/net/ppp/bsd_comp.c
-+++ b/drivers/net/ppp/bsd_comp.c
-@@ -406,7 +406,7 @@ static void *bsd_alloc (unsigned char *options, int opt_len, int decomp)
-  * Allocate space for the dictionary. This may be more than one page in
-  * length.
-  */
--    db->dict = vmalloc(array_size(hsize, sizeof(struct bsd_dict)));
-+    db->dict = vmalloc_array(hsize, sizeof(struct bsd_dict));
-     if (!db->dict)
-       {
- 	bsd_free (db);
-@@ -425,7 +425,7 @@ static void *bsd_alloc (unsigned char *options, int opt_len, int decomp)
-  */
-     else
-       {
--        db->lens = vmalloc(array_size(sizeof(db->lens[0]), (maxmaxcode + 1)));
-+        db->lens = vmalloc_array(maxmaxcode + 1, sizeof(db->lens[0]));
- 	if (!db->lens)
- 	  {
- 	    bsd_free (db);
--- 
-2.34.1
+>
+>>=20
+>> As the time sync interrupt already signals that the Tx timestamp is
+>> available, there's no need to schedule a work item in this case. I might
+>> have missed something though. But my testing looked good. The warn_on
+>> never triggered.
+>>=20
+>>>
+>>>> Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+>>>> ---
+>>>>    drivers/net/ethernet/intel/igb/igb.h      |  1 +
+>>>>    drivers/net/ethernet/intel/igb/igb_main.c |  2 +-
+>>>>    drivers/net/ethernet/intel/igb/igb_ptp.c  | 22 ++++++++++++++++++++=
+++
+>>>>    3 files changed, 24 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/net/ethernet/intel/igb/igb.h b/drivers/net/ethern=
+et/intel/igb/igb.h
+>>>> index c3f4f7cd264e9b2ff70f03b580f95b15b528028c..102ca32e8979fa3203fc2e=
+a36eac456f1943cfca 100644
+>>>> --- a/drivers/net/ethernet/intel/igb/igb.h
+>>>> +++ b/drivers/net/ethernet/intel/igb/igb.h
+>>>> @@ -776,6 +776,7 @@ int igb_ptp_hwtstamp_get(struct net_device *netdev,
+>>>>    int igb_ptp_hwtstamp_set(struct net_device *netdev,
+>>>>    			 struct kernel_hwtstamp_config *config,
+>>>>    			 struct netlink_ext_ack *extack);
+>>>> +void igb_ptp_tx_tstamp_event(struct igb_adapter *adapter);
+>>>>    void igb_set_flag_queue_pairs(struct igb_adapter *, const u32);
+>>>>    unsigned int igb_get_max_rss_queues(struct igb_adapter *);
+>>>>    #ifdef CONFIG_IGB_HWMON
+>>>> diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/e=
+thernet/intel/igb/igb_main.c
+>>>> index a9a7a94ae61e93aa737b0103e00580e73601d62b..8ab6e52cb839bbb698007a=
+74462798faaaab0071 100644
+>>>> --- a/drivers/net/ethernet/intel/igb/igb_main.c
+>>>> +++ b/drivers/net/ethernet/intel/igb/igb_main.c
+>>>> @@ -7080,7 +7080,7 @@ static void igb_tsync_interrupt(struct igb_adapt=
+er *adapter)
+>>>>=20=20=20=20
+>>>>    	if (tsicr & E1000_TSICR_TXTS) {
+>>>>    		/* retrieve hardware timestamp */
+>>>> -		schedule_work(&adapter->ptp_tx_work);
+>>>> +		igb_ptp_tx_tstamp_event(adapter);
+>>>>    	}
+>>>>=20=20=20=20
+>>>>    	if (tsicr & TSINTR_TT0)
+>>>> diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/et=
+hernet/intel/igb/igb_ptp.c
+>>>> index a7876882aeaf2b2a7fb9ec6ff5c83d8a1b06008a..20ecafecc60557353f8cc5=
+ab505030246687c8e4 100644
+>>>> --- a/drivers/net/ethernet/intel/igb/igb_ptp.c
+>>>> +++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
+>>>> @@ -796,6 +796,28 @@ static int igb_ptp_verify_pin(struct ptp_clock_in=
+fo *ptp, unsigned int pin,
+>>>>    	return 0;
+>>>>    }
+>>>>=20=20=20=20
+>>>> +/**
+>>>> + * igb_ptp_tx_tstamp_event
+>>>> + * @adapter: pointer to igb adapter
+>>>> + *
+>>>> + * This function checks the TSYNCTXCTL valid bit and stores the Tx ha=
+rdware
+>>>> + * timestamp at the current skb.
+>>>> + **/
+>>>> +void igb_ptp_tx_tstamp_event(struct igb_adapter *adapter)
+>>>> +{
+>>>> +	struct e1000_hw *hw =3D &adapter->hw;
+>>>> +	u32 tsynctxctl;
+>>>> +
+>>>> +	if (!adapter->ptp_tx_skb)
+>>>> +		return;
+>>>> +
+>>>> +	tsynctxctl =3D rd32(E1000_TSYNCTXCTL);
+>>>> +	if (WARN_ON_ONCE(!(tsynctxctl & E1000_TSYNCTXCTL_VALID)))
+>>>> +		return;
+>>>> +
+>>>> +	igb_ptp_tx_hwtstamp(adapter);
+>>>> +}
+>>>> +
+>>>>    /**
+>>>>     * igb_ptp_tx_work
+>>>>     * @work: pointer to work struct
+>>>
+>>> The diff looks fine.
+>>>
+>>> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+>
+> Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
+Thanks!
+Kurt
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJHBAEBCgAxFiEEvLm/ssjDfdPf21mSwZPR8qpGc4IFAmigSikTHGt1cnRAbGlu
+dXRyb25peC5kZQAKCRDBk9HyqkZzgtwqEACrkPVsqfeGqszsv4seaGMy8MnS3Rfj
+FWa1rws6GMNjRAh5c4q31ScZonmUO1aCrdR2LPIVaSOpi3Lazd8dB4vOiScCikK2
+3TwL172hDFWyKdGKujz5ekPiQRmD5odgb+q5RhKzfeYRKjLOJLtcxDh4LREGlpOb
+k5iSdXC7Ib5eJRQGrk1YOSK7ZHO0EkEQhxb17MMKWZCJ3kAhPIDx3SD7+T1cD8ne
+9X9OSMiIUVeE6rFCY3TdSvmDxnWmCLf5xI/sbAtUNQ29+zyrhmXgGS3JiDc4ybnF
+0qzHMBCmlNT9WLvFCfC1rLXZFwWjEnbmK+JM5SMAFkL3c+rbyjmG21phs5uz7rsj
+BFW++mxosAx7DUS7N5WzKg3ecqkbI2M6VmyIriwvSRPEZ23/iIW2HWiiUY+fpF+M
+9a/gFUa5FFII700xrQ5Wp6azMrJ3doR6AKOp6BYReUKtQLCaAre/GecXEQxyoeI+
+CntDN/3wCQJGRQSIl3C2y/5Ym7tE7A+JDMBm4buLbOpNiXh9xv1+p4f3f+ZazSK1
+W8yL/Odaq29AU7Nj+ikKDm7oxXJa1Xr41kTJfunL/Xoh0PmC+kCw+46QYpOJMQYI
+4dh+o+CsOMi4jWGk3JVEDMQRJSJLd2+bGwBjpoQM+NVWV1hbZ3HwTrTKFJCrLp4A
+3yJGuXAPPWaV/w==
+=3TtW
+-----END PGP SIGNATURE-----
+--=-=-=--
