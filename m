@@ -1,168 +1,66 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01391C5D44
-	for <netdev@vger.kernel.org>; Sat, 16 Aug 2025 03:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3807918DF9D
+	for <netdev@vger.kernel.org>; Sat, 16 Aug 2025 03:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755314111; cv=none; b=aXv3VhvjT0tFHzf1EUvP+Q+5gCV0a8mPq7GKKKh+CWz3d0BxsaRTkcibxFpBvHSZnPRsuoS6NjqrSQcmwvmoBHTxKg8zXreJUECv6LAkPucvawMmVEtd8NZ1OTwt0c0YhZhYDE89qYZ5cD8DFU3yOSlKVqqXm1gMiMJfLByCYXg=
+	t=1755314266; cv=none; b=JEn5A9fLVnaZNch7mymH4z1iELCE69Apuy/83Rj1+uUwfDOMgoBExeTD/7IfBfP3NYIKfR2TQpqRQ3/35nCR+DuMUeXxT0zAIgc7LIgZbOjT9FsNPuf8o9naGfz7emAHdoN3R5+oVjWHUqSe3+ddZS8LhKZWRH00/LOjSe0ziQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755314111; c=relaxed/simple;
-	bh=kpc/AaV/MXVEkt4nZDRozJphvXj2D/MYH8vhHJ9f38Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgtGrB9nAUUHMsjlsgagJJry1qSI4ivfr8K3PsMkYN2FvbIS+NIixLOlB630Fx9Q69tQOor6I6aluODBTLQ+jRfRED7yS1of30UGc7HxL9buu9w2f0iPdR0v4l6pDC4JQ65LLXKv+JDT/lSsUi3DJFVLQsRAN0DPMJLv/OX2TzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RxFygN02; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755314266; c=relaxed/simple;
+	bh=IDltpbWpSbxJQ90doQZnXbZEUwDE8nkh7yxygl+vDRE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GUlh4bAuNigH1eUWlzCpbcsV4bFF9NbWbfsAsI4I2lyWyRN/+zbTBH/uLNTCMVbExtydYarz3hl8PSjDNDYEsvFMU+mRjxtNgnwcwXTrsuEgq5Z3iezue59uvx6Knj8S5VAfqbTkav5885bDJDT2SnTLre2R365d0sPKmIiM6P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOP47wLh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RxFygN02"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712D2C4CEF5;
-	Sat, 16 Aug 2025 03:15:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOP47wLh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6B7C4CEEB;
+	Sat, 16 Aug 2025 03:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755314110;
-	bh=kpc/AaV/MXVEkt4nZDRozJphvXj2D/MYH8vhHJ9f38Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RxFygN02YgFdKB1JL9YYGKoKToEK1D3pTFBKV42sBGH87ZufG6E2170ji1+Zmyxl/
-	 RNTM1j+i8479kaAQioEfUIlMECgckGJoJN5bf7JKmb9VP93R9aWwFZf6DxBwSDltYt
-	 0uY6z3CVwVsXoDQwHWZCRrRSR2UvxyNJrMj0EQDaGHgF+mFuQNFrNwjSaC9959Jst4
-	 4SYpJjn0PLAz+IDtDHmMz/IOUyN2FmDnXsge3KK1tPo4WEXL2oLZGBz1zpHNVUavi5
-	 8EwsTL4xkS3wHYDGm/zEjJdbrf2tlmkzt68AzIasraQPQPoXyuWma1FbPp1lMpmVqn
-	 uwk/YzZcRG8DA==
+	s=k20201202; t=1755314265;
+	bh=IDltpbWpSbxJQ90doQZnXbZEUwDE8nkh7yxygl+vDRE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bOP47wLhmhfa9Ee7/pE0lZuE1z1GD1D0W8nXqWIWoW5mVmOlC+FDsen+tDuv3JyKH
+	 RCbVf7O6BbkzFhGWkTZoLl5Pgy4ToqcOKLc7QMnpwAJ0SqlzoX+t2cUwvyBFTtjAzI
+	 URjZF0Gz9BwM/29jSHyhynU03bbVON2A6pONHjgaa/LSct3VaSDciK+GMVoX674yaB
+	 EQNww1J94XfcP+/HemifpQVrfzuTObOV1EfbgpC+ul8FSTra2LySTYxVSU56Rx8ibP
+	 +JAaOVcYHN5ltU67CGIchomkCNDZqpbBknjrxhc58QrieqgdCCmfqPAzvAXVpQD7jh
+	 4NIC5Xlx5woKQ==
+Date: Fri, 15 Aug 2025 20:16:40 -0700
 From: Eric Biggers <ebiggers@kernel.org>
-To: netdev@vger.kernel.org,
-	Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: David Lebrun <dlebrun@google.com>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH net-next 3/3] ipv6: sr: Prepare HMAC key ahead of time
-Date: Fri, 15 Aug 2025 20:11:36 -0700
-Message-ID: <20250816031136.482400-4-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250816031136.482400-1-ebiggers@kernel.org>
-References: <20250816031136.482400-1-ebiggers@kernel.org>
+To: netdev@vger.kernel.org, David Ahern <dsahern@gmail.com>,
+	Stephen Hemminger <stephen@networkplumber.org>
+Cc: Andrea Mayer <andrea.mayer@uniroma2.it>,
+	David Lebrun <dlebrun@google.com>
+Subject: Re: [PATCH iproute2-next] man8: ip-sr: Document that passphrase must
+ be high-entropy
+Message-ID: <20250816031640.GA1309@sol>
+References: <20250816030129.474797-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250816030129.474797-1-ebiggers@kernel.org>
 
-Prepare the HMAC key when it is added to the kernel, instead of
-preparing it implicitly for every packet.  This significantly improves
-the performance of seg6_hmac_compute().  A microbenchmark on x86_64
-shows seg6_hmac_compute() (with HMAC-SHA256) dropping from ~1978 cycles
-to ~1419 cycles, a 28% improvement.
+On Fri, Aug 15, 2025 at 08:01:29PM -0700, Eric Biggers wrote:
+> 'ip sr hmac set' takes a newline-terminated "passphrase", but it fails
+> to stretch it.  The "passphrase" actually gets used directly as the key.
+> This makes it difficult to use securely.
+> 
+> I recommend deprecating this command and replacing it with a command
+> that either stretches the passphrase or explicitly takes a key instead
+> of a passphrase.  But for now, let's at least document this pitfall.
+> 
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> ---
+>  man/man8/ip-sr.8 | 20 ++++++++++++++++----
+>  1 file changed, 16 insertions(+), 4 deletions(-)
 
-The size of 'struct seg6_hmac_info' increases by 128 bytes, but that
-should be fine, since there should not be a massive number of keys.
+Sorry, please disregard this version.  I had a (small) unstaged change
+that I meant to include.  I'll send v2 with it included.
 
-As a side effect, invalid values for SEG6_ATTR_ALGID (i.e., values other
-than SEG6_HMAC_ALGO_SHA1 and SEG6_HMAC_ALGO_SHA256) now cause an error
-immediately when the key is added, rather than later when computing a
-HMAC value is attempted.  This seems like the expected behavior anyway.
-
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
- include/net/seg6_hmac.h |  8 ++++++++
- net/ipv6/seg6.c         | 13 +++++++++++++
- net/ipv6/seg6_hmac.c    |  9 ++++-----
- 3 files changed, 25 insertions(+), 5 deletions(-)
-
-diff --git a/include/net/seg6_hmac.h b/include/net/seg6_hmac.h
-index 3fe4123dbbf0a..e9f41725933e4 100644
---- a/include/net/seg6_hmac.h
-+++ b/include/net/seg6_hmac.h
-@@ -7,10 +7,12 @@
-  */
- 
- #ifndef _NET_SEG6_HMAC_H
- #define _NET_SEG6_HMAC_H
- 
-+#include <crypto/sha1.h>
-+#include <crypto/sha2.h>
- #include <net/flow.h>
- #include <net/ip6_fib.h>
- #include <net/sock.h>
- #include <linux/ip.h>
- #include <linux/ipv6.h>
-@@ -24,13 +26,19 @@
- struct seg6_hmac_info {
- 	struct rhash_head node;
- 	struct rcu_head rcu;
- 
- 	u32 hmackeyid;
-+	/* The raw key, kept only so it can be returned back to userspace */
- 	char secret[SEG6_HMAC_SECRET_LEN];
- 	u8 slen;
- 	u8 alg_id;
-+	/* The prepared key, which the calculations actually use */
-+	union {
-+		struct hmac_sha1_key sha1;
-+		struct hmac_sha256_key sha256;
-+	} key;
- };
- 
- extern int seg6_hmac_compute(struct seg6_hmac_info *hinfo,
- 			     struct ipv6_sr_hdr *hdr, struct in6_addr *saddr,
- 			     u8 *output);
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index a5c4c629b788c..313acdf1b2158 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -211,10 +211,23 @@ static int seg6_genl_sethmac(struct sk_buff *skb, struct genl_info *info)
- 	memcpy(hinfo->secret, secret, slen);
- 	hinfo->slen = slen;
- 	hinfo->alg_id = algid;
- 	hinfo->hmackeyid = hmackeyid;
- 
-+	switch (algid) {
-+	case SEG6_HMAC_ALGO_SHA1:
-+		hmac_sha1_preparekey(&hinfo->key.sha1, secret, slen);
-+		break;
-+	case SEG6_HMAC_ALGO_SHA256:
-+		hmac_sha256_preparekey(&hinfo->key.sha256, secret, slen);
-+		break;
-+	default:
-+		kfree(hinfo);
-+		err = -EINVAL;
-+		goto out_unlock;
-+	}
-+
- 	err = seg6_hmac_info_add(net, hmackeyid, hinfo);
- 	if (err)
- 		kfree(hinfo);
- 
- out_unlock:
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index 816aef69e0cea..5cdcb3011cb3e 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -146,23 +146,22 @@ int seg6_hmac_compute(struct seg6_hmac_info *hinfo, struct ipv6_sr_hdr *hdr,
- 		off += 16;
- 	}
- 
- 	switch (hinfo->alg_id) {
- 	case SEG6_HMAC_ALGO_SHA1:
--		hmac_sha1_usingrawkey(hinfo->secret, hinfo->slen, ring, plen,
--				      output);
-+		hmac_sha1(&hinfo->key.sha1, ring, plen, output);
- 		static_assert(SEG6_HMAC_FIELD_LEN > SHA1_DIGEST_SIZE);
- 		memset(&output[SHA1_DIGEST_SIZE], 0,
- 		       SEG6_HMAC_FIELD_LEN - SHA1_DIGEST_SIZE);
- 		break;
- 	case SEG6_HMAC_ALGO_SHA256:
--		hmac_sha256_usingrawkey(hinfo->secret, hinfo->slen, ring, plen,
--					output);
-+		hmac_sha256(&hinfo->key.sha256, ring, plen, output);
- 		static_assert(SEG6_HMAC_FIELD_LEN == SHA256_DIGEST_SIZE);
- 		break;
- 	default:
--		ret = -ENOENT;
-+		WARN_ON_ONCE(1);
-+		ret = -EINVAL;
- 		break;
- 	}
- 	local_unlock_nested_bh(&hmac_storage.bh_lock);
- 	local_bh_enable();
- 	return ret;
--- 
-2.50.1
-
+- Eric
