@@ -1,137 +1,192 @@
-Received: from smtp4-g21.free.fr (smtp4-g21.free.fr [212.27.42.4])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1551C2DB2;
-	Sat, 16 Aug 2025 18:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACEED207A0B;
+	Sat, 16 Aug 2025 19:51:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755369953; cv=none; b=e94UCbyxE9HtHWPM/UpyiBHukguMtZ5yqy2UQSqvVomKNwtDDYjncs6qIqGWsoVT9nVk7lwcvsCAbIs/zhB/wUpLd3FmaRCLt278DwAJa8dU5DsHzvvxAn+GcI1f11xQJwqcCUOmBxaKrqOl3CbfjfwKYgBx5KSDEmsi67ExRps=
+	t=1755373869; cv=none; b=liWwSn2iosw/BsNQngHQ1gtucfn8DmBx18hIM1zG6d6R052EueWFEFnYRPk3/Si08KF1Bu6gP1SwNsMBIoDUEi9/TaWZhC79M5YbMmtfdkzNRQ2cgrYcDW4KQzWTRoeBobZssK8SUXjvtLXtSSh5pjIT/8AgaLUQrkkdC5/cqRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755369953; c=relaxed/simple;
-	bh=8aYSOySoEz7FCu7GTPtcv6KZfxK2OsnYq3gGWh5IHSA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=anHEA2VZHzNe7yWCddHCQMhP+RtelWuQE4y+bT0vkUUQ7KeZiH2ypxP+WE15Lqxh8cYiViUv/8zaIPTm+78YibcBfROg+1MadIlYZTb/xRo4auD6ePPzNxvePaHr5Ffp64SkFf0DTxmdYkMKOVM2gsL9IlmB5/jPvFI2cXdUStk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=LC78k60W; arc=none smtp.client-ip=212.27.42.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="LC78k60W"
-Received: from [44.168.19.11] (unknown [86.195.82.193])
-	(Authenticated sender: bernard.pidoux@free.fr)
-	by smtp4-g21.free.fr (Postfix) with ESMTPSA id E7E6219F5BA;
-	Sat, 16 Aug 2025 20:45:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
-	s=smtp-20201208; t=1755369949;
-	bh=8aYSOySoEz7FCu7GTPtcv6KZfxK2OsnYq3gGWh5IHSA=;
-	h=Date:Subject:From:To:Reply-To:References:In-Reply-To:From;
-	b=LC78k60W+P0RXRlTG3oMP72KzlfV2ZaVwqumlh85/3xm8Ty245jBPMhp3TCKJruO9
-	 rHrC+6s2iiVlWa6nS13XRX7K+DfabpZXXIGnLIMeXVVSB1vda3CPRmxccU9n8Ga1gD
-	 b4+B9ahbFhmbU53q/fwsk5fW7BuhFLDLr6odDGR2/qxmxeYN2Xnr54Bu072jSrJke+
-	 82b2+InFztAtfD5cdL2l5uWfaqem0eqvb2B+YBM0obAe9FJ5Ay5TFJuHo071OdiP24
-	 BMsjp+kDES5sljky8mgetFxVOeX1aSxUtWo6nBQUVjwgPfJnxfUXcXfHda135MIRp1
-	 EtZQp4yoxlW5Q==
-Message-ID: <e92e23a7-1503-454f-a7a2-cedab6e55fe2@free.fr>
-Date: Sat, 16 Aug 2025 20:45:46 +0200
+	s=arc-20240116; t=1755373869; c=relaxed/simple;
+	bh=j56q4vHgG+bh4xmCJrmoMvgyYabA1VSV5N5+8z89ay4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=EHdnhYCKvBBYQw5CEe3AHlfPvdKHo/hVeSzlsKY3WAm3kg+kvHHqTI52MKm6sVijREMQm0JFpsp+HFSIBZtlMgKGYsvTuQRWz4ii1m/8wZMaUe/dfu4D/6StzszgqqewrKkiwYrHoXCTvJAyqEUClxPaMr/ViNf1lKJrbXUdC4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.98.2)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1unMvd-000000006vx-2lJD;
+	Sat, 16 Aug 2025 19:51:01 +0000
+Date: Sat, 16 Aug 2025 20:50:57 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Hauke Mehrtens <hauke@hauke-m.de>, Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Arkadi Sharshevsky <arkadis@mellanox.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Cc: Andreas Schirm <andreas.schirm@siemens.com>,
+	Lukas Stockmann <lukas.stockmann@siemens.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Peter Christen <peter.christen@siemens.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>,
+	Juraj Povazanec <jpovazanec@maxlinear.com>,
+	"Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	"Livia M. Rosu" <lrosu@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: [PATCH RFC net-next 01/23] net: dsa: lantiq_gswip: honor dsa_db
+ passed to port_fdb_{add,del}
+Message-ID: <aKDhIQb36SayIjy6@pidgin.makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [ROSE] [AX25] 6.15.10 long term stable kernel oops
-From: Bernard Pidoux <bernard.pidoux@free.fr>
-To: David Ranch <dranch@trinnet.net>, linux-hams@vger.kernel.org,
- netdev <netdev@vger.kernel.org>
-Reply-To: Bernard Pidoux <bernard.pidoux@free.fr>
-References: <11c5701d-4bf9-4661-ad8a-06690bbe1c1c@free.fr>
- <fff0b3eb-ea42-4475-970d-30622dc25dca@free.fr>
-Content-Language: en-US
-In-Reply-To: <fff0b3eb-ea42-4475-970d-30622dc25dca@free.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-David,
+Commit c9eb3e0f8701 ("net: dsa: Add support for learning FDB through
+notification") added a dev_close() call "to indicate inconsistent
+situation" when we could not delete an FDB entry from the port. In case
+of the lantiq_gswip driver this is problematic on standalone ports for
+which all calls to either .port_fdb_add() or .port_fdb_del() would just
+always return -EINVAL as adding or removing FDB entries is currently
+only supported for ports which are a member of a bridge.
 
-For some reason my messages are not accepted by vger.kernel.org despite 
-I configured thunderbird not to send html.
+As since commit c26933639b54 ("net: dsa: request drivers to perform FDB
+isolation") the dsa_db is passed to the .port_fdb_add() or
+.port_fdb_del() calls we can use that to set the FID accordingly,
+similar to how it was for bridge ports, and to FID 0 for standalone
+ports. In order for FID 0 to work at all we also need to set bit 1 in
+val[1], so always set it.
 
-I just compiled and loaded kernel 6.15.1.
+This solution was found in a downstream driver provided by MaxLinear
+(which is the current owner of the former Lantiq switch IP) under
+GPL-2.0. Import the implementation and the copyright headers from that
+driver.
 
-Up to now FPAC 4.1.4 is running fine and performing connexions with 
-neighbour ROSE nodes.
+Fixes: c9eb3e0f8701 ("net: dsa: Add support for learning FDB through notification")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+---
+ drivers/net/dsa/lantiq_gswip.c | 55 ++++++++++++++++++++--------------
+ 1 file changed, 33 insertions(+), 22 deletions(-)
 
-I will let it run a while before starting to apply progressively the 
-AX25 and ROSE patches committed in kernels 15.2 to 15.10
-
-I will start with ax25 ones and see what happens.
-
-73 de Bernard f6bvp / ai7bg
-
-
-
-Le 16/08/2025 à 19:49, Bernard Pidoux a écrit :
-> Hi David,
-> 
-> Actually Ubuntu stops responding without any message. No more response 
-> from keyboard or mouse. Only switch power !
-> 
-> I am working on activating kernel messages on oops.
-> 
-> The bug is already present in 6.15.10 so there is no reason to look at a 
-> more recent version.
-> 
-> I will report any progress if I find something interesting.
-> 
-> This is quite a challenge for me as I did not perform this kind of 
-> kernel investigations since nearly a decade...and I am not getting younger !
-> 
-> 73 de Bernard, f6bvp / ai7bg
-> 
-> 
-> Le 16/08/2025 à 19:32, David Ranch a écrit :
->>
->> Hey Bernard,
->>
->> Thanks for posting this issue.  Can you copy/paste in the Oops you're 
->> seeing?  I did see a recent ROSE issue on 6.16.0-rc6-next-20250718- 
->> syzkaller and I wonder if that could have created this issue:
->>
->> https://groups.google.com/g/syzkaller-bugs/c/0TmBbcJ2PKE
->>
->> Btw, I would say that posting this to netdev@vger.kernel.org would 
->> probably be more important than this Debian list since this is most 
->> likely a kernel issue and not a distro issue per se.
->>
->> --David
->> KI6ZHD
->>
->>
->> On 08/16/2025 10:02 AM, Bernard Pidoux wrote:
->>> Hi,
->>>
->>> I am continuously working on AX25 ROSE/FPAC node since decades, 
->>> running a number of RaspBerry Pi (Raspi OS 64bit) plus Ubuntu LTS on 
->>> a mini PC.
->>>
->>> Stable FPAC version 4.1.4 is performing packet switch quite well 
->>> although some improvements are underway.
->>>
->>> FPAC runs flawlessly with kernel 6.14.11.
->>>
->>> However, trying FPAC under stable kernel 6.15.10 experienced a frozen 
->>> system when issuing some commands like connect request.
->>>
->>> Investigations seem to show that ax25 connect is fine and that the 
->>> bug is probably in ROSE module .
->>>
->>> I am presently trying to find the faulty bug that triggers the kernel 
->>> oops by compiling and installing previous kernel versions starting 
->>> with 6.15.1.
->>>
->>> 73s de Bernard, f6bvp / ai7bg
->>>
->>> http://f6bvp.org
->>>
->>
-
+diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq_gswip.c
+index 6eb3140d4044..fed86b2d78fc 100644
+--- a/drivers/net/dsa/lantiq_gswip.c
++++ b/drivers/net/dsa/lantiq_gswip.c
+@@ -2,9 +2,11 @@
+ /*
+  * Lantiq / Intel GSWIP switch driver for VRX200, xRX300 and xRX330 SoCs
+  *
+- * Copyright (C) 2010 Lantiq Deutschland
+- * Copyright (C) 2012 Avinash Jayaraman <ajayaraman@maxlinear.com>, Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>, Juraj Povazanec <jpovazanec@maxlinear.com>, "Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>, "Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>, "Livia M. Rosu" <lrosu@maxlinear.com>, John Crispin <john@phrozen.org>
++ * Copyright (C) 2023 - 2024 MaxLinear Inc.
++ * Copyright (C) 2022 Snap One, LLC.  All rights reserved.
+  * Copyright (C) 2017 - 2019 Hauke Mehrtens <hauke@hauke-m.de>
++ * Copyright (C) 2012 Avinash Jayaraman <ajayaraman@maxlinear.com>, Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>, Juraj Povazanec <jpovazanec@maxlinear.com>, "Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>, "Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>, "Livia M. Rosu" <lrosu@maxlinear.com>, John Crispin <john@phrozen.org>
++ * Copyright (C) 2010 Lantiq Deutschland
+  *
+  * The VLAN and bridge model the GSWIP hardware uses does not directly
+  * matches the model DSA uses.
+@@ -239,6 +241,7 @@
+ #define  GSWIP_TABLE_MAC_BRIDGE_KEY3_FID	GENMASK(5, 0)	/* Filtering identifier */
+ #define  GSWIP_TABLE_MAC_BRIDGE_VAL0_PORT	GENMASK(7, 4)	/* Port on learned entries */
+ #define  GSWIP_TABLE_MAC_BRIDGE_VAL1_STATIC	BIT(0)		/* Static, non-aging entry */
++#define  GSWIP_TABLE_MAC_BRIDGE_VAL1_VALID	BIT(1)		/* Valid bit */
+ 
+ #define XRX200_GPHY_FW_ALIGN	(16 * 1024)
+ 
+@@ -1349,30 +1352,37 @@ static void gswip_port_stp_state_set(struct dsa_switch *ds, int port, u8 state)
+ }
+ 
+ static int gswip_port_fdb(struct dsa_switch *ds, int port,
+-			  const unsigned char *addr, u16 vid, bool add)
++			  const unsigned char *addr, u16 vid, struct dsa_db db,
++			  bool add)
+ {
+-	struct net_device *bridge = dsa_port_bridge_dev_get(dsa_to_port(ds, port));
+ 	struct gswip_priv *priv = ds->priv;
+ 	struct gswip_pce_table_entry mac_bridge = {0,};
+-	unsigned int max_ports = priv->hw_info->max_ports;
+ 	int fid = -1;
+-	int i;
+ 	int err;
++	int i;
+ 
+-	if (!bridge)
+-		return -EINVAL;
+-
+-	for (i = max_ports; i < ARRAY_SIZE(priv->vlans); i++) {
+-		if (priv->vlans[i].bridge == bridge) {
+-			fid = priv->vlans[i].fid;
+-			break;
++	switch (db.type) {
++	case DSA_DB_BRIDGE:
++		for (i = 0; i < ARRAY_SIZE(priv->vlans); i++) {
++			if (priv->vlans[i].bridge == db.bridge.dev) {
++				fid = priv->vlans[i].fid;
++				break;
++			}
+ 		}
+-	}
+-
+-	if (fid == -1) {
+-		dev_err(priv->dev, "no FID found for bridge %s\n",
+-			bridge->name);
+-		return -EINVAL;
++		if (fid == -1) {
++			dev_err(priv->dev, "Port %d not part of a bridge\n", port);
++			return -EINVAL;
++		}
++		break;
++	case DSA_DB_PORT:
++		if (dsa_is_cpu_port(ds, port) &&
++			dsa_fdb_present_in_other_db(ds, port, addr, vid, db))
++			return 0;
++		/* FID of a standalone / single port bridge */
++		fid = 0;
++		break;
++	default:
++		return -EOPNOTSUPP;
+ 	}
+ 
+ 	mac_bridge.table = GSWIP_TABLE_MAC_BRIDGE;
+@@ -1382,7 +1392,8 @@ static int gswip_port_fdb(struct dsa_switch *ds, int port,
+ 	mac_bridge.key[2] = addr[1] | (addr[0] << 8);
+ 	mac_bridge.key[3] = FIELD_PREP(GSWIP_TABLE_MAC_BRIDGE_KEY3_FID, fid);
+ 	mac_bridge.val[0] = add ? BIT(port) : 0; /* port map */
+-	mac_bridge.val[1] = GSWIP_TABLE_MAC_BRIDGE_VAL1_STATIC;
++	mac_bridge.val[1] = add ? (GSWIP_TABLE_MAC_BRIDGE_VAL1_STATIC |
++				   GSWIP_TABLE_MAC_BRIDGE_VAL1_VALID) : 0;
+ 	mac_bridge.valid = add;
+ 
+ 	err = gswip_pce_table_entry_write(priv, &mac_bridge);
+@@ -1396,14 +1407,14 @@ static int gswip_port_fdb_add(struct dsa_switch *ds, int port,
+ 			      const unsigned char *addr, u16 vid,
+ 			      struct dsa_db db)
+ {
+-	return gswip_port_fdb(ds, port, addr, vid, true);
++	return gswip_port_fdb(ds, port, addr, vid, db, true);
+ }
+ 
+ static int gswip_port_fdb_del(struct dsa_switch *ds, int port,
+ 			      const unsigned char *addr, u16 vid,
+ 			      struct dsa_db db)
+ {
+-	return gswip_port_fdb(ds, port, addr, vid, false);
++	return gswip_port_fdb(ds, port, addr, vid, db, false);
+ }
+ 
+ static int gswip_port_fdb_dump(struct dsa_switch *ds, int port,
+-- 
+2.50.1
