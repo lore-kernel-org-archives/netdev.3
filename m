@@ -1,151 +1,117 @@
-Received: from aye.elm.relay.mailchannels.net (aye.elm.relay.mailchannels.net [23.83.212.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC8314B086;
-	Sun, 17 Aug 2025 16:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.212.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755446997; cv=pass; b=ZeG1nUDVRu5CS/x+EI9DnPmVi8qwjSmkBhd7iPJEak8H++eaMnbxUz0Uk+5zgCyDegtGhp8m+uVSQNXOtYv2FlP2hYa8LtU+xaM1TsuRp2THvZTMecppEh5/NsngrHJbvTyBqPaVzTbueBaCMUTKAfdW1heV4PCHHEV5IG6D3c4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755446997; c=relaxed/simple;
-	bh=fjqdlchKoZQp8z6BOQfPzPE/Kn3at+oXweNS0d0qYd0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aDaBMVWBRLIXSPvD3z+1gXExD3HjLmMK3kvlZ3Hfhuuk285s7otviymqWRe1Ojkd9+4blQuJFeBLI3gPbzXeANwDIKnM6h3fo2hBp1lFgRS7NVuweeKCYmqFLKah1ZsFhUlmX6LrGX+TAV3t4BjIsWAEHVd5YkGhWjDmycKVLZ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net; spf=pass smtp.mailfrom=landley.net; dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b=XCpqFCqx; arc=pass smtp.client-ip=23.83.212.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=landley.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AC2285075;
+	Sun, 17 Aug 2025 16:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755448724; cv=none; b=TSacDFe2Ku90QWwwJt2ITqLTR0fmkDIqH3M19Tv73HWr7Rh0qSMilSuoQOZA32FWlwZt0IKe+A6qWrsRbl4qbr64sY6xhFXjkpFRF+cSag69yK7gUIF4QqijezJDUWTU79DZdHHSu796UuBLvZWv4kDZr6NEAusl+2eLm95bJzY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755448724; c=relaxed/simple;
+	bh=8R2fcFGpSJdmy6QSJXEPyqstFl05JrSadN5kH4ubPtM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=jBKOpZgO17su/HXvVxVGhThXD7Op7/Q6d53dEGTw5HKLuVbx1DWCIhMTGxSyUyi1aWIQO748GUctwgxh/MWn2pMQWi4G5eobLv9UWYslcsBUsEKC4YQf2UgG23XJcpZg00nUk82BXFXDe+jV14JHaAm3D1jWJ8IGOae1gqWnuaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N7ishbzr; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b="XCpqFCqx"
-X-Sender-Id: dreamhost|x-authsender|rob@landley.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 3AA5D2C5FF4;
-	Sun, 17 Aug 2025 16:04:39 +0000 (UTC)
-Received: from pdx1-sub0-mail-a266.dreamhost.com (trex-blue-2.trex.outbound.svc.cluster.local [100.96.24.204])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id A9D5C2C5BC0;
-	Sun, 17 Aug 2025 16:04:38 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1755446678; a=rsa-sha256;
-	cv=none;
-	b=79eaCdimCdxb/iC5hvvHQ0HNM1n+D3OOB0TRZHB7IooDoHyGsXYPyHmQgzKJ92/kSbWxoF
-	ZDD4pdXgyLyx/0J1zojJgIiP2Xhi0TJnpZYh12QO68Df5EbVMp3rvxKGA1gdi+V8zc2iHC
-	0KUJfztwk0KiGkbDl5DnbMyb9mdnncU2HD5cMu2fQVHk5p03MtyIWM4vkdlpgcBu0YnC0d
-	FNZ5S5cyuFvhHZy99dPLCpP8eJZNU6A2gqAimu45PsRit+cJsEdsPmI+1Nl55/M7mpmKN4
-	l0UHKiM6jAG+KWhePC6KnK9VGWAr3GxHE+HEu2tIjK9cshMaHlJxmKQazWZ9iQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1755446678;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1UyeYL1cdUfgr+ZEGrn8RJmbevR9bD7UF50xpYXVxks=;
-	b=j9uqFpwWW/V8LMvtx445Rjvn3UEe/k3YyuJm8IJeS4RfFPG7ydSgVr3qTMLzQLGiLpUg8R
-	wLYdC3ckaH3bDP2SkyWoq9y26eRo80cPxkxGWGu+PigkBFcagNWD+gzuM5KDp4cAcJsdcw
-	2Lx4ugPCjC2/Gg5oM+cdQkqwceh0CvYxFb3Nm5cRf0S1SmxD492H2gvG7wGFxPSvr2Z+D5
-	5ZDFu1b2alrxc5TmHHq/yvyCuVPbDED8lXPa4INYBnSbFzTr/xWHkExYXidiV77RkmIOSa
-	vkodUcMM5U2crkPBYfVrtda8N9Fc/JkG1+MtJgNdV9mfkTRZxz2SWj7P5IsgLQ==
-ARC-Authentication-Results: i=1;
-	rspamd-697fb8bd44-8sr7s;
-	auth=pass smtp.auth=dreamhost smtp.mailfrom=rob@landley.net
-X-Sender-Id: dreamhost|x-authsender|rob@landley.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|rob@landley.net
-X-MailChannels-Auth-Id: dreamhost
-X-Shrill-Cooing: 5f6ae9f50f5cf92c_1755446679101_4172374461
-X-MC-Loop-Signature: 1755446679101:843244194
-X-MC-Ingress-Time: 1755446679101
-Received: from pdx1-sub0-mail-a266.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.96.24.204 (trex/7.1.3);
-	Sun, 17 Aug 2025 16:04:39 +0000
-Received: from [192.168.88.7] (unknown [209.81.127.98])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: rob@landley.net)
-	by pdx1-sub0-mail-a266.dreamhost.com (Postfix) with ESMTPSA id 4c4gdx2LB3zPS;
-	Sun, 17 Aug 2025 09:04:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=landley.net;
-	s=dreamhost; t=1755446678;
-	bh=1UyeYL1cdUfgr+ZEGrn8RJmbevR9bD7UF50xpYXVxks=;
-	h=Date:Subject:To:Cc:From:Content-Type:Content-Transfer-Encoding;
-	b=XCpqFCqxcvJJTfy4OTrCUM2Htgr/7IGFok1cVjmYKXOMi1wiqwODNwADQ13rSCESQ
-	 KvqhFDCGeL+c039xlvVPaEcg6pRW0U4Y5wlSwIGq+6ZZO9FnVlwH4jmDkE+GvxBd+Q
-	 cmCzGOP+NY0jTdG7uM10/iobTMZaE3C1OY2yWhYP1aWuhpU2Hy+j2RUgOqiXWsc+cK
-	 uGFI1ZxQM6lqbyvm4sEEgMtR2pU2EJGCiDKn3fbeBQ9UhLeImL9yWGx4t/j5xeMDxM
-	 2v3xSGhAaOC8JJefzQUEaQbjpMiNxrJLR4clZ+cKLRIReShruLL1R8oarPXUKd/vNA
-	 SBmtoP9N2gv8A==
-Message-ID: <dd48568e-90db-430a-b910-623c7aaf566e@landley.net>
-Date: Sun, 17 Aug 2025 11:04:36 -0500
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N7ishbzr"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-244580591b0so23581385ad.1;
+        Sun, 17 Aug 2025 09:38:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755448722; x=1756053522; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MIT6uNUMzYTnbCPCMHsRis4gVzR0ZZCKNYfvnWn+bgk=;
+        b=N7ishbzrnrMt/Rfb1zN9teAA1dJTveeQ8XoFz49LBoltTwfGNir0+nChm2KOz2ZlEV
+         GdFUgg6yxGDc5o8p1MdFV9kCJsO+sRB1KfXuTHKKY6KOcGPdPqtrwH8IaNzW5DRDuhwt
+         gBdPo7E4Uu2YZTfaYspNBAtHNfx1m2y8gYnYze8nZTd2dRV4hKXTQnV5rmP12dLq9tOm
+         M7RbQWKbblh7HLEYrDKP31knPiTMwXCg9N8FxQ+yAWjCUInxN3ym2wDBKSJ77fuSbqbX
+         T//2Xl0CvbdNtfCRFnrgxO2yOZaddDib7mL20PlsmowBu9wjA2f7dN92h3c63orDf2dV
+         SCbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755448722; x=1756053522;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MIT6uNUMzYTnbCPCMHsRis4gVzR0ZZCKNYfvnWn+bgk=;
+        b=WJ69+G1UAC3UurHeZVuY3AMiL/ajriZCaORR15CjzCKmnXmpVcaHOD8SHVUOkFL7Jq
+         dVGOxcrakqW2bT2wYnWK6VjE0IgnhhRUTlPImR6jwjvTlFLUzP890uFKiNRPfiA+Z6RE
+         vbE8R+sFtDGS5fupVFK8XpfzgwuA7C3MtNdqxS/5wVFUm/STdA9rWmWjzbJkb22FgmpI
+         4knxDzRmf+I7CTeky3X4WFZdB5jfV48AEOZCY0tL/of3Oau5F6JWoRzMVmmwq6klBdjW
+         5hMK82cmdR4M/66iCygShdzjNICI1XA8724tkut9HNmvBCvx3jpK/pmzaJI4NeJxshD0
+         Naqw==
+X-Forwarded-Encrypted: i=1; AJvYcCUY0qTvxIJacrTrE3cQn+TnNGnc2aJsZ0cNc93o0bjKEFKS/tXasVRaqVnI5ka/W+2iCqM8ItiR@vger.kernel.org, AJvYcCXbtWWkCxdr2BlLNHMLipDW7pa0F0MsZPZcB5cxoecXQJrV+RuL/qFqDYiSzGOqlHzf7xdlnvOkrtD3Yg==@vger.kernel.org, AJvYcCXh6s9AnwzoExpsWbNV8T9iD2gT9MeUnT4SFpnJFW3f51Hv+wgLgcmhOAUU3Cg0mdXVMG2q1Hi1AzWbYMQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqgzcoC48LbddJ+dQQGBzywB/OLTvCAVAQbJpw/yr3i/12doFU
+	RFoOAxTzh3MpDoNIQ1ho7ywitWNT30peQ/vUoQXhd5VB5oEwyHpnKV8l
+X-Gm-Gg: ASbGncvIYXKNmvO3FROIYF5UZaA3o1F3XYRF9bouEJ+jDaXqDaJCHXaR2YhJOJ4YbY+
+	Wq9fZdcg5xM0/U20uaSBeNtUmek9vIN/c5Rg4qXb78BPyLK6FbwKUZd/8czu6fGm/SYEvTcizIK
+	Bb7exIVFWXtkBWTGtX/qgOTreyTVR/3smmOrlAJyNPyoH1DijdBAcq4ZpH+KUiR/JQlZOk2qwDw
+	DoOL7fHdNC9vrJoEOLbUWGngqbfO2LmS7EtJxYfAPAOZEvtQwX2FhyRrOqiO41EB7jTuJpEAkpH
+	xjxRY3qF70rGRKFkUR+E5c0EVnUd77Nn/Hds8WRNwCKCwPpx4C3txDrR466m6EV01R/jEz2ji1I
+	1tPv4I3+pI5nU7Q6+Sz/0Y576IYeTFTMmLhba1XAByNf2kQ==
+X-Google-Smtp-Source: AGHT+IEkSGa1drps5XlLVHbgDwqS0fGTBd+3pDBDTaNi1J6dZB00Iu5x8mb8bByRJd5ZnaAPNHfgXQ==
+X-Received: by 2002:a17:902:cccb:b0:243:80d:c513 with SMTP id d9443c01a7336-2446d6e444dmr128946865ad.4.1755448722181;
+        Sun, 17 Aug 2025 09:38:42 -0700 (PDT)
+Received: from localhost.localdomain ([120.235.172.134])
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-b472d735e83sm6279040a12.33.2025.08.17.09.38.37
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 17 Aug 2025 09:38:41 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Tariq Toukan <tariqt@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com
+Subject: [PATCH v2] eth: mlx4: Fix IS_ERR() vs NULL check bug in mlx4_en_create_rx_ring
+Date: Mon, 18 Aug 2025 00:38:30 +0800
+Message-Id: <20250817163830.10819-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250805025057.3659898-1-linmq006@gmail.com>
+References: <20250805025057.3659898-1-linmq006@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] net: j2: Introduce J-Core EMAC
-To: Andrew Lunn <andrew@lunn.ch>, Artur Rojek <contact@artur-rojek.eu>
-Cc: Jeff Dionne <jeff@coresemi.io>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250815194806.1202589-1-contact@artur-rojek.eu>
- <20250815194806.1202589-4-contact@artur-rojek.eu>
- <973c6f96-6020-43e0-a7cf-9c129611da13@lunn.ch>
- <b1a9b50471d80d51691dfbe1c0dbe6fb@artur-rojek.eu>
- <02ce17e8f00955bab53194a366b9a542@artur-rojek.eu>
- <fc6ed96e-2bab-4f2f-9479-32a895b9b1b2@lunn.ch>
-Content-Language: en-US
-From: Rob Landley <rob@landley.net>
-In-Reply-To: <fc6ed96e-2bab-4f2f-9479-32a895b9b1b2@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/15/25 17:38, Andrew Lunn wrote:
->>>> What support is there for MDIO? Normally the MAC driver would not be
->>>> setting the carrier status, phylink or phylib would do that.
->>>
->>>  From what I can tell, none. This is a very simple FPGA RTL
->>> implementation of a MAC, and looking at the VHDL, I don't see any MDIO
->>> registers.
->>
->>> Moreover, the MDIO pin on the PHY IC on my dev board also
->>> appears unconnected.
->>
->> I spoke too soon on that one. It appears to be connected through a trace
->> that goes under the IC. Nevertheless, I don't think MDIO support is in
->> the IP core design.
-> 
-> MDIO is actually two pins. MDC and MDIO.
+Replace NULL check with IS_ERR() check after calling page_pool_create()
+since this function returns error pointers (ERR_PTR).
+Using NULL check could lead to invalid pointer dereference.
 
-I asked Jeff and he pointed me at 
-https://github.com/j-core/jcore-soc/blob/master/targets/boards/turtle_1v1/pad_ring.vhd#L732 
-and 
-https://github.com/j-core/jcore-soc/blob/master/targets/pins/turtle_1v0.pins 
-and said those two pins are "wired to zero".
+Fixes: 8533b14b3d65 ("eth: mlx4: create a page pool for Rx")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+Changes in v2:
+use err = PTR_ERR(ring->pp);
+v1 link: https://lore.kernel.org/all/20250805025057.3659898-1-linmq006@gmail.com
+---
+ drivers/net/ethernet/mellanox/mlx4/en_rx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-He also said: "It would only take a few hrs to add MDIO." but there 
-basically hasn't been a use case yet.
-
-> It might be there is a second IP core which implements MDIO. There is
-> no reason it needs to be tightly integrated into the MAC. But it does
-> make the MAC driver slightly more complex. You then need a Linux MDIO
-> bus driver for it, and the DT for the MAC would include a phy-handle
-> property pointing to the PHY on the MDIO bus.
-> 
-> Is there an Ethernet PHY on your board?
-
-According to 
-https://github.com/j-core/jcore-jx/blob/master/schematic.pdf it's a 
-https://www.micros.com.pl/mediaserver/info-uiip101a.pdf
-
-> 	Andrew
-
-Rob
+diff --git a/drivers/net/ethernet/mellanox/mlx4/en_rx.c b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
+index 92a16ddb7d86..13666d50b90f 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
+@@ -267,8 +267,10 @@ int mlx4_en_create_rx_ring(struct mlx4_en_priv *priv,
+    pp.dma_dir = priv->dma_dir;
+ 
+    ring->pp = page_pool_create(&pp);
+-   if (!ring->pp)
++   if (IS_ERR(ring->pp)) {
++       err = PTR_ERR(ring->pp);
+        goto err_ring;
++   }
+ 
+    if (xdp_rxq_info_reg(&ring->xdp_rxq, priv->dev, queue_index, 0) < 0)
+        goto err_pp;
+-- 
+2.25.1
