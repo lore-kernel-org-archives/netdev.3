@@ -1,114 +1,99 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D3C1F4171;
-	Sun, 17 Aug 2025 12:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64052417D1
+	for <netdev@vger.kernel.org>; Sun, 17 Aug 2025 13:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755432260; cv=none; b=ujspTMM3h7pBrrRVM0hAVDp8TXHGcaUjaU4QHJd+4CrKYKvpHv4wukUIHmlayc4lpQdzs+I3vCb09i5+6xD6k6jypuNM++jHUjZaiTYUwDzVwiYRmOinDZplD3ISZxqFwH6s9Wz4sk/Stw6Cns0Z8fQ3rdfmlmPIwSouLiZ5fjs=
+	t=1755436241; cv=none; b=bzFARaCnV1md+N3pTOy48HPf5usHldoEpa10ylBSiGC6Leki2wwRVukedfrB2GyKXFm+8JthZGIB4ISs1JT/4M2j6p/CFmukYBn8PT+vHLlXEIb6BMo2xW6HDzA0qMQjzHbbHmbc9sS/9ZoS/OEL9vlGRGbxoMFO7TrypF6f3YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755432260; c=relaxed/simple;
-	bh=KXv5kHvWuWXqgZhKsdaeb5EOVo/7DJAvYBHzVbHPz/I=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=PqtwDjQuxZVlncyq9pZAVpYwdP3J7h1UAT3prg+EXmg5Tyf2kzYKG//9rW5CbxgbhCn+u4LzKFLBlbNNo2JWbfXMW/4J7fk6hHNsbpJ/gKj22Z056afAhP2Y5PlvzK14ShZV85AhRc8FToRYXjgjx2ALHVomrZ0I22HDmQD3tHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=artur-rojek.eu; spf=pass smtp.mailfrom=artur-rojek.eu; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=artur-rojek.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=artur-rojek.eu
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D502B4385D;
-	Sun, 17 Aug 2025 12:04:11 +0000 (UTC)
+	s=arc-20240116; t=1755436241; c=relaxed/simple;
+	bh=8aueD4LZAmwg5aZHlopS76L5StWw14x+UcnJwKcFiGk=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=V+JQA+J0xKxlqa388DpmktmJSrVK2bnx8ClvTH4R2P9V2QiTZCpjDsHKtR6E8E1kttiFzTp0A/rlB7l/ksrKRAMfBs07ef85A6xrU/8ZWuVnIib5E1OuZXbPWEEt6b0JyC7A86dJeJkfBe4JPFDFwn6BDIbbV1fPbSCjuTPghW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=Or+C4YJw; arc=none smtp.client-ip=212.77.101.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="Or+C4YJw"
+Received: (wp-smtpd smtp.wp.pl 42800 invoked from network); 17 Aug 2025 15:10:31 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
+          t=1755436231; bh=J8bY8XzRhO9uRmNXMNrZ4j309FM0iyVDCmnGWEK7AkQ=;
+          h=From:To:Subject;
+          b=Or+C4YJwcsZs6ue7SxxH4+JvEFajVZXc52HtWA3ysZWTxymR97UVnKhuak8L9w2wS
+           ofDAXYRi9cwFwiHxb4ds5rIUOpbp1We+Dt6xGsKs/+y/mMsw5ntVYuwquTu6u1tmrw
+           Medg/EKKz9pBwhVq1Z2Oj6SKPk9qYsuBuyLV99JB4maPnD+KZYf0Ayf9WV72NuwEvg
+           Np+pqdq7a52JiTUw0LOQDc6FhjQyPl7AHr39wRs5HDQyuMB8nr9c44INekGjoxb5PZ
+           Lcy7kkPjB9y1PLB6qsj6JUuACECxgBBPDvRznJ4LNeIdr2wiz+lv/htoRUizwghIQe
+           KNyIjDjYeDHLw==
+Received: from 83.24.134.210.ipv4.supernova.orange.pl (HELO laptop-olek.lan) (olek2@wp.pl@[83.24.134.210])
+          (envelope-sender <olek2@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <robh@kernel.org>; 17 Aug 2025 15:10:31 +0200
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	tsbogend@alpha.franken.de,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	john@phrozen.org,
+	olek2@wp.pl,
+	devicetree@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2 1/2] mips: dts: lantiq: danube: add missing burst length property
+Date: Sun, 17 Aug 2025 14:49:06 +0200
+Message-ID: <20250817131022.3796476-2-olek2@wp.pl>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250817131022.3796476-1-olek2@wp.pl>
+References: <20250817131022.3796476-1-olek2@wp.pl>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 17 Aug 2025 14:04:11 +0200
-From: Artur Rojek <contact@artur-rojek.eu>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Rob Landley <rob@landley.net>, Jeff Dionne <jeff@coresemi.io>, John Paul
- Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] net: j2: Introduce J-Core EMAC
-In-Reply-To: <52aef275-0907-4510-b95c-b2b01738ce0b@lunn.ch>
-References: <20250815194806.1202589-1-contact@artur-rojek.eu>
- <20250815194806.1202589-4-contact@artur-rojek.eu>
- <973c6f96-6020-43e0-a7cf-9c129611da13@lunn.ch>
- <b1a9b50471d80d51691dfbe1c0dbe6fb@artur-rojek.eu>
- <02ce17e8f00955bab53194a366b9a542@artur-rojek.eu>
- <fc6ed96e-2bab-4f2f-9479-32a895b9b1b2@lunn.ch>
- <7a4154eef1cd243e30953d3423e97ab1@artur-rojek.eu>
- <ee607928-1845-47aa-90a1-6511decda49d@lunn.ch>
- <9eab7a4ff3a72117a1a832b87425130f@artur-rojek.eu>
- <52aef275-0907-4510-b95c-b2b01738ce0b@lunn.ch>
-Message-ID: <b6dd9b94e3a43d98bacdcd22f536a10c@artur-rojek.eu>
-X-Sender: contact@artur-rojek.eu
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddugeelieekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeggfffhvfevufgjfhfkgigtgfesthejjhdttddtvdenucfhrhhomheptehrthhurhcutfhojhgvkhcuoegtohhnthgrtghtsegrrhhtuhhrqdhrohhjvghkrdgvuheqnecuggftrfgrthhtvghrnhepvdeiveekkeelieehfedvvedvheetffekuddtheeljeetieeiiefhjeekvdffleelnecuffhomhgrihhnpehophgvnhgtohhrvghsrdhorhhgnecukfhppedutddrvddttddrvddtuddrudelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddtrddvtddtrddvtddurdduledphhgvlhhopeifvggsmhgrihhlrdhgrghnughirdhnvghtpdhmrghilhhfrhhomheptghonhhtrggtthesrghrthhurhdqrhhojhgvkhdrvghupdhnsggprhgtphhtthhopeduiedprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehrohgssehlrghnughlvgihrdhnvghtpdhrtghpthhtohepjhgvfhhfsegtohhrvghsvghmihdrihhopdhrtghpthhtohepghhlrghusghithiisehphhihshhikhdrfhhuqdgsvghrlhhinhdruggvpdhrtghpthhtohepghgvvghrthdorhgvnhgvshgrshesg
- hhlihguvghrrdgsvgdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhm
-X-GND-Sasl: contact@artur-rojek.eu
+Content-Transfer-Encoding: 8bit
+X-WP-MailID: 17e6220015e61466cc5f973a3dfaf8be
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [MQPR]                               
 
-On 2025-08-16 17:04, Andrew Lunn wrote:
-> On Sat, Aug 16, 2025 at 03:40:57PM +0200, Artur Rojek wrote:
->> On 2025-08-16 02:18, Andrew Lunn wrote:
->> > > Yes, it's an IC+ IP101ALF 10/100 Ethernet PHY [1]. It does have both
->> > > MDC
->> > > and MDIO pins connected, however I suspect that nothing really
->> > > configures it, and it simply runs on default register values (which
->> > > allow for valid operation in 100Mb/s mode, it seems). I doubt there is
->> > > another IP core to handle MDIO, as this SoC design is optimized for
->> > > minimal utilization of FPGA blocks. Does it make sense to you that a
->> > > MAC
->> > > could run without any access to an MDIO bus?
->> >
->> > It can work like that. You will likely have problems if the link ever
->> > negotiates 10Mbps or 100Mbps half duplex. You generally need to change
->> > something in the MAC to support different speeds and duplex. Without
->> > being able to talk to the PHY over MDIO you have no idea what it has
->> > negotiated with the link peer.
->> 
->> Thanks for the explanation. I just confirmed that there is no activity
->> on the MDIO bus from board power on, up to the jcore_emac driver start
->> (and past it), so most likely this SoC design does not provide any
->> management interface between MAC and PHY. I guess once/if MDIO is
->> implemented, we can distinguish between IP core revision compatibles,
->> and properly switch between netif_carrier_*()/phylink logic.
-> 
-> How cut down of a SoC design is it? Is there pinmux and each pin can
-> also be used for GPIO?
+The upstream dts lacks the lantiq,{rx/tx}-burst-length property. Other
+issues were also fixed:
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): 'interrupt-names' is a required property
+	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): 'lantiq,tx-burst-length' is a required property
+	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): 'lantiq,rx-burst-length' is a required property
+	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
 
-It's pretty limited - there is no MMU or DMA, for example. There does
-appear to be a GPIO controller, however I'm not sure if it is of pinmux
-variety (whether pins used by an IP core can be multiplexed to PIO), or
-if it has its own pool of general purpose pins, that don't overlap with
-PHY. In any case, there is no Linux driver for it (I have interest to
-eventually write one), and I don't know if the design for it is even
-included in the bitstream on my board.
+Fixes: 14d4e308e0aa ("net: lantiq: configure the burst length in ethernet drivers")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+---
+ arch/mips/boot/dts/lantiq/danube_easy50712.dts | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> Linux has software bit-banging MDIO, if you can
-> make the two pins be standard Linux GPIOs, and can configure them
-> correctly, i _think_ open drain on MDIO. It will be slow, but it
-> works, and it is pretty much for free.
+diff --git a/arch/mips/boot/dts/lantiq/danube_easy50712.dts b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
+index 1ce20b7d05cb..d8b3cd69eda3 100644
+--- a/arch/mips/boot/dts/lantiq/danube_easy50712.dts
++++ b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
+@@ -87,8 +87,11 @@ etop@e180000 {
+ 			reg = <0xe180000 0x40000>;
+ 			interrupt-parent = <&icu0>;
+ 			interrupts = <73 78>;
++			interrupt-names = "tx", "rx";
+ 			phy-mode = "rmii";
+ 			mac-address = [ 00 11 22 33 44 55 ];
++			lantiq,rx-burst-length = <4>;
++			lantiq,tx-burst-length = <4>;
+ 		};
+ 
+ 		stp0: stp@e100bb0 {
+-- 
+2.47.2
 
-This is a clever idea! It does however sound like Jeff & co. will
-eventually add a proper MDIO interface to this MAC. I will halt upstream
-of this driver for now and see what happens first (that, or me
-experimenting with GPIO). Thanks for the review of this series thus far!
-
-Cheers,
-Artur
-
-> 
-> MDIO itself is simple, just a big shift register:
-> 
-> https://opencores.org/websvn/filedetails?repname=ethmac10g&path=%2Fethmac10g%2Ftrunk%2Frtl%2Fverilog%2Fmgmt%2Fmdio.v
-> 
-> 	Andrew
