@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9111D1DD9D3
-	for <netdev@vger.kernel.org>; Sun, 17 Aug 2025 16:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE2D14EC73
+	for <netdev@vger.kernel.org>; Sun, 17 Aug 2025 16:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755446674; cv=none; b=M3F+ZKcwlbCE48zmJDTgcm0kUi4e0FHtrJ0E76ze05XXp8CbQ1kn932thkraFMpSc6093CyDGW8xDTvVBSGL31cq8WzrfoCH0BkZ8jEhS4zKI82EclY9g8Ag8Yx3RKjm9DtVG1FUgyvhrTUOzK4Ra6OLeMAeujUYAW+VpwvFhXI=
+	t=1755446694; cv=none; b=JC822BIj4XuThMJunzrR7rvKA/W+bwa1ereWR+sJivFOm/glKKWH6ivIo1IEMfektQQL+L/Jp3AHD/BbV73kCJ6+V+tm6vVo5P9x9EhcizIJGKXNp2bDb4GOwiF8fnfVLTMjL/7uIMePzv2aO/uIsG6uRHzH6bQpwaBr163VUic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755446674; c=relaxed/simple;
-	bh=P5rwfcGSSOv/uKKsAF8TFd6e2O3BXYcrXeQHrS/Jmoc=;
+	s=arc-20240116; t=1755446694; c=relaxed/simple;
+	bh=70nj/bwe1ofe/dXixEBO/yoBaoggTvY9MIMBWlAybDY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EeFLPuQILjibn2fO6HmB20tXH5fHrG2WCRnCkr1q/se/8xhnSwYa9TrTtqLuWrCq4qAykILji0Q5VMef+Dz+uifi3VmQtePB6stSM79f1nbh+ydrJ8+JzcnpnkDJLMW19XKWK6f5mMdkqXmRJJdCW/350ZtxnWlQyUpIqx+24zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Js/+i2gN; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=ggH69U4Mi7c5/mZS3FPHjHGf/rjb4NGzFfvJXl4NY2YipGT8SSETczvhrvGWUnjNzthKUDxE9rXIqPPBeKZFAlflrXaA+PBYnuxzAhgKEBiNiWCyNYaovyuyOcoVNEZHnT1TBsTGMB1rjpaJa7CVpEYmEDIZhuFym1mJNIsucjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rC1G319d; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Js/+i2gN"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rC1G319d"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=pCcg/l2MDgyx42YR9rTaA9Q/wswgRnMWMOcSSkfSRn4=; b=Js/+i2gNu7+OuWsAOyEK76MHHO
-	+acVYTB9ee7v42LjoTfgrn+PZf3WWQw3nWkegNNMFrUQuTUlKLsU9LAEdA4LMgwWLLmUlTOLmsDv0
-	lFguBOYFUw5w8mXnBJp53xm+O0rOnOsjIH12t/3Wlpl+xLYDi0yFenWZoO3qcxP2AyFo=;
+	bh=POmukRFkjYpNXYmDEPj/7QMdAoS9bsibi9ZYM92l9p4=; b=rC1G319dTDBFPpGTPqkcpbL3HP
+	QRy7+PTdl6rXOCpbsnZoW9eRT/HTpDkvV38pa5R3sZaUwBqPhMWRcTJXghaFODfj/1bt9qR/+iSnF
+	UFeHFBOmNQ9e/FjkROLMguEQQ1MF7Jm/+OHTPgM25A5hdD2vuWO9nGHI6xIYLJWfmC/8=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1unfrr-004yc7-Ll; Sun, 17 Aug 2025 18:04:23 +0200
-Date: Sun, 17 Aug 2025 18:04:23 +0200
+	id 1unfsD-004ydR-DH; Sun, 17 Aug 2025 18:04:45 +0200
+Date: Sun, 17 Aug 2025 18:04:45 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Heiner Kallweit <hkallweit1@gmail.com>,
@@ -40,11 +40,11 @@ Cc: Heiner Kallweit <hkallweit1@gmail.com>,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 6/7] net: stmmac: add helpers to indicate WoL
- enable status
-Message-ID: <f5b02f2a-e05e-414d-962d-4f561710271e@lunn.ch>
+Subject: Re: [PATCH net-next 7/7] net: stmmac: explain the
+ phylink_speed_down() call in stmmac_release()
+Message-ID: <3590bd11-c934-4838-b9c7-87a480dc3696@lunn.ch>
 References: <aJ8avIp8DBAckgMc@shell.armlinux.org.uk>
- <E1umsfP-008vKp-U1@rmk-PC.armlinux.org.uk>
+ <E1umsfV-008vKv-1O@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,11 +53,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1umsfP-008vKp-U1@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1umsfV-008vKv-1O@rmk-PC.armlinux.org.uk>
 
-On Fri, Aug 15, 2025 at 12:32:15PM +0100, Russell King (Oracle) wrote:
-> Add two helpers to abstract the WoL enable status at the PHY and MAC to
-> make the code easier to read.
+On Fri, Aug 15, 2025 at 12:32:21PM +0100, Russell King (Oracle) wrote:
+> The call to phylink_speed_down() looks odd on the face of it. Add a
+> comment to explain why this call is there. phylink_speed_up() is
+> always called in __stmmac_open(), and already has a comment.
 > 
 > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
