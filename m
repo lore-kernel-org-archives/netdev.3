@@ -1,149 +1,91 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A412F9C27;
-	Sun, 17 Aug 2025 14:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19081114;
+	Sun, 17 Aug 2025 14:47:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755441730; cv=none; b=Hx1aid4lRoaQVwPzKehC8wayM/oM9GOYPTGJt+Rf5r1RGn6u5HDW4QSWwCyuHfaFd+Mfr6hOr8GqnfXK4KAkMu74Ka/fqktoHefcfClRO+9cfPP/JnXkdpppx/IwCBgH+UurItA1GiSe8I2RekF3NsD88N8g1kGFu/EPEmliyQg=
+	t=1755442070; cv=none; b=B6nao+nE9NI156++rRHwGWjJCHWNbh+a4e6tHhlX/ikoZbvcYz2fPAb152DeG6O+Lo+BUyK0yBVQ+9CRpWrvzilQSk+YCYDGBBynfSIDZixRADg4M71ZbwHDC3kw/UM6TP9K6tHTbUuCRE06lfGVJjWprDcYSYOxsX7VSh0bIDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755441730; c=relaxed/simple;
-	bh=VCAAoYXrZeEeZvYFDo8gpSf5FRlsHN77VicwqCg7lnk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fC4Ccl3MtMWp4HtMhnVMLk6YeWivlEV+jlc4XzpW5YJ6gBS/ADl7G3xp9e/06nkhtsXEQQSQ49VFk4mGqdHlyJ4MEBBBi0Z33BX/o8B+RZ2MgMyZhjjl+RJJPw3iy5HyHu63CDj/Wu3zYfZPtufPcAtj9dyLCHZlQ029fdgrC5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BTr/44sk; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755442070; c=relaxed/simple;
+	bh=yXARakI6k03ymGQSbr4dSPhBT/iQlvYnjX8gdJUZ974=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JyUZ8YuFL6YSw+RO3gSwBkOSahIrI4ku8RCS0SiOa1bUC+KRqukc2ONk1+UkQ8loQwTcUmxOmXAnJ6s5xMa6L8PagoeuDUgRXSPp6uMUbOWHm8x8fhwdsmDd4xztFNUPeEoE2FK9YLmz8LHA5bxHsmn2VATlqcJDTNF+1el7N54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=vNZkMSOJ; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BTr/44sk"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3b9dc5c2f0eso2314486f8f.1;
-        Sun, 17 Aug 2025 07:42:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755441727; x=1756046527; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JCK0McWcOTuTtwFlnRSx3Lqz/jXdIqFs+uzK4OV710Y=;
-        b=BTr/44skjPhAdxbal7NahWzkVbEdpaUbOUWJ3nUwro/PceJUEoDatGH33kJZJ9najw
-         1JwCcToQdjFPN2RMPrOBxkI3Fb8WhZDjCPhSIWOoCYfBdZXRtOzPpycHPJUyY7PLfIxF
-         7Vz/ht7mMzHCmKQHC6ryqTLJWpqbjo3Kor3UR5iD0VRQYJTFxgHP0tp56WdyO1K7kAZi
-         tBHeYUya2iSuUX7Qx+rsgK2fLfOcW+ZpD+owkMRX4RpttdGsOEO2TNGmZMJou7iRAzQB
-         oNH9l0HAtUe7/7cYXnws003ymvJLK6gZwW0RRq0+vXSuIs4YPdLc/GPuuCKy74OCAJJt
-         GMeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755441727; x=1756046527;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JCK0McWcOTuTtwFlnRSx3Lqz/jXdIqFs+uzK4OV710Y=;
-        b=bfpNgkScJJ58I5k63HRSjj1rwpvhV2zVTbs3FwPsaeywSYRZR/A3EIPlQEqnnVKi+K
-         ne/YFAMnnCb2LNvCXbUbhhhvqyIfHJFM8sli1/JAskrmexYWCff8QKoRpDYGcyUoA0c/
-         pdzqYk8Q9VMEGg8MXwheWVmWkomR9OwCYxziPQ1Y8CiJqYlMRbcpVzKG6/jGxBk7d/cR
-         Y2wEkAUac+qUcoQJXnS77OyW5bkTJ7b57An7uq7zouAJW95knxkEG3NyXk21AmzrgWsW
-         2DXCmZWzJ0UT66E0tRHZptBXg7dAZMd+3F3umIdhH9ln1TZpBye9scmq8S+y/FJqNfXR
-         z+Ag==
-X-Forwarded-Encrypted: i=1; AJvYcCVeEEL0gZybcwWqSWiTlZFF9evqm8jnTSYblDwh4ybjTqxMwdClV/g/WZwdZXbb40D24teri02S@vger.kernel.org, AJvYcCXtd9yfTG80Z1FVQ4jOKMUhOXqbVCqcglub4+gYcoNO5HZ5swixVBktayJMgv6TULoqnFeSdH/C6XB6LHI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxE7SRJomPEFyRZQMK++AzuSaMMduaDpCtiWNuXIOsdEcCCeqDu
-	isN0NkmYvknYC2LWy7vs3wLEf3KTVRwr8YQCZRsAeMrMq5a+46U7HPfV
-X-Gm-Gg: ASbGncv4jXzbxoUiToO89aaIB/1iWU/HfsWOp4xdeYVog1aNVisOH24a43JQ2JViZOP
-	Zdf5wIRUda054fhwzcSEzQrDMOfqk6CfVeypoedR8vhBHjYfpwcTU0KWbPKb7GApGFGMDKNuqS+
-	uTQgypG7aZjX19xoQH5FWjRC6QfYAmnLUC9cBOslpdrsq3D0R+4WYfsRQaLh81t+pcpjrWLRfC7
-	gA62QrAF3mLPY9zQvZgSK+4WcYuP823qxWAM7rbZ2k5hj0ExpFLn/zwQwqca9ss50yveKj49rA4
-	F34RHZ497BVluH0jHtV3NrP9jL+ybgKxzqbUa1VRq2nTIaBIQtw+wSGv+3AAceV5dmr4HJRIhuB
-	amPERpZFQzPZ8yke9xoYwhRdlC9Ip3YO0q5rvfx9U5airHSqNqWWG9BGAZ5Xg
-X-Google-Smtp-Source: AGHT+IFlIuH2NAhG3N61PeoqIDbW0IWOe4t4kn17RiKQqs35q6xh7BpQ/VMASePWLc6529FKkvONyg==
-X-Received: by 2002:a5d:5d11:0:b0:3b8:fa8c:f1ac with SMTP id ffacd0b85a97d-3bc68b89fb3mr4773670f8f.24.1755441726833;
-        Sun, 17 Aug 2025 07:42:06 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a22328b5fsm93743445e9.20.2025.08.17.07.42.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Aug 2025 07:42:06 -0700 (PDT)
-Date: Sun, 17 Aug 2025 15:42:05 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Xichao Zhao <zhao.xichao@vivo.com>
-Cc: ecree.xilinx@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-net-drivers@amd.com,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] sfc: replace min/max nesting with clamp()
-Message-ID: <20250817154205.6044124e@pumpkin>
-In-Reply-To: <20250812065026.620115-1-zhao.xichao@vivo.com>
-References: <20250812065026.620115-1-zhao.xichao@vivo.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="vNZkMSOJ"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id D612620606;
+	Sun, 17 Aug 2025 16:47:39 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id cKvTaERl5Ngu; Sun, 17 Aug 2025 16:47:39 +0200 (CEST)
+Received: from EXCH-01.secunet.de (unknown [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id E4A122050A;
+	Sun, 17 Aug 2025 16:47:38 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com E4A122050A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1755442058;
+	bh=9ZP7Ld49nJmdiuSlDqBAd2NVgX/RMSwa8yk9QwTGslY=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=vNZkMSOJGKLDsy49gGXtnEW6RPfia9sMRy0aepDBUSGLsMSSxpIRZ3ouetDDnupDy
+	 YGwUovdPAx5a0mq7/Vvo3trWHca0BweV14G3/ZGdtyjVugrLDGO91wJVQVQIHEnpjh
+	 mEOrNjK/2YOBECgHOSXSH+O1eyzyd3owmss9b4lyuDEwMs81AFGTGdjN+lopKNfChL
+	 qG+rP3eXv1SBv3dEFGcqNvm7Im+Bzebb2XBSSVrgrwwKB2pBWyfQm5OU0GKds4BZcQ
+	 qPTg+nMoScqjZ+IyxTZ1zyFFFX9D8XKNPybXjTFC4zwwWMqpwV2CQ2f+tP1q+AGnRs
+	 wfBxGI9H24gPQ==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Sun, 17 Aug
+ 2025 16:47:38 +0200
+Received: (nullmailer pid 2608436 invoked by uid 1000);
+	Sun, 17 Aug 2025 14:47:37 -0000
+Date: Sun, 17 Aug 2025 16:47:37 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Charalampos Mitrodimas <charmitro@posteo.net>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller"
+	<davem@davemloft.net>, David Ahern <dsahern@kernel.org>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com>
+Subject: Re: [PATCH ipsec-next v3] net: ipv6: fix field-spanning memcpy
+ warning in AH output
+Message-ID: <aKHriXFxwGlTHwnq@secunet.com>
+References: <20250812-ah6-buffer-overflow-v3-1-446d4340c86f@posteo.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250812-ah6-buffer-overflow-v3-1-446d4340c86f@posteo.net>
+X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
+ EXCH-01.secunet.de (10.32.0.171)
 
-On Tue, 12 Aug 2025 14:50:26 +0800
-Xichao Zhao <zhao.xichao@vivo.com> wrote:
-
-> The clamp() macro explicitly expresses the intent of constraining
-> a value within bounds.Therefore, replacing min(max(a, b), c) with
-> clamp(val, lo, hi) can improve code readability.
-
-I think you can do a better job of the line wraps?
-The first and third won't exceed 80 cols split onto two lines.
-They might be 86 on one line - plausibly ok (but I like 80 and they are splittable).
-
-	David
-
+On Tue, Aug 12, 2025 at 03:51:25PM +0000, Charalampos Mitrodimas wrote:
+> Fix field-spanning memcpy warnings in ah6_output() and
+> ah6_output_done() where extension headers are copied to/from IPv6
+> address fields, triggering fortify-string warnings about writes beyond
+> the 16-byte address fields.
 > 
-> Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
-> ---
->  drivers/net/ethernet/sfc/efx_channels.c       | 4 ++--
->  drivers/net/ethernet/sfc/falcon/efx.c         | 5 ++---
->  drivers/net/ethernet/sfc/siena/efx_channels.c | 4 ++--
->  3 files changed, 6 insertions(+), 7 deletions(-)
+>   memcpy: detected field-spanning write (size 40) of single field "&top_iph->saddr" at net/ipv6/ah6.c:439 (size 16)
+>   WARNING: CPU: 0 PID: 8838 at net/ipv6/ah6.c:439 ah6_output+0xe7e/0x14e0 net/ipv6/ah6.c:439
 > 
-> diff --git a/drivers/net/ethernet/sfc/efx_channels.c b/drivers/net/ethernet/sfc/efx_channels.c
-> index 06b4f52713ef..0f66324ed351 100644
-> --- a/drivers/net/ethernet/sfc/efx_channels.c
-> +++ b/drivers/net/ethernet/sfc/efx_channels.c
-> @@ -216,8 +216,8 @@ static int efx_allocate_msix_channels(struct efx_nic *efx,
->  
->  	if (efx_separate_tx_channels) {
->  		efx->n_tx_channels =
-> -			min(max(n_channels / 2, 1U),
-> -			    efx->max_tx_channels);
-> +			clamp(n_channels / 2, 1U,
-> +			      efx->max_tx_channels);
->  		efx->tx_channel_offset =
->  			n_channels - efx->n_tx_channels;
->  		efx->n_rx_channels =
-> diff --git a/drivers/net/ethernet/sfc/falcon/efx.c b/drivers/net/ethernet/sfc/falcon/efx.c
-> index b07f7e4e2877..d19fbf8732ff 100644
-> --- a/drivers/net/ethernet/sfc/falcon/efx.c
-> +++ b/drivers/net/ethernet/sfc/falcon/efx.c
-> @@ -1394,9 +1394,8 @@ static int ef4_probe_interrupts(struct ef4_nic *efx)
->  			if (n_channels > extra_channels)
->  				n_channels -= extra_channels;
->  			if (ef4_separate_tx_channels) {
-> -				efx->n_tx_channels = min(max(n_channels / 2,
-> -							     1U),
-> -							 efx->max_tx_channels);
-> +				efx->n_tx_channels = clamp(n_channels / 2, 1U,
-> +							   efx->max_tx_channels);
->  				efx->n_rx_channels = max(n_channels -
->  							 efx->n_tx_channels,
->  							 1U);
-> diff --git a/drivers/net/ethernet/sfc/siena/efx_channels.c b/drivers/net/ethernet/sfc/siena/efx_channels.c
-> index d120b3c83ac0..703419866d18 100644
-> --- a/drivers/net/ethernet/sfc/siena/efx_channels.c
-> +++ b/drivers/net/ethernet/sfc/siena/efx_channels.c
-> @@ -217,8 +217,8 @@ static int efx_allocate_msix_channels(struct efx_nic *efx,
->  
->  	if (efx_siena_separate_tx_channels) {
->  		efx->n_tx_channels =
-> -			min(max(n_channels / 2, 1U),
-> -			    efx->max_tx_channels);
-> +			clamp(n_channels / 2, 1U,
-> +			      efx->max_tx_channels);
->  		efx->tx_channel_offset =
->  			n_channels - efx->n_tx_channels;
->  		efx->n_rx_channels =
+> The warnings are false positives as the extension headers are
+> intentionally placed after the IPv6 header in memory. Fix by properly
+> copying addresses and extension headers separately, and introduce
+> helper functions to avoid code duplication.
+> 
+> Reported-by: syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=01b0667934cdceb4451c
+> Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
 
+Applied, thanks a lot!
