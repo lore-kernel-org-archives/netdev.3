@@ -1,79 +1,94 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Received: from orbyte.nwl.cc (orbyte.nwl.cc [151.80.46.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BB5261B75
-	for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 11:09:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783182765F1;
+	Mon, 18 Aug 2025 11:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=151.80.46.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755515388; cv=none; b=gGfT0c+JM/TldMsU+RtLwfCzAMdiHW6a4Z/+Csyh8Z78zV6jeYwfy1nKIRG1C2c4sUyS5Pxw3z9A7KrVlCcb5pp9k4LpOBcXvvio/LhS+fSG3rdbhMCff+4Q8PFXn2KxsD0KXuziaPI0/IC1nJv75I79njvZ7KyQzmxQ4eHstEk=
+	t=1755516150; cv=none; b=QOtBLYT/vVjAz7M4F1YFqoQLub3+oGW4A0goSdA1CcunYKSdXQA0hBEbwFNeTDXFUa7fmtM75nReNe14ZzmirWWDOb8OQ7c8XcM50mI8CVcKyQ9wGECFzgs03UIqPaELrNbyPK/KU6tOhNv3F2pBZ+I8+b7e2HfejtUpvBhmFsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755515388; c=relaxed/simple;
-	bh=OR2DYq8Rl0wyBBPU7bl3PHpoIKLvpH9ZHB/YJ+Qzhyo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HNtMjDLjQe0q+vqfPHvYH+tlO2m17UldyIQMvknuHuFacB6sxV3TJAzVa/gjkl0Vxa5TqZrTIzY390I+zB/Gzw2Hh9jiTP013/RW9K+hCTvHln1j8i1qfWdgY10fCAmrB31wroRvFG7esjfd8WF+M7otczbX6jwQ2GYW+++pacc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=s9PdbNxY; arc=none smtp.client-ip=91.218.175.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1755516150; c=relaxed/simple;
+	bh=1gbiQY/r9J8++5jEQ3UILKJfZPk6cI6zE5J0Rn9VyGQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hxdsWPEyOj5/EZLWE+8H9FHnC+prvtp2SqMtiAxDof7ASCaelmXGCWRZ7WkIriqWiTjQdnzMjG/r5RyhhceZtghlUefkP8p2xYTA2fixDchYDNhbTCwZE6OwgoiS6Mh3TaexSXn6jTqEel5SO6lhAH7fWj+jpbf/8Xdx5KWKjNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nwl.cc; spf=pass smtp.mailfrom=nwl.cc; dkim=pass (2048-bit key) header.d=nwl.cc header.i=@nwl.cc header.b=Ehmc9dPZ; arc=none smtp.client-ip=151.80.46.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nwl.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nwl.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="s9PdbNxY"
-Message-ID: <dcce0303-8184-4ed0-a26d-f85dc469ab46@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755515374;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oiI4Lo7dgIKpq91EheYYdUeo63Zgn5fpMIaRzAbNtFE=;
-	b=s9PdbNxY9pt01nUa/jDZlrc+V5+s6LqfC6YacW8Hblt8ku4JeoJpyd5TUX7g/Sw5YiVcv3
-	hXv8EZVYrlBG02zBty/PaGxfBLdVdWYiN78A+fcGe7nDVHfCz959hT1n05mauxBVogpjIm
-	BxJinPaeDGpMAW/2zd/bo02+VeKPnbE=
-Date: Mon, 18 Aug 2025 12:09:28 +0100
+	dkim=pass (2048-bit key) header.d=nwl.cc header.i=@nwl.cc header.b="Ehmc9dPZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nwl.cc;
+	s=mail2022; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=rbZ9DHkVW4OtrX4voktvrmKijnsuPEqk2pjb3fx2uYk=; b=Ehmc9dPZpnjHTXMRzJt1Zkbgao
+	1CRJ2FjxDxgmARjAWaj/81Ko8Z2UA8YBCVa1Ecm9gozNhoW3I/+YPndqSZgBFr7JbT0VNchBzznmo
+	9feqVT5N0ucfVmlhQTUES8n6p7mBnUfWYJr24n9lt6rtC6+V0GA2lMnbQfCZ3bcovy4utE+OlKcRv
+	2SDF53cfsv2EXQu4EUOgyBk6X/n744cecjM9V3Z116BIsjkfsqN6531fUc0UE9ZmBrXYH+aZbkdkq
+	sapxhE0SUqcLmtXBj9yk0X1+FhNEQ+uueuJaC6qvbHOT+JwjUKK7kyryxorbGJGCq8KH5NNj/1xJ0
+	IrRsUi8w==;
+Authentication-Results: mail.nwl.cc;
+	iprev=pass (localhost) smtp.remote-ip=::1
+Received: from localhost ([::1] helo=xic)
+	by orbyte.nwl.cc with esmtp (Exim 4.97.1)
+	(envelope-from <phil@nwl.cc>)
+	id 1unxwX-000000006sa-46v5;
+	Mon, 18 Aug 2025 13:22:26 +0200
+From: Phil Sutter <phil@nwl.cc>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org,
+	Yi Chen <yiche@redhat.com>,
+	linux-modules@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [nf PATCH] netfilter: conntrack: helper: Replace -EEXIST by -EBUSY
+Date: Mon, 18 Aug 2025 13:22:20 +0200
+Message-ID: <20250818112220.26641-1-phil@nwl.cc>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net v4] phy: mscc: Fix timestamping for vsc8584
-To: Horatiu Vultur <horatiu.vultur@microchip.com>, andrew@lunn.ch,
- hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, rmk+kernel@armlinux.org.uk,
- vladimir.oltean@nxp.com, rosenp@gmail.com, christophe.jaillet@wanadoo.fr,
- viro@zeniv.linux.org.uk, quentin.schulz@bootlin.com, atenart@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250818081029.1300780-1-horatiu.vultur@microchip.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20250818081029.1300780-1-horatiu.vultur@microchip.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On 18/08/2025 09:10, Horatiu Vultur wrote:
-> There was a problem when we received frames and the frames were
-> timestamped. The driver is configured to store the nanosecond part of
-> the timestmap in the ptp reserved bits and it would take the second part
-> by reading the LTC. The problem is that when reading the LTC we are in
-> atomic context and to read the second part will go over mdio bus which
-> might sleep, so we get an error.
-> The fix consists in actually put all the frames in a queue and start the
-> aux work and in that work to read the LTC and then calculate the full
-> received time.
-> 
-> Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-> Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-> 
-> ---
-> v3->v4:
-> - remove empty line
-> 
-> v2->v3:
-> - make sure to flush the rx_skbs_list when the driver is removed
-> 
-> v1->v2:
-> - use sk_buff_head instead of a list_head and spinlock_t
-> - stop allocating vsc8431_skb but put the timestamp in skb->cb
+The helper registration return value is passed-through by module_init
+callbacks which modprobe confuses with the harmless -EEXIST returned
+when trying to load an already loaded module.
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Make sure modprobe fails so users notice their helper has not been
+registered and won't work.
+
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+---
+ net/netfilter/nf_conntrack_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
+index 4ed5878cb25b..ceb48c3ca0a4 100644
+--- a/net/netfilter/nf_conntrack_helper.c
++++ b/net/netfilter/nf_conntrack_helper.c
+@@ -368,7 +368,7 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
+ 			    (cur->tuple.src.l3num == NFPROTO_UNSPEC ||
+ 			     cur->tuple.src.l3num == me->tuple.src.l3num) &&
+ 			    cur->tuple.dst.protonum == me->tuple.dst.protonum) {
+-				ret = -EEXIST;
++				ret = -EBUSY;
+ 				goto out;
+ 			}
+ 		}
+@@ -379,7 +379,7 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
+ 		hlist_for_each_entry(cur, &nf_ct_helper_hash[h], hnode) {
+ 			if (nf_ct_tuple_src_mask_cmp(&cur->tuple, &me->tuple,
+ 						     &mask)) {
+-				ret = -EEXIST;
++				ret = -EBUSY;
+ 				goto out;
+ 			}
+ 		}
+-- 
+2.49.0
+
