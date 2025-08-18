@@ -1,146 +1,96 @@
-Received: from vps001.vanheusden.com (fatelectron.soleus.nu [94.142.246.159])
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DCE273D65;
-	Mon, 18 Aug 2025 10:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.142.246.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7442236F2
+	for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 10:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755511990; cv=none; b=LzdUnSvwUCPH20R1mzAGNj624hUxtQnFVm8HqpY31Qj+gPORNrxZhUksqAinOgqRTEvLultTPiIJ2yUDmsAwV+lio8BJKiXVmvSf/jgC7LbCP+wOq12K0WUXvD9lXD9txpzuCrw6n+qBs73CbiqjX2yWKAbk8xNp10a99ng6xYg=
+	t=1755512372; cv=none; b=tUStPStSGqmlGIGeoqVBdIzViyZRMA2byD0AbtMmbdZ8gfsTCqhnluXrYvOQIUfzIQjiBG1yn0LcgDO63lop8rHriVHOxZTyY3WmequvUzvuM1OcxJemu8GCmFM0nwp7Pk9AP01PudOKkIO/XBK+KGSh2LyL+rrA3VMajljFuf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755511990; c=relaxed/simple;
-	bh=ZlxYiXZYWSzDfPDTW01mRTD49zmTG73+TBn2R9YARug=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=lhVOlX+85/0mx555i6j7vtWbbGgCfKXzWLdYsPmerhyIO+IxCwvEIeKpp/wDC/trOvosy+rT4Vk8a5mkeY5/8NfDrHXszg1Bt4avMYNJJlyG+PtQEMPWwu2OrTtpTpRkxELlNUe675HGcruBZCefDfQE7f1LZJr+krmWtanBD8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vanheusden.com; spf=pass smtp.mailfrom=vanheusden.com; arc=none smtp.client-ip=94.142.246.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vanheusden.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vanheusden.com
-Received: from webmail.vanheusden.com (unknown [172.29.0.1])
-	by vps001.vanheusden.com (Postfix) with ESMTPA id 26F245008F8;
-	Mon, 18 Aug 2025 12:04:17 +0200 (CEST)
+	s=arc-20240116; t=1755512372; c=relaxed/simple;
+	bh=f30jZL5cYWfUn1vWNWyTFBHLrGVCX1FnWqrPVRvaIe8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=RHnhZwHrrB77dryevouNFm1HEzgDhR1T5/lsYd9kxpYCmWLQAIANxR7XLjukG2eg+IZLekVG8kZbNfQ+awfVt22Zwd26wxOaL/zBzQAnIOrFn8tH6K7w3xPcQDiAbn47OTkQKWJiVpYUXjhsShoesrotJ74ukqpUMfwlFN0xt8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=oHmj8Jkx; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="oHmj8Jkx"
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+	t=1755512356; bh=f30jZL5cYWfUn1vWNWyTFBHLrGVCX1FnWqrPVRvaIe8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=oHmj8Jkx7+QX4TFX9u+mNGH9lll/6ZJxEolXYC/ijdyXwxR2C+5597fmAdVFwYCOr
+	 ZfA26R7i466ABzXTkI3LTnGLsXgC8alK9BqPbZFRabZgbNT+mKOerox65QxXMvhLl6
+	 /918zRCr9t734sZaaOjGSMl8CNum1iAwoNAVmesHtQ11E8l6OgPKV/zKdAXh5Oy+f9
+	 JX3t/4YLPo8rwNl6JDiXuSctqZG0/DhdqntT5As4Wylw37nNOY9MbL3z8g01IQ9VeF
+	 UzEmZhCPJXXFGbbmeVga7OphjBIKJ+/CgBmTBXgZcxaK1ror7Y6QcMtY7Q0Vp+2fY/
+	 DIDodlQTvZMtQ==
+To: William Liu <will@willsroot.io>, netdev@vger.kernel.org
+Cc: jhs@mojatatu.com, xiyou.wangcong@gmail.com, pabeni@redhat.com,
+ kuba@kernel.org, savy@syst3mfailure.io, jiri@resnulli.us,
+ davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+ cake@lists.bufferbloat.net, William Liu <will@willsroot.io>
+Subject: Re: [PATCH net 1/2] net/sched: Make cake_enqueue return NET_XMIT_CN
+ when past buffer_limit
+In-Reply-To: <20250817172344.449992-1-will@willsroot.io>
+References: <20250817172344.449992-1-will@willsroot.io>
+Date: Mon, 18 Aug 2025 12:19:16 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87a53xj5jv.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 18 Aug 2025 12:04:17 +0200
-From: Folkert van Heusden <folkert@vanheusden.com>
-To: Bernard Pidoux <bernard.pidoux@free.fr>
-Cc: David Ranch <dranch@trinnet.net>, linux-hams@vger.kernel.org, netdev
- <netdev@vger.kernel.org>
-Subject: Re: [ROSE] [AX25] 6.15.10 long term stable kernel oops
-In-Reply-To: <acd04154-25a5-4721-a62b-36827a6e4e47@free.fr>
-References: <11c5701d-4bf9-4661-ad8a-06690bbe1c1c@free.fr>
- <fff0b3eb-ea42-4475-970d-30622dc25dca@free.fr>
- <e92e23a7-1503-454f-a7a2-cedab6e55fe2@free.fr>
- <acd04154-25a5-4721-a62b-36827a6e4e47@free.fr>
-Message-ID: <af3344165cd51561f92449a27841f41d@vanheusden.com>
-X-Sender: folkert@vanheusden.com
-Organization: www.vanheusden.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Looks like the issue I reported a few weeks ago.
-In my case not related to rose, only new connections.
+William Liu <will@willsroot.io> writes:
 
-On 2025-08-18 12:00, Bernard Pidoux wrote:
-> Hi,
-> 
-> I captured a screen picture of kernel panic in linux-6.16.0 that 
-> displays [mkiss]. See included picture.
-> 
-> Bernard
-> 
-> 
-> Le 16/08/2025 à 20:45, Bernard Pidoux a écrit :
->> David,
->> 
->> For some reason my messages are not accepted by vger.kernel.org 
->> despite I configured thunderbird not to send html.
->> 
->> I just compiled and loaded kernel 6.15.1.
->> 
->> Up to now FPAC 4.1.4 is running fine and performing connexions with 
->> neighbour ROSE nodes.
->> 
->> I will let it run a while before starting to apply progressively the 
->> AX25 and ROSE patches committed in kernels 15.2 to 15.10
->> 
->> I will start with ax25 ones and see what happens.
->> 
->> 73 de Bernard f6bvp / ai7bg
->> 
->> 
->> 
->> Le 16/08/2025 à 19:49, Bernard Pidoux a écrit :
->>> Hi David,
->>> 
->>> Actually Ubuntu stops responding without any message. No more 
->>> response from keyboard or mouse. Only switch power !
->>> 
->>> I am working on activating kernel messages on oops.
->>> 
->>> The bug is already present in 6.15.10 so there is no reason to look 
->>> at a more recent version.
->>> 
->>> I will report any progress if I find something interesting.
->>> 
->>> This is quite a challenge for me as I did not perform this kind of 
->>> kernel investigations since nearly a decade...and I am not getting 
->>> younger !
->>> 
->>> 73 de Bernard, f6bvp / ai7bg
->>> 
->>> 
->>> Le 16/08/2025 à 19:32, David Ranch a écrit :
->>>> 
->>>> Hey Bernard,
->>>> 
->>>> Thanks for posting this issue.  Can you copy/paste in the Oops 
->>>> you're seeing?  I did see a recent ROSE issue on 
->>>> 6.16.0-rc6-next-20250718- syzkaller and I wonder if that could have 
->>>> created this issue:
->>>> 
->>>> https://groups.google.com/g/syzkaller-bugs/c/0TmBbcJ2PKE
->>>> 
->>>> Btw, I would say that posting this to netdev@vger.kernel.org would 
->>>> probably be more important than this Debian list since this is most 
->>>> likely a kernel issue and not a distro issue per se.
->>>> 
->>>> --David
->>>> KI6ZHD
->>>> 
->>>> 
->>>> On 08/16/2025 10:02 AM, Bernard Pidoux wrote:
->>>>> Hi,
->>>>> 
->>>>> I am continuously working on AX25 ROSE/FPAC node since decades, 
->>>>> running a number of RaspBerry Pi (Raspi OS 64bit) plus Ubuntu LTS 
->>>>> on a mini PC.
->>>>> 
->>>>> Stable FPAC version 4.1.4 is performing packet switch quite well 
->>>>> although some improvements are underway.
->>>>> 
->>>>> FPAC runs flawlessly with kernel 6.14.11.
->>>>> 
->>>>> However, trying FPAC under stable kernel 6.15.10 experienced a 
->>>>> frozen system when issuing some commands like connect request.
->>>>> 
->>>>> Investigations seem to show that ax25 connect is fine and that the 
->>>>> bug is probably in ROSE module .
->>>>> 
->>>>> I am presently trying to find the faulty bug that triggers the 
->>>>> kernel oops by compiling and installing previous kernel versions 
->>>>> starting with 6.15.1.
->>>>> 
->>>>> 73s de Bernard, f6bvp / ai7bg
->>>>> 
->>>>> http://f6bvp.org
->>>>> 
->>>> 
->> 
+> The following setup can trigger a WARNING in htb_activate due to
+> the condition: !cl->leaf.q->q.qlen
+>
+> tc qdisc del dev lo root
+> tc qdisc add dev lo root handle 1: htb default 1
+> tc class add dev lo parent 1: classid 1:1 \
+>        htb rate 64bit
+> tc qdisc add dev lo parent 1:1 handle f: \
+>        cake memlimit 1b
+> ping -I lo -f -c1 -s64 -W0.001 127.0.0.1
+>
+> This is because the low memlimit leads to a low buffer_limit, which
+> causes packet dropping. However, cake_enqueue still returns
+> NET_XMIT_SUCCESS, causing htb_enqueue to call htb_activate with an
+> empty child qdisc.
+>
+> I do not believe return value of NET_XMIT_CN is necessary for packet
+> drops in the case of ack filtering, as that is meant to optimize
+> performance, not to signal congestion.
+>
+> Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
+> Signed-off-by: William Liu <will@willsroot.io>
+> Reviewed-by: Savino Dicanosa <savy@syst3mfailure.io>
+> ---
+>  net/sched/sch_cake.c | 3 +++
+>  1 file changed, 3 i
+> nsertions(+)
+>
+> diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+> index dbcfb948c867..40814449f17a 100644
+> --- a/net/sched/sch_cake.c
+> +++ b/net/sched/sch_cake.c
+> @@ -1934,6 +1934,9 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+>  			cake_drop(sch, to_free);
+>  		}
+>  		b->drop_overlimit += dropped;
+> +
+> +		if (dropped)
+> +			return NET_XMIT_CN;
 
+cake_drop() may drop from a different flow, so we can't unconditionally
+return NET_XMIT_CN. We'll have to check the return code of cake_drop()
+and only return NET_XMIT_CN if it's the same flow we just enqueued a
+packet to (which is also what fq_codel does, BTW).
 
--- 
-www.vanheusden.com
+-Toke
