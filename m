@@ -1,63 +1,63 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60859322776;
-	Mon, 18 Aug 2025 13:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05D5322A24;
+	Mon, 18 Aug 2025 13:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525407; cv=none; b=RV9yyWkxI3NZsTWXja9Tgmi6Z3Afq77inIIxvhO/AzG25xZboorKdM7jUnWb6ylEpfgXKP2g83PR4vJjx00gbnQV8kLmg8XBNPEmO0mt9YCb7zVg62edZnJ5SY5ulPnl23yFt3QZl0CAWNBjMWSAhoNJRY75G35QmNTRosDtGAQ=
+	t=1755525409; cv=none; b=f3EOLO955xrTr4GmhgCccFySN1stlQrPkvCOq15qcCSKzCS8+6dTGvviTSxE2tfhqtbO9R7iqaip0ANRa4EQVHh6rG7OlGRvFbPZDeaEVHyrYGNLdkYHyTY3Cy3Tv3J/UPdmqipzEcasR1lsCIovO5CnhqKNSAbJXj1W2mzIDHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525407; c=relaxed/simple;
-	bh=FlAybfuKHbG6+a7ZbRKEB6/E7DbObThw5ayznKjijpQ=;
+	s=arc-20240116; t=1755525409; c=relaxed/simple;
+	bh=3GMjb+lbBpFhbrGVSn65GBcvohAzWPx6gsl/4V25jU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBoZvXKWWypi825KAE7uhq7P/29Qu7Iko6XMWefmNeD0EF/k/5nUJP7MEEGPv1H0gFmEH8GvDsg/8DpRU/NtbopqCcF0I8A3m4uu5qPj1e/kFmmZ6DTam5QxjMoyL0upjFc4Dg/YmkH031rOwkI7vXQYDcRFqS4HUFj9CTunOpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cPIs/8vY; arc=none smtp.client-ip=209.85.128.54
+	 MIME-Version; b=QsMx9UE7Jk33MIcHSmu0WLCzyXMKRAYy7e2Le4lKlRBur6PFXmhhWZw9pP18JeDoirtdpn9ARAefqvQ2ZRSY2tb95obZTzyaFuKDWvBBbH4589Edn8mOs0fJnm1fjuHfz/bqdrdr3Rw+OLDVU1IocnsJ6L0l8Z3vk+OtcxBVQgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WCGCLtm2; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cPIs/8vY"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-45a1b05ac1eso19561395e9.1;
-        Mon, 18 Aug 2025 06:56:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WCGCLtm2"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3b9df0bffc3so2892966f8f.1;
+        Mon, 18 Aug 2025 06:56:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755525401; x=1756130201; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1755525405; x=1756130205; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=s6CWZWRRbyysTyJbo/8Elocwsz5g3qKnhCwDIxLbwp8=;
-        b=cPIs/8vY4bqB6nxe+LYKZUseQfz4Bg4Bfn1XkjGsUBC9qUTk9XXwWiPk4Exjr6IMKq
-         aeIWisWkICjJZfoDlZJ/PfEjkyKd5W+Z1sKcBJCdSTIhKE3zEDjAl6jNfhH+uhZ0m54G
-         JgUI6aLcJOXIcojXGAqEyso1SrDjh6wfkG65RujijfmRn3KT4EYqhLQmZX7foEl/6mfv
-         jiI/rbVsPC8vfzi9rc0H7Te+9kBwsAGpboMznYITiqADlYr+hdig+CEFXEZGdw+9nsIf
-         dvAe35UQU08P8sQTAPZhy1/u1zGgdYvdfYCg000Ijf2lwXvZRsfvyjbXYh63VEXBHwLT
-         FtqA==
+        bh=+t66GhzgS8tUB6DAwObgo1BEyoN8jrBytfijH3iRZiA=;
+        b=WCGCLtm2wWZtNPZUOCkRPch6AhldoeB3oVnVz7Dm5aEBv9zQ+evYqd5f3VXGkE+JhP
+         M7ys6aDFqkOe9XYZrxuYGkvLlcy3/8ac2uXeRbV/j6OnhSgsku9pfqWETO9IeKhwpNgu
+         pbtABu5OC0B/IiawCdtCbinXlGmSNz0/RhuICTplOwA5KqqYf76s8tfDDeAgubPOU2f9
+         02L9wZpP86gM5q3amXfNEHa0WiK1KhE2DB87rLpZPEftqjWPznRjfF+wgirj+Pj4WAEI
+         G1MZxkeihtA53qj6uAreaeg0wpWzJ2JnfShB1icy5HCyqQI104XPCSERLYOAzydWSnOZ
+         4Dlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755525401; x=1756130201;
+        d=1e100.net; s=20230601; t=1755525405; x=1756130205;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=s6CWZWRRbyysTyJbo/8Elocwsz5g3qKnhCwDIxLbwp8=;
-        b=rmDvezjmKI62EAgVgNy/YnGh17MbPnj9tsZGIPGm2UtAaChu4Z9UF5TxHzeP1vr01m
-         19bREmaLAtZXR5FDJg2l7tm5BSqbL5SOnhYQlZ1vLMm3VvvAk4SD0xkMU+9V3v7GCDr/
-         JVgZvyooV4V7LUKDXZFdVWuI7uemiKGAY0GjVTOkSkgoZd1jHFK9+/Hs+mreBfu5aGk6
-         fdhnS1Ckh9bV8J8D6h9N77afpGg9IxwUBgW4I/2f9MZU4YJ0O1CpHk8bXetDIXV9siDX
-         +snZvdE99B51u11kcfL8zXuvQ1+2poLhWHiJg8j1LO9LrvWcLxPKai8O1m+dAEfLCCbQ
-         GG0A==
-X-Forwarded-Encrypted: i=1; AJvYcCUMFcMp+E557De/FSSynK/fgDWsyBBSblC4mrViUjHv2jgYo3H72WsGIp7pzULZxd5NWrfxurq41/1s6vWB@vger.kernel.org, AJvYcCWZnMrceZ+7FYScbbAOuw1F+ZuarpGP9IgXWIMt2y8HRAyu89dbdWcphJL7hgJt/4jQeCQkSFmc@vger.kernel.org, AJvYcCWoHV9WiE5VySITYT1BZ6+NH3YtaWS1dOFbZrZem9o0LmFYo5Pb2igd9y4AdRVJ6EhXAx7jVkDMZw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBHuvg34UT82Je1K1OYpi2LmQzeToygHexT0moCPzjAEp9wJZQ
-	Zy7zNKOBlk3gkQta1TuGBJQB7zVh6TS6qWehR1MLymWe72t9HdKCA2/w
-X-Gm-Gg: ASbGncuwGJ+pP9i9Mr2iPlQhaa1jBGAufvXVwwdhvdjB34F9eRM7d+GqIN7ddWfxteG
-	nHJN22eauafskA0nJptu1puvfSnh/yQj3NqDkThig+rASX7+49T1bP9/eQMVWngDfguRxN0dL2Y
-	F4/peKvgqEzAPBUo5r27KxhpcaLV+1/4o2nsz7enXUr0KbT5yVjpDLciBnqCVLLYe8JPQEzAk79
-	7fqh4JektBQYqMayZYfnwi14UOQg3aHOBrvKi7kts6///lnpfezi8yHRt8msbXhHWKFr8YcloHR
-	9UT7W7WMJQkpGobGJDfct1Ik6VDuaDCopf7lZD9qMBQg8QXvl4Ka6IVdgvIQoBjdu1STx62+g+N
-	MFoOK2s6Rpe+CvgCS5WvnkKj5exU/+pUr0g==
-X-Google-Smtp-Source: AGHT+IH+tR2XWMLJZg0/0SvwYa74cV6Ty6uup/A/EKyiDBFftJoh6BBU2pCbd0h9aJQxrt19sfX62w==
-X-Received: by 2002:a05:600c:4fce:b0:456:18f3:b951 with SMTP id 5b1f17b1804b1-45a21805be3mr109152805e9.15.1755525401413;
-        Mon, 18 Aug 2025 06:56:41 -0700 (PDT)
+        bh=+t66GhzgS8tUB6DAwObgo1BEyoN8jrBytfijH3iRZiA=;
+        b=shVFC3IGLCwJM/Z7ITAPa82FBns4Gi8JYnl2PQtAEsqawOUrrWAZ/Q0aXO7m2Yxc6f
+         wCWslD1RW5+QMGwX4quZRM0AtQ9meriYvWZW+eO8FReGCo/Dwar+SyUmyIVo77zI5T+w
+         491CyX4uv7uOBZkNeyS4QC8HYDXN1CRz8q5LkIG+iobM8mIyuDUvdbSieTVFVk9zhiMz
+         QN+BBo+UgocQ3daKXcEdry1nztt0fTMRr6fRSr/44XHAsZJgXfqIl5/rgTDPUB4Z64JK
+         lmwhlgxvojyIm9xuQFZSQoOn4KejsOoIw3l4xamzLEnBhKsXw3XC6vLUG/fkPpzdZyBR
+         OQcw==
+X-Forwarded-Encrypted: i=1; AJvYcCUwxVgpDLmdgL6lH0gP1wZWZPtWUSR8N1N2jBAB/1y758NnunEx876x1jPQek3x3o7bjawprmeu@vger.kernel.org, AJvYcCVfHqNOzo5KZyp0GlHzO0cmeSCsM+SxSrrhhQ+950qh/X5bz3LTRtLhaYLPJPt0rDyrcUCz88PGEKAwb4HQ@vger.kernel.org, AJvYcCW+lcXqaL/uD+ROZRa9RhWSryxJeIUIjHAdeVlp/IKvBrYLAdXXFpALSodFMAVSNlTXq9QufHzv2g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8c2DucWs5tWmHENNOcOxVcDU7OUkC4whzJ428dCETcJGYKYlb
+	xGxwUy5EjBf2p1rt2EX5RsSAEP+R8w7OzVr9mJS9+/qMSdhYU9TYshrf
+X-Gm-Gg: ASbGncsfB8l6RS4qccfO0JzpDx3WnY4YeZPCtV+d+FRVfasvnz7HFVVD1ELHied+pwq
+	LlO1I8xcpjEtZbgDSTiUK00kowYLfYQvUNqX0tWQpcQNaAWnToFDZZ3RxEvDnv8rMWtIAcf2mMg
+	8MVwgQbvWOvmKmliqvdnsOi1ZXM48NexsiCyE4oLnl7OIetIx5kjo52vsT4Fcqtm33VFlzF6CWW
+	Ig5ECLpsRlI2abCpZVZ/uFJ42r7UxN2YZTs41SqAtdvXq9fYJUqnVP5IAoG7ifItidoLGaJSar0
+	87/+/jhU+4Dl+Jw6gCQ73al3LMtQsQgFCRfIQnlpm9Kt6WK1MyAIwTv9JVCGjYdP6XH127mkIS2
+	QKp7+XB6LLRuuNK1v5fJ8ZsBOg64T+PeKPA==
+X-Google-Smtp-Source: AGHT+IFWS+50cUTPIMdIhGYfua7eZN7PcLQyrWYfXTyoFLwVW+vWPYvtq8zqWpxs5aIj1ZQPnK/Cug==
+X-Received: by 2002:a05:6000:1a8e:b0:3b9:7c1f:86b1 with SMTP id ffacd0b85a97d-3bb68548d36mr9603703f8f.37.1755525404694;
+        Mon, 18 Aug 2025 06:56:44 -0700 (PDT)
 Received: from 127.0.0.1localhost ([185.69.144.43])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1b899338sm91187345e9.7.2025.08.18.06.56.39
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1b899338sm91187345e9.7.2025.08.18.06.56.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Aug 2025 06:56:40 -0700 (PDT)
+        Mon, 18 Aug 2025 06:56:43 -0700 (PDT)
 From: Pavel Begunkov <asml.silence@gmail.com>
 To: Jakub Kicinski <kuba@kernel.org>,
 	netdev@vger.kernel.org
@@ -76,9 +76,9 @@ Cc: asml.silence@gmail.com,
 	ap420073@gmail.com,
 	linux-kernel@vger.kernel.org,
 	io-uring@vger.kernel.org
-Subject: [PATCH net-next v3 06/23] net: add rx_buf_len to netdev config
-Date: Mon, 18 Aug 2025 14:57:22 +0100
-Message-ID: <fab9f52289a416f823d2eac6544e01cb7040eee9.1755499376.git.asml.silence@gmail.com>
+Subject: [PATCH net-next v3 08/23] eth: bnxt: set page pool page order based on rx_page_size
+Date: Mon, 18 Aug 2025 14:57:24 +0100
+Message-ID: <51c3dd0a3a8aab6175e2915d94f7f7aece8e74d3.1755499376.git.asml.silence@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1755499375.git.asml.silence@gmail.com>
 References: <cover.1755499375.git.asml.silence@gmail.com>
@@ -92,64 +92,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Jakub Kicinski <kuba@kernel.org>
 
-Add rx_buf_len to configuration maintained by the core.
-Use "three-state" semantics where 0 means "driver default".
+If user decides to increase the buffer size for agg ring
+we need to ask the page pool for higher order pages.
+There is no need to use larger pages for header frags,
+if user increase the size of agg ring buffers switch
+to separate header page automatically.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[pavel: calculate adjust max_len]
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 ---
- include/net/netdev_queues.h | 4 ++++
- net/ethtool/common.c        | 1 +
- net/ethtool/rings.c         | 2 ++
- 3 files changed, 7 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/netdev_queues.h b/include/net/netdev_queues.h
-index c8ce23e7c812..8c21ea9b9515 100644
---- a/include/net/netdev_queues.h
-+++ b/include/net/netdev_queues.h
-@@ -25,6 +25,10 @@ struct netdev_config {
- 	 * If "unset" driver is free to decide, and may change its choice
- 	 * as other parameters change.
- 	 */
-+	/** @rx_buf_len: Size of buffers on the Rx ring
-+	 *		 (ETHTOOL_A_RINGS_RX_BUF_LEN).
-+	 */
-+	u32	rx_buf_len;
- 	/** @hds_config: HDS enabled (ETHTOOL_A_RINGS_TCP_DATA_SPLIT).
- 	 */
- 	u8	hds_config;
-diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-index faa95f91efad..44fd27480756 100644
---- a/net/ethtool/common.c
-+++ b/net/ethtool/common.c
-@@ -889,6 +889,7 @@ void ethtool_ringparam_get_cfg(struct net_device *dev,
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 5307b33ea1c7..d3d9b72ef313 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -3824,11 +3824,13 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
+ 	pp.pool_size = bp->rx_agg_ring_size / agg_size_fac;
+ 	if (BNXT_RX_PAGE_MODE(bp))
+ 		pp.pool_size += bp->rx_ring_size / rx_size_fac;
++
++	pp.order = get_order(bp->rx_page_size);
+ 	pp.nid = numa_node;
+ 	pp.netdev = bp->dev;
+ 	pp.dev = &bp->pdev->dev;
+ 	pp.dma_dir = bp->rx_dir;
+-	pp.max_len = PAGE_SIZE;
++	pp.max_len = PAGE_SIZE << pp.order;
+ 	pp.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV |
+ 		   PP_FLAG_ALLOW_UNREADABLE_NETMEM;
+ 	pp.queue_idx = rxr->bnapi->index;
+@@ -3839,7 +3841,10 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
+ 	rxr->page_pool = pool;
  
- 	/* Driver gives us current state, we want to return current config */
- 	kparam->tcp_data_split = dev->cfg->hds_config;
-+	kparam->rx_buf_len = dev->cfg->rx_buf_len;
- }
- 
- static void ethtool_init_tsinfo(struct kernel_ethtool_ts_info *info)
-diff --git a/net/ethtool/rings.c b/net/ethtool/rings.c
-index 628546a1827b..6a74e7e4064e 100644
---- a/net/ethtool/rings.c
-+++ b/net/ethtool/rings.c
-@@ -41,6 +41,7 @@ static int rings_prepare_data(const struct ethnl_req_info *req_base,
- 		return ret;
- 
- 	data->kernel_ringparam.tcp_data_split = dev->cfg->hds_config;
-+	data->kernel_ringparam.rx_buf_len = dev->cfg->rx_buf_len;
- 	data->kernel_ringparam.hds_thresh = dev->cfg->hds_thresh;
- 
- 	dev->ethtool_ops->get_ringparam(dev, &data->ringparam,
-@@ -302,6 +303,7 @@ ethnl_set_rings(struct ethnl_req_info *req_info, struct genl_info *info)
- 		return -EINVAL;
- 	}
- 
-+	dev->cfg_pending->rx_buf_len = kernel_ringparam.rx_buf_len;
- 	dev->cfg_pending->hds_config = kernel_ringparam.tcp_data_split;
- 	dev->cfg_pending->hds_thresh = kernel_ringparam.hds_thresh;
- 
+ 	rxr->need_head_pool = page_pool_is_unreadable(pool);
++	rxr->need_head_pool |= !!pp.order;
+ 	if (bnxt_separate_head_pool(rxr)) {
++		pp.order = 0;
++		pp.max_len = PAGE_SIZE;
+ 		pp.pool_size = min(bp->rx_ring_size / rx_size_fac, 1024);
+ 		pp.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
+ 		pool = page_pool_create(&pp);
 -- 
 2.49.0
 
