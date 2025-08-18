@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3972827453
-	for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 09:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470E630BF77
+	for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 09:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755507759; cv=none; b=j/cIjlJz7cPm3mIznz7TfkFKnPT1T7xjkCS/FTPlvcGfqRQLa0rllHvkWEMsDU4hK644xoJz8PSHEy3u4gZIYxqH6NOoXu7Z+Hk9tWVWrZ1qwlVEBmtUwYNiBaeq4kA86DAP+OaCfVz5zivRaSj2ixSwxeLKlT7urxQhOZJ5rYw=
+	t=1755507760; cv=none; b=ehfCzabgJviwTj6KXdywDCW45OMZbxSCcbElkvWD69UGFzSMc9fpg8+msgfwrr6oiRGMoDdiP1BLgOpGIgz9KTMo6RID5aFcn6DvuUY+HHasNOr56wRGgLe3Q4MuM+ygY9QdEEB4KlgR9poHqVJYHDpXOYUoNynk8HUBgktQXFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755507759; c=relaxed/simple;
-	bh=qALKcs2I9DsQXdi+amMeBicjXd8u1yrHnBOjvx/vG9g=;
+	s=arc-20240116; t=1755507760; c=relaxed/simple;
+	bh=9tiTx1Q3LRn2gqsaSeeENCt5/jgoRJCwOLQLl2JYKOk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Y4UW0PT4oA8pd73BsYLg/Igl3XaV+fC3DzTGXkSRiXvOFLIzstbPZpZqhUPSHynZYh8bIEcCs3TrvAG/DuarWKY4HOhqMSAxJ16QcG9UReWiM8zIOQQubSwG2kyGMID+U3E8vZ5k+7MFDmFqCsZQojQLwmRU96mwq6M0Fsz1y54=
+	 MIME-Version; b=JU24KWhgL3FUPp4g0ccWtqDOGk4AVIotNZv1/CR73XL7plqPQ1rB8LCYm7GOuCXY2SVinMDdK8ZP3W7A9KR6cfqyPjOO6bG/rfBXHhHP3Na8aIv+G2WkahKLZVcTb8EBbHcHJwvLxgx7gHG3K7uicSUP0VjqIgURKJsrgHzZcMk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1unvky-0003N3-Rd; Mon, 18 Aug 2025 11:02:20 +0200
+	id 1unvky-0003N5-Rd; Mon, 18 Aug 2025 11:02:20 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1unvkw-000sBC-2J;
+	id 1unvkw-000sBE-2S;
 	Mon, 18 Aug 2025 11:02:18 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1unvkw-00Bhgp-24;
+	id 1unvkw-00BhhA-2D;
 	Mon, 18 Aug 2025 11:02:18 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -45,9 +45,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Simon Horman <horms@kernel.org>,
 	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	=?UTF-8?q?S=C3=B8ren=20Andersen?= <san@skov.dk>
-Subject: [PATCH net-next v1 1/3] net: stmmac: Correctly handle Rx checksum offload errors
-Date: Mon, 18 Aug 2025 11:02:15 +0200
-Message-Id: <20250818090217.2789521-2-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v1 3/3] net: stmmac: dwmac4: stop hardware from dropping checksum-error packets
+Date: Mon, 18 Aug 2025 11:02:17 +0200
+Message-Id: <20250818090217.2789521-4-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250818090217.2789521-1-o.rempel@pengutronix.de>
 References: <20250818090217.2789521-1-o.rempel@pengutronix.de>
@@ -63,40 +63,58 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-The stmmac_rx function would previously set skb->ip_summed to
-CHECKSUM_UNNECESSARY if hardware checksum offload (CoE) was enabled
-and the packet was of a known IP ethertype.
+Tell the MAC not to discard frames that fail TCP/IP checksum
+validation.
 
-However, this logic failed to check if the hardware had actually
-reported a checksum error. The hardware status, indicating a header or
-payload checksum failure, was being ignored at this stage. This could
-cause corrupt packets to be passed up the network stack as valid.
+By default, when the hardware checksum engine (CoE) is enabled,
+dwmac4 silently drops any packet where the offload engine detects
+a checksum error. These frames are not reported to the driver and
+are not counted in any statistics as dropped packets.
 
-This patch corrects the logic by checking the `csum_none` status flag,
-which is set when the hardware reports a checksum error. If this flag
-is set, skb->ip_summed is now correctly set to CHECKSUM_NONE,
-ensuring the kernel's network stack will perform its own validation and
-properly handle the corrupt packet.
+Set the MTL_OP_MODE_DIS_TCP_EF bit when initializing the Rx channel so
+that all packets are delivered, even if they failed hardware checksum
+validation. CoE remains enabled, but instead of dropping such frames,
+the driver propagates the error status and marks the skb with
+CHECKSUM_NONE. This allows the stack to verify and drop the packet
+while updating statistics.
+
+This change follows the decision made in the discussion:
+Link: https://lore.kernel.org/all/20250625132117.1b3264e8@kernel.org/
+
+It depends on the previous patches that added proper error propagation
+in the Rx path.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac4.h     | 1 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 9a77390b7f9d..75d8d8042316 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5733,7 +5733,8 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
+index f4694fd576f5..3dec1a264cf6 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
+@@ -341,6 +341,7 @@ static inline u32 mtl_chanx_base_addr(const struct dwmac4_addrs *addrs,
+ #define MTL_OP_MODE_RFA_SHIFT		8
  
- 		skb->protocol = eth_type_trans(skb, priv->dev);
+ #define MTL_OP_MODE_EHFC		BIT(7)
++#define MTL_OP_MODE_DIS_TCP_EF		BIT(6)
  
--		if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
-+		if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb) ||
-+		    (status & csum_none))
- 			skb_checksum_none_assert(skb);
- 		else
- 			skb->ip_summed = CHECKSUM_UNNECESSARY;
+ #define MTL_OP_MODE_RTC_MASK		GENMASK(1, 0)
+ #define MTL_OP_MODE_RTC_SHIFT		0
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+index 0cb84a0041a4..d87a8b595e6a 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+@@ -268,6 +268,8 @@ static void dwmac4_dma_rx_chan_op_mode(struct stmmac_priv *priv,
+ 
+ 	mtl_rx_op = readl(ioaddr + MTL_CHAN_RX_OP_MODE(dwmac4_addrs, channel));
+ 
++	mtl_rx_op |= MTL_OP_MODE_DIS_TCP_EF;
++
+ 	if (mode == SF_DMA_MODE) {
+ 		pr_debug("GMAC: enable RX store and forward mode\n");
+ 		mtl_rx_op |= MTL_OP_MODE_RSF;
 -- 
 2.39.5
 
