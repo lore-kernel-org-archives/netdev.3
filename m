@@ -1,44 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5750B2566D2
-	for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 15:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FB2274FDB;
+	Mon, 18 Aug 2025 15:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755531374; cv=none; b=HH8DDgjMavUq1fFkVNWrtpVhY8W3yKdx0GTjAFcitMCBlBM9fCAYEqwrXS9jOyVDz23n6lo+edce6KyLrEQOTp+SmBmGI3XrNBYgb74YSJLDf4z3oJdAdWT+9BX3rK5m1NdFYOunv2Xq1wtjFkJBu+c/C5DhbjiYqJ5kDzq84Ks=
+	t=1755531559; cv=none; b=YX5+2iLmHFw7Jtb+e3exgqjYVv9SbcBdtmPY2sS2kXDAkj8RWXHCDL//WELs+DLSAhDYkujzROEBqHh57b73pttHhckatzW+pU+CcndaLBNWH7kAKqfkjzRObbYeR9GXjn7WGdkTNLI2Cr2jyLVSMpVJzL+8ET3VTkEphTG9kQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755531374; c=relaxed/simple;
-	bh=d7VCYZGrLn8maRLTI2zXfX4uJyHacQgqyAsqAF+vVsw=;
+	s=arc-20240116; t=1755531559; c=relaxed/simple;
+	bh=uo+eilYO4oF8TuPssFwLv6m+/cY9ysnICDRqi7G/yho=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AL1gwGcplSWgCgW322bMhWB+LzqGimIjSlJxZ4eb9iADSjPYxdPlClRTd2n27PNifGkzcWmegsnBdrikT1t4wFkWCVJtWUs5hmAwFnksM8zT4nhiPAlFelYAA1kLUW6j/hOMdMHB7Z0htX3HY57Dx2usWGL4wKiRzXcXDqaqNgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SreVfZlo; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=cwyHrY/jVNK5W6YCtCaFiBmmQ+iL+w5Gbm+4DeOSJRar+PNmch8qvBcRsWRcajDz0zE+A/0biYFzpeE6+KJCf0Ok4KPSMwBWfUCnHwC4YUWOLwnS3UkbdJT1DTZkRJnL2+KjzYTZrZ6nvZkxVgKtadDdh3aDSVL2Emiq0rSpji4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r5Gcr2Wa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SreVfZlo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A101C4CEEB;
-	Mon, 18 Aug 2025 15:36:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r5Gcr2Wa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233F2C4CEEB;
+	Mon, 18 Aug 2025 15:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755531373;
-	bh=d7VCYZGrLn8maRLTI2zXfX4uJyHacQgqyAsqAF+vVsw=;
+	s=k20201202; t=1755531558;
+	bh=uo+eilYO4oF8TuPssFwLv6m+/cY9ysnICDRqi7G/yho=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SreVfZloi9OI6+O/W8xwRIC4cntulK0wttb0Dh4GMDpAUsAiqassdwerzPZ2NR5oD
-	 aWDvXZGOrIAzY40qAcfOA0Y+RVBnJa1gKNX1Q+uZvnVvzwlQuXZeFeYkHKiIt1k5Fx
-	 cgItI/1Z/Tb/qP3SOBc4lhpNlrgT4quwtmLCNTSaZG8P1zV7XuW6KZntwqdZV8GFxF
-	 xty3h53NZ3OP79xiDaVSuwIs29IXOWRSrhTsZuV5hIagorQtbfRuya3DZNvoVZLrhb
-	 CugqSgHEFhKuC0JKp/hoKvAZNxV+whUbEYVeJR8ukJVTKKeLaMi9Ri7WhIedBcJ4vH
-	 EaeY6RfjRRG9A==
-Date: Mon, 18 Aug 2025 08:36:12 -0700
+	b=r5Gcr2WaCtdIunh9lUs1z3HPI5LuKTQNsOIok0BMFOaE4QoGK3kk4AemMmHu+vllA
+	 2+y75tx3aD+iDbK3Op/fcdPe6viltoWZiJlxMOM5zJaYOSBBeKaz3qjTEiZTi0meRO
+	 GnTO1O/boLTpSBwyOYM7vnwcAxlBToC1f4Q7C1eSD8sG6GeQA6/y2PehjHFZCxmdfp
+	 VZb0O1EuvpwKmudxQCsEaYT8fYjS2R7U3+00vgOKRGTXvctJVFN/evZYeeAYzucbi5
+	 G6eFNjKe2Cdd3aXEUKLDSrU7pkBEfXudFz54Pc8fGDwJKenIyQVKmTOocTY46gxJwA
+	 qYTtaLkHcFj2Q==
+Date: Mon, 18 Aug 2025 08:39:17 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: Erni Sri Satya Vennela <ernis@linux.microsoft.com>, dsahern@gmail.com,
- netdev@vger.kernel.org, haiyangz@microsoft.com,
- shradhagupta@linux.microsoft.com, ssengar@microsoft.com,
- dipayanroy@microsoft.com, ernis@microsoft.com
-Subject: Re: [PATCH iproute2-next v3] iproute2: Add 'netshaper' command to
- 'ip link' for netdev shaping
-Message-ID: <20250818083612.68a3c137@kernel.org>
-In-Reply-To: <20250816155510.03a99223@hermes.local>
-References: <1754895902-8790-1-git-send-email-ernis@linux.microsoft.com>
-	<20250816155510.03a99223@hermes.local>
+To: Junnan Wu <junnan01.wu@samsung.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ eperezma@redhat.com, jasowang@redhat.com, lei19.wang@samsung.com,
+ linux-kernel@vger.kernel.org, mst@redhat.com, netdev@vger.kernel.org,
+ pabeni@redhat.com, q1.huang@samsung.com, virtualization@lists.linux.dev,
+ xuanzhuo@linux.alibaba.com, ying123.xu@samsung.com
+Subject: Re: [PATCH net] virtio_net: adjust the execution order of function
+ `virtnet_close` during freeze
+Message-ID: <20250818083917.435a4263@kernel.org>
+In-Reply-To: <20250818011522.1334212-1-junnan01.wu@samsung.com>
+References: <20250815085503.3034e391@kernel.org>
+	<CGME20250818011515epcas5p21295745d0e831fd988706877d598f913@epcas5p2.samsung.com>
+	<20250818011522.1334212-1-junnan01.wu@samsung.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,37 +50,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 16 Aug 2025 15:55:10 -0700 Stephen Hemminger wrote:
-> On Mon, 11 Aug 2025 00:05:02 -0700
-> Erni Sri Satya Vennela <ernis@linux.microsoft.com> wrote:
-> 
-> > Add support for the netshaper Generic Netlink
-> > family to iproute2. Introduce a new subcommand to `ip link` for
-> > configuring netshaper parameters directly from userspace.
+On Mon, 18 Aug 2025 09:15:22 +0800 Junnan Wu wrote:
+> > > Yes, you are right. The commit of this fix tag is the first commit I
+> > > found which add function `virtnet_poll_cleantx`. Actually, we are not
+> > > sure whether this issue appears after this commit.
+> > > 
+> > > In our side, this issue is found by chance in version 5.15.
+> > > 
+> > > It's hard to find the key commit which cause this issue
+> > > for reason that the reproduction of this scenario is too complex.  
 > > 
-> > This interface allows users to set shaping attributes (such as speed)
-> > which are passed to the kernel to perform the corresponding netshaper
-> > operation.
-> > 
-> > Example usage:
-> > $ip link netshaper { set | get | delete } dev DEVNAME \
-> >                    handle scope SCOPE id ID \
-> >                    [ speed SPEED ]  
+> > I think the problem needs to be more clearly understood, and then it
+> > will be easier to find the fixes tag. At the face of it the patch
+> > makes it look like close() doesn't reliably stop the device, which
+> > is highly odd.  
 > 
-> The choice of ip link is awkward and doesn't match other options.
-> I can think of some better other choices:
+> Yes, you are right. It is really strange that `close()` acts like
+> that, because current order has worked for long time. But panic call
+> stack in our env shows that the function `virtnet_close` and
+> `netif_device_detach` should have a correct execution order. And it
+> needs more time to find the fixes tag. I wonder that is it must have
+> fixes tag to merge?
 > 
->   1. netshaper could be a property of the device. But the choice of using genetlink
->      instead of regular ip netlink attributes makes this hard.
->   2. netshaper could be part of devlink. Since it is more targeted at hardware
->      device attributes.
->   3. netshaper could be a standalone command like bridge, dcb, devlink, rdma, tipc and vdpa.
-> 
-> What ever choice the command line options need to follow similar syntax to other iproute commands.
+> By the way, you mentioned that "the problem need to be more clearly
+> understood", did you mean the descriptions and sequences in commit
+> message are not easy to understand? Do you have some suggestions
+> about this?
 
-I think historically we gravitated towards option 3 -- each family has
-a command? But indeed we could fold it together with something like
-the netdev family without much issue, they are both key'd on netdevs.
-
-Somewhat related -- what's your take on integrating / vendoring in YNL?
-mnl doesn't provide any extack support..
+Perhaps Jason gets your explanation and will correct me, but to me it
+seems like the fix is based on trial and error rather than clear
+understanding of the problem. If you understood the problem clearly
+you should be able to find the Fixes tag without a problem..
