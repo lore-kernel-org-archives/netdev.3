@@ -1,118 +1,249 @@
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCC83074AE;
-	Mon, 18 Aug 2025 09:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5287E9
+	for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 09:23:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755508923; cv=none; b=pkbwIeVebR0kAMjkplDmYb7zN8N2DUA4TwH8ufHL0vOQorg8TsSVj+Vz2ffPiYZogpYE1bri1qYNAHVGz+Q3/qXdX3DU1ASiV9XoZYhvY8+Oq+jEWDZLIkjb7+ZvQ8hUAl0Qwo3HG9FLUHfNVFsKxKxzcxJSR4Q9YIZURRl+e7c=
+	t=1755508983; cv=none; b=XuCzetlv+LQQELkFz4BOBg3zKYd0U0DFWU7GSqP7pVaTz0lgIhSnu1uztuWTNZNZAEqZuwEuvsWL8YNNR3aFAyV3QbAwrIEtjOHOwl+gfJDPIPBxT91yVufRHEdzMb9lMT8vs1H3XUXcJj3WZTb9IG+/wJBLfr0/YLsH0gZY+9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755508923; c=relaxed/simple;
-	bh=35ExYHNkSOFl+vIDqv8fU+bcX6NCYN9Sw9qjqiUvNJw=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=JTo5MJ+iYVwos5KOP7yAuwdOzONg9ZEJuuWdRpT6cUDntViDpV6Ga0LO/dh1yQgTKYjm98YZsU0rEHOL7ZWU6NtibokbFClgGA5UHM0UvqaqH+xV0hk/hT/tC5s7P/oH9W8VR2w2jutdI/dvA9ijpRIAgwzZhXKmVt1DolcuNsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JyQYtfoY; arc=none smtp.client-ip=209.85.221.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755508983; c=relaxed/simple;
+	bh=/LuIP8J01iC3FFoBg+YOO1Bc4xsgg9BJzDuEs645eDk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hqT/7OEBEwC3Ck6NnCJRLCdehBAjGG541CflaEWN6nmL/bmVjsrDlutg0uBmwH/bjL+vo6Az+FbOfOEevtWdStXFM13o4YtOYuQpQwsDV2y/YXfYegF2CDmm8NcTAHV1URFoj274oFRZuleZBaXtUSxqk5spcUeINo495FTYk44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EPuRw6xk; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JyQYtfoY"
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-53b09878addso3597821e0c.0;
-        Mon, 18 Aug 2025 02:22:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755508921; x=1756113721; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4i8EHdDnh/5DdxWcY1M48VGjMphp0rLN8Gdmw8dmd2w=;
-        b=JyQYtfoY8Y8LIhE8XGuiIg/fwhfVf3GF/cmN2OWx2rkHIV0ixiCRTNPv37UU1rIUUn
-         YfN5NlW59TbrNalpmm930LKBoQ3iKipP4uX4SvK4yGHPtuM+A3gHu4DUr5SY0jLNQqZM
-         1Ypuf/Mf14yJHf5orNhqb1jWLK7qur4gPz7J+6fwQ3/qi7nZpsciEqizthyvlU9eHE10
-         vrRqqI/HOfimJnW+atWRo3gzR9GVZ6kuQ9K/oDSi1rqgyqNG1s5vAZ1y/AG0EeD1aloY
-         mkkWjbjC4rsTtdB3zZkEYK0Ke/6hfDosDVMSidv/gZ43+TFkFTZOde/ilveph245wx0x
-         cQYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755508921; x=1756113721;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4i8EHdDnh/5DdxWcY1M48VGjMphp0rLN8Gdmw8dmd2w=;
-        b=GdE19m95hI0WGWLfVBk9DuyYUHpFECegZfoibxCtaxT6D2/K0K4gGT7UDM8TJtLUsw
-         xojoXTSeSEhWlZ46BZ8Y/1XOGAyagE4HGSLPeb39zHGToE/D9rcUkXNYsQP3dqBPMtyZ
-         PMPffuBLjRCwp0T/drPOSZVIoKGRwRleayS3v82aUzTjCbasp+jHrieLPmpL/JNpcGiU
-         NtbNLcuXYdksWi1+GBolwzzceW+mXmqUcaXtgwkeY3CFO6n4bmwUZAI39VWu3MQTE2gj
-         PRAqDHDTLXuI39fmDV0PxarE7KH+9SSCUrkOkKN0DuWtzbnFaeF3MdkWDvxJ1DOVMKd8
-         VFCA==
-X-Forwarded-Encrypted: i=1; AJvYcCUilDfzEsxtx/f344EJoXlCek8fqRWoxxzCM6gkMCqgNgJ0ASHCgB3ZlidwhJguiih3O13omH1v@vger.kernel.org, AJvYcCUw9hNxyBLlyY8C0cJKRazu6TwdwAuGguT1WAo3qEdxjcuHeH5BWweCFhdC4brk8A8MADFhwKdXhgmE+jY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyafrQPGvkuM5Mc25o7cVbJxVHX+zUuJV9hMAB/Oo5tthnVOP2/
-	df1bFrFaaNhS6ruTjiCFU9y0xvFvCzhfm8oRJWf9kaf2H+tewK1kHxQy
-X-Gm-Gg: ASbGncsi6ft3W+SVH0OvR4hjubWeoHwklWiPt1efu6z8mC97ubuJUbLJZjJbcw5ln4U
-	eXhoYX5YpARDZKnQsvGn77Z5hC9OI5QgwwV57w9lrdXWnDzwbPokkGb/6l8BwfB9vjkLUi4a/Hk
-	kocOFfSaBbIt6seppVEj0/AroU2Dss5DyJdrdX3bCvkJP0tkADSJZQRnuKC+567xOke86pvejyl
-	gNDvtlys41+SXevorx0uUg1645juWVwKO9I+KenEhC70sR7pvEolY+AUcjMDTyJzj5xp2w4G1oC
-	IkqDW687XU6FXXqETJFrJkkuV8pLOrHliXeeYUoC8zNPVNCTqZ5+s+3UGAg0w9LKYIVffCcsUFi
-	Qtr3Vn4xqFvUb7prr+QXc/ywCaPQarFmyKgFwWj9dvYSJfObsOiNd/95xk7DA2anCDKYr/g==
-X-Google-Smtp-Source: AGHT+IH8FYwREhyqacv9UB0VgYQu7743NkG4uUNESFFnzPKV4gB3XG5F0ca/b2TSYW5gJp37+nmmXQ==
-X-Received: by 2002:a05:6122:e6b:b0:53a:dcb4:79be with SMTP id 71dfb90a1353d-53b19d86818mr4321378e0c.4.1755508920640;
-        Mon, 18 Aug 2025 02:22:00 -0700 (PDT)
-Received: from gmail.com (128.5.86.34.bc.googleusercontent.com. [34.86.5.128])
-        by smtp.gmail.com with UTF8SMTPSA id 71dfb90a1353d-53b2bf26276sm1884859e0c.32.2025.08.18.02.21.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Aug 2025 02:21:59 -0700 (PDT)
-Date: Mon, 18 Aug 2025 05:21:59 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Xin Zhao <jackzxcui1989@163.com>, 
- willemdebruijn.kernel@gmail.com, 
- edumazet@google.com, 
- ferenc@fejes.dev
-Cc: davem@davemloft.net, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.45acd8edbab1@gmail.com>
-In-Reply-To: <20250818071334.240913-1-jackzxcui1989@163.com>
-References: <20250818071334.240913-1-jackzxcui1989@163.com>
-Subject: Re: [PATCH net-next v3] net: af_packet: Use hrtimer to do the retire
- operation
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EPuRw6xk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755508981; x=1787044981;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=/LuIP8J01iC3FFoBg+YOO1Bc4xsgg9BJzDuEs645eDk=;
+  b=EPuRw6xk9si3adjQNih8a2M8y7AM8nSxwsNbnFOQwGiedt8WkTV3neqh
+   t4eRni47eynatZXusVFHawuTm60AQZyzdBpKq0p3XuClnpMBv9teU9FVZ
+   /kk1yMTvXH2YWzmA29GTbsTnmonj2g31cm15P1vVUMlZiC3H7C40mc1hr
+   jFnZ8k+50QmP/FIFMBCCcnD/Iwm/SKYplchmDDHEwAwWrBkUvm8au6lXx
+   ltMK3ojXe7pZr6xl9Ggc6stwJUYu/no/3AZeP252Q2+7Z0imHpkdDToLQ
+   mX1eiOju+6ql94HVU3mX7M1Isx7lC8NL+e2oPxz6fcS5w1kR3AGEtrctm
+   g==;
+X-CSE-ConnectionGUID: 48aYOhciRm2qYI8ASQb8xw==
+X-CSE-MsgGUID: twzlrc8/QAewYnUgQx6Fog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11524"; a="75179346"
+X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
+   d="scan'208";a="75179346"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 02:22:56 -0700
+X-CSE-ConnectionGUID: eO7TREEJRgOMmQ2pfaJstQ==
+X-CSE-MsgGUID: s5Ux3tzDR1OWQlYH4lQ0gg==
+X-ExtLoop1: 1
+Received: from host59.igk.intel.com ([10.123.220.59])
+  by fmviesa003.fm.intel.com with ESMTP; 18 Aug 2025 02:22:54 -0700
+From: Anton Nadezhdin <anton.nadezhdin@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	richardcochran@gmail.com,
+	Milena Olech <milena.olech@intel.com>,
+	Anton Nadezhdin <anton.nadezhdin@intel.com>,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [PATCH iwl-next] idpf: add HW timestamping statistics
+Date: Mon, 18 Aug 2025 07:20:27 -0400
+Message-ID: <20250818112027.31222-1-anton.nadezhdin@intel.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Xin Zhao wrote:
-> On Sun, 2025-08-17 at 21:28 +0800, Willem wrote:
-> 
-> > Here we cannot use hrtimer_add_expires for the same reason you gave in
-> > the second version of the patch:
-> > 
-> > > Additionally, I think we cannot avoid using ktime_get, as the retire
-> > > timeout for each block is not fixed. When there are a lot of network packets,
-> > > a block can retire quickly, and if we do not re-fetch the time, the timeout
-> > > duration may be set incorrectly.
-> > 
-> > Is that right?
-> > 
-> > Otherwise patch LGTM.
-> 
-> 
-> Dear Willem,
-> 
-> While reviewing the code, I suddenly realized that previously I used 
-> hrtimer_set_expires instead of hrtimer_forward_now to resolve the situation when
-> handling the retire timer timeout while run into prb_open_block simultaneously.
-> However, since there is now a distinction with the bool start variable in PATCH v4,
-> it seems that we no longer need to use hrtimer_set_expires and can directly use
-> hrtimer_forward_now instead. Therefore, I plan to make this change immediately and
-> resend PATCH v4. Please take a look at it then.
+From: Milena Olech <milena.olech@intel.com>
 
-Having a conversation in one thread that is not concluded yet and
-already starting another thread makes back and forth communication
-a bit difficult.
+Add HW timestamping statistics support - through implementing get_ts_stats.
+Timestamp statistics include correctly timestamped packets, discarded,
+skipped and flushed during PTP release.
 
-I'll take a look, but just send a v5 after 24 hrs.
+Most of the stats are collected per vport, only requests skipped due to
+lack of free latch index are collected per Tx queue.
+
+Signed-off-by: Milena Olech <milena.olech@intel.com>
+Co-developed-by: Anton Nadezhdin <anton.nadezhdin@intel.com>
+Signed-off-by: Anton Nadezhdin <anton.nadezhdin@intel.com>
+Reviewed-by: Joshua Hay <joshua.a.hay@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+---
+ drivers/net/ethernet/intel/idpf/idpf.h        | 17 +++++++
+ .../net/ethernet/intel/idpf/idpf_ethtool.c    | 51 +++++++++++++++++++
+ drivers/net/ethernet/intel/idpf/idpf_ptp.c    | 11 +++-
+ .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   |  4 ++
+ 4 files changed, 82 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+index f4c0eaf9bde3..5951ede8c7ea 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -256,6 +256,21 @@ enum idpf_vport_flags {
+ 	IDPF_VPORT_FLAGS_NBITS,
+ };
+ 
++/**
++ * struct idpf_tstamp_stats - Tx timestamp statistics
++ * @stats_sync: See struct u64_stats_sync
++ * @packets: Number of packets successfully timestamped by the hardware
++ * @discarded: Number of Tx skbs discarded due to cached PHC
++ *	       being too old to correctly extend timestamp
++ * @flushed: Number of Tx skbs flushed due to interface closed
++ */
++struct idpf_tstamp_stats {
++	struct u64_stats_sync stats_sync;
++	u64_stats_t packets;
++	u64_stats_t discarded;
++	u64_stats_t flushed;
++};
++
+ struct idpf_port_stats {
+ 	struct u64_stats_sync stats_sync;
+ 	u64_stats_t rx_hw_csum_err;
+@@ -322,6 +337,7 @@ struct idpf_fsteer_fltr {
+  * @tx_tstamp_caps: Capabilities negotiated for Tx timestamping
+  * @tstamp_config: The Tx tstamp config
+  * @tstamp_task: Tx timestamping task
++ * @tstamp_stats: Tx timestamping statistics
+  */
+ struct idpf_vport {
+ 	u16 num_txq;
+@@ -372,6 +388,7 @@ struct idpf_vport {
+ 	struct idpf_ptp_vport_tx_tstamp_caps *tx_tstamp_caps;
+ 	struct kernel_hwtstamp_config tstamp_config;
+ 	struct work_struct tstamp_task;
++	struct idpf_tstamp_stats tstamp_stats;
+ };
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
+index 0eb812ac19c2..d56a4157ad5f 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
+@@ -1685,6 +1685,56 @@ static int idpf_get_ts_info(struct net_device *netdev,
+ 	return err;
+ }
+ 
++/**
++ * idpf_get_ts_stats - Collect HW tstamping statistics
++ * @netdev: network interface device structure
++ * @ts_stats: HW timestamping stats structure
++ *
++ * Collect HW timestamping statistics including successfully timestamped
++ * packets, discarded due to illegal values, flushed during releasing PTP and
++ * skipped due to lack of the free index.
++ */
++static void idpf_get_ts_stats(struct net_device *netdev,
++			      struct ethtool_ts_stats *ts_stats)
++{
++	struct idpf_vport *vport;
++	unsigned int start;
++
++	idpf_vport_ctrl_lock(netdev);
++	vport = idpf_netdev_to_vport(netdev);
++	do {
++		start = u64_stats_fetch_begin(&vport->tstamp_stats.stats_sync);
++		ts_stats->pkts = u64_stats_read(&vport->tstamp_stats.packets);
++		ts_stats->lost = u64_stats_read(&vport->tstamp_stats.flushed);
++		ts_stats->err = u64_stats_read(&vport->tstamp_stats.discarded);
++	} while (u64_stats_fetch_retry(&vport->tstamp_stats.stats_sync, start));
++
++	for (u16 i = 0; i < vport->num_txq_grp; i++) {
++		struct idpf_txq_group *txq_grp = &vport->txq_grps[i];
++
++		for (u16 j = 0; j < txq_grp->num_txq; j++) {
++			struct idpf_tx_queue *txq = txq_grp->txqs[j];
++			struct idpf_tx_queue_stats *stats;
++			u64 ts;
++
++			if (!txq)
++				continue;
++
++			stats = &txq->q_stats;
++			do {
++				start = u64_stats_fetch_begin(&txq->stats_sync);
++
++				ts = u64_stats_read(&stats->tstamp_skipped);
++			} while (u64_stats_fetch_retry(&txq->stats_sync,
++						       start));
++
++			ts_stats->lost += ts;
++		}
++	}
++
++	idpf_vport_ctrl_unlock(netdev);
++}
++
+ static const struct ethtool_ops idpf_ethtool_ops = {
+ 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
+ 				     ETHTOOL_COALESCE_USE_ADAPTIVE,
+@@ -1711,6 +1761,7 @@ static const struct ethtool_ops idpf_ethtool_ops = {
+ 	.set_ringparam		= idpf_set_ringparam,
+ 	.get_link_ksettings	= idpf_get_link_ksettings,
+ 	.get_ts_info		= idpf_get_ts_info,
++	.get_ts_stats		= idpf_get_ts_stats,
+ };
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+index ee21f2ff0cad..142823af1f9e 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_ptp.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+@@ -618,8 +618,13 @@ u64 idpf_ptp_extend_ts(struct idpf_vport *vport, u64 in_tstamp)
+ 
+ 	discard_time = ptp->cached_phc_jiffies + 2 * HZ;
+ 
+-	if (time_is_before_jiffies(discard_time))
++	if (time_is_before_jiffies(discard_time)) {
++		u64_stats_update_begin(&vport->tstamp_stats.stats_sync);
++		u64_stats_inc(&vport->tstamp_stats.discarded);
++		u64_stats_update_end(&vport->tstamp_stats.stats_sync);
++
+ 		return 0;
++	}
+ 
+ 	return idpf_ptp_tstamp_extend_32b_to_64b(ptp->cached_phc_time,
+ 						 lower_32_bits(in_tstamp));
+@@ -853,10 +858,14 @@ static void idpf_ptp_release_vport_tstamp(struct idpf_vport *vport)
+ 
+ 	/* Remove list with latches in use */
+ 	head = &vport->tx_tstamp_caps->latches_in_use;
++	u64_stats_update_begin(&vport->tstamp_stats.stats_sync);
+ 	list_for_each_entry_safe(ptp_tx_tstamp, tmp, head, list_member) {
++		u64_stats_inc(&vport->tstamp_stats.flushed);
++
+ 		list_del(&ptp_tx_tstamp->list_member);
+ 		kfree(ptp_tx_tstamp);
+ 	}
++	u64_stats_update_end(&vport->tstamp_stats.stats_sync);
+ 
+ 	spin_unlock_bh(&vport->tx_tstamp_caps->latches_lock);
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+index 4f1fb0cefe51..8a2e0f8c5e36 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+@@ -521,6 +521,10 @@ idpf_ptp_get_tstamp_value(struct idpf_vport *vport,
+ 	list_add(&ptp_tx_tstamp->list_member,
+ 		 &tx_tstamp_caps->latches_free);
+ 
++	u64_stats_update_begin(&vport->tstamp_stats.stats_sync);
++	u64_stats_inc(&vport->tstamp_stats.packets);
++	u64_stats_update_end(&vport->tstamp_stats.stats_sync);
++
+ 	return 0;
+ }
+ 
+
+base-commit: 94f1d1440652b6145cbaa026f376ae4e7fb95843
+-- 
+2.42.0
+
