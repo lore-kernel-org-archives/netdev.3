@@ -1,96 +1,86 @@
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7442236F2
-	for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 10:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B052701C3;
+	Mon, 18 Aug 2025 10:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755512372; cv=none; b=tUStPStSGqmlGIGeoqVBdIzViyZRMA2byD0AbtMmbdZ8gfsTCqhnluXrYvOQIUfzIQjiBG1yn0LcgDO63lop8rHriVHOxZTyY3WmequvUzvuM1OcxJemu8GCmFM0nwp7Pk9AP01PudOKkIO/XBK+KGSh2LyL+rrA3VMajljFuf0=
+	t=1755512440; cv=none; b=RcXRRR+yBEOOxaZcAdqMhrpr/obsFLCk45S3du74pKp6ze78YX7LNbS2R0wIbLZ2SKoTi7d1L8+x4I4sKKjKCecvOXx03F7Ua7gNwHVvkKNiT5gL1LdSsMAqDnZhJWoUEo+mVPj6KWJrtKIVyoY3xAv4MmfIO+1eUMPQV5S6/9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755512372; c=relaxed/simple;
-	bh=f30jZL5cYWfUn1vWNWyTFBHLrGVCX1FnWqrPVRvaIe8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RHnhZwHrrB77dryevouNFm1HEzgDhR1T5/lsYd9kxpYCmWLQAIANxR7XLjukG2eg+IZLekVG8kZbNfQ+awfVt22Zwd26wxOaL/zBzQAnIOrFn8tH6K7w3xPcQDiAbn47OTkQKWJiVpYUXjhsShoesrotJ74ukqpUMfwlFN0xt8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=oHmj8Jkx; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="oHmj8Jkx"
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1755512356; bh=f30jZL5cYWfUn1vWNWyTFBHLrGVCX1FnWqrPVRvaIe8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=oHmj8Jkx7+QX4TFX9u+mNGH9lll/6ZJxEolXYC/ijdyXwxR2C+5597fmAdVFwYCOr
-	 ZfA26R7i466ABzXTkI3LTnGLsXgC8alK9BqPbZFRabZgbNT+mKOerox65QxXMvhLl6
-	 /918zRCr9t734sZaaOjGSMl8CNum1iAwoNAVmesHtQ11E8l6OgPKV/zKdAXh5Oy+f9
-	 JX3t/4YLPo8rwNl6JDiXuSctqZG0/DhdqntT5As4Wylw37nNOY9MbL3z8g01IQ9VeF
-	 UzEmZhCPJXXFGbbmeVga7OphjBIKJ+/CgBmTBXgZcxaK1ror7Y6QcMtY7Q0Vp+2fY/
-	 DIDodlQTvZMtQ==
-To: William Liu <will@willsroot.io>, netdev@vger.kernel.org
-Cc: jhs@mojatatu.com, xiyou.wangcong@gmail.com, pabeni@redhat.com,
- kuba@kernel.org, savy@syst3mfailure.io, jiri@resnulli.us,
- davem@davemloft.net, edumazet@google.com, horms@kernel.org,
- cake@lists.bufferbloat.net, William Liu <will@willsroot.io>
-Subject: Re: [PATCH net 1/2] net/sched: Make cake_enqueue return NET_XMIT_CN
- when past buffer_limit
-In-Reply-To: <20250817172344.449992-1-will@willsroot.io>
-References: <20250817172344.449992-1-will@willsroot.io>
-Date: Mon, 18 Aug 2025 12:19:16 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87a53xj5jv.fsf@toke.dk>
+	s=arc-20240116; t=1755512440; c=relaxed/simple;
+	bh=gi1XBiPa+Y9s7F0E7yYhrqUCfP7ER/mlAOwnS69M9ng=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=te2G9oBt92Whq5Kzzh9E2CLyW4VrVfwg8uQ/gOqGDwZ+hzL1YlYr7raGlHsE0IZhqpT60oUOhVJpdhs+9QdTqbm++mtGBKVjpTahgkgKZMkw5FK6CXSgMxtlo5fRFjdy3cfV2gti6rC1Kj5DGC0kl9unCnALe21a+bh+BRva55k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4c57Fj32R9z9sSY;
+	Mon, 18 Aug 2025 11:48:41 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id v4Dqw6h7vKWf; Mon, 18 Aug 2025 11:48:41 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4c57Fj2DGkz9sSC;
+	Mon, 18 Aug 2025 11:48:41 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 363608B764;
+	Mon, 18 Aug 2025 11:48:41 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id nZLLT_AYuvrt; Mon, 18 Aug 2025 11:48:41 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [10.25.207.160])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0F32C8B763;
+	Mon, 18 Aug 2025 11:48:41 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2] netfilter: nft_payload: Use csum_replace4() instead of opencoding
+Date: Mon, 18 Aug 2025 11:48:30 +0200
+Message-ID: <e35d9dca6ce3a67b5a0fb067e02b35f3f53ce561.1755510324.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1755510516; l=892; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=gi1XBiPa+Y9s7F0E7yYhrqUCfP7ER/mlAOwnS69M9ng=; b=P1rymAuoU44cHcNRzxv+AAep0JyXqqQEoidtcFyR4aEiH+vmLVBt88Caboz7pYShYjwOIi/bI KQCkRxUQD+2CEd+6njYAuwJQ/QbJYAo/3RyMcVMREZYYauv99G/INzb
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 
-William Liu <will@willsroot.io> writes:
+Open coded calculation can be avoided and replaced by the
+equivalent csum_replace4() in nft_csum_replace().
 
-> The following setup can trigger a WARNING in htb_activate due to
-> the condition: !cl->leaf.q->q.qlen
->
-> tc qdisc del dev lo root
-> tc qdisc add dev lo root handle 1: htb default 1
-> tc class add dev lo parent 1: classid 1:1 \
->        htb rate 64bit
-> tc qdisc add dev lo parent 1:1 handle f: \
->        cake memlimit 1b
-> ping -I lo -f -c1 -s64 -W0.001 127.0.0.1
->
-> This is because the low memlimit leads to a low buffer_limit, which
-> causes packet dropping. However, cake_enqueue still returns
-> NET_XMIT_SUCCESS, causing htb_enqueue to call htb_activate with an
-> empty child qdisc.
->
-> I do not believe return value of NET_XMIT_CN is necessary for packet
-> drops in the case of ack filtering, as that is meant to optimize
-> performance, not to signal congestion.
->
-> Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
-> Signed-off-by: William Liu <will@willsroot.io>
-> Reviewed-by: Savino Dicanosa <savy@syst3mfailure.io>
-> ---
->  net/sched/sch_cake.c | 3 +++
->  1 file changed, 3 i
-> nsertions(+)
->
-> diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-> index dbcfb948c867..40814449f17a 100644
-> --- a/net/sched/sch_cake.c
-> +++ b/net/sched/sch_cake.c
-> @@ -1934,6 +1934,9 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
->  			cake_drop(sch, to_free);
->  		}
->  		b->drop_overlimit += dropped;
-> +
-> +		if (dropped)
-> +			return NET_XMIT_CN;
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v2: Add cast to __be32 to match csum_replace4() expected param types
+---
+ net/netfilter/nft_payload.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-cake_drop() may drop from a different flow, so we can't unconditionally
-return NET_XMIT_CN. We'll have to check the return code of cake_drop()
-and only return NET_XMIT_CN if it's the same flow we just enqueued a
-packet to (which is also what fq_codel does, BTW).
+diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
+index 7dfc5343dae4..059b28ffad0e 100644
+--- a/net/netfilter/nft_payload.c
++++ b/net/netfilter/nft_payload.c
+@@ -684,7 +684,7 @@ static const struct nft_expr_ops nft_payload_inner_ops = {
+ 
+ static inline void nft_csum_replace(__sum16 *sum, __wsum fsum, __wsum tsum)
+ {
+-	*sum = csum_fold(csum_add(csum_sub(~csum_unfold(*sum), fsum), tsum));
++	csum_replace4(sum, (__force __be32)fsum, (__force __be32)tsum);
+ 	if (*sum == 0)
+ 		*sum = CSUM_MANGLED_0;
+ }
+-- 
+2.49.0
 
--Toke
