@@ -1,100 +1,101 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8061D321F43;
-	Mon, 18 Aug 2025 13:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A479733769A;
+	Mon, 18 Aug 2025 14:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525518; cv=none; b=KoiHaehZ01XX+lOHQFPyJaMGqfunITrs+xeEaEUwXzGyj8A7c01znI81+PXTHMAVUXLKwFZy7ni+VbOh6O0+c0YVJDTNAJ0hbopzeTs3W/V9anb9vWQYrzNM4GJO4QPiQAlS756UreCXllO3GgbsqPF0+fJUs86UgoaiT9we6hM=
+	t=1755525654; cv=none; b=doNHzf/X8z6m6se8dmnBHruRYQTmt5XdejQCsC7S/zz1siJxbU1tQ4xBBXD59eMnTTDxZCQ0yKW8VhI4qh1ZafZVE88PtVXDDQVGq3qjrHBdGPNMGWJj/07X9cDNQVKhXMCIyA1SkzIaDVccvxmI/nEJhk/RyEBk+e0NL7mG8yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525518; c=relaxed/simple;
-	bh=udImFYEyvcy0P5Lzw36Tuio32ZiyjGbkEpFXoChFLk0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hYP3e5hWroFTYnen0WSA2nZcWingLkLbaEyQKHoKH3qkvV4Zkek+Amv1dQjqviZLU10rmYZdkMvwweVo4trpp9OS8BHDY0CZ/92AxO9WyXd4OenI4jK7p0RA1bpK2j/PXm/cpgl9FHhPRzeDGy+L5DqrpDHGG6Qnc7Lm0RbKqpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HI9FsVDI; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1755525654; c=relaxed/simple;
+	bh=E5iyPsDk9H29cD9D9pxBQ5hBRtBIAKLKi2Znr3CPkqE=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WF1KH+YTgT/X1ty8K9DNh+LvCNTho524hCSiEdMRm8FflS0bnEjxIkBAarXc6AvUa6sC80O0Mm/SXAvm4Q/+VfQPwGhn9HavyhBfWnQG0mXRl9BOwWTW3xFHOTaJzFvD8aa/XEroZbtmQo6rVH2aBmSq3FVuimNvZw7KpzLKq1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=g035lRP+; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HI9FsVDI"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45a1b0bd237so33184155e9.2;
-        Mon, 18 Aug 2025 06:58:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755525515; x=1756130315; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4J2qOoplxm5/COGTn/SHR0+UbFimv4xPGKDMv/3jRlg=;
-        b=HI9FsVDIdABVPxgdQ9izfZn6O8uF9O5/MgoJyGpMIFE69h4uIJI5kNS8C1SW28PgKQ
-         4UqzUsp3Zu6JiJ8O/AKyuO3+fPhD4DkV94szlcJut5I4Wnl9tMyv/q9mw7hupZ/FDFwy
-         080gGBMEsKPWDbclkCltlD/kppkYG0myInL4nYL4fZxPCkHBMqOrVhNdR9Chd3iO7/fu
-         wcQKv9dH+/0xT7RPlSe3Qp0ERS/vK1sMBjO6mRScK9fAwCycP5ZmPfFfWKl0D80PdCps
-         bKsCLLIHUTTLe5AFe1itCQ1at2OSG7Lqyoo16RclBp+TMjARhxjvbdIpyDhnD6S6kXK9
-         ZGpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755525515; x=1756130315;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4J2qOoplxm5/COGTn/SHR0+UbFimv4xPGKDMv/3jRlg=;
-        b=ncWxNTRn0Yq4R7r0+za8/OT22IKpyoWH5zrZAedMSecQwUv+FhQmftVN14wLCqx8A0
-         JmMurDHOReio7sjY5mF03fgin/YMMKKFdR6VZatOhIhJS20nVl0WT1VcjspqfwCAy+M1
-         zqqxlUPG715YxSbVzPtyCTFlMhrEQtvBPkQBSCNMVVB/k0WEfXJKSRfR9P9dnwBto+Sh
-         BSXiQAW0QMAeGPbxk17XhuKoetz3B7/YAixNB+WGy7fNeu4wFCbwRCsLmXe9ZFlHhWWN
-         R5miNfDEYfKwPGoKJFn78f+87Vg0r2j+nlRI5c1C0smgn32GPHD5SIQq5HDM1sC3k+Ln
-         9lXA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0ba5zX5ZFCabBrcZQlxDGzHyFDkBPJEqMAS/9CeAJeSz0tjEZxiJTPHKmFzK+0k0gb+xYMtUVWg==@vger.kernel.org, AJvYcCW1qwTlMZnDMKFemOrq2o0RrVDh4eUndYGWtehzj5MB1jrDTWIzMoM4cYk07oG4QjtTkJHhY6CI@vger.kernel.org, AJvYcCXccQoXEs7t3/WjZSWEwyMb7ih207OooioFLxVFlm3U6K629OxnECNGzvlEMqqVb8AczPX5COrztJmad9QN@vger.kernel.org
-X-Gm-Message-State: AOJu0YwN9yDMAGx6UzCsj+6TmUFXHVSs9jxdzTqFwumHc4uVDxi1bde8
-	5VpOorDYjTIdGk0i7Z2LKnfFmyjrymqP4QnLJLjvc036w/cvi2mpC/ek
-X-Gm-Gg: ASbGncvBgsodfe7g4Kh9uN8QjYJGzo/h6WqBt9ezxPvI5bXP1vwqzkhkZhxTbmt1Hr2
-	ft7bRWRqy8RdhqbcPjoLu8zEXjjXJjfx0qyVGtTaZotBZDOJ/+RcI18nUNKeMJeqMv6cFCShA6U
-	d1KAkXJ8pMLDs+FgW4co8W7FBYD3GYP6eNF4eJEWpKRlxKmN0Z18JA4uCnIOjn5UGNSnOvx0Q7v
-	sbHOgW3QItQQ0gw/Mcnsi3+Ts62FLoCVJHB/IR3POtXo57wGH6+TP7YTG9ARKBSsE8pdcwJ3TD+
-	RSGmvV+Wj3oECfOm2gPXt/9mS79GeC0wuS0YsJJGjBFlCOIaUyFWRrjV08gd0LRBDkTaJif4QlA
-	lF9RRDXg8OSztt3bDAxuXTgLiD1rcdg==
-X-Google-Smtp-Source: AGHT+IF2nSSJ1vpyZ8Q4Drk6IzqIjIiKmjZ/df6jowsqi46vTHnishqb15aL/CEwNQNCubGU2CO5Ow==
-X-Received: by 2002:a5d:5f89:0:b0:3b7:78c8:9392 with SMTP id ffacd0b85a97d-3bb67007abbmr9891260f8f.19.1755525514523;
-        Mon, 18 Aug 2025 06:58:34 -0700 (PDT)
-Received: from [192.168.8.100] ([185.69.144.43])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b42a983f7sm1150745e9.24.2025.08.18.06.58.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Aug 2025 06:58:33 -0700 (PDT)
-Message-ID: <9b55ae03-01b3-4a49-8eb7-b1f24e9e1ce0@gmail.com>
-Date: Mon, 18 Aug 2025 14:59:46 +0100
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="g035lRP+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1755525652; x=1787061652;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=E5iyPsDk9H29cD9D9pxBQ5hBRtBIAKLKi2Znr3CPkqE=;
+  b=g035lRP+H0/+ITf17A6OIL3QBVBz5G7GcSGe0wr4/c8g5+Enfxc7y+op
+   /p4HMS3buuMYPkvvvEjIBGnVMvGO66mwCiquMpu4gEADoDAu4ZnC76AtC
+   cuUX7hvZG8jq1erlavN9h0JKYGKjUTNyIesp4PKQhIhcfW5ArlgdARj8f
+   VsBRqYnZDilOV6agvb8WwtKbJXpO4C0UT8uxa6WH+t0m3P9VdwuD7ojsA
+   NGed1B0efgeD1eglE50WKa+QMiy1mYxwk3b8qAIf4qeUyq+LQgD/EQDmG
+   fQsVEVcGr78/fjgSqA5XHk01phEwbYsinY0BFHfkkVL/HO3xRAbUs2Agb
+   A==;
+X-CSE-ConnectionGUID: PqJWKOs1TemkFKVpsePsIQ==
+X-CSE-MsgGUID: fwqzwb4vR8y2J/tvjpku3Q==
+X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
+   d="scan'208";a="44782887"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Aug 2025 07:00:51 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Mon, 18 Aug 2025 07:00:20 -0700
+Received: from localhost (10.10.85.11) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
+ Transport; Mon, 18 Aug 2025 07:00:20 -0700
+Date: Mon, 18 Aug 2025 15:56:58 +0200
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <richardcochran@gmail.com>,
+	<rmk+kernel@armlinux.org.uk>, <rosenp@gmail.com>,
+	<christophe.jaillet@wanadoo.fr>, <viro@zeniv.linux.org.uk>,
+	<quentin.schulz@bootlin.com>, <atenart@kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v4] phy: mscc: Fix timestamping for vsc8584
+Message-ID: <20250818135658.exs5mrtuio7rm3bf@DEN-DL-M31836.microchip.com>
+References: <20250818081029.1300780-1-horatiu.vultur@microchip.com>
+ <20250818132141.ezxmflzzg6kj5t7k@skbuf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 00/23][pull request] Queue configs and large
- buffer providers
-To: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>, Willem de Bruijn
- <willemb@google.com>, Paolo Abeni <pabeni@redhat.com>,
- andrew+netdev@lunn.ch, horms@kernel.org, davem@davemloft.net,
- sdf@fomichev.me, almasrymina@google.com, dw@davidwei.uk,
- michael.chan@broadcom.com, dtatulea@nvidia.com, ap420073@gmail.com,
- linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-References: <cover.1755499375.git.asml.silence@gmail.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <cover.1755499375.git.asml.silence@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <20250818132141.ezxmflzzg6kj5t7k@skbuf>
 
-On 8/18/25 14:57, Pavel Begunkov wrote:
-> Pull request with netdev only patches that add support for per queue
-> configuration and large rx buffers for memory providers. The zcrx
-> patch using it is separately and can be found at [2].
+The 08/18/2025 16:21, Vladimir Oltean wrote:
 
-I'm sending it out as a v6.17-rc2 based pull request since I'll also
-need it in another tree for zcrx. The patch number is over the limit,
-however most of them are just taken from Jakub's series, and it'll
-likely be esier this way for cross tree work. Please let me know if
-that's acceptable or whether I need to somehow split or trim it
-down.
+Hi Vladimir,
+
+> 
+> On Mon, Aug 18, 2025 at 10:10:29AM +0200, Horatiu Vultur wrote:
+> > diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
+> > index 37e3e931a8e53..800da302ae632 100644
+> > --- a/drivers/net/phy/mscc/mscc_main.c
+> > +++ b/drivers/net/phy/mscc/mscc_main.c
+> > @@ -2368,6 +2368,13 @@ static int vsc85xx_probe(struct phy_device *phydev)
+> >       return vsc85xx_dt_led_modes_get(phydev, default_mode);
+> >  }
+> >
+> > +static void vsc85xx_remove(struct phy_device *phydev)
+> > +{
+> > +     struct vsc8531_private *priv = phydev->priv;
+> > +
+> > +     skb_queue_purge(&priv->rx_skbs_list);
+> > +}
+> 
+> Have you tested this patch with an unbind/bind cycle? Haven't you found
+> that a call to ptp_clock_unregister() is also missing?
+
+I haven't tested unbind/bind cycle. As I said also to Paolo[1], I will need
+to look in this issue with missing ptp_clock_unregister(). But I want to
+do that in a separate patch after getting this accepted.
+
+[1] https://lkml.org/lkml/2025/8/13/345
 
 -- 
-Pavel Begunkov
-
+/Horatiu
