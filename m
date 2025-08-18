@@ -1,98 +1,112 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471E030C34E
-	for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 09:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AC930DEB6
+	for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 09:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755507760; cv=none; b=QThDFrBkvwbyq9Nx1+lcImmSHKCAoTXhHdja5P4b/DZvmA/Q01cEJ57khrO84Md1vn7F/1KsqhkolXRy6SStYDIQPgHdoW2QY23RlPJ1OM415B7ygN+/cETHeObR/kwh9ABE/ioO7JMgisIlciG0MFB9B2rX8qZ+rEbZpSnzCjk=
+	t=1755507900; cv=none; b=Kaz0fgNjULOZ/qVluXfy1JEQR1C5+bcd7YPh6gH1zALkeJiglNZv8rF/iX4Rdi2vmTTlki7o2UiGyGsqbdKgomZ3dbpWRZK6Io9b1bcuVVu0KC++CGhduHQlcET63LxrmojiB8e9LrslHTDVhgGJytMny0YElRujCHemVpFHpN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755507760; c=relaxed/simple;
-	bh=vwWq2gQjuhdr2jRIjEhG3Jn96WIa3/SjAzzadW8kWnw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=doO9ninBR19UDI63WTsWqMJomGUfkLaNDdoqJl1CzfFsVA7qXilCFewtpagZ7sZeaXOitWqBCD+sXvy8kC4nSlJ2RiyHaB2GgS9NrDa8Hx6nudyVyKjhO15pb6w7Dfda+yZdHbRGBlMImpiJH6ceLpweambD48gRBV6ypu1/mys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1unvky-0003N2-Rd; Mon, 18 Aug 2025 11:02:20 +0200
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1unvkw-000sBB-2F;
-	Mon, 18 Aug 2025 11:02:18 +0200
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1unvkw-00Bhgg-1y;
-	Mon, 18 Aug 2025 11:02:18 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	=?UTF-8?q?S=C3=B8ren=20Andersen?= <san@skov.dk>
-Subject: [PATCH net-next v1 0/3] stmmac: stop silently dropping bad checksum packets
-Date: Mon, 18 Aug 2025 11:02:14 +0200
-Message-Id: <20250818090217.2789521-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1755507900; c=relaxed/simple;
+	bh=va8sFiqZgyorC646JnNnwfGYSxGL3VGuAC6L/LkmHLE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GKdFSoUtTB/RHY0wWwVxQ5OAi9WIVpNNGMHZ7nr/Ays3/4uCWH5pNm0MKSGFy03Hijz84qGtLC37BzfstkvpX6mwzCZKjYgG4eUm/LPCrdH4kPADnmkFP34Zuz8jpq3iMJf4fwG7vyAsob2Y5S2257U6szoUJtqprA84Joujol4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TfIjNGHz; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TfIjNGHz"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-afcb78c66dcso544664466b.1
+        for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 02:04:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1755507897; x=1756112697; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7Lw+LCxHSIFKIsmxIOr/OVqLwUPRzceVLg90y/kN8Gk=;
+        b=TfIjNGHzDdP0AtFVHVUW/HnFyVKbUGkkIpvADfMSCEI6vXz7rqp1F561VjLzZNECwd
+         bvJi//S1N381g8PXt5RBKm7B/55Nnv31YfEO5xyTpa7jwURTJLBl3yALgs5EKsroufaJ
+         imuG0L0vVYVzWI7M+V4/17Vewl2ZjyTWKu/nss5WwWp8THBMDasJIbf7r3koOPgtNFL5
+         aNgP/eu3qPruHrpU+2PZ+/UGh6C1rSp9SqMTuu7zzjexnPARbfuFE6PqsN7F3Y+/2QxO
+         KvfukXJVfnvDoL2ipJ0Vy9jJtL71UKrEhesbbdWLrv4EbmEH/cNqHcaGE8mkBBCfgjrK
+         E2CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755507897; x=1756112697;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7Lw+LCxHSIFKIsmxIOr/OVqLwUPRzceVLg90y/kN8Gk=;
+        b=FQiZZnItJuFGwsj/x1sQ4DlnFTuLdFBjTVZV8Py1b7HSLra42TK5zQzdm4jOhBEsA5
+         L6yWA1f/eJWI7QxJ0HedwWnyxUy9/bRAHJUYSzyr0iCz9QR8ulcEsoYfwV78CegBAB0V
+         mNq3XeQERT5n5dAkXZtcx0lYq6N33L5COADPUi84W5vf8M2kuqfqNNyGIBg6STqWh2Wp
+         23pi5feWdz+j5+ebPm66eIa7j6ILzn423M42n0TuSCS8Zu0p/nkIajqatYm8ktyjJwkc
+         nhL1MZusubmxDXOSIUsbtlMXWwLYUaydicyboBoMoZxAxoUGSTnaC67MAkfLnHXdekM3
+         sSOQ==
+X-Gm-Message-State: AOJu0YxLLEy3sd0CHj75HbNkaLsJi3/HegsJcmGBMe+Vis6Z36vmEtLp
+	7REmd6eOjyQ9FuDLztGzadMWik2S97OJmIe4OVWeo/p8tEHIEzse4nqTZJHuuwp8jPY=
+X-Gm-Gg: ASbGncvqdW8dShrrVNi5P9+ZflJYJNt+5m0sOlOL/RoFEkVNYKa/J1x47BmJSGo1iDG
+	5bR/gVVcjsW7SLVQxn/NhImrzRg0rSC8nRaGm/SWBF5sjmrO+/hXDPqDQjNiYbLDMBj67C4oAIH
+	D0CS53eFsdIuTRtIBrw/fAND18q84aH4g1I66QKQUTthX9r9Y2bS4T1uMUlQAX85MYouQj0Gh7v
+	RHW7sORhH8y5gAPL8d5vjlQgnw0jZ0FRfXq/imkh3g2ISmC/bVZEeWbpCJseejFdZx9sqPOcva9
+	nDDg9k3l/NZQqVTUSo8TUz4oLWfOTDN+1FvfYlusciQ2gT5xjSLGQqTR3R0Y8wcT8N9ApGZU81B
+	LKDHgfmnZgtC7WoPzVrhNBT5VoL/sqmCF+4LVG0Y7/F5Ig0QnKH3gNPNCd48tgRNZ5s4=
+X-Google-Smtp-Source: AGHT+IFN2U0ifcOYrsiMP+SqBYw/LYY7lYQDL305dHhYuuI+QSSyvw76/BjR0E/2+wN/duSXPuQBIg==
+X-Received: by 2002:a17:907:3c88:b0:ae3:5185:541a with SMTP id a640c23a62f3a-afceae9fd2fmr810880066b.54.1755507896815;
+        Mon, 18 Aug 2025 02:04:56 -0700 (PDT)
+Received: from ?IPV6:2001:a61:134f:2b01:3c68:f773:4c52:94ed? ([2001:a61:134f:2b01:3c68:f773:4c52:94ed])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afcdce53c1bsm764036566b.13.2025.08.18.02.04.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Aug 2025 02:04:56 -0700 (PDT)
+Message-ID: <663e2978-8e89-4af4-bc1f-ebbcb2c57b1c@suse.com>
+Date: Mon, 18 Aug 2025 11:04:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: usbnet: skip info->stop() callback if suspend_count
+ is not 0
+To: Xu Yang <xu.yang_2@nxp.com>, oneukum@suse.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, linux-usb@vger.kernel.org
+Cc: netdev@vger.kernel.org
+References: <20250818075722.2575543-1-xu.yang_2@nxp.com>
+Content-Language: en-US
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <20250818075722.2575543-1-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi all,
+On 8/18/25 09:57, Xu Yang wrote:
 
-this series reworks how stmmac handles receive checksum offload
-(CoE) errors on dwmac4.
+> --- a/drivers/net/usb/usbnet.c
+> +++ b/drivers/net/usb/usbnet.c
+> @@ -839,7 +839,7 @@ int usbnet_stop (struct net_device *net)
+>   	pm = usb_autopm_get_interface(dev->intf);
 
-At present, when CoE is enabled, the hardware silently discards any
-frame that fails checksum validation. These packets never reach the
-driver and are not accounted in the generic drop statistics. They are
-only visible in the stmmac-specific counters as "payload error" or
-"header error" packets, which makes it harder to debug or monitor
-network issues.
+This needs to fail ...
 
-Following discussion [1], the driver is reworked to propagate checksum
-error information up to the stack. With these changes, CoE stays
-enabled, but frames that fail hardware validation are no longer dropped
-in hardware. Instead, the driver marks them with CHECKSUM_NONE so the
-network stack can validate, drop, and properly account them in the
-standard drop statistics.
+>   	/* allow minidriver to stop correctly (wireless devices to turn off
+>   	 * radio etc) */
+> -	if (info->stop) {
+> +	if (info->stop && !dev->suspend_count) {
 
-[1] https://lore.kernel.org/all/20250625132117.1b3264e8@kernel.org/
+... for !dev->suspend_count to be false
 
-Oleksij Rempel (3):
-  net: stmmac: Correctly handle Rx checksum offload errors
-  net: stmmac: dwmac4: report Rx checksum errors in status
-  net: stmmac: dwmac4: stop hardware from dropping checksum-error
-    packets
+>   		retval = info->stop(dev);
+>   		if (retval < 0)
+>   			netif_info(dev, ifdown, dev->net,
 
- drivers/net/ethernet/stmicro/stmmac/dwmac4.h       | 1 +
- drivers/net/ethernet/stmicro/stmmac/dwmac4_descs.c | 8 ++++++--
- drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c   | 2 ++
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  | 3 ++-
- 4 files changed, 11 insertions(+), 3 deletions(-)
+In other words, this means that the driver has insufficient
+error handling in this method. This needs to be fixed and it
+needs to be fixed explicitly. We do not hide error handling.
 
---
-2.39.5
+Please use a literal "if (pm < 0)" to skip the parts we need to skip
+if the resumption fails.
 
+	Regards
+		Oliver
+
+NACKED-BY: Oliver Neukum <oneukum@suse.com>
