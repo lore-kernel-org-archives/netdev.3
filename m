@@ -1,149 +1,258 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2302206AF
-	for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 13:56:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1146C21CC55;
+	Mon, 18 Aug 2025 13:56:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525369; cv=none; b=VxDZFvGD2ehx/NAhYUtWmRMKGwV35lUQB4yhF6maQDvCm6pEoGaQjsi4iQG8av5WNJR98yH545GvMLRy7yVIyVCOVue0tncGpRphyjkDmF0icn+iNoZ0Qvu1QRDDusFDbCmA6v4KBrkgFWSl+9KogUQpWgaV51FwC3+I4atBGBo=
+	t=1755525394; cv=none; b=u65g64sS6UvzsWepd9dzgJbwJ0w1kQPlVk0TD3h/NecywOnNewdjSlTwxjHh7OAk/Nogjt2K+XF1et+i5Iz4Y4A3NEK9g19+TmaGBFlm7YsYRIxOQjXK6e4rXmI7TKYj+wsCFAgRDjK+hR9z0vGTMVm+3CG2wTqbCPvS6wjkhVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525369; c=relaxed/simple;
-	bh=kxwdAUu2zY5vhHf9mFzq/NhkfF2YCg3YlMNOdGVC6Xg=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=hsOyDJSwOywCl39SYytoUOTaUA+yDlUsSfEZpgcwW8TC3qagVpVmx0Ut9o8flZ+TE918rHpER+m7b2pFsY+WFtXf8Eiq7FGyA+nQQO/5RLAFPbywcvwYuI0Leg9LmBPkqvAH/tIsUrRJS8fp7UOYRr3iacwoY22TVuIyHPro3WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=coresemi.io; spf=none smtp.mailfrom=coresemi.io; dkim=pass (2048-bit key) header.d=coresemi-io.20230601.gappssmtp.com header.i=@coresemi-io.20230601.gappssmtp.com header.b=l1AlTTjl; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=coresemi.io
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=coresemi.io
+	s=arc-20240116; t=1755525394; c=relaxed/simple;
+	bh=WhJVNeSStiv+lvOcXcU3zfjW9jbIie7z1H0GF6hbESg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=otH3cU3aUQWcX51dEnSD4Osn3G9jvwSiG5pSiW1ytYrNU0B01ogcQIsLZQRxCKjLb1sApIBKnnaZRuWLUX0Mtirdh3ufie8xuq96Hm5BX52MoNCDxJrV5gRWd310g+T+0/on3GE6dxet2W1H6sajOMDCfVvsJ99NFbQHdiqtNRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LBpkvh3U; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=coresemi-io.20230601.gappssmtp.com header.i=@coresemi-io.20230601.gappssmtp.com header.b="l1AlTTjl"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b47174c8e45so3801527a12.2
-        for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 06:56:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LBpkvh3U"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3b9e41669d6so3288880f8f.2;
+        Mon, 18 Aug 2025 06:56:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=coresemi-io.20230601.gappssmtp.com; s=20230601; t=1755525367; x=1756130167; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=knjo7tVoICwQ1/dX/7NdQHS5Cp98cmu3MQrZQIGu3Nc=;
-        b=l1AlTTjlqjFymN0PDycAszkcc0QS4J1aBsOUaG60SC21jvgJzmky0Vd67+5uNJqV37
-         LnJ4+bUy7Nau76BhigafRp3bTEAdRz5pe6wPduKWHvgCSM5FVc3VRUxZOpy8Eo7ho5Pg
-         OXOuXTYyqm3nmq0aU14F9qYLvrbBsqUmiCK754CseUPsi+oAL8V+VnR2AvCrpwdWAz/0
-         9jmhRitH3W95+Td4sQUnP4Ie4xjv0yyzWk20IbFIb00kuYiH5GRiVd2bzd1Cu/Cs5yTg
-         oxKQd6nqu7wVOUrurKrtaZ4d9ah9apDdrwpYeY6B94Br5kaNFa3L2e2rPCFF8GBpv9FU
-         Nv/w==
+        d=gmail.com; s=20230601; t=1755525390; x=1756130190; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HIjGtIzogKi0vJY5xlfW/RJoJSvH8HUexozUhmGaN+Q=;
+        b=LBpkvh3U0atrnqg6BW2fG6GwWtU+TnVG0Nd0HTcf+hUJbGsw+Da+CTbfCuKNe3GxTa
+         Qr12Cbddg6q67SXYfuXSHJ5A+bDyYUwCFFHvGgER2vQcFjRYOnVyJmHt6wse4Ejd/t3O
+         FU9Uuul+ctA9+SCDhz8hUmKVI/GWI772Lxdx6Kwnc3yE8Ap5iS6OabScLlc4KDxOUq1W
+         aKjUNVU5Dx1P0qlCzCBaQlQLX4HdBR0jwTpL/N+MgYZSDuCXYuRbNFG2Us2DV8YNI9PE
+         2aiKxAPTA0dXKqlDF9/O+fFTimvpIiSQPEJcK7dvqpUsgt8m3E4fmA83osDzZGSujvcR
+         SFRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755525367; x=1756130167;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=knjo7tVoICwQ1/dX/7NdQHS5Cp98cmu3MQrZQIGu3Nc=;
-        b=ATEo/isDpztgu8G9UVTI+tq2gUMBXqyUD45qz1o8xbQV/4opcZqs/TCbVijOlHGoMP
-         qff78XzU/wzyjjFjaBaOy8cqI1IhyDPidCnpE1MBqq2BpY1HufLpbMhyxfJ491Ie/zrk
-         IJJytXLyNmgc2esDkLyFovYs4Z2n1+s2p7SCFfMG66/16Skd6XX7TP9BPEP6rOMWtCs0
-         X3cBk83VTP2Iz3FmAD4ZjSHpO1gpWuCuIFC/99XR0D+p+gSfgQZwlE5mJ6pfui10Ju74
-         hIzRz4Q224TpRF1c9MUSQdC7HOOQFcp8dcwVog+Cs5eQbBHvtIoFsyWOtU+80262Ux+u
-         Y7Vw==
-X-Forwarded-Encrypted: i=1; AJvYcCW0SOrvFKrdm65snXY7VtE6r19tpTW89Q4Rg/TyxGnvzVSahqaGKVcd9ySEy8Vp25tXVZG3Y2k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwY1g52DzHtVBg8McvWhiVaQjTqPMKiOwSPZov8Y9xL0W6OWiJ
-	GRRRYW/gButBXOgkO8Nvh7v8JUqlkanC0sPVwYR9xWHtByjMqPip1ovEaTHmF8JkwG4=
-X-Gm-Gg: ASbGnctXJWYhX7G+h5ss7eRgcD6QZuaSDU7bzrJatFCYdve5ZF0xh9pH0DOdNVcxzj8
-	LZD9WU330+POVdcLDurbqXuGsVEjdNEUq+RfsTaCxBhPzd14trrXCDO9askz4DMEl0nRGKo4Rhi
-	LMxND2oewm6zTED1Zg/ZNHuTP3zEEdg6n5zPW5v2aDkRtG7ArMCGfowh6xwy4jgUx8aRjRWWgWg
-	ppcD+O+AZRVr0p/NkpV0KXJm3dE9/uKYvB65B3BpSi8qQ/8O1koANQwDOUD47AwzDpAUPUG0AZT
-	+Q8fgHPyevfAnNVTvQiBDE7ip6T+oSImqmwz/Wfxyrk4g8+Liu0SmL4VEAIrmwoJhaM8d6pyNQ1
-	+72MoL0f0SXrOi/r+1GxgZT44DRQ3DIVbo/q0Eluy5xOPMGfSybb3kV4M7KCRZxcz1g==
-X-Google-Smtp-Source: AGHT+IEnSXb0vt8RQwBHMpljKGdgSRTOrqgUIcFjVsEjlh2qZKWBpjKH+4rX8SY3Lmj+EtSaZgz7UQ==
-X-Received: by 2002:a05:6a20:748d:b0:220:4750:1fb1 with SMTP id adf61e73a8af0-240d2de6aa1mr19430165637.4.1755525367168;
-        Mon, 18 Aug 2025 06:56:07 -0700 (PDT)
-Received: from smtpclient.apple (p121132.f.east.v6connect.net. [221.113.121.132])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b475095ef3bsm555683a12.46.2025.08.18.06.56.03
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 18 Aug 2025 06:56:06 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+        d=1e100.net; s=20230601; t=1755525390; x=1756130190;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HIjGtIzogKi0vJY5xlfW/RJoJSvH8HUexozUhmGaN+Q=;
+        b=MfxKqMi/ZJzH1dycZtjk9O8CP2/PmzgFU2UEengwOPq/nFDw2nu9DYjR6/epMp8rN+
+         MJ48GfMkl+Zq4Z3xO9YqoMrERlzJTfjPWwwfaa8uMewdvJ2YA0ns9l7r/TCyB+VY8Ii4
+         Hl9AsEmTUaGTh35Z3Ex5iKDgpGgmz16FbHNSxBINF9f30ZOnskQfsFA0VpeKQD3S8X0m
+         Nn96Ht6+BPEpHCeiEWZLyOiku4cp7osvBns9AFVW9+Fisc6rPbMoMpJfQzXJaK5enjE6
+         2KPXf92T1utWzEwsVJbaO5tdciZQKueSHXjgoimPolq4kzM9rNofrX2xNyIgB+RWWXAD
+         TUmA==
+X-Forwarded-Encrypted: i=1; AJvYcCWEXbfgE79FSfH0oDNnZ6Z1WIa9NNlzTeX23JnTjYH9qrvbNxTdK8VUzgKhjVGc4zSrMUvq/kNCKA==@vger.kernel.org, AJvYcCWn53sd5Y76Ixf7VxyKnC6Q9ZlQeQ/EaZAnDsKjs9EEypZM6uXWpuz9RvWLu4q16zzI9268S6Aicv1qefaZ@vger.kernel.org, AJvYcCWrgYoCd1NRCaVyYECO2RjnXjFqPlwNf3uxdTfhup1mCo4ECXkf8/r5KUd0XxBcI6+tFUVqfRNe@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9jCU0psrZ5IoDwj1O9efLPe0cFhYohjRS8iWqKbr27wszezr8
+	W8H1uZny8mzXrI1bQ//rmHjol/RsMD78vjckp49ohpt1zH3cIk0q0hIl
+X-Gm-Gg: ASbGncuNBOjphkbA4Fudvp9YSIa8RAFc2/KrHam174p1Cw9IJe4nJ6JlnZFvSN9dBOc
+	4BsprSXDh67wTZweKl4VFW3YK3BG27JMMyLaGGgvpYvOK1PCjoDRK2nTo3s6X292eLbstX3hH3O
+	gsKjo0wnNE9J/fjvYvP0UYn+mjaZID2t8JZKxfLuVvIRn3b4pvu6ZRV8CzpLcNkjse51k/0UMSX
+	LUXnTipB9XMOPnjBALzltJd4Pao9Gx1hYKkK/dUO2AvSIIEAYtIvBwjUq83lfAlZW8yQPgc772t
+	lkt46XHGsuBzxIuXNKFZKTaeSYsOCn+tTC4uViZ9AxP97DyYgTZmrux63M/0xOA4OTAN0EjRkMY
+	qa/1+wmx1q7bNGCqt5Kh6UgK1u66NN3pfog==
+X-Google-Smtp-Source: AGHT+IFITBu4xmm3trvkM7QeONfVwuLd61rclbo1mHoQfU27oRMWWeC93+mJ/tL09P7hnZHPJhojFA==
+X-Received: by 2002:a05:6000:1a8c:b0:3b9:13e4:9693 with SMTP id ffacd0b85a97d-3bc6a74837bmr7035633f8f.52.1755525390079;
+        Mon, 18 Aug 2025 06:56:30 -0700 (PDT)
+Received: from 127.0.0.1localhost ([185.69.144.43])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1b899338sm91187345e9.7.2025.08.18.06.56.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Aug 2025 06:56:29 -0700 (PDT)
+From: Pavel Begunkov <asml.silence@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org
+Cc: asml.silence@gmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	davem@davemloft.net,
+	sdf@fomichev.me,
+	almasrymina@google.com,
+	dw@davidwei.uk,
+	michael.chan@broadcom.com,
+	dtatulea@nvidia.com,
+	ap420073@gmail.com,
+	linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org
+Subject: [PATCH net-next v3 00/23][pull request] Queue configs and large buffer providers
+Date: Mon, 18 Aug 2025 14:57:16 +0100
+Message-ID: <cover.1755499375.git.asml.silence@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH 2/3] dt-bindings: net: Add support for J-Core EMAC
-From: "D. Jeff Dionne" <jeff@coresemi.io>
-In-Reply-To: <0784109c-bb3e-4c4e-a516-d9e11685f9fb@kernel.org>
-Date: Mon, 18 Aug 2025 22:55:51 +0900
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
- Artur Rojek <contact@artur-rojek.eu>,
- Rob Landley <rob@landley.net>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- netdev@vger.kernel.org,
- devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <CB2BF943-8629-4D01-8E52-EEC578A371B5@coresemi.io>
-References: <20250815194806.1202589-1-contact@artur-rojek.eu>
- <20250815194806.1202589-3-contact@artur-rojek.eu>
- <aa6bdc05-81b0-49a2-9d0d-8302fa66bf35@kernel.org>
- <cab483ef08e15d999f83e0fbabdc4fdf@artur-rojek.eu>
- <CAMuHMdVGv4UHoD0vbe3xrx8Q9thwrtEaKd6X+WaJgJHF_HXSaQ@mail.gmail.com>
- <26699eb1-26e8-4676-a7bc-623a1f770149@kernel.org>
- <295AB115-C189-430E-B361-4A892D7528C9@coresemi.io>
- <bc96aab8-fbb4-4869-a40a-d655e01bb5c7@kernel.org>
- <CAMuHMdW0NZHCX1V01N4oay-yKuOf+RR5YV3kjNFiM6X6aVAvdw@mail.gmail.com>
- <0784109c-bb3e-4c4e-a516-d9e11685f9fb@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Something like:
+Pull request with netdev only patches that add support for per queue
+configuration and large rx buffers for memory providers. The zcrx
+patch using it is separately and can be found at [2].
 
-J-Core SoCs are assembled with an SoC generator tool from standard =
-components.  An SoC has a ROM from soc_gen with a Device Tree binary =
-included.  Therefore, J-Core SoC devices are designed to =E2=80=98just =
-work=E2=80=99 with linux, but this means the DT entires are generic, =
-slightly different than standard device tree practice.
+Large buffers yielded significant benefits during testing, e.g.
+a setup with 32KB buffers was using 30% less CPU than with 4K,
+see [3] for more details.
 
-J
+Per queue configuration series:
+[1] https://lore.kernel.org/all/20250421222827.283737-1-kuba@kernel.org/
+Branch with the zcrx patch
+[2] https://github.com/isilence/linux.git zcrx/large-buffers-v3
+v2 of the series
+[3] https://lore.kernel.org/all/cover.1754657711.git.asml.silence@gmail.com/
 
-> On Aug 18, 2025, at 22:41, Krzysztof Kozlowski <krzk@kernel.org> =
-wrote:
->=20
-> On 18/08/2025 12:57, Geert Uytterhoeven wrote:
->>>>=20
->>>> No.  It=E2=80=99s a generic IP core for multiple SoCs, which do =
-have names.
->>>=20
->>> Then you need other SoCs compatibles, because we do not allow =
-generic
->>> items. See writing bindings.
->>>=20
->>>> This is the correct naming scheme.  All compatible devices and SoCs =
-match properly.
->>>=20
->>> No, it is not a correct naming scheme. Please read writing bindings.
->>=20
->> Can we please relax this for this specific compatible value?
->=20
-> We can...
->=20
->> All other devices in this specific hardware implementation were
->> accepted without SoC-specific compatible values ca. 9 years ago. =
-AFAIK
->> the Ethernet MAC was the sole missing piece, because its Linux driver
->> was never attempted to be upstreamed before.
->=20
-> ...just provide some context and rationale in the commit msg.
->=20
-> Some (different) people pick up some irrelevant commits and use them =
-as
-> argument in different discussions in style: it was allowed there, so I
-> can do the same.
->=20
-> Best regards,
-> Krzysztof
+---
+
+v3: - rebased, excluded zcrx specific patches
+    - set agg_size_fac to 1 on warning
+v2: - Add MAX_PAGE_ORDER check on pp init (Patch 1)
+    - Applied comments rewording (Patch 2)
+    - Adjust pp.max_len based on order (Patch 8)
+    - Patch up mlx5 queue callbacks after rebase (Patch 12)
+    - Minor ->queue_mgmt_ops refactoring (Patch 15)
+    - Rebased to account for both fill level and agg_size_fac (Patch 17)
+    - Pass providers buf length in struct pp_memory_provider_params and
+      apply it in __netdev_queue_confi(). (Patch 22)
+    - Use ->supported_ring_params to validate drivers support of set
+      qcfg parameters. (Patch 23)
+
+The following changes since commit c17b750b3ad9f45f2b6f7e6f7f4679844244f0b9:
+
+  Linux 6.17-rc2 (2025-08-17 15:22:10 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/isilence/linux.git tags/net-for-6.18-queue-rx-buf-len
+
+for you to fetch changes up to 417cf28f3bf129d1a0d1b231220aa045abac3263:
+
+  net: validate driver supports passed qcfg params (2025-08-18 07:39:50 +0100)
+
+Jakub Kicinski (20):
+      docs: ethtool: document that rx_buf_len must control payload lengths
+      net: ethtool: report max value for rx-buf-len
+      net: use zero value to restore rx_buf_len to default
+      net: clarify the meaning of netdev_config members
+      net: add rx_buf_len to netdev config
+      eth: bnxt: read the page size from the adapter struct
+      eth: bnxt: set page pool page order based on rx_page_size
+      eth: bnxt: support setting size of agg buffers via ethtool
+      net: move netdev_config manipulation to dedicated helpers
+      net: reduce indent of struct netdev_queue_mgmt_ops members
+      net: allocate per-queue config structs and pass them thru the queue API
+      net: pass extack to netdev_rx_queue_restart()
+      net: add queue config validation callback
+      eth: bnxt: always set the queue mgmt ops
+      eth: bnxt: store the rx buf size per queue
+      eth: bnxt: adjust the fill level of agg queues with larger buffers
+      netdev: add support for setting rx-buf-len per queue
+      net: wipe the setting of deactived queues
+      eth: bnxt: use queue op config validate
+      eth: bnxt: support per queue configuration of rx-buf-len
+
+Pavel Begunkov (3):
+      net: page_pool: sanitise allocation order
+      net: let pp memory provider to specify rx buf len
+      net: validate driver supports passed qcfg params
+
+ Documentation/netlink/specs/ethtool.yaml           |   4 +
+ Documentation/netlink/specs/netdev.yaml            |  15 ++
+ Documentation/networking/ethtool-netlink.rst       |   7 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c          | 143 ++++++++++++----
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h          |   5 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c  |   9 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c      |   6 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.h      |   2 +-
+ drivers/net/ethernet/google/gve/gve_main.c         |   9 +-
+ .../ethernet/marvell/octeontx2/nic/otx2_ethtool.c  |   6 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c  |   9 +-
+ drivers/net/netdevsim/netdev.c                     |   8 +-
+ include/linux/ethtool.h                            |   3 +
+ include/net/netdev_queues.h                        |  84 ++++++++--
+ include/net/netdev_rx_queue.h                      |   3 +-
+ include/net/netlink.h                              |  19 +++
+ include/net/page_pool/types.h                      |   1 +
+ include/uapi/linux/ethtool_netlink_generated.h     |   1 +
+ include/uapi/linux/netdev.h                        |   2 +
+ net/core/Makefile                                  |   2 +-
+ net/core/dev.c                                     |  12 +-
+ net/core/dev.h                                     |  15 ++
+ net/core/netdev-genl-gen.c                         |  15 ++
+ net/core/netdev-genl-gen.h                         |   1 +
+ net/core/netdev-genl.c                             |  92 +++++++++++
+ net/core/netdev_config.c                           | 183 +++++++++++++++++++++
+ net/core/netdev_rx_queue.c                         |  22 ++-
+ net/core/page_pool.c                               |   3 +
+ net/ethtool/common.c                               |   4 +-
+ net/ethtool/netlink.c                              |  14 +-
+ net/ethtool/rings.c                                |  14 +-
+ tools/include/uapi/linux/netdev.h                  |   2 +
+ 32 files changed, 631 insertions(+), 84 deletions(-)
+ create mode 100644 net/core/netdev_config.c
+
+Jakub Kicinski (20):
+  docs: ethtool: document that rx_buf_len must control payload lengths
+  net: ethtool: report max value for rx-buf-len
+  net: use zero value to restore rx_buf_len to default
+  net: clarify the meaning of netdev_config members
+  net: add rx_buf_len to netdev config
+  eth: bnxt: read the page size from the adapter struct
+  eth: bnxt: set page pool page order based on rx_page_size
+  eth: bnxt: support setting size of agg buffers via ethtool
+  net: move netdev_config manipulation to dedicated helpers
+  net: reduce indent of struct netdev_queue_mgmt_ops members
+  net: allocate per-queue config structs and pass them thru the queue
+    API
+  net: pass extack to netdev_rx_queue_restart()
+  net: add queue config validation callback
+  eth: bnxt: always set the queue mgmt ops
+  eth: bnxt: store the rx buf size per queue
+  eth: bnxt: adjust the fill level of agg queues with larger buffers
+  netdev: add support for setting rx-buf-len per queue
+  net: wipe the setting of deactived queues
+  eth: bnxt: use queue op config validate
+  eth: bnxt: support per queue configuration of rx-buf-len
+
+Pavel Begunkov (3):
+  net: page_pool: sanitise allocation order
+  net: let pp memory provider to specify rx buf len
+  net: validate driver supports passed qcfg params
+
+ Documentation/netlink/specs/ethtool.yaml      |   4 +
+ Documentation/netlink/specs/netdev.yaml       |  15 ++
+ Documentation/networking/ethtool-netlink.rst  |   7 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 143 +++++++++++---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |   5 +-
+ .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |   9 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |   6 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.h |   2 +-
+ drivers/net/ethernet/google/gve/gve_main.c    |   9 +-
+ .../marvell/octeontx2/nic/otx2_ethtool.c      |   6 +-
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |   9 +-
+ drivers/net/netdevsim/netdev.c                |   8 +-
+ include/linux/ethtool.h                       |   3 +
+ include/net/netdev_queues.h                   |  84 ++++++--
+ include/net/netdev_rx_queue.h                 |   3 +-
+ include/net/netlink.h                         |  19 ++
+ include/net/page_pool/types.h                 |   1 +
+ .../uapi/linux/ethtool_netlink_generated.h    |   1 +
+ include/uapi/linux/netdev.h                   |   2 +
+ net/core/Makefile                             |   2 +-
+ net/core/dev.c                                |  12 +-
+ net/core/dev.h                                |  15 ++
+ net/core/netdev-genl-gen.c                    |  15 ++
+ net/core/netdev-genl-gen.h                    |   1 +
+ net/core/netdev-genl.c                        |  92 +++++++++
+ net/core/netdev_config.c                      | 183 ++++++++++++++++++
+ net/core/netdev_rx_queue.c                    |  22 ++-
+ net/core/page_pool.c                          |   3 +
+ net/ethtool/common.c                          |   4 +-
+ net/ethtool/netlink.c                         |  14 +-
+ net/ethtool/rings.c                           |  14 +-
+ tools/include/uapi/linux/netdev.h             |   2 +
+ 32 files changed, 631 insertions(+), 84 deletions(-)
+ create mode 100644 net/core/netdev_config.c
+
+-- 
+2.49.0
 
