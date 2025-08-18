@@ -1,221 +1,468 @@
-Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1DB2797B5
-	for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 07:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84AC0298CB2;
+	Mon, 18 Aug 2025 07:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755503615; cv=none; b=t3XQwpYuCBA7MpHM3N6tx8haH5ZDHn+83izH1pk23Et2NVPDKkYAaA8pu2atG880/6xQS4nwtP0dlYyxvNN6kmy8wCx2QguU0byBonQEnyA6MGZOTYvDakx+8BkT9IFdrrNfV5yGIVueVhB+PnRu/x6e0Gy9TTrqd8/EgxC8oDI=
+	t=1755503736; cv=none; b=nUGAJwvla4gRItOYHm9eYEEOMVdBdYKR99C9WUjkscCxFDvjXsoCIDInEfoPCN1YB7ln0KzVKviGghV/9as5jXAEXMYTJNf47mtnS6sFKDk+20VCoXNW2etKwPUskvqqe17DgvkCY+m5t9YIaRZy+Ficfy7kVFESMCWlskguu6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755503615; c=relaxed/simple;
-	bh=Qm98CsKiZssJ89VPl287AmugGSc7bt8qYP2C0hgs4Ns=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=WQS76FOywu/nCxr29jPaY/hSRmjjmXUTWFIbUUUl+w1nQb/t9NvmFC1f9dmGtGw6LVLnuOidtXT/oNoWvbap1db7m3Tbnfpa+YEsSC7C581MBWPgNje547kC29lPG805SOtkh3+C7oOkkiUofhyLOpDggfaIM6Tsuv7QAicfIcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-88432e33c84so1155679639f.2
-        for <netdev@vger.kernel.org>; Mon, 18 Aug 2025 00:53:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755503613; x=1756108413;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+xErwOmLK+upZ5SztH45fHWHRLrfJkU1Tu5wxEcT0Jo=;
-        b=nx6v84O4anm/wKKXBtQW72cjOua3+Zmc2BqyV0tgOhjzWfI0hEtolx+lr5Nhu/kSKQ
-         y0tokm+HvBb2Y67OHCVTQB2wmFIafYPrGuhEWiSMa8n07m9Hp8O2HsjiHYfpGnRe14z5
-         L9SJUIZQgkfGUAnUcB75THtYQzV69XDa6NPxy8zmJf0XsMGAdP/e6X5i1HJkYNaHJilc
-         xDPOXXg4N6ry2rSPsku79+ZBiNG+8BwoiHLoYIvGUQ/f4tLOBIhgta0En0oB0/GkFngI
-         guQG7ulvTn/xvznEe1G5wnn5s00LUXDTEMcdLcxArjV1ltI8OkXAFlhvDYQJ08uSeqjU
-         IKZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWxrRnDqMBaPINMF5hi3ZUaJ77RlShXeZDWDYMWoT7rTjftr0w3ksFc20uA+jFdy1KWnEBm/xo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzr6Xa6lIIh+vIscsbYjVG9rU24OPtuIjeqUvejdHMqUKJgeZYp
-	BQXlvyk5zlhofhdV8Ekwo2xZc/gs6E2z2I81AO7LpBit84p4qXKgRe/wp5K8d+6UD49/1cC0GhK
-	6OWKZizI0sexLWfMHiEWDmX/pOktVE8H9UjbjGUdrrx0dSfQuL7oNFDvWDQc=
-X-Google-Smtp-Source: AGHT+IEKNm0dujcvmxcJQ1bwMG7c3CsIBMnei11YBxoOAkeqZE0BYc10q9fxiOU8HId8YCHUs5B7SRHWAb0d7m6XPn+QQBJrxf1Z
+	s=arc-20240116; t=1755503736; c=relaxed/simple;
+	bh=8/c2gLMraNoh8I3eW+y0GOqJjYmy4T+CnsyzqJRnjII=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NIkAiv9hESD8PsNPIwa3Jnyb7bMle5RUgtIZXJ6EuoRHuuMBfsjkeT/Qnvu2fvDjx75rG18GZVCftXZI5OB3X6rdj/h9vvmw62+vGsOxrfL3dMySr/WYGj7MmgDb4uohI6FOzIQ2V8Ryji8PoB6n5mM8mqryuN+GuGLh88UEsuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=TpAGUBaR; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="TpAGUBaR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1755503734; x=1787039734;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=8/c2gLMraNoh8I3eW+y0GOqJjYmy4T+CnsyzqJRnjII=;
+  b=TpAGUBaR42WsvInO+j7n+yvD3DoMHusfENR/l1EaH/U7Z/le/jyST8Hh
+   2fRaSWolfxfbzaR/ZirTL9AG3nqOw4jIMwyuMB9IQDEl6icdkHq+nNCSB
+   n1P9ScmBjGn0km/PxpefniqcbBh7TUKtnGkRzJSFNCllNAWhUt7d7dEkA
+   kqXWacxc63iqyT51nD3lYkqgkcL+kcsgA3fk6JiM6GVxcknoAXFOnEmtG
+   ex17pnh8UgBeYxem7jImB3+2FoTqX607pa2AQU7tm4zPCISuygiQJ+Yos
+   rph6PKCGfjd5ctZ2jcRHzh8bkZ0te7alU3iUFLppCGTUiRnyrM+czWFPj
+   A==;
+X-CSE-ConnectionGUID: IU94rHsXSPeQ3yq5rbnm/A==
+X-CSE-MsgGUID: oFlHcoEGTh+CqVdpC3dBqA==
+X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
+   d="scan'208";a="50855154"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 18 Aug 2025 00:55:33 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Mon, 18 Aug 2025 00:55:21 -0700
+Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.44 via Frontend Transport; Mon, 18 Aug 2025 00:55:18 -0700
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <richardcochran@gmail.com>, <o.rempel@pengutronix.de>,
+	<alok.a.tiwari@oracle.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>, Russell King <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH net-next v5 2/4] net: phy: micrel: Introduce lanphy_modify_page_reg
+Date: Mon, 18 Aug 2025 09:51:19 +0200
+Message-ID: <20250818075121.1298170-3-horatiu.vultur@microchip.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250818075121.1298170-1-horatiu.vultur@microchip.com>
+References: <20250818075121.1298170-1-horatiu.vultur@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:6705:b0:881:758b:802c with SMTP id
- ca18e2360f4ac-8843e4dc512mr1429380739f.10.1755503613348; Mon, 18 Aug 2025
- 00:53:33 -0700 (PDT)
-Date: Mon, 18 Aug 2025 00:53:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68a2dbfd.050a0220.e29e5.0094.GAE@google.com>
-Subject: [syzbot] [bpf?] general protection fault in __pcpu_freelist_pop
-From: syzbot <syzbot+331f5bebb641724ff1f0@syzkaller.appspotmail.com>
-To: andrii@kernel.org, arighi@nvidia.com, ast@kernel.org, bpf@vger.kernel.org, 
-	bsegall@google.com, changwoo@igalia.com, daniel@iogearbox.net, 
-	dietmar.eggemann@arm.com, eddyz87@gmail.com, haoluo@google.com, 
-	john.fastabend@gmail.com, jolsa@kernel.org, juri.lelli@redhat.com, 
-	kpsingh@kernel.org, linux-kernel@vger.kernel.org, martin.lau@linux.dev, 
-	mgorman@suse.de, mingo@redhat.com, netdev@vger.kernel.org, 
-	peterz@infradead.org, rostedt@goodmis.org, sched-ext@lists.linux.dev, 
-	sdf@fomichev.me, song@kernel.org, syzkaller-bugs@googlegroups.com, 
-	tj@kernel.org, vincent.guittot@linaro.org, void@manifault.com, 
-	vschneid@redhat.com, yonghong.song@linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hello,
+As the name suggests this function modifies the register in an
+extended page. It has the same parameters as phy_modify_mmd.
+This function was introduce because there are many places in the
+code where the registers was read then the value was modified and
+written back. So replace all this code with this function to make
+it clear.
 
-syzbot found the following issue on:
-
-HEAD commit:    e4414b01c1cd bpf: Check the helper function is valid in ge..
-git tree:       bpf
-console output: https://syzkaller.appspot.com/x/log.txt?x=11cd4442580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=412ee2f8b704a5e6
-dashboard link: https://syzkaller.appspot.com/bug?extid=331f5bebb641724ff1f0
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10d2e3a2580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11bd0ba2580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/cf622f58cf3e/disk-e4414b01.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/8947767e2701/vmlinux-e4414b01.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/2a73aee74e9c/bzImage-e4414b01.xz
-
-The issue was bisected to:
-
-commit c68ea8243c5cc901cea62f695504bec73195d906
-Author: Andrea Righi <arighi@nvidia.com>
-Date:   Wed Jun 4 14:33:11 2025 +0000
-
-    sched_ext: idle: Remove unnecessary ifdef in scx_bpf_cpu_node()
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=13d7aba2580000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=1037aba2580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=17d7aba2580000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+331f5bebb641724ff1f0@syzkaller.appspotmail.com
-Fixes: c68ea8243c5c ("sched_ext: idle: Remove unnecessary ifdef in scx_bpf_cpu_node()")
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 1 UID: 0 PID: 5867 Comm: syz-executor Not tainted 6.17.0-rc1-syzkaller-ge4414b01c1cd #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:___pcpu_freelist_pop kernel/bpf/percpu_freelist.c:114 [inline]
-RIP: 0010:__pcpu_freelist_pop+0x6b7/0x8c0 kernel/bpf/percpu_freelist.c:125
-Code: 10 48 3b 8c 24 80 00 00 00 0f 85 b4 01 00 00 48 8d 65 d8 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc 48 89 f8 48 c1 e8 03 <80> 3c 18 00 48 89 7c 24 20 74 0a e8 29 3f 41 00 48 8b 7c 24 20 48
-RSP: 0018:ffffc90000a08820 EFLAGS: 00010046
-RAX: 0000000000000000 RBX: dffffc0000000000 RCX: ffffe8ffffd6e308
-RDX: 0000000000000100 RSI: 0000000000000000 RDI: 0000000000000002
-RBP: ffffc90000a088f0 R08: 0000000000000003 R09: 0000000000000004
-R10: dffffc0000000000 R11: fffff52000141110 R12: 1ffffd1ffffadc60
-R13: ffffe8ffffd6e300 R14: 0000000000000001 R15: 0000000000000000
-FS:  0000555583dc4500(0000) GS:ffff888125d1c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005555622ed5c8 CR3: 00000000769d6000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- pcpu_freelist_pop+0xca/0x170 kernel/bpf/percpu_freelist.c:134
- __bpf_get_stackid+0x574/0xcf0 kernel/bpf/stackmap.c:259
- ____bpf_get_stackid_raw_tp kernel/trace/bpf_trace.c:1810 [inline]
- bpf_get_stackid_raw_tp+0x196/0x210 kernel/trace/bpf_trace.c:1799
- bpf_prog_b724608cae728045+0x27/0x2f
- bpf_dispatcher_nop_func include/linux/bpf.h:1332 [inline]
- __bpf_prog_run include/linux/filter.h:718 [inline]
- bpf_prog_run include/linux/filter.h:725 [inline]
- __bpf_trace_run kernel/trace/bpf_trace.c:2257 [inline]
- bpf_trace_run2+0x284/0x4b0 kernel/trace/bpf_trace.c:2298
- __do_trace_kfree include/trace/events/kmem.h:94 [inline]
- trace_kfree include/trace/events/kmem.h:94 [inline]
- kfree+0x3a0/0x440 mm/slub.c:4866
- slab_free_after_rcu_debug+0x60/0x2a0 mm/slub.c:4717
- rcu_do_batch kernel/rcu/tree.c:2605 [inline]
- rcu_core+0xca8/0x1770 kernel/rcu/tree.c:2861
- handle_softirqs+0x283/0x870 kernel/softirq.c:579
- do_softirq+0xec/0x180 kernel/softirq.c:480
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0x17d/0x1c0 kernel/softirq.c:407
- lock_sock include/net/sock.h:1667 [inline]
- tcp_sendmsg+0x21/0x50 net/ipv4/tcp.c:1392
- sock_sendmsg_nosec net/socket.c:714 [inline]
- __sock_sendmsg+0x19c/0x270 net/socket.c:729
- sock_write_iter+0x258/0x330 net/socket.c:1179
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x5c9/0xb30 fs/read_write.c:686
- ksys_write+0x145/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe78c18d660
-Code: 40 00 48 c7 c2 a8 ff ff ff f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 80 3d 01 af 1f 00 00 74 17 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 58 c3 0f 1f 80 00 00 00 00 48 83 ec 28 48 89
-RSP: 002b:00007ffc45dccfb8 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00000000179a7b00 RCX: 00007fe78c18d660
-RDX: 0000000000000108 RSI: 00007fe789c3fef8 RDI: 0000000000000003
-RBP: 0000000000000000 R08: 0000000000000007 R09: 000000000003fde8
-R10: 1a917aa2f8ade145 R11: 0000000000000202 R12: 0000000000000108
-R13: 0000555583ddd6d0 R14: 00007ffc45dcd480 R15: 00007fe789c3fef8
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:___pcpu_freelist_pop kernel/bpf/percpu_freelist.c:114 [inline]
-RIP: 0010:__pcpu_freelist_pop+0x6b7/0x8c0 kernel/bpf/percpu_freelist.c:125
-Code: 10 48 3b 8c 24 80 00 00 00 0f 85 b4 01 00 00 48 8d 65 d8 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc 48 89 f8 48 c1 e8 03 <80> 3c 18 00 48 89 7c 24 20 74 0a e8 29 3f 41 00 48 8b 7c 24 20 48
-RSP: 0018:ffffc90000a08820 EFLAGS: 00010046
-RAX: 0000000000000000 RBX: dffffc0000000000 RCX: ffffe8ffffd6e308
-RDX: 0000000000000100 RSI: 0000000000000000 RDI: 0000000000000002
-RBP: ffffc90000a088f0 R08: 0000000000000003 R09: 0000000000000004
-R10: dffffc0000000000 R11: fffff52000141110 R12: 1ffffd1ffffadc60
-R13: ffffe8ffffd6e300 R14: 0000000000000001 R15: 0000000000000000
-FS:  0000555583dc4500(0000) GS:ffff888125d1c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005555622ed5c8 CR3: 00000000769d6000 CR4: 00000000003526f0
-----------------
-Code disassembly (best guess):
-   0:	10 48 3b             	adc    %cl,0x3b(%rax)
-   3:	8c 24 80             	mov    %fs,(%rax,%rax,4)
-   6:	00 00                	add    %al,(%rax)
-   8:	00 0f                	add    %cl,(%rdi)
-   a:	85 b4 01 00 00 48 8d 	test   %esi,-0x72b80000(%rcx,%rax,1)
-  11:	65 d8 5b 41          	fcomps %gs:0x41(%rbx)
-  15:	5c                   	pop    %rsp
-  16:	41 5d                	pop    %r13
-  18:	41 5e                	pop    %r14
-  1a:	41 5f                	pop    %r15
-  1c:	5d                   	pop    %rbp
-  1d:	c3                   	ret
-  1e:	cc                   	int3
-  1f:	cc                   	int3
-  20:	cc                   	int3
-  21:	cc                   	int3
-  22:	cc                   	int3
-  23:	48 89 f8             	mov    %rdi,%rax
-  26:	48 c1 e8 03          	shr    $0x3,%rax
-* 2a:	80 3c 18 00          	cmpb   $0x0,(%rax,%rbx,1) <-- trapping instruction
-  2e:	48 89 7c 24 20       	mov    %rdi,0x20(%rsp)
-  33:	74 0a                	je     0x3f
-  35:	e8 29 3f 41 00       	call   0x413f63
-  3a:	48 8b 7c 24 20       	mov    0x20(%rsp),%rdi
-  3f:	48                   	rex.W
-
-
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/phy/micrel.c | 231 ++++++++++++++++++++-------------------
+ 1 file changed, 116 insertions(+), 115 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index e138f208c0e49..3353173ccf337 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -2840,6 +2840,27 @@ static int lanphy_write_page_reg(struct phy_device *phydev, int page, u16 addr,
+ 	return val;
+ }
+ 
++static int lanphy_modify_page_reg(struct phy_device *phydev, int page, u16 addr,
++				  u16 mask, u16 set)
++{
++	int ret;
++
++	phy_lock_mdio_bus(phydev);
++	__phy_write(phydev, LAN_EXT_PAGE_ACCESS_CONTROL, page);
++	__phy_write(phydev, LAN_EXT_PAGE_ACCESS_ADDRESS_DATA, addr);
++	__phy_write(phydev, LAN_EXT_PAGE_ACCESS_CONTROL,
++		    (page | LAN_EXT_PAGE_ACCESS_CTRL_EP_FUNC));
++	ret = __phy_modify_changed(phydev, LAN_EXT_PAGE_ACCESS_ADDRESS_DATA,
++				   mask, set);
++	phy_unlock_mdio_bus(phydev);
++
++	if (ret < 0)
++		phydev_err(phydev, "__phy_modify_changed() failed: %pe\n",
++			   ERR_PTR(ret));
++
++	return ret;
++}
++
+ static int lan8814_config_ts_intr(struct phy_device *phydev, bool enable)
+ {
+ 	u16 val = 0;
+@@ -2928,7 +2949,6 @@ static int lan8814_hwtstamp(struct mii_timestamper *mii_ts,
+ 	struct lan8814_ptp_rx_ts *rx_ts, *tmp;
+ 	int txcfg = 0, rxcfg = 0;
+ 	int pkt_ts_enable;
+-	int tx_mod;
+ 
+ 	ptp_priv->hwts_tx_type = config->tx_type;
+ 	ptp_priv->rx_filter = config->rx_filter;
+@@ -2975,13 +2995,14 @@ static int lan8814_hwtstamp(struct mii_timestamper *mii_ts,
+ 	lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_RX_TIMESTAMP_EN, pkt_ts_enable);
+ 	lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_TX_TIMESTAMP_EN, pkt_ts_enable);
+ 
+-	tx_mod = lanphy_read_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD);
+ 	if (ptp_priv->hwts_tx_type == HWTSTAMP_TX_ONESTEP_SYNC) {
+-		lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD,
+-				      tx_mod | PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_);
++		lanphy_modify_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD,
++				       PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_,
++				       PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_);
+ 	} else if (ptp_priv->hwts_tx_type == HWTSTAMP_TX_ON) {
+-		lanphy_write_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD,
+-				      tx_mod & ~PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_);
++		lanphy_modify_page_reg(ptp_priv->phydev, 5, PTP_TX_MOD,
++				       PTP_TX_MOD_TX_PTP_SYNC_TS_INSERT_,
++				       0);
+ 	}
+ 
+ 	if (config->rx_filter != HWTSTAMP_FILTER_NONE)
+@@ -3384,73 +3405,66 @@ static void lan8814_ptp_set_reload(struct phy_device *phydev, int event,
+ static void lan8814_ptp_enable_event(struct phy_device *phydev, int event,
+ 				     int pulse_width)
+ {
+-	u16 val;
+-
+-	val = lanphy_read_page_reg(phydev, 4, LAN8814_PTP_GENERAL_CONFIG);
+-	/* Set the pulse width of the event */
+-	val &= ~(LAN8814_PTP_GENERAL_CONFIG_LTC_EVENT_MASK(event));
+-	/* Make sure that the target clock will be incremented each time when
++	/* Set the pulse width of the event,
++	 * Make sure that the target clock will be incremented each time when
+ 	 * local time reaches or pass it
++	 * Set the polarity high
+ 	 */
+-	val |= LAN8814_PTP_GENERAL_CONFIG_LTC_EVENT_SET(event, pulse_width);
+-	val &= ~(LAN8814_PTP_GENERAL_CONFIG_RELOAD_ADD_X(event));
+-	/* Set the polarity high */
+-	val |= LAN8814_PTP_GENERAL_CONFIG_POLARITY_X(event);
+-	lanphy_write_page_reg(phydev, 4, LAN8814_PTP_GENERAL_CONFIG, val);
++	lanphy_modify_page_reg(phydev, 4, LAN8814_PTP_GENERAL_CONFIG,
++			       LAN8814_PTP_GENERAL_CONFIG_LTC_EVENT_MASK(event) |
++			       LAN8814_PTP_GENERAL_CONFIG_LTC_EVENT_SET(event, pulse_width) |
++			       LAN8814_PTP_GENERAL_CONFIG_RELOAD_ADD_X(event) |
++			       LAN8814_PTP_GENERAL_CONFIG_POLARITY_X(event),
++			       LAN8814_PTP_GENERAL_CONFIG_LTC_EVENT_SET(event, pulse_width) |
++			       LAN8814_PTP_GENERAL_CONFIG_POLARITY_X(event));
+ }
+ 
+ static void lan8814_ptp_disable_event(struct phy_device *phydev, int event)
+ {
+-	u16 val;
+-
+ 	/* Set target to too far in the future, effectively disabling it */
+ 	lan8814_ptp_set_target(phydev, event, 0xFFFFFFFF, 0);
+ 
+ 	/* And then reload once it recheas the target */
+-	val = lanphy_read_page_reg(phydev, 4, LAN8814_PTP_GENERAL_CONFIG);
+-	val |= LAN8814_PTP_GENERAL_CONFIG_RELOAD_ADD_X(event);
+-	lanphy_write_page_reg(phydev, 4, LAN8814_PTP_GENERAL_CONFIG, val);
++	lanphy_modify_page_reg(phydev, 4, LAN8814_PTP_GENERAL_CONFIG,
++			       LAN8814_PTP_GENERAL_CONFIG_RELOAD_ADD_X(event),
++			       LAN8814_PTP_GENERAL_CONFIG_RELOAD_ADD_X(event));
+ }
+ 
+ static void lan8814_ptp_perout_off(struct phy_device *phydev, int pin)
+ {
+-	u16 val;
+-
+ 	/* Disable gpio alternate function,
+ 	 * 1: select as gpio,
+ 	 * 0: select alt func
+ 	 */
+-	val = lanphy_read_page_reg(phydev, 4, LAN8814_GPIO_EN_ADDR(pin));
+-	val |= LAN8814_GPIO_EN_BIT(pin);
+-	lanphy_write_page_reg(phydev, 4, LAN8814_GPIO_EN_ADDR(pin), val);
++	lanphy_modify_page_reg(phydev, 4, LAN8814_GPIO_EN_ADDR(pin),
++			       LAN8814_GPIO_EN_BIT(pin),
++			       LAN8814_GPIO_EN_BIT(pin));
+ 
+-	val = lanphy_read_page_reg(phydev, 4, LAN8814_GPIO_DIR_ADDR(pin));
+-	val &= ~LAN8814_GPIO_DIR_BIT(pin);
+-	lanphy_write_page_reg(phydev, 4, LAN8814_GPIO_DIR_ADDR(pin), val);
++	lanphy_modify_page_reg(phydev, 4, LAN8814_GPIO_DIR_ADDR(pin),
++			       LAN8814_GPIO_DIR_BIT(pin),
++			       0);
+ 
+-	val = lanphy_read_page_reg(phydev, 4, LAN8814_GPIO_BUF_ADDR(pin));
+-	val &= ~LAN8814_GPIO_BUF_BIT(pin);
+-	lanphy_write_page_reg(phydev, 4, LAN8814_GPIO_BUF_ADDR(pin), val);
++	lanphy_modify_page_reg(phydev, 4, LAN8814_GPIO_BUF_ADDR(pin),
++			       LAN8814_GPIO_BUF_BIT(pin),
++			       0);
+ }
+ 
+ static void lan8814_ptp_perout_on(struct phy_device *phydev, int pin)
+ {
+-	int val;
+-
+ 	/* Set as gpio output */
+-	val = lanphy_read_page_reg(phydev, 4, LAN8814_GPIO_DIR_ADDR(pin));
+-	val |= LAN8814_GPIO_DIR_BIT(pin);
+-	lanphy_write_page_reg(phydev, 4, LAN8814_GPIO_DIR_ADDR(pin), val);
++	lanphy_modify_page_reg(phydev, 4, LAN8814_GPIO_DIR_ADDR(pin),
++			       LAN8814_GPIO_DIR_BIT(pin),
++			       LAN8814_GPIO_DIR_BIT(pin));
+ 
+ 	/* Enable gpio 0:for alternate function, 1:gpio */
+-	val = lanphy_read_page_reg(phydev, 4, LAN8814_GPIO_EN_ADDR(pin));
+-	val &= ~LAN8814_GPIO_EN_BIT(pin);
+-	lanphy_write_page_reg(phydev, 4, LAN8814_GPIO_EN_ADDR(pin), val);
++	lanphy_modify_page_reg(phydev, 4, LAN8814_GPIO_EN_ADDR(pin),
++			       LAN8814_GPIO_EN_BIT(pin),
++			       0);
+ 
+ 	/* Set buffer type to push pull */
+-	val = lanphy_read_page_reg(phydev, 4, LAN8814_GPIO_BUF_ADDR(pin));
+-	val |= LAN8814_GPIO_BUF_BIT(pin);
+-	lanphy_write_page_reg(phydev, 4, LAN8814_GPIO_BUF_ADDR(pin), val);
++	lanphy_modify_page_reg(phydev, 4, LAN8814_GPIO_BUF_ADDR(pin),
++			       LAN8814_GPIO_BUF_BIT(pin),
++			       LAN8814_GPIO_BUF_BIT(pin));
+ }
+ 
+ static int lan8814_ptp_perout(struct ptp_clock_info *ptpci,
+@@ -3565,61 +3579,59 @@ static int lan8814_ptp_perout(struct ptp_clock_info *ptpci,
+ 
+ static void lan8814_ptp_extts_on(struct phy_device *phydev, int pin, u32 flags)
+ {
+-	u16 tmp;
+-
+ 	/* Set as gpio input */
+-	tmp = lanphy_read_page_reg(phydev, 4, LAN8814_GPIO_DIR_ADDR(pin));
+-	tmp &= ~LAN8814_GPIO_DIR_BIT(pin);
+-	lanphy_write_page_reg(phydev, 4, LAN8814_GPIO_DIR_ADDR(pin), tmp);
++	lanphy_modify_page_reg(phydev, 4, LAN8814_GPIO_DIR_ADDR(pin),
++			       LAN8814_GPIO_DIR_BIT(pin),
++			       0);
+ 
+ 	/* Map the pin to ltc pin 0 of the capture map registers */
+-	tmp = lanphy_read_page_reg(phydev, 4, PTP_GPIO_CAP_MAP_LO);
+-	tmp |= pin;
+-	lanphy_write_page_reg(phydev, 4, PTP_GPIO_CAP_MAP_LO, tmp);
++	lanphy_modify_page_reg(phydev, 4, PTP_GPIO_CAP_MAP_LO,
++			       pin,
++			       pin);
+ 
+ 	/* Enable capture on the edges of the ltc pin */
+-	tmp = lanphy_read_page_reg(phydev, 4, PTP_GPIO_CAP_EN);
+ 	if (flags & PTP_RISING_EDGE)
+-		tmp |= PTP_GPIO_CAP_EN_GPIO_RE_CAPTURE_ENABLE(0);
++		lanphy_modify_page_reg(phydev, 4, PTP_GPIO_CAP_EN,
++				       PTP_GPIO_CAP_EN_GPIO_RE_CAPTURE_ENABLE(0),
++				       PTP_GPIO_CAP_EN_GPIO_RE_CAPTURE_ENABLE(0));
+ 	if (flags & PTP_FALLING_EDGE)
+-		tmp |= PTP_GPIO_CAP_EN_GPIO_FE_CAPTURE_ENABLE(0);
+-	lanphy_write_page_reg(phydev, 4, PTP_GPIO_CAP_EN, tmp);
++		lanphy_modify_page_reg(phydev, 4, PTP_GPIO_CAP_EN,
++				       PTP_GPIO_CAP_EN_GPIO_FE_CAPTURE_ENABLE(0),
++				       PTP_GPIO_CAP_EN_GPIO_FE_CAPTURE_ENABLE(0));
+ 
+ 	/* Enable interrupt top interrupt */
+-	tmp = lanphy_read_page_reg(phydev, 4, PTP_COMMON_INT_ENA);
+-	tmp |= PTP_COMMON_INT_ENA_GPIO_CAP_EN;
+-	lanphy_write_page_reg(phydev, 4, PTP_COMMON_INT_ENA, tmp);
++	lanphy_modify_page_reg(phydev, 4, PTP_COMMON_INT_ENA,
++			       PTP_COMMON_INT_ENA_GPIO_CAP_EN,
++			       PTP_COMMON_INT_ENA_GPIO_CAP_EN);
+ }
+ 
+ static void lan8814_ptp_extts_off(struct phy_device *phydev, int pin)
+ {
+-	u16 tmp;
+-
+ 	/* Set as gpio out */
+-	tmp = lanphy_read_page_reg(phydev, 4, LAN8814_GPIO_DIR_ADDR(pin));
+-	tmp |= LAN8814_GPIO_DIR_BIT(pin);
+-	lanphy_write_page_reg(phydev, 4, LAN8814_GPIO_DIR_ADDR(pin), tmp);
++	lanphy_modify_page_reg(phydev, 4, LAN8814_GPIO_DIR_ADDR(pin),
++			       LAN8814_GPIO_DIR_BIT(pin),
++			       LAN8814_GPIO_DIR_BIT(pin));
+ 
+ 	/* Enable alternate, 0:for alternate function, 1:gpio */
+-	tmp = lanphy_read_page_reg(phydev, 4, LAN8814_GPIO_EN_ADDR(pin));
+-	tmp &= ~LAN8814_GPIO_EN_BIT(pin);
+-	lanphy_write_page_reg(phydev, 4, LAN8814_GPIO_EN_ADDR(pin), tmp);
++	lanphy_modify_page_reg(phydev, 4, LAN8814_GPIO_EN_ADDR(pin),
++			       LAN8814_GPIO_EN_BIT(pin),
++			       0);
+ 
+ 	/* Clear the mapping of pin to registers 0 of the capture registers */
+-	tmp = lanphy_read_page_reg(phydev, 4, PTP_GPIO_CAP_MAP_LO);
+-	tmp &= ~GENMASK(3, 0);
+-	lanphy_write_page_reg(phydev, 4, PTP_GPIO_CAP_MAP_LO, tmp);
++	lanphy_modify_page_reg(phydev, 4, PTP_GPIO_CAP_MAP_LO,
++			       GENMASK(3, 0),
++			       0);
+ 
+ 	/* Disable capture on both of the edges */
+-	tmp = lanphy_read_page_reg(phydev, 4, PTP_GPIO_CAP_EN);
+-	tmp &= ~PTP_GPIO_CAP_EN_GPIO_RE_CAPTURE_ENABLE(pin);
+-	tmp &= ~PTP_GPIO_CAP_EN_GPIO_FE_CAPTURE_ENABLE(pin);
+-	lanphy_write_page_reg(phydev, 4, PTP_GPIO_CAP_EN, tmp);
++	lanphy_modify_page_reg(phydev, 4, PTP_GPIO_CAP_EN,
++			       PTP_GPIO_CAP_EN_GPIO_RE_CAPTURE_ENABLE(pin) |
++			       PTP_GPIO_CAP_EN_GPIO_FE_CAPTURE_ENABLE(pin),
++			       0);
+ 
+ 	/* Disable interrupt top interrupt */
+-	tmp = lanphy_read_page_reg(phydev, 4, PTP_COMMON_INT_ENA);
+-	tmp &= ~PTP_COMMON_INT_ENA_GPIO_CAP_EN;
+-	lanphy_write_page_reg(phydev, 4, PTP_COMMON_INT_ENA, tmp);
++	lanphy_modify_page_reg(phydev, 4, PTP_COMMON_INT_ENA,
++			       PTP_COMMON_INT_ENA_GPIO_CAP_EN,
++			       0);
+ }
+ 
+ static int lan8814_ptp_extts(struct ptp_clock_info *ptpci,
+@@ -3859,9 +3871,9 @@ static int lan8814_gpio_process_cap(struct lan8814_shared_priv *shared)
+ 	/* This is 0 because whatever was the input pin it was mapped it to
+ 	 * ltc gpio pin 0
+ 	 */
+-	tmp = lanphy_read_page_reg(phydev, 4, PTP_GPIO_SEL);
+-	tmp |= PTP_GPIO_SEL_GPIO_SEL(0);
+-	lanphy_write_page_reg(phydev, 4, PTP_GPIO_SEL, tmp);
++	lanphy_modify_page_reg(phydev, 4, PTP_GPIO_SEL,
++			       PTP_GPIO_SEL_GPIO_SEL(0),
++			       PTP_GPIO_SEL_GPIO_SEL(0));
+ 
+ 	tmp = lanphy_read_page_reg(phydev, 4, PTP_GPIO_CAP_STS);
+ 	if (!(tmp & PTP_GPIO_CAP_STS_PTP_GPIO_RE_STS(0)) &&
+@@ -3908,13 +3920,10 @@ static int lan8814_handle_gpio_interrupt(struct phy_device *phydev, u16 status)
+ 
+ static int lan8804_config_init(struct phy_device *phydev)
+ {
+-	int val;
+-
+ 	/* MDI-X setting for swap A,B transmit */
+-	val = lanphy_read_page_reg(phydev, 2, LAN8804_ALIGN_SWAP);
+-	val &= ~LAN8804_ALIGN_TX_A_B_SWAP_MASK;
+-	val |= LAN8804_ALIGN_TX_A_B_SWAP;
+-	lanphy_write_page_reg(phydev, 2, LAN8804_ALIGN_SWAP, val);
++	lanphy_modify_page_reg(phydev, 2, LAN8804_ALIGN_SWAP,
++			       LAN8804_ALIGN_TX_A_B_SWAP_MASK,
++			       LAN8804_ALIGN_TX_A_B_SWAP);
+ 
+ 	/* Make sure that the PHY will not stop generating the clock when the
+ 	 * link partner goes down
+@@ -4056,7 +4065,6 @@ static void lan8814_ptp_init(struct phy_device *phydev)
+ {
+ 	struct kszphy_priv *priv = phydev->priv;
+ 	struct kszphy_ptp_priv *ptp_priv = &priv->ptp_priv;
+-	u32 temp;
+ 
+ 	if (!IS_ENABLED(CONFIG_PTP_1588_CLOCK) ||
+ 	    !IS_ENABLED(CONFIG_NETWORK_PHY_TIMESTAMPING))
+@@ -4064,13 +4072,13 @@ static void lan8814_ptp_init(struct phy_device *phydev)
+ 
+ 	lanphy_write_page_reg(phydev, 5, TSU_HARD_RESET, TSU_HARD_RESET_);
+ 
+-	temp = lanphy_read_page_reg(phydev, 5, PTP_TX_MOD);
+-	temp |= PTP_TX_MOD_BAD_UDPV4_CHKSUM_FORCE_FCS_DIS_;
+-	lanphy_write_page_reg(phydev, 5, PTP_TX_MOD, temp);
++	lanphy_modify_page_reg(phydev, 5, PTP_TX_MOD,
++			       PTP_TX_MOD_BAD_UDPV4_CHKSUM_FORCE_FCS_DIS_,
++			       PTP_TX_MOD_BAD_UDPV4_CHKSUM_FORCE_FCS_DIS_);
+ 
+-	temp = lanphy_read_page_reg(phydev, 5, PTP_RX_MOD);
+-	temp |= PTP_RX_MOD_BAD_UDPV4_CHKSUM_FORCE_FCS_DIS_;
+-	lanphy_write_page_reg(phydev, 5, PTP_RX_MOD, temp);
++	lanphy_modify_page_reg(phydev, 5, PTP_RX_MOD,
++			       PTP_RX_MOD_BAD_UDPV4_CHKSUM_FORCE_FCS_DIS_,
++			       PTP_RX_MOD_BAD_UDPV4_CHKSUM_FORCE_FCS_DIS_);
+ 
+ 	lanphy_write_page_reg(phydev, 5, PTP_RX_PARSE_CONFIG, 0);
+ 	lanphy_write_page_reg(phydev, 5, PTP_TX_PARSE_CONFIG, 0);
+@@ -4196,23 +4204,21 @@ static void lan8814_setup_led(struct phy_device *phydev, int val)
+ static int lan8814_config_init(struct phy_device *phydev)
+ {
+ 	struct kszphy_priv *lan8814 = phydev->priv;
+-	int val;
+ 
+ 	/* Reset the PHY */
+-	val = lanphy_read_page_reg(phydev, 4, LAN8814_QSGMII_SOFT_RESET);
+-	val |= LAN8814_QSGMII_SOFT_RESET_BIT;
+-	lanphy_write_page_reg(phydev, 4, LAN8814_QSGMII_SOFT_RESET, val);
++	lanphy_modify_page_reg(phydev, 4, LAN8814_QSGMII_SOFT_RESET,
++			       LAN8814_QSGMII_SOFT_RESET_BIT,
++			       LAN8814_QSGMII_SOFT_RESET_BIT);
+ 
+ 	/* Disable ANEG with QSGMII PCS Host side */
+-	val = lanphy_read_page_reg(phydev, 5, LAN8814_QSGMII_PCS1G_ANEG_CONFIG);
+-	val &= ~LAN8814_QSGMII_PCS1G_ANEG_CONFIG_ANEG_ENA;
+-	lanphy_write_page_reg(phydev, 5, LAN8814_QSGMII_PCS1G_ANEG_CONFIG, val);
++	lanphy_modify_page_reg(phydev, 4, LAN8814_QSGMII_PCS1G_ANEG_CONFIG,
++			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG_ANEG_ENA,
++			       0);
+ 
+ 	/* MDI-X setting for swap A,B transmit */
+-	val = lanphy_read_page_reg(phydev, 2, LAN8814_ALIGN_SWAP);
+-	val &= ~LAN8814_ALIGN_TX_A_B_SWAP_MASK;
+-	val |= LAN8814_ALIGN_TX_A_B_SWAP;
+-	lanphy_write_page_reg(phydev, 2, LAN8814_ALIGN_SWAP, val);
++	lanphy_modify_page_reg(phydev, 2, LAN8814_ALIGN_SWAP,
++			       LAN8814_ALIGN_TX_A_B_SWAP_MASK,
++			       LAN8814_ALIGN_TX_A_B_SWAP);
+ 
+ 	if (lan8814->led_mode >= 0)
+ 		lan8814_setup_led(phydev, lan8814->led_mode);
+@@ -4243,29 +4249,24 @@ static int lan8814_release_coma_mode(struct phy_device *phydev)
+ 
+ static void lan8814_clear_2psp_bit(struct phy_device *phydev)
+ {
+-	u16 val;
+-
+ 	/* It was noticed that when traffic is passing through the PHY and the
+ 	 * cable is removed then the LED was still one even though there is no
+ 	 * link
+ 	 */
+-	val = lanphy_read_page_reg(phydev, 2, LAN8814_EEE_STATE);
+-	val &= ~LAN8814_EEE_STATE_MASK2P5P;
+-	lanphy_write_page_reg(phydev, 2, LAN8814_EEE_STATE, val);
++	lanphy_modify_page_reg(phydev, 2, LAN8814_EEE_STATE,
++			       LAN8814_EEE_STATE_MASK2P5P,
++			       0);
+ }
+ 
+ static void lan8814_update_meas_time(struct phy_device *phydev)
+ {
+-	u16 val;
+-
+ 	/* By setting the measure time to a value of 0xb this will allow cables
+ 	 * longer than 100m to be used. This configuration can be used
+ 	 * regardless of the mode of operation of the PHY
+ 	 */
+-	val = lanphy_read_page_reg(phydev, 1, LAN8814_PD_CONTROLS);
+-	val &= ~LAN8814_PD_CONTROLS_PD_MEAS_TIME_MASK;
+-	val |= LAN8814_PD_CONTROLS_PD_MEAS_TIME_VAL;
+-	lanphy_write_page_reg(phydev, 1, LAN8814_PD_CONTROLS, val);
++	lanphy_modify_page_reg(phydev, 1, LAN8814_PD_CONTROLS,
++			       LAN8814_PD_CONTROLS_PD_MEAS_TIME_MASK,
++			       LAN8814_PD_CONTROLS_PD_MEAS_TIME_VAL);
+ }
+ 
+ static int lan8814_probe(struct phy_device *phydev)
+-- 
+2.34.1
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
