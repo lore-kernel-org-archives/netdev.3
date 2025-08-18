@@ -1,250 +1,278 @@
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF8C2E228E;
-	Mon, 18 Aug 2025 11:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EC823C38C;
+	Mon, 18 Aug 2025 11:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755518287; cv=none; b=cMB9R2deHk5ciHCzxGitjnI2IyJ85Mc9hSw0UkucctbjBLDQMzJvctvgjbN0p31mOe7n9c7B/COdm100TLqVUiPgk8F24HqM9EYArnW4tojM7UKwVAZnwIRb3svup941fdxTzNZFaB6iETG/JBBE/s+NeZv9ka06krNNjZYe6KY=
+	t=1755518287; cv=none; b=ZfgQpBwg5rO6Fhd4FbJyzIUW5KblT5GmBVs9XQdymjRVADCHSxefeQcdkroAs+Mv3fE9hc0gJaxuFbUh7MZgGei2FFSx1Et1EYGrGcaI0zK4UgKdczsFEolNDDa2ihL4kCXJQ+GQCoXPOAnm2aUfFX/QbyO0mc2GpCg4gGj+f2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1755518287; c=relaxed/simple;
-	bh=YMdUmsBr9K3IFyLhq1F+TJ4XRdzUXjwh0B4mSGARz5U=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bn8NjeblQYOJR/ALxDZ14lA+Fd5y/GvJ1prss16aHJifcHTriKnb+6XFA8ZbEWyTuHOSMrGe6LfyBvG9OorWCdyUbmWucq4silT+r1zH8eZl1VRciXnXx2cyGrllVTIdjeh2HRtA8X7F36xsVLu6MJtl+rP5VtPQuIvK/DlXjzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=PfqFXmYz; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+	bh=0auSW5vJxopsycxV9N9Pw6iyytMEwDeZ+ZGHBA8xtEk=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=Z8DqYYDRqp0v0iPGGjQuZfNYgQo2ZAhpf1n10OS+qnYQyyQfN7dCxYmuAr4DLhF09rR1HbyQNpCnugSO/41RgMW7I1U156IXkXPRZQv7TznnAeZYA+PtyVEaaE4+11Py3WQkEcXXsRF74EGsAvVlZyZCuJdF3JLIgZpg4Pqpf+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HD6p8c5F; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="PfqFXmYz"
-X-UUID: 969afe5a7c2a11f0b33aeb1e7f16c2b6-20250818
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=HJ675xvY1PWuPSyC/B/bQZWRSZsn1mga7uIsxOCUypw=;
-	b=PfqFXmYz50eQN0tExI4acsQ/V3p5ftqwQ3+oCs8XJ0rat8lJV3wcAsOImT5JitwG+ZsIci3XV14hjtFclQFbd/53ApKlTm/IGiLxcjNF4+Gq6Ei8gtPDzKWnaaikCJDL6Z67oViza28zqqe7yIR9eJdn1i03X/QKpdwkU1qedeg=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.3,REQID:f11f6162-4e60-472d-8a39-cbf07d9ffc6a,IP:0,UR
-	L:25,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:25
-X-CID-META: VersionHash:f1326cf,CLOUDID:d50c417a-966c-41bd-96b5-7d0b3c22e782,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:-5,Content:0|15|50,EDM:
-	-3,IP:nil,URL:11|97|99|83|106|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,CO
-	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 969afe5a7c2a11f0b33aeb1e7f16c2b6-20250818
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
-	(envelope-from <irving-ch.lin@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 397038784; Mon, 18 Aug 2025 19:58:00 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Mon, 18 Aug 2025 19:57:59 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Mon, 18 Aug 2025 19:57:59 +0800
-From: irving.ch.lin <irving-ch.lin@mediatek.com>
-To: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
-	<sboyd@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Matthias Brugger
-	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, Ulf Hansson
-	<ulf.hansson@linaro.org>, Richard Cochran <richardcochran@gmail.com>
-CC: Qiqi Wang <qiqi.wang@mediatek.com>, <linux-clk@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
-	<linux-pm@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<Project_Global_Chrome_Upstream_Group@mediatek.com>,
-	<sirius.wang@mediatek.com>, <vince-wl.liu@mediatek.com>,
-	<jh.hsu@mediatek.com>, <irving-ch.lin@mediatek.com>
-Subject: [PATCH 1/6] dt-bindings: clock: mediatek: Add new MT8189 clock
-Date: Mon, 18 Aug 2025 19:57:29 +0800
-Message-ID: <20250818115754.1067154-2-irving-ch.lin@mediatek.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250818115754.1067154-1-irving-ch.lin@mediatek.com>
-References: <20250818115754.1067154-1-irving-ch.lin@mediatek.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HD6p8c5F"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7e87061d120so410378285a.2;
+        Mon, 18 Aug 2025 04:58:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755518285; x=1756123085; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DySjixOZmDG1zxGPAN3vyCflQ83OteviIDFUIh593Mk=;
+        b=HD6p8c5F//mtPSMc7Mbv+BJW43S4JLqQUkMrnQUduwGr0Tg/dyblZEAC/5nEASuqTg
+         A7Ly7xby2B/GEuEvkpAs9KKlHrHYsELLVUjKOTCvpiDrRl8xtZHnYFGpxdvqVBYWPSeE
+         XE4mKQ/k+FhBc4P/RB8Q9TC10kktIIzULsK8pkY4i0iEAV+YH/o3JWtBRnE3Uee1ytQx
+         s7kTJcY1nor+YyigdXB02wWRWtxVupMqabSrjPSJ/6R6GoFHXXi4fkPsIVTBCfXNEwYh
+         zOl4a2xlaVBa07/CfxYJX3weGYEgEWznpcMymsNsS15tcEIfQdSQOEwl2N+o0C8EsDy0
+         Ft7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755518285; x=1756123085;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=DySjixOZmDG1zxGPAN3vyCflQ83OteviIDFUIh593Mk=;
+        b=uwPvbBlG2c1qkuzWm1f6CPOxgcVoj+1GCrOCg/oK2bz+x/P9FaEa+DxZINxsXEpoxA
+         AUt+71Paovf9kL1h97lFM42caarC6gdd7n5ON3DboOy/hRyh7KKs92+yV0OpJkxPmUuO
+         9dRIiCNl8QUHBwqTdJnyKzopsC94XVF3EznXApS8i9yD38hOuG6Z535wqNHk0pgLnL/C
+         Kd/268UY5QwLDzBb0gQNOmzcSYrX52VGTLBJjwZWDtRxSa1FZFZAfEBUZxaEItxGrVgv
+         NGUXy1e5R35UGbVKrZl9gpL5SqDYjH/bdJuRebOPtAJZ8bhSM72o+5tuh7Z44w3lQg7Y
+         hVSw==
+X-Forwarded-Encrypted: i=1; AJvYcCUvRSXTcptWPKqs/q2iDHItOU5BKdj5J1KqVQq9kZYLfUHonnJc3mwuDFSleVslI9wLAK67qQkwV5ATuU0=@vger.kernel.org, AJvYcCVno4sm+YlViQ0vSpe1q8rXWekx6s7h/aPBg/6/mb99NgIuX2Aun16FjgqBiIljM47fL5cZcZwb@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw00VVZowLw9xHHtUk7YbYgsO513spNLakDGWwZ2t1BBwtl4uOy
+	tndtOCLHUQw2IG6Cfi5IoGzEYsm8sJRUR640qYY5B2zzNwSVcFTXAnAY
+X-Gm-Gg: ASbGncvMCmCtwqk1ZyxLVkwzEZra90oPu+FVkGeShZGY8btlTw8X48ygBuDlTfyxzTb
+	I5M6zYL9X/xfymgeX78mrtIaavYbjGqhcosDzVuD+RTNvrhACJ1R6nkIb/3NZL8XMXIFfq8+YFP
+	ITZ12FHrwictmAY+53kcyLWRWGb7MXsYNj3dY2xIwEO2PVzhoLzFIcfk6nMMysCIfr7sYN7wKEW
+	UmbWFiZ4YYipZHYrmBk0CgyAI1a7fXUENtEKV5zucRvaEGkBd0GeOsYIqVJIGcx3NQShmdZRm75
+	rHgL1LL1+lm9Ju9xbPIe9XQdq8hWeMdfikbx1DzusTgAmcvSml2fwbXbQE+HGp0BRxEO+V4ZwIk
+	/XXBak+XBqkImF1mq+wrqyqK96cObXWKyl6UUKA+B7FFc6xvV6bondpVjKA67MKRd1NKcnQ==
+X-Google-Smtp-Source: AGHT+IGGhOp8B+kplNRoYjGullJk6WNyVuzVI3ZyHvZN2lgnZPmkwC7OyobQlqFtgTG89CJLk+LZeg==
+X-Received: by 2002:a05:620a:2844:b0:7e8:4014:dbf2 with SMTP id af79cd13be357-7e87e0c744dmr1402704085a.56.1755518284702;
+        Mon, 18 Aug 2025 04:58:04 -0700 (PDT)
+Received: from gmail.com (128.5.86.34.bc.googleusercontent.com. [34.86.5.128])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-70ba902f4edsm51413646d6.14.2025.08.18.04.58.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Aug 2025 04:58:03 -0700 (PDT)
+Date: Mon, 18 Aug 2025 07:58:03 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Richard Gobert <richardbgobert@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ alexander.duyck@gmail.com, 
+ corbet@lwn.net, 
+ shenjian15@huawei.com, 
+ salil.mehta@huawei.com, 
+ shaojijie@huawei.com, 
+ andrew+netdev@lunn.ch, 
+ saeedm@nvidia.com, 
+ tariqt@nvidia.com, 
+ mbloch@nvidia.com, 
+ leon@kernel.org, 
+ ecree.xilinx@gmail.com, 
+ dsahern@kernel.org, 
+ ncardwell@google.com, 
+ kuniyu@google.com, 
+ shuah@kernel.org, 
+ sdf@fomichev.me, 
+ ahmed.zaki@intel.com, 
+ aleksander.lobakin@intel.com, 
+ linux-kernel@vger.kernel.org, 
+ linux-net-drivers@amd.com
+Message-ID: <willemdebruijn.kernel.ee1a9b43eb45@gmail.com>
+In-Reply-To: <9be872a7-1523-48ef-86a4-dad899fc0a03@gmail.com>
+References: <20250814114030.7683-1-richardbgobert@gmail.com>
+ <20250814114030.7683-4-richardbgobert@gmail.com>
+ <willemdebruijn.kernel.26e28ce8a7fe@gmail.com>
+ <willemdebruijn.kernel.2963bd70f4104@gmail.com>
+ <9be872a7-1523-48ef-86a4-dad899fc0a03@gmail.com>
+Subject: Re: [PATCH net-next 3/5] net: gso: restore ids of outer ip headers
+ correctly
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-From: Irving-ch Lin <irving-ch.lin@mediatek.com>
+Richard Gobert wrote:
+> Willem de Bruijn wrote:
+> > Willem de Bruijn wrote:
+> >> Richard Gobert wrote:
+> >>> Currently, NETIF_F_TSO_MANGLEID indicates that the inner-most ID can
+> >>> be mangled. Outer IDs can always be mangled.
+> >>>
+> >>> Make GSO preserve outer IDs by default, with NETIF_F_TSO_MANGLEID allowing
+> >>> both inner and outer IDs to be mangled. In the future, we could add
+> >>> NETIF_F_TSO_MANGLEID_{INNER,OUTER} to provide more granular control to
+> >>> drivers.
+> >>>
+> >>> This commit also modifies a few drivers that use SKB_GSO_FIXEDID directly.
+> >>>
+> >>> Signed-off-by: Richard Gobert <richardbgobert@gmail.com>
+> >>> ---
+> >>>  Documentation/networking/segmentation-offloads.rst |  4 ++--
+> >>>  drivers/net/ethernet/hisilicon/hns3/hns3_enet.c    |  2 +-
+> >>>  drivers/net/ethernet/mellanox/mlx5/core/en_rx.c    |  8 ++++++--
+> >>>  drivers/net/ethernet/sfc/ef100_tx.c                | 14 ++++++++------
+> >>>  include/linux/netdevice.h                          |  9 +++++++--
+> >>>  include/linux/skbuff.h                             |  6 +++++-
+> >>>  net/core/dev.c                                     |  7 +++----
+> >>>  net/ipv4/af_inet.c                                 | 13 ++++++-------
+> >>>  net/ipv4/tcp_offload.c                             |  4 +---
+> >>>  9 files changed, 39 insertions(+), 28 deletions(-)
+> >>>
+> >>> diff --git a/Documentation/networking/segmentation-offloads.rst b/Documentation/networking/segmentation-offloads.rst
+> >>> index 085e8fab03fd..21c759b81f4e 100644
+> >>> --- a/Documentation/networking/segmentation-offloads.rst
+> >>> +++ b/Documentation/networking/segmentation-offloads.rst
+> >>> @@ -42,8 +42,8 @@ also point to the TCP header of the packet.
+> >>>  
+> >>>  For IPv4 segmentation we support one of two types in terms of the IP ID.
+> >>>  The default behavior is to increment the IP ID with every segment.  If the
+> >>> -GSO type SKB_GSO_TCP_FIXEDID is specified then we will not increment the IP
+> >>> -ID and all segments will use the same IP ID.  If a device has
+> >>> +GSO type SKB_GSO_TCP_FIXEDID_{OUTER,INNER} is specified then we will not
+> >>> +increment the IP ID and all segments will use the same IP ID.  If a device has
+> >>>  NETIF_F_TSO_MANGLEID set then the IP ID can be ignored when performing TSO
+> >>>  and we will either increment the IP ID for all frames, or leave it at a
+> >>>  static value based on driver preference.
+> >>> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+> >>> index bfa5568baa92..b28f890b0af5 100644
+> >>> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+> >>> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+> >>> @@ -3868,7 +3868,7 @@ static int hns3_gro_complete(struct sk_buff *skb, u32 l234info)
+> >>>  		skb_shinfo(skb)->gso_type |= SKB_GSO_TCP_ECN;
+> >>>  
+> >>>  	if (l234info & BIT(HNS3_RXD_GRO_FIXID_B))
+> >>> -		skb_shinfo(skb)->gso_type |= SKB_GSO_TCP_FIXEDID;
+> >>> +		skb_shinfo(skb)->gso_type |= SKB_GSO_TCP_FIXEDID_OUTER;
+> >>>  
+> >>>  	skb->csum_start = (unsigned char *)th - skb->head;
+> >>>  	skb->csum_offset = offsetof(struct tcphdr, check);
+> >>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> >>> index b8c609d91d11..78df60c62225 100644
+> >>> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> >>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> >>> @@ -1289,8 +1289,12 @@ static void mlx5e_shampo_update_ipv4_tcp_hdr(struct mlx5e_rq *rq, struct iphdr *
+> >>>  	tcp->check = ~tcp_v4_check(skb->len - tcp_off, ipv4->saddr,
+> >>>  				   ipv4->daddr, 0);
+> >>>  	skb_shinfo(skb)->gso_type |= SKB_GSO_TCPV4;
+> >>> -	if (ntohs(ipv4->id) == rq->hw_gro_data->second_ip_id)
+> >>> -		skb_shinfo(skb)->gso_type |= SKB_GSO_TCP_FIXEDID;
+> >>> +	if (ntohs(ipv4->id) == rq->hw_gro_data->second_ip_id) {
+> >>> +		bool encap = rq->hw_gro_data->fk.control.flags & FLOW_DIS_ENCAPSULATION;
+> >>> +
+> >>> +		skb_shinfo(skb)->gso_type |= encap ?
+> >>> +					     SKB_GSO_TCP_FIXEDID_INNER : SKB_GSO_TCP_FIXEDID_OUTER;
+> >>> +	}
+> >>>  
+> >>>  	skb->csum_start = (unsigned char *)tcp - skb->head;
+> >>>  	skb->csum_offset = offsetof(struct tcphdr, check);
+> >>> diff --git a/drivers/net/ethernet/sfc/ef100_tx.c b/drivers/net/ethernet/sfc/ef100_tx.c
+> >>> index e6b6be549581..aab2425e62bb 100644
+> >>> --- a/drivers/net/ethernet/sfc/ef100_tx.c
+> >>> +++ b/drivers/net/ethernet/sfc/ef100_tx.c
+> >>> @@ -189,7 +189,8 @@ static void ef100_make_tso_desc(struct efx_nic *efx,
+> >>>  {
+> >>>  	bool gso_partial = skb_shinfo(skb)->gso_type & SKB_GSO_PARTIAL;
+> >>>  	unsigned int len, ip_offset, tcp_offset, payload_segs;
+> >>> -	u32 mangleid = ESE_GZ_TX_DESC_IP4_ID_INC_MOD16;
+> >>> +	u32 mangleid_outer = ESE_GZ_TX_DESC_IP4_ID_INC_MOD16;
+> >>> +	u32 mangleid_inner = ESE_GZ_TX_DESC_IP4_ID_INC_MOD16;
+> >>>  	unsigned int outer_ip_offset, outer_l4_offset;
+> >>>  	u16 vlan_tci = skb_vlan_tag_get(skb);
+> >>>  	u32 mss = skb_shinfo(skb)->gso_size;
+> >>> @@ -200,8 +201,10 @@ static void ef100_make_tso_desc(struct efx_nic *efx,
+> >>>  	bool outer_csum;
+> >>>  	u32 paylen;
+> >>>  
+> >>> -	if (skb_shinfo(skb)->gso_type & SKB_GSO_TCP_FIXEDID)
+> >>> -		mangleid = ESE_GZ_TX_DESC_IP4_ID_NO_OP;
+> >>> +	if (skb_shinfo(skb)->gso_type & SKB_GSO_TCP_FIXEDID_OUTER)
+> >>> +		mangleid_outer = ESE_GZ_TX_DESC_IP4_ID_NO_OP;
+> >>> +	if (skb_shinfo(skb)->gso_type & SKB_GSO_TCP_FIXEDID_INNER)
+> >>> +		mangleid_inner = ESE_GZ_TX_DESC_IP4_ID_NO_OP;
+> >>>  	if (efx->net_dev->features & NETIF_F_HW_VLAN_CTAG_TX)
+> >>>  		vlan_enable = skb_vlan_tag_present(skb);
+> >>>  
+> >>> @@ -239,14 +242,13 @@ static void ef100_make_tso_desc(struct efx_nic *efx,
+> >>>  			      ESF_GZ_TX_TSO_CSO_INNER_L4, 1,
+> >>>  			      ESF_GZ_TX_TSO_INNER_L3_OFF_W, ip_offset >> 1,
+> >>>  			      ESF_GZ_TX_TSO_INNER_L4_OFF_W, tcp_offset >> 1,
+> >>> -			      ESF_GZ_TX_TSO_ED_INNER_IP4_ID, mangleid,
+> >>> +			      ESF_GZ_TX_TSO_ED_INNER_IP4_ID, mangleid_inner,
+> >>>  			      ESF_GZ_TX_TSO_ED_INNER_IP_LEN, 1,
+> >>>  			      ESF_GZ_TX_TSO_OUTER_L3_OFF_W, outer_ip_offset >> 1,
+> >>>  			      ESF_GZ_TX_TSO_OUTER_L4_OFF_W, outer_l4_offset >> 1,
+> >>>  			      ESF_GZ_TX_TSO_ED_OUTER_UDP_LEN, udp_encap && !gso_partial,
+> >>>  			      ESF_GZ_TX_TSO_ED_OUTER_IP_LEN, encap && !gso_partial,
+> >>> -			      ESF_GZ_TX_TSO_ED_OUTER_IP4_ID, encap ? mangleid :
+> >>> -								     ESE_GZ_TX_DESC_IP4_ID_NO_OP,
+> >>> +			      ESF_GZ_TX_TSO_ED_OUTER_IP4_ID, mangleid_outer,
+> >>>  			      ESF_GZ_TX_TSO_VLAN_INSERT_EN, vlan_enable,
+> >>>  			      ESF_GZ_TX_TSO_VLAN_INSERT_TCI, vlan_tci
+> >>>  		);
+> >>> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+> >>> index 5e5de4b0a433..e55ba6918b0a 100644
+> >>> --- a/include/linux/netdevice.h
+> >>> +++ b/include/linux/netdevice.h
+> >>> @@ -5287,13 +5287,18 @@ void skb_warn_bad_offload(const struct sk_buff *skb);
+> >>>  
+> >>>  static inline bool net_gso_ok(netdev_features_t features, int gso_type)
+> >>>  {
+> >>> -	netdev_features_t feature = (netdev_features_t)gso_type << NETIF_F_GSO_SHIFT;
+> >>> +	netdev_features_t feature;
+> >>> +
+> >>> +	if (gso_type & (SKB_GSO_TCP_FIXEDID_OUTER | SKB_GSO_TCP_FIXEDID_INNER))
+> >>> +		gso_type |= __SKB_GSO_TCP_FIXEDID;
+> >>
+> >> This is quite peculiar.
+> >>
+> >> Is there a real use case for specifying FIXEDID separately for outer
+> >> and inner? Can the existing single bit govern both together instead?
+> >> That would be a lot simpler.
+> > 
+> > I guess not, as with GRO this is under control of the sender, and
+> > possibly a separate middlebox in control of encapsulation.
+> > 
+> > Still, possible to preserve existing FIXEDID for the unencapsulated
+> > or inner, and add only one extra FIXEDID for outer? Or is there value
+> > in having three bits?
+> 
+> The ideal solution would be to split NETIF_F_TSO_MANGLEID into
+> NETIF_F_TSO_MANGLEID_OUTER and NETIF_F_TSO_MANGLEID_INNER.
+>  
+> As I noted, we can add this in the future, then each SKB_GSO_FIXEDID
+> bit will have a corresponding NETIF_F_TSO_MANGLEID bit. This would
+> be a much bigger change, as it requires modifying all of the
+> drivers that use NETIF_F_TSO_MANGLEID. My proposed solution is
+> somewhat of a middle-ground, as it preserves the current behavior of
+> NETIF_F_TSO_MANGLEID.
+>  
+> Preserving the existing FIXEDID for unencapsulated or inner headers
+> seems confusing to me, and just moves the ugly code elsewhere. We also
+> still need to compare both SKB_GSO_FIXEDID bits against NETIF_F_TSO_MANGLEID.
 
-Add the new binding documentation for system clock
-and functional clock on MediaTek MT8189.
+Is it not simpler to keep NETIF_F_TSO_MANGLEID and SKB_GSO_FIXEDID as
+meaning unencapsulated, and add an ENCAP variant for outer headers of
+encapsulated packets. Similar to separate UDP_TUNNEL bits.
 
-Signed-off-by: Irving-ch Lin <irving-ch.lin@mediatek.com>
----
- .../bindings/clock/mediatek,mt8189-clock.yaml | 89 +++++++++++++++++++
- .../clock/mediatek,mt8189-sys-clock.yaml      | 58 ++++++++++++
- 2 files changed, 147 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt8189-clock.yaml
- create mode 100644 Documentation/devicetree/bindings/clock/mediatek,mt8189-sys-clock.yaml
+No device currently advertises support for outer FIXEDID. We don't
+intend to add this as an ethtool configurable feature. It is only used
+for GRO packets to maintain GRO+GSO semanticss when forwarding. So no
+matching NETIF_F flag is probably okay. 
 
-diff --git a/Documentation/devicetree/bindings/clock/mediatek,mt8189-clock.yaml b/Documentation/devicetree/bindings/clock/mediatek,mt8189-clock.yaml
-new file mode 100644
-index 000000000000..d0d887861a49
---- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/mediatek,mt8189-clock.yaml
-@@ -0,0 +1,89 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/clock/mediatek,mt8189-clock.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: MediaTek Functional Clock Controller for MT8189
-+
-+maintainers:
-+  - Qiqi Wang <qiqi.wang@mediatek.com>
-+
-+description: |
-+  The clock architecture in MediaTek like below
-+  PLLs -->
-+          dividers -->
-+                      muxes -->
-+                               clock gate
-+
-+  The devices provide clock gate control in different IP blocks.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - mediatek,mt8189-camsys-main
-+      - mediatek,mt8189-camsys-rawa
-+      - mediatek,mt8189-camsys-rawb
-+      - mediatek,mt8189-dbg-ao
-+      - mediatek,mt8189-dem
-+      - mediatek,mt8189-dispsys
-+      - mediatek,mt8189-dvfsrc-top
-+      - mediatek,mt8189-gce-d
-+      - mediatek,mt8189-gce-m
-+      - mediatek,mt8189-iic-wrap-e
-+      - mediatek,mt8189-iic-wrap-en
-+      - mediatek,mt8189-iic-wrap-s
-+      - mediatek,mt8189-iic-wrap-ws
-+      - mediatek,mt8189-imgsys1
-+      - mediatek,mt8189-imgsys2
-+      - mediatek,mt8189-infra-ao
-+      - mediatek,mt8189-ipesys
-+      - mediatek,mt8189-mdpsys
-+      - mediatek,mt8189-mfgcfg
-+      - mediatek,mt8189-mm-infra
-+      - mediatek,mt8189-peri-ao
-+      - mediatek,mt8189-scp-clk
-+      - mediatek,mt8189-scp-i2c-clk
-+      - mediatek,mt8189-ufscfg-ao
-+      - mediatek,mt8189-ufscfg-pdn
-+      - mediatek,mt8189-vdec-core
-+      - mediatek,mt8189-venc
-+
-+  reg:
-+    maxItems: 1
-+
-+  '#clock-cells':
-+    const: 1
-+
-+  '#reset-cells':
-+    const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - '#clock-cells'
-+
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - mediatek,mt8189-peri-ao
-+              - mediatek,mt8189-ufscfg-ao
-+              - mediatek,mt8189-ufscfg-pdn
-+
-+    then:
-+      required:
-+        - '#reset-cells'
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    imp_iic_wrap_ws_clk@11b21000 {
-+        compatible = "mediatek,mt8189-iic-wrap-ws";
-+        reg = <0 0x11b21000 0 0x1000>;
-+        #clock-cells = <1>;
-+    };
-+
-diff --git a/Documentation/devicetree/bindings/clock/mediatek,mt8189-sys-clock.yaml b/Documentation/devicetree/bindings/clock/mediatek,mt8189-sys-clock.yaml
-new file mode 100644
-index 000000000000..0d27ff807e79
---- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/mediatek,mt8189-sys-clock.yaml
-@@ -0,0 +1,58 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/clock/mediatek,mt8189-sys-clock.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: MediaTek System Clock Controller for MT8189
-+
-+maintainers:
-+  - Qiqi Wang <qiqi.wang@mediatek.com>
-+
-+description: |
-+  The clock architecture in MediaTek like below
-+  PLLs -->
-+          dividers -->
-+                      muxes -->
-+                               clock gate
-+
-+  The apmixedsys provides most of PLLs which generated from SoC 26m.
-+  The topckgen provides dividers and muxes which provide the clock source to other IP blocks.
-+  The infracfg_ao provides clock gate in peripheral and infrastructure IP blocks.
-+  The mcusys provides mux control to select the clock source in AP MCU.
-+  The device nodes also provide the system control capacity for configuration.
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - mediatek,mt8189-apmixedsys
-+          - mediatek,mt8189-topckgen
-+          - mediatek,mt8189-vlp-ckgen
-+          - mediatek,mt8189-vlp-ao-ckgen
-+          - mediatek,mt8189-vlpcfg-reg-bus
-+      - const: syscon
-+
-+  reg:
-+    maxItems: 1
-+
-+  '#clock-cells':
-+    const: 1
-+
-+  '#reset-cells':
-+    const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - '#clock-cells'
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    topckgen_clk@10000000 {
-+        compatible = "mediatek,mt8189-topckgen", "syscon";
-+        reg = <0 0x10000000 0 0x1000>;
-+        #clock-cells = <1>;
-+    };
--- 
-2.45.2
 
