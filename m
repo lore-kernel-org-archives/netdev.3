@@ -1,46 +1,62 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5DC52F66;
-	Tue, 19 Aug 2025 06:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586E827B358
+	for <netdev@vger.kernel.org>; Tue, 19 Aug 2025 07:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755586595; cv=none; b=rrZJIVcRWhygIlKykzbxgSaBmFfxiLURF8hrJ3LtOY1cZCe4ydQHtaGiUyaWO0KRI8/CqrOwtcgkvLtOp3hAF8SsFwim1BGJHU2xz0t1v2b/3+TaVoK0iFDTjsfags4zbs2GH5l4umBxHw6m4aD31wv0PXenduhtnxizwqCcRyM=
+	t=1755587600; cv=none; b=Uli3ClQ6UGEuercWfT3n9T151SuBMtFxEK1S5g6tD44M3j3qhoN5sHA8dy4mN3fMDeUiys7hHsHDDYqb0kpWcRyIvj9cTsTAOcoxb1jFmxtBKhLQUlc/cSHK9aclTdNQSZ+ieZRuDnUW0riHvZFfmVJzbxshOYmeyfrpE+ykEyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755586595; c=relaxed/simple;
-	bh=Zp8/D0QqwNUeSXX/OtnER595OeyW1wBAI56ORCb4OX4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ghZIOXX/AOrcwXyU+newlMdD4JziB8Tby194IdV2IAKa2+6NIWxawTn16cQ5//b3A15Zj5Bq4r92cYrpPb1x3iCbPsYSfEGXXyhKTHT8n1Z4IksUO/MN9p9ti/qOZDPNZJjqm7JUtHwxfIKBsx3ga8gtiA/caok6PX6QCnXmfBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OM7sBsBD; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OM7sBsBD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E4FC116B1;
-	Tue, 19 Aug 2025 06:56:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755586595;
-	bh=Zp8/D0QqwNUeSXX/OtnER595OeyW1wBAI56ORCb4OX4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=OM7sBsBDXlRp4StY81EhppkdOvvnuTp6LZHK9iXyBRsuAhUeuNWJfoew835h+3K3D
-	 D1nTVyFQ5Nzw5OcGxCY1Ws38OJIBbiF0OULZAkqogww4M38N0XqJH8uVjvjO6193fk
-	 sch6ocKvEpEo5770sYnqrGJ1AiK9K1+hRwTm0Nucmz4k+J4jQbgInHFHhE1+o5S0Am
-	 nuKbzX6pxlIPgrRLK4zw9FiCcongp/y08vAb8nmiNewrhJmD2ZQJmiZK8OsZI+1Pj7
-	 GsCxFG/Q7y9KkCs9w3YPxmZM9lfe3Ko7HzHzPvtTQOt8Nbx2iPBQzW7xD/SCTiNE+U
-	 vwBk9BT+5nlmA==
-From: Michael Walle <mwalle@kernel.org>
-To: Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>
-Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	linux-phy@lists.infradead.org,
+	s=arc-20240116; t=1755587600; c=relaxed/simple;
+	bh=34LTcszKLeYDmHdbnh9rrfPNBpaMAPrseZ4WCws0Ieg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=CBF33Q2LIpnMtqzNrRMFRcNhwc2PRAm60787mAL0lbQ7R2FikfK130hM33FmKuPtX5Z3ZXlrGyLeQgbII1nLDigiMYUyOIfwOoQArAq8L4H0QnmPTW+W1hcjHuxOL2UFNmlEwfnitbuy2RnTB5KxXAr4pM+6ptez8gQYqHqKH0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uoGWj-0004jN-QK; Tue, 19 Aug 2025 09:13:01 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uoGWf-00121d-0w;
+	Tue, 19 Aug 2025 09:12:57 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uoGWf-00EEba-0Z;
+	Tue, 19 Aug 2025 09:12:57 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Nishanth Menon <nm@ti.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
-	nm@ti.com,
-	vigneshr@ti.com,
-	Michael Walle <mwalle@kernel.org>
-Subject: [PATCH v3] phy: ti: gmii-sel: Always write the RGMII ID setting
-Date: Tue, 19 Aug 2025 08:56:22 +0200
-Message-Id: <20250819065622.1019537-1-mwalle@kernel.org>
+	UNGLinuxDriver@microchip.com,
+	linux-doc@vger.kernel.org,
+	Michal Kubecek <mkubecek@suse.cz>,
+	Roan van Dijk <roan@protonic.nl>
+Subject: [PATCH net-next v3 5/5] net: phy: dp83td510: add MSE interface support for 10BASE-T1L
+Date: Tue, 19 Aug 2025 09:12:56 +0200
+Message-Id: <20250819071256.3392659-6-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250819071256.3392659-1-o.rempel@pengutronix.de>
+References: <20250819071256.3392659-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,134 +64,98 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Some SoCs are just validated with the TX delay enabled. With commit
-ca13b249f291 ("net: ethernet: ti: am65-cpsw: fixup PHY mode for fixed
-RGMII TX delay"), the network driver will patch the delay setting on the
-fly assuming that the TX delay setting is fixed. In reality, the TX
-delay is configurable and just skipped in the documentation. There are
-bootloaders, which will disable the TX delay and this will lead to a
-transmit path which doesn't add any delays at all.
-Fix that by always writing the RGMII_ID setting and report an error for
-unsupported RGMII delay modes.
+Implement get_mse_config() and get_mse_snapshot() for the DP83TD510E
+to expose its Mean Square Error (MSE) register via the new PHY MSE
+UAPI.
 
-This is safe to do and shouldn't break any boards in mainline because
-the fixed delay is only introduced for gmii-sel compatibles which are
-used together with the am65-cpsw-nuss driver and also contains the
-commit above.
+The DP83TD510E does not document any peak MSE values; it only exposes
+a single average MSE register used internally to derive SQI. This
+implementation therefore advertises only PHY_MSE_CAP_AVG, along with
+LINK and channel-A selectors. Scaling is fixed to 0xFFFF, and the
+refresh interval/number of symbols are estimated from 10BASE-T1L
+symbol rate (7.5 MBd) and typical diagnostic intervals (~1 ms).
 
-Fixes: ca13b249f291 ("net: ethernet: ti: am65-cpsw: fixup PHY mode for fixed RGMII TX delay")
-Signed-off-by: Michael Walle <mwalle@kernel.org>
+For 10BASE-T1L deployments, SQI is a reliable indicator of link
+modulation quality once the link is established, but it does not
+indicate whether autonegotiation pulses will be correctly received
+in marginal conditions. MSE provides a direct measurement of slicer
+error rate that can be used to evaluate if autonegotiation is likely
+to succeed under a given cable length and condition. In practice,
+testing such scenarios often requires forcing a fixed-link setup to
+isolate MSE behaviour from the autonegotiation process.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
-v3:
- - simplify the logic. Thanks Matthias.
- - reworded the commit message
+ drivers/net/phy/dp83td510.c | 44 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-v2:
- - reject invalid PHY modes. Thanks Matthias.
- - add a paragraph to the commit message that this patch shouldn't
-   break any existing boards. Thanks Andrew.
-
- drivers/phy/ti/phy-gmii-sel.c | 47 +++++++++++++++++++++++++++++------
- 1 file changed, 39 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/phy/ti/phy-gmii-sel.c b/drivers/phy/ti/phy-gmii-sel.c
-index ff5d5e29629f..50adabb867cb 100644
---- a/drivers/phy/ti/phy-gmii-sel.c
-+++ b/drivers/phy/ti/phy-gmii-sel.c
-@@ -34,6 +34,7 @@ enum {
- 	PHY_GMII_SEL_PORT_MODE = 0,
- 	PHY_GMII_SEL_RGMII_ID_MODE,
- 	PHY_GMII_SEL_RMII_IO_CLK_EN,
-+	PHY_GMII_SEL_FIXED_TX_DELAY,
- 	PHY_GMII_SEL_LAST,
- };
+diff --git a/drivers/net/phy/dp83td510.c b/drivers/net/phy/dp83td510.c
+index 23af1ac194fa..094c070f3f96 100644
+--- a/drivers/net/phy/dp83td510.c
++++ b/drivers/net/phy/dp83td510.c
+@@ -249,6 +249,47 @@ struct dp83td510_priv {
+ #define DP83TD510E_ALCD_COMPLETE			BIT(15)
+ #define DP83TD510E_ALCD_CABLE_LENGTH			GENMASK(10, 0)
  
-@@ -127,6 +128,11 @@ static int phy_gmii_sel_mode(struct phy *phy, enum phy_mode mode, int submode)
- 		goto unsupported;
- 	}
- 
-+	/* With a fixed delay, some modes are not supported at all. */
-+	if (soc_data->features & BIT(PHY_GMII_SEL_FIXED_TX_DELAY) &&
-+	    rgmii_id != 0)
-+		return -EINVAL;
++static int dp83td510_get_mse_config(struct phy_device *phydev,
++				    struct phy_mse_config *config)
++{
++	/* The DP83TD510E datasheet does not specify peak MSE values.
++	 * It only provides a single MSE value which is used to derive SQI.
++	 * Therefore, we only support the average MSE capability.
++	 */
++	config->supported_caps = PHY_MSE_CAP_AVG | PHY_MSE_CAP_LINK |
++		PHY_MSE_CAP_CHANNEL_A;
++	config->max_average_mse = 0xFFFF;
 +
- 	if_phy->phy_if_mode = submode;
++	/* The datasheet does not specify the refresh rate or symbol count,
++	 * but based on similar PHYs and standards, we can assume a common
++	 * value. For 10BaseT1L, the symbol rate is 7.5 MBd. A common
++	 * diagnostic interval is around 1ms.
++	 * 7.5e6 symbols/sec * 0.001 sec = 7500 symbols.
++	 */
++	config->refresh_rate_ps = 1000000000; /* 1 ms */
++	config->num_symbols = 7500;
++
++	return 0;
++}
++
++static int dp83td510_get_mse_snapshot(struct phy_device *phydev, u32 channel,
++				      struct phy_mse_snapshot *snapshot)
++{
++	int ret;
++
++	if (channel != PHY_MSE_CHANNEL_LINK &&
++	    channel != PHY_MSE_CHANNEL_A)
++		return -EOPNOTSUPP;
++
++	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, DP83TD510E_MSE_DETECT);
++	if (ret < 0)
++		return ret;
++
++	snapshot->average_mse = ret;
++
++	return 0;
++}
++
+ static int dp83td510_led_brightness_set(struct phy_device *phydev, u8 index,
+ 					enum led_brightness brightness)
+ {
+@@ -893,6 +934,9 @@ static struct phy_driver dp83td510_driver[] = {
+ 	.get_phy_stats	= dp83td510_get_phy_stats,
+ 	.update_stats	= dp83td510_update_stats,
  
- 	dev_dbg(dev, "%s id:%u mode:%u rgmii_id:%d rmii_clk_ext:%d\n",
-@@ -210,25 +216,46 @@ struct phy_gmii_sel_soc_data phy_gmii_sel_soc_dm814 = {
- 
- static const
- struct reg_field phy_gmii_sel_fields_am654[][PHY_GMII_SEL_LAST] = {
--	{ [PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x0, 0, 2), },
--	{ [PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x4, 0, 2), },
--	{ [PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x8, 0, 2), },
--	{ [PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0xC, 0, 2), },
--	{ [PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x10, 0, 2), },
--	{ [PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x14, 0, 2), },
--	{ [PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x18, 0, 2), },
--	{ [PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x1C, 0, 2), },
-+	{
-+		[PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x0, 0, 2),
-+		[PHY_GMII_SEL_RGMII_ID_MODE] = REG_FIELD(0x0, 4, 4),
-+	}, {
-+		[PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x4, 0, 2),
-+		[PHY_GMII_SEL_RGMII_ID_MODE] = REG_FIELD(0x4, 4, 4),
-+	}, {
-+		[PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x8, 0, 2),
-+		[PHY_GMII_SEL_RGMII_ID_MODE] = REG_FIELD(0x8, 4, 4),
-+	}, {
-+		[PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0xC, 0, 2),
-+		[PHY_GMII_SEL_RGMII_ID_MODE] = REG_FIELD(0xC, 4, 4),
-+	}, {
-+		[PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x10, 0, 2),
-+		[PHY_GMII_SEL_RGMII_ID_MODE] = REG_FIELD(0x10, 4, 4),
-+	}, {
-+		[PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x14, 0, 2),
-+		[PHY_GMII_SEL_RGMII_ID_MODE] = REG_FIELD(0x14, 4, 4),
-+	}, {
-+		[PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x18, 0, 2),
-+		[PHY_GMII_SEL_RGMII_ID_MODE] = REG_FIELD(0x18, 4, 4),
-+	}, {
-+		[PHY_GMII_SEL_PORT_MODE] = REG_FIELD(0x1C, 0, 2),
-+		[PHY_GMII_SEL_RGMII_ID_MODE] = REG_FIELD(0x1C, 4, 4),
-+	},
- };
- 
- static const
- struct phy_gmii_sel_soc_data phy_gmii_sel_soc_am654 = {
- 	.use_of_data = true,
-+	.features = BIT(PHY_GMII_SEL_RGMII_ID_MODE) |
-+		    BIT(PHY_GMII_SEL_FIXED_TX_DELAY),
- 	.regfields = phy_gmii_sel_fields_am654,
- };
- 
- static const
- struct phy_gmii_sel_soc_data phy_gmii_sel_cpsw5g_soc_j7200 = {
- 	.use_of_data = true,
-+	.features = BIT(PHY_GMII_SEL_RGMII_ID_MODE) |
-+		    BIT(PHY_GMII_SEL_FIXED_TX_DELAY),
- 	.regfields = phy_gmii_sel_fields_am654,
- 	.extra_modes = BIT(PHY_INTERFACE_MODE_QSGMII) | BIT(PHY_INTERFACE_MODE_SGMII) |
- 		       BIT(PHY_INTERFACE_MODE_USXGMII),
-@@ -239,6 +266,8 @@ struct phy_gmii_sel_soc_data phy_gmii_sel_cpsw5g_soc_j7200 = {
- static const
- struct phy_gmii_sel_soc_data phy_gmii_sel_cpsw9g_soc_j721e = {
- 	.use_of_data = true,
-+	.features = BIT(PHY_GMII_SEL_RGMII_ID_MODE) |
-+		    BIT(PHY_GMII_SEL_FIXED_TX_DELAY),
- 	.regfields = phy_gmii_sel_fields_am654,
- 	.extra_modes = BIT(PHY_INTERFACE_MODE_QSGMII) | BIT(PHY_INTERFACE_MODE_SGMII),
- 	.num_ports = 8,
-@@ -248,6 +277,8 @@ struct phy_gmii_sel_soc_data phy_gmii_sel_cpsw9g_soc_j721e = {
- static const
- struct phy_gmii_sel_soc_data phy_gmii_sel_cpsw9g_soc_j784s4 = {
- 	.use_of_data = true,
-+	.features = BIT(PHY_GMII_SEL_RGMII_ID_MODE) |
-+		    BIT(PHY_GMII_SEL_FIXED_TX_DELAY),
- 	.regfields = phy_gmii_sel_fields_am654,
- 	.extra_modes = BIT(PHY_INTERFACE_MODE_QSGMII) | BIT(PHY_INTERFACE_MODE_SGMII) |
- 		       BIT(PHY_INTERFACE_MODE_USXGMII),
++	.get_mse_config	= dp83td510_get_mse_config,
++	.get_mse_snapshot = dp83td510_get_mse_snapshot,
++
+ 	.led_brightness_set = dp83td510_led_brightness_set,
+ 	.led_hw_is_supported = dp83td510_led_hw_is_supported,
+ 	.led_hw_control_set = dp83td510_led_hw_control_set,
 -- 
 2.39.5
 
