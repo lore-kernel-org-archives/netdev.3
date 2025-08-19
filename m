@@ -1,76 +1,213 @@
-Received: from newsmtp.uns.ac.rs (smtp.uns.ac.rs [147.91.173.6])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6D725A2DA;
-	Tue, 19 Aug 2025 21:48:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=147.91.173.6
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FB226D4C0
+	for <netdev@vger.kernel.org>; Tue, 19 Aug 2025 21:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755640115; cv=none; b=JiS0ICIFVeRo/3R4sZyvQ3QuR4Tgthjuq0ITH/ogR8ZFT4Sr+KhZEXJSeNVmVbKBlw1Sht4h+8RbXWjYWG5Uz+NBUy2dZRAl11IV1DOEa5MVqKUP81QuPhq3dr49CiBX0exDWY5szW7PBS0zm34MllCyn6RaJglfl7FQvjDoRDc=
+	t=1755640512; cv=none; b=ux983inAo3T9C/FfcZS1Ef9hRs+s9EZKqxLXTiNOY7VeRycGEb63Azbcp4e/4wpQDLVzLsnX8e51pv0YepUbxXDLFx8IeaEPJJayTmyb6ZOa3x9fWML9bCkkc3/37jsshM6azveVX/fJCknSrJy6gIkuqwkN5ItXWev37h+yJCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755640115; c=relaxed/simple;
-	bh=F46LWby5n9zQSfOV6XgHq7tjvhMPB2oEX5bCs3mw8E4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UngtTqx5WkM5LZjbVYVoBAuRVvtU8JKi2Y7lJoRb470LRfCqh0X/RT0SEvrgjTVGLfd+stayI3zhWPynRnONRIUsoXeqDtXH+rTG4PUWk549QGCDOyz8O4mwqGWi8UbPGqpfcvXUaMEzFTdBIhepPqXQKrwdU0rfnugNd7gdeJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uns.ac.rs; spf=pass smtp.mailfrom=uns.ac.rs; arc=none smtp.client-ip=147.91.173.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uns.ac.rs
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uns.ac.rs
-Received: from newsmtp.uns.ac.rs (localhost.localdomain [127.0.0.1])
-	by localhost (Postfix) with ESMTP id ED46A259CD2;
-	Tue, 19 Aug 2025 23:25:51 +0200 (CEST)
-Received: from [147.91.175.7] (unknown [147.91.175.7])
-	by smtp.uns.ac.rs (Postfix) with ESMTP id DD0E3259CD0;
-	Tue, 19 Aug 2025 23:25:49 +0200 (CEST)
-Message-ID: <8cacd186-c95c-c5a3-a341-c67b9e55a13c@uns.ac.rs>
-Date: Tue, 19 Aug 2025 23:17:37 +0200
+	s=arc-20240116; t=1755640512; c=relaxed/simple;
+	bh=jugAp7iAiTN5wpRLM0Lfl5uLxQIUuuVskd6wG72PHAQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O5JX8NHPCl4rDOmZMtMdlDGrIM+qE46I+d54NQdClob3ZC2C47KZ0XMM5KLgzGN4AY6aYn5XJJf6I8/06tTtBy57tNs52oJDCayHmIbrEpZ4dBJVsvoGW8AV7o1oHUvcRdgPq3TqxWhEo55SBJNULvL67n+NqWDTTaJ89mL4wyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o3LdfPM8; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o3LdfPM8"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55cc715d0easo4793e87.0
+        for <netdev@vger.kernel.org>; Tue, 19 Aug 2025 14:55:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755640508; x=1756245308; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1VjKxvkqlHvKuDQTAdp11Q1px0mlLxmaJPy90ey9LnI=;
+        b=o3LdfPM8idVZbUxrj9am39LbMwWCU2T84wyc+PsE8dM367cJO0Ugc7yuvcTtK47bSd
+         DbWJw/8odp4Cpmesnwhgng2AyUbE0t1q9WlcGNCNChL8E5aS5nZGrO9V+TNDcLnoxPkX
+         VXWIiX6+SNsmC9vnVwxNg1YXsUHBOPBFj79ZxiR9bVOFSqza1f14lNPlxnthrroHhnk5
+         UBRK74IWvtqQSMhfcWoITeAMpTJBqi34y4zw3IBbj0VFxppzjnhdhNRh7wofb0dZJbCx
+         CGrV9QSIBVLgdMsXBM5QPQlKcq4ILsoXpuFqMw3xMYv25nq8rrFtJD8Bkcq/CHtis/To
+         PBLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755640508; x=1756245308;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1VjKxvkqlHvKuDQTAdp11Q1px0mlLxmaJPy90ey9LnI=;
+        b=tmW+RGuj1Eupu//6P5j/b4hVFTzN648L/sDVmGzlZgjmMFlT+ffiukCOstf7y4E4A4
+         y118zY4FUJ4pE5u70fbS70/ZE+7wxvkLIAM2nlOc6Ah0EOAJ1d4b7SRVknpKFQo5JnUo
+         oeBrIx+xSBRLl21gSpJZGZwwCruPdfNnBHlGh0jYbhn1Dx6yoF1OEkqcTG2bowjFNDf/
+         kOxhzuO9b8LIfSuGWnF3yVgd7oT1/UmXn9TySRhCP8okehXEmQxGdQxiO7nMTmEz/HV0
+         f5P9W1JSH1vHFGuoe/syxaDhF5S44fbC+sn1qF60NYxBORcSAH+mMU2pcZgM/Na4p5We
+         rwHg==
+X-Forwarded-Encrypted: i=1; AJvYcCWJiCOVvfEOyqGzXUb3QYiQhhRPYmXTiPdXaC/qpTy0aHSaXzJYW7lGcOn2GVzboBZzwMwwpIk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiikPWzMncY+zx9vqTUN6cjszw2Vj5bNYDY2KKhsy0T1IGRQ8t
+	hTzRgT4dZyfbWKlum6EfOSDOyjJem1qKKx5NmnZkf2Trzd1yC8VU+E1pbejqLP+uD7nXL62da6P
+	eCVuu5le8DKLTEtzJ2FMi2FI+Sp8MMcFkQj8OW0WymOYmKrZdGa24exVf
+X-Gm-Gg: ASbGncsfkibFRww0rz5QLPpO9MM91xTM/ItZQ+aiSxBfUy19nj7V6b0NsuA1KADYOPW
+	FUppx6lyQicrWyBR2ItkvGnbkuBynXNsVCctt6lX7sp3PQWuzy/uFSOKEcUeHn4AUheYd/UMJoS
+	L4wfViHxA5Or5AHL+DhfOmWYf1znB1ruCOlli1qr9J2Jws1kfpdQsn9/1el36ymlHEqvd563X39
+	ATMB8vXC/UgkgeOg08YXfUQ0su2Szq9ESO3qRsV1mNjF2zWplMyd3g=
+X-Google-Smtp-Source: AGHT+IEENPeJUziX5JKCVFlOK3QcW9hOPlY+os3uYUuHODeq049TKSrhikj9f/ivABKSBZN/jlqaOuHA4OZlfyxo/To=
+X-Received: by 2002:a05:6512:6401:b0:55b:5e26:ed7b with SMTP id
+ 2adb3069b0e04-55e066d2922mr97406e87.0.1755640507787; Tue, 19 Aug 2025
+ 14:55:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: [OT] Re: [ROSE] [AX25] 6.15.10 long term stable kernel oops
-Content-Language: en-GB
-To: F6BVP <f6bvp@free.fr>, Dan Cross <crossd@gmail.com>,
- Bernard Pidoux <bernard.pidoux@free.fr>
-Cc: David Ranch <dranch@trinnet.net>, linux-hams@vger.kernel.org,
- netdev <netdev@vger.kernel.org>
-References: <11c5701d-4bf9-4661-ad8a-06690bbe1c1c@free.fr>
- <fff0b3eb-ea42-4475-970d-30622dc25dca@free.fr>
- <e92e23a7-1503-454f-a7a2-cedab6e55fe2@free.fr>
- <acd04154-25a5-4721-a62b-36827a6e4e47@free.fr>
- <CAEoi9W6kb0jZXY_Tu27CU7jkyx5O1ne5FOgvYqCk_GFBvnseiw@mail.gmail.com>
- <11212ddf-bf32-4b11-afee-e234cdee5938@free.fr>
-From: Miroslav Skoric <skoric@uns.ac.rs>
-In-Reply-To: <11212ddf-bf32-4b11-afee-e234cdee5938@free.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+References: <cover.1755499375.git.asml.silence@gmail.com> <819d46e1354b0c7cc97945c6c7bde09f12df1da6.1755499376.git.asml.silence@gmail.com>
+In-Reply-To: <819d46e1354b0c7cc97945c6c7bde09f12df1da6.1755499376.git.asml.silence@gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Tue, 19 Aug 2025 14:54:55 -0700
+X-Gm-Features: Ac12FXxeo1Wf2dKxzd4cQVsy9kzkzxP83IAtSvMfurLpwYPvoLmCKi5ODIA8qfw
+Message-ID: <CAHS8izOru3+zGPkOa5XMWOo1uhtzz+Zt7yDC7R=NZFfyPdeK9Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 14/23] net: add queue config validation callback
+To: Pavel Begunkov <asml.silence@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
+	Eric Dumazet <edumazet@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, andrew+netdev@lunn.ch, horms@kernel.org, 
+	davem@davemloft.net, sdf@fomichev.me, dw@davidwei.uk, 
+	michael.chan@broadcom.com, dtatulea@nvidia.com, ap420073@gmail.com, 
+	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/18/25 8:28 PM, F6BVP wrote:
-> Hi Dan,
-> 
-> I agree that it must be the same bug and mkiss module is involved in 
-> both cases although the environment is quite different.
-> I am using ROSE/FPAC nodes on different machines for AX25 messages 
-> routing with LinFBB BBS.
-> Nowadays I do not have radio anymore and all are interconnected via 
-> Internet using IP over AX25 encapsulation with ax25ipd (UDP ports).
-> 
+On Mon, Aug 18, 2025 at 6:56=E2=80=AFAM Pavel Begunkov <asml.silence@gmail.=
+com> wrote:
+>
+> From: Jakub Kicinski <kuba@kernel.org>
+>
+> I imagine (tm) that as the number of per-queue configuration
+> options grows some of them may conflict for certain drivers.
+> While the drivers can obviously do all the validation locally
+> doing so is fairly inconvenient as the config is fed to drivers
+> piecemeal via different ops (for different params and NIC-wide
+> vs per-queue).
+>
+> Add a centralized callback for validating the queue config
+> in queue ops. The callback gets invoked before each queue restart
+> and when ring params are modified.
+>
+> For NIC-wide changes the callback gets invoked for each active
+> (or active to-be) queue, and additionally with a negative queue
+> index for NIC-wide defaults. The NIC-wide check is needed in
+> case all queues have an override active when NIC-wide setting
+> is changed to an unsupported one. Alternatively we could check
+> the settings when new queues are enabled (in the channel API),
+> but accepting invalid config is a bad idea. Users may expect
+> that resetting a queue override will always work.
+>
+> The "trick" of passing a negative index is a bit ugly, we may
+> want to revisit if it causes confusion and bugs. Existing drivers
+> don't care about the index so it "just works".
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+> ---
+>  include/net/netdev_queues.h | 12 ++++++++++++
+>  net/core/dev.h              |  2 ++
+>  net/core/netdev_config.c    | 20 ++++++++++++++++++++
+>  net/core/netdev_rx_queue.c  |  6 ++++++
+>  net/ethtool/rings.c         |  5 +++++
+>  5 files changed, 45 insertions(+)
+>
+> diff --git a/include/net/netdev_queues.h b/include/net/netdev_queues.h
+> index b850cff71d12..d0cc475ec51e 100644
+> --- a/include/net/netdev_queues.h
+> +++ b/include/net/netdev_queues.h
+> @@ -147,6 +147,14 @@ void netdev_stat_queue_sum(struct net_device *netdev=
+,
+>   *                     defaults. Queue config structs are passed to this
+>   *                     helper before the user-requested settings are app=
+lied.
+>   *
+> + * @ndo_queue_cfg_validate: (Optional) Check if queue config is supporte=
+d.
+> + *                     Called when configuration affecting a queue may b=
+e
+> + *                     changing, either due to NIC-wide config, or confi=
+g
+> + *                     scoped to the queue at a specified index.
+> + *                     When NIC-wide config is changed the callback will
+> + *                     be invoked for all queues, and in addition to tha=
+t
+> + *                     with a negative queue index for the base settings=
+.
+> + *
+>   * @ndo_queue_mem_alloc: Allocate memory for an RX queue at the specifie=
+d index.
+>   *                      The new memory is written at the specified addre=
+ss.
+>   *
+> @@ -167,6 +175,10 @@ struct netdev_queue_mgmt_ops {
+>         void    (*ndo_queue_cfg_defaults)(struct net_device *dev,
+>                                           int idx,
+>                                           struct netdev_queue_config *qcf=
+g);
+> +       int     (*ndo_queue_cfg_validate)(struct net_device *dev,
+> +                                         int idx,
+> +                                         struct netdev_queue_config *qcf=
+g,
+> +                                         struct netlink_ext_ack *extack)=
+;
+>         int     (*ndo_queue_mem_alloc)(struct net_device *dev,
+>                                        struct netdev_queue_config *qcfg,
+>                                        void *per_queue_mem,
+> diff --git a/net/core/dev.h b/net/core/dev.h
+> index a553a0f1f846..523d50e6f88d 100644
+> --- a/net/core/dev.h
+> +++ b/net/core/dev.h
+> @@ -99,6 +99,8 @@ void netdev_free_config(struct net_device *dev);
+>  int netdev_reconfig_start(struct net_device *dev);
+>  void __netdev_queue_config(struct net_device *dev, int rxq,
+>                            struct netdev_queue_config *qcfg, bool pending=
+);
+> +int netdev_queue_config_revalidate(struct net_device *dev,
+> +                                  struct netlink_ext_ack *extack);
+>
+>  /* netdev management, shared between various uAPI entry points */
+>  struct netdev_name_node {
+> diff --git a/net/core/netdev_config.c b/net/core/netdev_config.c
+> index bad2d53522f0..fc700b77e4eb 100644
+> --- a/net/core/netdev_config.c
+> +++ b/net/core/netdev_config.c
+> @@ -99,3 +99,23 @@ void netdev_queue_config(struct net_device *dev, int r=
+xq,
+>         __netdev_queue_config(dev, rxq, qcfg, true);
+>  }
+>  EXPORT_SYMBOL(netdev_queue_config);
+> +
+> +int netdev_queue_config_revalidate(struct net_device *dev,
+> +                                  struct netlink_ext_ack *extack)
+> +{
+> +       const struct netdev_queue_mgmt_ops *qops =3D dev->queue_mgmt_ops;
+> +       struct netdev_queue_config qcfg;
+> +       int i, err;
+> +
+> +       if (!qops || !qops->ndo_queue_cfg_validate)
+> +               return 0;
+> +
+> +       for (i =3D -1; i < (int)dev->real_num_rx_queues; i++) {
+> +               netdev_queue_config(dev, i, &qcfg);
 
-Hi Bernard, et al.
+This function as written feels very useless tbh. There is no config
+passed in from the caller, so the function does a netdev_queue_config,
+which grabs the current-or-default-config (I'm not sure which tbh),
+and then validates that is applicable. But of course the current or
+default configs can be applied, right?
 
-Sorry for hijacking the thread. I have a question: As an experimental 
-station based on Ubuntu 18.04 LTS (not connected to the Internet for 
-several years, using kernel Linux ubuntu 4.15.0-212-generic #223-Ubuntu 
-SMP Tue May 23 13:08:22 UTC 2023 i686 i686 i686 GNU/Linux), I run a 
-rather old FPAC-Node v 4.0.3 (built Jan  3 2016), and on top of it an 
-FBB bbs V7.0.10 (Feb 28 2021).
+I thought there would be a refactor in a future patch that makes this
+function useful, but I don't see one.
 
-All works well for my basic packet needs. However it makes me wonder 
-whether it would be of any use to try upgrading FPAC and FBB, having in 
-mind that upgrading the distro is not possible.
+The qcfg being applied needs to be passed in by the caller of this
+function, no? That would make sense to me (the caller is wondering if
+this new config is applicable).
 
-Best regards, 73
-
-Misko YT7MPB
-
+--=20
+Thanks,
+Mina
