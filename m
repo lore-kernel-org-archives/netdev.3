@@ -1,161 +1,242 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715483101AA;
-	Tue, 19 Aug 2025 21:10:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5607C343D99
+	for <netdev@vger.kernel.org>; Tue, 19 Aug 2025 21:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755637810; cv=none; b=c6wdSXdcLfZloqk58jQX/JWkz1NYkVfSMOgazQ20qjNr2yg1kq3+LRd08gzSDUzKKS423ysi1ijORrYwLBq2ho45ilVulq95kkrv1a0ngiteGB3jy8SOGo8Ewh57L0G1kdRqn5f/gv4jOu9JHo4xRanlHCRKSne8msVMBTMI++g=
+	t=1755638966; cv=none; b=u797o56YOOkfIIqafd/PTum9z8qRryzV9tEZFIqmXh05x3UefN/TqBEjJBRXJZpM7SWZ8rT/U191VnQ0ZtQBKFot5pGMgNU6v1F1bxyB0lTGnF8/cDAIhhe7cLTbf4Pni79MFAx3PtGGiLyrJ5nQAegIxWzGfFqog+fChIUpaVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755637810; c=relaxed/simple;
-	bh=lAs7kHreBtRFM5BmhN+uVj7cvYVrE9W4cw3bVA+6RCw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HbjDhQjlYikbh3kCyr4YgRbw2mvU7HudbXkk616tBLLgN1+mLWFle8YHSupe4lIk937fH9D1Mjb7TrgMFy9jfN3fheR+paFzRWNpJIMDEtjbYHTMUNnufprD7c7E8nZkwYcChtycbLmAhcPMo26uiEJolMjen6+JksLMdVBT5l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kV6AT49z; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1755638966; c=relaxed/simple;
+	bh=VPYppmP8+N68IfWTMKDY6CCdjcacnp4h/5+7AGXFxYk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U3Dk/Y86QCHXO6T/+HZwn6GJdpiUOIXnQ2k/FusrmMs7bjR1li98UcPeIrnTOcn8hzhsCChMf02F+/Mi1Xntr+Wrjuq8pNghZ2aFNxvWBxJSE3T7h+6cwTxTv1DxAN+IrMcCvgIpBYy9wRWzI9AScEMa3K9m+WIar2qqQivwHY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurora.tech; spf=pass smtp.mailfrom=aurora.tech; dkim=pass (2048-bit key) header.d=aurora.tech header.i=@aurora.tech header.b=PcZA0hqe; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aurora.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aurora.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kV6AT49z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755637809; x=1787173809;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lAs7kHreBtRFM5BmhN+uVj7cvYVrE9W4cw3bVA+6RCw=;
-  b=kV6AT49zh8Ga4td68vmfVc6MLXTSojIvyD1YeCthtqCze69n0Tl/5w74
-   vIqMV/H2Yg36Et/7dTglt5WxXmKPqicWvEFOFvRzfHw9A5lTNJpWESyMX
-   qLsLzMN8GRbFTfS9uQY5dnDrY3jAh69S4B63Z8U1qqmVGGT/zP6CDzpQK
-   yFaUSbLrO2bkrqw2SXAo6Aj9hyuCSIcYEJ9nVixTWcVv0o+O6f/8DGD4X
-   nP44Q79GWGHYFCBs9I+ogs1fUiHQST4nRMEshPlF9+MwasaERFFanwlX5
-   E18kHexkliWPg489v4NJgYzvsZA2/1ghCWsVC82EZn5wo4adhKtvRY/PL
-   A==;
-X-CSE-ConnectionGUID: bUXcFjrWSuGFPqwD9rzM+Q==
-X-CSE-MsgGUID: sDQHuh75THGSNfn+ASX2Tg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="61728038"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="61728038"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2025 14:10:08 -0700
-X-CSE-ConnectionGUID: OjuMbXC3RGq+9bUgCgDQ/g==
-X-CSE-MsgGUID: q7vuU89HTWytl+PGKm8Z7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="173315511"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa005.jf.intel.com with ESMTP; 19 Aug 2025 14:10:04 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uoTai-000HVT-2v;
-	Tue, 19 Aug 2025 21:10:00 +0000
-Date: Wed, 20 Aug 2025 05:09:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Artur Rojek <contact@artur-rojek.eu>, Rob Landley <rob@landley.net>,
-	Jeff Dionne <jeff@coresemi.io>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Artur Rojek <contact@artur-rojek.eu>
-Subject: Re: [PATCH 3/3] net: j2: Introduce J-Core EMAC
-Message-ID: <202508200456.GIhKD5qv-lkp@intel.com>
-References: <20250815194806.1202589-4-contact@artur-rojek.eu>
+	dkim=pass (2048-bit key) header.d=aurora.tech header.i=@aurora.tech header.b="PcZA0hqe"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-76e2ea94c7cso5099565b3a.2
+        for <netdev@vger.kernel.org>; Tue, 19 Aug 2025 14:29:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=aurora.tech; s=google; t=1755638964; x=1756243764; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7aCI6yzk8DM4TwNhCoALXUsVJxPXQENSR97a0plBk5E=;
+        b=PcZA0hqe6cn7TIPegIsvworY7zmTuDFpS97455LIQHoDX6CyFuduE6hONDT0d4e51w
+         7ZLGGMHR3lDjXAqSZ7l8EN4+B0xWvSmZYpf/VOQRs/8zQqJgYqWIZF4cI18Er4qDE+Tn
+         GaUnvFN81PeVV47pA1C4OAStEaPFXeg7jxrliXIO+COqdOcmuIp2VwVA+eBnjfhr+Fcy
+         EW729xzbhgSUjMTKcoBOQXmcYZ6grqWCD27+kYekKyMJHbCL2I5BVs9bjAsSEMhLxIAx
+         GNo1/4TLFEobhCJQ4X20mb/Tdogd48U8sTU10/kswKK2Jk8NS5+SgIqVQy1SiWADGWG4
+         pyyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755638964; x=1756243764;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7aCI6yzk8DM4TwNhCoALXUsVJxPXQENSR97a0plBk5E=;
+        b=O3wk/yRXnwQpSz3kLQLLJGgoY4l6shPHXDxOZwgJFxbRTKLVKAGTIZR+NTY7rrijHh
+         li5bef0o28RFrZaaa7RrqaU1UcHw210weFeOmVPWDrQ1L8UPCxt3QbShLU1NhYCgamct
+         sUpYIIsqKw+UhIuV2TqBD0mZRlYHXp1IiZUSLD5z7BhCtXdzd4htMFLWJI3AhtuPaW7z
+         IA/Z6SASPXUMMGNJ52QxUtEJFPR5yeMLo00csjL9CTC1PbG5+A9SNjixEobw/BC4rxn+
+         fUAHFjOXxwtYfHTH88Rxcec9nEzJDv4j/7pebnYV1FrLCh6XYCxChHXrjORphceQfpRf
+         Rl2g==
+X-Gm-Message-State: AOJu0Yw/dwnPzS/QRV0x8ZW7V9gk4UaKvP4VRXME7elTnJU2Rw1UyYE2
+	di8o6JCDlJetriXy+X4/cF3kRDQ3/SSB2f2P/8K2bWi2M9by1ueZTV0JvGKlezgRhN4eq9OtCaL
+	8AhbKCAL7TPQwpIniB1uzYWCpvpx36Iw1FsgyZ0/5iTbWcaojurA7UIzfqczJtIn8N/mjCKB5rG
+	CO9tXL9kJ8uxsPV4qFgteTan3O1AA8i4OaHEP40+XUWFWtrA==
+X-Gm-Gg: ASbGncu9I5vadB72UQU5JmOYy4QxbLu0YNZeGBKe+ywlKBfJT6cqsy5q3r9oXnOLq01
+	XPBv2Nd95CIckdduIMv85VZ7YWDx0DcVWERkML+Na6upyZMLkGxOWiglsr3InyfNQGFGyA+yWTG
+	siKLP+O0zjXpRq1TX4ji4+SRsF98gTxNe0u+Wts9YZqFpx7a1Cmfjnvo5A0vzkMGE6R+3z+S/YY
+	nKWaQ4wye5whsHygRB/e9FxFgl3PbO7IOd/CYbTN9umr1ewTdNn+Be6Q0MCLXm4THx277wvLFVk
+	/9IOgr8m7i/QPuS/Dan+lgSJSQRk+CJQ2NdN1vdQKJBl6BnWJzHC2iJ02irL+peA9M4k/cgiFxn
+	oGdT152+DoGpVO9s4CEAe9UMw4IVIi6P410TYR/o87hQeKXgkTUUqCFnwex2d
+X-Google-Smtp-Source: AGHT+IEKLLXBhvdqQ9DkLGqLweL2RAop/TOGgN/7svtAkHa4dIHH00EQWAnZUSDMdmZp5bWblOASSg==
+X-Received: by 2002:a05:6a20:3d87:b0:240:30c:274a with SMTP id adf61e73a8af0-2431b82b45dmr1046597637.18.1755638964116;
+        Tue, 19 Aug 2025 14:29:24 -0700 (PDT)
+Received: from ievenbach-5SCQ9Y3.taila24ae5.ts.net ([2607:fb91:8284:c7ef:144e:d365:b3ff:ef2f])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-324e2625749sm127792a91.14.2025.08.19.14.29.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Aug 2025 14:29:23 -0700 (PDT)
+From: "Ilya A. Evenbach" <ievenbach@aurora.tech>
+To: netdev@vger.kernel.org
+Cc: "Ilya A. Evenbach" <ievenbach@aurora.tech>
+Subject: [PATCH] [88q2xxx] Add support for handling master/slave in forced mode
+Date: Tue, 19 Aug 2025 14:29:01 -0700
+Message-Id: <20250819212901.1559962-1-ievenbach@aurora.tech>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250815194806.1202589-4-contact@artur-rojek.eu>
+Content-Transfer-Encoding: 8bit
 
-Hi Artur,
+88q2xxx PHYs have non-standard way of setting master/slave in
+forced mode.
+This change adds support for changing and reporting this setting
+correctly through ethtool.
 
-kernel test robot noticed the following build errors:
+Signed-off-by: Ilya A. Evenbach <ievenbach@aurora.tech>
+---
+ drivers/net/phy/marvell-88q2xxx.c | 107 ++++++++++++++++++++++++++++--
+ 1 file changed, 102 insertions(+), 5 deletions(-)
 
-[auto build test ERROR on robh/for-next]
-[also build test ERROR on linus/master v6.17-rc2 next-20250819]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Artur-Rojek/dt-bindings-vendor-prefixes-Document-J-Core/20250816-042354
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20250815194806.1202589-4-contact%40artur-rojek.eu
-patch subject: [PATCH 3/3] net: j2: Introduce J-Core EMAC
-config: m68k-randconfig-r113-20250819 (https://download.01.org/0day-ci/archive/20250820/202508200456.GIhKD5qv-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 8.5.0
-reproduce: (https://download.01.org/0day-ci/archive/20250820/202508200456.GIhKD5qv-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508200456.GIhKD5qv-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/net/ethernet/jcore_emac.c: In function 'jcore_emac_set_rx_mode':
->> drivers/net/ethernet/jcore_emac.c:230:1: error: label at end of compound statement
-    next_ha:
-    ^~~~~~~
-
-
-vim +230 drivers/net/ethernet/jcore_emac.c
-
-   192	
-   193	static void jcore_emac_set_rx_mode(struct net_device *ndev)
-   194	{
-   195		struct jcore_emac *priv = netdev_priv(ndev);
-   196		struct netdev_hw_addr *ha;
-   197		unsigned int reg, i, idx = 0, set_mask = 0, clear_mask = 0, addr = 0;
-   198	
-   199		if (ndev->flags & IFF_PROMISC)
-   200			set_mask |= JCORE_EMAC_PROMISC;
-   201		else
-   202			clear_mask |= JCORE_EMAC_PROMISC;
-   203	
-   204		if (ndev->flags & IFF_ALLMULTI)
-   205			set_mask |= JCORE_EMAC_MCAST;
-   206		else
-   207			clear_mask |= JCORE_EMAC_MCAST;
-   208	
-   209		regmap_update_bits(priv->map, JCORE_EMAC_CONTROL, set_mask | clear_mask,
-   210				   set_mask);
-   211	
-   212		if (!(ndev->flags & IFF_MULTICAST))
-   213			return;
-   214	
-   215		netdev_for_each_mc_addr(ha, ndev) {
-   216			/* Only the first 3 octets are used in a hardware mcast mask. */
-   217			memcpy(&addr, ha->addr, 3);
-   218	
-   219			for (i = 0; i < idx; i++) {
-   220				regmap_read(priv->map, JCORE_EMAC_MCAST_MASK(i), &reg);
-   221				if (reg == addr)
-   222					goto next_ha;
-   223			}
-   224	
-   225			regmap_write(priv->map, JCORE_EMAC_MCAST_MASK(idx), addr);
-   226			if (++idx >= JCORE_EMAC_MCAST_ADDRS) {
-   227				netdev_warn(ndev, "Multicast list limit reached\n");
-   228				break;
-   229			}
- > 230	next_ha:
-   231		}
-   232	
-   233		/* Clear the remaining mask entries. */
-   234		for (i = idx; i < JCORE_EMAC_MCAST_ADDRS; i++)
-   235			regmap_write(priv->map, JCORE_EMAC_MCAST_MASK(i), 0);
-   236	}
-   237	
-
+diff --git a/drivers/net/phy/marvell-88q2xxx.c b/drivers/net/phy/marvell-88q2xxx.c
+index f3d83b04c953..1ab450056e86 100644
+--- a/drivers/net/phy/marvell-88q2xxx.c
++++ b/drivers/net/phy/marvell-88q2xxx.c
+@@ -9,6 +9,7 @@
+ #include <linux/ethtool_netlink.h>
+ #include <linux/hwmon.h>
+ #include <linux/marvell_phy.h>
++#include <linux/mdio.h>
+ #include <linux/of.h>
+ #include <linux/phy.h>
+ 
+@@ -118,6 +119,11 @@
+ #define MV88Q2XXX_LED_INDEX_TX_ENABLE			0
+ #define MV88Q2XXX_LED_INDEX_GPIO			1
+ 
++/* Marvell vendor PMA/PMD control for forced master/slave when AN is disabled */
++#define PMAPMD_MVL_PMAPMD_CTL				0x0834
++#define MASTER_MODE					BIT(14)
++#define MODE_MASK					BIT(14)
++
+ struct mv88q2xxx_priv {
+ 	bool enable_led0;
+ };
+@@ -377,13 +383,57 @@ static int mv88q2xxx_read_link(struct phy_device *phydev)
+ static int mv88q2xxx_read_master_slave_state(struct phy_device *phydev)
+ {
+ 	int ret;
++	int adv_l, adv_m, stat, stat2;
++
++	/* In forced mode, state and config are controlled via PMAPMD 0x834 */
++	if (phydev->autoneg == AUTONEG_DISABLE) {
++		ret = phy_read_mmd(phydev, MDIO_MMD_PMAPMD, PMAPMD_MVL_PMAPMD_CTL);
++		if (ret < 0)
++			return ret;
++
++		if (ret & MASTER_MODE) {
++			phydev->master_slave_state = MASTER_SLAVE_STATE_MASTER;
++			phydev->master_slave_get = MASTER_SLAVE_CFG_MASTER_FORCE;
++		} else {
++			phydev->master_slave_state = MASTER_SLAVE_STATE_SLAVE;
++			phydev->master_slave_get = MASTER_SLAVE_CFG_SLAVE_FORCE;
++		}
++		return 0;
++	}
+ 
+-	phydev->master_slave_state = MASTER_SLAVE_STATE_UNKNOWN;
+-	ret = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_MMD_AN_MV_STAT);
+-	if (ret < 0)
+-		return ret;
+ 
+-	if (ret & MDIO_MMD_AN_MV_STAT_LOCAL_MASTER)
++	adv_l = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_T1_ADV_L);
++	if (adv_l < 0)
++		return adv_l;
++	adv_m = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_T1_ADV_M);
++	if (adv_m < 0)
++		return adv_m;
++
++	if (adv_l & MDIO_AN_T1_ADV_L_FORCE_MS)
++		phydev->master_slave_get = MASTER_SLAVE_CFG_MASTER_FORCE;
++	else if (adv_m & MDIO_AN_T1_ADV_M_MST)
++		phydev->master_slave_get = MASTER_SLAVE_CFG_MASTER_PREFERRED;
++	else
++		phydev->master_slave_get = MASTER_SLAVE_CFG_SLAVE_PREFERRED;
++
++	stat = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_MMD_AN_MV_STAT);
++	if (stat < 0)
++		return stat;
++
++	if (stat & MDIO_MMD_AN_MV_STAT_MS_CONF_FAULT) {
++		phydev->master_slave_state = MASTER_SLAVE_STATE_ERR;
++		return 0;
++	}
++
++	stat2 = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_MMD_AN_MV_STAT2);
++	if (stat2 < 0)
++		return stat2;
++	if (!(stat2 & MDIO_MMD_AN_MV_STAT2_AN_RESOLVED)) {
++		phydev->master_slave_state = MASTER_SLAVE_STATE_UNKNOWN;
++		return 0;
++	}
++
++	if (stat & MDIO_MMD_AN_MV_STAT_LOCAL_MASTER)
+ 		phydev->master_slave_state = MASTER_SLAVE_STATE_MASTER;
+ 	else
+ 		phydev->master_slave_state = MASTER_SLAVE_STATE_SLAVE;
+@@ -391,6 +441,34 @@ static int mv88q2xxx_read_master_slave_state(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++static int mv88q2xxx_setup_master_slave_forced(struct phy_device *phydev)
++{
++	int ret = 0;
++
++	switch (phydev->master_slave_set) {
++	case MASTER_SLAVE_CFG_MASTER_FORCE:
++	case MASTER_SLAVE_CFG_MASTER_PREFERRED:
++		ret = phy_modify_mmd_changed(phydev, MDIO_MMD_PMAPMD,
++					     PMAPMD_MVL_PMAPMD_CTL,
++					     MODE_MASK, MASTER_MODE);
++		break;
++	case MASTER_SLAVE_CFG_SLAVE_FORCE:
++	case MASTER_SLAVE_CFG_SLAVE_PREFERRED:
++		ret = phy_modify_mmd_changed(phydev, MDIO_MMD_PMAPMD,
++					     PMAPMD_MVL_PMAPMD_CTL,
++					     MODE_MASK, 0);
++		break;
++	case MASTER_SLAVE_CFG_UNKNOWN:
++	case MASTER_SLAVE_CFG_UNSUPPORTED:
++	default:
++		phydev_warn(phydev, "Unsupported Master/Slave mode\n");
++		ret = 0;
++		break;
++	}
++
++	return ret;
++}
++
+ static int mv88q2xxx_read_aneg_speed(struct phy_device *phydev)
+ {
+ 	int ret;
+@@ -448,6 +526,11 @@ static int mv88q2xxx_read_status(struct phy_device *phydev)
+ 	if (ret < 0)
+ 		return ret;
+ 
++	/* Populate master/slave status also for forced modes */
++	ret = mv88q2xxx_read_master_slave_state(phydev);
++	if (ret < 0 && ret != -EOPNOTSUPP)
++		return ret;
++
+ 	return genphy_c45_read_pma(phydev);
+ }
+ 
+@@ -478,6 +561,20 @@ static int mv88q2xxx_config_aneg(struct phy_device *phydev)
+ 	if (ret)
+ 		return ret;
+ 
++	/* Configure Base-T1 master/slave per phydev->master_slave_set.
++	 * For AN disabled, program PMAPMD role directly; otherwise rely on
++	 * the standard Base-T1 AN advertisement bits.
++	 */
++	if (phydev->autoneg == AUTONEG_DISABLE) {
++		ret = mv88q2xxx_setup_master_slave_forced(phydev);
++		if (ret)
++			return ret;
++	} else {
++		ret = genphy_c45_pma_baset1_setup_master_slave(phydev);
++		if (ret)
++			return ret;
++	}
++
+ 	return phydev->drv->soft_reset(phydev);
+ }
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
