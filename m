@@ -1,46 +1,46 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013071.outbound.protection.outlook.com [52.101.72.71])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013032.outbound.protection.outlook.com [52.101.72.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC95433EAE9;
-	Tue, 19 Aug 2025 12:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00457343D9A;
+	Tue, 19 Aug 2025 12:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755608389; cv=fail; b=Q2I5xr2mfweqXNTWCmDgR7WrpVvfaZzfIbz/S8Zj+giDv74RIRer8ae4n7sNtuxDii2U0KV6YD8qcUUn2MH2+0B9qCtY9rB4FF46nLjpbLcJPgMHyrtDBOmpR6RUQ0ICeVycgauWJlbDJYF5HQZW5YBWw6w+bOlQ5vW4ltSnE+s=
+	t=1755608392; cv=fail; b=iE3J8QueAN5G5s73ia6fartpv+n21yMZxyL7omROoqBz3O8diNio1JkfoyKf3cdmcUIyvul9ah7tXLP5+9iq9KpOXWQJFuSaDB4oGTNPzDlV3HuZS2jkbq0YwuWRdQCfAvdYnCahD6bJtIOeygGM7y0PDwrgTMadL9ufnLXenAA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755608389; c=relaxed/simple;
-	bh=oUTIjOZjNx/EGiX1xHbrM4HlxNMY/ipezryM6KTfzMY=;
+	s=arc-20240116; t=1755608392; c=relaxed/simple;
+	bh=CkKuUQo77/6Bsid9gISKPCco9ZCqu6JAyUVn/1OeQVA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HwEkUXjsEad7rE+hQV5Fw264Zh42FFK6RSq/NSbS9tdd6Q0ALG4QDgPPmiSbO5ri3U+826Kdl5+Eo1IYXE3xqMBiwTVSHfI+pVdEDL+BrqUHYE4RKVEmLDMyln1vN3nctySc8Hxl9G3/HR+6SFLH/XVactKETnojCi1vxBOUIpk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HaE2AsxM; arc=fail smtp.client-ip=52.101.72.71
+	 Content-Type:MIME-Version; b=DnOrY0+7tyE9gTb+vtohsEJfVE1+2vKKp4cXCQ1g0c48ciDkaruYD2CIFxC4iJ1Sy8t9uFi50Agu9hi/SQTgHa2h9413QS99pV/sPBKvFMGiR1pBffHP/kdvmThqRen91544w/ph6j/9QCIMKjp7T7U8FXtcFnU/MMABnOVtjVI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gAzjUREa; arc=fail smtp.client-ip=52.101.72.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HaE2AsxM"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gAzjUREa"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XpybZ0FlOHpKmxffy3h8buxJoHh6XaDAL5Slj2bgouMZyPgQN2Mq6D4Vod5qt5kgw2KA/zC5wcs+ETFeuavp6/Fp9VN8tFVbeJXjx+MNBZvbc/MkoPMf2x8FVvzdWFlyHH+UeZtYhg14MxN58QoXNbX5jWKJgA3IJbsWgTkX8WRus5NRmVlCBRwXUaNUkuAZkx9EwrZjDFi9GpS1wsEg8uaSO+ybJw4y4k7bzSFGRxfP/By0xgX0PN6uSOq/Ii+dsSspz8TeBmfwvW9F+xzDqMmyYLTrezpXXci2/xiU2zu99bOE71AiEzODX4COSIQi/xBr6DFz+3xcsBB0D71eEA==
+ b=D27WfkcjUJXBezNFSkZTsLYHt+BDMiOaBpziyOojoPzTzs6UQC56dxgibUwlXo0Xw+iz2yugURi+yPqfzeyDnlJs0Bdgjf7INiXGONnpTr+/B9/hGxj39/sWd4/GXVdNdw8Zn/BovZsR1sz2Kc+xs3DE7nBlKVQFZnvOgIz66nRBgCI9DD+nb0JJekt2ZzGkgeoWtNx4pH/z7LQNPCgl0ZIU9au3w7mEiXqiJWX6Q8EVQro0IjZ0vmUpoXfqjkg6BrYWNCv0/CYnV4D6gMTzwG/S5uGzAWFy41zCTnQ+eaMUoK6SnaWiBawrwEOfvNBlmvZJfXyT2jhZ/ApDL/ZSmw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A8LWoBk5DX+xG6L9x8UqgXoedBH1tUmtGA3Yw3Xe0Hk=;
- b=OwhlvI+7hvob17DVDgNJj0sBcs7+er4DRRVN8NPBif6tCC/XysYM6Q40wlx9AZM/qV2laxMvJ0nP69WmCYZJLR9Ev2EnFBlw6fVFCO7lyC9VdoEYOI3b1qbVast7pIRAayR6SDjTOgZAVrJ5lc92Gw4NLrrNuMKvtmlW2BB2J9MUpOCCNCAJAZ6q3vpitpSYbUnr6w3DEp2cZmkAOYmtBO648BqV5+HcFbNW6fxvjHn0A/gLJutdslFcQozLGKrDzbWq8oI3kwCuJGSajOv7ZeyzUQBU2EaG8IlRrPNoY2r1cUT1CE9QWcax0WNFps2ueEv/0lzK9ekciBvGIABLaA==
+ bh=W6AjQTwpITTpQXwlvr3UsSda5pIcERSr2k2iUIJndF0=;
+ b=Ev7HIbXV6uqH8mr7LCkhSzxMsDi5XyNK/8yCNaQVP9A+rjHSTm9E0TPvHM7OCgUEZvY5Qj5Fr0WRPMuleEHAHUpRiB0I8Kx5t0SVyLHfT2Tsmt+Z7qBg64Cjm+K633V6YrnPtrkkyIqSP2Lzf6ujc3PxKyq3JkGn2Av4JfEHCb26HU8ID12bbKm8sEW6kfsoibWAkZ2pZHPe4wd6x1d7Jt+ZxyMpzCVA405dI2b9esz6IgS+uBAqOZy5IX/7Ci5Dht6S8tMtfQfK6gcc5JIJSJYq0Gmkv+l/eNmzjSFjzZgJA86IFCSAlgNJnTGxakXoruUO/sQeeNI2liAtJUvrgQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A8LWoBk5DX+xG6L9x8UqgXoedBH1tUmtGA3Yw3Xe0Hk=;
- b=HaE2AsxMWX4kLFZVO/ChjXxX4b8jzA+XQ3FGwUsFqo+y0GCBLuOXThCJoEmS3+oVqUKcbxStlMAh75DDJ6MI48sKJANO/NuYPSJp+rCHoBmWJZxUPVjCkwTfp+xtCYLntllMI5AMQpieW2EF0DKjf65PEvO0FKQtqYPPTqkXccoKvifi2tz2kZUVPb+JrFpqG6m94c7cjiSRsPxtH8GZ+HuUoiikG+D7Lik/2qyQuv09SV6Vw197zL4RY/Vr9r+YMrAac9M30M3wtUA+91mumj32bG86yym8l7DPmPk2g0zakx5On6jHKmMpyscZaCHPbOkdnqOJTDCLh+uJ0Vd8Eg==
+ bh=W6AjQTwpITTpQXwlvr3UsSda5pIcERSr2k2iUIJndF0=;
+ b=gAzjUREaNf2HBj8MjzHgshPQhw4hyJOfyAZXsuP0JEE4GP3EOvTusb1Ro3l40lzN5RZGb3Q1f0XMau/e8OiGcRbLaJ5YtstVrDQCIriT+H8hXRVl4GdBlMoBJKiQWbyrKjXyOybNAOI8rkHxGH4u40lD4p1bAvxUhqyNspG1OPMaTWUooIgfageQwRmu722xl9o8923jRbpYqsR9uFLNppJzvXkG0n+uxwWbSXzrv+hScxyRU7sxrrqu0DC/+8tfV0+bIKQ1zQMIwbDQxQgLdT2AOsGQTXZsRUeRnDf1ynfGEgUJo0UFsuvQN7izexDHAfOPyz7OYhsS/q2/Xq5RLA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DUZPR04MB9946.eurprd04.prod.outlook.com (2603:10a6:10:4db::5) with
+ by PAXPR04MB8992.eurprd04.prod.outlook.com (2603:10a6:102:20f::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.13; Tue, 19 Aug
- 2025 12:59:09 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.12; Tue, 19 Aug
+ 2025 12:59:23 +0000
 Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
  ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
  ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.9031.012; Tue, 19 Aug 2025
- 12:59:09 +0000
+ 12:59:23 +0000
 From: Wei Fang <wei.fang@nxp.com>
 To: robh@kernel.org,
 	krzk+dt@kernel.org,
@@ -65,9 +65,9 @@ Cc: fushi.peng@nxp.com,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev,
 	kernel@pengutronix.de
-Subject: [PATCH v4 net-next 08/15] ptp: netc: add debugfs support to loop back pulse signal
-Date: Tue, 19 Aug 2025 20:36:13 +0800
-Message-Id: <20250819123620.916637-9-wei.fang@nxp.com>
+Subject: [PATCH v4 net-next 10/15] net: enetc: save the parsed information of PTP packet to skb->cb
+Date: Tue, 19 Aug 2025 20:36:15 +0800
+Message-Id: <20250819123620.916637-11-wei.fang@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250819123620.916637-1-wei.fang@nxp.com>
 References: <20250819123620.916637-1-wei.fang@nxp.com>
@@ -82,269 +82,283 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DUZPR04MB9946:EE_
-X-MS-Office365-Filtering-Correlation-Id: 47e3d3bb-e4c3-431e-e42c-08dddf20301a
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PAXPR04MB8992:EE_
+X-MS-Office365-Filtering-Correlation-Id: af38ac1a-950a-4ab5-cc95-08dddf2037d5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|52116014|7416014|366016|1800799024|38350700014|921020;
+	BCL:0;ARA:13230040|19092799006|52116014|376014|1800799024|7416014|366016|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?p3AEgD9Q2o9lB509Ul2QUeUWwi4YxG7LnA6vswszBURGL7mBaZ5jUT8pMkhS?=
- =?us-ascii?Q?E9r6vOAXDBCIKA2GWAYYmX1brKqW+o/DaiqY6KZ4qdA/Itu0eMmfXLRZeLJl?=
- =?us-ascii?Q?IZWZ5WrlO0ybrSPL7pl58i4vAMUhA0fjf463/OHH/EaDfq0FlnYooT6TqE3k?=
- =?us-ascii?Q?BGu9kf04R0j8LDw7+KLFrkzi16XHzQxnq11M6jUD1esmHv8x6dp9AbpEF0dH?=
- =?us-ascii?Q?TNxZul/3v2sjGNhH7SHEaVuv8LvjQE2p5KqsnoVk/kyrF4UXdtFgBEW27UYJ?=
- =?us-ascii?Q?mrBXzFeZ4YEV5VAPeiGqfAEWlwlicsQmrTXejwSgJUqWtgFSrqRuU1p/6Wsd?=
- =?us-ascii?Q?wp2IICPT3gCLQha17yWwGPfMvLPTwaNaV/qDz3o1+9REgFd0zFBVLjT4aPX1?=
- =?us-ascii?Q?C5hYFKu9drkYx0UEYxWjZPGyW6cPwqX5ksn6GugQu4mwQhbV79iuk609RVXr?=
- =?us-ascii?Q?ImarvvPpISEv1Od8DjJjkfjodpgFh40nYO2WYD1VXw4qnQAePPA7DIQnndx4?=
- =?us-ascii?Q?iN//jVs/HoVTbppLoyHjEShw8Y7uaNptqIMw3E3+H1rXDvTiD+UNjyH48yjf?=
- =?us-ascii?Q?odNwAA4CzgXYLJAkf2rkF2Wakx/1iuhmWEcO59iBrxRSgbjLvtAZoJ/TrKtG?=
- =?us-ascii?Q?EeOzki5v465IoxDl5jquhJdkpOk/6AumUxweHJk5aXIZd4d8hvtUilxUNJ/C?=
- =?us-ascii?Q?FU+FpMMM4KEM2mD4HUk9bGp0uXPgj1B2o3yUKTrYZz0gWFmw8KhkjMmwmj5j?=
- =?us-ascii?Q?/8Q42t8sOl+hZ/eVKlaK2gB6GEwspyJlioih7f6inVa5b8xWZE4EpaLc3Onb?=
- =?us-ascii?Q?wxgPujP+wpk3YJXnpSjNPIjONsG7IIgES8LGw23hOqDSQGz4SseiuJpyYZU/?=
- =?us-ascii?Q?L7rQIPtHP7I/qcUdjVoZRPi4iWVSHWWo4ySs8QtjIgJ1WNp6UwYdvtmDnuz+?=
- =?us-ascii?Q?x9EZ7jJLNc7snei/xCqvu2SkaY9fwUthhRIZDRo6vXMs/8xyEZItr25oNKWV?=
- =?us-ascii?Q?/BgK/uidD/E40NDMKy3u3ZtOwKN/CVyMIX8lrV9hEOSmIVAdqnEDrAyEAhU5?=
- =?us-ascii?Q?ManuHPDqafGkhRWgtO/PwFD5oqRCdYsS4qvxifDdbDJNq+0Hb13vasI8m9IR?=
- =?us-ascii?Q?M410YoBHT1vqaKQUpnwS/Hus8LfMCvioYtHRrvtZYvHhGQ/cK1Q/YREh1ors?=
- =?us-ascii?Q?SnTa3TuDm8/SJMIjK2PCaABMdR9oLb1vykgtbCUq8db+jRDRiw2Qd7UpBFJ4?=
- =?us-ascii?Q?ol7sUJV4ZpeHLETqIgtlfyKWgJhTrj2RuhLagZKjLALJuRP7LNdfi7zeT4C5?=
- =?us-ascii?Q?bzh8IaLImboSHY1CHiSo1JwydfNnq2Bbx4a+fwgFaCwYUluZvNr6e/s75406?=
- =?us-ascii?Q?vMNJ3Y5ff4y4B+3UwmfqYNTytT+MJLF22pVSnBZfAuZvQ0BhnYiZ9TSHN+u/?=
- =?us-ascii?Q?07OjSQQlNogno/eacypxlU8LForQGeqV4PxEE3+sPBGEHXpd/aT5jLVdhXHC?=
- =?us-ascii?Q?Q4IzfAebVXk98SI=3D?=
+	=?us-ascii?Q?U3cI1lRvtWoqlp3pOX1SSnoXHsjH2DLXV/9UUnF30rEAuBqr72N+gDaTfQsC?=
+ =?us-ascii?Q?FAvsK8UAakJAlFdPQQtMjnQu7+pp3GpZld0DuCcWfQoyptOP+77miAoZUHFu?=
+ =?us-ascii?Q?/o0CTOvgKbEl4FC/37dltlRS7sH1elr5o9wh8l6VMjZVCaorvHHNyULxnBkw?=
+ =?us-ascii?Q?qwn9Pw4DNnbUbNAthnnEMGibi2yl9MWg1pW1OW57/6Chq0AOs/pV6MVZYbv9?=
+ =?us-ascii?Q?8T5taQSR9FipGbtGxLH9aEaVoHy3d4zojebI77AnJjADaDvF+HMLgrYdcYwD?=
+ =?us-ascii?Q?K9HayjaUUfP7ksZWQqKdgGvxj7a4/BsbSLhdyuANttDk72f8XOJ19bLbj2PB?=
+ =?us-ascii?Q?40nSNuap4xbGe2Yy0sxkL/GWJ97iwEN9R6/kcCdbFNDUzwdbbuiCqAKnuadz?=
+ =?us-ascii?Q?uJriUHgYis12xb2PPOPGf04fYVOvW2j1wPEK99nLeIi9TBWB1zESO6BSu7cC?=
+ =?us-ascii?Q?4HHRZm8oWeqU1cm3xMV63X0anqYzdDJ6s4GrcA2J9/7MTa9N+F3R6kYHFnX5?=
+ =?us-ascii?Q?yZOWePvPAwsf+cj6WVLBGlVwzsm9598wgejTDYTi5oRBhYyPhHuKzLtsdcI4?=
+ =?us-ascii?Q?BQ8fESuGRSmgIgvAeBhxwTgKCC1IvO/f0zO0g3unb7fh7NiQh7YiYJSxZkc/?=
+ =?us-ascii?Q?vwE+77Tet4S36RKLHPk2EfREy7PI7D/ZQ3DI/0oMRPuWJygZeB9rbAmHkwLG?=
+ =?us-ascii?Q?OImwxvN+/QZk9ljB1c9A364Y3nn0s+23OhycoHl06LqrimI9CYqDLtdo1QHQ?=
+ =?us-ascii?Q?fiIS4A8ux8nw5KC5fOr9chyiUQ3TWHyuwlGV5yhm/tSlCgHx5sYzkQI2dw6I?=
+ =?us-ascii?Q?XXS5Cv8tOzFneAIGm0YHhsQMbyCNEhJr1kWrkRxk2g4lKn/23rQUVOkUELdm?=
+ =?us-ascii?Q?ghQ/nL26BqQyKfFtPlZ+lOvNLz4BVFGnDv6eHxF0ruy7emsG1d5RCR86AbUh?=
+ =?us-ascii?Q?KlMR05y2GxicI+gJfjNdJuu5qEkYdjUuKgM9ohZUZPQjI27uPmgLN139ozFV?=
+ =?us-ascii?Q?w2VmaTivSL5x8R2bUOQqxPB6Uautdp6VSW/Wd1itFEoRwxuSic47okabI0V5?=
+ =?us-ascii?Q?iJRjMok4riwwzJf2bsltrBK43D/thyYIkxSErvCQ36p0X/9ilyAPsvLwDYs0?=
+ =?us-ascii?Q?TfU0eAXDUdQfFm/rDMkjSY/rp54o3KzgzxvCy1612JKcMWHzanf2EYdiK5Xv?=
+ =?us-ascii?Q?VpwpjHK7K+GnYW759vJwsU8I30u8FPqoASOqRZ2BN9PXwqkaCUiMAJUK3cBt?=
+ =?us-ascii?Q?CGaoG2e4n0LDpuzm8zVf3dHKumuv+moXE0KKyR5l3c1eVs6hTpY56U8/cDgc?=
+ =?us-ascii?Q?R3kiRwvuObVjdR66LtxSy/ZkCv4jqf6TXVGsNhoe56/V2Jj8rEoUumjjHldz?=
+ =?us-ascii?Q?T6CKN1f2n48NhlEuF9WITM4dv4WFMzHRNt2siVFkWdFIw/lMALQCgN356w/y?=
+ =?us-ascii?Q?eOZuJjTvCOU6gIxAFHPO+hY7iOv4nDsYo7+k1ELI5I6wDDC4NT4GDhoLjPmc?=
+ =?us-ascii?Q?utSoxmJkrk8DbnU=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(52116014)(7416014)(366016)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(376014)(1800799024)(7416014)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Ucx4TIPqh0UQDKhwFWpp3Z6MCRRFGBeeTEIOpEczVYJsRisOntnML5tchGvY?=
- =?us-ascii?Q?Du8bvqARzcAmk8E0aeVigzeJfKB9JvNkuu5BEMN5Hcs03pkfrXVEzezpu6fV?=
- =?us-ascii?Q?J556xE5h8rd5kibhowW/bvqByo4TvINpYVV+F0FbyF/ulkUWYBcuMreVJ9cm?=
- =?us-ascii?Q?W+WKrygpCIScszxGaB09l8HS6OJC8ydEQRF//mIflAWIdloaCYYIvSogH4Zk?=
- =?us-ascii?Q?uJR8LGxf+dlu/1H6ouK9X6pQzU/67r+XDWzp/Tch7bpC+kDc8cG10q+8P8Yu?=
- =?us-ascii?Q?ZSg1c2HmTKsyeC0LDZuB0dpxr5qNQiREDmrW/Px3xJzLcU6F2mza5WWJ00DX?=
- =?us-ascii?Q?25EJOgjNBnjdLmyD2wepBXBRkY1L0GB69PHULrgaNF87SwnQc1s2BY1qZSB2?=
- =?us-ascii?Q?AbLEod0FeIm7IrXJs2AkrQqWjpEo+dHo5smDQj8/b9nu+HusBk7MOVemfrvo?=
- =?us-ascii?Q?wpugfsysRkDxvue5ZhL83xAmFkIZvR0/H6J7dJaX/rCFXqBwsop5IYrNopfa?=
- =?us-ascii?Q?I4gV/PcWvxiYX6hMA680q086s8xi1fPO+EgS4TJbm6zeXqLDjLYpoqYAl2jU?=
- =?us-ascii?Q?L1uM4a5o6Kyd2ZHssZTP/9fzxDZPsb4y8RoW+OAF2W6pP6z3KxzyIaG4D+cz?=
- =?us-ascii?Q?WZG63iGwlgGk5gNEaWHpHsPhnGbWshsb9QbUTujSMo5AjqDvGY5l5cnYoXhL?=
- =?us-ascii?Q?7FuSKxxtsH2fYZfrNQzcc6aH6EGqyfYxnjjAT7JzWwbWmC1I4z3W18TPFrsF?=
- =?us-ascii?Q?wSCYdeqhfoKn0DeNdAwGrsLU4LyDuqGjJlAj2TVxVqrjJcz3f5XrDDLNeiRy?=
- =?us-ascii?Q?V8iwKfHXfya8rYycPXgiOQI9Bxno6P/w2UoMPrM6JQEk9nZ+h1fxt6z/+B3V?=
- =?us-ascii?Q?rEvGlFFy1Gjj+LNIdidlgC3O4sr8NvP0BASm4jYJTc5rOOECIDrtbdITH/jy?=
- =?us-ascii?Q?geKpsmBGhHJ1AApCK+AUx18tjqyzvioqm2XEnzEUX7CusjhLwlZOiJD31M63?=
- =?us-ascii?Q?KhqI2kIXSpU0/z9+bOioGzwIFSBOJ98rFu7KdI/wpgZoWxYbLoVrgFk7H2TI?=
- =?us-ascii?Q?D2xBBbSdd0f881qYfpTmDQ9GpWFj7PD+bPS2xtF2gnBjg5fem/tEBKdcnk2g?=
- =?us-ascii?Q?JIIKeAaIlUG9Wly8wKGCiFFmj3sL5fB/3Xq4lsTif7MwQBF+lafAPSgAO+wu?=
- =?us-ascii?Q?TQgS2TD7yUXASBgg/t3twhaGRWpRn7HMhH3ALmsEq3hkrK5bRMx0eUjGryxc?=
- =?us-ascii?Q?6dK/XlYv3/QzlfrjgsK7n2I2pHkvUYXkW7NKxm1pfboxibea/pPZ5BZtETM/?=
- =?us-ascii?Q?+Qp+s/w04fC9rLg94lDri0Az7ToB5Q88+N90hKaFZXECCHQ3vjcdLmvTy2w0?=
- =?us-ascii?Q?SYhjEkv9meAXIJEJXNP2hoC4OTmXaJ4/tgWtq4dsuSpijWjh3tph99mXI2os?=
- =?us-ascii?Q?qr6kiJbi76otTSe/E6u+FHscSvumZyXFd0INswKJ+iw9YmEMDBqvoyembfcw?=
- =?us-ascii?Q?9ShjnSmaVOFPp5qRXiquF5ICd11NikafhATsKE18Hbg1NKpevd9ZDn8yZiqn?=
- =?us-ascii?Q?QZcC4pdypsIM4KySiFJPmQ1iwJ6aoO/w/UsjQ98G?=
+	=?us-ascii?Q?B63IsiLbd4t+ik4JViZ8AFVh+W0WjnY0O7kq6zlNJc9ak/4C1tpTixvqXXWh?=
+ =?us-ascii?Q?pArhrvCiJ7Sca5A0DH7rmupYFcBUze6Zln1C/SwY9IrH0nfFE/DFNwNmOaE1?=
+ =?us-ascii?Q?RDp+sPMwjjDaJ7fkTBxfnPndZDS08Iww9BXjZCpmGZME519+VyKidv/6pNVQ?=
+ =?us-ascii?Q?ybLfv2JCM9ouB9t40r+ffY3teMKqnl0bfi6DqPBUiozhOg7FBes6yLcu4CFT?=
+ =?us-ascii?Q?LpTjTF7d6zRKtSRvav2I4YS/c2UWYV5jFT1sHDsuh+WN5O8c/Xlm895hlSZX?=
+ =?us-ascii?Q?OT1UxqVuJYeiS/r+k121UiYopDsWu2sjSsTvVY+e7CPNIdZrasyewzFGMqCo?=
+ =?us-ascii?Q?X04wlF+tIXLLUwRSZP1oEyQ2zWlwo7uyygcqu3BS9M/+267L5aXwcpWjWqN8?=
+ =?us-ascii?Q?VDtS0sLYmh37tCNaWMfzYW3Ef2k3Tf5nVOSOqcA0JAOSqPNX52HZlf4Dds08?=
+ =?us-ascii?Q?5eGnHrMtBPcOF1Rx6yflX9HXZ/vQFPKXai0H00C4eM+/0DS84Eg0sWD9/1kM?=
+ =?us-ascii?Q?mGs+1HT/M++GlE67C57gsSQUbFdT6+gQN0qbA9/BiVBc5H5M1/RSsVElG3mt?=
+ =?us-ascii?Q?cWtMCj/bqRvb2LmVJFWzZg9GuRUQX5zZ1Ht9HuVsHQyXVsXuT6urV7W65zP8?=
+ =?us-ascii?Q?2fXC3UqqNpSsZAtmC0qkahoKXVtg+LdvN0SK2bqa62knylnPojHYn6YWiyTS?=
+ =?us-ascii?Q?YumxICsjskBXmLwcDLx4MiHD0gQQt56THVhNPxgVgcUVg+NChKv/WGHmc/R3?=
+ =?us-ascii?Q?UFa4/IxtILnjKFk/4zxPxxbmMViAF0eQPOyA4jrHpZgJuYpcth6OKkrtQvbv?=
+ =?us-ascii?Q?uye0xxOEWKu8VYUixrVEFqCKocVFlmIgnbfCvn1NZ3yZSw8vd7GYSeCkGuF9?=
+ =?us-ascii?Q?jRaYWu0S3AbsyB7j75rc7M9B9C7aMJyL0m4eI1bttIUrTflP6vwzTN7d/U4R?=
+ =?us-ascii?Q?WllvrSkB0RQNPdH2nFxhpCQGLsuOKg54Kyh9zaQ6Nh25hB7Kjk342dRseALt?=
+ =?us-ascii?Q?O9tZAUVVcIURUvg26LXYnziU0c7rYpQxw0N3hn8gfeilSNSfdAt23Vl4W6vx?=
+ =?us-ascii?Q?5YfMAUOE6nZzVzn3ffvcwh40apcUPYKsmCe1JqZMZVYNA21KTW8Nip0HJPGp?=
+ =?us-ascii?Q?N3qsDSqMRj48thOLvloqVBf93GRY/nhODqI2YMlYItkv1K2ERwB7rlToAe5V?=
+ =?us-ascii?Q?DxbjF+T56u/hZEwSzbavYofPU68hXssUEIySQ1pW7g2r1bKla49PVRj7zAMX?=
+ =?us-ascii?Q?qZvwF59A9g00cqqCU96K9pDF8IdRfctYIjCaXA2qAHIh0nkQPovBGgt3z1yw?=
+ =?us-ascii?Q?0YshNgvjJv9xr0eLpAm2F/2JLOB5tA5jpoFriQeclHQ1wUQQRTnovEY+CW1f?=
+ =?us-ascii?Q?LtaLEeGzHMEUN6O85idUiE3ns6dtCSdzD/gTlvifjYrCDR1QuDEK6fM1vvI8?=
+ =?us-ascii?Q?UfArqRxVfauMZ7dr60OzocDrJXfYLSyZ02GV5aOOIczvMDib7JWGdwGazXvl?=
+ =?us-ascii?Q?T+2XNY5Y1P3d0kjMRIHBcqpUhB2SP3DDeTg91GZtIFeZyuxWzi3ggLnPTI0v?=
+ =?us-ascii?Q?9NsAAgiqBohKMXG7CrI8O8StwRwxE2zQ6rDAUquU?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47e3d3bb-e4c3-431e-e42c-08dddf20301a
+X-MS-Exchange-CrossTenant-Network-Message-Id: af38ac1a-950a-4ab5-cc95-08dddf2037d5
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 12:59:09.7900
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2025 12:59:23.0704
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sg3zslyxhji+jvDs73nbc3zNgSTXiLGqP79MSAc1QacMP6RlfDmDZaXy5nRPZbJ4981c7sr0LCDyMynXvM5LXQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9946
+X-MS-Exchange-CrossTenant-UserPrincipalName: GQvGhV4VbH3uKNtLdpYRNWXBso46nPDucR48G84CKmtinPYw28cBmvxq5YwUFuImmxohW9rfGMD1uvFQ5HSAMw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8992
 
-The NETC Timer supports to loop back the output pulse signal of Fiper-n
-into Trigger-n input, so that we can leverage this feature to validate
-some other features without external hardware support. For example, we
-can use it to test external trigger stamp (EXTTS). And we can combine
-EXTTS with loopback mode to check whether the generation time of PPS is
-aligned with an integral second of PHC, or the periodic output signal
-(PTP_CLK_REQ_PEROUT) whether is generated at the specified time. So add
-the debugfs interfaces to enable the loopback mode of Fiper1 and Fiper2.
-See below typical user cases.
+Currently, the Tx PTP packets are parsed twice in the enetc driver, once
+in enetc_xmit() and once in enetc_map_tx_buffs(). The latter is duplicate
+and is unnecessary, since the parsed information can be saved to skb->cb
+so that enetc_map_tx_buffs() can get the previously parsed data from
+skb->cb. Therefore, add struct enetc_skb_cb as the format of the data
+in the skb->cb buffer to save the parsed information of PTP packet. Use
+saved information in enetc_map_tx_buffs() to avoid parsing data again.
 
-Test the generation time of PPS event:
-
-$ echo 1 > /sys/kernel/debug/netc_timer0/fiper1-loopback
-$ echo 1 > /sys/class/ptp/ptp0/pps_enable
-$ testptp -d /dev/ptp0 -e 3
-external time stamp request okay
-event index 0 at 108.000000018
-event index 0 at 109.000000018
-event index 0 at 110.000000018
-
-Test the generation time of the periodic output signal:
-
-$ echo 1 > /sys/kernel/debug/netc_timer0/fiper1-loopback
-$ echo 0 260 0 1 500000000 > /sys/class/ptp/ptp0/period
-$ testptp -d /dev/ptp0 -e 3
-external time stamp request okay
-event index 0 at 260.000000016
-event index 0 at 261.500000015
-event index 0 at 263.000000016
+In addition, rename variables offset1 and offset2 in enetc_map_tx_buffs()
+to corr_off and tstamp_off for better readability.
 
 Signed-off-by: Wei Fang <wei.fang@nxp.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
 ---
 v2 changes:
-1. Remove the check of the return value of debugfs_create_dir()
+1. Add description of offset1 and offset2 being renamed in the commit
+message.
 v3 changes:
-1. Rename TMR_CTRL_PP1L and TMR_CTRL_PP2L to TMR_CTRL_PPL(i)
-2. Remove switch statement from netc_timer_get_fiper_loopback() and
-   netc_timer_set_fiper_loopback()
-v4 changes:
-1. Slightly modify the commit message and add Reviewed-by tag
+1. Improve the commit message
+2. Fix the error the patch, there were two "++" in the patch
 ---
- drivers/ptp/ptp_netc.c | 95 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 95 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 65 ++++++++++----------
+ drivers/net/ethernet/freescale/enetc/enetc.h |  9 +++
+ 2 files changed, 43 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
-index 7741b5bbe61d..4158fb3c58eb 100644
---- a/drivers/ptp/ptp_netc.c
-+++ b/drivers/ptp/ptp_netc.c
-@@ -6,6 +6,7 @@
- 
- #include <linux/bitfield.h>
- #include <linux/clk.h>
-+#include <linux/debugfs.h>
- #include <linux/fsl/netc_global.h>
- #include <linux/module.h>
- #include <linux/of.h>
-@@ -20,6 +21,7 @@
- #define  TMR_ETEP(i)			BIT(8 + (i))
- #define  TMR_COMP_MODE			BIT(15)
- #define  TMR_CTRL_TCLK_PERIOD		GENMASK(25, 16)
-+#define  TMR_CTRL_PPL(i)		BIT(27 - (i))
- #define  TMR_CTRL_FS			BIT(28)
- 
- #define NETC_TMR_TEVENT			0x0084
-@@ -120,6 +122,7 @@ struct netc_timer {
- 	u8 fs_alarm_num;
- 	u8 fs_alarm_bitmap;
- 	struct netc_pp pp[NETC_TMR_FIPER_NUM]; /* periodic pulse */
-+	struct dentry *debugfs_root;
- };
- 
- #define netc_timer_rd(p, o)		netc_read((p)->base + (o))
-@@ -936,6 +939,95 @@ static int netc_timer_get_global_ip_rev(struct netc_timer *priv)
- 	return val & IPBRR0_IP_REV;
- }
- 
-+static int netc_timer_get_fiper_loopback(struct netc_timer *priv,
-+					 int fiper, u64 *val)
-+{
-+	unsigned long flags;
-+	u32 tmr_ctrl;
-+
-+	spin_lock_irqsave(&priv->lock, flags);
-+	tmr_ctrl = netc_timer_rd(priv, NETC_TMR_CTRL);
-+	spin_unlock_irqrestore(&priv->lock, flags);
-+
-+	*val = (tmr_ctrl & TMR_CTRL_PPL(fiper)) ? 1 : 0;
-+
-+	return 0;
-+}
-+
-+static int netc_timer_set_fiper_loopback(struct netc_timer *priv,
-+					 int fiper, bool en)
-+{
-+	unsigned long flags;
-+	u32 tmr_ctrl;
-+
-+	spin_lock_irqsave(&priv->lock, flags);
-+
-+	tmr_ctrl = netc_timer_rd(priv, NETC_TMR_CTRL);
-+	if (en)
-+		tmr_ctrl |= TMR_CTRL_PPL(fiper);
-+	else
-+		tmr_ctrl &= ~TMR_CTRL_PPL(fiper);
-+
-+	netc_timer_wr(priv, NETC_TMR_CTRL, tmr_ctrl);
-+
-+	spin_unlock_irqrestore(&priv->lock, flags);
-+
-+	return 0;
-+}
-+
-+static int netc_timer_get_fiper1_loopback(void *data, u64 *val)
-+{
-+	struct netc_timer *priv = data;
-+
-+	return netc_timer_get_fiper_loopback(priv, 0, val);
-+}
-+
-+static int netc_timer_set_fiper1_loopback(void *data, u64 val)
-+{
-+	struct netc_timer *priv = data;
-+
-+	return netc_timer_set_fiper_loopback(priv, 0, !!val);
-+}
-+
-+DEFINE_DEBUGFS_ATTRIBUTE(netc_timer_fiper1_fops, netc_timer_get_fiper1_loopback,
-+			 netc_timer_set_fiper1_loopback, "%llu\n");
-+
-+static int netc_timer_get_fiper2_loopback(void *data, u64 *val)
-+{
-+	struct netc_timer *priv = data;
-+
-+	return netc_timer_get_fiper_loopback(priv, 1, val);
-+}
-+
-+static int netc_timer_set_fiper2_loopback(void *data, u64 val)
-+{
-+	struct netc_timer *priv = data;
-+
-+	return netc_timer_set_fiper_loopback(priv, 1, !!val);
-+}
-+
-+DEFINE_DEBUGFS_ATTRIBUTE(netc_timer_fiper2_fops, netc_timer_get_fiper2_loopback,
-+			 netc_timer_set_fiper2_loopback, "%llu\n");
-+
-+static void netc_timer_create_debugfs(struct netc_timer *priv)
-+{
-+	char debugfs_name[24];
-+
-+	snprintf(debugfs_name, sizeof(debugfs_name), "netc_timer%d",
-+		 ptp_clock_index(priv->clock));
-+	priv->debugfs_root = debugfs_create_dir(debugfs_name, NULL);
-+	debugfs_create_file("fiper1-loopback", 0600, priv->debugfs_root,
-+			    priv, &netc_timer_fiper1_fops);
-+	debugfs_create_file("fiper2-loopback", 0600, priv->debugfs_root,
-+			    priv, &netc_timer_fiper2_fops);
-+}
-+
-+static void netc_timer_remove_debugfs(struct netc_timer *priv)
-+{
-+	debugfs_remove(priv->debugfs_root);
-+	priv->debugfs_root = NULL;
-+}
-+
- static int netc_timer_probe(struct pci_dev *pdev,
- 			    const struct pci_device_id *id)
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index e4287725832e..54ccd7c57961 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -225,13 +225,12 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
  {
-@@ -974,6 +1066,8 @@ static int netc_timer_probe(struct pci_dev *pdev,
- 		goto free_msix_irq;
+ 	bool do_vlan, do_onestep_tstamp = false, do_twostep_tstamp = false;
+ 	struct enetc_ndev_priv *priv = netdev_priv(tx_ring->ndev);
++	struct enetc_skb_cb *enetc_cb = ENETC_SKB_CB(skb);
+ 	struct enetc_hw *hw = &priv->si->hw;
+ 	struct enetc_tx_swbd *tx_swbd;
+ 	int len = skb_headlen(skb);
+ 	union enetc_tx_bd temp_bd;
+-	u8 msgtype, twostep, udp;
+ 	union enetc_tx_bd *txbd;
+-	u16 offset1, offset2;
+ 	int i, count = 0;
+ 	skb_frag_t *frag;
+ 	unsigned int f;
+@@ -280,16 +279,10 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+ 	count++;
+ 
+ 	do_vlan = skb_vlan_tag_present(skb);
+-	if (skb->cb[0] & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
+-		if (enetc_ptp_parse(skb, &udp, &msgtype, &twostep, &offset1,
+-				    &offset2) ||
+-		    msgtype != PTP_MSGTYPE_SYNC || twostep)
+-			WARN_ONCE(1, "Bad packet for one-step timestamping\n");
+-		else
+-			do_onestep_tstamp = true;
+-	} else if (skb->cb[0] & ENETC_F_TX_TSTAMP) {
++	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP)
++		do_onestep_tstamp = true;
++	else if (enetc_cb->flag & ENETC_F_TX_TSTAMP)
+ 		do_twostep_tstamp = true;
+-	}
+ 
+ 	tx_swbd->do_twostep_tstamp = do_twostep_tstamp;
+ 	tx_swbd->qbv_en = !!(priv->active_offloads & ENETC_F_QBV);
+@@ -333,6 +326,8 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+ 		}
+ 
+ 		if (do_onestep_tstamp) {
++			u16 tstamp_off = enetc_cb->origin_tstamp_off;
++			u16 corr_off = enetc_cb->correction_off;
+ 			__be32 new_sec_l, new_nsec;
+ 			u32 lo, hi, nsec, val;
+ 			__be16 new_sec_h;
+@@ -362,32 +357,32 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+ 			new_sec_h = htons((sec >> 32) & 0xffff);
+ 			new_sec_l = htonl(sec & 0xffffffff);
+ 			new_nsec = htonl(nsec);
+-			if (udp) {
++			if (enetc_cb->udp) {
+ 				struct udphdr *uh = udp_hdr(skb);
+ 				__be32 old_sec_l, old_nsec;
+ 				__be16 old_sec_h;
+ 
+-				old_sec_h = *(__be16 *)(data + offset2);
++				old_sec_h = *(__be16 *)(data + tstamp_off);
+ 				inet_proto_csum_replace2(&uh->check, skb, old_sec_h,
+ 							 new_sec_h, false);
+ 
+-				old_sec_l = *(__be32 *)(data + offset2 + 2);
++				old_sec_l = *(__be32 *)(data + tstamp_off + 2);
+ 				inet_proto_csum_replace4(&uh->check, skb, old_sec_l,
+ 							 new_sec_l, false);
+ 
+-				old_nsec = *(__be32 *)(data + offset2 + 6);
++				old_nsec = *(__be32 *)(data + tstamp_off + 6);
+ 				inet_proto_csum_replace4(&uh->check, skb, old_nsec,
+ 							 new_nsec, false);
+ 			}
+ 
+-			*(__be16 *)(data + offset2) = new_sec_h;
+-			*(__be32 *)(data + offset2 + 2) = new_sec_l;
+-			*(__be32 *)(data + offset2 + 6) = new_nsec;
++			*(__be16 *)(data + tstamp_off) = new_sec_h;
++			*(__be32 *)(data + tstamp_off + 2) = new_sec_l;
++			*(__be32 *)(data + tstamp_off + 6) = new_nsec;
+ 
+ 			/* Configure single-step register */
+ 			val = ENETC_PM0_SINGLE_STEP_EN;
+-			val |= ENETC_SET_SINGLE_STEP_OFFSET(offset1);
+-			if (udp)
++			val |= ENETC_SET_SINGLE_STEP_OFFSET(corr_off);
++			if (enetc_cb->udp)
+ 				val |= ENETC_PM0_SINGLE_STEP_CH;
+ 
+ 			enetc_port_mac_wr(priv->si, ENETC_PM0_SINGLE_STEP,
+@@ -938,12 +933,13 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
+ static netdev_tx_t enetc_start_xmit(struct sk_buff *skb,
+ 				    struct net_device *ndev)
+ {
++	struct enetc_skb_cb *enetc_cb = ENETC_SKB_CB(skb);
+ 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+ 	struct enetc_bdr *tx_ring;
+ 	int count;
+ 
+ 	/* Queue one-step Sync packet if already locked */
+-	if (skb->cb[0] & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
++	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
+ 		if (test_and_set_bit_lock(ENETC_TX_ONESTEP_TSTAMP_IN_PROGRESS,
+ 					  &priv->flags)) {
+ 			skb_queue_tail(&priv->tx_skbs, skb);
+@@ -1005,24 +1001,29 @@ static netdev_tx_t enetc_start_xmit(struct sk_buff *skb,
+ 
+ netdev_tx_t enetc_xmit(struct sk_buff *skb, struct net_device *ndev)
+ {
++	struct enetc_skb_cb *enetc_cb = ENETC_SKB_CB(skb);
+ 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+ 	u8 udp, msgtype, twostep;
+ 	u16 offset1, offset2;
+ 
+-	/* Mark tx timestamp type on skb->cb[0] if requires */
++	/* Mark tx timestamp type on enetc_cb->flag if requires */
+ 	if ((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
+-	    (priv->active_offloads & ENETC_F_TX_TSTAMP_MASK)) {
+-		skb->cb[0] = priv->active_offloads & ENETC_F_TX_TSTAMP_MASK;
+-	} else {
+-		skb->cb[0] = 0;
+-	}
++	    (priv->active_offloads & ENETC_F_TX_TSTAMP_MASK))
++		enetc_cb->flag = priv->active_offloads & ENETC_F_TX_TSTAMP_MASK;
++	else
++		enetc_cb->flag = 0;
+ 
+ 	/* Fall back to two-step timestamp if not one-step Sync packet */
+-	if (skb->cb[0] & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
++	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
+ 		if (enetc_ptp_parse(skb, &udp, &msgtype, &twostep,
+ 				    &offset1, &offset2) ||
+-		    msgtype != PTP_MSGTYPE_SYNC || twostep != 0)
+-			skb->cb[0] = ENETC_F_TX_TSTAMP;
++		    msgtype != PTP_MSGTYPE_SYNC || twostep != 0) {
++			enetc_cb->flag = ENETC_F_TX_TSTAMP;
++		} else {
++			enetc_cb->udp = !!udp;
++			enetc_cb->correction_off = offset1;
++			enetc_cb->origin_tstamp_off = offset2;
++		}
  	}
  
-+	netc_timer_create_debugfs(priv);
+ 	return enetc_start_xmit(skb, ndev);
+@@ -1214,7 +1215,9 @@ static bool enetc_clean_tx_ring(struct enetc_bdr *tx_ring, int napi_budget)
+ 		if (xdp_frame) {
+ 			xdp_return_frame(xdp_frame);
+ 		} else if (skb) {
+-			if (unlikely(skb->cb[0] & ENETC_F_TX_ONESTEP_SYNC_TSTAMP)) {
++			struct enetc_skb_cb *enetc_cb = ENETC_SKB_CB(skb);
 +
- 	return 0;
++			if (unlikely(enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP)) {
+ 				/* Start work to release lock for next one-step
+ 				 * timestamping packet. And send one skb in
+ 				 * tx_skbs queue if has.
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
+index 62e8ee4d2f04..ce3fed95091b 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+@@ -54,6 +54,15 @@ struct enetc_tx_swbd {
+ 	u8 qbv_en:1;
+ };
  
- free_msix_irq:
-@@ -988,6 +1082,7 @@ static void netc_timer_remove(struct pci_dev *pdev)
- {
- 	struct netc_timer *priv = pci_get_drvdata(pdev);
- 
-+	netc_timer_remove_debugfs(priv);
- 	ptp_clock_unregister(priv->clock);
- 	netc_timer_free_msix_irq(priv);
- 	netc_timer_pci_remove(pdev);
++struct enetc_skb_cb {
++	u8 flag;
++	bool udp;
++	u16 correction_off;
++	u16 origin_tstamp_off;
++};
++
++#define ENETC_SKB_CB(skb) ((struct enetc_skb_cb *)((skb)->cb))
++
+ struct enetc_lso_t {
+ 	bool	ipv6;
+ 	bool	tcp;
 -- 
 2.34.1
 
