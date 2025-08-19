@@ -1,177 +1,196 @@
-Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43556305078
-	for <netdev@vger.kernel.org>; Tue, 19 Aug 2025 12:35:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E844305053;
+	Tue, 19 Aug 2025 12:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755606935; cv=none; b=QnBYNaixpBVaLSuwi1rJ4xAsy8+VC2pmouugwZe2bVmP5J3TrBjFs/7o92vTzuKrbN3xOOYrMLRgJMbJz1a+xg94nIyqFbH7h6aG8I0F0jq9VH/9AtdkPidDp+0yqqCVCgNHPrEpvbbjxftSwo1G1hdPEIkUoTE/yWZ4uKqIXgo=
+	t=1755607335; cv=none; b=fHNHbMYv9vgr3wS1R8ydgOll8c2B1bj+wrBdU3TJwYFueP42bMUdA2Drx0V2K1dTKNGvIoJfAa2J0vy2CE17FUgS3O3C7s/r55ix/1wUChAaZImjcjrq/3DJzQ2aHS/DaR31QOf0pYmr+CcynSoSvqPObAM+NPCpAbsoIS+qig4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755606935; c=relaxed/simple;
-	bh=q95Qb+hhBhfnL6Tk2OrDgDDxMo9Sus2kxRpHY53GEjY=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=V0aLktC2ZoOKM9L9oWZcaLSXaLaWCbWgV3OQO7b6IghXPq4M63XGfZwT9wpmIiIR4OtaaektORLCeBCMbHSAUY2o8twoPl19mkufDtR2WhyR4Otlqvm0JyYFeD+MT19Ld9CrssGWuDXDwxlyCuKWjbhpdXKmrVbNIEaoBGPIw6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3e570030cd4so150241125ab.2
-        for <netdev@vger.kernel.org>; Tue, 19 Aug 2025 05:35:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755606933; x=1756211733;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VOvnU9r+K7ZpX4gBu6BS9eomr8G8AbQJhvuYBCN3cBw=;
-        b=swjrFl1dlWZpdwZNNB08/q3Bd15lQnq/lKolf7uZxh6CBHMsltQ/J/Ef4F/6V495pr
-         MF1PV6DzEAngRV7SjUYi561pGoLsWEDVsFpx5AnVBLhuVGTir+ftiyw3LU2Dv1pude/E
-         9Ew+I21ZZILUPxUszW7u5c5uSOSMbWFYtiz1r+cbU1OjQnr8O/Rg3wQW+LfDah2zP1ia
-         ldDK6NP/znc9FryyuHdMgnlAr7RB/6fLMlqGzo+Wom3dW7sEYDCIcji0gJWY1IBu7NYm
-         zXyKsGnjCm55vfDEYnq/ZA3I/aF3Q8yRICGSKgntbSjHegXk/5NzLd48w/ZipEiwphPj
-         6VOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUyPRT5nke+M6CZsTb76HxUnRbz4baXnuq1jWxAPccskFqSiw5bSeCgQ+Nm3XS9gsL3zxKAtQA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yym4HzqMWBI1ShwxUgd27ihG4z4D1ZTbbkTvpZL8UyT3AJe5Fzy
-	SzHbs3n33o4cbzXpDYFF/nI45HhvRneNnJmdX1WNJP7u/I2qUoJGYJ3R7pcnJI9VPhoAMpH4Gnv
-	oPFLI+TQlslp/DiFr8Sb/EpWbYgEi+vXq4ODMsJ0ndrf+VpncJiIl6dOcSyM=
-X-Google-Smtp-Source: AGHT+IEI/1DKd1RUwxo+QrnTf+jaQy3KAVGbJHEv2V/rviSxbMgiJ0Mk9V4rxJBhkcG+TewcbHNj5I6B0JabnOTGaEDJ6m8PrJzO
+	s=arc-20240116; t=1755607335; c=relaxed/simple;
+	bh=5YmId6TaJSXxbQAcmBKh+QzUHZdg3v1E8gFElkn2tlc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oRdf+EwA4i4wUZCQ1KL5BM3NZet0tCTSBwjMagEjEKF0FSraS5vfw1deSowoB0Uu70wncKvoP4iG4W3BFQiOogeGuor8dcW5cxgWa9w2vSZV+EWBMCsjClto8qgR9307FMhKRmrZ7jUBRqKLBcuOAuH9GIlWNCSN/DilYpVI9yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=gDEdXieo; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="gDEdXieo"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=mQNnN16mIYhaXp4sreQmcdqv7Ohu0QtrzdbShxrwIUE=; b=gDEdXieo2XHmZfvDDMXPiJzmO8
+	se3oLVyBUlfyC40YGD5hE7JPOA+9nlwDd/AdA7ugCZK1h87RLw4yoXiPhFT+2x5eVMC0UB038ZgSo
+	q4BLS1komBZdCEISFDsOPxh81J6ASvsAlskPq1zFnLpNQv+iHdBydJvgntohpMnaz50E4GEJJnoam
+	WXmHYKJ9m2MJK2SnW0tKUilQykbLACJKKOiC654Ck2YFY25iv/WykgXE1xLqKokClBxYS/puuokXC
+	zthd87qoD8miGYBA+HIY5gKqQK5RtOnTlxZgLtKrtF8Aasor40N1COFNk7QPAlI/q/VmnfAYKgcOz
+	GT73mfWA==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1uoLfF-0009Xt-10;
+	Tue, 19 Aug 2025 14:42:09 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1uoLfE-000KJH-14;
+	Tue, 19 Aug 2025 14:42:08 +0200
+Message-ID: <7d2f3767-64c5-4efa-862b-f463751a03bb@iogearbox.net>
+Date: Tue, 19 Aug 2025 14:42:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:2141:b0:3e5:7f54:dcda with SMTP id
- e9e14a558f8ab-3e6765c3e5cmr43319725ab.1.1755606933212; Tue, 19 Aug 2025
- 05:35:33 -0700 (PDT)
-Date: Tue, 19 Aug 2025 05:35:33 -0700
-In-Reply-To: <673fdc18.050a0220.363a1b.012c.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68a46f95.050a0220.e29e5.00c3.GAE@google.com>
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in security_file_ioctl (9)
-From: syzbot <syzbot+b6f8640465bdf47ca708@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, andrii@kernel.org, ast@kernel.org, 
-	bpf@vger.kernel.org, brauner@kernel.org, daniel@iogearbox.net, jack@suse.cz, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com, 
-	viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net/cls_cgroup: Fix task_get_classid() during qdisc run
+To: Yafang Shao <laoar.shao@gmail.com>, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Thomas Graf <tgraf@suug.ch>, Paul McKenney <paulmck@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ "open list:BPF [RINGBUF]" <bpf@vger.kernel.org>,
+ Willem de Bruijn <willemb@google.com>
+References: <20250819093737.60688-1-laoar.shao@gmail.com>
+Content-Language: en-US
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <20250819093737.60688-1-laoar.shao@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27737/Tue Aug 19 10:27:27 2025)
 
-syzbot has found a reproducer for the following issue on:
+On 8/19/25 11:37 AM, Yafang Shao wrote:
+> During recent testing with the netem qdisc to inject delays into TCP
+> traffic, we observed that our CLS BPF program failed to function correctly
+> due to incorrect classid retrieval from task_get_classid(). The issue
+> manifests in the following call stack:
+> 
+>          bpf_get_cgroup_classid+5
+>          cls_bpf_classify+507
+>          __tcf_classify+90
+>          tcf_classify+217
+>          __dev_queue_xmit+798
+>          bond_dev_queue_xmit+43
+>          __bond_start_xmit+211
+>          bond_start_xmit+70
+>          dev_hard_start_xmit+142
+>          sch_direct_xmit+161
+>          __qdisc_run+102             <<<<< Issue location
+>          __dev_xmit_skb+1015
+>          __dev_queue_xmit+637
+>          neigh_hh_output+159
+>          ip_finish_output2+461
+>          __ip_finish_output+183
+>          ip_finish_output+41
+>          ip_output+120
+>          ip_local_out+94
+>          __ip_queue_xmit+394
+>          ip_queue_xmit+21
+>          __tcp_transmit_skb+2169
+>          tcp_write_xmit+959
+>          __tcp_push_pending_frames+55
+>          tcp_push+264
+>          tcp_sendmsg_locked+661
+>          tcp_sendmsg+45
+>          inet_sendmsg+67
+>          sock_sendmsg+98
+>          sock_write_iter+147
+>          vfs_write+786
+>          ksys_write+181
+>          __x64_sys_write+25
+>          do_syscall_64+56
+>          entry_SYSCALL_64_after_hwframe+100
+> 
+> The problem occurs when multiple tasks share a single qdisc. In such cases,
+> __qdisc_run() may transmit skbs created by different tasks. Consequently,
+> task_get_classid() retrieves an incorrect classid since it references the
+> current task's context rather than the skb's originating task.
+> 
+> Given that dev_queue_xmit() always executes with bh disabled, we can safely
+> use in_softirq() instead of in_serving_softirq() to properly identify the
+> softirq context and obtain the correct classid.
+> 
+> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+> Cc: Daniel Borkmann <daniel@iogearbox.net>
+> Cc: Thomas Graf <tgraf@suug.ch>
+> ---
+>   include/net/cls_cgroup.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/net/cls_cgroup.h b/include/net/cls_cgroup.h
+> index 7e78e7d6f015..fc9e0617a73c 100644
+> --- a/include/net/cls_cgroup.h
+> +++ b/include/net/cls_cgroup.h
+> @@ -63,7 +63,7 @@ static inline u32 task_get_classid(const struct sk_buff *skb)
+>   	 * calls by looking at the number of nested bh disable calls because
+>   	 * softirqs always disables bh.
+>   	 */
+> -	if (in_serving_softirq()) {
+> +	if (in_softirq()) {
+>   		struct sock *sk = skb_to_full_sk(skb);
+>   
+>   		/* If there is an sock_cgroup_classid we'll use that. */
 
-HEAD commit:    864e3396976e net: gso: Forbid IPv6 TSO with extensions on ..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=144e26f0580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=c321f33e4545e2a1
-dashboard link: https://syzkaller.appspot.com/bug?extid=b6f8640465bdf47ca708
-compiler:       Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=170a43bc580000
+Hm, essentially you only want to use the fallback method of retrieving cgroup from
+the socket when the dev_queue_xmit() was triggered via ksoftirqd, rather than from
+a process via syscall all the way into dev_queue_xmit(). It gets more fuzzy presumably
+when skbs are queued somewhere and then some other kthread calls the dev_queue_xmit().
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/576f260f8fdb/disk-864e3396.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/90ce2b40a623/vmlinux-864e3396.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/e9f2532beed2/bzImage-864e3396.xz
+Looking at in_softirq(), the comment says "the following macros are deprecated and
+should not be used in new code", see commit 15115830c887 ("preempt: Cleanup the
+macro maze a bit"). Maybe Sebastian or Paul has input on whether in_softirq() is
+still supposed to be used.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+b6f8640465bdf47ca708@syzkaller.appspotmail.com
+Side question, did you investigate where the skb->sk association got orphaned
+somewhere along the way?
 
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	1-...!: (3 ticks this GP) idle=3c4c/1/0x4000000000000000 softirq=18260/18260 fqs=0
-rcu: 	(detected by 0, t=10502 jiffies, g=12221, q=404 ncpus=2)
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 6109 Comm: syz.0.22 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:memory_is_poisoned_n mm/kasan/generic.c:137 [inline]
-RIP: 0010:memory_is_poisoned mm/kasan/generic.c:161 [inline]
-RIP: 0010:check_region_inline mm/kasan/generic.c:180 [inline]
-RIP: 0010:kasan_check_range+0x29f/0x2c0 mm/kasan/generic.c:189
-Code: f3 49 83 c3 05 eb 07 4d 01 f3 49 83 c3 06 4d 89 dc 4d 85 db 0f 84 44 ff ff ff 4d 01 d1 4d 39 cc 75 11 41 83 e0 07 45 0f be 09 <45> 39 c8 0f 8c 2b ff ff ff 0f b6 d2 e8 a0 ef ff ff 34 01 e9 1c ff
-RSP: 0018:ffffc90000a08ae8 EFLAGS: 00000006
-RAX: 00000000ffffff01 RBX: ffffffffffffffff RCX: ffffffff819e00e1
-RDX: 0000000000000001 RSI: 0000000000000004 RDI: ffffc90000a08b60
-RBP: ffffc90000a08bd0 R08: 0000000000000003 R09: 0000000000000004
-R10: dffffc0000000000 R11: fffff5200014116c R12: fffff5200014116c
-R13: ffffffff99d527c0 R14: fffff5200014116d R15: 1ffff9200014116c
-FS:  00007f17a98396c0(0000) GS:ffff888125d1b000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000000600 CR3: 000000006fc8c000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
- atomic_try_cmpxchg_acquire include/linux/atomic/atomic-instrumented.h:1301 [inline]
- queued_spin_lock include/asm-generic/qspinlock.h:111 [inline]
- do_raw_spin_lock+0x121/0x290 kernel/locking/spinlock_debug.c:116
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:111 [inline]
- _raw_spin_lock_irqsave+0xb3/0xf0 kernel/locking/spinlock.c:162
- debug_object_activate+0xbb/0x420 lib/debugobjects.c:818
- debug_hrtimer_activate kernel/time/hrtimer.c:445 [inline]
- debug_activate kernel/time/hrtimer.c:484 [inline]
- enqueue_hrtimer+0x30/0x3a0 kernel/time/hrtimer.c:1088
- __run_hrtimer kernel/time/hrtimer.c:1778 [inline]
- __hrtimer_run_queues+0x656/0xc60 kernel/time/hrtimer.c:1825
- hrtimer_interrupt+0x45b/0xaa0 kernel/time/hrtimer.c:1887
- local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1039 [inline]
- __sysvec_apic_timer_interrupt+0x108/0x410 arch/x86/kernel/apic/apic.c:1056
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
- sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1050
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
-RIP: 0010:bytes_is_nonzero mm/kasan/generic.c:86 [inline]
-RIP: 0010:memory_is_nonzero mm/kasan/generic.c:104 [inline]
-RIP: 0010:memory_is_poisoned_n mm/kasan/generic.c:129 [inline]
-RIP: 0010:memory_is_poisoned mm/kasan/generic.c:161 [inline]
-RIP: 0010:check_region_inline mm/kasan/generic.c:180 [inline]
-RIP: 0010:kasan_check_range+0x89/0x2c0 mm/kasan/generic.c:189
-Code: ff df 4f 8d 1c 17 49 ff c8 4d 89 c1 49 c1 e9 03 48 bb 01 00 00 00 00 fc ff df 4d 8d 34 19 4d 89 f4 4d 29 dc 49 83 fc 10 7f 29 <4d> 85 e4 0f 84 41 01 00 00 4c 89 cb 48 f7 d3 4c 01 fb 41 80 3b 00
-RSP: 0018:ffffc90003037910 EFLAGS: 00000283
-RAX: ffffffff8b758901 RBX: dffffc0000000001 RCX: ffffffff8b7589f6
-RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffffffff8c935a00
-RBP: ffffffff8c935a08 R08: ffffffff8c935a07 R09: 1ffffffff1926b40
-R10: dffffc0000000000 R11: fffffbfff1926b40 R12: 0000000000000001
-R13: ffffc90003037aa0 R14: fffffbfff1926b41 R15: 1ffffffff1926b40
- __asan_memcpy+0x29/0x70 mm/kasan/shadow.c:105
- vsnprintf+0x386/0xf00 lib/vsprintf.c:2878
- dynamic_dname+0xfc/0x1b0 fs/d_path.c:308
- tomoyo_realpath_from_path+0x170/0x5d0 security/tomoyo/realpath.c:258
- tomoyo_get_realpath security/tomoyo/file.c:151 [inline]
- tomoyo_path_number_perm+0x1e8/0x5a0 security/tomoyo/file.c:723
- security_file_ioctl+0xcb/0x2d0 security/security.c:2943
- __do_sys_ioctl fs/ioctl.c:592 [inline]
- __se_sys_ioctl+0x47/0x170 fs/ioctl.c:584
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f17a898ebe9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f17a9839038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f17a8bb5fa0 RCX: 00007f17a898ebe9
-RDX: 0000200000000600 RSI: 0000000000008933 RDI: 0000000000000003
-RBP: 00007f17a8a11e19 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f17a8bb6038 R14: 00007f17a8bb5fa0 R15: 00007ffccbbdc5c8
- </TASK>
-rcu: rcu_preempt kthread timer wakeup didn't happen for 10501 jiffies! g12221 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
-rcu: 	Possible timer handling issue on cpu=1 timer-softirq=3961
-rcu: rcu_preempt kthread starved for 10502 jiffies! g12221 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=1
-rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-rcu: RCU grace-period kthread stack dump:
-task:rcu_preempt     state:I stack:27224 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00004000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5357 [inline]
- __schedule+0x1798/0x4cc0 kernel/sched/core.c:6961
- __schedule_loop kernel/sched/core.c:7043 [inline]
- schedule+0x165/0x360 kernel/sched/core.c:7058
- schedule_timeout+0x12b/0x270 kernel/time/sleep_timeout.c:99
- rcu_gp_fqs_loop+0x301/0x1540 kernel/rcu/tree.c:2083
- rcu_gp_kthread+0x99/0x390 kernel/rcu/tree.c:2285
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x3f9/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Thanks,
+Daniel
