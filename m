@@ -1,94 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A57B33768E
-	for <netdev@vger.kernel.org>; Wed, 20 Aug 2025 17:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755710275; cv=none; b=df/GoCR+cNqNGx9ET4ae99fxbdz8WI3q5Cc8ES34eeoIpWRuEp2dv0L2YSUio6mdIrKSTbhf4wHm1vMoTlCE3gctL3Yf3ujY1PwgmwTSQ1rM9fxxv3erJLeZm061MmnOFcUSC4WIW9GkdeePxkkWIhZdgQnHbejDcK6tb/cqgQg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755710275; c=relaxed/simple;
-	bh=IEBjWzbl6kiCDYFZHoZmTEAuGpVV7AAE48D37VsplZk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O5bmgkQMWFm4k6/H1eF8X9+1vun831pYR8M57seBTFET/nhiNurZyV22Iph0gggBmRPiTcbYXwbqIov9n420VMnR+1gdP/iDcIWmyuGtbmNWl34TZWZOn1IHIusmizMCU7CL8gu2hoc+UmSU/83msBZohk5ujZquXUm9bbY9/BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gIIAg+d6; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902FF18BBB9;
+	Wed, 20 Aug 2025 17:17:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755710280; cv=pass; b=bOwbNsxjJIjEsmiynbrisZ1xVdpiwjbbwLddpBc404awYAfdN1ap2KuHM9TQOMbFC0T3ItGS1cBMd4zGvEn2bCL5OMCao8A5IT6URDT3QBMFbuN6zDRytsZxpzCHv6KAquhIkPlHute4WABXxurLP3h/gvP3KPsMJg9dprEIXlQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755710280; c=relaxed/simple;
+	bh=GrZJKQObZvuYNJ3ctiE4UlmVdIRpwc2yP4nRI10ihmo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LkS9okKDUulD6ri83+oNlhRiw9Bx3yae6QyRf6s4Mxuo36oRKyy5ziam5rF4NAPvPnrlUnbRuy8RWDcH8doltkfTeNpZ8QPg6FvY29F4BHxKkxfHYtZ7JafgAQe/AXzKFFisNq0DJ0OxC16lIkXhcV5ot4qQaJBMBRImE8Ef1KI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=ariel.dalessandro@collabora.com header.b=czRh2mvz; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gIIAg+d6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B218C113CF;
-	Wed, 20 Aug 2025 17:17:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755710273;
-	bh=IEBjWzbl6kiCDYFZHoZmTEAuGpVV7AAE48D37VsplZk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gIIAg+d6FE6CTRy+0QXFEAsAF0szp4v7Y5IPJ8rEWM6JGFutdLOoH5p1AFBQT1MED
-	 IXbs2EX+wqYk2Nv0wls+T9uGPkH36Ta5aoQptHOu4lmkoX0KMBoKyZfDHUwVluGL4Q
-	 2KRc0KzuVpoqxgwmFE9igHyb6TRrltIEDhjLqW7+SkOKlLrkPNTJvzqoeY2QNSH1I8
-	 ghGjkbwPy01bwqgOnJbCDQ1MJtYUCLJ42nBs5YKcVLSMiLsA7N6x5nrr9K5tGLHFe/
-	 nQqwuAL9SXIoD+BKxv/19mribJQS2QNC61wHv/EK22lMkbD1uecxas9795v+GeRo0S
-	 lps9ltzFx4B9w==
-Date: Wed, 20 Aug 2025 10:17:52 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- dhowells@redhat.com, gustavoars@kernel.org, aleksander.lobakin@intel.com,
- tstruk@gigaio.com
-Subject: Re: [PATCH net-next] stddef: don't include compiler_types.h in the
- uAPI header
-Message-ID: <20250820101752.63be03da@kernel.org>
-In-Reply-To: <202508182056.0D808624D8@keescook>
-References: <20250818181848.799566-1-kuba@kernel.org>
-	<202508182056.0D808624D8@keescook>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=ariel.dalessandro@collabora.com header.b="czRh2mvz"
+ARC-Seal: i=1; a=rsa-sha256; t=1755710230; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=jxMnTm6Cuq0s86rLXIMY4+PooMQsFtb1doQSY1MnqoA/Xqd1GOc9UWYlu16tWqn1cLRbAUsY8C96wu9EnUD0LdNCGiXyLINotXg+/S5NVQheSvUqlD76+eIdf7hBz3aGv+MjSJv+oX1vrMO5gFPr9/4/5y9WVHWpXkKazANYovs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1755710230; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ycniQyaJgGJqNZKTwz8OPAQgXyL5GobzzmE9CRpgq1Q=; 
+	b=QA2/VXsJM1yPDLmu9RLzq/qNo/5wgIgdL8s6ggml4QgXh7m1a3g2oHdz1cnVFksiud7+63fQqkooIUDZAMbq7N52BRMdUoDUs5MSO/d5VUKo8b7acny+Afl1XVJn87VEZcrB2LcB4TXJbRO1JVSJ5dwwRWWTBjOF8bLVA9jpVX4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=ariel.dalessandro@collabora.com;
+	dmarc=pass header.from=<ariel.dalessandro@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755710230;
+	s=zohomail; d=collabora.com; i=ariel.dalessandro@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=ycniQyaJgGJqNZKTwz8OPAQgXyL5GobzzmE9CRpgq1Q=;
+	b=czRh2mvzHkUEpQ+isiTqQNdXOID4rSWSeTrMIHdCtSJQn8UmJQY5A6I/UrheE2AS
+	UMqC1Qm+Hde8EWnoaR+Bje4ROzNkKoJQwKzzcYL07IMKyTUfGBoD790NCfpAMgyEteH
+	4/n1O8QC2u3/FyE2yl7F1pR4kTc2DrPUGWpBEc1M=
+Received: by mx.zohomail.com with SMTPS id 1755710228543472.88877592218955;
+	Wed, 20 Aug 2025 10:17:08 -0700 (PDT)
+From: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+To: airlied@gmail.com,
+	amergnat@baylibre.com,
+	andrew+netdev@lunn.ch,
+	andrew-ct.chen@mediatek.com,
+	angelogioacchino.delregno@collabora.com,
+	ariel.dalessandro@collabora.com,
+	broonie@kernel.org,
+	chunkuang.hu@kernel.org,
+	ck.hu@mediatek.com,
+	conor+dt@kernel.org,
+	davem@davemloft.net,
+	dmitry.torokhov@gmail.com,
+	edumazet@google.com,
+	flora.fu@mediatek.com,
+	houlong.wei@mediatek.com,
+	jeesw@melfas.com,
+	jmassot@collabora.com,
+	kernel@collabora.com,
+	krzk+dt@kernel.org,
+	kuba@kernel.org,
+	kyrie.wu@mediatek.corp-partner.google.com,
+	lgirdwood@gmail.com,
+	linus.walleij@linaro.org,
+	louisalexis.eyraud@collabora.com,
+	maarten.lankhorst@linux.intel.com,
+	matthias.bgg@gmail.com,
+	mchehab@kernel.org,
+	minghsiu.tsai@mediatek.com,
+	mripard@kernel.org,
+	p.zabel@pengutronix.de,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	sean.wang@kernel.org,
+	simona@ffwll.ch,
+	support.opensource@diasemi.com,
+	tiffany.lin@mediatek.com,
+	tzimmermann@suse.de,
+	yunfei.dong@mediatek.com
+Cc: devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-sound@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH v1 13/14] dt-bindings: input/touchscreen: Convert MELFAS MIP4 Touchscreen to YAML
+Date: Wed, 20 Aug 2025 14:13:01 -0300
+Message-ID: <20250820171302.324142-14-ariel.dalessandro@collabora.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250820171302.324142-1-ariel.dalessandro@collabora.com>
+References: <20250820171302.324142-1-ariel.dalessandro@collabora.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-On Mon, 18 Aug 2025 21:06:10 -0700 Kees Cook wrote:
-> > Since nothing needs this include, let's remove it.  
-> 
-> But yes, nothing uses compiler_types.h via uapi/linux/stddef.h. That
-> does seem to be true.
+Convert the existing text-based DT bindings for MELFAS MIP4 Touchscreen
+controller to a YAML schema.
 
-While staring at the kbuild bot report (which I can't repro :|) 
-I realized this include is to give kernel's __counted_by and friends
-precedence over the empty uAPI-facing defines.
+Signed-off-by: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+---
+ .../input/touchscreen/melfas,mip4_ts.yaml     | 55 +++++++++++++++++++
+ .../input/touchscreen/melfas_mip4.txt         | 20 -------
+ 2 files changed, 55 insertions(+), 20 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/melfas,mip4_ts.yaml
+ delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/melfas_mip4.txt
 
-Not sure this is the most fortunate approach, personally I'd rather wrap
-our empty user-space-facing defines under ifndef __KERNEL__. I think
-it'd be better from "include what you need" perspective. Perhaps stddef
-pulling in compiler annotations is expected, dunno...
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/melfas,mip4_ts.yaml b/Documentation/devicetree/bindings/input/touchscreen/melfas,mip4_ts.yaml
+new file mode 100644
+index 0000000000000..170fd4212467e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/input/touchscreen/melfas,mip4_ts.yaml
+@@ -0,0 +1,55 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/input/touchscreen/melfas,mip4_ts.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: MELFAS MIP4 Touchscreen
++
++maintainers:
++  - Ariel D'Alessandro <ariel.dalessandro@collabora.com>
++
++properties:
++  compatible:
++    const: "melfas,mip4_ts"
++
++  reg:
++    description: I2C address of the chip (0x48 or 0x34)
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  ce-gpios:
++    description: GPIO connected to the CE (chip enable) pin of the chip
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        touchscreen@34 {
++            compatible = "melfas,mip4_ts";
++            reg = <0x34>;
++
++            interrupts-extended = <&tlmm 13 IRQ_TYPE_EDGE_FALLING>;
++            ce-gpios = <&tlmm 12 GPIO_ACTIVE_HIGH>;
++
++            pinctrl-0 = <&touchscreen_default>;
++            pinctrl-names = "default";
++        };
++    };
++
++...
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/melfas_mip4.txt b/Documentation/devicetree/bindings/input/touchscreen/melfas_mip4.txt
+deleted file mode 100644
+index b2ab5498e5190..0000000000000
+--- a/Documentation/devicetree/bindings/input/touchscreen/melfas_mip4.txt
++++ /dev/null
+@@ -1,20 +0,0 @@
+-* MELFAS MIP4 Touchscreen
+-
+-Required properties:
+-- compatible: must be "melfas,mip4_ts"
+-- reg: I2C slave address of the chip (0x48 or 0x34)
+-- interrupts: interrupt to which the chip is connected
+-
+-Optional properties:
+-- ce-gpios: GPIO connected to the CE (chip enable) pin of the chip
+-
+-Example:
+-	i2c@00000000 {
+-		touchscreen: melfas_mip4@48 {
+-			compatible = "melfas,mip4_ts";
+-			reg = <0x48>;
+-			interrupt-parent = <&gpio>;
+-			interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
+-			ce-gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
+-		};
+-	};
+-- 
+2.50.1
 
-Would you be okay with:
-
-diff --git a/scripts/headers_install.sh b/scripts/headers_install.sh
-index 6bbccb43f7e7..4c20c62c4faf 100755
---- a/scripts/headers_install.sh
-+++ b/scripts/headers_install.sh
-@@ -32,7 +32,7 @@ fi
- sed -E -e '
-        s/([[:space:](])(__user|__force|__iomem)[[:space:]]/\1/g
-        s/__attribute_const__([[:space:]]|$)/\1/g
--       s@^#include <linux/compiler(|_types).h>@@
-+       s@^#include <linux/compiler.h>@@
-        s/(^|[^a-zA-Z0-9])__packed([^a-zA-Z0-9_]|$)/\1__attribute__((packed))\2/g
-        s/(^|[[:space:](])(inline|asm|volatile)([[:space:](]|$)/\1__\2__\3/g
-        s@#(ifndef|define|endif[[:space:]]*/[*])[[:space:]]*_UAPI@#\1 @
-diff --git a/include/uapi/linux/stddef.h b/include/uapi/linux/stddef.h
-index b87df1b485c2..9a28f7d9a334 100644
---- a/include/uapi/linux/stddef.h
-+++ b/include/uapi/linux/stddef.h
-@@ -2,7 +2,9 @@
- #ifndef _UAPI_LINUX_STDDEF_H
- #define _UAPI_LINUX_STDDEF_H
- 
-+#ifdef __KERNEL__
- #include <linux/compiler_types.h>
-+#endif
-
-? As you pointed out compiler_types.h is only included under stddef.h
-so the special handling in the installation script is easily avoided.
