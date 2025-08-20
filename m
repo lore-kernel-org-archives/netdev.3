@@ -1,174 +1,73 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB312D3231;
-	Wed, 20 Aug 2025 13:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787F32EE60F;
+	Wed, 20 Aug 2025 13:32:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755696496; cv=none; b=M3TobycmlSp22VdfEGSl4DlY2cLpJrimGAAstqC3crseLaZgw4w5purhFNnYYec9+m5eaEZvHUTxOLEronRbohQD+rBdeoIzEocoMD67+YPuRClb8T9Cei38pyIcFiEy2FZK1Pbv2SIdHAn6KTBv/zikwMjW2zBO74iQ7/Hih1Y=
+	t=1755696746; cv=none; b=d08AUTcqOKZDwBEb/sS3pW2uWmaIIX4F0E0VIybv+04x6vsALPCYX5ZcoEo4rkOaxbBA7MlMc+6pYyAZM2MuewO9m7hkgk3Q8kCbOlIip7BvfV+q08zJT0Wj5NMwcjpovzB6qIENQgUpC+mx6y+tGHcVSwf/JnXYJt+OGBW+Ytc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755696496; c=relaxed/simple;
-	bh=rqJbnI2LdCG9yqQrLaRMCg0AxlACV88Dlzc/cSANipg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kRHcCxRvfKQLi6pQWWBKYbOgRjDVlj7zIS3MJMQmoF+m13fLRrsCuKOcm3JuthZT3lKmMgBtj57riyAnfnkyuMrRwOk5gAU9NT1QfdqDNkLW+aa/62uo/YrfTnpVLWNcMoB0CHWSIPzOk9LfbqHNENC1qbiC/U11ZtTSYXc8gUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=flAtSwJo; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1755696746; c=relaxed/simple;
+	bh=AQDZK5sNxcUBX/haeT3KGURh6b7HjK+2cetyVxAe/Hc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LYxJh5vV9MIA0ExUKzv1ONlVi1hXWi1qAFLHZdX5TsEi+DQQuoMk7SNcTkI10RW/DkSXIhTTZXBG5s0/Z3TFytvV3YQD9TzWRWL6wB/IuMxEfjn3K/JNgdUX3SDLQTB+7DN4Ug4bzgJRCxsot4vUKcOkVTbYFr1oMPbXTlac50w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=xzA8smJ+; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="flAtSwJo"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 9B372C6B3A5;
-	Wed, 20 Aug 2025 13:27:58 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1C970606A0;
-	Wed, 20 Aug 2025 13:28:12 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 116271C22CF41;
-	Wed, 20 Aug 2025 15:28:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1755696491; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=EHAQSf51OR0tJUv4YhXS/cAsONEhMwCoETXsLmZdqH8=;
-	b=flAtSwJoVuLKUIu6A6Lu8a3rW/eFBrG/1J74vlxdW+K/uvlQwFgj1JsUtxvxDr7edjdAmP
-	No5yf6W5NRqjbtvFEqMckVs1RBAp+uBnFD3txX/Pg/87tBmft95Z8uFT3f1hOWixB9gIMq
-	ErBzF3aO+iesXm8tiXSweptFOtdOKetoBdumlUof/puykah5Ur+p4zgKZ+N9i7gfllfiZV
-	CPs4svUCdtUDaVxcbTHD1UcV2tyUZLn+md+YeQ8Nvv9sk7cWXPB4hkA9Lu31dtNddZi05O
-	/+WC4K70DaUFDReqqYBUCHeb0E3sm2U+XE+C/4NYdSQKPJ9846h90cUe7xbqwQ==
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Jakub Kicinski <kuba@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	"Kory Maincent (Dent Project)" <kory.maincent@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: thomas.petazzoni@bootlin.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="xzA8smJ+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=0RRO3wyFRhXuAJmaiFOy0RmE2iclZC8o3kvn5ptp9kE=; b=xzA8smJ+fQf9ZwZ8aCpF099aeV
+	2G/xJhYRNYxyrXg9IFUg9Pz/OPwMPDVyYalQSnt3pPkVW4VmZDUfHQiVhF8eUw3sCefe+qTQ1ns0R
+	Tq45fWyY6pAhc3so57CjgHaSrMyAwsFX3aVhvYrFfKG9tDYbT0R/yldbYeo5O3f7oqtU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uoiv6-005KIx-DC; Wed, 20 Aug 2025 15:32:04 +0200
+Date: Wed, 20 Aug 2025 15:32:04 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net] net: pse-pd: pd692x0: Fix power budget leak in manager setup error path
-Date: Wed, 20 Aug 2025 15:27:07 +0200
-Message-ID: <20250820132708.837255-1-kory.maincent@bootlin.com>
-X-Mailer: git-send-email 2.43.0
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Nishanth Menon <nm@ti.com>, kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	UNGLinuxDriver@microchip.com, linux-doc@vger.kernel.org,
+	Michal Kubecek <mkubecek@suse.cz>, Roan van Dijk <roan@protonic.nl>
+Subject: Re: [PATCH net-next v2 5/5] net: phy: dp83td510: add MSE interface
+ support for 10BASE-T1L
+Message-ID: <703ba750-99cd-4499-8171-1a17964af3e0@lunn.ch>
+References: <20250815063509.743796-1-o.rempel@pengutronix.de>
+ <20250815063509.743796-6-o.rempel@pengutronix.de>
+ <1df-68a2e100-1-20bf1840@149731379>
+ <aKLwdrqn-_9KqMaA@pengutronix.de>
+ <94745663-b68c-4a4c-95d8-36933c305e34@lunn.ch>
+ <aKW-3sF2g2QrKDpG@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aKW-3sF2g2QrKDpG@pengutronix.de>
 
-Fix a resource leak where manager power budgets were freed on both
-success and error paths during manager setup. Power budgets should
-only be freed on error paths after regulator registration or during
-driver removal.
+> So far I know, following T2/T4 PHYs support MSE:
+> LAN8830, KSZ9131, LAN8831, LAN8840, LAN8841
+> DP83826*, DP83640, DP83867*, DP83869HM
 
-Refactor cleanup logic by extracting OF node cleanup and power budget
-freeing into separate helper functions for better maintainability.
+O.K, that is plenty of justification.
 
-Fixes: 359754013e6a ("net: pse-pd: pd692x0: Add support for PSE PI priority feature")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
----
- drivers/net/pse-pd/pd692x0.c | 59 +++++++++++++++++++++++++++---------
- 1 file changed, 44 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/net/pse-pd/pd692x0.c b/drivers/net/pse-pd/pd692x0.c
-index 399ce9febda4..395f6c662175 100644
---- a/drivers/net/pse-pd/pd692x0.c
-+++ b/drivers/net/pse-pd/pd692x0.c
-@@ -1162,12 +1162,44 @@ pd692x0_write_ports_matrix(struct pd692x0_priv *priv,
- 	return 0;
- }
- 
-+static void pd692x0_of_put_managers(struct pd692x0_priv *priv,
-+				    struct pd692x0_manager *manager,
-+				    int nmanagers)
-+{
-+	int i, j;
-+
-+	for (i = 0; i < nmanagers; i++) {
-+		for (j = 0; j < manager[i].nports; j++)
-+			of_node_put(manager[i].port_node[j]);
-+		of_node_put(manager[i].node);
-+	}
-+}
-+
-+static void pd692x0_managers_free_pw_budget(struct pd692x0_priv *priv)
-+{
-+	int i;
-+
-+	for (i = 0; i < PD692X0_MAX_MANAGERS; i++) {
-+		struct regulator *supply;
-+
-+		if (!priv->manager_reg[i] || !priv->manager_pw_budget[i])
-+			continue;
-+
-+		supply = priv->manager_reg[i]->supply;
-+		if (!supply)
-+			continue;
-+
-+		regulator_free_power_budget(supply,
-+					    priv->manager_pw_budget[i]);
-+	}
-+}
-+
- static int pd692x0_setup_pi_matrix(struct pse_controller_dev *pcdev)
- {
- 	struct pd692x0_manager *manager __free(kfree) = NULL;
- 	struct pd692x0_priv *priv = to_pd692x0_priv(pcdev);
- 	struct pd692x0_matrix port_matrix[PD692X0_MAX_PIS];
--	int ret, i, j, nmanagers;
-+	int ret, nmanagers;
- 
- 	/* Should we flash the port matrix */
- 	if (priv->fw_state != PD692X0_FW_OK &&
-@@ -1185,31 +1217,27 @@ static int pd692x0_setup_pi_matrix(struct pse_controller_dev *pcdev)
- 	nmanagers = ret;
- 	ret = pd692x0_register_managers_regulator(priv, manager, nmanagers);
- 	if (ret)
--		goto out;
-+		goto err_of_managers;
- 
- 	ret = pd692x0_configure_managers(priv, nmanagers);
- 	if (ret)
--		goto out;
-+		goto err_of_managers;
- 
- 	ret = pd692x0_set_ports_matrix(priv, manager, nmanagers, port_matrix);
- 	if (ret)
--		goto out;
-+		goto err_managers_req_pw;
- 
- 	ret = pd692x0_write_ports_matrix(priv, port_matrix);
- 	if (ret)
--		goto out;
-+		goto err_managers_req_pw;
- 
--out:
--	for (i = 0; i < nmanagers; i++) {
--		struct regulator *supply = priv->manager_reg[i]->supply;
--
--		regulator_free_power_budget(supply,
--					    priv->manager_pw_budget[i]);
-+	pd692x0_of_put_managers(priv, manager, nmanagers);
-+	return 0;
- 
--		for (j = 0; j < manager[i].nports; j++)
--			of_node_put(manager[i].port_node[j]);
--		of_node_put(manager[i].node);
--	}
-+err_managers_req_pw:
-+	pd692x0_managers_free_pw_budget(priv);
-+err_of_managers:
-+	pd692x0_of_put_managers(priv, manager, nmanagers);
- 	return ret;
- }
- 
-@@ -1748,6 +1776,7 @@ static void pd692x0_i2c_remove(struct i2c_client *client)
- {
- 	struct pd692x0_priv *priv = i2c_get_clientdata(client);
- 
-+	pd692x0_managers_free_pw_budget(priv);
- 	firmware_upload_unregister(priv->fwl);
- }
- 
--- 
-2.43.0
-
+Thanks
+	Andrew
