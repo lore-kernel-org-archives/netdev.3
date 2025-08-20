@@ -1,66 +1,77 @@
-Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B494125A352;
-	Wed, 20 Aug 2025 17:50:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.13.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B8F27057B;
+	Wed, 20 Aug 2025 17:56:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755712224; cv=none; b=Xr4H8WWLeAdUWdIXRoyuMGUcb6AscnAEF87MyTNadkJYufeUqbEgIX7CejEomPk3NhDCj7N2tYuMaLafkEOEIMxePeytvQAcJ6Wo9nJed/n+xZkXp9LC2yPEsHfwbd0ZJBIC7f3oF07/jotCLzo2Gbl7mB6u3Rdjk+GoTsDL5C0=
+	t=1755712581; cv=none; b=b64//OiptBI8zewwX5SI9cU+qaO/NRfQpMSEP+osz1btSneExkgp+NuEHa5RFD+fL1bSTLemPp7t7K8GvUA0t+tNvquXtljDkGMp9vLVAA+zRKr2l34dwyBVTaiTnJGrJyKOuTPq6o2uk7h3L/KJv4dw6YzJjT5vJvVLP3Z1+R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755712224; c=relaxed/simple;
-	bh=rPg2RcgoIgKMolze2gcvmxHBrMA52rr6JIYnc2HoV0A=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QS8FFolKTilw7mpU4yKpRZiXSVcnIwu16cq2QddFb+5cDYd1bsPnl8a1ZzBVguuj01wmq0rhwp3cdPyuxVKo6BaXltw2mjauyUiRVq/0JcY1qoqPD2BV8XGRDLXn37Pe8Pk3mNG5l7rcvV2pdXSzIv2Vpup+szL8UFsaHIQ2MFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.jp; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.co.jp header.i=@amazon.co.jp header.b=j8cceavp; arc=none smtp.client-ip=52.13.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1755712581; c=relaxed/simple;
+	bh=jGdY+XlkdSM3yt6Aoazxzypn69809S2YpVHdfUFsk7w=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FGunouGDKD2dJc+conQRk38URem8+OISf6R2TzjHZ2oH6UPtqyWqiqJZ4vXJdhAXK868Odn09r9M3dTomdxCUrzn1mDHdRyrcuSqhr4ZeGroqKU+j/tAM070Wcz0OlbCTAXjNqk5M33p3z/iRss6qhrvbtJvjKsmlPxRkoGuBFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cDhYH/b3; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.co.jp header.i=@amazon.co.jp header.b="j8cceavp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cDhYH/b3"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-76e4fc419a9so247195b3a.0;
+        Wed, 20 Aug 2025 10:56:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.co.jp; i=@amazon.co.jp; q=dns/txt;
-  s=amazoncorp2; t=1755712222; x=1787248222;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=zcghHA/6jatVro5Ji3iwGM+5UIZAvlkLHRWWn+cOMAg=;
-  b=j8cceavp2y+aCxngOwIO31TfiUNvAR20UXmQ1r6l42ffqWl4wzt1v23a
-   KsYDfPwtrSD5MvHOBSuJpdty/7nIXPnZrTA72cO+CuFNRHAFdVEvHBTUJ
-   2JOujHf01MxBmVvjHjH/TdJ0sy3xLvN/hdjquTfB99tbFOt6+NcOS3xDi
-   uyGBkFDkKDLrDiT/7m/z288xk+U53i+lC9u3mPsfZTXuf8hI30ixT7pGu
-   CNBZHKRBFs+U7NbwLSBbBSMWjJEIvNBFw66NK+Or6QscoVQSgMOgsUep8
-   ri56kG/6qzZttPqoloewVYYbyZqqJRhIgK0rh4q3aukhMpJaLQvhSUnnz
-   A==;
-X-CSE-ConnectionGUID: ph/ayWJ9QQK/+qqAZtoL5w==
-X-CSE-MsgGUID: hwN9TQ0SSpCUFEtR49MZMQ==
-X-IronPort-AV: E=Sophos;i="6.17,306,1747699200"; 
-   d="scan'208";a="1450516"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 17:50:22 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:59372]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.5.153:2525] with esmtp (Farcaster)
- id 3b78b056-81aa-4d57-a7df-295f39ae4e00; Wed, 20 Aug 2025 17:50:22 +0000 (UTC)
-X-Farcaster-Flow-ID: 3b78b056-81aa-4d57-a7df-295f39ae4e00
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Wed, 20 Aug 2025 17:50:21 +0000
-Received: from 80a9974c3af6.amazon.com (10.37.244.14) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
- Wed, 20 Aug 2025 17:50:20 +0000
-From: Takamitsu Iwai <takamitz@amazon.co.jp>
-To: <linux-hams@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Takamitsu Iwai
-	<takamitz@amazon.co.jp>, Kohei Enju <enjuk@amazon.com>, Ingo Molnar
-	<mingo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-	<syzbot+942297eecf7d2d61d1f1@syzkaller.appspotmail.com>
-Subject: [PATCH v1 net 3/3] net: rose: include node references in rose_neigh refcount
-Date: Thu, 21 Aug 2025 02:47:07 +0900
-Message-ID: <20250820174707.83372-4-takamitz@amazon.co.jp>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250820174707.83372-1-takamitz@amazon.co.jp>
-References: <20250820174707.83372-1-takamitz@amazon.co.jp>
+        d=gmail.com; s=20230601; t=1755712579; x=1756317379; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JNB2CrqWtsjiP7tsNyF0vHX9zkfr5BLz9zt8kKx4s2A=;
+        b=cDhYH/b3O1KqjbYaxxR5uGu7GT2iuc88ZomGsr+5YNg1ztvWfGobNF4MRx3YFudNNr
+         9YT6efjLWYvaPXolKGRz444HL2jceOvnYvGoR7HfwG3C8f1du2BumtwWDW8G1xJoxd68
+         5LhdwpSI/rSXXUddBNxD8ReAt/UklV0/4OPFuluqPF6n4yi2PJNdRrIU1x/eWREvaYSY
+         UQwVMmvxB+ExpeXxkkJMWJ9Q1SuMoCN69lN4T0z0LTiFxd9JVxP+ZwP+JBxJkcEYi1L4
+         ioA3Zq79LgnxF/QnA6Y1Si/VsKrmGjnA/sKj7re9Hipv6RbkGp+Pa+l45u8BQ0/uQkIP
+         X1tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755712579; x=1756317379;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JNB2CrqWtsjiP7tsNyF0vHX9zkfr5BLz9zt8kKx4s2A=;
+        b=XLXX+okAx7qgGafYRvwBa7fz8P7Qkt/E3Gitp/Eg6WWSmfRD8S3bV8s+yHyuGydMQF
+         TxCyFaEd3MUdkih+ySSsVK7N6nS7sGzZu2gFWF/IcLNJi0JAFbPi+IrVjjJOfthd66HH
+         bJ+vH7Lsb3JpD8dbT0YGiAHjuz8srYY0XF1rkZuHMbPfUCjt+tTD0LVrXEKNiRsJOA/w
+         2oAjwtG8a7wK1S0XL8yWtPkaKWQf78suSrI8equG0/qpv2OchZ+eAs6BQM0/D6v+uMR+
+         IncQ68PL5zyU+YzP4FBOrchaV2ptxWjncPohgEqvq3M2vTT6SvINOOpfgfhQK9X3VpFe
+         Damg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4TpaB0GHupNus7VPgGPCVWJ267ypNABZNUj/SwQyX8Z6Uf8VmqsWo1ppupI1wlG+PBGC5rB1YvPPP0IA=@vger.kernel.org, AJvYcCW2jqKynQL5SFy8UvH7tHIH/9RdB7Q831IKHhtwJ03lXhKtkakg27qKKz7yiBvfL59R1TEu6VtpvrkJJA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7/R+99iVh0afQ4rfoH0ft0WaAusC8dANHK4xwQUM62oCSsQX7
+	9VZGKDJIW8tyAPPxrfQYNYJw7XlfeKg5fiX+b7TThmaZlpRSQCAgvnA=
+X-Gm-Gg: ASbGncvn1Rb4ZbEM1bCwkXTudS9XmcuxqCVKysDrglXhd2Rh047Nbbmc0xU/rjabt86
+	wWoTlkjo/yJWYNNzueuZ5mKveUdWv82tQ+WcdNsCiRKit77w7fyx5z1ZCDqJFsq7oWDMBa9Kqom
+	/sPfy3Ulj1cOlTvo6Uv/UwC3GUuQwTdK+i0ioF2hBTzvI7aUyfVFUd0M+xwg1vvu2Fbxfs/V0QU
+	N124oWUVaRn8IHeNQYGf6jLYudyK+Cp/LdHfhYvzvlTunf1eD9DdZASeDDRLbuTlLpEDCVyxRJq
+	UwqO5YeCE0iRkIZ7olh8Zm5j9J2+YJofwMCUyjQc0UF6dw6Z/5dLxuhvwfovX7VhDpO6CqIY/bb
+	5utFCedw7o8JBNJ7pGL/j2jwzIlSN/kEB
+X-Google-Smtp-Source: AGHT+IGF8ILzjEPGlCmGVMO/tO+HPfoKuFdeOEBPrhGoP67CgwFRsjqvn6uJxe22BQIKRc2gDn5bvg==
+X-Received: by 2002:a17:902:cf0f:b0:240:770f:72d1 with SMTP id d9443c01a7336-245ef165ec6mr56142485ad.24.1755712578979;
+        Wed, 20 Aug 2025 10:56:18 -0700 (PDT)
+Received: from debian.ujwal.com ([223.185.130.96])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-245ed4ccaa9sm32553815ad.86.2025.08.20.10.56.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Aug 2025 10:56:18 -0700 (PDT)
+From: Ujwal Kundur <ujwal.kundur@gmail.com>
+To: allison.henderson@oracle.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
+	linux-kernel@vger.kernel.org,
+	Ujwal Kundur <ujwal.kundur@gmail.com>
+Subject: [PATCH net-next v2 0/4] rds: Fix semantic annotations
+Date: Wed, 20 Aug 2025 23:25:46 +0530
+Message-Id: <20250820175550.498-1-ujwal.kundur@gmail.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,136 +79,27 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D032UWA003.ant.amazon.com (10.13.139.37) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Current implementation maintains two separate reference counting
-mechanisms: the 'count' field in struct rose_neigh tracks references from
-rose_node structures, while the 'use' field (now refcount_t) tracks
-references from rose_sock.
+This patchset addresses all semantic warnings flagged by Sparse for
+net/rds.
 
-This patch merges these two reference counting systems using 'use' field
-for proper reference management. Specifically, this patch adds incrementing
-and decrementing of rose_neigh->use when rose_neigh->count is incremented
-or decremented.
+v1:
+ - https://lore.kernel.org/all/20250810171155.3263-1-ujwal.kundur@gmail.com/
 
-This patch also modifies rose_rt_free(), rose_rt_device_down() and
-rose_clear_route() to properly release references to rose_neigh objects
-before freeing a rose_node through rose_remove_node().
+Ujwal Kundur (4):
+  rds: Replace POLLERR with EPOLLERR
+  rds: Fix endianness annotation of jhash wrappers
+  rds: Fix endianness annotation for RDS_MPATH_HASH
+  rds: Fix endianness annotations for RDS extension headers
 
-These changes ensure rose_neigh structures are properly freed only when
-all references, including those from rose_node structures, are released.
-As a result, this resolves a slab-use-after-free issue reported by Syzbot.
+ net/rds/af_rds.c     | 2 +-
+ net/rds/connection.c | 9 +++++----
+ net/rds/message.c    | 4 ++--
+ net/rds/rds.h        | 2 +-
+ net/rds/recv.c       | 4 ++--
+ net/rds/send.c       | 4 ++--
+ 6 files changed, 13 insertions(+), 12 deletions(-)
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+942297eecf7d2d61d1f1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=942297eecf7d2d61d1f1
-Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
----
- net/rose/rose_route.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
-
-diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
-index a032543bbbc8..20e772114a39 100644
---- a/net/rose/rose_route.c
-+++ b/net/rose/rose_route.c
-@@ -178,6 +178,7 @@ static int __must_check rose_add_node(struct rose_route_struct *rose_route,
- 			}
- 		}
- 		rose_neigh->count++;
-+		rose_neigh_hold(rose_neigh);
- 
- 		goto out;
- 	}
-@@ -187,6 +188,7 @@ static int __must_check rose_add_node(struct rose_route_struct *rose_route,
- 		rose_node->neighbour[rose_node->count] = rose_neigh;
- 		rose_node->count++;
- 		rose_neigh->count++;
-+		rose_neigh_hold(rose_neigh);
- 	}
- 
- out:
-@@ -322,6 +324,7 @@ static int rose_del_node(struct rose_route_struct *rose_route,
- 	for (i = 0; i < rose_node->count; i++) {
- 		if (rose_node->neighbour[i] == rose_neigh) {
- 			rose_neigh->count--;
-+			rose_neigh_put(rose_neigh);
- 
- 			if (rose_neigh->count == 0) {
- 				rose_remove_neigh(rose_neigh);
-@@ -430,6 +433,7 @@ int rose_add_loopback_node(const rose_address *address)
- 	rose_node_list  = rose_node;
- 
- 	rose_loopback_neigh->count++;
-+	rose_neigh_hold(rose_loopback_neigh);
- 
- out:
- 	spin_unlock_bh(&rose_node_list_lock);
-@@ -461,6 +465,7 @@ void rose_del_loopback_node(const rose_address *address)
- 	rose_remove_node(rose_node);
- 
- 	rose_loopback_neigh->count--;
-+	rose_neigh_put(rose_loopback_neigh);
- 
- out:
- 	spin_unlock_bh(&rose_node_list_lock);
-@@ -500,6 +505,7 @@ void rose_rt_device_down(struct net_device *dev)
- 				memmove(&t->neighbour[i], &t->neighbour[i + 1],
- 					sizeof(t->neighbour[0]) *
- 						(t->count - i));
-+				rose_neigh_put(s);
- 			}
- 
- 			if (t->count <= 0)
-@@ -543,6 +549,7 @@ static int rose_clear_routes(void)
- {
- 	struct rose_neigh *s, *rose_neigh;
- 	struct rose_node  *t, *rose_node;
-+	int i;
- 
- 	spin_lock_bh(&rose_node_list_lock);
- 	spin_lock_bh(&rose_neigh_list_lock);
-@@ -553,8 +560,12 @@ static int rose_clear_routes(void)
- 	while (rose_node != NULL) {
- 		t         = rose_node;
- 		rose_node = rose_node->next;
--		if (!t->loopback)
-+
-+		if (!t->loopback) {
-+			for (i = 0; i < rose_node->count; i++)
-+				rose_neigh_put(t->neighbour[i]);
- 			rose_remove_node(t);
-+		}
- 	}
- 
- 	while (rose_neigh != NULL) {
-@@ -1186,7 +1197,7 @@ static int rose_neigh_show(struct seq_file *seq, void *v)
- 			   (rose_neigh->loopback) ? "RSLOOP-0" : ax2asc(buf, &rose_neigh->callsign),
- 			   rose_neigh->dev ? rose_neigh->dev->name : "???",
- 			   rose_neigh->count,
--			   refcount_read(&rose_neigh->use) - 1,
-+			   refcount_read(&rose_neigh->use) - rose_neigh->count - 1,
- 			   (rose_neigh->dce_mode) ? "DCE" : "DTE",
- 			   (rose_neigh->restarted) ? "yes" : "no",
- 			   ax25_display_timer(&rose_neigh->t0timer) / HZ,
-@@ -1291,6 +1302,7 @@ void __exit rose_rt_free(void)
- 	struct rose_neigh *s, *rose_neigh = rose_neigh_list;
- 	struct rose_node  *t, *rose_node  = rose_node_list;
- 	struct rose_route *u, *rose_route = rose_route_list;
-+	int i;
- 
- 	while (rose_neigh != NULL) {
- 		s          = rose_neigh;
-@@ -1304,6 +1316,8 @@ void __exit rose_rt_free(void)
- 		t         = rose_node;
- 		rose_node = rose_node->next;
- 
-+		for (i = 0; i < t->count; i++)
-+			rose_neigh_put(t->neighbour[i]);
- 		rose_remove_node(t);
- 	}
- 
 -- 
-2.39.5 (Apple Git-154)
+2.30.2
 
