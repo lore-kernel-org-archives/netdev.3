@@ -1,162 +1,139 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007CB256D;
-	Wed, 20 Aug 2025 06:46:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E351F30A9;
+	Wed, 20 Aug 2025 06:48:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755672410; cv=none; b=jXijLIwTQw+NtQL6c9qO34zMHL7aNeS0TthAS7lNTKcD1I0RPqDGIUvCDMK6ht+43vOt2h4zz01LjA5EjAZ39zeAAC51c3YgDz3gX3zzWMlkTZm4ZQdwR2a3Z2c+PkWQTsZXCAAjTg7gRSAWdC5EtlJyybra0R7zDnVplS6MXmI=
+	t=1755672522; cv=none; b=mxi4UIKmoNj1TX1SpYF+u8c9Dpo0Fo5FBmouNSAqjIAO9Kw42eNzCnTRL8avJtfGGqhyi0+bsm7jVZve4PFCwOiTBi6ctgLMSOFB72wUnwJ2Pe/SoaM2Ki6xTuNvT0EaZVqvSX3+wjcoV4eioG5rzqWWRTw5IpmLURmbYlpShb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755672410; c=relaxed/simple;
-	bh=ldNndaQoO/UHByOrYRw96gyaFlCZhoYjJ+xlgbyY9tk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AIXcmL0toSbtSZ7DNPGGVmjMioIRxEunBl/JszfA8WpHm9vHTPDDxzfP1S9SF2JBByvnzV3rJNZ1jkQ7Bo1g88t+yaujTo1IGcVf04YjBa06bQmqF8yF9sB9OxpBy4aOtgp1ZFFi/9S1WPIGl4rXf5Vs73A4xtNb4hOReOikrok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=kATAWw3H; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="kATAWw3H"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57K1oBoM012409;
-	Tue, 19 Aug 2025 23:46:39 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=mgvPjbKHPHmqG3f6LOUqpIF
-	jvu1YeBJXr3u8s7i319M=; b=kATAWw3HyB+bJ5cs3f+c0VPwJ1SMHcZWsfInWVp
-	Z6+PxT/hwA7cwyKD4rtBMD4+g3p86fAEqG43BVWG9N7aO/fDhzJ2J5cBBLQhGwUJ
-	PIAfAGTeL+d1+bcunAMti1KVMuAC7YWlrA7/Eo9cZ83U0Gqt4JVKGwRXAsupSIk9
-	bsQPRvu2+rQkGV6US7S5lcJ6KVscUftWSnotJ4HDCx3eFFCqaHSpLgNKe8V2Kguf
-	WvHvVRYoDF410Bl11HEDvSND4QrINrW6+5J7OYvTYFrV9YcQt36WmIqIWyyZS+m8
-	Ao5dK8EfnOwsWB7hyBGzrqepUiT1cBc2wX67Izsdc/ArZKg==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 48n51urgbk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Aug 2025 23:46:39 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 19 Aug 2025 23:46:43 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 19 Aug 2025 23:46:42 -0700
-Received: from test-OptiPlex-Tower-Plus-7010.marvell.com (unknown [10.29.37.157])
-	by maili.marvell.com (Postfix) with ESMTP id 1DE183F70B5;
-	Tue, 19 Aug 2025 23:46:33 -0700 (PDT)
-From: Hariprasad Kelam <hkelam@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Hariprasad Kelam <hkelam@marvell.com>,
-        Sunil Goutham
-	<sgoutham@marvell.com>,
-        Linu Cherian <lcherian@marvell.com>,
-        Geetha sowjanya
-	<gakula@marvell.com>,
-        Jerin Jacob <jerinj@marvell.com>,
-        Subbaraya Sundeep
-	<sbhatta@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [net-next Patch] Octeontx2-af: Broadcast XON on all channels
-Date: Wed, 20 Aug 2025 12:16:25 +0530
-Message-ID: <20250820064625.1464361-1-hkelam@marvell.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1755672522; c=relaxed/simple;
+	bh=49DBKkptDFzzA2ZrfYvNanOnxBOu5JYgjj8zU6d4Jvg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=RvhI7qsKUTI5N4gbA0yg+m7UXiDb7eGE/TiaVSj+ZLRXWpsgQ8duMqyVjO4Iyst/5ouHRVipEMEf5oeKykDdbWoOKXvAgO/IQiL4PzrqWSnYf2bLqdqPis/XzPtL3nQsSUKBpPFam8g9gm6yuN1/Yrw0J8wl0Nk5XjgH5zW9heU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [127.0.0.2] (unknown [114.241.87.235])
+	by APP-03 (Coremail) with SMTP id rQCowABHoYKbb6Vozu+wDQ--.65205S7;
+	Wed, 20 Aug 2025 14:47:58 +0800 (CST)
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+Date: Wed, 20 Aug 2025 14:47:54 +0800
+Subject: [PATCH net-next v6 5/5] riscv: dts: spacemit: Add Ethernet support
+ for Jupiter
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: aIF4cOFPENb5x4stqJ4qKuTj_Bu-EPtX
-X-Proofpoint-GUID: aIF4cOFPENb5x4stqJ4qKuTj_Bu-EPtX
-X-Authority-Analysis: v=2.4 cv=I9E8hNgg c=1 sm=1 tr=0 ts=68a56f4f cx=c_pps a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17 a=2OwXVqhp2XgA:10 a=M5GUcnROAAAA:8 a=Zm5e-TsFn6k_I1Zn3SQA:9 a=OBjm3rFKGHvpk9ecZwUJ:22 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIwMDA1NyBTYWx0ZWRfX5xFSkjaHru68 v9UdCAn5UB2zn66qoUbsImFwYVB2SrsQXPfwWudzQsdznhOL7hFuBBEAikjsYNQRpdOVqRWj+XO 8QZZ9Etffv5+Fax3QCl0eS/0GVCEIcgOuiXn7/VIgEW9hdYeNiHUKv9qifvu/XP5zVp03q0R+AI
- 8D4Gy4yH73wmBCf7GQL8odJyqwa2K8gqcZoXlibzbpeUqEX6EZCRK3fphvm00yU86QmgTaDQIWI UWE0w1gtXHO6Rguqtc2GA24aifLnCMI9z/FhO5oAs9nj188vEGTC+rquudzjlP98Br7AonSm2Mf C9B2qrUgxQ7fR/9zi885f4uosHHSHPa8r9+4grTtpDU7+ekCFBfRynxoHQ0cwL2v+9XoCvikS4o
- Um6GLql0EjKGqVGBQe2YNiVqDvZykq34Sn68+TpXpG+3l+46KZiNq2lqtYnootPrmAY84WJR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-20_03,2025-08-14_01,2025-03-28_01
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250820-net-k1-emac-v6-5-c1e28f2b8be5@iscas.ac.cn>
+References: <20250820-net-k1-emac-v6-0-c1e28f2b8be5@iscas.ac.cn>
+In-Reply-To: <20250820-net-k1-emac-v6-0-c1e28f2b8be5@iscas.ac.cn>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>, 
+ Vivian Wang <wangruikang@iscas.ac.cn>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>
+Cc: Vivian Wang <uwu@dram.page>, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+ Junhui Liu <junhui.liu@pigmoral.tech>, Simon Horman <horms@kernel.org>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ spacemit@lists.linux.dev, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-CM-TRANSID:rQCowABHoYKbb6Vozu+wDQ--.65205S7
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kw43Gw1ftrWfAF43Cr45Jrb_yoW8WrW7pa
+	y3CFsaqFZrCr1fKw43Zr9F9r13Ga95GrWkC3y3uF1rJ3yIvFZ0vw1rtw17tr1DGrW5X34Y
+	vr10yFyxurnFkw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmS14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
+	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
+	z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
+	4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq
+	3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
+	IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4U
+	M4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2
+	kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkE
+	bVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67
+	AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI
+	42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
+	4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBI
+	daVFxhVjvjDU0xZFpf9x0pRQJ5wUUUUU=
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
-The NIX block receives traffic from multiple channels, including:
+Milk-V Jupiter uses an RGMII PHY for each port and uses GPIO for PHY
+reset.
 
-MAC block (RPM)
-Loopback module (LBK)
-CPT block
-
-                     RPM
-                      |
-                -----------------
-       LBK   --|     NIX         |
-                -----------------
-                     |
-                    CPT
-
-Due to a hardware errata,  CN10k and earlier Octeon silicon series,
-the hardware may incorrectly assert XOFF on certain channels during
-reset. As a workaround, a write operation to the NIX_AF_RX_CHANX_CFG
-register can be performed to broadcast XON signals on the affected
-channels
-
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu.c  |  3 +++
- drivers/net/ethernet/marvell/octeontx2/af/rvu.h  |  1 +
- .../net/ethernet/marvell/octeontx2/af/rvu_nix.c  | 16 ++++++++++++++++
- 3 files changed, 20 insertions(+)
+ arch/riscv/boot/dts/spacemit/k1-milkv-jupiter.dts | 46 +++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index c6bb3aaa8e0d..2d78e08f985f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -1164,6 +1164,9 @@ static int rvu_setup_hw_resources(struct rvu *rvu)
- 	rvu_program_channels(rvu);
- 	cgx_start_linkup(rvu);
+diff --git a/arch/riscv/boot/dts/spacemit/k1-milkv-jupiter.dts b/arch/riscv/boot/dts/spacemit/k1-milkv-jupiter.dts
+index 4483192141049caa201c093fb206b6134a064f42..c5933555c06b66f40e61fe2b9c159ba0770c2fa1 100644
+--- a/arch/riscv/boot/dts/spacemit/k1-milkv-jupiter.dts
++++ b/arch/riscv/boot/dts/spacemit/k1-milkv-jupiter.dts
+@@ -20,6 +20,52 @@ chosen {
+ 	};
+ };
  
-+	rvu_block_bcast_xon(rvu, BLKADDR_NIX0);
-+	rvu_block_bcast_xon(rvu, BLKADDR_NIX1);
++&eth0 {
++	phy-handle = <&rgmii0>;
++	phy-mode = "rgmii-id";
++	pinctrl-names = "default";
++	pinctrl-0 = <&gmac0_cfg>;
++	rx-internal-delay-ps = <0>;
++	tx-internal-delay-ps = <0>;
++	status = "okay";
 +
- 	err = rvu_mcs_init(rvu);
- 	if (err) {
- 		dev_err(rvu->dev, "%s: Failed to initialize mcs\n", __func__);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-index 7ee1fdeb5295..1692033b46b0 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-@@ -1017,6 +1017,7 @@ int rvu_nix_mcast_update_mcam_entry(struct rvu *rvu, u16 pcifunc,
- void rvu_nix_flr_free_bpids(struct rvu *rvu, u16 pcifunc);
- int rvu_alloc_cint_qint_mem(struct rvu *rvu, struct rvu_pfvf *pfvf,
- 			    int blkaddr, int nixlf);
-+void rvu_block_bcast_xon(struct rvu *rvu, int blkaddr);
- /* NPC APIs */
- void rvu_npc_freemem(struct rvu *rvu);
- int rvu_npc_get_pkind(struct rvu *rvu, u16 pf);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 60db1f616cc8..828316211b24 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -6616,3 +6616,19 @@ int rvu_mbox_handler_nix_mcast_grp_update(struct rvu *rvu,
- 
- 	return ret;
- }
++	mdio-bus {
++		#address-cells = <0x1>;
++		#size-cells = <0x0>;
 +
-+/* On CN10k and older series of silicons, hardware may incorrectly
-+ * assert XOFF on certain channels. Issue a write on NIX_AF_RX_CHANX_CFG
-+ * to broadcacst XON on the same.
-+ */
-+void rvu_block_bcast_xon(struct rvu *rvu, int blkaddr)
-+{
-+	struct rvu_block *block = &rvu->hw->block[blkaddr];
-+	u64 cfg;
++		reset-gpios = <&gpio K1_GPIO(110) GPIO_ACTIVE_LOW>;
++		reset-delay-us = <10000>;
++		reset-post-delay-us = <100000>;
 +
-+	if (!block->implemented || is_cn20k(rvu->pdev))
-+		return;
++		rgmii0: phy@1 {
++			reg = <0x1>;
++		};
++	};
++};
 +
-+	cfg = rvu_read64(rvu, blkaddr, NIX_AF_RX_CHANX_CFG(0));
-+	rvu_write64(rvu, blkaddr, NIX_AF_RX_CHANX_CFG(0), cfg);
-+}
++&eth1 {
++	phy-handle = <&rgmii1>;
++	phy-mode = "rgmii-id";
++	pinctrl-names = "default";
++	pinctrl-0 = <&gmac1_cfg>;
++	rx-internal-delay-ps = <0>;
++	tx-internal-delay-ps = <250>;
++	status = "okay";
++
++	mdio-bus {
++		#address-cells = <0x1>;
++		#size-cells = <0x0>;
++
++		reset-gpios = <&gpio K1_GPIO(115) GPIO_ACTIVE_LOW>;
++		reset-delay-us = <10000>;
++		reset-post-delay-us = <100000>;
++
++		rgmii1: phy@1 {
++			reg = <0x1>;
++		};
++	};
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_2_cfg>;
+
 -- 
-2.34.1
+2.50.1
 
