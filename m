@@ -1,72 +1,171 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B7D14AA9;
-	Wed, 20 Aug 2025 12:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EF5254B09;
+	Wed, 20 Aug 2025 12:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755691678; cv=none; b=dj/V1hoQFdcEVxJc1KIjKltGqOf0yVrP3KoObyluMTuqWQoobh533+cXQ0h2h+ic3NuWftJ8MaRZGQa5UXxwQoMNROVBYIoHR4uCUknqPl1q8VEMzVLX0k+vpnqYNhMzFMiiyqSTx9nLTSMG3B0pUuxaLnYrB4i4wBE6gkQEeA8=
+	t=1755691893; cv=none; b=nqAbPrfdoVyxR9wBV8TnpElkE3+fhbyJdvYvsJvrnXx9FhTqpdoXWbzULflQ95zAE9PDwmupg1xZcoClYO6oKDpeUlqYBvQhV55d3ixY5uP4na08yA+CXc6U2+q+nU2oLoidvEHHD1/vbQUu3waTC9Uu4g8LenDW+NRp2FD3f2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755691678; c=relaxed/simple;
-	bh=4WlTuZZPqKDf3XYz0wUxCidMfF6+jcgnmxaQa32GEms=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gqYWraO6dK9hA8t/LYrQCg6+CsC8r/TmqwpcASOF5U4lcuc+qGlK6vjGTwYSy6EOzXuGmH7ZiR5N8h6/LOQEsNLVbLg2x85/JDinRFr1o4s9uKOrlINePDSXj6p1+g7s/53YPlm96ex7Pj+7jDr8Ew35G78gkdmgPyHIwiKEoEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4c6QDG0c02ztTbD;
-	Wed, 20 Aug 2025 20:06:54 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0375F180B58;
-	Wed, 20 Aug 2025 20:07:53 +0800 (CST)
-Received: from huawei.com (10.50.159.234) by dggpemf500002.china.huawei.com
- (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 20 Aug
- 2025 20:07:51 +0800
-From: Yue Haibing <yuehaibing@huawei.com>
-To: <sgoutham@marvell.com>, <lcherian@marvell.com>, <gakula@marvell.com>,
-	<jerinj@marvell.com>, <hkelam@marvell.com>, <sbhatta@marvell.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <yuehaibing@huawei.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next] octeontx2-af: Remove unused declarations
-Date: Wed, 20 Aug 2025 20:30:07 +0800
-Message-ID: <20250820123007.1705047-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1755691893; c=relaxed/simple;
+	bh=NyH0GZuEbHC8l+Dh828rlG5rXAsq+P5yRXv6rhlnOKQ=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=kQFak6sZPuHUls2nXp52y6ZhqwRtMAuBeG5MVU+TQ0mrtbG7ec7ZcNlXePPpx6MN1U3xNJzDyfEer7ApHFjkleMWIRNx86WFjC2cZAsZuRhfPEM++Ed6u6cejSfrT4BYVDGX4wAOtK4zB0wAv3cCD8hDTEiw+mpoocF0BcL615o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.98.2)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1uohez-0000000009m-3Bxn;
+	Wed, 20 Aug 2025 12:11:21 +0000
+Date: Wed, 20 Aug 2025 13:11:12 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Xu Liang <lxu@maxlinear.com>, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 1/3] net: phy: mxl-86110: add basic support for
+ led_brightness_set op
+Message-ID: <a63f1487c3d36fc150fa3a920cd3ab19feb9b9f9.1755691622.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Commit 1845ada47f6d ("octeontx2-af: cn10k: Add RPM LMAC pause frame
-support") remove cgx_lmac_[s|g]et_pause_frm() and leave these unused.
+Add support for forcing each connected LED to be always on or always off
+by implementing the led_brightness_set() op.
+This is done by modifying the COM_EXT_LED_GEN_CFG register to enable
+force-mode and forcing the LED either on or off.
+When calling the led_hw_control_set() force-mode is again disabled for
+that LED.
+Implement mxl86110_modify_extended_reg() locked helper instead of
+manually acquiring and releasing the MDIO bus lock for single
+__mxl86110_modify_extended_reg() calls.
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cgx.h | 4 ----
- 1 file changed, 4 deletions(-)
+v3: no changes
+v2: introduce mxl86110_modify_extended_reg() helper
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.h b/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
-index 950231e7ea71..92ccf343dfe0 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
-@@ -161,10 +161,6 @@ int cgx_get_link_info(void *cgxd, int lmac_id,
- 		      struct cgx_link_user_info *linfo);
- int cgx_lmac_linkup_start(void *cgxd);
- int cgx_get_fwdata_base(u64 *base);
--int cgx_lmac_get_pause_frm(void *cgxd, int lmac_id,
--			   u8 *tx_pause, u8 *rx_pause);
--int cgx_lmac_set_pause_frm(void *cgxd, int lmac_id,
--			   u8 tx_pause, u8 rx_pause);
- void cgx_lmac_ptp_config(void *cgxd, int lmac_id, bool enable);
- u8 cgx_lmac_get_p2x(int cgx_id, int lmac_id);
- int cgx_set_fec(u64 fec, int cgx_id, int lmac_id);
+ drivers/net/phy/mxl-86110.c | 68 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 67 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/phy/mxl-86110.c b/drivers/net/phy/mxl-86110.c
+index ff2a3a22bd5b..31832018655f 100644
+--- a/drivers/net/phy/mxl-86110.c
++++ b/drivers/net/phy/mxl-86110.c
+@@ -71,6 +71,13 @@
+ 
+ #define MXL86110_MAX_LEDS	3
+ /* LED registers and defines */
++#define MXL86110_COM_EXT_LED_GEN_CFG			0xA00B
++# define MXL86110_COM_EXT_LED_GEN_CFG_LFE(x)		BIT(2 + 3 * (x))
++# define MXL86110_COM_EXT_LED_GEN_CFG_LFM(x)		({ typeof(x) _x = (x); \
++							  GENMASK(1 + (3 * (_x)), \
++								 3 * (_x)); })
++#  define MXL86110_COM_EXT_LED_GEN_CFG_LFME(x)		BIT(3 * (x))
++
+ #define MXL86110_LED0_CFG_REG 0xA00C
+ #define MXL86110_LED1_CFG_REG 0xA00D
+ #define MXL86110_LED2_CFG_REG 0xA00E
+@@ -235,6 +242,29 @@ static int mxl86110_read_extended_reg(struct phy_device *phydev, u16 regnum)
+ 	return ret;
+ }
+ 
++/**
++ * mxl86110_modify_extended_reg() - modify bits of a PHY's extended register
++ * @phydev: pointer to the PHY device structure
++ * @regnum: register number to write
++ * @mask: bit mask of bits to clear
++ * @set: bit mask of bits to set
++ *
++ * Note: register value = (old register value & ~mask) | set.
++ *
++ * Return: 0 or negative error code
++ */
++static int mxl86110_modify_extended_reg(struct phy_device *phydev,
++					u16 regnum, u16 mask, u16 set)
++{
++	int ret;
++
++	phy_lock_mdio_bus(phydev);
++	ret = __mxl86110_modify_extended_reg(phydev, regnum, mask, set);
++	phy_unlock_mdio_bus(phydev);
++
++	return ret;
++}
++
+ /**
+  * mxl86110_get_wol() - report if wake-on-lan is enabled
+  * @phydev: pointer to the phy_device
+@@ -394,6 +424,7 @@ static int mxl86110_led_hw_control_set(struct phy_device *phydev, u8 index,
+ 				       unsigned long rules)
+ {
+ 	u16 val = 0;
++	int ret;
+ 
+ 	if (index >= MXL86110_MAX_LEDS)
+ 		return -EINVAL;
+@@ -423,8 +454,42 @@ static int mxl86110_led_hw_control_set(struct phy_device *phydev, u8 index,
+ 	    rules & BIT(TRIGGER_NETDEV_RX))
+ 		val |= MXL86110_LEDX_CFG_BLINK;
+ 
+-	return mxl86110_write_extended_reg(phydev,
++	ret = mxl86110_write_extended_reg(phydev,
+ 					  MXL86110_LED0_CFG_REG + index, val);
++	if (ret)
++		return ret;
++
++	ret = mxl86110_modify_extended_reg(phydev,
++					   MXL86110_COM_EXT_LED_GEN_CFG,
++					   MXL86110_COM_EXT_LED_GEN_CFG_LFE(index),
++					   0);
++
++	return ret;
++}
++
++static int mxl86110_led_brightness_set(struct phy_device *phydev,
++				       u8 index, enum led_brightness value)
++{
++	u16 mask, set;
++	int ret;
++
++	if (index >= MXL86110_MAX_LEDS)
++		return -EINVAL;
++
++	/* force manual control */
++	set = MXL86110_COM_EXT_LED_GEN_CFG_LFE(index);
++	/* clear previous force mode */
++	mask = MXL86110_COM_EXT_LED_GEN_CFG_LFM(index);
++
++	/* force LED to be permanently on */
++	if (value != LED_OFF)
++		set |= MXL86110_COM_EXT_LED_GEN_CFG_LFME(index);
++
++	ret = mxl86110_modify_extended_reg(phydev,
++					   MXL86110_COM_EXT_LED_GEN_CFG,
++					   mask, set);
++
++	return ret;
+ }
+ 
+ /**
+@@ -596,6 +661,7 @@ static struct phy_driver mxl_phy_drvs[] = {
+ 		.config_init		= mxl86110_config_init,
+ 		.get_wol		= mxl86110_get_wol,
+ 		.set_wol		= mxl86110_set_wol,
++		.led_brightness_set	= mxl86110_led_brightness_set,
+ 		.led_hw_is_supported	= mxl86110_led_hw_is_supported,
+ 		.led_hw_control_get     = mxl86110_led_hw_control_get,
+ 		.led_hw_control_set     = mxl86110_led_hw_control_set,
 -- 
-2.34.1
-
+2.50.1
