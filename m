@@ -1,98 +1,111 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4E9273803;
-	Wed, 20 Aug 2025 17:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACEA280308;
+	Wed, 20 Aug 2025 17:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755712596; cv=none; b=tKxZaO/YSwxYoblUbAU0IV1cQysaMwtRt+4DPQonI0A8Y1/NaTRvA0fWseRXrqj4bg6/ifJI00RuJ+82A95cF8nJnxQ2Iu9NvQU+cxCzpf59rifx0cv5/X1oSJQ+FPijfmrOOFd7EyTL4p2MZ5WrWLo3x33XxJQ/A/fBssZzlkA=
+	t=1755712599; cv=none; b=Arf5NkiItf+0xL1vTbwcn6wiuXbhaHL755A8GL4vpNQ6obW6lALbvbGk8RLPLw7n3kJGrbpnQGdAh/GcclpRAa2iR2Do5oaWROUGEOmuzCBI5QSUCRVshDIE3rbdcySulgOZ2Wp3h8PhyrM5zS95bRZ5WsmKRddb7jR65CIufaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755712596; c=relaxed/simple;
-	bh=PAk45Dqw/IAb5hhcZzBL27LdnwY8NSIC8b5E9cb1V/4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VkKUX5EHl+gYdw0/C0wY/KaUrexej9Y81DvIpL+hOIuoOD/KbolLMBGth8R95LFR0rJfIrUujJcE3oAj5iOdR0F7y917jGMz2ahXg+CuXVmfl97NVcgbr1g2y9nUMVpmPaJYaIymIK636FTSTmovOYpc3hHJr4Slk2+1BbtrRK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [192.168.0.110] (unknown [114.241.87.235])
-	by APP-01 (Coremail) with SMTP id qwCowAB3Z6sLDKZou3TODQ--.64161S2;
-	Thu, 21 Aug 2025 01:55:23 +0800 (CST)
-Message-ID: <2601e3bd-b3d4-4eb1-bcb5-e4fbd9fe9c96@iscas.ac.cn>
-Date: Thu, 21 Aug 2025 01:55:23 +0800
+	s=arc-20240116; t=1755712599; c=relaxed/simple;
+	bh=lLfmta+h4SkyENDhCMnpdr51VJu3AKvH01fLUD8umjs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=lIWIhf1YKpQnCJ2ijKwFr4S5q5/4R2wgq0+MAajD3ahBgSAbS9P8MbtpJ0GSIwFlxIJ2ZDBOmO62QZbpkJCsHLNeojkQfFd1ju8OaP26MH31cKoscaikfHGmV79gqj3IkLUakXOPEH64w5tB29GHs0aSPnoO8pOS47o0WX9HPsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QlCEfWwV; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QlCEfWwV"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-244580523a0so1281515ad.1;
+        Wed, 20 Aug 2025 10:56:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755712597; x=1756317397; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H+38vPXKcE2XwH0KgIp2x58rU9vDQLzRiLzmYeUQXBI=;
+        b=QlCEfWwV++Oz0XpjNI5BhGkCyyWDx+gjVjcahTt018CN4ASsiUgKf+8422U9Ey2t8f
+         wawhCj0Z3chx/82zEQh3QEcJLUMlHxtsXuJN4oMBw7c8H+vRgibI718aNJsLkYCfcDdS
+         lJyUt6VIJywwOMs7o+yTG2uUHKyMnMVs8ZQDO0u8rfDIi9J5P1j477hgF2XD9YrZBoB5
+         EgBSZMmt9YESS7aKFDjbxjZ52NEZtLY7PLD4e+B8NXGsRrYYT2nXiG6zY2M23x7JWiOj
+         rAKLjm2Q5e9jCoogSgUCHAI+QlEukxQ3V/b08sixe9Y28pzbVizVm7uvEBelIDizW6/e
+         ysRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755712597; x=1756317397;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H+38vPXKcE2XwH0KgIp2x58rU9vDQLzRiLzmYeUQXBI=;
+        b=d0DZuJDYnqMQzbOqDYgR+E2Kov7h/2eBlTZHKIpBypMKd28440nqKgEnvXszfqaVwC
+         LrgdQP12KsWkJlzplpAKO4dDN9Y2QnNAO25ingZgPPQvbhDJO3nFT0oStkOdSa3DaYim
+         VSrGDVD9WwCz3gMFbj4HikyrITDvrupeMZoBnx33ZqWv/jskb4YkXCLwwIy34LIcAIeu
+         Y4F6d/nFmIfRCBdcoIjXWFF18REZwi+8Fuk/+7p/kNtxVwbpszmReowcj92Q2us1cMEd
+         YHetF4olO9ra5Wvh5u+UwOS9IBTFytF28sdVnuA1gPG1A1rBIt2e9TvAoVmrLHaLIxG2
+         g8kQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW9tYjS+YgvVqd39JQd3uGLCGBuQgwsyo2GLQIjXrEaAsDsN67xFNz62aqcXPQOwnWfU9KUYNrwTdDGbbY=@vger.kernel.org, AJvYcCWH+jAXAsMhwnYlwZEZNg42IwqRXw3PeDD6kgc5oMO9mT5r7Y+lbzSFUvfVQ94CZUzoLU8Sc9HHQ3X1Hw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYEQ28sHDJr8CZAdbeVzplnFBJvUqO+eL5O+Ouj5p3kSdGlzIB
+	yoQau1Kj9FFOx9+vXPaG2Jd2CULTtB0q+c/HuOzPvo5+NczrCeQTra8=
+X-Gm-Gg: ASbGnctqrXajTHSjwfFR4WBt+Njkrov3Vj+Xo458CNrVBOxcTmZxO/+mJB4mPG0LP0U
+	bF8X2gr3awa1ZQexFnHhEfkdIumBIVu24BusYAVEYAY3IfSbnZ4BVlMAza1KQYFfRJCH79czSWv
+	In8nfXLUY3glg0v8CPi+po5rjVb3dz0oMCtLqx8/5ViPW4m1td2waz+U3DDIXpoPow32VFa2unC
+	XUYa08Jn7k2cLzCbWbu09T1D/xMTf0SfGoz6cLCmYhKURxXsq/LiV5RBKIJk8mXDFgBVL1cBxuo
+	/kPyr5GmSAdlYCb+K0OGTOqEf24dfF69pK7JxDvBVotqoxpU9cWfkLoY7O0Jcb4hXl5g8tRds9J
+	UFkbJmh0XuKxED1Xs3vuq5YdD3q0FkoZZ
+X-Google-Smtp-Source: AGHT+IGOFAhBd7MGUiftUnl9fbiq5WDVmusdQ49YdOIXSr9FdK2a+VkS31ZeJvULUj4TqUOJvUU3zw==
+X-Received: by 2002:a17:902:e80b:b0:237:e696:3d56 with SMTP id d9443c01a7336-245ef22f57amr59998195ad.32.1755712597270;
+        Wed, 20 Aug 2025 10:56:37 -0700 (PDT)
+Received: from debian.ujwal.com ([223.185.130.96])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-245ed4ccaa9sm32553815ad.86.2025.08.20.10.56.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Aug 2025 10:56:36 -0700 (PDT)
+From: Ujwal Kundur <ujwal.kundur@gmail.com>
+To: allison.henderson@oracle.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
+	linux-kernel@vger.kernel.org,
+	Ujwal Kundur <ujwal.kundur@gmail.com>
+Subject: [PATCH net-next v2 1/4] rds: Replace POLLERR with EPOLLERR
+Date: Wed, 20 Aug 2025 23:25:47 +0530
+Message-Id: <20250820175550.498-2-ujwal.kundur@gmail.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20250820175550.498-1-ujwal.kundur@gmail.com>
+References: <20250820175550.498-1-ujwal.kundur@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 4/5] riscv: dts: spacemit: Add Ethernet
- support for BPI-F3
-To: Hendrik Hamerlinck <hendrik.hamerlinck@hammernet.be>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>
-Cc: Vivian Wang <uwu@dram.page>, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Junhui Liu <junhui.liu@pigmoral.tech>, Simon Horman <horms@kernel.org>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
- spacemit@lists.linux.dev, linux-kernel@vger.kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20250812-net-k1-emac-v5-0-dd17c4905f49@iscas.ac.cn>
- <20250812-net-k1-emac-v5-4-dd17c4905f49@iscas.ac.cn>
- <463dcfa3-152e-4a48-9821-debdc29c89b2@hammernet.be>
-Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <463dcfa3-152e-4a48-9821-debdc29c89b2@hammernet.be>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAB3Z6sLDKZou3TODQ--.64161S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrurWrJr43Kw45AFy8Gr45Wrg_yoWfArbE9F
-	WSqFnxu34ku3W0gr1UtanxAr1FqrZxWryaqas8twn5J34Ivw4UGw1rJas5JwnxGFy2qrnr
-	ZFyagF4jyr12vjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVxYjsxI4VWkKwAYFVCjjxCrM7AC8VAFwI0_Xr0_Wr1l1xkIjI8I
-	6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
-	8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0
-	cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
-	C2z280aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkI
-	wI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
-	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
-	17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
-	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
-	73UjIFyTuYvjxUkX_TUUUUU
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
+Both constants are 1<<3, but EPOLLERR uses the correct annotations.
 
-On 8/13/25 21:34, Hendrik Hamerlinck wrote:
->
-> On 8/12/25 04:02, Vivian Wang wrote:
->> Banana Pi BPI-F3 uses an RGMII PHY for each port and uses GPIO for PHY
->> reset.
->>
->> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
->>
-> Tested on Banana Pi BPI-F3 and Orange Pi RV2. Verified SSH shell over eth0
-> and eth1 interfaces, and basic UDP connectivity using iperf3. Thank you!
->
-> Tested-by: Hendrik Hamerlinck <hendrik.hamerlinck@hammernet.be>
+Flagged by Sparse.
 
-Thank you for the testing! I've already put this trailer on v6, but
-forgot to reply here.
+Signed-off-by: Ujwal Kundur <ujwal.kundur@gmail.com>
+---
+ net/rds/af_rds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I haven't included the DTS patch for Orange Pi RV2 in v6, because the
-board DTS is not in v6.17-rc1. However, it is in Yixun's spacemit tree,
-AFAICT, so if we get the driver in for v6.18 I'll send the DTS
-separately to spacemit mailing list. If we don't, I'll include it
-alongside the driver when rebasing to v6.18-rc1.
-
-Vivian "dramforever" Wang
-
+diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
+index 086a13170e09..4a7217fbeab6 100644
+--- a/net/rds/af_rds.c
++++ b/net/rds/af_rds.c
+@@ -242,7 +242,7 @@ static __poll_t rds_poll(struct file *file, struct socket *sock,
+ 	if (rs->rs_snd_bytes < rds_sk_sndbuf(rs))
+ 		mask |= (EPOLLOUT | EPOLLWRNORM);
+ 	if (sk->sk_err || !skb_queue_empty(&sk->sk_error_queue))
+-		mask |= POLLERR;
++		mask |= EPOLLERR;
+ 	read_unlock_irqrestore(&rs->rs_recv_lock, flags);
+ 
+ 	/* clear state any time we wake a seen-congested socket */
+-- 
+2.30.2
 
