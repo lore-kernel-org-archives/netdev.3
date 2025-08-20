@@ -1,137 +1,72 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E899A183CC3;
-	Wed, 20 Aug 2025 12:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B7D14AA9;
+	Wed, 20 Aug 2025 12:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755691414; cv=none; b=MjLPPAYqEoooqHCUQm8UFJE7Oude/d9vFLQjgpjyd3pfJUmmwzhw8Il+pwzCOC2Qs32FgmAWTDhZD/esibOjUIIvbVeTJk5G7Z+e6XQwTwbE8vjeHRs9msbNZDgAcF5umepomA/3PGptLgRlF1VB16+VY2p8Cic0Hc0HEciY0/s=
+	t=1755691678; cv=none; b=dj/V1hoQFdcEVxJc1KIjKltGqOf0yVrP3KoObyluMTuqWQoobh533+cXQ0h2h+ic3NuWftJ8MaRZGQa5UXxwQoMNROVBYIoHR4uCUknqPl1q8VEMzVLX0k+vpnqYNhMzFMiiyqSTx9nLTSMG3B0pUuxaLnYrB4i4wBE6gkQEeA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755691414; c=relaxed/simple;
-	bh=eHKn8iJucqxAbzpJgDpV7nmtzEYpKn6TT9ECvMVGXLY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LZ1MpysMPL2iuxeZVl1OHmkXqa3Yzjy94RTxh0Y5IiwxWeR2Cg0Xl8g51p1wDfcKzF8RokwJa6i+i5bucMXvOaT7nf2RBxD+tI+MLcZzofszSPvQJhmHOFWDm/FwJ65M4+qNz7mpuzreJpWNBfI7jh6bbwrFYpvgTXfHAA3klYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hjWCACoP; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hjWCACoP"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45a28ff47a0so19179595e9.0;
-        Wed, 20 Aug 2025 05:03:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755691410; x=1756296210; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XXaBuqHwa15yy/eu+VvjkdKQuH18mHpFGGi+XGcVeWI=;
-        b=hjWCACoPnoVX+m3eaCW7wFjEyv6RNDZVf9YF8wb6ijWbnmxQK/tWL65rKo9YpT3zuO
-         e18T+7qeg0xULyq7D9CoFPccg/70quBpeHut1k4bSKX446V3AO8tgwCTNxFPAYvVPp5M
-         utRnnKW0gdyOTg9S+Tej8ot44dGZTFRdetIV9cQZhxDan8XN99HnAwQy6OQk81ist2kk
-         NRXcrd1yONR8XJ660Kmxg/i3oMxft37KDcykseyuqusuyCo0RQ0aYEV8SSSWs3i0d1xo
-         5Cjla3ZautvG+4NznKs04Ik49HioI3YrEtKmY686/VjhUrpVVadA6DQFPNN5vUuN8lYu
-         F2+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755691410; x=1756296210;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XXaBuqHwa15yy/eu+VvjkdKQuH18mHpFGGi+XGcVeWI=;
-        b=SRuPULcVSVBe81L5RngBUbO1/QlPfMcbUJVupFCncAiEzc3X2etKgcRGGm7oyZayKb
-         ljnihYdM1/ExFDvLfULNPkPSPE0GAKnizaP6kBqsqW8LT66U11TQ49J1NMOXCW/GU9Ux
-         IBFCeVVNH05tIavoq+XsrOXKSBw6Z+tlj8n/i4I1b9kQt3Pui+zx9FMq7vuYUEQOBPa4
-         kqJl5nbtQk1UwgYgUISa/xgHpCi3CS0lxO+ZvsFj70v1XchEc7PEt51QxUjMUedXPXfA
-         7mgRWTTi0z68NLyEhnB7TOnMLHV6t94fz41wy7A8YOtvu9cABBPSmCX7C0pW90TuKG4r
-         R5PA==
-X-Forwarded-Encrypted: i=1; AJvYcCVODFH6e37MSLlCq6crMqPe9CIUuJmil+9eTA+/0xfo9HHePIf6LBB2EFaRPPFDfe5UVyhLBZ6kX8b5iEgC@vger.kernel.org, AJvYcCVveJcWc0M4onUIAoIXPJ1c7z4OE5Q8MhzakBiJzOd8wTZ9N3Ql2Q0f3b/qUMUPn1iZOFg5TSyVjg==@vger.kernel.org, AJvYcCXyrU3QlycofZeC3660IUBp01Svgcpy+daih4XcoTqa+0vD6UTX6bO8GuJRZcg8j1si2sdktPvh@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQNE6bJ/xGYnqCYtEXcQRUluUvG6xD7m6GF320n+3S97VJ749K
-	olPfmlocVAy0kELkZQf7b2M82tP2s9GshEgFaK7piEIv/5YzawG1VEpW
-X-Gm-Gg: ASbGncthDAJNndgFuDc+WRCqd8QLp5PN4Sclj68dEYfoct+w/eaHUABtX+tcZeaIoR8
-	jaYfrwuY9xn52xGNlSp+H2QzmoRyAmMQMOBn5ahgryifJQ2uy3LksmIlSdAsci06sv1adeO7k8j
-	dBB/BWrVIOn/dzXRB9319aL9Uxp9Awnyzgdy8+lkRLZ3lbMgRMvGYRCahCZxFfYYh/PqZlDr0LW
-	e/r6r0nBs4USRM6hVD4fALvNUHVG8fn8Faz7IIFPzxUkzk7hN2eLc5aF/92C4TQOaBx+2/BzkVs
-	XStr7zn4/wizvUWFyVBQMRB2Ls34tT0YzEYFeUY42BRhm9LpjAlyQxhlDtbiL9pMB/MtPabTjyX
-	TtFRoJFXD61rUzPqW78mLFFTa6Aoa3Rk2qDhWhJHe+5fBtKKD2WfgNtI=
-X-Google-Smtp-Source: AGHT+IFTqtLUCF0kRl8LCEKNbCKLBDF/eqiXvH/D0EJIMMk9eWA4xaRr/DXUkSzDP9Cz88lsFbLCqg==
-X-Received: by 2002:a05:600c:1906:b0:459:da89:b06 with SMTP id 5b1f17b1804b1-45b479e2772mr28957305e9.16.1755691409965;
-        Wed, 20 Aug 2025 05:03:29 -0700 (PDT)
-Received: from ?IPV6:2620:10d:c096:325:77fd:1068:74c8:af87? ([2620:10d:c092:600::1:5f7e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c07487978bsm7339533f8f.7.2025.08.20.05.03.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Aug 2025 05:03:29 -0700 (PDT)
-Message-ID: <d55e4a81-e4da-47c5-95ab-03132c1c5553@gmail.com>
-Date: Wed, 20 Aug 2025 13:04:40 +0100
+	s=arc-20240116; t=1755691678; c=relaxed/simple;
+	bh=4WlTuZZPqKDf3XYz0wUxCidMfF6+jcgnmxaQa32GEms=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gqYWraO6dK9hA8t/LYrQCg6+CsC8r/TmqwpcASOF5U4lcuc+qGlK6vjGTwYSy6EOzXuGmH7ZiR5N8h6/LOQEsNLVbLg2x85/JDinRFr1o4s9uKOrlINePDSXj6p1+g7s/53YPlm96ex7Pj+7jDr8Ew35G78gkdmgPyHIwiKEoEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4c6QDG0c02ztTbD;
+	Wed, 20 Aug 2025 20:06:54 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0375F180B58;
+	Wed, 20 Aug 2025 20:07:53 +0800 (CST)
+Received: from huawei.com (10.50.159.234) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 20 Aug
+ 2025 20:07:51 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <sgoutham@marvell.com>, <lcherian@marvell.com>, <gakula@marvell.com>,
+	<jerinj@marvell.com>, <hkelam@marvell.com>, <sbhatta@marvell.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <yuehaibing@huawei.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next] octeontx2-af: Remove unused declarations
+Date: Wed, 20 Aug 2025 20:30:07 +0800
+Message-ID: <20250820123007.1705047-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 05/23] net: clarify the meaning of
- netdev_config members
-To: Mina Almasry <almasrymina@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- Eric Dumazet <edumazet@google.com>, Willem de Bruijn <willemb@google.com>,
- Paolo Abeni <pabeni@redhat.com>, andrew+netdev@lunn.ch, horms@kernel.org,
- davem@davemloft.net, sdf@fomichev.me, dw@davidwei.uk,
- michael.chan@broadcom.com, dtatulea@nvidia.com, ap420073@gmail.com,
- linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-References: <cover.1755499375.git.asml.silence@gmail.com>
- <8669b80579316a12d5b1eb652edb475db2f535e7.1755499376.git.asml.silence@gmail.com>
- <CAHS8izMO=6oHN4w9XiL0yw7x86LF8iw-LhMA4qZe2rXOu0Cmbg@mail.gmail.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <CAHS8izMO=6oHN4w9XiL0yw7x86LF8iw-LhMA4qZe2rXOu0Cmbg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-On 8/19/25 02:46, Mina Almasry wrote:
-> On Mon, Aug 18, 2025 at 6:56 AM Pavel Begunkov <asml.silence@gmail.com> wrote:
->>
->> From: Jakub Kicinski <kuba@kernel.org>
->>
->> hds_thresh and hds_config are both inside struct netdev_config
->> but have quite different semantics. hds_config is the user config
->> with ternary semantics (on/off/unset). hds_thresh is a straight
->> up value, populated by the driver at init and only modified by
->> user space. We don't expect the drivers to have to pick a special
->> hds_thresh value based on other configuration.
->>
->> The two approaches have different advantages and downsides.
->> hds_thresh ("direct value") gives core easy access to current
->> device settings, but there's no way to express whether the value
->> comes from the user. It also requires the initialization by
->> the driver.
->>
->> hds_config ("user config values") tells us what user wanted, but
->> doesn't give us the current value in the core.
->>
->> Try to explain this a bit in the comments, so at we make a conscious
->> choice for new values which semantics we expect.
->>
->> Move the init inside ethtool_ringparam_get_cfg() to reflect the semantics.
->> Commit 216a61d33c07 ("net: ethtool: fix ethtool_ringparam_get_cfg()
->> returns a hds_thresh value always as 0.") added the setting for the
->> benefit of netdevsim which doesn't touch the value at all on get.
->> Again, this is just to clarify the intention, shouldn't cause any
->> functional change.
->>
-> 
-> TBH I can't say that moving the init to before
-> dev->ethtool_ops->get_ringparam(dev, param, kparam, extack) made me
-> understand semantics better. 
+Commit 1845ada47f6d ("octeontx2-af: cn10k: Add RPM LMAC pause frame
+support") remove cgx_lmac_[s|g]et_pause_frm() and leave these unused.
 
-I agree, it didn't do it for me either ...
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-> If you do a respin, maybe a comment above
-> the kparam->hds_thresh to say what you mean would help the next reader
-> understand.
-
-... and since the move doesn't have a strong semantical meaning, I
-can't think of a good comment to put on top of the assignment.
-hds_thresh is already described in struct netdev_config and it
-seems like a better place for such stuff. Thoughts?
-
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.h b/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
+index 950231e7ea71..92ccf343dfe0 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
+@@ -161,10 +161,6 @@ int cgx_get_link_info(void *cgxd, int lmac_id,
+ 		      struct cgx_link_user_info *linfo);
+ int cgx_lmac_linkup_start(void *cgxd);
+ int cgx_get_fwdata_base(u64 *base);
+-int cgx_lmac_get_pause_frm(void *cgxd, int lmac_id,
+-			   u8 *tx_pause, u8 *rx_pause);
+-int cgx_lmac_set_pause_frm(void *cgxd, int lmac_id,
+-			   u8 tx_pause, u8 rx_pause);
+ void cgx_lmac_ptp_config(void *cgxd, int lmac_id, bool enable);
+ u8 cgx_lmac_get_p2x(int cgx_id, int lmac_id);
+ int cgx_set_fec(u64 fec, int cgx_id, int lmac_id);
 -- 
-Pavel Begunkov
+2.34.1
 
