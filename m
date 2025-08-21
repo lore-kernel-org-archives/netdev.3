@@ -1,142 +1,173 @@
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFA02E8B75
-	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 03:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFD0222582
+	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 04:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755748330; cv=none; b=twAfeb6gZQZjpwp0tI/bMIWa2eXvVH6b367etRd6rIUB2X1PFVrFSnn5fqy2B8YyYONDd3AK0U/8/bAUraJabYdzo9rbgyPLayjt+bXOhqlcg2IhgdBuq5ClX7LV5yCiZLCE19YrVGuQ63sY40EBteFzEkaG9RLaE9VuapAZ5Vo=
+	t=1755749255; cv=none; b=DD2fW5X8fPjfKVY6YInnS7o54BMl0cBcz1Gl5wiA/a0mFhAA8ZZtj7u+LNuFhnmI575cFL2UMN0E6Rxp/+PVEpkV9K8LuUKg/h0vXhzbjsEJ/MTXKXtHqFBs44Vv9gcLa1QWWXIkNR6INs+9jVDFjv+UHAzMejm+CTUh0xIkfHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755748330; c=relaxed/simple;
-	bh=c+dzYgwegckKBE8DwdjCoqLZMH/ed06q6NOgQtARQeU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uCVXMeB1wtXCnmqtWcTTdO1rK2erFDYiiQ2KEw7eTUeu4OkHrPVyvrmIanvpwCE0R+OCKAs7xDFLwsWf3DZaGPOCvV2aD5yAFinwI0ZDVG0vl7z079dBbS9MeXOMm9wmDsZJD6L65L4pWiNgax27yYC20koTk3STUzlLjrgiLss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=54.92.39.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: zesmtpgz4t1755748320t06463bcc
-X-QQ-Originating-IP: BnGfIoXIObhF7yKbto78D0xs0V9ppX65sKZt2uAFk+o=
-Received: from localhost ( [203.174.112.180])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 21 Aug 2025 11:51:58 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 4102684638845518998
-Date: Thu, 21 Aug 2025 11:51:58 +0800
-From: Yibo Dong <dong100@mucse.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	corbet@lwn.net, gur.stavi@huawei.com, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, danishanwar@ti.com, lee@trager.us,
-	gongfan1@huawei.com, lorenzo@kernel.org, geert+renesas@glider.be,
-	Parthiban.Veerasooran@microchip.com, lukas.bulwahn@redhat.com,
-	alexanderduyck@fb.com, richardcochran@gmail.com,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 3/5] net: rnpgbe: Add basic mbx ops support
-Message-ID: <135DA1E6DB034659+20250821035158.GC1754449@nic-Precision-5820-Tower>
-References: <20250818112856.1446278-1-dong100@mucse.com>
- <20250818112856.1446278-4-dong100@mucse.com>
- <5cced097-52db-41c9-93e4-927aab5ffb2e@lunn.ch>
- <6981CF6C1312658E+20250821014411.GB1742451@nic-Precision-5820-Tower>
- <f0c9aee0-0e57-429e-8918-d91bf307018e@lunn.ch>
+	s=arc-20240116; t=1755749255; c=relaxed/simple;
+	bh=5oirP7WiNifHumklvNdf1HOpwUeGPcRbhlJLskwX9hc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ndBhjcV9YYPouyw/PuaaUTyHSRiw7vE9vSrxGApZUrp6Oppov+KFLfc5UGwHQySD8t9Z0i3oxH14kEgzEPkuQYukSaqHJjN1qZdffCzHWEJISQecdHmhacHZswSGiLX33FD6TTsizvbufQcQhkYTnikO67Gbjp5NK5ICGpjnt64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f4TN4DpN; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f4TN4DpN"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-618076fd48bso3564a12.1
+        for <netdev@vger.kernel.org>; Wed, 20 Aug 2025 21:07:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755749252; x=1756354052; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D2zfCcSJOzjARkXqmrK2VbK9VW5RbRjtX977JzOFSGY=;
+        b=f4TN4DpNGOUC91OZ4sACkuUfzsOB7BCcfva7qX/8nCC7M1sTdmQPHiQDYT47nK4V1w
+         4FPmCvkdnuPZM+fVBCIN7atWpoGca6DBEI4qom+uvjjEOkRppLtg/AdebGa4Wr/B/C1U
+         3Wao/GaQlSi6m4d5cuKTGbz2Ck6+azpfjcilozM56ob+g76dTu385g4Zm0c6ELKGJ5uN
+         G4fpvLA7uQyk5YPGpGc8Qcj35ZHAY2gIBpgq9dIkA4ddic8M9lvw7bbt6NqMPfoMmYtm
+         RtSY/0+AH4MFtDtkZ3mL/xRfcoKEwuT6PjSl0AIns1FPhYpx3bls7mPBuAqHL2Wk5SMK
+         ZPAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755749252; x=1756354052;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=D2zfCcSJOzjARkXqmrK2VbK9VW5RbRjtX977JzOFSGY=;
+        b=WE/sWRFxWW9KC4eH1l0nrLxP1oJhiJAuJUkqjWlpfg+c5AciOHdJ7LPR+9iArBm0Sk
+         u47finz2NqkbV1PiUKb1MxSVvxJ2m0vV7AnCLHCQxOIptXDJ5h9WIp6HMFedqqslKqpc
+         kw7T/QacSvDpy7sbwMdGZEql1NOgXIuGWjQawN3OoIyiUbHinCuZgusp+BM35ldYV+bs
+         94FjFd6fPah/OGlMUWp6VjHDowcxzhYfT24x9uV+EoBo/UC21bPVj7m7IpqkE/BbNt10
+         /ooYGrEv1TB4J/Uvki23ARh02El5z43+mqJpz8Dy26vkr/+jjWbmGWefJxzzJFiZyR1M
+         1XXw==
+X-Forwarded-Encrypted: i=1; AJvYcCWL2tVjIOw/wKMHH/djMZLBmJLT5y1IfrCTTLJKQDhkJixYeGC+2h49Z2sJzh/9tuooKT17FS0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywy7O7YXKFr3//xnPg8GEnz9vdVcA+QbAX8I7lB+QX8TyKaBWFL
+	76BrwjRacr4I5scMR8ObGNnj33melmAY/cjK0yT+feVPItFAyMCXDCIoN/n986pzvK+xPVvikCZ
+	X6QjUHZYNejQ1XCr/kPBzZs/8RyJQmax8/V2np6Q3
+X-Gm-Gg: ASbGncsHYTS/v/lRch531m88pqF4BaswxHV/WBEE8jVA0FdD0DlIV5CFZDbguj6W/Rf
+	XiX1gemsiTBIiQsS6pgXJuNw+Lu08Su26JwvikmC0WTSXPGFZ+1/KlGCkYFXGGowTECbtVEN3Zk
+	TRYCysYiRdYltRjd7rucSnrWnYRMI3TeIkuZkK+PCC/yZ/XVpyWqig31vysBmIr1azHcZ3OtuWt
+	gDLRQpB0tKAjLLRYWClrKKa+kCc6CbYWcsxdRGZWf8=
+X-Google-Smtp-Source: AGHT+IFrsPEyM2E5GeeRSvRDPHxWAC8MsuCNQnD2ZE2YVMx9fd6Zq4+VAYIDnVwZC2VKlhk7LZVLABzTWFCADUsy7rk=
+X-Received: by 2002:a50:d658:0:b0:61b:f987:42d9 with SMTP id
+ 4fb4d7f45d1cf-61bf98753a1mr20993a12.2.1755749251625; Wed, 20 Aug 2025
+ 21:07:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f0c9aee0-0e57-429e-8918-d91bf307018e@lunn.ch>
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:mucse.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MoR4tCOgKU4aBpl3gCAqSVOMkXH8Dl0iOqLSE3Bn6Ga2x8Uph9WPfxK6
-	m9u01nHDABkM5NUUOxLmPkYH/fFWo8ao0uqnyVdxDoe3/MbwM/rSMBwW429YpX419+b4Iho
-	E6oKSwVZZ55zNOlOdopRKeiFCYCVYdX89s7i5IltmN3FgvMAMX00I7dCRwzYkSOaEb7Ds9j
-	uQ6ONA0xvHtYkJkQx3hVWOQBKd3TPONIlHOjgaoF5UDNDNvr5MgnY/412TJHiQOdaaKNkX4
-	lFpO3S9Klwro4u/gg3/BPhskBcorEju6EgxDeE3CBlqMeEdBmTodfsdUhuVH9sHikvQ8aNv
-	LVvpCGS0SHczExY894Bav2LaFroDM4PrafczrNzdm7hPMJPqvinJ6/v83oOseRgQRw+XAYC
-	WAvxcaHv831qSgelL7+au89pACkmJ8P4N4gdtYwjlpK6Tvp8XAuheaABq52BgtHbW9rFQLu
-	D4S9oIRjNzUOcfiIzLNsUR0EnesVYkoxDpaupw3gSYfHNmhg+iJRFz/ZOxuC4G+7rGLibo3
-	PDlL9bGabMG7YmqfML2r8R5uW7BWz6lwyjBbjC7sjM9am0REb3seWy1u9LJa+rXJp6YYEHu
-	AI9/usFq/c7iYYuwk+99EvkKhG3RalYDRJkovPzyZq699RfyAohJf68Ox5iH4dEhTKRblWD
-	a0KNksa6WTP+7/Ty0PmkpFnSdBRghOlRd00/eKeABh1y2WDHizu2lo2twwQn3pDfV3888sz
-	ctb1lIzSo0dN0Y4n9NC/U5UWeQLQIyr7Hs5Gety3sT1k+Skggs/wWHJfs1iQ19FRwkBL95C
-	tVMxvQ4RYE88kFFoUAt3v+b2bh1qzyCv9y+jeJYtYWLw4NXrG6i36UPHp04Y/6lkW1KVBKH
-	pPjtt6jlYr8lt98kCIYGqwy9nByC+Xg0sOyCL9SdhuOyl31kYMaojx+hZPiTxyrtAoRwvjG
-	jWWHCi1V5teRF1uKozsfr6sDhM5oxIXvWBsZ2DfLs/c3pwngSfg36aNgdTDzLC5q/PsxUYn
-	VtxC9bxROpPwtVbLpewkHVrNmtpfCX4UBxjlUruOjohG3/2RMenr7T1flV9DE=
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
-X-QQ-RECHKSPAM: 0
+References: <20250813073955.1775315-1-maze@google.com> <6df59861-8334-49ac-8dca-2b0bac82f2d7@linux.dev>
+In-Reply-To: <6df59861-8334-49ac-8dca-2b0bac82f2d7@linux.dev>
+From: =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
+Date: Wed, 20 Aug 2025 21:07:19 -0700
+X-Gm-Features: Ac12FXwOFUmHRzE1mYnem_hnpYjz3EZEML8HNI_-8PwFPwygE3VYTkye6feLPsg
+Message-ID: <CANP3RGek2nTodF_niyenmrLg2_g=BCPV6MQkwXT4SpZ6W8+9pg@mail.gmail.com>
+Subject: Re: [PATCH bpf-next] bpf: hashtab - allow BPF_MAP_LOOKUP{,_AND_DELETE}_BATCH
+ with NULL keys/values.
+To: Yonghong Song <yonghong.song@linux.dev>
+Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Linux Network Development Mailing List <netdev@vger.kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, BPF Mailing List <bpf@vger.kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 21, 2025 at 05:06:50AM +0200, Andrew Lunn wrote:
-> On Thu, Aug 21, 2025 at 09:44:11AM +0800, Yibo Dong wrote:
-> > On Wed, Aug 20, 2025 at 10:23:44PM +0200, Andrew Lunn wrote:
-> > > > +/**
-> > > > + * mucse_mbx_get_ack - Read ack from reg
-> > > > + * @mbx: pointer to the MBX structure
-> > > > + * @reg: register to read
-> > > > + *
-> > > > + * @return: the ack value
-> > > > + **/
-> > > > +static u16 mucse_mbx_get_ack(struct mucse_mbx_info *mbx, int reg)
-> > > > +{
-> > > > +	return (mbx_data_rd32(mbx, reg) >> 16);
-> > > > +}
-> > > 
-> > > > +static int mucse_check_for_ack_pf(struct mucse_hw *hw)
-> > > > +{
-> > > > +	struct mucse_mbx_info *mbx = &hw->mbx;
-> > > > +	u16 hw_fw_ack;
-> > > > +
-> > > > +	hw_fw_ack = mucse_mbx_get_ack(mbx, MBX_FW2PF_COUNTER);
-> > > 
-> > > > +int mucse_write_mbx_pf(struct mucse_hw *hw, u32 *msg, u16 size)
-> > > > +{
-> > > > +	struct mucse_mbx_info *mbx = &hw->mbx;
-> > > > +	int size_inwords = size / 4;
-> > > > +	u32 ctrl_reg;
-> > > > +	int ret;
-> > > > +	int i;
-> > > > +
-> > > > +	ctrl_reg = PF2FW_MBOX_CTRL(mbx);
-> > > > +	ret = mucse_obtain_mbx_lock_pf(hw);
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +
-> > > > +	for (i = 0; i < size_inwords; i++)
-> > > > +		mbx_data_wr32(mbx, MBX_FW_PF_SHM_DATA + i * 4, msg[i]);
-> > > > +
-> > > > +	/* flush msg and acks as we are overwriting the message buffer */
-> > > > +	hw->mbx.fw_ack = mucse_mbx_get_ack(mbx, MBX_FW2PF_COUNTER);
-> > > 
-> > > It seems like the ACK is always at MBX_FW2PF_COUNTER. So why pass it
-> > > to mucse_mbx_get_ack()? Please look at your other getters and setters.
-> > > 
-> > 
-> > 'mucse_mbx_get_ack' is always at MBX_FW2PF_COUNTER now, just for pf-fw mbx. 
-> > But, in the future, there will be pf-vf mbx with different input.
-> > Should I move 'MBX_FW2PF_COUNTER' to function 'mucse_mbx_get_ack', and
-> > update the function when I add vf relative code in the future?
-> 
-> Maybe add mucse_mbx_get_pf_ack() so you can later add
-> mucse_mbx_get_vf_ack()?
-> 
-> The problem is, our crystal ball about what will come next is not very
-> good. So we review the code we see now, and make comments about it
-> now. You can add comments explaining why something is the way it is
-> because in the future it needs to be more generic to handle additional
-> use cases, etc. Or explain in the commit message.
-> 
-> 	Andrew
-> 
+On Mon, Aug 18, 2025 at 1:58=E2=80=AFPM Yonghong Song <yonghong.song@linux.=
+dev> wrote:
+> On 8/13/25 12:39 AM, Maciej =C5=BBenczykowski wrote:
+> > BPF_MAP_LOOKUP_AND_DELETE_BATCH keys & values =3D=3D NULL
+> > seems like a nice way to simply quickly clear a map.
+>
+> This will change existing API as users will expect
+> some error (e.g., -EFAULT) return when keys or values is NULL.
 
-Got it, I will move MBX_FW2PF_COUNTER to mucse_mbx_get_ack and rename
-the fucntion. And add new function later.
+No reasonable user will call the current api with NULLs.
 
-Thanks for your feedback.
+This is a similar API change to adding a new system call
+(where previously it returned -ENOSYS) - which *is* also a UAPI
+change, but obviously allowed.
 
+Or adding support for a new address family / protocol (where
+previously it -EAFNOSUPPORT)
+Or adding support for a new flag (where previously it returned -EINVAL)
 
-Thanks for your feedback.
+Consider why userspace would ever pass in NULL, two possibilities:
+(a) explicit NULL - you'd never do this since it would (till now)
+always -EFAULT,
+  so this would only possibly show up in a very thorough test suite
+(b) you're using dynamically allocated memory and it failed allocation.
+  that's already a program bug, you should catch that before you call bpf()=
+.
+
+> We have a 'flags' field in uapi header in
+>
+>          struct { /* struct used by BPF_MAP_*_BATCH commands */
+>                  __aligned_u64   in_batch;       /* start batch,
+>                                                   * NULL to start from be=
+ginning
+>                                                   */
+>                  __aligned_u64   out_batch;      /* output: next start ba=
+tch */
+>                  __aligned_u64   keys;
+>                  __aligned_u64   values;
+>                  __u32           count;          /* input/output:
+>                                                   * input: # of key/value
+>                                                   * elements
+>                                                   * output: # of filled e=
+lements
+>                                                   */
+>                  __u32           map_fd;
+>                  __u64           elem_flags;
+>                  __u64           flags;
+>          } batch;
+>
+> we can add a flag in 'flags' like BPF_F_CLEAR_MAP_IF_KV_NULL with a comme=
+nt
+> that if keys or values is NULL, the batched elements will be cleared.
+
+I just don't see what value this provides.
+
+> > BPF_MAP_LOOKUP keys/values =3D=3D NULL might be useful if we just want
+> > the values/keys and don't want to bother copying the keys/values...
+> >
+> > BPF_MAP_LOOKUP keys & values =3D=3D NULL might be useful to count
+> > the number of populated entries.
+>
+> bpf_map_lookup_elem() does not have flags field, so we probably should no=
+t
+> change existins semantics.
+
+This is unrelated to this patch, since this only touches 'batch' operation.
+(unless I'm missing something)
+
+> > Cc: Alexei Starovoitov <ast@kernel.org>
+> > Cc: Daniel Borkmann <daniel@iogearbox.net>
+> > Cc: Stanislav Fomichev <sdf@fomichev.me>
+> > Signed-off-by: Maciej =C5=BBenczykowski <maze@google.com>
+> > ---
+> >   kernel/bpf/hashtab.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+> > index 5001131598e5..8fbdd000d9e0 100644
+> > --- a/kernel/bpf/hashtab.c
+> > +++ b/kernel/bpf/hashtab.c
+> > @@ -1873,9 +1873,9 @@ __htab_map_lookup_and_delete_batch(struct bpf_map=
+ *map,
+> >
+> >       rcu_read_unlock();
+> >       bpf_enable_instrumentation();
+> > -     if (bucket_cnt && (copy_to_user(ukeys + total * key_size, keys,
+> > +     if (bucket_cnt && (ukeys && copy_to_user(ukeys + total * key_size=
+, keys,
+> >           key_size * bucket_cnt) ||
+> > -         copy_to_user(uvalues + total * value_size, values,
+> > +         uvalues && copy_to_user(uvalues + total * value_size, values,
+> >           value_size * bucket_cnt))) {
+> >               ret =3D -EFAULT;
+> >               goto after_loop;
