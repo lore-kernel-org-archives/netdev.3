@@ -1,186 +1,196 @@
-Received: from bird.elm.relay.mailchannels.net (bird.elm.relay.mailchannels.net [23.83.212.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFE52BD001;
-	Thu, 21 Aug 2025 21:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.212.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755811316; cv=pass; b=aaORIOpLJVEA+8B8f+l1Eguax2mXDzlPiHWtbIqIX7uUr8BD0wIaolgJPN3EhfigLKe2vQU5NIBVaRzSHzXITieA1NG6a8y2A41NlBTn/tqo2tD54EW4KsErJLhxdMIauW85TWKf1GVfdohWw8W1YKONeLihrfgcynLQp8aIH0U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755811316; c=relaxed/simple;
-	bh=gHc9N+sPNmbFdoVvlcXaXBnEUwSsL2C2pPfbjITtm2c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T24ZERiKtkukb2gip27u04p3LUQ2LzdbRX0C7Q7gHbl6my40KWs8SMPfIl1Qe3ffqIclOMSQzuc2POlhxgQ5Zybfc171Mpr/qb0aUFeRICrvAFE5BlSU/y+k/ewng1EPNnhJXrQ48gD2LoLe0isoUAuS8XhPYYpoiFODy4IS5BA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net; spf=pass smtp.mailfrom=landley.net; dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b=E7Ze60CN; arc=pass smtp.client-ip=23.83.212.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=landley.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=landley.net header.i=@landley.net header.b="E7Ze60CN"
-X-Sender-Id: dreamhost|x-authsender|rob@landley.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 67DB02C60D5;
-	Thu, 21 Aug 2025 21:02:47 +0000 (UTC)
-Received: from pdx1-sub0-mail-a254.dreamhost.com (trex-blue-3.trex.outbound.svc.cluster.local [100.96.37.67])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id BB8372C6073;
-	Thu, 21 Aug 2025 21:02:44 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1755810165; a=rsa-sha256;
-	cv=none;
-	b=VA395R/iBN/iOB+2AT3Sx/h1V57sN4gvPNEF/dlZq+Ge5opPfCJ/TpPnVatyDp0CHNJxEv
-	tfDOgcPj/9I3SSVqRyD5TEldt/tqv/xweW+60BgBStohBbFv8e2ynhrglN2nyyxh25jZQA
-	YORnb92Kh16oV1zpUf9tESKgdmeBarvhIeE7vF0+64eZYgtrrOlVucRk0kDNPxv7OQ5qY/
-	E2N1+scnJbeXWvTnXGmf8uS0oFkgbmIM+zJq5T0ul1As2+W1OWWVvNCUD+YIrVnck8t/2A
-	ji//1hdJ9dZfNDYeeIgIAVsb/CjjUaJAfb6JHpd7XAcTnKIglfss8ZWkvQuNWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1755810165;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PiRdnVkb3Mdck8rf90p7+DnOfB9A+JduUXfai72Z7+4=;
-	b=fvPcQG0GmaTFX0s1SvnPmsgzy7jrpdnnof5z+FJUBRcZNz6Yrb7EjpplCBztg5XKo8l85X
-	vHXX5ehr9qCvBYjGuVtmUvNX7211fZM0R9Xql2poMvPoFXHnoBmEFYsyNj4CC5rM9SmwHO
-	EAPh/w93JrVjFX3ybeA5SbFS+CvE6mYStAXAMcPUXA2p3YmsqIRTR+lWEtDtz6xxqipg7a
-	wI/lpLAQAIurkhZwCy7PSEzAmul2gk48lwVbObDJY/IKmMwgd9RSptaiYI45tUTfv3K7ml
-	HcRlx8kRl3opZw0WLx0xmQEJVlTb7vOavtegGw4yurw/8Zt+PJG4G0s6aM2eNg==
-ARC-Authentication-Results: i=1;
-	rspamd-b597879cf-ngsbq;
-	auth=pass smtp.auth=dreamhost smtp.mailfrom=rob@landley.net
-X-Sender-Id: dreamhost|x-authsender|rob@landley.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|rob@landley.net
-X-MailChannels-Auth-Id: dreamhost
-X-Macabre-Bubble: 2f8dd21033f8e097_1755810167283_2720825162
-X-MC-Loop-Signature: 1755810167283:381200934
-X-MC-Ingress-Time: 1755810167283
-Received: from pdx1-sub0-mail-a254.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.96.37.67 (trex/7.1.3);
-	Thu, 21 Aug 2025 21:02:47 +0000
-Received: from [IPV6:2607:fb90:faae:51e1:d9d4:2e42:ae75:9827] (unknown [172.58.14.113])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: rob@landley.net)
-	by pdx1-sub0-mail-a254.dreamhost.com (Postfix) with ESMTPSA id 4c7G431Sm7zDF;
-	Thu, 21 Aug 2025 14:02:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=landley.net;
-	s=dreamhost; t=1755810164;
-	bh=PiRdnVkb3Mdck8rf90p7+DnOfB9A+JduUXfai72Z7+4=;
-	h=Date:Subject:To:Cc:From:Content-Type:Content-Transfer-Encoding;
-	b=E7Ze60CNKAiVA+WD8T4gncR5kdArdw1idFuny3yPyKtIHpxERaG5Sb3tizBAEbBL/
-	 1rZpQo1GhUTePym7uXRlMqKbqQScRPDFlva0DiRf+aR0LSjS/M+i/0OSjzvlYfTtCd
-	 IgsnjyNyyunyCtWVkBI/altwWbggCNtHJGZ7XJ3zZhXH203GZsTE7otLwmIRNL/uUV
-	 Fjdx1AxvsaHevwhNKe1sIfhj+tUt6JSudtond1NWpomo1JJ7C5lGodn70E5f4LSu22
-	 96C1BYubVxQ4CfoUOIKdH3ZsHxphuqfLytr7+LmMt956XvMF7DNvFXe8gaUzBPpzRP
-	 pM+ZgqBhRFNkw==
-Message-ID: <4df745a6-2997-4eee-87b1-0c77ff46cfdd@landley.net>
-Date: Thu, 21 Aug 2025 16:02:41 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847DB259498
+	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 21:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755812237; cv=none; b=ZVu62tE1NWE1niVty5bMCZodHz84z3X23ageEu0LMlBpTmqt1Y4mMZnRhADAjaxafqVvPYQ994JAsL8mFlWoJoYgbaQ6U7tBR6OBlDA9NkA98jeQa04XCkT7ynrB7HBCfbSzkgWWyeH2IMSxeSr3BQZN0JE/VzvaILxnw8syYjs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755812237; c=relaxed/simple;
+	bh=D7mG/7eHvAByRVz7e7xhMg1OUUyaclPfbPriELhFlwc=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=Qw1axKgGFNKGnnhaBMM1CK1xKwOhiR1FMCXRuHIQONZV7dERceIG7y/1fVhqbQJUmARI6zzhBDRBmgwOhjPfw4SiiUu014cFlfXtF/fHql5PwT973L9z43x+W9s7MxQUBCV1iKa0yrKQhKjEQ2kk5dc4ymk6Ob01mDZQwEJ26tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3e7172dea48so29165685ab.1
+        for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 14:37:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755812234; x=1756417034;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q4cr6QMqKu3ZXE5LbmZFl5rCj+PzGQQulyaw1Vp4aNc=;
+        b=Ro/hjjzChDmaVxQebkP71CH7cOB1f4C767iCIsy0a5wGthTN7Fh66yK4kLfwCq2Aqz
+         y53tipm+TlX4pSmftOTs9W5DvYOD3WKPXpj2hnkVPJXFvHwpbVwCdpnIRdxCFBohCGXB
+         y+qr1qZamAj5EGxUiYHs4HuaT06YZPFQDwokuunVeUGcDYInTqmH8GjRmucGMtuyCS4f
+         o99i31XQaqM6sHnbF/NPjF+PLTLRUI37PQ/26OBa7/qESmHniBR8JBe66kWPoDwobbrk
+         yap7s3vIm66+ufYaIUjRVLXbDsCH+3ZRXYFsTB4C5Fj28+3N2xELBJ718th9yNpKVXIn
+         Y7TQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXRYX9nqimV7I8PEa1nYYuZimRP008ovU5LtsFdsZj06vE7eXmV44PQvwDnQy8FTk5ECcyw2bQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOAjUIsx+vOPSrhk8tKjsKWsswPDpyVQ+m5ILucyKqUBw7jY3b
+	OFafzz9AqveEWfUEm2OvHdSAqi8YQyKm3lVUr1ZiGlIDbO16Lc2OHE4exG6nP9MFBumvF9BL0eZ
+	0BTNDYvjaeMZ3V/A9XePraOofhJVj8QHk6dqTkEbeA1qhWQi/o7qneANFK5o=
+X-Google-Smtp-Source: AGHT+IF7KMX4PQ9MbhjzaZS9KH1hsBks7Ag/V1kb+FvUzHNpAJ+XwFEszukCkWQQAtI/yieVASDRCVnTSkaGoVJY87X1Pd3k81yl
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] dt-bindings: net: Add support for J-Core EMAC
-To: Rob Herring <robh@kernel.org>, "D. Jeff Dionne" <jeff@coresemi.io>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Artur Rojek <contact@artur-rojek.eu>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250815194806.1202589-3-contact@artur-rojek.eu>
- <aa6bdc05-81b0-49a2-9d0d-8302fa66bf35@kernel.org>
- <cab483ef08e15d999f83e0fbabdc4fdf@artur-rojek.eu>
- <CAMuHMdVGv4UHoD0vbe3xrx8Q9thwrtEaKd6X+WaJgJHF_HXSaQ@mail.gmail.com>
- <26699eb1-26e8-4676-a7bc-623a1f770149@kernel.org>
- <295AB115-C189-430E-B361-4A892D7528C9@coresemi.io>
- <bc96aab8-fbb4-4869-a40a-d655e01bb5c7@kernel.org>
- <CAMuHMdW0NZHCX1V01N4oay-yKuOf+RR5YV3kjNFiM6X6aVAvdw@mail.gmail.com>
- <0784109c-bb3e-4c4e-a516-d9e11685f9fb@kernel.org>
- <CB2BF943-8629-4D01-8E52-EEC578A371B5@coresemi.io>
- <20250820213959.GA1242641-robh@kernel.org>
-Content-Language: en-US
-From: Rob Landley <rob@landley.net>
-In-Reply-To: <20250820213959.GA1242641-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:19c6:b0:3e6:6c55:643 with SMTP id
+ e9e14a558f8ab-3e9201f3d92mr16380665ab.7.1755812233632; Thu, 21 Aug 2025
+ 14:37:13 -0700 (PDT)
+Date: Thu, 21 Aug 2025 14:37:13 -0700
+In-Reply-To: <20250821200701.1329277-1-david@redhat.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68a79189.050a0220.cb3d1.0004.GAE@google.com>
+Subject: [syzbot ci] Re: mm: remove nth_page()
+From: syzbot ci <syzbot+ci0b43493baa45553d@syzkaller.appspotmail.com>
+To: agordeev@linux.ibm.com, airlied@gmail.com, akpm@linux-foundation.org, 
+	alex.williamson@redhat.com, alex@ghiti.fr, andreas@gaisler.com, 
+	aou@eecs.berkeley.edu, axboe@kernel.dk, borntraeger@linux.ibm.com, 
+	bp@alien8.de, brett.creeley@amd.com, cassel@kernel.org, 
+	catalin.marinas@arm.com, chenhuacai@kernel.org, christophe.leroy@csgroup.eu, 
+	cl@gentwo.org, dave.hansen@linux.intel.com, davem@davemloft.net, 
+	david@redhat.com, dennis@kernel.org, dgilbert@interlog.com, 
+	dlemoal@kernel.org, dri-devel@lists.freedesktop.org, dvyukov@google.com, 
+	elver@google.com, glider@google.com, gor@linux.ibm.com, hannes@cmpxchg.org, 
+	hca@linux.ibm.com, herbert@gondor.apana.org.au, 
+	intel-gfx@lists.freedesktop.org, io-uring@vger.kernel.org, 
+	iommu@lists.linux.dev, jackmanb@google.com, 
+	james.bottomley@hansenpartnership.com, jani.nikula@linux.intel.com, 
+	jason@zx2c4.com, jesper.nilsson@axis.com, jgg@nvidia.com, jgg@ziepe.ca, 
+	jhubbard@nvidia.com, joonas.lahtinen@linux.intel.com, 
+	kasan-dev@googlegroups.com, kernel@xen0n.name, kevin.tian@intel.com, 
+	kvm@vger.kernel.org, lars.persson@axis.com, liam.howlett@oracle.com, 
+	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org, 
+	linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linux-mm@kvack.org, linux-mmc@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, lorenzo.stoakes@oracle.com, 
+	m.szyprowski@samsung.com, maddy@linux.ibm.com, martin.petersen@oracle.com, 
+	maximlevitsky@gmail.com, mhocko@suse.com, mingo@redhat.com, 
+	mpe@ellerman.id.au, muchun.song@linux.dev, netdev@vger.kernel.org, 
+	npiggin@gmail.com, oakad@yahoo.com, osalvador@suse.de, palmer@dabbelt.com, 
+	paul.walmsley@sifive.com, peterx@redhat.com, robin.murphy@arm.com, 
+	rodrigo.vivi@intel.com, rppt@kernel.org, shameerali.kolothum.thodi@huawei.com, 
+	shuah@kernel.org, simona@ffwll.ch, surenb@google.com, svens@linux.ibm.com, 
+	tglx@linutronix.de, tj@kernel.org, torvalds@linux-foundation.org, 
+	tsbogend@alpha.franken.de, tursulin@ursulin.net, ulf.hansson@linaro.org, 
+	vbabka@suse.cz, virtualization@lists.linux.dev, will@kernel.org, 
+	wireguard@lists.zx2c4.com, x86@kernel.org, ziy@nvidia.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 8/20/25 16:39, Rob Herring wrote:
-> On Mon, Aug 18, 2025 at 10:55:51PM +0900, D. Jeff Dionne wrote:
->> J-Core SoCs are assembled with an SoC generator tool from standard
->> components.  An SoC has a ROM from soc_gen with a Device Tree binary
->> included.  Therefore, J-Core SoC devices are designed to ‘just work’
->> with linux, but this means the DT entires are generic, slightly
->> different than standard device tree practice.
-> 
-> Yes. Though doesn't the SoC generator evolve/change? New features in the
-> IP blocks, bug fixes, etc. Soft IP for FPGAs is similar I think.
+syzbot ci has tested the following series
 
-The j-core guys almost never change the hardware interface on a deployed 
-I/O device: when the existing interface is too limiting they do a new 
-design with a different interface. (You'll notice in the github soc_top, 
-components/ has ddr and ddr2, and components/misc has aic and aic2 from 
-when the interrupt controller changed, for example. Those aren't version 
-numbers, those are rewrites.)
+[v1] mm: remove nth_page()
+https://lore.kernel.org/all/20250821200701.1329277-1-david@redhat.com
+* [PATCH RFC 01/35] mm: stop making SPARSEMEM_VMEMMAP user-selectable
+* [PATCH RFC 02/35] arm64: Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
+* [PATCH RFC 03/35] s390/Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
+* [PATCH RFC 04/35] x86/Kconfig: drop superfluous "select SPARSEMEM_VMEMMAP"
+* [PATCH RFC 05/35] wireguard: selftests: remove CONFIG_SPARSEMEM_VMEMMAP=y from qemu kernel config
+* [PATCH RFC 06/35] mm/page_alloc: reject unreasonable folio/compound page sizes in alloc_contig_range_noprof()
+* [PATCH RFC 07/35] mm/memremap: reject unreasonable folio/compound page sizes in memremap_pages()
+* [PATCH RFC 08/35] mm/hugetlb: check for unreasonable folio sizes when registering hstate
+* [PATCH RFC 09/35] mm/mm_init: make memmap_init_compound() look more like prep_compound_page()
+* [PATCH RFC 10/35] mm/hugetlb: cleanup hugetlb_folio_init_tail_vmemmap()
+* [PATCH RFC 11/35] mm: sanity-check maximum folio size in folio_set_order()
+* [PATCH RFC 12/35] mm: limit folio/compound page sizes in problematic kernel configs
+* [PATCH RFC 13/35] mm: simplify folio_page() and folio_page_idx()
+* [PATCH RFC 14/35] mm/mm/percpu-km: drop nth_page() usage within single allocation
+* [PATCH RFC 15/35] fs: hugetlbfs: remove nth_page() usage within folio in adjust_range_hwpoison()
+* [PATCH RFC 16/35] mm/pagewalk: drop nth_page() usage within folio in folio_walk_start()
+* [PATCH RFC 17/35] mm/gup: drop nth_page() usage within folio when recording subpages
+* [PATCH RFC 18/35] io_uring/zcrx: remove "struct io_copy_cache" and one nth_page() usage
+* [PATCH RFC 19/35] io_uring/zcrx: remove nth_page() usage within folio
+* [PATCH RFC 20/35] mips: mm: convert __flush_dcache_pages() to __flush_dcache_folio_pages()
+* [PATCH RFC 21/35] mm/cma: refuse handing out non-contiguous page ranges
+* [PATCH RFC 22/35] dma-remap: drop nth_page() in dma_common_contiguous_remap()
+* [PATCH RFC 23/35] scatterlist: disallow non-contigous page ranges in a single SG entry
+* [PATCH RFC 24/35] ata: libata-eh: drop nth_page() usage within SG entry
+* [PATCH RFC 25/35] drm/i915/gem: drop nth_page() usage within SG entry
+* [PATCH RFC 26/35] mspro_block: drop nth_page() usage within SG entry
+* [PATCH RFC 27/35] memstick: drop nth_page() usage within SG entry
+* [PATCH RFC 28/35] mmc: drop nth_page() usage within SG entry
+* [PATCH RFC 29/35] scsi: core: drop nth_page() usage within SG entry
+* [PATCH RFC 30/35] vfio/pci: drop nth_page() usage within SG entry
+* [PATCH RFC 31/35] crypto: remove nth_page() usage within SG entry
+* [PATCH RFC 32/35] mm/gup: drop nth_page() usage in unpin_user_page_range_dirty_lock()
+* [PATCH RFC 33/35] kfence: drop nth_page() usage
+* [PATCH RFC 34/35] block: update comment of "struct bio_vec" regarding nth_page()
+* [PATCH RFC 35/35] mm: remove nth_page()
 
-Outputting a different constellation of devices/busses from the SOC 
-generator is more akin to running "make menuconfig". There isn't an 
-ancestor/descendant relationship there, it's a generator working from a 
-configuration to instantiate and connect existing components.
+and found the following issue:
+general protection fault in kfence_guarded_alloc
 
-> There
-> we typically just require the versioning schema be documented and
-> correlate to the IP versions (vs. made up v1, v2, v3).
+Full report is available here:
+https://ci.syzbot.org/series/f6f0aea1-9616-4675-8c80-f9b59ba3211c
 
-There hasn't been a new version of the 100baseT specification recently.
+***
 
-The same chunk of bitstream is still driving the same PHY chips on the 
-boards (or compatible, long out of patent) via the same small parallel 
-bus at 50mhz. The engineers are no more interested in changing the 
-kernel side interface than they are in changing the PHY side interface.
+general protection fault in kfence_guarded_alloc
 
-> This is all pretty niche I think, so I'm not too concerned about what 
-> you do here.
+tree:      net-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
+base:      da114122b83149d1f1db0586b1d67947b651aa20
+arch:      amd64
+compiler:  Debian clang version 20.1.7 (++20250616065708+6146a88f6049-1~exp1~20250616065826.132), Debian LLD 20.1.7
+config:    https://ci.syzbot.org/builds/705b7862-eb10-40bd-a4cf-4820b4912466/config
 
-Eh, not that niche. Just hardware development culture rather than 
-software development culture. What's the model number on your microwave? 
-If you need to replace it, how many versions will you advance?
+smpboot: CPU0: Intel(R) Xeon(R) CPU @ 2.80GHz (family: 0x6, model: 0x55, stepping: 0x7)
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:kfence_guarded_alloc+0x643/0xc70
+Code: 41 c1 e5 18 bf 00 00 00 f5 44 89 ee e8 a6 67 9c ff 45 31 f6 41 81 fd 00 00 00 f5 4c 0f 44 f3 49 8d 7e 08 48 89 f8 48 c1 e8 03 <42> 80 3c 20 00 74 05 e8 f1 cb ff ff 4c 8b 6c 24 18 4d 89 6e 08 49
+RSP: 0000:ffffc90000047740 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: ffffea0004d90080 RCX: 0000000000000000
+RDX: ffff88801c2e8000 RSI: 00000000ff000000 RDI: 0000000000000008
+RBP: ffffc90000047850 R08: ffffffff99b2201b R09: 1ffffffff3364403
+R10: dffffc0000000000 R11: fffffbfff3364404 R12: dffffc0000000000
+R13: 00000000ff000000 R14: 0000000000000000 R15: ffff88813fec7068
+FS:  0000000000000000(0000) GS:ffff8880b861c000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff88813ffff000 CR3: 000000000df36000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ __kfence_alloc+0x385/0x3b0
+ __kmalloc_noprof+0x440/0x4f0
+ __alloc_workqueue+0x103/0x1b70
+ alloc_workqueue_noprof+0xd4/0x210
+ init_mm_internals+0x17/0x140
+ kernel_init_freeable+0x307/0x4b0
+ kernel_init+0x1d/0x1d0
+ ret_from_fork+0x3f9/0x770
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:kfence_guarded_alloc+0x643/0xc70
+Code: 41 c1 e5 18 bf 00 00 00 f5 44 89 ee e8 a6 67 9c ff 45 31 f6 41 81 fd 00 00 00 f5 4c 0f 44 f3 49 8d 7e 08 48 89 f8 48 c1 e8 03 <42> 80 3c 20 00 74 05 e8 f1 cb ff ff 4c 8b 6c 24 18 4d 89 6e 08 49
+RSP: 0000:ffffc90000047740 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: ffffea0004d90080 RCX: 0000000000000000
+RDX: ffff88801c2e8000 RSI: 00000000ff000000 RDI: 0000000000000008
+RBP: ffffc90000047850 R08: ffffffff99b2201b R09: 1ffffffff3364403
+R10: dffffc0000000000 R11: fffffbfff3364404 R12: dffffc0000000000
+R13: 00000000ff000000 R14: 0000000000000000 R15: ffff88813fec7068
+FS:  0000000000000000(0000) GS:ffff8880b861c000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff88813ffff000 CR3: 000000000df36000 CR4: 0000000000350ef0
 
-Chip model numbers tend to be assigned by marketing well after the fact, 
-and don't necessarily have a linear relationship even for the big boys 
-making central components other people build entire systems around:
 
-https://en.wikipedia.org/wiki/List_of_Qualcomm_Snapdragon_systems_on_chips
+***
 
-The Pentium II's development name was Kalmath, Pentium III was Katmai, 
-then Pentium 4 was a space heater and everybody backed up and switched 
-to "Pentium M" (which was MEANT to be a mobile chip but was instead a 
-"not stupid" chip) and then they did "Core"... And then "Core 2" and 
-"Core Duo" were different things and "Core 2 Duo" was both of those 
-things, and then they had i3 and i5 and i7 but they all came out at the 
-same time...
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
-Jeep produced a "Cherokee" for 50 years and expected the user to step 
-from a 1973 model to a 2023 model and be able to drive it the same 
-(modulo major flag day changes like stick shift or leaded gasoline) with 
-zero learning curve. Hardware developers of today go "here's an sd card, 
-it goes click-click into your device and it just works, the only numbers 
-you really need to know are price and capacity" (modulo microsd, but 
-they still provide adapter sleds).
-
-Software developers think that "DOS 2.0" and "DOS 3.0" or "Windows 3.0" 
-and "Windows 3.1" being profoundly different and largely incompatible is 
-just normal, and track that stuff minutely.
-
-Different culture.
-
-Rob
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
