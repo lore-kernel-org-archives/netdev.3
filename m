@@ -1,74 +1,74 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EAC736206D
-	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 20:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DEA369333
+	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 20:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755806884; cv=none; b=qoKNTLtIGtIIUCcoIyD4taNe3hyMZYuPSEL2vf4USEmt9IwJ8ptjOpJO7D02ZAhCu69KEmeZxfGyJi+Om8Z7BUeCNpqHwt7lGkI/i+mR+tqOhjDF4vKz4xSZRm0CczZJi9Ojm0xTMpTvDwyrGRuSeiT/GrcVJnC+lu5Q0hQEzN0=
+	t=1755806888; cv=none; b=pYGXJjpPq7EcNmHU6HN36exxv6XYhqemzKMwC9f2YCYkwT8oeh8njsQw9XUvAS/6BXVbxt98ywxqecI8Rny6bhpyNVK2iFxKHVpJ8GTvnPlo4un36fQ5exySBUzWNZC5hxahw3gvew8QPZQr9mQPVrmP/M5H8EcMZM8DYnQhVu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755806884; c=relaxed/simple;
-	bh=zuH5Mfr3MXrb3Q6KuIuEbIGzhyvXbwh1EOpbXVleP4E=;
+	s=arc-20240116; t=1755806888; c=relaxed/simple;
+	bh=3RfOoWzbZTj8EGhrr7OVQfmCtFM6TSZBuGB7jdppkcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XGEffWwNA3voEehniykFkmrqajVeJLEjK/IwbCyxHWtZsTl/Hn6u8N4A5tDN8GPA8QlzvuMV9r8xGZQ9x8HWDL1BJJGfcyYQJlNEYtWuArOIiJ5GrqZJ2x3fWPYtVlvkth+1kbGJe4Hvsc+Od3BZR6TPQzhIhRpsIDC7GCyXr5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g80CNirM; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=WGq3BSpn8aNKFabK8e6wpKy0DgwUAsKNmU9PniNxCMv7vbzLnxkuhIUl2gQlpzZUOKPJQtlyKQwR2jTk51jPz6g105wOxxJMpCGZjEbhveoZPl+s9Q3buPFhpsC1H53+OgKK2Il2qDxFcLoTCce7GyjC/fXMuUiWH7xhjE+C0FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T7pxJjw6; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g80CNirM"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T7pxJjw6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755806880;
+	s=mimecast20190719; t=1755806886;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hICKs+PYshPEfoclHwqOXtWPheskj6p8LyRcJkrFnX4=;
-	b=g80CNirM+XKtd5lCB8seBW95EVoOYwWRh+oRieBSB+hTQ/OAFnTZ2QRD+MpCwkJonxsPha
-	kHGbgxKNI1xHQKQq5qxt9CVy68m43ZgBoAcGd8m+ySiDKu3fZ1ccqafrKvwqNgIYuqt05Z
-	r8dkKgBNIu324SVLDqQAgUCFZsRSEHI=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=jaRFM4K4Pg6WYlxhcM2k1BGbQ/DW6XfjnDsCttbmjXY=;
+	b=T7pxJjw6IWMA55qZiM4hqL4R1C6yErAs7PlmpQbO7PYmtCxFEpv9aYQ5RJTkmkW9t7hKOq
+	Dnj1t7VQRJLRczFwXgbRmnKCrzolwy3sNDBwrzSrP+VVxWu1VSFiw5Dwvl3XfJ1wLthvBP
+	0psEG0s75Rl+3GhdyeOTSqKQWIXG5E8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-131-18W5_EhgPdSZsQmYGsByTA-1; Thu, 21 Aug 2025 16:07:58 -0400
-X-MC-Unique: 18W5_EhgPdSZsQmYGsByTA-1
-X-Mimecast-MFC-AGG-ID: 18W5_EhgPdSZsQmYGsByTA_1755806877
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3b9d41bda7bso1053981f8f.0
-        for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 13:07:58 -0700 (PDT)
+ us-mta-439-nrs4Bs0jMJOTjzIz1nQkwg-1; Thu, 21 Aug 2025 16:08:04 -0400
+X-MC-Unique: nrs4Bs0jMJOTjzIz1nQkwg-1
+X-Mimecast-MFC-AGG-ID: nrs4Bs0jMJOTjzIz1nQkwg_1755806883
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3c584459d02so247362f8f.0
+        for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 13:08:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755806877; x=1756411677;
+        d=1e100.net; s=20230601; t=1755806883; x=1756411683;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hICKs+PYshPEfoclHwqOXtWPheskj6p8LyRcJkrFnX4=;
-        b=Os0leD+9QpAimAz0celkkS9+RwR4meCxc/rTyQQUapdpotKC73XssZ4MEFFZiCPfG2
-         BX/20aclwOmuC32vJ1kOmAqwO/F7F1qCx+yHyzX3qAhU3EnatsOKfBK1NbCgIKKF0qJa
-         ZCChJ7XytLnpSi1bDCT90Q8aYq49m2DQwOmvGR5pqfKjFQCaB2X5D/gqapwkvzkebtKM
-         28zYqr4b6dlIICwKmgLAsb/55JYgjkXfnpJbTHhhpeIeRsrApCU4Kxm2nojz9CsKtIPy
-         sOOj1/1fXg+3ZlWETHA/JxI0DOIAwXOn309lLlgWuH5Wwhy3GJmA5UEIifCotD6C3m04
-         mmRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX0eCk3wqkmZ7XTuuUMLVlg9e/f3rxzbKjoJYX5EPUGVP3VJ6ynMFL/aMID4k2/Jxjy1p6F6KE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdVnNke3/hdUWkIaAKXdRL3MuTBSMaS8/IOwgoLtO2pQWtDHJm
-	S3s1LNpYf22iZalwz03vUVigQYcvvJ3XQE6a8GUSQAV8hp73tkfJYwZZu1xyQEZfWPO2LpDJdAk
-	RR4TCaUfDRRZ+0pHeZYjGMprvnsNMYa7EbddfZ0Co0N+PT6IhlcHjAquY2A==
-X-Gm-Gg: ASbGncscWAyZT1k3Ua6Skv51rURvdydNIUv0uUJoKenJtrjm+ujZTUWeEXjVqBDfZ5Z
-	BGOjsj6RcLoY+SpEVsVzcwGehUrQ/t6Ck2DWxaC9+PmAJ2DBr7ro1wx1fRjkqiDDi2v7APE8KyX
-	5X0ahH8YxeGy9LcDGyHw0/InhYb9z3V9SYI6ks6zgEmUNBRTyZiXKhSODSwSMxpeR3WBYdHT8zz
-	3Iv1TxWbz5IHmn/CtcvaZQ3uhFcSmuqp2lYu4U/Q+6mzLbJMPQ6rxmY2nvDorr6q85ss/0IQHyF
-	tzJRDCc+rheNSvsWU63g/6VuIidVEZaJcJZXB7uJ1gcS2WyhXT1srGzu6kIu7rP+RJYDMzpt9YY
-	c8LOmet11EIVMsv/iVSytcg==
-X-Received: by 2002:a05:6000:1789:b0:3b4:9721:2b2b with SMTP id ffacd0b85a97d-3c5dac17062mr195821f8f.12.1755806877251;
-        Thu, 21 Aug 2025 13:07:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHgVLjhFaRrDh3LOBLGV7UmH7wFAxvy1IR++ErfO8cOP/XFU/ikMyZpM3bVU7Jjqctj1mhmFQ==
-X-Received: by 2002:a05:6000:1789:b0:3b4:9721:2b2b with SMTP id ffacd0b85a97d-3c5dac17062mr195797f8f.12.1755806876810;
-        Thu, 21 Aug 2025 13:07:56 -0700 (PDT)
+        bh=jaRFM4K4Pg6WYlxhcM2k1BGbQ/DW6XfjnDsCttbmjXY=;
+        b=IXvtcyH/5BTs0/Rp7ulQ3uctXH+LxhGXasot8B9fAmtn0PrAfAQV+tCUkda+I8JZQp
+         9siV2C2WTKwLOvxSxzbyFSnTK/ZoYjFFrjEaeFs2hp7/aQROf5/p8vk632vzaWmAunBt
+         LAhTjR69T7zkRb/Ebl1iz4NlxNgOFJPd8HHn3+Mqvq42LpsXwdgXsQHPJkAUHELWkvfT
+         NCnNTqg262LAyLSuyY6464pzJz4kQWN+p0SS3MRQ3EbDpHoKpx/eaQ0Hj+K8HA2k10HK
+         f2BjmmZ9k3xQVKKTsjw25uo15kJSylWurxTVj4yKwh9+72Ki0cAwEjbnTlCGqchPpHBO
+         OnJg==
+X-Forwarded-Encrypted: i=1; AJvYcCUi0Qw3XdAtls9f2CSbTbQd5gOD/Y3qYNZukutpQxOPAmv0uieO1QKdYbKTQCYP/pSkfx1jKSQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNu8djKTPnjKoDSfbn2quWl/6VGojW3Z/DsNuQQvw/JPP3ZrUg
+	bQPzSDfdmncMV4/Z9eAmxCdCvrMQYT6gmh2F42cFI2COX1A72IKNb6cxkSDDRMYYLZjeuqbtVyp
+	KPpFRYOwOzTr1yV4RMa5D4nLkLtDdjx0ygBElRjYDnHGVMqebnBSuu6kRzw==
+X-Gm-Gg: ASbGncthVwtyyhZsfn5y9+gUVA3OMKJa435ivtILbijW7bC7fHW7pSdk908bfF2zrji
+	M56JWZ9ogrwLGwV0ZYPkH197x/qCJSKKEHla3uTwmFnZJgyui+t8TFcX2I8Dlq5OXD0eBYQAk3w
+	QHcCBCz7jQf8tb5UTn8aafL78viK4beNiK+rxN8JOU6SJPE7bn7DSBTlM1KU3Sxyc8k9dP982dP
+	se22v9RaPQ/x0RFk8UHiFZaXmzojT99gPQApSkvLsOdmcK3UVDBh1tDLrm5RAQ75h/oIDbit+FJ
+	Qyg7kgrq8FefYuDxP5ADXG9nx3i1DgyvhixGKHh2BM1APhuny4m3W2KAslnWkHjlF/e4sc/dTRj
+	J/EOgWD+1cRQQHSO2PMdN7A==
+X-Received: by 2002:a05:6000:2012:b0:3b7:dd87:d741 with SMTP id ffacd0b85a97d-3c5dcc095c3mr196174f8f.42.1755806882793;
+        Thu, 21 Aug 2025 13:08:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFiRO9AsztHDXjXXwtKcCswXKV/HQQvQjujQOlltIgK9F5s1Ca8ikdDYrX2bvCVEtKZoFK6NA==
+X-Received: by 2002:a05:6000:2012:b0:3b7:dd87:d741 with SMTP id ffacd0b85a97d-3c5dcc095c3mr196155f8f.42.1755806882316;
+        Thu, 21 Aug 2025 13:08:02 -0700 (PDT)
 Received: from localhost (p200300d82f26ba0008036ec5991806fd.dip0.t-ipconnect.de. [2003:d8:2f26:ba00:803:6ec5:9918:6fd])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3c4f77e968esm2903478f8f.21.2025.08.21.13.07.54
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45b50e0b299sm8957945e9.22.2025.08.21.13.08.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Aug 2025 13:07:56 -0700 (PDT)
+        Thu, 21 Aug 2025 13:08:01 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Alexander Potapenko <glider@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Brendan Jackman <jackmanb@google.com>,
@@ -80,6 +80,7 @@ Cc: David Hildenbrand <david@redhat.com>,
 	iommu@lists.linux.dev,
 	io-uring@vger.kernel.org,
 	Jason Gunthorpe <jgg@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	John Hubbard <jhubbard@nvidia.com>,
 	kasan-dev@googlegroups.com,
@@ -114,9 +115,9 @@ Cc: David Hildenbrand <david@redhat.com>,
 	wireguard@lists.zx2c4.com,
 	x86@kernel.org,
 	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH RFC 18/35] io_uring/zcrx: remove "struct io_copy_cache" and one nth_page() usage
-Date: Thu, 21 Aug 2025 22:06:44 +0200
-Message-ID: <20250821200701.1329277-19-david@redhat.com>
+Subject: [PATCH RFC 20/35] mips: mm: convert __flush_dcache_pages() to __flush_dcache_folio_pages()
+Date: Thu, 21 Aug 2025 22:06:46 +0200
+Message-ID: <20250821200701.1329277-21-david@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250821200701.1329277-1-david@redhat.com>
 References: <20250821200701.1329277-1-david@redhat.com>
@@ -128,95 +129,86 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-We always provide a single dst page, it's unclear why the io_copy_cache
-complexity is required.
+Let's make it clearer that we are operating within a single folio by
+providing both the folio and the page.
 
-So let's simplify and get rid of "struct io_copy_cache", simply working on
-the single page.
+This implies that for flush_dcache_folio() we'll now avoid one more
+page->folio lookup, and that we can safely drop the "nth_page" usage.
 
-... which immediately allows us for dropping one "nth_page" usage,
-because it's really just a single page.
-
-Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- io_uring/zcrx.c | 32 +++++++-------------------------
- 1 file changed, 7 insertions(+), 25 deletions(-)
+ arch/mips/include/asm/cacheflush.h | 11 +++++++----
+ arch/mips/mm/cache.c               |  8 ++++----
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index e5ff49f3425e0..f29b2a4867516 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -954,29 +954,18 @@ static struct net_iov *io_zcrx_alloc_fallback(struct io_zcrx_area *area)
- 	return niov;
- }
+diff --git a/arch/mips/include/asm/cacheflush.h b/arch/mips/include/asm/cacheflush.h
+index 1f14132b3fc98..8a2de28936e07 100644
+--- a/arch/mips/include/asm/cacheflush.h
++++ b/arch/mips/include/asm/cacheflush.h
+@@ -50,13 +50,14 @@ extern void (*flush_cache_mm)(struct mm_struct *mm);
+ extern void (*flush_cache_range)(struct vm_area_struct *vma,
+ 	unsigned long start, unsigned long end);
+ extern void (*flush_cache_page)(struct vm_area_struct *vma, unsigned long page, unsigned long pfn);
+-extern void __flush_dcache_pages(struct page *page, unsigned int nr);
++extern void __flush_dcache_folio_pages(struct folio *folio, struct page *page, unsigned int nr);
  
--struct io_copy_cache {
--	struct page		*page;
--	unsigned long		offset;
--	size_t			size;
--};
--
--static ssize_t io_copy_page(struct io_copy_cache *cc, struct page *src_page,
-+static ssize_t io_copy_page(struct page *dst_page, struct page *src_page,
- 			    unsigned int src_offset, size_t len)
+ #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
+ static inline void flush_dcache_folio(struct folio *folio)
  {
--	size_t copied = 0;
-+	size_t dst_offset = 0;
+ 	if (cpu_has_dc_aliases)
+-		__flush_dcache_pages(&folio->page, folio_nr_pages(folio));
++		__flush_dcache_folio_pages(folio, folio_page(folio, 0),
++					   folio_nr_pages(folio));
+ 	else if (!cpu_has_ic_fills_f_dc)
+ 		folio_set_dcache_dirty(folio);
+ }
+@@ -64,10 +65,12 @@ static inline void flush_dcache_folio(struct folio *folio)
  
--	len = min(len, cc->size);
-+	len = min(len, PAGE_SIZE);
- 
- 	while (len) {
- 		void *src_addr, *dst_addr;
--		struct page *dst_page = cc->page;
--		unsigned dst_offset = cc->offset;
- 		size_t n = len;
- 
--		if (folio_test_partial_kmap(page_folio(dst_page)) ||
--		    folio_test_partial_kmap(page_folio(src_page))) {
--			dst_page = nth_page(dst_page, dst_offset / PAGE_SIZE);
--			dst_offset = offset_in_page(dst_offset);
-+		if (folio_test_partial_kmap(page_folio(src_page))) {
- 			src_page = nth_page(src_page, src_offset / PAGE_SIZE);
- 			src_offset = offset_in_page(src_offset);
- 			n = min(PAGE_SIZE - src_offset, PAGE_SIZE - dst_offset);
-@@ -991,12 +980,10 @@ static ssize_t io_copy_page(struct io_copy_cache *cc, struct page *src_page,
- 		kunmap_local(src_addr);
- 		kunmap_local(dst_addr);
- 
--		cc->size -= n;
--		cc->offset += n;
-+		dst_offset += n;
- 		len -= n;
--		copied += n;
- 	}
--	return copied;
-+	return dst_offset;
+ static inline void flush_dcache_page(struct page *page)
+ {
++	struct folio *folio = page_folio(page);
++
+ 	if (cpu_has_dc_aliases)
+-		__flush_dcache_pages(page, 1);
++		__flush_dcache_folio_pages(folio, page, folio_nr_pages(folio));
+ 	else if (!cpu_has_ic_fills_f_dc)
+-		folio_set_dcache_dirty(page_folio(page));
++		folio_set_dcache_dirty(folio);
  }
  
- static ssize_t io_zcrx_copy_chunk(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
-@@ -1011,7 +998,6 @@ static ssize_t io_zcrx_copy_chunk(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
- 		return -EFAULT;
+ #define flush_dcache_mmap_lock(mapping)		do { } while (0)
+diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
+index bf9a37c60e9f0..e3b4224c9a406 100644
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -99,9 +99,9 @@ SYSCALL_DEFINE3(cacheflush, unsigned long, addr, unsigned long, bytes,
+ 	return 0;
+ }
  
- 	while (len) {
--		struct io_copy_cache cc;
- 		struct net_iov *niov;
- 		size_t n;
+-void __flush_dcache_pages(struct page *page, unsigned int nr)
++void __flush_dcache_folio_pages(struct folio *folio, struct page *page,
++		unsigned int nr)
+ {
+-	struct folio *folio = page_folio(page);
+ 	struct address_space *mapping = folio_flush_mapping(folio);
+ 	unsigned long addr;
+ 	unsigned int i;
+@@ -117,12 +117,12 @@ void __flush_dcache_pages(struct page *page, unsigned int nr)
+ 	 * get faulted into the tlb (and thus flushed) anyways.
+ 	 */
+ 	for (i = 0; i < nr; i++) {
+-		addr = (unsigned long)kmap_local_page(nth_page(page, i));
++		addr = (unsigned long)kmap_local_page(page + i);
+ 		flush_data_cache_page(addr);
+ 		kunmap_local((void *)addr);
+ 	}
+ }
+-EXPORT_SYMBOL(__flush_dcache_pages);
++EXPORT_SYMBOL(__flush_dcache_folio_pages);
  
-@@ -1021,11 +1007,7 @@ static ssize_t io_zcrx_copy_chunk(struct io_kiocb *req, struct io_zcrx_ifq *ifq,
- 			break;
- 		}
- 
--		cc.page = io_zcrx_iov_page(niov);
--		cc.offset = 0;
--		cc.size = PAGE_SIZE;
--
--		n = io_copy_page(&cc, src_page, src_offset, len);
-+		n = io_copy_page(io_zcrx_iov_page(niov), src_page, src_offset, len);
- 
- 		if (!io_zcrx_queue_cqe(req, niov, ifq, 0, n)) {
- 			io_zcrx_return_niov(niov);
+ void __flush_anon_page(struct page *page, unsigned long vmaddr)
+ {
 -- 
 2.50.1
 
