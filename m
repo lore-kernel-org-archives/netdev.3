@@ -1,35 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5628252910;
-	Thu, 21 Aug 2025 02:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468441A76DE
+	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 02:35:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755743407; cv=none; b=s7TpbEQstXqhhDpSLShMPG560dnz4SrhLdg/1roFFbpBrhW7b1dLmF+v9sV91MIzPriBhsCzHRH0wcyPOzBlKxMMZxrBV0O+IAib9Z+8403ei8tML4ScTnJIevOSL1SNgJ/50Q9+DnLEaEByq80JMpgv/aRLktsUo0OWr3vD6u8=
+	t=1755743737; cv=none; b=CotsnIyLbfqjLEqr6BTNddDRrkib3JSMQHGBJWSp/ON2LnAoBk1KATdi3HfB/4H3155ju4DYP6L0uq0i69k+EVPBenUnnhqHD9ZkBRcNbul5Vyj5iPUOshRwIp7R1+gifFzTgmYhs7mv9wZke6/WPYi0ToRAgLCGohnTCDBfJFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755743407; c=relaxed/simple;
-	bh=IX8S02uoqknO2ug4UL8qWthJagbJzYPLpQV+Px/2XoU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=t7yTsstWe8rl2YMMi20ue8nnwwxRYpSPDttxkSjaHfZlk27xWLZsB9LCnxACRkbXPA1XbeWmV5KSbn1YJIsCSeuQXbHVOj6KbuO6ahchOikfE/EHQ2B2Wz+vuzQhkRU6rfjip7HdTsOljCtZr0fT5DibheRixFvEKAjQX9Obbqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5PuTFYk; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5PuTFYk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A2E7C113CF;
-	Thu, 21 Aug 2025 02:30:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755743407;
-	bh=IX8S02uoqknO2ug4UL8qWthJagbJzYPLpQV+Px/2XoU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=A5PuTFYk03Xg7XX0NIZ26gUoUe05BPBZ8bIi1q05iw5u+MgNervuphr+9GBukLukD
-	 tfRYo+GzOkyuXuyk5iVdqOgYFWz4RdwoO9/Af/XKQhkOy3tV6Mxq+gkQ/dcPMYaihd
-	 V24KDWYF7Ma40miIsc9ikXz60DSWhNVT7ByRpe4CRjIcqH7vkki1PtHs9zzSY3zVAk
-	 0lm25uxcY4Iq7y3pdsXsH8YABihJOtluD143ASgZW640cEf+D+M9VAHOafTp6+m7ZG
-	 cz7nFmdt5eejUWLdc6XEirXaLzL5hOwpL9xiPT7Wi070R4Sgmb3/qol1N6U6vtmDZr
-	 Xzfb3ZmdVGjPA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EADC2383BF4E;
-	Thu, 21 Aug 2025 02:30:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1755743737; c=relaxed/simple;
+	bh=jnUdPUIMFKVF7SxzQjmOnhFbiuf424/+sxKqR81qgYA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=LljBsf72Evn17A7jO2ZzfRTaEz6nrsG/pKXJYpgapgUhisIP6pzIuUuryFfEwv+nnYeLafgc73U2cdVI1azzYeXhkVG0U4EheOhygazgz6Rjx+xHZK0JYMvT5UeI6Xd687Qb6sOuTdCQOnzbm5agHUBkUx4cqm2DbbWwmMDwdpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz16t1755743671tc1247408
+X-QQ-Originating-IP: Ry4hweYoAswEgxlhIJNY8vTcK0d2Zgglq3xx0gFs8Xo=
+Received: from lap-jiawenwu.trustnetic.com ( [122.233.175.250])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 21 Aug 2025 10:34:30 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 14626487224544562233
+EX-QQ-RecipientCnt: 10
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v5 2/4] net: wangxun: limit tx_max_coalesced_frames_irq
+Date: Thu, 21 Aug 2025 10:34:06 +0800
+Message-Id: <20250821023408.53472-3-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20250821023408.53472-1-jiawenwu@trustnetic.com>
+References: <20250821023408.53472-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,46 +47,55 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] selftests/net/socket.c: removed warnings from unused
- returns
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175574341664.480425.10177992226629504965.git-patchwork-notify@kernel.org>
-Date: Thu, 21 Aug 2025 02:30:16 +0000
-References: <20250819025227.239885-1-alex.t.tran@gmail.com>
-In-Reply-To: <20250819025227.239885-1-alex.t.tran@gmail.com>
-To: Alex Tran <alex.t.tran@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MRun/5VSKCpATZHN2ngO8UhSCpC4PnqAsFhZEtdopC2e3m2PLpYusN3I
+	eaWYClAHET99NiLCe8ITF736tyX6zI+YJ/91jEjIFsX1ENdgyVPYS7gSlECcls8piWCDfLC
+	JE0GY4I6PAeakj7Jilyrk58tw2kj9JedboWwT3mGRxpD9CIhWdlZXtmAFuNCCMnZLXfz8mx
+	jZGqsFQe6Ss5hx5kP7ndH5u8AflUuatfJ+wdvRzC77SZ9bqhZgI5lTW+EsK1Sjbeuvuks/A
+	sm+bHuVwlp+gq8nUC2ilBwLfNAmwzgedVONV8iLjw7aZPScCvQ2NZSWtMZu6Q8qCOUBU5Rl
+	ahu9NYyaOcwA/cgqbSa4AYAQWfXeryn4Wr5/GAwzamCSzkjAP3Ng9aEt1rHMJRoBoOn85GH
+	MZ9DRDuqHl4VBvGZiDE3+EAupDq2SDlXOQ+9O/KH0i3rpwdqRK0MKQL1GsfHxP7onRuSyXr
+	8CpVqQ3iKmjBmlWxblbsaTtbK9Qge/oRKFQEyAMtAiMvKYFv0vgKgxvw4ApRybTyt/pvk/A
+	fMMbPxFJxW9d0mu9OLbldBugApJaXnnWOf5CBs86tmz9ZLPMrki/IaKobxp4iIdYnFuYg0w
+	1up8Xph57UC23E4/dIUNEROYrDmXCun5e1L3hcFmgR38JyF1K68c5EOEyHIQ6628cnXuqb2
+	iOvzhaSG3xuFzoX2Y8nCq9pSv9qVJj8rqW9wvdiNIta0jUNczOIXve+ZjrtvXb4MJy7U5hE
+	36koJ14pe8B/YFnWIw4ee3Slj5MJpcUj4tTCWs2z1mwLQHQeQZa7kQYQFCm8Memv46DI8iX
+	n22a3LwswB9zXjgfTqd0Y6PjFuMsC/XcOwQHO6iJLzoUn558iGFejpuTjvOYwJSvXuP3AHJ
+	Okrm6LBQ89jBFpeyj/L1Mv/Syw8aGzcbMW2k5MmmcRWrLKGKIDO22/LIPgphzIdpTZMoWT/
+	1RDGRn0R0LkqoSdpC0wkR+IisIA2vXDXPKpkS5+qezr36SGXJWUZB0vJGZ7Fw0tWYLnS1Jr
+	X2reulWP8tjzgQU7CYgLuZQRozDtX+1uuNA6UgRmnWINQGWU8gVR4jrhM9Chtxo2KQ5Fm/S
+	Q==
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
+X-QQ-RECHKSPAM: 0
 
-Hello:
+Add limitation on tx_max_coalesced_frames_irq as 0 ~ 65535, because
+'wx->tx_work_limit' is declared as a member of type u16.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+ drivers/net/ethernet/wangxun/libwx/wx_ethtool.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-On Mon, 18 Aug 2025 19:52:27 -0700 you wrote:
-> socket.c: In function ‘run_tests’:
-> socket.c:59:25: warning: ignoring return value of ‘strerror_r’ \
-> declared with attribute ‘warn_unused_result’ [-Wunused-result]
-> 59 | strerror_r(-s->expect, err_string1, ERR_STRING_SZ);
-> | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> socket.c:60:25: warning: ignoring return value of ‘strerror_r’ \
-> declared with attribute ‘warn_unused_result’ [-Wunused-result]
-> 60 | strerror_r(errno, err_string2, ERR_STRING_SZ);
-> | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> [...]
-
-Here is the summary with links:
-  - [v2] selftests/net/socket.c: removed warnings from unused returns
-    https://git.kernel.org/netdev/net-next/c/6b4b1d577e1f
-
-You are awesome, thank you!
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+index d9412e55b5b2..590a5901cf77 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
+@@ -334,8 +334,11 @@ int wx_set_coalesce(struct net_device *netdev,
+ 			return -EOPNOTSUPP;
+ 	}
+ 
+-	if (ec->tx_max_coalesced_frames_irq)
+-		wx->tx_work_limit = ec->tx_max_coalesced_frames_irq;
++	if (ec->tx_max_coalesced_frames_irq > U16_MAX  ||
++	    !ec->tx_max_coalesced_frames_irq)
++		return -EINVAL;
++
++	wx->tx_work_limit = ec->tx_max_coalesced_frames_irq;
+ 
+ 	switch (wx->mac.type) {
+ 	case wx_mac_sp:
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.48.1
 
