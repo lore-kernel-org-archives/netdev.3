@@ -1,71 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6DA2EC57C
-	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 15:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33E0224B04;
+	Thu, 21 Aug 2025 15:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755788531; cv=none; b=cjdcSaO+ffrIHhT2UtT7fQMfALVuavHoDoUah2+2xdJRsVkUHYkwQ7HJHtYHNKhyPdXzgveuFMAGMScwuBh0AYkJkOFUecOq/Dll1Dm8gLLo59dkrUc95xaXaYXhNJEC/Q2tYHR2nlZtLmixdCdVmRClCNUYx+VXr9/aCafbO4Q=
+	t=1755788597; cv=none; b=hJM9YLpyifMg9dZW4yiso1ZKvi5Sx8AvlM64ZQwQcE4Iy9dyr3Y7IwElOYXLKxTAHS8is8/Sjhgrd5uGD+mqAF1ff8OVuLLl95La8em3eFbwNMKBMzc4mQq4J7/JKT2O6mC48h21s9foTq+oWvBJINQ9fYuZRcAdgjxHupCjiIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755788531; c=relaxed/simple;
-	bh=Q1R0CMc9mJlGf3babIixDfaWYUexWKFLtG0auBCl0yo=;
+	s=arc-20240116; t=1755788597; c=relaxed/simple;
+	bh=eG8tMdZ6ez6OY79lh4rWCVb57KYN1p1yvtLR6obd3Xc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VdOpqScXj3Z6A9zWYY1SF4mOh2fgYokYAjqjkhTXRmFiBaiubdkCxCq6Dk8ABOoIPml/0DWht3BCYfqL5JCiIcaBw3juJqCRa0fqc8x/QNYGbfCE/TC4ogfNiVAH/039OhWvXejd1Z1OQPH6kG2vghf+B3feiuOCOIx92vyx4cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bUR06Buz; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=A6SzfFdEOFNmRKcUM+iPIRaH3Ok4HCJSguAWCGVZOL7kdN5hqnaGgmMh15ocTBW7FhPB60pncgzbbxaCsWfR0G6PTDtjG52TfENYszON9h54yAmutKOQHVjuGpvnzun4lvKD2Y5uMDx4dOkghGz69rOyAxZiQIBYMl4VjMeTtc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GRx8+zWo; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bUR06Buz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755788529;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YeGF49xrsvHxpIxRGyeOUTffjJ2buyuXBi1SnFQwl50=;
-	b=bUR06BuzAPmEh77KIBTWD8/ipTdcBJ+AfLmTuzkbb8jzxSKEZyQkTZk9GmesKCCF9yUgPX
-	MilLWTPg+RqBJywC6GCpBmodVgm2mo8IA4LX9d/DPDWXqpVyzH3eRghpWA496YWvemHkKu
-	D/cbK90YyCSFMRCGld+QoxVTiFPInRE=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-492-n8XtD68oMg6tdg0UHOeahw-1; Thu, 21 Aug 2025 11:02:07 -0400
-X-MC-Unique: n8XtD68oMg6tdg0UHOeahw-1
-X-Mimecast-MFC-AGG-ID: n8XtD68oMg6tdg0UHOeahw_1755788527
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4b109765d3fso23405321cf.1
-        for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 08:02:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GRx8+zWo"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-afcb7347e09so189150466b.0;
+        Thu, 21 Aug 2025 08:03:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755788594; x=1756393394; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NlYkbxi7DFW6oY2NRpdpDsqyhyO6hkcK+DM6dtjAz2U=;
+        b=GRx8+zWoxb9FZHfWOAFlJe4QYmjgAXXvEwE6iGxn0KXWeq4MNw//fEvili1V36mVgV
+         iymMPbUu1TPHi7wnhSzmgweMtdM6a/UvR1uI7f0KK5+2UodoVQ9YfGZprrRgTYbtZT3S
+         puvBhIbJCim8zzNwYXl7Oe7CY9tkjlzpIlqmhKN6HRl3RCjwuQUn48tN7Iu0181EoZdN
+         QIAFD9Lapq6NNZgkcNwObriOE9VWviMnUlrTq2vOTY7HGUjgu0pZLYEIa6mIefZjq5KM
+         ShTjX41flqr0+QxY6eGn3VPErhpFYo0/fQRJ04CsiQCvRyjW4ikA085Ff/mlFx4GDapJ
+         /YrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755788526; x=1756393326;
+        d=1e100.net; s=20230601; t=1755788594; x=1756393394;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YeGF49xrsvHxpIxRGyeOUTffjJ2buyuXBi1SnFQwl50=;
-        b=opPNPqs4zeZ5P5FdH1fNR91NkiLcDU2oMrsO1lsdhaiFOLaoSuaNAmTny/GjDScqkS
-         HDrk51qtDnQ5tPVa4zq96AisSW8baQcPHDmsUYS5mlTFW8/1rmyU1CllS8BbsHmkQ5Cg
-         zzAW7ihTo8Gyhe8/CISrHheS83aNCN1h+yS2SQdzF7DXyme00c2UI9zPnHimAbHNhyg2
-         hDEVWIJkI53pEJ1qf/Cy/lXwWz4hhrDiYxf6WBZxjPQE0oQFuYCQKtWXX57lU1ZIhTS0
-         Hw8E+b+pAjqvtspffL2ykO0Omccb5V2gua5ERZR/6TIqkNhHjT+eW8/ITWkXh6yOoNOD
-         W/YA==
-X-Gm-Message-State: AOJu0YyXRewlnJ6rXkBOLgvcIkEeUjbk5pU7J7xbcaEGa1W5ExLH6Nzx
-	rIo8OHEuJjGA2tBndA1qk6dSIBQcupQW37TegyX5V7pofJ9LloFTsNXfb1+CedZDaFlS6exL9AY
-	IloEryt8VqlCnKMlVZOyH7xNX1Zwo8O9zohj2aDJ3DseKCo6+ZexZiBsqUc8qmMiAJg==
-X-Gm-Gg: ASbGncsaGbOmnYUAimFF2X83uhc7y52J6zSc+/Js7m9cq4UXy6vUtuCY4tnHk9yJnkw
-	jTIPJ4flApGWy1r2ioFXdtSXfVX0fQ8hXkUd8vzvwpwQ/b+gqpFFUIghECSXW0f7jepvixdgIJU
-	/lm6xcwP4VaZ/n8lk9weWnwedpMs4bf2Z/uVOhOkGovVPPWhUa2WgxlJXJ5IUxR1fzLQ1uIU4sc
-	yy6zsyuW4QGop8Wb1OrGv/oZdnUqf9kBz6Bm2t53ly7Tjz+F9eJNvxJaObbW/4yIjrVx5aqKa8u
-	ZTwMzJSgDuBWQA1fEVHOhRc4N1Ff72G4KdzGsr+EglvFZeLgjTlH2gd2lCph7MbNyNjG1DVnLmS
-	X1jBnjfzzjKA=
-X-Received: by 2002:a05:622a:258c:b0:4b0:e92d:78e1 with SMTP id d75a77b69052e-4b2a03d1480mr24272971cf.15.1755788526206;
-        Thu, 21 Aug 2025 08:02:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH1yTqUmEeV1YEtObKjQ71P70k0K3dK5xIY+TNMHECNzT6irjNTadrArKELPuAe0Vb2jDE6yg==
-X-Received: by 2002:a05:622a:258c:b0:4b0:e92d:78e1 with SMTP id d75a77b69052e-4b2a03d1480mr24272011cf.15.1755788525372;
-        Thu, 21 Aug 2025 08:02:05 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b11ddd6947sm104428351cf.36.2025.08.21.08.02.02
+        bh=NlYkbxi7DFW6oY2NRpdpDsqyhyO6hkcK+DM6dtjAz2U=;
+        b=TA0EP9SefNFOxYAaCbb2WujeFPBRZybBHEHlytEtQYLMPXcVCTft6trPhq4hfstJPV
+         3i57qNA2nsJ6/knwa3Iam5ER+r7kXoKI+E25BTIzKyd7jrgD4EHE5XnUHkLI0Sb2lxkT
+         /s3wmJdZhercWbeflblF2FvfXICI0G4Dvw1zsgZUCI5Owq5qGoeINL4xH8Qwc/QlXa3e
+         62txXXj1sdMhUU8lAtUMF34s8aAO4hCtOnm8UuCfmG85+jA4KM4uV6TDxZjSUFL70YKJ
+         XCxiYbLdoes/WXwcEgAU1ZANBglOFrbs2dA4bfC3REBqCG52WpmFtNZQ+yRpysZi7bJn
+         FJWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVpRZGOappg9ZuqrCHjrD5/8M2LM9pNV56Vv6IPwNvDvLeLmknfHtWTu/RNTvr703NLIPh2mS79Lg==@vger.kernel.org, AJvYcCW6NWVogKqQL/2BTdXkdBvyATisg+g9aWcWTeFlyDZInIOZOBnd1wjp5ms6Y1EFgcThb6TAu3dG4Y6HQMxp@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBtDonyRk7ZHlAVy7WxtE+rVLfqB/WmHWDFheqBHliukHBWce0
+	67Z0KgYRzlOEVm0DDXznPmd+feKvLhSkWCvarP79ukQmL6sMjtnZ5FHq
+X-Gm-Gg: ASbGncue6CBYxfmDtrcSdzAcahYgxtt29qBbJqrjMNjUv20k+sCwANhkNKrtkgp77dP
+	x1vcTrDX82wjkjRPH6reFQ+WasXS3UdSbP9w8ytSCECMyiR+XB7RgIzjl7G7uREFlsctNnD8Z85
+	wzUa9q3CFm1iwLjGbktNsL0Bvb8D5sGNw0B0maqk0cVsYmZ77mkVu75DB+sgDNsJt2J8zoN327x
+	1XNeAHBGQIVCAtBxOJIcAqDuff8mCk/AK6qzlhJHIVytrqv68Bgzq6gO0IWqMRIWIbq0/w4x/Qb
+	eJh9CD7PShxnXtvH2oIZR5BgZCEU7rRR0TPf3n0kZ4sr4JVQWrR48ot6FlW9yNWhuiGlxKQe/ih
+	m1VUA5xCzlca9r4cWB/eR2icjI//IgzmW
+X-Google-Smtp-Source: AGHT+IFDyzgm5SmuBDn9kus3exbU+SN8MuIf0hWHhWlqlJvBcwpLtZS48R/L1NwfWLBBp8JbB/tm1Q==
+X-Received: by 2002:a17:906:4794:b0:af9:c31c:eeca with SMTP id a640c23a62f3a-afe07c232f0mr252067766b.48.1755788593498;
+        Thu, 21 Aug 2025 08:03:13 -0700 (PDT)
+Received: from [192.168.8.100] ([148.252.133.113])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded307138sm406142966b.45.2025.08.21.08.03.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Aug 2025 08:02:04 -0700 (PDT)
-Message-ID: <457036b2-cc6c-45db-98fb-3967c535402e@redhat.com>
-Date: Thu, 21 Aug 2025 17:02:00 +0200
+        Thu, 21 Aug 2025 08:03:12 -0700 (PDT)
+Message-ID: <52a6f5d6-ce59-45a8-9271-5c6248d5b90d@gmail.com>
+Date: Thu, 21 Aug 2025 16:04:21 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,35 +67,91 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 00/15] eth: fbnic: support queue API and
- zero-copy Rx
-To: Jakub Kicinski <kuba@kernel.org>, Taehee Yoo <ap420073@gmail.com>
-Cc: netdev@vger.kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
- horms@kernel.org, almasrymina@google.com, michael.chan@broadcom.com,
- tariqt@nvidia.com, dtatulea@nvidia.com, hawk@kernel.org,
- ilias.apalodimas@linaro.org, alexanderduyck@fb.com, sdf@fomichev.me,
- davem@davemloft.net
-References: <20250820025704.166248-1-kuba@kernel.org>
- <5bba5969-36f4-4a0a-8c03-aea16e2a40de@redhat.com>
- <20250821072832.0758c118@kernel.org>
+Subject: Re: [PATCH net-next v3 00/23][pull request] Queue configs and large
+ buffer providers
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Willem de Bruijn <willemb@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ andrew+netdev@lunn.ch, horms@kernel.org, davem@davemloft.net,
+ sdf@fomichev.me, almasrymina@google.com, dw@davidwei.uk,
+ michael.chan@broadcom.com, dtatulea@nvidia.com, ap420073@gmail.com,
+ linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
+References: <cover.1755499375.git.asml.silence@gmail.com>
+ <20250819193126.2a4af62b@kernel.org>
+ <fb85866c-3890-41d2-9d5c-27549c4b7aa3@gmail.com>
+ <20250820183711.6586c1c6@kernel.org>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250821072832.0758c118@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20250820183711.6586c1c6@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 8/21/25 4:28 PM, Jakub Kicinski wrote:
-> On Thu, 21 Aug 2025 09:51:55 +0200 Paolo Abeni wrote:
->> Blindly noting 
+On 8/21/25 02:37, Jakub Kicinski wrote:
+> On Wed, 20 Aug 2025 14:39:51 +0100 Pavel Begunkov wrote:
+>> On 8/20/25 03:31, Jakub Kicinski wrote:
+>>> On Mon, 18 Aug 2025 14:57:16 +0100 Pavel Begunkov wrote:
+>>>> Jakub Kicinski (20):
+>>>
+>>> I think we need to revisit how we operate.
+>>> When we started the ZC work w/ io-uring I suggested a permanent shared
+>>> branch. That's perhaps an overkill. What I did not expect is that you
+>>> will not even CC netdev@ on changes to io_uring/zcrx.*
+>>>
+>>> I don't mean to assert any sort of ownership of that code, but you're
+>>> not meeting basic collaboration standards for the kernel. This needs
+>>> to change first.
+>>
+>> You're throwing quite allegations. Basic collaboration standards don't
+>> include spamming people with unrelated changes via an already busy list.
+>> I cc'ed netdev on patches that meaningfully change how it interacts
+>> (incl indirectly) with netdev and/or might be of interest, which is
+>> beyond of the usual standard expected of a project using infrastructure
+>> provided by a subsystem.
 > 
-> I haven't looked closely either :) but my gut feeling is that this 
-> is because the devmem test doesn't clean up after itself. It used to
-> bail out sooner, with this series is goes further in messing up the
-> config, and then all tests that run after have a misconfigured NIC..
+> To me iouring is a fancy syscall layer. It's good at its job, sure,
+> but saying that netdev provides infrastructure to a syscall layer is
+> laughable.
 
-Possibly I was not clear in my previous email: I suspect that the
-ping.py issue is a real one/tied to driver changes - even if already
-merged ones and not to the pending patches.
+?
 
-/P
+>> There are pieces that don't touch netdev, like
+>> how io_uring pins pages, accounts memory, sets up rings, etc. In the
+>> very same way generic io_uring patches are not normally posted to
+>> netdev, and netdev patches are not redirected to mm because there
+>> are kmalloc calls, even though, it's not even the standard used here.
+> 
+> I'm asking you to CC netdev, and people who work on ZC like Mina.
+> Normal reaction to someone asking to be CCed on patches is "Sure."
+> I don't understand what you're afraid of.
+
+Normal reaction is to ask to CC and not attempt to slander as you
+just did. That's not appreciated. All that cherry topped with a
+signal that you're not going to take my work until I learn how to
+read your mind.
+
+https://lore.kernel.org/all/bcf5a9e8-5014-44cc-85a0-2974e3039cb6@gmail.com/
+
+When you brought this topic before, I fully outlined what I believe
+would be a good workflow, and since there was no answer, I've been
+sticking to it. And let me note, you didn't directly and clearly
+ask to CC netdev. And I'm pretty sure, ignoring messages and
+smearing is not in the spirit of the "basic collaboration standards",
+whatever those are.
+
+>> If you have some way you want to work, I'd appreciate a clear
+>> indication of that, because that message you mentioned was answered
+>> and I've never heard any objection, or anything else really.
+> 
+> It honestly didn't cross my mind that you'd only CC netdev on patches
+> which touch code under net/. I'd have let you know sooner but it's hard
+
+If you refer to the directory, that's clearly not true.
+
+> to reply to messages one doesn't see. I found out that there's whole
+> bunch of ZC work that landed in iouring from talking to David Wei.
+
+The linked thread above indicates the opposite. 	
+
+-- 
+Pavel Begunkov
 
