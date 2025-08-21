@@ -1,373 +1,127 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C96C307AEA
-	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 10:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD93307AD5;
+	Thu, 21 Aug 2025 10:49:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755773120; cv=none; b=qwf+LihyB3nBlozxUyCWeL1EA0sx2faQwwfpjJpLnBdmF+v2vGC2hM4QthlFTB+r1B21IoEA3+7Zyh2/zsEkuPwh2yxeHUi77tbu+q/cFzrqvFJE/fgj67YxNnSejQYslJQPRddDs78kZ/2EEHVDzYT6xWII0zZQGohxxOrP0yo=
+	t=1755773352; cv=none; b=JB7TnT99V9L1b6b1/w/H5TJru9nhFkE95cW10Tbh1vL/KDq8ESrU/KsnFtjrlDY+f5fRxT2lfxvBoX1sIqwVt0Wu19++8V3HCyJEOfo5SB0UmfugJmtbxtkxcLBrJzAG8mQA/fP0yEUiFektcpMZ+tiFEnm1AiH9y0ch3F4DbN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755773120; c=relaxed/simple;
-	bh=PBBCROPXqCqMiyfxSy2ogwx9x/fVh4Mdn3jHv7YOdlA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B2mS4oFbvOUtS1MFsMf4RnezI/vcozsMpuf7jfM4F+8ZoR/p8LZBLgSdlykYnIPMo2Oux2d69XdJ91Vzi13WuzaYTQABx3HPuWxzQAyNWibp24ceAuUuMaTZhWP+lKQKahD1lEQfnRmYOXBHYo5bVxsuR5NlsBzFUgKcbkGKK7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ICkMPg+f; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1755773352; c=relaxed/simple;
+	bh=rG5esXl5MyyU9ccbkRzn255OdRwlFHNiQdQoQp112nU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=rVOdyLNEHUyZjwcVKgkqePmyzga3zY1yQ73Mq22IxFJD02z7RU03CKsNr5jDGXPP3gE6uuoRHsWba1G2ySUCI29LDlu7ypEKSrT7ugt7+lSGJUc5HAdKjRNROewVa9gtN291uflANujAN8UJ2jzC+nsrYT+Mnl3uzTXOnSYsqXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=kvtVQWY4; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ICkMPg+f"
-Received: by linux.microsoft.com (Postfix, from userid 1173)
-	id D2C6A2015BAB; Thu, 21 Aug 2025 03:45:17 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D2C6A2015BAB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1755773117;
-	bh=e7SjHFKqk2A6sr3D14xMVQkuBQSQH+8UWQBRCGzve8o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ICkMPg+fV0DgsxvFc5FYYdchtB7cGgt2Pl6woolhq19ppCRW8CR4UdI8DTZjaTf0z
-	 TK5QsA6pyBX/OXiEJsyVFALpytbSVGcrgElEximZ/yA/CT2j+uMlF2jjLRercB1cx0
-	 VPmZ8uVomG2rX+NMyOP1mI+PxqMFKoqAamKWCNKo=
-Date: Thu, 21 Aug 2025 03:45:17 -0700
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: dsahern@gmail.com, netdev@vger.kernel.org, haiyangz@microsoft.com,
-	shradhagupta@linux.microsoft.com, ssengar@microsoft.com,
-	dipayanroy@microsoft.com, ernis@microsoft.com
-Subject: Re: [PATCH iproute2-next v3] iproute2: Add 'netshaper' command to
- 'ip link' for netdev shaping
-Message-ID: <20250821104517.GA7364@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1754895902-8790-1-git-send-email-ernis@linux.microsoft.com>
- <20250816110507.3063a733@hermes.local>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="kvtVQWY4"
+Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57LAmFE23352350;
+	Thu, 21 Aug 2025 05:48:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1755773295;
+	bh=ZdcQq0ODeLvFcyZ8c1y1bdz85c9KQB/TPqgiMZRTnJo=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=kvtVQWY40B45uP1NmaZBuN+EuM78tEdP7xLQ47B+vp4LKGI78Io5SaBPkCqJ+Z+wV
+	 W8nk7I5i+I3rRLA8ddtPkKMkx9rO/yrAOGXKsHUHmjnGXGEX2mXXHw6gFAdzq63b5a
+	 +RcjA8x5Rb48WrKrmNNPxDoweF4ily0EFQPOIJTE=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57LAmFl81899798
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Thu, 21 Aug 2025 05:48:15 -0500
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 21
+ Aug 2025 05:48:14 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Thu, 21 Aug 2025 05:48:14 -0500
+Received: from [10.24.69.13] (meghana-pc.dhcp.ti.com [10.24.69.13] (may be forged))
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57LAm7OG2038086;
+	Thu, 21 Aug 2025 05:48:08 -0500
+Message-ID: <d2015724-416b-4222-aa85-88c0c5f9160c@ti.com>
+Date: Thu, 21 Aug 2025 16:18:07 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250816110507.3063a733@hermes.local>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 5/6] net: ti: icssg-prueth: Add AF_XDP zero copy
+ for RX
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <namcao@linutronix.de>, <jacob.e.keller@intel.com>,
+        <christian.koenig@amd.com>, <sumit.semwal@linaro.org>,
+        <sdf@fomichev.me>, <john.fastabend@gmail.com>, <hawk@kernel.org>,
+        <daniel@iogearbox.net>, <ast@kernel.org>, <pabeni@redhat.com>,
+        <edumazet@google.com>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>,
+        <linaro-mm-sig@lists.linaro.org>, <dri-devel@lists.freedesktop.org>,
+        <linux-media@vger.kernel.org>, <bpf@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
+        Vignesh Raghavendra
+	<vigneshr@ti.com>,
+        Roger Quadros <rogerq@kernel.org>, <danishanwar@ti.com>
+References: <20250818112424.3068643-1-m-malladi@ti.com>
+ <20250818112424.3068643-6-m-malladi@ti.com>
+ <20250819073558.2c996b6d@kernel.org>
+Content-Language: en-US
+From: Meghana Malladi <m-malladi@ti.com>
+In-Reply-To: <20250819073558.2c996b6d@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Sat, Aug 16, 2025 at 11:05:07AM -0700, Stephen Hemminger wrote:
-> On Mon, 11 Aug 2025 00:05:02 -0700
-> Erni Sri Satya Vennela <ernis@linux.microsoft.com> wrote:
-> 
-> > Add support for the netshaper Generic Netlink
-> > family to iproute2. Introduce a new subcommand to `ip link` for
-> > configuring netshaper parameters directly from userspace.
-> > 
-> > This interface allows users to set shaping attributes (such as speed)
-> > which are passed to the kernel to perform the corresponding netshaper
-> > operation.
-> > 
-> > Example usage:
-> > $ip link netshaper { set | get | delete } dev DEVNAME \
-> >                    handle scope SCOPE id ID \
-> >                    [ speed SPEED ]
-> > 
-> > Internally, this triggers a kernel call to apply the shaping
-> > configuration to the specified network device.
-> > 
-> > Currently, the tool supports the following functionalities:
-> > - Setting speed in Mbps, enabling bandwidth clamping for
-> >   a network device that support netshaper operations.
-> > - Deleting the current configuration.
-> > - Querying the existing configuration.
-> > 
-> > Additional netshaper operations will be integrated into the tool
-> > as per requirement.
-> > 
-> > This change enables easy and scriptable configuration of bandwidth
-> > shaping for  devices that use the netshaper Netlink family.
-> > 
-> > Corresponding net-next patches:
-> > 1) https://lore.kernel.org/all/cover.1728460186.git.pabeni@redhat.com/
-> > 2) https://lore.kernel.org/lkml/1750144656-2021-1-git-send-email-ernis@linux.microsoft.com/
-> > 
-> > Install pkg-config and libmnl* packages to print kernel extack
-> > errors to stdout.
-> > 
-> > Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-> > ---
-> > Please add include/uapi/linux/net_shaper.h from kernel source tree
-> > for this patch.
-> > ---
-> > Changes in v3:
-> > * Use strcmp instead of matches.
-> > * Use get_rate64 instead get_unsigned for speed parameter.
-> > * Remove speed_mbps in do_cmd() to reduce redundancy.
-> > * Update the usage of speed parameter in the command.
-> > Changes in v2:
-> > * Use color coding for printing device name in stdout.
-> > * Use clang-format to format the code inline.
-> > * Use __u64 for speed_bps.
-> > * Remove include/uapi/linux/netshaper.h file. 
-> > ---
-> >  ip/Makefile           |   2 +-
-> >  ip/iplink.c           |  12 +++
-> >  ip/iplink_netshaper.c | 189 ++++++++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 202 insertions(+), 1 deletion(-)
-> >  create mode 100644 ip/iplink_netshaper.c
-> 
-> No documentation.
-> No tests?
-I will share the documentation on netshapers, specifically covering
-how to use the ip command for this use case.
-> 
-> > 
-> > diff --git a/ip/Makefile b/ip/Makefile
-> > index 3535ba78..18218c3b 100644
-> > --- a/ip/Makefile
-> > +++ b/ip/Makefile
-> > @@ -4,7 +4,7 @@ IPOBJ=ip.o ipaddress.o ipaddrlabel.o iproute.o iprule.o ipnetns.o \
-> >      ipmaddr.o ipmonitor.o ipmroute.o ipprefix.o iptuntap.o iptoken.o \
-> >      ipxfrm.o xfrm_state.o xfrm_policy.o xfrm_monitor.o iplink_dummy.o \
-> >      iplink_ifb.o iplink_nlmon.o iplink_team.o iplink_vcan.o iplink_vxcan.o \
-> > -    iplink_vlan.o link_veth.o link_gre.o iplink_can.o iplink_xdp.o \
-> > +    iplink_vlan.o iplink_netshaper.o link_veth.o link_gre.o iplink_can.o iplink_xdp.o \
-> >      iplink_macvlan.o ipl2tp.o link_vti.o link_vti6.o link_xfrm.o \
-> >      iplink_vxlan.o tcp_metrics.o iplink_ipoib.o ipnetconf.o link_ip6tnl.o \
-> >      link_iptnl.o link_gre6.o iplink_bond.o iplink_bond_slave.o iplink_hsr.o \
-> > diff --git a/ip/iplink.c b/ip/iplink.c
-> > index 59e8caf4..daa4603d 100644
-> > --- a/ip/iplink.c
-> > +++ b/ip/iplink.c
-> > @@ -1509,6 +1509,15 @@ static void do_help(int argc, char **argv)
-> >  		usage();
-> >  }
-> >  
-> > +static int iplink_netshaper(int argc, char **argv)
-> > +{
-> > +	struct link_util *lu;
-> > +
-> > +	lu = get_link_kind("netshaper");
-> > +
-> > +	return lu->parse_opt(lu, argc, argv, NULL);
-> > +}
-> > +
-> >  int do_iplink(int argc, char **argv)
-> >  {
-> >  	if (argc < 1)
-> > @@ -1545,6 +1554,9 @@ int do_iplink(int argc, char **argv)
-> >  	if (matches(*argv, "property") == 0)
-> >  		return iplink_prop(argc-1, argv+1);
-> >  
-> > +	if (strcmp(*argv, "netshaper") == 0)
-> > +		return iplink_netshaper(argc-1, argv+1);
-> > +
-> >  	if (matches(*argv, "help") == 0) {
-> >  		do_help(argc-1, argv+1);
-> >  		return 0;
-> > diff --git a/ip/iplink_netshaper.c b/ip/iplink_netshaper.c
-> > new file mode 100644
-> > index 00000000..30ee6c3e
-> > --- /dev/null
-> > +++ b/ip/iplink_netshaper.c
-> > @@ -0,0 +1,189 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +/*
-> > + * iplink_netshaper.c netshaper H/W shaping support
-> > + *
-> > + * Authors:        Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-> > + */
-> > +#include <stdio.h>
-> > +#include <string.h>
-> > +#include <linux/genetlink.h>
-> > +#include <linux/netlink.h>
-> > +#include <linux/rtnetlink.h>
-> > +#include <uapi/linux/netshaper.h>
-> > +#include "utils.h"
-> > +#include "ip_common.h"
-> > +#include "libgenl.h"
-> > +
-> > +/* netlink socket */
-> > +static struct rtnl_handle gen_rth = { .fd = -1 };
-> > +static int genl_family = -1;
-> > +
-> > +static void usage(void)
-> > +{
-> > +	fprintf(stderr,
-> > +		"Usage:	ip link netshaper set dev DEVNAME handle scope HANDLE_SCOPE id HANDLE_ID speed SPEED\n"
-> > +		"	ip link netshaper delete dev DEVNAME handle scope HANDLE_SCOPE id HANDLE_ID\n"
-> > +		"	ip link netshaper get dev DEVNAME handle scope HANDLE_SCOPE id HANDLE_ID\n"
-> 
-> Seems like netshaper is property of the device not a top level object, the syntax
-> here is awkward. Open to better suggestions. Looks to me that netshaper should be property of
-> device not top level object.
-> 
-> Or netshaper is like neighbour and route and really wants to be not part of link command.
-> 
-> Also no other ip commands use show not get.
-> The verb "get" is only used for things like getting a route or neighbor with a particular address.
+Hi Jakub,
 
-Okay. I will change the code accordingly.
+On 8/19/25 20:05, Jakub Kicinski wrote:
+> On Mon, 18 Aug 2025 16:54:23 +0530 Meghana Malladi wrote:
+>> @@ -1332,6 +1350,13 @@ static int prueth_xsk_wakeup(struct net_device *ndev, u32 qid, u32 flags)
+>>   		}
+>>   	}
+>>   
+>> +	if (flags & XDP_WAKEUP_RX) {
+>> +		if (!napi_if_scheduled_mark_missed(&emac->napi_rx)) {
+>> +			if (likely(napi_schedule_prep(&emac->napi_rx)))
+>> +				__napi_schedule(&emac->napi_rx);
+>> +		}
+>> +	}
+>> +
+>>   	return 0;
 > 
+> I suspect this series is generated against old source or there's
+> another conflicting series in flight, because git ends up applying
+> this chunk to prueth_xsk_pool_disable() :S
 > 
-> > +		"Where:	DEVNAME		:= STRING\n"
-> > +		"	HANDLE_SCOPE	:= { netdev | queue | node }\n"
-> > +		"	HANDLE_ID	:= UINT\n"
-> > +		"	SPEED		:= UINT{ kbit | mbit | gbit }\n");
-> > +
-> > +	exit(-1);
-> > +}
-> > +
-> > +static void print_netshaper_attrs(struct nlmsghdr *answer)
-> > +{
-> > +	struct genlmsghdr *ghdr = NLMSG_DATA(answer);
-> > +	int len = answer->nlmsg_len - NLMSG_LENGTH(GENL_HDRLEN);
-> > +	struct rtattr *tb[NET_SHAPER_A_MAX + 1] = {};
-> > +	__u32 speed_mbps;
-> > +	__u64 speed_bps;
-> > +	int ifindex;
-> > +
-> > +	parse_rtattr(tb, NET_SHAPER_A_MAX,
-> > +		     (struct rtattr *)((char *)ghdr + GENL_HDRLEN), len);
-> > +
-> > +	for (int i = 1; i <= NET_SHAPER_A_MAX; ++i) {
-> > +		if (!tb[i])
-> > +			continue;
-> > +		switch (i) {
-> > +		case NET_SHAPER_A_BW_MAX:
-> > +			speed_bps = rta_getattr_u64(tb[i]);
-> > +			speed_mbps = (speed_bps / 1000000);
-> > +			print_uint(PRINT_ANY, "speed", "speed: %u mbps\n",
-> > +				   speed_mbps);
-> > +			break;
-> > +		case NET_SHAPER_A_IFINDEX:
-> > +			ifindex = rta_getattr_u32(tb[i]);
-> > +			print_color_string(PRINT_ANY, COLOR_IFNAME, "dev",
-> > +					   "dev: %s\n",
-> > +					   ll_index_to_name(ifindex));
-> > +			break;
-> > +		default:
-> > +			break;
-> > +		}
-> > +	}
-> > +}
-> > +
-> > +static int do_cmd(int argc, char **argv, struct nlmsghdr *n, int cmd)
-> > +{
-> > +	GENL_REQUEST(req, 1024, genl_family, 0, NET_SHAPER_FAMILY_VERSION, cmd,
-> > +		     NLM_F_REQUEST | NLM_F_ACK);
-> > +
-> > +	struct nlmsghdr *answer;
-> > +	__u64 speed_bps = 0;
-> > +	int ifindex = -1;
-> > +	int handle_scope = NET_SHAPER_SCOPE_UNSPEC;
-> > +	__u32 handle_id = 0;
-> > +	bool handle_present = false;
-> > +	int err;
-> > +
-> > +	while (argc > 0) {
-> > +		if (strcmp(*argv, "dev") == 0) {
-> > +			NEXT_ARG();
-> > +			ifindex = ll_name_to_index(*argv);
-> > +		} else if (strcmp(*argv, "speed") == 0) {
-> > +			NEXT_ARG();
-> > +			if(get_rate64(&speed_bps, *argv)) {
-> > +				fprintf(stderr, "Invalid speed value\n");
-> > +				return -1;
-> > +			}
-> > +			/*Convert Bps to bps*/
-> > +			speed_bps *= 8;
-> > +		} else if (strcmp(*argv, "handle") == 0) {
-> > +			handle_present = true;
-> > +			NEXT_ARG();
-> > +			if (strcmp(*argv, "scope") == 0) {
-> > +				NEXT_ARG();
-> > +				if (strcmp(*argv, "netdev") == 0) {
-> > +					handle_scope = NET_SHAPER_SCOPE_NETDEV;
-> > +				} else if (strcmp(*argv, "queue") == 0) {
-> > +					handle_scope = NET_SHAPER_SCOPE_QUEUE;
-> > +				} else if (strcmp(*argv, "node") == 0) {
-> > +					handle_scope = NET_SHAPER_SCOPE_NODE;
-> > +				} else {
-> > +					fprintf(stderr, "Invalid scope\n");
-> > +					return -1;
-> > +				}
-> > +
-> > +				NEXT_ARG();
-> > +				if (strcmp(*argv, "id") == 0) {
-> > +					NEXT_ARG();
-> > +					if (get_unsigned(&handle_id, *argv, 10)) {
-> > +						fprintf(stderr,
-> > +							"Invalid handle id\n");
-> > +						return -1;
-> > +					}
-> > +				}
-> > +			}
-> > +		} else {
-> > +			fprintf(stderr, "What is \"%s\"\n", *argv);
-> > +			usage();
-> > +		}
-> > +		argc--;
-> > +		argv++;
-> > +	}
-> > +
-> > +	if (ifindex == -1)
-> > +		missarg("dev");
-> > +
-> > +	if (!handle_present)
-> > +		missarg("handle");
-> > +
-> > +	if (cmd == NET_SHAPER_CMD_SET && speed_bps == 0)
-> > +		missarg("speed");
-> > +
-> > +	addattr32(&req.n, sizeof(req), NET_SHAPER_A_IFINDEX, ifindex);
-> > +
-> > +	struct rtattr *handle = addattr_nest(&req.n, sizeof(req),
-> > +					     NET_SHAPER_A_HANDLE | NLA_F_NESTED);
-> > +	addattr32(&req.n, sizeof(req), NET_SHAPER_A_HANDLE_SCOPE, handle_scope);
-> > +	addattr32(&req.n, sizeof(req), NET_SHAPER_A_HANDLE_ID, handle_id);
-> > +	addattr_nest_end(&req.n, handle);
-> > +
-> > +	if (cmd == NET_SHAPER_CMD_SET)
-> > +		addattr64(&req.n, sizeof(req), NET_SHAPER_A_BW_MAX, speed_bps);
-> > +
-> > +	err = rtnl_talk(&gen_rth, &req.n, &answer);
-> > +	if (err < 0) {
-> > +		printf("Kernel command failed: %d\n", err);
-> > +		return err;
-> > +	}
-> > +
-> > +	if (cmd == NET_SHAPER_CMD_GET)
-> > +		print_netshaper_attrs(answer);
-> > +
-> > +	return err;
-> > +}
-> > +
-> > +static int netshaper_parse_opt(struct link_util *lu, int argc, char **argv,
-> > +			       struct nlmsghdr *n)
-> > +{
-> > +	if (argc < 1)
-> > +		usage();
-> > +	if (strcmp(*argv, "help") == 0)
-> > +		usage();
-> > +
-> > +	if (genl_init_handle(&gen_rth, NET_SHAPER_FAMILY_NAME, &genl_family))
-> > +		exit(1);
-> > +
-> > +	if (strcmp(*argv, "set") == 0)
-> > +		return do_cmd(argc - 1, argv + 1, n, NET_SHAPER_CMD_SET);
-> > +
-> > +	if (strcmp(*argv, "delete") == 0)
-> > +		return do_cmd(argc - 1, argv + 1, n, NET_SHAPER_CMD_DELETE);
-> > +
-> > +	if (strcmp(*argv, "get") == 0)
-> > +		return do_cmd(argc - 1, argv + 1, n, NET_SHAPER_CMD_GET);
-> > +
-> > +	fprintf(stderr,
-> > +		"Command \"%s\" is unknown, try \"ip link netshaper help\".\n",
-> > +		*argv);
-> > +	exit(-1);
-> > +}
-> > +
-> > +struct link_util netshaper_link_util = {
-> > +	.id = "netshaper",
-> > +	.parse_opt = netshaper_parse_opt,
-> > +};
-> 
-> 
-> Please add a print_opt functionality.
-> Very useful to see what kernel thinks state is. 
 
-Thankyou for the clarification. I'll make sure to integrate these
-changes in the next version.
+That's interesting. I have directly applied these patches locally on the 
+tip of net-next (62a2b3502573 "net: openvswitch: Use for_each_cpu() 
+where appropriate") And everything gets applied cleanly and I couldn't 
+reproduce the issue you mentioned above. Can you tell me on top of which 
+commit you tried applying this series ? Or I wonder if this happened 
+because I posted this series from my net tree instead of net-next. Does 
+it make sense to re-post the same patches from net-next tree ?
+
+> Before you proceed with AF_XDP could you make this driver build under
+> COMPILE_TEST on x86? This is very easy to miss, luckily we got an off
+> list report but its pure luck. And obviously much more effort for the
+> maintainers to investigate than if it was caught by the CI.
+
+I have tried what you have suggested and these are the logs for the 
+same: 
+https://gist.github.com/MeghanaMalladiTI/8a3f64773d96e58aec48aca78c1bc98c
+
+ICSSG driver as a module has been compiled without any errors but 
+encountered few linking errors due to some missing symbols from another 
+module (CONFIG_TI_K3_UDMA). I included this module in the next iteration 
+and tried compiling but facing some build failures, logs: 
+https://gist.github.com/MeghanaMalladiTI/f7ed3958b5ab2b2be479151254015ff0
+
+I think it is safe to assume ICSSG as a driver build on x86 doesn't have 
+build regressions, thoughts ? Also is this something which needs to be 
+done by us everytime we are posting some feature upstream or does Kernel 
+CI take care of it ?
+
