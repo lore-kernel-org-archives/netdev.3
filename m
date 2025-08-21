@@ -1,54 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBE65FEE6
-	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 01:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D3C5FEE6
+	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 01:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755740752; cv=none; b=kDmMHpsrm+WEynyKkDBSkDBioQ58Svj4bDg6d8uhgsivBklkXyWHGS6j9Ou7NvvSkMlHJDUOPam20LBsGCcZqQSbVwSqKTgL5Un3zDgtz1ZKw+E/aEB3SWYRuSD9OgDl6OSZ89oyWS4+wVBN2ybkYPdF3+knGuOefqrGA9jhK6o=
+	t=1755740811; cv=none; b=PMi7dJ7PedwQawpcE4XQ6qLZT9HoHhL2o7gOFEQxUi+JToBT41Ru98aGrxl9H6lusGcHGnP7FDQJ9FXQGkpHakzCbvSKVk4tIo7wBS0BCtdrhWaKW3k0GEiQbmxS8guiyUdHmINH0xZXqUJZlaPNbkGt1UI/U98L7zIKuruR/QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755740752; c=relaxed/simple;
-	bh=MUymcHLseFDdkEAot59LOXnmmJnYPvWrvxEpDPKujK0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hDrhkQG62T+HBMJ7jXThhvhnEQrttAjUOOnOn6pvY9Vqi2MGuF+HLEdDbannLE02vWg4GDKve5Dirnx42jO2i54lFu9bEbN1DQXu2xmFFiS8k5j0MAjLu9cGyRDohD3FLU082g8ywl0iHRE8Aeu0Z7gsX5z+PydFeeROg+l8U08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XM+h6maG; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XM+h6maG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62116C4CEEB;
-	Thu, 21 Aug 2025 01:45:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755740751;
-	bh=MUymcHLseFDdkEAot59LOXnmmJnYPvWrvxEpDPKujK0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=XM+h6maG0KItWz10Fi7UUzCtmOKihVmRk+V5eHWACIFJG1GYwjcsLMc7RD84rDKx2
-	 edp+IYEZjCnT9UtN3Ef8fotsR7Ysac70i/oh9HN3g4cyBdDXJSAdPWja3yJ2VLOS7y
-	 0eO0Vc/h0nEYjE8Q7Msgf3j6cxXXFmvrguAY+V0TKElc3y3ge35P0njNwUfgBgQMJw
-	 apB5MVUZ4pjc4J+QDBhzJReYHUDXSRby9KUhKML+upOELUPTyZv0siR1uwJA17w41r
-	 4QRcyRw1bk7p/EK5dCStZL6TQgPSe7TA92frTsUuFElZCSxWkRXYXb56lQYhsoo0iR
-	 6rHInjq8tiSpA==
-Date: Wed, 20 Aug 2025 18:45:50 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
- andrew+netdev@lunn.ch, netdev@vger.kernel.org
-Subject: Re: [PATCH net v2 0/5][pull request] Intel Wired LAN Driver Updates
- 2025-08-15 (ice, ixgbe, igc)
-Message-ID: <20250820184550.48d126b8@kernel.org>
-In-Reply-To: <20250819222000.3504873-1-anthony.l.nguyen@intel.com>
-References: <20250819222000.3504873-1-anthony.l.nguyen@intel.com>
+	s=arc-20240116; t=1755740811; c=relaxed/simple;
+	bh=ySONGNdsPmg86SSrrcztNvt0AGXVE7A53Onq5Bg+ekI=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GkTObfhRwhrcGKQK9LmcJ4RN7RLUctGFEGBw2OyNy39TVlrWvYJZN11gzTv3jCtNuuMI6PJosrdaqnp9PoPn1t3jGtTiuPlaPtX9IeArAowoxnTBUedeovZZD7MGLJH+QBVEs2vo5ePoKTLnqIQf6HDAdD0XN+guVI87djCViqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.22.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:Yeas3t1755740706t582t41196
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [122.233.175.250])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 10310331411603570299
+To: "'Jakub Kicinski'" <kuba@kernel.org>
+Cc: <netdev@vger.kernel.org>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Simon Horman'" <horms@kernel.org>,
+	"'Jacob Keller'" <jacob.e.keller@intel.com>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>
+References: <20250812015023.12876-1-jiawenwu@trustnetic.com>	<20250812015023.12876-5-jiawenwu@trustnetic.com>	<20250815111854.170fea68@kernel.org>	<0bea01dc1175$d1394730$73abd590$@trustnetic.com> <20250820084513.587f560b@kernel.org>
+In-Reply-To: <20250820084513.587f560b@kernel.org>
+Subject: RE: [PATCH net-next v4 4/4] net: wangxun: support to use adaptive RX/TX coalescing
+Date: Thu, 21 Aug 2025 09:45:05 +0800
+Message-ID: <0c2101dc123d$38242470$a86c6d50$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain;
+	charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQJSp6GMsSi4kqJepxUFy3vdl3vtHAGdM6CxAmQrRkwBFLaOdgFi17CDs0tjf7A=
+X-QQ-SENDSIZE: 520
+Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: N/EN6P+BmEafMucSaU+EidtO8KWDCUV+kDrBDtGciYrQ/rnYHpN2Nmpy
+	lpnO3modbI81oMmekgKMJQfYItFbPbDaQeog3NbavYRq6QKtqKmsGCljsRQ9Khcx+5ennce
+	tCtYPR2wCAr2eLbRCr2d+e7d7cX1/vCwIWG7ArWC9nLAFc7GsElNOq76ogAq5kMpClGqNOk
+	5F6gKbxgw/E+NWjFFN7a1x9qXb9DkhzkCl+I5GCIcJO/ZUPG9EcUMj0hvIPAS1nNc4qQn8g
+	G6h/nbCOs3LACILPg76Vq8R6IGHb7SR7EiggDy3NkrlPVJIxNTwhnTgmkN37+BfA6d5sVaI
+	cFqvh2VSxCIjYGpwhEaZbh8EKE9r8PsCWyJJIpa8b4jblQ2/ItUkVqYI3qBMPfy2dR4W39i
+	ylUF7wDn5S9tSAHh/tuPgqRWuceedj/tkhmLwHFG5HeRGaGfqty3IEShUdRaYnr0pPOTcB1
+	jhk3UICxSifkQKKC1xiVGRZm6ef8AEl8phHtSG1krjK5XHwanBrPhdPpL3R5waHswKVvONJ
+	YE6esr+XBYcvutoiXNL0nkuVMrxcVyoe7NQ7iDWzIx/a1RjJWlrKp27UT+cTxfK7FWfmNdl
+	52SFnavkntSwwRG24Ktd7aKziiGigGHyAkx9DotMgaNGjyQwbjTxXB89x4/WckUQpBS8aMu
+	khk0I5cp+qlfXcmg0z4PLbU5ClzzkOR1K7B2rMOMTrPxgpAxff/mRPMJekJExK7sc8n3wh/
+	sS0mXw18eRVeM8eeuUadNvsYikSuJfwQEV0qwY0xhXRDO5XxAVvWyo3pHpO8myS78zW1Sla
+	egApXnZb4cgkHgCDR0gArKrBlKK0FxFa74PYxYa2Lp6c9Z7AmpBy3mJyykiy2y/39PTECCn
+	hgm5W+UDxj+LcvnNZ1T7Xeba9/fCGmSsM4Z2hyEGEKsMgyYdsalIuft0t/13NUTEKRfLC26
+	ylfjrIrcwH7AO4wfZ4gZFOifYxTE0TDL89Opq+diPOZPfygPf4/Apmjrl2WffQxj0T6a7Fu
+	gTF533P9cvdrqPRqy1P0lNrdh8G2W1HGuEEc/FUaRCWvWEcWQt
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
+X-QQ-RECHKSPAM: 0
 
-On Tue, 19 Aug 2025 15:19:54 -0700 Tony Nguyen wrote:
-> For ice:
-> Emil adds a check to ensure auxiliary device was created before
-> tear down to prevent NULL a pointer dereference and adds an unroll error
-> path on auxiliary device creation to stop a possible memory leak.
+On Wed, Aug 20, 2025 11:45 PM, Jakub Kicinski wrote:
+> On Wed, 20 Aug 2025 09:57:43 +0800 Jiawen Wu wrote:
+> > On Sat, Aug 16, 2025 2:19 AM, Jakub Kicinski wrote:
+> > > On Tue, 12 Aug 2025 09:50:23 +0800 Jiawen Wu wrote:
+> > > > @@ -878,6 +909,8 @@ static int wx_poll(struct napi_struct *napi, int budget)
+> > > >
+> > > >  	/* all work done, exit the polling mode */
+> > > >  	if (likely(napi_complete_done(napi, work_done))) {
+> > > > +		if (wx->adaptive_itr)
+> > > > +			wx_update_dim_sample(q_vector);
+> > >
+> > > this is racy, napi is considered released after napi_complete_done()
+> > > returns. So napi_disable() can succeed right after that point...
+> > >
+> > > > @@ -1611,6 +1708,8 @@ void wx_napi_disable_all(struct wx *wx)
+> > > >  	for (q_idx = 0; q_idx < wx->num_q_vectors; q_idx++) {
+> > > >  		q_vector = wx->q_vector[q_idx];
+> > > >  		napi_disable(&q_vector->napi);
+> > > > +		cancel_work_sync(&q_vector->rx.dim.work);
+> > > > +		cancel_work_sync(&q_vector->tx.dim.work);
+> > >
+> > > so you may end up with the DIM work scheduled after the device is
+> > > stopped.
+> >
+> > But the DIM work doesn't seem to be concerned about the status of napi.
+> > And even if the device is stopped, setting itr would not cause any errors.
+> >
+> > I can't fully grasp this point...
+> > Should I move cancel_work_sync() in front of napi_disable()?
+> 
+> My point is that this is possible today:
+> 
+>      CPU 0                     CPU 1
+> 
+>   napi_complete_done()
+>                             napi_disable()
+>                             cancel_work()
+>   wx_update_dim_sample()
+>     schedule_work()
+> 
+> You can probably use disable_work_sync() and enable_work..
+> to fix it.
 
-I'll apply the non-ice patches from the list, hope that's okay.
+Get it. Thanks!
+
