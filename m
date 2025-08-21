@@ -1,116 +1,92 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from forward204d.mail.yandex.net (forward204d.mail.yandex.net [178.154.239.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D722EE5E1
-	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 09:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9672EE604;
+	Thu, 21 Aug 2025 09:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755767792; cv=none; b=N6SYY6yM6S2Ncurvp54Ld+dA19OPX/bofPmfGrJ6tLhRE1YpWlB0u4rSLwpBgyZl5QcsdKRqBdDP/3t4CrJZnjxWGIj7q1HcJO9Yokm7jYRrO2vXzvlICcrsSclW+nRgT6dk6rUAdA7HymMmgy1dsOWRD/SODBPOFKr+4ZpLpkg=
+	t=1755768026; cv=none; b=R8fVIBaq52tUAyjhGOl6k2siyk+pbamfsBGMzFL9b+Gpp0vk0v8/8ehuVwHphCQxH9uDPN3NEEF/o9fVg4MoHit9ysfsPM93ZV/yt95Su0+qDJMMud4Cxfu9VYwuCn9ijiXMEgJ568gwQP53O6Nmu/8oUhLcKiELnmJRZt6HKCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755767792; c=relaxed/simple;
-	bh=pm14elPZ5G/j4V8ktFwqsKYTPh/bNpFOvdQNitNlm24=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B+RpRB/6lfF3HvKK2RvRKEnIja7spc6vngvO/8N1cxY/k4aKIMJLfR0zachpkst6XxzFwYhx5c01og5cjzMDEEjUY+DL083ko073V9zrGD+qXPMxSSt3902m3UA6tHfWsGzrkaLHhg6EK2+bSmLP4y6Y+p2XscYmtKRGsTPRU6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hVrcnMpp; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1755768026; c=relaxed/simple;
+	bh=3tVdFuHj4uHnjdjqWf3PNJx6ecexjwUyT+qOONlFsek=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L6jL1KjVGuogu950kPpsdMCKyzbyeN78zgTvHfh0h7XKKXLuSrTqlQngUWR6O1T8sXVflJUB/0yLBtLW1PgVNQkRDU5QyAnIZtwBpbzp9mgaAoR4qtCumPKs/aExovo9yeStS+n8FzE1Yq2fcd6AgGLDK23XknvYY96VxaGyDPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=NoE+lS2p; arc=none smtp.client-ip=178.154.239.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hVrcnMpp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755767790;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QFV43Vjpw2YCtuBdkEV7d+CUzzBS4M8wrUUVCTOwfBI=;
-	b=hVrcnMppqmV0nfpU6NJB68igdtK9lCtqa/r9z64458cPQxKGtpZNjP+ZGF/HeM7eE6y0mn
-	7ogY8YKhhpUvvrhl/NHlevS985GgrLZsYBSNhVIq72TD0VkzKp4g6gWeR7nzg8asrT6YSX
-	854VAx31x8qJwc6ocsaxZbLBAGXBSpE=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-k9iqYKLoO46w5rCuai-XIw-1; Thu, 21 Aug 2025 05:16:26 -0400
-X-MC-Unique: k9iqYKLoO46w5rCuai-XIw-1
-X-Mimecast-MFC-AGG-ID: k9iqYKLoO46w5rCuai-XIw_1755767786
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7e8704ea619so181384585a.1
-        for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 02:16:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755767786; x=1756372586;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QFV43Vjpw2YCtuBdkEV7d+CUzzBS4M8wrUUVCTOwfBI=;
-        b=JM7RgqCWRNp/6mHb8Z81+HfVQfcDFJ7Msjgsz8MrPeTpUgmghJp4Z5Of4S1F3zr5is
-         sZZ2TtIDFT0iNUkpEolhCd/7oNkKQF9VggLiUKFxJpuRmO02kJU6Ek3wgWJKAs5N1x+s
-         f9ZGatzEYKPknTiPyZoDzUc3DrfFAcE/nGUblJmnc/a+FkCT80MKBPmmgodkXXK20dvn
-         OaM1p4EuPqG4s1mUeGemnEtHVkFVIXdLesyN8ntFsXIdrocVvCVFCbTvsIl/l04DC3jC
-         TDA7JYLTa380ZZEq1jQ5Whqb/WDoYhM3MzuEeh11dn9XIFl/hODxHuQbnyUmnKtum9Fb
-         N+PA==
-X-Forwarded-Encrypted: i=1; AJvYcCXrjj45DWliMH57dPzMiw/2fg0Dx5FV7GjNi3HTpU3Mm5SGQIjcC3bYpuKVDx9pq2h5XWDa8Zs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRAmRoQUr3yB1hc55f+BnkbNfteKm5apfxmo6lk0wO9BsrEw8x
-	OloHtk2r0wd7HkLMU8hBNS+q+g4gwOGNRZdCNAenwz6vatAVkkzjzuRr9BY32QKwhq0erJuHmsQ
-	dw2rovAkzsee2Ee7z/b/ccfXL4eUrrJRVo0hFIJvJYKkxn5xql0qKAosXPA==
-X-Gm-Gg: ASbGncubF3GFxiW6pRaRkJoLI4zZVRWCkEZAzpUUc/LA3reUUIO1BjpC/W2MSBxrPpe
-	DB5o0Gt8YLMDtD9ZYKPYqy9lGsTsuBbQpOSSCktlE42OghWYSd8sHMItdlegXFflbLy8V9WXB9N
-	fc7QuLmza6tVtRXNBSfgAonC9FhdYWyRwGH/iyg8W4thy2q2zwUh4AoN5njlpsE/d/KYYtmzwHo
-	fJjM84QPyVhrpgKJnfe8Dj9EVhko8RizQb4AFw+LsS1xTCo4J2+ejFdqBjCd5Ynnnx4QT26aI+2
-	HyFxw7D1JGrX0wXRWshHbJGL3XFXLW1mOccGUBPZDIF/9zX9s93nVMf15tXmUgSVA+oSa8RM98j
-	jtpjEshSM0bY=
-X-Received: by 2002:a05:622a:2607:b0:4b0:74ac:db35 with SMTP id d75a77b69052e-4b29fa00e71mr17490401cf.12.1755767786298;
-        Thu, 21 Aug 2025 02:16:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEO59+xn+TEz6syN109Tg/E9Y9908A1mTpsNgURB+UWGfNs8GFE2O7XylT4YucYAMPXkXfNRg==
-X-Received: by 2002:a05:622a:2607:b0:4b0:74ac:db35 with SMTP id d75a77b69052e-4b29fa00e71mr17490011cf.12.1755767785777;
-        Thu, 21 Aug 2025 02:16:25 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e87e1c9b9dsm1089675885a.70.2025.08.21.02.16.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Aug 2025 02:16:25 -0700 (PDT)
-Message-ID: <1ba2c580-6401-4f95-8d63-48634b834234@redhat.com>
-Date: Thu, 21 Aug 2025 11:16:21 +0200
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="NoE+lS2p"
+Received: from forward102d.mail.yandex.net (forward102d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d102])
+	by forward204d.mail.yandex.net (Yandex) with ESMTPS id F054C832B2;
+	Thu, 21 Aug 2025 12:12:53 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:160e:0:640:2589:0])
+	by forward102d.mail.yandex.net (Yandex) with ESMTPS id 74116C00C6;
+	Thu, 21 Aug 2025 12:12:44 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id aCPrMXHMhOs0-xS4o7xgm;
+	Thu, 21 Aug 2025 12:12:43 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1755767563;
+	bh=Eerujrdfh/b9a+GIG0kU2uvLlnxYMyTOGbw/ntnEXBY=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=NoE+lS2puUcbUChbid6y6ZJ1jsjCQTfo0XPelej12dnYiLgO+F9HzQDiKUsbLitFr
+	 ULOKk6hOJCNm6EJomEU1euLxD3+Bsd+L/yCDA6LZFrtWisl3ZC0z9932tBuWWCWbTH
+	 UpFEBJ3G7YIsiACSfnl1sG3PgHcDLizDo6M6wGh8=
+Authentication-Results: mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rust-for-linux@vger.kernel.org
+Cc: fujita.tomonori@gmail.com,
+	tmgross@umich.edu,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	dakr@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH] rust: phy: use to_result for error handling
+Date: Thu, 21 Aug 2025 12:12:35 +0300
+Message-ID: <20250821091235.800-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv3 net-next 2/3] bonding: support aggregator selection
- based on port priority
-To: Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org
-Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>,
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Petr Machata <petrm@nvidia.com>,
- Amit Cohen <amcohen@nvidia.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
- Stephen Hemminger <stephen@networkplumber.org>,
- David Ahern <dsahern@gmail.com>, Jonas Gorski <jonas.gorski@gmail.com>,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20250818092311.383181-1-liuhangbin@gmail.com>
- <20250818092311.383181-3-liuhangbin@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250818092311.383181-3-liuhangbin@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/18/25 11:23 AM, Hangbin Liu wrote:
-> @@ -1707,6 +1719,9 @@ static struct aggregator *ad_agg_selection_test(struct aggregator *best,
->  	 * BOND_AD_COUNT: Select by count of ports.  If count is equal,
->  	 *     select by bandwidth.
->  	 *
-> +	 * BOND_AD_PRIO: Select by total priority of ports. If priority
-> +	 *     is equal, select by count.
-> +	 *
->  	 * BOND_AD_STABLE, BOND_AD_BANDWIDTH: Select by bandwidth.
->  	 */
->  	if (!best)
+Simplifies error handling by replacing the manual check
+of the return value with the `to_result` helper.
 
-Minor nit: I think the comment would be more readable placing
-BOND_AD_PRIO before BOND_AD_COUNT, so that each value documentation
-references only the following one.
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ rust/kernel/net/phy.rs | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-Thanks,
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index 7de5cc7a0eee..c895582cd624 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -196,11 +196,8 @@ pub fn read_paged(&mut self, page: u16, regnum: u16) -> Result<u16> {
+         // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+         // So it's just an FFI call.
+         let ret = unsafe { bindings::phy_read_paged(phydev, page.into(), regnum.into()) };
+-        if ret < 0 {
+-            Err(Error::from_errno(ret))
+-        } else {
+-            Ok(ret as u16)
+-        }
++
++        to_result(ret).map(|()| ret as u16)
+     }
 
-Paolo
+     /// Resolves the advertisements into PHY settings.
+--
+2.50.0
 
