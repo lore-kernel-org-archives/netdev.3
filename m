@@ -1,91 +1,62 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1471EE019
-	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 14:28:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F602EC573
+	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 14:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755786502; cv=none; b=sHTO1SO0RAttCBQNftGbTmVR0WfIRixICDi7tZ1ZaM9/DkhAY2Bzh5+JUj3Q4iGX/rI2+oXetUNmINClhZQv79uWTSyeHrYndL8+Za/dwxdYwc2lucJ+L0bWs2mo5ejWMKMPBkZJ5OdPWkiVXMpKJpSVDOVGqJmaNV+D/aWUx3k=
+	t=1755786514; cv=none; b=mPOBhhCXkbH4NfCgXYbaTCgcAu2Mj41TltsDVzz0/yA2d5+SHYcOgGgtjdDbRo53LCX0WsNluMNTOk11rfgJZmGVYD4mnhm4rwZHLx1gpmv/dMbVI6y6bgh6G6fk04eLF6CTtuyHRuI4pkdbrFwKv5QoMSMPnbefh7AGAqQ9ilI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755786502; c=relaxed/simple;
-	bh=Osw2o2AW9afeK12NE6hse5EtuH8xlV/L/bTy4tw9qAg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U1IbOyNWpuVq096QpSZ5yXl5hySSJSBqxuAolctrDijB9SEN8xhbIysfdPknQ7PDujDqzCHfzkjv78HbTQcCbTprmX3qDZogIqDBt3Lf5qjQj4+CzPQMkOe+CmuqPx74MdOEFm9mulz/RfbHVu0yXoMGxe3P2gVViWXDJf69K3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4PRjRlt5; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1755786514; c=relaxed/simple;
+	bh=tmFNfhTyU/Dd2MoiV3fKIrB2aFtvsr4jFxh/6PDDV1I=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MRkJBVuBZqztFnKNrjqqs5RDWhA8wJqnZYFOvtW2LGdTFlpwPyueDXoRP6EGt2VTrpwCnEyG2yZL9sFTG1mVBleLTA4sm8jaEBDpFukgxMccuDvpJQoUZFlTtsnYdbNrjJBUsAXSi0P/6wm9CTVT8JnJ1DHkcvnVc1l1lJ2V2Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qS8BEa+Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4PRjRlt5"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4b12b123e48so351971cf.0
-        for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 07:28:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755786500; x=1756391300; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Osw2o2AW9afeK12NE6hse5EtuH8xlV/L/bTy4tw9qAg=;
-        b=4PRjRlt5NBhldeXFPh/aLionv9H8dwPioREqfWsEMui9jIynOsnAxgZZmZ2oLT1yd7
-         j1CMEwrjn1wCJyg81NnuqK08Exr8hLQD2dpSFqoP4skmUCs9out3c4NRtaR3vsk9NR1X
-         DKAWSXghhk0f8M9WbxbxjsMulT8JTG/Tn3QET6vjgCwLg/ZYBQu7bc0pXCOnFs6wqDWt
-         JLckGM7cHdwfRgQsdmJeia24QXza5ggMnrLmfL5DBQQMO5IYZybZ/q7/Bvg5c3+qMQbk
-         3SLCRbfzbflsRT+EIn0OcI4o3D8PtyniTpISft9aKJUb+rYmPDOOztrIFfEJs56DhxzO
-         TT6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755786500; x=1756391300;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Osw2o2AW9afeK12NE6hse5EtuH8xlV/L/bTy4tw9qAg=;
-        b=heWEKYAklQkkepp6BmGPz05T6dS010Pp+gt6QID7NwFic9KN6BcqgGOWySeW16maw0
-         7k+CwmUyb3dadLn2xv0I8UoE6OyxGDpAQASSQlD1GJf2q0+kwFYbrF/aAXaFvWrL1UJ4
-         8mXf3BRs/ZPniX48hDOLGkXXhDDhRXiyLBOBcOxRkAbl2Tz9rdqYDBkRbZoXDHbGCMjX
-         FKjyeLl9aPgXnUtCRlPihb5ZoWNEZSWMr4b1pxqLbWHB1FgZSK4gSI8HAqmW+YsQyvoF
-         xczTlY9SrJXH9eKJmBW/9eIcHBdPo90R65YP7c223G/xOCxNNvkWcOcyp1rrMAJ0dd1H
-         Y3XA==
-X-Forwarded-Encrypted: i=1; AJvYcCViirukt+Q4Y8B1PmPQExv6sWoGFTt4M1dNY0qZb2c77NnyiFi81ym85BSs6kGXxeemsl09R80=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuzqWHOq+oVlXw4REuf6tJ/c9T8UbuOODMqBD4SW4/H91eiurh
-	W89H9TcdHkD42xRGJossSKmyfPe+BqxuyBkJzyqph/DfK7iSiKP3RLq4KPn4y7nrvN604QwmYwh
-	XcMP0+8PVkmsHUoQZJrN1RTdZkt3MHXWiqufp0F/F
-X-Gm-Gg: ASbGncsklqu9HVRtZ2M4zTxUQUd7/5RleaJ0Zx2DOx54rnXn639YCbO8a33I1tHadIe
-	tIvyQKRLh0qc/mMFAdNovkDtELlQleABZgPgy8xYlQgMaorpH/a7D8d/OySp8gxiGxyU5H/Apyr
-	L7nqS66t5yN9ZY7PHx8Usb+46oOV77g8usAOHA8bYtvcfkHrCC9EkrbI+sm+mUuIg74Pv0kV1Ro
-	pQzIQYTxoL3kUV4eJcdWUOq
-X-Google-Smtp-Source: AGHT+IFYKJsKRQOIOdBKtADhkjitGwmqd+HTNnwPRHKvhcgV8AKneDd+pNCCon2r6IF5tdsfvL1Vbz9BIqqO31fE5X8=
-X-Received: by 2002:a05:622a:24e:b0:479:1958:d81a with SMTP id
- d75a77b69052e-4b29f779b8dmr4065081cf.6.1755786499808; Thu, 21 Aug 2025
- 07:28:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qS8BEa+Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF32C4CEEB;
+	Thu, 21 Aug 2025 14:28:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755786514;
+	bh=tmFNfhTyU/Dd2MoiV3fKIrB2aFtvsr4jFxh/6PDDV1I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qS8BEa+Qaj2cvRyCJaecoEVGJzhvmYUfEbOmC9rby0u+/wFIIAnsn8xqb2y73r90U
+	 P8wjyUNqIeMgrs3yj0MajEl4ssGOABm2pl8uDQBx5nYYHO16Hzt92Ab4fHwEzrQyuF
+	 r8iZ/a+ajMZDUnuEPfJGSfF30HeKu5ODHAidAoDA/OziedZ6lFWK4ikh2z58cMuVA+
+	 Ah6THTbDV+zcIXoUGcirCHR2YEv+tSJLa6gkPsxZ7MyGgWZn5O5Yjw1ZEHj89/iJDU
+	 NAZ56j3ORb05VFiosmHZjX/rvOzBKZ+yFE9yncc3fNh/pmNw8U+DNHxlIIAhZpxpF/
+	 qMtlEcD5UtC0g==
+Date: Thu, 21 Aug 2025 07:28:32 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>, Taehee Yoo <ap420073@gmail.com>
+Cc: netdev@vger.kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
+ horms@kernel.org, almasrymina@google.com, michael.chan@broadcom.com,
+ tariqt@nvidia.com, dtatulea@nvidia.com, hawk@kernel.org,
+ ilias.apalodimas@linaro.org, alexanderduyck@fb.com, sdf@fomichev.me,
+ davem@davemloft.net
+Subject: Re: [PATCH net-next 00/15] eth: fbnic: support queue API and
+ zero-copy Rx
+Message-ID: <20250821072832.0758c118@kernel.org>
+In-Reply-To: <5bba5969-36f4-4a0a-8c03-aea16e2a40de@redhat.com>
+References: <20250820025704.166248-1-kuba@kernel.org>
+	<5bba5969-36f4-4a0a-8c03-aea16e2a40de@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250821141901.18839-1-edumazet@google.com> <20250821141901.18839-2-edumazet@google.com>
-In-Reply-To: <20250821141901.18839-2-edumazet@google.com>
-From: Neal Cardwell <ncardwell@google.com>
-Date: Thu, 21 Aug 2025 10:28:03 -0400
-X-Gm-Features: Ac12FXwAbRCFiQmDwEzyZOa-J-YUIju9b7ngAD3FVuwS2ZIGhx6qdKVukWl68_k
-Message-ID: <CADVnQy=m_mXb8pgcnUX0_H2FCAp58HTmhnESzQg78wXx9swaAw@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] tcp: annotate data-races around tp->rx_opt.user_mss
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 21, 2025 at 10:19=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
- wrote:
->
-> This field is already read locklessly for listeners,
-> next patch will make setsockopt(TCP_MAXSEG) lockless.
->
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
+On Thu, 21 Aug 2025 09:51:55 +0200 Paolo Abeni wrote:
+> Blindly noting 
 
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
+I haven't looked closely either :) but my gut feeling is that this 
+is because the devmem test doesn't clean up after itself. It used to
+bail out sooner, with this series is goes further in messing up the
+config, and then all tests that run after have a misconfigured NIC..
 
-Thanks, Eric!
-
-neal
+Taehee, are you planning to work on addressing that? I'm happy to fix
+it up myself, if you aren't already half way done with the changes
+yourself, or planning to do it soon..
