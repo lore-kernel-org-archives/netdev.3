@@ -1,114 +1,122 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E67A2E11D7
-	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 11:56:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E26C30FF09;
+	Thu, 21 Aug 2025 12:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755777399; cv=none; b=VREh9jZvEO7Di8NtzCu7VVTZbK7k9PJJdvPKzS6JrrLzl3BtQrzyli43YmvIyn94DDPUgPZbfmOyAUzO2lpxuizczRxrtmMgtd+viqtgeZpfeWnqQmCI9T82Xevkri0sfCKH819Z7fY6zOk+3v/+qtjKdT8Z/96rDrdAQafKOjM=
+	t=1755778790; cv=none; b=Mi4TBBUAVu2UNi3NZEgroQ62GIMAmevFEysnYOkuP/jyfdBcYMoQMr7/oX1XN++KqtrYHH3N69K8ezzH5NQBtP2tZcMNso+qgKuXkbs8X2g4kLfPPbzbK9TouCDZ4LIMSC4tiD2Z0/mSz1KiDhiPUNpft+fOY2oo6nI4fusBm9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755777399; c=relaxed/simple;
-	bh=uf6vS3Gl2AuJ7xqaJiaRJedxS56Xesptizd08sfMens=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BRR2UaY8lgodNagIdjM/QRhnvKYIDTbhdAP2Yh+lAZS8SjN5kqmsYbdpWcanbyX0JBVwjPPCE47npLl6j0IPDp+uMp521on9oIeN5vCM7pI3LBjN6rbuO5GmNleOhB0d9VrWi7teCF9iFuEXc4vnU/qeFfPBstQkLMDGRyhr/6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=o9dY4L8f; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1755778790; c=relaxed/simple;
+	bh=WogvDi0r85d7kj4DsfJxqY9POVZ7xh8jiErYhA/jon0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=glA9fvRTalL6rp7129OqLK5BFFKaX70Ueh0icPVsArcIh6eH93hdEGWVAwiFwrGTGXWk1+li0HAsYrpzUx7sAMpY1JXpC65Oqxpper0/tonHLXzEhPySCXLWzv5VMqgw3M5UuA4JjvchFpX5GMDHtnBCNBoEKKxcLCsy9aE+Dvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQcg3t+6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o9dY4L8f"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-333f8f0dd71so7544761fa.1
-        for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 04:56:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755777396; x=1756382196; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NTRZmz9b45Hl2bTm1apFpY/NlVi3bfWcm6ULUt78zN4=;
-        b=o9dY4L8fRM1bgesRcuwCsQbbh9CoT7nEgAEvHTWjMmcrsg5Ae/bAboardwNfBC0b0x
-         +52PYLRAZLcwJr/nZ/mNZa3yryQ0S/vnvLdoMTs3KnANoqQLYYjf74eu9UyprDu8hIhA
-         Ah5Mzim8Ey07GIGSLTEpJDmYOvkF3iwdR7NgTYfxty/wJNax+cQ1jdtXzfShEit76lYL
-         uekFlFe46yrOSHYRUne2eMdd1S4KAphVwJMI+6Q3khPA6SLBiHEqrnDEi9Wk6e9vKR28
-         8CjhxLGZQikFNJ7SWA778FzUTvDlNY2KXJCGxc6oyE/cc3eOGVTKEtHEDX63AeS8neAY
-         I8fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755777396; x=1756382196;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NTRZmz9b45Hl2bTm1apFpY/NlVi3bfWcm6ULUt78zN4=;
-        b=gQPTDI+MNwsi0L2uUukuvAnvgc+93dj9YsMFWssY53zXRmWBh6+Zr34H//Cs70KDzw
-         qYaFihTcVwOS6vtVCCjVASJVcMVVG1f50GuKNU2mYhyDiFBdQi/VBKx+4ygIk92wIBBf
-         gxkkpmSwQcZoVN51aOOVppTAhYgxyv1Hk8ThBOLBt7SUvGecmG9wj/0pMvalfn/xbFzI
-         enpfZzhWhaa2S1QEquwY3AoYeBeUYuhmu3SPCPGV5R99prB1Q+UbghmAFD4l7rueH8IT
-         z8NThywSb/2A4jvo6WmKCR+Pt5SnYsQT+AVblgZTQ0Fq760q7v1XxRMcJLvuO9I0Jj1z
-         7h/A==
-X-Forwarded-Encrypted: i=1; AJvYcCXTU/6c0qqws0qOa2OGezMP+PjxWsuDlzo6tai7CSZwhDJD8JsHLbSF0vq3ybkA3XaE78f/ZBk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxH4ULHg5GrW+x9465Wy/SX+GTLveCdOIxzGhHf5zENn7zpj1b3
-	Ol6w/h9oQmA7Fl/Kjm64K9Yop37dIJuhjfq+JFWj1Sj1m19UY8rX+QIFtafb3pKAn2/GmTRzQwW
-	jlF0M8Yg1Wf/+abyt1lrT4qt+u5RvC1alOdlFCEEsiQ==
-X-Gm-Gg: ASbGncsVSm+tdu5jCZIlUu5+aql7mcvoE0YhISRoXF6+4+HonQhrIeofXobTJDa6lxh
-	3uuFVHP0WFWwpU7XM8M062i42qBTOlmTYPVWiuAz3yWVzy7LNgJvp6ibeJUbNev6R1HFQO1fd9w
-	p12UYMtfIjg7jxkgF5pgAWnS5ew562OE5/cdYOtKW4hXt69R9nsf2/rnEzaG5CoIbaRiyHqFAt0
-	lnVQo8=
-X-Google-Smtp-Source: AGHT+IHLNT7GNgIK+Yc1AUKtRsJ+Pu3qxvF99KQLgmBORucS0GzpXEZZoUCuuB+z9QVIQwaQ+MKKQAluSVZweFngFeU=
-X-Received: by 2002:a05:651c:54a:b0:332:57b8:92eb with SMTP id
- 38308e7fff4ca-33549e7e81dmr7293611fa.10.1755777395492; Thu, 21 Aug 2025
- 04:56:35 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQcg3t+6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D223C4CEEB;
+	Thu, 21 Aug 2025 12:19:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755778790;
+	bh=WogvDi0r85d7kj4DsfJxqY9POVZ7xh8jiErYhA/jon0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UQcg3t+6Oq0Gnwjfg6zo5Qz9jY49O7XuYQskyEZxpMyh95MW8MQ0PeSHTzlw6pIAE
+	 rddukuDZg2Lar/PVmhOWRp0cvmA7yc3djlIQKfSUXA5EZgnCHbUGUAi7D+LMt9f5rR
+	 nrbcYp3Y45HLrG3NVXdOqMZugwSMXN5+Y1+zOT3g=
+Date: Thu, 21 Aug 2025 14:19:46 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Li Li <dualli@google.com>, Tiffany Yang <ynaffit@google.com>,
+	John Stultz <jstultz@google.com>, Shai Barack <shayba@google.com>,
+	=?iso-8859-1?Q?Thi=E9baud?= Weksteen <tweek@google.com>,
+	kernel-team@android.com, linux-kernel@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Todd Kjos <tkjos@android.com>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+	Martijn Coenen <maco@android.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Linux kernel regressions list <regressions@lists.linux.dev>,
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH v20 3/5] binder: introduce transaction reports via netlink
+Message-ID: <2025082145-crabmeat-ounce-e71f@gregkh>
+References: <20250727182932.2499194-1-cmllamas@google.com>
+ <20250727182932.2499194-4-cmllamas@google.com>
+ <e21744a4-0155-40ec-b8c1-d81b14107c9f@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250820171302.324142-1-ariel.dalessandro@collabora.com> <20250820171302.324142-14-ariel.dalessandro@collabora.com>
-In-Reply-To: <20250820171302.324142-14-ariel.dalessandro@collabora.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 21 Aug 2025 13:56:24 +0200
-X-Gm-Features: Ac12FXxjp4iK3cFyWU_S6p_GaEq9BIq8dd_UPbgZlXscJTvrfMnMiNgyqvjOGHs
-Message-ID: <CACRpkdbpKqKyebADj0xPFq3g0biPh-vm4d6C3sd8r0URyfyYRg@mail.gmail.com>
-Subject: Re: [PATCH v1 13/14] dt-bindings: input/touchscreen: Convert MELFAS
- MIP4 Touchscreen to YAML
-To: "Ariel D'Alessandro" <ariel.dalessandro@collabora.com>
-Cc: airlied@gmail.com, amergnat@baylibre.com, andrew+netdev@lunn.ch, 
-	andrew-ct.chen@mediatek.com, angelogioacchino.delregno@collabora.com, 
-	broonie@kernel.org, chunkuang.hu@kernel.org, ck.hu@mediatek.com, 
-	conor+dt@kernel.org, davem@davemloft.net, dmitry.torokhov@gmail.com, 
-	edumazet@google.com, flora.fu@mediatek.com, houlong.wei@mediatek.com, 
-	jeesw@melfas.com, jmassot@collabora.com, kernel@collabora.com, 
-	krzk+dt@kernel.org, kuba@kernel.org, 
-	kyrie.wu@mediatek.corp-partner.google.com, lgirdwood@gmail.com, 
-	louisalexis.eyraud@collabora.com, maarten.lankhorst@linux.intel.com, 
-	matthias.bgg@gmail.com, mchehab@kernel.org, minghsiu.tsai@mediatek.com, 
-	mripard@kernel.org, p.zabel@pengutronix.de, pabeni@redhat.com, 
-	robh@kernel.org, sean.wang@kernel.org, simona@ffwll.ch, 
-	support.opensource@diasemi.com, tiffany.lin@mediatek.com, tzimmermann@suse.de, 
-	yunfei.dong@mediatek.com, devicetree@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
-	linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-sound@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e21744a4-0155-40ec-b8c1-d81b14107c9f@leemhuis.info>
 
-Hi Ariel,
+On Thu, Aug 21, 2025 at 10:49:09AM +0200, Thorsten Leemhuis wrote:
+> On 27.07.25 20:29, Carlos Llamas wrote:
+> > From: Li Li <dualli@google.com>
+> > 
+> > Introduce a generic netlink multicast event to report binder transaction
+> > failures to userspace. This allows subscribers to monitor these events
+> > and take appropriate actions, such as stopping a misbehaving application
+> > that is spamming a service with huge amount of transactions.
+> > 
+> > The multicast event contains full details of the failed transactions,
+> > including the sender/target PIDs, payload size and specific error code.
+> > This interface is defined using a YAML spec, from which the UAPI and
+> > kernel headers and source are auto-generated.
+> 
+> It seems to me like this patch (which showed up in -next today after
+> Greg merged it) caused a build error for me in my daily -next builds
+> for Fedora when building tools/net/ynl:
+> 
+> """
+> make[1]: Entering directory '/home/kbuilder/ark-vanilla/linux-knurd42/tools/net/ynl/lib'
+> gcc -std=gnu11 -O2 -W -Wall -Wextra -Wno-unused-parameter -Wshadow   -c -MMD -c -o ynl.o ynl.c
+>         AR ynl.a
+> make[1]: Leaving directory '/home/kbuilder/ark-vanilla/linux-knurd42/tools/net/ynl/lib'
+> make[1]: Entering directory '/home/kbuilder/ark-vanilla/linux-knurd42/tools/net/ynl/generated'
+>         GEN binder-user.c
+> Traceback (most recent call last):
+>   File "/home/kbuilder/ark-vanilla/linux-knurd42/tools/net/ynl/generated/../pyynl/ynl_gen_c.py", line 3673, in <module>
+>     main()
+>     ~~~~^^
+>   File "/home/kbuilder/ark-vanilla/linux-knurd42/tools/net/ynl/generated/../pyynl/ynl_gen_c.py", line 3382, in main
+>     parsed = Family(args.spec, exclude_ops)
+>   File "/home/kbuilder/ark-vanilla/linux-knurd42/tools/net/ynl/generated/../pyynl/ynl_gen_c.py", line 1205, in __init__
+>     super().__init__(file_name, exclude_ops=exclude_ops)
+>     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>   File "/home/kbuilder/ark-vanilla/linux-knurd42/tools/net/ynl/pyynl/lib/nlspec.py", line 462, in __init__
+>     jsonschema.validate(self.yaml, schema)
+>     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+>   File "/usr/lib/python3.13/site-packages/jsonschema/validators.py", line 1307, in validate
+>     raise error
+> jsonschema.exceptions.ValidationError: 'from_pid' does not match '^[0-9a-z-]+$'
+> 
+> Failed validating 'pattern' in schema['properties']['attribute-sets']['items']['properties']['attributes']['items']['properties']['name']:
+>     {'pattern': '^[0-9a-z-]+$', 'type': 'string'}
+> 
+> On instance['attribute-sets'][0]['attributes'][2]['name']:
+>     'from_pid'
+> make[1]: *** [Makefile:48: binder-user.c] Error 1
+> make[1]: Leaving directory '/home/kbuilder/ark-vanilla/linux-knurd42/tools/net/ynl/generated'
+> make: *** [Makefile:25: generated] Error 2
+> """
 
-thanks for your patch!
+Odd, this works for me.
 
-On Wed, Aug 20, 2025 at 7:17=E2=80=AFPM Ariel D'Alessandro
-<ariel.dalessandro@collabora.com> wrote:
+How exactly are you building this?
 
-> +  ce-gpios:
-> +    description: GPIO connected to the CE (chip enable) pin of the chip
-> +    maxItems: 1
+thanks,
 
-Mention that this should always have the flag GPIO_ACTIVE_HIGH
-as this is required by the hardware.
-
-Unfortunately we have no YAML syntax for enforcing flags :/
-
-With that fix:
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-Yours,
-Linus Walleij
+greg k-h
