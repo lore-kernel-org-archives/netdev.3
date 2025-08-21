@@ -1,75 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f225.google.com (mail-il1-f225.google.com [209.85.166.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED6930EF9C
-	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 15:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EA827702B
+	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 15:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755790932; cv=none; b=ooNSbq+eC267x4CzaYgc+iHg/i1eio595L+gItOevmfv9FE3AE/mTbWJRKvziVfJExmsTeQT93C6QaSvB6a26/pmcdSTVu4CZ0+C/Cri7O2p7PqMTqG4qX09qrVr+oxCXIgPJDFZmnMx0vIW9pOYfCF/YrI6H3fvc3ScDNagRqA=
+	t=1755791319; cv=none; b=ChV2iSZHKVxRHI1Y8u5MV4GF0PLdcsY8q436X5/wa90HgOYfr4J0IXaAcHaJiKcYumvJ+kZomd3FaBkV5AiNtkPyfOd5uWzr6iU94NZbcWKmYou70mQeqSAqLAUXMbcX5vHBzP8h7kt7cHyhvl4Td5mN08BIp6WmDYeKm/KCdB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755790932; c=relaxed/simple;
-	bh=vMa7qjJ1dOo6u5AYMF3/xGeA4LnRSFu6peF98IgaBck=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aZvuZ99vBqcsFlQ++9mDlBqiHhjkqLqigQha8MtTF32r6NBYJc4E3ZPOxMnoptsGRMv8/Lvfiei7sThdEBvZepmeHb87pKq1yIcnT5hM6UVWiEj43hkEewQXyplkRJFR/KH6ILfv5AYUOooN2i7xl20EekZMmvSqURSovFT8Xik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LATWJIkN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755791319; c=relaxed/simple;
+	bh=QxMezdxGdBtB5eRD0pROjljUigKSdcuW8FalgQx9w8s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ucyCpnQ2MVdn46puKDGUNq8LH3RjC3jkLtvmVme8m/UXgnisOIgEQpxZPK21bCEpCP8yRQXLhDPteb04aoxRAuKxyxtd7kzaIBS9kHSWdn/3fWAakm6GlUU07L6l77eKmEPjQWSmwdhH+ifgIx08AMSLwH/aVWWdm3HiujH6qkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=BsKIjGVV; arc=none smtp.client-ip=209.85.166.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LATWJIkN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6EFC4CEED;
-	Thu, 21 Aug 2025 15:42:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755790932;
-	bh=vMa7qjJ1dOo6u5AYMF3/xGeA4LnRSFu6peF98IgaBck=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LATWJIkNvIL/WL2X8wNh6Gc+lXsuZY4FygVvEWwuYNSIOGwbb8aYZ/VzojH3yBvRG
-	 C64ADKWwvNSfUInB+BD7vvYFL7ieWB4Ie2iPpXQCBGQXCSmaJ+uiTb4CitGZW/Amy/
-	 L1m5hM7X+3Mn4mYC2BIago4rJRuE72K6XZGDylfjDPXceJbeJq99oC2URTMi3bMmX3
-	 +SGkCfpip3bO366awo92v6lMeaMIFCFeOTPcX19iHU0wYtn+vUOyrH/JLGRcIL3Hxr
-	 yh8UqVX1mIPFr70Rg8E6jZ7W0MXJ7bZUHACVGO6D6G0S8lp/stlCz9AIe+Dn2D/wey
-	 y/6NnXpRHBrAw==
-Date: Thu, 21 Aug 2025 08:42:10 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Mina Almasry <almasrymina@google.com>
-Cc: Taehee Yoo <ap420073@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, edumazet@google.com, andrew+netdev@lunn.ch,
- horms@kernel.org, michael.chan@broadcom.com, tariqt@nvidia.com,
- dtatulea@nvidia.com, hawk@kernel.org, ilias.apalodimas@linaro.org,
- alexanderduyck@fb.com, sdf@fomichev.me, davem@davemloft.net
-Subject: Re: [PATCH net-next 00/15] eth: fbnic: support queue API and
- zero-copy Rx
-Message-ID: <20250821084210.73635a08@kernel.org>
-In-Reply-To: <CAHS8izMHOzC2MUqZWgcQksLkTW_D7MJ4mndozA4pyfwAPzw0vQ@mail.gmail.com>
-References: <20250820025704.166248-1-kuba@kernel.org>
-	<5bba5969-36f4-4a0a-8c03-aea16e2a40de@redhat.com>
-	<20250821072832.0758c118@kernel.org>
-	<CAMArcTW7jTEE1QyCga5mpt+PLb1PDAozNSOwn8D7VwNYBp+xTg@mail.gmail.com>
-	<20250821080332.7282db12@kernel.org>
-	<CAHS8izMHOzC2MUqZWgcQksLkTW_D7MJ4mndozA4pyfwAPzw0vQ@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="BsKIjGVV"
+Received: by mail-il1-f225.google.com with SMTP id e9e14a558f8ab-3e57003ee3fso5024195ab.2
+        for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 08:48:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755791315; x=1756396115;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TnMi0sjBhZE4uuElmYuknC/E7+AMHFdyHEwqPSdU9NI=;
+        b=OeLYXtgkJAVC5Nj+MCkKV1A3+wtDVSTSBZQeInoyyH4oqJ0hGa1Fhclm6wr8s6UyzU
+         /40oL3nuvHGSqyf6KFhKdR7aYJ7KbGagHyRHFTxnrZqsY1W6RjN4gI3xnDWG+3acdrYM
+         239ysV8acFRTwlPzyfOJYp9JzONSsG1nH5zjdlWog6L5p4x4KoNaT0yM3+KF6QcGlmoD
+         /0cchH8omIEtqVrwQnw39kXa71Q7Tx7bGmPjyVv6Mk7kxE4z26Q1woM97rF7Eq0b62W8
+         IBBMKHZx3SWIYMlQklJou61+voqsc7rWrZJrDp8YlIGfOpGOqUYeNH9WIh7oIrqX3l2z
+         A5SQ==
+X-Gm-Message-State: AOJu0YzjR+JPm5iKZJ2pn48XittVyYn036oHMekN5ssDEFGaDSc5a/JG
+	o1G4QsMw6tneIbHnf+ZNuBDetjNi4stQ4XyzQftG6HjX5D3UOTWeYubwjYpK7WUYw6Vj2tQ252A
+	vUK5fvVpoguZZr2Voe6ExedVx1S2fkCqAyEeMQvSRlK2q7/7F74zicQmWNjwtuQyzOykScT1W+F
+	8fcXaIMZrwGc7C04Clj9zn++CF9E2f3CBCRmVIo9QivY5b/s4WNCPECd5hgPrkGp0whlgDvi5Zf
+	952lI1Ps7CY/y8IyYoZ
+X-Gm-Gg: ASbGncte5Pya5DvUvV+2igTYYGkLOYEzyx9Fb0/CWA+Zbk49EtOSU0oO34sg5r0WaV7
+	eNd+TDX0HLnbtsd0LYMtVQI4sviwIEzEAygpPZZkTmvUPTHQPbtIMbZtaIrl5AmMljFG/JgISe0
+	cpIjAYGIOogLI3rakLoKVBjza0st9b3HGMPeD4fgQOy3Q3f8mN79WtFl57l5xSOzxFgVXgaNTuW
+	1IiMp1WWSxajuZfPHtPrrbtiT1fdH92fvZWNGxeIAJ5ztnsThXo3aRMrFddkqzXByw312WdV8kY
+	O+yyQWjEKlpamH3E7O7rOHHDqpQGAsPOW/a9JEv1qhESmR16xi29Yy/V488sRWm9P6S8KGxioqm
+	o57ms4WyVOzHsmtkn9XJl7IsASabjhhLvVSIFpNzNGoKUFg2p433OjpIcMVXNCXE0uKrxngah5K
+	wT9fyVBQ==
+X-Google-Smtp-Source: AGHT+IG8pS56rq4KYwIUbQE4Zdh+YLEwBmRjVx8pS7ZgiUdnhJD8pCR/079fQNOXp6PtrlDl5MK8+cvIcvAb
+X-Received: by 2002:a05:6e02:1aa9:b0:3e5:5937:e54d with SMTP id e9e14a558f8ab-3e6d747d8ccmr49023155ab.15.1755791315494;
+        Thu, 21 Aug 2025 08:48:35 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-13.dlp.protect.broadcom.com. [144.49.247.13])
+        by smtp-relay.gmail.com with ESMTPS id e9e14a558f8ab-3e67efe3294sm3171505ab.22.2025.08.21.08.48.35
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 21 Aug 2025 08:48:35 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-323267915ebso2478053a91.1
+        for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 08:48:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1755791314; x=1756396114; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TnMi0sjBhZE4uuElmYuknC/E7+AMHFdyHEwqPSdU9NI=;
+        b=BsKIjGVVQ8VCgZgVIvQ4xVrtirKQTzllBPLn/+HpA8xkaCM0mgfJtYuq/TGyib5hpn
+         ir+SueLMXI6UQboU/EnC5Wle0merdyM+zV0KZBEw5kGKHMgX1biRVPzYriZoc2mOOAN0
+         KUEEVBIT7VZtxFVU4Qw1k/M3FNRGWpOXjGuEY=
+X-Received: by 2002:a17:90a:ec84:b0:31e:f3b7:49d2 with SMTP id 98e67ed59e1d1-32515d21177mr84868a91.0.1755791314050;
+        Thu, 21 Aug 2025 08:48:34 -0700 (PDT)
+X-Received: by 2002:a17:90a:ec84:b0:31e:f3b7:49d2 with SMTP id 98e67ed59e1d1-32515d21177mr84839a91.0.1755791313505;
+        Thu, 21 Aug 2025 08:48:33 -0700 (PDT)
+Received: from hyd-csg-thor2-h1-server2.dhcp.broadcom.net ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b47640b2d37sm5046894a12.46.2025.08.21.08.48.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Aug 2025 08:48:32 -0700 (PDT)
+From: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+Subject: [v3, net-next 0/9] Add more functionality to BNGE 
+Date: Thu, 21 Aug 2025 21:15:08 +0000
+Message-ID: <20250821211517.16578-1-bhargava.marreddy@broadcom.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Thu, 21 Aug 2025 08:22:27 -0700 Mina Almasry wrote:
-> > > Apologies for the delayed action.
-> > > I would appreciate it if you could address this issue.  
-> >
-> > Will do, thanks!
-> >
-> > Let me apply the first patch of this series, and the rest has to wait
-> > until I fix the devmem test, I guess.  
-> 
-> I'll take a look.
-> 
-> ...although I happen to be running into a random machine capacity
-> issue at the moment. I hope to resolve that sometime this week and
-> look into this.
+Hi,
 
-Hm, would it be useful for you to have access to fbnic-capable QEMU?
-Having a reasonably advanced driver on QEMU is a major productivity
-boost for me. But I suppose you already have a SW backend for GVE, 
-so it's more of a development flow thing? IOW you don't just run stuff
-on your laptop anyway?
+This patch series adds the infrastructure to make the netdevice
+functional. It allocates data structures for core resources,
+followed by their initialisation and registration with the firmware.
+The core resources include the RX, TX, AGG, CMPL, and NQ rings,
+as well as the VNIC. RX/TX functionality will be introduced in the
+next patch series to keep this one at a reviewable size.
+
+Changes from:
+
+v2->v3
+Addressed a comment from Jakub Kicinski: 
+    - Changed uses of atomic_t to refcount_t
+
+v1->v2
+
+Addressed warnings and errors in the patch series.
+
+Thanks,
+
+Bhargava Marreddy (9):
+  bng_en: Add initial support for RX and TX rings
+  bng_en: Add initial support for CP and NQ rings
+  bng_en: Introduce VNIC
+  bng_en: Initialise core resources
+  bng_en: Allocate packet buffers
+  bng_en: Allocate stat contexts
+  bng_en: Register rings with the firmware
+  bng_en: Register default VNIC
+  bng_en: Configure default VNIC
+
+ drivers/net/ethernet/broadcom/Kconfig         |    1 +
+ drivers/net/ethernet/broadcom/bnge/bnge.h     |   27 +
+ .../net/ethernet/broadcom/bnge/bnge_core.c    |   16 +
+ drivers/net/ethernet/broadcom/bnge/bnge_db.h  |   34 +
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.c    |  485 ++++
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.h    |   31 +
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 2186 +++++++++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  |  253 +-
+ .../net/ethernet/broadcom/bnge/bnge_resc.c    |    4 +-
+ .../net/ethernet/broadcom/bnge/bnge_resc.h    |    1 +
+ .../net/ethernet/broadcom/bnge/bnge_rmem.c    |   58 +
+ .../net/ethernet/broadcom/bnge/bnge_rmem.h    |   14 +
+ 12 files changed, 3106 insertions(+), 4 deletions(-)
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_db.h
+
+-- 
+2.47.3
+
