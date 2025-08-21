@@ -1,235 +1,187 @@
-Received: from mail-vk1-f227.google.com (mail-vk1-f227.google.com [209.85.221.227])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86EB1DF271
-	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 11:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF7E277C9F
+	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 11:17:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755775022; cv=none; b=oLLeOaMsFCMOLSy9JlDBe7DrajzTuWEYOJVoiaPnXY1L2PaFnkus3QVmisk2p4UMQ+8cv7+QX8xrLtoI4KCiG98vXzDfxiy0CqY1bgOGwybad9ie/CDZPgFuVoZjhpxowE2vQUe6MVFg/pPtdHhti5+K8gAygYFPBhjYmQ8rsnE=
+	t=1755775074; cv=none; b=nTJIikXDvzmMA7Y7IcTvrIbd7SAQ6Z8df+E5XfyAN4cXc1FqIL7ScY40ednL7WwVGD3mbqWyeytHmycX1w4saqqK+4vHKjt71iBv5sW+Hwl60DYZxEwaf4mUqzScr2em9QLjEwSvNITFV7+FNAEaxH9CS8o1aGCNILXmyTufqgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755775022; c=relaxed/simple;
-	bh=Mh0jYCcl2AsQYiir7/eSo4Eodqp1ipzQ+9QF7J/Shn8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jj73PEX4bs2oIbVrSrjxu210tHYZNVJtqa0mYsk0PlGuJmvKXhl++kyrFOyYN+mdmGOETLhdyueAvvzrcdQfM9+1AszhrViHzq0oBNJtqq5OfDlX84+9tN08yI7Uz4v8Ub386/h5j+m4i0QwSW7bSkniS5rYB7V1GPtEDmF1oUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=DjsVb16g; arc=none smtp.client-ip=209.85.221.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1755775074; c=relaxed/simple;
+	bh=0eZh22ExobVFn9QdpDSpMbExsBJy4p5TIuWrfygp2ng=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NGmRv8KiFbjwLMeh0wekEj6Qn/4GxQ26nnNvyYgshO34GH1zdFkMenEp09u10PBea8z1habbPTLhCaCHku1F4W+f1uczXHTvmTV5x0vYFJj5gcTOgjKBZGls9kE+rgXHD3MloIQx4nJgX5GaYCQxXV0bawRUbjIUocXMZyH/+ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cKPwSyWm; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="DjsVb16g"
-Received: by mail-vk1-f227.google.com with SMTP id 71dfb90a1353d-53b1740154dso646244e0c.1
-        for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 04:17:00 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cKPwSyWm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755775072;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vTF7fdaBAf09RlYCJCvUZk3IkcMydLaKtpCtjA+Wsos=;
+	b=cKPwSyWm0RVSYuUBxUqPmDYtMtrwwAZG8EAlPWbdtYnAE7SoZRcyygfzuBA15VwfzP7hTv
+	B2GcZ5yY/MIOx/waJbakXOiOgbHFUQ93DZ7OL/Au+DaL7wI1E3D2XOjp/APT4mh05m1vQH
+	3Hw7cQ+BBCDPJBMSqYb2ze+iEoZG0xw=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-262-7SY3Rl7XNee-_qFQg1xH3g-1; Thu, 21 Aug 2025 07:17:51 -0400
+X-MC-Unique: 7SY3Rl7XNee-_qFQg1xH3g-1
+X-Mimecast-MFC-AGG-ID: 7SY3Rl7XNee-_qFQg1xH3g_1755775071
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7e870324a51so217996885a.0
+        for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 04:17:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755775020; x=1756379820;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature
+        d=1e100.net; s=20230601; t=1755775071; x=1756379871;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QdQolOKpYG6UAB2piGu+oICeMfmzrvTtBrOxQYX6H6w=;
-        b=mWg3k5sNN3AiO2aya4htALcHIuimpJ03GLHrTRAJm39St8jMRlcLoBO/SHl5EJa2yK
-         RiTqb+mfwmCngm89dKW90hURMhdxyERp0eAjplH4UITKh6QNYIVGYrPBtCN4NLzmbjRp
-         maTA3BPOsmyYnP2i2tQ22SSHsuiTWJbtVkv1fU0A1xZb5IxxFesS4uGazdBevNWYftg/
-         XNe7YPf17bt2zB/lYz8Gl+lhcnofPSUCfoOSs/R4oDayfCScbX0AykzD6OYD8+LNbyk9
-         /KhpK6WK1vbqUdAlECsv4DCVbdj+ZwcG3Jfy5V8BbCrFoeKSU3Bzo45BTAyHoi67FuMp
-         IxUw==
-X-Gm-Message-State: AOJu0Yyig6frdjjKGYQZSfvPKM5GqXCzAFCtLyCBb6t1h9KzxFthdwKt
-	ZZM6B3ZNykpEhZB7ohY/Xa5fUXcJoekldELlpicbsdv4jQoa9AhR6XNa9bHPFNc7np06/ddw+tF
-	+k7w3dENlcd0idpshmZudW0gLybwBGL7lC3u/Z8wT1IdFnO13zSJQpetLK+emq9XcU7wO0i7Tj6
-	mUYeLdJ/QMNLlyJ3u+xc+uP+tfW46K8V0aFLbeFIr9EPBR68tKv6kNj8rmky04mG5EgmYHNYeFw
-	06lmQcRIL0=
-X-Gm-Gg: ASbGncsTYHlfw7VasO/hWNXAXi1DAPMHV4aLZh+pQ++5WnmfjhBbqO8voe514F2M9Tv
-	5WpFoEnjKVbxsahj0lKlf19Dw0XZfBPTcfiiWnaFqKw165vQ2JB4tWsvBKaElaO86FB/+si+CW+
-	N8AfjZAAmDDsrXhjPXKWfP3W4TjsKw2Ah4YQxZ/5OVH0loD4o1i7PKfEqI9TFLsClQxueMSSp5m
-	MCzS5ODibPSHe5RgntPLzmF6xmktEkWBT23WoeFJWbf4REqYRYhl82eJa4hsTWFkQHbnOTv9s/R
-	rYaJzNeybtLKKCfI3NaoUh5foubDq8AsTKZ7V8l0kY9Clv5UvWSokd/L1afMnV0m3plVpDFaaod
-	Wc0995m75kv+n0FWewHRxQ600gkiOrUifinsP/IsWEVMbjktDbiOLEQ7M2sKHLE715ozdgaKZ
-X-Google-Smtp-Source: AGHT+IECL0B16Ui1pTQgJBW+cWBXrhgUT54t4MXbT6dmF9MfG70xD6LcZRC4RLVlLZy7Y/vUEcV28dy9XAvI
-X-Received: by 2002:a05:6122:2092:b0:53a:dcb4:79be with SMTP id 71dfb90a1353d-53c7d6835e2mr555113e0c.4.1755775019653;
-        Thu, 21 Aug 2025 04:16:59 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-15.dlp.protect.broadcom.com. [144.49.247.15])
-        by smtp-relay.gmail.com with ESMTPS id 71dfb90a1353d-53b2bd22379sm1391588e0c.2.2025.08.21.04.16.59
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 21 Aug 2025 04:16:59 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-245f2a91d02so13805215ad.0
-        for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 04:16:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1755775018; x=1756379818; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QdQolOKpYG6UAB2piGu+oICeMfmzrvTtBrOxQYX6H6w=;
-        b=DjsVb16gVl68O2SQ+zjZM40PwF2m9J1VScXtEQ2Ha4k1qsF68Jb5/apgu13+5bALAG
-         mnD6OO6d3mpGK2pINcFhKghFNMGDbeCfbSwAE49HORH67/on+DUGZ0QUbBNdKfQC4Stj
-         hMZNDJWqLvwZxRr+/9jj+1d0Q9/imQBiXLkeA=
-X-Received: by 2002:a17:903:2448:b0:246:571:4b51 with SMTP id d9443c01a7336-246066025a9mr26676565ad.29.1755775018486;
-        Thu, 21 Aug 2025 04:16:58 -0700 (PDT)
-X-Received: by 2002:a17:903:2448:b0:246:571:4b51 with SMTP id d9443c01a7336-246066025a9mr26676165ad.29.1755775017689;
-        Thu, 21 Aug 2025 04:16:57 -0700 (PDT)
-Received: from photon-dev-haas.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-245fd335ea1sm21363285ad.110.2025.08.21.04.16.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Aug 2025 04:16:57 -0700 (PDT)
-From: Ajay Kaher <ajay.kaher@broadcom.com>
-To: nick.shi@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	bcm-kernel-feedback-list@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	florian.fainelli@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	tapas.kundu@broadcom.com,
-	shubham-sg.gupta@broadcom.com,
-	karen.wang@broadcom.com,
-	hari-krishna.ginka@broadcom.com,
-	ajay.kaher@broadcom.com
-Subject: [PATCH 2/2] ptp/ptp_vmw: load ptp_vmw driver by directly probing the device
-Date: Thu, 21 Aug 2025 11:03:23 +0000
-Message-Id: <20250821110323.974367-3-ajay.kaher@broadcom.com>
-X-Mailer: git-send-email 2.40.4
-In-Reply-To: <20250821110323.974367-1-ajay.kaher@broadcom.com>
-References: <20250821110323.974367-1-ajay.kaher@broadcom.com>
+        bh=vTF7fdaBAf09RlYCJCvUZk3IkcMydLaKtpCtjA+Wsos=;
+        b=Bbs2OLnuLbFuWSykMTG+qrlQ1l5PhdwCpFcvy4IBEm/iY46bqNICtZnz3YCteQrz/l
+         1dAjUPWuOrLMk5kxC8iUPbH1xBwpaLx131dQ9RcE3yuenSlnpu8gbjjmbpoqi8pAAFba
+         1T3RfYo0h5XFffFz75YnGNCyTlIet3puhBuZQ6SzeA+V9Kc/ctQPwSJzucMpunxfL1qm
+         +NhN1xqzMQLukSTH7vy78K34zwtA35wc9JTXyeY8+BY2KqzOMKMGKUuPvCNJQDodxXgx
+         SU2gt3O5/hZhI1fZGuR7MRfMOweu0aq8KGmnY1BJEd91CLar3c+g+VA3aeaivbhEEVFG
+         Zatw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUqd7Px22l7C+oVlFKvFY8Yss/l/H7Cj1Jlg1U5NnnDi5BzeMuKdbDVEpxqMGzLkfFTq290LA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7o580e1GLtPqW/gLRnIKx51rH7+lmzOkFS5c6aQ0UMMsGGgFV
+	sG1QSD9M4g4ZheDjsZDM839ZE08zvpJ/oHoj5da8YOr+FzZAiuBFq1JIbBLLiK7kW0vZFVQ3U/M
+	G/lHrF2DA0vABQsk0ekqjkJ/qLjgqb70kNCPbVKmOE8+oi5ktZxJfQxuKaQ==
+X-Gm-Gg: ASbGnctF3hnJu+Ab8vUgxyw+jC//vFuGci8f160y9Ev8UC2nN8FAv5kSjzzw5rhOIqx
+	qWJSKvFYNBEXEtCljDk8/c56AkbT8PelTKY/loHHAofj4NlHYB74lWHyxlSBHqf5mvaF/eIqOt6
+	+M8d/fxhhr758zdr9wHgyyl2KJrVk899arw/nmgkT/M2RKDgW+9ydCIu/iV17tWI8ck5fnM9azT
+	V5VhP9HIP99FwpD6NygHKOiVMXlfgRY3r/Bg3pyHXqLKt8q6+pks+0dO/kkuh7owWWmlkBKcEYT
+	5p9zYbBnNbfwXlRBPXg7rbPHHbEbsvfUOqL6djHUNnztqbZdRn4gxooAsdBlzjJbQnYsm58+cYN
+	djMHBvIVM3fY=
+X-Received: by 2002:a05:620a:4153:b0:7e9:f820:2b87 with SMTP id af79cd13be357-7ea08ea6badmr221665385a.72.1755775070661;
+        Thu, 21 Aug 2025 04:17:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGKExl4TKOYXLwhVSd7hxOBflNKJUSf9wwh0aonmAI1AB6dLc57LZaBS4sxU5LAnOMYXuVEEQ==
+X-Received: by 2002:a05:620a:4153:b0:7e9:f820:2b87 with SMTP id af79cd13be357-7ea08ea6badmr221660085a.72.1755775070157;
+        Thu, 21 Aug 2025 04:17:50 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e87f16f9ecsm1080143785a.24.2025.08.21.04.17.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Aug 2025 04:17:49 -0700 (PDT)
+Message-ID: <ec99ef48-c805-4ce8-99d5-dcf254f6e189@redhat.com>
+Date: Thu, 21 Aug 2025 13:17:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 02/15] net: build socket infrastructure for
+ QUIC protocol
+To: Xin Long <lucien.xin@gmail.com>, network dev <netdev@vger.kernel.org>
+Cc: davem@davemloft.net, kuba@kernel.org, Eric Dumazet <edumazet@google.com>,
+ Simon Horman <horms@kernel.org>, Stefan Metzmacher <metze@samba.org>,
+ Moritz Buhl <mbuhl@openbsd.org>, Tyler Fanelli <tfanelli@redhat.com>,
+ Pengtao He <hepengtao@xiaomi.com>, linux-cifs@vger.kernel.org,
+ Steve French <smfrench@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>,
+ Paulo Alcantara <pc@manguebit.com>, Tom Talpey <tom@talpey.com>,
+ kernel-tls-handshake@lists.linux.dev, Chuck Lever <chuck.lever@oracle.com>,
+ Jeff Layton <jlayton@kernel.org>, Benjamin Coddington <bcodding@redhat.com>,
+ Steve Dickson <steved@redhat.com>, Hannes Reinecke <hare@suse.de>,
+ Alexander Aring <aahringo@redhat.com>, David Howells <dhowells@redhat.com>,
+ Cong Wang <xiyou.wangcong@gmail.com>, "D . Wythe"
+ <alibuda@linux.alibaba.com>, Jason Baron <jbaron@akamai.com>,
+ illiliti <illiliti@protonmail.com>, Sabrina Dubroca <sd@queasysnail.net>,
+ Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+ Daniel Stenberg <daniel@haxx.se>,
+ Andy Gospodarek <andrew.gospodarek@broadcom.com>
+References: <cover.1755525878.git.lucien.xin@gmail.com>
+ <0456736751c8beb50a089368d8adb71ecccb32b1.1755525878.git.lucien.xin@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <0456736751c8beb50a089368d8adb71ecccb32b1.1755525878.git.lucien.xin@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-For scenerios when ACPI is disabled, allow ptp_vmw driver to be
-loaded by directly probing for the device using VMware hypercalls.
+On 8/18/25 4:04 PM, Xin Long wrote:
+> diff --git a/net/Makefile b/net/Makefile
+> index aac960c41db6..7c6de28e9aa5 100644
+> --- a/net/Makefile
+> +++ b/net/Makefile
+> @@ -42,6 +42,7 @@ obj-$(CONFIG_PHONET)		+= phonet/
+>  ifneq ($(CONFIG_VLAN_8021Q),)
+>  obj-y				+= 8021q/
+>  endif
+> +obj-$(CONFIG_IP_QUIC)		+= quic/
+>  obj-$(CONFIG_IP_SCTP)		+= sctp/
+>  obj-$(CONFIG_RDS)		+= rds/
+>  obj-$(CONFIG_WIRELESS)		+= wireless/
+> diff --git a/net/quic/Kconfig b/net/quic/Kconfig
+> new file mode 100644
+> index 000000000000..b64fa398750e
+> --- /dev/null
+> +++ b/net/quic/Kconfig
+> @@ -0,0 +1,35 @@
+> +# SPDX-License-Identifier: GPL-2.0-or-later
+> +#
+> +# QUIC configuration
+> +#
+> +
+> +menuconfig IP_QUIC
+> +	tristate "QUIC: A UDP-Based Multiplexed and Secure Transport (Experimental)"
+> +	depends on INET
+> +	depends on IPV6
 
-VMware precision clock virtual device is exposed as a platform ACPI
-device in its virtual chipset hardware. Its driver - ptp_vmw - is
-registered with the ACPI bus for discovery and binding. On systems
-where ACPI is disabled, such as virtual machines optimized for fast
-boot times, this means that the device is not discoverable and cannot
-be loaded. Since the device operations are performed via VMware
-hypercalls, the ACPI sub-system can be by-passed and manually loaded.
+What if IPV6=m ?
 
-Cc: Shubham Gupta <shubham-sg.gupta@broadcom.com>
-Cc: Nick Shi <nick.shi@broadcom.com>
-Tested-by: Karen Wang <karen.wang@broadcom.com>
-Tested-by: Hari Krishna Ginka <hari-krishna.ginka@broadcom.com>
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
----
- drivers/ptp/ptp_vmw.c | 71 +++++++++++++++++++++++++++++++++++--------
- 1 file changed, 59 insertions(+), 12 deletions(-)
+> +	select CRYPTO
+> +	select CRYPTO_HMAC
+> +	select CRYPTO_HKDF
+> +	select CRYPTO_AES
+> +	select CRYPTO_GCM
+> +	select CRYPTO_CCM
+> +	select CRYPTO_CHACHA20POLY1305
+> +	select NET_UDP_TUNNEL
 
-diff --git a/drivers/ptp/ptp_vmw.c b/drivers/ptp/ptp_vmw.c
-index a18ba729e..ce44b12ce 100644
---- a/drivers/ptp/ptp_vmw.c
-+++ b/drivers/ptp/ptp_vmw.c
-@@ -98,25 +98,41 @@ static struct ptp_clock_info ptp_vmw_clock_info = {
- 	.enable		= ptp_vmw_enable,
- };
- 
-+static int ptp_vmw_clock_register(void)
-+{
-+	ptp_vmw_clock = ptp_clock_register(&ptp_vmw_clock_info, NULL);
-+	if (IS_ERR(ptp_vmw_clock)) {
-+		pr_err("ptp_vmw: Failed to register ptp clock\n");
-+		return PTR_ERR(ptp_vmw_clock);
-+	}
-+	pr_debug("ptp_vmw: ptp clock registered\n");
-+	return 0;
-+}
-+
-+static void ptp_vmw_clock_unregister(void)
-+{
-+	ptp_clock_unregister(ptp_vmw_clock);
-+	ptp_vmw_clock = NULL;
-+	pr_debug("ptp_vmw: ptp clock unregistered\n");
-+}
-+
- /*
-  * ACPI driver ops for VMware "precision clock" virtual device.
-  */
- 
- static int ptp_vmw_acpi_add(struct acpi_device *device)
- {
--	ptp_vmw_clock = ptp_clock_register(&ptp_vmw_clock_info, NULL);
--	if (IS_ERR(ptp_vmw_clock)) {
--		pr_err("failed to register ptp clock\n");
--		return PTR_ERR(ptp_vmw_clock);
--	}
-+	int ret = ptp_vmw_clock_register();
- 
--	ptp_vmw_acpi_device = device;
--	return 0;
-+	if (ret == 0)
-+		ptp_vmw_acpi_device = device;
-+	return ret;
- }
- 
- static void ptp_vmw_acpi_remove(struct acpi_device *device)
- {
--	ptp_clock_unregister(ptp_vmw_clock);
-+	ptp_vmw_clock_unregister();
-+	ptp_vmw_acpi_device = NULL;
- }
- 
- static const struct acpi_device_id ptp_vmw_acpi_device_ids[] = {
-@@ -135,16 +151,47 @@ static struct acpi_driver ptp_vmw_acpi_driver = {
- 	},
- };
- 
-+/*
-+ * Probe existence of device by poking at a command. If successful,
-+ * register as a PTP clock. This is a fallback option for when ACPI
-+ * is not available.
-+ */
-+static int ptp_vmw_probe(void)
-+{
-+	u64 ns;
-+
-+	return ptp_vmw_pclk_read(VMWARE_CMD_PCLK_GETTIME, &ns);
-+}
-+
- static int __init ptp_vmw_init(void)
- {
--	if (x86_hyper_type != X86_HYPER_VMWARE)
--		return -1;
--	return acpi_bus_register_driver(&ptp_vmw_acpi_driver);
-+
-+	int error = -ENODEV;
-+
-+	if (x86_hyper_type != X86_HYPER_VMWARE) {
-+		error = -EINVAL;
-+		goto out;
-+	}
-+
-+	if (!acpi_disabled) {
-+		error = acpi_bus_register_driver(&ptp_vmw_acpi_driver);
-+		if (!error)
-+			goto out;
-+	}
-+
-+	if (!ptp_vmw_probe())
-+		error = ptp_vmw_clock_register();
-+
-+out:
-+	return error;
- }
- 
- static void __exit ptp_vmw_exit(void)
- {
--	acpi_bus_unregister_driver(&ptp_vmw_acpi_driver);
-+	if (!acpi_disabled && ptp_vmw_acpi_device)
-+		acpi_bus_unregister_driver(&ptp_vmw_acpi_driver);
-+	else if (ptp_vmw_clock)
-+		ptp_vmw_clock_unregister();
- }
- 
- module_init(ptp_vmw_init);
--- 
-2.40.4
+Possibly:
+	default n
+
+?
+[...]
+> +static int quic_init_sock(struct sock *sk)
+> +{
+> +	sk->sk_destruct = inet_sock_destruct;
+> +	sk->sk_write_space = quic_write_space;
+> +	sock_set_flag(sk, SOCK_USE_WRITE_QUEUE);
+> +
+> +	WRITE_ONCE(sk->sk_sndbuf, READ_ONCE(sysctl_quic_wmem[1]));
+> +	WRITE_ONCE(sk->sk_rcvbuf, READ_ONCE(sysctl_quic_rmem[1]));
+> +
+> +	local_bh_disable();
+
+Why?
+
+> +	sk_sockets_allocated_inc(sk);
+> +	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
+> +	local_bh_enable();
+> +
+> +	return 0;
+> +}
+> +
+> +static void quic_destroy_sock(struct sock *sk)
+> +{
+> +	local_bh_disable();
+
+Same question :)
+
+[...]
+> +static int quic_disconnect(struct sock *sk, int flags)
+> +{
+> +	quic_set_state(sk, QUIC_SS_CLOSED); /* for a listen socket only */
+> +	return 0;
+> +}
+
+disconnect() primary use-case is creating a lot of syzkaller reports.
+Since there should be no legacy/backward compatibility issue, I suggest
+considering a simple implementation always failing.
+
+/P
 
