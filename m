@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A86A252910
-	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 02:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E715F252910;
+	Thu, 21 Aug 2025 02:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755744024; cv=none; b=I8z9ZrcfPsKARPzxF2toYpZ7NW+x80HylS9h0z1Yev6HpROTp8Ol6j94Btsef8B6zGij5/E/n1yDtBzr7xK9Rts6jVb6wjwuCd++EoPOBq9j9Ifa4XSOcWrpifm9d4B7h1M5Sy5dFrKW+r6BjPqo6GfS8S2k8Ke8EfEHvnVwD/A=
+	t=1755744026; cv=none; b=mHvvS1lS24PDyHMOaeuecZFLOlfgoixpdGnr+OA5IWWwX1G++Jca0wlpcVm6CygGZeZyTtB5ENzbsWtgOKATZUrjBWoffdwGJerPeDEhBeHL65dsNw7mTvH2m3xyltR9kIA7vpVLUssg5QANEtceBsZDZoBi0RdyKDAxLbyc9h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755744024; c=relaxed/simple;
-	bh=k6uBuR+BFsezZ+t3N5i7gC9dG1VhnDJnGYMxyVqrBbA=;
+	s=arc-20240116; t=1755744026; c=relaxed/simple;
+	bh=9o/c4Ykf1FXVHZSL8h2+vsayOJyjbxiOwpDKgqJnfWc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pQPxpugVUuIR2HxmWL5xl1fH8hBQw634xr+ABCOp5/NHA/Lsyws0W/udNIxAZFuMJmiCuJkm1dg5Sek6rOvy8mE4CAAOSdjTW8Fu6pz4VUJo52MfDBdlGiOI77D+Kj94TvxAJYhVkuCXexSYppTGe3AC+T/PB26oflfYXv6JG6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MdmNoF3q; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=RunyoHjhjPLyAvtMZcUovISjqWHcLO44jLgTrwVtX8tOtKafyn3TuaSzBTwS48W54jyF+KP0P+xNXDbaRPGoamPYozefNUwol8MhqeR49VyTpXj0dtmiUE1YKqz1UxuNxb8q1q/xAkMVZ8BMeGpmlII4UWBFozJ/pC0iqBQ0Nng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jgKP9woY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MdmNoF3q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1DAC4CEE7;
-	Thu, 21 Aug 2025 02:40:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jgKP9woY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54266C4CEE7;
+	Thu, 21 Aug 2025 02:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755744023;
-	bh=k6uBuR+BFsezZ+t3N5i7gC9dG1VhnDJnGYMxyVqrBbA=;
+	s=k20201202; t=1755744025;
+	bh=9o/c4Ykf1FXVHZSL8h2+vsayOJyjbxiOwpDKgqJnfWc=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=MdmNoF3q3pvy//ktFo1CQn5qTfqx0xYB/nCNWbSJwUwdsHZRPBwXdRVto/rMmJhMt
-	 YXGoNnQ2eliv4187kgLkJVfg/ktXqHIN9pIprbQpToodPl2iOdlnGI7zKHKFkO0vSs
-	 iKS/N8/sOn123xDMkG9kphHqIaxZLLY9K0ZzJiYvc0rnKVGItG9KYe/r5uVesdxnWg
-	 SVOdYBJG9RF0AHSQWFdTAVmtTQKj+vaqmanlpzolCxdemhb0/Q9iG9ESUft3q1M3y8
-	 f1luJVta97bQoSugx5eKGSjlBspoj6p3VWwbDnBapToaDV3NIdOYxPi9e9bK9AA3tS
-	 QfwqLxYVOH84g==
+	b=jgKP9woYL27+rNaY9DgTwkEX+Wg9JZgEHo0dpF3zjC8QOhUVeRRaZBldyuS9n064O
+	 Z5/mNN0z55Q5N7A0+CCDWPLQal70NwmGl3+ArepfWasZcPBHfFFn06lWo7ymRJvvwh
+	 YJ8D+K5vagggWfJRO3ftI+D8dwoSZQvd73Sc3hMPb1djFg+4o9AcO2GG3Sbz/Z1Gtm
+	 l5HnlrzMb6Jia9WSAPE2Yvthh3wv89f7ACs7/jrbA21piAuX0uMu2nNJXlp+doeeep
+	 /bmQyh/tck6D3F3vWRCsYF0rJOgzqd2Ltmh6noF/+getuyly1qHZYfpguoxtAq4Pu5
+	 vtLbEhvkw9G7g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D96383BF4E;
-	Thu, 21 Aug 2025 02:40:34 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB03D383BF4E;
+	Thu, 21 Aug 2025 02:40:35 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/5] bnxt_en: Updates for net-next
+Subject: Re: [PATCH net-next] selftests: net: bpf_offload: print loaded
+ programs
+ on mismatch
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <175574403298.482952.17915026779929048641.git-patchwork-notify@kernel.org>
-Date: Thu, 21 Aug 2025 02:40:32 +0000
-References: <20250819163919.104075-1-michael.chan@broadcom.com>
-In-Reply-To: <20250819163919.104075-1-michael.chan@broadcom.com>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
- pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com
+ <175574403449.482952.12532476837961479515.git-patchwork-notify@kernel.org>
+Date: Thu, 21 Aug 2025 02:40:34 +0000
+References: <20250819073348.387972-1-liuhangbin@gmail.com>
+In-Reply-To: <20250819073348.387972-1-liuhangbin@gmail.com>
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, john.fastabend@gmail.com, bigeasy@linutronix.de,
+ lorenzo@kernel.org, andriin@fb.com, joamaki@gmail.com, jv@jvosburgh.net,
+ andy@greyhouse.net, corbet@lwn.net, andrew+netdev@lunn.ch,
+ razor@blackwall.org, toke@redhat.com, horms@kernel.org, fmaurer@redhat.com,
+ vmalik@redhat.com, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 19 Aug 2025 09:39:14 -0700 you wrote:
-> The first patch is the FW interface update, followed by 3 patches to
-> support the expanded pcie v2 structure for ethtool -d.  The last patch
-> adds a Hyper-V PCI ID for the 5760X chips (Thor2).
+On Tue, 19 Aug 2025 07:33:48 +0000 you wrote:
+> The test sometimes fails due to an unexpected number of loaded programs. e.g
 > 
-> v2: Update Changelog for patch #2
-> 
-> v1: https://lore.kernel.org/netdev/20250818004940.5663-1-michael.chan@broadcom.com/
+>   FAIL: 2 BPF programs loaded, expected 1
+>     File "/usr/libexec/kselftests/net/./bpf_offload.py", line 940, in <module>
+>       progs = bpftool_prog_list(expected=1)
+>     File "/usr/libexec/kselftests/net/./bpf_offload.py", line 187, in bpftool_prog_list
+>       fail(True, "%d BPF programs loaded, expected %d" %
+>     File "/usr/libexec/kselftests/net/./bpf_offload.py", line 89, in fail
+>       tb = "".join(traceback.extract_stack().format())
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2,1/5] bnxt_en: hsi: Update FW interface to 1.10.3.133
-    https://git.kernel.org/netdev/net-next/c/5f8a4f34f6dc
-  - [net-next,v2,2/5] bnxt_en: Refactor bnxt_get_regs()
-    https://git.kernel.org/netdev/net-next/c/1cc174d33a1f
-  - [net-next,v2,3/5] bnxt_en: Add pcie_stat_len to struct bp
-    https://git.kernel.org/netdev/net-next/c/b530173d3c8a
-  - [net-next,v2,4/5] bnxt_en: Add pcie_ctx_v2 support for ethtool -d
-    https://git.kernel.org/netdev/net-next/c/5a4cf42322a0
-  - [net-next,v2,5/5] bnxt_en: Add Hyper-V VF ID
-    https://git.kernel.org/netdev/net-next/c/5be7cb805bd9
+  - [net-next] selftests: net: bpf_offload: print loaded programs on mismatch
+    https://git.kernel.org/netdev/net-next/c/eacb6e408dc8
 
 You are awesome, thank you!
 -- 
