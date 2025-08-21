@@ -1,144 +1,98 @@
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D135246332
-	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 02:36:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6B31D6DB6
+	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 02:38:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755743778; cv=none; b=hOfipxavMpOgynjjG2dzarYzGM+M9RJh3nrryLvudieECQzRzGIFVKPhhcN6E9H4f1rFd0/XhmCGeC+2ggtid2ECpYZWpvAxKy4qFuBxbp6YDr0p1bRtlwRxXcrlW9DN+oHgYbCdBt5CqgOlYYmBLC7MvwSyPfIlfmNpaQEqGHI=
+	t=1755743906; cv=none; b=EXo7d0Hj6y3hREgxjmjHn5zWk9fuCAxNAohRqjjfvktkD9eC1ymJTghnOjF0cDMo/71Hu5fv1ILACeXqr8I6414BQDlYIPp9/5MhC3uMXdabSRESARrwU+cs5La8EEzUIaE6XgN4a/o4+iP4VCD+9V+sxBU0NnZnP4akPNjwl18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755743778; c=relaxed/simple;
-	bh=LnJD4HBNoXKe8JM1e+mPr1i/YYZX6wZEq2I6zU9AraM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tr8ahxmD93zzLclBmTJCpEoz662WRR10xc5emOtqWj3trPEsvDb8qEtIQn9fj3uWWt89cHOEnTEHqu7MPtBLMn5wMEGzwb2NDRpsYmdB+ireDUTdVQkBVVXnednJCNRlkrm0slkDqNLYX1j45f6S8msoECqyWOGUb8Fa84B3wdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz16t1755743674t88e96795
-X-QQ-Originating-IP: 5+GM4B4TEbP/y9jjuaXk8KnJPuf4r+NHSckMQq0PokI=
-Received: from lap-jiawenwu.trustnetic.com ( [122.233.175.250])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 21 Aug 2025 10:34:33 +0800 (CST)
-X-QQ-SSF: 0001000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 6922902254443300560
-EX-QQ-RecipientCnt: 11
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Subject: [PATCH net-next v5 3/4] net: wangxun: cleanup the code in wx_set_coalesce()
-Date: Thu, 21 Aug 2025 10:34:07 +0800
-Message-Id: <20250821023408.53472-4-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.21.0.windows.1
-In-Reply-To: <20250821023408.53472-1-jiawenwu@trustnetic.com>
-References: <20250821023408.53472-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1755743906; c=relaxed/simple;
+	bh=KsjIV1/2ffYaz0hJfNDVfMd7CKSxa6EV2XwVrwAxZ4E=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uwFCIKRfQskoOuYNE3FFmrOM5S0efQQsCVGiKs1Du3OdZZRUEhMpP+tgXUsHH+PBX7zM3VH90sKVzlUU5y6lKUx2iLU2JmXAcS+iLc9BHKtHShmaCcQfoMBfMVlm9Gr5WcGLD95M+tKBP3bOJ0/+Wp0Qw37MHg0rJRIzlFO0oBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mTT1nHvG; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mTT1nHvG"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-76e364afb44so436142b3a.3
+        for <netdev@vger.kernel.org>; Wed, 20 Aug 2025 19:38:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755743904; x=1756348704; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4ejQYYMpApIp8takWWTTEX4NKCk+aESE9rdeLB1U6ec=;
+        b=mTT1nHvGpYA7BysQVZ4ke+HfaxtQFHpwBMYFw5fuz/g7RpqWMEraRj0tluDK4+21Zk
+         YR5MWxNbqZDfHZl1VtphrrRm/OIHBc0dmr0EsHyyzgGRpsEAzD3gXYIpEiuFRIW6y9Tn
+         mDQCKlmubyNbfAWioYRRU/3G8CZ8dqytJfcvGU2npI482htxrDdADxn/csWobl1Uxajl
+         P5QtRq6StDAETcqSL7vy+MeblZzK9sW1W7qoFo1Vuz0BBB1ZZRnOVZd/ablIhEf72sNj
+         Ct6JFMVeM0ss3wkMn8uqn8ahBjgGEuPW0fV8Q0nfDV0+LXmDkWdQpWbUOzHe+3ARM4NI
+         vFgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755743904; x=1756348704;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4ejQYYMpApIp8takWWTTEX4NKCk+aESE9rdeLB1U6ec=;
+        b=cB42SLk3gvxrNM21QOQ+7dh7+cqe9UJiuNMYG8NRthRL+8QdzgzjZakE74xyl/GW7S
+         Pc2mmCK9UaOwp5KUoH5/W2m0kFzmflSXdnsqj8FfSCNOkqgv5WwBTQXzLgiDqfd91Lfx
+         psC0RpOkr2GjSpEp5cPdjQVhur0y6gs/cPzkugrEgtSBVg9c+aOMZs3ru1RhGN1jvTr+
+         bKwBb1LEPGfHJLMfVFE7Q/OV+k/GPYzkcHD1z+GT1gQI7YtqHial59HrXQrCVMSOJjB2
+         fD9BbTSylH27TO/xvEqGn6jwNLvraZXY+rbJoF977HeXMJ+TrGpPIGihF+YPLc64edI9
+         rDfA==
+X-Forwarded-Encrypted: i=1; AJvYcCVFvfDfQdaOSvjtFCmgOJpxfEOywssYUZQl3S+Pvc94s0mR/2YIJdKSg4oTN+YKVgeYX9MrLjg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyb8SsqjxDm78zmgpir/qdi04vSpZGewrpy4jY2WrFu9tK+9oSG
+	xNcLGiZkAcZmyH6SZ8NgR1EF7z1jYCU1iUAASCi+vzwhTW4711rWNVIAO8YfFLaPUp/+Vdy91+4
+	tLYikbw==
+X-Google-Smtp-Source: AGHT+IGPSm8s1qklyNWYrVBIjUvwJMNjYyV6tksvmWGvYuUNfdk/A/0UMMr2HBVxhLeFwG0+FUD0anr+dQs=
+X-Received: from pfbbu4.prod.google.com ([2002:a05:6a00:4104:b0:76e:7b1b:137d])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2da8:b0:76e:885a:c338
+ with SMTP id d2e1a72fcca58-76ea328cae8mr866640b3a.30.1755743904297; Wed, 20
+ Aug 2025 19:38:24 -0700 (PDT)
+Date: Thu, 21 Aug 2025 02:37:37 +0000
+In-Reply-To: <20250820174707.83372-3-takamitz@amazon.co.jp>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: OTHq+hPsk072iIamcLDbUtu16p5QzvF8BA3+MZV6oSTXdc0Sw6Ct7W69
-	tdmOwM0a+qfKu31R++LYCcw/ArMAsxqNwKQYFKjwmA/KjUFYMhNBSY3HllLGngEbbXSyhAO
-	V6GgzYiwQcybwAqkhRwe1d/Q7yiDLRARytpUH8S2R1LRE0FfnO/MfxzSbo1oHX53kJ+SHUj
-	gEkarqj9RvVRJAJ4gaxb72aShUbmUL49cYpiqKrVyiXTWC4Yv42ZQYXhqj8Zb9XpLjmszpV
-	Z+nKHXlfkqslrq1TaUlsb0WEmqunHHQlKTuaZXq0EXMk4ZoZHX56N1PIrNswSZe/W5Ilsr3
-	mLUFq0Ug7rTslowADvjP3oMT6KUQZR86Tni2/6518I0tMs9FQatmHuTIY6DaWM5GieM5IIn
-	5wKu5zdmPGjPrYxL2zXbhrZ/PTleiO8cxYTP9y9HkcKagBr21TySPwrLP8MRVE4CG3rpY99
-	A+fqkE9agEXS7AKV9igCNyO6IXURoQBb0xhPKUGCPnoqTYczP1a/NjMndDrvU5WWJVJmCjI
-	xUoFX9RFqIu7vldjDfzCJH7dxJVh4rqT+OA5pxweBjZGzgidguWFty4q7mdEUCrbZ4uaIH3
-	ZApXVJpJFYifqnTiyJKEOpF/J2BT1K5yfCwz4knd5cr4+FM1m4ftc9KRfUX43CUkbQNjqRq
-	UGL4g3+CxkgwE6maU2jJvk37PQQ+64wvcAorWIHHO/LhjegtrV6+dW8ZILMdtVQ3xOlLU6R
-	xnHKp7lnuB6lNjIyAkuhOEQbRDl8GKcim7o+npaxNgflWdXCX8C8mFdKRQKq6ggxsMh+VaU
-	rURF8firCkZQBLwioaSlVPfMutBxUmPo4ST5ass2zvuwxPka+mHWI5dFG6ikYBrcfzy2cB9
-	pCFFBiudQVPWTsho6qQ8X0m6xdIQCPEkLYgaESxIv2eqwEk+450Uo6QYJVx4uLM+aMYvRD8
-	m1Imxwjdf2+p2jcMaOty/iLO6Zplaiyg+0uK3Cf1OL7QFYr9p1h4upq7+nLdRfoeq9tRgXq
-	+TanES51GoNptDGxbh21n/5JxePOk0B/pXPtlOYOIMmbwjyTGuuPmX4seyMuKZ5JtUmaac5
-	tDEhgZD6xfF70fwYYOPs3wiBAC8WEYPMw==
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-X-QQ-RECHKSPAM: 0
+Mime-Version: 1.0
+References: <20250820174707.83372-3-takamitz@amazon.co.jp>
+X-Mailer: git-send-email 2.51.0.rc1.193.gad69d77794-goog
+Message-ID: <20250821023822.2820797-1-kuniyu@google.com>
+Subject: Re: [PATCH v1 net 2/3] net: rose: convert 'use' field to refcount_t
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: takamitz@amazon.co.jp
+Cc: davem@davemloft.net, edumazet@google.com, enjuk@amazon.com, 
+	horms@kernel.org, kuba@kernel.org, linux-hams@vger.kernel.org, 
+	mingo@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	tglx@linutronix.de, kuniyu@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-Cleanup the code for the next patch to add adaptive RX coalesce.
+From: Takamitsu Iwai <takamitz@amazon.co.jp>
+Date: Thu, 21 Aug 2025 02:47:06 +0900
+> @@ -874,8 +874,6 @@ static int rose_connect(struct socket *sock, struct sockaddr *uaddr, int addr_le
+>  
+>  	rose->state = ROSE_STATE_1;
+>  
+> -	rose->neighbour->use++;
+> -
 
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
----
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 28 ++++++-------------
- 1 file changed, 8 insertions(+), 20 deletions(-)
+This is replaced by rose_neigh_hold() in rose_get_neigh(),
+then rose_neigh_put() needs to be placed in error paths in
+rose_connect() (and rose_route_frame()).
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index 590a5901cf77..c7b3f5087b66 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -343,13 +343,19 @@ int wx_set_coalesce(struct net_device *netdev,
- 	switch (wx->mac.type) {
- 	case wx_mac_sp:
- 		max_eitr = WX_SP_MAX_EITR;
-+		rx_itr_param = WX_20K_ITR;
-+		tx_itr_param = WX_12K_ITR;
- 		break;
- 	case wx_mac_aml:
- 	case wx_mac_aml40:
- 		max_eitr = WX_AML_MAX_EITR;
-+		rx_itr_param = WX_20K_ITR;
-+		tx_itr_param = WX_12K_ITR;
- 		break;
- 	default:
- 		max_eitr = WX_EM_MAX_EITR;
-+		rx_itr_param = WX_7K_ITR;
-+		tx_itr_param = WX_7K_ITR;
- 		break;
- 	}
- 
-@@ -362,34 +368,16 @@ int wx_set_coalesce(struct net_device *netdev,
- 	else
- 		wx->rx_itr_setting = ec->rx_coalesce_usecs;
- 
--	if (wx->rx_itr_setting == 1) {
--		if (wx->mac.type == wx_mac_em)
--			rx_itr_param = WX_7K_ITR;
--		else
--			rx_itr_param = WX_20K_ITR;
--	} else {
-+	if (wx->rx_itr_setting != 1)
- 		rx_itr_param = wx->rx_itr_setting;
--	}
- 
- 	if (ec->tx_coalesce_usecs > 1)
- 		wx->tx_itr_setting = ec->tx_coalesce_usecs << 2;
- 	else
- 		wx->tx_itr_setting = ec->tx_coalesce_usecs;
- 
--	if (wx->tx_itr_setting == 1) {
--		switch (wx->mac.type) {
--		case wx_mac_sp:
--		case wx_mac_aml:
--		case wx_mac_aml40:
--			tx_itr_param = WX_12K_ITR;
--			break;
--		default:
--			tx_itr_param = WX_7K_ITR;
--			break;
--		}
--	} else {
-+	if (wx->tx_itr_setting != 1)
- 		tx_itr_param = wx->tx_itr_setting;
--	}
- 
- 	/* mixed Rx/Tx */
- 	if (wx->q_vector[0]->tx.count && wx->q_vector[0]->rx.count)
--- 
-2.48.1
 
+>  	rose_write_internal(sk, ROSE_CALL_REQUEST);
+>  	rose_start_heartbeat(sk);
+>  	rose_start_t1timer(sk);
+[...]
+> @@ -680,6 +679,7 @@ struct rose_neigh *rose_get_neigh(rose_address *addr, unsigned char *cause,
+>  			for (i = 0; i < node->count; i++) {
+>  				if (node->neighbour[i]->restarted) {
+>  					res = node->neighbour[i];
+> +					rose_neigh_hold(node->neighbour[i]);
+>  					goto out;
+>  				}
+>  			}
+> 
