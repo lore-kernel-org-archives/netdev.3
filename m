@@ -1,46 +1,46 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012037.outbound.protection.outlook.com [52.101.66.37])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011002.outbound.protection.outlook.com [52.101.70.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88096283FCE;
-	Thu, 21 Aug 2025 15:21:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9158B288C22;
+	Thu, 21 Aug 2025 15:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.2
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755789689; cv=fail; b=FNBSEsg20ywRwbfCzvsqbpKr3FXyjQ8mwBi8TUc/bvh73cH1YIHUBb5ZzD2Z3I4doi+lmGGEqWgU8NCCRVVCza6Z0TseAncmQIlsue425AJ+yOvTx0ENPJLHX6NKQkPMKu0RfsgYiNoKBzeFF1J34VJsRQI8e69n6e21HQXy3Ok=
+	t=1755789691; cv=fail; b=EDb2etYmMzM6oklRcwBfQckpNyrQGFYG0uuw20ra5srRbdULipCHB2qKpflLDt9+yd/Tk8T+J7uopMA9IXS9LYoY9LlDdnD9L45T1ERLZM+PhrLNY6sKkeZ+UeM2x7kPrBf0CJkzaFjpNewuvnqria071ke2MqGW+KKAf+b/6qU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755789689; c=relaxed/simple;
-	bh=7ZO8BWdNB3gFOE6N2KfiF1kGW0jDGB7VPs9/pt3ry3s=;
+	s=arc-20240116; t=1755789691; c=relaxed/simple;
+	bh=SCqmxOKDIm2qWTcNHAh1iK9IURczPHwI+RIxp57SFdo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CbIYYAdhLRvCDFvqzjt6xyrYp0qohTx77E6n4pb4oONx3+G3475faBZACFD9Ilrba2j3Zj4QTlGohK2sNav2AdXbe38Yj9gtMAO4d/acpCg5+pZGrNpOYIbP6Jt6iHefHInQ1dhynW1b3rLTGYJglZAHEl3oFoGywnv+pIp/R0M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=B4JoU8/G; arc=fail smtp.client-ip=52.101.66.37
+	 Content-Type:MIME-Version; b=QhDWyqAcAlQRNcydTP/WYGk4knlkj/VeSCx3o5LVl2xV6zN7QTYUUT1yXSYM+7FqA3zMekvIffjLhCsRwTnOGQF2xYrwQn5ckHtliUtBKgy22UQD8j98PoJ9bzRTzIgUiPcXVnev7oamdHauB/xud1AOMsjmGcjzlVLE6ro0wU4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=E682BXa4; arc=fail smtp.client-ip=52.101.70.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="B4JoU8/G"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="E682BXa4"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FTEikOBeqyH4TanoZ4cEr/Tns34TFT9f2KWMN48zJFC3W7a5/pGiiZexR5YAFD/jO46AhV0pPf+ucqvyb6hGLgHAox9MQSyYwMflac+z0bOwXrQShdWpxbQMV+kIXN+uqVV/rxCfrArM90yymTQ9fbTY0cuh8EMWjp2uqzQAT0b2128YIyqWxcybPNwZhSeCLmTKWr8A+U/0OfDGKs1CfL6av915emX/Mc1crU4cQZg+ZKa+I+bNp5qITRThuj5K5/8bMq9KQAi5gOIdNsz4kxbHwPc9CuFM6qcOm+0vAUI7EReb46fzfxcm6bWNYjrYf/gQ7prZphuUpAVnxAPqMQ==
+ b=DPL2kazwUDdhDR5lRTzAMT+9XVmGWYphMKmpoh68pXi0Z84L/XxSj8FUgLNPnbMPrzp+fVYkwPhWPRc1OV4IJFAbRYbqaTTLFMBhHEXrPh2H5LYj3fMGKCvZwF8+MlRyR1kI2KzwZZ+25D+pk3J2lHAzxkSEeAE8Y0rT+7sOmGXVyklRbVkGNdHFxZ2lFHLtZvkPeFZR3XYd5qVQafw6Z5QznnIBsaCii6xpeahDQXRAIc8wkglskAwmTet27a7l+ocj0wU33d3DTW5HWx2PA8Cdva3m2l2Z84tx2ipSdSgbsROld20BwgwMdjtkTfM/IaErqwDZnDR1DclvPwrTEQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7jlV6vbgvzqX5kXY5ZVH6ZggRYe8Q1k4zdx9zNYHvy8=;
- b=qQ8f/AjVJYPfBIjULWp5zRRP3mLNSjOA4D2c8gQLYdyCog/gmfJlKSrlrcK5m3mlr26oYhPGgi3aa6r82qXFX+9GyDs7aGcE+NNw582jnv/M0spevLbMak2XStILKXvcKuORquWzkQvOKydMS4NCm0QtsVG+5zxFkSHCnmwQ2nXnNLER29k+T2AVGNFDOHrDHGfuihiVRQlZYsE/kb+FUD0L17qDT3PMFhcrZUv2SKdULfX6/bL9qU6UKOEp0shPFCVS4v7sabbhLXNhuZHDRv2XgGmmdC5tYSWFgMvqLnhCLen0Kynld5lTfjTp4IMYyEfb5+4QShAq3V0cQd8opw==
+ bh=Tj7SlPVkCBGuSSnls28sZTXSY8KlmW5lLd6Kjegf8TY=;
+ b=XgyJBJtfi7Hebqe1oqc+T9AmamjzsVKYJrnYWI8KNC/Ax4l+1KcPfMtZoT8KGtlzzSihY2x1/bVxUqzMJdZ8CDdhDv+of0yZNJwVVnJ+GRcSfo86eDUU0O7+cIQLnTvFEcPDpQrljVcsTYNXJ1g+VxqGKxf+mByAfSGUJMM2N7FfkuNOTlYetPCKkJzjMwF+B/YB+ZSBTgHpRzNLhD68Z7eOHcUlZXY2CXVve5PqJprUmYLKmKTmzys6cQ5sp15kO5mXRuBuPN+1/EzlN3rwd4gLzb8LXY1cS6GMAzdIefZHRu48zoT9WSzaoy7pPJCvlY1+HyeLfPohO4G2o8VXng==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7jlV6vbgvzqX5kXY5ZVH6ZggRYe8Q1k4zdx9zNYHvy8=;
- b=B4JoU8/GgRNacG9xRm0ugPaDBSbsQc43eMrgxn4bgrzuT4ktfofPwqHB2M0oL0GbISHE/I5OvXLNf0nZ6jxZmd0ZeJgv6XQ8BKNUjWNWMn5GyOlX4ERbMQU9TJesS86x43qHynxXD2XVRssB/GiST1AAt5luSIOArQ9v4LevjLPYYPi08/AwZ1fwhczoPA3qHsB/YErJBKiO0xZq2RYuw/Yje4Mbewu2Pwe6DBWn4TNRrPodrQEl40EAUKtuVk7yTx9X+U7jM91ILla8UgT1n2UDkiIgEEOklxcKf8cTWxZ4FO6597nvbJhvrWbWTip1T2CTCmfVfIi2tcfDit8AZA==
+ bh=Tj7SlPVkCBGuSSnls28sZTXSY8KlmW5lLd6Kjegf8TY=;
+ b=E682BXa47OUEl0d9iJq3my34zTZoA0rxk5PQdH+a2HJXwlt4oyghet0im0As0nx3YSnR4QrszwRcYbOiK8L6Py2BBEvRrvaAIALrKEowEFKsgS2uvOeSjAbveK7rV15beOsnzhlWF+W9n52nDSXbJyv+oKmKr31mllCXHd1P0lDUsyK1ssGx7MLITTrq5jx3wjRci5OefmWUhza0PeU4FMPVkUUgLlSPnKMtD22YH7IXMrSIlOLZpDbhtcDfh5uoRqtcA3fWnAPk1QDPjkvRZfCVN2dsSKrl77Sa/x90HNW7JPGuCTLBjwe2fEmsK3puxnDNZiTAMMtiUvstDcdfug==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
  by VI2PR04MB10809.eurprd04.prod.outlook.com (2603:10a6:800:27b::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.11; Thu, 21 Aug
- 2025 15:21:18 +0000
+ 2025 15:21:21 +0000
 Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
  ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
  ([fe80::7417:d17f:8d97:44d2%7]) with mapi id 15.20.9052.013; Thu, 21 Aug 2025
- 15:21:18 +0000
+ 15:21:21 +0000
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 To: netdev@vger.kernel.org
 Cc: Andrew Lunn <andrew@lunn.ch>,
@@ -58,9 +58,9 @@ Cc: Andrew Lunn <andrew@lunn.ch>,
 	=?UTF-8?q?Pawe=C5=82=20Owoc?= <frut3k7@gmail.com>,
 	Sean Anderson <sean.anderson@seco.com>,
 	Jon Hunter <jonathanh@nvidia.com>
-Subject: [PATCH net-next 04/15] net: phy: aquantia: rename some aqr107 functions according to generation
-Date: Thu, 21 Aug 2025 18:20:11 +0300
-Message-Id: <20250821152022.1065237-5-vladimir.oltean@nxp.com>
+Subject: [PATCH net-next 06/15] net: phy: aquantia: save a local shadow of GLOBAL_CFG register values
+Date: Thu, 21 Aug 2025 18:20:13 +0300
+Message-Id: <20250821152022.1065237-7-vladimir.oltean@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250821152022.1065237-1-vladimir.oltean@nxp.com>
 References: <20250821152022.1065237-1-vladimir.oltean@nxp.com>
@@ -77,464 +77,260 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|VI2PR04MB10809:EE_
-X-MS-Office365-Filtering-Correlation-Id: f89b955d-5a13-4e81-f7ba-08dde0c6609e
+X-MS-Office365-Filtering-Correlation-Id: 99443d4b-17d3-4ff0-069b-08dde0c661fc
 X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
  BCL:0;ARA:13230040|1800799024|366016|52116014|376014|19092799006|7416014|38350700014;
 X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?5WYGp6FWu1TsRmZOdBY1cIts1pw0LPDtxUQcr+vLMZwJatq6TmPQLwg6mcMq?=
- =?us-ascii?Q?BhnQ94mnl49zfql11fOrD8M1KX+eUoNQ8n1XfofoOTuxRn1Lvl5qdmOSBc3z?=
- =?us-ascii?Q?ERwWX0C1LESG/3q+e76f8pVIoB/u/bxccIqCqnxQ6ay1iOXOzTGhd4S7EvEW?=
- =?us-ascii?Q?prBMZB4Qyi7vLNHR9aMyhCdcdoK/lCcxrPY41lf3HXAqDRly/1c46fCrX1p5?=
- =?us-ascii?Q?QJ+4qoktq5UJVvBBaM1HuGDqJmzQLKKFAH+8I15K2jpnw9i5UR+jACP3Ot0t?=
- =?us-ascii?Q?Rk1lv5jnTaiHkRlUDtdcCTBccZ7rarVWTV1H92mzRmJT4nbdD4QzfE1T7gqo?=
- =?us-ascii?Q?tr/CBUYB5N9Qt80myjic6aaae2UCSLmyG/ov7pciAg9+/t1fP3kxToTwTCYr?=
- =?us-ascii?Q?Enrw+yNtj5PwOr8sBO0F3GZ1JrcXOviAEMPMyfXp9kdYh2CDir4/FJyoA5EG?=
- =?us-ascii?Q?WWQFzr0wrdUzslyWkbIhCH+wkFIQ3JYszAIT2UuCVdy4m+Iffk31vn5hfRMZ?=
- =?us-ascii?Q?vcALYlGulljDcxcms5qjEoy/DhbKS3XVNMAQ+Dzq2BB6syEnGl+i4owrIDMm?=
- =?us-ascii?Q?m7JuTH9guqFGc4W/XI6U+t8QC9rUlEkt2XITLfczmiBvQ2YTCqEf8EiCQ825?=
- =?us-ascii?Q?5UxwHMVejXfQst0LruxHNpQ7xj7v3en+rABg35MsCO3lGEgvCiRxYzNl9ONm?=
- =?us-ascii?Q?UdGp9FpIH9a1BWAn5RLTvC+Rj+OtYuClcgcaaQAceVk9n4y/bNlCO+9ON1dj?=
- =?us-ascii?Q?GHpHUKNIcA5m/GLCJWMNAX4M5F4PhmGoFy/i3Ku+9FEBGLord3PRMrm6G3ip?=
- =?us-ascii?Q?CVGc4AgdTmgNkwTp5D0X3XrLPSu/3Y900nStIgr3SUYvntn6YXY/Lk5pD41l?=
- =?us-ascii?Q?lqvsmZmgCMlIsJQIqL9nA2d0bqhE4glhugQRNIXEvLp2i1fH91KzsdXZ8fUF?=
- =?us-ascii?Q?B+ppvGwm6XXX98ECUTNml39pPydaMit7DLw1+hi+5A62jfp/H/bnNDwN055C?=
- =?us-ascii?Q?YSd/5u/9iURklqDfoIpwz0OOW8BbTiBgPjPAK+OInnh7ia6m8ho9TKNhGQQk?=
- =?us-ascii?Q?JaKAHBret86EP5V+GXS+Xe6QaatvKQm2ldfcCo7j5bc1uI6i/uIr/T0bQh7a?=
- =?us-ascii?Q?yLlr9Wawev9UzqSyQyfqWNAob6QPJvPv6hdrkbciS/HAQkXaLzQzN21sY120?=
- =?us-ascii?Q?dcHCcjUxiKGV+cz3f2r0rl4UR5cnUhJ5i0dv/ZEL2T29EQ+k63tFGiF5Olvg?=
- =?us-ascii?Q?s7oWoW1GvvY5RMtCLFsUC8PvH6/3S5qpiCaHBeMd1hOXxXqEGbpD+kwH95qH?=
- =?us-ascii?Q?Bjrsx7SR5EQhE8W6Dnmuue3PMt/UzlaejN4fPvYLkZPJctZhyHmzbxGUMIfK?=
- =?us-ascii?Q?RkCIUAfh50NR3MEZQiXNMQ97ZHQiqAll/HAigPi6289WxpsIp2puL72txOW9?=
- =?us-ascii?Q?Aneo243zIIj8M6xVnxPKcwCNu2LrBJlobF3Uf5W12s7wqxduCWryIw=3D=3D?=
+ =?us-ascii?Q?Cu5yVaCohHdByU0LJeC9iFkFRE4ITSJy+c9yr213xDFEmRYRvDdUL2jQ5oFi?=
+ =?us-ascii?Q?bPN9J6WYTPJxfrtV7gHxPFZAwZPu3jm3ZrSRWzOTuviMxWBNG0STr1Fgqqa7?=
+ =?us-ascii?Q?FFuf5rzq6vzyVSizNJvNOtrwq6grNyYFLS43vCUs7NSkjkdSzqBj5j7X1kar?=
+ =?us-ascii?Q?umUF/u0TtpN06oxTUZF4NRpo6D/6RtbfuRdF22WPM+2ehPKZ9imDhkj7KIAL?=
+ =?us-ascii?Q?zVKVh5ZtiG64S0toraxxtlHNBj+qcDARFZ2Cq3+ad86dCvJZB/e1PUF8RHOB?=
+ =?us-ascii?Q?vVDMDKUZZu0ndFoqkvmu2Ii4cfOaruYMjNp7OC0/HcfqsPBAWMCdFmd6sV4h?=
+ =?us-ascii?Q?T6MeBqqJ2kUIvrr+vEeQGMFNuR4P++Eh5oD6q/ABnsObL9mjsrielmVTY/vR?=
+ =?us-ascii?Q?42IgkoFPXU2nRXsDRyxEXrRCtKoA4HQrIzQt8scvEn3U/G3uPwT+XwJCUa9i?=
+ =?us-ascii?Q?329QSLbHFCZMTA23JtUMX4adIXPs8JOBKqewW4ZTwEDRx6jSPznhsbsklrec?=
+ =?us-ascii?Q?87aFZUtsRZEVPm3FbWz46SH2j22R9Yv8rz2ewYzYm+S1dq79He2gF8NvoAiE?=
+ =?us-ascii?Q?lGBbJPIxNKvGogboeiN3pSyPu6pcbd1D/e47CpNJHuBa8d2kcoL/HSlZ9JXn?=
+ =?us-ascii?Q?nSNA0A1CXnhGJXY/10W5HuyZ/cab7XLUCIaGD3VlVx6wOTKvSj+4B7M1SAg/?=
+ =?us-ascii?Q?gLsUV8xPjE44wS1HC909sFEXFmFMuWEDbM7IbGpouu/QmC1sYu1pazAle0ZL?=
+ =?us-ascii?Q?Ik/ETDs9rSy6GfsgzL0h+JEpS60yTd1RzSU79IDtbaDceNDkFCvAEACLFVJ2?=
+ =?us-ascii?Q?eBcLYnow9obOS8YCYJHHy80Mkh6BiMxiBomORENtbcRfm2+q5boTD93RZYkk?=
+ =?us-ascii?Q?yIQizs5cIDAVVzMPN9YVUq1ro9We/583X4m8gApLAP/bIHXQeYg4S6WvmsWh?=
+ =?us-ascii?Q?ihjsS0W+pRa0uqdUFzeZScWKg3vVK8UfG9CUWBBRgV2VeZPi/vacnDLcCxag?=
+ =?us-ascii?Q?eWMw71wxi8eLKVNOwr0Jm4ITajARCsl+cK/aFyiH/E3g8CU8KGIUqQNsJvAM?=
+ =?us-ascii?Q?0TLuDeeziKfTKjC3tJx6rvl+Wutn7Yb56w9CtcCPeuNvTIOUXvx1oW5/HE0Y?=
+ =?us-ascii?Q?cTyCOD1np1u1ks1Q+C/ePndrh8WOX/Ul5B5CbYNBNiRtGvKyJo+VE0heqwrL?=
+ =?us-ascii?Q?2OOiHu4mLpMN9FmiipYPNVSr3DBpnwt+65pJnsFAE7XLfqN+EAJ1AXZjf6ED?=
+ =?us-ascii?Q?sr6FXrGoe24x/xpI++EUdI/PaYbbQpDORnzZ9puWj5tmb/S30d397Ls+b6FD?=
+ =?us-ascii?Q?QjQamjTYeFFg+t18LdwLJOCCN0cfhy1PEm3NQr7O9TecDlAt+xBQI4ctAWoF?=
+ =?us-ascii?Q?a5CpvxlEaZcQeDQRjzethTgFn0QiqdomcirSgLVvPE4bKu/tZHFb0sFRPm5f?=
+ =?us-ascii?Q?vdQojP+NY5qUG2bTCpPVQ49q7zoJHzAT1km+f7iUk3OwoffkayFnPA=3D=3D?=
 X-Forefront-Antispam-Report:
  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(19092799006)(7416014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?NE4xei/5bh1fCIJIz2gLiEyDFdmp/rTqZ5PvTtPyDFe62mEvNb1D8zrMYC6N?=
- =?us-ascii?Q?sRwwq4Kk0t9lAQIvBXm+jxa9RohBLynTI4kIIR6g4BkXP34nLDhIlD3cAjGU?=
- =?us-ascii?Q?G/sBEVo6fLBM8AwbJAwpbiw4At7JfHAD7DovpUO7gPEN7dD5jwusrB42VxZJ?=
- =?us-ascii?Q?1c2G9/hHdOy0Wf4o2bjY8bKX990I2nrB2dVIsQd/W8cwtaR5wwBFeThbq7rR?=
- =?us-ascii?Q?/ZgOMTd7oQVawpTma1I7pDlmiHhKuPuasLVMyd79SVRAJATKcmk+FAaqBXht?=
- =?us-ascii?Q?Dl1x0xdgJjohSyC6jC04NYNRcnJBMnVmkjQeTs03X+4hWBMxFu4Ex0MIoGD6?=
- =?us-ascii?Q?IzOHdtFvoB2dugS8fd5yGqA1/fTlYaWy0mg3acoU4gpv5U61cqnO+gH8KZin?=
- =?us-ascii?Q?DNm22DdeQsts9I1xJdbUQn2CP8p3ryyMl/toEHPqgq0gcVgHrv3A6mMOD/KW?=
- =?us-ascii?Q?kZJoHCouphVBdHtftr86ZDFWO/ZBI/lalB2N8iPR9Tepw2qK6WIkxJlyBfxD?=
- =?us-ascii?Q?mcBOStGFaBvWjRcvabspMPORxguwWXkLeRgk9O0DetPEL8BeoMw4ezk6mt/X?=
- =?us-ascii?Q?gswXhJmHV9u3h1hedp8QkFBIyosWJHhixIB+Ib1L8jwqo73fnuyIFNobEWoz?=
- =?us-ascii?Q?DepX7gBvqn7c0GdR/zc/MPI6EDwvAPeVjMzyMBaI0C8gvsReKZZXE2tUYSH1?=
- =?us-ascii?Q?UZ36DymIBBMmym08MfKHCCinuiYQAE+DJ5Mgsg6tdNqb2Wj2yH+NTy3wR6jK?=
- =?us-ascii?Q?o+vUgW/PyNXBHeELih41zXNVHxFumKLQWGRzYRem9pN9+fkuuUvIOkR/BVLT?=
- =?us-ascii?Q?sDgjzW4GhNBwCdznuP5jHSbK/e2y7DlHGdQpa7YgUtzrntmMrIUEPXBKpcXf?=
- =?us-ascii?Q?BYIUS6hwB36BS/4/afdhTIyg5ZQSz1lKwDPzGOqOsITITtGs8RKwBzrYd2oK?=
- =?us-ascii?Q?0bL5sPMMlF3sP+m89C9+pxJVr8p3G1CyDDNd6FLGQu8KtcA7NfS2pDXgTrGg?=
- =?us-ascii?Q?YccoljJe83ki0fPQtXFVP+SZgnxKwthAVL34/hMsbojZAxgHKjLxehVlCsD7?=
- =?us-ascii?Q?E7IzbMnYKnudgWZ3Y7yuw7M3M84BZQQ5w41gb+orYBgNHUmNKYNnBJNlPmfR?=
- =?us-ascii?Q?GjjfhmoMvPWRandy2mDPZUysWB3X6uaJOd/k+dvoQXWp4yYc7USGwkMKtRMp?=
- =?us-ascii?Q?l9QcDu7sEqAsRVBBRKn0LR0fdep5rSfoePmKWBVZ4MjfpEE42Q+mpL/EUHvv?=
- =?us-ascii?Q?n2QSkzqJgnu7e4RoAwyRhcH5Rom1JdFZpN6LVOhmoEPqO346twSQ5jnL3Sg+?=
- =?us-ascii?Q?ZxelMPQX4d7iWk3k9HvhpoSSV/BQkVNFUMpi/sjjiNNkkufncIWH9HwGtPt/?=
- =?us-ascii?Q?Rl2hVKHBASc3pgliha7Xu/a3N1Jzq25LRBUnRnjOxapRqCzGcT5tEH8kfxDP?=
- =?us-ascii?Q?F0Ui2myRPH51qQCm7ByvKyvGHYUG8Kc2cE1Tm5n3dv894Wkmi+9JtmnDcJ71?=
- =?us-ascii?Q?gPB2rz5J4EsYHM/1FjBW2SU08MiM2asFsAJWwIWL5HrjN4IF314s1H11L/sr?=
- =?us-ascii?Q?hKDiKdnP46ghfQghKHarRA2pQn4c+WNoWAFL62d2?=
+ =?us-ascii?Q?wxsq4Qg24qJkUWIYTGPob/1vqaGo8O0jPFkEMRxBd6gky/U60RtiNKnR1cPP?=
+ =?us-ascii?Q?EKGr36HVkeUazAruF63icRHIL4MhWCwpAU9cz166CytKilODjEAAgtOk7Ro8?=
+ =?us-ascii?Q?UX6xXTSFizHmsHrDkmnzVW3RBEAVEi6nnygwBHOcqIv8WRNgRVIJCLYzll/m?=
+ =?us-ascii?Q?HjgAmWiW5+PgtnvA1DSoUD8IuLSq37yz/LtaQpnPcRppSkOv2OJ3iukTJfAd?=
+ =?us-ascii?Q?bi8v+nahHEcFeEHNmTKC5u6n/WksQGmBh9ibm/2zCdN392YfBZLQPA99Lk9m?=
+ =?us-ascii?Q?ISEv0Y9sHPva4NVd2vjUbZRPM8nybwHCTfz00bHXPcryd2Qucf3FusvH4x/+?=
+ =?us-ascii?Q?I7jpDzaMIsOMdKpD+0FkQk0ITDfzcSs5r/TsvMsAs7IpNIJ3yL9oCFbtkDse?=
+ =?us-ascii?Q?/QIPlg4qtNg1DUBHDmO7tf0boh9YQ3ylU70AeO08amEJvbAlx5gfK0FFMd7H?=
+ =?us-ascii?Q?+y4bBzSKnp7+bximi+QTcnQ/p29Q5A1hVprwCyuXA4hkWx0GWyfWjrq2dMRM?=
+ =?us-ascii?Q?i/tR4ucG1+tta6ESW0F6O+KxViPBhrlwrh/kI1Z6ldELPhE5HJq9cBW5wlU0?=
+ =?us-ascii?Q?VjYU5PwnBEkU5Pv4dX9zdck3T8Yx1zoZ9qcX6elR/9Lu3S7bi1r4azAM4DqA?=
+ =?us-ascii?Q?oC1E84nQYUJeECDoX0nA07Dgpp4Icot/N/YS8ay778eeTfe+7OQN7NHE/gU9?=
+ =?us-ascii?Q?IVku41twjMAH1rG4aMV8dU8kl4XnP8QJGEukEm6LcZ/1gkqG9m/WwD0EzBcg?=
+ =?us-ascii?Q?Skqwzkz0VWVOECWLadcwqOKRn4z3429ryHkOzrmk7a1oPiPgUEMHSdyCJlFs?=
+ =?us-ascii?Q?y7mWZ9YcRZxNU6q/r1CTUIvjB6xM1eCxivWXia9HE4P9g3HJOdiOoxMuQwe1?=
+ =?us-ascii?Q?hB43nW4emP64f0BZ2/5owPqXfMnYutGcge6BjTPoa2XPP9upV8hWPx69N6ql?=
+ =?us-ascii?Q?N/bGthBqo4irZ7ozMdgBWxIUXhag+KlZuVVEUWquZS3c+pKutxcZ+fMisyfa?=
+ =?us-ascii?Q?J8MvmmWNqOGSmduYlBrCvDdZtjnQS0Kq4ZRf8R9ZBfo/2tF4PvvsXDfVImJc?=
+ =?us-ascii?Q?W3q2KCStb4w2jgepliuN/WFfUjtQfD4DZ2XqZWOesVMhBqkzfI+S9yd94L9u?=
+ =?us-ascii?Q?qeuAjrkjqQ8x2KdlJlwKaSEWnc9LLMZQVRKnUaYek1eA6d0uLKYd0favS17w?=
+ =?us-ascii?Q?gYBzANxslmhmduHB7ESHCenXGbddc84k5/mjHz8q+lXyus3OYx9hfUuaXp2n?=
+ =?us-ascii?Q?3m4VXN7KgE6fsNFbBdd0FWvVjddA2FhrVrPr4btk5thzSuG66oZkVQBr9i1A?=
+ =?us-ascii?Q?tY2ErSn1dztKc5nKWxqeGA8ji1MMiNcgPI5AxVNqVWuOrVzYsQ7TSGf9CNO3?=
+ =?us-ascii?Q?FffoJ3Bqcgz5N2rs2fgeW5aMUDGnWOtlZNP6PF4Y02d/r80+wB2XSYa/gSvD?=
+ =?us-ascii?Q?bVB7whSPblQCd0SpQfoW0PQtaglQVU4O7zFQUU5w0OfYSTBV9eo1MfW46o1D?=
+ =?us-ascii?Q?ZauihOS3iq+yN6dzaNBqwFBFJeFme72HQB41IXsfMMgCfhJBkiiwJT/5EJ6P?=
+ =?us-ascii?Q?wJ0lgBgjl3sMblM4CxhRpIHloHIhYgNSLHP2J05Y?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f89b955d-5a13-4e81-f7ba-08dde0c6609e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99443d4b-17d3-4ff0-069b-08dde0c661fc
 X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2025 15:21:18.6900
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2025 15:21:20.9877
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /GeXuImO5q0uIyVD+Rv2F8/iF7ujTTbidnzZHAVzM3SIIOjx2p/ML0sNaRnPOgVWvyPwvUNyJdS/7ZY9PILsiA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: M/QTcU26HeI/GK0G0w52096jv5xrSKzUaP6tYCTchSqDb9mW9WFK0hgl5XyOMsZ9UzVLbIkzpox2RWB7YpF1xw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10809
 
-Establish a more intuitive function naming convention in this driver.
-A GenX PHY must only call aqr_genY_ functions, where Y <= X.
+Currently, aqr_gen2_fill_interface_modes() reads VEND1_GLOBAL_CFG_*
+registers to populate phydev->supported_interfaces. But this is not
+the only place which needs to read these registers. There is also
+aqr107_read_rate().
 
-Loosely speaking, aqr107_ is representative of Gen2 and above, except for:
-- aqr107_config_init()
-- aqr107_suspend()
-- aqr107_resume()
-- aqr107_wait_processor_intensive_op()
+Based on the premise that these values are statically set by firmware
+and the driver only needs to read them, the proposal is to read them
+only once, at config_init() time, and use the cached values also in
+aqr107_read_rate().
 
-which are also called by AQR105, so these are renamed to Gen1.
-
-Actually aqr107_config_init() is renamed to aqr_gen1_config_init() when
-called by AQR105, and aqr_gen2_config_init() when called by all other
-PHYs. The Gen2 function calls the Gen1 function, so there is no
-functional change. This prefaces further Gen2-specific initialization
-steps which must be omitted for AQR105. These will be added to
-aqr_gen2_config_init().
-
-In fact, many PHY drivers call an aqr*_config_init() beneath their
-generation's feature set: AQR114C is a Gen4 PHY which calls
-aqr_gen2_config_init(), even though AQR113C, also a Gen4 PHY which
-differs only in maximum link speed, calls the richer
-aqr113c_config_init() which also sets phydev->possible_interfaces.
-Many of the more subtle inconsistencies of this kind will be fixed up in
-later changes.
+This patch only refactors the aqr_gen2_fill_interface_modes() code to
+save the registers to driver memory, and to populate supported_interfaces
+based on that.
 
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/net/phy/aquantia/aquantia_main.c | 117 ++++++++++++-----------
- 1 file changed, 61 insertions(+), 56 deletions(-)
+ drivers/net/phy/aquantia/aquantia.h      | 27 +++++++
+ drivers/net/phy/aquantia/aquantia_main.c | 91 ++++++++++++++++--------
+ 2 files changed, 87 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
-index 7ac0b685a317..8136f7843a37 100644
---- a/drivers/net/phy/aquantia/aquantia_main.c
-+++ b/drivers/net/phy/aquantia/aquantia_main.c
-@@ -811,7 +811,7 @@ static int aqr107_config_mdi(struct phy_device *phydev)
- 			      mdi_conf | PMAPMD_RSVD_VEND_PROV_MDI_FORCE);
- }
+diff --git a/drivers/net/phy/aquantia/aquantia.h b/drivers/net/phy/aquantia/aquantia.h
+index 67ec6f7484af..492052cf1e6e 100644
+--- a/drivers/net/phy/aquantia/aquantia.h
++++ b/drivers/net/phy/aquantia/aquantia.h
+@@ -174,11 +174,38 @@ static const struct aqr107_hw_stat aqr107_hw_stats[] = {
  
--static int aqr107_config_init(struct phy_device *phydev)
-+static int aqr_gen1_config_init(struct phy_device *phydev)
- {
- 	struct aqr107_priv *priv = phydev->priv;
- 	u32 led_idx;
-@@ -860,6 +860,11 @@ static int aqr107_config_init(struct phy_device *phydev)
- 	return 0;
- }
+ #define AQR107_SGMII_STAT_SZ ARRAY_SIZE(aqr107_hw_stats)
  
-+static int aqr_gen2_config_init(struct phy_device *phydev)
-+{
-+	return aqr_gen1_config_init(phydev);
-+}
++static const struct {
++	int speed;
++	u16 reg;
++} aqr_global_cfg_regs[] = {
++	{ SPEED_10,	VEND1_GLOBAL_CFG_10M, },
++	{ SPEED_100,	VEND1_GLOBAL_CFG_100M, },
++	{ SPEED_1000,	VEND1_GLOBAL_CFG_1G, },
++	{ SPEED_2500,	VEND1_GLOBAL_CFG_2_5G, },
++	{ SPEED_5000,	VEND1_GLOBAL_CFG_5G, },
++	{ SPEED_10000,	VEND1_GLOBAL_CFG_10G, },
++};
 +
- static int aqcs109_config_init(struct phy_device *phydev)
- {
- 	int ret;
-@@ -921,7 +926,7 @@ static void aqr107_link_change_notify(struct phy_device *phydev)
- 		phydev_info(phydev, "Aquantia 1000Base-T2 mode active\n");
- }
- 
--static int aqr107_wait_processor_intensive_op(struct phy_device *phydev)
-+static int aqr_gen1_wait_processor_intensive_op(struct phy_device *phydev)
- {
- 	int val, err;
- 
-@@ -945,8 +950,8 @@ static int aqr107_wait_processor_intensive_op(struct phy_device *phydev)
- 	return 0;
- }
- 
--static int aqr107_get_rate_matching(struct phy_device *phydev,
--				    phy_interface_t iface)
-+static int aqr_gen2_get_rate_matching(struct phy_device *phydev,
-+				      phy_interface_t iface)
- {
- 	if (iface == PHY_INTERFACE_MODE_10GBASER ||
- 	    iface == PHY_INTERFACE_MODE_2500BASEX ||
-@@ -955,7 +960,7 @@ static int aqr107_get_rate_matching(struct phy_device *phydev,
- 	return RATE_MATCH_NONE;
- }
- 
--static int aqr107_suspend(struct phy_device *phydev)
-+static int aqr_gen1_suspend(struct phy_device *phydev)
- {
- 	int err;
- 
-@@ -964,10 +969,10 @@ static int aqr107_suspend(struct phy_device *phydev)
- 	if (err)
- 		return err;
- 
--	return aqr107_wait_processor_intensive_op(phydev);
-+	return aqr_gen1_wait_processor_intensive_op(phydev);
- }
- 
--static int aqr107_resume(struct phy_device *phydev)
-+static int aqr_gen1_resume(struct phy_device *phydev)
- {
- 	int err;
- 
-@@ -976,7 +981,7 @@ static int aqr107_resume(struct phy_device *phydev)
- 	if (err)
- 		return err;
- 
--	return aqr107_wait_processor_intensive_op(phydev);
-+	return aqr_gen1_wait_processor_intensive_op(phydev);
- }
- 
- static const u16 aqr_global_cfg_regs[] = {
-@@ -988,7 +993,7 @@ static const u16 aqr_global_cfg_regs[] = {
- 	VEND1_GLOBAL_CFG_10G
++#define AQR_NUM_GLOBAL_CFG ARRAY_SIZE(aqr_global_cfg_regs)
++
++enum aqr_rate_adaptation {
++	AQR_RATE_ADAPT_NONE,
++	AQR_RATE_ADAPT_USX,
++	AQR_RATE_ADAPT_PAUSE,
++};
++
++struct aqr_global_syscfg {
++	int speed;
++	phy_interface_t interface;
++	enum aqr_rate_adaptation rate_adapt;
++};
++
+ struct aqr107_priv {
+ 	u64 sgmii_stats[AQR107_SGMII_STAT_SZ];
+ 	unsigned long leds_active_low;
+ 	unsigned long leds_active_high;
+ 	bool wait_on_global_cfg;
++	struct aqr_global_syscfg global_cfg[AQR_NUM_GLOBAL_CFG];
  };
  
--static int aqr107_fill_interface_modes(struct phy_device *phydev)
-+static int aqr_gen2_fill_interface_modes(struct phy_device *phydev)
- {
- 	unsigned long *possible = phydev->possible_interfaces;
- 	struct aqr107_priv *priv = phydev->priv;
-@@ -1089,11 +1094,11 @@ static int aqr113c_config_init(struct phy_device *phydev)
- 
- 	priv->wait_on_global_cfg = true;
- 
--	ret = aqr107_config_init(phydev);
-+	ret = aqr_gen2_config_init(phydev);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = aqr107_fill_interface_modes(phydev);
-+	ret = aqr_gen2_fill_interface_modes(phydev);
- 	if (ret)
- 		return ret;
- 
-@@ -1102,7 +1107,7 @@ static int aqr113c_config_init(struct phy_device *phydev)
- 	if (ret)
- 		return ret;
- 
--	return aqr107_wait_processor_intensive_op(phydev);
-+	return aqr_gen1_wait_processor_intensive_op(phydev);
+ #if IS_REACHABLE(CONFIG_HWMON)
+diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
+index 21fdbda2a0e0..9d704b7e3dc8 100644
+--- a/drivers/net/phy/aquantia/aquantia_main.c
++++ b/drivers/net/phy/aquantia/aquantia_main.c
+@@ -860,44 +860,24 @@ static int aqr_gen1_config_init(struct phy_device *phydev)
+ 	return 0;
  }
  
- static int aqr107_probe(struct phy_device *phydev)
-@@ -1144,13 +1149,13 @@ static struct phy_driver aqr_driver[] = {
- 	.name		= "Aquantia AQR105",
- 	.get_features	= aqr105_get_features,
- 	.probe		= aqr107_probe,
--	.config_init	= aqr107_config_init,
-+	.config_init	= aqr_gen1_config_init,
- 	.config_aneg    = aqr105_config_aneg,
- 	.config_intr	= aqr_config_intr,
- 	.handle_interrupt = aqr_handle_interrupt,
- 	.read_status	= aqr105_read_status,
--	.suspend	= aqr107_suspend,
--	.resume		= aqr107_resume,
-+	.suspend	= aqr_gen1_suspend,
-+	.resume		= aqr_gen1_resume,
- },
+-static const u16 aqr_global_cfg_regs[] = {
+-	VEND1_GLOBAL_CFG_10M,
+-	VEND1_GLOBAL_CFG_100M,
+-	VEND1_GLOBAL_CFG_1G,
+-	VEND1_GLOBAL_CFG_2_5G,
+-	VEND1_GLOBAL_CFG_5G,
+-	VEND1_GLOBAL_CFG_10G,
+-};
+-
+-static int aqr_gen2_fill_interface_modes(struct phy_device *phydev)
++/* Walk the media-speed configuration registers to determine which
++ * host-side serdes modes may be used by the PHY depending on the
++ * negotiated media speed.
++ */
++static int aqr_gen2_read_global_syscfg(struct phy_device *phydev)
  {
- 	PHY_ID_MATCH_MODEL(PHY_ID_AQR106),
-@@ -1164,16 +1169,16 @@ static struct phy_driver aqr_driver[] = {
- 	PHY_ID_MATCH_MODEL(PHY_ID_AQR107),
- 	.name		= "Aquantia AQR107",
- 	.probe		= aqr107_probe,
--	.get_rate_matching = aqr107_get_rate_matching,
--	.config_init	= aqr107_config_init,
-+	.get_rate_matching = aqr_gen2_get_rate_matching,
-+	.config_init	= aqr_gen2_config_init,
- 	.config_aneg    = aqr_config_aneg,
- 	.config_intr	= aqr_config_intr,
- 	.handle_interrupt = aqr_handle_interrupt,
- 	.read_status	= aqr107_read_status,
- 	.get_tunable    = aqr107_get_tunable,
- 	.set_tunable    = aqr107_set_tunable,
--	.suspend	= aqr107_suspend,
--	.resume		= aqr107_resume,
-+	.suspend	= aqr_gen1_suspend,
-+	.resume		= aqr_gen1_resume,
- 	.get_sset_count	= aqr107_get_sset_count,
- 	.get_strings	= aqr107_get_strings,
- 	.get_stats	= aqr107_get_stats,
-@@ -1188,7 +1193,7 @@ static struct phy_driver aqr_driver[] = {
- 	PHY_ID_MATCH_MODEL(PHY_ID_AQCS109),
- 	.name		= "Aquantia AQCS109",
- 	.probe		= aqr107_probe,
--	.get_rate_matching = aqr107_get_rate_matching,
-+	.get_rate_matching = aqr_gen2_get_rate_matching,
- 	.config_init	= aqcs109_config_init,
- 	.config_aneg    = aqr_config_aneg,
- 	.config_intr	= aqr_config_intr,
-@@ -1196,8 +1201,8 @@ static struct phy_driver aqr_driver[] = {
- 	.read_status	= aqr107_read_status,
- 	.get_tunable    = aqr107_get_tunable,
- 	.set_tunable    = aqr107_set_tunable,
--	.suspend	= aqr107_suspend,
--	.resume		= aqr107_resume,
-+	.suspend	= aqr_gen1_suspend,
-+	.resume		= aqr_gen1_resume,
- 	.get_sset_count	= aqr107_get_sset_count,
- 	.get_strings	= aqr107_get_strings,
- 	.get_stats	= aqr107_get_stats,
-@@ -1213,16 +1218,16 @@ static struct phy_driver aqr_driver[] = {
- 	PHY_ID_MATCH_MODEL(PHY_ID_AQR111),
- 	.name		= "Aquantia AQR111",
- 	.probe		= aqr107_probe,
--	.get_rate_matching = aqr107_get_rate_matching,
--	.config_init	= aqr107_config_init,
-+	.get_rate_matching = aqr_gen2_get_rate_matching,
-+	.config_init	= aqr_gen2_config_init,
- 	.config_aneg    = aqr_config_aneg,
- 	.config_intr	= aqr_config_intr,
- 	.handle_interrupt = aqr_handle_interrupt,
- 	.read_status	= aqr107_read_status,
- 	.get_tunable    = aqr107_get_tunable,
- 	.set_tunable    = aqr107_set_tunable,
--	.suspend	= aqr107_suspend,
--	.resume		= aqr107_resume,
-+	.suspend	= aqr_gen1_suspend,
-+	.resume		= aqr_gen1_resume,
- 	.get_sset_count	= aqr107_get_sset_count,
- 	.get_strings	= aqr107_get_strings,
- 	.get_stats	= aqr107_get_stats,
-@@ -1238,16 +1243,16 @@ static struct phy_driver aqr_driver[] = {
- 	PHY_ID_MATCH_MODEL(PHY_ID_AQR111B0),
- 	.name		= "Aquantia AQR111B0",
- 	.probe		= aqr107_probe,
--	.get_rate_matching = aqr107_get_rate_matching,
--	.config_init	= aqr107_config_init,
-+	.get_rate_matching = aqr_gen2_get_rate_matching,
-+	.config_init	= aqr_gen2_config_init,
- 	.config_aneg    = aqr_config_aneg,
- 	.config_intr	= aqr_config_intr,
- 	.handle_interrupt = aqr_handle_interrupt,
- 	.read_status	= aqr107_read_status,
- 	.get_tunable    = aqr107_get_tunable,
- 	.set_tunable    = aqr107_set_tunable,
--	.suspend	= aqr107_suspend,
--	.resume		= aqr107_resume,
-+	.suspend	= aqr_gen1_suspend,
-+	.resume		= aqr_gen1_resume,
- 	.get_sset_count	= aqr107_get_sset_count,
- 	.get_strings	= aqr107_get_strings,
- 	.get_stats	= aqr107_get_stats,
-@@ -1276,10 +1281,10 @@ static struct phy_driver aqr_driver[] = {
- 	.handle_interrupt = aqr_handle_interrupt,
- 	.get_tunable    = aqr107_get_tunable,
- 	.set_tunable    = aqr107_set_tunable,
--	.suspend	= aqr107_suspend,
--	.resume		= aqr107_resume,
-+	.suspend	= aqr_gen1_suspend,
-+	.resume		= aqr_gen1_resume,
- 	.read_status	= aqr107_read_status,
--	.get_rate_matching = aqr107_get_rate_matching,
-+	.get_rate_matching = aqr_gen2_get_rate_matching,
- 	.get_sset_count = aqr107_get_sset_count,
- 	.get_strings	= aqr107_get_strings,
- 	.get_stats	= aqr107_get_stats,
-@@ -1299,10 +1304,10 @@ static struct phy_driver aqr_driver[] = {
- 	.handle_interrupt = aqr_handle_interrupt,
- 	.get_tunable    = aqr107_get_tunable,
- 	.set_tunable    = aqr107_set_tunable,
--	.suspend	= aqr107_suspend,
--	.resume		= aqr107_resume,
-+	.suspend	= aqr_gen1_suspend,
-+	.resume		= aqr_gen1_resume,
- 	.read_status	= aqr107_read_status,
--	.get_rate_matching = aqr107_get_rate_matching,
-+	.get_rate_matching = aqr_gen2_get_rate_matching,
- 	.get_sset_count = aqr107_get_sset_count,
- 	.get_strings	= aqr107_get_strings,
- 	.get_stats	= aqr107_get_stats,
-@@ -1317,10 +1322,10 @@ static struct phy_driver aqr_driver[] = {
- 	.handle_interrupt = aqr_handle_interrupt,
- 	.get_tunable    = aqr107_get_tunable,
- 	.set_tunable    = aqr107_set_tunable,
--	.suspend	= aqr107_suspend,
--	.resume		= aqr107_resume,
-+	.suspend	= aqr_gen1_suspend,
-+	.resume		= aqr_gen1_resume,
- 	.read_status	= aqr107_read_status,
--	.get_rate_matching = aqr107_get_rate_matching,
-+	.get_rate_matching = aqr_gen2_get_rate_matching,
- 	.get_sset_count = aqr107_get_sset_count,
- 	.get_strings	= aqr107_get_strings,
- 	.get_stats	= aqr107_get_stats,
-@@ -1330,7 +1335,7 @@ static struct phy_driver aqr_driver[] = {
- 	PHY_ID_MATCH_MODEL(PHY_ID_AQR113),
- 	.name		= "Aquantia AQR113",
- 	.probe          = aqr107_probe,
--	.get_rate_matching = aqr107_get_rate_matching,
-+	.get_rate_matching = aqr_gen2_get_rate_matching,
- 	.config_init    = aqr113c_config_init,
- 	.config_aneg    = aqr_config_aneg,
- 	.config_intr    = aqr_config_intr,
-@@ -1338,8 +1343,8 @@ static struct phy_driver aqr_driver[] = {
- 	.read_status    = aqr107_read_status,
- 	.get_tunable    = aqr107_get_tunable,
- 	.set_tunable    = aqr107_set_tunable,
--	.suspend        = aqr107_suspend,
--	.resume         = aqr107_resume,
-+	.suspend        = aqr_gen1_suspend,
-+	.resume         = aqr_gen1_resume,
- 	.get_sset_count = aqr107_get_sset_count,
- 	.get_strings    = aqr107_get_strings,
- 	.get_stats      = aqr107_get_stats,
-@@ -1354,7 +1359,7 @@ static struct phy_driver aqr_driver[] = {
- 	PHY_ID_MATCH_MODEL(PHY_ID_AQR113C),
- 	.name           = "Aquantia AQR113C",
- 	.probe          = aqr107_probe,
--	.get_rate_matching = aqr107_get_rate_matching,
-+	.get_rate_matching = aqr_gen2_get_rate_matching,
- 	.config_init    = aqr113c_config_init,
- 	.config_aneg    = aqr_config_aneg,
- 	.config_intr    = aqr_config_intr,
-@@ -1362,8 +1367,8 @@ static struct phy_driver aqr_driver[] = {
- 	.read_status    = aqr107_read_status,
- 	.get_tunable    = aqr107_get_tunable,
- 	.set_tunable    = aqr107_set_tunable,
--	.suspend        = aqr107_suspend,
--	.resume         = aqr107_resume,
-+	.suspend        = aqr_gen1_suspend,
-+	.resume         = aqr_gen1_resume,
- 	.get_sset_count = aqr107_get_sset_count,
- 	.get_strings    = aqr107_get_strings,
- 	.get_stats      = aqr107_get_stats,
-@@ -1378,16 +1383,16 @@ static struct phy_driver aqr_driver[] = {
- 	PHY_ID_MATCH_MODEL(PHY_ID_AQR114C),
- 	.name           = "Aquantia AQR114C",
- 	.probe          = aqr107_probe,
--	.get_rate_matching = aqr107_get_rate_matching,
--	.config_init    = aqr107_config_init,
-+	.get_rate_matching = aqr_gen2_get_rate_matching,
-+	.config_init    = aqr_gen2_config_init,
- 	.config_aneg    = aqr_config_aneg,
- 	.config_intr    = aqr_config_intr,
- 	.handle_interrupt = aqr_handle_interrupt,
- 	.read_status    = aqr107_read_status,
- 	.get_tunable    = aqr107_get_tunable,
- 	.set_tunable    = aqr107_set_tunable,
--	.suspend        = aqr107_suspend,
--	.resume         = aqr107_resume,
-+	.suspend        = aqr_gen1_suspend,
-+	.resume         = aqr_gen1_resume,
- 	.get_sset_count = aqr107_get_sset_count,
- 	.get_strings    = aqr107_get_strings,
- 	.get_stats      = aqr107_get_stats,
-@@ -1403,7 +1408,7 @@ static struct phy_driver aqr_driver[] = {
- 	PHY_ID_MATCH_MODEL(PHY_ID_AQR115C),
- 	.name           = "Aquantia AQR115C",
- 	.probe          = aqr107_probe,
--	.get_rate_matching = aqr107_get_rate_matching,
-+	.get_rate_matching = aqr_gen2_get_rate_matching,
- 	.config_init    = aqr113c_config_init,
- 	.config_aneg    = aqr_config_aneg,
- 	.config_intr    = aqr_config_intr,
-@@ -1411,8 +1416,8 @@ static struct phy_driver aqr_driver[] = {
- 	.read_status    = aqr107_read_status,
- 	.get_tunable    = aqr107_get_tunable,
- 	.set_tunable    = aqr107_set_tunable,
--	.suspend        = aqr107_suspend,
--	.resume         = aqr107_resume,
-+	.suspend        = aqr_gen1_suspend,
-+	.resume         = aqr_gen1_resume,
- 	.get_sset_count = aqr107_get_sset_count,
- 	.get_strings    = aqr107_get_strings,
- 	.get_stats      = aqr107_get_stats,
-@@ -1428,16 +1433,16 @@ static struct phy_driver aqr_driver[] = {
- 	PHY_ID_MATCH_MODEL(PHY_ID_AQR813),
- 	.name		= "Aquantia AQR813",
- 	.probe		= aqr107_probe,
--	.get_rate_matching = aqr107_get_rate_matching,
--	.config_init	= aqr107_config_init,
-+	.get_rate_matching = aqr_gen2_get_rate_matching,
-+	.config_init	= aqr_gen2_config_init,
- 	.config_aneg    = aqr_config_aneg,
- 	.config_intr	= aqr_config_intr,
- 	.handle_interrupt = aqr_handle_interrupt,
- 	.read_status	= aqr107_read_status,
- 	.get_tunable    = aqr107_get_tunable,
- 	.set_tunable    = aqr107_set_tunable,
--	.suspend	= aqr107_suspend,
--	.resume		= aqr107_resume,
-+	.suspend	= aqr_gen1_suspend,
-+	.resume		= aqr_gen1_resume,
- 	.get_sset_count	= aqr107_get_sset_count,
- 	.get_strings	= aqr107_get_strings,
- 	.get_stats	= aqr107_get_stats,
+-	unsigned long *possible = phydev->possible_interfaces;
+ 	struct aqr107_priv *priv = phydev->priv;
+ 	unsigned int serdes_mode, rate_adapt;
+ 	phy_interface_t interface;
+-	int i, val, ret;
++	int i, val;
+ 
+-	/* It's been observed on some models that - when coming out of suspend
+-	 * - the FW signals that the PHY is ready but the GLOBAL_CFG registers
+-	 * continue on returning zeroes for some time. Let's poll the 100M
+-	 * register until it returns a real value as both 113c and 115c support
+-	 * this mode.
+-	 */
+-	if (priv->wait_on_global_cfg) {
+-		ret = phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1,
+-						VEND1_GLOBAL_CFG_100M, val,
+-						val != 0, 1000, 100000, false);
+-		if (ret)
+-			return ret;
+-	}
++	for (i = 0; i < AQR_NUM_GLOBAL_CFG; i++) {
++		struct aqr_global_syscfg *syscfg = &priv->global_cfg[i];
++
++		syscfg->speed = aqr_global_cfg_regs[i].speed;
+ 
+-	/* Walk the media-speed configuration registers to determine which
+-	 * host-side serdes modes may be used by the PHY depending on the
+-	 * negotiated media speed.
+-	 */
+-	for (i = 0; i < ARRAY_SIZE(aqr_global_cfg_regs); i++) {
+ 		val = phy_read_mmd(phydev, MDIO_MMD_VEND1,
+-				   aqr_global_cfg_regs[i]);
++				   aqr_global_cfg_regs[i].reg);
+ 		if (val < 0)
+ 			return val;
+ 
+@@ -931,6 +911,55 @@ static int aqr_gen2_fill_interface_modes(struct phy_device *phydev)
+ 			break;
+ 		}
+ 
++		syscfg->interface = interface;
++
++		switch (rate_adapt) {
++		case VEND1_GLOBAL_CFG_RATE_ADAPT_NONE:
++			syscfg->rate_adapt = AQR_RATE_ADAPT_NONE;
++			break;
++		case VEND1_GLOBAL_CFG_RATE_ADAPT_USX:
++			syscfg->rate_adapt = AQR_RATE_ADAPT_USX;
++			break;
++		case VEND1_GLOBAL_CFG_RATE_ADAPT_PAUSE:
++			syscfg->rate_adapt = AQR_RATE_ADAPT_PAUSE;
++			break;
++		default:
++			phydev_warn(phydev, "unrecognized rate adapt mode %u\n",
++				    rate_adapt);
++			break;
++		}
++	}
++
++	return 0;
++}
++
++static int aqr_gen2_fill_interface_modes(struct phy_device *phydev)
++{
++	unsigned long *possible = phydev->possible_interfaces;
++	struct aqr107_priv *priv = phydev->priv;
++	phy_interface_t interface;
++	int i, val, ret;
++
++	/* It's been observed on some models that - when coming out of suspend
++	 * - the FW signals that the PHY is ready but the GLOBAL_CFG registers
++	 * continue on returning zeroes for some time. Let's poll the 100M
++	 * register until it returns a real value as both 113c and 115c support
++	 * this mode.
++	 */
++	if (priv->wait_on_global_cfg) {
++		ret = phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1,
++						VEND1_GLOBAL_CFG_100M, val,
++						val != 0, 1000, 100000, false);
++		if (ret)
++			return ret;
++	}
++
++	ret = aqr_gen2_read_global_syscfg(phydev);
++	if (ret)
++		return ret;
++
++	for (i = 0; i < AQR_NUM_GLOBAL_CFG; i++) {
++		interface = priv->global_cfg[i].interface;
+ 		if (interface != PHY_INTERFACE_MODE_NA)
+ 			__set_bit(interface, possible);
+ 	}
 -- 
 2.34.1
 
