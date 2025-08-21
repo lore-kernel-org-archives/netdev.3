@@ -1,64 +1,63 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from m204-227.eu.mailgun.net (m204-227.eu.mailgun.net [161.38.204.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AABC2EDD6E
-	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 14:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F963101A5
+	for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 14:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.38.204.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755786108; cv=none; b=GZAObRRfuY4fHKajrKVWW+JE/YtZzhywCZzeokpuimGBAILrCkC2M6+ybULmxvLCizZffHV6XB3laQMtRaQCl6dK1QFmG698JACYWSY2firJJqShqbxOu062oFE1M5V8Op/MyQKLq4HIglf2EdUwFFvtF/jiltIFI6VphI3HxBg=
+	t=1755786115; cv=none; b=rq6lSBD3ZRFFJilQ5F0swfexf+PSR6l6H+x18MBO0LLMVtoKOVYNrzPX88QiXVLwIJPc7kiVw3dm/hlZ66+mCXC9LeEoyhekGb7UbpNmbFXomnwuu6uNpuWKP6ZFaXOrPv05nt76Hmr4KK+iJSaC/tR6tKFKK7Zelj3ZEJSK2Ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755786108; c=relaxed/simple;
-	bh=mn+3JdjqYVuQ42AEXu9cfJXsjcT0sp0KFcE1RlWN/Wo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HZnEkZNiq9JcGV6OBG0T9uPi6jP8ChS+xvp3UZoJuALEi50dkdBi2x/7/Oe4qU+dLUqyd5sDGGpC35F5STAQanr4FeGgyPwSZHqFPYLeeC7sn1Cw6GhZb9JQfAIOOP1SYeI2BS9Fd22eLoxCpl7DzFF8BFUM8ynN7zls1GTXMWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VtyIWBF5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755786115; c=relaxed/simple;
+	bh=fI/vBmYoPbL2e7jrvLhjIJBCGy37cdY01TiUpHVOgfw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WzUcf4NnvoTmuPgbjYSEifkV8aSbYpY/NONNm8U1b9vj7xuGlIvYLLTlISwTFU7qOtKbo6jqld0vmCluRJZz+Ug5iDzF57eGRUga/mEtylsbMTdgWUDLUuG3677ZtAEbLEWs4ABKUXyOGkRDsOb0FT0b3JFvJ7FKD7UJ6Kfq68o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0x65c.net; spf=pass smtp.mailfrom=0x65c.net; dkim=pass (2048-bit key) header.d=0x65c.net header.i=@0x65c.net header.b=f1Wb8+GG; arc=none smtp.client-ip=161.38.204.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0x65c.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0x65c.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VtyIWBF5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73574C4CEED;
-	Thu, 21 Aug 2025 14:21:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755786107;
-	bh=mn+3JdjqYVuQ42AEXu9cfJXsjcT0sp0KFcE1RlWN/Wo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VtyIWBF5qpA+Nk1wz8JYRGJ5nYMqXKSJezOekjH8ZvaJMHHkRZQgLGQt5n3I/uI5A
-	 PnNdVezjYVI/FcQDX7+zGW6M/Z/qI6+eoJJ9uTAkUfA595IOvfO5lbVeNrwgbCMIPT
-	 7/UqEsQlIMHPjaA2+y4TDlNyuDTvssfQOgDC8MoQMm+/wRSij4G8wYjPCIV93qAX54
-	 trKIJ/VCKwOMf8p46lMZ0mSPm2ATJl/7FKXSNDioWN2WziT8NR9OmlncCaMKSexaoI
-	 aPuDw5lhPHeYlBIV5yYbfrGuNQ4caD+NkMlVIbrWAJR2hYfDZ5/C/6hQ2p3B4wquKM
-	 dFyK7kMERKEUA==
-Date: Thu, 21 Aug 2025 07:21:46 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: David Wei <dw@davidwei.uk>, netdev@vger.kernel.org, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Sridhar
- Samudrala <sridhar.samudrala@intel.com>, "Hay, Joshua A"
- <joshua.a.hay@intel.com>
-Subject: Re: [PATCH net-next v1] iou-zcrx: update documentation
-Message-ID: <20250821072146.4c06e82b@kernel.org>
-In-Reply-To: <CAM0EoMm06em6GKDyDP94oQ_RPHv4PQ3dK19YZU9jxCiNh2S8rg@mail.gmail.com>
-References: <20250819205632.1368993-1-dw@davidwei.uk>
-	<CAM0EoMm06em6GKDyDP94oQ_RPHv4PQ3dK19YZU9jxCiNh2S8rg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=0x65c.net header.i=@0x65c.net header.b="f1Wb8+GG"
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=0x65c.net; q=dns/txt; s=email; t=1755786111; x=1755793311;
+ h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To: Message-ID: Date: Subject: Subject: Cc: To: To: From: From: Sender: Sender;
+ bh=fI/vBmYoPbL2e7jrvLhjIJBCGy37cdY01TiUpHVOgfw=;
+ b=f1Wb8+GG2Fz7HxXWqLS74Do9sYPq9zZW8YT46Y/f8L2EAXJDK14GZus3LyUsJp4+RH/CKPnyoBBgdRk1xtcVOpGOb3VTN8PWzEUeQ2yzQo3u8LcgohyXQQ3eOUFv+ZtAfY5K+NR0lubuVVKjtjN5WxPn9677eCCLmBmP+N1NptYr0UK8F0iqPpfWVGKWPFPQf5VNMHhQER+bcbQECQprLvJsiG+NSGZh4BkWlFLhY27Mvk3ytXybksXeqt66kQKPUmPDiJ46z6rhzgRKYldZcazO1JKyiBHWs9hr2gF7My4dX+bMOBn8z121SPorvsLs9+bkD3WLgQ+PBZbuC2+t/Q==
+X-Mailgun-Sid: WyI2ZTA5MCIsIm5ldGRldkB2Z2VyLmtlcm5lbC5vcmciLCI1NGVmNCJd
+Received: from fedora (pub082136115007.dh-hfc.datazug.ch [82.136.115.7]) by
+ 7b15455cfe8dbafdef49f89608815e4823a50a73c49b1f725c695bfcd1e1c385 with SMTP id
+ 68a72b7e03c0e2ff1b44b971; Thu, 21 Aug 2025 14:21:50 GMT
+X-Mailgun-Sending-Ip: 161.38.204.227
+Sender: alessandro@0x65c.net
+From: Alessandro Ratti <alessandro@0x65c.net>
+To: alessandro@0x65c.net,
+	linux-kselftest@vger.kernel.org,
+	liuhangbin@gmail.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	skhan@linuxfoundation.org
+Subject: [PATCH v2] selftests: rtnetlink: skip tests if tools or feats are missing
+Date: Thu, 21 Aug 2025 16:16:50 +0200
+Message-ID: <20250821142141.735075-1-alessandro@0x65c.net>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <CAKiXHKejzOAiieTxZpq8+v-vnzSEyuOuD0tYbzHL5R78iS+BMQ@mail.gmail.com>
+References: <CAKiXHKejzOAiieTxZpq8+v-vnzSEyuOuD0tYbzHL5R78iS+BMQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 21 Aug 2025 00:34:34 -0400 Jamal Hadi Salim wrote:
-> > +Zero copy Rx currently support two NIC families:
-> > +
-> > +* Broadcom Thor (BCM95750x) family
-> > +  * Minimum FW is 232
-> > +* Mellanox ConnectX-7 (MT2910) family
-> > +  * Minimum FW is 28.42
-> > +  
-> 
-> you missed the intel dpu/idpf 
 
-I think you were using an out of tree driver?
+Hi,
 
-But keep an eye out for GVE, there's a patch to support ZC there.
+Following up on Hangbin's comment, here is the updated patch with
+adjustments to skip tests gracefully when missing tools and iproute2
+capabilities.
+
+Thanks for your time and consideration.
+
+Best regards,
+Alessandro Ratti
