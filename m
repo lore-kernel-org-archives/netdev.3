@@ -1,48 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8FC312815
-	for <netdev@vger.kernel.org>; Fri, 22 Aug 2025 16:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBBCC2D1;
+	Fri, 22 Aug 2025 17:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755881268; cv=none; b=mgJjyVJEVsgljiBDjv5ZwM6Wk6ow0SSVG5LDP679VrD6PlevOyPoWrYSSGp1ejA1zoSVQ66tLnhmQFYsg6JRCpB64E+SCrd5DQJe4s45CY//DGv8GMIyDMIEpKgklJ0w7sCZEa0IcRCnPGMGpAuBNWM8JALwzpR4TtkkNrC3MM0=
+	t=1755882140; cv=none; b=Qziv/BNaOnwcfj0KWV7sr6xHjMqXjN6olVdrWEWwir0DivwV/48rtgGCJX38obJ51eMv1yiR27JRIwFnm7L9QKptV1k16Fup9r6Lx8AMN2IVbImn1zxIS3v9nd8ZwoeDa6s6DSUPrBRaO22ie3hqzPkXbqLS40CzJtb2LhtCCSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755881268; c=relaxed/simple;
-	bh=ogRNXuyA7/UWBwJCnVbErmx1TdIAN/Oj6nrxwUz/z4I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+7UoUAAz5Dva+gP38TYq3hl0sgFcGdWivFV0zBf7UhdmnIYpZ9+HxbLTm9qguaWbSFb1dODJHSth00oy49I1FkwOJYEgGROFO4dCX7z3qle3dToY8IW2sXdDFZ0UxFmqCGz5mKoBKezNeC1ByBaYk6hSyAcsD+xgYmVspw9sQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DE/uIM+t; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755882140; c=relaxed/simple;
+	bh=N43GnKy17u3pJmuxA0B+CvRzCGT4IjO9pWdh50KAxp8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=o+JK/CO8sbSnwmCSSoH1tDbcvxkQFBA2qk2wuQCgulwaFkcrAAmkdkpGSqJGlAlMowfI4a1bXL1+XKcV/o1umi84tY5HokDDyUJhfbqqrzsazQKkJAf/2kLI4EM8WKBO5J36Jsj4Jy4TYMf7Otn/MbEUTPA9YI7Wy4p0ty/t7Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X/RxlEh5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DE/uIM+t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A106C4CEED;
-	Fri, 22 Aug 2025 16:47:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X/RxlEh5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EA9C4CEED;
+	Fri, 22 Aug 2025 17:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755881267;
-	bh=ogRNXuyA7/UWBwJCnVbErmx1TdIAN/Oj6nrxwUz/z4I=;
+	s=k20201202; t=1755882140;
+	bh=N43GnKy17u3pJmuxA0B+CvRzCGT4IjO9pWdh50KAxp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DE/uIM+tirDY+Nbz2L1C6/00AYGfhAZ3oaTmfOUhLhQnz5u2TTN6PH0GGSxjXsov/
-	 QEailDgkuEAjCYp7Qo6vF/CpAOjUFp5NvnIn0jobvp6wpnnJYhgIbWrD7YIHiR7bv/
-	 BGJKLALWLZRj8QJC43oZPJaCjbYvKqqvIv+SPRMQm2mgsCXJN5Zab0EWtE90loZxw/
-	 ZnBZD0MhzilYZDjJl1TIUDAnxMr8juI6a3YL7ej3lX06SO0eQdNU30STD/JtcFyFj4
-	 Q+CM1+Vjr4ysM77wUXPSedyMNDKpy9LJWMe16jx7phXCdymW26n9VjUsZ4iamqF/1b
-	 RRBv7qsVfADYw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	alexanderduyck@fb.com,
-	linux@armlinux.org.uk,
-	mohsin.bashr@gmail.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 6/6] eth: fbnic: Add pause stats support
-Date: Fri, 22 Aug 2025 09:47:31 -0700
-Message-ID: <20250822164731.1461754-7-kuba@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250822164731.1461754-1-kuba@kernel.org>
-References: <20250822164731.1461754-1-kuba@kernel.org>
+	b=X/RxlEh56SJyKzLLReKVy9zMR7Rn10sDZ2qGXdgaqLeUy++5vRLbAaO8F1sq4dW3A
+	 FVPFAm1E1KDu+9/CVB8PArKdY0HRrXTU0L7mEy3QGm8oDmYlvLcPGrEnt/PdkJ5xtS
+	 WPwGxZiqHYuwlyrYRxRwfpMchkAzSUix0wgYLGwYkH8uFDFTTyuMLp6fHc+1uXHfs8
+	 s+X5+H1F8hdQ3OyIBGTgvD5OcC7RDayM3+Gr4vyGqAtfAsaEK49eudKcHbm56kC8gk
+	 8jVNP2cdHpsMgjezsa0xbQw1c8LogFjCAJQgvfQ9Um93+KYDxx0kQzjtsDqYPIARCs
+	 dvKAxgTXqd2AA==
+From: SeongJae Park <sj@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Christoph Lameter <cl@gentwo.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	iommu@lists.linux.dev,
+	io-uring@vger.kernel.org,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	kasan-dev@googlegroups.com,
+	kvm@vger.kernel.org,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-arm-kernel@axis.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-crypto@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Marco Elver <elver@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	netdev@vger.kernel.org,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	virtualization@lists.linux.dev,
+	Vlastimil Babka <vbabka@suse.cz>,
+	wireguard@lists.zx2c4.com,
+	x86@kernel.org,
+	Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH RFC 01/35] mm: stop making SPARSEMEM_VMEMMAP user-selectable
+Date: Fri, 22 Aug 2025 10:02:17 -0700
+Message-Id: <20250822170217.53169-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250821200701.1329277-2-david@redhat.com>
+References: 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,162 +102,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
+On Thu, 21 Aug 2025 22:06:27 +0200 David Hildenbrand <david@redhat.com> wrote:
 
-Add support to read pause stats for fbnic. Unlike FEC and PCS stats,
-pause stats won't wrap, do not fetch them under the service task. Since,
-they are exclusively accessed via the ethtool API, don't include them in
-fbnic_get_hw_stats().
+> In an ideal world, we wouldn't have to deal with SPARSEMEM without
+> SPARSEMEM_VMEMMAP, but in particular for 32bit SPARSEMEM_VMEMMAP is
+> considered too costly and consequently not supported.
+> 
+> However, if an architecture does support SPARSEMEM with
+> SPARSEMEM_VMEMMAP, let's forbid the user to disable VMEMMAP: just
+> like we already do for arm64, s390 and x86.
+> 
+> So if SPARSEMEM_VMEMMAP is supported, don't allow to use SPARSEMEM without
+> SPARSEMEM_VMEMMAP.
+> 
+> This implies that the option to not use SPARSEMEM_VMEMMAP will now be
+> gone for loongarch, powerpc, riscv and sparc. All architectures only
+> enable SPARSEMEM_VMEMMAP with 64bit support, so there should not really
+> be a big downside to using the VMEMMAP (quite the contrary).
+> 
+> This is a preparation for not supporting
+> 
+> (1) folio sizes that exceed a single memory section
+> (2) CMA allocations of non-contiguous page ranges
+> 
+> in SPARSEMEM without SPARSEMEM_VMEMMAP configs, whereby we
+> want to limit possible impact as much as possible (e.g., gigantic hugetlb
+> page allocations suddenly fails).
+> 
+> Cc: Huacai Chen <chenhuacai@kernel.org>
+> Cc: WANG Xuerui <kernel@xen0n.name>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Albert Ou <aou@eecs.berkeley.edu>
+> Cc: Alexandre Ghiti <alex@ghiti.fr>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Andreas Larsson <andreas@gaisler.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-]# ethtool -I -a eth0
-Pause parameters for eth0:
-Autonegotiate:	on
-RX:		off
-TX:		off
-Statistics:
-  tx_pause_frames: 0
-  rx_pause_frames: 0
+Acked-by: SeongJae Park <sj@kernel.org>
 
-Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h     |  4 ++++
- .../net/ethernet/meta/fbnic/fbnic_hw_stats.h    |  7 +++++++
- drivers/net/ethernet/meta/fbnic/fbnic_mac.h     |  2 ++
- drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c | 17 +++++++++++++++++
- .../net/ethernet/meta/fbnic/fbnic_hw_stats.c    |  1 +
- drivers/net/ethernet/meta/fbnic/fbnic_mac.c     | 11 +++++++++++
- 6 files changed, 42 insertions(+)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-index 69cb73ca8bca..e2fffe1597e9 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-@@ -844,6 +844,10 @@ enum {
- #define FBNIC_CSR_END_SIG		0x1184e /* CSR section delimiter */
- 
- #define FBNIC_CSR_START_MAC_STAT	0x11a00
-+#define FBNIC_MAC_STAT_RX_XOFF_STB_L	0x11a00		/* 0x46800 */
-+#define FBNIC_MAC_STAT_RX_XOFF_STB_H	0x11a01		/* 0x46804 */
-+#define FBNIC_MAC_STAT_TX_XOFF_STB_L	0x11a04		/* 0x46810 */
-+#define FBNIC_MAC_STAT_TX_XOFF_STB_H	0x11a05		/* 0x46814 */
- #define FBNIC_MAC_STAT_RX_BYTE_COUNT_L	0x11a08		/* 0x46820 */
- #define FBNIC_MAC_STAT_RX_BYTE_COUNT_H	0x11a09		/* 0x46824 */
- #define FBNIC_MAC_STAT_RX_ALIGN_ERROR_L	0x11a0a		/* 0x46828 */
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
-index baffae1868a6..aa3f429a9aed 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
-@@ -50,6 +50,12 @@ struct fbnic_rmon_stats {
- 	struct fbnic_stat_counter hist_tx[ETHTOOL_RMON_HIST_MAX];
- };
- 
-+/* Note: not updated by fbnic_get_hw_stats() */
-+struct fbnic_pause_stats {
-+	struct fbnic_stat_counter tx_pause_frames;
-+	struct fbnic_stat_counter rx_pause_frames;
-+};
-+
- struct fbnic_eth_mac_stats {
- 	struct fbnic_stat_counter FramesTransmittedOK;
- 	struct fbnic_stat_counter FramesReceivedOK;
-@@ -73,6 +79,7 @@ struct fbnic_phy_stats {
- 
- struct fbnic_mac_stats {
- 	struct fbnic_eth_mac_stats eth_mac;
-+	struct fbnic_pause_stats pause;
- 	struct fbnic_eth_ctrl_stats eth_ctrl;
- 	struct fbnic_rmon_stats rmon;
- };
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_mac.h b/drivers/net/ethernet/meta/fbnic/fbnic_mac.h
-index 92dd6efb920a..ede5ff0dae22 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_mac.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_mac.h
-@@ -85,6 +85,8 @@ struct fbnic_mac {
- 			      struct fbnic_pcs_stats *pcs_stats);
- 	void (*get_eth_mac_stats)(struct fbnic_dev *fbd, bool reset,
- 				  struct fbnic_eth_mac_stats *mac_stats);
-+	void (*get_pause_stats)(struct fbnic_dev *fbd, bool reset,
-+				struct fbnic_pause_stats *pause_stats);
- 	void (*get_eth_ctrl_stats)(struct fbnic_dev *fbd, bool reset,
- 				   struct fbnic_eth_ctrl_stats *ctrl_stats);
- 	void (*get_rmon_stats)(struct fbnic_dev *fbd, bool reset,
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-index 4194b30f1074..b4ff98ee2051 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-@@ -1641,6 +1641,22 @@ static void fbnic_set_counter(u64 *stat, struct fbnic_stat_counter *counter)
- 		*stat = counter->value;
- }
- 
-+static void
-+fbnic_get_pause_stats(struct net_device *netdev,
-+		      struct ethtool_pause_stats *pause_stats)
-+{
-+	struct fbnic_net *fbn = netdev_priv(netdev);
-+	struct fbnic_mac_stats *mac_stats;
-+	struct fbnic_dev *fbd = fbn->fbd;
-+
-+	mac_stats = &fbd->hw_stats.mac;
-+
-+	fbd->mac->get_pause_stats(fbd, false, &mac_stats->pause);
-+
-+	pause_stats->tx_pause_frames = mac_stats->pause.tx_pause_frames.value;
-+	pause_stats->rx_pause_frames = mac_stats->pause.rx_pause_frames.value;
-+}
-+
- static void
- fbnic_get_fec_stats(struct net_device *netdev,
- 		    struct ethtool_fec_stats *fec_stats)
-@@ -1801,6 +1817,7 @@ static const struct ethtool_ops fbnic_ethtool_ops = {
- 	.set_coalesce			= fbnic_set_coalesce,
- 	.get_ringparam			= fbnic_get_ringparam,
- 	.set_ringparam			= fbnic_set_ringparam,
-+	.get_pause_stats		= fbnic_get_pause_stats,
- 	.get_pauseparam			= fbnic_phylink_get_pauseparam,
- 	.set_pauseparam			= fbnic_phylink_set_pauseparam,
- 	.get_strings			= fbnic_get_strings,
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-index 358eb8cc302a..f595863e7ba2 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-@@ -536,6 +536,7 @@ static void fbnic_reset_hw_mac_stats(struct fbnic_dev *fbd,
- 	const struct fbnic_mac *mac = fbd->mac;
- 
- 	mac->get_eth_mac_stats(fbd, true, &mac_stats->eth_mac);
-+	mac->get_pause_stats(fbd, true, &mac_stats->pause);
- 	mac->get_eth_ctrl_stats(fbd, true, &mac_stats->eth_ctrl);
- 	mac->get_rmon_stats(fbd, true, &mac_stats->rmon);
- }
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_mac.c b/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
-index ffdaebd4002a..8f998d26b9a3 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
-@@ -709,6 +709,16 @@ fbnic_mac_get_eth_mac_stats(struct fbnic_dev *fbd, bool reset,
- 			    MAC_STAT_TX_BROADCAST);
- }
- 
-+static void
-+fbnic_mac_get_pause_stats(struct fbnic_dev *fbd, bool reset,
-+			  struct fbnic_pause_stats *pause_stats)
-+{
-+	fbnic_mac_stat_rd64(fbd, reset, pause_stats->tx_pause_frames,
-+			    MAC_STAT_TX_XOFF_STB);
-+	fbnic_mac_stat_rd64(fbd, reset, pause_stats->rx_pause_frames,
-+			    MAC_STAT_RX_XOFF_STB);
-+}
-+
- static void
- fbnic_mac_get_eth_ctrl_stats(struct fbnic_dev *fbd, bool reset,
- 			     struct fbnic_eth_ctrl_stats *ctrl_stats)
-@@ -856,6 +866,7 @@ static const struct fbnic_mac fbnic_mac_asic = {
- 	.get_fec_stats = fbnic_mac_get_fec_stats,
- 	.get_pcs_stats = fbnic_mac_get_pcs_stats,
- 	.get_eth_mac_stats = fbnic_mac_get_eth_mac_stats,
-+	.get_pause_stats = fbnic_mac_get_pause_stats,
- 	.get_eth_ctrl_stats = fbnic_mac_get_eth_ctrl_stats,
- 	.get_rmon_stats = fbnic_mac_get_rmon_stats,
- 	.link_down = fbnic_mac_link_down_asic,
--- 
-2.50.1
+Thanks,
+SJ
 
+[...]
