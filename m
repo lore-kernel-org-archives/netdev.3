@@ -1,214 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E792F3631;
-	Fri, 22 Aug 2025 09:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DFA2356B9;
+	Fri, 22 Aug 2025 09:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755855766; cv=none; b=UO34IfAYn8ov5om8b/TV81X7RgjZXWcGwVfbUvR5hocKvvZAcmsnGrXXc+hbvcvCOvDSWgBcMfZXXSydlm0uXgc5yIAotRZzkI974EBgqgIsttfAPhhB1nb1+ApY9Ra5PgtjXprClzXesou5KGf0uRIqTPZEpQ+RzJ75YGHCZzk=
+	t=1755855784; cv=none; b=BkGyartRJYr9wGQKhgC/Zu+Qd8TxZ8r6Vch2TF0cn6qJBMThzzJ4vTXn5pLJvwWmpH7ZUn0Z05pX734dD6YHOg4W23gjkonVI46ggdrFULOR/Rq9+G757+w2cxSCvxccm45BFhBZk2qxWW10s5CfFQRGr5XWBo5wPFgO7eKmjpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755855766; c=relaxed/simple;
-	bh=AjSIPvmX+WBUEEOhAOa299WYAwKCct5GlSBzXMXwYF0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DN4FQOeNBfXRSya+ponH56IuPXW9Xj0xcq0TxWeVXrxbSuodLrBXo3+Skx+tSl430nbjmr5zuBvaqRYal+otdFPjtcWXnrcY+QDZC2XOIXxLgiYlaco0qKnREnSbSp89/nPatkShavfJUCgWPvOTdPdUynIsQxhfWZd5M0OQ9+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PDq/EF+p; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755855784; c=relaxed/simple;
+	bh=6lka0/62rfqpl6YPbKf8gI40GE/XAI9LCAAMWUiUkQg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tUCMgm0wwhU8+vJAcU9g3BlpTU0f/0NRSQ/xbc4089WMgCQ+pTcUA60LmOgS5Xfu7IJs7JUPJKowraDbE4bybXFc3WJjSQhgi1AehK/CrAclqGwWJ3RN8EG4jbKoQJnmjl4PIKc+o4ifWHUwlzk2gh7ecMPhu+FzW3L59rmnQ7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=AfOr5IcM; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PDq/EF+p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031B4C4CEED;
-	Fri, 22 Aug 2025 09:42:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755855764;
-	bh=AjSIPvmX+WBUEEOhAOa299WYAwKCct5GlSBzXMXwYF0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PDq/EF+pv25enQf6FxrVX9Gb3fmQZ5R/jyGdMJBaM3830C7AAWM8XwijIIHO6u3hc
-	 py7ySqOuPz8z6xcxooaNlDvzwaUSeD7QfPKavbDA1XyF0K0cO0CahOzGwHipZrWFtf
-	 YAtTiNCn8TWkxkqt5RTwhv1dz6Gmrzku0ekBPfaVs3RuNTSMVNjmLe7ddmEbTDsln1
-	 8Sl1ss0cYEoWKPCXLOqwTjTz1OSp8o6gqzuWmtXKsiSrkxXYKSttTvpZrqLTbcRNki
-	 4Gvr6Drmap4UZMJp8HYxDov4b/O8vC980anYwrrg5mpLdyYht3KGer2NrcGdJmYOGO
-	 nB1Lqv9l/OL9A==
-Message-ID: <a596db6b-bbc5-4670-ac9f-e6822bad83fa@kernel.org>
-Date: Fri, 22 Aug 2025 11:42:40 +0200
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="AfOr5IcM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=IjUHb499RjZ87+IojyVt03OIRq/VU75xCa/jogdbmr4=; b=AfOr5IcMFlxzDrDJ51yRa8rSqL
+	6pdNeSgO9ess+gjUV5vQXuAfJcohDN8kCRClgEROg5DhfGM2JyHYZLRW76p3hzC6SInrJlUgnBdxO
+	BJVRlGcI0yA02lpwSmi53Bkjz8Ei3BuDXMJcVFkc7On0yj+fh25YhJ3Ywq6WJdnX3+e9XHs/0KUj+
+	pvQ9rLdvI3KE9+vK097gt2ivhgdamA/S8LxIKHnxa6NMF5hLLTwV7gl0XJrgL7qKaBeucbops+gzg
+	T4PiskbsMlag1fCFFV0tgN/69suvFXIcyIrB3FfbYPJAfKGHvp5pvQSllzOjPVrrkIMzygosIR9AA
+	Ist3leGg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:48842)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1upOIR-000000002JK-15Ug;
+	Fri, 22 Aug 2025 10:42:56 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1upOIP-000000001ze-2mlq;
+	Fri, 22 Aug 2025 10:42:53 +0100
+Date: Fri, 22 Aug 2025 10:42:53 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/1] net: phy: Clear link-specific data on
+ link down
+Message-ID: <aKg7nf8YczCT6N0O@shell.armlinux.org.uk>
+References: <20250822090947.2870441-1-o.rempel@pengutronix.de>
+ <aKg2HHIBAR8t2CQW@shell.armlinux.org.uk>
+ <aKg4XcM0vAIS4C-8@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/2] net: maxlinear: Add build support for MxL
- SoC
-To: Jack Ping CHNG <jchng@maxlinear.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: davem@davemloft.net, andrew+netdev@lunn.ch, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, yzhu@maxlinear.com, sureshnagaraj@maxlinear.com
-References: <20250822090809.1464232-1-jchng@maxlinear.com>
- <20250822090809.1464232-2-jchng@maxlinear.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250822090809.1464232-2-jchng@maxlinear.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aKg4XcM0vAIS4C-8@pengutronix.de>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 22/08/2025 11:08, Jack Ping CHNG wrote:
-> Add build infrastructure for MxL network driver.
-> Ethernet driver to initialize and create network devices.
+On Fri, Aug 22, 2025 at 11:29:01AM +0200, Oleksij Rempel wrote:
+> On Fri, Aug 22, 2025 at 10:19:24AM +0100, Russell King (Oracle) wrote:
+> > On Fri, Aug 22, 2025 at 11:09:47AM +0200, Oleksij Rempel wrote:
+> > > When a network interface is brought down, the associated PHY is stopped.
+> > > However, several link-specific parameters within the phy_device struct
+> > > are not cleared. This leads to userspace tools like ethtool reporting
+> > > stale information from the last active connection, which is misleading
+> > > as the link is no longer active.
+> > 
+> > This is not a good idea. Consider the case where the PHY has been
+> > configured with autoneg disabled, and phydev->speed etc specifies
+> > the desired speed.
+> > 
+> > When the link goes down, all that state gets cleared, and we lose
+> > the user's settings.
+> > 
+> > So no, I don't think this is appropriate.
+> > 
+> > I think it is appropriate to clear some of the state, but anything that
+> > the user can configure (such as ->speed and ->duplex) must not be
+> > cleared.
+> 
+> Hm... should it be cleared conditionally? If autoneg is used, clear the
+> speed and duplex?
 
-Please wrap commit message according to Linux coding style / submission
-process (neither too early nor over the limit):
-https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/submitting-patches.rst#L597
+Actually no, you can't do any of this here.
 
-What is a "build support for a driver/soc"? Confusing.
+Look at phy_ethtool_set_eee_noneg(). If the LPI configuration changes,
+it needs to inform the MAC of the change, and it does that by
+_simulating_ a brief loss of link by calling phy_link_down() followed
+by phy_link_up() - expecting all state to be preserved except that
+which needs to be modified.
 
+Maybe we should do something in the PHY_HALTED state in
+_phy_state_machine() ?
 
-...
+Note that in the usual case of link down, it is the responsibility of
+phy_read_status() to update most of what you're clearing, the
+exception is phydev->eee_active and phydev->enable_tx_lpi which are
+managed by phylib itself.
 
-> + */
-> +#include <linux/clk.h>
-> +#include <linux/etherdevice.h>
-> +#include <linux/init.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/netdevice.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/reset.h>
-> +
-> +#define ETH_TX_TIMEOUT		(10 * HZ)
-> +#define MXL_NUM_TX_RING		8
-> +#define MXL_NUM_RX_RING		8
-> +#define MXL_NUM_PORT		2
-> +
-> +static const char * const clk_names = "ethif";
+I think that both the PHY_HALTED and PHY_ERROR states should be
+clearing phydev->eee_active and phydev->enable_tx_lpi, so that
+should be in the existing if().
 
-Drop, pretty useless.
+I'm not sure we want to clear out the remainder of the state on
+PHY_ERROR, as this would aid debugging when something goes wrong.
 
-...
-
-> +
-> +static void mxl_eth_cleanup(struct mxl_eth_drvdata *pdata)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < MXL_NUM_PORT && pdata->ndevs[i]; i++) {
-> +		unregister_netdev(pdata->ndevs[i]);
-> +		pdata->ndevs[i] = NULL;
-> +	}
-> +
-> +	if (!IS_ERR(pdata->clks))
-
-Hm? Why?
-
-> +		clk_disable_unprepare(pdata->clks);
-> +}
-> +
-> +static int mxl_eth_probe(struct platform_device *pdev)
-> +{
-> +	struct mxl_eth_drvdata *pdata;
-> +	struct reset_control *rst;
-> +	struct net_device *ndev;
-> +	struct device_node *np;
-> +	int ret, i;
-> +
-> +	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
-> +	if (!pdata)
-> +		return -ENOMEM;
-> +
-> +	pdata->clks = devm_clk_get(&pdev->dev, clk_names);
-> +	if (IS_ERR(pdata->clks)) {
-> +		dev_err(&pdev->dev, "failed to get %s\n", clk_names);
-
-You are sending us some 10 year old coding style. This is supposed to be
-dev_err_probe and devm_get_clk_enabled.
-
-I think my second talk for OSSE 25 about static analyzers is also
-suitable...
-
-> +		return PTR_ERR(pdata->clks);
-> +	}
-> +
-> +	ret = clk_prepare_enable(pdata->clks);
-
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "failed to enable %s\n", clk_names);
-> +		return ret;
-> +	}
-> +
-> +	rst = devm_reset_control_get_optional(&pdev->dev, NULL);
-> +	if (IS_ERR(rst)) {
-> +		dev_err(&pdev->dev,
-> +			"failed to get optional reset control: %ld\n",
-> +			PTR_ERR(rst));
-> +		ret = PTR_ERR(rst);
-> +		goto err_cleanup;
-> +	}
-> +
-> +	if (rst) {
-> +		ret = reset_control_assert(rst);
-> +		if (ret)
-> +			goto err_cleanup;
-> +
-> +		udelay(1);
-> +
-> +		ret = reset_control_deassert(rst);
-> +		if (ret)
-> +			goto err_cleanup;
-> +	}
-> +
-> +	platform_set_drvdata(pdev, pdata);
-> +
-> +	i = 0;
-> +	for_each_available_child_of_node(pdev->dev.of_node, np) {
-> +		if (!of_device_is_compatible(np, "mxl,eth-mac"))
-> +			continue;
-> +
-> +		if (!of_device_is_available(np))
-
-Redundant.
-
-
-Best regards,
-Krzysztof
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
