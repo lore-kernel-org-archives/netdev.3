@@ -1,116 +1,112 @@
-Received: from m204-227.eu.mailgun.net (m204-227.eu.mailgun.net [161.38.204.227])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6CF2EC576
-	for <netdev@vger.kernel.org>; Fri, 22 Aug 2025 12:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.38.204.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142F82FC007;
+	Fri, 22 Aug 2025 12:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755864908; cv=none; b=XQ3YJmpoZa+QOBymyO16uPukj2EeBfBjNsMSo3mvBuBuKQXz2hYAeUUT1UxVJDSUP/R0a291WJd5g4q6FK55C3Ev2K7z5z4p9yn2gGXBN89G/0WA8k33J5NRSIUd8BJcQGSN77fodYru9Sd6H4KBLZ3OIYLkWb9IHuPDhW5+NjQ=
+	t=1755864978; cv=none; b=UnVbgHM/azXULeyzfpc5ajfwq+xr9nKMYq2n8RXAlEFZ3ujrT45KELB/itYT1cID2X6rzIt4/L0MdYhGjz6jfmu4EpCXefqhYhNV6Dol5AXik9xNV3NwrvYFt5hDe1RQwqi4d0ZDVtXNvN01Qq5Hxp88qHyv8hSmga0gKPXHKEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755864908; c=relaxed/simple;
-	bh=MbuzkpNpBJjd9jPnS8Jkw8wvr0U9HiopYBlW1Tz4bKA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6n3a8+lm4cb9x0j6sPMrmZgRQ/rz2pN8oXwJqGoz++KxEcnq68yYr6LnTkobhQ5Kn+ANd1uSPa2s7voOr/3mcFwIdkky2cSba0Ie/QF3qYzdZTJL9ZNbkNbMMT+zCL3bdGFhG1wTHURwq+awvvfV2uCxTzYIa2oVPuUR0iTtSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0x65c.net; spf=pass smtp.mailfrom=0x65c.net; dkim=pass (2048-bit key) header.d=0x65c.net header.i=@0x65c.net header.b=Uq1d4Z4h; arc=none smtp.client-ip=161.38.204.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0x65c.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0x65c.net
+	s=arc-20240116; t=1755864978; c=relaxed/simple;
+	bh=3Ea7W0dwKnTlVfxRkgXHCe2WVUuOP11xif5wEmfOclM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=LQZ1jICEBMNzx4+Z+kpdEESDIeQUqdN4iRxKdDzQrT4DSDhWiAp3dY3we1h4FdY9S/J3/oYKzJvZqolzcHkVbiZ5Ckf519+EE4KYfmLTXpeSSxwKpioswf6iP8UW3Yl25SfuC+eIItIMGnnyaPCbClyIpsjRU+mBL0+d+tDJ+OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=vK5SYRbK; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=0x65c.net header.i=@0x65c.net header.b="Uq1d4Z4h"
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=0x65c.net; q=dns/txt; s=email; t=1755864904; x=1755872104;
- h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To: Message-ID: Date: Subject: Subject: Cc: To: To: From: From: Sender: Sender;
- bh=B39wn23HoDhdp32XZbA3rEZPRynsttWmC21YDWxhBMk=;
- b=Uq1d4Z4hpjoFcdOu+mSRkzge8vEHaS3hnLRoGxNR/q2yXGyCIpBZ8mO11KK8u336/edSe/Cv4pSykrsxsVuidUKXE1FMyKDDBLZvoujMJ2CA0eI4kaUu3WWKw0KFxpQlIoe4scNBfQskjCuHoqO2s8QXIKrNPw8EdyV6PwWWujbJ7dHYOx6v1Aec9qhNIAY2eWu5lORfCph2xW/NXtJcY1EV8sUPhGPUoJKiAwVfraB5kCeR27JDgKsjeVgh5TJIpSh8xX9S0/85OKDHgXV9iFfPkUuyBe98VdMlX5vpX31ltuIZ9bZf+4zV/CLxrvdOcM5XqFtvxdJPPfeC2dssWw==
-X-Mailgun-Sid: WyI2ZTA5MCIsIm5ldGRldkB2Z2VyLmtlcm5lbC5vcmciLCI1NGVmNCJd
-Received: from fedora (pub082136115007.dh-hfc.datazug.ch [82.136.115.7]) by
- 768ff15aeb8381866dc49adec9f57767686591a2ec2869842b26002dbfcaba46 with SMTP id
- 68a85f48ee121590a3baacc2; Fri, 22 Aug 2025 12:15:04 GMT
-X-Mailgun-Sending-Ip: 161.38.204.227
-Sender: alessandro@0x65c.net
-From: Alessandro Ratti <alessandro@0x65c.net>
-To: liuhangbin@gmail.com
-Cc: alessandro@0x65c.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	skhan@linuxfoundation.org
-Subject: [PATCH net-next v2] selftests: rtnetlink: skip tests if tools or feats are missing
-Date: Fri, 22 Aug 2025 14:08:42 +0200
-Message-ID: <20250822121456.874759-2-alessandro@0x65c.net>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250822121456.874759-1-alessandro@0x65c.net>
-References: <aKfDOSx3C8NbMJsw@fedora>
- <20250822121456.874759-1-alessandro@0x65c.net>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="vK5SYRbK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1755864978; x=1787400978;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=3Ea7W0dwKnTlVfxRkgXHCe2WVUuOP11xif5wEmfOclM=;
+  b=vK5SYRbKb8No+twO1Sq/8UVyGGoMYlqLdRLXXXu9ztsq6jncKmbOo6+1
+   shICueE5ZQ4WPleKmL/zDvaZghDlWQaE+u9ieMCIsnjUwRoNB5xSsFAML
+   13tsQRaR8XKfOhdjh1jl1S8g3/fiqGnUhenhPxrauL5K01M5yW2mZPavj
+   lCkvcCYxzC0deYNxd9Z7//5REpw3fq1Qvs5xMI3OM5y/p0f/CcAtMZJLs
+   V46810FIpF5xktsoxzvJlpvRyJvTGG8Ag5PxjKcJuU8CqUVHg8g11yZKD
+   UMs6z8VDWk+nnVcFfK3JLbqdLTYlUOSMzcOe/LUnGDlTEudkfjk/8ZcOg
+   A==;
+X-CSE-ConnectionGUID: jcwXdTWwTtyRRk6+L1Fb/g==
+X-CSE-MsgGUID: /sDrhHoERLykyKvbaKhrcg==
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
+   d="scan'208";a="276922450"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 22 Aug 2025 05:16:13 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Fri, 22 Aug 2025 05:15:51 -0700
+Received: from [10.159.245.205] (10.10.85.11) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
+ Transport; Fri, 22 Aug 2025 05:15:47 -0700
+Message-ID: <bc7b0167-7514-4aad-a4dd-bd1d9929e99b@microchip.com>
+Date: Fri, 22 Aug 2025 14:15:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/5] dt-bindings: net: cdns,macb: Add compatible for
+ Raspberry Pi RP1
+To: Stanimir Varbanov <svarbanov@suse.de>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-rpi-kernel@lists.infradead.org>, Broadcom internal kernel review list
+	<bcm-kernel-feedback-list@broadcom.com>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Florian Fainelli <florian.fainelli@broadcom.com>,
+	Andrea della Porta <andrea.porta@suse.com>, Claudiu Beznea
+	<claudiu.beznea@tuxon.dev>, Phil Elwell <phil@raspberrypi.com>, Jonathan Bell
+	<jonathan@raspberrypi.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Andrew Lunn <andrew@lunn.ch>, Conor Dooley <conor.dooley@microchip.com>
+References: <20250822093440.53941-1-svarbanov@suse.de>
+ <20250822093440.53941-3-svarbanov@suse.de>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
+Content-Language: en-US, fr
+Organization: microchip
+In-Reply-To: <20250822093440.53941-3-svarbanov@suse.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Some rtnetlink selftests assume the presence of ifconfig and iproute2
-support for the `proto` keyword in `ip address` commands. These
-assumptions can cause test failures on modern systems (e.g. Debian
-Bookworm) where:
+On 22/08/2025 at 11:34, Stanimir Varbanov wrote:
+> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+> 
+> The Raspberry Pi RP1 chip has the Cadence GEM ethernet
+> controller, so add a compatible string for it.
+> 
+> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+> Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
- - ifconfig is not installed by default
- - The iproute2 version lacks support for address protocol
+Reviewed-by: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-This patch improves test robustness by:
-
- - Skipping kci_test_promote_secondaries if ifconfig is missing
- - Skipping do_test_address_proto if ip address help does not mention
-   proto
-
-These changes ensure the tests degrade gracefully by reporting SKIP
-instead of FAIL when prerequisites are not met, improving portability
-across systems.
-
-Signed-off-by: Alessandro Ratti <alessandro@0x65c.net>
-
----
-v2:
-- Updated the patch based on review from Hangbin Liu
-- Changed subject and commit message to better reflect updated behavior
-- Added Reviewed-by tag
-
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
----
- tools/testing/selftests/net/rtnetlink.sh | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/tools/testing/selftests/net/rtnetlink.sh b/tools/testing/selftests/net/rtnetlink.sh
-index d6c00efeb664..c2a0e7f37391 100755
---- a/tools/testing/selftests/net/rtnetlink.sh
-+++ b/tools/testing/selftests/net/rtnetlink.sh
-@@ -323,6 +323,11 @@ kci_test_addrlft()
- 
- kci_test_promote_secondaries()
- {
-+	run_cmd ifconfig "$devdummy"
-+	if [ $ret -ne 0 ]; then
-+		end_test "SKIP: ifconfig not installed"
-+		return $ksft_skip
-+	fi
- 	promote=$(sysctl -n net.ipv4.conf.$devdummy.promote_secondaries)
- 
- 	sysctl -q net.ipv4.conf.$devdummy.promote_secondaries=1
-@@ -1201,6 +1206,12 @@ do_test_address_proto()
- 	local ret=0
- 	local err
- 
-+	run_cmd_grep 'proto' ip address help
-+	if [ $? -ne 0 ];then
-+		end_test "SKIP: addr proto ${what}: iproute2 too old"
-+		return $ksft_skip
-+	fi
-+
- 	ip address add dev "$devdummy" "$addr3"
- 	check_err $?
- 	proto=$(address_get_proto "$addr3")
--- 
-2.39.5
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> ---
+>   Documentation/devicetree/bindings/net/cdns,macb.yaml | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/cdns,macb.yaml b/Documentation/devicetree/bindings/net/cdns,macb.yaml
+> index 559d0f733e7e..0591da97d434 100644
+> --- a/Documentation/devicetree/bindings/net/cdns,macb.yaml
+> +++ b/Documentation/devicetree/bindings/net/cdns,macb.yaml
+> @@ -54,6 +54,7 @@ properties:
+>             - cdns,np4-macb             # NP4 SoC devices
+>             - microchip,sama7g5-emac    # Microchip SAMA7G5 ethernet interface
+>             - microchip,sama7g5-gem     # Microchip SAMA7G5 gigabit ethernet interface
+> +          - raspberrypi,rp1-gem       # Raspberry Pi RP1 gigabit ethernet interface
+>             - sifive,fu540-c000-gem     # SiFive FU540-C000 SoC
+>             - cdns,emac                 # Generic
+>             - cdns,gem                  # Generic
+> --
+> 2.47.0
+> 
 
