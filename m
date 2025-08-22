@@ -1,87 +1,31 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444CC312802;
-	Fri, 22 Aug 2025 17:07:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D47310624;
+	Fri, 22 Aug 2025 17:08:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755882469; cv=none; b=oK1zHiIzrhSOspR+0B4eMECAi/HhhMR7O0QGF8c4crZur6t6uo93t0VpvKOQSQ6tqp3vD+ecBoJ9rK2eWYjMNF6kPGqd1zGepZ4cQWICVMGefR7FCpNkYiZYXXR7Tlb1NTRGExsMxyjsABqc1/97N6V0MBA82ivCWaG10qsf2z0=
+	t=1755882545; cv=none; b=pUSVTjcP4Nx3E5GsOKH/wc+2L6MaYCuZzfE0DpMsBfpFRmokrnyoPsO7GqC0oA7k7Co3k6vlgJseyWwp7cX9/AP21II/dq5o/uJE4JHxdF0jW7+/H+f2OeUzvArJGgRFVQ/YVgUGsWcthz8G5eYJGuXfSh03lRT54wv8UQiPiQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755882469; c=relaxed/simple;
-	bh=vZLAjgh0rHfPoMdjN4T/8EdoC5/y95Yj/31fEqm5lgA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Z3fHJU6pTKNk6CdzkHGzCZr1c6A28Lx5XDeC1JTKxJQEybE92VdunBr/b6c0ZgJ28l7d3QVDhI7Ltb0bIEyj4YYNhKFHFhwLrEbz0mOQ2eB0VoAjA9JyMg+lNjzaWww1FlYU31Xpz+7qSRxznNhFRJd/w+MjzUJnC3n2ki2hzTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fSplAPAb; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fSplAPAb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD1D1C4CEF4;
-	Fri, 22 Aug 2025 17:07:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755882468;
-	bh=vZLAjgh0rHfPoMdjN4T/8EdoC5/y95Yj/31fEqm5lgA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fSplAPAbcqCwXrc73KaBOQNzaayHHHryXHEfz/QvCIP5+OLUcuUqhayGQU30an1Hx
-	 YGDC2ch0190J8ZS7lR1jUdP6OQwlEiLMILXs/CkC/SlPI/9/wAF5EXwIZ0nb0Uecnj
-	 UA9Ha7hLdu3BvCtDoUnTti40P6RP3bVkvwZuA5UDhaj8Dob3g32dp2vkLL6LUz2Uga
-	 JrNca6OOm6CtiYGSnyjbJHFyuYTMa9sirnIIEndUMU2kE26IZfHRAqBcN1+HEuWJKI
-	 iH1nd0618aV38WN9VJmQt9ibmxV/jw/X7xirOs3F2GwN8kBuIL5KMKravrNObUYubi
-	 MyQ+vWsMpUjxQ==
-From: SeongJae Park <sj@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Christoph Lameter <cl@gentwo.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	iommu@lists.linux.dev,
-	io-uring@vger.kernel.org,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	kasan-dev@googlegroups.com,
-	kvm@vger.kernel.org,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-arm-kernel@axis.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-crypto@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-mmc@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Marco Elver <elver@google.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
+	s=arc-20240116; t=1755882545; c=relaxed/simple;
+	bh=ahzZ/0mvs0l2sMIO3U7UUbHaORgWwhdGQPeal2ZB710=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GwyhkpTGv+NCRdiu2l9KRvgdZkv1xO707MpqoQWKmKEgbnTHhHDBbjcmx9j3StiUJ63jRv0GIfWMomyarCpswbELdVJUdjk6i/SaSIZkV/GPqCE7aNMqWl9Eate7wKQrF+a2alzT/meYc8p0QIW/lRbRo6kcFEn6hTMUQBT5a2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+From: Brett A C Sheffield <bacs@librecast.net>
+To: regressions@lists.linux.dev
+Cc: Brett A C Sheffield <bacs@librecast.net>,
 	netdev@vger.kernel.org,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	virtualization@lists.linux.dev,
-	Vlastimil Babka <vbabka@suse.cz>,
-	wireguard@lists.zx2c4.com,
-	x86@kernel.org,
-	Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH RFC 06/35] mm/page_alloc: reject unreasonable folio/compound page sizes in alloc_contig_range_noprof()
-Date: Fri, 22 Aug 2025 10:07:46 -0700
-Message-Id: <20250822170746.53309-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250821200701.1329277-7-david@redhat.com>
-References: 
+	stable@vger.kernel.org,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	oscmaes92@gmail.com,
+	kuba@kernel.org
+Subject: [REGRESSION][BISECTED][PATCH] net: ipv4: fix regression in broadcast routes
+Date: Fri, 22 Aug 2025 16:50:51 +0000
+Message-ID: <20250822165231.4353-4-bacs@librecast.net>
+X-Mailer: git-send-email 2.49.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,24 +34,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Thu, 21 Aug 2025 22:06:32 +0200 David Hildenbrand <david@redhat.com> wrote:
+Fix the regression introduced in 9e30ecf23b1b whereby IPv4 broadcast
+packets were having their ethernet destination field mangled.  This
+broke WOL magic packets and likely other IPv4 broadcast.
 
-> Let's reject them early,
+The regression can be observed by sending an IPv4 WOL packet using
+the wakeonlan program to any ethernet address:
 
-I like early failures. :)
+ wakeonlan 46:3b:ad:61:e0:5d
 
-> which in turn makes folio_alloc_gigantic() reject
-> them properly.
-> 
-> To avoid converting from order to nr_pages, let's just add MAX_FOLIO_ORDER
-> and calculate MAX_FOLIO_NR_PAGES based on that.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+and capturing the packet with tcpdump:
 
-Acked-by: SeongJae Park <sj@kernel.org>
+ tcpdump -i eth0 -w /tmp/bad.cap dst port 9
 
+The ethernet destination MUST be ff:ff:ff:ff:ff:ff for broadcast, but is
+mangled with 9e30ecf23b1b applied.
 
-Thanks,
-SJ
+Revert the change made in 9e30ecf23b1b and ensure the MTU value for
+broadcast routes is retained by calling ip_dst_init_metrics() directly,
+avoiding the need to enter the main code block in rt_set_nexthop().
 
-[...]
+Simplify the code path taken for broadcast packets back to the original
+before the regression, adding only the call to ip_dst_init_metrics().
+
+The broadcast_pmtu.sh selftest provided with the original patch still
+passes with this patch applied.
+
+Fixes: 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
+Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
+---
+ net/ipv4/route.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index f639a2ae881a..eaf78e128aca 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2588,6 +2588,7 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
+ 	do_cache = true;
+ 	if (type == RTN_BROADCAST) {
+ 		flags |= RTCF_BROADCAST | RTCF_LOCAL;
++		fi = NULL;
+ 	} else if (type == RTN_MULTICAST) {
+ 		flags |= RTCF_MULTICAST | RTCF_LOCAL;
+ 		if (!ip_check_mc_rcu(in_dev, fl4->daddr, fl4->saddr,
+@@ -2657,8 +2658,12 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
+ 			rth->dst.output = ip_mc_output;
+ 			RT_CACHE_STAT_INC(out_slow_mc);
+ 		}
++		if (type == RTN_BROADCAST) {
++			/* ensure MTU value for broadcast routes is retained */
++			ip_dst_init_metrics(&rth->dst, res->fi->fib_metrics);
++		}
+ #ifdef CONFIG_IP_MROUTE
+-		if (type == RTN_MULTICAST) {
++		else if (type == RTN_MULTICAST) {
+ 			if (IN_DEV_MFORWARD(in_dev) &&
+ 			    !ipv4_is_local_multicast(fl4->daddr)) {
+ 				rth->dst.input = ip_mr_input;
+
+base-commit: 01b9128c5db1b470575d07b05b67ffa3cb02ebf1
+-- 
+2.49.1
+
