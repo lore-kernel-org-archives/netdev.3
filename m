@@ -1,195 +1,178 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBCC2E2F19
-	for <netdev@vger.kernel.org>; Fri, 22 Aug 2025 06:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0E02E3AE6;
+	Fri, 22 Aug 2025 06:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755843529; cv=none; b=CIs4bEFGKqbDrHaDuRaBBDMC3RZmVh96ikoJAigST3n04PRtyCCagLcNdFFScPKsdxqq0Y6A86m3hBlCl/3wCv6vUAyawSGNWgaqQKle5r9IRc+rNOqYYvIYYPBnx4WAAJ13vY7sp8VCaAvYOi5Spsr0z5/1VKKCtq/eRQV73i4=
+	t=1755843703; cv=none; b=EaD155DECtiOL+/VI/mgDk23NWJR+x0JUfsIvVuxrP6DnuFruQm71AjzZIcqJCJ1N0VbAQwoDlbSSULyOCLt6GEQ8DUlpTixOBovjjhjUHl2KC6RqikBPcc8tO+bYvBx0hSXOvo6f38UyzdHCc7WcKT+4tJAr1WFo1nD6jQoZTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755843529; c=relaxed/simple;
-	bh=Ipdvs+TlyksrM4l/hJDMakLp93JAanz9a9w+7zx003g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sMy0feAfNgiz2Er4FJE7Zm0ZBfPng0YNhkRd/sBd2hzcMB6hWZtZaiy6h+DOcKhyNpnYJSDwATLE4vTJNpX0X4FtZR56moZFYCUc0ig5pMutn8NSGuzRjLLyGaKuro171tMFxUCrK1D5FxQVB6rjpERMgG/cI3nEcKi3FIEw+mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OkzQtCvu; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OkzQtCvu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755843527;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=niXcAgzmbCLTQjKBYxU2ktBBprjtNy5MGdyac9sGLRc=;
-	b=OkzQtCvu9K0jp5DStkMTdwMA41eVci/U5ckfSs6Qy3WNZ1I0HE989EckcUIH9KSIF0R/Yh
-	baOXVdPAZU9+LBdZ62c3QXJXS1JSk+N5QQY6jXOfFX+gKhIKnV7HNP3lzC3ysQgeGfZQ7c
-	GvLABDi6HOkPsA2Ep9awNdNGhYAdnEs=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-kgXlq60ePNeWxb6OkQaAGw-1; Fri, 22 Aug 2025 02:18:45 -0400
-X-MC-Unique: kgXlq60ePNeWxb6OkQaAGw-1
-X-Mimecast-MFC-AGG-ID: kgXlq60ePNeWxb6OkQaAGw_1755843524
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45a1b0cfbafso9826705e9.2
-        for <netdev@vger.kernel.org>; Thu, 21 Aug 2025 23:18:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755843524; x=1756448324;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=niXcAgzmbCLTQjKBYxU2ktBBprjtNy5MGdyac9sGLRc=;
-        b=W52WNbT+yihUINpvkrhzM0pbDTdOy5H5lKfrONGbgvoZnQhMmmi1+yjRBV/bn+vRAo
-         goV0diXCx7dpHSBZB4O+VoBY4zpMIBrvtO+nkOSuy2/hoyGyK+Dr+b2WVzagjRfWIg80
-         WXGh+832mYN6XuJVAM2RIqtcjjU8rLg31+R1JOCeNZ/+RuvYyMM0p3ZZC6pq0r/nhrAj
-         vZXI93oRKDLEwMNjmcFRLkEgZtDjvf+ONeizBPP0oJYDpWzzkwGFcWMIEUZgsbhWpdQp
-         QkWZoDV4vrFYBCIZeKj1Xmp3IILqgr/IVGc7Mdf4smWR5cOPJnk4BsudY1/IEVNLvMZj
-         zElQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWWLVM2lo8izaFXLo88QczqGsGaGpyMg3PiLuUY7m6L/mw/kSdgt/xtYbtKJmusTyPW3uI8LE8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxo8eyL/kC7dbZ9eqTJ55itugrSI201UsDO8Mwxh1OI0bV8Pr2f
-	Pos6ytpienGMSKMbKjEWZnqAsk0SuXXm9wgo5BObN5ObMO1GNkKw+n+CJPn0YH5D0wg1vtiSkik
-	jInxym0h2JI0Of4mHoDgCHlUX+QcU1QLF4ugUzcdLUo25FlvxXbogqexigA==
-X-Gm-Gg: ASbGncvsy+trKUlu5SUmJbakvGiVKXd48Mc3ukZ1jRJwhBrHWj1kBhplQXitj99234D
-	OJA6EZl+ZafKmIorRVnxXG7l8HOFbSoT/f53zBoFNIyFNWYMgjI9u0rX3SnbCLXXKxQ6KqujqXK
-	4N1ln4NImGunviLB93rGQcIOcZF7PRzPeBtSku721gv+9sNSBia6Uh7QwHOTTwkcZ17PDzh7jVI
-	mftc7ZDN1sSHMq8YwgvJkHVOwJHyGHndP/rrEC5lnphmxP/Bw0useCf18jlZv8s2A0Mb6dRLff0
-	KSb/qav3nGDNnShiqbcje9lldna8H9sh4HvYnbUUne6xqv9S2mXYkEFdVqX6Hg4DjRDv0Q==
-X-Received: by 2002:a05:600c:4e8c:b0:456:1ac8:cace with SMTP id 5b1f17b1804b1-45b5179e7e8mr12435735e9.12.1755843523914;
-        Thu, 21 Aug 2025 23:18:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHdnIqi4Hq3cqdHCtXLM1BskgbP/iNxi6JCTe3b4/5WxUiRcTB1IoXLbvfQ3J7NKdKWtFg41A==
-X-Received: by 2002:a05:600c:4e8c:b0:456:1ac8:cace with SMTP id 5b1f17b1804b1-45b5179e7e8mr12435175e9.12.1755843523431;
-        Thu, 21 Aug 2025 23:18:43 -0700 (PDT)
-Received: from [192.168.3.141] (p4ff1f25c.dip0.t-ipconnect.de. [79.241.242.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b50d62991sm24078285e9.0.2025.08.21.23.18.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Aug 2025 23:18:42 -0700 (PDT)
-Message-ID: <6bff5a45-8e52-4a5d-81cb-63a7331d7d0b@redhat.com>
-Date: Fri, 22 Aug 2025 08:18:40 +0200
+	s=arc-20240116; t=1755843703; c=relaxed/simple;
+	bh=0Otq+2/vcanDsGkeffe7L/JarqW63r/YNxF07A5f51s=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=q83ykligOjKnQ6V8J7mxIsCUxL330XiRsZy5HsHEyuRwqLqYyABCysgsf68wDEQqYP8wcnW3vuHinQkWz4egHCIgMMKU5k/UDtDfvq0vMx+2p3uWoP7cE4IJJkXILilrTLphx8wGixPrOThi9WVvckiV4MH2Nt8xK9HICEuA+Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4c7VPg1sxbz2Dc7L;
+	Fri, 22 Aug 2025 14:18:47 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 44D181A0171;
+	Fri, 22 Aug 2025 14:21:38 +0800 (CST)
+Received: from huawei.com (10.50.159.234) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 22 Aug
+ 2025 14:21:37 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>, <dawid.osuchowski@linux.intel.com>
+Subject: [PATCH v2 net-next] ipv6: mcast: Add ip6_mc_find_idev() helper
+Date: Fri, 22 Aug 2025 14:40:51 +0800
+Message-ID: <20250822064051.2991480-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 24/35] ata: libata-eh: drop nth_page() usage within SG
- entry
-To: Damien Le Moal <dlemoal@kernel.org>, linux-kernel@vger.kernel.org
-Cc: Niklas Cassel <cassel@kernel.org>, Alexander Potapenko
- <glider@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
- Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Marco Elver <elver@google.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, netdev@vger.kernel.org,
- Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>,
- Robin Murphy <robin.murphy@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Tejun Heo <tj@kernel.org>, virtualization@lists.linux.dev,
- Vlastimil Babka <vbabka@suse.cz>, wireguard@lists.zx2c4.com, x86@kernel.org,
- Zi Yan <ziy@nvidia.com>
-References: <20250821200701.1329277-1-david@redhat.com>
- <20250821200701.1329277-25-david@redhat.com>
- <3812ed9e-2a47-4c1c-bd69-f37768e62ad3@kernel.org>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <3812ed9e-2a47-4c1c-bd69-f37768e62ad3@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-On 22.08.25 03:59, Damien Le Moal wrote:
-> On 8/22/25 05:06, David Hildenbrand wrote:
->> It's no longer required to use nth_page() when iterating pages within a
->> single SG entry, so let's drop the nth_page() usage.
->>
->> Cc: Damien Le Moal <dlemoal@kernel.org>
->> Cc: Niklas Cassel <cassel@kernel.org>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
->> ---
->>   drivers/ata/libata-sff.c | 6 +++---
->>   1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
->> index 7fc407255eb46..9f5d0f9f6d686 100644
->> --- a/drivers/ata/libata-sff.c
->> +++ b/drivers/ata/libata-sff.c
->> @@ -614,7 +614,7 @@ static void ata_pio_sector(struct ata_queued_cmd *qc)
->>   	offset = qc->cursg->offset + qc->cursg_ofs;
->>   
->>   	/* get the current page and offset */
->> -	page = nth_page(page, (offset >> PAGE_SHIFT));
->> +	page += offset / PAGE_SHIFT;
-> 
-> Shouldn't this be "offset >> PAGE_SHIFT" ?
+Extract the same code logic from __ipv6_sock_mc_join() and
+ip6_mc_find_dev(), also add new helper ip6_mc_find_idev() to
+reduce redundancy and enhance readability.
 
-Thanks for taking a look!
+No functional changes intended.
 
-Yeah, I already reverted back to "offset >> PAGE_SHIFT" after Linus 
-mentioned in another mail in this thread that ">> PAGE_SHIFT" is 
-generally preferred because the compiler cannot optimize as much if 
-offset would be a signed variable.
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+---
+v2: remove unneeded changes in ip6_mc_find_idev()
+    refine commit log
+---
+ net/ipv6/mcast.c | 67 ++++++++++++++++++++++--------------------------
+ 1 file changed, 31 insertions(+), 36 deletions(-)
 
-So the next version will have the shift again.
-
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index 36ca27496b3c..55c49dc14b1b 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -169,6 +169,29 @@ static int unsolicited_report_interval(struct inet6_dev *idev)
+ 	return iv > 0 ? iv : 1;
+ }
+ 
++static struct net_device *ip6_mc_find_dev(struct net *net,
++					  const struct in6_addr *group,
++					  int ifindex)
++{
++	struct net_device *dev = NULL;
++	struct rt6_info *rt;
++
++	if (ifindex == 0) {
++		rcu_read_lock();
++		rt = rt6_lookup(net, group, NULL, 0, NULL, 0);
++		if (rt) {
++			dev = dst_dev(&rt->dst);
++			dev_hold(dev);
++			ip6_rt_put(rt);
++		}
++		rcu_read_unlock();
++	} else {
++		dev = dev_get_by_index(net, ifindex);
++	}
++
++	return dev;
++}
++
+ /*
+  *	socket join on multicast group
+  */
+@@ -191,28 +214,13 @@ static int __ipv6_sock_mc_join(struct sock *sk, int ifindex,
+ 	}
+ 
+ 	mc_lst = sock_kmalloc(sk, sizeof(struct ipv6_mc_socklist), GFP_KERNEL);
+-
+ 	if (!mc_lst)
+ 		return -ENOMEM;
+ 
+ 	mc_lst->next = NULL;
+ 	mc_lst->addr = *addr;
+ 
+-	if (ifindex == 0) {
+-		struct rt6_info *rt;
+-
+-		rcu_read_lock();
+-		rt = rt6_lookup(net, addr, NULL, 0, NULL, 0);
+-		if (rt) {
+-			dev = dst_dev(&rt->dst);
+-			dev_hold(dev);
+-			ip6_rt_put(rt);
+-		}
+-		rcu_read_unlock();
+-	} else {
+-		dev = dev_get_by_index(net, ifindex);
+-	}
+-
++	dev = ip6_mc_find_dev(net, addr, ifindex);
+ 	if (!dev) {
+ 		sock_kfree_s(sk, mc_lst, sizeof(*mc_lst));
+ 		return -ENODEV;
+@@ -302,27 +310,14 @@ int ipv6_sock_mc_drop(struct sock *sk, int ifindex, const struct in6_addr *addr)
+ }
+ EXPORT_SYMBOL(ipv6_sock_mc_drop);
+ 
+-static struct inet6_dev *ip6_mc_find_dev(struct net *net,
+-					 const struct in6_addr *group,
+-					 int ifindex)
++static struct inet6_dev *ip6_mc_find_idev(struct net *net,
++					  const struct in6_addr *group,
++					  int ifindex)
+ {
+-	struct net_device *dev = NULL;
++	struct net_device *dev;
+ 	struct inet6_dev *idev;
+ 
+-	if (ifindex == 0) {
+-		struct rt6_info *rt;
+-
+-		rcu_read_lock();
+-		rt = rt6_lookup(net, group, NULL, 0, NULL, 0);
+-		if (rt) {
+-			dev = dst_dev(&rt->dst);
+-			dev_hold(dev);
+-			ip6_rt_put(rt);
+-		}
+-		rcu_read_unlock();
+-	} else {
+-		dev = dev_get_by_index(net, ifindex);
+-	}
++	dev = ip6_mc_find_dev(net, group, ifindex);
+ 	if (!dev)
+ 		return NULL;
+ 
+@@ -374,7 +369,7 @@ int ip6_mc_source(int add, int omode, struct sock *sk,
+ 	if (!ipv6_addr_is_multicast(group))
+ 		return -EINVAL;
+ 
+-	idev = ip6_mc_find_dev(net, group, pgsr->gsr_interface);
++	idev = ip6_mc_find_idev(net, group, pgsr->gsr_interface);
+ 	if (!idev)
+ 		return -ENODEV;
+ 
+@@ -509,7 +504,7 @@ int ip6_mc_msfilter(struct sock *sk, struct group_filter *gsf,
+ 	    gsf->gf_fmode != MCAST_EXCLUDE)
+ 		return -EINVAL;
+ 
+-	idev = ip6_mc_find_dev(net, group, gsf->gf_interface);
++	idev = ip6_mc_find_idev(net, group, gsf->gf_interface);
+ 	if (!idev)
+ 		return -ENODEV;
+ 
 -- 
-Cheers
-
-David / dhildenb
+2.34.1
 
