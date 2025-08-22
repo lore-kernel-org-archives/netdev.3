@@ -1,46 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A3A2EB84F;
-	Fri, 22 Aug 2025 14:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7932F2FDC3B
+	for <netdev@vger.kernel.org>; Fri, 22 Aug 2025 14:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755871310; cv=none; b=dRFOczdtYxyRaw8f7N/cwTBG48K++Qz0CiO/Zfqi+fqpRxAtWiaRzpz8tOWO7qt58kUiYUJjFemopLy8sYG5Xz8tmFNO/JQ/FIBYxKsHkHKWPQ+wv5ATZWRrMb2OVXCQ7cFbDwlFXOv7zbrvNmNl51PwRBFz/QHWHkRHXcXHvWg=
+	t=1755871481; cv=none; b=HlahnTOkqaGZTBRrfRPblpERBiBs5Kbrx510kW7iFGMytYaIc03+22rxaGud0EH9U0Zq/ylpwAqjQBjKpNH1moAwI99jaXVuFBkTD8a3RiRGIEfOQ+kLamBMJvJXUA+c99sar23LKeARTzBoX9lFjfx8MF1cfdtlPD2nBO+wbjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755871310; c=relaxed/simple;
-	bh=9TuER9TVfaawHAu2ZzezpBnq2eWkpUazPrpKKrgYpg0=;
+	s=arc-20240116; t=1755871481; c=relaxed/simple;
+	bh=lnXfUbhwjwvmKYPmzSa4znMTh2n6CcVoBz5/ntha/kQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z63/NWgWW3yL4LyuOkHFJX3feqGTaJvJle2O4nR8Qbg8trgKkXuQzRY9i/Y31sXeaSv2upbcIzeVvgINSNZPWcOOCeRPv+GgKdTWO4QPwd77yytGdZ18rm72pKKxKvo1+0jokvnaA56S+b0tLctB7Cb27PAGPtTuSmtmxZsA+To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rzq2MzCZ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=iyMzwzbYC73BKKdbGnL7dm82pNipMPqa7+jNaqB89kIDoPW3Ef0zlS5xUsDwZuIcw0oPOxA2H63U7I7SHxb+YzptoBgzWo2aTaKpDGxxfa4i7R+ZnIlGPEl+XX+E5GHCA3Bhso6f6PjXbbhey9ATplYfFd/Mwcsk7MxXOjGDAtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFVLq/5+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rzq2MzCZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6274EC4CEED;
-	Fri, 22 Aug 2025 14:01:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFVLq/5+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB16DC4CEED;
+	Fri, 22 Aug 2025 14:04:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755871309;
-	bh=9TuER9TVfaawHAu2ZzezpBnq2eWkpUazPrpKKrgYpg0=;
+	s=k20201202; t=1755871481;
+	bh=lnXfUbhwjwvmKYPmzSa4znMTh2n6CcVoBz5/ntha/kQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rzq2MzCZieMW0wVn6HeGXsec3xM34igLkKufPD/dfIvpyGhjVevYzUJayUzXn/5nz
-	 mgpZBtnBHLy90AIyUkfivIFoXXL6tdtKEPmBTmOzwEgUlUSMdAEFD4iSbgkVFbYEpL
-	 v25TUu0kLym28YxBVZs/h+AINUBuzJwDvCY+Ao5w7D7lFn/WEm6G+NDM6kYF2de4lc
-	 jrHq5rhiV9D5TetJZjn3LF/Z1X4FFFUTYjnrZmbY4Af25sNu8KLYRnvS7GCDOQJNNp
-	 806g3WKhXuuHp4SDHN73qMPNrUuu+J+rCED9fJG8BIFnAMp6U/wmBDI9OMpnCZivhK
-	 2q84RQIt0HPpQ==
-Date: Fri, 22 Aug 2025 07:01:48 -0700
+	b=OFVLq/5+Ub4dj8tgte5CU3YyS+G3fbUUCVHF/U0fN2r4VHg5Qc2QgGjsZX6ikjnRX
+	 rwoJO+kNO+WT2C9Il4VcHqV9qGPlniquUYMxTaYPBFGsMalkVoT4P3yB4me7+FQxJO
+	 Ztkhi1ObxOocGbxM/jgyg44dUPONEq78O8ThI7eikBEXCREwhB030j+FXrdPhDYvP1
+	 SMASRyL/17cuNSMhyxVz5mBEto4pcz5tDDZEX7yRo9ihT7kpqXFLbITPtTAAqwnOAr
+	 7AOUvOW3X9kahbJk6a0IDLbfWFPKxadajkDdF0MhGTvd3hlBjdaUDsRBuLnt9ToNRQ
+	 /kIyrUWIcuj/Q==
+Date: Fri, 22 Aug 2025 07:04:40 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: "Michael Walle" <mwalle@kernel.org>
-Cc: "Vinod Koul" <vkoul@kernel.org>, "Kishon Vijay Abraham I"
- <kishon@kernel.org>, "Siddharth Vadapalli" <s-vadapalli@ti.com>, "Matthias
- Schiffer" <matthias.schiffer@ew.tq-group.com>, "Andrew Lunn"
- <andrew@lunn.ch>, <linux-phy@lists.infradead.org>,
- <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>, <nm@ti.com>,
- <vigneshr@ti.com>
-Subject: Re: [PATCH v3] phy: ti: gmii-sel: Always write the RGMII ID setting
-Message-ID: <20250822070148.2e23c3f6@kernel.org>
-In-Reply-To: <DC8R5IJ2Q88K.YKUE9X9FZRNK@kernel.org>
-References: <20250819065622.1019537-1-mwalle@kernel.org>
-	<20250821181850.6af0ff7f@kernel.org>
-	<DC8R5IJ2Q88K.YKUE9X9FZRNK@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next 2/3] net: airoha: Add airoha_ppe_dev struct
+ definition
+Message-ID: <20250822070440.71bdd804@kernel.org>
+In-Reply-To: <aKgVEYMftYgdynxw@lore-rh-laptop>
+References: <20250819-airoha-en7581-wlan-rx-offload-v1-0-71a097e0e2a1@kernel.org>
+	<20250819-airoha-en7581-wlan-rx-offload-v1-2-71a097e0e2a1@kernel.org>
+	<20250821183453.4136c5d3@kernel.org>
+	<aKgVEYMftYgdynxw@lore-rh-laptop>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,16 +50,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 22 Aug 2025 08:45:33 +0200 Michael Walle wrote:
-> On Fri Aug 22, 2025 at 3:18 AM CEST, Jakub Kicinski wrote:
-> > On Tue, 19 Aug 2025 08:56:22 +0200 Michael Walle wrote:  
-> > > v3:
-> > >  - simplify the logic. Thanks Matthias.
-> > >  - reworded the commit message  
-> >
-> > This was set to Not Applicable in our patchwork, IDK why.
-> > Could you resend?  
+On Fri, 22 Aug 2025 08:58:25 +0200 Lorenzo Bianconi wrote:
+> > On Tue, 19 Aug 2025 14:21:07 +0200 Lorenzo Bianconi wrote:  
+> > > +	pdev = of_find_device_by_node(np);
+> > > +  
+> > 
+> > did you mean to put the of_node_put() here?
+> >   
+> > > +	if (!pdev) {
+> > > +		dev_err(dev, "cannot find device node %s\n", np->name);
+> > > +		of_node_put(np);
+> > > +		return ERR_PTR(-ENODEV);
+> > > +	}
+> > > +	of_node_put(np);  
 > 
-> Won't this patch be picked up by the linux-phy tree?
+> I moved the of_node_put() here (and in the if branch) in order to fix a similar
+> issue fixed by Alok for airoha_npu.
 
-Ah, poops, you're right! Let me adjust our filters..
+Ah, didn't notice it in the print..
+maybe remove the empty line between the of_find_device.. and the null
+check on pdev then?
