@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3587F1BC4E;
-	Fri, 22 Aug 2025 23:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4ED19E7E2
+	for <netdev@vger.kernel.org>; Fri, 22 Aug 2025 23:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755904801; cv=none; b=DhWnc0OAl80MxPBNhaqEGQofPkmV2D+ykTIPa51hOsJu9ww0Yjgm94mNCo4itKuiJzs5CZs6pr5kASvHoMZKSnBZlnjD1t0INrNZVGGk2VjA/g37euxexWqiLKC37PZkE4trLtLP+IQlez4J62O40LWoOyNaDtsgu7SPUC9fGmE=
+	t=1755906000; cv=none; b=ZIzvuPLNDxvuWtKk3kP5Hz8zOVU0TMadi32XpKAzcoyXtiVMu2h7tqhDrE1+tX5Vonv8WuGvoknodv+p48zfmGcYOQnjLcQX7Iet+BU+9YJcZ8KrNLT8rfEClB15q6WbAQXHBzo6967cnjMjY5rZ7gQuLOLImq8TfkuMq2ZpQxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755904801; c=relaxed/simple;
-	bh=b0145TecL6AiWliykubpQbxXyN0lq6fu7ZWZv2P6DPQ=;
+	s=arc-20240116; t=1755906000; c=relaxed/simple;
+	bh=oSYw0CCLIbx8JTGJyUNNIop35e33owDNtPxvOTvyzyw=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ozkIeZTeXqezPqGeUks7LMv7BTK2mhQ1aCVrXocZdwttvUfWpecoKak4vjTPiU7Q3050LkYMi9sM4Ykqq/YJTue/rDnhorZ1exJmkDDyLvUNm29NTpaKNqWCaAPDy7v/lsLK+t4BeLeugV1MVjhTp2gTQNSswP1R+y/vx0Er3t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J52FOqSt; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=VlC8bA8tvoJ8HiDKb326nY4qTCs7+czyuLjNehdE5odN14uyWrs3UcNFTwyWPsjSyyP3yriuOrR1jH6eOXQ8gRxUsqI0F7ZO7hw6NrY2MCVewVi04MCa+bXCbRhpJXAcKoV6Wo5xtaqLDyFvg+H6PLZcWsM7f3sl3fzlO0mT98w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jI7xDZ9F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J52FOqSt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C166C4CEED;
-	Fri, 22 Aug 2025 23:20:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jI7xDZ9F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A07C4CEED;
+	Fri, 22 Aug 2025 23:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755904800;
-	bh=b0145TecL6AiWliykubpQbxXyN0lq6fu7ZWZv2P6DPQ=;
+	s=k20201202; t=1755905999;
+	bh=oSYw0CCLIbx8JTGJyUNNIop35e33owDNtPxvOTvyzyw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=J52FOqStkrYagAsCwkBnGSJ2MKCIYOvZhT63LHdoLXpvbvAy2ZjEBRUGQhCZW8j50
-	 fqPjx58ft6n2dliK1zB96ih+Wm4yzDfuALONKyWC2TWgeNNSGKR/E4SkEn+pPq6Wi2
-	 4i9NRW99lG0gZ9MjfxU9+XBMV4j1+5RCufDv7DFpdWsaANgkrBG0OtIoWS4DoX0pjH
-	 FkTgXzG8bk0VltIB3s/k0UtDUWTyJ+fFHT3eJeoG4DFCQmoJwZIalIeda/MBdQ2wCW
-	 vnJlguN5KpUYlH/VHOSxw/TWtzgffPvAmfDWwnqGHXyHHCjzGdZFpvImok5BB2qm9i
-	 G3mE3Ge51F7dQ==
+	b=jI7xDZ9FcAp5ODht08wEVLNWLRbRg2h1QVqZkpq7om6ECjeO2xMszfwtlkz5CuIsq
+	 CNnJ4Z4g3th8D6iGv+MJBnC4pphFLFVL+pC4E6H5R49iqwX1xMJC6/pN2nddi07gvr
+	 c4Hk7EnMlvfVFBYTX8Nro7Dl0J7ryoEzaKdEwN8tQG5XveZXRg+py74jzb19XzudwD
+	 079rdTT+Jdbc19HG9kV7II2OqfXD/FcdJAWOygRbbaJvFpo9VpPhjgkLp7aRYNeAYv
+	 gM+9PshNzMDhItxKwACXCpyCyfjzkAbX33kgBcqKpih8WetkPTCYSycA+SAEuEtlXp
+	 0YpAaBI2jx4zQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id A89CE383BF69;
-	Fri, 22 Aug 2025 23:20:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAE19383BF69;
+	Fri, 22 Aug 2025 23:40:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,36 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] bluetooth 2025-08-22
+Subject: Re: [PATCH net-next 0/2] tcp: user_mss and TCP_MAXSEG series
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <175590480950.2028930.1900073054090928591.git-patchwork-notify@kernel.org>
-Date: Fri, 22 Aug 2025 23:20:09 +0000
-References: <20250822180230.345979-1-luiz.dentz@gmail.com>
-In-Reply-To: <20250822180230.345979-1-luiz.dentz@gmail.com>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org
+ <175590600877.2032242.10124563349770509552.git-patchwork-notify@kernel.org>
+Date: Fri, 22 Aug 2025 23:40:08 +0000
+References: <20250821141901.18839-1-edumazet@google.com>
+In-Reply-To: <20250821141901.18839-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ ncardwell@google.com, horms@kernel.org, kuniyu@google.com,
+ willemb@google.com, netdev@vger.kernel.org, eric.dumazet@gmail.com
 
 Hello:
 
-This pull request was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 22 Aug 2025 14:02:30 -0400 you wrote:
-> The following changes since commit 01b9128c5db1b470575d07b05b67ffa3cb02ebf1:
+On Thu, 21 Aug 2025 14:18:59 +0000 you wrote:
+> Annotate data-races around tp->rx_opt.user_mss and make
+> TCP_MAXSEG lockless.
 > 
->   net: macb: fix unregister_netdev call order in macb_remove() (2025-08-21 18:38:40 -0700)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2025-08-22
+> Eric Dumazet (2):
+>   tcp: annotate data-races around tp->rx_opt.user_mss
+>   tcp: lockless TCP_MAXSEG option
 > 
 > [...]
 
 Here is the summary with links:
-  - [GIT,PULL] bluetooth 2025-08-22
-    https://git.kernel.org/netdev/net/c/1559c9c23110
+  - [net-next,1/2] tcp: annotate data-races around tp->rx_opt.user_mss
+    https://git.kernel.org/netdev/net-next/c/d5ffba0f254d
+  - [net-next,2/2] tcp: lockless TCP_MAXSEG option
+    https://git.kernel.org/netdev/net-next/c/9217146fee49
 
 You are awesome, thank you!
 -- 
