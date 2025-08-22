@@ -1,59 +1,109 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4982FE590
-	for <netdev@vger.kernel.org>; Fri, 22 Aug 2025 09:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F1E2F616E
+	for <netdev@vger.kernel.org>; Fri, 22 Aug 2025 09:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755855098; cv=none; b=ePVYflVllskPJSS8k4JP0UuVPRCwYiqR6FSQLonlDkFaauSZpd1oO/tysHHq4ZTffeLO3+oTbE1eiM6I+cHKMBHH3jXCDTzKGI780SfF9UmAgUeQyoH8mHud2GVJtJ66hEaKCswNjWds6vQ0Itenq66cCZ6lFo7lsY07oCiFgaA=
+	t=1755855318; cv=none; b=i+xTpuIavXRsBoZACeW26+YFsR6040kLA7l97W5jWxYV6MmFNKK3X1L9302JARiNn1vLy6tv1vQcEruBF7cVi+oLtP27sQmo9S6esqNtcfY2S4CQBEA9BS2cOftesrP97bkyGAIkw4oOeC05pHMkQaHajE1109oxkUDT9vt3Xag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755855098; c=relaxed/simple;
-	bh=GDqmgHytA/OIUmAi3a+R2kiC3Oc9IvjzIFeK2FU1iLs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ME8wqq8U1kKwvCAVZTF6sH1wK+6Ons38CKEUQE1FcCjomE7mAuD/onecCXwFkKidnil9ZBNGRsSLoYoL/J098/ZOXS2h+rfWr/Ejv6Oy5KgxxAEMHeU1m1zBwmAJZo34ydTskX9SBu1LbBoUzr4rAU1zW5gsSfQkh26gNl+5Qh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=SXKlIfb0; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1755855318; c=relaxed/simple;
+	bh=0eZBISu1sy54u8q87vkl2076gxRKS5osMWVlUuR7xGA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D9o0EFWBZ53Z68qQ68UnYD380pEnbnYumrYuuZTywFO0oA621NmKzsEWai9hCc6Ere4Pew6ZPzAltpVU5QVSyTKsJVbtesNKT1kadqpmoVBlIBKhgZnkoHlklQT63KPUW+14wPR1mODNmtFSBjus2RwR8xWPgGiO639N92Y8x2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dbrWpBop; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Zi0z6swT; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dbrWpBop; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Zi0z6swT; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="SXKlIfb0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1755855083; x=1787391083;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=GDqmgHytA/OIUmAi3a+R2kiC3Oc9IvjzIFeK2FU1iLs=;
-  b=SXKlIfb03nBoXxTF2yWK5PS49r4p8FuWstPe02dgn5CMJ9jHA1XHeUZQ
-   ZIkovBb9OEY+5UKNQIbgN4DsgM06Jzsy9jrbc9ei7RP6+ahlIVs7+V52u
-   4siEQ9nNLAPoDthpfQj+pwDe3+ZyW/nZy68inf1EaH9KXmaznXt+0kkKd
-   9I5jURRf4kTQUwvIMlu3vsNP+0XtfYFsoLf2oHmGsVAvfUFm8abqf9tfF
-   EmBPJw6ZQFsdLwMphPOlIpxO++zT9sVlmApUb6/SL1UyEEPw021TWPy2I
-   4aTMq4+8nwOEBAGMZi96eqb7dGrLi9/qHPU3HCy5mDhCjKwa1pwfhVkyS
-   w==;
-X-CSE-ConnectionGUID: TnN8egzkSSO68KFi/UIkZw==
-X-CSE-MsgGUID: YYaqK5AKTQG68YcoBtip8A==
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="212950475"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 22 Aug 2025 02:31:13 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Fri, 22 Aug 2025 02:30:47 -0700
-Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.44 via Frontend Transport; Fri, 22 Aug 2025 02:30:45 -0700
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <richardcochran@gmail.com>
-CC: <netdev@vger.kernel.org>, Horatiu Vultur <horatiu.vultur@microchip.com>
-Subject: [PATCH net-next 1/2] net: phy: micrel: Introduce function __lan8814_ptp_probe_once
-Date: Fri, 22 Aug 2025 11:27:13 +0200
-Message-ID: <20250822092714.2554262-2-horatiu.vultur@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250822092714.2554262-1-horatiu.vultur@microchip.com>
-References: <20250822092714.2554262-1-horatiu.vultur@microchip.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dbrWpBop";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Zi0z6swT";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dbrWpBop";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Zi0z6swT"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id F29D621EE0;
+	Fri, 22 Aug 2025 09:35:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1755855312; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kS6Jm0pX+9aKxSOc86DV2+DLnuxx3u12QOfeFCRH/nI=;
+	b=dbrWpBopZPlvr4x0XwSrltJeh/4Ii47r80IHIQVwQWLEGSvwbvldOk1uom7cpeXZ5QEOvL
+	ibivTprtyJe/kkDqWULWRHkGNbO+TiCgPYFRxL7jscSWp6bAmxK1Cw2SHo3t8KzgyyZPh/
+	DXjb9ZLFhVxz5l4Z8qI5bYI8ml6qIsE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1755855312;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kS6Jm0pX+9aKxSOc86DV2+DLnuxx3u12QOfeFCRH/nI=;
+	b=Zi0z6swTrVdP2dpko2xPGrV2jM+1hQ8PKPKDWLiKa47axqMDSshh4XxBOagMq10DNXwjGr
+	zHXbohDBbS6RZDAQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1755855312; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kS6Jm0pX+9aKxSOc86DV2+DLnuxx3u12QOfeFCRH/nI=;
+	b=dbrWpBopZPlvr4x0XwSrltJeh/4Ii47r80IHIQVwQWLEGSvwbvldOk1uom7cpeXZ5QEOvL
+	ibivTprtyJe/kkDqWULWRHkGNbO+TiCgPYFRxL7jscSWp6bAmxK1Cw2SHo3t8KzgyyZPh/
+	DXjb9ZLFhVxz5l4Z8qI5bYI8ml6qIsE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1755855312;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kS6Jm0pX+9aKxSOc86DV2+DLnuxx3u12QOfeFCRH/nI=;
+	b=Zi0z6swTrVdP2dpko2xPGrV2jM+1hQ8PKPKDWLiKa47axqMDSshh4XxBOagMq10DNXwjGr
+	zHXbohDBbS6RZDAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ECA41139B7;
+	Fri, 22 Aug 2025 09:35:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id SIqRN845qGihMAAAD6G6ig
+	(envelope-from <svarbanov@suse.de>); Fri, 22 Aug 2025 09:35:10 +0000
+From: Stanimir Varbanov <svarbanov@suse.de>
+To: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rpi-kernel@lists.infradead.org,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Andrea della Porta <andrea.porta@suse.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Phil Elwell <phil@raspberrypi.com>,
+	Jonathan Bell <jonathan@raspberrypi.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Stanimir Varbanov <svarbanov@suse.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v2 2/5] dt-bindings: net: cdns,macb: Add compatible for Raspberry Pi RP1
+Date: Fri, 22 Aug 2025 12:34:37 +0300
+Message-ID: <20250822093440.53941-3-svarbanov@suse.de>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250822093440.53941-1-svarbanov@suse.de>
+References: <20250822093440.53941-1-svarbanov@suse.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,75 +111,59 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-Spamd-Result: default: False [-5.30 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TAGGED_RCPT(0.00)[dt,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email,microchip.com:email];
+	R_RATELIMIT(0.00)[to_ip_from(RL7mwea5a3cdyragbzqhrtit3y)];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spam-Score: -5.30
 
-Introduce the function __lan8814_ptp_probe_once as this function will be
-used also by lan8842 driver. This change doesn't have any functional
-changes.
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+The Raspberry Pi RP1 chip has the Cadence GEM ethernet
+controller, so add a compatible string for it.
+
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- drivers/net/phy/micrel.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ Documentation/devicetree/bindings/net/cdns,macb.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 04bd744920b0d..42af075894bec 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -4242,7 +4242,8 @@ static void lan8814_ptp_init(struct phy_device *phydev)
- 	phydev->default_timestamp = true;
- }
- 
--static int lan8814_ptp_probe_once(struct phy_device *phydev)
-+static int __lan8814_ptp_probe_once(struct phy_device *phydev, char *pin_name,
-+				    size_t gpios)
- {
- 	struct lan8814_shared_priv *shared = phy_package_get_priv(phydev);
- 
-@@ -4250,18 +4251,18 @@ static int lan8814_ptp_probe_once(struct phy_device *phydev)
- 	mutex_init(&shared->shared_lock);
- 
- 	shared->pin_config = devm_kmalloc_array(&phydev->mdio.dev,
--						LAN8814_PTP_GPIO_NUM,
-+						gpios,
- 						sizeof(*shared->pin_config),
- 						GFP_KERNEL);
- 	if (!shared->pin_config)
- 		return -ENOMEM;
- 
--	for (int i = 0; i < LAN8814_PTP_GPIO_NUM; i++) {
-+	for (int i = 0; i < gpios; i++) {
- 		struct ptp_pin_desc *ptp_pin = &shared->pin_config[i];
- 
- 		memset(ptp_pin, 0, sizeof(*ptp_pin));
- 		snprintf(ptp_pin->name,
--			 sizeof(ptp_pin->name), "lan8814_ptp_pin_%02d", i);
-+			 sizeof(ptp_pin->name), "%s_%02d", pin_name, i);
- 		ptp_pin->index = i;
- 		ptp_pin->func =  PTP_PF_NONE;
- 	}
-@@ -4271,7 +4272,7 @@ static int lan8814_ptp_probe_once(struct phy_device *phydev)
- 	shared->ptp_clock_info.max_adj = 31249999;
- 	shared->ptp_clock_info.n_alarm = 0;
- 	shared->ptp_clock_info.n_ext_ts = LAN8814_PTP_EXTTS_NUM;
--	shared->ptp_clock_info.n_pins = LAN8814_PTP_GPIO_NUM;
-+	shared->ptp_clock_info.n_pins = gpios;
- 	shared->ptp_clock_info.pps = 0;
- 	shared->ptp_clock_info.supported_extts_flags = PTP_RISING_EDGE |
- 						       PTP_FALLING_EDGE |
-@@ -4318,6 +4319,12 @@ static int lan8814_ptp_probe_once(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int lan8814_ptp_probe_once(struct phy_device *phydev)
-+{
-+	return __lan8814_ptp_probe_once(phydev, "lan8814_ptp_pin",
-+					LAN8814_PTP_GPIO_NUM);
-+}
-+
- static void lan8814_setup_led(struct phy_device *phydev, int val)
- {
- 	int temp;
+diff --git a/Documentation/devicetree/bindings/net/cdns,macb.yaml b/Documentation/devicetree/bindings/net/cdns,macb.yaml
+index 559d0f733e7e..0591da97d434 100644
+--- a/Documentation/devicetree/bindings/net/cdns,macb.yaml
++++ b/Documentation/devicetree/bindings/net/cdns,macb.yaml
+@@ -54,6 +54,7 @@ properties:
+           - cdns,np4-macb             # NP4 SoC devices
+           - microchip,sama7g5-emac    # Microchip SAMA7G5 ethernet interface
+           - microchip,sama7g5-gem     # Microchip SAMA7G5 gigabit ethernet interface
++          - raspberrypi,rp1-gem       # Raspberry Pi RP1 gigabit ethernet interface
+           - sifive,fu540-c000-gem     # SiFive FU540-C000 SoC
+           - cdns,emac                 # Generic
+           - cdns,gem                  # Generic
 -- 
-2.34.1
+2.47.0
 
