@@ -1,92 +1,78 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DBC2F657C
-	for <netdev@vger.kernel.org>; Fri, 22 Aug 2025 09:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40732EF65A
+	for <netdev@vger.kernel.org>; Fri, 22 Aug 2025 09:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755854953; cv=none; b=pOVcBr2kBvvT3yw+EwWDcPTU7uEwLPpP9wQt38mvnB59JU0aBmXuBEkIpL3ZhNDsjmFk8wWBPPZIrlvCBUKQJZuBpszEYxnBTee6RMNZaOUP5iYpr1D373GSNtHGTcMkosxv6tGYfDRI3p70BiyVd43X5wK2i01f2V8qOXbR0/4=
+	t=1755855083; cv=none; b=o1tvYZ19QqQQMymDyzq4zu+a0CStp2Oq2PEuSbdhrYVscR77rUuMO44QmUXRz2LsWwgklgDKHOxx3oTCAEYXGCu5alIz3gtLKPyCUx5dJExTpyWITH22LYgOzUg+qCjoxX2Dka/ckJBfSe3UDtJlZL2uQgefHlnvxApWilUOkdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755854953; c=relaxed/simple;
-	bh=qy1eb80X2+M43XeBimEia04iu3UlKhbOel9Og0vmxV8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aZy3+OIMjOen5khENFQ2qIby5RE3WGUGZG0Tn8ll6/mvjcphqJwPAKsh4xnptG5EozIWWrouYD7bdFxmpwzy+pM8dUbuHnziCcGq/ZihoCHnJwo3pJHJEZl6Ck5a5kSgjZIo9C+NccxgCd9svMb2gkvQcbTS0RRIzyEP89LUskc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1upO50-0005bC-AD; Fri, 22 Aug 2025 11:29:02 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1upO50-001YQR-0H;
-	Fri, 22 Aug 2025 11:29:02 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1upO4z-00A50K-34;
-	Fri, 22 Aug 2025 11:29:01 +0200
-Date: Fri, 22 Aug 2025 11:29:01 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/1] net: phy: Clear link-specific data on
- link down
-Message-ID: <aKg4XcM0vAIS4C-8@pengutronix.de>
-References: <20250822090947.2870441-1-o.rempel@pengutronix.de>
- <aKg2HHIBAR8t2CQW@shell.armlinux.org.uk>
+	s=arc-20240116; t=1755855083; c=relaxed/simple;
+	bh=N3NJ5tDeDCi3vhISESZJkIN7qYp9IUb8LelWUgmInQM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ICIf+1xcWg5iNASjiwCSAnH/0hE3qP+/ts2xSNN5fv6vTMvRYxNg8EXhzRzH9z43W0BTGyh48I882Zv/kG2VVFdGPKmhWiJflDzeu4RMK3ZU5L/53YJT2jOqmK2n4Cel6zzdFLAUuSU1NHM63AhH9bZqbwFAj0619d8cuPdJ2ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=aKEa4vT5; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="aKEa4vT5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1755855074; x=1787391074;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=N3NJ5tDeDCi3vhISESZJkIN7qYp9IUb8LelWUgmInQM=;
+  b=aKEa4vT5x5FxUUBuuYnhZANZsb0BjpfdtEA4Spj9jKWLOTkcg8USRJ0J
+   7mGXC0eOU4koS2yJY2g+1n90UiyaJSIn0hXLZ7W/XDT7nmd7Ov2Gi1J5v
+   Im+PSk19/a5J9pl/0YYCd1JDrct7ShUhUZlmE/d42uQid8egNnJcpmWLy
+   OXcKM4RLHIA48dzsOjf8es5OugQ6Lbf2ctfITNUjgz4tx4j45VpormeCT
+   3HhDXb7fvLk3n466jzXqhIyc644PUGlo1JhcJvqShnvkotxlYSGV6frS0
+   w1ah2P2GpFj4YznSucOYxMpx5XZx1kni+4yvcCoTiUQtBljuFD38XL1bd
+   w==;
+X-CSE-ConnectionGUID: TnN8egzkSSO68KFi/UIkZw==
+X-CSE-MsgGUID: SDJ+zHwnRWmAKjcc0kjqKQ==
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
+   d="scan'208";a="212950473"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 22 Aug 2025 02:31:12 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Fri, 22 Aug 2025 02:30:44 -0700
+Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.44 via Frontend Transport; Fri, 22 Aug 2025 02:30:42 -0700
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <richardcochran@gmail.com>
+CC: <netdev@vger.kernel.org>, Horatiu Vultur <horatiu.vultur@microchip.com>
+Subject: [PATCH net-next 0/2] net: phy: micrel: Add PTP support for lan8842
+Date: Fri, 22 Aug 2025 11:27:12 +0200
+Message-ID: <20250822092714.2554262-1-horatiu.vultur@microchip.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aKg2HHIBAR8t2CQW@shell.armlinux.org.uk>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Fri, Aug 22, 2025 at 10:19:24AM +0100, Russell King (Oracle) wrote:
-> On Fri, Aug 22, 2025 at 11:09:47AM +0200, Oleksij Rempel wrote:
-> > When a network interface is brought down, the associated PHY is stopped.
-> > However, several link-specific parameters within the phy_device struct
-> > are not cleared. This leads to userspace tools like ethtool reporting
-> > stale information from the last active connection, which is misleading
-> > as the link is no longer active.
-> 
-> This is not a good idea. Consider the case where the PHY has been
-> configured with autoneg disabled, and phydev->speed etc specifies
-> the desired speed.
-> 
-> When the link goes down, all that state gets cleared, and we lose
-> the user's settings.
-> 
-> So no, I don't think this is appropriate.
-> 
-> I think it is appropriate to clear some of the state, but anything that
-> the user can configure (such as ->speed and ->duplex) must not be
-> cleared.
+The PTP block in lan8842 is the same as lan8814 so reuse all these
+functions.  The first patch of the series just does cosmetic changes such
+that lan8842 can reuse the function lan8814_ptp_probe. There should not be
+any functional changes here. While the second patch adds the PTP support
+to lan8842.
 
-Hm... should it be cleared conditionally? If autoneg is used, clear the
-speed and duplex?
+Horatiu Vultur (2):
+  net: phy: micrel: Introduce function __lan8814_ptp_probe_once
+  net: phy: micrel: Add PTP support for lan8842
+
+ drivers/net/phy/micrel.c | 107 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 102 insertions(+), 5 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.34.1
+
