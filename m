@@ -1,252 +1,284 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9942FE586;
-	Fri, 22 Aug 2025 13:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9891226C3A5;
+	Fri, 22 Aug 2025 13:28:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755869270; cv=none; b=mq1PzxIp62g7DMFjfoMzFByWI6l5NItt+FN8UMusF2IZZveF3Wsve3kUpb8GGBBxVIv0x93vJiJE7aA+D5nb4dPnNcraqSMQ3qmwo7OWRNOEagvHOCrvN4sGaLMq6gExQlKeVLDoSUIkVuUg7DsVKyF5R0wPg7ctZpvAq1a9B1c=
+	t=1755869314; cv=none; b=emAhAsXszhneq/9fu1H/nHwNzguO/xqw6QG72bUrOevTOhKAmpgAe4rLdSgWDO0bH3stisYiJXeWJbefdjDJy70a5jpW2CHFktBaaXFkv8z6cRcgxODArfOCZ03r0RhrNDinaorp4QlIZUL8hNUAs2vQoSLzPDkCp6pRastXarc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755869270; c=relaxed/simple;
-	bh=CvQW0D4khBGNDHhog9aZU9HwDtvPDlg7O4IlJEZ4bfk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IKQmOtD6vg5vYrJ+oiAjkdNF3ecnd3CLJZTTD3B4iaCh2CRvSL/gdIXXsSMfITQH+5P7rTK4g9CuEjOcgXZKP3M1FetRvpwqRGIYT53gSub3P3r6ojIXkhaVbKtwd5So67yHsrwBKjLIYUPlJVfbhtn7um30IRg6kXUDXFyVwg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [192.168.0.105] (unknown [114.241.87.235])
-	by APP-03 (Coremail) with SMTP id rQCowADnQIIncKhoqZtfDg--.14333S2;
-	Fri, 22 Aug 2025 21:27:04 +0800 (CST)
-Message-ID: <50926ebd-f8c0-485b-87cd-f7552df4bcd4@iscas.ac.cn>
-Date: Fri, 22 Aug 2025 21:27:03 +0800
+	s=arc-20240116; t=1755869314; c=relaxed/simple;
+	bh=0VsMEnEr2VDRo0Ri/5+/NsnkxoLsmIGUj+AodUpf6tA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=snxYahaApuUmXhq3APs6+qMbUB8RpJRM/y4dQXnxN1G1PceRlBw01p7U1xO8Vf7H4/kfC7ElGd16uyx8xsE3xkgKwZVC0nbWSTTLLDa9/FcWBdR3Jfwjp30JNnZAj5YvBaEw/XHDQCi7XzVKajixKSXU5y4XY2kD0iJuqUhKoUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=mb9ckhdJ; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="mb9ckhdJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject
+	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=YdEoMQG0nDa9N91oUIFRJbRyYEXBj+RtjSfzrXGLPK4=; b=mb9ckhdJIu88HEGnG92e/ycF9S
+	KIScFyC6MtRN6Kau8Fsdlu92FPhPUhWnvAKxxNnJcWyxpRwZgbKF6DPZ6ps+Ho4NMnD0CrdRXEN1j
+	0XeHZ21Yld/cwJwlHUMLwvwcZd6gRSWnGa2Gif/Knx4y42xj1SdtieqDwMghGg04ZLNloJ+ArinG5
+	7ilOoc6HqfTgJVB55l4clCP/r6v9iG+57GcwF5r2PZwx/YZixgUACW3EjAUvq221mtDkqj0p1uid3
+	tOMRRddut8pi9vfIQDHUSL5WFHxeQeoCncCmduM7KIMSpnlYdlxLB9ZyqU4hyUaT5DwNoNhM2k7HH
+	evGJT8Ew==;
+Received: from [122.175.9.182] (port=12892 helo=cypher.couthit.local)
+	by server.couthit.com with esmtpa (Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1upRoa-00000000S6j-4AmJ;
+	Fri, 22 Aug 2025 09:28:21 -0400
+From: Parvathi Pudi <parvathi@couthit.com>
+To: danishanwar@ti.com,
+	rogerq@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	ssantosh@kernel.org,
+	richardcochran@gmail.com,
+	m-malladi@ti.com,
+	s.hauer@pengutronix.de,
+	afd@ti.com,
+	jacob.e.keller@intel.com,
+	horms@kernel.org,
+	johan@kernel.org,
+	m-karicheri2@ti.com,
+	s-anna@ti.com,
+	glaroque@baylibre.com,
+	saikrishnag@marvell.com,
+	kory.maincent@bootlin.com,
+	diogo.ivo@siemens.com,
+	javier.carrasco.cruz@gmail.com,
+	basharath@couthit.com,
+	parvathi@couthit.com
+Cc: linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	vadim.fedorenko@linux.dev,
+	alok.a.tiwari@oracle.com,
+	bastien.curutchet@bootlin.com,
+	pratheesh@ti.com,
+	prajith@ti.com,
+	vigneshr@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	rogerq@ti.com,
+	krishna@couthit.com,
+	pmohan@couthit.com,
+	mohan@couthit.com
+Subject: [PATCH net-next v14 0/5] PRU-ICSSM Ethernet Driver
+Date: Fri, 22 Aug 2025 18:55:55 +0530
+Message-ID: <20250822132758.2771308-1-parvathi@couthit.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 2/5] net: spacemit: Add K1 Ethernet MAC
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Vadim Fedorenko
- <vadim.fedorenko@linux.dev>, Junhui Liu <junhui.liu@pigmoral.tech>,
- Simon Horman <horms@kernel.org>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
- spacemit@lists.linux.dev, linux-kernel@vger.kernel.org,
- Vivian Wang <uwu@dram.page>
-References: <20250820-net-k1-emac-v6-0-c1e28f2b8be5@iscas.ac.cn>
- <20250820-net-k1-emac-v6-2-c1e28f2b8be5@iscas.ac.cn>
- <20250821161420.7c9804f7@kernel.org>
-Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <20250821161420.7c9804f7@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:rQCowADnQIIncKhoqZtfDg--.14333S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3JFy3XFyxKFyDAr15urW3ZFb_yoW7ArW8pF
-	W8Wa1DAF48Xrn7Cr47Xr4UAFnFvr1xXw15u3WYyaya9F9IkrySgryrKrWak34rCr909r1F
-	vr4jv343WFn5KrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvqb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
-	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
-	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMc
-	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY
-	1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
-	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
-	wI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
-	v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
-	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0x
-	ZFpf9x07bIBTOUUUUU=
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
+X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Hi Jakub,
+Hi,
 
-Thank you for the comments.
+The Programmable Real-Time Unit Industrial Communication Sub-system (PRU-ICSS)
+is available on the TI SOCs in two flavors: Gigabit ICSS (ICSSG) and the older
+Megabit ICSS (ICSSM).
 
-On 8/22/25 07:14, Jakub Kicinski wrote:
-> On Wed, 20 Aug 2025 14:47:51 +0800 Vivian Wang wrote:
->> +static void emac_tx_mem_map(struct emac_priv *priv, struct sk_buff *skb)
->> +{
->> +	struct emac_desc_ring *tx_ring = &priv->tx_ring;
->> +	struct emac_desc tx_desc, *tx_desc_addr;
->> +	struct device *dev = &priv->pdev->dev;
->> +	struct emac_tx_desc_buffer *tx_buf;
->> +	u32 head, old_head, frag_num, f;
->> +	bool buf_idx;
->> +
->> +	frag_num = skb_shinfo(skb)->nr_frags;
->> +	head = tx_ring->head;
->> +	old_head = head;
->> +
->> +	for (f = 0; f < frag_num + 1; f++) {
->> +		buf_idx = f % 2;
->> +
->> +		/*
->> +		 * If using buffer 1, initialize a new desc. Otherwise, use
->> +		 * buffer 2 of previous fragment's desc.
->> +		 */
->> +		if (!buf_idx) {
->> +			tx_buf = &tx_ring->tx_desc_buf[head];
->> +			tx_desc_addr =
->> +				&((struct emac_desc *)tx_ring->desc_addr)[head];
->> +			memset(&tx_desc, 0, sizeof(tx_desc));
->> +
->> +			/*
->> +			 * Give ownership for all but first desc initially. For
->> +			 * first desc, give at the end so DMA cannot start
->> +			 * reading uninitialized descs.
->> +			 */
->> +			if (head != old_head)
->> +				tx_desc.desc0 |= TX_DESC_0_OWN;
->> +
->> +			if (++head == tx_ring->total_cnt) {
->> +				/* Just used last desc in ring */
->> +				tx_desc.desc1 |= TX_DESC_1_END_RING;
->> +				head = 0;
->> +			}
->> +		}
->> +
->> +		if (emac_tx_map_frag(dev, &tx_desc, tx_buf, skb, f)) {
->> +			netdev_err(priv->ndev, "Map TX frag %d failed", f);
->> +			goto dma_map_err;
->> +		}
->> +
->> +		if (f == 0)
->> +			tx_desc.desc1 |= TX_DESC_1_FIRST_SEGMENT;
->> +
->> +		if (f == frag_num) {
->> +			tx_desc.desc1 |= TX_DESC_1_LAST_SEGMENT;
->> +			tx_buf->skb = skb;
->> +			if (emac_tx_should_interrupt(priv, frag_num + 1))
->> +				tx_desc.desc1 |=
->> +					TX_DESC_1_INTERRUPT_ON_COMPLETION;
->> +		}
->> +
->> +		*tx_desc_addr = tx_desc;
->> +	}
->> +
->> +	/* All descriptors are ready, give ownership for first desc */
->> +	tx_desc_addr = &((struct emac_desc *)tx_ring->desc_addr)[old_head];
->> +	dma_wmb();
->> +	WRITE_ONCE(tx_desc_addr->desc0, tx_desc_addr->desc0 | TX_DESC_0_OWN);
->> +
->> +	emac_dma_start_transmit(priv);
->> +
->> +	tx_ring->head = head;
->> +
->> +	return;
->> +
->> +dma_map_err:
->> +	dev_kfree_skb_any(skb);
-> You free the skb here.. 
->
->> +	priv->ndev->stats.tx_dropped++;
->> +}
->> +
->> +static netdev_tx_t emac_start_xmit(struct sk_buff *skb, struct net_device *ndev)
->> +{
->> +	struct emac_priv *priv = netdev_priv(ndev);
->> +	int nfrags = skb_shinfo(skb)->nr_frags;
->> +	struct device *dev = &priv->pdev->dev;
->> +
->> +	if (unlikely(emac_tx_avail(priv) < nfrags + 1)) {
->> +		if (!netif_queue_stopped(ndev)) {
->> +			netif_stop_queue(ndev);
->> +			dev_err_ratelimited(dev, "TX ring full, stop TX queue\n");
->> +		}
->> +		return NETDEV_TX_BUSY;
->> +	}
->> +
->> +	emac_tx_mem_map(priv, skb);
->> +
->> +	ndev->stats.tx_packets++;
->> +	ndev->stats.tx_bytes += skb->len;
-> .. and then you use skb here.
->
->> +	/* Make sure there is space in the ring for the next TX. */
->> +	if (unlikely(emac_tx_avail(priv) <= MAX_SKB_FRAGS + 2))
->> +		netif_stop_queue(ndev);
->> +
->> +	return NETDEV_TX_OK;
->> +}
+Support for ICSSG Dual-EMAC mode has already been mainlined [1] and the
+fundamental components/drivers such as PRUSS driver, Remoteproc driver,
+PRU-ICSS INTC, and PRU-ICSS IEP drivers are already available in the mainline
+Linux kernel. The current set of patch series builds on top of these components
+and introduces changes to support the Dual-EMAC using ICSSM on the TI AM57xx,
+AM437x and AM335x devices.
 
-Thanks for the catch. I'll fix the error handling here in the next version.
+AM335x, AM437x and AM57xx devices may have either one or two PRU-ICSS instances
+with two 32-bit RISC PRU cores. Each PRU core has (a) dedicated Ethernet interface
+(MII, MDIO), timers, capture modules, and serial communication interfaces, and
+(b) dedicated data and instruction RAM as well as shared RAM for inter PRU
+communication within the PRU-ICSS.
 
->> +static void emac_get_ethtool_stats(struct net_device *dev,
->> +				   struct ethtool_stats *stats, u64 *data)
->> +{
->> +	struct emac_priv *priv = netdev_priv(dev);
->> +	u64 *rx_stats = (u64 *)&priv->rx_stats;
->> +	int i;
->> +
->> +	scoped_guard(spinlock_irqsave, &priv->stats_lock) {
-> Why is this spin lock taken in irqsave mode?
-> Please convert the code not to use scoped_guard()
-> There's not a single flow control (return) in any of them.
-> It's just hiding the information that you're unnecessarily masking irqs.
-> See
-> https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#using-device-managed-and-cleanup-h-constructs
+These patches add support for basic RX and TX  functionality over PRU Ethernet
+ports in Dual-EMAC mode.
 
-I'll fix these in the next version.
+Further, note that these are the initial set of patches for a single instance of
+PRU-ICSS Ethernet.  Additional features such as Ethtool support, VLAN Filtering,
+Multicast Filtering, Promiscuous mode, Storm prevention, Interrupt coalescing,
+Linux PTP (ptp4l) Ordinary clock and Switch mode support for AM335x, AM437x
+and AM57x along with support for a second instance of  PRU-ICSS on AM57x
+will be posted subsequently.
 
->> +		emac_stats_update(priv);
->> +
->> +		for (i = 0; i < ARRAY_SIZE(emac_ethtool_rx_stats); i++)
->> +			data[i] = rx_stats[emac_ethtool_rx_stats[i].offset];
->> +	}
->> +static void emac_tx_timeout_task(struct work_struct *work)
->> +{
->> +	struct net_device *ndev;
->> +	struct emac_priv *priv;
->> +
->> +	priv = container_of(work, struct emac_priv, tx_timeout_task);
->> +	ndev = priv->ndev;
-> I don't see this work ever being canceled.
-> What prevents ndev from being freed before it gets to run?
-Oops. I'll fix the handling of this timer in the next version.
->> +/* Called when net interface is brought up. */
->> +static int emac_open(struct net_device *ndev)
->> +{
->> +	struct emac_priv *priv = netdev_priv(ndev);
->> +	struct device *dev = &priv->pdev->dev;
->> +	int ret;
->> +
->> +	ret = emac_alloc_tx_resources(priv);
->> +	if (ret) {
->> +		dev_err(dev, "Error when setting up the Tx resources\n");
->> +		goto emac_alloc_tx_resource_fail;
->> +	}
->> +
->> +	ret = emac_alloc_rx_resources(priv);
->> +	if (ret) {
->> +		dev_err(dev, "Error when setting up the Rx resources\n");
->> +		goto emac_alloc_rx_resource_fail;
->> +	}
->> +
->> +	ret = emac_up(priv);
->> +	if (ret) {
->> +		dev_err(dev, "Error when bringing interface up\n");
->> +		goto emac_up_fail;
->> +	}
->> +	return 0;
->> +
->> +emac_up_fail:
-> please name the jump labels after the destination not the source.
-> Please fix everywhere in the driver.
-> This is covered in the kernel coding style docs.
->
-I'll fix in next version.
+The patches presented in this series have gone through the patch verification
+tools and no warnings or errors are reported. Sample test logs obtained from AM33x,
+AM43x and AM57x verifying the functionality on Linux next kernel are available here:
 
-Thanks,
-Vivian "dramforever" Wang
+[Interface up Testing](https://gist.github.com/ParvathiPudi/07922443b89d0183a197136037aea735)
+
+[Ping Testing](https://gist.github.com/ParvathiPudi/b106e4315d6062991dc3210c6b16df22)
+
+[Iperf Testing](https://gist.github.com/ParvathiPudi/b909073095632cd98582aad1fd02aecf)
+
+[1] https://lore.kernel.org/all/20230106121046.886863-1-danishanwar@ti.com/
+[2] https://lore.kernel.org/all/20250108125937.10604-1-basharath@couthit.com/
+
+This is the v14 of the patch series [v1]. This version of the patchset
+addresses the comments made on [v13] of the series.
+
+Changes from v13 to v14 :
+
+*) Addressed Jakub Kicinski's comments on patch 4 of the series.
+*) Addressed MD Danish Anwar comments on cover letter of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v12 to v13 :
+
+*) Addressed Alok Tiwari comments on patch 2, 3 and 5 of the series.
+*) Addressed Bastien Curutchet comment on patch 2 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v11 to v12 :
+
+*) Addressed Jakub Kicinski's comments on patch 2 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v10 to v11 :
+
+*) Reduced patch series size by removing features such as Ethtool support,
+VLAN filtering, Multicast filtering, Promiscuous mode handling, Storm Prevention,
+Interrupt coalescing, and Linux PTP (ptp4l) ordinary clock support. This was done
+based on Jakub Kicinski's feedback regarding the large patch size (~5kLoC).
+Excluded features will be resubmitted.
+*) Addressed Jakub Kicinski comments on patch 2, and 3 of the series.
+*) Addressed Jakub Kicinski's comment on patch 4 of the series by implementing
+hrtimer based TX resume logic to notify upper layers in case of TX busy.
+*) Rebased the series on latest net-next.
+
+Changes from v9 to v10 :
+
+*) Addressed Vadim Fedorenko comments on patch 6 and 11 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v8 to v9 :
+
+*) Addressed Vadim Fedorenko comments on patch 6 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v7 to v8 :
+
+*) Addressed Paolo Abeni comments on patch 3 and 4 of the series.
+*) Replaced threaded IRQ logic with NAPI logic based on feedback from Paolo Abeni.
+*) Added Reviewed-by: tag from Rob Herring for patch 1.
+*) Rebased the series on latest net-next.
+
+Changes from v6 to v7 :
+
+*) Addressed Rob Herring comments on patch 1 of the series.
+*) Addressed Jakub Kicinski comments on patch 4, 5 and 6 of the series.
+*) Addressed Alok Tiwari comments on Patch 1, 4 and 5 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v5 to v6 :
+
+*) Addressed Simon Horman comments on patch 2, 7 and 11 of the series.
+*) Addressed Andrew Lunn comments on patch 5 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v4 to v5 :
+
+*) Addressed Andrew Lunn and Keller, Jacob E comments on patch 5 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v3 to v4 :
+
+*) Added support for AM33x and AM43x platforms.
+*) Removed SOC patch [2] and its dependencies.
+*) Addressed Jakub Kicinski, MD Danish Anwar and Nishanth Menon comments on cover
+   letter of the series.
+*) Addressed Rob Herring comments on patch 1 of the series.
+*) Addressed Ratheesh Kannoth comments on patch 2 of the series.
+*) Addressed Maxime Chevallier comments on patch 4 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v2 to v3 :
+
+*) Addressed Conor Dooley comments on patch 1 of the series.
+*) Addressed Simon Horman comments on patch 2, 3, 4, 5 and 6 of the series.
+*) Addressed Joe Damato comments on patch 4 of the series.
+*) Rebased the series on latest net-next.
+
+Changes from v1 to v2 :
+
+*) Addressed Andrew Lunn, Rob Herring comments on patch 1 of the series.
+*) Addressed Andrew Lunn comments on patch 2, 3, and 4 of the series.
+*) Addressed Richard Cochran, Jason Xing comments on patch 6 of the series.
+*) Rebased patchset on next-202401xx linux-next.
+
+[v1] https://lore.kernel.org/all/20250109105600.41297-1-basharath@couthit.com/
+[v2] https://lore.kernel.org/all/20250124122353.1457174-1-basharath@couthit.com/
+[v3] https://lore.kernel.org/all/20250214054702.1073139-1-parvathi@couthit.com/
+[v4] https://lore.kernel.org/all/20250407102528.1048589-1-parvathi@couthit.com/
+[v5] https://lore.kernel.org/all/20250414113458.1913823-1-parvathi@couthit.com/
+[v6] https://lore.kernel.org/all/20250423060707.145166-1-parvathi@couthit.com/
+[v7] https://lore.kernel.org/all/20250503121107.1973888-1-parvathi@couthit.com/
+[v8] https://lore.kernel.org/all/20250610105721.3063503-1-parvathi@couthit.com/
+[v9] https://lore.kernel.org/all/20250623135949.254674-1-parvathi@couthit.com/
+[v10] https://lore.kernel.org/all/20250702140633.1612269-1-parvathi@couthit.com/
+[v11] https://lore.kernel.org/all/20250722132700.2655208-1-parvathi@couthit.com/
+[v12] https://lore.kernel.org/all/20250724072535.3062604-1-parvathi@couthit.com/
+[v13] https://lore.kernel.org/all/20250812110723.4116929-1-parvathi@couthit.com/
+
+Thanks and Regards,
+Parvathi.
+
+Parvathi Pudi (2):
+  dt-bindings: net: ti: Adds DUAL-EMAC mode support on PRU-ICSS2 for
+    AM57xx, AM43xx and AM33xx SOCs
+  net: ti: icssm-prueth: Adds IEP support for PRUETH on AM33x, AM43x and
+    AM57x SOCs
+
+Roger Quadros (3):
+  net: ti: icssm-prueth: Adds ICSSM Ethernet driver
+  net: ti: icssm-prueth: Adds PRUETH HW and SW configuration
+  net: ti: icssm-prueth: Adds link detection, RX and TX support.
+
+ .../devicetree/bindings/net/ti,icss-iep.yaml  |   10 +-
+ .../bindings/net/ti,icssm-prueth.yaml         |  233 +++
+ .../bindings/net/ti,pruss-ecap.yaml           |   32 +
+ .../devicetree/bindings/soc/ti/ti,pruss.yaml  |    9 +
+ drivers/net/ethernet/ti/Kconfig               |   12 +
+ drivers/net/ethernet/ti/Makefile              |    3 +
+ drivers/net/ethernet/ti/icssg/icss_iep.c      |  101 +
+ drivers/net/ethernet/ti/icssm/icssm_prueth.c  | 1745 +++++++++++++++++
+ drivers/net/ethernet/ti/icssm/icssm_prueth.h  |  255 +++
+ .../net/ethernet/ti/icssm/icssm_prueth_ptp.h  |   85 +
+ drivers/net/ethernet/ti/icssm/icssm_switch.h  |  257 +++
+ 11 files changed, 2739 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/ti,icssm-prueth.yaml
+ create mode 100644 Documentation/devicetree/bindings/net/ti,pruss-ecap.yaml
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth.c
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth.h
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_ptp.h
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_switch.h
+
+-- 
+2.43.0
 
