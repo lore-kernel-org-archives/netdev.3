@@ -1,116 +1,88 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890022459CD;
-	Fri, 22 Aug 2025 06:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037E02D77E4;
+	Fri, 22 Aug 2025 06:32:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755844296; cv=none; b=p6zipxZS00qBEWp2jpCjwtovzn1HbY9nPFqlrr93DLrexJ/XVQvxZc3bkhEgfhd5j10GLSu1RmQWHwHN9o2DYcRntCXGCsGQ95OfpxNzaZImGffefHdecTlKW839YD5bgxtqmBsm5zTWNGNqSna4ek+03KieJFmKn2wBJbVK97E=
+	t=1755844347; cv=none; b=UkQbSE8eCYQB5zs3OuhCYbJCXyfa1gpQaRCLSDhZBVPfZp/9k9/Aidt+tjtWKtkbR6Bx7kcasSx00EzCASUkR6SEQ9O9imGxFtkAanHVufRc1OHkX6ZgTtA1+b7dQVcPpQwX8zHO0d8Gvp4Yf5I7tvbcThD/oPLoUNM4+pXDClA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755844296; c=relaxed/simple;
-	bh=BfrIP2efQTPMIsUMGQ2GSf0G8ZxHl1U5ZvuSo5I4hyQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P/HEURU98k7A6NWUgjU60gtipPgGJxjwmuU2/UEgqtKt4psf5MAy8L3zVxyLRSxV/RvR32LJm0vQc4hBE6B+JfzbPw+k/9ui0ZO1IDdhoR0xgQFT6fK5ghO0oZnzlfDmrwyA7WeJmBUm2grAAHh7/OIvoj3Fi0kmNKq5ashxCno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=TW3GAKcV; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="TW3GAKcV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1755844294; x=1787380294;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BfrIP2efQTPMIsUMGQ2GSf0G8ZxHl1U5ZvuSo5I4hyQ=;
-  b=TW3GAKcVH44HdG3Zo6uvknw8Xguz8k1+JrGgn7TjnUwbsdt/eDkpkf3Q
-   opMUcqM7ecyMQdqQsaiGLsmPzNu24NTUUx+tyWm2+WVri10VZ1XhKEZSH
-   zYturIAWXvQ+tZNteymRjtHNnOCqJs4XUkS7puH/Kl79bAC3565FYHJir
-   JO6vb9cOE+ipvCcJ4ABtax5ghC4h4smmDj88BVbE9vVrBXGvtuFQz4BJs
-   q90COHOJbBDIRP5sPWWJtYcTm0nyrL/Lyu4z3C4SLInaxzLH3o64u0ATM
-   0iNe+hG20xN2ycevP9+ctCje/6UZUVbsR3LeUL/bc1scIyjDLwxRQNh5A
-   g==;
-X-CSE-ConnectionGUID: FwPxws7BQ9CIjc8APoX4aw==
-X-CSE-MsgGUID: uBBIn80iTQO67UXCd/9b1Q==
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="276910799"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 21 Aug 2025 23:31:33 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Thu, 21 Aug 2025 23:30:53 -0700
-Received: from localhost (10.10.85.11) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
- Transport; Thu, 21 Aug 2025 23:30:52 -0700
-Date: Fri, 22 Aug 2025 08:27:26 +0200
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-CC: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <richardcochran@gmail.com>, <vladimir.oltean@nxp.com>,
-	<rmk+kernel@armlinux.org.uk>, <rosenp@gmail.com>,
-	<christophe.jaillet@wanadoo.fr>, <viro@zeniv.linux.org.uk>,
-	<atenart@kernel.org>, <quentin.schulz@bootlin.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] phy: mscc: Fix when PTP clock is register and
- unregister
-Message-ID: <20250822062726.cv7bdoorf6c4wkvt@DEN-DL-M31836.microchip.com>
-References: <20250821104628.2329569-1-horatiu.vultur@microchip.com>
- <3f8cef10-fbfd-42b7-8ab7-f15d46938eb3@linux.dev>
+	s=arc-20240116; t=1755844347; c=relaxed/simple;
+	bh=Jw1/6DUF+Ac5HcoF990e1YAh6IPo3BGIaMyRMVjFFWA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hZpNUH6OaZDcTiQNwwedIfyPvbOeiIlbnh1Os+NwDHYvdB9radN4N1uJkz4pulBDuNxcwzxTTDvLqE0DB9W9aWcVv7xLXuIYtUbu7W6plunRuXj0n5ic7lmg7hY1WGv52ndMunjnCaq20cHufhNMaEHYPBhl0HmkEovcIAkm9q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.0.192] (ip5f5af7b3.dynamic.kabel-deutschland.de [95.90.247.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 3298161E64841;
+	Fri, 22 Aug 2025 08:31:53 +0200 (CEST)
+Message-ID: <0f19e779-ec78-419a-a261-c4550d778b45@molgen.mpg.de>
+Date: Fri, 22 Aug 2025 08:31:51 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <3f8cef10-fbfd-42b7-8ab7-f15d46938eb3@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH net] i40e: Prevent unwanted interface
+ name changes
+To: Calvin Owens <calvin@wbinvd.org>
+Cc: netdev@vger.kernel.org, Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+ Ivan Vecera <ivecera@redhat.com>, intel-wired-lan@lists.osuosl.org,
+ linux-kernel@vger.kernel.org
+References: <94d7d5c0bb4fc171154ccff36e85261a9f186923.1755661118.git.calvin@wbinvd.org>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <94d7d5c0bb4fc171154ccff36e85261a9f186923.1755661118.git.calvin@wbinvd.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The 08/21/2025 14:50, Vadim Fedorenko wrote:
+Dear Calvin,
 
-Hi Vadim,
 
+Thank you for your patch..
+
+Am 20.08.25 um 06:29 schrieb Calvin Owens:
+> The same naming regression which was reported in ixgbe and fixed in
+> commit e67a0bc3ed4f ("ixgbe: prevent from unwanted interface name
+> changes") still exists in i40e.
 > 
-> On 21/08/2025 11:46, Horatiu Vultur wrote:
-> > +static void __vsc8584_deinit_ptp(struct phy_device *phydev)
-> > +{
-> > +     struct vsc8531_private *vsc8531 = phydev->priv;
-> > 
-> > -     vsc8531->ptp->ptp_clock = ptp_clock_register(&vsc8531->ptp->caps,
-> > -                                                  &phydev->mdio.dev);
-> > -     return PTR_ERR_OR_ZERO(vsc8531->ptp->ptp_clock);
-> > +     ptp_clock_unregister(vsc8531->ptp->ptp_clock);
-> > +     skb_queue_purge(&vsc8531->rx_skbs_list);
-> >   }
-> > 
-> >   void vsc8584_config_ts_intr(struct phy_device *phydev)
-> > @@ -1552,6 +1549,18 @@ int vsc8584_ptp_init(struct phy_device *phydev)
-> >       return 0;
-> >   }
-> > 
-> > +void vsc8584_ptp_deinit(struct phy_device *phydev)
-> > +{
-> > +     switch (phydev->phy_id & phydev->drv->phy_id_mask) {
-> > +     case PHY_ID_VSC8572:
-> > +     case PHY_ID_VSC8574:
-> > +     case PHY_ID_VSC8575:
-> > +     case PHY_ID_VSC8582:
-> > +     case PHY_ID_VSC8584:
-> > +             return __vsc8584_deinit_ptp(phydev);
+> Fix i40e by setting the same flag, added in commit c5ec7f49b480
+> ("devlink: let driver opt out of automatic phys_port_name generation").
 > 
-> void function has no return value. as well as it shouldn't return
-> anything. I'm not quite sure why do you need __vsc8584_deinit_ptp()
-> at all, I think everything can be coded inside vsc8584_ptp_deinit()
-
-I understand, I can update not to return anything.
-Regarding __vsc8584_deinit_ptp, I have created that function just to be
-similar with the __vsc8584_init_ptp.
-
+> Fixes: 9e479d64dc58 ("i40e: Add initial devlink support")
+> Signed-off-by: Calvin Owens <calvin@wbinvd.org>
+> ---
+>   drivers/net/ethernet/intel/i40e/i40e_devlink.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> > +     }
-> > +}
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_devlink.c b/drivers/net/ethernet/intel/i40e/i40e_devlink.c
+> index cc4e9e2addb7..40f81e798151 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_devlink.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_devlink.c
+> @@ -212,6 +212,7 @@ int i40e_devlink_create_port(struct i40e_pf *pf)
+>   
+>   	attrs.flavour = DEVLINK_PORT_FLAVOUR_PHYSICAL;
+>   	attrs.phys.port_number = pf->hw.pf_id;
+> +	attrs.no_phys_port_name = 1;
+>   	i40e_devlink_set_switch_id(pf, &attrs.switch_id);
+>   	devlink_port_attrs_set(&pf->devlink_port, &attrs);
+>   	err = devlink_port_register(devlink, &pf->devlink_port, pf->hw.pf_id);
 
--- 
-/Horatiu
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+
+
+Kind regards,
+
+Paul
