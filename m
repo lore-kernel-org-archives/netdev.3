@@ -1,149 +1,172 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601611C2324;
-	Fri, 22 Aug 2025 06:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E183D27B335;
+	Fri, 22 Aug 2025 06:42:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755844670; cv=none; b=ctfuA7TIUGGV+ISqHaXVS99YFBsxYUVfBSGyWn4SvK2VIeHh/cPPW9TBppxca78QLXTUz4hipHrkiA7SLMvxlhE+lTQAb6pRXqeLvjao7VRafZtRhI+9RHEDTZkbfc8w4ENzwigAaSLTf7+IOA6d/MioJU45Z2ZO9FstcVtkfII=
+	t=1755844938; cv=none; b=nJ8mpfwSq/KV3NlywTyx+thLXRLQOh99fhEzNHvrYanfiapVBc4TT17iHyxS94ro+m3yIGCWJITKbDDM2D5oKMASU7lyuDdsRy3/YaM/0SiBAOS1xfRpJH7jPe+TQ17VlCU4o6JzLG2JI71HaXHHdcTB5Y12oeFC1gqJ1649Pa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755844670; c=relaxed/simple;
-	bh=3ptJvRkorx30o/nmj79EaSDid0byC9I3VNPmVg+/Eqg=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=Jeds1DRXg3qImQ8owoN5EZUalw/NL1w+x0tt7hKm5MaEa5DNJbyqMqROai+V0aWtnlfRHzaMer4nshHlZKhhnM6hEWQlfhYm2CsE1E5Gi/433jHiw/hqvZJaznplvPF4WxHCUjE3xlUyyCQrQ8LbuSnglj9BlXuz8rem98WNZSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AzrP7DC/; arc=none smtp.client-ip=209.85.160.179
+	s=arc-20240116; t=1755844938; c=relaxed/simple;
+	bh=iXpYXCN1x34lZ8VI9aiuqMvXMDjQvQQHN3G+RjXOopw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jNDBgAK7DxfC6rbeTQRUKHV7witBHHo85lWOkjhmy+8mkNUo5EGMsXN2igCvbxGEmATO2lD3XXdDpm4AHG9NGR6gxnelWtPEQndiE1I4SS2vC1x6TUZN0rhED7Ik6n7stYK9KqD0z3q92sSpJKYl7SONP/xhE9z69MLHwPlMZJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CMm5E5af; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AzrP7DC/"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4b109bcceb9so21817181cf.2;
-        Thu, 21 Aug 2025 23:37:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CMm5E5af"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-324e7600bf0so1837125a91.0;
+        Thu, 21 Aug 2025 23:42:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755844668; x=1756449468; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ksGVMnBHOv+KVHUZNMSVUIxA0uiJlyV/kU3aXFvzdl0=;
-        b=AzrP7DC/X6drB5ee8bCYKslliZ1hKM0MN0Fga1dkOKbvfEkXWwcjdeIi4nm8owT/GH
-         O93dKtMe/gYB5FSD0n4LSNzoeoR19q6uKEQsV99ay4ANHmp0dUGUCXudUpLIxNaAZm+Q
-         8Tv7MZq/OCqbxFrD2ZAky09by8qhYAqAzkM9PWWuPLV6p7lx8aCrsShNy1m7bJT5d8YK
-         X423AZ//wfjzKtdv9EoZ3crQNWs9G5+ByYWLh1A0x9ACoprALI1aTYQ64W6PdZEpur4I
-         xKE7J+gwmQgrPE7PPsNX3wtvg2IDUkd0MznxQ5n9OO8n8HoWQhbgTGaN9TubAjglxJ/1
-         Q+fw==
+        d=gmail.com; s=20230601; t=1755844936; x=1756449736; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zognEqlh8xhTAIdT4lPPmGYK0eu8rF8ErUK8aPMoM8o=;
+        b=CMm5E5afxrax4TLeC8+hN+mjE12BMuWTb5oUW51RD+Wbuh/trHCfMLanVnTX6IuNpz
+         HA3v499GXf1Wl06+cN3rHt3K2GyWX5aUfJCpKiw2AWlxPEuAFxlEDH7IQJSRWG4MAI2d
+         b0MXcHK//7U1Ldp7qyqcA5T8iz0pQDfivxhp9j47nyysznsY9WdrIBHPJgU2YnFsy2Eq
+         C8KvCZOVjPIXUu4/LW7e2wHQw1oZqkcDk6d/WM2CYrOi7Ff/O0BYm45hfT9PJfl9xXf4
+         zPHVMZjCJoZlvMmGLgt9N8nBDqtuf3BiJlTZLUPvGXM2Siwg9mni3XEsJ9VMMuGi1jvk
+         0I4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755844668; x=1756449468;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ksGVMnBHOv+KVHUZNMSVUIxA0uiJlyV/kU3aXFvzdl0=;
-        b=XSGry6fJ+n4sitcLskriGIXd1HMG/gqme2iGpt5n8W5OCZDYpQlaZ1Ku3N0HeW6KeS
-         cw8VP2AWCpljv5Pf4z/bajq0h9+bPeWX2B3bjNLQY3WtVX6jLmqrqpjcebWndZJZM5H+
-         NTGREKNxOUMD3FOkr/CIIx3GBhvT1bYR0H55/rppZiXNEJOWbf1N4i98Y2jv59perFs6
-         0eQRJAHfNNVRB/TAZIH1Ndq73ky6i08Ze7+p415d8UULSTsjEi71YsCsOB9s0lj4CT+1
-         DLEhifedfFZx719GrgVzDrgQOu+WjmtSHAlxkAfmEneJHUzDGeYjK4ZrQG0tAE6KEuny
-         M0Sg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1/1V8bajXSzzI1ldC2PMU7tBtPODbba1VSLas5LXU3rFzetorq/Fw5UhX/HgsnJknVYpx2ifEzIsYmds=@vger.kernel.org, AJvYcCXT1Jvvc7cqDltsmqnIUzu/bk4uh/Vk4nPgYybFXphZ626g7UD5UWs7f0+0JK/+6IDCu+s2QKdS@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGkeYWmibMS3M0qd0noPybz5mhTUdyg2eKjOnYH4SagPt3tIFL
-	Zujo4VnIypq387CzjdARRpySVCVtW/Jrql7hXvXLw9DgLcvZ2CskrKpZ
-X-Gm-Gg: ASbGnct/MNVXBJu62OtXEhkjxEgMiT0mvgfdejQXZk2TIjAp+2SqYvpdgGr/8U1OiAK
-	odOAl1U8xIwIZXidHNyfs/00ZvPRidCP7sfpE6ha+ylegHHqlz1f1nrl8JnJG9qvgyR8aNQVNTy
-	VDQYIVOtIvJIcg5wfysq3SLkof+gWZigwmhS9H4dkjisSwUJ0+NDfoZ0vLKX12tkIV5P+C9dPlO
-	7IKUXA+cqmqYFAmszndtNShUZ9NNqZmPdevSS4OPrVoVormHLxkvtrQgz8Nae3mJWpL5wlul7X/
-	QAjsCzIwpQd/eaiT8EwMJkOvIMq7AAnqkprRHNIzUE5nlznDbwQuiECR4SzHmOR735PNPiXYBiL
-	y95YTeKmqnx9H0EGDw48cG+UcnlGR8tC3vZFuvEkOI5ixBLNfvBs6ChBeLu5gHsitdddnMw==
-X-Google-Smtp-Source: AGHT+IF2PXmBBcwCdu2yhQ0+8QZamETgDCeN5gb9pcPrOutvGtnte/i38ECCZbepNGyT8JslDhUUUg==
-X-Received: by 2002:ac8:5e12:0:b0:4ae:6b72:2ae2 with SMTP id d75a77b69052e-4b2aaacef55mr19784391cf.40.1755844668104;
-        Thu, 21 Aug 2025 23:37:48 -0700 (PDT)
-Received: from gmail.com (128.5.86.34.bc.googleusercontent.com. [34.86.5.128])
-        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4b27e7810f0sm70469551cf.47.2025.08.21.23.37.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Aug 2025 23:37:47 -0700 (PDT)
-Date: Fri, 22 Aug 2025 02:37:45 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Xin Zhao <jackzxcui1989@163.com>, 
- willemdebruijn.kernel@gmail.com, 
- edumazet@google.com, 
- ferenc@fejes.dev
-Cc: davem@davemloft.net, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.60ba954529f7@gmail.com>
-In-Reply-To: <20250821153017.3607708-1-jackzxcui1989@163.com>
-References: <20250821153017.3607708-1-jackzxcui1989@163.com>
-Subject: Re: [PATCH net-next v6] net: af_packet: Use hrtimer to do the retire
- operation
+        d=1e100.net; s=20230601; t=1755844936; x=1756449736;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zognEqlh8xhTAIdT4lPPmGYK0eu8rF8ErUK8aPMoM8o=;
+        b=NTUd6N7a39lF8uhwUb5eN+a4Z1hfh9Q0YIWO3eDKGvMqf2pU0L6wHHgDoT4gxVmFch
+         VD2UMyq8kFd0SNSqXe0FpM3XOBTpemwMTAiv8ZTr93pkyDzJJh1lqFbXoNagAfG7KWRP
+         9Mhoj4NGU1XxX/kZL3NjmaCUDBpIZckLJYGJvn7kq/d+qIKgBSxH7WbyFB9SPmdQnWPX
+         oItg0WROo0h3lwgur2OWwmBWyznCPoMKNJcyaKWiYMyXUZtgfMC4K9VHv9+9un7jBIeU
+         rlS9Kue5vpr3nkFTl/OiVqaHpW2bdhbRhP5fCDJm739Mz+fcKANM/lQ+Z3Y0WGRz9/Fd
+         hrXw==
+X-Forwarded-Encrypted: i=1; AJvYcCUWF2g1PG7QngnBiulSj3AptOaXWfGRHF7EoK+vOpNRhofAbQCNg9Je4zpUqCoSh9Lf7Xw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNCatFitJVTBUBz9Z3Lox3bykQTaLK5zQx+EszYlzmf4wEX5UD
+	ejkmqK/NLbvIEdPC1BVqqXrd/Gqllk6m5FuL+t1YbNdmZLndggzysFBD
+X-Gm-Gg: ASbGncs4Lr9FyTlVuEVfHABL+kzM1UMy+3xxgOT9eRHs3QY64F2xfOFbImJ2HKljLwt
+	nJ8DmYGuQwq7dMWwFC7oEYfGT4MbnK/zkTNjCA4E3CXfYFqelzrgWzLndXl7v7HXLHZNxoOcVI8
+	/TOIh62DEoU6JuLimBCJYcbZD5v9eEq6/utphLd5EfPT0wM7XUh3x2N0XybYTbZCZ32DDy/KSA3
+	1rkWf1CFxadJmTv0VcdthLIso3BrZTgRL/2FHaLMyJcHMbebCNMxy7cjJeQk7fjkA94ldnE9MD+
+	HkXsJNX2aIh6idwXY3xYSNpVn/5q68nTa7Ev7eSZhq7vA23dWYAvLyPcSn4KnGjJHn14SwdxdIu
+	slilBsd+bgZaEVR46uruc9tNFfTF7H/i9V3BUjUNPHzr42Dnqvhr5Tw/GSZtu2JmBhw0Y5Qhk+c
+	HFkaw=
+X-Google-Smtp-Source: AGHT+IHyySsOUXTk+f5WEVDZbRO5VSTVnfRbuOXZRZb4zcRlBaDoFLGdzXBoKlFwd03ujeu+d3J/4Q==
+X-Received: by 2002:a17:90b:4fd0:b0:325:c92:4a89 with SMTP id 98e67ed59e1d1-32515e3cad8mr2586829a91.5.1755844935945;
+        Thu, 21 Aug 2025 23:42:15 -0700 (PDT)
+Received: from localhost.localdomain ([101.82.213.56])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-325123e4751sm1532049a91.1.2025.08.21.23.42.11
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 21 Aug 2025 23:42:15 -0700 (PDT)
+From: Yafang Shao <laoar.shao@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	daniel@iogearbox.net,
+	bigeasy@linutronix.de,
+	tgraf@suug.ch,
+	paulmck@kernel.org
+Cc: netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Yafang Shao <laoar.shao@gmail.com>
+Subject: [PATCH v2] net/cls_cgroup: Fix task_get_classid() during qdisc run
+Date: Fri, 22 Aug 2025 14:42:00 +0800
+Message-Id: <20250822064200.38149-1-laoar.shao@gmail.com>
+X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Xin Zhao wrote:
-> On Thu, 2025-08-21 at 22:32 +0800, Willem wrote:
-> 
-> > Thanks for the analysis.
-> > 
-> > Using hrtimer_start from within the callback that returns
-> > HRTIMER_RESTART does not sound in line with the intention of the API
-> > to me.
-> > 
-> > I think we should just adjust and restart from within the callback and
-> > hrtimer_start from tpacket_rcv iff the timer is not yet queued.
-> > 
-> > Since all these modifications are made while the receive queue lock is
-> > held I don't immediately see why we would need additional mutual
-> > exclusion beyond that.
-> 
-> 
-> The hrtimer callback is called by __run_hrtimer, if we only use hrtimer_forward_now in the callback,
-> it will not restart the time within the callback. The timer will be enqueued after the callback
-> return. So when the timer is being enqueued, it is not protected by sk_receive_queue.lock.
+During recent testing with the netem qdisc to inject delays into TCP
+traffic, we observed that our CLS BPF program failed to function correctly
+due to incorrect classid retrieval from task_get_classid(). The issue
+manifests in the following call stack:
 
-I see.
+        bpf_get_cgroup_classid+5
+        cls_bpf_classify+507
+        __tcf_classify+90
+        tcf_classify+217
+        __dev_queue_xmit+798
+        bond_dev_queue_xmit+43
+        __bond_start_xmit+211
+        bond_start_xmit+70
+        dev_hard_start_xmit+142
+        sch_direct_xmit+161
+        __qdisc_run+102             <<<<< Issue location
+        __dev_xmit_skb+1015
+        __dev_queue_xmit+637
+        neigh_hh_output+159
+        ip_finish_output2+461
+        __ip_finish_output+183
+        ip_finish_output+41
+        ip_output+120
+        ip_local_out+94
+        __ip_queue_xmit+394
+        ip_queue_xmit+21
+        __tcp_transmit_skb+2169
+        tcp_write_xmit+959
+        __tcp_push_pending_frames+55
+        tcp_push+264
+        tcp_sendmsg_locked+661
+        tcp_sendmsg+45
+        inet_sendmsg+67
+        sock_sendmsg+98
+        sock_write_iter+147
+        vfs_write+786
+        ksys_write+181
+        __x64_sys_write+25
+        do_syscall_64+56
+        entry_SYSCALL_64_after_hwframe+100
+
+The problem occurs when multiple tasks share a single qdisc. In such cases,
+__qdisc_run() may transmit skbs created by different tasks. Consequently,
+task_get_classid() retrieves an incorrect classid since it references the
+current task's context rather than the skb's originating task.
+
+Given that dev_queue_xmit() always executes with bh disabled, we can safely
+use in_softirq() instead of in_serving_softirq() to properly identify the
+softirq context and obtain the correct classid.
+
+The simple steps to reproduce this issue:
+1. Add network delay to the network interface:
+  such as: tc qdisc add dev bond0 root netem delay 1.5ms
+2. Create two distinct net_cls cgroups, each running a network-intensive task
+3. Initiate parallel TCP streams from both tasks to external servers.
+
+Under this specific condition, the issue reliably occurs. The kernel
+eventually dequeues an SKB that originated from Task-A while executing in
+the context of Task-B.
+
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Thomas Graf <tgraf@suug.ch>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+
+---
+
+v1->v2: use softirq_count() instead of in_softirq()
+---
+ include/net/cls_cgroup.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/net/cls_cgroup.h b/include/net/cls_cgroup.h
+index 7e78e7d6f015..668aeee9b3f6 100644
+--- a/include/net/cls_cgroup.h
++++ b/include/net/cls_cgroup.h
+@@ -63,7 +63,7 @@ static inline u32 task_get_classid(const struct sk_buff *skb)
+ 	 * calls by looking at the number of nested bh disable calls because
+ 	 * softirqs always disables bh.
+ 	 */
+-	if (in_serving_softirq()) {
++	if (softirq_count()) {
+ 		struct sock *sk = skb_to_full_sk(skb);
  
-> Consider the following timing sequence:
-> timer   cpu0 (softirq context, hrtimer timeout)                cpu
-> 0       hrtimer_run_softirq
-> 1         __hrtimer_run_queues
-> 2           __run_hrtimer
-> 3             prb_retire_rx_blk_timer_expired
-> 4               spin_lock(&po->sk.sk_receive_queue.lock);
-> 5               _prb_refresh_rx_retire_blk_timer
-> 6                 hrtimer_forward_now
-> 7               spin_unlock(&po->sk.sk_receive_queue.lock)
-> 8             raw_spin_lock_irq(&cpu_base->lock);              tpacket_rcv
-> 9             enqueue_hrtimer                                    spin_lock(&sk->sk_receive_queue.lock);
-> 10                                                               packet_current_rx_frame
-> 11                                                                 __packet_lookup_frame_in_block
-> 12            finish enqueue_hrtimer                                 prb_open_block
-> 13                                                                     _prb_refresh_rx_retire_blk_timer
-> 14                                                                       hrtimer_is_queued(&pkc->retire_blk_timer) == true
-> 15                                                                       hrtimer_forward_now
-> 16                                                                         WARN_ON
-> 
-> On cpu0 in the timing sequence above, enqueue_hrtimer is not protected by sk_receive_queue.lock,
-> while the hrtimer_forward_now is not protected by raw_spin_lock_irq(&cpu_base->lock).
-> 
-> It will cause WARN_ON if we only use 'hrtimer_is_queued(&pkc->retire_blk_timer) == true' to check
-> whether to call hrtimer_forward_now.
-
-One way around this may be to keep the is_timer_queued state inside
-tpacket_kbdq_core protected by a relevant lock, like the receive queue
-lock. Similar to pkc->delete_blk_timer.
-
-Admittedly I have not given this much thought yet. Am traveling for a
-few days, have limited time.
- 
-> 
-> Thanks
-> Xin Zhao
-> 
-
+ 		/* If there is an sock_cgroup_classid we'll use that. */
+-- 
+2.43.5
 
