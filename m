@@ -1,67 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB39B3126CC
-	for <netdev@vger.kernel.org>; Fri, 22 Aug 2025 14:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7CF305E33;
+	Fri, 22 Aug 2025 14:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755873520; cv=none; b=s7EIv2EE4y2ZW1wlrqVCaRDNZq000UudN12p6fWum/2E+gg7UU5DkOagsTiMtwcoaQ1C+FCFM6soo8ADONHKmFX6w/1kXMptPFUjNEwsQh2Z4Y4oERpYtEzHCt44nEKUcf/HB1O+i2oTYfoeyjFPtoslOM8WNg44Q4J83Tg3NZA=
+	t=1755873598; cv=none; b=XTXC0n3v3+Fo/Oxkq0z5IHyOq/h0fKiYBJzga9Ecvh2GCaOq73ACI6VxU41Y7fdHnBpftpdyi1lVjfVdpE+Fmkw/FAPWyYA2dVtBG9zzFa/b5TnSMihzCtIk3eBx9AWqduRR5q0xE05BWTRhkbLFRunjZJLkVRhrYBKdyIomekI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755873520; c=relaxed/simple;
-	bh=0ohbEUcDQtMZ8LIN1dVF0ofMoZ/hGdLyI2kAkLh7ZKA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TlQ0VQ3aEI58XlyQdw9I7TMg3RFkWa1++aIduWVOqbu1XKjOyiTUcfwxQF2C2eEMvysFY8ZC2LgMEIvrMHwCwcFzoStUPh6nRqs0XJnQNuGA/2tUC7znrxgylm4TyDWXsd6fCTAQEdnzIWRoaFEIZtSMrye8oFfWIRS3Syr47IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/o4d2lQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755873598; c=relaxed/simple;
+	bh=excmmn0rLz8jDLo6G5LPnwtgNJIKp38iA06yY5tt/ow=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=cW5jUiddVciVfg3NnKdlYIVdSpb++xWZTr8N9XdTkJx2nIrxasEMl1Z7qPJ8YZ7kQLpHcQsnSPl/Xe6xwOYuygP+/rxRSi4u5O9/ZGN/y6z/rP4Ig2PBka/dN142IunOE3Syf3eoJW0kGqwD7FkFXnpK4Nzd+4wRLoh6obJlbI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GT6Bm49j; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/o4d2lQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E83C113CF;
-	Fri, 22 Aug 2025 14:38:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GT6Bm49j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51A4C4CEED;
+	Fri, 22 Aug 2025 14:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755873519;
-	bh=0ohbEUcDQtMZ8LIN1dVF0ofMoZ/hGdLyI2kAkLh7ZKA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=V/o4d2lQpWluTRU64SKjomir38I8NJi6S9ntSkoEbKRY6tqm/4BPvkiVX5b8wSp3H
-	 +CarlZrKKN46utWL+/QSTCo1IXlBGvkLMHYHOZErae2Z3VlxJoYXn8sQnjlvdoz0x9
-	 6cJ17jsyLDY69OMlZJTFrw2aBaa75ACZI0OzNe3DGktGuzAddCX1Mc1mEnomi3XDN/
-	 l+03Fiw9Az8B2Kuv73xg6F8CGQLujZBdr4EusRr2d6oyE+mAIm79qatpEcUceo7B9b
-	 Z5dDy6ck95qOJc9iMv7sscc40h1F+T+AYsyhBxFarpl1Py5S8YLEZaLr95urPyCgpe
-	 62NWVl87KI1lg==
-Date: Fri, 22 Aug 2025 07:38:38 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next 2/3] net: airoha: Add airoha_ppe_dev struct
- definition
-Message-ID: <20250822073838.7da185f9@kernel.org>
-In-Reply-To: <aKh9_g7mgvFxMdAz@lore-rh-laptop>
-References: <20250819-airoha-en7581-wlan-rx-offload-v1-0-71a097e0e2a1@kernel.org>
-	<20250819-airoha-en7581-wlan-rx-offload-v1-2-71a097e0e2a1@kernel.org>
-	<20250821183453.4136c5d3@kernel.org>
-	<aKgVEYMftYgdynxw@lore-rh-laptop>
-	<20250822070440.71bdd804@kernel.org>
-	<aKh9_g7mgvFxMdAz@lore-rh-laptop>
+	s=k20201202; t=1755873597;
+	bh=excmmn0rLz8jDLo6G5LPnwtgNJIKp38iA06yY5tt/ow=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=GT6Bm49jh0UkAPm9GbxeW2EqxFGUhAg4Eb18z5SyqD8G4kcEnk5ErjAg2iOLKSVoT
+	 5gwAZy8rdjXcBozw49l0RaCY8hEhip2ArQ6Sox5bPt/n5yCtHol8dwI3qwd3dFS4R4
+	 Y6din6QooeQRvbrgm2fUqNeimb2BmL7mgTMgOWQXcRWyKyRwlehOsX8UbEBTsqnEWF
+	 c3agk86kO0oiBIaHvcq+iyTjxIt3pKYYsC/KS3nFgtTpVwUXsHAW+V5Qtuw68LOn0K
+	 pDFnP5NBpIQo+zrhM7qP+uVBYhKV9AgDDY3bEKrB/Lisa9xD8d+yu5Z7hx+gAxFhfU
+	 I7uytKwf0rcgA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAFB4383BF6A;
+	Fri, 22 Aug 2025 14:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] Bluetooth: hci_sync: fix set_local_name race condition
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <175587360675.1857936.2078613470430464551.git-patchwork-notify@kernel.org>
+Date: Fri, 22 Aug 2025 14:40:06 +0000
+References: <20250822092055.286475-1-pashpakovskii@salutedevices.com>
+In-Reply-To: <20250822092055.286475-1-pashpakovskii@salutedevices.com>
+To: Pavel Shpakovskiy <pashpakovskii@salutedevices.com>
+Cc: marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, brian.gix@intel.com, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel@salutedevices.com
 
-On Fri, 22 Aug 2025 16:26:06 +0200 Lorenzo Bianconi wrote:
-> > > I moved the of_node_put() here (and in the if branch) in order to fix a similar
-> > > issue fixed by Alok for airoha_npu.  
-> > 
-> > Ah, didn't notice it in the print..
-> > maybe remove the empty line between the of_find_device.. and the null
-> > check on pdev then?  
+Hello:
+
+This patch was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
+
+On Fri, 22 Aug 2025 12:20:55 +0300 you wrote:
+> Function set_name_sync() uses hdev->dev_name field to send
+> HCI_OP_WRITE_LOCAL_NAME command, but copying from data to hdev->dev_name
+> is called after mgmt cmd was queued, so it is possible that function
+> set_name_sync() will read old name value.
 > 
-> I am fine with it. I did it this way just to be consistent with NPU code:
-> https://github.com/torvalds/linux/blob/master/drivers/net/ethernet/airoha/airoha_npu.c#L403
-> Do you want me to post v3?
+> This change adds name as a parameter for function hci_update_name_sync()
+> to avoid race condition.
+> 
+> [...]
 
-Nah, it's fine.
+Here is the summary with links:
+  - [v2] Bluetooth: hci_sync: fix set_local_name race condition
+    https://git.kernel.org/bluetooth/bluetooth-next/c/c49a788e88e4
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
