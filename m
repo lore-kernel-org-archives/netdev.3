@@ -1,147 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com [50.112.246.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E76D23D7DB;
-	Sat, 23 Aug 2025 09:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978F923F41F;
+	Sat, 23 Aug 2025 09:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=50.112.246.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755939608; cv=none; b=dXrcrm8x496Q3BhRjfrSmPxOp10jyaAinCDl3BOpaKl4l+/KIdn03FlNPqs4ilQwhpbkb1umSvHME8OQCqxgTBWu6J9I6ZNqPiOMmDX8eAlzyh0aihrJAqHvO4mdNnbvAhsTDi8I3jWTrPbOxPZH6geh1gylc1FrKylxVqK3u/M=
+	t=1755939626; cv=none; b=Uo92r9uRMGEr0Ppgue8g5bdK1HgS8XVxS2L4uQbgWOR5M6nHTJBya7nhFFtbXW0n0Q9zHmsXqBUCt98uwT8wr1tClptmZrdxM4eWkY7OqD6VABYlV7xnYm2GRVpgiGhgNqvLQrkIf78lHMUvEW+FjTx3vY7An6g7WNOCyY4YyDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755939608; c=relaxed/simple;
-	bh=aU4s6rL8qphUf3ASSPtkvFhSbnF7KQL/5p/AkB6ZkD0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eUiIZIYSWxXBZ5vRjGUYEEVuNZoE907Mj7xmlK0WI1X4JtxeY1DqQqbAdzGyW4/Z7FamBh1rsXSz4dWNDT3q2Kr3UKbvUHrj1Iy0hTwIUfXEXhZ3TQ/mFBTJvm62+sgrlBm20EoYf5Qy3vfRayfDYY7ra+nyEcnfmQZeCMVMYks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rOGkWtsU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755939626; c=relaxed/simple;
+	bh=+JgLOk8/+MuHf4uL4nfhRfQ9Jpyb9aAZaDNs+SG5BOE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fXxl1DRCkyD9d6a8mxhVBfgHPtuz6/OT+5FO+V+DB2kwe20Yj/lvjKW975/cTmbeRlf3i24G0y7fTU4GgL/RgyRq0USMXWZ3ptacIEvDh8W8+KuquEBb4qq2FKpXDAhg9qZqt3z8Uw0NJP2WW1+mYwMMKZ8q7uafRwh0U+FGXNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.jp; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.co.jp header.i=@amazon.co.jp header.b=dMdJZJMA; arc=none smtp.client-ip=50.112.246.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rOGkWtsU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35E6C113D0;
-	Sat, 23 Aug 2025 08:59:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755939608;
-	bh=aU4s6rL8qphUf3ASSPtkvFhSbnF7KQL/5p/AkB6ZkD0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rOGkWtsURQmqeVJWZZ8QU1TwZHK57H1RHXwc/i48rhECw+oAVRa4mF0zfqNM3aJ7b
-	 K4ufsfNlCAWHsLgknGRRJAM8fAg49ifByU7aHcJpd60KD5n2ftLsVEjekOSHSO2hKf
-	 TyNgVi/IP/sZ+Zv1HQC39pwpdaVXtYVat6Ea2uqdZXF6QBRAllDzvBMajMv+E6mXfL
-	 wV6BxOvsD2NYhNSk4hF0URYans98VMn0JY+kTDajsHLCy41MHKhsR0ynwpYDfvi23F
-	 uDIHwC7s5hdPOSqfKNvqn2djgrkhoLcYMLwZ0RX2xL3FelT1nsv2lD+CEaDl2f3oOX
-	 wFjm0sW7YW4bQ==
-Date: Sat, 23 Aug 2025 11:59:50 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>, dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org, iommu@lists.linux.dev,
-	io-uring@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com,
-	kvm@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
-	linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Marco Elver <elver@google.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-	virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
-	wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH RFC 10/35] mm/hugetlb: cleanup
- hugetlb_folio_init_tail_vmemmap()
-Message-ID: <aKmDBobyvEX7ZUWL@kernel.org>
-References: <20250821200701.1329277-1-david@redhat.com>
- <20250821200701.1329277-11-david@redhat.com>
- <9156d191-9ec4-4422-bae9-2e8ce66f9d5e@redhat.com>
- <7077e09f-6ce9-43ba-8f87-47a290680141@redhat.com>
+	dkim=pass (2048-bit key) header.d=amazon.co.jp header.i=@amazon.co.jp header.b="dMdJZJMA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.jp; i=@amazon.co.jp; q=dns/txt;
+  s=amazoncorp2; t=1755939624; x=1787475624;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SxqQSM2gbb1WZoRn7Ppxjmyk+XMelBVrSvSiL1PRpwk=;
+  b=dMdJZJMAXNOrvOBLKM8eaigPru+oaH1Ws/yI10pCVEeaJrRL16Ve+jr6
+   6WU0R3jEkayb6HDpU0hZGem+8tZj9jlgIjmcTVuZp2EgcZqHNVFRac+Rd
+   ij9MO35Ke+VHEVN94zQHAdIyucecyZ9fGtigXzmFYm3LvTGnjG9t+x4th
+   3eq+dGVO40yfDPMWCnekgaHAzuF+XSleoQNHh0KbjFZ/L+t8CqaoZM0NX
+   v+Quk8A4uOOWdtFJ6jxDo1j5Cymyi8Q8kPPOUxjtGOnp7U/eVYO29j0cy
+   mgp/Oc7MvLpGqGMw8DrAKUMzdOkA03G3Y0R+2KwxWs8JTO2TNKkuTZSqP
+   w==;
+X-CSE-ConnectionGUID: h1Qm+bWOTpKk3a21IJmQnQ==
+X-CSE-MsgGUID: 3wWwBZOnTFyeGBUFigUv6w==
+X-IronPort-AV: E=Sophos;i="6.17,312,1747699200"; 
+   d="scan'208";a="1546914"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2025 09:00:24 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:16633]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.5.153:2525] with esmtp (Farcaster)
+ id 3f0a882d-72d6-4f2d-8c62-145d317c28a1; Sat, 23 Aug 2025 09:00:23 +0000 (UTC)
+X-Farcaster-Flow-ID: 3f0a882d-72d6-4f2d-8c62-145d317c28a1
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
+ Sat, 23 Aug 2025 09:00:23 +0000
+Received: from 80a9974c3af6.amazon.com (10.37.244.14) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
+ Sat, 23 Aug 2025 09:00:21 +0000
+From: Takamitsu Iwai <takamitz@amazon.co.jp>
+To: <linux-hams@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Takamitsu Iwai
+	<takamitz@amazon.co.jp>, Kohei Enju <enjuk@amazon.com>, Ingo Molnar
+	<mingo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "Jesper Dangaard
+ Brouer" <hawk@kernel.org>, Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Kuniyuki Iwashima <kuniyu@google.com>
+Subject: [PATCH v2 net 0/3] Introduce refcount_t for reference counting of rose_neigh
+Date: Sat, 23 Aug 2025 17:58:54 +0900
+Message-ID: <20250823085857.47674-1-takamitz@amazon.co.jp>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <7077e09f-6ce9-43ba-8f87-47a290680141@redhat.com>
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D037UWB002.ant.amazon.com (10.13.138.121) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Fri, Aug 22, 2025 at 08:24:31AM +0200, David Hildenbrand wrote:
-> On 22.08.25 06:09, Mika Penttilä wrote:
-> > 
-> > On 8/21/25 23:06, David Hildenbrand wrote:
-> > 
-> > > All pages were already initialized and set to PageReserved() with a
-> > > refcount of 1 by MM init code.
-> > 
-> > Just to be sure, how is this working with MEMBLOCK_RSRV_NOINIT, where MM is supposed not to
-> > initialize struct pages?
-> 
-> Excellent point, I did not know about that one.
-> 
-> Spotting that we don't do the same for the head page made me assume that
-> it's just a misuse of __init_single_page().
-> 
-> But the nasty thing is that we use memblock_reserved_mark_noinit() to only
-> mark the tail pages ...
+The current implementation of rose_neigh uses 'use' and 'count' field of
+type unsigned short as a reference count. This approach lacks atomicity,
+leading to potential race conditions. As a result, syzbot has reported
+slab-use-after-free errors due to unintended removals.
 
-And even nastier thing is that when CONFIG_DEFERRED_STRUCT_PAGE_INIT is
-disabled struct pages are initialized regardless of
-memblock_reserved_mark_noinit().
+This series introduces refcount_t for reference counting to ensure
+atomicity and prevent race conditions. The patches are structured as
+follows:
 
-I think this patch should go in before your updates:
+1. Refactor rose_remove_neigh() to separate removal and freeing operations
+2. Convert 'use' field to refcount_t for appropriate reference counting
+3. Include references from rose_node to 'use' field
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 753f99b4c718..1c51788339a5 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3230,6 +3230,22 @@ int __alloc_bootmem_huge_page(struct hstate *h, int nid)
- 	return 1;
- }
- 
-+/*
-+ * Tail pages in a huge folio allocated from memblock are marked as 'noinit',
-+ * which means that when CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled their
-+ * struct page won't be initialized
-+ */
-+#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-+static void __init hugetlb_init_tail_page(struct page *page, unsigned long pfn,
-+					enum zone_type zone, int nid)
-+{
-+	__init_single_page(page, pfn, zone, nid);
-+}
-+#else
-+static inline void hugetlb_init_tail_page(struct page *page, unsigned long pfn,
-+					enum zone_type zone, int nid) {}
-+#endif
-+
- /* Initialize [start_page:end_page_number] tail struct pages of a hugepage */
- static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
- 					unsigned long start_page_number,
-@@ -3244,7 +3260,7 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
- 	for (pfn = head_pfn + start_page_number; pfn < end_pfn; pfn++) {
- 		struct page *page = pfn_to_page(pfn);
- 
--		__init_single_page(page, pfn, zone, nid);
-+		hugetlb_init_tail_page(page, pfn, zone, nid);
- 		prep_compound_tail((struct page *)folio, pfn - head_pfn);
- 		ret = page_ref_freeze(page, 1);
- 		VM_BUG_ON(!ret);
- 
-> Let me revert back to __init_single_page() and add a big fat comment why
-> this is required.
-> 
-> Thanks!
+These changes should resolve the reported slab-use-after-free issues and
+improve the overall stability of the ROSE network layer.
+
+Changes:
+ v2:
+  - Added rose_neigh_put() in error paths of rose_connect() to prevent
+    reference count leaks that could occur after moving the reference
+    count increment to rose_get_neigh().
+  - Added rose_neigh_put() at the end of rose_route_frame() to properly
+    release the temporary reference held by new_neigh variable when
+    the function completes.
+  - Added rose_neigh_hold() in the second for loop of rose_get_neigh()
+    to maintain consistent reference counting behavior between both loops.
+
+  v1:
+    https://lore.kernel.org/all/20250820174707.83372-1-takamitz@amazon.co.jp/
+
+
+Takamitsu Iwai (3):
+  net: rose: split remove and free operations in rose_remove_neigh()
+  net: rose: convert 'use' field to refcount_t
+  net: rose: include node references in rose_neigh refcount
+
+ include/net/rose.h    | 18 ++++++++++++-
+ net/rose/af_rose.c    | 13 ++++-----
+ net/rose/rose_in.c    | 12 ++++-----
+ net/rose/rose_route.c | 62 ++++++++++++++++++++++++++-----------------
+ net/rose/rose_timer.c |  2 +-
+ 5 files changed, 69 insertions(+), 38 deletions(-)
 
 -- 
-Sincerely yours,
-Mike.
+2.39.5 (Apple Git-154)
+
