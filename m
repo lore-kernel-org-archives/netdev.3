@@ -1,263 +1,147 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F9C150997
-	for <netdev@vger.kernel.org>; Sat, 23 Aug 2025 07:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E76D23D7DB;
+	Sat, 23 Aug 2025 09:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755935793; cv=none; b=ENpOjl+Dhq4twp6zdUDzugbGYgeudUYXDxUgDkfp2Jr2pOiezqfm8SWcpC7MTDDCLmpFbOP+ThjcW0PyENNq14p2sJ4KbsflmW19scpcZhFRLDyruYomW/eM899feCSNFeiYjnKSbfI5IPr2HznwF+UtOKr7ftYVfyAs5ikRcBE=
+	t=1755939608; cv=none; b=dXrcrm8x496Q3BhRjfrSmPxOp10jyaAinCDl3BOpaKl4l+/KIdn03FlNPqs4ilQwhpbkb1umSvHME8OQCqxgTBWu6J9I6ZNqPiOMmDX8eAlzyh0aihrJAqHvO4mdNnbvAhsTDi8I3jWTrPbOxPZH6geh1gylc1FrKylxVqK3u/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755935793; c=relaxed/simple;
-	bh=Tbme8j5p7op4L6staVb0SYIyNq6Rfw+asaK7RC4Bgu4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Vmhq1Kq3I5vWiW71Eqxe3kYs+p2DTcKLYlNTd/HpypltDsmZDLsOcTP05lOHicn4ivpQDutrymW00M+NAzMDB1RA924D9ZlWY9ycOGwbKKCYiPDWv9bJVX6B/E09liVzwRkdKr6VqfcoeclepxMEidnn32gErBy6oJeksz7mYlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DEuA0nsm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755939608; c=relaxed/simple;
+	bh=aU4s6rL8qphUf3ASSPtkvFhSbnF7KQL/5p/AkB6ZkD0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eUiIZIYSWxXBZ5vRjGUYEEVuNZoE907Mj7xmlK0WI1X4JtxeY1DqQqbAdzGyW4/Z7FamBh1rsXSz4dWNDT3q2Kr3UKbvUHrj1Iy0hTwIUfXEXhZ3TQ/mFBTJvm62+sgrlBm20EoYf5Qy3vfRayfDYY7ra+nyEcnfmQZeCMVMYks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rOGkWtsU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DEuA0nsm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B80C4CEE7;
-	Sat, 23 Aug 2025 07:56:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rOGkWtsU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35E6C113D0;
+	Sat, 23 Aug 2025 08:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755935793;
-	bh=Tbme8j5p7op4L6staVb0SYIyNq6Rfw+asaK7RC4Bgu4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=DEuA0nsmNpRsG8Zr7JOf1GFl3750lOiEqavhv6ysiK3Ksg9bjVyWxn/yXWGZGxKBm
-	 b7zSJ4Hd8kb+x02iBWxRe0Q3ZSpTtRDr8XoJy2QOhcG3T1P1/KsYVSGW76UwuYCBBq
-	 USEdK3WFEj1wkd815C1Rveo4Vq0b3dVfO9KPBY2an4U+DCLzSg8u+nCM7gfuOxbWP0
-	 DIa78dXZyatZWFqq4tCH9HhZ6Las2mSYbnsRKC77l5PuF1JTnZUTQFL/S1AIIwKLXH
-	 Q5Sw6uWW2poyl99pa1/O17VXdXEnK0V4csM8+KLFUZAcTAfyCfk21zARXIF7HO7WQh
-	 cHCplH6gqkKOw==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Sat, 23 Aug 2025 09:56:04 +0200
-Subject: [PATCH net-next v3 3/3] net: airoha: Introduce check_skb callback
- in ppe_dev ops
+	s=k20201202; t=1755939608;
+	bh=aU4s6rL8qphUf3ASSPtkvFhSbnF7KQL/5p/AkB6ZkD0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rOGkWtsURQmqeVJWZZ8QU1TwZHK57H1RHXwc/i48rhECw+oAVRa4mF0zfqNM3aJ7b
+	 K4ufsfNlCAWHsLgknGRRJAM8fAg49ifByU7aHcJpd60KD5n2ftLsVEjekOSHSO2hKf
+	 TyNgVi/IP/sZ+Zv1HQC39pwpdaVXtYVat6Ea2uqdZXF6QBRAllDzvBMajMv+E6mXfL
+	 wV6BxOvsD2NYhNSk4hF0URYans98VMn0JY+kTDajsHLCy41MHKhsR0ynwpYDfvi23F
+	 uDIHwC7s5hdPOSqfKNvqn2djgrkhoLcYMLwZ0RX2xL3FelT1nsv2lD+CEaDl2f3oOX
+	 wFjm0sW7YW4bQ==
+Date: Sat, 23 Aug 2025 11:59:50 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Mika =?iso-8859-1?Q?Penttil=E4?= <mpenttil@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Alexander Potapenko <glider@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>, dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org, iommu@lists.linux.dev,
+	io-uring@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>, kasan-dev@googlegroups.com,
+	kvm@vger.kernel.org, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-arm-kernel@axis.com, linux-arm-kernel@lists.infradead.org,
+	linux-crypto@vger.kernel.org, linux-ide@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Marco Elver <elver@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+	virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+	wireguard@lists.zx2c4.com, x86@kernel.org, Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH RFC 10/35] mm/hugetlb: cleanup
+ hugetlb_folio_init_tail_vmemmap()
+Message-ID: <aKmDBobyvEX7ZUWL@kernel.org>
+References: <20250821200701.1329277-1-david@redhat.com>
+ <20250821200701.1329277-11-david@redhat.com>
+ <9156d191-9ec4-4422-bae9-2e8ce66f9d5e@redhat.com>
+ <7077e09f-6ce9-43ba-8f87-47a290680141@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250823-airoha-en7581-wlan-rx-offload-v3-3-f78600ec3ed8@kernel.org>
-References: <20250823-airoha-en7581-wlan-rx-offload-v3-0-f78600ec3ed8@kernel.org>
-In-Reply-To: <20250823-airoha-en7581-wlan-rx-offload-v3-0-f78600ec3ed8@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7077e09f-6ce9-43ba-8f87-47a290680141@redhat.com>
 
-Export airoha_ppe_check_skb routine in ppe_dev ops. check_skb callback
-will be used by the MT76 driver in order to offload the traffic received
-by the wlan NIC and forwarded to the ethernet one.
-Add rx_wlan parameter to airoha_ppe_check_skb routine signature.
+On Fri, Aug 22, 2025 at 08:24:31AM +0200, David Hildenbrand wrote:
+> On 22.08.25 06:09, Mika Penttilä wrote:
+> > 
+> > On 8/21/25 23:06, David Hildenbrand wrote:
+> > 
+> > > All pages were already initialized and set to PageReserved() with a
+> > > refcount of 1 by MM init code.
+> > 
+> > Just to be sure, how is this working with MEMBLOCK_RSRV_NOINIT, where MM is supposed not to
+> > initialize struct pages?
+> 
+> Excellent point, I did not know about that one.
+> 
+> Spotting that we don't do the same for the head page made me assume that
+> it's just a misuse of __init_single_page().
+> 
+> But the nasty thing is that we use memblock_reserved_mark_noinit() to only
+> mark the tail pages ...
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
----
- drivers/net/ethernet/airoha/airoha_eth.c  |  3 ++-
- drivers/net/ethernet/airoha/airoha_eth.h  |  8 ++------
- drivers/net/ethernet/airoha/airoha_ppe.c  | 25 ++++++++++++++-----------
- include/linux/soc/airoha/airoha_offload.h | 20 ++++++++++++++++++++
- 4 files changed, 38 insertions(+), 18 deletions(-)
+And even nastier thing is that when CONFIG_DEFERRED_STRUCT_PAGE_INIT is
+disabled struct pages are initialized regardless of
+memblock_reserved_mark_noinit().
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 5a04f90dd3de47ae0ee8e90bfe221618076297e6..81ea01a652b9c545c348ad6390af8be873a4997f 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -698,7 +698,8 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
- 
- 		reason = FIELD_GET(AIROHA_RXD4_PPE_CPU_REASON, msg1);
- 		if (reason == PPE_CPU_REASON_HIT_UNBIND_RATE_REACHED)
--			airoha_ppe_check_skb(eth->ppe, q->skb, hash);
-+			airoha_ppe_check_skb(&eth->ppe->dev, q->skb, hash,
-+					     false);
- 
- 		done++;
- 		napi_gro_receive(&q->napi, q->skb);
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index 9060b1d2814e0e4023d42a05ecb5265212df588f..77fd13d466dcd235a3ab39a488aa26d8f793cf77 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -229,10 +229,6 @@ struct airoha_hw_stats {
- 	u64 rx_len[7];
- };
- 
--enum {
--	PPE_CPU_REASON_HIT_UNBIND_RATE_REACHED = 0x0f,
--};
--
- enum {
- 	AIROHA_FOE_STATE_INVALID,
- 	AIROHA_FOE_STATE_UNBIND,
-@@ -622,8 +618,8 @@ static inline bool airhoa_is_lan_gdm_port(struct airoha_gdm_port *port)
- bool airoha_is_valid_gdm_port(struct airoha_eth *eth,
- 			      struct airoha_gdm_port *port);
- 
--void airoha_ppe_check_skb(struct airoha_ppe *ppe, struct sk_buff *skb,
--			  u16 hash);
-+void airoha_ppe_check_skb(struct airoha_ppe_dev *dev, struct sk_buff *skb,
-+			  u16 hash, bool rx_wlan);
- int airoha_ppe_setup_tc_block_cb(struct airoha_ppe_dev *dev, void *type_data);
- int airoha_ppe_init(struct airoha_eth *eth);
- void airoha_ppe_deinit(struct airoha_eth *eth);
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index 03d9b1f24bb34008b36d9590ec355f4503f9b01c..78473527ff508919fa60a464917617cb882aac20 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -616,7 +616,7 @@ static bool airoha_ppe_foe_compare_entry(struct airoha_flow_table_entry *e,
- 
- static int airoha_ppe_foe_commit_entry(struct airoha_ppe *ppe,
- 				       struct airoha_foe_entry *e,
--				       u32 hash)
-+				       u32 hash, bool rx_wlan)
- {
- 	struct airoha_foe_entry *hwe = ppe->foe + hash * sizeof(*hwe);
- 	u32 ts = airoha_ppe_get_timestamp(ppe);
-@@ -639,7 +639,8 @@ static int airoha_ppe_foe_commit_entry(struct airoha_ppe *ppe,
- 		goto unlock;
- 	}
- 
--	airoha_ppe_foe_flow_stats_update(ppe, npu, hwe, hash);
-+	if (!rx_wlan)
-+		airoha_ppe_foe_flow_stats_update(ppe, npu, hwe, hash);
- 
- 	if (hash < PPE_SRAM_NUM_ENTRIES) {
- 		dma_addr_t addr = ppe->foe_dma + hash * sizeof(*hwe);
-@@ -665,7 +666,7 @@ static void airoha_ppe_foe_remove_flow(struct airoha_ppe *ppe,
- 		e->data.ib1 &= ~AIROHA_FOE_IB1_BIND_STATE;
- 		e->data.ib1 |= FIELD_PREP(AIROHA_FOE_IB1_BIND_STATE,
- 					  AIROHA_FOE_STATE_INVALID);
--		airoha_ppe_foe_commit_entry(ppe, &e->data, e->hash);
-+		airoha_ppe_foe_commit_entry(ppe, &e->data, e->hash, false);
- 		e->hash = 0xffff;
- 	}
- 	if (e->type == FLOW_TYPE_L2_SUBFLOW) {
-@@ -704,7 +705,7 @@ static void airoha_ppe_foe_flow_remove_entry(struct airoha_ppe *ppe,
- static int
- airoha_ppe_foe_commit_subflow_entry(struct airoha_ppe *ppe,
- 				    struct airoha_flow_table_entry *e,
--				    u32 hash)
-+				    u32 hash, bool rx_wlan)
- {
- 	u32 mask = AIROHA_FOE_IB1_BIND_PACKET_TYPE | AIROHA_FOE_IB1_BIND_UDP;
- 	struct airoha_foe_entry *hwe_p, hwe;
-@@ -745,14 +746,14 @@ airoha_ppe_foe_commit_subflow_entry(struct airoha_ppe *ppe,
- 	}
- 
- 	hwe.bridge.data = e->data.bridge.data;
--	airoha_ppe_foe_commit_entry(ppe, &hwe, hash);
-+	airoha_ppe_foe_commit_entry(ppe, &hwe, hash, rx_wlan);
- 
- 	return 0;
+I think this patch should go in before your updates:
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 753f99b4c718..1c51788339a5 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3230,6 +3230,22 @@ int __alloc_bootmem_huge_page(struct hstate *h, int nid)
+ 	return 1;
  }
  
- static void airoha_ppe_foe_insert_entry(struct airoha_ppe *ppe,
- 					struct sk_buff *skb,
--					u32 hash)
-+					u32 hash, bool rx_wlan)
- {
- 	struct airoha_flow_table_entry *e;
- 	struct airoha_foe_bridge br = {};
-@@ -785,7 +786,7 @@ static void airoha_ppe_foe_insert_entry(struct airoha_ppe *ppe,
- 		if (!airoha_ppe_foe_compare_entry(e, hwe))
- 			continue;
- 
--		airoha_ppe_foe_commit_entry(ppe, &e->data, hash);
-+		airoha_ppe_foe_commit_entry(ppe, &e->data, hash, rx_wlan);
- 		commit_done = true;
- 		e->hash = hash;
- 	}
-@@ -797,7 +798,7 @@ static void airoha_ppe_foe_insert_entry(struct airoha_ppe *ppe,
- 	e = rhashtable_lookup_fast(&ppe->l2_flows, &br,
- 				   airoha_l2_flow_table_params);
- 	if (e)
--		airoha_ppe_foe_commit_subflow_entry(ppe, e, hash);
-+		airoha_ppe_foe_commit_subflow_entry(ppe, e, hash, rx_wlan);
- unlock:
- 	spin_unlock_bh(&ppe_lock);
- }
-@@ -1301,9 +1302,10 @@ int airoha_ppe_setup_tc_block_cb(struct airoha_ppe_dev *dev, void *type_data)
- 	return err;
- }
- 
--void airoha_ppe_check_skb(struct airoha_ppe *ppe, struct sk_buff *skb,
--			  u16 hash)
-+void airoha_ppe_check_skb(struct airoha_ppe_dev *dev, struct sk_buff *skb,
-+			  u16 hash, bool rx_wlan)
- {
-+	struct airoha_ppe *ppe = dev->priv;
- 	u16 now, diff;
- 
- 	if (hash > PPE_HASH_MASK)
-@@ -1315,7 +1317,7 @@ void airoha_ppe_check_skb(struct airoha_ppe *ppe, struct sk_buff *skb,
- 		return;
- 
- 	ppe->foe_check_time[hash] = now;
--	airoha_ppe_foe_insert_entry(ppe, skb, hash);
-+	airoha_ppe_foe_insert_entry(ppe, skb, hash, rx_wlan);
- }
- 
- void airoha_ppe_init_upd_mem(struct airoha_gdm_port *port)
-@@ -1404,6 +1406,7 @@ int airoha_ppe_init(struct airoha_eth *eth)
- 		return -ENOMEM;
- 
- 	ppe->dev.ops.setup_tc_block_cb = airoha_ppe_setup_tc_block_cb;
-+	ppe->dev.ops.check_skb = airoha_ppe_check_skb;
- 	ppe->dev.priv = ppe;
- 
- 	foe_size = PPE_NUM_ENTRIES * sizeof(struct airoha_foe_entry);
-diff --git a/include/linux/soc/airoha/airoha_offload.h b/include/linux/soc/airoha/airoha_offload.h
-index 4b4b8b9e426dbc555bec4438b5e110cd235d2edc..1dc5b4e35ef9eaa1d06072a6b6dad52902468f79 100644
---- a/include/linux/soc/airoha/airoha_offload.h
-+++ b/include/linux/soc/airoha/airoha_offload.h
-@@ -9,10 +9,17 @@
- #include <linux/spinlock.h>
- #include <linux/workqueue.h>
- 
-+enum {
-+	PPE_CPU_REASON_HIT_UNBIND_RATE_REACHED = 0x0f,
-+};
-+
- struct airoha_ppe_dev {
- 	struct {
- 		int (*setup_tc_block_cb)(struct airoha_ppe_dev *dev,
- 					 void *type_data);
-+		void (*check_skb)(struct airoha_ppe_dev *dev,
-+				  struct sk_buff *skb, u16 hash,
-+				  bool rx_wlan);
- 	} ops;
- 
- 	void *priv;
-@@ -27,6 +34,13 @@ static inline int airoha_ppe_dev_setup_tc_block_cb(struct airoha_ppe_dev *dev,
- {
- 	return dev->ops.setup_tc_block_cb(dev, type_data);
- }
-+
-+static inline void airoha_ppe_dev_check_skb(struct airoha_ppe_dev *dev,
-+					    struct sk_buff *skb,
-+					    u16 hash, bool rx_wlan)
++/*
++ * Tail pages in a huge folio allocated from memblock are marked as 'noinit',
++ * which means that when CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled their
++ * struct page won't be initialized
++ */
++#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
++static void __init hugetlb_init_tail_page(struct page *page, unsigned long pfn,
++					enum zone_type zone, int nid)
 +{
-+	dev->ops.check_skb(dev, skb, hash, rx_wlan);
++	__init_single_page(page, pfn, zone, nid);
 +}
- #else
- static inline struct airoha_ppe_dev *airoha_ppe_get_dev(struct device *dev)
- {
-@@ -42,6 +56,12 @@ static inline int airoha_ppe_setup_tc_block_cb(struct airoha_ppe_dev *dev,
- {
- 	return -EOPNOTSUPP;
- }
++#else
++static inline void hugetlb_init_tail_page(struct page *page, unsigned long pfn,
++					enum zone_type zone, int nid) {}
++#endif
 +
-+static inline void airoha_ppe_dev_check_skb(struct airoha_ppe_dev *dev,
-+					    struct sk_buff *skb, u16 hash,
-+					    bool rx_wlan)
-+{
-+}
- #endif
+ /* Initialize [start_page:end_page_number] tail struct pages of a hugepage */
+ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
+ 					unsigned long start_page_number,
+@@ -3244,7 +3260,7 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
+ 	for (pfn = head_pfn + start_page_number; pfn < end_pfn; pfn++) {
+ 		struct page *page = pfn_to_page(pfn);
  
- #define NPU_NUM_CORES		8
+-		__init_single_page(page, pfn, zone, nid);
++		hugetlb_init_tail_page(page, pfn, zone, nid);
+ 		prep_compound_tail((struct page *)folio, pfn - head_pfn);
+ 		ret = page_ref_freeze(page, 1);
+ 		VM_BUG_ON(!ret);
+ 
+> Let me revert back to __init_single_page() and add a big fat comment why
+> this is required.
+> 
+> Thanks!
 
 -- 
-2.50.1
-
+Sincerely yours,
+Mike.
